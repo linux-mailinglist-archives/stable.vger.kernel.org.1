@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-153977-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153989-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 41500ADD7B2
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:48:12 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B8474ADD7F1
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:50:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BF09E19473E2
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:34:20 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9C8194A2E46
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:34:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1762C21FF5F;
-	Tue, 17 Jun 2025 16:28:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 211672E8DFC;
+	Tue, 17 Jun 2025 16:29:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1l4StGfa"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UzstQSla"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C71991FBEA8;
-	Tue, 17 Jun 2025 16:28:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2E402DFF22;
+	Tue, 17 Jun 2025 16:29:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750177707; cv=none; b=FEp3qkZpopCqjFV5viNkseUMX0k+aVvowV3QBHQ8xS4BCD7R2YGuPa8vodokhZxg5FnIJI8wry+eu2o5AZHj1N4l7OYl2DNDJZTJojoKxBUEQy8QNbN6kBFwbsBMXBA0mP66pgoDeM3O51TsLLJQKIg8Cr1HL7ll2+2Cu+mllow=
+	t=1750177747; cv=none; b=LJbT+o3bRcou6dI2RjiA9JiDhBlIyUz8JjtOLCViGAMQGf/OVDVB2jczhDFQ0pgmtwEt87zs3UHW+wwkLZcm9WcmncTBhcOC+jqcRFnFMbvNQdiXkHCYIMbOLZMAzhs+4RYNfC00kyh6pcKBNbUlQVakKnVDxiZlaZN3V7chRrc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750177707; c=relaxed/simple;
-	bh=zCt400L9Y4ciene1f82nKC5UnSqtOe+XXZqv39OrMwc=;
+	s=arc-20240116; t=1750177747; c=relaxed/simple;
+	bh=Sjdu81OQgEGMxqcqD5/i1gSY1GBq0aH01RhMJj9FBnc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UiGfimwHA3IlSljZ03DbK9tETuoIQZB8AOK7g6EDG9XlZyJshribarjjQBty8jhJH35fwKEznoVwoybSVQCfBVUzhkTHVmu82Kn9R3SlTFWwZjNSHsjp9aBMYBImIZ17rTDYnhQHiTwbuZStCjwS2M1UzXkuNzw7KE6LU69CDOQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1l4StGfa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D671C4CEE3;
-	Tue, 17 Jun 2025 16:28:26 +0000 (UTC)
+	 MIME-Version; b=B8cj8Wg9AOu7EyS+T4OWCfIGi60nmNhruzADGWt37FErDstoFjjAbziF9GnkR2CzktVZYCCh0hUKkNVtNlF011yrLZ5VUgDhC7xHnfaLsmL9shqc/PjRLWMwiPImdS7+5KaB4bGrIMJ5btDjiboUOPOr84S26HbUVT2Q+Ip6M3E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UzstQSla; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AED08C4CEF3;
+	Tue, 17 Jun 2025 16:29:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750177707;
-	bh=zCt400L9Y4ciene1f82nKC5UnSqtOe+XXZqv39OrMwc=;
+	s=korg; t=1750177747;
+	bh=Sjdu81OQgEGMxqcqD5/i1gSY1GBq0aH01RhMJj9FBnc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1l4StGfa3ovv5pHYHZiy83B2rCxIDmX0hQ6KJo+BCPkZ1zm8t3FNL9ZOALvh1j2SM
-	 e/QCXjmMifX/qmJhOws2xh3iVkoyCal4rpggWRNt01YCl6F2HkVDzedgQFu6hgczvc
-	 oBzXjVUhtBpdoQEustzLEm6tsuUOkSdp3/zlvzU4=
+	b=UzstQSlaNN9B0Dk6iVtRDg55QQ9vSBRnVWnPhhIdQjj9VXQv37TFcAXaxeFc1CEmQ
+	 SJikH9aY2dMsgWpXpBtCRY/rYpqfCYgEq0wlrzVqFa047HU465spDthc4x1gwX/Mt+
+	 CYn/t+HK9ffo6HYtvcE7AjgIO5JbbMnZCP4sT7WE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thangaraj Samynathan <thangaraj.s@microchip.com>,
-	Andrew Lunn <andrew@lunn.ch>,
+	Horatiu Vultur <horatiu.vultur@microchip.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 331/780] net: lan743x: Fix PHY reset handling during initialization and WOL
-Date: Tue, 17 Jun 2025 17:20:39 +0200
-Message-ID: <20250617152504.930767357@linuxfoundation.org>
+Subject: [PATCH 6.15 332/780] net: phy: mscc: Fix memory leak when using one step timestamping
+Date: Tue, 17 Jun 2025 17:20:40 +0200
+Message-ID: <20250617152504.973374899@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
 References: <20250617152451.485330293@linuxfoundation.org>
@@ -67,63 +66,60 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Thangaraj Samynathan <thangaraj.s@microchip.com>
+From: Horatiu Vultur <horatiu.vultur@microchip.com>
 
-[ Upstream commit 82d1096ca8b5dbb3158d707e6fb3ad21c3403a49 ]
+[ Upstream commit 846992645b25ec4253167e3f931e4597eb84af56 ]
 
-Remove lan743x_phy_init from lan743x_hardware_init as it resets the PHY
-registers, causing WOL to fail on subsequent attempts. Add a call to
-lan743x_hw_reset_phy in the probe function to ensure the PHY is reset
-during device initialization.
+Fix memory leak when running one-step timestamping. When running
+one-step sync timestamping, the HW is configured to insert the TX time
+into the frame, so there is no reason to keep the skb anymore. As in
+this case the HW will never generate an interrupt to say that the frame
+was timestamped, then the frame will never released.
+Fix this by freeing the frame in case of one-step timestamping.
 
-Fixes: 23f0703c125be ("lan743x: Add main source files for new lan743x driver")
-Signed-off-by: Thangaraj Samynathan <thangaraj.s@microchip.com>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Link: https://patch.msgid.link/20250526053048.287095-3-thangaraj.s@microchip.com
+Fixes: 7d272e63e0979d ("net: phy: mscc: timestamping and PHC support")
+Signed-off-by: Horatiu Vultur <horatiu.vultur@microchip.com>
+Link: https://patch.msgid.link/20250522115722.2827199-1-horatiu.vultur@microchip.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/microchip/lan743x_main.c | 13 ++++---------
- 1 file changed, 4 insertions(+), 9 deletions(-)
+ drivers/net/phy/mscc/mscc_ptp.c | 16 +++++++++++-----
+ 1 file changed, 11 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/net/ethernet/microchip/lan743x_main.c b/drivers/net/ethernet/microchip/lan743x_main.c
-index da5bd54208dd5..7f36443832ada 100644
---- a/drivers/net/ethernet/microchip/lan743x_main.c
-+++ b/drivers/net/ethernet/microchip/lan743x_main.c
-@@ -1346,11 +1346,6 @@ static int lan743x_hw_reset_phy(struct lan743x_adapter *adapter)
- 				  50000, 1000000);
+diff --git a/drivers/net/phy/mscc/mscc_ptp.c b/drivers/net/phy/mscc/mscc_ptp.c
+index ed8fb14a7f215..6f96f2679f0bf 100644
+--- a/drivers/net/phy/mscc/mscc_ptp.c
++++ b/drivers/net/phy/mscc/mscc_ptp.c
+@@ -1166,18 +1166,24 @@ static void vsc85xx_txtstamp(struct mii_timestamper *mii_ts,
+ 		container_of(mii_ts, struct vsc8531_private, mii_ts);
+ 
+ 	if (!vsc8531->ptp->configured)
+-		return;
++		goto out;
+ 
+-	if (vsc8531->ptp->tx_type == HWTSTAMP_TX_OFF) {
+-		kfree_skb(skb);
+-		return;
+-	}
++	if (vsc8531->ptp->tx_type == HWTSTAMP_TX_OFF)
++		goto out;
++
++	if (vsc8531->ptp->tx_type == HWTSTAMP_TX_ONESTEP_SYNC)
++		if (ptp_msg_is_sync(skb, type))
++			goto out;
+ 
+ 	skb_shinfo(skb)->tx_flags |= SKBTX_IN_PROGRESS;
+ 
+ 	mutex_lock(&vsc8531->ts_lock);
+ 	__skb_queue_tail(&vsc8531->ptp->tx_queue, skb);
+ 	mutex_unlock(&vsc8531->ts_lock);
++	return;
++
++out:
++	kfree_skb(skb);
  }
  
--static int lan743x_phy_init(struct lan743x_adapter *adapter)
--{
--	return lan743x_hw_reset_phy(adapter);
--}
--
- static void lan743x_phy_interface_select(struct lan743x_adapter *adapter)
- {
- 	u32 id_rev;
-@@ -3534,10 +3529,6 @@ static int lan743x_hardware_init(struct lan743x_adapter *adapter,
- 	if (ret)
- 		return ret;
- 
--	ret = lan743x_phy_init(adapter);
--	if (ret)
--		return ret;
--
- 	ret = lan743x_ptp_init(adapter);
- 	if (ret)
- 		return ret;
-@@ -3674,6 +3665,10 @@ static int lan743x_pcidev_probe(struct pci_dev *pdev,
- 	if (ret)
- 		goto cleanup_pci;
- 
-+	ret = lan743x_hw_reset_phy(adapter);
-+	if (ret)
-+		goto cleanup_pci;
-+
- 	ret = lan743x_hardware_init(adapter, pdev);
- 	if (ret)
- 		goto cleanup_pci;
+ static bool vsc85xx_rxtstamp(struct mii_timestamper *mii_ts,
 -- 
 2.39.5
 
