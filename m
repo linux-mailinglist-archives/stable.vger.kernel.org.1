@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-154480-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-154128-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B7EF9ADD9CE
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 19:09:45 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3A229ADD8B6
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:58:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CEB7F4A277A
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:55:59 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A78055A0025
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:42:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4AAA2FA656;
-	Tue, 17 Jun 2025 16:55:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B489E2ECE99;
+	Tue, 17 Jun 2025 16:36:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iJyGWHq+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o65BFwO5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6259B2FA638;
-	Tue, 17 Jun 2025 16:55:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FA721E1C22;
+	Tue, 17 Jun 2025 16:36:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750179342; cv=none; b=HXOxHQzJWLoo6Itvwdd1Lt06SvchSLkfMetJSiAeYJn+D3IG2SBVpw9JgXrFW4SDseqI02+Ci5EY4q46SNlW+mYtGuV+93450Im9/42yYSyZu5R9R9X0EOzeE5lDkWIG7Ub9PLQPwNq36MjoYiG/N2MCOKVna8jPJzli3r/fBMI=
+	t=1750178192; cv=none; b=sGXLcOMOEZQttwz8kNYR5j62MocyVHly7Ous3cew27LSn7M+fCSAtHltZ5KomsUyQnVnhUbwJXvRvbJ2pSfYA3kMcSlGUEsYLWxNsAun9vBbMOTrrm0QGZ6P0uuO5rq4YLuT5MWKLeeGFf/ivJbjZVvywPTVcEZPcXRjgc7Pvoc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750179342; c=relaxed/simple;
-	bh=t6e3Kcty6BYaURvBjjIbt+ccZLSKoNz4CW7kM0a7/j4=;
+	s=arc-20240116; t=1750178192; c=relaxed/simple;
+	bh=Tl/aydMS4sPc9pvGBza4i9R/ow6k9ZAFIh66RX3QQl4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=s2MY4JwK9Bvs3wLC/wu2XB51BdQcFuU7SJcW4UD6IZMlIMfTgt3QxTBiqh2RVa5MGJ+3e7SHGktIOVLCNIMsw+r+i1vd8aYREDnXCHUqXv+3iZMiZ/g7oX/pKANwNHybKgfHbYQsMVChvv11QguEPXhhanrfLIteXCDthTb9wCo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iJyGWHq+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7DB6C4CEE3;
-	Tue, 17 Jun 2025 16:55:41 +0000 (UTC)
+	 MIME-Version; b=Nj55UDRR9W7Rh4PCgwprSBRvRsvqYXfLpEBmekJnD/RxAaV+xUWsfXQTcXqZfnqQ3L94VOWhpjrOlHm+sNsYMyhU+ds4DUvfDnOYsQkmPghUoIXx59rZ/VyqNPZhfUXS4utzeo0LhLt/A0TA762hoApMm7L2y1WEEY3cU7eHPhE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o65BFwO5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF1FFC4CEE3;
+	Tue, 17 Jun 2025 16:36:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750179342;
-	bh=t6e3Kcty6BYaURvBjjIbt+ccZLSKoNz4CW7kM0a7/j4=;
+	s=korg; t=1750178192;
+	bh=Tl/aydMS4sPc9pvGBza4i9R/ow6k9ZAFIh66RX3QQl4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iJyGWHq+cNQzVsOcTA+9kGQ+nbzR/2rRr8+yOQTtld/taQstntGm0JpWIs0LmSWBg
-	 86URxHduh0VBTqF2HzfCdmgrrJbwcXQVi8dstNgN+iT+rz50fv4xWN8bZuNBHrC66A
-	 6f498o48o+T6VpOejHnEQn6BmCBsQWdcMNzYe5/Q=
+	b=o65BFwO5MokfDNDRLC7X6flHLf3BCdk8LZNQXtuODs3UmysI7iXqoovYPvrkARgua
+	 hZNF/DiPpu4zJONgu0qszKOfEYpMkoixFM5cvvqKlgCA8uPFz1NGkfCiEo0V3+Ix6M
+	 y1bQkpS49ywXcAT+GMwpMWnzkH90YSbmBk3IJEFg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gerrard Tai <gerrard.tai@starlabs.sg>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	kernel test robot <lkp@intel.com>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 717/780] net_sched: prio: fix a race in prio_tune()
+Subject: [PATCH 6.12 459/512] Bluetooth: MGMT: Fix sparse errors
 Date: Tue, 17 Jun 2025 17:27:05 +0200
-Message-ID: <20250617152520.690641603@linuxfoundation.org>
+Message-ID: <20250617152438.170431326@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
-References: <20250617152451.485330293@linuxfoundation.org>
+In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
+References: <20250617152419.512865572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,60 +62,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 
-[ Upstream commit d35acc1be3480505b5931f17e4ea9b7617fea4d3 ]
+[ Upstream commit 7dd38ba4acbea9875b4ee061e20a26413e39d9f4 ]
 
-Gerrard Tai reported a race condition in PRIO, whenever SFQ perturb timer
-fires at the wrong time.
+This fixes the following errors:
 
-The race is as follows:
+net/bluetooth/mgmt.c:5400:59: sparse: sparse: incorrect type in argument 3
+(different base types) @@     expected unsigned short [usertype] handle @@
+got restricted __le16 [usertype] monitor_handle @@
+net/bluetooth/mgmt.c:5400:59: sparse:     expected unsigned short [usertype] handle
+net/bluetooth/mgmt.c:5400:59: sparse:     got restricted __le16 [usertype] monitor_handle
 
-CPU 0                                 CPU 1
-[1]: lock root
-[2]: qdisc_tree_flush_backlog()
-[3]: unlock root
- |
- |                                    [5]: lock root
- |                                    [6]: rehash
- |                                    [7]: qdisc_tree_reduce_backlog()
- |
-[4]: qdisc_put()
-
-This can be abused to underflow a parent's qlen.
-
-Calling qdisc_purge_queue() instead of qdisc_tree_flush_backlog()
-should fix the race, because all packets will be purged from the qdisc
-before releasing the lock.
-
-Fixes: 7b8e0b6e6599 ("net: sched: prio: delay destroying child qdiscs on change")
-Reported-by: Gerrard Tai <gerrard.tai@starlabs.sg>
-Suggested-by: Gerrard Tai <gerrard.tai@starlabs.sg>
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Link: https://patch.msgid.link/20250611111515.1983366-2-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: e6ed54e86aae ("Bluetooth: MGMT: Fix UAF on mgmt_remove_adv_monitor_complete")
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202506060347.ux2O1p7L-lkp@intel.com/
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sched/sch_prio.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/bluetooth/mgmt.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/net/sched/sch_prio.c b/net/sched/sch_prio.c
-index cc30f7a32f1a7..9e2b9a490db23 100644
---- a/net/sched/sch_prio.c
-+++ b/net/sched/sch_prio.c
-@@ -211,7 +211,7 @@ static int prio_tune(struct Qdisc *sch, struct nlattr *opt,
- 	memcpy(q->prio2band, qopt->priomap, TC_PRIO_MAX+1);
+diff --git a/net/bluetooth/mgmt.c b/net/bluetooth/mgmt.c
+index 70a26c895512f..7664e7ba372ce 100644
+--- a/net/bluetooth/mgmt.c
++++ b/net/bluetooth/mgmt.c
+@@ -5166,11 +5166,11 @@ static void mgmt_adv_monitor_added(struct sock *sk, struct hci_dev *hdev,
+ }
  
- 	for (i = q->bands; i < oldbands; i++)
--		qdisc_tree_flush_backlog(q->queues[i]);
-+		qdisc_purge_queue(q->queues[i]);
+ static void mgmt_adv_monitor_removed(struct sock *sk, struct hci_dev *hdev,
+-				     u16 handle)
++				     __le16 handle)
+ {
+ 	struct mgmt_ev_adv_monitor_removed ev;
  
- 	for (i = oldbands; i < q->bands; i++) {
- 		q->queues[i] = queues[i];
+-	ev.monitor_handle = cpu_to_le16(handle);
++	ev.monitor_handle = handle;
+ 
+ 	mgmt_event(MGMT_EV_ADV_MONITOR_REMOVED, hdev, &ev, sizeof(ev), sk);
+ }
 -- 
 2.39.5
 
