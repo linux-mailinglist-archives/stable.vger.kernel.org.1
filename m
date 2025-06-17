@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-153817-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-154323-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 750F1ADD73D
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:42:48 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 09992ADD912
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 19:02:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 84E88189AD4E
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:25:56 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9B0E34A0C85
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:49:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D9E642EE281;
-	Tue, 17 Jun 2025 16:19:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E43C92E06C8;
+	Tue, 17 Jun 2025 16:47:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y0jkMlng"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uI/WF+9G"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 954D4235071;
-	Tue, 17 Jun 2025 16:19:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9ED53231A37;
+	Tue, 17 Jun 2025 16:47:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750177192; cv=none; b=AtcMEkFMufQj9iDKxBIrY3JAzfE9HvLGWCXG61LP+km2J4sEt1NqVoZdzB7PH9FqmsuIpiyx8sDhMn6Fzi3MYHMaEixEVKLWdDfe9m1pni4acUAScI5eVb6F2FFLeqIwM4ImC9mKSGQc9/yn3SJmmkaHyMpJ7S/3d5HLfPdscsQ=
+	t=1750178822; cv=none; b=K6r+5UZU0G05iqsEJKVXGUDZh/SMNDRbzRsPhqXwGfIZj5BV91Divh/rrytR/Pp6wXgstKDp9X9jV8kMH1zdB8KKG/mwoEoDHrq2nENHVrxSAhA4K18fGxMZwUBoXvPuTA2ySuuKY/vs6kpmzHcLyftgbPA0kmqFCwhbSQ/wkT0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750177192; c=relaxed/simple;
-	bh=HdznCL5Y7x7UUAYnyd8zKlqBEku6BCYym9wz0MU6tgs=;
+	s=arc-20240116; t=1750178822; c=relaxed/simple;
+	bh=xN33zIqOwvLJxjNl+JFQZ5r842kAKbry7zi7WijVIrQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WYRAnkjiA18fo5EDiPmbGwOzpePpXKCGdgslA+TDTunR5LVtxLSb8altjQKPS/m4aWP1zJeQEXePWxf559+0qEBkueTRhZ0NtxxJ7pvOLxk3UsoZ7JF/RsH+jJmg40rrKnZZlrSB2gGFvgRCBEapZ36NOl1DU9UBRXyjQIHYeDk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y0jkMlng; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9DECC4CEE3;
-	Tue, 17 Jun 2025 16:19:51 +0000 (UTC)
+	 MIME-Version; b=RD1i7iOUwUFr9/VmtifCY3KnNevLMdAB8KWZjPP9aCHSd+vRHDhds2norqNggJ4xge4+2kbsooUkTUQpFXzCuBcWPRSFUnyt1RM9vLlm3UDDvVASdphjREqn3ACHUIyLK9Qno30D2xF1+VH4drKsxEnstDxQw1+FhhxgwS8EPOY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uI/WF+9G; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1FED2C4CEE3;
+	Tue, 17 Jun 2025 16:47:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750177192;
-	bh=HdznCL5Y7x7UUAYnyd8zKlqBEku6BCYym9wz0MU6tgs=;
+	s=korg; t=1750178822;
+	bh=xN33zIqOwvLJxjNl+JFQZ5r842kAKbry7zi7WijVIrQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=y0jkMlngU/sMXC6tOmzRhJsdHC8zp5f/oG7RGqCG+gm5c/2FJ/DezbE59FlieHUcL
-	 7X4NMc9Ua3r3bu7eXFLFNSZYJPs/K1whWL/A9Cr6567UpiRSNjo99AiJn3aBBVtxMY
-	 ApN921XbM2tgCJAnptMmVkCUbf+f7X3xS6TYFmWg=
+	b=uI/WF+9GFrP42Gvo/Hm4X2pVuKnmFD/iBnS+SgKHPmjEMmzkP/yDalLNzjREkZz7m
+	 erXM8ceNKZQRgjHtDFVutzsaOJEC6bsVSwfxU1wZgT0uJzNxqqqjCRnBFw+p6f6Av9
+	 Tp6ZHQvma5FClr2hEfjvyN72AweWhlx6d7FlvOkc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Benno Lossin <benno.lossin@proton.me>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Danilo Krummrich <dakr@kernel.org>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Simon Horman <horms@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 305/512] rust: alloc: add missing invariant in Vec::set_len()
-Date: Tue, 17 Jun 2025 17:24:31 +0200
-Message-ID: <20250617152431.965868558@linuxfoundation.org>
+Subject: [PATCH 6.15 564/780] net/mlx4_en: Prevent potential integer overflow calculating Hz
+Date: Tue, 17 Jun 2025 17:24:32 +0200
+Message-ID: <20250617152514.453706704@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
-References: <20250617152419.512865572@linuxfoundation.org>
+In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
+References: <20250617152451.485330293@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,42 +63,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Danilo Krummrich <dakr@kernel.org>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-[ Upstream commit fb1bf1067de979c89ae33589e0466d6ce0dde204 ]
+[ Upstream commit 54d34165b4f786d7fea8412a18fb4a54c1eab623 ]
 
-When setting a new length, we have to justify that the set length
-represents the exact number of elements stored in the vector.
+The "freq" variable is in terms of MHz and "max_val_cycles" is in terms
+of Hz.  The fact that "max_val_cycles" is a u64 suggests that support
+for high frequency is intended but the "freq_khz * 1000" would overflow
+the u32 type if we went above 4GHz.  Use unsigned long long type for the
+mutliplication to prevent that.
 
-Reviewed-by: Benno Lossin <benno.lossin@proton.me>
-Reported-by: Alice Ryhl <aliceryhl@google.com>
-Closes: https://lore.kernel.org/rust-for-linux/20250311-iov-iter-v1-4-f6c9134ea824@google.com
-Fixes: 2aac4cd7dae3 ("rust: alloc: implement kernel `Vec` type")
-Link: https://lore.kernel.org/r/20250315154436.65065-2-dakr@kernel.org
-Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+Fixes: 31c128b66e5b ("net/mlx4_en: Choose time-stamping shift value according to HW frequency")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/aDbFHe19juIJKjsb@stanley.mountain
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- rust/kernel/alloc/kvec.rs | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/net/ethernet/mellanox/mlx4/en_clock.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/rust/kernel/alloc/kvec.rs b/rust/kernel/alloc/kvec.rs
-index 87a71fd40c3ca..f62204fe563f5 100644
---- a/rust/kernel/alloc/kvec.rs
-+++ b/rust/kernel/alloc/kvec.rs
-@@ -196,6 +196,9 @@ where
-     #[inline]
-     pub unsafe fn set_len(&mut self, new_len: usize) {
-         debug_assert!(new_len <= self.capacity());
-+
-+        // INVARIANT: By the safety requirements of this method `new_len` represents the exact
-+        // number of elements stored within `self`.
-         self.len = new_len;
-     }
- 
+diff --git a/drivers/net/ethernet/mellanox/mlx4/en_clock.c b/drivers/net/ethernet/mellanox/mlx4/en_clock.c
+index cd754cd76bde1..d73a2044dc266 100644
+--- a/drivers/net/ethernet/mellanox/mlx4/en_clock.c
++++ b/drivers/net/ethernet/mellanox/mlx4/en_clock.c
+@@ -249,7 +249,7 @@ static const struct ptp_clock_info mlx4_en_ptp_clock_info = {
+ static u32 freq_to_shift(u16 freq)
+ {
+ 	u32 freq_khz = freq * 1000;
+-	u64 max_val_cycles = freq_khz * 1000 * MLX4_EN_WRAP_AROUND_SEC;
++	u64 max_val_cycles = freq_khz * 1000ULL * MLX4_EN_WRAP_AROUND_SEC;
+ 	u64 max_val_cycles_rounded = 1ULL << fls64(max_val_cycles - 1);
+ 	/* calculate max possible multiplier in order to fit in 64bit */
+ 	u64 max_mul = div64_u64(ULLONG_MAX, max_val_cycles_rounded);
 -- 
 2.39.5
 
