@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-154156-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-154497-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6711AADD804
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:51:21 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D948ADD950
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 19:05:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EC6F419E4860
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:43:59 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6C1471947675
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:56:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C33E2EE272;
-	Tue, 17 Jun 2025 16:38:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52D792FA62F;
+	Tue, 17 Jun 2025 16:56:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uhEZJsRq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j9WVKXu8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 124542ED868;
-	Tue, 17 Jun 2025 16:38:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2DE22FA625;
+	Tue, 17 Jun 2025 16:56:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750178282; cv=none; b=dEla1YPpAfsxjspNkJ/ZhENVdTls/GsPMQDW21i/pYCvh3WcLhMiu2qPqtL3uVByazOTJG/n2Ndd4bVskwLhXQKc/tIULwrPjCplmDasEw6gTYkSeiDxFBbT5xJEdSG/ZZToYzTqpqdrSsgKbRHo86MZyRSU++W9H0u9MVPtO0Y=
+	t=1750179399; cv=none; b=BPdKgsQ8DTmxjihhc0QgsRUltLH/XtU1I31zBYWTuEbIwlNCJpb1SRi31EPI7nA5r2maxXCODx2qUyL4BMrQQ0E1ZOsFDYYtnaK9G6WAssJgt/1wXwYcwP+EQZwvxhLJ1/XBGelAyyEKUlaoisihDgYYqnjY25XIGwUj+C5PKa8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750178282; c=relaxed/simple;
-	bh=5dcjVnaOMSLjgICac2xpXr26VhbFfxrE9Z+0E+IwO5o=;
+	s=arc-20240116; t=1750179399; c=relaxed/simple;
+	bh=WfeON4poukMny33221lkE3pWOWhIycsdMJANlsZrJvI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MijQxxBQvVQKpEg65GCezbnOMNIqk2f+DPb6lA9jHE4o7OJZWfWfoKyvzjLGKzuugf2YlDprYSXPH0elMdZ/sky9T1bbuadk+GRcYklZ17QTkxCMFC6fVN0n8pc6uzMZUWoQfrSBBG4pF0I+O693nYh73fsibsvvdgPWGr+EqeI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uhEZJsRq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6DCA5C4CEE3;
-	Tue, 17 Jun 2025 16:38:01 +0000 (UTC)
+	 MIME-Version; b=G702dWf/3eEPc4/dnyVcXSg7g7aRouXBqrBh+QmMsNg/AsIPpEuklbdSgJpYXtDTLiCEcEHVjhgSxqNpO5LJhThFqdlAfvXcPvjb4amv+LBcO15CT99JZYdWCvghGcsYRNw2ovxv2p2V9vmFVV8CK0+tEWVhofps+k6iyKnp8CE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j9WVKXu8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E37F3C4CEE3;
+	Tue, 17 Jun 2025 16:56:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750178281;
-	bh=5dcjVnaOMSLjgICac2xpXr26VhbFfxrE9Z+0E+IwO5o=;
+	s=korg; t=1750179398;
+	bh=WfeON4poukMny33221lkE3pWOWhIycsdMJANlsZrJvI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uhEZJsRqCY9xDmef0QQhTfoEOclxsQkA4CWz2DiysV+d3kFT2GIWgv0//hfhoIap/
-	 SdDZB6tfcbkg723RRkF9UpMlA/UflTZz0j8ZqwKXtuKNiAPtUUpkKzPwvOZs7e8Fz2
-	 LTOOVfrGxL1+is0vNbDjgwtURAORAaXioE29upZE=
+	b=j9WVKXu8ubiNw0pNVjpHnYIljCIwRZ49hK43OuFl053pVLbRflUBCB4NZEQPVSxBY
+	 OyMJIRc2IBt2tQmanbcFsAwhZ9VrjG5czY/gxdMn2POr9aj/e78YtQRro4kfhMLSGh
+	 1lIphaPwnBQZe0B2Ac+dtscboAth90RF40DdQX9g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Filipe Manana <fdmanana@suse.com>,
-	David Sterba <dsterba@suse.com>,
+	Hannes Reinecke <hare@suse.de>,
+	Nilay Shroff <nilay@linux.ibm.com>,
+	Christoph Hellwig <hch@lst.de>,
+	Ming Lei <ming.lei@redhat.com>,
+	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 473/512] btrfs: exit after state split error at set_extent_bit()
-Date: Tue, 17 Jun 2025 17:27:19 +0200
-Message-ID: <20250617152438.743500412@linuxfoundation.org>
+Subject: [PATCH 6.15 732/780] block: use q->elevator with ->elevator_lock held in elv_iosched_show()
+Date: Tue, 17 Jun 2025 17:27:20 +0200
+Message-ID: <20250617152521.304523735@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
-References: <20250617152419.512865572@linuxfoundation.org>
+In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
+References: <20250617152451.485330293@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,49 +65,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Filipe Manana <fdmanana@suse.com>
+From: Ming Lei <ming.lei@redhat.com>
 
-[ Upstream commit 41d69d4d78d8b179bf3bcdfc56d28a12b3a608d2 ]
+[ Upstream commit 94209d27d14104ed828ca88cd5403a99162fe51a ]
 
-If split_state() returned an error we call extent_io_tree_panic() which
-will trigger a BUG() call. However if CONFIG_BUG is disabled, which is an
-uncommon and exotic scenario, then we fallthrough and hit a use after free
-when calling set_state_bits() since the extent state record which the
-local variable 'prealloc' points to was freed by split_state().
+Use q->elevator with ->elevator_lock held in elv_iosched_show(), since
+the local cached elevator reference may become stale after getting
+->elevator_lock.
 
-So jump to the label 'out' after calling extent_io_tree_panic() and set
-the 'prealloc' pointer to NULL since split_state() has already freed it
-when it hit an error.
-
-Signed-off-by: Filipe Manana <fdmanana@suse.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
+Reviewed-by: Hannes Reinecke <hare@suse.de>
+Reviewed-by: Nilay Shroff <nilay@linux.ibm.com>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Ming Lei <ming.lei@redhat.com>
+Link: https://lore.kernel.org/r/20250505141805.2751237-5-ming.lei@redhat.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/extent-io-tree.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ block/elevator.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/fs/btrfs/extent-io-tree.c b/fs/btrfs/extent-io-tree.c
-index bb3aaf610652a..5f9a43734812e 100644
---- a/fs/btrfs/extent-io-tree.c
-+++ b/fs/btrfs/extent-io-tree.c
-@@ -1252,8 +1252,11 @@ static int __set_extent_bit(struct extent_io_tree *tree, u64 start, u64 end,
- 		if (!prealloc)
- 			goto search_again;
- 		ret = split_state(tree, state, prealloc, end + 1);
--		if (ret)
-+		if (ret) {
- 			extent_io_tree_panic(tree, state, "split", ret);
-+			prealloc = NULL;
-+			goto out;
-+		}
+diff --git a/block/elevator.c b/block/elevator.c
+index b4d08026b02ce..dc4cadef728e5 100644
+--- a/block/elevator.c
++++ b/block/elevator.c
+@@ -744,7 +744,6 @@ ssize_t elv_iosched_store(struct gendisk *disk, const char *buf,
+ ssize_t elv_iosched_show(struct gendisk *disk, char *name)
+ {
+ 	struct request_queue *q = disk->queue;
+-	struct elevator_queue *eq = q->elevator;
+ 	struct elevator_type *cur = NULL, *e;
+ 	int len = 0;
  
- 		set_state_bits(tree, prealloc, bits, changeset);
- 		cache_state(prealloc, cached_state);
+@@ -753,7 +752,7 @@ ssize_t elv_iosched_show(struct gendisk *disk, char *name)
+ 		len += sprintf(name+len, "[none] ");
+ 	} else {
+ 		len += sprintf(name+len, "none ");
+-		cur = eq->type;
++		cur = q->elevator->type;
+ 	}
+ 
+ 	spin_lock(&elv_list_lock);
 -- 
 2.39.5
 
