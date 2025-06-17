@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-153113-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153116-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D520CADD263
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 17:41:56 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C42B8ADD265
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 17:42:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 34EED3A19E2
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 15:41:25 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D9AF4189AAD4
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 15:42:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68A972EA487;
-	Tue, 17 Jun 2025 15:41:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C55C12EB5AB;
+	Tue, 17 Jun 2025 15:41:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F9gAEoLR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PJsU2BQ6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23F7D2ECD0B;
-	Tue, 17 Jun 2025 15:41:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80ADC20F090;
+	Tue, 17 Jun 2025 15:41:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750174905; cv=none; b=KJei69rfdTRl8FESiykAw2j/VUulzclaLRgkaKewi88QWE9jYaojmJ6B/DJw3aSeaHSQKcsRsRh/ltozB8VPbxCkNhTimN6msGYjqsShslsI7DhdcEJLXD14EfAW3PrGz1FHBSoFDO7/oKlX8f0oKg9dVicEbunYFGjNuXOdcJk=
+	t=1750174915; cv=none; b=maFolk/zE8skqrMhGqwaRU+q0g7k7p2BtVGq3YeSTDpD+0trBOsUsrNJbTGQqWQEQ1vKYVQ87FNmgR5J8gTCbMjUR06ZyRASk5DYE2KA53Zs36pC5abMaS2kyz1pEO0dfjSHDtDFe0HxQ5//uRKjJKu1cnCToeQvzQFLAdiUxPI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750174905; c=relaxed/simple;
-	bh=qMsh8x4/dHokZtJFTUKEvS9Unmxtxnj6wvuEGYp2Ndk=;
+	s=arc-20240116; t=1750174915; c=relaxed/simple;
+	bh=3rdCwV/DTOUr1vgIT3VFP198Ij8UGvTP9yM3tLilKwQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KfcOwzYv0cZwbZz7erF7ZJ0q7Y0BHcjEKfYIkwJHA3QA+ZilUw+BQIfpjxYDmxDGAjzQERYcwkan76g1U7oqxieh8veXjNTNSZNVdzjCCjYTrnkvxk8ZkL4/ezQ0wPT8XfPRyYFYZdPyfyy++tWNquYUC+6dTkWdQlwLZ/DuGpM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F9gAEoLR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8867DC4CEE3;
-	Tue, 17 Jun 2025 15:41:44 +0000 (UTC)
+	 MIME-Version; b=Ce+jOF9BsnSslFbL6UKpqIB+fYSGRkP9y1JC/zDAqvLbAt4sbcwV11aDmEm8pWDMVYL1ATRHa201aMXDCeR0dh0T/zxmrJlfjPHcfMZRgaCw85ioxwi8CmlBb5EUUftY5/9N4vnnQWFgTeZ5PTSKMsW1dN/c5SfmZp49/g5zaLA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PJsU2BQ6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB56FC4CEE3;
+	Tue, 17 Jun 2025 15:41:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750174905;
-	bh=qMsh8x4/dHokZtJFTUKEvS9Unmxtxnj6wvuEGYp2Ndk=;
+	s=korg; t=1750174915;
+	bh=3rdCwV/DTOUr1vgIT3VFP198Ij8UGvTP9yM3tLilKwQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=F9gAEoLRkqoV4yWa/PdmR6WvYWy+Ggs4xlioZQqaiF/JmRg9SH8KNWlBugXh69psz
-	 hZq0LyJ0+nfcapFxPz8KGfLHNVS9t/L3funrRJiYTFZJTnynWzlod0VUxUxjJoE+9t
-	 /CidAi6l8dcRP3QiMEwbb/AynLEkv3tFcDkvsCiM=
+	b=PJsU2BQ6uBNX9Yz0u1NUFTdhJ+xrgLeGZIO/8/rBqDL6S5QDQsUo/+rkhOPM1Z5gM
+	 nBS7TtJg4hfctssj1pcZkWcGoTRo+S2jMvwmNycS6vHf2fh6ICuxVjpSktc/KDVlJU
+	 eKLaGf7Bola1dKdq0nLzN05Fn95wBoeRA97MRVPA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -46,9 +46,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Christoph Hellwig <hch@lst.de>,
 	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 032/780] brd: fix aligned_sector from brd_do_discard()
-Date: Tue, 17 Jun 2025 17:15:40 +0200
-Message-ID: <20250617152452.813141217@linuxfoundation.org>
+Subject: [PATCH 6.15 033/780] brd: fix discard end sector
+Date: Tue, 17 Jun 2025 17:15:41 +0200
+Message-ID: <20250617152452.853035819@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
 References: <20250617152451.485330293@linuxfoundation.org>
@@ -69,33 +69,56 @@ Content-Transfer-Encoding: 8bit
 
 From: Yu Kuai <yukuai3@huawei.com>
 
-[ Upstream commit d4099f8893b057ad7e8d61df76bdeaf807ebd679 ]
+[ Upstream commit a26a339a654b9403f0ee1004f1db4c2b2a355460 ]
 
-The calculation is just wrong, fix it by round_up().
+brd_do_discard() just aligned start sector to page, this can only work
+if the discard size if at least one page. For example:
+
+blkdiscard /dev/ram0 -o 5120 -l 1024
+
+In this case, size = (1024 - (8192 - 5120)), which is a huge value.
+
+Fix the problem by round_down() the end sector.
 
 Fixes: 9ead7efc6f3f ("brd: implement discard support")
 Signed-off-by: Yu Kuai <yukuai3@huawei.com>
 Reviewed-by: Christoph Hellwig <hch@lst.de>
-Link: https://lore.kernel.org/r/20250506061756.2970934-3-yukuai1@huaweicloud.com
+Link: https://lore.kernel.org/r/20250506061756.2970934-4-yukuai1@huaweicloud.com
 Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/block/brd.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/block/brd.c | 9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
 diff --git a/drivers/block/brd.c b/drivers/block/brd.c
-index 292f127cae0ab..9549cd71e083b 100644
+index 9549cd71e083b..02fa8106ef549 100644
 --- a/drivers/block/brd.c
 +++ b/drivers/block/brd.c
-@@ -224,7 +224,7 @@ static int brd_do_bvec(struct brd_device *brd, struct page *page,
- 
+@@ -225,18 +225,21 @@ static int brd_do_bvec(struct brd_device *brd, struct page *page,
  static void brd_do_discard(struct brd_device *brd, sector_t sector, u32 size)
  {
--	sector_t aligned_sector = (sector + PAGE_SECTORS) & ~PAGE_SECTORS;
-+	sector_t aligned_sector = round_up(sector, PAGE_SECTORS);
+ 	sector_t aligned_sector = round_up(sector, PAGE_SECTORS);
++	sector_t aligned_end = round_down(
++			sector + (size >> SECTOR_SHIFT), PAGE_SECTORS);
  	struct page *page;
  
- 	size -= (aligned_sector - sector) * SECTOR_SIZE;
+-	size -= (aligned_sector - sector) * SECTOR_SIZE;
++	if (aligned_end <= aligned_sector)
++		return;
++
+ 	xa_lock(&brd->brd_pages);
+-	while (size >= PAGE_SIZE && aligned_sector < rd_size * 2) {
++	while (aligned_sector < aligned_end && aligned_sector < rd_size * 2) {
+ 		page = __xa_erase(&brd->brd_pages, aligned_sector >> PAGE_SECTORS_SHIFT);
+ 		if (page) {
+ 			__free_page(page);
+ 			brd->brd_nr_pages--;
+ 		}
+ 		aligned_sector += PAGE_SECTORS;
+-		size -= PAGE_SIZE;
+ 	}
+ 	xa_unlock(&brd->brd_pages);
+ }
 -- 
 2.39.5
 
