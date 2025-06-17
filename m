@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-153435-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-154163-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 34800ADD505
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:16:09 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CB2F1ADD89E
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:57:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5B83D1899217
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:03:49 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D86EE2C7DDF
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:43:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B57402EA14E;
-	Tue, 17 Jun 2025 15:59:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C99423AE84;
+	Tue, 17 Jun 2025 16:38:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qgtR6EOZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U65+Q6fQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71FB72DFF0B;
-	Tue, 17 Jun 2025 15:59:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECCF428506E;
+	Tue, 17 Jun 2025 16:38:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750175953; cv=none; b=JGcct1YnWKQg2xaFgUSxT4mIFvwWg9fCHw3RHiIFpMVAK9DKpHQCFKcwsDNj2pxlV2ZkDbm1vMZ1Ah54VgRtvF/3HVcGNBJPoZUUicciIS7/bg5up+CR4Ar+owhOj2x0Scc38sQbo6YusXfp5bQMp8XcivG7WbIAjRt531+2a2k=
+	t=1750178305; cv=none; b=IWVqWd48OeABdNrWZgQPS/6FBKx9Fcpe7p4S3CJ2ifq4A8qR/zWHJj/19etvZbwRj3+BDXEPbL3KptWPs8lWlctSJv6FwtWs4S1iF+m7Hw/hsTFJr3yzIeveAzAqAM4DsqppgM37dEQ5CpKKLr0Vg3MvxGrg9ZpxsK+b2qv7HIE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750175953; c=relaxed/simple;
-	bh=DGGy6dpiwfvfvq9On0Y3blluMTBVaFtP6cSVQZTZMro=;
+	s=arc-20240116; t=1750178305; c=relaxed/simple;
+	bh=4JLa3394yV/R30IBlwxXhT2JKG9gABRkSRZUEt55/sQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PtqGkVl7IetBodtVM0ScwLYlU3hw2HUmPIZTkvb7kPHfdNEPD7Da4T+HG6d/V39z5oT/qI6LarROWoaboTE1mV849EjUc1INTYubmjAEdgd6vOCzfjqcZlCQ9dFfHcVkcXLUjy0SQFUyqIlMDqHf4LJpLs2cvTw5dxfQSgFYn2M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qgtR6EOZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B4AEC4CEE3;
-	Tue, 17 Jun 2025 15:59:12 +0000 (UTC)
+	 MIME-Version; b=rFPtmiwa9TK6zJEVmc8jnD3gvcM83dIdvIMPRGPep7+QjbuDtC1Y+feaMNnnILTPV96bm4uBB77/aHZaWAajUvtKWlwhJ0/7ccD2Pi8Nao+4cJp9T3t8EqalF76H4npUwWnp+AStc05ZjF/Oow0npG/4yOUo05rK0KctFcNOcts=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U65+Q6fQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E7B0C4CEE3;
+	Tue, 17 Jun 2025 16:38:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750175953;
-	bh=DGGy6dpiwfvfvq9On0Y3blluMTBVaFtP6cSVQZTZMro=;
+	s=korg; t=1750178304;
+	bh=4JLa3394yV/R30IBlwxXhT2JKG9gABRkSRZUEt55/sQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qgtR6EOZ++QpIA2fW+Ym+3VxlHpVrI9Z/pxUEL94WOHIAEjA2Ub5ZJZ39+9wgMmPy
-	 ZLWYWisl3rMH4mgka1D8d9/3UWTcUilNRTfEY3a/7p5GuwhmBlfz3w+4ErWocKb8Eb
-	 IfK5FLdelMqcl5h+eqzD6VhtNBnIMYcQLD8pLiBs=
+	b=U65+Q6fQvwFiXOSqcnu4DCv9PlmHVP+wYjZGBAKp8OFpNNSXRqC/m5SQF8m8dCOZq
+	 gLWN+/+nyq4ktaZN2Xu5QLK9fiaTALlgUAQd5/sQ35E12zjOKWwY4yslEVBfK887uW
+	 G0C/kKwSNdznfKxr05IB/QDYr7mpkCpTvtKbBjkw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Kent Overstreet <kent.overstreet@linux.dev>,
+	Benjamin Marzinski <bmarzins@redhat.com>,
+	Mikulas Patocka <mpatocka@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 182/512] Bluetooth: ISO: Fix not using SID from adv report
-Date: Tue, 17 Jun 2025 17:22:28 +0200
-Message-ID: <20250617152427.023582169@linuxfoundation.org>
+Subject: [PATCH 6.15 441/780] dm-flakey: make corrupting read bios work
+Date: Tue, 17 Jun 2025 17:22:29 +0200
+Message-ID: <20250617152509.417770294@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
-References: <20250617152419.512865572@linuxfoundation.org>
+In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
+References: <20250617152451.485330293@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,300 +63,182 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+From: Benjamin Marzinski <bmarzins@redhat.com>
 
-[ Upstream commit e2d471b7806b09744d65a64bcf41337468f2443b ]
+[ Upstream commit 13e79076c89f6e96a6cca8f6df38b40d025907b4 ]
 
-Up until now it has been assumed that the application would be able to
-enter the advertising SID in sockaddr_iso_bc.bc_sid, but userspace has
-no access to SID since the likes of MGMT_EV_DEVICE_FOUND cannot carry
-it, so it was left unset (0x00) which means it would be unable to
-synchronize if the broadcast source is using a different SID e.g. 0x04:
+dm-flakey corrupts the read bios in the endio function.  However, the
+corrupt_bio_* functions checked bio_has_data() to see if there was data
+to corrupt. Since this was the endio function, there was no data left to
+complete, so bio_has_data() was always false. Fix this by saving a copy
+of the bio's bi_iter in flakey_map(), and using this to initialize the
+iter for corrupting the read bios. This patch also skips cloning the bio
+for write bios with no data.
 
-> HCI Event: LE Meta Event (0x3e) plen 57
-      LE Extended Advertising Report (0x0d)
-        Num reports: 1
-        Entry 0
-          Event type: 0x0000
-            Props: 0x0000
-            Data status: Complete
-          Address type: Random (0x01)
-          Address: 0B:82:E8:50:6D:C8 (Non-Resolvable)
-          Primary PHY: LE 1M
-          Secondary PHY: LE 2M
-          SID: 0x04
-          TX power: 127 dBm
-          RSSI: -55 dBm (0xc9)
-          Periodic advertising interval: 180.00 msec (0x0090)
-          Direct address type: Public (0x00)
-          Direct address: 00:00:00:00:00:00 (OUI 00-00-00)
-          Data length: 0x1f
-        06 16 52 18 5b 0b e1 05 16 56 18 04 00 11 30 4c  ..R.[....V....0L
-        75 69 7a 27 73 20 53 32 33 20 55 6c 74 72 61     uiz's S23 Ultra
-        Service Data: Broadcast Audio Announcement (0x1852)
-        Broadcast ID: 14748507 (0xe10b5b)
-        Service Data: Public Broadcast Announcement (0x1856)
-          Data[2]: 0400
-        Unknown EIR field 0x30[16]: 4c75697a27732053323320556c747261
-< HCI Command: LE Periodic Advertising Create Sync (0x08|0x0044) plen 14
-        Options: 0x0000
-        Use advertising SID, Advertiser Address Type and address
-        Reporting initially enabled
-        SID: 0x00 (<- Invalid)
-        Adv address type: Random (0x01)
-        Adv address: 0B:82:E8:50:6D:C8 (Non-Resolvable)
-        Skip: 0x0000
-        Sync timeout: 20000 msec (0x07d0)
-        Sync CTE type: 0x0000
-
-So instead this changes now allow application to set HCI_SID_INVALID
-which will make hci_le_pa_create_sync to wait for a report, update the
-conn->sid using the report SID and only then issue PA create sync
-command:
-
-< HCI Command: LE Periodic Advertising Create Sync
-        Options: 0x0000
-        Use advertising SID, Advertiser Address Type and address
-        Reporting initially enabled
-        SID: 0x04
-        Adv address type: Random (0x01)
-        Adv address: 0B:82:E8:50:6D:C8 (Non-Resolvable)
-        Skip: 0x0000
-        Sync timeout: 20000 msec (0x07d0)
-        Sync CTE type: 0x0000
-> HCI Event: LE Meta Event (0x3e) plen 16
-      LE Periodic Advertising Sync Established (0x0e)
-        Status: Success (0x00)
-        Sync handle: 64
-        Advertising SID: 0x04
-        Advertiser address type: Random (0x01)
-        Advertiser address: 0B:82:E8:50:6D:C8 (Non-Resolvable)
-        Advertiser PHY: LE 2M (0x02)
-        Periodic advertising interval: 180.00 msec (0x0090)
-        Advertiser clock accuracy: 0x05
-
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Reported-by: Kent Overstreet <kent.overstreet@linux.dev>
+Fixes: a3998799fb4df ("dm flakey: add corrupt_bio_byte feature")
+Signed-off-by: Benjamin Marzinski <bmarzins@redhat.com>
+Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bluetooth/hci_conn.c  |  2 ++
- net/bluetooth/hci_core.c  | 13 ++++++-----
- net/bluetooth/hci_event.c | 16 ++++++++++++-
- net/bluetooth/hci_sync.c  | 49 +++++++++++++++++++++++++++++++++++----
- net/bluetooth/iso.c       |  9 +++++--
- 5 files changed, 75 insertions(+), 14 deletions(-)
+ drivers/md/dm-flakey.c | 54 ++++++++++++++++++++++--------------------
+ 1 file changed, 28 insertions(+), 26 deletions(-)
 
-diff --git a/net/bluetooth/hci_conn.c b/net/bluetooth/hci_conn.c
-index ae66fa0a5fb58..c6c1232db4e28 100644
---- a/net/bluetooth/hci_conn.c
-+++ b/net/bluetooth/hci_conn.c
-@@ -2067,6 +2067,8 @@ struct hci_conn *hci_pa_create_sync(struct hci_dev *hdev, bdaddr_t *dst,
- {
- 	struct hci_conn *conn;
+diff --git a/drivers/md/dm-flakey.c b/drivers/md/dm-flakey.c
+index 806a80dd3bd9b..347881f323d5b 100644
+--- a/drivers/md/dm-flakey.c
++++ b/drivers/md/dm-flakey.c
+@@ -47,7 +47,8 @@ enum feature_flag_bits {
+ };
  
-+	bt_dev_dbg(hdev, "dst %pMR type %d sid %d", dst, dst_type, sid);
-+
- 	conn = hci_conn_add_unset(hdev, ISO_LINK, dst, HCI_ROLE_SLAVE);
- 	if (IS_ERR(conn))
- 		return conn;
-diff --git a/net/bluetooth/hci_core.c b/net/bluetooth/hci_core.c
-index 72439764186ed..743b63287a18f 100644
---- a/net/bluetooth/hci_core.c
-+++ b/net/bluetooth/hci_core.c
-@@ -4071,10 +4071,13 @@ static void hci_send_cmd_sync(struct hci_dev *hdev, struct sk_buff *skb)
- 		return;
- 	}
+ struct per_bio_data {
+-	bool bio_submitted;
++	bool bio_can_corrupt;
++	struct bvec_iter saved_iter;
+ };
  
--	err = hci_send_frame(hdev, skb);
--	if (err < 0) {
--		hci_cmd_sync_cancel_sync(hdev, -err);
--		return;
-+	if (hci_skb_opcode(skb) != HCI_OP_NOP) {
-+		err = hci_send_frame(hdev, skb);
-+		if (err < 0) {
-+			hci_cmd_sync_cancel_sync(hdev, -err);
-+			return;
-+		}
-+		atomic_dec(&hdev->cmd_cnt);
- 	}
- 
- 	if (hdev->req_status == HCI_REQ_PEND &&
-@@ -4082,8 +4085,6 @@ static void hci_send_cmd_sync(struct hci_dev *hdev, struct sk_buff *skb)
- 		kfree_skb(hdev->req_skb);
- 		hdev->req_skb = skb_clone(hdev->sent_cmd, GFP_KERNEL);
- 	}
--
--	atomic_dec(&hdev->cmd_cnt);
+ static int parse_features(struct dm_arg_set *as, struct flakey_c *fc,
+@@ -339,7 +340,8 @@ static void flakey_map_bio(struct dm_target *ti, struct bio *bio)
  }
  
- static void hci_cmd_work(struct work_struct *work)
-diff --git a/net/bluetooth/hci_event.c b/net/bluetooth/hci_event.c
-index 8894633403519..5c4c3d04d8b93 100644
---- a/net/bluetooth/hci_event.c
-+++ b/net/bluetooth/hci_event.c
-@@ -6333,6 +6333,17 @@ static void hci_le_ext_adv_report_evt(struct hci_dev *hdev, void *data,
- 			info->secondary_phy &= 0x1f;
+ static void corrupt_bio_common(struct bio *bio, unsigned int corrupt_bio_byte,
+-			       unsigned char corrupt_bio_value)
++			       unsigned char corrupt_bio_value,
++			       struct bvec_iter start)
+ {
+ 	struct bvec_iter iter;
+ 	struct bio_vec bvec;
+@@ -348,7 +350,7 @@ static void corrupt_bio_common(struct bio *bio, unsigned int corrupt_bio_byte,
+ 	 * Overwrite the Nth byte of the bio's data, on whichever page
+ 	 * it falls.
+ 	 */
+-	bio_for_each_segment(bvec, bio, iter) {
++	__bio_for_each_segment(bvec, bio, iter, start) {
+ 		if (bio_iter_len(bio, iter) > corrupt_bio_byte) {
+ 			unsigned char *segment = bvec_kmap_local(&bvec);
+ 			segment[corrupt_bio_byte] = corrupt_bio_value;
+@@ -357,36 +359,31 @@ static void corrupt_bio_common(struct bio *bio, unsigned int corrupt_bio_byte,
+ 				"(rw=%c bi_opf=%u bi_sector=%llu size=%u)\n",
+ 				bio, corrupt_bio_value, corrupt_bio_byte,
+ 				(bio_data_dir(bio) == WRITE) ? 'w' : 'r', bio->bi_opf,
+-				(unsigned long long)bio->bi_iter.bi_sector,
+-				bio->bi_iter.bi_size);
++				(unsigned long long)start.bi_sector,
++				start.bi_size);
+ 			break;
+ 		}
+ 		corrupt_bio_byte -= bio_iter_len(bio, iter);
+ 	}
+ }
+ 
+-static void corrupt_bio_data(struct bio *bio, struct flakey_c *fc)
++static void corrupt_bio_data(struct bio *bio, struct flakey_c *fc,
++			     struct bvec_iter start)
+ {
+ 	unsigned int corrupt_bio_byte = fc->corrupt_bio_byte - 1;
+ 
+-	if (!bio_has_data(bio))
+-		return;
+-
+-	corrupt_bio_common(bio, corrupt_bio_byte, fc->corrupt_bio_value);
++	corrupt_bio_common(bio, corrupt_bio_byte, fc->corrupt_bio_value, start);
+ }
+ 
+-static void corrupt_bio_random(struct bio *bio)
++static void corrupt_bio_random(struct bio *bio, struct bvec_iter start)
+ {
+ 	unsigned int corrupt_byte;
+ 	unsigned char corrupt_value;
+ 
+-	if (!bio_has_data(bio))
+-		return;
+-
+-	corrupt_byte = get_random_u32() % bio->bi_iter.bi_size;
++	corrupt_byte = get_random_u32() % start.bi_size;
+ 	corrupt_value = get_random_u8();
+ 
+-	corrupt_bio_common(bio, corrupt_byte, corrupt_value);
++	corrupt_bio_common(bio, corrupt_byte, corrupt_value, start);
+ }
+ 
+ static void clone_free(struct bio *clone)
+@@ -481,7 +478,7 @@ static int flakey_map(struct dm_target *ti, struct bio *bio)
+ 	unsigned int elapsed;
+ 	struct per_bio_data *pb = dm_per_bio_data(bio, sizeof(struct per_bio_data));
+ 
+-	pb->bio_submitted = false;
++	pb->bio_can_corrupt = false;
+ 
+ 	if (op_is_zone_mgmt(bio_op(bio)))
+ 		goto map_bio;
+@@ -490,10 +487,11 @@ static int flakey_map(struct dm_target *ti, struct bio *bio)
+ 	elapsed = (jiffies - fc->start_time) / HZ;
+ 	if (elapsed % (fc->up_interval + fc->down_interval) >= fc->up_interval) {
+ 		bool corrupt_fixed, corrupt_random;
+-		/*
+-		 * Flag this bio as submitted while down.
+-		 */
+-		pb->bio_submitted = true;
++
++		if (bio_has_data(bio)) {
++			pb->bio_can_corrupt = true;
++			pb->saved_iter = bio->bi_iter;
++		}
+ 
+ 		/*
+ 		 * Error reads if neither corrupt_bio_byte or drop_writes or error_writes are set.
+@@ -516,6 +514,8 @@ static int flakey_map(struct dm_target *ti, struct bio *bio)
+ 			return DM_MAPIO_SUBMITTED;
  		}
  
-+		/* Check if PA Sync is pending and if the hci_conn SID has not
-+		 * been set update it.
-+		 */
-+		if (hci_dev_test_flag(hdev, HCI_PA_SYNC)) {
-+			struct hci_conn *conn;
-+
-+			conn = hci_conn_hash_lookup_create_pa_sync(hdev);
-+			if (conn && conn->sid == HCI_SID_INVALID)
-+				conn->sid = info->sid;
-+		}
-+
- 		if (legacy_evt_type != LE_ADV_INVALID) {
- 			process_adv_report(hdev, legacy_evt_type, &info->bdaddr,
- 					   info->bdaddr_type, NULL, 0,
-@@ -7136,7 +7147,8 @@ static void hci_le_meta_evt(struct hci_dev *hdev, void *data,
++		if (!pb->bio_can_corrupt)
++			goto map_bio;
+ 		/*
+ 		 * Corrupt matching writes.
+ 		 */
+@@ -535,9 +535,11 @@ static int flakey_map(struct dm_target *ti, struct bio *bio)
+ 			struct bio *clone = clone_bio(ti, fc, bio);
+ 			if (clone) {
+ 				if (corrupt_fixed)
+-					corrupt_bio_data(clone, fc);
++					corrupt_bio_data(clone, fc,
++							 clone->bi_iter);
+ 				if (corrupt_random)
+-					corrupt_bio_random(clone);
++					corrupt_bio_random(clone,
++							   clone->bi_iter);
+ 				submit_bio(clone);
+ 				return DM_MAPIO_SUBMITTED;
+ 			}
+@@ -559,21 +561,21 @@ static int flakey_end_io(struct dm_target *ti, struct bio *bio,
+ 	if (op_is_zone_mgmt(bio_op(bio)))
+ 		return DM_ENDIO_DONE;
  
- 	/* Only match event if command OGF is for LE */
- 	if (hdev->req_skb &&
--	    hci_opcode_ogf(hci_skb_opcode(hdev->req_skb)) == 0x08 &&
-+	   (hci_opcode_ogf(hci_skb_opcode(hdev->req_skb)) == 0x08 ||
-+	    hci_skb_opcode(hdev->req_skb) == HCI_OP_NOP) &&
- 	    hci_skb_event(hdev->req_skb) == ev->subevent) {
- 		*opcode = hci_skb_opcode(hdev->req_skb);
- 		hci_req_cmd_complete(hdev, *opcode, 0x00, req_complete,
-@@ -7492,8 +7504,10 @@ void hci_event_packet(struct hci_dev *hdev, struct sk_buff *skb)
- 		goto done;
- 	}
- 
-+	hci_dev_lock(hdev);
- 	kfree_skb(hdev->recv_event);
- 	hdev->recv_event = skb_clone(skb, GFP_KERNEL);
-+	hci_dev_unlock(hdev);
- 
- 	event = hdr->evt;
- 	if (!event) {
-diff --git a/net/bluetooth/hci_sync.c b/net/bluetooth/hci_sync.c
-index 6597936fbd51b..59011f45906a1 100644
---- a/net/bluetooth/hci_sync.c
-+++ b/net/bluetooth/hci_sync.c
-@@ -6890,20 +6890,37 @@ int hci_le_conn_update_sync(struct hci_dev *hdev, struct hci_conn *conn,
- 
- static void create_pa_complete(struct hci_dev *hdev, void *data, int err)
- {
-+	struct hci_conn *conn = data;
-+	struct hci_conn *pa_sync;
-+
- 	bt_dev_dbg(hdev, "err %d", err);
- 
--	if (!err)
-+	if (err == -ECANCELED)
- 		return;
- 
-+	hci_dev_lock(hdev);
-+
- 	hci_dev_clear_flag(hdev, HCI_PA_SYNC);
- 
--	if (err == -ECANCELED)
--		return;
-+	if (!hci_conn_valid(hdev, conn))
-+		clear_bit(HCI_CONN_CREATE_PA_SYNC, &conn->flags);
- 
--	hci_dev_lock(hdev);
-+	if (!err)
-+		goto unlock;
- 
--	hci_update_passive_scan_sync(hdev);
-+	/* Add connection to indicate PA sync error */
-+	pa_sync = hci_conn_add_unset(hdev, ISO_LINK, BDADDR_ANY,
-+				     HCI_ROLE_SLAVE);
- 
-+	if (IS_ERR(pa_sync))
-+		goto unlock;
-+
-+	set_bit(HCI_CONN_PA_SYNC_FAILED, &pa_sync->flags);
-+
-+	/* Notify iso layer */
-+	hci_connect_cfm(pa_sync, bt_status(err));
-+
-+unlock:
- 	hci_dev_unlock(hdev);
- }
- 
-@@ -6917,9 +6934,23 @@ static int hci_le_pa_create_sync(struct hci_dev *hdev, void *data)
- 	if (!hci_conn_valid(hdev, conn))
- 		return -ECANCELED;
- 
-+	if (conn->sync_handle != HCI_SYNC_HANDLE_INVALID)
-+		return -EINVAL;
-+
- 	if (hci_dev_test_and_set_flag(hdev, HCI_PA_SYNC))
- 		return -EBUSY;
- 
-+	/* Stop scanning if SID has not been set and active scanning is enabled
-+	 * so we use passive scanning which will be scanning using the allow
-+	 * list programmed to contain only the connection address.
-+	 */
-+	if (conn->sid == HCI_SID_INVALID &&
-+	    hci_dev_test_flag(hdev, HCI_LE_SCAN)) {
-+		hci_scan_disable_sync(hdev);
-+		hci_dev_set_flag(hdev, HCI_LE_SCAN_INTERRUPTED);
-+		hci_discovery_set_state(hdev, DISCOVERY_STOPPED);
-+	}
-+
- 	/* Mark HCI_CONN_CREATE_PA_SYNC so hci_update_passive_scan_sync can
- 	 * program the address in the allow list so PA advertisements can be
- 	 * received.
-@@ -6928,6 +6959,14 @@ static int hci_le_pa_create_sync(struct hci_dev *hdev, void *data)
- 
- 	hci_update_passive_scan_sync(hdev);
- 
-+	/* SID has not been set listen for HCI_EV_LE_EXT_ADV_REPORT to update
-+	 * it.
-+	 */
-+	if (conn->sid == HCI_SID_INVALID)
-+		__hci_cmd_sync_status_sk(hdev, HCI_OP_NOP, 0, NULL,
-+					 HCI_EV_LE_EXT_ADV_REPORT,
-+					 conn->conn_timeout, NULL);
-+
- 	memset(&cp, 0, sizeof(cp));
- 	cp.options = qos->bcast.options;
- 	cp.sid = conn->sid;
-diff --git a/net/bluetooth/iso.c b/net/bluetooth/iso.c
-index 72bf9b1db2247..a08a0f3d5003c 100644
---- a/net/bluetooth/iso.c
-+++ b/net/bluetooth/iso.c
-@@ -938,7 +938,7 @@ static int iso_sock_bind_bc(struct socket *sock, struct sockaddr *addr,
- 
- 	iso_pi(sk)->dst_type = sa->iso_bc->bc_bdaddr_type;
- 
--	if (sa->iso_bc->bc_sid > 0x0f)
-+	if (sa->iso_bc->bc_sid > 0x0f && sa->iso_bc->bc_sid != HCI_SID_INVALID)
- 		return -EINVAL;
- 
- 	iso_pi(sk)->bc_sid = sa->iso_bc->bc_sid;
-@@ -1963,6 +1963,9 @@ static bool iso_match_sid(struct sock *sk, void *data)
- {
- 	struct hci_ev_le_pa_sync_established *ev = data;
- 
-+	if (iso_pi(sk)->bc_sid == HCI_SID_INVALID)
-+		return true;
-+
- 	return ev->sid == iso_pi(sk)->bc_sid;
- }
- 
-@@ -2009,8 +2012,10 @@ int iso_connect_ind(struct hci_dev *hdev, bdaddr_t *bdaddr, __u8 *flags)
- 	if (ev1) {
- 		sk = iso_get_sock(&hdev->bdaddr, bdaddr, BT_LISTEN,
- 				  iso_match_sid, ev1);
--		if (sk && !ev1->status)
-+		if (sk && !ev1->status) {
- 			iso_pi(sk)->sync_handle = le16_to_cpu(ev1->handle);
-+			iso_pi(sk)->bc_sid = ev1->sid;
-+		}
- 
- 		goto done;
- 	}
+-	if (!*error && pb->bio_submitted && (bio_data_dir(bio) == READ)) {
++	if (!*error && pb->bio_can_corrupt && (bio_data_dir(bio) == READ)) {
+ 		if (fc->corrupt_bio_byte) {
+ 			if ((fc->corrupt_bio_rw == READ) &&
+ 			    all_corrupt_bio_flags_match(bio, fc)) {
+ 				/*
+ 				 * Corrupt successful matching READs while in down state.
+ 				 */
+-				corrupt_bio_data(bio, fc);
++				corrupt_bio_data(bio, fc, pb->saved_iter);
+ 			}
+ 		}
+ 		if (fc->random_read_corrupt) {
+ 			u64 rnd = get_random_u64();
+ 			u32 rem = do_div(rnd, PROBABILITY_BASE);
+ 			if (rem < fc->random_read_corrupt)
+-				corrupt_bio_random(bio);
++				corrupt_bio_random(bio, pb->saved_iter);
+ 		}
+ 		if (test_bit(ERROR_READS, &fc->flags)) {
+ 			/*
 -- 
 2.39.5
 
