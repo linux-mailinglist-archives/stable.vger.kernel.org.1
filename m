@@ -1,57 +1,60 @@
-Return-Path: <stable+bounces-153616-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-154258-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 08A27ADD567
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:20:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 868F6ADD92B
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 19:03:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8F97D406273
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:12:45 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3AE2C4A12D1
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:47:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 658112EF2B1;
-	Tue, 17 Jun 2025 16:08:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 537D52CCC5;
+	Tue, 17 Jun 2025 16:43:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hKJ0CWKU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MHVMdEkB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23BB82ED179;
-	Tue, 17 Jun 2025 16:08:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0ED0A1E3DCF;
+	Tue, 17 Jun 2025 16:43:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750176538; cv=none; b=bxCIHrMHS+z6izcOOwfegrDOzMYW93JKR9VrOKgBdedwHzpbTmaeHm5ZRlsXFqX5etRsn4I7I39xjQPQD0Qnd03tEoD+Wh8G08tgipts20X8i4adjLmBIbp83GG/fj3M8a3S41y77KAXQhwNIps4K27EhS3CfdohzSuKdIyGDV0=
+	t=1750178611; cv=none; b=p5AXCib2suQ6A61qIkbs26neJlw8YFYjDSXfwto1uE8EqBmTxmtM7VTzSLOLzLDCKUwYatsOvCF8rhw5D++WOt/kyd8n+X6dVwKblejJ6fEUZXfMvH1qjAi4L/YeNQvx5mYwEITFvVy8cv36EAyh5i+Fqs8m5QCMAhbYfRwmMF0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750176538; c=relaxed/simple;
-	bh=7j2NYvOnWVcuoqn0TUp3TslP5JODh3FtfYfRag1Zouo=;
+	s=arc-20240116; t=1750178611; c=relaxed/simple;
+	bh=zeUwkwkopSKW5AW/2CXsRTHSjCCvtQgctfWrWmIZRT0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JlHRKF0RLASh/m4Sq3yxRbubIZjMedJ+1VaxD2+XDnIK6fNTYKDsh+AjTF+4g3ezxWTDfZo1y2+YVei9cPUcpHrQzG+CFbG02iIpbMOAIgS/Z82U/StEhi1vGi5tSxLvreLD9047UxJ6LsEekfeQAmyEHBG1CmDzzPl3ubMNOq8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hKJ0CWKU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87C7CC4CEE3;
-	Tue, 17 Jun 2025 16:08:57 +0000 (UTC)
+	 MIME-Version; b=NKM2zwrKBYTsSASDMY1bEvLoGgjz5zKMBxbeebMEhJKbnu0X9sEWIkF8IqLLuf155Ei9oypg7E4i3A8vVlGoTUsezpY4fduWQ4j8dHJcn7yTSPs/SrB6nkHFf5GVjxsDJqqPfdwLaZws0sF508uTE+rRSgttZIUQtZD/FIvRQoA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MHVMdEkB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72175C4CEE3;
+	Tue, 17 Jun 2025 16:43:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750176538;
-	bh=7j2NYvOnWVcuoqn0TUp3TslP5JODh3FtfYfRag1Zouo=;
+	s=korg; t=1750178610;
+	bh=zeUwkwkopSKW5AW/2CXsRTHSjCCvtQgctfWrWmIZRT0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hKJ0CWKUo1W2pbYiN5SyiAHcP2NOI/839eNyt7ooy2EH11biCPUa5Ol18wnqZ/+yV
-	 u4xBTFIPrO5dqnu2IjJUUyqgyf7NV9Dhtgr5Bbjma9/qo0QhaLy7DVutAasayDzkHA
-	 Gsnb1oC255hVcDQ0GdkQBcoMm1dWGwRbZyj2vPSQ=
+	b=MHVMdEkB2fGKG9QPm4JM+aneQHkoMwO4xd1fmaPcKpXY/k+YwyfIzDGVUQCYqhtD4
+	 sR44uDqRLcCdJQLSiYeWQQ8J12jCG6OGJInpsF2kCejKSflhI39aVLhdwqEE93kFF4
+	 QYk4RB5hJaCg2SnAigx6vf9kMNKgcs6oTdrFRBrU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Adam Ford <aford173@gmail.com>,
-	Frank Li <Frank.Li@nxp.com>,
-	Shawn Guo <shawnguo@kernel.org>,
+	Hector Martin <marcan@marcan.st>,
+	Alyssa Rosenzweig <alyssa@rosenzweig.io>,
+	Marc Zyngier <maz@kernel.org>,
+	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+	Janne Grunau <j@jannau.net>,
+	"Rob Herring (Arm)" <robh@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 240/512] arm64: dts: imx8mn-beacon: Set SAI5 MCLK direction to output for HDMI audio
-Date: Tue, 17 Jun 2025 17:23:26 +0200
-Message-ID: <20250617152429.345678276@linuxfoundation.org>
+Subject: [PATCH 6.15 499/780] PCI: apple: Use gpiod_set_value_cansleep in probe flow
+Date: Tue, 17 Jun 2025 17:23:27 +0200
+Message-ID: <20250617152511.815532132@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
-References: <20250617152419.512865572@linuxfoundation.org>
+In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
+References: <20250617152451.485330293@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,42 +66,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Adam Ford <aford173@gmail.com>
+From: Hector Martin <marcan@marcan.st>
 
-[ Upstream commit a747c4dd2a60c4d0179b372032a4b98548135096 ]
+[ Upstream commit 7334364f9de79a9a236dd0243ba574b8d2876e89 ]
 
-The HDMI bridge chip fails to generate an audio source due to the SAI5
-master clock (MCLK) direction not being set to output. This prevents proper
-clocking of the HDMI audio interface.
+We're allowed to sleep here, so tell the GPIO core by using
+gpiod_set_value_cansleep instead of gpiod_set_value.
 
-Add the `fsl,sai-mclk-direction-output` property to the SAI5 node to ensure
-the MCLK is driven by the SoC, resolving the HDMI sound issue.
-
-Fixes: 1d6880ceef43 ("arm64: dts: imx8mn-beacon: Add HDMI video with sound")
-Signed-off-by: Adam Ford <aford173@gmail.com>
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
-Signed-off-by: Shawn Guo <shawnguo@kernel.org>
+Fixes: 1e33888fbe44 ("PCI: apple: Add initial hardware bring-up")
+Signed-off-by: Hector Martin <marcan@marcan.st>
+Signed-off-by: Alyssa Rosenzweig <alyssa@rosenzweig.io>
+Signed-off-by: Marc Zyngier <maz@kernel.org>
+Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Tested-by: Janne Grunau <j@jannau.net>
+Reviewed-by: Rob Herring (Arm) <robh@kernel.org>
+Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Acked-by: Alyssa Rosenzweig <alyssa@rosenzweig.io>
+Link: https://patch.msgid.link/20250401091713.2765724-12-maz@kernel.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/freescale/imx8mn-beacon-kit.dts | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/pci/controller/pcie-apple.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/freescale/imx8mn-beacon-kit.dts b/arch/arm64/boot/dts/freescale/imx8mn-beacon-kit.dts
-index 1df5ceb113879..37fc5ed98d7f6 100644
---- a/arch/arm64/boot/dts/freescale/imx8mn-beacon-kit.dts
-+++ b/arch/arm64/boot/dts/freescale/imx8mn-beacon-kit.dts
-@@ -124,6 +124,7 @@
- 	assigned-clock-parents = <&clk IMX8MN_AUDIO_PLL1_OUT>;
- 	assigned-clock-rates = <24576000>;
- 	#sound-dai-cells = <0>;
-+	fsl,sai-mclk-direction-output;
- 	status = "okay";
- };
+diff --git a/drivers/pci/controller/pcie-apple.c b/drivers/pci/controller/pcie-apple.c
+index 18e11b9a7f464..3d778d8b01875 100644
+--- a/drivers/pci/controller/pcie-apple.c
++++ b/drivers/pci/controller/pcie-apple.c
+@@ -540,7 +540,7 @@ static int apple_pcie_setup_port(struct apple_pcie *pcie,
+ 	rmw_set(PORT_APPCLK_EN, port->base + PORT_APPCLK);
  
+ 	/* Assert PERST# before setting up the clock */
+-	gpiod_set_value(reset, 1);
++	gpiod_set_value_cansleep(reset, 1);
+ 
+ 	ret = apple_pcie_setup_refclk(pcie, port);
+ 	if (ret < 0)
+@@ -551,7 +551,7 @@ static int apple_pcie_setup_port(struct apple_pcie *pcie,
+ 
+ 	/* Deassert PERST# */
+ 	rmw_set(PORT_PERST_OFF, port->base + PORT_PERST);
+-	gpiod_set_value(reset, 0);
++	gpiod_set_value_cansleep(reset, 0);
+ 
+ 	/* Wait for 100ms after PERST# deassertion (PCIe r5.0, 6.6.1) */
+ 	msleep(100);
 -- 
 2.39.5
 
