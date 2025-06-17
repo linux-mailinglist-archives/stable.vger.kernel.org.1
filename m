@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-154030-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-154032-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 258B0ADD78F
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:46:12 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id A90DFADD773
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:44:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B33DE407823
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:36:50 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 406884A142F
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:37:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B2FA22EE295;
-	Tue, 17 Jun 2025 16:31:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C1D92EE298;
+	Tue, 17 Jun 2025 16:31:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nV1OpM5O"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RfW+sFjy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EBE32ED84B;
-	Tue, 17 Jun 2025 16:31:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC9B02367A0;
+	Tue, 17 Jun 2025 16:31:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750177881; cv=none; b=oOkkl4nWKZ3t+mqSV5l52sW2lsxrVc+phWqfAS+xMPYglWvs33vq0Riw4JWOA65FAtJ03W2rJGvTowzt2qDTD7SafC5N9oUNDPBGqDrCJ5VEQDpR82Z+HVeYvyXbM/3bTAAGg3K8JSfc1CyD5BqOnTsnyfMKbr2M5yaSB5STmW8=
+	t=1750177888; cv=none; b=WlGrjswKqeJ68ifg6a+EhmkTVZD7hWmON5ZolBB9BHEcKv5eaLKS4qvw8puNIpqEhut4xa7oG8cEgSvKja+pz2aQUY1YqmsvyXuJJmoxV5LFoIFjaiKqbdH+ZEkEnraEIhmC0Q5TYtecpcG8iWAJyMmVuzav4c3l+MAb1ei1fYQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750177881; c=relaxed/simple;
-	bh=WDsiezwwVM3rZj8n/8flt0+W5ThJASA3LBcoO/UL6Qo=;
+	s=arc-20240116; t=1750177888; c=relaxed/simple;
+	bh=ormodN7vNi7sbyvVNr9SanqQaxHLt4jsHuZqwRxF+lA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lXZ2QxxljKuVfXEJd0IvT1aI/vqAzQ+js1lqBqKr+9b+ZIKh+zCBSsjHjqaI4o0r5R9YNNBbhjPtSin1uTg9pIhv7VufGkFrmZnWn0uBn+vpaQqkd22PO6tyh4we1HteUPoWYZ7VgdliuIMRtGJP2CXtVJM1o2dGei4O1+fPimg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nV1OpM5O; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9120C4CEE3;
-	Tue, 17 Jun 2025 16:31:20 +0000 (UTC)
+	 MIME-Version:Content-Type; b=ZgYBySv7DdySG3Nkuke45ClnKAQDzDpvFGiPsmE9KNMk9Gov916G5xqE1AxWrpoHjCIg0BHhYCA19yBbvWNwX1r6V+Z3Oent4eOwNWYz3R8YA4Gj0Rl1kuVuHwPykwi/ePTbRLaXM3C6t8XXQMQKlucS/Zg6n2EJjgmgolz/8Us=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RfW+sFjy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4BCB1C4CEE3;
+	Tue, 17 Jun 2025 16:31:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750177881;
-	bh=WDsiezwwVM3rZj8n/8flt0+W5ThJASA3LBcoO/UL6Qo=;
+	s=korg; t=1750177887;
+	bh=ormodN7vNi7sbyvVNr9SanqQaxHLt4jsHuZqwRxF+lA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nV1OpM5Oo/nswoRLsyqlrDBKhW+VL6FHNBDkS+Dx/0ShXxJ8drMYLPGs3v46Pc6V8
-	 6509zRM1av8p8Ss5bcLmpCXChs4HciecC+m+4Oj8/JqLiQncRrXbCIvQn9uzP1Uz/D
-	 aCgNSedEhSo7VjLdSAE2ZNXTjUcjRoX0Mrcnatzk=
+	b=RfW+sFjylInuvzYlR+X8ZvFyv7+6kVA2TbCG62dwHvW2aqlu46JZYZAG5vdnm4LdQ
+	 YR514NvJjAIM/13uUvx2nwPC+RgAKxZahyf8Yx1x312cF6KdOeE1ts62a38C99eywV
+	 iqO0qiTgeCJhX0/LKpzshbOr3JvSmVSEw6XVJ0hU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Adam Ford <aford173@gmail.com>,
-	Frank Li <Frank.Li@nxp.com>,
-	Shawn Guo <shawnguo@kernel.org>,
+	"=?UTF-8?q?N=C3=ADcolas=20F . =20R . =20A . =20Prado?=" <nfraprado@collabora.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 376/780] arm64: dts: imx8mn-beacon: Set SAI5 MCLK direction to output for HDMI audio
-Date: Tue, 17 Jun 2025 17:21:24 +0200
-Message-ID: <20250617152506.770476674@linuxfoundation.org>
+Subject: [PATCH 6.15 377/780] arm64: dts: mediatek: mt6357: Drop regulator-fixed compatibles
+Date: Tue, 17 Jun 2025 17:21:25 +0200
+Message-ID: <20250617152506.809605120@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
 References: <20250617152451.485330293@linuxfoundation.org>
@@ -61,44 +60,123 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Adam Ford <aford173@gmail.com>
+From: Nícolas F. R. A. Prado <nfraprado@collabora.com>
 
-[ Upstream commit a747c4dd2a60c4d0179b372032a4b98548135096 ]
+[ Upstream commit d77e89b7b03fb945b4353f2dcc4a70b34baa7bcb ]
 
-The HDMI bridge chip fails to generate an audio source due to the SAI5
-master clock (MCLK) direction not being set to output. This prevents proper
-clocking of the HDMI audio interface.
+Some of the regulators in the MT6357 PMIC dtsi have compatible set to
+regulator-fixed, even though they don't serve any purpose: all those
+regulators are handled as a whole by the mt6357-regulator driver. In
+fact this is the only dtsi in this family of chips where this is the
+case: mt6359 and mt6358 don't have any such compatibles.
 
-Add the `fsl,sai-mclk-direction-output` property to the SAI5 node to ensure
-the MCLK is driven by the SoC, resolving the HDMI sound issue.
+A side-effect caused by this is that the DT kselftest, which is supposed
+to identify nodes with compatibles that can be probed, but haven't,
+shows these nodes as failures.
 
-Fixes: 1d6880ceef43 ("arm64: dts: imx8mn-beacon: Add HDMI video with sound")
-Signed-off-by: Adam Ford <aford173@gmail.com>
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
-Signed-off-by: Shawn Guo <shawnguo@kernel.org>
+Remove the useless compatibles to move the dtsi in line with the others
+in its family and fix the DT kselftest failures.
+
+Fixes: 55749bb478f8 ("arm64: dts: mediatek: add mt6357 device-tree")
+Signed-off-by: Nícolas F. R. A. Prado <nfraprado@collabora.com>
+Link: https://lore.kernel.org/r/20250502-mt6357-regulator-fixed-compatibles-removal-v1-1-a582c16743fe@collabora.com
+Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/freescale/imx8mn-beacon-kit.dts | 1 +
- 1 file changed, 1 insertion(+)
+ arch/arm64/boot/dts/mediatek/mt6357.dtsi | 10 ----------
+ 1 file changed, 10 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/freescale/imx8mn-beacon-kit.dts b/arch/arm64/boot/dts/freescale/imx8mn-beacon-kit.dts
-index 1df5ceb113879..37fc5ed98d7f6 100644
---- a/arch/arm64/boot/dts/freescale/imx8mn-beacon-kit.dts
-+++ b/arch/arm64/boot/dts/freescale/imx8mn-beacon-kit.dts
-@@ -124,6 +124,7 @@
- 	assigned-clock-parents = <&clk IMX8MN_AUDIO_PLL1_OUT>;
- 	assigned-clock-rates = <24576000>;
- 	#sound-dai-cells = <0>;
-+	fsl,sai-mclk-direction-output;
- 	status = "okay";
- };
+diff --git a/arch/arm64/boot/dts/mediatek/mt6357.dtsi b/arch/arm64/boot/dts/mediatek/mt6357.dtsi
+index 5fafa842d312f..dca4e5c3d8e21 100644
+--- a/arch/arm64/boot/dts/mediatek/mt6357.dtsi
++++ b/arch/arm64/boot/dts/mediatek/mt6357.dtsi
+@@ -60,7 +60,6 @@
+ 			};
  
+ 			mt6357_vfe28_reg: ldo-vfe28 {
+-				compatible = "regulator-fixed";
+ 				regulator-name = "vfe28";
+ 				regulator-min-microvolt = <2800000>;
+ 				regulator-max-microvolt = <2800000>;
+@@ -75,7 +74,6 @@
+ 			};
+ 
+ 			mt6357_vrf18_reg: ldo-vrf18 {
+-				compatible = "regulator-fixed";
+ 				regulator-name = "vrf18";
+ 				regulator-min-microvolt = <1800000>;
+ 				regulator-max-microvolt = <1800000>;
+@@ -83,7 +81,6 @@
+ 			};
+ 
+ 			mt6357_vrf12_reg: ldo-vrf12 {
+-				compatible = "regulator-fixed";
+ 				regulator-name = "vrf12";
+ 				regulator-min-microvolt = <1200000>;
+ 				regulator-max-microvolt = <1200000>;
+@@ -112,7 +109,6 @@
+ 			};
+ 
+ 			mt6357_vcn28_reg: ldo-vcn28 {
+-				compatible = "regulator-fixed";
+ 				regulator-name = "vcn28";
+ 				regulator-min-microvolt = <2800000>;
+ 				regulator-max-microvolt = <2800000>;
+@@ -120,7 +116,6 @@
+ 			};
+ 
+ 			mt6357_vcn18_reg: ldo-vcn18 {
+-				compatible = "regulator-fixed";
+ 				regulator-name = "vcn18";
+ 				regulator-min-microvolt = <1800000>;
+ 				regulator-max-microvolt = <1800000>;
+@@ -142,7 +137,6 @@
+ 			};
+ 
+ 			mt6357_vcamio_reg: ldo-vcamio18 {
+-				compatible = "regulator-fixed";
+ 				regulator-name = "vcamio";
+ 				regulator-min-microvolt = <1800000>;
+ 				regulator-max-microvolt = <1800000>;
+@@ -175,7 +169,6 @@
+ 			};
+ 
+ 			mt6357_vaux18_reg: ldo-vaux18 {
+-				compatible = "regulator-fixed";
+ 				regulator-name = "vaux18";
+ 				regulator-min-microvolt = <1800000>;
+ 				regulator-max-microvolt = <1800000>;
+@@ -183,7 +176,6 @@
+ 			};
+ 
+ 			mt6357_vaud28_reg: ldo-vaud28 {
+-				compatible = "regulator-fixed";
+ 				regulator-name = "vaud28";
+ 				regulator-min-microvolt = <2800000>;
+ 				regulator-max-microvolt = <2800000>;
+@@ -191,7 +183,6 @@
+ 			};
+ 
+ 			mt6357_vio28_reg: ldo-vio28 {
+-				compatible = "regulator-fixed";
+ 				regulator-name = "vio28";
+ 				regulator-min-microvolt = <2800000>;
+ 				regulator-max-microvolt = <2800000>;
+@@ -199,7 +190,6 @@
+ 			};
+ 
+ 			mt6357_vio18_reg: ldo-vio18 {
+-				compatible = "regulator-fixed";
+ 				regulator-name = "vio18";
+ 				regulator-min-microvolt = <1800000>;
+ 				regulator-max-microvolt = <1800000>;
 -- 
 2.39.5
 
