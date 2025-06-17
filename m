@@ -1,56 +1,60 @@
-Return-Path: <stable+bounces-153957-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-154394-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8CB38ADD81A
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:52:02 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E550ADD82C
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:52:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EBF643B3CF1
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:32:17 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A34647A885E
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:51:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B19A22DFF14;
-	Tue, 17 Jun 2025 16:27:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AFEF82FA63F;
+	Tue, 17 Jun 2025 16:50:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E76xZlvr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WTDu714a"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D559238D49;
-	Tue, 17 Jun 2025 16:27:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6994D1E502;
+	Tue, 17 Jun 2025 16:50:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750177642; cv=none; b=Xkg0CnmEG5tIA+tCzmmv11j7O7bui1qTTCn40oJUSvvzIHSox7v7Mum1Vbb2BbRvxkF+X1UT2WiPgfXXrRWR9a1YCwVqt3zQqNH1avMtUiFXNgQrgtPNcuI8+abiFyEl18paiTSwThRw3Nu0bZxiGzEmgR2WBOqP/76xeoEGfG4=
+	t=1750179053; cv=none; b=BRMPhhDuDgDjiqqgecfjjOxnl6pop5MwK9l9BZgvxrgY8nUQ+oJiPrHQXASWaX9XmTeLZGq/VP6hxpgxm+/rycK5T44rNmCqjep1k04btOB6i7kq5phXQRJTM66f9SwldfsUpbnPYEzlETyWJtr2mv/Vt3JqnCW/0G5byF9i69E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750177642; c=relaxed/simple;
-	bh=kC41xfiBHYrZiApes72HNeWPjchn8JJjzeCT7MPpob4=;
+	s=arc-20240116; t=1750179053; c=relaxed/simple;
+	bh=umBlyDwbuC7HkXVEbEetNYf2cPIu1xDfJteLlyVS1Xs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WL1yQKDRQjbMwu5I6cFJaZUD95z87K3ofTS/eQO3eKWf8vLnxOCVgYMDEQvWbfPIJQu2NirEU6y/2t20pJz1jnUgxdGAEf6FPAmlMwNVdKjanrR5oYbCzr7iu1sxeJvpcTCo+Ec2JbQKZu0SQri7DlHCWpf2Nf6C2OPWoKVh8i8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E76xZlvr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0AEDC4CEE3;
-	Tue, 17 Jun 2025 16:27:21 +0000 (UTC)
+	 MIME-Version:Content-Type; b=llVN0GNP8k8Qk6uTJMa0C5oi0jrYhn/GTuzPsAFVXYciKZEMAZSIbdfYd8n+NOsZ1D2OsPnrROsWL1/Fq7Lq6KT6zCaJXPIUz+Mjpt5OeJXK8eLpk4EfQ8Ss/PmGbIXjxK19cFsOI5oI/+4iF7GWL4j32/nQHRfV5OeBV2w+61w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WTDu714a; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CECDFC4CEE3;
+	Tue, 17 Jun 2025 16:50:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750177642;
-	bh=kC41xfiBHYrZiApes72HNeWPjchn8JJjzeCT7MPpob4=;
+	s=korg; t=1750179053;
+	bh=umBlyDwbuC7HkXVEbEetNYf2cPIu1xDfJteLlyVS1Xs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=E76xZlvrEcMM5T/8EmtHg5/Rp5YPUoW4LNbKwvPeauei1QAeC1OZR3KIJZoNcNUTJ
-	 DKg3GCNvTeRU7/qTWG9rqmRh7cffb77uX4hh6lop/9rmdBZvaG0BCY0MdBUs04AgP1
-	 w6UdWWCQ24484oIb4yauzAKJewW0w/yD92c9a7zs=
+	b=WTDu714a961utopPQ2O0WmdmlMFPblZ4WfXzSQgDkHUy5sKhLloAvh0JwsCX3eNvo
+	 iDEvv7dCiKfwCaMPN5BM53xAhvr5ecVzMPvSHv/xrSXzkDxNdQz6JAn5I+myFYKWM2
+	 pR7M+AOrl9qVMEss9aL6NGCazmT2Zv0dTe2g+Oa0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michael Walle <mwalle@kernel.org>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
+	Can Guo <quic_cang@quicinc.com>,
+	Ziqi Chen <quic_ziqichen@quicinc.com>,
+	Luca Weiss <luca.weiss@fairphone.com>,
+	Bean Huo <beanhuo@micron.com>,
+	=?UTF-8?q?Lo=C3=AFc=20Minier?= <loic.minier@oss.qualcomm.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 375/512] drm/panel-simple: fix the warnings for the Evervision VGG644804
+Subject: [PATCH 6.15 633/780] scsi: ufs: qcom: Map devfreq OPP freq to UniPro Core Clock freq
 Date: Tue, 17 Jun 2025 17:25:41 +0200
-Message-ID: <20250617152434.788676101@linuxfoundation.org>
+Message-ID: <20250617152517.252159195@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
-References: <20250617152419.512865572@linuxfoundation.org>
+In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
+References: <20250617152451.485330293@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,51 +64,186 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Walle <mwalle@kernel.org>
+From: Can Guo <quic_cang@quicinc.com>
 
-[ Upstream commit 5dc1ea903588a73fb03b3a3e5a041a7c63a4bccd ]
+[ Upstream commit 8c5bcb3daeef9bc54c9939c36dca9a626126eb59 ]
 
-The panel lacked the connector type which causes a warning. Adding the
-connector type reveals wrong bus_flags and bits per pixel. Fix all of
-it.
+On some platforms, the devfreq OPP freq may be different than the unipro
+core clock freq. Implement ufs_qcom_opp_freq_to_clk_freq() and use it to
+find the unipro core clk freq.
 
-Fixes: 1319f2178bdf ("drm/panel-simple: add Evervision VGG644804 panel entry")
-Signed-off-by: Michael Walle <mwalle@kernel.org>
-Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
-Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
-Link: https://lore.kernel.org/r/20250520074110.655114-1-mwalle@kernel.org
+Fixes: c02fe9e222d1 ("scsi: ufs: qcom: Implement the freq_to_gear_speed() vop")
+Signed-off-by: Can Guo <quic_cang@quicinc.com>
+Co-developed-by: Ziqi Chen <quic_ziqichen@quicinc.com>
+Signed-off-by: Ziqi Chen <quic_ziqichen@quicinc.com>
+Link: https://lore.kernel.org/r/20250522021537.999107-3-quic_ziqichen@quicinc.com
+Reported-by: Luca Weiss <luca.weiss@fairphone.com>
+Closes: https://lore.kernel.org/linux-arm-msm/D9FZ9U3AEXW4.1I12FX3YQ3JPW@fairphone.com/
+Tested-by: Luca Weiss <luca.weiss@fairphone.com>
+Reviewed-by: Bean Huo <beanhuo@micron.com>
+Tested-by: Loïc Minier <loic.minier@oss.qualcomm.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/panel/panel-simple.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/ufs/host/ufs-qcom.c | 81 ++++++++++++++++++++++++++++++++-----
+ 1 file changed, 71 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/gpu/drm/panel/panel-simple.c b/drivers/gpu/drm/panel/panel-simple.c
-index d041ff542a4ee..82db3daf4f81a 100644
---- a/drivers/gpu/drm/panel/panel-simple.c
-+++ b/drivers/gpu/drm/panel/panel-simple.c
-@@ -2141,13 +2141,14 @@ static const struct display_timing evervision_vgg644804_timing = {
- static const struct panel_desc evervision_vgg644804 = {
- 	.timings = &evervision_vgg644804_timing,
- 	.num_timings = 1,
--	.bpc = 8,
-+	.bpc = 6,
- 	.size = {
- 		.width = 115,
- 		.height = 86,
- 	},
- 	.bus_format = MEDIA_BUS_FMT_RGB666_1X7X3_SPWG,
--	.bus_flags = DRM_BUS_FLAG_DE_HIGH | DRM_BUS_FLAG_PIXDATA_SAMPLE_NEGEDGE,
-+	.bus_flags = DRM_BUS_FLAG_DE_HIGH,
-+	.connector_type = DRM_MODE_CONNECTOR_LVDS,
+diff --git a/drivers/ufs/host/ufs-qcom.c b/drivers/ufs/host/ufs-qcom.c
+index 28515f89ce798..2b000c1708ce4 100644
+--- a/drivers/ufs/host/ufs-qcom.c
++++ b/drivers/ufs/host/ufs-qcom.c
+@@ -103,7 +103,9 @@ static const struct __ufs_qcom_bw_table {
  };
  
- static const struct display_timing evervision_vgg804821_timing = {
+ static void ufs_qcom_get_default_testbus_cfg(struct ufs_qcom_host *host);
+-static int ufs_qcom_set_core_clk_ctrl(struct ufs_hba *hba, unsigned long freq);
++static unsigned long ufs_qcom_opp_freq_to_clk_freq(struct ufs_hba *hba,
++						   unsigned long freq, char *name);
++static int ufs_qcom_set_core_clk_ctrl(struct ufs_hba *hba, bool is_scale_up, unsigned long freq);
+ 
+ static struct ufs_qcom_host *rcdev_to_ufs_host(struct reset_controller_dev *rcd)
+ {
+@@ -602,7 +604,7 @@ static int ufs_qcom_link_startup_notify(struct ufs_hba *hba,
+ 			return -EINVAL;
+ 		}
+ 
+-		err = ufs_qcom_set_core_clk_ctrl(hba, ULONG_MAX);
++		err = ufs_qcom_set_core_clk_ctrl(hba, true, ULONG_MAX);
+ 		if (err)
+ 			dev_err(hba->dev, "cfg core clk ctrl failed\n");
+ 		/*
+@@ -1360,29 +1362,46 @@ static int ufs_qcom_set_clk_40ns_cycles(struct ufs_hba *hba,
+ 	return ufshcd_dme_set(hba, UIC_ARG_MIB(PA_VS_CORE_CLK_40NS_CYCLES), reg);
+ }
+ 
+-static int ufs_qcom_set_core_clk_ctrl(struct ufs_hba *hba, unsigned long freq)
++static int ufs_qcom_set_core_clk_ctrl(struct ufs_hba *hba, bool is_scale_up, unsigned long freq)
+ {
+ 	struct ufs_qcom_host *host = ufshcd_get_variant(hba);
+ 	struct list_head *head = &hba->clk_list_head;
+ 	struct ufs_clk_info *clki;
+ 	u32 cycles_in_1us = 0;
+ 	u32 core_clk_ctrl_reg;
++	unsigned long clk_freq;
+ 	int err;
+ 
++	if (hba->use_pm_opp && freq != ULONG_MAX) {
++		clk_freq = ufs_qcom_opp_freq_to_clk_freq(hba, freq, "core_clk_unipro");
++		if (clk_freq) {
++			cycles_in_1us = ceil(clk_freq, HZ_PER_MHZ);
++			goto set_core_clk_ctrl;
++		}
++	}
++
+ 	list_for_each_entry(clki, head, list) {
+ 		if (!IS_ERR_OR_NULL(clki->clk) &&
+ 		    !strcmp(clki->name, "core_clk_unipro")) {
+-			if (!clki->max_freq)
++			if (!clki->max_freq) {
+ 				cycles_in_1us = 150; /* default for backwards compatibility */
+-			else if (freq == ULONG_MAX)
++				break;
++			}
++
++			if (freq == ULONG_MAX) {
+ 				cycles_in_1us = ceil(clki->max_freq, HZ_PER_MHZ);
+-			else
+-				cycles_in_1us = ceil(freq, HZ_PER_MHZ);
++				break;
++			}
+ 
++			if (is_scale_up)
++				cycles_in_1us = ceil(clki->max_freq, HZ_PER_MHZ);
++			else
++				cycles_in_1us = ceil(clk_get_rate(clki->clk), HZ_PER_MHZ);
+ 			break;
+ 		}
+ 	}
+ 
++set_core_clk_ctrl:
+ 	err = ufshcd_dme_get(hba,
+ 			    UIC_ARG_MIB(DME_VS_CORE_CLK_CTRL),
+ 			    &core_clk_ctrl_reg);
+@@ -1425,7 +1444,7 @@ static int ufs_qcom_clk_scale_up_pre_change(struct ufs_hba *hba, unsigned long f
+ 		return ret;
+ 	}
+ 	/* set unipro core clock attributes and clear clock divider */
+-	return ufs_qcom_set_core_clk_ctrl(hba, freq);
++	return ufs_qcom_set_core_clk_ctrl(hba, true, freq);
+ }
+ 
+ static int ufs_qcom_clk_scale_up_post_change(struct ufs_hba *hba)
+@@ -1457,7 +1476,7 @@ static int ufs_qcom_clk_scale_down_pre_change(struct ufs_hba *hba)
+ static int ufs_qcom_clk_scale_down_post_change(struct ufs_hba *hba, unsigned long freq)
+ {
+ 	/* set unipro core clock attributes and clear clock divider */
+-	return ufs_qcom_set_core_clk_ctrl(hba, freq);
++	return ufs_qcom_set_core_clk_ctrl(hba, false, freq);
+ }
+ 
+ static int ufs_qcom_clk_scale_notify(struct ufs_hba *hba, bool scale_up,
+@@ -1922,11 +1941,53 @@ static int ufs_qcom_config_esi(struct ufs_hba *hba)
+ 	return ret;
+ }
+ 
++static unsigned long ufs_qcom_opp_freq_to_clk_freq(struct ufs_hba *hba,
++						   unsigned long freq, char *name)
++{
++	struct ufs_clk_info *clki;
++	struct dev_pm_opp *opp;
++	unsigned long clk_freq;
++	int idx = 0;
++	bool found = false;
++
++	opp = dev_pm_opp_find_freq_exact_indexed(hba->dev, freq, 0, true);
++	if (IS_ERR(opp)) {
++		dev_err(hba->dev, "Failed to find OPP for exact frequency %lu\n", freq);
++		return 0;
++	}
++
++	list_for_each_entry(clki, &hba->clk_list_head, list) {
++		if (!strcmp(clki->name, name)) {
++			found = true;
++			break;
++		}
++
++		idx++;
++	}
++
++	if (!found) {
++		dev_err(hba->dev, "Failed to find clock '%s' in clk list\n", name);
++		dev_pm_opp_put(opp);
++		return 0;
++	}
++
++	clk_freq = dev_pm_opp_get_freq_indexed(opp, idx);
++
++	dev_pm_opp_put(opp);
++
++	return clk_freq;
++}
++
+ static u32 ufs_qcom_freq_to_gear_speed(struct ufs_hba *hba, unsigned long freq)
+ {
+ 	u32 gear = UFS_HS_DONT_CHANGE;
++	unsigned long unipro_freq;
++
++	if (!hba->use_pm_opp)
++		return gear;
+ 
+-	switch (freq) {
++	unipro_freq = ufs_qcom_opp_freq_to_clk_freq(hba, freq, "core_clk_unipro");
++	switch (unipro_freq) {
+ 	case 403000000:
+ 		gear = UFS_HS_G5;
+ 		break;
 -- 
 2.39.5
 
