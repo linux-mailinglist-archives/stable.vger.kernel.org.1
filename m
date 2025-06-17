@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-154180-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-154536-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D956ADD95E
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 19:05:38 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E3E4ADD8CD
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:59:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5A9981943A80
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:44:35 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 97B827A4E30
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:57:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D161A2E8DF5;
-	Tue, 17 Jun 2025 16:39:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 87A0F2FA626;
+	Tue, 17 Jun 2025 16:58:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aYcHXOkv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E47XSp15"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E77C2DFF1B;
-	Tue, 17 Jun 2025 16:39:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DD91CA4B;
+	Tue, 17 Jun 2025 16:58:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750178360; cv=none; b=VOBcPvESOWnfwM11cR1W65gmbSa13Zk8BMHuixhbJTeIxOCT+dJCKpmyD5YVlqXswWdOsYzWBilyJyla5fjBUt1jpuWnT0aq0jSbblQG4XbBiQQzIZd9aTwZmUkM4SLWkgQClJzbpPMQQ4dKwwcZOdaCKTCSkYprFhYkdHCUYHU=
+	t=1750179526; cv=none; b=Cgrh/dnzpLSMXwb0RCXGAJOGwrDBC4yKyHH2pa/0wBYkT/v8vZrYKCTuCyxUHYXh2LCx4ConAWlkHb0xrD54jizXMtrOBCXIkyFAc+gTFpkMmD/XJbv08VNZQLJ2AsHcE69NaqzIut2/OdSwmyopYK3Pmu5b7+UrFAcvYRH4410=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750178360; c=relaxed/simple;
-	bh=u1tJqXMiEt9x1hvb4rdayQiWIiWDvXzOo5zFmGR2i7o=;
+	s=arc-20240116; t=1750179526; c=relaxed/simple;
+	bh=9rJf45ZjkXLPnzhzS60uM0DdVOl2+DupF3X1qZkPkjc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MzFSxWGRwrRfeSwCPRg/vUA0ymEYW12OwN/Xu7ACLwksetQOvHcHf2yCxVPZ1u/m3y4cfasOt2UMif2qF/vTlfadTGpcjxzAJVv0hipBWPBxOOnwtOgZVYrM02sNNMgTVOb+P0zdv/jQsOLL+Gv4ql/S1TC2DJUBKaRqrMfAixc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aYcHXOkv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F223BC4CEE3;
-	Tue, 17 Jun 2025 16:39:19 +0000 (UTC)
+	 MIME-Version; b=RUPulLooaiEVFjOpgXpry4bbVAT1CG+d3gQeC18KIEPz8PgWur3Rb1ol5ww/3m5DtozBs+NLjJvyvxiWKoGbDi2daQR/czDC/nwUh81oCQz5+SuiwXNZeZq8qdfnHJXLlw371G/QIwbciZyUgUnwlIslZz6y2SYTMUxjnqMYP4M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E47XSp15; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 995AFC4CEE3;
+	Tue, 17 Jun 2025 16:58:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750178360;
-	bh=u1tJqXMiEt9x1hvb4rdayQiWIiWDvXzOo5zFmGR2i7o=;
+	s=korg; t=1750179526;
+	bh=9rJf45ZjkXLPnzhzS60uM0DdVOl2+DupF3X1qZkPkjc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aYcHXOkvlda23QvBU/ME1EQitH5HxFBTqGpP0UtNhUnCPzn32lUkedG/N04PKdLFN
-	 kfnNm2f4oOjz4EkctkrBAHo4QvqkJag4BD7md2pihaaOQBYGaXTvl6BmPUExwQcAfD
-	 aNsmgsSv5R0kKnKQ7+6NLIw8h46dZ1YywhrvxeuI=
+	b=E47XSp15Ge+FS6q3Vk7rT9VqaS+Ou+zqWoGk5KlvMpABYcGlI5T8HgvKOcCWaIe6t
+	 iz2UPrLJ3Qpyu1fMQ7spnvwtu7XtTQmCuPcScVBXcbY1eIVIKEsmJuoCsyP7AdoGnH
+	 9wHMSAh77+Jm1zOvwPBbiTuMfIw6WZXsYiUm61Ww=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jeff Chen <jeff.chen_1@nxp.com>,
-	Francesco Dolcini <francesco.dolcini@toradex.com>,
-	Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH 6.12 484/512] Revert "wifi: mwifiex: Fix HT40 bandwidth issue."
+	stable@kernel.org,
+	Benno Lossin <lossin@kernel.org>,
+	Miguel Ojeda <ojeda@kernel.org>
+Subject: [PATCH 6.15 742/780] rust: list: fix path of `assert_pinned!`
 Date: Tue, 17 Jun 2025 17:27:30 +0200
-Message-ID: <20250617152439.230331700@linuxfoundation.org>
+Message-ID: <20250617152521.719123923@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
-References: <20250617152419.512865572@linuxfoundation.org>
+In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
+References: <20250617152451.485330293@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,57 +62,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Francesco Dolcini <francesco.dolcini@toradex.com>
+From: Benno Lossin <lossin@kernel.org>
 
-commit 570896604f47d44d4ff6882d2a588428d2a6ef17 upstream.
+commit eb71feaacaaca227ae8f91c8578cf831553c5ab5 upstream.
 
-This reverts commit 4fcfcbe45734 ("wifi: mwifiex: Fix HT40 bandwidth
-issue.")
+Commit dbd5058ba60c ("rust: make pin-init its own crate") moved all
+items from pin-init into the pin-init crate, including the
+`assert_pinned!` macro.
 
-That commit introduces a regression, when HT40 mode is enabled,
-received packets are lost, this was experience with W8997 with both
-SDIO-UART and SDIO-SDIO variants. From an initial investigation the
-issue solves on its own after some time, but it's not clear what is
-the reason. Given that this was just a performance optimization, let's
-revert it till we have a better understanding of the issue and a proper
-fix.
+Thus fix the path of the sole user of the `assert_pinned!` macro.
 
-Cc: Jeff Chen <jeff.chen_1@nxp.com>
-Cc: stable@vger.kernel.org
-Fixes: 4fcfcbe45734 ("wifi: mwifiex: Fix HT40 bandwidth issue.")
-Closes: https://lore.kernel.org/all/20250603203337.GA109929@francesco-nb/
-Signed-off-by: Francesco Dolcini <francesco.dolcini@toradex.com>
-Link: https://patch.msgid.link/20250605130302.55555-1-francesco@dolcini.it
-[fix commit reference format]
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+This occurrence was missed in the commit above, since it is in a macro
+rule that has no current users (although binder is a future user).
+
+Cc: stable@kernel.org
+Fixes: dbd5058ba60c ("rust: make pin-init its own crate")
+Signed-off-by: Benno Lossin <lossin@kernel.org>
+Link: https://lore.kernel.org/r/20250525173450.853413-1-lossin@kernel.org
+[ Reworded slightly as discussed in the list. - Miguel ]
+Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/marvell/mwifiex/11n.c |    6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ rust/kernel/list/arc.rs | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/net/wireless/marvell/mwifiex/11n.c
-+++ b/drivers/net/wireless/marvell/mwifiex/11n.c
-@@ -403,14 +403,12 @@ mwifiex_cmd_append_11n_tlv(struct mwifie
+diff --git a/rust/kernel/list/arc.rs b/rust/kernel/list/arc.rs
+index 13c50df37b89..a88a2dc65aa7 100644
+--- a/rust/kernel/list/arc.rs
++++ b/rust/kernel/list/arc.rs
+@@ -96,7 +96,7 @@ unsafe fn on_drop_list_arc(&self) {}
+     } $($rest:tt)*) => {
+         impl$(<$($generics)*>)? $crate::list::ListArcSafe<$num> for $t {
+             unsafe fn on_create_list_arc_from_unique(self: ::core::pin::Pin<&mut Self>) {
+-                $crate::assert_pinned!($t, $field, $fty, inline);
++                ::pin_init::assert_pinned!($t, $field, $fty, inline);
  
- 		if (sband->ht_cap.cap & IEEE80211_HT_CAP_SUP_WIDTH_20_40 &&
- 		    bss_desc->bcn_ht_oper->ht_param &
--		    IEEE80211_HT_PARAM_CHAN_WIDTH_ANY) {
--			chan_list->chan_scan_param[0].radio_type |=
--				CHAN_BW_40MHZ << 2;
-+		    IEEE80211_HT_PARAM_CHAN_WIDTH_ANY)
- 			SET_SECONDARYCHAN(chan_list->chan_scan_param[0].
- 					  radio_type,
- 					  (bss_desc->bcn_ht_oper->ht_param &
- 					  IEEE80211_HT_PARAM_CHA_SEC_OFFSET));
--		}
-+
- 		*buffer += struct_size(chan_list, chan_scan_param, 1);
- 		ret_len += struct_size(chan_list, chan_scan_param, 1);
- 	}
+                 // SAFETY: This field is structurally pinned as per the above assertion.
+                 let field = unsafe {
+-- 
+2.49.0
+
 
 
 
