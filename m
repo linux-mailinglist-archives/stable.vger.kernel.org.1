@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-153958-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153960-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D4A35ADD795
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:46:39 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 97308ADD731
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:42:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4CD46407B6C
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:32:19 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 903FF17ECA4
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:32:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 074822EE61A;
-	Tue, 17 Jun 2025 16:27:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71B9D2ECEAE;
+	Tue, 17 Jun 2025 16:27:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uMaUAJ7h"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ltukC43R"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B85AA2DFF10;
-	Tue, 17 Jun 2025 16:27:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 297EA23AE84;
+	Tue, 17 Jun 2025 16:27:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750177645; cv=none; b=HFq3QDZ6QyVY/aG7MtcZzBl0JFwTPTqp+nNZkxZeFuaoEIZkqi9Mltz929G990NaHOzPd21V+Dt/RyTWnoLdZ8sdYWBa/263F+7YKpjf2XkU6E2sxlrWTfbxVOwodFct1ehVY2XbTOnl12FrfQMNK8OaybU995m7jdN1KWSU/do=
+	t=1750177652; cv=none; b=DdbJHnALV40oBXwrQZ1gzg+uPZWeWefErtPu5K9NBbbxtk/HfEJUD7QBwjNiBL7iNTSGk+49PyffGi6kwv5XqBMcaXkkw6K/m+lV82NK12grOrm1kcJptHrA9y/kneK1EYsF5yAxh5z2v4hBtgMaYG1ILQ4igWyju5hapcLg7RI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750177645; c=relaxed/simple;
-	bh=HBc+1N2hTk9YLF37I6y2/NrKqnk2DxbN9XOb/itrw/U=;
+	s=arc-20240116; t=1750177652; c=relaxed/simple;
+	bh=vz/b1Tp2Cl0vEByRCgvN9CVhUtETJrP/eomC5tTox6g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nIL9+wK2DTVWJRUaZ0kWa+0M8FSTbSAdpBanpRnfiUvYNx5aOdMx3ChNNuE623qJcd9BHCerWID0VyE+PAACSGlIlTwgFLtXuVmQG8khTOiOtXmjhQ38Y3i0HgTIs/LYc6XPVyXqmv+xScAh93i6omm8e1Y7ktCJxHfcLzlckHc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uMaUAJ7h; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1FB72C4CEE3;
-	Tue, 17 Jun 2025 16:27:24 +0000 (UTC)
+	 MIME-Version; b=T/DXz9jFVA6/FV+AnxF3D/oLv/aDXIcm9y80OxTaHivSQzOfon/bUjRTG4Pq6F7leZyR5Tlq/A9K66q5Z8uqh0LIOq90fbf1btQOiItp62R+VM1jXN05Nbd9vPSWT6tmDA1jsmcFS06w1q7F35cqO8pWRbBa/ewHP6JUgMMDnBQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ltukC43R; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8DD00C4CEE3;
+	Tue, 17 Jun 2025 16:27:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750177645;
-	bh=HBc+1N2hTk9YLF37I6y2/NrKqnk2DxbN9XOb/itrw/U=;
+	s=korg; t=1750177652;
+	bh=vz/b1Tp2Cl0vEByRCgvN9CVhUtETJrP/eomC5tTox6g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uMaUAJ7hA5VDz+BgRnHZ2gP3WGQaUA4hvygW/Sk7BklIottFvX/gNvARhszs5sH0+
-	 gqqrmf5y8v3VtRgrxCIQ58HW8Eey3GTc5MbH9jJTOnxWEKh5RSjZQ7mtUAVODKOHFn
-	 WVWpbomJa4tg8jli/RMMKG5EZJH68gqIungoNiLM=
+	b=ltukC43RsZNBQgzkqVKidWz0mtkUASniQ2dMmR0+Cq5KJ8kZI64NMhiEaQvPvrqIN
+	 LJtAOPrCVKfUs3rpKwUoAXOi6kjd+Pwl1ykb2C84krIVHeO6kKD5Lr5o1IIcpS29Bf
+	 BB5NbTcKgrVigyDyG+qCBxUC/+rFAw+eBEUylr6M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhiguo Niu <zhiguo.niu@unisoc.com>,
-	Chao Yu <chao@kernel.org>,
-	Jaegeuk Kim <jaegeuk@kernel.org>,
+	Mark Kettenis <kettenis@openbsd.org>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 340/780] f2fs: fix to correct check conditions in f2fs_cross_rename
-Date: Tue, 17 Jun 2025 17:20:48 +0200
-Message-ID: <20250617152505.303459358@linuxfoundation.org>
+Subject: [PATCH 6.15 341/780] arm64: dts: qcom: x1e80100: Mark usb_2 as dma-coherent
+Date: Tue, 17 Jun 2025 17:20:49 +0200
+Message-ID: <20250617152505.343054251@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
 References: <20250617152451.485330293@linuxfoundation.org>
@@ -67,34 +67,35 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Zhiguo Niu <zhiguo.niu@unisoc.com>
+From: Mark Kettenis <kettenis@openbsd.org>
 
-[ Upstream commit 9883494c45a13dc88d27dde4f988c04823b42a2f ]
+[ Upstream commit 45bd6ff900cfe5038e2718a900f153ded3fa5392 ]
 
-Should be "old_dir" here.
+Make this USB controller consistent with the others on this platform.
 
-Fixes: 5c57132eaf52 ("f2fs: support project quota")
-Signed-off-by: Zhiguo Niu <zhiguo.niu@unisoc.com>
-Reviewed-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+Fixes: 4af46b7bd66f ("arm64: dts: qcom: x1e80100: Add USB nodes")
+Signed-off-by: Mark Kettenis <kettenis@openbsd.org>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Link: https://lore.kernel.org/r/20250109205232.92336-1-kettenis@openbsd.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/f2fs/namei.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm64/boot/dts/qcom/x1e80100.dtsi | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/fs/f2fs/namei.c b/fs/f2fs/namei.c
-index faa5191cf4ca6..28137d499f8f6 100644
---- a/fs/f2fs/namei.c
-+++ b/fs/f2fs/namei.c
-@@ -1108,7 +1108,7 @@ static int f2fs_cross_rename(struct inode *old_dir, struct dentry *old_dentry,
- 	if ((is_inode_flag_set(new_dir, FI_PROJ_INHERIT) &&
- 			!projid_eq(F2FS_I(new_dir)->i_projid,
- 			F2FS_I(old_inode)->i_projid)) ||
--	    (is_inode_flag_set(new_dir, FI_PROJ_INHERIT) &&
-+	    (is_inode_flag_set(old_dir, FI_PROJ_INHERIT) &&
- 			!projid_eq(F2FS_I(old_dir)->i_projid,
- 			F2FS_I(new_inode)->i_projid)))
- 		return -EXDEV;
+diff --git a/arch/arm64/boot/dts/qcom/x1e80100.dtsi b/arch/arm64/boot/dts/qcom/x1e80100.dtsi
+index 5aeecf711340d..607d32f68c340 100644
+--- a/arch/arm64/boot/dts/qcom/x1e80100.dtsi
++++ b/arch/arm64/boot/dts/qcom/x1e80100.dtsi
+@@ -4815,6 +4815,8 @@
+ 				snps,dis-u1-entry-quirk;
+ 				snps,dis-u2-entry-quirk;
+ 
++				dma-coherent;
++
+ 				ports {
+ 					#address-cells = <1>;
+ 					#size-cells = <0>;
 -- 
 2.39.5
 
