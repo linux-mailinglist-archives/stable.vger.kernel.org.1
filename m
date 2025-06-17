@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-154385-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153356-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A40D8ADD9F6
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 19:11:30 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id EFFDEADD420
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:06:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AF3814A65AA
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:51:55 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B5DC31942C44
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 15:58:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3EF1C285057;
-	Tue, 17 Jun 2025 16:50:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E39E2DFF1B;
+	Tue, 17 Jun 2025 15:54:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Hg+xjc1/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ydTsMNuR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E533E2264DD;
-	Tue, 17 Jun 2025 16:50:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF0832EB10;
+	Tue, 17 Jun 2025 15:54:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750179024; cv=none; b=DkQ4H5Bmbb6shgGPodykg8MmS36OaKDkTUPLNd8ZvC0hJf8hR98XnjJnmkzXZLClXxhI4avSuRL06lKrbm/QWC9oVhHWkAfchv1BIMEzliJgPGqaqRIxeqSIED5uXZ3E/+N6l/Q5aa9sglZnCZKSn8slwaLLPZjMNZjiwhrMK6Q=
+	t=1750175684; cv=none; b=aDCsa7+6cw7/7hHI5pX02kJzxxHnziEzntrk1dLfuUD8TmivamB2j+nUBZKgH31yd6bIdgr8ZX5MHjr+UbSVRENlF8/hbRwTdoEMITK9g1VGEEfmMKNiH3xKRv20sp6HUPh4sOByx3dktZFMxoT1WgphVkyEAcm3fcXmtH5iQGk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750179024; c=relaxed/simple;
-	bh=V9GzvwQLnMndw6rMvXjtRdT6DmSy7y0tCku+4hAHRpU=;
+	s=arc-20240116; t=1750175684; c=relaxed/simple;
+	bh=CtvUjagTb1S+Ie5LIBnTl+EKByD8mWSOhdP7O//Lc6E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=i563Y0PlpAxmvD3tHsXK2nDpiNShsOdvLxbIcsKXClFNI3uTqtQulnnCMhs1f/rP7ih+OVjTo6ZQP2DjJHlIeFSkl09RJ9pgt8wSdj0KYTAmOxkx4BBfCmqu1MddVg06w0RQlMQTP7UzMw39XoJvwslqntzd12pPk0T/aCz25lU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Hg+xjc1/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 558FAC4CEE3;
-	Tue, 17 Jun 2025 16:50:23 +0000 (UTC)
+	 MIME-Version; b=u86nu9MIcEGqEFGDsM4qVzUgSBfdNKar9dnQrdAa0WGLC0Ta51qxDRughrcFVEcdX3L12z5NrcQYWttsy+W4P3PjTKjdXbrSD1C0tyronnKovDcv88oTKQk8XtxsrpOh4iONyP1f1uVULLriyO+6fjl/JzGCZNM+gnUl5cN0hBY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ydTsMNuR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 579A7C4CEE3;
+	Tue, 17 Jun 2025 15:54:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750179023;
-	bh=V9GzvwQLnMndw6rMvXjtRdT6DmSy7y0tCku+4hAHRpU=;
+	s=korg; t=1750175684;
+	bh=CtvUjagTb1S+Ie5LIBnTl+EKByD8mWSOhdP7O//Lc6E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Hg+xjc1/6iISZuP4/cCh1vCQQg495TuNyAdDos6vA3L7Effd/DpU+J++OyAfGvpSB
-	 bhHR78Q6FKwrPjTaEXqiD/d5pO2t6T+FIlPCnGJyK9+HLSK2xBU9k1D9Fx7jwfN0yh
-	 NLN7mEGSJmR6/UuziBj0HWrUq+VdGoDsdGOCHMQI=
+	b=ydTsMNuR4RgE4JbKIJXUTYzMTMOo5B+zaigIZfGNODBgIEKp9SLkirb7mpJ/cR7/N
+	 8NjWBUugkCrUmbRK26rxUBBV+O2BTfB/Dk/Qi7TriGsBOZhNDl3o9d+45N2CUIAD4n
+	 n3BbJA1KKpGiXcpS/Le+JLZfjEy45LLu5cVMwce8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Florian Westphal <fw@strlen.de>,
-	Stefano Brivio <sbrivio@redhat.com>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Damien Le Moal <dlemoal@kernel.org>,
+	Benjamin Marzinski <bmarzins@redhat.com>,
+	Mikulas Patocka <mpatocka@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 607/780] netfilter: nf_set_pipapo_avx2: fix initial map fill
+Subject: [PATCH 6.6 200/356] dm: dont change md if dm_table_set_restrictions() fails
 Date: Tue, 17 Jun 2025 17:25:15 +0200
-Message-ID: <20250617152516.203093884@linuxfoundation.org>
+Message-ID: <20250617152346.266054583@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
-References: <20250617152451.485330293@linuxfoundation.org>
+In-Reply-To: <20250617152338.212798615@linuxfoundation.org>
+References: <20250617152338.212798615@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,70 +63,83 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Florian Westphal <fw@strlen.de>
+From: Benjamin Marzinski <bmarzins@redhat.com>
 
-[ Upstream commit ea77c397bff8b6d59f6d83dae1425b08f465e8b5 ]
+[ Upstream commit 9eb7109a5bfc5b8226e9517e9f3cc6d414391884 ]
 
-If the first field doesn't cover the entire start map, then we must zero
-out the remainder, else we leak those bits into the next match round map.
+__bind was changing the disk capacity, geometry and mempools of the
+mapped device before calling dm_table_set_restrictions() which could
+fail, forcing dm to drop the new table. Failing here would leave the
+device using the old table but with the wrong capacity and mempools.
 
-The early fix was incomplete and did only fix up the generic C
-implementation.
+Move dm_table_set_restrictions() earlier in __bind(). Since it needs the
+capacity to be set, save the old version and restore it on failure.
 
-A followup patch adds a test case to nft_concat_range.sh.
-
-Fixes: 791a615b7ad2 ("netfilter: nf_set_pipapo: fix initial map fill")
-Signed-off-by: Florian Westphal <fw@strlen.de>
-Reviewed-by: Stefano Brivio <sbrivio@redhat.com>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Fixes: bb37d77239af2 ("dm: introduce zone append emulation")
+Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
+Tested-by: Damien Le Moal <dlemoal@kernel.org>
+Signed-off-by: Benjamin Marzinski <bmarzins@redhat.com>
+Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nft_set_pipapo_avx2.c | 21 ++++++++++++++++++++-
- 1 file changed, 20 insertions(+), 1 deletion(-)
+ drivers/md/dm.c | 22 ++++++++++++----------
+ 1 file changed, 12 insertions(+), 10 deletions(-)
 
-diff --git a/net/netfilter/nft_set_pipapo_avx2.c b/net/netfilter/nft_set_pipapo_avx2.c
-index c15db28c5ebc4..be7c16c79f711 100644
---- a/net/netfilter/nft_set_pipapo_avx2.c
-+++ b/net/netfilter/nft_set_pipapo_avx2.c
-@@ -1113,6 +1113,25 @@ bool nft_pipapo_avx2_estimate(const struct nft_set_desc *desc, u32 features,
- 	return true;
- }
+diff --git a/drivers/md/dm.c b/drivers/md/dm.c
+index 9ea868bd0d129..d154c89305fbe 100644
+--- a/drivers/md/dm.c
++++ b/drivers/md/dm.c
+@@ -2195,21 +2195,29 @@ static struct dm_table *__bind(struct mapped_device *md, struct dm_table *t,
+ 			       struct queue_limits *limits)
+ {
+ 	struct dm_table *old_map;
+-	sector_t size;
++	sector_t size, old_size;
+ 	int ret;
  
-+/**
-+ * pipapo_resmap_init_avx2() - Initialise result map before first use
-+ * @m:		Matching data, including mapping table
-+ * @res_map:	Result map
-+ *
-+ * Like pipapo_resmap_init() but do not set start map bits covered by the first field.
-+ */
-+static inline void pipapo_resmap_init_avx2(const struct nft_pipapo_match *m, unsigned long *res_map)
-+{
-+	const struct nft_pipapo_field *f = m->f;
-+	int i;
+ 	lockdep_assert_held(&md->suspend_lock);
+ 
+ 	size = dm_table_get_size(t);
+ 
++	old_size = dm_get_size(md);
++	set_capacity(md->disk, size);
 +
-+	/* Starting map doesn't need to be set to all-ones for this implementation,
-+	 * but we do need to zero the remaining bits, if any.
-+	 */
-+	for (i = f->bsize; i < m->bsize_max; i++)
-+		res_map[i] = 0ul;
-+}
++	ret = dm_table_set_restrictions(t, md->queue, limits);
++	if (ret) {
++		set_capacity(md->disk, old_size);
++		old_map = ERR_PTR(ret);
++		goto out;
++	}
 +
- /**
-  * nft_pipapo_avx2_lookup() - Lookup function for AVX2 implementation
-  * @net:	Network namespace
-@@ -1171,7 +1190,7 @@ bool nft_pipapo_avx2_lookup(const struct net *net, const struct nft_set *set,
- 	res  = scratch->map + (map_index ? m->bsize_max : 0);
- 	fill = scratch->map + (map_index ? 0 : m->bsize_max);
+ 	/*
+ 	 * Wipe any geometry if the size of the table changed.
+ 	 */
+-	if (size != dm_get_size(md))
++	if (size != old_size)
+ 		memset(&md->geometry, 0, sizeof(md->geometry));
  
--	/* Starting map doesn't need to be set for this implementation */
-+	pipapo_resmap_init_avx2(m, res);
+-	set_capacity(md->disk, size);
+-
+ 	dm_table_event_callback(t, event_callback, md);
  
- 	nft_pipapo_avx2_prepare();
+ 	if (dm_table_request_based(t)) {
+@@ -2242,12 +2250,6 @@ static struct dm_table *__bind(struct mapped_device *md, struct dm_table *t,
+ 		t->mempools = NULL;
+ 	}
  
+-	ret = dm_table_set_restrictions(t, md->queue, limits);
+-	if (ret) {
+-		old_map = ERR_PTR(ret);
+-		goto out;
+-	}
+-
+ 	old_map = rcu_dereference_protected(md->map, lockdep_is_held(&md->suspend_lock));
+ 	rcu_assign_pointer(md->map, (void *)t);
+ 	md->immutable_target_type = dm_table_get_immutable_target_type(t);
 -- 
 2.39.5
 
