@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-152927-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153461-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A1916ADD17F
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 17:31:34 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 825E1ADD3F4
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:04:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8D2AC3BD2A4
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 15:31:10 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1BA747A2144
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:03:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A011D2EBDC0;
-	Tue, 17 Jun 2025 15:31:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B23302F237C;
+	Tue, 17 Jun 2025 16:00:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GokDaXYk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q8oeYKC7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58C2F2EF659;
-	Tue, 17 Jun 2025 15:31:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B8482F2377;
+	Tue, 17 Jun 2025 16:00:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750174291; cv=none; b=A30YpPZCbYjm9RWXesabT6vKOOcI49DQX/mKRmFWuqvpr5a0O/k32OCS1GF9oCmYMKeDa48JCEoGcFjyz7n3nOXdIRzmvLvKPjWgg991Gw1wRfiJD0XRh8dOD+3EGtM+B/sBDNlFcD6JndzI9O01f2Tf3K4NZRSxPGsB1ZWGkWM=
+	t=1750176038; cv=none; b=BJbfysSv7qVI7MWx1wjL97Y/a9mFrTsSaIX9/HXgF7Pz9QpthNmsH3sUHuWVUhrKKpR9k3/jBzkUeCWiODn7xOph3tI15m0zxNBRe9/9EQMYiJSfLOtdmv9R1zhIShdO16pqzQeMbUsDEpZqN7Aj6ZgBGGV16e0qY3erU37R4JE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750174291; c=relaxed/simple;
-	bh=iFgKkBLYHLIquHVbKNJG4ErZQuWH1wDuFGn9XfsPXd4=;
+	s=arc-20240116; t=1750176038; c=relaxed/simple;
+	bh=BD+Z2vgxbqUSzYLtp0r3YcS0SgLugvjl2Gh/jykWZQs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HXKH9N74JJWU1d4o9wUGiBe/E+OC7cxItXe1qydm2Bz26F4+rTZNPo+BbHqrtKBH6YEE8EtcmahmMbpPmoiHwciErdyJuS72+36B9RnCRaQsxdrpjM+6oEhbVfaaOiKSrZXQA692lwVs/9neLPQPx2V5VRefYo/FVbuXqPKb70g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GokDaXYk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF4EDC4CEE3;
-	Tue, 17 Jun 2025 15:31:30 +0000 (UTC)
+	 MIME-Version; b=INugCel15FoD9M48bZpRqTiMwujdZdaT0YR5WblqYVXMD8gwGlBk3D1iET5h1ui41JmUpF0KDSFG7+lVw1j/og6FrMcTwAONb/+ZeKbrGX7E8vyp1XOdIXHO/Bo7A00Y0YbD8yyGT9rbCg2daSCqMc0/9c4J9DXwC4e3mSw7QLQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q8oeYKC7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CCCFAC4CEF2;
+	Tue, 17 Jun 2025 16:00:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750174291;
-	bh=iFgKkBLYHLIquHVbKNJG4ErZQuWH1wDuFGn9XfsPXd4=;
+	s=korg; t=1750176038;
+	bh=BD+Z2vgxbqUSzYLtp0r3YcS0SgLugvjl2Gh/jykWZQs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GokDaXYkssfD0aXQIkZk0036QnMfFckxKIITMHke0ezehHg6UPk/yhq/tLEetvoKQ
-	 YV79uiZ7D0WKVoY0koI6R1fJtLCRJPBASDlf9x+yGowuyB2y6pjhdvpZIa44ZARe/s
-	 C0h2ZJF7XDmL6HYPuRN5gHt87j05Ivjt1gGwPXs4=
+	b=q8oeYKC7O8KrqKw3KnJc05/zHB8CHPldTLIcVBoGU0isv1r9MrrcHVPFE4L0UDCcQ
+	 qfPfc3hjahb+vnijEjcvenwDok+1YKosEPyKEKsfS0cbDEUmrdj4iCPqTTyrHe45ae
+	 C0VG4FQ81kgv6yEhinYK/Dv8DCndlzDm74q0qJec=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Feng Xu <feng.f.xu@intel.com>,
-	Qiuxu Zhuo <qiuxu.zhuo@intel.com>,
-	Tony Luck <tony.luck@intel.com>,
+	Xuewen Yan <xuewen.yan@unisoc.com>,
+	Di Shen <di.shen@unisoc.com>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Alexei Starovoitov <ast@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 041/356] EDAC/skx_common: Fix general protection fault
+Subject: [PATCH 6.12 190/512] bpf: Revert "bpf: remove unnecessary rcu_read_{lock,unlock}() in multi-uprobe attach logic"
 Date: Tue, 17 Jun 2025 17:22:36 +0200
-Message-ID: <20250617152339.885037156@linuxfoundation.org>
+Message-ID: <20250617152427.337615774@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152338.212798615@linuxfoundation.org>
-References: <20250617152338.212798615@linuxfoundation.org>
+In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
+References: <20250617152419.512865572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,70 +64,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Qiuxu Zhuo <qiuxu.zhuo@intel.com>
+From: Di Shen <di.shen@unisoc.com>
 
-[ Upstream commit 20d2d476b3ae18041be423671a8637ed5ffd6958 ]
+[ Upstream commit 4e2e6841ff761cc15a54e8bebcf35d7325ec78a2 ]
 
-After loading i10nm_edac (which automatically loads skx_edac_common), if
-unload only i10nm_edac, then reload it and perform error injection testing,
-a general protection fault may occur:
+This reverts commit 4a8f635a6054.
 
-  mce: [Hardware Error]: Machine check events logged
-  Oops: general protection fault ...
-  ...
-  Workqueue: events mce_gen_pool_process
-  RIP: 0010:string+0x53/0xe0
-  ...
-  Call Trace:
-  <TASK>
-  ? die_addr+0x37/0x90
-  ? exc_general_protection+0x1e7/0x3f0
-  ? asm_exc_general_protection+0x26/0x30
-  ? string+0x53/0xe0
-  vsnprintf+0x23e/0x4c0
-  snprintf+0x4d/0x70
-  skx_adxl_decode+0x16a/0x330 [skx_edac_common]
-  skx_mce_check_error.part.0+0xf8/0x220 [skx_edac_common]
-  skx_mce_check_error+0x17/0x20 [skx_edac_common]
-  ...
+Althought get_pid_task() internally already calls rcu_read_lock() and
+rcu_read_unlock(), the find_vpid() was not.
 
-The issue arose was because the variable 'adxl_component_count' (inside
-skx_edac_common), which counts the ADXL components, was not reset. During
-the reloading of i10nm_edac, the count was incremented by the actual number
-of ADXL components again, resulting in a count that was double the real
-number of ADXL components. This led to an out-of-bounds reference to the
-ADXL component array, causing the general protection fault above.
+The documentation for find_vpid() clearly states:
+"Must be called with the tasklist_lock or rcu_read_lock() held."
 
-Fix this issue by resetting the 'adxl_component_count' in adxl_put(),
-which is called during the unloading of {skx,i10nm}_edac.
+Add proper rcu_read_lock/unlock() to protect the find_vpid().
 
-Fixes: 123b15863550 ("EDAC, i10nm: make skx_common.o a separate module")
-Reported-by: Feng Xu <feng.f.xu@intel.com>
-Signed-off-by: Qiuxu Zhuo <qiuxu.zhuo@intel.com>
-Signed-off-by: Tony Luck <tony.luck@intel.com>
-Tested-by: Feng Xu <feng.f.xu@intel.com>
-Link: https://lore.kernel.org/r/20250417150724.1170168-2-qiuxu.zhuo@intel.com
+Fixes: 4a8f635a6054 ("bpf: remove unnecessary rcu_read_{lock,unlock}() in multi-uprobe attach logic")
+Reported-by: Xuewen Yan <xuewen.yan@unisoc.com>
+Signed-off-by: Di Shen <di.shen@unisoc.com>
+Acked-by: Andrii Nakryiko <andrii@kernel.org>
+Link: https://lore.kernel.org/r/20250520054943.5002-1-xuewen.yan@unisoc.com
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/edac/skx_common.c | 1 +
- 1 file changed, 1 insertion(+)
+ kernel/trace/bpf_trace.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/edac/skx_common.c b/drivers/edac/skx_common.c
-index d47f0055217e4..9e43aed72bd9f 100644
---- a/drivers/edac/skx_common.c
-+++ b/drivers/edac/skx_common.c
-@@ -115,6 +115,7 @@ EXPORT_SYMBOL_GPL(skx_adxl_get);
+diff --git a/kernel/trace/bpf_trace.c b/kernel/trace/bpf_trace.c
+index 66075e86b691c..3ec7df7dbeec4 100644
+--- a/kernel/trace/bpf_trace.c
++++ b/kernel/trace/bpf_trace.c
+@@ -3349,7 +3349,9 @@ int bpf_uprobe_multi_link_attach(const union bpf_attr *attr, struct bpf_prog *pr
+ 	}
  
- void skx_adxl_put(void)
- {
-+	adxl_component_count = 0;
- 	kfree(adxl_values);
- 	kfree(adxl_msg);
- }
+ 	if (pid) {
++		rcu_read_lock();
+ 		task = get_pid_task(find_vpid(pid), PIDTYPE_TGID);
++		rcu_read_unlock();
+ 		if (!task) {
+ 			err = -ESRCH;
+ 			goto error_path_put;
 -- 
 2.39.5
 
