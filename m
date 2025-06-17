@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-153936-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-154384-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 63315ADD7C8
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:49:12 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9FE81ADD932
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 19:03:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5B9D6189C210
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:31:32 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 07F7D2C5D88
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:52:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C2B02F94AD;
-	Tue, 17 Jun 2025 16:26:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0E5B2E8E16;
+	Tue, 17 Jun 2025 16:50:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kTQ59reY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2Xle2Hin"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 596FD2F94A9;
-	Tue, 17 Jun 2025 16:26:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C09E2E8E10;
+	Tue, 17 Jun 2025 16:50:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750177579; cv=none; b=ZSAj8MApJWpDTaN55QPeEzyHFFTXReAp23/g/5u7AMNCZ1veiYnK2N/vYtHTUlMDZ1/Kv2Wc3I7I3KslMIXbzNaPhehYguVWcLcFJXUgs06lCP7ZRujBY0Ooc+Ea1o8pWOSkqnOL1DYmsojR3Tl9RdGnn0GUCnpmyEfoQ2/pW2s=
+	t=1750179020; cv=none; b=d5+XzZ7Ba4SJkbEMd4nuXEcOSotNqnFbQEAjAxIUADLh9PrGnODCzhyqjWjSvYmlyBw0dK70FDd498VG6GjF71X7rYqH+FYxwRM704HhFYoy2KEvYB5SO67+Hg1zdIwa8VDjyOmBed4kZFU1jfscQb8p4PW5bkBp5kqdMBeIkyw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750177579; c=relaxed/simple;
-	bh=LVw9vogv6ScAXG9ROFrbbXuSkVPAF3K2tbi+ItTLNCM=;
+	s=arc-20240116; t=1750179020; c=relaxed/simple;
+	bh=AcpKWJhbOK8ZdmgJqwhA6pLzc+EUqcdgG0XI52VpXQE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=GdFfcuGn+962RAtLqc4TGTNFJ2hmlgFrufSxsPd68/ziVhC/iFf8SnVG2OOOERtVeOYPcYWKJ0IbyhwLr6EV0RclOKAW3jU4JFIwHuCbEQZs6rAsrKS5EBWgxE6pL1J6c0p13flPWvC+o7D0Km5wVdaVicCtrF/OqNCzO9XSpYU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kTQ59reY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE029C4CEE3;
-	Tue, 17 Jun 2025 16:26:18 +0000 (UTC)
+	 MIME-Version; b=fSIj+E6HwCdCPvQhAFLiXZlq9f4EghwOlzXujA3goT/hicgJe1KgpRq1bqX0KAq6IuIpnJAGrnKW+6bysOMVTIfeNDh1tHO7fWCaJnju0e1DuG2FzncS/eDPyCX2nyKCCAbJcIQFFe5cSoTixVIvBihXdVmjV4Fn8Tufw1n9f9I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2Xle2Hin; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED3E8C4CEE3;
+	Tue, 17 Jun 2025 16:50:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750177579;
-	bh=LVw9vogv6ScAXG9ROFrbbXuSkVPAF3K2tbi+ItTLNCM=;
+	s=korg; t=1750179020;
+	bh=AcpKWJhbOK8ZdmgJqwhA6pLzc+EUqcdgG0XI52VpXQE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kTQ59reY0SynkDFzbu+V76feQ+DuUd4sf66RtUA9Ce/wW2c+l9Vpijo30Afw0t9i/
-	 02+9T+Zkrg9XxGGUwuGyMIDI8acP9sd/bvmfwklv8l4UumGZCZsjNQzHQ/rVuantJ6
-	 9pJ3sIuYa/iTnx5b3Y8d3cMjnRVKJGviAv6fp1B0=
+	b=2Xle2HineTmlLvjcOX0A5Wer4YpSjuRl3G8wADoTrUFml5xcK8o+5iazYx9K/yUED
+	 QLHfFmVlB5zGV+XEDXKQCT7xr7SilZfFry39JABx1dky5vjpwStqq6OF3f6jbPlin3
+	 ab0ixLTv5SsFVnZBEqj5hw0oWUaBHeNkdSc10t+4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Jouni=20H=C3=B6gander?= <jouni.hogander@intel.com>,
-	Ankit Nautiyal <ankit.k.nautiyal@intel.com>,
-	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
+	syzbot+9fc858ba0312b42b577e@syzkaller.appspotmail.com,
+	Eric Dumazet <edumazet@google.com>,
+	Stanislav Fomichev <sdf@fomichev.me>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 366/512] drm/i915/psr: Fix using wrong mask in REG_FIELD_PREP
+Subject: [PATCH 6.15 624/780] net: prevent a NULL deref in rtnl_create_link()
 Date: Tue, 17 Jun 2025 17:25:32 +0200
-Message-ID: <20250617152434.416140030@linuxfoundation.org>
+Message-ID: <20250617152516.885595263@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
-References: <20250617152419.512865572@linuxfoundation.org>
+In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
+References: <20250617152451.485330293@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,46 +62,63 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jouni Högander <jouni.hogander@intel.com>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit 57d63c6cd0851d3af612a556ec61b0f2a9bd522f ]
+[ Upstream commit feafc73f3e6ae73371777a037d41d2e31c929636 ]
 
-Wrong mask is used in PORT_ALPM_LFPS_CTL_FIRST_LFPS_HALF_CYCLE_DURATION and
-PORT_ALPM_LFPS_CTL_LAST_LFPS_HALF_CYCLE_DURATION.
+At the time rtnl_create_link() is running, dev->netdev_ops is NULL,
+we must not use netdev_lock_ops() or risk a NULL deref if
+CONFIG_NET_SHAPER is defined.
 
-Fixes: 295099580f04 ("drm/i915/psr: Add missing ALPM AUX-Less register definitions")
-Signed-off-by: Jouni Högander <jouni.hogander@intel.com>
-Reviewed-by: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
-Link: https://lore.kernel.org/r/20250526120512.1702815-12-jouni.hogander@intel.com
-(cherry picked from commit 8097128a40ff378761034ec72cdbf6f46e466dc0)
-Signed-off-by: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
+Use netif_set_group() instead of dev_set_group().
+
+ RIP: 0010:netdev_need_ops_lock include/net/netdev_lock.h:33 [inline]
+ RIP: 0010:netdev_lock_ops include/net/netdev_lock.h:41 [inline]
+ RIP: 0010:dev_set_group+0xc0/0x230 net/core/dev_api.c:82
+Call Trace:
+ <TASK>
+  rtnl_create_link+0x748/0xd10 net/core/rtnetlink.c:3674
+  rtnl_newlink_create+0x25c/0xb00 net/core/rtnetlink.c:3813
+  __rtnl_newlink net/core/rtnetlink.c:3940 [inline]
+  rtnl_newlink+0x16d6/0x1c70 net/core/rtnetlink.c:4055
+  rtnetlink_rcv_msg+0x7cf/0xb70 net/core/rtnetlink.c:6944
+  netlink_rcv_skb+0x208/0x470 net/netlink/af_netlink.c:2534
+  netlink_unicast_kernel net/netlink/af_netlink.c:1313 [inline]
+  netlink_unicast+0x75b/0x8d0 net/netlink/af_netlink.c:1339
+  netlink_sendmsg+0x805/0xb30 net/netlink/af_netlink.c:1883
+  sock_sendmsg_nosec net/socket.c:712 [inline]
+
+Reported-by: syzbot+9fc858ba0312b42b577e@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/netdev/6840265f.a00a0220.d4325.0009.GAE@google.com/T/#u
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Fixes: 7e4d784f5810 ("net: hold netdev instance lock during rtnetlink operations")
+Acked-by: Stanislav Fomichev <sdf@fomichev.me>
+Link: https://patch.msgid.link/20250604105815.1516973-1-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/i915/display/intel_psr_regs.h | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ net/core/rtnetlink.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/i915/display/intel_psr_regs.h b/drivers/gpu/drm/i915/display/intel_psr_regs.h
-index 642bb15fb5475..25c0424e34db2 100644
---- a/drivers/gpu/drm/i915/display/intel_psr_regs.h
-+++ b/drivers/gpu/drm/i915/display/intel_psr_regs.h
-@@ -314,8 +314,8 @@
- #define  PORT_ALPM_LFPS_CTL_LFPS_HALF_CYCLE_DURATION_MASK	REG_GENMASK(20, 16)
- #define  PORT_ALPM_LFPS_CTL_LFPS_HALF_CYCLE_DURATION(val)	REG_FIELD_PREP(PORT_ALPM_LFPS_CTL_LFPS_HALF_CYCLE_DURATION_MASK, val)
- #define  PORT_ALPM_LFPS_CTL_FIRST_LFPS_HALF_CYCLE_DURATION_MASK	REG_GENMASK(12, 8)
--#define  PORT_ALPM_LFPS_CTL_FIRST_LFPS_HALF_CYCLE_DURATION(val)	REG_FIELD_PREP(PORT_ALPM_LFPS_CTL_LFPS_HALF_CYCLE_DURATION_MASK, val)
-+#define  PORT_ALPM_LFPS_CTL_FIRST_LFPS_HALF_CYCLE_DURATION(val)	REG_FIELD_PREP(PORT_ALPM_LFPS_CTL_FIRST_LFPS_HALF_CYCLE_DURATION_MASK, val)
- #define  PORT_ALPM_LFPS_CTL_LAST_LFPS_HALF_CYCLE_DURATION_MASK	REG_GENMASK(4, 0)
--#define  PORT_ALPM_LFPS_CTL_LAST_LFPS_HALF_CYCLE_DURATION(val)	REG_FIELD_PREP(PORT_ALPM_LFPS_CTL_LFPS_HALF_CYCLE_DURATION_MASK, val)
-+#define  PORT_ALPM_LFPS_CTL_LAST_LFPS_HALF_CYCLE_DURATION(val)	REG_FIELD_PREP(PORT_ALPM_LFPS_CTL_LAST_LFPS_HALF_CYCLE_DURATION_MASK, val)
- 
- #endif /* __INTEL_PSR_REGS_H__ */
+diff --git a/net/core/rtnetlink.c b/net/core/rtnetlink.c
+index c5a7f41982a57..fc6815ad78266 100644
+--- a/net/core/rtnetlink.c
++++ b/net/core/rtnetlink.c
+@@ -3681,7 +3681,7 @@ struct net_device *rtnl_create_link(struct net *net, const char *ifname,
+ 	if (tb[IFLA_LINKMODE])
+ 		dev->link_mode = nla_get_u8(tb[IFLA_LINKMODE]);
+ 	if (tb[IFLA_GROUP])
+-		dev_set_group(dev, nla_get_u32(tb[IFLA_GROUP]));
++		netif_set_group(dev, nla_get_u32(tb[IFLA_GROUP]));
+ 	if (tb[IFLA_GSO_MAX_SIZE])
+ 		netif_set_gso_max_size(dev, nla_get_u32(tb[IFLA_GSO_MAX_SIZE]));
+ 	if (tb[IFLA_GSO_MAX_SEGS])
 -- 
 2.39.5
 
