@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-154044-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153608-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C101BADD84C
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:54:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 51752ADD575
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:21:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 692CB4A66CB
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:37:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0827C407652
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:11:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71BAB2EE60D;
-	Tue, 17 Jun 2025 16:32:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D78B2EA16E;
+	Tue, 17 Jun 2025 16:08:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I6szu7I5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WROHNuy9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24C1C1ADC97;
-	Tue, 17 Jun 2025 16:32:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A38A204F73;
+	Tue, 17 Jun 2025 16:08:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750177922; cv=none; b=rgWl+Eo/dyf47NTIqlFyqRKJKDopKEaTySCGfSvrHU/j15vAt2x5AIlcaJIR/qhRVT0WM5y1jvTOfdBdiIQbz2FlL6kATgdlO835/sCWDPOhvDgpxlWEtGaBNgx4Zzjziw+poXNEkLbZH2Yz/YWrqV6M9/RrMpGYlnzbOGn7MDE=
+	t=1750176512; cv=none; b=uVjEsh77DhrPVF/Zig2esQX8as0l24j7D2ELirfontqjPK8yxM10rwSCieZzJaDwP7io48pxyFrHUmPHlOwDYccbCTtNawlM96/X6K76U+XI/VN0yKW+GxY9i9hweEULrRB0s6k8I6NKpXr1ZzwdniXZN/YiGQ7lA46d1Wg/Tnk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750177922; c=relaxed/simple;
-	bh=XB02xQIxNX5qjy7yk56avs8hTBEi0UXsRjMjlPQZYc8=;
+	s=arc-20240116; t=1750176512; c=relaxed/simple;
+	bh=GWSBnq7tbJCzACqUesqlQI6CUxmiBUIANNHkP3tk9dY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Rfz8uuhif84HW4pZf2xRnTjW9WowEJdGBnHWBj0dWb3iwb/nILoZuZwh7F8aFEja3D8D14DdTYjgkAncsuKqS4S1tTfzWoPvS0UkAJApSaQhcytNI0J8ngsa9VELgMAxAbGncCk2M+FzSR4m6QlbiWnTlIYaIa2fbR/a15Gjig8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I6szu7I5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 950DBC4CEE3;
-	Tue, 17 Jun 2025 16:32:01 +0000 (UTC)
+	 MIME-Version; b=Njq8v+ykeedQyb/D8vQ2kSu8nEpPe+smi7QWAOI95t1BsbXSiGA2mqGCeE0BJEFb9XEZBudbI+5/G6zHiEN9QzX4TGG/Fl8VKQnD408bebFGX8fCCu+L5MLplKdR1ocTGX1+kt7v9+ca01koFbxtKEb5tkpmYY9SKqmiLC31Tv4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WROHNuy9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6BCA2C4CEE3;
+	Tue, 17 Jun 2025 16:08:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750177922;
-	bh=XB02xQIxNX5qjy7yk56avs8hTBEi0UXsRjMjlPQZYc8=;
+	s=korg; t=1750176511;
+	bh=GWSBnq7tbJCzACqUesqlQI6CUxmiBUIANNHkP3tk9dY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=I6szu7I5JmfyWv8hXuHL0aGZeQInVj3OYbxdff++lDSoq+cAwp74OjeYJNkIwVSSo
-	 atFie5DPyzk0z/KED1GSJuHWW2BiGzo5yi88rhrCegCUfE0iwMMX9iU1cwtcaIR3Ll
-	 50Ai6i5UdvSydVeGbF8eMoDBcCv2kQber88AnnKg=
+	b=WROHNuy9gY6OF59od1GB6uDnrM8DVMZ+KhlO1dFGuYnpdb/STG6/0P13jfjbzX45c
+	 tERsbwCPhp89L+YR84eDUFBTXe3wBZZ53kBn3L4jGIOMsFBaaKeH6N66gWJXrxnjqj
+	 Uext061+X9uMMhOe2MlIw59hDXTVrOGuUO5SFZZU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>,
-	Nuno Sa <nuno.sa@analog.com>,
-	Conor Dooley <conor.dooley@microchip.com>,
-	Trevor Gamblin <tgamblin@baylibre.com>,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <ukleinek@kernel.org>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Jonas Gorski <jonas.gorski@gmail.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 414/512] dt-bindings: pwm: adi,axi-pwmgen: Increase #pwm-cells to 3
-Date: Tue, 17 Jun 2025 17:26:20 +0200
-Message-ID: <20250617152436.358224229@linuxfoundation.org>
+Subject: [PATCH 6.6 266/356] net: dsa: b53: allow RGMII for bcm63xx RGMII ports
+Date: Tue, 17 Jun 2025 17:26:21 +0200
+Message-ID: <20250617152348.910343369@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
-References: <20250617152419.512865572@linuxfoundation.org>
+In-Reply-To: <20250617152338.212798615@linuxfoundation.org>
+References: <20250617152338.212798615@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,53 +61,50 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
+From: Jonas Gorski <jonas.gorski@gmail.com>
 
-[ Upstream commit 664b5e466f915ad7fce87215ccfb038c47ace4fb ]
+[ Upstream commit 5ea0d42c1980e6d10e5cb56a78021db5bfcebaaf ]
 
-Using 3 cells allows to pass additional flags and is the normal
-abstraction for new PWM descriptions. There are no device trees yet to
-adapt to this change.
+Add RGMII to supported interfaces for BCM63xx RGMII ports so they can be
+actually used in RGMII mode.
 
-Signed-off-by: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
-Reviewed-by: Nuno Sa <nuno.sa@analog.com>
-Acked-by: Conor Dooley <conor.dooley@microchip.com>
-Reviewed-by: Trevor Gamblin <tgamblin@baylibre.com>
-Link: https://lore.kernel.org/r/20241024102554.711689-2-u.kleine-koenig@baylibre.com
-Signed-off-by: Uwe Kleine-König <ukleinek@kernel.org>
-Stable-dep-of: e683131e64f7 ("dt-bindings: pwm: adi,axi-pwmgen: Fix clocks")
+Without this, phylink will fail to configure them:
+
+[    3.580000] b53-switch 10700000.switch GbE3 (uninitialized): validation of rgmii with support 0000000,00000000,00000000,000062ff and advertisement 0000000,00000000,00000000,000062ff failed: -EINVAL
+[    3.600000] b53-switch 10700000.switch GbE3 (uninitialized): failed to connect to PHY: -EINVAL
+[    3.610000] b53-switch 10700000.switch GbE3 (uninitialized): error -22 setting up PHY for tree 0, switch 0, port 4
+
+Fixes: ce3bf94871f7 ("net: dsa: b53: add support for BCM63xx RGMIIs")
+Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Signed-off-by: Jonas Gorski <jonas.gorski@gmail.com>
+Link: https://patch.msgid.link/20250602193953.1010487-5-jonas.gorski@gmail.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- Documentation/devicetree/bindings/pwm/adi,axi-pwmgen.yaml | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/net/dsa/b53/b53_common.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/Documentation/devicetree/bindings/pwm/adi,axi-pwmgen.yaml b/Documentation/devicetree/bindings/pwm/adi,axi-pwmgen.yaml
-index ec6115d3796ba..aa35209f74cfa 100644
---- a/Documentation/devicetree/bindings/pwm/adi,axi-pwmgen.yaml
-+++ b/Documentation/devicetree/bindings/pwm/adi,axi-pwmgen.yaml
-@@ -27,7 +27,7 @@ properties:
-     maxItems: 1
+diff --git a/drivers/net/dsa/b53/b53_common.c b/drivers/net/dsa/b53/b53_common.c
+index 7ca42170d8666..004d2c988ff09 100644
+--- a/drivers/net/dsa/b53/b53_common.c
++++ b/drivers/net/dsa/b53/b53_common.c
+@@ -1377,6 +1377,10 @@ static void b53_phylink_get_caps(struct dsa_switch *ds, int port,
+ 	__set_bit(PHY_INTERFACE_MODE_MII, config->supported_interfaces);
+ 	__set_bit(PHY_INTERFACE_MODE_REVMII, config->supported_interfaces);
  
-   "#pwm-cells":
--    const: 2
-+    const: 3
++	/* BCM63xx RGMII ports support RGMII */
++	if (is63xx(dev) && in_range(port, B53_63XX_RGMII0, 4))
++		phy_interface_set_rgmii(config->supported_interfaces);
++
+ 	config->mac_capabilities = MAC_ASYM_PAUSE | MAC_SYM_PAUSE |
+ 		MAC_10 | MAC_100;
  
-   clocks:
-     maxItems: 1
-@@ -44,5 +44,5 @@ examples:
-        compatible = "adi,axi-pwmgen-2.00.a";
-        reg = <0x44b00000 0x1000>;
-        clocks = <&spi_clk>;
--       #pwm-cells = <2>;
-+       #pwm-cells = <3>;
-     };
 -- 
 2.39.5
 
