@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-153891-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-154368-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 24751ADD6CF
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:37:29 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1B1A1ADD9D2
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 19:09:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 017B74072D9
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:28:24 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 60C3019E5A88
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:51:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B5272DFF17;
-	Tue, 17 Jun 2025 16:23:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F16802DFF0B;
+	Tue, 17 Jun 2025 16:49:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dJ/91wZK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aGc+4W6d"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 282D222DF80;
-	Tue, 17 Jun 2025 16:23:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC5B12FA65D;
+	Tue, 17 Jun 2025 16:49:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750177432; cv=none; b=KakhtAlry+iRx+YAxozrcG9XVUALZFQi6ztZiklOQiZ9TdzeWyvVZ9u5WTKYxx19UxMxag1yoSZL2olKIhOcTogdUN4RbW2pEOYyQRnNpaeOrPbAoL+jbm9GjRUamlu7FQikUTlsLkOT15F2sZIbcO7wfwNyYz2xG8mOE91O0Sg=
+	t=1750178971; cv=none; b=dhjlpELrs4L4EAhBB+JxsOizQQrzOzdIUwyPrnNOciK7EBgqvCax7tURhf4NkdHpZRRw47JoeWrcALKL6SSq6zs2w8UsLCJXLZRJNDC2Sdi7XEx3y9NabAuJlE2Xe7vVGvqag596uOCxvwehYl4qtHb+5Cs7lXtFTNDmwwndCN4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750177432; c=relaxed/simple;
-	bh=40pbeMe+YPQAWcEvbSsiusJTRHF9Hnzu+CcyP4j5LVc=;
+	s=arc-20240116; t=1750178971; c=relaxed/simple;
+	bh=6606mQYbC17H9PL1cE/rOjGbEjhS/105n3VfS2otA9g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ggFIp/Ef3V4oVqIKx4xwZPtL9AfQ+EWnqtlaGCldHAND0f1Cu1N0HfUILi69B9KfVzw3toP/Grg+ffkQv++uWhbTebGWQesKmcJ41P+sp+BGGMQ8EOb9PlcrHNwQ9ChiSfXGhFkqYo13Y+paL1QCBru9GaFqpD8OkX9gmEtkVB8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dJ/91wZK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33DEFC4CEE3;
-	Tue, 17 Jun 2025 16:23:51 +0000 (UTC)
+	 MIME-Version; b=IbDSjiapC4GLOGlppvSknNQVo2vxeO11Q1sAHzzVgoZBBd0VO5L8KqfeXx06nKlVqrF0YUmW7dAJxOFw0YueRu9Uh3Qz8n9ckjtsr/aPWZXKOseI78brollB2+ntJoGG3M3TpLjFUvZkVPmWl8JhQNG1hp5edWbOg8KnYgPXaB4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aGc+4W6d; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E4C1C4CEE7;
+	Tue, 17 Jun 2025 16:49:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750177431;
-	bh=40pbeMe+YPQAWcEvbSsiusJTRHF9Hnzu+CcyP4j5LVc=;
+	s=korg; t=1750178971;
+	bh=6606mQYbC17H9PL1cE/rOjGbEjhS/105n3VfS2otA9g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dJ/91wZK1LyN3ayUHNKbLOWZTlFg9iwsFMEJbVSGOySwKUEbP70sc+1CAykLHxowy
-	 3754qZWC/u+P/qYujTEJhUCmNcI8F5EvEBhejXRhzQCtgsCVUU8VuBg8DT8VehV0Lk
-	 XUqmox/cIbCYXCoreopihr+T94Y4eGVT+sZGO6OU=
+	b=aGc+4W6dQkddT+EV0APK2ACYrjPtztSbZwPy9agSJk12qVzZjuZtDwkgNIC59Qyou
+	 Z2vtaZlgmPGNni5bNGMRb7Iv9hOjUTQ6UVIAR2Oi76PslCj2wq5jv4/YhzQ7rbSJ/b
+	 i9Q8FZZ1Klllezgz8960TfA3pKNyqNjcelXaY0mM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jerome Brunet <jbrunet@baylibre.com>,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Niklas Cassel <cassel@kernel.org>,
+	Paul Chaignon <paul.chaignon@gmail.com>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 320/512] PCI: endpoint: Retain fixed-size BAR size as well as aligned size
-Date: Tue, 17 Jun 2025 17:24:46 +0200
-Message-ID: <20250617152432.576516049@linuxfoundation.org>
+Subject: [PATCH 6.15 579/780] net: Fix checksum update for ILA adj-transport
+Date: Tue, 17 Jun 2025 17:24:47 +0200
+Message-ID: <20250617152515.063247026@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
-References: <20250617152419.512865572@linuxfoundation.org>
+In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
+References: <20250617152451.485330293@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,128 +63,169 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jerome Brunet <jbrunet@baylibre.com>
+From: Paul Chaignon <paul.chaignon@gmail.com>
 
-[ Upstream commit 793908d60b8745c386b9f4e29eb702f74ceb0886 ]
+[ Upstream commit 6043b794c7668c19dabc4a93c75b924a19474d59 ]
 
-When allocating space for an endpoint function on a BAR with a fixed size,
-the size saved in 'struct pci_epf_bar.size' should be the fixed size as
-expected by pci_epc_set_bar().
+During ILA address translations, the L4 checksums can be handled in
+different ways. One of them, adj-transport, consist in parsing the
+transport layer and updating any found checksum. This logic relies on
+inet_proto_csum_replace_by_diff and produces an incorrect skb->csum when
+in state CHECKSUM_COMPLETE.
 
-However, if pci_epf_alloc_space() increased the allocation size to
-accommodate iATU alignment requirements, it previously saved the larger
-aligned size in .size, which broke pci_epc_set_bar().
+This bug can be reproduced with a simple ILA to SIR mapping, assuming
+packets are received with CHECKSUM_COMPLETE:
 
-To solve this, keep the fixed BAR size in .size and save the aligned size
-in a new .aligned_size for use when deallocating it.
+  $ ip a show dev eth0
+  14: eth0@if15: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc noqueue state UP group default qlen 1000
+      link/ether 62:ae:35:9e:0f:8d brd ff:ff:ff:ff:ff:ff link-netnsid 0
+      inet6 3333:0:0:1::c078/64 scope global
+         valid_lft forever preferred_lft forever
+      inet6 fd00:10:244:1::c078/128 scope global nodad
+         valid_lft forever preferred_lft forever
+      inet6 fe80::60ae:35ff:fe9e:f8d/64 scope link proto kernel_ll
+         valid_lft forever preferred_lft forever
+  $ ip ila add loc_match fd00:10:244:1 loc 3333:0:0:1 \
+      csum-mode adj-transport ident-type luid dev eth0
 
-Fixes: 2a9a801620ef ("PCI: endpoint: Add support to specify alignment for buffers allocated to BARs")
-Signed-off-by: Jerome Brunet <jbrunet@baylibre.com>
-[mani: commit message fixup]
-Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-[bhelgaas: more specific subject, commit log, wrap comment to match file]
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Reviewed-by: Niklas Cassel <cassel@kernel.org>
-Link: https://patch.msgid.link/20250424-pci-ep-size-alignment-v5-1-2d4ec2af23f5@baylibre.com
+Then I hit [fd00:10:244:1::c078]:8000 with a server listening only on
+[3333:0:0:1::c078]:8000. With the bug, the SYN packet is dropped with
+SKB_DROP_REASON_TCP_CSUM after inet_proto_csum_replace_by_diff changed
+skb->csum. The translation and drop are visible on pwru [1] traces:
+
+  IFACE   TUPLE                                                        FUNC
+  eth0:9  [fd00:10:244:3::3d8]:51420->[fd00:10:244:1::c078]:8000(tcp)  ipv6_rcv
+  eth0:9  [fd00:10:244:3::3d8]:51420->[fd00:10:244:1::c078]:8000(tcp)  ip6_rcv_core
+  eth0:9  [fd00:10:244:3::3d8]:51420->[fd00:10:244:1::c078]:8000(tcp)  nf_hook_slow
+  eth0:9  [fd00:10:244:3::3d8]:51420->[fd00:10:244:1::c078]:8000(tcp)  inet_proto_csum_replace_by_diff
+  eth0:9  [fd00:10:244:3::3d8]:51420->[3333:0:0:1::c078]:8000(tcp)     tcp_v6_early_demux
+  eth0:9  [fd00:10:244:3::3d8]:51420->[3333:0:0:1::c078]:8000(tcp)     ip6_route_input
+  eth0:9  [fd00:10:244:3::3d8]:51420->[3333:0:0:1::c078]:8000(tcp)     ip6_input
+  eth0:9  [fd00:10:244:3::3d8]:51420->[3333:0:0:1::c078]:8000(tcp)     ip6_input_finish
+  eth0:9  [fd00:10:244:3::3d8]:51420->[3333:0:0:1::c078]:8000(tcp)     ip6_protocol_deliver_rcu
+  eth0:9  [fd00:10:244:3::3d8]:51420->[3333:0:0:1::c078]:8000(tcp)     raw6_local_deliver
+  eth0:9  [fd00:10:244:3::3d8]:51420->[3333:0:0:1::c078]:8000(tcp)     ipv6_raw_deliver
+  eth0:9  [fd00:10:244:3::3d8]:51420->[3333:0:0:1::c078]:8000(tcp)     tcp_v6_rcv
+  eth0:9  [fd00:10:244:3::3d8]:51420->[3333:0:0:1::c078]:8000(tcp)     __skb_checksum_complete
+  eth0:9  [fd00:10:244:3::3d8]:51420->[3333:0:0:1::c078]:8000(tcp)     kfree_skb_reason(SKB_DROP_REASON_TCP_CSUM)
+  eth0:9  [fd00:10:244:3::3d8]:51420->[3333:0:0:1::c078]:8000(tcp)     skb_release_head_state
+  eth0:9  [fd00:10:244:3::3d8]:51420->[3333:0:0:1::c078]:8000(tcp)     skb_release_data
+  eth0:9  [fd00:10:244:3::3d8]:51420->[3333:0:0:1::c078]:8000(tcp)     skb_free_head
+  eth0:9  [fd00:10:244:3::3d8]:51420->[3333:0:0:1::c078]:8000(tcp)     kfree_skbmem
+
+This is happening because inet_proto_csum_replace_by_diff is updating
+skb->csum when it shouldn't. The L4 checksum is updated such that it
+"cancels" the IPv6 address change in terms of checksum computation, so
+the impact on skb->csum is null.
+
+Note this would be different for an IPv4 packet since three fields
+would be updated: the IPv4 address, the IP checksum, and the L4
+checksum. Two would cancel each other and skb->csum would still need
+to be updated to take the L4 checksum change into account.
+
+This patch fixes it by passing an ipv6 flag to
+inet_proto_csum_replace_by_diff, to skip the skb->csum update if we're
+in the IPv6 case. Note the behavior of the only other user of
+inet_proto_csum_replace_by_diff, the BPF subsystem, is left as is in
+this patch and fixed in the subsequent patch.
+
+With the fix, using the reproduction from above, I can confirm
+skb->csum is not touched by inet_proto_csum_replace_by_diff and the TCP
+SYN proceeds to the application after the ILA translation.
+
+Link: https://github.com/cilium/pwru [1]
+Fixes: 65d7ab8de582 ("net: Identifier Locator Addressing module")
+Signed-off-by: Paul Chaignon <paul.chaignon@gmail.com>
+Acked-by: Daniel Borkmann <daniel@iogearbox.net>
+Link: https://patch.msgid.link/b5539869e3550d46068504feb02d37653d939c0b.1748509484.git.paul.chaignon@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/endpoint/pci-epf-core.c | 22 +++++++++++++++-------
- include/linux/pci-epf.h             |  3 +++
- 2 files changed, 18 insertions(+), 7 deletions(-)
+ include/net/checksum.h    | 2 +-
+ net/core/filter.c         | 2 +-
+ net/core/utils.c          | 4 ++--
+ net/ipv6/ila/ila_common.c | 6 +++---
+ 4 files changed, 7 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/pci/endpoint/pci-epf-core.c b/drivers/pci/endpoint/pci-epf-core.c
-index 50bc2892a36c5..963d2f3aa5d47 100644
---- a/drivers/pci/endpoint/pci-epf-core.c
-+++ b/drivers/pci/endpoint/pci-epf-core.c
-@@ -236,12 +236,13 @@ void pci_epf_free_space(struct pci_epf *epf, void *addr, enum pci_barno bar,
- 	}
+diff --git a/include/net/checksum.h b/include/net/checksum.h
+index 243f972267b8d..be9356d4b67a1 100644
+--- a/include/net/checksum.h
++++ b/include/net/checksum.h
+@@ -164,7 +164,7 @@ void inet_proto_csum_replace16(__sum16 *sum, struct sk_buff *skb,
+ 			       const __be32 *from, const __be32 *to,
+ 			       bool pseudohdr);
+ void inet_proto_csum_replace_by_diff(__sum16 *sum, struct sk_buff *skb,
+-				     __wsum diff, bool pseudohdr);
++				     __wsum diff, bool pseudohdr, bool ipv6);
  
- 	dev = epc->dev.parent;
--	dma_free_coherent(dev, epf_bar[bar].size, addr,
-+	dma_free_coherent(dev, epf_bar[bar].aligned_size, addr,
- 			  epf_bar[bar].phys_addr);
+ static __always_inline
+ void inet_proto_csum_replace2(__sum16 *sum, struct sk_buff *skb,
+diff --git a/net/core/filter.c b/net/core/filter.c
+index 577a4504e26fa..3c93765742c9c 100644
+--- a/net/core/filter.c
++++ b/net/core/filter.c
+@@ -1987,7 +1987,7 @@ BPF_CALL_5(bpf_l4_csum_replace, struct sk_buff *, skb, u32, offset,
+ 		if (unlikely(from != 0))
+ 			return -EINVAL;
  
- 	epf_bar[bar].phys_addr = 0;
- 	epf_bar[bar].addr = NULL;
- 	epf_bar[bar].size = 0;
-+	epf_bar[bar].aligned_size = 0;
- 	epf_bar[bar].barno = 0;
- 	epf_bar[bar].flags = 0;
- }
-@@ -264,7 +265,7 @@ void *pci_epf_alloc_space(struct pci_epf *epf, size_t size, enum pci_barno bar,
- 			  enum pci_epc_interface_type type)
+-		inet_proto_csum_replace_by_diff(ptr, skb, to, is_pseudo);
++		inet_proto_csum_replace_by_diff(ptr, skb, to, is_pseudo, false);
+ 		break;
+ 	case 2:
+ 		inet_proto_csum_replace2(ptr, skb, from, to, is_pseudo);
+diff --git a/net/core/utils.c b/net/core/utils.c
+index 27f4cffaae05d..b8c21a859e27b 100644
+--- a/net/core/utils.c
++++ b/net/core/utils.c
+@@ -473,11 +473,11 @@ void inet_proto_csum_replace16(__sum16 *sum, struct sk_buff *skb,
+ EXPORT_SYMBOL(inet_proto_csum_replace16);
+ 
+ void inet_proto_csum_replace_by_diff(__sum16 *sum, struct sk_buff *skb,
+-				     __wsum diff, bool pseudohdr)
++				     __wsum diff, bool pseudohdr, bool ipv6)
  {
- 	u64 bar_fixed_size = epc_features->bar[bar].fixed_size;
--	size_t align = epc_features->align;
-+	size_t aligned_size, align = epc_features->align;
- 	struct pci_epf_bar *epf_bar;
- 	dma_addr_t phys_addr;
- 	struct pci_epc *epc;
-@@ -281,12 +282,18 @@ void *pci_epf_alloc_space(struct pci_epf *epf, size_t size, enum pci_barno bar,
- 			return NULL;
+ 	if (skb->ip_summed != CHECKSUM_PARTIAL) {
+ 		csum_replace_by_diff(sum, diff);
+-		if (skb->ip_summed == CHECKSUM_COMPLETE && pseudohdr)
++		if (skb->ip_summed == CHECKSUM_COMPLETE && pseudohdr && !ipv6)
+ 			skb->csum = ~csum_sub(diff, skb->csum);
+ 	} else if (pseudohdr) {
+ 		*sum = ~csum_fold(csum_add(diff, csum_unfold(*sum)));
+diff --git a/net/ipv6/ila/ila_common.c b/net/ipv6/ila/ila_common.c
+index 95e9146918cc6..b8d43ed4689db 100644
+--- a/net/ipv6/ila/ila_common.c
++++ b/net/ipv6/ila/ila_common.c
+@@ -86,7 +86,7 @@ static void ila_csum_adjust_transport(struct sk_buff *skb,
+ 
+ 			diff = get_csum_diff(ip6h, p);
+ 			inet_proto_csum_replace_by_diff(&th->check, skb,
+-							diff, true);
++							diff, true, true);
  		}
- 		size = bar_fixed_size;
-+	} else {
-+		/* BAR size must be power of two */
-+		size = roundup_pow_of_two(size);
+ 		break;
+ 	case NEXTHDR_UDP:
+@@ -97,7 +97,7 @@ static void ila_csum_adjust_transport(struct sk_buff *skb,
+ 			if (uh->check || skb->ip_summed == CHECKSUM_PARTIAL) {
+ 				diff = get_csum_diff(ip6h, p);
+ 				inet_proto_csum_replace_by_diff(&uh->check, skb,
+-								diff, true);
++								diff, true, true);
+ 				if (!uh->check)
+ 					uh->check = CSUM_MANGLED_0;
+ 			}
+@@ -111,7 +111,7 @@ static void ila_csum_adjust_transport(struct sk_buff *skb,
+ 
+ 			diff = get_csum_diff(ip6h, p);
+ 			inet_proto_csum_replace_by_diff(&ih->icmp6_cksum, skb,
+-							diff, true);
++							diff, true, true);
+ 		}
+ 		break;
  	}
- 
--	if (align)
--		size = ALIGN(size, align);
--	else
--		size = roundup_pow_of_two(size);
-+	/*
-+	 * Allocate enough memory to accommodate the iATU alignment
-+	 * requirement.  In most cases, this will be the same as .size but
-+	 * it might be different if, for example, the fixed size of a BAR
-+	 * is smaller than align.
-+	 */
-+	aligned_size = align ? ALIGN(size, align) : size;
- 
- 	if (type == PRIMARY_INTERFACE) {
- 		epc = epf->epc;
-@@ -297,7 +304,7 @@ void *pci_epf_alloc_space(struct pci_epf *epf, size_t size, enum pci_barno bar,
- 	}
- 
- 	dev = epc->dev.parent;
--	space = dma_alloc_coherent(dev, size, &phys_addr, GFP_KERNEL);
-+	space = dma_alloc_coherent(dev, aligned_size, &phys_addr, GFP_KERNEL);
- 	if (!space) {
- 		dev_err(dev, "failed to allocate mem space\n");
- 		return NULL;
-@@ -306,6 +313,7 @@ void *pci_epf_alloc_space(struct pci_epf *epf, size_t size, enum pci_barno bar,
- 	epf_bar[bar].phys_addr = phys_addr;
- 	epf_bar[bar].addr = space;
- 	epf_bar[bar].size = size;
-+	epf_bar[bar].aligned_size = aligned_size;
- 	epf_bar[bar].barno = bar;
- 	if (upper_32_bits(size) || epc_features->bar[bar].only_64bit)
- 		epf_bar[bar].flags |= PCI_BASE_ADDRESS_MEM_TYPE_64;
-diff --git a/include/linux/pci-epf.h b/include/linux/pci-epf.h
-index 18a3aeb62ae4e..cd6f8f4bc4540 100644
---- a/include/linux/pci-epf.h
-+++ b/include/linux/pci-epf.h
-@@ -114,6 +114,8 @@ struct pci_epf_driver {
-  * @phys_addr: physical address that should be mapped to the BAR
-  * @addr: virtual address corresponding to the @phys_addr
-  * @size: the size of the address space present in BAR
-+ * @aligned_size: the size actually allocated to accommodate the iATU alignment
-+ *                requirement
-  * @barno: BAR number
-  * @flags: flags that are set for the BAR
-  */
-@@ -121,6 +123,7 @@ struct pci_epf_bar {
- 	dma_addr_t	phys_addr;
- 	void		*addr;
- 	size_t		size;
-+	size_t		aligned_size;
- 	enum pci_barno	barno;
- 	int		flags;
- };
 -- 
 2.39.5
 
