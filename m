@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-154255-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153667-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF871ADD940
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 19:04:23 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7E44BADD59C
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:23:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 489375A1D1E
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:47:00 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 110007AF0FD
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:16:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F18782EA17B;
-	Tue, 17 Jun 2025 16:43:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71F942EA16D;
+	Tue, 17 Jun 2025 16:11:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gx7q02sz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QjT7Ywe/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF9812135A0;
-	Tue, 17 Jun 2025 16:43:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FFBF2E7199;
+	Tue, 17 Jun 2025 16:11:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750178601; cv=none; b=a6g4b7J1cD920jxOO1Xh4zAWTe5YAHhRVY4OpH6KE9ggvnPDzj0Xq8r4OFOVKwXro3Edn4VuOtXiA2CewOTuZa0nIgQGzq0SvXYu/BslB5FUFUR2piweqlj4vIR4OCK0IDZ76+dWxlQUhCq1S9ZyhMgygUyXujOZhSUDQ1iFq/Y=
+	t=1750176702; cv=none; b=VIyfkkPkYHk41b1tojgiIxHPZMr2msmgSGwWpolLVvTThZdxVqTYR1Dtz8zQ25U7Yt9+6uYrp2cLIMBYWKFVov1UmG3slP51QSMTROh8Oxf4ZKmlTxCzC7qhI3gTqfS2+JyDoLefEZlPwy+NaATaVSfSEKAPyPyR9VJTFwhQoY8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750178601; c=relaxed/simple;
-	bh=LgIr7/SFoZj1DRDdzBp4lzmZszGc9ws7XHqhGXLwOPU=;
+	s=arc-20240116; t=1750176702; c=relaxed/simple;
+	bh=UGZVR/idQ53ZkCRoDZw8EyS2zr9V4GNg8yt1CyNDYuA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QeT1T9av8/l3kYC9h3ox9hAZuqbYY06/jtucqBZJ8fVIjMpeAyVRexIOBqvx+oIjFQTXc0VzGxOQGtwkaNDmRIuPCeFw7lxbmlelUo9rm+7Yr0U3fBpktEfjpm4RVQTjrtQSLMUTutCHUbz7qJf9uUlBkFgvOmlrl7ESXWiShWs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gx7q02sz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD1A9C4CEE3;
-	Tue, 17 Jun 2025 16:43:20 +0000 (UTC)
+	 MIME-Version; b=KaKRg0N1wC3EH7Xw9jZgdvTOcJ1GKy4s8zcozKN7wyER3FwZciD5XeAwyMUmDvfBPnTZ3MvOdQbvfBuKzlcE5BL8V9LHletp9MW70/cqejE7lrvD7/TLonerL/GIKU9ULEDliZk3mNXhktOApXcJaJCujNqLzj86InV4qxTR374=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QjT7Ywe/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C620C4CEE3;
+	Tue, 17 Jun 2025 16:11:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750178601;
-	bh=LgIr7/SFoZj1DRDdzBp4lzmZszGc9ws7XHqhGXLwOPU=;
+	s=korg; t=1750176702;
+	bh=UGZVR/idQ53ZkCRoDZw8EyS2zr9V4GNg8yt1CyNDYuA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gx7q02szbZwDNdoDNo4xRbb3XkOU4JKVpD7nMEzJvWWtx4waACh3LaYAkON/kWzxe
-	 9H/6xK0pRAt7afBRc9Hbva+p9TUR9mZ4QhBOP/KRLLqlfgax9PWpS39sGtH0aDJZHO
-	 XCYBSzUVwQKjM2iJpG3yeLCHXdRd59/keIOxU2uU=
+	b=QjT7Ywe/2OJ5Xi7U6nwNlwfYKv0OygCAYC2dj3tMZmO6n7fghvnL4E8Ms+ZmSeykP
+	 T2+Nx1tv6I1fPPoHYtIZvYAJ44sMq3zlbzqtKWtdkfsrn2geyuVPRJQK6EAtnwUaqO
+	 d2ppAD23fHW6FIsYWT80KwO1oADRI5g9NSvYOVBs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jensen Huang <jensenhuang@friendlyarm.com>,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-	Shawn Lin <shawn.lin@rock-chips.com>,
+	Adam Ford <aford173@gmail.com>,
+	Frank Li <Frank.Li@nxp.com>,
+	Shawn Guo <shawnguo@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 496/780] PCI: rockchip: Fix order of rockchip_pci_core_rsts
+Subject: [PATCH 6.12 238/512] arm64: dts: imx8mp-beacon: Fix RTC capacitive load
 Date: Tue, 17 Jun 2025 17:23:24 +0200
-Message-ID: <20250617152511.692058155@linuxfoundation.org>
+Message-ID: <20250617152429.265599947@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
-References: <20250617152451.485330293@linuxfoundation.org>
+In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
+References: <20250617152419.512865572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,57 +63,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jensen Huang <jensenhuang@friendlyarm.com>
+From: Adam Ford <aford173@gmail.com>
 
-[ Upstream commit c7540e5423d7f588c7210a9941ceb6a836963ccc ]
+[ Upstream commit 6821ee17537938e919e8b86a541aae451f73165b ]
 
-The order of rockchip_pci_core_rsts introduced in the offending commit
-followed the previous comment that warned not to reorder them. But the
-commit failed to take into account that reset_control_bulk_deassert()
-deasserts the resets in reverse order. So this leads to the link getting
-downgraded to 2.5 GT/s.
+Although not noticeable when used every day, the RTC appears to drift when
+left to sit over time.  This is due to the capacitive load not being
+properly set. Fix RTC drift by correcting the capacitive load setting
+from 7000 to 12500, which matches the actual hardware configuration.
 
-Hence, restore the deassert order and also add back the comments for
-rockchip_pci_core_rsts.
-
-Tested on NanoPC-T4 with Samsung 970 Pro.
-
-Fixes: 18715931a5c0 ("PCI: rockchip: Simplify reset control handling by using reset_control_bulk*() function")
-Signed-off-by: Jensen Huang <jensenhuang@friendlyarm.com>
-[mani: reworded the commit message and the comment above rockchip_pci_core_rsts]
-Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Acked-by: Shawn Lin <shawn.lin@rock-chips.com>
-Link: https://patch.msgid.link/20250328105822.3946767-1-jensenhuang@friendlyarm.com
+Fixes: 25a5ccdce767 ("arm64: dts: freescale: Introduce imx8mp-beacon-kit")
+Signed-off-by: Adam Ford <aford173@gmail.com>
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
+Signed-off-by: Shawn Guo <shawnguo@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/controller/pcie-rockchip.h | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ arch/arm64/boot/dts/freescale/imx8mp-beacon-som.dtsi | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/pci/controller/pcie-rockchip.h b/drivers/pci/controller/pcie-rockchip.h
-index 14954f43e5e9a..5864a20323f21 100644
---- a/drivers/pci/controller/pcie-rockchip.h
-+++ b/drivers/pci/controller/pcie-rockchip.h
-@@ -319,11 +319,12 @@ static const char * const rockchip_pci_pm_rsts[] = {
- 	"aclk",
+diff --git a/arch/arm64/boot/dts/freescale/imx8mp-beacon-som.dtsi b/arch/arm64/boot/dts/freescale/imx8mp-beacon-som.dtsi
+index 15f7ab58db36c..88561df70d03a 100644
+--- a/arch/arm64/boot/dts/freescale/imx8mp-beacon-som.dtsi
++++ b/arch/arm64/boot/dts/freescale/imx8mp-beacon-som.dtsi
+@@ -257,6 +257,7 @@
+ 	rtc: rtc@51 {
+ 		compatible = "nxp,pcf85263";
+ 		reg = <0x51>;
++		quartz-load-femtofarads = <12500>;
+ 	};
  };
  
-+/* NOTE: Do not reorder the deassert sequence of the following reset pins */
- static const char * const rockchip_pci_core_rsts[] = {
--	"mgmt-sticky",
--	"core",
--	"mgmt",
- 	"pipe",
-+	"mgmt",
-+	"core",
-+	"mgmt-sticky",
- };
- 
- struct rockchip_pcie {
 -- 
 2.39.5
 
