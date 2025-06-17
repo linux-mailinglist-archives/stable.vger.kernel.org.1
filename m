@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-153561-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-154234-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BDFFCADD469
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:09:50 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C787ADD8CF
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:59:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0B7B67A39AF
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:07:46 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 226D34A627D
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:46:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D2EB2ED854;
-	Tue, 17 Jun 2025 16:06:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A347B2DFF30;
+	Tue, 17 Jun 2025 16:42:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Bcm8Cba5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D37Q9pdU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC3282ED844;
-	Tue, 17 Jun 2025 16:06:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 604712FA655;
+	Tue, 17 Jun 2025 16:42:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750176360; cv=none; b=bfiASJ4AZ59nYnX+/xQXJFqmEpDPjq4H2fUL8NAPm3KFuhMr21Q0L+ERPuxE9RbtCzeoXnaRFIYsRgRxRMfDqk0ZXkJfhv2n1d1hyZBA/LEGQZqVtm3NdK/ihB1IVR6c01B6SAMvPY96WZpH6Wtrh+BmFP7vcbN5EMe3kPJfghM=
+	t=1750178536; cv=none; b=RhYKZegC6lbdW/5rv5GHRUp/ne5JtLV9C7C/9qQHFwXL3w0jPGaRIDNzOlin4lcRPQVLMYXyT1q7OXCUhgPBN/zQycHauwp3tYNd4NNeQ8pMRxGQXNvt4qbApkrV3Ga0xjvqlw8Aq85gFS0+O2Gq7vJ+WrETeFJjNms3I9lE+8U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750176360; c=relaxed/simple;
-	bh=lYccObZXlgxNzM+nE6+1gRsxRsrnte7J2XBCQhvzDko=;
+	s=arc-20240116; t=1750178536; c=relaxed/simple;
+	bh=pyjNdgujHTVlIGAppS2Jtp7oeGNvxJ88UAbCMXozI4g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=d3ssvxgs3DnEtcebrNOxEGWKw94Bt+HI91Ex/nJobnS1NWFLuHzLNlHDDziF5JgcNhBvxFiPOkQaSNcl5fd7ZII/PLGx00RvbPIw9CeTvf63OTTmLS0Pj++B77ozovq2VpUxWqFZsV4taViCDwCFac1YVY+/fxZjT6iLwiZrg1k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Bcm8Cba5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1EC76C4CEF4;
-	Tue, 17 Jun 2025 16:05:59 +0000 (UTC)
+	 MIME-Version; b=jbfATLZ2B+5MmZmL3iwWJElOM6r8xMrB+MMpPQLi8h4l7pRjpy80ZUUaV/3V7qWc5mLzeJlEjqkHcPHl8zWwVvdZIeDh4cva241fMeCPg7dVzDFl6iu9zD3LzBTYU9PkJK3EapTEWGnPULF9GYuuW0SV0gVNR0nu+FEkVJNKfSY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D37Q9pdU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7609BC4CEE3;
+	Tue, 17 Jun 2025 16:42:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750176360;
-	bh=lYccObZXlgxNzM+nE6+1gRsxRsrnte7J2XBCQhvzDko=;
+	s=korg; t=1750178534;
+	bh=pyjNdgujHTVlIGAppS2Jtp7oeGNvxJ88UAbCMXozI4g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Bcm8Cba5KXiKc7eR9z1suAuF05Gp67iSliNsb3drZgxAzcmeRpbT46trF8ch5JPkw
-	 aq1sHf7AecRWNvL42GfMVf1TejCBiY4h2uUxHWlvcLlnLkmjWCX9dgmoNnAik+FY2o
-	 n4Cq6oFEbQeC7X63vig7AdBaltw93U2fuui5zjco=
+	b=D37Q9pdU2FURm0GpFLAt9J7TQn9qfHAlfWBhRF0Q2AoWqvG2OIQgL7aUnrbL6qoZX
+	 3zftg94RFlVhyuA1aGghVPM1J6im6cTtz9d/d4OnC7oVJS31y3Fv52qhd7srCWWaI2
+	 FdGVOAXMyp3i5yhZ4M9yKMU4W9m/URBPxWxmoiR4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhiguo Niu <zhiguo.niu@unisoc.com>,
-	Chao Yu <chao@kernel.org>,
-	Jaegeuk Kim <jaegeuk@kernel.org>,
+	Li Lingfeng <lilingfeng3@huawei.com>,
+	Anna Schumaker <anna.schumaker@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 216/512] f2fs: use d_inode(dentry) cleanup dentry->d_inode
+Subject: [PATCH 6.15 474/780] nfs: clear SB_RDONLY before getting superblock
 Date: Tue, 17 Jun 2025 17:23:02 +0200
-Message-ID: <20250617152428.386265934@linuxfoundation.org>
+Message-ID: <20250617152510.790826426@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
-References: <20250617152419.512865572@linuxfoundation.org>
+In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
+References: <20250617152451.485330293@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,76 +62,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhiguo Niu <zhiguo.niu@unisoc.com>
+From: Li Lingfeng <lilingfeng3@huawei.com>
 
-[ Upstream commit a6c397a31f58a1d577c2c8d04b624e9baa31951c ]
+[ Upstream commit 8cd9b785943c57a136536250da80ba1eb6f8eb18 ]
 
-no logic changes.
+As described in the link, commit 52cb7f8f1778 ("nfs: ignore SB_RDONLY when
+mounting nfs") removed the check for the ro flag when determining whether
+to share the superblock, which caused issues when mounting different
+subdirectories under the same export directory via NFSv3. However, this
+change did not affect NFSv4.
 
-Signed-off-by: Zhiguo Niu <zhiguo.niu@unisoc.com>
-Reviewed-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+For NFSv3:
+1) A single superblock is created for the initial mount.
+2) When mounted read-only, this superblock carries the SB_RDONLY flag.
+3) Before commit 52cb7f8f1778 ("nfs: ignore SB_RDONLY when mounting nfs"):
+Subsequent rw mounts would not share the existing ro superblock due to
+flag mismatch, creating a new superblock without SB_RDONLY.
+After the commit:
+  The SB_RDONLY flag is ignored during superblock comparison, and this leads
+  to sharing the existing superblock even for rw mounts.
+  Ultimately results in write operations being rejected at the VFS layer.
+
+For NFSv4:
+1) Multiple superblocks are created and the last one will be kept.
+2) The actually used superblock for ro mounts doesn't carry SB_RDONLY flag.
+Therefore, commit 52cb7f8f1778 doesn't affect NFSv4 mounts.
+
+Clear SB_RDONLY before getting superblock when NFS_MOUNT_UNSHARED is not
+set to fix it.
+
+Fixes: 52cb7f8f1778 ("nfs: ignore SB_RDONLY when mounting nfs")
+Closes: https://lore.kernel.org/all/12d7ea53-1202-4e21-a7ef-431c94758ce5@app.fastmail.com/T/
+Signed-off-by: Li Lingfeng <lilingfeng3@huawei.com>
+Signed-off-by: Anna Schumaker <anna.schumaker@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/f2fs/namei.c | 8 ++++----
- fs/f2fs/super.c | 4 ++--
- 2 files changed, 6 insertions(+), 6 deletions(-)
+ fs/nfs/super.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/fs/f2fs/namei.c b/fs/f2fs/namei.c
-index 57d46e1439ded..f8407a645303b 100644
---- a/fs/f2fs/namei.c
-+++ b/fs/f2fs/namei.c
-@@ -413,7 +413,7 @@ static int f2fs_link(struct dentry *old_dentry, struct inode *dir,
+diff --git a/fs/nfs/super.c b/fs/nfs/super.c
+index 9eea9e62afc9c..1a609471e85ef 100644
+--- a/fs/nfs/super.c
++++ b/fs/nfs/super.c
+@@ -1308,8 +1308,17 @@ int nfs_get_tree_common(struct fs_context *fc)
+ 	if (IS_ERR(server))
+ 		return PTR_ERR(server);
  
- 	if (is_inode_flag_set(dir, FI_PROJ_INHERIT) &&
- 			(!projid_eq(F2FS_I(dir)->i_projid,
--			F2FS_I(old_dentry->d_inode)->i_projid)))
-+			F2FS_I(inode)->i_projid)))
- 		return -EXDEV;
++	/*
++	 * When NFS_MOUNT_UNSHARED is not set, NFS forces the sharing of a
++	 * superblock among each filesystem that mounts sub-directories
++	 * belonging to a single exported root path.
++	 * To prevent interference between different filesystems, the
++	 * SB_RDONLY flag should be removed from the superblock.
++	 */
+ 	if (server->flags & NFS_MOUNT_UNSHARED)
+ 		compare_super = NULL;
++	else
++		fc->sb_flags &= ~SB_RDONLY;
  
- 	err = f2fs_dquot_initialize(dir);
-@@ -905,7 +905,7 @@ static int f2fs_rename(struct mnt_idmap *idmap, struct inode *old_dir,
- 
- 	if (is_inode_flag_set(new_dir, FI_PROJ_INHERIT) &&
- 			(!projid_eq(F2FS_I(new_dir)->i_projid,
--			F2FS_I(old_dentry->d_inode)->i_projid)))
-+			F2FS_I(old_inode)->i_projid)))
- 		return -EXDEV;
- 
- 	/*
-@@ -1098,10 +1098,10 @@ static int f2fs_cross_rename(struct inode *old_dir, struct dentry *old_dentry,
- 
- 	if ((is_inode_flag_set(new_dir, FI_PROJ_INHERIT) &&
- 			!projid_eq(F2FS_I(new_dir)->i_projid,
--			F2FS_I(old_dentry->d_inode)->i_projid)) ||
-+			F2FS_I(old_inode)->i_projid)) ||
- 	    (is_inode_flag_set(new_dir, FI_PROJ_INHERIT) &&
- 			!projid_eq(F2FS_I(old_dir)->i_projid,
--			F2FS_I(new_dentry->d_inode)->i_projid)))
-+			F2FS_I(new_inode)->i_projid)))
- 		return -EXDEV;
- 
- 	err = f2fs_dquot_initialize(old_dir);
-diff --git a/fs/f2fs/super.c b/fs/f2fs/super.c
-index 573cc4725e2e8..faa76531246eb 100644
---- a/fs/f2fs/super.c
-+++ b/fs/f2fs/super.c
-@@ -1862,9 +1862,9 @@ static int f2fs_statfs(struct dentry *dentry, struct kstatfs *buf)
- 	buf->f_fsid    = u64_to_fsid(id);
- 
- #ifdef CONFIG_QUOTA
--	if (is_inode_flag_set(dentry->d_inode, FI_PROJ_INHERIT) &&
-+	if (is_inode_flag_set(d_inode(dentry), FI_PROJ_INHERIT) &&
- 			sb_has_quota_limits_enabled(sb, PRJQUOTA)) {
--		f2fs_statfs_project(sb, F2FS_I(dentry->d_inode)->i_projid, buf);
-+		f2fs_statfs_project(sb, F2FS_I(d_inode(dentry))->i_projid, buf);
- 	}
- #endif
- 	return 0;
+ 	/* -o noac implies -o sync */
+ 	if (server->flags & NFS_MOUNT_NOAC)
 -- 
 2.39.5
 
