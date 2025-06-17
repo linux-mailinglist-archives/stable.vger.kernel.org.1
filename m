@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-153786-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153788-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A513CADD66D
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:33:22 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C775ADD6A8
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:35:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C9CE64A04BE
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:23:46 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 065BA1946A45
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:24:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E98162EA16D;
-	Tue, 17 Jun 2025 16:18:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C6EE2EB5CF;
+	Tue, 17 Jun 2025 16:18:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x6lPR6RR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TNO1GcAu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A875D20B807;
-	Tue, 17 Jun 2025 16:18:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38CAB2EA17F;
+	Tue, 17 Jun 2025 16:18:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750177093; cv=none; b=a16Of7OIKkWPp4FT/lK2+FgqeaMzJMTs4QlksMtlTKk7j231kwTnetSLI1xj4ElQsmKmM+PGtvGroe1LKG3Cb2kYtySqZBOyRkj83l974ntVtajgX5O60zRN6DylsorpQaWWjQwDbhOYt5P5EPJpubtJI2oqrbkqUNviURFBAM8=
+	t=1750177100; cv=none; b=PS0ga8P3sOLKDqEtGPHAXctuHo1RtTVXDW+ePAklOcZkyv3hwoof2q9Zqk/efmzpFXpBqBDgAX56hrVxOs4Jfiy+EgZLF8z/M4CP/Qn/CEKdnIiN+LhwInfrRPws3nvSnf8G8KXzAiW40JiaqPCfvbkE3YeJZtWfPSf+uIbpU04=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750177093; c=relaxed/simple;
-	bh=NhmoHB5BSLGJ9BFqRULlbHP7TqncaPX3lBkM8yWlldg=;
+	s=arc-20240116; t=1750177100; c=relaxed/simple;
+	bh=8B7ZxM2C2Jh9ANu6vqZGiK/L9W9vp+UVDJLfzHRvGV8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KDd91pd/E/sXfJXJJVbhYL2KFKI5P+1RB3y8fPahQONA7fnMTNOOq0fQAcn2Dfa2gy4m2BBiO2TE4KseOkNNsTPKFV4QbrZfCDIcA7iYLUp76Qu9DMQpd3sy6oipDAOKrAAp0wNfuvRPZnsfzQy4xL75BrLeoAN83eLU3Jeawyc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x6lPR6RR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14583C4CEE7;
-	Tue, 17 Jun 2025 16:18:12 +0000 (UTC)
+	 MIME-Version; b=N3SY5kh+H/o34UlRV4gh2wMG5cqkp0TyXNfSpXlMIF6ubdomZzTlZsUDSZV4/64Y5dI7ZPqsh5zjcwpHj1JCqdIxQNzF+ItZu0s+6XJ0cPjbgOQWCDfa0Tnsjb60mpoJb6y0RDTPodKyFzoOk9f7noU1FnlNXKI3QtJGhBXYqT8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TNO1GcAu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C67CC4CEE7;
+	Tue, 17 Jun 2025 16:18:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750177093;
-	bh=NhmoHB5BSLGJ9BFqRULlbHP7TqncaPX3lBkM8yWlldg=;
+	s=korg; t=1750177100;
+	bh=8B7ZxM2C2Jh9ANu6vqZGiK/L9W9vp+UVDJLfzHRvGV8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=x6lPR6RRxLRe5GC8g8rHjjIC6w5kVXkRCt1SkHeESbuNwdGQKle5rZtmuz+dACOeg
-	 /902HgP1UI3Ih7s+C/OU//QOntGx1m1zwPA34GbRg7WIPcHz1gU9kxM/kxGotbohJm
-	 3mivCggS+u7MccDg1KBv9VxpW4oYUcZNkeZvkae0=
+	b=TNO1GcAugemxGtpoHsigFMDIkg+tXcYOwSlPGx8CzmGP0pjGrm415kmvJ8SePzU+0
+	 0zRq74OfYCL4pql0laxo41Tlc16aICw6x20M/I9V8a8D7JLcw1dYwYk3HZndHeOvxf
+	 2gfy9BqbMA3MUG3OZNGbJ6JSM3JbOKKWoE3PI3sY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mikhail Arkhipov <m.arhipov@rosa.ru>,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
+	Alexei Safin <a.safin@rosa.ru>,
+	Guenter Roeck <linux@roeck-us.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 277/512] mtd: nand: ecc-mxic: Fix use of uninitialized variable ret
-Date: Tue, 17 Jun 2025 17:24:03 +0200
-Message-ID: <20250617152430.821063419@linuxfoundation.org>
+Subject: [PATCH 6.12 278/512] hwmon: (asus-ec-sensors) check sensor index in read_string()
+Date: Tue, 17 Jun 2025 17:24:04 +0200
+Message-ID: <20250617152430.859547959@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
 References: <20250617152419.512865572@linuxfoundation.org>
@@ -66,57 +66,46 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Mikhail Arkhipov <m.arhipov@rosa.ru>
+From: Alexei Safin <a.safin@rosa.ru>
 
-[ Upstream commit d95846350aac72303036a70c4cdc69ae314aa26d ]
+[ Upstream commit 25be318324563c63cbd9cb53186203a08d2f83a1 ]
 
-If ctx->steps is zero, the loop processing ECC steps is skipped,
-and the variable ret remains uninitialized. It is later checked
-and returned, which leads to undefined behavior and may cause
-unpredictable results in user space or kernel crashes.
+Prevent a potential invalid memory access when the requested sensor
+is not found.
 
-This scenario can be triggered in edge cases such as misconfigured
-geometry, ECC engine misuse, or if ctx->steps is not validated
-after initialization.
+find_ec_sensor_index() may return a negative value (e.g. -ENOENT),
+but its result was used without checking, which could lead to
+undefined behavior when passed to get_sensor_info().
 
-Initialize ret to zero before the loop to ensure correct and safe
-behavior regardless of the ctx->steps value.
+Add a proper check to return -EINVAL if sensor_index is negative.
 
 Found by Linux Verification Center (linuxtesting.org) with SVACE.
 
-Fixes: 48e6633a9fa2 ("mtd: nand: mxic-ecc: Add Macronix external ECC engine support")
-Signed-off-by: Mikhail Arkhipov <m.arhipov@rosa.ru>
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Fixes: d0ddfd241e57 ("hwmon: (asus-ec-sensors) add driver for ASUS EC")
+Signed-off-by: Alexei Safin <a.safin@rosa.ru>
+Link: https://lore.kernel.org/r/20250424202654.5902-1-a.safin@rosa.ru
+[groeck: Return error code returned from find_ec_sensor_index]
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mtd/nand/ecc-mxic.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/hwmon/asus-ec-sensors.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/mtd/nand/ecc-mxic.c b/drivers/mtd/nand/ecc-mxic.c
-index 47e10945b8d27..63cb206269dd9 100644
---- a/drivers/mtd/nand/ecc-mxic.c
-+++ b/drivers/mtd/nand/ecc-mxic.c
-@@ -614,7 +614,7 @@ static int mxic_ecc_finish_io_req_external(struct nand_device *nand,
+diff --git a/drivers/hwmon/asus-ec-sensors.c b/drivers/hwmon/asus-ec-sensors.c
+index 9555366aeaf0d..fdc157c7394d9 100644
+--- a/drivers/hwmon/asus-ec-sensors.c
++++ b/drivers/hwmon/asus-ec-sensors.c
+@@ -910,6 +910,10 @@ static int asus_ec_hwmon_read_string(struct device *dev,
  {
- 	struct mxic_ecc_engine *mxic = nand_to_mxic(nand);
- 	struct mxic_ecc_ctx *ctx = nand_to_ecc_ctx(nand);
--	int nents, step, ret;
-+	int nents, step, ret = 0;
+ 	struct ec_sensors_data *state = dev_get_drvdata(dev);
+ 	int sensor_index = find_ec_sensor_index(state, type, channel);
++
++	if (sensor_index < 0)
++		return sensor_index;
++
+ 	*str = get_sensor_info(state, sensor_index)->label;
  
- 	if (req->mode == MTD_OPS_RAW)
- 		return 0;
--- 
-2.39.5
-
-
-
-	q->limit = ctl->limit;
- 	if (child) {
--		qdisc_tree_flush_backlog(q->qdisc);
-+		qdisc_purge_queue(q->qdisc);
- 		old_child = q->qdisc;
- 		q->qdisc = child;
- 	}
+ 	return 0;
 -- 
 2.39.5
 
