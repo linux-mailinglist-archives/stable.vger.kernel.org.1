@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-153889-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-154367-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A0A3ADD71C
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:41:22 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6937EADD937
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 19:03:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 16FC7407502
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:28:19 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8B734403918
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:51:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B81652DFF22;
-	Tue, 17 Jun 2025 16:23:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD0E52DE1E5;
+	Tue, 17 Jun 2025 16:49:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GS8zMiQc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ylr/7t5e"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F528285073;
-	Tue, 17 Jun 2025 16:23:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A8D520CCFB;
+	Tue, 17 Jun 2025 16:49:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750177425; cv=none; b=NMAUAltmWptvErwJezF6SK3DlrQ9M3XpFqm35OaB9Nll8JcknAQVvbeM1Tqgfq3jsdyxnaX9dFCYrkGKjX7X6CeYi6fZn4gbbw7kP+Jpn1XaCIGe+0NrynqtTJuN38lGWQUDXKhFN2tXM7b18nT0vZolHegVJeHElkCYU9+zufk=
+	t=1750178968; cv=none; b=D+JF56xSBJUFDyxUoDO8h67jfxQB0bDXcJQJMpJd/RbWiZa6qAl834OAZOQif3Ky9IWMYzm74NHoUQkn4wPaI/fuNyoaw+JdFRVolgspXpHZuWaH8qVNlFHlEsoG96FYp3MG7oSgtJOy38kZAIMEiKBMAKad5ipX3Q6M9KuMeL0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750177425; c=relaxed/simple;
-	bh=MDzI1X5z5YOiz1vDhd+VabwpfWeAQmdGPtz8Jrc1I7E=;
+	s=arc-20240116; t=1750178968; c=relaxed/simple;
+	bh=2nr0en8xmKREnHgHwUpByKufI1mqs5WjJLdBYrgBCqY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bJMTSl3vJBpSQXsFsSmGbHgD5GibBtITFHx9c6C5cH74iuXHNvp5o1bjlsv98f5vDDpusB6RHUCnVEOxRom8NjWmTeOcTDfyInWpA5DW0IfzkpHDXh2dEaCbZviLLeha130wCvfNgiegLgUfLJcmTaLUAosVDJMvO+o5I81Ues0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GS8zMiQc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9DA4C4CEE3;
-	Tue, 17 Jun 2025 16:23:44 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Nq9D5wkaxJg34J69oNaDWDTzp7M/YK7aksTXa5HfPYe9UfNZdttETl8jYndcJ/VPDGvNB3jbaQoL7SGa/W0y/xG0/mAEtSBET67UuEjhOvmPjtDRD3FtWNukAaRqNdzDtuwJmL74Hh+FFy9ITATK76vcDjzjv5IXrANAOfNYOhM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ylr/7t5e; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CEC1CC4CEE3;
+	Tue, 17 Jun 2025 16:49:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750177425;
-	bh=MDzI1X5z5YOiz1vDhd+VabwpfWeAQmdGPtz8Jrc1I7E=;
+	s=korg; t=1750178968;
+	bh=2nr0en8xmKREnHgHwUpByKufI1mqs5WjJLdBYrgBCqY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GS8zMiQc9LOhOrx35v/g+PxIcJN2iwQAavc+yzJu+jpobXoJzjdhTQWQa0+u6JCLu
-	 QKxIY/hoFOlYBP+UiRWUd7xBo/AVHlqcSbuwVCLUGMh0RYE4/Kd/gg8e2v5I6H1P0H
-	 QQjFsSTUWxQMQhYhTRgO5TNJz4tBDXKjO2EhURCc=
+	b=ylr/7t5eBJDOUCl2BT0G/mV5Lcp1dVNb/mIR/yNVrgedCt8fZj+NsJjjpC7vhwgUk
+	 obewScU0fVIkxXbOLTDWmrKgPWQUHJ94WXZ5lAmxgMHvyKDQKF14BLaddbixLm6W6j
+	 wD63B9DQLceHGqGkgF7gjMY5bPOXQBGxEGlPbxP0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Liu Dalin <liudalin@kylinsec.com.cn>,
-	Binbin Zhou <zhoubinbin@loongson.cn>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	Maxime Chevallier <maxime.chevallier@bootlin.com>,
+	=?UTF-8?q?Alexis=20Lothor=C3=A9?= <alexis.lothore@bootlin.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 319/512] rtc: loongson: Add missing alarm notifications for ACPI RTC events
-Date: Tue, 17 Jun 2025 17:24:45 +0200
-Message-ID: <20250617152432.538196389@linuxfoundation.org>
+Subject: [PATCH 6.15 578/780] net: stmmac: make sure that ptp_rate is not 0 before configuring EST
+Date: Tue, 17 Jun 2025 17:24:46 +0200
+Message-ID: <20250617152515.022753190@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
-References: <20250617152419.512865572@linuxfoundation.org>
+In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
+References: <20250617152451.485330293@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,56 +61,50 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Liu Dalin <liudalin@kylinsec.com.cn>
+From: Alexis Lothoré <alexis.lothore@bootlin.com>
 
-[ Upstream commit 5af9f1fa576874b24627d4c05e3a84672204c200 ]
+[ Upstream commit cbefe2ffa7784525ec5d008ba87c7add19ec631a ]
 
-When an application sets and enables an alarm on Loongson RTC devices,
-the alarm notification fails to propagate to userspace because the
-ACPI event handler omits calling rtc_update_irq().
+If the ptp_rate recorded earlier in the driver happens to be 0, this
+bogus value will propagate up to EST configuration, where it will
+trigger a division by 0.
 
-As a result, processes waiting via select() or poll() on RTC device
-files fail to receive alarm notifications.
+Prevent this division by 0 by adding the corresponding check and error
+code.
 
-The ACPI interrupt is also triggered multiple times. In loongson_rtc_handler,
-we need to clear TOY_MATCH0_REG to resolve this issue.
-
-Fixes: 09471d8f5b39 ("rtc: loongson: clear TOY_MATCH0_REG in loongson_rtc_isr()")
-Fixes: 1b733a9ebc3d ("rtc: Add rtc driver for the Loongson family chips")
-Signed-off-by: Liu Dalin <liudalin@kylinsec.com.cn>
-Reviewed-by: Binbin Zhou <zhoubinbin@loongson.cn>
-Link: https://lore.kernel.org/r/20250509084416.7979-1-liudalin@kylinsec.com.cn
-Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+Suggested-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
+Signed-off-by: Alexis Lothoré <alexis.lothore@bootlin.com>
+Fixes: 8572aec3d0dc ("net: stmmac: Add basic EST support for XGMAC")
+Link: https://patch.msgid.link/20250529-stmmac_tstamp_div-v4-2-d73340a794d5@bootlin.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/rtc/rtc-loongson.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ drivers/net/ethernet/stmicro/stmmac/stmmac_est.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/rtc/rtc-loongson.c b/drivers/rtc/rtc-loongson.c
-index 90e9d97a86b48..c9d5b91a6544d 100644
---- a/drivers/rtc/rtc-loongson.c
-+++ b/drivers/rtc/rtc-loongson.c
-@@ -129,6 +129,14 @@ static u32 loongson_rtc_handler(void *id)
- {
- 	struct loongson_rtc_priv *priv = (struct loongson_rtc_priv *)id;
+diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_est.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_est.c
+index c9693f77e1f61..ac6f2e3a3fcd2 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/stmmac_est.c
++++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_est.c
+@@ -32,6 +32,11 @@ static int est_configure(struct stmmac_priv *priv, struct stmmac_est *cfg,
+ 	int i, ret = 0;
+ 	u32 ctrl;
  
-+	rtc_update_irq(priv->rtcdev, 1, RTC_AF | RTC_IRQF);
++	if (!ptp_rate) {
++		netdev_warn(priv->dev, "Invalid PTP rate");
++		return -EINVAL;
++	}
 +
-+	/*
-+	 * The TOY_MATCH0_REG should be cleared 0 here,
-+	 * otherwise the interrupt cannot be cleared.
-+	 */
-+	regmap_write(priv->regmap, TOY_MATCH0_REG, 0);
-+
- 	spin_lock(&priv->lock);
- 	/* Disable RTC alarm wakeup and interrupt */
- 	writel(readl(priv->pm_base + PM1_EN_REG) & ~RTC_EN,
+ 	ret |= est_write(est_addr, EST_BTR_LOW, cfg->btr[0], false);
+ 	ret |= est_write(est_addr, EST_BTR_HIGH, cfg->btr[1], false);
+ 	ret |= est_write(est_addr, EST_TER, cfg->ter, false);
 -- 
 2.39.5
 
