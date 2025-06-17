@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-153665-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153612-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 03888ADD5AF
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:24:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A42BEADD560
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:20:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A3EE12C25DD
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:17:34 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 927262C5F08
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:12:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7EC162EA171;
-	Tue, 17 Jun 2025 16:11:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D3D02ECD36;
+	Tue, 17 Jun 2025 16:08:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gSyanxaB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IjeqWXpk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36503237162;
-	Tue, 17 Jun 2025 16:11:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AB792EB5CE;
+	Tue, 17 Jun 2025 16:08:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750176699; cv=none; b=rE1JgUo44z2ZjARCqN1IVlIb6aJOV3+vvhs1cOor6SlGPlB/V88ALYe4E/BM7p3urpK+ImprhWr15oNXMmOEy2pbhqM/V62gPsIoev3Rt3gIanCm3U8f2LG4oGrMlLPk8XlSxYbyO2YNmxuKhXcRv40SABeOr7705v8ycr2LqlE=
+	t=1750176526; cv=none; b=OkXGzlltK2dkMHshaktRw79Pw8pWOqbqpM1d42bp2TvAOBPKfN9xfz4Qito2OByqJA1bN+pbR1Pxu+Udr7j2ALog2+PDWdYWY66Fn+LKtjN20nGRKGaQ4g96nZzjnixNDjBE4k+oO1ms7MGuMM1igZsyzm/fU3+U0J57iY70y2o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750176699; c=relaxed/simple;
-	bh=q1u4Hfz6wKnfEEjcDE2YLkfaiOCZy/gfMo9aIRhvLV8=;
+	s=arc-20240116; t=1750176526; c=relaxed/simple;
+	bh=IQ8P9EzTY0nSqtUPfky5Uk3WynUnCgTq+OdKp7uoXsg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DiuDc7GxM6wV/9a53hrmCPv9szsBwfhlLRu4CCuZFV02+mMjmCz4eXPwTMRX7HfDy7inCS7fVU6k3T2i+QBPm6BaiXV8KVnjqPxzzlzO+optYOrR2Cuqa4epaPNc08juLMgHpScIcUkZBbWukQyBwVHyvYJUGGKDU4cJuZaICqE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gSyanxaB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A9F1C4CEE7;
-	Tue, 17 Jun 2025 16:11:38 +0000 (UTC)
+	 MIME-Version; b=BNcmeB8791bbfFhzayeRnUSam+7WB8KZbRvs1nWdYej09hDFubDigYY99mLuZ66x0m5GyUU8HqdjL186qAWtVy3d68tx0RwqTrBDjiunKvUURh9t2we/5bER4peyZVJR7jjzA2/8lPru4blN3gnFboA8XvzhefHxTXo4MmfDlw8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IjeqWXpk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D805C4CEE3;
+	Tue, 17 Jun 2025 16:08:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750176699;
-	bh=q1u4Hfz6wKnfEEjcDE2YLkfaiOCZy/gfMo9aIRhvLV8=;
+	s=korg; t=1750176524;
+	bh=IQ8P9EzTY0nSqtUPfky5Uk3WynUnCgTq+OdKp7uoXsg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gSyanxaBh7nPmZYSPGqD0hmVMS65dgPIHhGMclWFuywnSFz5YeTPDfh7jpm5Zr65s
-	 tnzcEyx+5Ex23r2/vIIrqifniOFBkSpnQzXEKrNDEHDNwzzABd2ibI6+Xf/bqwCVMc
-	 h/C2IQen1nO5V+c09AV/at0DFmm/UQhf7A6PiVSg=
+	b=IjeqWXpkSovd13MDhPBcglz6KLMU9hVyJAU1MsFUtwPczpi3OtTf3ZGVtIM5NqlhN
+	 uiFVJYxlrlXFcR71VQLtIvQC5Igld9dZmVUsnlyoVRkPV7D6IWGDLVk92B9QSPOpGd
+	 s4zQhSKFn03hfSMU1tYuFTxEvAZ3Gak4ExgHBoUQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -48,9 +48,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Hangbin Liu <liuhangbin@gmail.com>,
 	Steffen Klassert <steffen.klassert@secunet.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 197/780] bonding: Mark active offloaded xfrm_states
-Date: Tue, 17 Jun 2025 17:18:25 +0200
-Message-ID: <20250617152459.494955905@linuxfoundation.org>
+Subject: [PATCH 6.15 198/780] bonding: Fix multiple long standing offload races
+Date: Tue, 17 Jun 2025 17:18:26 +0200
+Message-ID: <20250617152459.533957131@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
 References: <20250617152451.485330293@linuxfoundation.org>
@@ -71,74 +71,44 @@ Content-Transfer-Encoding: 8bit
 
 From: Cosmin Ratiu <cratiu@nvidia.com>
 
-[ Upstream commit fd4e41ebf66cb8b43de2f640b97314c4ee3b4499 ]
+[ Upstream commit d2fddbd3479928e52061e1c8dd302006b6283ce8 ]
 
-When the active link is changed for a bond device, the existing xfrm
-states need to be migrated over to the new link. This is done with:
-- bond_ipsec_del_sa_all() goes through the offloaded states list and
-  removes all of them from hw.
-- bond_ipsec_add_sa_all() re-offloads all states to the new device.
+Refactor the bonding ipsec offload operations to fix a number of
+long-standing control plane races between state migration and user
+deletion and a few other issues.
 
-But because the offload status of xfrm states isn't marked in any way,
-there can be bugs.
+xfrm state deletion can happen concurrently with
+bond_change_active_slave() operation. This manifests itself as a
+bond_ipsec_del_sa() call with x->lock held, followed by a
+bond_ipsec_free_sa() a bit later from a wq. The alternate path of
+these calls coming from xfrm_dev_state_flush() can't happen, as that
+needs the RTNL lock and bond_change_active_slave() already holds it.
 
-When all bond links are down, bond_ipsec_del_sa_all() unoffloads
-everything from the previous active link. If the same link then comes
-back up, nothing gets reoffloaded by bond_ipsec_add_sa_all().
-This results in a stack trace like this a bit later when user space
-removes the offloaded rules, because mlx5e_xfrm_del_state() is asked to
-remove a rule that's no longer offloaded:
+1. bond_ipsec_del_sa_all() might call xdo_dev_state_delete() a second
+   time on an xfrm state that was concurrently killed. This is bad.
+2. bond_ipsec_add_sa_all() can add a state on the new device, but
+   pending bond_ipsec_free_sa() calls from the old device will then hit
+   the WARN_ON() and then, worse, call xdo_dev_state_free() on the new
+   device without a corresponding xdo_dev_state_delete().
+3. Resolve a sleeping in atomic context introduced by the mentioned
+   "Fixes" commit.
 
- [] Call Trace:
- []  <TASK>
- []  ? __warn+0x7d/0x110
- []  ? mlx5e_xfrm_del_state+0x90/0xa0 [mlx5_core]
- []  ? report_bug+0x16d/0x180
- []  ? handle_bug+0x4f/0x90
- []  ? exc_invalid_op+0x14/0x70
- []  ? asm_exc_invalid_op+0x16/0x20
- []  ? mlx5e_xfrm_del_state+0x73/0xa0 [mlx5_core]
- []  ? mlx5e_xfrm_del_state+0x90/0xa0 [mlx5_core]
- []  bond_ipsec_del_sa+0x1ab/0x200 [bonding]
- []  xfrm_dev_state_delete+0x1f/0x60
- []  __xfrm_state_delete+0x196/0x200
- []  xfrm_state_delete+0x21/0x40
- []  xfrm_del_sa+0x69/0x110
- []  xfrm_user_rcv_msg+0x11d/0x300
- []  ? release_pages+0xca/0x140
- []  ? copy_to_user_tmpl.part.0+0x110/0x110
- []  netlink_rcv_skb+0x54/0x100
- []  xfrm_netlink_rcv+0x31/0x40
- []  netlink_unicast+0x1fc/0x2d0
- []  netlink_sendmsg+0x1e4/0x410
- []  __sock_sendmsg+0x38/0x60
- []  sock_write_iter+0x94/0xf0
- []  vfs_write+0x338/0x3f0
- []  ksys_write+0xba/0xd0
- []  do_syscall_64+0x4c/0x100
- []  entry_SYSCALL_64_after_hwframe+0x4b/0x53
+bond_ipsec_del_sa_all() and bond_ipsec_add_sa_all() now acquire x->lock
+and check for x->km.state to help with problems 1 and 2. And since
+xso.real_dev is now a private pointer managed by the bonding driver in
+xfrm state, make better use of it to fully fix problems 1 and 2. In
+bond_ipsec_del_sa_all(), set xso.real_dev to NULL while holding both the
+mutex and x->lock, which makes sure that neither bond_ipsec_del_sa() nor
+bond_ipsec_free_sa() could run concurrently.
 
-There's also another theoretical bug:
-Calling bond_ipsec_del_sa_all() multiple times can result in corruption
-in the driver implementation if the double-free isn't tolerated. This
-isn't nice.
+Fix problem 3 by moving the list cleanup (which requires the mutex) from
+bond_ipsec_del_sa() (called from atomic context) to bond_ipsec_free_sa()
 
-Before the "Fixes" commit, xs->xso.real_dev was set to NULL when an xfrm
-state was unoffloaded from a device, but a race with netdevsim's
-.xdo_dev_offload_ok() accessing real_dev was considered a sufficient
-reason to not set real_dev to NULL anymore. This unfortunately
-introduced the new bugs.
+Finally, simplify bond_ipsec_del_sa() and bond_ipsec_free_sa() by using
+xso->real_dev directly, since it's now protected by locks and can be
+trusted to always reflect the offload device.
 
-Since .xdo_dev_offload_ok() was significantly refactored by [1] and
-there are no more users in the stack of xso.real_dev, that
-race is now gone and xs->xso.real_dev can now once again be used to
-represent which device (if any) currently holds the offloaded rule.
-
-Go one step further and set real_dev after add/before delete calls, to
-catch any future driver misuses of real_dev.
-
-[1] https://lore.kernel.org/netdev/cover.1739972570.git.leon@kernel.org/
-Fixes: f8cde9805981 ("bonding: fix xfrm real_dev null pointer dereference")
+Fixes: 2aeeef906d5a ("bonding: change ipsec_lock from spin lock to mutex")
 Signed-off-by: Cosmin Ratiu <cratiu@nvidia.com>
 Reviewed-by: Leon Romanovsky <leonro@nvidia.com>
 Reviewed-by: Nikolay Aleksandrov <razor@blackwall.org>
@@ -147,55 +117,170 @@ Tested-by: Hangbin Liu <liuhangbin@gmail.com>
 Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/bonding/bond_main.c | 8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+ drivers/net/bonding/bond_main.c | 82 +++++++++++++++------------------
+ include/net/xfrm.h              |  7 ++-
+ 2 files changed, 41 insertions(+), 48 deletions(-)
 
 diff --git a/drivers/net/bonding/bond_main.c b/drivers/net/bonding/bond_main.c
-index b183a3c99f627..14ebbe82a2c5b 100644
+index 14ebbe82a2c5b..4461220bcd58d 100644
 --- a/drivers/net/bonding/bond_main.c
 +++ b/drivers/net/bonding/bond_main.c
-@@ -496,9 +496,9 @@ static int bond_ipsec_add_sa(struct net_device *bond_dev,
- 		goto out;
- 	}
- 
--	xs->xso.real_dev = real_dev;
- 	err = real_dev->xfrmdev_ops->xdo_dev_state_add(real_dev, xs, extack);
- 	if (!err) {
-+		xs->xso.real_dev = real_dev;
- 		ipsec->xs = xs;
- 		INIT_LIST_HEAD(&ipsec->list);
- 		mutex_lock(&bond->ipsec_lock);
-@@ -540,12 +540,12 @@ static void bond_ipsec_add_sa_all(struct bonding *bond)
- 		if (ipsec->xs->xso.real_dev == real_dev)
- 			continue;
- 
--		ipsec->xs->xso.real_dev = real_dev;
- 		if (real_dev->xfrmdev_ops->xdo_dev_state_add(real_dev,
- 							     ipsec->xs, NULL)) {
+@@ -545,7 +545,20 @@ static void bond_ipsec_add_sa_all(struct bonding *bond)
  			slave_warn(bond_dev, real_dev, "%s: failed to add SA\n", __func__);
--			ipsec->xs->xso.real_dev = NULL;
-+			continue;
+ 			continue;
  		}
-+		ipsec->xs->xso.real_dev = real_dev;
++
++		spin_lock_bh(&ipsec->xs->lock);
++		/* xs might have been killed by the user during the migration
++		 * to the new dev, but bond_ipsec_del_sa() should have done
++		 * nothing, as xso.real_dev is NULL.
++		 * Delete it from the device we just added it to. The pending
++		 * bond_ipsec_free_sa() call will do the rest of the cleanup.
++		 */
++		if (ipsec->xs->km.state == XFRM_STATE_DEAD &&
++		    real_dev->xfrmdev_ops->xdo_dev_state_delete)
++			real_dev->xfrmdev_ops->xdo_dev_state_delete(real_dev,
++								    ipsec->xs);
+ 		ipsec->xs->xso.real_dev = real_dev;
++		spin_unlock_bh(&ipsec->xs->lock);
  	}
  out:
  	mutex_unlock(&bond->ipsec_lock);
-@@ -629,6 +629,7 @@ static void bond_ipsec_del_sa_all(struct bonding *bond)
+@@ -560,48 +573,20 @@ static void bond_ipsec_del_sa(struct net_device *bond_dev,
+ 			      struct xfrm_state *xs)
+ {
+ 	struct net_device *real_dev;
+-	netdevice_tracker tracker;
+-	struct bond_ipsec *ipsec;
+-	struct bonding *bond;
+-	struct slave *slave;
+ 
+-	if (!bond_dev)
++	if (!bond_dev || !xs->xso.real_dev)
+ 		return;
+ 
+-	rcu_read_lock();
+-	bond = netdev_priv(bond_dev);
+-	slave = rcu_dereference(bond->curr_active_slave);
+-	real_dev = slave ? slave->dev : NULL;
+-	netdev_hold(real_dev, &tracker, GFP_ATOMIC);
+-	rcu_read_unlock();
+-
+-	if (!slave)
+-		goto out;
+-
+-	if (!xs->xso.real_dev)
+-		goto out;
+-
+-	WARN_ON(xs->xso.real_dev != real_dev);
++	real_dev = xs->xso.real_dev;
+ 
+ 	if (!real_dev->xfrmdev_ops ||
+ 	    !real_dev->xfrmdev_ops->xdo_dev_state_delete ||
+ 	    netif_is_bond_master(real_dev)) {
+ 		slave_warn(bond_dev, real_dev, "%s: no slave xdo_dev_state_delete\n", __func__);
+-		goto out;
++		return;
+ 	}
+ 
+ 	real_dev->xfrmdev_ops->xdo_dev_state_delete(real_dev, xs);
+-out:
+-	netdev_put(real_dev, &tracker);
+-	mutex_lock(&bond->ipsec_lock);
+-	list_for_each_entry(ipsec, &bond->ipsec_list, list) {
+-		if (ipsec->xs == xs) {
+-			list_del(&ipsec->list);
+-			kfree(ipsec);
+-			break;
+-		}
+-	}
+-	mutex_unlock(&bond->ipsec_lock);
+ }
+ 
+ static void bond_ipsec_del_sa_all(struct bonding *bond)
+@@ -629,9 +614,15 @@ static void bond_ipsec_del_sa_all(struct bonding *bond)
  				   __func__);
  			continue;
  		}
-+		ipsec->xs->xso.real_dev = NULL;
- 		real_dev->xfrmdev_ops->xdo_dev_state_delete(real_dev,
- 							    ipsec->xs);
++
++		spin_lock_bh(&ipsec->xs->lock);
+ 		ipsec->xs->xso.real_dev = NULL;
+-		real_dev->xfrmdev_ops->xdo_dev_state_delete(real_dev,
+-							    ipsec->xs);
++		/* Don't double delete states killed by the user. */
++		if (ipsec->xs->km.state != XFRM_STATE_DEAD)
++			real_dev->xfrmdev_ops->xdo_dev_state_delete(real_dev,
++								    ipsec->xs);
++		spin_unlock_bh(&ipsec->xs->lock);
++
  		if (real_dev->xfrmdev_ops->xdo_dev_state_free)
-@@ -664,6 +665,7 @@ static void bond_ipsec_free_sa(struct net_device *bond_dev,
+ 			real_dev->xfrmdev_ops->xdo_dev_state_free(real_dev,
+ 								  ipsec->xs);
+@@ -643,34 +634,33 @@ static void bond_ipsec_free_sa(struct net_device *bond_dev,
+ 			       struct xfrm_state *xs)
+ {
+ 	struct net_device *real_dev;
+-	netdevice_tracker tracker;
++	struct bond_ipsec *ipsec;
+ 	struct bonding *bond;
+-	struct slave *slave;
  
- 	WARN_ON(xs->xso.real_dev != real_dev);
+ 	if (!bond_dev)
+ 		return;
  
-+	xs->xso.real_dev = NULL;
- 	if (real_dev && real_dev->xfrmdev_ops &&
+-	rcu_read_lock();
+ 	bond = netdev_priv(bond_dev);
+-	slave = rcu_dereference(bond->curr_active_slave);
+-	real_dev = slave ? slave->dev : NULL;
+-	netdev_hold(real_dev, &tracker, GFP_ATOMIC);
+-	rcu_read_unlock();
+-
+-	if (!slave)
+-		goto out;
+ 
++	mutex_lock(&bond->ipsec_lock);
+ 	if (!xs->xso.real_dev)
+ 		goto out;
+ 
+-	WARN_ON(xs->xso.real_dev != real_dev);
++	real_dev = xs->xso.real_dev;
+ 
+ 	xs->xso.real_dev = NULL;
+-	if (real_dev && real_dev->xfrmdev_ops &&
++	if (real_dev->xfrmdev_ops &&
  	    real_dev->xfrmdev_ops->xdo_dev_state_free)
  		real_dev->xfrmdev_ops->xdo_dev_state_free(real_dev, xs);
+ out:
+-	netdev_put(real_dev, &tracker);
++	list_for_each_entry(ipsec, &bond->ipsec_list, list) {
++		if (ipsec->xs == xs) {
++			list_del(&ipsec->list);
++			kfree(ipsec);
++			break;
++		}
++	}
++	mutex_unlock(&bond->ipsec_lock);
+ }
+ 
+ /**
+diff --git a/include/net/xfrm.h b/include/net/xfrm.h
+index 01783dc3d0e32..1f1861c57e2ad 100644
+--- a/include/net/xfrm.h
++++ b/include/net/xfrm.h
+@@ -154,8 +154,11 @@ struct xfrm_dev_offload {
+ 	 */
+ 	struct net_device	*dev;
+ 	netdevice_tracker	dev_tracker;
+-	/* This is a private pointer used by the bonding driver.
+-	 * Device drivers should not use it.
++	/* This is a private pointer used by the bonding driver (and eventually
++	 * should be moved there). Device drivers should not use it.
++	 * Protected by xfrm_state.lock AND bond.ipsec_lock in most cases,
++	 * except in the .xdo_dev_state_del() flow, where only xfrm_state.lock
++	 * is held.
+ 	 */
+ 	struct net_device	*real_dev;
+ 	unsigned long		offload_handle;
 -- 
 2.39.5
 
