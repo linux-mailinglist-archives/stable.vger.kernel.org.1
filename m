@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-153511-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153515-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C6B1CADD520
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:17:42 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 488AFADD41D
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:06:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3E708194174E
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:06:58 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2618C7A4685
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:05:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 501B12DFF1D;
-	Tue, 17 Jun 2025 16:03:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6224C2DFF2B;
+	Tue, 17 Jun 2025 16:03:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0ruQ7Rrp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="climbkex"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 036DF2DFF1B;
-	Tue, 17 Jun 2025 16:03:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F7E02DFF25;
+	Tue, 17 Jun 2025 16:03:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750176200; cv=none; b=bqLe9dii2Qn928ftClHTpkBbI+HiMtzrrf0NZCoFaGCgMH3Izqj4jU3W2q7w2wunvOs9Peh7NxS+b6DFA3dAIPGGlTV4jItppCBYKKsQOwYzo/8Ew+S71Yr8pNKMdgRW+sd0aM8A8qiO2Amrmsegkxx8zsZvkU86Rx2ehVZ8eAg=
+	t=1750176213; cv=none; b=o94ukc4oZfnzXLfILKx+rq700SWCCy96y2rLwFm5bm/KNZvRJRz+DVt8p/wve5XWRzpQetYvAnHm3eTGmkV5R0ZPDhjp/zo5K7QDQusHC+ufVvwNf7MuHnRaAQqAF1JiZ+bqRfNk6ZWB1mKWkI7eGjovRQ5QX5YEA9j4FsV/6yY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750176200; c=relaxed/simple;
-	bh=WQpOpqiwbHrLBf/3tR/Ad1ZfO+qnR8Rev63TPFOgi8k=;
+	s=arc-20240116; t=1750176213; c=relaxed/simple;
+	bh=AupRZSqwo/9p8xkjLoH32/R7Gm1fp8+PatlfNZ54XsA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YkrjNwM2EPu9WyfZmn0l5+KdvjtS0aG4AAILAel/BkuysM8bzbEsaDKeZhNk6P2GCRfHB3Suir9B+P6GiCSTrdVvljJrCIJiKispwBjBUPNBUpn3Ef9FiizPkz8vJqS1pf6SvsKSs9w3N0Cwn1fMipTtQ+c98NsYrCzRVSgOXCs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0ruQ7Rrp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 674A1C4CEE3;
-	Tue, 17 Jun 2025 16:03:19 +0000 (UTC)
+	 MIME-Version; b=bjYvFof2kwOUYv2CdJwTH41S5wEm45827OvymKKaoT8u7dqLq5YQrngrc8fIVzS+97evfNJg7I0rTPLXYeyQzlHOdbNd+6HQxUpSGP93oix4NBt2tfLodlDu57tEKUft6Xpk/DsE+GF+/ZStsx/GEvejUefDd6tu0hpVv2hQdUo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=climbkex; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 829B6C4CEE7;
+	Tue, 17 Jun 2025 16:03:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750176199;
-	bh=WQpOpqiwbHrLBf/3tR/Ad1ZfO+qnR8Rev63TPFOgi8k=;
+	s=korg; t=1750176213;
+	bh=AupRZSqwo/9p8xkjLoH32/R7Gm1fp8+PatlfNZ54XsA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0ruQ7RrpAJzW7KS/pf8DfNizh2G8kX4eMwRxN0qDpNQxhsxTxVkrQte69FATDQsxZ
-	 etxAHcoiDGv6p/rrAHkMoHQwO18PTsSosAztMzV6bC2TfBsWl5pXup4n/TAVXju8Gg
-	 YcEJiWZ1S25Ev0qwegyTbd/84W9M/gGOS4fyffDo=
+	b=climbkexRA8FyV8fkJNIjLsUDcgBXrVemGvGSZ4+OHSPnngnUu6RNV/VO/IE8pFGe
+	 PHG2nv6cFJ1CCyTj6H71lY1yyoznLXq7E0zUyqbEYOVDgOSvLMmX2zZ1eYPgK0jnbv
+	 4nKRPGibTG+InEwLj3i6wAg4UF/4Fxq2xdUmUFmY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -45,9 +45,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	P Praneesh <praneesh.p@oss.qualcomm.com>,
 	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 164/780] wifi: ath12k: Fix memory leak during vdev_id mismatch
-Date: Tue, 17 Jun 2025 17:17:52 +0200
-Message-ID: <20250617152458.164798055@linuxfoundation.org>
+Subject: [PATCH 6.15 165/780] wifi: ath12k: Fix memory corruption during MLO multicast tx
+Date: Tue, 17 Jun 2025 17:17:53 +0200
+Message-ID: <20250617152458.205280891@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
 References: <20250617152451.485330293@linuxfoundation.org>
@@ -68,64 +68,52 @@ Content-Transfer-Encoding: 8bit
 
 From: P Praneesh <praneesh.p@oss.qualcomm.com>
 
-[ Upstream commit 75ec94db880b1e4b4f9182885d60db0db6e2ee56 ]
+[ Upstream commit 6f8a27a584b23e9dedefd6cb110dd2587b84a6d4 ]
 
-Currently driver enables vdev_id check as part of the bank configuration
-in ath12k_dp_tx_get_vdev_bank_config(). This check ensures that the vdev_id
-configured in the bank register aligns with the vdev_id in the packet's
-address search table within the firmware. If there is a mismatch, the
-firmware forwards the packet with the HTT status
-HAL_WBM_REL_HTT_TX_COMP_STATUS_VDEVID_MISMATCH. Since driver does not
-handle this vdev_id mismatch HTT status, the corresponding buffers are not
-freed properly, causing a memory leak. Fix this issue by adding handling to
-free the buffers when a vdev_id mismatch HTT status is encountered.
+The struct sk_buff's control buffer is shared by mac80211's struct
+ieee80211_tx_info and ath12k's struct ath12k_skb_cb. When the driver wants
+to transmit an skb, it caches all the mac80211-specific information from
+struct ieee80211_tx_info, then performs a memset on the control buffer
+before writing the ath12k-specific information using struct ath12k_skb_cb.
+However, during multicast tx, the key is being filled into the driver data,
+which overwrites some crucial members like link_id and flags in struct
+ath12k_skb_cb. This causes invalid information retrieval when the driver
+accesses these fields during ath12k_dp_tx(). Fix this issue by removing
+the key filling logic during MLO multicast tx, as it is not used anywhere
+in the tx path.
 
 Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.4.1-00199-QCAHKSWPL_SILICONZ-1
-Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0.c5-00481-QCAHMTSWPL_V1.0_V2.0_SILICONZ-
+Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0.c5-00481-QCAHMTSWPL_V1.0_V2.0_SILICONZ-3
 
-Fixes: d889913205cf ("wifi: ath12k: driver for Qualcomm Wi-Fi 7 devices")
+Fixes: 2f50de725677 ("wifi: ath12k: Add support for MLO Multicast handling in driver")
 Signed-off-by: P Praneesh <praneesh.p@oss.qualcomm.com>
-Link: https://patch.msgid.link/20250402174032.2651221-1-praneesh.p@oss.qualcomm.com
+Link: https://patch.msgid.link/20250402175714.2667270-1-praneesh.p@oss.qualcomm.com
 Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath12k/dp_tx.c    | 1 +
- drivers/net/wireless/ath/ath12k/hal_desc.h | 3 ++-
- 2 files changed, 3 insertions(+), 1 deletion(-)
+ drivers/net/wireless/ath/ath12k/mac.c | 2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath12k/dp_tx.c b/drivers/net/wireless/ath/ath12k/dp_tx.c
-index ced232bf4aed0..1e2788df476c2 100644
---- a/drivers/net/wireless/ath/ath12k/dp_tx.c
-+++ b/drivers/net/wireless/ath/ath12k/dp_tx.c
-@@ -585,6 +585,7 @@ ath12k_dp_tx_process_htt_tx_complete(struct ath12k_base *ab,
- 	case HAL_WBM_REL_HTT_TX_COMP_STATUS_TTL:
- 	case HAL_WBM_REL_HTT_TX_COMP_STATUS_REINJ:
- 	case HAL_WBM_REL_HTT_TX_COMP_STATUS_INSPECT:
-+	case HAL_WBM_REL_HTT_TX_COMP_STATUS_VDEVID_MISMATCH:
- 		ath12k_dp_tx_free_txbuf(ab, msdu, mac_id, tx_ring);
- 		break;
- 	case HAL_WBM_REL_HTT_TX_COMP_STATUS_MEC_NOTIFY:
-diff --git a/drivers/net/wireless/ath/ath12k/hal_desc.h b/drivers/net/wireless/ath/ath12k/hal_desc.h
-index 3e8983b85de86..63d279fab3224 100644
---- a/drivers/net/wireless/ath/ath12k/hal_desc.h
-+++ b/drivers/net/wireless/ath/ath12k/hal_desc.h
-@@ -1,7 +1,7 @@
- /* SPDX-License-Identifier: BSD-3-Clause-Clear */
- /*
-  * Copyright (c) 2018-2021 The Linux Foundation. All rights reserved.
-- * Copyright (c) 2021-2022, 2024 Qualcomm Innovation Center, Inc. All rights reserved.
-+ * Copyright (c) 2021-2022, 2024-2025 Qualcomm Innovation Center, Inc. All rights reserved.
-  */
- #include "core.h"
+diff --git a/drivers/net/wireless/ath/ath12k/mac.c b/drivers/net/wireless/ath/ath12k/mac.c
+index c20fd92000dfe..a1fad297ca357 100644
+--- a/drivers/net/wireless/ath/ath12k/mac.c
++++ b/drivers/net/wireless/ath/ath12k/mac.c
+@@ -7429,7 +7429,6 @@ static void ath12k_mac_op_tx(struct ieee80211_hw *hw,
+ 								info_flags);
  
-@@ -1298,6 +1298,7 @@ enum hal_wbm_htt_tx_comp_status {
- 	HAL_WBM_REL_HTT_TX_COMP_STATUS_REINJ,
- 	HAL_WBM_REL_HTT_TX_COMP_STATUS_INSPECT,
- 	HAL_WBM_REL_HTT_TX_COMP_STATUS_MEC_NOTIFY,
-+	HAL_WBM_REL_HTT_TX_COMP_STATUS_VDEVID_MISMATCH,
- 	HAL_WBM_REL_HTT_TX_COMP_STATUS_MAX,
- };
+ 			skb_cb = ATH12K_SKB_CB(msdu_copied);
+-			info = IEEE80211_SKB_CB(msdu_copied);
+ 			skb_cb->link_id = link_id;
  
+ 			/* For open mode, skip peer find logic */
+@@ -7452,7 +7451,6 @@ static void ath12k_mac_op_tx(struct ieee80211_hw *hw,
+ 			if (key) {
+ 				skb_cb->cipher = key->cipher;
+ 				skb_cb->flags |= ATH12K_SKB_CIPHER_SET;
+-				info->control.hw_key = key;
+ 
+ 				hdr = (struct ieee80211_hdr *)msdu_copied->data;
+ 				if (!ieee80211_has_protected(hdr->frame_control))
 -- 
 2.39.5
 
