@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-153309-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153320-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B8DE1ADD39C
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:00:13 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id AAC0EADD3DF
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:04:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2030517DCCD
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 15:55:54 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 744EE1944DA6
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 15:56:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6FBF12F236E;
-	Tue, 17 Jun 2025 15:52:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2852C2EA176;
+	Tue, 17 Jun 2025 15:52:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M3kV91wu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kyqow+U/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C68A2F2341;
-	Tue, 17 Jun 2025 15:52:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF9712E7185;
+	Tue, 17 Jun 2025 15:52:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750175533; cv=none; b=gRN71HxbFdnbvcldmDUfMQ54iygzal9rIjs9oeT+QDszCprqsmSO7S75bgojWAdsqIxr6Vf72BrNJfwrKOFaNz6SnaHWlAFXMCZ0E9hPZuTUsOiSR++t9FqB7zK+8CUp+1CCLQCCwqPcZ9AovPuHAb3NBr3Lggq+aYhxpFgylZg=
+	t=1750175568; cv=none; b=R3h00q0uds1hyQemBIv0KGZN1KgSJagkR5GZhU82QCxrE7lNZckXKQLKxXVaN89UrTz3SpDJyc7ZDGfKEXCqSTxhFexk7dsTXSEdxS50TxeLpXivqB2LKWCbxPRc2cF9Wa6nRCN9HT+AbeSiKmfKJ+uxtIy4ozh1ShE+VrxV2KY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750175533; c=relaxed/simple;
-	bh=p+6YxpTf4zhQmU4Yr0UhCp5kpH42R/KPXfUnNzfdKpQ=;
+	s=arc-20240116; t=1750175568; c=relaxed/simple;
+	bh=VJmchrKfGDRo3GzBEy3Inijycz23kuYsgFpiv8bu/e8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YfOJsBOueakMLSH4IR697iQ8jVbs/8jljlwXtCuOkfDB3C4JMUSOpYVEP/d/XDase+VBy8QOiA7un7q9d0F1vWbMPAmyszMVeiTGcAzZbtcKLjAa2mpkxwfTBJfgaWBvCCjDjRxMG/EIqr1DnhOOFVLcFnNOIy6ZNu6oMyGouq4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M3kV91wu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F9B2C4CEE7;
-	Tue, 17 Jun 2025 15:52:12 +0000 (UTC)
+	 MIME-Version; b=tyIq/ZSUDgCrQcbVCpcVulJc40mB4yh9Ze1FOMqakfqaIN7V01iGZFqSKePyCmxCb4vVoBIw2or2QsLoj+v6RvIBUT+QOPD+3jHt/X63d8pkiJbxGkKBFn3eDH6gaSqkWTeQGly7tRgqYMSHBvGOpUVtr7Occ/lcJJqjhRZEWTk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kyqow+U/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36305C4CEE3;
+	Tue, 17 Jun 2025 15:52:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750175533;
-	bh=p+6YxpTf4zhQmU4Yr0UhCp5kpH42R/KPXfUnNzfdKpQ=;
+	s=korg; t=1750175568;
+	bh=VJmchrKfGDRo3GzBEy3Inijycz23kuYsgFpiv8bu/e8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=M3kV91wufinLgnwBp5x50uJAXJJpDYLkILylL5kUzWEvocfCkdKxY/XU1WN8ReI42
-	 KI7poAY17uziacecg4aMMmNhL1aosVPgFuGYCUO4PvnXkbsOYvfgEETsPAIjlodWcO
-	 oi3WPO3JpfMxDdLGgJESFJ35OmRJGzXMto9KThBo=
+	b=kyqow+U/vcuJNWT6jXcxqvrQN2p6E64xoJGxprsk0VGleIhBvIyQsSRuL9DcRV/iY
+	 dJ3lPgFvHT1D4tsnRSlTNKHMbHY/NUKABg1QkQ19u2wU2tJO2N5wWEuAknMkSKWPQr
+	 NtlKWVnWEmPlQJyeitprVXjurItzKxjPTlDhv6/M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yihang Li <liyihang9@huawei.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Hengqi Chen <hengqi.chen@gmail.com>,
+	Feng Yang <yangfeng@kylinos.cn>,
+	Andrii Nakryiko <andrii@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 135/512] scsi: hisi_sas: Call I_T_nexus after soft reset for SATA disk
-Date: Tue, 17 Jun 2025 17:21:41 +0200
-Message-ID: <20250617152425.068413830@linuxfoundation.org>
+Subject: [PATCH 6.12 136/512] libbpf: Fix event name too long error
+Date: Tue, 17 Jun 2025 17:21:42 +0200
+Message-ID: <20250617152425.108299370@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
 References: <20250617152419.512865572@linuxfoundation.org>
@@ -66,77 +67,158 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Yihang Li <liyihang9@huawei.com>
+From: Feng Yang <yangfeng@kylinos.cn>
 
-[ Upstream commit e4d953ca557e02edd3aed7390043e1b8ad1c9723 ]
+[ Upstream commit 4dde20b1aa85d69c4281eaac9a7cfa7d2b62ecf0 ]
 
-In commit 21c7e972475e ("scsi: hisi_sas: Disable SATA disk phy for severe
-I_T nexus reset failure"), if the softreset fails upon certain
-conditions, the PHY connected to the disk is disabled directly. Manual
-recovery is required, which is inconvenient for users in actual use.
+When the binary path is excessively long, the generated probe_name in libbpf
+exceeds the kernel's MAX_EVENT_NAME_LEN limit (64 bytes).
+This causes legacy uprobe event attachment to fail with error code -22.
 
-In addition, SATA disks do not support simultaneous connection of multiple
-hosts. Therefore, when multiple controllers are connected to a SATA disk
-at the same time, the controller which is connected later failed to issue
-an ATA softreset to the SATA disk. As a result, the PHY associated with
-the disk is disabled and cannot be automatically recovered.
+The fix reorders the fields to place the unique ID before the name.
+This ensures that even if truncation occurs via snprintf, the unique ID
+remains intact, preserving event name uniqueness. Additionally, explicit
+checks with MAX_EVENT_NAME_LEN are added to enforce length constraints.
 
-Now that, we will not focus on the execution result of softreset. No
-matter whether the execution is successful or not, we will directly carry
-out I_T_nexus_reset.
+Before Fix:
+	./test_progs -t attach_probe/kprobe-long_name
+	......
+	libbpf: failed to add legacy kprobe event for 'bpf_testmod_looooooooooooooooooooooooooooooong_name+0x0': -EINVAL
+	libbpf: prog 'handle_kprobe': failed to create kprobe 'bpf_testmod_looooooooooooooooooooooooooooooong_name+0x0' perf event: -EINVAL
+	test_attach_kprobe_long_event_name:FAIL:attach_kprobe_long_event_name unexpected error: -22
+	test_attach_probe:PASS:uprobe_ref_ctr_cleanup 0 nsec
+	#13/11   attach_probe/kprobe-long_name:FAIL
+	#13      attach_probe:FAIL
 
-Fixes: 21c7e972475e ("scsi: hisi_sas: Disable SATA disk phy for severe I_T nexus reset failure")
-Signed-off-by: Yihang Li <liyihang9@huawei.com>
-Link: https://lore.kernel.org/r/20250414080845.1220997-4-liyihang9@huawei.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+	./test_progs -t attach_probe/uprobe-long_name
+	......
+	libbpf: failed to add legacy uprobe event for /root/linux-bpf/bpf-next/tools/testing/selftests/bpf/test_progs:0x13efd9: -EINVAL
+	libbpf: prog 'handle_uprobe': failed to create uprobe '/root/linux-bpf/bpf-next/tools/testing/selftests/bpf/test_progs:0x13efd9' perf event: -EINVAL
+	test_attach_uprobe_long_event_name:FAIL:attach_uprobe_long_event_name unexpected error: -22
+	#13/10   attach_probe/uprobe-long_name:FAIL
+	#13      attach_probe:FAIL
+After Fix:
+	./test_progs -t attach_probe/uprobe-long_name
+	#13/10   attach_probe/uprobe-long_name:OK
+	#13      attach_probe:OK
+	Summary: 1/1 PASSED, 0 SKIPPED, 0 FAILED
+
+	./test_progs -t attach_probe/kprobe-long_name
+	#13/11   attach_probe/kprobe-long_name:OK
+	#13      attach_probe:OK
+	Summary: 1/1 PASSED, 0 SKIPPED, 0 FAILED
+
+Fixes: 46ed5fc33db9 ("libbpf: Refactor and simplify legacy kprobe code")
+Fixes: cc10623c6810 ("libbpf: Add legacy uprobe attaching support")
+Signed-off-by: Hengqi Chen <hengqi.chen@gmail.com>
+Signed-off-by: Feng Yang <yangfeng@kylinos.cn>
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Link: https://lore.kernel.org/bpf/20250417014848.59321-2-yangfeng59949@163.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/hisi_sas/hisi_sas_main.c | 29 +++++----------------------
- 1 file changed, 5 insertions(+), 24 deletions(-)
+ tools/lib/bpf/libbpf.c | 43 ++++++++++++++++--------------------------
+ 1 file changed, 16 insertions(+), 27 deletions(-)
 
-diff --git a/drivers/scsi/hisi_sas/hisi_sas_main.c b/drivers/scsi/hisi_sas/hisi_sas_main.c
-index e98e6b2b9f570..d9500b7306905 100644
---- a/drivers/scsi/hisi_sas/hisi_sas_main.c
-+++ b/drivers/scsi/hisi_sas/hisi_sas_main.c
-@@ -1850,33 +1850,14 @@ static int hisi_sas_I_T_nexus_reset(struct domain_device *device)
- 	}
- 	hisi_sas_dereg_device(hisi_hba, device);
+diff --git a/tools/lib/bpf/libbpf.c b/tools/lib/bpf/libbpf.c
+index 069ffe5da96e5..976fabd5d4dbc 100644
+--- a/tools/lib/bpf/libbpf.c
++++ b/tools/lib/bpf/libbpf.c
+@@ -60,6 +60,8 @@
+ #define BPF_FS_MAGIC		0xcafe4a11
+ #endif
  
--	rc = hisi_sas_debug_I_T_nexus_reset(device);
--	if (rc == TMF_RESP_FUNC_COMPLETE && dev_is_sata(device)) {
--		struct sas_phy *local_phy;
++#define MAX_EVENT_NAME_LEN	64
++
+ #define BPF_FS_DEFAULT_PATH "/sys/fs/bpf"
+ 
+ #define BPF_INSN_SZ (sizeof(struct bpf_insn))
+@@ -11039,16 +11041,16 @@ static const char *tracefs_available_filter_functions_addrs(void)
+ 			     : TRACEFS"/available_filter_functions_addrs";
+ }
+ 
+-static void gen_kprobe_legacy_event_name(char *buf, size_t buf_sz,
+-					 const char *kfunc_name, size_t offset)
++static void gen_probe_legacy_event_name(char *buf, size_t buf_sz,
++					const char *name, size_t offset)
+ {
+ 	static int index = 0;
+ 	int i;
+ 
+-	snprintf(buf, buf_sz, "libbpf_%u_%s_0x%zx_%d", getpid(), kfunc_name, offset,
+-		 __sync_fetch_and_add(&index, 1));
++	snprintf(buf, buf_sz, "libbpf_%u_%d_%s_0x%zx", getpid(),
++		 __sync_fetch_and_add(&index, 1), name, offset);
+ 
+-	/* sanitize binary_path in the probe name */
++	/* sanitize name in the probe name */
+ 	for (i = 0; buf[i]; i++) {
+ 		if (!isalnum(buf[i]))
+ 			buf[i] = '_';
+@@ -11174,9 +11176,9 @@ int probe_kern_syscall_wrapper(int token_fd)
+ 
+ 		return pfd >= 0 ? 1 : 0;
+ 	} else { /* legacy mode */
+-		char probe_name[128];
++		char probe_name[MAX_EVENT_NAME_LEN];
+ 
+-		gen_kprobe_legacy_event_name(probe_name, sizeof(probe_name), syscall_name, 0);
++		gen_probe_legacy_event_name(probe_name, sizeof(probe_name), syscall_name, 0);
+ 		if (add_kprobe_event_legacy(probe_name, false, syscall_name, 0) < 0)
+ 			return 0;
+ 
+@@ -11233,10 +11235,10 @@ bpf_program__attach_kprobe_opts(const struct bpf_program *prog,
+ 					    func_name, offset,
+ 					    -1 /* pid */, 0 /* ref_ctr_off */);
+ 	} else {
+-		char probe_name[256];
++		char probe_name[MAX_EVENT_NAME_LEN];
+ 
+-		gen_kprobe_legacy_event_name(probe_name, sizeof(probe_name),
+-					     func_name, offset);
++		gen_probe_legacy_event_name(probe_name, sizeof(probe_name),
++					    func_name, offset);
+ 
+ 		legacy_probe = strdup(probe_name);
+ 		if (!legacy_probe)
+@@ -11744,20 +11746,6 @@ static int attach_uprobe_multi(const struct bpf_program *prog, long cookie, stru
+ 	return ret;
+ }
+ 
+-static void gen_uprobe_legacy_event_name(char *buf, size_t buf_sz,
+-					 const char *binary_path, uint64_t offset)
+-{
+-	int i;
 -
-+	if (dev_is_sata(device)) {
- 		rc = hisi_sas_softreset_ata_disk(device);
--		switch (rc) {
--		case -ECOMM:
--			rc = -ENODEV;
--			break;
--		case TMF_RESP_FUNC_FAILED:
--		case -EMSGSIZE:
--		case -EIO:
--			local_phy = sas_get_local_phy(device);
--			rc = sas_phy_enable(local_phy, 0);
--			if (!rc) {
--				local_phy->enabled = 0;
--				dev_err(dev, "Disabled local phy of ATA disk %016llx due to softreset fail (%d)\n",
--					SAS_ADDR(device->sas_addr), rc);
--				rc = -ENODEV;
--			}
--			sas_put_local_phy(local_phy);
--			break;
--		default:
--			break;
--		}
-+		if (rc == TMF_RESP_FUNC_FAILED)
-+			dev_err(dev, "ata disk %016llx reset (%d)\n",
-+				SAS_ADDR(device->sas_addr), rc);
- 	}
+-	snprintf(buf, buf_sz, "libbpf_%u_%s_0x%zx", getpid(), binary_path, (size_t)offset);
+-
+-	/* sanitize binary_path in the probe name */
+-	for (i = 0; buf[i]; i++) {
+-		if (!isalnum(buf[i]))
+-			buf[i] = '_';
+-	}
+-}
+-
+ static inline int add_uprobe_event_legacy(const char *probe_name, bool retprobe,
+ 					  const char *binary_path, size_t offset)
+ {
+@@ -12173,13 +12161,14 @@ bpf_program__attach_uprobe_opts(const struct bpf_program *prog, pid_t pid,
+ 		pfd = perf_event_open_probe(true /* uprobe */, retprobe, binary_path,
+ 					    func_offset, pid, ref_ctr_off);
+ 	} else {
+-		char probe_name[PATH_MAX + 64];
++		char probe_name[MAX_EVENT_NAME_LEN];
  
-+	rc = hisi_sas_debug_I_T_nexus_reset(device);
- 	if ((rc == TMF_RESP_FUNC_COMPLETE) || (rc == -ENODEV))
- 		hisi_sas_release_task(hisi_hba, device);
+ 		if (ref_ctr_off)
+ 			return libbpf_err_ptr(-EINVAL);
  
+-		gen_uprobe_legacy_event_name(probe_name, sizeof(probe_name),
+-					     binary_path, func_offset);
++		gen_probe_legacy_event_name(probe_name, sizeof(probe_name),
++					    strrchr(binary_path, '/') ? : binary_path,
++					    func_offset);
+ 
+ 		legacy_probe = strdup(probe_name);
+ 		if (!legacy_probe)
 -- 
 2.39.5
 
