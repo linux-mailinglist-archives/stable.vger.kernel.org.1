@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-154214-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-154526-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3051AADD84F
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:54:18 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id C33A5ADD9C2
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 19:09:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 32F5E5A0FC8
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:44:56 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C043419E7692
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:58:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 108882FA624;
-	Tue, 17 Jun 2025 16:41:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D497E13B5B3;
+	Tue, 17 Jun 2025 16:58:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VuMjIyq+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Wwwg4NlP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C08B02FA621;
-	Tue, 17 Jun 2025 16:41:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8ADE62FA654;
+	Tue, 17 Jun 2025 16:58:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750178471; cv=none; b=G8qBbAvtP2EgLPUd1sTY8A8BsBrls+2BMYyzXlpgERRqcW0bE27n65PVxpnmpnDKnbHwCwjIyXSUAcTR4KkFGecq6Zpi5CH0EPvqTq8FYHkarGd8gAi3ficfdTlP7RfwCoObnAsCxXPRj/MZXxXb4E4n+jWz2xKMuX0xOAni4RE=
+	t=1750179493; cv=none; b=ZqIrpknYanKxYjG5eWCYN4aj2XojYhjpLxZJx+Kg/FEuQrHDGDpi5TnTCgWUPs2BLlOGwOtTXNLXxzF/m9vg20SBC75uj7Rq22PxJt773wA19yUT5bY/nshlcXl9VENSsI+GAsvsKHIk43oDfw5eOF59NeJcqH9qQp0TwEy3k40=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750178471; c=relaxed/simple;
-	bh=cEYPydIKroKlWN5Umquu6JZr+t/JVUd550ANyzBay2c=;
+	s=arc-20240116; t=1750179493; c=relaxed/simple;
+	bh=+cEXI/S87VoS6fz9dhJhUS/kH4gMyy/bjh4PkBzm2uo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=H7n3IUM6qk//vkZybyoddcDOoQRvNUkilAekaRTl8dePnyV8ECph1pB8EMwJv+vHSEVGv3ZhdVLBi9tFaq+wEjQ6FIK+zgxL8e5XZ5vUwwxuyQBClkcwDEJhr7qg2cpvMMkdd58a5xPQWIRAipqvyxYcT2Tfnl8FRZ+qTbGiQ8k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VuMjIyq+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B5FDC4CEE3;
-	Tue, 17 Jun 2025 16:41:10 +0000 (UTC)
+	 MIME-Version; b=cNRHWS4+pefUtjI9VunagUkHlVl7hiXQ0RbCK2WF0XjArGv1UJtsgQOv2Jp4DoOgMjMKIkLRWYHrT4/hsOj5TcfszdnDNP1YdKnMSY5R/aDh5t9vLFRHOHgFmKN2iwINTJVm9IMG/Tpul/d7iOb5ddbEX90yqZHEAwULEFb+Kms=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Wwwg4NlP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8862C4CEE3;
+	Tue, 17 Jun 2025 16:58:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750178471;
-	bh=cEYPydIKroKlWN5Umquu6JZr+t/JVUd550ANyzBay2c=;
+	s=korg; t=1750179493;
+	bh=+cEXI/S87VoS6fz9dhJhUS/kH4gMyy/bjh4PkBzm2uo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VuMjIyq+hthj0+MYoFCoyHptN3vZFoUhOr/PPte54E4Ac0c87NGmTCgIdqNP1/jYM
-	 VjHyCUecsoDGZpMCgNMlMHudsYK5rZyfR5GzfeR8u3FDeKn+GLdmcenIdA89V+AvMa
-	 aMkzWcJo4+xLYsq/4ykvA8NnG2D5xPUiWohNKUv4=
+	b=Wwwg4NlPahkjpWjbj0UqFHGVTxGYCZJpYDcrTvi2Jxv8koZBbIwvRgsocI35DPqcf
+	 FtJbeDmN+j31uCDqMNbsVRYZP0mGiP70/g05gwkRid6qBiV6B1YVuYNvYnN3RC36VB
+	 zu9SjtfQAKUOJClsS82BbaXJPvgGl3IRVuKX0HzA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+e2b1803445d236442e54@syzkaller.appspotmail.com,
-	Thomas Gleixner <tglx@linutronix.de>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>
-Subject: [PATCH 6.12 504/512] x86/iopl: Cure TIF_IO_BITMAP inconsistencies
+	David Howells <dhowells@redhat.com>,
+	v9fs@lists.linux.dev,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Dominique Martinet <asmadeus@codewreck.org>,
+	Christian Brauner <brauner@kernel.org>
+Subject: [PATCH 6.15 762/780] 9p: Add a migrate_folio method
 Date: Tue, 17 Jun 2025 17:27:50 +0200
-Message-ID: <20250617152440.042613039@linuxfoundation.org>
+Message-ID: <20250617152522.541972255@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
-References: <20250617152419.512865572@linuxfoundation.org>
+In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
+References: <20250617152451.485330293@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,123 +64,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Gleixner <tglx@linutronix.de>
+From: Matthew Wilcox (Oracle) <willy@infradead.org>
 
-commit 8b68e978718f14fdcb080c2a7791c52a0d09bc6d upstream.
+commit 03ddd7725ed1b39cf9251e1a420559f25dac49b3 upstream.
 
-io_bitmap_exit() is invoked from exit_thread() when a task exists or
-when a fork fails. In the latter case the exit_thread() cleans up
-resources which were allocated during fork().
+The migration code used to be able to migrate dirty 9p folios by writing
+them back using writepage.  When the writepage method was removed,
+we neglected to add a migrate_folio method, which means that dirty 9p
+folios have been unmovable ever since.  This reduced our success at
+defragmenting memory on machines which use 9p heavily.
 
-io_bitmap_exit() invokes task_update_io_bitmap(), which in turn ends up
-in tss_update_io_bitmap(). tss_update_io_bitmap() operates on the
-current task. If current has TIF_IO_BITMAP set, but no bitmap installed,
-tss_update_io_bitmap() crashes with a NULL pointer dereference.
-
-There are two issues, which lead to that problem:
-
-  1) io_bitmap_exit() should not invoke task_update_io_bitmap() when
-     the task, which is cleaned up, is not the current task. That's a
-     clear indicator for a cleanup after a failed fork().
-
-  2) A task should not have TIF_IO_BITMAP set and neither a bitmap
-     installed nor IOPL emulation level 3 activated.
-
-     This happens when a kernel thread is created in the context of
-     a user space thread, which has TIF_IO_BITMAP set as the thread
-     flags are copied and the IO bitmap pointer is cleared.
-
-     Other than in the failed fork() case this has no impact because
-     kernel threads including IO workers never return to user space and
-     therefore never invoke tss_update_io_bitmap().
-
-Cure this by adding the missing cleanups and checks:
-
-  1) Prevent io_bitmap_exit() to invoke task_update_io_bitmap() if
-     the to be cleaned up task is not the current task.
-
-  2) Clear TIF_IO_BITMAP in copy_thread() unconditionally. For user
-     space forks it is set later, when the IO bitmap is inherited in
-     io_bitmap_share().
-
-For paranoia sake, add a warning into tss_update_io_bitmap() to catch
-the case, when that code is invoked with inconsistent state.
-
-Fixes: ea5f1cd7ab49 ("x86/ioperm: Remove bitmap if all permissions dropped")
-Reported-by: syzbot+e2b1803445d236442e54@syzkaller.appspotmail.com
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Fixes: 80105ed2fd27 (9p: Use netfslib read/write_iter)
 Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/87wmdceom2.ffs@tglx
+Cc: David Howells <dhowells@redhat.com>
+Cc: v9fs@lists.linux.dev
+Signed-off-by: "Matthew Wilcox (Oracle)" <willy@infradead.org>
+Link: https://lore.kernel.org/r/20250402150005.2309458-2-willy@infradead.org
+Acked-by: Dominique Martinet <asmadeus@codewreck.org>
+Reviewed-by: David Howells <dhowells@redhat.com>
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kernel/ioport.c  |   13 +++++++++----
- arch/x86/kernel/process.c |    6 ++++++
- 2 files changed, 15 insertions(+), 4 deletions(-)
+ fs/9p/vfs_addr.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/arch/x86/kernel/ioport.c
-+++ b/arch/x86/kernel/ioport.c
-@@ -33,8 +33,9 @@ void io_bitmap_share(struct task_struct
- 	set_tsk_thread_flag(tsk, TIF_IO_BITMAP);
- }
- 
--static void task_update_io_bitmap(struct task_struct *tsk)
-+static void task_update_io_bitmap(void)
- {
-+	struct task_struct *tsk = current;
- 	struct thread_struct *t = &tsk->thread;
- 
- 	if (t->iopl_emul == 3 || t->io_bitmap) {
-@@ -54,7 +55,12 @@ void io_bitmap_exit(struct task_struct *
- 	struct io_bitmap *iobm = tsk->thread.io_bitmap;
- 
- 	tsk->thread.io_bitmap = NULL;
--	task_update_io_bitmap(tsk);
-+	/*
-+	 * Don't touch the TSS when invoked on a failed fork(). TSS
-+	 * reflects the state of @current and not the state of @tsk.
-+	 */
-+	if (tsk == current)
-+		task_update_io_bitmap();
- 	if (iobm && refcount_dec_and_test(&iobm->refcnt))
- 		kfree(iobm);
- }
-@@ -192,8 +198,7 @@ SYSCALL_DEFINE1(iopl, unsigned int, leve
- 	}
- 
- 	t->iopl_emul = level;
--	task_update_io_bitmap(current);
--
-+	task_update_io_bitmap();
- 	return 0;
- }
- 
---- a/arch/x86/kernel/process.c
-+++ b/arch/x86/kernel/process.c
-@@ -180,6 +180,7 @@ int copy_thread(struct task_struct *p, c
- 	frame->ret_addr = (unsigned long) ret_from_fork_asm;
- 	p->thread.sp = (unsigned long) fork_frame;
- 	p->thread.io_bitmap = NULL;
-+	clear_tsk_thread_flag(p, TIF_IO_BITMAP);
- 	p->thread.iopl_warn = 0;
- 	memset(p->thread.ptrace_bps, 0, sizeof(p->thread.ptrace_bps));
- 
-@@ -468,6 +469,11 @@ void native_tss_update_io_bitmap(void)
- 	} else {
- 		struct io_bitmap *iobm = t->io_bitmap;
- 
-+		if (WARN_ON_ONCE(!iobm)) {
-+			clear_thread_flag(TIF_IO_BITMAP);
-+			native_tss_invalidate_io_bitmap();
-+		}
-+
- 		/*
- 		 * Only copy bitmap data when the sequence number differs. The
- 		 * update time is accounted to the incoming task.
+--- a/fs/9p/vfs_addr.c
++++ b/fs/9p/vfs_addr.c
+@@ -165,4 +165,5 @@ const struct address_space_operations v9
+ 	.invalidate_folio	= netfs_invalidate_folio,
+ 	.direct_IO		= noop_direct_IO,
+ 	.writepages		= netfs_writepages,
++	.migrate_folio		= filemap_migrate_folio,
+ };
 
 
 
