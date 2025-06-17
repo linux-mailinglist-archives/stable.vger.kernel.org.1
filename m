@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-153909-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153911-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C58D0ADD75F
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:44:10 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3690BADD6B3
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:36:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8AC04404144
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:28:48 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2A7172C5671
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:29:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F2772E9753;
-	Tue, 17 Jun 2025 16:24:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94C812EA146;
+	Tue, 17 Jun 2025 16:24:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vxa4HNEs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gfEQEpnT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E04AE524F;
-	Tue, 17 Jun 2025 16:24:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 525CC524F;
+	Tue, 17 Jun 2025 16:24:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750177491; cv=none; b=KMgvOXpzbBn0Xlp4wnE4cE/xs8zovcCQ+hlaUc2hCN2F6cSjaUVs5vmLwiwXRAvcI/5t5z8mwb95nUvQQW/PEf6dl1ikjhjXxz4M+550orpWbdlwV5Lvw5oNhadHW/ckrEjwPqmjdBPN2FsCXyQZ0wEFpidV05gBrE1od2uGxeg=
+	t=1750177497; cv=none; b=TxLg72WoQoVk1y4mMZ7Ohk1PKw2gZvwr7uCbogsnu+wKJeaH88Rs/k15Tuszar40QASvMvZh3JXjAaiiSR/5MgJhp9LrIyLMbrNLG/kkk5keaiDbd4xJmXG9eScF3CY/tXRDWr28VMr/HCQ7RGU3Fghi8UngzQAIuyfsb7Z4yzU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750177491; c=relaxed/simple;
-	bh=KVD+9fO7rN1wdhQ1eA7Wp0IzRLKqgR1bHJ32p8yn2Mk=;
+	s=arc-20240116; t=1750177497; c=relaxed/simple;
+	bh=6ymRVWauvkcQMNeal7cma5lVhR06zbSeqZAXzqJ1hWw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AgRjq7x4QxEjA+CxB+sj63pkd+5cSEnmTU6ZtqTpOjIYx63YVPegTrCV5I75KJc75axpTyy2qPZAmwf4khNt6zEieMq4izSot50BRwOZAUXhYZnGqtC18t6ncLlAKEq8tcDoAbkjLxl+FLkxnKtU5qrC5qEwTyYB9QZqh/c6q1M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vxa4HNEs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D877DC4CEE3;
-	Tue, 17 Jun 2025 16:24:49 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Gx0AxgO+WJQRT3OVYFz5m0ZI/VhbyM43Oj7MFXxvZmxduv55qM/VPL+j0j5iVAok2/FnNaUMz3orqwqcfG8Or/zISuBeck3Lid3NrRJ6vWO8OyzEUUHta4rYzaH8qFGePE9K8AHqf5VLBWsXs/qz4P/htpYmjq87w7p0TyTLYtY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gfEQEpnT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6535C4CEE3;
+	Tue, 17 Jun 2025 16:24:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750177490;
-	bh=KVD+9fO7rN1wdhQ1eA7Wp0IzRLKqgR1bHJ32p8yn2Mk=;
+	s=korg; t=1750177497;
+	bh=6ymRVWauvkcQMNeal7cma5lVhR06zbSeqZAXzqJ1hWw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vxa4HNEsuEGmF0y3Rgqj0Pz/z5cpOsL8o4KEdGbXTlFPUIxKu8u6xyRtVcVJ5KnJM
-	 3e+vMP3Ov2+yO8RlKfFfMDzGY1qyJ3cxd+0pt5umRGp8gD+C9NWJv/vKg9INzGYtjv
-	 B0lhxnt1z7OhhRV1InK0BFelR5/GZbBkNNCnmHOA=
+	b=gfEQEpnTcTwn4Z68hVb5RSuStp5AAyjPW4yRYl7/4EFMxszlXxwVST4RSsZGAPanY
+	 Y6kO6X/WqJFd4mncMpu5ZwZGSHql3fSujRQKYow7VnJB9o4T9WlPx9NpDtkeHnQ39X
+	 /JTnB9ft+SVDAmY9d2YxrtV2+c60ujnqcI847naA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Fernando Fernandez Mancera <fmancera@suse.de>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
+	=?UTF-8?q?Radim=20Kr=C4=8Dm=C3=A1=C5=99?= <rkrcmar@ventanamicro.com>,
+	Anup Patel <anup@brainfault.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 314/780] netfilter: nft_tunnel: fix geneve_opt dump
-Date: Tue, 17 Jun 2025 17:20:22 +0200
-Message-ID: <20250617152504.250498735@linuxfoundation.org>
+Subject: [PATCH 6.15 315/780] RISC-V: KVM: lock the correct mp_state during reset
+Date: Tue, 17 Jun 2025 17:20:23 +0200
+Message-ID: <20250617152504.289780169@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
 References: <20250617152451.485330293@linuxfoundation.org>
@@ -60,75 +60,47 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fernando Fernandez Mancera <fmancera@suse.de>
+From: Radim Krčmář <rkrcmar@ventanamicro.com>
 
-[ Upstream commit 22a9613de4c29d7d0770bfb8a5a9d73eb8df7dad ]
+[ Upstream commit 7917be170928189fefad490d1a1237fdfa6b856f ]
 
-When dumping a nft_tunnel with more than one geneve_opt configured the
-netlink attribute hierarchy should be as follow:
+Currently, the kvm_riscv_vcpu_sbi_system_reset() function locks
+vcpu->arch.mp_state_lock when updating tmp->arch.mp_state.mp_state
+which is incorrect hence fix it.
 
- NFTA_TUNNEL_KEY_OPTS
- |
- |--NFTA_TUNNEL_KEY_OPTS_GENEVE
- |  |
- |  |--NFTA_TUNNEL_KEY_GENEVE_CLASS
- |  |--NFTA_TUNNEL_KEY_GENEVE_TYPE
- |  |--NFTA_TUNNEL_KEY_GENEVE_DATA
- |
- |--NFTA_TUNNEL_KEY_OPTS_GENEVE
- |  |
- |  |--NFTA_TUNNEL_KEY_GENEVE_CLASS
- |  |--NFTA_TUNNEL_KEY_GENEVE_TYPE
- |  |--NFTA_TUNNEL_KEY_GENEVE_DATA
- |
- |--NFTA_TUNNEL_KEY_OPTS_GENEVE
- ...
-
-Otherwise, userspace tools won't be able to fetch the geneve options
-configured correctly.
-
-Fixes: 925d844696d9 ("netfilter: nft_tunnel: add support for geneve opts")
-Signed-off-by: Fernando Fernandez Mancera <fmancera@suse.de>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Fixes: 2121cadec45a ("RISCV: KVM: Introduce mp_state_lock to avoid lock inversion")
+Signed-off-by: Radim Krčmář <rkrcmar@ventanamicro.com>
+Reviewed-by: Anup Patel <anup@brainfault.org>
+Link: https://lore.kernel.org/r/20250523104725.2894546-4-rkrcmar@ventanamicro.com
+Signed-off-by: Anup Patel <anup@brainfault.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nft_tunnel.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ arch/riscv/kvm/vcpu_sbi.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/net/netfilter/nft_tunnel.c b/net/netfilter/nft_tunnel.c
-index 0c63d1367cf7a..a12486ae089d6 100644
---- a/net/netfilter/nft_tunnel.c
-+++ b/net/netfilter/nft_tunnel.c
-@@ -621,10 +621,10 @@ static int nft_tunnel_opts_dump(struct sk_buff *skb,
- 		struct geneve_opt *opt;
- 		int offset = 0;
+diff --git a/arch/riscv/kvm/vcpu_sbi.c b/arch/riscv/kvm/vcpu_sbi.c
+index d1c83a77735e0..0000ecf49b188 100644
+--- a/arch/riscv/kvm/vcpu_sbi.c
++++ b/arch/riscv/kvm/vcpu_sbi.c
+@@ -143,9 +143,9 @@ void kvm_riscv_vcpu_sbi_system_reset(struct kvm_vcpu *vcpu,
+ 	struct kvm_vcpu *tmp;
  
--		inner = nla_nest_start_noflag(skb, NFTA_TUNNEL_KEY_OPTS_GENEVE);
--		if (!inner)
--			goto failure;
- 		while (opts->len > offset) {
-+			inner = nla_nest_start_noflag(skb, NFTA_TUNNEL_KEY_OPTS_GENEVE);
-+			if (!inner)
-+				goto failure;
- 			opt = (struct geneve_opt *)(opts->u.data + offset);
- 			if (nla_put_be16(skb, NFTA_TUNNEL_KEY_GENEVE_CLASS,
- 					 opt->opt_class) ||
-@@ -634,8 +634,8 @@ static int nft_tunnel_opts_dump(struct sk_buff *skb,
- 				    opt->length * 4, opt->opt_data))
- 				goto inner_failure;
- 			offset += sizeof(*opt) + opt->length * 4;
-+			nla_nest_end(skb, inner);
- 		}
--		nla_nest_end(skb, inner);
+ 	kvm_for_each_vcpu(i, tmp, vcpu->kvm) {
+-		spin_lock(&vcpu->arch.mp_state_lock);
++		spin_lock(&tmp->arch.mp_state_lock);
+ 		WRITE_ONCE(tmp->arch.mp_state.mp_state, KVM_MP_STATE_STOPPED);
+-		spin_unlock(&vcpu->arch.mp_state_lock);
++		spin_unlock(&tmp->arch.mp_state_lock);
  	}
- 	nla_nest_end(skb, nest);
- 	return 0;
+ 	kvm_make_all_cpus_request(vcpu->kvm, KVM_REQ_SLEEP);
+ 
 -- 
 2.39.5
 
