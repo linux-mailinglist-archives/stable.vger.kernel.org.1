@@ -1,52 +1,53 @@
-Return-Path: <stable+bounces-152977-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-152999-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9426CADD1BD
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 17:34:22 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A1E16ADD1DB
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 17:35:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4DA8E3AFB5E
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 15:33:51 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 75EF618980AF
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 15:35:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C71352EB5AB;
-	Tue, 17 Jun 2025 15:34:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C9462ECD20;
+	Tue, 17 Jun 2025 15:35:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m/4xDdIi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PReywBM/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8409A1E8332;
-	Tue, 17 Jun 2025 15:34:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59E66221F1F;
+	Tue, 17 Jun 2025 15:35:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750174452; cv=none; b=mt3twNoZprnYpyrLTpjFJrjC3nM5Ue7os7Rgku2nXDT9FXQ0t+S5uQVckEfM7T2cXN0k3QFE4YdpvVETL26/zBiuC9uu8gDOQoFVkKuXhIOlTQG/XcvR4wK93+DuPEMYLPFVmSauu3Ma7eHnecrmtAeNGeJxagnsbqx967Q7V5k=
+	t=1750174538; cv=none; b=qRB6WNPp6ErQbsvYzt9WSY76PrnBbxtAlQSR7Y5tP2BgckJJeGS768hFydbuLIlKLQp7Xpz2/BTEeYh/h1EqhSrUec+gsIySMxm6QcLI36osjOoBm8FUxgF4t+ZbdEjVUqkPrQGxj03YoxGsh9jYxMhxJmHxlJCBk01PH1k4+D8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750174452; c=relaxed/simple;
-	bh=xiQWHwr4V0WUQtAIhxKse2dOqB/IfbBLDIsBr9BFH6U=;
+	s=arc-20240116; t=1750174538; c=relaxed/simple;
+	bh=fCTISZz1bLNj5/n9yDxbbvyNxUkVZYxH15tlMZM3M/I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=i9id1hYSzBhMJBGsNP3AeaF3HVM5GCq6JvOIigtjdaW+Fdx0B2jV09IcTt2BHTRWTgkoJi0i+pjlyKKoTFI5VeDhacSBpHVYDZTOPIpm5Wlgkpw8JEHdDMvA08ICSb8yQ5ly/g3ExRTywb7ZIUuti2GDQO3Rak45qi5z3LugPeg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m/4xDdIi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6DDBC4CEE3;
-	Tue, 17 Jun 2025 15:34:11 +0000 (UTC)
+	 MIME-Version; b=WenSxbJzz7QelcSlcy5PH1RCdF8wh4WfsASbJQz00Rps7/4a36rjcjnbh0vT/KMthqj7f3VmpctxLiHq1IlG7EqQVYMKoIwlStvLCFBlwJTyeXtnoOCR5A1a6ATSXYgpm+VDmeYPLup45Pgyxx2M3dxCytN3ZUi43gYf6BYBW9U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PReywBM/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE449C4CEE3;
+	Tue, 17 Jun 2025 15:35:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750174452;
-	bh=xiQWHwr4V0WUQtAIhxKse2dOqB/IfbBLDIsBr9BFH6U=;
+	s=korg; t=1750174538;
+	bh=fCTISZz1bLNj5/n9yDxbbvyNxUkVZYxH15tlMZM3M/I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=m/4xDdIifjfJXNXaV7phJNuRJ8RrMe2WGXvIugaKBY/zNHcqIgJNjDX0SvZ736N0x
-	 j9zXPZtBKkrZjbJ6rBet5kBPhBVx/fsb39TROVBb7fuHs4BDQKpfCObcQokkhmfTOY
-	 GJ6U6ptPcd7lOOhtzYKIvWrqmp+8guyQLOlA0bdI=
+	b=PReywBM/dtSrKH972zbF4bI4MPr8fRqUW+thwcDZq1wVJ0Fvf0rVwW9dlOzY4TNWl
+	 W0X3YDKhLcuB2bDxp0vQ7a4cEExZWKFqvg4OW6ppbBkxHNA5GQYbnDB6TZFL9tk/H1
+	 U7sR0mpj/JWg8SK+rw9AJ5n8tFrbsFTs6pl+uwz8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andreas Gruenbacher <agruenba@redhat.com>,
+	Qing Wang <wangqing7171@gmail.com>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 008/512] gfs2: gfs2_create_inode error handling fix
-Date: Tue, 17 Jun 2025 17:19:34 +0200
-Message-ID: <20250617152419.862469257@linuxfoundation.org>
+Subject: [PATCH 6.12 009/512] perf/core: Fix broken throttling when max_samples_per_tick=1
+Date: Tue, 17 Jun 2025 17:19:35 +0200
+Message-ID: <20250617152419.901351754@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
 References: <20250617152419.512865572@linuxfoundation.org>
@@ -65,33 +66,62 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Andreas Gruenbacher <agruenba@redhat.com>
+From: Qing Wang <wangqing7171@gmail.com>
 
-[ Upstream commit af4044fd0b77e915736527dd83011e46e6415f01 ]
+[ Upstream commit f51972e6f8b9a737b2b3eb588069acb538fa72de ]
 
-When gfs2_create_inode() finds a directory, make sure to return -EISDIR.
+According to the throttling mechanism, the pmu interrupts number can not
+exceed the max_samples_per_tick in one tick. But this mechanism is
+ineffective when max_samples_per_tick=1, because the throttling check is
+skipped during the first interrupt and only performed when the second
+interrupt arrives.
 
-Fixes: 571a4b57975a ("GFS2: bugger off early if O_CREAT open finds a directory")
-Signed-off-by: Andreas Gruenbacher <agruenba@redhat.com>
+Perhaps this bug may cause little influence in one tick, but if in a
+larger time scale, the problem can not be underestimated.
+
+When max_samples_per_tick = 1:
+Allowed-interrupts-per-second max-samples-per-second  default-HZ  ARCH
+200                           100                     100         X86
+500                           250                     250         ARM64
+...
+Obviously, the pmu interrupt number far exceed the user's expect.
+
+Fixes: e050e3f0a71b ("perf: Fix broken interrupt rate throttling")
+Signed-off-by: Qing Wang <wangqing7171@gmail.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Link: https://lkml.kernel.org/r/20250405141635.243786-3-wangqing7171@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/gfs2/inode.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ kernel/events/core.c | 16 ++++++++--------
+ 1 file changed, 8 insertions(+), 8 deletions(-)
 
-diff --git a/fs/gfs2/inode.c b/fs/gfs2/inode.c
-index 1b95db2c3aac3..3be24285ab01d 100644
---- a/fs/gfs2/inode.c
-+++ b/fs/gfs2/inode.c
-@@ -659,7 +659,8 @@ static int gfs2_create_inode(struct inode *dir, struct dentry *dentry,
- 	if (!IS_ERR(inode)) {
- 		if (S_ISDIR(inode->i_mode)) {
- 			iput(inode);
--			inode = ERR_PTR(-EISDIR);
-+			inode = NULL;
-+			error = -EISDIR;
- 			goto fail_gunlock;
- 		}
- 		d_instantiate(dentry, inode);
+diff --git a/kernel/events/core.c b/kernel/events/core.c
+index 285a4548450bd..8352376d82154 100644
+--- a/kernel/events/core.c
++++ b/kernel/events/core.c
+@@ -9715,14 +9715,14 @@ __perf_event_account_interrupt(struct perf_event *event, int throttle)
+ 		hwc->interrupts = 1;
+ 	} else {
+ 		hwc->interrupts++;
+-		if (unlikely(throttle &&
+-			     hwc->interrupts > max_samples_per_tick)) {
+-			__this_cpu_inc(perf_throttled_count);
+-			tick_dep_set_cpu(smp_processor_id(), TICK_DEP_BIT_PERF_EVENTS);
+-			hwc->interrupts = MAX_INTERRUPTS;
+-			perf_log_throttle(event, 0);
+-			ret = 1;
+-		}
++	}
++
++	if (unlikely(throttle && hwc->interrupts >= max_samples_per_tick)) {
++		__this_cpu_inc(perf_throttled_count);
++		tick_dep_set_cpu(smp_processor_id(), TICK_DEP_BIT_PERF_EVENTS);
++		hwc->interrupts = MAX_INTERRUPTS;
++		perf_log_throttle(event, 0);
++		ret = 1;
+ 	}
+ 
+ 	if (event->attr.freq) {
 -- 
 2.39.5
 
