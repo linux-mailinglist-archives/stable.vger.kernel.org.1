@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-153480-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-154410-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0D830ADD4CD
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:14:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3479CADD9F5
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 19:11:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 95D3E560050
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:05:08 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 442F8404404
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:52:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3CA132ED16B;
-	Tue, 17 Jun 2025 16:01:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD7E3285072;
+	Tue, 17 Jun 2025 16:51:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ui8dzTxl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="waOwjsqI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF1BE2ECE94;
-	Tue, 17 Jun 2025 16:01:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 693422FA623;
+	Tue, 17 Jun 2025 16:51:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750176100; cv=none; b=jdxNs5pGJ4hi1Otm6CBqGJhme1xL5gAuPr4nhC99HV8jtgBIOHejj49Kl9b8kHaMFe0QA4w0aOpEIUpUdxBjBInDW99T/MuHzjh51z/TKV3Udtl+nq1G09uaJjVAGDj5bQgtXjUDq+LmxOsIwcB53LaUh8ViqNBpPwylnrXZBgs=
+	t=1750179105; cv=none; b=afKjPfaKz4c4f+UtTaMhks54PgyQHb3IWWdjgfYxn9MYvvuEuR92xq1yan1DGbfrSnjZG3Y0laK9UcsbX6Ys7EcigZvk3LE7H5QiKp6i1rnCPQLpEqTp9S8aE7wf4kUyxa0fsA90K0JiPl++hmydJcoC7YvQT+QakB576bhOyhI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750176100; c=relaxed/simple;
-	bh=uIFV8YwIHJ/kDRMtmn4zI+ayBmurw3SvkfVU/7fh5ns=;
+	s=arc-20240116; t=1750179105; c=relaxed/simple;
+	bh=nlofB6hSviRw9q5Lx32Qt96KQL/wMwoMf+TiNGPnH7M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=C3TDsJpEXi1mq5Q1Mt5wkHRrVCv93aG2xdnN+Ii+JfhxzrzvTASEzMHWWsxw2icKmlx1iEZfkvAue9b91oOYq+DhSkc/dIS8wEhvQz/5yu/Mhs/nLZzuna6LPzy8ueU1f0TcsqK4g/ChXumiH287h5065Br/mnzBBnS/RzCJS9Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ui8dzTxl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75A76C4CEE3;
-	Tue, 17 Jun 2025 16:01:39 +0000 (UTC)
+	 MIME-Version; b=R/G2IeFZ3iQg+Vw+y9ZIvPJxg2m8a6rMZt/je/RrhhqogaAb8ibQIno8ee22bSFYd+3/it1BaCMt79td3HO4sZ96JJ4N58HVHZJt+u/Ea1BI+m/FgnmUUNBn+ZqSnGlgBqk3RIFY5J9/Vad6iNT6rcwhLdG3nO4xl31FQVReI3s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=waOwjsqI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EDCABC4CEE3;
+	Tue, 17 Jun 2025 16:51:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750176099;
-	bh=uIFV8YwIHJ/kDRMtmn4zI+ayBmurw3SvkfVU/7fh5ns=;
+	s=korg; t=1750179105;
+	bh=nlofB6hSviRw9q5Lx32Qt96KQL/wMwoMf+TiNGPnH7M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ui8dzTxlRlEv1V75rm3DZDgF/iNOKUlHe04tkl8lnYVDsXDbcSOaKZRnI0BfGUtd2
-	 ntY9QXCD8J/XJkFDQWku7DhHHo32L4lVUm1/AUokZ+mdlhu//GgXwr6INtHsLPySQR
-	 yCqcX0qCIceW4ye9rh7Vuj6y45d1i+CZ4O9dA3tk=
+	b=waOwjsqIcSUJAYviW/wNyQnNwWbYGAKhd5HxmnYl9x/Mr32cWntAJ1iNW4+0p8gOY
+	 BMRzrb3Jxwb8PlCO+RqFEGaNAk66Dg7s21qoeNUb0Fo6p+ZZJ22Z9wgbOOss8Yz/sB
+	 dHQJWTjTdM/RdI1MCrnbAvRwBZWlQ2IE5HqtBncw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Quentin Schulz <quentin.schulz@cherry.de>,
-	Maxime Chevallier <maxime.chevallier@bootlin.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Christian Brauner <brauner@kernel.org>,
+	Al Viro <viro@zeniv.linux.org.uk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 243/356] net: stmmac: platform: guarantee uniqueness of bus_id
+Subject: [PATCH 6.15 650/780] path_overmount(): avoid false negatives
 Date: Tue, 17 Jun 2025 17:25:58 +0200
-Message-ID: <20250617152347.992027672@linuxfoundation.org>
+Message-ID: <20250617152517.949213556@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152338.212798615@linuxfoundation.org>
-References: <20250617152338.212798615@linuxfoundation.org>
+In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
+References: <20250617152451.485330293@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,70 +62,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Quentin Schulz <quentin.schulz@cherry.de>
+From: Al Viro <viro@zeniv.linux.org.uk>
 
-[ Upstream commit eb7fd7aa35bfcc1e1fda4ecc42ccfcb526cdc780 ]
+[ Upstream commit 5f31c549382bcddbbd754c72c5433b19420d485d ]
 
-bus_id is currently derived from the ethernetX alias. If one is missing
-for the device, 0 is used. If ethernet0 points to another stmmac device
-or if there are 2+ stmmac devices without an ethernet alias, then bus_id
-will be 0 for all of those.
+Holding namespace_sem is enough to make sure that result remains valid.
+It is *not* enough to avoid false negatives from __lookup_mnt().  Mounts
+can be unhashed outside of namespace_sem (stuck children getting detached
+on final mntput() of lazy-umounted mount) and having an unrelated mount
+removed from the hash chain while we traverse it may end up with false
+negative from __lookup_mnt().  We need to sample and recheck the seqlock
+component of mount_lock...
 
-This is an issue because the bus_id is used to generate the mdio bus id
-(new_bus->id in drivers/net/ethernet/stmicro/stmmac/stmmac_mdio.c
-stmmac_mdio_register) and this needs to be unique.
+Bug predates the introduction of path_overmount() - it had come from
+the code in finish_automount() that got abstracted into that helper.
 
-This allows to avoid needing to define ethernet aliases for devices with
-multiple stmmac controllers (such as the Rockchip RK3588) for multiple
-stmmac devices to probe properly.
-
-Obviously, the bus_id isn't guaranteed to be stable across reboots if no
-alias is set for the device but that is easily fixed by simply adding an
-alias if this is desired.
-
-Fixes: 25c83b5c2e82 ("dt:net:stmmac: Add support to dwmac version 3.610 and 3.710")
-Signed-off-by: Quentin Schulz <quentin.schulz@cherry.de>
-Reviewed-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
-Link: https://patch.msgid.link/20250527-stmmac-mdio-bus_id-v2-1-a5ca78454e3c@cherry.de
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Reviewed-by: Christian Brauner <brauner@kernel.org>
+Fixes: 26df6034fdb2 ("fix automount/automount race properly")
+Fixes: 6ac392815628 ("fs: allow to mount beneath top mount")
+Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/stmicro/stmmac/stmmac_platform.c | 11 +++++++++--
- 1 file changed, 9 insertions(+), 2 deletions(-)
+ fs/namespace.c | 19 +++++++++++++------
+ 1 file changed, 13 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_platform.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_platform.c
-index 4d570efd9d4bb..6c684f6ee84be 100644
---- a/drivers/net/ethernet/stmicro/stmmac/stmmac_platform.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_platform.c
-@@ -419,6 +419,7 @@ stmmac_probe_config_dt(struct platform_device *pdev, u8 *mac)
- 	struct device_node *np = pdev->dev.of_node;
- 	struct plat_stmmacenet_data *plat;
- 	struct stmmac_dma_cfg *dma_cfg;
-+	static int bus_id = -ENODEV;
- 	int phy_mode;
- 	void *ret;
- 	int rc;
-@@ -454,8 +455,14 @@ stmmac_probe_config_dt(struct platform_device *pdev, u8 *mac)
- 	of_property_read_u32(np, "max-speed", &plat->max_speed);
- 
- 	plat->bus_id = of_alias_get_id(np, "ethernet");
--	if (plat->bus_id < 0)
--		plat->bus_id = 0;
-+	if (plat->bus_id < 0) {
-+		if (bus_id < 0)
-+			bus_id = of_alias_get_highest_id("ethernet");
-+		/* No ethernet alias found, init at -1 so first bus_id is 0 */
-+		if (bus_id < 0)
-+			bus_id = -1;
-+		plat->bus_id = ++bus_id;
+diff --git a/fs/namespace.c b/fs/namespace.c
+index 216807f772cd2..cb5126b06dcb9 100644
+--- a/fs/namespace.c
++++ b/fs/namespace.c
+@@ -3477,18 +3477,25 @@ static int do_set_group(struct path *from_path, struct path *to_path)
+  * Check if path is overmounted, i.e., if there's a mount on top of
+  * @path->mnt with @path->dentry as mountpoint.
+  *
+- * Context: This function expects namespace_lock() to be held.
++ * Context: namespace_sem must be held at least shared.
++ * MUST NOT be called under lock_mount_hash() (there one should just
++ * call __lookup_mnt() and check if it returns NULL).
+  * Return: If path is overmounted true is returned, false if not.
+  */
+ static inline bool path_overmounted(const struct path *path)
+ {
++	unsigned seq = read_seqbegin(&mount_lock);
++	bool no_child;
++
+ 	rcu_read_lock();
+-	if (unlikely(__lookup_mnt(path->mnt, path->dentry))) {
+-		rcu_read_unlock();
+-		return true;
+-	}
++	no_child = !__lookup_mnt(path->mnt, path->dentry);
+ 	rcu_read_unlock();
+-	return false;
++	if (need_seqretry(&mount_lock, seq)) {
++		read_seqlock_excl(&mount_lock);
++		no_child = !__lookup_mnt(path->mnt, path->dentry);
++		read_sequnlock_excl(&mount_lock);
 +	}
++	return unlikely(!no_child);
+ }
  
- 	/* Default to phy auto-detection */
- 	plat->phy_addr = -1;
+ /**
 -- 
 2.39.5
 
