@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-153337-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153340-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7DCF3ADD3C8
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:02:19 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BCA51ADD3CC
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:02:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 427BE2C1C12
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 15:57:32 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2BE90166B27
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 15:57:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF8B72ECEA4;
-	Tue, 17 Jun 2025 15:53:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 683702EE614;
+	Tue, 17 Jun 2025 15:53:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nzocA2XO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SG+6tYmZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AA382E92BC;
-	Tue, 17 Jun 2025 15:53:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C1122EE60C;
+	Tue, 17 Jun 2025 15:53:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750175623; cv=none; b=DkeMdHmN7gVAfhvGmkYUFkvaEURE+dIL87MpLEfjO4XvFw1caJG1hVH8bme79Tua2krJ+BB1mtTybyLSjXVY53XhxfqIoETKIXpamFGivL5Elc0rdxR4jdMNiVas0SouxYqWz2/Rg9YHUIYn/hsXRRgF70Ni5JG6wdCCI9lYFzs=
+	t=1750175633; cv=none; b=CVdQ22syXn5QgxinH2qfjoRBxc8r8j5qTK/GHAEqfLGdBoZxF6AngLIbFBzUb4wNGM54dscDWMMOeuswEzIfDR9LPeSzQFVeY3mhqPLMaaRvxqdLWvD31yLqXOmf2nG+F1qqbLA5zyi3naCMjTwhYZxv1nWwLFoknLRVe/n7N5s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750175623; c=relaxed/simple;
-	bh=AO+GoIcaz7vpGVflnvdAu6X8fvADCAeZOx9FIeHQI44=;
+	s=arc-20240116; t=1750175633; c=relaxed/simple;
+	bh=0m2NXWCYyHmZiQQJKfEEbAse7iB8ulMXJEEngwtdRr8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ghBP8iD9hdTlNgcDx3cew7QirwvUjfa4NQG3WPGQTGcfst5QrOuLCuaJdMpnpnU8Vea4RN3L0wGYf3qY3JZPc/S/cEOz5LCIKG2mFA4hwTwyGX3M6ZIz5FccNPTHZeO6pD0A/uJcVJ/RlCQ5F7xm5QHs34QCrvrKZkOJsh/hw88=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nzocA2XO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DCD71C4CEE7;
-	Tue, 17 Jun 2025 15:53:42 +0000 (UTC)
+	 MIME-Version; b=TQUnAU+DovZdsPAgvn1cxg/OLf+42/KyBveVT/pCXcIe+pQZYQiX1sV3qQ932yLuIWTEjNPMz7FrtcwhpsJrgDxRk5xpFkL/4P9UjVZyZ3aMvn7x5K7tlO2yt0kFGjKTSVuhSU4vBlZVRH9UVJvxuHRRQ4KFJYacxUXzLQlqY+E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SG+6tYmZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81411C4CEF1;
+	Tue, 17 Jun 2025 15:53:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750175623;
-	bh=AO+GoIcaz7vpGVflnvdAu6X8fvADCAeZOx9FIeHQI44=;
+	s=korg; t=1750175633;
+	bh=0m2NXWCYyHmZiQQJKfEEbAse7iB8ulMXJEEngwtdRr8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nzocA2XOITsoNx4x0bAv5jer5drVAYr/zccyIzeGdtiRr4GVDhARN09dvzWntgxwG
-	 6/z0xnKaBB6WGmU4MVHvHXLyGQCkW2FLUXLIFfivppaN5XImi0KQhZCEbgplBMv8BC
-	 0hJCRAYnqTBrSn2tDpGnppO/IujVenldpC9RIxkw=
+	b=SG+6tYmZgolpD2tT/pOXabx1Qjvn5slRh5T6T/UtNP7GMXnEcu9EWFERfgMm9IMF9
+	 0cnYegB5XtKmb8mb77q0U/M/5EO6zNhlSALJGZlvXPq9wRiFPfzMclxwm/zqEhBzah
+	 G6epBUkcicksoPaCjObnWGWkZ3QzWnKLzvljD88I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -46,9 +46,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Steven Price <steven.price@arm.com>,
 	Boris Brezillon <boris.brezillon@collabora.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 107/780] drm/panthor: Call panthor_gpu_coherency_init() after PM resume()
-Date: Tue, 17 Jun 2025 17:16:55 +0200
-Message-ID: <20250617152455.859582366@linuxfoundation.org>
+Subject: [PATCH 6.15 108/780] drm/panthor: Update panthor_mmu::irq::mask when needed
+Date: Tue, 17 Jun 2025 17:16:56 +0200
+Message-ID: <20250617152455.905480425@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
 References: <20250617152451.485330293@linuxfoundation.org>
@@ -69,14 +69,11 @@ Content-Transfer-Encoding: 8bit
 
 From: Boris Brezillon <boris.brezillon@collabora.com>
 
-[ Upstream commit 7d5a3b22f5b58ef89ab8770d7a44c24eecde8d66 ]
+[ Upstream commit 8ba64cf2f358079d09faba7529aad2b0a46c7903 ]
 
-When the device is coherent, panthor_gpu_coherency_init() will read
-GPU_COHERENCY_FEATURES to make sure the GPU supports the ACE-Lite
-coherency protocol, which will fail if the clocks/power-domains are
-not enabled when the read is done. Move the
-panthor_gpu_coherency_init() call after the device has been resumed
-to prevent that.
+When we clear the faulty bits in the AS mask, we also need to update
+the panthor_mmu::irq::mask field otherwise our IRQ handler won't get
+called again until the GPU is reset.
 
 Changes in v2:
 - Add Liviu's R-b
@@ -84,42 +81,28 @@ Changes in v2:
 Changes in v3:
 - Add Steve's R-b
 
-Fixes: dd7db8d911a1 ("drm/panthor: Explicitly set the coherency mode")
+Fixes: 647810ec2476 ("drm/panthor: Add the MMU/VM logical block")
 Reviewed-by: Liviu Dudau <liviu.dudau@arm.com>
 Reviewed-by: Steven Price <steven.price@arm.com>
-Link: https://lore.kernel.org/r/20250404080933.2912674-3-boris.brezillon@collabora.com
+Link: https://lore.kernel.org/r/20250404080933.2912674-4-boris.brezillon@collabora.com
 Signed-off-by: Boris Brezillon <boris.brezillon@collabora.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/panthor/panthor_device.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/gpu/drm/panthor/panthor_mmu.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/gpu/drm/panthor/panthor_device.c b/drivers/gpu/drm/panthor/panthor_device.c
-index a9da1d1eeb707..c73c1608d6e68 100644
---- a/drivers/gpu/drm/panthor/panthor_device.c
-+++ b/drivers/gpu/drm/panthor/panthor_device.c
-@@ -171,10 +171,6 @@ int panthor_device_init(struct panthor_device *ptdev)
- 	struct page *p;
- 	int ret;
+diff --git a/drivers/gpu/drm/panthor/panthor_mmu.c b/drivers/gpu/drm/panthor/panthor_mmu.c
+index 12a02e28f50fd..7cca97d298ea1 100644
+--- a/drivers/gpu/drm/panthor/panthor_mmu.c
++++ b/drivers/gpu/drm/panthor/panthor_mmu.c
+@@ -781,6 +781,7 @@ int panthor_vm_active(struct panthor_vm *vm)
+ 	if (ptdev->mmu->as.faulty_mask & panthor_mmu_as_fault_mask(ptdev, as)) {
+ 		gpu_write(ptdev, MMU_INT_CLEAR, panthor_mmu_as_fault_mask(ptdev, as));
+ 		ptdev->mmu->as.faulty_mask &= ~panthor_mmu_as_fault_mask(ptdev, as);
++		ptdev->mmu->irq.mask |= panthor_mmu_as_fault_mask(ptdev, as);
+ 		gpu_write(ptdev, MMU_INT_MASK, ~ptdev->mmu->as.faulty_mask);
+ 	}
  
--	ret = panthor_gpu_coherency_init(ptdev);
--	if (ret)
--		return ret;
--
- 	init_completion(&ptdev->unplug.done);
- 	ret = drmm_mutex_init(&ptdev->base, &ptdev->unplug.lock);
- 	if (ret)
-@@ -247,6 +243,10 @@ int panthor_device_init(struct panthor_device *ptdev)
- 	if (ret)
- 		goto err_rpm_put;
- 
-+	ret = panthor_gpu_coherency_init(ptdev);
-+	if (ret)
-+		return ret;
-+
- 	ret = panthor_mmu_init(ptdev);
- 	if (ret)
- 		goto err_unplug_gpu;
 -- 
 2.39.5
 
