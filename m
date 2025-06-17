@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-153926-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153929-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 77E0BADD701
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:39:53 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1246BADD6BD
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:36:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A0AE31943467
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:30:35 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 34D124A14F3
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:30:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E7A372ED844;
-	Tue, 17 Jun 2025 16:25:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6CF842ED854;
+	Tue, 17 Jun 2025 16:25:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ddFhZpI8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sCOoWuJg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A09D32ED174;
-	Tue, 17 Jun 2025 16:25:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 255B42ECE87;
+	Tue, 17 Jun 2025 16:25:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750177547; cv=none; b=eUxvb/x4v1j77lPeRO65MOKB3Pm/o8DDBFjXnEoiHxR7FisDjT64CYA+eURu98Ri2PMbhcTAM+yEwd6jDcKXf4FOrCLsstCgYkUjePiJB9JYC/BN6O1xGKNLZdchaNEo1uJiEEEfttiFfXsjoDvzX9klYbKvY4XpXhkESsy2VjE=
+	t=1750177556; cv=none; b=SRYNINnYVMefKP3JfC5CNYEkjmCLKdF3DU7HIc96MND0MdI6ObndtkRqkLlCXu9LHWVVzFTob8efgLnbgx5A1YoquPo74muV3LXlDfTFCTreU51hG6Buz3X4PkfLFM3P+IXMVv7If0+NfKFvinvzwashrRFH/YuvTdGAN7psF/Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750177547; c=relaxed/simple;
-	bh=WWSLFjI+2GUR5v/EHJtj91SrNTJTG2p7TUEHr1Bcfew=;
+	s=arc-20240116; t=1750177556; c=relaxed/simple;
+	bh=RbMePumnu9p5AzczLWMmkrlA4lpJu1Pso6tOpOrOFhw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RUfJpnhu9nMrBw6rd9npycqiU3HZItypzMKfu/T42+huAVVG7lbPXM0ZRiM394fxGLIBom/u8wI3i2T28+O3s/4nVlu+Dug9m9myQ8QZAOWrezoUZ+PjozdGnbpYnIR/ppXklQ7/TZ49vWt6He2vB9m0ZJqeY4ybT9YvVCXhTwc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ddFhZpI8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2F12C4CEE3;
-	Tue, 17 Jun 2025 16:25:45 +0000 (UTC)
+	 MIME-Version; b=nrJxq/2/UlOf53P3ZCkxwpQJXwBO3/sKYKeGii5FC0FdfnbyPSV9dSrVFSYCr6xyXMT50bgx1Zwkp0sVAwoSpW/JHIVend8GzVLwNF4sLr+ERmzFtWDRC9JTY0f3oYUi2hQhWX9b1AZxkYs7ebNzMHgR8f3JuWrW7rEwzEvXHAo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sCOoWuJg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84363C4CEE3;
+	Tue, 17 Jun 2025 16:25:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750177546;
-	bh=WWSLFjI+2GUR5v/EHJtj91SrNTJTG2p7TUEHr1Bcfew=;
+	s=korg; t=1750177556;
+	bh=RbMePumnu9p5AzczLWMmkrlA4lpJu1Pso6tOpOrOFhw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ddFhZpI80y9j4DEmB4y52KZ9JWQ94C/sxYfTIGturel+sbiibQfEvjSdatUALJCkM
-	 tE1wkCpH97ejFGGrJ3ZjDlg561Vg2GtMspNHDytkHV7Q6N5hucTe3o3FgVr4KhA7bl
-	 Xmzycrqav3nA9TLMLXzK5GKDszQ4Sn2vc4qI+58g=
+	b=sCOoWuJgaJTGmt0saauXro9XcPdihEnaH2VkN1g5A82Fm52KoRXOv6u83jt/B0H6W
+	 yYT3uwEK7QnfiTD4RwCRNuruoNCGUtGEozm/lB0yVOHUZeraU3ziSKzTkTcFt0eeEC
+	 EcaIjze0vqrbbFt27uwbA2Dp3Jm2fSvA5NWg1HLI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+b191b5ccad8d7a986286@syzkaller.appspotmail.com,
-	Stanislav Fomichev <stfomichev@gmail.com>,
-	Willem de Bruijn <willemb@google.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Israel Rukshin <israelr@nvidia.com>,
+	Parav Pandit <parav@nvidia.com>,
+	Max Gurtovoy <mgurtovoy@nvidia.com>,
+	"Michael S. Tsirkin" <mst@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 322/780] af_packet: move notifiers packet_dev_mc out of rcu critical section
-Date: Tue, 17 Jun 2025 17:20:30 +0200
-Message-ID: <20250617152504.565248588@linuxfoundation.org>
+Subject: [PATCH 6.15 323/780] virtio-pci: Fix result size returned for the admin command completion
+Date: Tue, 17 Jun 2025 17:20:31 +0200
+Message-ID: <20250617152504.606919426@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
 References: <20250617152451.485330293@linuxfoundation.org>
@@ -68,134 +68,70 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Stanislav Fomichev <stfomichev@gmail.com>
+From: Israel Rukshin <israelr@nvidia.com>
 
-[ Upstream commit d8d85ef0a631df9127f202e6371bb33a0b589952 ]
+[ Upstream commit 9ef41ebf787fcbde99ac404ae473f8467641f983 ]
 
-Syzkaller reports the following issue:
+The result size returned by virtio_pci_admin_dev_parts_get() is 8 bytes
+larger than the actual result data size. This occurs because the
+result_sg_size field of the command is filled with the result length
+from virtqueue_get_buf(), which includes both the data size and an
+additional 8 bytes of status.
 
- BUG: sleeping function called from invalid context at kernel/locking/mutex.c:578
- __mutex_lock+0x106/0xe80 kernel/locking/mutex.c:746
- team_change_rx_flags+0x38/0x220 drivers/net/team/team_core.c:1781
- dev_change_rx_flags net/core/dev.c:9145 [inline]
- __dev_set_promiscuity+0x3f8/0x590 net/core/dev.c:9189
- netif_set_promiscuity+0x50/0xe0 net/core/dev.c:9201
- dev_set_promiscuity+0x126/0x260 net/core/dev_api.c:286 packet_dev_mc net/packet/af_packet.c:3698 [inline]
- packet_dev_mclist_delete net/packet/af_packet.c:3722 [inline]
- packet_notifier+0x292/0xa60 net/packet/af_packet.c:4247
- notifier_call_chain+0x1b3/0x3e0 kernel/notifier.c:85
- call_netdevice_notifiers_extack net/core/dev.c:2214 [inline]
- call_netdevice_notifiers net/core/dev.c:2228 [inline]
- unregister_netdevice_many_notify+0x15d8/0x2330 net/core/dev.c:11972
- rtnl_delete_link net/core/rtnetlink.c:3522 [inline]
- rtnl_dellink+0x488/0x710 net/core/rtnetlink.c:3564
- rtnetlink_rcv_msg+0x7cf/0xb70 net/core/rtnetlink.c:6955
- netlink_rcv_skb+0x219/0x490 net/netlink/af_netlink.c:2534
+This oversized result size causes two issues:
+1. The state transferred to the destination includes 8 bytes of extra
+   data at the end.
+2. The allocated buffer in the kernel may be smaller than the returned
+   size, leading to failures when reading beyond the allocated size.
 
-Calling `PACKET_ADD_MEMBERSHIP` on an ops-locked device can trigger
-the `NETDEV_UNREGISTER` notifier, which may require disabling promiscuous
-and/or allmulti mode. Both of these operations require acquiring
-the netdev instance lock.
+The commit fixes this by subtracting the status size from the result of
+virtqueue_get_buf().
 
-Move the call to `packet_dev_mc` outside of the RCU critical section.
-The `mclist` modifications (add, del, flush, unregister) are protected by
-the RTNL, not the RCU. The RCU only protects the `sklist` and its
-associated `sks`. The delayed operation on the `mclist` entry remains
-within the RTNL.
+This fix has been tested through live migrations with virtio-net,
+virtio-net-transitional, and virtio-blk devices.
 
-Reported-by: syzbot+b191b5ccad8d7a986286@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=b191b5ccad8d7a986286
-Fixes: ad7c7b2172c3 ("net: hold netdev instance lock during sysfs operations")
-Signed-off-by: Stanislav Fomichev <stfomichev@gmail.com>
-Reviewed-by: Willem de Bruijn <willemb@google.com>
-Link: https://patch.msgid.link/20250522031129.3247266-1-stfomichev@gmail.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: 704806ca400e ("virtio: Extend the admin command to include the result size")
+Signed-off-by: Israel Rukshin <israelr@nvidia.com>
+Reviewed-by: Parav Pandit <parav@nvidia.com>
+Reviewed-by: Max Gurtovoy <mgurtovoy@nvidia.com>
+Message-Id: <1745318025-23103-1-git-send-email-israelr@nvidia.com>
+Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/packet/af_packet.c | 21 ++++++++++++++++-----
- net/packet/internal.h  |  1 +
- 2 files changed, 17 insertions(+), 5 deletions(-)
+ drivers/virtio/virtio_pci_modern.c | 13 ++++++++++++-
+ 1 file changed, 12 insertions(+), 1 deletion(-)
 
-diff --git a/net/packet/af_packet.c b/net/packet/af_packet.c
-index d4dba06297c33..20be2c47cf419 100644
---- a/net/packet/af_packet.c
-+++ b/net/packet/af_packet.c
-@@ -3713,15 +3713,15 @@ static int packet_dev_mc(struct net_device *dev, struct packet_mclist *i,
- }
- 
- static void packet_dev_mclist_delete(struct net_device *dev,
--				     struct packet_mclist **mlp)
-+				     struct packet_mclist **mlp,
-+				     struct list_head *list)
+diff --git a/drivers/virtio/virtio_pci_modern.c b/drivers/virtio/virtio_pci_modern.c
+index d50fe030d8253..7182f43ed0551 100644
+--- a/drivers/virtio/virtio_pci_modern.c
++++ b/drivers/virtio/virtio_pci_modern.c
+@@ -48,6 +48,7 @@ void vp_modern_avq_done(struct virtqueue *vq)
  {
- 	struct packet_mclist *ml;
- 
- 	while ((ml = *mlp) != NULL) {
- 		if (ml->ifindex == dev->ifindex) {
--			packet_dev_mc(dev, ml, -1);
-+			list_add(&ml->remove_list, list);
- 			*mlp = ml->next;
--			kfree(ml);
- 		} else
- 			mlp = &ml->next;
- 	}
-@@ -3769,6 +3769,7 @@ static int packet_mc_add(struct sock *sk, struct packet_mreq_max *mreq)
- 	memcpy(i->addr, mreq->mr_address, i->alen);
- 	memset(i->addr + i->alen, 0, sizeof(i->addr) - i->alen);
- 	i->count = 1;
-+	INIT_LIST_HEAD(&i->remove_list);
- 	i->next = po->mclist;
- 	po->mclist = i;
- 	err = packet_dev_mc(dev, i, 1);
-@@ -4233,9 +4234,11 @@ static int packet_getsockopt(struct socket *sock, int level, int optname,
- static int packet_notifier(struct notifier_block *this,
- 			   unsigned long msg, void *ptr)
- {
--	struct sock *sk;
- 	struct net_device *dev = netdev_notifier_info_to_dev(ptr);
- 	struct net *net = dev_net(dev);
-+	struct packet_mclist *ml, *tmp;
-+	LIST_HEAD(mclist);
-+	struct sock *sk;
- 
- 	rcu_read_lock();
- 	sk_for_each_rcu(sk, &net->packet.sklist) {
-@@ -4244,7 +4247,8 @@ static int packet_notifier(struct notifier_block *this,
- 		switch (msg) {
- 		case NETDEV_UNREGISTER:
- 			if (po->mclist)
--				packet_dev_mclist_delete(dev, &po->mclist);
-+				packet_dev_mclist_delete(dev, &po->mclist,
-+							 &mclist);
- 			fallthrough;
- 
- 		case NETDEV_DOWN:
-@@ -4277,6 +4281,13 @@ static int packet_notifier(struct notifier_block *this,
+ 	struct virtio_pci_device *vp_dev = to_vp_device(vq->vdev);
+ 	struct virtio_pci_admin_vq *admin_vq = &vp_dev->admin_vq;
++	unsigned int status_size = sizeof(struct virtio_admin_cmd_status);
+ 	struct virtio_admin_cmd *cmd;
+ 	unsigned long flags;
+ 	unsigned int len;
+@@ -56,7 +57,17 @@ void vp_modern_avq_done(struct virtqueue *vq)
+ 	do {
+ 		virtqueue_disable_cb(vq);
+ 		while ((cmd = virtqueue_get_buf(vq, &len))) {
+-			cmd->result_sg_size = len;
++			/* If the number of bytes written by the device is less
++			 * than the size of struct virtio_admin_cmd_status, the
++			 * remaining status bytes will remain zero-initialized,
++			 * since the buffer was zeroed during allocation.
++			 * In this case, set the size of command_specific_result
++			 * to 0.
++			 */
++			if (len < status_size)
++				cmd->result_sg_size = 0;
++			else
++				cmd->result_sg_size = len - status_size;
+ 			complete(&cmd->completion);
  		}
- 	}
- 	rcu_read_unlock();
-+
-+	/* packet_dev_mc might grab instance locks so can't run under rcu */
-+	list_for_each_entry_safe(ml, tmp, &mclist, remove_list) {
-+		packet_dev_mc(dev, ml, -1);
-+		kfree(ml);
-+	}
-+
- 	return NOTIFY_DONE;
- }
- 
-diff --git a/net/packet/internal.h b/net/packet/internal.h
-index d5d70712007ad..1e743d0316fdd 100644
---- a/net/packet/internal.h
-+++ b/net/packet/internal.h
-@@ -11,6 +11,7 @@ struct packet_mclist {
- 	unsigned short		type;
- 	unsigned short		alen;
- 	unsigned char		addr[MAX_ADDR_LEN];
-+	struct list_head	remove_list;
- };
- 
- /* kbdq - kernel block descriptor queue */
+ 	} while (!virtqueue_enable_cb(vq));
 -- 
 2.39.5
 
