@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-154115-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153373-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id F3FB4ADD907
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 19:01:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C2736ADD43E
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:08:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7101619E2944
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:42:40 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 91062194620E
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:00:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 00E9E2EA151;
-	Tue, 17 Jun 2025 16:35:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D16E02EA17B;
+	Tue, 17 Jun 2025 15:55:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EkeLZK0+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0avpF9KL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B15412EA147;
-	Tue, 17 Jun 2025 16:35:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CCE52E92C9;
+	Tue, 17 Jun 2025 15:55:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750178151; cv=none; b=R/fClQFtY3cacy66v8UrL2u3nfZTMhShk+1f/2pUvlqzp7IKODuNYdXRVWIx6CNt7OLkd5m2lPceyv7IwiBJNjsbjquqD69CDQbkW4/d6TwvLm/Vt1kvEU6PTsXDrnf5xoJgp+BhoftT+7zWmAbmeLoLZICszkdG1Pe+C6OSMyI=
+	t=1750175743; cv=none; b=hUoSg/VQrQlkTmCLIbg1wtMhdMBaafGWdRcApCpGL0wA62kqbFjX+cmJ5qA5EBPC/s11l2UMi11H7pfRvR0BmBlqZE6GLMD2ot7VtzkslEcyVBin1ofBjYpXUjPqE7/rY+J2dF86cvfLZCY73Ic15M2vIqQAH0mNh7TDXKD+aow=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750178151; c=relaxed/simple;
-	bh=xlOyCqLHWtmn4sJa9t++RkvJFVeuxT6Gfu1YMOrMFdo=;
+	s=arc-20240116; t=1750175743; c=relaxed/simple;
+	bh=T4brOIoOA4m9fPKnjT1Ao4RAmNuXM5eBxtNefsYqfpc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fRoIVCGmgWNKV3+NnzqS5b1J7Lz0dfPo7uAIXi4apIpbw2q4BAtS2e/jlqs9yZmD7EVdIQ1akxO2njCkdNiHn5MritdSURCR45fvONhlN6PSJ8TLIvEyUBOHGuoKc1RGcYrC1oRBy3J/tVPXB4pZp8ANvVqPfhkY2BjFq/VV6sM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EkeLZK0+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BFA8EC4CEE3;
-	Tue, 17 Jun 2025 16:35:50 +0000 (UTC)
+	 MIME-Version; b=HpIz+N/K6XjLLTgL44w72E6+WR61/ccYzaGjC0R9JeRjrbPDPo6ip1+HpPOdSk/Ual8UOUarDWGKf48uB+GuP/GlwakQAlS+0zfNEJvjVkjutn0k1bhNhovFd2eYutj9czIfAPfFaZwSPbgrjqKs1J3VrCsg6OHQqNUXeKvoofc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0avpF9KL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E0DEC4CEF0;
+	Tue, 17 Jun 2025 15:55:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750178151;
-	bh=xlOyCqLHWtmn4sJa9t++RkvJFVeuxT6Gfu1YMOrMFdo=;
+	s=korg; t=1750175743;
+	bh=T4brOIoOA4m9fPKnjT1Ao4RAmNuXM5eBxtNefsYqfpc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EkeLZK0+bwU5jaYF4jaKqCeYxS8hZJNCrnf+CdSKRH/rR71h8irHDUy1v8ClAcMFK
-	 iAIEKhOnsWlwNYFSb81EYJaJolN/BATuqQe7VBm1y+vG9DvdhBHVseqw8OxZqLAXA0
-	 EyQJdQagqzK0rcAHlwzCqV32SwYxei0az6p/ue2Y=
+	b=0avpF9KLLldQ9FXRFWDP5ZbKLEG1WnoCi6LoO4mncAAve+y+0XI/stN3u4NbW+VYK
+	 qgfHfrIlaJXmXoOJN0O8HH9IRJBY5wQdMO/H4t1cXKQCLthBcxu3Smq0Mh4P0IEc1L
+	 MoX1Q2y7ahnYSvRmPjN/Fb4Y4GHxI3UV/ZKAMhW8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Henry Martin <bsdhenrymartin@gmail.com>,
-	Guenter Roeck <linux@roeck-us.net>,
-	Wim Van Sebroeck <wim@linux-watchdog.org>,
+	Hans Zhang <18255117159@163.com>,
+	Ard Biesheuvel <ardb@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 417/780] watchdog: lenovo_se30_wdt: Fix possible devm_ioremap() NULL pointer dereference in lenovo_se30_wdt_probe()
+Subject: [PATCH 6.12 159/512] efi/libstub: Describe missing out parameter in efi_load_initrd
 Date: Tue, 17 Jun 2025 17:22:05 +0200
-Message-ID: <20250617152508.454060398@linuxfoundation.org>
+Message-ID: <20250617152426.055947502@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
-References: <20250617152451.485330293@linuxfoundation.org>
+In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
+References: <20250617152419.512865572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,44 +62,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Henry Martin <bsdhenrymartin@gmail.com>
+From: Hans Zhang <18255117159@163.com>
 
-[ Upstream commit a4e2401438a26131ecff9be6a3a1d4cbfea66f9a ]
+[ Upstream commit c8e1927e7f7d63721e32ec41d27ccb0eb1a1b0fc ]
 
-devm_ioremap() returns NULL on error. Currently, lenovo_se30_wdt_probe()
-does not check for this case, which results in a NULL pointer
-dereference.
+The function efi_load_initrd() had a documentation warning due to
+the missing description for the 'out' parameter. Add the parameter
+description to the kernel-doc comment to resolve the warning and
+improve API documentation.
 
-Add NULL check after devm_ioremap() to prevent this issue.
+Fixes the following compiler warning:
+drivers/firmware/efi/libstub/efi-stub-helper.c:611: warning: Function parameter or struct member 'out' not described in 'efi_load_initrd'
 
-Fixes: c284153a2c55 ("watchdog: lenovo_se30_wdt: Watchdog driver for Lenovo SE30 platform")
-Signed-off-by: Henry Martin <bsdhenrymartin@gmail.com>
-Reviewed-by: Guenter Roeck <linux@roeck-us.net>
-Link: https://lore.kernel.org/r/20250424071648.89016-1-bsdhenrymartin@gmail.com
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
-Signed-off-by: Wim Van Sebroeck <wim@linux-watchdog.org>
+Fixes: f4dc7fffa987 ("efi: libstub: unify initrd loading between architectures")
+Signed-off-by: Hans Zhang <18255117159@163.com>
+Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/watchdog/lenovo_se30_wdt.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/firmware/efi/libstub/efi-stub-helper.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/watchdog/lenovo_se30_wdt.c b/drivers/watchdog/lenovo_se30_wdt.c
-index 024b842499b36..1c73bb7eeeeed 100644
---- a/drivers/watchdog/lenovo_se30_wdt.c
-+++ b/drivers/watchdog/lenovo_se30_wdt.c
-@@ -271,6 +271,8 @@ static int lenovo_se30_wdt_probe(struct platform_device *pdev)
- 		return -EBUSY;
- 
- 	priv->shm_base_addr = devm_ioremap(dev, base_phys, SHM_WIN_SIZE);
-+	if (!priv->shm_base_addr)
-+		return -ENOMEM;
- 
- 	priv->wdt_cfg.mod = WDT_MODULE;
- 	priv->wdt_cfg.idx = WDT_CFG_INDEX;
+diff --git a/drivers/firmware/efi/libstub/efi-stub-helper.c b/drivers/firmware/efi/libstub/efi-stub-helper.c
+index de659f6a815fd..1ad414da9920a 100644
+--- a/drivers/firmware/efi/libstub/efi-stub-helper.c
++++ b/drivers/firmware/efi/libstub/efi-stub-helper.c
+@@ -603,6 +603,7 @@ efi_status_t efi_load_initrd_cmdline(efi_loaded_image_t *image,
+  * @image:	EFI loaded image protocol
+  * @soft_limit:	preferred address for loading the initrd
+  * @hard_limit:	upper limit address for loading the initrd
++ * @out:	pointer to store the address of the initrd table
+  *
+  * Return:	status code
+  */
 -- 
 2.39.5
 
