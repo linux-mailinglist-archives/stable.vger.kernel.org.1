@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-154428-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153447-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B9F31ADD954
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 19:05:05 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 28B12ADD486
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:11:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D86FE1946FF3
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:54:16 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 508AB2C3D5E
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:04:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A644285CA4;
-	Tue, 17 Jun 2025 16:52:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B4742EA17D;
+	Tue, 17 Jun 2025 15:59:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DTNpif7g"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Iz1xDvOn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9BCE285077;
-	Tue, 17 Jun 2025 16:52:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 102F12EA149;
+	Tue, 17 Jun 2025 15:59:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750179159; cv=none; b=CNm7rPIgoaJxyuFIdTQ0zJEhau70ynJ7yxIA9lvKjwDa9PT/vD6dgxhN3ygpjRXDHYNu+mM1ehx3uFAqeoKIKvPkF/7Y+xtzY9LA6lRdsKTkdk3KXgpyA6l78NmsZaq8Fs4QL5Ygqq+3MDTOzAae7S2ahIhsQJlT9o8D/KZqK8I=
+	t=1750175993; cv=none; b=Ero+pS/OWHroPpzqg7V++r2Vj4N5Nv0UyMCS3bVC73wvE3l+O16DpZlpKp9gi1SIi+jlsM/ZbBTSomhC81+INXG6mqquyPGuD0OhjMVka3l1vfOKAVk0stuekAGDSboIHyT5vC1b4856Yhe/JTgWkMlUTKnM+KTWhz0aAbW/jGw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750179159; c=relaxed/simple;
-	bh=30+gQ6oJURlLKs6y+DUPkuH9ALnxR1tlPc1Uxc0Acnc=;
+	s=arc-20240116; t=1750175993; c=relaxed/simple;
+	bh=0j22nBOeqlt/avGRhoyD1RQJACA5qOPq4ubGrgbn4yU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=iyblkiwovC5ZEJEWXcxs55qELTTDJyUgPQC8zTgCsi4tfG+x+r+ahoK460B2qVkcdFHGtCsSNA31a8BXP67WFGg0ekIUvfE77mhHasbLwYQAOOubSe3CnNLOehg8wm90Iwgd/1BkzAiyWg7og1kKLslA4ik2L2uKUpt8rkLyeXE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DTNpif7g; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07AA1C4CEE3;
-	Tue, 17 Jun 2025 16:52:38 +0000 (UTC)
+	 MIME-Version; b=sZ9CZpjShteGIyo2E0p0IFEXArwU+rotQKJDyS9KdjyPT27OKegcDYpI62UDDQorRDPcdy9M8d1XKxamCruWHfT03d+CwNieSzEVImT5dQWHHt8DsP8qQejCeLCiAa608qpdxonJhDWgF7TgURAqslfi/u55BI11HXBwoR4xDOo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Iz1xDvOn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73D24C4CEE3;
+	Tue, 17 Jun 2025 15:59:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750179159;
-	bh=30+gQ6oJURlLKs6y+DUPkuH9ALnxR1tlPc1Uxc0Acnc=;
+	s=korg; t=1750175992;
+	bh=0j22nBOeqlt/avGRhoyD1RQJACA5qOPq4ubGrgbn4yU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DTNpif7gs/0vKO+C0U3IulqsGQNasWqUjDNUUEqo6dS8W5FShGhyySAcQf3MfsW4O
-	 2b/UlXBqvPdr3rYyQzVCSMtv66VtWoD9oXvyQCLOXK0VgzBSxHqULWHDJGnW4yNbvO
-	 BGl4Z/yJxFbw8zfukrrO6bwmJbO9aAtc02I66pqo=
+	b=Iz1xDvOn05fiIJUvhozNO8GSL/FOHKdXiUEKxzm12ftHjNukcTn8WghWAshDWMtlY
+	 mfLCRuzo5D1COowsehpArh/XKGs/8TpK659Gk2yhEcBsVnDBgg8Znz83TEpTHMH8gg
+	 6a5GHLir9GyOVOYffE1X6+8UC7hyTCsUzQh0iFzo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Amadeusz=20S=C5=82awi=C5=84ski?= <amadeuszx.slawinski@linux.intel.com>,
-	Cezary Rojewski <cezary.rojewski@intel.com>,
-	Mark Brown <broonie@kernel.org>,
+	Sam Winchenbach <swinchenbach@arka.org>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 639/780] ASoC: Intel: avs: Fix PPLCxFMT calculation
-Date: Tue, 17 Jun 2025 17:25:47 +0200
-Message-ID: <20250617152517.497022631@linuxfoundation.org>
+Subject: [PATCH 6.6 233/356] iio: filter: admv8818: fix band 4, state 15
+Date: Tue, 17 Jun 2025 17:25:48 +0200
+Message-ID: <20250617152347.573307206@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
-References: <20250617152451.485330293@linuxfoundation.org>
+In-Reply-To: <20250617152338.212798615@linuxfoundation.org>
+References: <20250617152338.212798615@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,70 +60,41 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cezary Rojewski <cezary.rojewski@intel.com>
+From: Sam Winchenbach <swinchenbach@arka.org>
 
-[ Upstream commit 347c8d6db7c9d65d93ef226849b273823f54eaea ]
+[ Upstream commit ef0ce24f590ac075d5eda11f2d6434b303333ed6 ]
 
-HDAudio transfer types utilize SDxFMT for front-end (HOST) and PPLCxFMT
-for back-end (LINK) side when setting up the stream. BE's
-substream->runtime duplicates FE runtime so switch to using BE's
-hw_params to address incorrect format values on the LINK side when FE
-and BE formats differ.
+Corrects the upper range of LPF Band 4 from 18.5 GHz to 18.85 GHz per
+the ADMV8818 datasheet
 
-The problem is introduced with commit d070002a20fc ("ASoC: Intel: avs:
-HDA PCM BE operations") but the code has been shuffled around since then
-so direct 'Fixes:' tag does not apply.
-
-Reviewed-by: Amadeusz Sławiński <amadeuszx.slawinski@linux.intel.com>
-Signed-off-by: Cezary Rojewski <cezary.rojewski@intel.com>
-Link: https://patch.msgid.link/20250530141025.2942936-4-cezary.rojewski@intel.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: f34fe888ad05 ("iio:filter:admv8818: add support for ADMV8818")
+Signed-off-by: Sam Winchenbach <swinchenbach@arka.org>
+Link: https://patch.msgid.link/20250328174831.227202-3-sam.winchenbach@framepointer.org
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/intel/avs/pcm.c | 8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+ drivers/iio/filter/admv8818.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/sound/soc/intel/avs/pcm.c b/sound/soc/intel/avs/pcm.c
-index 6116465c8f9b1..fc51fa1fd40d2 100644
---- a/sound/soc/intel/avs/pcm.c
-+++ b/sound/soc/intel/avs/pcm.c
-@@ -449,9 +449,10 @@ static int avs_dai_hda_be_hw_free(struct snd_pcm_substream *substream, struct sn
+diff --git a/drivers/iio/filter/admv8818.c b/drivers/iio/filter/admv8818.c
+index d85b7d3de8660..3d8740caa1455 100644
+--- a/drivers/iio/filter/admv8818.c
++++ b/drivers/iio/filter/admv8818.c
+@@ -103,7 +103,7 @@ static const unsigned long long freq_range_lpf[4][2] = {
+ 	{2050000000ULL, 3850000000ULL},
+ 	{3350000000ULL, 7250000000ULL},
+ 	{7000000000, 13000000000},
+-	{12550000000, 18500000000}
++	{12550000000, 18850000000}
+ };
  
- static int avs_dai_hda_be_prepare(struct snd_pcm_substream *substream, struct snd_soc_dai *dai)
- {
--	struct snd_pcm_runtime *runtime = substream->runtime;
-+	struct snd_soc_pcm_runtime *be = snd_soc_substream_to_rtd(substream);
- 	const struct snd_soc_pcm_stream *stream_info;
- 	struct hdac_ext_stream *link_stream;
-+	const struct snd_pcm_hw_params *p;
- 	struct avs_dma_data *data;
- 	unsigned int format_val;
- 	unsigned int bits;
-@@ -459,14 +460,15 @@ static int avs_dai_hda_be_prepare(struct snd_pcm_substream *substream, struct sn
- 
- 	data = snd_soc_dai_get_dma_data(dai, substream);
- 	link_stream = data->link_stream;
-+	p = &be->dpcm[substream->stream].hw_params;
- 
- 	if (link_stream->link_prepared)
- 		return 0;
- 
- 	stream_info = snd_soc_dai_get_pcm_stream(dai, substream->stream);
--	bits = snd_hdac_stream_format_bits(runtime->format, runtime->subformat,
-+	bits = snd_hdac_stream_format_bits(params_format(p), params_subformat(p),
- 					   stream_info->sig_bits);
--	format_val = snd_hdac_stream_format(runtime->channels, bits, runtime->rate);
-+	format_val = snd_hdac_stream_format(params_channels(p), bits, params_rate(p));
- 
- 	snd_hdac_ext_stream_decouple(&data->adev->base.core, link_stream, true);
- 	snd_hdac_ext_stream_reset(link_stream);
+ static const struct regmap_config admv8818_regmap_config = {
 -- 
 2.39.5
 
