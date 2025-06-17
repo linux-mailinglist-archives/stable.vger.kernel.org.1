@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-153846-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153848-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF6CCADD758
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:43:54 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 41F08ADD6E9
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:38:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 60C541942876
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:27:05 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 781624A1582
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:26:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 955DB2ED86F;
-	Tue, 17 Jun 2025 16:21:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E118A2EE604;
+	Tue, 17 Jun 2025 16:21:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Cvj2yOpS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rYbav+nU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E3352EE5F0;
-	Tue, 17 Jun 2025 16:21:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E7122DFF0A;
+	Tue, 17 Jun 2025 16:21:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750177287; cv=none; b=t0RvU1oBV9dDxq8FODQ37i7Po9zcqKV9KlyXH1W3+To34VoftZA3CGhNPVFgg94ReZ6wkKDOn/2PanTrQcpLyvWr01Zm0txHlCfURT9pMPohm802ctqIYZfLI9XrdDRQl/XYMMY2+OMxJLuGKu3WVyWuVRRtCa/pDWSdaV+mHTY=
+	t=1750177293; cv=none; b=Mo9aJ6cjDuYGzFo1qBlm/k6uR4LlRvvYn+MsphY65dQFylXX/yNxgt3Z1bg8odTQPDWhK9a7g7FH5RwaaDmAEOT6Tc+sPBfEW2Ho9n5hTI3dHDyddadlj9Ro5nkAbG0V7/5v+Fh8saljOcL7aaM7BJYkr/1vY/HWkvhvaJabjBg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750177287; c=relaxed/simple;
-	bh=7jU2m3HstC6AknkSZ2nHmLJWKYD4Uoaku33b+qOi4xY=;
+	s=arc-20240116; t=1750177293; c=relaxed/simple;
+	bh=WWdrqnUqMas7iJIAFZDt8oZ4xPz+PqZ130BkQ+ynQXQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BRYsB2zB2VING6TAwe5WVTsPy9VQzw4Bsco2a7S6d7UjjTq4+FmqE2LsIuCnRV1Ik555emDfe4SLe8yM9Eh2ezAO1TevpI/ORuryG0AE4tijTqSmLVno5IvRxWMjwJyyuIe8zqwZKQmqeaxxkgRsYw8SHoxc1afo2DXRN1hCjnw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Cvj2yOpS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0BA2C4CEE3;
-	Tue, 17 Jun 2025 16:21:26 +0000 (UTC)
+	 MIME-Version; b=dgydWqEYx/Klu+JwSx687y3b0DE9vjmZZp6Lg9sr7oHCI+3gYnO79ewf9+hVw4OoGZttpzpIYMCGM/5+weFQr3s4ubEAxwHMmCj80k2ex4MXQAa5Oz9Z0izTzgkgzMi1e8ztRb4DYVSBOC9ig/nKcvz5J++XxR3LQaHo9JkSKHY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rYbav+nU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D44D0C4CEE3;
+	Tue, 17 Jun 2025 16:21:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750177287;
-	bh=7jU2m3HstC6AknkSZ2nHmLJWKYD4Uoaku33b+qOi4xY=;
+	s=korg; t=1750177293;
+	bh=WWdrqnUqMas7iJIAFZDt8oZ4xPz+PqZ130BkQ+ynQXQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Cvj2yOpSkPwgMSAvZNQzR9xO3AH/FcginwdI1mv5n4opeRu4qcMGSIYn1kEL/bc+g
-	 vxZXYawnlYt9BjTmziYuH3ukRlr9WcOpQC8NQJkCMXQNQtSDh5fnn+dAX2+lkEG5WS
-	 Y4t2Jno8qxbDFPF5y+05wBy3Gl999/yRKMqBOEWk=
+	b=rYbav+nUv6LHgZ+O783+GQ234aT5BowQ1j9p+HnP7fRciF5C1K8yt0umumsq9nr4/
+	 oZ3XuUs7rP24m8sTkAurEPZJhS2uPV2UwVcLADx5l7YTEKOZ4mmGl/luGjNxf4GDjj
+	 s133NxsRFyzZ+GDX+7V5aKhYN1AJJh1zKkXlYqCk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -46,9 +46,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Kalesh AP <kalesh-anakkur.purayil@broadcom.com>,
 	Leon Romanovsky <leon@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 284/780] RDMA/bnxt_re: Fix incorrect display of inactivity_cp in debugfs output
-Date: Tue, 17 Jun 2025 17:19:52 +0200
-Message-ID: <20250617152503.039891266@linuxfoundation.org>
+Subject: [PATCH 6.15 285/780] RDMA/bnxt_re: Fix missing error handling for tx_queue
+Date: Tue, 17 Jun 2025 17:19:53 +0200
+Message-ID: <20250617152503.080026125@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
 References: <20250617152451.485330293@linuxfoundation.org>
@@ -69,49 +69,73 @@ Content-Transfer-Encoding: 8bit
 
 From: Gautam R A <gautam-r.a@broadcom.com>
 
-[ Upstream commit 58d7a965bb2b014d467445d38cdb07099b1f0f77 ]
+[ Upstream commit e3d57a00d4d1f36689e9eab80b60d5024361efec ]
 
-The inactivity_cp parameter in debugfs was not being read or
-written correctly, resulting in "Invalid argument" errors.
+bnxt_re_fill_gen0_ext0() did not return an error when
+attempting to modify CMDQ_MODIFY_ROCE_CC_MODIFY_MASK_TX_QUEUE,
+leading to silent failures.
 
-Fixed this by ensuring proper mapping of inactivity_cp in
-both the map_cc_config_offset_gen0_ext0 and
-bnxt_re_fill_gen0_ext0() functions.
+Fixed this by returning -EOPNOTSUPP for tx_queue modifications and
+ensuring proper error propagation in bnxt_re_configure_cc().
 
 Fixes: 656dff55da19 ("RDMA/bnxt_re: Congestion control settings using debugfs hook")
 Signed-off-by: Gautam R A <gautam-r.a@broadcom.com>
-Link: https://patch.msgid.link/20250520035910.1061918-2-kalesh-anakkur.purayil@broadcom.com
+Link: https://patch.msgid.link/20250520035910.1061918-3-kalesh-anakkur.purayil@broadcom.com
 Reviewed-by: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
 Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/hw/bnxt_re/debugfs.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/infiniband/hw/bnxt_re/debugfs.c | 15 +++++++++------
+ 1 file changed, 9 insertions(+), 6 deletions(-)
 
 diff --git a/drivers/infiniband/hw/bnxt_re/debugfs.c b/drivers/infiniband/hw/bnxt_re/debugfs.c
-index af91d16c3c77f..a3aad6c3dbec1 100644
+index a3aad6c3dbec1..9f6392155d915 100644
 --- a/drivers/infiniband/hw/bnxt_re/debugfs.c
 +++ b/drivers/infiniband/hw/bnxt_re/debugfs.c
-@@ -170,6 +170,9 @@ static int map_cc_config_offset_gen0_ext0(u32 offset, struct bnxt_qplib_cc_param
- 	case CMDQ_MODIFY_ROCE_CC_MODIFY_MASK_TCP_CP:
- 		*val =  ccparam->tcp_cp;
- 		break;
-+	case CMDQ_MODIFY_ROCE_CC_MODIFY_MASK_INACTIVITY_CP:
-+		*val = ccparam->inact_th;
-+		break;
- 	default:
- 		return -EINVAL;
- 	}
-@@ -247,7 +250,9 @@ static void bnxt_re_fill_gen0_ext0(struct bnxt_qplib_cc_param *ccparam, u32 offs
+@@ -206,7 +206,7 @@ static ssize_t bnxt_re_cc_config_get(struct file *filp, char __user *buffer,
+ 	return simple_read_from_buffer(buffer, usr_buf_len, ppos, (u8 *)(buf), rc);
+ }
+ 
+-static void bnxt_re_fill_gen0_ext0(struct bnxt_qplib_cc_param *ccparam, u32 offset, u32 val)
++static int bnxt_re_fill_gen0_ext0(struct bnxt_qplib_cc_param *ccparam, u32 offset, u32 val)
+ {
+ 	u32 modify_mask;
+ 
+@@ -250,7 +250,7 @@ static void bnxt_re_fill_gen0_ext0(struct bnxt_qplib_cc_param *ccparam, u32 offs
  		ccparam->tcp_cp = val;
  		break;
  	case CMDQ_MODIFY_ROCE_CC_MODIFY_MASK_TX_QUEUE:
-+		break;
+-		break;
++		return -EOPNOTSUPP;
  	case CMDQ_MODIFY_ROCE_CC_MODIFY_MASK_INACTIVITY_CP:
-+		ccparam->inact_th = val;
+ 		ccparam->inact_th = val;
  		break;
- 	case CMDQ_MODIFY_ROCE_CC_MODIFY_MASK_TIME_PER_PHASE:
- 		ccparam->time_pph = val;
+@@ -263,18 +263,21 @@ static void bnxt_re_fill_gen0_ext0(struct bnxt_qplib_cc_param *ccparam, u32 offs
+ 	}
+ 
+ 	ccparam->mask = modify_mask;
++	return 0;
+ }
+ 
+ static int bnxt_re_configure_cc(struct bnxt_re_dev *rdev, u32 gen_ext, u32 offset, u32 val)
+ {
+ 	struct bnxt_qplib_cc_param ccparam = { };
++	int rc;
+ 
+-	/* Supporting only Gen 0 now */
+-	if (gen_ext == CC_CONFIG_GEN0_EXT0)
+-		bnxt_re_fill_gen0_ext0(&ccparam, offset, val);
+-	else
++	if (gen_ext != CC_CONFIG_GEN0_EXT0)
+ 		return -EINVAL;
+ 
++	rc = bnxt_re_fill_gen0_ext0(&ccparam, offset, val);
++	if (rc)
++		return rc;
++
+ 	bnxt_qplib_modify_cc(&rdev->qplib_res, &ccparam);
+ 	return 0;
+ }
 -- 
 2.39.5
 
