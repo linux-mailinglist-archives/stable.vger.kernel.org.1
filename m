@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-154312-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153824-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id BD54AADD8CC
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:59:02 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 38B6DADD724
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:41:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CBD121882C6A
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:49:32 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5E800189787F
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:26:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC43E2FA642;
-	Tue, 17 Jun 2025 16:46:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E4BD92ED856;
+	Tue, 17 Jun 2025 16:20:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K0+yiBHU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oyZQMp7r"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87A742ECE86;
-	Tue, 17 Jun 2025 16:46:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F8F722FF2B;
+	Tue, 17 Jun 2025 16:20:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750178785; cv=none; b=cFseo8/xxD0z3Yz/Tdb0IdEyyaZ+M2tGimaA9e9vxlY0e/2DxMZITAfjIt3mL+oW5aGKa8cj2PnboQMyltZpl58MuC4N/zY3abxAic7gI8f4Y2aYe5orExLUYdm8CvnXL0fIOzJCNPAHrcKLfo2Wa6tAmKZ3O4MK+I/P82zqQ5Q=
+	t=1750177216; cv=none; b=lK5ERYG9SscT7Lfq1BaK4f6Cs06xm/g4Swn1nNedvtXQmaZXOmtlhiPfNU1nrPKbyzJ8AafITMIUpvVdkneAx5jGV5pSWkTiNoWh+AB3qi79c4Ug5ODGRxV9s7EUuOqplpFZOBspVL0WaChiqSUUIqJytF/28lgkTQGWYQzm6ts=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750178785; c=relaxed/simple;
-	bh=X9sjX4x7eZGPd1/tiwbrd9zPXB0XIXHHsIPVYEdId3w=;
+	s=arc-20240116; t=1750177216; c=relaxed/simple;
+	bh=Yt8QUY3ogpF68k5OAyZZHEKqQXDhW8Xq5eiUhfuF4HE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dzLtruwCZWnep90H0RRUUG4QdkJvPBl/YhiR7fim6h12o3yICs5Q+/aZLiHFTMlTnJ7HYvfox702al7Uz/xjqmGTwEaSS0aolXlJf4c4J97nnsbwxwlVdS804lgfd2c/iWEPKHERIXzIso0uoNTo9eCU395EfCT24BXQZgumeNw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K0+yiBHU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0FD9CC4CEE3;
-	Tue, 17 Jun 2025 16:46:24 +0000 (UTC)
+	 MIME-Version; b=KcJIpVeala7rI3+psQSvrUsvhxNKXO7lMc4mKAyEzsAr2M/SiDxmpzmcM4u3fr4PoJwzOmT8BEEBkJDAufsGkelWZPwUbfCH/C1vUw/18v8M1Rv2/q2LDLURYJjP0Fan/2tdsWbcy5iPG9lOwdf/c1o6E6eTftZDS5Q4QNP3vyk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oyZQMp7r; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3527C4CEE3;
+	Tue, 17 Jun 2025 16:20:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750178785;
-	bh=X9sjX4x7eZGPd1/tiwbrd9zPXB0XIXHHsIPVYEdId3w=;
+	s=korg; t=1750177215;
+	bh=Yt8QUY3ogpF68k5OAyZZHEKqQXDhW8Xq5eiUhfuF4HE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=K0+yiBHUt4ggkZIGV5XBEGDe18zPB3QlDTyGvfqgMrq9EG6ztYykszjJCDg9I77ze
-	 FxKuKqZjYIHySM3fFPfApI1YU+TqTYKk8QwZZ81kgvQfW+zsu+KGjWn3+oB5LqCn7Y
-	 l8w+05sj9Cx3jqqpMIY3RYGRTx+D2InunW9EhwJ8=
+	b=oyZQMp7rr6fkZ/0aHYgxuQmKf/qpDCdCpU7h+lz/BG9WQNQx/zD+6wcx2N1BL/hGr
+	 7jIbNkYZ2KvmKbGqNGTJF1RgzHIL3RvIaaUMltpiFLy8okK9wWq7gINHP4fhlOrr/d
+	 o7GOFx5hNSoyDoH2YH6N27yWC/T6AtBbek2rvpaM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Damon Ding <damon.ding@rock-chips.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Douglas Anderson <dianders@chromium.org>,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	Jason-JH Lin <jason-jh.lin@mediatek.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Jassi Brar <jassisinghbrar@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 554/780] drm/bridge: analogix_dp: Add support to get panel from the DP AUX bus
+Subject: [PATCH 6.12 296/512] mailbox: mtk-cmdq: Refine GCE_GCTL_VALUE setting
 Date: Tue, 17 Jun 2025 17:24:22 +0200
-Message-ID: <20250617152514.064185427@linuxfoundation.org>
+Message-ID: <20250617152431.590983353@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
-References: <20250617152451.485330293@linuxfoundation.org>
+In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
+References: <20250617152419.512865572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,68 +63,146 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Damon Ding <damon.ding@rock-chips.com>
+From: Jason-JH Lin <jason-jh.lin@mediatek.com>
 
-[ Upstream commit e5e9fa9f7aad4ad7eedb6359baea9193531bf4ac ]
+[ Upstream commit 9fcebcb37c3e0a4b6eb40768cc5a5faebf166fbe ]
 
-The main modification is moving the DP AUX initialization from function
-analogix_dp_bind() to analogix_dp_probe(). In order to get the EDID of
-eDP panel during probing, it is also needed to advance PM operations to
-ensure that eDP controller and phy are prepared for AUX transmission.
+Add cmdq_gctl_value_toggle() to configure GCE_CTRL_BY_SW and GCE_DDR_EN
+together in the same GCE_GCTL_VALUE register.
 
-Signed-off-by: Damon Ding <damon.ding@rock-chips.com>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Reviewed-by: Douglas Anderson <dianders@chromium.org>
-Link: https://lore.kernel.org/r/20250310104114.2608063-7-damon.ding@rock-chips.com
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Stable-dep-of: fd03f82a026c ("drm/bridge: analogix_dp: Fix clk-disable removal")
+For the SoCs whose GCE is located in MMINFRA and uses MMINFRA_AO power,
+this allows it to be written without enabling the clocks. Otherwise, all
+GCE registers should be written after the GCE clocks are enabled.
+Move this function into cmdq_runtime_resume() and cmdq_runtime_suspend()
+to ensure it is called when the GCE clock is enabled.
+
+Fixes: 7abd037aa581 ("mailbox: mtk-cmdq: add gce ddr enable support flow")
+Signed-off-by: Jason-JH Lin <jason-jh.lin@mediatek.com>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Signed-off-by: Jassi Brar <jassisinghbrar@gmail.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../drm/bridge/analogix/analogix_dp_core.c    | 20 ++++++++++---------
- 1 file changed, 11 insertions(+), 9 deletions(-)
+ drivers/mailbox/mtk-cmdq-mailbox.c | 51 +++++++++++++-----------------
+ 1 file changed, 22 insertions(+), 29 deletions(-)
 
-diff --git a/drivers/gpu/drm/bridge/analogix/analogix_dp_core.c b/drivers/gpu/drm/bridge/analogix/analogix_dp_core.c
-index b7a96f5bc0074..28a5326e11b35 100644
---- a/drivers/gpu/drm/bridge/analogix/analogix_dp_core.c
-+++ b/drivers/gpu/drm/bridge/analogix/analogix_dp_core.c
-@@ -1643,6 +1643,17 @@ analogix_dp_probe(struct device *dev, struct analogix_dp_plat_data *plat_data)
- 	}
- 	disable_irq(dp->irq);
+diff --git a/drivers/mailbox/mtk-cmdq-mailbox.c b/drivers/mailbox/mtk-cmdq-mailbox.c
+index 9c43ed9bdd37b..d24f71819c3d6 100644
+--- a/drivers/mailbox/mtk-cmdq-mailbox.c
++++ b/drivers/mailbox/mtk-cmdq-mailbox.c
+@@ -92,18 +92,6 @@ struct gce_plat {
+ 	u32 gce_num;
+ };
  
-+	dp->aux.name = "DP-AUX";
-+	dp->aux.transfer = analogix_dpaux_transfer;
-+	dp->aux.dev = dp->dev;
-+	drm_dp_aux_init(&dp->aux);
-+
-+	pm_runtime_use_autosuspend(dp->dev);
-+	pm_runtime_set_autosuspend_delay(dp->dev, 100);
-+	ret = devm_pm_runtime_enable(dp->dev);
-+	if (ret)
-+		goto err_disable_clk;
-+
- 	return dp;
- }
- EXPORT_SYMBOL_GPL(analogix_dp_probe);
-@@ -1688,15 +1699,6 @@ int analogix_dp_bind(struct analogix_dp_device *dp, struct drm_device *drm_dev)
- 	dp->drm_dev = drm_dev;
- 	dp->encoder = dp->plat_data->encoder;
- 
--	pm_runtime_use_autosuspend(dp->dev);
--	pm_runtime_set_autosuspend_delay(dp->dev, 100);
--	ret = devm_pm_runtime_enable(dp->dev);
--	if (ret)
--		return ret;
+-static void cmdq_sw_ddr_enable(struct cmdq *cmdq, bool enable)
+-{
+-	WARN_ON(clk_bulk_enable(cmdq->pdata->gce_num, cmdq->clocks));
 -
--	dp->aux.name = "DP-AUX";
--	dp->aux.transfer = analogix_dpaux_transfer;
--	dp->aux.dev = dp->dev;
- 	dp->aux.drm_dev = drm_dev;
+-	if (enable)
+-		writel(GCE_DDR_EN | GCE_CTRL_BY_SW, cmdq->base + GCE_GCTL_VALUE);
+-	else
+-		writel(GCE_CTRL_BY_SW, cmdq->base + GCE_GCTL_VALUE);
+-
+-	clk_bulk_disable(cmdq->pdata->gce_num, cmdq->clocks);
+-}
+-
+ u8 cmdq_get_shift_pa(struct mbox_chan *chan)
+ {
+ 	struct cmdq *cmdq = container_of(chan->mbox, struct cmdq, mbox);
+@@ -112,6 +100,19 @@ u8 cmdq_get_shift_pa(struct mbox_chan *chan)
+ }
+ EXPORT_SYMBOL(cmdq_get_shift_pa);
  
- 	ret = drm_dp_aux_register(&dp->aux);
++static void cmdq_gctl_value_toggle(struct cmdq *cmdq, bool ddr_enable)
++{
++	u32 val = cmdq->pdata->control_by_sw ? GCE_CTRL_BY_SW : 0;
++
++	if (!cmdq->pdata->control_by_sw && !cmdq->pdata->sw_ddr_en)
++		return;
++
++	if (cmdq->pdata->sw_ddr_en && ddr_enable)
++		val |= GCE_DDR_EN;
++
++	writel(val, cmdq->base + GCE_GCTL_VALUE);
++}
++
+ static int cmdq_thread_suspend(struct cmdq *cmdq, struct cmdq_thread *thread)
+ {
+ 	u32 status;
+@@ -140,16 +141,10 @@ static void cmdq_thread_resume(struct cmdq_thread *thread)
+ static void cmdq_init(struct cmdq *cmdq)
+ {
+ 	int i;
+-	u32 gctl_regval = 0;
+ 
+ 	WARN_ON(clk_bulk_enable(cmdq->pdata->gce_num, cmdq->clocks));
+-	if (cmdq->pdata->control_by_sw)
+-		gctl_regval = GCE_CTRL_BY_SW;
+-	if (cmdq->pdata->sw_ddr_en)
+-		gctl_regval |= GCE_DDR_EN;
+ 
+-	if (gctl_regval)
+-		writel(gctl_regval, cmdq->base + GCE_GCTL_VALUE);
++	cmdq_gctl_value_toggle(cmdq, true);
+ 
+ 	writel(CMDQ_THR_ACTIVE_SLOT_CYCLES, cmdq->base + CMDQ_THR_SLOT_CYCLES);
+ 	for (i = 0; i <= CMDQ_MAX_EVENT; i++)
+@@ -315,14 +310,21 @@ static irqreturn_t cmdq_irq_handler(int irq, void *dev)
+ static int cmdq_runtime_resume(struct device *dev)
+ {
+ 	struct cmdq *cmdq = dev_get_drvdata(dev);
++	int ret;
+ 
+-	return clk_bulk_enable(cmdq->pdata->gce_num, cmdq->clocks);
++	ret = clk_bulk_enable(cmdq->pdata->gce_num, cmdq->clocks);
++	if (ret)
++		return ret;
++
++	cmdq_gctl_value_toggle(cmdq, true);
++	return 0;
+ }
+ 
+ static int cmdq_runtime_suspend(struct device *dev)
+ {
+ 	struct cmdq *cmdq = dev_get_drvdata(dev);
+ 
++	cmdq_gctl_value_toggle(cmdq, false);
+ 	clk_bulk_disable(cmdq->pdata->gce_num, cmdq->clocks);
+ 	return 0;
+ }
+@@ -347,9 +349,6 @@ static int cmdq_suspend(struct device *dev)
+ 	if (task_running)
+ 		dev_warn(dev, "exist running task(s) in suspend\n");
+ 
+-	if (cmdq->pdata->sw_ddr_en)
+-		cmdq_sw_ddr_enable(cmdq, false);
+-
+ 	return pm_runtime_force_suspend(dev);
+ }
+ 
+@@ -360,9 +359,6 @@ static int cmdq_resume(struct device *dev)
+ 	WARN_ON(pm_runtime_force_resume(dev));
+ 	cmdq->suspended = false;
+ 
+-	if (cmdq->pdata->sw_ddr_en)
+-		cmdq_sw_ddr_enable(cmdq, true);
+-
+ 	return 0;
+ }
+ 
+@@ -370,9 +366,6 @@ static void cmdq_remove(struct platform_device *pdev)
+ {
+ 	struct cmdq *cmdq = platform_get_drvdata(pdev);
+ 
+-	if (cmdq->pdata->sw_ddr_en)
+-		cmdq_sw_ddr_enable(cmdq, false);
+-
+ 	if (!IS_ENABLED(CONFIG_PM))
+ 		cmdq_runtime_suspend(&pdev->dev);
+ 
 -- 
 2.39.5
 
