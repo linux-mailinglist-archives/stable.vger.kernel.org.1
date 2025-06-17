@@ -1,53 +1,56 @@
-Return-Path: <stable+bounces-153486-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153430-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 80907ADD4D9
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:14:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C3DCAADD48A
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:11:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7FF4A5601C5
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:05:23 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D0F6B40272A
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:03:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F80F2ED859;
-	Tue, 17 Jun 2025 16:01:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 375142DFF39;
+	Tue, 17 Jun 2025 15:58:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hHuNOCeM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uNaPnPEW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDE0F2ED856;
-	Tue, 17 Jun 2025 16:01:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8AA72DFF08;
+	Tue, 17 Jun 2025 15:58:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750176119; cv=none; b=adoBtBdwq8wPUChUUNOLFGe4N99jA1Q8KKIzC4ie3v/Hp0uRIrwzgMOZKYetRZjCBcqWYQIOo00euNMYow4eyAIzkuNj1u40ZbYUpyFGRdcNaBZ7rQsYYPZRYEPu1grknzvWRaQySsbAwmk1VgDma57NDpT5yMcvqsNjfHTvFbg=
+	t=1750175937; cv=none; b=TkoeBQ7pVzDz6oYPBmulzBsN6QvxRqNSxPVmKATIaOXlDuZ2Ic7N7kSGV1wrS3Jq3S8zwUo2DW9fhPq65TnaZpxNQRoBQuaRt017c4cNi8bJsA+uiv+v5mdPaCfBkISQgc5NPymgCluOQuiVSvj+fSJNVzhDWL2yZ7Aw01UZbnE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750176119; c=relaxed/simple;
-	bh=ovH9RR4fUbQryW+a+y6M2UJ41MgCM97gyYUuVb1Wm+8=;
+	s=arc-20240116; t=1750175937; c=relaxed/simple;
+	bh=7WKD1cS+S58nUAIYZQGSqyJr8ZKnJCLdfYHDamKSMb4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bAR0Cd0jivU136Jb01myrMk/2T0xSqRKmxRs+JDS+UTkttqUtkKyOMBuzvqPj+BFqF0loVNHuKo8EcOIRGMFAtuE3Pz7PhPSr0NnAWG7uvZ4EUBiW9eXaR67MqJCY/s7Zz/ZFqNLPI/RlTyupwAM4klqung5ww463vDO1DtgLsU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hHuNOCeM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D63CC4CEE3;
-	Tue, 17 Jun 2025 16:01:58 +0000 (UTC)
+	 MIME-Version; b=pFHlt1OgSAu1qHfbwILFI5QH8lNCNCpbxB25HvhgYPlasEXXnhqIaqmD1y5oNDh/HpQxPdz+THynVtNrKIps6OOItI3VjMi13Z13xgphEeRqspeGhZ/xIlo3w+SOmoqC6p4qGSjMxbHzjIborcG1JKcOO6GJY2MA58xIkeJ06HY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uNaPnPEW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56B1FC4CEE3;
+	Tue, 17 Jun 2025 15:58:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750176118;
-	bh=ovH9RR4fUbQryW+a+y6M2UJ41MgCM97gyYUuVb1Wm+8=;
+	s=korg; t=1750175936;
+	bh=7WKD1cS+S58nUAIYZQGSqyJr8ZKnJCLdfYHDamKSMb4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hHuNOCeMuc4fhI+cr6/QpfLh180GOkG6N5kJyfpGFudb4zTL28OmydJ5QDqA1jWyE
-	 nMVXT5/K62Y0HSIRzj6PJSgQ7LiF9Wd2pAYQRxg7xeC85zDcKhz4RWDZJ6/lM4pcAl
-	 7JBWbk9J9RrmnyZDjgfAqsBpktUol6j0MYhNKxbI=
+	b=uNaPnPEWwodcFVZOLqM+42JxV5QZuaf5yAftrdYakO3dYVkzKEYmkeNVMtfb0o2ru
+	 9xjHWfaqHkff4Ba0yJJ0qalww+apmvmDEfo5ERE02xRRjmATbRu9J7vGqDTljwT4z1
+	 6vle69/lPFUWb8ShMwYSXQi4iW4ccknSJ87roLfM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Biju Das <biju.das.jz@bp.renesas.com>,
-	Thierry Reding <treding@nvidia.com>,
+	Harry Wentland <harry.wentland@amd.com>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	Leo Li <sunpeng.li@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Alex Hung <alex.hung@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 135/780] drm/tegra: rgb: Fix the unbound reference count
-Date: Tue, 17 Jun 2025 17:17:23 +0200
-Message-ID: <20250617152457.000763882@linuxfoundation.org>
+Subject: [PATCH 6.15 136/780] drm/amd/display: Dont check for NULL divisor in fixpt code
+Date: Tue, 17 Jun 2025 17:17:24 +0200
+Message-ID: <20250617152457.039274013@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
 References: <20250617152451.485330293@linuxfoundation.org>
@@ -66,55 +69,79 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Biju Das <biju.das.jz@bp.renesas.com>
+From: Harry Wentland <harry.wentland@amd.com>
 
-[ Upstream commit 3c3642335065c3bde0742b0edc505b6ea8fdc2b3 ]
+[ Upstream commit d01ca8708d95a561f6462a15cad94a2c0bec7042 ]
 
-The of_get_child_by_name() increments the refcount in tegra_dc_rgb_probe,
-but the driver does not decrement the refcount during unbind. Fix the
-unbound reference count using devm_add_action_or_reset() helper.
+[Why]
+We check for a NULL divisor but don't act on it.
+This check does nothing other than throw a warning.
+It does confuse static checkers though:
+See https://lkml.org/lkml/2025/4/26/371
 
-Fixes: d8f4a9eda006 ("drm: Add NVIDIA Tegra20 support")
-Signed-off-by: Biju Das <biju.das.jz@bp.renesas.com>
-Signed-off-by: Thierry Reding <treding@nvidia.com>
-Link: https://lore.kernel.org/r/20250205112137.36055-1-biju.das.jz@bp.renesas.com
+[How]
+Drop the ASSERTs in both DC and SPL variants.
+
+Fixes: 4562236b3bc0 ("drm/amd/dc: Add dc display driver (v2)")
+Fixes: 6efc0ab3b05d ("drm/amd/display: add back quality EASF and ISHARP and dc dependency changes")
+Signed-off-by: Harry Wentland <harry.wentland@amd.com>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Leo Li <sunpeng.li@amd.com>
+Cc: Alex Deucher <alexander.deucher@amd.com>
+Acked-by: Alex Deucher <alexander.deucher@amd.com>
+Reviewed-by: Alex Hung <alex.hung@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/tegra/rgb.c | 14 +++++++++++++-
- 1 file changed, 13 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/amd/display/dc/basics/fixpt31_32.c   | 5 -----
+ drivers/gpu/drm/amd/display/dc/sspl/spl_fixpt31_32.c | 4 ----
+ 2 files changed, 9 deletions(-)
 
-diff --git a/drivers/gpu/drm/tegra/rgb.c b/drivers/gpu/drm/tegra/rgb.c
-index 1e8ec50b759e4..ff5a749710db3 100644
---- a/drivers/gpu/drm/tegra/rgb.c
-+++ b/drivers/gpu/drm/tegra/rgb.c
-@@ -200,6 +200,11 @@ static const struct drm_encoder_helper_funcs tegra_rgb_encoder_helper_funcs = {
- 	.atomic_check = tegra_rgb_encoder_atomic_check,
- };
- 
-+static void tegra_dc_of_node_put(void *data)
-+{
-+	of_node_put(data);
-+}
-+
- int tegra_dc_rgb_probe(struct tegra_dc *dc)
+diff --git a/drivers/gpu/drm/amd/display/dc/basics/fixpt31_32.c b/drivers/gpu/drm/amd/display/dc/basics/fixpt31_32.c
+index 88d3f9d7dd556..452206b5095eb 100644
+--- a/drivers/gpu/drm/amd/display/dc/basics/fixpt31_32.c
++++ b/drivers/gpu/drm/amd/display/dc/basics/fixpt31_32.c
+@@ -51,8 +51,6 @@ static inline unsigned long long complete_integer_division_u64(
  {
- 	struct device_node *np;
-@@ -207,7 +212,14 @@ int tegra_dc_rgb_probe(struct tegra_dc *dc)
- 	int err;
+ 	unsigned long long result;
  
- 	np = of_get_child_by_name(dc->dev->of_node, "rgb");
--	if (!np || !of_device_is_available(np))
-+	if (!np)
-+		return -ENODEV;
-+
-+	err = devm_add_action_or_reset(dc->dev, tegra_dc_of_node_put, np);
-+	if (err < 0)
-+		return err;
-+
-+	if (!of_device_is_available(np))
- 		return -ENODEV;
+-	ASSERT(divisor);
+-
+ 	result = div64_u64_rem(dividend, divisor, remainder);
  
- 	rgb = devm_kzalloc(dc->dev, sizeof(*rgb), GFP_KERNEL);
+ 	return result;
+@@ -213,9 +211,6 @@ struct fixed31_32 dc_fixpt_recip(struct fixed31_32 arg)
+ 	 * @note
+ 	 * Good idea to use Newton's method
+ 	 */
+-
+-	ASSERT(arg.value);
+-
+ 	return dc_fixpt_from_fraction(
+ 		dc_fixpt_one.value,
+ 		arg.value);
+diff --git a/drivers/gpu/drm/amd/display/dc/sspl/spl_fixpt31_32.c b/drivers/gpu/drm/amd/display/dc/sspl/spl_fixpt31_32.c
+index 52d97918a3bd2..ebf0287417e0e 100644
+--- a/drivers/gpu/drm/amd/display/dc/sspl/spl_fixpt31_32.c
++++ b/drivers/gpu/drm/amd/display/dc/sspl/spl_fixpt31_32.c
+@@ -29,8 +29,6 @@ static inline unsigned long long spl_complete_integer_division_u64(
+ {
+ 	unsigned long long result;
+ 
+-	SPL_ASSERT(divisor);
+-
+ 	result = spl_div64_u64_rem(dividend, divisor, remainder);
+ 
+ 	return result;
+@@ -196,8 +194,6 @@ struct spl_fixed31_32 spl_fixpt_recip(struct spl_fixed31_32 arg)
+ 	 * Good idea to use Newton's method
+ 	 */
+ 
+-	SPL_ASSERT(arg.value);
+-
+ 	return spl_fixpt_from_fraction(
+ 		spl_fixpt_one.value,
+ 		arg.value);
 -- 
 2.39.5
 
