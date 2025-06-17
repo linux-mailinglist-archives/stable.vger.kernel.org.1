@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-153221-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153224-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB06AADD321
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 17:53:43 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 07CF2ADD331
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 17:54:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CC599161BCA
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 15:51:03 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BFCA03BFDC3
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 15:50:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F5362DFF39;
-	Tue, 17 Jun 2025 15:47:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF6192E88B1;
+	Tue, 17 Jun 2025 15:47:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PCECPBoF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WIbMoo3X"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0B5D2DFF2A;
-	Tue, 17 Jun 2025 15:47:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BDED2DFF22;
+	Tue, 17 Jun 2025 15:47:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750175264; cv=none; b=AP3Rvhjtn6JFJBf96ujfesVQMw1hjNzIF3K+xuZ4T8K9ayz3bomSAMQfLYmm6aGFZCfrzbH4xVIOJ2YwGaY2bRQgcpjDOtuhF92qP0Lm0Ea+VSkqnLgI3rQfT7Vq76ntl0V2lMYqrUgfeBTrCtwdL78XwTeWrJ88iHLaDUJjq/I=
+	t=1750175274; cv=none; b=Z3S7KZkAN6/8Zp1YZsj6kV3etfi+8eF14RKedhSNvVpJivTmnP0Dp96XGJsiDmnwEEFU0C8wsM/z/3uCHsSVwhj92EaXcAoeacdFXyFQeRXUFlJobimWCqn8mhVIpz077aWuBhauQz5/hjwvhaw2CV/JJ8SUSmoPLNxGFUb5COg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750175264; c=relaxed/simple;
-	bh=Q/EsvUV8HUPMpy83DQEEwuwRf9id1feptKRXT3JGbeo=;
+	s=arc-20240116; t=1750175274; c=relaxed/simple;
+	bh=7Zg+inp6c56P0SKZqRsXCTEoqeJE5uzbgDUsaCmUUHs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AqkJsu0y6822q4ZUILo/rUlWpUPXFP0UfaY7AazR3XQLQXOJCMdTnDqtLcTof1NzSCyuWrLs9DNA4Hf2F+0IlVfx947aaNZmegn4izgZHSnva/GRdyGdENL0fN3YFEwL0LlOGCmf3haLFBo4s06J3K+H/Tw/lfIeriyq4CUMEJI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PCECPBoF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F743C4CEE3;
-	Tue, 17 Jun 2025 15:47:43 +0000 (UTC)
+	 MIME-Version; b=KDH7buHgZ9uTShPdrHAUmhdWLiJMgmevYnMyF/2RdTFMK4l6K15aJlDiDUyiKW4jA8urc3sjvYtCQ8YnU0kB/3RgjyF9PLeTek96CTnYrBfCUgksW9X9Gi2nlUuYc+baJqpNPcj9R9CDRgjA5/FlVg61FxuVEiz7qU+5JnHLw8s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WIbMoo3X; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0F66C4CEE3;
+	Tue, 17 Jun 2025 15:47:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750175264;
-	bh=Q/EsvUV8HUPMpy83DQEEwuwRf9id1feptKRXT3JGbeo=;
+	s=korg; t=1750175274;
+	bh=7Zg+inp6c56P0SKZqRsXCTEoqeJE5uzbgDUsaCmUUHs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PCECPBoFkK75310/dkpL6OLre/dPAKu1mwVt8+kFQjQ1FdkxzWylDOuq1Y9PSYvYu
-	 ufJyMBphZ+gMHVjHRqD1ZZeY23m58B7NVkLM/w3mi3e+1emuiJZk4VCGximvQw+ZLV
-	 C8kYuZWL0yEc8Zr4zEF6q8hGVero2gTq3VGUc5Hc=
+	b=WIbMoo3X5UH5f6rGwlS+ZFMpthOa1b+7LhP94GbKaWNcZ+WW0vH+AWLFL92MSCnVL
+	 bkBVE267b1c3IP0JdB7/TCxxInBP7R47pCisWZlZ4M/ExbzuIfWRNPu3xjey9VEnje
+	 fFek5DLbyrvwYbGH8gqBXiIpKW/60WAEpT3vjNVs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Benson Leung <bleung@chromium.org>,
-	Jameson Thies <jthies@google.com>,
-	Abhishek Pandit-Subedi <abhishekpandit@chromium.org>,
-	Tzung-Bi Shih <tzungbi@kernel.org>,
+	Kees Cook <kees@kernel.org>,
+	Peter Ujfalusi <peter.ujfalusi@linux.intel.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 068/780] platform/chrome: cros_ec_typec: Set Pin Assignment E in DP PORT VDO
-Date: Tue, 17 Jun 2025 17:16:16 +0200
-Message-ID: <20250617152454.279255738@linuxfoundation.org>
+Subject: [PATCH 6.15 069/780] ASoC: SOF: ipc4-pcm: Adjust pipeline_list->pipelines allocation type
+Date: Tue, 17 Jun 2025 17:16:17 +0200
+Message-ID: <20250617152454.326619287@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
 References: <20250617152451.485330293@linuxfoundation.org>
@@ -68,54 +67,44 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Benson Leung <bleung@chromium.org>
+From: Kees Cook <kees@kernel.org>
 
-[ Upstream commit a9635ef0ca12e7914f42bfa7ca6a019f606c2817 ]
+[ Upstream commit 00a371adbbfb46db561db85a9d7b53b2363880a1 ]
 
-Pin C and D are used on C-to-C cable applications including docks,
-and for USB-C adapters that convert from DP over USB-C to other
-video standards.
+In preparation for making the kmalloc family of allocators type aware,
+we need to make sure that the returned type from the allocation matches
+the type of the variable being assigned. (Before, the allocator would
+always return "void *", which can be implicitly cast to any pointer type.)
 
-Pin Assignment E is intended to be used with adapter from USB-C to DP
-plugs or receptacles.
+The assigned type is "struct snd_sof_pipeline **", but the returned type
+will be "struct snd_sof_widget **". These are the same size allocation
+(pointer size) but the types don't match. Adjust the allocation type to
+match the assignment.
 
-All Chromebook USB-C DFPs support DisplayPort Alternate Mode as the DP
-Source with support for all 3 pin assignments. Pin Assignment E is required
-in order to support if the user attaches a Pin E C-to-DP cable.
-
-Without this, the displayport.c alt mode driver will error out of
-dp_altmode_probe with an -ENODEV, as it cannot find a compatible matching
-pin assignment between the DFP_D and UFP_D.
-
-Fixes: dbb3fc0ffa95 ("platform/chrome: cros_ec_typec: Displayport support")
-
-Signed-off-by: Benson Leung <bleung@chromium.org>
-Reviewed-by: Jameson Thies <jthies@google.com>
-Reviewed-by: Abhishek Pandit-Subedi <abhishekpandit@chromium.org>
-Link: https://lore.kernel.org/r/20250428174828.13939-1-bleung@chromium.org
-Signed-off-by: Tzung-Bi Shih <tzungbi@kernel.org>
+Signed-off-by: Kees Cook <kees@kernel.org>
+Fixes: 9c04363d222b ("ASoC: SOF: Introduce struct snd_sof_pipeline")
+Acked-by: Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
+Link: https://patch.msgid.link/20250426062511.work.859-kees@kernel.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/chrome/cros_ec_typec.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ sound/soc/sof/ipc4-pcm.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/platform/chrome/cros_ec_typec.c b/drivers/platform/chrome/cros_ec_typec.c
-index d2228720991ff..7678e3d05fd36 100644
---- a/drivers/platform/chrome/cros_ec_typec.c
-+++ b/drivers/platform/chrome/cros_ec_typec.c
-@@ -22,8 +22,10 @@
+diff --git a/sound/soc/sof/ipc4-pcm.c b/sound/soc/sof/ipc4-pcm.c
+index c09b424ab863d..8eee3e1aadf93 100644
+--- a/sound/soc/sof/ipc4-pcm.c
++++ b/sound/soc/sof/ipc4-pcm.c
+@@ -784,7 +784,8 @@ static int sof_ipc4_pcm_setup(struct snd_sof_dev *sdev, struct snd_sof_pcm *spcm
  
- #define DRV_NAME "cros-ec-typec"
- 
--#define DP_PORT_VDO	(DP_CONF_SET_PIN_ASSIGN(BIT(DP_PIN_ASSIGN_C) | BIT(DP_PIN_ASSIGN_D)) | \
--				DP_CAP_DFP_D | DP_CAP_RECEPTACLE)
-+#define DP_PORT_VDO	(DP_CAP_DFP_D | DP_CAP_RECEPTACLE | \
-+			 DP_CONF_SET_PIN_ASSIGN(BIT(DP_PIN_ASSIGN_C) | \
-+						BIT(DP_PIN_ASSIGN_D) | \
-+						BIT(DP_PIN_ASSIGN_E)))
- 
- static void cros_typec_role_switch_quirk(struct fwnode_handle *fwnode)
- {
+ 		/* allocate memory for max number of pipeline IDs */
+ 		pipeline_list->pipelines = kcalloc(ipc4_data->max_num_pipelines,
+-						   sizeof(struct snd_sof_widget *), GFP_KERNEL);
++						   sizeof(*pipeline_list->pipelines),
++						   GFP_KERNEL);
+ 		if (!pipeline_list->pipelines) {
+ 			sof_ipc4_pcm_free(sdev, spcm);
+ 			return -ENOMEM;
 -- 
 2.39.5
 
