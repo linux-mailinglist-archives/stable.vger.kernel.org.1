@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-154426-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-154022-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 23664ADD93F
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 19:04:23 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B86D1ADD7D0
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:49:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A9A0B5A3F30
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:53:21 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C91B74A6118
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:36:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 907EA2FA62A;
-	Tue, 17 Jun 2025 16:52:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4BD342ED84A;
+	Tue, 17 Jun 2025 16:30:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lTWB34Mb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TO7Woj1J"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C8642FA62C;
-	Tue, 17 Jun 2025 16:52:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0771E2ED84B;
+	Tue, 17 Jun 2025 16:30:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750179153; cv=none; b=NE2hiHlsJfzh/bwViZmcAy8SLvEj7IrT44AHVPI+rBm7HQ8oE/JJARQBnsH2Y29w1BNEVihIbfAR3ry03x8c7lM5P8dUaF9pZnKdNJ/slmYm3eNSlWBspfvuW6f+TfMM+OSPtu/7RC7r1x+ZeQR4MlmVYGE2dxcSvNuRMYI+NU4=
+	t=1750177855; cv=none; b=QA1i7/UoaLXL9UrmAagRd/EGmXJiBdDVTpD4uzEyawVKUpsgC4oHyQLT7otNGwMUGe2x4B4+MZ8jgGE5sQ6dKHojZfwUxgVsgvSW99TFRRxhtpp+/z7ebE0ywU44kR84Y0RHC4iSzroVClWhYaa0491g4rJM1B7+i8WGK5eOpr4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750179153; c=relaxed/simple;
-	bh=wW+hvIiVFa1CqdJCyT+am32PJ+JkjpSNagKfdK5em7Y=;
+	s=arc-20240116; t=1750177855; c=relaxed/simple;
+	bh=VYfGdC6XVmAt3mf6qp1/e/e3XMkqt9FkLIgA899CUFA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=bEhaiH2TI2bmJ/rhJlJYlvAXfcI7/cvfpkySYWKFjMiTnYRnYOXEQ7Ft/ZwF9C/FLIaJkyLE7vqjYHyij+7aV/ohVB17ar34hWVZHRoNPqTMPqAhDqhv1TPvCyw8wxoWX8X1JXq+x5gbCMMd/7idtsuVJ6RwLwCvch0WH3TwjGo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lTWB34Mb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74FD9C4CEE3;
-	Tue, 17 Jun 2025 16:52:32 +0000 (UTC)
+	 MIME-Version:Content-Type; b=o0dPn+Zrwj1tiPArt2jQD3Sx5jpCgLGeDDUQsGxITO+y9KYA4qeNrsEiQx22rNj9MOuflRbBnHxzYfERwm0NFYPqFYP6QIvpPL+Zh6zHcAMGc43QFeuo9CG3Lq+8KJyi/zI0eOUAbF4nAtSLQ+Q6YTv5lvX8YAZuILymielPSlA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TO7Woj1J; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79DDBC4CEE3;
+	Tue, 17 Jun 2025 16:30:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750179152;
-	bh=wW+hvIiVFa1CqdJCyT+am32PJ+JkjpSNagKfdK5em7Y=;
+	s=korg; t=1750177854;
+	bh=VYfGdC6XVmAt3mf6qp1/e/e3XMkqt9FkLIgA899CUFA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lTWB34MbeAIYqh+iTwMmdAZslr+0pcuEK6CMFS+uKnSU5N6koI6AItHj/y+zIz952
-	 d9U/1WvI7ZSvZ1vY8BS4cFB6LduevmdxnPgxI4awtt92BWbYRJ0HWUHgtH/ZBp/LWn
-	 bddqqzGVfzrnfwr7tcahVlHt91FSRsCC2Nhy1YZ4=
+	b=TO7Woj1JiDV11d90wUKZ0IJJDRzV2APa87gYfYOqTq1MdrPcOOOKBjajCrhnqGK2N
+	 D7GpH+w1p/vJIAErHK9AAO58OBGTz8FFiVY6oQCxG0+hzRyHgKkZWOwLot3P+fUbWv
+	 OXu+AXoMY2ROdVzgzN/HwnHZNMVijCAY7GzvHj2k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chandrashekar Devegowda <chandrashekar.devegowda@intel.com>,
-	Kiran K <kiran.k@intel.com>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	=?UTF-8?q?Hanno=20B=C3=B6ck?= <hanno@hboeck.de>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 664/780] Bluetooth: btintel_pcie: Fix driver not posting maximum rx buffers
+Subject: [PATCH 6.12 406/512] Input: synaptics-rmi - fix crash with unsupported versions of F34
 Date: Tue, 17 Jun 2025 17:26:12 +0200
-Message-ID: <20250617152518.507277196@linuxfoundation.org>
+Message-ID: <20250617152436.029776780@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
-References: <20250617152451.485330293@linuxfoundation.org>
+In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
+References: <20250617152419.512865572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,76 +63,261 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kiran K <kiran.k@intel.com>
+From: Dmitry Torokhov <dmitry.torokhov@gmail.com>
 
-[ Upstream commit daabd276985055250528da97e9ce6d277d7009c2 ]
+[ Upstream commit ca39500f6af9cfe6823dc5aa8fbaed788d6e35b2 ]
 
-The driver was posting only 6 rx buffers, despite the maximum rx buffers
-being defined as 16. Having fewer RX buffers caused firmware exceptions
-in HID use cases when events arrived in bursts.
+Sysfs interface for updating firmware for RMI devices is available even
+when F34 probe fails. The code checks for presence of F34 "container"
+pointer and then tries to use the function data attached to the
+sub-device. F34 assigns the function data early, before it knows if
+probe will succeed, leaving behind a stale pointer.
 
-Exception seen on android 6.12 kernel.
+Fix this by expanding checks to not only test for presence of F34
+"container" but also check if there is driver data assigned to the
+sub-device, and call dev_set_drvdata() only after we are certain that
+probe is successful.
 
-E Bluetooth: hci0: Received hw exception interrupt
-E Bluetooth: hci0: Received gp1 mailbox interrupt
-D Bluetooth: hci0: 00000000: ff 3e 87 80 03 01 01 01 03 01 0c 0d 02 1c 10 0e
-D Bluetooth: hci0: 00000010: 01 00 05 14 66 b0 28 b0 c0 b0 28 b0 ac af 28 b0
-D Bluetooth: hci0: 00000020: 14 f1 28 b0 00 00 00 00 fa 04 00 00 00 00 40 10
-D Bluetooth: hci0: 00000030: 08 00 00 00 7a 7a 7a 7a 47 00 fb a0 10 00 00 00
-D Bluetooth: hci0: 00000000: 10 01 0a
-E Bluetooth: hci0: ---- Dump of debug registers —
-E Bluetooth: hci0: boot stage: 0xe0fb0047
-E Bluetooth: hci0: ipc status: 0x00000004
-E Bluetooth: hci0: ipc control: 0x00000000
-E Bluetooth: hci0: ipc sleep control: 0x00000000
-E Bluetooth: hci0: mbox_1: 0x00badbad
-E Bluetooth: hci0: mbox_2: 0x0000101c
-E Bluetooth: hci0: mbox_3: 0x00000008
-E Bluetooth: hci0: mbox_4: 0x7a7a7a7a
+This is not a complete fix, since F34 will be freed during firmware
+update, so there is still a race when fetching and accessing this
+pointer. This race will be addressed in follow-up changes.
 
-Signed-off-by: Chandrashekar Devegowda <chandrashekar.devegowda@intel.com>
-Signed-off-by: Kiran K <kiran.k@intel.com>
-Fixes: c2b636b3f788 ("Bluetooth: btintel_pcie: Add support for PCIe transport")
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Reported-by: Hanno Böck <hanno@hboeck.de>
+Fixes: 29fd0ec2bdbe ("Input: synaptics-rmi4 - add support for F34 device reflash")
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/aBlAl6sGulam-Qcx@google.com
+Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/bluetooth/btintel_pcie.c | 3 ++-
- drivers/bluetooth/btintel_pcie.h | 3 ---
- 2 files changed, 2 insertions(+), 4 deletions(-)
+ drivers/input/rmi4/rmi_f34.c | 135 ++++++++++++++++++++---------------
+ 1 file changed, 76 insertions(+), 59 deletions(-)
 
-diff --git a/drivers/bluetooth/btintel_pcie.c b/drivers/bluetooth/btintel_pcie.c
-index 0a759ea26fd38..a1bfc76fa29b2 100644
---- a/drivers/bluetooth/btintel_pcie.c
-+++ b/drivers/bluetooth/btintel_pcie.c
-@@ -303,8 +303,9 @@ static int btintel_pcie_submit_rx(struct btintel_pcie_data *data)
- static int btintel_pcie_start_rx(struct btintel_pcie_data *data)
- {
- 	int i, ret;
-+	struct rxq *rxq = &data->rxq;
+diff --git a/drivers/input/rmi4/rmi_f34.c b/drivers/input/rmi4/rmi_f34.c
+index e2468bc04a5cb..c2516c7549582 100644
+--- a/drivers/input/rmi4/rmi_f34.c
++++ b/drivers/input/rmi4/rmi_f34.c
+@@ -4,6 +4,7 @@
+  * Copyright (C) 2016 Zodiac Inflight Innovations
+  */
  
--	for (i = 0; i < BTINTEL_PCIE_RX_MAX_QUEUE; i++) {
-+	for (i = 0; i < rxq->count; i++) {
- 		ret = btintel_pcie_submit_rx(data);
- 		if (ret)
- 			return ret;
-diff --git a/drivers/bluetooth/btintel_pcie.h b/drivers/bluetooth/btintel_pcie.h
-index 873178019cad0..3f59138dfcca4 100644
---- a/drivers/bluetooth/btintel_pcie.h
-+++ b/drivers/bluetooth/btintel_pcie.h
-@@ -158,9 +158,6 @@ enum {
- /* Doorbell vector for TFD */
- #define BTINTEL_PCIE_TX_DB_VEC	0
++#include "linux/device.h"
+ #include <linux/kernel.h>
+ #include <linux/rmi.h>
+ #include <linux/firmware.h>
+@@ -298,39 +299,30 @@ static int rmi_f34_update_firmware(struct f34_data *f34,
+ 	return ret;
+ }
  
--/* Number of pending RX requests for downlink */
--#define BTINTEL_PCIE_RX_MAX_QUEUE	6
+-static int rmi_f34_status(struct rmi_function *fn)
+-{
+-	struct f34_data *f34 = dev_get_drvdata(&fn->dev);
 -
- /* Doorbell vector for FRBD */
- #define BTINTEL_PCIE_RX_DB_VEC	513
+-	/*
+-	 * The status is the percentage complete, or once complete,
+-	 * zero for success or a negative return code.
+-	 */
+-	return f34->update_status;
+-}
+-
+ static ssize_t rmi_driver_bootloader_id_show(struct device *dev,
+ 					     struct device_attribute *dattr,
+ 					     char *buf)
+ {
+ 	struct rmi_driver_data *data = dev_get_drvdata(dev);
+-	struct rmi_function *fn = data->f34_container;
++	struct rmi_function *fn;
+ 	struct f34_data *f34;
  
+-	if (fn) {
+-		f34 = dev_get_drvdata(&fn->dev);
+-
+-		if (f34->bl_version == 5)
+-			return sysfs_emit(buf, "%c%c\n",
+-					  f34->bootloader_id[0],
+-					  f34->bootloader_id[1]);
+-		else
+-			return sysfs_emit(buf, "V%d.%d\n",
+-					  f34->bootloader_id[1],
+-					  f34->bootloader_id[0]);
+-	}
++	fn = data->f34_container;
++	if (!fn)
++		return -ENODEV;
+ 
+-	return 0;
++	f34 = dev_get_drvdata(&fn->dev);
++	if (!f34)
++		return -ENODEV;
++
++	if (f34->bl_version == 5)
++		return sysfs_emit(buf, "%c%c\n",
++				  f34->bootloader_id[0],
++				  f34->bootloader_id[1]);
++	else
++		return sysfs_emit(buf, "V%d.%d\n",
++				  f34->bootloader_id[1],
++				  f34->bootloader_id[0]);
+ }
+ 
+ static DEVICE_ATTR(bootloader_id, 0444, rmi_driver_bootloader_id_show, NULL);
+@@ -343,13 +335,16 @@ static ssize_t rmi_driver_configuration_id_show(struct device *dev,
+ 	struct rmi_function *fn = data->f34_container;
+ 	struct f34_data *f34;
+ 
+-	if (fn) {
+-		f34 = dev_get_drvdata(&fn->dev);
++	fn = data->f34_container;
++	if (!fn)
++		return -ENODEV;
+ 
+-		return sysfs_emit(buf, "%s\n", f34->configuration_id);
+-	}
++	f34 = dev_get_drvdata(&fn->dev);
++	if (!f34)
++		return -ENODEV;
+ 
+-	return 0;
++
++	return sysfs_emit(buf, "%s\n", f34->configuration_id);
+ }
+ 
+ static DEVICE_ATTR(configuration_id, 0444,
+@@ -365,10 +360,14 @@ static int rmi_firmware_update(struct rmi_driver_data *data,
+ 
+ 	if (!data->f34_container) {
+ 		dev_warn(dev, "%s: No F34 present!\n", __func__);
+-		return -EINVAL;
++		return -ENODEV;
+ 	}
+ 
+ 	f34 = dev_get_drvdata(&data->f34_container->dev);
++	if (!f34) {
++		dev_warn(dev, "%s: No valid F34 present!\n", __func__);
++		return -ENODEV;
++	}
+ 
+ 	if (f34->bl_version >= 7) {
+ 		if (data->pdt_props & HAS_BSR) {
+@@ -494,10 +493,18 @@ static ssize_t rmi_driver_update_fw_status_show(struct device *dev,
+ 						char *buf)
+ {
+ 	struct rmi_driver_data *data = dev_get_drvdata(dev);
+-	int update_status = 0;
++	struct f34_data *f34;
++	int update_status = -ENODEV;
+ 
+-	if (data->f34_container)
+-		update_status = rmi_f34_status(data->f34_container);
++	/*
++	 * The status is the percentage complete, or once complete,
++	 * zero for success or a negative return code.
++	 */
++	if (data->f34_container) {
++		f34 = dev_get_drvdata(&data->f34_container->dev);
++		if (f34)
++			update_status = f34->update_status;
++	}
+ 
+ 	return sysfs_emit(buf, "%d\n", update_status);
+ }
+@@ -517,33 +524,21 @@ static const struct attribute_group rmi_firmware_attr_group = {
+ 	.attrs = rmi_firmware_attrs,
+ };
+ 
+-static int rmi_f34_probe(struct rmi_function *fn)
++static int rmi_f34v5_probe(struct f34_data *f34)
+ {
+-	struct f34_data *f34;
+-	unsigned char f34_queries[9];
++	struct rmi_function *fn = f34->fn;
++	u8 f34_queries[9];
+ 	bool has_config_id;
+-	u8 version = fn->fd.function_version;
+-	int ret;
+-
+-	f34 = devm_kzalloc(&fn->dev, sizeof(struct f34_data), GFP_KERNEL);
+-	if (!f34)
+-		return -ENOMEM;
+-
+-	f34->fn = fn;
+-	dev_set_drvdata(&fn->dev, f34);
+-
+-	/* v5 code only supported version 0, try V7 probe */
+-	if (version > 0)
+-		return rmi_f34v7_probe(f34);
++	int error;
+ 
+ 	f34->bl_version = 5;
+ 
+-	ret = rmi_read_block(fn->rmi_dev, fn->fd.query_base_addr,
+-			     f34_queries, sizeof(f34_queries));
+-	if (ret) {
++	error = rmi_read_block(fn->rmi_dev, fn->fd.query_base_addr,
++			       f34_queries, sizeof(f34_queries));
++	if (error) {
+ 		dev_err(&fn->dev, "%s: Failed to query properties\n",
+ 			__func__);
+-		return ret;
++		return error;
+ 	}
+ 
+ 	snprintf(f34->bootloader_id, sizeof(f34->bootloader_id),
+@@ -569,11 +564,11 @@ static int rmi_f34_probe(struct rmi_function *fn)
+ 		f34->v5.config_blocks);
+ 
+ 	if (has_config_id) {
+-		ret = rmi_read_block(fn->rmi_dev, fn->fd.control_base_addr,
+-				     f34_queries, sizeof(f34_queries));
+-		if (ret) {
++		error = rmi_read_block(fn->rmi_dev, fn->fd.control_base_addr,
++				       f34_queries, sizeof(f34_queries));
++		if (error) {
+ 			dev_err(&fn->dev, "Failed to read F34 config ID\n");
+-			return ret;
++			return error;
+ 		}
+ 
+ 		snprintf(f34->configuration_id, sizeof(f34->configuration_id),
+@@ -582,12 +577,34 @@ static int rmi_f34_probe(struct rmi_function *fn)
+ 			 f34_queries[2], f34_queries[3]);
+ 
+ 		rmi_dbg(RMI_DEBUG_FN, &fn->dev, "Configuration ID: %s\n",
+-			 f34->configuration_id);
++			f34->configuration_id);
+ 	}
+ 
+ 	return 0;
+ }
+ 
++static int rmi_f34_probe(struct rmi_function *fn)
++{
++	struct f34_data *f34;
++	u8 version = fn->fd.function_version;
++	int error;
++
++	f34 = devm_kzalloc(&fn->dev, sizeof(struct f34_data), GFP_KERNEL);
++	if (!f34)
++		return -ENOMEM;
++
++	f34->fn = fn;
++
++	/* v5 code only supported version 0 */
++	error = version == 0 ? rmi_f34v5_probe(f34) : rmi_f34v7_probe(f34);
++	if (error)
++		return error;
++
++	dev_set_drvdata(&fn->dev, f34);
++
++	return 0;
++}
++
+ int rmi_f34_create_sysfs(struct rmi_device *rmi_dev)
+ {
+ 	return sysfs_create_group(&rmi_dev->dev.kobj, &rmi_firmware_attr_group);
 -- 
 2.39.5
 
