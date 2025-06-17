@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-153555-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-154090-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id BA7B1ADD58C
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:22:15 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 735E9ADD98F
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 19:07:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7AFDF19E0CF1
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:08:40 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 911814063AA
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:41:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7DD512ECE83;
-	Tue, 17 Jun 2025 16:05:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D6BED1FBEA8;
+	Tue, 17 Jun 2025 16:34:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C3p2ZPyL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JcDqtmaD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39A512F2355;
-	Tue, 17 Jun 2025 16:05:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9430E2FA645;
+	Tue, 17 Jun 2025 16:34:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750176341; cv=none; b=DdnE6nYn/q/e07ylnDPhiKPbC0uX6h87m7YcxXNrfnwQDCnrhuuHybYyb1ZL+a8JwDbpebHm/5smUVaAvlXIndLmnH58Zt4M8L0NwP5T/MUxEAPEiBeDwYZ9N8h9ruNf2lGMUeioJAM9wSRbEclOXH5fFYsOwWJzqHw5mjZcLKs=
+	t=1750178069; cv=none; b=Us5TGtC7zKadMhfJU60ftbmfCIJoT6XB5zwgiaj68qI+matlE/wRfzdd7+EZeh4lbNPvP23hxjocxeg3yssm8+5Yuexvf2RzYrH0NNVFZPDSDswdgineLWBXI9V/yZzxwWr7pQZn3tVf0qlTJ6GPqMCoaI/OX4lnsup9TpAtH+Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750176341; c=relaxed/simple;
-	bh=vD5MnLwrv3SPQLdmkmI9tcBQiFDxnFmVzKBv4ApBy/8=;
+	s=arc-20240116; t=1750178069; c=relaxed/simple;
+	bh=AJos5fd0734dbevzcQ4bYe5tZkSLHvP7iz0B0m9Ev34=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aVIUoooc7mxUSL05M2aHjO+hFdCJRLuXxxZIbr6SNfW05Hs1h/rFKc/oS7xpY6u6WtG/CfLErZoS5iq9x01/8CZoyp5Asbys0JhmV5/J1+RGTR313uhq9XJGB0uc/0+Qf6ym29ghCflkmaN3Zu6HrktBgNoWkvd210nUOskZbxM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C3p2ZPyL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9BA84C4CEE3;
-	Tue, 17 Jun 2025 16:05:40 +0000 (UTC)
+	 MIME-Version; b=j63hPKhBXHi1pPf/eX87lrXHIlTKxwvCpZ1AOm7a+ABgk3CLZPO0YR3n8Gf+Uhqr/bCErPSqyOFbZvaQ+pxkiB52cdSeIEAsYKauKrxaSAuqNj7ZJAuEhxa2j3V07oA4bpwWMfnFFPjeYDW6Z32SXAfu6jdQMxtWVuFxhe0JaQI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JcDqtmaD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A100AC4CEE3;
+	Tue, 17 Jun 2025 16:34:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750176341;
-	bh=vD5MnLwrv3SPQLdmkmI9tcBQiFDxnFmVzKBv4ApBy/8=;
+	s=korg; t=1750178069;
+	bh=AJos5fd0734dbevzcQ4bYe5tZkSLHvP7iz0B0m9Ev34=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=C3p2ZPyLOhptZoncE+svdpkM/N9bRMnmbv+GVGjOLJ/srwv4NXmyKr2qJ7YS4Fk7u
-	 TYHCK2ToseKh/+B9pqxSYz5/QECVzVj52nt8IfmWw1AJqdK/oo6WZXNON9UIocDD2g
-	 JDgrGz1+WMdpH8wyAyi9TLodeKZaPcWVLukU1Ylk=
+	b=JcDqtmaDL5ndUOIzNUijUMDSMq59WkqRgDwfNYe9ucTaUeFI1iRPULNlKnQVRZe2y
+	 P2cgg+lVS73dI2ZS5v9wu/+AeIRHg56Pb9ofohuwQ+ZTrfIJkQZPfQ7/A40z4fySYg
+	 ftmXmkoGas/iLMo0zMvkpcI6GuFpNIn00dlsHhVU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Petr Machata <petrm@nvidia.com>,
-	Ido Schimmel <idosch@nvidia.com>,
-	David Ahern <dsahern@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 268/356] seg6: Fix validation of nexthop addresses
+Subject: [PATCH 6.12 417/512] serial: sh-sci: Move runtime PM enable to sci_probe_single()
 Date: Tue, 17 Jun 2025 17:26:23 +0200
-Message-ID: <20250617152348.993645605@linuxfoundation.org>
+Message-ID: <20250617152436.474113766@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152338.212798615@linuxfoundation.org>
-References: <20250617152338.212798615@linuxfoundation.org>
+In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
+References: <20250617152419.512865572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,53 +62,92 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ido Schimmel <idosch@nvidia.com>
+From: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
 
-[ Upstream commit 7632fedb266d93ed0ed9f487133e6c6314a9b2d1 ]
+[ Upstream commit 239f11209e5f282e16f5241b99256e25dd0614b6 ]
 
-The kernel currently validates that the length of the provided nexthop
-address does not exceed the specified length. This can lead to the
-kernel reading uninitialized memory if user space provided a shorter
-length than the specified one.
+Relocate the runtime PM enable operation to sci_probe_single(). This change
+prepares the codebase for upcoming fixes.
 
-Fix by validating that the provided length exactly matches the specified
-one.
+While at it, replace the existing logic with a direct call to
+devm_pm_runtime_enable() and remove sci_cleanup_single(). The
+devm_pm_runtime_enable() function automatically handles disabling runtime
+PM during driver removal.
 
-Fixes: d1df6fd8a1d2 ("ipv6: sr: define core operations for seg6local lightweight tunnel")
-Reviewed-by: Petr Machata <petrm@nvidia.com>
-Signed-off-by: Ido Schimmel <idosch@nvidia.com>
-Reviewed-by: David Ahern <dsahern@kernel.org>
-Link: https://patch.msgid.link/20250604113252.371528-1-idosch@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+Link: https://lore.kernel.org/r/20250116182249.3828577-3-claudiu.beznea.uj@bp.renesas.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv6/seg6_local.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ drivers/tty/serial/sh-sci.c |   24 ++++++------------------
+ 1 file changed, 6 insertions(+), 18 deletions(-)
 
-diff --git a/net/ipv6/seg6_local.c b/net/ipv6/seg6_local.c
-index c434940131b1d..7f295b9c13744 100644
---- a/net/ipv6/seg6_local.c
-+++ b/net/ipv6/seg6_local.c
-@@ -1638,10 +1638,8 @@ static const struct nla_policy seg6_local_policy[SEG6_LOCAL_MAX + 1] = {
- 	[SEG6_LOCAL_SRH]	= { .type = NLA_BINARY },
- 	[SEG6_LOCAL_TABLE]	= { .type = NLA_U32 },
- 	[SEG6_LOCAL_VRFTABLE]	= { .type = NLA_U32 },
--	[SEG6_LOCAL_NH4]	= { .type = NLA_BINARY,
--				    .len = sizeof(struct in_addr) },
--	[SEG6_LOCAL_NH6]	= { .type = NLA_BINARY,
--				    .len = sizeof(struct in6_addr) },
-+	[SEG6_LOCAL_NH4]	= NLA_POLICY_EXACT_LEN(sizeof(struct in_addr)),
-+	[SEG6_LOCAL_NH6]	= NLA_POLICY_EXACT_LEN(sizeof(struct in6_addr)),
- 	[SEG6_LOCAL_IIF]	= { .type = NLA_U32 },
- 	[SEG6_LOCAL_OIF]	= { .type = NLA_U32 },
- 	[SEG6_LOCAL_BPF]	= { .type = NLA_NESTED },
--- 
-2.39.5
-
+--- a/drivers/tty/serial/sh-sci.c
++++ b/drivers/tty/serial/sh-sci.c
+@@ -3074,10 +3074,6 @@ static int sci_init_single(struct platfo
+ 		ret = sci_init_clocks(sci_port, &dev->dev);
+ 		if (ret < 0)
+ 			return ret;
+-
+-		port->dev = &dev->dev;
+-
+-		pm_runtime_enable(&dev->dev);
+ 	}
+ 
+ 	port->type		= p->type;
+@@ -3104,11 +3100,6 @@ static int sci_init_single(struct platfo
+ 	return 0;
+ }
+ 
+-static void sci_cleanup_single(struct sci_port *port)
+-{
+-	pm_runtime_disable(port->port.dev);
+-}
+-
+ #if defined(CONFIG_SERIAL_SH_SCI_CONSOLE) || \
+     defined(CONFIG_SERIAL_SH_SCI_EARLYCON)
+ static void serial_console_putchar(struct uart_port *port, unsigned char ch)
+@@ -3278,8 +3269,6 @@ static void sci_remove(struct platform_d
+ 	sci_ports_in_use &= ~BIT(port->port.line);
+ 	uart_remove_one_port(&sci_uart_driver, &port->port);
+ 
+-	sci_cleanup_single(port);
+-
+ 	if (port->port.fifosize > 1)
+ 		device_remove_file(&dev->dev, &dev_attr_rx_fifo_trigger);
+ 	if (type == PORT_SCIFA || type == PORT_SCIFB || type == PORT_HSCIF)
+@@ -3444,6 +3433,11 @@ static int sci_probe_single(struct platf
+ 	if (ret)
+ 		return ret;
+ 
++	sciport->port.dev = &dev->dev;
++	ret = devm_pm_runtime_enable(&dev->dev);
++	if (ret)
++		return ret;
++
+ 	sciport->gpios = mctrl_gpio_init(&sciport->port, 0);
+ 	if (IS_ERR(sciport->gpios))
+ 		return PTR_ERR(sciport->gpios);
+@@ -3457,13 +3451,7 @@ static int sci_probe_single(struct platf
+ 		sciport->port.flags |= UPF_HARD_FLOW;
+ 	}
+ 
+-	ret = uart_add_one_port(&sci_uart_driver, &sciport->port);
+-	if (ret) {
+-		sci_cleanup_single(sciport);
+-		return ret;
+-	}
+-
+-	return 0;
++	return uart_add_one_port(&sci_uart_driver, &sciport->port);
+ }
+ 
+ static int sci_probe(struct platform_device *dev)
 
 
 
