@@ -1,60 +1,57 @@
-Return-Path: <stable+bounces-154462-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153617-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9292BADD925
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 19:03:24 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id CDAE3ADD577
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:21:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 598AF4074A0
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:55:10 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B666216CF69
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:13:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8225202C38;
-	Tue, 17 Jun 2025 16:54:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F396C2ED17B;
+	Tue, 17 Jun 2025 16:09:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Bxrr7eJ5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="igKzwMdG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A52862FA652;
-	Tue, 17 Jun 2025 16:54:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A273E2ED176;
+	Tue, 17 Jun 2025 16:09:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750179264; cv=none; b=O0FXhK5gWnFjQAtUimTToUUp2bTRWvmxPlb32cqF6MHr11peIyw1km/FxgxF6NVUbi3nlo2jgxyezjVpt0JxK70kuZKcDsaTrzBqWWxSd+uakTSMacb61mSh8G35jDeUgT2kyU/CT6sJNoyoGiKPDdb8Oms97/ozgIAsqv4kq1I=
+	t=1750176541; cv=none; b=iE84eYdJYE2vGpcQzUXnLLjzSq9Ip4ytgmsm5Z6XSoOhshZ303G/LoXPKEDNEWRlc7HhF1aeSPlknZRvlnZn+bbY8iOFktU9y1+o1epioYwlxJNx6HNA8+Gx9sZMoMURqTSEVwShWD/kP5L1i9Cygu9sWfJJ7IfSIsK9lJvb0pw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750179264; c=relaxed/simple;
-	bh=2flbqWcw44L23PspSVO3FITDG998NyKYffeZihIKmRc=;
+	s=arc-20240116; t=1750176541; c=relaxed/simple;
+	bh=10xGQac022hY1dr5inw4AqR3hyU42XMNxD6FFBnw4vs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=f99B8ORLd2vd9rOAP/42V1T49ts0j0vBi0nNpVDn5HVVsdgHlgK8rHWbSaPX2bYvLaOAAkOM8D3rSkjZN3r/lwrf1TdnSWNkxT8QPPGQXHwCyMKQ7D+15L6HYCXP67UP8shiAhlk4D6+Har2reuXsAqRJh/+0Bk88Y3798rSHss=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Bxrr7eJ5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16BDBC4CEE3;
-	Tue, 17 Jun 2025 16:54:23 +0000 (UTC)
+	 MIME-Version; b=vEg2nNlYv0nGD3cQYaXPxbNdRqNiJcESmcZLrDLgU/84bsUr9nXhSRTfgGnzd3YbqzXVTYP+PZaI+O78/Wk3sx3RcgtEm489+Y9ETOj8+yRuaFvXlY/3RXl1Uh1bFIrhEhGeT5dcHWCZXnCv8M/j8wZKpNqCmvYrjLCkCrSgI5Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=igKzwMdG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB1A4C4CEE3;
+	Tue, 17 Jun 2025 16:09:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750179264;
-	bh=2flbqWcw44L23PspSVO3FITDG998NyKYffeZihIKmRc=;
+	s=korg; t=1750176541;
+	bh=10xGQac022hY1dr5inw4AqR3hyU42XMNxD6FFBnw4vs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Bxrr7eJ5mEThPVAA3KkLsniBIpQxACP4afqojdQk1tOIeea80Ui4NdiszeJckExFZ
-	 j1SWTAH7lzo9IrOnz/fgXgSe1a1SWpbArFskyNa3MrzBkcdx/wvnbeoJWxZRPXwurS
-	 FIAfN/rNgMpp6hu0HoMl5Pc8O2WkgumyqA/fRupA=
+	b=igKzwMdGvdObdliFKG2UW5zN7uay5KQfXxVmKNRplyfBVASzismxE1nanGJhml6WA
+	 TRDs2fkp8LlNGeF6yE4B4+CSYyWKXvG0CkEn9aPJApsMyEKxVdXAO5WMhlKTFUNsLU
+	 fnZoz2XIcFMCYj2Er4bBmyu1Zt0Q7Z2JsT9gFcpU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+846bb38dc67fe62cc733@syzkaller.appspotmail.com,
-	John <john.cs.hey@gmail.com>,
-	Joe Damato <jdamato@fastly.com>,
-	Stanislav Fomichev <sdf@fomichev.me>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Pauli Virtanen <pav@iki.fi>,
+	Paul Menzel <pmenzel@molgen.mpg.de>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 698/780] e1000: Move cancel_work_sync to avoid deadlock
+Subject: [PATCH 6.6 291/356] Bluetooth: hci_core: fix list_for_each_entry_rcu usage
 Date: Tue, 17 Jun 2025 17:26:46 +0200
-Message-ID: <20250617152519.922570692@linuxfoundation.org>
+Message-ID: <20250617152349.892762891@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
-References: <20250617152451.485330293@linuxfoundation.org>
+In-Reply-To: <20250617152338.212798615@linuxfoundation.org>
+References: <20250617152338.212798615@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,76 +63,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Joe Damato <jdamato@fastly.com>
+From: Pauli Virtanen <pav@iki.fi>
 
-[ Upstream commit b4a8085ceefb7bbb12c2b71c55e71fc946c6929f ]
+[ Upstream commit 308a3a8ce8ea41b26c46169f3263e50f5997c28e ]
 
-Previously, e1000_down called cancel_work_sync for the e1000 reset task
-(via e1000_down_and_stop), which takes RTNL.
+Releasing + re-acquiring RCU lock inside list_for_each_entry_rcu() loop
+body is not correct.
 
-As reported by users and syzbot, a deadlock is possible in the following
-scenario:
+Fix by taking the update-side hdev->lock instead.
 
-CPU 0:
-  - RTNL is held
-  - e1000_close
-  - e1000_down
-  - cancel_work_sync (cancel / wait for e1000_reset_task())
-
-CPU 1:
-  - process_one_work
-  - e1000_reset_task
-  - take RTNL
-
-To remedy this, avoid calling cancel_work_sync from e1000_down
-(e1000_reset_task does nothing if the device is down anyway). Instead,
-call cancel_work_sync for e1000_reset_task when the device is being
-removed.
-
-Fixes: e400c7444d84 ("e1000: Hold RTNL when e1000_down can be called")
-Reported-by: syzbot+846bb38dc67fe62cc733@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/netdev/683837bf.a00a0220.52848.0003.GAE@google.com/
-Reported-by: John <john.cs.hey@gmail.com>
-Closes: https://lore.kernel.org/netdev/CAP=Rh=OEsn4y_2LvkO3UtDWurKcGPnZ_NPSXK=FbgygNXL37Sw@mail.gmail.com/
-Signed-off-by: Joe Damato <jdamato@fastly.com>
-Acked-by: Stanislav Fomichev <sdf@fomichev.me>
-Acked-by: Jacob Keller <jacob.e.keller@intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Fixes: c7eaf80bfb0c ("Bluetooth: Fix hci_link_tx_to RCU lock usage")
+Signed-off-by: Pauli Virtanen <pav@iki.fi>
+Reviewed-by: Paul Menzel <pmenzel@molgen.mpg.de>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/e1000/e1000_main.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ net/bluetooth/hci_core.c | 11 +++--------
+ 1 file changed, 3 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/e1000/e1000_main.c b/drivers/net/ethernet/intel/e1000/e1000_main.c
-index 3f089c3d47b23..d8595e84326db 100644
---- a/drivers/net/ethernet/intel/e1000/e1000_main.c
-+++ b/drivers/net/ethernet/intel/e1000/e1000_main.c
-@@ -477,10 +477,6 @@ static void e1000_down_and_stop(struct e1000_adapter *adapter)
+diff --git a/net/bluetooth/hci_core.c b/net/bluetooth/hci_core.c
+index 30519d47e8a69..febfd389ecf43 100644
+--- a/net/bluetooth/hci_core.c
++++ b/net/bluetooth/hci_core.c
+@@ -3380,23 +3380,18 @@ static void hci_link_tx_to(struct hci_dev *hdev, __u8 type)
  
- 	cancel_delayed_work_sync(&adapter->phy_info_task);
- 	cancel_delayed_work_sync(&adapter->fifo_stall_task);
--
--	/* Only kill reset task if adapter is not resetting */
--	if (!test_bit(__E1000_RESETTING, &adapter->flags))
--		cancel_work_sync(&adapter->reset_task);
+ 	bt_dev_err(hdev, "link tx timeout");
+ 
+-	rcu_read_lock();
++	hci_dev_lock(hdev);
+ 
+ 	/* Kill stalled connections */
+-	list_for_each_entry_rcu(c, &h->list, list) {
++	list_for_each_entry(c, &h->list, list) {
+ 		if (c->type == type && c->sent) {
+ 			bt_dev_err(hdev, "killing stalled connection %pMR",
+ 				   &c->dst);
+-			/* hci_disconnect might sleep, so, we have to release
+-			 * the RCU read lock before calling it.
+-			 */
+-			rcu_read_unlock();
+ 			hci_disconnect(c, HCI_ERROR_REMOTE_USER_TERM);
+-			rcu_read_lock();
+ 		}
+ 	}
+ 
+-	rcu_read_unlock();
++	hci_dev_unlock(hdev);
  }
  
- void e1000_down(struct e1000_adapter *adapter)
-@@ -1266,6 +1262,10 @@ static void e1000_remove(struct pci_dev *pdev)
- 
- 	unregister_netdev(netdev);
- 
-+	/* Only kill reset task if adapter is not resetting */
-+	if (!test_bit(__E1000_RESETTING, &adapter->flags))
-+		cancel_work_sync(&adapter->reset_task);
-+
- 	e1000_phy_hw_reset(hw);
- 
- 	kfree(adapter->tx_ring);
+ static struct hci_chan *hci_chan_sent(struct hci_dev *hdev, __u8 type,
 -- 
 2.39.5
 
