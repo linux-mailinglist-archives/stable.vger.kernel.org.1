@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-154524-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153807-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D305ADDA4C
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 19:16:39 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 902F1ADD683
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:34:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CEB20194745F
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:58:26 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 03E5A406758
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:25:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 510EB2FA627;
-	Tue, 17 Jun 2025 16:58:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62E2F2F2367;
+	Tue, 17 Jun 2025 16:19:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L8N0uEX8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h72R6FBH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E1EB2FA622;
-	Tue, 17 Jun 2025 16:58:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DB572F235C;
+	Tue, 17 Jun 2025 16:19:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750179486; cv=none; b=fqWZcwCdUy3XcN0kT0YL/gAK2THlL6X/LkDkK3xVAVhfcIUqDvS7DmEH27Nyir6DJxt0kXkk6ddvWtfviF7xuwCuqOQ7L63Ae7BQIrmliLPLcdSuy9pjjUTlFpvk7c4do8kCUVn3hkiDID8c53K5k1En3a48rg9RNq1ODz70wqw=
+	t=1750177160; cv=none; b=FhifsYrypCEZu2+9F6nNIgx1aSMzCM2iPG5CZNOEp+Lgxj/MHhmh+dUa4Ww4SMWKdizQDyQZAX2BgxOryJ6b4OwMlj+CtBDKFvpobH+nZt6b19LCR4KCwuYzx4xUvggqas5Gxciv31ivfwyReFX5dKl1thRxUk7hPR7oNkUYGTA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750179486; c=relaxed/simple;
-	bh=+x9p0TGeWjtqSTLRu7UgiEHKGxMdtkd7kzrvSqc1HTg=;
+	s=arc-20240116; t=1750177160; c=relaxed/simple;
+	bh=yESWEhmf0Uawvd972r8fKzTDw8EgnsN9LZaEFGQXo/Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tP1j8Q+mr/SEuE+/o4TP1RhaGc2ekRJ/6LEOxAy0V7Bwj4AdFaEu0GsID2gROqfTimH9SWfcEfIfkfOzw1FFFVuxIvcrnu8gKgF/zNXfl8AO7REhRiHpls0C5MVDDo0XYtwY2RDLZd1DbC802cSmUGQk0tBALfo+aoQHO6eoKQA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L8N0uEX8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 939C4C4CEE3;
-	Tue, 17 Jun 2025 16:58:05 +0000 (UTC)
+	 MIME-Version; b=HZPMC5kkC0ijLOlx/UQym4HVAOvCAU9wSOiAseyIHdRJu0Cqvk0qTL27EFwz8E2KwOduzmWRVLy5eftxMPt1vJRe95CztqmAsT4jmzPtDoaH1dWGNaHjgJJEppzIq7EiySY8M8jxRjBoW67pgSnNAkJYc5D3A4Hwl17Z5zDOvPs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=h72R6FBH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33638C4CEE3;
+	Tue, 17 Jun 2025 16:19:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750179485;
-	bh=+x9p0TGeWjtqSTLRu7UgiEHKGxMdtkd7kzrvSqc1HTg=;
+	s=korg; t=1750177158;
+	bh=yESWEhmf0Uawvd972r8fKzTDw8EgnsN9LZaEFGQXo/Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=L8N0uEX8MF5wwcnDonDuR+bmmlFIboB1Q5ZK5w7lQo6avd3MbMozjUW9pZV6R0CKl
-	 ejxbKEtZDispC9eOGKi8c3cPcfqJGksH1XskYD5kJ7eyJ/JXIC7bMJK2kFkC1NCac9
-	 PvWK3vMPGH9JzfDUveWzriej8GFxecbRyCxpjWYw=
+	b=h72R6FBH+4MvMjqx/tfexAYyXU7YC+gF0DfsQJny/IwnzKw5PT1EqXEYbtoNzRRwJ
+	 hvmv5thxOSr2iA/FaTxdXt4+zGQTZVf3uusTJfigR7RUu+GSB13IEN2Gng+M2OJMkz
+	 ViYJfuQ8QqpAyaBmbblN3vrl6S158tgr2VNtFEFk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Amit Sunil Dhamne <amitsd@google.com>,
-	Badhri Jagan Sridharan <badhri@google.com>,
-	Kyle Tso <kyletso@google.com>,
-	stable <stable@kernel.org>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Subject: [PATCH 6.15 760/780] usb: typec: tcpm/tcpci_maxim: Fix bounds check in process_rx()
+	syzbot <syzkaller@googlegroups.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Kuniyuki Iwashima <kuniyu@amazon.com>,
+	Paul Moore <paul@paul-moore.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.6 353/356] calipso: unlock rcu before returning -EAFNOSUPPORT
 Date: Tue, 17 Jun 2025 17:27:48 +0200
-Message-ID: <20250617152522.455589578@linuxfoundation.org>
+Message-ID: <20250617152352.345822501@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
-References: <20250617152451.485330293@linuxfoundation.org>
+In-Reply-To: <20250617152338.212798615@linuxfoundation.org>
+References: <20250617152338.212798615@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,49 +64,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Amit Sunil Dhamne <amitsd@google.com>
+From: Eric Dumazet <edumazet@google.com>
 
-commit 0736299d090f5c6a1032678705c4bc0a9511a3db upstream.
+commit 3cae906e1a6184cdc9e4d260e4dbdf9a118d94ad upstream.
 
-Register read of TCPC_RX_BYTE_CNT returns the total size consisting of:
+syzbot reported that a recent patch forgot to unlock rcu
+in the error path.
 
-  PD message (pending read) size + 1 Byte for Frame Type (SOP*)
+Adopt the convention that netlbl_conn_setattr() is already using.
 
-This is validated against the max PD message (`struct pd_message`) size
-without accounting for the extra byte for the frame type. Note that the
-struct pd_message does not contain a field for the frame_type. This
-results in false negatives when the "PD message (pending read)" is equal
-to the max PD message size.
-
-Fixes: 6f413b559f86 ("usb: typec: tcpci_maxim: Chip level TCPC driver")
-Signed-off-by: Amit Sunil Dhamne <amitsd@google.com>
-Signed-off-by: Badhri Jagan Sridharan <badhri@google.com>
-Reviewed-by: Kyle Tso <kyletso@google.com>
-Cc: stable <stable@kernel.org>
-Link: https://lore.kernel.org/stable/20250502-b4-new-fix-pd-rx-count-v1-1-e5711ed09b3d%40google.com
-Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Link: https://lore.kernel.org/r/20250502-b4-new-fix-pd-rx-count-v1-1-e5711ed09b3d@google.com
+Fixes: 6e9f2df1c550 ("calipso: Don't call calipso functions for AF_INET sk.")
+Reported-by: syzbot <syzkaller@googlegroups.com>
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Cc: Kuniyuki Iwashima <kuniyu@amazon.com>
+Acked-by: Paul Moore <paul@paul-moore.com>
+Link: https://patch.msgid.link/20250604133826.1667664-1-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/typec/tcpm/tcpci_maxim_core.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ net/netlabel/netlabel_kapi.c |    6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
---- a/drivers/usb/typec/tcpm/tcpci_maxim_core.c
-+++ b/drivers/usb/typec/tcpm/tcpci_maxim_core.c
-@@ -166,7 +166,8 @@ static void process_rx(struct max_tcpci_
- 		return;
- 	}
+--- a/net/netlabel/netlabel_kapi.c
++++ b/net/netlabel/netlabel_kapi.c
+@@ -1140,8 +1140,10 @@ int netlbl_conn_setattr(struct sock *sk,
+ 		break;
+ #if IS_ENABLED(CONFIG_IPV6)
+ 	case AF_INET6:
+-		if (sk->sk_family != AF_INET6)
+-			return -EAFNOSUPPORT;
++		if (sk->sk_family != AF_INET6) {
++			ret_val = -EAFNOSUPPORT;
++			goto conn_setattr_return;
++		}
  
--	if (count > sizeof(struct pd_message) || count + 1 > TCPC_RECEIVE_BUFFER_LEN) {
-+	if (count > sizeof(struct pd_message) + 1 ||
-+	    count + 1 > TCPC_RECEIVE_BUFFER_LEN) {
- 		dev_err(chip->dev, "Invalid TCPC_RX_BYTE_CNT %d\n", count);
- 		return;
- 	}
+ 		addr6 = (struct sockaddr_in6 *)addr;
+ 		entry = netlbl_domhsh_getentry_af6(secattr->domain,
 
 
 
