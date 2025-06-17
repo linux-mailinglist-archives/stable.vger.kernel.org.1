@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-154006-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-154008-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 74062ADD7DE
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:50:00 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id ED19EADD796
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:46:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5B7BC1946258
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:36:27 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EB6B64A36E2
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:36:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE3632ECD05;
-	Tue, 17 Jun 2025 16:30:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5CBE2ED161;
+	Tue, 17 Jun 2025 16:30:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KU4R6MnJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mRLqetRc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9AB7A2DFF20;
-	Tue, 17 Jun 2025 16:30:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FAB32ED150;
+	Tue, 17 Jun 2025 16:30:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750177803; cv=none; b=fOxHe34bfPQ3Y59TwMG0afII4IfdQS3cbZKw/l6BgxdNW3/djotRCYptIAHCln6gaWnEDP8sNZHwYFJuDyHVFh/GP7m+HS5FZcNjTPUEN5/XfiFtowgaKNQMMOKg/FM1gJx4lgACJMv3s1SrRTlj/GpLrRDI4ZbeosBuWAKLsdQ=
+	t=1750177809; cv=none; b=ZJHH+UHT7hULjOrcJ4is/HbNUO3whIae1LKZY8RQUpjLDYzMaxsHrPdB9pBEc67p2+K7DqyTzAE21xUL2nlAddBjPRV59EHII0R6iPBQdDEAPgHBBZo7XI8bOEyXNOfkb3XLU1h5SPqjpx8raHu9EqgZyy8VDC9TuTEjUuctD7I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750177803; c=relaxed/simple;
-	bh=3pV6C4gV7w533UGQDjcH7Bv2fYKkxk6hXjaEEchwFoA=;
+	s=arc-20240116; t=1750177809; c=relaxed/simple;
+	bh=rhxqsohmuJ7rhhQmMqj630Qm3QH607dQ8N24Ou4ZxV4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=U+Oo7BZcijnSCtistenEUEaqi9IQbtITY7Gypnx7b1w92wfW9n/mVUsGRUdQLvdNWOsaaS7707DGzVwYrvLIBP67yA9pJdtRGdnX3qJDGZAkiWx3n7IJM8otfzeUvFAT3WAEnpxfXaVmIEy9o8d95JJKnqTpAgIHy17D5V1lJNQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KU4R6MnJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2AADC4CEE3;
-	Tue, 17 Jun 2025 16:30:02 +0000 (UTC)
+	 MIME-Version; b=XSFXRTP7PRHX8C1fs9OZupAaSWYdIlEixLPAK3DWZD2L/xBDE7VLIblvUcD/MgEOrGpIGkWw5E2Tb+LC4lUmJG3ICj6BHdVX+0CCXPP3u4msa8cO33KxlfibneStVpWJDKDyGaSnFVDLJFK0/9Ne+25kds57gFozXP6IWkmDsW4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mRLqetRc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3BF7C4CEE3;
+	Tue, 17 Jun 2025 16:30:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750177803;
-	bh=3pV6C4gV7w533UGQDjcH7Bv2fYKkxk6hXjaEEchwFoA=;
+	s=korg; t=1750177809;
+	bh=rhxqsohmuJ7rhhQmMqj630Qm3QH607dQ8N24Ou4ZxV4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KU4R6MnJW6jaF8FVwNABNVDFafNpAptsnMXitPngt0f7GmyxbFCXTlZllRpJyKBQe
-	 GnevoTzWWIvXo6sffDfn2chuZ3a05ylAvgu5bKabTh36K3xNKcQHjnsrpMNBCIx7uw
-	 uGzCsRtUefIDSXwJUzXZhuKdbVzX28ErYwg1SXWo=
+	b=mRLqetRcO9o+PwHAxGWFL9SOAAQo9XLO2Dei5MGFGB+kKbK5+T510zfZv6TOXPS+U
+	 8TuIpBqq4LZWP6ZHn+jV2jc1q2FIG0TnCgEaFr8tC10GD0kutuzvBmGSIVjni4gbN5
+	 1kkUJDMniolj00DlN7NhAfFQM16A4XgrkNAIxycg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wolfram Sang <wsa+renesas@sang-engineering.com>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>,
-	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
+	Chen-Yu Tsai <wenst@chromium.org>,
+	Jason-JH Lin <jason-jh.lin@mediatek.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 365/780] ARM: dts: at91: at91sam9263: fix NAND chip selects
-Date: Tue, 17 Jun 2025 17:21:13 +0200
-Message-ID: <20250617152506.320137667@linuxfoundation.org>
+Subject: [PATCH 6.15 366/780] arm64: dts: mediatek: mt8188: Fix IOMMU device for rdma0
+Date: Tue, 17 Jun 2025 17:21:14 +0200
+Message-ID: <20250617152506.359008786@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
 References: <20250617152451.485330293@linuxfoundation.org>
@@ -67,65 +67,51 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Wolfram Sang <wsa+renesas@sang-engineering.com>
+From: Chen-Yu Tsai <wenst@chromium.org>
 
-[ Upstream commit c72ede1c24be689733bcd2233a3a56f2478429c8 ]
+[ Upstream commit 267623000d11f6d483214be2484555f600393a12 ]
 
-NAND did not work on my USB-A9263. I discovered that the offending
-commit converted the PIO bank for chip selects wrongly, so all A9263
-boards need to be fixed.
+Based on the comments in the MT8188 IOMMU binding header, the rdma0
+device specifies the wrong IOMMU device for the IOMMU port it is
+tied to:
 
-Fixes: 1004a2977bdc ("ARM: dts: at91: Switch to the new NAND bindings")
-Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
-Reviewed-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
-Link: https://lore.kernel.org/r/20250402210446.5972-2-wsa+renesas@sang-engineering.com
-Signed-off-by: Claudiu Beznea <claudiu.beznea@tuxon.dev>
+    This SoC have two MM IOMMU HWs, this is the connected information:
+    iommu-vdo: larb0/2/5/9/10/11A/11C/13/16B/17B/19/21
+    iommu-vpp: larb1/3/4/6/7/11B/12/14/15/16A/17A/23/27
+
+rdma0's endpoint is M4U_PORT_L1_DISP_RDMA0 (on larb1), which should use
+iommu-vpp, but it is currently tied to iommu-vdo.
+
+Somehow this went undetected until recently in Linux v6.15-rc1 with some
+IOMMU subsystem framework changes that caused the IOMMU to no longer
+work. The IOMMU would fail to probe if any devices associated with it
+could not be successfully attached. Prior to these changes, only the
+end device would be left without an IOMMU attached.
+
+Fixes: 7075b21d1a8e ("arm64: dts: mediatek: mt8188: Add display nodes for vdosys0")
+Signed-off-by: Chen-Yu Tsai <wenst@chromium.org>
+Reviewed-by: Jason-JH Lin <jason-jh.lin@mediatek.com>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Link: https://lore.kernel.org/r/20250408092303.3563231-1-wenst@chromium.org
+Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/boot/dts/microchip/at91sam9263ek.dts | 2 +-
- arch/arm/boot/dts/microchip/tny_a9263.dts     | 2 +-
- arch/arm/boot/dts/microchip/usb_a9263.dts     | 2 +-
- 3 files changed, 3 insertions(+), 3 deletions(-)
+ arch/arm64/boot/dts/mediatek/mt8188.dtsi | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm/boot/dts/microchip/at91sam9263ek.dts b/arch/arm/boot/dts/microchip/at91sam9263ek.dts
-index 471ea25296aa1..93c5268a0845d 100644
---- a/arch/arm/boot/dts/microchip/at91sam9263ek.dts
-+++ b/arch/arm/boot/dts/microchip/at91sam9263ek.dts
-@@ -152,7 +152,7 @@
- 				nand@3 {
- 					reg = <0x3 0x0 0x800000>;
- 					rb-gpios = <&pioA 22 GPIO_ACTIVE_HIGH>;
--					cs-gpios = <&pioA 15 GPIO_ACTIVE_HIGH>;
-+					cs-gpios = <&pioD 15 GPIO_ACTIVE_HIGH>;
- 					nand-bus-width = <8>;
- 					nand-ecc-mode = "soft";
- 					nand-on-flash-bbt;
-diff --git a/arch/arm/boot/dts/microchip/tny_a9263.dts b/arch/arm/boot/dts/microchip/tny_a9263.dts
-index 3dd48b3e06da5..fd8244b56e059 100644
---- a/arch/arm/boot/dts/microchip/tny_a9263.dts
-+++ b/arch/arm/boot/dts/microchip/tny_a9263.dts
-@@ -64,7 +64,7 @@
- 				nand@3 {
- 					reg = <0x3 0x0 0x800000>;
- 					rb-gpios = <&pioA 22 GPIO_ACTIVE_HIGH>;
--					cs-gpios = <&pioA 15 GPIO_ACTIVE_HIGH>;
-+					cs-gpios = <&pioD 15 GPIO_ACTIVE_HIGH>;
- 					nand-bus-width = <8>;
- 					nand-ecc-mode = "soft";
- 					nand-on-flash-bbt;
-diff --git a/arch/arm/boot/dts/microchip/usb_a9263.dts b/arch/arm/boot/dts/microchip/usb_a9263.dts
-index 6af450cb387c9..8e1a3fb61087c 100644
---- a/arch/arm/boot/dts/microchip/usb_a9263.dts
-+++ b/arch/arm/boot/dts/microchip/usb_a9263.dts
-@@ -84,7 +84,7 @@
- 				nand@3 {
- 					reg = <0x3 0x0 0x800000>;
- 					rb-gpios = <&pioA 22 GPIO_ACTIVE_HIGH>;
--					cs-gpios = <&pioA 15 GPIO_ACTIVE_HIGH>;
-+					cs-gpios = <&pioD 15 GPIO_ACTIVE_HIGH>;
- 					nand-bus-width = <8>;
- 					nand-ecc-mode = "soft";
- 					nand-on-flash-bbt;
+diff --git a/arch/arm64/boot/dts/mediatek/mt8188.dtsi b/arch/arm64/boot/dts/mediatek/mt8188.dtsi
+index 69a8423d38589..29d35ca945973 100644
+--- a/arch/arm64/boot/dts/mediatek/mt8188.dtsi
++++ b/arch/arm64/boot/dts/mediatek/mt8188.dtsi
+@@ -2579,7 +2579,7 @@
+ 			reg = <0 0x1c002000 0 0x1000>;
+ 			clocks = <&vdosys0 CLK_VDO0_DISP_RDMA0>;
+ 			interrupts = <GIC_SPI 638 IRQ_TYPE_LEVEL_HIGH 0>;
+-			iommus = <&vdo_iommu M4U_PORT_L1_DISP_RDMA0>;
++			iommus = <&vpp_iommu M4U_PORT_L1_DISP_RDMA0>;
+ 			power-domains = <&spm MT8188_POWER_DOMAIN_VDOSYS0>;
+ 			mediatek,gce-client-reg = <&gce0 SUBSYS_1c00XXXX 0x2000 0x1000>;
+ 
 -- 
 2.39.5
 
