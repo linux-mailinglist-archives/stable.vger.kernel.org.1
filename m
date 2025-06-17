@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-152968-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-152970-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2CA6FADD1B7
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 17:34:10 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3475BADD1AB
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 17:33:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A34D13B0CE7
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 15:33:21 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 65C8F188D0C8
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 15:34:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2956F2EB5AB;
-	Tue, 17 Jun 2025 15:33:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA2C42E9753;
+	Tue, 17 Jun 2025 15:33:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dSOZYRlH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="faKO1asx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4D4C23B633;
-	Tue, 17 Jun 2025 15:33:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 978E51E8332;
+	Tue, 17 Jun 2025 15:33:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750174423; cv=none; b=AlLMAAWm5SXPjt1lhkHU/GLl6vtsYdDJ1K/1+BtCYv/Z07SHXzVHE8hM5bi8BhmwmbQf0NnEwPDn2upj2DGKBMc8Xaa+VsRBzs0JoFJfO2TlRhGAeOeAJCTLefyaJmY3qy8zbkkCUynIG/FkmTF0GPM+XfIPMwMipBQ2NR/7xOI=
+	t=1750174430; cv=none; b=MkctRriyCO/OAU4XIeYfqfqwXsClkQqGLU6HglWEUfBnDQpG8HS/HdGXngUfiBFtbHFTf+uEJRpIU81R7cLIDzc95zhcc/yrY6GiWMV1/dYIX4n83jF/3dU5z71RnLyHRGMnN9Pkj0cRJ8wFfB3ZCUOscz6Nnf2vQmCi6WxoWhU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750174423; c=relaxed/simple;
-	bh=gUtbaNbhTv2u8upUwdOot7nxejNcPZcT/EUlOixRb+g=;
+	s=arc-20240116; t=1750174430; c=relaxed/simple;
+	bh=2eeGmzbezLmOPYJ9xjqYRkKDG1Ix1e0Q/QHFUsXhe5M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nk0bGk7s8b/yF6H+6fwYDZDYN80iu8FHOP5oQPNG+jU0IcVKBcbHiFUO5ye/4W5z/LPpMH2Fdlqou2h2XrfZvvRjBi3unR237+j5Hf7dJeRGC0AcdW0WEWeVUfPy212ZwYQ/FXtqaRUsq9kQWD3+LwU2r9tsuUrTXYX1yN7R6D4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dSOZYRlH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4215AC4CEE3;
-	Tue, 17 Jun 2025 15:33:43 +0000 (UTC)
+	 MIME-Version; b=onTaXuMYlIF5wNWRf6KVHy9jxr9ncBWcZWuuiA0XiAk6icdnnK4aR4SVFi+7f1BtaMZvDrBfkPGaDG7y6HrCo5/1k9q8n08Eq8m9yIgOJUScOx1wGMsKBbsZn34dyPQ2PPoxoSRXBwJijTC/qU1oH1T3rRYkbgsjrA1Q775nypY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=faKO1asx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B18D7C4CEE3;
+	Tue, 17 Jun 2025 15:33:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750174423;
-	bh=gUtbaNbhTv2u8upUwdOot7nxejNcPZcT/EUlOixRb+g=;
+	s=korg; t=1750174430;
+	bh=2eeGmzbezLmOPYJ9xjqYRkKDG1Ix1e0Q/QHFUsXhe5M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dSOZYRlHxFpz8f6e9n87PKpAxRDmLe3YcLyZHgT8jpRqBrenMpUipIAeoCQv7PaAE
-	 kymtGdldfVPbK0XGJMBgtK8nGpbHPmBr/mysViugQseCdxRoudon8yqQO57QT99pNI
-	 QgdiUkyQsZLJI8/tL9nFHnFXJSw2cg+I5yWQHbME=
+	b=faKO1asxPPZ/zSe0BaM/IlXP/0jvu2z1SEVcZGgofL02QMhcC/c7smonNcpu5gwAB
+	 rQ513BsfHSsK1Eonu/N5uqZvaXZyf6EBuL7c9cjc9jsDnLMS/XPBKSaXoj0cCZuAUz
+	 8IiPMjUkvkddZywGFouAs9gAp5Bj4fYxTNgMaStg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Ahmed S. Darwish" <darwi@linutronix.de>,
+	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
 	Ingo Molnar <mingo@kernel.org>,
-	Andrew Cooper <andrew.cooper3@citrix.com>,
 	"H. Peter Anvin" <hpa@zytor.com>,
-	John Ogness <john.ogness@linutronix.de>,
-	x86-cpuid@lists.linux.dev,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Peter Zijlstra <peterz@infradead.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 017/512] x86/cpu: Sanitize CPUID(0x80000000) output
-Date: Tue, 17 Jun 2025 17:19:43 +0200
-Message-ID: <20250617152420.222948429@linuxfoundation.org>
+Subject: [PATCH 6.12 018/512] x86/insn: Fix opcode map (!REX2) superscript tags
+Date: Tue, 17 Jun 2025 17:19:44 +0200
+Message-ID: <20250617152420.261872896@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
 References: <20250617152419.512865572@linuxfoundation.org>
@@ -70,90 +69,201 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Ahmed S. Darwish <darwi@linutronix.de>
+From: Masami Hiramatsu (Google) <mhiramat@kernel.org>
 
-[ Upstream commit cc663ba3fe383a628a812f893cc98aafff39ab04 ]
+[ Upstream commit ca698ec2f07873a448d53c580795c4e023c75393 ]
 
-CPUID(0x80000000).EAX returns the max extended CPUID leaf available.  On
-x86-32 machines without an extended CPUID range, a CPUID(0x80000000)
-query will just repeat the output of the last valid standard CPUID leaf
-on the CPU; i.e., a garbage values.  Current tip:x86/cpu code protects against
-this by doing:
+Commit:
 
-	eax = cpuid_eax(0x80000000);
-	c->extended_cpuid_level = eax;
+  159039af8c07 ("x86/insn: x86/insn: Add support for REX2 prefix to the instruction decoder opcode map")
 
-	if ((eax & 0xffff0000) == 0x80000000) {
-		// CPU has an extended CPUID range. Check for 0x80000001
-		if (eax >= 0x80000001) {
-			cpuid(0x80000001, ...);
-		}
-	}
+added (!REX2) superscript with a space, but the correct format requires ','
+for concatination with other superscript tags.
 
-This is correct so far.  Afterwards though, the same possibly broken EAX
-value is used to check the availability of other extended CPUID leaves:
+Add ',' to generate correct insn attribute tables.
 
-	if (c->extended_cpuid_level >= 0x80000007)
-		...
-	if (c->extended_cpuid_level >= 0x80000008)
-		...
-	if (c->extended_cpuid_level >= 0x8000000a)
-		...
-	if (c->extended_cpuid_level >= 0x8000001f)
-		...
+I confirmed with following command:
 
-which is invalid.  Fix this by immediately setting the CPU's max extended
-CPUID leaf to zero if CPUID(0x80000000).EAX doesn't indicate a valid
-CPUID extended range.
+      arch/x86/lib/x86-opcode-map.txt | grep e8 | head -n 1
+  [0xe8] = INAT_MAKE_IMM(INAT_IMM_VWORD32) | INAT_FORCE64 | INAT_NO_REX2,
 
-While at it, add a comment, similar to kernel/head_32.S, clarifying the
-CPUID(0x80000000) sanity check.
-
-References: 8a50e5135af0 ("x86-32: Use symbolic constants, safer CPUID when enabling EFER.NX")
-Fixes: 3da99c977637 ("x86: make (early)_identify_cpu more the same between 32bit and 64 bit")
-Signed-off-by: Ahmed S. Darwish <darwi@linutronix.de>
+Fixes: 159039af8c07 ("x86/insn: x86/insn: Add support for REX2 prefix to the instruction decoder opcode map")
+Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Cc: Andrew Cooper <andrew.cooper3@citrix.com>
 Cc: H. Peter Anvin <hpa@zytor.com>
-Cc: John Ogness <john.ogness@linutronix.de>
-Cc: x86-cpuid@lists.linux.dev
-Link: https://lore.kernel.org/r/20250506050437.10264-3-darwi@linutronix.de
+Cc: Adrian Hunter <adrian.hunter@intel.com>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Link: https://lore.kernel.org/r/174580489027.388420.15539375184727726142.stgit@devnote2
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kernel/cpu/common.c | 17 +++++++++--------
- 1 file changed, 9 insertions(+), 8 deletions(-)
+ arch/x86/lib/x86-opcode-map.txt       | 50 +++++++++++++--------------
+ tools/arch/x86/lib/x86-opcode-map.txt | 50 +++++++++++++--------------
+ 2 files changed, 50 insertions(+), 50 deletions(-)
 
-diff --git a/arch/x86/kernel/cpu/common.c b/arch/x86/kernel/cpu/common.c
-index 39e9ec3dea985..b487754455236 100644
---- a/arch/x86/kernel/cpu/common.c
-+++ b/arch/x86/kernel/cpu/common.c
-@@ -1007,17 +1007,18 @@ void get_cpu_cap(struct cpuinfo_x86 *c)
- 		c->x86_capability[CPUID_D_1_EAX] = eax;
- 	}
+diff --git a/arch/x86/lib/x86-opcode-map.txt b/arch/x86/lib/x86-opcode-map.txt
+index f5dd84eb55dcd..cd3fd5155f6ec 100644
+--- a/arch/x86/lib/x86-opcode-map.txt
++++ b/arch/x86/lib/x86-opcode-map.txt
+@@ -35,7 +35,7 @@
+ #  - (!F3) : the last prefix is not 0xF3 (including non-last prefix case)
+ #  - (66&F2): Both 0x66 and 0xF2 prefixes are specified.
+ #
+-# REX2 Prefix
++# REX2 Prefix Superscripts
+ #  - (!REX2): REX2 is not allowed
+ #  - (REX2): REX2 variant e.g. JMPABS
  
--	/* AMD-defined flags: level 0x80000001 */
-+	/*
-+	 * Check if extended CPUID leaves are implemented: Max extended
-+	 * CPUID leaf must be in the 0x80000001-0x8000ffff range.
-+	 */
- 	eax = cpuid_eax(0x80000000);
--	c->extended_cpuid_level = eax;
-+	c->extended_cpuid_level = ((eax & 0xffff0000) == 0x80000000) ? eax : 0;
+@@ -286,10 +286,10 @@ df: ESC
+ # Note: "forced64" is Intel CPU behavior: they ignore 0x66 prefix
+ # in 64-bit mode. AMD CPUs accept 0x66 prefix, it causes RIP truncation
+ # to 16 bits. In 32-bit mode, 0x66 is accepted by both Intel and AMD.
+-e0: LOOPNE/LOOPNZ Jb (f64) (!REX2)
+-e1: LOOPE/LOOPZ Jb (f64) (!REX2)
+-e2: LOOP Jb (f64) (!REX2)
+-e3: JrCXZ Jb (f64) (!REX2)
++e0: LOOPNE/LOOPNZ Jb (f64),(!REX2)
++e1: LOOPE/LOOPZ Jb (f64),(!REX2)
++e2: LOOP Jb (f64),(!REX2)
++e3: JrCXZ Jb (f64),(!REX2)
+ e4: IN AL,Ib (!REX2)
+ e5: IN eAX,Ib (!REX2)
+ e6: OUT Ib,AL (!REX2)
+@@ -298,10 +298,10 @@ e7: OUT Ib,eAX (!REX2)
+ # in "near" jumps and calls is 16-bit. For CALL,
+ # push of return address is 16-bit wide, RSP is decremented by 2
+ # but is not truncated to 16 bits, unlike RIP.
+-e8: CALL Jz (f64) (!REX2)
+-e9: JMP-near Jz (f64) (!REX2)
+-ea: JMP-far Ap (i64) (!REX2)
+-eb: JMP-short Jb (f64) (!REX2)
++e8: CALL Jz (f64),(!REX2)
++e9: JMP-near Jz (f64),(!REX2)
++ea: JMP-far Ap (i64),(!REX2)
++eb: JMP-short Jb (f64),(!REX2)
+ ec: IN AL,DX (!REX2)
+ ed: IN eAX,DX (!REX2)
+ ee: OUT DX,AL (!REX2)
+@@ -478,22 +478,22 @@ AVXcode: 1
+ 7f: movq Qq,Pq | vmovdqa Wx,Vx (66) | vmovdqa32/64 Wx,Vx (66),(evo) | vmovdqu Wx,Vx (F3) | vmovdqu32/64 Wx,Vx (F3),(evo) | vmovdqu8/16 Wx,Vx (F2),(ev)
+ # 0x0f 0x80-0x8f
+ # Note: "forced64" is Intel CPU behavior (see comment about CALL insn).
+-80: JO Jz (f64) (!REX2)
+-81: JNO Jz (f64) (!REX2)
+-82: JB/JC/JNAE Jz (f64) (!REX2)
+-83: JAE/JNB/JNC Jz (f64) (!REX2)
+-84: JE/JZ Jz (f64) (!REX2)
+-85: JNE/JNZ Jz (f64) (!REX2)
+-86: JBE/JNA Jz (f64) (!REX2)
+-87: JA/JNBE Jz (f64) (!REX2)
+-88: JS Jz (f64) (!REX2)
+-89: JNS Jz (f64) (!REX2)
+-8a: JP/JPE Jz (f64) (!REX2)
+-8b: JNP/JPO Jz (f64) (!REX2)
+-8c: JL/JNGE Jz (f64) (!REX2)
+-8d: JNL/JGE Jz (f64) (!REX2)
+-8e: JLE/JNG Jz (f64) (!REX2)
+-8f: JNLE/JG Jz (f64) (!REX2)
++80: JO Jz (f64),(!REX2)
++81: JNO Jz (f64),(!REX2)
++82: JB/JC/JNAE Jz (f64),(!REX2)
++83: JAE/JNB/JNC Jz (f64),(!REX2)
++84: JE/JZ Jz (f64),(!REX2)
++85: JNE/JNZ Jz (f64),(!REX2)
++86: JBE/JNA Jz (f64),(!REX2)
++87: JA/JNBE Jz (f64),(!REX2)
++88: JS Jz (f64),(!REX2)
++89: JNS Jz (f64),(!REX2)
++8a: JP/JPE Jz (f64),(!REX2)
++8b: JNP/JPO Jz (f64),(!REX2)
++8c: JL/JNGE Jz (f64),(!REX2)
++8d: JNL/JGE Jz (f64),(!REX2)
++8e: JLE/JNG Jz (f64),(!REX2)
++8f: JNLE/JG Jz (f64),(!REX2)
+ # 0x0f 0x90-0x9f
+ 90: SETO Eb | kmovw/q Vk,Wk | kmovb/d Vk,Wk (66)
+ 91: SETNO Eb | kmovw/q Mv,Vk | kmovb/d Mv,Vk (66)
+diff --git a/tools/arch/x86/lib/x86-opcode-map.txt b/tools/arch/x86/lib/x86-opcode-map.txt
+index f5dd84eb55dcd..cd3fd5155f6ec 100644
+--- a/tools/arch/x86/lib/x86-opcode-map.txt
++++ b/tools/arch/x86/lib/x86-opcode-map.txt
+@@ -35,7 +35,7 @@
+ #  - (!F3) : the last prefix is not 0xF3 (including non-last prefix case)
+ #  - (66&F2): Both 0x66 and 0xF2 prefixes are specified.
+ #
+-# REX2 Prefix
++# REX2 Prefix Superscripts
+ #  - (!REX2): REX2 is not allowed
+ #  - (REX2): REX2 variant e.g. JMPABS
  
--	if ((eax & 0xffff0000) == 0x80000000) {
--		if (eax >= 0x80000001) {
--			cpuid(0x80000001, &eax, &ebx, &ecx, &edx);
-+	if (c->extended_cpuid_level >= 0x80000001) {
-+		cpuid(0x80000001, &eax, &ebx, &ecx, &edx);
- 
--			c->x86_capability[CPUID_8000_0001_ECX] = ecx;
--			c->x86_capability[CPUID_8000_0001_EDX] = edx;
--		}
-+		c->x86_capability[CPUID_8000_0001_ECX] = ecx;
-+		c->x86_capability[CPUID_8000_0001_EDX] = edx;
- 	}
- 
- 	if (c->extended_cpuid_level >= 0x80000007) {
+@@ -286,10 +286,10 @@ df: ESC
+ # Note: "forced64" is Intel CPU behavior: they ignore 0x66 prefix
+ # in 64-bit mode. AMD CPUs accept 0x66 prefix, it causes RIP truncation
+ # to 16 bits. In 32-bit mode, 0x66 is accepted by both Intel and AMD.
+-e0: LOOPNE/LOOPNZ Jb (f64) (!REX2)
+-e1: LOOPE/LOOPZ Jb (f64) (!REX2)
+-e2: LOOP Jb (f64) (!REX2)
+-e3: JrCXZ Jb (f64) (!REX2)
++e0: LOOPNE/LOOPNZ Jb (f64),(!REX2)
++e1: LOOPE/LOOPZ Jb (f64),(!REX2)
++e2: LOOP Jb (f64),(!REX2)
++e3: JrCXZ Jb (f64),(!REX2)
+ e4: IN AL,Ib (!REX2)
+ e5: IN eAX,Ib (!REX2)
+ e6: OUT Ib,AL (!REX2)
+@@ -298,10 +298,10 @@ e7: OUT Ib,eAX (!REX2)
+ # in "near" jumps and calls is 16-bit. For CALL,
+ # push of return address is 16-bit wide, RSP is decremented by 2
+ # but is not truncated to 16 bits, unlike RIP.
+-e8: CALL Jz (f64) (!REX2)
+-e9: JMP-near Jz (f64) (!REX2)
+-ea: JMP-far Ap (i64) (!REX2)
+-eb: JMP-short Jb (f64) (!REX2)
++e8: CALL Jz (f64),(!REX2)
++e9: JMP-near Jz (f64),(!REX2)
++ea: JMP-far Ap (i64),(!REX2)
++eb: JMP-short Jb (f64),(!REX2)
+ ec: IN AL,DX (!REX2)
+ ed: IN eAX,DX (!REX2)
+ ee: OUT DX,AL (!REX2)
+@@ -478,22 +478,22 @@ AVXcode: 1
+ 7f: movq Qq,Pq | vmovdqa Wx,Vx (66) | vmovdqa32/64 Wx,Vx (66),(evo) | vmovdqu Wx,Vx (F3) | vmovdqu32/64 Wx,Vx (F3),(evo) | vmovdqu8/16 Wx,Vx (F2),(ev)
+ # 0x0f 0x80-0x8f
+ # Note: "forced64" is Intel CPU behavior (see comment about CALL insn).
+-80: JO Jz (f64) (!REX2)
+-81: JNO Jz (f64) (!REX2)
+-82: JB/JC/JNAE Jz (f64) (!REX2)
+-83: JAE/JNB/JNC Jz (f64) (!REX2)
+-84: JE/JZ Jz (f64) (!REX2)
+-85: JNE/JNZ Jz (f64) (!REX2)
+-86: JBE/JNA Jz (f64) (!REX2)
+-87: JA/JNBE Jz (f64) (!REX2)
+-88: JS Jz (f64) (!REX2)
+-89: JNS Jz (f64) (!REX2)
+-8a: JP/JPE Jz (f64) (!REX2)
+-8b: JNP/JPO Jz (f64) (!REX2)
+-8c: JL/JNGE Jz (f64) (!REX2)
+-8d: JNL/JGE Jz (f64) (!REX2)
+-8e: JLE/JNG Jz (f64) (!REX2)
+-8f: JNLE/JG Jz (f64) (!REX2)
++80: JO Jz (f64),(!REX2)
++81: JNO Jz (f64),(!REX2)
++82: JB/JC/JNAE Jz (f64),(!REX2)
++83: JAE/JNB/JNC Jz (f64),(!REX2)
++84: JE/JZ Jz (f64),(!REX2)
++85: JNE/JNZ Jz (f64),(!REX2)
++86: JBE/JNA Jz (f64),(!REX2)
++87: JA/JNBE Jz (f64),(!REX2)
++88: JS Jz (f64),(!REX2)
++89: JNS Jz (f64),(!REX2)
++8a: JP/JPE Jz (f64),(!REX2)
++8b: JNP/JPO Jz (f64),(!REX2)
++8c: JL/JNGE Jz (f64),(!REX2)
++8d: JNL/JGE Jz (f64),(!REX2)
++8e: JLE/JNG Jz (f64),(!REX2)
++8f: JNLE/JG Jz (f64),(!REX2)
+ # 0x0f 0x90-0x9f
+ 90: SETO Eb | kmovw/q Vk,Wk | kmovb/d Vk,Wk (66)
+ 91: SETNO Eb | kmovw/q Mv,Vk | kmovb/d Mv,Vk (66)
 -- 
 2.39.5
 
