@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-154052-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-154054-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 40385ADD7C1
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:48:47 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E8FF6ADD816
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:51:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 857F74A4175
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:38:13 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3A74319E7699
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:38:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E0DB2F236C;
-	Tue, 17 Jun 2025 16:32:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68B3C2F236A;
+	Tue, 17 Jun 2025 16:32:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iREPVZNN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZvTFEvEd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A01E2F2361;
-	Tue, 17 Jun 2025 16:32:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 254562EE60B;
+	Tue, 17 Jun 2025 16:32:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750177948; cv=none; b=Zgw9zgu/3dM7pbGk3aNb6/6mal2XHmuNcICcg2sJ1cvZ3zddn/Nr9nyCGRfOk5m42Y6eUMs1gZqfCafr6gAsB75DppJBT5JEmaW5KzY1oiIjH+EwXJohas/nBG7+s64Cy5722IotgP2+nbhRYkPTclxGIZo0XNRvEUEFXA0YWkk=
+	t=1750177955; cv=none; b=Y6ASn/63s24aWj+FHHrSsdM5/vE+z6LMLyDkffquupFi5TvnwludKSTqj+ewAVVCRpZg1d6xNhMlGMfkNceNhwHZiNyiz0egzeqewMSozznSOk2GHpxEB/aZxkH2OLQobMXsVvaCp2EAdtoztAOqRBXd5OfptKyQyGODRihgYgM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750177948; c=relaxed/simple;
-	bh=4c6qNZkfJy2uwW7fFbftSgvCl5/F5DRoUGlu5hmcOWE=;
+	s=arc-20240116; t=1750177955; c=relaxed/simple;
+	bh=e3bOPzxv6t/kg3hLKK3CB5ZuyNb65Mn1cHNpvc6pe+k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=YTQ+QVirsFCUUba3UZgt1BBW23j8+kxVjVXuy5u5jr/efkppP/f1zR9oOmwN/b5JpwTzqPnlyA1sdl5ic4GK1lsL4DFT39UxWfiAUgyjmT2/OrQTXotUfuzlTkYuSqXicd5F6ppOW2NMB7nzTjV/2z8DQZ5d9ldx/Kig/BACNKw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iREPVZNN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6593AC4CEE3;
-	Tue, 17 Jun 2025 16:32:27 +0000 (UTC)
+	 MIME-Version; b=n4c4Ofn5AbCcFtdqwMJWInVNyINdBIQJOP9/viTvAxZXzkHEmFKdHtU3YAaHnHWZaYmWhxLXMDX9i4J+JGz3fK0FyWYVYyZC4321rQieIC0OhDxLN/RKxxBEqdR3IHtzMxVbluIoK12nOrpX5gSWyBOtclSYhPr3drkuYDHk/+o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZvTFEvEd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B256C4CEE3;
+	Tue, 17 Jun 2025 16:32:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750177947;
-	bh=4c6qNZkfJy2uwW7fFbftSgvCl5/F5DRoUGlu5hmcOWE=;
+	s=korg; t=1750177954;
+	bh=e3bOPzxv6t/kg3hLKK3CB5ZuyNb65Mn1cHNpvc6pe+k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iREPVZNNWXIUVPIVazO1fAbXl50pfroHyMVaYj5VKcwdDaFDMZlHKUhASbc6MQBuo
-	 yWCV8bhK/CvxDm5Tsn6hAcnnH325xItIRyatEWH6z+4w78xC7rj9aKsSTQ93SAQBck
-	 QQn604BvRgvnMCZ0dMKU0g/WyEAmffSD0eeNaL8s=
+	b=ZvTFEvEdMjK5+5Weef4VO1V8M0SftO/3TbX5/aopDMywDAgh2kEdfoiGM6xmFqO/y
+	 GxNDrAOZ7ihf57GW3qYgqD5JIZKxSR1i2ndpX5RxNObl8Udmar6zK6fqEN09g0o/N1
+	 ww76D4n4EIuFgJuz+jQdzYdX1GAd3zvgYFy4olwc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	=?UTF-8?q?Niklas=20S=C3=B6derlund?= <niklas.soderlund+renesas@ragnatech.se>,
+	Aaron Kling <webgeek1234@gmail.com>,
+	Thierry Reding <treding@nvidia.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 387/780] arm64: dts: renesas: white-hawk-single: Improve Ethernet TSN description
-Date: Tue, 17 Jun 2025 17:21:35 +0200
-Message-ID: <20250617152507.221529236@linuxfoundation.org>
+Subject: [PATCH 6.15 388/780] arm64: tegra: Drop remaining serial clock-names and reset-names
+Date: Tue, 17 Jun 2025 17:21:36 +0200
+Message-ID: <20250617152507.259922267@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
 References: <20250617152451.485330293@linuxfoundation.org>
@@ -60,66 +60,157 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Geert Uytterhoeven <geert+renesas@glider.be>
+From: Aaron Kling <webgeek1234@gmail.com>
 
-[ Upstream commit 8ffec7d62c6956199f442dac3b2d5d02231c3977 ]
+[ Upstream commit 4cd763297c2203c6ba587d7d4a9105f96597b998 ]
 
-  - Add the missing "ethernet3" alias for the Ethernet TSN port, so
-    U-Boot will fill its local-mac-address property based on the
-    "eth3addr" environment variable (if set), avoiding a random MAC
-    address being assigned by the OS,
-  - Rename the numerical Ethernet PHY label to "tsn0_phy", to avoid
-    future conflicts, and for consistency with the "avbN_phy" labels.
+The referenced commit only removed some of the names, missing all that
+weren't in use at the time. The commit removes the rest.
 
-Fixes: 3d8e475bd7a724a9 ("arm64: dts: renesas: white-hawk-single: Wire-up Ethernet TSN")
-Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Reviewed-by: Niklas Söderlund <niklas.soderlund+renesas@ragnatech.se>
-Link: https://lore.kernel.org/367f10a18aa196ff1c96734dd9bd5634b312c421.1746624368.git.geert+renesas@glider.be
+Fixes: 71de0a054d0e ("arm64: tegra: Drop serial clock-names and reset-names")
+Signed-off-by: Aaron Kling <webgeek1234@gmail.com>
+Link: https://lore.kernel.org/r/20250428-tegra-serial-fixes-v1-1-4f47c5d85bf6@gmail.com
+Signed-off-by: Thierry Reding <treding@nvidia.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/renesas/white-hawk-single.dtsi | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ arch/arm64/boot/dts/nvidia/tegra186.dtsi | 12 ------------
+ arch/arm64/boot/dts/nvidia/tegra194.dtsi | 12 ------------
+ 2 files changed, 24 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/renesas/white-hawk-single.dtsi b/arch/arm64/boot/dts/renesas/white-hawk-single.dtsi
-index 20e8232f2f323..976a3ab44e5a5 100644
---- a/arch/arm64/boot/dts/renesas/white-hawk-single.dtsi
-+++ b/arch/arm64/boot/dts/renesas/white-hawk-single.dtsi
-@@ -11,6 +11,10 @@
- / {
- 	model = "Renesas White Hawk Single board";
- 	compatible = "renesas,white-hawk-single";
-+
-+	aliases {
-+		ethernet3 = &tsn0;
-+	};
- };
+diff --git a/arch/arm64/boot/dts/nvidia/tegra186.dtsi b/arch/arm64/boot/dts/nvidia/tegra186.dtsi
+index 2b3bb5d0af17b..f0b7949df92c0 100644
+--- a/arch/arm64/boot/dts/nvidia/tegra186.dtsi
++++ b/arch/arm64/boot/dts/nvidia/tegra186.dtsi
+@@ -621,9 +621,7 @@
+ 		reg-shift = <2>;
+ 		interrupts = <GIC_SPI 113 IRQ_TYPE_LEVEL_HIGH>;
+ 		clocks = <&bpmp TEGRA186_CLK_UARTB>;
+-		clock-names = "serial";
+ 		resets = <&bpmp TEGRA186_RESET_UARTB>;
+-		reset-names = "serial";
+ 		status = "disabled";
+ 	};
  
- &hscif0 {
-@@ -53,7 +57,7 @@
- 	pinctrl-0 = <&tsn0_pins>;
- 	pinctrl-names = "default";
- 	phy-mode = "rgmii";
--	phy-handle = <&phy3>;
-+	phy-handle = <&tsn0_phy>;
- 	status = "okay";
+@@ -633,9 +631,7 @@
+ 		reg-shift = <2>;
+ 		interrupts = <GIC_SPI 115 IRQ_TYPE_LEVEL_HIGH>;
+ 		clocks = <&bpmp TEGRA186_CLK_UARTD>;
+-		clock-names = "serial";
+ 		resets = <&bpmp TEGRA186_RESET_UARTD>;
+-		reset-names = "serial";
+ 		status = "disabled";
+ 	};
  
- 	mdio {
-@@ -63,7 +67,7 @@
- 		reset-gpios = <&gpio1 23 GPIO_ACTIVE_LOW>;
- 		reset-post-delay-us = <4000>;
+@@ -645,9 +641,7 @@
+ 		reg-shift = <2>;
+ 		interrupts = <GIC_SPI 116 IRQ_TYPE_LEVEL_HIGH>;
+ 		clocks = <&bpmp TEGRA186_CLK_UARTE>;
+-		clock-names = "serial";
+ 		resets = <&bpmp TEGRA186_RESET_UARTE>;
+-		reset-names = "serial";
+ 		status = "disabled";
+ 	};
  
--		phy3: ethernet-phy@0 {
-+		tsn0_phy: ethernet-phy@0 {
- 			compatible = "ethernet-phy-id002b.0980",
- 				     "ethernet-phy-ieee802.3-c22";
- 			reg = <0>;
+@@ -657,9 +651,7 @@
+ 		reg-shift = <2>;
+ 		interrupts = <GIC_SPI 117 IRQ_TYPE_LEVEL_HIGH>;
+ 		clocks = <&bpmp TEGRA186_CLK_UARTF>;
+-		clock-names = "serial";
+ 		resets = <&bpmp TEGRA186_RESET_UARTF>;
+-		reset-names = "serial";
+ 		status = "disabled";
+ 	};
+ 
+@@ -1236,9 +1228,7 @@
+ 		reg-shift = <2>;
+ 		interrupts = <GIC_SPI 114 IRQ_TYPE_LEVEL_HIGH>;
+ 		clocks = <&bpmp TEGRA186_CLK_UARTC>;
+-		clock-names = "serial";
+ 		resets = <&bpmp TEGRA186_RESET_UARTC>;
+-		reset-names = "serial";
+ 		status = "disabled";
+ 	};
+ 
+@@ -1248,9 +1238,7 @@
+ 		reg-shift = <2>;
+ 		interrupts = <GIC_SPI 118 IRQ_TYPE_LEVEL_HIGH>;
+ 		clocks = <&bpmp TEGRA186_CLK_UARTG>;
+-		clock-names = "serial";
+ 		resets = <&bpmp TEGRA186_RESET_UARTG>;
+-		reset-names = "serial";
+ 		status = "disabled";
+ 	};
+ 
+diff --git a/arch/arm64/boot/dts/nvidia/tegra194.dtsi b/arch/arm64/boot/dts/nvidia/tegra194.dtsi
+index 33f92b77cd9d9..c369507747851 100644
+--- a/arch/arm64/boot/dts/nvidia/tegra194.dtsi
++++ b/arch/arm64/boot/dts/nvidia/tegra194.dtsi
+@@ -766,9 +766,7 @@
+ 			reg-shift = <2>;
+ 			interrupts = <GIC_SPI 115 IRQ_TYPE_LEVEL_HIGH>;
+ 			clocks = <&bpmp TEGRA194_CLK_UARTD>;
+-			clock-names = "serial";
+ 			resets = <&bpmp TEGRA194_RESET_UARTD>;
+-			reset-names = "serial";
+ 			status = "disabled";
+ 		};
+ 
+@@ -778,9 +776,7 @@
+ 			reg-shift = <2>;
+ 			interrupts = <GIC_SPI 116 IRQ_TYPE_LEVEL_HIGH>;
+ 			clocks = <&bpmp TEGRA194_CLK_UARTE>;
+-			clock-names = "serial";
+ 			resets = <&bpmp TEGRA194_RESET_UARTE>;
+-			reset-names = "serial";
+ 			status = "disabled";
+ 		};
+ 
+@@ -790,9 +786,7 @@
+ 			reg-shift = <2>;
+ 			interrupts = <GIC_SPI 117 IRQ_TYPE_LEVEL_HIGH>;
+ 			clocks = <&bpmp TEGRA194_CLK_UARTF>;
+-			clock-names = "serial";
+ 			resets = <&bpmp TEGRA194_RESET_UARTF>;
+-			reset-names = "serial";
+ 			status = "disabled";
+ 		};
+ 
+@@ -817,9 +811,7 @@
+ 			reg-shift = <2>;
+ 			interrupts = <GIC_SPI 207 IRQ_TYPE_LEVEL_HIGH>;
+ 			clocks = <&bpmp TEGRA194_CLK_UARTH>;
+-			clock-names = "serial";
+ 			resets = <&bpmp TEGRA194_RESET_UARTH>;
+-			reset-names = "serial";
+ 			status = "disabled";
+ 		};
+ 
+@@ -1616,9 +1608,7 @@
+ 			reg-shift = <2>;
+ 			interrupts = <GIC_SPI 114 IRQ_TYPE_LEVEL_HIGH>;
+ 			clocks = <&bpmp TEGRA194_CLK_UARTC>;
+-			clock-names = "serial";
+ 			resets = <&bpmp TEGRA194_RESET_UARTC>;
+-			reset-names = "serial";
+ 			status = "disabled";
+ 		};
+ 
+@@ -1628,9 +1618,7 @@
+ 			reg-shift = <2>;
+ 			interrupts = <GIC_SPI 118 IRQ_TYPE_LEVEL_HIGH>;
+ 			clocks = <&bpmp TEGRA194_CLK_UARTG>;
+-			clock-names = "serial";
+ 			resets = <&bpmp TEGRA194_RESET_UARTG>;
+-			reset-names = "serial";
+ 			status = "disabled";
+ 		};
+ 
 -- 
 2.39.5
 
