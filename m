@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-154290-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153716-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 52A7BADD981
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 19:07:01 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 987FDADD61A
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:30:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 19F1419E7424
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:48:28 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B99472C365C
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:21:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F8D72EA723;
-	Tue, 17 Jun 2025 16:45:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D18742EE5F2;
+	Tue, 17 Jun 2025 16:14:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ogAXvnnJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Tw96U7qG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4AA3E19F424;
-	Tue, 17 Jun 2025 16:45:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83D432EF297;
+	Tue, 17 Jun 2025 16:14:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750178715; cv=none; b=s3r+H/XzMIiiiX0ikVgvizh/vPtGxA7EBr/aQhHibGirYO4e0FvdcpEbZxVeKNafvm76F8gZFagfI2WxUH9kocZJ1PUXB2YZAb+TLF3/27TXHL8okWuMKxOGiH562cl/u6D1QOklsdwweQGEp/8AiWdCvct8lAKy85Q21xsNp2U=
+	t=1750176861; cv=none; b=K60oneO9n7ps2ZM0xopU4wrAZ6bAA6fd+hNJuGBrhj8R5dkzg6SNG4eFADxjV4piaeOCYA7RCrec7EWJvNh4LaJdZB2dvcsxdrlwdOKBO07Xz2nzCOgMEQGMvA9Sq4vqobKocIRXcirMEE3cLPDdYu38yEvmd1A3+FdJgpTvQE8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750178715; c=relaxed/simple;
-	bh=W0InUr67uCZqLzOq9VqysbWJAfFLZNuZSmmL+DlzqWY=;
+	s=arc-20240116; t=1750176861; c=relaxed/simple;
+	bh=z+R3I/M3jBxVe5/Y2RGaRCEQic3RgnmsHAtH/5BZtvM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=FCE3OwVAbq7rKNKYAZw+UkgcSS2I7/bSQ71oMu7MYYr6FKnIjVxJU/bU61KxypaqC/bT5e790qw8IwOhmMGkMZrhFEwcO6WJ5zisuu8Po4XxuH6ugtnuIufVdww4rpxkno2TYdGyQgFmDM/FyCKxKudGn4GWbqlJjPZ+Muvty8c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ogAXvnnJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD30BC4CEE3;
-	Tue, 17 Jun 2025 16:45:14 +0000 (UTC)
+	 MIME-Version; b=qIYfkL2TMalAVhUz5DxEKC0QEFFtrZ7xWAyZ8GeX+thOhYRLYG2Al1VkDCrrhMSP7ZylM2sNQo71rTkaEd7LjIGG2A/W1W+Lm7bUBj+4Dw8CUyrHWDFq0mrnsHmdXYuV4vWlwfWZaNMHAoa4N+IAlyyw7d0CmpzAeBVI1CnXIyg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Tw96U7qG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8EA39C4CEE3;
+	Tue, 17 Jun 2025 16:14:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750178715;
-	bh=W0InUr67uCZqLzOq9VqysbWJAfFLZNuZSmmL+DlzqWY=;
+	s=korg; t=1750176859;
+	bh=z+R3I/M3jBxVe5/Y2RGaRCEQic3RgnmsHAtH/5BZtvM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ogAXvnnJL/IfjukQPAX4canm+7RX2pozFgS+wsT/zYkxjyWy1JxrPm652S0FyBoZ7
-	 FZ49BL9qERnkMLCGN7owL0l693SRqvFimo2x4w9/SrVoBoP4RJ6zY3SsAovhT1H4an
-	 zJdMear+N+e6SllQkt0Nym1NoqWsvfWpquVYrnfw=
+	b=Tw96U7qG93Rd3+/xAB1RY880MP4qk4OX6QLnYpZL6LnPxX/yfgHSqK2Gfm303FtC1
+	 LRMSe6rJt7FkJ9VuiYQ+Xciv0rirNvgI82PUEIP0qZypFR0AEhOaXMyz0CsvD5yiQX
+	 lpw666M8Bar0jJR4CbkL6cuW2NgnEXzkxOP8AnxE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Antoniu Miclaus <antoniu.miclaus@analog.com>,
-	=?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Damien Le Moal <dlemoal@kernel.org>,
+	Benjamin Marzinski <bmarzins@redhat.com>,
+	Mikulas Patocka <mpatocka@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 531/780] iio: adc: ad4851: fix ad4858 chan pointer handling
+Subject: [PATCH 6.12 273/512] dm: dont change md if dm_table_set_restrictions() fails
 Date: Tue, 17 Jun 2025 17:23:59 +0200
-Message-ID: <20250617152513.136377636@linuxfoundation.org>
+Message-ID: <20250617152430.660305796@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
-References: <20250617152451.485330293@linuxfoundation.org>
+In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
+References: <20250617152419.512865572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,73 +61,85 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Antoniu Miclaus <antoniu.miclaus@analog.com>
+From: Benjamin Marzinski <bmarzins@redhat.com>
 
-[ Upstream commit 499a8cee812588905cc940837e69918c1649a19e ]
+[ Upstream commit 9eb7109a5bfc5b8226e9517e9f3cc6d414391884 ]
 
-The pointer returned from ad4851_parse_channels_common() is incremented
-internally as each channel is populated. In ad4858_parse_channels(),
-the same pointer was further incremented while setting ext_scan_type
-fields for each channel. This resulted in indio_dev->channels being set
-to a pointer past the end of the allocated array, potentially causing
-memory corruption or undefined behavior.
+__bind was changing the disk capacity, geometry and mempools of the
+mapped device before calling dm_table_set_restrictions() which could
+fail, forcing dm to drop the new table. Failing here would leave the
+device using the old table but with the wrong capacity and mempools.
 
-Fix this by iterating over the channels using an explicit index instead
-of incrementing the pointer. This preserves the original base pointer
-and ensures all channel metadata is set correctly.
+Move dm_table_set_restrictions() earlier in __bind(). Since it needs the
+capacity to be set, save the old version and restore it on failure.
 
-Fixes: 6250803fe2ec ("iio: adc: ad4851: add ad485x driver")
-Signed-off-by: Antoniu Miclaus <antoniu.miclaus@analog.com>
-Reviewed-by: Nuno Sá <nuno.sa@analog.com>
-Link: https://patch.msgid.link/20250509101657.6742-1-antoniu.miclaus@analog.com
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Fixes: bb37d77239af2 ("dm: introduce zone append emulation")
+Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
+Tested-by: Damien Le Moal <dlemoal@kernel.org>
+Signed-off-by: Benjamin Marzinski <bmarzins@redhat.com>
+Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iio/adc/ad4851.c | 14 +++++++-------
- 1 file changed, 7 insertions(+), 7 deletions(-)
+ drivers/md/dm.c | 22 ++++++++++++----------
+ 1 file changed, 12 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/iio/adc/ad4851.c b/drivers/iio/adc/ad4851.c
-index 98ebc853db796..f1d2e2896f2a2 100644
---- a/drivers/iio/adc/ad4851.c
-+++ b/drivers/iio/adc/ad4851.c
-@@ -1034,7 +1034,7 @@ static int ad4858_parse_channels(struct iio_dev *indio_dev)
- 	struct device *dev = &st->spi->dev;
- 	struct iio_chan_spec *ad4851_channels;
- 	const struct iio_chan_spec ad4851_chan = AD4858_IIO_CHANNEL;
--	int ret;
-+	int ret, i = 0;
+diff --git a/drivers/md/dm.c b/drivers/md/dm.c
+index d29125ee9e72a..12d5f414a6788 100644
+--- a/drivers/md/dm.c
++++ b/drivers/md/dm.c
+@@ -2410,21 +2410,29 @@ static struct dm_table *__bind(struct mapped_device *md, struct dm_table *t,
+ 			       struct queue_limits *limits)
+ {
+ 	struct dm_table *old_map;
+-	sector_t size;
++	sector_t size, old_size;
+ 	int ret;
  
- 	ret = ad4851_parse_channels_common(indio_dev, &ad4851_channels,
- 					   ad4851_chan);
-@@ -1042,15 +1042,15 @@ static int ad4858_parse_channels(struct iio_dev *indio_dev)
- 		return ret;
+ 	lockdep_assert_held(&md->suspend_lock);
  
- 	device_for_each_child_node_scoped(dev, child) {
--		ad4851_channels->has_ext_scan_type = 1;
-+		ad4851_channels[i].has_ext_scan_type = 1;
- 		if (fwnode_property_read_bool(child, "bipolar")) {
--			ad4851_channels->ext_scan_type = ad4851_scan_type_20_b;
--			ad4851_channels->num_ext_scan_type = ARRAY_SIZE(ad4851_scan_type_20_b);
-+			ad4851_channels[i].ext_scan_type = ad4851_scan_type_20_b;
-+			ad4851_channels[i].num_ext_scan_type = ARRAY_SIZE(ad4851_scan_type_20_b);
- 		} else {
--			ad4851_channels->ext_scan_type = ad4851_scan_type_20_u;
--			ad4851_channels->num_ext_scan_type = ARRAY_SIZE(ad4851_scan_type_20_u);
-+			ad4851_channels[i].ext_scan_type = ad4851_scan_type_20_u;
-+			ad4851_channels[i].num_ext_scan_type = ARRAY_SIZE(ad4851_scan_type_20_u);
- 		}
--		ad4851_channels++;
-+		i++;
+ 	size = dm_table_get_size(t);
+ 
++	old_size = dm_get_size(md);
++	set_capacity(md->disk, size);
++
++	ret = dm_table_set_restrictions(t, md->queue, limits);
++	if (ret) {
++		set_capacity(md->disk, old_size);
++		old_map = ERR_PTR(ret);
++		goto out;
++	}
++
+ 	/*
+ 	 * Wipe any geometry if the size of the table changed.
+ 	 */
+-	if (size != dm_get_size(md))
++	if (size != old_size)
+ 		memset(&md->geometry, 0, sizeof(md->geometry));
+ 
+-	set_capacity(md->disk, size);
+-
+ 	dm_table_event_callback(t, event_callback, md);
+ 
+ 	if (dm_table_request_based(t)) {
+@@ -2457,12 +2465,6 @@ static struct dm_table *__bind(struct mapped_device *md, struct dm_table *t,
+ 		t->mempools = NULL;
  	}
  
- 	indio_dev->channels = ad4851_channels;
+-	ret = dm_table_set_restrictions(t, md->queue, limits);
+-	if (ret) {
+-		old_map = ERR_PTR(ret);
+-		goto out;
+-	}
+-
+ 	old_map = rcu_dereference_protected(md->map, lockdep_is_held(&md->suspend_lock));
+ 	rcu_assign_pointer(md->map, (void *)t);
+ 	md->immutable_target_type = dm_table_get_immutable_target_type(t);
 -- 
 2.39.5
 
