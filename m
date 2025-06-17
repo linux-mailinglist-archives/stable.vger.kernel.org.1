@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-153281-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153284-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB9F5ADD3B8
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:01:45 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 146D4ADD3BA
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:01:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2588B1893F62
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 15:54:45 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A1286194455A
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 15:54:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C0F5A2DFF18;
-	Tue, 17 Jun 2025 15:50:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A92582EB10;
+	Tue, 17 Jun 2025 15:51:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="byqIJWj7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZN78sgJw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D6E22F2366;
-	Tue, 17 Jun 2025 15:50:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 616EA2F2366;
+	Tue, 17 Jun 2025 15:51:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750175453; cv=none; b=JaiCR/XpGl9PSOvYTM8ka6VJ3gplsvOz3GqwkddBKfYCEbhaAWBwCVYU+NFA7y/g3RvOmY6AgJVbN+sithq7j8bUy3RPTYRAWxew30u5TBWjKDda/+kNVrOIm2e6AJQmi9VYKwUkuXLQ97K2miPHf6EGPPm7S1eswikFukpBjMY=
+	t=1750175463; cv=none; b=tZho6hH5dH9mf2oJcf7s6RCcJKDNY7RZzvSwK0e39qyRrSLPTk+ickR/kn5iAUaIRxYLxv7fCRAz86mYU7wC1/9+fp9MkZDci1PYC/d/yKg453w6P6CxhY5LsE2AhFy7AYZXIgnfOI0YZwQmPm2+yQkCkIXN1tqpmUD/Uu4l4N8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750175453; c=relaxed/simple;
-	bh=mObWzqO8p+ey81O8utPFXh1Kv2sv9Q7zkY6DknY139E=;
+	s=arc-20240116; t=1750175463; c=relaxed/simple;
+	bh=4l0bauWxU1RUHNOBNKntL/EQZCZ5vvfRKGc1xFT4tjM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dA2ox9u9jCsdIqzTenG34aOF/wsehHoOf7O7C7+iOn8IbPyK8NSACjNodZEoiOBRSbbRwWHVcMKEKgry1YNzolWBEa5DFRqqYkXc34BCQ7wCgj6aBHK1lfrOW5Bbu6FwURU5CG4/y+spENKaqy3P/FoGvxREIo/ksCjEu/K1HVg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=byqIJWj7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DFF1EC4CEE3;
-	Tue, 17 Jun 2025 15:50:52 +0000 (UTC)
+	 MIME-Version; b=Mg2FAi+of9V44uuvEfkejcc7jbwDuBWKgc/gJHWq7LG1Qe7pdAnhwUGKVFSXZFjzpQk6B8wctxkG9zbnGbcryeTBYxYV/X+uzjinjg4QFrG0jvfFwem1G/JjXT39VOu1CxtPkdX3vY9UuD8OhauGT5rYOxHWqxzvHLfMiFLZ4Uo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZN78sgJw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CFD50C4CEE7;
+	Tue, 17 Jun 2025 15:51:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750175453;
-	bh=mObWzqO8p+ey81O8utPFXh1Kv2sv9Q7zkY6DknY139E=;
+	s=korg; t=1750175463;
+	bh=4l0bauWxU1RUHNOBNKntL/EQZCZ5vvfRKGc1xFT4tjM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=byqIJWj77cugJC/9ncF3cBNee7tu+vWF/KKOtgpyO0kHuXXWZRwEsVxB6I7jusjFR
-	 RywkBvRZD6zItgLuotydD9sx90utvDN5wkhKsLvK12xS/h2ebZEjlGswJwz/BLgact
-	 KSNi8kE1LpIEG0N6y0naHarDhtWMF6XTjl7d9WyE=
+	b=ZN78sgJwTVvRZjC6nzZelEe+mlUn9MeZQzcD+XlTxIz0npwfORgEFj4Ku8Thj7F5a
+	 Ytjks1STnZglfugnS9xXEmn1xAfqiz/OwEq4Peq1Q7n9pF56DUAXhVeB+2sud9M00W
+	 1rG4GmKPSFUtCzUQ/7a3xuC/yjTCj5ca8wFvPaSU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Keisuke Nishimura <keisuke.nishimura@inria.fr>,
-	Zack Rusin <zack.rusin@broadcom.com>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 089/780] drm/vmwgfx: Add error path for xa_store in vmw_bo_add_detached_resource
-Date: Tue, 17 Jun 2025 17:16:37 +0200
-Message-ID: <20250617152455.137085400@linuxfoundation.org>
+Subject: [PATCH 6.15 090/780] drm: xlnx: zynqmp_dpsub: fix Kconfig dependencies for ASoC
+Date: Tue, 17 Jun 2025 17:16:38 +0200
+Message-ID: <20250617152455.179895330@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
 References: <20250617152451.485330293@linuxfoundation.org>
@@ -66,99 +66,42 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Keisuke Nishimura <keisuke.nishimura@inria.fr>
+From: Arnd Bergmann <arnd@arndb.de>
 
-[ Upstream commit 3282422bf251db541fe07c548ca304130d37d754 ]
+[ Upstream commit f9f087d946266bc5da7c3a17bd8fd9d01969e3cf ]
 
-The xa_store() may fail due to memory allocation failure because there
-is no guarantee that the index is already used. This fix introduces new
-paths to handle the error.
+The new audio code fails to build when sounds support is in a loadable
+module but the GPU driver is built-in:
 
-This patch also aligns the order of function calls by calling
-vmw_bo_add_detached_resource() before ttm_prime_object_init() in order
-to allow consistent error handling.
+x86_64-linux-ld: zynqmp_dp_audio.c:(.text+0x6a8): undefined reference to `devm_snd_soc_register_card'
+x86_64-linux-ld: drivers/gpu/drm/xlnx/zynqmp_dp_audio.o:(.rodata+0x1bc): undefined reference to `snd_soc_info_volsw'
+x86_64-linux-ld: drivers/gpu/drm/xlnx/zynqmp_dp_audio.o:(.rodata+0x1f0): undefined reference to `snd_soc_get_volsw'
+x86_64-linux-ld: drivers/gpu/drm/xlnx/zynqmp_dp_audio.o:(.rodata+0x1f4): undefined reference to `snd_soc_put_volsw'
 
-Fixes: d6667f0ddf46 ("drm/vmwgfx: Fix handling of dumb buffers")
-Signed-off-by: Keisuke Nishimura <keisuke.nishimura@inria.fr>
-Signed-off-by: Zack Rusin <zack.rusin@broadcom.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20250225145223.34773-1-keisuke.nishimura@inria.fr
+Change the Kconfig dependency to disallow the sound support in this
+configuration.
+
+Fixes: 3ec5c1579305 ("drm: xlnx: zynqmp_dpsub: Add DP audio support")
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Signed-off-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20250227132036.1136600-1-arnd@kernel.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/vmwgfx/vmwgfx_bo.c      |  4 ++--
- drivers/gpu/drm/vmwgfx/vmwgfx_bo.h      |  2 +-
- drivers/gpu/drm/vmwgfx/vmwgfx_surface.c | 16 ++++++++++++++--
- 3 files changed, 17 insertions(+), 5 deletions(-)
+ drivers/gpu/drm/xlnx/Kconfig | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/gpu/drm/vmwgfx/vmwgfx_bo.c b/drivers/gpu/drm/vmwgfx/vmwgfx_bo.c
-index 9b5b8c1f063bb..aa13e4061ff15 100644
---- a/drivers/gpu/drm/vmwgfx/vmwgfx_bo.c
-+++ b/drivers/gpu/drm/vmwgfx/vmwgfx_bo.c
-@@ -848,9 +848,9 @@ void vmw_bo_placement_set_default_accelerated(struct vmw_bo *bo)
- 	vmw_bo_placement_set(bo, domain, domain);
- }
- 
--void vmw_bo_add_detached_resource(struct vmw_bo *vbo, struct vmw_resource *res)
-+int vmw_bo_add_detached_resource(struct vmw_bo *vbo, struct vmw_resource *res)
- {
--	xa_store(&vbo->detached_resources, (unsigned long)res, res, GFP_KERNEL);
-+	return xa_err(xa_store(&vbo->detached_resources, (unsigned long)res, res, GFP_KERNEL));
- }
- 
- void vmw_bo_del_detached_resource(struct vmw_bo *vbo, struct vmw_resource *res)
-diff --git a/drivers/gpu/drm/vmwgfx/vmwgfx_bo.h b/drivers/gpu/drm/vmwgfx/vmwgfx_bo.h
-index 11e330c7c7f52..51790a11fe649 100644
---- a/drivers/gpu/drm/vmwgfx/vmwgfx_bo.h
-+++ b/drivers/gpu/drm/vmwgfx/vmwgfx_bo.h
-@@ -141,7 +141,7 @@ void vmw_bo_move_notify(struct ttm_buffer_object *bo,
- 			struct ttm_resource *mem);
- void vmw_bo_swap_notify(struct ttm_buffer_object *bo);
- 
--void vmw_bo_add_detached_resource(struct vmw_bo *vbo, struct vmw_resource *res);
-+int vmw_bo_add_detached_resource(struct vmw_bo *vbo, struct vmw_resource *res);
- void vmw_bo_del_detached_resource(struct vmw_bo *vbo, struct vmw_resource *res);
- struct vmw_surface *vmw_bo_surface(struct vmw_bo *vbo);
- 
-diff --git a/drivers/gpu/drm/vmwgfx/vmwgfx_surface.c b/drivers/gpu/drm/vmwgfx/vmwgfx_surface.c
-index 5721c74da3e0b..1f7626f6ac0b1 100644
---- a/drivers/gpu/drm/vmwgfx/vmwgfx_surface.c
-+++ b/drivers/gpu/drm/vmwgfx/vmwgfx_surface.c
-@@ -871,7 +871,12 @@ int vmw_surface_define_ioctl(struct drm_device *dev, void *data,
- 			vmw_resource_unreference(&res);
- 			goto out_unlock;
- 		}
--		vmw_bo_add_detached_resource(res->guest_memory_bo, res);
-+
-+		ret = vmw_bo_add_detached_resource(res->guest_memory_bo, res);
-+		if (unlikely(ret != 0)) {
-+			vmw_resource_unreference(&res);
-+			goto out_unlock;
-+		}
- 	}
- 
- 	tmp = vmw_resource_reference(&srf->res);
-@@ -1670,6 +1675,14 @@ vmw_gb_surface_define_internal(struct drm_device *dev,
- 
- 	}
- 
-+	if (res->guest_memory_bo) {
-+		ret = vmw_bo_add_detached_resource(res->guest_memory_bo, res);
-+		if (unlikely(ret != 0)) {
-+			vmw_resource_unreference(&res);
-+			goto out_unlock;
-+		}
-+	}
-+
- 	tmp = vmw_resource_reference(res);
- 	ret = ttm_prime_object_init(tfile, res->guest_memory_size, &user_srf->prime,
- 				    VMW_RES_SURFACE,
-@@ -1684,7 +1697,6 @@ vmw_gb_surface_define_internal(struct drm_device *dev,
- 	rep->handle      = user_srf->prime.base.handle;
- 	rep->backup_size = res->guest_memory_size;
- 	if (res->guest_memory_bo) {
--		vmw_bo_add_detached_resource(res->guest_memory_bo, res);
- 		rep->buffer_map_handle =
- 			drm_vma_node_offset_addr(&res->guest_memory_bo->tbo.base.vma_node);
- 		rep->buffer_size = res->guest_memory_bo->tbo.base.size;
+diff --git a/drivers/gpu/drm/xlnx/Kconfig b/drivers/gpu/drm/xlnx/Kconfig
+index dbecca9bdd544..cfabf5e2a0bb0 100644
+--- a/drivers/gpu/drm/xlnx/Kconfig
++++ b/drivers/gpu/drm/xlnx/Kconfig
+@@ -22,6 +22,7 @@ config DRM_ZYNQMP_DPSUB_AUDIO
+ 	bool "ZynqMP DisplayPort Audio Support"
+ 	depends on DRM_ZYNQMP_DPSUB
+ 	depends on SND && SND_SOC
++	depends on SND_SOC=y || DRM_ZYNQMP_DPSUB=m
+ 	select SND_SOC_GENERIC_DMAENGINE_PCM
+ 	help
+ 	  Choose this option to enable DisplayPort audio support in the ZynqMP
 -- 
 2.39.5
 
