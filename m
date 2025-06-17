@@ -1,56 +1,60 @@
-Return-Path: <stable+bounces-153606-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-154254-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A9BCADD55E
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:20:13 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id EEF4FADD999
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 19:07:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ED34E407611
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:11:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A286D19E3363
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:47:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19B322E9738;
-	Tue, 17 Jun 2025 16:08:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6931B1E98E3;
+	Tue, 17 Jun 2025 16:43:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JxofhALQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Wi0ejpSd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6ADD21018A;
-	Tue, 17 Jun 2025 16:08:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26B2A2135A0;
+	Tue, 17 Jun 2025 16:43:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750176505; cv=none; b=WnPYWWtOCRbbYZGfCF7+HVlJIZnNegjTt3raJ3lHRBFdD8Hgtc1NldF1laezUhQO8Ga/gieIIbiviP4QVvyjovkZ2So+xtlM5EdLHWm5RgEpREjirA7zfG9rOC4sOrlAeRmIHNuVPUxb6t4Law+uyyPdQAYPBpZd5AbMR3rHSIw=
+	t=1750178598; cv=none; b=GPHZLd41xqSmU87hI7idzqFvqpMxTtmFdpVoLbGsiY9QqwtonNzhJ9tKO9Wbo8RyuXtb5+JwHTHQ0puxRouSoLM8nkJ/M3ZigYGxcYorQs74ykfDWERxH2G4jChQ3NUz7kVzW3dISAOlNEVNaChgyUjeX0DM+JxdiePn6HbcMxg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750176505; c=relaxed/simple;
-	bh=aHBy57Jgh9uSdzE161VgKUj4y6MSdOuHmt9A8TgFZV8=;
+	s=arc-20240116; t=1750178598; c=relaxed/simple;
+	bh=Oo80URvaSgBkFWSqPOHKy/Zw7o3SHoJv4yo65cgFkvY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JydG7xsYPX2iK1juzcR83LdzxjVzixPgSVGDEZqGrryeZUlRGbibKXz3Hdy/c2VeL+1dgBSDzeVzsfanyfz9Wdkpa780jMQU6dpEH9KwBa48LGkJ0xF5siMqfyi2jk2wat+jRAsWV9I1OXPjPqWfH3unPViFDtfYWpM2JsQV/qI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JxofhALQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8D3DC4CEE3;
-	Tue, 17 Jun 2025 16:08:24 +0000 (UTC)
+	 MIME-Version:Content-Type; b=JRMB+m4z1QQm+HtCzp5robiimWhUOCUIuQPCEH3fqdj4bM7kmISfwLRdB9KOLk1FCRQLgL/c8fTGqOTxuESmYjNUOY+vL4Ey8MhI1YQYOR8JSJ62yJQGZNJUdrXajjSKFCWjfOfTVEpVMnzK5TEuuygdH8w8vfCo2mUZc+B2aIo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Wi0ejpSd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A4ECC4CEE3;
+	Tue, 17 Jun 2025 16:43:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750176505;
-	bh=aHBy57Jgh9uSdzE161VgKUj4y6MSdOuHmt9A8TgFZV8=;
+	s=korg; t=1750178598;
+	bh=Oo80URvaSgBkFWSqPOHKy/Zw7o3SHoJv4yo65cgFkvY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JxofhALQtmTl3M3Ds7JPgGRu6sbwSCpCOFF/Po3yp8LCndCR5F0IN/xUCjd8lpBP4
-	 DfjDGphjYBd93mjA3DSTnfZ4i9NkiWNt3QdRndjBj+fsn7ThwPlmWKG1+ePAdetVJt
-	 2wB51AQ/zCRMG0p3FflgctUnsGNkoBo8G4SMaZwI=
+	b=Wi0ejpSdRpbAsVpygA4ms0zBfWkl2pXNdxy3c/UhMAky3B+AXVpnW9iZVKhmrP0sN
+	 Mow5j7jXk4ak8mJfXqnvV8YH3lP/gCXO1MHdkZrBcqkBV4yv9AawZAL8/A/qBgGE1n
+	 +1QqupH48uQs8/xiVWATZSjju1EVJuOGYZ2OU2B8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Adam Ford <aford173@gmail.com>,
-	Shawn Guo <shawnguo@kernel.org>,
+	Wilfred Mallawa <wilfred.mallawa@wdc.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Damien Le Moal <dlemoal@kernel.org>,
+	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
+	Mika Westerberg <mika.westerberg@linux.intel.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 236/512] arm64: dts: imx8mm-beacon: Fix RTC capacitive load
-Date: Tue, 17 Jun 2025 17:23:22 +0200
-Message-ID: <20250617152429.186082435@linuxfoundation.org>
+Subject: [PATCH 6.15 495/780] PCI: Print the actual delay time in pci_bridge_wait_for_secondary_bus()
+Date: Tue, 17 Jun 2025 17:23:23 +0200
+Message-ID: <20250617152511.652788611@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
-References: <20250617152419.512865572@linuxfoundation.org>
+In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
+References: <20250617152451.485330293@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,40 +64,45 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Adam Ford <aford173@gmail.com>
+From: Wilfred Mallawa <wilfred.mallawa@wdc.com>
 
-[ Upstream commit 2e98d456666d63f897ba153210bcef9d78ba0f3a ]
+[ Upstream commit d24eba726aadf8778f2907dd42281c6380b0ccaa ]
 
-Although not noticeable when used every day, the RTC appears to drift when
-left to sit over time.  This is due to the capacitive load not being
-properly set. Fix RTC drift by correcting the capacitive load setting
-from 7000 to 12500, which matches the actual hardware configuration.
+Print the delay amount that pcie_wait_for_link_delay() is invoked with
+instead of the hardcoded 1000ms value in the debug info print.
 
-Fixes: 593816fa2f35 ("arm64: dts: imx: Add Beacon i.MX8m-Mini development kit")
-Signed-off-by: Adam Ford <aford173@gmail.com>
-Signed-off-by: Shawn Guo <shawnguo@kernel.org>
+Fixes: 7b3ba09febf4 ("PCI/PM: Shorten pci_bridge_wait_for_secondary_bus() wait time for slow links")
+Signed-off-by: Wilfred Mallawa <wilfred.mallawa@wdc.com>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
+Reviewed-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
+Reviewed-by: Mika Westerberg <mika.westerberg@linux.intel.com>
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Link: https://patch.msgid.link/20250414001505.21243-2-wilfred.opensource@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/freescale/imx8mm-beacon-som.dtsi | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/pci/pci.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm64/boot/dts/freescale/imx8mm-beacon-som.dtsi b/arch/arm64/boot/dts/freescale/imx8mm-beacon-som.dtsi
-index 62ed64663f495..9ba0cb89fa24e 100644
---- a/arch/arm64/boot/dts/freescale/imx8mm-beacon-som.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx8mm-beacon-som.dtsi
-@@ -233,6 +233,7 @@
- 	rtc: rtc@51 {
- 		compatible = "nxp,pcf85263";
- 		reg = <0x51>;
-+		quartz-load-femtofarads = <12500>;
- 	};
- };
+diff --git a/drivers/pci/pci.c b/drivers/pci/pci.c
+index e77d5b53c0cec..4d84ed4124844 100644
+--- a/drivers/pci/pci.c
++++ b/drivers/pci/pci.c
+@@ -4954,7 +4954,7 @@ int pci_bridge_wait_for_secondary_bus(struct pci_dev *dev, char *reset_type)
+ 		delay);
+ 	if (!pcie_wait_for_link_delay(dev, true, delay)) {
+ 		/* Did not train, no need to wait any further */
+-		pci_info(dev, "Data Link Layer Link Active not set in 1000 msec\n");
++		pci_info(dev, "Data Link Layer Link Active not set in %d msec\n", delay);
+ 		return -ENOTTY;
+ 	}
  
 -- 
 2.39.5
