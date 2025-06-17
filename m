@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-153208-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153211-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 21A99ADD326
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 17:54:06 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1F21EADD319
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 17:53:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DE9C83BE35E
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 15:50:23 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3AFB6166DB4
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 15:50:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C666D2DFF14;
-	Tue, 17 Jun 2025 15:47:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CDE562DFF18;
+	Tue, 17 Jun 2025 15:47:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PNla00NL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UylLC26A"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 842BA2DE1F3;
-	Tue, 17 Jun 2025 15:47:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AF612DFF06;
+	Tue, 17 Jun 2025 15:47:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750175223; cv=none; b=jbWdleSVrFy7WYJsHEAGBAaHKx2eCxMmg4ledXQyjAQRUMUjv0tGtRTWx8JrYntf9XeNmWB1I2pbwQpZ5qs58WiSzUyXc6rjAT7+5N4CQ+mrQ69niYl/YfEdmAcb4/glQiUjKq28bEe6Aehzd7fsnWKdL2Zn210/S3LbxwkaGHs=
+	t=1750175232; cv=none; b=Yrhqm5l1VzWlacVnk0YNaUXrT5pVkHRp5zsLNK2r1Sl3RsQqAaoYyUwzjng1fobdcOxaT67n79NJcrEnzbNjw+ov8PQ4MuXA2mkTKIog/DgSJnPtcmpEDSrL5Cu47zQtu4LtduiqUd2TeAlW4i0+GQR4UizZejGnjJzq/FsZuI0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750175223; c=relaxed/simple;
-	bh=08GkDYlem1NQ/B0Ob6dynxDTBaDMrRBJ9X1HyJWUQ1Y=;
+	s=arc-20240116; t=1750175232; c=relaxed/simple;
+	bh=2LxLBFwOE6WO88ls9/pzF81em2DlmLs+Wm83WkRQT2E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IyJM3MIUigCRgO7Z2BQcbwitosh7y0PRmZTJuT1unebKd8Kg69Cr7nlApAyhBhUd05tt1LNMCK5wtcHBBafaWRbhGG3s/LuQinh0uSmzEe87Hu1ZvfGdjPWkkEJCQsJYA9NqpUtD1VSKfQCDA2JIkmPZbiyEJyriu4253FckSOQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PNla00NL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C015BC4CEE7;
-	Tue, 17 Jun 2025 15:47:02 +0000 (UTC)
+	 MIME-Version; b=kE9u7eZslGUgFs8U6M4c5/kHTMb/yCYh3DeMIAk3BVAmdZHu3fn1PCH48+obdkmbg02YJRJztorQNta2syV7dW9d7RhNziOzT5aBE7039sYTWtThQ6gXIWJTxlWpqZZWII1D/BCxdfSntaGWfH3LGgsH4HwdfzZ9AC69h1xPLR4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UylLC26A; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D452C4CEE7;
+	Tue, 17 Jun 2025 15:47:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750175223;
-	bh=08GkDYlem1NQ/B0Ob6dynxDTBaDMrRBJ9X1HyJWUQ1Y=;
+	s=korg; t=1750175232;
+	bh=2LxLBFwOE6WO88ls9/pzF81em2DlmLs+Wm83WkRQT2E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PNla00NLJA2+F9/MGIqWKNjBJ7hXGkrAWQNQZ223SgPx9VzNWO3AD+4pPqjENegJf
-	 yrVac8dGqUyh/Tjm9NMJZqjtC4HPAjZnOnFhxFKHWfahE1CYFsepVXASsDCStrNWjR
-	 qH8mqdTimfohr/S6Ihg3D389Cq2EU02zO0TRjGIs=
+	b=UylLC26AX8v9HJQMm7omcPthztE/wgdiBcb0iUMo6le1gQBzo1uYB5YkhMiSrd4IC
+	 Y26toRypgiT+xGyuGeZGSDzJbMuBDQprUJMXRQZUuyY3dHAHIqKAz5M4RjWoTKeHaw
+	 TFuHeepI2jDo/b/haJG67lw7CQbAMx9jZaRIqEZo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vishwaroop A <va@nvidia.com>,
-	Mark Brown <broonie@kernel.org>,
+	Alexander Shiyan <eagle.alexander923@gmail.com>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	Sebastian Reichel <sebastian.reichel@collabora.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 064/780] spi: tegra210-quad: modify chip select (CS) deactivation
-Date: Tue, 17 Jun 2025 17:16:12 +0200
-Message-ID: <20250617152454.105761761@linuxfoundation.org>
+Subject: [PATCH 6.15 065/780] power: reset: at91-reset: Optimize at91_reset()
+Date: Tue, 17 Jun 2025 17:16:13 +0200
+Message-ID: <20250617152454.144892186@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
 References: <20250617152451.485330293@linuxfoundation.org>
@@ -66,49 +67,54 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Vishwaroop A <va@nvidia.com>
+From: Alexander Shiyan <eagle.alexander923@gmail.com>
 
-[ Upstream commit d8966b65413390d1b5b706886987caac05fbe024 ]
+[ Upstream commit 62d48983f215bf1dd48665913318101fa3414dcf ]
 
-Modify the chip select (CS) deactivation and inter-transfer delay
-execution only during the DATA_TRANSFER phase when the cs_change
-flag is not set. This ensures proper CS handling and timing between
-transfers while eliminating redundant operations.
+This patch adds a small optimization to the low-level at91_reset()
+function, which includes:
+- Removes the extra branch, since the following store operations
+  already have proper condition checks.
+- Removes the definition of the clobber register r4, since it is
+  no longer used in the code.
 
-Fixes: 1b8342cc4a38 ("spi: tegra210-quad: combined sequence mode")
-Signed-off-by: Vishwaroop A <va@nvidia.com>
-Link: https://patch.msgid.link/20250416110606.2737315-4-va@nvidia.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: fcd0532fac2a ("power: reset: at91-reset: make at91sam9g45_restart() generic")
+Signed-off-by: Alexander Shiyan <eagle.alexander923@gmail.com>
+Reviewed-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+Link: https://lore.kernel.org/r/20250307053809.20245-1-eagle.alexander923@gmail.com
+Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi-tegra210-quad.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/power/reset/at91-reset.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/spi/spi-tegra210-quad.c b/drivers/spi/spi-tegra210-quad.c
-index b2872853d6ed8..665c06e1473be 100644
---- a/drivers/spi/spi-tegra210-quad.c
-+++ b/drivers/spi/spi-tegra210-quad.c
-@@ -1159,16 +1159,16 @@ static int tegra_qspi_combined_seq_xfer(struct tegra_qspi *tqspi,
- 				ret = -EIO;
- 				goto exit;
- 			}
--			if (!xfer->cs_change) {
--				tegra_qspi_transfer_end(spi);
--				spi_transfer_delay_exec(xfer);
--			}
- 			break;
- 		default:
- 			ret = -EINVAL;
- 			goto exit;
- 		}
- 		msg->actual_length += xfer->len;
-+		if (!xfer->cs_change && transfer_phase == DATA_TRANSFER) {
-+			tegra_qspi_transfer_end(spi);
-+			spi_transfer_delay_exec(xfer);
-+		}
- 		transfer_phase++;
- 	}
- 	ret = 0;
+diff --git a/drivers/power/reset/at91-reset.c b/drivers/power/reset/at91-reset.c
+index 036b18a1f90f8..511f5a8f8961c 100644
+--- a/drivers/power/reset/at91-reset.c
++++ b/drivers/power/reset/at91-reset.c
+@@ -129,12 +129,11 @@ static int at91_reset(struct notifier_block *this, unsigned long mode,
+ 		"	str	%4, [%0, %6]\n\t"
+ 		/* Disable SDRAM1 accesses */
+ 		"1:	tst	%1, #0\n\t"
+-		"	beq	2f\n\t"
+ 		"	strne	%3, [%1, #" __stringify(AT91_DDRSDRC_RTR) "]\n\t"
+ 		/* Power down SDRAM1 */
+ 		"	strne	%4, [%1, %6]\n\t"
+ 		/* Reset CPU */
+-		"2:	str	%5, [%2, #" __stringify(AT91_RSTC_CR) "]\n\t"
++		"	str	%5, [%2, #" __stringify(AT91_RSTC_CR) "]\n\t"
+ 
+ 		"	b	.\n\t"
+ 		:
+@@ -145,7 +144,7 @@ static int at91_reset(struct notifier_block *this, unsigned long mode,
+ 		  "r" cpu_to_le32(AT91_DDRSDRC_LPCB_POWER_DOWN),
+ 		  "r" (reset->data->reset_args),
+ 		  "r" (reset->ramc_lpr)
+-		: "r4");
++	);
+ 
+ 	return NOTIFY_DONE;
+ }
 -- 
 2.39.5
 
