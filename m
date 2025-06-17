@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-153696-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-154284-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE878ADD5D1
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:26:19 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 684B4ADD8BF
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:58:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3C8C24075B5
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:18:42 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B939B4A22FB
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:48:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68E2C2F362A;
-	Tue, 17 Jun 2025 16:13:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B39B12E54D9;
+	Tue, 17 Jun 2025 16:44:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f4wdbAYJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j88vNzJ7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24CC72F3626;
-	Tue, 17 Jun 2025 16:13:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A5872DFF3B;
+	Tue, 17 Jun 2025 16:44:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750176794; cv=none; b=YcJIaiKRuE8Gs4801rIMTjXjqTgGRoD4+ZdDRaHoQiY0IyPiJq2s+IZP0kFU+V8BfPtPT7AGS8ou+EOPqhW5TDsLF1ZgimZChA9Gp/tWIvlLszhaoB4hsHz+zte7a0LSsp7HYuW4w47Z+0r03LvspcHD9Z8PIEKkgQo3LNbN8S8=
+	t=1750178695; cv=none; b=hCELg5FbUYzOX038erHhYBMrzQg41su3b9oO7QA736K3OtJnvexLigsAWp5Dez+CnXlaUUxHZKnUinLsMXMQOKnlMW5eSgMOZKh84Eisub0ExphDstw7om9ib6YVOgHYu8heundR4YqhgRm3I0Yl2JjAslQtP9YxD4BrY4iJJj4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750176794; c=relaxed/simple;
-	bh=jTaJN6vxGeqIrEb8Q6ZlI9wutzY+AsimmzOeqZ0kFNs=;
+	s=arc-20240116; t=1750178695; c=relaxed/simple;
+	bh=8Ce+yCjgP2UFqlbTyeq+xgXeEfBQSMmETdPhsXooHeI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pcKwm2Ium5pjs9wZdoJjIxrAVwSXU6zlVUXrFeBN2gMpWCtZTL/s63PAV5KgjHnkqgIS1sgEgaCzVY8DEs+fOysUZzQtJg8g5KdXcrPIP/ViP943lW0ZYPJpEIkTL6+KFCy3llmdryqftrrihKkvET3NK4WosRqi0eDT0vp4Zk0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f4wdbAYJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 886E8C4CEF0;
-	Tue, 17 Jun 2025 16:13:13 +0000 (UTC)
+	 MIME-Version; b=YOHtz09hzbD5R667z52zSbqNxkkcakTBtgDYQVj+lO94hIdDXF3cwsUCvLsThzZhdldJvr25RfBcsHKyiVuIikiAkx/WNy6FfVSy1PBuVT7TMuvjdfJ3flQzv0rb/eQ2i/B/BYxP9ECzausBbEZ7x2VCehHFepQp7Z1AkiLthPA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j88vNzJ7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CEACFC4CEE3;
+	Tue, 17 Jun 2025 16:44:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750176794;
-	bh=jTaJN6vxGeqIrEb8Q6ZlI9wutzY+AsimmzOeqZ0kFNs=;
+	s=korg; t=1750178695;
+	bh=8Ce+yCjgP2UFqlbTyeq+xgXeEfBQSMmETdPhsXooHeI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=f4wdbAYJZ8B6qwlDVomHqiDXB3gD+TJwFjQ4ad1ZgCEnKi7kfqyoxhyAcHzdjpCXs
-	 KDVl3MDR+u95hBuy8kn/m8/WmSoLmyEUlFMRXdD/Zdb6L2a3/mSpBOgKsjPuuzK0LB
-	 rDrmXWlErhg5Yrn33MmrH8UbQTWw8QiWp8cZisLg=
+	b=j88vNzJ7oDPfeDeDj7S1qxgwNf+1nAQl9tDSaxQoE3JAm+L7TcLT5GUMn+qjQIYo+
+	 w6OrlJA5cX85c5B4v29N+MAd4uE8GeZw8kadGdm9o5opRryWHG8dcQU2E6MpslsfR3
+	 UyfY65ag0kfcY5eQp9sH6Cojobzg5g1Obxu0JXK0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Henry Martin <bsdhenrymartin@gmail.com>,
-	Andrew Jeffery <andrew@codeconstruct.com.au>,
-	Arnd Bergmann <arnd@arndb.de>,
+	Yabin Cui <yabinc@google.com>,
+	James Clark <james.clark@linaro.org>,
+	Leo Yan <leo.yan@arm.com>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 267/512] soc: aspeed: Add NULL check in aspeed_lpc_enable_snoop()
-Date: Tue, 17 Jun 2025 17:23:53 +0200
-Message-ID: <20250617152430.414018531@linuxfoundation.org>
+Subject: [PATCH 6.15 526/780] coresight: catu: Introduce refcount and spinlock for enabling/disabling
+Date: Tue, 17 Jun 2025 17:23:54 +0200
+Message-ID: <20250617152512.931755329@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
-References: <20250617152419.512865572@linuxfoundation.org>
+In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
+References: <20250617152451.485330293@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,75 +64,111 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Henry Martin <bsdhenrymartin@gmail.com>
+From: Yabin Cui <yabinc@google.com>
 
-[ Upstream commit f1706e0e1a74b095cbc60375b9b1e6205f5f4c98 ]
+[ Upstream commit a03a0a08c6fe5e50c1b12ea41b9e228e7f649c22 ]
 
-devm_kasprintf() returns NULL when memory allocation fails. Currently,
-aspeed_lpc_enable_snoop() does not check for this case, which results in a
-NULL pointer dereference.
+When tracing ETM data on multiple CPUs concurrently via the
+perf interface, the CATU device is shared across different CPU
+paths. This can lead to race conditions when multiple CPUs attempt
+to enable or disable the CATU device simultaneously.
 
-Add NULL check after devm_kasprintf() to prevent this issue.
+To address these race conditions, this patch introduces the
+following changes:
 
-Fixes: 3772e5da4454 ("drivers/misc: Aspeed LPC snoop output using misc chardev")
-Signed-off-by: Henry Martin <bsdhenrymartin@gmail.com>
-Link: https://patch.msgid.link/20250401074647.21300-1-bsdhenrymartin@gmail.com
-[arj: Fix Fixes: tag to use subject from 3772e5da4454]
-Signed-off-by: Andrew Jeffery <andrew@codeconstruct.com.au>
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+1. The enable and disable operations for the CATU device are not
+   reentrant. Therefore, a spinlock is added to ensure that only
+   one CPU can enable or disable a given CATU device at any point
+   in time.
+
+2. A reference counter is used to manage the enable/disable state
+   of the CATU device. The device is enabled when the first CPU
+   requires it and is only disabled when the last CPU finishes
+   using it. This ensures the device remains active as long as at
+   least one CPU needs it.
+
+Fixes: fcacb5c154ba ("coresight: Introduce support for Coresight Address Translation Unit")
+Signed-off-by: Yabin Cui <yabinc@google.com>
+Reviewed-by: James Clark <james.clark@linaro.org>
+Reviewed-by: Leo Yan <leo.yan@arm.com>
+Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
+Link: https://lore.kernel.org/r/20250429231301.1952246-2-yabinc@google.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/soc/aspeed/aspeed-lpc-snoop.c | 15 +++++++++++++--
- 1 file changed, 13 insertions(+), 2 deletions(-)
+ drivers/hwtracing/coresight/coresight-catu.c | 25 +++++++++++++-------
+ drivers/hwtracing/coresight/coresight-catu.h |  1 +
+ 2 files changed, 18 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/soc/aspeed/aspeed-lpc-snoop.c b/drivers/soc/aspeed/aspeed-lpc-snoop.c
-index f06edc4cc5ea4..d2e63277f0aa9 100644
---- a/drivers/soc/aspeed/aspeed-lpc-snoop.c
-+++ b/drivers/soc/aspeed/aspeed-lpc-snoop.c
-@@ -200,11 +200,15 @@ static int aspeed_lpc_enable_snoop(struct aspeed_lpc_snoop *lpc_snoop,
- 	lpc_snoop->chan[channel].miscdev.minor = MISC_DYNAMIC_MINOR;
- 	lpc_snoop->chan[channel].miscdev.name =
- 		devm_kasprintf(dev, GFP_KERNEL, "%s%d", DEVICE_NAME, channel);
-+	if (!lpc_snoop->chan[channel].miscdev.name) {
-+		rc = -ENOMEM;
-+		goto err_free_fifo;
+diff --git a/drivers/hwtracing/coresight/coresight-catu.c b/drivers/hwtracing/coresight/coresight-catu.c
+index 96cb48b140afa..d4e2e175e0770 100644
+--- a/drivers/hwtracing/coresight/coresight-catu.c
++++ b/drivers/hwtracing/coresight/coresight-catu.c
+@@ -458,12 +458,17 @@ static int catu_enable_hw(struct catu_drvdata *drvdata, enum cs_mode cs_mode,
+ static int catu_enable(struct coresight_device *csdev, enum cs_mode mode,
+ 		       void *data)
+ {
+-	int rc;
++	int rc = 0;
+ 	struct catu_drvdata *catu_drvdata = csdev_to_catu_drvdata(csdev);
+ 
+-	CS_UNLOCK(catu_drvdata->base);
+-	rc = catu_enable_hw(catu_drvdata, mode, data);
+-	CS_LOCK(catu_drvdata->base);
++	guard(raw_spinlock_irqsave)(&catu_drvdata->spinlock);
++	if (csdev->refcnt == 0) {
++		CS_UNLOCK(catu_drvdata->base);
++		rc = catu_enable_hw(catu_drvdata, mode, data);
++		CS_LOCK(catu_drvdata->base);
 +	}
- 	lpc_snoop->chan[channel].miscdev.fops = &snoop_fops;
- 	lpc_snoop->chan[channel].miscdev.parent = dev;
- 	rc = misc_register(&lpc_snoop->chan[channel].miscdev);
- 	if (rc)
--		return rc;
-+		goto err_free_fifo;
- 
- 	/* Enable LPC snoop channel at requested port */
- 	switch (channel) {
-@@ -221,7 +225,8 @@ static int aspeed_lpc_enable_snoop(struct aspeed_lpc_snoop *lpc_snoop,
- 		hicrb_en = HICRB_ENSNP1D;
- 		break;
- 	default:
--		return -EINVAL;
-+		rc = -EINVAL;
-+		goto err_misc_deregister;
- 	}
- 
- 	regmap_update_bits(lpc_snoop->regmap, HICR5, hicr5_en, hicr5_en);
-@@ -231,6 +236,12 @@ static int aspeed_lpc_enable_snoop(struct aspeed_lpc_snoop *lpc_snoop,
- 		regmap_update_bits(lpc_snoop->regmap, HICRB,
- 				hicrb_en, hicrb_en);
- 
-+	return 0;
-+
-+err_misc_deregister:
-+	misc_deregister(&lpc_snoop->chan[channel].miscdev);
-+err_free_fifo:
-+	kfifo_free(&lpc_snoop->chan[channel].fifo);
++	if (!rc)
++		csdev->refcnt++;
  	return rc;
  }
  
+@@ -486,12 +491,15 @@ static int catu_disable_hw(struct catu_drvdata *drvdata)
+ 
+ static int catu_disable(struct coresight_device *csdev, void *__unused)
+ {
+-	int rc;
++	int rc = 0;
+ 	struct catu_drvdata *catu_drvdata = csdev_to_catu_drvdata(csdev);
+ 
+-	CS_UNLOCK(catu_drvdata->base);
+-	rc = catu_disable_hw(catu_drvdata);
+-	CS_LOCK(catu_drvdata->base);
++	guard(raw_spinlock_irqsave)(&catu_drvdata->spinlock);
++	if (--csdev->refcnt == 0) {
++		CS_UNLOCK(catu_drvdata->base);
++		rc = catu_disable_hw(catu_drvdata);
++		CS_LOCK(catu_drvdata->base);
++	}
+ 	return rc;
+ }
+ 
+@@ -550,6 +558,7 @@ static int __catu_probe(struct device *dev, struct resource *res)
+ 	dev->platform_data = pdata;
+ 
+ 	drvdata->base = base;
++	raw_spin_lock_init(&drvdata->spinlock);
+ 	catu_desc.access = CSDEV_ACCESS_IOMEM(base);
+ 	catu_desc.pdata = pdata;
+ 	catu_desc.dev = dev;
+diff --git a/drivers/hwtracing/coresight/coresight-catu.h b/drivers/hwtracing/coresight/coresight-catu.h
+index 141feac1c14b0..755776cd19c5b 100644
+--- a/drivers/hwtracing/coresight/coresight-catu.h
++++ b/drivers/hwtracing/coresight/coresight-catu.h
+@@ -65,6 +65,7 @@ struct catu_drvdata {
+ 	void __iomem *base;
+ 	struct coresight_device *csdev;
+ 	int irq;
++	raw_spinlock_t spinlock;
+ };
+ 
+ #define CATU_REG32(name, offset)					\
 -- 
 2.39.5
 
