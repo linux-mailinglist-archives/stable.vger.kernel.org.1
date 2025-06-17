@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-153482-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153549-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4EB13ADD4CE
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:14:28 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id B9F8EADD43F
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:08:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8467856007A
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:05:11 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 33C277A74DB
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:06:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92EC72ED171;
-	Tue, 17 Jun 2025 16:01:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6484A2ECD22;
+	Tue, 17 Jun 2025 16:05:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WZrqvOOt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YoBjmuGh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FCD62F2345;
-	Tue, 17 Jun 2025 16:01:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F51420A5EA;
+	Tue, 17 Jun 2025 16:05:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750176106; cv=none; b=fHIhmn2KEdsn3qlIZQPkJkeXlqoB8GYDhZGj6g/03mXA0abbFNoo4br+HnKUPHNwhu1t3X9cMNSnBbaAJQVev8WJm8yOQW+4JKiWvIhoBjhJ4UVJaf5HEXbaTe/tlyVwBch32bGg8T6VKhU9tHcNZ/nWyp3CV+Dk9T/7MJxB8K8=
+	t=1750176322; cv=none; b=U7g0PJvnuNPEC3z64BWW7srUQmGVRE1n90VaGC7JWSf+A+GyQBYYlQn3QLE48QcrqlVx3SLUz/Lx6ZRhhu7E4bJgxmvDkGE8h1zN0Rk4KulMEOnz/nPQwL3GdE5/GBUhbBzkJbZK7zb+Px/TsT4zW0+UfirURhUGdRkI/X9UfFY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750176106; c=relaxed/simple;
-	bh=kbXny0NAXVDlF3mSdNaFMkKNclwXh/YRQCrHQwt6OSE=;
+	s=arc-20240116; t=1750176322; c=relaxed/simple;
+	bh=5ZfWgy9esgahb0QqQijGFmO8QmsKCjGb6OQMi39jBxY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=X5j/gXGZtPaQ/RzhSNVWO0g0bi0IR8JwBk05nbrVnpSYYHZ8aKpTukiyNMU0TYYhp3WWsk93kLHM/0jBnB62qpifRjNFl4+g4LDzTdJhKx32d5XNtTMNseRuwxKfi3D5IvV9rxOHB5wpXifwr1AADI473lwFuIbcaBOdFk19jI4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WZrqvOOt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA719C4CEE3;
-	Tue, 17 Jun 2025 16:01:45 +0000 (UTC)
+	 MIME-Version; b=QkwmXEeJvDiF4XYeqro2pvdTY1L9m2lQh6cCq0Y60K3CyKMlNOEvd2w+mIUBlM9SQwd5fmyIvGxKVLK5yflZoXSqhdbIUXeHdsGAnL5ww/t/kWJg2CHQMIa3sObkOSCTR6SNEiC8yFDzInBQMkPvZ2EJ1HIK4Jn/MvCTFFNibfU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YoBjmuGh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C5D6C4CEE3;
+	Tue, 17 Jun 2025 16:05:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750176106;
-	bh=kbXny0NAXVDlF3mSdNaFMkKNclwXh/YRQCrHQwt6OSE=;
+	s=korg; t=1750176321;
+	bh=5ZfWgy9esgahb0QqQijGFmO8QmsKCjGb6OQMi39jBxY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WZrqvOOtLCCzEhghew9fppw0fx/02dYBIPBVyxCcwuEP2fmjlfqq4svgRozE8u5+h
-	 b6qZnDgTeAc3UFgFqfdo37O8vnN/a8EEcHH02JfvypX8tybzkP7lvW5yREq+IfcH2E
-	 dbbYYHGcFf8i8wDh/1aoDnNvQNDR7xBbt+C9Dk94=
+	b=YoBjmuGhxDhgeq/ZHnQlrk8lIPWDu2PPkhkewPJ0w0tOrH30Cz4K6w+blGoBsowuL
+	 6mEwpOT4lXA+H/EoaXD0LGUgVeiE6024JFIWtJ7BoO6mVTQ7/sbt9E1uWBGUvgble0
+	 4Qk/S9oGe77GiWU1Dvce0ZOXom8WN6Ex2SN/fdoQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chen-Yu Tsai <wenst@chromium.org>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Chun-Kuang Hu <chunkuang.hu@kernel.org>,
+	Detlev Casanova <detlev.casanova@collabora.com>,
+	Nicolas Dufresne <nicolas.dufresne@collabora.com>,
+	Hans Verkuil <hverkuil@xs4all.nl>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 152/780] drm/mediatek: mtk_drm_drv: Unbind secondary mmsys components on err
-Date: Tue, 17 Jun 2025 17:17:40 +0200
-Message-ID: <20250617152457.692913985@linuxfoundation.org>
+Subject: [PATCH 6.15 153/780] media: verisilicon: Free post processor buffers on error
+Date: Tue, 17 Jun 2025 17:17:41 +0200
+Message-ID: <20250617152457.730557260@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
 References: <20250617152451.485330293@linuxfoundation.org>
@@ -67,56 +67,45 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+From: Detlev Casanova <detlev.casanova@collabora.com>
 
-[ Upstream commit 94c933716567084bfb9e79dcd81eb2b2308e84e1 ]
+[ Upstream commit 11beb0fc346e00c412b3bfd19013206f6b655604 ]
 
-When calling component_bind_all(), if a component that is included
-in the list fails, all of those that have been successfully bound
-will be unbound, but this driver has two components lists for two
-actual devices, as in, each mmsys instance has its own components
-list.
+During initialization, the post processor allocates the same number of
+buffers as the buf queue.
+As the init function is called in streamon(), if an allocation fails,
+streamon will return an error and streamoff() will not be called, keeping
+all post processor buffers allocated.
 
-In case mmsys0 (or actually vdosys0) is able to bind all of its
-components, but the secondary one fails, all of the components of
-the first are kept bound, while the ones of mmsys1/vdosys1 are
-correctly cleaned up.
+To avoid that, all post proc buffers are freed in case of an allocation
+error.
 
-This is not right because, in case of a failure, the components
-are re-bound for all of the mmsys/vdosys instances without caring
-about the ones that were previously left in a bound state.
-
-Fix that by calling component_unbind_all() on all of the previous
-component masters that succeeded binding all subdevices when any
-of the other masters errors out.
-
-Fixes: 1ef7ed48356c ("drm/mediatek: Modify mediatek-drm for mt8195 multi mmsys support")
-Reviewed-by: Chen-Yu Tsai <wenst@chromium.org>
-Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Link: https://patchwork.kernel.org/project/dri-devel/patch/20250403104741.71045-4-angelogioacchino.delregno@collabora.com/
-Signed-off-by: Chun-Kuang Hu <chunkuang.hu@kernel.org>
+Fixes: 26711491a807 ("media: verisilicon: Refactor postprocessor to store more buffers")
+Signed-off-by: Detlev Casanova <detlev.casanova@collabora.com>
+Reviewed-by: Nicolas Dufresne <nicolas.dufresne@collabora.com>
+Signed-off-by: Nicolas Dufresne <nicolas.dufresne@collabora.com>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/mediatek/mtk_drm_drv.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/media/platform/verisilicon/hantro_postproc.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/mediatek/mtk_drm_drv.c b/drivers/gpu/drm/mediatek/mtk_drm_drv.c
-index 593193555c07e..7c0c12dde4885 100644
---- a/drivers/gpu/drm/mediatek/mtk_drm_drv.c
-+++ b/drivers/gpu/drm/mediatek/mtk_drm_drv.c
-@@ -488,8 +488,11 @@ static int mtk_drm_kms_init(struct drm_device *drm)
- 	for (i = 0; i < private->data->mmsys_dev_num; i++) {
- 		drm->dev_private = private->all_drm_private[i];
- 		ret = component_bind_all(private->all_drm_private[i]->dev, drm);
+diff --git a/drivers/media/platform/verisilicon/hantro_postproc.c b/drivers/media/platform/verisilicon/hantro_postproc.c
+index c435a393e0cb7..9f559a13d409b 100644
+--- a/drivers/media/platform/verisilicon/hantro_postproc.c
++++ b/drivers/media/platform/verisilicon/hantro_postproc.c
+@@ -250,8 +250,10 @@ int hantro_postproc_init(struct hantro_ctx *ctx)
+ 
+ 	for (i = 0; i < num_buffers; i++) {
+ 		ret = hantro_postproc_alloc(ctx, i);
 -		if (ret)
 +		if (ret) {
-+			while (--i >= 0)
-+				component_unbind_all(private->all_drm_private[i]->dev, drm);
++			hantro_postproc_free(ctx);
  			return ret;
 +		}
  	}
  
- 	/*
+ 	return 0;
 -- 
 2.39.5
 
