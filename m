@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-154257-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153616-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 97B1DADD86E
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:55:37 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 08A27ADD567
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:20:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7F8EF4A2356
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:47:27 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8F97D406273
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:12:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 280142EB5D0;
-	Tue, 17 Jun 2025 16:43:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 658112EF2B1;
+	Tue, 17 Jun 2025 16:08:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GNyoJoDC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hKJ0CWKU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D88312135A0;
-	Tue, 17 Jun 2025 16:43:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23BB82ED179;
+	Tue, 17 Jun 2025 16:08:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750178607; cv=none; b=OTNbR8CMm6NkpzVbM6//M7IrlDBxGi9oUDb8sC3ejoWV48caT+95Dj/1v6h+9UIJfD8GuYo4unNw4qivuEL47+92pGboekon6EGAWoYHkICuvHgZI1C0h5szHeYLFDBG/fHlJ0E8dCWmLz5207zBiYQkF/WsVNR4AVg6DA0ksb8=
+	t=1750176538; cv=none; b=bxCIHrMHS+z6izcOOwfegrDOzMYW93JKR9VrOKgBdedwHzpbTmaeHm5ZRlsXFqX5etRsn4I7I39xjQPQD0Qnd03tEoD+Wh8G08tgipts20X8i4adjLmBIbp83GG/fj3M8a3S41y77KAXQhwNIps4K27EhS3CfdohzSuKdIyGDV0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750178607; c=relaxed/simple;
-	bh=Oud/0JPoomWQmHFuIArSRUJ9FgDh+S8qSij29+Y1xSQ=;
+	s=arc-20240116; t=1750176538; c=relaxed/simple;
+	bh=7j2NYvOnWVcuoqn0TUp3TslP5JODh3FtfYfRag1Zouo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gQt+LJIvR+DZm3RuuMXmynf6l0X4SjSHMj3lfmmLIPM7Go95pyrGQK7r2HMdv9Vvib4AQjXYkR9CdKoT9II2Gxd8Gx+JHtOLHc2X/aMi4JsIS6baALRifkTRp+dpe1ey3PD+Kn6/MxIGobX2gav+A4WjX0hRmTJOJBCX0Exej3M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GNyoJoDC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D837C4CEE3;
-	Tue, 17 Jun 2025 16:43:27 +0000 (UTC)
+	 MIME-Version; b=JlHRKF0RLASh/m4Sq3yxRbubIZjMedJ+1VaxD2+XDnIK6fNTYKDsh+AjTF+4g3ezxWTDfZo1y2+YVei9cPUcpHrQzG+CFbG02iIpbMOAIgS/Z82U/StEhi1vGi5tSxLvreLD9047UxJ6LsEekfeQAmyEHBG1CmDzzPl3ubMNOq8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hKJ0CWKU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87C7CC4CEE3;
+	Tue, 17 Jun 2025 16:08:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750178607;
-	bh=Oud/0JPoomWQmHFuIArSRUJ9FgDh+S8qSij29+Y1xSQ=;
+	s=korg; t=1750176538;
+	bh=7j2NYvOnWVcuoqn0TUp3TslP5JODh3FtfYfRag1Zouo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GNyoJoDCxPPcukJRI8umGM27x2Olmy5cVkuGjx3oSNyuR/h4Lxwga1XNJspXVIzq0
-	 AP3WWf1nsiLYFtzbWLRk/fx9lDnevDpYjbeOOFG1KY75qzirlExpV0FleS79+3pMSr
-	 SVeS+7US/zkr/+Yo96BfVW3VIss1CVQEuDakcff4=
+	b=hKJ0CWKUo1W2pbYiN5SyiAHcP2NOI/839eNyt7ooy2EH11biCPUa5Ol18wnqZ/+yV
+	 u4xBTFIPrO5dqnu2IjJUUyqgyf7NV9Dhtgr5Bbjma9/qo0QhaLy7DVutAasayDzkHA
+	 Gsnb1oC255hVcDQ0GdkQBcoMm1dWGwRbZyj2vPSQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hans Zhang <18255117159@163.com>,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+	Adam Ford <aford173@gmail.com>,
+	Frank Li <Frank.Li@nxp.com>,
+	Shawn Guo <shawnguo@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 498/780] PCI: cadence: Fix runtime atomic count underflow
+Subject: [PATCH 6.12 240/512] arm64: dts: imx8mn-beacon: Set SAI5 MCLK direction to output for HDMI audio
 Date: Tue, 17 Jun 2025 17:23:26 +0200
-Message-ID: <20250617152511.775038085@linuxfoundation.org>
+Message-ID: <20250617152429.345678276@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
-References: <20250617152451.485330293@linuxfoundation.org>
+In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
+References: <20250617152419.512865572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,55 +63,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hans Zhang <18255117159@163.com>
+From: Adam Ford <aford173@gmail.com>
 
-[ Upstream commit 8805f32a96d3b97cef07999fa6f52112678f7e65 ]
+[ Upstream commit a747c4dd2a60c4d0179b372032a4b98548135096 ]
 
-If the call to pci_host_probe() in cdns_pcie_host_setup() fails, PM
-runtime count is decremented in the error path using pm_runtime_put_sync().
-But the runtime count is not incremented by this driver, but only by the
-callers (cdns_plat_pcie_probe/j721e_pcie_probe). And the callers also
-decrement the runtime PM count in their error path. So this leads to the
-below warning from the PM core:
+The HDMI bridge chip fails to generate an audio source due to the SAI5
+master clock (MCLK) direction not being set to output. This prevents proper
+clocking of the HDMI audio interface.
 
-	"runtime PM usage count underflow!"
+Add the `fsl,sai-mclk-direction-output` property to the SAI5 node to ensure
+the MCLK is driven by the SoC, resolving the HDMI sound issue.
 
-So fix it by getting rid of pm_runtime_put_sync() in the error path and
-directly return the errno.
-
-Fixes: 49e427e6bdd1 ("Merge branch 'pci/host-probe-refactor'")
-Signed-off-by: Hans Zhang <18255117159@163.com>
-Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Link: https://patch.msgid.link/20250419133058.162048-1-18255117159@163.com
+Fixes: 1d6880ceef43 ("arm64: dts: imx8mn-beacon: Add HDMI video with sound")
+Signed-off-by: Adam Ford <aford173@gmail.com>
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
+Signed-off-by: Shawn Guo <shawnguo@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/controller/cadence/pcie-cadence-host.c | 11 +----------
- 1 file changed, 1 insertion(+), 10 deletions(-)
+ arch/arm64/boot/dts/freescale/imx8mn-beacon-kit.dts | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/pci/controller/cadence/pcie-cadence-host.c b/drivers/pci/controller/cadence/pcie-cadence-host.c
-index 8af95e9da7cec..741e10a575ec7 100644
---- a/drivers/pci/controller/cadence/pcie-cadence-host.c
-+++ b/drivers/pci/controller/cadence/pcie-cadence-host.c
-@@ -570,14 +570,5 @@ int cdns_pcie_host_setup(struct cdns_pcie_rc *rc)
- 	if (!bridge->ops)
- 		bridge->ops = &cdns_pcie_host_ops;
+diff --git a/arch/arm64/boot/dts/freescale/imx8mn-beacon-kit.dts b/arch/arm64/boot/dts/freescale/imx8mn-beacon-kit.dts
+index 1df5ceb113879..37fc5ed98d7f6 100644
+--- a/arch/arm64/boot/dts/freescale/imx8mn-beacon-kit.dts
++++ b/arch/arm64/boot/dts/freescale/imx8mn-beacon-kit.dts
+@@ -124,6 +124,7 @@
+ 	assigned-clock-parents = <&clk IMX8MN_AUDIO_PLL1_OUT>;
+ 	assigned-clock-rates = <24576000>;
+ 	#sound-dai-cells = <0>;
++	fsl,sai-mclk-direction-output;
+ 	status = "okay";
+ };
  
--	ret = pci_host_probe(bridge);
--	if (ret < 0)
--		goto err_init;
--
--	return 0;
--
-- err_init:
--	pm_runtime_put_sync(dev);
--
--	return ret;
-+	return pci_host_probe(bridge);
- }
 -- 
 2.39.5
 
