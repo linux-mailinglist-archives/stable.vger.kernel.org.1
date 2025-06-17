@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-154060-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153585-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 83128ADD7C2
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:48:50 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C8E65ADD55A
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:20:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 219EB4A6B11
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:38:02 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 10FA03BF8DE
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:10:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 93E162DFF14;
-	Tue, 17 Jun 2025 16:32:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 599772CCC5;
+	Tue, 17 Jun 2025 16:07:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I3Dqkan0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gd/tWQYm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5181220E71E;
-	Tue, 17 Jun 2025 16:32:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15750216E2A;
+	Tue, 17 Jun 2025 16:07:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750177974; cv=none; b=hnJWmCBXVGFhu1Jag+CAAl7aR+roUpTxDbpe4Wqp9sAJhvqQpBIcXIi6QuUWNu4I0y6O5vqZlRoMMXCQyUo1MZPj4Iw9eP/Gu30xV291gB7ce1WuNZ1h6Hw1neHektYrEisdhKHkzrXxHSAF47G4wyY3vRE8ecnf98Poo1j6Iyw=
+	t=1750176437; cv=none; b=DbWNJpVdzzzWhUlaHJ2+LmV8T1sLzd0tfVD3RhlHLWhHY9U51B9n+3Nu7Q6el2U+BOmDSQBRG+EyMaY0Fp70QSt6oizL1RCHoCLtDoDQV8+BQBzKHILfuXHHbP8rO/lKAjKKTtIPJ8l7o55NS3voXVG4wd/vhTu+sxhvdmAXGsE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750177974; c=relaxed/simple;
-	bh=kweeEq81c5lK+oTfXDV4igMjA0O1g3BpnFyQlNVAUjU=;
+	s=arc-20240116; t=1750176437; c=relaxed/simple;
+	bh=970jrK8NtBAntskZlQX7wSZQxygWsvVdkUVPV1h5ZZI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rSgtQinAGaYDMx6mbuUhz8IptJzjYyLpdR+Mu6zs2IlzJY0AJ8MEUka/ZJwomTlx08hydkIZiYGimyYsFHxt2l+J5yYysFni9OzCDtOj9aG/E5vTK4YlFNICDfruUP3V3CfpnwK4hV/H/pd1k9Ek/seX6XeEpyYf/u/IStUEUjg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I3Dqkan0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3BAEC4CEE3;
-	Tue, 17 Jun 2025 16:32:53 +0000 (UTC)
+	 MIME-Version; b=b3jpkpxRZUiOt9BF9Z4nKAhvUm7Lw85LgTJNF6r8Fe0DbUVV6tXuMpFYe+rzwMsgWmxIGt9EQzZ8MQD6omPJxHmNcnCoyGr3jAixBq84yeyiJYhQSnufdGXcdm583hJ01ZnLkP1IOpnC4LFAWB5JnV+TbPOygCL8q0U2qyD3z0M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gd/tWQYm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E375C4CEE3;
+	Tue, 17 Jun 2025 16:07:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750177974;
-	bh=kweeEq81c5lK+oTfXDV4igMjA0O1g3BpnFyQlNVAUjU=;
+	s=korg; t=1750176437;
+	bh=970jrK8NtBAntskZlQX7wSZQxygWsvVdkUVPV1h5ZZI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=I3Dqkan0dUVGKE9RJKrRLltKOi1OtCgewVZGzlFEo8ejH6+8iBlLk1tVh+IYCcyZ8
-	 bhi+rolEP04XtTPE5IBOiAwHGpZZk3p/TFlcqzzCYGEG15k192MwSVbVEZhfabTxVB
-	 IGiLoGQPb5auVHr0nkCqSo0QZFASv5hN444G0EgY=
+	b=gd/tWQYmw6U8zcoZLye0mrIITgTQobIASq4tjDP+m+s14ER2PzUiEhUdHZ+h+5avn
+	 e4UXfl4+p/9SuhX06M/DlDm5aICnlHphHBjdd8NGdCBRiT/eMVcYkOdyI7v+qI79rF
+	 cB1Qwuw9mjCEbJYxNF4dbzs1i6YWFSmMJeqExiGk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jonas Gorski <jonas.gorski@gmail.com>,
+	Pieter Van Trappen <pieter.van.trappen@cern.ch>,
 	Florian Fainelli <florian.fainelli@broadcom.com>,
-	Vladimir Oltean <olteanv@gmail.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 426/512] net: dsa: b53: fix untagged traffic sent via cpu tagged with VID 0
+Subject: [PATCH 6.6 277/356] net: dsa: microchip: update tag_ksz masks for KSZ9477 family
 Date: Tue, 17 Jun 2025 17:26:32 +0200
-Message-ID: <20250617152436.831531049@linuxfoundation.org>
+Message-ID: <20250617152349.344636049@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
-References: <20250617152419.512865572@linuxfoundation.org>
+In-Reply-To: <20250617152338.212798615@linuxfoundation.org>
+References: <20250617152338.212798615@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,71 +63,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jonas Gorski <jonas.gorski@gmail.com>
+From: Pieter Van Trappen <pieter.van.trappen@cern.ch>
 
-[ Upstream commit 692eb9f8a5b71d852e873375d20cf5da7a046ea6 ]
+[ Upstream commit 3f464b193d40e49299dcd087b10cc3b77cbbea68 ]
 
-When Linux sends out untagged traffic from a port, it will enter the CPU
-port without any VLAN tag, even if the port is a member of a vlan
-filtering bridge with a PVID egress untagged VLAN.
+Remove magic number 7 by introducing a GENMASK macro instead.
+Remove magic number 0x80 by using the BIT macro instead.
 
-This makes the CPU port's PVID take effect, and the PVID's VLAN
-table entry controls if the packet will be tagged on egress.
-
-Since commit 45e9d59d3950 ("net: dsa: b53: do not allow to configure
-VLAN 0") we remove bridged ports from VLAN 0 when joining or leaving a
-VLAN aware bridge. But we also clear the untagged bit, causing untagged
-traffic from the controller to become tagged with VID 0 (and priority
-0).
-
-Fix this by not touching the untagged map of VLAN 0. Additionally,
-always keep the CPU port as a member, as the untag map is only effective
-as long as there is at least one member, and we would remove it when
-bridging all ports and leaving no standalone ports.
-
-Since Linux (and the switch) treats VLAN 0 tagged traffic like untagged,
-the actual impact of this is rather low, but this also prevented earlier
-detection of the issue.
-
-Fixes: 45e9d59d3950 ("net: dsa: b53: do not allow to configure VLAN 0")
-Signed-off-by: Jonas Gorski <jonas.gorski@gmail.com>
+Signed-off-by: Pieter Van Trappen <pieter.van.trappen@cern.ch>
 Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
-Reviewed-by: Vladimir Oltean <olteanv@gmail.com>
-Link: https://patch.msgid.link/20250602194914.1011890-1-jonas.gorski@gmail.com
+Link: https://patch.msgid.link/20240909134301.75448-1-vtpieter@gmail.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Stable-dep-of: ba54bce747fa ("net: dsa: microchip: linearize skb for tail-tagging switches")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/dsa/b53/b53_common.c | 6 +-----
- 1 file changed, 1 insertion(+), 5 deletions(-)
+ net/dsa/tag_ksz.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/dsa/b53/b53_common.c b/drivers/net/dsa/b53/b53_common.c
-index 79039c0941c20..71c30a81c36db 100644
---- a/drivers/net/dsa/b53/b53_common.c
-+++ b/drivers/net/dsa/b53/b53_common.c
-@@ -2036,9 +2036,6 @@ int b53_br_join(struct dsa_switch *ds, int port, struct dsa_bridge bridge,
+diff --git a/net/dsa/tag_ksz.c b/net/dsa/tag_ksz.c
+index ea100bd25939b..7bf87fa471a0c 100644
+--- a/net/dsa/tag_ksz.c
++++ b/net/dsa/tag_ksz.c
+@@ -176,8 +176,9 @@ MODULE_ALIAS_DSA_TAG_DRIVER(DSA_TAG_PROTO_KSZ8795, KSZ8795_NAME);
  
- 		b53_get_vlan_entry(dev, pvid, vl);
- 		vl->members &= ~BIT(port);
--		if (vl->members == BIT(cpu_port))
--			vl->members &= ~BIT(cpu_port);
--		vl->untag = vl->members;
- 		b53_set_vlan_entry(dev, pvid, vl);
- 	}
+ #define KSZ9477_INGRESS_TAG_LEN		2
+ #define KSZ9477_PTP_TAG_LEN		4
+-#define KSZ9477_PTP_TAG_INDICATION	0x80
++#define KSZ9477_PTP_TAG_INDICATION	BIT(7)
  
-@@ -2117,8 +2114,7 @@ void b53_br_leave(struct dsa_switch *ds, int port, struct dsa_bridge bridge)
- 		}
++#define KSZ9477_TAIL_TAG_EG_PORT_M	GENMASK(2, 0)
+ #define KSZ9477_TAIL_TAG_PRIO		GENMASK(8, 7)
+ #define KSZ9477_TAIL_TAG_OVERRIDE	BIT(9)
+ #define KSZ9477_TAIL_TAG_LOOKUP		BIT(10)
+@@ -302,7 +303,7 @@ static struct sk_buff *ksz9477_rcv(struct sk_buff *skb, struct net_device *dev)
+ {
+ 	/* Tag decoding */
+ 	u8 *tag = skb_tail_pointer(skb) - KSZ_EGRESS_TAG_LEN;
+-	unsigned int port = tag[0] & 7;
++	unsigned int port = tag[0] & KSZ9477_TAIL_TAG_EG_PORT_M;
+ 	unsigned int len = KSZ_EGRESS_TAG_LEN;
  
- 		b53_get_vlan_entry(dev, pvid, vl);
--		vl->members |= BIT(port) | BIT(cpu_port);
--		vl->untag |= BIT(port) | BIT(cpu_port);
-+		vl->members |= BIT(port);
- 		b53_set_vlan_entry(dev, pvid, vl);
- 	}
- }
+ 	/* Extra 4-bytes PTP timestamp */
 -- 
 2.39.5
 
