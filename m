@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-153157-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153160-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 01E76ADD2D8
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 17:49:54 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 54A9BADD2F0
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 17:51:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8FC14189DCE8
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 15:48:19 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4E48818844BB
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 15:49:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78B962EF28C;
-	Tue, 17 Jun 2025 15:44:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73D6D2F2370;
+	Tue, 17 Jun 2025 15:44:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xKZajTCc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nJhbbvJy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 305FF2EF286;
-	Tue, 17 Jun 2025 15:44:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EFC82F2366;
+	Tue, 17 Jun 2025 15:44:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750175062; cv=none; b=hOk74lxtgCIzOB96ySvYSJ5ikxlR0+6krKuWgCfAlN/RkyD8PY23gDy5g68PncwxndVoVsPsAR+1+Ih41doLR9MaNBQAKCDDEBS1LqtM0qNxsquVm8mIYcJRX29+AoOvOsfQFXHeV0ux6LVcpwrJBFYxmLsi0B7imd10e4D59lk=
+	t=1750175072; cv=none; b=sqkGrGx0H57eOO/4Cv8aT87IgiEqYjGSbnYY2jy7snPqrxCvJ8mJNcZxBINyYGYGa9VQD2AfLmeNB4Gm1rhdaLjSULyRy/Ki9H+N9r35ctjSYk+tYa2kSX1tPjpJB4HYrIYV7PNmduMjjBF3wzd13tpo/TTcZ6p4L5Tym89L52g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750175062; c=relaxed/simple;
-	bh=6L2mlrPv6uyie0rMb5LsDuOo+foF40V8FSxbZunnXR0=;
+	s=arc-20240116; t=1750175072; c=relaxed/simple;
+	bh=NDhQI3uA1WMxgZF4xBl/ybhsR5OYsiVmNaZCWjVfnYM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PclwPzHgkSpT2Auwe14xaTd4pyb+R8N8MexdNwqIEFKGIWusCHmVCRVtSUSGBOqjU8LBoLe2W939SLtm/qbuuSbkMxEXNt+EzIC1hU+7WGrBP7cQK1sWNVpGU6XBeTXf2AdNeRjHbzXFWvb5YsMJdPb9yq9O277s9ezbEZd87/A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xKZajTCc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 565B5C4CEF2;
-	Tue, 17 Jun 2025 15:44:21 +0000 (UTC)
+	 MIME-Version; b=C3jQl37VK8/VAbhcJTZ5AO/WPq4x34+FM1A4Krdc/T4mmcJwEzQCEcfZrA7FjCM8OeZ+fkq+rSLk8WlS4TpN/cOOLhtd9t0BFKGfmpXKPSDPc4+Z2Oa+jigB6EbdfSm5KVtn6pAplsdn5upBrR3NjB1Q26AvJUP/K7qTwwbtYMI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nJhbbvJy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C56EC4CEE3;
+	Tue, 17 Jun 2025 15:44:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750175062;
-	bh=6L2mlrPv6uyie0rMb5LsDuOo+foF40V8FSxbZunnXR0=;
+	s=korg; t=1750175072;
+	bh=NDhQI3uA1WMxgZF4xBl/ybhsR5OYsiVmNaZCWjVfnYM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xKZajTCcP8wedpI4bY9GSTAUQEuqfMB9ZCJ1lLNB8hFRxUC3n0ypQkVSHnrMvt22R
-	 RBGx0KSKyD+gDGXzqJf3PLa/6dGhABiJ4sLIX0Ru7wm/n+VDLJwwKuCVoh2Rsjq+PA
-	 W6WQD8BBnObpuoy0XnjjBTlFKyLGOFn9+/4ur1OY=
+	b=nJhbbvJyJV+T6ILu77BUosCRuG0U3gXAcNY1JKgQaUR44zy82IcptZijbWWo8+pDH
+	 uFqA7Mo3/xGE0v+xX3qh9sBGzGONNzll44YZRc0Y2AcdjFbfeUXZYz8POUJ2RYPcTC
+	 8tnur0yjgLqBgYKBLz8t9AUffRPUX+PZfcze8K4g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	Biju Das <biju.das.jz@bp.renesas.com>,
+	Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>,
+	Tomi Valkeinen <tomi.valkeinen+renesas@ideasonboard.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 088/512] drm/msm/dpu: enable SmartDMA on SC8180X
-Date: Tue, 17 Jun 2025 17:20:54 +0200
-Message-ID: <20250617152423.149813115@linuxfoundation.org>
+Subject: [PATCH 6.12 089/512] drm: rcar-du: Fix memory leak in rcar_du_vsps_init()
+Date: Tue, 17 Jun 2025 17:20:55 +0200
+Message-ID: <20250617152423.188386014@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
 References: <20250617152419.512865572@linuxfoundation.org>
@@ -66,99 +67,59 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+From: Biju Das <biju.das.jz@bp.renesas.com>
 
-[ Upstream commit 8dcccd7a156ffb3157de7f527cc7c6100e9a455a ]
+[ Upstream commit 91e3bf09a90bb4340c0c3c51396e7531555efda4 ]
 
-Reworking of the catalog dropped the SmartDMA feature bit on the SC8180X
-platform. Renable SmartDMA support on this SoC.
+The rcar_du_vsps_init() doesn't free the np allocated by
+of_parse_phandle_with_fixed_args() for the non-error case.
 
-Fixes: 460c410f02e4 ("drm/msm/dpu: duplicate sdm845 catalog entries")
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Patchwork: https://patchwork.freedesktop.org/patch/650421/
-Link: https://lore.kernel.org/r/20250425-dpu-rework-vig-masks-v2-2-c71900687d08@oss.qualcomm.com
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Fix memory leak for the non-error case.
+
+While at it, replace the label 'error'->'done' as it applies to non-error
+case as well and update the error check condition for rcar_du_vsp_init()
+to avoid breakage in future, if it returns positive value.
+
+Fixes: 3e81374e2014 ("drm: rcar-du: Support multiple sources from the same VSP")
+Signed-off-by: Biju Das <biju.das.jz@bp.renesas.com>
+Reviewed-by: Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>
+Link: https://lore.kernel.org/r/20231116122424.80136-1-biju.das.jz@bp.renesas.com
+Signed-off-by: Tomi Valkeinen <tomi.valkeinen+renesas@ideasonboard.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../drm/msm/disp/dpu1/catalog/dpu_5_1_sc8180x.h  | 16 ++++++++--------
- 1 file changed, 8 insertions(+), 8 deletions(-)
+ drivers/gpu/drm/renesas/rcar-du/rcar_du_kms.c | 10 ++++------
+ 1 file changed, 4 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_5_1_sc8180x.h b/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_5_1_sc8180x.h
-index e8eacdb47967a..485c3041c8018 100644
---- a/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_5_1_sc8180x.h
-+++ b/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_5_1_sc8180x.h
-@@ -75,7 +75,7 @@ static const struct dpu_sspp_cfg sc8180x_sspp[] = {
- 	{
- 		.name = "sspp_0", .id = SSPP_VIG0,
- 		.base = 0x4000, .len = 0x1f0,
--		.features = VIG_SDM845_MASK,
-+		.features = VIG_SDM845_MASK_SDMA,
- 		.sblk = &dpu_vig_sblk_qseed3_1_4,
- 		.xin_id = 0,
- 		.type = SSPP_TYPE_VIG,
-@@ -83,7 +83,7 @@ static const struct dpu_sspp_cfg sc8180x_sspp[] = {
- 	}, {
- 		.name = "sspp_1", .id = SSPP_VIG1,
- 		.base = 0x6000, .len = 0x1f0,
--		.features = VIG_SDM845_MASK,
-+		.features = VIG_SDM845_MASK_SDMA,
- 		.sblk = &dpu_vig_sblk_qseed3_1_4,
- 		.xin_id = 4,
- 		.type = SSPP_TYPE_VIG,
-@@ -91,7 +91,7 @@ static const struct dpu_sspp_cfg sc8180x_sspp[] = {
- 	}, {
- 		.name = "sspp_2", .id = SSPP_VIG2,
- 		.base = 0x8000, .len = 0x1f0,
--		.features = VIG_SDM845_MASK,
-+		.features = VIG_SDM845_MASK_SDMA,
- 		.sblk = &dpu_vig_sblk_qseed3_1_4,
- 		.xin_id = 8,
- 		.type = SSPP_TYPE_VIG,
-@@ -99,7 +99,7 @@ static const struct dpu_sspp_cfg sc8180x_sspp[] = {
- 	}, {
- 		.name = "sspp_3", .id = SSPP_VIG3,
- 		.base = 0xa000, .len = 0x1f0,
--		.features = VIG_SDM845_MASK,
-+		.features = VIG_SDM845_MASK_SDMA,
- 		.sblk = &dpu_vig_sblk_qseed3_1_4,
- 		.xin_id = 12,
- 		.type = SSPP_TYPE_VIG,
-@@ -107,7 +107,7 @@ static const struct dpu_sspp_cfg sc8180x_sspp[] = {
- 	}, {
- 		.name = "sspp_8", .id = SSPP_DMA0,
- 		.base = 0x24000, .len = 0x1f0,
--		.features = DMA_SDM845_MASK,
-+		.features = DMA_SDM845_MASK_SDMA,
- 		.sblk = &dpu_dma_sblk,
- 		.xin_id = 1,
- 		.type = SSPP_TYPE_DMA,
-@@ -115,7 +115,7 @@ static const struct dpu_sspp_cfg sc8180x_sspp[] = {
- 	}, {
- 		.name = "sspp_9", .id = SSPP_DMA1,
- 		.base = 0x26000, .len = 0x1f0,
--		.features = DMA_SDM845_MASK,
-+		.features = DMA_SDM845_MASK_SDMA,
- 		.sblk = &dpu_dma_sblk,
- 		.xin_id = 5,
- 		.type = SSPP_TYPE_DMA,
-@@ -123,7 +123,7 @@ static const struct dpu_sspp_cfg sc8180x_sspp[] = {
- 	}, {
- 		.name = "sspp_10", .id = SSPP_DMA2,
- 		.base = 0x28000, .len = 0x1f0,
--		.features = DMA_CURSOR_SDM845_MASK,
-+		.features = DMA_CURSOR_SDM845_MASK_SDMA,
- 		.sblk = &dpu_dma_sblk,
- 		.xin_id = 9,
- 		.type = SSPP_TYPE_DMA,
-@@ -131,7 +131,7 @@ static const struct dpu_sspp_cfg sc8180x_sspp[] = {
- 	}, {
- 		.name = "sspp_11", .id = SSPP_DMA3,
- 		.base = 0x2a000, .len = 0x1f0,
--		.features = DMA_CURSOR_SDM845_MASK,
-+		.features = DMA_CURSOR_SDM845_MASK_SDMA,
- 		.sblk = &dpu_dma_sblk,
- 		.xin_id = 13,
- 		.type = SSPP_TYPE_DMA,
+diff --git a/drivers/gpu/drm/renesas/rcar-du/rcar_du_kms.c b/drivers/gpu/drm/renesas/rcar-du/rcar_du_kms.c
+index 70d8ad065bfa1..4c8fe83dd6101 100644
+--- a/drivers/gpu/drm/renesas/rcar-du/rcar_du_kms.c
++++ b/drivers/gpu/drm/renesas/rcar-du/rcar_du_kms.c
+@@ -705,7 +705,7 @@ static int rcar_du_vsps_init(struct rcar_du_device *rcdu)
+ 		ret = of_parse_phandle_with_fixed_args(np, vsps_prop_name,
+ 						       cells, i, &args);
+ 		if (ret < 0)
+-			goto error;
++			goto done;
+ 
+ 		/*
+ 		 * Add the VSP to the list or update the corresponding existing
+@@ -743,13 +743,11 @@ static int rcar_du_vsps_init(struct rcar_du_device *rcdu)
+ 		vsp->dev = rcdu;
+ 
+ 		ret = rcar_du_vsp_init(vsp, vsps[i].np, vsps[i].crtcs_mask);
+-		if (ret < 0)
+-			goto error;
++		if (ret)
++			goto done;
+ 	}
+ 
+-	return 0;
+-
+-error:
++done:
+ 	for (i = 0; i < ARRAY_SIZE(vsps); ++i)
+ 		of_node_put(vsps[i].np);
+ 
 -- 
 2.39.5
 
