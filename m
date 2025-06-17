@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-153471-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-154187-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E3F7FADD4E4
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:15:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BD24DADD902
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 19:01:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1D8A53A4029
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:04:56 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 06DB85A0A6F
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:44:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 16A332ED157;
-	Tue, 17 Jun 2025 16:01:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE1B91A2632;
+	Tue, 17 Jun 2025 16:39:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FtjL4bSJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nfxr5b3D"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5A642E92CD;
-	Tue, 17 Jun 2025 16:01:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98EA2285059;
+	Tue, 17 Jun 2025 16:39:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750176071; cv=none; b=Vw6/C4nj5ekiaTcN9qyPj7QCwDU+jkRBZKPyXaZ7rjss5tg8IRsjQH8Zyg5nj7mg+xk6eBVcFtjmoN0zRnqTl043ut4mEfZtZwWfNN0qHskRUb3/kUJW/vosJwnu7ncHSSOuvGU3FCgWX1kKyKHfAq73V7nXNtWUI03MEzpH84I=
+	t=1750178383; cv=none; b=An6SA2FtY8nacF+bCkDfigzGRfDvWxcZ69YR/oj9FRwWuhvD5YWGbYy7hSWbE1iLlGUP80IQ62J4pLXTtnNG9rLQq/4f1zpl4R0m044aPn4gNLYmYymgaVGnZfrwEmBPOOQR4mM8McBHOufIdurQYx7SF93+/1plnc4QzRGxzVo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750176071; c=relaxed/simple;
-	bh=NxavLxI984YPjCQSJmQwkKes+3btoJiNDRLPkuR2d/0=;
+	s=arc-20240116; t=1750178383; c=relaxed/simple;
+	bh=0Ae4qDSkWuprj23mDcIjEwwNpIt6HKVc/OOnQTvW8Pg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=icGC4z/4jOG5T7vSsSssNAGzka9OLmmLaxjqi3sJiPaoSCLY9GPtI+JQtm70krdGkOdeT4eD8hkIM16LYlIGG76Qb/hKZo7VoaccisaYBRMr3hX+4trp9pv4GNuKNg1cd52U+Odu2Xb6BArKgiBrY6MHErwhTm9aGdKnWXnpqjM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FtjL4bSJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3BC2AC4CEE3;
-	Tue, 17 Jun 2025 16:01:11 +0000 (UTC)
+	 MIME-Version; b=AROaIW1eF7VonNp/pRwX8mzx6fO035tujT2volypji7NHc1oBdyZMVKgSdyW1xpnGNdLbuGUHdIZwHM/YTXtmBqfwjt1zs3nMAkPQCiSkKQihpTCz7RoRduwsQ9geUthARJqKrFzzVfa6Ln4Ue5o2N0D5kEWJA1E7o6YSuLwh50=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nfxr5b3D; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0793CC4CEE3;
+	Tue, 17 Jun 2025 16:39:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750176071;
-	bh=NxavLxI984YPjCQSJmQwkKes+3btoJiNDRLPkuR2d/0=;
+	s=korg; t=1750178383;
+	bh=0Ae4qDSkWuprj23mDcIjEwwNpIt6HKVc/OOnQTvW8Pg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FtjL4bSJq1i8Ez57q5hyfzPIE8jIGyiNlBGR6PSExTfar+zpTpWb8EPBwqrI3f4XB
-	 cmCvjTJu8ni9I8TQ4L3gt/n/N+6dI+Tr8ug+8dKMNO9pfXm49pEUy3ntUl0sR8844C
-	 Twbs8T1xsPxHT5anTwkAu72CJyHcrAVICw0s3aq4=
+	b=nfxr5b3Dy0Jsiml62Gl7RHa0MY3IUsOcMEDhx7QlbqVycYiiWDBm4WQZEme2mL7OF
+	 fsYSmLrXk2ow+lqA4dqI5bPufklnFAvzZeSwRZU8BkaAXNI/F3UmMu5AZMCtcb6Aj5
+	 nyW3a3mHXevx6yyvUswJOz43KPV5zTcz6n0tSqv0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Li RongQing <lirongqing@baidu.com>,
-	Alex Williamson <alex.williamson@redhat.com>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 193/512] vfio/type1: Fix error unwind in migration dirty bitmap allocation
-Date: Tue, 17 Jun 2025 17:22:39 +0200
-Message-ID: <20250617152427.464051719@linuxfoundation.org>
+Subject: [PATCH 6.15 452/780] rpmsg: qcom_smd: Fix uninitialized return variable in __qcom_smd_send()
+Date: Tue, 17 Jun 2025 17:22:40 +0200
+Message-ID: <20250617152509.877292890@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
-References: <20250617152419.512865572@linuxfoundation.org>
+In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
+References: <20250617152451.485330293@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,47 +62,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Li RongQing <lirongqing@baidu.com>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-[ Upstream commit 4518e5a60c7fbf0cdff393c2681db39d77b4f87e ]
+[ Upstream commit 5de775df3362090a6e90046d1f2d83fe62489aa0 ]
 
-When setting up dirty page tracking at the vfio IOMMU backend for
-device migration, if an error is encountered allocating a tracking
-bitmap, the unwind loop fails to free previously allocated tracking
-bitmaps.  This occurs because the wrong loop index is used to
-generate the tracking object.  This results in unintended memory
-usage for the life of the current DMA mappings where bitmaps were
-successfully allocated.
+The "ret" variable isn't initialized if we don't enter the loop.  For
+example,  if "channel->state" is not SMD_CHANNEL_OPENED.
 
-Use the correct loop index to derive the tracking object for
-freeing during unwind.
-
-Fixes: d6a4c185660c ("vfio iommu: Implementation of ioctl for dirty pages tracking")
-Signed-off-by: Li RongQing <lirongqing@baidu.com>
-Link: https://lore.kernel.org/r/20250521034647.2877-1-lirongqing@baidu.com
-Signed-off-by: Alex Williamson <alex.williamson@redhat.com>
+Fixes: 33e3820dda88 ("rpmsg: smd: Use spinlock in tx path")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Link: https://lore.kernel.org/r/aAkhvV0nSbrsef1P@stanley.mountain
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/vfio/vfio_iommu_type1.c | 2 +-
+ drivers/rpmsg/qcom_smd.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/vfio/vfio_iommu_type1.c b/drivers/vfio/vfio_iommu_type1.c
-index bf391b40e576f..8338cfd61fe14 100644
---- a/drivers/vfio/vfio_iommu_type1.c
-+++ b/drivers/vfio/vfio_iommu_type1.c
-@@ -294,7 +294,7 @@ static int vfio_dma_bitmap_alloc_all(struct vfio_iommu *iommu, size_t pgsize)
- 			struct rb_node *p;
+diff --git a/drivers/rpmsg/qcom_smd.c b/drivers/rpmsg/qcom_smd.c
+index 40d386809d6b7..bb161def31753 100644
+--- a/drivers/rpmsg/qcom_smd.c
++++ b/drivers/rpmsg/qcom_smd.c
+@@ -746,7 +746,7 @@ static int __qcom_smd_send(struct qcom_smd_channel *channel, const void *data,
+ 	__le32 hdr[5] = { cpu_to_le32(len), };
+ 	int tlen = sizeof(hdr) + len;
+ 	unsigned long flags;
+-	int ret;
++	int ret = 0;
  
- 			for (p = rb_prev(n); p; p = rb_prev(p)) {
--				struct vfio_dma *dma = rb_entry(n,
-+				struct vfio_dma *dma = rb_entry(p,
- 							struct vfio_dma, node);
- 
- 				vfio_dma_bitmap_free(dma);
+ 	/* Word aligned channels only accept word size aligned data */
+ 	if (channel->info_word && len % 4)
 -- 
 2.39.5
 
