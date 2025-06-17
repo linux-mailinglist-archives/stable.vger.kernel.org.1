@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-154420-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-154011-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E22D1ADD8E2
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 19:00:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DC00CADD7AD
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:47:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1B6D45A3D72
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:53:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C7B58407771
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:36:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 451E228505A;
-	Tue, 17 Jun 2025 16:52:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A9571E1C22;
+	Tue, 17 Jun 2025 16:30:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eyninxLB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P/SNM2g5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3C4F2FA651;
-	Tue, 17 Jun 2025 16:52:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46FB62F198E;
+	Tue, 17 Jun 2025 16:30:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750179138; cv=none; b=Be41Fp/h5HA+cVIVSM5sRzqO+/S+C5b9zkVa0dGBk2lUW/Rk4oTT3OMUCtL+6r0tiXFHrgEMh1S49mqICbJ5ZPABquP3oWmE/sOyObbuUz6PP76R/vDVWPdBd6VB9ZHbJ+ZCqyXlalUSP2fAEt23wmAB9GKAca62qxftdpmVjrw=
+	t=1750177819; cv=none; b=MG5PGa/w9Kr6dJgbxTB1YrJ7AaDKNwmTNRU3FfbhEhPo2F1bAWpBRHEEOSW3aPp9otU7N9Tg7Sjyr95uc1kfPeHirM3OF1v3w8mGV5s3Mqcf3L7IKgUNco8vq6FXNOG/lTsoRUs9j8jAxA/p1LWo9RI9C5vahsDzk02RGsrtjOM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750179138; c=relaxed/simple;
-	bh=upbTyz0jZYFgooCAss6hg1c++lNyc/GrYABD4Rmk/uk=;
+	s=arc-20240116; t=1750177819; c=relaxed/simple;
+	bh=1tdV5u4ezSsLj3uj6lsuBuu+np3b8PZquSUXsWczfcA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=r5exUedm7W17bkXbwVsO97dVpG0CLhP6NVgKCaB0QSXctSYknTQ0NZFxSirSWVhiYLaWvNlvYxGc8kX+xtBBUO+BK9sw+0Mwf6jP0cKdaddg0c3e3W/l8Fz3RxqE1/jbxPzWj6zbY+ny7NghotblLPYNTS1voWGtJ1hVzMX0y8Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eyninxLB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16DB2C4CEE3;
-	Tue, 17 Jun 2025 16:52:15 +0000 (UTC)
+	 MIME-Version; b=rSeotpjb/TzYDOdYhZaJzlw+cuTginXZ8wm59L3epLDMqC4Tyqz37tzyIDKo6ppAWBM3NYKsRFfyotuAQDrZANG9sPa33za3P1UseDrG/mZiO8ilkkqiZaWSDQfDFTdKloagoEnV/sXvM1kzeYKEthed1Gn1yuor1RFlBJkdn04=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P/SNM2g5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA3DBC4CEE3;
+	Tue, 17 Jun 2025 16:30:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750179136;
-	bh=upbTyz0jZYFgooCAss6hg1c++lNyc/GrYABD4Rmk/uk=;
+	s=korg; t=1750177819;
+	bh=1tdV5u4ezSsLj3uj6lsuBuu+np3b8PZquSUXsWczfcA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eyninxLBpT2s0HhZnZWLAZX9zvenglqnu2SiKCn0lkpqERBcXVDw5/CGLOKdW9YcY
-	 Bo0yZpqQh4Xu+S2XBxn5M6Kev75NBrJSAQI60xvr/J+3qVe5mDpItMDLqv0aKGw1q5
-	 GMQ+dwzdOv+gbXq2POa60ktupSGAW5fJyN3MgAf0=
+	b=P/SNM2g52m31zewWFxbAT02gxzmQvbifHS+bKYwDLmyZMGclaUYdnoizZUa2vWtdR
+	 X3xHQs4zOzrhL2qc7zannpz7vr2whiZCPrmAAf/oReby+0Tvo3MQNIbGiss9AnvcQB
+	 RvcnTH/HlT6ohdm5zc7clgj/Th+p84YEvqneojYg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peter Griffin <peter.griffin@linaro.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Chris Chiu <chris.chiu@canonical.com>,
+	Simon Trimmer <simont@opensource.cirrus.com>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 659/780] pinctrl: samsung: refactor drvdata suspend & resume callbacks
+Subject: [PATCH 6.12 401/512] ALSA: hda/realtek: fix micmute LEDs on HP Laptops with ALC3247
 Date: Tue, 17 Jun 2025 17:26:07 +0200
-Message-ID: <20250617152518.303602992@linuxfoundation.org>
+Message-ID: <20250617152435.835242305@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
-References: <20250617152451.485330293@linuxfoundation.org>
+In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
+References: <20250617152419.512865572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,302 +63,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peter Griffin <peter.griffin@linaro.org>
+From: Chris Chiu <chris.chiu@canonical.com>
 
-[ Upstream commit 3ade961e97f3b05dcdd9a4fabfe179c9e75571e0 ]
+[ Upstream commit 78f4ca3c6f6fd305b9af8c51470643617df85e11 ]
 
-This enables the clk_enable() and clk_disable() logic to be removed
-from each callback, but otherwise should have no functional impact.
+More HP EliteBook with Realtek HDA codec ALC3247 with combined CS35L56
+Amplifiers need quirk ALC236_FIXUP_HP_GPIO_LED to fix the micmute LED.
 
-It is a prepatory patch so that the callbacks can become SoC
-specific.
-
-Signed-off-by: Peter Griffin <peter.griffin@linaro.org>
-Link: https://lore.kernel.org/r/20250402-pinctrl-fltcon-suspend-v6-1-78ce0d4eb30c@linaro.org
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Stable-dep-of: bdbe0a0f7100 ("pinctrl: samsung: add gs101 specific eint suspend/resume callbacks")
+Signed-off-by: Chris Chiu <chris.chiu@canonical.com>
+Reviewed-by: Simon Trimmer <simont@opensource.cirrus.com>
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Link: https://patch.msgid.link/20250321104914.544233-2-chris.chiu@canonical.com
+Stable-dep-of: f709b78aecab ("ALSA: hda/realtek - Add new HP ZBook laptop with micmute led fixup")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pinctrl/samsung/pinctrl-exynos.c  | 89 ++++++-----------------
- drivers/pinctrl/samsung/pinctrl-exynos.h  |  4 +-
- drivers/pinctrl/samsung/pinctrl-samsung.c | 21 ++++--
- drivers/pinctrl/samsung/pinctrl-samsung.h |  8 +-
- 4 files changed, 42 insertions(+), 80 deletions(-)
+ sound/pci/hda/patch_realtek.c |    5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/pinctrl/samsung/pinctrl-exynos.c b/drivers/pinctrl/samsung/pinctrl-exynos.c
-index 42093bae8bb79..ae82f42be83cf 100644
---- a/drivers/pinctrl/samsung/pinctrl-exynos.c
-+++ b/drivers/pinctrl/samsung/pinctrl-exynos.c
-@@ -762,19 +762,11 @@ __init int exynos_eint_wkup_init(struct samsung_pinctrl_drv_data *d)
- 	return 0;
- }
- 
--static void exynos_pinctrl_suspend_bank(
--				struct samsung_pinctrl_drv_data *drvdata,
--				struct samsung_pin_bank *bank)
-+static void exynos_pinctrl_suspend_bank(struct samsung_pin_bank *bank)
- {
- 	struct exynos_eint_gpio_save *save = bank->soc_priv;
- 	const void __iomem *regs = bank->eint_base;
- 
--	if (clk_enable(bank->drvdata->pclk)) {
--		dev_err(bank->gpio_chip.parent,
--			"unable to enable clock for saving state\n");
--		return;
--	}
--
- 	save->eint_con = readl(regs + EXYNOS_GPIO_ECON_OFFSET
- 						+ bank->eint_offset);
- 	save->eint_fltcon0 = readl(regs + EXYNOS_GPIO_EFLTCON_OFFSET
-@@ -784,71 +776,46 @@ static void exynos_pinctrl_suspend_bank(
- 	save->eint_mask = readl(regs + bank->irq_chip->eint_mask
- 						+ bank->eint_offset);
- 
--	clk_disable(bank->drvdata->pclk);
--
- 	pr_debug("%s: save     con %#010x\n", bank->name, save->eint_con);
- 	pr_debug("%s: save fltcon0 %#010x\n", bank->name, save->eint_fltcon0);
- 	pr_debug("%s: save fltcon1 %#010x\n", bank->name, save->eint_fltcon1);
- 	pr_debug("%s: save    mask %#010x\n", bank->name, save->eint_mask);
- }
- 
--static void exynosauto_pinctrl_suspend_bank(struct samsung_pinctrl_drv_data *drvdata,
--					    struct samsung_pin_bank *bank)
-+static void exynosauto_pinctrl_suspend_bank(struct samsung_pin_bank *bank)
- {
- 	struct exynos_eint_gpio_save *save = bank->soc_priv;
- 	const void __iomem *regs = bank->eint_base;
- 
--	if (clk_enable(bank->drvdata->pclk)) {
--		dev_err(bank->gpio_chip.parent,
--			"unable to enable clock for saving state\n");
--		return;
--	}
--
- 	save->eint_con = readl(regs + bank->pctl_offset + bank->eint_con_offset);
- 	save->eint_mask = readl(regs + bank->pctl_offset + bank->eint_mask_offset);
- 
--	clk_disable(bank->drvdata->pclk);
--
- 	pr_debug("%s: save     con %#010x\n", bank->name, save->eint_con);
- 	pr_debug("%s: save    mask %#010x\n", bank->name, save->eint_mask);
- }
- 
--void exynos_pinctrl_suspend(struct samsung_pinctrl_drv_data *drvdata)
-+void exynos_pinctrl_suspend(struct samsung_pin_bank *bank)
- {
--	struct samsung_pin_bank *bank = drvdata->pin_banks;
- 	struct exynos_irq_chip *irq_chip = NULL;
--	int i;
- 
--	for (i = 0; i < drvdata->nr_banks; ++i, ++bank) {
--		if (bank->eint_type == EINT_TYPE_GPIO) {
--			if (bank->eint_con_offset)
--				exynosauto_pinctrl_suspend_bank(drvdata, bank);
--			else
--				exynos_pinctrl_suspend_bank(drvdata, bank);
--		}
--		else if (bank->eint_type == EINT_TYPE_WKUP) {
--			if (!irq_chip) {
--				irq_chip = bank->irq_chip;
--				irq_chip->set_eint_wakeup_mask(drvdata,
--							       irq_chip);
--			}
-+	if (bank->eint_type == EINT_TYPE_GPIO) {
-+		if (bank->eint_con_offset)
-+			exynosauto_pinctrl_suspend_bank(bank);
-+		else
-+			exynos_pinctrl_suspend_bank(bank);
-+	} else if (bank->eint_type == EINT_TYPE_WKUP) {
-+		if (!irq_chip) {
-+			irq_chip = bank->irq_chip;
-+			irq_chip->set_eint_wakeup_mask(bank->drvdata, irq_chip);
- 		}
- 	}
- }
- 
--static void exynos_pinctrl_resume_bank(
--				struct samsung_pinctrl_drv_data *drvdata,
--				struct samsung_pin_bank *bank)
-+static void exynos_pinctrl_resume_bank(struct samsung_pin_bank *bank)
- {
- 	struct exynos_eint_gpio_save *save = bank->soc_priv;
- 	void __iomem *regs = bank->eint_base;
- 
--	if (clk_enable(bank->drvdata->pclk)) {
--		dev_err(bank->gpio_chip.parent,
--			"unable to enable clock for restoring state\n");
--		return;
--	}
--
- 	pr_debug("%s:     con %#010x => %#010x\n", bank->name,
- 			readl(regs + EXYNOS_GPIO_ECON_OFFSET
- 			+ bank->eint_offset), save->eint_con);
-@@ -870,22 +837,13 @@ static void exynos_pinctrl_resume_bank(
- 						+ 2 * bank->eint_offset + 4);
- 	writel(save->eint_mask, regs + bank->irq_chip->eint_mask
- 						+ bank->eint_offset);
--
--	clk_disable(bank->drvdata->pclk);
- }
- 
--static void exynosauto_pinctrl_resume_bank(struct samsung_pinctrl_drv_data *drvdata,
--					   struct samsung_pin_bank *bank)
-+static void exynosauto_pinctrl_resume_bank(struct samsung_pin_bank *bank)
- {
- 	struct exynos_eint_gpio_save *save = bank->soc_priv;
- 	void __iomem *regs = bank->eint_base;
- 
--	if (clk_enable(bank->drvdata->pclk)) {
--		dev_err(bank->gpio_chip.parent,
--			"unable to enable clock for restoring state\n");
--		return;
--	}
--
- 	pr_debug("%s:     con %#010x => %#010x\n", bank->name,
- 		 readl(regs + bank->pctl_offset + bank->eint_con_offset), save->eint_con);
- 	pr_debug("%s:    mask %#010x => %#010x\n", bank->name,
-@@ -894,21 +852,16 @@ static void exynosauto_pinctrl_resume_bank(struct samsung_pinctrl_drv_data *drvd
- 	writel(save->eint_con, regs + bank->pctl_offset + bank->eint_con_offset);
- 	writel(save->eint_mask, regs + bank->pctl_offset + bank->eint_mask_offset);
- 
--	clk_disable(bank->drvdata->pclk);
- }
- 
--void exynos_pinctrl_resume(struct samsung_pinctrl_drv_data *drvdata)
-+void exynos_pinctrl_resume(struct samsung_pin_bank *bank)
- {
--	struct samsung_pin_bank *bank = drvdata->pin_banks;
--	int i;
--
--	for (i = 0; i < drvdata->nr_banks; ++i, ++bank)
--		if (bank->eint_type == EINT_TYPE_GPIO) {
--			if (bank->eint_con_offset)
--				exynosauto_pinctrl_resume_bank(drvdata, bank);
--			else
--				exynos_pinctrl_resume_bank(drvdata, bank);
--		}
-+	if (bank->eint_type == EINT_TYPE_GPIO) {
-+		if (bank->eint_con_offset)
-+			exynosauto_pinctrl_resume_bank(bank);
-+		else
-+			exynos_pinctrl_resume_bank(bank);
-+	}
- }
- 
- static void exynos_retention_enable(struct samsung_pinctrl_drv_data *drvdata)
-diff --git a/drivers/pinctrl/samsung/pinctrl-exynos.h b/drivers/pinctrl/samsung/pinctrl-exynos.h
-index b483270ddc53c..341155c1abd15 100644
---- a/drivers/pinctrl/samsung/pinctrl-exynos.h
-+++ b/drivers/pinctrl/samsung/pinctrl-exynos.h
-@@ -240,8 +240,8 @@ struct exynos_muxed_weint_data {
- 
- int exynos_eint_gpio_init(struct samsung_pinctrl_drv_data *d);
- int exynos_eint_wkup_init(struct samsung_pinctrl_drv_data *d);
--void exynos_pinctrl_suspend(struct samsung_pinctrl_drv_data *drvdata);
--void exynos_pinctrl_resume(struct samsung_pinctrl_drv_data *drvdata);
-+void exynos_pinctrl_suspend(struct samsung_pin_bank *bank);
-+void exynos_pinctrl_resume(struct samsung_pin_bank *bank);
- struct samsung_retention_ctrl *
- exynos_retention_init(struct samsung_pinctrl_drv_data *drvdata,
- 		      const struct samsung_retention_data *data);
-diff --git a/drivers/pinctrl/samsung/pinctrl-samsung.c b/drivers/pinctrl/samsung/pinctrl-samsung.c
-index 2896eb2de2c09..ef557217e173a 100644
---- a/drivers/pinctrl/samsung/pinctrl-samsung.c
-+++ b/drivers/pinctrl/samsung/pinctrl-samsung.c
-@@ -1333,6 +1333,7 @@ static int samsung_pinctrl_probe(struct platform_device *pdev)
- static int __maybe_unused samsung_pinctrl_suspend(struct device *dev)
- {
- 	struct samsung_pinctrl_drv_data *drvdata = dev_get_drvdata(dev);
-+	struct samsung_pin_bank *bank;
- 	int i;
- 
- 	i = clk_enable(drvdata->pclk);
-@@ -1343,7 +1344,7 @@ static int __maybe_unused samsung_pinctrl_suspend(struct device *dev)
- 	}
- 
- 	for (i = 0; i < drvdata->nr_banks; i++) {
--		struct samsung_pin_bank *bank = &drvdata->pin_banks[i];
-+		bank = &drvdata->pin_banks[i];
- 		const void __iomem *reg = bank->pctl_base + bank->pctl_offset;
- 		const u8 *offs = bank->type->reg_offset;
- 		const u8 *widths = bank->type->fld_width;
-@@ -1371,10 +1372,14 @@ static int __maybe_unused samsung_pinctrl_suspend(struct device *dev)
- 		}
- 	}
- 
-+	for (i = 0; i < drvdata->nr_banks; i++) {
-+		bank = &drvdata->pin_banks[i];
-+		if (drvdata->suspend)
-+			drvdata->suspend(bank);
-+	}
-+
- 	clk_disable(drvdata->pclk);
- 
--	if (drvdata->suspend)
--		drvdata->suspend(drvdata);
- 	if (drvdata->retention_ctrl && drvdata->retention_ctrl->enable)
- 		drvdata->retention_ctrl->enable(drvdata);
- 
-@@ -1392,6 +1397,7 @@ static int __maybe_unused samsung_pinctrl_suspend(struct device *dev)
- static int __maybe_unused samsung_pinctrl_resume(struct device *dev)
- {
- 	struct samsung_pinctrl_drv_data *drvdata = dev_get_drvdata(dev);
-+	struct samsung_pin_bank *bank;
- 	int ret;
- 	int i;
- 
-@@ -1406,11 +1412,14 @@ static int __maybe_unused samsung_pinctrl_resume(struct device *dev)
- 		return ret;
- 	}
- 
--	if (drvdata->resume)
--		drvdata->resume(drvdata);
-+	for (i = 0; i < drvdata->nr_banks; i++) {
-+		bank = &drvdata->pin_banks[i];
-+		if (drvdata->resume)
-+			drvdata->resume(bank);
-+	}
- 
- 	for (i = 0; i < drvdata->nr_banks; i++) {
--		struct samsung_pin_bank *bank = &drvdata->pin_banks[i];
-+		bank = &drvdata->pin_banks[i];
- 		void __iomem *reg = bank->pctl_base + bank->pctl_offset;
- 		const u8 *offs = bank->type->reg_offset;
- 		const u8 *widths = bank->type->fld_width;
-diff --git a/drivers/pinctrl/samsung/pinctrl-samsung.h b/drivers/pinctrl/samsung/pinctrl-samsung.h
-index 3cf758df7d691..fcc57c244d167 100644
---- a/drivers/pinctrl/samsung/pinctrl-samsung.h
-+++ b/drivers/pinctrl/samsung/pinctrl-samsung.h
-@@ -285,8 +285,8 @@ struct samsung_pin_ctrl {
- 	int		(*eint_gpio_init)(struct samsung_pinctrl_drv_data *);
- 	int		(*eint_wkup_init)(struct samsung_pinctrl_drv_data *);
- 	void		(*pud_value_init)(struct samsung_pinctrl_drv_data *drvdata);
--	void		(*suspend)(struct samsung_pinctrl_drv_data *);
--	void		(*resume)(struct samsung_pinctrl_drv_data *);
-+	void		(*suspend)(struct samsung_pin_bank *bank);
-+	void		(*resume)(struct samsung_pin_bank *bank);
- };
- 
- /**
-@@ -335,8 +335,8 @@ struct samsung_pinctrl_drv_data {
- 
- 	struct samsung_retention_ctrl	*retention_ctrl;
- 
--	void (*suspend)(struct samsung_pinctrl_drv_data *);
--	void (*resume)(struct samsung_pinctrl_drv_data *);
-+	void (*suspend)(struct samsung_pin_bank *bank);
-+	void (*resume)(struct samsung_pin_bank *bank);
- };
- 
- /**
--- 
-2.39.5
-
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -10779,6 +10779,11 @@ static const struct hda_quirk alc269_fix
+ 	SND_PCI_QUIRK(0x103c, 0x8d90, "HP EliteBook 16 G12", ALC285_FIXUP_HP_GPIO_LED),
+ 	SND_PCI_QUIRK(0x103c, 0x8d91, "HP ZBook Firefly 14 G12", ALC285_FIXUP_HP_GPIO_LED),
+ 	SND_PCI_QUIRK(0x103c, 0x8d92, "HP ZBook Firefly 16 G12", ALC285_FIXUP_HP_GPIO_LED),
++	SND_PCI_QUIRK(0x103c, 0x8dec, "HP EliteBook 640 G12", ALC236_FIXUP_HP_GPIO_LED),
++	SND_PCI_QUIRK(0x103c, 0x8dee, "HP EliteBook 660 G12", ALC236_FIXUP_HP_GPIO_LED),
++	SND_PCI_QUIRK(0x103c, 0x8df0, "HP EliteBook 630 G12", ALC236_FIXUP_HP_GPIO_LED),
++	SND_PCI_QUIRK(0x103c, 0x8dfc, "HP EliteBook 645 G12", ALC236_FIXUP_HP_GPIO_LED),
++	SND_PCI_QUIRK(0x103c, 0x8dfe, "HP EliteBook 665 G12", ALC236_FIXUP_HP_GPIO_LED),
+ 	SND_PCI_QUIRK(0x103c, 0x8e14, "HP ZBook Firefly 14 G12", ALC285_FIXUP_HP_GPIO_LED),
+ 	SND_PCI_QUIRK(0x103c, 0x8e15, "HP ZBook Firefly 14 G12", ALC285_FIXUP_HP_GPIO_LED),
+ 	SND_PCI_QUIRK(0x103c, 0x8e16, "HP ZBook Firefly 14 G12", ALC285_FIXUP_HP_GPIO_LED),
 
 
 
