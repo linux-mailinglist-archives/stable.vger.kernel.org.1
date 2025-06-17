@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-153813-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153835-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 50DF6ADD700
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:39:47 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AA1DDADD6E5
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:38:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0C0E219E372D
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:25:51 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2A26C4A1085
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:25:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E76E2EE26B;
-	Tue, 17 Jun 2025 16:19:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA0182F949D;
+	Tue, 17 Jun 2025 16:20:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yrlLhzC3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cycXHLou"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A4702EE26E;
-	Tue, 17 Jun 2025 16:19:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E8882F9496;
+	Tue, 17 Jun 2025 16:20:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750177179; cv=none; b=G4uxmFaYq7fmKEjAuPrdaIYxIEKtPBz8l3XhY3BPVd0hzfTLat9CJzdz1RF6aO1S+wh1OuW4baLZ0ujvGFjmt9O5TqfXihyBY85chxKoDAtAq4xX+9hgIw+Y8Ntn03r9ddVpFU6hbL6BP4LHyGQfD3hl3AJsNgAESPDdc8gEGBg=
+	t=1750177251; cv=none; b=hY6Ghh5So0YWEdwpU9yM53mrBLxlX5SsnupwsQQfeGsmeV5X8A/cCLTlrMcybXfXt77XGxLWI1FkN0wJlNv3738pZR2OeVxHM/I3MyIUc4yIf+HuomJ3aqqAWAqGoQ+qsO1Jlh36TXqlaykWwJr0IUE9F+NfcNmtUFRLUP/Q6ow=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750177179; c=relaxed/simple;
-	bh=nKyZ3lLtZcstYRDbjWccln1OattIEoo2b72AEMGlrN4=;
+	s=arc-20240116; t=1750177251; c=relaxed/simple;
+	bh=qqbOCDQ8JFpWD5BYMvKdBo2s7yvZJUhV5vioxfRA22A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=e+q4/yt/w4lxvLjCze3U6UBoywJYsbmdJOY2vd9FM3KW+oRm7FhP05ENHfp2ao+Jjp3dXlEGM9dklIC7D2KWeyMYrAG2FDwAvP9BHzIe2JYEpeSSmlCmzcDD322wJhEY8FF7v6hyc5OY8m3Yx1PS3vIFINeKGGcKikoaHXa+P+E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yrlLhzC3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F6C0C4CEE3;
-	Tue, 17 Jun 2025 16:19:38 +0000 (UTC)
+	 MIME-Version; b=KmyHNoVIfURrHZ4apAK6YvrlMasEzpX/H/dE/JY6ly5bcoTDO/yivsVse68W6HreB+ihTx26evscC10h90Lby4iGuzNdqPKoiiU4gULo18cnkDluveXRD15sIbvHPi4OwgtYwLTmj56fp03tI4DNvjgokCpax3PQjJQixKJdVAw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cycXHLou; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7A26C4CEE3;
+	Tue, 17 Jun 2025 16:20:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750177179;
-	bh=nKyZ3lLtZcstYRDbjWccln1OattIEoo2b72AEMGlrN4=;
+	s=korg; t=1750177251;
+	bh=qqbOCDQ8JFpWD5BYMvKdBo2s7yvZJUhV5vioxfRA22A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yrlLhzC3ffVU1wDwHxcf2jXyz+PUPb9Ir6gvC2g11f40HEltibXLhafD9CKu9gm9G
-	 cGuYuxGs8pXNxYSvr0mhNJRXiM73MyFhow1wA3Y5dEpHGz1bKLd+/OhcOIu7z9As28
-	 jMQSHiWhR0PIEqoJ3JybadeOV5OYbWoU2QT0y5pc=
+	b=cycXHLou7MvN6zH+ntGEapWlSNyai/Mfec1Yu+uvQhJ1B6tCe5uhD9uI/BlOT8kjH
+	 CW4Yf2vJPoLFxlbqjxT+mKE334zsHYVZLNMKoneIy3bkooN4FiWRi95H5OeoBXenZz
+	 3qlIZblKCHCQEqDOSUnr2hPpIE7NPrjXi052Iqpw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Anton Protopopov <a.s.protopopov@gmail.com>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	Lijuan Gao <quic_lijuang@quicinc.com>,
+	Linus Walleij <linus.walleij@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 259/780] libbpf: Use proper errno value in nlattr
-Date: Tue, 17 Jun 2025 17:19:27 +0200
-Message-ID: <20250617152502.004616222@linuxfoundation.org>
+Subject: [PATCH 6.15 260/780] pinctrl: qcom: correct the ngpios entry for QCS615
+Date: Tue, 17 Jun 2025 17:19:28 +0200
+Message-ID: <20250617152502.044911081@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
 References: <20250617152451.485330293@linuxfoundation.org>
@@ -66,73 +67,37 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Anton Protopopov <a.s.protopopov@gmail.com>
+From: Lijuan Gao <quic_lijuang@quicinc.com>
 
-[ Upstream commit fd5fd538a1f4b34cee6823ba0ddda2f7a55aca96 ]
+[ Upstream commit d18cdb975ba8aad7046ff82df1a963fa21082a45 ]
 
-Return value of the validate_nla() function can be propagated all the
-way up to users of libbpf API. In case of error this libbpf version
-of validate_nla returns -1 which will be seen as -EPERM from user's
-point of view. Instead, return a more reasonable -EINVAL.
+Correct the ngpios entry to account for the UFS_RESET pin being exported
+as a GPIO in addition to the real GPIOs, allowing the UFS driver to toggle
+it.
 
-Fixes: bbf48c18ee0c ("libbpf: add error reporting in XDP")
-Suggested-by: Andrii Nakryiko <andrii@kernel.org>
-Signed-off-by: Anton Protopopov <a.s.protopopov@gmail.com>
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Link: https://lore.kernel.org/bpf/20250510182011.2246631-1-a.s.protopopov@gmail.com
+Fixes: b698f36a9d40 ("pinctrl: qcom: add the tlmm driver for QCS615 platform")
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Signed-off-by: Lijuan Gao <quic_lijuang@quicinc.com>
+Link: https://lore.kernel.org/20250506-correct_gpio_ranges-v3-3-49a7d292befa@quicinc.com
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/lib/bpf/nlattr.c | 15 +++++++--------
- 1 file changed, 7 insertions(+), 8 deletions(-)
+ drivers/pinctrl/qcom/pinctrl-qcs615.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tools/lib/bpf/nlattr.c b/tools/lib/bpf/nlattr.c
-index 975e265eab3bf..06663f9ea581f 100644
---- a/tools/lib/bpf/nlattr.c
-+++ b/tools/lib/bpf/nlattr.c
-@@ -63,16 +63,16 @@ static int validate_nla(struct nlattr *nla, int maxtype,
- 		minlen = nla_attr_minlen[pt->type];
- 
- 	if (libbpf_nla_len(nla) < minlen)
--		return -1;
-+		return -EINVAL;
- 
- 	if (pt->maxlen && libbpf_nla_len(nla) > pt->maxlen)
--		return -1;
-+		return -EINVAL;
- 
- 	if (pt->type == LIBBPF_NLA_STRING) {
- 		char *data = libbpf_nla_data(nla);
- 
- 		if (data[libbpf_nla_len(nla) - 1] != '\0')
--			return -1;
-+			return -EINVAL;
- 	}
- 
- 	return 0;
-@@ -118,19 +118,18 @@ int libbpf_nla_parse(struct nlattr *tb[], int maxtype, struct nlattr *head,
- 		if (policy) {
- 			err = validate_nla(nla, maxtype, policy);
- 			if (err < 0)
--				goto errout;
-+				return err;
- 		}
- 
--		if (tb[type])
-+		if (tb[type]) {
- 			pr_warn("Attribute of type %#x found multiple times in message, "
- 				"previous attribute is being ignored.\n", type);
-+		}
- 
- 		tb[type] = nla;
- 	}
- 
--	err = 0;
--errout:
--	return err;
-+	return 0;
- }
- 
- /**
+diff --git a/drivers/pinctrl/qcom/pinctrl-qcs615.c b/drivers/pinctrl/qcom/pinctrl-qcs615.c
+index 23015b055f6a9..17ca743c2210f 100644
+--- a/drivers/pinctrl/qcom/pinctrl-qcs615.c
++++ b/drivers/pinctrl/qcom/pinctrl-qcs615.c
+@@ -1062,7 +1062,7 @@ static const struct msm_pinctrl_soc_data qcs615_tlmm = {
+ 	.nfunctions = ARRAY_SIZE(qcs615_functions),
+ 	.groups = qcs615_groups,
+ 	.ngroups = ARRAY_SIZE(qcs615_groups),
+-	.ngpios = 123,
++	.ngpios = 124,
+ 	.tiles = qcs615_tiles,
+ 	.ntiles = ARRAY_SIZE(qcs615_tiles),
+ 	.wakeirq_map = qcs615_pdc_map,
 -- 
 2.39.5
 
