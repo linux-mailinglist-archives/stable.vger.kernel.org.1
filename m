@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-152974-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-152976-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3913AADD1D3
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 17:35:26 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 320E2ADD1B9
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 17:34:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2FA657A6691
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 15:32:45 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D7DC217C9EF
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 15:34:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 945792ECD1C;
-	Tue, 17 Jun 2025 15:34:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8348D2ECD0A;
+	Tue, 17 Jun 2025 15:34:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1rmlg0uq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rXLiOZZn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F0282EBDC0;
-	Tue, 17 Jun 2025 15:34:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FDD21E8332;
+	Tue, 17 Jun 2025 15:34:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750174443; cv=none; b=hOKNIPIRJn+KUlgNXO1FjZnRK2KxZCiC3jsz0iLQSwwYy1N0tEuVWx41jARdfJZA8LVdiuWfbP8LadB8rrF/Zh+FOEFtFI8dG7+t/VjzX8hyrBeiiwzbBA8cHuMrszORF0HsP/brdN9TAH3/h3dfLoaOriquPHOMGnqpqGBtELk=
+	t=1750174449; cv=none; b=qKVL5yHSLvbXAmTUBEABGvM3OnUy5heve7yqCv2/aLt4uSEOT7RB+b83JtrYG8MZ73MYGSbteLFaZaDaz4b2ZysLsO78fdKvNUerqHn2J93S7izUjumipnWWPYw88RFEW3DU+LPkiWUNG+p/tuwSrB9phO2R+2X0vkl2IDB7FCg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750174443; c=relaxed/simple;
-	bh=GwouXKZHF3l7k9SXzPnWYUtBAT6+lkzArT21xUdOjqc=;
+	s=arc-20240116; t=1750174449; c=relaxed/simple;
+	bh=Rqq5eORjebg5VgroPGsBjZ/TBs2AkIA2MfR13HwmVxY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ieycPou/vTEjqf8IahBRUOZoK7hSDo/KjFwUuIsU6iWmMKc+p+P1PUb/dRQXTMQu0k8gef4SHrjT0/Dx8xOQkrpLPirIhGyDEKaUotnv03VGZqBahrwOXdZWBg4ZRiQqnlo1iZVOXOM7wA+EPZN+UBz8XxkkNKp+OItawZqrinw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1rmlg0uq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1676C4CEE3;
-	Tue, 17 Jun 2025 15:34:02 +0000 (UTC)
+	 MIME-Version:Content-Type; b=mYPtZBHjstz9vN74Fl6U6TXvTxdkcBLYxouwo0qHMV/P4Avw0qdkYsrzvA7RgXPgsFk1nuAiR/PuHFT0yYdNif8L4ixf4acPZ1uW2q7SkmPYtA34x6FJ+ew4JgJLMgMggLiE+g7Ui0SxrVytxmIQ+6kdTlmHX6FBJofSJ54dgUc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rXLiOZZn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A323BC4CEE3;
+	Tue, 17 Jun 2025 15:34:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750174443;
-	bh=GwouXKZHF3l7k9SXzPnWYUtBAT6+lkzArT21xUdOjqc=;
+	s=korg; t=1750174449;
+	bh=Rqq5eORjebg5VgroPGsBjZ/TBs2AkIA2MfR13HwmVxY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1rmlg0uqzN8sj/VzWUYeZxSBeyf8aSXVXokL+zzFbyr6zQBHSEQb/YNbz4/rYpJIH
-	 bZ9/9Tk1NvOwXMQO7AJE/xG+CtyDPXJB/HDUAITH8i1thUw9EofagC1JaGl0EJ33AT
-	 eOnZIqb7R/Y/GJlbWW7YEWKTXYUUeTHprhACA5LU=
+	b=rXLiOZZnWYUOQJMt4rgWjk8daO4/szJss7iBbtvWJpgVSMslal0xkrkJcRIYDyhiR
+	 YzLPfaPNaTdJzICwMbRsAdIf57MU6D7+bVZXdlNY5/GiOIc4A17BPynzFqdZTynPt8
+	 yHJJXDhxrAr4lEzyo5sXrzzmYfDTBif4t5NYQAGo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yu Kuai <yukuai3@huawei.com>,
-	Christoph Hellwig <hch@lst.de>,
-	Jens Axboe <axboe@kernel.dk>,
+	"=?UTF-8?q?N=C3=ADcolas=20F . =20R . =20A . =20Prado?=" <nfraprado@collabora.com>,
+	Shuah Khan <skhan@linuxfoundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 020/512] brd: fix discard end sector
-Date: Tue, 17 Jun 2025 17:19:46 +0200
-Message-ID: <20250617152420.349871890@linuxfoundation.org>
+Subject: [PATCH 6.12 021/512] kselftest: cpufreq: Get rid of double suspend in rtcwake case
+Date: Tue, 17 Jun 2025 17:19:47 +0200
+Message-ID: <20250617152420.390392157@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
 References: <20250617152419.512865572@linuxfoundation.org>
@@ -61,64 +60,54 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yu Kuai <yukuai3@huawei.com>
+From: Nícolas F. R. A. Prado <nfraprado@collabora.com>
 
-[ Upstream commit a26a339a654b9403f0ee1004f1db4c2b2a355460 ]
+[ Upstream commit 23b88515a318680337f21d0a2fceee8038ccffc8 ]
 
-brd_do_discard() just aligned start sector to page, this can only work
-if the discard size if at least one page. For example:
+Commit 0b631ed3ce92 ("kselftest: cpufreq: Add RTC wakeup alarm") added
+support for automatic wakeup in the suspend routine of the cpufreq
+kselftest by using rtcwake, however it left the manual power state
+change in the common path. The end result is that when running the
+cpufreq kselftest with '-t suspend_rtc' or '-t hibernate_rtc', the
+system will go to sleep and be woken up by the RTC, but then immediately
+go to sleep again with no wakeup programmed, so it will sleep forever in
+an automated testing setup.
 
-blkdiscard /dev/ram0 -o 5120 -l 1024
+Fix this by moving the manual power state change so that it only happens
+when not using rtcwake.
 
-In this case, size = (1024 - (8192 - 5120)), which is a huge value.
-
-Fix the problem by round_down() the end sector.
-
-Fixes: 9ead7efc6f3f ("brd: implement discard support")
-Signed-off-by: Yu Kuai <yukuai3@huawei.com>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Link: https://lore.kernel.org/r/20250506061756.2970934-4-yukuai1@huaweicloud.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Link: https://lore.kernel.org/r/20250430-ksft-cpufreq-suspend-rtc-double-fix-v1-1-dc17a729c5a7@collabora.com
+Fixes: 0b631ed3ce92 ("kselftest: cpufreq: Add RTC wakeup alarm")
+Signed-off-by: Nícolas F. R. A. Prado <nfraprado@collabora.com>
+Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/block/brd.c | 9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ tools/testing/selftests/cpufreq/cpufreq.sh | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/block/brd.c b/drivers/block/brd.c
-index 9549cd71e083b..02fa8106ef549 100644
---- a/drivers/block/brd.c
-+++ b/drivers/block/brd.c
-@@ -225,18 +225,21 @@ static int brd_do_bvec(struct brd_device *brd, struct page *page,
- static void brd_do_discard(struct brd_device *brd, sector_t sector, u32 size)
- {
- 	sector_t aligned_sector = round_up(sector, PAGE_SECTORS);
-+	sector_t aligned_end = round_down(
-+			sector + (size >> SECTOR_SHIFT), PAGE_SECTORS);
- 	struct page *page;
+diff --git a/tools/testing/selftests/cpufreq/cpufreq.sh b/tools/testing/selftests/cpufreq/cpufreq.sh
+index e350c521b4675..3aad9db921b53 100755
+--- a/tools/testing/selftests/cpufreq/cpufreq.sh
++++ b/tools/testing/selftests/cpufreq/cpufreq.sh
+@@ -244,9 +244,10 @@ do_suspend()
+ 					printf "Failed to suspend using RTC wake alarm\n"
+ 					return 1
+ 				fi
++			else
++				echo $filename > $SYSFS/power/state
+ 			fi
  
--	size -= (aligned_sector - sector) * SECTOR_SIZE;
-+	if (aligned_end <= aligned_sector)
-+		return;
-+
- 	xa_lock(&brd->brd_pages);
--	while (size >= PAGE_SIZE && aligned_sector < rd_size * 2) {
-+	while (aligned_sector < aligned_end && aligned_sector < rd_size * 2) {
- 		page = __xa_erase(&brd->brd_pages, aligned_sector >> PAGE_SECTORS_SHIFT);
- 		if (page) {
- 			__free_page(page);
- 			brd->brd_nr_pages--;
- 		}
- 		aligned_sector += PAGE_SECTORS;
--		size -= PAGE_SIZE;
- 	}
- 	xa_unlock(&brd->brd_pages);
- }
+-			echo $filename > $SYSFS/power/state
+ 			printf "Came out of $1\n"
+ 
+ 			printf "Do basic tests after finishing $1 to verify cpufreq state\n\n"
 -- 
 2.39.5
 
