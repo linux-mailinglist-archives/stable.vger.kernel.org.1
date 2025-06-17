@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-153215-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153219-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D32A6ADD2FE
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 17:52:23 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id AF802ADD35A
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 17:56:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 35E8A7A7AFD
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 15:49:36 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 88030189B877
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 15:51:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F5692DFF20;
-	Tue, 17 Jun 2025 15:47:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D3772DFF2D;
+	Tue, 17 Jun 2025 15:47:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SRHOlXoT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fpMX06Yq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFC582DFF06;
-	Tue, 17 Jun 2025 15:47:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 065582DFF2A;
+	Tue, 17 Jun 2025 15:47:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750175245; cv=none; b=dLrj6bzuQbMyHRDsj4q8JM3jWJzwoS5xlYS8qAW9078AktO+pp+9xdpuPEci7DjbU55YsSgxFooFBx4bCrRWE8TXRxZutK0DtnQ3j+SBhvsD/GMMLG/7L/hAn+RYw9vqO7J2bnuicF3eidDQWV25IjMJeFQthIJYGAfAp4owSew=
+	t=1750175258; cv=none; b=O+v/tNJx2ye7ViqI/0VgJJyJDDJ+QtJ/PDEc5EZWeqFrPL3WXxQt9lKQC6Pgf+UUUTD2DcbCBGt0xhjU/HhuObmhwnEgp0s85avTEakZ2K2kYz+fhpsUsd4ZACyt9aIPhQrOCL9UHON9s1XkxyECdjScRLsgcdDiGLXHCFIXtwQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750175245; c=relaxed/simple;
-	bh=2ECWu57gXiF9UAoY3R7mAzVKg9mNWYeSE7VwijnogP0=;
+	s=arc-20240116; t=1750175258; c=relaxed/simple;
+	bh=+MvLmrgvDjXKEQhu0L4jsiW03/TTsEqQ/HB9e7gQfFY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OHiY2ogIgl/v6gERukCzWRNoACYdTKXWu1WYNWvR3nBxnfljQDM1lY7u8jlpJ7KEm6dqqU62pLBg4ZseaH6iOPfG9RXMNCI3yQvemp3oGV8Jtcuq5pg4niwUaox5IEC3txTAxMMMa78pX8MLF4RWs7A5aOo7gLVSIS7y/J1W/7A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SRHOlXoT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5019FC4CEF0;
-	Tue, 17 Jun 2025 15:47:24 +0000 (UTC)
+	 MIME-Version; b=efwBOLDhWIBugNhseH0OFbD2HreEJ0LDzcMqgugMglFWfrVnDPYb2A4ddzZX/s36NdxRqJYAOk+/Fch2cWgn/tunL5ctFi/DWdauizprj4yuXraAP96gsZon+vg7jmE9B1udtIjj6agHq5MxL5GT6VFQ10NnW+x/OyR9q4GnfXI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fpMX06Yq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69D65C4CEE3;
+	Tue, 17 Jun 2025 15:47:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750175244;
-	bh=2ECWu57gXiF9UAoY3R7mAzVKg9mNWYeSE7VwijnogP0=;
+	s=korg; t=1750175257;
+	bh=+MvLmrgvDjXKEQhu0L4jsiW03/TTsEqQ/HB9e7gQfFY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SRHOlXoTobuC6vntPZ/Sy20ALcQHi/AS1haggmvva/fo2Zn6Yd/W5eEv3+cnS0i12
-	 KFCnQGevPyhYGzuY/sz+xVAx6Ro36Y3BEZfbPyT8eeOTUJfLLBD1Uxi5yRUufiyduJ
-	 +drYawAv3cBI9tsEyLFN96agIHsznRVPMefB22yw=
+	b=fpMX06YqNicPiOfazEZDEsuovwwLxO3zU4+J8eAe1/cOvftUHSinGg+19Ay/STmZm
+	 4YrrejFwVsH28xcaOsVMCWxK5XEkabPCywN7yjQ09SAmDc9HFhKPBmQHHQy44h3Ei6
+	 I9ZajaeYW5NOUmWtpKLboMkN3WdEK/oOMTGCh4KQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Konrad Dybcio <konrad.dybcio@linaro.org>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
 	Dzmitry Sankouski <dsankouski@gmail.com>,
-	Bryan ODonoghue <bryan.odonoghue@linaro.org>,
 	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 157/356] arm64: dts: qcom: sdm845-starqltechn: remove wifi
-Date: Tue, 17 Jun 2025 17:24:32 +0200
-Message-ID: <20250617152344.547245374@linuxfoundation.org>
+Subject: [PATCH 6.6 158/356] arm64: dts: qcom: sdm845-starqltechn: fix usb regulator mistake
+Date: Tue, 17 Jun 2025 17:24:33 +0200
+Message-ID: <20250617152344.585566675@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250617152338.212798615@linuxfoundation.org>
 References: <20250617152338.212798615@linuxfoundation.org>
@@ -70,42 +69,42 @@ Content-Transfer-Encoding: 8bit
 
 From: Dzmitry Sankouski <dsankouski@gmail.com>
 
-[ Upstream commit 2d3dd4b237638853b8a99353401ab8d88a6afb6c ]
+[ Upstream commit 242e4126ee007b95765c21a9d74651fdcf221f2b ]
 
-Starqltechn has broadcom chip for wifi, so sdm845 wifi part
-can be disabled.
+Usb regulator was wrongly pointed to vreg_l1a_0p875.
+However, on starqltechn it's powered from vreg_l5a_0p8.
 
 Fixes: d711b22eee55 ("arm64: dts: qcom: starqltechn: add initial device tree for starqltechn")
-Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
 Signed-off-by: Dzmitry Sankouski <dsankouski@gmail.com>
-Fixes: d711b22eee55 ("arm64: dts: qcom: starqltechn: add initial device  tree for starqltechn")
-Reviewed-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
-Link: https://lore.kernel.org/r/20250225-starqltechn_integration_upstream-v9-2-a5d80375cb66@gmail.com
+Link: https://lore.kernel.org/r/20250225-starqltechn_integration_upstream-v9-3-a5d80375cb66@gmail.com
 Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/sdm845-samsung-starqltechn.dts | 8 --------
- 1 file changed, 8 deletions(-)
+ arch/arm64/boot/dts/qcom/sdm845-samsung-starqltechn.dts | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
 diff --git a/arch/arm64/boot/dts/qcom/sdm845-samsung-starqltechn.dts b/arch/arm64/boot/dts/qcom/sdm845-samsung-starqltechn.dts
-index d37a433130b98..6fc30fd1262b8 100644
+index 6fc30fd1262b8..f3f2b25883d81 100644
 --- a/arch/arm64/boot/dts/qcom/sdm845-samsung-starqltechn.dts
 +++ b/arch/arm64/boot/dts/qcom/sdm845-samsung-starqltechn.dts
-@@ -418,14 +418,6 @@
- 	status = "okay";
- };
+@@ -135,8 +135,6 @@
+ 		vdda_sp_sensor:
+ 		vdda_ufs1_core:
+ 		vdda_ufs2_core:
+-		vdda_usb1_ss_core:
+-		vdda_usb2_ss_core:
+ 		vreg_l1a_0p875: ldo1 {
+ 			regulator-min-microvolt = <880000>;
+ 			regulator-max-microvolt = <880000>;
+@@ -157,6 +155,7 @@
+ 			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
+ 		};
  
--&wifi {
--	vdd-0.8-cx-mx-supply = <&vreg_l5a_0p8>;
--	vdd-1.8-xo-supply = <&vreg_l7a_1p8>;
--	vdd-1.3-rfa-supply = <&vreg_l17a_1p3>;
--	vdd-3.3-ch0-supply = <&vreg_l25a_3p3>;
--	status = "okay";
--};
--
- &tlmm {
- 	gpio-reserved-ranges = <0 4>, <27 4>, <81 4>, <85 4>;
- 
++		vdda_usb1_ss_core:
+ 		vdd_wcss_cx:
+ 		vdd_wcss_mx:
+ 		vdda_wcss_pll:
 -- 
 2.39.5
 
