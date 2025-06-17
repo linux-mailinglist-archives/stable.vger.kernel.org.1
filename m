@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-153270-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153273-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id EB1DFADD3AF
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:00:54 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 930AAADD3BF
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:01:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0F9F7189E58B
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 15:54:14 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A89161944358
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 15:54:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3438D2ECE99;
-	Tue, 17 Jun 2025 15:50:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E64422ECEA9;
+	Tue, 17 Jun 2025 15:50:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I0oHP2ki"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b5jqvR4q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2C452F2C55;
-	Tue, 17 Jun 2025 15:50:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0D7F2ECEA5;
+	Tue, 17 Jun 2025 15:50:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750175420; cv=none; b=TL/zcdLC+5pePOMyxlPV3gvDFC2lGjZrBYqIyxrceAXlDNRSyk/wXLA530IZv4hsyTJlTCmKXZKOvbt5jWMKAmu+WltmrFZIuhXpmva0PyS+y69ldePXfkJWieDy/vHe4lKoeqPLvewI/b9F9ZJbbY0UCk8odn4xPqE/KluV8eA=
+	t=1750175429; cv=none; b=fdxJ0YsnytJ5kLHFP55qPMQmIMJQoi/f+eAWiSkU2Vi9cyEXdEP7UIRzs6zYBBgaxkinIE/1pbFyCmRr3D8UIBaiDlEkq1fr0n0yxJ4PMx82DF6y6epMDDeo/GpZhw16Popqp8iMEWV5Whl10Zh5PMr2Gq8iZYDE5WSiesSTtLs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750175420; c=relaxed/simple;
-	bh=M202Es4hzm4xT4dK+acrZRgcACAjGgD9Er5HkE8AVcg=;
+	s=arc-20240116; t=1750175429; c=relaxed/simple;
+	bh=v3nW4vagzOHqPvzwN195a2pF3yhd/k+PZAs0VKvumF0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=G7dxFqaz/Szj87MKRzvdHEvF0BIu3ALb4i1RnVHngwm0n0C421Z9+TvWUxw7Jl5jhiDkx7Pt5iUdOO65zgTNhGQiyQEeUDKATBjvtT5CudpFoGphkzkg3T6qM6t36c9MekCjrA5mPIINpErW3wc4vX8NGlcYq2d4EFmnOZhjud0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I0oHP2ki; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75FF4C4CEF1;
-	Tue, 17 Jun 2025 15:50:19 +0000 (UTC)
+	 MIME-Version; b=mXmF5WZNZzZzJVi5FgqPDJJzKwv2gIanWKYOntByLCA5OkU4hedIdEu7zHhsZheBrgb4LZs3CFktmEyQngbEBWhNMqkgYMuLUZk1OTdjnjtZ6c0hpYpgduJYBbndOGyrofzInP2lfx+vamCiUsVcduqgBax3Z20eC55BNyjsCc8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b5jqvR4q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7B85C4CEE3;
+	Tue, 17 Jun 2025 15:50:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750175419;
-	bh=M202Es4hzm4xT4dK+acrZRgcACAjGgD9Er5HkE8AVcg=;
+	s=korg; t=1750175429;
+	bh=v3nW4vagzOHqPvzwN195a2pF3yhd/k+PZAs0VKvumF0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=I0oHP2ki1qCeDfFXhbz5IxM0CCJAQkNFDWW6z9KYSLcHL2bn3aWwk7acgVGsLpipx
-	 yRWdmXerXNe79YFnNIH+tr0fvfW3Zge673z+3bu0WrHt7tu10+I+6Vqg3JUfEbNXT3
-	 W14pJeqebkCg0BNTZcGR+ucUXb+tLvqUi1Rm8lY4=
+	b=b5jqvR4qLgs7lDKTdi4N30/lg36fsLfKMjLtAY03yrWJU89xJpPoaYogILxTEmwja
+	 R3M5rx+hF3HEfYGcsMzZrKYqCM0+MjaQL29I9nDwBqJ97I1fBiv0hgQaa6cwOMtc16
+	 bvOJXjEorNj/tYTbbW697yXu7FX8uOEnwVUjDwjY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	lmarch2 <2524158037@qq.com>,
-	Viktor Malik <vmalik@redhat.com>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Shung-Hsi Yu <shung-hsi.yu@suse.com>,
+	Cosmin Ratiu <cratiu@nvidia.com>,
+	Leon Romanovsky <leonro@nvidia.com>,
+	Nikolay Aleksandrov <razor@blackwall.org>,
+	Steffen Klassert <steffen.klassert@secunet.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 124/512] libbpf: Fix buffer overflow in bpf_object__init_prog
-Date: Tue, 17 Jun 2025 17:21:30 +0200
-Message-ID: <20250617152424.618110074@linuxfoundation.org>
+Subject: [PATCH 6.12 125/512] net/mlx5: Avoid using xso.real_dev unnecessarily
+Date: Tue, 17 Jun 2025 17:21:31 +0200
+Message-ID: <20250617152424.656705565@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
 References: <20250617152419.512865572@linuxfoundation.org>
@@ -68,104 +68,113 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Viktor Malik <vmalik@redhat.com>
+From: Cosmin Ratiu <cratiu@nvidia.com>
 
-[ Upstream commit ee684de5c1b0ac01821320826baec7da93f3615b ]
+[ Upstream commit d79444e8c3d40b11f5e155e5591d53bd1e512e1f ]
 
-As shown in [1], it is possible to corrupt a BPF ELF file such that
-arbitrary BPF instructions are loaded by libbpf. This can be done by
-setting a symbol (BPF program) section offset to a large (unsigned)
-number such that <section start + symbol offset> overflows and points
-before the section data in the memory.
+xso.real_dev is the active device of an offloaded xfrm state and is
+managed by bonding. As such, it's subject to change when states are
+migrated to a new device. Using it in places other than
+offloading/unoffloading the states is risky.
 
-Consider the situation below where:
-- prog_start = sec_start + symbol_offset    <-- size_t overflow here
-- prog_end   = prog_start + prog_size
+This commit saves the device into the driver-specific struct
+mlx5e_ipsec_sa_entry and switches mlx5e_ipsec_init_macs() and
+mlx5e_ipsec_netevent_event() to make use of it.
 
-    prog_start        sec_start        prog_end        sec_end
-        |                |                 |              |
-        v                v                 v              v
-    .....................|################################|............
+Additionally, mlx5e_xfrm_update_stats() used xso.real_dev to validate
+that correct net locks are held. But in a bonding config, the net of the
+master device is the same as the underlying devices, and the net is
+already a local var, so use that instead.
 
-The report in [1] also provides a corrupted BPF ELF which can be used as
-a reproducer:
+The only remaining references to xso.real_dev are now in the
+.xdo_dev_state_add() / .xdo_dev_state_delete() path.
 
-    $ readelf -S crash
-    Section Headers:
-      [Nr] Name              Type             Address           Offset
-           Size              EntSize          Flags  Link  Info  Align
-    ...
-      [ 2] uretprobe.mu[...] PROGBITS         0000000000000000  00000040
-           0000000000000068  0000000000000000  AX       0     0     8
-
-    $ readelf -s crash
-    Symbol table '.symtab' contains 8 entries:
-       Num:    Value          Size Type    Bind   Vis      Ndx Name
-    ...
-         6: ffffffffffffffb8   104 FUNC    GLOBAL DEFAULT    2 handle_tp
-
-Here, the handle_tp prog has section offset ffffffffffffffb8, i.e. will
-point before the actual memory where section 2 is allocated.
-
-This is also reported by AddressSanitizer:
-
-    =================================================================
-    ==1232==ERROR: AddressSanitizer: heap-buffer-overflow on address 0x7c7302fe0000 at pc 0x7fc3046e4b77 bp 0x7ffe64677cd0 sp 0x7ffe64677490
-    READ of size 104 at 0x7c7302fe0000 thread T0
-        #0 0x7fc3046e4b76 in memcpy (/lib64/libasan.so.8+0xe4b76)
-        #1 0x00000040df3e in bpf_object__init_prog /src/libbpf/src/libbpf.c:856
-        #2 0x00000040df3e in bpf_object__add_programs /src/libbpf/src/libbpf.c:928
-        #3 0x00000040df3e in bpf_object__elf_collect /src/libbpf/src/libbpf.c:3930
-        #4 0x00000040df3e in bpf_object_open /src/libbpf/src/libbpf.c:8067
-        #5 0x00000040f176 in bpf_object__open_file /src/libbpf/src/libbpf.c:8090
-        #6 0x000000400c16 in main /poc/poc.c:8
-        #7 0x7fc3043d25b4 in __libc_start_call_main (/lib64/libc.so.6+0x35b4)
-        #8 0x7fc3043d2667 in __libc_start_main@@GLIBC_2.34 (/lib64/libc.so.6+0x3667)
-        #9 0x000000400b34 in _start (/poc/poc+0x400b34)
-
-    0x7c7302fe0000 is located 64 bytes before 104-byte region [0x7c7302fe0040,0x7c7302fe00a8)
-    allocated by thread T0 here:
-        #0 0x7fc3046e716b in malloc (/lib64/libasan.so.8+0xe716b)
-        #1 0x7fc3045ee600 in __libelf_set_rawdata_wrlock (/lib64/libelf.so.1+0xb600)
-        #2 0x7fc3045ef018 in __elf_getdata_rdlock (/lib64/libelf.so.1+0xc018)
-        #3 0x00000040642f in elf_sec_data /src/libbpf/src/libbpf.c:3740
-
-The problem here is that currently, libbpf only checks that the program
-end is within the section bounds. There used to be a check
-`while (sec_off < sec_sz)` in bpf_object__add_programs, however, it was
-removed by commit 6245947c1b3c ("libbpf: Allow gaps in BPF program
-sections to support overriden weak functions").
-
-Add a check for detecting the overflow of `sec_off + prog_sz` to
-bpf_object__init_prog to fix this issue.
-
-[1] https://github.com/lmarch2/poc/blob/main/libbpf/libbpf.md
-
-Fixes: 6245947c1b3c ("libbpf: Allow gaps in BPF program sections to support overriden weak functions")
-Reported-by: lmarch2 <2524158037@qq.com>
-Signed-off-by: Viktor Malik <vmalik@redhat.com>
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Reviewed-by: Shung-Hsi Yu <shung-hsi.yu@suse.com>
-Link: https://github.com/lmarch2/poc/blob/main/libbpf/libbpf.md
-Link: https://lore.kernel.org/bpf/20250415155014.397603-1-vmalik@redhat.com
+Signed-off-by: Cosmin Ratiu <cratiu@nvidia.com>
+Reviewed-by: Leon Romanovsky <leonro@nvidia.com>
+Reviewed-by: Nikolay Aleksandrov <razor@blackwall.org>
+Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/lib/bpf/libbpf.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ .../ethernet/mellanox/mlx5/core/en_accel/ipsec.c | 16 +++++-----------
+ .../ethernet/mellanox/mlx5/core/en_accel/ipsec.h |  1 +
+ 2 files changed, 6 insertions(+), 11 deletions(-)
 
-diff --git a/tools/lib/bpf/libbpf.c b/tools/lib/bpf/libbpf.c
-index 6e4d417604fa0..069ffe5da96e5 100644
---- a/tools/lib/bpf/libbpf.c
-+++ b/tools/lib/bpf/libbpf.c
-@@ -887,7 +887,7 @@ bpf_object__add_programs(struct bpf_object *obj, Elf_Data *sec_data,
- 			return -LIBBPF_ERRNO__FORMAT;
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec.c b/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec.c
+index 1baf8933a07cb..94edfd7713b5d 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec.c
+@@ -266,8 +266,7 @@ static void mlx5e_ipsec_init_macs(struct mlx5e_ipsec_sa_entry *sa_entry,
+ 				  struct mlx5_accel_esp_xfrm_attrs *attrs)
+ {
+ 	struct mlx5_core_dev *mdev = mlx5e_ipsec_sa2dev(sa_entry);
+-	struct xfrm_state *x = sa_entry->x;
+-	struct net_device *netdev;
++	struct net_device *netdev = sa_entry->dev;
+ 	struct neighbour *n;
+ 	u8 addr[ETH_ALEN];
+ 	const void *pkey;
+@@ -277,8 +276,6 @@ static void mlx5e_ipsec_init_macs(struct mlx5e_ipsec_sa_entry *sa_entry,
+ 	    attrs->type != XFRM_DEV_OFFLOAD_PACKET)
+ 		return;
+ 
+-	netdev = x->xso.real_dev;
+-
+ 	mlx5_query_mac_address(mdev, addr);
+ 	switch (attrs->dir) {
+ 	case XFRM_DEV_OFFLOAD_IN:
+@@ -707,6 +704,7 @@ static int mlx5e_xfrm_add_state(struct xfrm_state *x,
+ 		return -ENOMEM;
+ 
+ 	sa_entry->x = x;
++	sa_entry->dev = netdev;
+ 	sa_entry->ipsec = ipsec;
+ 	/* Check if this SA is originated from acquire flow temporary SA */
+ 	if (x->xso.flags & XFRM_DEV_OFFLOAD_FLAG_ACQ)
+@@ -849,8 +847,6 @@ static int mlx5e_ipsec_netevent_event(struct notifier_block *nb,
+ 	struct mlx5e_ipsec_sa_entry *sa_entry;
+ 	struct mlx5e_ipsec *ipsec;
+ 	struct neighbour *n = ptr;
+-	struct net_device *netdev;
+-	struct xfrm_state *x;
+ 	unsigned long idx;
+ 
+ 	if (event != NETEVENT_NEIGH_UPDATE || !(n->nud_state & NUD_VALID))
+@@ -870,11 +866,9 @@ static int mlx5e_ipsec_netevent_event(struct notifier_block *nb,
+ 				continue;
  		}
  
--		if (sec_off + prog_sz > sec_sz) {
-+		if (sec_off + prog_sz > sec_sz || sec_off + prog_sz < sec_off) {
- 			pr_warn("sec '%s': program at offset %zu crosses section boundary\n",
- 				sec_name, sec_off);
- 			return -LIBBPF_ERRNO__FORMAT;
+-		x = sa_entry->x;
+-		netdev = x->xso.real_dev;
+ 		data = sa_entry->work->data;
+ 
+-		neigh_ha_snapshot(data->addr, n, netdev);
++		neigh_ha_snapshot(data->addr, n, sa_entry->dev);
+ 		queue_work(ipsec->wq, &sa_entry->work->work);
+ 	}
+ 
+@@ -1005,8 +999,8 @@ static void mlx5e_xfrm_update_stats(struct xfrm_state *x)
+ 	size_t headers;
+ 
+ 	lockdep_assert(lockdep_is_held(&x->lock) ||
+-		       lockdep_is_held(&dev_net(x->xso.real_dev)->xfrm.xfrm_cfg_mutex) ||
+-		       lockdep_is_held(&dev_net(x->xso.real_dev)->xfrm.xfrm_state_lock));
++		       lockdep_is_held(&net->xfrm.xfrm_cfg_mutex) ||
++		       lockdep_is_held(&net->xfrm.xfrm_state_lock));
+ 
+ 	if (x->xso.flags & XFRM_DEV_OFFLOAD_FLAG_ACQ)
+ 		return;
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec.h b/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec.h
+index 7d943e93cf6dc..9aff779c77c89 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec.h
++++ b/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec.h
+@@ -260,6 +260,7 @@ struct mlx5e_ipsec_limits {
+ struct mlx5e_ipsec_sa_entry {
+ 	struct mlx5e_ipsec_esn_state esn_state;
+ 	struct xfrm_state *x;
++	struct net_device *dev;
+ 	struct mlx5e_ipsec *ipsec;
+ 	struct mlx5_accel_esp_xfrm_attrs attrs;
+ 	void (*set_iv_op)(struct sk_buff *skb, struct xfrm_state *x,
 -- 
 2.39.5
 
