@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-154122-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153674-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B17BBADD88D
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:57:05 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 61EE8ADD5D7
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:27:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A92B019E5FD6
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:42:49 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6582A2C75B6
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:17:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 189DB2EA16B;
-	Tue, 17 Jun 2025 16:36:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D86B2ECD1C;
+	Tue, 17 Jun 2025 16:12:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zeHz4Sez"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cR0x+EcJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C89DA2EA161;
-	Tue, 17 Jun 2025 16:36:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A3E82EB5D8;
+	Tue, 17 Jun 2025 16:12:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750178170; cv=none; b=dF95rrulLwubQOurL5FlCnzrPTTBc5YBFfGynYkMNDHFNgwx7T9PN9kwB6yY3ua0RejO9ZAywrbmrrNz8hAjO01YZ7ZsyyC02D6KTKKOnb/OgoyWLXSqL+/Zugiek3XlfJvkT17mP9MHwPfLG/C5qyB9/zSzelOMRtA2WEPqHv0=
+	t=1750176724; cv=none; b=UqhVCthXB6r2O6Msp643uQajYIjqUqY6IBjddhBceXIm0HQDGz6vDSimWFNvhclRMHKQsZGi7UeESwwx4Q2mxG0rKSK0TvQl5IRpSdsKjMDYb7z08mioKb/ip0apb6RqLjTUfLfkMqSDXPUpFzVppBDcqvt8ZG/4DWq0X+KBb6U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750178170; c=relaxed/simple;
-	bh=robSoHqr+uHniB7bDjoVC6fA0+ijXjqGLYqkeqC+Vf4=;
+	s=arc-20240116; t=1750176724; c=relaxed/simple;
+	bh=RGZl9Ps0S4Cyat8faMd+POxTVYTVZvla1vrob+vukmM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TZylY3kwFSUbDcWqJG+u6LMa+WCFTleSYSz1DI7/suPXcOoMdWW03mC+ABsuMrr+hVvyd+hgviPE+A/4rdNOTIntcQ4XUVhLSvfkUr/GkAnubLcWzI4jEEslHhG2HXjLPZO7oYUSOq9O1/9aKfrpDdq+KKr2t7tQNVzW2Lr1WaE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zeHz4Sez; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22794C4CEE7;
-	Tue, 17 Jun 2025 16:36:09 +0000 (UTC)
+	 MIME-Version; b=FRpJETdvD6ha6/Cdd4bVOcLrF9frHTEwi0Uz4luF8XBdNeIqXCWowmG36Po4ea0b+7L0QSC5YTFkcrur1v5IM09j6vLLtP5j9XkaQwqo1S5frIZ+oSJUf0SqdLgq/vHG77/lcGDFMNQyHledPIyH+s0o2X0JsWedBi4GM3/rIfY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cR0x+EcJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1CD58C4CEE3;
+	Tue, 17 Jun 2025 16:12:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750178170;
-	bh=robSoHqr+uHniB7bDjoVC6fA0+ijXjqGLYqkeqC+Vf4=;
+	s=korg; t=1750176723;
+	bh=RGZl9Ps0S4Cyat8faMd+POxTVYTVZvla1vrob+vukmM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zeHz4Sez9D0i0WEnWFjA4qb8M5CgXWy41g9HlQnpmEJtneRYivcLN6f9RSXBz9N+H
-	 O8R7kxYY2sji5su7v8UO6Q01sOjuI2xrzkx6kg5U0sYo787/2ENrNRSLsDaDhKLxNv
-	 681kj08Dcr1wlDeAepAK5KnevFD9sY/mIlZLf3x0=
+	b=cR0x+EcJghyI8o9WXA1WG7JN3SH3v2mepiSW3Rb29pPjxyQ92QOKr3SH2SbmCsJat
+	 ybD/ujYc34h9oqgfgknH/ajTwE+9Bq+2GN8y90SiuC/0hwJw2hZZYwaYe2g1GwKvVj
+	 qxQkyxeYsNAWh9ddtraDdynDbjLBvVefiWLsq2qY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Jonathan Greental <yonatan02greental@gmail.com>,
+	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 456/512] Bluetooth: Fix NULL pointer deference on eir_get_service_data
+Subject: [PATCH 6.6 307/356] powerpc/powernv/memtrace: Fix out of bounds issue in memtrace mmap
 Date: Tue, 17 Jun 2025 17:27:02 +0200
-Message-ID: <20250617152438.050523517@linuxfoundation.org>
+Message-ID: <20250617152350.527731524@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
-References: <20250617152419.512865572@linuxfoundation.org>
+In-Reply-To: <20250617152338.212798615@linuxfoundation.org>
+References: <20250617152338.212798615@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,52 +63,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+From: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
 
-[ Upstream commit 20a2aa01f5aeb6daad9aeaa7c33dd512c58d81eb ]
+[ Upstream commit cd097df4596f3a1e9d75eb8520162de1eb8485b2 ]
 
-The len parameter is considered optional so it can be NULL so it cannot
-be used for skipping to next entry of EIR_SERVICE_DATA.
+memtrace mmap issue has an out of bounds issue. This patch fixes the by
+checking that the requested mapping region size should stay within the
+allocated region size.
 
-Fixes: 8f9ae5b3ae80 ("Bluetooth: eir: Add helpers for managing service data")
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Reported-by: Jonathan Greental <yonatan02greental@gmail.com>
+Fixes: 08a022ad3dfa ("powerpc/powernv/memtrace: Allow mmaping trace buffers")
+Signed-off-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
+Link: https://patch.msgid.link/20250610021227.361980-1-maddy@linux.ibm.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bluetooth/eir.c | 10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
+ arch/powerpc/platforms/powernv/memtrace.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/net/bluetooth/eir.c b/net/bluetooth/eir.c
-index 1bc51e2b05a34..3e1713673ecc9 100644
---- a/net/bluetooth/eir.c
-+++ b/net/bluetooth/eir.c
-@@ -366,17 +366,19 @@ u8 eir_create_scan_rsp(struct hci_dev *hdev, u8 instance, u8 *ptr)
- 
- void *eir_get_service_data(u8 *eir, size_t eir_len, u16 uuid, size_t *len)
+diff --git a/arch/powerpc/platforms/powernv/memtrace.c b/arch/powerpc/platforms/powernv/memtrace.c
+index 877720c645151..35471b679638a 100644
+--- a/arch/powerpc/platforms/powernv/memtrace.c
++++ b/arch/powerpc/platforms/powernv/memtrace.c
+@@ -48,11 +48,15 @@ static ssize_t memtrace_read(struct file *filp, char __user *ubuf,
+ static int memtrace_mmap(struct file *filp, struct vm_area_struct *vma)
  {
--	while ((eir = eir_get_data(eir, eir_len, EIR_SERVICE_DATA, len))) {
-+	size_t dlen;
-+
-+	while ((eir = eir_get_data(eir, eir_len, EIR_SERVICE_DATA, &dlen))) {
- 		u16 value = get_unaligned_le16(eir);
+ 	struct memtrace_entry *ent = filp->private_data;
++	unsigned long ent_nrpages = ent->size >> PAGE_SHIFT;
++	unsigned long vma_nrpages = vma_pages(vma);
  
- 		if (uuid == value) {
- 			if (len)
--				*len -= 2;
-+				*len = dlen - 2;
- 			return &eir[2];
- 		}
+-	if (ent->size < vma->vm_end - vma->vm_start)
++	/* The requested page offset should be within object's page count */
++	if (vma->vm_pgoff >= ent_nrpages)
+ 		return -EINVAL;
  
--		eir += *len;
--		eir_len -= *len;
-+		eir += dlen;
-+		eir_len -= dlen;
- 	}
+-	if (vma->vm_pgoff << PAGE_SHIFT >= ent->size)
++	/* The requested mapping range should remain within the bounds */
++	if (vma_nrpages > ent_nrpages - vma->vm_pgoff)
+ 		return -EINVAL;
  
- 	return NULL;
+ 	vma->vm_page_prot = pgprot_noncached(vma->vm_page_prot);
 -- 
 2.39.5
 
