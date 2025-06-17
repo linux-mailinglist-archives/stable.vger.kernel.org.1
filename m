@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-154274-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153653-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 91ECDADD94B
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 19:04:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A086ADD5C3
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:25:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 94A2E2C1CF1
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:47:50 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CDC292C7225
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:16:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC97B28505A;
-	Tue, 17 Jun 2025 16:44:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3BC03285054;
+	Tue, 17 Jun 2025 16:10:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="p2EzBkzT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xCBWcrl0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 792DD8F54;
-	Tue, 17 Jun 2025 16:44:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA98228504B;
+	Tue, 17 Jun 2025 16:10:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750178662; cv=none; b=d+TzN9opXNEN9M25B8DkU5N+CCqQ9ENkyfPqya7DyVHxMVUj5DiUi5c+jt1BwdTAoCOqYFHUBnSaNbKIbJvgK/HW1DPBEGldZhtLAOTNjma2SIFeGxMo16+wW2PnxtRJltMajZsHsgbI4sySkr6TIxYJjdz+C37IDXWggrMefds=
+	t=1750176658; cv=none; b=Nx4nQP/w3ZCZ8a3eChQFN0wzRc1YujENUusBNdYRki0IxJWOVok7pavDFDdGE33lzuJF+zI9hVTrt26ztnl0Z/w++djbXJfNnalkVsUGFN1fV1hYfk3D5kpmKiVE49oVSJHnI3fq8r7v1GxA1FbW1/Sz2FsrdEJdBHRBJF3ik7c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750178662; c=relaxed/simple;
-	bh=Fmm949Uz7hYzprJeTAAbXXGZ7SaKVVHtkND1TPa2/no=;
+	s=arc-20240116; t=1750176658; c=relaxed/simple;
+	bh=pGcyWBp/J9emvsUcOwcvPL+H33tZWTMNzNbp+E6rMJw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=K05TobKBg0+W4d43946t9WayDDqgORIpoac4g3pLB1uX7rTfxr9vU0k7jJbCrcG8jdfrIjmjP5MkngdNkt4cSpgvaMOlMHtymZVybsoveMp8M9wyA8cXUA+CABMGcvciKmSC1oCuVQJvTrkRCnFvxuXlRNwqt+9vPlDXA7kjiIA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=p2EzBkzT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4FF1C4CEE3;
-	Tue, 17 Jun 2025 16:44:21 +0000 (UTC)
+	 MIME-Version; b=uSP3YTevYtER+ugkiP7Q9e1CP+7FpOCl6U2mfH9hdwZg24pSIiqbSgDSbtW0zb4nYJZPvZY9GrPhgpM0fkpwIlMT9VnqMwse38CwGgXoolN8LWPkRKk0MmzFqjCkn2wfx5klTTY+b/12kwvvt/1RmqQVzl1eKmnijf88enxbsxI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xCBWcrl0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 591A6C4CEF3;
+	Tue, 17 Jun 2025 16:10:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750178662;
-	bh=Fmm949Uz7hYzprJeTAAbXXGZ7SaKVVHtkND1TPa2/no=;
+	s=korg; t=1750176657;
+	bh=pGcyWBp/J9emvsUcOwcvPL+H33tZWTMNzNbp+E6rMJw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=p2EzBkzT7wT+VpXUWkGFKxt4YzAJK6qxZAmTIOlvY3olHN/nR7g1V7gqxrVY8UP6l
-	 IyRdgKIe/uxFD+WFBOMJx8H0wyYTtIW5CedieWoTodrvaUQ66azYyBwWeY/EOTw8aG
-	 DNwSkQ84kBnNOl1cyqgo1WlhxwmKptrtZ3NBH/P4=
+	b=xCBWcrl0tFtyjEHOn8cw1okVYOooR30kO++H3Q3t6z03vL9UzvXHhcAs9PLPNJj6l
+	 wzb5TyrH62G8vSX2GibL+9Is3QcTublfRz/LVFoF/I/XUgrMdpB9rvniCjAsUbYfVs
+	 uIDsopgK8FSUyf4Qc5XWsDMySe5o/LFhJ+mXWd90=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
-	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	syzbot+65761fc25a137b9c8c6e@syzkaller.appspotmail.com,
+	Phillip Lougher <phillip@squashfs.org.uk>,
+	Andrew Morton <akpm@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 508/780] PCI/DPC: Initialize aer_err_info before using it
-Date: Tue, 17 Jun 2025 17:23:36 +0200
-Message-ID: <20250617152512.194627740@linuxfoundation.org>
+Subject: [PATCH 6.12 251/512] Squashfs: check return result of sb_min_blocksize
+Date: Tue, 17 Jun 2025 17:23:37 +0200
+Message-ID: <20250617152429.774506375@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
-References: <20250617152451.485330293@linuxfoundation.org>
+In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
+References: <20250617152419.512865572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,48 +61,70 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bjorn Helgaas <bhelgaas@google.com>
+From: Phillip Lougher <phillip@squashfs.org.uk>
 
-[ Upstream commit a424b598e6a6c1e69a2bb801d6fd16e805ab2c38 ]
+[ Upstream commit 734aa85390ea693bb7eaf2240623d41b03705c84 ]
 
-Previously the struct aer_err_info "info" was allocated on the stack
-without being initialized, so it contained junk except for the fields we
-explicitly set later.
+Syzkaller reports an "UBSAN: shift-out-of-bounds in squashfs_bio_read" bug.
 
-Initialize "info" at declaration so it starts as all zeros.
+Syzkaller forks multiple processes which after mounting the Squashfs
+filesystem, issues an ioctl("/dev/loop0", LOOP_SET_BLOCK_SIZE, 0x8000).
+Now if this ioctl occurs at the same time another process is in the
+process of mounting a Squashfs filesystem on /dev/loop0, the failure
+occurs.  When this happens the following code in squashfs_fill_super()
+fails.
 
-Fixes: 8aefa9b0d910 ("PCI/DPC: Print AER status in DPC event handling")
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Tested-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
-Reviewed-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Link: https://patch.msgid.link/20250522232339.1525671-2-helgaas@kernel.org
+----
+msblk->devblksize = sb_min_blocksize(sb, SQUASHFS_DEVBLK_SIZE);
+msblk->devblksize_log2 = ffz(~msblk->devblksize);
+----
+
+sb_min_blocksize() returns 0, which means msblk->devblksize is set to 0.
+
+As a result, ffz(~msblk->devblksize) returns 64, and msblk->devblksize_log2
+is set to 64.
+
+This subsequently causes the
+
+UBSAN: shift-out-of-bounds in fs/squashfs/block.c:195:36
+shift exponent 64 is too large for 64-bit type 'u64' (aka
+'unsigned long long')
+
+This commit adds a check for a 0 return by sb_min_blocksize().
+
+Link: https://lkml.kernel.org/r/20250409024747.876480-1-phillip@squashfs.org.uk
+Fixes: 0aa666190509 ("Squashfs: super block operations")
+Reported-by: syzbot+65761fc25a137b9c8c6e@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/all/67f0dd7a.050a0220.0a13.0230.GAE@google.com/
+Signed-off-by: Phillip Lougher <phillip@squashfs.org.uk>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/pcie/dpc.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/squashfs/super.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/pci/pcie/dpc.c b/drivers/pci/pcie/dpc.c
-index df42f15c98295..3daaf61c79c9f 100644
---- a/drivers/pci/pcie/dpc.c
-+++ b/drivers/pci/pcie/dpc.c
-@@ -258,7 +258,7 @@ static int dpc_get_aer_uncorrect_severity(struct pci_dev *dev,
- void dpc_process_error(struct pci_dev *pdev)
- {
- 	u16 cap = pdev->dpc_cap, status, source, reason, ext_reason;
--	struct aer_err_info info;
-+	struct aer_err_info info = {};
+diff --git a/fs/squashfs/super.c b/fs/squashfs/super.c
+index 22e812808e5cf..3a27d4268b3c4 100644
+--- a/fs/squashfs/super.c
++++ b/fs/squashfs/super.c
+@@ -202,6 +202,11 @@ static int squashfs_fill_super(struct super_block *sb, struct fs_context *fc)
+ 	msblk->panic_on_errors = (opts->errors == Opt_errors_panic);
  
- 	pci_read_config_word(pdev, cap + PCI_EXP_DPC_STATUS, &status);
- 	pci_read_config_word(pdev, cap + PCI_EXP_DPC_SOURCE_ID, &source);
+ 	msblk->devblksize = sb_min_blocksize(sb, SQUASHFS_DEVBLK_SIZE);
++	if (!msblk->devblksize) {
++		errorf(fc, "squashfs: unable to set blocksize\n");
++		return -EINVAL;
++	}
++
+ 	msblk->devblksize_log2 = ffz(~msblk->devblksize);
+ 
+ 	mutex_init(&msblk->meta_index_mutex);
 -- 
 2.39.5
 
