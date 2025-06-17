@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-153883-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153885-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9DD2FADD690
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:35:13 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id E152CADD6A1
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:35:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6351C19E42C9
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:28:33 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 223F14A09AB
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:28:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC2C128505F;
-	Tue, 17 Jun 2025 16:23:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6FD7420CCE4;
+	Tue, 17 Jun 2025 16:23:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sWt/DhhT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f3ddkDvK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A900B2356CE;
-	Tue, 17 Jun 2025 16:23:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BF90192B90;
+	Tue, 17 Jun 2025 16:23:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750177405; cv=none; b=Oym6qNAFKudrgDzVa0t0fVdVK84WFphdCAWJEEf53hQD1xvwV+rOgcpmYQwiUOpwy0KQDv7/fxXiglm5Xrgyoq+KxC/dFf318BcijkPmHRZUvooPhcLYfNa+UGVJvqzYkxn8xM/4eITJVjiQTcsa+SjtKhT4ySsDatSbzV1QGc0=
+	t=1750177412; cv=none; b=tIqqKDbhvFbWZ2WRszlMbM/gvYpIFagEWs0w2Kdj1hQvzIN96CANdHiskb3qbUdxJXtR2RIYcRHgRYYS915+muxd9Du+4XeEOtH3EjgdQOdrfJpWUQCaLrD2uXh3VjDfJfxnAsA6Z/Xa+d45hsutPJ9WNB/jWCQ7V9v+qPZFF3U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750177405; c=relaxed/simple;
-	bh=sdNFcs18DApL99/oC7c4c5kN/DQ9UHJUxRswG0+lNCE=;
+	s=arc-20240116; t=1750177412; c=relaxed/simple;
+	bh=widlisDYqv6yTi49PprZ0EsfQqsGkLWF3AaNwupX03o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jWgyl7vKRUsR9iXqKU5hIaW0fT+7z9qJF7R/w9RP+sNKF4PMrIPaa1oO7M6DUU/z+SoaRczUefJj3glYwXMVbsk36ATPJVjz8HBCDIJAX6nBvKEyPaffBpeVEKXjoeAggpvqmDof91ZjS9O70ayOaJak+/DXQDEvqbAL1e8ErzI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sWt/DhhT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18B12C4CEE3;
-	Tue, 17 Jun 2025 16:23:24 +0000 (UTC)
+	 MIME-Version; b=t25M25gMYIZGBXDcdOZuCD86vBzHIv1LW/9CXEu4Ma/Rymk+TMPUth5irF82+EZVIbgSvK4/BrbqJUT3wSFYa1M14szIjMeAFiDJ1J/3ThM99Zv3IqPe53o8jIkrv9hVjrTefxHG6uPebkf5iGZ5/3JI9d4+78ERl/PONNzb9qQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f3ddkDvK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 869B0C4CEE3;
+	Tue, 17 Jun 2025 16:23:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750177405;
-	bh=sdNFcs18DApL99/oC7c4c5kN/DQ9UHJUxRswG0+lNCE=;
+	s=korg; t=1750177412;
+	bh=widlisDYqv6yTi49PprZ0EsfQqsGkLWF3AaNwupX03o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sWt/DhhTkMK+Zt0eMJJoQpBJa6hXU8dUIk51MqfpCJQnqi1YBtJ+jAH3oWncbyTjE
-	 Y9ZyEstJBRBNImeOQSxiEO3AkJS9/bH2zZhYhq2wFeuFyhFYdeyfYi16Sja8m+fdzD
-	 RBZ6KuvOZboYdcdNSNqp6YMWuVnwZNXB2TFRJS14=
+	b=f3ddkDvK6565OzQIVxoiPGKbilJqDrKF6A7iEL1gz/ChP0izRdZtdnWWf1x2cJPEM
+	 W9jUHBaQuuj6asHJeDSsQlVbV0nitS70RE7T8YG+lM5Zpp3XJGX0RC2IcPvDjCQWio
+	 fPKhLzOH+t4zxD5M4VFXWaiP1ZUHzPMhrdbLfPJI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Howard Hsu <howard-yh.hsu@mediatek.com>,
+	Peter Chiu <chui-hao.chiu@mediatek.com>,
 	Shayne Chen <shayne.chen@mediatek.com>,
 	Felix Fietkau <nbd@nbd.name>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 301/780] wifi: mt76: mt7996: fix beamformee SS field
-Date: Tue, 17 Jun 2025 17:20:09 +0200
-Message-ID: <20250617152503.726985432@linuxfoundation.org>
+Subject: [PATCH 6.15 302/780] wifi: mt76: mt7996: set EHT max ampdu length capability
+Date: Tue, 17 Jun 2025 17:20:10 +0200
+Message-ID: <20250617152503.765929230@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
 References: <20250617152451.485330293@linuxfoundation.org>
@@ -67,45 +67,38 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Howard Hsu <howard-yh.hsu@mediatek.com>
+From: Peter Chiu <chui-hao.chiu@mediatek.com>
 
-[ Upstream commit 5c78949fc7cd772d483a8abe126fe90937c0f002 ]
+[ Upstream commit 8b2f574845e33d02e7fbad2d3192a8b717567afa ]
 
-Fix the beamformee SS field for the mt7996, mt7992 and mt7990 chipsets.
-For the mt7992, this value shall be set to 0x4, while the others shall
-be set to 0x3.
+Set the max AMPDU length in the EHT MAC CAP. Without this patch, the
+peer station cannot obtain the correct capability, which prevents
+achieving peak throughput on the 2 GHz band.
 
-Fixes: 5b20557593d4 ("wifi: mt76: connac: adjust phy capabilities based on band constraints")
-Signed-off-by: Howard Hsu <howard-yh.hsu@mediatek.com>
+Fixes: 1816ad9381e0 ("wifi: mt76: mt7996: add max mpdu len capability")
+Signed-off-by: Peter Chiu <chui-hao.chiu@mediatek.com>
 Signed-off-by: Shayne Chen <shayne.chen@mediatek.com>
-Link: https://patch.msgid.link/20250515032952.1653494-2-shayne.chen@mediatek.com
+Link: https://patch.msgid.link/20250515032952.1653494-3-shayne.chen@mediatek.com
 Signed-off-by: Felix Fietkau <nbd@nbd.name>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/mediatek/mt76/mt7996/init.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/net/wireless/mediatek/mt76/mt7996/init.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
 diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/init.c b/drivers/net/wireless/mediatek/mt76/mt7996/init.c
-index 5af52bd1f1f12..e99dfd1771d52 100644
+index e99dfd1771d52..4906b0ecc73e0 100644
 --- a/drivers/net/wireless/mediatek/mt76/mt7996/init.c
 +++ b/drivers/net/wireless/mediatek/mt76/mt7996/init.c
-@@ -1116,12 +1116,12 @@ mt7996_set_stream_he_txbf_caps(struct mt7996_phy *phy,
+@@ -1321,6 +1321,9 @@ mt7996_init_eht_caps(struct mt7996_phy *phy, enum nl80211_band band,
+ 		u8_encode_bits(IEEE80211_EHT_MAC_CAP0_MAX_MPDU_LEN_11454,
+ 			       IEEE80211_EHT_MAC_CAP0_MAX_MPDU_LEN_MASK);
  
- 	c = IEEE80211_HE_PHY_CAP4_SU_BEAMFORMEE;
- 
--	if (is_mt7996(phy->mt76->dev))
--		c |= IEEE80211_HE_PHY_CAP4_BEAMFORMEE_MAX_STS_UNDER_80MHZ_4 |
--		     (IEEE80211_HE_PHY_CAP4_BEAMFORMEE_MAX_STS_ABOVE_80MHZ_4 * non_2g);
--	else
-+	if (is_mt7992(phy->mt76->dev))
- 		c |= IEEE80211_HE_PHY_CAP4_BEAMFORMEE_MAX_STS_UNDER_80MHZ_5 |
- 		     (IEEE80211_HE_PHY_CAP4_BEAMFORMEE_MAX_STS_ABOVE_80MHZ_5 * non_2g);
-+	else
-+		c |= IEEE80211_HE_PHY_CAP4_BEAMFORMEE_MAX_STS_UNDER_80MHZ_4 |
-+		     (IEEE80211_HE_PHY_CAP4_BEAMFORMEE_MAX_STS_ABOVE_80MHZ_4 * non_2g);
- 
- 	elem->phy_cap_info[4] |= c;
- 
++	eht_cap_elem->mac_cap_info[1] |=
++		IEEE80211_EHT_MAC_CAP1_MAX_AMPDU_LEN_MASK;
++
+ 	eht_cap_elem->phy_cap_info[0] =
+ 		IEEE80211_EHT_PHY_CAP0_NDP_4_EHT_LFT_32_GI |
+ 		IEEE80211_EHT_PHY_CAP0_SU_BEAMFORMER |
 -- 
 2.39.5
 
