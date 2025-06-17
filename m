@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-153313-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153329-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7CC95ADD3EE
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:04:34 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A220ADD3EA
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:04:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C0DA9189975A
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 15:56:14 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2FAB6404874
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 15:56:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E3882F237C;
-	Tue, 17 Jun 2025 15:52:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2E472EE5E6;
+	Tue, 17 Jun 2025 15:53:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HlUHgwku"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Yj/zxwpP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BCEB2F2372;
-	Tue, 17 Jun 2025 15:52:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F5F82ED86F;
+	Tue, 17 Jun 2025 15:53:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750175546; cv=none; b=snfcYjchoQvbhxpL8p3X2AHgA60gRxjQekW/dWo7y5/y8RbHGIQ11+XC9FGkSXz39IMSsR+3YwZYlHRU4B6xknlEf9oO8y7Hl5paCaAiFNtmeCW2pDsbh0IhQ70oXRyGZCvXTjnMKwgcQuhCeTUEg7v5YYneTbmQPwek0dpGjN4=
+	t=1750175597; cv=none; b=C6QH82Gy++PQ6PlR8N58Wuc6nI8d+cKwsN3j+JcAT1MkXu2yih0K2titgfU+ygn4x4jNvUt/MSkJho2SP+YZNEjefU+/yDvBrcUH6cKoRLSaKlpui1lUBVjGcDyp7m1zpco7XwyPG4GLkRv9VQovr5dcML2u/hU7MlYeukVS2L0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750175546; c=relaxed/simple;
-	bh=l/JU1SDzJWXQPWl6kJUYAyKnqoZgZVG4sc+N2Iglsv4=;
+	s=arc-20240116; t=1750175597; c=relaxed/simple;
+	bh=PUYF5QoptKXMBlAQV5uPhgWN85gOxhacy+4qqwEVG5U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jk7tq0njNlRU2Vf2HNOu4XrrBzyl02qAAFzlHy7ohhA0+VyjiYiY5Rgjfxv+ClchmMgB5Vb3NqWEVLLK9MVjwOIsQNQVHftGoSRSOlUSro3306cBM2VUMDsCYoKQ/tZbSWMkexT4vJhonwy0m3KWANZutEvfVVzdeAoEu1FfgIU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HlUHgwku; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 902E3C4CEE3;
-	Tue, 17 Jun 2025 15:52:25 +0000 (UTC)
+	 MIME-Version; b=S0fZYmjahYGLCnmqy5sPEE2KfoRmW5JPWkn5RFQ6VEQwCbZed/Gv930fybuCvMgK0bmDq6m4RPqezBm9+Y3HTUGIJybBPBCNuly4QVmbBVuRRv/Y0dy1Bq00iaiXjnkjvjhspiTG1AdUt5SI/G97Vjr9jsVjHFoXxZ5FTMPqvwA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Yj/zxwpP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 008DDC4CEE3;
+	Tue, 17 Jun 2025 15:53:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750175546;
-	bh=l/JU1SDzJWXQPWl6kJUYAyKnqoZgZVG4sc+N2Iglsv4=;
+	s=korg; t=1750175597;
+	bh=PUYF5QoptKXMBlAQV5uPhgWN85gOxhacy+4qqwEVG5U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HlUHgwkuEkUWwYSlgIFKJk6K16ZK69lmseWZio2kqh+Oz/xIOAbngw7Ve9V2QLfAp
-	 jaunIdTeFqmqCm3vXMPqMsCFr2FzgV41XnuhNr4/16cHvX4tVEmI4DlyhUMTCXR5OF
-	 MmSM3buklFOa2GgR6OP3SgTAo+VD8a15Z15qQBjc=
+	b=Yj/zxwpPZt6GfbDZawdXqensMaOghnTScXi/mYUmI2Z7pav6kyp0MnLF8VjyN8AhB
+	 r/btT5GhgrfXxZAFvxUIPzNL6lZopQa+fQ4gDTWpdVIHDhvCZ1TQl1oLVp3XwCFjGm
+	 WtqsRjhuaL2e2fZdlQtHk7kgiN0X/iYf/dpWy1Mc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
-	Bjorn Andersson <andersson@kernel.org>,
+	Joel Stanley <joel@jms.id.au>,
+	Andrew Jeffery <andrew@codeconstruct.com.au>,
+	Arnd Bergmann <arnd@arndb.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 187/356] ARM: dts: qcom: apq8064 merge hw splinlock into corresponding syscon device
-Date: Tue, 17 Jun 2025 17:25:02 +0200
-Message-ID: <20250617152345.741635121@linuxfoundation.org>
+Subject: [PATCH 6.6 192/356] ARM: aspeed: Dont select SRAM
+Date: Tue, 17 Jun 2025 17:25:07 +0200
+Message-ID: <20250617152345.935801918@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250617152338.212798615@linuxfoundation.org>
 References: <20250617152338.212798615@linuxfoundation.org>
@@ -67,55 +67,35 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+From: Joel Stanley <joel@jms.id.au>
 
-[ Upstream commit 325c6a441ae1f8fcb1db9bb945b8bdbd3142141e ]
+[ Upstream commit e4f59f873c3ffe2a0150e11115a83e2dfb671dbf ]
 
-Follow up the expected way of describing the SFPB hwspinlock and merge
-hwspinlock node into corresponding syscon node, fixing several dt-schema
-warnings.
+The ASPEED devices have SRAM, but don't require it for basic function
+(or any function; there's no known users of the driver).
 
-Fixes: 24a9baf933dc ("ARM: dts: qcom: apq8064: Add hwmutex and SMEM nodes")
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Link: https://lore.kernel.org/r/20250318-fix-nexus-4-v2-7-bcedd1406790@oss.qualcomm.com
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Fixes: 8c2ed9bcfbeb ("arm: Add Aspeed machine")
+Signed-off-by: Joel Stanley <joel@jms.id.au>
+Link: https://patch.msgid.link/20250115103942.421429-1-joel@jms.id.au
+Signed-off-by: Andrew Jeffery <andrew@codeconstruct.com.au>
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/boot/dts/qcom/qcom-apq8064.dtsi | 13 ++++---------
- 1 file changed, 4 insertions(+), 9 deletions(-)
+ arch/arm/mach-aspeed/Kconfig | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/arch/arm/boot/dts/qcom/qcom-apq8064.dtsi b/arch/arm/boot/dts/qcom/qcom-apq8064.dtsi
-index 06251aba80d88..b8f160cfe8e15 100644
---- a/arch/arm/boot/dts/qcom/qcom-apq8064.dtsi
-+++ b/arch/arm/boot/dts/qcom/qcom-apq8064.dtsi
-@@ -213,12 +213,6 @@
- 		};
- 	};
- 
--	sfpb_mutex: hwmutex {
--		compatible = "qcom,sfpb-mutex";
--		syscon = <&sfpb_wrapper_mutex 0x604 0x4>;
--		#hwlock-cells = <1>;
--	};
--
- 	smem {
- 		compatible = "qcom,smem";
- 		memory-region = <&smem_region>;
-@@ -322,9 +316,10 @@
- 			pinctrl-0 = <&ps_hold>;
- 		};
- 
--		sfpb_wrapper_mutex: syscon@1200000 {
--			compatible = "syscon";
--			reg = <0x01200000 0x8000>;
-+		sfpb_mutex: hwmutex@1200600 {
-+			compatible = "qcom,sfpb-mutex";
-+			reg = <0x01200600 0x100>;
-+			#hwlock-cells = <1>;
- 		};
- 
- 		intc: interrupt-controller@2000000 {
+diff --git a/arch/arm/mach-aspeed/Kconfig b/arch/arm/mach-aspeed/Kconfig
+index 080019aa6fcd8..fcf287edd0e5e 100644
+--- a/arch/arm/mach-aspeed/Kconfig
++++ b/arch/arm/mach-aspeed/Kconfig
+@@ -2,7 +2,6 @@
+ menuconfig ARCH_ASPEED
+ 	bool "Aspeed BMC architectures"
+ 	depends on (CPU_LITTLE_ENDIAN && ARCH_MULTI_V5) || ARCH_MULTI_V6 || ARCH_MULTI_V7
+-	select SRAM
+ 	select WATCHDOG
+ 	select ASPEED_WATCHDOG
+ 	select MFD_SYSCON
 -- 
 2.39.5
 
