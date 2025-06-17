@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-154455-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153669-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5555EADDA43
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 19:16:03 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 71ED6ADD59E
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:23:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3511D5A53E8
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:55:00 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B846B7ADA36
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:16:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67EB428505F;
-	Tue, 17 Jun 2025 16:54:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5ED122EA170;
+	Tue, 17 Jun 2025 16:11:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CzFjpCWq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="avFTQQ/T"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 267322FA62A;
-	Tue, 17 Jun 2025 16:54:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A63A237162;
+	Tue, 17 Jun 2025 16:11:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750179242; cv=none; b=jbAt53tmxF8g7a7uNG7GwjxaHgK+ls99dNIwp06wmx15VNb1fAl1zX1TX83RcYJvxfmlhXpwjc5ARv3KXnruplkYwhxOs55eExwofePAy8552mD3Ylniz4QTdWQB1k8dtR67HuZitV3yF0wi3jOyTnrWMfauz1zpGiYo0kqm6jo=
+	t=1750176708; cv=none; b=pCfQAKFeoMYWIsmViMmyleFVO9UM/k/upUQ7q+LbMD2KI1P2lYT3qQE3zt5d8PyXTpuckIx1yEW7SoHn32x5CFQ4lfIpqXLDV1PbUZpfezNijFkQrTIHqGBQV4EaHX11CqFb/K1aWVPWIt2GwF38gXnlMGJks9ij+lCk1zNqS6Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750179242; c=relaxed/simple;
-	bh=Segj1BL+M2VPUB/rH7Wk0tyKWIx0xgVGc7nD2+KXFJ0=;
+	s=arc-20240116; t=1750176708; c=relaxed/simple;
+	bh=n/+VfxFcfcn3Hrf6HuLc0Y3S+WWT/On9G0vQLQXMVU4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=klj9OAHwqMPH0tBCxrMulmPa9uSGAfZyRk/hEW3uSX3z520kiY7zQQf+ookB+1I30vV+EXTYLejsAkuMwNqUnZ3MzSA6bFLi182Eqc/M0BAfma6MUF8oz05yCiVbVO4Ls10jACYAQ/oimLLadHoKgA0KnAGe04c4Lij22OdN4EY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CzFjpCWq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89D10C4CEE3;
-	Tue, 17 Jun 2025 16:54:01 +0000 (UTC)
+	 MIME-Version; b=hJrUFeZdUZ8SThgtDLyGdRKOul/0IFLizz6oUEsL9IdlwDTXkc9ndcKIg7JJN0aevuBAHndMgrxY+O4RMG3+WOkbT++wp85ujco3g3NUBpuGlP6loxdAGIJkHUWYySFypXpVgfwdpnHn05PkWaMLY21JVJvNzQ8WKFrQYUH/Cr0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=avFTQQ/T; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A003DC4CEE3;
+	Tue, 17 Jun 2025 16:11:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750179242;
-	bh=Segj1BL+M2VPUB/rH7Wk0tyKWIx0xgVGc7nD2+KXFJ0=;
+	s=korg; t=1750176708;
+	bh=n/+VfxFcfcn3Hrf6HuLc0Y3S+WWT/On9G0vQLQXMVU4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CzFjpCWqpWLhVZlKVI31c+GbaR4tK55ay1uJdP6OLGQnY+RF7xyGav1Kvgk3MVTS8
-	 1Z1S8IoeDs+RgGlzJbCv2Ey8HCF/FGOTWxv834iYFNe7dWREtNVhZ4pgJ99q8dgIL6
-	 WKlkIKyTFP2Ye2MYshctVIrGu5bDRKMmJVbdinxs=
+	b=avFTQQ/T3G+kobA9dfWpdKTOuFqSYZYgvz5Y+2fV5pPZ8hG8YP3d00ZktnHBPoxTV
+	 QXYk0CTSEpUOdr3455dab0yMTqTlkZ27Sc+LaJdDe91G9SszSg82ViJa8j9ewSaKSA
+	 L+yjrzyjEL9pQg2gVHaR/rKDGHhhaJGQvQH2Kn+0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
+	Vaishnav Achath <vaishnav.a@ti.com>,
+	Jai Luthra <j-luthra@ti.com>,
+	Vignesh Raghavendra <vigneshr@ti.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 691/780] drm/meson: use vclk_freq instead of pixel_freq in debug print
+Subject: [PATCH 6.6 284/356] arm64: dts: ti: k3-j721e-sk: Model CSI2RX connector mux
 Date: Tue, 17 Jun 2025 17:26:39 +0200
-Message-ID: <20250617152519.629472903@linuxfoundation.org>
+Message-ID: <20250617152349.620551373@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
-References: <20250617152451.485330293@linuxfoundation.org>
+In-Reply-To: <20250617152338.212798615@linuxfoundation.org>
+References: <20250617152338.212798615@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,48 +63,82 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+From: Vaishnav Achath <vaishnav.a@ti.com>
 
-[ Upstream commit faf2f8382088e8c74bd6eeb236c8c9190e61615e ]
+[ Upstream commit f87c88947396674586a42a163b72efa3999e3dee ]
 
-meson_vclk_vic_supported_freq() has a debug print which includes the
-pixel freq. However, within the whole function the pixel freq is
-irrelevant, other than checking the end of the params array. Switch to
-printing the vclk_freq which is being compared / matched against the
-inputs to the function to avoid confusion when analyzing error reports
-from users.
+J721E SK has the CSI2RX routed to a MIPI CSI connector and to 15-pin
+RPi camera connector through an analog mux with GPIO control, model that
+so that an overlay can control the mux state according to connected
+cameras. Also provide labels to the I2C mux bus instances so that a
+generic overlay can be used across multiple platforms.
 
-Fixes: e5fab2ec9ca4 ("drm/meson: vclk: add support for YUV420 setup")
-Signed-off-by: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
-Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
-Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
-Link: https://lore.kernel.org/r/20250606221031.3419353-1-martin.blumenstingl@googlemail.com
+J721E SK schematics: https://www.ti.com/lit/zip/sprr438
+
+Signed-off-by: Vaishnav Achath <vaishnav.a@ti.com>
+Reviewed-by: Jai Luthra <j-luthra@ti.com>
+Link: https://lore.kernel.org/r/20240215085518.552692-6-vaishnav.a@ti.com
+Signed-off-by: Vignesh Raghavendra <vigneshr@ti.com>
+Stable-dep-of: 97b67cc102dc ("arm64: dts: ti: k3-j721e-sk: Add DT nodes for power regulators")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/meson/meson_vclk.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ arch/arm64/boot/dts/ti/k3-j721e-sk.dts | 19 +++++++++++++++++--
+ 1 file changed, 17 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/meson/meson_vclk.c b/drivers/gpu/drm/meson/meson_vclk.c
-index 3325580d885d0..c4123bb958e4c 100644
---- a/drivers/gpu/drm/meson/meson_vclk.c
-+++ b/drivers/gpu/drm/meson/meson_vclk.c
-@@ -790,9 +790,9 @@ meson_vclk_vic_supported_freq(struct meson_drm *priv,
- 	}
+diff --git a/arch/arm64/boot/dts/ti/k3-j721e-sk.dts b/arch/arm64/boot/dts/ti/k3-j721e-sk.dts
+index ccacb65683b5b..d967b384071cf 100644
+--- a/arch/arm64/boot/dts/ti/k3-j721e-sk.dts
++++ b/arch/arm64/boot/dts/ti/k3-j721e-sk.dts
+@@ -286,6 +286,15 @@ tfp410_out: endpoint {
+ 			};
+ 		};
+ 	};
++
++	csi_mux: mux-controller {
++		compatible = "gpio-mux";
++		#mux-state-cells = <1>;
++		mux-gpios = <&main_gpio0 88 GPIO_ACTIVE_HIGH>;
++		idle-state = <0>;
++		pinctrl-names = "default";
++		pinctrl-0 = <&main_csi_mux_sel_pins_default>;
++	};
+ };
  
- 	for (i = 0 ; params[i].pixel_freq ; ++i) {
--		DRM_DEBUG_DRIVER("i = %d pixel_freq = %lluHz alt = %lluHz\n",
--				 i, params[i].pixel_freq,
--				 PIXEL_FREQ_1000_1001(params[i].pixel_freq));
-+		DRM_DEBUG_DRIVER("i = %d vclk_freq = %lluHz alt = %lluHz\n",
-+				 i, params[i].vclk_freq,
-+				 PIXEL_FREQ_1000_1001(params[i].vclk_freq));
- 		DRM_DEBUG_DRIVER("i = %d phy_freq = %lluHz alt = %lluHz\n",
- 				 i, params[i].phy_freq,
- 				 PHY_FREQ_1000_1001(params[i].phy_freq));
+ &main_pmx0 {
+@@ -352,6 +361,12 @@ J721E_IOPAD(0x214, PIN_OUTPUT, 4) /* (V4) MCAN1_TX.USB1_DRVVBUS */
+ 		>;
+ 	};
+ 
++	main_csi_mux_sel_pins_default: main-csi-mux-sel-default-pins {
++		pinctrl-single,pins = <
++			J721E_IOPAD(0x164, PIN_OUTPUT, 7) /* (V29) RGMII5_TD2 */
++		>;
++	};
++
+ 	dp0_pins_default: dp0-default-pins {
+ 		pinctrl-single,pins = <
+ 			J721E_IOPAD(0x1c4, PIN_INPUT, 5) /* SPI0_CS1.DP0_HPD */
+@@ -707,14 +722,14 @@ i2c-mux@70 {
+ 		reg = <0x70>;
+ 
+ 		/* CSI0 I2C */
+-		i2c@0 {
++		cam0_i2c: i2c@0 {
+ 			#address-cells = <1>;
+ 			#size-cells = <0>;
+ 			reg = <0>;
+ 		};
+ 
+ 		/* CSI1 I2C */
+-		i2c@1 {
++		cam1_i2c: i2c@1 {
+ 			#address-cells = <1>;
+ 			#size-cells = <0>;
+ 			reg = <1>;
 -- 
 2.39.5
 
