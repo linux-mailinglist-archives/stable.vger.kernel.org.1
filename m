@@ -1,38 +1,38 @@
-Return-Path: <stable+bounces-152845-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-152846-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B28C0ADCD9A
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 15:39:41 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8973DADCD9B
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 15:39:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 963C8188C167
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 13:38:43 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5ACFE1884431
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 13:38:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB6982E2646;
-	Tue, 17 Jun 2025 13:37:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 18FAC2356C6;
+	Tue, 17 Jun 2025 13:37:37 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31B422C08B8
-	for <stable@vger.kernel.org>; Tue, 17 Jun 2025 13:37:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45F7D21CA00
+	for <stable@vger.kernel.org>; Tue, 17 Jun 2025 13:37:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750167452; cv=none; b=XS4FNg7hzhemzDw83EbWIVq9vT+WWzmZGPqap9ZviWAD27pQkREPTIETUBm91DmUwiW/Zkl8hMyZDyf4EDzyP74r/TMBlkvUYUT/w2aSfnR5vsUocoxBZ7eyXKuIk+lWatu/dQpHEhVmnrqpi63htrTRjmKgyEUYr8UzL2CHbPk=
+	t=1750167456; cv=none; b=GeyS+ylnTm7ih97Si8e+EI2BfAfK+niMiowwEFOLufsEzmpD3hS8QLVbODXUihRdJVIviW3IXy5ibfR7sVCx1hBTqgHBhBW5c4YRV4fxYcCV2adoDgzAnZcCVpZTYER9QLQ8hz4IUj9sJhoMHAOYAGYAmds30lY635CTzdadGeM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750167452; c=relaxed/simple;
-	bh=UrVxdD15CWzA7wot5nb34iSJalGMyLmizhXK/wJXqkw=;
+	s=arc-20240116; t=1750167456; c=relaxed/simple;
+	bh=8UZSNU4qP+sMOACufynmkiAZlaqlrXoDJdwKjHyGBwg=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=SE4IukjI7EaEkJ4wkKHqS5RUL972PhpZWKpHIcJZ/VvUB85Xe49hO7KhZjZ38mDg4p3rXJJ4vFSRtBnoFqIZCQWe9lrQkGXwalYKnZNjfF+5GoDgWYb1q7JfbpZZ1hhtD7592JSy41B5YyO5mmTaRlR4q5pmIwMdE533DcvmzVw=
+	 MIME-Version; b=ASRPIq61lJS29yhdxA601ASUZoQmnQZUr+75QL3nW792AMH+UvrgYeL9ZFIhOCWysjBjgZZGhG97Vq6OxhoozNoQus4ArKHrvSKQi65ViYkEbiiXtnQ2kAC0dMkYNwLhkCHSkrjFrTf2D02Sn9AqIcObf9QbX0sp4K/WXuPB5D4=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id A2EDA1595;
-	Tue, 17 Jun 2025 06:37:09 -0700 (PDT)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id B46C91595;
+	Tue, 17 Jun 2025 06:37:13 -0700 (PDT)
 Received: from lakrids.cambridge.arm.com (usa-sjc-imap-foss1.foss.arm.com [10.121.207.14])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id E7E7A3F673;
-	Tue, 17 Jun 2025 06:37:28 -0700 (PDT)
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 06E343F673;
+	Tue, 17 Jun 2025 06:37:32 -0700 (PDT)
 From: Mark Rutland <mark.rutland@arm.com>
 To: linux-arm-kernel@lists.infradead.org
 Cc: broonie@kernel.org,
@@ -44,9 +44,9 @@ Cc: broonie@kernel.org,
 	stable@vger.kernel.org,
 	tabba@google.com,
 	will@kernel.org
-Subject: [PATCH 1/7] KVM: arm64: VHE: Synchronize restore of host debug registers
-Date: Tue, 17 Jun 2025 14:37:12 +0100
-Message-Id: <20250617133718.4014181-2-mark.rutland@arm.com>
+Subject: [PATCH 2/7] KVM: arm64: VHE: Synchronize CPTR trap deactivation
+Date: Tue, 17 Jun 2025 14:37:13 +0100
+Message-Id: <20250617133718.4014181-3-mark.rutland@arm.com>
 X-Mailer: git-send-email 2.30.2
 In-Reply-To: <20250617133718.4014181-1-mark.rutland@arm.com>
 References: <20250617133718.4014181-1-mark.rutland@arm.com>
@@ -58,18 +58,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-When KVM runs in non-protected VHE mode, there's no context
-synchronization event between __debug_switch_to_host() restoring the
-host debug registers and __kvm_vcpu_run() unmasking debug exceptions.
-Due to this, it's theoretically possible for the host to take an
-unexpected debug exception due to the stale guest configuration.
+Currently there is no ISB between __deactivate_cptr_traps() disabling
+traps that affect EL2 and fpsimd_lazy_switch_to_host() manipulating
+registers potentially affected by CPTR traps.
 
-This cannot happen in NVHE/HVHE mode as debug exceptions are masked in
-the hyp code, and the exception return to the host will provide the
-necessary context synchronization before debug exceptions can be taken.
+When NV is not in use, this is safe because the relevant registers are
+only accessed when guest_owns_fp_regs() && vcpu_has_sve(vcpu), and this
+also implies that SVE traps affecting EL2 have been deactivated prior to
+__guest_entry().
 
-For now, avoid the problem by adding an ISB after VHE hyp code restores
-the host debug registers.
+When NV is in use, a guest hypervisor may have configured SVE traps for
+a nested context, and so it is necessary to have an ISB between
+__deactivate_cptr_traps() and fpsimd_lazy_switch_to_host().
+
+Due to the current lack of an ISB, when a guest hypervisor enables SVE
+traps in CPTR, the host can take an unexpected SVE trap from within
+fpsimd_lazy_switch_to_host(), e.g.
+
+| Unhandled 64-bit el1h sync exception on CPU1, ESR 0x0000000066000000 -- SVE
+| CPU: 1 UID: 0 PID: 164 Comm: kvm-vcpu-0 Not tainted 6.15.0-rc4-00138-ga05e0f012c05 #3 PREEMPT
+| Hardware name: FVP Base RevC (DT)
+| pstate: 604023c9 (nZCv DAIF +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+| pc : __kvm_vcpu_run+0x6f4/0x844
+| lr : __kvm_vcpu_run+0x150/0x844
+| sp : ffff800083903a60
+| x29: ffff800083903a90 x28: ffff000801f4a300 x27: 0000000000000000
+| x26: 0000000000000000 x25: ffff000801f90000 x24: ffff000801f900f0
+| x23: ffff800081ff7720 x22: 0002433c807d623f x21: ffff000801f90000
+| x20: ffff00087f730730 x19: 0000000000000000 x18: 0000000000000000
+| x17: 0000000000000000 x16: 0000000000000000 x15: 0000000000000000
+| x14: 0000000000000000 x13: 0000000000000000 x12: 0000000000000000
+| x11: 0000000000000000 x10: 0000000000000000 x9 : 0000000000000000
+| x8 : 0000000000000000 x7 : 0000000000000000 x6 : ffff000801f90d70
+| x5 : 0000000000001000 x4 : ffff8007fd739000 x3 : ffff000801f90000
+| x2 : 0000000000000000 x1 : 00000000000003cc x0 : ffff800082f9d000
+| Kernel panic - not syncing: Unhandled exception
+| CPU: 1 UID: 0 PID: 164 Comm: kvm-vcpu-0 Not tainted 6.15.0-rc4-00138-ga05e0f012c05 #3 PREEMPT
+| Hardware name: FVP Base RevC (DT)
+| Call trace:
+|  show_stack+0x18/0x24 (C)
+|  dump_stack_lvl+0x60/0x80
+|  dump_stack+0x18/0x24
+|  panic+0x168/0x360
+|  __panic_unhandled+0x68/0x74
+|  el1h_64_irq_handler+0x0/0x24
+|  el1h_64_sync+0x6c/0x70
+|  __kvm_vcpu_run+0x6f4/0x844 (P)
+|  kvm_arm_vcpu_enter_exit+0x64/0xa0
+|  kvm_arch_vcpu_ioctl_run+0x21c/0x870
+|  kvm_vcpu_ioctl+0x1a8/0x9d0
+|  __arm64_sys_ioctl+0xb4/0xf4
+|  invoke_syscall+0x48/0x104
+|  el0_svc_common.constprop.0+0x40/0xe0
+|  do_el0_svc+0x1c/0x28
+|  el0_svc+0x30/0xcc
+|  el0t_64_sync_handler+0x10c/0x138
+|  el0t_64_sync+0x198/0x19c
+| SMP: stopping secondary CPUs
+| Kernel Offset: disabled
+| CPU features: 0x0000,000002c0,02df4fb9,97ee773f
+| Memory Limit: none
+| ---[ end Kernel panic - not syncing: Unhandled exception ]---
+
+Fix this by adding an ISB between __deactivate_traps() and
+fpsimd_lazy_switch_to_host().
 
 Signed-off-by: Mark Rutland <mark.rutland@arm.com>
 Cc: Catalin Marinas <catalin.marinas@arm.com>
@@ -78,25 +130,24 @@ Cc: Marc Zyngier <maz@kernel.org>
 Cc: Mark Brown <broonie@kernel.org>
 Cc: Oliver Upton <oliver.upton@linux.dev>
 Cc: Will Deacon <will@kernel.org>
-Cc: stable@vger.kernel.org
 ---
- arch/arm64/kvm/hyp/include/hyp/debug-sr.h | 3 +++
+ arch/arm64/kvm/hyp/vhe/switch.c | 3 +++
  1 file changed, 3 insertions(+)
 
-diff --git a/arch/arm64/kvm/hyp/include/hyp/debug-sr.h b/arch/arm64/kvm/hyp/include/hyp/debug-sr.h
-index 502a5b73ee70c..73881e1dc2679 100644
---- a/arch/arm64/kvm/hyp/include/hyp/debug-sr.h
-+++ b/arch/arm64/kvm/hyp/include/hyp/debug-sr.h
-@@ -167,6 +167,9 @@ static inline void __debug_switch_to_host_common(struct kvm_vcpu *vcpu)
+diff --git a/arch/arm64/kvm/hyp/vhe/switch.c b/arch/arm64/kvm/hyp/vhe/switch.c
+index 09df2b42bc1b7..20df44b49ceb8 100644
+--- a/arch/arm64/kvm/hyp/vhe/switch.c
++++ b/arch/arm64/kvm/hyp/vhe/switch.c
+@@ -667,6 +667,9 @@ static int __kvm_vcpu_run_vhe(struct kvm_vcpu *vcpu)
  
- 	__debug_save_state(guest_dbg, guest_ctxt);
- 	__debug_restore_state(host_dbg, host_ctxt);
+ 	__deactivate_traps(vcpu);
+ 
++	/* Ensure CPTR trap deactivation has taken effect */
++	isb();
 +
-+	if (has_vhe())
-+		isb();
- }
+ 	fpsimd_lazy_switch_to_host(vcpu);
  
- #endif /* __ARM64_KVM_HYP_DEBUG_SR_H__ */
+ 	sysreg_restore_host_state_vhe(host_ctxt);
 -- 
 2.30.2
 
