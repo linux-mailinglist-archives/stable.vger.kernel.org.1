@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-153431-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-154438-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD0A5ADD49D
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:12:17 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id CF579ADD93C
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 19:04:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 397C0407B91
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:03:03 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 209101BC2910
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:54:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 802022DFF38;
-	Tue, 17 Jun 2025 15:59:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D89002DF3E9;
+	Tue, 17 Jun 2025 16:53:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hsuX/PqP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="koIbH1dg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38F252F234A;
-	Tue, 17 Jun 2025 15:59:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 957A82DE1E5;
+	Tue, 17 Jun 2025 16:53:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750175940; cv=none; b=ctAGe2aTGT1xRVywyI2iMY9TdchNycfSWE8xoGfx3cIt4pkdjzb5rWK9iCmWtQD8c1vJq25y9JxfZw0xZBRsTxteOejo07IK9+bHaRvjvnuUrJZKAsVurDmfnjZ+/6id/MZNdHRchf1TQncgxDdUo+DpDTr5Uf9+cZDRQhl9ha8=
+	t=1750179192; cv=none; b=Pt7253BRPVcnOlAi3xbDJkPvBZYx8dxbgZVvnlhJyOEMECt0WYRBc0GNRJYDYEg+7Z1Y5lhYolm7D8jisNTonHixFwEiyH9YXr3iElMz/nIb0Y3PM3X0nqsO7hC0V5qgm5hr4FWsTg4U5QaVLy29JZu5t/9lsOAEI2hn0K0Jpd8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750175940; c=relaxed/simple;
-	bh=WbGsL23eaXyfikdiWm8rf2kG6/MEd1nYmLu3S0xWVeg=;
+	s=arc-20240116; t=1750179192; c=relaxed/simple;
+	bh=eoa/O7dZTYiV2bwc6ZzqXOym/QSWuAiXQ0qulVU3Eak=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=kCXI1TA0k4nhIoaSXoaOy1t9U+x/DAl7TdBc4GVZLBKrvVxa6iJq9lQ658jf5/EPnMpMU9nNmnE4W7Lx9QE1Yj+7qCxXQT8dc/2hrKxxozSMB+XHJ/2yiDKAV0//Y+lmK8i7VvDGvS0AogEmKOJEKOfhFlsMY11v/MwwXg9JUMg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hsuX/PqP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9AE19C4CEE3;
-	Tue, 17 Jun 2025 15:58:59 +0000 (UTC)
+	 MIME-Version:Content-Type; b=lPrfA8O5/ZBHN9Gti4czG3KDRxb0DUkFGRwiUBrnBEJPB+xhs9poU8tIvuEnc6yoA/VRUIXkDznzw7HOqai+Nds/KtPS8OOLTmPXLz+niYCz8pgDrhO7Gi8EtVvRUlxzlbolNaHi/OONmtz8tPyDerysquYQyIPsOtPdBjOK2kw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=koIbH1dg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01FF9C4CEE3;
+	Tue, 17 Jun 2025 16:53:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750175940;
-	bh=WbGsL23eaXyfikdiWm8rf2kG6/MEd1nYmLu3S0xWVeg=;
+	s=korg; t=1750179192;
+	bh=eoa/O7dZTYiV2bwc6ZzqXOym/QSWuAiXQ0qulVU3Eak=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hsuX/PqPw8qKrqz1A91nSmwic98UVNQb2EiSLTl1vtRYbA4VQ/pOemGJ8ndRFhTHI
-	 nqfu41XmmoSnaz54Eju3QoWsOLvLaoGI4MuBa4c76bAgdIL+Oo8IpyJRsUjRPuPtAm
-	 wpT7ToGqSZHYohy2JC2xISiQvRR1MjIjkRSUR5q4=
+	b=koIbH1dgc/fKvJkhx029lqzuyhGNmMXVQigXnheK59mdeuXi9yeM3rDGerbvOUWyy
+	 KSFDtBYLnd2kfyoovyZbm7jRM85XTwmctKQxWLw99GVUij9Tnrg+S4pKGgaY3x3iI3
+	 bEbVrPfX0MmQEgy/zWBDe2qev0IxVOuMTOnbPxHg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
-	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	=?UTF-8?q?Amadeusz=20S=C5=82awi=C5=84ski?= <amadeuszx.slawinski@linux.intel.com>,
+	Cezary Rojewski <cezary.rojewski@intel.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 228/356] PCI/DPC: Initialize aer_err_info before using it
-Date: Tue, 17 Jun 2025 17:25:43 +0200
-Message-ID: <20250617152347.377102924@linuxfoundation.org>
+Subject: [PATCH 6.15 636/780] ASoC: Intel: avs: Fix deadlock when the failing IPC is SET_D0IX
+Date: Tue, 17 Jun 2025 17:25:44 +0200
+Message-ID: <20250617152517.376675933@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152338.212798615@linuxfoundation.org>
-References: <20250617152338.212798615@linuxfoundation.org>
+In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
+References: <20250617152451.485330293@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,45 +64,44 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bjorn Helgaas <bhelgaas@google.com>
+From: Cezary Rojewski <cezary.rojewski@intel.com>
 
-[ Upstream commit a424b598e6a6c1e69a2bb801d6fd16e805ab2c38 ]
+[ Upstream commit 9ad1f3cd0d60444c69948854c7e50d2a61b63755 ]
 
-Previously the struct aer_err_info "info" was allocated on the stack
-without being initialized, so it contained junk except for the fields we
-explicitly set later.
+The procedure handling IPC timeouts and EXCEPTION_CAUGHT notification
+shall cancel any D0IX work before proceeding with DSP recovery. If
+SET_D0IX called from delayed_work is the failing IPC the procedure will
+deadlock. Conditionally skip cancelling the work to fix that.
 
-Initialize "info" at declaration so it starts as all zeros.
-
-Fixes: 8aefa9b0d910 ("PCI/DPC: Print AER status in DPC event handling")
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Tested-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
-Reviewed-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Link: https://patch.msgid.link/20250522232339.1525671-2-helgaas@kernel.org
+Fixes: 335c4cbd201d ("ASoC: Intel: avs: D0ix power state support")
+Reviewed-by: Amadeusz Sławiński <amadeuszx.slawinski@linux.intel.com>
+Signed-off-by: Cezary Rojewski <cezary.rojewski@intel.com>
+Link: https://patch.msgid.link/20250530141025.2942936-3-cezary.rojewski@intel.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/pcie/dpc.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ sound/soc/intel/avs/ipc.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/pci/pcie/dpc.c b/drivers/pci/pcie/dpc.c
-index a5cec2a4e057d..3c3ecb9cf57af 100644
---- a/drivers/pci/pcie/dpc.c
-+++ b/drivers/pci/pcie/dpc.c
-@@ -263,7 +263,7 @@ static int dpc_get_aer_uncorrect_severity(struct pci_dev *dev,
- void dpc_process_error(struct pci_dev *pdev)
- {
- 	u16 cap = pdev->dpc_cap, status, source, reason, ext_reason;
--	struct aer_err_info info;
-+	struct aer_err_info info = {};
+diff --git a/sound/soc/intel/avs/ipc.c b/sound/soc/intel/avs/ipc.c
+index 08ed9d96738a0..0314f9d4ea5f4 100644
+--- a/sound/soc/intel/avs/ipc.c
++++ b/sound/soc/intel/avs/ipc.c
+@@ -169,7 +169,9 @@ static void avs_dsp_exception_caught(struct avs_dev *adev, union avs_notify_msg
  
- 	pci_read_config_word(pdev, cap + PCI_EXP_DPC_STATUS, &status);
- 	pci_read_config_word(pdev, cap + PCI_EXP_DPC_SOURCE_ID, &source);
+ 	dev_crit(adev->dev, "communication severed, rebooting dsp..\n");
+ 
+-	cancel_delayed_work_sync(&ipc->d0ix_work);
++	/* Avoid deadlock as the exception may be the response to SET_D0IX. */
++	if (current_work() != &ipc->d0ix_work.work)
++		cancel_delayed_work_sync(&ipc->d0ix_work);
+ 	ipc->in_d0ix = false;
+ 	/* Re-enabled on recovery completion. */
+ 	pm_runtime_disable(adev->dev);
 -- 
 2.39.5
 
