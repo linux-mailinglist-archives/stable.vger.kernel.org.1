@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-154217-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-154527-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A7CD1ADD94D
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 19:04:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 896E8ADDA68
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 19:18:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C16D61947E01
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:45:39 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 247BE19E3DA4
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:58:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF4DA2FA630;
-	Tue, 17 Jun 2025 16:41:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 666442FA62F;
+	Tue, 17 Jun 2025 16:58:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="boCyeBBq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q/2NpI0L"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B8142FA62D;
-	Tue, 17 Jun 2025 16:41:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22BEC2FA623;
+	Tue, 17 Jun 2025 16:58:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750178482; cv=none; b=SWSizmeSxVuDSa/MmBF+1t3ZdyJntEpNoqnBdvvztF7w3CFl1cDeW9nj5+Ebp6w5j5AJqXSK+2Tqbt2z9jt5tBHRq792BZE1mpQ9DUcLEo53Dw+1svgnnNS5puT7wH+gMy8UGoofvFR7iwZm3O0tDqH/kQmhmRqamx/G8/Xr4v0=
+	t=1750179499; cv=none; b=rFxV8WImByp0fCxc02Lc/ypnrogtRM4m2F7VvnhIWtKhneiWpoMj/aogZ/KiHGJdU99SO12qFPXoMNFl7RAWSm7NC+BHSjizsGifhGTMAcnYrzXdF43kVmeUhr0yZV7XQfFHGbwe2kTZ/k50LY8RuEGmHPDpx/P2QAwi17Obk4s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750178482; c=relaxed/simple;
-	bh=l8rxJ8RkEfOpnW7BQ3irEEWjkuv6xPNbgXLiOmIMsdg=;
+	s=arc-20240116; t=1750179499; c=relaxed/simple;
+	bh=qrX32344hNXTxO6sjI6ijmL5yqMv5SD7rjrbj8fUPCs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OVqOthnixUKrljpQLmsqGDdhBsoLWqQFsCiz8ksAEcmE+/sxMh9rpiNSfP08tGJFYfOwqrApGudPBnyNTJ8VZz3+dj6DbkikpElikS3ylePe8OKe/1RoC150CW8APh9jPf8RdGlAeWiv31Kqv803xRQ4bgd9VcaCvp3R3MPIUUE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=boCyeBBq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8E53C4CEE3;
-	Tue, 17 Jun 2025 16:41:21 +0000 (UTC)
+	 MIME-Version; b=QYGzy2V98OB1qPG3m1O53bTN0pm4zVJ0tK7a4P2grSBJbZDZBUvINkSIPMbIuzu2o793yXXRzxn97txzUvREX7gMPET4Qf9MjdAzHH7opNPQAMVuIUGLvAwn4XQ9fsF6HrHgR6jRkLVP4PzrgMhvKwSVTshqUZMe8yKXyTb1LkA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q/2NpI0L; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39F15C4CEE3;
+	Tue, 17 Jun 2025 16:58:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750178482;
-	bh=l8rxJ8RkEfOpnW7BQ3irEEWjkuv6xPNbgXLiOmIMsdg=;
+	s=korg; t=1750179496;
+	bh=qrX32344hNXTxO6sjI6ijmL5yqMv5SD7rjrbj8fUPCs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=boCyeBBqQGMw8oDTnUTnOxD4D30F5Iwv0ohJ61uHd2mfC6nOG1oviWINBSfwgP+hF
-	 vTjkWRfWtounO0ebxvxC/8ppVSgSFJ75hHunH+0zlDgqvLFkfLcFPovYFpFlusZfXa
-	 gMhkujomzd96muMQk+HWHH1WdB5fzcyyD0cnV3ts=
+	b=q/2NpI0LNDRf14yteBb0nKrjwnfLMKnjUOS3JEXDWDSig42WPTB6VAu4U+hNEv4Mn
+	 30A5T3Z1OAMBEbazm9/341iQTM90K+Ln1BpSgY5glAIBFHYxlCm7NiVjg6YJSrX0k3
+	 U2P+Jro0tHcWUNOPqyA2PUJnqN4ibeWk71Ak8vAM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"H. Peter Anvin (Intel)" <hpa@zytor.com>,
-	"Xin Li (Intel)" <xin@zytor.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Sohil Mehta <sohil.mehta@intel.com>
-Subject: [PATCH 6.12 505/512] x86/fred/signal: Prevent immediate repeat of single step trap on return from SIGTRAP handler
+	Allison Karlitskaya <lis@redhat.com>,
+	Christian Brauner <brauner@kernel.org>,
+	Al Viro <viro@zeniv.linux.org.uk>
+Subject: [PATCH 6.15 763/780] Dont propagate mounts into detached trees
 Date: Tue, 17 Jun 2025 17:27:51 +0200
-Message-ID: <20250617152440.082336050@linuxfoundation.org>
+Message-ID: <20250617152522.582231332@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
-References: <20250617152419.512865572@linuxfoundation.org>
+In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
+References: <20250617152451.485330293@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,129 +62,114 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xin Li (Intel) <xin@zytor.com>
+From: Al Viro <viro@zeniv.linux.org.uk>
 
-commit e34dbbc85d64af59176fe59fad7b4122f4330fe2 upstream.
+commit 3b5260d12b1fe76b566fe182de8abc586b827ed0 upstream.
 
-Clear the software event flag in the augmented SS to prevent immediate
-repeat of single step trap on return from SIGTRAP handler if the trap
-flag (TF) is set without an external debugger attached.
+All versions up to 6.14 did not propagate mount events into detached
+tree.  Shortly after 6.14 a merge of vfs-6.15-rc1.mount.namespace
+(130e696aa68b) has changed that.
 
-Following is a typical single-stepping flow for a user process:
+Unfortunately, that has caused userland regressions (reported in
+https://lore.kernel.org/all/CAOYeF9WQhFDe+BGW=Dp5fK8oRy5AgZ6zokVyTj1Wp4EUiYgt4w@mail.gmail.com/)
 
-1) The user process is prepared for single-stepping by setting
-   RFLAGS.TF = 1.
-2) When any instruction in user space completes, a #DB is triggered.
-3) The kernel handles the #DB and returns to user space, invoking the
-   SIGTRAP handler with RFLAGS.TF = 0.
-4) After the SIGTRAP handler finishes, the user process performs a
-   sigreturn syscall, restoring the original state, including
-   RFLAGS.TF = 1.
-5) Goto step 2.
+Straight revert wouldn't be an option - in particular, the variant in 6.14
+had a bug that got fixed in d1ddc6f1d9f0 ("fix IS_MNT_PROPAGATING uses")
+and we don't want to bring the bug back.
 
-According to the FRED specification:
+This is a modification of manual revert posted by Christian, with changes
+needed to avoid reintroducing the breakage in scenario described in
+d1ddc6f1d9f0.
 
-A) Bit 17 in the augmented SS is designated as the software event
-   flag, which is set to 1 for FRED event delivery of SYSCALL,
-   SYSENTER, or INT n.
-B) If bit 17 of the augmented SS is 1 and ERETU would result in
-   RFLAGS.TF = 1, a single-step trap will be pending upon completion
-   of ERETU.
-
-In step 4) above, the software event flag is set upon the sigreturn
-syscall, and its corresponding ERETU would restore RFLAGS.TF = 1.
-This combination causes a pending single-step trap upon completion of
-ERETU.  Therefore, another #DB is triggered before any user space
-instruction is executed, which leads to an infinite loop in which the
-SIGTRAP handler keeps being invoked on the same user space IP.
-
-Fixes: 14619d912b65 ("x86/fred: FRED entry/exit and dispatch code")
-Suggested-by: H. Peter Anvin (Intel) <hpa@zytor.com>
-Signed-off-by: Xin Li (Intel) <xin@zytor.com>
-Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
-Tested-by: Sohil Mehta <sohil.mehta@intel.com>
-Cc:stable@vger.kernel.org
-Link: https://lore.kernel.org/all/20250609084054.2083189-2-xin%40zytor.com
+Cc: stable@vger.kernel.org
+Reported-by: Allison Karlitskaya <lis@redhat.com>
+Tested-by: Allison Karlitskaya <lis@redhat.com>
+Acked-by: Christian Brauner <brauner@kernel.org>
+Co-developed-by: Christian Brauner <brauner@kernel.org>
+Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/include/asm/sighandling.h |   22 ++++++++++++++++++++++
- arch/x86/kernel/signal_32.c        |    4 ++++
- arch/x86/kernel/signal_64.c        |    4 ++++
- 3 files changed, 30 insertions(+)
+ fs/mount.h     |    5 -----
+ fs/namespace.c |   15 ++-------------
+ fs/pnode.c     |    4 ++--
+ 3 files changed, 4 insertions(+), 20 deletions(-)
 
---- a/arch/x86/include/asm/sighandling.h
-+++ b/arch/x86/include/asm/sighandling.h
-@@ -24,4 +24,26 @@ int ia32_setup_rt_frame(struct ksignal *
- int x64_setup_rt_frame(struct ksignal *ksig, struct pt_regs *regs);
- int x32_setup_rt_frame(struct ksignal *ksig, struct pt_regs *regs);
+--- a/fs/mount.h
++++ b/fs/mount.h
+@@ -7,10 +7,6 @@
  
-+/*
-+ * To prevent immediate repeat of single step trap on return from SIGTRAP
-+ * handler if the trap flag (TF) is set without an external debugger attached,
-+ * clear the software event flag in the augmented SS, ensuring no single-step
-+ * trap is pending upon ERETU completion.
-+ *
-+ * Note, this function should be called in sigreturn() before the original
-+ * state is restored to make sure the TF is read from the entry frame.
-+ */
-+static __always_inline void prevent_single_step_upon_eretu(struct pt_regs *regs)
-+{
-+	/*
-+	 * If the trap flag (TF) is set, i.e., the sigreturn() SYSCALL instruction
-+	 * is being single-stepped, do not clear the software event flag in the
-+	 * augmented SS, thus a debugger won't skip over the following instruction.
-+	 */
-+#ifdef CONFIG_X86_FRED
-+	if (!(regs->flags & X86_EFLAGS_TF))
-+		regs->fred_ss.swevent = 0;
-+#endif
-+}
-+
- #endif /* _ASM_X86_SIGHANDLING_H */
---- a/arch/x86/kernel/signal_32.c
-+++ b/arch/x86/kernel/signal_32.c
-@@ -152,6 +152,8 @@ SYSCALL32_DEFINE0(sigreturn)
- 	struct sigframe_ia32 __user *frame = (struct sigframe_ia32 __user *)(regs->sp-8);
- 	sigset_t set;
+ extern struct list_head notify_list;
  
-+	prevent_single_step_upon_eretu(regs);
-+
- 	if (!access_ok(frame, sizeof(*frame)))
- 		goto badframe;
- 	if (__get_user(set.sig[0], &frame->sc.oldmask)
-@@ -175,6 +177,8 @@ SYSCALL32_DEFINE0(rt_sigreturn)
- 	struct rt_sigframe_ia32 __user *frame;
- 	sigset_t set;
+-typedef __u32 __bitwise mntns_flags_t;
+-
+-#define MNTNS_PROPAGATING	((__force mntns_flags_t)(1 << 0))
+-
+ struct mnt_namespace {
+ 	struct ns_common	ns;
+ 	struct mount *	root;
+@@ -37,7 +33,6 @@ struct mnt_namespace {
+ 	struct rb_node		mnt_ns_tree_node; /* node in the mnt_ns_tree */
+ 	struct list_head	mnt_ns_list; /* entry in the sequential list of mounts namespace */
+ 	refcount_t		passive; /* number references not pinning @mounts */
+-	mntns_flags_t		mntns_flags;
+ } __randomize_layout;
  
-+	prevent_single_step_upon_eretu(regs);
-+
- 	frame = (struct rt_sigframe_ia32 __user *)(regs->sp - 4);
+ struct mnt_pcp {
+--- a/fs/namespace.c
++++ b/fs/namespace.c
+@@ -3673,7 +3673,7 @@ static int do_move_mount(struct path *ol
+ 	if (!(attached ? check_mnt(old) : is_anon_ns(ns)))
+ 		goto out;
  
- 	if (!access_ok(frame, sizeof(*frame)))
---- a/arch/x86/kernel/signal_64.c
-+++ b/arch/x86/kernel/signal_64.c
-@@ -250,6 +250,8 @@ SYSCALL_DEFINE0(rt_sigreturn)
- 	sigset_t set;
- 	unsigned long uc_flags;
+-	if (is_anon_ns(ns)) {
++	if (is_anon_ns(ns) && ns == p->mnt_ns) {
+ 		/*
+ 		 * Ending up with two files referring to the root of the
+ 		 * same anonymous mount namespace would cause an error
+@@ -3681,16 +3681,7 @@ static int do_move_mount(struct path *ol
+ 		 * twice into the mount tree which would be rejected
+ 		 * later. But be explicit about it right here.
+ 		 */
+-		if ((is_anon_ns(p->mnt_ns) && ns == p->mnt_ns))
+-			goto out;
+-
+-		/*
+-		 * If this is an anonymous mount tree ensure that mount
+-		 * propagation can detect mounts that were just
+-		 * propagated to the target mount tree so we don't
+-		 * propagate onto them.
+-		 */
+-		ns->mntns_flags |= MNTNS_PROPAGATING;
++		goto out;
+ 	} else if (is_anon_ns(p->mnt_ns)) {
+ 		/*
+ 		 * Don't allow moving an attached mount tree to an
+@@ -3747,8 +3738,6 @@ static int do_move_mount(struct path *ol
+ 	if (attached)
+ 		put_mountpoint(old_mp);
+ out:
+-	if (is_anon_ns(ns))
+-		ns->mntns_flags &= ~MNTNS_PROPAGATING;
+ 	unlock_mount(mp);
+ 	if (!err) {
+ 		if (attached) {
+--- a/fs/pnode.c
++++ b/fs/pnode.c
+@@ -231,8 +231,8 @@ static int propagate_one(struct mount *m
+ 	/* skip if mountpoint isn't visible in m */
+ 	if (!is_subdir(dest_mp->m_dentry, m->mnt.mnt_root))
+ 		return 0;
+-	/* skip if m is in the anon_ns we are emptying */
+-	if (m->mnt_ns->mntns_flags & MNTNS_PROPAGATING)
++	/* skip if m is in the anon_ns */
++	if (is_anon_ns(m->mnt_ns))
+ 		return 0;
  
-+	prevent_single_step_upon_eretu(regs);
-+
- 	frame = (struct rt_sigframe __user *)(regs->sp - sizeof(long));
- 	if (!access_ok(frame, sizeof(*frame)))
- 		goto badframe;
-@@ -366,6 +368,8 @@ COMPAT_SYSCALL_DEFINE0(x32_rt_sigreturn)
- 	sigset_t set;
- 	unsigned long uc_flags;
- 
-+	prevent_single_step_upon_eretu(regs);
-+
- 	frame = (struct rt_sigframe_x32 __user *)(regs->sp - 8);
- 
- 	if (!access_ok(frame, sizeof(*frame)))
+ 	if (peers(m, last_dest)) {
 
 
 
