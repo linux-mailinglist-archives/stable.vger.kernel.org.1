@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-153611-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-154456-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 09218ADD4C9
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:14:22 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A1E9CADDA51
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 19:16:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4D5AA7AE258
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:10:45 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3B71B1BC2EE6
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:55:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08A0B2ECEA8;
-	Tue, 17 Jun 2025 16:08:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C3B62FA62C;
+	Tue, 17 Jun 2025 16:54:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r/fl2jzM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DKS+f07D"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B82212EB5CE;
-	Tue, 17 Jun 2025 16:08:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 472762FA63F;
+	Tue, 17 Jun 2025 16:54:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750176521; cv=none; b=iteMBqJmNsOTB3aEHE0YLljON4YU5h+BVIWzAbrndGu8Tc7RCQysMFg7eNsrgy0vXm9QqR5ew2ZY27gS/vJHwXabAopnWCqF4fQG3qF3Mw0FRNRWtnYTDIawUITrjKcGppy+RYpD/YX8wbxfiWIYZ1cQkOZ5IcxnFj/JSbfQeeE=
+	t=1750179245; cv=none; b=XHjemx+KYfiDN2PsKrsK/jEC/m4bfFjxjpqNKtyJhOFd8z2zIXGTqKEeViKpKxiXBHshKI/e7Jok7YM+PskOUPB7UDx5LxEKZ0GbQlscHHIRSrI8G682Un7+l2bdCkOcyKug/D19P/K+pWw8i3TR5pMHAXe7LlXXt5UlAwgAcBk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750176521; c=relaxed/simple;
-	bh=ZR6/XaJYkrzXRsvpLu2l6cpfvncMxHe0sEXmqHZnm7o=;
+	s=arc-20240116; t=1750179245; c=relaxed/simple;
+	bh=c6Wfu8UdQSPId0RWfTfSDoJu16dYEeM/r3/a+KSlvkI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=D9P7N4sQ5esB2zUWi+V3bgW2KCzIapRZt4WybxAkXeTEYeXYJlJzzHV69QjQ+fZSmFtZDfmEefneNm+tdU1cRx0wnZY1AK/NdC/fKWM2Cm+NsegGTZ4s9wPdLYUtfwGIFPTCam6jp8lJnTD/Aiihkvkhshah61XzHle2cv1qVHg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r/fl2jzM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B9E4C4CEE3;
-	Tue, 17 Jun 2025 16:08:40 +0000 (UTC)
+	 MIME-Version; b=Z4ADDuyBlQYr+1+gpRR3CtxGBuAeUu0RoqtvxCwUGDTzBvkU3WchLQQI0rHP2wIVelgn25TjNRvC47aDytbz6+h2c3cp3uyNTy5dsN2nnfeiZOEhpWxHyPAw/RPS6wCWyvagtgJkNsGPSljMRCGQi4NEzWF7q30NKdZIuzcDpps=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DKS+f07D; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE27BC4CEE3;
+	Tue, 17 Jun 2025 16:54:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750176521;
-	bh=ZR6/XaJYkrzXRsvpLu2l6cpfvncMxHe0sEXmqHZnm7o=;
+	s=korg; t=1750179245;
+	bh=c6Wfu8UdQSPId0RWfTfSDoJu16dYEeM/r3/a+KSlvkI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=r/fl2jzMNp4Q2khnIKD72Cixxhu3xOS5fPE+pWeJ6tdUU78CkR8RG65xOGNDCMvVF
-	 zFhfcT/Pmk4y24lqMWuFOn0mMVPDLPSUo/pJ449NdaFBaAAHq9K997RTHtGTq1xxJY
-	 iHoZJOqSzmy5chFuSmrlpat3UZRc4DdMFu77I5Is=
+	b=DKS+f07D5/8mKKg2nHEsjYG6k7Sp1RWywq4Q/PcO/jz/1JySIdKVgOafoZnBAO9/Z
+	 +YlU6UnhWd5s8NeIflLlBBC+YhpZZs7ePgy19LyqHHsN6lziIA6tEUCy8jr2C+lI2t
+	 brJy1Kg+4wl/8EzQAOXBlTghpGnJ4tS5v7vLgBOQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Beleswar Padhi <b-padhi@ti.com>,
-	Bhavya Kapoor <b-kapoor@ti.com>,
-	Vignesh Raghavendra <vigneshr@ti.com>,
+	Christian Hewitt <christianshewitt@gmail.com>,
+	Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 285/356] arm64: dts: ti: k3-j721e-sk: Add support for multiple CAN instances
+Subject: [PATCH 6.15 692/780] drm/meson: fix more rounding issues with 59.94Hz modes
 Date: Tue, 17 Jun 2025 17:26:40 +0200
-Message-ID: <20250617152349.659382890@linuxfoundation.org>
+Message-ID: <20250617152519.669636281@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152338.212798615@linuxfoundation.org>
-References: <20250617152338.212798615@linuxfoundation.org>
+In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
+References: <20250617152451.485330293@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,181 +63,136 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Beleswar Padhi <b-padhi@ti.com>
+From: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
 
-[ Upstream commit 021d3d5f0741e5393a7a110ac909fc746b1e0a4d ]
+[ Upstream commit 0cee6c4d3518b2e757aedae78771f17149f57653 ]
 
-CAN instance 0 in the mcu domain is brought on the J721E-SK board
-through header J1. Thus, add its respective transceiver 1 dt node to add
-support for this CAN instance.
+Commit 1017560164b6 ("drm/meson: use unsigned long long / Hz for
+frequency types") attempts to resolve video playback using 59.94Hz.
+ using YUV420 by changing the clock calculation to use
+Hz instead of kHz (thus yielding more precision).
 
-CAN instances 0, 5 and 9 in the main domain are brought on the J721E-SK
-board through headers J5, J6 and J2 respectively. Thus, add their
-respective transceivers 2, 3 and 4 dt nodes to add support for these CAN
-instances.
+The basic calculation itself is correct, however the comparisions in
+meson_vclk_vic_supported_freq() and meson_vclk_setup() don't work
+anymore for 59.94Hz modes (using the freq * 1000 / 1001 logic). For
+example, drm/edid specifies a 593407kHz clock for 3840x2160@59.94Hz.
+With the mentioend commit we convert this to Hz. Then meson_vclk
+tries to find a matchig "params" entry (as the clock setup code
+currently only supports specific frequencies) by taking the venc_freq
+from the params and calculating the "alt frequency" (used for the
+59.94Hz modes) from it, which is:
+  (594000000Hz * 1000) / 1001 = 593406593Hz
 
-Signed-off-by: Beleswar Padhi <b-padhi@ti.com>
-Reviewed-by: Bhavya Kapoor <b-kapoor@ti.com>
-Link: https://lore.kernel.org/r/20240430131512.1327283-1-b-padhi@ti.com
-Signed-off-by: Vignesh Raghavendra <vigneshr@ti.com>
-Stable-dep-of: 97b67cc102dc ("arm64: dts: ti: k3-j721e-sk: Add DT nodes for power regulators")
+Similar calculation is applied to the phy_freq (TMDS clock), which is 10
+times the pixel clock.
+
+Implement a new meson_vclk_freqs_are_matching_param() function whose
+purpose is to compare if the requested and calculated frequencies. They
+may not match exactly (for the reasons mentioned above). Allow the
+clocks to deviate slightly to make the 59.94Hz modes again.
+
+Fixes: 1017560164b6 ("drm/meson: use unsigned long long / Hz for frequency types")
+Reported-by: Christian Hewitt <christianshewitt@gmail.com>
+Signed-off-by: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
+Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
+Link: https://lore.kernel.org/r/20250609202751.962208-1-martin.blumenstingl@googlemail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/ti/k3-j721e-sk.dts | 116 +++++++++++++++++++++++++
- 1 file changed, 116 insertions(+)
+ drivers/gpu/drm/meson/meson_vclk.c | 55 ++++++++++++++++++------------
+ 1 file changed, 34 insertions(+), 21 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/ti/k3-j721e-sk.dts b/arch/arm64/boot/dts/ti/k3-j721e-sk.dts
-index d967b384071cf..5e03a7f58faa4 100644
---- a/arch/arm64/boot/dts/ti/k3-j721e-sk.dts
-+++ b/arch/arm64/boot/dts/ti/k3-j721e-sk.dts
-@@ -210,6 +210,42 @@ vdd_sd_dv_alt: gpio-regulator-tps659411 {
- 			 <3300000 0x1>;
- 	};
+diff --git a/drivers/gpu/drm/meson/meson_vclk.c b/drivers/gpu/drm/meson/meson_vclk.c
+index c4123bb958e4c..dfe0c28a0f054 100644
+--- a/drivers/gpu/drm/meson/meson_vclk.c
++++ b/drivers/gpu/drm/meson/meson_vclk.c
+@@ -110,10 +110,7 @@
+ #define HDMI_PLL_LOCK		BIT(31)
+ #define HDMI_PLL_LOCK_G12A	(3 << 30)
  
-+	transceiver1: can-phy1 {
-+		compatible = "ti,tcan1042";
-+		#phy-cells = <0>;
-+		max-bitrate = <5000000>;
-+		pinctrl-names = "default";
-+		pinctrl-0 = <&mcu_mcan0_gpio_pins_default>;
-+		standby-gpios = <&wkup_gpio0 3 GPIO_ACTIVE_HIGH>;
-+	};
-+
-+	transceiver2: can-phy2 {
-+		compatible = "ti,tcan1042";
-+		#phy-cells = <0>;
-+		max-bitrate = <5000000>;
-+		pinctrl-names = "default";
-+		pinctrl-0 = <&main_mcan0_gpio_pins_default>;
-+		standby-gpios = <&main_gpio0 65 GPIO_ACTIVE_HIGH>;
-+	};
-+
-+	transceiver3: can-phy3 {
-+		compatible = "ti,tcan1042";
-+		#phy-cells = <0>;
-+		max-bitrate = <5000000>;
-+		pinctrl-names = "default";
-+		pinctrl-0 = <&main_mcan5_gpio_pins_default>;
-+		standby-gpios = <&main_gpio0 66 GPIO_ACTIVE_HIGH>;
-+	};
-+
-+	transceiver4: can-phy4 {
-+		compatible = "ti,tcan1042";
-+		#phy-cells = <0>;
-+		max-bitrate = <5000000>;
-+		pinctrl-names = "default";
-+		pinctrl-0 = <&main_mcan9_gpio_pins_default>;
-+		standby-gpios = <&main_gpio0 67 GPIO_ACTIVE_HIGH>;
-+	};
-+
- 	dp_pwr_3v3: fixedregulator-dp-prw {
- 		compatible = "regulator-fixed";
- 		regulator-name = "dp-pwr";
-@@ -367,6 +403,45 @@ J721E_IOPAD(0x164, PIN_OUTPUT, 7) /* (V29) RGMII5_TD2 */
- 		>;
- 	};
+-#define PIXEL_FREQ_1000_1001(_freq)	\
+-	DIV_ROUND_CLOSEST_ULL((_freq) * 1000ULL, 1001ULL)
+-#define PHY_FREQ_1000_1001(_freq)	\
+-	(PIXEL_FREQ_1000_1001(DIV_ROUND_DOWN_ULL(_freq, 10ULL)) * 10)
++#define FREQ_1000_1001(_freq)	DIV_ROUND_CLOSEST_ULL((_freq) * 1000ULL, 1001ULL)
  
-+	main_mcan0_pins_default: main-mcan0-default-pins {
-+		pinctrl-single,pins = <
-+			J721E_IOPAD(0x208, PIN_INPUT, 0) /* (W5) MCAN0_RX */
-+			J721E_IOPAD(0x20c, PIN_OUTPUT, 0) /* (W6) MCAN0_TX */
-+		>;
-+	};
-+
-+	main_mcan0_gpio_pins_default: main-mcan0-gpio-default-pins {
-+		pinctrl-single,pins = <
-+			J721E_IOPAD(0x108, PIN_INPUT, 7) /* (AD27) PRG0_PRU1_GPO2.GPIO0_65 */
-+		>;
-+	};
-+
-+	main_mcan5_pins_default: main-mcan5-default-pins {
-+		pinctrl-single,pins = <
-+			J721E_IOPAD(0x050, PIN_INPUT, 6) /* (AE21) PRG1_PRU0_GPO18.MCAN5_RX */
-+			J721E_IOPAD(0x04c, PIN_OUTPUT, 6) /* (AJ21) PRG1_PRU0_GPO17.MCAN5_TX */
-+		>;
-+	};
-+
-+	main_mcan5_gpio_pins_default: main-mcan5-gpio-default-pins {
-+		pinctrl-single,pins = <
-+			J721E_IOPAD(0x10c, PIN_INPUT, 7) /* (AC25) PRG0_PRU1_GPO3.GPIO0_66 */
-+		>;
-+	};
-+
-+	main_mcan9_pins_default: main-mcan9-default-pins {
-+		pinctrl-single,pins = <
-+			J721E_IOPAD(0x0d0, PIN_INPUT, 6) /* (AC27) PRG0_PRU0_GPO8.MCAN9_RX */
-+			J721E_IOPAD(0x0cc, PIN_OUTPUT, 6) /* (AC28) PRG0_PRU0_GPO7.MCAN9_TX */
-+		>;
-+	};
-+
-+	main_mcan9_gpio_pins_default: main-mcan9-gpio-default-pins {
-+		pinctrl-single,pins = <
-+			J721E_IOPAD(0x110, PIN_INPUT, 7) /* (AD29) PRG0_PRU1_GPO4.GPIO0_67 */
-+		>;
-+	};
-+
- 	dp0_pins_default: dp0-default-pins {
- 		pinctrl-single,pins = <
- 			J721E_IOPAD(0x1c4, PIN_INPUT, 5) /* SPI0_CS1.DP0_HPD */
-@@ -549,6 +624,19 @@ J721E_WKUP_IOPAD(0xfc, PIN_INPUT_PULLUP, 0) /* (H24) WKUP_I2C0_SDA */
- 		>;
- 	};
+ /* VID PLL Dividers */
+ enum {
+@@ -772,6 +769,36 @@ static void meson_hdmi_pll_generic_set(struct meson_drm *priv,
+ 		  pll_freq);
+ }
  
-+	mcu_mcan0_pins_default: mcu-mcan0-default-pins {
-+		pinctrl-single,pins = <
-+			J721E_WKUP_IOPAD(0x0ac, PIN_INPUT, 0) /* (C29) MCU_MCAN0_RX */
-+			J721E_WKUP_IOPAD(0x0a8, PIN_OUTPUT, 0) /* (D29) MCU_MCAN0_TX */
-+		>;
-+	};
++static bool meson_vclk_freqs_are_matching_param(unsigned int idx,
++						unsigned long long phy_freq,
++						unsigned long long vclk_freq)
++{
++	DRM_DEBUG_DRIVER("i = %d vclk_freq = %lluHz alt = %lluHz\n",
++			 idx, params[idx].vclk_freq,
++			 FREQ_1000_1001(params[idx].vclk_freq));
++	DRM_DEBUG_DRIVER("i = %d phy_freq = %lluHz alt = %lluHz\n",
++			 idx, params[idx].phy_freq,
++			 FREQ_1000_1001(params[idx].phy_freq));
 +
-+	mcu_mcan0_gpio_pins_default: mcu-mcan0-gpio-default-pins {
-+		pinctrl-single,pins = <
-+			J721E_WKUP_IOPAD(0x0bc, PIN_INPUT, 7) /* (F27) WKUP_GPIO0_3 */
-+		>;
-+	};
++	/* Match strict frequency */
++	if (phy_freq == params[idx].phy_freq &&
++	    vclk_freq == params[idx].vclk_freq)
++		return true;
 +
- 	/* Reset for M.2 M Key slot on PCIe1  */
- 	mkey_reset_pins_default: mkey-reset-pns-default-pins {
- 		pinctrl-single,pins = <
-@@ -957,6 +1045,34 @@ &pcie1_rc {
- 	num-lanes = <2>;
- };
++	/* Match 1000/1001 variant: vclk deviation has to be less than 1kHz
++	 * (drm EDID is defined in 1kHz steps, so everything smaller must be
++	 * rounding error) and the PHY freq deviation has to be less than
++	 * 10kHz (as the TMDS clock is 10 times the pixel clock, so anything
++	 * smaller must be rounding error as well).
++	 */
++	if (abs(vclk_freq - FREQ_1000_1001(params[idx].vclk_freq)) < 1000 &&
++	    abs(phy_freq - FREQ_1000_1001(params[idx].phy_freq)) < 10000)
++		return true;
++
++	/* no match */
++	return false;
++}
++
+ enum drm_mode_status
+ meson_vclk_vic_supported_freq(struct meson_drm *priv,
+ 			      unsigned long long phy_freq,
+@@ -790,19 +817,7 @@ meson_vclk_vic_supported_freq(struct meson_drm *priv,
+ 	}
  
-+&mcu_mcan0 {
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&mcu_mcan0_pins_default>;
-+	phys = <&transceiver1>;
-+	status = "okay";
-+};
-+
-+&main_mcan0 {
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&main_mcan0_pins_default>;
-+	phys = <&transceiver2>;
-+	status = "okay";
-+};
-+
-+&main_mcan5 {
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&main_mcan5_pins_default>;
-+	phys = <&transceiver3>;
-+	status = "okay";
-+};
-+
-+&main_mcan9 {
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&main_mcan9_pins_default>;
-+	phys = <&transceiver4>;
-+	status = "okay";
-+};
-+
- &ufs_wrapper {
- 	status = "disabled";
- };
+ 	for (i = 0 ; params[i].pixel_freq ; ++i) {
+-		DRM_DEBUG_DRIVER("i = %d vclk_freq = %lluHz alt = %lluHz\n",
+-				 i, params[i].vclk_freq,
+-				 PIXEL_FREQ_1000_1001(params[i].vclk_freq));
+-		DRM_DEBUG_DRIVER("i = %d phy_freq = %lluHz alt = %lluHz\n",
+-				 i, params[i].phy_freq,
+-				 PHY_FREQ_1000_1001(params[i].phy_freq));
+-		/* Match strict frequency */
+-		if (phy_freq == params[i].phy_freq &&
+-		    vclk_freq == params[i].vclk_freq)
+-			return MODE_OK;
+-		/* Match 1000/1001 variant */
+-		if (phy_freq == PHY_FREQ_1000_1001(params[i].phy_freq) &&
+-		    vclk_freq == PIXEL_FREQ_1000_1001(params[i].vclk_freq))
++		if (meson_vclk_freqs_are_matching_param(i, phy_freq, vclk_freq))
+ 			return MODE_OK;
+ 	}
+ 
+@@ -1075,10 +1090,8 @@ void meson_vclk_setup(struct meson_drm *priv, unsigned int target,
+ 	}
+ 
+ 	for (freq = 0 ; params[freq].pixel_freq ; ++freq) {
+-		if ((phy_freq == params[freq].phy_freq ||
+-		     phy_freq == PHY_FREQ_1000_1001(params[freq].phy_freq)) &&
+-		    (vclk_freq == params[freq].vclk_freq ||
+-		     vclk_freq == PIXEL_FREQ_1000_1001(params[freq].vclk_freq))) {
++		if (meson_vclk_freqs_are_matching_param(freq, phy_freq,
++							vclk_freq)) {
+ 			if (vclk_freq != params[freq].vclk_freq)
+ 				vic_alternate_clock = true;
+ 			else
 -- 
 2.39.5
 
