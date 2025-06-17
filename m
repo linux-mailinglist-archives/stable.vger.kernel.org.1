@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-154026-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153527-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC695ADD76A
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:44:38 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 152FCADD506
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:16:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 905A54A62C8
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:36:45 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EDA7517E215
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:07:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 680092ED153;
-	Tue, 17 Jun 2025 16:31:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 37B812EA15F;
+	Tue, 17 Jun 2025 16:04:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u2CZ4ael"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uG7nMpzn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22AB22EE266;
-	Tue, 17 Jun 2025 16:31:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E79822DFF0B;
+	Tue, 17 Jun 2025 16:04:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750177868; cv=none; b=lD6OasJm54YGuGbDEf7xJNUPgSnYHFlx+xW096tFl0RQjrhDEmF3C0B0BuCFS17jL2Ovz4eJ85OljYOMwNj/ZTf9UKHgZ2AYQLR5of9P7z+Ml4FM2P6gpbkcJD7wUypKF0JhQbzoDxOMfTM5pFnYVz3ZNRfTixgF1ObGjfJawzs=
+	t=1750176252; cv=none; b=ZSb8ukA1IgoZofrSKq9Np0YLdCI+4RLWaYZNXuZ0H/nYcxpRdZ7HQT1c2PY4ZJ6c/w6CMrC+rSzVaMDpFrvPbOk1AXKlhSfpDEPgh8GiAVekATUEuGMbR+Q7YclqhJH9PKBkpp3A1Dm3YkLC4cRZbpeKnUl4z5hJ6Cqw75ub8u4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750177868; c=relaxed/simple;
-	bh=8/jLO4rak0ikUCgUhtsvBiQ/r89ghrWYezOxhOFrJiM=;
+	s=arc-20240116; t=1750176252; c=relaxed/simple;
+	bh=zgpHgqHRR7kNBRth4rwlsU6Jb7dbkrigYTNsM9K7/sE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bmHoUPL5bumCEVzteSNixpHM21Ek5o/DMlZqeR5NZbruA6chPniZtlanOgNHM72ZJ+82nA9c1uo2MIeZblQAzo2m/a1n0KX+pZxDGe/DQs0Lvnsw4wgjzuo1diOegxUnrZQ1DzfZ7C9MkiD6Q+G3kGRD5BYrMbPEPDEs9KumnaE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u2CZ4ael; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85173C4CEE7;
-	Tue, 17 Jun 2025 16:31:07 +0000 (UTC)
+	 MIME-Version; b=KIJt0BmdJlfKDG5yzfK0A2cqOuFDJxS1j9F6JKJ3ta3XK/DB4sMAxnMDTPozR/vaXI5MeSFl/8tfq+jiHg07QsLn6IzRvj/6pl+tjyeKPQFL0M+8OgtzTUHA4odxRTbKQXqdE1kaVk9/gsi4tqEzhdfR3EpmWmQr0kYq3f6Qcj8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uG7nMpzn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53ECEC4CEE3;
+	Tue, 17 Jun 2025 16:04:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750177868;
-	bh=8/jLO4rak0ikUCgUhtsvBiQ/r89ghrWYezOxhOFrJiM=;
+	s=korg; t=1750176251;
+	bh=zgpHgqHRR7kNBRth4rwlsU6Jb7dbkrigYTNsM9K7/sE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=u2CZ4aelQWhjI29VWTJPLGMPB24JkvtiPZ0WDwAS6Q5rJVMo6FvtRS9gTtuFAo4TI
-	 7sPj1ekiZx8yNUUnUni0Mzh4rhSzQhJdbwczBm21rd8Xdjv/d/QV/ar/+/dpi74Wot
-	 QXtFNcTQEeL1jgquW1/geDjYI8H9HoL4+oEFHlKA=
+	b=uG7nMpznEaIMaDews1ZCQhcQHBJAAdTaaif1i1ht7iqYOpAymITOk9QxdETPCxVx+
+	 GbpiVpPTRUlwMTZSWgFvJ2Z6b6hfepYSzuWMIz8lNnZTjD8+ZSJ8Lydk6rHJNc4J7D
+	 sOpswC161uiyQxkjTl2Qc/shBxF5oRYXZnlyhZSE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Nicolas Frattaroli <nicolas.frattaroli@collabora.com>,
-	Shawn Lin <shawn.lin@rock-chips.com>,
-	Ulf Hansson <ulf.hansson@linaro.org>,
+	Jinjian Song <jinjian.song@fibocom.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 408/512] mmc: sdhci-of-dwcmshc: add PD workaround on RK3576
+Subject: [PATCH 6.6 259/356] net: wwan: t7xx: Fix napi rx poll issue
 Date: Tue, 17 Jun 2025 17:26:14 +0200
-Message-ID: <20250617152436.107626283@linuxfoundation.org>
+Message-ID: <20250617152348.629853286@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
-References: <20250617152419.512865572@linuxfoundation.org>
+In-Reply-To: <20250617152338.212798615@linuxfoundation.org>
+References: <20250617152338.212798615@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,120 +62,105 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nicolas Frattaroli <nicolas.frattaroli@collabora.com>
+From: Jinjian Song <jinjian.song@fibocom.com>
 
-[ Upstream commit 08f959759e1e6e9c4b898c51a7d387ac3480630b ]
+[ Upstream commit 905fe0845bb27e4eed2ca27ea06e6c4847f1b2b1 ]
 
-RK3576's power domains have a peculiar design where the PD_NVM power
-domain, of which the sdhci controller is a part, seemingly does not have
-idempotent runtime disable/enable. The end effect is that if PD_NVM gets
-turned off by the generic power domain logic because all the devices
-depending on it are suspended, then the next time the sdhci device is
-unsuspended, it'll hang the SoC as soon as it tries accessing the CQHCI
-registers.
+When driver handles the napi rx polling requests, the netdev might
+have been released by the dellink logic triggered by the disconnect
+operation on user plane. However, in the logic of processing skb in
+polling, an invalid netdev is still being used, which causes a panic.
 
-RK3576's UFS support needed a new dev_pm_genpd_rpm_always_on function
-added to the generic power domains API to handle what appears to be a
-similar hardware design.
+BUG: kernel NULL pointer dereference, address: 00000000000000f1
+Oops: 0000 [#1] PREEMPT SMP NOPTI
+RIP: 0010:dev_gro_receive+0x3a/0x620
+[...]
+Call Trace:
+ <IRQ>
+ ? __die_body+0x68/0xb0
+ ? page_fault_oops+0x379/0x3e0
+ ? exc_page_fault+0x4f/0xa0
+ ? asm_exc_page_fault+0x22/0x30
+ ? __pfx_t7xx_ccmni_recv_skb+0x10/0x10 [mtk_t7xx (HASH:1400 7)]
+ ? dev_gro_receive+0x3a/0x620
+ napi_gro_receive+0xad/0x170
+ t7xx_ccmni_recv_skb+0x48/0x70 [mtk_t7xx (HASH:1400 7)]
+ t7xx_dpmaif_napi_rx_poll+0x590/0x800 [mtk_t7xx (HASH:1400 7)]
+ net_rx_action+0x103/0x470
+ irq_exit_rcu+0x13a/0x310
+ sysvec_apic_timer_interrupt+0x56/0x90
+ </IRQ>
 
-Use this new function to ask for the same treatment in the sdhci
-controller by giving rk3576 its own platform data with its own postinit
-function. The benefit of doing this instead of marking the power domains
-always on in the power domain core is that we only do this if we know
-the platform we're running on actually uses the sdhci controller. For
-others, keeping PD_NVM always on would be a waste, as they won't run
-into this specific issue. The only other IP in PD_NVM that could be
-affected is FSPI0. If it gets a mainline driver, it will probably want
-to do the same thing.
-
-Acked-by: Adrian Hunter <adrian.hunter@intel.com>
-Signed-off-by: Nicolas Frattaroli <nicolas.frattaroli@collabora.com>
-Reviewed-by: Shawn Lin <shawn.lin@rock-chips.com>
-Fixes: cfee1b507758 ("pmdomain: rockchip: Add support for RK3576 SoC")
-Cc: <stable@vger.kernel.org> # v6.15+
-Link: https://lore.kernel.org/r/20250423-rk3576-emmc-fix-v3-1-0bf80e29967f@collabora.com
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Fixes: 5545b7b9f294 ("net: wwan: t7xx: Add NAPI support")
+Signed-off-by: Jinjian Song <jinjian.song@fibocom.com>
+Link: https://patch.msgid.link/20250530031648.5592-1-jinjian.song@fibocom.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mmc/host/sdhci-of-dwcmshc.c | 40 +++++++++++++++++++++++++++++
- 1 file changed, 40 insertions(+)
+ drivers/net/wwan/t7xx/t7xx_netdev.c | 11 ++++++-----
+ 1 file changed, 6 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/mmc/host/sdhci-of-dwcmshc.c b/drivers/mmc/host/sdhci-of-dwcmshc.c
-index 8fd80dac11bfd..bf29aad082a19 100644
---- a/drivers/mmc/host/sdhci-of-dwcmshc.c
-+++ b/drivers/mmc/host/sdhci-of-dwcmshc.c
-@@ -17,6 +17,7 @@
- #include <linux/module.h>
- #include <linux/of.h>
- #include <linux/platform_device.h>
-+#include <linux/pm_domain.h>
- #include <linux/pm_runtime.h>
- #include <linux/reset.h>
- #include <linux/sizes.h>
-@@ -787,6 +788,29 @@ static void dwcmshc_rk35xx_postinit(struct sdhci_host *host, struct dwcmshc_priv
- 	}
+diff --git a/drivers/net/wwan/t7xx/t7xx_netdev.c b/drivers/net/wwan/t7xx/t7xx_netdev.c
+index 3ef4a8a4f8fdb..d879424093b78 100644
+--- a/drivers/net/wwan/t7xx/t7xx_netdev.c
++++ b/drivers/net/wwan/t7xx/t7xx_netdev.c
+@@ -296,7 +296,7 @@ static int t7xx_ccmni_wwan_newlink(void *ctxt, struct net_device *dev, u32 if_id
+ 	ccmni->ctlb = ctlb;
+ 	ccmni->dev = dev;
+ 	atomic_set(&ccmni->usage, 0);
+-	ctlb->ccmni_inst[if_id] = ccmni;
++	WRITE_ONCE(ctlb->ccmni_inst[if_id], ccmni);
+ 
+ 	ret = register_netdevice(dev);
+ 	if (ret)
+@@ -318,6 +318,7 @@ static void t7xx_ccmni_wwan_dellink(void *ctxt, struct net_device *dev, struct l
+ 	if (WARN_ON(ctlb->ccmni_inst[if_id] != ccmni))
+ 		return;
+ 
++	WRITE_ONCE(ctlb->ccmni_inst[if_id], NULL);
+ 	unregister_netdevice(dev);
  }
  
-+static void dwcmshc_rk3576_postinit(struct sdhci_host *host, struct dwcmshc_priv *dwc_priv)
-+{
-+	struct device *dev = mmc_dev(host->mmc);
-+	int ret;
-+
-+	/*
-+	 * This works around the design of the RK3576's power domains, which
-+	 * makes the PD_NVM power domain, which the sdhci controller on the
-+	 * RK3576 is in, never come back the same way once it's run-time
-+	 * suspended once. This can happen during early kernel boot if no driver
-+	 * is using either PD_NVM or its child power domain PD_SDGMAC for a
-+	 * short moment, leading to it being turned off to save power. By
-+	 * keeping it on, sdhci suspending won't lead to PD_NVM becoming a
-+	 * candidate for getting turned off.
-+	 */
-+	ret = dev_pm_genpd_rpm_always_on(dev, true);
-+	if (ret && ret != -EOPNOTSUPP)
-+		dev_warn(dev, "failed to set PD rpm always on, SoC may hang later: %pe\n",
-+			 ERR_PTR(ret));
-+
-+	dwcmshc_rk35xx_postinit(host, dwc_priv);
-+}
-+
- static int th1520_execute_tuning(struct sdhci_host *host, u32 opcode)
- {
- 	struct sdhci_pltfm_host *pltfm_host = sdhci_priv(host);
-@@ -1218,6 +1242,18 @@ static const struct dwcmshc_pltfm_data sdhci_dwcmshc_rk35xx_pdata = {
- 	.postinit = dwcmshc_rk35xx_postinit,
- };
+@@ -413,7 +414,7 @@ static void t7xx_ccmni_recv_skb(struct t7xx_ccmni_ctrl *ccmni_ctlb, struct sk_bu
  
-+static const struct dwcmshc_pltfm_data sdhci_dwcmshc_rk3576_pdata = {
-+	.pdata = {
-+		.ops = &sdhci_dwcmshc_rk35xx_ops,
-+		.quirks = SDHCI_QUIRK_CAP_CLOCK_BASE_BROKEN |
-+			  SDHCI_QUIRK_BROKEN_TIMEOUT_VAL,
-+		.quirks2 = SDHCI_QUIRK2_PRESET_VALUE_BROKEN |
-+			   SDHCI_QUIRK2_CLOCK_DIV_ZERO_BROKEN,
-+	},
-+	.init = dwcmshc_rk35xx_init,
-+	.postinit = dwcmshc_rk3576_postinit,
-+};
-+
- static const struct dwcmshc_pltfm_data sdhci_dwcmshc_th1520_pdata = {
- 	.pdata = {
- 		.ops = &sdhci_dwcmshc_th1520_ops,
-@@ -1316,6 +1352,10 @@ static const struct of_device_id sdhci_dwcmshc_dt_ids[] = {
- 		.compatible = "rockchip,rk3588-dwcmshc",
- 		.data = &sdhci_dwcmshc_rk35xx_pdata,
- 	},
-+	{
-+		.compatible = "rockchip,rk3576-dwcmshc",
-+		.data = &sdhci_dwcmshc_rk3576_pdata,
-+	},
- 	{
- 		.compatible = "rockchip,rk3568-dwcmshc",
- 		.data = &sdhci_dwcmshc_rk35xx_pdata,
+ 	skb_cb = T7XX_SKB_CB(skb);
+ 	netif_id = skb_cb->netif_idx;
+-	ccmni = ccmni_ctlb->ccmni_inst[netif_id];
++	ccmni = READ_ONCE(ccmni_ctlb->ccmni_inst[netif_id]);
+ 	if (!ccmni) {
+ 		dev_kfree_skb(skb);
+ 		return;
+@@ -435,7 +436,7 @@ static void t7xx_ccmni_recv_skb(struct t7xx_ccmni_ctrl *ccmni_ctlb, struct sk_bu
+ 
+ static void t7xx_ccmni_queue_tx_irq_notify(struct t7xx_ccmni_ctrl *ctlb, int qno)
+ {
+-	struct t7xx_ccmni *ccmni = ctlb->ccmni_inst[0];
++	struct t7xx_ccmni *ccmni = READ_ONCE(ctlb->ccmni_inst[0]);
+ 	struct netdev_queue *net_queue;
+ 
+ 	if (netif_running(ccmni->dev) && atomic_read(&ccmni->usage) > 0) {
+@@ -447,7 +448,7 @@ static void t7xx_ccmni_queue_tx_irq_notify(struct t7xx_ccmni_ctrl *ctlb, int qno
+ 
+ static void t7xx_ccmni_queue_tx_full_notify(struct t7xx_ccmni_ctrl *ctlb, int qno)
+ {
+-	struct t7xx_ccmni *ccmni = ctlb->ccmni_inst[0];
++	struct t7xx_ccmni *ccmni = READ_ONCE(ctlb->ccmni_inst[0]);
+ 	struct netdev_queue *net_queue;
+ 
+ 	if (atomic_read(&ccmni->usage) > 0) {
+@@ -465,7 +466,7 @@ static void t7xx_ccmni_queue_state_notify(struct t7xx_pci_dev *t7xx_dev,
+ 	if (ctlb->md_sta != MD_STATE_READY)
+ 		return;
+ 
+-	if (!ctlb->ccmni_inst[0]) {
++	if (!READ_ONCE(ctlb->ccmni_inst[0])) {
+ 		dev_warn(&t7xx_dev->pdev->dev, "No netdev registered yet\n");
+ 		return;
+ 	}
 -- 
 2.39.5
 
