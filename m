@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-153947-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-154390-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 77B62ADD7AC
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:47:56 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id AA9C7ADD903
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 19:01:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8D88E19E5291
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:31:47 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 16ACE19E69AF
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:52:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 991992ED85B;
-	Tue, 17 Jun 2025 16:26:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9AE202FA63E;
+	Tue, 17 Jun 2025 16:50:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dzqeHv6k"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s0X5uIna"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 528012ED855;
-	Tue, 17 Jun 2025 16:26:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5749A2FA624;
+	Tue, 17 Jun 2025 16:50:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750177615; cv=none; b=C0S5R6lA4U5rf3nO95HhS4FPd7hEkbgc11eOLIirSNh2HTxxabZdDzoOwo9jYAOFw6gvSDs4891SL8rAl8kzs5zI/DddTi/eBH6eEfIalXWezWAZblv6WH7R0k2550BYEAugQl8sCsCQAYutGP1YcXVT+AV2lU4yfhBaG9TCFas=
+	t=1750179040; cv=none; b=G4U3G/rLTDc9tZ0V7u+bKqSxZi/k8A0azJD/qSwlWo8OEKKYOOzrbqADvEn+EAWqYBfkZGGXh7i8s+ZJGQyGM4bqzj0lo4ii221tLUO4Edry2mYIQsGzHJRXq8QhKzXg8TNGbgIIVSC8cZGVMudizSwAgKebk1ZTGo44w5dPYxI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750177615; c=relaxed/simple;
-	bh=JDleZXXE9v1/hS+3wMmS9M3ZMzGiwJBcTIaFBIKpL3c=;
+	s=arc-20240116; t=1750179040; c=relaxed/simple;
+	bh=eOwLZ8ZDWuzc4LdFgN3c/RpwKTVqu4usey1RcgSkSdU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jFPHuY+yEx0fkyGIVYzjDVV2hzDGZ/xSoKBjv4mKP4lzCZXIL3Ch4WkI1Il1NZLEDEY9r10mRaOovueZ9WxB1NPu063IxcO3GpX1tGIvy9EzO1IFyaDwnv+o8GsZR/VRHG8xwbZnqhwsCchXhkERp1m/H0bxzUr8pgIwbvlIHWU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dzqeHv6k; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76DB3C4CEE3;
-	Tue, 17 Jun 2025 16:26:53 +0000 (UTC)
+	 MIME-Version:Content-Type; b=F10fJjjogJ6c8CFlxPxPWlhElK4d7Ju1Va3Tqvko03JeLmXdv1yCmmDAHiAn2zomBXSFChU8S2Mvy3/PPaxrlMPACtJN0lz0hm1Ffw5cfqjjWAaAqeE32up4PJFRkmDJubhwMixT1RpJGMyPXi8mv/wiVflUf65ZXSyNssLOYcg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s0X5uIna; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2AF6C4CEE3;
+	Tue, 17 Jun 2025 16:50:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750177613;
-	bh=JDleZXXE9v1/hS+3wMmS9M3ZMzGiwJBcTIaFBIKpL3c=;
+	s=korg; t=1750179040;
+	bh=eOwLZ8ZDWuzc4LdFgN3c/RpwKTVqu4usey1RcgSkSdU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dzqeHv6ktheW/MsTbdkqweUPqbByjCIio6s8jOicIa1THLvDCUi5t9ltzmp9KJJ3Q
-	 1Yp4OoFJATNEbD05vm+qv2mU+1rezm2RrgtQ8LehkUjPATloXsj3PhPC+vOB02qYsH
-	 mzFxGzjVKaOYFFSUC73hemkpXgNXyuzFYDUBXPBw=
+	b=s0X5uInad6vmvuJdBVP6hbV/KFXKGTkkPKx62nVl8NmCT/WyfMRv28RBVDT8hnx/B
+	 cz/5KeDhSeesZlHbEefVxUFh5i6rebvpkF3XbCWbqiDylzTb8E8v8mZ8EBpCrwAKmC
+	 RqkYIs9yecWQ5UzQQj+z58U+X0nTDEfbFIH6zaNo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bui Quang Minh <minhquangbui99@gmail.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Daniele Ceraolo Spurio <daniele.ceraolospurio@intel.com>,
+	John Harrison <John.C.Harrison@Intel.com>,
+	=?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 371/512] selftests: net: build net/lib dependency in all target
+Subject: [PATCH 6.15 629/780] drm/xe/pxp: Use the correct define in the set_property_funcs array
 Date: Tue, 17 Jun 2025 17:25:37 +0200
-Message-ID: <20250617152434.623002031@linuxfoundation.org>
+Message-ID: <20250617152517.090842716@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
-References: <20250617152419.512865572@linuxfoundation.org>
+In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
+References: <20250617152451.485330293@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,44 +61,46 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bui Quang Minh <minhquangbui99@gmail.com>
+From: Daniele Ceraolo Spurio <daniele.ceraolospurio@intel.com>
 
-[ Upstream commit d3f2a9587ebe68f5067f9ff624f9a83dfb911f60 ]
+[ Upstream commit 6bf4d5649230ca65725ec4793333fb5eba18d646 ]
 
-We have the logic to include net/lib automatically for net related
-selftests. However, currently, this logic is only in install target
-which means only `make install` will have net/lib included. This commit
-adds the logic to all target so that all `make`, `make run_tests` and
-`make install` will have net/lib included in net related selftests.
+The define of the extension type was accidentally used instead of the
+one of the property itself. They're both zero, so no functional issue,
+but we should use the correct define for code correctness.
 
-Signed-off-by: Bui Quang Minh <minhquangbui99@gmail.com>
-Link: https://patch.msgid.link/20250601142914.13379-1-minhquangbui99@gmail.com
-Fixes: b86761ff6374 ("selftests: net: add scaffolding for Netlink tests in Python")
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: 41a97c4a1294 ("drm/xe/pxp/uapi: Add API to mark a BO as using PXP")
+Signed-off-by: Daniele Ceraolo Spurio <daniele.ceraolospurio@intel.com>
+Cc: John Harrison <John.C.Harrison@Intel.com>
+Reviewed-by: John Harrison <John.C.Harrison@Intel.com>
+Link: https://lore.kernel.org/r/20250522225401.3953243-6-daniele.ceraolospurio@intel.com
+(cherry picked from commit 1d891ee820fd0fbb4101eacb0d922b5050a24933)
+Signed-off-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/Makefile | 2 +-
+ drivers/gpu/drm/xe/xe_bo.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tools/testing/selftests/Makefile b/tools/testing/selftests/Makefile
-index 9cf769d415687..85c5f39131d34 100644
---- a/tools/testing/selftests/Makefile
-+++ b/tools/testing/selftests/Makefile
-@@ -196,7 +196,7 @@ export KHDR_INCLUDES
+diff --git a/drivers/gpu/drm/xe/xe_bo.c b/drivers/gpu/drm/xe/xe_bo.c
+index b98526d271f2f..5922302c3e00c 100644
+--- a/drivers/gpu/drm/xe/xe_bo.c
++++ b/drivers/gpu/drm/xe/xe_bo.c
+@@ -2396,7 +2396,7 @@ typedef int (*xe_gem_create_set_property_fn)(struct xe_device *xe,
+ 					     u64 value);
  
- all:
- 	@ret=1;							\
--	for TARGET in $(TARGETS); do				\
-+	for TARGET in $(TARGETS) $(INSTALL_DEP_TARGETS); do	\
- 		BUILD_TARGET=$$BUILD/$$TARGET;			\
- 		mkdir $$BUILD_TARGET  -p;			\
- 		$(MAKE) OUTPUT=$$BUILD_TARGET -C $$TARGET	\
+ static const xe_gem_create_set_property_fn gem_create_set_property_funcs[] = {
+-	[DRM_XE_GEM_CREATE_EXTENSION_SET_PROPERTY] = gem_create_set_pxp_type,
++	[DRM_XE_GEM_CREATE_SET_PROPERTY_PXP_TYPE] = gem_create_set_pxp_type,
+ };
+ 
+ static int gem_create_user_ext_set_property(struct xe_device *xe,
 -- 
 2.39.5
 
