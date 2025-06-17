@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-153825-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153827-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 87D68ADD663
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:32:49 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6D42AADD6B7
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:36:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C23472C56A2
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:25:52 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 371764A0EDE
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:25:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C234C2EE299;
-	Tue, 17 Jun 2025 16:20:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59DBC2ED870;
+	Tue, 17 Jun 2025 16:20:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HbgNdZ2O"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AiOQPjQj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C65F2ED854;
-	Tue, 17 Jun 2025 16:20:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14B4B2F9480;
+	Tue, 17 Jun 2025 16:20:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750177218; cv=none; b=SSniy+CGjfc9qrpLEv5HqnARnoN/oR5cGSTa5vHoygw3vGCRV0vuC6yUWs2qYP6cljLiOqmmImyj3IRV5vriEWX9poTOEyhjQePyEunIK1XGERDO92t6Sm60EA/LF6zgN8jNAM0zG9J+tG5GESnoTC62bukpST9I34ipn7ZHI88=
+	t=1750177225; cv=none; b=UTtm6KdnyUpnWukbxF55eoQGfxherLd/5yQEu5gjeR2AA3cefgxI0HySU992GIjQDK54PDFxVSb0tqgBvFeEJAUiXNe1SFSzA8zfB3cwQoYseM7+0QYfSSqAUnjz8GirpG3WvVzEgavoKoMfkBaCmYeWmx54/PdYH9x0yYYQWH8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750177218; c=relaxed/simple;
-	bh=yrcn9IxFr2O2pfhF90QtuXjqg6SiqcdrWEZ1HYDV07s=;
+	s=arc-20240116; t=1750177225; c=relaxed/simple;
+	bh=GqcvXIVEM9pKVa3luqBtOQu4JrW4X/dZuSfkrARZ3w4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JZti2VSn7ryljaCcj7TK6Jym3yeiiOEZ/UGuATjh+4cVQPFu5JxDgW3dTyD0DJtVXOOOkoqhEH6R3MAQkE8KdhwKchfv8ne13DC7sJ3OxuUjr/+Ws36jWkfCr3uMYmknwiF8x4n3c67sWl/PwiBBdqiqg2hnVkA0MK+IKIAjfZc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HbgNdZ2O; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE276C4CEE3;
-	Tue, 17 Jun 2025 16:20:17 +0000 (UTC)
+	 MIME-Version; b=o2nZIHWX8k3uMiJTjcuAG3mKi51V8N8Vc7A5l7oZoQr8W3jwt69n3A3D3KVovAEQpng10DFh0RbYQUQhxAX8ehmWp+oarUKmYgKqRH6NfTijKX93Jxe3EG/JoebdVgGkTzn59lMglt7FPG3XPpRJ0Ja0IoxesBBPcxtivequuJQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AiOQPjQj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71561C4CEE3;
+	Tue, 17 Jun 2025 16:20:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750177218;
-	bh=yrcn9IxFr2O2pfhF90QtuXjqg6SiqcdrWEZ1HYDV07s=;
+	s=korg; t=1750177224;
+	bh=GqcvXIVEM9pKVa3luqBtOQu4JrW4X/dZuSfkrARZ3w4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HbgNdZ2Oc4LD9euoJzpBNI7jgLUSSdgT2XyWvMsrzs2Ewmfa6wg5AZMaQyQdgusAp
-	 e8rMBSIGOuI0WL2yZ7vPd7l6CK8cCshpjdDxLOmN9xv4MXyxLQCHO3b1I37bKySKTc
-	 bUSjf6HQQEiUtwFCEF+Ug+BKpUFJ+uaV6RvfjPzc=
+	b=AiOQPjQjd1XaahS3Untjwr/43qFNjuafzkuINFklnRUjf1BBNtY/5zFXFgoUQlP78
+	 bP/41ZIhD9ScSV3eYM0+BKKVxdBfD84oZny3L0M/4diptolPt9tEcJLf7L73rV9kfw
+	 vNT4N2supKhseZ5xeFlYePRU9gI3NBewI71ap0qo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yingying Tang <quic_yintang@quicinc.com>,
-	Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>,
+	Rajat Soni <quic_rajson@quicinc.com>,
+	Raj Kumar Bhagat <quic_rajkbhag@quicinc.com>,
 	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 273/780] wifi: ath12k: Reorder and relocate the release of resources in ath12k_core_deinit()
-Date: Tue, 17 Jun 2025 17:19:41 +0200
-Message-ID: <20250617152502.587221545@linuxfoundation.org>
+Subject: [PATCH 6.15 274/780] wifi: ath12k: fix memory leak in ath12k_service_ready_ext_event
+Date: Tue, 17 Jun 2025 17:19:42 +0200
+Message-ID: <20250617152502.626957947@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
 References: <20250617152451.485330293@linuxfoundation.org>
@@ -67,120 +67,63 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Yingying Tang <quic_yintang@quicinc.com>
+From: Rajat Soni <quic_rajson@quicinc.com>
 
-[ Upstream commit aabd3be90579ed088aa34f0584ab6836c735c76f ]
+[ Upstream commit 89142d34d5602c7447827beb181fa06eb08b9d5c ]
 
-Ath12k panic notifier is registered in driver loading process. But it is not
-unregistered if ATH12K_FLAG_QMI_FAIL is set(e.g. load BDF failed) and unload
-driver. It causes a dirty node in panic notifier list since ath12k panic
-notifier is not unregistered from list but the buffer of this node is freed
-in driver unloading process. If load driver again there will be a page fault
-error due to this dirty node in panic notifier list.
+Currently, in ath12k_service_ready_ext_event(), svc_rdy_ext.mac_phy_caps
+is not freed in the failure case, causing a memory leak. The following
+trace is observed in kmemleak:
 
-This issue is caused by asymmetry between ath12k_core_init() and
-ath12k_core_deinit(). Reorder and relocate the release of resources in
-ath12k_core_deinit() to avoid this asymmetry issue.
+unreferenced object 0xffff8b3eb5789c00 (size 1024):
+ comm "softirq", pid 0, jiffies 4294942577
+ hex dump (first 32 bytes):
+   00 00 00 00 01 00 00 00 00 00 00 00 7b 00 00 10  ............{...
+   01 00 00 00 00 00 00 00 01 00 00 00 1f 38 00 00  .............8..
+ backtrace (crc 44e1c357):
+   __kmalloc_noprof+0x30b/0x410
+   ath12k_wmi_mac_phy_caps_parse+0x84/0x100 [ath12k]
+   ath12k_wmi_tlv_iter+0x5e/0x140 [ath12k]
+   ath12k_wmi_svc_rdy_ext_parse+0x308/0x4c0 [ath12k]
+   ath12k_wmi_tlv_iter+0x5e/0x140 [ath12k]
+   ath12k_service_ready_ext_event.isra.0+0x44/0xd0 [ath12k]
+   ath12k_wmi_op_rx+0x2eb/0xd70 [ath12k]
+   ath12k_htc_rx_completion_handler+0x1f4/0x330 [ath12k]
+   ath12k_ce_recv_process_cb+0x218/0x300 [ath12k]
+   ath12k_pci_ce_workqueue+0x1b/0x30 [ath12k]
+   process_one_work+0x219/0x680
+   bh_worker+0x198/0x1f0
+   tasklet_action+0x13/0x30
+   handle_softirqs+0xca/0x460
+   __irq_exit_rcu+0xbe/0x110
+   irq_exit_rcu+0x9/0x30
 
-Call Trace:
-<TASK>
-? show_regs+0x67/0x70
-? __die_body+0x20/0x70
-? __die+0x2b/0x40
-? page_fault_oops+0x15d/0x500
-? search_bpf_extables+0x63/0x90
-? notifier_chain_register+0x21/0xe0
-? search_exception_tables+0x5f/0x70
-? kernelmode_fixup_or_oops.isra.0+0x61/0x80
-? __bad_area_nosemaphore+0x179/0x240
-? bad_area_nosemaphore+0x16/0x20
-? do_user_addr_fault+0x312/0x7f0
-? prb_read_valid+0x1c/0x30
-? exc_page_fault+0x78/0x180
-? asm_exc_page_fault+0x27/0x30
-? notifier_chain_register+0x21/0xe0
-? notifier_chain_register+0x55/0xe0
-atomic_notifier_chain_register+0x2c/0x50
-ath12k_core_init+0x7e/0x110 [ath12k]
-ath12k_pci_probe+0xaba/0xba0 [ath12k]
+Free svc_rdy_ext.mac_phy_caps in the error case to fix this memory leak.
 
-Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.0-02903-QCAHKSWPL_SILICONZ-1
-Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0.c5-00481-QCAHMTSWPL_V1.0_V2.0_SILICONZ-3
+Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.4.1-00199-QCAHKSWPL_SILICONZ-1
 
-Fixes: 809055628bce8 ("wifi: ath12k: add panic handler")
-Signed-off-by: Yingying Tang <quic_yintang@quicinc.com>
-Reviewed-by: Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>
-Link: https://patch.msgid.link/20250423055650.16230-2-quic_yintang@quicinc.com
+Fixes: d889913205cf ("wifi: ath12k: driver for Qualcomm Wi-Fi 7 devices")
+Signed-off-by: Rajat Soni <quic_rajson@quicinc.com>
+Signed-off-by: Raj Kumar Bhagat <quic_rajkbhag@quicinc.com>
+Link: https://patch.msgid.link/20250430-wmi-mem-leak-v1-1-fcc9b49c2ddc@quicinc.com
 Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath12k/core.c | 5 ++---
- drivers/net/wireless/ath/ath12k/core.h | 1 +
- drivers/net/wireless/ath/ath12k/pci.c  | 5 ++---
- 3 files changed, 5 insertions(+), 6 deletions(-)
+ drivers/net/wireless/ath/ath12k/wmi.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/wireless/ath/ath12k/core.c b/drivers/net/wireless/ath/ath12k/core.c
-index 6b0c719be5434..770156347ffad 100644
---- a/drivers/net/wireless/ath/ath12k/core.c
-+++ b/drivers/net/wireless/ath/ath12k/core.c
-@@ -1785,7 +1785,7 @@ static void ath12k_core_hw_group_destroy(struct ath12k_hw_group *ag)
- 	}
+diff --git a/drivers/net/wireless/ath/ath12k/wmi.c b/drivers/net/wireless/ath/ath12k/wmi.c
+index d0705880cd3c9..fe50c3d3cb820 100644
+--- a/drivers/net/wireless/ath/ath12k/wmi.c
++++ b/drivers/net/wireless/ath/ath12k/wmi.c
+@@ -4601,6 +4601,7 @@ static int ath12k_service_ready_ext_event(struct ath12k_base *ab,
+ 	return 0;
+ 
+ err:
++	kfree(svc_rdy_ext.mac_phy_caps);
+ 	ath12k_wmi_free_dbring_caps(ab);
+ 	return ret;
  }
- 
--static void ath12k_core_hw_group_cleanup(struct ath12k_hw_group *ag)
-+void ath12k_core_hw_group_cleanup(struct ath12k_hw_group *ag)
- {
- 	struct ath12k_base *ab;
- 	int i;
-@@ -1933,10 +1933,9 @@ int ath12k_core_init(struct ath12k_base *ab)
- 
- void ath12k_core_deinit(struct ath12k_base *ab)
- {
--	ath12k_core_panic_notifier_unregister(ab);
--	ath12k_core_hw_group_cleanup(ab->ag);
- 	ath12k_core_hw_group_destroy(ab->ag);
- 	ath12k_core_hw_group_unassign(ab);
-+	ath12k_core_panic_notifier_unregister(ab);
- }
- 
- void ath12k_core_free(struct ath12k_base *ab)
-diff --git a/drivers/net/wireless/ath/ath12k/core.h b/drivers/net/wireless/ath/ath12k/core.h
-index 2ee83517eadc7..f5f1ec796f7c5 100644
---- a/drivers/net/wireless/ath/ath12k/core.h
-+++ b/drivers/net/wireless/ath/ath12k/core.h
-@@ -1195,6 +1195,7 @@ struct ath12k_fw_stats_pdev {
- };
- 
- int ath12k_core_qmi_firmware_ready(struct ath12k_base *ab);
-+void ath12k_core_hw_group_cleanup(struct ath12k_hw_group *ag);
- int ath12k_core_pre_init(struct ath12k_base *ab);
- int ath12k_core_init(struct ath12k_base *ath12k);
- void ath12k_core_deinit(struct ath12k_base *ath12k);
-diff --git a/drivers/net/wireless/ath/ath12k/pci.c b/drivers/net/wireless/ath/ath12k/pci.c
-index 99b2c7927ec81..273f4bc260bfe 100644
---- a/drivers/net/wireless/ath/ath12k/pci.c
-+++ b/drivers/net/wireless/ath/ath12k/pci.c
-@@ -1734,8 +1734,6 @@ static void ath12k_pci_remove(struct pci_dev *pdev)
- 
- 	if (test_bit(ATH12K_FLAG_QMI_FAIL, &ab->dev_flags)) {
- 		ath12k_pci_power_down(ab, false);
--		ath12k_qmi_deinit_service(ab);
--		ath12k_core_hw_group_unassign(ab);
- 		goto qmi_fail;
- 	}
- 
-@@ -1743,9 +1741,10 @@ static void ath12k_pci_remove(struct pci_dev *pdev)
- 
- 	cancel_work_sync(&ab->reset_work);
- 	cancel_work_sync(&ab->dump_work);
--	ath12k_core_deinit(ab);
-+	ath12k_core_hw_group_cleanup(ab->ag);
- 
- qmi_fail:
-+	ath12k_core_deinit(ab);
- 	ath12k_fw_unmap(ab);
- 	ath12k_mhi_unregister(ab_pci);
- 
 -- 
 2.39.5
 
