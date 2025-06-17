@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-153323-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153884-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A54EADD3FA
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:05:11 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A153DADD6D2
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:37:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4ABB6189572F
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 15:56:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 250964A1F94
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:27:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 95C022ED157;
-	Tue, 17 Jun 2025 15:52:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8BDBF28505E;
+	Tue, 17 Jun 2025 16:23:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l+xjr1Vz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P5oLiwzr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 524312ED14E;
-	Tue, 17 Jun 2025 15:52:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 470121E8332;
+	Tue, 17 Jun 2025 16:23:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750175578; cv=none; b=qHBIlbx/wl4m5yBTLG+kH69c0LCm5RQnUE0IUlaLR4rzW9E+Jwp21wxI8qGXMNcc5PNeFvYCRvgB47PzO50iA4NWJxZs0hL1013Jh4+aJwSPdViUo3nUWrUBINe4jL9hMoFOTfYvYMc0QCS0AT0jk9fxUYBiIwudYqstQwZmBU0=
+	t=1750177409; cv=none; b=ihbPY4By8t2Dcis+psBaVgy6HtEKYQn9UxqAwWqJJOd03faxdUFI1YB7Kpu9uY2RJJDBJcN5mDFvtyrM/gb6fvi2NDW376RyRWFrcGBkoAitX/jU7CDv1o+kh7U8WkpWVM7dVSs/MA9vphJNKhd4RXNk0jy731sxXfH/xTZoOXQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750175578; c=relaxed/simple;
-	bh=DTu4Lz1nZbGOBiCJ5SuBh2FXA/8dHxYlEJncagWWoDQ=;
+	s=arc-20240116; t=1750177409; c=relaxed/simple;
+	bh=/cEr+0gjhnvAUkeRBz61N26M+fo9OE1n8fvgPaN1Ras=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RXi2BMAJf7M5/KPAcfED/7vp9U2CoU+zOEjITY2LcV18fhDKouTHU5OKudy2ibhZY4rU9r4xK7892va/j9PtVfTTpJU56/vpvwDlI/QzsMojFgOdb/ZMJptBcGZn/YcqEqAllKhBH35qixMzC1uJSS9JF2TNYGheS4dHt7bk/3Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l+xjr1Vz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5DACC4CEE3;
-	Tue, 17 Jun 2025 15:52:57 +0000 (UTC)
+	 MIME-Version; b=buu8yI9cTOB56IZLRWt2pNEYQvcFd1/4Yc78Mw45xZKChJr33e++veAS6Sm3m4ekVIP5HKjJXsi6b/eeplGh0z0GVksrihaoEWtBe17xj/Sohu0zJIFnP0cyM1FX8ZsvWtWmkMhTqOpHsjrRYt9bDvW4g0qGYc1xTN1tdzD+fYQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P5oLiwzr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5846DC4CEE3;
+	Tue, 17 Jun 2025 16:23:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750175578;
-	bh=DTu4Lz1nZbGOBiCJ5SuBh2FXA/8dHxYlEJncagWWoDQ=;
+	s=korg; t=1750177408;
+	bh=/cEr+0gjhnvAUkeRBz61N26M+fo9OE1n8fvgPaN1Ras=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=l+xjr1Vzw6SWzMCU9i6fwNLmyXq9vp6uqXJ0V2aIxP9PR6ikl+kxSF6ifS7lYVk+q
-	 iXW1gJtm5rYHsu7jPW8pTTv7q9lQQczQxxcz6oLy5Yc9rkxYrRt8k+eNn6OftuCE+W
-	 fuFVCAQtzWDYCgT1quASxaOlBgYyfrorOaWhdEu4=
+	b=P5oLiwzrHIi8UyIj+gJuo4vXmw1DfhS3SbIq6SgzZX2JpofKTxvxuIbIPQc4RtNwM
+	 i/cvemw3XJhbhHmPzwUmb9Z9hw+KM8VQtBj4viVnoH5ADBsY5EDgZX6Tz6Lw8P5SJN
+	 Toy92uQviP0AxRXQa4JbVNCZtU2B7YDF9b0AFKO0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thuan Nguyen <thuan.nguyen-hong@banvien.com.vn>,
-	Duy Nguyen <duy.nguyen.rh@renesas.com>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>,
+	Lukas Rauber <lukas.rauber@janitza.de>,
+	Marcus Folkesson <marcus.folkesson@gmail.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 190/356] arm64: dts: renesas: white-hawk-ard-audio: Fix TPU0 groups
+Subject: [PATCH 6.12 339/512] iio: adc: mcp3911: fix device dependent mappings for conversion result registers
 Date: Tue, 17 Jun 2025 17:25:05 +0200
-Message-ID: <20250617152345.858113854@linuxfoundation.org>
+Message-ID: <20250617152433.342452920@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152338.212798615@linuxfoundation.org>
-References: <20250617152338.212798615@linuxfoundation.org>
+In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
+References: <20250617152419.512865572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,44 +64,172 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thuan Nguyen <thuan.nguyen-hong@banvien.com.vn>
+From: Marcus Folkesson <marcus.folkesson@gmail.com>
 
-[ Upstream commit 652eea251dd852f02cef6223f367220acb3d1867 ]
+[ Upstream commit f62c49d8f32d6ce8871b01795498352775aa61db ]
 
-White Hawk ARD audio uses a clock generated by the TPU, but commit
-3d144ef10a44 ("pinctrl: renesas: r8a779g0: Fix TPU suffixes") renamed
-pin group "tpu_to0_a" to "tpu_to0_b".  Update DTS accordingly otherwise
-the sound driver does not receive a clock signal.
+The conversion result registers differs between devices. Make sure the
+mapping is correct by using a device dependent .get_raw() callback function.
 
-Fixes: 3d144ef10a448f89 ("pinctrl: renesas: r8a779g0: Fix TPU suffixes")
-Signed-off-by: Thuan Nguyen <thuan.nguyen-hong@banvien.com.vn>
-Signed-off-by: Duy Nguyen <duy.nguyen.rh@renesas.com>
-Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Acked-by: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
-Link: https://lore.kernel.org/TYCPR01MB8740608B675365215ADB0374B49CA@TYCPR01MB8740.jpnprd01.prod.outlook.com
-Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Fixes: 732ad34260d3 ("iio: adc: mcp3911: add support for the whole MCP39xx family")
+Co-developed-by: Lukas Rauber <lukas.rauber@janitza.de>
+Signed-off-by: Lukas Rauber <lukas.rauber@janitza.de>
+Signed-off-by: Marcus Folkesson <marcus.folkesson@gmail.com>
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Link: https://patch.msgid.link/20250428-mcp3911-fixes-v2-1-406e39330c3d@gmail.com
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../boot/dts/renesas/r8a779g0-white-hawk-ard-audio-da7212.dtso  | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/iio/adc/mcp3911.c | 39 ++++++++++++++++++++++++++++++++++-----
+ 1 file changed, 34 insertions(+), 5 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/renesas/r8a779g0-white-hawk-ard-audio-da7212.dtso b/arch/arm64/boot/dts/renesas/r8a779g0-white-hawk-ard-audio-da7212.dtso
-index e6f53377ecd90..99f62574bc3c2 100644
---- a/arch/arm64/boot/dts/renesas/r8a779g0-white-hawk-ard-audio-da7212.dtso
-+++ b/arch/arm64/boot/dts/renesas/r8a779g0-white-hawk-ard-audio-da7212.dtso
-@@ -108,7 +108,7 @@
- 	};
+diff --git a/drivers/iio/adc/mcp3911.c b/drivers/iio/adc/mcp3911.c
+index b097f04172c80..4bd6b5aac4fe8 100644
+--- a/drivers/iio/adc/mcp3911.c
++++ b/drivers/iio/adc/mcp3911.c
+@@ -6,7 +6,7 @@
+  * Copyright (C) 2018 Kent Gustavsson <kent@minoris.se>
+  */
+ #include <linux/bitfield.h>
+-#include <linux/bits.h>
++#include <linux/bitops.h>
+ #include <linux/cleanup.h>
+ #include <linux/clk.h>
+ #include <linux/delay.h>
+@@ -79,6 +79,8 @@
+ #define MCP3910_CONFIG1_CLKEXT		BIT(6)
+ #define MCP3910_CONFIG1_VREFEXT		BIT(7)
  
- 	tpu0_pins: tpu0 {
--		groups = "tpu_to0_a";
-+		groups = "tpu_to0_b";
- 		function = "tpu";
- 	};
++#define MCP3910_CHANNEL(ch)		(MCP3911_REG_CHANNEL0 + (ch))
++
+ #define MCP3910_REG_OFFCAL_CH0		0x0f
+ #define MCP3910_OFFCAL(ch)		(MCP3910_REG_OFFCAL_CH0 + (ch) * 6)
+ 
+@@ -110,6 +112,7 @@ struct mcp3911_chip_info {
+ 	int (*get_offset)(struct mcp3911 *adc, int channel, int *val);
+ 	int (*set_offset)(struct mcp3911 *adc, int channel, int val);
+ 	int (*set_scale)(struct mcp3911 *adc, int channel, u32 val);
++	int (*get_raw)(struct mcp3911 *adc, int channel, int *val);
  };
+ 
+ struct mcp3911 {
+@@ -170,6 +173,18 @@ static int mcp3911_update(struct mcp3911 *adc, u8 reg, u32 mask, u32 val, u8 len
+ 	return mcp3911_write(adc, reg, val, len);
+ }
+ 
++static int mcp3911_read_s24(struct mcp3911 *const adc, u8 const reg, s32 *const val)
++{
++	u32 uval;
++	int const ret = mcp3911_read(adc, reg, &uval, 3);
++
++	if (ret)
++		return ret;
++
++	*val = sign_extend32(uval, 23);
++	return ret;
++}
++
+ static int mcp3910_enable_offset(struct mcp3911 *adc, bool enable)
+ {
+ 	unsigned int mask = MCP3910_CONFIG0_EN_OFFCAL;
+@@ -194,6 +209,11 @@ static int mcp3910_set_offset(struct mcp3911 *adc, int channel, int val)
+ 	return adc->chip->enable_offset(adc, 1);
+ }
+ 
++static int mcp3910_get_raw(struct mcp3911 *adc, int channel, s32 *val)
++{
++	return mcp3911_read_s24(adc, MCP3910_CHANNEL(channel), val);
++}
++
+ static int mcp3911_enable_offset(struct mcp3911 *adc, bool enable)
+ {
+ 	unsigned int mask = MCP3911_STATUSCOM_EN_OFFCAL;
+@@ -218,6 +238,11 @@ static int mcp3911_set_offset(struct mcp3911 *adc, int channel, int val)
+ 	return adc->chip->enable_offset(adc, 1);
+ }
+ 
++static int mcp3911_get_raw(struct mcp3911 *adc, int channel, s32 *val)
++{
++	return mcp3911_read_s24(adc, MCP3911_CHANNEL(channel), val);
++}
++
+ static int mcp3910_get_osr(struct mcp3911 *adc, u32 *val)
+ {
+ 	int ret;
+@@ -321,12 +346,9 @@ static int mcp3911_read_raw(struct iio_dev *indio_dev,
+ 	guard(mutex)(&adc->lock);
+ 	switch (mask) {
+ 	case IIO_CHAN_INFO_RAW:
+-		ret = mcp3911_read(adc,
+-				   MCP3911_CHANNEL(channel->channel), val, 3);
++		ret = adc->chip->get_raw(adc, channel->channel, val);
+ 		if (ret)
+ 			return ret;
+-
+-		*val = sign_extend32(*val, 23);
+ 		return IIO_VAL_INT;
+ 	case IIO_CHAN_INFO_OFFSET:
+ 		ret = adc->chip->get_offset(adc, channel->channel, val);
+@@ -799,6 +821,7 @@ static const struct mcp3911_chip_info mcp3911_chip_info[] = {
+ 		.get_offset = mcp3910_get_offset,
+ 		.set_offset = mcp3910_set_offset,
+ 		.set_scale = mcp3910_set_scale,
++		.get_raw = mcp3910_get_raw,
+ 	},
+ 	[MCP3911] = {
+ 		.channels = mcp3911_channels,
+@@ -810,6 +833,7 @@ static const struct mcp3911_chip_info mcp3911_chip_info[] = {
+ 		.get_offset = mcp3911_get_offset,
+ 		.set_offset = mcp3911_set_offset,
+ 		.set_scale = mcp3911_set_scale,
++		.get_raw = mcp3911_get_raw,
+ 	},
+ 	[MCP3912] = {
+ 		.channels = mcp3912_channels,
+@@ -821,6 +845,7 @@ static const struct mcp3911_chip_info mcp3911_chip_info[] = {
+ 		.get_offset = mcp3910_get_offset,
+ 		.set_offset = mcp3910_set_offset,
+ 		.set_scale = mcp3910_set_scale,
++		.get_raw = mcp3910_get_raw,
+ 	},
+ 	[MCP3913] = {
+ 		.channels = mcp3913_channels,
+@@ -832,6 +857,7 @@ static const struct mcp3911_chip_info mcp3911_chip_info[] = {
+ 		.get_offset = mcp3910_get_offset,
+ 		.set_offset = mcp3910_set_offset,
+ 		.set_scale = mcp3910_set_scale,
++		.get_raw = mcp3910_get_raw,
+ 	},
+ 	[MCP3914] = {
+ 		.channels = mcp3914_channels,
+@@ -843,6 +869,7 @@ static const struct mcp3911_chip_info mcp3911_chip_info[] = {
+ 		.get_offset = mcp3910_get_offset,
+ 		.set_offset = mcp3910_set_offset,
+ 		.set_scale = mcp3910_set_scale,
++		.get_raw = mcp3910_get_raw,
+ 	},
+ 	[MCP3918] = {
+ 		.channels = mcp3918_channels,
+@@ -854,6 +881,7 @@ static const struct mcp3911_chip_info mcp3911_chip_info[] = {
+ 		.get_offset = mcp3910_get_offset,
+ 		.set_offset = mcp3910_set_offset,
+ 		.set_scale = mcp3910_set_scale,
++		.get_raw = mcp3910_get_raw,
+ 	},
+ 	[MCP3919] = {
+ 		.channels = mcp3919_channels,
+@@ -865,6 +893,7 @@ static const struct mcp3911_chip_info mcp3911_chip_info[] = {
+ 		.get_offset = mcp3910_get_offset,
+ 		.set_offset = mcp3910_set_offset,
+ 		.set_scale = mcp3910_set_scale,
++		.get_raw = mcp3910_get_raw,
+ 	},
+ };
+ static const struct of_device_id mcp3911_dt_ids[] = {
 -- 
 2.39.5
 
