@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-154250-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153599-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD76FADD7A1
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:47:19 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id BE360ADD5C9
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:25:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7A3837ABDA8
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:45:57 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5448D194659F
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:11:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 70E982EA14E;
-	Tue, 17 Jun 2025 16:43:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3FE97202C38;
+	Tue, 17 Jun 2025 16:08:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="twKguGOp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jOQrligg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D8EF1E3DCF;
-	Tue, 17 Jun 2025 16:43:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F207C2F2367;
+	Tue, 17 Jun 2025 16:08:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750178585; cv=none; b=VXTVQGA4/7S4a9GpjDR/7DtItmIBXSjuyyLxX/L9EKpEB7yZjxQg0ryQ7vn9sl4riTCwcUaXD0YV8HrKjdcfQSRmLkkrrEWM7swsmo3NqCeLSjd6K4WmO/0Y9vlUfBI1l9fV/tPQ6ccKN/MWB33pEbBZEufg3dR1JHjSfHUtmqY=
+	t=1750176483; cv=none; b=fRHyMTjxCz9Uk/uR0dWFeB/LAb0sCsxBHGcfpVyGPlrLOZwPlhAjjjdzrfPmcO32kNLqQ3epfrxdgMDFJDRFIhgiOXWWbH6qiVhpF7BFV+NrhpPRjF+iUAMTRwaqJvU1rgicFfs4+ba2DgOizuD6xNuQ2a5yvasmKMtISR9pWK4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750178585; c=relaxed/simple;
-	bh=rRFa0YMKaivV5eBpJ597M9CeLfDzoVeqvAj57TJqEeI=;
+	s=arc-20240116; t=1750176483; c=relaxed/simple;
+	bh=UUTnPYcAEcO7Vr6xJLBaGBT3dslaRDwOckZ0y7WBd34=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dHOjDIbrnh61btznGMx3DYwd4qoEZLmme5LvY5rZqUD4u8Ytw/n8zwZcqbZ+LcM1jE1qUWKVnz23vKf85KCkjFPwPhzCLMrUkJpOp5yzkYuH1GfMFRohY8cXT7rNw9/BZY1KhJ4mAy9ZauU1DrfxnhqX4FsoD4B8mPT73RW6G8A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=twKguGOp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6FAE6C4CEE3;
-	Tue, 17 Jun 2025 16:43:04 +0000 (UTC)
+	 MIME-Version; b=GILh88Q5RFvO8eTVwfAyoHOp0JzG9VFS9KtSiYxSw23ss6NADnFmulOlMEtTg2fprzq2KWnL0I4ZG5EyUa3ni5WsDOijgaYdJZ5bB72IVprBiEg1pVBHB6vADKPybDTPOYukAzZ2YXrZJWb0gQJiVlJl9pLQWqS02llB7przrao=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jOQrligg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5850FC4CEE3;
+	Tue, 17 Jun 2025 16:08:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750178585;
-	bh=rRFa0YMKaivV5eBpJ597M9CeLfDzoVeqvAj57TJqEeI=;
+	s=korg; t=1750176482;
+	bh=UUTnPYcAEcO7Vr6xJLBaGBT3dslaRDwOckZ0y7WBd34=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=twKguGOp8w/JudyKEfm6D+lKMNmLx9r4Zvj6gzPnAPL+DTlHZJW7jhzByIcHJ79K+
-	 IbuniXaXuBPDrMy11Qw7UKBFMnhDsIfgJmbzFOWzOTMYufmsNpfOgWyb0kpkEO2aZ/
-	 f5EPPD7dwIaH0YGgDRswDkYK9z8xD5vh2mwq7rgg=
+	b=jOQrliggMxD9JvWb99YRG70UOXY5ROd0KfNs8B+m8DHNEEhZdSN9tokcBtFtP3aHC
+	 FUahlP+VA7cP9pQv/GR+P76U7eJQ2QlXDNcDb/DCX509r8nFbASq/SYSNK+19oCofV
+	 xrumgRe+gnSCAIkUQIt6uWulQmn6J4YhOXJRYu1I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Cristian Ciocaltea <cristian.ciocaltea@collabora.com>,
-	Vinod Koul <vkoul@kernel.org>,
+	Alexey Minnekhanov <alexeymin@postmarketos.org>,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 492/780] phy: rockchip: samsung-hdptx: Do no set rk_hdptx_phy->rate in case of errors
+Subject: [PATCH 6.12 234/512] arm64: dts: qcom: sdm660-xiaomi-lavender: Add missing SD card detect GPIO
 Date: Tue, 17 Jun 2025 17:23:20 +0200
-Message-ID: <20250617152511.523393656@linuxfoundation.org>
+Message-ID: <20250617152429.107263937@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
-References: <20250617152451.485330293@linuxfoundation.org>
+In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
+References: <20250617152419.512865572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,54 +63,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
+From: Alexey Minnekhanov <alexeymin@postmarketos.org>
 
-[ Upstream commit 1f4d382769e3b38dfc498c806811dae856e40f31 ]
+[ Upstream commit 2eca6af66709de0d1ba14cdf8b6d200a1337a3a2 ]
 
-Ensure rk_hdptx_ropll_tmds_cmn_config() updates hdptx->rate only after
-all the other operations have been successful.
+During initial porting these cd-gpios were missed. Having card detect is
+beneficial because driver does not need to do polling every second and it
+can just use IRQ. SD card detection in U-Boot is also fixed by this.
 
-Fixes: c4b09c562086 ("phy: phy-rockchip-samsung-hdptx: Add clock provider support")
-Signed-off-by: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
-Link: https://lore.kernel.org/r/20250318-phy-sam-hdptx-bpc-v6-4-8cb1678e7663@collabora.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Fixes: cf85e9aee210 ("arm64: dts: qcom: sdm660-xiaomi-lavender: Add eMMC and SD")
+Signed-off-by: Alexey Minnekhanov <alexeymin@postmarketos.org>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Link: https://lore.kernel.org/r/20250415130101.1429281-1-alexeymin@postmarketos.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/phy/rockchip/phy-rockchip-samsung-hdptx.c | 10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
+ arch/arm64/boot/dts/qcom/sdm660-xiaomi-lavender.dts | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/phy/rockchip/phy-rockchip-samsung-hdptx.c b/drivers/phy/rockchip/phy-rockchip-samsung-hdptx.c
-index 6cfed3fcd647b..61db514ce5cfb 100644
---- a/drivers/phy/rockchip/phy-rockchip-samsung-hdptx.c
-+++ b/drivers/phy/rockchip/phy-rockchip-samsung-hdptx.c
-@@ -1008,9 +1008,7 @@ static int rk_hdptx_ropll_tmds_cmn_config(struct rk_hdptx_phy *hdptx,
- {
- 	const struct ropll_config *cfg = NULL;
- 	struct ropll_config rc = {0};
--	int i;
--
--	hdptx->rate = rate * 100;
-+	int ret, i;
+diff --git a/arch/arm64/boot/dts/qcom/sdm660-xiaomi-lavender.dts b/arch/arm64/boot/dts/qcom/sdm660-xiaomi-lavender.dts
+index 7167f75bced3f..0b4d71c14a772 100644
+--- a/arch/arm64/boot/dts/qcom/sdm660-xiaomi-lavender.dts
++++ b/arch/arm64/boot/dts/qcom/sdm660-xiaomi-lavender.dts
+@@ -404,6 +404,8 @@
+ &sdhc_2 {
+ 	status = "okay";
  
- 	for (i = 0; i < ARRAY_SIZE(ropll_tmds_cfg); i++)
- 		if (rate == ropll_tmds_cfg[i].bit_rate) {
-@@ -1065,7 +1063,11 @@ static int rk_hdptx_ropll_tmds_cmn_config(struct rk_hdptx_phy *hdptx,
- 	regmap_update_bits(hdptx->regmap, CMN_REG(0086), PLL_PCG_CLK_EN_MASK,
- 			   FIELD_PREP(PLL_PCG_CLK_EN_MASK, 0x1));
- 
--	return rk_hdptx_post_enable_pll(hdptx);
-+	ret = rk_hdptx_post_enable_pll(hdptx);
-+	if (!ret)
-+		hdptx->rate = rate * 100;
++	cd-gpios = <&tlmm 54 GPIO_ACTIVE_HIGH>;
 +
-+	return ret;
- }
- 
- static int rk_hdptx_ropll_tmds_mode_config(struct rk_hdptx_phy *hdptx,
+ 	vmmc-supply = <&vreg_l5b_2p95>;
+ 	vqmmc-supply = <&vreg_l2b_2p95>;
+ };
 -- 
 2.39.5
 
