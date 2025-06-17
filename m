@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-153730-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153681-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id ACC3BADD607
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:29:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4BE4DADD5CF
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:26:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0E9A119E282E
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:22:17 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CF70719477D8
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:18:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E44422AE7F;
-	Tue, 17 Jun 2025 16:15:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C1CB2ECD39;
+	Tue, 17 Jun 2025 16:12:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iF/Azkdg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a99eWVVm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59800235071;
-	Tue, 17 Jun 2025 16:15:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 176582ECD33;
+	Tue, 17 Jun 2025 16:12:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750176905; cv=none; b=NKrHy46oYVXCjQHN9duoT12X7ONbiJOgPi/f9O7im5XGmyS6cbOf8LdWwA6m8kjGrFMyuK+K+SzqJG8egbIoMumi8cpasLomk+TT5ItXDFkKAyecpOdxHyHedZtARHT4PFTplcMswdTsG/NnrOmewmZ43QMnA5BW3WDp5yCIRiM=
+	t=1750176745; cv=none; b=M6KS1Oo4t/53LMR8k1YVorDqwz9U/iZwpKRjBOFHnkao4edesVpowZlOWkBcI7hmjEAoYWsQTgFqjYNovBPdYqT9RYRsUtI/1AIwZBW3sDvyfLbK5NXdQwRoJp9yaUHCiYPaebJeXiGgGu6CD/8uB05PF2HkxZmhG+oXPsfSRjk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750176905; c=relaxed/simple;
-	bh=+hqo0yVkK43Zs0PzcOyjklm5HKTXekamek3K2+pUPH0=;
+	s=arc-20240116; t=1750176745; c=relaxed/simple;
+	bh=9avUdZG3y2T9sdXEjabQHBjf5HWpkjHLj/AmGScn4XQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lUZn0+yX6D4aW32K75G6g7scB3+f0qC/nXgdnl5xgohREmHQ4tseYWFXQNbIsOogGM5nVO84oY8eBkinNMQuzWB3P63e11SrL9GWKKG3BOVZoSu5cLqyb0/JbN6eZBdnLKr8oEM6XABt1ly1acw89U2kgdjlINmEoxjktSjbn9o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iF/Azkdg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2230C4CEE3;
-	Tue, 17 Jun 2025 16:15:04 +0000 (UTC)
+	 MIME-Version; b=nA8tu3RSyb1dLXS0p1HJhObJ+Fq/TV2lVVUcUQpIRMftvioa51q+Q+gQAMa6Ag+UG1s8XrKiXqvwit3vv9kyvrKtvFucnVFXLyoVtn3abWlqCwJx61FOFOKyaBa4guMVAYiVjd8HzjC72nDN+VgihLalPKTAICqKXjmJTtDoViw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a99eWVVm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C793C4CEE7;
+	Tue, 17 Jun 2025 16:12:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750176905;
-	bh=+hqo0yVkK43Zs0PzcOyjklm5HKTXekamek3K2+pUPH0=;
+	s=korg; t=1750176745;
+	bh=9avUdZG3y2T9sdXEjabQHBjf5HWpkjHLj/AmGScn4XQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iF/AzkdgRC02ntYteWBVv8+EKp7LYaCwI0QBvw1BNbEde4e/bTj8Fnv14b+iXaHx2
-	 1PKExf5MljvEMVsqDjD1u6iEahvkuhe4o/mcU5dFxGyVGfo1zNozaLjuP5H6GRCYJG
-	 gOJtx/aPFofOinzqxNgixMJFlTlpx33MxZBE86Xc=
+	b=a99eWVVmFWON5NywRwjZKk9/tCrTdz5FweULBlhrJ9T9Uzfo2UN1Ukl9osLicX5QB
+	 PT93QVRU+RmiYIHR3kqywlHkw4bibLMy6nHKsHA7YXFBhl8jZdV38YiNT7siJ4gyK7
+	 UDf/WMI9DKQ6JjyVo2Vx+08YlYbxY8A+Mxwd2k2I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Maharaja Kennadyrajan <maharaja.kennadyrajan@oss.qualcomm.com>,
-	Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>,
-	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
+	syzbot+4edb496c3cad6e953a31@syzkaller.appspotmail.com,
+	Zhu Yanjun <yanjun.zhu@linux.dev>,
+	Leon Romanovsky <leon@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 214/780] wifi: ath12k: fix node corruption in ar->arvifs list
-Date: Tue, 17 Jun 2025 17:18:42 +0200
-Message-ID: <20250617152500.175943743@linuxfoundation.org>
+Subject: [PATCH 6.15 215/780] RDMA/rxe: Fix "trying to register non-static key in rxe_qp_do_cleanup" bug
+Date: Tue, 17 Jun 2025 17:18:43 +0200
+Message-ID: <20250617152500.214309743@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
 References: <20250617152451.485330293@linuxfoundation.org>
@@ -67,77 +67,87 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Maharaja Kennadyrajan <maharaja.kennadyrajan@oss.qualcomm.com>
+From: Zhu Yanjun <yanjun.zhu@linux.dev>
 
-[ Upstream commit 823435bd23108d6f8be89ea2d025c0e2e3769c51 ]
+[ Upstream commit 1c7eec4d5f3b39cdea2153abaebf1b7229a47072 ]
 
-In current WLAN recovery code flow, ath12k_core_halt() only reinitializes
-the "arvifs" list head. This will cause the list node immediately following
-the list head to become an invalid list node. Because the prev of that node
-still points to the list head "arvifs", but the next of the list head
-"arvifs" no longer points to that list node.
+Call Trace:
+ <TASK>
+ __dump_stack lib/dump_stack.c:94 [inline]
+ dump_stack_lvl+0x116/0x1f0 lib/dump_stack.c:120
+ assign_lock_key kernel/locking/lockdep.c:986 [inline]
+ register_lock_class+0x4a3/0x4c0 kernel/locking/lockdep.c:1300
+ __lock_acquire+0x99/0x1ba0 kernel/locking/lockdep.c:5110
+ lock_acquire kernel/locking/lockdep.c:5866 [inline]
+ lock_acquire+0x179/0x350 kernel/locking/lockdep.c:5823
+ __timer_delete_sync+0x152/0x1b0 kernel/time/timer.c:1644
+ rxe_qp_do_cleanup+0x5c3/0x7e0 drivers/infiniband/sw/rxe/rxe_qp.c:815
+ execute_in_process_context+0x3a/0x160 kernel/workqueue.c:4596
+ __rxe_cleanup+0x267/0x3c0 drivers/infiniband/sw/rxe/rxe_pool.c:232
+ rxe_create_qp+0x3f7/0x5f0 drivers/infiniband/sw/rxe/rxe_verbs.c:604
+ create_qp+0x62d/0xa80 drivers/infiniband/core/verbs.c:1250
+ ib_create_qp_kernel+0x9f/0x310 drivers/infiniband/core/verbs.c:1361
+ ib_create_qp include/rdma/ib_verbs.h:3803 [inline]
+ rdma_create_qp+0x10c/0x340 drivers/infiniband/core/cma.c:1144
+ rds_ib_setup_qp+0xc86/0x19a0 net/rds/ib_cm.c:600
+ rds_ib_cm_initiate_connect+0x1e8/0x3d0 net/rds/ib_cm.c:944
+ rds_rdma_cm_event_handler_cmn+0x61f/0x8c0 net/rds/rdma_transport.c:109
+ cma_cm_event_handler+0x94/0x300 drivers/infiniband/core/cma.c:2184
+ cma_work_handler+0x15b/0x230 drivers/infiniband/core/cma.c:3042
+ process_one_work+0x9cc/0x1b70 kernel/workqueue.c:3238
+ process_scheduled_works kernel/workqueue.c:3319 [inline]
+ worker_thread+0x6c8/0xf10 kernel/workqueue.c:3400
+ kthread+0x3c2/0x780 kernel/kthread.c:464
+ ret_from_fork+0x45/0x80 arch/x86/kernel/process.c:153
+ ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
+ </TASK>
 
-When a WLAN recovery occurs during the execution of a vif removal, and it
-happens before the spin_lock_bh(&ar->data_lock) in
-ath12k_mac_vdev_delete(), list_del() will detect the previously mentioned
-situation, thereby triggering a kernel panic.
+The root cause is as below:
 
-The fix is to remove and reinitialize all vif list nodes from the list head
-"arvifs" during WLAN halt. The reinitialization is to make the list nodes
-valid, ensuring that the list_del() in ath12k_mac_vdev_delete() can execute
-normally.
+In the function rxe_create_qp, the function rxe_qp_from_init is called
+to create qp, if this function rxe_qp_from_init fails, rxe_cleanup will
+be called to handle all the allocated resources, including the timers:
+retrans_timer and rnr_nak_timer.
 
-Call trace:
-__list_del_entry_valid_or_report+0xd4/0x100 (P)
-ath12k_mac_remove_link_interface.isra.0+0xf8/0x2e4 [ath12k]
-ath12k_scan_vdev_clean_work+0x40/0x164 [ath12k]
-cfg80211_wiphy_work+0xfc/0x100
-process_one_work+0x164/0x2d0
-worker_thread+0x254/0x380
-kthread+0xfc/0x100
-ret_from_fork+0x10/0x20
+The function rxe_qp_from_init calls the function rxe_qp_init_req to
+initialize the timers: retrans_timer and rnr_nak_timer.
 
-The change is mostly copied from the ath11k patch:
-https://lore.kernel.org/all/20250320053145.3445187-1-quic_stonez@quicinc.com/
+But these timers are initialized in the end of rxe_qp_init_req.
+If some errors occur before the initialization of these timers, this
+problem will occur.
 
-Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.4.1-00199-QCAHKSWPL_SILICONZ-1
+The solution is to check whether these timers are initialized or not.
+If these timers are not initialized, ignore these timers.
 
-Fixes: d889913205cf ("wifi: ath12k: driver for Qualcomm Wi-Fi 7 devices")
-Signed-off-by: Maharaja Kennadyrajan <maharaja.kennadyrajan@oss.qualcomm.com>
-Reviewed-by: Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>
-Link: https://patch.msgid.link/20250416021724.2162519-1-maharaja.kennadyrajan@oss.qualcomm.com
-Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+Fixes: 8700e3e7c485 ("Soft RoCE driver")
+Reported-by: syzbot+4edb496c3cad6e953a31@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=4edb496c3cad6e953a31
+Signed-off-by: Zhu Yanjun <yanjun.zhu@linux.dev>
+Link: https://patch.msgid.link/20250419080741.1515231-1-yanjun.zhu@linux.dev
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath12k/core.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ drivers/infiniband/sw/rxe/rxe_qp.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/ath/ath12k/core.c b/drivers/net/wireless/ath/ath12k/core.c
-index 34eaa6b5bf772..6b0c719be5434 100644
---- a/drivers/net/wireless/ath/ath12k/core.c
-+++ b/drivers/net/wireless/ath/ath12k/core.c
-@@ -1251,6 +1251,7 @@ static void ath12k_rfkill_work(struct work_struct *work)
+diff --git a/drivers/infiniband/sw/rxe/rxe_qp.c b/drivers/infiniband/sw/rxe/rxe_qp.c
+index 7975fb0e2782f..f2af3e0aef35b 100644
+--- a/drivers/infiniband/sw/rxe/rxe_qp.c
++++ b/drivers/infiniband/sw/rxe/rxe_qp.c
+@@ -811,7 +811,12 @@ static void rxe_qp_do_cleanup(struct work_struct *work)
+ 	spin_unlock_irqrestore(&qp->state_lock, flags);
+ 	qp->qp_timeout_jiffies = 0;
  
- void ath12k_core_halt(struct ath12k *ar)
- {
-+	struct list_head *pos, *n;
- 	struct ath12k_base *ab = ar->ab;
- 
- 	lockdep_assert_wiphy(ath12k_ar_to_hw(ar)->wiphy);
-@@ -1266,7 +1267,12 @@ void ath12k_core_halt(struct ath12k *ar)
- 
- 	rcu_assign_pointer(ab->pdevs_active[ar->pdev_idx], NULL);
- 	synchronize_rcu();
--	INIT_LIST_HEAD(&ar->arvifs);
-+
-+	spin_lock_bh(&ar->data_lock);
-+	list_for_each_safe(pos, n, &ar->arvifs)
-+		list_del_init(pos);
-+	spin_unlock_bh(&ar->data_lock);
-+
- 	idr_init(&ar->txmgmt_idr);
- }
- 
+-	if (qp_type(qp) == IB_QPT_RC) {
++	/* In the function timer_setup, .function is initialized. If .function
++	 * is NULL, it indicates the function timer_setup is not called, the
++	 * timer is not initialized. Or else, the timer is initialized.
++	 */
++	if (qp_type(qp) == IB_QPT_RC && qp->retrans_timer.function &&
++		qp->rnr_nak_timer.function) {
+ 		timer_delete_sync(&qp->retrans_timer);
+ 		timer_delete_sync(&qp->rnr_nak_timer);
+ 	}
 -- 
 2.39.5
 
