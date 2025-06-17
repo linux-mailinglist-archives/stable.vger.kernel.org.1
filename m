@@ -1,56 +1,121 @@
-Return-Path: <stable+bounces-153593-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-154067-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1DF2EADD55F
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:20:15 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8423EADD806
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:51:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6CA64401232
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:10:34 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 136B42C4E98
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:38:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D5CC239561;
-	Tue, 17 Jun 2025 16:07:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A010C28505A;
+	Tue, 17 Jun 2025 16:33:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d1iuW7ai"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DoVluRmR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 575A62356A4;
-	Tue, 17 Jun 2025 16:07:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CEA68F54;
+	Tue, 17 Jun 2025 16:33:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750176463; cv=none; b=s7WwBeRqC5J4UToFR40UD+afj5y6MD8d/rwK77cO5TdZ77SYGeZq0R4PEhAeCU7+9SXrsnNj7ijvOfgIVgPSjwN2TKU6WuhSIDWOia+c7ah5KHnfmb2JzZWlYLF2Mj5nDeTx1NpQYp1Cu+QpU/dYmrPA3WvWMT7flnuUyFJylMk=
+	t=1750177997; cv=none; b=Mdk4hbG5v5xbs1nmiWE5+14dJtP+BFG7RDHOShsSq9cRQPmengKhBJFTxyJj9ceMxOPx3lfV2GC4FOREETVNOTTcBgz7yZjMAoYjL2uVVJJI6/RI++maV4i/aqAxt5pNlyM3NKyuftHPss6xAkGW0Wbp6oXnAyz7Mp04dE7dJsQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750176463; c=relaxed/simple;
-	bh=qYvyhcKpLe25uLHInO6vTXcgeFV2fUUHFJfjMNiwzhw=;
+	s=arc-20240116; t=1750177997; c=relaxed/simple;
+	bh=ayaKlxVHRUROIUp4ENAPD1t5upaQH8w1kt8d4GfkCxw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=AP2lWMDxX11QD/95U2qziWmiL3GsbzyIL0T72AjdhnOCV0fBSHh9Tje40qnggYMkcGhaBVC7k/mdUWgBc6LCmB4GZo326CahkGh3k3uLlFQwsXZQD6ERIAnrWHTuUG8AGtRAJ60Za2JtUkfZGkrJNjvRUSBmiUpzSPz3bTDVMwc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d1iuW7ai; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C441EC4CEF0;
-	Tue, 17 Jun 2025 16:07:42 +0000 (UTC)
+	 MIME-Version:Content-Type; b=ZihEIxL19lNuhNca8M9NsNgcsTwHW/Tmbj6ZjCanqCv0He8Rif1N+VfDcM1iYyTwxQQz0VHErQ9dqT25gy6ngLD5AJnuNqw0+voKB/kA6JRUMv3LehqCTYy3YE5wRljw0jf1pOkHfp10n92fpf/U2nZYYjGiIUmA7QGO8ZlyV/c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DoVluRmR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40991C4CEE3;
+	Tue, 17 Jun 2025 16:33:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750176463;
-	bh=qYvyhcKpLe25uLHInO6vTXcgeFV2fUUHFJfjMNiwzhw=;
+	s=korg; t=1750177997;
+	bh=ayaKlxVHRUROIUp4ENAPD1t5upaQH8w1kt8d4GfkCxw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=d1iuW7aixoTOg8etcNB3+YyPuRNJ4DYi5pfIrTvlGv82cRT5/ZVlQqsUVCDYGfe1H
-	 ZSzb/Wn2CFa6qY+DuokosrAAjcUZG5YCcO11jiR/FM2gzfkjPRidtfxwqu4DBYjPnC
-	 anctqJIw5oMIq43EIyA2Tx1UNGePC59iAYayk8OA=
+	b=DoVluRmRczELqHb/+aBB1ObjJJbcJk5tkLWIOfqC2yHX4LsUUijF/9wMG5vOMguYG
+	 rQdWgg5sci9PxksuKOl7bMHoQNjpv7nSgEqSwkmhL7cMLbIhDpXo5GiWgihleKPj07
+	 RqF7wUfsUtK2v4OkSlNCN/L7wyzziKn8jQi91waY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Hanno=20B=C3=B6ck?= <hanno@hboeck.de>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+	Jeff Johnson <quic_jjohnson@quicinc.com>,
+	Easwar Hariharan <eahariha@linux.microsoft.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	Anna-Maria Behnsen <anna-maria@linutronix.de>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Christian Borntraeger <borntraeger@linux.ibm.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Daniel Mack <daniel@zonque.org>,
+	David Airlie <airlied@gmail.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Dick Kennedy <dick.kennedy@broadcom.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Haojian Zhuang <haojian.zhuang@gmail.com>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Ilya Dryomov <idryomov@gmail.com>,
+	Jack Wang <jinpu.wang@cloud.ionos.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	James Bottomley <James.Bottomley@HansenPartnership.com>,
+	James Smart <james.smart@broadcom.com>,
+	Jaroslav Kysela <perex@perex.cz>,
+	Jeff Johnson <jjohnson@kernel.org>,
+	Jens Axboe <axboe@kernel.dk>,
+	Jeroen de Borst <jeroendb@google.com>,
+	Jiri Kosina <jikos@kernel.org>,
+	Joe Lawrence <joe.lawrence@redhat.com>,
+	Johan Hedberg <johan.hedberg@gmail.com>,
+	Josh Poimboeuf <jpoimboe@kernel.org>,
+	Jozsef Kadlecsik <kadlec@netfilter.org>,
+	Julia Lawall <julia.lawall@inria.fr>,
+	Kalle Valo <kvalo@kernel.org>,
+	Louis Peens <louis.peens@corigine.com>,
+	Lucas De Marchi <lucas.demarchi@intel.com>,
+	Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Marcel Holtmann <marcel@holtmann.org>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Miroslav Benes <mbenes@suse.cz>,
+	Naveen N Rao <naveen@kernel.org>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Nicolas Palix <nicolas.palix@imag.fr>,
+	Oded Gabbay <ogabbay@kernel.org>,
+	Ofir Bitton <obitton@habana.ai>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Petr Mladek <pmladek@suse.com>,
+	Praveen Kaligineedi <pkaligineedi@google.com>,
+	Ray Jui <rjui@broadcom.com>,
+	Robert Jarzmik <robert.jarzmik@free.fr>,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>,
+	=?UTF-8?q?Roger=20Pau=20Monn=C3=A9?= <roger.pau@citrix.com>,
+	Russell King <linux@armlinux.org.uk>,
+	Scott Branden <sbranden@broadcom.com>,
+	Shailend Chand <shailend@google.com>,
+	Simona Vetter <simona@ffwll.ch>,
+	Simon Horman <horms@kernel.org>,
+	Sven Schnelle <svens@linux.ibm.com>,
+	Takashi Iwai <tiwai@suse.com>,
+	=?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	Vasily Gorbik <gor@linux.ibm.com>,
+	Xiubo Li <xiubli@redhat.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 280/356] Input: synaptics-rmi - fix crash with unsupported versions of F34
+Subject: [PATCH 6.12 429/512] wifi: ath11k: convert timeouts to secs_to_jiffies()
 Date: Tue, 17 Jun 2025 17:26:35 +0200
-Message-ID: <20250617152349.462339674@linuxfoundation.org>
+Message-ID: <20250617152436.957381348@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152338.212798615@linuxfoundation.org>
-References: <20250617152338.212798615@linuxfoundation.org>
+In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
+References: <20250617152419.512865572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,261 +128,119 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+From: Easwar Hariharan <eahariha@linux.microsoft.com>
 
-[ Upstream commit ca39500f6af9cfe6823dc5aa8fbaed788d6e35b2 ]
+[ Upstream commit b29425972c5234a59b6fb634125420ed74266377 ]
 
-Sysfs interface for updating firmware for RMI devices is available even
-when F34 probe fails. The code checks for presence of F34 "container"
-pointer and then tries to use the function data attached to the
-sub-device. F34 assigns the function data early, before it knows if
-probe will succeed, leaving behind a stale pointer.
+Commit b35108a51cf7 ("jiffies: Define secs_to_jiffies()") introduced
+secs_to_jiffies().  As the value here is a multiple of 1000, use
+secs_to_jiffies() instead of msecs_to_jiffies to avoid the multiplication.
 
-Fix this by expanding checks to not only test for presence of F34
-"container" but also check if there is driver data assigned to the
-sub-device, and call dev_set_drvdata() only after we are certain that
-probe is successful.
+This is converted using scripts/coccinelle/misc/secs_to_jiffies.cocci with
+the following Coccinelle rules:
 
-This is not a complete fix, since F34 will be freed during firmware
-update, so there is still a race when fetching and accessing this
-pointer. This race will be addressed in follow-up changes.
+@@ constant C; @@
 
-Reported-by: Hanno Böck <hanno@hboeck.de>
-Fixes: 29fd0ec2bdbe ("Input: synaptics-rmi4 - add support for F34 device reflash")
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/aBlAl6sGulam-Qcx@google.com
-Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+- msecs_to_jiffies(C * 1000)
++ secs_to_jiffies(C)
+
+@@ constant C; @@
+
+- msecs_to_jiffies(C * MSEC_PER_SEC)
++ secs_to_jiffies(C)
+
+Link: https://lkml.kernel.org/r/20241210-converge-secs-to-jiffies-v3-14-ddfefd7e9f2a@linux.microsoft.com
+Acked-by: Jeff Johnson <quic_jjohnson@quicinc.com>
+Signed-off-by: Easwar Hariharan <eahariha@linux.microsoft.com>
+Cc: Alexander Gordeev <agordeev@linux.ibm.com>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>
+Cc: Anna-Maria Behnsen <anna-maria@linutronix.de>
+Cc: Catalin Marinas <catalin.marinas@arm.com>
+Cc: Christian Borntraeger <borntraeger@linux.ibm.com>
+Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
+Cc: Daniel Mack <daniel@zonque.org>
+Cc: David Airlie <airlied@gmail.com>
+Cc: David S. Miller <davem@davemloft.net>
+Cc: Dick Kennedy <dick.kennedy@broadcom.com>
+Cc: Eric Dumazet <edumazet@google.com>
+Cc: Florian Fainelli <florian.fainelli@broadcom.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Haojian Zhuang <haojian.zhuang@gmail.com>
+Cc: Heiko Carstens <hca@linux.ibm.com>
+Cc: Ilya Dryomov <idryomov@gmail.com>
+Cc: Jack Wang <jinpu.wang@cloud.ionos.com>
+Cc: Jakub Kicinski <kuba@kernel.org>
+Cc: James Bottomley <James.Bottomley@HansenPartnership.com>
+Cc: James Smart <james.smart@broadcom.com>
+Cc: Jaroslav Kysela <perex@perex.cz>
+Cc: Jeff Johnson <jjohnson@kernel.org>
+Cc: Jens Axboe <axboe@kernel.dk>
+Cc: Jeroen de Borst <jeroendb@google.com>
+Cc: Jiri Kosina <jikos@kernel.org>
+Cc: Joe Lawrence <joe.lawrence@redhat.com>
+Cc: Johan Hedberg <johan.hedberg@gmail.com>
+Cc: Josh Poimboeuf <jpoimboe@kernel.org>
+Cc: Jozsef Kadlecsik <kadlec@netfilter.org>
+Cc: Julia Lawall <julia.lawall@inria.fr>
+Cc: Kalle Valo <kvalo@kernel.org>
+Cc: Louis Peens <louis.peens@corigine.com>
+Cc: Lucas De Marchi <lucas.demarchi@intel.com>
+Cc: Luiz Augusto von Dentz <luiz.dentz@gmail.com>
+Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
+Cc: Madhavan Srinivasan <maddy@linux.ibm.com>
+Cc: Marcel Holtmann <marcel@holtmann.org>
+Cc: Martin K. Petersen <martin.petersen@oracle.com>
+Cc: Maxime Ripard <mripard@kernel.org>
+Cc: Michael Ellerman <mpe@ellerman.id.au>
+Cc: Miroslav Benes <mbenes@suse.cz>
+Cc: Naveen N Rao <naveen@kernel.org>
+Cc: Nicholas Piggin <npiggin@gmail.com>
+Cc: Nicolas Palix <nicolas.palix@imag.fr>
+Cc: Oded Gabbay <ogabbay@kernel.org>
+Cc: Ofir Bitton <obitton@habana.ai>
+Cc: Pablo Neira Ayuso <pablo@netfilter.org>
+Cc: Paolo Abeni <pabeni@redhat.com>
+Cc: Petr Mladek <pmladek@suse.com>
+Cc: Praveen Kaligineedi <pkaligineedi@google.com>
+Cc: Ray Jui <rjui@broadcom.com>
+Cc: Robert Jarzmik <robert.jarzmik@free.fr>
+Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Cc: Roger Pau Monné <roger.pau@citrix.com>
+Cc: Russell King <linux@armlinux.org.uk>
+Cc: Scott Branden <sbranden@broadcom.com>
+Cc: Shailend Chand <shailend@google.com>
+Cc: Simona Vetter <simona@ffwll.ch>
+Cc: Simon Horman <horms@kernel.org>
+Cc: Sven Schnelle <svens@linux.ibm.com>
+Cc: Takashi Iwai <tiwai@suse.com>
+Cc: Thomas Hellström <thomas.hellstrom@linux.intel.com>
+Cc: Thomas Zimmermann <tzimmermann@suse.de>
+Cc: Vasily Gorbik <gor@linux.ibm.com>
+Cc: Xiubo Li <xiubli@redhat.com>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Stable-dep-of: 9f6e82d11bb9 ("wifi: ath11k: avoid burning CPU in ath11k_debugfs_fw_stats_request()")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/input/rmi4/rmi_f34.c | 135 ++++++++++++++++++++---------------
- 1 file changed, 76 insertions(+), 59 deletions(-)
+ drivers/net/wireless/ath/ath11k/debugfs.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/input/rmi4/rmi_f34.c b/drivers/input/rmi4/rmi_f34.c
-index 0d9a5756e3f59..cae1e41664921 100644
---- a/drivers/input/rmi4/rmi_f34.c
-+++ b/drivers/input/rmi4/rmi_f34.c
-@@ -4,6 +4,7 @@
-  * Copyright (C) 2016 Zodiac Inflight Innovations
-  */
+diff --git a/drivers/net/wireless/ath/ath11k/debugfs.c b/drivers/net/wireless/ath/ath11k/debugfs.c
+index 57281a135dd7f..bf192529e3fe2 100644
+--- a/drivers/net/wireless/ath/ath11k/debugfs.c
++++ b/drivers/net/wireless/ath/ath11k/debugfs.c
+@@ -178,7 +178,7 @@ static int ath11k_debugfs_fw_stats_request(struct ath11k *ar,
+ 	 * received 'update stats' event, we keep a 3 seconds timeout in case,
+ 	 * fw_stats_done is not marked yet
+ 	 */
+-	timeout = jiffies + msecs_to_jiffies(3 * 1000);
++	timeout = jiffies + secs_to_jiffies(3);
  
-+#include "linux/device.h"
- #include <linux/kernel.h>
- #include <linux/rmi.h>
- #include <linux/firmware.h>
-@@ -298,39 +299,30 @@ static int rmi_f34_update_firmware(struct f34_data *f34,
- 	return ret;
- }
+ 	ath11k_debugfs_fw_stats_reset(ar);
  
--static int rmi_f34_status(struct rmi_function *fn)
--{
--	struct f34_data *f34 = dev_get_drvdata(&fn->dev);
--
--	/*
--	 * The status is the percentage complete, or once complete,
--	 * zero for success or a negative return code.
--	 */
--	return f34->update_status;
--}
--
- static ssize_t rmi_driver_bootloader_id_show(struct device *dev,
- 					     struct device_attribute *dattr,
- 					     char *buf)
- {
- 	struct rmi_driver_data *data = dev_get_drvdata(dev);
--	struct rmi_function *fn = data->f34_container;
-+	struct rmi_function *fn;
- 	struct f34_data *f34;
- 
--	if (fn) {
--		f34 = dev_get_drvdata(&fn->dev);
--
--		if (f34->bl_version == 5)
--			return sysfs_emit(buf, "%c%c\n",
--					  f34->bootloader_id[0],
--					  f34->bootloader_id[1]);
--		else
--			return sysfs_emit(buf, "V%d.%d\n",
--					  f34->bootloader_id[1],
--					  f34->bootloader_id[0]);
--	}
-+	fn = data->f34_container;
-+	if (!fn)
-+		return -ENODEV;
- 
--	return 0;
-+	f34 = dev_get_drvdata(&fn->dev);
-+	if (!f34)
-+		return -ENODEV;
-+
-+	if (f34->bl_version == 5)
-+		return sysfs_emit(buf, "%c%c\n",
-+				  f34->bootloader_id[0],
-+				  f34->bootloader_id[1]);
-+	else
-+		return sysfs_emit(buf, "V%d.%d\n",
-+				  f34->bootloader_id[1],
-+				  f34->bootloader_id[0]);
- }
- 
- static DEVICE_ATTR(bootloader_id, 0444, rmi_driver_bootloader_id_show, NULL);
-@@ -343,13 +335,16 @@ static ssize_t rmi_driver_configuration_id_show(struct device *dev,
- 	struct rmi_function *fn = data->f34_container;
- 	struct f34_data *f34;
- 
--	if (fn) {
--		f34 = dev_get_drvdata(&fn->dev);
-+	fn = data->f34_container;
-+	if (!fn)
-+		return -ENODEV;
- 
--		return sysfs_emit(buf, "%s\n", f34->configuration_id);
--	}
-+	f34 = dev_get_drvdata(&fn->dev);
-+	if (!f34)
-+		return -ENODEV;
- 
--	return 0;
-+
-+	return sysfs_emit(buf, "%s\n", f34->configuration_id);
- }
- 
- static DEVICE_ATTR(configuration_id, 0444,
-@@ -365,10 +360,14 @@ static int rmi_firmware_update(struct rmi_driver_data *data,
- 
- 	if (!data->f34_container) {
- 		dev_warn(dev, "%s: No F34 present!\n", __func__);
--		return -EINVAL;
-+		return -ENODEV;
- 	}
- 
- 	f34 = dev_get_drvdata(&data->f34_container->dev);
-+	if (!f34) {
-+		dev_warn(dev, "%s: No valid F34 present!\n", __func__);
-+		return -ENODEV;
-+	}
- 
- 	if (f34->bl_version >= 7) {
- 		if (data->pdt_props & HAS_BSR) {
-@@ -494,10 +493,18 @@ static ssize_t rmi_driver_update_fw_status_show(struct device *dev,
- 						char *buf)
- {
- 	struct rmi_driver_data *data = dev_get_drvdata(dev);
--	int update_status = 0;
-+	struct f34_data *f34;
-+	int update_status = -ENODEV;
- 
--	if (data->f34_container)
--		update_status = rmi_f34_status(data->f34_container);
-+	/*
-+	 * The status is the percentage complete, or once complete,
-+	 * zero for success or a negative return code.
-+	 */
-+	if (data->f34_container) {
-+		f34 = dev_get_drvdata(&data->f34_container->dev);
-+		if (f34)
-+			update_status = f34->update_status;
-+	}
- 
- 	return sysfs_emit(buf, "%d\n", update_status);
- }
-@@ -517,33 +524,21 @@ static const struct attribute_group rmi_firmware_attr_group = {
- 	.attrs = rmi_firmware_attrs,
- };
- 
--static int rmi_f34_probe(struct rmi_function *fn)
-+static int rmi_f34v5_probe(struct f34_data *f34)
- {
--	struct f34_data *f34;
--	unsigned char f34_queries[9];
-+	struct rmi_function *fn = f34->fn;
-+	u8 f34_queries[9];
- 	bool has_config_id;
--	u8 version = fn->fd.function_version;
--	int ret;
--
--	f34 = devm_kzalloc(&fn->dev, sizeof(struct f34_data), GFP_KERNEL);
--	if (!f34)
--		return -ENOMEM;
--
--	f34->fn = fn;
--	dev_set_drvdata(&fn->dev, f34);
--
--	/* v5 code only supported version 0, try V7 probe */
--	if (version > 0)
--		return rmi_f34v7_probe(f34);
-+	int error;
- 
- 	f34->bl_version = 5;
- 
--	ret = rmi_read_block(fn->rmi_dev, fn->fd.query_base_addr,
--			     f34_queries, sizeof(f34_queries));
--	if (ret) {
-+	error = rmi_read_block(fn->rmi_dev, fn->fd.query_base_addr,
-+			       f34_queries, sizeof(f34_queries));
-+	if (error) {
- 		dev_err(&fn->dev, "%s: Failed to query properties\n",
- 			__func__);
--		return ret;
-+		return error;
- 	}
- 
- 	snprintf(f34->bootloader_id, sizeof(f34->bootloader_id),
-@@ -569,11 +564,11 @@ static int rmi_f34_probe(struct rmi_function *fn)
- 		f34->v5.config_blocks);
- 
- 	if (has_config_id) {
--		ret = rmi_read_block(fn->rmi_dev, fn->fd.control_base_addr,
--				     f34_queries, sizeof(f34_queries));
--		if (ret) {
-+		error = rmi_read_block(fn->rmi_dev, fn->fd.control_base_addr,
-+				       f34_queries, sizeof(f34_queries));
-+		if (error) {
- 			dev_err(&fn->dev, "Failed to read F34 config ID\n");
--			return ret;
-+			return error;
- 		}
- 
- 		snprintf(f34->configuration_id, sizeof(f34->configuration_id),
-@@ -582,12 +577,34 @@ static int rmi_f34_probe(struct rmi_function *fn)
- 			 f34_queries[2], f34_queries[3]);
- 
- 		rmi_dbg(RMI_DEBUG_FN, &fn->dev, "Configuration ID: %s\n",
--			 f34->configuration_id);
-+			f34->configuration_id);
- 	}
- 
- 	return 0;
- }
- 
-+static int rmi_f34_probe(struct rmi_function *fn)
-+{
-+	struct f34_data *f34;
-+	u8 version = fn->fd.function_version;
-+	int error;
-+
-+	f34 = devm_kzalloc(&fn->dev, sizeof(struct f34_data), GFP_KERNEL);
-+	if (!f34)
-+		return -ENOMEM;
-+
-+	f34->fn = fn;
-+
-+	/* v5 code only supported version 0 */
-+	error = version == 0 ? rmi_f34v5_probe(f34) : rmi_f34v7_probe(f34);
-+	if (error)
-+		return error;
-+
-+	dev_set_drvdata(&fn->dev, f34);
-+
-+	return 0;
-+}
-+
- int rmi_f34_create_sysfs(struct rmi_device *rmi_dev)
- {
- 	return sysfs_create_group(&rmi_dev->dev.kobj, &rmi_firmware_attr_group);
 -- 
 2.39.5
 
