@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-153501-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153996-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E1529ADD4BE
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:13:44 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 44182ADD7FC
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:50:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 529372C4936
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:06:28 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4091219E65A1
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:35:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3705D2E9730;
-	Tue, 17 Jun 2025 16:02:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EFA3C2EA15E;
+	Tue, 17 Jun 2025 16:29:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zXFZCdke"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UNg2H1GJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5F0E2EF28A;
-	Tue, 17 Jun 2025 16:02:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB6052EA155;
+	Tue, 17 Jun 2025 16:29:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750176167; cv=none; b=Ga7wlAJbwZCH9XPqO/VEwmeoOiHZsFQNHgsDbHAZ2igoDKMHQGr7OhTYWs/xpCr7plMGBEGXXy72SYRLGLMPEYoAtm/VhjNuQs0CZzvcob5NASohKOfcO9O52jteQGnoDPMNgVk0Xx855WOebnjetBlT4YIoNTtP2HiP6+v1dR8=
+	t=1750177770; cv=none; b=bA0NI+zznRJ+b84SKeS2Ze3TwG6kOszXcRXEaoYDdEvZ3SRGYhUgExUI0f1tgZKHnyQYoiHBbDG67CEJGqysA/vtj5GFoUkBhA5aBBLaIN/drQWEJ6/vjkJNGbUXcI261Bmi62JOOJt8LzIeC/CODQ4cyPcp3qbsYXhQU8gwQlY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750176167; c=relaxed/simple;
-	bh=DBY+sGN/MtYQOCdQiRxGXE/hvMUmo3cTMFwNBFjrSv0=;
+	s=arc-20240116; t=1750177770; c=relaxed/simple;
+	bh=osfBLEkrDLWRWnopKaYWUW8rBpxQ5AM3bFQLlUvQQgg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JACc809wD6xc4ZzyX9c0jYJCvLkqVlwLP89Yf+wOsNZ8bUlqiOBgzk1XyugOIs/+C5JSf5rHOXnWo7Wq/Xe5QavH1KK2z9W5r1bBWC/zaE2WJpyHv014ihSsnZtScRdyEBjkGNfhHcre0bgddLuNZ88CkSA1Gat2mP1OPTyCtn4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zXFZCdke; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 558E7C4CEE7;
-	Tue, 17 Jun 2025 16:02:46 +0000 (UTC)
+	 MIME-Version; b=n+QrqgImMaYKoAyrDPgurIdUiwiRPczo8jxHQk4q4cK7DIi/7ydyQOAaE4XiQrNBVdT3QOigNK3sUsp5r2UVDk7wQSSGB5KPtGcSV69x5WBac7s5XT1p56++r9ZOSX6akrAQkfP9va+Go7VKVGrzoEJmDstTjl8HcwmevqtO1a4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UNg2H1GJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7B4DC4CEE7;
+	Tue, 17 Jun 2025 16:29:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750176166;
-	bh=DBY+sGN/MtYQOCdQiRxGXE/hvMUmo3cTMFwNBFjrSv0=;
+	s=korg; t=1750177770;
+	bh=osfBLEkrDLWRWnopKaYWUW8rBpxQ5AM3bFQLlUvQQgg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zXFZCdkecL+VEQ5tt7+5TQ4HwsRrxoXWb+f3+L3z5bLsQKE0wpbELI3g/v2oPaYBM
-	 Gb++oOvfILMwoRuYDvcsqqzGO0Ozmv+NGdvquvcJx4HOxY1ctfMgz2ZkRGdPOVs6g4
-	 CO0ZFHphlqpOJRkXZkyIjS+eFM2oRjYyWNF0OyHQ=
+	b=UNg2H1GJK/+9bBkmVooM8wKW3nzwwltQfQlc13FG8lIcTg5kC4eVla+n2w1r4PNw3
+	 M2mfUsX6wXxfCYM3nKplQwW8/N77uRuyDjPIAhTHeoOvwZa24VfFyyQQgdQMZSNutl
+	 C4pLUC3KESqYnYdonlVL22I/JU9Pe6apuj3Nmg/c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+f0c4a4aba757549ae26c@syzkaller.appspotmail.com,
-	Charalampos Mitrodimas <charmitro@posteo.net>,
-	Tung Nguyen <tung.quang.nguyen@est.tech>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Christian Brauner <brauner@kernel.org>,
+	Al Viro <viro@zeniv.linux.org.uk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 245/356] net: tipc: fix refcount warning in tipc_aead_encrypt
+Subject: [PATCH 6.12 394/512] fix propagation graph breakage by MOVE_MOUNT_SET_GROUP move_mount(2)
 Date: Tue, 17 Jun 2025 17:26:00 +0200
-Message-ID: <20250617152348.070114815@linuxfoundation.org>
+Message-ID: <20250617152435.559871226@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152338.212798615@linuxfoundation.org>
-References: <20250617152338.212798615@linuxfoundation.org>
+In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
+References: <20250617152419.512865572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,59 +62,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Charalampos Mitrodimas <charmitro@posteo.net>
+From: Al Viro <viro@zeniv.linux.org.uk>
 
-[ Upstream commit f29ccaa07cf3d35990f4d25028cc55470d29372b ]
+[ Upstream commit d8cc0362f918d020ca1340d7694f07062dc30f36 ]
 
-syzbot reported a refcount warning [1] caused by calling get_net() on
-a network namespace that is being destroyed (refcount=0). This happens
-when a TIPC discovery timer fires during network namespace cleanup.
+9ffb14ef61ba "move_mount: allow to add a mount into an existing group"
+breaks assertions on ->mnt_share/->mnt_slave.  For once, the data structures
+in question are actually documented.
 
-The recently added get_net() call in commit e279024617134 ("net/tipc:
-fix slab-use-after-free Read in tipc_aead_encrypt_done") attempts to
-hold a reference to the network namespace. However, if the namespace
-is already being destroyed, its refcount might be zero, leading to the
-use-after-free warning.
+Documentation/filesystem/sharedsubtree.rst:
+        All vfsmounts in a peer group have the same ->mnt_master.  If it is
+	non-NULL, they form a contiguous (ordered) segment of slave list.
 
-Replace get_net() with maybe_get_net(), which safely checks if the
-refcount is non-zero before incrementing it. If the namespace is being
-destroyed, return -ENODEV early, after releasing the bearer reference.
+do_set_group() puts a mount into the same place in propagation graph
+as the old one.  As the result, if old mount gets events from somewhere
+and is not a pure event sink, new one needs to be placed next to the
+old one in the slave list the old one's on.  If it is a pure event
+sink, we only need to make sure the new one doesn't end up in the
+middle of some peer group.
 
-[1]: https://lore.kernel.org/all/68342b55.a70a0220.253bc2.0091.GAE@google.com/T/#m12019cf9ae77e1954f666914640efa36d52704a2
+"move_mount: allow to add a mount into an existing group" ends up putting
+the new one in the beginning of list; that's definitely not going to be
+in the middle of anything, so that's fine for case when old is not marked
+shared.  In case when old one _is_ marked shared (i.e. is not a pure event
+sink), that breaks the assumptions of propagation graph iterators.
 
-Reported-by: syzbot+f0c4a4aba757549ae26c@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/all/68342b55.a70a0220.253bc2.0091.GAE@google.com/T/#m12019cf9ae77e1954f666914640efa36d52704a2
-Fixes: e27902461713 ("net/tipc: fix slab-use-after-free Read in tipc_aead_encrypt_done")
-Signed-off-by: Charalampos Mitrodimas <charmitro@posteo.net>
-Reviewed-by: Tung Nguyen <tung.quang.nguyen@est.tech>
-Link: https://patch.msgid.link/20250527-net-tipc-warning-v2-1-df3dc398a047@posteo.net
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Put the new mount next to the old one on the list - that does the right thing
+in "old is marked shared" case and is just as correct as the current behaviour
+if old is not marked shared (kudos to Pavel for pointing that out - my original
+suggested fix changed behaviour in the "nor marked" case, which complicated
+things for no good reason).
+
+Reviewed-by: Christian Brauner <brauner@kernel.org>
+Fixes: 9ffb14ef61ba ("move_mount: allow to add a mount into an existing group")
+Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/tipc/crypto.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ fs/namespace.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/tipc/crypto.c b/net/tipc/crypto.c
-index 8584893b47851..79f91b6ca8c84 100644
---- a/net/tipc/crypto.c
-+++ b/net/tipc/crypto.c
-@@ -818,7 +818,11 @@ static int tipc_aead_encrypt(struct tipc_aead *aead, struct sk_buff *skb,
+diff --git a/fs/namespace.c b/fs/namespace.c
+index 1cb236af29bec..1022a5af691d6 100644
+--- a/fs/namespace.c
++++ b/fs/namespace.c
+@@ -3151,7 +3151,7 @@ static int do_set_group(struct path *from_path, struct path *to_path)
+ 	if (IS_MNT_SLAVE(from)) {
+ 		struct mount *m = from->mnt_master;
+ 
+-		list_add(&to->mnt_slave, &m->mnt_slave_list);
++		list_add(&to->mnt_slave, &from->mnt_slave);
+ 		to->mnt_master = m;
  	}
  
- 	/* Get net to avoid freed tipc_crypto when delete namespace */
--	get_net(aead->crypto->net);
-+	if (!maybe_get_net(aead->crypto->net)) {
-+		tipc_bearer_put(b);
-+		rc = -ENODEV;
-+		goto exit;
-+	}
- 
- 	/* Now, do encrypt */
- 	rc = crypto_aead_encrypt(req);
 -- 
 2.39.5
 
