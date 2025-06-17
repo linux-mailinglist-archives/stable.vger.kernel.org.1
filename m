@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-153603-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-154454-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9DFB5ADD57E
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:21:38 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6DD6EADD927
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 19:03:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5B523194354A
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:11:40 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 630A75A52B2
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:54:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45D39238C0A;
-	Tue, 17 Jun 2025 16:08:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77351285044;
+	Tue, 17 Jun 2025 16:54:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dkEWz2L+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AwKkxXyF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03F6828E8;
-	Tue, 17 Jun 2025 16:08:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3186C23B600;
+	Tue, 17 Jun 2025 16:53:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750176499; cv=none; b=bLg3bnE/Oirz3em6wm/8E8HRGRBmANICTNDGSH28SP9jttEm3QsMvGRlMmfT78w+iHuDitTZo1UChlTaiThaIVMZw4Q3uQ6OYLSHnHjQnzgySL0G1qgbvEUwb9WAAIHCWQ2/T4O9la8bI59Pd2p48FkxoIluW0MSSv55o6ogcXU=
+	t=1750179240; cv=none; b=LabjfvUZWG2bOwXEtuWbJZg88XcuZ01EaB6xzzc7CwjNpVqBh6yOHO1huOevaDKGNtta1XOgbqt7utTd3SgSxpAwWKF9LFU89IFh93JyZfJblK6cQuStFqTEWs7fJiWsZ5UsahC0yb85JlfiftcSMTjQTN5N/5d9Dxb+AWbivhI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750176499; c=relaxed/simple;
-	bh=CK/WWCXMNJmG5iD7DcpVpuxbloIUEDZtTV74cj3pPIg=;
+	s=arc-20240116; t=1750179240; c=relaxed/simple;
+	bh=Mlt26PqOmlNp54wCu4oGPBQwgery6F7sXMPB7tuf5Sc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hM7Ds32nQwF3f6PVDH3tGUZPL1MhI7FiZ01t9ae1HJJMsUt0xC0Qi8sQ3dgG1tU6pXAE9Fu3TnTlSxoBpFL2RTlluO9yyGmPp1X47Wq7fRrchKdZN/6GP8ymJByNXAH76LxmqomtQXB6cTrit3/7EtpkjVUIVgoiOyDV+EpG/6A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dkEWz2L+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E8F3C4CEE3;
-	Tue, 17 Jun 2025 16:08:14 +0000 (UTC)
+	 MIME-Version; b=LkiaF4rdiTopXtqCNfksKEPgNu+HEfH/pyOnj5QJG9IZ5bYfCvph+aXEgtmf2kydN2kwZiR6zxsbFOFh2KXEKi9N7vszkHK9l3H4vuUF/+ynnlzRzOTuqIy+WahIIUMcziv+XYfC0/oSf60hBxeld925jZQ0JedZfWGPuXvTLbk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AwKkxXyF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1571BC4CEF4;
+	Tue, 17 Jun 2025 16:53:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750176495;
-	bh=CK/WWCXMNJmG5iD7DcpVpuxbloIUEDZtTV74cj3pPIg=;
+	s=korg; t=1750179238;
+	bh=Mlt26PqOmlNp54wCu4oGPBQwgery6F7sXMPB7tuf5Sc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dkEWz2L+klyKBALhGI6dpXwp+iBLqSXHcEeNGJDaN4ZJC3/NePKeE5cB3eIXyB2Bb
-	 qiWMJTR9JajPl2I+iTUe15oKZj6iE19YrpA/7u+23V8SVJ+4tkeO89EI/y+Ob0nvhK
-	 4c163cKL8sER8G2RBbpC0aw/gyUVyQ2BauOZf+kg=
+	b=AwKkxXyFqmX2PkWgH4TRBtVq31TbyjTnGgi2SGgHdbIerKMNM7cO0FAvKKaYcV79V
+	 iAlBlFVfLN8RrEF6hC3MQSNajv4z+PWl7gEBO1Q1fl/BPMvLdTFpmhpfmabzL7aDqp
+	 tVZszC3p1izm3m61G2R2CpQyrfBuiehQtdfzcvJA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Judith Mendez <jm@ti.com>,
-	Moteen Shah <m-shah@ti.com>,
-	Nishanth Menon <nm@ti.com>,
+	Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 283/356] arm64: dts: ti: k3-am65-main: Add missing taps to sdhci0
+Subject: [PATCH 6.15 690/780] drm/meson: fix debug log statement when setting the HDMI clocks
 Date: Tue, 17 Jun 2025 17:26:38 +0200
-Message-ID: <20250617152349.581501167@linuxfoundation.org>
+Message-ID: <20250617152519.585835237@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152338.212798615@linuxfoundation.org>
-References: <20250617152338.212798615@linuxfoundation.org>
+In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
+References: <20250617152451.485330293@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,43 +62,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Judith Mendez <jm@ti.com>
+From: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
 
-[ Upstream commit f55c9f087cc2e2252d44ffd9d58def2066fc176e ]
+[ Upstream commit d17e61ab63fb7747b340d6a66bf1408cd5c6562b ]
 
-For am65x, add missing ITAPDLYSEL values for Default Speed and High
-Speed SDR modes to sdhci0 node according to the device datasheet [0].
+The "phy" and "vclk" frequency labels were swapped, making it more
+difficult to debug driver errors. Swap the label order to make them
+match with the actual frequencies printed to correct this.
 
-[0] https://www.ti.com/lit/gpn/am6548
-
-Fixes: eac99d38f861 ("arm64: dts: ti: k3-am654-main: Update otap-del-sel values")
-Cc: stable@vger.kernel.org
-Signed-off-by: Judith Mendez <jm@ti.com>
-Reviewed-by: Moteen Shah <m-shah@ti.com>
-Link: https://lore.kernel.org/r/20250429173009.33994-1-jm@ti.com
-Signed-off-by: Nishanth Menon <nm@ti.com>
+Fixes: e5fab2ec9ca4 ("drm/meson: vclk: add support for YUV420 setup")
+Signed-off-by: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
+Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
+Link: https://lore.kernel.org/r/20250606203729.3311592-1-martin.blumenstingl@googlemail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/ti/k3-am65-main.dtsi | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/gpu/drm/meson/meson_encoder_hdmi.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm64/boot/dts/ti/k3-am65-main.dtsi b/arch/arm64/boot/dts/ti/k3-am65-main.dtsi
-index 9c5de448351e9..0523bd0da80c7 100644
---- a/arch/arm64/boot/dts/ti/k3-am65-main.dtsi
-+++ b/arch/arm64/boot/dts/ti/k3-am65-main.dtsi
-@@ -448,6 +448,8 @@ sdhci0: mmc@4f80000 {
- 		ti,otap-del-sel-ddr50 = <0x5>;
- 		ti,otap-del-sel-ddr52 = <0x5>;
- 		ti,otap-del-sel-hs200 = <0x5>;
-+		ti,itap-del-sel-legacy = <0xa>;
-+		ti,itap-del-sel-mmc-hs = <0x1>;
- 		ti,itap-del-sel-ddr52 = <0x0>;
- 		dma-coherent;
- 	};
+diff --git a/drivers/gpu/drm/meson/meson_encoder_hdmi.c b/drivers/gpu/drm/meson/meson_encoder_hdmi.c
+index c08fa93e50a30..2bccda1e52a17 100644
+--- a/drivers/gpu/drm/meson/meson_encoder_hdmi.c
++++ b/drivers/gpu/drm/meson/meson_encoder_hdmi.c
+@@ -108,7 +108,7 @@ static void meson_encoder_hdmi_set_vclk(struct meson_encoder_hdmi *encoder_hdmi,
+ 		venc_freq /= 2;
+ 
+ 	dev_dbg(priv->dev,
+-		"vclk:%lluHz phy=%lluHz venc=%lluHz hdmi=%lluHz enci=%d\n",
++		"phy:%lluHz vclk=%lluHz venc=%lluHz hdmi=%lluHz enci=%d\n",
+ 		phy_freq, vclk_freq, venc_freq, hdmi_freq,
+ 		priv->venc.hdmi_use_enci);
+ 
 -- 
 2.39.5
 
