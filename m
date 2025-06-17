@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-153718-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153721-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B11BADD5EE
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:28:39 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D4B6FADD60E
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:29:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C8E7317AFE5
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:21:24 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 04F882C5B9F
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:21:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07B902ECEA5;
-	Tue, 17 Jun 2025 16:14:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 003822F430D;
+	Tue, 17 Jun 2025 16:14:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L6H9573H"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SAMc/QI3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B85202EF297;
-	Tue, 17 Jun 2025 16:14:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEAA42ECEAE;
+	Tue, 17 Jun 2025 16:14:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750176865; cv=none; b=lt/6YMyO0vMo+xmF55CV6HnUVhCi9v8DT5NMRTVdyWYeih2CsfmBku6S0IWaFfiki3KbeUJtd4gwGuOBEIONK7Ad014e8cvHg1bHeVbKcTEa+4xgH1WqcQAaSLqrK6/8pj4qZnemHZpJcToyQKKCJJ1e6PH6sJ4czDeqyMBDS64=
+	t=1750176875; cv=none; b=hRCvz8dbGam/bAKAWlo5rm/zwcwUCGaS4hvxngRDXZTeYbzRxjYrExZENmeIb5gkpt6Lrl5vxK4JQsQbqV+k4/7j/tR1d3CEeuXEwwbUc6rnYXAq3UP/C0jWNwwIz5jw20szn6kmvf8TdVje87KaKXwuJ6nRzt4SkeuNF73ko1k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750176865; c=relaxed/simple;
-	bh=6++8/E2qwlXO18K7fYF09VqEkOBCuGzgeUyAvHLHLa8=;
+	s=arc-20240116; t=1750176875; c=relaxed/simple;
+	bh=HL0Ldza2hJxnD2sBm9IaxsEX/WBNaAmyBEaEkBf+KM8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=isfJgPbNzSJAgljrm2//L18VcoiXTAhcOkNvpw3dmkJTtKhqb2I0F+SbjYObL36hrbEj2Tr86lQ53Iu0/jaYdEKmzfqDL6ziN92vMGz5vvvr6MUAuTjBJ4bbwoHFRmo/ht6Uc7LINJalrmTGD9vpy45K5J+5BpHsw2T7PagNx7Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L6H9573H; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20EB5C4CEE3;
-	Tue, 17 Jun 2025 16:14:24 +0000 (UTC)
+	 MIME-Version; b=R+jHhDqHGhYSMbZDOYB7FCuYrosuk/4zNahl8aZGobj3FtHHqxWLwBYQr7vYjDvrL30FB8PBMQEWVeGUTCcUZdDQPbbQe9/xGynRJD7q1YW+7xHJv2NdDMPPuLXgvD/IllEfdKv3cPcnoN8S2HFIqHnCQppqVxtJO1gN15Nzio4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SAMc/QI3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D32BEC4CEE3;
+	Tue, 17 Jun 2025 16:14:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750176865;
-	bh=6++8/E2qwlXO18K7fYF09VqEkOBCuGzgeUyAvHLHLa8=;
+	s=korg; t=1750176875;
+	bh=HL0Ldza2hJxnD2sBm9IaxsEX/WBNaAmyBEaEkBf+KM8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=L6H9573HfSRPUrRiE4c8a7OpVI0xk9niSlxa28C/NumRKbKJxJece9AEZtBUydESl
-	 w/Gd3aJZrficHqE4KemoOn9z7R1YG2uT5Lm+MnZCCaHGnyElU8KOKRikaiq6rM33RM
-	 1iR9k+g4aWzhdz0SguE2W8NXmuGaFDSLzyRP1TNA=
+	b=SAMc/QI3U72lSJuZJpCxDyXdyczV7oWUq6ruyUUNgkC9+lTWBsRbYtzGPvtN9voQN
+	 EUsG2wXFgEgwxPU9Qwn1vbpfoL3x7Qxp3Ao0hqPcbWGgacZM0pfFhQv4DSBHwCLZKp
+	 AP/7KyvJ7Z9aOhMRBS+RG4JuvHzYli09WRt4BAGM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Anton Protopopov <a.s.protopopov@gmail.com>,
-	Andrii Nakryiko <andrii@kernel.org>,
+	Lorenzo Bianconi <lorenzo@kernel.org>,
+	Martin KaFai Lau <martin.lau@kernel.org>,
+	Stanislav Fomichev <sdf@fomichev.me>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 233/780] libbpf: Use proper errno value in linker
-Date: Tue, 17 Jun 2025 17:19:01 +0200
-Message-ID: <20250617152500.943140867@linuxfoundation.org>
+Subject: [PATCH 6.15 234/780] bpf: Allow XDP dev-bound programs to perform XDP_REDIRECT into maps
+Date: Tue, 17 Jun 2025 17:19:02 +0200
+Message-ID: <20250617152500.988078634@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
 References: <20250617152451.485330293@linuxfoundation.org>
@@ -66,47 +67,89 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Anton Protopopov <a.s.protopopov@gmail.com>
+From: Lorenzo Bianconi <lorenzo@kernel.org>
 
-[ Upstream commit 358b1c0f56ebb6996fcec7dcdcf6bae5dcbc8b6c ]
+[ Upstream commit 714070c4cb7a10ff57450a618a936775f3036245 ]
 
-Return values of the linker_append_sec_data() and the
-linker_append_elf_relos() functions are propagated all the
-way up to users of libbpf API. In some error cases these
-functions return -1 which will be seen as -EPERM from user's
-point of view. Instead, return a more reasonable -EINVAL.
+In the current implementation if the program is dev-bound to a specific
+device, it will not be possible to perform XDP_REDIRECT into a DEVMAP
+or CPUMAP even if the program is running in the driver NAPI context and
+it is not attached to any map entry. This seems in contrast with the
+explanation available in bpf_prog_map_compatible routine.
+Fix the issue introducing __bpf_prog_map_compatible utility routine in
+order to avoid bpf_prog_is_dev_bound() check running bpf_check_tail_call()
+at program load time (bpf_prog_select_runtime()).
+Continue forbidding to attach a dev-bound program to XDP maps
+(BPF_MAP_TYPE_PROG_ARRAY, BPF_MAP_TYPE_DEVMAP and BPF_MAP_TYPE_CPUMAP).
 
-Fixes: faf6ed321cf6 ("libbpf: Add BPF static linker APIs")
-Signed-off-by: Anton Protopopov <a.s.protopopov@gmail.com>
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Link: https://lore.kernel.org/bpf/20250430120820.2262053-1-a.s.protopopov@gmail.com
+Fixes: 3d76a4d3d4e59 ("bpf: XDP metadata RX kfuncs")
+Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+Signed-off-by: Martin KaFai Lau <martin.lau@kernel.org>
+Acked-by: Stanislav Fomichev <sdf@fomichev.me>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/lib/bpf/linker.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ kernel/bpf/core.c | 27 ++++++++++++++++-----------
+ 1 file changed, 16 insertions(+), 11 deletions(-)
 
-diff --git a/tools/lib/bpf/linker.c b/tools/lib/bpf/linker.c
-index 56f5068e2ebab..a469e5d4fee70 100644
---- a/tools/lib/bpf/linker.c
-+++ b/tools/lib/bpf/linker.c
-@@ -1376,7 +1376,7 @@ static int linker_append_sec_data(struct bpf_linker *linker, struct src_obj *obj
- 		} else {
- 			if (!secs_match(dst_sec, src_sec)) {
- 				pr_warn("ELF sections %s are incompatible\n", src_sec->sec_name);
--				return -1;
-+				return -EINVAL;
- 			}
+diff --git a/kernel/bpf/core.c b/kernel/bpf/core.c
+index ba6b6118cf504..a3e5716884211 100644
+--- a/kernel/bpf/core.c
++++ b/kernel/bpf/core.c
+@@ -2358,8 +2358,8 @@ static unsigned int __bpf_prog_ret0_warn(const void *ctx,
+ 	return 0;
+ }
  
- 			/* "license" and "version" sections are deduped */
-@@ -2223,7 +2223,7 @@ static int linker_append_elf_relos(struct bpf_linker *linker, struct src_obj *ob
- 			}
- 		} else if (!secs_match(dst_sec, src_sec)) {
- 			pr_warn("sections %s are not compatible\n", src_sec->sec_name);
--			return -1;
-+			return -EINVAL;
+-bool bpf_prog_map_compatible(struct bpf_map *map,
+-			     const struct bpf_prog *fp)
++static bool __bpf_prog_map_compatible(struct bpf_map *map,
++				      const struct bpf_prog *fp)
+ {
+ 	enum bpf_prog_type prog_type = resolve_prog_type(fp);
+ 	bool ret;
+@@ -2368,14 +2368,6 @@ bool bpf_prog_map_compatible(struct bpf_map *map,
+ 	if (fp->kprobe_override)
+ 		return false;
+ 
+-	/* XDP programs inserted into maps are not guaranteed to run on
+-	 * a particular netdev (and can run outside driver context entirely
+-	 * in the case of devmap and cpumap). Until device checks
+-	 * are implemented, prohibit adding dev-bound programs to program maps.
+-	 */
+-	if (bpf_prog_is_dev_bound(aux))
+-		return false;
+-
+ 	spin_lock(&map->owner.lock);
+ 	if (!map->owner.type) {
+ 		/* There's no owner yet where we could check for
+@@ -2409,6 +2401,19 @@ bool bpf_prog_map_compatible(struct bpf_map *map,
+ 	return ret;
+ }
+ 
++bool bpf_prog_map_compatible(struct bpf_map *map, const struct bpf_prog *fp)
++{
++	/* XDP programs inserted into maps are not guaranteed to run on
++	 * a particular netdev (and can run outside driver context entirely
++	 * in the case of devmap and cpumap). Until device checks
++	 * are implemented, prohibit adding dev-bound programs to program maps.
++	 */
++	if (bpf_prog_is_dev_bound(fp->aux))
++		return false;
++
++	return __bpf_prog_map_compatible(map, fp);
++}
++
+ static int bpf_check_tail_call(const struct bpf_prog *fp)
+ {
+ 	struct bpf_prog_aux *aux = fp->aux;
+@@ -2421,7 +2426,7 @@ static int bpf_check_tail_call(const struct bpf_prog *fp)
+ 		if (!map_type_contains_progs(map))
+ 			continue;
+ 
+-		if (!bpf_prog_map_compatible(map, fp)) {
++		if (!__bpf_prog_map_compatible(map, fp)) {
+ 			ret = -EINVAL;
+ 			goto out;
  		}
- 
- 		/* shdr->sh_link points to SYMTAB */
 -- 
 2.39.5
 
