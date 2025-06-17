@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-152910-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-152954-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B378AADD16C
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 17:30:36 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id A07C8ADD19F
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 17:33:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E9293189630B
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 15:30:51 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0E1C2170545
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 15:33:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9CA8C2DF3CB;
-	Tue, 17 Jun 2025 15:30:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E3382ECD31;
+	Tue, 17 Jun 2025 15:32:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xzw+DneE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qGJ9w8X8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58EAE2EF659;
-	Tue, 17 Jun 2025 15:30:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 492A72DF3CB;
+	Tue, 17 Jun 2025 15:32:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750174233; cv=none; b=f0or7zMqw9iWs00PAdOgksqrgxYQetObBgOMxMqFwRw7/HLTzbZy6fNn5RAiVttG7vAcuH/Ox1XmvbmarDNsHOyKrPBJGNLUPBP4ZEwwTO/MB72Xsf7lVa9J4LecrjelEY4V38G8pDHnjHW7rPe7Dr/50rHd9RXapXninrBDZS0=
+	t=1750174378; cv=none; b=TmpyOyqgtF0VGE6D3+48iLLDwYGNNsrQXsIq7c6Stf3J1RO/pQrqbxgyD7lgWFxbiut+ag6AOJyNT1FNrsH2vAGXb5LSm/HvcAfniYj6KqkoBFH6xCBPO09JIoqydH1UHz6fyRuTggpHdM2ugXFBy5zXe/Mv7iCA1k8B3YFyLQQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750174233; c=relaxed/simple;
-	bh=VLGslZLMk/hwbdWJQ2WEjxJcFobWFrMsL1GKsaucRVI=;
+	s=arc-20240116; t=1750174378; c=relaxed/simple;
+	bh=5FQ1EpA6JeDwRIX/QUW3S4KICZEpk/1QGzAfgugd0tM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=s4VK6KBynX2w3HLgY7eQRh9wcF6UjYOVpnK+6dX2RwbJyMx/g52rkdtvn4jwYGm2HWq1C0STaxH4/xHJ3XT705An9soc8n/Y345cRxtafDs0ccLpiepffhHeMkrb/G5H+gwwVQJNHoEqiRSdrabmGBxrHkUN3qTSrXAfx5kHmM8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xzw+DneE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE23FC4CEE3;
-	Tue, 17 Jun 2025 15:30:32 +0000 (UTC)
+	 MIME-Version; b=YosV1od6ib/tr8FCjDzqlXxMUYAff8RdZMzTR7RcAnASLz8UjUtGJL903WEFHOWem0pS3wQNnjRkqRMEUV01uozbty29cG8Rmuc7lVMrgIcvZH9PrE+ZuKVI2pNaKBG2zqjd8bBJakMM4VLk8iSwc6orV7lUFIjRHwbPBZcZw2k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qGJ9w8X8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC2E9C4CEE3;
+	Tue, 17 Jun 2025 15:32:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750174233;
-	bh=VLGslZLMk/hwbdWJQ2WEjxJcFobWFrMsL1GKsaucRVI=;
+	s=korg; t=1750174378;
+	bh=5FQ1EpA6JeDwRIX/QUW3S4KICZEpk/1QGzAfgugd0tM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xzw+DneE1LiZjTssZJe3/WYoQvWWPLv4bdzVR1EcQHSbnd339I6K8V+3tAnsSZPNi
-	 9TxkFmh3siz95ammOwZ8AZsDapKxacWu29KRWaurO1xMbNqkHNFK36YUFzI0QE96Lg
-	 cxogQdrrGHrlPTb2Ghb5McIj/DRoWo9GS1HOr9DM=
+	b=qGJ9w8X8Meq9323Ri1wHCosK6TjOWffJIYTgQSM/PYKbonY2vnvz8NosRQ3EGRKoF
+	 bI3bazZ9pTJBJUHLwwZkX1dkYURieDRMrM0MUMEfUrSJvgDEDxDNrPkFhhU1D/ZL8p
+	 qnZ0j1v6P4+WoBKjrYcEMAO/6e6ZWU4LbBhF0W3M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ovidiu Panait <ovidiu.panait.oss@gmail.com>,
+	Corentin Labbe <clabbe.montjoie@gmail.com>,
 	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 023/356] crypto: sun8i-ce-cipher - fix error handling in sun8i_ce_cipher_prepare()
-Date: Tue, 17 Jun 2025 17:22:18 +0200
-Message-ID: <20250617152339.171007030@linuxfoundation.org>
+Subject: [PATCH 6.6 024/356] crypto: sun8i-ss - do not use sg_dma_len before calling DMA functions
+Date: Tue, 17 Jun 2025 17:22:19 +0200
+Message-ID: <20250617152339.209767947@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250617152338.212798615@linuxfoundation.org>
 References: <20250617152338.212798615@linuxfoundation.org>
@@ -66,74 +66,37 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Ovidiu Panait <ovidiu.panait.oss@gmail.com>
+From: Corentin Labbe <clabbe.montjoie@gmail.com>
 
-[ Upstream commit f31adc3e356f7350d4a4d68c98d3f60f2f6e26b3 ]
+[ Upstream commit 2dfc7cd74a5e062a5405560447517e7aab1c7341 ]
 
-Fix two DMA cleanup issues on the error path in sun8i_ce_cipher_prepare():
+When testing sun8i-ss with multi_v7_defconfig, all CBC algorithm fail crypto
+selftests.
+This is strange since on sunxi_defconfig, everything was ok.
+The problem was in the IV setup loop which never run because sg_dma_len
+was 0.
 
-1] If dma_map_sg() fails for areq->dst, the device driver would try to free
-   DMA memory it has not allocated in the first place. To fix this, on the
-   "theend_sgs" error path, call dma unmap only if the corresponding dma
-   map was successful.
-
-2] If the dma_map_single() call for the IV fails, the device driver would
-   try to free an invalid DMA memory address on the "theend_iv" path:
-   ------------[ cut here ]------------
-   DMA-API: sun8i-ce 1904000.crypto: device driver tries to free an invalid DMA memory address
-   WARNING: CPU: 2 PID: 69 at kernel/dma/debug.c:968 check_unmap+0x123c/0x1b90
-   Modules linked in: skcipher_example(O+)
-   CPU: 2 UID: 0 PID: 69 Comm: 1904000.crypto- Tainted: G           O        6.15.0-rc3+ #24 PREEMPT
-   Tainted: [O]=OOT_MODULE
-   Hardware name: OrangePi Zero2 (DT)
-   pc : check_unmap+0x123c/0x1b90
-   lr : check_unmap+0x123c/0x1b90
-   ...
-   Call trace:
-    check_unmap+0x123c/0x1b90 (P)
-    debug_dma_unmap_page+0xac/0xc0
-    dma_unmap_page_attrs+0x1f4/0x5fc
-    sun8i_ce_cipher_do_one+0x1bd4/0x1f40
-    crypto_pump_work+0x334/0x6e0
-    kthread_worker_fn+0x21c/0x438
-    kthread+0x374/0x664
-    ret_from_fork+0x10/0x20
-   ---[ end trace 0000000000000000 ]---
-
-To fix this, check for !dma_mapping_error() before calling
-dma_unmap_single() on the "theend_iv" path.
-
-Fixes: 06f751b61329 ("crypto: allwinner - Add sun8i-ce Crypto Engine")
-Signed-off-by: Ovidiu Panait <ovidiu.panait.oss@gmail.com>
+Fixes: 359e893e8af4 ("crypto: sun8i-ss - rework handling of IV")
+Signed-off-by: Corentin Labbe <clabbe.montjoie@gmail.com>
 Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/crypto/allwinner/sun8i-ce/sun8i-ce-cipher.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ drivers/crypto/allwinner/sun8i-ss/sun8i-ss-cipher.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/crypto/allwinner/sun8i-ce/sun8i-ce-cipher.c b/drivers/crypto/allwinner/sun8i-ce/sun8i-ce-cipher.c
-index d2cf9619018b1..70434601f99be 100644
---- a/drivers/crypto/allwinner/sun8i-ce/sun8i-ce-cipher.c
-+++ b/drivers/crypto/allwinner/sun8i-ce/sun8i-ce-cipher.c
-@@ -275,13 +275,16 @@ static int sun8i_ce_cipher_prepare(struct crypto_engine *engine, void *async_req
- 	} else {
- 		if (nr_sgs > 0)
- 			dma_unmap_sg(ce->dev, areq->src, ns, DMA_TO_DEVICE);
--		dma_unmap_sg(ce->dev, areq->dst, nd, DMA_FROM_DEVICE);
-+
-+		if (nr_sgd > 0)
-+			dma_unmap_sg(ce->dev, areq->dst, nd, DMA_FROM_DEVICE);
- 	}
+diff --git a/drivers/crypto/allwinner/sun8i-ss/sun8i-ss-cipher.c b/drivers/crypto/allwinner/sun8i-ss/sun8i-ss-cipher.c
+index 7fa359725ec75..9b18fb46a2c89 100644
+--- a/drivers/crypto/allwinner/sun8i-ss/sun8i-ss-cipher.c
++++ b/drivers/crypto/allwinner/sun8i-ss/sun8i-ss-cipher.c
+@@ -141,7 +141,7 @@ static int sun8i_ss_setup_ivs(struct skcipher_request *areq)
  
- theend_iv:
- 	if (areq->iv && ivsize > 0) {
--		if (rctx->addr_iv)
-+		if (!dma_mapping_error(ce->dev, rctx->addr_iv))
- 			dma_unmap_single(ce->dev, rctx->addr_iv, rctx->ivlen, DMA_TO_DEVICE);
-+
- 		offset = areq->cryptlen - ivsize;
- 		if (rctx->op_dir & CE_DECRYPTION) {
- 			memcpy(areq->iv, chan->backup_iv, ivsize);
+ 	/* we need to copy all IVs from source in case DMA is bi-directionnal */
+ 	while (sg && len) {
+-		if (sg_dma_len(sg) == 0) {
++		if (sg->length == 0) {
+ 			sg = sg_next(sg);
+ 			continue;
+ 		}
 -- 
 2.39.5
 
