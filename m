@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-154068-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153342-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 41BBFADD7F9
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:50:56 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6F0C8ADD422
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:07:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 85B0A4A434C
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:38:38 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D4D711942513
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 15:58:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3AF5D2DFF29;
-	Tue, 17 Jun 2025 16:33:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E26AA2EF2B0;
+	Tue, 17 Jun 2025 15:53:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aDDu9Kf/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fbAd4a2a"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC3F52DFF1B;
-	Tue, 17 Jun 2025 16:33:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FDE32EF2AB;
+	Tue, 17 Jun 2025 15:53:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750178001; cv=none; b=BjAvcL8j7E3Z+4fgOyMt7aC56quVIRNlVJxmMh6u5iwqUu1yAksPuLOYIAUlMKGHySWnu4mdKNDgCQHku8CzIPfIctv+HC6rfT9IsUtt8tdIYwZguAxrRqOFOwTJFTINRTYXGzWlTnvOZJmcc8+JhzaroVk6ZEEWC0B6/UEIq+s=
+	t=1750175639; cv=none; b=qdCbz+4/x04SsvKiJcvX1KUj2sPITafHOhsHZVINzLTCPC1NEEyTqnlNHIblv5dWRYzyR3assFTcRY+4aKpCnxihYdMDDaAVcL3ox8/qLefQpqgrCE69MRzOj+iznbrWqnsbh3bW7GSTgd+442uTmbKQeNQ9Ls+BApOGFTjrz0w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750178001; c=relaxed/simple;
-	bh=pSsAulrkD1Z49+w5y6MTu2A7zgAehUVl+parOAoc+KM=;
+	s=arc-20240116; t=1750175639; c=relaxed/simple;
+	bh=Xzfu3MgCMkphIcR18fX8YWU6A8wrUx8DUT0/v5pc9iY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TaDKjokoWi42jzDOsNN9+5g/H1h15Vs5TYZO5lm7WgLuoJsXNB1JgDaG8b9INqx80oHn24uqS26iJsliyyYHt8BkzzyDERda8ywOrWnwaJL3pEIAfCpx3EHIhbBlrlYreSeO5oFVeRQFLDI4bS7uzHJKh1XygH7I2p8F4/7qP+A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aDDu9Kf/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D579C4CEE3;
-	Tue, 17 Jun 2025 16:33:19 +0000 (UTC)
+	 MIME-Version; b=MYZrm1k/dY8a+4GpOH7z8YzYtIJL5vROmVLVh379YpSYCNVyL9/u2XEk77jHS7o9C4zMwq3cg2KuZ9IpYDd+05L8rUS+6SUvFpC2b1C3EgzmPWABW+x91UU7kZplbtjkPFpjYyImDD0Z0QrmFnrlPJgmwHhJPxDbbraRTrflgHQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fbAd4a2a; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F03A2C4CEF1;
+	Tue, 17 Jun 2025 15:53:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750178000;
-	bh=pSsAulrkD1Z49+w5y6MTu2A7zgAehUVl+parOAoc+KM=;
+	s=korg; t=1750175639;
+	bh=Xzfu3MgCMkphIcR18fX8YWU6A8wrUx8DUT0/v5pc9iY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aDDu9Kf/EZjQgV5eytcwdp7Ggb5Mjxu1p17UtV1lYMKJ30XzCfRqOPt7zMzhWOqIx
-	 JRJ2UmIAk6zG4tyD5us++Sc84y8rNpOwFgkvztQkqpbmAy0gSG6JzZSGM2YIiYUcKf
-	 S+zgG2eetcUG9CnpBiSOpnueHtX7EF9FTvzBUvAM=
+	b=fbAd4a2aVcfNUKByG5cQpZdP3sTv1/ZGx7NkGhiqTqQviooVDrlSMkCVlym6nos4/
+	 dsKJnYvhSWOVKdcNL3w79cvGfqEu40gAPnHDZKTNPu5C7Avp7Ho7wn2lNdUJeeFU5K
+	 EnKUA5PK4P7m3c8bXmlpPSO8kpcSqBDLhzkWHnVI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wentao Liang <vulab@iscas.ac.cn>,
-	Ryusuke Konishi <konishi.ryusuke@gmail.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
+	Tao Chen <chen.dylane@linux.dev>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Namhyung Kim <namhyung@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 394/780] nilfs2: add pointer check for nilfs_direct_propagate()
-Date: Tue, 17 Jun 2025 17:21:42 +0200
-Message-ID: <20250617152507.500313512@linuxfoundation.org>
+Subject: [PATCH 6.12 137/512] libbpf: Remove sample_period init in perf_buffer
+Date: Tue, 17 Jun 2025 17:21:43 +0200
+Message-ID: <20250617152425.151823346@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
-References: <20250617152451.485330293@linuxfoundation.org>
+In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
+References: <20250617152419.512865572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,58 +64,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wentao Liang <vulab@iscas.ac.cn>
+From: Tao Chen <chen.dylane@linux.dev>
 
-[ Upstream commit f43f02429295486059605997bc43803527d69791 ]
+[ Upstream commit 64821d25f05ac468d435e61669ae745ce5a633ea ]
 
-Patch series "nilfs2: improve sanity checks in dirty state propagation".
+It seems that sample_period is not used in perf buffer. Actually, only
+wakeup_events are meaningful to enable events aggregation for wakeup notification.
+Remove sample_period setting code to avoid confusion.
 
-This fixes one missed check for block mapping anomalies and one improper
-return of an error code during a preparation step for log writing, thereby
-improving checking for filesystem corruption on writeback.
-
-This patch (of 2):
-
-In nilfs_direct_propagate(), the printer get from nilfs_direct_get_ptr()
-need to be checked to ensure it is not an invalid pointer.
-
-If the pointer value obtained by nilfs_direct_get_ptr() is
-NILFS_BMAP_INVALID_PTR, means that the metadata (in this case, i_bmap in
-the nilfs_inode_info struct) that should point to the data block at the
-buffer head of the argument is corrupted and the data block is orphaned,
-meaning that the file system has lost consistency.
-
-Add a value check and return -EINVAL when it is an invalid pointer.
-
-Link: https://lkml.kernel.org/r/20250428173808.6452-1-konishi.ryusuke@gmail.com
-Link: https://lkml.kernel.org/r/20250428173808.6452-2-konishi.ryusuke@gmail.com
-Fixes: 36a580eb489f ("nilfs2: direct block mapping")
-Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
-Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Fixes: fb84b8224655 ("libbpf: add perf buffer API")
+Signed-off-by: Tao Chen <chen.dylane@linux.dev>
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Acked-by: Jiri Olsa <jolsa@kernel.org>
+Acked-by: Namhyung Kim <namhyung@kernel.org>
+Link: https://lore.kernel.org/bpf/20250423163901.2983689-1-chen.dylane@linux.dev
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nilfs2/direct.c | 3 +++
- 1 file changed, 3 insertions(+)
+ tools/lib/bpf/libbpf.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/fs/nilfs2/direct.c b/fs/nilfs2/direct.c
-index 893ab36824cc2..2d8dc6b35b547 100644
---- a/fs/nilfs2/direct.c
-+++ b/fs/nilfs2/direct.c
-@@ -273,6 +273,9 @@ static int nilfs_direct_propagate(struct nilfs_bmap *bmap,
- 	dat = nilfs_bmap_get_dat(bmap);
- 	key = nilfs_bmap_data_get_key(bmap, bh);
- 	ptr = nilfs_direct_get_ptr(bmap, key);
-+	if (ptr == NILFS_BMAP_INVALID_PTR)
-+		return -EINVAL;
-+
- 	if (!buffer_nilfs_volatile(bh)) {
- 		oldreq.pr_entry_nr = ptr;
- 		newreq.pr_entry_nr = ptr;
+diff --git a/tools/lib/bpf/libbpf.c b/tools/lib/bpf/libbpf.c
+index 976fabd5d4dbc..c6eceae4d6ff6 100644
+--- a/tools/lib/bpf/libbpf.c
++++ b/tools/lib/bpf/libbpf.c
+@@ -13245,7 +13245,6 @@ struct perf_buffer *perf_buffer__new(int map_fd, size_t page_cnt,
+ 	attr.config = PERF_COUNT_SW_BPF_OUTPUT;
+ 	attr.type = PERF_TYPE_SOFTWARE;
+ 	attr.sample_type = PERF_SAMPLE_RAW;
+-	attr.sample_period = sample_period;
+ 	attr.wakeup_events = sample_period;
+ 
+ 	p.attr = &attr;
 -- 
 2.39.5
 
