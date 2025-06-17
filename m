@@ -1,57 +1,60 @@
-Return-Path: <stable+bounces-153945-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153416-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 558D5ADD73C
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:42:48 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 21B2FADD488
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:11:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D57D62C58D4
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:31:29 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BB937401AAF
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:02:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48B7F2ED846;
-	Tue, 17 Jun 2025 16:26:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC6A52F2C72;
+	Tue, 17 Jun 2025 15:58:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ukzBNNw1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y4MH0Kka"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 054541ADC97;
-	Tue, 17 Jun 2025 16:26:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9FF92EF287;
+	Tue, 17 Jun 2025 15:58:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750177608; cv=none; b=cieib/DYfwkXtTb0g/b3kVzPQPtG7D+8rYyGksmM7Xarn0Dh/EAOxYtZphrRNPHBtf9bPmuQltH9bq4qSlVVjuMpQUDhuoa/wvTlvdf8CrijM3QbzXh49RIHNGY76hWBoYOAHpwfl1TPz59BDLMlCmZLo9+diomHgFnmSic1/mM=
+	t=1750175890; cv=none; b=d82GPu+2zuigyXINNLP+rfWAfDml38ogCTf6RA251NWMdr9WN1V8kfF1yGW8VBB3knXoXTGasjb6vsxy00VJgGoYSmMryUGGJJQZKn9Mhv0unrpkbkKxBXG4Q6M/kD8TMY1HHN8wTr5Nb2zYtw+KqTC8BBg6fzHGbDy6DB1eicM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750177608; c=relaxed/simple;
-	bh=C4ckT8RUXODunkfyo0k7i5G2R1PsWF8BXwEjE9mSqLc=;
+	s=arc-20240116; t=1750175890; c=relaxed/simple;
+	bh=ltcGN+82A8NQaTyTLb22IqN47ZhwuqoEQN/gmIaUpi0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=opauG95CsMP64iBbZDa+1hHXOcAQBOJAQCRPO9c4SzoUQVmrLLClmx8+YIm0gZxTx6n9hvIPOLaxCXHqO2QYjb3hkbtcN2jJWfLQ4jX3ujIg7fkKieNJflpWZt2OrlJtFhtt9jLtq/UBhVeNhwvqMa5PrLqOwRXlcuXvjZAUs8w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ukzBNNw1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28BA5C4CEE3;
-	Tue, 17 Jun 2025 16:26:46 +0000 (UTC)
+	 MIME-Version:Content-Type; b=bvjSdGV4Y08EqVoffJ14ER3JtKXqjyRZMTckpP4q3/EG2PWCIJCjGZd+PjeERwHXqneRcF20HyjHbXvB+QgqAyeoQDGTs00Xg0R1x1iBXrT5Ts529sE09hIeUnqX0b4YrDHoQEb20aVXZuKGzK5del6pHnjGTUmezS/J8UAmeAE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y4MH0Kka; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88976C4CEE3;
+	Tue, 17 Jun 2025 15:58:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750177607;
-	bh=C4ckT8RUXODunkfyo0k7i5G2R1PsWF8BXwEjE9mSqLc=;
+	s=korg; t=1750175890;
+	bh=ltcGN+82A8NQaTyTLb22IqN47ZhwuqoEQN/gmIaUpi0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ukzBNNw1VLcvNwMdg145I4kRP4PCiolhOp+rmDYa/rzKPa9VdS2OtLV01pweqwGkb
-	 5oDt+zRFmelCjI+AjGU7ioeM91ashfxbPFQlPbeBLitJ7h013a/PIIoOzL9/ns5dOe
-	 cfdHsVkVH2/3z4eOdwuVTGxX4ds//gu/W7dtzOpg=
+	b=y4MH0Kka3bE4SInkY/DGB44u39EuZD70ZNlKZakeTDHgL8ySx2U6IDbaB60rKanQf
+	 iFsACN1JD+y1Va9GzuuChcs/ZWamusRgLvsrjCGMcwwLQx+2gNy3oqu+oPyxFhfuG1
+	 8EYXNk0LtKSYnyyTxD3zCH9BAA2eD88xekKpON5g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ronak Doshi <ronak.doshi@broadcom.com>,
-	Guolin Yang <guolin.yang@broadcom.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Wilfred Mallawa <wilfred.mallawa@wdc.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Damien Le Moal <dlemoal@kernel.org>,
+	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
+	Mika Westerberg <mika.westerberg@linux.intel.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 370/512] vmxnet3: correctly report gso type for UDP tunnels
-Date: Tue, 17 Jun 2025 17:25:36 +0200
-Message-ID: <20250617152434.584669111@linuxfoundation.org>
+Subject: [PATCH 6.6 222/356] PCI: Print the actual delay time in pci_bridge_wait_for_secondary_bus()
+Date: Tue, 17 Jun 2025 17:25:37 +0200
+Message-ID: <20250617152347.140784543@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
-References: <20250617152419.512865572@linuxfoundation.org>
+In-Reply-To: <20250617152338.212798615@linuxfoundation.org>
+References: <20250617152338.212798615@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,86 +64,46 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ronak Doshi <ronak.doshi@broadcom.com>
+From: Wilfred Mallawa <wilfred.mallawa@wdc.com>
 
-[ Upstream commit 982d30c30eaa2ec723df42e3bf526c014c1dbb88 ]
+[ Upstream commit d24eba726aadf8778f2907dd42281c6380b0ccaa ]
 
-Commit 3d010c8031e3 ("udp: do not accept non-tunnel GSO skbs landing
-in a tunnel") added checks in linux stack to not accept non-tunnel
-GRO packets landing in a tunnel. This exposed an issue in vmxnet3
-which was not correctly reporting GRO packets for tunnel packets.
+Print the delay amount that pcie_wait_for_link_delay() is invoked with
+instead of the hardcoded 1000ms value in the debug info print.
 
-This patch fixes this issue by setting correct GSO type for the
-tunnel packets.
-
-Currently, vmxnet3 does not support reporting inner fields for LRO
-tunnel packets. The issue is not seen for egress drivers that do not
-use skb inner fields. The workaround is to enable tnl-segmentation
-offload on the egress interfaces if the driver supports it. This
-problem pre-exists this patch fix and can be addressed as a separate
-future patch.
-
-Fixes: dacce2be3312 ("vmxnet3: add geneve and vxlan tunnel offload support")
-Signed-off-by: Ronak Doshi <ronak.doshi@broadcom.com>
-Acked-by: Guolin Yang <guolin.yang@broadcom.com>
-Link: https://patch.msgid.link/20250530152701.70354-1-ronak.doshi@broadcom.com
-[pabeni@redhat.com: dropped the changelog]
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: 7b3ba09febf4 ("PCI/PM: Shorten pci_bridge_wait_for_secondary_bus() wait time for slow links")
+Signed-off-by: Wilfred Mallawa <wilfred.mallawa@wdc.com>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
+Reviewed-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
+Reviewed-by: Mika Westerberg <mika.westerberg@linux.intel.com>
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Link: https://patch.msgid.link/20250414001505.21243-2-wilfred.opensource@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/vmxnet3/vmxnet3_drv.c | 26 ++++++++++++++++++++++++++
- 1 file changed, 26 insertions(+)
+ drivers/pci/pci.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/vmxnet3/vmxnet3_drv.c b/drivers/net/vmxnet3/vmxnet3_drv.c
-index 151d7cdfc4802..c48c2de6f961f 100644
---- a/drivers/net/vmxnet3/vmxnet3_drv.c
-+++ b/drivers/net/vmxnet3/vmxnet3_drv.c
-@@ -1560,6 +1560,30 @@ vmxnet3_get_hdr_len(struct vmxnet3_adapter *adapter, struct sk_buff *skb,
- 	return (hlen + (hdr.tcp->doff << 2));
- }
+diff --git a/drivers/pci/pci.c b/drivers/pci/pci.c
+index 095fa1910d36d..503304aba9eac 100644
+--- a/drivers/pci/pci.c
++++ b/drivers/pci/pci.c
+@@ -5221,7 +5221,7 @@ int pci_bridge_wait_for_secondary_bus(struct pci_dev *dev, char *reset_type)
+ 		delay);
+ 	if (!pcie_wait_for_link_delay(dev, true, delay)) {
+ 		/* Did not train, no need to wait any further */
+-		pci_info(dev, "Data Link Layer Link Active not set in 1000 msec\n");
++		pci_info(dev, "Data Link Layer Link Active not set in %d msec\n", delay);
+ 		return -ENOTTY;
+ 	}
  
-+static void
-+vmxnet3_lro_tunnel(struct sk_buff *skb, __be16 ip_proto)
-+{
-+	struct udphdr *uh = NULL;
-+
-+	if (ip_proto == htons(ETH_P_IP)) {
-+		struct iphdr *iph = (struct iphdr *)skb->data;
-+
-+		if (iph->protocol == IPPROTO_UDP)
-+			uh = (struct udphdr *)(iph + 1);
-+	} else {
-+		struct ipv6hdr *iph = (struct ipv6hdr *)skb->data;
-+
-+		if (iph->nexthdr == IPPROTO_UDP)
-+			uh = (struct udphdr *)(iph + 1);
-+	}
-+	if (uh) {
-+		if (uh->check)
-+			skb_shinfo(skb)->gso_type |= SKB_GSO_UDP_TUNNEL_CSUM;
-+		else
-+			skb_shinfo(skb)->gso_type |= SKB_GSO_UDP_TUNNEL;
-+	}
-+}
-+
- static int
- vmxnet3_rq_rx_complete(struct vmxnet3_rx_queue *rq,
- 		       struct vmxnet3_adapter *adapter, int quota)
-@@ -1873,6 +1897,8 @@ vmxnet3_rq_rx_complete(struct vmxnet3_rx_queue *rq,
- 			if (segCnt != 0 && mss != 0) {
- 				skb_shinfo(skb)->gso_type = rcd->v4 ?
- 					SKB_GSO_TCPV4 : SKB_GSO_TCPV6;
-+				if (encap_lro)
-+					vmxnet3_lro_tunnel(skb, skb->protocol);
- 				skb_shinfo(skb)->gso_size = mss;
- 				skb_shinfo(skb)->gso_segs = segCnt;
- 			} else if ((segCnt != 0 || skb->len > mtu) && !encap_lro) {
 -- 
 2.39.5
 
