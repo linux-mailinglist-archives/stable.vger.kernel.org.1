@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-153211-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153214-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1F21EADD319
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 17:53:26 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C9D29ADD32A
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 17:54:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3AFB6166DB4
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 15:50:52 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1A8893BF36F
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 15:50:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CDE562DFF18;
-	Tue, 17 Jun 2025 15:47:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E11752DFF27;
+	Tue, 17 Jun 2025 15:47:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UylLC26A"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FGu1DJqJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AF612DFF06;
-	Tue, 17 Jun 2025 15:47:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C1B52DFF1F;
+	Tue, 17 Jun 2025 15:47:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750175232; cv=none; b=Yrhqm5l1VzWlacVnk0YNaUXrT5pVkHRp5zsLNK2r1Sl3RsQqAaoYyUwzjng1fobdcOxaT67n79NJcrEnzbNjw+ov8PQ4MuXA2mkTKIog/DgSJnPtcmpEDSrL5Cu47zQtu4LtduiqUd2TeAlW4i0+GQR4UizZejGnjJzq/FsZuI0=
+	t=1750175241; cv=none; b=j9qa0kzsxXonCUoMTkB2/19V2ZkfUEqgB+q1pA/83+SwrPyRkGDMDRl8WzxnnhkfHWB4EEqamPrqntREjmuhsQpdy93+r1nJB50aDHIfGZ7akEYMIJPHQ1ezN9c4gHPB2DCbCqULAATRN6mCEuvAC+WDMx+FTj/BF9WZuYAUD9Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750175232; c=relaxed/simple;
-	bh=2LxLBFwOE6WO88ls9/pzF81em2DlmLs+Wm83WkRQT2E=;
+	s=arc-20240116; t=1750175241; c=relaxed/simple;
+	bh=CfFPMnTbqhS00eBNm0lyxqZwWeWQWhI3u2kbNYRJi9Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kE9u7eZslGUgFs8U6M4c5/kHTMb/yCYh3DeMIAk3BVAmdZHu3fn1PCH48+obdkmbg02YJRJztorQNta2syV7dW9d7RhNziOzT5aBE7039sYTWtThQ6gXIWJTxlWpqZZWII1D/BCxdfSntaGWfH3LGgsH4HwdfzZ9AC69h1xPLR4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UylLC26A; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D452C4CEE7;
-	Tue, 17 Jun 2025 15:47:11 +0000 (UTC)
+	 MIME-Version; b=VydXw5ioMApgdK8MGJLR7Gvb2KpIFtwk73K76PN67u83DggKAvN2OqvExogyTJTfJYZ0jazbf6OO0d0hOKtFAiZywR5DjmUGycRHxKSXMcgpZu2QrJlR257Rm5x+0COAzh9XZzOByysYC1WS6tqD329ffOnc+OQX7w7GFOxEeLI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FGu1DJqJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B07EC4CEE3;
+	Tue, 17 Jun 2025 15:47:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750175232;
-	bh=2LxLBFwOE6WO88ls9/pzF81em2DlmLs+Wm83WkRQT2E=;
+	s=korg; t=1750175241;
+	bh=CfFPMnTbqhS00eBNm0lyxqZwWeWQWhI3u2kbNYRJi9Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UylLC26AX8v9HJQMm7omcPthztE/wgdiBcb0iUMo6le1gQBzo1uYB5YkhMiSrd4IC
-	 Y26toRypgiT+xGyuGeZGSDzJbMuBDQprUJMXRQZUuyY3dHAHIqKAz5M4RjWoTKeHaw
-	 TFuHeepI2jDo/b/haJG67lw7CQbAMx9jZaRIqEZo=
+	b=FGu1DJqJm3uI14Vx6xZeGnttqDkJCRLe05gY4R51o86WKfmq45gOAHEi95yUHvK33
+	 w/+ZsOqEzPAKMVPZ3O0bQ7U6Lf3stK/g+JNk2U5214z+oC7eEMBbdsPUSTb2NgBkLv
+	 fR7O9BVfe8g76m9TsXbIHKUpIRJ4qnHpBkt2dAWI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexander Shiyan <eagle.alexander923@gmail.com>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>,
-	Sebastian Reichel <sebastian.reichel@collabora.com>,
+	Yaxiong Tian <tianyaxiong@kylinos.cn>,
+	Lukasz Luba <lukasz.luba@arm.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 065/780] power: reset: at91-reset: Optimize at91_reset()
-Date: Tue, 17 Jun 2025 17:16:13 +0200
-Message-ID: <20250617152454.144892186@linuxfoundation.org>
+Subject: [PATCH 6.15 066/780] PM: EM: Fix potential division-by-zero error in em_compute_costs()
+Date: Tue, 17 Jun 2025 17:16:14 +0200
+Message-ID: <20250617152454.194607539@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
 References: <20250617152451.485330293@linuxfoundation.org>
@@ -67,54 +67,44 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Alexander Shiyan <eagle.alexander923@gmail.com>
+From: Yaxiong Tian <tianyaxiong@kylinos.cn>
 
-[ Upstream commit 62d48983f215bf1dd48665913318101fa3414dcf ]
+[ Upstream commit 179c0c7044a378198adb36f2a12410ab68cc730a ]
 
-This patch adds a small optimization to the low-level at91_reset()
-function, which includes:
-- Removes the extra branch, since the following store operations
-  already have proper condition checks.
-- Removes the definition of the clobber register r4, since it is
-  no longer used in the code.
+When the device is of a non-CPU type, table[i].performance won't be
+initialized in the previous em_init_performance(), resulting in division
+by zero when calculating costs in em_compute_costs().
 
-Fixes: fcd0532fac2a ("power: reset: at91-reset: make at91sam9g45_restart() generic")
-Signed-off-by: Alexander Shiyan <eagle.alexander923@gmail.com>
-Reviewed-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
-Link: https://lore.kernel.org/r/20250307053809.20245-1-eagle.alexander923@gmail.com
-Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
+Since the 'cost' algorithm is only used for EAS energy efficiency
+calculations and is currently not utilized by other device drivers, we
+should add the _is_cpu_device(dev) check to prevent this division-by-zero
+issue.
+
+Fixes: 1b600da51073 ("PM: EM: Optimize em_cpu_energy() and remove division")
+Signed-off-by: Yaxiong Tian <tianyaxiong@kylinos.cn>
+Reviewed-by: Lukasz Luba <lukasz.luba@arm.com>
+Link: https://patch.msgid.link/tencent_7F99ED4767C1AF7889D0D8AD50F34859CE06@qq.com
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/power/reset/at91-reset.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ kernel/power/energy_model.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/power/reset/at91-reset.c b/drivers/power/reset/at91-reset.c
-index 036b18a1f90f8..511f5a8f8961c 100644
---- a/drivers/power/reset/at91-reset.c
-+++ b/drivers/power/reset/at91-reset.c
-@@ -129,12 +129,11 @@ static int at91_reset(struct notifier_block *this, unsigned long mode,
- 		"	str	%4, [%0, %6]\n\t"
- 		/* Disable SDRAM1 accesses */
- 		"1:	tst	%1, #0\n\t"
--		"	beq	2f\n\t"
- 		"	strne	%3, [%1, #" __stringify(AT91_DDRSDRC_RTR) "]\n\t"
- 		/* Power down SDRAM1 */
- 		"	strne	%4, [%1, %6]\n\t"
- 		/* Reset CPU */
--		"2:	str	%5, [%2, #" __stringify(AT91_RSTC_CR) "]\n\t"
-+		"	str	%5, [%2, #" __stringify(AT91_RSTC_CR) "]\n\t"
+diff --git a/kernel/power/energy_model.c b/kernel/power/energy_model.c
+index d9b7e2b38c7a9..41606247c2776 100644
+--- a/kernel/power/energy_model.c
++++ b/kernel/power/energy_model.c
+@@ -233,6 +233,10 @@ static int em_compute_costs(struct device *dev, struct em_perf_state *table,
+ 	unsigned long prev_cost = ULONG_MAX;
+ 	int i, ret;
  
- 		"	b	.\n\t"
- 		:
-@@ -145,7 +144,7 @@ static int at91_reset(struct notifier_block *this, unsigned long mode,
- 		  "r" cpu_to_le32(AT91_DDRSDRC_LPCB_POWER_DOWN),
- 		  "r" (reset->data->reset_args),
- 		  "r" (reset->ramc_lpr)
--		: "r4");
-+	);
- 
- 	return NOTIFY_DONE;
- }
++	/* This is needed only for CPUs and EAS skip other devices */
++	if (!_is_cpu_device(dev))
++		return 0;
++
+ 	/* Compute the cost of each performance state. */
+ 	for (i = nr_states - 1; i >= 0; i--) {
+ 		unsigned long power_res, cost;
 -- 
 2.39.5
 
