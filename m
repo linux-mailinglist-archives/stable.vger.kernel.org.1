@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-153839-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-154519-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A67A0ADD73F
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:42:54 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6D1ECADD9A2
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 19:08:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 98B1D194472F
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:26:28 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DC15A19E7F92
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:58:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 710302F94AC;
-	Tue, 17 Jun 2025 16:21:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4E3F2FA633;
+	Tue, 17 Jun 2025 16:57:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MYGDO29z"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qBnb3CMd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BDC32F94A8;
-	Tue, 17 Jun 2025 16:21:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F88D2FA624;
+	Tue, 17 Jun 2025 16:57:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750177264; cv=none; b=OxQmjN021cnT9wdTkRHyhyaca5iXhAw3zkjpeoECW7z8TW8AsLXjOd3Tf3p6JoTTeQDgUjJomycRfKYQ6Y0yJxqooKLBeBQBaK79okz6t8zDmhqsCPe1FfeakDT3DTbqBz6dt+MazFDyV0JLPxi8iLyUo56UxSlwib4JL2ndD1Y=
+	t=1750179468; cv=none; b=NZ0bKWPsfQJJWzcE8QGRZi/5twNj1IyQZ39CpzGBvwvMaFatHG4kjRETV8sF7zQSJYv01oLuEe8eqoH+5qRX/87nqlr7/Q2H6NboM42fPKWAuPPLk59GAQFPBkew7ZlQ0lrfSmSaG02NAf5NMixbCskcqIfNiuqcR44kXW1tnM8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750177264; c=relaxed/simple;
-	bh=y4M6hRRqwPnEnNx1Cr3oF7wNAB/WUaD0Gj+5QZq87bg=;
+	s=arc-20240116; t=1750179468; c=relaxed/simple;
+	bh=mRspAhsiC2Cif63LnsqSYpG9NPsndCF4vLZi0BhubXA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EjnT2bQ2Z/Ru81XIdPF8AO69zBjvIXNjNKl6VbRgkb2FTA9qz8t922Xijl6GLOvhDgKj7KleF8g4E0LLS6M1Zbtq9fl/KySFa+ECKCisA9e2w/Fm9LyWJ7h/ntWh3f0cgN5N0qqQ+tet/ICcRiYEGDmWP4e7X58kjn0rVDnaZ04=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MYGDO29z; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8B81C4CEE3;
-	Tue, 17 Jun 2025 16:21:03 +0000 (UTC)
+	 MIME-Version; b=GYrWw3+j7Q4m8Df4/mnnButUgSK9QF4WMihkaL0ZelX8t6thjNo+KcPAvlQVu/URMevbPmhZpaFMU2R7a3ix73WJLQAn2eVdLI0e3xDTkXLwtS/2uzvBUXlMf62MqoxSo416d2Y/YqTNesKCb1SO6tFFOIYKK99WZ4JU8qS6he4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qBnb3CMd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D596CC4CEE3;
+	Tue, 17 Jun 2025 16:57:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750177264;
-	bh=y4M6hRRqwPnEnNx1Cr3oF7wNAB/WUaD0Gj+5QZq87bg=;
+	s=korg; t=1750179468;
+	bh=mRspAhsiC2Cif63LnsqSYpG9NPsndCF4vLZi0BhubXA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MYGDO29z5QcCWzZYglFTpiaYz9NIeu5V3y1oGzw0mpQPDU9laD0gq76LcbtAxA+W2
-	 UP8nZ6J2a93ZnsYKPwHxyQMkRvUJgILBz/zHYgQZMPY/g5B3ZBKgSNrF7Azmp0LFG8
-	 hGKYSl7QJKcBQHxcUcDR73nvVQA9GZXwrRhQ9i9U=
+	b=qBnb3CMd4Nui6MYthJCMQvo/PRj9nBfIoy1derGsvqP8qP3iBT8fwV+Y3kwpCFLFF
+	 rfFQdeNk17RPddTF9e5IvlcVsH5ggi+NbdJ0WQMbfAYtFyMfzEH+/N23l9/pDIi5+H
+	 PttUjFChsZZb0XnEG9EROSYEXWZl5CpHKwaR7jqo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Pawel Laszczak <pawell@cadence.com>,
-	Peter Chen <peter.chen@kernel.org>
-Subject: [PATCH 6.6 347/356] usb: cdnsp: Fix issue with detecting command completion event
-Date: Tue, 17 Jun 2025 17:27:42 +0200
-Message-ID: <20250617152352.105287810@linuxfoundation.org>
+	"Jiri Slaby (SUSE)" <jirislaby@kernel.org>,
+	Mans Rullgard <mans@mansr.com>
+Subject: [PATCH 6.15 755/780] tty: serial: 8250_omap: fix TX with DMA for am33xx
+Date: Tue, 17 Jun 2025 17:27:43 +0200
+Message-ID: <20250617152522.255944437@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152338.212798615@linuxfoundation.org>
-References: <20250617152338.212798615@linuxfoundation.org>
+In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
+References: <20250617152451.485330293@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,80 +61,105 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pawel Laszczak <pawell@cadence.com>
+From: Jiri Slaby (SUSE) <jirislaby@kernel.org>
 
-commit f4ecdc352646f7d23f348e5c544dbe3212c94fc8 upstream.
+commit b495021a973e2468497689bd3e29b736747b896f upstream.
 
-In some cases, there is a small-time gap in which CMD_RING_BUSY can be
-cleared by controller but adding command completion event to event ring
-will be delayed. As the result driver will return error code.
+Commit 1788cf6a91d9 ("tty: serial: switch from circ_buf to kfifo")
+introduced an error in the TX DMA handling for 8250_omap.
 
-This behavior has been detected on usbtest driver (test 9) with
-configuration including ep1in/ep1out bulk and ep2in/ep2out isoc
-endpoint.
+When the OMAP_DMA_TX_KICK flag is set, the "skip_byte" is pulled from
+the kfifo and emitted directly in order to start the DMA. While the
+kfifo is updated, dma->tx_size is not decreased. This leads to
+uart_xmit_advance() called in omap_8250_dma_tx_complete() advancing the
+kfifo by one too much.
 
-Probably this gap occurred because controller was busy with adding some
-other events to event ring.
+In practice, transmitting N bytes has been seen to result in the last
+N-1 bytes being sent repeatedly.
 
-The CMD_RING_BUSY is cleared to '0' when the Command Descriptor has been
-executed and not when command completion event has been added to event
-ring.
+This change fixes the problem by moving all of the dma setup after the
+OMAP_DMA_TX_KICK handling and using kfifo_len() instead of the DMA size
+for the 4-byte cutoff check. This slightly changes the behaviour at
+buffer wraparound, but it still transmits the correct bytes somehow.
 
-To fix this issue for this test the small delay is sufficient less than
-10us) but to make sure the problem doesn't happen again in the future
-the patch introduces 10 retries to check with delay about 20us before
-returning error code.
+Now, the "skip_byte" would no longer be accounted to the stats. As
+previously, dma->tx_size included also this skip byte, up->icount.tx was
+updated by aforementioned uart_xmit_advance() in
+omap_8250_dma_tx_complete(). Fix this by using the uart_fifo_out()
+helper instead of bare kfifo_get().
 
-Fixes: 3d82904559f4 ("usb: cdnsp: cdns3 Add main part of Cadence USBSSP DRD Driver")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Pawel Laszczak <pawell@cadence.com>
-Acked-by: Peter Chen <peter.chen@kernel.org>
-Link: https://lore.kernel.org/r/PH7PR07MB9538AA45362ACCF1B94EE9B7DD96A@PH7PR07MB9538.namprd07.prod.outlook.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Based on patch by Mans Rullgard <mans@mansr.com>
+
+Signed-off-by: "Jiri Slaby (SUSE)" <jirislaby@kernel.org>
+Fixes: 1788cf6a91d9 ("tty: serial: switch from circ_buf to kfifo")
+Link: https://lore.kernel.org/all/20250506150748.3162-1-mans@mansr.com/
+Reported-by: Mans Rullgard <mans@mansr.com>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20250522053835.3495975-1-jirislaby@kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/cdns3/cdnsp-gadget.c |   18 +++++++++++++++++-
- 1 file changed, 17 insertions(+), 1 deletion(-)
+ drivers/tty/serial/8250/8250_omap.c |   25 ++++++++++---------------
+ 1 file changed, 10 insertions(+), 15 deletions(-)
 
---- a/drivers/usb/cdns3/cdnsp-gadget.c
-+++ b/drivers/usb/cdns3/cdnsp-gadget.c
-@@ -546,6 +546,7 @@ int cdnsp_wait_for_cmd_compl(struct cdns
- 	dma_addr_t cmd_deq_dma;
- 	union cdnsp_trb *event;
- 	u32 cycle_state;
-+	u32 retry = 10;
- 	int ret, val;
- 	u64 cmd_dma;
- 	u32  flags;
-@@ -577,8 +578,23 @@ int cdnsp_wait_for_cmd_compl(struct cdns
- 		flags = le32_to_cpu(event->event_cmd.flags);
+--- a/drivers/tty/serial/8250/8250_omap.c
++++ b/drivers/tty/serial/8250/8250_omap.c
+@@ -1173,16 +1173,6 @@ static int omap_8250_tx_dma(struct uart_
+ 		return 0;
+ 	}
  
- 		/* Check the owner of the TRB. */
--		if ((flags & TRB_CYCLE) != cycle_state)
-+		if ((flags & TRB_CYCLE) != cycle_state) {
-+			/*
-+			 * Give some extra time to get chance controller
-+			 * to finish command before returning error code.
-+			 * Checking CMD_RING_BUSY is not sufficient because
-+			 * this bit is cleared to '0' when the Command
-+			 * Descriptor has been executed by controller
-+			 * and not when command completion event has
-+			 * be added to event ring.
-+			 */
-+			if (retry--) {
-+				udelay(20);
-+				continue;
-+			}
+-	sg_init_table(&sg, 1);
+-	ret = kfifo_dma_out_prepare_mapped(&tport->xmit_fifo, &sg, 1,
+-					   UART_XMIT_SIZE, dma->tx_addr);
+-	if (ret != 1) {
+-		serial8250_clear_THRI(p);
+-		return 0;
+-	}
+-
+-	dma->tx_size = sg_dma_len(&sg);
+-
+ 	if (priv->habit & OMAP_DMA_TX_KICK) {
+ 		unsigned char c;
+ 		u8 tx_lvl;
+@@ -1207,18 +1197,22 @@ static int omap_8250_tx_dma(struct uart_
+ 			ret = -EBUSY;
+ 			goto err;
+ 		}
+-		if (dma->tx_size < 4) {
++		if (kfifo_len(&tport->xmit_fifo) < 4) {
+ 			ret = -EINVAL;
+ 			goto err;
+ 		}
+-		if (!kfifo_get(&tport->xmit_fifo, &c)) {
++		if (!uart_fifo_out(&p->port, &c, 1)) {
+ 			ret = -EINVAL;
+ 			goto err;
+ 		}
+ 		skip_byte = c;
+-		/* now we need to recompute due to kfifo_get */
+-		kfifo_dma_out_prepare_mapped(&tport->xmit_fifo, &sg, 1,
+-				UART_XMIT_SIZE, dma->tx_addr);
++	}
 +
- 			return -EINVAL;
-+		}
++	sg_init_table(&sg, 1);
++	ret = kfifo_dma_out_prepare_mapped(&tport->xmit_fifo, &sg, 1, UART_XMIT_SIZE, dma->tx_addr);
++	if (ret != 1) {
++		ret = -EINVAL;
++		goto err;
+ 	}
  
- 		cmd_dma = le64_to_cpu(event->event_cmd.cmd_trb);
+ 	desc = dmaengine_prep_slave_sg(dma->txchan, &sg, 1, DMA_MEM_TO_DEV,
+@@ -1228,6 +1222,7 @@ static int omap_8250_tx_dma(struct uart_
+ 		goto err;
+ 	}
  
++	dma->tx_size = sg_dma_len(&sg);
+ 	dma->tx_running = 1;
+ 
+ 	desc->callback = omap_8250_dma_tx_complete;
 
 
 
