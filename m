@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-153174-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153178-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 49DC8ADD313
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 17:53:05 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9EC95ADD2EE
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 17:51:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8911D188808F
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 018F2169D27
 	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 15:49:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 359EB2ED84D;
-	Tue, 17 Jun 2025 15:45:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E002B2ED862;
+	Tue, 17 Jun 2025 15:45:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KlThkdda"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eiHTjXdy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E58B12ED17A;
-	Tue, 17 Jun 2025 15:45:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C1D028E8;
+	Tue, 17 Jun 2025 15:45:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750175118; cv=none; b=a1CZA36l8EOdtBTF9bC96tiWcyT+gZnpcajQqs7pEEtBGvT07fgKOHPgfxRzM0UNcxEs+gvgDl9dYSOBeVdZxgA+qOuMVEAJiIrBJ+UqujAXceUHGzkUIF7zUU1xsru3nO1feoxcRK5/oLMcAVLYBKM1d5beEFIKlY5Z/yS5Smc=
+	t=1750175130; cv=none; b=N7U+AKmIrsoyAeTgxsk0hhIY58O7+uhW83eH8UZooN8Hu6BkQ5gxwkGAEGzjhJyArrq07z8GxltXDy9BvtNEZbT5K9zL3UDgbIkYTwrjiLRvW9heQfD9O/g3dcSPaSnPglvA1EnXsQou0VCOskyZiqfyoNa7nviekDA7ID8J2AY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750175118; c=relaxed/simple;
-	bh=ZxwJmlHHjAb2V6wZNNQXVo+9ux0IA/+/h59OkqW7oU4=;
+	s=arc-20240116; t=1750175130; c=relaxed/simple;
+	bh=iWZx2BSGXYM3012Xo+joN5+guOBjM/k44Fbq/NjdK3M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RPsvwQsf5+GQAzauBhsvCpBnoIQ0AL/walQ23eWv0MZijc95Jl7Y/b74OIQmA4T1pJINHIKfkOHoS8eQsypYDU1OpBOahR9M/e7b9Bq98/3ZqS1/JtcMP95Hq26YVmjfmyCBulmYcCSigtdDAGMVGuKWNOeSoZ5NrYNwmROWuKw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KlThkdda; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09BD7C4CEE3;
-	Tue, 17 Jun 2025 15:45:16 +0000 (UTC)
+	 MIME-Version; b=cLtLY3q6S8w1nvwzIbImylv0AbiwV+2TKtuPis3ZV1FKbOs8/rOpr3DeAePjGIvlbJGICPFEKyMKsd4hDMWygLTOArunYNtGyofYaTZ9zpfXTmenS6STCeG2BKFrmUxzSn3unJaztcbxPu/7NPKrJXNa1yhDLaZRVudzDp9KMjQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eiHTjXdy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B89BC4CEF0;
+	Tue, 17 Jun 2025 15:45:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750175117;
-	bh=ZxwJmlHHjAb2V6wZNNQXVo+9ux0IA/+/h59OkqW7oU4=;
+	s=korg; t=1750175130;
+	bh=iWZx2BSGXYM3012Xo+joN5+guOBjM/k44Fbq/NjdK3M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KlThkddaEzSMO1nAF2wUMNLJEY2Z8f4YpSeKHhCb/g21oL3J/V1y8m4t4Vw4ZWiJW
-	 MnHl8QH9XhgTsXwmdvWyjejyU0CaGLn0T7uAgs3/QzayuhBSKk6zYJrLspIrnjwMXa
-	 pF+6EfVMSPq3JtvP8NGSV9OnHBfAc+QewhUwWwnw=
+	b=eiHTjXdyFVwKfBDeIxYrsvQBjusZvesdOiQ/r9v1SH9Cyhg85tdJ018s1O+8BI1+I
+	 LOwPk8kQgWRF8OeI9PLqkdACIuwFjvkgjHi+d5JLgpfDbVZgG9L4G0HCTYS3HXJgHJ
+	 LpZnmDWA2rseLviNJOMBZelo1XZv3+g8UenEcLSY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Horatiu Vultur <horatiu.vultur@microchip.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	syzbot+0903f6d7f285e41cdf10@syzkaller.appspotmail.com,
+	KaFai Wan <mannkafai@gmail.com>,
+	Alexei Starovoitov <ast@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 145/356] net: lan966x: Fix 1-step timestamping over ipv4 or ipv6
-Date: Tue, 17 Jun 2025 17:24:20 +0200
-Message-ID: <20250617152344.072847785@linuxfoundation.org>
+Subject: [PATCH 6.6 146/356] bpf: Avoid __bpf_prog_ret0_warn when jit fails
+Date: Tue, 17 Jun 2025 17:24:21 +0200
+Message-ID: <20250617152344.111069856@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250617152338.212798615@linuxfoundation.org>
 References: <20250617152338.212798615@linuxfoundation.org>
@@ -66,166 +67,55 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Horatiu Vultur <horatiu.vultur@microchip.com>
+From: KaFai Wan <mannkafai@gmail.com>
 
-[ Upstream commit 57ee9584fd8606deef66d7b65fa4dcf94f6843aa ]
+[ Upstream commit 86bc9c742426a16b52a10ef61f5b721aecca2344 ]
 
-When enabling 1-step timestamping for ptp frames that are over udpv4 or
-udpv6 then the inserted timestamp is added at the wrong offset in the
-frame, meaning that will modify the frame at the wrong place, so the
-frame will be malformed.
-To fix this, the HW needs to know which kind of frame it is to know
-where to insert the timestamp. For that there is a field in the IFH that
-says the PDU_TYPE, which can be NONE  which is the default value,
-IPV4 or IPV6. Therefore make sure to set the PDU_TYPE so the HW knows
-where to insert the timestamp.
-Like I mention before the issue is not seen with L2 frames because by
-default the PDU_TYPE has a value of 0, which represents the L2 frames.
+syzkaller reported an issue:
 
-Fixes: 77eecf25bd9d2f ("net: lan966x: Update extraction/injection for timestamping")
-Signed-off-by: Horatiu Vultur <horatiu.vultur@microchip.com>
-Link: https://patch.msgid.link/20250521124159.2713525-1-horatiu.vultur@microchip.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+WARNING: CPU: 3 PID: 217 at kernel/bpf/core.c:2357 __bpf_prog_ret0_warn+0xa/0x20 kernel/bpf/core.c:2357
+Modules linked in:
+CPU: 3 UID: 0 PID: 217 Comm: kworker/u32:6 Not tainted 6.15.0-rc4-syzkaller-00040-g8bac8898fe39
+RIP: 0010:__bpf_prog_ret0_warn+0xa/0x20 kernel/bpf/core.c:2357
+Call Trace:
+ <TASK>
+ bpf_dispatcher_nop_func include/linux/bpf.h:1316 [inline]
+ __bpf_prog_run include/linux/filter.h:718 [inline]
+ bpf_prog_run include/linux/filter.h:725 [inline]
+ cls_bpf_classify+0x74a/0x1110 net/sched/cls_bpf.c:105
+ ...
+
+When creating bpf program, 'fp->jit_requested' depends on bpf_jit_enable.
+This issue is triggered because of CONFIG_BPF_JIT_ALWAYS_ON is not set
+and bpf_jit_enable is set to 1, causing the arch to attempt JIT the prog,
+but jit failed due to FAULT_INJECTION. As a result, incorrectly
+treats the program as valid, when the program runs it calls
+`__bpf_prog_ret0_warn` and triggers the WARN_ON_ONCE(1).
+
+Reported-by: syzbot+0903f6d7f285e41cdf10@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/bpf/6816e34e.a70a0220.254cdc.002c.GAE@google.com
+Fixes: fa9dd599b4da ("bpf: get rid of pure_initcall dependency to enable jits")
+Signed-off-by: KaFai Wan <mannkafai@gmail.com>
+Link: https://lore.kernel.org/r/20250526133358.2594176-1-mannkafai@gmail.com
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../ethernet/microchip/lan966x/lan966x_main.c |  6 +++
- .../ethernet/microchip/lan966x/lan966x_main.h |  5 ++
- .../ethernet/microchip/lan966x/lan966x_ptp.c  | 49 ++++++++++++++-----
- 3 files changed, 47 insertions(+), 13 deletions(-)
+ kernel/bpf/core.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/microchip/lan966x/lan966x_main.c b/drivers/net/ethernet/microchip/lan966x/lan966x_main.c
-index c3f6c10bc2393..05f6c92275830 100644
---- a/drivers/net/ethernet/microchip/lan966x/lan966x_main.c
-+++ b/drivers/net/ethernet/microchip/lan966x/lan966x_main.c
-@@ -353,6 +353,11 @@ static void lan966x_ifh_set_rew_op(void *ifh, u64 rew_op)
- 	lan966x_ifh_set(ifh, rew_op, IFH_POS_REW_CMD, IFH_WID_REW_CMD);
- }
- 
-+static void lan966x_ifh_set_oam_type(void *ifh, u64 oam_type)
-+{
-+	lan966x_ifh_set(ifh, oam_type, IFH_POS_PDU_TYPE, IFH_WID_PDU_TYPE);
-+}
-+
- static void lan966x_ifh_set_timestamp(void *ifh, u64 timestamp)
- {
- 	lan966x_ifh_set(ifh, timestamp, IFH_POS_TIMESTAMP, IFH_WID_TIMESTAMP);
-@@ -380,6 +385,7 @@ static netdev_tx_t lan966x_port_xmit(struct sk_buff *skb,
- 			return err;
- 
- 		lan966x_ifh_set_rew_op(ifh, LAN966X_SKB_CB(skb)->rew_op);
-+		lan966x_ifh_set_oam_type(ifh, LAN966X_SKB_CB(skb)->pdu_type);
- 		lan966x_ifh_set_timestamp(ifh, LAN966X_SKB_CB(skb)->ts_id);
- 	}
- 
-diff --git a/drivers/net/ethernet/microchip/lan966x/lan966x_main.h b/drivers/net/ethernet/microchip/lan966x/lan966x_main.h
-index caa9e0533c96b..b65d58a1552b5 100644
---- a/drivers/net/ethernet/microchip/lan966x/lan966x_main.h
-+++ b/drivers/net/ethernet/microchip/lan966x/lan966x_main.h
-@@ -74,6 +74,10 @@
- #define IFH_REW_OP_ONE_STEP_PTP		0x3
- #define IFH_REW_OP_TWO_STEP_PTP		0x4
- 
-+#define IFH_PDU_TYPE_NONE		0
-+#define IFH_PDU_TYPE_IPV4		7
-+#define IFH_PDU_TYPE_IPV6		8
-+
- #define FDMA_RX_DCB_MAX_DBS		1
- #define FDMA_TX_DCB_MAX_DBS		1
- #define FDMA_DCB_INFO_DATAL(x)		((x) & GENMASK(15, 0))
-@@ -306,6 +310,7 @@ struct lan966x_phc {
- 
- struct lan966x_skb_cb {
- 	u8 rew_op;
-+	u8 pdu_type;
- 	u16 ts_id;
- 	unsigned long jiffies;
- };
-diff --git a/drivers/net/ethernet/microchip/lan966x/lan966x_ptp.c b/drivers/net/ethernet/microchip/lan966x/lan966x_ptp.c
-index 63905bb5a63a8..87e5e81d40dc6 100644
---- a/drivers/net/ethernet/microchip/lan966x/lan966x_ptp.c
-+++ b/drivers/net/ethernet/microchip/lan966x/lan966x_ptp.c
-@@ -322,34 +322,55 @@ void lan966x_ptp_hwtstamp_get(struct lan966x_port *port,
- 	*cfg = phc->hwtstamp_config;
- }
- 
--static int lan966x_ptp_classify(struct lan966x_port *port, struct sk_buff *skb)
-+static void lan966x_ptp_classify(struct lan966x_port *port, struct sk_buff *skb,
-+				 u8 *rew_op, u8 *pdu_type)
- {
- 	struct ptp_header *header;
- 	u8 msgtype;
- 	int type;
- 
--	if (port->ptp_tx_cmd == IFH_REW_OP_NOOP)
--		return IFH_REW_OP_NOOP;
-+	if (port->ptp_tx_cmd == IFH_REW_OP_NOOP) {
-+		*rew_op = IFH_REW_OP_NOOP;
-+		*pdu_type = IFH_PDU_TYPE_NONE;
-+		return;
-+	}
- 
- 	type = ptp_classify_raw(skb);
--	if (type == PTP_CLASS_NONE)
--		return IFH_REW_OP_NOOP;
-+	if (type == PTP_CLASS_NONE) {
-+		*rew_op = IFH_REW_OP_NOOP;
-+		*pdu_type = IFH_PDU_TYPE_NONE;
-+		return;
-+	}
- 
- 	header = ptp_parse_header(skb, type);
--	if (!header)
--		return IFH_REW_OP_NOOP;
-+	if (!header) {
-+		*rew_op = IFH_REW_OP_NOOP;
-+		*pdu_type = IFH_PDU_TYPE_NONE;
-+		return;
-+	}
- 
--	if (port->ptp_tx_cmd == IFH_REW_OP_TWO_STEP_PTP)
--		return IFH_REW_OP_TWO_STEP_PTP;
-+	if (type & PTP_CLASS_L2)
-+		*pdu_type = IFH_PDU_TYPE_NONE;
-+	if (type & PTP_CLASS_IPV4)
-+		*pdu_type = IFH_PDU_TYPE_IPV4;
-+	if (type & PTP_CLASS_IPV6)
-+		*pdu_type = IFH_PDU_TYPE_IPV6;
-+
-+	if (port->ptp_tx_cmd == IFH_REW_OP_TWO_STEP_PTP) {
-+		*rew_op = IFH_REW_OP_TWO_STEP_PTP;
-+		return;
-+	}
- 
- 	/* If it is sync and run 1 step then set the correct operation,
- 	 * otherwise run as 2 step
+diff --git a/kernel/bpf/core.c b/kernel/bpf/core.c
+index 3f140b7527cfc..5eaaf95048abc 100644
+--- a/kernel/bpf/core.c
++++ b/kernel/bpf/core.c
+@@ -2364,7 +2364,7 @@ struct bpf_prog *bpf_prog_select_runtime(struct bpf_prog *fp, int *err)
+ 	/* In case of BPF to BPF calls, verifier did all the prep
+ 	 * work with regards to JITing, etc.
  	 */
- 	msgtype = ptp_get_msgtype(header, type);
--	if ((msgtype & 0xf) == 0)
--		return IFH_REW_OP_ONE_STEP_PTP;
-+	if ((msgtype & 0xf) == 0) {
-+		*rew_op = IFH_REW_OP_ONE_STEP_PTP;
-+		return;
-+	}
+-	bool jit_needed = false;
++	bool jit_needed = fp->jit_requested;
  
--	return IFH_REW_OP_TWO_STEP_PTP;
-+	*rew_op = IFH_REW_OP_TWO_STEP_PTP;
- }
- 
- static void lan966x_ptp_txtstamp_old_release(struct lan966x_port *port)
-@@ -374,10 +395,12 @@ int lan966x_ptp_txtstamp_request(struct lan966x_port *port,
- {
- 	struct lan966x *lan966x = port->lan966x;
- 	unsigned long flags;
-+	u8 pdu_type;
- 	u8 rew_op;
- 
--	rew_op = lan966x_ptp_classify(port, skb);
-+	lan966x_ptp_classify(port, skb, &rew_op, &pdu_type);
- 	LAN966X_SKB_CB(skb)->rew_op = rew_op;
-+	LAN966X_SKB_CB(skb)->pdu_type = pdu_type;
- 
- 	if (rew_op != IFH_REW_OP_TWO_STEP_PTP)
- 		return 0;
+ 	if (fp->bpf_func)
+ 		goto finalize;
 -- 
 2.39.5
 
