@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-153348-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-154098-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB952ADD40E
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:06:03 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AFA16ADD7D9
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:49:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1C6BC19429BD
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 15:58:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 313D53B8547
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:41:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4681E2ECEB8;
-	Tue, 17 Jun 2025 15:54:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3C1E239E9F;
+	Tue, 17 Jun 2025 16:34:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FFrSpyxG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T9Ub1DWa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0114D1E9B2A;
-	Tue, 17 Jun 2025 15:54:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 988CD239E85;
+	Tue, 17 Jun 2025 16:34:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750175660; cv=none; b=OpYQqi5ojYNPS8H5ULohOeiOSiXXEEY73yqC++0vk0VbDlRTT63XvjOecM7ozi6JPte+8YBguuD5m7NwNRcCxuHOauF2K/V+45s9dSN9l/M5fhcwGMc9i0aR4pRYzNb3wNN90vsNU/K8dAzdawUTOtvrFc5hiEAaa2hmvb4KUZ4=
+	t=1750178097; cv=none; b=UKiv3decIwGkYre1SrtKi39OqmpAr1/qvvNUYhi5CX4xjUb/zwHQiVrzieYlB8g4ZXXPweMkga99WAhplFbclkewdGKD5HNMogeMqltnIjpV++NG4elEeLJ0eTo9yS0VjacY2YBc1S6zSWMZFrmHvHmtZ4znPOkSj4dr3G13QcI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750175660; c=relaxed/simple;
-	bh=Z30lx2qXuq6HutP7RHfI2oYvYVQDgYPqlrSNEolIj2o=;
+	s=arc-20240116; t=1750178097; c=relaxed/simple;
+	bh=YIROW0S7HNU4DZXZ3xOeh4SZ4aQMMLEcXA43R+t7nQA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Gr5BL0F5UpIzft4HhDXtCjuDF4YXdIEfuWy78Y2LKC+iuhbf2sFDK7ZFjmcOugyGkdldyNYqb7EJoa2pqm0/Sv8CLEMC7GZvq4d0W9bZcmbSZ3znRFE3zfZT8nSa/MR4gmtWBVR5Ei2Vv/Qjc0qWalLeCRl8BeLGNJH4q43K6LI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FFrSpyxG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 204F0C4CEF0;
-	Tue, 17 Jun 2025 15:54:17 +0000 (UTC)
+	 MIME-Version; b=Tg8kESAfRZMNQudyMBRPMngs0829KIHFR4QNS4H7SXqmU2KiXflNvawCZD0/NIZ9nqQoPwF80savJa7vPciCfnFioE6Xv58BpOi0eZq4fScs1s0lg0hxXWCoidWkZ+02EG3E+SPPpeGGwwRAKCKBpYXhQ5k954F9RVFbuIYsMtg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T9Ub1DWa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 185F1C4CEE3;
+	Tue, 17 Jun 2025 16:34:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750175658;
-	bh=Z30lx2qXuq6HutP7RHfI2oYvYVQDgYPqlrSNEolIj2o=;
+	s=korg; t=1750178095;
+	bh=YIROW0S7HNU4DZXZ3xOeh4SZ4aQMMLEcXA43R+t7nQA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FFrSpyxGOyJjfCMQs1jL1D4dz3FfaTYiFUg0vD5srIv9rRu48T0ZS0Nfjhe7hk06N
-	 i0llFiH2ZDjgpsU1u6gHpJPwzpTfGfAC6+KWlRq5TsJShXVCQCGH+lN5weyYeOJXjT
-	 QNnQOQkX1UXOd1lUfMfAvDRWzpJX3Y6o6EznuW0A=
+	b=T9Ub1DWaLgz1VAx6IF4OCu4JD3UOkIzJSYxueDcM0Hpdmhg8/92KfxGGAb7evag1W
+	 F1d7WQ5hlijnssk7qIVq0Qu3i1Lr8Aa6/70r+5nJlMnZR8TLoU3YMDOFI2A14Clx8Y
+	 gke3jxmxh24yU0iRAg62fySj41Sfqhk1DyFdPflU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Tom Zanussi <zanussi@kernel.org>,
-	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 151/512] tracing: Move histogram trigger variables from stack to per CPU structure
+Subject: [PATCH 6.15 409/780] arm64: dts: qcom: qcs615: Fix up UFS clocks
 Date: Tue, 17 Jun 2025 17:21:57 +0200
-Message-ID: <20250617152425.724632392@linuxfoundation.org>
+Message-ID: <20250617152508.119676026@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
-References: <20250617152419.512865572@linuxfoundation.org>
+In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
+References: <20250617152451.485330293@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,240 +63,84 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Steven Rostedt <rostedt@goodmis.org>
+From: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
 
-[ Upstream commit 7ab0fc61ce73040f89b12d76a8279995ec283541 ]
+[ Upstream commit ea172f61f4fdb17aaaf8def980ee309a3b727eea ]
 
-The histogram trigger has three somewhat large arrays on the kernel stack:
+The clocks are out of order with the bindings' expectations.
 
-	unsigned long entries[HIST_STACKTRACE_DEPTH];
-	u64 var_ref_vals[TRACING_MAP_VARS_MAX];
-	char compound_key[HIST_KEY_SIZE_MAX];
+Reorder them to resolve the errors.
 
-Checking the function event_hist_trigger() stack frame size, it currently
-uses 816 bytes for its stack frame due to these variables!
-
-Instead, allocate a per CPU structure that holds these arrays for each
-context level (normal, softirq, irq and NMI). That is, each CPU will have
-4 of these structures. This will be allocated when the first histogram
-trigger is enabled and freed when the last is disabled. When the
-histogram callback triggers, it will request this structure. The request
-will disable preemption, get the per CPU structure at the index of the
-per CPU variable, and increment that variable.
-
-The callback will use the arrays in this structure to perform its work and
-then release the structure. That in turn will simply decrement the per CPU
-index and enable preemption.
-
-Moving the variables from the kernel stack to the per CPU structure brings
-the stack frame of event_hist_trigger() down to just 112 bytes.
-
-Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Cc: Tom Zanussi <zanussi@kernel.org>
-Link: https://lore.kernel.org/20250407123851.74ea8d58@gandalf.local.home
-Fixes: 067fe038e70f6 ("tracing: Add variable reference handling to hist triggers")
-Reviewed-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Fixes: a6a9d10e7969 ("arm64: dts: qcom: qcs615: add UFS node")
+Signed-off-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Link: https://lore.kernel.org/r/20250327-topic-more_dt_bindings_fixes-v2-12-b763d958545f@oss.qualcomm.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/trace/trace_events_hist.c | 120 +++++++++++++++++++++++++++----
- 1 file changed, 105 insertions(+), 15 deletions(-)
+ arch/arm64/boot/dts/qcom/qcs615.dtsi | 16 ++++++++--------
+ 1 file changed, 8 insertions(+), 8 deletions(-)
 
-diff --git a/kernel/trace/trace_events_hist.c b/kernel/trace/trace_events_hist.c
-index 4ebafc655223a..c56375848e088 100644
---- a/kernel/trace/trace_events_hist.c
-+++ b/kernel/trace/trace_events_hist.c
-@@ -5249,17 +5249,94 @@ hist_trigger_actions(struct hist_trigger_data *hist_data,
- 	}
- }
+diff --git a/arch/arm64/boot/dts/qcom/qcs615.dtsi b/arch/arm64/boot/dts/qcom/qcs615.dtsi
+index 8db06d17eb474..1206548490438 100644
+--- a/arch/arm64/boot/dts/qcom/qcs615.dtsi
++++ b/arch/arm64/boot/dts/qcom/qcs615.dtsi
+@@ -1022,10 +1022,10 @@
+ 				      "bus_aggr_clk",
+ 				      "iface_clk",
+ 				      "core_clk_unipro",
+-				      "core_clk_ice",
+ 				      "ref_clk",
+ 				      "tx_lane0_sync_clk",
+-				      "rx_lane0_sync_clk";
++				      "rx_lane0_sync_clk",
++				      "ice_core_clk";
  
-+/*
-+ * The hist_pad structure is used to save information to create
-+ * a histogram from the histogram trigger. It's too big to store
-+ * on the stack, so when the histogram trigger is initialized
-+ * a percpu array of 4 hist_pad structures is allocated.
-+ * This will cover every context from normal, softirq, irq and NMI
-+ * in the very unlikely event that a tigger happens at each of
-+ * these contexts and interrupts a currently active trigger.
-+ */
-+struct hist_pad {
-+	unsigned long		entries[HIST_STACKTRACE_DEPTH];
-+	u64			var_ref_vals[TRACING_MAP_VARS_MAX];
-+	char			compound_key[HIST_KEY_SIZE_MAX];
-+};
-+
-+static struct hist_pad __percpu *hist_pads;
-+static DEFINE_PER_CPU(int, hist_pad_cnt);
-+static refcount_t hist_pad_ref;
-+
-+/* One hist_pad for every context (normal, softirq, irq, NMI) */
-+#define MAX_HIST_CNT 4
-+
-+static int alloc_hist_pad(void)
-+{
-+	lockdep_assert_held(&event_mutex);
-+
-+	if (refcount_read(&hist_pad_ref)) {
-+		refcount_inc(&hist_pad_ref);
-+		return 0;
-+	}
-+
-+	hist_pads = __alloc_percpu(sizeof(struct hist_pad) * MAX_HIST_CNT,
-+				   __alignof__(struct hist_pad));
-+	if (!hist_pads)
-+		return -ENOMEM;
-+
-+	refcount_set(&hist_pad_ref, 1);
-+	return 0;
-+}
-+
-+static void free_hist_pad(void)
-+{
-+	lockdep_assert_held(&event_mutex);
-+
-+	if (!refcount_dec_and_test(&hist_pad_ref))
-+		return;
-+
-+	free_percpu(hist_pads);
-+	hist_pads = NULL;
-+}
-+
-+static struct hist_pad *get_hist_pad(void)
-+{
-+	struct hist_pad *hist_pad;
-+	int cnt;
-+
-+	if (WARN_ON_ONCE(!hist_pads))
-+		return NULL;
-+
-+	preempt_disable();
-+
-+	hist_pad = per_cpu_ptr(hist_pads, smp_processor_id());
-+
-+	if (this_cpu_read(hist_pad_cnt) == MAX_HIST_CNT) {
-+		preempt_enable();
-+		return NULL;
-+	}
-+
-+	cnt = this_cpu_inc_return(hist_pad_cnt) - 1;
-+
-+	return &hist_pad[cnt];
-+}
-+
-+static void put_hist_pad(void)
-+{
-+	this_cpu_dec(hist_pad_cnt);
-+	preempt_enable();
-+}
-+
- static void event_hist_trigger(struct event_trigger_data *data,
- 			       struct trace_buffer *buffer, void *rec,
- 			       struct ring_buffer_event *rbe)
- {
- 	struct hist_trigger_data *hist_data = data->private_data;
- 	bool use_compound_key = (hist_data->n_keys > 1);
--	unsigned long entries[HIST_STACKTRACE_DEPTH];
--	u64 var_ref_vals[TRACING_MAP_VARS_MAX];
--	char compound_key[HIST_KEY_SIZE_MAX];
- 	struct tracing_map_elt *elt = NULL;
- 	struct hist_field *key_field;
-+	struct hist_pad *hist_pad;
- 	u64 field_contents;
- 	void *key = NULL;
- 	unsigned int i;
-@@ -5267,12 +5344,18 @@ static void event_hist_trigger(struct event_trigger_data *data,
- 	if (unlikely(!rbe))
- 		return;
+ 			resets = <&gcc GCC_UFS_PHY_BCR>;
+ 			reset-names = "rst";
+@@ -1060,10 +1060,10 @@
+ 						 /bits/ 64 <0>,
+ 						 /bits/ 64 <0>,
+ 						 /bits/ 64 <37500000>,
+-						 /bits/ 64 <75000000>,
+ 						 /bits/ 64 <0>,
+ 						 /bits/ 64 <0>,
+-						 /bits/ 64 <0>;
++						 /bits/ 64 <0>,
++						 /bits/ 64 <75000000>;
+ 					required-opps = <&rpmhpd_opp_low_svs>;
+ 				};
  
--	memset(compound_key, 0, hist_data->key_size);
-+	hist_pad = get_hist_pad();
-+	if (!hist_pad)
-+		return;
-+
-+	memset(hist_pad->compound_key, 0, hist_data->key_size);
+@@ -1072,10 +1072,10 @@
+ 						 /bits/ 64 <0>,
+ 						 /bits/ 64 <0>,
+ 						 /bits/ 64 <75000000>,
+-						 /bits/ 64 <150000000>,
+ 						 /bits/ 64 <0>,
+ 						 /bits/ 64 <0>,
+-						 /bits/ 64 <0>;
++						 /bits/ 64 <0>,
++						 /bits/ 64 <150000000>;
+ 					required-opps = <&rpmhpd_opp_svs>;
+ 				};
  
- 	for_each_hist_key_field(i, hist_data) {
- 		key_field = hist_data->fields[i];
- 
- 		if (key_field->flags & HIST_FIELD_FL_STACKTRACE) {
-+			unsigned long *entries = hist_pad->entries;
-+
- 			memset(entries, 0, HIST_STACKTRACE_SIZE);
- 			if (key_field->field) {
- 				unsigned long *stack, n_entries;
-@@ -5296,26 +5379,31 @@ static void event_hist_trigger(struct event_trigger_data *data,
- 		}
- 
- 		if (use_compound_key)
--			add_to_key(compound_key, key, key_field, rec);
-+			add_to_key(hist_pad->compound_key, key, key_field, rec);
- 	}
- 
- 	if (use_compound_key)
--		key = compound_key;
-+		key = hist_pad->compound_key;
- 
- 	if (hist_data->n_var_refs &&
--	    !resolve_var_refs(hist_data, key, var_ref_vals, false))
--		return;
-+	    !resolve_var_refs(hist_data, key, hist_pad->var_ref_vals, false))
-+		goto out;
- 
- 	elt = tracing_map_insert(hist_data->map, key);
- 	if (!elt)
--		return;
-+		goto out;
- 
--	hist_trigger_elt_update(hist_data, elt, buffer, rec, rbe, var_ref_vals);
-+	hist_trigger_elt_update(hist_data, elt, buffer, rec, rbe, hist_pad->var_ref_vals);
- 
--	if (resolve_var_refs(hist_data, key, var_ref_vals, true))
--		hist_trigger_actions(hist_data, elt, buffer, rec, rbe, key, var_ref_vals);
-+	if (resolve_var_refs(hist_data, key, hist_pad->var_ref_vals, true)) {
-+		hist_trigger_actions(hist_data, elt, buffer, rec, rbe,
-+				     key, hist_pad->var_ref_vals);
-+	}
- 
- 	hist_poll_wakeup();
-+
-+ out:
-+	put_hist_pad();
- }
- 
- static void hist_trigger_stacktrace_print(struct seq_file *m,
-@@ -6160,6 +6248,9 @@ static int event_hist_trigger_init(struct event_trigger_data *data)
- {
- 	struct hist_trigger_data *hist_data = data->private_data;
- 
-+	if (alloc_hist_pad() < 0)
-+		return -ENOMEM;
-+
- 	if (!data->ref && hist_data->attrs->name)
- 		save_named_trigger(hist_data->attrs->name, data);
- 
-@@ -6204,6 +6295,7 @@ static void event_hist_trigger_free(struct event_trigger_data *data)
- 
- 		destroy_hist_data(hist_data);
- 	}
-+	free_hist_pad();
- }
- 
- static struct event_trigger_ops event_hist_trigger_ops = {
-@@ -6219,9 +6311,7 @@ static int event_hist_trigger_named_init(struct event_trigger_data *data)
- 
- 	save_named_trigger(data->named_data->name, data);
- 
--	event_hist_trigger_init(data->named_data);
--
--	return 0;
-+	return event_hist_trigger_init(data->named_data);
- }
- 
- static void event_hist_trigger_named_free(struct event_trigger_data *data)
+@@ -1084,10 +1084,10 @@
+ 						 /bits/ 64 <0>,
+ 						 /bits/ 64 <0>,
+ 						 /bits/ 64 <150000000>,
+-						 /bits/ 64 <300000000>,
+ 						 /bits/ 64 <0>,
+ 						 /bits/ 64 <0>,
+-						 /bits/ 64 <0>;
++						 /bits/ 64 <0>,
++						 /bits/ 64 <300000000>;
+ 					required-opps = <&rpmhpd_opp_nom>;
+ 				};
+ 			};
 -- 
 2.39.5
 
