@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-153441-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153970-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 44221ADD4D3
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:14:41 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id A7AD7ADD726
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:41:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 147D7194493E
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:04:13 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EA8DB4A2511
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:32:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 445912EA15E;
-	Tue, 17 Jun 2025 15:59:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 810532DFF3C;
+	Tue, 17 Jun 2025 16:28:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zuDRrw+X"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jnAyWXS8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F28802EA14F;
-	Tue, 17 Jun 2025 15:59:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CD092F94B2;
+	Tue, 17 Jun 2025 16:28:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750175973; cv=none; b=o7PSpfshfRmQMs+3UWmPw50+OZub5TlnO/Uu5eoKbnKBmJucSJTilcRic0UevsGl+tkdH4lzkOm3x8b3hkF4TVaLNg63M4UUx2RR0SIhxThxuzSlN1iG6HX5wq7iuz8xhaINe011ebg/zBRAXANdl+f0KY4fgC69UPHmHnO0lLY=
+	t=1750177685; cv=none; b=j6T2KxcwJ6rhCXxqmo4tiZnRdZ3lxysDXUweiPX/0z314vT16OE5IFJkObDWrgeCNXdfqJu/LQdBQ9A4vgQAtPjKiXmYbodCznqfPYkuZB/gLtI9ZwN14KTgsYjq1m+EFQKQNiXTEhC9ZHAk/eMf+Dxer5/Jaqi6jFFNJGxL4sg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750175973; c=relaxed/simple;
-	bh=LezxC0aLNm1j/izh2yijIktPkls8e454K/phwrS5+yk=;
+	s=arc-20240116; t=1750177685; c=relaxed/simple;
+	bh=YncuPt95ClMyFZho7PcRBUsCfn/0i3da1TIh8PYCHRA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nEYVHcztxdIZLuYjnzfuRsTmWClYDuWqch+2MYy7XQzJID7vOQobaPAKUQt4HLjyJXAVk6wFJq9GaRCk/vVoQKdPSSEsA9aGMJKWlB9u0ZpFdtfOvccsP53sNLecaGfty0MpnrPAopytMoiDtoAJxznkcLUrIwSqeXfA09CwYpQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zuDRrw+X; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17623C4CEE3;
-	Tue, 17 Jun 2025 15:59:31 +0000 (UTC)
+	 MIME-Version; b=gNYpACsCAWIofM8aXKfAJApiRSmWOfHsEbxlGk+A733Jh1C0Nq8u3941MZQMGm6CCA+eCtC9ZsXmQPMNIQnYF1TdAOfM+KJsKrlGoBNazvMAWWnNUOmvlhQEGAyZsMl739V6nZh8FEKhE27QqAnki3y3MZsY5DATb/gDmN8Av74=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jnAyWXS8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A014BC4CEE3;
+	Tue, 17 Jun 2025 16:28:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750175972;
-	bh=LezxC0aLNm1j/izh2yijIktPkls8e454K/phwrS5+yk=;
+	s=korg; t=1750177685;
+	bh=YncuPt95ClMyFZho7PcRBUsCfn/0i3da1TIh8PYCHRA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zuDRrw+XypcVAG34Vf0GhUWaRjZNDir1sSAYHA7hfSvMkzOjWrSAAbROtXrd2846b
-	 YnSsRSAow068M1Sjhb5RO0kIcrXCNlurC098dXz7HSiQcDGIe7yH1FSMXkOfATZfi7
-	 oxAD/f5ZcTJMeqfhSo4AWgX42xJsgLd+WaZKmT8w=
+	b=jnAyWXS8MaFuU9Py2SP5vSKR2AJv4jPJK44Qrqtzd2Ej7fwXLWV3kUIt++Br9UdLY
+	 d0TJYLTWAA/Bu4I5gneePZx0Ur7WfUo+0oj3NpdB5LOAhvuTRyrWF/c6Qwiv7Nj+QI
+	 /c827/b9k7bzrpAIHkCoXh3tp4QCbs3ruU+ZgmG8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Henry Martin <bsdhenrymartin@gmail.com>,
+	Jonas Gorski <jonas.gorski@gmail.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 231/356] serial: Fix potential null-ptr-deref in mlb_usio_probe()
-Date: Tue, 17 Jun 2025 17:25:46 +0200
-Message-ID: <20250617152347.492796701@linuxfoundation.org>
+Subject: [PATCH 6.12 381/512] net: dsa: b53: do not touch DLL_IQQD on bcm53115
+Date: Tue, 17 Jun 2025 17:25:47 +0200
+Message-ID: <20250617152435.029143246@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152338.212798615@linuxfoundation.org>
-References: <20250617152338.212798615@linuxfoundation.org>
+In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
+References: <20250617152419.512865572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,45 +62,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Henry Martin <bsdhenrymartin@gmail.com>
+From: Jonas Gorski <jonas.gorski@gmail.com>
 
-[ Upstream commit 86bcae88c9209e334b2f8c252f4cc66beb261886 ]
+[ Upstream commit bc1a65eb81a21e2aa3c3dca058ee8adf687b6ef5 ]
 
-devm_ioremap() can return NULL on error. Currently, mlb_usio_probe()
-does not check for this case, which could result in a NULL pointer
-dereference.
+According to OpenMDK, bit 2 of the RGMII register has a different
+meaning for BCM53115 [1]:
 
-Add NULL check after devm_ioremap() to prevent this issue.
+"DLL_IQQD         1: In the IDDQ mode, power is down0: Normal function
+                  mode"
 
-Fixes: ba44dc043004 ("serial: Add Milbeaut serial control")
-Signed-off-by: Henry Martin <bsdhenrymartin@gmail.com>
-Link: https://lore.kernel.org/r/20250403070339.64990-1-bsdhenrymartin@gmail.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Configuring RGMII delay works without setting this bit, so let's keep it
+at the default. For other chips, we always set it, so not clearing it
+is not an issue.
+
+One would assume BCM53118 works the same, but OpenMDK is not quite sure
+what this bit actually means [2]:
+
+"BYPASS_IMP_2NS_DEL #1: In the IDDQ mode, power is down#0: Normal
+                    function mode1: Bypass dll65_2ns_del IP0: Use
+                    dll65_2ns_del IP"
+
+So lets keep setting it for now.
+
+[1] https://github.com/Broadcom-Network-Switching-Software/OpenMDK/blob/master/cdk/PKG/chip/bcm53115/bcm53115_a0_defs.h#L19871
+[2] https://github.com/Broadcom-Network-Switching-Software/OpenMDK/blob/master/cdk/PKG/chip/bcm53118/bcm53118_a0_defs.h#L14392
+
+Fixes: 967dd82ffc52 ("net: dsa: b53: Add support for Broadcom RoboSwitch")
+Signed-off-by: Jonas Gorski <jonas.gorski@gmail.com>
+Link: https://patch.msgid.link/20250602193953.1010487-6-jonas.gorski@gmail.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/serial/milbeaut_usio.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/net/dsa/b53/b53_common.c | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/tty/serial/milbeaut_usio.c b/drivers/tty/serial/milbeaut_usio.c
-index 70a910085e937..9de3883a4e0b0 100644
---- a/drivers/tty/serial/milbeaut_usio.c
-+++ b/drivers/tty/serial/milbeaut_usio.c
-@@ -522,7 +522,10 @@ static int mlb_usio_probe(struct platform_device *pdev)
- 	}
- 	port->membase = devm_ioremap(&pdev->dev, res->start,
- 				resource_size(res));
--
-+	if (!port->membase) {
-+		ret = -ENOMEM;
-+		goto failed;
-+	}
- 	ret = platform_get_irq_byname(pdev, "rx");
- 	mlb_usio_irq[index][RX] = ret;
+diff --git a/drivers/net/dsa/b53/b53_common.c b/drivers/net/dsa/b53/b53_common.c
+index a17a3083180b0..79039c0941c20 100644
+--- a/drivers/net/dsa/b53/b53_common.c
++++ b/drivers/net/dsa/b53/b53_common.c
+@@ -1356,8 +1356,7 @@ static void b53_adjust_531x5_rgmii(struct dsa_switch *ds, int port,
+ 	 * tx_clk aligned timing (restoring to reset defaults)
+ 	 */
+ 	b53_read8(dev, B53_CTRL_PAGE, off, &rgmii_ctrl);
+-	rgmii_ctrl &= ~(RGMII_CTRL_DLL_RXC | RGMII_CTRL_DLL_TXC |
+-			RGMII_CTRL_TIMING_SEL);
++	rgmii_ctrl &= ~(RGMII_CTRL_DLL_RXC | RGMII_CTRL_DLL_TXC);
  
+ 	/* PHY_INTERFACE_MODE_RGMII_TXID means TX internal delay, make
+ 	 * sure that we enable the port TX clock internal delay to
+@@ -1377,7 +1376,10 @@ static void b53_adjust_531x5_rgmii(struct dsa_switch *ds, int port,
+ 		rgmii_ctrl |= RGMII_CTRL_DLL_TXC;
+ 	if (interface == PHY_INTERFACE_MODE_RGMII)
+ 		rgmii_ctrl |= RGMII_CTRL_DLL_TXC | RGMII_CTRL_DLL_RXC;
+-	rgmii_ctrl |= RGMII_CTRL_TIMING_SEL;
++
++	if (dev->chip_id != BCM53115_DEVICE_ID)
++		rgmii_ctrl |= RGMII_CTRL_TIMING_SEL;
++
+ 	b53_write8(dev, B53_CTRL_PAGE, off, rgmii_ctrl);
+ 
+ 	dev_info(ds->dev, "Configured port %d for %s\n", port,
 -- 
 2.39.5
 
