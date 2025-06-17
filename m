@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-153748-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-154180-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id EAE31ADD62D
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:30:54 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D956ADD95E
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 19:05:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9DA837AF2C0
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:21:22 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5A9981943A80
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:44:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5DDFA2DFF09;
-	Tue, 17 Jun 2025 16:16:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D161A2E8DF5;
+	Tue, 17 Jun 2025 16:39:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="03QjBBP9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aYcHXOkv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19E772CCC5;
-	Tue, 17 Jun 2025 16:16:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E77C2DFF1B;
+	Tue, 17 Jun 2025 16:39:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750176970; cv=none; b=eDVibeIDi/bubCQij34334QGc2j9rnvuwyH0yy3swD1upj++0/du2CLdki+JI8pN+vSbmZ4JOL3n6Ub+TTHA06b2lfuELxaR48/p5DJ3kMzo3dAbeou6Wh30P15YBkc1XVX59v0cPcFSB+zG6/pgUybF8ZJ67BQ2dDr3SZvgMeQ=
+	t=1750178360; cv=none; b=VOBcPvESOWnfwM11cR1W65gmbSa13Zk8BMHuixhbJTeIxOCT+dJCKpmyD5YVlqXswWdOsYzWBilyJyla5fjBUt1jpuWnT0aq0jSbblQG4XbBiQQzIZd9aTwZmUkM4SLWkgQClJzbpPMQQ4dKwwcZOdaCKTCSkYprFhYkdHCUYHU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750176970; c=relaxed/simple;
-	bh=ZtGO1Mj9Kl/0YWQgfZsZy20kD8m1Wih03InaQMCFVYo=;
+	s=arc-20240116; t=1750178360; c=relaxed/simple;
+	bh=u1tJqXMiEt9x1hvb4rdayQiWIiWDvXzOo5zFmGR2i7o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KizY4aA4WDpWFId1Cvu8DweQIbOEggHglPnf2MYhEmD3HFQPMlT8A+aqLL8eC35j+I6n5NBWDzE7jb4q7wZGMO6LAWw5KxEULSPRUqEeJf+tFK98Sdw1BQhh1m16YgfW9mrqLSZ2PrwJgGQ0TLoGJnd9qwMOTgnfylrXI/Ed7VM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=03QjBBP9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D2A3C4CEE3;
-	Tue, 17 Jun 2025 16:16:09 +0000 (UTC)
+	 MIME-Version; b=MzFSxWGRwrRfeSwCPRg/vUA0ymEYW12OwN/Xu7ACLwksetQOvHcHf2yCxVPZ1u/m3y4cfasOt2UMif2qF/vTlfadTGpcjxzAJVv0hipBWPBxOOnwtOgZVYrM02sNNMgTVOb+P0zdv/jQsOLL+Gv4ql/S1TC2DJUBKaRqrMfAixc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aYcHXOkv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F223BC4CEE3;
+	Tue, 17 Jun 2025 16:39:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750176969;
-	bh=ZtGO1Mj9Kl/0YWQgfZsZy20kD8m1Wih03InaQMCFVYo=;
+	s=korg; t=1750178360;
+	bh=u1tJqXMiEt9x1hvb4rdayQiWIiWDvXzOo5zFmGR2i7o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=03QjBBP9alSC2mldWXnojW8x09Vh0WAK4ksC2TdcxeRl4olkj0Am0rpk9STy1bWJ0
-	 vnsduDN6I3o9Qpmb39u/XRa6OQTu6oEDIx2BEZdCsgSr0a0pmIqqpznX1HKW3hZWYP
-	 vC8Ghs+wLUEa4JvozsqKfamePResjWdDSSQyXqzE=
+	b=aYcHXOkvlda23QvBU/ME1EQitH5HxFBTqGpP0UtNhUnCPzn32lUkedG/N04PKdLFN
+	 kfnNm2f4oOjz4EkctkrBAHo4QvqkJag4BD7md2pihaaOQBYGaXTvl6BmPUExwQcAfD
+	 aNsmgsSv5R0kKnKQ7+6NLIw8h46dZ1YywhrvxeuI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Jens Axboe <axboe@kernel.dk>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 335/356] block: Fix bvec_set_folio() for very large folios
+	Jeff Chen <jeff.chen_1@nxp.com>,
+	Francesco Dolcini <francesco.dolcini@toradex.com>,
+	Johannes Berg <johannes.berg@intel.com>
+Subject: [PATCH 6.12 484/512] Revert "wifi: mwifiex: Fix HT40 bandwidth issue."
 Date: Tue, 17 Jun 2025 17:27:30 +0200
-Message-ID: <20250617152351.620228811@linuxfoundation.org>
+Message-ID: <20250617152439.230331700@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152338.212798615@linuxfoundation.org>
-References: <20250617152338.212798615@linuxfoundation.org>
+In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
+References: <20250617152419.512865572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,51 +62,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthew Wilcox (Oracle) <willy@infradead.org>
+From: Francesco Dolcini <francesco.dolcini@toradex.com>
 
-[ Upstream commit 5e223e06ee7c6d8f630041a0645ac90e39a42cc6 ]
+commit 570896604f47d44d4ff6882d2a588428d2a6ef17 upstream.
 
-Similarly to 26064d3e2b4d ("block: fix adding folio to bio"), if
-we attempt to add a folio that is larger than 4GB, we'll silently
-truncate the offset and len.  Widen the parameters to size_t, assert
-that the length is less than 4GB and set the first page that contains
-the interesting data rather than the first page of the folio.
+This reverts commit 4fcfcbe45734 ("wifi: mwifiex: Fix HT40 bandwidth
+issue.")
 
-Fixes: 26db5ee15851 (block: add a bvec_set_folio helper)
-Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
-Link: https://lore.kernel.org/r/20250612144255.2850278-1-willy@infradead.org
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+That commit introduces a regression, when HT40 mode is enabled,
+received packets are lost, this was experience with W8997 with both
+SDIO-UART and SDIO-SDIO variants. From an initial investigation the
+issue solves on its own after some time, but it's not clear what is
+the reason. Given that this was just a performance optimization, let's
+revert it till we have a better understanding of the issue and a proper
+fix.
+
+Cc: Jeff Chen <jeff.chen_1@nxp.com>
+Cc: stable@vger.kernel.org
+Fixes: 4fcfcbe45734 ("wifi: mwifiex: Fix HT40 bandwidth issue.")
+Closes: https://lore.kernel.org/all/20250603203337.GA109929@francesco-nb/
+Signed-off-by: Francesco Dolcini <francesco.dolcini@toradex.com>
+Link: https://patch.msgid.link/20250605130302.55555-1-francesco@dolcini.it
+[fix commit reference format]
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/bvec.h | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ drivers/net/wireless/marvell/mwifiex/11n.c |    6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/include/linux/bvec.h b/include/linux/bvec.h
-index bd1e361b351c5..99ab7b2bba27c 100644
---- a/include/linux/bvec.h
-+++ b/include/linux/bvec.h
-@@ -57,9 +57,12 @@ static inline void bvec_set_page(struct bio_vec *bv, struct page *page,
-  * @offset:	offset into the folio
-  */
- static inline void bvec_set_folio(struct bio_vec *bv, struct folio *folio,
--		unsigned int len, unsigned int offset)
-+		size_t len, size_t offset)
- {
--	bvec_set_page(bv, &folio->page, len, offset);
-+	unsigned long nr = offset / PAGE_SIZE;
-+
-+	WARN_ON_ONCE(len > UINT_MAX);
-+	bvec_set_page(bv, folio_page(folio, nr), len, offset % PAGE_SIZE);
- }
+--- a/drivers/net/wireless/marvell/mwifiex/11n.c
++++ b/drivers/net/wireless/marvell/mwifiex/11n.c
+@@ -403,14 +403,12 @@ mwifiex_cmd_append_11n_tlv(struct mwifie
  
- /**
--- 
-2.39.5
-
+ 		if (sband->ht_cap.cap & IEEE80211_HT_CAP_SUP_WIDTH_20_40 &&
+ 		    bss_desc->bcn_ht_oper->ht_param &
+-		    IEEE80211_HT_PARAM_CHAN_WIDTH_ANY) {
+-			chan_list->chan_scan_param[0].radio_type |=
+-				CHAN_BW_40MHZ << 2;
++		    IEEE80211_HT_PARAM_CHAN_WIDTH_ANY)
+ 			SET_SECONDARYCHAN(chan_list->chan_scan_param[0].
+ 					  radio_type,
+ 					  (bss_desc->bcn_ht_oper->ht_param &
+ 					  IEEE80211_HT_PARAM_CHA_SEC_OFFSET));
+-		}
++
+ 		*buffer += struct_size(chan_list, chan_scan_param, 1);
+ 		ret_len += struct_size(chan_list, chan_scan_param, 1);
+ 	}
 
 
 
