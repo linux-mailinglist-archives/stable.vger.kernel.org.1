@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-153036-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153040-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA26BADD201
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 17:37:44 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id CE983ADD230
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 17:40:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5BF7917D1C4
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 15:37:45 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 56F547AD4CF
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 15:36:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3F992EBDC0;
-	Tue, 17 Jun 2025 15:37:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA3252E9753;
+	Tue, 17 Jun 2025 15:37:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GOFLtcdl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NCiafVp/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 914DE18A6AE;
-	Tue, 17 Jun 2025 15:37:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76E15217F34;
+	Tue, 17 Jun 2025 15:37:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750174659; cv=none; b=W22dpghbe01VSdFtiD3v3/6E46C5VVBSic++yMbfu9zrJAYDS7N8fn4s6hrOWygKVEaYbc16Uon9i1bo4sAIfn/41vt5Icsq+6TZinom6387TqIDnyjQv6BuU0iJ599b1Q6KE9/uWopUnKf4zr4/Tf4YRYsfTifLWPXJRv96rTQ=
+	t=1750174672; cv=none; b=NUl9K26qfalsVLXGFnhSlz+PiEQs1nMnL0VvMEfyZR4/ytlkMCuDm2w9QpAdnWjan6mCVotClLVwvrxmsLcGs7rjyIXRpUeCfV5qC5wb6bP53eNKal86Q5e/JYVpHBUOV62I/qd4m4PTbKWo5SVTIzeXPMaG8825JfdScn2Q2zk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750174659; c=relaxed/simple;
-	bh=qFVeJKDbiQKmO8hCSiviB7YghMI3VhMqfA2Gwbifm1E=;
+	s=arc-20240116; t=1750174672; c=relaxed/simple;
+	bh=J0Bx9Gkq+I+PHBRuxt/7RBYCf3O7u6m/wckKGocDRQM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=H/0W+V5LN4vwrm8CC8pb7RnPLV/ZcuyepPINQ22Vm/vmzAa7+PBTqqG1mlbu9h/kAfHYPaBlkcuq9G7NpmGxDu6uQNA3RtSRM/UQwz5RGF0Ag8fdVcgFocBlJNVOS6INAHiNKS5ZNC9Zk7bf9zVIDbjnl+qfbfRTiAox9qbCBG8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GOFLtcdl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0058DC4CEE3;
-	Tue, 17 Jun 2025 15:37:38 +0000 (UTC)
+	 MIME-Version; b=is11Ub954mWj4+K7H4QCSXMScbNRCCiv8RsMKCxxGx0Q94Kr5iJ+LrCKvpJhH3XZ5dfkn7iE3aTDh3ZmDisMcMqmLnmJj16Jz74EV2d57SHeQtPaJwLEAKwQLoSMx9rwSbhlZZSlSFgcDY4FQx3gYgVe0LA1HM8k+ZSvohlnl8g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NCiafVp/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC38DC4CEE3;
+	Tue, 17 Jun 2025 15:37:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750174659;
-	bh=qFVeJKDbiQKmO8hCSiviB7YghMI3VhMqfA2Gwbifm1E=;
+	s=korg; t=1750174672;
+	bh=J0Bx9Gkq+I+PHBRuxt/7RBYCf3O7u6m/wckKGocDRQM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GOFLtcdljvuK1H2iaPCDhOgKVBingP2yGy+iPdxzGG5q9b6tWzltHmPQOEwI+oHRs
-	 etw/tF9IvGSQlk0hTjo2NzBP1A0/cmA2jgBrV+d5uCCFOXo4jPyHqx8ZoGWhCK4QLj
-	 aGaFZMBC+lH0jSCux6lFl61B1WiPujF41w+x1md8=
+	b=NCiafVp/55We3XFigs91BudMM8w3wqdx/arED5TbthV8PAkCFxy2dh2yVAQV8/j+M
+	 B5Sp9okSdm5rLn+HGoYMjRLtN/vGpHPGmmA4MR7LNQutFnnB4ILY01k6hCTg23keFL
+	 /WM+FoZT+aonP7qD9a1oFUuLbPMhNnLRlxKuO8QM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kees Cook <kees@kernel.org>,
-	Peter Ujfalusi <peter.ujfalusi@linux.intel.com>,
+	Vijendar Mukunda <Vijendar.Mukunda@amd.com>,
+	Ranjani Sridharan <ranjani.sridharan@linux.intel.com>,
+	Bard Liao <yung-chuan.liao@linux.intel.com>,
 	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 048/512] ASoC: SOF: ipc4-pcm: Adjust pipeline_list->pipelines allocation type
-Date: Tue, 17 Jun 2025 17:20:14 +0200
-Message-ID: <20250617152421.483026308@linuxfoundation.org>
+Subject: [PATCH 6.12 049/512] ASoC: SOF: amd: add missing acp descriptor field
+Date: Tue, 17 Jun 2025 17:20:15 +0200
+Message-ID: <20250617152421.522562230@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
 References: <20250617152419.512865572@linuxfoundation.org>
@@ -67,44 +68,36 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Kees Cook <kees@kernel.org>
+From: Vijendar Mukunda <Vijendar.Mukunda@amd.com>
 
-[ Upstream commit 00a371adbbfb46db561db85a9d7b53b2363880a1 ]
+[ Upstream commit 7c2bad7b95db5b4b978853cd4dd042ae3ec83e63 ]
 
-In preparation for making the kmalloc family of allocators type aware,
-we need to make sure that the returned type from the allocation matches
-the type of the variable being assigned. (Before, the allocator would
-always return "void *", which can be implicitly cast to any pointer type.)
+Add missing acp descriptor field acp_error_stat for ACP7.0 platform.
 
-The assigned type is "struct snd_sof_pipeline **", but the returned type
-will be "struct snd_sof_widget **". These are the same size allocation
-(pointer size) but the types don't match. Adjust the allocation type to
-match the assignment.
+Fixes: 490be7ba2a01 ("ASoC: SOF: amd: add support for acp7.0 based platform")
 
-Signed-off-by: Kees Cook <kees@kernel.org>
-Fixes: 9c04363d222b ("ASoC: SOF: Introduce struct snd_sof_pipeline")
-Acked-by: Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
-Link: https://patch.msgid.link/20250426062511.work.859-kees@kernel.org
+Signed-off-by: Vijendar Mukunda <Vijendar.Mukunda@amd.com>
+Reviewed-by: Ranjani Sridharan <ranjani.sridharan@linux.intel.com>
+Reviewed-by: Bard Liao <yung-chuan.liao@linux.intel.com>
+Link: https://patch.msgid.link/20250502154445.3008598-3-Vijendar.Mukunda@amd.com
 Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/sof/ipc4-pcm.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ sound/soc/sof/amd/pci-acp70.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/sound/soc/sof/ipc4-pcm.c b/sound/soc/sof/ipc4-pcm.c
-index 2fe4969cdc3b4..9db2cdb321282 100644
---- a/sound/soc/sof/ipc4-pcm.c
-+++ b/sound/soc/sof/ipc4-pcm.c
-@@ -780,7 +780,8 @@ static int sof_ipc4_pcm_setup(struct snd_sof_dev *sdev, struct snd_sof_pcm *spcm
- 
- 		/* allocate memory for max number of pipeline IDs */
- 		pipeline_list->pipelines = kcalloc(ipc4_data->max_num_pipelines,
--						   sizeof(struct snd_sof_widget *), GFP_KERNEL);
-+						   sizeof(*pipeline_list->pipelines),
-+						   GFP_KERNEL);
- 		if (!pipeline_list->pipelines) {
- 			sof_ipc4_pcm_free(sdev, spcm);
- 			return -ENOMEM;
+diff --git a/sound/soc/sof/amd/pci-acp70.c b/sound/soc/sof/amd/pci-acp70.c
+index a5d8b6a95a222..fe2ad0395f5d3 100644
+--- a/sound/soc/sof/amd/pci-acp70.c
++++ b/sound/soc/sof/amd/pci-acp70.c
+@@ -34,6 +34,7 @@ static const struct sof_amd_acp_desc acp70_chip_info = {
+ 	.ext_intr_cntl = ACP70_EXTERNAL_INTR_CNTL,
+ 	.ext_intr_stat	= ACP70_EXT_INTR_STAT,
+ 	.ext_intr_stat1	= ACP70_EXT_INTR_STAT1,
++	.acp_error_stat = ACP70_ERROR_STATUS,
+ 	.dsp_intr_base	= ACP70_DSP_SW_INTR_BASE,
+ 	.acp_sw0_i2s_err_reason = ACP7X_SW0_I2S_ERROR_REASON,
+ 	.sram_pte_offset = ACP70_SRAM_PTE_OFFSET,
 -- 
 2.39.5
 
