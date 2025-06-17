@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-153411-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-154177-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 044A0ADD437
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:07:54 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D0488ADD994
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 19:07:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AB09C1626CD
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:01:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D66CF3BEF79
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:43:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67F942ED870;
-	Tue, 17 Jun 2025 15:57:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1FF6A2E8DE0;
+	Tue, 17 Jun 2025 16:39:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PMLffwXb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x7Q8iQta"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2372D2E92BC;
-	Tue, 17 Jun 2025 15:57:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D014D2DFF3B;
+	Tue, 17 Jun 2025 16:39:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750175873; cv=none; b=IM4rSSsKr05Oz7ShikxiOYi8O1HsiOgfC4qUuIqwpJqlaVua2geNwKtjBJk/syi+0O0TMia+J7ehKhmHN7IEp68wQDitbGS4vSkFPYsFm9IwX4nTPUjbMBlh96Kv5n5SRI7XorA1tvEf7uBgO9awyf9aw0PJCpnKTWtJhPJDlMQ=
+	t=1750178350; cv=none; b=qWdzEA/FW7+JpKueGoiJFL3rr0aYdnot1T7Uw3xDPo6ltIF+3Htr3F7lVAKHirsaA2+37fOW2BMpaUWejn89II8LFme14N5b/OUawRTR/fbQifDmd636ptTS7azA1P1mzBLpnUEXMN3qmmkus5GO0SDyU0f3RLs633GGCK/nUE4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750175873; c=relaxed/simple;
-	bh=3ec4PhmvagJLuh0Z+DSPn76XYFD+nK6jO7O/2plels0=;
+	s=arc-20240116; t=1750178350; c=relaxed/simple;
+	bh=QLitYBQgP8GImp3855rm7NiUvQl2a/3O2dce40UJDDs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Oxv8B3F7Ug6PsnZ0uggUU9zDJL+b/HP8IRLW3P9Mxvhy3+AyncnVnZkA9M6w6BR9mwUMB5Sg0Ngzlv+kOMoR0Bhj42F74DdLg1QN2+iF4eEpCtQHpzhtnrX9IlfqwiAkMs0rLu4W1R534WDE8HiVgzh+xpbjnYNTG/noJR8lf74=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PMLffwXb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88F4AC4CEE3;
-	Tue, 17 Jun 2025 15:57:52 +0000 (UTC)
+	 MIME-Version; b=G268kSvzRHzvOhbcYch1UKgXP36lNZKuQiTqXn9o6LcDIEtnLEDFUMDWk1T6NJkMsz8f3BoIw+W2uYPbqp3IcUtdV9y6NGcD8mezH13ifStai0IVxqoe9l3xmlLY3YwxW45NtcXhFh72uphbWscj0e6gjh1sWRKOSnOnW3GBYRs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x7Q8iQta; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4050EC4CEE3;
+	Tue, 17 Jun 2025 16:39:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750175873;
-	bh=3ec4PhmvagJLuh0Z+DSPn76XYFD+nK6jO7O/2plels0=;
+	s=korg; t=1750178350;
+	bh=QLitYBQgP8GImp3855rm7NiUvQl2a/3O2dce40UJDDs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PMLffwXbFj31QmjlAb5wqPES6xUIfjsG6s/EwrHXs0Ee2yiCvrKF2lXlt6b2WeVV+
-	 0dYkWIXFF/dTHQSRE5sfT1LUjwficvZtS3Sx5iY5mGfdbQfpo0p5durd6ghawRjP8u
-	 cZapuu7HBgBXPb4wqSjrMcVH6Y+4UBBRdR9ilk+g=
+	b=x7Q8iQtaIpCuAHAVKAw5zrKj6kpjL9PV6vM9CK6UI+MHx9DTbMwQgzfm7J1Q5lsHj
+	 FkCNfDcd+1ae0YTAPEa8F38Q4HhVzMSU3vMVKwRU/XwL1jK/0PwiL/4bsD6bthUdrJ
+	 zdmUWEWBLArL8gdVDbn0kp1849Lj3E+9k/UDCmuY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Samuel Reyes <zohrlaffz@gmail.com>,
-	Ping-Ke Shih <pkshih@realtek.com>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Aditya Garg <gargaditya08@live.com>,
+	Jiri Kosina <jkosina@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 171/512] wifi: rtw89: pci: enlarge retry times of RX tag to 1000
-Date: Tue, 17 Jun 2025 17:22:17 +0200
-Message-ID: <20250617152426.548185373@linuxfoundation.org>
+Subject: [PATCH 6.15 430/780] HID: HID_APPLETB_KBD should depend on X86
+Date: Tue, 17 Jun 2025 17:22:18 +0200
+Message-ID: <20250617152508.976249968@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
-References: <20250617152419.512865572@linuxfoundation.org>
+In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
+References: <20250617152451.485330293@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,46 +63,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ping-Ke Shih <pkshih@realtek.com>
+From: Geert Uytterhoeven <geert+renesas@glider.be>
 
-[ Upstream commit dda27a47c036d981ec664ac57e044a21035ffe12 ]
+[ Upstream commit 2a647d400afecdf12ba5905424e1337fbc2d6750 ]
 
-RX tag is sequence number to ensure RX DMA is complete. On platform
-Gigabyte X870 AORUS ELITE WIFI7, sometimes it needs longer retry times
-to complete RX DMA, or driver throws warnings and connection drops:
+The Apple Touch Bar is only present on x86 MacBook Pros.  Hence add a
+dependency on X86, to prevent asking the user about this driver when
+configuring a kernel for a different architecture.
 
-  rtw89_8922ae 0000:07:00.0: failed to update 162 RXBD info: -11
-  rtw89_8922ae 0000:07:00.0: failed to update 163 RXBD info: -11
-  rtw89_8922ae 0000:07:00.0: failed to update 32 RXBD info: -11
-  rtw89_8922ae 0000:07:00.0: failed to release TX skbs
-
-Fixes: 0bc7d1d4e63c ("wifi: rtw89: pci: validate RX tag for RXQ and RPQ")
-Reported-by: Samuel Reyes <zohrlaffz@gmail.com>
-Closes: https://lore.kernel.org/linux-wireless/f4355539f3ac46bbaf9c586d059a8cbb@realtek.com/T/#t
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
-Link: https://patch.msgid.link/20250509013433.7573-1-pkshih@realtek.com
+Fixes: 8e9b9152cfbdc2a9 ("HID: hid-appletb-kbd: add driver for the keyboard mode of Apple Touch Bars")
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Reviewed-by: Aditya Garg <gargaditya08@live.com>
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/realtek/rtw89/pci.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/hid/Kconfig | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/wireless/realtek/rtw89/pci.c b/drivers/net/wireless/realtek/rtw89/pci.c
-index 0ac84f968994b..e203d3b2a8274 100644
---- a/drivers/net/wireless/realtek/rtw89/pci.c
-+++ b/drivers/net/wireless/realtek/rtw89/pci.c
-@@ -228,7 +228,7 @@ int rtw89_pci_sync_skb_for_device_and_validate_rx_info(struct rtw89_dev *rtwdev,
- 						       struct sk_buff *skb)
- {
- 	struct rtw89_pci_rx_info *rx_info = RTW89_PCI_RX_SKB_CB(skb);
--	int rx_tag_retry = 100;
-+	int rx_tag_retry = 1000;
- 	int ret;
- 
- 	do {
+diff --git a/drivers/hid/Kconfig b/drivers/hid/Kconfig
+index a503252702b7b..119e5190a2df7 100644
+--- a/drivers/hid/Kconfig
++++ b/drivers/hid/Kconfig
+@@ -163,6 +163,7 @@ config HID_APPLETB_KBD
+ 	depends on USB_HID
+ 	depends on BACKLIGHT_CLASS_DEVICE
+ 	depends on INPUT
++	depends on X86 || COMPILE_TEST
+ 	select INPUT_SPARSEKMAP
+ 	select HID_APPLETB_BL
+ 	help
 -- 
 2.39.5
 
