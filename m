@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-153359-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-154396-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 68ECAADD410
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:06:11 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CE530ADD9BC
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 19:08:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4BA193B0507
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 15:58:07 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2FEB14A39BC
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:53:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E621F2DFF25;
-	Tue, 17 Jun 2025 15:54:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D04E2E8DE4;
+	Tue, 17 Jun 2025 16:51:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y+Gil6ZD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KudyiaL0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A08592EB10;
-	Tue, 17 Jun 2025 15:54:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 488B52FA630;
+	Tue, 17 Jun 2025 16:50:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750175694; cv=none; b=aHtM61dWduAXsVdoE7V9/OswKqRx5DXxbK2Uj3O9JXJdxNSaRndf3vKmMgm9UlXRgOKOXiMIekBZ0So7NPw0DO7j056QwXGEWwD85MquDX0odWDkFRqzWTkIaiFOvbLyK6e8mL/9yAG+zztsMkac69UIul0OO9GpeA2BrZR0wdg=
+	t=1750179060; cv=none; b=U9qIC0dRm+bTNG6BeNCh6nxS3WjIR4NdOnvbVYtGXSUYlucPyj86+L8du/mRNcHV+9I787kqIejLCsKlfSZCFphFuzVbyPnbPci1dsJx6YPJmeOINH9r84eL1+y7XMn/bSi8FQmqmjmJEkigSg5Qz9iy2z/BA1aiitYtY0t1G/k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750175694; c=relaxed/simple;
-	bh=MaKsC7yqtYrbZhzrRCoMxxD7w/LqhxBhNaN9PxUoPks=;
+	s=arc-20240116; t=1750179060; c=relaxed/simple;
+	bh=TgAZA4p2sscExsOAZ/Uto+P3F3+oY4qp8IDgBauZl7U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fVpJPoYpkNVaG35psyjLuglSIE8HQwSHOGg4/xfkiQcu/6Q806392Efu4G0ZQ6LomzOPBabASiEduK3XGGcNkk5eklxTcxqj+VduLdVH2YARQtHB8d7pZJ4DUQsUl9LBoM7HHr5o4AHRZct9FFfaTn8VW+VcUXhvwiyKPe9t1/U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y+Gil6ZD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23DC3C4CEF0;
-	Tue, 17 Jun 2025 15:54:53 +0000 (UTC)
+	 MIME-Version; b=YLvh+kEqTzMq+6sL8kFLNL5MsPKFrOOUHX5X/iyfWOIvPCA4gduK5a7BYQfT5D/Gr1Sz41+9Rh9zTm3M4sHSuSrZ+NBJ9UCqh8lpX/Hw7NIgwC8RUaqtN5tJ2LwjKnnDz0q/1OQnOX2oBJAwCeGLF4TX9ThERW4zd4e4TcOGVpc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KudyiaL0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60834C4CEE3;
+	Tue, 17 Jun 2025 16:50:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750175694;
-	bh=MaKsC7yqtYrbZhzrRCoMxxD7w/LqhxBhNaN9PxUoPks=;
+	s=korg; t=1750179059;
+	bh=TgAZA4p2sscExsOAZ/Uto+P3F3+oY4qp8IDgBauZl7U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=y+Gil6ZDLQ1o2r1wY8BnSNLyZ2FufN89fBZ3fuV90xaTi4c+tcpVkXdAyEfmFfdzK
-	 dgtHlSSO9rb+zqH/PoZeNf2X1VEXk2zw0cI1/fIxLhgO4Pf85uP8cFfV/RJ7bR+d0B
-	 jOLy4mn2CxkZZQe0LpcpmzW/wrF0sr7HPRBvwAco=
+	b=KudyiaL0n+NfwbvTAIwRttCuTbdlyOEa3g1GrEy63WANMqsC6B+JEQ4tUfuTrac8B
+	 duAWtvw3NC8zjOymeSykBHFZjUWwDwiML12N6i7ZB386opzl+26ZjHk5v5pgyE1ZU0
+	 A0kQzQni40Ig9JpGQVSfwF6OEhM4OgvujBHuGKAA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Damien Le Moal <dlemoal@kernel.org>,
-	Benjamin Marzinski <bmarzins@redhat.com>,
-	Mikulas Patocka <mpatocka@redhat.com>,
+	Yafang Shao <laoar.shao@gmail.com>,
+	Shaun Brady <brady.1345@gmail.com>,
+	Florian Westphal <fw@strlen.de>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 201/356] dm: free table mempools if not used in __bind
+Subject: [PATCH 6.15 608/780] netfilter: nf_nat: also check reverse tuple to obtain clashing entry
 Date: Tue, 17 Jun 2025 17:25:16 +0200
-Message-ID: <20250617152346.303638409@linuxfoundation.org>
+Message-ID: <20250617152516.241953301@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152338.212798615@linuxfoundation.org>
-References: <20250617152338.212798615@linuxfoundation.org>
+In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
+References: <20250617152451.485330293@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,56 +64,105 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Benjamin Marzinski <bmarzins@redhat.com>
+From: Florian Westphal <fw@strlen.de>
 
-[ Upstream commit e8819e7f03470c5b468720630d9e4e1d5b99159e ]
+[ Upstream commit 50d9ce9679dd50df2dc51ada717fa875bc248fad ]
 
-With request-based dm, the mempools don't need reloading when switching
-tables, but the unused table mempools are not freed until the active
-table is finally freed. Free them immediately if they are not needed.
+The logic added in the blamed commit was supposed to only omit nat source
+port allocation if neither the existing nor the new entry are subject to
+NAT.
 
-Fixes: 29dec90a0f1d9 ("dm: fix bio_set allocation")
-Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
-Tested-by: Damien Le Moal <dlemoal@kernel.org>
-Signed-off-by: Benjamin Marzinski <bmarzins@redhat.com>
-Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
+However, its not enough to lookup the conntrack based on the proposed
+tuple, we must also check the reverse direction.
+
+Otherwise there are esoteric cases where the collision is in the reverse
+direction because that colliding connection has a port rewrite, but the
+new entry doesn't.  In this case, we only check the new entry and then
+erronously conclude that no clash exists anymore.
+
+ The existing (udp) tuple is:
+  a:p -> b:P, with nat translation to s:P, i.e. pure daddr rewrite,
+  reverse tuple in conntrack table is s:P -> a:p.
+
+When another UDP packet is sent directly to s, i.e. a:p->s:P, this is
+correctly detected as a colliding entry: tuple is taken by existing reply
+tuple in reverse direction.
+
+But the colliding conntrack is only searched for with unreversed
+direction, and we can't find such entry matching a:p->s:P.
+
+The incorrect conclusion is that the clashing entry has timed out and
+that no port address translation is required.
+
+Such conntrack will then be discarded at nf_confirm time because the
+proposed reverse direction clashes with an existing mapping in the
+conntrack table.
+
+Search for the reverse tuple too, this will then check the NAT bits of
+the colliding entry and triggers port reallocation.
+
+Followp patch extends nft_nat.sh selftest to cover this scenario.
+
+The IPS_SEQ_ADJUST change is also a bug fix:
+Instead of checking for SEQ_ADJ this tested for SEEN_REPLY and ASSURED
+by accident -- _BIT is only for use with the test_bit() API.
+
+This bug has little consequence in practice, because the sequence number
+adjustments are only useful for TCP which doesn't support clash resolution.
+
+The existing test case (conntrack_reverse_clash.sh) exercise a race
+condition path (parallel conntrack creation on different CPUs), so
+the colliding entries have neither SEEN_REPLY nor ASSURED set.
+
+Thanks to Yafang Shao and Shaun Brady for an initial investigation
+of this bug.
+
+Fixes: d8f84a9bc7c4 ("netfilter: nf_nat: don't try nat source port reallocation for reverse dir clash")
+Closes: https://bugzilla.netfilter.org/show_bug.cgi?id=1795
+Reported-by: Yafang Shao <laoar.shao@gmail.com>
+Reported-by: Shaun Brady <brady.1345@gmail.com>
+Signed-off-by: Florian Westphal <fw@strlen.de>
+Tested-by: Yafang Shao <laoar.shao@gmail.com>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/md/dm.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ net/netfilter/nf_nat_core.c | 12 +++++++++---
+ 1 file changed, 9 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/md/dm.c b/drivers/md/dm.c
-index d154c89305fbe..44424554e6b52 100644
---- a/drivers/md/dm.c
-+++ b/drivers/md/dm.c
-@@ -2235,10 +2235,10 @@ static struct dm_table *__bind(struct mapped_device *md, struct dm_table *t,
- 		 * requests in the queue may refer to bio from the old bioset,
- 		 * so you must walk through the queue to unprep.
- 		 */
--		if (!md->mempools) {
-+		if (!md->mempools)
- 			md->mempools = t->mempools;
--			t->mempools = NULL;
--		}
-+		else
-+			dm_free_md_mempools(t->mempools);
- 	} else {
- 		/*
- 		 * The md may already have mempools that need changing.
-@@ -2247,8 +2247,8 @@ static struct dm_table *__bind(struct mapped_device *md, struct dm_table *t,
- 		 */
- 		dm_free_md_mempools(md->mempools);
- 		md->mempools = t->mempools;
--		t->mempools = NULL;
- 	}
-+	t->mempools = NULL;
+diff --git a/net/netfilter/nf_nat_core.c b/net/netfilter/nf_nat_core.c
+index aad84aabd7f1d..f391cd267922b 100644
+--- a/net/netfilter/nf_nat_core.c
++++ b/net/netfilter/nf_nat_core.c
+@@ -248,7 +248,7 @@ static noinline bool
+ nf_nat_used_tuple_new(const struct nf_conntrack_tuple *tuple,
+ 		      const struct nf_conn *ignored_ct)
+ {
+-	static const unsigned long uses_nat = IPS_NAT_MASK | IPS_SEQ_ADJUST_BIT;
++	static const unsigned long uses_nat = IPS_NAT_MASK | IPS_SEQ_ADJUST;
+ 	const struct nf_conntrack_tuple_hash *thash;
+ 	const struct nf_conntrack_zone *zone;
+ 	struct nf_conn *ct;
+@@ -287,8 +287,14 @@ nf_nat_used_tuple_new(const struct nf_conntrack_tuple *tuple,
+ 	zone = nf_ct_zone(ignored_ct);
  
- 	old_map = rcu_dereference_protected(md->map, lockdep_is_held(&md->suspend_lock));
- 	rcu_assign_pointer(md->map, (void *)t);
+ 	thash = nf_conntrack_find_get(net, zone, tuple);
+-	if (unlikely(!thash)) /* clashing entry went away */
+-		return false;
++	if (unlikely(!thash)) {
++		struct nf_conntrack_tuple reply;
++
++		nf_ct_invert_tuple(&reply, tuple);
++		thash = nf_conntrack_find_get(net, zone, &reply);
++		if (!thash) /* clashing entry went away */
++			return false;
++	}
+ 
+ 	ct = nf_ct_tuplehash_to_ctrack(thash);
+ 
 -- 
 2.39.5
 
