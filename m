@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-153716-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-154291-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 987FDADD61A
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:30:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 38147ADD8F5
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 19:01:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B99472C365C
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:21:21 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EB44F4A1F43
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:48:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D18742EE5F2;
-	Tue, 17 Jun 2025 16:14:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1BFDA2FA626;
+	Tue, 17 Jun 2025 16:45:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Tw96U7qG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OY3ymHdl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83D432EF297;
-	Tue, 17 Jun 2025 16:14:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE1EB2FA624;
+	Tue, 17 Jun 2025 16:45:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750176861; cv=none; b=K60oneO9n7ps2ZM0xopU4wrAZ6bAA6fd+hNJuGBrhj8R5dkzg6SNG4eFADxjV4piaeOCYA7RCrec7EWJvNh4LaJdZB2dvcsxdrlwdOKBO07Xz2nzCOgMEQGMvA9Sq4vqobKocIRXcirMEE3cLPDdYu38yEvmd1A3+FdJgpTvQE8=
+	t=1750178721; cv=none; b=rmrcmN5Re64zoRSJxq/GMqWGahHdidSBd3nLQQ84OZwhEnHZmoLhd9jlMGrccBXUiiz83sa6Nctm3wfmAFvPL9toVFekCdsA/B1IeALmqLKgOD2vQJPg9BK6y6pODIpdXee8U7pjZuL38cBCu5zuqF4UCpdSUvjdOoynikabYx8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750176861; c=relaxed/simple;
-	bh=z+R3I/M3jBxVe5/Y2RGaRCEQic3RgnmsHAtH/5BZtvM=;
+	s=arc-20240116; t=1750178721; c=relaxed/simple;
+	bh=C7Uy/BuWG16g9r8xG1QybcdYSttB3UJ5FjnRkQWh1ls=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qIYfkL2TMalAVhUz5DxEKC0QEFFtrZ7xWAyZ8GeX+thOhYRLYG2Al1VkDCrrhMSP7ZylM2sNQo71rTkaEd7LjIGG2A/W1W+Lm7bUBj+4Dw8CUyrHWDFq0mrnsHmdXYuV4vWlwfWZaNMHAoa4N+IAlyyw7d0CmpzAeBVI1CnXIyg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Tw96U7qG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8EA39C4CEE3;
-	Tue, 17 Jun 2025 16:14:18 +0000 (UTC)
+	 MIME-Version; b=MUL1z9332ch/vYrYVqxst0bltnSNyRo5cPw10oU7dwJiC1HrAGBTqJgYdtjPl8xi7HfCzSuRepOmvX7BoeZVK1JQ9CMCgrtk3im0zDoSreGvAUQXTcydI2Tn+bJ58YspnwL/mgzIrrO4shn6QZFUIUCjY79bIUC91lUxPmCx1Z0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OY3ymHdl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1804C4CEE3;
+	Tue, 17 Jun 2025 16:45:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750176859;
-	bh=z+R3I/M3jBxVe5/Y2RGaRCEQic3RgnmsHAtH/5BZtvM=;
+	s=korg; t=1750178718;
+	bh=C7Uy/BuWG16g9r8xG1QybcdYSttB3UJ5FjnRkQWh1ls=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Tw96U7qG93Rd3+/xAB1RY880MP4qk4OX6QLnYpZL6LnPxX/yfgHSqK2Gfm303FtC1
-	 LRMSe6rJt7FkJ9VuiYQ+Xciv0rirNvgI82PUEIP0qZypFR0AEhOaXMyz0CsvD5yiQX
-	 lpw666M8Bar0jJR4CbkL6cuW2NgnEXzkxOP8AnxE=
+	b=OY3ymHdlsl2mPh7jt18JjyA5TV+QhOt3PzXmtdeWnuG/cympj+94ns+Z/aqTbA0ww
+	 Y+efa/6grmAIS32npterNIaWDBbxYhL7lmTWdhVBxJ2Zn9vEDlx11xHFLpQt1cMNJ4
+	 yRCZxbISgDwuH3BOma8copcBwJxkZQF/k83lPvt8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Damien Le Moal <dlemoal@kernel.org>,
-	Benjamin Marzinski <bmarzins@redhat.com>,
-	Mikulas Patocka <mpatocka@redhat.com>,
+	Yuanfang Zhang <quic_yuanfang@quicinc.com>,
+	Mao Jinlong <quic_jinlmao@quicinc.com>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 273/512] dm: dont change md if dm_table_set_restrictions() fails
-Date: Tue, 17 Jun 2025 17:23:59 +0200
-Message-ID: <20250617152430.660305796@linuxfoundation.org>
+Subject: [PATCH 6.15 532/780] coresight: tmc: fix failure to disable/enable ETF after reading
+Date: Tue, 17 Jun 2025 17:24:00 +0200
+Message-ID: <20250617152513.176502555@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
-References: <20250617152419.512865572@linuxfoundation.org>
+In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
+References: <20250617152451.485330293@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,83 +63,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Benjamin Marzinski <bmarzins@redhat.com>
+From: Mao Jinlong <quic_jinlmao@quicinc.com>
 
-[ Upstream commit 9eb7109a5bfc5b8226e9517e9f3cc6d414391884 ]
+[ Upstream commit d23bc38e8aa4efbd617bf660bb1a25fee9f6c177 ]
 
-__bind was changing the disk capacity, geometry and mempools of the
-mapped device before calling dm_table_set_restrictions() which could
-fail, forcing dm to drop the new table. Failing here would leave the
-device using the old table but with the wrong capacity and mempools.
+ETF may fail to re-enable after reading, and driver->reading will
+not be set to false, this will cause failure to enable/disable to ETF.
+This change set driver->reading to false even if re-enabling fail.
 
-Move dm_table_set_restrictions() earlier in __bind(). Since it needs the
-capacity to be set, save the old version and restore it on failure.
-
-Fixes: bb37d77239af2 ("dm: introduce zone append emulation")
-Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
-Tested-by: Damien Le Moal <dlemoal@kernel.org>
-Signed-off-by: Benjamin Marzinski <bmarzins@redhat.com>
-Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
+Fixes: 669c4614236a ("coresight: tmc: Don't enable TMC when it's not ready.")
+Co-developed-by: Yuanfang Zhang <quic_yuanfang@quicinc.com>
+Signed-off-by: Yuanfang Zhang <quic_yuanfang@quicinc.com>
+Signed-off-by: Mao Jinlong <quic_jinlmao@quicinc.com>
+[ Added a comment to explain why we ignore the error ]
+Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
+Link: https://lore.kernel.org/r/20250507063716.1945213-1-quic_jinlmao@quicinc.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/md/dm.c | 22 ++++++++++++----------
- 1 file changed, 12 insertions(+), 10 deletions(-)
+ drivers/hwtracing/coresight/coresight-tmc-etf.c | 11 +++++------
+ 1 file changed, 5 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/md/dm.c b/drivers/md/dm.c
-index d29125ee9e72a..12d5f414a6788 100644
---- a/drivers/md/dm.c
-+++ b/drivers/md/dm.c
-@@ -2410,21 +2410,29 @@ static struct dm_table *__bind(struct mapped_device *md, struct dm_table *t,
- 			       struct queue_limits *limits)
- {
- 	struct dm_table *old_map;
--	sector_t size;
-+	sector_t size, old_size;
- 	int ret;
+diff --git a/drivers/hwtracing/coresight/coresight-tmc-etf.c b/drivers/hwtracing/coresight/coresight-tmc-etf.c
+index d858740001c27..a922e3b709638 100644
+--- a/drivers/hwtracing/coresight/coresight-tmc-etf.c
++++ b/drivers/hwtracing/coresight/coresight-tmc-etf.c
+@@ -747,7 +747,6 @@ int tmc_read_unprepare_etb(struct tmc_drvdata *drvdata)
+ 	char *buf = NULL;
+ 	enum tmc_mode mode;
+ 	unsigned long flags;
+-	int rc = 0;
  
- 	lockdep_assert_held(&md->suspend_lock);
- 
- 	size = dm_table_get_size(t);
- 
-+	old_size = dm_get_size(md);
-+	set_capacity(md->disk, size);
-+
-+	ret = dm_table_set_restrictions(t, md->queue, limits);
-+	if (ret) {
-+		set_capacity(md->disk, old_size);
-+		old_map = ERR_PTR(ret);
-+		goto out;
-+	}
-+
- 	/*
- 	 * Wipe any geometry if the size of the table changed.
- 	 */
--	if (size != dm_get_size(md))
-+	if (size != old_size)
- 		memset(&md->geometry, 0, sizeof(md->geometry));
- 
--	set_capacity(md->disk, size);
--
- 	dm_table_event_callback(t, event_callback, md);
- 
- 	if (dm_table_request_based(t)) {
-@@ -2457,12 +2465,6 @@ static struct dm_table *__bind(struct mapped_device *md, struct dm_table *t,
- 		t->mempools = NULL;
- 	}
- 
--	ret = dm_table_set_restrictions(t, md->queue, limits);
--	if (ret) {
--		old_map = ERR_PTR(ret);
--		goto out;
--	}
--
- 	old_map = rcu_dereference_protected(md->map, lockdep_is_held(&md->suspend_lock));
- 	rcu_assign_pointer(md->map, (void *)t);
- 	md->immutable_target_type = dm_table_get_immutable_target_type(t);
+ 	/* config types are set a boot time and never change */
+ 	if (WARN_ON_ONCE(drvdata->config_type != TMC_CONFIG_TYPE_ETB &&
+@@ -773,11 +772,11 @@ int tmc_read_unprepare_etb(struct tmc_drvdata *drvdata)
+ 		 * can't be NULL.
+ 		 */
+ 		memset(drvdata->buf, 0, drvdata->size);
+-		rc = __tmc_etb_enable_hw(drvdata);
+-		if (rc) {
+-			raw_spin_unlock_irqrestore(&drvdata->spinlock, flags);
+-			return rc;
+-		}
++		/*
++		 * Ignore failures to enable the TMC to make sure, we don't
++		 * leave the TMC in a "reading" state.
++		 */
++		__tmc_etb_enable_hw(drvdata);
+ 	} else {
+ 		/*
+ 		 * The ETB/ETF is not tracing and the buffer was just read.
 -- 
 2.39.5
 
