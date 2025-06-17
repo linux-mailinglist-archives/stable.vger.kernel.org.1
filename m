@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-154225-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-154556-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 22E64ADD8B9
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:58:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A97EADDA73
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 19:19:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9BB044A0B16
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:45:40 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6C4D15A129D
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:59:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C001F238C1E;
-	Tue, 17 Jun 2025 16:41:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2035D2FA62F;
+	Tue, 17 Jun 2025 16:59:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LN2NnnkE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iCyfQIGK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E44922DF80;
-	Tue, 17 Jun 2025 16:41:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D10A72FA624;
+	Tue, 17 Jun 2025 16:59:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750178507; cv=none; b=RNAU0YhHVC8eEuKEWbCd05jt4JEY42Wnn4oYLUg+EWVHSKbeCm7s4gFW6ESp+gUpljWxCfNixH45uFTHLtreiTWQoVoPwXt0kxEHcvkT5SceYQmEF6NcXlKqclb05b7HF7ZOZLi64inLrdKoocgD8SmkoLVB8SDYmG5+0yK4b4A=
+	t=1750179578; cv=none; b=pOBP/qHl+1misxCo8JysI63O06mlFFQG6u/uDc0ln4tDweInw2g8hX2ef6mwcxGXykdizSfOElfrdm9qN97a4iQaXdCif71/p6zHRlw9pWfIBh9vG1c26L4zEwTl88DQLbRy9UO64JwZ8lZi5vy18+Q5o1/rNE6gjNudO9tZUAQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750178507; c=relaxed/simple;
-	bh=yOyomGc2QEHR+Bcx77guj65/46dSSYDFXxv6fDL94Sw=;
+	s=arc-20240116; t=1750179578; c=relaxed/simple;
+	bh=ZJ7WnB75ZXawUh0yNUj+GOLV8xZbkLRdIxLm87ZJNIA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mZyCg7xsGs+UDxC6G/XEbbcQjZy/fJnpfNQkD5TSMs1sIU2lqeBa0w55+pnFRrYzFhnNbGVBGkOxxvIb20hU9lwO//Vxc9HByYOEvXb8qcARtDl6GzkvvyAbZzxrLcyJ1tLKbNTgvFkLsPrHAW2ShVEw2NwCwQy04gNxYCsjec0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LN2NnnkE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2D96C4CEE7;
-	Tue, 17 Jun 2025 16:41:46 +0000 (UTC)
+	 MIME-Version; b=ZQDNB5/wXzoTbRGldep16dn6f5EvIo5FxqM+dLTSfcUzsckUK6xWTO78g359qR5/W7sgt92Z48vXFY6PLNtoi2BUuQQWF5k2gXiDzem9pHPw2A6xeZJKrVnPVBkYKVUvI2lj1AcpvLtTQ7VYsh7hZBZnKM0b9YWzNs8Mj5+Z0Kg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iCyfQIGK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 403D1C4CEE3;
+	Tue, 17 Jun 2025 16:59:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750178507;
-	bh=yOyomGc2QEHR+Bcx77guj65/46dSSYDFXxv6fDL94Sw=;
+	s=korg; t=1750179578;
+	bh=ZJ7WnB75ZXawUh0yNUj+GOLV8xZbkLRdIxLm87ZJNIA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LN2NnnkEmZmH3BZ3kRDcUb9IMTOEQtv2cIzl4D7L6mSretnSgQT31YYMgHRLnYZHy
-	 nFcCK9q2i2w0fIiyYlwFYWw3WtiOLeQhtjc47K4jASwnccCjA9Ub9Y8O6eHnOkfaoh
-	 7whMY/p2dC/mllQN4ogNDEV7tuRn51Q9uBxor1r4=
+	b=iCyfQIGKxy9mGJ96SUFfnaerLYnlDCTCMcxD4oXyAKjT58DthYkdbKHIprZZQQtPq
+	 jj0uxnXgWuK+4Hsl7Tht5U95yNQGM7g8WZ5jQIPqRbRqYdR0XxYcVD5GxXFv7W3XkP
+	 a+ygUOWxq1DxxMSuGL5u7IUYkxbvqkWxdgXoDOdE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Oliver Neukum <oneukum@suse.com>,
-	Andrew Lunn <andrew@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>
-Subject: [PATCH 6.12 509/512] net: usb: aqc111: debug info before sanitation
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Tzvetomir Stoyanov <tz.stoyanov@gmail.com>,
+	syzbot+05d673e83ec640f0ced9@syzkaller.appspotmail.com,
+	Dmitry Antipov <dmantipov@yandex.ru>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>
+Subject: [PATCH 6.15 767/780] ring-buffer: Fix buffer locking in ring_buffer_subbuf_order_set()
 Date: Tue, 17 Jun 2025 17:27:55 +0200
-Message-ID: <20250617152440.239359738@linuxfoundation.org>
+Message-ID: <20250617152522.748685578@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
-References: <20250617152419.512865572@linuxfoundation.org>
+In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
+References: <20250617152451.485330293@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,56 +65,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Oliver Neukum <oneukum@suse.com>
+From: Dmitry Antipov <dmantipov@yandex.ru>
 
-commit d3faab9b5a6a0477d69c38bd11c43aa5e936f929 upstream.
+commit 40ee2afafc1d9fe3aa44a6fbe440d78a5c96a72e upstream.
 
-If we sanitize error returns, the debug statements need
-to come before that so that we don't lose information.
+Enlarge the critical section in ring_buffer_subbuf_order_set() to
+ensure that error handling takes place with per-buffer mutex held,
+thus preventing list corruption and other concurrency-related issues.
 
-Signed-off-by: Oliver Neukum <oneukum@suse.com>
-Fixes: 405b0d610745 ("net: usb: aqc111: fix error handling of usbnet read calls")
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Cc: stable@vger.kernel.org
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Cc: Tzvetomir Stoyanov <tz.stoyanov@gmail.com>
+Link: https://lore.kernel.org/20250606112242.1510605-1-dmantipov@yandex.ru
+Reported-by: syzbot+05d673e83ec640f0ced9@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=05d673e83ec640f0ced9
+Fixes: f9b94daa542a8 ("ring-buffer: Set new size of the ring buffer sub page")
+Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/usb/aqc111.c |    8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ kernel/trace/ring_buffer.c |    4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
---- a/drivers/net/usb/aqc111.c
-+++ b/drivers/net/usb/aqc111.c
-@@ -31,11 +31,11 @@ static int aqc111_read_cmd_nopm(struct u
- 				   USB_RECIP_DEVICE, value, index, data, size);
+--- a/kernel/trace/ring_buffer.c
++++ b/kernel/trace/ring_buffer.c
+@@ -6764,7 +6764,7 @@ int ring_buffer_subbuf_order_set(struct
+ 	old_size = buffer->subbuf_size;
  
- 	if (unlikely(ret < size)) {
--		ret = ret < 0 ? ret : -ENODATA;
--
- 		netdev_warn(dev->net,
- 			    "Failed to read(0x%x) reg index 0x%04x: %d\n",
- 			    cmd, index, ret);
-+
-+		ret = ret < 0 ? ret : -ENODATA;
+ 	/* prevent another thread from changing buffer sizes */
+-	mutex_lock(&buffer->mutex);
++	guard(mutex)(&buffer->mutex);
+ 	atomic_inc(&buffer->record_disabled);
+ 
+ 	/* Make sure all commits have finished */
+@@ -6869,7 +6869,6 @@ int ring_buffer_subbuf_order_set(struct
  	}
  
- 	return ret;
-@@ -50,11 +50,11 @@ static int aqc111_read_cmd(struct usbnet
- 			      USB_RECIP_DEVICE, value, index, data, size);
+ 	atomic_dec(&buffer->record_disabled);
+-	mutex_unlock(&buffer->mutex);
  
- 	if (unlikely(ret < size)) {
--		ret = ret < 0 ? ret : -ENODATA;
--
- 		netdev_warn(dev->net,
- 			    "Failed to read(0x%x) reg index 0x%04x: %d\n",
- 			    cmd, index, ret);
-+
-+		ret = ret < 0 ? ret : -ENODATA;
- 	}
+ 	return 0;
  
- 	return ret;
+@@ -6878,7 +6877,6 @@ error:
+ 	buffer->subbuf_size = old_size;
+ 
+ 	atomic_dec(&buffer->record_disabled);
+-	mutex_unlock(&buffer->mutex);
+ 
+ 	for_each_buffer_cpu(buffer, cpu) {
+ 		cpu_buffer = buffer->buffers[cpu];
 
 
 
