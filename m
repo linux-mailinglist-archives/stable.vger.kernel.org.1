@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-153066-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153069-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EB1B0ADD220
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 17:39:28 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3660AADD228
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 17:39:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7F22D17D44C
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 15:39:28 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 96CEB1899617
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 15:40:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6C952ECE87;
-	Tue, 17 Jun 2025 15:39:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 759782ECD20;
+	Tue, 17 Jun 2025 15:39:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Qg49S8Sb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RB6E/ZOq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 707A12ECD22;
-	Tue, 17 Jun 2025 15:39:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F8972EA487;
+	Tue, 17 Jun 2025 15:39:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750174756; cv=none; b=ibmA+dRhasS3tIoD3LPJu4zaLYvwTwRsbvORx7uTVIf8FHpEV9uWqL3Be1UkeLwhYQtEbro8SDXWMd49Hl6vkPP+X8y69J7Ax6TlLLmGKUIInVTgMltzdp7d+or6Bz/UIenTCFmJ2say7pHJIQRkx5+1yyFVSjFi9bvLd6Mp5UU=
+	t=1750174766; cv=none; b=YWXsEak1TIbY5YhMrxszXZ3rkHT7POUeRb/S76S9RZh0X4jkYvZGaKAgEodNj62kc+V5B7PzLrf1l3Vszp23upSqhq2SVNyXjRum6L3IYGwOQQfnK2jpqRNP+5k2oChe+jE0X5yJECK+vN49YVBy7UhLVLPWNozssyxEcnUrSdk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750174756; c=relaxed/simple;
-	bh=VAgO2QwwZjYSOrvvvaYBXnuHXD9WPu+z0CfuW4t9N7E=;
+	s=arc-20240116; t=1750174766; c=relaxed/simple;
+	bh=WNPdCjdWPn5SWLUYmbdx+kRaxlWW5+5umiwsd+0PJyo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=RTQddl/J0+9PX3EdJr1iU8X1BiXL8/45n+1O+ObZaPrSR77toQkIMPT82vyw4tKmPJB5FjCLgJnwPjviVffeQjlzQ3YvVxkZnwVbGvnQyRlNtLsmb5g/leleXhDS/iBeC7y9rB7DF5veAP7RmOE9qMAHAMs3AGNIGE5Mna7Azu0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Qg49S8Sb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BBB1EC4CEE3;
-	Tue, 17 Jun 2025 15:39:15 +0000 (UTC)
+	 MIME-Version; b=O062OjWEd/fh8YUwFprbxHXJ3qpnGU0x87ifRUdfHT/UE8pPPlDWfK9LZNUH/Hv9oFfCwaAUxhMpKD8NY7u/Smu8NZTJbT1kKpzpvX5TC/6EzXVkCHJ3dzNXAIRO+TScskZoKUosZcG4fyjfrmEdN3jMAjM7cSPVIVgJA1wYvYU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RB6E/ZOq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9288DC4CEE3;
+	Tue, 17 Jun 2025 15:39:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750174756;
-	bh=VAgO2QwwZjYSOrvvvaYBXnuHXD9WPu+z0CfuW4t9N7E=;
+	s=korg; t=1750174766;
+	bh=WNPdCjdWPn5SWLUYmbdx+kRaxlWW5+5umiwsd+0PJyo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Qg49S8SbjFEiCWv2o/gGl2ze9wCmLpHlA0BB0Es1dJsv9NzFCQhkcnMvgB/GsR3AU
-	 m3FkUJ9nnldke6OH5WOkfOKuKJZYRpzwiD6Kixb06GHERrRzSyfqn4EW9f0IoJGc0S
-	 ZVk/e7QZnT0f5ZTi+G4R8mN4GocKrMgOTNpymubM=
+	b=RB6E/ZOq5ojQAgVWd2qyZ/THuuqlPQVLSzUuH7AKwOkZ/XTYBOrBKWLYBkW3/4hVK
+	 MnGlipCYP5n4cVyzJ6zWQsvIPfyHti+IzyS9aC3RoEC2Esm+YmGozo6baewStsKa+G
+	 mVW1Jd6JfaAKlQmY2CLZ/1YTNE//RvxJXIRDD0CU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Martin=20Povi=C5=A1er?= <povik+lin@cutebit.org>,
-	James Calligeros <jcalligeros99@gmail.com>,
-	Mark Brown <broonie@kernel.org>,
+	Jaroslav Kysela <perex@perex.cz>,
+	Takashi Iwai <tiwai@suse.com>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 057/512] ASoC: apple: mca: Constrain channels according to TDM mask
-Date: Tue, 17 Jun 2025 17:20:23 +0200
-Message-ID: <20250617152421.854202707@linuxfoundation.org>
+Subject: [PATCH 6.12 058/512] ALSA: core: fix up bus match const issues.
+Date: Tue, 17 Jun 2025 17:20:24 +0200
+Message-ID: <20250617152421.897477594@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
 References: <20250617152419.512865572@linuxfoundation.org>
@@ -61,72 +61,122 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Martin Povišer <povik+lin@cutebit.org>
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
-[ Upstream commit e717c661e2d1a660e96c40b0fe9933e23a1d7747 ]
+[ Upstream commit 62f134ab190c5fd5c9f68fe638ad8e13bb8a4cb4 ]
 
-We don't (and can't) configure the hardware correctly if the number of
-channels exceeds the weight of the TDM mask. Report that constraint in
-startup of FE.
+In commit d69d80484598 ("driver core: have match() callback in struct
+bus_type take a const *"), the match bus callback was changed to have
+the driver be a const pointer.  Unfortunately that const attribute was
+thrown away when container_of() is called, which is not correct and was
+not caught by the compiler due to how container_of() is implemented.
+Fix this up by correctly preserving the const attribute of the driver
+passed to the bus match function which requires the hdac_driver match
+function to also take a const pointer for the driver structure.
 
-Fixes: 3df5d0d97289 ("ASoC: apple: mca: Start new platform driver")
-Signed-off-by: Martin Povišer <povik+lin@cutebit.org>
-Signed-off-by: James Calligeros <jcalligeros99@gmail.com>
-Link: https://patch.msgid.link/20250518-mca-fixes-v1-1-ee1015a695f6@gmail.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Cc: Jaroslav Kysela <perex@perex.cz>
+Cc: Takashi Iwai <tiwai@suse.com>
+Fixes: d69d80484598 ("driver core: have match() callback in struct bus_type take a const *")
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://patch.msgid.link/2025052204-hyphen-thermal-3e72@gregkh
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/apple/mca.c | 23 +++++++++++++++++++++++
- 1 file changed, 23 insertions(+)
+ include/sound/hdaudio.h  | 4 ++--
+ sound/core/seq_device.c  | 2 +-
+ sound/hda/hda_bus_type.c | 6 +++---
+ sound/pci/hda/hda_bind.c | 4 ++--
+ 4 files changed, 8 insertions(+), 8 deletions(-)
 
-diff --git a/sound/soc/apple/mca.c b/sound/soc/apple/mca.c
-index c9e7d40c47cc1..4a4ec1c09e132 100644
---- a/sound/soc/apple/mca.c
-+++ b/sound/soc/apple/mca.c
-@@ -464,6 +464,28 @@ static int mca_configure_serdes(struct mca_cluster *cl, int serdes_unit,
- 	return -EINVAL;
- }
+diff --git a/include/sound/hdaudio.h b/include/sound/hdaudio.h
+index b098ceadbe74b..9a70048adbc06 100644
+--- a/include/sound/hdaudio.h
++++ b/include/sound/hdaudio.h
+@@ -223,7 +223,7 @@ struct hdac_driver {
+ 	struct device_driver driver;
+ 	int type;
+ 	const struct hda_device_id *id_table;
+-	int (*match)(struct hdac_device *dev, struct hdac_driver *drv);
++	int (*match)(struct hdac_device *dev, const struct hdac_driver *drv);
+ 	void (*unsol_event)(struct hdac_device *dev, unsigned int event);
  
-+static int mca_fe_startup(struct snd_pcm_substream *substream,
-+			  struct snd_soc_dai *dai)
-+{
-+	struct mca_cluster *cl = mca_dai_to_cluster(dai);
-+	unsigned int mask, nchannels;
-+
-+	if (cl->tdm_slots) {
-+		if (substream->stream == SNDRV_PCM_STREAM_PLAYBACK)
-+			mask = cl->tdm_tx_mask;
-+		else
-+			mask = cl->tdm_rx_mask;
-+
-+		nchannels = hweight32(mask);
-+	} else {
-+		nchannels = 2;
-+	}
-+
-+	return snd_pcm_hw_constraint_minmax(substream->runtime,
-+					    SNDRV_PCM_HW_PARAM_CHANNELS,
-+					    1, nchannels);
-+}
-+
- static int mca_fe_set_tdm_slot(struct snd_soc_dai *dai, unsigned int tx_mask,
- 			       unsigned int rx_mask, int slots, int slot_width)
+ 	/* fields used by ext bus APIs */
+@@ -235,7 +235,7 @@ struct hdac_driver {
+ #define drv_to_hdac_driver(_drv) container_of(_drv, struct hdac_driver, driver)
+ 
+ const struct hda_device_id *
+-hdac_get_device_id(struct hdac_device *hdev, struct hdac_driver *drv);
++hdac_get_device_id(struct hdac_device *hdev, const struct hdac_driver *drv);
+ 
+ /*
+  * Bus verb operators
+diff --git a/sound/core/seq_device.c b/sound/core/seq_device.c
+index 4492be5d2317c..bac9f86037342 100644
+--- a/sound/core/seq_device.c
++++ b/sound/core/seq_device.c
+@@ -43,7 +43,7 @@ MODULE_LICENSE("GPL");
+ static int snd_seq_bus_match(struct device *dev, const struct device_driver *drv)
  {
-@@ -680,6 +702,7 @@ static int mca_fe_hw_params(struct snd_pcm_substream *substream,
- }
+ 	struct snd_seq_device *sdev = to_seq_dev(dev);
+-	struct snd_seq_driver *sdrv = to_seq_drv(drv);
++	const struct snd_seq_driver *sdrv = to_seq_drv(drv);
  
- static const struct snd_soc_dai_ops mca_fe_ops = {
-+	.startup = mca_fe_startup,
- 	.set_fmt = mca_fe_set_fmt,
- 	.set_bclk_ratio = mca_set_bclk_ratio,
- 	.set_tdm_slot = mca_fe_set_tdm_slot,
+ 	return strcmp(sdrv->id, sdev->id) == 0 &&
+ 		sdrv->argsize == sdev->argsize;
+diff --git a/sound/hda/hda_bus_type.c b/sound/hda/hda_bus_type.c
+index 7545ace7b0ee4..eb72a7af2e56e 100644
+--- a/sound/hda/hda_bus_type.c
++++ b/sound/hda/hda_bus_type.c
+@@ -21,7 +21,7 @@ MODULE_LICENSE("GPL");
+  * driver id_table and returns the matching device id entry.
+  */
+ const struct hda_device_id *
+-hdac_get_device_id(struct hdac_device *hdev, struct hdac_driver *drv)
++hdac_get_device_id(struct hdac_device *hdev, const struct hdac_driver *drv)
+ {
+ 	if (drv->id_table) {
+ 		const struct hda_device_id *id  = drv->id_table;
+@@ -38,7 +38,7 @@ hdac_get_device_id(struct hdac_device *hdev, struct hdac_driver *drv)
+ }
+ EXPORT_SYMBOL_GPL(hdac_get_device_id);
+ 
+-static int hdac_codec_match(struct hdac_device *dev, struct hdac_driver *drv)
++static int hdac_codec_match(struct hdac_device *dev, const struct hdac_driver *drv)
+ {
+ 	if (hdac_get_device_id(dev, drv))
+ 		return 1;
+@@ -49,7 +49,7 @@ static int hdac_codec_match(struct hdac_device *dev, struct hdac_driver *drv)
+ static int hda_bus_match(struct device *dev, const struct device_driver *drv)
+ {
+ 	struct hdac_device *hdev = dev_to_hdac_dev(dev);
+-	struct hdac_driver *hdrv = drv_to_hdac_driver(drv);
++	const struct hdac_driver *hdrv = drv_to_hdac_driver(drv);
+ 
+ 	if (hdev->type != hdrv->type)
+ 		return 0;
+diff --git a/sound/pci/hda/hda_bind.c b/sound/pci/hda/hda_bind.c
+index b7ca2a83fbb08..90633970b59f7 100644
+--- a/sound/pci/hda/hda_bind.c
++++ b/sound/pci/hda/hda_bind.c
+@@ -18,10 +18,10 @@
+ /*
+  * find a matching codec id
+  */
+-static int hda_codec_match(struct hdac_device *dev, struct hdac_driver *drv)
++static int hda_codec_match(struct hdac_device *dev, const struct hdac_driver *drv)
+ {
+ 	struct hda_codec *codec = container_of(dev, struct hda_codec, core);
+-	struct hda_codec_driver *driver =
++	const struct hda_codec_driver *driver =
+ 		container_of(drv, struct hda_codec_driver, core);
+ 	const struct hda_device_id *list;
+ 	/* check probe_id instead of vendor_id if set */
 -- 
 2.39.5
 
