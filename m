@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-152945-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-152947-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA717ADD194
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 17:32:40 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 349AEADD1B2
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 17:34:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D183A17C615
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 15:32:39 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5646D7AC33B
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 15:31:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 464CC23B633;
-	Tue, 17 Jun 2025 15:32:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A762293443;
+	Tue, 17 Jun 2025 15:32:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0kZRqyar"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gFt1XhBq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 033352DF3C9;
-	Tue, 17 Jun 2025 15:32:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E82B62E9730;
+	Tue, 17 Jun 2025 15:32:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750174349; cv=none; b=rrkuP3JHpEtQ+2gJtDT0YvxCnobx2iDCVLgezQ2MbKZ4AJl2LFOJLuRTMeXsxYgAydOie4DaxQ3JJL/yJ3jp9crdIkqOrBnjoS3QXjk4QqDO/MPbDOOACuk9BBL0nBMjudlIO422yfap1C2zYahYMZ58yyLIbroZSAQqZvAkdX4=
+	t=1750174356; cv=none; b=Z4/XJWOWcfaEAkEYMEP9F1RjHHLRJ2xWf8W119sVv+OUjXROJr6mdEjh2jSNBzlsWfhxv7r8MACAWazjeF5RK8+6MGsVm7l4mVolHM4dAoAjuzt2gg6HGkm4UmiEBUPRPhVy3wIZHp3nLhD1sM7qi8Dii9qyfMZ/7FgqOPEvZ80=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750174349; c=relaxed/simple;
-	bh=V/Udh08FOJYOZrZATy2l6UaqUu3RRobnvxwJJK9YkrE=;
+	s=arc-20240116; t=1750174356; c=relaxed/simple;
+	bh=MGe5bzZoUTGtYC8LXLuXo+WEtvXCzjS7EnjrQxiPp4M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=vEssJZ9pp3vnkPzh/nf7Zy7o1fOWJ+/F2NoX2k7o3Z8oNjy1bAy5vDDsr2Xf+v5xXjIytGj0c32GVDQEb5ieASlTmI6YGARnMR423v1H7ndkXZ3zQ6+0aVfidD6AVxOa5TPDzvPq9hmD3Waibw/CJRBU3Hx3X2p7MBeCBuKxOIg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0kZRqyar; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65919C4CEF0;
-	Tue, 17 Jun 2025 15:32:28 +0000 (UTC)
+	 MIME-Version:Content-Type; b=C1foH8AVSxT3Xe3mN6UlquehMxRtDWLJCB1INYMBYRwWiH9IYuIwk0UU5ald4BNAFXz8vE8RyVuPjh0gPNdWExNeMa8EbBIjy+QGORuMQFJlC4smNHTNovo+ORjPeLW5Ku18pI+ggaAevrg6CwElPi6mo2aTf0mDBoc/8Yvqqy0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gFt1XhBq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE71FC4CEF2;
+	Tue, 17 Jun 2025 15:32:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750174348;
-	bh=V/Udh08FOJYOZrZATy2l6UaqUu3RRobnvxwJJK9YkrE=;
+	s=korg; t=1750174355;
+	bh=MGe5bzZoUTGtYC8LXLuXo+WEtvXCzjS7EnjrQxiPp4M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0kZRqyarBHqppn/3jqVpdPwqlOcQllAcTqinY5TffDbcEMZDq3GKYE+r0HPNSM+hy
-	 VJPrmVIBggfmk6qFMHVEifVzBuFoPRsGSFq7s6A8whoiMP06twN7x1bOUn5r5tJG2u
-	 oQ3Z0/1LXPObH17Cmw5xzp7CQiv7cPFFwTYDT/P8=
+	b=gFt1XhBqlv7Ii550L4Jj9t3EvsuUWiDRaeLfHNpvel2J6OJjdcpXchYKz37bClGWq
+	 fWEXnOZRTDA4M6fmEio6qOmyaNfi4nFAMUmzrPioX+5iqLMRbqpg6IFC6rd5K5zRAG
+	 d0I7Gnhi+QVQpDaxXqvvQ7yQhRMFihoXK6iCP5QA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ian Forbes <ian.forbes@broadcom.com>,
-	Zack Rusin <zack.rusin@broadcom.com>,
+	=?UTF-8?q?Ma=C3=ADra=20Canal?= <mcanal@igalia.com>,
+	Maxime Ripard <mripard@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 055/356] drm/vmwgfx: Add seqno waiter for sync_files
-Date: Tue, 17 Jun 2025 17:22:50 +0200
-Message-ID: <20250617152340.449168079@linuxfoundation.org>
+Subject: [PATCH 6.6 056/356] drm/vc4: tests: Use return instead of assert
+Date: Tue, 17 Jun 2025 17:22:51 +0200
+Message-ID: <20250617152340.489467007@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250617152338.212798615@linuxfoundation.org>
 References: <20250617152338.212798615@linuxfoundation.org>
@@ -60,93 +60,115 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ian Forbes <ian.forbes@broadcom.com>
+From: Maxime Ripard <mripard@kernel.org>
 
-[ Upstream commit 0039a3b35b10d9c15d3d26320532ab56cc566750 ]
+[ Upstream commit 9e26a3740cc08ef8bcdc5e5d824792cd677affce ]
 
-Because sync_files are passive waiters they do not participate in
-the processing of fences like the traditional vmw_fence_wait IOCTL.
-If userspace exclusively uses sync_files for synchronization then
-nothing in the kernel actually processes fence updates as interrupts
-for fences are masked and ignored if the kernel does not indicate to the
-SVGA device that there are active waiters.
+The vc4_mock_atomic_add_output() and vc4_mock_atomic_del_output() assert
+that the functions they are calling didn't fail. Since some of them can
+return EDEADLK, we can't properly deal with it.
 
-This oversight results in a bug where the entire GUI can freeze waiting
-on a sync_file that will never be signalled as we've masked the interrupts
-to signal its completion. This bug is incredibly racy as any process which
-interacts with the fencing code via the 3D stack can process the stuck
-fences on behalf of the stuck process causing it to run again. Even a
-simple app like eglinfo is enough to resume the stuck process. Usually
-this bug is seen at a login screen like GDM because there are no other
-3D apps running.
+Since both functions are expected to return an int, and all caller check
+the return value, let's just properly propagate the errors when they
+occur.
 
-By adding a seqno waiter we re-enable interrupt based processing of the
-dma_fences associated with the sync_file which is signalled as part of a
-dma_fence_callback.
-
-This has likely been broken since it was initially added to the kernel in
-2017 but has gone unnoticed until mutter recently started using sync_files
-heavily over the course of 2024 as part of their explicit sync support.
-
-Fixes: c906965dee22 ("drm/vmwgfx: Add export fence to file descriptor support")
-Signed-off-by: Ian Forbes <ian.forbes@broadcom.com>
-Signed-off-by: Zack Rusin <zack.rusin@broadcom.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20250228200633.642417-1-ian.forbes@broadcom.com
+Fixes: f759f5b53f1c ("drm/vc4: tests: Introduce a mocking infrastructure")
+Fixes: 76ec18dc5afa ("drm/vc4: tests: Add unit test suite for the PV muxing")
+Reviewed-by: Maíra Canal <mcanal@igalia.com>
+Link: https://lore.kernel.org/r/20250403-drm-vc4-kunit-failures-v2-1-e09195cc8840@kernel.org
+Signed-off-by: Maxime Ripard <mripard@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/vmwgfx/vmwgfx_execbuf.c | 26 +++++++++++++++++++++++++
- 1 file changed, 26 insertions(+)
+ drivers/gpu/drm/vc4/tests/vc4_mock_output.c | 36 ++++++++++++++-------
+ 1 file changed, 24 insertions(+), 12 deletions(-)
 
-diff --git a/drivers/gpu/drm/vmwgfx/vmwgfx_execbuf.c b/drivers/gpu/drm/vmwgfx/vmwgfx_execbuf.c
-index 5fef0b31c1179..b129ce873af3f 100644
---- a/drivers/gpu/drm/vmwgfx/vmwgfx_execbuf.c
-+++ b/drivers/gpu/drm/vmwgfx/vmwgfx_execbuf.c
-@@ -4083,6 +4083,23 @@ static int vmw_execbuf_tie_context(struct vmw_private *dev_priv,
+diff --git a/drivers/gpu/drm/vc4/tests/vc4_mock_output.c b/drivers/gpu/drm/vc4/tests/vc4_mock_output.c
+index e70d7c3076acf..f0ddc223c1f83 100644
+--- a/drivers/gpu/drm/vc4/tests/vc4_mock_output.c
++++ b/drivers/gpu/drm/vc4/tests/vc4_mock_output.c
+@@ -75,24 +75,30 @@ int vc4_mock_atomic_add_output(struct kunit *test,
+ 	int ret;
+ 
+ 	encoder = vc4_find_encoder_by_type(drm, type);
+-	KUNIT_ASSERT_NOT_ERR_OR_NULL(test, encoder);
++	if (!encoder)
++		return -ENODEV;
+ 
+ 	crtc = vc4_find_crtc_for_encoder(test, drm, encoder);
+-	KUNIT_ASSERT_NOT_ERR_OR_NULL(test, crtc);
++	if (!crtc)
++		return -ENODEV;
+ 
+ 	output = encoder_to_vc4_dummy_output(encoder);
+ 	conn = &output->connector;
+ 	conn_state = drm_atomic_get_connector_state(state, conn);
+-	KUNIT_ASSERT_NOT_ERR_OR_NULL(test, conn_state);
++	if (IS_ERR(conn_state))
++		return PTR_ERR(conn_state);
+ 
+ 	ret = drm_atomic_set_crtc_for_connector(conn_state, crtc);
+-	KUNIT_EXPECT_EQ(test, ret, 0);
++	if (ret)
++		return ret;
+ 
+ 	crtc_state = drm_atomic_get_crtc_state(state, crtc);
+-	KUNIT_ASSERT_NOT_ERR_OR_NULL(test, crtc_state);
++	if (IS_ERR(crtc_state))
++		return PTR_ERR(crtc_state);
+ 
+ 	ret = drm_atomic_set_mode_for_crtc(crtc_state, &default_mode);
+-	KUNIT_EXPECT_EQ(test, ret, 0);
++	if (ret)
++		return ret;
+ 
+ 	crtc_state->active = true;
+ 
+@@ -113,26 +119,32 @@ int vc4_mock_atomic_del_output(struct kunit *test,
+ 	int ret;
+ 
+ 	encoder = vc4_find_encoder_by_type(drm, type);
+-	KUNIT_ASSERT_NOT_ERR_OR_NULL(test, encoder);
++	if (!encoder)
++		return -ENODEV;
+ 
+ 	crtc = vc4_find_crtc_for_encoder(test, drm, encoder);
+-	KUNIT_ASSERT_NOT_ERR_OR_NULL(test, crtc);
++	if (!crtc)
++		return -ENODEV;
+ 
+ 	crtc_state = drm_atomic_get_crtc_state(state, crtc);
+-	KUNIT_ASSERT_NOT_ERR_OR_NULL(test, crtc_state);
++	if (IS_ERR(crtc_state))
++		return PTR_ERR(crtc_state);
+ 
+ 	crtc_state->active = false;
+ 
+ 	ret = drm_atomic_set_mode_for_crtc(crtc_state, NULL);
+-	KUNIT_ASSERT_EQ(test, ret, 0);
++	if (ret)
++		return ret;
+ 
+ 	output = encoder_to_vc4_dummy_output(encoder);
+ 	conn = &output->connector;
+ 	conn_state = drm_atomic_get_connector_state(state, conn);
+-	KUNIT_ASSERT_NOT_ERR_OR_NULL(test, conn_state);
++	if (IS_ERR(conn_state))
++		return PTR_ERR(conn_state);
+ 
+ 	ret = drm_atomic_set_crtc_for_connector(conn_state, NULL);
+-	KUNIT_ASSERT_EQ(test, ret, 0);
++	if (ret)
++		return ret;
+ 
  	return 0;
  }
- 
-+/*
-+ * DMA fence callback to remove a seqno_waiter
-+ */
-+struct seqno_waiter_rm_context {
-+	struct dma_fence_cb base;
-+	struct vmw_private *dev_priv;
-+};
-+
-+static void seqno_waiter_rm_cb(struct dma_fence *f, struct dma_fence_cb *cb)
-+{
-+	struct seqno_waiter_rm_context *ctx =
-+		container_of(cb, struct seqno_waiter_rm_context, base);
-+
-+	vmw_seqno_waiter_remove(ctx->dev_priv);
-+	kfree(ctx);
-+}
-+
- int vmw_execbuf_process(struct drm_file *file_priv,
- 			struct vmw_private *dev_priv,
- 			void __user *user_commands, void *kernel_commands,
-@@ -4263,6 +4280,15 @@ int vmw_execbuf_process(struct drm_file *file_priv,
- 		} else {
- 			/* Link the fence with the FD created earlier */
- 			fd_install(out_fence_fd, sync_file->file);
-+			struct seqno_waiter_rm_context *ctx =
-+				kmalloc(sizeof(*ctx), GFP_KERNEL);
-+			ctx->dev_priv = dev_priv;
-+			vmw_seqno_waiter_add(dev_priv);
-+			if (dma_fence_add_callback(&fence->base, &ctx->base,
-+						   seqno_waiter_rm_cb) < 0) {
-+				vmw_seqno_waiter_remove(dev_priv);
-+				kfree(ctx);
-+			}
- 		}
- 	}
- 
 -- 
 2.39.5
 
