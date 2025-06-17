@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-154046-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-154048-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id ABB57ADD851
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:54:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 00CC1ADD89B
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:57:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C905B19E7459
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:38:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6459019E748F
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:38:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2ACCD2EF28E;
-	Tue, 17 Jun 2025 16:32:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2DDF52EF295;
+	Tue, 17 Jun 2025 16:32:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AQOnSHrf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s6bcce5g"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D63262EE602;
-	Tue, 17 Jun 2025 16:32:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC9FF2EE5EE;
+	Tue, 17 Jun 2025 16:32:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750177928; cv=none; b=AXjQo4j/O+dPouKKweLfbodeoGHxymokKKytOI7F7l1kinJo2H+4IG7L7Z56Un4ZldOEC9NFl8hM8HdhjazAjwxmxU0nwkFhWiuqP5Vtv488vbzKb4zvpsFqJRQIKvMFMk+sw49bQTFV0WSLEvz3JpeJKOBkEDWxqoUzeg99LXw=
+	t=1750177935; cv=none; b=k4iU3NkPJmuy78xhI2bLg+o0PF8hw6bwd8LZ5ooP+rQTb0aoxHNMwsE0S+7hwLQJH2O9eytydmoDmJWZG/y7Fvp85+6HpJxD15dSB6TIkMZZNhBiRMK4xyFu5kT6tDptjqgAmbEx/ud/2omElqI2IdeX1N5CEbtKq0v9NuKchFA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750177928; c=relaxed/simple;
-	bh=12S2OnAR81ngcj6IMFG6MgKweGS57sPPT5CuBf2vluQ=;
+	s=arc-20240116; t=1750177935; c=relaxed/simple;
+	bh=be7H0RCuekhgXndJzyeQWSm5E5MwYy8DLrLSZKNcvOc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ceuhUoYU+HEwoVz0uM1RvNa8lnfIexEzW1XGHjPGyAmyy2B/mC0YFws6wYJzxiAO85dQ/9ivwY1AP4IFs7NHv3aqxMut3jcZsh3BwmYlvWtdtrpULDvAHYNEO/qjjXRZNVjeLNorFOfvKNjvVFMWYsd8HITD1zMp3ZpYOQAzB5U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AQOnSHrf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60EAFC4CEE3;
-	Tue, 17 Jun 2025 16:32:08 +0000 (UTC)
+	 MIME-Version; b=ZzNcSDVbuESbWMCSXa+LQxmysrVxKRXBRxyKfceXfm+fsl2TQJD6zcewp0vyZnNEOqn2fzpaUK9dMmLxZ1YGJoL8RsE7FVUmeMkfT5zbmNLMawlm0C1Qcq5oBT4oQeo4trTEhCPYC9vUUdctobuR08GF3Boc/nasLyzu1ttSByE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s6bcce5g; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66F9FC4CEE3;
+	Tue, 17 Jun 2025 16:32:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750177928;
-	bh=12S2OnAR81ngcj6IMFG6MgKweGS57sPPT5CuBf2vluQ=;
+	s=korg; t=1750177934;
+	bh=be7H0RCuekhgXndJzyeQWSm5E5MwYy8DLrLSZKNcvOc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AQOnSHrfa39MCsDBungGNvi0q6zy6Z0Po4Fa9tPJeq8Ddv3FNiQ+Ltop4z8wWx0r4
-	 yxDYZZmwSe6LGldzDbx74RdjnbZmvZyW3D29gGaklP07GlCAfaT5vfE+xFzDD/7TDC
-	 p5XtgdzT3pVJW4beMnNMQXKq+nurplzyOThQyrSY=
+	b=s6bcce5gCqFXeQhGhC0Dw4WSq2gg2LBHTBBXnUi0CvOOmVRDNzaYTaP4wcR9ksJ9d
+	 QpQbGs3JcT19W8JXBQrKbNyan5iK+calAKnFRuCVN6O9xqvHsETCFRDIEoGyruy/H1
+	 pQCwylIjOFDaj2FUiuE5aYsxkBLPbTAxHxVze0L4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peter Robinson <pbrobinson@gmail.com>,
-	Heiko Stuebner <heiko@sntech.de>,
+	Andre Przywara <andre.przywara@arm.com>,
+	Chen-Yu Tsai <wens@csie.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 384/780] arm64: dts: rockchip: Add vcc-supply to SPI flash on rk3566-rock3c
-Date: Tue, 17 Jun 2025 17:21:32 +0200
-Message-ID: <20250617152507.099795188@linuxfoundation.org>
+Subject: [PATCH 6.15 385/780] arm64: dts: allwinner: a100: set maximum MMC frequency
+Date: Tue, 17 Jun 2025 17:21:33 +0200
+Message-ID: <20250617152507.138908685@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
 References: <20250617152451.485330293@linuxfoundation.org>
@@ -66,39 +66,53 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Peter Robinson <pbrobinson@gmail.com>
+From: Andre Przywara <andre.przywara@arm.com>
 
-[ Upstream commit a706a593cb19796f31d3a888423ef1a71885ae72 ]
+[ Upstream commit d8f10550448b03d3c5c6d9392119205c65ebfc89 ]
 
-As described in the radxa_rock_3c_v1400_schematic.pdf, the SPI Flash's
-VCC connector is connected to VCCIO_FLASH and according to the
-that same schematic, that belongs to the VCC_1V8 power source.
+The manual for the Allwinner A133 SoC mentions that the maximum
+supported MMC frequency is 150 MHz, for all of the MMC devices.
 
-This fixes the following warning:
+Describe that in the DT entry, to help drivers setting the right
+interface frequency.
 
-  spi-nor spi4.0: supply vcc not found, using dummy regulator
-
-Fixes: ee219017ddb5 ("arm64: dts: rockchip: Add Radxa ROCK 3C")
-Signed-off-by: Peter Robinson <pbrobinson@gmail.com>
-Link: https://lore.kernel.org/r/20250506195702.593044-1-pbrobinson@gmail.com
-Signed-off-by: Heiko Stuebner <heiko@sntech.de>
+Fixes: fcfbb8d9ec58 ("arm64: allwinner: a100: Add MMC related nodes")
+Signed-off-by: Andre Przywara <andre.przywara@arm.com>
+Link: https://patch.msgid.link/20250505202416.23753-1-andre.przywara@arm.com
+Signed-off-by: Chen-Yu Tsai <wens@csie.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/rockchip/rk3566-rock-3c.dts | 1 +
- 1 file changed, 1 insertion(+)
+ arch/arm64/boot/dts/allwinner/sun50i-a100.dtsi | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/arch/arm64/boot/dts/rockchip/rk3566-rock-3c.dts b/arch/arm64/boot/dts/rockchip/rk3566-rock-3c.dts
-index 53e71528e4c4c..6224d72813e59 100644
---- a/arch/arm64/boot/dts/rockchip/rk3566-rock-3c.dts
-+++ b/arch/arm64/boot/dts/rockchip/rk3566-rock-3c.dts
-@@ -636,6 +636,7 @@
- 		spi-max-frequency = <104000000>;
- 		spi-rx-bus-width = <4>;
- 		spi-tx-bus-width = <1>;
-+		vcc-supply = <&vcc_1v8>;
- 	};
- };
- 
+diff --git a/arch/arm64/boot/dts/allwinner/sun50i-a100.dtsi b/arch/arm64/boot/dts/allwinner/sun50i-a100.dtsi
+index f9f6fea03b744..bd366389b2389 100644
+--- a/arch/arm64/boot/dts/allwinner/sun50i-a100.dtsi
++++ b/arch/arm64/boot/dts/allwinner/sun50i-a100.dtsi
+@@ -252,6 +252,7 @@
+ 			interrupts = <GIC_SPI 39 IRQ_TYPE_LEVEL_HIGH>;
+ 			pinctrl-names = "default";
+ 			pinctrl-0 = <&mmc0_pins>;
++			max-frequency = <150000000>;
+ 			status = "disabled";
+ 			#address-cells = <1>;
+ 			#size-cells = <0>;
+@@ -267,6 +268,7 @@
+ 			interrupts = <GIC_SPI 40 IRQ_TYPE_LEVEL_HIGH>;
+ 			pinctrl-names = "default";
+ 			pinctrl-0 = <&mmc1_pins>;
++			max-frequency = <150000000>;
+ 			status = "disabled";
+ 			#address-cells = <1>;
+ 			#size-cells = <0>;
+@@ -282,6 +284,7 @@
+ 			interrupts = <GIC_SPI 41 IRQ_TYPE_LEVEL_HIGH>;
+ 			pinctrl-names = "default";
+ 			pinctrl-0 = <&mmc2_pins>;
++			max-frequency = <150000000>;
+ 			status = "disabled";
+ 			#address-cells = <1>;
+ 			#size-cells = <0>;
 -- 
 2.39.5
 
