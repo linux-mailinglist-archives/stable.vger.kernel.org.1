@@ -1,55 +1,53 @@
-Return-Path: <stable+bounces-153759-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153762-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 03DA2ADD636
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:31:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 92C62ADD664
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:32:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 938495A0AAA
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:22:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2945F5A0C32
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:22:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C22A8285057;
-	Tue, 17 Jun 2025 16:16:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0CE232E8E19;
+	Tue, 17 Jun 2025 16:16:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KWSa1z/h"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nMJz0D6L"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E0BD285049;
-	Tue, 17 Jun 2025 16:16:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD194285045;
+	Tue, 17 Jun 2025 16:16:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750177007; cv=none; b=nnGhmPT3KhG89dLo51ym/nc8ezy2zRBRrCoBz4kGhTk7c1Tr1NACwVhFetR1UOFETyK/Nk0iaO5EHZQ4LSrg/ZkL+o3RZActW75BpG5sMx3riSz3c+snHkX0cch67E23PJIDXBeUkIc5u6/FiseLXkQ3g1lWvGD2TuzkLQeo3UE=
+	t=1750177016; cv=none; b=JKbpSNphVNrGH/c0gznypYPvVpfSjhAUNFnWa9U5ZGXyvfB7ecgJHdDf6go79qd7PkeW/vyH8KNs3+7dwgAQ8zX67Zstw+XqRJNih5tJqkpY6/BiJ5Yyfwv+b+0psm5NtUvrLlhJDSGXOgZy6l/OlJWXO05LyTjUn5m9iWIv1cI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750177007; c=relaxed/simple;
-	bh=q0XLe6NPCUD4TBxWUVZiL/k89ipae0OVyXskYRjIl0o=;
+	s=arc-20240116; t=1750177016; c=relaxed/simple;
+	bh=m+ogHYYWoKCPbQxOQzZRuIB0tJKckvG3fMXBotDXYvQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MW7NplXxrRF98HPYqTjq/98Ld9iHFrB9F9DtqW9IhcQWey49XvIimykrY1c7depNEqScT0Gc4buos/4HW25IfW82XOMpFoBxeQeCPIIZQHOVcm8A3D9fwKE2Sy4KRn0vWrEwrOvO5XsbWAM+JFz0vtf5LcocruSdOQj0h/jSJsQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KWSa1z/h; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB46EC4CEE3;
-	Tue, 17 Jun 2025 16:16:46 +0000 (UTC)
+	 MIME-Version:Content-Type; b=nIJsMnkgHfqniMAsdDQGyDWxDgcz2ZJhosxT+s40uVuzzaENsv0JFmHD/Rb/7QS+sPEPTf3S7dxMNofL+FqZ9C2zlApOeKRGPRjW87l7RiITUgW62uflNVKOersIRLBx6zD/yPkQWJ1QQ22ZToPH/GCaLLJQ2FrxqRbWbyH1DX8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nMJz0D6L; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2DE82C4CEE3;
+	Tue, 17 Jun 2025 16:16:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750177007;
-	bh=q0XLe6NPCUD4TBxWUVZiL/k89ipae0OVyXskYRjIl0o=;
+	s=korg; t=1750177016;
+	bh=m+ogHYYWoKCPbQxOQzZRuIB0tJKckvG3fMXBotDXYvQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KWSa1z/hn8BX5iW5kEY+HfTJG+CxMPebMaVpbTdjkrAU8klIV8U9/5Unlf3mgMByO
-	 N+Jb2bKwDi1jIKrruNPU5ORuQcnAHnu+/i/Aw9Wsb79znEOk4EMLURHT8AgY6WeLeN
-	 TcSRxViymISH+87BCenziRaCDIAmVRzoOCQJyYO4=
+	b=nMJz0D6LqOSifZhr7D+7SvOcmrBCLG/RsoDbhs6x8inUHkPEj+YvE6sbftoX3YmuN
+	 kp1umKwl4flfkiqWQ1c0HhexEeDWozKRm6G8iSJRQyTQHGa0KR0OYQ5vYOcyfBKU68
+	 zS0RDj97Eg+OpVQ1VcjNheUeEiRkf4JPlt68jPDY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Henry Martin <bsdhenrymartin@gmail.com>,
-	Dave Stevenson <dave.stevenson@raspberrypi.com>,
-	Stefan Wahren <wahrenst@gmx.net>,
+	Richard Fitzgerald <rf@opensource.cirrus.com>,
 	Stephen Boyd <sboyd@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 248/780] clk: bcm: rpi: Add NULL check in raspberrypi_clk_register()
-Date: Tue, 17 Jun 2025 17:19:16 +0200
-Message-ID: <20250617152501.550078246@linuxfoundation.org>
+Subject: [PATCH 6.15 249/780] clk: test: Forward-declare struct of_phandle_args in kunit/clk.h
+Date: Tue, 17 Jun 2025 17:19:17 +0200
+Message-ID: <20250617152501.590997599@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
 References: <20250617152451.485330293@linuxfoundation.org>
@@ -62,46 +60,46 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Henry Martin <bsdhenrymartin@gmail.com>
+From: Richard Fitzgerald <rf@opensource.cirrus.com>
 
-[ Upstream commit 73c46d9a93d071ca69858dea3f569111b03e549e ]
+[ Upstream commit 7a0c1872ee7db25d711ac29a55f36844a7108308 ]
 
-devm_kasprintf() returns NULL when memory allocation fails. Currently,
-raspberrypi_clk_register() does not check for this case, which results
-in a NULL pointer dereference.
+Add a forward-declare of struct of_phandle_args to prevent the compiler
+warning:
 
-Add NULL check after devm_kasprintf() to prevent this issue.
+../include/kunit/clk.h:29:63: warning: ‘struct of_phandle_args’ declared
+inside parameter list will not be visible outside of this definition or
+declaration
+   struct clk_hw *(*get)(struct of_phandle_args *clkspec, void *data),
 
-Fixes: 93d2725affd6 ("clk: bcm: rpi: Discover the firmware clocks")
-Signed-off-by: Henry Martin <bsdhenrymartin@gmail.com>
-Reviewed-by: Dave Stevenson <dave.stevenson@raspberrypi.com>
-Link: https://lore.kernel.org/r/20250402020513.42628-1-bsdhenrymartin@gmail.com
-Reviewed-by: Stefan Wahren <wahrenst@gmx.net>
+Signed-off-by: Richard Fitzgerald <rf@opensource.cirrus.com>
+Link: https://lore.kernel.org/r/20250327125214.82598-1-rf@opensource.cirrus.com
+Fixes: a82fcb16d977 ("clk: test: Add test managed of_clk_add_hw_provider()")
 Signed-off-by: Stephen Boyd <sboyd@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/bcm/clk-raspberrypi.c | 2 ++
- 1 file changed, 2 insertions(+)
+ include/kunit/clk.h | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/clk/bcm/clk-raspberrypi.c b/drivers/clk/bcm/clk-raspberrypi.c
-index 0e1fe3759530a..720acc10f8aa4 100644
---- a/drivers/clk/bcm/clk-raspberrypi.c
-+++ b/drivers/clk/bcm/clk-raspberrypi.c
-@@ -286,6 +286,8 @@ static struct clk_hw *raspberrypi_clk_register(struct raspberrypi_clk *rpi,
- 	init.name = devm_kasprintf(rpi->dev, GFP_KERNEL,
- 				   "fw-clk-%s",
- 				   rpi_firmware_clk_names[id]);
-+	if (!init.name)
-+		return ERR_PTR(-ENOMEM);
- 	init.ops = &raspberrypi_firmware_clk_ops;
- 	init.flags = CLK_GET_RATE_NOCACHE;
+diff --git a/include/kunit/clk.h b/include/kunit/clk.h
+index 0afae7688157b..f226044cc78d1 100644
+--- a/include/kunit/clk.h
++++ b/include/kunit/clk.h
+@@ -6,6 +6,7 @@ struct clk;
+ struct clk_hw;
+ struct device;
+ struct device_node;
++struct of_phandle_args;
+ struct kunit;
  
+ struct clk *
 -- 
 2.39.5
 
