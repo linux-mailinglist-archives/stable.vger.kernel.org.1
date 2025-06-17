@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-154232-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-154549-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1636FADD9A4
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 19:08:26 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 94658ADD97F
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 19:06:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7AD494A3C83
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:46:09 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2AA8419455EA
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:59:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D7EBC285079;
-	Tue, 17 Jun 2025 16:42:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 18C532FA626;
+	Tue, 17 Jun 2025 16:59:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UrT/zkOt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wDPPMZm/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93A102FA655;
-	Tue, 17 Jun 2025 16:42:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C94EA2FA62F;
+	Tue, 17 Jun 2025 16:59:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750178528; cv=none; b=noAFlXreMqnPgYrAXnihZX4A8vlXmwRI5zDha9snjYkwULwl/f1XlSdNM0cWu5XXIVmW2ceb/PUI5SiTWgeLJ8ezjbPzdPnpbqDj7YI7yn9WVa392QQyTmYW/dIZvZFvw6uzWRukk6Rs7D2XqULE/e+AV4eZaQOSnowSFkDy7+4=
+	t=1750179556; cv=none; b=g1ArYyUKrqsNdimviwCuRX67ARS+qawGf8Z6AS2w+bvcwG83w7YH7b67Bfe1RgiHdR2RiO15+yZhc1vVVfPdnFHVhuM7Lmkwc02Lf2IU1jVlMwFCS6HRJLVFXcnm9DlTNL9BDAgw6CFz1uP3j+T+cPoRsLp+4gFNYHoBNcnJTo4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750178528; c=relaxed/simple;
-	bh=d0vs/E6wG2HA0LCACr91+W1xLTyBJdg1kXgbqfTHFdE=;
+	s=arc-20240116; t=1750179556; c=relaxed/simple;
+	bh=RF8uh+fODg9oQeENzeBpepOzoTeP1tUAuGzCW0pJ+uA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GF5CkxK8bBBmPN8gCKxTfCx9KcFuZS9Ozvfrzo4Z16sgZgAR+Evz1KehDArJQ9+t0/HD7M9/7wLiskF+FJUtra1ThMceSIz/49GhJhItenGKCIbppg9tA7IKyIokuuGHECvBLiCFCZRQFoummTSi5xxGldOFEzjYK/ZXJxqsbwQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UrT/zkOt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 215F8C4CEE3;
-	Tue, 17 Jun 2025 16:42:07 +0000 (UTC)
+	 MIME-Version; b=hJfYcCZy2pe1dWkuCuYrfKv82yCrfiFsbdk8znZlU3QmJT19oxeZpdK7IfVSyvaKlkEFN7UCpnRBn58ZXVDiigStEQilR9lGXNdUkGFY/nhX3Tg5HzPAKn/heLuxcCwnQlqedp2aXYS58q2fFvUaNQ3pm3olKDe5By7cyio3l48=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wDPPMZm/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF349C4CEE3;
+	Tue, 17 Jun 2025 16:59:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750178528;
-	bh=d0vs/E6wG2HA0LCACr91+W1xLTyBJdg1kXgbqfTHFdE=;
+	s=korg; t=1750179555;
+	bh=RF8uh+fODg9oQeENzeBpepOzoTeP1tUAuGzCW0pJ+uA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UrT/zkOtLvN7MGju4TC/UvdxJDUc74YpdrnQEYDMrV6H354UYNzErc2tBGqy7Zyp1
-	 MH4/HSuWii+XucxLccpy2aLqHKLEo/TIoy0KeA1nuA8fmh9xqU5pmrR2V8YkjgDHSc
-	 X2SDFi/dHu/FpnssVr/DcfN4RmB/MdbFpw3k23yU=
+	b=wDPPMZm/ZnfmGZXxPX3i6m+Kz1188o9UM3C1qNZkSJXpV1iXnPmJobod9qWR0Iisv
+	 UNc2SZM8STf02YvoQAHTv98+rqysN14PBDJ2hTVEXGMiaKZWyaE/AKsKogsxwrcQ82
+	 iEcXH8kby7EvHvfHANkWVQWidZ6XAZ3Yc8hCez9I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	I Hsin Cheng <richard120310@gmail.com>,
-	Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
-	Neil Armstrong <neil.armstrong@linaro.org>
-Subject: [PATCH 6.12 512/512] drm/meson: Use 1000ULL when operating with mode->clock
+	stable@kernel.org,
+	Stefano Stabellini <stefano.stabellini@amd.com>,
+	Juergen Gross <jgross@suse.com>
+Subject: [PATCH 6.15 770/780] xen/arm: call uaccess_ttbr0_enable for dm_op hypercall
 Date: Tue, 17 Jun 2025 17:27:58 +0200
-Message-ID: <20250617152440.359064899@linuxfoundation.org>
+Message-ID: <20250617152522.871933865@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
-References: <20250617152419.512865572@linuxfoundation.org>
+In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
+References: <20250617152451.485330293@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,49 +62,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: I Hsin Cheng <richard120310@gmail.com>
+From: Stefano Stabellini <stefano.stabellini@amd.com>
 
-commit eb0851e14432f3b87c77b704c835ac376deda03a upstream.
+commit 7f9bbc1140ff8796230bc2634055763e271fd692 upstream.
 
-Coverity scan reported the usage of "mode->clock * 1000" may lead to
-integer overflow. Use "1000ULL" instead of "1000"
-when utilizing it to avoid potential integer overflow issue.
+dm_op hypercalls might come from userspace and pass memory addresses as
+parameters. The memory addresses typically correspond to buffers
+allocated in userspace to hold extra hypercall parameters.
 
-Link: https://scan5.scan.coverity.com/#/project-view/10074/10063?selectedIssue=1646759
-Signed-off-by: I Hsin Cheng <richard120310@gmail.com>
-Reviewed-by: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
-Fixes: 1017560164b6 ("drm/meson: use unsigned long long / Hz for frequency types")
-Link: https://lore.kernel.org/r/20250505184338.678540-1-richard120310@gmail.com
-Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
+On ARM, when CONFIG_ARM64_SW_TTBR0_PAN is enabled, they might not be
+accessible by Xen, as a result ioreq hypercalls might fail. See the
+existing comment in arch/arm64/xen/hypercall.S regarding privcmd_call
+for reference.
+
+For privcmd_call, Linux calls uaccess_ttbr0_enable before issuing the
+hypercall thanks to commit 9cf09d68b89a. We need to do the same for
+dm_op. This resolves the problem.
+
+Cc: stable@kernel.org
+Fixes: 9cf09d68b89a ("arm64: xen: Enable user access before a privcmd hvc call")
+Signed-off-by: Stefano Stabellini <stefano.stabellini@amd.com>
+Reviewed-by: Juergen Gross <jgross@suse.com>
+Message-ID: <alpine.DEB.2.22.394.2505121446370.8380@ubuntu-linux-20-04-desktop>
+Signed-off-by: Juergen Gross <jgross@suse.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/meson/meson_encoder_hdmi.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/arm64/xen/hypercall.S |   21 ++++++++++++++++++++-
+ 1 file changed, 20 insertions(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/meson/meson_encoder_hdmi.c
-+++ b/drivers/gpu/drm/meson/meson_encoder_hdmi.c
-@@ -75,7 +75,7 @@ static void meson_encoder_hdmi_set_vclk(
- 	unsigned long long venc_freq;
- 	unsigned long long hdmi_freq;
+--- a/arch/arm64/xen/hypercall.S
++++ b/arch/arm64/xen/hypercall.S
+@@ -83,7 +83,26 @@ HYPERCALL3(vcpu_op);
+ HYPERCALL1(platform_op_raw);
+ HYPERCALL2(multicall);
+ HYPERCALL2(vm_assist);
+-HYPERCALL3(dm_op);
++
++SYM_FUNC_START(HYPERVISOR_dm_op)
++	mov x16, #__HYPERVISOR_dm_op;	\
++	/*
++	 * dm_op hypercalls are issued by the userspace. The kernel needs to
++	 * enable access to TTBR0_EL1 as the hypervisor would issue stage 1
++	 * translations to user memory via AT instructions. Since AT
++	 * instructions are not affected by the PAN bit (ARMv8.1), we only
++	 * need the explicit uaccess_enable/disable if the TTBR0 PAN emulation
++	 * is enabled (it implies that hardware UAO and PAN disabled).
++	 */
++	uaccess_ttbr0_enable x6, x7, x8
++	hvc XEN_IMM
++
++	/*
++	 * Disable userspace access from kernel once the hyp call completed.
++	 */
++	uaccess_ttbr0_disable x6, x7
++	ret
++SYM_FUNC_END(HYPERVISOR_dm_op);
  
--	vclk_freq = mode->clock * 1000;
-+	vclk_freq = mode->clock * 1000ULL;
- 
- 	/* For 420, pixel clock is half unlike venc clock */
- 	if (encoder_hdmi->output_bus_fmt == MEDIA_BUS_FMT_UYYVYY8_0_5X24)
-@@ -123,7 +123,7 @@ static enum drm_mode_status meson_encode
- 	struct meson_encoder_hdmi *encoder_hdmi = bridge_to_meson_encoder_hdmi(bridge);
- 	struct meson_drm *priv = encoder_hdmi->priv;
- 	bool is_hdmi2_sink = display_info->hdmi.scdc.supported;
--	unsigned long long clock = mode->clock * 1000;
-+	unsigned long long clock = mode->clock * 1000ULL;
- 	unsigned long long phy_freq;
- 	unsigned long long vclk_freq;
- 	unsigned long long venc_freq;
+ SYM_FUNC_START(privcmd_call)
+ 	mov x16, x0
 
 
 
