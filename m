@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-154396-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153362-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE530ADD9BC
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 19:08:50 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4DBE5ADD474
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:10:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2FEB14A39BC
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:53:03 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D1BFE19430DF
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 15:59:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D04E2E8DE4;
-	Tue, 17 Jun 2025 16:51:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 11BAD2F364F;
+	Tue, 17 Jun 2025 15:55:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KudyiaL0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vS3bR4hb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 488B52FA630;
-	Tue, 17 Jun 2025 16:50:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1BFD2EA146;
+	Tue, 17 Jun 2025 15:55:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750179060; cv=none; b=U9qIC0dRm+bTNG6BeNCh6nxS3WjIR4NdOnvbVYtGXSUYlucPyj86+L8du/mRNcHV+9I787kqIejLCsKlfSZCFphFuzVbyPnbPci1dsJx6YPJmeOINH9r84eL1+y7XMn/bSi8FQmqmjmJEkigSg5Qz9iy2z/BA1aiitYtY0t1G/k=
+	t=1750175704; cv=none; b=XmWbfBdX06Tf40ErKAJuaD9XHb9EuNAiGYTua+ui/jY2I52QizFXDGNTEon+8HPDO5C49iiFaWhY1Y+L9Ho+2l2daaL8J7Dhs9WnAIMBRdkPHLVZY9mZl56sRCItKwtmRkNwwiFNM1skZETkX0qc8hCCEsZwPcygK0ggr3poUAY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750179060; c=relaxed/simple;
-	bh=TgAZA4p2sscExsOAZ/Uto+P3F3+oY4qp8IDgBauZl7U=;
+	s=arc-20240116; t=1750175704; c=relaxed/simple;
+	bh=+2OcayYHWuO7Q1/occiu4fq5RMnT8ADu1o/zhfdBqfk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YLvh+kEqTzMq+6sL8kFLNL5MsPKFrOOUHX5X/iyfWOIvPCA4gduK5a7BYQfT5D/Gr1Sz41+9Rh9zTm3M4sHSuSrZ+NBJ9UCqh8lpX/Hw7NIgwC8RUaqtN5tJ2LwjKnnDz0q/1OQnOX2oBJAwCeGLF4TX9ThERW4zd4e4TcOGVpc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KudyiaL0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60834C4CEE3;
-	Tue, 17 Jun 2025 16:50:59 +0000 (UTC)
+	 MIME-Version; b=dA0lATdzadVSFsDwIP/Xg3QiehbwgYEjOO3Y3ww2Wdh9BR+Iv8TNkBGV+jle1bBvH7Lst2xhG2uFfk9fhStnGHE5WcmBir5fKGrV9P9yEsmCz6t+xb2fR5Gh0CIGmPyYcoYCAHL6OBsPA+QdzHbr/3H4oy9q8RtxAtz9tpfoZrQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vS3bR4hb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C5F8C4CEE3;
+	Tue, 17 Jun 2025 15:55:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750179059;
-	bh=TgAZA4p2sscExsOAZ/Uto+P3F3+oY4qp8IDgBauZl7U=;
+	s=korg; t=1750175704;
+	bh=+2OcayYHWuO7Q1/occiu4fq5RMnT8ADu1o/zhfdBqfk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KudyiaL0n+NfwbvTAIwRttCuTbdlyOEa3g1GrEy63WANMqsC6B+JEQ4tUfuTrac8B
-	 duAWtvw3NC8zjOymeSykBHFZjUWwDwiML12N6i7ZB386opzl+26ZjHk5v5pgyE1ZU0
-	 A0kQzQni40Ig9JpGQVSfwF6OEhM4OgvujBHuGKAA=
+	b=vS3bR4hbxhBW0Fkq3XKmhV1toDNUEynEOvbfnTxm4iuLN+tk5l9vG5hZTNw8BrumC
+	 F0gJUjzCK+dCU7bZ1Vfz5FHtOHxrqQH2akSV3yuKX6QVH0Evk6/5NTjzeZ7818z3Fe
+	 IzHqgzHqDzMrCE33wLoBXhkSc5MgH+biUXa669xw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yafang Shao <laoar.shao@gmail.com>,
-	Shaun Brady <brady.1345@gmail.com>,
-	Florian Westphal <fw@strlen.de>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Henry Martin <bsdhenrymartin@gmail.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	"Daniel Thompson (RISCstar)" <danielt@kernel.org>,
+	Lee Jones <lee@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 608/780] netfilter: nf_nat: also check reverse tuple to obtain clashing entry
-Date: Tue, 17 Jun 2025 17:25:16 +0200
-Message-ID: <20250617152516.241953301@linuxfoundation.org>
+Subject: [PATCH 6.6 202/356] backlight: pm8941: Add NULL check in wled_configure()
+Date: Tue, 17 Jun 2025 17:25:17 +0200
+Message-ID: <20250617152346.341651191@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
-References: <20250617152451.485330293@linuxfoundation.org>
+In-Reply-To: <20250617152338.212798615@linuxfoundation.org>
+References: <20250617152338.212798615@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,105 +64,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Florian Westphal <fw@strlen.de>
+From: Henry Martin <bsdhenrymartin@gmail.com>
 
-[ Upstream commit 50d9ce9679dd50df2dc51ada717fa875bc248fad ]
+[ Upstream commit e12d3e1624a02706cdd3628bbf5668827214fa33 ]
 
-The logic added in the blamed commit was supposed to only omit nat source
-port allocation if neither the existing nor the new entry are subject to
-NAT.
+devm_kasprintf() returns NULL when memory allocation fails. Currently,
+wled_configure() does not check for this case, which results in a NULL
+pointer dereference.
 
-However, its not enough to lookup the conntrack based on the proposed
-tuple, we must also check the reverse direction.
+Add NULL check after devm_kasprintf() to prevent this issue.
 
-Otherwise there are esoteric cases where the collision is in the reverse
-direction because that colliding connection has a port rewrite, but the
-new entry doesn't.  In this case, we only check the new entry and then
-erronously conclude that no clash exists anymore.
-
- The existing (udp) tuple is:
-  a:p -> b:P, with nat translation to s:P, i.e. pure daddr rewrite,
-  reverse tuple in conntrack table is s:P -> a:p.
-
-When another UDP packet is sent directly to s, i.e. a:p->s:P, this is
-correctly detected as a colliding entry: tuple is taken by existing reply
-tuple in reverse direction.
-
-But the colliding conntrack is only searched for with unreversed
-direction, and we can't find such entry matching a:p->s:P.
-
-The incorrect conclusion is that the clashing entry has timed out and
-that no port address translation is required.
-
-Such conntrack will then be discarded at nf_confirm time because the
-proposed reverse direction clashes with an existing mapping in the
-conntrack table.
-
-Search for the reverse tuple too, this will then check the NAT bits of
-the colliding entry and triggers port reallocation.
-
-Followp patch extends nft_nat.sh selftest to cover this scenario.
-
-The IPS_SEQ_ADJUST change is also a bug fix:
-Instead of checking for SEQ_ADJ this tested for SEEN_REPLY and ASSURED
-by accident -- _BIT is only for use with the test_bit() API.
-
-This bug has little consequence in practice, because the sequence number
-adjustments are only useful for TCP which doesn't support clash resolution.
-
-The existing test case (conntrack_reverse_clash.sh) exercise a race
-condition path (parallel conntrack creation on different CPUs), so
-the colliding entries have neither SEEN_REPLY nor ASSURED set.
-
-Thanks to Yafang Shao and Shaun Brady for an initial investigation
-of this bug.
-
-Fixes: d8f84a9bc7c4 ("netfilter: nf_nat: don't try nat source port reallocation for reverse dir clash")
-Closes: https://bugzilla.netfilter.org/show_bug.cgi?id=1795
-Reported-by: Yafang Shao <laoar.shao@gmail.com>
-Reported-by: Shaun Brady <brady.1345@gmail.com>
-Signed-off-by: Florian Westphal <fw@strlen.de>
-Tested-by: Yafang Shao <laoar.shao@gmail.com>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Fixes: f86b77583d88 ("backlight: pm8941: Convert to using %pOFn instead of device_node.name")
+Signed-off-by: Henry Martin <bsdhenrymartin@gmail.com>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Reviewed-by: "Daniel Thompson (RISCstar)" <danielt@kernel.org>
+Link: https://lore.kernel.org/r/20250401091647.22784-1-bsdhenrymartin@gmail.com
+Signed-off-by: Lee Jones <lee@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nf_nat_core.c | 12 +++++++++---
- 1 file changed, 9 insertions(+), 3 deletions(-)
+ drivers/video/backlight/qcom-wled.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/net/netfilter/nf_nat_core.c b/net/netfilter/nf_nat_core.c
-index aad84aabd7f1d..f391cd267922b 100644
---- a/net/netfilter/nf_nat_core.c
-+++ b/net/netfilter/nf_nat_core.c
-@@ -248,7 +248,7 @@ static noinline bool
- nf_nat_used_tuple_new(const struct nf_conntrack_tuple *tuple,
- 		      const struct nf_conn *ignored_ct)
- {
--	static const unsigned long uses_nat = IPS_NAT_MASK | IPS_SEQ_ADJUST_BIT;
-+	static const unsigned long uses_nat = IPS_NAT_MASK | IPS_SEQ_ADJUST;
- 	const struct nf_conntrack_tuple_hash *thash;
- 	const struct nf_conntrack_zone *zone;
- 	struct nf_conn *ct;
-@@ -287,8 +287,14 @@ nf_nat_used_tuple_new(const struct nf_conntrack_tuple *tuple,
- 	zone = nf_ct_zone(ignored_ct);
+diff --git a/drivers/video/backlight/qcom-wled.c b/drivers/video/backlight/qcom-wled.c
+index 10129095a4c17..b19e5f73de8bb 100644
+--- a/drivers/video/backlight/qcom-wled.c
++++ b/drivers/video/backlight/qcom-wled.c
+@@ -1406,9 +1406,11 @@ static int wled_configure(struct wled *wled)
+ 	wled->ctrl_addr = be32_to_cpu(*prop_addr);
  
- 	thash = nf_conntrack_find_get(net, zone, tuple);
--	if (unlikely(!thash)) /* clashing entry went away */
--		return false;
-+	if (unlikely(!thash)) {
-+		struct nf_conntrack_tuple reply;
-+
-+		nf_ct_invert_tuple(&reply, tuple);
-+		thash = nf_conntrack_find_get(net, zone, &reply);
-+		if (!thash) /* clashing entry went away */
-+			return false;
+ 	rc = of_property_read_string(dev->of_node, "label", &wled->name);
+-	if (rc)
++	if (rc) {
+ 		wled->name = devm_kasprintf(dev, GFP_KERNEL, "%pOFn", dev->of_node);
+-
++		if (!wled->name)
++			return -ENOMEM;
 +	}
- 
- 	ct = nf_ct_tuplehash_to_ctrack(thash);
- 
+ 	switch (wled->version) {
+ 	case 3:
+ 		u32_opts = wled3_opts;
 -- 
 2.39.5
 
