@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-153649-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-154501-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 13FF8ADD5E4
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:27:44 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 31646ADDA6B
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 19:18:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9F2F917BD91
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:16:17 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4D19C5A5FB7
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:56:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA5592EA150;
-	Tue, 17 Jun 2025 16:10:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0A022FA630;
+	Tue, 17 Jun 2025 16:56:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jn9U6E3Q"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jriVOzIa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B7532EA14A;
-	Tue, 17 Jun 2025 16:10:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACB5C2FA625;
+	Tue, 17 Jun 2025 16:56:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750176644; cv=none; b=Zryo7ZjxCQa4JWEZjz2eSmfiNckZLGIt7Ee6MShe5mKYkaAtcD7GTsOtG+nlsrfxeKdOqF9FIZwgzZ4XvSaCPMTdOh8xGAKCq43X/eXugBGbiwYdVhSNCUTK5LWduW157XIE9YQzdJt3eR3PXpXYfDXffrlgMn2eGnoH6I7eT8w=
+	t=1750179410; cv=none; b=dr3symmVdojcsrdfepGf4XHR0xEV5Q9Sx+0DskPloveDygVGe4I89LR45ykyqL94xeFZXoaIMTqq2JmOGf5goASPsIdFAcdTwBiMPYyN1FLPMDaBTJA0/aH8y6H7r0dAzqfmf6bMk5gzITGjAGelB7f39OJbC/jMdnG11MdXnoY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750176644; c=relaxed/simple;
-	bh=yjATzQho/edp3ESZXr3I51c98EwEYVR7IGnO65i8ARo=;
+	s=arc-20240116; t=1750179410; c=relaxed/simple;
+	bh=0LanXHr3ZNwf/oa/Ot00+eRpSwq/3gMUqgxvc8Ks9X8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XyXGNtobkV1nZidOvhjtkpqYitim0wKBHFSmJUQcIOINAc6b8yf9NPwmRAk4XJnhi7cRI0qn4hI6JQr0lLwRWRESooGmJvQ9kXdwbOAMvFF3tRrrP1DBPMPA24bqEgJ1f5TGh5hvyL39zjJxDXnSUvAURkeA+kKlB8IrQZAACKw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jn9U6E3Q; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CEBD2C4CEE3;
-	Tue, 17 Jun 2025 16:10:43 +0000 (UTC)
+	 MIME-Version; b=hJgr+gRr1NBmUFmjW34wr+PJtJswquPXUJ6S2G5mTb++RUZLTmZJyB07A+CK/7DUrF1YEkI/IzwwOiziQTYGMTvOf8QZoYxQdjBp3wqcf9Cs6q/YoPaihMb/iel4i+Qjd/ZQ80IIP/cGDjoHrfThzO+IQFgZRI8EkohMDfOLMTk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jriVOzIa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1ED1FC4CEE3;
+	Tue, 17 Jun 2025 16:56:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750176644;
-	bh=yjATzQho/edp3ESZXr3I51c98EwEYVR7IGnO65i8ARo=;
+	s=korg; t=1750179410;
+	bh=0LanXHr3ZNwf/oa/Ot00+eRpSwq/3gMUqgxvc8Ks9X8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jn9U6E3QqKrwTqvtT5i2JczmaLoE1f+LdcWOLcI0r6g0V+6wLpi9SMpp2CwSzp39D
-	 wOWqWKQCN5siaSjddZ0w1vxEAhWj9n8hUd/0ZTsiQ4obzCTaDy8+oAm8WniJzvI71O
-	 AmyJpagL9L3x7OZQ2hPGYh/l2HZQDWRsv1KJy8UI=
+	b=jriVOzIahXi0DxtDu0JbXzr6ndTLeRXN8wYqQQe7CnXPhwMlxAYtveTEEarfN+g2A
+	 Clium26K0Oo+0aHeEKewYuIv1hGOMZe0TIObbyxAu3Zq+aeqP4AzLwtwerB5jK/t1n
+	 ciYJJexk3+fCAJVeTjBCwD5C4YG3ITRJ7FQvtOuc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Baochen Qiang <quic_bqiang@quicinc.com>,
-	Kalle Valo <kvalo@kernel.org>,
-	Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>,
-	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 300/356] wifi: ath11k: dont use static variables in ath11k_debugfs_fw_stats_process()
+Subject: [PATCH 6.15 707/780] Bluetooth: eir: Fix possible crashes on eir_create_adv_data
 Date: Tue, 17 Jun 2025 17:26:55 +0200
-Message-ID: <20250617152350.247405241@linuxfoundation.org>
+Message-ID: <20250617152520.290885504@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152338.212798615@linuxfoundation.org>
-References: <20250617152338.212798615@linuxfoundation.org>
+In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
+References: <20250617152451.485330293@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,130 +61,95 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Baochen Qiang <quic_bqiang@quicinc.com>
+From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 
-[ Upstream commit 2bcf73b2612dda7432f2c2eaad6679bd291791f2 ]
+[ Upstream commit 47c03902269aff377f959dc3fd94a9733aa31d6e ]
 
-Currently ath11k_debugfs_fw_stats_process() is using static variables to count
-firmware stat events. Taking num_vdev as an example, if for whatever reason (
-say ar->num_started_vdevs is 0 or firmware bug etc.) the following condition
+eir_create_adv_data may attempt to add EIR_FLAGS and EIR_TX_POWER
+without checking if that would fit.
 
-	(++num_vdev) == total_vdevs_started
-
-is not met, is_end is not set thus num_vdev won't be cleared. Next time when
-firmware stats is requested again, even if everything is working fine, we will
-fail due to the condition above will never be satisfied.
-
-The same applies to num_bcn as well.
-
-Change to use non-static counters so that we have a chance to clear them each
-time firmware stats is requested. Currently only ath11k_fw_stats_request() and
-ath11k_debugfs_fw_stats_request() are requesting firmware stats, so clear
-counters there.
-
-Tested-on: WCN6855 hw2.0 PCI WLAN.HSP.1.1-03125-QCAHSPSWPL_V1_V2_SILICONZ_LITE-3.6510.37
-
-Fixes: da3a9d3c1576 ("ath11k: refactor debugfs code into debugfs.c")
-Signed-off-by: Baochen Qiang <quic_bqiang@quicinc.com>
-Acked-by: Kalle Valo <kvalo@kernel.org>
-Reviewed-by: Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>
-Link: https://patch.msgid.link/20250220082448.31039-3-quic_bqiang@quicinc.com
-Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+Link: https://github.com/bluez/bluez/issues/1117#issuecomment-2958244066
+Fixes: 01ce70b0a274 ("Bluetooth: eir: Move EIR/Adv Data functions to its own file")
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath11k/core.h    |  2 ++
- drivers/net/wireless/ath/ath11k/debugfs.c | 16 +++++++---------
- drivers/net/wireless/ath/ath11k/mac.c     |  2 ++
- 3 files changed, 11 insertions(+), 9 deletions(-)
+ net/bluetooth/eir.c      | 7 ++++---
+ net/bluetooth/eir.h      | 2 +-
+ net/bluetooth/hci_sync.c | 5 +++--
+ 3 files changed, 8 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath11k/core.h b/drivers/net/wireless/ath/ath11k/core.h
-index 41ccf59a4fd93..555deafd8399a 100644
---- a/drivers/net/wireless/ath/ath11k/core.h
-+++ b/drivers/net/wireless/ath/ath11k/core.h
-@@ -550,6 +550,8 @@ struct ath11k_fw_stats {
- 	struct list_head pdevs;
- 	struct list_head vdevs;
- 	struct list_head bcn;
-+	u32 num_vdev_recvd;
-+	u32 num_bcn_recvd;
- };
- 
- struct ath11k_dbg_htt_stats {
-diff --git a/drivers/net/wireless/ath/ath11k/debugfs.c b/drivers/net/wireless/ath/ath11k/debugfs.c
-index a5791155fe065..5a375d6680594 100644
---- a/drivers/net/wireless/ath/ath11k/debugfs.c
-+++ b/drivers/net/wireless/ath/ath11k/debugfs.c
-@@ -98,6 +98,8 @@ static void ath11k_debugfs_fw_stats_reset(struct ath11k *ar)
- 	spin_lock_bh(&ar->data_lock);
- 	ath11k_fw_stats_pdevs_free(&ar->fw_stats.pdevs);
- 	ath11k_fw_stats_vdevs_free(&ar->fw_stats.vdevs);
-+	ar->fw_stats.num_vdev_recvd = 0;
-+	ar->fw_stats.num_bcn_recvd = 0;
- 	spin_unlock_bh(&ar->data_lock);
+diff --git a/net/bluetooth/eir.c b/net/bluetooth/eir.c
+index 3e1713673ecc9..3f72111ba651f 100644
+--- a/net/bluetooth/eir.c
++++ b/net/bluetooth/eir.c
+@@ -242,7 +242,7 @@ u8 eir_create_per_adv_data(struct hci_dev *hdev, u8 instance, u8 *ptr)
+ 	return ad_len;
  }
  
-@@ -106,7 +108,6 @@ void ath11k_debugfs_fw_stats_process(struct ath11k *ar, struct ath11k_fw_stats *
- 	struct ath11k_base *ab = ar->ab;
- 	struct ath11k_pdev *pdev;
- 	bool is_end;
--	static unsigned int num_vdev, num_bcn;
- 	size_t total_vdevs_started = 0;
- 	int i;
- 
-@@ -131,15 +132,14 @@ void ath11k_debugfs_fw_stats_process(struct ath11k *ar, struct ath11k_fw_stats *
- 				total_vdevs_started += ar->num_started_vdevs;
+-u8 eir_create_adv_data(struct hci_dev *hdev, u8 instance, u8 *ptr)
++u8 eir_create_adv_data(struct hci_dev *hdev, u8 instance, u8 *ptr, u8 size)
+ {
+ 	struct adv_info *adv = NULL;
+ 	u8 ad_len = 0, flags = 0;
+@@ -286,7 +286,7 @@ u8 eir_create_adv_data(struct hci_dev *hdev, u8 instance, u8 *ptr)
+ 		/* If flags would still be empty, then there is no need to
+ 		 * include the "Flags" AD field".
+ 		 */
+-		if (flags) {
++		if (flags && (ad_len + eir_precalc_len(1) <= size)) {
+ 			ptr[0] = 0x02;
+ 			ptr[1] = EIR_FLAGS;
+ 			ptr[2] = flags;
+@@ -316,7 +316,8 @@ u8 eir_create_adv_data(struct hci_dev *hdev, u8 instance, u8 *ptr)
  		}
  
--		is_end = ((++num_vdev) == total_vdevs_started);
-+		is_end = ((++ar->fw_stats.num_vdev_recvd) == total_vdevs_started);
+ 		/* Provide Tx Power only if we can provide a valid value for it */
+-		if (adv_tx_power != HCI_TX_POWER_INVALID) {
++		if (adv_tx_power != HCI_TX_POWER_INVALID &&
++		    (ad_len + eir_precalc_len(1) <= size)) {
+ 			ptr[0] = 0x02;
+ 			ptr[1] = EIR_TX_POWER;
+ 			ptr[2] = (u8)adv_tx_power;
+diff --git a/net/bluetooth/eir.h b/net/bluetooth/eir.h
+index 5c89a05e8b290..9372db83f912f 100644
+--- a/net/bluetooth/eir.h
++++ b/net/bluetooth/eir.h
+@@ -9,7 +9,7 @@
  
- 		list_splice_tail_init(&stats->vdevs,
- 				      &ar->fw_stats.vdevs);
+ void eir_create(struct hci_dev *hdev, u8 *data);
  
--		if (is_end) {
-+		if (is_end)
- 			complete(&ar->fw_stats_done);
--			num_vdev = 0;
--		}
-+
- 		return;
+-u8 eir_create_adv_data(struct hci_dev *hdev, u8 instance, u8 *ptr);
++u8 eir_create_adv_data(struct hci_dev *hdev, u8 instance, u8 *ptr, u8 size);
+ u8 eir_create_scan_rsp(struct hci_dev *hdev, u8 instance, u8 *ptr);
+ u8 eir_create_per_adv_data(struct hci_dev *hdev, u8 instance, u8 *ptr);
+ 
+diff --git a/net/bluetooth/hci_sync.c b/net/bluetooth/hci_sync.c
+index 8ba1c3aa7801a..83de3847c8eaf 100644
+--- a/net/bluetooth/hci_sync.c
++++ b/net/bluetooth/hci_sync.c
+@@ -1822,7 +1822,8 @@ static int hci_set_ext_adv_data_sync(struct hci_dev *hdev, u8 instance)
+ 			return 0;
  	}
  
-@@ -151,15 +151,13 @@ void ath11k_debugfs_fw_stats_process(struct ath11k *ar, struct ath11k_fw_stats *
- 		/* Mark end until we reached the count of all started VDEVs
- 		 * within the PDEV
- 		 */
--		is_end = ((++num_bcn) == ar->num_started_vdevs);
-+		is_end = ((++ar->fw_stats.num_bcn_recvd) == ar->num_started_vdevs);
+-	len = eir_create_adv_data(hdev, instance, pdu->data);
++	len = eir_create_adv_data(hdev, instance, pdu->data,
++				  HCI_MAX_EXT_AD_LENGTH);
  
- 		list_splice_tail_init(&stats->bcn,
- 				      &ar->fw_stats.bcn);
+ 	pdu->length = len;
+ 	pdu->handle = adv ? adv->handle : instance;
+@@ -1853,7 +1854,7 @@ static int hci_set_adv_data_sync(struct hci_dev *hdev, u8 instance)
  
--		if (is_end) {
-+		if (is_end)
- 			complete(&ar->fw_stats_done);
--			num_bcn = 0;
--		}
- 	}
- }
+ 	memset(&cp, 0, sizeof(cp));
  
-diff --git a/drivers/net/wireless/ath/ath11k/mac.c b/drivers/net/wireless/ath/ath11k/mac.c
-index c3bfbc40273d0..9df3f6449f768 100644
---- a/drivers/net/wireless/ath/ath11k/mac.c
-+++ b/drivers/net/wireless/ath/ath11k/mac.c
-@@ -9011,6 +9011,8 @@ static int ath11k_fw_stats_request(struct ath11k *ar,
+-	len = eir_create_adv_data(hdev, instance, cp.data);
++	len = eir_create_adv_data(hdev, instance, cp.data, sizeof(cp.data));
  
- 	spin_lock_bh(&ar->data_lock);
- 	ath11k_fw_stats_pdevs_free(&ar->fw_stats.pdevs);
-+	ar->fw_stats.num_vdev_recvd = 0;
-+	ar->fw_stats.num_bcn_recvd = 0;
- 	spin_unlock_bh(&ar->data_lock);
- 
- 	reinit_completion(&ar->fw_stats_complete);
+ 	/* There's nothing to do if the data hasn't changed */
+ 	if (hdev->adv_data_len == len &&
 -- 
 2.39.5
 
