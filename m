@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-153264-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153267-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id EDA9FADD32C
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 17:54:21 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id ACA06ADD36B
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 17:57:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 752817A13CD
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 15:52:11 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 29A20164D73
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 15:53:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A97A228E8;
-	Tue, 17 Jun 2025 15:49:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3CB82ECE9C;
+	Tue, 17 Jun 2025 15:50:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0RKL842n"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KV0ofUFo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 657102ECE99;
-	Tue, 17 Jun 2025 15:49:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F32B2ECE80;
+	Tue, 17 Jun 2025 15:50:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750175397; cv=none; b=rkJzq2Fb03fenK8rbQ/27uvaFfGlJLZ31tORo5ThmJe4Z6YBbyZaS87iQQhxdwQjwPvX8RUj7+qrNGgWuZtaR9fpvmCNeOR/C73EmTzPvj5LwyCgDF1Pf64fmCun08EKQRDNRFXxEUUoRYmBQOeCP9lge7XxSGXxIHYlIvqUiqk=
+	t=1750175406; cv=none; b=ny5qHYVSsO5kvz0NpFiYXzCVok+2D4g9ikX2wVOjlw32CvNpck4YM/Lp0ytpdmOYVM1H3E5E7v8eczeuZ27RXf8Vx7/7lm/eiyqiY87jt5zmpFj6Wp8qMG841ToQqFzv0cLgr5HCLgYU+Uj2WPgap91d7AS7rsYE7ZMbl9XlSXs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750175397; c=relaxed/simple;
-	bh=c7mkup13KOb2pv0emSUK7+lp9mIgXr1v5VtYJ534n4Y=;
+	s=arc-20240116; t=1750175406; c=relaxed/simple;
+	bh=40l6X3GVXdB8jON9QlgvzVWoNUS2oV9gW+FIKT2dIj4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=kxBTEEw0NIQpW/Awn6XDzA4QtemUfj+dzi41EN3SBwTThv63ahnGeF/pogqrIEp7gyyKHTlI2tDgYQ0zgfJ5jVXRgKlNONrtvQX4NKs3uWuMwftkM0qLN6tGhZUxbtKC89TAu612Ef5UQZKeq6aA0dPJ6p8HmqDdbbYyAlIjKb8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0RKL842n; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3B3CC4CEE3;
-	Tue, 17 Jun 2025 15:49:56 +0000 (UTC)
+	 MIME-Version; b=BeQXNdNJ+xT73KeQDY2r8EkhdYLbDvUYF2LAopcQ9nw88ZJUk/nWi3fKP5F9rnAuVLeLWPEz0yrth8Nuriw5QFTaAKaRfMpUk4neuGOs1hRb4tVv/q3qFca6D94kflJuK8Be9iGeWXolYuJS9PzbVevWVhdtOR8w8Lx9ZHIoh48=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KV0ofUFo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD4ECC4CEE3;
+	Tue, 17 Jun 2025 15:50:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750175397;
-	bh=c7mkup13KOb2pv0emSUK7+lp9mIgXr1v5VtYJ534n4Y=;
+	s=korg; t=1750175406;
+	bh=40l6X3GVXdB8jON9QlgvzVWoNUS2oV9gW+FIKT2dIj4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0RKL842nNd3KG6HcepB8Qr4NIb9dydV58bAAGqQy9neY61ClGDhWK9PMFM5vwNbG3
-	 BvHaHlN8dQ9JV+heWJzdlEVoYMXJoGsWJoHEGYp39pQ6y55kZZO9osf2J+2oyhtk1L
-	 WJ5qZeLaSoePlevNIr4BZYdyapSTbRtlln6lZyTg=
+	b=KV0ofUFoJPXH92FA86E4u1p0txwh6cLGK2omld/5fnKaK0OmipLzd5N3sGie5PisG
+	 pHtD7N1NigIIaDVmz7YpXf6BxRsiDpaTs41kCKkpBh3YKF55CPJWOSSSB/3bXwMZlY
+	 /T1QPjLCdniLKhyy8tqQ58p08A4IQmho871iK2fU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Martin=20Povi=C5=A1er?= <povik+lin@cutebit.org>,
-	James Calligeros <jcalligeros99@gmail.com>,
-	Mark Brown <broonie@kernel.org>,
+	David Thompson <davthompson@nvidia.com>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>,
+	Shravan Kumar Ramani <shravankr@nvidia.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 084/780] ASoC: apple: mca: Constrain channels according to TDM mask
-Date: Tue, 17 Jun 2025 17:16:32 +0200
-Message-ID: <20250617152454.939116027@linuxfoundation.org>
+Subject: [PATCH 6.15 085/780] EDAC/bluefield: Dont use bluefield_edac_readl() result on error
+Date: Tue, 17 Jun 2025 17:16:33 +0200
+Message-ID: <20250617152454.978875659@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
 References: <20250617152451.485330293@linuxfoundation.org>
@@ -61,72 +61,88 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Martin Povišer <povik+lin@cutebit.org>
+From: David Thompson <davthompson@nvidia.com>
 
-[ Upstream commit e717c661e2d1a660e96c40b0fe9933e23a1d7747 ]
+[ Upstream commit ea3b0b7f541b9511abe2b89547c95458804f38e2 ]
 
-We don't (and can't) configure the hardware correctly if the number of
-channels exceeds the weight of the TDM mask. Report that constraint in
-startup of FE.
+The bluefield_edac_readl() routine returns an uninitialized result on error
+paths. In those cases the calling routine should not use the uninitialized
+result. The driver should simply log the error, and then return early.
 
-Fixes: 3df5d0d97289 ("ASoC: apple: mca: Start new platform driver")
-Signed-off-by: Martin Povišer <povik+lin@cutebit.org>
-Signed-off-by: James Calligeros <jcalligeros99@gmail.com>
-Link: https://patch.msgid.link/20250518-mca-fixes-v1-1-ee1015a695f6@gmail.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: e41967575474 ("EDAC/bluefield: Use Arm SMC for EMI access on BlueField-2")
+Signed-off-by: David Thompson <davthompson@nvidia.com>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Reviewed-by: Shravan Kumar Ramani <shravankr@nvidia.com>
+Link: https://lore.kernel.org/20250318214747.12271-1-davthompson@nvidia.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/apple/mca.c | 23 +++++++++++++++++++++++
- 1 file changed, 23 insertions(+)
+ drivers/edac/bluefield_edac.c | 20 +++++++++++++++-----
+ 1 file changed, 15 insertions(+), 5 deletions(-)
 
-diff --git a/sound/soc/apple/mca.c b/sound/soc/apple/mca.c
-index b4f4696809dd2..5dd24ab90d0f0 100644
---- a/sound/soc/apple/mca.c
-+++ b/sound/soc/apple/mca.c
-@@ -464,6 +464,28 @@ static int mca_configure_serdes(struct mca_cluster *cl, int serdes_unit,
- 	return -EINVAL;
- }
- 
-+static int mca_fe_startup(struct snd_pcm_substream *substream,
-+			  struct snd_soc_dai *dai)
-+{
-+	struct mca_cluster *cl = mca_dai_to_cluster(dai);
-+	unsigned int mask, nchannels;
-+
-+	if (cl->tdm_slots) {
-+		if (substream->stream == SNDRV_PCM_STREAM_PLAYBACK)
-+			mask = cl->tdm_tx_mask;
-+		else
-+			mask = cl->tdm_rx_mask;
-+
-+		nchannels = hweight32(mask);
-+	} else {
-+		nchannels = 2;
+diff --git a/drivers/edac/bluefield_edac.c b/drivers/edac/bluefield_edac.c
+index 4942a240c30f2..ae3bb7afa103e 100644
+--- a/drivers/edac/bluefield_edac.c
++++ b/drivers/edac/bluefield_edac.c
+@@ -199,8 +199,10 @@ static void bluefield_gather_report_ecc(struct mem_ctl_info *mci,
+ 	 * error without the detailed information.
+ 	 */
+ 	err = bluefield_edac_readl(priv, MLXBF_SYNDROM, &dram_syndrom);
+-	if (err)
++	if (err) {
+ 		dev_err(priv->dev, "DRAM syndrom read failed.\n");
++		return;
 +	}
-+
-+	return snd_pcm_hw_constraint_minmax(substream->runtime,
-+					    SNDRV_PCM_HW_PARAM_CHANNELS,
-+					    1, nchannels);
-+}
-+
- static int mca_fe_set_tdm_slot(struct snd_soc_dai *dai, unsigned int tx_mask,
- 			       unsigned int rx_mask, int slots, int slot_width)
- {
-@@ -680,6 +702,7 @@ static int mca_fe_hw_params(struct snd_pcm_substream *substream,
- }
  
- static const struct snd_soc_dai_ops mca_fe_ops = {
-+	.startup = mca_fe_startup,
- 	.set_fmt = mca_fe_set_fmt,
- 	.set_bclk_ratio = mca_set_bclk_ratio,
- 	.set_tdm_slot = mca_fe_set_tdm_slot,
+ 	serr = FIELD_GET(MLXBF_SYNDROM__SERR, dram_syndrom);
+ 	derr = FIELD_GET(MLXBF_SYNDROM__DERR, dram_syndrom);
+@@ -213,20 +215,26 @@ static void bluefield_gather_report_ecc(struct mem_ctl_info *mci,
+ 	}
+ 
+ 	err = bluefield_edac_readl(priv, MLXBF_ADD_INFO, &dram_additional_info);
+-	if (err)
++	if (err) {
+ 		dev_err(priv->dev, "DRAM additional info read failed.\n");
++		return;
++	}
+ 
+ 	err_prank = FIELD_GET(MLXBF_ADD_INFO__ERR_PRANK, dram_additional_info);
+ 
+ 	ecc_dimm = (err_prank >= 2 && priv->dimm_ranks[0] <= 2) ? 1 : 0;
+ 
+ 	err = bluefield_edac_readl(priv, MLXBF_ERR_ADDR_0, &edea0);
+-	if (err)
++	if (err) {
+ 		dev_err(priv->dev, "Error addr 0 read failed.\n");
++		return;
++	}
+ 
+ 	err = bluefield_edac_readl(priv, MLXBF_ERR_ADDR_1, &edea1);
+-	if (err)
++	if (err) {
+ 		dev_err(priv->dev, "Error addr 1 read failed.\n");
++		return;
++	}
+ 
+ 	ecc_dimm_addr = ((u64)edea1 << 32) | edea0;
+ 
+@@ -250,8 +258,10 @@ static void bluefield_edac_check(struct mem_ctl_info *mci)
+ 		return;
+ 
+ 	err = bluefield_edac_readl(priv, MLXBF_ECC_CNT, &ecc_count);
+-	if (err)
++	if (err) {
+ 		dev_err(priv->dev, "ECC count read failed.\n");
++		return;
++	}
+ 
+ 	single_error_count = FIELD_GET(MLXBF_ECC_CNT__SERR_CNT, ecc_count);
+ 	double_error_count = FIELD_GET(MLXBF_ECC_CNT__DERR_CNT, ecc_count);
 -- 
 2.39.5
 
