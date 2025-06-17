@@ -1,60 +1,56 @@
-Return-Path: <stable+bounces-154534-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153745-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E4BD4ADD9B1
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 19:08:33 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 14FE4ADD62A
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:30:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CCB982C648C
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:58:42 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3545E7AF200
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:21:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EAD002FA635;
-	Tue, 17 Jun 2025 16:58:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 776982E8DFE;
+	Tue, 17 Jun 2025 16:16:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qdXkzu2Z"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ynls2JRb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7A742FA62E;
-	Tue, 17 Jun 2025 16:58:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CD1A23771C;
+	Tue, 17 Jun 2025 16:15:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750179519; cv=none; b=bVqdQW/xnOnZo5TyXbbcVE4AyOZONxqQGg3c49d9kYs2HKSisK5GTO7vR2q5UVlWE5izO8WIem8MUWfCo0K2wNm/BcO6OWlz79R/y8fPnkKyXq+rCWKgwdppGqgWv4gL/AlWESWkNTNbU0OFlITcoO0Fpjwudew4u1K6X6cUvwY=
+	t=1750176960; cv=none; b=b6Kq/ThPGm4cF94LZ4N6d+VU1zf7Oogp4Qs52/xSjpphZLjp2F3xgzIM7YsCRA0Lv1jEqTxn+f9sDS+3lR40lmFKf4ORHhscdF0cFvNnduN4yftVAp7DLUB61sVh8pkiGuwRWgx67VFj69cCRsnXv/ZcEnARAuYsI5SrZvpqFps=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750179519; c=relaxed/simple;
-	bh=cCErqSqKF0vVVs/GVKqQRcwgiorY0qUHwzTjAUXTZcc=;
+	s=arc-20240116; t=1750176960; c=relaxed/simple;
+	bh=5onN8pn7bFtfz9XCQ3dfzZ0ZMtQLx5Elfs8pOQK0RZo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iKQMM9hgxLJ6/htStAGmquaSuY8Vvz+SuvHaxsTGVNNGMAIRIzUxEtsCWBgSVNe3L0YCZVIVfsi5L2l7qMV8VEcZXNBDZwNyybxg/tHWORUJu/SojFf97jAr/40f2C4iL0La2t7xPy3t4waMmgEOig5cRyWJkirxv3xZEef1Btk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qdXkzu2Z; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11EE3C4CEE7;
-	Tue, 17 Jun 2025 16:58:38 +0000 (UTC)
+	 MIME-Version; b=QGsHW39YxX9Bi/ZBdjbyOdjoebcZMoh67LShk9+xYB47tn5j3Ty9QUR2b8ztlRSce+ltDJBkq+POuEjMSPkj0GK6g+np0ze/9lBTBlp92bQcLPMyF4mm5CGPwemq98OTyccE1wiuTDXC9g3lPWCsaBvIn/RyocG6Et+AENDYMr4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ynls2JRb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 541EEC4CEE3;
+	Tue, 17 Jun 2025 16:15:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750179519;
-	bh=cCErqSqKF0vVVs/GVKqQRcwgiorY0qUHwzTjAUXTZcc=;
+	s=korg; t=1750176959;
+	bh=5onN8pn7bFtfz9XCQ3dfzZ0ZMtQLx5Elfs8pOQK0RZo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qdXkzu2ZepNSKaKUB7RBZtbGUtad8ZF7G3SvhplnUEPXB0STeD96Ops4boh2YM/C5
-	 qnAw0786q2O2INSkVRTM2JaHFg4Vb/vJq92ms73Jwj8r4rkOMMGKxRivM8gY9ZT+PO
-	 u+1DqkpUO6oNbtB85XKGw+vCfWYIhVmqmqkfx4vI=
+	b=ynls2JRbDlW9sOrLEimlvokNStORTlzHjdlbeZyG/lwLA2ZX06dUY9X6M9x/PUbDY
+	 l3YbqmOfrz/yCEo0LHc4eN7v+BD6IYbiKOnTkYO5qlekJ+pIfj8YoKb1bjE8GdM/L7
+	 DB2vtxKjFvf//JpetLo3+fux5uUtgAJE3DyQWgDo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	John Hubbard <jhubbard@nvidia.com>,
-	Timur Tabi <ttabi@nvidia.com>,
-	Kane York <kanepyork@gmail.com>,
-	Josh Poimboeuf <jpoimboe@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Joel Fernandes <joelagnelf@nvidia.com>,
-	Miguel Ojeda <ojeda@kernel.org>
-Subject: [PATCH 6.15 740/780] objtool/rust: relax slice condition to cover more `noreturn` Rust functions
-Date: Tue, 17 Jun 2025 17:27:28 +0200
-Message-ID: <20250617152521.636145695@linuxfoundation.org>
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Jens Axboe <axboe@kernel.dk>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 334/356] bio: Fix bio_first_folio() for SPARSEMEM without VMEMMAP
+Date: Tue, 17 Jun 2025 17:27:29 +0200
+Message-ID: <20250617152351.581857651@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
-References: <20250617152451.485330293@linuxfoundation.org>
+In-Reply-To: <20250617152338.212798615@linuxfoundation.org>
+References: <20250617152338.212798615@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,58 +62,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Miguel Ojeda <ojeda@kernel.org>
+From: Matthew Wilcox (Oracle) <willy@infradead.org>
 
-commit cbeaa41dfe26b72639141e87183cb23e00d4b0dd upstream.
+[ Upstream commit f826ec7966a63d48e16e0868af4e038bf9a1a3ae ]
 
-Developers are indeed hitting other of the `noreturn` slice symbols in
-Nova [1], thus relax the last check in the list so that we catch all of
-them, i.e.
+It is possible for physically contiguous folios to have discontiguous
+struct pages if SPARSEMEM is enabled and SPARSEMEM_VMEMMAP is not.
+This is correctly handled by folio_page_idx(), so remove this open-coded
+implementation.
 
-    *_4core5slice5index22slice_index_order_fail
-    *_4core5slice5index24slice_end_index_len_fail
-    *_4core5slice5index26slice_start_index_len_fail
-    *_4core5slice5index29slice_end_index_overflow_fail
-    *_4core5slice5index31slice_start_index_overflow_fail
-
-These all exist since at least Rust 1.78.0, thus backport it too.
-
-See commit 56d680dd23c3 ("objtool/rust: list `noreturn` Rust functions")
-for more details.
-
-Cc: stable@vger.kernel.org # Needed in 6.12.y and later.
-Cc: John Hubbard <jhubbard@nvidia.com>
-Cc: Timur Tabi <ttabi@nvidia.com>
-Cc: Kane York <kanepyork@gmail.com>
-Cc: Josh Poimboeuf <jpoimboe@kernel.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Reported-by: Joel Fernandes <joelagnelf@nvidia.com>
-Fixes: 56d680dd23c3 ("objtool/rust: list `noreturn` Rust functions")
-Closes: https://lore.kernel.org/rust-for-linux/20250513180757.GA1295002@joelnvbox/ [1]
-Tested-by: Joel Fernandes <joelagnelf@nvidia.com>
-Link: https://lore.kernel.org/r/20250520185555.825242-1-ojeda@kernel.org
-Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 640d1930bef4 (block: Add bio_for_each_folio_all())
+Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
+Link: https://lore.kernel.org/r/20250612144126.2849931-1-willy@infradead.org
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/objtool/check.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ include/linux/bio.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/tools/objtool/check.c
-+++ b/tools/objtool/check.c
-@@ -230,7 +230,8 @@ static bool is_rust_noreturn(const struc
- 	       str_ends_with(func->name, "_7___rustc17rust_begin_unwind")				||
- 	       strstr(func->name, "_4core9panicking13assert_failed")					||
- 	       strstr(func->name, "_4core9panicking11panic_const24panic_const_")			||
--	       (strstr(func->name, "_4core5slice5index24slice_") &&
-+	       (strstr(func->name, "_4core5slice5index") &&
-+		strstr(func->name, "slice_") &&
- 		str_ends_with(func->name, "_fail"));
- }
+diff --git a/include/linux/bio.h b/include/linux/bio.h
+index b893418c3cc02..f193aef4fac08 100644
+--- a/include/linux/bio.h
++++ b/include/linux/bio.h
+@@ -294,7 +294,7 @@ static inline void bio_first_folio(struct folio_iter *fi, struct bio *bio,
  
+ 	fi->folio = page_folio(bvec->bv_page);
+ 	fi->offset = bvec->bv_offset +
+-			PAGE_SIZE * (bvec->bv_page - &fi->folio->page);
++			PAGE_SIZE * folio_page_idx(fi->folio, bvec->bv_page);
+ 	fi->_seg_count = bvec->bv_len;
+ 	fi->length = min(folio_size(fi->folio) - fi->offset, fi->_seg_count);
+ 	fi->_next = folio_next(fi->folio);
+-- 
+2.39.5
+
 
 
 
