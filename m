@@ -1,55 +1,53 @@
-Return-Path: <stable+bounces-153040-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153043-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE983ADD230
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 17:40:06 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7E8FEADD206
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 17:38:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 56F547AD4CF
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 15:36:35 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AD6DB18990E8
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 15:38:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA3252E9753;
-	Tue, 17 Jun 2025 15:37:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F30D2EB5AB;
+	Tue, 17 Jun 2025 15:38:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NCiafVp/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wgiQj2EG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76E15217F34;
-	Tue, 17 Jun 2025 15:37:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48DC42264B7;
+	Tue, 17 Jun 2025 15:38:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750174672; cv=none; b=NUl9K26qfalsVLXGFnhSlz+PiEQs1nMnL0VvMEfyZR4/ytlkMCuDm2w9QpAdnWjan6mCVotClLVwvrxmsLcGs7rjyIXRpUeCfV5qC5wb6bP53eNKal86Q5e/JYVpHBUOV62I/qd4m4PTbKWo5SVTIzeXPMaG8825JfdScn2Q2zk=
+	t=1750174684; cv=none; b=iygUhyiPZfkg7bQBp0O9eK+zHFysa1Jwguct8mx5bv4fYcoNf/PUCjgqb47VPkj/Ip+6hdcF4GLHvolm5Fw6OJ+VQOC3MwflLDIz60TSVJO4Xr2+j8u7NgAVPIOhctQ2s98apzfv4eaDndH451CjiYRettFrBdrVxWNSd9lgafg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750174672; c=relaxed/simple;
-	bh=J0Bx9Gkq+I+PHBRuxt/7RBYCf3O7u6m/wckKGocDRQM=;
+	s=arc-20240116; t=1750174684; c=relaxed/simple;
+	bh=d3N67LdHakgdlrMmqUHmnHzQR5N07OaisGFgInXAPCs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=is11Ub954mWj4+K7H4QCSXMScbNRCCiv8RsMKCxxGx0Q94Kr5iJ+LrCKvpJhH3XZ5dfkn7iE3aTDh3ZmDisMcMqmLnmJj16Jz74EV2d57SHeQtPaJwLEAKwQLoSMx9rwSbhlZZSlSFgcDY4FQx3gYgVe0LA1HM8k+ZSvohlnl8g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NCiafVp/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC38DC4CEE3;
-	Tue, 17 Jun 2025 15:37:51 +0000 (UTC)
+	 MIME-Version; b=otDUw69SzpM3TH8JmXwumn4TyVLMDvafaWPCFTokRpBg3utNgInJf8qFC7QlA02/HRPqqLGsVoDJ3PMcbShW+NrR0Ntmha9RgiNIsFP6p89avLTNggBPqCqw0sJvuQX4ott+cvoH1egP3k2iozCw+6gD6Fdjk0tShJRLTTWgIU0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wgiQj2EG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4FEDCC4CEF4;
+	Tue, 17 Jun 2025 15:38:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750174672;
-	bh=J0Bx9Gkq+I+PHBRuxt/7RBYCf3O7u6m/wckKGocDRQM=;
+	s=korg; t=1750174681;
+	bh=d3N67LdHakgdlrMmqUHmnHzQR5N07OaisGFgInXAPCs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NCiafVp/55We3XFigs91BudMM8w3wqdx/arED5TbthV8PAkCFxy2dh2yVAQV8/j+M
-	 B5Sp9okSdm5rLn+HGoYMjRLtN/vGpHPGmmA4MR7LNQutFnnB4ILY01k6hCTg23keFL
-	 /WM+FoZT+aonP7qD9a1oFUuLbPMhNnLRlxKuO8QM=
+	b=wgiQj2EGuMDTcEOJ3Ob8I96EdXM5Zu7ju15M/V15zAqboU+j+wpy60VGrie2KbWv3
+	 XHRSNaF45QljIf0frp3OsJFvAnp+bY0qyktswU58GC37ISZCQ4d2u9KClQlgkBypoF
+	 BTDV/PBbLB0kfE1g9WFSl6d7/mfeOjJ2F7bWm6Lw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vijendar Mukunda <Vijendar.Mukunda@amd.com>,
-	Ranjani Sridharan <ranjani.sridharan@linux.intel.com>,
-	Bard Liao <yung-chuan.liao@linux.intel.com>,
-	Mark Brown <broonie@kernel.org>,
+	Zijun Hu <quic_zijuhu@quicinc.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 049/512] ASoC: SOF: amd: add missing acp descriptor field
-Date: Tue, 17 Jun 2025 17:20:15 +0200
-Message-ID: <20250617152421.522562230@linuxfoundation.org>
+Subject: [PATCH 6.12 050/512] PM: wakeup: Delete space in the end of string shown by pm_show_wakelocks()
+Date: Tue, 17 Jun 2025 17:20:16 +0200
+Message-ID: <20250617152421.561678575@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
 References: <20250617152419.512865572@linuxfoundation.org>
@@ -68,36 +66,42 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Vijendar Mukunda <Vijendar.Mukunda@amd.com>
+From: Zijun Hu <quic_zijuhu@quicinc.com>
 
-[ Upstream commit 7c2bad7b95db5b4b978853cd4dd042ae3ec83e63 ]
+[ Upstream commit f0050a3e214aa941b78ad4caf122a735a24d81a6 ]
 
-Add missing acp descriptor field acp_error_stat for ACP7.0 platform.
+pm_show_wakelocks() is called to generate a string when showing
+attributes /sys/power/wake_(lock|unlock), but the string ends
+with an unwanted space that was added back by mistake by commit
+c9d967b2ce40 ("PM: wakeup: simplify the output logic of
+pm_show_wakelocks()").
 
-Fixes: 490be7ba2a01 ("ASoC: SOF: amd: add support for acp7.0 based platform")
+Remove the unwanted space.
 
-Signed-off-by: Vijendar Mukunda <Vijendar.Mukunda@amd.com>
-Reviewed-by: Ranjani Sridharan <ranjani.sridharan@linux.intel.com>
-Reviewed-by: Bard Liao <yung-chuan.liao@linux.intel.com>
-Link: https://patch.msgid.link/20250502154445.3008598-3-Vijendar.Mukunda@amd.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: c9d967b2ce40 ("PM: wakeup: simplify the output logic of pm_show_wakelocks()")
+Signed-off-by: Zijun Hu <quic_zijuhu@quicinc.com>
+Link: https://patch.msgid.link/20250505-fix_power-v1-1-0f7f2c2f338c@quicinc.com
+[ rjw: Changelog edits ]
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/sof/amd/pci-acp70.c | 1 +
- 1 file changed, 1 insertion(+)
+ kernel/power/wakelock.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/sound/soc/sof/amd/pci-acp70.c b/sound/soc/sof/amd/pci-acp70.c
-index a5d8b6a95a222..fe2ad0395f5d3 100644
---- a/sound/soc/sof/amd/pci-acp70.c
-+++ b/sound/soc/sof/amd/pci-acp70.c
-@@ -34,6 +34,7 @@ static const struct sof_amd_acp_desc acp70_chip_info = {
- 	.ext_intr_cntl = ACP70_EXTERNAL_INTR_CNTL,
- 	.ext_intr_stat	= ACP70_EXT_INTR_STAT,
- 	.ext_intr_stat1	= ACP70_EXT_INTR_STAT1,
-+	.acp_error_stat = ACP70_ERROR_STATUS,
- 	.dsp_intr_base	= ACP70_DSP_SW_INTR_BASE,
- 	.acp_sw0_i2s_err_reason = ACP7X_SW0_I2S_ERROR_REASON,
- 	.sram_pte_offset = ACP70_SRAM_PTE_OFFSET,
+diff --git a/kernel/power/wakelock.c b/kernel/power/wakelock.c
+index 52571dcad768b..4e941999a53ba 100644
+--- a/kernel/power/wakelock.c
++++ b/kernel/power/wakelock.c
+@@ -49,6 +49,9 @@ ssize_t pm_show_wakelocks(char *buf, bool show_active)
+ 			len += sysfs_emit_at(buf, len, "%s ", wl->name);
+ 	}
+ 
++	if (len > 0)
++		--len;
++
+ 	len += sysfs_emit_at(buf, len, "\n");
+ 
+ 	mutex_unlock(&wakelocks_lock);
 -- 
 2.39.5
 
