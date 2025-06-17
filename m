@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-153447-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153972-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 28B12ADD486
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:11:04 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 28AB1ADD807
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:51:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 508AB2C3D5E
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:04:06 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8895319E59DB
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:33:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B4742EA17D;
-	Tue, 17 Jun 2025 15:59:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE47C285042;
+	Tue, 17 Jun 2025 16:28:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Iz1xDvOn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Zdlt8LlV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 102F12EA149;
-	Tue, 17 Jun 2025 15:59:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A1292F94A0;
+	Tue, 17 Jun 2025 16:28:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750175993; cv=none; b=Ero+pS/OWHroPpzqg7V++r2Vj4N5Nv0UyMCS3bVC73wvE3l+O16DpZlpKp9gi1SIi+jlsM/ZbBTSomhC81+INXG6mqquyPGuD0OhjMVka3l1vfOKAVk0stuekAGDSboIHyT5vC1b4856Yhe/JTgWkMlUTKnM+KTWhz0aAbW/jGw=
+	t=1750177691; cv=none; b=Lequ4AQIgFXD0yY7nLHV7fCh/bTtoYTNvvwpVUL2/RPJq/pFxriFc+zJRbXO0BNPAwZdU9mGUUq33NwdcJIVoAXlWaKWAgxP+mMVv91/S95PwMCtuN60OCz2c2iU231S/+Hlz4OhgCF1A4pGei6UyWm7eHtcX2UOohSOGpz6sOw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750175993; c=relaxed/simple;
-	bh=0j22nBOeqlt/avGRhoyD1RQJACA5qOPq4ubGrgbn4yU=;
+	s=arc-20240116; t=1750177691; c=relaxed/simple;
+	bh=/Ii2XPuAEd5982FC/iPn/jAKqpCkX7vq58kGE/rmlFM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sZ9CZpjShteGIyo2E0p0IFEXArwU+rotQKJDyS9KdjyPT27OKegcDYpI62UDDQorRDPcdy9M8d1XKxamCruWHfT03d+CwNieSzEVImT5dQWHHt8DsP8qQejCeLCiAa608qpdxonJhDWgF7TgURAqslfi/u55BI11HXBwoR4xDOo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Iz1xDvOn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73D24C4CEE3;
-	Tue, 17 Jun 2025 15:59:52 +0000 (UTC)
+	 MIME-Version; b=N9TDPvilRu7A/xYlbySPM6a9XYVamTxV1In3ZT6kGeWzACBPdpj0S6G6SUz1NG4uASOEnRn+5Yp06JH0a9ARNmPe3bvUPwAQlqH2AwS9lbfxWestybWreoNIxMpSDA8a1QRPysIhYnMArB8lNU6IuFMmo5H0/UkhPUUY0QnffME=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Zdlt8LlV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC1BAC4CEE3;
+	Tue, 17 Jun 2025 16:28:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750175992;
-	bh=0j22nBOeqlt/avGRhoyD1RQJACA5qOPq4ubGrgbn4yU=;
+	s=korg; t=1750177691;
+	bh=/Ii2XPuAEd5982FC/iPn/jAKqpCkX7vq58kGE/rmlFM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Iz1xDvOn05fiIJUvhozNO8GSL/FOHKdXiUEKxzm12ftHjNukcTn8WghWAshDWMtlY
-	 mfLCRuzo5D1COowsehpArh/XKGs/8TpK659Gk2yhEcBsVnDBgg8Znz83TEpTHMH8gg
-	 6a5GHLir9GyOVOYffE1X6+8UC7hyTCsUzQh0iFzo=
+	b=Zdlt8LlVG/ZJQhZdfcicKKgnbp30hQ6VjfKCfgO0sACmKA9xcEuolXgpVLkLrW7z4
+	 afWquuKl6qINFwKUKV9HwrN2+6J1olcumtPj/jTwuCO24HgETOWeAKBaDKJBKsXTeL
+	 kVgsy9F5IkzJT0RQIWrocfoCTsdCCqpbcW7DV+eM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sam Winchenbach <swinchenbach@arka.org>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Lachlan Hodges <lachlan.hodges@morsemicro.com>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 233/356] iio: filter: admv8818: fix band 4, state 15
+Subject: [PATCH 6.12 382/512] wifi: cfg80211/mac80211: correctly parse S1G beacon optional elements
 Date: Tue, 17 Jun 2025 17:25:48 +0200
-Message-ID: <20250617152347.573307206@linuxfoundation.org>
+Message-ID: <20250617152435.068516399@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152338.212798615@linuxfoundation.org>
-References: <20250617152338.212798615@linuxfoundation.org>
+In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
+References: <20250617152419.512865572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,39 +62,247 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sam Winchenbach <swinchenbach@arka.org>
+From: Lachlan Hodges <lachlan.hodges@morsemicro.com>
 
-[ Upstream commit ef0ce24f590ac075d5eda11f2d6434b303333ed6 ]
+[ Upstream commit 1e1f706fc2ce90eaaf3480b3d5f27885960d751c ]
 
-Corrects the upper range of LPF Band 4 from 18.5 GHz to 18.85 GHz per
-the ADMV8818 datasheet
+S1G beacons are not traditional beacons but a type of extension frame.
+Extension frames contain the frame control and duration fields, followed
+by zero or more optional fields before the frame body. These optional
+fields are distinct from the variable length elements.
 
-Fixes: f34fe888ad05 ("iio:filter:admv8818: add support for ADMV8818")
-Signed-off-by: Sam Winchenbach <swinchenbach@arka.org>
-Link: https://patch.msgid.link/20250328174831.227202-3-sam.winchenbach@framepointer.org
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+The presence of optional fields is indicated in the frame control field.
+To correctly locate the elements offset, the frame control must be parsed
+to identify which optional fields are present. Currently, mac80211 parses
+S1G beacons based on fixed assumptions about the frame layout, without
+inspecting the frame control field. This can result in incorrect offsets
+to the "variable" portion of the frame.
+
+Properly parse S1G beacon frames by using the field lengths defined in
+IEEE 802.11-2024, section 9.3.4.3, ensuring that the elements offset is
+calculated accurately.
+
+Fixes: 9eaffe5078ca ("cfg80211: convert S1G beacon to scan results")
+Fixes: cd418ba63f0c ("mac80211: convert S1G beacon to scan results")
+Signed-off-by: Lachlan Hodges <lachlan.hodges@morsemicro.com>
+Link: https://patch.msgid.link/20250603053538.468562-1-lachlan.hodges@morsemicro.com
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iio/filter/admv8818.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ include/linux/ieee80211.h | 79 ++++++++++++++++++++++++++++++++++-----
+ net/mac80211/mlme.c       |  7 +---
+ net/mac80211/scan.c       | 11 +++---
+ net/wireless/scan.c       | 18 ++++-----
+ 4 files changed, 83 insertions(+), 32 deletions(-)
 
-diff --git a/drivers/iio/filter/admv8818.c b/drivers/iio/filter/admv8818.c
-index d85b7d3de8660..3d8740caa1455 100644
---- a/drivers/iio/filter/admv8818.c
-+++ b/drivers/iio/filter/admv8818.c
-@@ -103,7 +103,7 @@ static const unsigned long long freq_range_lpf[4][2] = {
- 	{2050000000ULL, 3850000000ULL},
- 	{3350000000ULL, 7250000000ULL},
- 	{7000000000, 13000000000},
--	{12550000000, 18500000000}
-+	{12550000000, 18850000000}
- };
+diff --git a/include/linux/ieee80211.h b/include/linux/ieee80211.h
+index 777f6aa8efa7b..d07c1f0ad3de3 100644
+--- a/include/linux/ieee80211.h
++++ b/include/linux/ieee80211.h
+@@ -111,6 +111,8 @@
  
- static const struct regmap_config admv8818_regmap_config = {
+ /* bits unique to S1G beacon */
+ #define IEEE80211_S1G_BCN_NEXT_TBTT	0x100
++#define IEEE80211_S1G_BCN_CSSID		0x200
++#define IEEE80211_S1G_BCN_ANO		0x400
+ 
+ /* see 802.11ah-2016 9.9 NDP CMAC frames */
+ #define IEEE80211_S1G_1MHZ_NDP_BITS	25
+@@ -153,9 +155,6 @@
+ 
+ #define IEEE80211_ANO_NETTYPE_WILD              15
+ 
+-/* bits unique to S1G beacon */
+-#define IEEE80211_S1G_BCN_NEXT_TBTT    0x100
+-
+ /* control extension - for IEEE80211_FTYPE_CTL | IEEE80211_STYPE_CTL_EXT */
+ #define IEEE80211_CTL_EXT_POLL		0x2000
+ #define IEEE80211_CTL_EXT_SPR		0x3000
+@@ -627,6 +626,42 @@ static inline bool ieee80211_is_s1g_beacon(__le16 fc)
+ 	       cpu_to_le16(IEEE80211_FTYPE_EXT | IEEE80211_STYPE_S1G_BEACON);
+ }
+ 
++/**
++ * ieee80211_s1g_has_next_tbtt - check if IEEE80211_S1G_BCN_NEXT_TBTT
++ * @fc: frame control bytes in little-endian byteorder
++ * Return: whether or not the frame contains the variable-length
++ *	next TBTT field
++ */
++static inline bool ieee80211_s1g_has_next_tbtt(__le16 fc)
++{
++	return ieee80211_is_s1g_beacon(fc) &&
++		(fc & cpu_to_le16(IEEE80211_S1G_BCN_NEXT_TBTT));
++}
++
++/**
++ * ieee80211_s1g_has_ano - check if IEEE80211_S1G_BCN_ANO
++ * @fc: frame control bytes in little-endian byteorder
++ * Return: whether or not the frame contains the variable-length
++ *	ANO field
++ */
++static inline bool ieee80211_s1g_has_ano(__le16 fc)
++{
++	return ieee80211_is_s1g_beacon(fc) &&
++		(fc & cpu_to_le16(IEEE80211_S1G_BCN_ANO));
++}
++
++/**
++ * ieee80211_s1g_has_cssid - check if IEEE80211_S1G_BCN_CSSID
++ * @fc: frame control bytes in little-endian byteorder
++ * Return: whether or not the frame contains the variable-length
++ *	compressed SSID field
++ */
++static inline bool ieee80211_s1g_has_cssid(__le16 fc)
++{
++	return ieee80211_is_s1g_beacon(fc) &&
++		(fc & cpu_to_le16(IEEE80211_S1G_BCN_CSSID));
++}
++
+ /**
+  * ieee80211_is_s1g_short_beacon - check if frame is an S1G short beacon
+  * @fc: frame control bytes in little-endian byteorder
+@@ -1245,16 +1280,40 @@ struct ieee80211_ext {
+ 			u8 change_seq;
+ 			u8 variable[0];
+ 		} __packed s1g_beacon;
+-		struct {
+-			u8 sa[ETH_ALEN];
+-			__le32 timestamp;
+-			u8 change_seq;
+-			u8 next_tbtt[3];
+-			u8 variable[0];
+-		} __packed s1g_short_beacon;
+ 	} u;
+ } __packed __aligned(2);
+ 
++/**
++ * ieee80211_s1g_optional_len - determine length of optional S1G beacon fields
++ * @fc: frame control bytes in little-endian byteorder
++ * Return: total length in bytes of the optional fixed-length fields
++ *
++ * S1G beacons may contain up to three optional fixed-length fields that
++ * precede the variable-length elements. Whether these fields are present
++ * is indicated by flags in the frame control field.
++ *
++ * From IEEE 802.11-2024 section 9.3.4.3:
++ *  - Next TBTT field may be 0 or 3 bytes
++ *  - Short SSID field may be 0 or 4 bytes
++ *  - Access Network Options (ANO) field may be 0 or 1 byte
++ */
++static inline size_t
++ieee80211_s1g_optional_len(__le16 fc)
++{
++	size_t len = 0;
++
++	if (ieee80211_s1g_has_next_tbtt(fc))
++		len += 3;
++
++	if (ieee80211_s1g_has_cssid(fc))
++		len += 4;
++
++	if (ieee80211_s1g_has_ano(fc))
++		len += 1;
++
++	return len;
++}
++
+ #define IEEE80211_TWT_CONTROL_NDP			BIT(0)
+ #define IEEE80211_TWT_CONTROL_RESP_MODE			BIT(1)
+ #define IEEE80211_TWT_CONTROL_NEG_TYPE_BROADCAST	BIT(3)
+diff --git a/net/mac80211/mlme.c b/net/mac80211/mlme.c
+index 8fa9b9dd46118..16bb3db67eaac 100644
+--- a/net/mac80211/mlme.c
++++ b/net/mac80211/mlme.c
+@@ -6728,11 +6728,8 @@ static void ieee80211_rx_mgmt_beacon(struct ieee80211_link_data *link,
+ 	bssid = ieee80211_get_bssid(hdr, len, sdata->vif.type);
+ 	if (ieee80211_is_s1g_beacon(mgmt->frame_control)) {
+ 		struct ieee80211_ext *ext = (void *) mgmt;
+-
+-		if (ieee80211_is_s1g_short_beacon(ext->frame_control))
+-			variable = ext->u.s1g_short_beacon.variable;
+-		else
+-			variable = ext->u.s1g_beacon.variable;
++		variable = ext->u.s1g_beacon.variable +
++			   ieee80211_s1g_optional_len(ext->frame_control);
+ 	}
+ 
+ 	baselen = (u8 *) variable - (u8 *) mgmt;
+diff --git a/net/mac80211/scan.c b/net/mac80211/scan.c
+index adb88c06b5982..ce6d5857214eb 100644
+--- a/net/mac80211/scan.c
++++ b/net/mac80211/scan.c
+@@ -260,6 +260,7 @@ void ieee80211_scan_rx(struct ieee80211_local *local, struct sk_buff *skb)
+ 	struct ieee80211_mgmt *mgmt = (void *)skb->data;
+ 	struct ieee80211_bss *bss;
+ 	struct ieee80211_channel *channel;
++	struct ieee80211_ext *ext;
+ 	size_t min_hdr_len = offsetof(struct ieee80211_mgmt,
+ 				      u.probe_resp.variable);
+ 
+@@ -269,12 +270,10 @@ void ieee80211_scan_rx(struct ieee80211_local *local, struct sk_buff *skb)
+ 		return;
+ 
+ 	if (ieee80211_is_s1g_beacon(mgmt->frame_control)) {
+-		if (ieee80211_is_s1g_short_beacon(mgmt->frame_control))
+-			min_hdr_len = offsetof(struct ieee80211_ext,
+-					       u.s1g_short_beacon.variable);
+-		else
+-			min_hdr_len = offsetof(struct ieee80211_ext,
+-					       u.s1g_beacon);
++		ext = (struct ieee80211_ext *)mgmt;
++		min_hdr_len =
++			offsetof(struct ieee80211_ext, u.s1g_beacon.variable) +
++			ieee80211_s1g_optional_len(ext->frame_control);
+ 	}
+ 
+ 	if (skb->len < min_hdr_len)
+diff --git a/net/wireless/scan.c b/net/wireless/scan.c
+index f0dd1f448d4d4..d80ab1725f28d 100644
+--- a/net/wireless/scan.c
++++ b/net/wireless/scan.c
+@@ -3213,6 +3213,7 @@ cfg80211_inform_bss_frame_data(struct wiphy *wiphy,
+ 	const u8 *ie;
+ 	size_t ielen;
+ 	u64 tsf;
++	size_t s1g_optional_len;
+ 
+ 	if (WARN_ON(!mgmt))
+ 		return NULL;
+@@ -3227,12 +3228,11 @@ cfg80211_inform_bss_frame_data(struct wiphy *wiphy,
+ 
+ 	if (ieee80211_is_s1g_beacon(mgmt->frame_control)) {
+ 		ext = (void *) mgmt;
+-		if (ieee80211_is_s1g_short_beacon(mgmt->frame_control))
+-			min_hdr_len = offsetof(struct ieee80211_ext,
+-					       u.s1g_short_beacon.variable);
+-		else
+-			min_hdr_len = offsetof(struct ieee80211_ext,
+-					       u.s1g_beacon.variable);
++		s1g_optional_len =
++			ieee80211_s1g_optional_len(ext->frame_control);
++		min_hdr_len =
++			offsetof(struct ieee80211_ext, u.s1g_beacon.variable) +
++			s1g_optional_len;
+ 	} else {
+ 		/* same for beacons */
+ 		min_hdr_len = offsetof(struct ieee80211_mgmt,
+@@ -3248,11 +3248,7 @@ cfg80211_inform_bss_frame_data(struct wiphy *wiphy,
+ 		const struct ieee80211_s1g_bcn_compat_ie *compat;
+ 		const struct element *elem;
+ 
+-		if (ieee80211_is_s1g_short_beacon(mgmt->frame_control))
+-			ie = ext->u.s1g_short_beacon.variable;
+-		else
+-			ie = ext->u.s1g_beacon.variable;
+-
++		ie = ext->u.s1g_beacon.variable + s1g_optional_len;
+ 		elem = cfg80211_find_elem(WLAN_EID_S1G_BCN_COMPAT, ie, ielen);
+ 		if (!elem)
+ 			return NULL;
 -- 
 2.39.5
 
