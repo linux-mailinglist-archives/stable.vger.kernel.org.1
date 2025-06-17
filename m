@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-153738-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153742-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 79F34ADD638
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:31:18 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 054F8ADD630
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:30:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D25ED17FB0B
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:22:19 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1C65540503E
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:22:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2FCB02DFF34;
-	Tue, 17 Jun 2025 16:15:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 849722E8DE7;
+	Tue, 17 Jun 2025 16:15:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2XuoD6li"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e29gnciS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDBCA1F37A1;
-	Tue, 17 Jun 2025 16:15:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F2DA23771C;
+	Tue, 17 Jun 2025 16:15:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750176937; cv=none; b=tj02P0k20zAmlX+zc6IZzFLAhToZ0DUZoLmA5bEMOF68DhF5MaNO/Jm4FrR0ghGmAun3ctB48Q4tsmrsGP314crdufA5WOljq5uI/tYfO5Efrk0ybTSPTZZsz4+inTObQggCdlZPbABcXLwiJ4DxvDz//PgwdDCVsx78Jc9TV1w=
+	t=1750176950; cv=none; b=t3e6s0CO9rSW/brJPK6W5sRSeeGT6uA08lG/RpCEAl4vBCYu3Jp5BsFV2DiwxHfJgOOUo7xJKYMjt2k8tr/lOZMKI6OBao8/kFKk8YKbeNfHQJtA8Y8fLz9jIGU+kCzc2Q9MXqsl9rn1XZ0B0yhGVrvBBq2RGWhkXAjJ/QK964M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750176937; c=relaxed/simple;
-	bh=jOePu1nYz0favQk/p+cT+fsBHgu+b4HLluMFSqVMAOI=;
+	s=arc-20240116; t=1750176950; c=relaxed/simple;
+	bh=Ll+YynXPgO/mQI6p8/Rq75uW0OOJkrFTtwcceWoOwBw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ws29VelDUaWqye1DrG6ll97LNhxJxn+/n5QJjNH4FfSUu9v0Y5GOTE7Ci/X5rYJbbbeMUfoze3kcureS4UbTPb0SnnSgNDtdPkp4JEa3Ze4EcGL2oWnQ3Ne2PlXrFq7wA6JFweq/wm+aCUNg6T4kGSCdIJwzU5pGYeVlGiE+IMc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2XuoD6li; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E007C4CEE7;
-	Tue, 17 Jun 2025 16:15:36 +0000 (UTC)
+	 MIME-Version; b=YPn06Ubt8RGVS5KJ+pu39Z7fk06I3KI4Sbwzh1CB7Xre8EVKHsrmUPUaRcmHoZ8IGpWIHdinUr3lEPjGW/w9npKSP1n3lTWFgu+HTiW3p0zczXnhIQR3FRsym6S2Y3BWa20AFtgED1oFsUK99K6kdtHi0ZsQPM8I8SK2azlFmX8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e29gnciS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4BD50C4CEE3;
+	Tue, 17 Jun 2025 16:15:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750176936;
-	bh=jOePu1nYz0favQk/p+cT+fsBHgu+b4HLluMFSqVMAOI=;
+	s=korg; t=1750176949;
+	bh=Ll+YynXPgO/mQI6p8/Rq75uW0OOJkrFTtwcceWoOwBw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2XuoD6lio/L+6a3ixc+o/WAXxqYeEbBuqkKfjHzL42dp3GNuMuu9HQWfkAC0IFy6b
-	 oE9JDBtS8y3E1vgAHQDsR1cVvbjbl6eWKjXUpbUZnvJtvaxDo3Wy0CNGtPyDNHRqqI
-	 1y/mtsUyGouDuABucGNGasl2O97p5Q/PbIwDcX+k=
+	b=e29gnciSgUoaHZT3/3WQyE+AO3bOPUQEwMq8YQRFNbb8T7WRyy6BOVg++kbkSVSxy
+	 7I1M/GXuUW7oT7bHOZm3lsMpbM0UuP3Q2tEuR7BFY1w02qZUltZbXLhQolU+/CAIHX
+	 jS6D6I915+UmsCR3w1yTCKVHLpxa4kfe99h3ircI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniel Wagner <wagi@kernel.org>,
-	Christoph Hellwig <hch@lst.de>,
+	Ravi Bangoria <ravi.bangoria@amd.com>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 332/356] nvmet-fcloop: access fcpreq only when holding reqlock
-Date: Tue, 17 Jun 2025 17:27:27 +0200
-Message-ID: <20250617152351.506171884@linuxfoundation.org>
+Subject: [PATCH 6.6 333/356] perf: Ensure bpf_perf_link path is properly serialized
+Date: Tue, 17 Jun 2025 17:27:28 +0200
+Message-ID: <20250617152351.544910391@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250617152338.212798615@linuxfoundation.org>
 References: <20250617152338.212798615@linuxfoundation.org>
@@ -66,93 +66,96 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Daniel Wagner <wagi@kernel.org>
+From: Peter Zijlstra <peterz@infradead.org>
 
-[ Upstream commit 47a827cd7929d0550c3496d70b417fcb5649b27b ]
+[ Upstream commit 7ed9138a72829d2035ecbd8dbd35b1bc3c137c40 ]
 
-The abort handling logic expects that the state and the fcpreq are only
-accessed when holding the reqlock lock.
+Ravi reported that the bpf_perf_link_attach() usage of
+perf_event_set_bpf_prog() is not serialized by ctx->mutex, unlike the
+PERF_EVENT_IOC_SET_BPF case.
 
-While at it, only handle the aborts in the abort handler.
-
-Signed-off-by: Daniel Wagner <wagi@kernel.org>
-Signed-off-by: Christoph Hellwig <hch@lst.de>
+Reported-by: Ravi Bangoria <ravi.bangoria@amd.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Reviewed-by: Ravi Bangoria <ravi.bangoria@amd.com>
+Link: https://lkml.kernel.org/r/20250307193305.486326750@infradead.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nvme/target/fcloop.c | 31 ++++++++++++++++---------------
- 1 file changed, 16 insertions(+), 15 deletions(-)
+ kernel/events/core.c | 34 ++++++++++++++++++++++++++++++----
+ 1 file changed, 30 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/nvme/target/fcloop.c b/drivers/nvme/target/fcloop.c
-index 4b35bdcac185f..aeeb7455fc2e7 100644
---- a/drivers/nvme/target/fcloop.c
-+++ b/drivers/nvme/target/fcloop.c
-@@ -613,12 +613,13 @@ fcloop_fcp_recv_work(struct work_struct *work)
+diff --git a/kernel/events/core.c b/kernel/events/core.c
+index 6460f79280ed2..563f39518f7fe 100644
+--- a/kernel/events/core.c
++++ b/kernel/events/core.c
+@@ -5913,6 +5913,9 @@ static int perf_event_set_output(struct perf_event *event,
+ static int perf_event_set_filter(struct perf_event *event, void __user *arg);
+ static int perf_copy_attr(struct perf_event_attr __user *uattr,
+ 			  struct perf_event_attr *attr);
++static int __perf_event_set_bpf_prog(struct perf_event *event,
++				     struct bpf_prog *prog,
++				     u64 bpf_cookie);
+ 
+ static long _perf_ioctl(struct perf_event *event, unsigned int cmd, unsigned long arg)
  {
- 	struct fcloop_fcpreq *tfcp_req =
- 		container_of(work, struct fcloop_fcpreq, fcp_rcv_work);
--	struct nvmefc_fcp_req *fcpreq = tfcp_req->fcpreq;
-+	struct nvmefc_fcp_req *fcpreq;
- 	unsigned long flags;
- 	int ret = 0;
- 	bool aborted = false;
+@@ -5981,7 +5984,7 @@ static long _perf_ioctl(struct perf_event *event, unsigned int cmd, unsigned lon
+ 		if (IS_ERR(prog))
+ 			return PTR_ERR(prog);
  
- 	spin_lock_irqsave(&tfcp_req->reqlock, flags);
-+	fcpreq = tfcp_req->fcpreq;
- 	switch (tfcp_req->inistate) {
- 	case INI_IO_START:
- 		tfcp_req->inistate = INI_IO_ACTIVE;
-@@ -633,16 +634,19 @@ fcloop_fcp_recv_work(struct work_struct *work)
- 	}
- 	spin_unlock_irqrestore(&tfcp_req->reqlock, flags);
- 
--	if (unlikely(aborted))
--		ret = -ECANCELED;
--	else {
--		if (likely(!check_for_drop(tfcp_req)))
--			ret = nvmet_fc_rcv_fcp_req(tfcp_req->tport->targetport,
--				&tfcp_req->tgt_fcp_req,
--				fcpreq->cmdaddr, fcpreq->cmdlen);
--		else
--			pr_info("%s: dropped command ********\n", __func__);
-+	if (unlikely(aborted)) {
-+		/* the abort handler will call fcloop_call_host_done */
-+		return;
-+	}
-+
-+	if (unlikely(check_for_drop(tfcp_req))) {
-+		pr_info("%s: dropped command ********\n", __func__);
-+		return;
- 	}
-+
-+	ret = nvmet_fc_rcv_fcp_req(tfcp_req->tport->targetport,
-+				   &tfcp_req->tgt_fcp_req,
-+				   fcpreq->cmdaddr, fcpreq->cmdlen);
- 	if (ret)
- 		fcloop_call_host_done(fcpreq, tfcp_req, ret);
+-		err = perf_event_set_bpf_prog(event, prog, 0);
++		err = __perf_event_set_bpf_prog(event, prog, 0);
+ 		if (err) {
+ 			bpf_prog_put(prog);
+ 			return err;
+@@ -10583,8 +10586,9 @@ static inline bool perf_event_is_tracing(struct perf_event *event)
+ 	return false;
  }
-@@ -657,9 +661,10 @@ fcloop_fcp_abort_recv_work(struct work_struct *work)
- 	unsigned long flags;
  
- 	spin_lock_irqsave(&tfcp_req->reqlock, flags);
--	fcpreq = tfcp_req->fcpreq;
- 	switch (tfcp_req->inistate) {
- 	case INI_IO_ABORTED:
-+		fcpreq = tfcp_req->fcpreq;
-+		tfcp_req->fcpreq = NULL;
- 		break;
- 	case INI_IO_COMPLETED:
- 		completed = true;
-@@ -681,10 +686,6 @@ fcloop_fcp_abort_recv_work(struct work_struct *work)
- 		nvmet_fc_rcv_fcp_abort(tfcp_req->tport->targetport,
- 					&tfcp_req->tgt_fcp_req);
+-int perf_event_set_bpf_prog(struct perf_event *event, struct bpf_prog *prog,
+-			    u64 bpf_cookie)
++static int __perf_event_set_bpf_prog(struct perf_event *event,
++				     struct bpf_prog *prog,
++				     u64 bpf_cookie)
+ {
+ 	bool is_kprobe, is_uprobe, is_tracepoint, is_syscall_tp;
  
--	spin_lock_irqsave(&tfcp_req->reqlock, flags);
--	tfcp_req->fcpreq = NULL;
--	spin_unlock_irqrestore(&tfcp_req->reqlock, flags);
--
- 	fcloop_call_host_done(fcpreq, tfcp_req, -ECANCELED);
- 	/* call_host_done releases reference for abort downcall */
+@@ -10622,6 +10626,20 @@ int perf_event_set_bpf_prog(struct perf_event *event, struct bpf_prog *prog,
+ 	return perf_event_attach_bpf_prog(event, prog, bpf_cookie);
  }
+ 
++int perf_event_set_bpf_prog(struct perf_event *event,
++			    struct bpf_prog *prog,
++			    u64 bpf_cookie)
++{
++	struct perf_event_context *ctx;
++	int ret;
++
++	ctx = perf_event_ctx_lock(event);
++	ret = __perf_event_set_bpf_prog(event, prog, bpf_cookie);
++	perf_event_ctx_unlock(event, ctx);
++
++	return ret;
++}
++
+ void perf_event_free_bpf_prog(struct perf_event *event)
+ {
+ 	if (!perf_event_is_tracing(event)) {
+@@ -10641,7 +10659,15 @@ static void perf_event_free_filter(struct perf_event *event)
+ {
+ }
+ 
+-int perf_event_set_bpf_prog(struct perf_event *event, struct bpf_prog *prog,
++static int __perf_event_set_bpf_prog(struct perf_event *event,
++				     struct bpf_prog *prog,
++				     u64 bpf_cookie)
++{
++	return -ENOENT;
++}
++
++int perf_event_set_bpf_prog(struct perf_event *event,
++			    struct bpf_prog *prog,
+ 			    u64 bpf_cookie)
+ {
+ 	return -ENOENT;
 -- 
 2.39.5
 
