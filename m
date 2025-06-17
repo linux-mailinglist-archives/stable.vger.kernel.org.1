@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-154212-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153812-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id ADBD5ADD930
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 19:03:41 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id CEA83ADD68B
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:35:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 15EEA19466CF
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:45:33 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 14D0A4A0C9F
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:25:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 555BF2EA758;
-	Tue, 17 Jun 2025 16:41:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 320462EE279;
+	Tue, 17 Jun 2025 16:19:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V+byQ53z"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Nvf8Fyl7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 100402EA72C;
-	Tue, 17 Jun 2025 16:41:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC5D4235071;
+	Tue, 17 Jun 2025 16:19:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750178465; cv=none; b=g4FcZtl/IL0Xnu5LywaE+7gJH05UFchwbut7MH/U3PNHeWSrK58XJa11f24mXaTcATcrij95zIQ8jk2a2zNbqN36z3krjCCrjVnU7TqbAyhgabKdVwVV8khbu0nHTYpMDqpn62Vwkix7k/fkgFDbSsK3RMci0zEqlw6nFn4tMaM=
+	t=1750177176; cv=none; b=qFn+grQYJwn+L8KD/tOsLPEWD7HC3+NXM4TTZ2zYM5tyr2+CxNjCCCdQGdmrOmUQwbuj6BX6pdCORUFhANHt6OrePTkzBHsGViE3ym1vinP1B4poB40Y7cr7dK3bOeV5BG/y6MjuakpdrDz+SRsas5/7+5VJr0zkRSiEvzNvYgM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750178465; c=relaxed/simple;
-	bh=awFXpan8vcccc+tshElBr8CYJlKZCndFVlK6S+oLVks=;
+	s=arc-20240116; t=1750177176; c=relaxed/simple;
+	bh=DvCp6X/wyQm4He1v4rBC3o7S1B4EryhpMc2b3NR/pco=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YIqik9NBuNsZWJOVH81v4noV3ANcQ8u9ZzClFbg+nQdgGGAvIu+PDPCqUncrL9AvU7/7Q9OYABX8ZVH1ned1JHOchT0H29P/3BPBtZOtS95ybjxFo9eTo0HourYmZyGwHm2hLeK1G9cP4rsuDKQJmfZVDjFM2rxrDQn3NoYd2/A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V+byQ53z; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78FE6C4CEE3;
-	Tue, 17 Jun 2025 16:41:04 +0000 (UTC)
+	 MIME-Version; b=baeM2NPMWOV0ADVDOu0nLu45cR8RLAiJcKd4HERbnzuYPyLn6avD6Z+48cL/yff9FUmaXaxtvfdv5FLXU0CSaCiIKBuoFQ2gMb3E+UrrfnDHKDzG1TMK7IanNVteeSfTnL5alfleFmEFA8XGdYXYOaW9ac+m834l6LxOJ/Bjv7A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Nvf8Fyl7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C070C4CEE7;
+	Tue, 17 Jun 2025 16:19:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750178464;
-	bh=awFXpan8vcccc+tshElBr8CYJlKZCndFVlK6S+oLVks=;
+	s=korg; t=1750177175;
+	bh=DvCp6X/wyQm4He1v4rBC3o7S1B4EryhpMc2b3NR/pco=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=V+byQ53z8F6fM6TQKkB/9gb2RAz2Bu/yZY7SVvJul+v5whnahtctJnT3cHZLxvhLE
-	 aV0abP927cE3wWWzd81RLmxCD8nWTJfDoplh9kC3vM2UIk6Q7UhLkuuc0c5WJp6cf6
-	 tgBUOl76wYaerEuEUeXCN5ZD/o0FZ0NyEgaHVgwE=
+	b=Nvf8Fyl7h/rccGGIGASdv0f02m1wscYJuWiUmRHufES9lI0iua4xLC4YejQqbwD4P
+	 b+wX7K9qquhLhqQHyXfsXulhKvlogJTJJI1RRszMuyAJZgfV+dt/xzVd3UCXcGjC6L
+	 XlnVM3FU4+u3wkQYZhZUhqcxcPx4ZFNhCkJyGLmQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Stefano Stabellini <stefano.stabellini@amd.com>,
-	Juergen Gross <jgross@suse.com>
-Subject: [PATCH 6.12 503/512] xen/arm: call uaccess_ttbr0_enable for dm_op hypercall
-Date: Tue, 17 Jun 2025 17:27:49 +0200
-Message-ID: <20250617152440.004782545@linuxfoundation.org>
+	Oliver Neukum <oneukum@suse.com>,
+	Andrew Lunn <andrew@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>
+Subject: [PATCH 6.6 355/356] net: usb: aqc111: debug info before sanitation
+Date: Tue, 17 Jun 2025 17:27:50 +0200
+Message-ID: <20250617152352.428374074@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
-References: <20250617152419.512865572@linuxfoundation.org>
+In-Reply-To: <20250617152338.212798615@linuxfoundation.org>
+References: <20250617152338.212798615@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,68 +62,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stefano Stabellini <stefano.stabellini@amd.com>
+From: Oliver Neukum <oneukum@suse.com>
 
-commit 7f9bbc1140ff8796230bc2634055763e271fd692 upstream.
+commit d3faab9b5a6a0477d69c38bd11c43aa5e936f929 upstream.
 
-dm_op hypercalls might come from userspace and pass memory addresses as
-parameters. The memory addresses typically correspond to buffers
-allocated in userspace to hold extra hypercall parameters.
+If we sanitize error returns, the debug statements need
+to come before that so that we don't lose information.
 
-On ARM, when CONFIG_ARM64_SW_TTBR0_PAN is enabled, they might not be
-accessible by Xen, as a result ioreq hypercalls might fail. See the
-existing comment in arch/arm64/xen/hypercall.S regarding privcmd_call
-for reference.
-
-For privcmd_call, Linux calls uaccess_ttbr0_enable before issuing the
-hypercall thanks to commit 9cf09d68b89a. We need to do the same for
-dm_op. This resolves the problem.
-
-Cc: stable@kernel.org
-Fixes: 9cf09d68b89a ("arm64: xen: Enable user access before a privcmd hvc call")
-Signed-off-by: Stefano Stabellini <stefano.stabellini@amd.com>
-Reviewed-by: Juergen Gross <jgross@suse.com>
-Message-ID: <alpine.DEB.2.22.394.2505121446370.8380@ubuntu-linux-20-04-desktop>
-Signed-off-by: Juergen Gross <jgross@suse.com>
+Signed-off-by: Oliver Neukum <oneukum@suse.com>
+Fixes: 405b0d610745 ("net: usb: aqc111: fix error handling of usbnet read calls")
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/xen/hypercall.S |   21 ++++++++++++++++++++-
- 1 file changed, 20 insertions(+), 1 deletion(-)
+ drivers/net/usb/aqc111.c |    8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
---- a/arch/arm64/xen/hypercall.S
-+++ b/arch/arm64/xen/hypercall.S
-@@ -83,7 +83,26 @@ HYPERCALL3(vcpu_op);
- HYPERCALL1(platform_op_raw);
- HYPERCALL2(multicall);
- HYPERCALL2(vm_assist);
--HYPERCALL3(dm_op);
-+
-+SYM_FUNC_START(HYPERVISOR_dm_op)
-+	mov x16, #__HYPERVISOR_dm_op;	\
-+	/*
-+	 * dm_op hypercalls are issued by the userspace. The kernel needs to
-+	 * enable access to TTBR0_EL1 as the hypervisor would issue stage 1
-+	 * translations to user memory via AT instructions. Since AT
-+	 * instructions are not affected by the PAN bit (ARMv8.1), we only
-+	 * need the explicit uaccess_enable/disable if the TTBR0 PAN emulation
-+	 * is enabled (it implies that hardware UAO and PAN disabled).
-+	 */
-+	uaccess_ttbr0_enable x6, x7, x8
-+	hvc XEN_IMM
-+
-+	/*
-+	 * Disable userspace access from kernel once the hyp call completed.
-+	 */
-+	uaccess_ttbr0_disable x6, x7
-+	ret
-+SYM_FUNC_END(HYPERVISOR_dm_op);
+--- a/drivers/net/usb/aqc111.c
++++ b/drivers/net/usb/aqc111.c
+@@ -31,11 +31,11 @@ static int aqc111_read_cmd_nopm(struct u
+ 				   USB_RECIP_DEVICE, value, index, data, size);
  
- SYM_FUNC_START(privcmd_call)
- 	mov x16, x0
+ 	if (unlikely(ret < size)) {
+-		ret = ret < 0 ? ret : -ENODATA;
+-
+ 		netdev_warn(dev->net,
+ 			    "Failed to read(0x%x) reg index 0x%04x: %d\n",
+ 			    cmd, index, ret);
++
++		ret = ret < 0 ? ret : -ENODATA;
+ 	}
+ 
+ 	return ret;
+@@ -50,11 +50,11 @@ static int aqc111_read_cmd(struct usbnet
+ 			      USB_RECIP_DEVICE, value, index, data, size);
+ 
+ 	if (unlikely(ret < size)) {
+-		ret = ret < 0 ? ret : -ENODATA;
+-
+ 		netdev_warn(dev->net,
+ 			    "Failed to read(0x%x) reg index 0x%04x: %d\n",
+ 			    cmd, index, ret);
++
++		ret = ret < 0 ? ret : -ENODATA;
+ 	}
+ 
+ 	return ret;
 
 
 
