@@ -1,62 +1,56 @@
-Return-Path: <stable+bounces-154132-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153395-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 53A54ADD872
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:55:57 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7BDF1ADD4A1
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:12:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7C51A4A5B8E
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:43:06 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 051F3189C691
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:01:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C430F2E264E;
-	Tue, 17 Jun 2025 16:36:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B02692ED16E;
+	Tue, 17 Jun 2025 15:57:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hbOMWUrA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EdiACq8f"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 810FA2135A0;
-	Tue, 17 Jun 2025 16:36:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EC822ED17C;
+	Tue, 17 Jun 2025 15:57:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750178204; cv=none; b=GOQtvRBgrAWfvh48uWE0fknpOzW31fPANt+kEbi5GrYZJBdDD5E3UAxuVneB7BJXfnAmuoxv5HYkwy6OKJBHNaa4TBFCU53qkaD4u3aF7Bq3dKv/T12t3myVQuWSH3bl8k9oicXiolktUaO9qXZ3EYlQSH7ONEGke/3BOisePZg=
+	t=1750175822; cv=none; b=TU9qnXLa9qa8J/XVzzztpDr9tppYeA+GT1Gvr/+oDNN0xHZjGwZbYRZwOfu/zADifZBLsWrHR/53ZIpJvcvKitLRcFeERw9dPQPLcpxBOp1FT1f1Nys5PTZr8LmVykYnsFBmEK8ez+t4eeE6aLrHAjeM1EgdAFqkc8JHb8Cn24o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750178204; c=relaxed/simple;
-	bh=4FMsVL4QFVFmJqN+mX0ocYQzgzlS+p1xIPZ1sWYbu/M=;
+	s=arc-20240116; t=1750175822; c=relaxed/simple;
+	bh=+ZTW2jqkmuH0ePxMQZbPruX/HNk9P/VkRuqFeQ7IGEM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=T5CjH2h39IEdp102o0G/ZVd3Jr0DWoDPnnYwY39oj09CwdxZR3Z9jb/yXxy95Z3MZT3oeV7eYHyzNYKVPWPnMP4RSR5pUU34WRsdfKd7C/szIezvZp7MgD6hEdGZs0wynfNjbxgTfGm/77rULPd6TreSApQoti9jrMEd1SV5u9E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hbOMWUrA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08446C4CEE3;
-	Tue, 17 Jun 2025 16:36:43 +0000 (UTC)
+	 MIME-Version; b=rq/NmMn8ORPyzDm24KOcwUMZEmVLEEC07nQXOVh+crpARyx+A29UVL4FDzXagJo/5izpO0dLE5dL3XotJSF761fGKAkNk6DsLDOwlt+DETrZrcIouZ99sjAKtXe7jYfD9vTl19BxjZxRaMO99g3JByuSGWT1gWMZJmVxNbvhXy0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EdiACq8f; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED4AAC4CEE3;
+	Tue, 17 Jun 2025 15:57:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750178204;
-	bh=4FMsVL4QFVFmJqN+mX0ocYQzgzlS+p1xIPZ1sWYbu/M=;
+	s=korg; t=1750175822;
+	bh=+ZTW2jqkmuH0ePxMQZbPruX/HNk9P/VkRuqFeQ7IGEM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hbOMWUrARey7zz1bz/D2zlml54GK++uy91TNgYEu1zVUTKnQYG+jhS5IdYjA1UzqE
-	 xYPw50xmKYtBRU6I9o8ft9T+8Op4R6kYrncn2vCyQ0dfyDBDhqUY6r4Y2Z+otLOjx9
-	 HiShic1MMl6qpVxfbs/0vqvENbMsFO1zQluLL6qI=
+	b=EdiACq8faAk0DWLiHltwsp/fCgPAN+DSb6VKa6eKPrbqbOBN8oEE1YcK77bKxMsWA
+	 z6Bk0PIS6blKbSgmDjbg/HPAWzlzo6aqE3oDOZOIFs/A0QAMSW2gMZFOlbS3dPCn2k
+	 ur0GmzvLm2EMc70+a4M8q83nsobIZ2g/Hm8vTi1A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ingo Molnar <mingo@kernel.org>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Ian Rogers <irogers@google.com>,
-	James Clark <james.clark@linaro.org>,
-	Jiri Olsa <jolsa@kernel.org>,
-	Kan Liang <kan.liang@linux.intel.com>,
-	Namhyung Kim <namhyung@kernel.org>,
-	Arnaldo Carvalho de Melo <acme@redhat.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Linus Walleij <linus.walleij@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 424/780] perf ui browser hists: Set actions->thread before calling do_zoom_thread()
+Subject: [PATCH 6.12 166/512] pinctrl: at91: Fix possible out-of-boundary access
 Date: Tue, 17 Jun 2025 17:22:12 +0200
-Message-ID: <20250617152508.737469192@linuxfoundation.org>
+Message-ID: <20250617152426.345963481@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
-References: <20250617152451.485330293@linuxfoundation.org>
+In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
+References: <20250617152419.512865572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,63 +62,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnaldo Carvalho de Melo <acme@redhat.com>
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-[ Upstream commit 1741189d843a1d5ef38538bc52a3760e2e46cb2e ]
+[ Upstream commit 762ef7d1e6eefad9896560bfcb9bcf7f1b6df9c1 ]
 
-In 7cecb7fe8388d5c3 ("perf hists: Move sort__has_comm into struct
-perf_hpp_list") it assumes that act->thread is set prior to calling
-do_zoom_thread().
+at91_gpio_probe() doesn't check that given OF alias is not available or
+something went wrong when trying to get it. This might have consequences
+when accessing gpio_chips array with that value as an index. Note, that
+BUG() can be compiled out and hence won't actually perform the required
+checks.
 
-This doesn't happen when we use ESC or the Left arrow key to Zoom out of
-a specific thread, making this operation not to work and we get stuck
-into the thread zoom.
-
-In 6422184b087ff435 ("perf hists browser: Simplify zooming code using
-pstack_peek()") it says no need to set actions->thread, and at that
-point that was true, but in 7cecb7fe8388d5c3 a actions->thread == NULL
-check was added before the zoom out of thread could kick in.
-
-We can zoom out using the alternative 't' thread zoom toggle hotkey to
-finally set actions->thread before calling do_zoom_thread() and zoom
-out, but lets also fix the ESC/Zoom out of thread case.
-
-Fixes: 7cecb7fe8388d5c3 ("perf hists: Move sort__has_comm into struct perf_hpp_list")
-Reported-by: Ingo Molnar <mingo@kernel.org>
-Tested-by: Ingo Molnar <mingo@kernel.org>
-Cc: Adrian Hunter <adrian.hunter@intel.com>
-Cc: Ian Rogers <irogers@google.com>
-Cc: James Clark <james.clark@linaro.org>
-Cc: Jiri Olsa <jolsa@kernel.org>
-Cc: Kan Liang <kan.liang@linux.intel.com>
-Cc: Namhyung Kim <namhyung@kernel.org>
-Link: https://lore.kernel.org/r/Z_TYux5fUg2pW-pF@gmail.com
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Fixes: 6732ae5cb47c ("ARM: at91: add pinctrl support")
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Closes: https://lore.kernel.org/r/202505052343.UHF1Zo93-lkp@intel.com/
+Link: https://lore.kernel.org/20250508200807.1384558-1-andriy.shevchenko@linux.intel.com
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/ui/browsers/hists.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/pinctrl/pinctrl-at91.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/tools/perf/ui/browsers/hists.c b/tools/perf/ui/browsers/hists.c
-index 35c10509b797f..992d1c822a97a 100644
---- a/tools/perf/ui/browsers/hists.c
-+++ b/tools/perf/ui/browsers/hists.c
-@@ -3274,10 +3274,10 @@ static int evsel__hists_browse(struct evsel *evsel, int nr_events, const char *h
- 				/*
- 				 * No need to set actions->dso here since
- 				 * it's just to remove the current filter.
--				 * Ditto for thread below.
- 				 */
- 				do_zoom_dso(browser, actions);
- 			} else if (top == &browser->hists->thread_filter) {
-+				actions->thread = thread;
- 				do_zoom_thread(browser, actions);
- 			} else if (top == &browser->hists->socket_filter) {
- 				do_zoom_socket(browser, actions);
+diff --git a/drivers/pinctrl/pinctrl-at91.c b/drivers/pinctrl/pinctrl-at91.c
+index 93ab277d9943c..fbe74e4ef320c 100644
+--- a/drivers/pinctrl/pinctrl-at91.c
++++ b/drivers/pinctrl/pinctrl-at91.c
+@@ -1819,12 +1819,16 @@ static int at91_gpio_probe(struct platform_device *pdev)
+ 	struct at91_gpio_chip *at91_chip = NULL;
+ 	struct gpio_chip *chip;
+ 	struct pinctrl_gpio_range *range;
++	int alias_idx;
+ 	int ret = 0;
+ 	int irq, i;
+-	int alias_idx = of_alias_get_id(np, "gpio");
+ 	uint32_t ngpio;
+ 	char **names;
+ 
++	alias_idx = of_alias_get_id(np, "gpio");
++	if (alias_idx < 0)
++		return alias_idx;
++
+ 	BUG_ON(alias_idx >= ARRAY_SIZE(gpio_chips));
+ 	if (gpio_chips[alias_idx])
+ 		return dev_err_probe(dev, -EBUSY, "%d slot is occupied.\n", alias_idx);
 -- 
 2.39.5
 
