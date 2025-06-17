@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-153069-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153072-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3660AADD228
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 17:39:50 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 66FF4ADD22C
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 17:39:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 96CEB1899617
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 15:40:05 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EECD33BE48D
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 15:39:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 759782ECD20;
-	Tue, 17 Jun 2025 15:39:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01D802ECD32;
+	Tue, 17 Jun 2025 15:39:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RB6E/ZOq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="woGMnX6F"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F8972EA487;
-	Tue, 17 Jun 2025 15:39:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B05532EB5AB;
+	Tue, 17 Jun 2025 15:39:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750174766; cv=none; b=YWXsEak1TIbY5YhMrxszXZ3rkHT7POUeRb/S76S9RZh0X4jkYvZGaKAgEodNj62kc+V5B7PzLrf1l3Vszp23upSqhq2SVNyXjRum6L3IYGwOQQfnK2jpqRNP+5k2oChe+jE0X5yJECK+vN49YVBy7UhLVLPWNozssyxEcnUrSdk=
+	t=1750174775; cv=none; b=hyIOWqpgI9obOFdfpV2I+sWSoeTiY3HkFFZXHJD/epBRIx3n722HWHLba8ke8NDFY77kCK6IOmwXnrvId5llDI1WEwbsi7ppS7AHpToprTU51kf812hvl4RsC9sv1G6S1crc1oHft41xEJGwXs+1zapVAwGsPnG3p6A849fs24E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750174766; c=relaxed/simple;
-	bh=WNPdCjdWPn5SWLUYmbdx+kRaxlWW5+5umiwsd+0PJyo=;
+	s=arc-20240116; t=1750174775; c=relaxed/simple;
+	bh=s0kD9lt1kWNi1YObZdKjnQmI/x7T6lkgn79NB4Kvqts=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=O062OjWEd/fh8YUwFprbxHXJ3qpnGU0x87ifRUdfHT/UE8pPPlDWfK9LZNUH/Hv9oFfCwaAUxhMpKD8NY7u/Smu8NZTJbT1kKpzpvX5TC/6EzXVkCHJ3dzNXAIRO+TScskZoKUosZcG4fyjfrmEdN3jMAjM7cSPVIVgJA1wYvYU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RB6E/ZOq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9288DC4CEE3;
-	Tue, 17 Jun 2025 15:39:25 +0000 (UTC)
+	 MIME-Version; b=DNq58Fp6/yWuS6P0DyLJP1RTy6pZwdnaB2mY/L/nKyFY7Vp/AQPI5oeH7iDIuX7d62apDhrcNIFNaQfnp/h9tdmEkgDUZHq9f7Fgfhjz5OZX4zBFOz688t2amJKML58rgmtUSoUzcI4qlOpA9enl77CoY8yqmr0OqQu6HGjehwo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=woGMnX6F; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E74BC4CEE3;
+	Tue, 17 Jun 2025 15:39:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750174766;
-	bh=WNPdCjdWPn5SWLUYmbdx+kRaxlWW5+5umiwsd+0PJyo=;
+	s=korg; t=1750174775;
+	bh=s0kD9lt1kWNi1YObZdKjnQmI/x7T6lkgn79NB4Kvqts=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RB6E/ZOq5ojQAgVWd2qyZ/THuuqlPQVLSzUuH7AKwOkZ/XTYBOrBKWLYBkW3/4hVK
-	 MnGlipCYP5n4cVyzJ6zWQsvIPfyHti+IzyS9aC3RoEC2Esm+YmGozo6baewStsKa+G
-	 mVW1Jd6JfaAKlQmY2CLZ/1YTNE//RvxJXIRDD0CU=
+	b=woGMnX6FzNozHEiCCQAppLNqf4qXWRjSO6zuGr2Dm0p/ukS2P4QQ/H6e3uOHgEZ30
+	 fupNVl/mcFt8XL/j50tkAUlRPc2H7KEnBfrS6D0/RvpxeDx/7xgsEwPuzHVYVggPt1
+	 suT3TVNX9Ym/AWMnthVATLm/h7CrHnVVIXiQqKNI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jaroslav Kysela <perex@perex.cz>,
-	Takashi Iwai <tiwai@suse.com>,
-	Takashi Iwai <tiwai@suse.de>,
+	Ian Forbes <ian.forbes@broadcom.com>,
+	Zack Rusin <zack.rusin@broadcom.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 058/512] ALSA: core: fix up bus match const issues.
-Date: Tue, 17 Jun 2025 17:20:24 +0200
-Message-ID: <20250617152421.897477594@linuxfoundation.org>
+Subject: [PATCH 6.12 059/512] drm/vmwgfx: Add seqno waiter for sync_files
+Date: Tue, 17 Jun 2025 17:20:25 +0200
+Message-ID: <20250617152421.946288974@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
 References: <20250617152419.512865572@linuxfoundation.org>
@@ -67,116 +66,87 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+From: Ian Forbes <ian.forbes@broadcom.com>
 
-[ Upstream commit 62f134ab190c5fd5c9f68fe638ad8e13bb8a4cb4 ]
+[ Upstream commit 0039a3b35b10d9c15d3d26320532ab56cc566750 ]
 
-In commit d69d80484598 ("driver core: have match() callback in struct
-bus_type take a const *"), the match bus callback was changed to have
-the driver be a const pointer.  Unfortunately that const attribute was
-thrown away when container_of() is called, which is not correct and was
-not caught by the compiler due to how container_of() is implemented.
-Fix this up by correctly preserving the const attribute of the driver
-passed to the bus match function which requires the hdac_driver match
-function to also take a const pointer for the driver structure.
+Because sync_files are passive waiters they do not participate in
+the processing of fences like the traditional vmw_fence_wait IOCTL.
+If userspace exclusively uses sync_files for synchronization then
+nothing in the kernel actually processes fence updates as interrupts
+for fences are masked and ignored if the kernel does not indicate to the
+SVGA device that there are active waiters.
 
-Cc: Jaroslav Kysela <perex@perex.cz>
-Cc: Takashi Iwai <tiwai@suse.com>
-Fixes: d69d80484598 ("driver core: have match() callback in struct bus_type take a const *")
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Link: https://patch.msgid.link/2025052204-hyphen-thermal-3e72@gregkh
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+This oversight results in a bug where the entire GUI can freeze waiting
+on a sync_file that will never be signalled as we've masked the interrupts
+to signal its completion. This bug is incredibly racy as any process which
+interacts with the fencing code via the 3D stack can process the stuck
+fences on behalf of the stuck process causing it to run again. Even a
+simple app like eglinfo is enough to resume the stuck process. Usually
+this bug is seen at a login screen like GDM because there are no other
+3D apps running.
+
+By adding a seqno waiter we re-enable interrupt based processing of the
+dma_fences associated with the sync_file which is signalled as part of a
+dma_fence_callback.
+
+This has likely been broken since it was initially added to the kernel in
+2017 but has gone unnoticed until mutter recently started using sync_files
+heavily over the course of 2024 as part of their explicit sync support.
+
+Fixes: c906965dee22 ("drm/vmwgfx: Add export fence to file descriptor support")
+Signed-off-by: Ian Forbes <ian.forbes@broadcom.com>
+Signed-off-by: Zack Rusin <zack.rusin@broadcom.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20250228200633.642417-1-ian.forbes@broadcom.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/sound/hdaudio.h  | 4 ++--
- sound/core/seq_device.c  | 2 +-
- sound/hda/hda_bus_type.c | 6 +++---
- sound/pci/hda/hda_bind.c | 4 ++--
- 4 files changed, 8 insertions(+), 8 deletions(-)
+ drivers/gpu/drm/vmwgfx/vmwgfx_execbuf.c | 26 +++++++++++++++++++++++++
+ 1 file changed, 26 insertions(+)
 
-diff --git a/include/sound/hdaudio.h b/include/sound/hdaudio.h
-index b098ceadbe74b..9a70048adbc06 100644
---- a/include/sound/hdaudio.h
-+++ b/include/sound/hdaudio.h
-@@ -223,7 +223,7 @@ struct hdac_driver {
- 	struct device_driver driver;
- 	int type;
- 	const struct hda_device_id *id_table;
--	int (*match)(struct hdac_device *dev, struct hdac_driver *drv);
-+	int (*match)(struct hdac_device *dev, const struct hdac_driver *drv);
- 	void (*unsol_event)(struct hdac_device *dev, unsigned int event);
- 
- 	/* fields used by ext bus APIs */
-@@ -235,7 +235,7 @@ struct hdac_driver {
- #define drv_to_hdac_driver(_drv) container_of(_drv, struct hdac_driver, driver)
- 
- const struct hda_device_id *
--hdac_get_device_id(struct hdac_device *hdev, struct hdac_driver *drv);
-+hdac_get_device_id(struct hdac_device *hdev, const struct hdac_driver *drv);
- 
- /*
-  * Bus verb operators
-diff --git a/sound/core/seq_device.c b/sound/core/seq_device.c
-index 4492be5d2317c..bac9f86037342 100644
---- a/sound/core/seq_device.c
-+++ b/sound/core/seq_device.c
-@@ -43,7 +43,7 @@ MODULE_LICENSE("GPL");
- static int snd_seq_bus_match(struct device *dev, const struct device_driver *drv)
- {
- 	struct snd_seq_device *sdev = to_seq_dev(dev);
--	struct snd_seq_driver *sdrv = to_seq_drv(drv);
-+	const struct snd_seq_driver *sdrv = to_seq_drv(drv);
- 
- 	return strcmp(sdrv->id, sdev->id) == 0 &&
- 		sdrv->argsize == sdev->argsize;
-diff --git a/sound/hda/hda_bus_type.c b/sound/hda/hda_bus_type.c
-index 7545ace7b0ee4..eb72a7af2e56e 100644
---- a/sound/hda/hda_bus_type.c
-+++ b/sound/hda/hda_bus_type.c
-@@ -21,7 +21,7 @@ MODULE_LICENSE("GPL");
-  * driver id_table and returns the matching device id entry.
-  */
- const struct hda_device_id *
--hdac_get_device_id(struct hdac_device *hdev, struct hdac_driver *drv)
-+hdac_get_device_id(struct hdac_device *hdev, const struct hdac_driver *drv)
- {
- 	if (drv->id_table) {
- 		const struct hda_device_id *id  = drv->id_table;
-@@ -38,7 +38,7 @@ hdac_get_device_id(struct hdac_device *hdev, struct hdac_driver *drv)
+diff --git a/drivers/gpu/drm/vmwgfx/vmwgfx_execbuf.c b/drivers/gpu/drm/vmwgfx/vmwgfx_execbuf.c
+index 2e52d73eba484..ea741bc4ac3fc 100644
+--- a/drivers/gpu/drm/vmwgfx/vmwgfx_execbuf.c
++++ b/drivers/gpu/drm/vmwgfx/vmwgfx_execbuf.c
+@@ -4086,6 +4086,23 @@ static int vmw_execbuf_tie_context(struct vmw_private *dev_priv,
+ 	return 0;
  }
- EXPORT_SYMBOL_GPL(hdac_get_device_id);
  
--static int hdac_codec_match(struct hdac_device *dev, struct hdac_driver *drv)
-+static int hdac_codec_match(struct hdac_device *dev, const struct hdac_driver *drv)
- {
- 	if (hdac_get_device_id(dev, drv))
- 		return 1;
-@@ -49,7 +49,7 @@ static int hdac_codec_match(struct hdac_device *dev, struct hdac_driver *drv)
- static int hda_bus_match(struct device *dev, const struct device_driver *drv)
- {
- 	struct hdac_device *hdev = dev_to_hdac_dev(dev);
--	struct hdac_driver *hdrv = drv_to_hdac_driver(drv);
-+	const struct hdac_driver *hdrv = drv_to_hdac_driver(drv);
++/*
++ * DMA fence callback to remove a seqno_waiter
++ */
++struct seqno_waiter_rm_context {
++	struct dma_fence_cb base;
++	struct vmw_private *dev_priv;
++};
++
++static void seqno_waiter_rm_cb(struct dma_fence *f, struct dma_fence_cb *cb)
++{
++	struct seqno_waiter_rm_context *ctx =
++		container_of(cb, struct seqno_waiter_rm_context, base);
++
++	vmw_seqno_waiter_remove(ctx->dev_priv);
++	kfree(ctx);
++}
++
+ int vmw_execbuf_process(struct drm_file *file_priv,
+ 			struct vmw_private *dev_priv,
+ 			void __user *user_commands, void *kernel_commands,
+@@ -4266,6 +4283,15 @@ int vmw_execbuf_process(struct drm_file *file_priv,
+ 		} else {
+ 			/* Link the fence with the FD created earlier */
+ 			fd_install(out_fence_fd, sync_file->file);
++			struct seqno_waiter_rm_context *ctx =
++				kmalloc(sizeof(*ctx), GFP_KERNEL);
++			ctx->dev_priv = dev_priv;
++			vmw_seqno_waiter_add(dev_priv);
++			if (dma_fence_add_callback(&fence->base, &ctx->base,
++						   seqno_waiter_rm_cb) < 0) {
++				vmw_seqno_waiter_remove(dev_priv);
++				kfree(ctx);
++			}
+ 		}
+ 	}
  
- 	if (hdev->type != hdrv->type)
- 		return 0;
-diff --git a/sound/pci/hda/hda_bind.c b/sound/pci/hda/hda_bind.c
-index b7ca2a83fbb08..90633970b59f7 100644
---- a/sound/pci/hda/hda_bind.c
-+++ b/sound/pci/hda/hda_bind.c
-@@ -18,10 +18,10 @@
- /*
-  * find a matching codec id
-  */
--static int hda_codec_match(struct hdac_device *dev, struct hdac_driver *drv)
-+static int hda_codec_match(struct hdac_device *dev, const struct hdac_driver *drv)
- {
- 	struct hda_codec *codec = container_of(dev, struct hda_codec, core);
--	struct hda_codec_driver *driver =
-+	const struct hda_codec_driver *driver =
- 		container_of(drv, struct hda_codec_driver, core);
- 	const struct hda_device_id *list;
- 	/* check probe_id instead of vendor_id if set */
 -- 
 2.39.5
 
