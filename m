@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-153180-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153124-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4EE06ADD32B
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 17:54:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D88AFADD274
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 17:42:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 634E11890D8F
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 15:49:50 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 31624189B2E4
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 15:42:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 749822EE5E1;
-	Tue, 17 Jun 2025 15:45:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 618DC2ECD3F;
+	Tue, 17 Jun 2025 15:42:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kaOODZf4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="p7DVBNAA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E49E2ED872;
-	Tue, 17 Jun 2025 15:45:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E6FE2E9753;
+	Tue, 17 Jun 2025 15:42:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750175137; cv=none; b=Ry6a/9/9yYjwf2M2rsMaSo6h9SzT5Y9eH/eRy3tWla7qz6ISKwAvoRy1r5UipSD4PILhVwdkVs8LGjOWYfxaX73WXtItBuISQ/EGUpXXpoI/BVyfX6gcCwKmeHpnsUz783666X1Pv+uN6qn+Qey/GnQ7oHvPUFLIzGf52a9k9Q8=
+	t=1750174940; cv=none; b=blXXtyAcKOn4qnWo8AoagRCFLyO79lQ5HI6P4qDgWIsroXCC9pPFF7QKEHfCnaQZbapfpGAu13sJWUGbDurJqbtlZqZo2oqRaOQkRx1y2QEqVbwGwnFnGwFC27mXWuxJOQPb4BB0YnQR1FPBRlsEw/Tb0DZAPyMyi7B1Smtk7GQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750175137; c=relaxed/simple;
-	bh=Aj6E+fv1/OWcH66QY0dcPP7d66kk0PvBtLzrpnhq8hQ=;
+	s=arc-20240116; t=1750174940; c=relaxed/simple;
+	bh=ru66QfUEQZmtMrkiR7dyKAIeHuWj5CWvqnbJDwe4gh4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aJOsEJ7fb0Cje6C/O8C+MIY52yRfjOAuSdTGjiYR6QJCXjiHBEvahmPSN2GtzX0hq+68kE1CciOy7cv6I1qAH34A02nMsbN/58wQ0ou+2jBFJglbi3+jyw730nTd1prjyU6UnILwbgDslUE2Jiew8tfeKIqhPSnqUxpNLkVzg2U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kaOODZf4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92E0CC4CEF1;
-	Tue, 17 Jun 2025 15:45:36 +0000 (UTC)
+	 MIME-Version; b=n9+6WJgotWnz0MYrxYnf0DfUM+U/U8dUsojqDK3uLeLEsI2lIj6HG2/hPUe7XvzqgvqjNVYk7r6e20e1iemF/hqnmP8zh9ND2s1BzL1zxZWmdKvQz0ywo0v14ocXq8LI/Ow6+X2CzzqCrxC0pVShc+T1YVGkSQmqLUsIGU+lvoE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=p7DVBNAA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4352CC4CEE7;
+	Tue, 17 Jun 2025 15:42:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750175137;
-	bh=Aj6E+fv1/OWcH66QY0dcPP7d66kk0PvBtLzrpnhq8hQ=;
+	s=korg; t=1750174939;
+	bh=ru66QfUEQZmtMrkiR7dyKAIeHuWj5CWvqnbJDwe4gh4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kaOODZf4pfmGk2puJKuRunONIczmzZ67tUiESQNBw4bRRv5SQEzF7lBz/ycJPmlMY
-	 vbEr8vCoHhgpJ53H7U7od6EHHUooZCmw3Uzig5QhvytJIaWHQ3qGjdinIItyTSGBVI
-	 KWsrvazzrMAIKm+V24oWZXNrkFXAyHpo8880Vdy0=
+	b=p7DVBNAAojWG2rI2i9FpYJWwgi9L6EXLm9Pt5SDianNtVxjK7Zb3tl9H4qNrqY4b4
+	 U71dcb38RwhiQXfonSiaBeAel4Dzn5BFKGwXYD/R+I0tcA/PJ9Moj1X+EzZzRVvGcx
+	 Zhgr/liy1aDbzp55RMJFf5lVX57ogbarDKd0ak6I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	Andrey Vatoropin <a.vatoropin@crpt.ru>,
+	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 077/512] drm/bridge: lt9611uxc: Fix an error handling path in lt9611uxc_probe()
-Date: Tue, 17 Jun 2025 17:20:43 +0200
-Message-ID: <20250617152422.704641795@linuxfoundation.org>
+Subject: [PATCH 6.12 078/512] fs/ntfs3: handle hdr_first_de() return value
+Date: Tue, 17 Jun 2025 17:20:44 +0200
+Message-ID: <20250617152422.744477356@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
 References: <20250617152419.512865572@linuxfoundation.org>
@@ -67,42 +66,54 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+From: Andrey Vatoropin <a.vatoropin@crpt.ru>
 
-[ Upstream commit b848cd418aebdb313364b4843f41fae82281a823 ]
+[ Upstream commit af5cab0e5b6f8edb0be51a9f47f3f620e0b4fd70 ]
 
-If lt9611uxc_audio_init() fails, some resources still need to be released
-before returning the error code.
+The hdr_first_de() function returns a pointer to a struct NTFS_DE. This
+pointer may be NULL. To handle the NULL error effectively, it is important
+to implement an error handler. This will help manage potential errors
+consistently.
 
-Use the existing error handling path.
+Additionally, error handling for the return value already exists at other
+points where this function is called.
 
-Fixes: 0cbbd5b1a012 ("drm: bridge: add support for lontium LT9611UXC bridge")
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Link: https://lore.kernel.org/r/f167608e392c6b4d7d7f6e45e3c21878feb60cbd.1744958833.git.christophe.jaillet@wanadoo.fr
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
+
+Fixes: 82cae269cfa9 ("fs/ntfs3: Add initialization of super block")
+Signed-off-by: Andrey Vatoropin <a.vatoropin@crpt.ru>
+Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/bridge/lontium-lt9611uxc.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ fs/ntfs3/index.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/drivers/gpu/drm/bridge/lontium-lt9611uxc.c b/drivers/gpu/drm/bridge/lontium-lt9611uxc.c
-index 4d1d40e1f1b4d..748bed8acd2d9 100644
---- a/drivers/gpu/drm/bridge/lontium-lt9611uxc.c
-+++ b/drivers/gpu/drm/bridge/lontium-lt9611uxc.c
-@@ -879,7 +879,11 @@ static int lt9611uxc_probe(struct i2c_client *client)
- 		}
- 	}
+diff --git a/fs/ntfs3/index.c b/fs/ntfs3/index.c
+index 78d20e4baa2c9..1bf2a6593dec6 100644
+--- a/fs/ntfs3/index.c
++++ b/fs/ntfs3/index.c
+@@ -2182,6 +2182,10 @@ static int indx_get_entry_to_replace(struct ntfs_index *indx,
  
--	return lt9611uxc_audio_init(dev, lt9611uxc);
-+	ret = lt9611uxc_audio_init(dev, lt9611uxc);
-+	if (ret)
-+		goto err_remove_bridge;
-+
-+	return 0;
+ 		e = hdr_first_de(&n->index->ihdr);
+ 		fnd_push(fnd, n, e);
++		if (!e) {
++			err = -EINVAL;
++			goto out;
++		}
  
- err_remove_bridge:
- 	free_irq(client->irq, lt9611uxc);
+ 		if (!de_is_last(e)) {
+ 			/*
+@@ -2203,6 +2207,10 @@ static int indx_get_entry_to_replace(struct ntfs_index *indx,
+ 
+ 	n = fnd->nodes[level];
+ 	te = hdr_first_de(&n->index->ihdr);
++	if (!te) {
++		err = -EINVAL;
++		goto out;
++	}
+ 	/* Copy the candidate entry into the replacement entry buffer. */
+ 	re = kmalloc(le16_to_cpu(te->size) + sizeof(u64), GFP_NOFS);
+ 	if (!re) {
 -- 
 2.39.5
 
