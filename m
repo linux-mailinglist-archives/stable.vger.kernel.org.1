@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-153129-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153132-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A6C6BADD27A
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 17:43:11 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 65231ADD28C
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 17:44:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6003C189BB03
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 15:43:05 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A4E703BF636
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 15:42:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6908F2ECE84;
-	Tue, 17 Jun 2025 15:42:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AFE462ECD1B;
+	Tue, 17 Jun 2025 15:42:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s/NS4pWn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ph/DH9rc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23CF22ECE80;
-	Tue, 17 Jun 2025 15:42:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B27A1E8332;
+	Tue, 17 Jun 2025 15:42:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750174956; cv=none; b=SPuEcZ32nfWxB4Zn1scffxOwST+9VpcBM52t2IyY8rgL2qJsZTexbfGV4mCKiwXyV2XAZ5AU6Ocu8kV5XOr8YYy0HMRQMxlz+G0BhOpeusXzQ2W4svgTdAMP6jjY7hPPwdgNYVqm/QSYZ3uaXEVgZDghu4ud6R29Vpl7QFMxqg4=
+	t=1750174972; cv=none; b=Xet1Gd80Z91HrIdoS2twI7/anP/Wr+K4lDlZlAXSPy5GKpUob3tN1Ry0r0HAUxRp1AZKZt74K+leq96iuLezo2nTokj+LdqNQZxMU1WEeuLlJmpxrvbSMPcm9TNf8B3FMVL4lvQtBcJ9gN74djpEC9SK9+Uf+YlSUPlBwJt6UCg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750174956; c=relaxed/simple;
-	bh=bqbNnGCXfgY6gcJZu1N1t1sdo0QcLU9X7j6fpynzIGE=;
+	s=arc-20240116; t=1750174972; c=relaxed/simple;
+	bh=icmQF3+HRMQOnJcYzmSl2cZEwXN+xKUBzOIptDpE8QE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hMHRoOesxqPnJMlck8e9Pn3azhymMKSADr3Chk6hgjPMY1Kb6Xt6S/m0ggvLFtaAEgb2Cl4HmAVpE6G3kGhyPuuuFl+bX/5US3WMFRyX+4FK/ONmyg1B+KXcOsk8Urrc+7W2vhG2zNIjEejlui9KxE/QvrOVBWMOiH2FphFNa1U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s/NS4pWn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87AEDC4CEE3;
-	Tue, 17 Jun 2025 15:42:35 +0000 (UTC)
+	 MIME-Version; b=rnuV7P2in1233ilo2aoQIeMU40Aldd8OKb5ymYSC6iJELZaoUSvrkKcdoseh6g1VBlQeyp28tqIbar5nn1YyTBVvzH3xTZumeYNcX9WA5F1LwSQEPIVbuFAFOVhak2IumOy1EICr9jF10CsO8TwryhG4D2rqeUsNzaklG+/ulBM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ph/DH9rc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF2AAC4CEE3;
+	Tue, 17 Jun 2025 15:42:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750174956;
-	bh=bqbNnGCXfgY6gcJZu1N1t1sdo0QcLU9X7j6fpynzIGE=;
+	s=korg; t=1750174972;
+	bh=icmQF3+HRMQOnJcYzmSl2cZEwXN+xKUBzOIptDpE8QE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=s/NS4pWnfbygE2HaMkAT1F/2WYggUFZqmQRcEHqfHZrDfHQ/sGKPiiFLxGSdtd179
-	 re2X8FQuvE7xXmWF+9wMCrRlxfatMAVkd0R8OQvaIECww5RA7vh73p4JU2uepAWuG8
-	 E1vOYTIyCXj385yAXvbip62eWuJlnV9jLe3D+nNM=
+	b=Ph/DH9rcPGuk3oMMnHYTdlIaf+W9n4TMoBb4XLXxXpdXiA+H3csoBX0jr+ZjM43d5
+	 iJaws2t0be+L9ZXWQUaLGvaODBMgg3DBy2Wy0yEehRPohpkYmtqymwR6LWy97Kz4KS
+	 JGlQzXxF2ydRtsjadXlCevJleaYViJSrFG93aVFg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hongbo Li <lihongbo22@huawei.com>,
+	Sheng Yong <shengyong1@xiaomi.com>,
 	Gao Xiang <hsiangkao@linux.alibaba.com>,
+	Hongbo Li <lihongbo22@huawei.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 037/780] erofs: fix file handle encoding for 64-bit NIDs
-Date: Tue, 17 Jun 2025 17:15:45 +0200
-Message-ID: <20250617152453.011905604@linuxfoundation.org>
+Subject: [PATCH 6.15 038/780] erofs: avoid using multiple devices with different type
+Date: Tue, 17 Jun 2025 17:15:46 +0200
+Message-ID: <20250617152453.050677172@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
 References: <20250617152451.485330293@linuxfoundation.org>
@@ -66,113 +67,62 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Hongbo Li <lihongbo22@huawei.com>
+From: Sheng Yong <shengyong1@xiaomi.com>
 
-[ Upstream commit 510de8363f2c3d8e67fa9dfb2366e821382036e0 ]
+[ Upstream commit 9748f2f54f66743ac77275c34886a9f890e18409 ]
 
-EROFS uses NID to indicate the on-disk inode offset, which can
-exceed 32 bits. However, the default encode_fh uses the ino32,
-thus it doesn't work if the image is larger than 128GiB.
+For multiple devices, both primary and extra devices should be the
+same type. `erofs_init_device` has already guaranteed that if the
+primary is a file-backed device, extra devices should also be
+regular files.
 
-Let's introduce our own helpers to encode file handles.
+However, if the primary is a block device while the extra device
+is a file-backed device, `erofs_init_device` will get an ENOTBLK,
+which is not treated as an error in `erofs_fc_get_tree`, and that
+leads to an UAF:
 
-It's easy to reproduce:
-  1. prepare an erofs image with nid bigger than U32_MAX
-  2. mount -t erofs foo.img /mnt/erofs
-  3. set exportfs with configuration: /mnt/erofs *(rw,sync,
-     no_root_squash)
-  4. mount -t nfs $IP:/mnt/erofs /mnt/nfs
-  5. md5sum /mnt/nfs/foo # foo is the file which nid bigger
-     than U32_MAX.  # you will get ESTALE error.
+  erofs_fc_get_tree
+    get_tree_bdev_flags(erofs_fc_fill_super)
+      erofs_read_superblock
+        erofs_init_device  // sbi->dif0 is not inited yet,
+                           // return -ENOTBLK
+      deactivate_locked_super
+        free(sbi)
+    if (err is -ENOTBLK)
+      sbi->dif0.file = filp_open()  // sbi UAF
 
-In the case of overlayfs, the underlying filesystem's file
-handle is encoded in ovl_fb.fid, which is similar to NFS's
-case. If the NID of file is larger than U32_MAX, the overlay
-will get -ESTALE error when calls exportfs_decode_fh.
+So if -ENOTBLK is hitted in `erofs_init_device`, it means the
+primary device must be a block device, and the extra device
+is not a block device. The error can be converted to -EINVAL.
 
-Fixes: 3e917cc305c6 ("erofs: make filesystem exportable")
-Signed-off-by: Hongbo Li <lihongbo22@huawei.com>
+Fixes: fb176750266a ("erofs: add file-backed mount support")
+Signed-off-by: Sheng Yong <shengyong1@xiaomi.com>
 Reviewed-by: Gao Xiang <hsiangkao@linux.alibaba.com>
-Link: https://lore.kernel.org/r/20250507094015.14007-1-lihongbo22@huawei.com
+Reviewed-by: Hongbo Li <lihongbo22@huawei.com>
+Link: https://lore.kernel.org/r/20250515014837.3315886-1-shengyong1@xiaomi.com
 Signed-off-by: Gao Xiang <hsiangkao@linux.alibaba.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/erofs/super.c | 44 ++++++++++++++++++++++++++++++++++++--------
- 1 file changed, 36 insertions(+), 8 deletions(-)
+ fs/erofs/super.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
 diff --git a/fs/erofs/super.c b/fs/erofs/super.c
-index da6ee7c39290d..bcb99c3c2594b 100644
+index bcb99c3c2594b..6e57b9cc6ed2e 100644
 --- a/fs/erofs/super.c
 +++ b/fs/erofs/super.c
-@@ -510,24 +510,52 @@ static int erofs_fc_parse_param(struct fs_context *fc,
- 	return 0;
- }
+@@ -165,8 +165,11 @@ static int erofs_init_device(struct erofs_buf *buf, struct super_block *sb,
+ 				filp_open(dif->path, O_RDONLY | O_LARGEFILE, 0) :
+ 				bdev_file_open_by_path(dif->path,
+ 						BLK_OPEN_READ, sb->s_type, NULL);
+-		if (IS_ERR(file))
++		if (IS_ERR(file)) {
++			if (file == ERR_PTR(-ENOTBLK))
++				return -EINVAL;
+ 			return PTR_ERR(file);
++		}
  
--static struct inode *erofs_nfs_get_inode(struct super_block *sb,
--					 u64 ino, u32 generation)
-+static int erofs_encode_fh(struct inode *inode, u32 *fh, int *max_len,
-+			   struct inode *parent)
- {
--	return erofs_iget(sb, ino);
-+	erofs_nid_t nid = EROFS_I(inode)->nid;
-+	int len = parent ? 6 : 3;
-+
-+	if (*max_len < len) {
-+		*max_len = len;
-+		return FILEID_INVALID;
-+	}
-+
-+	fh[0] = (u32)(nid >> 32);
-+	fh[1] = (u32)(nid & 0xffffffff);
-+	fh[2] = inode->i_generation;
-+
-+	if (parent) {
-+		nid = EROFS_I(parent)->nid;
-+
-+		fh[3] = (u32)(nid >> 32);
-+		fh[4] = (u32)(nid & 0xffffffff);
-+		fh[5] = parent->i_generation;
-+	}
-+
-+	*max_len = len;
-+	return parent ? FILEID_INO64_GEN_PARENT : FILEID_INO64_GEN;
- }
- 
- static struct dentry *erofs_fh_to_dentry(struct super_block *sb,
- 		struct fid *fid, int fh_len, int fh_type)
- {
--	return generic_fh_to_dentry(sb, fid, fh_len, fh_type,
--				    erofs_nfs_get_inode);
-+	if ((fh_type != FILEID_INO64_GEN &&
-+	     fh_type != FILEID_INO64_GEN_PARENT) || fh_len < 3)
-+		return NULL;
-+
-+	return d_obtain_alias(erofs_iget(sb,
-+		((u64)fid->raw[0] << 32) | fid->raw[1]));
- }
- 
- static struct dentry *erofs_fh_to_parent(struct super_block *sb,
- 		struct fid *fid, int fh_len, int fh_type)
- {
--	return generic_fh_to_parent(sb, fid, fh_len, fh_type,
--				    erofs_nfs_get_inode);
-+	if (fh_type != FILEID_INO64_GEN_PARENT || fh_len < 6)
-+		return NULL;
-+
-+	return d_obtain_alias(erofs_iget(sb,
-+		((u64)fid->raw[3] << 32) | fid->raw[4]));
- }
- 
- static struct dentry *erofs_get_parent(struct dentry *child)
-@@ -543,7 +571,7 @@ static struct dentry *erofs_get_parent(struct dentry *child)
- }
- 
- static const struct export_operations erofs_export_ops = {
--	.encode_fh = generic_encode_ino32_fh,
-+	.encode_fh = erofs_encode_fh,
- 	.fh_to_dentry = erofs_fh_to_dentry,
- 	.fh_to_parent = erofs_fh_to_parent,
- 	.get_parent = erofs_get_parent,
+ 		if (!erofs_is_fileio_mode(sbi)) {
+ 			dif->dax_dev = fs_dax_get_by_bdev(file_bdev(file),
 -- 
 2.39.5
 
