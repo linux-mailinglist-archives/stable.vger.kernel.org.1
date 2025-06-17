@@ -1,63 +1,61 @@
-Return-Path: <stable+bounces-153657-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-154296-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 674DFADD5A3
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:23:57 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 44F67ADDA24
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 19:13:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3EB6A3A4566
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:16:27 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DBE633B98CF
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:47:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 332C2285072;
-	Tue, 17 Jun 2025 16:11:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66EC22FA63B;
+	Tue, 17 Jun 2025 16:45:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pX3gqwXv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="12JpbbTn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D484428506C;
-	Tue, 17 Jun 2025 16:11:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 239492FA629;
+	Tue, 17 Jun 2025 16:45:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750176670; cv=none; b=CKLIrrsyXLcx/wwN9oW0iAi0SnmfZFqo9awF2yaTAEM5/U+oLvsDCDZHdRakW9n6FOXgoqnz1WvqEuh+yP08GoPr3Pon8CB2eNMNTm4cfVngVqP/GMpqsVVI7pifzVoCsYMacjjm3IRJqNe6OyvH1b+qzs8RzvxMU3tBFh6bpgQ=
+	t=1750178735; cv=none; b=YXNLceGINw3JdDhMfcdN2yDa8Bd8es8j6ML01KH5EG7K70qi3bM77Ij2p6HhGSLJ+hxTQwvOUz7U2jgXoVJjW45rHvaUdRyucW+RranUfgwCMPFfKJMl+2LmPby7Su0rDbSnG/zTiPKWNPTyKZo7H9EzxTtCWAj3U+9GDgndpDo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750176670; c=relaxed/simple;
-	bh=PxuLXIfvoOq73Xagp6jiy64umoqU9SlFtUEfgaEA56Y=;
+	s=arc-20240116; t=1750178735; c=relaxed/simple;
+	bh=1EP1vp7V0QqH7hsrztGCOZxB7dDYyw1zKEMpJGv5LI0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WtxIzZjK0XA34ALYCzvOvGVUAzCdjhojT++FsTu5Z4LnK8y33aYmy3+ewRuOvH0MROuthypfkN3+EX24uyGb9EW8iQ1NXQyrsqyQ9YRZXZEHtht/+C8LelBgoEI3Ryjz6oi0L470LJI2p+6Z87Dfr6XvI1q9ULK1HEeXwNKw1v0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pX3gqwXv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 349F3C4CEE3;
-	Tue, 17 Jun 2025 16:11:10 +0000 (UTC)
+	 MIME-Version:Content-Type; b=cFl+MYcx5FZu5AStwiewrpS3++ryADkAejJpBvTLtAkf3TfhO8WlTvT+ieQsbj2SNCCY+zZYXDrhpbIas/dFJzQ2WSVfrEM8ihc7zdg2U9iFoIr9u4yE8HcutOV+S4uy0Gcug8lsNvHpcO5f8kONq5Zd5EKPxIMCH+4x2vLRKLc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=12JpbbTn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73B2BC4CEE3;
+	Tue, 17 Jun 2025 16:45:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750176670;
-	bh=PxuLXIfvoOq73Xagp6jiy64umoqU9SlFtUEfgaEA56Y=;
+	s=korg; t=1750178734;
+	bh=1EP1vp7V0QqH7hsrztGCOZxB7dDYyw1zKEMpJGv5LI0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pX3gqwXvSvhddLCrYfWA+UxIf1wMmTUec1BJxVbH/9Adk9M6NV2m8E0riLMo6ogq7
-	 Ih+6P4lajecnd58vn6dS85SsTARTjyoIz27wy+HVouWOaf+Cf31xIXLl05Bh+BehC/
-	 O04Hvsx+p0fm/G/HuT7qGztKSirw0038FGLaKfAc=
+	b=12JpbbTn2L31OzCPRXsXcjrAb55XChqolj0jKqFAfpBd8aFiL3kR0B9VEgG8oUu5w
+	 HmdaxkzVQRfpbZdOswfZdI9SDFNybIWmGrqjzn+SuFtcFy5LUaJapBNaINPBKqC/kT
+	 B/qCaiqv8Wu1nsab950WrKVdZ6lUvNb/FPr7n7C4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Murad Masimov <m.masimov@mt-integration.ru>,
-	Jan Kara <jack@suse.cz>,
-	Joseph Qi <joseph.qi@linux.alibaba.com>,
-	Mark Fasheh <mark@fasheh.com>,
-	Joel Becker <jlbec@evilplan.org>,
-	Junxiao Bi <junxiao.bi@oracle.com>,
-	Changwei Ge <gechangwei@live.cn>,
-	Jun Piao <piaojun@huawei.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
+	Brian Norris <briannorris@google.com>,
+	Brian Norris <briannorris@chromium.org>,
+	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+	Konrad Dybcio <konradybcio@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 252/512] ocfs2: fix possible memory leak in ocfs2_finish_quota_recovery
+Subject: [PATCH 6.15 510/780] PCI/pwrctrl: Cancel outstanding rescan work when unregistering
 Date: Tue, 17 Jun 2025 17:23:38 +0200
-Message-ID: <20250617152429.814779214@linuxfoundation.org>
+Message-ID: <20250617152512.282869254@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
-References: <20250617152419.512865572@linuxfoundation.org>
+In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
+References: <20250617152451.485330293@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,54 +65,53 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Murad Masimov <m.masimov@mt-integration.ru>
+From: Brian Norris <briannorris@google.com>
 
-[ Upstream commit cdc3ed3035d0fe934aa1d9b78ce256752fd3bb7d ]
+[ Upstream commit 8b926f237743f020518162c62b93cb7107a2b5eb ]
 
-If ocfs2_finish_quota_recovery() exits due to an error before passing all
-rc_list elements to ocfs2_recover_local_quota_file() then it can lead to a
-memory leak as rc_list may still contain elements that have to be freed.
+It's possible to trigger use-after-free here by:
 
-Release all memory allocated by ocfs2_add_recovery_chunk() using
-ocfs2_free_quota_recovery() instead of kfree().
+  (a) forcing rescan_work_func() to take a long time and
+  (b) utilizing a pwrctrl driver that may be unloaded for some reason
 
-Found by Linux Verification Center (linuxtesting.org) with Syzkaller.
+Cancel outstanding work to ensure it is finished before we allow our data
+structures to be cleaned up.
 
-Link: https://lkml.kernel.org/r/20250402065628.706359-2-m.masimov@mt-integration.ru
-Fixes: 2205363dce74 ("ocfs2: Implement quota recovery")
-Signed-off-by: Murad Masimov <m.masimov@mt-integration.ru>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Reviewed-by: Joseph Qi <joseph.qi@linux.alibaba.com>
-Cc: Mark Fasheh <mark@fasheh.com>
-Cc: Joel Becker <jlbec@evilplan.org>
-Cc: Junxiao Bi <junxiao.bi@oracle.com>
-Cc: Changwei Ge <gechangwei@live.cn>
-Cc: Jun Piao <piaojun@huawei.com>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+[bhelgaas: tidy commit log]
+Fixes: 8f62819aaace ("PCI/pwrctl: Rescan bus on a separate thread")
+Signed-off-by: Brian Norris <briannorris@google.com>
+Signed-off-by: Brian Norris <briannorris@chromium.org>
+Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Acked-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Cc: Konrad Dybcio <konradybcio@kernel.org>
+Link: https://patch.msgid.link/20250409115313.1.Ia319526ed4ef06bec3180378c9a008340cec9658@changeid
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ocfs2/quota_local.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/pci/pwrctrl/core.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/fs/ocfs2/quota_local.c b/fs/ocfs2/quota_local.c
-index e272429da3db3..de7f12858729a 100644
---- a/fs/ocfs2/quota_local.c
-+++ b/fs/ocfs2/quota_local.c
-@@ -674,7 +674,7 @@ int ocfs2_finish_quota_recovery(struct ocfs2_super *osb,
- 			break;
- 	}
- out:
--	kfree(rec);
-+	ocfs2_free_quota_recovery(rec);
- 	return status;
- }
- 
+diff --git a/drivers/pci/pwrctrl/core.c b/drivers/pci/pwrctrl/core.c
+index 9cc7e2b7f2b56..6bdbfed584d6d 100644
+--- a/drivers/pci/pwrctrl/core.c
++++ b/drivers/pci/pwrctrl/core.c
+@@ -101,6 +101,8 @@ EXPORT_SYMBOL_GPL(pci_pwrctrl_device_set_ready);
+  */
+ void pci_pwrctrl_device_unset_ready(struct pci_pwrctrl *pwrctrl)
+ {
++	cancel_work_sync(&pwrctrl->work);
++
+ 	/*
+ 	 * We don't have to delete the link here. Typically, this function
+ 	 * is only called when the power control device is being detached. If
 -- 
 2.39.5
 
