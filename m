@@ -1,56 +1,63 @@
-Return-Path: <stable+bounces-153438-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-154165-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D1838ADD524
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:17:49 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 05ADAADD87A
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:56:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 454C71947C26
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:04:08 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 992AE4A39D2
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:43:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59D7A2EA170;
-	Tue, 17 Jun 2025 15:59:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC4C023771C;
+	Tue, 17 Jun 2025 16:38:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nV5lT0aP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QeS+7kX9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10E102ECD36;
-	Tue, 17 Jun 2025 15:59:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69CB8217F40;
+	Tue, 17 Jun 2025 16:38:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750175963; cv=none; b=gCl/SwqUKDhAiyeTqS/j+yz8wcC7vs74YmaIjFu0olkR8+3LlZgHuP2oIIDIIRmr8jt+34898xbe7Waol5t4ymWxrxYDxWN5bGH9y4bKyZ+1SoBaTgcIkivpgL2N5kOuYVPLdrvJuMyfctegTLxgyFr/GYD4gZnU2ja4a/pOMuQ=
+	t=1750178311; cv=none; b=fo+1nESis2cdmXmGYW35MaVi4XBx1TeIzavQdK/GZAiqdA0ZhS3GWxhjDza3Rdu35e/DMVnU9eJoe5jphUxYTlh/qCDwHR6bVYBsXS0uQf55WVjYvitY265vK8OdLCvmgPGKqJJ4UvJsiQ6dNZmt75HWNY8a0yaznICV6CpGNMY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750175963; c=relaxed/simple;
-	bh=dFjt2b+rUjEix1qyGabia9XQeLweBeN24hRNAWtYxlU=;
+	s=arc-20240116; t=1750178311; c=relaxed/simple;
+	bh=AjO18tfRv5xo/B+xcxbb+KLoDkBVSeDrGaqvBUnejgc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NwbokhezJE1cviXZSFJxVEzse+8gayFUYQ4z8d4QTv0Txzi9fIYNTnuRQ25mDQk9EUzUwz463t4jDzHU3aH7J6CcRAXXovuZHM0eQ5nPvt5V+BDHfLVMyO7H58Qnnvd47hb86DoWsa/Fq3WqB/mNfmobu/gzbRIVmH/zInFsEtQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nV5lT0aP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 728FFC4CEF2;
-	Tue, 17 Jun 2025 15:59:22 +0000 (UTC)
+	 MIME-Version; b=pWOWsq6W9ZELg7CvK1K6U/2TBHA2jZxZ/4YC3f4YZduUUt7M91IkyiI8/JDKrwgt4ANjzNkKZEbNNCDK21bNF5QMAgw/PPn0suRf62laQGOc81rZWtu5Q9viA2+sHZ1SihJ1nUwjggpyRQOXP9F86N2AmTnpbXKMQqt1AUEcVkc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QeS+7kX9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD1C7C4CEE3;
+	Tue, 17 Jun 2025 16:38:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750175962;
-	bh=dFjt2b+rUjEix1qyGabia9XQeLweBeN24hRNAWtYxlU=;
+	s=korg; t=1750178311;
+	bh=AjO18tfRv5xo/B+xcxbb+KLoDkBVSeDrGaqvBUnejgc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nV5lT0aPOJtzdrsrBgmdLWgelgAcsbgn3wwLmANB7jolS/y2UdjWaJAhA8qbG/ymX
-	 RUH1eYWrnKQBEk22t1gRU2Cvk6IcHMSQFURwfcuONqgJ4xwKFTzu2fLu2C1m1/ETil
-	 5/ukr4McA6clvqjhAks27Zdjug/UfPx8u10u2TQE=
+	b=QeS+7kX9j7igFkeBB13b8VrfXLC8/HP1KpWM+fd1raLdVqY2pywk3lS3ipkXfHzUv
+	 n0tp7qv69zva1bJnxEW9wD9S/hNp/jJrdVRTarSxV5H0nX6nPaN4bAo+G45AgneccQ
+	 H4YryiapbVihRPEeVOZFezDi7QbGje1v4s3c/0+Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Henry Martin <bsdhenrymartin@gmail.com>,
-	Felix Fietkau <nbd@nbd.name>,
+	Howard Chu <howardchu95@gmail.com>,
+	Namhyung Kim <namhyung@kernel.org>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Ian Rogers <irogers@google.com>,
+	Ingo Molnar <mingo@kernel.org>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Kan Liang <kan.liang@linux.intel.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Arnaldo Carvalho de Melo <acme@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 183/512] wifi: mt76: mt7996: Fix null-ptr-deref in mt7996_mmio_wed_init()
-Date: Tue, 17 Jun 2025 17:22:29 +0200
-Message-ID: <20250617152427.064228843@linuxfoundation.org>
+Subject: [PATCH 6.15 442/780] perf trace: Fix leaks of struct thread in fprintf_sys_enter()
+Date: Tue, 17 Jun 2025 17:22:30 +0200
+Message-ID: <20250617152509.457146419@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
-References: <20250617152419.512865572@linuxfoundation.org>
+In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
+References: <20250617152451.485330293@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,43 +69,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Henry Martin <bsdhenrymartin@gmail.com>
+From: Namhyung Kim <namhyung@kernel.org>
 
-[ Upstream commit 8f30e2b059757d8711a823e4c9c023db62a1d171 ]
+[ Upstream commit bb3de7fa988c1b315ab8e87dc74e0d088284f142 ]
 
-devm_ioremap() returns NULL on error. Currently, mt7996_mmio_wed_init()
-does not check for this case, which results in a NULL pointer
-dereference.
+I've found some leaks from 'perf trace -a'.
 
-Prevent null pointer dereference in mt7996_mmio_wed_init()
+It seems there are more leaks but this is what I can find for now.
 
-Fixes: 83eafc9251d6 ("wifi: mt76: mt7996: add wed tx support")
-Signed-off-by: Henry Martin <bsdhenrymartin@gmail.com>
-Link: https://patch.msgid.link/20250407032349.83360-1-bsdhenrymartin@gmail.com
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
+Fixes: 70351029b55677eb ("perf thread: Add support for reading the e_machine type for a thread")
+Reviewed-by: Howard Chu <howardchu95@gmail.com>
+Signed-off-by: Namhyung Kim <namhyung@kernel.org>
+Cc: Adrian Hunter <adrian.hunter@intel.com>
+Cc: Ian Rogers <irogers@google.com>
+Cc: Ingo Molnar <mingo@kernel.org>
+Cc: Jiri Olsa <jolsa@kernel.org>
+Cc: Kan Liang <kan.liang@linux.intel.com>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Link: https://lore.kernel.org/r/20250403054213.7021-1-namhyung@kernel.org
+[ split from a larget patch ]
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/mediatek/mt76/mt7996/mmio.c | 3 +++
- 1 file changed, 3 insertions(+)
+ tools/perf/builtin-trace.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mmio.c b/drivers/net/wireless/mediatek/mt76/mt7996/mmio.c
-index b6209ed1cfe01..bffee73b780cb 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7996/mmio.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7996/mmio.c
-@@ -323,6 +323,9 @@ int mt7996_mmio_wed_init(struct mt7996_dev *dev, void *pdev_ptr,
- 	wed->wlan.base = devm_ioremap(dev->mt76.dev,
- 				      pci_resource_start(pci_dev, 0),
- 				      pci_resource_len(pci_dev, 0));
-+	if (!wed->wlan.base)
-+		return -ENOMEM;
-+
- 	wed->wlan.phy_base = pci_resource_start(pci_dev, 0);
- 
- 	if (hif2) {
+diff --git a/tools/perf/builtin-trace.c b/tools/perf/builtin-trace.c
+index 6ac51925ea424..f6b23319ea5f6 100644
+--- a/tools/perf/builtin-trace.c
++++ b/tools/perf/builtin-trace.c
+@@ -2842,7 +2842,7 @@ static int trace__fprintf_sys_enter(struct trace *trace, struct evsel *evsel,
+ 	e_machine = thread__e_machine(thread, trace->host);
+ 	sc = trace__syscall_info(trace, evsel, e_machine, id);
+ 	if (sc == NULL)
+-		return -1;
++		goto out_put;
+ 	ttrace = thread__trace(thread, trace);
+ 	/*
+ 	 * We need to get ttrace just to make sure it is there when syscall__scnprintf_args()
 -- 
 2.39.5
 
