@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-152909-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-152911-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5CA8CADD16B
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 17:30:32 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 693BFADD16D
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 17:30:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 432723BD064
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 15:30:08 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 158A417C15B
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 15:30:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57FD02E9753;
-	Tue, 17 Jun 2025 15:30:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 040522E9753;
+	Tue, 17 Jun 2025 15:30:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N7KSbmHE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="B853BTOp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 142E311CBA;
-	Tue, 17 Jun 2025 15:30:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B25E92DF3C9;
+	Tue, 17 Jun 2025 15:30:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750174230; cv=none; b=mS5DLLIMRfGSH+bfLbCw10sjpSJ3J5RfaztBzqeHXq7weNjPpwb7/TVOKjofrBeKICydXhhAtNClzeTL+2krav68GWLYFcdd1dwJc8wc7GDdx+TAaF0+GzGB7RngSpRrhNd+RpKXkE1dJevFcre+BNaYuiBGP60Tt2x0HY3OWoU=
+	t=1750174236; cv=none; b=etvU8dYkkmzIE4TX3ptaYcKecIo819+ri1QMa+ORKtsAEUS+hp1fCBf8SFhZ2AKzVWYOqQ07TStVoD7Ci8wR6jJ6NnoRytEDxXpalpsht1+GJOtuAVdoeXSMIn1TYIy7fuLikN1wF228xvoHW2LaZ6iLtN3VL6HRu9SF4pBH11U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750174230; c=relaxed/simple;
-	bh=W//S+peJ/QOHQe1FzBBcKhFP6GRMTeFpdfQELwP8+88=;
+	s=arc-20240116; t=1750174236; c=relaxed/simple;
+	bh=lomAGKRzs2PcpyhdTlJWJ767IXaGh26MQaRF9lBOznI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=eYtnZ7frjmt823tdV5hYSnoD3XeDvI9ohxaTQnBiDscv4I6lsp43Ym0+tADYim+GNirRE8QvRps0USlul9oN585Kceg3qTHcrvsBKAmWTeuPxRVKajLw9PGnEiSuMXF1KjU8x2cEqJfYKq7oUdU2hr1mLpYCo0sAFl2wiV0rDDY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=N7KSbmHE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39141C4CEE3;
-	Tue, 17 Jun 2025 15:30:29 +0000 (UTC)
+	 MIME-Version:Content-Type; b=pXFZSgt6ZArdke/uDwqfaNxPNFCcddklW/APbK4T/A0tG6hn2kdfihelG41mQuxl0l9JFYULrmnh2IZW1yGqJ3caHWgWhz4+TvURok7XqhmFJjbmSNQRQHlNaAtOJYAJdyP3YH8saqgxbp9wsRkxwJuT6fn6XLVDbmo01Sox4yY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=B853BTOp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E1A7C4CEF2;
+	Tue, 17 Jun 2025 15:30:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750174229;
-	bh=W//S+peJ/QOHQe1FzBBcKhFP6GRMTeFpdfQELwP8+88=;
+	s=korg; t=1750174236;
+	bh=lomAGKRzs2PcpyhdTlJWJ767IXaGh26MQaRF9lBOznI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=N7KSbmHEd4hLYIu11zD7i70sZUd60e+3Lz4BQe5SYIW/6zNfKVeDCeFS9QDauYGer
-	 UtT8LZiVUzRpX+ABzjl+UE2ogzvjM1OBJ/uwdBw+MdYtMekrrwy+zRuoVrKIQ14r50
-	 huUdC4uGdmJuu9fpH0fZn/xNbQ0KfShGN+OTUOKk=
+	b=B853BTOpLNiwYz5/Lyfbh4V1KL7/rxf6m21leQNv+eo4TA87KX6GPnbvmn3lwtavU
+	 1BXUkja1JYk5xT0oERh/Ypmy8/ybtWsJoRLwMM9vOg1pMYP9wlOIpgLZ8mq+4D35Fh
+	 vnDJILqAunWWcYA/4Tr1+EbcWMy3qqMnn57ENu4Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -45,9 +45,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Alexandre Mergnat <amergnat@baylibre.com>,
 	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>,
 	Alexandre Belloni <alexandre.belloni@bootlin.com>
-Subject: [PATCH 6.6 005/356] rtc: Make rtc_time64_to_tm() support dates before 1970
-Date: Tue, 17 Jun 2025 17:22:00 +0200
-Message-ID: <20250617152338.439159772@linuxfoundation.org>
+Subject: [PATCH 6.6 006/356] rtc: Fix offset calculation for .start_secs < 0
+Date: Tue, 17 Jun 2025 17:22:01 +0200
+Message-ID: <20250617152338.483456494@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250617152338.212798615@linuxfoundation.org>
 References: <20250617152338.212798615@linuxfoundation.org>
@@ -69,81 +69,50 @@ Content-Transfer-Encoding: 8bit
 
 From: Alexandre Mergnat <amergnat@baylibre.com>
 
-commit 7df4cfef8b351fec3156160bedfc7d6d29de4cce upstream.
+commit fe9f5f96cfe8b82d0f24cbfa93718925560f4f8d upstream.
 
-Conversion of dates before 1970 is still relevant today because these
-dates are reused on some hardwares to store dates bigger than the
-maximal date that is representable in the device's native format.
-This prominently and very soon affects the hardware covered by the
-rtc-mt6397 driver that can only natively store dates in the interval
-1900-01-01 up to 2027-12-31. So to store the date 2028-01-01 00:00:00
-to such a device, rtc_time64_to_tm() must do the right thing for
-time=-2208988800.
+The comparison
 
+        rtc->start_secs > rtc->range_max
+
+has a signed left-hand side and an unsigned right-hand side.
+So the comparison might become true for negative start_secs which is
+interpreted as a (possibly very large) positive value.
+
+As a negative value can never be bigger than an unsigned value
+the correct representation of the (mathematical) comparison
+
+        rtc->start_secs > rtc->range_max
+
+in C is:
+
+        rtc->start_secs >= 0 && rtc->start_secs > rtc->range_max
+
+Use that to fix the offset calculation currently used in the
+rtc-mt6397 driver.
+
+Fixes: 989515647e783 ("rtc: Add one offset seconds to expand RTC range")
 Signed-off-by: Alexandre Mergnat <amergnat@baylibre.com>
 Reviewed-by: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
-Link: https://lore.kernel.org/r/20250428-enable-rtc-v4-1-2b2f7e3f9349@baylibre.com
+Link: https://lore.kernel.org/r/20250428-enable-rtc-v4-2-2b2f7e3f9349@baylibre.com
 Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
 Signed-off-by: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/rtc/lib.c |   24 +++++++++++++++++++-----
- 1 file changed, 19 insertions(+), 5 deletions(-)
+ drivers/rtc/class.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/rtc/lib.c
-+++ b/drivers/rtc/lib.c
-@@ -46,24 +46,38 @@ EXPORT_SYMBOL(rtc_year_days);
-  * rtc_time64_to_tm - converts time64_t to rtc_time.
-  *
-  * @time:	The number of seconds since 01-01-1970 00:00:00.
-- *		(Must be positive.)
-+ *		Works for values since at least 1900
-  * @tm:		Pointer to the struct rtc_time.
-  */
- void rtc_time64_to_tm(time64_t time, struct rtc_time *tm)
- {
--	unsigned int secs;
--	int days;
-+	int days, secs;
- 
- 	u64 u64tmp;
- 	u32 u32tmp, udays, century, day_of_century, year_of_century, year,
- 		day_of_year, month, day;
- 	bool is_Jan_or_Feb, is_leap_year;
- 
--	/* time must be positive */
-+	/*
-+	 * Get days and seconds while preserving the sign to
-+	 * handle negative time values (dates before 1970-01-01)
-+	 */
- 	days = div_s64_rem(time, 86400, &secs);
- 
-+	/*
-+	 * We need 0 <= secs < 86400 which isn't given for negative
-+	 * values of time. Fixup accordingly.
-+	 */
-+	if (secs < 0) {
-+		days -= 1;
-+		secs += 86400;
-+	}
-+
- 	/* day of the week, 1970-01-01 was a Thursday */
- 	tm->tm_wday = (days + 4) % 7;
-+	/* Ensure tm_wday is always positive */
-+	if (tm->tm_wday < 0)
-+		tm->tm_wday += 7;
- 
- 	/*
- 	 * The following algorithm is, basically, Proposition 6.3 of Neri
-@@ -93,7 +107,7 @@ void rtc_time64_to_tm(time64_t time, str
- 	 * thus, is slightly different from [1].
+--- a/drivers/rtc/class.c
++++ b/drivers/rtc/class.c
+@@ -323,7 +323,7 @@ static void rtc_device_get_offset(struct
+ 	 *
+ 	 * Otherwise the offset seconds should be 0.
  	 */
- 
--	udays		= ((u32) days) + 719468;
-+	udays		= days + 719468;
- 
- 	u32tmp		= 4 * udays + 3;
- 	century		= u32tmp / 146097;
+-	if (rtc->start_secs > rtc->range_max ||
++	if ((rtc->start_secs >= 0 && rtc->start_secs > rtc->range_max) ||
+ 	    rtc->start_secs + range_secs - 1 < rtc->range_min)
+ 		rtc->offset_secs = rtc->start_secs - rtc->range_min;
+ 	else if (rtc->start_secs > rtc->range_min)
 
 
 
