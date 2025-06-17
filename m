@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-153404-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153407-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D375ADD42F
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:07:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 97FC2ADD434
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:07:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 60ACE17F24D
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:01:12 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BD94916200C
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:01:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4DB72ECE9C;
-	Tue, 17 Jun 2025 15:57:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B46B2ED862;
+	Tue, 17 Jun 2025 15:57:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u8oMsxUD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="byuGU13P"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DC032ECE94;
-	Tue, 17 Jun 2025 15:57:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 310002ECEA4;
+	Tue, 17 Jun 2025 15:57:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750175850; cv=none; b=HHUc4SN0nrrTS5zEpoVCw1BMfnTbbkcKZalC6kTQfTy4M4sIuW2dW65ARv7cMBZJmERPJxOh1RlhHNDH9YcnO2CnCplFXxatnFJMW9HPRAoF2szRWOvIT8WeszbIzg2isAlc4fNwpBVPhSrmwAjh1oyFTgHZ+k5L4OLRkPTWPKU=
+	t=1750175860; cv=none; b=EU+tVyOgXl0e0BpkzQzUARvbL4PqyDdIL1l3qWoeF0cR/XAhvIGmODW/loDmeC7IWmNSpfvAK3gvfoi5IHMahxNecp0Io9sCzh0NljbTXqg+Yfl9JCpzrZC7V0ua00gS7tEBjUSxSrOLO0wS44vl1pnmVrcZIgDE9imYp6/gQgw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750175850; c=relaxed/simple;
-	bh=33FiWN4/YQsvzUjEV/+jqhY4PWrI+0exsnyt38+BAxo=;
+	s=arc-20240116; t=1750175860; c=relaxed/simple;
+	bh=3xGLsM4zByVrejlG75SWP7JHaGvQKD7YqXIrVbPe71E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ws69a7hVCgFkgYf/kXhkn2QgbaK969T5Exbx8X0ezyL1uUAFPev4rUFz14oIr/xzhQY46jtPtHluYsgqqSuBER4n0Eq+nLKePN5DC+lk/TiabxXxF6TY4S8/RbBc2Sko8c7AA88YtVi7HKkLYdtEV4/4KHBnev1LihGLDf/bVGk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u8oMsxUD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82FEBC4CEE3;
-	Tue, 17 Jun 2025 15:57:29 +0000 (UTC)
+	 MIME-Version; b=agmiMO/E6HQL0Vt07lQhUxBiEmrlPZ83ao7fbtdRyYk7PMSAUDB0PqVQa8TTnPQQ+F9ZteOyTBM+0zDaRb3r5IBJ4MEoaSb5+IcnjElogHlQDECRkxbCC1JLU1Ykc4eH3IyWSsvSjTwyRjghYkGJRBRHd874WRCUEQ1BlD1+FVI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=byuGU13P; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55E8EC4AF09;
+	Tue, 17 Jun 2025 15:57:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750175850;
-	bh=33FiWN4/YQsvzUjEV/+jqhY4PWrI+0exsnyt38+BAxo=;
+	s=korg; t=1750175859;
+	bh=3xGLsM4zByVrejlG75SWP7JHaGvQKD7YqXIrVbPe71E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=u8oMsxUDY9loqz8kCJEBkssbTEo5BaS9EP3TCqLrJinvzlrKD+mo0CZ8Kd7ueGydy
-	 GScwtzTS+/IIQqFqqtA5bWYu5mtSPW6lqH8hXAWbIYbMtT9wgKNIFohPjO4egVRkqb
-	 5XrJP0CmcUShJN4q68j1mllX9Yc6bvv5K9f4jG1U=
+	b=byuGU13PZaFsqAQipVMkkkSkBghnUikv2t0Tu0kUhmDYKpmzAENhGYW2f9EQQ6T8e
+	 EnR1pVEzhlNct/ZOc0ontze/O1ylMdz9D9nE8J7sfRZ0irFe9SgRaD/MB8D8bXQOJj
+	 XQMpQUKG0FKxTjexH0MCyk/HEY5px/JXTkTj8pQg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -45,9 +45,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
 	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 128/780] drm/msm/dpu: enable SmartDMA on SM8150
-Date: Tue, 17 Jun 2025 17:17:16 +0200
-Message-ID: <20250617152456.720284289@linuxfoundation.org>
+Subject: [PATCH 6.15 129/780] drm/msm/dpu: enable SmartDMA on SC8180X
+Date: Tue, 17 Jun 2025 17:17:17 +0200
+Message-ID: <20250617152456.760119939@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
 References: <20250617152451.485330293@linuxfoundation.org>
@@ -68,26 +68,26 @@ Content-Transfer-Encoding: 8bit
 
 From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 
-[ Upstream commit 6a2343de0b6f70a21bf503ac4688dc905cb068e1 ]
+[ Upstream commit 8dcccd7a156ffb3157de7f527cc7c6100e9a455a ]
 
-Reworking of the catalog dropped the SmartDMA feature bit on the SM8150
+Reworking of the catalog dropped the SmartDMA feature bit on the SC8180X
 platform. Renable SmartDMA support on this SoC.
 
 Fixes: 460c410f02e4 ("drm/msm/dpu: duplicate sdm845 catalog entries")
 Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Patchwork: https://patchwork.freedesktop.org/patch/650418/
-Link: https://lore.kernel.org/r/20250425-dpu-rework-vig-masks-v2-1-c71900687d08@oss.qualcomm.com
+Patchwork: https://patchwork.freedesktop.org/patch/650421/
+Link: https://lore.kernel.org/r/20250425-dpu-rework-vig-masks-v2-2-c71900687d08@oss.qualcomm.com
 Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../drm/msm/disp/dpu1/catalog/dpu_5_0_sm8150.h   | 16 ++++++++--------
+ .../drm/msm/disp/dpu1/catalog/dpu_5_1_sc8180x.h  | 16 ++++++++--------
  1 file changed, 8 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_5_0_sm8150.h b/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_5_0_sm8150.h
-index 979527d98fbcb..8e23dbfeef354 100644
---- a/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_5_0_sm8150.h
-+++ b/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_5_0_sm8150.h
-@@ -76,7 +76,7 @@ static const struct dpu_sspp_cfg sm8150_sspp[] = {
+diff --git a/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_5_1_sc8180x.h b/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_5_1_sc8180x.h
+index d76b8992a6c18..e736eb73a7e61 100644
+--- a/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_5_1_sc8180x.h
++++ b/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_5_1_sc8180x.h
+@@ -75,7 +75,7 @@ static const struct dpu_sspp_cfg sc8180x_sspp[] = {
  	{
  		.name = "sspp_0", .id = SSPP_VIG0,
  		.base = 0x4000, .len = 0x1f0,
@@ -96,7 +96,7 @@ index 979527d98fbcb..8e23dbfeef354 100644
  		.sblk = &dpu_vig_sblk_qseed3_1_4,
  		.xin_id = 0,
  		.type = SSPP_TYPE_VIG,
-@@ -84,7 +84,7 @@ static const struct dpu_sspp_cfg sm8150_sspp[] = {
+@@ -83,7 +83,7 @@ static const struct dpu_sspp_cfg sc8180x_sspp[] = {
  	}, {
  		.name = "sspp_1", .id = SSPP_VIG1,
  		.base = 0x6000, .len = 0x1f0,
@@ -105,7 +105,7 @@ index 979527d98fbcb..8e23dbfeef354 100644
  		.sblk = &dpu_vig_sblk_qseed3_1_4,
  		.xin_id = 4,
  		.type = SSPP_TYPE_VIG,
-@@ -92,7 +92,7 @@ static const struct dpu_sspp_cfg sm8150_sspp[] = {
+@@ -91,7 +91,7 @@ static const struct dpu_sspp_cfg sc8180x_sspp[] = {
  	}, {
  		.name = "sspp_2", .id = SSPP_VIG2,
  		.base = 0x8000, .len = 0x1f0,
@@ -114,7 +114,7 @@ index 979527d98fbcb..8e23dbfeef354 100644
  		.sblk = &dpu_vig_sblk_qseed3_1_4,
  		.xin_id = 8,
  		.type = SSPP_TYPE_VIG,
-@@ -100,7 +100,7 @@ static const struct dpu_sspp_cfg sm8150_sspp[] = {
+@@ -99,7 +99,7 @@ static const struct dpu_sspp_cfg sc8180x_sspp[] = {
  	}, {
  		.name = "sspp_3", .id = SSPP_VIG3,
  		.base = 0xa000, .len = 0x1f0,
@@ -123,7 +123,7 @@ index 979527d98fbcb..8e23dbfeef354 100644
  		.sblk = &dpu_vig_sblk_qseed3_1_4,
  		.xin_id = 12,
  		.type = SSPP_TYPE_VIG,
-@@ -108,7 +108,7 @@ static const struct dpu_sspp_cfg sm8150_sspp[] = {
+@@ -107,7 +107,7 @@ static const struct dpu_sspp_cfg sc8180x_sspp[] = {
  	}, {
  		.name = "sspp_8", .id = SSPP_DMA0,
  		.base = 0x24000, .len = 0x1f0,
@@ -132,7 +132,7 @@ index 979527d98fbcb..8e23dbfeef354 100644
  		.sblk = &dpu_dma_sblk,
  		.xin_id = 1,
  		.type = SSPP_TYPE_DMA,
-@@ -116,7 +116,7 @@ static const struct dpu_sspp_cfg sm8150_sspp[] = {
+@@ -115,7 +115,7 @@ static const struct dpu_sspp_cfg sc8180x_sspp[] = {
  	}, {
  		.name = "sspp_9", .id = SSPP_DMA1,
  		.base = 0x26000, .len = 0x1f0,
@@ -141,7 +141,7 @@ index 979527d98fbcb..8e23dbfeef354 100644
  		.sblk = &dpu_dma_sblk,
  		.xin_id = 5,
  		.type = SSPP_TYPE_DMA,
-@@ -124,7 +124,7 @@ static const struct dpu_sspp_cfg sm8150_sspp[] = {
+@@ -123,7 +123,7 @@ static const struct dpu_sspp_cfg sc8180x_sspp[] = {
  	}, {
  		.name = "sspp_10", .id = SSPP_DMA2,
  		.base = 0x28000, .len = 0x1f0,
@@ -150,7 +150,7 @@ index 979527d98fbcb..8e23dbfeef354 100644
  		.sblk = &dpu_dma_sblk,
  		.xin_id = 9,
  		.type = SSPP_TYPE_DMA,
-@@ -132,7 +132,7 @@ static const struct dpu_sspp_cfg sm8150_sspp[] = {
+@@ -131,7 +131,7 @@ static const struct dpu_sspp_cfg sc8180x_sspp[] = {
  	}, {
  		.name = "sspp_11", .id = SSPP_DMA3,
  		.base = 0x2a000, .len = 0x1f0,
