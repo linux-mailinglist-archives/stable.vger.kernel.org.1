@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-153182-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153122-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA9A2ADD2F5
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 17:52:02 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 26CA3ADD271
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 17:42:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D74351786FB
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 15:49:46 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 87699189A7BF
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 15:42:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A2BA2ECE8F;
-	Tue, 17 Jun 2025 15:45:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 02DE22ECD3A;
+	Tue, 17 Jun 2025 15:42:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XMAjUYUx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UUV9X4mG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B80D92EE5F4;
-	Tue, 17 Jun 2025 15:45:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B41772EBDCC;
+	Tue, 17 Jun 2025 15:42:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750175143; cv=none; b=Xau+gU7ahRCXcpPX0iefsPtuRteZBq3Mbq+MF5SV8vTGHDGuWRSwhPnyOdVEUFJ1Qo1kBUSiOb9H3dixoWbRBnmFFgrKafOBC4cZBRNfS+jtR6ETLeqlsW6xSQG2+2pqVR7FKogSQeawSVb1rCtjoLAl0EkRty1ddDWQyWH3vqo=
+	t=1750174933; cv=none; b=Jpag4rXSl7fbb/dDaZkFmXBtOp44THSmypAQWdy7oxziB4hiaKUzwHJy48NfMhfpaosGEOZAN6k4ZBVB001Q731PJ1e8qHIeZ6tlgx6WgqY8bYHgURtBNFI/aOUXIqQPTrOwHRllUqqR4hjD2wk5l641PacZVSCiWQfx3dxX5lc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750175143; c=relaxed/simple;
-	bh=TkKJGXe/jkjnOc+TLmMR6UN480rIdcPU34dOfHtxbbI=;
+	s=arc-20240116; t=1750174933; c=relaxed/simple;
+	bh=dgd0XN278FXIdbdnhEvgEuZLi/BMIPl9paobHYAIvbw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AVOEb7L3JTwyJ9CvHrzNcSAeBOtvYCu9Wqnkz1fUBwFzyvdrMHvfTt6Y8CtZ3hq2m/jZNp7TFnrO/qkAIq1AlzM+K5PRvuljtDsQG783g/czt6EfQUPAdrQBCClFQ0vcdYXeph7XFs54k88FYmOXmoclJBtQBLgpTBxyxRYY6gk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XMAjUYUx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26167C4CEF1;
-	Tue, 17 Jun 2025 15:45:42 +0000 (UTC)
+	 MIME-Version; b=jbLO1UjHmWeCEruiOpb4evo+kqxr+VqNtESssidh0vpZOU787JoIPHQhef2gwa6Yt88z0bio5izjbGwKWPMWqns/WgsqTwgX3XvInJaDx5np4KZlYiqvFDy6aHZe+17z+OhBxrkmOWJlwE1IvEXHx7cKR067WLdVqMD+Jy+RXmI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UUV9X4mG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AFFFDC4CEE7;
+	Tue, 17 Jun 2025 15:42:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750175143;
-	bh=TkKJGXe/jkjnOc+TLmMR6UN480rIdcPU34dOfHtxbbI=;
+	s=korg; t=1750174933;
+	bh=dgd0XN278FXIdbdnhEvgEuZLi/BMIPl9paobHYAIvbw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XMAjUYUx5uCbBZnrmP0fy/EE1kMYytPW9hi6ze7rF61yVrbmE7B3DMSGNNMcC7BN7
-	 oi5oMjyiRwPCK4MXfdv712xWBYT4KkRuiXNTHtAPe5E3Ub5o8jkWayled9mwpOyDeU
-	 Q7xckvh91EA8zSFHlC+5himu238MuXnjRIs+hruM=
+	b=UUV9X4mGiZwPYpv6MbAsAOUIH1qCvUFexJvhUmYJPVZ+Nuvev/GRdcUjZ9llMfxyC
+	 3+7SrTbb5ziQdbqnz+d9xoFmPqJrMUMw6kCnqMCSq0UxrmSOVUDTX6zNzf3cXujlPI
+	 jLFyt/nbjGnyqcMlAV8pIv5EE+ZgmhKDLaUyQuPY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Liviu Dudau <liviu.dudau@arm.com>,
-	Steven Price <steven.price@arm.com>,
-	Boris Brezillon <boris.brezillon@collabora.com>,
+	Hongbo Yao <andy.xu@hj-micro.com>,
+	Robin Murphy <robin.murphy@arm.com>,
+	Will Deacon <will@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 073/512] drm/panthor: Update panthor_mmu::irq::mask when needed
-Date: Tue, 17 Jun 2025 17:20:39 +0200
-Message-ID: <20250617152422.540251448@linuxfoundation.org>
+Subject: [PATCH 6.12 074/512] perf: arm-ni: Unregister PMUs on probe failure
+Date: Tue, 17 Jun 2025 17:20:40 +0200
+Message-ID: <20250617152422.578675618@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
 References: <20250617152419.512865572@linuxfoundation.org>
@@ -67,42 +67,117 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Boris Brezillon <boris.brezillon@collabora.com>
+From: Hongbo Yao <andy.xu@hj-micro.com>
 
-[ Upstream commit 8ba64cf2f358079d09faba7529aad2b0a46c7903 ]
+[ Upstream commit 7f57afde6a44d9e044885e1125034edd4fda02e8 ]
 
-When we clear the faulty bits in the AS mask, we also need to update
-the panthor_mmu::irq::mask field otherwise our IRQ handler won't get
-called again until the GPU is reset.
+When a resource allocation fails in one clock domain of an NI device,
+we need to properly roll back all previously registered perf PMUs in
+other clock domains of the same device.
 
-Changes in v2:
-- Add Liviu's R-b
+Otherwise, it can lead to kernel panics.
 
-Changes in v3:
-- Add Steve's R-b
+Calling arm_ni_init+0x0/0xff8 [arm_ni] @ 2374
+arm-ni ARMHCB70:00: Failed to request PMU region 0x1f3c13000
+arm-ni ARMHCB70:00: probe with driver arm-ni failed with error -16
+list_add corruption: next->prev should be prev (fffffd01e9698a18),
+but was 0000000000000000. (next=ffff10001a0decc8).
+pstate: 6340009 (nZCv daif +PAN -UAO +TCO +DIT -SSBS BTYPE=--)
+pc : list_add_valid_or_report+0x7c/0xb8
+lr : list_add_valid_or_report+0x7c/0xb8
+Call trace:
+ __list_add_valid_or_report+0x7c/0xb8
+ perf_pmu_register+0x22c/0x3a0
+ arm_ni_probe+0x554/0x70c [arm_ni]
+ platform_probe+0x70/0xe8
+ really_probe+0xc6/0x4d8
+ driver_probe_device+0x48/0x170
+ __driver_attach+0x8e/0x1c0
+ bus_for_each_dev+0x64/0xf0
+ driver_add+0x138/0x260
+ bus_add_driver+0x68/0x138
+ __platform_driver_register+0x2c/0x40
+ arm_ni_init+0x14/0x2a [arm_ni]
+ do_init_module+0x36/0x298
+---[ end trace 0000000000000000 ]---
+Kernel panic - not syncing: Oops - BUG: Fatal exception
+SMP: stopping secondary CPUs
 
-Fixes: 647810ec2476 ("drm/panthor: Add the MMU/VM logical block")
-Reviewed-by: Liviu Dudau <liviu.dudau@arm.com>
-Reviewed-by: Steven Price <steven.price@arm.com>
-Link: https://lore.kernel.org/r/20250404080933.2912674-4-boris.brezillon@collabora.com
-Signed-off-by: Boris Brezillon <boris.brezillon@collabora.com>
+Fixes: 4d5a7680f2b4 ("perf: Add driver for Arm NI-700 interconnect PMU")
+Signed-off-by: Hongbo Yao <andy.xu@hj-micro.com>
+Reviewed-by: Robin Murphy <robin.murphy@arm.com>
+Link: https://lore.kernel.org/r/20250403070918.4153839-1-andy.xu@hj-micro.com
+Signed-off-by: Will Deacon <will@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/panthor/panthor_mmu.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/perf/arm-ni.c | 39 +++++++++++++++++++++------------------
+ 1 file changed, 21 insertions(+), 18 deletions(-)
 
-diff --git a/drivers/gpu/drm/panthor/panthor_mmu.c b/drivers/gpu/drm/panthor/panthor_mmu.c
-index 0e6f94df690dd..b57824abeb9ee 100644
---- a/drivers/gpu/drm/panthor/panthor_mmu.c
-+++ b/drivers/gpu/drm/panthor/panthor_mmu.c
-@@ -780,6 +780,7 @@ int panthor_vm_active(struct panthor_vm *vm)
- 	if (ptdev->mmu->as.faulty_mask & panthor_mmu_as_fault_mask(ptdev, as)) {
- 		gpu_write(ptdev, MMU_INT_CLEAR, panthor_mmu_as_fault_mask(ptdev, as));
- 		ptdev->mmu->as.faulty_mask &= ~panthor_mmu_as_fault_mask(ptdev, as);
-+		ptdev->mmu->irq.mask |= panthor_mmu_as_fault_mask(ptdev, as);
- 		gpu_write(ptdev, MMU_INT_MASK, ~ptdev->mmu->as.faulty_mask);
- 	}
+diff --git a/drivers/perf/arm-ni.c b/drivers/perf/arm-ni.c
+index 90fcfe693439e..3f3d2e0f91fa7 100644
+--- a/drivers/perf/arm-ni.c
++++ b/drivers/perf/arm-ni.c
+@@ -576,6 +576,23 @@ static int arm_ni_init_cd(struct arm_ni *ni, struct arm_ni_node *node, u64 res_s
+ 	return err;
+ }
  
++static void arm_ni_remove(struct platform_device *pdev)
++{
++	struct arm_ni *ni = platform_get_drvdata(pdev);
++
++	for (int i = 0; i < ni->num_cds; i++) {
++		struct arm_ni_cd *cd = ni->cds + i;
++
++		if (!cd->pmu_base)
++			continue;
++
++		writel_relaxed(0, cd->pmu_base + NI_PMCR);
++		writel_relaxed(U32_MAX, cd->pmu_base + NI_PMINTENCLR);
++		perf_pmu_unregister(&cd->pmu);
++		cpuhp_state_remove_instance_nocalls(arm_ni_hp_state, &cd->cpuhp_node);
++	}
++}
++
+ static void arm_ni_probe_domain(void __iomem *base, struct arm_ni_node *node)
+ {
+ 	u32 reg = readl_relaxed(base + NI_NODE_TYPE);
+@@ -657,8 +674,11 @@ static int arm_ni_probe(struct platform_device *pdev)
+ 				reg = readl_relaxed(pd.base + NI_CHILD_PTR(c));
+ 				arm_ni_probe_domain(base + reg, &cd);
+ 				ret = arm_ni_init_cd(ni, &cd, res->start);
+-				if (ret)
++				if (ret) {
++					ni->cds[cd.id].pmu_base = NULL;
++					arm_ni_remove(pdev);
+ 					return ret;
++				}
+ 			}
+ 		}
+ 	}
+@@ -666,23 +686,6 @@ static int arm_ni_probe(struct platform_device *pdev)
+ 	return 0;
+ }
+ 
+-static void arm_ni_remove(struct platform_device *pdev)
+-{
+-	struct arm_ni *ni = platform_get_drvdata(pdev);
+-
+-	for (int i = 0; i < ni->num_cds; i++) {
+-		struct arm_ni_cd *cd = ni->cds + i;
+-
+-		if (!cd->pmu_base)
+-			continue;
+-
+-		writel_relaxed(0, cd->pmu_base + NI_PMCR);
+-		writel_relaxed(U32_MAX, cd->pmu_base + NI_PMINTENCLR);
+-		perf_pmu_unregister(&cd->pmu);
+-		cpuhp_state_remove_instance_nocalls(arm_ni_hp_state, &cd->cpuhp_node);
+-	}
+-}
+-
+ #ifdef CONFIG_OF
+ static const struct of_device_id arm_ni_of_match[] = {
+ 	{ .compatible = "arm,ni-700" },
 -- 
 2.39.5
 
