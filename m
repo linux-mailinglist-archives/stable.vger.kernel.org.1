@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-154364-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153938-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 704E6ADD8C7
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:58:52 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 615C1ADD71B
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:41:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3060F4A5A33
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:50:47 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 300F716CCDC
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:31:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF29A238C0A;
-	Tue, 17 Jun 2025 16:49:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 000F42F94B3;
+	Tue, 17 Jun 2025 16:26:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HBItu/Ca"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Qyllv3rl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CC3518E025;
-	Tue, 17 Jun 2025 16:49:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B024A2F9492;
+	Tue, 17 Jun 2025 16:26:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750178958; cv=none; b=eBlzbMJfBoBlozduKOjR7URXrgYtXQsWl2vMHhi1raMbdsXkZElAwwMBWauOEmTgA+/zjtXtT40kNDiMoLu2u7VN0vl+3+wT+kNGT13ocGwINCsNlpVCrtt3E9KZGr+xFOJlGSO4dkc2xNLwtycCJczUe0RigOYhrro0tbP1m8o=
+	t=1750177585; cv=none; b=WSursMp2K96kbui7Xrkw/k2ERkE6nGAMRSRnoqtwS13Wm5MM2r4vDIYE+QaVfbjNiJ3wUScoc39SChO2DDymPWpAR9zwGtxzZqFYzWjezSfebfFzrLVbLV3/5i+aBmorQWzGVSm44sG+WbhXysBWwFyxBhXieGNBpgn16ui3TyQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750178958; c=relaxed/simple;
-	bh=rhTH4CPNdpxgHBawryHAaxBHbvnfXSKMczH8nq6WrrA=;
+	s=arc-20240116; t=1750177585; c=relaxed/simple;
+	bh=SE0c2ktNiFQGhglbMYELqRJJ5tsKWp1cdVqsemKO8oA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ExBl31rLH9LuYDApoC3QEvK0hdR1Zc8WpY74kH2vyL+eVLltAF+hJ19ezjjGgd6GPaLNuM+sx71lINjAAIcVFPXS1OaLmLB5z+cPzMLzrPeEC4HLgDxxPHocraEgdV5/nFYLxANfKhfKn+c+MvuGrobGsmM8vO2l3pGC+i+hvbk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HBItu/Ca; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03E45C4CEE3;
-	Tue, 17 Jun 2025 16:49:17 +0000 (UTC)
+	 MIME-Version; b=D3c4FEzlg4fuYm3Yk5WlD3ys6DCcCDRkr0nL6+t4dyWaaUAqKhi/noXh6aen0/Z79dHaXEQZ8skhxWIEzHwN/0Fwg7pzFjn1T8B4qOa/LgaQL2poix9IHKPioMBbc3uKlMEJEUdvrPZOnMkG46lFm0C2pCctNdsqxo2sbBb/NN0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Qyllv3rl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C31AC4CEE3;
+	Tue, 17 Jun 2025 16:26:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750178958;
-	bh=rhTH4CPNdpxgHBawryHAaxBHbvnfXSKMczH8nq6WrrA=;
+	s=korg; t=1750177585;
+	bh=SE0c2ktNiFQGhglbMYELqRJJ5tsKWp1cdVqsemKO8oA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HBItu/CaJCgVJjfi7oinPsa5pYmaHVp/arDV4j5t2Zz+NykWRFHhm28MSyHR/eWvj
-	 fXIiXF1IOz8Zum4fHaYaLpXYISVBOR/Kh22iIeBFIhLsJTVC37kMA7+p6K+oj2ODlP
-	 LV58opWfGDDypvhuUjiJ3Vz1q7+g/jIukW7orfQk=
+	b=Qyllv3rlvfFKlkB7fH7lRZUI0PrKpAV8y+PSRPjKZJuc0Nrja0wWZ82uxlJ0TJNLZ
+	 BADUXPhV1giZyEdvpRuC5u2IHTVXMAmvQjzzxt6qbuM97j8bG3uUxN5jYRSYFJJPOv
+	 87E2flaXlee2WTBmQo6z0Kr/g0SjiIkEOPYd9vIQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alok Tiwari <alok.a.tiwari@oracle.com>,
-	Mina Almasry <almasrymina@google.com>,
-	Simon Horman <horms@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>,
+	Abel Wu <wuyun.abel@bytedance.com>,
+	Tengteng Yang <yangtengteng@bytedance.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 603/780] gve: add missing NULL check for gve_alloc_pending_packet() in TX DQO
+Subject: [PATCH 6.12 345/512] Fix sock_exceed_buf_limit not being triggered in __sk_mem_raise_allocated
 Date: Tue, 17 Jun 2025 17:25:11 +0200
-Message-ID: <20250617152516.038011890@linuxfoundation.org>
+Message-ID: <20250617152433.572981021@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
-References: <20250617152451.485330293@linuxfoundation.org>
+In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
+References: <20250617152419.512865572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,46 +63,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alok Tiwari <alok.a.tiwari@oracle.com>
+From: Tengteng Yang <yangtengteng@bytedance.com>
 
-[ Upstream commit 12c331b29c7397ac3b03584e12902990693bc248 ]
+[ Upstream commit 8542d6fac25c03b4bf36b2d762cfe60fda8491bb ]
 
-gve_alloc_pending_packet() can return NULL, but gve_tx_add_skb_dqo()
-did not check for this case before dereferencing the returned pointer.
+When a process under memory pressure is not part of any cgroup and
+the charged flag is false, trace_sock_exceed_buf_limit was not called
+as expected.
 
-Add a missing NULL check to prevent a potential NULL pointer
-dereference when allocation fails.
+This regression was introduced by commit 2def8ff3fdb6 ("sock:
+Code cleanup on __sk_mem_raise_allocated()"). The fix changes the
+default value of charged to true while preserving existing logic.
 
-This improves robustness in low-memory scenarios.
-
-Fixes: a57e5de476be ("gve: DQO: Add TX path")
-Signed-off-by: Alok Tiwari <alok.a.tiwari@oracle.com>
-Reviewed-by: Mina Almasry <almasrymina@google.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Fixes: 2def8ff3fdb6 ("sock: Code cleanup on __sk_mem_raise_allocated()")
+Signed-off-by: Abel Wu <wuyun.abel@bytedance.com>
+Signed-off-by: Tengteng Yang <yangtengteng@bytedance.com>
+Link: https://patch.msgid.link/20250527030419.67693-1-yangtengteng@bytedance.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/google/gve/gve_tx_dqo.c | 3 +++
- 1 file changed, 3 insertions(+)
+ net/core/sock.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/ethernet/google/gve/gve_tx_dqo.c b/drivers/net/ethernet/google/gve/gve_tx_dqo.c
-index 2eba868d80370..f7da7de23d672 100644
---- a/drivers/net/ethernet/google/gve/gve_tx_dqo.c
-+++ b/drivers/net/ethernet/google/gve/gve_tx_dqo.c
-@@ -763,6 +763,9 @@ static int gve_tx_add_skb_dqo(struct gve_tx_ring *tx,
- 	s16 completion_tag;
+diff --git a/net/core/sock.c b/net/core/sock.c
+index 0842dc9189bf8..3c5386c76d6fe 100644
+--- a/net/core/sock.c
++++ b/net/core/sock.c
+@@ -3157,16 +3157,16 @@ int __sk_mem_raise_allocated(struct sock *sk, int size, int amt, int kind)
+ {
+ 	struct mem_cgroup *memcg = mem_cgroup_sockets_enabled ? sk->sk_memcg : NULL;
+ 	struct proto *prot = sk->sk_prot;
+-	bool charged = false;
++	bool charged = true;
+ 	long allocated;
  
- 	pkt = gve_alloc_pending_packet(tx);
-+	if (!pkt)
-+		return -ENOMEM;
-+
- 	pkt->skb = skb;
- 	completion_tag = pkt - tx->dqo.pending_packets;
+ 	sk_memory_allocated_add(sk, amt);
+ 	allocated = sk_memory_allocated(sk);
  
+ 	if (memcg) {
+-		if (!mem_cgroup_charge_skmem(memcg, amt, gfp_memcg_charge()))
++		charged = mem_cgroup_charge_skmem(memcg, amt, gfp_memcg_charge());
++		if (!charged)
+ 			goto suppress_allocation;
+-		charged = true;
+ 	}
+ 
+ 	/* Under limit. */
+@@ -3251,7 +3251,7 @@ int __sk_mem_raise_allocated(struct sock *sk, int size, int amt, int kind)
+ 
+ 	sk_memory_allocated_sub(sk, amt);
+ 
+-	if (charged)
++	if (memcg && charged)
+ 		mem_cgroup_uncharge_skmem(memcg, amt);
+ 
+ 	return 0;
 -- 
 2.39.5
 
