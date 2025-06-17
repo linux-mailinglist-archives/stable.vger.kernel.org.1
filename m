@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-153060-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153007-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5C6F7ADD218
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 17:38:59 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 21EA2ADD1E4
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 17:36:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B38031881496
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 15:39:14 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 796821897F72
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 15:36:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6199120F090;
-	Tue, 17 Jun 2025 15:38:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 962022E9730;
+	Tue, 17 Jun 2025 15:36:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ixQUYIF5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S66c3xl8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19B362ECD2A;
-	Tue, 17 Jun 2025 15:38:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5327518A6AE;
+	Tue, 17 Jun 2025 15:36:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750174737; cv=none; b=sj3qas0dD8mXMha/hFlO+1ZKbOX+F5efOfM48dVRNJRkw6Zlp19JKi7REz5nVBi0yT9JfsO66hUzJkrG02ddreTM1FdppE3Y3CBfw/HORISiojnx9Keau7h2iVwrVR98n5AC1gL/KF87cq+0V070w6ItB29JNyS7JzB/hXA9t6c=
+	t=1750174568; cv=none; b=i3Em8+9gNP2k7cTFmV+djc3F7GkjZ0ONAJihpVBwH5Kt7WBkLsE97ACZfqLGHbcycCpLiEmsQwuytQWLAwohUPd0DYOCnqwJ4oAX9fgrsw5nPV7urY+70z43Svoz8NueHKD73MyMUXnhcxEDTzpCSbaEnWBZFUl5JHtNL5evsPU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750174737; c=relaxed/simple;
-	bh=QUUGa9j/IXY8IwN1O0Z37yERnMfreYAXDiFRUabtMag=;
+	s=arc-20240116; t=1750174568; c=relaxed/simple;
+	bh=1K40XHrn2E1on6rABlde5LK7Y90wZrh3fbqblymNcbU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KhNfabZPy5lzMhpleMvDEAA49lYQ81LbOR+XLvrTBM+4Wn8EOtllbHq3iJUIqfKUkOcA1MR0ofFTpAaeaTofIz688QvNCftnMoCYaFVpfQ5bEW93x6489TBpJfIX33hLw6MRUPoKVNUlqSNuTnsk0Xv0Sn21lsjONEF3jOQtUYA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ixQUYIF5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97231C4CEE3;
-	Tue, 17 Jun 2025 15:38:56 +0000 (UTC)
+	 MIME-Version; b=D/fGzGjl3vYKzBWzkXgNoNQuG4L74t17MkIV50y0WvO1wyUA1IBp3OEsNsnw+FsNz76MbiHeGxRAJgR+x+kOeqWic7xvwUFT102FHG2hkah46r9D8ohbjo9qX3c4Og+VN8Ygtpw4pMF6EaVMxfFnrubnoqWWAjMwmzO+AY9HgH0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S66c3xl8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA127C4CEF1;
+	Tue, 17 Jun 2025 15:36:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750174737;
-	bh=QUUGa9j/IXY8IwN1O0Z37yERnMfreYAXDiFRUabtMag=;
+	s=korg; t=1750174568;
+	bh=1K40XHrn2E1on6rABlde5LK7Y90wZrh3fbqblymNcbU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ixQUYIF5v+iHPKifSDqKeSUc4QTu7vjymwFHMmw6ebuMXlQI48ufczn64ez8Ph1Tb
-	 xFFbV2CO8i4DA5Ge1Y5mAvhZih6mk1JVU6qeY5ufOuIYSHsOW16P4tgJ45EHLVf0yg
-	 y+WnZAHf7qvHgEVbnC6KG7bt+TYi9+nHVSj+95hU=
+	b=S66c3xl8sMdIkbLsQT199NxO7RoNyy65b14RamKBgZdgM+O6gjKIwQMdniEFtXvCW
+	 FH34iL962rpJPDCn7OQybGZM040TeG9eaagQ9xMp32s+W29iDDYgW5lQtlH3zKXyQk
+	 yENe4wPCm+C1hnr0HUgEDFIMV3fzEpUsza0DkKI0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ingo Franzki <ifranzki@linux.ibm.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
+	Daniil Tatianin <d-tatianin@yandex-team.ru>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 035/512] crypto: api - Redo lookup on EEXIST
-Date: Tue, 17 Jun 2025 17:20:01 +0200
-Message-ID: <20250617152420.977170898@linuxfoundation.org>
+Subject: [PATCH 6.12 036/512] ACPICA: exserial: dont forget to handle FFixedHW opregions for reading
+Date: Tue, 17 Jun 2025 17:20:02 +0200
+Message-ID: <20250617152421.016403653@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
 References: <20250617152419.512865572@linuxfoundation.org>
@@ -66,54 +66,42 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Herbert Xu <herbert@gondor.apana.org.au>
+From: Daniil Tatianin <d-tatianin@yandex-team.ru>
 
-[ Upstream commit 0a3cf32da469ff1df6e016f5f82b439a63d14461 ]
+[ Upstream commit 0f8af0356a45547683a216e4921006a3c6a6d922 ]
 
-When two crypto algorithm lookups occur at the same time with
-different names for the same algorithm, e.g., ctr(aes-generic)
-and ctr(aes), they will both be instantiated.  However, only one
-of them can be registered.  The second instantiation will fail
-with EEXIST.
+The initial commit that introduced support for FFixedHW operation
+regions did add a special case in the AcpiExReadSerialBus If, but
+forgot to actually handle it inside the switch, so add the missing case
+to prevent reads from failing with AE_AML_INVALID_SPACE_ID.
 
-Avoid failing the second lookup by making it retry, but only once
-because there are tricky names such as gcm_base(ctr(aes),ghash)
-that will always fail, despite triggering instantiation and EEXIST.
-
-Reported-by: Ingo Franzki <ifranzki@linux.ibm.com>
-Fixes: 2825982d9d66 ("[CRYPTO] api: Added event notification")
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Link: https://github.com/acpica/acpica/pull/998
+Fixes: ee64b827a9a ("ACPICA: Add support for FFH Opregion special context data")
+Signed-off-by: Daniil Tatianin <d-tatianin@yandex-team.ru>
+Link: https://patch.msgid.link/20250401184312.599962-1-d-tatianin@yandex-team.ru
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- crypto/api.c | 13 +++++++++++--
- 1 file changed, 11 insertions(+), 2 deletions(-)
+ drivers/acpi/acpica/exserial.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/crypto/api.c b/crypto/api.c
-index c2c4eb14ef955..5ce54328fef11 100644
---- a/crypto/api.c
-+++ b/crypto/api.c
-@@ -220,10 +220,19 @@ static struct crypto_alg *crypto_larval_wait(struct crypto_alg *alg,
- 		if (crypto_is_test_larval(larval))
- 			crypto_larval_kill(larval);
- 		alg = ERR_PTR(-ETIMEDOUT);
--	} else if (!alg) {
-+	} else if (!alg || PTR_ERR(alg) == -EEXIST) {
-+		int err = alg ? -EEXIST : -EAGAIN;
+diff --git a/drivers/acpi/acpica/exserial.c b/drivers/acpi/acpica/exserial.c
+index 5241f4c01c765..89a4ac447a2be 100644
+--- a/drivers/acpi/acpica/exserial.c
++++ b/drivers/acpi/acpica/exserial.c
+@@ -201,6 +201,12 @@ acpi_ex_read_serial_bus(union acpi_operand_object *obj_desc,
+ 		function = ACPI_READ;
+ 		break;
+ 
++	case ACPI_ADR_SPACE_FIXED_HARDWARE:
 +
-+		/*
-+		 * EEXIST is expected because two probes can be scheduled
-+		 * at the same time with one using alg_name and the other
-+		 * using driver_name.  Do a re-lookup but do not retry in
-+		 * case we hit a quirk like gcm_base(ctr(aes),...) which
-+		 * will never match.
-+		 */
- 		alg = &larval->alg;
- 		alg = crypto_alg_lookup(alg->cra_name, type, mask) ?:
--		      ERR_PTR(-EAGAIN);
-+		      ERR_PTR(err);
- 	} else if (IS_ERR(alg))
- 		;
- 	else if (crypto_is_test_larval(larval) &&
++		buffer_length = ACPI_FFH_INPUT_BUFFER_SIZE;
++		function = ACPI_READ;
++		break;
++
+ 	default:
+ 		return_ACPI_STATUS(AE_AML_INVALID_SPACE_ID);
+ 	}
 -- 
 2.39.5
 
