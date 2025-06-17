@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-153678-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153682-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 144DDADD655
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:32:25 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 84845ADD5A9
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:24:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C81211899097
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:18:07 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 819C87ADB7D
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:16:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 780262EB5D3;
-	Tue, 17 Jun 2025 16:12:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0EBC62ECE8F;
+	Tue, 17 Jun 2025 16:12:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z8cT+3Ke"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HxN8Qc1O"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36698237162;
-	Tue, 17 Jun 2025 16:12:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFA2D2ECE83;
+	Tue, 17 Jun 2025 16:12:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750176737; cv=none; b=N0mJN9sH8JrFdPvg/m873TwhkGw+TdqEu3UGWsPIMC2JYRQdZAu397Mpk5itW3Bl7PQb2Ga/Tsv3bc9GNPq8x+9P12SV+27jQ3+tJQRC/64QuuS0Dl1FtVmbvbGcgzbGNG6ICJ5u+ubLPF1PjnDIuQQ+yJujeUYfqwvGZGVqLdc=
+	t=1750176748; cv=none; b=doligC0Ch7pqCsp8bp6wqy4o1OB/SziwN9r9V4wqA+9/0vDIbzHJTLU0PwUKM9BrgDiaq0gePl20XNODNpXvgUe75J7UzvYlnkO4p16PvffoloYWHbZf5lD5M2zJHnLgmBlHlkG1M75QsAfbnU5eMcvX9IiDDJ023c8r1XYnwo8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750176737; c=relaxed/simple;
-	bh=65qbZqD6h6bAXmbbYlksR+uI876uGT0aHi0yVGYQ52Y=;
+	s=arc-20240116; t=1750176748; c=relaxed/simple;
+	bh=W15U66n+rWrWb6lNIpFOm5P/ZUpplSmPXR6Zek0OpLE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Zt/+wmB8jQm5Qxui7RYbcT2U0A97qTX1pkcTCD5GuqHF3z5WcdeiK8ocYL/zHdnxYErWJ3YJyeqw9u1vQoCdWK3VkGdv9SvvyZMFWaKqrHXWsszFmbwOPIEUrvdxtCGUw3/90MXv2Ifz5XGxLeJtEA6j9McCOJ1flwHzRB7tRd0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z8cT+3Ke; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4730BC4CEE7;
-	Tue, 17 Jun 2025 16:12:15 +0000 (UTC)
+	 MIME-Version; b=b3Se9tx27gB211n9qv2F14R6KJgB25X7+SXboKB1iXMtapeE7BrfbR9FBlET0V6iOKwR/wLAAOmWTLY1spNsp1JcDaGfTPKad6JlBBgHP0BQO2a7qZCUk86zcRh9lVr3M2COopyb6qpDhR1IuiuJIXWS0vtM66TXY4OC3rMNK60=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HxN8Qc1O; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0351C4CEE3;
+	Tue, 17 Jun 2025 16:12:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750176735;
-	bh=65qbZqD6h6bAXmbbYlksR+uI876uGT0aHi0yVGYQ52Y=;
+	s=korg; t=1750176748;
+	bh=W15U66n+rWrWb6lNIpFOm5P/ZUpplSmPXR6Zek0OpLE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=z8cT+3Ke2uzzsmUkztctM7hY0iDIv/JIz4NkWw9l5R19LD4jD//6y7VxXNt9/hbWf
-	 4w/AZgr05mkA+Tc5cRWTC7Di2/g9md61QG7m6jubOTO6c02njweZz2o988kFCybLLm
-	 l2H1uvx7PEbScV2ckxi4Nw5oaA4Q/AmRu2tL17CQ=
+	b=HxN8Qc1OvTc3ZpNi5CSREM34ZF3QzPriCHeEpp888qPPjqLtjAww6TLVYPuOn7Q2Y
+	 74F13bjzhVpgt6+51OyPe/2AKeX7GpT4I1O58hHqPqNkEp35ABwYsAnhXGeg9z2Kpg
+	 0yY9FUiIJG1r6y3dnCgUueJJfeG0QdtNYzbZ6ZI4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jonathan Wiepert <jonathan.wiepert@gmail.com>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Mykyta Yatsenko <mykyta.yatsenko5@gmail.com>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Jason Gunthorpe <jgg@nvidia.com>,
+	Joerg Roedel <jroedel@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 221/780] Use thread-safe function pointer in libbpf_print
-Date: Tue, 17 Jun 2025 17:18:49 +0200
-Message-ID: <20250617152500.457415970@linuxfoundation.org>
+Subject: [PATCH 6.15 222/780] iommu: ipmmu-vmsa: avoid Wformat-security warning
+Date: Tue, 17 Jun 2025 17:18:50 +0200
+Message-ID: <20250617152500.496468916@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
 References: <20250617152451.485330293@linuxfoundation.org>
@@ -67,37 +68,49 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Jonathan Wiepert <jonathan.wiepert@gmail.com>
+From: Arnd Bergmann <arnd@arndb.de>
 
-[ Upstream commit 91dbac4076537b464639953c055c460d2bdfc7ea ]
+[ Upstream commit 33647d0be323f9e2f27cd1e86de5cfd965cec654 ]
 
-This patch fixes a thread safety bug where libbpf_print uses the
-global variable storing the print function pointer rather than the local
-variable that had the print function set via __atomic_load_n.
+iommu_device_sysfs_add() requires a constant format string, otherwise
+a W=1 build produces a warning:
 
-Fixes: f1cb927cdb62 ("libbpf: Ensure print callback usage is thread-safe")
-Signed-off-by: Jonathan Wiepert <jonathan.wiepert@gmail.com>
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Acked-by: Mykyta Yatsenko <mykyta.yatsenko5@gmail.com>
-Link: https://lore.kernel.org/bpf/20250424221457.793068-1-jonathan.wiepert@gmail.com
+drivers/iommu/ipmmu-vmsa.c:1093:62: error: format string is not a string literal (potentially insecure) [-Werror,-Wformat-security]
+ 1093 |         ret = iommu_device_sysfs_add(&mmu->iommu, &pdev->dev, NULL, dev_name(&pdev->dev));
+      |                                                                     ^~~~~~~~~~~~~~~~~~~~
+drivers/iommu/ipmmu-vmsa.c:1093:62: note: treat the string as an argument to avoid this
+ 1093 |         ret = iommu_device_sysfs_add(&mmu->iommu, &pdev->dev, NULL, dev_name(&pdev->dev));
+      |                                                                     ^
+      |                                                                     "%s",
+
+This was an old bug but I saw it now because the code was changed as part
+of commit d9d3cede4167 ("iommu/ipmmu-vmsa: Register in a sensible order").
+
+Fixes: 7af9a5fdb9e0 ("iommu/ipmmu-vmsa: Use iommu_device_sysfs_add()/remove()")
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
+Link: https://lore.kernel.org/r/20250423164006.2661372-1-arnd@kernel.org
+Signed-off-by: Joerg Roedel <jroedel@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/lib/bpf/libbpf.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/iommu/ipmmu-vmsa.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/tools/lib/bpf/libbpf.c b/tools/lib/bpf/libbpf.c
-index 2bc0e3bfdd491..147964bb64c8f 100644
---- a/tools/lib/bpf/libbpf.c
-+++ b/tools/lib/bpf/libbpf.c
-@@ -286,7 +286,7 @@ void libbpf_print(enum libbpf_print_level level, const char *format, ...)
- 	old_errno = errno;
+diff --git a/drivers/iommu/ipmmu-vmsa.c b/drivers/iommu/ipmmu-vmsa.c
+index e424b279a8cd9..90341b24a8115 100644
+--- a/drivers/iommu/ipmmu-vmsa.c
++++ b/drivers/iommu/ipmmu-vmsa.c
+@@ -1090,7 +1090,8 @@ static int ipmmu_probe(struct platform_device *pdev)
+ 	if (mmu->features->has_cache_leaf_nodes && ipmmu_is_root(mmu))
+ 		return 0;
  
- 	va_start(args, format);
--	__libbpf_pr(level, format, args);
-+	print_fn(level, format, args);
- 	va_end(args);
+-	ret = iommu_device_sysfs_add(&mmu->iommu, &pdev->dev, NULL, dev_name(&pdev->dev));
++	ret = iommu_device_sysfs_add(&mmu->iommu, &pdev->dev, NULL, "%s",
++				     dev_name(&pdev->dev));
+ 	if (ret)
+ 		return ret;
  
- 	errno = old_errno;
 -- 
 2.39.5
 
