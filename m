@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-153523-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-154413-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C8EB5ADD4E6
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:15:17 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id E2578ADD9F3
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 19:11:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 329891942D68
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:07:28 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E858219E43AA
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:53:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 63A4C2EA15E;
-	Tue, 17 Jun 2025 16:03:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4405020CCFB;
+	Tue, 17 Jun 2025 16:51:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fLsEbl3A"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uRdpGrHj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20CB62EA153;
-	Tue, 17 Jun 2025 16:03:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F27F32FA658;
+	Tue, 17 Jun 2025 16:51:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750176239; cv=none; b=WDlA+aaEx8bLmXoQ3RjPyE6jK/9O1CfOAdt3YyseXCWaA9pl1qXwBHIHKxbDkWXL5rVf2PDwk2WBealZgvU/USK69GU+cKyXw/DQwIx2ezIvIYdeF6bp2guxooAZAbQc1rLpg1MhehNOmuLYlC3tBLSYnlpp6jEyl3N8Qa3tm6s=
+	t=1750179115; cv=none; b=HIt8kguDdvFppq0gdUvmwHudhgt88vIld4UuyT+/a2GWUwe+/xk3HZCjoClRIINjSBJ+OfdQix3DOGjeQ4koV+NCeACXsQ5E/5tZpZhCWjSxZu+5ynTvGYXABqQ1uQMjI4uxdoX0S+qGPdBqkr2lnkpKjdDeclbdr5PDTmOL4mM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750176239; c=relaxed/simple;
-	bh=OtKSSFWWLKchrSjvwi9W1ggxwiS3bDvhXvYP5Aaer2E=;
+	s=arc-20240116; t=1750179115; c=relaxed/simple;
+	bh=qD1OXUF4AfnDYgY33dG9ZIbNbOOOSl5ehRWo1qOjc4s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kjqzM8hyB8PXeYCQf2y9yivFtfB+vf+T/5ltIdcHwTT1vAdO9QQdD5YoI6ppoqM43H/lZjB7qZWVVTt7RvHjAHn2ywObAMOV1ACnGgpWuHN4IQkAJSD8E4T08KEPOxOKuanctqryqN/msRPhtRWvSExpq9/kvkcBlhuWnC+l44E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fLsEbl3A; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8501BC4CEE3;
-	Tue, 17 Jun 2025 16:03:58 +0000 (UTC)
+	 MIME-Version; b=tF9lPnPQPYE5eAUbL+f5eocb2XKvp2GUnZPp8HLEJq6UrMrIBRhod9z+Sz1jqcOfW0m5WaedfluH8ZRrJ9vfsdVbEQ7JDDNOp4MmMU4VU6OfY/vifPeosvcCARUuHOIjvwQRjZwCnvOn7eiTSztlLjtzUhzVPN6jv88oTYYKBEI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uRdpGrHj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5DD53C4CEE3;
+	Tue, 17 Jun 2025 16:51:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750176239;
-	bh=OtKSSFWWLKchrSjvwi9W1ggxwiS3bDvhXvYP5Aaer2E=;
+	s=korg; t=1750179114;
+	bh=qD1OXUF4AfnDYgY33dG9ZIbNbOOOSl5ehRWo1qOjc4s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fLsEbl3AFeANCWqufDTrF58d0mEt52abtl1flmN4dDTVO0z8XAb9O/7UcDZNUxQ6a
-	 Uaq5A6zDtrOKX1og+CY/HmjzalGp1BSHqlicf2QExayVjBDsl7zCwCYKXnwi973qnc
-	 gTL/O82MmPNou7l6q+JzJvQxayurDglMz5tU39pE=
+	b=uRdpGrHjqYLT1MKnEalPNW1tBDf9DRBubWq98FJkGC+73aeoVC7rprhbehjU67H0b
+	 lfuCoVoXlU78u5SvNc+Hk6kC2itCbk3VNES3M2Y1otXJXhSEOFRO8PltePGIFEyDlD
+	 Qxm5x5V0CpGn8THbx/9ADs8UcjXEKBzrlrjjMTZQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yanqing Wang <ot_yanqing.wang@mediatek.com>,
-	Macpaul Lin <macpaul.lin@mediatek.com>,
-	Biao Huang <biao.huang@mediatek.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Christian Brauner <brauner@kernel.org>,
+	Al Viro <viro@zeniv.linux.org.uk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 246/356] driver: net: ethernet: mtk_star_emac: fix suspend/resume issue
+Subject: [PATCH 6.15 653/780] fix propagation graph breakage by MOVE_MOUNT_SET_GROUP move_mount(2)
 Date: Tue, 17 Jun 2025 17:26:01 +0200
-Message-ID: <20250617152348.110023845@linuxfoundation.org>
+Message-ID: <20250617152518.068459750@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152338.212798615@linuxfoundation.org>
-References: <20250617152338.212798615@linuxfoundation.org>
+In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
+References: <20250617152451.485330293@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,54 +62,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yanqing Wang <ot_yanqing.wang@mediatek.com>
+From: Al Viro <viro@zeniv.linux.org.uk>
 
-[ Upstream commit ba99c627aac85bc746fb4a6e2d79edb3ad100326 ]
+[ Upstream commit d8cc0362f918d020ca1340d7694f07062dc30f36 ]
 
-Identify the cause of the suspend/resume hang: netif_carrier_off()
-is called during link state changes and becomes stuck while
-executing linkwatch_work().
+9ffb14ef61ba "move_mount: allow to add a mount into an existing group"
+breaks assertions on ->mnt_share/->mnt_slave.  For once, the data structures
+in question are actually documented.
 
-To resolve this issue, call netif_device_detach() during the Ethernet
-suspend process to temporarily detach the network device from the
-kernel and prevent the suspend/resume hang.
+Documentation/filesystem/sharedsubtree.rst:
+        All vfsmounts in a peer group have the same ->mnt_master.  If it is
+	non-NULL, they form a contiguous (ordered) segment of slave list.
 
-Fixes: 8c7bd5a454ff ("net: ethernet: mtk-star-emac: new driver")
-Signed-off-by: Yanqing Wang <ot_yanqing.wang@mediatek.com>
-Signed-off-by: Macpaul Lin <macpaul.lin@mediatek.com>
-Signed-off-by: Biao Huang <biao.huang@mediatek.com>
-Link: https://patch.msgid.link/20250528075351.593068-1-macpaul.lin@mediatek.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+do_set_group() puts a mount into the same place in propagation graph
+as the old one.  As the result, if old mount gets events from somewhere
+and is not a pure event sink, new one needs to be placed next to the
+old one in the slave list the old one's on.  If it is a pure event
+sink, we only need to make sure the new one doesn't end up in the
+middle of some peer group.
+
+"move_mount: allow to add a mount into an existing group" ends up putting
+the new one in the beginning of list; that's definitely not going to be
+in the middle of anything, so that's fine for case when old is not marked
+shared.  In case when old one _is_ marked shared (i.e. is not a pure event
+sink), that breaks the assumptions of propagation graph iterators.
+
+Put the new mount next to the old one on the list - that does the right thing
+in "old is marked shared" case and is just as correct as the current behaviour
+if old is not marked shared (kudos to Pavel for pointing that out - my original
+suggested fix changed behaviour in the "nor marked" case, which complicated
+things for no good reason).
+
+Reviewed-by: Christian Brauner <brauner@kernel.org>
+Fixes: 9ffb14ef61ba ("move_mount: allow to add a mount into an existing group")
+Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/mediatek/mtk_star_emac.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ fs/namespace.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/mediatek/mtk_star_emac.c b/drivers/net/ethernet/mediatek/mtk_star_emac.c
-index c2ab87828d858..5eb7a97e7eb17 100644
---- a/drivers/net/ethernet/mediatek/mtk_star_emac.c
-+++ b/drivers/net/ethernet/mediatek/mtk_star_emac.c
-@@ -1468,6 +1468,8 @@ static __maybe_unused int mtk_star_suspend(struct device *dev)
- 	if (netif_running(ndev))
- 		mtk_star_disable(ndev);
+diff --git a/fs/namespace.c b/fs/namespace.c
+index cb5126b06dcb9..e2780f413a2e0 100644
+--- a/fs/namespace.c
++++ b/fs/namespace.c
+@@ -3452,7 +3452,7 @@ static int do_set_group(struct path *from_path, struct path *to_path)
+ 	if (IS_MNT_SLAVE(from)) {
+ 		struct mount *m = from->mnt_master;
  
-+	netif_device_detach(ndev);
-+
- 	clk_bulk_disable_unprepare(MTK_STAR_NCLKS, priv->clks);
- 
- 	return 0;
-@@ -1492,6 +1494,8 @@ static __maybe_unused int mtk_star_resume(struct device *dev)
- 			clk_bulk_disable_unprepare(MTK_STAR_NCLKS, priv->clks);
+-		list_add(&to->mnt_slave, &m->mnt_slave_list);
++		list_add(&to->mnt_slave, &from->mnt_slave);
+ 		to->mnt_master = m;
  	}
- 
-+	netif_device_attach(ndev);
-+
- 	return ret;
- }
  
 -- 
 2.39.5
