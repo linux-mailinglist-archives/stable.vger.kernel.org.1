@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-153617-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-154464-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id CDAE3ADD577
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:21:23 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 65E26ADD870
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:55:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B666216CF69
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:13:11 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 271F77A3168
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:54:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F396C2ED17B;
-	Tue, 17 Jun 2025 16:09:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C2D92FA652;
+	Tue, 17 Jun 2025 16:54:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="igKzwMdG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rSWeZAf6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A273E2ED176;
-	Tue, 17 Jun 2025 16:09:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3853D2FA626;
+	Tue, 17 Jun 2025 16:54:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750176541; cv=none; b=iE84eYdJYE2vGpcQzUXnLLjzSq9Ip4ytgmsm5Z6XSoOhshZ303G/LoXPKEDNEWRlc7HhF1aeSPlknZRvlnZn+bbY8iOFktU9y1+o1epioYwlxJNx6HNA8+Gx9sZMoMURqTSEVwShWD/kP5L1i9Cygu9sWfJJ7IfSIsK9lJvb0pw=
+	t=1750179271; cv=none; b=by9kuLeHKCMweINmbone62u6QdnhvrDkgysILIq9yP9QFOGjnXH/EAYFIe+x/Sc+7Hhg7BS5ttUggM66NxMqa3BMSpMILMGq6qd7JItHb6I8uJx+DFIpjznl+N/RkTlk5KN4eFdM3zZ7UO1yuIVE5lcv6rfmx/bETCEScW6yvZw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750176541; c=relaxed/simple;
-	bh=10xGQac022hY1dr5inw4AqR3hyU42XMNxD6FFBnw4vs=;
+	s=arc-20240116; t=1750179271; c=relaxed/simple;
+	bh=s9u9RjxOFt01Ovamh5c1STytAWKNU6FanjD+TLCLAYI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=vEg2nNlYv0nGD3cQYaXPxbNdRqNiJcESmcZLrDLgU/84bsUr9nXhSRTfgGnzd3YbqzXVTYP+PZaI+O78/Wk3sx3RcgtEm489+Y9ETOj8+yRuaFvXlY/3RXl1Uh1bFIrhEhGeT5dcHWCZXnCv8M/j8wZKpNqCmvYrjLCkCrSgI5Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=igKzwMdG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB1A4C4CEE3;
-	Tue, 17 Jun 2025 16:09:00 +0000 (UTC)
+	 MIME-Version; b=jb/fLHQqegp2OvRc09Xfhj7N94GMcwxR07a95Ip79tE4+LXWlx3QGDTFk9RuhLcP3P81eIfBT6fRAiWQ80GeBdfjwERUTbVl8sY5Iu1pYf433Yo7rLzuBpN0YX8zRdZ/N4l34XcDAnngshjwidJgTHAvDsKNIzhjJJ28Ggf6pb0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rSWeZAf6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9FA77C4CEE3;
+	Tue, 17 Jun 2025 16:54:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750176541;
-	bh=10xGQac022hY1dr5inw4AqR3hyU42XMNxD6FFBnw4vs=;
+	s=korg; t=1750179271;
+	bh=s9u9RjxOFt01Ovamh5c1STytAWKNU6FanjD+TLCLAYI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=igKzwMdGvdObdliFKG2UW5zN7uay5KQfXxVmKNRplyfBVASzismxE1nanGJhml6WA
-	 TRDs2fkp8LlNGeF6yE4B4+CSYyWKXvG0CkEn9aPJApsMyEKxVdXAO5WMhlKTFUNsLU
-	 fnZoz2XIcFMCYj2Er4bBmyu1Zt0Q7Z2JsT9gFcpU=
+	b=rSWeZAf6hWIeo2k3Z8ffGi7fmsYFv/wVG6v8Mw6W4uynt/AlWhhcfe7rCERtK9u9j
+	 8Dpo1bgl/wxCmvR2pUvQ8mMKAVQTk9A0NwwjTVtwcr8SWwKl+FyDRO2I9d81oEaBL6
+	 VraZMZHCEAuI33UzLtyJSd+qLS/QeTBZFaLAyGC0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pauli Virtanen <pav@iki.fi>,
-	Paul Menzel <pmenzel@molgen.mpg.de>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Xu Lu <luxu.kernel@bytedance.com>,
+	Yunhui Cui <cuiyunhui@bytedance.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 291/356] Bluetooth: hci_core: fix list_for_each_entry_rcu usage
-Date: Tue, 17 Jun 2025 17:26:46 +0200
-Message-ID: <20250617152349.892762891@linuxfoundation.org>
+Subject: [PATCH 6.15 699/780] ACPI: CPPC: Fix NULL pointer dereference when nosmp is used
+Date: Tue, 17 Jun 2025 17:26:47 +0200
+Message-ID: <20250617152519.961179552@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152338.212798615@linuxfoundation.org>
-References: <20250617152338.212798615@linuxfoundation.org>
+In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
+References: <20250617152451.485330293@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,59 +63,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pauli Virtanen <pav@iki.fi>
+From: Yunhui Cui <cuiyunhui@bytedance.com>
 
-[ Upstream commit 308a3a8ce8ea41b26c46169f3263e50f5997c28e ]
+[ Upstream commit 15eece6c5b05e5f9db0711978c3e3b7f1a2cfe12 ]
 
-Releasing + re-acquiring RCU lock inside list_for_each_entry_rcu() loop
-body is not correct.
+With nosmp in cmdline, other CPUs are not brought up, leaving
+their cpc_desc_ptr NULL. CPU0's iteration via for_each_possible_cpu()
+dereferences these NULL pointers, causing panic.
 
-Fix by taking the update-side hdev->lock instead.
+Panic backtrace:
 
-Fixes: c7eaf80bfb0c ("Bluetooth: Fix hci_link_tx_to RCU lock usage")
-Signed-off-by: Pauli Virtanen <pav@iki.fi>
-Reviewed-by: Paul Menzel <pmenzel@molgen.mpg.de>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+[    0.401123] Unable to handle kernel NULL pointer dereference at virtual address 00000000000000b8
+...
+[    0.403255] [<ffffffff809a5818>] cppc_allow_fast_switch+0x6a/0xd4
+...
+Kernel panic - not syncing: Attempted to kill init!
+
+Fixes: 3cc30dd00a58 ("cpufreq: CPPC: Enable fast_switch")
+Reported-by: Xu Lu <luxu.kernel@bytedance.com>
+Signed-off-by: Yunhui Cui <cuiyunhui@bytedance.com>
+Link: https://patch.msgid.link/20250604023036.99553-1-cuiyunhui@bytedance.com
+[ rjw: New subject ]
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bluetooth/hci_core.c | 11 +++--------
- 1 file changed, 3 insertions(+), 8 deletions(-)
+ drivers/acpi/cppc_acpi.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/bluetooth/hci_core.c b/net/bluetooth/hci_core.c
-index 30519d47e8a69..febfd389ecf43 100644
---- a/net/bluetooth/hci_core.c
-+++ b/net/bluetooth/hci_core.c
-@@ -3380,23 +3380,18 @@ static void hci_link_tx_to(struct hci_dev *hdev, __u8 type)
+diff --git a/drivers/acpi/cppc_acpi.c b/drivers/acpi/cppc_acpi.c
+index f193e713825ac..ff23b6edb2df3 100644
+--- a/drivers/acpi/cppc_acpi.c
++++ b/drivers/acpi/cppc_acpi.c
+@@ -463,7 +463,7 @@ bool cppc_allow_fast_switch(void)
+ 	struct cpc_desc *cpc_ptr;
+ 	int cpu;
  
- 	bt_dev_err(hdev, "link tx timeout");
- 
--	rcu_read_lock();
-+	hci_dev_lock(hdev);
- 
- 	/* Kill stalled connections */
--	list_for_each_entry_rcu(c, &h->list, list) {
-+	list_for_each_entry(c, &h->list, list) {
- 		if (c->type == type && c->sent) {
- 			bt_dev_err(hdev, "killing stalled connection %pMR",
- 				   &c->dst);
--			/* hci_disconnect might sleep, so, we have to release
--			 * the RCU read lock before calling it.
--			 */
--			rcu_read_unlock();
- 			hci_disconnect(c, HCI_ERROR_REMOTE_USER_TERM);
--			rcu_read_lock();
- 		}
- 	}
- 
--	rcu_read_unlock();
-+	hci_dev_unlock(hdev);
- }
- 
- static struct hci_chan *hci_chan_sent(struct hci_dev *hdev, __u8 type,
+-	for_each_possible_cpu(cpu) {
++	for_each_present_cpu(cpu) {
+ 		cpc_ptr = per_cpu(cpc_desc_ptr, cpu);
+ 		desired_reg = &cpc_ptr->cpc_regs[DESIRED_PERF];
+ 		if (!CPC_IN_SYSTEM_MEMORY(desired_reg) &&
 -- 
 2.39.5
 
