@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-153140-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153143-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9CC89ADD28F
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 17:44:28 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 17A19ADD29E
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 17:45:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5779A3BC3F4
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 15:42:59 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 34EDE17CCEB
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 15:43:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D6AF2ECD0B;
-	Tue, 17 Jun 2025 15:43:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CCD082ECD2F;
+	Tue, 17 Jun 2025 15:43:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VKG09RUY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LsnWMKus"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B1C01E8332;
-	Tue, 17 Jun 2025 15:43:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A49D2EA487;
+	Tue, 17 Jun 2025 15:43:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750175000; cv=none; b=sp1T8zf4N5ucRh2IPBXqx7n1JmtQ5wywN5F3HLx5ZGlUbZZRT4/Ww6X9wTZwfNySrKpdZp0z/qOYvWUQfR7WGY3CLi/lbGO3f6Sul2ibsOrCh+Q4tH/HVwgMPg0IMxPQ3DIrsVTIwFwhjhbSlTZwd4azdPJcLg30o5zZaQePW1k=
+	t=1750175016; cv=none; b=Ax1+oOGHmZbxyoU+9eLLDq+YXP8G4V9EUEbHMhiugxlFmfxWySBVTavIw3e/Prp4lBMmiFFvnigvmkgcL3o/fUOcA0qy/UFQ7wl78gPLVwLsQpwYgdUpg60w/WaX9cfcxCmHOfqC2rN0EQLN3ghxemW3mEhNNZmOEs89O+IJLss=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750175000; c=relaxed/simple;
-	bh=Ub4DUF4Gb48xUApRVoLh78sZ4Sb6PMZusYFfayp2MuE=;
+	s=arc-20240116; t=1750175016; c=relaxed/simple;
+	bh=QEnjEcXByIBu+ufQaljjLPeRBeLG6pdbfivCx221t1E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mw3swleOQ6UpO1szCWvUTeyMO2cHyW8tgTK7mIoFulhBOrFWyTdU10ePkCk+Gn5KKFbrC14Qos/YaKkpoxZowglMnPGpO2KRtmSszCpVqYuPgReW7DdpUJxQeP9qZUnt7E7vSPtZCNQw5HNFti3Y5xCljX5HOaVEdIZmN74oZ0E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VKG09RUY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1F6BC4CEE7;
-	Tue, 17 Jun 2025 15:43:19 +0000 (UTC)
+	 MIME-Version:Content-Type; b=lCnW442p0ltVyt3MDxLvKtYddnPHWtN4k8dg+mCt0qnCWwkk246wdOoTBGhn1+OGJe4m8pc0t4+yT1KZXKx+jxMYxNzqvNNbaRcEWvtF/oKmPjkOGnwenE56f7KfDiB3ou+svpss/56JqpMUpgHyeFspO1SiFSghb1MFptPKjZs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LsnWMKus; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED00AC4CEE3;
+	Tue, 17 Jun 2025 15:43:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750175000;
-	bh=Ub4DUF4Gb48xUApRVoLh78sZ4Sb6PMZusYFfayp2MuE=;
+	s=korg; t=1750175016;
+	bh=QEnjEcXByIBu+ufQaljjLPeRBeLG6pdbfivCx221t1E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VKG09RUYAQUdqqXbxCbXbuq9H6gdbi4gXhi1W0zl9e5+CkQBtKc8gA11wlg/R+Mim
-	 jlIsro+x8A7rIiKPU627mVmVzEgMbKTYHeK4AP0sGBOujfo0x6QP7D9eH5Z4cOQvVp
-	 hn/PmjOW3D0x3L9JLBgo8hfPnQJ5VmcqQaRmPWrE=
+	b=LsnWMKusgHoN000wDU65t4h8tKDDs6pqznpUMt/hyFaqLjrX6OcaU4pIpg3fxzgM9
+	 RfpxnPOIxEV8L2+aqR7XBc5+hgaSymCXiICOiaFKEKdgKf/J+Kt94UQs901sAPbklq
+	 143SxJNuAPJs+2R8UAi8PwCV8nMmnQzcGtF3zML4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Miaoqian Lin <linmq006@gmail.com>,
-	Gavin Shan <gshan@redhat.com>,
-	Mark Rutland <mark.rutland@arm.com>,
+	=?UTF-8?q?Kornel=20Dul=C4=99ba?= <korneld@google.com>,
+	Anshuman Khandual <anshuman.khandual@arm.com>,
 	Will Deacon <will@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 083/512] firmware: psci: Fix refcount leak in psci_dt_init
-Date: Tue, 17 Jun 2025 17:20:49 +0200
-Message-ID: <20250617152422.940058074@linuxfoundation.org>
+Subject: [PATCH 6.12 084/512] arm64: Support ARM64_VA_BITS=52 when setting ARCH_MMAP_RND_BITS_MAX
+Date: Tue, 17 Jun 2025 17:20:50 +0200
+Message-ID: <20250617152422.978391734@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
 References: <20250617152419.512865572@linuxfoundation.org>
@@ -62,46 +61,58 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Miaoqian Lin <linmq006@gmail.com>
+From: Kornel Dulęba <korneld@google.com>
 
-[ Upstream commit 7ff37d29fd5c27617b9767e1b8946d115cf93a1e ]
+[ Upstream commit f101c56447717c595d803894ba0e215f56c6fba4 ]
 
-Fix a reference counter leak in psci_dt_init() where of_node_put(np) was
-missing after of_find_matching_node_and_match() when np is unavailable.
+When the 52-bit virtual addressing was introduced the select like
+ARCH_MMAP_RND_BITS_MAX logic was never updated to account for it.
+Because of that the rnd max bits knob is set to the default value of 18
+when ARM64_VA_BITS=52.
+Fix this by setting ARCH_MMAP_RND_BITS_MAX to the same value that would
+be used if 48-bit addressing was used. Higher values can't used here
+because 52-bit addressing is used only if the caller provides a hint to
+mmap, with a fallback to 48-bit. The knob in question is an upper bound
+for what the user can set in /proc/sys/vm/mmap_rnd_bits, which in turn
+is used to determine how many random bits can be inserted into the base
+address used for mmap allocations. Since 48-bit allocations are legal
+with ARM64_VA_BITS=52, we need to make sure that the base address is
+small enough to facilitate this.
 
-Fixes: d09a0011ec0d ("drivers: psci: Allow PSCI node to be disabled")
-Signed-off-by: Miaoqian Lin <linmq006@gmail.com>
-Reviewed-by: Gavin Shan <gshan@redhat.com>
-Acked-by: Mark Rutland <mark.rutland@arm.com>
-Link: https://lore.kernel.org/r/20250318151712.28763-1-linmq006@gmail.com
+Fixes: b6d00d47e81a ("arm64: mm: Introduce 52-bit Kernel VAs")
+Signed-off-by: Kornel Dulęba <korneld@google.com>
+Reviewed-by: Anshuman Khandual <anshuman.khandual@arm.com>
+Link: https://lore.kernel.org/r/20250417114754.3238273-1-korneld@google.com
 Signed-off-by: Will Deacon <will@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/firmware/psci/psci.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ arch/arm64/Kconfig | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/firmware/psci/psci.c b/drivers/firmware/psci/psci.c
-index 2328ca58bba61..d6701d81cf680 100644
---- a/drivers/firmware/psci/psci.c
-+++ b/drivers/firmware/psci/psci.c
-@@ -759,8 +759,10 @@ int __init psci_dt_init(void)
- 
- 	np = of_find_matching_node_and_match(NULL, psci_of_match, &matched_np);
- 
--	if (!np || !of_device_is_available(np))
-+	if (!np || !of_device_is_available(np)) {
-+		of_node_put(np);
- 		return -ENODEV;
-+	}
- 
- 	init_fn = (psci_initcall_t)matched_np->data;
- 	ret = init_fn(np);
+diff --git a/arch/arm64/Kconfig b/arch/arm64/Kconfig
+index a11a7a42edbfb..7887d18cce3e4 100644
+--- a/arch/arm64/Kconfig
++++ b/arch/arm64/Kconfig
+@@ -322,9 +322,9 @@ config ARCH_MMAP_RND_BITS_MAX
+ 	default 24 if ARM64_VA_BITS=39
+ 	default 27 if ARM64_VA_BITS=42
+ 	default 30 if ARM64_VA_BITS=47
+-	default 29 if ARM64_VA_BITS=48 && ARM64_64K_PAGES
+-	default 31 if ARM64_VA_BITS=48 && ARM64_16K_PAGES
+-	default 33 if ARM64_VA_BITS=48
++	default 29 if (ARM64_VA_BITS=48 || ARM64_VA_BITS=52) && ARM64_64K_PAGES
++	default 31 if (ARM64_VA_BITS=48 || ARM64_VA_BITS=52) && ARM64_16K_PAGES
++	default 33 if (ARM64_VA_BITS=48 || ARM64_VA_BITS=52)
+ 	default 14 if ARM64_64K_PAGES
+ 	default 16 if ARM64_16K_PAGES
+ 	default 18
 -- 
 2.39.5
 
