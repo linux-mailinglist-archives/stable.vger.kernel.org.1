@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-154025-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-154028-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D816DADD797
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:46:46 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C406AADD77B
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:45:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5CAB94A626D
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:36:44 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C1AE22C451C
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:37:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A8B692EE284;
-	Tue, 17 Jun 2025 16:31:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F12682EE28F;
+	Tue, 17 Jun 2025 16:31:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vgEH6eHH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2T+Wsc8J"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 664BF2ED84B;
-	Tue, 17 Jun 2025 16:31:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACFD82ED84B;
+	Tue, 17 Jun 2025 16:31:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750177864; cv=none; b=hoKnNjmgQL5ie6yay+vFLY8qv0IJV7DsUDJHYvRqAEgEhgiKSeOp5GZzdBfeQmRncq6lgaE3I9p6qlDr2f13eeJyOoOhZvrbVABQaObt82k0vdQ0Y+f5QVNs/Jp4FYKDlrPMpMeYW3uTPDyWh071ccOZANcOp3biRZm2TcOBKA8=
+	t=1750177874; cv=none; b=g9VnRSP1UDq/UsQkAjTBSeCRfIo09yp3ZI46aJGAONpqia9zqMyFPx6pAiRpW3nWYiT/YsfI4iAr5xQzoivzyZobRAAm7NVgfbZbtDrkv4tKIv0OtD9ENhsfZcP+RCn37t7tu8mI8KKvED3s5TtWfYVfrpER8DJTzBhBhMO8cJU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750177864; c=relaxed/simple;
-	bh=NVn76SVDrEgOE5MN+/gz2RP2dsBiZ05JrdANSPSrzAo=;
+	s=arc-20240116; t=1750177874; c=relaxed/simple;
+	bh=fc4ENxM+0hsTC/3QgqpMGl6yi7VLWnMy/5IGbxhy6u4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Fwwy5J7I/rmQmM8x/Ia0Gci5DJ+6Bzky6A/Vy1RndNr6OLWuFLChA9Jf/JMagaikq7qqGkcyyJERy/ZvJvsmmHR5hdQRhTiZwSx9y0hdFlGMUiC539TuFJ7DshsZyLw70NnVbt2e1OdGvz8tmYZoCDzZGYIlEHbhnosY7Z6C30E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vgEH6eHH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EAFADC4CEE3;
-	Tue, 17 Jun 2025 16:31:03 +0000 (UTC)
+	 MIME-Version; b=KcTXia3PhOWV0RKV5bDMPHPezrMoCAcIr9UiDuoXBWaLce2BjDjL3NJH/7TLdCKYyi+4ClFLDHnkqO/+338dXBg9vRvEoWfReJrWRajeBtcuDdPdiJUvRjPHKJXqiUs12xk3QnTZWXSm+eUPE8UgsN/dCxbCGdrlPsBiklNdei8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2T+Wsc8J; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA5D2C4CEE3;
+	Tue, 17 Jun 2025 16:31:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750177864;
-	bh=NVn76SVDrEgOE5MN+/gz2RP2dsBiZ05JrdANSPSrzAo=;
+	s=korg; t=1750177874;
+	bh=fc4ENxM+0hsTC/3QgqpMGl6yi7VLWnMy/5IGbxhy6u4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vgEH6eHH7Z5kog91gBM2TJK+pSrUhygX6pfXmfiuKUG4ljjb28XMMQCbz4C8tUA6o
-	 tXlBF2sxvoJ79Y4yrysytUUoCTGZe90z8n0s86cyR/zHLY1Cfa5FRAj2DW26cX64QL
-	 9m5DwgBk/0uYWttVuRcuOgxXFwN4cyWQOx+5dKws=
+	b=2T+Wsc8JDthoNdYLw+oAbJ5pEjYeMCuEhAC5AruI7Tp+jllRj1EHVRsJporcBxudO
+	 ypPAQjB8qgB8t40ABfXOgXLgziZvzic6Ttub1StKWcYoCE2gwBArSDCSii3qHLVehZ
+	 mEFwh4z8hYVV+M2ixWFvdx30fHMrZU2iFJ9DxFTQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -46,9 +46,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Frank Li <Frank.Li@nxp.com>,
 	Shawn Guo <shawnguo@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 374/780] arm64: dts: imx8mp-beacon: Fix RTC capacitive load
-Date: Tue, 17 Jun 2025 17:21:22 +0200
-Message-ID: <20250617152506.685888387@linuxfoundation.org>
+Subject: [PATCH 6.15 375/780] arm64: dts: imx8mm-beacon: Set SAI5 MCLK direction to output for HDMI audio
+Date: Tue, 17 Jun 2025 17:21:23 +0200
+Message-ID: <20250617152506.729480191@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
 References: <20250617152451.485330293@linuxfoundation.org>
@@ -69,32 +69,34 @@ Content-Transfer-Encoding: 8bit
 
 From: Adam Ford <aford173@gmail.com>
 
-[ Upstream commit 6821ee17537938e919e8b86a541aae451f73165b ]
+[ Upstream commit 8c716f80dfe8cd6ed9a2696847cea1affeeff6ff ]
 
-Although not noticeable when used every day, the RTC appears to drift when
-left to sit over time.  This is due to the capacitive load not being
-properly set. Fix RTC drift by correcting the capacitive load setting
-from 7000 to 12500, which matches the actual hardware configuration.
+The HDMI bridge chip fails to generate an audio source due to the SAI5
+master clock (MCLK) direction not being set to output. This prevents proper
+clocking of the HDMI audio interface.
 
-Fixes: 25a5ccdce767 ("arm64: dts: freescale: Introduce imx8mp-beacon-kit")
+Add the `fsl,sai-mclk-direction-output` property to the SAI5 node to ensure
+the MCLK is driven by the SoC, resolving the HDMI sound issue.
+
+Fixes: 8ad7d14d99f3 ("arm64: dts: imx8mm-beacon: Add HDMI video with sound")
 Signed-off-by: Adam Ford <aford173@gmail.com>
 Reviewed-by: Frank Li <Frank.Li@nxp.com>
 Signed-off-by: Shawn Guo <shawnguo@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/freescale/imx8mp-beacon-som.dtsi | 1 +
+ arch/arm64/boot/dts/freescale/imx8mm-beacon-kit.dts | 1 +
  1 file changed, 1 insertion(+)
 
-diff --git a/arch/arm64/boot/dts/freescale/imx8mp-beacon-som.dtsi b/arch/arm64/boot/dts/freescale/imx8mp-beacon-som.dtsi
-index 15f7ab58db36c..88561df70d03a 100644
---- a/arch/arm64/boot/dts/freescale/imx8mp-beacon-som.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx8mp-beacon-som.dtsi
-@@ -257,6 +257,7 @@
- 	rtc: rtc@51 {
- 		compatible = "nxp,pcf85263";
- 		reg = <0x51>;
-+		quartz-load-femtofarads = <12500>;
- 	};
+diff --git a/arch/arm64/boot/dts/freescale/imx8mm-beacon-kit.dts b/arch/arm64/boot/dts/freescale/imx8mm-beacon-kit.dts
+index 97ff1ddd63188..734a75198f06e 100644
+--- a/arch/arm64/boot/dts/freescale/imx8mm-beacon-kit.dts
++++ b/arch/arm64/boot/dts/freescale/imx8mm-beacon-kit.dts
+@@ -124,6 +124,7 @@
+ 	assigned-clock-parents = <&clk IMX8MM_AUDIO_PLL1_OUT>;
+ 	assigned-clock-rates = <24576000>;
+ 	#sound-dai-cells = <0>;
++	fsl,sai-mclk-direction-output;
+ 	status = "okay";
  };
  
 -- 
