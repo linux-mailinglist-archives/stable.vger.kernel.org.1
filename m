@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-153300-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153303-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 21046ADD3BB
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:01:55 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4148FADD3DE
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:03:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 53BD94012EA
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 15:55:17 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1145218991ED
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 15:56:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67F8A2ED14C;
-	Tue, 17 Jun 2025 15:51:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 370FB2F2350;
+	Tue, 17 Jun 2025 15:51:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h03ul06q"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EZtXMEWa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 221C22E9753;
-	Tue, 17 Jun 2025 15:51:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6D202F234D;
+	Tue, 17 Jun 2025 15:51:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750175506; cv=none; b=n4MplNFwI/0YG3vpSj3EywgEoZGoMgmQZsM4CBFyEEhcTerTp4IaeS8kwMEiJ1tRervDgn2JyHM9BwgVDkePCf+r0Xng/7Fxwlke7W0wK7FYeS76XgCi89WODOOIAMbbCsMpUm8hKBuCtrdShSVbrvqou3+5Tq1zg1wwcL/dmDw=
+	t=1750175515; cv=none; b=qBp822lfJkKHfm81yVl6nrdSOAuk5/0ttVhkE0OU8o780ExrLssikc18NF0BRHH0gdzyFx8VrfizyuG0jNR4UyZj6xauSJ+3O+1l5Wzq9p20vYGvMv5KkFdNnnp3yb1256RcKmUrCeQOIocyTW3Q2x9XJ3qy38PykSvZUuyfdR8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750175506; c=relaxed/simple;
-	bh=OHAAriTRrAtV0FjtGxXcaxqCw5Qk+IrNjwvJrUdp1YY=;
+	s=arc-20240116; t=1750175515; c=relaxed/simple;
+	bh=1ShX5+I8vPBaMrrshbGCwWZmBUdIqMDj2PVCjndIHvg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VyVbuHmVE1QGOCoEUIcC1e6JLa3nqChlIREUiEuK7mdz8rOUTQ1n5rcHBnd5cqEG9lxoCN0s+PI4Crp5NZzkqa/WVaXMfh9eNazgRCRkiFJidmMdDKs396G+yN3LMnyJ2HBV40Tb0HyrRFPw3Cr+u4os9qqBf8pbc1yuYegJbXg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=h03ul06q; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C240C4CEE3;
-	Tue, 17 Jun 2025 15:51:45 +0000 (UTC)
+	 MIME-Version; b=KsVYy2dYN8yffmhUwBJ3kLqaukEa1Ck3At6LzhxqBxAopCI1jcPXZ/Y/yMx1LjJW9YWrARQYWWNpLMqR9X3rq0narVskE5tOVJ9cd7w4dURRGZWJRsHGklN5GLK+CneKee0g7/Bavfh25WV/m1n1jQfzOaCibFz7QiXYP5Ta8zU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EZtXMEWa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 635DFC4CEE3;
+	Tue, 17 Jun 2025 15:51:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750175505;
-	bh=OHAAriTRrAtV0FjtGxXcaxqCw5Qk+IrNjwvJrUdp1YY=;
+	s=korg; t=1750175514;
+	bh=1ShX5+I8vPBaMrrshbGCwWZmBUdIqMDj2PVCjndIHvg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=h03ul06qy+TLTKc8X0x0Xn3UK9hzU4NOOwPiw3lKT4I6Te/ER5I6EinM2Yjx93cDj
-	 WAo4SZyDemykELUqYlau1bpzuWwIAYDart/Po4lwbwUdvqCPGJJ/FXdnmLLqqDGBTC
-	 jvtG6LZOMhbsBujf2VIuddEYTZ040mM7mPjQc+f0=
+	b=EZtXMEWaLVkknQLy9P/cCC5ze5cgHV4iZc8rsYY3ezdF/kTmzz1dZPwE7MPqF0V7c
+	 C/WIG4FQiG+ZPTF0+I9jVjQLD33TMN3+oFpBvdJdZKLzRj3oedyNSAxXt2peWv95Y3
+	 o4J5t1OPyjAtV8/OrTCLKjR5xgXD9OwWyULgSrFU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ryusuke Konishi <konishi.ryusuke@gmail.com>,
-	Wentao Liang <vulab@iscas.ac.cn>,
-	Andrew Morton <akpm@linux-foundation.org>,
+	Ioana Ciornei <ioana.ciornei@nxp.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 183/356] nilfs2: do not propagate ENOENT error from nilfs_btree_propagate()
-Date: Tue, 17 Jun 2025 17:24:58 +0200
-Message-ID: <20250617152345.582908396@linuxfoundation.org>
+Subject: [PATCH 6.6 184/356] bus: fsl-mc: fix double-free on mc_dev
+Date: Tue, 17 Jun 2025 17:24:59 +0200
+Message-ID: <20250617152345.623984938@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250617152338.212798615@linuxfoundation.org>
 References: <20250617152338.212798615@linuxfoundation.org>
@@ -67,53 +66,50 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+From: Ioana Ciornei <ioana.ciornei@nxp.com>
 
-[ Upstream commit 8e39fbb1edbb4ec9d7c1124f403877fc167fcecd ]
+[ Upstream commit d694bf8a9acdbd061596f3e7549bc8cb70750a60 ]
 
-In preparation for writing logs, in nilfs_btree_propagate(), which makes
-parent and ancestor node blocks dirty starting from a modified data block
-or b-tree node block, if the starting block does not belong to the b-tree,
-i.e.  is isolated, nilfs_btree_do_lookup() called within the function
-fails with -ENOENT.
+The blamed commit tried to simplify how the deallocations are done but,
+in the process, introduced a double-free on the mc_dev variable.
 
-In this case, even though -ENOENT is an internal code, it is propagated to
-the log writer via nilfs_bmap_propagate() and may be erroneously returned
-to system calls such as fsync().
+In case the MC device is a DPRC, a new mc_bus is allocated and the
+mc_dev variable is just a reference to one of its fields. In this
+circumstance, on the error path only the mc_bus should be freed.
 
-Fix this issue by changing the error code to -EINVAL in this case, and
-having the bmap layer detect metadata corruption and convert the error
-code appropriately.
+This commit introduces back the following checkpatch warning which is a
+false-positive.
 
-Link: https://lkml.kernel.org/r/20250428173808.6452-3-konishi.ryusuke@gmail.com
-Fixes: 1f5abe7e7dbc ("nilfs2: replace BUG_ON and BUG calls triggerable from ioctl")
-Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Cc: Wentao Liang <vulab@iscas.ac.cn>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+WARNING: kfree(NULL) is safe and this check is probably not required
++       if (mc_bus)
++               kfree(mc_bus);
+
+Fixes: a042fbed0290 ("staging: fsl-mc: simplify couple of deallocations")
+Signed-off-by: Ioana Ciornei <ioana.ciornei@nxp.com>
+Link: https://lore.kernel.org/r/20250408105814.2837951-2-ioana.ciornei@nxp.com
+Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nilfs2/btree.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/bus/fsl-mc/fsl-mc-bus.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/fs/nilfs2/btree.c b/fs/nilfs2/btree.c
-index dbd27a44632fa..5e70a3478afe0 100644
---- a/fs/nilfs2/btree.c
-+++ b/fs/nilfs2/btree.c
-@@ -2094,11 +2094,13 @@ static int nilfs_btree_propagate(struct nilfs_bmap *btree,
+diff --git a/drivers/bus/fsl-mc/fsl-mc-bus.c b/drivers/bus/fsl-mc/fsl-mc-bus.c
+index 2f6d5002e43d5..b405ee330af1f 100644
+--- a/drivers/bus/fsl-mc/fsl-mc-bus.c
++++ b/drivers/bus/fsl-mc/fsl-mc-bus.c
+@@ -905,8 +905,10 @@ int fsl_mc_device_add(struct fsl_mc_obj_desc *obj_desc,
  
- 	ret = nilfs_btree_do_lookup(btree, path, key, NULL, level + 1, 0);
- 	if (ret < 0) {
--		if (unlikely(ret == -ENOENT))
-+		if (unlikely(ret == -ENOENT)) {
- 			nilfs_crit(btree->b_inode->i_sb,
- 				   "writing node/leaf block does not appear in b-tree (ino=%lu) at key=%llu, level=%d",
- 				   btree->b_inode->i_ino,
- 				   (unsigned long long)key, level);
-+			ret = -EINVAL;
-+		}
- 		goto out;
- 	}
+ error_cleanup_dev:
+ 	kfree(mc_dev->regions);
+-	kfree(mc_bus);
+-	kfree(mc_dev);
++	if (mc_bus)
++		kfree(mc_bus);
++	else
++		kfree(mc_dev);
  
+ 	return error;
+ }
 -- 
 2.39.5
 
