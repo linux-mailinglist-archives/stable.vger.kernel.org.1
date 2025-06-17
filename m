@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-153324-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153330-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 38150ADD3B0
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:01:00 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B65FFADD3E5
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:04:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 683722C0EB3
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 15:56:28 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 74485404935
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 15:56:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA8602F2343;
-	Tue, 17 Jun 2025 15:53:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 21EAC2ED86F;
+	Tue, 17 Jun 2025 15:53:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YZw9xiG1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vipmIVGO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 729502ED14D;
-	Tue, 17 Jun 2025 15:53:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D39562ECE8F;
+	Tue, 17 Jun 2025 15:53:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750175581; cv=none; b=F+rTJ0jiNYaRb9nFD8Ar+EgzWkKVE0hjv7VNX2lBAUTNivQo8RopmN7zhIqlXX2+xVZmb6c2AHIymkdxHGLmbjg52nE81MhRjkJ/htqa3tf6lND7WWTZOgEm191rx5Wx2kto5QFloCEpklkytwHDwR0hoxQC8T3K9nmPVyophdU=
+	t=1750175600; cv=none; b=sDkMpy4XM9QDcGUKrB37QyisAQ1plZ/QEBv7kDxLLR4baSa5Tgsp9VMdr3pzrCDFZEjr2UKcCxIe1NJbMHJNFPoZrSbEszXPcWv0Jc2YuaSBwUlIU3o330Yzlc3sDgC83IfyGaD3UM1R2EYfXGDeT4KEvESC8+ke01PUP3nLuXE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750175581; c=relaxed/simple;
-	bh=MCPv01huxpg2eu8cLkpx1AqtzFSOZCo2bK7QsLKSRxQ=;
+	s=arc-20240116; t=1750175600; c=relaxed/simple;
+	bh=6RYKsz1rYCcCLQVEaFWc6Z7ev0GOxoHmR5oAvV+hl68=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ck78zHfSApIqciXk/gMbOmicXh4zcs0wCLpG1cDdO2A8izAM4yUrAs2tSBqNqjBvmV8Z5e0LLyhThXLlGPXh78uG9IjPrvcUbHtWEVH+aHf0xcVzvilJA/pjQvTpq42plbh+kS/yFn0E59QUbnUPBa+5HT8gDXYJIysCGbD3qU0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YZw9xiG1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0E86C4CEE3;
-	Tue, 17 Jun 2025 15:53:00 +0000 (UTC)
+	 MIME-Version; b=IR+cyyVSPbzcx7U+kVCBRMvhwVnk1tt5l3bEjqUE2vNbcpwz4ZDM9GxvY+XNHQWKC134UTdhcGbOpMhMq4Xcl50rMHDGGkIo2AfkAqvqt+8jhFAcG2nxRpfOWXHpzEC3oCfGhHo2KDjhSAMCMN2eFN4NAPYnAGQmALjU4L26DgY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vipmIVGO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42CD8C4CEE3;
+	Tue, 17 Jun 2025 15:53:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750175581;
-	bh=MCPv01huxpg2eu8cLkpx1AqtzFSOZCo2bK7QsLKSRxQ=;
+	s=korg; t=1750175600;
+	bh=6RYKsz1rYCcCLQVEaFWc6Z7ev0GOxoHmR5oAvV+hl68=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YZw9xiG1pHrKBl8/Lvh/YIeVSRda1ZZ7ACciMTrNaKWyqNGlgzoQ9UGhNwlyKsgnm
-	 XWI84FofF9NxCSlzV5Z6ttrNi0dRgxpX2dXAnZ+do9P0tdcLg3I4EAN0BvA+HpZAqB
-	 NrGqB88ljzxNbib+SCfICWrGFyCpwTNOFUH/P3Jk=
+	b=vipmIVGOep3oA8ySgKKsHNUsEk3fxPrTE4kvT0AGvAiVFgqcqDiQ/QbvrbjZUGtVK
+	 G5p40tZm8tI1kASfF7a/u6qF2eiqhJRhOLgfyPI/O8XBickJytxOIxrJv4k8hA2IZH
+	 4yYUuO46cDg256lbdLRuUL3Klbcja40nCPLWgeho=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Mark Rutland <mark.rutland@arm.com>,
-	Ard Biesheuvel <ardb@kernel.org>,
+	Marc Zyngier <maz@kernel.org>,
 	Mark Brown <broonie@kernel.org>,
 	Will Deacon <will@kernel.org>,
 	Catalin Marinas <catalin.marinas@arm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 103/780] arm64/fpsimd: Avoid clobbering kernel FPSIMD state with SMSTOP
-Date: Tue, 17 Jun 2025 17:16:51 +0200
-Message-ID: <20250617152455.703292593@linuxfoundation.org>
+Subject: [PATCH 6.15 105/780] arm64/fpsimd: Fix merging of FPSIMD state during signal return
+Date: Tue, 17 Jun 2025 17:16:53 +0200
+Message-ID: <20250617152455.779963864@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
 References: <20250617152451.485330293@linuxfoundation.org>
@@ -71,31 +71,82 @@ Content-Transfer-Encoding: 8bit
 
 From: Mark Rutland <mark.rutland@arm.com>
 
-[ Upstream commit 01098d893fa8a6edb2b56e178b798e3e6b674f02 ]
+[ Upstream commit c94f2f326146a34066a0070ed90b8bc656b1842f ]
 
-On system with SME, a thread's kernel FPSIMD state may be erroneously
-clobbered during a context switch immediately after that state is
-restored. Systems without SME are unaffected.
+For backwards compatibility reasons, when a signal return occurs which
+restores SVE state, the effective lower 128 bits of each of the SVE
+vector registers are restored from the corresponding FPSIMD vector
+register in the FPSIMD signal frame, overriding the values in the SVE
+signal frame. This is intended to be the case regardless of streaming
+mode.
 
-If the CPU happens to be in streaming SVE mode before a context switch
-to a thread with kernel FPSIMD state, fpsimd_thread_switch() will
-restore the kernel FPSIMD state using fpsimd_load_kernel_state() while
-the CPU is still in streaming SVE mode. When fpsimd_thread_switch()
-subsequently calls fpsimd_flush_cpu_state(), this will execute an
-SMSTOP, causing an exit from streaming SVE mode. The exit from
-streaming SVE mode will cause the hardware to reset a number of
-FPSIMD/SVE/SME registers, clobbering the FPSIMD state.
+To make this happen, restore_sve_fpsimd_context() uses
+fpsimd_update_current_state() to merge the lower 128 bits from the
+FPSIMD signal frame into the SVE register state. Unfortunately,
+fpsimd_update_current_state() performs this merging dependent upon
+TIF_SVE, which is not always correct for streaming SVE register state:
 
-Fix this by calling fpsimd_flush_cpu_state() before restoring the kernel
-FPSIMD state.
+* When restoring non-streaming SVE register state there is no observable
+  problem, as the signal return code configures TIF_SVE and the saved
+  fp_type to match before calling fpsimd_update_current_state(), which
+  observes either:
 
-Fixes: e92bee9f861b ("arm64/fpsimd: Avoid erroneous elide of user state reload")
+  - TIF_SVE set    AND  fp_type == FP_STATE_SVE
+  - TIF_SVE clear  AND  fp_type == FP_STATE_FPSIMD
+
+* On systems which have SME but not SVE, TIF_SVE cannot be set. Thus the
+  merging will never happen for the streaming SVE register state.
+
+* On systems which have SVE and SME, TIF_SVE can be set and cleared
+  independently of PSTATE.SM. Thus the merging may or may not happen for
+  streaming SVE register state.
+
+  As TIF_SVE can be cleared non-deterministically during syscalls
+  (including at the start of sigreturn()), the merging may occur
+  non-deterministically from the perspective of userspace.
+
+This logic has been broken since its introduction in commit:
+
+  85ed24dad2904f7c ("arm64/sme: Implement streaming SVE signal handling")
+
+... at which point both fpsimd_signal_preserve_current_state() and
+fpsimd_update_current_state() only checked TIF SVE. When PSTATE.SM==1
+and TIF_SVE was clear, signal delivery would place stale FPSIMD state
+into the FPSIMD signal frame, and signal return would not merge this
+into the restored register state.
+
+Subsequently, signal delivery was fixed as part of commit:
+
+  61da7c8e2a602f66 ("arm64/signal: Don't assume that TIF_SVE means we saved SVE state")
+
+... but signal restore was not given a corresponding fix, and when
+TIF_SVE was clear, signal restore would still fail to merge the FPSIMD
+state into the restored SVE register state. The 'Fixes' tag did not
+indicate that this had been broken since its introduction.
+
+Fix this by merging the FPSIMD state dependent upon the saved fp_type,
+matching what we (currently) do during signal delivery.
+
+As described above, when backporting this commit, it will also be
+necessary to backport commit:
+
+  61da7c8e2a602f66 ("arm64/signal: Don't assume that TIF_SVE means we saved SVE state")
+
+... and prior to commit:
+
+  baa8515281b30861 ("arm64/fpsimd: Track the saved FPSIMD state type separately to TIF_SVE")
+
+... it will be necessary for fpsimd_signal_preserve_current_state() and
+fpsimd_update_current_state() to consider both TIF_SVE and
+thread_sm_enabled(&current->thread), in place of the saved fp_type.
+
+Fixes: 85ed24dad290 ("arm64/sme: Implement streaming SVE signal handling")
 Signed-off-by: Mark Rutland <mark.rutland@arm.com>
-Cc: Ard Biesheuvel <ardb@kernel.org>
+Cc: Marc Zyngier <maz@kernel.org>
 Cc: Mark Brown <broonie@kernel.org>
 Cc: Will Deacon <will@kernel.org>
 Reviewed-by: Mark Brown <broonie@kernel.org>
-Link: https://lore.kernel.org/r/20250409164010.3480271-8-mark.rutland@arm.com
+Link: https://lore.kernel.org/r/20250409164010.3480271-10-mark.rutland@arm.com
 Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
@@ -103,19 +154,18 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/arch/arm64/kernel/fpsimd.c b/arch/arm64/kernel/fpsimd.c
-index 9466b3c5021ac..72ab9649c705b 100644
+index 7ae01f02e18b7..1edf797d2c710 100644
 --- a/arch/arm64/kernel/fpsimd.c
 +++ b/arch/arm64/kernel/fpsimd.c
-@@ -1575,8 +1575,8 @@ void fpsimd_thread_switch(struct task_struct *next)
- 		fpsimd_save_user_state();
+@@ -1806,7 +1806,7 @@ void fpsimd_update_current_state(struct user_fpsimd_state const *state)
+ 	get_cpu_fpsimd_context();
  
- 	if (test_tsk_thread_flag(next, TIF_KERNEL_FPSTATE)) {
--		fpsimd_load_kernel_state(next);
- 		fpsimd_flush_cpu_state();
-+		fpsimd_load_kernel_state(next);
- 	} else {
- 		/*
- 		 * Fix up TIF_FOREIGN_FPSTATE to correctly describe next's
+ 	current->thread.uw.fpsimd_state = *state;
+-	if (test_thread_flag(TIF_SVE))
++	if (current->thread.fp_type == FP_STATE_SVE)
+ 		fpsimd_to_sve(current);
+ 
+ 	task_fpsimd_load();
 -- 
 2.39.5
 
