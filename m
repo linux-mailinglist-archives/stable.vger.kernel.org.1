@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-153460-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153981-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C402ADD497
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:12:01 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0510AADD766
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:44:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 827F516A95D
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:04:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BE5B14A4FCE
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:33:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5CA97238C1E;
-	Tue, 17 Jun 2025 16:00:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73506285068;
+	Tue, 17 Jun 2025 16:28:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IlDKu9Tw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EbiUJ81i"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1716B2F2377;
-	Tue, 17 Jun 2025 16:00:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DA621FBEA8;
+	Tue, 17 Jun 2025 16:28:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750176035; cv=none; b=HWjoqDUv/2zUWWgza5/CAIPqmSMXFqGtLbPZLGzir/NUIGCaEyHrE31zVR69EVA1E09zaU832Ii8jQQRPhWCWuuDa/q5YjgILaINTAYRt663gej6DSAdyJyzhG4cZHNvzNbW8x6WujlL5A+7UabBUnoat7UK0XGrBSHEkp8TIEE=
+	t=1750177721; cv=none; b=HEskkLxeEn22xuHhofR1Z7bNLHyaUZNd7L9JgYeb43hDMkIpl0f84/ixIJYQPz/50a1SRQ1Fv55Oy3zMOHs+rxwVoOkhoKZowd2irv3yXDlU1JFeghHQyhY2AC4SvuQp45LE2INCXMRnfRxpsH/igJ8d+7dNilZXQ93ZxMVw9p0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750176035; c=relaxed/simple;
-	bh=0ynAEGBhiS1xbYCFyI5Jevq3fu4Q/rzhBYRRS1Jxv6E=;
+	s=arc-20240116; t=1750177721; c=relaxed/simple;
+	bh=OnDUgxiFEQfFubsLjUcPsb+HHO53l0/cZYEfVESxaFM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=EODmmBU6YPeRf8w5oJoPf8MtoTrcbk0fDWUqHFTPPEf6MBT0TLplCuDFw4PfIdV39levVLl1n2xue+eioHYPU7oblOtcIL5c7O/kqGVsm1fT6RI4qBWiWS5SqJCt68FKc2Rm3idX6BaTlpE1nO2przBdpXYH2XSCIEE33fXXKzc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IlDKu9Tw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70536C4CEF4;
-	Tue, 17 Jun 2025 16:00:34 +0000 (UTC)
+	 MIME-Version; b=Qr8o66qIUtxLSoq2FPGQ1L1hKfU79eYh+cvJ3ZyPd+Su8UD7Ks3dGZxw+d+clXrdOIegoyyGMCb9lFwOBEQprumJYA8vuZnWFYhfP/GWehWXrjf2QT2puGT1JtyArQeh6RRyEFvbU2kOuYV+4HuwkYUOeOZFIp3FGiTw5f4g0mk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EbiUJ81i; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E3CEC4CEE3;
+	Tue, 17 Jun 2025 16:28:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750176034;
-	bh=0ynAEGBhiS1xbYCFyI5Jevq3fu4Q/rzhBYRRS1Jxv6E=;
+	s=korg; t=1750177720;
+	bh=OnDUgxiFEQfFubsLjUcPsb+HHO53l0/cZYEfVESxaFM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IlDKu9TwoTCsNsG+4DzZ0VNk4MnqvaTfq8Y+5SQVB/G0GZMkQCDx5Oe68mBMFm3CH
-	 02c5iz3T5gGuNBI4j33pGGleHONe9Ny4wsuCz8S5ombEvdNC+9VWONSdt7nycUu9Pu
-	 ai4ozsNpUYaPNQyh3AfBPLHJmMd8CJnkrV6riUWE=
+	b=EbiUJ81i1d4oCLfdU9zoySdMKHkJeEKi9g/jSZ7xnILPq2h6HX521JsOo5AyzzAiP
+	 bOieDPR+6Hnf9FKWLmPZNpcne10wpYRfGpJHk154zqaU2TqrMI7eumRrMcx3QsSOHb
+	 ZjVYVBUTW6tmazOtBxSi4RdD/kiqgVRPTUbM1tYY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>,
-	Marcelo Schmitt <marcelo.schmitt@analog.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Zong Li <zong.li@sifive.com>,
+	Nylon Chen <nylon.chen@sifive.com>,
+	Palmer Dabbelt <palmer@rivosinc.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 237/356] iio: adc: ad7124: Fix 3dB filter frequency reading
+Subject: [PATCH 6.12 386/512] riscv: misaligned: fix sleeping function called during misaligned access handling
 Date: Tue, 17 Jun 2025 17:25:52 +0200
-Message-ID: <20250617152347.741580918@linuxfoundation.org>
+Message-ID: <20250617152435.223676120@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152338.212798615@linuxfoundation.org>
-References: <20250617152338.212798615@linuxfoundation.org>
+In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
+References: <20250617152419.512865572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,47 +61,74 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
+From: Nylon Chen <nylon.chen@sifive.com>
 
-[ Upstream commit 8712e4986e7ce42a14c762c4c350f290989986a5 ]
+[ Upstream commit 61a74ad254628ccd9e88838c3c622885dfb6c588 ]
 
-The sinc4 filter has a factor 0.23 between Output Data Rate and f_{3dB}
-and for sinc3 the factor is 0.272 according to the data sheets for
-ad7124-4 (Rev. E.) and ad7124-8 (Rev. F).
+Use copy_from_user_nofault() and copy_to_user_nofault() instead of
+copy_from/to_user functions in the misaligned access trap handlers.
 
-Fixes: cef2760954cf ("iio: adc: ad7124: add 3db filter")
-Signed-off-by: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
-Reviewed-by: Marcelo Schmitt <marcelo.schmitt@analog.com>
-Link: https://patch.msgid.link/20250317115247.3735016-6-u.kleine-koenig@baylibre.com
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+The following bug report was found when executing misaligned memory
+accesses:
+
+BUG: sleeping function called from invalid context at ./include/linux/uaccess.h:162
+in_atomic(): 0, irqs_disabled(): 1, non_block: 0, pid: 115, name: two
+preempt_count: 0, expected: 0
+CPU: 0 UID: 0 PID: 115 Comm: two Not tainted 6.14.0-rc5 #24
+Hardware name: riscv-virtio,qemu (DT)
+Call Trace:
+ [<ffffffff800160ea>] dump_backtrace+0x1c/0x24
+ [<ffffffff80002304>] show_stack+0x28/0x34
+ [<ffffffff80010fae>] dump_stack_lvl+0x4a/0x68
+ [<ffffffff80010fe0>] dump_stack+0x14/0x1c
+ [<ffffffff8004e44e>] __might_resched+0xfa/0x104
+ [<ffffffff8004e496>] __might_sleep+0x3e/0x62
+ [<ffffffff801963c4>] __might_fault+0x1c/0x24
+ [<ffffffff80425352>] _copy_from_user+0x28/0xaa
+ [<ffffffff8000296c>] handle_misaligned_store+0x204/0x254
+ [<ffffffff809eae82>] do_trap_store_misaligned+0x24/0xee
+ [<ffffffff809f4f1a>] handle_exception+0x146/0x152
+
+Fixes: b686ecdeacf6 ("riscv: misaligned: Restrict user access to kernel memory")
+Fixes: 441381506ba7 ("riscv: misaligned: remove CONFIG_RISCV_M_MODE specific code")
+
+Signed-off-by: Zong Li <zong.li@sifive.com>
+Signed-off-by: Nylon Chen <nylon.chen@sifive.com>
+Link: https://lore.kernel.org/r/20250411073850.3699180-3-nylon.chen@sifive.com
+Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iio/adc/ad7124.c | 4 ++--
+ arch/riscv/kernel/traps_misaligned.c | 4 ++--
  1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/iio/adc/ad7124.c b/drivers/iio/adc/ad7124.c
-index 0e6baf017bfd1..f631351eef97b 100644
---- a/drivers/iio/adc/ad7124.c
-+++ b/drivers/iio/adc/ad7124.c
-@@ -300,9 +300,9 @@ static int ad7124_get_3db_filter_freq(struct ad7124_state *st,
+diff --git a/arch/riscv/kernel/traps_misaligned.c b/arch/riscv/kernel/traps_misaligned.c
+index d14bfc23e315b..36ac96eac9c9e 100644
+--- a/arch/riscv/kernel/traps_misaligned.c
++++ b/arch/riscv/kernel/traps_misaligned.c
+@@ -429,7 +429,7 @@ int handle_misaligned_load(struct pt_regs *regs)
  
- 	switch (st->channels[channel].cfg.filter_type) {
- 	case AD7124_SINC3_FILTER:
--		return DIV_ROUND_CLOSEST(fadc * 230, 1000);
-+		return DIV_ROUND_CLOSEST(fadc * 272, 1000);
- 	case AD7124_SINC4_FILTER:
--		return DIV_ROUND_CLOSEST(fadc * 262, 1000);
-+		return DIV_ROUND_CLOSEST(fadc * 230, 1000);
- 	default:
- 		return -EINVAL;
- 	}
+ 	val.data_u64 = 0;
+ 	if (user_mode(regs)) {
+-		if (copy_from_user(&val, (u8 __user *)addr, len))
++		if (copy_from_user_nofault(&val, (u8 __user *)addr, len))
+ 			return -1;
+ 	} else {
+ 		memcpy(&val, (u8 *)addr, len);
+@@ -530,7 +530,7 @@ int handle_misaligned_store(struct pt_regs *regs)
+ 		return -EOPNOTSUPP;
+ 
+ 	if (user_mode(regs)) {
+-		if (copy_to_user((u8 __user *)addr, &val, len))
++		if (copy_to_user_nofault((u8 __user *)addr, &val, len))
+ 			return -1;
+ 	} else {
+ 		memcpy((u8 *)addr, &val, len);
 -- 
 2.39.5
 
