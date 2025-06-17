@@ -1,53 +1,55 @@
-Return-Path: <stable+bounces-153019-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153021-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8269CADD216
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 17:38:55 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BFDF7ADD219
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 17:38:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7B7097ACD33
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 15:35:28 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 328097ACE06
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 15:35:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DBD182DF3C9;
-	Tue, 17 Jun 2025 15:36:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71D7A2E9753;
+	Tue, 17 Jun 2025 15:36:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jvSffgFa"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OsZf7zEz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 981852E9730;
-	Tue, 17 Jun 2025 15:36:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BF0018A6AE;
+	Tue, 17 Jun 2025 15:36:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750174605; cv=none; b=PS/Nxol1aMjlDE/o/S4tC8d0BykEb2zqCZXMNgoayLXAiUW4dBv04ynotlpP6J1bZVLp2Pt/1YvfqOv7PanGwiW1ubJrzlpw9fMuZQFCnO0vHAkIAMxn93/gwxempOTleSEvO9cGg3A1JHVdNTubWYiX53yh02/rNYkKMBG4LY4=
+	t=1750174612; cv=none; b=oLizJ8Igr9WrXDFCB2EAP/5gNYIVFXUTqNBvF7HwPzdDximq1X8gIYMga9TfnhD4VfYF5rt5IzX9YTIKE31vLo3Ofsp84DdIpFxLiTDoNdq9U2s7/yHTcA7yg9QbIrrpz5XbHiRknfGFgPbSbexiqhr0uU4wKEzN+82GHtYu6sQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750174605; c=relaxed/simple;
-	bh=Wxz7aJbD+pcQ5erav0cvp1RmuAlJbpnFCW3h+ynjdfo=;
+	s=arc-20240116; t=1750174612; c=relaxed/simple;
+	bh=7uwmLgsIMGkw2TruKZS3og8nU0JbOpsOKPSVhtYEUpE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mzxn38TEnsUnM0ZZZFLcjC98aBLSVYWbZFW2eLuVgYZeqjLMyq3BkQwEGFOqfUTWFX/Q7j1Aq6hWpQbdZE9hFht3PTRX2qWgyU6KXCMHDYXgi5u/+BhzK36+4JMhVq+pkqGg7PIp/wcGHyqnndXvukQKV8h3UVKMcReQ+7vPJKo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jvSffgFa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2177EC4CEE3;
-	Tue, 17 Jun 2025 15:36:44 +0000 (UTC)
+	 MIME-Version; b=Jq2zuvSrZil2ZKRVcK2MwGuX+fTrQgL6w5G5CvXcDSlYeZ7HGwF+7arsKVxfKRI1uN582mz8scmEfeeFFqSnj1sjNI+GN/A1jTIsIYkiwWdmmsmt3BCwPN739lKnG9Ak7OiBtIBonZy5aX6hFvqJ5eE2UZuiqUhhn/xA0FHMnxE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OsZf7zEz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8FDB0C4CEE3;
+	Tue, 17 Jun 2025 15:36:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750174605;
-	bh=Wxz7aJbD+pcQ5erav0cvp1RmuAlJbpnFCW3h+ynjdfo=;
+	s=korg; t=1750174612;
+	bh=7uwmLgsIMGkw2TruKZS3og8nU0JbOpsOKPSVhtYEUpE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jvSffgFa3HpEpE+NQzG+kZ+PsUgrVV2HGtJ+8Abw0KhPYfsfMd56m4372CP+ByH+G
-	 pgV7B25LBpOxE1UNSJk6NFrVoWi8Zc1elpqLRblZ29jx21ZBByPoGoW47CZISxhfGu
-	 tXRvTFH4aOs7lFCC6IuET6kTTIONnK97CnKPDSUI=
+	b=OsZf7zEzrhhu0V6Pbfu0fOIEfivQHHKH7li9g/SZGAWhALXtTVwRWdU7Fzm0n7R90
+	 gr+M1afVW3seIJTILwbpvzGfH7xJy5LZYey47gy6afb+kwz3ZZBaKbOgI2K+U8I+Te
+	 nj9qDrpQSfkhTbe1M+KCvClDgj998q7gMNYz/e2w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ping-Ke Shih <pkshih@realtek.com>,
-	Dmitry Antipov <dmantipov@yandex.ru>,
+	P Praneesh <quic_ppranees@quicinc.com>,
+	Nithyanantham Paramasivam <nithyanantham.paramasivam@oss.qualcomm.com>,
+	Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>,
+	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 093/356] wifi: rtw88: do not ignore hardware read error during DPK
-Date: Tue, 17 Jun 2025 17:23:28 +0200
-Message-ID: <20250617152341.959106600@linuxfoundation.org>
+Subject: [PATCH 6.6 094/356] wifi: ath12k: Add MSDU length validation for TKIP MIC error
+Date: Tue, 17 Jun 2025 17:23:29 +0200
+Message-ID: <20250617152342.004396953@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250617152338.212798615@linuxfoundation.org>
 References: <20250617152338.212798615@linuxfoundation.org>
@@ -66,40 +68,53 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Dmitry Antipov <dmantipov@yandex.ru>
+From: P Praneesh <quic_ppranees@quicinc.com>
 
-[ Upstream commit 20d3c19bd8f9b498173c198eadf54580c8caa336 ]
+[ Upstream commit 763216fe6c5df95d122c71ef34c342427c987820 ]
 
-In 'rtw8822c_dpk_cal_coef1()', do not ignore error returned
-by 'check_hw_ready()' but issue a warning to denote possible
-DPK issue. Compile tested only.
+In the WBM error path, while processing TKIP MIC errors, MSDU length
+is fetched from the hal_rx_desc's msdu_end. This MSDU length is
+directly passed to skb_put() without validation. In stress test
+scenarios, the WBM error ring may receive invalid descriptors, which
+could lead to an invalid MSDU length.
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
+To fix this, add a check to drop the skb when the calculated MSDU
+length is greater than the skb size.
 
-Fixes: 5227c2ee453d ("rtw88: 8822c: add SW DPK support")
-Suggested-by: Ping-Ke Shih <pkshih@realtek.com>
-Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
-Link: https://patch.msgid.link/20250415090720.194048-1-dmantipov@yandex.ru
+Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.3.1-00173-QCAHKSWPL_SILICONZ-1
+Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0.c5-00481-QCAHMTSWPL_V1.0_V2.0_SILICONZ-3
+
+Fixes: d889913205cf ("wifi: ath12k: driver for Qualcomm Wi-Fi 7 devices")
+Signed-off-by: P Praneesh <quic_ppranees@quicinc.com>
+Signed-off-by: Nithyanantham Paramasivam <nithyanantham.paramasivam@oss.qualcomm.com>
+Reviewed-by: Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>
+Link: https://patch.msgid.link/20250416021903.3178962-1-nithyanantham.paramasivam@oss.qualcomm.com
+Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/realtek/rtw88/rtw8822c.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/net/wireless/ath/ath12k/dp_rx.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/drivers/net/wireless/realtek/rtw88/rtw8822c.c b/drivers/net/wireless/realtek/rtw88/rtw8822c.c
-index 3fe5c70ce731b..f9b2527fbeee5 100644
---- a/drivers/net/wireless/realtek/rtw88/rtw8822c.c
-+++ b/drivers/net/wireless/realtek/rtw88/rtw8822c.c
-@@ -3991,7 +3991,8 @@ static void rtw8822c_dpk_cal_coef1(struct rtw_dev *rtwdev)
- 	rtw_write32(rtwdev, REG_NCTL0, 0x00001148);
- 	rtw_write32(rtwdev, REG_NCTL0, 0x00001149);
+diff --git a/drivers/net/wireless/ath/ath12k/dp_rx.c b/drivers/net/wireless/ath/ath12k/dp_rx.c
+index 8d9315038a75e..56dda76d066c3 100644
+--- a/drivers/net/wireless/ath/ath12k/dp_rx.c
++++ b/drivers/net/wireless/ath/ath12k/dp_rx.c
+@@ -3683,6 +3683,15 @@ static bool ath12k_dp_rx_h_tkip_mic_err(struct ath12k *ar, struct sk_buff *msdu,
  
--	check_hw_ready(rtwdev, 0x2d9c, MASKBYTE0, 0x55);
-+	if (!check_hw_ready(rtwdev, 0x2d9c, MASKBYTE0, 0x55))
-+		rtw_warn(rtwdev, "DPK stuck, performance may be suboptimal");
+ 	l3pad_bytes = ath12k_dp_rx_h_l3pad(ab, desc);
+ 	msdu_len = ath12k_dp_rx_h_msdu_len(ab, desc);
++
++	if ((hal_rx_desc_sz + l3pad_bytes + msdu_len) > DP_RX_BUFFER_SIZE) {
++		ath12k_dbg(ab, ATH12K_DBG_DATA,
++			   "invalid msdu len in tkip mic err %u\n", msdu_len);
++		ath12k_dbg_dump(ab, ATH12K_DBG_DATA, NULL, "", desc,
++				sizeof(*desc));
++		return true;
++	}
++
+ 	skb_put(msdu, hal_rx_desc_sz + l3pad_bytes + msdu_len);
+ 	skb_pull(msdu, hal_rx_desc_sz + l3pad_bytes);
  
- 	rtw_write8(rtwdev, 0x1b10, 0x0);
- 	rtw_write32_mask(rtwdev, REG_NCTL0, BIT_SUBPAGE, 0x0000000c);
 -- 
 2.39.5
 
