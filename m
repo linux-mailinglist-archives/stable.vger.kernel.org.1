@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-153413-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153417-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E04DFADD482
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:10:58 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 14B8BADD45B
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:09:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 803B819442F1
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:01:40 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id ADD4B2C1F51
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:02:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD6B52ED878;
-	Tue, 17 Jun 2025 15:58:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3CFC52F2C64;
+	Tue, 17 Jun 2025 15:58:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nGduSioe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DUt8WET/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A1122ECE99;
-	Tue, 17 Jun 2025 15:58:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE7DE2ECEA7;
+	Tue, 17 Jun 2025 15:58:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750175880; cv=none; b=ma/C9PZjjXtk6omH3ddP1Nn41zpRrEGz9nn1o8vxocFmsR4O4W3hUUBPAvJBebByBpoczcf9mXdS0pfWeTypvGHulfyMLbFPZvOg0nhKOmqDH2mq8l9ncVLYvZgi6hGELGJxnDnQTtntGbIRgLmIApvf5vTkvHvxtN3pEwC/yLo=
+	t=1750175894; cv=none; b=Fb0Lq5s8tLl3MwKXDkDiQwC9lpk/DwffslGJAyhmCkj/wX4vzJSmywYB63/eWz3MXRKX35W1PcikgNyetc9rRaL8A0IcNBGEMCyFDIiUDM5LVoXnoBccwNTLgUdSbofHwAFtKroMFwvsGQpPVPH26ChHOPyhpQHBBGf1MaKop1s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750175880; c=relaxed/simple;
-	bh=BAeQvoeaKf94bealLblE/GYMgemuzTrahXVvhn7khWU=;
+	s=arc-20240116; t=1750175894; c=relaxed/simple;
+	bh=eyMqCVPb8QByxGN0jqAReKFHf+Vpu8n9y9R4yLTKuZ0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Y49+Q4nSvy60ps6h670ZI1tzfncX5ll/zNAFJuyan48A/eTXzrjIdbgROaylcrOhCR2DMtzshdOzCcvnjglp5Dt/5ymN+MicwDJcfWoMbYzcN0MfrpCrqp5N1p8Vj+g76MQYV/h+/1WcAY52Z4vdcZeVqG0OfDnQxrM+GDasTV0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nGduSioe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98FFDC4CEE3;
-	Tue, 17 Jun 2025 15:57:59 +0000 (UTC)
+	 MIME-Version; b=bIL8HtgB4R85mj6FZGl6cRjnRwHBqSoYqPxYbPmF7o1LGlk6Ik40eTUZgkIr+YoUvmJuIXJSouOl9yeWkxU44RoMPqFtiFhV3fDutrjcCEBtubswSym6/quyDUb4XrCuHhXRBPwl+6rkylQAbSkS7mR7iM6lzXbBQ8qEuQL1Eqk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DUt8WET/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0EE0DC4CEE3;
+	Tue, 17 Jun 2025 15:58:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750175880;
-	bh=BAeQvoeaKf94bealLblE/GYMgemuzTrahXVvhn7khWU=;
+	s=korg; t=1750175893;
+	bh=eyMqCVPb8QByxGN0jqAReKFHf+Vpu8n9y9R4yLTKuZ0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nGduSioeA+UPD+nZDOtjR51Y+wIKT1IrqavgYRMl1MLG71dnA3kMfGREjdDBe2OhL
-	 mN6rPidota4+Bse8sx1OH+sQ4MeRnsN9JlLG/8ch2IiFduaFkYJEY+t8osL3wEkAwP
-	 Ie38BYlGs+21pdUh6LmIXjryiK5fFYPweC8N6Op0=
+	b=DUt8WET/awJ9QuaNGjtphsNH1ojpP9j3Iwu4lhUTc6iPiupsv8nsswSEfAQDPxzoT
+	 BkPUMMQEgZ3ahGakI9Ffw87YS/gfQWsIQdrmDBKvrmt+OKhrjgsXouwC7P+i2oiRu/
+	 w43TCRIL8cVG8xT5g2GggkNXddRevNd9AxGzDj5c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -47,9 +47,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
 	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 131/780] drm/msm/dpu: remove DSC feature bit for PINGPONG on MSM8917
-Date: Tue, 17 Jun 2025 17:17:19 +0200
-Message-ID: <20250617152456.839366564@linuxfoundation.org>
+Subject: [PATCH 6.15 132/780] drm/msm/dpu: remove DSC feature bit for PINGPONG on MSM8953
+Date: Tue, 17 Jun 2025 17:17:20 +0200
+Message-ID: <20250617152456.881584958@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
 References: <20250617152451.485330293@linuxfoundation.org>
@@ -70,31 +70,31 @@ Content-Transfer-Encoding: 8bit
 
 From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 
-[ Upstream commit 5be98120115c46907921e29344291628cf79912a ]
+[ Upstream commit 5232a29ebc74df4abf790147a06db451d824cd92 ]
 
-The MSM8917 platform doesn't have DSC blocks nor does have it DSC
+The MSM8953 platform doesn't have DSC blocks nor does have it DSC
 registers in the PINGPONG block. Drop the DPU_PINGPONG_DSC feature bit
 from the PINGPONG's feature mask and, as it is the only remaining bit,
 drop the .features assignment completely.
 
-Fixes: 62af6e1cb596 ("drm/msm/dpu: Add support for MSM8917")
+Fixes: 7a6109ce1c2c ("drm/msm/dpu: Add support for MSM8953")
 Reported-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
 Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
 Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 Reviewed-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
-Patchwork: https://patchwork.freedesktop.org/patch/640301/
-Link: https://lore.kernel.org/r/20250301-dpu-fix-catalog-v2-2-498271be8b50@linaro.org
+Patchwork: https://patchwork.freedesktop.org/patch/640303/
+Link: https://lore.kernel.org/r/20250301-dpu-fix-catalog-v2-3-498271be8b50@linaro.org
 Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_1_15_msm8917.h | 1 -
- 1 file changed, 1 deletion(-)
+ drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_1_16_msm8953.h | 2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_1_15_msm8917.h b/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_1_15_msm8917.h
-index a1cf89a0a42d5..8d1b43ea1663c 100644
---- a/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_1_15_msm8917.h
-+++ b/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_1_15_msm8917.h
-@@ -93,7 +93,6 @@ static const struct dpu_pingpong_cfg msm8917_pp[] = {
+diff --git a/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_1_16_msm8953.h b/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_1_16_msm8953.h
+index eea9b80e2287a..16c12499b24bb 100644
+--- a/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_1_16_msm8953.h
++++ b/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_1_16_msm8953.h
+@@ -100,14 +100,12 @@ static const struct dpu_pingpong_cfg msm8953_pp[] = {
  	{
  		.name = "pingpong_0", .id = PINGPONG_0,
  		.base = 0x70000, .len = 0xd4,
@@ -102,6 +102,13 @@ index a1cf89a0a42d5..8d1b43ea1663c 100644
  		.sblk = &msm8996_pp_sblk,
  		.intr_done = DPU_IRQ_IDX(MDP_SSPP_TOP0_INTR, 8),
  		.intr_rdptr = DPU_IRQ_IDX(MDP_SSPP_TOP0_INTR, 12),
+ 	}, {
+ 		.name = "pingpong_1", .id = PINGPONG_1,
+ 		.base = 0x70800, .len = 0xd4,
+-		.features = PINGPONG_MSM8996_MASK,
+ 		.sblk = &msm8996_pp_sblk,
+ 		.intr_done = DPU_IRQ_IDX(MDP_SSPP_TOP0_INTR, 9),
+ 		.intr_rdptr = DPU_IRQ_IDX(MDP_SSPP_TOP0_INTR, 13),
 -- 
 2.39.5
 
