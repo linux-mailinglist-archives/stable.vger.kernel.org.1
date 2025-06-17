@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-153011-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153013-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 59313ADD1E7
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 17:36:22 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 49DC4ADD1EA
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 17:36:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 44A5E3BDBB8
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 15:35:58 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EA60317CF58
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 15:36:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C34002EB5AB;
-	Tue, 17 Jun 2025 15:36:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6CB82E9753;
+	Tue, 17 Jun 2025 15:36:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LHrxiQGP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XwtONz/9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81AE918A6AE;
-	Tue, 17 Jun 2025 15:36:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74B2818A6AE;
+	Tue, 17 Jun 2025 15:36:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750174580; cv=none; b=tf3YZXHljHwA0VMGxZ4NQl9ZO4IZdROL46Ku5C8FEvkFGNoR7IZldGFBQ87QpuuZdyyAU3dYPbKeNddQsIr0PnTGIryfnBovSgD74wJhID+wwjrfiOodF/MZLYUYQmz+G/yHE0UYNxudXBQKOPce0aE69HqpC5TZpGIeY/Gt1dE=
+	t=1750174586; cv=none; b=pnGXbfeOS5z1rknPRfse9bSNe5UWW/0N6FS+qHv5/4NR+TFfGIG+sEyDwKgxTn8IegzteW7X9RA5fK2cwr7XJNlShpCZYCzO6Wz3bwY8+7mWyPn5Ke+BqH3LuuDf4EvfMiskrXOdNYNIfZBR+LGBR/rVT25k1g9dJixAZG3uZZo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750174580; c=relaxed/simple;
-	bh=9AogUGnM62OCn5ULMiGpJCVLfHpSG+rQH5YRCu77xPI=;
+	s=arc-20240116; t=1750174586; c=relaxed/simple;
+	bh=ozBu1Wg71Cdv1fVVWDsG6okZEVWqwowW0SnWOAzVJn4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YHaDYBUfmBjA8RdhNA8DIQt9OYtjlfBnn+hdvCsO+n6OYv0Fewf3xmXdpV+1wk8enH881AieP4DzN7fMjiHLpEp7nysSOXKQTlsuhiWAbekHV0cGTG16cdz48Tx2HNJfjLt0+Mc4tSxtQMGzyyqsPIMK9MDtAulf02eQg17cX/k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LHrxiQGP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C0B6C4CEE3;
-	Tue, 17 Jun 2025 15:36:19 +0000 (UTC)
+	 MIME-Version; b=b44LdtCvFvX1srjHWkXkl9blhfhKl2DljWp+6X4WfnYgf2+IuUV2WcO/ZuI2TQqrlFaZMAQDeS46KqZJzd6sA78BuMNLB0LtJk0KXz7ADefI/c41rVBpYXwtfBJhECoF9YBzkNvuUogdyZXCfAZQHA/LcuNF2yKT7TN55THC9Ms=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XwtONz/9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 015DFC4CEE3;
+	Tue, 17 Jun 2025 15:36:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750174580;
-	bh=9AogUGnM62OCn5ULMiGpJCVLfHpSG+rQH5YRCu77xPI=;
+	s=korg; t=1750174586;
+	bh=ozBu1Wg71Cdv1fVVWDsG6okZEVWqwowW0SnWOAzVJn4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LHrxiQGPuLqgOOayQHM/yTqdQM9vrSKfvry+61YXrQihKDfegWDdSpc0N2u6ZrzPX
-	 4hscWuEFSbnJqJsLx/neaspl9wsQkxd7eMVF/5a+ViqIAlGphEBNhAUFqMSibB3M3n
-	 zna7xrKB0Im4FqczcgugZjxOCLVuKdMfIuomqTtY=
+	b=XwtONz/9qZJfPO5nNoP2/bO4YetJEnEwn2mA1SvhDRn0Xym+er+52LCXHU6sJJPWz
+	 BkPEloa3FiWcEw/kunB9dwjZ0FRSHH/bwwKge4QW0zjsVKUBfsLoj1y1axdZYHXTPo
+	 UZj71PCj7UwvjK0wFzIMRQCMvAm0kVq29Qp6aDFw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Neal Gompa <neal@gompa.dev>,
-	Hector Martin <marcan@marcan.st>,
-	James Calligeros <jcalligeros99@gmail.com>,
+	Julien Massot <julien.massot@collabora.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
 	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 038/512] ASoC: tas2764: Enable main IRQs
-Date: Tue, 17 Jun 2025 17:20:04 +0200
-Message-ID: <20250617152421.093456061@linuxfoundation.org>
+Subject: [PATCH 6.12 039/512] ASoC: mediatek: mt8195: Set ETDM1/2 IN/OUT to COMP_DUMMY()
+Date: Tue, 17 Jun 2025 17:20:05 +0200
+Message-ID: <20250617152421.131898862@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
 References: <20250617152419.512865572@linuxfoundation.org>
@@ -68,39 +67,96 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Hector Martin <marcan@marcan.st>
+From: Julien Massot <julien.massot@collabora.com>
 
-[ Upstream commit dd50f0e38563f15819059c923bf142200453e003 ]
+[ Upstream commit 7af317f7faaab09d5a78f24605057d11f5955115 ]
 
-IRQ handling was added in commit dae191fb957f ("ASoC: tas2764: Add IRQ
-handling") however that same commit masks all interrupts coming from
-the chip. Unmask the "main" interrupts so that we can see and
-deal with a number of errors including clock, voltage, and current.
+ETDM2_IN_BE and ETDM1_OUT_BE are defined as COMP_EMPTY(),
+in the case the codec dai_name will be null.
 
-Fixes: dae191fb957f ("ASoC: tas2764: Add IRQ handling")
-Reviewed-by: Neal Gompa <neal@gompa.dev>
-Signed-off-by: Hector Martin <marcan@marcan.st>
-Signed-off-by: James Calligeros <jcalligeros99@gmail.com>
-Link: https://patch.msgid.link/20250406-apple-codec-changes-v5-4-50a00ec850a3@gmail.com
+Avoid a crash if the device tree is not assigning a codec
+to these links.
+
+[    1.179936] Unable to handle kernel NULL pointer dereference at virtual address 0000000000000000
+[    1.181065] Mem abort info:
+[    1.181420]   ESR = 0x0000000096000004
+[    1.181892]   EC = 0x25: DABT (current EL), IL = 32 bits
+[    1.182576]   SET = 0, FnV = 0
+[    1.182964]   EA = 0, S1PTW = 0
+[    1.183367]   FSC = 0x04: level 0 translation fault
+[    1.183983] Data abort info:
+[    1.184406]   ISV = 0, ISS = 0x00000004, ISS2 = 0x00000000
+[    1.185097]   CM = 0, WnR = 0, TnD = 0, TagAccess = 0
+[    1.185766]   GCS = 0, Overlay = 0, DirtyBit = 0, Xs = 0
+[    1.186439] [0000000000000000] user address but active_mm is swapper
+[    1.187239] Internal error: Oops: 0000000096000004 [#1] PREEMPT SMP
+[    1.188029] Modules linked in:
+[    1.188420] CPU: 7 UID: 0 PID: 70 Comm: kworker/u32:1 Not tainted 6.14.0-rc4-next-20250226+ #85
+[    1.189515] Hardware name: Radxa NIO 12L (DT)
+[    1.190065] Workqueue: events_unbound deferred_probe_work_func
+[    1.190808] pstate: 40400009 (nZcv daif +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+[    1.191683] pc : __pi_strcmp+0x24/0x140
+[    1.192170] lr : mt8195_mt6359_soc_card_probe+0x224/0x7b0
+[    1.192854] sp : ffff800083473970
+[    1.193271] x29: ffff800083473a10 x28: 0000000000001008 x27: 0000000000000002
+[    1.194168] x26: ffff800082408960 x25: ffff800082417db0 x24: ffff800082417d88
+[    1.195065] x23: 000000000000001e x22: ffff800082dbf480 x21: ffff800082dc07b8
+[    1.195961] x20: 0000000000000000 x19: 0000000000000013 x18: 00000000ffffffff
+[    1.196858] x17: 000000040044ffff x16: 005000f2b5503510 x15: 0000000000000006
+[    1.197755] x14: ffff800082407af0 x13: 6e6f69737265766e x12: 692d6b636f6c6374
+[    1.198651] x11: 0000000000000002 x10: ffff80008240b920 x9 : 0000000000000018
+[    1.199547] x8 : 0101010101010101 x7 : 0000000000000000 x6 : 0000000000000000
+[    1.200443] x5 : 0000000000000000 x4 : 8080808080000000 x3 : 303933383978616d
+[    1.201339] x2 : 0000000000000000 x1 : ffff80008240b920 x0 : 0000000000000000
+[    1.202236] Call trace:
+[    1.202545]  __pi_strcmp+0x24/0x140 (P)
+[    1.203029]  mtk_soundcard_common_probe+0x3bc/0x5b8
+[    1.203644]  platform_probe+0x70/0xe8
+[    1.204106]  really_probe+0xc8/0x3a0
+[    1.204556]  __driver_probe_device+0x84/0x160
+[    1.205104]  driver_probe_device+0x44/0x130
+[    1.205630]  __device_attach_driver+0xc4/0x170
+[    1.206189]  bus_for_each_drv+0x8c/0xf8
+[    1.206672]  __device_attach+0xa8/0x1c8
+[    1.207155]  device_initial_probe+0x1c/0x30
+[    1.207681]  bus_probe_device+0xb0/0xc0
+[    1.208165]  deferred_probe_work_func+0xa4/0x100
+[    1.208747]  process_one_work+0x158/0x3e0
+[    1.209254]  worker_thread+0x2c4/0x3e8
+[    1.209727]  kthread+0x134/0x1f0
+[    1.210136]  ret_from_fork+0x10/0x20
+[    1.210589] Code: 54000401 b50002c6 d503201f f86a6803 (f8408402)
+[    1.211355] ---[ end trace 0000000000000000 ]---
+
+Signed-off-by: Julien Massot <julien.massot@collabora.com>
+Fixes: e70b8dd26711 ("ASoC: mediatek: mt8195: Remove afe-dai component and rework codec link")
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Link: https://patch.msgid.link/20250417-mt8395-audio-sof-v1-2-30587426e5dd@collabora.com
 Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/codecs/tas2764.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ sound/soc/mediatek/mt8195/mt8195-mt6359.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/sound/soc/codecs/tas2764.c b/sound/soc/codecs/tas2764.c
-index 39a7d39536fe6..4326555aac032 100644
---- a/sound/soc/codecs/tas2764.c
-+++ b/sound/soc/codecs/tas2764.c
-@@ -540,7 +540,7 @@ static int tas2764_codec_probe(struct snd_soc_component *component)
- 	tas2764_reset(tas2764);
+diff --git a/sound/soc/mediatek/mt8195/mt8195-mt6359.c b/sound/soc/mediatek/mt8195/mt8195-mt6359.c
+index 8ebf6c7502aa3..400cec09c3a3c 100644
+--- a/sound/soc/mediatek/mt8195/mt8195-mt6359.c
++++ b/sound/soc/mediatek/mt8195/mt8195-mt6359.c
+@@ -822,12 +822,12 @@ SND_SOC_DAILINK_DEFS(ETDM1_IN_BE,
  
- 	if (tas2764->irq) {
--		ret = snd_soc_component_write(tas2764->component, TAS2764_INT_MASK0, 0xff);
-+		ret = snd_soc_component_write(tas2764->component, TAS2764_INT_MASK0, 0x00);
- 		if (ret < 0)
- 			return ret;
+ SND_SOC_DAILINK_DEFS(ETDM2_IN_BE,
+ 		     DAILINK_COMP_ARRAY(COMP_CPU("ETDM2_IN")),
+-		     DAILINK_COMP_ARRAY(COMP_EMPTY()),
++		     DAILINK_COMP_ARRAY(COMP_DUMMY()),
+ 		     DAILINK_COMP_ARRAY(COMP_EMPTY()));
  
+ SND_SOC_DAILINK_DEFS(ETDM1_OUT_BE,
+ 		     DAILINK_COMP_ARRAY(COMP_CPU("ETDM1_OUT")),
+-		     DAILINK_COMP_ARRAY(COMP_EMPTY()),
++		     DAILINK_COMP_ARRAY(COMP_DUMMY()),
+ 		     DAILINK_COMP_ARRAY(COMP_EMPTY()));
+ 
+ SND_SOC_DAILINK_DEFS(ETDM2_OUT_BE,
 -- 
 2.39.5
 
