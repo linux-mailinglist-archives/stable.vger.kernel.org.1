@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-153394-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153397-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 49730ADD453
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:09:14 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id AAA62ADD47B
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:10:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9C03E406D1D
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:00:32 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 070E4188C1A7
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:01:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C5CE2ED17A;
-	Tue, 17 Jun 2025 15:56:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF0252ED84B;
+	Tue, 17 Jun 2025 15:57:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i7gL+Bec"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Yabx6ImO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57BB02ED16E;
-	Tue, 17 Jun 2025 15:56:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B3EB2ED17D;
+	Tue, 17 Jun 2025 15:57:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750175819; cv=none; b=TXWiE11tsefqiDtCElce9cGqQrExgLpBkFcynaBy2VXZtT3hIYkI9XV37N8AM+FAhfUvZfYXN8eXpVTr6vs5gPAh5agW2vokTXbr1/MK4iOSEf6R6Wq2yvUPwb1cQ7vkYPpjqTIJ74LsBVZGHGN3AoYiSuORMZ6JyRfLrEPtyCY=
+	t=1750175828; cv=none; b=r1f4lMPWYqqlXyRB+DqXthmPUdoRRIOmCTXFUJh7ftLboM372RVniy8sN2RWispEU3YRdax9iRjHjGj90I8GZQVTs1PLu3svd2MDrbO0/UJSA9cBCe7aNWfCe4Zc0WSNIYGDwbtOHMf/rnVhIddFs4HsM3GBkK+XSI01b798sck=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750175819; c=relaxed/simple;
-	bh=lCG1lWFdpyT8pV+YSnqqYMbYJV7qDXwuKmw/YPfEvU8=;
+	s=arc-20240116; t=1750175828; c=relaxed/simple;
+	bh=dp1s5XUzzV3ZzOtiymMYGYh0CBiFdgHxHQPreT9hxpU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=lVQwKIQTmWDeS9XxPBdNvEoz9HeSw3G0Q6rAwDHOBVMCmjzQQsXmMOGn1/nJtmUgUJAz5MkFvWOB81iyS/clINv3NSufctZ3y/MpsSu2Vtaynh7KmaRTSDweWNPcncV0CWP8KeGKtic60ymosn31eK5nsJQ/HolBYAt/P2x5Mik=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i7gL+Bec; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5826C4CEE3;
-	Tue, 17 Jun 2025 15:56:58 +0000 (UTC)
+	 MIME-Version; b=jXoJ11GsMExEmEg8VEkHuiKyE1NG40z7csTBhyAMLKrGBhXFGC9pPI8s670F5VEWzBQTcwf+n5KqlxFtmcBdkPLJaw4kUNyHlSJ9tMBqC7HkLTPL2IdYe/bfCkDtxvqqA4YsSWJQu40iov29ZkJiDtojXc0Al6X6ijEKapxhgfk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Yabx6ImO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EFCE7C4CEF0;
+	Tue, 17 Jun 2025 15:57:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750175819;
-	bh=lCG1lWFdpyT8pV+YSnqqYMbYJV7qDXwuKmw/YPfEvU8=;
+	s=korg; t=1750175828;
+	bh=dp1s5XUzzV3ZzOtiymMYGYh0CBiFdgHxHQPreT9hxpU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=i7gL+Bec5aRGtip8OnoojR77wdExt950aW8BFtOe2vo0pvFAXS4m6Ed5vE7pi/v5O
-	 DIPd5/46MumiEgiFAnWvcdz4b4YQbh78Zy7lM0uL+AjFPqzB3oKDsu4CtyiWqSDJ+N
-	 GogwB/StVmD52cXuU7356PPixUVjZl3LgEMIy3BE=
+	b=Yabx6ImOBARdxG13T+CTo8uHvEag3uEngyydQEmRezU8s9/XK15FUTbG6TQajF93r
+	 wFRnOAvddkovOde74h3y+VgCLCqP+ObDfTtWtKrrCptm1jQk8sOIovd95FlIE6Q0Al
+	 pl+KxRKgu2Z/nz50sKblkGWpbCs7clAvvbza5rwg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Kornel=20Dul=C4=99ba?= <korneld@google.com>,
-	Anshuman Khandual <anshuman.khandual@arm.com>,
 	Will Deacon <will@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Marc Zyngier <maz@kernel.org>,
+	Mark Brown <broonie@kernel.org>,
+	Catalin Marinas <catalin.marinas@arm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 125/780] arm64: Support ARM64_VA_BITS=52 when setting ARCH_MMAP_RND_BITS_MAX
-Date: Tue, 17 Jun 2025 17:17:13 +0200
-Message-ID: <20250617152456.603191240@linuxfoundation.org>
+Subject: [PATCH 6.15 126/780] arm64/fpsimd: Avoid warning when sve_to_fpsimd() is unused
+Date: Tue, 17 Jun 2025 17:17:14 +0200
+Message-ID: <20250617152456.641485801@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
 References: <20250617152451.485330293@linuxfoundation.org>
@@ -61,58 +63,81 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kornel Dulęba <korneld@google.com>
+From: Mark Rutland <mark.rutland@arm.com>
 
-[ Upstream commit f101c56447717c595d803894ba0e215f56c6fba4 ]
+[ Upstream commit f699c66691fb7e08a5a631c5baf5f2a19b7a6468 ]
 
-When the 52-bit virtual addressing was introduced the select like
-ARCH_MMAP_RND_BITS_MAX logic was never updated to account for it.
-Because of that the rnd max bits knob is set to the default value of 18
-when ARM64_VA_BITS=52.
-Fix this by setting ARCH_MMAP_RND_BITS_MAX to the same value that would
-be used if 48-bit addressing was used. Higher values can't used here
-because 52-bit addressing is used only if the caller provides a hint to
-mmap, with a fallback to 48-bit. The knob in question is an upper bound
-for what the user can set in /proc/sys/vm/mmap_rnd_bits, which in turn
-is used to determine how many random bits can be inserted into the base
-address used for mmap allocations. Since 48-bit allocations are legal
-with ARM64_VA_BITS=52, we need to make sure that the base address is
-small enough to facilitate this.
+Historically fpsimd_to_sve() and sve_to_fpsimd() were (conditionally)
+called by functions which were defined regardless of CONFIG_ARM64_SVE.
+Hence it was necessary that both fpsimd_to_sve() and sve_to_fpsimd()
+were always defined and not guarded by ifdeffery.
 
-Fixes: b6d00d47e81a ("arm64: mm: Introduce 52-bit Kernel VAs")
-Signed-off-by: Kornel Dulęba <korneld@google.com>
-Reviewed-by: Anshuman Khandual <anshuman.khandual@arm.com>
-Link: https://lore.kernel.org/r/20250417114754.3238273-1-korneld@google.com
-Signed-off-by: Will Deacon <will@kernel.org>
+As a result of the removal of fpsimd_signal_preserve_current_state() in
+commit:
+
+  929fa99b1215966f ("arm64/fpsimd: signal: Always save+flush state early")
+
+... sve_to_fpsimd() has no callers when CONFIG_ARM64_SVE=n, resulting in
+a build-time warnign that it is unused:
+
+| arch/arm64/kernel/fpsimd.c:676:13: warning: unused function 'sve_to_fpsimd' [-Wunused-function]
+|   676 | static void sve_to_fpsimd(struct task_struct *task)
+|       |             ^~~~~~~~~~~~~
+| 1 warning generated.
+
+In contrast, fpsimd_to_sve() still has callers which are defined when
+CONFIG_ARM64_SVE=n, and it would be awkward to hide this behind
+ifdeffery and/or to use stub functions.
+
+For now, suppress the warning by marking both fpsimd_to_sve() and
+sve_to_fpsimd() as 'static inline', as we usually do for stub functions.
+The compiler will no longer warn if either function is unused.
+
+Aside from suppressing the warning, there should be no functional change
+as a result of this patch.
+
+Link: https://lore.kernel.org/linux-arm-kernel/20250429194600.GA26883@willie-the-truck/
+Reported-by: Will Deacon <will@kernel.org>
+Fixes: 929fa99b1215 ("arm64/fpsimd: signal: Always save+flush state early")
+Signed-off-by: Mark Rutland <mark.rutland@arm.com>
+Cc: Marc Zyngier <maz@kernel.org>
+Cc: Mark Brown <broonie@kernel.org>
+Cc: Will Deacon <will@kernel.org>
+Link: https://lore.kernel.org/r/20250430173240.4023627-1-mark.rutland@arm.com
+Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/Kconfig | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ arch/arm64/kernel/fpsimd.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm64/Kconfig b/arch/arm64/Kconfig
-index a182295e6f08b..6527d0d5656a1 100644
---- a/arch/arm64/Kconfig
-+++ b/arch/arm64/Kconfig
-@@ -333,9 +333,9 @@ config ARCH_MMAP_RND_BITS_MAX
- 	default 24 if ARM64_VA_BITS=39
- 	default 27 if ARM64_VA_BITS=42
- 	default 30 if ARM64_VA_BITS=47
--	default 29 if ARM64_VA_BITS=48 && ARM64_64K_PAGES
--	default 31 if ARM64_VA_BITS=48 && ARM64_16K_PAGES
--	default 33 if ARM64_VA_BITS=48
-+	default 29 if (ARM64_VA_BITS=48 || ARM64_VA_BITS=52) && ARM64_64K_PAGES
-+	default 31 if (ARM64_VA_BITS=48 || ARM64_VA_BITS=52) && ARM64_16K_PAGES
-+	default 33 if (ARM64_VA_BITS=48 || ARM64_VA_BITS=52)
- 	default 14 if ARM64_64K_PAGES
- 	default 16 if ARM64_16K_PAGES
- 	default 18
+diff --git a/arch/arm64/kernel/fpsimd.c b/arch/arm64/kernel/fpsimd.c
+index 1edf797d2c710..0e649d0e59b06 100644
+--- a/arch/arm64/kernel/fpsimd.c
++++ b/arch/arm64/kernel/fpsimd.c
+@@ -651,7 +651,7 @@ static void __fpsimd_to_sve(void *sst, struct user_fpsimd_state const *fst,
+  * task->thread.uw.fpsimd_state must be up to date before calling this
+  * function.
+  */
+-static void fpsimd_to_sve(struct task_struct *task)
++static inline void fpsimd_to_sve(struct task_struct *task)
+ {
+ 	unsigned int vq;
+ 	void *sst = task->thread.sve_state;
+@@ -675,7 +675,7 @@ static void fpsimd_to_sve(struct task_struct *task)
+  * bytes of allocated kernel memory.
+  * task->thread.sve_state must be up to date before calling this function.
+  */
+-static void sve_to_fpsimd(struct task_struct *task)
++static inline void sve_to_fpsimd(struct task_struct *task)
+ {
+ 	unsigned int vq, vl;
+ 	void const *sst = task->thread.sve_state;
 -- 
 2.39.5
 
