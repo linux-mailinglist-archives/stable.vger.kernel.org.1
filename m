@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-154266-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153647-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 132F6ADD7A6
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:47:41 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6A20DADD59A
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:23:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C86637AC79A
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:46:18 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9C32E1944C74
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:16:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B963238D49;
-	Tue, 17 Jun 2025 16:43:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D063C2DFF38;
+	Tue, 17 Jun 2025 16:10:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VBx9WZUc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D52knHdW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBB79236A73;
-	Tue, 17 Jun 2025 16:43:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C87C2DFF08;
+	Tue, 17 Jun 2025 16:10:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750178637; cv=none; b=Jl+Ly+5mmPsyDE9hExYym7fyILv7uFZpT8biZ9jjxTlMt+V3AvjKFxtunj6+9h+PiJ20yChpvLajzTZzXXC+mEPoClEVf+CQP81y9rZ2zFQ8Hx9QNBwDB5pyJkYKgHJf7W9NtHHu+YS+C8EMvWFVWej+Cgpg8bj3SE5G1r8PonQ=
+	t=1750176637; cv=none; b=I1dULl3qc+ugAyBs4m86dpCYgl0wsuPxschDUfUiuEZhR7+LVqplpkAPuWP7EP+iXuIpRWsN2e0rJdiuGgMkZGJXWM9bxxVlSdtqgDV736vzY6oYh4Q+odIFrMoi/aBDGGFgzpIkdqkipUdWExdhtMu+YMGPjZO2m0Dtwmlt8AM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750178637; c=relaxed/simple;
-	bh=1xeNF0hrjLqpazJHVC5jqNxKqNwJ2impdaZ7VMXJc6s=;
+	s=arc-20240116; t=1750176637; c=relaxed/simple;
+	bh=PTtefIEL/2+CReQuHVVS5UpSe8K0zvVYC51wWL5pvo0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XtQtWtf/Snqex1Wukg9+Ukv9Voj+slBuMj/kOHPGBX2tVLmWP0Bw07doIElMoOTxlb+EOzxBIlVEYTqT9VKAuGqhHf5RemIm8fLpaPDIFUlVw0QwBEn6c3XrqHwNoI6QqTRRSwvnsftmarvK/L8E4cwWXzUbCCta7MY2F6FrQd8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VBx9WZUc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B84FC4CEE3;
-	Tue, 17 Jun 2025 16:43:56 +0000 (UTC)
+	 MIME-Version; b=KvgDeVL5lEI5NWTZX0nKKc7iqStLGIWKP4WcABuOfX7hXG/5rWlGFbB3c6tVLOnxqCWkhXpKHr/QVuf9sr9AhzSLAsn/2qQMj/fLCu/JMeBFy2WgxYdvpRRh9+WnTnUtoZstduYWyZxlyUlofQZtTOHJ5xXajqdXp1+SZaDfq0E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D52knHdW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F12B3C4CEE3;
+	Tue, 17 Jun 2025 16:10:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750178636;
-	bh=1xeNF0hrjLqpazJHVC5jqNxKqNwJ2impdaZ7VMXJc6s=;
+	s=korg; t=1750176637;
+	bh=PTtefIEL/2+CReQuHVVS5UpSe8K0zvVYC51wWL5pvo0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VBx9WZUcDfDFi+jdSyrUlmqgq7di137gmZsmKYqwEjrJ8DFGi0Dc9/k3j7OTTxp/2
-	 W4fZIIGGMnkGtymWQMvDsj/lzbHs4Fyxo2JL5nZxeQhT2/Dc1sAKStmJ7Kq6uBwmv0
-	 Kn9L52a2yjS9FrRfJ7TiiF6lmskYLvfzCjgXdmUs=
+	b=D52knHdWa/4EHmhdwTmN/IYrFHhP9sU62KTinzrzbnp/xpadnxnkqL9ACpIJo/Noz
+	 9XRxXjIR/YTFdjzcl1w1sndN2GhKss89mFlua3YA+3Ndgeivcg+6+1VmKgq8c03cTh
+	 eSfoGRhx4LKheyEIKI6yhO7DeBmbxtv1CUgjmWZE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Henry Martin <bsdhenrymartin@gmail.com>,
-	Nathan Lynch <nathan.lynch@amd.com>,
-	Peter Ujfalusi <peter.ujfalusi@gmail.com>,
-	Vinod Koul <vkoul@kernel.org>,
+	Prasanth Babu Mantena <p-mantena@ti.com>,
+	Nishanth Menon <nm@ti.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 506/780] dmaengine: ti: Add NULL check in udma_probe()
-Date: Tue, 17 Jun 2025 17:23:34 +0200
-Message-ID: <20250617152512.112722293@linuxfoundation.org>
+Subject: [PATCH 6.12 249/512] arm64: dts: ti: k3-j721e-common-proc-board: Enable OSPI1 on J721E
+Date: Tue, 17 Jun 2025 17:23:35 +0200
+Message-ID: <20250617152429.694606916@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
-References: <20250617152451.485330293@linuxfoundation.org>
+In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
+References: <20250617152419.512865572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,45 +62,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Henry Martin <bsdhenrymartin@gmail.com>
+From: Prasanth Babu Mantena <p-mantena@ti.com>
 
-[ Upstream commit fd447415e74bccd7362f760d4ea727f8e1ebfe91 ]
+[ Upstream commit 6b8deb2ff0d31848c43a73f6044e69ba9276b3ec ]
 
-devm_kasprintf() returns NULL when memory allocation fails. Currently,
-udma_probe() does not check for this case, which results in a NULL
-pointer dereference.
+J721E SoM has MT25QU512AB Serial NOR flash connected to
+OSPI1 controller. Enable ospi1 node in device tree.
 
-Add NULL check after devm_kasprintf() to prevent this issue.
-
-Fixes: 25dcb5dd7b7c ("dmaengine: ti: New driver for K3 UDMA")
-Signed-off-by: Henry Martin <bsdhenrymartin@gmail.com>
-Reviewed-by: Nathan Lynch <nathan.lynch@amd.com>
-Acked-by: Peter Ujfalusi <peter.ujfalusi@gmail.com>
-Link: https://lore.kernel.org/r/20250402023900.43440-1-bsdhenrymartin@gmail.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Fixes: 73676c480b72 ("arm64: dts: ti: k3-j721e: Enable OSPI nodes at the board level")
+Signed-off-by: Prasanth Babu Mantena <p-mantena@ti.com>
+Link: https://lore.kernel.org/r/20250507050701.3007209-1-p-mantena@ti.com
+Signed-off-by: Nishanth Menon <nm@ti.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/dma/ti/k3-udma.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ arch/arm64/boot/dts/ti/k3-j721e-common-proc-board.dts | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/dma/ti/k3-udma.c b/drivers/dma/ti/k3-udma.c
-index b6255c0601bb2..aa2dc762140f6 100644
---- a/drivers/dma/ti/k3-udma.c
-+++ b/drivers/dma/ti/k3-udma.c
-@@ -5624,7 +5624,8 @@ static int udma_probe(struct platform_device *pdev)
- 		uc->config.dir = DMA_MEM_TO_MEM;
- 		uc->name = devm_kasprintf(dev, GFP_KERNEL, "%s chan%d",
- 					  dev_name(dev), i);
--
-+		if (!uc->name)
-+			return -ENOMEM;
- 		vchan_init(&uc->vc, &ud->ddev);
- 		/* Use custom vchan completion handling */
- 		tasklet_setup(&uc->vc.task, udma_vchan_complete);
+diff --git a/arch/arm64/boot/dts/ti/k3-j721e-common-proc-board.dts b/arch/arm64/boot/dts/ti/k3-j721e-common-proc-board.dts
+index 8230d53cd6960..f7a557e6af547 100644
+--- a/arch/arm64/boot/dts/ti/k3-j721e-common-proc-board.dts
++++ b/arch/arm64/boot/dts/ti/k3-j721e-common-proc-board.dts
+@@ -557,6 +557,7 @@
+ &ospi1 {
+ 	pinctrl-names = "default";
+ 	pinctrl-0 = <&mcu_fss0_ospi1_pins_default>;
++	status = "okay";
+ 
+ 	flash@0 {
+ 		compatible = "jedec,spi-nor";
 -- 
 2.39.5
 
