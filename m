@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-154215-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153519-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 23690ADD825
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:52:29 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 17650ADD51B
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:17:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 26C044A105C
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:45:22 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 601941945BF2
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:07:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3DA362FA626;
-	Tue, 17 Jun 2025 16:41:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F16A2EA159;
+	Tue, 17 Jun 2025 16:03:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c1ZmuT+m"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="StJX3+89"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECF992FA621;
-	Tue, 17 Jun 2025 16:41:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AB2A2CCC5;
+	Tue, 17 Jun 2025 16:03:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750178475; cv=none; b=mh/dvC+5hidnJd5qfuWU4W42EO3q2GFvdOr+Vl/fDi7A7UlcBOEvPfvzOm9maG3u3kHJMn3/Oc7ZSH6ZoOPtU80FChS4G79OUzCiLzSmFpPtBZA4WrtjzcVP691LKHCPM/v/vVbEuWJi18dOATHS9AVlhoDDSx6DfRYwWWTRX2I=
+	t=1750176226; cv=none; b=kerFuHAeMCtBI9cbDHmWrE+go2uSInpF6NE4AC8fE1nqW75nJ6RIABM3oGE7va2PWPyAqyIgZeLXjTmG9kHyPQ/jTn3ZWP4ixZ7RaZBCIdVxzeLys8JzaUWOQFnzSNbw+vu/+n3lZRN9yt1fghiARIq6csAR0dnkMzaMSLTgPHQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750178475; c=relaxed/simple;
-	bh=w5HdXiLLYzQX56g0eD6i3Y8KKhlk36X/aGU3JPUiT1k=;
+	s=arc-20240116; t=1750176226; c=relaxed/simple;
+	bh=X0SXelOt1ki/g9LXlrGiNzaj8Trw/CVUSOTLRsglKes=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mtxTpXBmQdtu18X3qB5VSFOJzTynKVp7ehXH0aMxwS1CvDlexsni/pf48G1y7n96LrunuF5/YBx1NfbCAY5qbzypc3LSUwu+3/DzwALuf9GZQr/7y3HchIlL4QxltV4decr7ALte9/wZefkcIIsGSt+3JfrIxvm/XsggyMj5Zsg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c1ZmuT+m; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C9B5C4CEE3;
-	Tue, 17 Jun 2025 16:41:14 +0000 (UTC)
+	 MIME-Version; b=Wqj2lDhmXQUzdGQOqMeI9MQBHMagz9KtIDSpdm0vg4iXsdWxifkU/qZh0pUO3OP5BOkMthvGLAmnXB97z0Syt9zjc+nJfVrsUe5UqzDMGYDfV9unUDxsn2TewwrP+h9qf4R4EsMCBUOwSDWris8/JHP7gjIWximgiNXFMf5s/po=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=StJX3+89; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9CD1CC4CEE3;
+	Tue, 17 Jun 2025 16:03:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750178474;
-	bh=w5HdXiLLYzQX56g0eD6i3Y8KKhlk36X/aGU3JPUiT1k=;
+	s=korg; t=1750176226;
+	bh=X0SXelOt1ki/g9LXlrGiNzaj8Trw/CVUSOTLRsglKes=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=c1ZmuT+mEpj78A55QRxIoxHDDZFjGn3lOP52aYl7R5gAgE0JfQy272ayPKZ9k4XzP
-	 PHMZB1l6PPo/eIUXou0vKn7fGYU7VFKjM36zQYLR0Kbno9diZzd3BHN2YUGirQeYpC
-	 JrQFVHhqxojt9uFCNiz+07jC4l1DRNxFGaInF5kI=
+	b=StJX3+89sPcYiBbZ3cpG+nkFYbn0oSdZZxsnqyaqL7IU0Fzz+vUmy9AvprZucwmnD
+	 PXSFtgaK/7mLIjyR+5WTMXFAHEMcgAIdhlJR87xPok4QVg5B+BXm8fBfgY2AG7JoQp
+	 msM19eLNLQvUdqGab9Dp/l0+1ONJ09sW5liFqVwQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jason-JH Lin <jason-jh.lin@mediatek.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Jassi Brar <jassisinghbrar@gmail.com>,
+	Thangaraj Samynathan <thangaraj.s@microchip.com>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 465/780] mailbox: mtk-cmdq: Refine GCE_GCTL_VALUE setting
-Date: Tue, 17 Jun 2025 17:22:53 +0200
-Message-ID: <20250617152510.428420255@linuxfoundation.org>
+Subject: [PATCH 6.12 208/512] net: lan743x: rename lan743x_reset_phy to lan743x_hw_reset_phy
+Date: Tue, 17 Jun 2025 17:22:54 +0200
+Message-ID: <20250617152428.060122419@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
-References: <20250617152451.485330293@linuxfoundation.org>
+In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
+References: <20250617152419.512865572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,146 +63,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jason-JH Lin <jason-jh.lin@mediatek.com>
+From: Thangaraj Samynathan <thangaraj.s@microchip.com>
 
-[ Upstream commit 9fcebcb37c3e0a4b6eb40768cc5a5faebf166fbe ]
+[ Upstream commit 68927eb52d0af04863584930db06075d2610e194 ]
 
-Add cmdq_gctl_value_toggle() to configure GCE_CTRL_BY_SW and GCE_DDR_EN
-together in the same GCE_GCTL_VALUE register.
+rename the function to lan743x_hw_reset_phy to better describe it
+operation.
 
-For the SoCs whose GCE is located in MMINFRA and uses MMINFRA_AO power,
-this allows it to be written without enabling the clocks. Otherwise, all
-GCE registers should be written after the GCE clocks are enabled.
-Move this function into cmdq_runtime_resume() and cmdq_runtime_suspend()
-to ensure it is called when the GCE clock is enabled.
-
-Fixes: 7abd037aa581 ("mailbox: mtk-cmdq: add gce ddr enable support flow")
-Signed-off-by: Jason-JH Lin <jason-jh.lin@mediatek.com>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Signed-off-by: Jassi Brar <jassisinghbrar@gmail.com>
+Fixes: 23f0703c125be ("lan743x: Add main source files for new lan743x driver")
+Signed-off-by: Thangaraj Samynathan <thangaraj.s@microchip.com>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Link: https://patch.msgid.link/20250526053048.287095-2-thangaraj.s@microchip.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mailbox/mtk-cmdq-mailbox.c | 51 +++++++++++++-----------------
- 1 file changed, 22 insertions(+), 29 deletions(-)
+ drivers/net/ethernet/microchip/lan743x_main.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/mailbox/mtk-cmdq-mailbox.c b/drivers/mailbox/mtk-cmdq-mailbox.c
-index d186865b8dce6..ab4e8d1954a16 100644
---- a/drivers/mailbox/mtk-cmdq-mailbox.c
-+++ b/drivers/mailbox/mtk-cmdq-mailbox.c
-@@ -92,18 +92,6 @@ struct gce_plat {
- 	u32 gce_num;
- };
- 
--static void cmdq_sw_ddr_enable(struct cmdq *cmdq, bool enable)
--{
--	WARN_ON(clk_bulk_enable(cmdq->pdata->gce_num, cmdq->clocks));
--
--	if (enable)
--		writel(GCE_DDR_EN | GCE_CTRL_BY_SW, cmdq->base + GCE_GCTL_VALUE);
--	else
--		writel(GCE_CTRL_BY_SW, cmdq->base + GCE_GCTL_VALUE);
--
--	clk_bulk_disable(cmdq->pdata->gce_num, cmdq->clocks);
--}
--
- u8 cmdq_get_shift_pa(struct mbox_chan *chan)
- {
- 	struct cmdq *cmdq = container_of(chan->mbox, struct cmdq, mbox);
-@@ -112,6 +100,19 @@ u8 cmdq_get_shift_pa(struct mbox_chan *chan)
- }
- EXPORT_SYMBOL(cmdq_get_shift_pa);
- 
-+static void cmdq_gctl_value_toggle(struct cmdq *cmdq, bool ddr_enable)
-+{
-+	u32 val = cmdq->pdata->control_by_sw ? GCE_CTRL_BY_SW : 0;
-+
-+	if (!cmdq->pdata->control_by_sw && !cmdq->pdata->sw_ddr_en)
-+		return;
-+
-+	if (cmdq->pdata->sw_ddr_en && ddr_enable)
-+		val |= GCE_DDR_EN;
-+
-+	writel(val, cmdq->base + GCE_GCTL_VALUE);
-+}
-+
- static int cmdq_thread_suspend(struct cmdq *cmdq, struct cmdq_thread *thread)
- {
- 	u32 status;
-@@ -140,16 +141,10 @@ static void cmdq_thread_resume(struct cmdq_thread *thread)
- static void cmdq_init(struct cmdq *cmdq)
- {
- 	int i;
--	u32 gctl_regval = 0;
- 
- 	WARN_ON(clk_bulk_enable(cmdq->pdata->gce_num, cmdq->clocks));
--	if (cmdq->pdata->control_by_sw)
--		gctl_regval = GCE_CTRL_BY_SW;
--	if (cmdq->pdata->sw_ddr_en)
--		gctl_regval |= GCE_DDR_EN;
- 
--	if (gctl_regval)
--		writel(gctl_regval, cmdq->base + GCE_GCTL_VALUE);
-+	cmdq_gctl_value_toggle(cmdq, true);
- 
- 	writel(CMDQ_THR_ACTIVE_SLOT_CYCLES, cmdq->base + CMDQ_THR_SLOT_CYCLES);
- 	for (i = 0; i <= CMDQ_MAX_EVENT; i++)
-@@ -315,14 +310,21 @@ static irqreturn_t cmdq_irq_handler(int irq, void *dev)
- static int cmdq_runtime_resume(struct device *dev)
- {
- 	struct cmdq *cmdq = dev_get_drvdata(dev);
-+	int ret;
- 
--	return clk_bulk_enable(cmdq->pdata->gce_num, cmdq->clocks);
-+	ret = clk_bulk_enable(cmdq->pdata->gce_num, cmdq->clocks);
-+	if (ret)
-+		return ret;
-+
-+	cmdq_gctl_value_toggle(cmdq, true);
-+	return 0;
+diff --git a/drivers/net/ethernet/microchip/lan743x_main.c b/drivers/net/ethernet/microchip/lan743x_main.c
+index 812ad9d61676a..8d53a35a2b561 100644
+--- a/drivers/net/ethernet/microchip/lan743x_main.c
++++ b/drivers/net/ethernet/microchip/lan743x_main.c
+@@ -1330,7 +1330,7 @@ static int lan743x_mac_set_mtu(struct lan743x_adapter *adapter, int new_mtu)
  }
  
- static int cmdq_runtime_suspend(struct device *dev)
+ /* PHY */
+-static int lan743x_phy_reset(struct lan743x_adapter *adapter)
++static int lan743x_hw_reset_phy(struct lan743x_adapter *adapter)
  {
- 	struct cmdq *cmdq = dev_get_drvdata(dev);
+ 	u32 data;
  
-+	cmdq_gctl_value_toggle(cmdq, false);
- 	clk_bulk_disable(cmdq->pdata->gce_num, cmdq->clocks);
- 	return 0;
- }
-@@ -347,9 +349,6 @@ static int cmdq_suspend(struct device *dev)
- 	if (task_running)
- 		dev_warn(dev, "exist running task(s) in suspend\n");
+@@ -1348,7 +1348,7 @@ static int lan743x_phy_reset(struct lan743x_adapter *adapter)
  
--	if (cmdq->pdata->sw_ddr_en)
--		cmdq_sw_ddr_enable(cmdq, false);
--
- 	return pm_runtime_force_suspend(dev);
- }
- 
-@@ -360,9 +359,6 @@ static int cmdq_resume(struct device *dev)
- 	WARN_ON(pm_runtime_force_resume(dev));
- 	cmdq->suspended = false;
- 
--	if (cmdq->pdata->sw_ddr_en)
--		cmdq_sw_ddr_enable(cmdq, true);
--
- 	return 0;
- }
- 
-@@ -370,9 +366,6 @@ static void cmdq_remove(struct platform_device *pdev)
+ static int lan743x_phy_init(struct lan743x_adapter *adapter)
  {
- 	struct cmdq *cmdq = platform_get_drvdata(pdev);
+-	return lan743x_phy_reset(adapter);
++	return lan743x_hw_reset_phy(adapter);
+ }
  
--	if (cmdq->pdata->sw_ddr_en)
--		cmdq_sw_ddr_enable(cmdq, false);
--
- 	if (!IS_ENABLED(CONFIG_PM))
- 		cmdq_runtime_suspend(&pdev->dev);
- 
+ static void lan743x_phy_interface_select(struct lan743x_adapter *adapter)
 -- 
 2.39.5
 
