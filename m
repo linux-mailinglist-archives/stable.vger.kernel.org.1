@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-154506-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-154164-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA70BADDA11
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 19:12:58 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F3D06ADD884
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:56:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D53462C5A32
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:57:28 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C7DF64A5A64
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:43:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48D6B2FA652;
-	Tue, 17 Jun 2025 16:57:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA75823B603;
+	Tue, 17 Jun 2025 16:38:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EPdg3+rc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A2tEh9ZP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05519188006;
-	Tue, 17 Jun 2025 16:57:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95E47235067;
+	Tue, 17 Jun 2025 16:38:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750179427; cv=none; b=jRmj7wpGWKwcYdZCSBzKAHOmpwR8oUhJgkbskN810smI3LRiBscLaLr80t7x9eeQA7jPh0NiqzObb+TQgnofl4K+XVowZEg5EPvu4LOuUYXYvlJiI78ZiWW+I2kiuZ0IK3nl/k/cIAq/zZeuJDjl54/vKqpHVI1dFdok6elSGzg=
+	t=1750178308; cv=none; b=f97KgygVNRle1ac/ULkKBYoDMt38RoX9p5M570XpyOyU44OclxJvN/8wCzSBzazVUJbKdTOh5ULG1CIkNBzslm33MoHva+VYPWrhjGlC++6+xKzcfUB1zkae744xjQ2J2y4s9DchCyJG7SzPbf2/PebI9VNNcnSEi5FlKNctJBE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750179427; c=relaxed/simple;
-	bh=3wFYP99NyffCEc1ptxtJkT66mYhBV6T2A5cHCtPD9dc=;
+	s=arc-20240116; t=1750178308; c=relaxed/simple;
+	bh=xOFnHcfd+OaIrcPoaeSPGUExtOgWoTkKxkRkoRoanjE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OX0MF23Mfc4oR8SxEa50GkwoFjRQjqatTVuheUdROAffoDxg+MlEpZtkIz4TXpg/dm6h7wvIzUZHdB33C6TRu0Dn0/kpbyWxAlPRyeCG8RcA1gKK38qeIqovOrzDf2hmUOsDBvotHhp9JGNl0S90bjWTcEp4SYd4VOr939a+1HU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EPdg3+rc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 167D4C4CEF2;
-	Tue, 17 Jun 2025 16:57:05 +0000 (UTC)
+	 MIME-Version; b=F+Re/ip/IfNfC+ROcDh8t7K2OZGzVd9vkAmO/lOCljHwUJ9jYYC6RKqiF7IbQK6rFo3NIZajTu6yq2j3BryJOKD6Qyuh7BoegUkvZNLXjvNwjM8Adoggzv8yQGOyRYdJKjbfrVTSi3bxThx6oeXPARjiUxrRzRZaYBkEoiUgRjI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A2tEh9ZP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2DC7C4CEE3;
+	Tue, 17 Jun 2025 16:38:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750179426;
-	bh=3wFYP99NyffCEc1ptxtJkT66mYhBV6T2A5cHCtPD9dc=;
+	s=korg; t=1750178308;
+	bh=xOFnHcfd+OaIrcPoaeSPGUExtOgWoTkKxkRkoRoanjE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EPdg3+rcTMZ2RxTa8DUp+qrldLRtfX52MH9n60fApuvXCoy5Ho3Q6NE91EfPYVB8m
-	 xucfNcpFBM1PqOYXCtMXnr4axW1bYWsf/+V7TRD4d7pKCds4YVZ7mnjJRpnYN131/R
-	 /DandArKbZ/MHFafcHwCWJQk6LwITCVfLt+58KYE=
+	b=A2tEh9ZPstuN3PnrwhMm8SSDzdZY0hzKcqSr+ZSl+FTWsp29pcfgmBy1M8Ne2TL2s
+	 +xRCWETw1RSC1UfkOcMrd3CQfYHD/S5MjxUcOCY/H1X4lUXE6ROFIBk814+/MuR+i5
+	 jpYCUIuoAZrRgzik6TwqyQzAObuANmijjfG7AkMg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Keith Busch <kbusch@kernel.org>,
+	syzbot+531502bbbe51d2f769f4@syzkaller.appspotmail.com,
+	Penglei Jiang <superman.xpt@gmail.com>,
 	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 735/780] io_uring: consistently use rcu semantics with sqpoll thread
+Subject: [PATCH 6.12 477/512] io_uring: fix use-after-free of sq->thread in __io_uring_show_fdinfo()
 Date: Tue, 17 Jun 2025 17:27:23 +0200
-Message-ID: <20250617152521.435619100@linuxfoundation.org>
+Message-ID: <20250617152438.913584152@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
-References: <20250617152451.485330293@linuxfoundation.org>
+In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
+References: <20250617152419.512865572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,185 +63,209 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Keith Busch <kbusch@kernel.org>
+From: Penglei Jiang <superman.xpt@gmail.com>
 
-[ Upstream commit c538f400fae22725580842deb2bef546701b64bd ]
+[ Upstream commit ac0b8b327a5677dc6fecdf353d808161525b1ff0 ]
 
-The sqpoll thread is dereferenced with rcu read protection in one place,
-so it needs to be annotated as an __rcu type, and should consistently
-use rcu helpers for access and assignment to make sparse happy.
+syzbot reports:
 
-Since most of the accesses occur under the sqd->lock, we can use
-rcu_dereference_protected() without declaring an rcu read section.
-Provide a simple helper to get the thread from a locked context.
+BUG: KASAN: slab-use-after-free in getrusage+0x1109/0x1a60
+Read of size 8 at addr ffff88810de2d2c8 by task a.out/304
 
-Fixes: ac0b8b327a5677d ("io_uring: fix use-after-free of sq->thread in __io_uring_show_fdinfo()")
-Signed-off-by: Keith Busch <kbusch@kernel.org>
-Link: https://lore.kernel.org/r/20250611205343.1821117-1-kbusch@meta.com
-[axboe: fold in fix for register.c]
+CPU: 0 UID: 0 PID: 304 Comm: a.out Not tainted 6.16.0-rc1 #1 PREEMPT(voluntary)
+Hardware name: QEMU Ubuntu 24.04 PC (i440FX + PIIX, 1996), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
+Call Trace:
+ <TASK>
+ dump_stack_lvl+0x53/0x70
+ print_report+0xd0/0x670
+ ? __pfx__raw_spin_lock_irqsave+0x10/0x10
+ ? getrusage+0x1109/0x1a60
+ kasan_report+0xce/0x100
+ ? getrusage+0x1109/0x1a60
+ getrusage+0x1109/0x1a60
+ ? __pfx_getrusage+0x10/0x10
+ __io_uring_show_fdinfo+0x9fe/0x1790
+ ? ksys_read+0xf7/0x1c0
+ ? do_syscall_64+0xa4/0x260
+ ? vsnprintf+0x591/0x1100
+ ? __pfx___io_uring_show_fdinfo+0x10/0x10
+ ? __pfx_vsnprintf+0x10/0x10
+ ? mutex_trylock+0xcf/0x130
+ ? __pfx_mutex_trylock+0x10/0x10
+ ? __pfx_show_fd_locks+0x10/0x10
+ ? io_uring_show_fdinfo+0x57/0x80
+ io_uring_show_fdinfo+0x57/0x80
+ seq_show+0x38c/0x690
+ seq_read_iter+0x3f7/0x1180
+ ? inode_set_ctime_current+0x160/0x4b0
+ seq_read+0x271/0x3e0
+ ? __pfx_seq_read+0x10/0x10
+ ? __pfx__raw_spin_lock+0x10/0x10
+ ? __mark_inode_dirty+0x402/0x810
+ ? selinux_file_permission+0x368/0x500
+ ? file_update_time+0x10f/0x160
+ vfs_read+0x177/0xa40
+ ? __pfx___handle_mm_fault+0x10/0x10
+ ? __pfx_vfs_read+0x10/0x10
+ ? mutex_lock+0x81/0xe0
+ ? __pfx_mutex_lock+0x10/0x10
+ ? fdget_pos+0x24d/0x4b0
+ ksys_read+0xf7/0x1c0
+ ? __pfx_ksys_read+0x10/0x10
+ ? do_user_addr_fault+0x43b/0x9c0
+ do_syscall_64+0xa4/0x260
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+RIP: 0033:0x7f0f74170fc9
+Code: 00 c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 44 00 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 8b 8
+RSP: 002b:00007fffece049e8 EFLAGS: 00000206 ORIG_RAX: 0000000000000000
+RAX: ffffffffffffffda RBX: 0000000000000000 RCX: 00007f0f74170fc9
+RDX: 0000000000001000 RSI: 00007fffece049f0 RDI: 0000000000000004
+RBP: 00007fffece05ad0 R08: 0000000000000000 R09: 00007fffece04d90
+R10: 0000000000000000 R11: 0000000000000206 R12: 00005651720a1100
+R13: 0000000000000000 R14: 0000000000000000 R15: 0000000000000000
+ </TASK>
+
+Allocated by task 298:
+ kasan_save_stack+0x33/0x60
+ kasan_save_track+0x14/0x30
+ __kasan_slab_alloc+0x6e/0x70
+ kmem_cache_alloc_node_noprof+0xe8/0x330
+ copy_process+0x376/0x5e00
+ create_io_thread+0xab/0xf0
+ io_sq_offload_create+0x9ed/0xf20
+ io_uring_setup+0x12b0/0x1cc0
+ do_syscall_64+0xa4/0x260
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+
+Freed by task 22:
+ kasan_save_stack+0x33/0x60
+ kasan_save_track+0x14/0x30
+ kasan_save_free_info+0x3b/0x60
+ __kasan_slab_free+0x37/0x50
+ kmem_cache_free+0xc4/0x360
+ rcu_core+0x5ff/0x19f0
+ handle_softirqs+0x18c/0x530
+ run_ksoftirqd+0x20/0x30
+ smpboot_thread_fn+0x287/0x6c0
+ kthread+0x30d/0x630
+ ret_from_fork+0xef/0x1a0
+ ret_from_fork_asm+0x1a/0x30
+
+Last potentially related work creation:
+ kasan_save_stack+0x33/0x60
+ kasan_record_aux_stack+0x8c/0xa0
+ __call_rcu_common.constprop.0+0x68/0x940
+ __schedule+0xff2/0x2930
+ __cond_resched+0x4c/0x80
+ mutex_lock+0x5c/0xe0
+ io_uring_del_tctx_node+0xe1/0x2b0
+ io_uring_clean_tctx+0xb7/0x160
+ io_uring_cancel_generic+0x34e/0x760
+ do_exit+0x240/0x2350
+ do_group_exit+0xab/0x220
+ __x64_sys_exit_group+0x39/0x40
+ x64_sys_call+0x1243/0x1840
+ do_syscall_64+0xa4/0x260
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+
+The buggy address belongs to the object at ffff88810de2cb00
+ which belongs to the cache task_struct of size 3712
+The buggy address is located 1992 bytes inside of
+ freed 3712-byte region [ffff88810de2cb00, ffff88810de2d980)
+
+which is caused by the task_struct pointed to by sq->thread being
+released while it is being used in the function
+__io_uring_show_fdinfo(). Holding ctx->uring_lock does not prevent ehre
+relase or exit of sq->thread.
+
+Fix this by assigning and looking up ->thread under RCU, and grabbing a
+reference to the task_struct. This ensures that it cannot get released
+while fdinfo is using it.
+
+Reported-by: syzbot+531502bbbe51d2f769f4@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/all/682b06a5.a70a0220.3849cf.00b3.GAE@google.com
+Fixes: 3fcb9d17206e ("io_uring/sqpoll: statistics of the true utilization of sq threads")
+Signed-off-by: Penglei Jiang <superman.xpt@gmail.com>
+Link: https://lore.kernel.org/r/20250610171801.70960-1-superman.xpt@gmail.com
+[axboe: massage commit message]
 Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- io_uring/io_uring.c |  4 ++--
- io_uring/register.c |  7 +++++--
- io_uring/sqpoll.c   | 34 ++++++++++++++++++++++++----------
- io_uring/sqpoll.h   |  8 +++++++-
- 4 files changed, 38 insertions(+), 15 deletions(-)
+ io_uring/fdinfo.c | 12 ++++++++++--
+ io_uring/sqpoll.c |  9 ++++-----
+ 2 files changed, 14 insertions(+), 7 deletions(-)
 
-diff --git a/io_uring/io_uring.c b/io_uring/io_uring.c
-index 9266d4f2016ad..e5466f6568269 100644
---- a/io_uring/io_uring.c
-+++ b/io_uring/io_uring.c
-@@ -2913,7 +2913,7 @@ static __cold void io_ring_exit_work(struct work_struct *work)
- 			struct task_struct *tsk;
+diff --git a/io_uring/fdinfo.c b/io_uring/fdinfo.c
+index ecdbe473a49f7..c6c624eb9866d 100644
+--- a/io_uring/fdinfo.c
++++ b/io_uring/fdinfo.c
+@@ -146,18 +146,26 @@ __cold void io_uring_show_fdinfo(struct seq_file *m, struct file *file)
  
- 			io_sq_thread_park(sqd);
--			tsk = sqd->thread;
-+			tsk = sqpoll_task_locked(sqd);
- 			if (tsk && tsk->io_uring && tsk->io_uring->io_wq)
- 				io_wq_cancel_cb(tsk->io_uring->io_wq,
- 						io_cancel_ctx_cb, ctx, true);
-@@ -3150,7 +3150,7 @@ __cold void io_uring_cancel_generic(bool cancel_all, struct io_sq_data *sqd)
- 	s64 inflight;
- 	DEFINE_WAIT(wait);
- 
--	WARN_ON_ONCE(sqd && sqd->thread != current);
-+	WARN_ON_ONCE(sqd && sqpoll_task_locked(sqd) != current);
- 
- 	if (!current->io_uring)
- 		return;
-diff --git a/io_uring/register.c b/io_uring/register.c
-index cc23a4c205cd4..a59589249fce7 100644
---- a/io_uring/register.c
-+++ b/io_uring/register.c
-@@ -273,6 +273,8 @@ static __cold int io_register_iowq_max_workers(struct io_ring_ctx *ctx,
- 	if (ctx->flags & IORING_SETUP_SQPOLL) {
- 		sqd = ctx->sq_data;
- 		if (sqd) {
-+			struct task_struct *tsk;
-+
- 			/*
- 			 * Observe the correct sqd->lock -> ctx->uring_lock
- 			 * ordering. Fine to drop uring_lock here, we hold
-@@ -282,8 +284,9 @@ static __cold int io_register_iowq_max_workers(struct io_ring_ctx *ctx,
- 			mutex_unlock(&ctx->uring_lock);
- 			mutex_lock(&sqd->lock);
- 			mutex_lock(&ctx->uring_lock);
--			if (sqd->thread)
--				tctx = sqd->thread->io_uring;
-+			tsk = sqpoll_task_locked(sqd);
-+			if (tsk)
-+				tctx = tsk->io_uring;
- 		}
- 	} else {
- 		tctx = current->io_uring;
-diff --git a/io_uring/sqpoll.c b/io_uring/sqpoll.c
-index 0625a421626f4..268d2fbe6160c 100644
---- a/io_uring/sqpoll.c
-+++ b/io_uring/sqpoll.c
-@@ -30,7 +30,7 @@ enum {
- void io_sq_thread_unpark(struct io_sq_data *sqd)
- 	__releases(&sqd->lock)
- {
--	WARN_ON_ONCE(sqd->thread == current);
-+	WARN_ON_ONCE(sqpoll_task_locked(sqd) == current);
- 
- 	/*
- 	 * Do the dance but not conditional clear_bit() because it'd race with
-@@ -46,24 +46,32 @@ void io_sq_thread_unpark(struct io_sq_data *sqd)
- void io_sq_thread_park(struct io_sq_data *sqd)
- 	__acquires(&sqd->lock)
- {
--	WARN_ON_ONCE(data_race(sqd->thread) == current);
-+	struct task_struct *tsk;
- 
- 	atomic_inc(&sqd->park_pending);
- 	set_bit(IO_SQ_THREAD_SHOULD_PARK, &sqd->state);
- 	mutex_lock(&sqd->lock);
--	if (sqd->thread)
--		wake_up_process(sqd->thread);
-+
-+	tsk = sqpoll_task_locked(sqd);
-+	if (tsk) {
-+		WARN_ON_ONCE(tsk == current);
-+		wake_up_process(tsk);
-+	}
- }
- 
- void io_sq_thread_stop(struct io_sq_data *sqd)
- {
--	WARN_ON_ONCE(sqd->thread == current);
-+	struct task_struct *tsk;
-+
- 	WARN_ON_ONCE(test_bit(IO_SQ_THREAD_SHOULD_STOP, &sqd->state));
- 
- 	set_bit(IO_SQ_THREAD_SHOULD_STOP, &sqd->state);
- 	mutex_lock(&sqd->lock);
--	if (sqd->thread)
--		wake_up_process(sqd->thread);
-+	tsk = sqpoll_task_locked(sqd);
-+	if (tsk) {
-+		WARN_ON_ONCE(tsk == current);
-+		wake_up_process(tsk);
-+	}
- 	mutex_unlock(&sqd->lock);
- 	wait_for_completion(&sqd->exited);
- }
-@@ -486,7 +494,10 @@ __cold int io_sq_offload_create(struct io_ring_ctx *ctx,
- 			goto err_sqpoll;
- 		}
- 
--		sqd->thread = tsk;
-+		mutex_lock(&sqd->lock);
-+		rcu_assign_pointer(sqd->thread, tsk);
-+		mutex_unlock(&sqd->lock);
-+
- 		task_to_put = get_task_struct(tsk);
- 		ret = io_uring_alloc_task_context(tsk, ctx);
- 		wake_up_new_task(tsk);
-@@ -514,10 +525,13 @@ __cold int io_sqpoll_wq_cpu_affinity(struct io_ring_ctx *ctx,
- 	int ret = -EINVAL;
- 
- 	if (sqd) {
+ 	if (has_lock && (ctx->flags & IORING_SETUP_SQPOLL)) {
+ 		struct io_sq_data *sq = ctx->sq_data;
 +		struct task_struct *tsk;
-+
- 		io_sq_thread_park(sqd);
- 		/* Don't set affinity for a dying thread */
--		if (sqd->thread)
--			ret = io_wq_cpu_affinity(sqd->thread->io_uring, mask);
-+		tsk = sqpoll_task_locked(sqd);
-+		if (tsk)
-+			ret = io_wq_cpu_affinity(tsk->io_uring, mask);
- 		io_sq_thread_unpark(sqd);
+ 
++		rcu_read_lock();
++		tsk = rcu_dereference(sq->thread);
+ 		/*
+ 		 * sq->thread might be NULL if we raced with the sqpoll
+ 		 * thread termination.
+ 		 */
+-		if (sq->thread) {
++		if (tsk) {
++			get_task_struct(tsk);
++			rcu_read_unlock();
++			getrusage(tsk, RUSAGE_SELF, &sq_usage);
++			put_task_struct(tsk);
+ 			sq_pid = sq->task_pid;
+ 			sq_cpu = sq->sq_cpu;
+-			getrusage(sq->thread, RUSAGE_SELF, &sq_usage);
+ 			sq_total_time = (sq_usage.ru_stime.tv_sec * 1000000
+ 					 + sq_usage.ru_stime.tv_usec);
+ 			sq_work_time = sq->work_time;
++		} else {
++			rcu_read_unlock();
+ 		}
  	}
  
-diff --git a/io_uring/sqpoll.h b/io_uring/sqpoll.h
-index 4171666b1cf4c..b83dcdec9765f 100644
---- a/io_uring/sqpoll.h
-+++ b/io_uring/sqpoll.h
-@@ -8,7 +8,7 @@ struct io_sq_data {
- 	/* ctx's that are using this sqd */
- 	struct list_head	ctx_list;
+diff --git a/io_uring/sqpoll.c b/io_uring/sqpoll.c
+index 430922c541681..b0f17a1220ecd 100644
+--- a/io_uring/sqpoll.c
++++ b/io_uring/sqpoll.c
+@@ -277,7 +277,8 @@ static int io_sq_thread(void *data)
+ 	/* offload context creation failed, just exit */
+ 	if (!current->io_uring) {
+ 		mutex_lock(&sqd->lock);
+-		sqd->thread = NULL;
++		rcu_assign_pointer(sqd->thread, NULL);
++		put_task_struct(current);
+ 		mutex_unlock(&sqd->lock);
+ 		goto err_out;
+ 	}
+@@ -386,7 +387,8 @@ static int io_sq_thread(void *data)
+ 		io_sq_tw(&retry_list, UINT_MAX);
  
--	struct task_struct	*thread;
-+	struct task_struct __rcu *thread;
- 	struct wait_queue_head	wait;
- 
- 	unsigned		sq_thread_idle;
-@@ -29,3 +29,9 @@ void io_sq_thread_unpark(struct io_sq_data *sqd);
- void io_put_sq_data(struct io_sq_data *sqd);
- void io_sqpoll_wait_sq(struct io_ring_ctx *ctx);
- int io_sqpoll_wq_cpu_affinity(struct io_ring_ctx *ctx, cpumask_var_t mask);
-+
-+static inline struct task_struct *sqpoll_task_locked(struct io_sq_data *sqd)
-+{
-+	return rcu_dereference_protected(sqd->thread,
-+					 lockdep_is_held(&sqd->lock));
-+}
+ 	io_uring_cancel_generic(true, sqd);
+-	sqd->thread = NULL;
++	rcu_assign_pointer(sqd->thread, NULL);
++	put_task_struct(current);
+ 	list_for_each_entry(ctx, &sqd->ctx_list, sqd_list)
+ 		atomic_or(IORING_SQ_NEED_WAKEUP, &ctx->rings->sq_flags);
+ 	io_run_task_work();
+@@ -507,9 +509,6 @@ __cold int io_sq_offload_create(struct io_ring_ctx *ctx,
+ 		ret = -EINVAL;
+ 		goto err;
+ 	}
+-
+-	if (task_to_put)
+-		put_task_struct(task_to_put);
+ 	return 0;
+ err_sqpoll:
+ 	complete(&ctx->sq_data->exited);
 -- 
 2.39.5
 
