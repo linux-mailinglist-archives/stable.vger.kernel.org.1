@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-153898-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153900-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 973EFADD76B
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:44:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B236CADD6DE
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:37:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5CE59402443
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:28:33 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DDC71403DE7
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:28:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E26252E8E09;
-	Tue, 17 Jun 2025 16:24:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 434A12E8E10;
+	Tue, 17 Jun 2025 16:24:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="owjq/piS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j+e4O9tE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F9C620CCFB;
-	Tue, 17 Jun 2025 16:24:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2B0620CCFB;
+	Tue, 17 Jun 2025 16:24:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750177454; cv=none; b=awwcpgcqTc0gua8ty4vkk7zLEGmjkZ7FCYhvLKKlbtlNZtpfnGMttH7ERoWYF0EHb4MNbU1AOJjS80J1HrfrokA/VOS+FC1mXYhZCBEwTwFphoMHMidjk6RIWbMJH4Kz3y4anyBW1tWShVOhziUbjcUelJf8KqhJa96B8hZSRzE=
+	t=1750177461; cv=none; b=Nb4VdIYG6Q/2YoDAlPy1NlPCS3ROBbCK/2K7hdAccFA0Q7/FXpjBafDVQrzAiEyD/OFXZ3GNZhlMy86f8mthFYJM2CJNSXOdZ1hw2sPRjXBQd7hOVMPSEFxM0Egv/wChTvJkkEMKoTJv+f2BZl32+jsLMrET1QLrbHOAAwE6LGE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750177454; c=relaxed/simple;
-	bh=MldG18YYgjL8IkxqjAzFZd6cXz+bDnJ4bg1Y3TEkwt4=;
+	s=arc-20240116; t=1750177461; c=relaxed/simple;
+	bh=ZZ+T6NWxMdXhl29TYgCOVjubdcEjVj1bIbb56ZkvcHI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dIzkD6Zb/ZuU2u1agZX9CDXB2cmue1hi07EsDLXCdNL+j+h0rfx28FTU8Ifj9bHkk2xVmHFd5mn4oJX19m1YBJAahpHiZmxp1hlRTzb7o9ys2BXZVgLmNzuXgr5tmT8XPNiVcsuwtmWcAE/OUwAaYziCVOQsMWFJEc45nssDAe0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=owjq/piS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5107C4CEE3;
-	Tue, 17 Jun 2025 16:24:13 +0000 (UTC)
+	 MIME-Version; b=a9gb+Y7faGcG+1OHwKtOlLcOj7cwaWPmwIjRfWWrKBor48fUHWQj+pH2z+1yXxZieaJxPuyQtdz2WHkElnzag1ZNnli7Y4oOEgpTDNLwT+6QQ/HgjjiRKXz5lohiy3nCbOPaoGx/0ihcFsflPtFIuGZY/g9FisjTPZt70KivFQA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j+e4O9tE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6038BC4CEE3;
+	Tue, 17 Jun 2025 16:24:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750177454;
-	bh=MldG18YYgjL8IkxqjAzFZd6cXz+bDnJ4bg1Y3TEkwt4=;
+	s=korg; t=1750177460;
+	bh=ZZ+T6NWxMdXhl29TYgCOVjubdcEjVj1bIbb56ZkvcHI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=owjq/piSXSB2Kn0HC6tOnCQnfDNLvM8ofvYO9D61A8FInUcxuemgU/5NTwHmn5PrM
-	 rpKXQ/YblFU52khRpWlB6N4GpXazH3uPFYVXxEAAEiLnT8odakh75PRtahDNpOndky
-	 DarHTjPtRQH4BI7g0c5CKqZF7QVmXXJU/waMYz8Q=
+	b=j+e4O9tE+qU4GfayndXGuLHLHx7uPxTaNusv1MwJqslsFgQ3fB8ZgtOS2MpSs0nfY
+	 xnsc/mXGlPIoJRCGnaQTsp6h0OCXmWeAzHl/19oG32eeoMQuB27Y8PpT0iR8T3saFW
+	 0boKEJ/9leN+p9B5XiTLQfOGfE1Lwvttt+X2k1KY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Li RongQing <lirongqing@baidu.com>,
-	Alex Williamson <alex.williamson@redhat.com>,
+	Dmitry Antipov <dmantipov@yandex.ru>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 309/780] vfio/type1: Fix error unwind in migration dirty bitmap allocation
-Date: Tue, 17 Jun 2025 17:20:17 +0200
-Message-ID: <20250617152504.047644595@linuxfoundation.org>
+Subject: [PATCH 6.15 310/780] Bluetooth: MGMT: iterate over mesh commands in mgmt_mesh_foreach()
+Date: Tue, 17 Jun 2025 17:20:18 +0200
+Message-ID: <20250617152504.094131662@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
 References: <20250617152451.485330293@linuxfoundation.org>
@@ -66,43 +66,34 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Li RongQing <lirongqing@baidu.com>
+From: Dmitry Antipov <dmantipov@yandex.ru>
 
-[ Upstream commit 4518e5a60c7fbf0cdff393c2681db39d77b4f87e ]
+[ Upstream commit 3bb88524b7d030160bb3c9b35f928b2778092111 ]
 
-When setting up dirty page tracking at the vfio IOMMU backend for
-device migration, if an error is encountered allocating a tracking
-bitmap, the unwind loop fails to free previously allocated tracking
-bitmaps.  This occurs because the wrong loop index is used to
-generate the tracking object.  This results in unintended memory
-usage for the life of the current DMA mappings where bitmaps were
-successfully allocated.
+In 'mgmt_mesh_foreach()', iterate over mesh commands
+rather than generic mgmt ones. Compile tested only.
 
-Use the correct loop index to derive the tracking object for
-freeing during unwind.
-
-Fixes: d6a4c185660c ("vfio iommu: Implementation of ioctl for dirty pages tracking")
-Signed-off-by: Li RongQing <lirongqing@baidu.com>
-Link: https://lore.kernel.org/r/20250521034647.2877-1-lirongqing@baidu.com
-Signed-off-by: Alex Williamson <alex.williamson@redhat.com>
+Fixes: b338d91703fa ("Bluetooth: Implement support for Mesh")
+Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/vfio/vfio_iommu_type1.c | 2 +-
+ net/bluetooth/mgmt_util.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/vfio/vfio_iommu_type1.c b/drivers/vfio/vfio_iommu_type1.c
-index 0ac56072af9f2..ba5d91e576af1 100644
---- a/drivers/vfio/vfio_iommu_type1.c
-+++ b/drivers/vfio/vfio_iommu_type1.c
-@@ -293,7 +293,7 @@ static int vfio_dma_bitmap_alloc_all(struct vfio_iommu *iommu, size_t pgsize)
- 			struct rb_node *p;
+diff --git a/net/bluetooth/mgmt_util.c b/net/bluetooth/mgmt_util.c
+index e5ff65e424b5b..3713ff490c65d 100644
+--- a/net/bluetooth/mgmt_util.c
++++ b/net/bluetooth/mgmt_util.c
+@@ -304,7 +304,7 @@ void mgmt_mesh_foreach(struct hci_dev *hdev,
+ {
+ 	struct mgmt_mesh_tx *mesh_tx, *tmp;
  
- 			for (p = rb_prev(n); p; p = rb_prev(p)) {
--				struct vfio_dma *dma = rb_entry(n,
-+				struct vfio_dma *dma = rb_entry(p,
- 							struct vfio_dma, node);
- 
- 				vfio_dma_bitmap_free(dma);
+-	list_for_each_entry_safe(mesh_tx, tmp, &hdev->mgmt_pending, list) {
++	list_for_each_entry_safe(mesh_tx, tmp, &hdev->mesh_pending, list) {
+ 		if (!sk || mesh_tx->sk == sk)
+ 			cb(mesh_tx, data);
+ 	}
 -- 
 2.39.5
 
