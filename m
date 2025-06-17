@@ -1,53 +1,55 @@
-Return-Path: <stable+bounces-153162-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153165-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id BCDA7ADD2EB
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 17:51:26 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 43F42ADD2E6
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 17:51:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3B55E3A3D76
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 15:48:32 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 846DB1686F7
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 15:49:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 584772F237B;
-	Tue, 17 Jun 2025 15:44:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E6B72F237E;
+	Tue, 17 Jun 2025 15:44:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Lag9uMIU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SgF4aFD9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CF632F236D;
-	Tue, 17 Jun 2025 15:44:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19E1B2F2374;
+	Tue, 17 Jun 2025 15:44:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750175079; cv=none; b=KX+k0b3VTxqq41A7/T6Yxg5WP1oSIvNoQqiQdI4SVTq25x81y/Tp9KJ/ETVwBvR8wHMGLL3xhCJehtuY/Hq0U/lA1XdzrrmDRTETvgR21wTZ2bVT4SG00HKSil8UHsSrOFQA0Zyk9Uyho9AfLiHH/YZj2GGRhrUNAHZ2Kq4LY5s=
+	t=1750175089; cv=none; b=W2T0iLcpqO/nwHgX4IzDfet3hFf0MpPpuVPR9eUkB/XhmFIBqxT/6kc63TQp8fnIBxz1a5+FZOxtf+O2tC60hv0Jgol/+WFTBm2y0wM4S+Tu3TEPu5S7CbqCQv7FJU1310H1SU7SykIGjeWu1b6lRR0CYLweIINp7pJhIWIgj/U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750175079; c=relaxed/simple;
-	bh=xJ+mGR11zND/9+4N2S6C89kf0XgulVHLKIYQaX5GrQA=;
+	s=arc-20240116; t=1750175089; c=relaxed/simple;
+	bh=nzcCbmTkJvlxWcUjsiuKgNQxs+Z3+2kF3J3mr2P/f2E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sX3wQzrabETMAqJSzUxH4iYJ7CayWKAk15pVht86rvqkW2H/fNT56AIRPalmeV1CaCViwZVin5p4UXtQI+J1o0ThIeLEhQpQZco0CmateJqNQGm8N3zXMsgc9pLGvfal5Dv49FG8bjWmWEDvhrMQVYBN7bcJevNrgRCLd3Js/I8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Lag9uMIU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07480C4CEE3;
-	Tue, 17 Jun 2025 15:44:37 +0000 (UTC)
+	 MIME-Version; b=QAdTAUp+Teg6CKjL9DjLVDgOgLHFQ9lBtdQA3sm5PsV4RFxri04yDomMsqxFaThsgWWS0qR8QWFdZw+79IKiesrttdFEaF8VYoz/J8Jh/2TBmxY73GU/NZrqdtn3mu0TBzolqHgC3gzbMhd5xvGtPNAbs2JWeLSRmI/FBnT/6Rc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SgF4aFD9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28473C4CEE3;
+	Tue, 17 Jun 2025 15:44:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750175078;
-	bh=xJ+mGR11zND/9+4N2S6C89kf0XgulVHLKIYQaX5GrQA=;
+	s=korg; t=1750175088;
+	bh=nzcCbmTkJvlxWcUjsiuKgNQxs+Z3+2kF3J3mr2P/f2E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Lag9uMIU6zPsJA8FwKmTdMcHwV+FKQaVdJnZCDRZ6oCE0Vvwz1rbd9oOQzf5DDNiN
-	 +z9BnI205UbFC/h589OAAfunK5SrIO3xWYeqbw7wlODKxNEytHUxtt5Bhzj37wl3Xr
-	 YbsdysHIj3H+SO9rEQQz1VhF/G36lS9dq66op/Qo=
+	b=SgF4aFD9n5PNwJwMMGmgpIONxDCp/LB8jIqtWtyizFe9HKu3hBCNlnRt0VivWLZ4M
+	 KezUyhVqx0fi6CTi8PmSBIhlrVoiTgp+FATvVUCprLBsVPHADjFC9s6f2Xs+w5FLgB
+	 hYSqPKXDNeIIas1ea5c6cAQv1mGlaaEQEimFuqOQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ovidiu Panait <ovidiu.panait.oss@gmail.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 047/780] crypto: sun8i-ce - move fallback ahash_request to the end of the struct
-Date: Tue, 17 Jun 2025 17:15:55 +0200
-Message-ID: <20250617152453.412591636@linuxfoundation.org>
+	Xuewen Yan <xuewen.yan@unisoc.com>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Vincent Guittot <vincent.guittot@linaro.org>,
+	Sasha Levin <sashal@kernel.org>,
+	Tianchen Ding <dtcccc@linux.alibaba.com>
+Subject: [PATCH 6.15 048/780] sched/fair: Fixup wake_up_sync() vs DELAYED_DEQUEUE
+Date: Tue, 17 Jun 2025 17:15:56 +0200
+Message-ID: <20250617152453.457655601@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
 References: <20250617152451.485330293@linuxfoundation.org>
@@ -66,38 +68,59 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Ovidiu Panait <ovidiu.panait.oss@gmail.com>
+From: Xuewen Yan <xuewen.yan@unisoc.com>
 
-[ Upstream commit c822831b426307a6ca426621504d3c7f99765a39 ]
+[ Upstream commit aa3ee4f0b7541382c9f6f43f7408d73a5d4f4042 ]
 
-'struct ahash_request' has a flexible array at the end, so it must be the
-last member in a struct, to avoid overwriting other struct members.
+Delayed dequeued feature keeps a sleeping task enqueued until its
+lag has elapsed. As a result, it stays also visible in rq->nr_running.
+So when in wake_affine_idle(), we should use the real running-tasks
+in rq to check whether we should place the wake-up task to
+current cpu.
+On the other hand, add a helper function to return the nr-delayed.
 
-Therefore, move 'fallback_req' to the end of the 'sun8i_ce_hash_reqctx'
-struct.
-
-Fixes: 56f6d5aee88d ("crypto: sun8i-ce - support hash algorithms")
-Signed-off-by: Ovidiu Panait <ovidiu.panait.oss@gmail.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Fixes: 152e11f6df29 ("sched/fair: Implement delayed dequeue")
+Signed-off-by: Xuewen Yan <xuewen.yan@unisoc.com>
+Reviewed-and-tested-by: Tianchen Ding <dtcccc@linux.alibaba.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Reviewed-by: Vincent Guittot <vincent.guittot@linaro.org>
+Link: https://lore.kernel.org/r/20250303105241.17251-2-xuewen.yan@unisoc.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/crypto/allwinner/sun8i-ce/sun8i-ce.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ kernel/sched/fair.c | 13 +++++++++++--
+ 1 file changed, 11 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/crypto/allwinner/sun8i-ce/sun8i-ce.h b/drivers/crypto/allwinner/sun8i-ce/sun8i-ce.h
-index 3b5c2af013d0d..83df4d7190531 100644
---- a/drivers/crypto/allwinner/sun8i-ce/sun8i-ce.h
-+++ b/drivers/crypto/allwinner/sun8i-ce/sun8i-ce.h
-@@ -308,8 +308,8 @@ struct sun8i_ce_hash_tfm_ctx {
-  * @flow:	the flow to use for this request
-  */
- struct sun8i_ce_hash_reqctx {
--	struct ahash_request fallback_req;
- 	int flow;
-+	struct ahash_request fallback_req; // keep at the end
- };
+diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
+index 0fb9bf995a479..0c04ed4148525 100644
+--- a/kernel/sched/fair.c
++++ b/kernel/sched/fair.c
+@@ -7196,6 +7196,11 @@ static bool dequeue_task_fair(struct rq *rq, struct task_struct *p, int flags)
+ 	return true;
+ }
  
- /*
++static inline unsigned int cfs_h_nr_delayed(struct rq *rq)
++{
++	return (rq->cfs.h_nr_queued - rq->cfs.h_nr_runnable);
++}
++
+ #ifdef CONFIG_SMP
+ 
+ /* Working cpumask for: sched_balance_rq(), sched_balance_newidle(). */
+@@ -7357,8 +7362,12 @@ wake_affine_idle(int this_cpu, int prev_cpu, int sync)
+ 	if (available_idle_cpu(this_cpu) && cpus_share_cache(this_cpu, prev_cpu))
+ 		return available_idle_cpu(prev_cpu) ? prev_cpu : this_cpu;
+ 
+-	if (sync && cpu_rq(this_cpu)->nr_running == 1)
+-		return this_cpu;
++	if (sync) {
++		struct rq *rq = cpu_rq(this_cpu);
++
++		if ((rq->nr_running - cfs_h_nr_delayed(rq)) == 1)
++			return this_cpu;
++	}
+ 
+ 	if (available_idle_cpu(prev_cpu))
+ 		return prev_cpu;
 -- 
 2.39.5
 
