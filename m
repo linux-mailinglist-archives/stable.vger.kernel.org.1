@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-153344-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153347-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7ED29ADD3FC
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:05:23 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C9F12ADD40D
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:06:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 75B593A61F7
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 15:57:33 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CD416194292B
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 15:58:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 369152F2C4C;
-	Tue, 17 Jun 2025 15:54:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 383012ECEAE;
+	Tue, 17 Jun 2025 15:54:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M2O9btZG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MWyDFVfU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4FC42EF657;
-	Tue, 17 Jun 2025 15:54:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E88BB2EF2BB;
+	Tue, 17 Jun 2025 15:54:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750175646; cv=none; b=jHkBLoW3hP2ey/GgOrUaGJ4IzFXbHVizfpOkg3pGFTykg+2gytpxhakKa+RUTL2ElkohPIQBpKBsh7xnwX18ul8O4JuC5RhDPrHJLm71elVlzj+lyePH0EDN2rCNSYeR9mwY9hHSYk6ZoTfbIT3cVkS4eL8opab2LJZuPzTCWIs=
+	t=1750175656; cv=none; b=YXk5yeemtGkxsaYWamXtoQITIhwZOYI/C5edARQn9/w738llnqk3hE9p9o1eq7TLfeNy8W/Fe4HC0i8Islw7wpzAHtPuweSkjyYBNFvWwLKT0N5TToFuGOYax1t95UGwTbzy0V7gUEUHA7JWsTJ6eJMK3I2BIvy+z8PIVijb4zs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750175646; c=relaxed/simple;
-	bh=cYOty/x+VNZHPTkVCQbrSmk7fAqIRDHS5xyZF8+fMSo=;
+	s=arc-20240116; t=1750175656; c=relaxed/simple;
+	bh=C9Gz+J43UljSNoAb8wDj0BoiJaXCtYhUfyR1XhK10Wg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IENIs41Hm5WBtgVScyVwiaE0JP2FELjDMDVqSgb5wc+53+qu7FZkKj8cYTpLunyLxdNDf0MJNK524LFR3DTalQ47KTRMFhs8uE4vMA7ff/W/eIZ4TD4K6naEuIuRQqy+hckzmrGthr3JKiBEpOPZ/UrYvyvJj7uAGoFXn0Ltp7Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M2O9btZG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7845FC4CEE3;
-	Tue, 17 Jun 2025 15:54:05 +0000 (UTC)
+	 MIME-Version; b=epKBT1Yg/orzYMdIqPK8asl6Y8bojjPyN50LMYztTOtIPBjD51r/PzAwn/M4G0y0aAlEzfJm7Is/W4QrTMwNeu7A1Opc88MEW7KJMxeuLmP4ruOBL5LgqkwBfPiVaD/WnLyzWCmQcHlAv21D0n8kFUZ2Dysdjbwv6G/s3VMYDKU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MWyDFVfU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E90C9C4CEE3;
+	Tue, 17 Jun 2025 15:54:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750175645;
-	bh=cYOty/x+VNZHPTkVCQbrSmk7fAqIRDHS5xyZF8+fMSo=;
+	s=korg; t=1750175655;
+	bh=C9Gz+J43UljSNoAb8wDj0BoiJaXCtYhUfyR1XhK10Wg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=M2O9btZG/ThYfKBqHMO9x8OA31C8+6e8i0Y6tpjU0dHSLZJgfXC2/hs7nw2AnIAVS
-	 I9hDWlC7lPZ48Q2jYFXwT+m/m90EVj8PbMgp4gmNbHuVl8XqUurIdYJbk7nWjRVOd8
-	 fwqgBH+FE06h3E0l+HNsFJhtJ8+1mot9K5P97BQ8=
+	b=MWyDFVfUw5JCCtVxYXSr1zj4qwITUkyRaQnKusaEcYD3at16FsNzz6bQFvbcQbn1E
+	 leOLRZ98ad8V9/jZriIDBjvUaADa4qreOUB/57tF32n1kRkIpSdMuIzyQiuU1WO3ZB
+	 Nrey/WoiGntxRCFEFprcjoTaw1MGEz/3tAP9HVM4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>,
-	Maciej Falkowski <maciej.falkowski@linux.intel.com>,
-	Lizhi Hou <lizhi.hou@amd.com>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Steven Price <steven.price@arm.com>,
+	Liviu Dudau <liviu.dudau@arm.com>,
+	Boris Brezillon <boris.brezillon@collabora.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 109/780] accel/amdxdna: Fix incorrect size of ERT_START_NPU commands
-Date: Tue, 17 Jun 2025 17:16:57 +0200
-Message-ID: <20250617152455.946817997@linuxfoundation.org>
+Subject: [PATCH 6.15 110/780] drm/panthor: Fix the panthor_gpu_coherency_init() error path
+Date: Tue, 17 Jun 2025 17:16:58 +0200
+Message-ID: <20250617152455.985744233@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
 References: <20250617152451.485330293@linuxfoundation.org>
@@ -67,83 +68,39 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Lizhi Hou <lizhi.hou@amd.com>
+From: Boris Brezillon <boris.brezillon@collabora.com>
 
-[ Upstream commit 6c161732ea6467c6dea0c35810ca8e8d1ae135f1 ]
+[ Upstream commit 938aaed555f3add76531cd204e2d4128ecb84ace ]
 
-When multiple ERT_START_NPU commands are combined in one buffer, the
-buffer size calculation is incorrect. Also, the condition to make sure
-the buffer size is not beyond 4K is also fixed.
+The panthor_gpu_coherency_init() call has been moved around, but the
+error path hasn't been adjusted accordingly. Make sure we undo what
+has been done before this call in case of failure.
 
-Fixes: aac243092b70 ("accel/amdxdna: Add command execution")
-Reviewed-by: Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>
-Reviewed-by: Maciej Falkowski <maciej.falkowski@linux.intel.com>
-Signed-off-by: Lizhi Hou <lizhi.hou@amd.com>
-Link: https://lore.kernel.org/r/20250409210013.10854-1-lizhi.hou@amd.com
+Fixes: 7d5a3b22f5b5 ("drm/panthor: Call panthor_gpu_coherency_init() after PM resume()")
+Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
+Closes: https://lore.kernel.org/dri-devel/4da470aa-4f84-460e-aff8-dabc8cc4da15@stanley.mountain/T/#t
+Reviewed-by: Steven Price <steven.price@arm.com>
+Reviewed-by: Liviu Dudau <liviu.dudau@arm.com>
+Link: https://lore.kernel.org/r/20250414130120.581274-1-boris.brezillon@collabora.com
+Signed-off-by: Boris Brezillon <boris.brezillon@collabora.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/accel/amdxdna/aie2_message.c  |  6 +++---
- drivers/accel/amdxdna/aie2_msg_priv.h | 10 ++++------
- 2 files changed, 7 insertions(+), 9 deletions(-)
+ drivers/gpu/drm/panthor/panthor_device.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/accel/amdxdna/aie2_message.c b/drivers/accel/amdxdna/aie2_message.c
-index bf4219e32cc19..82412eec9a4b8 100644
---- a/drivers/accel/amdxdna/aie2_message.c
-+++ b/drivers/accel/amdxdna/aie2_message.c
-@@ -525,7 +525,7 @@ aie2_cmdlist_fill_one_slot_cf(void *cmd_buf, u32 offset,
- 	if (!payload)
- 		return -EINVAL;
+diff --git a/drivers/gpu/drm/panthor/panthor_device.c b/drivers/gpu/drm/panthor/panthor_device.c
+index c73c1608d6e68..1e8811c6716df 100644
+--- a/drivers/gpu/drm/panthor/panthor_device.c
++++ b/drivers/gpu/drm/panthor/panthor_device.c
+@@ -245,7 +245,7 @@ int panthor_device_init(struct panthor_device *ptdev)
  
--	if (!slot_cf_has_space(offset, payload_len))
-+	if (!slot_has_space(*buf, offset, payload_len))
- 		return -ENOSPC;
+ 	ret = panthor_gpu_coherency_init(ptdev);
+ 	if (ret)
+-		return ret;
++		goto err_unplug_gpu;
  
- 	buf->cu_idx = cu_idx;
-@@ -558,7 +558,7 @@ aie2_cmdlist_fill_one_slot_dpu(void *cmd_buf, u32 offset,
- 	if (payload_len < sizeof(*sn) || arg_sz > MAX_DPU_ARGS_SIZE)
- 		return -EINVAL;
- 
--	if (!slot_dpu_has_space(offset, arg_sz))
-+	if (!slot_has_space(*buf, offset, arg_sz))
- 		return -ENOSPC;
- 
- 	buf->inst_buf_addr = sn->buffer;
-@@ -569,7 +569,7 @@ aie2_cmdlist_fill_one_slot_dpu(void *cmd_buf, u32 offset,
- 	memcpy(buf->args, sn->prop_args, arg_sz);
- 
- 	/* Accurate buf size to hint firmware to do necessary copy */
--	*size += sizeof(*buf) + arg_sz;
-+	*size = sizeof(*buf) + arg_sz;
- 	return 0;
- }
- 
-diff --git a/drivers/accel/amdxdna/aie2_msg_priv.h b/drivers/accel/amdxdna/aie2_msg_priv.h
-index 4e02e744b470e..6df9065b13f68 100644
---- a/drivers/accel/amdxdna/aie2_msg_priv.h
-+++ b/drivers/accel/amdxdna/aie2_msg_priv.h
-@@ -319,18 +319,16 @@ struct async_event_msg_resp {
- } __packed;
- 
- #define MAX_CHAIN_CMDBUF_SIZE SZ_4K
--#define slot_cf_has_space(offset, payload_size) \
--	(MAX_CHAIN_CMDBUF_SIZE - ((offset) + (payload_size)) > \
--	 offsetof(struct cmd_chain_slot_execbuf_cf, args[0]))
-+#define slot_has_space(slot, offset, payload_size)		\
-+	(MAX_CHAIN_CMDBUF_SIZE >= (offset) + (payload_size) +	\
-+	 sizeof(typeof(slot)))
-+
- struct cmd_chain_slot_execbuf_cf {
- 	__u32 cu_idx;
- 	__u32 arg_cnt;
- 	__u32 args[] __counted_by(arg_cnt);
- };
- 
--#define slot_dpu_has_space(offset, payload_size) \
--	(MAX_CHAIN_CMDBUF_SIZE - ((offset) + (payload_size)) > \
--	 offsetof(struct cmd_chain_slot_dpu, args[0]))
- struct cmd_chain_slot_dpu {
- 	__u64 inst_buf_addr;
- 	__u32 inst_size;
+ 	ret = panthor_mmu_init(ptdev);
+ 	if (ret)
 -- 
 2.39.5
 
