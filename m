@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-153464-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-154437-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 23D02ADD4A0
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:12:25 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7BB97ADD910
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 19:02:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F3359406114
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:04:45 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2185E19481AA
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:54:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B7CB22ED143;
-	Tue, 17 Jun 2025 16:00:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC1E5218EA8;
+	Tue, 17 Jun 2025 16:53:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u1uVw6nT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mCD1GdqA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74E3F2ECD3C;
-	Tue, 17 Jun 2025 16:00:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A79292FA626;
+	Tue, 17 Jun 2025 16:53:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750176048; cv=none; b=NPnT9ACHrvpYwD9AeZ4Z4bBSACEFaG3MBMyz/uxULnETQYRFbwM2EWuZ/BBzKhiAACPptNvVq374p/CUpKuxFkGL5kAAWZeRVBov89L2jLlA723cqAkrYsfyfIgGaY2RHPkrWVu8EpbqrXyee4c19+Osoi1sACp7JqynQtAMNio=
+	t=1750179189; cv=none; b=iSMnkcgkKHDhokWLXv8PqUQ6Kvd/35gwjawm8GNPKx5t1KW6OSbqbyADuAMHl7NnhBAz6dhxZ9tESaa8iFRRIHJz6QrjFOOzFioRhySjRtmRvZgW0WJT7nVry+TB9R0gIv2ZxbtGRxx5A1nLFr2I9elzA/m2gKJNrJijv8w4jrs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750176048; c=relaxed/simple;
-	bh=14m5AmUWxkiNw6Iuwlk5VE/IHbPdoxZQx9EMg0W5SX0=;
+	s=arc-20240116; t=1750179189; c=relaxed/simple;
+	bh=HFAZOieM4AeR9CEbVTV2edJ+9oPZ6ioHDtZobzl44iE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=u1RfPs48rHfbUobNTGP0TfHgHK7e7g44OYoGjVMjy5unI+DnhUEq5hwrOgujRFdUPnKFdrdJSLs69caS93h4EECoFxEXkWoOu75GWJ7wGbut4nSwJTdpaV/Y4B/aJGImvUSaUgQnIDDn+0bZA1qlUQe9WWGyEo1FK5gHIYQsR/4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u1uVw6nT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3E9CC4CEE3;
-	Tue, 17 Jun 2025 16:00:47 +0000 (UTC)
+	 MIME-Version:Content-Type; b=ojovnteIqlsSL8FYKLX4zkGy8AJtZEtllF2Wzt/m1TCXSgZcTgRvGEaVkO0lzjAEgXtgKWoIrcriv7G0ucjvfZio0snzqtKeRCt/CXtPF/EGVbjw05Lqke3MSl7Z/eA29GZcSg/IRVm9F2gTm8Q0PUvivqxfhMIZUGJL4chUp2o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mCD1GdqA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1A2AC4CEE3;
+	Tue, 17 Jun 2025 16:53:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750176048;
-	bh=14m5AmUWxkiNw6Iuwlk5VE/IHbPdoxZQx9EMg0W5SX0=;
+	s=korg; t=1750179189;
+	bh=HFAZOieM4AeR9CEbVTV2edJ+9oPZ6ioHDtZobzl44iE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=u1uVw6nT3fNAX509yCARvD0oNTNeJhhKVUyJ/KyQLz1UTH8ynhKPupQ+MIijBejto
-	 lkswFQ6k9ZJWcTBhsogz2bdbF0OLvDG9ZqwjEY3ezFOfZF0zdBi/ArXOYCxzwAM6oP
-	 AXWEfkTv/gLIFUe4wsAiYr31UjPF8qS4Ok3yaQnk=
+	b=mCD1GdqANOsBeLYajNGe/lPTSggJQiZPxJmZCTm/498cDact+iLIg9F83X0cfSbVf
+	 BzOE4dZJ1NMyxlvcB4t/LTENalVBWs5g1YprYJpaHzxk+Ncx953xiMKONgkNKoJtyr
+	 rzeiWkKPTb8Z72lZK+E5IQjyqpfws0R37aveSoYY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	WangYuli <wangyuli@uniontech.com>,
-	=?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+	=?UTF-8?q?Amadeusz=20S=C5=82awi=C5=84ski?= <amadeuszx.slawinski@linux.intel.com>,
+	Cezary Rojewski <cezary.rojewski@intel.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 238/356] MIPS: Loongson64: Add missing #interrupt-cells for loongson64c_ls7a
+Subject: [PATCH 6.15 645/780] ASoC: Intel: avs: Verify kcalloc() status when setting constraints
 Date: Tue, 17 Jun 2025 17:25:53 +0200
-Message-ID: <20250617152347.788036713@linuxfoundation.org>
+Message-ID: <20250617152517.748380792@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152338.212798615@linuxfoundation.org>
-References: <20250617152338.212798615@linuxfoundation.org>
+In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
+References: <20250617152451.485330293@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,42 +64,39 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: WangYuli <wangyuli@uniontech.com>
+From: Cezary Rojewski <cezary.rojewski@intel.com>
 
-[ Upstream commit 6d223b8ffcd1593d032b71875def2daa71c53111 ]
+[ Upstream commit 5f342aeee2724d31046172eb5caab8e0e8afd57d ]
 
-Similar to commit 98a9e2ac3755 ("MIPS: Loongson64: DTS: Fix msi node for ls7a").
+All memory operations shall be checked.
 
-Fix follow warnings:
-  arch/mips/boot/dts/loongson/loongson64c_4core_ls7a.dts:28.31-36.4: Warning (interrupt_provider): /bus@10000000/msi-controller@2ff00000: Missing '#interrupt-cells' in interrupt provider
-  arch/mips/boot/dts/loongson/loongson64c_4core_ls7a.dtb: Warning (interrupt_map): Failed prerequisite 'interrupt_provider'
-
-Fixes: 24af105962c8 ("MIPS: Loongson64: DeviceTree for LS7A PCH")
-Tested-by: WangYuli <wangyuli@uniontech.com>
-Signed-off-by: WangYuli <wangyuli@uniontech.com>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Fixes: f2f847461fb7 ("ASoC: Intel: avs: Constrain path based on BE capabilities")
+Reviewed-by: Amadeusz Sławiński <amadeuszx.slawinski@linux.intel.com>
+Signed-off-by: Cezary Rojewski <cezary.rojewski@intel.com>
+Link: https://patch.msgid.link/20250530141025.2942936-7-cezary.rojewski@intel.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/mips/boot/dts/loongson/loongson64c_4core_ls7a.dts | 1 +
- 1 file changed, 1 insertion(+)
+ sound/soc/intel/avs/path.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/arch/mips/boot/dts/loongson/loongson64c_4core_ls7a.dts b/arch/mips/boot/dts/loongson/loongson64c_4core_ls7a.dts
-index c7ea4f1c0bb21..6c277ab83d4b9 100644
---- a/arch/mips/boot/dts/loongson/loongson64c_4core_ls7a.dts
-+++ b/arch/mips/boot/dts/loongson/loongson64c_4core_ls7a.dts
-@@ -29,6 +29,7 @@
- 		compatible = "loongson,pch-msi-1.0";
- 		reg = <0 0x2ff00000 0 0x8>;
- 		interrupt-controller;
-+		#interrupt-cells = <1>;
- 		msi-controller;
- 		loongson,msi-base-vec = <64>;
- 		loongson,msi-num-vecs = <64>;
+diff --git a/sound/soc/intel/avs/path.c b/sound/soc/intel/avs/path.c
+index 8f1bf8d0af8f9..43b3d99539107 100644
+--- a/sound/soc/intel/avs/path.c
++++ b/sound/soc/intel/avs/path.c
+@@ -134,6 +134,8 @@ int avs_path_set_constraint(struct avs_dev *adev, struct avs_tplg_path_template
+ 	rlist = kcalloc(i, sizeof(*rlist), GFP_KERNEL);
+ 	clist = kcalloc(i, sizeof(*clist), GFP_KERNEL);
+ 	slist = kcalloc(i, sizeof(*slist), GFP_KERNEL);
++	if (!rlist || !clist || !slist)
++		return -ENOMEM;
+ 
+ 	i = 0;
+ 	list_for_each_entry(path_template, &template->path_list, node) {
 -- 
 2.39.5
 
