@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-152975-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-152978-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 02B58ADD1B8
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 17:34:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DF52BADD1BB
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 17:34:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 537941894DE6
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 15:34:26 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 42F8A189548B
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 15:34:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CCF052EB5AB;
-	Tue, 17 Jun 2025 15:34:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F02812EBDC0;
+	Tue, 17 Jun 2025 15:34:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gFt7lhX+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TDUk81rD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88CDD293443;
-	Tue, 17 Jun 2025 15:34:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD7911E8332;
+	Tue, 17 Jun 2025 15:34:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750174447; cv=none; b=QzDNMEw/dqPND3oYOnj6f1wHEGU2CjVEVwpl+bV1zNdnYUyr3xiWJF8Lhaj6NnFXLI3zaSPe2hx5mK4af0HerSo5Mk6tv5TV1AS3i4+uwZJ+RRnKAYW/y8hgJtn77zlhyC52a1IRkvNEi8EQNQjiWOZ3iHKhv5ShNcNnRla+a5g=
+	t=1750174455; cv=none; b=C3KXGgiAdFaHCWUyC11YA8O0ucJkggHRZA6p2b/9ehXxRqb1ieJvL+WLp4H+zga8SttLfcLomK9JDHryZPXOExxSspPUX9cl0AsHwn35u6+t5nqaBXajlX9g8ErfdxYpfl88YjYDXfupL2uHUhfp3xU+Yz2zcBetWaaeCHhX8xk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750174447; c=relaxed/simple;
-	bh=6l+60ocqVvQwhna7d0KvAtzOxUWHdN8zvRY5srvUq0U=;
+	s=arc-20240116; t=1750174455; c=relaxed/simple;
+	bh=WpCSFPJ5mYmxqftqM/b2xmsMBiYHlgP6lk5DDOdY8Q0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gp1x369dBHNKhz2teYNAa7ePKxaO9JVow31Mc5yKtfFQF0Pxrl+NzVYkSWEcpkguAzx1oYlcXfIUtIXsyzDZHDEQv6b40rkt2vxtWDDdydna2ZeO1/D0B9mWTHd2PD2JgiCKH5TAEuJQzJuuVbLDh9ri4NYpXhvgrBuAwNCNi9A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gFt7lhX+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C452CC4CEE3;
-	Tue, 17 Jun 2025 15:34:05 +0000 (UTC)
+	 MIME-Version; b=gUNYOPj62rINGrb+YN2USVe+qkARUKk/XD3pzFLnEnBjeZc3zk62R7c6ALAILrvmN+Xa9G+XOngZ101iJt6FOyt3tCUroElfLbhZE9q4aESgBh5mTr3OkBIf8fCwHscwwMVCxKinjknhTTlPDXoKZgpeReFfK6MDRDoxCbAe3vw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TDUk81rD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C5CFC4CEE3;
+	Tue, 17 Jun 2025 15:34:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750174446;
-	bh=6l+60ocqVvQwhna7d0KvAtzOxUWHdN8zvRY5srvUq0U=;
+	s=korg; t=1750174455;
+	bh=WpCSFPJ5mYmxqftqM/b2xmsMBiYHlgP6lk5DDOdY8Q0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gFt7lhX+vPhaMVDl0+Uw7XEXUFNZUxGsEUaA+C67L0ilEn0kalZKKFf7foiIwiVeb
-	 SiluC4X8q/uQApNdr1Uk4iosWf1V82UFUyKxf+0pWugN0hBvs2k4hgdIxB4uIjItxp
-	 2g2Vs8WqIT7+kEp/THw01eKlGRudng0s7QKrxpHo=
+	b=TDUk81rDXd+/0fHGqV3KLo/VNOzI9wNlK4iBrtaIoByK4vr67yr1N7G9PJbmoY5cP
+	 bPn84UxYABmr2RksJJoozGT7DVjAGwexKr18bbQRdXkvdhfFfaT6gKRMRENqbCPUq5
+	 WQIs0xBH33vpElzucPlzRDyjDCe9Z6bZMKx3MkOQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kees Cook <kees@kernel.org>,
-	Louis Chauvet <louis.chauvet@bootlin.com>,
-	Louis Chauvet <contact@louischauvet.fr>,
+	Biju Das <biju.das.jz@bp.renesas.com>,
+	Thierry Reding <treding@nvidia.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 070/356] drm/vkms: Adjust vkms_state->active_planes allocation type
-Date: Tue, 17 Jun 2025 17:23:05 +0200
-Message-ID: <20250617152341.043777465@linuxfoundation.org>
+Subject: [PATCH 6.6 071/356] drm/tegra: rgb: Fix the unbound reference count
+Date: Tue, 17 Jun 2025 17:23:06 +0200
+Message-ID: <20250617152341.081559659@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250617152338.212798615@linuxfoundation.org>
 References: <20250617152338.212798615@linuxfoundation.org>
@@ -67,42 +66,55 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Kees Cook <kees@kernel.org>
+From: Biju Das <biju.das.jz@bp.renesas.com>
 
-[ Upstream commit 258aebf100540d36aba910f545d4d5ddf4ecaf0b ]
+[ Upstream commit 3c3642335065c3bde0742b0edc505b6ea8fdc2b3 ]
 
-In preparation for making the kmalloc family of allocators type aware,
-we need to make sure that the returned type from the allocation matches
-the type of the variable being assigned. (Before, the allocator would
-always return "void *", which can be implicitly cast to any pointer type.)
+The of_get_child_by_name() increments the refcount in tegra_dc_rgb_probe,
+but the driver does not decrement the refcount during unbind. Fix the
+unbound reference count using devm_add_action_or_reset() helper.
 
-The assigned type is "struct vkms_plane_state **", but the returned type
-will be "struct drm_plane **". These are the same size (pointer size), but
-the types don't match. Adjust the allocation type to match the assignment.
-
-Signed-off-by: Kees Cook <kees@kernel.org>
-Reviewed-by: Louis Chauvet <louis.chauvet@bootlin.com>
-Fixes: 8b1865873651 ("drm/vkms: totally reworked crc data tracking")
-Link: https://lore.kernel.org/r/20250426061431.work.304-kees@kernel.org
-Signed-off-by: Louis Chauvet <contact@louischauvet.fr>
+Fixes: d8f4a9eda006 ("drm: Add NVIDIA Tegra20 support")
+Signed-off-by: Biju Das <biju.das.jz@bp.renesas.com>
+Signed-off-by: Thierry Reding <treding@nvidia.com>
+Link: https://lore.kernel.org/r/20250205112137.36055-1-biju.das.jz@bp.renesas.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/vkms/vkms_crtc.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/tegra/rgb.c | 14 +++++++++++++-
+ 1 file changed, 13 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/vkms/vkms_crtc.c b/drivers/gpu/drm/vkms/vkms_crtc.c
-index 61e500b8c9da2..894c484f99e95 100644
---- a/drivers/gpu/drm/vkms/vkms_crtc.c
-+++ b/drivers/gpu/drm/vkms/vkms_crtc.c
-@@ -201,7 +201,7 @@ static int vkms_crtc_atomic_check(struct drm_crtc *crtc,
- 		i++;
- 	}
+diff --git a/drivers/gpu/drm/tegra/rgb.c b/drivers/gpu/drm/tegra/rgb.c
+index d6424abd3c45d..8930460ba6282 100644
+--- a/drivers/gpu/drm/tegra/rgb.c
++++ b/drivers/gpu/drm/tegra/rgb.c
+@@ -190,6 +190,11 @@ static const struct drm_encoder_helper_funcs tegra_rgb_encoder_helper_funcs = {
+ 	.atomic_check = tegra_rgb_encoder_atomic_check,
+ };
  
--	vkms_state->active_planes = kcalloc(i, sizeof(plane), GFP_KERNEL);
-+	vkms_state->active_planes = kcalloc(i, sizeof(*vkms_state->active_planes), GFP_KERNEL);
- 	if (!vkms_state->active_planes)
- 		return -ENOMEM;
- 	vkms_state->num_active_planes = i;
++static void tegra_dc_of_node_put(void *data)
++{
++	of_node_put(data);
++}
++
+ int tegra_dc_rgb_probe(struct tegra_dc *dc)
+ {
+ 	struct device_node *np;
+@@ -197,7 +202,14 @@ int tegra_dc_rgb_probe(struct tegra_dc *dc)
+ 	int err;
+ 
+ 	np = of_get_child_by_name(dc->dev->of_node, "rgb");
+-	if (!np || !of_device_is_available(np))
++	if (!np)
++		return -ENODEV;
++
++	err = devm_add_action_or_reset(dc->dev, tegra_dc_of_node_put, np);
++	if (err < 0)
++		return err;
++
++	if (!of_device_is_available(np))
+ 		return -ENODEV;
+ 
+ 	rgb = devm_kzalloc(dc->dev, sizeof(*rgb), GFP_KERNEL);
 -- 
 2.39.5
 
