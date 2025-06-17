@@ -1,142 +1,151 @@
-Return-Path: <stable+bounces-153806-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153948-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9481EADD668
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:32:58 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7ED1DADD75B
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:44:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B781A7A8C44
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:23:53 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F13394A1B97
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:31:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22EA02EF2BE;
-	Tue, 17 Jun 2025 16:19:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E504A2ED855;
+	Tue, 17 Jun 2025 16:26:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=heusel.eu header.i=christian@heusel.eu header.b="yz6OGYb4"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="FCwRoqi+"
 X-Original-To: stable@vger.kernel.org
-Received: from mout.kundenserver.de (mout.kundenserver.de [212.227.17.13])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94B2E2ED841;
-	Tue, 17 Jun 2025 16:19:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.13
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F56E2F9485
+	for <stable@vger.kernel.org>; Tue, 17 Jun 2025 16:26:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750177157; cv=none; b=lffdnUp3c+SJkSh+hGHAP2S3R4TXPg4xufwX3tta2r7W96aOaSUC4UwiDVz5R6NcOQYmaLt65LSvmAGi8Ur0z0kJfTM7UTE5skGG+0YsR1V0STwhqcC0+HscL4Y54yLnj3PW/58p4nIRJTfLaIL7A/tiFpp87/9nJLtRT9UsSeg=
+	t=1750177615; cv=none; b=MEW9bygW7JWnNYqm2xgMVEotV4ZNI1KObKO0IRReJmlV/aoTmqwwMhAGF2NF7tIVKhyZSJFn3M+4hheNtbNzFKByj0EPykWtc+cliNOmB7MSIqKh0XMF0321nu2jefx3K5hz5nhS/uA6QusVrejrBhOYWp/51p4Uly/oD0+xsl8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750177157; c=relaxed/simple;
-	bh=odXfEf04AblCiwtd5oaSZsRjpkfGUvIS3F2wdch70Ro=;
+	s=arc-20240116; t=1750177615; c=relaxed/simple;
+	bh=05w2d9pQn49GBKjN5vG4Maoa4OIgXqw2oKlhjzh22uM=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=nF2q0TIfJ51G9mWxXB9HJbQMPzD8asZYShmg5waL2i8hL/oyRhazlz0gTsXvcQ5KvPNlcEd5DCurBnN5e5upCDmLmLkqFbKUv15VRzPYXGz7YHWEZn6Xc08pCkt/LzarRfGu2pbNlxrCYEUjTmGfyNgOzwYuykNqWG0apqpZQH8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=heusel.eu; spf=pass smtp.mailfrom=heusel.eu; dkim=pass (2048-bit key) header.d=heusel.eu header.i=christian@heusel.eu header.b=yz6OGYb4; arc=none smtp.client-ip=212.227.17.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=heusel.eu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=heusel.eu
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=heusel.eu;
-	s=s1-ionos; t=1750177153; x=1750781953; i=christian@heusel.eu;
-	bh=9kwaX69BYlfOgsIpG/Pvl71vvTAMGxrM4gg1LwJXpw0=;
-	h=X-UI-Sender-Class:Date:From:To:Cc:Subject:Message-ID:References:
-	 MIME-Version:Content-Type:In-Reply-To:cc:
-	 content-transfer-encoding:content-type:date:from:message-id:
-	 mime-version:reply-to:subject:to;
-	b=yz6OGYb4A5w2JEvZGPXWy4kZEzMuimbhJF8QH/dnAgYr0ueIL5E42XTpqBby2NmK
-	 3ZrA77J8tmQWiIWntciNQjIbrL72UjkbdSq4bd93ASnzsCWNgV5Tp9f/ERSSzo+/s
-	 dtvboIqK51jk3EG5ld8vRcFYEOCq14yCYvLLaRKemIGNYRbvQWWTKtPS1tP3ZgG4l
-	 Q8XbPu+LBX4yqSFYJ4MtAW5Lpv6h6zuOsZFWEqFBmYfMz2SD/pCid7M7+WbKpRYG5
-	 Y9cdNPf3a0b0D5W25cOQjAk8Vk69ha1rVlGnzKUsUz+458ULsooPNhLfZ7UfqgDqF
-	 w9l6vZa9WZmgMr03pA==
-X-UI-Sender-Class: 55c96926-9e95-11ee-ae09-1f7a4046a0f6
-Received: from localhost ([89.244.90.55]) by mrelayeu.kundenserver.de
- (mreue109 [212.227.15.183]) with ESMTPSA (Nemesis) id
- 1MEmAX-1uYSxd24sd-002fsg; Tue, 17 Jun 2025 18:12:58 +0200
-Date: Tue, 17 Jun 2025 18:12:56 +0200
-From: Christian Heusel <christian@heusel.eu>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, akpm@linux-foundation.org, 
-	linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org, 
-	lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com, f.fainelli@gmail.com, 
-	sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org, 
-	hargar@microsoft.com, broonie@kernel.org
-Subject: Re: [PATCH 6.15 000/780] 6.15.3-rc1 review
-Message-ID: <fe2120f7-8839-4a0a-8bf8-70b841a8624c@heusel.eu>
-References: <20250617152451.485330293@linuxfoundation.org>
+	 Content-Type:Content-Disposition:In-Reply-To; b=nSAwJM27TJ+ETztV0v5e8gVcgfUL3GWe18ueGpVWAwKrVWXe3kKsK/vfFTh1cCKeGqoFR3BN4dzD/nEWWXbwAiDfPzqkgjnzwSTq2oywZQgbEO7GH3kR6LCLXdxJUsEpc7GO2buz9GMs8rQ9RWVct11843ZAXFXrk/zg1wzFqVM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=FCwRoqi+; arc=none smtp.client-ip=192.198.163.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1750177614; x=1781713614;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:content-transfer-encoding:in-reply-to;
+  bh=05w2d9pQn49GBKjN5vG4Maoa4OIgXqw2oKlhjzh22uM=;
+  b=FCwRoqi+XFS0HdM684KWF+EIB6g7Jj0RzcYE7JgRBt5i+XaG8ZyGhEKj
+   sjvGsLEELoWGQGtd1K6a3+caTaptBys09XFZe82KzyO/9trqTA1g+uCCj
+   MNO5HjkwKQy3u14c501qKWVeSwpCZ1H+Pj0AwJgCWbshfNYLkP3DG3jP9
+   YYQMHl4BVtvMfOJFQnn4bxBHdQ+5mlo1lmpHpIPuVfm3f8MpkELRQo+Fk
+   vBmK1nr/N5U/FPcGrMUsbmxuTcN6I9N9EAE/Zi8VLzTHv7lB6pNkqPBMY
+   6sK7J10oNpkdzwpuMdGsKL6bJL/LJE7MsNGlBYu2XgMHQK+R+r+AVQ/yu
+   w==;
+X-CSE-ConnectionGUID: /vp7st5wTN6GRadwz8DJRw==
+X-CSE-MsgGUID: hJXI982mRxqpYVjntGfbxQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11467"; a="52503689"
+X-IronPort-AV: E=Sophos;i="6.16,243,1744095600"; 
+   d="scan'208";a="52503689"
+Received: from orviesa005.jf.intel.com ([10.64.159.145])
+  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Jun 2025 09:26:52 -0700
+X-CSE-ConnectionGUID: pLaZZmXJQDOKinGY7kfs8w==
+X-CSE-MsgGUID: 22sXZ1wHS6mFvTT8VvsYGg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.16,243,1744095600"; 
+   d="scan'208";a="154124500"
+Received: from fpallare-mobl4.ger.corp.intel.com (HELO stinkbox) ([10.245.245.184])
+  by orviesa005.jf.intel.com with SMTP; 17 Jun 2025 09:26:49 -0700
+Received: by stinkbox (sSMTP sendmail emulation); Tue, 17 Jun 2025 19:26:48 +0300
+Date: Tue, 17 Jun 2025 19:26:48 +0300
+From: Ville =?iso-8859-1?Q?Syrj=E4l=E4?= <ville.syrjala@linux.intel.com>
+To: Matthew Auld <matthew.auld@intel.com>
+Cc: intel-xe@lists.freedesktop.org,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	stable@vger.kernel.org
+Subject: Re: [PATCH 1/2] drm/xe: Move DSB l2 flush to a more sensible place
+Message-ID: <aFGXSPmrDiB8MNrG@intel.com>
+References: <20250606104546.1996818-3-matthew.auld@intel.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="b65wpbro3ixgg3e2"
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
-X-Provags-ID: V03:K1:rkeVi0aqo4aMzMglbOeMMhlCod2mVcFqnJiyVI5aZsidvr7CVy+
- 5Cf/EVtrSMO0fPlek2bHC2ATQsWbao9hZsr2it240brdeZFZs21EfOCRztrj8+FZ9ZWuO2A
- akM/05d55SFX9Gf9RCSfIc27eTExAMwd+IDbR+1Q5+EeiWJqMfe5IKm5dZle0AkPFmu1gV4
- CXob+wKERhI2lgWvMowqQ==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:J0cjcYypcOs=;1Sh7VcgqT/rN3rSuVTlxzOlEnS4
- NwrreWl35/LQyRu5+HiAOHDZKkqLcHHxhJZ3eOBKlRAZbPhzxUq9yV6YRNusglGeE0hb8hINV
- zomKT6o+GUN2gL5YwN2flJen/32aCHIXTSbCNDYUqhwZcv2OSzXyt6s9P0wkyorocMvdxqvAA
- CWmvSvzcwXmPxI/epMoRmaQpyGD9SalXdSpdQ04UBdW8w1TxvQ2I671Czt05KmWV/i6jlVDH4
- 86sZrQLOhfEaIA8gD9pzNEvFiHkSn3eLS6pkmFRbYIIuObaztSoI3QRCwavzKZncGa+4KJDw+
- e1sNSRaBgYNEJUqBxqOR3+KFJmGUmwkz4Lr8FjtyuowJtcEXaJRKC4qiImN3t5L6+D6Qx5AEi
- /M1j16cQX/XS2qIPI16kSjiwTeZYNlt2PCbH3UbZt5F7ORomXQlRxge1Oh5R4KVyiMWCoG++m
- eFzGKtQxnVQpyRGrs8IKbpK4j1TavEEnpXAJBOtqDXWBzYyRNHWfIV6GUcNk0ci7H0BkW5ImR
- d6JrUc5/qrxhi93+/UwUntUm5MFeF4qotnAeGsjRY4szEJmXL8jrj97sEqp+Q/CrzlJgrTqb2
- 1zJEUAuUZHq9heLD+QjkMTxtonyg/xAYPw19pnmobQmns692qMeh/dsCrydE5eC4XdnPHbilB
- /Jw53YUwOssQcGS7vMcOYBnyOOANwNFHMzblyckp9nayC+ksgwfvwf0On83oT3EOgS6pzYtpP
- MJJ81HYKSTpGtKdTCamJoZJcj2Xco2ztZsiLuEwpPCMlkf+tXvWFck7fakBKPpN+3twanoMhN
- MKmWsN2WgnzPX+Enwzqy64lN5+rwcpL03cTfj51GHnagwEKJHqeQ7h9bo23SUJkatelUYig9l
- Vl2yetg+qHh7xGk7ZjLkjyphoi8YtrDjiP/g2S26CcxOQZMrZhsxtvnK0Xq3qfkjry9j5RBSZ
- jRYtRXt7RMabiRqr1wexm7hrZEmfmeboUjeAvVN1A4yk0y4aWafQVEdtItmxHMPLwrzemNcoG
- EkNqDZXR8kECFECm1gLjlKlCeknFTYSFErLAlqPgKrzjH3neLXy8E/Szs+YoGdQdYrx3vhb/U
- ZDXVaMGHjJxeawrOX3XCossv3H5gipwixV6yMnlsrXZlQBnhbCNMzL1Jq4U2XfDkItwHCGH4Z
- PgmEtOGUI2d0rpjjB34yFz/fNQd1FF8xBOCC4+WHmVkiukb6KL5eFMXxNS9xgIJWEbQPaNtE0
- 31nKSNGie6laJb+VydTa2o50GcGSRMi4IziU1lvkWjO9GUXhPxOp3imph5UxjT6fFXbsTFySl
- yXk1SMU/Pc0nN4WsmCcjz0TH9o74d3PisFcgBZX8yIVOGmoJHozibAoHtqgtTliXjeVBhtB4K
- Q+RxrrdCuePh8EHaawg7zt+R+rhUV0e3Xt3SotNbUyqeo2q3UicXVberjP
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20250606104546.1996818-3-matthew.auld@intel.com>
+X-Patchwork-Hint: comment
 
+On Fri, Jun 06, 2025 at 11:45:47AM +0100, Matthew Auld wrote:
+> From: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
+> 
+> Flushing l2 is only needed after all data has been written.
+> 
+> Fixes: 01570b446939 ("drm/xe/bmg: implement Wa_16023588340")
+> Signed-off-by: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
+> Cc: Matthew Auld <matthew.auld@intel.com>
+> Cc: <stable@vger.kernel.org> # v6.12+
+> Reviewed-by: Matthew Auld <matthew.auld@intel.com>
+> Signed-off-by: Matthew Auld <matthew.auld@intel.com>
 
---b65wpbro3ixgg3e2
-Content-Type: text/plain; protected-headers=v1; charset=us-ascii
-Content-Disposition: inline
-Subject: Re: [PATCH 6.15 000/780] 6.15.3-rc1 review
-MIME-Version: 1.0
+Looks reasonable.
 
-On 25/06/17 05:15PM, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.15.3 release.
-> There are 780 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
->
-> Responses should be made by Thu, 19 Jun 2025 15:22:30 +0000.
-> Anything received after that time might be too late.
+Reviewed-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
 
-Tested-by: Christian Heusel <christian@heusel.eu>
+> ---
+>  drivers/gpu/drm/xe/display/xe_dsb_buffer.c | 11 ++++-------
+>  1 file changed, 4 insertions(+), 7 deletions(-)
+> 
+> diff --git a/drivers/gpu/drm/xe/display/xe_dsb_buffer.c b/drivers/gpu/drm/xe/display/xe_dsb_buffer.c
+> index f95375451e2f..9f941fc2e36b 100644
+> --- a/drivers/gpu/drm/xe/display/xe_dsb_buffer.c
+> +++ b/drivers/gpu/drm/xe/display/xe_dsb_buffer.c
+> @@ -17,10 +17,7 @@ u32 intel_dsb_buffer_ggtt_offset(struct intel_dsb_buffer *dsb_buf)
+>  
+>  void intel_dsb_buffer_write(struct intel_dsb_buffer *dsb_buf, u32 idx, u32 val)
+>  {
+> -	struct xe_device *xe = dsb_buf->vma->bo->tile->xe;
+> -
+>  	iosys_map_wr(&dsb_buf->vma->bo->vmap, idx * 4, u32, val);
+> -	xe_device_l2_flush(xe);
+>  }
+>  
+>  u32 intel_dsb_buffer_read(struct intel_dsb_buffer *dsb_buf, u32 idx)
+> @@ -30,12 +27,9 @@ u32 intel_dsb_buffer_read(struct intel_dsb_buffer *dsb_buf, u32 idx)
+>  
+>  void intel_dsb_buffer_memset(struct intel_dsb_buffer *dsb_buf, u32 idx, u32 val, size_t size)
+>  {
+> -	struct xe_device *xe = dsb_buf->vma->bo->tile->xe;
+> -
+>  	WARN_ON(idx > (dsb_buf->buf_size - size) / sizeof(*dsb_buf->cmd_buf));
+>  
+>  	iosys_map_memset(&dsb_buf->vma->bo->vmap, idx * 4, val, size);
+> -	xe_device_l2_flush(xe);
+>  }
+>  
+>  bool intel_dsb_buffer_create(struct intel_crtc *crtc, struct intel_dsb_buffer *dsb_buf, size_t size)
+> @@ -74,9 +68,12 @@ void intel_dsb_buffer_cleanup(struct intel_dsb_buffer *dsb_buf)
+>  
+>  void intel_dsb_buffer_flush_map(struct intel_dsb_buffer *dsb_buf)
+>  {
+> +	struct xe_device *xe = dsb_buf->vma->bo->tile->xe;
+> +
+>  	/*
+>  	 * The memory barrier here is to ensure coherency of DSB vs MMIO,
+>  	 * both for weak ordering archs and discrete cards.
+>  	 */
+> -	xe_device_wmb(dsb_buf->vma->bo->tile->xe);
+> +	xe_device_wmb(xe);
+> +	xe_device_l2_flush(xe);
+>  }
+> -- 
+> 2.49.0
 
-Tested on a ThinkPad E14 Gen 3 with a AMD Ryzen 5 5500U CPU and on the
-Steam Deck (LCD variant) aswell as a Framework Desktop.
-
---b65wpbro3ixgg3e2
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCgAdFiEEb3ea3iR6a4oPcswTwEfU8yi1JYUFAmhRlAgACgkQwEfU8yi1
-JYWrxRAAr22WwpGat0STLhfFC5l4KRlbFOPLB4jgZV9IPwkgK4dAL5jSfLxJxMcY
-0EbBI8mo4+Dn+A4N24VMy7XasicUdtg/48l5ImbyHEveZhWqu9LxtEg4hSEc1hLp
-qV3XaMGQ1BnYzTZnUsYqywJVJQylytUSjFIhgvvAALg8NYSnzGNQJ78U14sQjx6y
-OIVxucmlhHchMoRcPhrcorxJuk0ui9FgFwejpgyZ8RE+x1l/lGUGX9vm4nqQprgE
-xxd0H7HGomVh427b1i3avDDFu+k924McKQB6NVu3vhXmH3gd6pmHff/D2EFc9ase
-ocP9JJvH58I45PRLG6kOk1cxIwyS8h2G86/eiIcnttE6xqD/2xOj/J+ufyAdkMAe
-02r4F0oVtkZaYWLM/hgEkXMBkn944lWsMNQoFUPO/WcAM/A6+SSK8AlDgoxiprTK
-9uuegqCh3+8/E8+dj8hOpg8m0f43b6XULP8EmD0GVDlWaUCqeMpyBYes97wifDhM
-he3zfH8R+2ib0z0zeCjQbCiZYD+uwafC601DWOwhpZiPK4K6IMPMsbIegJhDwG/d
-YgzN5CZYJkRq65jYDLl4vHwVWq5HjBLgjPNew7/ul5CoaoaiUO4y6uaEub7LWGvG
-Thp3B8M4PC5ZnvFda4ATaMW2nVrbg9XDCIc7CuklYX8uHNhv260=
-=8EQi
------END PGP SIGNATURE-----
-
---b65wpbro3ixgg3e2--
+-- 
+Ville Syrjälä
+Intel
 
