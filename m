@@ -1,59 +1,55 @@
-Return-Path: <stable+bounces-154477-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-154122-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1937DADD980
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 19:06:56 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id B17BBADD88D
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:57:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 88EBA1947AAC
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:56:10 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A92B019E5FD6
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:42:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 398282FA647;
-	Tue, 17 Jun 2025 16:55:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 189DB2EA16B;
+	Tue, 17 Jun 2025 16:36:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bmaWHvGt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zeHz4Sez"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E90652FA62E;
-	Tue, 17 Jun 2025 16:55:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C89DA2EA161;
+	Tue, 17 Jun 2025 16:36:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750179333; cv=none; b=YsZortWQL6z/WWtEl9RY+DTOd/8+KFqlMOphPqOd1e3hZ6MMqFPEXDyhVDcvAjB6ds1dDgQqiswW313p7tN7uyvcpfapcU2beCqnyCDj0s0SQXIBHcxwTdXTZHwXL25LQJs9qVft3fcogQli2j15pfn3XQio+Nk4O8bnf1OC/aQ=
+	t=1750178170; cv=none; b=dF95rrulLwubQOurL5FlCnzrPTTBc5YBFfGynYkMNDHFNgwx7T9PN9kwB6yY3ua0RejO9ZAywrbmrrNz8hAjO01YZ7ZsyyC02D6KTKKOnb/OgoyWLXSqL+/Zugiek3XlfJvkT17mP9MHwPfLG/C5qyB9/zSzelOMRtA2WEPqHv0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750179333; c=relaxed/simple;
-	bh=1AQht9g3DwYsJKSRQpBEzbgiOQPxGBLH3hPOkQV/MLE=;
+	s=arc-20240116; t=1750178170; c=relaxed/simple;
+	bh=robSoHqr+uHniB7bDjoVC6fA0+ijXjqGLYqkeqC+Vf4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XVfQfqt0w8AutbKx+zvAvbsPY242umoekdWAhB06rm4XcoyCPqwI9im9UjkmD/O9BnkBsk0cxgRSDcihYZAN45lvN+bvVvOWMvM2iMa0oKf2tryODiULG4+Me3pbZOYysjgab/q0USZ/x8LXoaq6uYNbHGGoJ9ZGiycz4roNBFs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bmaWHvGt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0EAEC4CEE3;
-	Tue, 17 Jun 2025 16:55:31 +0000 (UTC)
+	 MIME-Version; b=TZylY3kwFSUbDcWqJG+u6LMa+WCFTleSYSz1DI7/suPXcOoMdWW03mC+ABsuMrr+hVvyd+hgviPE+A/4rdNOTIntcQ4XUVhLSvfkUr/GkAnubLcWzI4jEEslHhG2HXjLPZO7oYUSOq9O1/9aKfrpDdq+KKr2t7tQNVzW2Lr1WaE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zeHz4Sez; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22794C4CEE7;
+	Tue, 17 Jun 2025 16:36:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750179332;
-	bh=1AQht9g3DwYsJKSRQpBEzbgiOQPxGBLH3hPOkQV/MLE=;
+	s=korg; t=1750178170;
+	bh=robSoHqr+uHniB7bDjoVC6fA0+ijXjqGLYqkeqC+Vf4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bmaWHvGt2PvKhExfSqOuqSEO2fJ0NwfWap0dJkZG1aqnsuzu8pys4U1JuMhQ2m2VC
-	 rFhhIjr+qfH26YhrJZwq9ssu49r9lV7FZDy+2H7Alsp6d8zZhP0gZatiTceLTTAMFA
-	 htP4Tfao/6euID87DNFwQhrNFXPhNYiTT3BA8G3E=
+	b=zeHz4Sez9D0i0WEnWFjA4qb8M5CgXWy41g9HlQnpmEJtneRYivcLN6f9RSXBz9N+H
+	 O8R7kxYY2sji5su7v8UO6Q01sOjuI2xrzkx6kg5U0sYo787/2ENrNRSLsDaDhKLxNv
+	 681kj08Dcr1wlDeAepAK5KnevFD9sY/mIlZLf3x0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jianbo Liu <jianbol@nvidia.com>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Alex Lazar <alazar@nvidia.com>,
-	Mark Bloch <mbloch@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 714/780] net/mlx5e: Fix leak of Geneve TLV option object
+Subject: [PATCH 6.12 456/512] Bluetooth: Fix NULL pointer deference on eir_get_service_data
 Date: Tue, 17 Jun 2025 17:27:02 +0200
-Message-ID: <20250617152520.567468345@linuxfoundation.org>
+Message-ID: <20250617152438.050523517@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
-References: <20250617152451.485330293@linuxfoundation.org>
+In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
+References: <20250617152419.512865572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,81 +61,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jianbo Liu <jianbol@nvidia.com>
+From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 
-[ Upstream commit aa9c44b842096c553871bc68a8cebc7861fa192b ]
+[ Upstream commit 20a2aa01f5aeb6daad9aeaa7c33dd512c58d81eb ]
 
-Previously, a unique tunnel id was added for the matching on TC
-non-zero chains, to support inner header rewrite with goto action.
-Later, it was used to support VF tunnel offload for vxlan, then for
-Geneve and GRE. To support VF tunnel, a temporary mlx5_flow_spec is
-used to parse tunnel options. For Geneve, if there is TLV option, a
-object is created, or refcnt is added if already exists. But the
-temporary mlx5_flow_spec is directly freed after parsing, which causes
-the leak because no information regarding the object is saved in
-flow's mlx5_flow_spec, which is used to free the object when deleting
-the flow.
+The len parameter is considered optional so it can be NULL so it cannot
+be used for skipping to next entry of EIR_SERVICE_DATA.
 
-To fix the leak, call mlx5_geneve_tlv_option_del() before free the
-temporary spec if it has TLV object.
-
-Fixes: 521933cdc4aa ("net/mlx5e: Support Geneve and GRE with VF tunnel offload")
-Signed-off-by: Jianbo Liu <jianbol@nvidia.com>
-Reviewed-by: Tariq Toukan <tariqt@nvidia.com>
-Reviewed-by: Alex Lazar <alazar@nvidia.com>
-Signed-off-by: Mark Bloch <mbloch@nvidia.com>
-Link: https://patch.msgid.link/20250610151514.1094735-9-mbloch@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 8f9ae5b3ae80 ("Bluetooth: eir: Add helpers for managing service data")
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/en_tc.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ net/bluetooth/eir.c | 10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_tc.c b/drivers/net/ethernet/mellanox/mlx5/core/en_tc.c
-index f1d908f611349..fef418e1ed1a0 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en_tc.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en_tc.c
-@@ -2028,9 +2028,8 @@ mlx5e_tc_add_fdb_flow(struct mlx5e_priv *priv,
- 	return err;
- }
+diff --git a/net/bluetooth/eir.c b/net/bluetooth/eir.c
+index 1bc51e2b05a34..3e1713673ecc9 100644
+--- a/net/bluetooth/eir.c
++++ b/net/bluetooth/eir.c
+@@ -366,17 +366,19 @@ u8 eir_create_scan_rsp(struct hci_dev *hdev, u8 instance, u8 *ptr)
  
--static bool mlx5_flow_has_geneve_opt(struct mlx5e_tc_flow *flow)
-+static bool mlx5_flow_has_geneve_opt(struct mlx5_flow_spec *spec)
+ void *eir_get_service_data(u8 *eir, size_t eir_len, u16 uuid, size_t *len)
  {
--	struct mlx5_flow_spec *spec = &flow->attr->parse_attr->spec;
- 	void *headers_v = MLX5_ADDR_OF(fte_match_param,
- 				       spec->match_value,
- 				       misc_parameters_3);
-@@ -2069,7 +2068,7 @@ static void mlx5e_tc_del_fdb_flow(struct mlx5e_priv *priv,
- 	}
- 	complete_all(&flow->del_hw_done);
+-	while ((eir = eir_get_data(eir, eir_len, EIR_SERVICE_DATA, len))) {
++	size_t dlen;
++
++	while ((eir = eir_get_data(eir, eir_len, EIR_SERVICE_DATA, &dlen))) {
+ 		u16 value = get_unaligned_le16(eir);
  
--	if (mlx5_flow_has_geneve_opt(flow))
-+	if (mlx5_flow_has_geneve_opt(&attr->parse_attr->spec))
- 		mlx5_geneve_tlv_option_del(priv->mdev->geneve);
- 
- 	if (flow->decap_route)
-@@ -2574,12 +2573,13 @@ static int parse_tunnel_attr(struct mlx5e_priv *priv,
- 
- 		err = mlx5e_tc_tun_parse(filter_dev, priv, tmp_spec, f, match_level);
- 		if (err) {
--			kvfree(tmp_spec);
- 			NL_SET_ERR_MSG_MOD(extack, "Failed to parse tunnel attributes");
- 			netdev_warn(priv->netdev, "Failed to parse tunnel attributes");
--			return err;
-+		} else {
-+			err = mlx5e_tc_set_attr_rx_tun(flow, tmp_spec);
+ 		if (uuid == value) {
+ 			if (len)
+-				*len -= 2;
++				*len = dlen - 2;
+ 			return &eir[2];
  		}
--		err = mlx5e_tc_set_attr_rx_tun(flow, tmp_spec);
-+		if (mlx5_flow_has_geneve_opt(tmp_spec))
-+			mlx5_geneve_tlv_option_del(priv->mdev->geneve);
- 		kvfree(tmp_spec);
- 		if (err)
- 			return err;
+ 
+-		eir += *len;
+-		eir_len -= *len;
++		eir += dlen;
++		eir_len -= dlen;
+ 	}
+ 
+ 	return NULL;
 -- 
 2.39.5
 
