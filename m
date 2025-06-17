@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-153653-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-154285-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7A086ADD5C3
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:25:38 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 84884ADD85E
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:54:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CDC292C7225
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:16:39 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3006219E73C7
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:48:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3BC03285054;
-	Tue, 17 Jun 2025 16:10:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 63D3428505C;
+	Tue, 17 Jun 2025 16:44:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xCBWcrl0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UyELxsWh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA98228504B;
-	Tue, 17 Jun 2025 16:10:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20BFE2DFF3B;
+	Tue, 17 Jun 2025 16:44:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750176658; cv=none; b=Nx4nQP/w3ZCZ8a3eChQFN0wzRc1YujENUusBNdYRki0IxJWOVok7pavDFDdGE33lzuJF+zI9hVTrt26ztnl0Z/w++djbXJfNnalkVsUGFN1fV1hYfk3D5kpmKiVE49oVSJHnI3fq8r7v1GxA1FbW1/Sz2FsrdEJdBHRBJF3ik7c=
+	t=1750178699; cv=none; b=MVkM2ZpYN0sNlrf9JdZPWSZUMVs6VULLCJYKID/WKIejEo0RdYshlqR7VWRexMdGXR5jTZrqwO3cxAP6/Tytbu19FK4YW4kij+68TCXgAN9farizqH9FzkKaixnQGfatJPoV+iB2YbPo++BQpXqtH6AWlu1SPgCTrp2lb/oRViA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750176658; c=relaxed/simple;
-	bh=pGcyWBp/J9emvsUcOwcvPL+H33tZWTMNzNbp+E6rMJw=;
+	s=arc-20240116; t=1750178699; c=relaxed/simple;
+	bh=NNw4JhuVSo9dWvucaAOtb2mEfqXupNmeokl9jO4mmEI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uSP3YTevYtER+ugkiP7Q9e1CP+7FpOCl6U2mfH9hdwZg24pSIiqbSgDSbtW0zb4nYJZPvZY9GrPhgpM0fkpwIlMT9VnqMwse38CwGgXoolN8LWPkRKk0MmzFqjCkn2wfx5klTTY+b/12kwvvt/1RmqQVzl1eKmnijf88enxbsxI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xCBWcrl0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 591A6C4CEF3;
-	Tue, 17 Jun 2025 16:10:57 +0000 (UTC)
+	 MIME-Version:Content-Type; b=VEVSBLp5jchbxh1j3s/H/3pZXbOgqw4+Zxp78vYhdOTA1LJ4QXhsyD8ZuG6fPnMN8l+CN1zFen1fKtzgTJX5S9WjU4FKi0x2spHCU4zOUgRBUvLZ7JupOriuCoGwT8L2heJC2lZArYEHz46uJLDmpDM6f2qhD8nbGVERuxuSVYU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UyELxsWh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3727FC4CEE3;
+	Tue, 17 Jun 2025 16:44:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750176657;
-	bh=pGcyWBp/J9emvsUcOwcvPL+H33tZWTMNzNbp+E6rMJw=;
+	s=korg; t=1750178698;
+	bh=NNw4JhuVSo9dWvucaAOtb2mEfqXupNmeokl9jO4mmEI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xCBWcrl0tFtyjEHOn8cw1okVYOooR30kO++H3Q3t6z03vL9UzvXHhcAs9PLPNJj6l
-	 wzb5TyrH62G8vSX2GibL+9Is3QcTublfRz/LVFoF/I/XUgrMdpB9rvniCjAsUbYfVs
-	 uIDsopgK8FSUyf4Qc5XWsDMySe5o/LFhJ+mXWd90=
+	b=UyELxsWh4O0npdlktlaFtuEuXAgq1yFZo5lYCcl/ldyZ0v9LkSCfRQ3KEDwVvwVk1
+	 2cxp5sWcXXYCnivioM8P6TbOnZomL1yutjWxtTcMU2doAUP5ZEAsvOAalNJtNfGw8J
+	 qmbQsWqKnX9ihmLqbbKQvO2UxEi/6RZdSCoOd928=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+65761fc25a137b9c8c6e@syzkaller.appspotmail.com,
-	Phillip Lougher <phillip@squashfs.org.uk>,
-	Andrew Morton <akpm@linux-foundation.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 251/512] Squashfs: check return result of sb_min_blocksize
+Subject: [PATCH 6.15 509/780] PCI/DPC: Log Error Source ID only when valid
 Date: Tue, 17 Jun 2025 17:23:37 +0200
-Message-ID: <20250617152429.774506375@linuxfoundation.org>
+Message-ID: <20250617152512.242883923@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
-References: <20250617152419.512865572@linuxfoundation.org>
+In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
+References: <20250617152451.485330293@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,70 +63,135 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Phillip Lougher <phillip@squashfs.org.uk>
+From: Bjorn Helgaas <bhelgaas@google.com>
 
-[ Upstream commit 734aa85390ea693bb7eaf2240623d41b03705c84 ]
+[ Upstream commit a0b62cc310239c7f1323fb20bd3789f21bdd8615 ]
 
-Syzkaller reports an "UBSAN: shift-out-of-bounds in squashfs_bio_read" bug.
+DPC Error Source ID is only valid when the DPC Trigger Reason indicates
+that DPC was triggered due to reception of an ERR_NONFATAL or ERR_FATAL
+Message (PCIe r6.0, sec 7.9.14.5).
 
-Syzkaller forks multiple processes which after mounting the Squashfs
-filesystem, issues an ioctl("/dev/loop0", LOOP_SET_BLOCK_SIZE, 0x8000).
-Now if this ioctl occurs at the same time another process is in the
-process of mounting a Squashfs filesystem on /dev/loop0, the failure
-occurs.  When this happens the following code in squashfs_fill_super()
-fails.
+When DPC was triggered by ERR_NONFATAL (PCI_EXP_DPC_STATUS_TRIGGER_RSN_NFE)
+or ERR_FATAL (PCI_EXP_DPC_STATUS_TRIGGER_RSN_FE) from a downstream device,
+log the Error Source ID (decoded into domain/bus/device/function).  Don't
+print the source otherwise, since it's not valid.
 
-----
-msblk->devblksize = sb_min_blocksize(sb, SQUASHFS_DEVBLK_SIZE);
-msblk->devblksize_log2 = ffz(~msblk->devblksize);
-----
+For DPC trigger due to reception of ERR_NONFATAL or ERR_FATAL, the dmesg
+logging changes:
 
-sb_min_blocksize() returns 0, which means msblk->devblksize is set to 0.
+  - pci 0000:00:01.0: DPC: containment event, status:0x000d source:0x0200
+  - pci 0000:00:01.0: DPC: ERR_FATAL detected
+  + pci 0000:00:01.0: DPC: containment event, status:0x000d, ERR_FATAL received from 0000:02:00.0
 
-As a result, ffz(~msblk->devblksize) returns 64, and msblk->devblksize_log2
-is set to 64.
+and when DPC triggered for other reasons, where DPC Error Source ID is
+undefined, e.g., unmasked uncorrectable error:
 
-This subsequently causes the
+  - pci 0000:00:01.0: DPC: containment event, status:0x0009 source:0x0200
+  - pci 0000:00:01.0: DPC: unmasked uncorrectable error detected
+  + pci 0000:00:01.0: DPC: containment event, status:0x0009: unmasked uncorrectable error detected
 
-UBSAN: shift-out-of-bounds in fs/squashfs/block.c:195:36
-shift exponent 64 is too large for 64-bit type 'u64' (aka
-'unsigned long long')
+Previously the "containment event" message was at KERN_INFO and the
+"%s detected" message was at KERN_WARNING.  Now the single message is at
+KERN_WARNING.
 
-This commit adds a check for a 0 return by sb_min_blocksize().
-
-Link: https://lkml.kernel.org/r/20250409024747.876480-1-phillip@squashfs.org.uk
-Fixes: 0aa666190509 ("Squashfs: super block operations")
-Reported-by: syzbot+65761fc25a137b9c8c6e@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/all/67f0dd7a.050a0220.0a13.0230.GAE@google.com/
-Signed-off-by: Phillip Lougher <phillip@squashfs.org.uk>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Fixes: 26e515713342 ("PCI: Add Downstream Port Containment driver")
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Tested-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
+Reviewed-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
+Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Link: https://patch.msgid.link/20250522232339.1525671-3-helgaas@kernel.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/squashfs/super.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/pci/pcie/dpc.c | 66 +++++++++++++++++++++++-------------------
+ 1 file changed, 37 insertions(+), 29 deletions(-)
 
-diff --git a/fs/squashfs/super.c b/fs/squashfs/super.c
-index 22e812808e5cf..3a27d4268b3c4 100644
---- a/fs/squashfs/super.c
-+++ b/fs/squashfs/super.c
-@@ -202,6 +202,11 @@ static int squashfs_fill_super(struct super_block *sb, struct fs_context *fc)
- 	msblk->panic_on_errors = (opts->errors == Opt_errors_panic);
+diff --git a/drivers/pci/pcie/dpc.c b/drivers/pci/pcie/dpc.c
+index 3daaf61c79c9f..9d85f1b3b7611 100644
+--- a/drivers/pci/pcie/dpc.c
++++ b/drivers/pci/pcie/dpc.c
+@@ -261,37 +261,45 @@ void dpc_process_error(struct pci_dev *pdev)
+ 	struct aer_err_info info = {};
  
- 	msblk->devblksize = sb_min_blocksize(sb, SQUASHFS_DEVBLK_SIZE);
-+	if (!msblk->devblksize) {
-+		errorf(fc, "squashfs: unable to set blocksize\n");
-+		return -EINVAL;
-+	}
+ 	pci_read_config_word(pdev, cap + PCI_EXP_DPC_STATUS, &status);
+-	pci_read_config_word(pdev, cap + PCI_EXP_DPC_SOURCE_ID, &source);
+-
+-	pci_info(pdev, "containment event, status:%#06x source:%#06x\n",
+-		 status, source);
+ 
+ 	reason = status & PCI_EXP_DPC_STATUS_TRIGGER_RSN;
+-	ext_reason = status & PCI_EXP_DPC_STATUS_TRIGGER_RSN_EXT;
+-	pci_warn(pdev, "%s detected\n",
+-		 (reason == PCI_EXP_DPC_STATUS_TRIGGER_RSN_UNCOR) ?
+-		 "unmasked uncorrectable error" :
+-		 (reason == PCI_EXP_DPC_STATUS_TRIGGER_RSN_NFE) ?
+-		 "ERR_NONFATAL" :
+-		 (reason == PCI_EXP_DPC_STATUS_TRIGGER_RSN_FE) ?
+-		 "ERR_FATAL" :
+-		 (ext_reason == PCI_EXP_DPC_STATUS_TRIGGER_RSN_RP_PIO) ?
+-		 "RP PIO error" :
+-		 (ext_reason == PCI_EXP_DPC_STATUS_TRIGGER_RSN_SW_TRIGGER) ?
+-		 "software trigger" :
+-		 "reserved error");
+-
+-	/* show RP PIO error detail information */
+-	if (pdev->dpc_rp_extensions &&
+-	    reason == PCI_EXP_DPC_STATUS_TRIGGER_RSN_IN_EXT &&
+-	    ext_reason == PCI_EXP_DPC_STATUS_TRIGGER_RSN_RP_PIO)
+-		dpc_process_rp_pio_error(pdev);
+-	else if (reason == PCI_EXP_DPC_STATUS_TRIGGER_RSN_UNCOR &&
+-		 dpc_get_aer_uncorrect_severity(pdev, &info) &&
+-		 aer_get_device_error_info(pdev, &info)) {
+-		aer_print_error(pdev, &info);
+-		pci_aer_clear_nonfatal_status(pdev);
+-		pci_aer_clear_fatal_status(pdev);
 +
- 	msblk->devblksize_log2 = ffz(~msblk->devblksize);
++	switch (reason) {
++	case PCI_EXP_DPC_STATUS_TRIGGER_RSN_UNCOR:
++		pci_warn(pdev, "containment event, status:%#06x: unmasked uncorrectable error detected\n",
++			 status);
++		if (dpc_get_aer_uncorrect_severity(pdev, &info) &&
++		    aer_get_device_error_info(pdev, &info)) {
++			aer_print_error(pdev, &info);
++			pci_aer_clear_nonfatal_status(pdev);
++			pci_aer_clear_fatal_status(pdev);
++		}
++		break;
++	case PCI_EXP_DPC_STATUS_TRIGGER_RSN_NFE:
++	case PCI_EXP_DPC_STATUS_TRIGGER_RSN_FE:
++		pci_read_config_word(pdev, cap + PCI_EXP_DPC_SOURCE_ID,
++				     &source);
++		pci_warn(pdev, "containment event, status:%#06x, %s received from %04x:%02x:%02x.%d\n",
++			 status,
++			 (reason == PCI_EXP_DPC_STATUS_TRIGGER_RSN_FE) ?
++				"ERR_FATAL" : "ERR_NONFATAL",
++			 pci_domain_nr(pdev->bus), PCI_BUS_NUM(source),
++			 PCI_SLOT(source), PCI_FUNC(source));
++		break;
++	case PCI_EXP_DPC_STATUS_TRIGGER_RSN_IN_EXT:
++		ext_reason = status & PCI_EXP_DPC_STATUS_TRIGGER_RSN_EXT;
++		pci_warn(pdev, "containment event, status:%#06x: %s detected\n",
++			 status,
++			 (ext_reason == PCI_EXP_DPC_STATUS_TRIGGER_RSN_RP_PIO) ?
++			 "RP PIO error" :
++			 (ext_reason == PCI_EXP_DPC_STATUS_TRIGGER_RSN_SW_TRIGGER) ?
++			 "software trigger" :
++			 "reserved error");
++		/* show RP PIO error detail information */
++		if (ext_reason == PCI_EXP_DPC_STATUS_TRIGGER_RSN_RP_PIO &&
++		    pdev->dpc_rp_extensions)
++			dpc_process_rp_pio_error(pdev);
++		break;
+ 	}
+ }
  
- 	mutex_init(&msblk->meta_index_mutex);
 -- 
 2.39.5
 
