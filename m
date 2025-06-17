@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-153618-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153621-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A555AADD5B0
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:24:26 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 71019ADD4F4
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:15:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4D9C0173AC8
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:13:13 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2D1D47AEA61
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:11:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40EAE2ECEBF;
-	Tue, 17 Jun 2025 16:09:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 97F442ED846;
+	Tue, 17 Jun 2025 16:09:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ojVTSaQ7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S3vf6Rpf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0EB52ED175;
-	Tue, 17 Jun 2025 16:09:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 526222ED174;
+	Tue, 17 Jun 2025 16:09:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750176545; cv=none; b=OW3K+m9oe2THUxcnoXMacHy/JYybplKoKuS8FhPT5k0b4NxkjYpuafCU9jIQaiG0WKVF3Hf3xFzkNaxQN4i8uGw57FN/FlOqpFMPUBjj2g7Lauk2mt2fJEGmEiddEkWa1bkl6XK+6Q3HoyIE2QE4485PKPF2tuKL4GpfuVpuAF4=
+	t=1750176554; cv=none; b=IEKT1fiSVSXl5uXfd3TP4nP3SGOMHwCemCLiy1BL53SdM1yqxQSVXuUDA2vJG8bL9nFEoZ07qNekojpkGmenF+cjZDQHTOYYf1n1kCchQEsZRqk9/CrCjjFSWRgwAT1zbZQvyVd2EfsXyk1edL/RJbG/sdDIAkWRpXnMNDxVIxI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750176545; c=relaxed/simple;
-	bh=1WqBctlvkE6/8FTKBaC246Gcz2jJ3C0FfFBZXSefZw4=;
+	s=arc-20240116; t=1750176554; c=relaxed/simple;
+	bh=tIpZ/oHctfF5yoUT6z1JFek8UCJAws173kirL3U4/wA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ggkgRkNSnkcqf4QNnUbx2a3c5II2pqc/8U3EXWMYMKQU9cpDSzLUmoCx994hEw/53CQUhA08icwqGqABOaK1np1AZa4vrD7eGkFs3Imf0lt69+/pX6p/YkS3Q4vdFwLJD4u4SQjInztJzE4dLtGF+lqFaKTEbjgElfrfuASQgGM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ojVTSaQ7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A90EC4CEE3;
-	Tue, 17 Jun 2025 16:09:03 +0000 (UTC)
+	 MIME-Version; b=XRwcSxoUEwlbVvOcKkTgjWpd5/jY7CW89MYBwYHUiYwn/acpLpSKYfi8iRaUDcXUZD/TGS0o/oDPt/6K9f9sDteMm1NsHNLjbOnUORsmfzx/pX3MXc0XoBTZP66NXbVSi+vmm8QUyDtYgOCCko1pyZ+c+PU0qE+3aGdkpjm6LSU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S3vf6Rpf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B36BBC4CEE3;
+	Tue, 17 Jun 2025 16:09:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750176544;
-	bh=1WqBctlvkE6/8FTKBaC246Gcz2jJ3C0FfFBZXSefZw4=;
+	s=korg; t=1750176554;
+	bh=tIpZ/oHctfF5yoUT6z1JFek8UCJAws173kirL3U4/wA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ojVTSaQ7Msx2UGVRmwfsOjNbrZz03H70WIvH1zTVSDzIy491bbkFSGQsqwgdEKqdD
-	 UVUAuR4MLtoC1ebH2dM1LM21wnOYPKTWByE1cQnIz9B1+G/KWlju587QymAlwderuz
-	 ZXuiDwpLI1gqLE1dSIgktvOHVwXwOjE9VGKcv0cw=
+	b=S3vf6Rpf+myr5BJ4uWHb1s69XQ6AjSdhwGRPZd3mb0dwErhn63z/nkO2N/aXcCMH+
+	 0wTr4Fdd+ItPGG7+zGdK8gWK0yh5O4SGQGhwo4viKlZbpHJF56NzJH3CSnYOtnSKMh
+	 pJvEUuAGbNArvhOHhIsmzvY/J/VvidEMVem+X69I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhen XIN <zhen.xin@nokia-sbell.com>,
-	Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
 	Ping-Ke Shih <pkshih@realtek.com>,
+	Dmitry Antipov <dmantipov@yandex.ru>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 200/780] wifi: rtw88: sdio: call rtw_sdio_indicate_tx_status unconditionally
-Date: Tue, 17 Jun 2025 17:18:28 +0200
-Message-ID: <20250617152459.612287412@linuxfoundation.org>
+Subject: [PATCH 6.15 201/780] wifi: rtw88: do not ignore hardware read error during DPK
+Date: Tue, 17 Jun 2025 17:18:29 +0200
+Message-ID: <20250617152459.651134479@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
 References: <20250617152451.485330293@linuxfoundation.org>
@@ -67,44 +66,40 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Zhen XIN <zhen.xin@nokia-sbell.com>
+From: Dmitry Antipov <dmantipov@yandex.ru>
 
-[ Upstream commit fc5f5a0ec463ae6a07850428bd3082947e01d276 ]
+[ Upstream commit 20d3c19bd8f9b498173c198eadf54580c8caa336 ]
 
-The rtw88-sdio do not work in AP mode due to the lack of TX status report
-for management frames.
+In 'rtw8822c_dpk_cal_coef1()', do not ignore error returned
+by 'check_hw_ready()' but issue a warning to denote possible
+DPK issue. Compile tested only.
 
-Make the invocation of rtw_sdio_indicate_tx_status unconditional and cover
-all packet queues
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
 
-Tested-on: rtl8723ds
-
-Fixes: 65371a3f14e7 ("wifi: rtw88: sdio: Add HCI implementation for SDIO based chipsets")
-Signed-off-by: Zhen XIN <zhen.xin@nokia-sbell.com>
-Reviewed-by: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+Fixes: 5227c2ee453d ("rtw88: 8822c: add SW DPK support")
+Suggested-by: Ping-Ke Shih <pkshih@realtek.com>
+Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
 Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
-Link: https://patch.msgid.link/20250410154217.1849977-2-zhen.xin@nokia-sbell.com
+Link: https://patch.msgid.link/20250415090720.194048-1-dmantipov@yandex.ru
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/realtek/rtw88/sdio.c | 5 +----
- 1 file changed, 1 insertion(+), 4 deletions(-)
+ drivers/net/wireless/realtek/rtw88/rtw8822c.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/realtek/rtw88/sdio.c b/drivers/net/wireless/realtek/rtw88/sdio.c
-index ba600d40bba46..410f637b1add5 100644
---- a/drivers/net/wireless/realtek/rtw88/sdio.c
-+++ b/drivers/net/wireless/realtek/rtw88/sdio.c
-@@ -1224,10 +1224,7 @@ static void rtw_sdio_process_tx_queue(struct rtw_dev *rtwdev,
- 		return;
- 	}
+diff --git a/drivers/net/wireless/realtek/rtw88/rtw8822c.c b/drivers/net/wireless/realtek/rtw88/rtw8822c.c
+index 5e53e0db177ef..8937a7b656edb 100644
+--- a/drivers/net/wireless/realtek/rtw88/rtw8822c.c
++++ b/drivers/net/wireless/realtek/rtw88/rtw8822c.c
+@@ -3951,7 +3951,8 @@ static void rtw8822c_dpk_cal_coef1(struct rtw_dev *rtwdev)
+ 	rtw_write32(rtwdev, REG_NCTL0, 0x00001148);
+ 	rtw_write32(rtwdev, REG_NCTL0, 0x00001149);
  
--	if (queue <= RTW_TX_QUEUE_VO)
--		rtw_sdio_indicate_tx_status(rtwdev, skb);
--	else
--		dev_kfree_skb_any(skb);
-+	rtw_sdio_indicate_tx_status(rtwdev, skb);
- }
+-	check_hw_ready(rtwdev, 0x2d9c, MASKBYTE0, 0x55);
++	if (!check_hw_ready(rtwdev, 0x2d9c, MASKBYTE0, 0x55))
++		rtw_warn(rtwdev, "DPK stuck, performance may be suboptimal");
  
- static void rtw_sdio_tx_handler(struct work_struct *work)
+ 	rtw_write8(rtwdev, 0x1b10, 0x0);
+ 	rtw_write32_mask(rtwdev, REG_NCTL0, BIT_SUBPAGE, 0x0000000c);
 -- 
 2.39.5
 
