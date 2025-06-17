@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-153356-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153901-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id EFFDEADD420
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:06:54 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 143DEADD6AD
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:36:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B5DC31942C44
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 15:58:42 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E15F619E46C3
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:29:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E39E2DFF1B;
-	Tue, 17 Jun 2025 15:54:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 83C772E8E0F;
+	Tue, 17 Jun 2025 16:24:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ydTsMNuR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="msmyKxWX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF0832EB10;
-	Tue, 17 Jun 2025 15:54:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40A4718E025;
+	Tue, 17 Jun 2025 16:24:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750175684; cv=none; b=aDCsa7+6cw7/7hHI5pX02kJzxxHnziEzntrk1dLfuUD8TmivamB2j+nUBZKgH31yd6bIdgr8ZX5MHjr+UbSVRENlF8/hbRwTdoEMITK9g1VGEEfmMKNiH3xKRv20sp6HUPh4sOByx3dktZFMxoT1WgphVkyEAcm3fcXmtH5iQGk=
+	t=1750177464; cv=none; b=i4msSGmfLVpVvEsxypUHhBj9dzbp4UUrarIuNC6Y7izg8QdVxns6o2+egBNfGkHwQF/avaPt+45qzioL+C3l0w5+rI5zxgsgkIm1q4j2h9j6IRW4PZz67P1BgV2GV0+0wrK1Qb/3jgDABq0WURJs9sP7cay3zNJPhP04jJlP23I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750175684; c=relaxed/simple;
-	bh=CtvUjagTb1S+Ie5LIBnTl+EKByD8mWSOhdP7O//Lc6E=;
+	s=arc-20240116; t=1750177464; c=relaxed/simple;
+	bh=bIgV9gya83qNuNfgRrXNDbXqn5fYdpi9crglEOCY9oE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=u86nu9MIcEGqEFGDsM4qVzUgSBfdNKar9dnQrdAa0WGLC0Ta51qxDRughrcFVEcdX3L12z5NrcQYWttsy+W4P3PjTKjdXbrSD1C0tyronnKovDcv88oTKQk8XtxsrpOh4iONyP1f1uVULLriyO+6fjl/JzGCZNM+gnUl5cN0hBY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ydTsMNuR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 579A7C4CEE3;
-	Tue, 17 Jun 2025 15:54:43 +0000 (UTC)
+	 MIME-Version; b=sTNDIMiatnhjC8a/JlHf3kQhykhWPiw+tJxPb6mFxwVrA5gpVSX+uiU8gZu8ZcfZUKwK3ZZ+SzJ2QMis+CcpQ+GdrRqk1cThijLSklW5TVOJ3WLsQ9xkeYqWOoaqyjDEMUbileudjCNj/7adxDtM+cAx7E7MUsyE4pHd1oH2Iww=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=msmyKxWX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4BBFC4CEE3;
+	Tue, 17 Jun 2025 16:24:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750175684;
-	bh=CtvUjagTb1S+Ie5LIBnTl+EKByD8mWSOhdP7O//Lc6E=;
+	s=korg; t=1750177464;
+	bh=bIgV9gya83qNuNfgRrXNDbXqn5fYdpi9crglEOCY9oE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ydTsMNuR4RgE4JbKIJXUTYzMTMOo5B+zaigIZfGNODBgIEKp9SLkirb7mpJ/cR7/N
-	 8NjWBUugkCrUmbRK26rxUBBV+O2BTfB/Dk/Qi7TriGsBOZhNDl3o9d+45N2CUIAD4n
-	 n3BbJA1KKpGiXcpS/Le+JLZfjEy45LLu5cVMwce8=
+	b=msmyKxWX1OLdUb3HI1bqrB+DSi0k6PWF5jFuL2ttTOh9ilze/Eze0MLfpuymhjixe
+	 /cpXTiZvNTc/Me0IYLmXCGyXsPwVFhYr1sQBxcrbe/FlPBXGPgBZffDexazBpAkjdn
+	 Jlzbv7ufb4A/qkBTGILI/TbvF7JDDKJId3/YahQo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Damien Le Moal <dlemoal@kernel.org>,
-	Benjamin Marzinski <bmarzins@redhat.com>,
-	Mikulas Patocka <mpatocka@redhat.com>,
+	Yanqing Wang <ot_yanqing.wang@mediatek.com>,
+	Macpaul Lin <macpaul.lin@mediatek.com>,
+	Biao Huang <biao.huang@mediatek.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 200/356] dm: dont change md if dm_table_set_restrictions() fails
-Date: Tue, 17 Jun 2025 17:25:15 +0200
-Message-ID: <20250617152346.266054583@linuxfoundation.org>
+Subject: [PATCH 6.12 350/512] driver: net: ethernet: mtk_star_emac: fix suspend/resume issue
+Date: Tue, 17 Jun 2025 17:25:16 +0200
+Message-ID: <20250617152433.765559130@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152338.212798615@linuxfoundation.org>
-References: <20250617152338.212798615@linuxfoundation.org>
+In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
+References: <20250617152419.512865572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,83 +64,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Benjamin Marzinski <bmarzins@redhat.com>
+From: Yanqing Wang <ot_yanqing.wang@mediatek.com>
 
-[ Upstream commit 9eb7109a5bfc5b8226e9517e9f3cc6d414391884 ]
+[ Upstream commit ba99c627aac85bc746fb4a6e2d79edb3ad100326 ]
 
-__bind was changing the disk capacity, geometry and mempools of the
-mapped device before calling dm_table_set_restrictions() which could
-fail, forcing dm to drop the new table. Failing here would leave the
-device using the old table but with the wrong capacity and mempools.
+Identify the cause of the suspend/resume hang: netif_carrier_off()
+is called during link state changes and becomes stuck while
+executing linkwatch_work().
 
-Move dm_table_set_restrictions() earlier in __bind(). Since it needs the
-capacity to be set, save the old version and restore it on failure.
+To resolve this issue, call netif_device_detach() during the Ethernet
+suspend process to temporarily detach the network device from the
+kernel and prevent the suspend/resume hang.
 
-Fixes: bb37d77239af2 ("dm: introduce zone append emulation")
-Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
-Tested-by: Damien Le Moal <dlemoal@kernel.org>
-Signed-off-by: Benjamin Marzinski <bmarzins@redhat.com>
-Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
+Fixes: 8c7bd5a454ff ("net: ethernet: mtk-star-emac: new driver")
+Signed-off-by: Yanqing Wang <ot_yanqing.wang@mediatek.com>
+Signed-off-by: Macpaul Lin <macpaul.lin@mediatek.com>
+Signed-off-by: Biao Huang <biao.huang@mediatek.com>
+Link: https://patch.msgid.link/20250528075351.593068-1-macpaul.lin@mediatek.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/md/dm.c | 22 ++++++++++++----------
- 1 file changed, 12 insertions(+), 10 deletions(-)
+ drivers/net/ethernet/mediatek/mtk_star_emac.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/md/dm.c b/drivers/md/dm.c
-index 9ea868bd0d129..d154c89305fbe 100644
---- a/drivers/md/dm.c
-+++ b/drivers/md/dm.c
-@@ -2195,21 +2195,29 @@ static struct dm_table *__bind(struct mapped_device *md, struct dm_table *t,
- 			       struct queue_limits *limits)
- {
- 	struct dm_table *old_map;
--	sector_t size;
-+	sector_t size, old_size;
- 	int ret;
+diff --git a/drivers/net/ethernet/mediatek/mtk_star_emac.c b/drivers/net/ethernet/mediatek/mtk_star_emac.c
+index c2ab87828d858..5eb7a97e7eb17 100644
+--- a/drivers/net/ethernet/mediatek/mtk_star_emac.c
++++ b/drivers/net/ethernet/mediatek/mtk_star_emac.c
+@@ -1468,6 +1468,8 @@ static __maybe_unused int mtk_star_suspend(struct device *dev)
+ 	if (netif_running(ndev))
+ 		mtk_star_disable(ndev);
  
- 	lockdep_assert_held(&md->suspend_lock);
- 
- 	size = dm_table_get_size(t);
- 
-+	old_size = dm_get_size(md);
-+	set_capacity(md->disk, size);
++	netif_device_detach(ndev);
 +
-+	ret = dm_table_set_restrictions(t, md->queue, limits);
-+	if (ret) {
-+		set_capacity(md->disk, old_size);
-+		old_map = ERR_PTR(ret);
-+		goto out;
-+	}
-+
- 	/*
- 	 * Wipe any geometry if the size of the table changed.
- 	 */
--	if (size != dm_get_size(md))
-+	if (size != old_size)
- 		memset(&md->geometry, 0, sizeof(md->geometry));
+ 	clk_bulk_disable_unprepare(MTK_STAR_NCLKS, priv->clks);
  
--	set_capacity(md->disk, size);
--
- 	dm_table_event_callback(t, event_callback, md);
- 
- 	if (dm_table_request_based(t)) {
-@@ -2242,12 +2250,6 @@ static struct dm_table *__bind(struct mapped_device *md, struct dm_table *t,
- 		t->mempools = NULL;
+ 	return 0;
+@@ -1492,6 +1494,8 @@ static __maybe_unused int mtk_star_resume(struct device *dev)
+ 			clk_bulk_disable_unprepare(MTK_STAR_NCLKS, priv->clks);
  	}
  
--	ret = dm_table_set_restrictions(t, md->queue, limits);
--	if (ret) {
--		old_map = ERR_PTR(ret);
--		goto out;
--	}
--
- 	old_map = rcu_dereference_protected(md->map, lockdep_is_held(&md->suspend_lock));
- 	rcu_assign_pointer(md->map, (void *)t);
- 	md->immutable_target_type = dm_table_get_immutable_target_type(t);
++	netif_device_attach(ndev);
++
+ 	return ret;
+ }
+ 
 -- 
 2.39.5
 
