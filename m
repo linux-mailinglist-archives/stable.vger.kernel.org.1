@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-154144-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-154155-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 98BC0ADD90E
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 19:02:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 24022ADD906
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 19:01:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 14E834A19D2
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:43:28 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AF96C4A5DFE
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:43:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D97F22DFF0E;
-	Tue, 17 Jun 2025 16:37:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B9B22EE26C;
+	Tue, 17 Jun 2025 16:37:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OLl9IbZj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wGlSGGX5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95EE52FA64D;
-	Tue, 17 Jun 2025 16:37:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCFA42EE266;
+	Tue, 17 Jun 2025 16:37:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750178242; cv=none; b=O8afHoQ2VF7X2emxLTml0IT76t77bJNxABVWCR42M+1WKg4krIiUarbihBQKAXjQ5fLBOeWB6nUGj2c2/j1H15/f/OSM1qKFQ62XZ0xZjsf14ZaN/CYSXnJ/4ljGf/UbkzQfYomLdR/AXZR/NHcsscS+FgSTgsHaMAd19+omGEI=
+	t=1750178278; cv=none; b=Tk3RxTUdoUbFZHWspOLKGOhrG6jhepqmdLdBzkt6x9OQm3N3vjigJg7drArG4mPthkdHxwmYSiFYcbgAHoRvIuIy6t5luQjBBEpBjVO+ZLjih53PiQc6/d/zVgX+mZH4q+tWRL7xd6jGXmtF+EjOqVbn22uQ2/msxCQWTRkG8CA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750178242; c=relaxed/simple;
-	bh=620cGVCDZ7m0E+jqoz6BclSzn/mqpINx20Qt4gvEFuA=;
+	s=arc-20240116; t=1750178278; c=relaxed/simple;
+	bh=BC+M0KMmaZL4t3GVPsZOtZIP6JpL3GeT2kzPHrCzkV4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UomVEAX7Uv6ryuYlAM0gn3FaCWIyyBhzSvIlcQ9fbUqY1zQ2wND20urUTNeiPsp6hcVUA+moiG/obb5aqD3SgesQxD31exGAt2SpcTz/5LUbP+Ci7yDIu1z/iHoaWAhJSNxLPE2cuoMeurHbvlgAuKqUrQZkjXiKb9dB2f7IC44=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OLl9IbZj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB240C4CEF2;
-	Tue, 17 Jun 2025 16:37:21 +0000 (UTC)
+	 MIME-Version; b=dwgxuhYLYMANGWWkInO0WU4s9AonvUS4UQbPpGONSw/fMXs/xYUdKICSwZPMaOxhz2wd5pX3vs4uvtO8HxIOyshW+Zz/+MxfneXiFx0WKyhMC3KiGpSjcfju1YoDaf24/ImPrryjL40/dkJ2XMHgkf/4+UPmKdSzaeOsXPE3aqc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wGlSGGX5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A389C4CEE3;
+	Tue, 17 Jun 2025 16:37:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750178242;
-	bh=620cGVCDZ7m0E+jqoz6BclSzn/mqpINx20Qt4gvEFuA=;
+	s=korg; t=1750178278;
+	bh=BC+M0KMmaZL4t3GVPsZOtZIP6JpL3GeT2kzPHrCzkV4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OLl9IbZjh1M4SGdSwCMBNy2J/jiU7iG6lXVBVseJ7GgrplgEe6jLF6CJbCqyaXJoY
-	 ZIe5eKPZbhh8mshVMNYpAHqOBu6F7gtjZrb/qW8tLRRXuPYqaOsyGjj0m8VMw10+jh
-	 XDx/ZH+t2jizc+iAFIaIkHkmqQtmMZVC0w8LuCbQ=
+	b=wGlSGGX54+1cLo/NB2UUPKDifURHarUOsE4KRpD3fHv7c1KIBIAnUZZbIMXIyj0uy
+	 m3virRy9MCHE2eZn2txd/+ma/pgnLr28/q0EBM0h71YFflqVRbpRWo4jMh38Ws81hY
+	 BidHfhDnDkYHZ4B1J/ctq/UAAn9LNQXAdKUNPWmk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Henry Martin <bsdhenrymartin@gmail.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
-	"Daniel Thompson (RISCstar)" <danielt@kernel.org>,
-	Lee Jones <lee@kernel.org>,
+	Wentao Guan <guanwentao@uniontech.com>,
+	WangYuli <wangyuli@uniontech.com>,
+	Even Xu <even.xu@intel.com>,
+	Jiri Kosina <jkosina@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 428/780] backlight: pm8941: Add NULL check in wled_configure()
-Date: Tue, 17 Jun 2025 17:22:16 +0200
-Message-ID: <20250617152508.898124777@linuxfoundation.org>
+Subject: [PATCH 6.15 429/780] HID: intel-thc-hid: intel-quicki2c: pass correct arguments to acpi_evaluate_object
+Date: Tue, 17 Jun 2025 17:22:17 +0200
+Message-ID: <20250617152508.937057103@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
 References: <20250617152451.485330293@linuxfoundation.org>
@@ -68,45 +68,48 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Henry Martin <bsdhenrymartin@gmail.com>
+From: Wentao Guan <guanwentao@uniontech.com>
 
-[ Upstream commit e12d3e1624a02706cdd3628bbf5668827214fa33 ]
+[ Upstream commit 37d66cf07871927ea682c491b9e9a12dd73e6b5b ]
 
-devm_kasprintf() returns NULL when memory allocation fails. Currently,
-wled_configure() does not check for this case, which results in a NULL
-pointer dereference.
+Delete unused argument, pass correct argument to acpi_evaluate_object.
 
-Add NULL check after devm_kasprintf() to prevent this issue.
+Log:
+  intel_quicki2c 0000:00:10.0: enabling device (0000 -> 0002)
+  ACPI: \_SB.PC00.THC0.ICRS: 1 arguments were passed to a non-method ACPI object (Buffer) (20230628/nsarguments-211)
+  ACPI: \_SB.PC00.THC0.ISUB: 1 arguments were passed to a non-method ACPI object (Buffer) (20230628/nsarguments-211)
 
-Fixes: f86b77583d88 ("backlight: pm8941: Convert to using %pOFn instead of device_node.name")
-Signed-off-by: Henry Martin <bsdhenrymartin@gmail.com>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Reviewed-by: "Daniel Thompson (RISCstar)" <danielt@kernel.org>
-Link: https://lore.kernel.org/r/20250401091647.22784-1-bsdhenrymartin@gmail.com
-Signed-off-by: Lee Jones <lee@kernel.org>
+Fixes: 5282e45ccbfa ("HID: intel-thc-hid: intel-quicki2c: Add THC QuickI2C ACPI interfaces")
+Signed-off-by: Wentao Guan <guanwentao@uniontech.com>
+Signed-off-by: WangYuli <wangyuli@uniontech.com>
+Reviewed-by: Even Xu <even.xu@intel.com>
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/video/backlight/qcom-wled.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/hid/intel-thc-hid/intel-quicki2c/pci-quicki2c.c | 7 +------
+ 1 file changed, 1 insertion(+), 6 deletions(-)
 
-diff --git a/drivers/video/backlight/qcom-wled.c b/drivers/video/backlight/qcom-wled.c
-index 9afe701b2a1b6..a63bb42c8f8b0 100644
---- a/drivers/video/backlight/qcom-wled.c
-+++ b/drivers/video/backlight/qcom-wled.c
-@@ -1406,9 +1406,11 @@ static int wled_configure(struct wled *wled)
- 	wled->ctrl_addr = be32_to_cpu(*prop_addr);
+diff --git a/drivers/hid/intel-thc-hid/intel-quicki2c/pci-quicki2c.c b/drivers/hid/intel-thc-hid/intel-quicki2c/pci-quicki2c.c
+index fa51155ebe393..8a8c4a46f9270 100644
+--- a/drivers/hid/intel-thc-hid/intel-quicki2c/pci-quicki2c.c
++++ b/drivers/hid/intel-thc-hid/intel-quicki2c/pci-quicki2c.c
+@@ -82,15 +82,10 @@ static int quicki2c_acpi_get_dsd_property(struct acpi_device *adev, acpi_string
+ {
+ 	acpi_handle handle = acpi_device_handle(adev);
+ 	struct acpi_buffer buffer = { ACPI_ALLOCATE_BUFFER, NULL };
+-	union acpi_object obj = { .type = type };
+-	struct acpi_object_list arg_list = {
+-		.count = 1,
+-		.pointer = &obj,
+-	};
+ 	union acpi_object *ret_obj;
+ 	acpi_status status;
  
- 	rc = of_property_read_string(dev->of_node, "label", &wled->name);
--	if (rc)
-+	if (rc) {
- 		wled->name = devm_kasprintf(dev, GFP_KERNEL, "%pOFn", dev->of_node);
--
-+		if (!wled->name)
-+			return -ENOMEM;
-+	}
- 	switch (wled->version) {
- 	case 3:
- 		u32_opts = wled3_opts;
+-	status = acpi_evaluate_object(handle, dsd_method_name, &arg_list, &buffer);
++	status = acpi_evaluate_object(handle, dsd_method_name, NULL, &buffer);
+ 	if (ACPI_FAILURE(status)) {
+ 		acpi_handle_err(handle,
+ 				"Can't evaluate %s method: %d\n", dsd_method_name, status);
 -- 
 2.39.5
 
