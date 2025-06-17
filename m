@@ -1,49 +1,49 @@
-Return-Path: <stable+bounces-152861-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-152862-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A2FDCADCE74
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 15:58:37 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id D0D49ADCE5E
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 15:55:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 489603A4EAE
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 13:53:59 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C86AD176913
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 13:55:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 37AE928D85F;
-	Tue, 17 Jun 2025 13:54:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CAE8D2E88B1;
+	Tue, 17 Jun 2025 13:54:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="WAvECyDL"
+	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="HZx1zX53"
 X-Original-To: stable@vger.kernel.org
 Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71D391A5B94;
-	Tue, 17 Jun 2025 13:54:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3A452E8881;
+	Tue, 17 Jun 2025 13:54:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750168458; cv=none; b=Z9jXF5oQLLDZfT5STHRYl4boSlcQbzO9q2Tyd9n008iV13TQyMcdn81Xzu+9LB+nTkUumA0yS2quH/qjUUEAprseCBNdmM505w+xFxT4qz/2ElxckJU3YcKHEX7NvBu+SoZXL0yw7oIyjQRYuiRkJyu6k2lmR1a79hDqUgaWKdg=
+	t=1750168464; cv=none; b=Jjx6tdpnWLnnn7Uvbnsg9YNRJ/v7a+u0Uv5JkAlWvPL/THvGfR03nxsydJMY0+pvxeJuEaF1AZiFCuvBNZWlS6CKpj5JrlVbo7zAqY+J6oJBGZTcqmGvXxMp3wN1lvp/Gxj37r62NHgX/xnRY4ToWUk0MXzyulM46fGZ4IPNt5A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750168458; c=relaxed/simple;
-	bh=B/wEmXo11hHDhNREcS4lqaU0yYVoIybs/I7Ns51Y4+M=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=H28AD5XiC7z1BSm5bZiefkezDhz3OUzixIqwVVjPhmsbiF7fnEzBhh2rFcwVIyHD4XICom+sU6Hn/aJwWxlizLhac5/21yQyXLYZPgZ3We2yjgd70PXeD7XjFrcHEZxgYF/uqqNc2sdrjqa9mlx188Ws4GDNAptNUMW+f80Kc1A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=WAvECyDL; arc=none smtp.client-ip=213.167.242.64
+	s=arc-20240116; t=1750168464; c=relaxed/simple;
+	bh=+zqqmKIUftUfrElMykNoEhWSaAdLvXt5iznvaoygcTU=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=MUu4ZOjCbrud3m6PH5QPI5V9Epe2t0Sh0xEqpbS7hbw7YX0bQl57VUl5xchY6jzeIEBYmhcTJwvnATi+dQPwYSQuhpAKeACOMdMQwH+79zBr2Chabu8QwdpA6La0wjNmbwZeDeTvtWThFofGP++wng+LF2erwPEWOEf5dpgfAvg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=HZx1zX53; arc=none smtp.client-ip=213.167.242.64
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
 Received: from [192.168.1.102] (93-61-96-190.ip145.fastwebnet.it [93.61.96.190])
-	by perceval.ideasonboard.com (Postfix) with ESMTPSA id F2D04496;
-	Tue, 17 Jun 2025 15:54:00 +0200 (CEST)
+	by perceval.ideasonboard.com (Postfix) with ESMTPSA id BE7BA4371;
+	Tue, 17 Jun 2025 15:54:04 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
-	s=mail; t=1750168441;
-	bh=B/wEmXo11hHDhNREcS4lqaU0yYVoIybs/I7Ns51Y4+M=;
-	h=From:Subject:Date:To:Cc:From;
-	b=WAvECyDLej6YB7Nr4p0QgtBBRxa3K6a8PYUVHYK/w4XRp1nCFS/leQE1oLMfmx7C6
-	 2NO9fCZzZr7jwPg8zwxLcxIuURp3EqejLFM13KY4G9S8qJFSk3PrcOdqK8dxXVXKUt
-	 k4yyR3dZev9TEUzCY+wY29ho8BujKibPRu3wVnyQ=
+	s=mail; t=1750168445;
+	bh=+zqqmKIUftUfrElMykNoEhWSaAdLvXt5iznvaoygcTU=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
+	b=HZx1zX53qc58axyY+buCnKjSNgBYyNb281iQ+d8JoeKYrFZZWX3+Uq7/tc9kqNKlx
+	 a1/Qcm2aoy5sOg+iSbY+pNP1HmmG87SmilEjPDO3A0IytziFsH+5ccIqEEf/s2TiPZ
+	 22rJvmVLKMOIunr402Td3u51fw2mZjU5VIXmY+WI=
 From: Jacopo Mondi <jacopo.mondi@ideasonboard.com>
-Subject: [PATCH v8 0/4] media: pisp-be: Split jobs creation and scheduling
-Date: Tue, 17 Jun 2025 15:53:58 +0200
-Message-Id: <20250617-pispbe-mainline-split-jobs-handling-v6-v8-0-e58ae199c17d@ideasonboard.com>
+Date: Tue, 17 Jun 2025 15:54:02 +0200
+Subject: [PATCH v8 4/4] media: pisp_be: Fix pm_runtime underrun in probe
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -52,12 +52,9 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAHZzUWgC/5WQS27DMAxEr2JoHQaSHNNxVr1H0YU+dMIillzJN
- VoEuXuZBNl10QLcDD9vMLyoSoWpqkNzUYVWrpyTiP2mUeHk0pGAo2hltd3podUwc509weQ4nTk
- R1PnMC7xnX0H2o/SOsCKYLgaDZAy1TglsLjTy193o9U30ieuSy/fdd8Vb998WUhqwjajHIUajx
- xeO5GpOPrsStyFP6ua09k96p1Hjn+m90HdocBg1Wuv7X+jXR7BCH5/yuOWRTnlXCWQ+8XJoAnX
- BBRy8pSgH1x9xanC/cQEAAA==
-X-Change-ID: 20240930-pispbe-mainline-split-jobs-handling-v6-15dc16e11e3a
+Message-Id: <20250617-pispbe-mainline-split-jobs-handling-v6-v8-4-e58ae199c17d@ideasonboard.com>
+References: <20250617-pispbe-mainline-split-jobs-handling-v6-v8-0-e58ae199c17d@ideasonboard.com>
+In-Reply-To: <20250617-pispbe-mainline-split-jobs-handling-v6-v8-0-e58ae199c17d@ideasonboard.com>
 To: Naushir Patuck <naush@raspberrypi.com>, 
  Nick Hollinghurst <nick.hollinghurst@raspberrypi.com>, 
  David Plowman <david.plowman@raspberrypi.com>, 
@@ -73,112 +70,100 @@ Cc: linux-media@vger.kernel.org, linux-rpi-kernel@lists.infradead.org,
  linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
  Jacopo Mondi <jacopo.mondi@ideasonboard.com>, stable@vger.kernel.org
 X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3441;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3265;
  i=jacopo.mondi@ideasonboard.com; h=from:subject:message-id;
- bh=B/wEmXo11hHDhNREcS4lqaU0yYVoIybs/I7Ns51Y4+M=;
- b=owEBbQKS/ZANAwAKAXI0Bo8WoVY8AcsmYgBoUXOEd2UE0FPDI8aSMq8syacdaXOZA70wDaGAV
- xPcb1e5pGiJAjMEAAEKAB0WIQS1xD1IgJogio9YOMByNAaPFqFWPAUCaFFzhAAKCRByNAaPFqFW
- PGOPEACz4XPp+Za3n5vtxK5vkPtlAdFtUwLUul0BsIZH27YgM3HPfWmSdZP+IV4I1E3jjAQbN32
- PjhHVIOwwCG9KhYi0PZ2STEeBWaWP7yEKHityfcT34cQ0+QWGUOpNB2H43OfGzPiuhScURQvmlB
- ZV9u5wLo4zaNw38NGol/0wOfS9+X0f26GmPn55GRcEHDlXlYZuXsBynV0kuOAR4D/FUXyhCOiX3
- 6sWogEtan7vlxobx4CBJhjNMcpaaSwt3BeGdW9lOiftRNh1gv0ZeTNhnV+2u28pke24EM60YQPc
- ONYI0YI0n5cy+8SAtyXV3LR40eWiEitrif8KMGMVVQF9CcYx1wJApZvM0eVrnVPbXY1quE3LKa5
- meI1xRralp1R+vBwieOmg2JoxTrpUpwTv2fWJsCC1eBI+ijDAKl/YWC8BidowXZySMEEyMzTx/A
- HBzwSKiCos+RSHm6wJFNevD+YSQZLVr+/JZzaUJUnkInJZh7+DPipKdRx7aPOKeR3WbAYlKJCmp
- nHxcuOa0rpgZpgoxe/1sAD58XxH54HlOH1/ncTkLuW2qcEVDHJ/rRkURnAW+GTnUwg7YIgPstPf
- kq4LFduraVORkh/wvsHvGWsnX2hqCOBm9c1+OjqL2YSsBPOW3ipOAM9pEBOfakfnECTO3hGMhE2
- A2BrsvE5ltBuMKw==
+ bh=+zqqmKIUftUfrElMykNoEhWSaAdLvXt5iznvaoygcTU=;
+ b=owEBbQKS/ZANAwAKAXI0Bo8WoVY8AcsmYgBoUXOEbA+dXnVyiD4fxG8s5bJd//kD7Vj5ntMJc
+ MB1aGNB5uSJAjMEAAEKAB0WIQS1xD1IgJogio9YOMByNAaPFqFWPAUCaFFzhAAKCRByNAaPFqFW
+ PO2QD/9FWbjUfguHOEg9Va0TjkdMBLIiy4tT32D8DssRg/qq2p4rWJPSjE1Hjabozj8wAgpJ8Br
+ puM+Lgw2lxhq1t5DSJvKQkkEirD3uedtCHet2vwU95CswdHsnqljKsytl67N623aNIgE9cVBEYF
+ APlOPUuY81umvgcQeYmTVdvOHGXphD5IRSuJPDiXb+FcxZWozgMIkkM3Mc5muYq6RImez9DGOKT
+ iT9C/A1isjiYMu3nYac3kMWods8nBeibf/nsrblNt3dvEo0mRqwUf/S+YunHLZMH1+8GZasW1SB
+ H5Uh4zeUlPKLBChdkjBJDZBMCUAlPPcfMxb46pYfmw/iZvZ3yU16Q5o9r9uwVBztwBGkdOK2yGQ
+ K2vmzZMSPFPzaxKPfXkb77G2QVOBxFId3FwBaXQwcviPRoEyPvonGhpb/Zs3BzsDr0RH0eo407D
+ CjRtH6tQo/KXPI14oFJGBY4JczLbJjK6zxtTtVM4baqlfZxakT6zXDS7qsE6+iQJM3JqYTDR2sr
+ PNY2qS9g8jZ5AkyURyU7s5FeHytuA8Qd/pJhqXaCFGQWiel6O2DR33bBjXww6HGkQ+WxWTo4ucL
+ Fw0sAxJZyaETE+CFXpcjIrtDpwelnpBxtr2B90KZs4joHTNuCJcFaUgPDdrEZFBP8jr6XjzubjE
+ 1rp2/O83LtcxvZw==
 X-Developer-Key: i=jacopo.mondi@ideasonboard.com; a=openpgp;
  fpr=72392EDC88144A65C701EA9BA5826A2587AD026B
 
-Currently the 'pispbe_schedule()' function does two things:
+During the probe() routine, the PiSP BE driver needs to power up the
+interface in order to identify and initialize the hardware.
 
-1) Tries to assemble a job by inspecting all the video node queues
-   to make sure all the required buffers are available
-2) Submit the job to the hardware
+The driver resumes the interface by calling the
+pispbe_runtime_resume() function directly, without going
+through the pm_runtime helpers, but later suspends it by calling
+pm_runtime_put_autosuspend().
 
-The pispbe_schedule() function is called at:
+This causes a PM usage count imbalance at probe time, notified by the
+runtime_pm framework with the below message in the system log:
 
-- video device start_streaming() time
-- video device qbuf() time
-- irq handler
+ pispbe 1000880000.pisp_be: Runtime PM usage count underflow!
 
-As assembling a job requires inspecting all queues, it is a rather
-time consuming operation which is better not run in IRQ context.
+Fix this by resuming the interface using the pm runtime helpers instead
+of calling the resume function directly and use the pm_runtime framework
+in the probe() error path. While at it, remove manual suspend of the
+interface in the remove() function. The driver cannot be unloaded if in
+use, so simply disable runtime pm.
 
-To avoid executing the time consuming job creation in interrupt
-context, split the job creation and job scheduling in two distinct
-operations. When a well-formed job is created, append it to the
-newly introduced 'pispbe->job_queue' where it will be dequeued from
-by the scheduling routine.
+To simplify the implementation, make the driver depend on PM as the
+RPI5 platform where the ISP is integrated in uses the PM framework by
+default.
 
-At start_streaming() and qbuf() time immediately try to schedule a job
-if one has been created as the irq handler routine is only called when
-a job has completed, and we can't solely rely on it for scheduling new
-jobs.
-
+Fixes: 12187bd5d4f8 ("media: raspberrypi: Add support for PiSP BE")
+Cc: stable@vger.kernel.org
+Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
 Signed-off-by: Jacopo Mondi <jacopo.mondi@ideasonboard.com>
 ---
-Changes in v8:
-- Use automatic release of *job in pispbe_prepare_job()
-- Use temporary list to release jobs without holding the main driver
-  lock
-- Collect tags
-- Rebased on rpi-6.6.y: https://github.com/raspberrypi/linux/pull/6905
-- Link to v7: https://lore.kernel.org/r/20250606-pispbe-mainline-split-jobs-handling-v6-v7-0-46169f0622b7@ideasonboard.com
+ drivers/media/platform/raspberrypi/pisp_be/Kconfig   | 1 +
+ drivers/media/platform/raspberrypi/pisp_be/pisp_be.c | 5 ++---
+ 2 files changed, 3 insertions(+), 3 deletions(-)
 
-Changes in v7:
-- Rebased on media-committers/next
-- Fix lockdep warning by using the proper spinlock_irq() primitive in
-  pispbe_prepare_job() which can race with the IRQ handler
-- Link to v6: https://lore.kernel.org/r/20240930-pispbe-mainline-split-jobs-handling-v6-v6-0-63d60f9dd10f@ideasonboard.com
+diff --git a/drivers/media/platform/raspberrypi/pisp_be/Kconfig b/drivers/media/platform/raspberrypi/pisp_be/Kconfig
+index 46765a2e4c4d1573757ff842f208834216e582cb..a9e51fd94aadc6add70f883bfcea0c9fa91f0c4b 100644
+--- a/drivers/media/platform/raspberrypi/pisp_be/Kconfig
++++ b/drivers/media/platform/raspberrypi/pisp_be/Kconfig
+@@ -3,6 +3,7 @@ config VIDEO_RASPBERRYPI_PISP_BE
+ 	depends on V4L_PLATFORM_DRIVERS
+ 	depends on VIDEO_DEV
+ 	depends on ARCH_BCM2835 || COMPILE_TEST
++	depends on PM
+ 	select VIDEO_V4L2_SUBDEV_API
+ 	select MEDIA_CONTROLLER
+ 	select VIDEOBUF2_DMA_CONTIG
+diff --git a/drivers/media/platform/raspberrypi/pisp_be/pisp_be.c b/drivers/media/platform/raspberrypi/pisp_be/pisp_be.c
+index ccc6cb99868b842ac0d295f9ec28470303e60788..be794a12362020f42b3cf5bd291b4a1625543b5f 100644
+--- a/drivers/media/platform/raspberrypi/pisp_be/pisp_be.c
++++ b/drivers/media/platform/raspberrypi/pisp_be/pisp_be.c
+@@ -1725,7 +1725,7 @@ static int pispbe_probe(struct platform_device *pdev)
+ 	pm_runtime_use_autosuspend(pispbe->dev);
+ 	pm_runtime_enable(pispbe->dev);
+ 
+-	ret = pispbe_runtime_resume(pispbe->dev);
++	ret = pm_runtime_resume_and_get(pispbe->dev);
+ 	if (ret)
+ 		goto pm_runtime_disable_err;
+ 
+@@ -1747,7 +1747,7 @@ static int pispbe_probe(struct platform_device *pdev)
+ disable_devs_err:
+ 	pispbe_destroy_devices(pispbe);
+ pm_runtime_suspend_err:
+-	pispbe_runtime_suspend(pispbe->dev);
++	pm_runtime_put(pispbe->dev);
+ pm_runtime_disable_err:
+ 	pm_runtime_dont_use_autosuspend(pispbe->dev);
+ 	pm_runtime_disable(pispbe->dev);
+@@ -1761,7 +1761,6 @@ static void pispbe_remove(struct platform_device *pdev)
+ 
+ 	pispbe_destroy_devices(pispbe);
+ 
+-	pispbe_runtime_suspend(pispbe->dev);
+ 	pm_runtime_dont_use_autosuspend(pispbe->dev);
+ 	pm_runtime_disable(pispbe->dev);
+ }
 
-v5->v6:
-- Make the driver depend on PM
-  - Simplify the probe() routine by using pm_runtime_
-  - Remove suspend call from remove()
-
-v4->v5:
-- Use appropriate locking constructs:
-  - spin_lock_irq() for pispbe_prepare_job() called from non irq context
-  - spin_lock_irqsave() for pispbe_schedule() called from irq context
-  - Remove hw_lock from ready_queue accesses in stop_streaming and
-    start_streaming
-  - Fix trivial indentation mistake in 4/4
-
-v3->v4:
-- Expand commit message in 2/4 to explain why removing validation in schedule()
-  is safe
-- Drop ready_lock spinlock
-- Use non _irqsave version of safe_guard(spinlock
-- Support !CONFIG_PM in 4/4 by calling the enable/disable routines directly
-  and adjust pm_runtime usage as suggested by Laurent
-
-v2->v3:
-- Mark pispbe_runtime_resume() as __maybe_unused
-- Add fixes tags where appropriate
-
-v1->v2:
-- Add two patches to address Laurent's comments separately
-- use scoped_guard() when possible
-- Add patch to fix runtime_pm imbalance
-
----
-Jacopo Mondi (4):
-      media: pisp_be: Drop reference to non-existing function
-      media: pisp_be: Remove config validation from schedule()
-      media: pisp_be: Split jobs creation and scheduling
-      media: pisp_be: Fix pm_runtime underrun in probe
-
- drivers/media/platform/raspberrypi/pisp_be/Kconfig |   1 +
- .../media/platform/raspberrypi/pisp_be/pisp_be.c   | 196 ++++++++++-----------
- 2 files changed, 98 insertions(+), 99 deletions(-)
----
-base-commit: ce5cac69b2edac3e3246fee03e8f4c2a1075238b
-change-id: 20240930-pispbe-mainline-split-jobs-handling-v6-15dc16e11e3a
-
-Best regards,
 -- 
-Jacopo Mondi <jacopo.mondi@ideasonboard.com>
+2.49.0
 
 
