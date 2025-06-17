@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-153098-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153101-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B484ADD24E
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 17:41:10 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id CDABAADD297
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 17:44:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BB9ED3BE585
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 15:40:40 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3135F7A2194
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 15:39:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D45C92ECD0B;
-	Tue, 17 Jun 2025 15:40:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA5712E9753;
+	Tue, 17 Jun 2025 15:41:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jCz05Z1u"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H2prNNPA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C0892DF3C9;
-	Tue, 17 Jun 2025 15:40:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85FE620F090;
+	Tue, 17 Jun 2025 15:41:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750174859; cv=none; b=OQzZZMP+dck1MFNrmcSlNzEWrH8Nymm7Vfc/G55GMIWZfuWJfpAazK7+jBXcG5cSI88tJgVHMH4bEtSRxduyf4u740WALP0RLBDY4bQfgHbgasTQVxefUhAS8gPWwh5T9BOSpgIJ2OGaohjB+JLk+EokmmBsurCj74ii5bavC30=
+	t=1750174868; cv=none; b=cs6nPPyCBke9oa4UeSYXw65j8HfNJVoxUwRj8YfjqRcNYGd86e+/zWwcndlzZlGhhEv18wCC9E7P2DIy2clAR6mLSpbyYaNki6bhLwPIU/MfzogTMGfCLywGAyo+0AGRaxtHuTPqUn8GG85eIWeK1RbJI8NnfwAailJJ7SvR0Ps=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750174859; c=relaxed/simple;
-	bh=EHP67hnE3JcRR/spdE5zlDhdNSDxrw5sov2kaxVDD34=;
+	s=arc-20240116; t=1750174868; c=relaxed/simple;
+	bh=nEvAb2rWD4NGGlHxLnnjHlAwxRWzIk5uwiot+gSm/Xs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Zl+IcD9Fdt1ytIjy+UKC9+9+Q6Iw+nhXUNfsS5yNSb2rfRrbUj5VhJebHA6ovsjv+1QaBg+bfKZJWK7IwykA4qI2EtbgEsCs6A21wUWtDcUqkz9vEr5Rm64vpRlqI/ozsEu66725qnkv0w5I8SPDz0Am1hc2mrY+/N0yKMQSzxc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jCz05Z1u; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2062C4CEE3;
-	Tue, 17 Jun 2025 15:40:58 +0000 (UTC)
+	 MIME-Version; b=VY2EyK4iXrL3lYm1dEFFQb4KqKxC8UGQNZcXISTYoDb8PEC4JnDX4cm9ezMjDdeW311dzsiPje5SrJ+vcnTtGO508CQCj+Di3D7kbUl+BIhcF4nMgt5LAMH66UhQtivrj4WT2Qlcbm4l+095pIpr/UhkM5YfAjvmbNipT5xV+mo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H2prNNPA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0030EC4CEE3;
+	Tue, 17 Jun 2025 15:41:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750174859;
-	bh=EHP67hnE3JcRR/spdE5zlDhdNSDxrw5sov2kaxVDD34=;
+	s=korg; t=1750174868;
+	bh=nEvAb2rWD4NGGlHxLnnjHlAwxRWzIk5uwiot+gSm/Xs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jCz05Z1ucLKLgHx6NXcUyZiVR1W//IYKC8mvX+hpoUPZcXFQiaJmNGt+uEEMSGbnk
-	 TuAajFdDAlf9hYpx4VbIJec/3nq3Vdw2BqMn7oumTeJAS+rSqjjxQJkY6ThBgj8mNI
-	 wv4aDrCxpGZFPYVhfCwqwhAzZt3dfgRn8hSKvTXM=
+	b=H2prNNPASL5rv4j1NR31Xtr63NbGluQnQpOPoGgaNhlRaQaUxCQQW1lzOB3VNhxtm
+	 Ne0HViJYGQs7eT10NaQiel2RYUq3I+3Ju3hsH/Eta7WQw977Q0OWZkEpxcfZtX5b3v
+	 CIVQVRxRzlBAH20WFD9JD/NzyfRLH2ug3QKyPk60=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mark Rutland <mark.rutland@arm.com>,
 	Mark Brown <broonie@kernel.org>,
-	Marc Zyngier <maz@kernel.org>,
-	Will Deacon <will@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
 	Catalin Marinas <catalin.marinas@arm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 067/512] arm64/fpsimd: Discard stale CPU state when handling SME traps
-Date: Tue, 17 Jun 2025 17:20:33 +0200
-Message-ID: <20250617152422.291172811@linuxfoundation.org>
+Subject: [PATCH 6.12 068/512] arm64/fpsimd: Dont corrupt FPMR when streaming mode changes
+Date: Tue, 17 Jun 2025 17:20:34 +0200
+Message-ID: <20250617152422.329455032@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
 References: <20250617152419.512865572@linuxfoundation.org>
@@ -71,97 +69,69 @@ Content-Transfer-Encoding: 8bit
 
 From: Mark Brown <broonie@kernel.org>
 
-[ Upstream commit d3eaab3c70905c5467e5c4ea403053d67505adeb ]
+[ Upstream commit e5fa85fce08b21ed41643cb7968bf66bbd0532e3 ]
 
-The logic for handling SME traps manipulates saved FPSIMD/SVE/SME state
-incorrectly, and a race with preemption can result in a task having
-TIF_SME set and TIF_FOREIGN_FPSTATE clear even though the live CPU state
-is stale (e.g. with SME traps enabled). This can result in warnings from
-do_sme_acc() where SME traps are not expected while TIF_SME is set:
+When the effective value of PSTATE.SM is changed from 0 to 1 or from 1
+to 0 by any method, an entry or exit to/from streaming SVE mode is
+performed, and hardware automatically resets a number of registers. As
+of ARM DDI 0487 L.a, this means:
 
-|        /* With TIF_SME userspace shouldn't generate any traps */
-|        if (test_and_set_thread_flag(TIF_SME))
-|                WARN_ON(1);
+* All implemented bits of the SVE vector registers are set to zero.
 
-This is very similar to the SVE issue we fixed in commit:
+* All implemented bits of the SVE predicate registers are set to zero.
 
-  751ecf6afd6568ad ("arm64/sve: Discard stale CPU state when handling SVE traps")
+* All implemented bits of FFR are set to zero, if FFR is implemented in
+  the new mode.
 
-The race can occur when the SME trap handler is preempted before and
-after manipulating the saved FPSIMD/SVE/SME state, starting and ending on
-the same CPU, e.g.
+* FPSR is set to 0x0000_0000_0800_009f.
 
-| void do_sme_acc(unsigned long esr, struct pt_regs *regs)
-| {
-|         // Trap on CPU 0 with TIF_SME clear, SME traps enabled
-|         // task->fpsimd_cpu is 0.
-|         // per_cpu_ptr(&fpsimd_last_state, 0) is task.
-|
-|         ...
-|
-|         // Preempted; migrated from CPU 0 to CPU 1.
-|         // TIF_FOREIGN_FPSTATE is set.
-|
-|         get_cpu_fpsimd_context();
-|
-|         /* With TIF_SME userspace shouldn't generate any traps */
-|         if (test_and_set_thread_flag(TIF_SME))
-|                 WARN_ON(1);
-|
-|         if (!test_thread_flag(TIF_FOREIGN_FPSTATE)) {
-|                 unsigned long vq_minus_one =
-|                         sve_vq_from_vl(task_get_sme_vl(current)) - 1;
-|                 sme_set_vq(vq_minus_one);
-|
-|                 fpsimd_bind_task_to_cpu();
-|         }
-|
-|         put_cpu_fpsimd_context();
-|
-|         // Preempted; migrated from CPU 1 to CPU 0.
-|         // task->fpsimd_cpu is still 0
-|         // If per_cpu_ptr(&fpsimd_last_state, 0) is still task then:
-|         // - Stale HW state is reused (with SME traps enabled)
-|         // - TIF_FOREIGN_FPSTATE is cleared
-|         // - A return to userspace skips HW state restore
-| }
+* FPMR is set to 0, if FPMR is implemented.
 
-Fix the case where the state is not live and TIF_FOREIGN_FPSTATE is set
-by calling fpsimd_flush_task_state() to detach from the saved CPU
-state. This ensures that a subsequent context switch will not reuse the
-stale CPU state, and will instead set TIF_FOREIGN_FPSTATE, forcing the
-new state to be reloaded from memory prior to a return to userspace.
+Currently task_fpsimd_load() restores FPMR before restoring SVCR (which
+is an accessor for PSTATE.{SM,ZA}), and so the restored value of FPMR
+may be clobbered if the restored value of PSTATE.SM happens to differ
+from the initial value of PSTATE.SM.
 
-Note: this was originallly posted as [1].
+Fix this by moving the restore of FPMR later.
 
-Fixes: 8bd7f91c03d8 ("arm64/sme: Implement traps and syscall handling for SME")
-Reported-by: Mark Rutland <mark.rutland@arm.com>
+Note: this was originally posted as [1].
+
+Fixes: 203f2b95a882 ("arm64/fpsimd: Support FEAT_FPMR")
 Signed-off-by: Mark Brown <broonie@kernel.org>
-Link: https://lore.kernel.org/linux-arm-kernel/20241204-arm64-sme-reenable-v2-1-bae87728251d@kernel.org/
+Link: https://lore.kernel.org/linux-arm-kernel/20241204-arm64-sme-reenable-v2-2-bae87728251d@kernel.org/
 [ Rutland: rewrite commit message ]
 Signed-off-by: Mark Rutland <mark.rutland@arm.com>
-Cc: Marc Zyngier <maz@kernel.org>
-Cc: Will Deacon <will@kernel.org>
-Link: https://lore.kernel.org/r/20250409164010.3480271-6-mark.rutland@arm.com
+Link: https://lore.kernel.org/r/20250409164010.3480271-7-mark.rutland@arm.com
 Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/kernel/fpsimd.c | 2 ++
- 1 file changed, 2 insertions(+)
+ arch/arm64/kernel/fpsimd.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
 diff --git a/arch/arm64/kernel/fpsimd.c b/arch/arm64/kernel/fpsimd.c
-index 1aab12a320bbd..42b6740d1a64c 100644
+index 42b6740d1a64c..12982f1570fca 100644
 --- a/arch/arm64/kernel/fpsimd.c
 +++ b/arch/arm64/kernel/fpsimd.c
-@@ -1460,6 +1460,8 @@ void do_sme_acc(unsigned long esr, struct pt_regs *regs)
- 		sme_set_vq(vq_minus_one);
+@@ -359,9 +359,6 @@ static void task_fpsimd_load(void)
+ 	WARN_ON(preemptible());
+ 	WARN_ON(test_thread_flag(TIF_KERNEL_FPSTATE));
  
- 		fpsimd_bind_task_to_cpu();
-+	} else {
-+		fpsimd_flush_task_state(current);
+-	if (system_supports_fpmr())
+-		write_sysreg_s(current->thread.uw.fpmr, SYS_FPMR);
+-
+ 	if (system_supports_sve() || system_supports_sme()) {
+ 		switch (current->thread.fp_type) {
+ 		case FP_STATE_FPSIMD:
+@@ -413,6 +410,9 @@ static void task_fpsimd_load(void)
+ 			restore_ffr = system_supports_fa64();
  	}
  
- 	put_cpu_fpsimd_context();
++	if (system_supports_fpmr())
++		write_sysreg_s(current->thread.uw.fpmr, SYS_FPMR);
++
+ 	if (restore_sve_regs) {
+ 		WARN_ON_ONCE(current->thread.fp_type != FP_STATE_SVE);
+ 		sve_load_state(sve_pffr(&current->thread),
 -- 
 2.39.5
 
