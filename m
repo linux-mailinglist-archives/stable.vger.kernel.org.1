@@ -1,60 +1,54 @@
-Return-Path: <stable+bounces-154065-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-154068-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA324ADD834
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:53:08 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 41BBFADD7F9
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:50:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 187FC19476B8
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:38:49 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 85B0A4A434C
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:38:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CAA6E2F1994;
-	Tue, 17 Jun 2025 16:33:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3AF5D2DFF29;
+	Tue, 17 Jun 2025 16:33:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0/QEsx+u"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aDDu9Kf/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83574188006;
-	Tue, 17 Jun 2025 16:33:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC3F52DFF1B;
+	Tue, 17 Jun 2025 16:33:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750177990; cv=none; b=RCbkFHTXYydEi8JB82z8+LmYFQFM1ClIQsY1FLqOuCra4WoYYghYCOPyMLMF5tnABsxk+zQIe8/F04RcMmWAB4krhZkW/nB5n/J7AZtYWhSdgzuAG12YIYE4szc+4t41OZIuxh3EVdtHfingkf5NBryXezskwVCTpi7ittXylmo=
+	t=1750178001; cv=none; b=BjAvcL8j7E3Z+4fgOyMt7aC56quVIRNlVJxmMh6u5iwqUu1yAksPuLOYIAUlMKGHySWnu4mdKNDgCQHku8CzIPfIctv+HC6rfT9IsUtt8tdIYwZguAxrRqOFOwTJFTINRTYXGzWlTnvOZJmcc8+JhzaroVk6ZEEWC0B6/UEIq+s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750177990; c=relaxed/simple;
-	bh=JThAhBUL5Pu9yG94BNM83LRYfVJgKjTEv6GYxM4EPQI=;
+	s=arc-20240116; t=1750178001; c=relaxed/simple;
+	bh=pSsAulrkD1Z49+w5y6MTu2A7zgAehUVl+parOAoc+KM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=S/aTjn92PE3MccpCGFl1Zc0j3dE5qlU96WQAMHTZODV3smUi3EoEoxUd2mk3XFwM1WBXJNaADKdahl/lVYjO3mtfRUAcei++oRfAEeFHU7pTdI61K7bQUPS3GhndsL6Z2jf8WAQiXnOv5nia4G6WnHH+Rm4zH9x10kXCGFNKwPI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0/QEsx+u; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6943C4CEE7;
-	Tue, 17 Jun 2025 16:33:09 +0000 (UTC)
+	 MIME-Version; b=TaDKjokoWi42jzDOsNN9+5g/H1h15Vs5TYZO5lm7WgLuoJsXNB1JgDaG8b9INqx80oHn24uqS26iJsliyyYHt8BkzzyDERda8ywOrWnwaJL3pEIAfCpx3EHIhbBlrlYreSeO5oFVeRQFLDI4bS7uzHJKh1XygH7I2p8F4/7qP+A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aDDu9Kf/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D579C4CEE3;
+	Tue, 17 Jun 2025 16:33:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750177990;
-	bh=JThAhBUL5Pu9yG94BNM83LRYfVJgKjTEv6GYxM4EPQI=;
+	s=korg; t=1750178000;
+	bh=pSsAulrkD1Z49+w5y6MTu2A7zgAehUVl+parOAoc+KM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0/QEsx+usmIZWWz3KbIWADidCD8mMWrBjnuMRTtJgZkRnNUhDfmYqKszoHNZTSS7H
-	 m/v9kUflJ1Xgg6+bvhwO8758yGKan4kHXd7Ic1bi439foTpGt0GKQSvJhCPT+OOeuK
-	 nethPfXiA5v0bAVat35Z60NoX2tDgDZ3mEeJFWJA=
+	b=aDDu9Kf/EZjQgV5eytcwdp7Ggb5Mjxu1p17UtV1lYMKJ30XzCfRqOPt7zMzhWOqIx
+	 JRJ2UmIAk6zG4tyD5us++Sc84y8rNpOwFgkvztQkqpbmAy0gSG6JzZSGM2YIiYUcKf
+	 S+zgG2eetcUG9CnpBiSOpnueHtX7EF9FTvzBUvAM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Murad Masimov <m.masimov@mt-integration.ru>,
-	Jan Kara <jack@suse.cz>,
-	Joseph Qi <joseph.qi@linux.alibaba.com>,
-	Mark Fasheh <mark@fasheh.com>,
-	Joel Becker <jlbec@evilplan.org>,
-	Junxiao Bi <junxiao.bi@oracle.com>,
-	Changwei Ge <gechangwei@live.cn>,
-	Jun Piao <piaojun@huawei.com>,
+	Wentao Liang <vulab@iscas.ac.cn>,
+	Ryusuke Konishi <konishi.ryusuke@gmail.com>,
 	Andrew Morton <akpm@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 393/780] ocfs2: fix possible memory leak in ocfs2_finish_quota_recovery
-Date: Tue, 17 Jun 2025 17:21:41 +0200
-Message-ID: <20250617152507.457069965@linuxfoundation.org>
+Subject: [PATCH 6.15 394/780] nilfs2: add pointer check for nilfs_direct_propagate()
+Date: Tue, 17 Jun 2025 17:21:42 +0200
+Message-ID: <20250617152507.500313512@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
 References: <20250617152451.485330293@linuxfoundation.org>
@@ -73,48 +67,54 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Murad Masimov <m.masimov@mt-integration.ru>
+From: Wentao Liang <vulab@iscas.ac.cn>
 
-[ Upstream commit cdc3ed3035d0fe934aa1d9b78ce256752fd3bb7d ]
+[ Upstream commit f43f02429295486059605997bc43803527d69791 ]
 
-If ocfs2_finish_quota_recovery() exits due to an error before passing all
-rc_list elements to ocfs2_recover_local_quota_file() then it can lead to a
-memory leak as rc_list may still contain elements that have to be freed.
+Patch series "nilfs2: improve sanity checks in dirty state propagation".
 
-Release all memory allocated by ocfs2_add_recovery_chunk() using
-ocfs2_free_quota_recovery() instead of kfree().
+This fixes one missed check for block mapping anomalies and one improper
+return of an error code during a preparation step for log writing, thereby
+improving checking for filesystem corruption on writeback.
 
-Found by Linux Verification Center (linuxtesting.org) with Syzkaller.
+This patch (of 2):
 
-Link: https://lkml.kernel.org/r/20250402065628.706359-2-m.masimov@mt-integration.ru
-Fixes: 2205363dce74 ("ocfs2: Implement quota recovery")
-Signed-off-by: Murad Masimov <m.masimov@mt-integration.ru>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Reviewed-by: Joseph Qi <joseph.qi@linux.alibaba.com>
-Cc: Mark Fasheh <mark@fasheh.com>
-Cc: Joel Becker <jlbec@evilplan.org>
-Cc: Junxiao Bi <junxiao.bi@oracle.com>
-Cc: Changwei Ge <gechangwei@live.cn>
-Cc: Jun Piao <piaojun@huawei.com>
+In nilfs_direct_propagate(), the printer get from nilfs_direct_get_ptr()
+need to be checked to ensure it is not an invalid pointer.
+
+If the pointer value obtained by nilfs_direct_get_ptr() is
+NILFS_BMAP_INVALID_PTR, means that the metadata (in this case, i_bmap in
+the nilfs_inode_info struct) that should point to the data block at the
+buffer head of the argument is corrupted and the data block is orphaned,
+meaning that the file system has lost consistency.
+
+Add a value check and return -EINVAL when it is an invalid pointer.
+
+Link: https://lkml.kernel.org/r/20250428173808.6452-1-konishi.ryusuke@gmail.com
+Link: https://lkml.kernel.org/r/20250428173808.6452-2-konishi.ryusuke@gmail.com
+Fixes: 36a580eb489f ("nilfs2: direct block mapping")
+Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
+Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ocfs2/quota_local.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/nilfs2/direct.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/fs/ocfs2/quota_local.c b/fs/ocfs2/quota_local.c
-index e272429da3db3..de7f12858729a 100644
---- a/fs/ocfs2/quota_local.c
-+++ b/fs/ocfs2/quota_local.c
-@@ -674,7 +674,7 @@ int ocfs2_finish_quota_recovery(struct ocfs2_super *osb,
- 			break;
- 	}
- out:
--	kfree(rec);
-+	ocfs2_free_quota_recovery(rec);
- 	return status;
- }
- 
+diff --git a/fs/nilfs2/direct.c b/fs/nilfs2/direct.c
+index 893ab36824cc2..2d8dc6b35b547 100644
+--- a/fs/nilfs2/direct.c
++++ b/fs/nilfs2/direct.c
+@@ -273,6 +273,9 @@ static int nilfs_direct_propagate(struct nilfs_bmap *bmap,
+ 	dat = nilfs_bmap_get_dat(bmap);
+ 	key = nilfs_bmap_data_get_key(bmap, bh);
+ 	ptr = nilfs_direct_get_ptr(bmap, key);
++	if (ptr == NILFS_BMAP_INVALID_PTR)
++		return -EINVAL;
++
+ 	if (!buffer_nilfs_volatile(bh)) {
+ 		oldreq.pr_entry_nr = ptr;
+ 		newreq.pr_entry_nr = ptr;
 -- 
 2.39.5
 
