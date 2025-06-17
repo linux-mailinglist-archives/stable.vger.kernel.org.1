@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-152918-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-152898-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB96CADD176
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 17:31:02 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 55B20ADD160
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 17:30:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0E1F3189653D
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 15:31:18 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D503017C347
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 15:29:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E84482E9737;
-	Tue, 17 Jun 2025 15:30:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A4C52EB5D6;
+	Tue, 17 Jun 2025 15:29:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Dx8Iojtf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tl3RCtbG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3F732EF659;
-	Tue, 17 Jun 2025 15:30:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEB302E92AA;
+	Tue, 17 Jun 2025 15:29:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750174259; cv=none; b=UepDHg+DhT3goJbf0VWG+xwFr72OCfRGCsoKrW0oWzN2LmAY+3RGMUOqfjgPjmVdwi7iU+NxnEQQ+kikFqw2mbVCiBixyBf6qsynphg1zzYjQ2Vnc0omhuMwTGLan7Zn5A/srM0qDd8wBlE6Bqz10rpUNJzgyHWxP9083WWTG0M=
+	t=1750174185; cv=none; b=eAsXUE94/Gsm0vR3tEOlOwxBqwYF+3h7FHyMOD4gBcl4vRlgzogcIjwFeddZ6pPQLBxiv+6zQiupzuy+dcrDUXNowD5nVanRS+pK34FtaWuDhP+sQfll+DAqHok/dpu6wtgekzv/xiqR9Z1V7PY9F8vROST/ncFKL8MEQ1I9n8o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750174259; c=relaxed/simple;
-	bh=32DMe4OuZ7muyh2aXgAqiUkuHrwvvYXqU71bTxuWMi4=;
+	s=arc-20240116; t=1750174185; c=relaxed/simple;
+	bh=bmdBg43wsdCvpN0FGQtEg/FkVTW2PaYbWTuwDFKBGko=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=h31szKwx9h4wWHIkhE8MZ16qQiiMMJ7CSOGzbTxlhJxxdtAcY0lKR0HOHyXUrelWnO2EXYQIUZfdIPhqXlhroy5fwtdyiqZB4513ekYRRuUZm/YmY/D6cDiAZL7TeK5E/gN0qI5t+fU2Q2kd0zaXkvT943QCTPpEoM/sWTp9hp0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Dx8Iojtf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1DFC7C4CEE3;
-	Tue, 17 Jun 2025 15:30:58 +0000 (UTC)
+	 MIME-Version; b=PVeTdB5GgcSs5Tbs2s2dvcVOr822kw8Xbd+DKve381z6/X4HdCT6eJv52hHSBCi3zq2vwMtwmg78ASDPDvrmsSrcOn0V8xI6O6Th9XBApZ5wlUZyFKUku2yRP9VQt1pqp9CcxVxhfajQb6tt6OYBodxdLJxe3k0ZwwoRRK82/T8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tl3RCtbG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0A90C4CEE3;
+	Tue, 17 Jun 2025 15:29:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750174259;
-	bh=32DMe4OuZ7muyh2aXgAqiUkuHrwvvYXqU71bTxuWMi4=;
+	s=korg; t=1750174185;
+	bh=bmdBg43wsdCvpN0FGQtEg/FkVTW2PaYbWTuwDFKBGko=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Dx8IojtfUbaSlxVBHx1sy0DW82yflOThgsF9wFawvD7C6gFyCccy1bfJxg9FzhJSg
-	 1YP9sMjZuPE5I0ws9zNClxDcM6n0M7HjCHjqcZGNXN6LR4Ff4LvGzmiu5gOYtcy02r
-	 dhgqjlRxD6jUEYBgJ5ZodY5qH1VkzXR4AoYC9dr4=
+	b=tl3RCtbGEv26QduiZDFhE9rca1nhN+VMeA1EKCf+a+YOf4PRGdOZOGgtUjfKNLz9g
+	 JgNs21BlbkZ1MxBfGViD7X8G4OrKCqQ/FjG51apt8n1X23kgLl5yQPnNfADBslnF3G
+	 Zq4SB4j5FA37fr10/y6siieH+2B/BLjEtltTqzYE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Imre Kaloz <kaloz@openwrt.org>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Gabor Juhos <j4g8y7@gmail.com>,
-	Linus Walleij <linus.walleij@linaro.org>
-Subject: [PATCH 6.6 003/356] pinctrl: armada-37xx: set GPIO output value before setting direction
-Date: Tue, 17 Jun 2025 17:21:58 +0200
-Message-ID: <20250617152338.357285527@linuxfoundation.org>
+	Manu Bretelle <chantr4@gmail.com>,
+	"Gautham R. Shenoy" <gautham.shenoy@amd.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
+Subject: [PATCH 6.6 004/356] acpi-cpufreq: Fix nominal_freq units to KHz in get_max_boost_ratio()
+Date: Tue, 17 Jun 2025 17:21:59 +0200
+Message-ID: <20250617152338.396363842@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250617152338.212798615@linuxfoundation.org>
 References: <20250617152338.212798615@linuxfoundation.org>
@@ -67,63 +66,46 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Gabor Juhos <j4g8y7@gmail.com>
+From: Gautham R. Shenoy <gautham.shenoy@amd.com>
 
-commit e6ebd4942981f8ad37189bbb36a3c8495e21ef4c upstream.
+commit cb6a85f38f456b086c366e346ebb67ffa70c7243 upstream.
 
-Changing the direction before updating the output value in the
-OUTPUT_VAL register may result in a glitch on the output line
-if the previous value in the OUTPUT_VAL register is different
-from the one we want to set.
+commit 083466754596 ("cpufreq: ACPI: Fix max-frequency computation")
+modified get_max_boost_ratio() to return the nominal_freq advertised
+in the _CPC object. This was for the purposes of computing the maximum
+frequency. The frequencies advertised in _CPC objects are in
+MHz. However, cpufreq expects the frequency to be in KHz. Since the
+nominal_freq returned by get_max_boost_ratio() was not in KHz but
+instead in MHz,the cpuinfo_max_frequency that was computed using this
+nominal_freq was incorrect and an invalid value which resulted in
+cpufreq reporting the P0 frequency as the cpuinfo_max_freq.
 
-In order to avoid that, update the output value before changing
-the direction.
+Fix this by converting the nominal_freq to KHz before returning the
+same from get_max_boost_ratio().
 
-Cc: stable@vger.kernel.org
-Fixes: 6702abb3bf23 ("pinctrl: armada-37xx: Fix direction_output() callback behavior")
-Signed-off-by: Imre Kaloz <kaloz@openwrt.org>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Signed-off-by: Gabor Juhos <j4g8y7@gmail.com>
-Link: https://lore.kernel.org/20250514-pinctrl-a37xx-fixes-v2-2-07e9ac1ab737@gmail.com
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+Reported-by: Manu Bretelle <chantr4@gmail.com>
+Closes: https://lore.kernel.org/lkml/aDaB63tDvbdcV0cg@HQ-GR2X1W2P57/
+Fixes: 083466754596 ("cpufreq: ACPI: Fix max-frequency computation")
+Signed-off-by: Gautham R. Shenoy <gautham.shenoy@amd.com>
+Cc: 6.14+ <stable@vger.kernel.org> # 6.14+
+Link: https://patch.msgid.link/20250529085143.709-1-gautham.shenoy@amd.com
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pinctrl/mvebu/pinctrl-armada-37xx.c |   15 +++++++--------
- 1 file changed, 7 insertions(+), 8 deletions(-)
+ drivers/cpufreq/acpi-cpufreq.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/pinctrl/mvebu/pinctrl-armada-37xx.c
-+++ b/drivers/pinctrl/mvebu/pinctrl-armada-37xx.c
-@@ -417,23 +417,22 @@ static int armada_37xx_gpio_direction_ou
- 					     unsigned int offset, int value)
- {
- 	struct armada_37xx_pinctrl *info = gpiochip_get_data(chip);
--	unsigned int val_offset = offset;
--	unsigned int reg = OUTPUT_EN;
-+	unsigned int en_offset = offset;
-+	unsigned int reg = OUTPUT_VAL;
- 	unsigned int mask, val, ret;
+--- a/drivers/cpufreq/acpi-cpufreq.c
++++ b/drivers/cpufreq/acpi-cpufreq.c
+@@ -659,7 +659,7 @@ static u64 get_max_boost_ratio(unsigned
+ 	nominal_perf = perf_caps.nominal_perf;
  
- 	armada_37xx_update_reg(&reg, &offset);
- 	mask = BIT(offset);
-+	val = value ? mask : 0;
+ 	if (nominal_freq)
+-		*nominal_freq = perf_caps.nominal_freq;
++		*nominal_freq = perf_caps.nominal_freq * 1000;
  
--	ret = regmap_update_bits(info->regmap, reg, mask, mask);
--
-+	ret = regmap_update_bits(info->regmap, reg, mask, val);
- 	if (ret)
- 		return ret;
- 
--	reg = OUTPUT_VAL;
--	armada_37xx_update_reg(&reg, &val_offset);
-+	reg = OUTPUT_EN;
-+	armada_37xx_update_reg(&reg, &en_offset);
- 
--	val = value ? mask : 0;
--	regmap_update_bits(info->regmap, reg, mask, val);
-+	regmap_update_bits(info->regmap, reg, mask, mask);
- 
- 	return 0;
- }
+ 	if (!highest_perf || !nominal_perf) {
+ 		pr_debug("CPU%d: highest or nominal performance missing\n", cpu);
 
 
 
