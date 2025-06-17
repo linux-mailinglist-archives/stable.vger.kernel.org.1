@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-153771-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-154236-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 44464ADD6C6
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:37:13 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A244ADD865
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:55:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 27E7F1944B02
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:24:06 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BA5584A46D8
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:46:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6242F239E85;
-	Tue, 17 Jun 2025 16:17:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99E992E8E02;
+	Tue, 17 Jun 2025 16:42:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jZd0/MnW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Tjx4MEgV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FFB52E7163;
-	Tue, 17 Jun 2025 16:17:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5581B2E7181;
+	Tue, 17 Jun 2025 16:42:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750177045; cv=none; b=uZMKhAjVuFpU20IXXGq6l1jqz495Hj2cM1r3QUkE1cgIDIqjBnlI12JYNPsoyreDVxLXAXZLJHOKIxzRFy/lg1Nb2B4VHjsTl4IxbzZQvL8aXJz77o0Tt8eSKXDSCiPTCX+K+YA8YO3bAKF4PpdvDUR/m5QZ4c6YbrI3ZYXfJcs=
+	t=1750178538; cv=none; b=jA7+QCJVgXKXV85MY2CqB53k7iWEy4Ir+uwoUJVwg/oonEZ3P1isHXlgeNtjHZy2adiKfVfxnV29bCvG83Ecqrz1Xtxoer5eU2Sk2iz6Y8AlxEx/qSNTysKKJ2STIZtFpMR0ntkFOj1gp3NQdo0AOyfgUFSFidVM0zIGJGmuk44=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750177045; c=relaxed/simple;
-	bh=+J1ZxDdKzuEBCXOdhFVi0R43trBjrZmip4HoY5ZxvXA=;
+	s=arc-20240116; t=1750178538; c=relaxed/simple;
+	bh=ZEprKMF5XeyFAsYBnHOVBd0r5gYgPRflJXflub+TSyw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Y6zale+hMIgpAKVSkzopxX6NrJZ+usouDrVzwWVFtsPqVjo3bpsx8JIUhjPJfO3JBjRmYaLbJ9OJxErr690C49cLuWA0jvjOrTUT6WrVgFRcNwnI8NzVK8jGC2smMgmyh+CHtQTBFcILUzUMpSg0LbENlX0dfyykvM18S4J/JNw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jZd0/MnW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9FA80C4CEE7;
-	Tue, 17 Jun 2025 16:17:24 +0000 (UTC)
+	 MIME-Version; b=JPHeSSSeJyRNNCTM43XHfy6uJ15FQ/KR0fBkFos7Ck7ptU4UuFTd14Gs073SUVGcM8XEZztqR2O81yYQV6fHI6GMFePXyvvFm4WnV/5qhx3v0D9PwymwatwrSeAbiYANoWVOL4Mxr8SZ07SOIfb13/TN1OG4J2yPo4rA8ZGO0B0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Tjx4MEgV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9CF2C4CEE3;
+	Tue, 17 Jun 2025 16:42:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750177045;
-	bh=+J1ZxDdKzuEBCXOdhFVi0R43trBjrZmip4HoY5ZxvXA=;
+	s=korg; t=1750178538;
+	bh=ZEprKMF5XeyFAsYBnHOVBd0r5gYgPRflJXflub+TSyw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jZd0/MnWAFYje2HBmemsCr6WX6+tsPlqz1HcEh3A2L25OEhhJk9wWoE6LsuEhY8yh
-	 OX6dDJtgMybjy1gaR8CiIe/LAQxpolibR30H1MPMLROSdQF4UDWkQetR1cCwLm7kK7
-	 +Dufyu6lsQr00fpVG2V7SnsAqmul9TL2tOZBsX+M=
+	b=Tjx4MEgVnfoLE/p+Lmg3Ubnpc+SD9uiimiv5Z7ubfw0ODIl8EzdeuRmGBf74swxq3
+	 c6jSxLLsvrJI5TVAwMheAsiQtj5cFZ5S0Dk6OnIzVsoLR4QUCGTq12fgeoU+Us0uL0
+	 hbUBd4/WTDMSTgTJb/5V7WEi6O68F91STSrT/FcY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 6.6 342/356] Revert "io_uring: ensure deferred completions are posted for multishot"
-Date: Tue, 17 Jun 2025 17:27:37 +0200
-Message-ID: <20250617152351.901875146@linuxfoundation.org>
+	stable <stable@kernel.org>,
+	Jonathan Stroud <jonathan.stroud@amd.com>,
+	Radhey Shyam Pandey <radhey.shyam.pandey@amd.com>
+Subject: [PATCH 6.12 492/512] usb: misc: onboard_usb_dev: Fix usb5744 initialization sequence
+Date: Tue, 17 Jun 2025 17:27:38 +0200
+Message-ID: <20250617152439.567916068@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152338.212798615@linuxfoundation.org>
-References: <20250617152338.212798615@linuxfoundation.org>
+In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
+References: <20250617152419.512865572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,44 +62,172 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+From: Jonathan Stroud <jonathan.stroud@amd.com>
 
-This reverts commit 746e7d285dcb96caa1845fbbb62b14bf4010cdfb which is
-commit 687b2bae0efff9b25e071737d6af5004e6e35af5 upstream.
+commit 1143d41922c0f87504f095417ba1870167970143 upstream.
 
-Jens writes:
-	There's some missing dependencies that makes this not work
-	right, I'll bring it back in a series instead.
+Introduce i2c APIs to read/write for proper configuration register
+programming. It ensures that read-modify-write sequence is performed
+and reserved bit in Runtime Flags 2 register are not touched.
 
-Link: https://lore.kernel.org/r/906ba919-32e6-4534-bbad-2cd18e1098ca@kernel.dk
-Reported-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Also legacy smbus block write inserted an extra count value into the
+i2c data stream which breaks the register write on the usb5744.
+
+Switching to new read/write i2c APIs fixes both issues.
+
+Fixes: 6782311d04df ("usb: misc: onboard_usb_dev: add Microchip usb5744 SMBus programming support")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Jonathan Stroud <jonathan.stroud@amd.com>
+Co-developed-by: Radhey Shyam Pandey <radhey.shyam.pandey@amd.com>
+Signed-off-by: Radhey Shyam Pandey <radhey.shyam.pandey@amd.com>
+Link: https://lore.kernel.org/r/1747398760-284021-1-git-send-email-radhey.shyam.pandey@amd.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- io_uring/io_uring.c |    8 --------
- 1 file changed, 8 deletions(-)
+ drivers/usb/misc/onboard_usb_dev.c | 100 +++++++++++++++++++++++++----
+ 1 file changed, 87 insertions(+), 13 deletions(-)
 
---- a/io_uring/io_uring.c
-+++ b/io_uring/io_uring.c
-@@ -920,14 +920,6 @@ static bool __io_post_aux_cqe(struct io_
- {
- 	bool filled;
+diff --git a/drivers/usb/misc/onboard_usb_dev.c b/drivers/usb/misc/onboard_usb_dev.c
+index 40bc98019e0b..1048e3912068 100644
+--- a/drivers/usb/misc/onboard_usb_dev.c
++++ b/drivers/usb/misc/onboard_usb_dev.c
+@@ -36,9 +36,10 @@
+ #define USB5744_CMD_CREG_ACCESS			0x99
+ #define USB5744_CMD_CREG_ACCESS_LSB		0x37
+ #define USB5744_CREG_MEM_ADDR			0x00
++#define USB5744_CREG_MEM_RD_ADDR		0x04
+ #define USB5744_CREG_WRITE			0x00
+-#define USB5744_CREG_RUNTIMEFLAGS2		0x41
+-#define USB5744_CREG_RUNTIMEFLAGS2_LSB		0x1D
++#define USB5744_CREG_READ			0x01
++#define USB5744_CREG_RUNTIMEFLAGS2		0x411D
+ #define USB5744_CREG_BYPASS_UDC_SUSPEND		BIT(3)
  
--	/*
--	 * If multishot has already posted deferred completions, ensure that
--	 * those are flushed first before posting this one. If not, CQEs
--	 * could get reordered.
--	 */
--	if (!wq_list_empty(&ctx->submit_state.compl_reqs))
--		__io_submit_flush_completions(ctx);
+ static void onboard_dev_attach_usb_driver(struct work_struct *work);
+@@ -309,11 +310,88 @@ static void onboard_dev_attach_usb_driver(struct work_struct *work)
+ 		pr_err("Failed to attach USB driver: %pe\n", ERR_PTR(err));
+ }
+ 
++static int onboard_dev_5744_i2c_read_byte(struct i2c_client *client, u16 addr, u8 *data)
++{
++	struct i2c_msg msg[2];
++	u8 rd_buf[3];
++	int ret;
++
++	u8 wr_buf[7] = {0, USB5744_CREG_MEM_ADDR, 4,
++			USB5744_CREG_READ, 1,
++			addr >> 8 & 0xff,
++			addr & 0xff};
++	msg[0].addr = client->addr;
++	msg[0].flags = 0;
++	msg[0].len = sizeof(wr_buf);
++	msg[0].buf = wr_buf;
++
++	ret = i2c_transfer(client->adapter, msg, 1);
++	if (ret < 0)
++		return ret;
++
++	wr_buf[0] = USB5744_CMD_CREG_ACCESS;
++	wr_buf[1] = USB5744_CMD_CREG_ACCESS_LSB;
++	wr_buf[2] = 0;
++	msg[0].len = 3;
++
++	ret = i2c_transfer(client->adapter, msg, 1);
++	if (ret < 0)
++		return ret;
++
++	wr_buf[0] = 0;
++	wr_buf[1] = USB5744_CREG_MEM_RD_ADDR;
++	msg[0].len = 2;
++
++	msg[1].addr = client->addr;
++	msg[1].flags = I2C_M_RD;
++	msg[1].len = 2;
++	msg[1].buf = rd_buf;
++
++	ret = i2c_transfer(client->adapter, msg, 2);
++	if (ret < 0)
++		return ret;
++	*data = rd_buf[1];
++
++	return 0;
++}
++
++static int onboard_dev_5744_i2c_write_byte(struct i2c_client *client, u16 addr, u8 data)
++{
++	struct i2c_msg msg[2];
++	int ret;
++
++	u8 wr_buf[8] = {0, USB5744_CREG_MEM_ADDR, 5,
++			USB5744_CREG_WRITE, 1,
++			addr >> 8 & 0xff,
++			addr & 0xff,
++			data};
++	msg[0].addr = client->addr;
++	msg[0].flags = 0;
++	msg[0].len = sizeof(wr_buf);
++	msg[0].buf = wr_buf;
++
++	ret = i2c_transfer(client->adapter, msg, 1);
++	if (ret < 0)
++		return ret;
++
++	msg[0].len = 3;
++	wr_buf[0] = USB5744_CMD_CREG_ACCESS;
++	wr_buf[1] = USB5744_CMD_CREG_ACCESS_LSB;
++	wr_buf[2] = 0;
++
++	ret = i2c_transfer(client->adapter, msg, 1);
++	if (ret < 0)
++		return ret;
++
++	return 0;
++}
++
+ static int onboard_dev_5744_i2c_init(struct i2c_client *client)
+ {
+ #if IS_ENABLED(CONFIG_USB_ONBOARD_DEV_USB5744)
+ 	struct device *dev = &client->dev;
+ 	int ret;
++	u8 reg;
+ 
+ 	/*
+ 	 * Set BYPASS_UDC_SUSPEND bit to ensure MCU is always enabled
+@@ -321,21 +399,17 @@ static int onboard_dev_5744_i2c_init(struct i2c_client *client)
+ 	 * The command writes 5 bytes to memory and single data byte in
+ 	 * configuration register.
+ 	 */
+-	char wr_buf[7] = {USB5744_CREG_MEM_ADDR, 5,
+-			  USB5744_CREG_WRITE, 1,
+-			  USB5744_CREG_RUNTIMEFLAGS2,
+-			  USB5744_CREG_RUNTIMEFLAGS2_LSB,
+-			  USB5744_CREG_BYPASS_UDC_SUSPEND};
++	ret = onboard_dev_5744_i2c_read_byte(client,
++					     USB5744_CREG_RUNTIMEFLAGS2, &reg);
++	if (ret)
++		return dev_err_probe(dev, ret, "CREG_RUNTIMEFLAGS2 read failed\n");
+ 
+-	ret = i2c_smbus_write_block_data(client, 0, sizeof(wr_buf), wr_buf);
++	reg |= USB5744_CREG_BYPASS_UDC_SUSPEND;
++	ret = onboard_dev_5744_i2c_write_byte(client,
++					      USB5744_CREG_RUNTIMEFLAGS2, reg);
+ 	if (ret)
+ 		return dev_err_probe(dev, ret, "BYPASS_UDC_SUSPEND bit configuration failed\n");
+ 
+-	ret = i2c_smbus_write_word_data(client, USB5744_CMD_CREG_ACCESS,
+-					USB5744_CMD_CREG_ACCESS_LSB);
+-	if (ret)
+-		return dev_err_probe(dev, ret, "Configuration Register Access Command failed\n");
 -
- 	io_cq_lock(ctx);
- 	filled = io_fill_cqe_aux(ctx, user_data, res, cflags);
- 	if (!filled && allow_overflow)
+ 	/* Send SMBus command to boot hub. */
+ 	ret = i2c_smbus_write_word_data(client, USB5744_CMD_ATTACH,
+ 					USB5744_CMD_ATTACH_LSB);
+-- 
+2.49.0
+
 
 
 
