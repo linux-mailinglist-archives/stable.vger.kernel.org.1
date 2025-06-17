@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-154107-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153361-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A57E4ADD886
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:56:46 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D4E27ADD41E
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:06:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DC5114A56C4
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:42:14 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4536F3B2C15
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 15:58:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A7502E8E11;
-	Tue, 17 Jun 2025 16:35:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D01E32EF2BC;
+	Tue, 17 Jun 2025 15:55:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="whEsx+SR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rNiKfLfP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 290712E8E05;
-	Tue, 17 Jun 2025 16:35:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B7342F3643;
+	Tue, 17 Jun 2025 15:55:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750178125; cv=none; b=Csvnp7gXglSgPN8nJMuEU5hk2TNV+TqFMkufSYH/6jRkuae/SvhFhXJz3MXkokPv7/trbWoe8V37evP+v2Se3y/LRbpWtoyD03//JDjTSRc/JrMrVakhE/24XENdIj3x1h7WpYm3waqh1qwXccoQ73TboTZugIy3fGrkveY76G0=
+	t=1750175701; cv=none; b=esr/vePBttCPAxci5dzhSEC0QpFIXTY2QRqRMWzx6DIgXWp1Uuv6RGQ4w5WpAkqIf5k77qdSEtsgBpER8u5ZtcO7qI8wpbb7UVZhXkjZYyrb1R1YBVI1sah27qDzthy+gZpC9brLABUlraPLzHQIg5NZygx6ZZa18iWf2w1EEmc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750178125; c=relaxed/simple;
-	bh=3yQR18S9kCDi43+FeFUrdVziQ3bGQwBKPRBTjPleVXo=;
+	s=arc-20240116; t=1750175701; c=relaxed/simple;
+	bh=YEWWEWb3NTdb6Dh0pVS+BbnD7AQTjeLxF17gPz4/Cac=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=cIcr+soDNMCeG1aRKbEqceTwtp97jBDNryUokTn3JGHXm/FtQVL943RZbEgN7iE4utf78xtm1vU4sd1bp60PKE6Fp3T2cbi6xhvR5IyBLNgXgG2xvFr944KJP1poeJkRpy4CNghDmD5AgnCDYFz7Jf2KMIAqi/Z0jgw6ezak92g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=whEsx+SR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8BAD7C4CEE3;
-	Tue, 17 Jun 2025 16:35:24 +0000 (UTC)
+	 MIME-Version; b=BksfBd3U3B02wHS4dps9iAkbVq7BZm/IpRWSWn8seK4w8IVHWEVVHDVm6PLwgW6S9aZPwueji5xoMfN42KtkZ39c2n5KUtMAlyxYMt/pWn00xT8D4HnofT6HrHwb+hCV/ASr955D/zQr3ba/pwlsLmpuv6/GqysJZi7bdm2qVjY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rNiKfLfP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8D98C4CEE7;
+	Tue, 17 Jun 2025 15:55:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750178125;
-	bh=3yQR18S9kCDi43+FeFUrdVziQ3bGQwBKPRBTjPleVXo=;
+	s=korg; t=1750175701;
+	bh=YEWWEWb3NTdb6Dh0pVS+BbnD7AQTjeLxF17gPz4/Cac=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=whEsx+SRamhvt2O+v7znTooHtVrhvse9Qkh2N9zxoPGf5HAzk59rNkdM/5eiOz+hT
-	 3+VduqRc7WnkKxwiRMaxdbyFR8oasC2/cjPFX8BMa2rTpofF+rBKEz1PFlKYbDKzKD
-	 +FM4zGbRVWeYCFJpHZFZySDV3Ndd32jqQwMjDJLw=
+	b=rNiKfLfPxYV5JauMztMDXqac0l/4z3cykZF0/+jf58oCAFFLkwCZNgBaWVZM+8WCz
+	 eSgahaTafnQffoC7IkKTLFEA+dZ9UBXRUnqnloE6xn72lSgQjxHgE441bDN3vX2YFx
+	 gi+CshcMIpmkXxN2XmbVEER8I6u9WIqmBMR5FDwg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Su Hui <suhui@nfschina.com>,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Andrew Jeffery <andrew@codeconstruct.com.au>,
-	Arnd Bergmann <arnd@arndb.de>,
+	Luca Weiss <luca.weiss@fairphone.com>,
+	Taniya Das <quic_tdas@quicinc.com>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 413/780] soc: aspeed: lpc: Fix impossible judgment condition
+Subject: [PATCH 6.12 155/512] clk: qcom: gpucc-sm6350: Add *_wait_val values for GDSCs
 Date: Tue, 17 Jun 2025 17:22:01 +0200
-Message-ID: <20250617152508.291174358@linuxfoundation.org>
+Message-ID: <20250617152425.888538044@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
-References: <20250617152451.485330293@linuxfoundation.org>
+In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
+References: <20250617152419.512865572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,48 +61,60 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Su Hui <suhui@nfschina.com>
+From: Luca Weiss <luca.weiss@fairphone.com>
 
-[ Upstream commit d9f0a97e859bdcef51f9c187b1eb712eb13fd3ff ]
+[ Upstream commit d988b0b866c2aeb23aa74022b5bbd463165a7a33 ]
 
-smatch error：
-drivers/soc/aspeed/aspeed-lpc-snoop.c:169
-aspeed_lpc_snoop_config_irq() warn: platform_get_irq() does not return zero
+Compared to the msm-4.19 driver the mainline GDSC driver always sets the
+bits for en_rest, en_few & clk_dis, and if those values are not set
+per-GDSC in the respective driver then the default value from the GDSC
+driver is used. The downstream driver only conditionally sets
+clk_dis_wait_val if qcom,clk-dis-wait-val is given in devicetree.
 
-platform_get_irq() return non-zero IRQ number or negative error code,
-change '!lpc_snoop->irq' to 'lpc_snoop->irq < 0' to fix this.
+Correct this situation by explicitly setting those values. For all GDSCs
+the reset value of those bits are used, with the exception of
+gpu_cx_gdsc which has an explicit value (qcom,clk-dis-wait-val = <8>).
 
-Fixes: 9f4f9ae81d0a ("drivers/misc: add Aspeed LPC snoop driver")
-Signed-off-by: Su Hui <suhui@nfschina.com>
-Reviewed-by: Dan Carpenter <dan.carpenter@linaro.org>
-Link: https://lore.kernel.org/r/20231027020703.1231875-1-suhui@nfschina.com
-Signed-off-by: Andrew Jeffery <andrew@codeconstruct.com.au>
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Fixes: 013804a727a0 ("clk: qcom: Add GPU clock controller driver for SM6350")
+Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
+Reviewed-by: Taniya Das <quic_tdas@quicinc.com>
+Link: https://lore.kernel.org/r/20250425-sm6350-gdsc-val-v1-4-1f252d9c5e4e@fairphone.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/soc/aspeed/aspeed-lpc-snoop.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/clk/qcom/gpucc-sm6350.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/drivers/soc/aspeed/aspeed-lpc-snoop.c b/drivers/soc/aspeed/aspeed-lpc-snoop.c
-index 9ab5ba9cf1d61..57ba855f375d9 100644
---- a/drivers/soc/aspeed/aspeed-lpc-snoop.c
-+++ b/drivers/soc/aspeed/aspeed-lpc-snoop.c
-@@ -166,7 +166,7 @@ static int aspeed_lpc_snoop_config_irq(struct aspeed_lpc_snoop *lpc_snoop,
- 	int rc;
- 
- 	lpc_snoop->irq = platform_get_irq(pdev, 0);
--	if (!lpc_snoop->irq)
-+	if (lpc_snoop->irq < 0)
- 		return -ENODEV;
- 
- 	rc = devm_request_irq(dev, lpc_snoop->irq,
+diff --git a/drivers/clk/qcom/gpucc-sm6350.c b/drivers/clk/qcom/gpucc-sm6350.c
+index 1e12ad8948dbd..644bdc41892c6 100644
+--- a/drivers/clk/qcom/gpucc-sm6350.c
++++ b/drivers/clk/qcom/gpucc-sm6350.c
+@@ -412,6 +412,9 @@ static struct clk_branch gpu_cc_gx_vsense_clk = {
+ static struct gdsc gpu_cx_gdsc = {
+ 	.gdscr = 0x106c,
+ 	.gds_hw_ctrl = 0x1540,
++	.en_rest_wait_val = 0x2,
++	.en_few_wait_val = 0x2,
++	.clk_dis_wait_val = 0x8,
+ 	.pd = {
+ 		.name = "gpu_cx_gdsc",
+ 	},
+@@ -422,6 +425,9 @@ static struct gdsc gpu_cx_gdsc = {
+ static struct gdsc gpu_gx_gdsc = {
+ 	.gdscr = 0x100c,
+ 	.clamp_io_ctrl = 0x1508,
++	.en_rest_wait_val = 0x2,
++	.en_few_wait_val = 0x2,
++	.clk_dis_wait_val = 0x2,
+ 	.pd = {
+ 		.name = "gpu_gx_gdsc",
+ 		.power_on = gdsc_gx_do_nothing_enable,
 -- 
 2.39.5
 
