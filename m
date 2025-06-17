@@ -1,60 +1,58 @@
-Return-Path: <stable+bounces-154237-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153481-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3984CADD876
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:56:06 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id EC2F3ADD4DB
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:14:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3E3885A1A3B
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:46:29 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id ADAE719E020D
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:05:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA8072E92C8;
-	Tue, 17 Jun 2025 16:42:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68E242F2355;
+	Tue, 17 Jun 2025 16:01:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="scHwE7hM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FFymzH9m"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80A612E8E1D;
-	Tue, 17 Jun 2025 16:42:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22C6E2EA143;
+	Tue, 17 Jun 2025 16:01:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750178541; cv=none; b=KpIZHMuyede1gyqBld3R8Aj+16C+wdQ4xrzcQT5MtKdYPoZLLSsHscxvORzkyNN88DenyjGjAUFkPONCC02L44kBH/DnGw6782bGLnIpwzjoxdiBNY6VzJ26Wa+KzwlFN1zMv4uU6zWNZdfLHK0qaDT8p+6UFIK24+mK6w+yNEs=
+	t=1750176103; cv=none; b=qjCqlT4w+XYh/6AP+B6uUfpMUoC/6j3bFSmnO4X5CXD2H+vkZVXP7rI/dYySncwbchy7Rm2xPDdnzYq4oPLJ1g15QUKMjUxqYmK5IN4ljH/p5ByBGFZI+tEwo7f7WaMFLP9uHd2+GtVxda4Q8M5Yr3wR40PJnz6e4E5VWcqZm7Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750178541; c=relaxed/simple;
-	bh=s3sT5tqV4KSvRGzgT7da1+aDqIQONUjI4Y56+5Ovx34=;
+	s=arc-20240116; t=1750176103; c=relaxed/simple;
+	bh=zZeN5Ko0eypIRjKN/M8uacwOmVrFvlGFgn6TVKSM5mo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Cmx4bleSlB8lWt+wlcs6c5nHqBvCNSQycUFshX+pLABZrzbp+VRbk5I0uxJWtCAHanDuTe6VIF7KGuoKjTdoqn+suYDYNBn9CRuKI9BUYavuTqIrx1j5oGWJXpi2mfQg95ZU4HQRxtXCJThVxmAgUThnogPrJ0Cgwnev6fwAFFY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=scHwE7hM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E47C3C4CEE3;
-	Tue, 17 Jun 2025 16:42:20 +0000 (UTC)
+	 MIME-Version; b=VPYlboE3bWyQT77whnPY6YKYC7wVFPRQbP+IN2rvlrbudz7ZJvnIj37rOi/0L9yfhtQk18DqAq7yF2wiqo9FHvP5OvCZtxFd/DRLw2uT6vYkZsBNWpUhdIoDg/h4hnKd3GYQWhPt8g9AHOB6ePcd+F05dTl1j2Nc1iHOow88nH8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FFymzH9m; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91A7EC4CEE3;
+	Tue, 17 Jun 2025 16:01:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750178541;
-	bh=s3sT5tqV4KSvRGzgT7da1+aDqIQONUjI4Y56+5Ovx34=;
+	s=korg; t=1750176103;
+	bh=zZeN5Ko0eypIRjKN/M8uacwOmVrFvlGFgn6TVKSM5mo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=scHwE7hM9xnVx10QHdid91z8YgclY4it2hAVTI4/Cm5mRXzCM2johD5ro9M1Kmmby
-	 OFPnXPuB1dNuoyxWHu0xZpPhaGEZw5nr86LeutuWIbDKQqNJkB+ZlFR5fd8bujq166
-	 kCyl2k+GmQXbgZ7xEWA9liO6vElRyQAGTrxOfBts=
+	b=FFymzH9mcIR4GFUy3b0oyS109JCBkZtRfinP4wIs4hwnbfVSgG2ewngP4Lj2FJhs3
+	 w1ih1Lnn6KCClFqpZaIt1706G2jqp8J02kSbnTyLtvdln1QEDJDcgcn4A35w5o0JrM
+	 FxGnkBZ4HANeusi1Ttr54fZnZJRqh+t3EBYRlDfY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nicolas Baranger <nicolas.baranger@3xo.fr>,
-	"Paulo Alcantara (Red Hat)" <pc@manguebit.com>,
-	David Howells <dhowells@redhat.com>,
-	netfs@lists.linux.dev,
-	linux-fsdevel@vger.kernel.org,
-	Christian Brauner <brauner@kernel.org>,
+	Michal Luczaj <mhal@rbox.co>,
+	Jiayuan Chen <jiayuan.chen@linux.dev>,
+	Martin KaFai Lau <martin.lau@kernel.org>,
+	John Fastabend <john.fastabend@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 454/780] netfs: Fix setting of transferred bytes with short DIO reads
+Subject: [PATCH 6.12 196/512] bpf, sockmap: Avoid using sk_socket after free when sending
 Date: Tue, 17 Jun 2025 17:22:42 +0200
-Message-ID: <20250617152509.955808478@linuxfoundation.org>
+Message-ID: <20250617152427.578392406@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
-References: <20250617152451.485330293@linuxfoundation.org>
+In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
+References: <20250617152419.512865572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,119 +64,127 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paulo Alcantara <pc@manguebit.com>
+From: Jiayuan Chen <jiayuan.chen@linux.dev>
 
-[ Upstream commit 34eb98c6598c4057640ca56dd1fad6555187473a ]
+[ Upstream commit 8259eb0e06d8f64c700f5fbdb28a5c18e10de291 ]
 
-A netfslib request comprises an ordered stream of subrequests that, when
-doing an unbuffered/DIO read, are contiguous.  The subrequests may be
-performed in parallel, but may not be fully completed.
+The sk->sk_socket is not locked or referenced in backlog thread, and
+during the call to skb_send_sock(), there is a race condition with
+the release of sk_socket. All types of sockets(tcp/udp/unix/vsock)
+will be affected.
 
-For instance, if we try and make a 256KiB DIO read from a 3-byte file with
-a 64KiB rsize and 256KiB bsize, netfslib will attempt to make a read of
-256KiB, broken up into four 64KiB subreads, with the expectation that the
-first will be short and the subsequent three be completely devoid - but we
-do all four on the basis that the file may have been changed by a third
-party.
+Race conditions:
+'''
+CPU0                               CPU1
 
-The read-collection code, however, walks through all the subreqs and
-advances the notion of how much data has been read in the stream to the
-start of each subreq plus its amount transferred (which are 3, 0, 0, 0 for
-the example above) - which gives an amount apparently read of 3*64KiB -
-which is incorrect.
+backlog::skb_send_sock
+  sendmsg_unlocked
+    sock_sendmsg
+      sock_sendmsg_nosec
+                                   close(fd):
+                                     ...
+                                     ops->release() -> sock_map_close()
+                                     sk_socket->ops = NULL
+                                     free(socket)
+      sock->ops->sendmsg
+            ^
+            panic here
+'''
 
-Fix the collection code to cut short the calculation of the transferred
-amount with the first short subrequest in an unbuffered read; everything
-beyond that must be ignored as there's a hole that cannot be filled.  This
-applies both to shortness due to hitting the EOF and shortness due to an
-error.
+The ref of psock become 0 after sock_map_close() executed.
+'''
+void sock_map_close()
+{
+    ...
+    if (likely(psock)) {
+    ...
+    // !! here we remove psock and the ref of psock become 0
+    sock_map_remove_links(sk, psock)
+    psock = sk_psock_get(sk);
+    if (unlikely(!psock))
+        goto no_psock; <=== Control jumps here via goto
+        ...
+        cancel_delayed_work_sync(&psock->work); <=== not executed
+        sk_psock_put(sk, psock);
+        ...
+}
+'''
 
-This is achieved by setting a flag on the request when we collect the first
-short subrequest (collection is done in ascending order).
+Based on the fact that we already wait for the workqueue to finish in
+sock_map_close() if psock is held, we simply increase the psock
+reference count to avoid race conditions.
 
-This can be tested by mounting a cifs volume with rsize=65536,bsize=262144
-and doing a 256k DIO read of a very small file (e.g. 3 bytes).  read()
-should return 3, not >3.
+With this patch, if the backlog thread is running, sock_map_close() will
+wait for the backlog thread to complete and cancel all pending work.
 
-This problem came in when netfs_read_collection() set rreq->transferred to
-stream->transferred, even for DIO.  Prior to that, netfs_rreq_assess_dio()
-just went over the list and added up the subreqs till it met a short one -
-but now the subreqs are discarded earlier.
+If no backlog running, any pending work that hasn't started by then will
+fail when invoked by sk_psock_get(), as the psock reference count have
+been zeroed, and sk_psock_drop() will cancel all jobs via
+cancel_delayed_work_sync().
 
-Fixes: e2d46f2ec332 ("netfs: Change the read result collector to only use one work item")
-Reported-by: Nicolas Baranger <nicolas.baranger@3xo.fr>
-Closes: https://lore.kernel.org/all/10bec2430ed4df68bde10ed95295d093@3xo.fr/
-Signed-off-by: "Paulo Alcantara (Red Hat)" <pc@manguebit.com>
-Signed-off-by: David Howells <dhowells@redhat.com>
-Link: https://lore.kernel.org/20250519090707.2848510-3-dhowells@redhat.com
-cc: netfs@lists.linux.dev
-cc: linux-fsdevel@vger.kernel.org
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+In summary, we require synchronization to coordinate the backlog thread
+and close() thread.
+
+The panic I catched:
+'''
+Workqueue: events sk_psock_backlog
+RIP: 0010:sock_sendmsg+0x21d/0x440
+RAX: 0000000000000000 RBX: ffffc9000521fad8 RCX: 0000000000000001
+...
+Call Trace:
+ <TASK>
+ ? die_addr+0x40/0xa0
+ ? exc_general_protection+0x14c/0x230
+ ? asm_exc_general_protection+0x26/0x30
+ ? sock_sendmsg+0x21d/0x440
+ ? sock_sendmsg+0x3e0/0x440
+ ? __pfx_sock_sendmsg+0x10/0x10
+ __skb_send_sock+0x543/0xb70
+ sk_psock_backlog+0x247/0xb80
+...
+'''
+
+Fixes: 4b4647add7d3 ("sock_map: avoid race between sock_map_close and sk_psock_put")
+Reported-by: Michal Luczaj <mhal@rbox.co>
+Signed-off-by: Jiayuan Chen <jiayuan.chen@linux.dev>
+Signed-off-by: Martin KaFai Lau <martin.lau@kernel.org>
+Reviewed-by: John Fastabend <john.fastabend@gmail.com>
+Link: https://lore.kernel.org/r/20250516141713.291150-1-jiayuan.chen@linux.dev
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/netfs/read_collect.c | 21 +++++----------------
- include/linux/netfs.h   |  1 +
- 2 files changed, 6 insertions(+), 16 deletions(-)
+ net/core/skmsg.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/fs/netfs/read_collect.c b/fs/netfs/read_collect.c
-index 23c75755ad4ed..d3cf27b2697c3 100644
---- a/fs/netfs/read_collect.c
-+++ b/fs/netfs/read_collect.c
-@@ -280,9 +280,13 @@ static void netfs_collect_read_results(struct netfs_io_request *rreq)
- 			stream->need_retry = true;
- 			notes |= NEED_RETRY | MADE_PROGRESS;
- 			break;
-+		} else if (test_bit(NETFS_RREQ_SHORT_TRANSFER, &rreq->flags)) {
-+			notes |= MADE_PROGRESS;
- 		} else {
- 			if (!stream->failed)
--				stream->transferred = stream->collected_to - rreq->start;
-+				stream->transferred += transferred;
-+			if (front->transferred < front->len)
-+				set_bit(NETFS_RREQ_SHORT_TRANSFER, &rreq->flags);
- 			notes |= MADE_PROGRESS;
- 		}
+diff --git a/net/core/skmsg.c b/net/core/skmsg.c
+index 1219e0404def0..a8d238dd982af 100644
+--- a/net/core/skmsg.c
++++ b/net/core/skmsg.c
+@@ -655,6 +655,13 @@ static void sk_psock_backlog(struct work_struct *work)
+ 	bool ingress;
+ 	int ret;
  
-@@ -342,23 +346,8 @@ static void netfs_collect_read_results(struct netfs_io_request *rreq)
-  */
- static void netfs_rreq_assess_dio(struct netfs_io_request *rreq)
- {
--	struct netfs_io_subrequest *subreq;
--	struct netfs_io_stream *stream = &rreq->io_streams[0];
- 	unsigned int i;
++	/* Increment the psock refcnt to synchronize with close(fd) path in
++	 * sock_map_close(), ensuring we wait for backlog thread completion
++	 * before sk_socket freed. If refcnt increment fails, it indicates
++	 * sock_map_close() completed with sk_socket potentially already freed.
++	 */
++	if (!sk_psock_get(psock->sk))
++		return;
+ 	mutex_lock(&psock->work_mutex);
+ 	while ((skb = skb_peek(&psock->ingress_skb))) {
+ 		len = skb->len;
+@@ -706,6 +713,7 @@ static void sk_psock_backlog(struct work_struct *work)
+ 	}
+ end:
+ 	mutex_unlock(&psock->work_mutex);
++	sk_psock_put(psock->sk, psock);
+ }
  
--	/* Collect unbuffered reads and direct reads, adding up the transfer
--	 * sizes until we find the first short or failed subrequest.
--	 */
--	list_for_each_entry(subreq, &stream->subrequests, rreq_link) {
--		rreq->transferred += subreq->transferred;
--
--		if (subreq->transferred < subreq->len ||
--		    test_bit(NETFS_SREQ_FAILED, &subreq->flags)) {
--			rreq->error = subreq->error;
--			break;
--		}
--	}
--
- 	if (rreq->origin == NETFS_DIO_READ) {
- 		for (i = 0; i < rreq->direct_bv_count; i++) {
- 			flush_dcache_page(rreq->direct_bv[i].bv_page);
-diff --git a/include/linux/netfs.h b/include/linux/netfs.h
-index c86a11cfc4a36..497c4f4698f6e 100644
---- a/include/linux/netfs.h
-+++ b/include/linux/netfs.h
-@@ -279,6 +279,7 @@ struct netfs_io_request {
- #define NETFS_RREQ_USE_IO_ITER		12	/* Use ->io_iter rather than ->i_pages */
- #define NETFS_RREQ_ALL_QUEUED		13	/* All subreqs are now queued */
- #define NETFS_RREQ_RETRYING		14	/* Set if we're in the retry path */
-+#define NETFS_RREQ_SHORT_TRANSFER	15	/* Set if we have a short transfer */
- #define NETFS_RREQ_USE_PGPRIV2		31	/* [DEPRECATED] Use PG_private_2 to mark
- 						 * write to cache on read */
- 	const struct netfs_request_ops *netfs_ops;
+ struct sk_psock *sk_psock_init(struct sock *sk, int node)
 -- 
 2.39.5
 
