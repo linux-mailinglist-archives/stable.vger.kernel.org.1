@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-153434-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153965-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id ECE01ADD476
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:10:18 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9BF12ADD70B
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:40:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 94C3D2C31C6
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:03:32 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3BA6A1944B07
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:33:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D7072DFF3F;
-	Tue, 17 Jun 2025 15:59:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B8472DFF29;
+	Tue, 17 Jun 2025 16:27:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LWa+lxSI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dbL3HuRF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BBC02F234A;
-	Tue, 17 Jun 2025 15:59:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD46E2F94B2;
+	Tue, 17 Jun 2025 16:27:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750175950; cv=none; b=neKe+cpyLqda72MV4RDpc/GrE4p7ajYRtT+6Awmh38lXqZtRDCren1tV1xUpiVZsF+wruYEACkVIbrqZlitux/E7W38iZpCPZJetTn9weW5MmubsgdLu8dwWcGkOwB29uWujIjdMejCrng/qQVgxd0QBDC1Kg5TWLh8sRals0Rk=
+	t=1750177669; cv=none; b=k1ZdDHJWl7BQkeJ8DxGWbx7kr/l4aXk1mBC7Muf1MI4ae1uMMSwJyfUmEPwIDkQOY3bqLa40ci8pXIC6sgY6z8omNQyU0rnVvgB654nLQvRT4XjCpyL8cxwmNsaUX0e4uPDiA5pjAMXqXy0iaBvxa4fI2YVqfoez+1rq7c0vN2o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750175950; c=relaxed/simple;
-	bh=iuLKTn2pNvu+GE1gZEkoRSUbt+iYlh+9v0Bua80Kyiw=;
+	s=arc-20240116; t=1750177669; c=relaxed/simple;
+	bh=/bi2Ri1B/q5QpSJZHPjyKHzLw3USQMZg2TuKYtbJ13U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=q42iHoEZpOy3hOql7SjToB5f7WF2L4txDvG536rmZRoeO5Igs2c/w64/Gp/C89a9Av7Q/UOOS3Mb4Pe0aCXGqoQINWRh3JRobPRwA2OqpK/Yp5CtGANtYS504VnAsAZHvLPUYw4tWWi0wd8BJnnKpIu3otrLRMyIGBG8kOjTZUE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LWa+lxSI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71A98C4CEE3;
-	Tue, 17 Jun 2025 15:59:09 +0000 (UTC)
+	 MIME-Version; b=ewOHSfRZHpklppgqImNFJ77iHn1XuJ5uHKNWyQhOczfZOY25Kr2VODgYSYX6F+tfQJt9IVbNb7YpjbLCcTEacngNhbd91htpn3uxNFZNVk6OT8k5Gtos7gVZgdYLZYU6+q8u6xtotHuOJpdYOdXldZC3ryCg4ye0BjzrFIVsfTY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dbL3HuRF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EBD99C4CEE3;
+	Tue, 17 Jun 2025 16:27:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750175949;
-	bh=iuLKTn2pNvu+GE1gZEkoRSUbt+iYlh+9v0Bua80Kyiw=;
+	s=korg; t=1750177668;
+	bh=/bi2Ri1B/q5QpSJZHPjyKHzLw3USQMZg2TuKYtbJ13U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LWa+lxSIHX2x+CERQOrrKrdtI/cPVsiTsv/xjFW+UbUY8OUjNlwJrY/M07RxaiuDF
-	 D4NvE+7VUFKrgSubV4tyHUuFDVHKmIQy8K6pduOKn+4wE2Z8uKKMbIrj6BM1kOSGQt
-	 PrRnrNPWSIvRvQ8iiIHLkvLV4dkqLE3NyOLZiBEE=
+	b=dbL3HuRFJrtKuM+Rd3GBWaV5r/5KZZQtjOKsKWRnZDUKm6kzZ9xW+LsZm+dBsXLV7
+	 CawVm6YXoH7lr4c5IO+mOxiK/bdvmQNInGXds9wbz4pozdZAWOjM2m8aX7b2SyQJwP
+	 nnkAnBWnzxNc/lLRQZjnjOX3w9BWFLDmqK2cUpMI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Liu Dalin <liudalin@kylinsec.com.cn>,
-	Binbin Zhou <zhoubinbin@loongson.cn>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	Jonas Gorski <jonas.gorski@gmail.com>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 229/356] rtc: loongson: Add missing alarm notifications for ACPI RTC events
-Date: Tue, 17 Jun 2025 17:25:44 +0200
-Message-ID: <20250617152347.415472495@linuxfoundation.org>
+Subject: [PATCH 6.12 379/512] net: dsa: b53: do not enable RGMII delay on bcm63xx
+Date: Tue, 17 Jun 2025 17:25:45 +0200
+Message-ID: <20250617152434.949247175@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152338.212798615@linuxfoundation.org>
-References: <20250617152338.212798615@linuxfoundation.org>
+In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
+References: <20250617152419.512865572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,54 +63,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Liu Dalin <liudalin@kylinsec.com.cn>
+From: Jonas Gorski <jonas.gorski@gmail.com>
 
-[ Upstream commit 5af9f1fa576874b24627d4c05e3a84672204c200 ]
+[ Upstream commit 4af523551d876ab8b8057d1e5303a860fd736fcb ]
 
-When an application sets and enables an alarm on Loongson RTC devices,
-the alarm notification fails to propagate to userspace because the
-ACPI event handler omits calling rtc_update_irq().
+bcm63xx's RGMII ports are always in MAC mode, never in PHY mode, so we
+shouldn't enable any delays and let the PHY handle any delays as
+necessary.
 
-As a result, processes waiting via select() or poll() on RTC device
-files fail to receive alarm notifications.
+This fixes using RGMII ports with normal PHYs like BCM54612E, which will
+handle the delay in the PHY.
 
-The ACPI interrupt is also triggered multiple times. In loongson_rtc_handler,
-we need to clear TOY_MATCH0_REG to resolve this issue.
-
-Fixes: 09471d8f5b39 ("rtc: loongson: clear TOY_MATCH0_REG in loongson_rtc_isr()")
-Fixes: 1b733a9ebc3d ("rtc: Add rtc driver for the Loongson family chips")
-Signed-off-by: Liu Dalin <liudalin@kylinsec.com.cn>
-Reviewed-by: Binbin Zhou <zhoubinbin@loongson.cn>
-Link: https://lore.kernel.org/r/20250509084416.7979-1-liudalin@kylinsec.com.cn
-Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+Fixes: ce3bf94871f7 ("net: dsa: b53: add support for BCM63xx RGMIIs")
+Signed-off-by: Jonas Gorski <jonas.gorski@gmail.com>
+Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Link: https://patch.msgid.link/20250602193953.1010487-3-jonas.gorski@gmail.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/rtc/rtc-loongson.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ drivers/net/dsa/b53/b53_common.c | 19 +------------------
+ 1 file changed, 1 insertion(+), 18 deletions(-)
 
-diff --git a/drivers/rtc/rtc-loongson.c b/drivers/rtc/rtc-loongson.c
-index 90e9d97a86b48..c9d5b91a6544d 100644
---- a/drivers/rtc/rtc-loongson.c
-+++ b/drivers/rtc/rtc-loongson.c
-@@ -129,6 +129,14 @@ static u32 loongson_rtc_handler(void *id)
- {
- 	struct loongson_rtc_priv *priv = (struct loongson_rtc_priv *)id;
+diff --git a/drivers/net/dsa/b53/b53_common.c b/drivers/net/dsa/b53/b53_common.c
+index 0168ad495e6c9..2747a507e3ce9 100644
+--- a/drivers/net/dsa/b53/b53_common.c
++++ b/drivers/net/dsa/b53/b53_common.c
+@@ -1326,24 +1326,7 @@ static void b53_adjust_63xx_rgmii(struct dsa_switch *ds, int port,
+ 		off = B53_RGMII_CTRL_P(port);
  
-+	rtc_update_irq(priv->rtcdev, 1, RTC_AF | RTC_IRQF);
-+
-+	/*
-+	 * The TOY_MATCH0_REG should be cleared 0 here,
-+	 * otherwise the interrupt cannot be cleared.
-+	 */
-+	regmap_write(priv->regmap, TOY_MATCH0_REG, 0);
-+
- 	spin_lock(&priv->lock);
- 	/* Disable RTC alarm wakeup and interrupt */
- 	writel(readl(priv->pm_base + PM1_EN_REG) & ~RTC_EN,
+ 	b53_read8(dev, B53_CTRL_PAGE, off, &rgmii_ctrl);
+-
+-	switch (interface) {
+-	case PHY_INTERFACE_MODE_RGMII_ID:
+-		rgmii_ctrl |= (RGMII_CTRL_DLL_RXC | RGMII_CTRL_DLL_TXC);
+-		break;
+-	case PHY_INTERFACE_MODE_RGMII_RXID:
+-		rgmii_ctrl &= ~(RGMII_CTRL_DLL_TXC);
+-		rgmii_ctrl |= RGMII_CTRL_DLL_RXC;
+-		break;
+-	case PHY_INTERFACE_MODE_RGMII_TXID:
+-		rgmii_ctrl &= ~(RGMII_CTRL_DLL_RXC);
+-		rgmii_ctrl |= RGMII_CTRL_DLL_TXC;
+-		break;
+-	case PHY_INTERFACE_MODE_RGMII:
+-	default:
+-		rgmii_ctrl &= ~(RGMII_CTRL_DLL_RXC | RGMII_CTRL_DLL_TXC);
+-		break;
+-	}
++	rgmii_ctrl &= ~(RGMII_CTRL_DLL_RXC | RGMII_CTRL_DLL_TXC);
+ 
+ 	if (port != dev->imp_port) {
+ 		if (is63268(dev))
 -- 
 2.39.5
 
