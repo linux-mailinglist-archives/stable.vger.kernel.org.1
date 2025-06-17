@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-154465-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153625-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC47BADDA49
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 19:16:29 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 65466ADD56D
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:20:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C37B03BF85F
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:55:14 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C4EB52C45A4
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:13:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CAC4422DF80;
-	Tue, 17 Jun 2025 16:54:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 688402ED87B;
+	Tue, 17 Jun 2025 16:09:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CVWElEea"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ryY1WIOI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EC56221F14;
-	Tue, 17 Jun 2025 16:54:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 262022ED871;
+	Tue, 17 Jun 2025 16:09:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750179274; cv=none; b=sJnLs4Wwo2MlUr/s1o/txjvAYzdIv5/ViatbYXndAQknsilBXVnad1bc6F+9gBSbfLdRnImz5oNnD77QDzFDbRpQtBstYW8DsWnJfJCaRbh6smtsytf1eERlFCZYwaRiqdMwHqszJQtq76o3CmZZ4gNvVOSLlAe8iTzsCg8wzxE=
+	t=1750176564; cv=none; b=Ujr09SPDg2m4Gxqd9il2C7aSqUykg/LhpNfSAR/q7LMMg+YPNwb1fEaENiyaRtPfyjjm0LNBlYCU7LqtvT6D84OH0jGTcBAqV3MaTuz5KM2DrcyO6sOlkYJcT8TxmlH7/czrWIOk5H41E77WuhoDanT1U1rhhqiOj+ZZJg6h+wg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750179274; c=relaxed/simple;
-	bh=i5L2lCCUos5cjimQZHehqJ0Z+YkL2JjQl5Yq4Gul5UU=;
+	s=arc-20240116; t=1750176564; c=relaxed/simple;
+	bh=0KuRN1j1ox2LsaKK3mZak3HnDq8qcz2DSGz2rX2PRs0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lpup32ET7HC8b5FFt7HGOZ0K+XDJ6+Fv7qC5n/mFXDJaEji+e0mKnO97wLJ0zEV7aAIrmcsBBN9lnhB8NgAZ9MHg9a/DD416uIoHVKYgzTjMBsXqe4GinzWDigU0yuXMSMadJ1mRQqxNikJ67RF6sluHt1jjEzifWoj2XgNZUiA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CVWElEea; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1C3BC4CEE3;
-	Tue, 17 Jun 2025 16:54:33 +0000 (UTC)
+	 MIME-Version; b=FuLe4gckPkuYXpWezFwADVBjWbJGD0RAuVNeHtNU7BHXr6bezeY9cg+pzpTdKATKkuvzMRXiQ8tvrMTz4n6Qaw/5a1FV1Uc9TzVVtcRLByQ60lDDeL+5+E3YRCMncsmQ109rh3J5DZKVUBrujDahLbDHq5dDEs4VXL/bj0c9Xz8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ryY1WIOI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89B9DC4CEE7;
+	Tue, 17 Jun 2025 16:09:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750179274;
-	bh=i5L2lCCUos5cjimQZHehqJ0Z+YkL2JjQl5Yq4Gul5UU=;
+	s=korg; t=1750176564;
+	bh=0KuRN1j1ox2LsaKK3mZak3HnDq8qcz2DSGz2rX2PRs0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CVWElEeaX4WjfzZZrA9rR1O35lZgRrYQcmhOdpt/YOn4foq+5U+fTlZicBvkZCsmg
-	 zz6HiwvTQjZRY9YRXhPblY7PVuzM1vdDt7D5ciYIs5oAuK6OkwSVUwJ/IOyURelozJ
-	 ODHY37uNCeuGlXzN8gA37AHkYPmWSIRurgolNp1s=
+	b=ryY1WIOI5sHbkBgbKVurGmZ07Sd+CPqxsr5aTBQz3RVYuxeQytEoWfgMX4zPEqrvz
+	 d1Wf/D2nIAbiVaXzOJ2Yl4hTm3dvtM4VP2slt5WSR0hLh0VbMnZFlA4Cyy98G78ysm
+	 ozRi3/z21fkFUnSwPdYJWueZ7i4ltLqyfRk4y1b0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jakub Sitnicki <jakub@cloudflare.com>,
-	Michal Luczaj <mhal@rbox.co>,
-	Willem de Bruijn <willemb@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	"Dr. David Alan Gilbert" <linux@treblig.org>,
+	Simon Horman <horms@kernel.org>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 700/780] net: Fix TOCTOU issue in sk_is_readable()
+Subject: [PATCH 6.6 293/356] Bluetooth: MGMT: Remove unused mgmt_pending_find_data
 Date: Tue, 17 Jun 2025 17:26:48 +0200
-Message-ID: <20250617152520.000913353@linuxfoundation.org>
+Message-ID: <20250617152349.969674740@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
-References: <20250617152451.485330293@linuxfoundation.org>
+In-Reply-To: <20250617152338.212798615@linuxfoundation.org>
+References: <20250617152338.212798615@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,54 +63,72 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michal Luczaj <mhal@rbox.co>
+From: Dr. David Alan Gilbert <linux@treblig.org>
 
-[ Upstream commit 2660a544fdc0940bba15f70508a46cf9a6491230 ]
+[ Upstream commit 276af34d82f13bda0b2a4d9786c90b8bbf1cd064 ]
 
-sk->sk_prot->sock_is_readable is a valid function pointer when sk resides
-in a sockmap. After the last sk_psock_put() (which usually happens when
-socket is removed from sockmap), sk->sk_prot gets restored and
-sk->sk_prot->sock_is_readable becomes NULL.
+mgmt_pending_find_data() last use was removed in 2021 by
+commit 5a7501374664 ("Bluetooth: hci_sync: Convert MGMT_OP_GET_CLOCK_INFO")
 
-This makes sk_is_readable() racy, if the value of sk->sk_prot is reloaded
-after the initial check. Which in turn may lead to a null pointer
-dereference.
+Remove it.
 
-Ensure the function pointer does not turn NULL after the check.
-
-Fixes: 8934ce2fd081 ("bpf: sockmap redirect ingress support")
-Suggested-by: Jakub Sitnicki <jakub@cloudflare.com>
-Signed-off-by: Michal Luczaj <mhal@rbox.co>
-Reviewed-by: Willem de Bruijn <willemb@google.com>
-Link: https://patch.msgid.link/20250609-skisreadable-toctou-v1-1-d0dfb2d62c37@rbox.co
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Dr. David Alan Gilbert <linux@treblig.org>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Stable-dep-of: 6fe26f694c82 ("Bluetooth: MGMT: Protect mgmt_pending list with its own lock")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/sock.h | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ net/bluetooth/mgmt_util.c | 17 -----------------
+ net/bluetooth/mgmt_util.h |  4 ----
+ 2 files changed, 21 deletions(-)
 
-diff --git a/include/net/sock.h b/include/net/sock.h
-index 694f954258d43..99470c6d24de8 100644
---- a/include/net/sock.h
-+++ b/include/net/sock.h
-@@ -2978,8 +2978,11 @@ int sock_ioctl_inout(struct sock *sk, unsigned int cmd,
- int sk_ioctl(struct sock *sk, unsigned int cmd, void __user *arg);
- static inline bool sk_is_readable(struct sock *sk)
- {
--	if (sk->sk_prot->sock_is_readable)
--		return sk->sk_prot->sock_is_readable(sk);
-+	const struct proto *prot = READ_ONCE(sk->sk_prot);
-+
-+	if (prot->sock_is_readable)
-+		return prot->sock_is_readable(sk);
-+
- 	return false;
+diff --git a/net/bluetooth/mgmt_util.c b/net/bluetooth/mgmt_util.c
+index 17e32605d9b00..dba6a0d66500f 100644
+--- a/net/bluetooth/mgmt_util.c
++++ b/net/bluetooth/mgmt_util.c
+@@ -229,23 +229,6 @@ struct mgmt_pending_cmd *mgmt_pending_find(unsigned short channel, u16 opcode,
+ 	return NULL;
  }
- #endif	/* _SOCK_H */
+ 
+-struct mgmt_pending_cmd *mgmt_pending_find_data(unsigned short channel,
+-						u16 opcode,
+-						struct hci_dev *hdev,
+-						const void *data)
+-{
+-	struct mgmt_pending_cmd *cmd;
+-
+-	list_for_each_entry(cmd, &hdev->mgmt_pending, list) {
+-		if (cmd->user_data != data)
+-			continue;
+-		if (cmd->opcode == opcode)
+-			return cmd;
+-	}
+-
+-	return NULL;
+-}
+-
+ void mgmt_pending_foreach(u16 opcode, struct hci_dev *hdev,
+ 			  void (*cb)(struct mgmt_pending_cmd *cmd, void *data),
+ 			  void *data)
+diff --git a/net/bluetooth/mgmt_util.h b/net/bluetooth/mgmt_util.h
+index bdf978605d5a8..f2ba994ab1d84 100644
+--- a/net/bluetooth/mgmt_util.h
++++ b/net/bluetooth/mgmt_util.h
+@@ -54,10 +54,6 @@ int mgmt_cmd_complete(struct sock *sk, u16 index, u16 cmd, u8 status,
+ 
+ struct mgmt_pending_cmd *mgmt_pending_find(unsigned short channel, u16 opcode,
+ 					   struct hci_dev *hdev);
+-struct mgmt_pending_cmd *mgmt_pending_find_data(unsigned short channel,
+-						u16 opcode,
+-						struct hci_dev *hdev,
+-						const void *data);
+ void mgmt_pending_foreach(u16 opcode, struct hci_dev *hdev,
+ 			  void (*cb)(struct mgmt_pending_cmd *cmd, void *data),
+ 			  void *data);
 -- 
 2.39.5
 
