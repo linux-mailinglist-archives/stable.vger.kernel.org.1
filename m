@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-153058-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153060-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1EF14ADD256
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 17:41:30 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C6F7ADD218
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 17:38:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 559EE7A4027
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 15:37:32 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B38031881496
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 15:39:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE11B2ECD0B;
-	Tue, 17 Jun 2025 15:38:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6199120F090;
+	Tue, 17 Jun 2025 15:38:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qKxkduTE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ixQUYIF5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A89F02E88A5;
-	Tue, 17 Jun 2025 15:38:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19B362ECD2A;
+	Tue, 17 Jun 2025 15:38:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750174730; cv=none; b=rZyrjRQCVd+BFvfZ4AkV8uaumQXcbfkTsSAAD82ragBefiAtKawsqOk4hj+2CTtmL4aYYrcwqOVyf34fAZS6NSsoAKO9o3l7YJIrJHTKnr1J70soVq5KLKCRGFPJ2Njd7ftsk4RmLlq/PlgVMrbW1TH3hxnXtK5L55/66RjdmCk=
+	t=1750174737; cv=none; b=sj3qas0dD8mXMha/hFlO+1ZKbOX+F5efOfM48dVRNJRkw6Zlp19JKi7REz5nVBi0yT9JfsO66hUzJkrG02ddreTM1FdppE3Y3CBfw/HORISiojnx9Keau7h2iVwrVR98n5AC1gL/KF87cq+0V070w6ItB29JNyS7JzB/hXA9t6c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750174730; c=relaxed/simple;
-	bh=Dxs9SiARaLNgbLYtXrbSO/VzZywDAdc+TVIB7JrWZw0=;
+	s=arc-20240116; t=1750174737; c=relaxed/simple;
+	bh=QUUGa9j/IXY8IwN1O0Z37yERnMfreYAXDiFRUabtMag=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=amkWcgNGfrxrrYIesn5YFCH2ai7+qPPW2WvmYQyugnJMs5drNp3QWPUZDFulSCdgJ8HLwiPcEyWSeXHHL/hXAVqacusx/wPnjjKr5Zg1i2xvU/s7eZV2r3tRRIDeQSdlSkMzsbqJwd2fKgv6BQyO72oePQcePC5rQq0O4rSYNbw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qKxkduTE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 109BBC4CEE3;
-	Tue, 17 Jun 2025 15:38:49 +0000 (UTC)
+	 MIME-Version; b=KhNfabZPy5lzMhpleMvDEAA49lYQ81LbOR+XLvrTBM+4Wn8EOtllbHq3iJUIqfKUkOcA1MR0ofFTpAaeaTofIz688QvNCftnMoCYaFVpfQ5bEW93x6489TBpJfIX33hLw6MRUPoKVNUlqSNuTnsk0Xv0Sn21lsjONEF3jOQtUYA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ixQUYIF5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97231C4CEE3;
+	Tue, 17 Jun 2025 15:38:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750174730;
-	bh=Dxs9SiARaLNgbLYtXrbSO/VzZywDAdc+TVIB7JrWZw0=;
+	s=korg; t=1750174737;
+	bh=QUUGa9j/IXY8IwN1O0Z37yERnMfreYAXDiFRUabtMag=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qKxkduTEzemG+CRQDtff/S1lplXs01m3XkutDLwgD9OtRlP8JO40hKMM5RQ1wvv8f
-	 /sq7FEeVI8qNvBrn49zp6xR0b50DgFUehiRG6g8KMn8MIRL5nmoccCHnHv4URQR5n6
-	 icXu4NkTClOX4OZ/kcX30rwgURwDXu3vl64NrEGk=
+	b=ixQUYIF5v+iHPKifSDqKeSUc4QTu7vjymwFHMmw6ebuMXlQI48ufczn64ez8Ph1Tb
+	 xFFbV2CO8i4DA5Ge1Y5mAvhZih6mk1JVU6qeY5ufOuIYSHsOW16P4tgJ45EHLVf0yg
+	 y+WnZAHf7qvHgEVbnC6KG7bt+TYi9+nHVSj+95hU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tzung-Bi Shih <tzungbi@kernel.org>,
-	David Gow <davidgow@google.com>,
-	Shuah Khan <skhan@linuxfoundation.org>,
+	Ingo Franzki <ifranzki@linux.ibm.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 034/512] kunit: Fix wrong parameter to kunit_deactivate_static_stub()
-Date: Tue, 17 Jun 2025 17:20:00 +0200
-Message-ID: <20250617152420.936862081@linuxfoundation.org>
+Subject: [PATCH 6.12 035/512] crypto: api - Redo lookup on EEXIST
+Date: Tue, 17 Jun 2025 17:20:01 +0200
+Message-ID: <20250617152420.977170898@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
 References: <20250617152419.512865572@linuxfoundation.org>
@@ -67,39 +66,54 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Tzung-Bi Shih <tzungbi@kernel.org>
+From: Herbert Xu <herbert@gondor.apana.org.au>
 
-[ Upstream commit 772e50a76ee664e75581624f512df4e45582605a ]
+[ Upstream commit 0a3cf32da469ff1df6e016f5f82b439a63d14461 ]
 
-kunit_deactivate_static_stub() accepts real_fn_addr instead of
-replacement_addr.  In the case, it always passes NULL to
-kunit_deactivate_static_stub().
+When two crypto algorithm lookups occur at the same time with
+different names for the same algorithm, e.g., ctr(aes-generic)
+and ctr(aes), they will both be instantiated.  However, only one
+of them can be registered.  The second instantiation will fail
+with EEXIST.
 
-Fix it.
+Avoid failing the second lookup by making it retry, but only once
+because there are tricky names such as gcm_base(ctr(aes),ghash)
+that will always fail, despite triggering instantiation and EEXIST.
 
-Link: https://lore.kernel.org/r/20250520082050.2254875-1-tzungbi@kernel.org
-Fixes: e047c5eaa763 ("kunit: Expose 'static stub' API to redirect functions")
-Signed-off-by: Tzung-Bi Shih <tzungbi@kernel.org>
-Reviewed-by: David Gow <davidgow@google.com>
-Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
+Reported-by: Ingo Franzki <ifranzki@linux.ibm.com>
+Fixes: 2825982d9d66 ("[CRYPTO] api: Added event notification")
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- lib/kunit/static_stub.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ crypto/api.c | 13 +++++++++++--
+ 1 file changed, 11 insertions(+), 2 deletions(-)
 
-diff --git a/lib/kunit/static_stub.c b/lib/kunit/static_stub.c
-index 92b2cccd5e763..484fd85251b41 100644
---- a/lib/kunit/static_stub.c
-+++ b/lib/kunit/static_stub.c
-@@ -96,7 +96,7 @@ void __kunit_activate_static_stub(struct kunit *test,
- 
- 	/* If the replacement address is NULL, deactivate the stub. */
- 	if (!replacement_addr) {
--		kunit_deactivate_static_stub(test, replacement_addr);
-+		kunit_deactivate_static_stub(test, real_fn_addr);
- 		return;
- 	}
- 
+diff --git a/crypto/api.c b/crypto/api.c
+index c2c4eb14ef955..5ce54328fef11 100644
+--- a/crypto/api.c
++++ b/crypto/api.c
+@@ -220,10 +220,19 @@ static struct crypto_alg *crypto_larval_wait(struct crypto_alg *alg,
+ 		if (crypto_is_test_larval(larval))
+ 			crypto_larval_kill(larval);
+ 		alg = ERR_PTR(-ETIMEDOUT);
+-	} else if (!alg) {
++	} else if (!alg || PTR_ERR(alg) == -EEXIST) {
++		int err = alg ? -EEXIST : -EAGAIN;
++
++		/*
++		 * EEXIST is expected because two probes can be scheduled
++		 * at the same time with one using alg_name and the other
++		 * using driver_name.  Do a re-lookup but do not retry in
++		 * case we hit a quirk like gcm_base(ctr(aes),...) which
++		 * will never match.
++		 */
+ 		alg = &larval->alg;
+ 		alg = crypto_alg_lookup(alg->cra_name, type, mask) ?:
+-		      ERR_PTR(-EAGAIN);
++		      ERR_PTR(err);
+ 	} else if (IS_ERR(alg))
+ 		;
+ 	else if (crypto_is_test_larval(larval) &&
 -- 
 2.39.5
 
