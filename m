@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-154103-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-154105-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 32872ADD817
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:51:57 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 37920ADD841
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:53:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D7C8B165023
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:42:06 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4CD1D1BC016A
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:42:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 527302E8DFE;
-	Tue, 17 Jun 2025 16:35:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D7A432E8E0B;
+	Tue, 17 Jun 2025 16:35:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FQeoq2kM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c5U8LjzE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E9952E7181;
-	Tue, 17 Jun 2025 16:35:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93F122E8E05;
+	Tue, 17 Jun 2025 16:35:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750178112; cv=none; b=IoshxZUHXpa6zgIL6Unu3dY0H2rPTgtiNPyIp+4XJfxElDiGX5oyil0/pAH29i/o36oxQT5kdt0QQiyQ1RVVzXP2ZsXASGOf/oKuZz5Jqyhr39IaPLO0zOxHbb2o+6KpjKCeAO+DoTbTl0N/4RtgFA9BcEtpyZnxbe3Agf+mO38=
+	t=1750178118; cv=none; b=kU38JNRCaExpyPhe3TPjvvG6YR1TB17g6wCyBOdLVR26Cl0GKBId9aogJkx/OllA6ShVACyTeTIERSvDOTv9Ajfn4UGfqroCwuams8SQm7kwq3bzCQ2dceQUSZC6KEtKY3NJUt4c0o1ooYowIDizuMfI03g3WFYUlmWaM3wIOfo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750178112; c=relaxed/simple;
-	bh=6RYYxsX97bYaeKtDddlUNXw7z6EP8Lk9eP2j6+rnHs8=;
+	s=arc-20240116; t=1750178118; c=relaxed/simple;
+	bh=6yyErsA2hvimMb4chFnarArcDz39riXz2BNcdtKVCEA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=X5XMwoZiTxRIO4a47dMig5TxR44rh8HvWZmXk1Uf46/ms0LQovYnEObifOjZKtVCVISj5XEX2MNgtWn71D1cdQeJk0A+MFafupBhwFhM31uPRt18ARqun7UwVguYY/a6hQ6sWi0Xx1li6OyogHak4ldJ8tVQOkAUTJidiFhJf6w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FQeoq2kM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71D99C4CEE3;
-	Tue, 17 Jun 2025 16:35:11 +0000 (UTC)
+	 MIME-Version; b=c4ZEuBMe3o9v6jf/ECqjKp7vcxOmnHT96gr8M/HljmqPfnZdmzj5OFJ7eyqkdzHHZvXSuMzfQsauj6SkFSPzGLz//B+tRgvaeIdwfzrjPGfQb/TXCBt/cajBH7AEg6wKYVM7o0CgbtD1j6IgjjABuqlcxc6BvU4joa0N+EutOgQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c5U8LjzE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 045F4C4CEE3;
+	Tue, 17 Jun 2025 16:35:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750178111;
-	bh=6RYYxsX97bYaeKtDddlUNXw7z6EP8Lk9eP2j6+rnHs8=;
+	s=korg; t=1750178118;
+	bh=6yyErsA2hvimMb4chFnarArcDz39riXz2BNcdtKVCEA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FQeoq2kMb/TQZhxikXhzcbP/ivM4wE6pzgx1BnUqD5CbQqkKjY161H1w10IyQyoPS
-	 x53FUaNohgxSF4Q3Jl0pJbqOMKfP+XKquLAJnnB1qHC7WsuG1vdVkGGzxLzY2Pc25f
-	 sdzbrB/9TG3nG/Tvl7Q3DRDf3xOxndI5Zu8cFqyg=
+	b=c5U8LjzEBGJECGRBXjciHvrUrwrgynQZ4WVHqb75A3JeEv1TpsdFcey/OG/Q1+oIE
+	 f7ieJywQ3ydmUKJOhqtC0DZbYhWaPCPv9UZRsazZfvdqDd+rLlJuE5h+HQOft5F9oR
+	 HcH7Sb1TT2BZob6GZH6KEvjc4969BxN/ljUezWCY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christian Hewitt <christianshewitt@gmail.com>,
-	Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
+	Robert Malz <robert.malz@canonical.com>,
+	Rafal Romanowski <rafal.romanowski@intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 448/512] drm/meson: fix more rounding issues with 59.94Hz modes
-Date: Tue, 17 Jun 2025 17:26:54 +0200
-Message-ID: <20250617152437.717072252@linuxfoundation.org>
+Subject: [PATCH 6.12 449/512] i40e: return false from i40e_reset_vf if reset is in progress
+Date: Tue, 17 Jun 2025 17:26:55 +0200
+Message-ID: <20250617152437.756560574@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
 References: <20250617152419.512865572@linuxfoundation.org>
@@ -67,132 +67,53 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+From: Robert Malz <robert.malz@canonical.com>
 
-[ Upstream commit 0cee6c4d3518b2e757aedae78771f17149f57653 ]
+[ Upstream commit a2c90d63b71223d69a813333c1abf4fdacddbbe5 ]
 
-Commit 1017560164b6 ("drm/meson: use unsigned long long / Hz for
-frequency types") attempts to resolve video playback using 59.94Hz.
- using YUV420 by changing the clock calculation to use
-Hz instead of kHz (thus yielding more precision).
+The function i40e_vc_reset_vf attempts, up to 20 times, to handle a
+VF reset request, using the return value of i40e_reset_vf as an indicator
+of whether the reset was successfully triggered. Currently, i40e_reset_vf
+always returns true, which causes new reset requests to be ignored if a
+different VF reset is already in progress.
 
-The basic calculation itself is correct, however the comparisions in
-meson_vclk_vic_supported_freq() and meson_vclk_setup() don't work
-anymore for 59.94Hz modes (using the freq * 1000 / 1001 logic). For
-example, drm/edid specifies a 593407kHz clock for 3840x2160@59.94Hz.
-With the mentioend commit we convert this to Hz. Then meson_vclk
-tries to find a matchig "params" entry (as the clock setup code
-currently only supports specific frequencies) by taking the venc_freq
-from the params and calculating the "alt frequency" (used for the
-59.94Hz modes) from it, which is:
-  (594000000Hz * 1000) / 1001 = 593406593Hz
+This patch updates the return value of i40e_reset_vf to reflect when
+another VF reset is in progress, allowing the caller to properly use
+the retry mechanism.
 
-Similar calculation is applied to the phy_freq (TMDS clock), which is 10
-times the pixel clock.
-
-Implement a new meson_vclk_freqs_are_matching_param() function whose
-purpose is to compare if the requested and calculated frequencies. They
-may not match exactly (for the reasons mentioned above). Allow the
-clocks to deviate slightly to make the 59.94Hz modes again.
-
-Fixes: 1017560164b6 ("drm/meson: use unsigned long long / Hz for frequency types")
-Reported-by: Christian Hewitt <christianshewitt@gmail.com>
-Signed-off-by: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
-Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
-Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
-Link: https://lore.kernel.org/r/20250609202751.962208-1-martin.blumenstingl@googlemail.com
+Fixes: 52424f974bc5 ("i40e: Fix VF hang when reset is triggered on another VF")
+Signed-off-by: Robert Malz <robert.malz@canonical.com>
+Tested-by: Rafal Romanowski <rafal.romanowski@intel.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/meson/meson_vclk.c | 55 ++++++++++++++++++------------
- 1 file changed, 34 insertions(+), 21 deletions(-)
+ drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/gpu/drm/meson/meson_vclk.c b/drivers/gpu/drm/meson/meson_vclk.c
-index c4123bb958e4c..dfe0c28a0f054 100644
---- a/drivers/gpu/drm/meson/meson_vclk.c
-+++ b/drivers/gpu/drm/meson/meson_vclk.c
-@@ -110,10 +110,7 @@
- #define HDMI_PLL_LOCK		BIT(31)
- #define HDMI_PLL_LOCK_G12A	(3 << 30)
+diff --git a/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c b/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c
+index dfa785e39458d..bde41d30c69ee 100644
+--- a/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c
++++ b/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c
+@@ -1546,8 +1546,8 @@ static void i40e_cleanup_reset_vf(struct i40e_vf *vf)
+  * @vf: pointer to the VF structure
+  * @flr: VFLR was issued or not
+  *
+- * Returns true if the VF is in reset, resets successfully, or resets
+- * are disabled and false otherwise.
++ * Return: True if reset was performed successfully or if resets are disabled.
++ * False if reset is already in progress.
+  **/
+ bool i40e_reset_vf(struct i40e_vf *vf, bool flr)
+ {
+@@ -1566,7 +1566,7 @@ bool i40e_reset_vf(struct i40e_vf *vf, bool flr)
  
--#define PIXEL_FREQ_1000_1001(_freq)	\
--	DIV_ROUND_CLOSEST_ULL((_freq) * 1000ULL, 1001ULL)
--#define PHY_FREQ_1000_1001(_freq)	\
--	(PIXEL_FREQ_1000_1001(DIV_ROUND_DOWN_ULL(_freq, 10ULL)) * 10)
-+#define FREQ_1000_1001(_freq)	DIV_ROUND_CLOSEST_ULL((_freq) * 1000ULL, 1001ULL)
+ 	/* If VF is being reset already we don't need to continue. */
+ 	if (test_and_set_bit(I40E_VF_STATE_RESETTING, &vf->vf_states))
+-		return true;
++		return false;
  
- /* VID PLL Dividers */
- enum {
-@@ -772,6 +769,36 @@ static void meson_hdmi_pll_generic_set(struct meson_drm *priv,
- 		  pll_freq);
- }
+ 	i40e_trigger_vf_reset(vf, flr);
  
-+static bool meson_vclk_freqs_are_matching_param(unsigned int idx,
-+						unsigned long long phy_freq,
-+						unsigned long long vclk_freq)
-+{
-+	DRM_DEBUG_DRIVER("i = %d vclk_freq = %lluHz alt = %lluHz\n",
-+			 idx, params[idx].vclk_freq,
-+			 FREQ_1000_1001(params[idx].vclk_freq));
-+	DRM_DEBUG_DRIVER("i = %d phy_freq = %lluHz alt = %lluHz\n",
-+			 idx, params[idx].phy_freq,
-+			 FREQ_1000_1001(params[idx].phy_freq));
-+
-+	/* Match strict frequency */
-+	if (phy_freq == params[idx].phy_freq &&
-+	    vclk_freq == params[idx].vclk_freq)
-+		return true;
-+
-+	/* Match 1000/1001 variant: vclk deviation has to be less than 1kHz
-+	 * (drm EDID is defined in 1kHz steps, so everything smaller must be
-+	 * rounding error) and the PHY freq deviation has to be less than
-+	 * 10kHz (as the TMDS clock is 10 times the pixel clock, so anything
-+	 * smaller must be rounding error as well).
-+	 */
-+	if (abs(vclk_freq - FREQ_1000_1001(params[idx].vclk_freq)) < 1000 &&
-+	    abs(phy_freq - FREQ_1000_1001(params[idx].phy_freq)) < 10000)
-+		return true;
-+
-+	/* no match */
-+	return false;
-+}
-+
- enum drm_mode_status
- meson_vclk_vic_supported_freq(struct meson_drm *priv,
- 			      unsigned long long phy_freq,
-@@ -790,19 +817,7 @@ meson_vclk_vic_supported_freq(struct meson_drm *priv,
- 	}
- 
- 	for (i = 0 ; params[i].pixel_freq ; ++i) {
--		DRM_DEBUG_DRIVER("i = %d vclk_freq = %lluHz alt = %lluHz\n",
--				 i, params[i].vclk_freq,
--				 PIXEL_FREQ_1000_1001(params[i].vclk_freq));
--		DRM_DEBUG_DRIVER("i = %d phy_freq = %lluHz alt = %lluHz\n",
--				 i, params[i].phy_freq,
--				 PHY_FREQ_1000_1001(params[i].phy_freq));
--		/* Match strict frequency */
--		if (phy_freq == params[i].phy_freq &&
--		    vclk_freq == params[i].vclk_freq)
--			return MODE_OK;
--		/* Match 1000/1001 variant */
--		if (phy_freq == PHY_FREQ_1000_1001(params[i].phy_freq) &&
--		    vclk_freq == PIXEL_FREQ_1000_1001(params[i].vclk_freq))
-+		if (meson_vclk_freqs_are_matching_param(i, phy_freq, vclk_freq))
- 			return MODE_OK;
- 	}
- 
-@@ -1075,10 +1090,8 @@ void meson_vclk_setup(struct meson_drm *priv, unsigned int target,
- 	}
- 
- 	for (freq = 0 ; params[freq].pixel_freq ; ++freq) {
--		if ((phy_freq == params[freq].phy_freq ||
--		     phy_freq == PHY_FREQ_1000_1001(params[freq].phy_freq)) &&
--		    (vclk_freq == params[freq].vclk_freq ||
--		     vclk_freq == PIXEL_FREQ_1000_1001(params[freq].vclk_freq))) {
-+		if (meson_vclk_freqs_are_matching_param(freq, phy_freq,
-+							vclk_freq)) {
- 			if (vclk_freq != params[freq].vclk_freq)
- 				vic_alternate_clock = true;
- 			else
 -- 
 2.39.5
 
