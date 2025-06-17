@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-153466-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153469-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 25EA6ADD56C
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:20:42 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 74267ADD4D2
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:14:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 64F0519E0099
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:05:28 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BFC2F1945001
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:05:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 49EE72ECD39;
-	Tue, 17 Jun 2025 16:00:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F01FE236457;
+	Tue, 17 Jun 2025 16:01:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OpW61dN8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G7CiFn8N"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 033DA2ECE84;
-	Tue, 17 Jun 2025 16:00:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A47A518E025;
+	Tue, 17 Jun 2025 16:01:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750176055; cv=none; b=S/xF9ipiRH6DFdAy4DGWMi4801GH38NwZiJdvuihHwXcaILc7T97VOzOETs3EDy5IfvovQDHgzRc/t1wKg6cx9w1Fl88v6F+W7bQqPsACENScXIJsD67V2ed0G4caqH5Iiuwygljt4Z+Cp5g7pq+vZMIC/WEQ9LvlFJJBQr0+hA=
+	t=1750176065; cv=none; b=Npoc7kAYKX5aMmVcHvR/Nm0ncn9o6EPduz4geK6wyqgeZvbhUU7qyJ0NUYFXBAXH+QdanJxGYESS8wW/J1qacL59kygbzqFiQcgHVQsNm1i7cFxcG4XEqT/+jiASFqTvlH/ITPH+/LOBWIbe/kQFQrjg2xidJebu4+EQwevfrDY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750176055; c=relaxed/simple;
-	bh=EzVQSnisQG8lcDrug676GcQucIWBD+nu5Zlus4Jnnuo=;
+	s=arc-20240116; t=1750176065; c=relaxed/simple;
+	bh=eZOkdBp2F5xffS9zKoS5tbm0kQuQK6SX9Php+SlwVsg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FiUNuqGidBOmevXpCRIhDjonFYs0UzY+yeUwQz5dhWnUYDjcZkWRr4sTSu17HUcGNjzstn4Thoj6L5DEqE3ilWWW3tvv9ZAKPsgcM1VqEDDDNX/H51k4ygQeofsxoesdFILPJUw0ByCoeFycLGVcNssldmRoDi9AJn6K7myJ4bw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OpW61dN8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 673BBC4CEE3;
-	Tue, 17 Jun 2025 16:00:54 +0000 (UTC)
+	 MIME-Version; b=jV0YrVSftuFN9VgG9RfpXYDq/CtEqgOP8zIfI6W18CL7LjLPbgsA8pCg3ERpMkvMJvTHIEYNIcZ+QyoSo3yALq/y86JtyHnzshVBV/Sm8W2RdA8lFSudBgeeXNnk4+gyBLlgtNSI1J5rvF+GhNjXWGag6Kvh755xg7YWr/oPSFo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G7CiFn8N; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19A28C4CEE3;
+	Tue, 17 Jun 2025 16:01:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750176054;
-	bh=EzVQSnisQG8lcDrug676GcQucIWBD+nu5Zlus4Jnnuo=;
+	s=korg; t=1750176065;
+	bh=eZOkdBp2F5xffS9zKoS5tbm0kQuQK6SX9Php+SlwVsg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OpW61dN8uToUcbHt/8RASs2d5PWhTGF6aNSLmAeGAq1HuEKTdofSle+0eLAxME4jn
-	 2vjyCvGoexRhumXYhk5I/gASCDXPAOo0tUP03RFdqWYRxkolS3AfK/LZQnCY9cfVpc
-	 GhCE5Ask8r7p4w/8l3x3JA6qzqZkOAwDhFoceW4Q=
+	b=G7CiFn8Nrt6Dm0aVVwCY4BIXBka++YHmGzTTOHFnub8b6RHrc2ha+N0Wogx2AvpVC
+	 2ENOYGhGNVOobY96PxCjWLU+TTAYuvBFmZTIVNveBwBg/lb20mtMnn3bDyTfwwWO+x
+	 x2hoFqd0II5NautA6cYvugIQFsEcbRV5bz5Mp2lo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -50,9 +50,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Rob Clark <robdclark@gmail.com>,
 	Sasha Levin <sashal@kernel.org>,
 	Jessica Zhang <quic_jesszhan@quicinc.com>
-Subject: [PATCH 6.15 147/780] drm/msm/dp: Account for LTTPRs capabilities
-Date: Tue, 17 Jun 2025 17:17:35 +0200
-Message-ID: <20250617152457.493124604@linuxfoundation.org>
+Subject: [PATCH 6.15 148/780] drm/msm/dp: Prepare for link training per-segment for LTTPRs
+Date: Tue, 17 Jun 2025 17:17:36 +0200
+Message-ID: <20250617152457.533128995@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
 References: <20250617152451.485330293@linuxfoundation.org>
@@ -73,10 +73,10 @@ Content-Transfer-Encoding: 8bit
 
 From: Aleksandrs Vinarskis <alex.vinarskis@gmail.com>
 
-[ Upstream commit c156fe2dd46774321c8eaaff9a6f04b64e6b9742 ]
+[ Upstream commit 7513ccb8840b54e35579f3c2cce08c3443a6e2d4 ]
 
-Take into account LTTPR capabilities when selecting maximum allowed
-link rate, number of data lines.
+Per-segment link training requires knowing the number of LTTPRs
+(if any) present. Store the count during LTTPRs' initialization.
 
 Fixes: 72d0af4accd9 ("drm/msm/dp: Add support for LTTPR handling")
 Reviewed-by: Abel Vesa <abel.vesa@linaro.org>
@@ -86,87 +86,67 @@ Signed-off-by: Aleksandrs Vinarskis <alex.vinarskis@gmail.com>
 Tested-by: Jessica Zhang <quic_jesszhan@quicinc.com> # SA8775P
 Tested-by: Johan Hovold <johan+linaro@kernel.org>
 Tested-by: Rob Clark <robdclark@gmail.com>
-Patchwork: https://patchwork.freedesktop.org/patch/652302/
-Link: https://lore.kernel.org/r/20250507230113.14270-3-alex.vinarskis@gmail.com
+Patchwork: https://patchwork.freedesktop.org/patch/652306/
+Link: https://lore.kernel.org/r/20250507230113.14270-4-alex.vinarskis@gmail.com
 Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/msm/dp/dp_display.c |  5 ++---
- drivers/gpu/drm/msm/dp/dp_link.h    |  3 +++
- drivers/gpu/drm/msm/dp/dp_panel.c   | 12 +++++++++++-
- 3 files changed, 16 insertions(+), 4 deletions(-)
+ drivers/gpu/drm/msm/dp/dp_display.c | 17 +++++++++++------
+ drivers/gpu/drm/msm/dp/dp_link.h    |  1 +
+ 2 files changed, 12 insertions(+), 6 deletions(-)
 
 diff --git a/drivers/gpu/drm/msm/dp/dp_display.c b/drivers/gpu/drm/msm/dp/dp_display.c
-index fc07cce68382a..5c57c1d7ac601 100644
+index 5c57c1d7ac601..ab8c1f19dcb42 100644
 --- a/drivers/gpu/drm/msm/dp/dp_display.c
 +++ b/drivers/gpu/drm/msm/dp/dp_display.c
-@@ -369,13 +369,12 @@ static int msm_dp_display_send_hpd_notification(struct msm_dp_display_private *d
- 
- static void msm_dp_display_lttpr_init(struct msm_dp_display_private *dp, u8 *dpcd)
- {
--	u8 lttpr_caps[DP_LTTPR_COMMON_CAP_SIZE];
- 	int rc;
- 
--	if (drm_dp_read_lttpr_common_caps(dp->aux, dpcd, lttpr_caps))
-+	if (drm_dp_read_lttpr_common_caps(dp->aux, dpcd, dp->link->lttpr_common_caps))
- 		return;
- 
--	rc = drm_dp_lttpr_init(dp->aux, drm_dp_lttpr_count(lttpr_caps));
-+	rc = drm_dp_lttpr_init(dp->aux, drm_dp_lttpr_count(dp->link->lttpr_common_caps));
- 	if (rc)
- 		DRM_ERROR("failed to set LTTPRs transparency mode, rc=%d\n", rc);
+@@ -367,16 +367,21 @@ static int msm_dp_display_send_hpd_notification(struct msm_dp_display_private *d
+ 	return 0;
  }
-diff --git a/drivers/gpu/drm/msm/dp/dp_link.h b/drivers/gpu/drm/msm/dp/dp_link.h
-index 8db5d5698a97c..c47d75cfc720c 100644
---- a/drivers/gpu/drm/msm/dp/dp_link.h
-+++ b/drivers/gpu/drm/msm/dp/dp_link.h
-@@ -7,6 +7,7 @@
- #define _DP_LINK_H_
  
- #include "dp_aux.h"
-+#include <drm/display/drm_dp_helper.h>
- 
- #define DS_PORT_STATUS_CHANGED 0x200
- #define DP_TEST_BIT_DEPTH_UNKNOWN 0xFFFFFFFF
-@@ -60,6 +61,8 @@ struct msm_dp_link_phy_params {
- };
- 
- struct msm_dp_link {
-+	u8 lttpr_common_caps[DP_LTTPR_COMMON_CAP_SIZE];
-+
- 	u32 sink_request;
- 	u32 test_response;
- 
-diff --git a/drivers/gpu/drm/msm/dp/dp_panel.c b/drivers/gpu/drm/msm/dp/dp_panel.c
-index 92415bf8aa166..4e8ab75c771b1 100644
---- a/drivers/gpu/drm/msm/dp/dp_panel.c
-+++ b/drivers/gpu/drm/msm/dp/dp_panel.c
-@@ -47,7 +47,7 @@ static void msm_dp_panel_read_psr_cap(struct msm_dp_panel_private *panel)
- 
- static int msm_dp_panel_read_dpcd(struct msm_dp_panel *msm_dp_panel)
+-static void msm_dp_display_lttpr_init(struct msm_dp_display_private *dp, u8 *dpcd)
++static int msm_dp_display_lttpr_init(struct msm_dp_display_private *dp, u8 *dpcd)
  {
 -	int rc;
-+	int rc, max_lttpr_lanes, max_lttpr_rate;
- 	struct msm_dp_panel_private *panel;
- 	struct msm_dp_link_info *link_info;
- 	u8 *dpcd, major, minor;
-@@ -75,6 +75,16 @@ static int msm_dp_panel_read_dpcd(struct msm_dp_panel *msm_dp_panel)
- 	if (link_info->rate > msm_dp_panel->max_dp_link_rate)
- 		link_info->rate = msm_dp_panel->max_dp_link_rate;
++	int rc, lttpr_count;
  
-+	/* Limit data lanes from LTTPR capabilities, if any */
-+	max_lttpr_lanes = drm_dp_lttpr_max_lane_count(panel->link->lttpr_common_caps);
-+	if (max_lttpr_lanes && max_lttpr_lanes < link_info->num_lanes)
-+		link_info->num_lanes = max_lttpr_lanes;
+ 	if (drm_dp_read_lttpr_common_caps(dp->aux, dpcd, dp->link->lttpr_common_caps))
+-		return;
++		return 0;
+ 
+-	rc = drm_dp_lttpr_init(dp->aux, drm_dp_lttpr_count(dp->link->lttpr_common_caps));
+-	if (rc)
++	lttpr_count = drm_dp_lttpr_count(dp->link->lttpr_common_caps);
++	rc = drm_dp_lttpr_init(dp->aux, lttpr_count);
++	if (rc) {
+ 		DRM_ERROR("failed to set LTTPRs transparency mode, rc=%d\n", rc);
++		return 0;
++	}
 +
-+	/* Limit link rate from LTTPR capabilities, if any */
-+	max_lttpr_rate = drm_dp_lttpr_max_link_rate(panel->link->lttpr_common_caps);
-+	if (max_lttpr_rate && max_lttpr_rate < link_info->rate)
-+		link_info->rate = max_lttpr_rate;
-+
- 	drm_dbg_dp(panel->drm_dev, "version: %d.%d\n", major, minor);
- 	drm_dbg_dp(panel->drm_dev, "link_rate=%d\n", link_info->rate);
- 	drm_dbg_dp(panel->drm_dev, "lane_count=%d\n", link_info->num_lanes);
++	return lttpr_count;
+ }
+ 
+ static int msm_dp_display_process_hpd_high(struct msm_dp_display_private *dp)
+@@ -390,7 +395,7 @@ static int msm_dp_display_process_hpd_high(struct msm_dp_display_private *dp)
+ 	if (rc)
+ 		goto end;
+ 
+-	msm_dp_display_lttpr_init(dp, dpcd);
++	dp->link->lttpr_count = msm_dp_display_lttpr_init(dp, dpcd);
+ 
+ 	rc = msm_dp_panel_read_sink_caps(dp->panel, connector);
+ 	if (rc)
+diff --git a/drivers/gpu/drm/msm/dp/dp_link.h b/drivers/gpu/drm/msm/dp/dp_link.h
+index c47d75cfc720c..ba47c6d19fbfa 100644
+--- a/drivers/gpu/drm/msm/dp/dp_link.h
++++ b/drivers/gpu/drm/msm/dp/dp_link.h
+@@ -62,6 +62,7 @@ struct msm_dp_link_phy_params {
+ 
+ struct msm_dp_link {
+ 	u8 lttpr_common_caps[DP_LTTPR_COMMON_CAP_SIZE];
++	int lttpr_count;
+ 
+ 	u32 sink_request;
+ 	u32 test_response;
 -- 
 2.39.5
 
