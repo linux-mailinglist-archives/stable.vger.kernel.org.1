@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-153127-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153130-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1C979ADD280
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 17:43:29 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 130CAADD281
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 17:43:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9C1123BF7F1
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 15:42:20 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 730D8160F25
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 15:42:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D19412ECE9A;
-	Tue, 17 Jun 2025 15:42:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91BD22ECD0B;
+	Tue, 17 Jun 2025 15:42:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IF47YpOI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cG0StmVV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E66E2EBDCC;
-	Tue, 17 Jun 2025 15:42:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E58723B633;
+	Tue, 17 Jun 2025 15:42:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750174949; cv=none; b=ob+kR6igo5GKqCxecZdwtdxcoXbzmMYK/jtkM/kCtyYHW2Ug8p/R/mJ12Vsiq0yDL+m2TP0sbfmZuOPaJUrH/2eYb0WPssag+R0dyt7Q3PKuu3pVWlr6F3jeA7dMpkKgxnf1VMYq/edtXYjAFDEhVTdSOLE6KveOlyCboOGvd5w=
+	t=1750174959; cv=none; b=SWP5798CmpgblwjltnjfIwGDkhRhpR8ESiNllaTtpaSRDrHwnawp/l39yJ7IOyOaPBBvmF8IR7pHubZiS7vqa1UoaK345yM+n5hPcqdcBmwMRTjlog8DdXIMle7R6fBseroN2Ag2NeZ8kZK86JKPpDr4pHs5b5eQS91EJojU2SA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750174949; c=relaxed/simple;
-	bh=sc/jooSsAzRfEwPqtmkWFh2DGpujk+KeX0d3CREoi2Q=;
+	s=arc-20240116; t=1750174959; c=relaxed/simple;
+	bh=Y6qQlkWsIJMwfzAw5Ali3e6Cwg9X89uOHxfpxWA6+pU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oFImU8sTSKoxR595vc+w5s1bIBxWt5HwDc1oV03AykPCqPx4e6++tsH7L0WoXHwcu9E7SKqgSigG9vVGA2HxZu6EZ6TNdv6yHvREG8RK8SvW0hCgXQgCzUTYqGDq31c2w7wH62gWik52gopu+4XdL/ootObqIcGPIQx78OuOFpk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IF47YpOI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00462C4CEF0;
-	Tue, 17 Jun 2025 15:42:28 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Tn5ysl2Dnd8+q0j1KAa6bdhhZfw4BL6RWOwMKDr0PixD1uSF0IPr+bgXC4yytkRrTiXAHRQMmEVX+RTXi+rvhFSXjrXdYP4CcYZvcy83dtS9HNHz1FlwWMz9rslO/+0EagG5VrtbMIOE7B5N/aRncECyvPyybjnLkQvsldvfkqk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cG0StmVV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD3BDC4CEE3;
+	Tue, 17 Jun 2025 15:42:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750174949;
-	bh=sc/jooSsAzRfEwPqtmkWFh2DGpujk+KeX0d3CREoi2Q=;
+	s=korg; t=1750174959;
+	bh=Y6qQlkWsIJMwfzAw5Ali3e6Cwg9X89uOHxfpxWA6+pU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IF47YpOIl9rehrkfzM+hqAIFgXia3DCwPbluWZgp4J57t80h7I1gAFz2cS6RsnLCM
-	 EJIEPt7iSWyX59Oi1hZF0ufy6AOLzJJIg5Un0bwmtRIZ1qcIbrCS4zIwuSMUyIG17F
-	 AKgkx2vzonCzNyrn4seRgLEFh7orJ0sbjwrakfuY=
+	b=cG0StmVV1orvzYRvb+T0ctEFDLMLluZSjkWZB7LSB1bz2uyGa3umaWfyqeR4Q3gJj
+	 gSTq4hKIrpE/hjYannf9nbECAuRhxkitFq1l94yvwP6FuR7xIyQTWDpJx63Lgi3FTS
+	 +OzcE4ji+xDS2bV4GTT+UvV8vhC0z2yryzV9sR04=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+e36cc3297bd3afd25e19@syzkaller.appspotmail.com,
-	Lizhi Xu <lizhi.xu@windriver.com>,
-	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
+	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>,
+	Kees Cook <kees@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 079/512] fs/ntfs3: Add missing direct_IO in ntfs_aops_cmpr
-Date: Tue, 17 Jun 2025 17:20:45 +0200
-Message-ID: <20250617152422.783283484@linuxfoundation.org>
+Subject: [PATCH 6.12 080/512] kunit/usercopy: Disable u64 test on 32-bit SPARC
+Date: Tue, 17 Jun 2025 17:20:46 +0200
+Message-ID: <20250617152422.821795403@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
 References: <20250617152419.512865572@linuxfoundation.org>
@@ -61,51 +60,47 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lizhi Xu <lizhi.xu@windriver.com>
+From: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
 
-[ Upstream commit 8b26c8c376b29cf29710fbfd093df194cefe26ad ]
+[ Upstream commit 0d6efa20e384a41a7f4afdcd8a0aec442c19d33e ]
 
-The ntfs3 can use the page cache directly, so its address_space_operations
-need direct_IO. Exit ntfs_direct_IO() if it is a compressed file.
+usercopy of 64 bit values does not work on 32-bit SPARC:
 
-Fixes: b432163ebd15 ("fs/ntfs3: Update inode->i_mapping->a_ops on compression state")
-Reported-by: syzbot+e36cc3297bd3afd25e19@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=e36cc3297bd3afd25e19
-Signed-off-by: Lizhi Xu <lizhi.xu@windriver.com>
-Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
+    # usercopy_test_valid: EXPECTATION FAILED at lib/tests/usercopy_kunit.c:209
+    Expected val_u64 == 0x5a5b5c5d6a6b6c6d, but
+        val_u64 == 1515936861 (0x5a5b5c5d)
+        0x5a5b5c5d6a6b6c6d == 6510899242581322861 (0x5a5b5c5d6a6b6c6d)
+
+Disable the test.
+
+Fixes: 4c5d7bc63775 ("usercopy: Add tests for all get_user() sizes")
+Signed-off-by: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
+Link: https://lore.kernel.org/r/20250416-kunit-sparc-usercopy-v1-1-a772054db3af@linutronix.de
+Signed-off-by: Kees Cook <kees@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ntfs3/inode.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ lib/usercopy_kunit.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/fs/ntfs3/inode.c b/fs/ntfs3/inode.c
-index a1e11228dafd0..5c05cccd2d40b 100644
---- a/fs/ntfs3/inode.c
-+++ b/fs/ntfs3/inode.c
-@@ -805,6 +805,10 @@ static ssize_t ntfs_direct_IO(struct kiocb *iocb, struct iov_iter *iter)
- 		ret = 0;
- 		goto out;
- 	}
-+	if (is_compressed(ni)) {
-+		ret = 0;
-+		goto out;
-+	}
- 
- 	ret = blockdev_direct_IO(iocb, inode, iter,
- 				 wr ? ntfs_get_block_direct_IO_W :
-@@ -2108,5 +2112,6 @@ const struct address_space_operations ntfs_aops_cmpr = {
- 	.read_folio	= ntfs_read_folio,
- 	.readahead	= ntfs_readahead,
- 	.dirty_folio	= block_dirty_folio,
-+	.direct_IO	= ntfs_direct_IO,
- };
- // clang-format on
+diff --git a/lib/usercopy_kunit.c b/lib/usercopy_kunit.c
+index 77fa00a13df77..80f8abe10968c 100644
+--- a/lib/usercopy_kunit.c
++++ b/lib/usercopy_kunit.c
+@@ -27,6 +27,7 @@
+ 			    !defined(CONFIG_MICROBLAZE) &&	\
+ 			    !defined(CONFIG_NIOS2) &&		\
+ 			    !defined(CONFIG_PPC32) &&		\
++			    !defined(CONFIG_SPARC32) &&		\
+ 			    !defined(CONFIG_SUPERH))
+ # define TEST_U64
+ #endif
 -- 
 2.39.5
 
