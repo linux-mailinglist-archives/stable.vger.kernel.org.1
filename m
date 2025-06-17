@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-154043-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153994-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id EEDA1ADD79D
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:47:09 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CEB4EADD74F
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:43:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A6D8419E73FB
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:38:00 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 59B67163F8E
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:35:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F96C2EE60A;
-	Tue, 17 Jun 2025 16:31:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2645E2EA165;
+	Tue, 17 Jun 2025 16:29:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jeRzxqNG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t/BEoR/O"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0CF41ADC97;
-	Tue, 17 Jun 2025 16:31:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D77AA2EA15F;
+	Tue, 17 Jun 2025 16:29:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750177919; cv=none; b=oikNxc5Ms4nyxLT/Ungj92vHz+becqGE+vKDnTow5HstGrXRD6EFf0JF3uDq5T0ePjuPxPdCP/dEjAzAtvW6XD/EGVzOV/xeUZnwyOzx7zuEe+2UlArS/B6SEUO9F5rUaZk/PKQy2FVZSvrtIOjwRjtK1MRtskWaQ4PjCZMtYzQ=
+	t=1750177763; cv=none; b=b4LyE+lfPB0eyUqMT6BaqKVN43kqV4ce2dEv/ZQy/eFVgLULT3J0sdkpZGC0XYbdysuxRqYrBWFVMAXIRzEsx1Jv4ZDo77uILzqsNMTnOMuitJ3JTGvlSBPxaSdsQtEQ6trCEzXA2Yfo+u070jzzx6DWp7pROs4LDP8s5Qs6wZM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750177919; c=relaxed/simple;
-	bh=HQSJkV+VwNRnO5B7o5sBuau5k2knXEp8o8ZbBh4avQQ=;
+	s=arc-20240116; t=1750177763; c=relaxed/simple;
+	bh=R6zkRd0m8sk/5EOSPLdGux+6m9w63Hvclzjd0e1I2AU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ovbLRWAPYOKbY9c/JjRvbRTgbKIzbRY6HVtWAvvj3HHfIDW08cMDX13edyS3GS+cktNgshrUN2HQjK8aF8UEN1zCanOeGCYSGwDUiRzkgfRwMfStmTmicuMnSx41ioNowLuGpe+5Rj9flwrrjpz8tYJ2WRrrkWyjW+tKKc2Nyt0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jeRzxqNG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 544A1C4CEE3;
-	Tue, 17 Jun 2025 16:31:58 +0000 (UTC)
+	 MIME-Version; b=uuVzR5PqC13tN8KlLQYnoxwKLN0gbElwbk8Z2dkxi8VIP+Fv/JHBSdBVMLXdZngyTCMYvYsMb0XCU1XZjmoQz5MbXgRGK6eoiQWRKaqd1sv9NtguI8q7MeUjByvhio1TZowvkTBPFkxac/AuK+sCfb4a9AOYUPXm2F5RputypsU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t/BEoR/O; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48E06C4CEE3;
+	Tue, 17 Jun 2025 16:29:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750177918;
-	bh=HQSJkV+VwNRnO5B7o5sBuau5k2knXEp8o8ZbBh4avQQ=;
+	s=korg; t=1750177763;
+	bh=R6zkRd0m8sk/5EOSPLdGux+6m9w63Hvclzjd0e1I2AU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jeRzxqNG/mQIqHYCbUXRSKv8wCCRtNXD5lcSFVmsW8T6zHjl3xoNTMNRtP3mJ1JQy
-	 +PjOLiSRX24Tab5JN49ErCXFgagJPzNeu6KS3J7pcuh0ea32AdnQ9nsWJd6z4LyyDR
-	 Xz4z7Pg0BChvqEwC73LCtqGAADubqSdnjao/DFnc=
+	b=t/BEoR/OCqWM2fonCkJ4+99qXDbYjdtUg5VQvTmM+8hS6A23D9uu3oGJ3kFk5v8jr
+	 DRWhb1z9twViNvO9ZsmcBLbcwFDilb3zb3MhRZTksPQwgSPlgvTEKTYR+bAhugiGKv
+	 mf+HRkS03ngQlnMQrbP+x/eDN3KbjfqDXxteLfpM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Manikanta Mylavarapu <quic_mmanikan@quicinc.com>,
+	Maulik Shah <maulik.shah@oss.qualcomm.com>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
 	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 354/780] arm64: dts: qcom: ipq9574: fix the msi interrupt numbers of pcie3
-Date: Tue, 17 Jun 2025 17:21:02 +0200
-Message-ID: <20250617152505.876377836@linuxfoundation.org>
+Subject: [PATCH 6.15 355/780] arm64: dts: qcom: sm8750: Fix cluster hierarchy for idle states
+Date: Tue, 17 Jun 2025 17:21:03 +0200
+Message-ID: <20250617152505.917098082@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
 References: <20250617152451.485330293@linuxfoundation.org>
@@ -66,51 +67,102 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Manikanta Mylavarapu <quic_mmanikan@quicinc.com>
+From: Maulik Shah <maulik.shah@oss.qualcomm.com>
 
-[ Upstream commit c87d58bc7f831bf3d887e6ec846246cb673c2e50 ]
+[ Upstream commit 778dc0f876c70b3d781a49981560ec88e1b7083a ]
 
-The MSI interrupt numbers of the PCIe3 controller are incorrect. Due
-to this, the functional bring up of the QDSP6 processor on the PCIe
-endpoint has failed. Correct the MSI interrupt numbers to properly
-bring up the QDSP6 processor on the PCIe endpoint.
+SM8750 have two different clusters. cluster0 have CPU 0-5 as child and
+cluster1 have CPU 6-7 as child. Each cluster requires its own idle state
+and power domain in order to achieve complete domain sleep state.
 
-Fixes: d80c7fbfa908 ("arm64: dts: qcom: ipq9574: Add PCIe PHYs and controller nodes")
-Signed-off-by: Manikanta Mylavarapu <quic_mmanikan@quicinc.com>
-Link: https://lore.kernel.org/r/20250313071422.510-1-quic_mmanikan@quicinc.com
+However only single cluster idle state is added mapping CPU 0-7 to the
+same power domain. Fix this by correctly mapping each CPU to respective
+cluster power domain and make cluster1 power domain use same domain idle
+state as cluster0 since both use same idle state parameters.
+
+Fixes: 068c3d3c83be ("arm64: dts: qcom: Add base SM8750 dtsi")
+Signed-off-by: Maulik Shah <maulik.shah@oss.qualcomm.com>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Link: https://lore.kernel.org/r/20250226-sm8750_cluster_idle-v2-1-ef0ac81e242f@oss.qualcomm.com
 Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/ipq9574.dtsi | 16 ++++++++--------
- 1 file changed, 8 insertions(+), 8 deletions(-)
+ arch/arm64/boot/dts/qcom/sm8750.dtsi | 24 +++++++++++++++---------
+ 1 file changed, 15 insertions(+), 9 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/qcom/ipq9574.dtsi b/arch/arm64/boot/dts/qcom/ipq9574.dtsi
-index 3c02351fbb156..b790a6b288abb 100644
---- a/arch/arm64/boot/dts/qcom/ipq9574.dtsi
-+++ b/arch/arm64/boot/dts/qcom/ipq9574.dtsi
-@@ -974,14 +974,14 @@
- 			ranges = <0x01000000 0x0 0x00000000 0x18200000 0x0 0x100000>,
- 				 <0x02000000 0x0 0x18300000 0x18300000 0x0 0x7d00000>;
+diff --git a/arch/arm64/boot/dts/qcom/sm8750.dtsi b/arch/arm64/boot/dts/qcom/sm8750.dtsi
+index 3bbd7d18598ee..d08a2dbeb0f79 100644
+--- a/arch/arm64/boot/dts/qcom/sm8750.dtsi
++++ b/arch/arm64/boot/dts/qcom/sm8750.dtsi
+@@ -233,53 +233,59 @@
  
--			interrupts = <GIC_SPI 126 IRQ_TYPE_LEVEL_HIGH>,
--				     <GIC_SPI 128 IRQ_TYPE_LEVEL_HIGH>,
--				     <GIC_SPI 129 IRQ_TYPE_LEVEL_HIGH>,
--				     <GIC_SPI 130 IRQ_TYPE_LEVEL_HIGH>,
--				     <GIC_SPI 137 IRQ_TYPE_LEVEL_HIGH>,
--				     <GIC_SPI 141 IRQ_TYPE_LEVEL_HIGH>,
--				     <GIC_SPI 142 IRQ_TYPE_LEVEL_HIGH>,
--				     <GIC_SPI 143 IRQ_TYPE_LEVEL_HIGH>;
-+			interrupts = <GIC_SPI 221 IRQ_TYPE_LEVEL_HIGH>,
-+				     <GIC_SPI 222 IRQ_TYPE_LEVEL_HIGH>,
-+				     <GIC_SPI 225 IRQ_TYPE_LEVEL_HIGH>,
-+				     <GIC_SPI 312 IRQ_TYPE_LEVEL_HIGH>,
-+				     <GIC_SPI 326 IRQ_TYPE_LEVEL_HIGH>,
-+				     <GIC_SPI 415 IRQ_TYPE_LEVEL_HIGH>,
-+				     <GIC_SPI 494 IRQ_TYPE_LEVEL_HIGH>,
-+				     <GIC_SPI 495 IRQ_TYPE_LEVEL_HIGH>;
- 			interrupt-names = "msi0",
- 					  "msi1",
- 					  "msi2",
+ 		cpu_pd0: power-domain-cpu0 {
+ 			#power-domain-cells = <0>;
+-			power-domains = <&cluster_pd>;
++			power-domains = <&cluster0_pd>;
+ 			domain-idle-states = <&cluster0_c4>;
+ 		};
+ 
+ 		cpu_pd1: power-domain-cpu1 {
+ 			#power-domain-cells = <0>;
+-			power-domains = <&cluster_pd>;
++			power-domains = <&cluster0_pd>;
+ 			domain-idle-states = <&cluster0_c4>;
+ 		};
+ 
+ 		cpu_pd2: power-domain-cpu2 {
+ 			#power-domain-cells = <0>;
+-			power-domains = <&cluster_pd>;
++			power-domains = <&cluster0_pd>;
+ 			domain-idle-states = <&cluster0_c4>;
+ 		};
+ 
+ 		cpu_pd3: power-domain-cpu3 {
+ 			#power-domain-cells = <0>;
+-			power-domains = <&cluster_pd>;
++			power-domains = <&cluster0_pd>;
+ 			domain-idle-states = <&cluster0_c4>;
+ 		};
+ 
+ 		cpu_pd4: power-domain-cpu4 {
+ 			#power-domain-cells = <0>;
+-			power-domains = <&cluster_pd>;
++			power-domains = <&cluster0_pd>;
+ 			domain-idle-states = <&cluster0_c4>;
+ 		};
+ 
+ 		cpu_pd5: power-domain-cpu5 {
+ 			#power-domain-cells = <0>;
+-			power-domains = <&cluster_pd>;
++			power-domains = <&cluster0_pd>;
+ 			domain-idle-states = <&cluster0_c4>;
+ 		};
+ 
+ 		cpu_pd6: power-domain-cpu6 {
+ 			#power-domain-cells = <0>;
+-			power-domains = <&cluster_pd>;
++			power-domains = <&cluster1_pd>;
+ 			domain-idle-states = <&cluster1_c4>;
+ 		};
+ 
+ 		cpu_pd7: power-domain-cpu7 {
+ 			#power-domain-cells = <0>;
+-			power-domains = <&cluster_pd>;
++			power-domains = <&cluster1_pd>;
+ 			domain-idle-states = <&cluster1_c4>;
+ 		};
+ 
+-		cluster_pd: power-domain-cluster {
++		cluster0_pd: power-domain-cluster0 {
++			#power-domain-cells = <0>;
++			domain-idle-states = <&cluster_cl5>;
++			power-domains = <&system_pd>;
++		};
++
++		cluster1_pd: power-domain-cluster1 {
+ 			#power-domain-cells = <0>;
+ 			domain-idle-states = <&cluster_cl5>;
+ 			power-domains = <&system_pd>;
 -- 
 2.39.5
 
