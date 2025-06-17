@@ -1,57 +1,64 @@
-Return-Path: <stable+bounces-153385-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-154125-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 82D78ADD440
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:08:20 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 20B76ADD96D
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 19:06:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 65D5D1946330
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:00:30 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 969774A1F3A
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:42:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01B152F237E;
-	Tue, 17 Jun 2025 15:56:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CCBB12ECD3C;
+	Tue, 17 Jun 2025 16:36:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rjGj6dnR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N1/XrifR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFC1B2F2375;
-	Tue, 17 Jun 2025 15:56:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 879F22ECD33;
+	Tue, 17 Jun 2025 16:36:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750175786; cv=none; b=c8uBbabvyKBkYvGFPfU7j1LplENkYcx/uKpYRWkb4ARgk9vBdnzi2L3l9kqbzvDjW46NbM6z8qFx98YpX3XHhRkEYDC3ZsRcT4rXLhsp1D5l3TxzHHm5yypyMzqzgYhQ+i0+t3O3c7a6IgHwmHLf1in/miKJ8eRMjglEQCwosVQ=
+	t=1750178180; cv=none; b=I9tS35CazYaRvTSY2A4HPim5k/05yJl6OGFL5+m03W4ZOdwUy23juwgkaO2T8CgFUuaWWEintzSCFXcuVZVilM52HPijy0ov4Wzo2GhGBNInd/Sfd+DBARCp+kYdQYXMJvcl9MYxVRjdz8KdDZcHu7HMIBcgd3RUGmez+Qxluzk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750175786; c=relaxed/simple;
-	bh=0NB/lMfDDUk62CgWWz2lS3qTttfZbb3w9bwojLTnxGg=;
+	s=arc-20240116; t=1750178180; c=relaxed/simple;
+	bh=56Nk4fn8wZ4sP3B8iqpFQqOQXcP/J15g9rxcA52XOqY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ir4oCdSTFZNLinVBGAXqhn5f/2/eKnFVS5NixeHKQSA1ln3MZrPH/6Afv7+ZeiPa6HHZPBtiZCkOCSnP53ubP7H5KUSpmpFqd1NRxc9D9lBqbDLxAd79PhTEslfJz1HdsS8c+0YzQcHvyJhO86beMGzErazyfaAcgwIpBYZZO8M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rjGj6dnR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D58AC4CEE3;
-	Tue, 17 Jun 2025 15:56:26 +0000 (UTC)
+	 MIME-Version; b=Xn2kyZSQuHhRMH7011GMQlcZ/D3eMTMroGE9kX3dUWgWrdljV3LjOL+jIPPPvoCRXycA7SX2N0xM47zGOpw/TC78AU1wujLk57ENq1/L/MY3fGyXD6enuhtSx4Mu6dgNa5vbAe37SXMXvKSQt/lGC9sUg7vmeSYBoauF/QnPDdQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=N1/XrifR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90AA6C4CEE3;
+	Tue, 17 Jun 2025 16:36:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750175786;
-	bh=0NB/lMfDDUk62CgWWz2lS3qTttfZbb3w9bwojLTnxGg=;
+	s=korg; t=1750178180;
+	bh=56Nk4fn8wZ4sP3B8iqpFQqOQXcP/J15g9rxcA52XOqY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rjGj6dnR52AzvCeYiUK6D5aCgcabqQi/Y+q9G64iDVcC75xTkK0l3/LTc4hRRH0QK
-	 c/8/oR5r1rO538UsGIEg8PyUNLx1byx6z0gwYWb8dX1BL6q60Co0eZT5863NWS/cDy
-	 XDi/UFkjUPSBter7UBPaF7+QreNgdaNqk4LkiC6I=
+	b=N1/XrifRyT1xCrUxs5X8cJ64Kv01c6cIw02PEn5uzher0gSKFEbDV1l2OyqwhnBvs
+	 2kDD0ad+rsE9Yj+q0FoCCGlWIzMCpiyvc9JJgOuQphjXmC7NW4BoXxS/5r+QARDlVK
+	 oIXhJQGdvuYNFXSYegWAgSIbolfye/bNWSV+kWEQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Stephen Boyd <sboyd@kernel.org>,
-	"Rob Herring (Arm)" <robh@kernel.org>,
+	Ingo Molnar <mingo@kernel.org>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Dmitriy Vyukov <dvyukov@google.com>,
+	Howard Chu <howardchu95@gmail.com>,
+	Ian Rogers <irogers@google.com>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Kan Liang <kan.liang@linux.intel.com>,
+	Namhyung Kim <namhyung@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Arnaldo Carvalho de Melo <acme@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 163/512] of: unittest: Unlock on error in unittest_data_add()
+Subject: [PATCH 6.15 421/780] tools build: Dont show libunwind build status as it is opt-in
 Date: Tue, 17 Jun 2025 17:22:09 +0200
-Message-ID: <20250617152426.216668335@linuxfoundation.org>
+Message-ID: <20250617152508.615981103@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
-References: <20250617152419.512865572@linuxfoundation.org>
+In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
+References: <20250617152451.485330293@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,63 +70,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Arnaldo Carvalho de Melo <acme@redhat.com>
 
-[ Upstream commit 493e6cb63a21e9f009dc4c209fd311f2bb777656 ]
+[ Upstream commit a3a40391292273cf78a7920c119cdc386d694c38 ]
 
-The of_overlay_mutex_unlock() was accidentally deleted if "of_root" is
-NULL.  Change this to a goto unlock.
+Since 13e17c9ff49119aa ("perf build: Make libunwind opt-in rather than
+opt-out") doesn't try to build with libunwind, so showing that it is OFF
+when building causes just distraction, remove it from FEATURES_DISPLAY.
 
-Fixes: d1eabd218ede ("of: unittest: treat missing of_root as error instead of fixing up")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Reviewed-by: Stephen Boyd <sboyd@kernel.org>
-Link: https://lore.kernel.org/r/aBHZ1DvXiBcZkWmk@stanley.mountain
-Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
+For people that for some reason notice that there is always 'perf -vv',
+a short hand for 'perf version --build-options' and 'perf check feature
+libunwind' that now explains why it is not built:
+
+  $ perf check feature libunwind
+             libunwind: [ OFF ]  # HAVE_LIBUNWIND_SUPPORT ( tip: Deprecated, use LIBUNWIND=1 and install libunwind-dev[el] to build with it )
+  $
+
+Fixes: 13e17c9ff49119aa ("perf build: Make libunwind opt-in rather than opt-out")
+Reported-by: Ingo Molnar <mingo@kernel.org>
+Tested-by: Ingo Molnar <mingo@kernel.org>
+Cc: Adrian Hunter <adrian.hunter@intel.com>
+Cc: Dmitriy Vyukov <dvyukov@google.com>
+Cc: Howard Chu <howardchu95@gmail.com>
+Cc: Ian Rogers <irogers@google.com>
+Cc: Jiri Olsa <jolsa@kernel.org>
+Cc: Kan Liang <kan.liang@linux.intel.com>
+Cc: Namhyung Kim <namhyung@kernel.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Link: https://lore.kernel.org/r/Z--pWmTHGb62_83e@gmail.com
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/of/unittest.c | 10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
+ tools/build/Makefile.feature | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/drivers/of/unittest.c b/drivers/of/unittest.c
-index 576e9beefc7c8..9a72f75e5c2d8 100644
---- a/drivers/of/unittest.c
-+++ b/drivers/of/unittest.c
-@@ -1916,15 +1916,16 @@ static int __init unittest_data_add(void)
- 	rc = of_resolve_phandles(unittest_data_node);
- 	if (rc) {
- 		pr_err("%s: Failed to resolve phandles (rc=%i)\n", __func__, rc);
--		of_overlay_mutex_unlock();
--		return -EINVAL;
-+		rc = -EINVAL;
-+		goto unlock;
- 	}
- 
- 	/* attach the sub-tree to live tree */
- 	if (!of_root) {
- 		pr_warn("%s: no live tree to attach sub-tree\n", __func__);
- 		kfree(unittest_data);
--		return -ENODEV;
-+		rc = -ENODEV;
-+		goto unlock;
- 	}
- 
- 	EXPECT_BEGIN(KERN_INFO,
-@@ -1943,9 +1944,10 @@ static int __init unittest_data_add(void)
- 	EXPECT_END(KERN_INFO,
- 		   "Duplicate name in testcase-data, renamed to \"duplicate-name#1\"");
- 
-+unlock:
- 	of_overlay_mutex_unlock();
- 
--	return 0;
-+	return rc;
- }
- 
- #ifdef CONFIG_OF_OVERLAY
+diff --git a/tools/build/Makefile.feature b/tools/build/Makefile.feature
+index 48e3f124b98ac..357749701239f 100644
+--- a/tools/build/Makefile.feature
++++ b/tools/build/Makefile.feature
+@@ -155,7 +155,6 @@ FEATURE_DISPLAY ?=              \
+          libperl                \
+          libpython              \
+          libcrypto              \
+-         libunwind              \
+          libcapstone            \
+          llvm-perf              \
+          zlib                   \
 -- 
 2.39.5
 
