@@ -1,63 +1,57 @@
-Return-Path: <stable+bounces-153504-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-154421-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 78CA8ADD507
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:16:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E88D0ADDA48
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 19:16:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5B7F33A8D09
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:06:08 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9D0995A3DBD
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:53:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B9A52DFF0C;
-	Tue, 17 Jun 2025 16:02:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 43AC1285071;
+	Tue, 17 Jun 2025 16:52:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WHQ7JCvO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L2OVi7na"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC9B22DFF03;
-	Tue, 17 Jun 2025 16:02:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9E1323A9B3;
+	Tue, 17 Jun 2025 16:52:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750176176; cv=none; b=efEXxujVy0JzJ069ghT5JXoJ0N+ihkgp/wga8uoxKq9wFRp4VhFtzunWZzBLXqUy7bRUt0wVaH66KtrtJqratIcwPB0lVKSNgnSBrzQj+AoaHt8E2Ws2r473NDlrUD4wTgV13Ffzj1aSMKCXlRMRF2ygs8b3qfMvuTTIbns/h9s=
+	t=1750179140; cv=none; b=VTjGSErBtMl+gY0AOEfXkfZH9ejBHbW3UD6uMDeLG7XQKrmJKoRDeytKguosCMBYvoTsirjQWRUfSuDL+sFGpGjVYqXVHOVdYvSgHz09l9QyPU+X30tjSpG6AW4zVfQjXhBc+WtGcCJO6s2LKzrHGioTKyPORATAKybow9Zkr+I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750176176; c=relaxed/simple;
-	bh=ZFQyUJsTktW88Za1Qqz6UUhXEremtQ2zeWONIBhiRyg=;
+	s=arc-20240116; t=1750179140; c=relaxed/simple;
+	bh=KnPjwZuk8fQcBMLer49sOyyjYhcxdcubKVMMZzqaZH0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OdBASvyos0jbGKQmE0rTJhMxPv3+eHe+F8DTDI9/ml8m2QGrmvU9OSctubXtJhWSze3f1Li4TIEQ9GLUHOJVEVQHEBW9xPIFF4t/mT3X68gPDSXRuM8K6sqYYdXirbkbjrZeQ1OnMuNJiIZWn1Gb1G9khLzdmPvIc1dxFNwaRUw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WHQ7JCvO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 130ACC4CEE3;
-	Tue, 17 Jun 2025 16:02:56 +0000 (UTC)
+	 MIME-Version:Content-Type; b=fuFCuBhDC6T4sYZzevaulM7bnGslP3QEoLUct8I0kVwRiciI9TmD5IdJcNIXnQZxWeHw5KC5wHei/Sc5KUg5L585mKuF0Gni2X+Fqxw0uZN+e+n/g4Qgks36IRNeC/vYnxOU8lbQm3cjgEMZejXCB5P0N19MgGiNY8H4qEYg8D8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L2OVi7na; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A07BC4CEE7;
+	Tue, 17 Jun 2025 16:52:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750176176;
-	bh=ZFQyUJsTktW88Za1Qqz6UUhXEremtQ2zeWONIBhiRyg=;
+	s=korg; t=1750179139;
+	bh=KnPjwZuk8fQcBMLer49sOyyjYhcxdcubKVMMZzqaZH0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WHQ7JCvOSFFh3vmsueyfHM5S+lPBEvTeVnTH1sTmcXdWAzFWe/ETv5yfWG6I2sLi5
-	 dL8ZYM4rf337k93erpD92hy3HcRTbUrdfV6pkCxRtMuxEChdgBD/xtXmTNaU/X3I2N
-	 zZYXNsTmKvN99k8otunB3h2IyMlhL5XfnoUjfeUI=
+	b=L2OVi7nae5dnc8cypsYwf/qfHGDChQXq5oXJzgqQ6vX8ElaALEOKRNMVSGIdrGvcg
+	 Y8fKaUcDecSOpRhuu2CZ9ZrSlYR/+CUp9hwabdNEmIkg6Df5yreg7JcLoRnjakXjz3
+	 Fy2sS+2bYSAUihc0Qs9qA6EWHRAE0INxB3Dqhces=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dawid Osuchowski <dawid.osuchowski@linux.intel.com>,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Michal Kubiak <michal.kubiak@intel.com>,
-	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
-	Simon Horman <horms@kernel.org>,
-	Jesse Brandeburg <jbrandeburg@cloudflare.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Sasha Levin <sashal@kernel.org>,
-	Saritha Sanigani <sarithax.sanigani@intel.com>
-Subject: [PATCH 6.6 252/356] ice: fix Tx scheduler error handling in XDP callback
-Date: Tue, 17 Jun 2025 17:26:07 +0200
-Message-ID: <20250617152348.346172616@linuxfoundation.org>
+	=?UTF-8?q?Andr=C3=A9=20Draszik?= <andre.draszik@linaro.org>,
+	Peter Griffin <peter.griffin@linaro.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.15 660/780] pinctrl: samsung: add dedicated SoC eint suspend/resume callbacks
+Date: Tue, 17 Jun 2025 17:26:08 +0200
+Message-ID: <20250617152518.342063931@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152338.212798615@linuxfoundation.org>
-References: <20250617152338.212798615@linuxfoundation.org>
+In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
+References: <20250617152451.485330293@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,186 +61,313 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michal Kubiak <michal.kubiak@intel.com>
+From: Peter Griffin <peter.griffin@linaro.org>
 
-[ Upstream commit 0153f36041b8e52019ebfa8629c13bf8f9b0a951 ]
+[ Upstream commit 77ac6b742eba063a5b6600cda67834a7a212281a ]
 
-When the XDP program is loaded, the XDP callback adds new Tx queues.
-This means that the callback must update the Tx scheduler with the new
-queue number. In the event of a Tx scheduler failure, the XDP callback
-should also fail and roll back any changes previously made for XDP
-preparation.
+Refactor the existing platform specific suspend/resume callback
+so that each SoC variant has it's own callback containing the
+SoC specific logic.
 
-The previous implementation had a bug that not all changes made by the
-XDP callback were rolled back. This caused the crash with the following
-call trace:
+This allows exynosautov920 to have a dedicated function for using
+eint_con_offset and eint_mask_offset. Also it is easily extendable
+for gs101 which will need dedicated logic for handling the varying
+register offset of fltcon0 via eint_fltcon_offset.
 
-[  +9.549584] ice 0000:ca:00.0: Failed VSI LAN queue config for XDP, error: -5
-[  +0.382335] Oops: general protection fault, probably for non-canonical address 0x50a2250a90495525: 0000 [#1] SMP NOPTI
-[  +0.010710] CPU: 103 UID: 0 PID: 0 Comm: swapper/103 Not tainted 6.14.0-net-next-mar-31+ #14 PREEMPT(voluntary)
-[  +0.010175] Hardware name: Intel Corporation M50CYP2SBSTD/M50CYP2SBSTD, BIOS SE5C620.86B.01.01.0005.2202160810 02/16/2022
-[  +0.010946] RIP: 0010:__ice_update_sample+0x39/0xe0 [ice]
-
-[...]
-
-[  +0.002715] Call Trace:
-[  +0.002452]  <IRQ>
-[  +0.002021]  ? __die_body.cold+0x19/0x29
-[  +0.003922]  ? die_addr+0x3c/0x60
-[  +0.003319]  ? exc_general_protection+0x17c/0x400
-[  +0.004707]  ? asm_exc_general_protection+0x26/0x30
-[  +0.004879]  ? __ice_update_sample+0x39/0xe0 [ice]
-[  +0.004835]  ice_napi_poll+0x665/0x680 [ice]
-[  +0.004320]  __napi_poll+0x28/0x190
-[  +0.003500]  net_rx_action+0x198/0x360
-[  +0.003752]  ? update_rq_clock+0x39/0x220
-[  +0.004013]  handle_softirqs+0xf1/0x340
-[  +0.003840]  ? sched_clock_cpu+0xf/0x1f0
-[  +0.003925]  __irq_exit_rcu+0xc2/0xe0
-[  +0.003665]  common_interrupt+0x85/0xa0
-[  +0.003839]  </IRQ>
-[  +0.002098]  <TASK>
-[  +0.002106]  asm_common_interrupt+0x26/0x40
-[  +0.004184] RIP: 0010:cpuidle_enter_state+0xd3/0x690
-
-Fix this by performing the missing unmapping of XDP queues from
-q_vectors and setting the XDP rings pointer back to NULL after all those
-queues are released.
-Also, add an immediate exit from the XDP callback in case of ring
-preparation failure.
-
-Fixes: efc2214b6047 ("ice: Add support for XDP")
-Reviewed-by: Dawid Osuchowski <dawid.osuchowski@linux.intel.com>
-Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
-Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
-Signed-off-by: Michal Kubiak <michal.kubiak@intel.com>
-Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Tested-by: Jesse Brandeburg <jbrandeburg@cloudflare.com>
-Tested-by: Saritha Sanigani <sarithax.sanigani@intel.com> (A Contingent Worker at Intel)
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Reviewed-by: André Draszik <andre.draszik@linaro.org>
+Signed-off-by: Peter Griffin <peter.griffin@linaro.org>
+Link: https://lore.kernel.org/r/20250402-pinctrl-fltcon-suspend-v6-2-78ce0d4eb30c@linaro.org
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Stable-dep-of: bdbe0a0f7100 ("pinctrl: samsung: add gs101 specific eint suspend/resume callbacks")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/ice/ice_main.c | 47 ++++++++++++++++-------
- 1 file changed, 33 insertions(+), 14 deletions(-)
+ .../pinctrl/samsung/pinctrl-exynos-arm64.c    |  28 ++--
+ drivers/pinctrl/samsung/pinctrl-exynos.c      | 152 ++++++++++--------
+ drivers/pinctrl/samsung/pinctrl-exynos.h      |   2 +
+ 3 files changed, 97 insertions(+), 85 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/ice/ice_main.c b/drivers/net/ethernet/intel/ice/ice_main.c
-index 0ae7bdfff83fb..e1a68fb5e9fff 100644
---- a/drivers/net/ethernet/intel/ice/ice_main.c
-+++ b/drivers/net/ethernet/intel/ice/ice_main.c
-@@ -2650,6 +2650,27 @@ static void ice_vsi_assign_bpf_prog(struct ice_vsi *vsi, struct bpf_prog *prog)
- 		bpf_prog_put(old_prog);
- }
+diff --git a/drivers/pinctrl/samsung/pinctrl-exynos-arm64.c b/drivers/pinctrl/samsung/pinctrl-exynos-arm64.c
+index dd07720e32cc0..4b5d4e436a337 100644
+--- a/drivers/pinctrl/samsung/pinctrl-exynos-arm64.c
++++ b/drivers/pinctrl/samsung/pinctrl-exynos-arm64.c
+@@ -1419,8 +1419,8 @@ static const struct samsung_pin_ctrl exynosautov920_pin_ctrl[] = {
+ 		.pin_banks	= exynosautov920_pin_banks0,
+ 		.nr_banks	= ARRAY_SIZE(exynosautov920_pin_banks0),
+ 		.eint_wkup_init	= exynos_eint_wkup_init,
+-		.suspend	= exynos_pinctrl_suspend,
+-		.resume		= exynos_pinctrl_resume,
++		.suspend	= exynosautov920_pinctrl_suspend,
++		.resume		= exynosautov920_pinctrl_resume,
+ 		.retention_data	= &exynosautov920_retention_data,
+ 	}, {
+ 		/* pin-controller instance 1 AUD data */
+@@ -1431,43 +1431,43 @@ static const struct samsung_pin_ctrl exynosautov920_pin_ctrl[] = {
+ 		.pin_banks	= exynosautov920_pin_banks2,
+ 		.nr_banks	= ARRAY_SIZE(exynosautov920_pin_banks2),
+ 		.eint_gpio_init	= exynos_eint_gpio_init,
+-		.suspend	= exynos_pinctrl_suspend,
+-		.resume		= exynos_pinctrl_resume,
++		.suspend	= exynosautov920_pinctrl_suspend,
++		.resume		= exynosautov920_pinctrl_resume,
+ 	}, {
+ 		/* pin-controller instance 3 HSI1 data */
+ 		.pin_banks	= exynosautov920_pin_banks3,
+ 		.nr_banks	= ARRAY_SIZE(exynosautov920_pin_banks3),
+ 		.eint_gpio_init	= exynos_eint_gpio_init,
+-		.suspend	= exynos_pinctrl_suspend,
+-		.resume		= exynos_pinctrl_resume,
++		.suspend	= exynosautov920_pinctrl_suspend,
++		.resume		= exynosautov920_pinctrl_resume,
+ 	}, {
+ 		/* pin-controller instance 4 HSI2 data */
+ 		.pin_banks	= exynosautov920_pin_banks4,
+ 		.nr_banks	= ARRAY_SIZE(exynosautov920_pin_banks4),
+ 		.eint_gpio_init	= exynos_eint_gpio_init,
+-		.suspend	= exynos_pinctrl_suspend,
+-		.resume		= exynos_pinctrl_resume,
++		.suspend	= exynosautov920_pinctrl_suspend,
++		.resume		= exynosautov920_pinctrl_resume,
+ 	}, {
+ 		/* pin-controller instance 5 HSI2UFS data */
+ 		.pin_banks	= exynosautov920_pin_banks5,
+ 		.nr_banks	= ARRAY_SIZE(exynosautov920_pin_banks5),
+ 		.eint_gpio_init	= exynos_eint_gpio_init,
+-		.suspend	= exynos_pinctrl_suspend,
+-		.resume		= exynos_pinctrl_resume,
++		.suspend	= exynosautov920_pinctrl_suspend,
++		.resume		= exynosautov920_pinctrl_resume,
+ 	}, {
+ 		/* pin-controller instance 6 PERIC0 data */
+ 		.pin_banks	= exynosautov920_pin_banks6,
+ 		.nr_banks	= ARRAY_SIZE(exynosautov920_pin_banks6),
+ 		.eint_gpio_init	= exynos_eint_gpio_init,
+-		.suspend	= exynos_pinctrl_suspend,
+-		.resume		= exynos_pinctrl_resume,
++		.suspend	= exynosautov920_pinctrl_suspend,
++		.resume		= exynosautov920_pinctrl_resume,
+ 	}, {
+ 		/* pin-controller instance 7 PERIC1 data */
+ 		.pin_banks	= exynosautov920_pin_banks7,
+ 		.nr_banks	= ARRAY_SIZE(exynosautov920_pin_banks7),
+ 		.eint_gpio_init	= exynos_eint_gpio_init,
+-		.suspend	= exynos_pinctrl_suspend,
+-		.resume		= exynos_pinctrl_resume,
++		.suspend	= exynosautov920_pinctrl_suspend,
++		.resume		= exynosautov920_pinctrl_resume,
+ 	},
+ };
  
-+/**
-+ * ice_unmap_xdp_rings - Unmap XDP rings from interrupt vectors
-+ * @vsi: the VSI with XDP rings being unmapped
-+ */
-+static void ice_unmap_xdp_rings(struct ice_vsi *vsi)
-+{
-+	int v_idx;
-+
-+	ice_for_each_q_vector(vsi, v_idx) {
-+		struct ice_q_vector *q_vector = vsi->q_vectors[v_idx];
-+		struct ice_tx_ring *ring;
-+
-+		ice_for_each_tx_ring(ring, q_vector->tx)
-+			if (!ring->tx_buf || !ice_ring_is_xdp(ring))
-+				break;
-+
-+		/* restore the value of last node prior to XDP setup */
-+		q_vector->tx.tx_ring = ring;
-+	}
-+}
-+
- /**
-  * ice_prepare_xdp_rings - Allocate, configure and setup Tx rings for XDP
-  * @vsi: VSI to bring up Tx rings used by XDP
-@@ -2749,7 +2770,7 @@ int ice_prepare_xdp_rings(struct ice_vsi *vsi, struct bpf_prog *prog,
- 	if (status) {
- 		dev_err(dev, "Failed VSI LAN queue config for XDP, error: %d\n",
- 			status);
--		goto clear_xdp_rings;
-+		goto unmap_xdp_rings;
- 	}
- 
- 	/* assign the prog only when it's not already present on VSI;
-@@ -2765,6 +2786,8 @@ int ice_prepare_xdp_rings(struct ice_vsi *vsi, struct bpf_prog *prog,
- 		ice_vsi_assign_bpf_prog(vsi, prog);
- 
+diff --git a/drivers/pinctrl/samsung/pinctrl-exynos.c b/drivers/pinctrl/samsung/pinctrl-exynos.c
+index ae82f42be83cf..18c327f7e3133 100644
+--- a/drivers/pinctrl/samsung/pinctrl-exynos.c
++++ b/drivers/pinctrl/samsung/pinctrl-exynos.c
+@@ -762,105 +762,115 @@ __init int exynos_eint_wkup_init(struct samsung_pinctrl_drv_data *d)
  	return 0;
-+unmap_xdp_rings:
-+	ice_unmap_xdp_rings(vsi);
- clear_xdp_rings:
- 	ice_for_each_xdp_txq(vsi, i)
- 		if (vsi->xdp_rings[i]) {
-@@ -2781,6 +2804,8 @@ int ice_prepare_xdp_rings(struct ice_vsi *vsi, struct bpf_prog *prog,
- 	mutex_unlock(&pf->avail_q_mutex);
- 
- 	devm_kfree(dev, vsi->xdp_rings);
-+	vsi->xdp_rings = NULL;
-+
- 	return -ENOMEM;
  }
  
-@@ -2796,7 +2821,7 @@ int ice_destroy_xdp_rings(struct ice_vsi *vsi, enum ice_xdp_cfg cfg_type)
+-static void exynos_pinctrl_suspend_bank(struct samsung_pin_bank *bank)
++static void exynos_set_wakeup(struct samsung_pin_bank *bank)
  {
- 	u16 max_txqs[ICE_MAX_TRAFFIC_CLASS] = { 0 };
- 	struct ice_pf *pf = vsi->back;
--	int i, v_idx;
-+	int i;
+-	struct exynos_eint_gpio_save *save = bank->soc_priv;
+-	const void __iomem *regs = bank->eint_base;
++	struct exynos_irq_chip *irq_chip;
  
- 	/* q_vectors are freed in reset path so there's no point in detaching
- 	 * rings
-@@ -2804,17 +2829,7 @@ int ice_destroy_xdp_rings(struct ice_vsi *vsi, enum ice_xdp_cfg cfg_type)
- 	if (cfg_type == ICE_XDP_CFG_PART)
- 		goto free_qmap;
- 
--	ice_for_each_q_vector(vsi, v_idx) {
--		struct ice_q_vector *q_vector = vsi->q_vectors[v_idx];
--		struct ice_tx_ring *ring;
+-	save->eint_con = readl(regs + EXYNOS_GPIO_ECON_OFFSET
+-						+ bank->eint_offset);
+-	save->eint_fltcon0 = readl(regs + EXYNOS_GPIO_EFLTCON_OFFSET
+-						+ 2 * bank->eint_offset);
+-	save->eint_fltcon1 = readl(regs + EXYNOS_GPIO_EFLTCON_OFFSET
+-						+ 2 * bank->eint_offset + 4);
+-	save->eint_mask = readl(regs + bank->irq_chip->eint_mask
+-						+ bank->eint_offset);
 -
--		ice_for_each_tx_ring(ring, q_vector->tx)
--			if (!ring->tx_buf || !ice_ring_is_xdp(ring))
--				break;
--
--		/* restore the value of last node prior to XDP setup */
--		q_vector->tx.tx_ring = ring;
--	}
-+	ice_unmap_xdp_rings(vsi);
+-	pr_debug("%s: save     con %#010x\n", bank->name, save->eint_con);
+-	pr_debug("%s: save fltcon0 %#010x\n", bank->name, save->eint_fltcon0);
+-	pr_debug("%s: save fltcon1 %#010x\n", bank->name, save->eint_fltcon1);
+-	pr_debug("%s: save    mask %#010x\n", bank->name, save->eint_mask);
++	if (bank->irq_chip) {
++		irq_chip = bank->irq_chip;
++		irq_chip->set_eint_wakeup_mask(bank->drvdata, irq_chip);
++	}
+ }
  
- free_qmap:
- 	mutex_lock(&pf->avail_q_mutex);
-@@ -2956,11 +2971,14 @@ ice_xdp_setup_prog(struct ice_vsi *vsi, struct bpf_prog *prog,
- 		xdp_ring_err = ice_vsi_determine_xdp_res(vsi);
- 		if (xdp_ring_err) {
- 			NL_SET_ERR_MSG_MOD(extack, "Not enough Tx resources for XDP");
-+			goto resume_if;
- 		} else {
- 			xdp_ring_err = ice_prepare_xdp_rings(vsi, prog,
- 							     ICE_XDP_CFG_FULL);
--			if (xdp_ring_err)
-+			if (xdp_ring_err) {
- 				NL_SET_ERR_MSG_MOD(extack, "Setting up XDP Tx resources failed");
-+				goto resume_if;
-+			}
- 		}
- 		xdp_features_set_redirect_target(vsi->netdev, true);
- 		/* reallocate Rx queues that are used for zero-copy */
-@@ -2978,6 +2996,7 @@ ice_xdp_setup_prog(struct ice_vsi *vsi, struct bpf_prog *prog,
- 			NL_SET_ERR_MSG_MOD(extack, "Freeing XDP Rx resources failed");
+-static void exynosauto_pinctrl_suspend_bank(struct samsung_pin_bank *bank)
++void exynos_pinctrl_suspend(struct samsung_pin_bank *bank)
+ {
+ 	struct exynos_eint_gpio_save *save = bank->soc_priv;
+ 	const void __iomem *regs = bank->eint_base;
+ 
+-	save->eint_con = readl(regs + bank->pctl_offset + bank->eint_con_offset);
+-	save->eint_mask = readl(regs + bank->pctl_offset + bank->eint_mask_offset);
+-
+-	pr_debug("%s: save     con %#010x\n", bank->name, save->eint_con);
+-	pr_debug("%s: save    mask %#010x\n", bank->name, save->eint_mask);
++	if (bank->eint_type == EINT_TYPE_GPIO) {
++		save->eint_con = readl(regs + EXYNOS_GPIO_ECON_OFFSET
++				       + bank->eint_offset);
++		save->eint_fltcon0 = readl(regs + EXYNOS_GPIO_EFLTCON_OFFSET
++					   + 2 * bank->eint_offset);
++		save->eint_fltcon1 = readl(regs + EXYNOS_GPIO_EFLTCON_OFFSET
++					   + 2 * bank->eint_offset + 4);
++		save->eint_mask = readl(regs + bank->irq_chip->eint_mask
++					+ bank->eint_offset);
++
++		pr_debug("%s: save     con %#010x\n",
++			 bank->name, save->eint_con);
++		pr_debug("%s: save fltcon0 %#010x\n",
++			 bank->name, save->eint_fltcon0);
++		pr_debug("%s: save fltcon1 %#010x\n",
++			 bank->name, save->eint_fltcon1);
++		pr_debug("%s: save    mask %#010x\n",
++			 bank->name, save->eint_mask);
++	} else if (bank->eint_type == EINT_TYPE_WKUP) {
++		exynos_set_wakeup(bank);
++	}
+ }
+ 
+-void exynos_pinctrl_suspend(struct samsung_pin_bank *bank)
++void exynosautov920_pinctrl_suspend(struct samsung_pin_bank *bank)
+ {
+-	struct exynos_irq_chip *irq_chip = NULL;
++	struct exynos_eint_gpio_save *save = bank->soc_priv;
++	const void __iomem *regs = bank->eint_base;
+ 
+ 	if (bank->eint_type == EINT_TYPE_GPIO) {
+-		if (bank->eint_con_offset)
+-			exynosauto_pinctrl_suspend_bank(bank);
+-		else
+-			exynos_pinctrl_suspend_bank(bank);
++		save->eint_con = readl(regs + bank->pctl_offset +
++				       bank->eint_con_offset);
++		save->eint_mask = readl(regs + bank->pctl_offset +
++					bank->eint_mask_offset);
++		pr_debug("%s: save     con %#010x\n",
++			 bank->name, save->eint_con);
++		pr_debug("%s: save    mask %#010x\n",
++			 bank->name, save->eint_mask);
+ 	} else if (bank->eint_type == EINT_TYPE_WKUP) {
+-		if (!irq_chip) {
+-			irq_chip = bank->irq_chip;
+-			irq_chip->set_eint_wakeup_mask(bank->drvdata, irq_chip);
+-		}
++		exynos_set_wakeup(bank);
  	}
+ }
  
-+resume_if:
- 	if (if_running)
- 		ret = ice_up(vsi);
+-static void exynos_pinctrl_resume_bank(struct samsung_pin_bank *bank)
++void exynos_pinctrl_resume(struct samsung_pin_bank *bank)
+ {
+ 	struct exynos_eint_gpio_save *save = bank->soc_priv;
+ 	void __iomem *regs = bank->eint_base;
  
+-	pr_debug("%s:     con %#010x => %#010x\n", bank->name,
+-			readl(regs + EXYNOS_GPIO_ECON_OFFSET
+-			+ bank->eint_offset), save->eint_con);
+-	pr_debug("%s: fltcon0 %#010x => %#010x\n", bank->name,
+-			readl(regs + EXYNOS_GPIO_EFLTCON_OFFSET
+-			+ 2 * bank->eint_offset), save->eint_fltcon0);
+-	pr_debug("%s: fltcon1 %#010x => %#010x\n", bank->name,
+-			readl(regs + EXYNOS_GPIO_EFLTCON_OFFSET
+-			+ 2 * bank->eint_offset + 4), save->eint_fltcon1);
+-	pr_debug("%s:    mask %#010x => %#010x\n", bank->name,
+-			readl(regs + bank->irq_chip->eint_mask
+-			+ bank->eint_offset), save->eint_mask);
+-
+-	writel(save->eint_con, regs + EXYNOS_GPIO_ECON_OFFSET
+-						+ bank->eint_offset);
+-	writel(save->eint_fltcon0, regs + EXYNOS_GPIO_EFLTCON_OFFSET
+-						+ 2 * bank->eint_offset);
+-	writel(save->eint_fltcon1, regs + EXYNOS_GPIO_EFLTCON_OFFSET
+-						+ 2 * bank->eint_offset + 4);
+-	writel(save->eint_mask, regs + bank->irq_chip->eint_mask
+-						+ bank->eint_offset);
++	if (bank->eint_type == EINT_TYPE_GPIO) {
++		pr_debug("%s:     con %#010x => %#010x\n", bank->name,
++			 readl(regs + EXYNOS_GPIO_ECON_OFFSET
++			       + bank->eint_offset), save->eint_con);
++		pr_debug("%s: fltcon0 %#010x => %#010x\n", bank->name,
++			 readl(regs + EXYNOS_GPIO_EFLTCON_OFFSET
++			       + 2 * bank->eint_offset), save->eint_fltcon0);
++		pr_debug("%s: fltcon1 %#010x => %#010x\n", bank->name,
++			 readl(regs + EXYNOS_GPIO_EFLTCON_OFFSET
++			       + 2 * bank->eint_offset + 4),
++			 save->eint_fltcon1);
++		pr_debug("%s:    mask %#010x => %#010x\n", bank->name,
++			 readl(regs + bank->irq_chip->eint_mask
++			       + bank->eint_offset), save->eint_mask);
++
++		writel(save->eint_con, regs + EXYNOS_GPIO_ECON_OFFSET
++		       + bank->eint_offset);
++		writel(save->eint_fltcon0, regs + EXYNOS_GPIO_EFLTCON_OFFSET
++		       + 2 * bank->eint_offset);
++		writel(save->eint_fltcon1, regs + EXYNOS_GPIO_EFLTCON_OFFSET
++		       + 2 * bank->eint_offset + 4);
++		writel(save->eint_mask, regs + bank->irq_chip->eint_mask
++		       + bank->eint_offset);
++	}
+ }
+ 
+-static void exynosauto_pinctrl_resume_bank(struct samsung_pin_bank *bank)
++void exynosautov920_pinctrl_resume(struct samsung_pin_bank *bank)
+ {
+ 	struct exynos_eint_gpio_save *save = bank->soc_priv;
+ 	void __iomem *regs = bank->eint_base;
+ 
+-	pr_debug("%s:     con %#010x => %#010x\n", bank->name,
+-		 readl(regs + bank->pctl_offset + bank->eint_con_offset), save->eint_con);
+-	pr_debug("%s:    mask %#010x => %#010x\n", bank->name,
+-		 readl(regs + bank->pctl_offset + bank->eint_mask_offset), save->eint_mask);
+-
+-	writel(save->eint_con, regs + bank->pctl_offset + bank->eint_con_offset);
+-	writel(save->eint_mask, regs + bank->pctl_offset + bank->eint_mask_offset);
+-
+-}
+-
+-void exynos_pinctrl_resume(struct samsung_pin_bank *bank)
+-{
+ 	if (bank->eint_type == EINT_TYPE_GPIO) {
+-		if (bank->eint_con_offset)
+-			exynosauto_pinctrl_resume_bank(bank);
+-		else
+-			exynos_pinctrl_resume_bank(bank);
++		/* exynosautov920 has eint_con_offset for all but one bank */
++		if (!bank->eint_con_offset)
++			exynos_pinctrl_resume(bank);
++
++		pr_debug("%s:     con %#010x => %#010x\n", bank->name,
++			 readl(regs + bank->pctl_offset + bank->eint_con_offset),
++			 save->eint_con);
++		pr_debug("%s:    mask %#010x => %#010x\n", bank->name,
++			 readl(regs + bank->pctl_offset +
++			       bank->eint_mask_offset), save->eint_mask);
++
++		writel(save->eint_con,
++		       regs + bank->pctl_offset + bank->eint_con_offset);
++		writel(save->eint_mask,
++		       regs + bank->pctl_offset + bank->eint_mask_offset);
+ 	}
+ }
+ 
+diff --git a/drivers/pinctrl/samsung/pinctrl-exynos.h b/drivers/pinctrl/samsung/pinctrl-exynos.h
+index 341155c1abd15..3a771862b4b17 100644
+--- a/drivers/pinctrl/samsung/pinctrl-exynos.h
++++ b/drivers/pinctrl/samsung/pinctrl-exynos.h
+@@ -240,6 +240,8 @@ struct exynos_muxed_weint_data {
+ 
+ int exynos_eint_gpio_init(struct samsung_pinctrl_drv_data *d);
+ int exynos_eint_wkup_init(struct samsung_pinctrl_drv_data *d);
++void exynosautov920_pinctrl_resume(struct samsung_pin_bank *bank);
++void exynosautov920_pinctrl_suspend(struct samsung_pin_bank *bank);
+ void exynos_pinctrl_suspend(struct samsung_pin_bank *bank);
+ void exynos_pinctrl_resume(struct samsung_pin_bank *bank);
+ struct samsung_retention_ctrl *
 -- 
 2.39.5
 
