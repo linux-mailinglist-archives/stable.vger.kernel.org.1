@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-153034-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153037-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id C2D46ADD229
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 17:39:50 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 95DB9ADD200
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 17:37:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 217B77AD308
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 15:36:15 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 81F1A3BCFB1
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 15:37:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB9522ECD1B;
-	Tue, 17 Jun 2025 15:37:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0869C2ECD0B;
+	Tue, 17 Jun 2025 15:37:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="geHNiaKq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oUUdUaFD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78BEC2E9730;
-	Tue, 17 Jun 2025 15:37:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB48818A6AE;
+	Tue, 17 Jun 2025 15:37:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750174653; cv=none; b=LolqxuStF9JAF4VY1IqwWUnKBsLjGDDjWiR5Y7syyeyik0MuWyojyEZ5QSkEu7x018RXj1+YEoMQaW9WecRSATWKOlNMRsRG1AZRh4FLUh+6ZtV6dP9zaTXdn5N0EniTRplW6XuQ4L8+jjd44kTU3UeiOz7rkwuYgqAm7yJIS/c=
+	t=1750174662; cv=none; b=R87K05fCPn+NVnItXCJ5tDUhI7quyHuqFzozVyNWr1Y3WtNCYwV6tfnaMLUP6fhqJr9IGBd3CUpvrc4V0/V/fx9L5oe5N6er6XhNlF82eRvXeOfLEmtIHhYZqZjot6qEmp1kHPVUQHbFWx/5QHSX7+MOxMgpitSS0iSdMzFaNoo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750174653; c=relaxed/simple;
-	bh=LAD5+HNQXSpr2dYl8Kt6xR25lEG4b59VaQY3P51zu7w=;
+	s=arc-20240116; t=1750174662; c=relaxed/simple;
+	bh=gftoO5w7UNPgM/H45IjTAejCLT5TA3eHmzKww86r9mo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=p9jaKlhK6VTX9QYVyAvbdLgeob6YcFC5ZPAFROQdonL3wmmt3BDxMlMe2fStqJ3wff5ei8GBZI6uUW6Hocsj1n5/Y7KQagKuTEOYD7Oi8kHACGwCDJKQrX1fcggH4U64g+ZLCFoOa0d376YiExiWrDTIrl+wDKtZrIXQbAm7Yks=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=geHNiaKq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F55FC4CEE3;
-	Tue, 17 Jun 2025 15:37:32 +0000 (UTC)
+	 MIME-Version; b=K30rzM0KGWYptTW9cUk79Na1b2gfzbVHB0XmA1Djh3o2f7zOYoPn0BVfsX4k3CpsMto5xGuTz8zwHRUkpdY9/ckY7PgrvNwGP2+omWQh45AX2GoswjjSp4trvlERBlQHHnEnuhs2QaNAUeXWXiFEdA9dZCGuYkfgA6mqkB6FMHA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oUUdUaFD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C9EBC4CEE7;
+	Tue, 17 Jun 2025 15:37:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750174653;
-	bh=LAD5+HNQXSpr2dYl8Kt6xR25lEG4b59VaQY3P51zu7w=;
+	s=korg; t=1750174662;
+	bh=gftoO5w7UNPgM/H45IjTAejCLT5TA3eHmzKww86r9mo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=geHNiaKqZZtniNY1xHwRHLM5meugz7SWAJR/0kTNeJ3CqqvYywL/3R+l0FcH3Q2HY
-	 WmH3zYFcxiyd1CPSuuPBYxbAJCf76H14eVrWQekV3oDHJli7Eyvdy99XYWzV2Hq5mR
-	 L4HDzEOVsMpmVCc8mdUx/u6aol6TxYkhuEEo5AVI=
+	b=oUUdUaFDN7AqVcaDexkepabd793pN/usJ3yjXNRnIM3z0+nloYuOtjl/4Xi3eg4Iu
+	 g3qKNCm1xCHeOjVJfaZ98lwHqOB6Jyy8zdntafZXH73xxvunusnUaKRsTTkGZwrzGc
+	 0jKSPkoS0G4eZSR3ax0TcEs5jzgmvL2K2wrCixxI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gabriele Monaco <gmonaco@redhat.com>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
-	Valentin Schneider <vschneid@redhat.com>,
+	Lukas Wunner <lukas@wunner.de>,
+	Stefan Berger <stefanb@linux.ibm.com>,
+	Ignat Korchagin <ignat@cloudflare.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 005/780] sched: Fix trace_sched_switch(.prev_state)
-Date: Tue, 17 Jun 2025 17:15:13 +0200
-Message-ID: <20250617152451.716777039@linuxfoundation.org>
+Subject: [PATCH 6.15 006/780] crypto: ecdsa - Fix enc/dec size reported by KEYCTL_PKEY_QUERY
+Date: Tue, 17 Jun 2025 17:15:14 +0200
+Message-ID: <20250617152451.756523110@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
 References: <20250617152451.485330293@linuxfoundation.org>
@@ -67,50 +68,70 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Peter Zijlstra <peterz@infradead.org>
+From: Lukas Wunner <lukas@wunner.de>
 
-[ Upstream commit 8feb053d53194382fcfb68231296fdc220497ea6 ]
+[ Upstream commit 3828485e1c7b111290122ab6e083c2a37132b5c2 ]
 
-Gabriele noted that in case of signal_pending_state(), the tracepoint
-sees a stale task-state.
+KEYCTL_PKEY_QUERY system calls for ecdsa keys return the key size as
+max_enc_size and max_dec_size, even though such keys cannot be used for
+encryption/decryption.  They're exclusively for signature generation or
+verification.
 
-Fixes: fa2c3254d7cf ("sched/tracing: Don't re-read p->state when emitting sched_switch event")
-Reported-by: Gabriele Monaco <gmonaco@redhat.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Cc: Valentin Schneider <vschneid@redhat.com>
+Only rsa keys with pkcs1 encoding can also be used for encryption or
+decryption.
+
+Return 0 instead for ecdsa keys (as well as ecrdsa keys).
+
+Signed-off-by: Lukas Wunner <lukas@wunner.de>
+Reviewed-by: Stefan Berger <stefanb@linux.ibm.com>
+Reviewed-by: Ignat Korchagin <ignat@cloudflare.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Stable-dep-of: 6b7f9397c98c ("crypto: ecdsa - Fix NIST P521 key size reported by KEYCTL_PKEY_QUERY")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/sched/core.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ crypto/asymmetric_keys/public_key.c | 9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
-diff --git a/kernel/sched/core.c b/kernel/sched/core.c
-index c81cf642dba05..36b34e6884587 100644
---- a/kernel/sched/core.c
-+++ b/kernel/sched/core.c
-@@ -6571,12 +6571,14 @@ pick_next_task(struct rq *rq, struct task_struct *prev, struct rq_flags *rf)
-  * Otherwise marks the task's __state as RUNNING
-  */
- static bool try_to_block_task(struct rq *rq, struct task_struct *p,
--			      unsigned long task_state)
-+			      unsigned long *task_state_p)
- {
-+	unsigned long task_state = *task_state_p;
- 	int flags = DEQUEUE_NOCLOCK;
+diff --git a/crypto/asymmetric_keys/public_key.c b/crypto/asymmetric_keys/public_key.c
+index bf165d321440d..dd44a966947fb 100644
+--- a/crypto/asymmetric_keys/public_key.c
++++ b/crypto/asymmetric_keys/public_key.c
+@@ -188,6 +188,8 @@ static int software_key_query(const struct kernel_pkey_params *params,
+ 	ptr = pkey_pack_u32(ptr, pkey->paramlen);
+ 	memcpy(ptr, pkey->params, pkey->paramlen);
  
- 	if (signal_pending_state(task_state, p)) {
- 		WRITE_ONCE(p->__state, TASK_RUNNING);
-+		*task_state_p = TASK_RUNNING;
- 		return false;
++	memset(info, 0, sizeof(*info));
++
+ 	if (issig) {
+ 		sig = crypto_alloc_sig(alg_name, 0, 0);
+ 		if (IS_ERR(sig)) {
+@@ -211,6 +213,9 @@ static int software_key_query(const struct kernel_pkey_params *params,
+ 			info->supported_ops |= KEYCTL_SUPPORTS_SIGN;
+ 
+ 		if (strcmp(params->encoding, "pkcs1") == 0) {
++			info->max_enc_size = len;
++			info->max_dec_size = len;
++
+ 			info->supported_ops |= KEYCTL_SUPPORTS_ENCRYPT;
+ 			if (pkey->key_is_private)
+ 				info->supported_ops |= KEYCTL_SUPPORTS_DECRYPT;
+@@ -232,6 +237,8 @@ static int software_key_query(const struct kernel_pkey_params *params,
+ 		len = crypto_akcipher_maxsize(tfm);
+ 		info->max_sig_size = len;
+ 		info->max_data_size = len;
++		info->max_enc_size = len;
++		info->max_dec_size = len;
+ 
+ 		info->supported_ops = KEYCTL_SUPPORTS_ENCRYPT;
+ 		if (pkey->key_is_private)
+@@ -239,8 +246,6 @@ static int software_key_query(const struct kernel_pkey_params *params,
  	}
  
-@@ -6713,7 +6715,7 @@ static void __sched notrace __schedule(int sched_mode)
- 			goto picked;
- 		}
- 	} else if (!preempt && prev_state) {
--		try_to_block_task(rq, prev, prev_state);
-+		try_to_block_task(rq, prev, &prev_state);
- 		switch_count = &prev->nvcsw;
- 	}
+ 	info->key_size = len * 8;
+-	info->max_enc_size = len;
+-	info->max_dec_size = len;
+ 
+ 	ret = 0;
  
 -- 
 2.39.5
