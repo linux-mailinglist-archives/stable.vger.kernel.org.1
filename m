@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-153803-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-154523-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA38CADD676
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:33:55 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 83D49ADDA2C
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 19:14:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9827B17B9A0
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:25:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 56FD55A6BC0
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:57:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3BC102EF2B8;
-	Tue, 17 Jun 2025 16:19:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D63CF2FA635;
+	Tue, 17 Jun 2025 16:58:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I8nygJLE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T5LwGe+K"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAD372EA14E;
-	Tue, 17 Jun 2025 16:19:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91F842FA624;
+	Tue, 17 Jun 2025 16:58:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750177149; cv=none; b=avD1sC4qUstuCob4RSrOxc+okf9UWEUht6ocfNcz2Z/Vrv17rYpDFDbwUIoRiDTTUFlYy5JnkbzWHcG5T8mA5zNtZdqj119RW5ZV2cbn9oH+oJS0fowOdAohNSBdrcq/p2QPNuXdZzUsOzwMhfLEKdllLTD8Xb1C2qm0sXyzhaM=
+	t=1750179482; cv=none; b=osY5DGTXtJqxvVnzEQBvAvtYCQCRmDTW5gnP7sZ9lN3thlpVE3N78JDxbH9bu+iKBcU9woEBJvwSnlzTP8MC3M0z3RcoofS6cP214OSj5F79ghouQHKbVQq/amT9lhneKXuKsdQiiS/xLBh0ek7X5oaAlVp8vQa1xWWxuVGaxoo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750177149; c=relaxed/simple;
-	bh=md+TxOl756FysgTZAgmmRNq2ZBEVTtqS15KcQuGExCY=;
+	s=arc-20240116; t=1750179482; c=relaxed/simple;
+	bh=Cb7UW8QeMh2gP/n3jjNdF6ickI0AuIYxywr5ASOWs8I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Cnq//CvzFRtpD0gTdn36AUk09UO70PMSBLPt4BKyLmj8UU7Z9PcVKYYGsfOkGHe9w3ZVLp8OFkJRvQY86MwvPEc/Cp1NCs85r1v3pkKz2LmVoZIojSJl/5il/DXoe3PxHKP/35VOqCgy9MGSR6k8lkqPOXUO0Kd5n9uvoYnHJQA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I8nygJLE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C5ADC4CEE3;
-	Tue, 17 Jun 2025 16:19:08 +0000 (UTC)
+	 MIME-Version; b=VEHQc4nOhcMUA3nwowxphnASexV/yTAmc8hKRxJYoTs6ybiw7KJmfIEDJT2bCuFYbEDkQj9/aRy5EWNRC/qSc2mjCMEOFpidhCAROP5RM/iUMRMneydYKt1PM5rTjPwz4UyL7lGnz9MvvGt8FZ2rnt7cA5HCKyOoS4xsK+eDfVM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T5LwGe+K; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01378C4CEE3;
+	Tue, 17 Jun 2025 16:58:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750177148;
-	bh=md+TxOl756FysgTZAgmmRNq2ZBEVTtqS15KcQuGExCY=;
+	s=korg; t=1750179482;
+	bh=Cb7UW8QeMh2gP/n3jjNdF6ickI0AuIYxywr5ASOWs8I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=I8nygJLEM5eQ/iVl4xLDQ9G8MQOz6+TGnlla+r5pwmmVEYW/ZyQZLVQRprqGAJkLR
-	 zrRCNVaOoDq0dPHRcii/eL7ZBkTLGUhlXy8jAMcG6oK4ZL7+srHsvOAQWpMeabDdP/
-	 bhnBvO5Fa/SZ3kiyNRrIylImHjjin+e9hnpnD3mo=
+	b=T5LwGe+KLuJO+1VSsq5oV9hlgBThp9madFnWImZOonUvDH8lj/HOVjvK2nb5GlWLd
+	 CkV7qPNcP+Hp8guyabzwi3GJr9KNLT8K5iHshtBHKj/8dw3QjyAHyOxRzBgnGTz389
+	 bPyUiRdVFTB0TX91pRcBbFWuyFzO3CrcHl2SNGEY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+e2b1803445d236442e54@syzkaller.appspotmail.com,
-	Thomas Gleixner <tglx@linutronix.de>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>
-Subject: [PATCH 6.6 352/356] x86/iopl: Cure TIF_IO_BITMAP inconsistencies
+	stable <stable@kernel.org>,
+	Mathias Nyman <mathias.nyman@linux.intel.com>
+Subject: [PATCH 6.15 759/780] usb: Flush altsetting 0 endpoints before reinitializating them after reset.
 Date: Tue, 17 Jun 2025 17:27:47 +0200
-Message-ID: <20250617152352.305569814@linuxfoundation.org>
+Message-ID: <20250617152522.416315993@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152338.212798615@linuxfoundation.org>
-References: <20250617152338.212798615@linuxfoundation.org>
+In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
+References: <20250617152451.485330293@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,123 +61,80 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Gleixner <tglx@linutronix.de>
+From: Mathias Nyman <mathias.nyman@linux.intel.com>
 
-commit 8b68e978718f14fdcb080c2a7791c52a0d09bc6d upstream.
+commit 89bb3dc13ac29a563f4e4c555e422882f64742bd upstream.
 
-io_bitmap_exit() is invoked from exit_thread() when a task exists or
-when a fork fails. In the latter case the exit_thread() cleans up
-resources which were allocated during fork().
+usb core avoids sending a Set-Interface altsetting 0 request after device
+reset, and instead relies on calling usb_disable_interface() and
+usb_enable_interface() to flush and reset host-side of those endpoints.
 
-io_bitmap_exit() invokes task_update_io_bitmap(), which in turn ends up
-in tss_update_io_bitmap(). tss_update_io_bitmap() operates on the
-current task. If current has TIF_IO_BITMAP set, but no bitmap installed,
-tss_update_io_bitmap() crashes with a NULL pointer dereference.
+xHCI hosts allocate and set up endpoint ring buffers and host_ep->hcpriv
+during usb_hcd_alloc_bandwidth() callback, which in this case is called
+before flushing the endpoint in usb_disable_interface().
 
-There are two issues, which lead to that problem:
+Call usb_disable_interface() before usb_hcd_alloc_bandwidth() to ensure
+URBs are flushed before new ring buffers for the endpoints are allocated.
 
-  1) io_bitmap_exit() should not invoke task_update_io_bitmap() when
-     the task, which is cleaned up, is not the current task. That's a
-     clear indicator for a cleanup after a failed fork().
+Otherwise host driver will attempt to find and remove old stale URBs
+from a freshly allocated new ringbuffer.
 
-  2) A task should not have TIF_IO_BITMAP set and neither a bitmap
-     installed nor IOPL emulation level 3 activated.
-
-     This happens when a kernel thread is created in the context of
-     a user space thread, which has TIF_IO_BITMAP set as the thread
-     flags are copied and the IO bitmap pointer is cleared.
-
-     Other than in the failed fork() case this has no impact because
-     kernel threads including IO workers never return to user space and
-     therefore never invoke tss_update_io_bitmap().
-
-Cure this by adding the missing cleanups and checks:
-
-  1) Prevent io_bitmap_exit() to invoke task_update_io_bitmap() if
-     the to be cleaned up task is not the current task.
-
-  2) Clear TIF_IO_BITMAP in copy_thread() unconditionally. For user
-     space forks it is set later, when the IO bitmap is inherited in
-     io_bitmap_share().
-
-For paranoia sake, add a warning into tss_update_io_bitmap() to catch
-the case, when that code is invoked with inconsistent state.
-
-Fixes: ea5f1cd7ab49 ("x86/ioperm: Remove bitmap if all permissions dropped")
-Reported-by: syzbot+e2b1803445d236442e54@syzkaller.appspotmail.com
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/87wmdceom2.ffs@tglx
+Cc: stable <stable@kernel.org>
+Fixes: 4fe0387afa89 ("USB: don't send Set-Interface after reset")
+Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
+Link: https://lore.kernel.org/r/20250514132520.225345-1-mathias.nyman@linux.intel.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kernel/ioport.c  |   13 +++++++++----
- arch/x86/kernel/process.c |    6 ++++++
- 2 files changed, 15 insertions(+), 4 deletions(-)
+ drivers/usb/core/hub.c |   16 ++++++++++++++--
+ 1 file changed, 14 insertions(+), 2 deletions(-)
 
---- a/arch/x86/kernel/ioport.c
-+++ b/arch/x86/kernel/ioport.c
-@@ -33,8 +33,9 @@ void io_bitmap_share(struct task_struct
- 	set_tsk_thread_flag(tsk, TIF_IO_BITMAP);
- }
+--- a/drivers/usb/core/hub.c
++++ b/drivers/usb/core/hub.c
+@@ -6133,6 +6133,7 @@ static int usb_reset_and_verify_device(s
+ 	struct usb_hub			*parent_hub;
+ 	struct usb_hcd			*hcd = bus_to_hcd(udev->bus);
+ 	struct usb_device_descriptor	descriptor;
++	struct usb_interface		*intf;
+ 	struct usb_host_bos		*bos;
+ 	int				i, j, ret = 0;
+ 	int				port1 = udev->portnum;
+@@ -6190,6 +6191,18 @@ static int usb_reset_and_verify_device(s
+ 	if (!udev->actconfig)
+ 		goto done;
  
--static void task_update_io_bitmap(struct task_struct *tsk)
-+static void task_update_io_bitmap(void)
- {
-+	struct task_struct *tsk = current;
- 	struct thread_struct *t = &tsk->thread;
- 
- 	if (t->iopl_emul == 3 || t->io_bitmap) {
-@@ -54,7 +55,12 @@ void io_bitmap_exit(struct task_struct *
- 	struct io_bitmap *iobm = tsk->thread.io_bitmap;
- 
- 	tsk->thread.io_bitmap = NULL;
--	task_update_io_bitmap(tsk);
 +	/*
-+	 * Don't touch the TSS when invoked on a failed fork(). TSS
-+	 * reflects the state of @current and not the state of @tsk.
++	 * Some devices can't handle setting default altsetting 0 with a
++	 * Set-Interface request. Disable host-side endpoints of those
++	 * interfaces here. Enable and reset them back after host has set
++	 * its internal endpoint structures during usb_hcd_alloc_bandwith()
 +	 */
-+	if (tsk == current)
-+		task_update_io_bitmap();
- 	if (iobm && refcount_dec_and_test(&iobm->refcnt))
- 		kfree(iobm);
- }
-@@ -192,8 +198,7 @@ SYSCALL_DEFINE1(iopl, unsigned int, leve
- 	}
- 
- 	t->iopl_emul = level;
--	task_update_io_bitmap(current);
--
-+	task_update_io_bitmap();
- 	return 0;
- }
- 
---- a/arch/x86/kernel/process.c
-+++ b/arch/x86/kernel/process.c
-@@ -180,6 +180,7 @@ int copy_thread(struct task_struct *p, c
- 	frame->ret_addr = (unsigned long) ret_from_fork_asm;
- 	p->thread.sp = (unsigned long) fork_frame;
- 	p->thread.io_bitmap = NULL;
-+	clear_tsk_thread_flag(p, TIF_IO_BITMAP);
- 	p->thread.iopl_warn = 0;
- 	memset(p->thread.ptrace_bps, 0, sizeof(p->thread.ptrace_bps));
- 
-@@ -468,6 +469,11 @@ void native_tss_update_io_bitmap(void)
- 	} else {
- 		struct io_bitmap *iobm = t->io_bitmap;
- 
-+		if (WARN_ON_ONCE(!iobm)) {
-+			clear_thread_flag(TIF_IO_BITMAP);
-+			native_tss_invalidate_io_bitmap();
-+		}
++	for (i = 0; i < udev->actconfig->desc.bNumInterfaces; i++) {
++		intf = udev->actconfig->interface[i];
++		if (intf->cur_altsetting->desc.bAlternateSetting == 0)
++			usb_disable_interface(udev, intf, true);
++	}
 +
- 		/*
- 		 * Only copy bitmap data when the sequence number differs. The
- 		 * update time is accounted to the incoming task.
+ 	mutex_lock(hcd->bandwidth_mutex);
+ 	ret = usb_hcd_alloc_bandwidth(udev, udev->actconfig, NULL, NULL);
+ 	if (ret < 0) {
+@@ -6221,12 +6234,11 @@ static int usb_reset_and_verify_device(s
+ 	 */
+ 	for (i = 0; i < udev->actconfig->desc.bNumInterfaces; i++) {
+ 		struct usb_host_config *config = udev->actconfig;
+-		struct usb_interface *intf = config->interface[i];
+ 		struct usb_interface_descriptor *desc;
+ 
++		intf = config->interface[i];
+ 		desc = &intf->cur_altsetting->desc;
+ 		if (desc->bAlternateSetting == 0) {
+-			usb_disable_interface(udev, intf, true);
+ 			usb_enable_interface(udev, intf, true);
+ 			ret = 0;
+ 		} else {
 
 
 
