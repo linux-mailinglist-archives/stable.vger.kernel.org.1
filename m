@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-154112-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153661-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 802F2ADD8AD
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:58:09 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id AE30AADD5AA
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:24:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 763A82C22AF
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:42:21 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 491783BEB13
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:16:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D7AE2E973E;
-	Tue, 17 Jun 2025 16:35:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 362D02356A4;
+	Tue, 17 Jun 2025 16:11:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D6rMh58W"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zMNPontN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE343285048;
-	Tue, 17 Jun 2025 16:35:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4087202C38;
+	Tue, 17 Jun 2025 16:11:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750178141; cv=none; b=ovjMzsIl0y6cQMQVvZNs2P9C2vhaqbL/nkIHRv/3lv+LqbwgdsTQG9sZ6dxwn/zBvHPHHjwRLS6q+7hIRaWsLjutiPAPB3F1zj+rHtmByuU1nKLBkRGi3rCSN/qTNZSs6q1zfU/liGvPBeOYyqo/xO8+5S4CNAms6WcVqgYejNM=
+	t=1750176684; cv=none; b=OU2uBGuVrx8w06t8+Ghz9OSNHrm/snjSxBmpo+HcXKxZCjbPl4PLSc43wRKV1xqLLmuaEF4yQQMZI4Ta0QGo5ypPIeBGJ2TpwDVORUD8k1gKn8+wTv69GPkFlJOYDP0OPuUrd49Q1aD1am9J9JalO6mW9LkQwMrKIrafdyoUHiI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750178141; c=relaxed/simple;
-	bh=jiqKqn4kPJEHS3ZrtZMmvS77kHbusVBAde4ghL7YztY=;
+	s=arc-20240116; t=1750176684; c=relaxed/simple;
+	bh=AuZjo+pUx7BCNBkaHxrCF+b4ndXte9Fjq6jLDSXWZbw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EzVglcKlf5aEZZDjKqz0sHt8NDjGFbOIfD4ss3UUNhorGHqmyS9AnJ6JRI2FdhwzYPdT+smb666OyYx0Lr72yeHPF4zK8HEp9tcyVmoJUmSufZfqx6HxC1lLOEGCDx9VwXU4oMEZzXRXDi37Zwyc7EGbg4gJ7Cx6mZq339YWCGQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D6rMh58W; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9355C4CEE3;
-	Tue, 17 Jun 2025 16:35:40 +0000 (UTC)
+	 MIME-Version; b=bcWAbzczspHnyHmVn3Wa6V+dCufY0236kNOM2VIO8WP+ufCjckYTslSN8awSnPWVB3BVgKBHR8ncX/d/vkyZMtdZObUmAxUph6P0uxbDh89podoTi6bFr8ZE5RyuBuzBan1+dlC87/NOblhRItou38M5uzoBogcx5Yu4fhOrRjU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zMNPontN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19CEDC4CEE3;
+	Tue, 17 Jun 2025 16:11:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750178141;
-	bh=jiqKqn4kPJEHS3ZrtZMmvS77kHbusVBAde4ghL7YztY=;
+	s=korg; t=1750176683;
+	bh=AuZjo+pUx7BCNBkaHxrCF+b4ndXte9Fjq6jLDSXWZbw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=D6rMh58Wl2d9zcy7+rFVj4lJaz3yZN2RKbV0ZFzgIr018qTXWZupUlo2xNTGCTWHo
-	 Xkqi2nWsJl/7Q73b8AWpA1TkhVHuoX+DY8agRtmIVamSsO28fblN3qQL8uMS2h4/8T
-	 kJR8AbtSX+EwQfcjnrfhtLpcCnIbaZJhEjsZuuP4=
+	b=zMNPontNvVNcaIq05kgcQeUNXSu/fMAxyK7ppKHSEvzkwzaDECSlakQqMM7fiSDsH
+	 qrAvApRoJNU5VlioVooGC9osHcAFUm9YsdAqoeg0TVYp4S9jb5rvcx+G9iBVxizxIe
+	 7koKuiUJYcVR4qdgLpzBIKLV4NPsh04RHYvm+30o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jakub Sitnicki <jakub@cloudflare.com>,
-	Michal Luczaj <mhal@rbox.co>,
-	Willem de Bruijn <willemb@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Wojciech Slenska <wojciech.slenska@gmail.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	Linus Walleij <linus.walleij@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 452/512] net: Fix TOCTOU issue in sk_is_readable()
-Date: Tue, 17 Jun 2025 17:26:58 +0200
-Message-ID: <20250617152437.884768118@linuxfoundation.org>
+Subject: [PATCH 6.6 304/356] pinctrl: qcom: pinctrl-qcm2290: Add missing pins
+Date: Tue, 17 Jun 2025 17:26:59 +0200
+Message-ID: <20250617152350.405201823@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
-References: <20250617152419.512865572@linuxfoundation.org>
+In-Reply-To: <20250617152338.212798615@linuxfoundation.org>
+References: <20250617152338.212798615@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,54 +63,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michal Luczaj <mhal@rbox.co>
+From: Wojciech Slenska <wojciech.slenska@gmail.com>
 
-[ Upstream commit 2660a544fdc0940bba15f70508a46cf9a6491230 ]
+[ Upstream commit 315345610faee8a0568b522dba9e35067d1732ab ]
 
-sk->sk_prot->sock_is_readable is a valid function pointer when sk resides
-in a sockmap. After the last sk_psock_put() (which usually happens when
-socket is removed from sockmap), sk->sk_prot gets restored and
-sk->sk_prot->sock_is_readable becomes NULL.
+Added the missing pins to the qcm2290_pins table.
 
-This makes sk_is_readable() racy, if the value of sk->sk_prot is reloaded
-after the initial check. Which in turn may lead to a null pointer
-dereference.
-
-Ensure the function pointer does not turn NULL after the check.
-
-Fixes: 8934ce2fd081 ("bpf: sockmap redirect ingress support")
-Suggested-by: Jakub Sitnicki <jakub@cloudflare.com>
-Signed-off-by: Michal Luczaj <mhal@rbox.co>
-Reviewed-by: Willem de Bruijn <willemb@google.com>
-Link: https://patch.msgid.link/20250609-skisreadable-toctou-v1-1-d0dfb2d62c37@rbox.co
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Wojciech Slenska <wojciech.slenska@gmail.com>
+Fixes: 48e049ef1238 ("pinctrl: qcom: Add QCM2290 pinctrl driver")
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Link: https://lore.kernel.org/20250523101437.59092-1-wojciech.slenska@gmail.com
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/sock.h | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ drivers/pinctrl/qcom/pinctrl-qcm2290.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/include/net/sock.h b/include/net/sock.h
-index fa9b9dadbe170..b7270b6b9e9cc 100644
---- a/include/net/sock.h
-+++ b/include/net/sock.h
-@@ -2942,8 +2942,11 @@ int sock_ioctl_inout(struct sock *sk, unsigned int cmd,
- int sk_ioctl(struct sock *sk, unsigned int cmd, void __user *arg);
- static inline bool sk_is_readable(struct sock *sk)
- {
--	if (sk->sk_prot->sock_is_readable)
--		return sk->sk_prot->sock_is_readable(sk);
-+	const struct proto *prot = READ_ONCE(sk->sk_prot);
-+
-+	if (prot->sock_is_readable)
-+		return prot->sock_is_readable(sk);
-+
- 	return false;
- }
- #endif	/* _SOCK_H */
+diff --git a/drivers/pinctrl/qcom/pinctrl-qcm2290.c b/drivers/pinctrl/qcom/pinctrl-qcm2290.c
+index f5c1c427b44e9..61b7c22e963c2 100644
+--- a/drivers/pinctrl/qcom/pinctrl-qcm2290.c
++++ b/drivers/pinctrl/qcom/pinctrl-qcm2290.c
+@@ -165,6 +165,10 @@ static const struct pinctrl_pin_desc qcm2290_pins[] = {
+ 	PINCTRL_PIN(62, "GPIO_62"),
+ 	PINCTRL_PIN(63, "GPIO_63"),
+ 	PINCTRL_PIN(64, "GPIO_64"),
++	PINCTRL_PIN(65, "GPIO_65"),
++	PINCTRL_PIN(66, "GPIO_66"),
++	PINCTRL_PIN(67, "GPIO_67"),
++	PINCTRL_PIN(68, "GPIO_68"),
+ 	PINCTRL_PIN(69, "GPIO_69"),
+ 	PINCTRL_PIN(70, "GPIO_70"),
+ 	PINCTRL_PIN(71, "GPIO_71"),
+@@ -179,12 +183,17 @@ static const struct pinctrl_pin_desc qcm2290_pins[] = {
+ 	PINCTRL_PIN(80, "GPIO_80"),
+ 	PINCTRL_PIN(81, "GPIO_81"),
+ 	PINCTRL_PIN(82, "GPIO_82"),
++	PINCTRL_PIN(83, "GPIO_83"),
++	PINCTRL_PIN(84, "GPIO_84"),
++	PINCTRL_PIN(85, "GPIO_85"),
+ 	PINCTRL_PIN(86, "GPIO_86"),
+ 	PINCTRL_PIN(87, "GPIO_87"),
+ 	PINCTRL_PIN(88, "GPIO_88"),
+ 	PINCTRL_PIN(89, "GPIO_89"),
+ 	PINCTRL_PIN(90, "GPIO_90"),
+ 	PINCTRL_PIN(91, "GPIO_91"),
++	PINCTRL_PIN(92, "GPIO_92"),
++	PINCTRL_PIN(93, "GPIO_93"),
+ 	PINCTRL_PIN(94, "GPIO_94"),
+ 	PINCTRL_PIN(95, "GPIO_95"),
+ 	PINCTRL_PIN(96, "GPIO_96"),
 -- 
 2.39.5
 
