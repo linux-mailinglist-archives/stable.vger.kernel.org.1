@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-154129-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153335-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 22A67ADD8C3
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:58:45 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 65623ADD3FF
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:05:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 09B0F407ACE
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:42:38 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9CBDF19410FF
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 15:57:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1CC11E1C22;
-	Tue, 17 Jun 2025 16:36:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 372C92ECE98;
+	Tue, 17 Jun 2025 15:53:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vbTKWFLo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PG3DHP6c"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E8F61A5B9D;
-	Tue, 17 Jun 2025 16:36:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E55032E92BC;
+	Tue, 17 Jun 2025 15:53:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750178195; cv=none; b=UTb2bmREJ8zrlDVtn7qH0nwtaK/ozwEBdrOpADX7bjZwFTMePm3D8Dkfh7gXxU3NUOVQhDDh512f/5T6xtxgZNSqBtjMx6SaDi/oM/UI0qeePUE9Mf4jvq75IcMK/YdJseTDd64sNAGpwqcN7dK5o+nV78Xxv+g7rhfSPz2aUKI=
+	t=1750175617; cv=none; b=rLhaPUJIZD9P8sTpB4hkSL1fgUJcjr8McGSCI3KxukuSvcSzIKUju6z2SzY1S7DA30mhsyZSehnMHrZYJg9jPogf8ujckb7qhJOcoOOmqsJug05fSrEw451TBIQ0O5ICkHJ8qS99dc3p/4PmAvRRlrXOhABD2r47BXzKRmVpJio=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750178195; c=relaxed/simple;
-	bh=4WsLkaDmxICNfd4ej1e/1CAnxAgs5p2ww3g8ZVb0wIA=;
+	s=arc-20240116; t=1750175617; c=relaxed/simple;
+	bh=zvuaOIc3BZICiSuQW039Y9URScZ3NUE62wfpWyFrq6o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aWFbfOfSW+5QeaDAu8f83Veu1qde++nuGdxn5xTDLWB8WeWQaRXuQQeH+5o8GlIKcGftWJGDsoc4djLNyl38ynE88/t00kHee6ZKsQUlStvzuxeDjW4GxU7QPwISIC2ng46LmzxL3OeLeF2FjyimFV25Ej+tO0qo5nCCk4FAsgc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vbTKWFLo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E09D6C4CEE3;
-	Tue, 17 Jun 2025 16:36:34 +0000 (UTC)
+	 MIME-Version; b=aSZlYXzJikPsw4ByCKk0TxP91OgRhWE49QPMh1AVRgExEwFTb+L8FNyg16hyIvyWVSOUcZSmASs+NqdyO84mHNGHHJLPoAgO5imNUkX8fuhCTyLEbP5LhC1WA9qs90HqC3QfaLwEf78nr5OHcuRwZM8X2+jTQJB+hqW4S/CxDlQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PG3DHP6c; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55B6CC4CEE3;
+	Tue, 17 Jun 2025 15:53:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750178195;
-	bh=4WsLkaDmxICNfd4ej1e/1CAnxAgs5p2ww3g8ZVb0wIA=;
+	s=korg; t=1750175616;
+	bh=zvuaOIc3BZICiSuQW039Y9URScZ3NUE62wfpWyFrq6o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vbTKWFLobwzC4r4fVCX1FM9gTJBCZzLrqc8a1x+TdLdC0JnE2bWtcPA4NZLBYlVvZ
-	 jb21UNbnWPODvH36kKzLSuUiJ2ZSN7SxUvHf6CbqdcvpFfGTCPdGPDTFVCirLwHMJF
-	 eTWd5Is+3ZKI5cb6wR6p2D2y8vjpEqTb8boPuI8c=
+	b=PG3DHP6cFCXO2uL5LuFqyvP6DtF3XqJTHguhDBiCKgGsEFjLiSQuQhnrD6lPRb2TX
+	 6epdwf6vQvX+pmhiduCa3siPTIcM+D2gh27a4LjqSwwZLFPibzouL9NRReuCKjMnbg
+	 jkM22XvBOew+GZRqyGWbbUfy7bT3QB4LJ5ES2zCw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Quentin Schulz <quentin.schulz@cherry.de>,
-	Lukasz Czechowski <lukasz.czechowski@thaumatec.com>,
-	Heiko Stuebner <heiko@sntech.de>,
+	Zhongqiu Duan <dzq.aishenghu0@gmail.com>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 405/780] arm64: dts: rockchip: disable unrouted USB controllers and PHY on RK3399 Puma with Haikou
+Subject: [PATCH 6.12 147/512] netfilter: nft_quota: match correctly when the quota just depleted
 Date: Tue, 17 Jun 2025 17:21:53 +0200
-Message-ID: <20250617152507.957454023@linuxfoundation.org>
+Message-ID: <20250617152425.562552418@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
-References: <20250617152451.485330293@linuxfoundation.org>
+In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
+References: <20250617152419.512865572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,68 +62,80 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Quentin Schulz <quentin.schulz@cherry.de>
+From: Zhongqiu Duan <dzq.aishenghu0@gmail.com>
 
-[ Upstream commit febd8c6ab52c683b447fe22fc740918c86feae43 ]
+[ Upstream commit bfe7cfb65c753952735c3eed703eba9a8b96a18d ]
 
-The u2phy0_host port is the part of the USB PHY0 (namely the
-HOST0_DP/DM lanes) which routes directly to the USB2.0 HOST
-controller[1]. The other lanes of the PHY are routed to the USB3.0 OTG
-controller (dwc3), which we do use.
+The xt_quota compares skb length with remaining quota, but the nft_quota
+compares it with consumed bytes.
 
-The HOST0_DP/DM lanes aren't routed on RK3399 Puma so let's simply
-disable the USB2.0 controllers.
+The xt_quota can match consumed bytes up to quota at maximum. But the
+nft_quota break match when consumed bytes equal to quota.
 
-USB3 OTG has been known to be unstable on RK3399 Puma Haikou for a
-while, one of the recurring issues being that only USB2 is detected and
-not USB3 in host mode. Reading the justification above and seeing that
-we are keeping u2phy0_host in the Haikou carrierboard DTS probably may
-have bothered you since it should be changed to u2phy0_otg. The issue is
-that if it's switched to that, USB OTG on Haikou is entirely broken. I
-have checked the routing in the Gerber file, the lanes are going to the
-expected ball pins (that is, NOT HOST0_DP/DM).
-u2phy0_host is for sure the wrong part of the PHY to use, but it's the
-only one that works at the moment for that board so keep it until we
-figure out what exactly is broken.
+i.e., nft_quota match consumed bytes in [0, quota - 1], not [0, quota].
 
-No intended functional change.
-
-[1] https://rockchip.fr/Rockchip%20RK3399%20TRM%20V1.3%20Part2.pdf
-    Chapter 2 USB2.0 PHY
-
-Fixes: 2c66fc34e945 ("arm64: dts: rockchip: add RK3399-Q7 (Puma) SoM")
-Signed-off-by: Quentin Schulz <quentin.schulz@cherry.de>
-Signed-off-by: Lukasz Czechowski <lukasz.czechowski@thaumatec.com>
-Link: https://lore.kernel.org/r/20250425-onboard_usb_dev-v2-5-4a76a474a010@thaumatec.com
-Signed-off-by: Heiko Stuebner <heiko@sntech.de>
+Fixes: 795595f68d6c ("netfilter: nft_quota: dump consumed quota")
+Signed-off-by: Zhongqiu Duan <dzq.aishenghu0@gmail.com>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/rockchip/rk3399-puma-haikou.dts | 8 --------
- 1 file changed, 8 deletions(-)
+ net/netfilter/nft_quota.c | 20 +++++++++++++-------
+ 1 file changed, 13 insertions(+), 7 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/rockchip/rk3399-puma-haikou.dts b/arch/arm64/boot/dts/rockchip/rk3399-puma-haikou.dts
-index f2234dabd6641..70979079923c1 100644
---- a/arch/arm64/boot/dts/rockchip/rk3399-puma-haikou.dts
-+++ b/arch/arm64/boot/dts/rockchip/rk3399-puma-haikou.dts
-@@ -312,14 +312,6 @@
- 	status = "okay";
+diff --git a/net/netfilter/nft_quota.c b/net/netfilter/nft_quota.c
+index 9b2d7463d3d32..df0798da2329b 100644
+--- a/net/netfilter/nft_quota.c
++++ b/net/netfilter/nft_quota.c
+@@ -19,10 +19,16 @@ struct nft_quota {
  };
  
--&usb_host0_ehci {
--	status = "okay";
--};
--
--&usb_host0_ohci {
--	status = "okay";
--};
--
- &vopb {
- 	status = "okay";
- };
+ static inline bool nft_overquota(struct nft_quota *priv,
+-				 const struct sk_buff *skb)
++				 const struct sk_buff *skb,
++				 bool *report)
+ {
+-	return atomic64_add_return(skb->len, priv->consumed) >=
+-	       atomic64_read(&priv->quota);
++	u64 consumed = atomic64_add_return(skb->len, priv->consumed);
++	u64 quota = atomic64_read(&priv->quota);
++
++	if (report)
++		*report = consumed >= quota;
++
++	return consumed > quota;
+ }
+ 
+ static inline bool nft_quota_invert(struct nft_quota *priv)
+@@ -34,7 +40,7 @@ static inline void nft_quota_do_eval(struct nft_quota *priv,
+ 				     struct nft_regs *regs,
+ 				     const struct nft_pktinfo *pkt)
+ {
+-	if (nft_overquota(priv, pkt->skb) ^ nft_quota_invert(priv))
++	if (nft_overquota(priv, pkt->skb, NULL) ^ nft_quota_invert(priv))
+ 		regs->verdict.code = NFT_BREAK;
+ }
+ 
+@@ -51,13 +57,13 @@ static void nft_quota_obj_eval(struct nft_object *obj,
+ 			       const struct nft_pktinfo *pkt)
+ {
+ 	struct nft_quota *priv = nft_obj_data(obj);
+-	bool overquota;
++	bool overquota, report;
+ 
+-	overquota = nft_overquota(priv, pkt->skb);
++	overquota = nft_overquota(priv, pkt->skb, &report);
+ 	if (overquota ^ nft_quota_invert(priv))
+ 		regs->verdict.code = NFT_BREAK;
+ 
+-	if (overquota &&
++	if (report &&
+ 	    !test_and_set_bit(NFT_QUOTA_DEPLETED_BIT, &priv->flags))
+ 		nft_obj_notify(nft_net(pkt), obj->key.table, obj, 0, 0,
+ 			       NFT_MSG_NEWOBJ, 0, nft_pf(pkt), 0, GFP_ATOMIC);
 -- 
 2.39.5
 
