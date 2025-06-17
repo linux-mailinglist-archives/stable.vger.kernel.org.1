@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-154500-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-154103-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id BB53EADD9DD
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 19:10:23 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 32872ADD817
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:51:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 09D8019E34E5
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:57:05 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D7C8B165023
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:42:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA4AD2FA627;
-	Tue, 17 Jun 2025 16:56:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 527302E8DFE;
+	Tue, 17 Jun 2025 16:35:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c/deF6kW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FQeoq2kM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8353F2FA622;
-	Tue, 17 Jun 2025 16:56:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E9952E7181;
+	Tue, 17 Jun 2025 16:35:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750179407; cv=none; b=M6ZCjOqadkUwJ5sUPbnePXaJ7z70yKHE8HWcQ9tk61mhEFsSYUOrSqGAhnKeTbI/Z7Uac1x+EbyQpgds5w6eIibZR2zZeofpnPMfa7fkYLRmdR3ix1FA61LYeKWATHcYiWUEyROoqH2xRIxhpYbf9Tjz1+rLFvxmR+B3skMZivU=
+	t=1750178112; cv=none; b=IoshxZUHXpa6zgIL6Unu3dY0H2rPTgtiNPyIp+4XJfxElDiGX5oyil0/pAH29i/o36oxQT5kdt0QQiyQ1RVVzXP2ZsXASGOf/oKuZz5Jqyhr39IaPLO0zOxHbb2o+6KpjKCeAO+DoTbTl0N/4RtgFA9BcEtpyZnxbe3Agf+mO38=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750179407; c=relaxed/simple;
-	bh=WnnYbY6CVBBagwaM45PrtOCjHQJxsqUfLg6P0eoeWnk=;
+	s=arc-20240116; t=1750178112; c=relaxed/simple;
+	bh=6RYYxsX97bYaeKtDddlUNXw7z6EP8Lk9eP2j6+rnHs8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QXbVE9qlyQbpmisBrM5gQBDzbk2cYOeOZFcNVmdKjE3onxOAKqLm05dp6jEt4H2Z/YEXr8zYAD22eHDZ+RbTblTVJqL2+pFWvmqIMRBcbRF4r7PzxInF2dBtYvQLYEGS+43eVP+ZyfwVov3FGaZdkKtiTrGGzY0+Sz6LZyR89S8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c/deF6kW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EEA73C4CEE3;
-	Tue, 17 Jun 2025 16:56:46 +0000 (UTC)
+	 MIME-Version; b=X5XMwoZiTxRIO4a47dMig5TxR44rh8HvWZmXk1Uf46/ms0LQovYnEObifOjZKtVCVISj5XEX2MNgtWn71D1cdQeJk0A+MFafupBhwFhM31uPRt18ARqun7UwVguYY/a6hQ6sWi0Xx1li6OyogHak4ldJ8tVQOkAUTJidiFhJf6w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FQeoq2kM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71D99C4CEE3;
+	Tue, 17 Jun 2025 16:35:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750179407;
-	bh=WnnYbY6CVBBagwaM45PrtOCjHQJxsqUfLg6P0eoeWnk=;
+	s=korg; t=1750178111;
+	bh=6RYYxsX97bYaeKtDddlUNXw7z6EP8Lk9eP2j6+rnHs8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=c/deF6kWWoUl1IIgEu4PKnBZp4dhWXy7zBN3kxDO76mRpyKncKoNlNWrtn0ssRudg
-	 EsJ9mo/RoMPkK1mbesqtnA+MRgzLeNkHm1um688tts8+vldAcIFvP0trpy5bXkBooy
-	 AE5bglcmBQ2ND88RkjBblY5Ic5+Gx533aCzAshtQ=
+	b=FQeoq2kMb/TQZhxikXhzcbP/ivM4wE6pzgx1BnUqD5CbQqkKjY161H1w10IyQyoPS
+	 x53FUaNohgxSF4Q3Jl0pJbqOMKfP+XKquLAJnnB1qHC7WsuG1vdVkGGzxLzY2Pc25f
+	 sdzbrB/9TG3nG/Tvl7Q3DRDf3xOxndI5Zu8cFqyg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Christian Hewitt <christianshewitt@gmail.com>,
+	Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 706/780] Bluetooth: hci_sync: Fix broadcast/PA when using an existing instance
+Subject: [PATCH 6.12 448/512] drm/meson: fix more rounding issues with 59.94Hz modes
 Date: Tue, 17 Jun 2025 17:26:54 +0200
-Message-ID: <20250617152520.251472650@linuxfoundation.org>
+Message-ID: <20250617152437.717072252@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
-References: <20250617152451.485330293@linuxfoundation.org>
+In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
+References: <20250617152419.512865572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,107 +63,136 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+From: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
 
-[ Upstream commit 5725bc608252050ed8a4d47d59225b7dd73474c8 ]
+[ Upstream commit 0cee6c4d3518b2e757aedae78771f17149f57653 ]
 
-When using and existing adv_info instance for broadcast source it
-needs to be updated to periodic first before it can be reused, also in
-case the existing instance already have data hci_set_adv_instance_data
-cannot be used directly since it would overwrite the existing data so
-this reappend the original data after the Broadcast ID, if one was
-generated.
+Commit 1017560164b6 ("drm/meson: use unsigned long long / Hz for
+frequency types") attempts to resolve video playback using 59.94Hz.
+ using YUV420 by changing the clock calculation to use
+Hz instead of kHz (thus yielding more precision).
 
-Example:
+The basic calculation itself is correct, however the comparisions in
+meson_vclk_vic_supported_freq() and meson_vclk_setup() don't work
+anymore for 59.94Hz modes (using the freq * 1000 / 1001 logic). For
+example, drm/edid specifies a 593407kHz clock for 3840x2160@59.94Hz.
+With the mentioend commit we convert this to Hz. Then meson_vclk
+tries to find a matchig "params" entry (as the clock setup code
+currently only supports specific frequencies) by taking the venc_freq
+from the params and calculating the "alt frequency" (used for the
+59.94Hz modes) from it, which is:
+  (594000000Hz * 1000) / 1001 = 593406593Hz
 
-bluetoothctl># Add PBP to EA so it can be later referenced as the BIS ID
-bluetoothctl> advertise.service 0x1856 0x00 0x00
-bluetoothctl> advertise on
-...
-< HCI Command: LE Set Extended Advertising Data (0x08|0x0037) plen 13
-        Handle: 0x01
-        Operation: Complete extended advertising data (0x03)
-        Fragment preference: Minimize fragmentation (0x01)
-        Data length: 0x09
-        Service Data: Public Broadcast Announcement (0x1856)
-          Data[2]: 0000
-        Flags: 0x06
-          LE General Discoverable Mode
-          BR/EDR Not Supported
-...
-bluetoothctl># Attempt to acquire Broadcast Source transport
-bluetoothctl>transport.acquire /org/bluez/hci0/pac_bcast0/fd0
-...
-< HCI Command: LE Set Extended Advertising Data (0x08|0x0037) plen 255
-        Handle: 0x01
-        Operation: Complete extended advertising data (0x03)
-        Fragment preference: Minimize fragmentation (0x01)
-        Data length: 0x0e
-        Service Data: Broadcast Audio Announcement (0x1852)
-        Broadcast ID: 11371620 (0xad8464)
-        Service Data: Public Broadcast Announcement (0x1856)
-          Data[2]: 0000
-        Flags: 0x06
-          LE General Discoverable Mode
-          BR/EDR Not Supported
+Similar calculation is applied to the phy_freq (TMDS clock), which is 10
+times the pixel clock.
 
-Link: https://github.com/bluez/bluez/issues/1117
-Fixes: eca0ae4aea66 ("Bluetooth: Add initial implementation of BIS connections")
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Implement a new meson_vclk_freqs_are_matching_param() function whose
+purpose is to compare if the requested and calculated frequencies. They
+may not match exactly (for the reasons mentioned above). Allow the
+clocks to deviate slightly to make the 59.94Hz modes again.
+
+Fixes: 1017560164b6 ("drm/meson: use unsigned long long / Hz for frequency types")
+Reported-by: Christian Hewitt <christianshewitt@gmail.com>
+Signed-off-by: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
+Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
+Link: https://lore.kernel.org/r/20250609202751.962208-1-martin.blumenstingl@googlemail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bluetooth/hci_sync.c | 20 +++++++++++++++-----
- 1 file changed, 15 insertions(+), 5 deletions(-)
+ drivers/gpu/drm/meson/meson_vclk.c | 55 ++++++++++++++++++------------
+ 1 file changed, 34 insertions(+), 21 deletions(-)
 
-diff --git a/net/bluetooth/hci_sync.c b/net/bluetooth/hci_sync.c
-index 62d1ff951ebe6..8ba1c3aa7801a 100644
---- a/net/bluetooth/hci_sync.c
-+++ b/net/bluetooth/hci_sync.c
-@@ -1559,7 +1559,8 @@ static int hci_enable_per_advertising_sync(struct hci_dev *hdev, u8 instance)
- static int hci_adv_bcast_annoucement(struct hci_dev *hdev, struct adv_info *adv)
- {
- 	u8 bid[3];
--	u8 ad[4 + 3];
-+	u8 ad[HCI_MAX_EXT_AD_LENGTH];
-+	u8 len;
+diff --git a/drivers/gpu/drm/meson/meson_vclk.c b/drivers/gpu/drm/meson/meson_vclk.c
+index c4123bb958e4c..dfe0c28a0f054 100644
+--- a/drivers/gpu/drm/meson/meson_vclk.c
++++ b/drivers/gpu/drm/meson/meson_vclk.c
+@@ -110,10 +110,7 @@
+ #define HDMI_PLL_LOCK		BIT(31)
+ #define HDMI_PLL_LOCK_G12A	(3 << 30)
  
- 	/* Skip if NULL adv as instance 0x00 is used for general purpose
- 	 * advertising so it cannot used for the likes of Broadcast Announcement
-@@ -1585,8 +1586,10 @@ static int hci_adv_bcast_annoucement(struct hci_dev *hdev, struct adv_info *adv)
+-#define PIXEL_FREQ_1000_1001(_freq)	\
+-	DIV_ROUND_CLOSEST_ULL((_freq) * 1000ULL, 1001ULL)
+-#define PHY_FREQ_1000_1001(_freq)	\
+-	(PIXEL_FREQ_1000_1001(DIV_ROUND_DOWN_ULL(_freq, 10ULL)) * 10)
++#define FREQ_1000_1001(_freq)	DIV_ROUND_CLOSEST_ULL((_freq) * 1000ULL, 1001ULL)
  
- 	/* Generate Broadcast ID */
- 	get_random_bytes(bid, sizeof(bid));
--	eir_append_service_data(ad, 0, 0x1852, bid, sizeof(bid));
--	hci_set_adv_instance_data(hdev, adv->instance, sizeof(ad), ad, 0, NULL);
-+	len = eir_append_service_data(ad, 0, 0x1852, bid, sizeof(bid));
-+	memcpy(ad + len, adv->adv_data, adv->adv_data_len);
-+	hci_set_adv_instance_data(hdev, adv->instance, len + adv->adv_data_len,
-+				  ad, 0, NULL);
- 
- 	return hci_update_adv_data_sync(hdev, adv->instance);
+ /* VID PLL Dividers */
+ enum {
+@@ -772,6 +769,36 @@ static void meson_hdmi_pll_generic_set(struct meson_drm *priv,
+ 		  pll_freq);
  }
-@@ -1603,8 +1606,15 @@ int hci_start_per_adv_sync(struct hci_dev *hdev, u8 instance, u8 data_len,
  
- 	if (instance) {
- 		adv = hci_find_adv_instance(hdev, instance);
--		/* Create an instance if that could not be found */
--		if (!adv) {
-+		if (adv) {
-+			/* Turn it into periodic advertising */
-+			adv->periodic = true;
-+			adv->per_adv_data_len = data_len;
-+			if (data)
-+				memcpy(adv->per_adv_data, data, data_len);
-+			adv->flags = flags;
-+		} else if (!adv) {
-+			/* Create an instance if that could not be found */
- 			adv = hci_add_per_instance(hdev, instance, flags,
- 						   data_len, data,
- 						   sync_interval,
++static bool meson_vclk_freqs_are_matching_param(unsigned int idx,
++						unsigned long long phy_freq,
++						unsigned long long vclk_freq)
++{
++	DRM_DEBUG_DRIVER("i = %d vclk_freq = %lluHz alt = %lluHz\n",
++			 idx, params[idx].vclk_freq,
++			 FREQ_1000_1001(params[idx].vclk_freq));
++	DRM_DEBUG_DRIVER("i = %d phy_freq = %lluHz alt = %lluHz\n",
++			 idx, params[idx].phy_freq,
++			 FREQ_1000_1001(params[idx].phy_freq));
++
++	/* Match strict frequency */
++	if (phy_freq == params[idx].phy_freq &&
++	    vclk_freq == params[idx].vclk_freq)
++		return true;
++
++	/* Match 1000/1001 variant: vclk deviation has to be less than 1kHz
++	 * (drm EDID is defined in 1kHz steps, so everything smaller must be
++	 * rounding error) and the PHY freq deviation has to be less than
++	 * 10kHz (as the TMDS clock is 10 times the pixel clock, so anything
++	 * smaller must be rounding error as well).
++	 */
++	if (abs(vclk_freq - FREQ_1000_1001(params[idx].vclk_freq)) < 1000 &&
++	    abs(phy_freq - FREQ_1000_1001(params[idx].phy_freq)) < 10000)
++		return true;
++
++	/* no match */
++	return false;
++}
++
+ enum drm_mode_status
+ meson_vclk_vic_supported_freq(struct meson_drm *priv,
+ 			      unsigned long long phy_freq,
+@@ -790,19 +817,7 @@ meson_vclk_vic_supported_freq(struct meson_drm *priv,
+ 	}
+ 
+ 	for (i = 0 ; params[i].pixel_freq ; ++i) {
+-		DRM_DEBUG_DRIVER("i = %d vclk_freq = %lluHz alt = %lluHz\n",
+-				 i, params[i].vclk_freq,
+-				 PIXEL_FREQ_1000_1001(params[i].vclk_freq));
+-		DRM_DEBUG_DRIVER("i = %d phy_freq = %lluHz alt = %lluHz\n",
+-				 i, params[i].phy_freq,
+-				 PHY_FREQ_1000_1001(params[i].phy_freq));
+-		/* Match strict frequency */
+-		if (phy_freq == params[i].phy_freq &&
+-		    vclk_freq == params[i].vclk_freq)
+-			return MODE_OK;
+-		/* Match 1000/1001 variant */
+-		if (phy_freq == PHY_FREQ_1000_1001(params[i].phy_freq) &&
+-		    vclk_freq == PIXEL_FREQ_1000_1001(params[i].vclk_freq))
++		if (meson_vclk_freqs_are_matching_param(i, phy_freq, vclk_freq))
+ 			return MODE_OK;
+ 	}
+ 
+@@ -1075,10 +1090,8 @@ void meson_vclk_setup(struct meson_drm *priv, unsigned int target,
+ 	}
+ 
+ 	for (freq = 0 ; params[freq].pixel_freq ; ++freq) {
+-		if ((phy_freq == params[freq].phy_freq ||
+-		     phy_freq == PHY_FREQ_1000_1001(params[freq].phy_freq)) &&
+-		    (vclk_freq == params[freq].vclk_freq ||
+-		     vclk_freq == PIXEL_FREQ_1000_1001(params[freq].vclk_freq))) {
++		if (meson_vclk_freqs_are_matching_param(freq, phy_freq,
++							vclk_freq)) {
+ 			if (vclk_freq != params[freq].vclk_freq)
+ 				vic_alternate_clock = true;
+ 			else
 -- 
 2.39.5
 
