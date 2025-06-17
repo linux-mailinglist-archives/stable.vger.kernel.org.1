@@ -1,57 +1,68 @@
-Return-Path: <stable+bounces-154319-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153805-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 52E99ADD91F
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 19:03:18 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 62DFAADD688
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:34:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E931618885DD
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:49:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A41964A0AD1
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:24:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 805872DFF19;
-	Tue, 17 Jun 2025 16:46:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C27D32F2341;
+	Tue, 17 Jun 2025 16:19:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pjSLoIj/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KWiUMCtd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CEFE285063;
-	Tue, 17 Jun 2025 16:46:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F1B42EA14E;
+	Tue, 17 Jun 2025 16:19:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750178810; cv=none; b=ihSSyncEkmyjWME6cAcRU5/1Of0vaEuE7zs2fYQjrnF1eAAmovFv6GW/bZgDwfWgVFgJhS/JNTVq/CSrVZCx92bcjZ6Xi7F6rVwjxcnokvQqjg3bFbA+RlSXhBg7FvFXvmDZbDcnbK54xecBEaW9xersMcitFa7p1UnJ7Nk3TNM=
+	t=1750177155; cv=none; b=Fg1RqfPGWrLEupsEog9gBaPJhNPLF9/0tPlvNY7IN3lTBXKUYf1rZwIwDKJV5LI5kb0/aC7+MbVstN78gBgIOqhKiSDTldBjl+/r70Rb6c+sZjUSkI3gpYCBhhwMupaElkN+72WlFpdfTfj5GZ22C7uyX5z8Upfag+scyVNNBEg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750178810; c=relaxed/simple;
-	bh=dMaLXJYFIVFDgi4W3ucJP1HwS/5DXRCP7ICN3X4Df3c=;
+	s=arc-20240116; t=1750177155; c=relaxed/simple;
+	bh=ghTo5pqkmKqRMHX6nvIBMg8eGWDBCiQUCr5FeBdsGLM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KDQPr/CWF/QuFTWhwy0NNHejAD4e1Af8qmN37MX0jjpCItjOhaLokqY/EObQE2z5A7QwjJ0guRxUiiE0Es1mVgAaw/rJKZX3h4oiBpME+ZAWFsZ8fnVkRIl0oBa5qq8LD9oC1Y1L/eMSnK9t0Nt0PyC9/J6VejUHlcLGdnNmDHI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pjSLoIj/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A570DC4CEE3;
-	Tue, 17 Jun 2025 16:46:49 +0000 (UTC)
+	 MIME-Version; b=KbprP3Ny5DBnMpGkTMhE6r4toatVznVbN7KnbCyGI3eLEfsqwvj3UTDNQi6BbtyhZ+nnJqYjAL6huhTaXoG3FLplomM+W5HiGyB/Bg6t/yHda0AAin0GAGkgsSqkoFqmbzi2ZKms68F56an6nWqmFRAa4Ln4pQwoiK+hlrKnreg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KWiUMCtd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B265FC4CEE3;
+	Tue, 17 Jun 2025 16:19:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750178810;
-	bh=dMaLXJYFIVFDgi4W3ucJP1HwS/5DXRCP7ICN3X4Df3c=;
+	s=korg; t=1750177155;
+	bh=ghTo5pqkmKqRMHX6nvIBMg8eGWDBCiQUCr5FeBdsGLM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pjSLoIj/7jsO+2ZLQp32gQa4G5DpmN2j+fz5JDcshdckZnqJdXJrCNybLW0RPbSLk
-	 Hi+VLR39Z9J0P4eb906pXGd0GUh4wECZ8n/O5JUebs/esDzxs0Q/mXwlLcje//tVoo
-	 K/vOlVaz4Ew73r0iH9G0d5qoyavybpmZNo7Vbzg8=
+	b=KWiUMCtd7s7TmJpaHbfxayQVSKA5ZDTapQ2j/R/19HWCFgwn9na1zGIEoHkoPg9iE
+	 A73B50JkoikOyXz4P2kPkspuWnVteV0kV15Y+hP504xaItamFhreSFdX+o1dqwLini
+	 b+1p3zCvQgsVpiJtWQFour7ykSDNY9Hb6X2hcqCA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Quentin Schulz <quentin.schulz@cherry.de>,
-	Maxime Chevallier <maxime.chevallier@bootlin.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Anubhav Shelat <ashelat@redhat.com>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+	Dapeng Mi <dapeng1.mi@linux.intel.com>,
+	Ian Rogers <irogers@google.com>,
+	Ingo Molnar <mingo@redhat.com>,
+	James Clark <james.clark@linaro.org>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Kan Liang <kan.liang@linux.intel.com>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Michael Petlan <mpetlan@redhat.com>,
+	Namhyung Kim <namhyung@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Arnaldo Carvalho de Melo <acme@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 560/780] net: stmmac: platform: guarantee uniqueness of bus_id
+Subject: [PATCH 6.12 302/512] perf trace: Set errpid to false for rseq and set_robust_list
 Date: Tue, 17 Jun 2025 17:24:28 +0200
-Message-ID: <20250617152514.299775825@linuxfoundation.org>
+Message-ID: <20250617152431.834506426@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
-References: <20250617152451.485330293@linuxfoundation.org>
+In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
+References: <20250617152419.512865572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,70 +74,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Quentin Schulz <quentin.schulz@cherry.de>
+From: Anubhav Shelat <ashelat@redhat.com>
 
-[ Upstream commit eb7fd7aa35bfcc1e1fda4ecc42ccfcb526cdc780 ]
+[ Upstream commit 8c56bfe53bd881c7b598c54a3a06216743c57bbc ]
 
-bus_id is currently derived from the ethernetX alias. If one is missing
-for the device, 0 is used. If ethernet0 points to another stmmac device
-or if there are 2+ stmmac devices without an ethernet alias, then bus_id
-will be 0 for all of those.
+The 'rseq' and 'set_robust_list' syscalls don't return a pid, so set
+errpid for both to false.
 
-This is an issue because the bus_id is used to generate the mdio bus id
-(new_bus->id in drivers/net/ethernet/stmicro/stmmac/stmmac_mdio.c
-stmmac_mdio_register) and this needs to be unique.
-
-This allows to avoid needing to define ethernet aliases for devices with
-multiple stmmac controllers (such as the Rockchip RK3588) for multiple
-stmmac devices to probe properly.
-
-Obviously, the bus_id isn't guaranteed to be stable across reboots if no
-alias is set for the device but that is easily fixed by simply adding an
-alias if this is desired.
-
-Fixes: 25c83b5c2e82 ("dt:net:stmmac: Add support to dwmac version 3.610 and 3.710")
-Signed-off-by: Quentin Schulz <quentin.schulz@cherry.de>
-Reviewed-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
-Link: https://patch.msgid.link/20250527-stmmac-mdio-bus_id-v2-1-a5ca78454e3c@cherry.de
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: 0c1019e3463b263a ("perf trace: Mark the 'rseq' arg in the rseq syscall as coming from user space")
+Fixes: 1de5b5dcb8353f36 ("perf trace: Mark the 'head' arg in the set_robust_list syscall as coming from user space")
+Signed-off-by: Anubhav Shelat <ashelat@redhat.com>
+Cc: Adrian Hunter <adrian.hunter@intel.com>
+Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
+Cc: Dapeng Mi <dapeng1.mi@linux.intel.com>
+Cc: Ian Rogers <irogers@google.com>
+Cc: Ingo Molnar <mingo@redhat.com>
+Cc: James Clark <james.clark@linaro.org>
+Cc: Jiri Olsa <jolsa@kernel.org>
+Cc: Kan Liang <kan.liang@linux.intel.com>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Michael Petlan <mpetlan@redhat.com>
+Cc: Namhyung Kim <namhyung@kernel.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Link: https://lore.kernel.org/r/20250529143334.1469669-2-ashelat@redhat.com
+[ Remove explicit .errpid = false, omitting its initialization zeroes it, as noted by Namhyung ]
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/stmicro/stmmac/stmmac_platform.c | 11 +++++++++--
- 1 file changed, 9 insertions(+), 2 deletions(-)
+ tools/perf/builtin-trace.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_platform.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_platform.c
-index c73eff6a56b87..15205a47cafc2 100644
---- a/drivers/net/ethernet/stmicro/stmmac/stmmac_platform.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_platform.c
-@@ -430,6 +430,7 @@ stmmac_probe_config_dt(struct platform_device *pdev, u8 *mac)
- 	struct device_node *np = pdev->dev.of_node;
- 	struct plat_stmmacenet_data *plat;
- 	struct stmmac_dma_cfg *dma_cfg;
-+	static int bus_id = -ENODEV;
- 	int phy_mode;
- 	void *ret;
- 	int rc;
-@@ -465,8 +466,14 @@ stmmac_probe_config_dt(struct platform_device *pdev, u8 *mac)
- 	of_property_read_u32(np, "max-speed", &plat->max_speed);
- 
- 	plat->bus_id = of_alias_get_id(np, "ethernet");
--	if (plat->bus_id < 0)
--		plat->bus_id = 0;
-+	if (plat->bus_id < 0) {
-+		if (bus_id < 0)
-+			bus_id = of_alias_get_highest_id("ethernet");
-+		/* No ethernet alias found, init at -1 so first bus_id is 0 */
-+		if (bus_id < 0)
-+			bus_id = -1;
-+		plat->bus_id = ++bus_id;
-+	}
- 
- 	/* Default to phy auto-detection */
- 	plat->phy_addr = -1;
+diff --git a/tools/perf/builtin-trace.c b/tools/perf/builtin-trace.c
+index ebe4fad0d4751..f77e4f4b6f03e 100644
+--- a/tools/perf/builtin-trace.c
++++ b/tools/perf/builtin-trace.c
+@@ -1327,7 +1327,7 @@ static const struct syscall_fmt syscall_fmts[] = {
+ 	  .arg = { [0] = { .scnprintf = SCA_FDAT, /* olddirfd */ },
+ 		   [2] = { .scnprintf = SCA_FDAT, /* newdirfd */ },
+ 		   [4] = { .scnprintf = SCA_RENAMEAT2_FLAGS, /* flags */ }, }, },
+-	{ .name	    = "rseq",	    .errpid = true,
++	{ .name	    = "rseq",
+ 	  .arg = { [0] = { .from_user = true /* rseq */, }, }, },
+ 	{ .name	    = "rt_sigaction",
+ 	  .arg = { [0] = { .scnprintf = SCA_SIGNUM, /* sig */ }, }, },
+@@ -1351,7 +1351,7 @@ static const struct syscall_fmt syscall_fmts[] = {
+ 	{ .name	    = "sendto",
+ 	  .arg = { [3] = { .scnprintf = SCA_MSG_FLAGS, /* flags */ },
+ 		   [4] = SCA_SOCKADDR_FROM_USER(addr), }, },
+-	{ .name	    = "set_robust_list",	    .errpid = true,
++	{ .name	    = "set_robust_list",
+ 	  .arg = { [0] = { .from_user = true /* head */, }, }, },
+ 	{ .name	    = "set_tid_address", .errpid = true, },
+ 	{ .name	    = "setitimer",
 -- 
 2.39.5
 
