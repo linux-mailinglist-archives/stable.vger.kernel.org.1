@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-153654-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-154110-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 94610ADD60D
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:29:44 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 63E44ADD84A
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:53:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4F6611940B62
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:16:56 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BF8654A2117
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:42:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5607D285057;
-	Tue, 17 Jun 2025 16:11:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53ACD2E8E1E;
+	Tue, 17 Jun 2025 16:35:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FzAHCuO9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e/CkNbFV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12FB228504D;
-	Tue, 17 Jun 2025 16:11:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C7B1285048;
+	Tue, 17 Jun 2025 16:35:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750176661; cv=none; b=OJgwFOV3rxYzDCkY4MMhffxwm6irTLpUlnLHocNRFzgV54+fPJNWowa1zS0G4xmh272q4efmeBNB94q5ZQOVqfMzYuC9Ix0EyAjgCsRxjviHLUNNa2FJsy8SNOTg1sEPt/csvqZu4w+o6+YxyW2+0RB49tOnr56RxP1KsKL5gUY=
+	t=1750178135; cv=none; b=IsNnavI3MngxLqOH3DhkXZUfUk5t11KPZbJMikOtCCzqceYjy/l9vYLYnHKF/HDG5qGTfafSpEvdnH4ylaZG6kBMvWHh73jCUcwAWM9H+82eQrtH3Av/p4BmXbfwAjGX3I0HomTRRjrRoEyxSn2NcdWmAwPTkEiYwGdgKqrwR3c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750176661; c=relaxed/simple;
-	bh=NYVNEL2vjlzhzwamzMVR2ArZlx6s5HqC1Z4nvrsvuCk=;
+	s=arc-20240116; t=1750178135; c=relaxed/simple;
+	bh=iSnAhAzBAwItEoGA/8D6zPbhUUkPjAofK8EG+MXdE6w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mvV+iFHLTa6lw3lPdFLVIkk9OxY2ZGdQesND/qnSnl6KzcvlF2GN9k/MQtvu/mPBuoDJNQWFUX+4PU5oF7ZRyHYYJejGpNDu9HObQ4g8kGbj1Vk0k7ZDg0EqfAOLqcgaooqn+TB2cJqCTU89kj9uPPlX7vBU6MSqncyd7Ggx7r0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FzAHCuO9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 766D6C4CEE3;
-	Tue, 17 Jun 2025 16:11:00 +0000 (UTC)
+	 MIME-Version; b=fGQnQh2Rr1ICdCVsgkWwmO9Gy6PkjaMWjadzMH8jHmfz0Ib+WAYgbV5M6H/sqqwMXap9dZzdSyIn0mtguVfb+OJ1NQF7KwVsJrz/3AbqlSN+0cXyhgs/iOUsNa7r0tMkxst2igmm840fuaj/ZVhTJ/GD3SI9aLOhmgr7qimxLx0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e/CkNbFV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 623FBC4CEE3;
+	Tue, 17 Jun 2025 16:35:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750176660;
-	bh=NYVNEL2vjlzhzwamzMVR2ArZlx6s5HqC1Z4nvrsvuCk=;
+	s=korg; t=1750178134;
+	bh=iSnAhAzBAwItEoGA/8D6zPbhUUkPjAofK8EG+MXdE6w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FzAHCuO9rLv5Im5h0ovAuWh/J+HAXsjVbRKbbP+m+3ZYuanpePjU/cEArkQ6UbPpZ
-	 X9Mll8lV1LihgfDaA6O2TRYvDCF71JKNhX4EUpmrzjB4rq5SOSDBeVY79IamSZ5hps
-	 n5UyhP5vpyP9j/LAFHDSqKijashxG1DEmTHtHvaY=
+	b=e/CkNbFVIyvhP0CIy0XyS0Qc12IXQc+NeHZ804kDRskpvCrdsz4380fD2IIzPbDmZ
+	 7f52YL0G11VrUgtQ/dGJpE0bA5wKqNAjB/xTkpgyi6kdrJHbUMdfzcEuNAyv3jLZlK
+	 hIcpsAmqL9Kar1qu48HiWCa/Z2uKtw1dLE9Sl8u4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Rodrigo Gobbi <rodrigo.gobbi.7@gmail.com>,
-	kernel test robot <lkp@intel.com>,
-	Dan Carpenter <error27@gmail.com>,
-	Baochen Qiang <quic_bqiang@quicinc.com>,
-	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
+	Xu Lu <luxu.kernel@bytedance.com>,
+	Yunhui Cui <cuiyunhui@bytedance.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 302/356] wifi: ath11k: validate ath11k_crypto_mode on top of ath11k_core_qmi_firmware_ready
+Subject: [PATCH 6.12 451/512] ACPI: CPPC: Fix NULL pointer dereference when nosmp is used
 Date: Tue, 17 Jun 2025 17:26:57 +0200
-Message-ID: <20250617152350.326423886@linuxfoundation.org>
+Message-ID: <20250617152437.841564210@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152338.212798615@linuxfoundation.org>
-References: <20250617152338.212798615@linuxfoundation.org>
+In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
+References: <20250617152419.512865572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,81 +63,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rodrigo Gobbi <rodrigo.gobbi.7@gmail.com>
+From: Yunhui Cui <cuiyunhui@bytedance.com>
 
-[ Upstream commit b0d226a60856a1b765bb9a3848c7b2322fd08c47 ]
+[ Upstream commit 15eece6c5b05e5f9db0711978c3e3b7f1a2cfe12 ]
 
-if ath11k_crypto_mode is invalid (not ATH11K_CRYPT_MODE_SW/ATH11K_CRYPT_MODE_HW),
-ath11k_core_qmi_firmware_ready() will not undo some actions that was previously
-started/configured. Do the validation as soon as possible in order to avoid
-undoing actions in that case and also to fix the following smatch warning:
+With nosmp in cmdline, other CPUs are not brought up, leaving
+their cpc_desc_ptr NULL. CPU0's iteration via for_each_possible_cpu()
+dereferences these NULL pointers, causing panic.
 
-drivers/net/wireless/ath/ath11k/core.c:2166 ath11k_core_qmi_firmware_ready()
-warn: missing unwind goto?
+Panic backtrace:
 
-Signed-off-by: Rodrigo Gobbi <rodrigo.gobbi.7@gmail.com>
-Reported-by: kernel test robot <lkp@intel.com>
-Reported-by: Dan Carpenter <error27@gmail.com>
-Closes: https://lore.kernel.org/r/202304151955.oqAetVFd-lkp@intel.com/
-Fixes: aa2092a9bab3 ("ath11k: add raw mode and software crypto support")
-Reviewed-by: Baochen Qiang <quic_bqiang@quicinc.com>
-Link: https://patch.msgid.link/20250522200519.16858-1-rodrigo.gobbi.7@gmail.com
-Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+[    0.401123] Unable to handle kernel NULL pointer dereference at virtual address 00000000000000b8
+...
+[    0.403255] [<ffffffff809a5818>] cppc_allow_fast_switch+0x6a/0xd4
+...
+Kernel panic - not syncing: Attempted to kill init!
+
+Fixes: 3cc30dd00a58 ("cpufreq: CPPC: Enable fast_switch")
+Reported-by: Xu Lu <luxu.kernel@bytedance.com>
+Signed-off-by: Yunhui Cui <cuiyunhui@bytedance.com>
+Link: https://patch.msgid.link/20250604023036.99553-1-cuiyunhui@bytedance.com
+[ rjw: New subject ]
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath11k/core.c | 28 +++++++++++++-------------
- 1 file changed, 14 insertions(+), 14 deletions(-)
+ drivers/acpi/cppc_acpi.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/ath/ath11k/core.c b/drivers/net/wireless/ath/ath11k/core.c
-index 12c5f50f61f90..609d8387c41f3 100644
---- a/drivers/net/wireless/ath/ath11k/core.c
-+++ b/drivers/net/wireless/ath/ath11k/core.c
-@@ -1638,6 +1638,20 @@ int ath11k_core_qmi_firmware_ready(struct ath11k_base *ab)
- {
- 	int ret;
+diff --git a/drivers/acpi/cppc_acpi.c b/drivers/acpi/cppc_acpi.c
+index e78e3754d99e1..dab941dc984a9 100644
+--- a/drivers/acpi/cppc_acpi.c
++++ b/drivers/acpi/cppc_acpi.c
+@@ -463,7 +463,7 @@ bool cppc_allow_fast_switch(void)
+ 	struct cpc_desc *cpc_ptr;
+ 	int cpu;
  
-+	switch (ath11k_crypto_mode) {
-+	case ATH11K_CRYPT_MODE_SW:
-+		set_bit(ATH11K_FLAG_HW_CRYPTO_DISABLED, &ab->dev_flags);
-+		set_bit(ATH11K_FLAG_RAW_MODE, &ab->dev_flags);
-+		break;
-+	case ATH11K_CRYPT_MODE_HW:
-+		clear_bit(ATH11K_FLAG_HW_CRYPTO_DISABLED, &ab->dev_flags);
-+		clear_bit(ATH11K_FLAG_RAW_MODE, &ab->dev_flags);
-+		break;
-+	default:
-+		ath11k_info(ab, "invalid crypto_mode: %d\n", ath11k_crypto_mode);
-+		return -EINVAL;
-+	}
-+
- 	ret = ath11k_core_start_firmware(ab, ab->fw_mode);
- 	if (ret) {
- 		ath11k_err(ab, "failed to start firmware: %d\n", ret);
-@@ -1656,20 +1670,6 @@ int ath11k_core_qmi_firmware_ready(struct ath11k_base *ab)
- 		goto err_firmware_stop;
- 	}
- 
--	switch (ath11k_crypto_mode) {
--	case ATH11K_CRYPT_MODE_SW:
--		set_bit(ATH11K_FLAG_HW_CRYPTO_DISABLED, &ab->dev_flags);
--		set_bit(ATH11K_FLAG_RAW_MODE, &ab->dev_flags);
--		break;
--	case ATH11K_CRYPT_MODE_HW:
--		clear_bit(ATH11K_FLAG_HW_CRYPTO_DISABLED, &ab->dev_flags);
--		clear_bit(ATH11K_FLAG_RAW_MODE, &ab->dev_flags);
--		break;
--	default:
--		ath11k_info(ab, "invalid crypto_mode: %d\n", ath11k_crypto_mode);
--		return -EINVAL;
--	}
--
- 	if (ath11k_frame_mode == ATH11K_HW_TXRX_RAW)
- 		set_bit(ATH11K_FLAG_RAW_MODE, &ab->dev_flags);
- 
+-	for_each_possible_cpu(cpu) {
++	for_each_present_cpu(cpu) {
+ 		cpc_ptr = per_cpu(cpc_desc_ptr, cpu);
+ 		desired_reg = &cpc_ptr->cpc_regs[DESIRED_PERF];
+ 		if (!CPC_IN_SYSTEM_MEMORY(desired_reg) &&
 -- 
 2.39.5
 
