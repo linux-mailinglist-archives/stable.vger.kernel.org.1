@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-153849-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-154370-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3670DADD6F0
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:38:57 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 84ED4ADD9D6
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 19:10:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E845E4082F9
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:26:29 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 72F054A598E
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:51:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 97F252EE609;
-	Tue, 17 Jun 2025 16:21:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 891262E8E03;
+	Tue, 17 Jun 2025 16:49:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S5Pwp2WU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DbtLQst3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 511212DFF0A;
-	Tue, 17 Jun 2025 16:21:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 431782FA65D;
+	Tue, 17 Jun 2025 16:49:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750177296; cv=none; b=av8zBdkmnkuLr6hOBlKBM+H6bn0UQPe0HSV+t+rYFZHt0lNt5oxyH3bq8Sx1IsQjOadX92F4vMe/YXFiWRAhkdwsxnRhCinyQ5gyjIFgE5rCVhgV+tC9CiZhsRzVbxxPoCSsTCTrgCDgV/cXlg6Q5II9HPa+b3AZRHD24yXlU+c=
+	t=1750178978; cv=none; b=qBLXGjHRmA6b7JNa5iLSwRqOrSEzJUQvA01VWWHV3voDgvrhNnJlimTz3y14orOsEXFTeKGDydJVOUzfCosAMSjw7e3DkQMJT/R+h8YheCRD5uPl7JvQHkwftzgUVR/0ifvlRMxF4lLtRDcWAtQDf51SmtOCDoRGqwIQzhbBNIY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750177296; c=relaxed/simple;
-	bh=RZw+R8aktxuKN+xF6SMkhyKgIXgW7yOawilHae1I15Y=;
+	s=arc-20240116; t=1750178978; c=relaxed/simple;
+	bh=ys135BNKUproTt24qYOuosMVydW/04e1ehygwyd7MeA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PcY3TXr+/u9m9NJ8KsqSWrAnMNMSeOPcf9MV1KlOK4bRpj4Uomf7HxT4cHVpKbV3ZFMURHm9Qeu+uO8r+GALhCd2/bWXyLXY2f264PwdKgojG2EMO3vR5Y1NlKjYaGjNG7azZND5oqTbMMuxLk/bUFIG+m/Wi2LvYViQ5bZ4aCM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S5Pwp2WU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0630C4CEE3;
-	Tue, 17 Jun 2025 16:21:35 +0000 (UTC)
+	 MIME-Version; b=rfPC8ZkS8XAN/Oq6xwaAWHeWdhO5y2GCcLG7ggpWVFn+6iHQqSQnPijFjDdLjiOUiJL1WhsR8Py8wS/f4Twpb4yAbrveuujmMSoLRa2WXn2xA/Z0TjuOBFV+GgElqDPJS0zJdm7hqPe1GHApX7P4CW6PMrFfT2jlV3Rz+H8P7QE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DbtLQst3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A523AC4CEE3;
+	Tue, 17 Jun 2025 16:49:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750177296;
-	bh=RZw+R8aktxuKN+xF6SMkhyKgIXgW7yOawilHae1I15Y=;
+	s=korg; t=1750178978;
+	bh=ys135BNKUproTt24qYOuosMVydW/04e1ehygwyd7MeA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=S5Pwp2WUrbiUAAbARCPE/I/uqvMIpKgYjgLT2olNHizTzYbqBmG8nmC3HWOFCIFP3
-	 NQxcTtLKEaAxxz1fKD72v0j0K1wfMR87VUzUFetg6iaHb3ZqUauw2y73m35W4c/NnZ
-	 d2GWpCI5zPJAd/qrIHHHQ17z1gVg5DQ5HjG0yk4w=
+	b=DbtLQst3I5VYc6RBYq/tdy3DAnkX8v1fShDj91/BHeq1z9g537Z9x0dOMsbcc9GMb
+	 vempmsh1+gVXp9xNnwqTX2Lf7D+SaJXjTNAJxQu/Pql2CgWH0jQYIBVER4ECOpgDS5
+	 59cHbJxEfDuUlINOPvg2I74YkfAvi28ZoMRwoJEo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Mika Westerberg <mika.westerberg@linux.intel.com>,
+	Paul Chaignon <paul.chaignon@gmail.com>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 323/512] thunderbolt: Fix a logic error in wake on connect
+Subject: [PATCH 6.15 581/780] bpf: Fix L4 csum update on IPv6 in CHECKSUM_COMPLETE
 Date: Tue, 17 Jun 2025 17:24:49 +0200
-Message-ID: <20250617152432.691419642@linuxfoundation.org>
+Message-ID: <20250617152515.143932201@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
-References: <20250617152419.512865572@linuxfoundation.org>
+In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
+References: <20250617152451.485330293@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,53 +63,139 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mario Limonciello <mario.limonciello@amd.com>
+From: Paul Chaignon <paul.chaignon@gmail.com>
 
-[ Upstream commit 1a760d10ded372d113a0410c42be246315bbc2ff ]
+[ Upstream commit ead7f9b8de65632ef8060b84b0c55049a33cfea1 ]
 
-commit a5cfc9d65879c ("thunderbolt: Add wake on connect/disconnect
-on USB4 ports") introduced a sysfs file to control wake up policy
-for a given USB4 port that defaulted to disabled.
+In Cilium, we use bpf_csum_diff + bpf_l4_csum_replace to, among other
+things, update the L4 checksum after reverse SNATing IPv6 packets. That
+use case is however not currently supported and leads to invalid
+skb->csum values in some cases. This patch adds support for IPv6 address
+changes in bpf_l4_csum_update via a new flag.
 
-However when testing commit 4bfeea6ec1c02 ("thunderbolt: Use wake
-on connect and disconnect over suspend") I found that it was working
-even without making changes to the power/wakeup file (which defaults
-to disabled). This is because of a logic error doing a bitwise or
-of the wake-on-connect flag with device_may_wakeup() which should
-have been a logical AND.
+When calling bpf_l4_csum_replace in Cilium, it ends up calling
+inet_proto_csum_replace_by_diff:
 
-Adjust the logic so that policy is only applied when wakeup is
-actually enabled.
+    1:  void inet_proto_csum_replace_by_diff(__sum16 *sum, struct sk_buff *skb,
+    2:                                       __wsum diff, bool pseudohdr)
+    3:  {
+    4:      if (skb->ip_summed != CHECKSUM_PARTIAL) {
+    5:          csum_replace_by_diff(sum, diff);
+    6:          if (skb->ip_summed == CHECKSUM_COMPLETE && pseudohdr)
+    7:              skb->csum = ~csum_sub(diff, skb->csum);
+    8:      } else if (pseudohdr) {
+    9:          *sum = ~csum_fold(csum_add(diff, csum_unfold(*sum)));
+    10:     }
+    11: }
 
-Fixes: a5cfc9d65879c ("thunderbolt: Add wake on connect/disconnect on USB4 ports")
-Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
-Signed-off-by: Mika Westerberg <mika.westerberg@linux.intel.com>
+The bug happens when we're in the CHECKSUM_COMPLETE state. We've just
+updated one of the IPv6 addresses. The helper now updates the L4 header
+checksum on line 5. Next, it updates skb->csum on line 7. It shouldn't.
+
+For an IPv6 packet, the updates of the IPv6 address and of the L4
+checksum will cancel each other. The checksums are set such that
+computing a checksum over the packet including its checksum will result
+in a sum of 0. So the same is true here when we update the L4 checksum
+on line 5. We'll update it as to cancel the previous IPv6 address
+update. Hence skb->csum should remain untouched in this case.
+
+The same bug doesn't affect IPv4 packets because, in that case, three
+fields are updated: the IPv4 address, the IP checksum, and the L4
+checksum. The change to the IPv4 address and one of the checksums still
+cancel each other in skb->csum, but we're left with one checksum update
+and should therefore update skb->csum accordingly. That's exactly what
+inet_proto_csum_replace_by_diff does.
+
+This special case for IPv6 L4 checksums is also described atop
+inet_proto_csum_replace16, the function we should be using in this case.
+
+This patch introduces a new bpf_l4_csum_replace flag, BPF_F_IPV6,
+to indicate that we're updating the L4 checksum of an IPv6 packet. When
+the flag is set, inet_proto_csum_replace_by_diff will skip the
+skb->csum update.
+
+Fixes: 7d672345ed295 ("bpf: add generic bpf_csum_diff helper")
+Signed-off-by: Paul Chaignon <paul.chaignon@gmail.com>
+Acked-by: Daniel Borkmann <daniel@iogearbox.net>
+Link: https://patch.msgid.link/96a6bc3a443e6f0b21ff7b7834000e17fb549e05.1748509484.git.paul.chaignon@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/thunderbolt/usb4.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ include/uapi/linux/bpf.h       | 2 ++
+ net/core/filter.c              | 5 +++--
+ tools/include/uapi/linux/bpf.h | 2 ++
+ 3 files changed, 7 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/thunderbolt/usb4.c b/drivers/thunderbolt/usb4.c
-index 402fdf8b1cdec..57821b6f4e468 100644
---- a/drivers/thunderbolt/usb4.c
-+++ b/drivers/thunderbolt/usb4.c
-@@ -440,10 +440,10 @@ int usb4_switch_set_wake(struct tb_switch *sw, unsigned int flags)
- 			bool configured = val & PORT_CS_19_PC;
- 			usb4 = port->usb4;
+diff --git a/include/uapi/linux/bpf.h b/include/uapi/linux/bpf.h
+index bceb1950ec204..fe5df2a9fe8ee 100644
+--- a/include/uapi/linux/bpf.h
++++ b/include/uapi/linux/bpf.h
+@@ -2052,6 +2052,7 @@ union bpf_attr {
+  * 		for updates resulting in a null checksum the value is set to
+  * 		**CSUM_MANGLED_0** instead. Flag **BPF_F_PSEUDO_HDR** indicates
+  * 		that the modified header field is part of the pseudo-header.
++ * 		Flag **BPF_F_IPV6** should be set for IPv6 packets.
+  *
+  * 		This helper works in combination with **bpf_csum_diff**\ (),
+  * 		which does not update the checksum in-place, but offers more
+@@ -6068,6 +6069,7 @@ enum {
+ 	BPF_F_PSEUDO_HDR		= (1ULL << 4),
+ 	BPF_F_MARK_MANGLED_0		= (1ULL << 5),
+ 	BPF_F_MARK_ENFORCE		= (1ULL << 6),
++	BPF_F_IPV6			= (1ULL << 7),
+ };
  
--			if (((flags & TB_WAKE_ON_CONNECT) |
-+			if (((flags & TB_WAKE_ON_CONNECT) &&
- 			      device_may_wakeup(&usb4->dev)) && !configured)
- 				val |= PORT_CS_19_WOC;
--			if (((flags & TB_WAKE_ON_DISCONNECT) |
-+			if (((flags & TB_WAKE_ON_DISCONNECT) &&
- 			      device_may_wakeup(&usb4->dev)) && configured)
- 				val |= PORT_CS_19_WOD;
- 			if ((flags & TB_WAKE_ON_USB4) && configured)
+ /* BPF_FUNC_skb_set_tunnel_key and BPF_FUNC_skb_get_tunnel_key flags. */
+diff --git a/net/core/filter.c b/net/core/filter.c
+index 3c93765742c9c..357d26b76c22d 100644
+--- a/net/core/filter.c
++++ b/net/core/filter.c
+@@ -1968,10 +1968,11 @@ BPF_CALL_5(bpf_l4_csum_replace, struct sk_buff *, skb, u32, offset,
+ 	bool is_pseudo = flags & BPF_F_PSEUDO_HDR;
+ 	bool is_mmzero = flags & BPF_F_MARK_MANGLED_0;
+ 	bool do_mforce = flags & BPF_F_MARK_ENFORCE;
++	bool is_ipv6   = flags & BPF_F_IPV6;
+ 	__sum16 *ptr;
+ 
+ 	if (unlikely(flags & ~(BPF_F_MARK_MANGLED_0 | BPF_F_MARK_ENFORCE |
+-			       BPF_F_PSEUDO_HDR | BPF_F_HDR_FIELD_MASK)))
++			       BPF_F_PSEUDO_HDR | BPF_F_HDR_FIELD_MASK | BPF_F_IPV6)))
+ 		return -EINVAL;
+ 	if (unlikely(offset > 0xffff || offset & 1))
+ 		return -EFAULT;
+@@ -1987,7 +1988,7 @@ BPF_CALL_5(bpf_l4_csum_replace, struct sk_buff *, skb, u32, offset,
+ 		if (unlikely(from != 0))
+ 			return -EINVAL;
+ 
+-		inet_proto_csum_replace_by_diff(ptr, skb, to, is_pseudo, false);
++		inet_proto_csum_replace_by_diff(ptr, skb, to, is_pseudo, is_ipv6);
+ 		break;
+ 	case 2:
+ 		inet_proto_csum_replace2(ptr, skb, from, to, is_pseudo);
+diff --git a/tools/include/uapi/linux/bpf.h b/tools/include/uapi/linux/bpf.h
+index bceb1950ec204..fe5df2a9fe8ee 100644
+--- a/tools/include/uapi/linux/bpf.h
++++ b/tools/include/uapi/linux/bpf.h
+@@ -2052,6 +2052,7 @@ union bpf_attr {
+  * 		for updates resulting in a null checksum the value is set to
+  * 		**CSUM_MANGLED_0** instead. Flag **BPF_F_PSEUDO_HDR** indicates
+  * 		that the modified header field is part of the pseudo-header.
++ * 		Flag **BPF_F_IPV6** should be set for IPv6 packets.
+  *
+  * 		This helper works in combination with **bpf_csum_diff**\ (),
+  * 		which does not update the checksum in-place, but offers more
+@@ -6068,6 +6069,7 @@ enum {
+ 	BPF_F_PSEUDO_HDR		= (1ULL << 4),
+ 	BPF_F_MARK_MANGLED_0		= (1ULL << 5),
+ 	BPF_F_MARK_ENFORCE		= (1ULL << 6),
++	BPF_F_IPV6			= (1ULL << 7),
+ };
+ 
+ /* BPF_FUNC_skb_set_tunnel_key and BPF_FUNC_skb_get_tunnel_key flags. */
 -- 
 2.39.5
 
