@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-154034-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-154036-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B89FBADD788
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:45:56 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id C1905ADD800
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:51:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E517319E7237
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:37:35 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A815516B4D6
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:37:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2708F2ED17E;
-	Tue, 17 Jun 2025 16:31:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4573C2ED85B;
+	Tue, 17 Jun 2025 16:31:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dgE/r/RS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oL/fNp29"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF6AB2367A0;
-	Tue, 17 Jun 2025 16:31:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEFE72EA16C;
+	Tue, 17 Jun 2025 16:31:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750177893; cv=none; b=Z9u/l1dJiDOMgJD/Ob7GVM0aeHUo4M8Y+TCWsyc7mMdLgtX+MHb82+h9CnjXODG8UTbK+hiM2+ZENr3CSEHnWzkABJ0kjgdf6KiKWyUCCds/XX2h1Arufyc51gRwVSjViHn/XdkaMp+5LHDnNt8B7HJZReHoOqR6ZX5DNvtfoAE=
+	t=1750177900; cv=none; b=Hx6TtHYhVvaxVkQM3arBjkbaE0ZubqQmWzxyQZnNn2VkcKVWsihprOG64YgLXXrpZY7j1kwyDIdBPzc49zoc2nLN4UzTwd0TjDFow30TZ4VWTTqxiU8gxVOs/a4z0jbAs/BIFXqquGqBsbJl7ZdF0zBNguhbwqAEiR4W3hk3WDM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750177893; c=relaxed/simple;
-	bh=0q2H0dH9pIfTIdHVcGAGiGAT023fF9ZuXDLaBsGmZ8M=;
+	s=arc-20240116; t=1750177900; c=relaxed/simple;
+	bh=TQNHUhHBfxL9gUzFlIuT9/0u5UxrqGnwotsLxuTnT+4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Q6JQ9iGWg+X5MuoB85nWFJk7E5k64Z/2IUQswU8UvI12mXJ580QWqgs3RTN/y22dryqO5PZe3Gr/y6Bu1UBNzO/fC71J0kjZkzNmOsIYpSbUt2TuQBbR4txKPT5CsVR6qtjo4idorGijbZRrGN5Lr223oLeN0Rrp7NwoynIEYVo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dgE/r/RS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55A02C4CEE3;
-	Tue, 17 Jun 2025 16:31:33 +0000 (UTC)
+	 MIME-Version; b=Q3kmAP9N80hDb8ZRTKd8fzLSsg2shLFfnHvupMgDqWvMqNLhxXx9sxhrdVjQy0paABQgad5qqEtZwbojw6UNr0xASQW2JqiGZKNs92vn8zQ/petZo5M88rcGticcLUu5AZO7mlVWfV0GnMuJRSMI5zPRIMi5SIgLCCK+XUAmOL0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oL/fNp29; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7CDB2C4CEE3;
+	Tue, 17 Jun 2025 16:31:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750177893;
-	bh=0q2H0dH9pIfTIdHVcGAGiGAT023fF9ZuXDLaBsGmZ8M=;
+	s=korg; t=1750177899;
+	bh=TQNHUhHBfxL9gUzFlIuT9/0u5UxrqGnwotsLxuTnT+4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dgE/r/RSpksrzIMT72O7tuQyYWBcDaPxipfGeaMXBLlLy1ASLC8cfZtqXFOmCVHON
-	 h/gF81grPBYSTUOZKPS9hA/PqT80sfw3YQT6GZq0tIp5IfphqWNd1mFsCLn8tp+oS9
-	 b45wMwpB67sU7stwU5hfnNE1j5xqt7thLvunQiQI=
+	b=oL/fNp29rsK3T73cSD5e9cmvK92/qf23h4+J2hs3ivRs7bwDv7r9p0sO7+kGUEnEj
+	 +otEPLXSMqo8BbLDEioyJ+bRVkAfV/oBaAHmXxHxDyJ0qgCay3VV1vDQE8kRzh9f+3
+	 8VoSHftYcin/wHpce6lMVvauiN078qt0h58ccsPQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Louis-Alexis Eyraud <louisalexis.eyraud@collabora.com>,
+	Julien Massot <julien.massot@collabora.com>,
 	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 378/780] arm64: dts: mediatek: mt8390-genio-common: Set ssusb2 default dual role mode to host
-Date: Tue, 17 Jun 2025 17:21:26 +0200
-Message-ID: <20250617152506.848713236@linuxfoundation.org>
+Subject: [PATCH 6.15 379/780] arm64: dts: mt6359: Add missing compatible property to regulators node
+Date: Tue, 17 Jun 2025 17:21:27 +0200
+Message-ID: <20250617152506.895721427@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
 References: <20250617152451.485330293@linuxfoundation.org>
@@ -66,65 +66,38 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Louis-Alexis Eyraud <louisalexis.eyraud@collabora.com>
+From: Julien Massot <julien.massot@collabora.com>
 
-[ Upstream commit f9167f15dd4e70b124023a2f7ba2b09401b3b6ff ]
+[ Upstream commit 1fe38d2a19950fa6dbc384ee8967c057aef9faf4 ]
 
-On the Mediatek Genio 510-EVK and 700-EVK boards, ssusb2 controller is
-one but has two ports: one is routed to the M.2 slot, the other is on
-the RPi header who does support full OTG.
-Since Mediatek Genio 700-EVK USB support was added, dual role mode
-property is set to otg for ssusb2. This config prevents the M.2
-Wifi/Bluetooth module, present on those boards and exposing Bluetooth
-as an USB device to be properly detected at startup as the default role
-is device.
-To keep the OTG functionality and make the M.2 module be detected at
-the same time, add role-switch-default-mode property set to host and
-also fix the polarity of GPIO associated to the USB connector, so the
-ssusb2 controller role is properly set to host when the other port is
-unused.
+The 'compatible' property is required by the
+'mfd/mediatek,mt6397.yaml' binding. Add it to fix the following
+dtb-check error:
+mediatek/mt8395-radxa-nio-12l.dtb: pmic: regulators:
+'compatible' is a required property
 
-Fixes: 1afaeca17238 ("arm64: dts: mediatek: mt8390-genio-700: Add USB, TypeC Controller, MUX")
-Signed-off-by: Louis-Alexis Eyraud <louisalexis.eyraud@collabora.com>
-Link: https://lore.kernel.org/r/20250502-mtk-genio-510-700-fix-bt-detection-v2-1-870aa2145480@collabora.com
+Fixes: 3b7d143be4b7 ("arm64: dts: mt6359: add PMIC MT6359 related nodes")
+Signed-off-by: Julien Massot <julien.massot@collabora.com>
+Link: https://lore.kernel.org/r/20250505-mt8395-dtb-errors-v1-3-9c4714dcdcdb@collabora.com
 Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../arm64/boot/dts/mediatek/mt8390-genio-common.dtsi | 12 +++++++++++-
- 1 file changed, 11 insertions(+), 1 deletion(-)
+ arch/arm64/boot/dts/mediatek/mt6359.dtsi | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/arch/arm64/boot/dts/mediatek/mt8390-genio-common.dtsi b/arch/arm64/boot/dts/mediatek/mt8390-genio-common.dtsi
-index 60139e6dffd8e..6a75b230282ed 100644
---- a/arch/arm64/boot/dts/mediatek/mt8390-genio-common.dtsi
-+++ b/arch/arm64/boot/dts/mediatek/mt8390-genio-common.dtsi
-@@ -1199,8 +1199,18 @@
- };
+diff --git a/arch/arm64/boot/dts/mediatek/mt6359.dtsi b/arch/arm64/boot/dts/mediatek/mt6359.dtsi
+index 7b10f9c59819a..0c479404b3fe3 100644
+--- a/arch/arm64/boot/dts/mediatek/mt6359.dtsi
++++ b/arch/arm64/boot/dts/mediatek/mt6359.dtsi
+@@ -20,6 +20,8 @@
+ 		};
  
- &ssusb2 {
-+	/*
-+	 * the ssusb2 controller is one but we got two ports : one is routed
-+	 * to the M.2 slot, the other is on the RPi header who does support
-+	 * full OTG.
-+	 * As the controller is shared between them, the role switch default
-+	 * mode is set to host to make any peripheral inserted in the M.2
-+	 * slot (i.e BT/WIFI module) be detected when the other port is
-+	 * unused.
-+	 */
- 	dr_mode = "otg";
- 	maximum-speed = "high-speed";
-+	role-switch-default-mode = "host";
- 	usb-role-switch;
- 	vusb33-supply = <&mt6359_vusb_ldo_reg>;
- 	wakeup-source;
-@@ -1211,7 +1221,7 @@
- 	connector {
- 		compatible = "gpio-usb-b-connector", "usb-b-connector";
- 		type = "micro";
--		id-gpios = <&pio 89 GPIO_ACTIVE_HIGH>;
-+		id-gpios = <&pio 89 GPIO_ACTIVE_LOW>;
- 		vbus-supply = <&usb_p2_vbus>;
- 	};
- };
+ 		regulators {
++			compatible = "mediatek,mt6359-regulator";
++
+ 			mt6359_vs1_buck_reg: buck_vs1 {
+ 				regulator-name = "vs1";
+ 				regulator-min-microvolt = <800000>;
 -- 
 2.39.5
 
