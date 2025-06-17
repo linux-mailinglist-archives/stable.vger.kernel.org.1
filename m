@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-154308-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153773-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C570FADD8BA
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:58:36 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 30033ADD703
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:39:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 081564A6EA5
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:49:11 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E968B1886CC9
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:24:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 863E72ECE80;
-	Tue, 17 Jun 2025 16:46:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA8782EA142;
+	Tue, 17 Jun 2025 16:17:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R2lJ28Og"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M9XaTF4P"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40533236453;
-	Tue, 17 Jun 2025 16:46:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6E782E9738;
+	Tue, 17 Jun 2025 16:17:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750178773; cv=none; b=fD9JlT/hyTfKat9Uim31VgycmvGXOwwxulgqGqAds0kpdw17bKnBetcLGyneSXQadXMbk9BUbK0NQRQJi4y4EpqA1MXULZz1f6Jy/a4U+J0I+iORvRpshXVXt63mD+LrBIPkysyjuDOiiALqN/g+YkzAPjVmL27hizd9DsjebUE=
+	t=1750177051; cv=none; b=Lz+UMkCZcstdCd+8b6f8VgfXEBRzI8+B6nW/bSbLliCQ1I/EKXw8qwgrmsfhFpptcLcGm4D6MXCmNWIQdgPDxlSStcj0kZ/n8naiggenvTW29TeX6v+YV3KQSi4v1zxy9DBNc+VKVhyqYvs0O+zKQhV8zHk3PpXEbL6lgBHwUSE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750178773; c=relaxed/simple;
-	bh=hJcfa3pxwvHP+0ivW8gOWmZ27Pj5xAFH8i1Y+PmKkko=;
+	s=arc-20240116; t=1750177051; c=relaxed/simple;
+	bh=uVhy6bfhD6sM9nIvBeLCdyVKh7N9d+v8WVSyx3332PE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FM4kdUK5NLjIQigO/iQtYAjnLOo29ybbz9wLM8WaXh/Pk8sxbpDKM3AGQNJC4Z9AsLx/7/sM0QOrA2+e983FI+vVTquGvfJEUpqL6J9kBOX7wdn+xo5Rro2rly6PDiJRoQH7QffRDtUqMJaahdGP83MG57mY2sKQsThMdb1BDw4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R2lJ28Og; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A77ACC4CEE3;
-	Tue, 17 Jun 2025 16:46:12 +0000 (UTC)
+	 MIME-Version; b=SNRobz/StaDqW3GwtN9hU2f7FusoHbAGZyYwhFkRXutfAtDouNZX0rqks5q828hjxlH7arj2WG9rLW1bn5rvRvGdJbGBSfeS3Nl0I+VEGjRGN03bDyOkwa/B9AuCKWf5hF+BvDm0+9/7OyRSYw3ND1EWe4e/eLK9CXhh2NKdUBs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M9XaTF4P; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18050C4CEE3;
+	Tue, 17 Jun 2025 16:17:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750178773;
-	bh=hJcfa3pxwvHP+0ivW8gOWmZ27Pj5xAFH8i1Y+PmKkko=;
+	s=korg; t=1750177051;
+	bh=uVhy6bfhD6sM9nIvBeLCdyVKh7N9d+v8WVSyx3332PE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=R2lJ28OgUoRt0SAgdmphxd3UY6SaIkhjWZSDg5gyC6eOgZScsRTV26+UF2LYWqWIW
-	 TmJIGazvQyhvJOp5xxKchOBNusDd1eApKCV6UkoIxVH7SKzP+SobSSLgfQyZ7bkJnT
-	 G+zFv4oZDDTkqALvyb0pT88YO/5kIAHPuYZ4RltM=
+	b=M9XaTF4PIRlRS2ws/zcHUbx4V8SFo6ttFQL+fprBUCqX3JxrILP1bGCz+t8hbTsI3
+	 yvVjqbU5wfcT9OPTo/jU0UcSWXgYoJe+Aurw8seI1RmsRQSaGZPBafiKXGkvk7ag7P
+	 40Cb5vs86ThVP9pBCqEBxJeKYg0NrbCVVWCAf9+o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nicolas Frattaroli <nicolas.frattaroli@collabora.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Lee Jones <lee@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 550/780] drm/connector: only call HDMI audio helper plugged cb if non-null
+Subject: [PATCH 6.12 292/512] mfd: exynos-lpass: Avoid calling exynos_lpass_disable() twice in exynos_lpass_remove()
 Date: Tue, 17 Jun 2025 17:24:18 +0200
-Message-ID: <20250617152513.904150308@linuxfoundation.org>
+Message-ID: <20250617152431.433692997@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
-References: <20250617152451.485330293@linuxfoundation.org>
+In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
+References: <20250617152419.512865572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,49 +63,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nicolas Frattaroli <nicolas.frattaroli@collabora.com>
+From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 
-[ Upstream commit be9b3f9a54101c19226c25ba7163d291183777a0 ]
+[ Upstream commit b70b84556eeca5262d290e8619fe0af5b7664a52 ]
 
-On driver remove, sound/soc/codecs/hdmi-codec.c calls the plugged_cb
-with NULL as the callback function and codec_dev, as seen in its
-hdmi_remove function.
+exynos_lpass_disable() is called twice in the remove function. Remove
+one of these calls.
 
-The HDMI audio helper then happily tries calling said null function
-pointer, and produces an Oops as a result.
-
-Fix this by only executing the callback if fn is non-null. This means
-the .plugged_cb and .plugged_cb_dev members still get appropriately
-cleared.
-
-Fixes: baf616647fe6 ("drm/connector: implement generic HDMI audio helpers")
-Signed-off-by: Nicolas Frattaroli <nicolas.frattaroli@collabora.com>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Link: https://lore.kernel.org/r/20250527-hdmi-audio-helper-remove-fix-v1-1-6cf77de364d8@collabora.com
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Fixes: 90f447170c6f ("mfd: exynos-lpass: Add runtime PM support")
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Link: https://lore.kernel.org/r/74d69e8de10308c9855db6d54155a3de4b11abfd.1745247209.git.christophe.jaillet@wanadoo.fr
+Signed-off-by: Lee Jones <lee@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/display/drm_hdmi_audio_helper.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/mfd/exynos-lpass.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/display/drm_hdmi_audio_helper.c b/drivers/gpu/drm/display/drm_hdmi_audio_helper.c
-index 05afc9f0bdd6b..ae8a0cf595fc6 100644
---- a/drivers/gpu/drm/display/drm_hdmi_audio_helper.c
-+++ b/drivers/gpu/drm/display/drm_hdmi_audio_helper.c
-@@ -103,7 +103,8 @@ static int drm_connector_hdmi_audio_hook_plugged_cb(struct device *dev,
- 	connector->hdmi_audio.plugged_cb = fn;
- 	connector->hdmi_audio.plugged_cb_dev = codec_dev;
+diff --git a/drivers/mfd/exynos-lpass.c b/drivers/mfd/exynos-lpass.c
+index eedcfc22c3325..e36805f07282e 100644
+--- a/drivers/mfd/exynos-lpass.c
++++ b/drivers/mfd/exynos-lpass.c
+@@ -141,7 +141,6 @@ static void exynos_lpass_remove(struct platform_device *pdev)
+ {
+ 	struct exynos_lpass *lpass = platform_get_drvdata(pdev);
  
--	fn(codec_dev, connector->hdmi_audio.last_state);
-+	if (fn)
-+		fn(codec_dev, connector->hdmi_audio.last_state);
- 
- 	mutex_unlock(&connector->hdmi_audio.lock);
- 
+-	exynos_lpass_disable(lpass);
+ 	pm_runtime_disable(&pdev->dev);
+ 	if (!pm_runtime_status_suspended(&pdev->dev))
+ 		exynos_lpass_disable(lpass);
 -- 
 2.39.5
 
