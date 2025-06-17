@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-153834-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153837-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 880E0ADD6E0
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:38:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DC5FDADD6AB
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:36:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 661614A1014
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:25:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0EAF83BE0C0
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:25:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 906B72F9497;
-	Tue, 17 Jun 2025 16:20:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 648E92F94A3;
+	Tue, 17 Jun 2025 16:20:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ov6pVI57"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kgZZ8rv7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4ACF52F9492;
-	Tue, 17 Jun 2025 16:20:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FDD22F9492;
+	Tue, 17 Jun 2025 16:20:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750177248; cv=none; b=V4p20wW/0jtz39anw8ZhDmAgofu/Wnjh/ZG/POb68qS+fximUlwnI8Th6OeJT9lI/s3TPE2DWTtrFLVOKiqmFXCoew5IjHVGi3fKbigNzvHUqb8UNR1FmyqTddb56YwJNBHGkEKH8IV9kpxbCJcpJtIJSrv+mSX2kIVLM/Mqkz0=
+	t=1750177258; cv=none; b=tbhwrJPY7G350f7fwUIgHRAfoaJBCM3wHtQnHJ/H4a0PMRgk+0B4QzEOq4w00q42YX5rqDEOLTigmTWA8SNIvc06ax58mYKKItrBERqcahmlINvJE0Ik9AmWfQyEEkoG7kb/RzBRxnqvDATfoUuu4Xg/k2r87FuS7QQX8m15ks4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750177248; c=relaxed/simple;
-	bh=d/sOActGyxksS981kqg1LbxdqGJVundRozjeOgnNfyI=;
+	s=arc-20240116; t=1750177258; c=relaxed/simple;
+	bh=k2pVnRAv8qNj22NTVAH/63kYJLru6jhyh2R34yOX3KE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lhsRxpCeecmiCbFfcCNyyu5LjHPEXkuO/VNnAZGgn8aCZ5KfkSBe5k7/7WBgDxgMo5GlELnKU60Hf4Ptn3wRff1mmkb0R3GaOQRBLalSebOdT2EF+Yc+28oBqH8q0pwvZ1AWfirWqO2QrGfD+cb/u/s6Mecq7JdknbhgN6M9VXA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ov6pVI57; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6092C4CEE3;
-	Tue, 17 Jun 2025 16:20:47 +0000 (UTC)
+	 MIME-Version; b=aDLgQhjb5bz6NDJ+vpK6G31j4X3TT5Fh48Ak2IhidQUlsuav2OkKiwEfsFWlaCd2E0EFiPG/YbtF5y5/3woDdqD3MUaF0fQHATSTxi7VhRQXbWi2mzsxV04NXXUOLpDM/sileuyUICqn3rp8gqPCuYPnJO6vCB1p6lDD0sXkujs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kgZZ8rv7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 839BFC4CEE3;
+	Tue, 17 Jun 2025 16:20:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750177248;
-	bh=d/sOActGyxksS981kqg1LbxdqGJVundRozjeOgnNfyI=;
+	s=korg; t=1750177258;
+	bh=k2pVnRAv8qNj22NTVAH/63kYJLru6jhyh2R34yOX3KE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ov6pVI57sTeKj/8TX9QRb2dAFrjhHJFN6qBApKUF6jfLgWA2grBMOO8WOsxMUe3jm
-	 xEtgQKBS34XUZtRtSov2J3aUtwV2G4CWeTcICHkBk9EnnpJyOToE3TnINfKpmXs6dL
-	 zyrXfbd6fSOrn1emfadn9Osw0aml/nRqc5lsewOE=
+	b=kgZZ8rv73IImMbKzEAtKJ63FBOST4ZUBHlJOa5H3ALepldCF43NGQ+RDT0NpEwKPu
+	 4sOHrbOo53Ogih6phb8pVUqslFeJ4ZMoHg9TRfcyjtq6wioUEhTvFjfAZccCKjZAHP
+	 Yh2hDbDvCAOaKk7ecbru2BCw27ak+cS0IQHK4ulw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Denis Benato <benato.denis96@gmail.com>,
-	Yijun Shen <Yijun_Shen@Dell.com>,
-	David Perry <david.perry@amd.com>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Chenyuan Yang <chenyuan0y@gmail.com>,
+	Johan Hovold <johan@kernel.org>,
+	Krzysztof Kozlowski <krzk@kernel.org>,
+	Johan Hovold <johan+linaro@kernel.org>,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	Vinod Koul <vkoul@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 313/512] PCI: Explicitly put devices into D0 when initializing
-Date: Tue, 17 Jun 2025 17:24:39 +0200
-Message-ID: <20250617152432.297176178@linuxfoundation.org>
+Subject: [PATCH 6.12 314/512] phy: qcom-qmp-usb: Fix an NULL vs IS_ERR() bug
+Date: Tue, 17 Jun 2025 17:24:40 +0200
+Message-ID: <20250617152432.339053084@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
 References: <20250617152419.512865572@linuxfoundation.org>
@@ -70,106 +70,54 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Mario Limonciello <mario.limonciello@amd.com>
+From: Chenyuan Yang <chenyuan0y@gmail.com>
 
-[ Upstream commit 4d4c10f763d7808fbade28d83d237411603bca05 ]
+[ Upstream commit d14402a38c2d868cacb1facaf9be908ca6558e59 ]
 
-AMD BIOS team has root caused an issue that NVMe storage failed to come
-back from suspend to a lack of a call to _REG when NVMe device was probed.
+The qmp_usb_iomap() helper function currently returns the raw result of
+devm_ioremap() for non-exclusive mappings. Since devm_ioremap() may return
+a NULL pointer and the caller only checks error pointers with IS_ERR(),
+NULL could bypass the check and lead to an invalid dereference.
 
-112a7f9c8edbf ("PCI/ACPI: Call _REG when transitioning D-states") added
-support for calling _REG when transitioning D-states, but this only works
-if the device actually "transitions" D-states.
+Fix the issue by checking if devm_ioremap() returns NULL. When it does,
+qmp_usb_iomap() now returns an error pointer via IOMEM_ERR_PTR(-ENOMEM),
+ensuring safe and consistent error handling.
 
-967577b062417 ("PCI/PM: Keep runtime PM enabled for unbound PCI devices")
-added support for runtime PM on PCI devices, but never actually
-'explicitly' sets the device to D0.
-
-To make sure that devices are in D0 and that platform methods such as
-_REG are called, explicitly set all devices into D0 during initialization.
-
-Fixes: 967577b062417 ("PCI/PM: Keep runtime PM enabled for unbound PCI devices")
-Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Tested-by: Denis Benato <benato.denis96@gmail.com>
-Tested-By: Yijun Shen <Yijun_Shen@Dell.com>
-Tested-By: David Perry <david.perry@amd.com>
-Reviewed-by: Rafael J. Wysocki <rafael@kernel.org>
-Link: https://patch.msgid.link/20250424043232.1848107-1-superm1@kernel.org
+Signed-off-by: Chenyuan Yang <chenyuan0y@gmail.com>
+Fixes: a5d6b1ac56cb ("phy: qcom-qmp-usb: fix memleak on probe deferral")
+CC: Johan Hovold <johan@kernel.org>
+CC: Krzysztof Kozlowski <krzk@kernel.org>
+Reviewed-by: Johan Hovold <johan+linaro@kernel.org>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Link: https://lore.kernel.org/r/20250414125050.2118619-1-chenyuan0y@gmail.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/pci-driver.c |  6 ------
- drivers/pci/pci.c        | 13 ++++++++++---
- drivers/pci/pci.h        |  1 +
- 3 files changed, 11 insertions(+), 9 deletions(-)
+ drivers/phy/qualcomm/phy-qcom-qmp-usb.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/pci/pci-driver.c b/drivers/pci/pci-driver.c
-index 35270172c8331..a90990157e0b7 100644
---- a/drivers/pci/pci-driver.c
-+++ b/drivers/pci/pci-driver.c
-@@ -555,12 +555,6 @@ static void pci_pm_default_resume(struct pci_dev *pci_dev)
- 	pci_enable_wake(pci_dev, PCI_D0, false);
- }
- 
--static void pci_pm_power_up_and_verify_state(struct pci_dev *pci_dev)
--{
--	pci_power_up(pci_dev);
--	pci_update_current_state(pci_dev, PCI_D0);
--}
--
- static void pci_pm_default_resume_early(struct pci_dev *pci_dev)
+diff --git a/drivers/phy/qualcomm/phy-qcom-qmp-usb.c b/drivers/phy/qualcomm/phy-qcom-qmp-usb.c
+index 8e2cd2c178d6b..c12efd127a612 100644
+--- a/drivers/phy/qualcomm/phy-qcom-qmp-usb.c
++++ b/drivers/phy/qualcomm/phy-qcom-qmp-usb.c
+@@ -2044,12 +2044,16 @@ static void __iomem *qmp_usb_iomap(struct device *dev, struct device_node *np,
+ 					int index, bool exclusive)
  {
- 	pci_pm_power_up_and_verify_state(pci_dev);
-diff --git a/drivers/pci/pci.c b/drivers/pci/pci.c
-index 7ca5422feb2d4..1a6639dbe81b3 100644
---- a/drivers/pci/pci.c
-+++ b/drivers/pci/pci.c
-@@ -3185,6 +3185,12 @@ void pci_d3cold_disable(struct pci_dev *dev)
- }
- EXPORT_SYMBOL_GPL(pci_d3cold_disable);
+ 	struct resource res;
++	void __iomem *mem;
  
-+void pci_pm_power_up_and_verify_state(struct pci_dev *pci_dev)
-+{
-+	pci_power_up(pci_dev);
-+	pci_update_current_state(pci_dev, PCI_D0);
-+}
-+
- /**
-  * pci_pm_init - Initialize PM functions of given PCI device
-  * @dev: PCI device to handle.
-@@ -3195,9 +3201,6 @@ void pci_pm_init(struct pci_dev *dev)
- 	u16 status;
- 	u16 pmc;
+ 	if (!exclusive) {
+ 		if (of_address_to_resource(np, index, &res))
+ 			return IOMEM_ERR_PTR(-EINVAL);
  
--	pm_runtime_forbid(&dev->dev);
--	pm_runtime_set_active(&dev->dev);
--	pm_runtime_enable(&dev->dev);
- 	device_enable_async_suspend(&dev->dev);
- 	dev->wakeup_prepared = false;
+-		return devm_ioremap(dev, res.start, resource_size(&res));
++		mem = devm_ioremap(dev, res.start, resource_size(&res));
++		if (!mem)
++			return IOMEM_ERR_PTR(-ENOMEM);
++		return mem;
+ 	}
  
-@@ -3259,6 +3262,10 @@ void pci_pm_init(struct pci_dev *dev)
- 	pci_read_config_word(dev, PCI_STATUS, &status);
- 	if (status & PCI_STATUS_IMM_READY)
- 		dev->imm_ready = 1;
-+	pci_pm_power_up_and_verify_state(dev);
-+	pm_runtime_forbid(&dev->dev);
-+	pm_runtime_set_active(&dev->dev);
-+	pm_runtime_enable(&dev->dev);
- }
- 
- static unsigned long pci_ea_flags(struct pci_dev *dev, u8 prop)
-diff --git a/drivers/pci/pci.h b/drivers/pci/pci.h
-index 65df6d2ac0032..c1a5874eeb6cf 100644
---- a/drivers/pci/pci.h
-+++ b/drivers/pci/pci.h
-@@ -146,6 +146,7 @@ void pci_dev_adjust_pme(struct pci_dev *dev);
- void pci_dev_complete_resume(struct pci_dev *pci_dev);
- void pci_config_pm_runtime_get(struct pci_dev *dev);
- void pci_config_pm_runtime_put(struct pci_dev *dev);
-+void pci_pm_power_up_and_verify_state(struct pci_dev *pci_dev);
- void pci_pm_init(struct pci_dev *dev);
- void pci_ea_init(struct pci_dev *dev);
- void pci_msi_init(struct pci_dev *dev);
+ 	return devm_of_iomap(dev, np, index, NULL);
 -- 
 2.39.5
 
