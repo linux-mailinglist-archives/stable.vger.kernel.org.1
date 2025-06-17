@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-153997-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153999-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0FE81ADD72C
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:42:10 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 82307ADD805
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:51:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7C9FD4A036F
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:35:06 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 46A2A403745
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:34:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3CD192EA16D;
-	Tue, 17 Jun 2025 16:29:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E82182EBDCE;
+	Tue, 17 Jun 2025 16:29:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hAWW56Oj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IsPiXriS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED0492EA155;
-	Tue, 17 Jun 2025 16:29:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3DFC2EB5CF;
+	Tue, 17 Jun 2025 16:29:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750177774; cv=none; b=asf02cBIs/YEe1hT3Dk+4FBx+xGgtiVvVrQK3y3zbpS3/G1LPb+W8oiezeClT+XmqvpfwxiWl8SAYMsmBZTCcO8nKBwjGhR/COt8IxCwwEjAohNkzQmdlAfR1pWUnjPKCgMUmlw+9Y7W+KKNw4CKW7lEH8nJ8tG2iydsQK3+XUI=
+	t=1750177780; cv=none; b=DZl6Kf9C2iebAhEwyR3sjlStMtMJVUbK5v1CR3YCyowQ3eteGxXeq7mLs2XlUgBpZaMWGbF6r36xdFeHlJCGgSt8WwMyZSzmfjRBtvdfnupFdxsGCdp+woTOUlKm2Aw4pmijzHmIqny6ezsMg/jEl/PVY3h5p31U/38yzOO9Qt4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750177774; c=relaxed/simple;
-	bh=uJ0Twk80UpdM71ilQCRUNaBLIpeBP/qd4lDSyRzUrNo=;
+	s=arc-20240116; t=1750177780; c=relaxed/simple;
+	bh=P3Z+cejXi+BlI9dR0Kdom6YfuVijerW02F900iFhjao=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=h/eyD47ccIRKAUul5FpIUbBsyjGiYBqQ77Hoq0uAYJXjp7gH/g/UKHs3tvjzSgvDrlwI5adamm3A2N/9H7SLiv9iSyfnzJlPGvyeEb3bqyNeAnivwkHkl22sLLw8Z2F1XC4yhR43sTXq0JyVwwH39gColnSKH1+9U3mKJ5QGdRo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hAWW56Oj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06C80C4CEE3;
-	Tue, 17 Jun 2025 16:29:32 +0000 (UTC)
+	 MIME-Version; b=f3VPvXyCZ87bCA7pbGOaEcfG/iTA07aCzUAcnAmg/7T3DFaLlo9ejfh0qxv7oI0AFaeaCne2eM+8XbqBf0gS4+UXBLnR4gklI5H0oYkfrArhPpG7fKBdFU1HsNcy5JkgVQrmYGDCVqhaTxq8zsl77+maoBwIQk0r9oLFJ7V1j0Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IsPiXriS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6C90C4CEE3;
+	Tue, 17 Jun 2025 16:29:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750177773;
-	bh=uJ0Twk80UpdM71ilQCRUNaBLIpeBP/qd4lDSyRzUrNo=;
+	s=korg; t=1750177780;
+	bh=P3Z+cejXi+BlI9dR0Kdom6YfuVijerW02F900iFhjao=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hAWW56OjMb+g0YZeAVocJeX59nTo/lQQM68LhA3CcgjyBXldfPHIWB3WKdGzz2Trb
-	 ob1pnOAhSzhgV+5T8WKC//gqVO3NUs/HuzoJZVZP41VXXUiVK7PTtKnaV5Uut4nXgA
-	 AwXRlYH2Q4GrN0/VbYJmmIFtvQsEwhXlAe7gPpJM=
+	b=IsPiXriSu9XvgkLIyd6nsNOvPOwrI0mAwOEPFFAtXRzY6bpqsWTy6GbuFkInHirZ1
+	 s119PDF0aamqAIojNcLbuEmhLl/OLPYqiUwDFaQ+5b5Iw7NuARPkX9SRs2b9Z4wmKu
+	 s7xh2uVsQMwH7VV3tZ40A4ly1J+Grs+RU70Kot8A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Luca Weiss <luca.weiss@fairphone.com>,
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
-	Bjorn Andersson <andersson@kernel.org>,
+	Yao Zi <ziyao@disroot.org>,
+	Chukun Pan <amadeus@jmu.edu.cn>,
+	Heiko Stuebner <heiko@sntech.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 361/780] arm64: dts: qcom: sm8650: Fix domain-idle-state for CPU2
-Date: Tue, 17 Jun 2025 17:21:09 +0200
-Message-ID: <20250617152506.159122646@linuxfoundation.org>
+Subject: [PATCH 6.15 362/780] arm64: dts: rockchip: Add missing uart3 interrupt for RK3528
+Date: Tue, 17 Jun 2025 17:21:10 +0200
+Message-ID: <20250617152506.201541389@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
 References: <20250617152451.485330293@linuxfoundation.org>
@@ -67,38 +67,38 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Luca Weiss <luca.weiss@fairphone.com>
+From: Chukun Pan <amadeus@jmu.edu.cn>
 
-[ Upstream commit 9bb5ca464100e7c8f2d740148088f60e04fed8ed ]
+[ Upstream commit a37d21a9b45e47ed6bc1f94e738096c07db78a07 ]
 
-On SM8650 the CPUs 0-1 are "silver" (Cortex-A520), CPU 2-6 are "gold"
-(Cortex-A720) and CPU 7 is "gold-plus" (Cortex-X4).
+The interrupt of uart3 node on rk3528 is missing, fix it.
 
-So reference the correct "gold" idle-state for CPU core 2.
-
-Fixes: d2350377997f ("arm64: dts: qcom: add initial SM8650 dtsi")
-Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Link: https://lore.kernel.org/r/20250314-sm8650-cpu2-sleep-v1-1-31d5c7c87a5d@fairphone.com
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Fixes: 7983e6c379a9 ("arm64: dts: rockchip: Add base DT for rk3528 SoC")
+Reviewed-by: Yao Zi <ziyao@disroot.org>
+Signed-off-by: Chukun Pan <amadeus@jmu.edu.cn>
+Link: https://lore.kernel.org/r/20250401100020.944658-2-amadeus@jmu.edu.cn
+Signed-off-by: Heiko Stuebner <heiko@sntech.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/sm8650.dtsi | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm64/boot/dts/rockchip/rk3528.dtsi | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/arch/arm64/boot/dts/qcom/sm8650.dtsi b/arch/arm64/boot/dts/qcom/sm8650.dtsi
-index 36919efc888c2..bf6590e09a4c4 100644
---- a/arch/arm64/boot/dts/qcom/sm8650.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sm8650.dtsi
-@@ -460,7 +460,7 @@
- 		cpu_pd2: power-domain-cpu2 {
- 			#power-domain-cells = <0>;
- 			power-domains = <&cluster_pd>;
--			domain-idle-states = <&silver_cpu_sleep_0>;
-+			domain-idle-states = <&gold_cpu_sleep_0>;
- 		};
+diff --git a/arch/arm64/boot/dts/rockchip/rk3528.dtsi b/arch/arm64/boot/dts/rockchip/rk3528.dtsi
+index 26c3559d6a6de..7f1ffd6003f58 100644
+--- a/arch/arm64/boot/dts/rockchip/rk3528.dtsi
++++ b/arch/arm64/boot/dts/rockchip/rk3528.dtsi
+@@ -404,9 +404,10 @@
  
- 		cpu_pd3: power-domain-cpu3 {
+ 		uart3: serial@ffa08000 {
+ 			compatible = "rockchip,rk3528-uart", "snps,dw-apb-uart";
++			reg = <0x0 0xffa08000 0x0 0x100>;
+ 			clocks = <&cru SCLK_UART3>, <&cru PCLK_UART3>;
+ 			clock-names = "baudclk", "apb_pclk";
+-			reg = <0x0 0xffa08000 0x0 0x100>;
++			interrupts = <GIC_SPI 43 IRQ_TYPE_LEVEL_HIGH>;
+ 			reg-io-width = <4>;
+ 			reg-shift = <2>;
+ 			status = "disabled";
 -- 
 2.39.5
 
