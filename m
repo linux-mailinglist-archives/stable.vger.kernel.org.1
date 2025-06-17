@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-153090-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153093-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF82BADD246
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 17:40:53 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 86004ADD293
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 17:44:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 49CBA17D73F
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 15:40:48 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 072317A1A49
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 15:39:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E72862ECD2A;
-	Tue, 17 Jun 2025 15:40:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F9162ECD38;
+	Tue, 17 Jun 2025 15:40:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t1AGOB8F"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YgmFd43z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A47852E9753;
-	Tue, 17 Jun 2025 15:40:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CF1D2EB5AB;
+	Tue, 17 Jun 2025 15:40:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750174833; cv=none; b=N0sdgycOt6+cO73sgclXQ0eOapQtnd9NSnbiBH92vIvRlpiu19BeedOdoR8qwz7gHXYADu8Cq3TXtUeeQmUanO+YX34q8cQFSINPkY6cG3SIoQTCxwcocrijrSYwMo47TO5R/djS6XsnEdSmV9CQu3Sw4/YNK2e2aTqid3ja7y0=
+	t=1750174843; cv=none; b=l+6vZL80ch5nVI+Pn5zOr8wOHFVYC+IaZCsN8IJNwGBe5xLHIGukiq6T1o6UDs95AliLHT/+U5sv/kBvqCss/PLvLWe49Mv4sVE95n13uT/JgiCa/CCtQ92zhtJ+bDYzJJPvsUZfVg6GF0jmcZPgfdm0RjGn8b4lOf/iBw/k22k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750174833; c=relaxed/simple;
-	bh=ivixVKyU5Pu9o7zJHPcAEo9PbpDOiiHUM9l4W9uw8/4=;
+	s=arc-20240116; t=1750174843; c=relaxed/simple;
+	bh=uoDNEEHYTM73KYOUJla/PESt2u2slSXfBsBWl/WqA98=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XFx4tZ9E/nIMNfBj3YnMXAqcxqtoeElY4bfIDZeYHrSXCtkVHaZy12z8F73/0x0Fy/1+DiIyOFkIXeg+rw7S9dqy38+mNlgWmWUrbbmQsEtgT0l5dvGK9Nx20jvMreeMhSRS74ACTEP6nrMb41oZ/bTqlW0LBkLrVennuXQWGp4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t1AGOB8F; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1421DC4CEE7;
-	Tue, 17 Jun 2025 15:40:32 +0000 (UTC)
+	 MIME-Version; b=KL5tBbr8yYN/xQc+NQ/cFQyjz2+8owQMGsCbVOqHjJE72RLh1ZTZ7XdeUejyz8dEmnHP09MZMAjjJ62fM9iZbVQywwVtxiPzQMQsWlKYMdgBc61jPxiiDSsp8r8C7OV1FP4nagM7ZuyByvVSnOZGpXZjfpCJmxnfWNXDsoL5IqQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YgmFd43z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C84C6C4CEE3;
+	Tue, 17 Jun 2025 15:40:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750174833;
-	bh=ivixVKyU5Pu9o7zJHPcAEo9PbpDOiiHUM9l4W9uw8/4=;
+	s=korg; t=1750174843;
+	bh=uoDNEEHYTM73KYOUJla/PESt2u2slSXfBsBWl/WqA98=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=t1AGOB8FErS2VWMWgICZFRHQ+FXuJh/WMBbvFbrVmyN7JzPa/LJ+/UXp9gVR2kBMt
-	 nE08ys8bq+rNd64/dtU1NmqNT3e8wCJPQQIJZLyZ1hXsMCd+ohctCusKt3Bln/fMoL
-	 oWCYZB9dPrbLY6gM3uF4vHPauVi9HZEHztXDYCGY=
+	b=YgmFd43z3vnQAevbgWz/N9N3GbrblSzf/GyrJzRHpk6qBbEeVYKxLswSRHnwddN1g
+	 ZrcYrvWbWBQR4tGEtuGsmJVY0FpiavRGv8/jYxFxPCEgTbptcSL/En7L5H9siqDQ5B
+	 7B5JIQKw+V43GDR/D6nnK0bs1L7AwnLtE7xBM3Q0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -45,9 +45,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Nam Cao <namcao@linutronix.de>,
 	Christian Brauner <brauner@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 025/780] selftests: coredump: Properly initialize pointer
-Date: Tue, 17 Jun 2025 17:15:33 +0200
-Message-ID: <20250617152452.533004861@linuxfoundation.org>
+Subject: [PATCH 6.15 026/780] selftests: coredump: Fix test failure for slow machines
+Date: Tue, 17 Jun 2025 17:15:34 +0200
+Message-ID: <20250617152452.571479101@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
 References: <20250617152451.485330293@linuxfoundation.org>
@@ -68,45 +68,49 @@ Content-Transfer-Encoding: 8bit
 
 From: Nam Cao <namcao@linutronix.de>
 
-[ Upstream commit e194d2067c958827810a7a7282dff8773633ad8c ]
+[ Upstream commit 6f5bf9f37f06668ead446e2997f2b431db8963ce ]
 
-The buffer pointer "line" is not initialized. This pointer is passed to
-getline().
+The test waits for coredump to finish by busy-waiting for the stack_values
+file to be created. The maximum wait time is 10 seconds.
 
-It can still work if the stack is zero-initialized, because getline() can
-work with a NULL pointer as buffer.
+This doesn't work for slow machine (qemu-system-riscv64), because coredump
+takes longer.
 
-But this is obviously broken. This bug shows up while running the test on a
-riscv64 machine.
-
-Fix it by properly initializing the pointer.
+Fix it by waiting for the crashing child process to finish first.
 
 Fixes: 15858da53542 ("selftests: coredump: Add stackdump test")
 Signed-off-by: Nam Cao <namcao@linutronix.de>
-Link: https://lore.kernel.org/4fb9b6fb3e0040481bacc258c44b4aab5c4df35d.1744383419.git.namcao@linutronix.de
+Link: https://lore.kernel.org/ee657f3fc8e19657cf7aaa366552d6347728f371.1744383419.git.namcao@linutronix.de
 Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/coredump/stackdump_test.c | 2 ++
- 1 file changed, 2 insertions(+)
+ tools/testing/selftests/coredump/stackdump_test.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
 diff --git a/tools/testing/selftests/coredump/stackdump_test.c b/tools/testing/selftests/coredump/stackdump_test.c
-index 137b2364a0820..c23cf95c3f6df 100644
+index c23cf95c3f6df..9da10fb5e597c 100644
 --- a/tools/testing/selftests/coredump/stackdump_test.c
 +++ b/tools/testing/selftests/coredump/stackdump_test.c
-@@ -138,10 +138,12 @@ TEST_F(coredump, stackdump)
- 	ASSERT_NE(file, NULL);
+@@ -96,7 +96,7 @@ TEST_F(coredump, stackdump)
+ 	char *test_dir, *line;
+ 	size_t line_length;
+ 	char buf[PATH_MAX];
+-	int ret, i;
++	int ret, i, status;
+ 	FILE *file;
+ 	pid_t pid;
  
- 	/* Step 4: Make sure all stack pointer values are non-zero */
-+	line = NULL;
- 	for (i = 0; -1 != getline(&line, &line_length, file); ++i) {
- 		stack = strtoull(line, NULL, 10);
- 		ASSERT_NE(stack, 0);
- 	}
-+	free(line);
- 
- 	ASSERT_EQ(i, 1 + NUM_THREAD_SPAWN);
- 
+@@ -129,6 +129,10 @@ TEST_F(coredump, stackdump)
+ 	/*
+ 	 * Step 3: Wait for the stackdump script to write the stack pointers to the stackdump file
+ 	 */
++	waitpid(pid, &status, 0);
++	ASSERT_TRUE(WIFSIGNALED(status));
++	ASSERT_TRUE(WCOREDUMP(status));
++
+ 	for (i = 0; i < 10; ++i) {
+ 		file = fopen(STACKDUMP_FILE, "r");
+ 		if (file)
 -- 
 2.39.5
 
