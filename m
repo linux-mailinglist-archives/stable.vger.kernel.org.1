@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-153483-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-154412-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C3638ADD50B
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:16:28 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 65193ADD83C
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:53:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DFB7C3A7BBB
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:05:12 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EB20B7AE6F8
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:52:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD6E62ED175;
-	Tue, 17 Jun 2025 16:01:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01DAB235071;
+	Tue, 17 Jun 2025 16:51:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LiOigOBb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dpgUZ9oZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78AA02ECE94;
-	Tue, 17 Jun 2025 16:01:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC3EA2FA658;
+	Tue, 17 Jun 2025 16:51:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750176109; cv=none; b=lJNeFZA2GmbfneECTRak1Q4ooI3z7topL8EldUSK+m5TjkoQWxqnd1r6ZMvCV6ZjU2EMnbV5WjUP0wR9cV0MObMxR56wmHuY9yN9XbW9oV/v3DtMJKW58lJ95hSSTaIslBNK7b0RIoHNnzZ4k6SLPUJpmwqFCdatkDOqRhZgGco=
+	t=1750179111; cv=none; b=IiwwSFB2Bel6fjeumb0XC+mZgba1wWFnFdXCIF6s5M8gygDxTQPsjjFenVl+kaDsC5oc5Jz6Lv1c0QLEJy2m9pNkqAaFAgpx+4ZWIETNxUfGl5G/qox6B+TmA9qbZuPoQwkViHf6/4YG0IppgJa+c+UibkXnXdeP2jyWKTPZSHs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750176109; c=relaxed/simple;
-	bh=26j4J55XU6SuWQYd2ofRCKbKxbx1YXYiEnhj90CZLMc=;
+	s=arc-20240116; t=1750179111; c=relaxed/simple;
+	bh=0P92VuA0gmOjHEsbbbgnjP/j/C5fy3zaq7lGNE9j3Pg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Yo9LLZ0cOmyUuS/Q0jsb10ERQbfI/I/OMV0kY/Z7VgX7PHS58IWWGTKK4csZyRUxNU6ag9w7xg3zSZTV3L0nD0aCnwZz+oL8uWyE/hzihrCFu3eNld/tzCJ+csWyDCwdWX/wJ0O+8R7DsbNsv/5WI4LBWu0mdHcD9ICkC0kqTpc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LiOigOBb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EAC4FC4CEF3;
-	Tue, 17 Jun 2025 16:01:48 +0000 (UTC)
+	 MIME-Version; b=qMVhAK/QZvNjYev6ByJZO7yxqzZKdvJIK8NC4brxX7tUxVLp3MRRH04UCDxrHdSwuSZvze3V9+Se0AvK+3fn4loJt92G082tKnZDw7RcNE/Il2a6VlJbiY6QHaIo3j9q/hkanKOi44G0A65BnXX81F3nwsGfyRPtMeENvma47c8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dpgUZ9oZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D1EAC4CEE3;
+	Tue, 17 Jun 2025 16:51:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750176109;
-	bh=26j4J55XU6SuWQYd2ofRCKbKxbx1YXYiEnhj90CZLMc=;
+	s=korg; t=1750179111;
+	bh=0P92VuA0gmOjHEsbbbgnjP/j/C5fy3zaq7lGNE9j3Pg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LiOigOBbVgMRHjvr21qHW3kD3TooYX0ysq2yByzmo8Wmi90bJR19SiFEEQwB6gzns
-	 b31MMKNrRKWUHNZDeUW6EfggaBNNo64LMv9mAkEQwD0K1nZvwDhnRR+pRY1y4oErMH
-	 omFQyxKDraqpvLJlyYERx4ZQU6xkGMcgD7Gx9jCA=
+	b=dpgUZ9oZCNVfH89+g/6I4VNjy4/PCVuX99B3LbxZQQ5seuI20oM/5qwFPz19yDoNY
+	 8s8WvUEHVxatfJYVVC7Gf15iaFNSeeaqHIt2XlgCyVDBGLOcKoqC4QcVbRqMWEEM+N
+	 KJfmZ2z967GXvstoYUHvZI42PtSfq7+teLod5JNY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alok Tiwari <alok.a.tiwari@oracle.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Christian Brauner <brauner@kernel.org>,
+	Al Viro <viro@zeniv.linux.org.uk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 244/356] gve: Fix RX_BUFFERS_POSTED stat to report per-queue fill_cnt
-Date: Tue, 17 Jun 2025 17:25:59 +0200
-Message-ID: <20250617152348.030779940@linuxfoundation.org>
+Subject: [PATCH 6.15 652/780] finish_automount(): dont leak MNT_LOCKED from parent to child
+Date: Tue, 17 Jun 2025 17:26:00 +0200
+Message-ID: <20250617152518.026292035@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152338.212798615@linuxfoundation.org>
-References: <20250617152338.212798615@linuxfoundation.org>
+In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
+References: <20250617152451.485330293@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,41 +62,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alok Tiwari <alok.a.tiwari@oracle.com>
+From: Al Viro <viro@zeniv.linux.org.uk>
 
-[ Upstream commit f41a94aade120dc60322865f363cee7865f2df01 ]
+[ Upstream commit bab77c0d191e241d2d59a845c7ed68bfa6e1b257 ]
 
-Previously, the RX_BUFFERS_POSTED stat incorrectly reported the
-fill_cnt from RX queue 0 for all queues, resulting in inaccurate
-per-queue statistics.
-Fix this by correctly indexing priv->rx[idx].fill_cnt for each RX queue.
+Intention for MNT_LOCKED had always been to protect the internal
+mountpoints within a subtree that got copied across the userns boundary,
+not the mountpoint that tree got attached to - after all, it _was_
+exposed before the copying.
 
-Fixes: 24aeb56f2d38 ("gve: Add Gvnic stats AQ command and ethtool show/set-priv-flags.")
-Signed-off-by: Alok Tiwari <alok.a.tiwari@oracle.com>
-Link: https://patch.msgid.link/20250527130830.1812903-1-alok.a.tiwari@oracle.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+For roots of secondary copies that is enforced in attach_recursive_mnt() -
+MNT_LOCKED is explicitly stripped for those.  For the root of primary
+copy we are almost always guaranteed that MNT_LOCKED won't be there,
+so attach_recursive_mnt() doesn't bother.  Unfortunately, one call
+chain got overlooked - triggering e.g. NFS referral will have the
+submount inherit the public flags from parent; that's fine for such
+things as read-only, nosuid, etc., but not for MNT_LOCKED.
+
+This is particularly pointless since the mount attached by finish_automount()
+is usually expirable, which makes any protection granted by MNT_LOCKED
+null and void; just wait for a while and that mount will go away on its own.
+
+Include MNT_LOCKED into the set of flags to be ignored by do_add_mount() - it
+really is an internal flag.
+
+Reviewed-by: Christian Brauner <brauner@kernel.org>
+Fixes: 5ff9d8a65ce8 ("vfs: Lock in place mounts from more privileged users")
+Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/google/gve/gve_main.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ include/linux/mount.h | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/google/gve/gve_main.c b/drivers/net/ethernet/google/gve/gve_main.c
-index 8cd098fe88ef2..b4745d94cbbdb 100644
---- a/drivers/net/ethernet/google/gve/gve_main.c
-+++ b/drivers/net/ethernet/google/gve/gve_main.c
-@@ -1992,7 +1992,7 @@ void gve_handle_report_stats(struct gve_priv *priv)
- 			};
- 			stats[stats_idx++] = (struct stats) {
- 				.stat_name = cpu_to_be32(RX_BUFFERS_POSTED),
--				.value = cpu_to_be64(priv->rx[0].fill_cnt),
-+				.value = cpu_to_be64(priv->rx[idx].fill_cnt),
- 				.queue_id = cpu_to_be32(idx),
- 			};
- 		}
+diff --git a/include/linux/mount.h b/include/linux/mount.h
+index 6904ad33ee7a3..1a3136e53eaa0 100644
+--- a/include/linux/mount.h
++++ b/include/linux/mount.h
+@@ -65,7 +65,8 @@ enum mount_flags {
+ 	MNT_ATIME_MASK = MNT_NOATIME | MNT_NODIRATIME | MNT_RELATIME,
+ 
+ 	MNT_INTERNAL_FLAGS = MNT_SHARED | MNT_WRITE_HOLD | MNT_INTERNAL |
+-			     MNT_DOOMED | MNT_SYNC_UMOUNT | MNT_MARKED,
++			     MNT_DOOMED | MNT_SYNC_UMOUNT | MNT_MARKED |
++			     MNT_LOCKED,
+ };
+ 
+ struct vfsmount {
 -- 
 2.39.5
 
