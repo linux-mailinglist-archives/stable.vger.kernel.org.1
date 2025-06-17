@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-154452-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153544-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id CBA21ADDA52
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 19:16:45 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5EB9BADD578
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:21:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 98334189AD09
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:55:20 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C95C819E0C62
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:08:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 640832FA631;
-	Tue, 17 Jun 2025 16:53:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 241822EB5CF;
+	Tue, 17 Jun 2025 16:05:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SN3aXJfV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MC27yYeK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 211132FA622;
-	Tue, 17 Jun 2025 16:53:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDD2E2F2346;
+	Tue, 17 Jun 2025 16:05:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750179232; cv=none; b=PuVuokp+OXAmCmgVuhDhCEnbL94aoX0rOEDyT9JkAQzsktpg0IyT3O+gw6z0ivfGWs6NqStVvbT/t1muwXQHNrwdB3dFHWVgLrUMnQ+G0xvtm3rtiVzDS06nD6YHqQQQy4Vcc0Lnknu2ySs4/1kJuUaP0q7dkFGgaLCABZNtGVw=
+	t=1750176305; cv=none; b=K6MM70dWB4B6IRTXCPhODVNlKyUidpHP07nJeHQrPTrEZZgs4+/gMVIqluQ+h+9h9y3lp6qXIPhmdw/R9BOx+d8TIa3zE/m9EKhjK+sAv9PQfSSXaGCRjLzlXNRVtoLnFo3NV1TIIZ2scNY3xE40pEXvS5oWSnd3XVau3+LxQH4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750179232; c=relaxed/simple;
-	bh=kQWich6l0AU01/EUqJ4iWOZFrR6N14705iiscEuXIzU=;
+	s=arc-20240116; t=1750176305; c=relaxed/simple;
+	bh=htO05rXnm3XXqL8jUF9QjEBLdH/2DjL3qLibkSRsLnw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=r92S8qn+yJ+L/NmGm0A5Ofj4sIhD7Cf7s740KwLrokESIf6rsW6ae84hihcc6tjF/BubM3ZB9/zrfqpZ82UrlH19sMY3OhsCK3KPiA/QVVET8CScl6a/oerNtnoAGY+dAulw7rne7fT4HvLWHRNfeUkdLNIQ8FBsJsUu+0Bts94=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SN3aXJfV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 818F1C4CEE7;
-	Tue, 17 Jun 2025 16:53:51 +0000 (UTC)
+	 MIME-Version; b=u4mozw4MfFHD+ci4/h8Fzvi9dS5ez9VSUBg5bCeoZMuAO2+Khlg6U1SQjfKn7MSLwn1cHQk/7nqwhbVHyemXenvLnY2Jorf/rOjJ8ivo/HvW/noSSPYPAwGw6pDLjXEDYhVsI9Le7tlqNxS8vUx32orqmOoc9/J0y87zHZN6ky8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MC27yYeK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB1C8C4CEE3;
+	Tue, 17 Jun 2025 16:05:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750179232;
-	bh=kQWich6l0AU01/EUqJ4iWOZFrR6N14705iiscEuXIzU=;
+	s=korg; t=1750176305;
+	bh=htO05rXnm3XXqL8jUF9QjEBLdH/2DjL3qLibkSRsLnw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SN3aXJfVWvqsVUHV1mYVJoaSrGxPZxqTf3SgecaQIwKU3ec9QhNPTU7nL33+j3XzY
-	 rWfKmSUNrKfsJdh64SXnqCEIaGjdG3TcP6tEV3gHQ7/fq13CRUzw6qOjhh8jyInLdc
-	 Xv9fhCWippODVRhcb12RZPvEwqHt98lwE5cu+/pc=
+	b=MC27yYeK/2zwiuiUTVYBjkVtrMUNds3Qt2XGRfnTmqQWoS4hSY5HyhtPWVe57Udby
+	 BluQCtGTAEbAjKC/xobOlyXCS8Ij2MeTIp4M3BxB93o9lj7EubjQvxPzyvJnO6m+nQ
+	 XjEQmR2RW8U8d1vfsF3J0+DbBlwO15QasRmbGSqM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Caleb Connolly <caleb.connolly@linaro.org>,
-	Loic Poulain <loic.poulain@oss.qualcomm.com>,
-	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
+	Yafang Shao <laoar.shao@gmail.com>,
+	Shaun Brady <brady.1345@gmail.com>,
+	Florian Westphal <fw@strlen.de>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 671/780] ath10k: snoc: fix unbalanced IRQ enable in crash recovery
+Subject: [PATCH 6.6 264/356] netfilter: nf_nat: also check reverse tuple to obtain clashing entry
 Date: Tue, 17 Jun 2025 17:26:19 +0200
-Message-ID: <20250617152518.798068190@linuxfoundation.org>
+Message-ID: <20250617152348.831287944@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
-References: <20250617152451.485330293@linuxfoundation.org>
+In-Reply-To: <20250617152338.212798615@linuxfoundation.org>
+References: <20250617152338.212798615@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,51 +64,105 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Caleb Connolly <caleb.connolly@linaro.org>
+From: Florian Westphal <fw@strlen.de>
 
-[ Upstream commit 1650d32b92b01db03a1a95d69ee74fcbc34d4b00 ]
+[ Upstream commit 50d9ce9679dd50df2dc51ada717fa875bc248fad ]
 
-In ath10k_snoc_hif_stop() we skip disabling the IRQs in the crash
-recovery flow, but we still unconditionally call enable again in
-ath10k_snoc_hif_start().
+The logic added in the blamed commit was supposed to only omit nat source
+port allocation if neither the existing nor the new entry are subject to
+NAT.
 
-We can't check the ATH10K_FLAG_CRASH_FLUSH bit since it is cleared
-before hif_start() is called, so instead check the
-ATH10K_SNOC_FLAG_RECOVERY flag and skip enabling the IRQs during crash
-recovery.
+However, its not enough to lookup the conntrack based on the proposed
+tuple, we must also check the reverse direction.
 
-This fixes unbalanced IRQ enable splats that happen after recovering from
-a crash.
+Otherwise there are esoteric cases where the collision is in the reverse
+direction because that colliding connection has a port rewrite, but the
+new entry doesn't.  In this case, we only check the new entry and then
+erronously conclude that no clash exists anymore.
 
-Fixes: 0e622f67e041 ("ath10k: add support for WCN3990 firmware crash recovery")
-Signed-off-by: Caleb Connolly <caleb.connolly@linaro.org>
-Tested-by: Loic Poulain <loic.poulain@oss.qualcomm.com>
-Link: https://patch.msgid.link/20250318205043.1043148-1-caleb.connolly@linaro.org
-Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+ The existing (udp) tuple is:
+  a:p -> b:P, with nat translation to s:P, i.e. pure daddr rewrite,
+  reverse tuple in conntrack table is s:P -> a:p.
+
+When another UDP packet is sent directly to s, i.e. a:p->s:P, this is
+correctly detected as a colliding entry: tuple is taken by existing reply
+tuple in reverse direction.
+
+But the colliding conntrack is only searched for with unreversed
+direction, and we can't find such entry matching a:p->s:P.
+
+The incorrect conclusion is that the clashing entry has timed out and
+that no port address translation is required.
+
+Such conntrack will then be discarded at nf_confirm time because the
+proposed reverse direction clashes with an existing mapping in the
+conntrack table.
+
+Search for the reverse tuple too, this will then check the NAT bits of
+the colliding entry and triggers port reallocation.
+
+Followp patch extends nft_nat.sh selftest to cover this scenario.
+
+The IPS_SEQ_ADJUST change is also a bug fix:
+Instead of checking for SEQ_ADJ this tested for SEEN_REPLY and ASSURED
+by accident -- _BIT is only for use with the test_bit() API.
+
+This bug has little consequence in practice, because the sequence number
+adjustments are only useful for TCP which doesn't support clash resolution.
+
+The existing test case (conntrack_reverse_clash.sh) exercise a race
+condition path (parallel conntrack creation on different CPUs), so
+the colliding entries have neither SEEN_REPLY nor ASSURED set.
+
+Thanks to Yafang Shao and Shaun Brady for an initial investigation
+of this bug.
+
+Fixes: d8f84a9bc7c4 ("netfilter: nf_nat: don't try nat source port reallocation for reverse dir clash")
+Closes: https://bugzilla.netfilter.org/show_bug.cgi?id=1795
+Reported-by: Yafang Shao <laoar.shao@gmail.com>
+Reported-by: Shaun Brady <brady.1345@gmail.com>
+Signed-off-by: Florian Westphal <fw@strlen.de>
+Tested-by: Yafang Shao <laoar.shao@gmail.com>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath10k/snoc.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ net/netfilter/nf_nat_core.c | 12 +++++++++---
+ 1 file changed, 9 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath10k/snoc.c b/drivers/net/wireless/ath/ath10k/snoc.c
-index 866bad2db3348..65673b1aba55d 100644
---- a/drivers/net/wireless/ath/ath10k/snoc.c
-+++ b/drivers/net/wireless/ath/ath10k/snoc.c
-@@ -937,7 +937,9 @@ static int ath10k_snoc_hif_start(struct ath10k *ar)
+diff --git a/net/netfilter/nf_nat_core.c b/net/netfilter/nf_nat_core.c
+index ccca6e3848bcc..9df883d79acc9 100644
+--- a/net/netfilter/nf_nat_core.c
++++ b/net/netfilter/nf_nat_core.c
+@@ -248,7 +248,7 @@ static noinline bool
+ nf_nat_used_tuple_new(const struct nf_conntrack_tuple *tuple,
+ 		      const struct nf_conn *ignored_ct)
+ {
+-	static const unsigned long uses_nat = IPS_NAT_MASK | IPS_SEQ_ADJUST_BIT;
++	static const unsigned long uses_nat = IPS_NAT_MASK | IPS_SEQ_ADJUST;
+ 	const struct nf_conntrack_tuple_hash *thash;
+ 	const struct nf_conntrack_zone *zone;
+ 	struct nf_conn *ct;
+@@ -287,8 +287,14 @@ nf_nat_used_tuple_new(const struct nf_conntrack_tuple *tuple,
+ 	zone = nf_ct_zone(ignored_ct);
  
- 	dev_set_threaded(ar->napi_dev, true);
- 	ath10k_core_napi_enable(ar);
--	ath10k_snoc_irq_enable(ar);
-+	/* IRQs are left enabled when we restart due to a firmware crash */
-+	if (!test_bit(ATH10K_SNOC_FLAG_RECOVERY, &ar_snoc->flags))
-+		ath10k_snoc_irq_enable(ar);
- 	ath10k_snoc_rx_post(ar);
+ 	thash = nf_conntrack_find_get(net, zone, tuple);
+-	if (unlikely(!thash)) /* clashing entry went away */
+-		return false;
++	if (unlikely(!thash)) {
++		struct nf_conntrack_tuple reply;
++
++		nf_ct_invert_tuple(&reply, tuple);
++		thash = nf_conntrack_find_get(net, zone, &reply);
++		if (!thash) /* clashing entry went away */
++			return false;
++	}
  
- 	clear_bit(ATH10K_SNOC_FLAG_RECOVERY, &ar_snoc->flags);
+ 	ct = nf_ct_tuplehash_to_ctrack(thash);
+ 
 -- 
 2.39.5
 
