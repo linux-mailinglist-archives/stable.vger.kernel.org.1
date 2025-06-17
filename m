@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-153580-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153584-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 76185ADD547
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:19:10 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 58DFEADD528
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:17:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CEDA940749C
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:09:52 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3F87E18947D1
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:10:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A71E62264A5;
-	Tue, 17 Jun 2025 16:07:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0658E2DFF37;
+	Tue, 17 Jun 2025 16:07:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vrJi+KTj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z3sVBWYp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 634BD2F2365;
-	Tue, 17 Jun 2025 16:07:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B47A22CCC5;
+	Tue, 17 Jun 2025 16:07:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750176421; cv=none; b=Xga1a009ntbf9eZnI+ZdxOObSP/dywIULrfypnR7MDC4sZjvdIpccjlYTYkSzwyJZQ4Wujtrxq/3QKOgF7xtnezoe5D26hthN+tJrvq/qYLWD8Y7Qe/xIgjw25d9tSaewn/9vCg3S2WL3JaxPtiEO4UUS3a9Ky65xpVI/01EDAQ=
+	t=1750176433; cv=none; b=FFcVudARmr12uRdchctbB+A0Zgfz1MFY5VtCFFTqrwZxN8XY6oGOB6S0I/KUxDJskY7od7NIpEHMTF3K66GskKsksWq4PA1ovGe0ytn1eZq2bxZzNJYqXGYetvjleTaCGPSqRJmu+p/XIrh5LK6/ecGIgXAGO8525QhabvUo7Z4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750176421; c=relaxed/simple;
-	bh=7pLm6KcLNN74UMme9LvnmqkTUbA4CLyv51Jst+d+sNg=;
+	s=arc-20240116; t=1750176433; c=relaxed/simple;
+	bh=z3k1bQbB8hBiJ9mV3JALf79PHo72WZu3Ve5Tb95EEZQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cIr63ZXhejGOFvUUfMruPwg/a4Xe1zLlLasxAlDjRtdkDNfwevSnLwzHH0kbZvVd7YZcyQMMUPlozuZwA3YPxgb3VyXb/RPhn3kZv/5FbMzqjVOPSdxQSRfJ4lHwiF7bN7j4T6s0ll1wSka0kpFS9BpE02auk2uuwxMJwWABbBY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vrJi+KTj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7D6EC4CEE3;
-	Tue, 17 Jun 2025 16:07:00 +0000 (UTC)
+	 MIME-Version; b=dZl5gazVJIYAu20CGYziEKSw4i8TkbVwQwXBKTWqYVS/yi/WjYSVdAWDOu7Q1GnsNOSRyrOQgJtB1aYRA89RNOtt2Cfx3zxwtXoOsm5xmd0YUAQl3FVXNs8Ji16tT7Y5Xt94AGo/v9K52xglmlEbkPsscMQDiGX9SWONTdE86Qs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z3sVBWYp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19E25C4CEE3;
+	Tue, 17 Jun 2025 16:07:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750176421;
-	bh=7pLm6KcLNN74UMme9LvnmqkTUbA4CLyv51Jst+d+sNg=;
+	s=korg; t=1750176433;
+	bh=z3k1bQbB8hBiJ9mV3JALf79PHo72WZu3Ve5Tb95EEZQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vrJi+KTjFUslNh4OIGRyNQmlbTIt2uoN/JXSER5Kpbs36k/fisxxpp+Ir+q9u1z91
-	 +/jZfZOz02GsZkKJY/tT3dWYvRbjmmZHf8WiLVkXnd3ntq3EPwdQtlwp/t4EgleDfq
-	 Bp4nKUI1HIjvYkCiOF7yWXxbOi8ekT2iW0jZS134=
+	b=Z3sVBWYpVgluTpNHTjGAytZmqqztjiMlOr6vueGQ0UxFHqgdP7+rmFdbRCm37GTRG
+	 zDvqyHot0SvZLE0oX6d80DLl1mfgJ3Kyoop0UQndSrxmKhBEOsLsx3UBSUh81HP+fu
+	 MIngkcPbeflfwtTfE4j0Bg/16uFt1XA1stq+l3qQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stephan Gerhold <stephan.gerhold@linaro.org>,
+	Varadarajan Narayanan <quic_varada@quicinc.com>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
 	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 228/512] arm64: dts: qcom: sc8280xp-x13s: Drop duplicate DMIC supplies
-Date: Tue, 17 Jun 2025 17:23:14 +0200
-Message-ID: <20250617152428.869863943@linuxfoundation.org>
+Subject: [PATCH 6.12 229/512] arm64: dts: qcom: ipq9574: Fix USB vdd info
+Date: Tue, 17 Jun 2025 17:23:15 +0200
+Message-ID: <20250617152428.910870586@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
 References: <20250617152419.512865572@linuxfoundation.org>
@@ -66,51 +67,63 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Stephan Gerhold <stephan.gerhold@linaro.org>
+From: Varadarajan Narayanan <quic_varada@quicinc.com>
 
-[ Upstream commit a2e617f4e6981aa514a569e927f90b0d39bb31b2 ]
+[ Upstream commit 4f4c905e6a2a4e884f4e9b7326c94fac3500e0f9 ]
 
-The WCD938x codec provides two controls for each of the MIC_BIASn outputs:
+USB phys in ipq9574 use the 'L5' regulator. The commit ec4f047679d5
+("arm64: dts: qcom: ipq9574: Enable USB") incorrectly specified it as
+'L2'. Because of this when the phy module turns off/on its regulators,
+the wrong regulator is turned off/on resulting in 2 issues, namely the
+correct regulator related to the USB phy is not turned off/on and the
+module powered by the incorrect regulator is affected.
 
- - "MIC BIASn" enables an internal regulator to generate the output
-   with a configurable voltage (qcom,micbiasN-microvolt).
-
- - "VA MIC BIASn" enables "pull-up mode" that bypasses the internal
-   regulator and directly outputs fixed 1.8V from the VDD_PX pin.
-   This is intended for low-power VA (voice activation) use cases.
-
-The audio-routing setup for the ThinkPad X13s currently specifies both
-as power supplies for the DMICs, but only one of them can be active
-at the same time. In practice, only the internal regulator is used
-with the current setup because the driver prefers it over pull-up mode.
-
-Make this more clear by dropping the redundant routes to the pull-up
-"VA MIC BIASn" supply. There is no functional difference except that we
-skip briefly switching to pull-up mode when shutting down the microphone.
-
-Fixes: 2e498f35c385 ("arm64: dts: qcom: sc8280xp-x13s: fix va dmic dai links and routing")
-Signed-off-by: Stephan Gerhold <stephan.gerhold@linaro.org>
-Link: https://lore.kernel.org/r/20241203-x1e80100-va-mic-bias-v1-1-0dfd4d9b492c@linaro.org
+Fixes: ec4f047679d5 ("arm64: dts: qcom: ipq9574: Enable USB")
+Signed-off-by: Varadarajan Narayanan <quic_varada@quicinc.com>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Link: https://lore.kernel.org/r/20250207073545.1768990-2-quic_varada@quicinc.com
 Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/sc8280xp-lenovo-thinkpad-x13s.dts | 3 ---
- 1 file changed, 3 deletions(-)
+ arch/arm64/boot/dts/qcom/ipq9574-rdp-common.dtsi | 11 +++++++++--
+ 1 file changed, 9 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/qcom/sc8280xp-lenovo-thinkpad-x13s.dts b/arch/arm64/boot/dts/qcom/sc8280xp-lenovo-thinkpad-x13s.dts
-index 6a28cab971891..8e5951da5920d 100644
---- a/arch/arm64/boot/dts/qcom/sc8280xp-lenovo-thinkpad-x13s.dts
-+++ b/arch/arm64/boot/dts/qcom/sc8280xp-lenovo-thinkpad-x13s.dts
-@@ -1131,9 +1131,6 @@
- 		"VA DMIC0", "MIC BIAS1",
- 		"VA DMIC1", "MIC BIAS1",
- 		"VA DMIC2", "MIC BIAS3",
--		"VA DMIC0", "VA MIC BIAS1",
--		"VA DMIC1", "VA MIC BIAS1",
--		"VA DMIC2", "VA MIC BIAS3",
- 		"TX SWR_ADC1", "ADC2_OUTPUT";
+diff --git a/arch/arm64/boot/dts/qcom/ipq9574-rdp-common.dtsi b/arch/arm64/boot/dts/qcom/ipq9574-rdp-common.dtsi
+index 91e104b0f8653..a5294a42c287a 100644
+--- a/arch/arm64/boot/dts/qcom/ipq9574-rdp-common.dtsi
++++ b/arch/arm64/boot/dts/qcom/ipq9574-rdp-common.dtsi
+@@ -111,6 +111,13 @@
+ 			regulator-always-on;
+ 			regulator-boot-on;
+ 		};
++
++		mp5496_l5: l5 {
++			regulator-min-microvolt = <1800000>;
++			regulator-max-microvolt = <1800000>;
++			regulator-always-on;
++			regulator-boot-on;
++		};
+ 	};
+ };
  
- 	wcd-playback-dai-link {
+@@ -146,7 +153,7 @@
+ };
+ 
+ &usb_0_qmpphy {
+-	vdda-pll-supply = <&mp5496_l2>;
++	vdda-pll-supply = <&mp5496_l5>;
+ 	vdda-phy-supply = <&regulator_fixed_0p925>;
+ 
+ 	status = "okay";
+@@ -154,7 +161,7 @@
+ 
+ &usb_0_qusbphy {
+ 	vdd-supply = <&regulator_fixed_0p925>;
+-	vdda-pll-supply = <&mp5496_l2>;
++	vdda-pll-supply = <&mp5496_l5>;
+ 	vdda-phy-dpdm-supply = <&regulator_fixed_3p3>;
+ 
+ 	status = "okay";
 -- 
 2.39.5
 
