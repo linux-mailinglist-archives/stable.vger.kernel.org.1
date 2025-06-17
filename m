@@ -1,55 +1,121 @@
-Return-Path: <stable+bounces-154499-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153642-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 750F1ADD9F7
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 19:11:33 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B945ADD552
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:19:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ABA4E5A5E8E
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:56:23 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BC42D7AFC63
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:14:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8B2E2FA633;
-	Tue, 17 Jun 2025 16:56:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 051261F37A1;
+	Tue, 17 Jun 2025 16:10:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Nzz77YuR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IwLqG/NW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 731A62FA631;
-	Tue, 17 Jun 2025 16:56:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B20522DFF29;
+	Tue, 17 Jun 2025 16:10:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750179404; cv=none; b=rjWkcCl80hozI1W7fqKAjUcabbctzyqLLLt4ZlMLvSLYOsP2g12qc3RyxRAHyiwKvvScCS70wLqvQM+PKB9affT/ZjEYdj5o9eIRpDMajeua3UhB4YHZNkkPkgG1+V8dNjWZ+loWcrplUbkoIWPbXH7K8ByMYPU6xYevJTS3eOI=
+	t=1750176620; cv=none; b=ljdaWyJ91CO29iGZArngxbuIOHk9gzQfvEDJC+d9HAbpfuBFyA6lG558Gizn8m3zG9dVxsgZPNk88jqSg50LUOXbRm2A0qFTBazxtD1noRt19DGxZf04404sFuUQF2ZPKzy/chomIZrMUOUZUxdeaMhXKyMJbUo7JONpYTnz3WU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750179404; c=relaxed/simple;
-	bh=u32/Iu1jpuA2MzPgatz47TUqBkGryiCnss7x37vmX60=;
+	s=arc-20240116; t=1750176620; c=relaxed/simple;
+	bh=o9Z5LHqsEqcGWoO/9fXe5jm6uC8roHd1wCjHF6ipqSw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=U9qo59mf0CbtxDY6jxUko4bZLM9qMU0hYtN0cM86zAXtLiO6L19wrnF2mk2juYbUGj29u1BcmppqGKehBPz6mHVl62LXwhYHgAII3wSVoasuiaODakDTc1Eh300QOstlyZsWplMhObv7DAZ1BICQKkApmiAXuJpgPZr0vCYCdz8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Nzz77YuR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EEE32C4CEE7;
-	Tue, 17 Jun 2025 16:56:43 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Pv8FLotEu2lBIrrUb/MMGQzZzd+Sqayks4Tn4fxUtICzI4fYShCR7iroKSmZIauV/eyBEnB2JWes0fs7KGAzzD0/UIyuikK2RLD5ZUjRLPkOnHyphF1FW/iShbRH8vVIKaCspvweb9iMoHrXRcJdYmrtNQ/C9mJNxEMYIktzhV0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IwLqG/NW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41EE7C4CEE3;
+	Tue, 17 Jun 2025 16:10:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750179404;
-	bh=u32/Iu1jpuA2MzPgatz47TUqBkGryiCnss7x37vmX60=;
+	s=korg; t=1750176620;
+	bh=o9Z5LHqsEqcGWoO/9fXe5jm6uC8roHd1wCjHF6ipqSw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Nzz77YuRkDl8dLM6m01ZVee+dIFJJfdcWAvUodE5+Ia7MXFYFSRdAd/pfUC5Je9vf
-	 ExD8TmZTkv73uss2Xg/EG4LMYeKA4QKMbA992xb1UsvQUa7x5FTQj/+ZHUj3obnb+q
-	 +TomhC7UWtvZhxHmjHaQXHlCv8ui2rBu27YlkxNA=
+	b=IwLqG/NWwW+CiHRjPylG4kxunBQ46cvmsFDMXsbbtlvowu3ECx22AR3lqhLj10V5P
+	 XXlEoM6ScIKDuDTZ4r7nla+KtdnKtUZ/52BwPRhdSUn6cqe5TQxZZWxjoUsGZdJyCQ
+	 IFNtse30YoI/D3DzE5a/ZHY11tlYSpQsSmaGiT08=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Jeff Johnson <quic_jjohnson@quicinc.com>,
+	Easwar Hariharan <eahariha@linux.microsoft.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	Anna-Maria Behnsen <anna-maria@linutronix.de>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Christian Borntraeger <borntraeger@linux.ibm.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Daniel Mack <daniel@zonque.org>,
+	David Airlie <airlied@gmail.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Dick Kennedy <dick.kennedy@broadcom.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Haojian Zhuang <haojian.zhuang@gmail.com>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Ilya Dryomov <idryomov@gmail.com>,
+	Jack Wang <jinpu.wang@cloud.ionos.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	James Bottomley <James.Bottomley@HansenPartnership.com>,
+	James Smart <james.smart@broadcom.com>,
+	Jaroslav Kysela <perex@perex.cz>,
+	Jeff Johnson <jjohnson@kernel.org>,
+	Jens Axboe <axboe@kernel.dk>,
+	Jeroen de Borst <jeroendb@google.com>,
+	Jiri Kosina <jikos@kernel.org>,
+	Joe Lawrence <joe.lawrence@redhat.com>,
+	Johan Hedberg <johan.hedberg@gmail.com>,
+	Josh Poimboeuf <jpoimboe@kernel.org>,
+	Jozsef Kadlecsik <kadlec@netfilter.org>,
+	Julia Lawall <julia.lawall@inria.fr>,
+	Kalle Valo <kvalo@kernel.org>,
+	Louis Peens <louis.peens@corigine.com>,
+	Lucas De Marchi <lucas.demarchi@intel.com>,
+	Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Marcel Holtmann <marcel@holtmann.org>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Miroslav Benes <mbenes@suse.cz>,
+	Naveen N Rao <naveen@kernel.org>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Nicolas Palix <nicolas.palix@imag.fr>,
+	Oded Gabbay <ogabbay@kernel.org>,
+	Ofir Bitton <obitton@habana.ai>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Petr Mladek <pmladek@suse.com>,
+	Praveen Kaligineedi <pkaligineedi@google.com>,
+	Ray Jui <rjui@broadcom.com>,
+	Robert Jarzmik <robert.jarzmik@free.fr>,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>,
+	=?UTF-8?q?Roger=20Pau=20Monn=C3=A9?= <roger.pau@citrix.com>,
+	Russell King <linux@armlinux.org.uk>,
+	Scott Branden <sbranden@broadcom.com>,
+	Shailend Chand <shailend@google.com>,
+	Simona Vetter <simona@ffwll.ch>,
+	Simon Horman <horms@kernel.org>,
+	Sven Schnelle <svens@linux.ibm.com>,
+	Takashi Iwai <tiwai@suse.com>,
+	=?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	Vasily Gorbik <gor@linux.ibm.com>,
+	Xiubo Li <xiubli@redhat.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 705/780] Bluetooth: Fix NULL pointer deference on eir_get_service_data
+Subject: [PATCH 6.6 298/356] wifi: ath11k: convert timeouts to secs_to_jiffies()
 Date: Tue, 17 Jun 2025 17:26:53 +0200
-Message-ID: <20250617152520.206360844@linuxfoundation.org>
+Message-ID: <20250617152350.164504822@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
-References: <20250617152451.485330293@linuxfoundation.org>
+In-Reply-To: <20250617152338.212798615@linuxfoundation.org>
+References: <20250617152338.212798615@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,54 +125,122 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+From: Easwar Hariharan <eahariha@linux.microsoft.com>
 
-[ Upstream commit 20a2aa01f5aeb6daad9aeaa7c33dd512c58d81eb ]
+[ Upstream commit b29425972c5234a59b6fb634125420ed74266377 ]
 
-The len parameter is considered optional so it can be NULL so it cannot
-be used for skipping to next entry of EIR_SERVICE_DATA.
+Commit b35108a51cf7 ("jiffies: Define secs_to_jiffies()") introduced
+secs_to_jiffies().  As the value here is a multiple of 1000, use
+secs_to_jiffies() instead of msecs_to_jiffies to avoid the multiplication.
 
-Fixes: 8f9ae5b3ae80 ("Bluetooth: eir: Add helpers for managing service data")
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+This is converted using scripts/coccinelle/misc/secs_to_jiffies.cocci with
+the following Coccinelle rules:
+
+@@ constant C; @@
+
+- msecs_to_jiffies(C * 1000)
++ secs_to_jiffies(C)
+
+@@ constant C; @@
+
+- msecs_to_jiffies(C * MSEC_PER_SEC)
++ secs_to_jiffies(C)
+
+Link: https://lkml.kernel.org/r/20241210-converge-secs-to-jiffies-v3-14-ddfefd7e9f2a@linux.microsoft.com
+Acked-by: Jeff Johnson <quic_jjohnson@quicinc.com>
+Signed-off-by: Easwar Hariharan <eahariha@linux.microsoft.com>
+Cc: Alexander Gordeev <agordeev@linux.ibm.com>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>
+Cc: Anna-Maria Behnsen <anna-maria@linutronix.de>
+Cc: Catalin Marinas <catalin.marinas@arm.com>
+Cc: Christian Borntraeger <borntraeger@linux.ibm.com>
+Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
+Cc: Daniel Mack <daniel@zonque.org>
+Cc: David Airlie <airlied@gmail.com>
+Cc: David S. Miller <davem@davemloft.net>
+Cc: Dick Kennedy <dick.kennedy@broadcom.com>
+Cc: Eric Dumazet <edumazet@google.com>
+Cc: Florian Fainelli <florian.fainelli@broadcom.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Haojian Zhuang <haojian.zhuang@gmail.com>
+Cc: Heiko Carstens <hca@linux.ibm.com>
+Cc: Ilya Dryomov <idryomov@gmail.com>
+Cc: Jack Wang <jinpu.wang@cloud.ionos.com>
+Cc: Jakub Kicinski <kuba@kernel.org>
+Cc: James Bottomley <James.Bottomley@HansenPartnership.com>
+Cc: James Smart <james.smart@broadcom.com>
+Cc: Jaroslav Kysela <perex@perex.cz>
+Cc: Jeff Johnson <jjohnson@kernel.org>
+Cc: Jens Axboe <axboe@kernel.dk>
+Cc: Jeroen de Borst <jeroendb@google.com>
+Cc: Jiri Kosina <jikos@kernel.org>
+Cc: Joe Lawrence <joe.lawrence@redhat.com>
+Cc: Johan Hedberg <johan.hedberg@gmail.com>
+Cc: Josh Poimboeuf <jpoimboe@kernel.org>
+Cc: Jozsef Kadlecsik <kadlec@netfilter.org>
+Cc: Julia Lawall <julia.lawall@inria.fr>
+Cc: Kalle Valo <kvalo@kernel.org>
+Cc: Louis Peens <louis.peens@corigine.com>
+Cc: Lucas De Marchi <lucas.demarchi@intel.com>
+Cc: Luiz Augusto von Dentz <luiz.dentz@gmail.com>
+Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
+Cc: Madhavan Srinivasan <maddy@linux.ibm.com>
+Cc: Marcel Holtmann <marcel@holtmann.org>
+Cc: Martin K. Petersen <martin.petersen@oracle.com>
+Cc: Maxime Ripard <mripard@kernel.org>
+Cc: Michael Ellerman <mpe@ellerman.id.au>
+Cc: Miroslav Benes <mbenes@suse.cz>
+Cc: Naveen N Rao <naveen@kernel.org>
+Cc: Nicholas Piggin <npiggin@gmail.com>
+Cc: Nicolas Palix <nicolas.palix@imag.fr>
+Cc: Oded Gabbay <ogabbay@kernel.org>
+Cc: Ofir Bitton <obitton@habana.ai>
+Cc: Pablo Neira Ayuso <pablo@netfilter.org>
+Cc: Paolo Abeni <pabeni@redhat.com>
+Cc: Petr Mladek <pmladek@suse.com>
+Cc: Praveen Kaligineedi <pkaligineedi@google.com>
+Cc: Ray Jui <rjui@broadcom.com>
+Cc: Robert Jarzmik <robert.jarzmik@free.fr>
+Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Cc: Roger Pau Monné <roger.pau@citrix.com>
+Cc: Russell King <linux@armlinux.org.uk>
+Cc: Scott Branden <sbranden@broadcom.com>
+Cc: Shailend Chand <shailend@google.com>
+Cc: Simona Vetter <simona@ffwll.ch>
+Cc: Simon Horman <horms@kernel.org>
+Cc: Sven Schnelle <svens@linux.ibm.com>
+Cc: Takashi Iwai <tiwai@suse.com>
+Cc: Thomas Hellström <thomas.hellstrom@linux.intel.com>
+Cc: Thomas Zimmermann <tzimmermann@suse.de>
+Cc: Vasily Gorbik <gor@linux.ibm.com>
+Cc: Xiubo Li <xiubli@redhat.com>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Stable-dep-of: 9f6e82d11bb9 ("wifi: ath11k: avoid burning CPU in ath11k_debugfs_fw_stats_request()")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bluetooth/eir.c | 10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
+ drivers/net/wireless/ath/ath11k/debugfs.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/bluetooth/eir.c b/net/bluetooth/eir.c
-index 1bc51e2b05a34..3e1713673ecc9 100644
---- a/net/bluetooth/eir.c
-+++ b/net/bluetooth/eir.c
-@@ -366,17 +366,19 @@ u8 eir_create_scan_rsp(struct hci_dev *hdev, u8 instance, u8 *ptr)
+diff --git a/drivers/net/wireless/ath/ath11k/debugfs.c b/drivers/net/wireless/ath/ath11k/debugfs.c
+index 34aa04d27a1d7..a8bd944f76d92 100644
+--- a/drivers/net/wireless/ath/ath11k/debugfs.c
++++ b/drivers/net/wireless/ath/ath11k/debugfs.c
+@@ -178,7 +178,7 @@ static int ath11k_debugfs_fw_stats_request(struct ath11k *ar,
+ 	 * received 'update stats' event, we keep a 3 seconds timeout in case,
+ 	 * fw_stats_done is not marked yet
+ 	 */
+-	timeout = jiffies + msecs_to_jiffies(3 * 1000);
++	timeout = jiffies + secs_to_jiffies(3);
  
- void *eir_get_service_data(u8 *eir, size_t eir_len, u16 uuid, size_t *len)
- {
--	while ((eir = eir_get_data(eir, eir_len, EIR_SERVICE_DATA, len))) {
-+	size_t dlen;
-+
-+	while ((eir = eir_get_data(eir, eir_len, EIR_SERVICE_DATA, &dlen))) {
- 		u16 value = get_unaligned_le16(eir);
+ 	ath11k_debugfs_fw_stats_reset(ar);
  
- 		if (uuid == value) {
- 			if (len)
--				*len -= 2;
-+				*len = dlen - 2;
- 			return &eir[2];
- 		}
- 
--		eir += *len;
--		eir_len -= *len;
-+		eir += dlen;
-+		eir_len -= dlen;
- 	}
- 
- 	return NULL;
 -- 
 2.39.5
 
