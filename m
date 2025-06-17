@@ -1,64 +1,57 @@
-Return-Path: <stable+bounces-154123-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153385-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 974D4ADD956
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 19:05:08 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 82D78ADD440
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:08:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7A91C4A328D
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:42:11 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 65D5D1946330
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:00:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C9F42E9738;
-	Tue, 17 Jun 2025 16:36:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01B152F237E;
+	Tue, 17 Jun 2025 15:56:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A4yVex8c"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rjGj6dnR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5834D1DF271;
-	Tue, 17 Jun 2025 16:36:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFC1B2F2375;
+	Tue, 17 Jun 2025 15:56:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750178174; cv=none; b=cWWop3mE7C4ALIwzsawOc8LEdq5ZY8r0iP+boTUPkm1RQeLeSQBLmwg/oAqLGagj+w5440f/jf/3v44oXOybXQoIsDc8d9+YJl3eRSeAQxymPofxQHKbYefjDLEke1Rnfq6hKDM2vP679t2fu0tonJs7Wr8z3nCioRHW4dK5RRk=
+	t=1750175786; cv=none; b=c8uBbabvyKBkYvGFPfU7j1LplENkYcx/uKpYRWkb4ARgk9vBdnzi2L3l9kqbzvDjW46NbM6z8qFx98YpX3XHhRkEYDC3ZsRcT4rXLhsp1D5l3TxzHHm5yypyMzqzgYhQ+i0+t3O3c7a6IgHwmHLf1in/miKJ8eRMjglEQCwosVQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750178174; c=relaxed/simple;
-	bh=l4n9LwSjZGaJt291lJrXaLqnYNZquCZ1uWlrNRKBbqA=;
+	s=arc-20240116; t=1750175786; c=relaxed/simple;
+	bh=0NB/lMfDDUk62CgWWz2lS3qTttfZbb3w9bwojLTnxGg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WnMWSeHceVIL2UMJKuwV8+xf6Vk9teXcRtKQdtfHZDV2ZuhkQcHfMMGLEBE5DX6I568nOUw7zGZaznKxpA8N39CHl0y61AZ2qW6hoYpauIpggtj4BSAHGMjpGHRzx0TqMgBqQV6a62PIfSpLW37VgP5NoYwUQV7flaIR8OYnHSs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A4yVex8c; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99139C4CEE7;
-	Tue, 17 Jun 2025 16:36:13 +0000 (UTC)
+	 MIME-Version; b=ir4oCdSTFZNLinVBGAXqhn5f/2/eKnFVS5NixeHKQSA1ln3MZrPH/6Afv7+ZeiPa6HHZPBtiZCkOCSnP53ubP7H5KUSpmpFqd1NRxc9D9lBqbDLxAd79PhTEslfJz1HdsS8c+0YzQcHvyJhO86beMGzErazyfaAcgwIpBYZZO8M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rjGj6dnR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D58AC4CEE3;
+	Tue, 17 Jun 2025 15:56:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750178174;
-	bh=l4n9LwSjZGaJt291lJrXaLqnYNZquCZ1uWlrNRKBbqA=;
+	s=korg; t=1750175786;
+	bh=0NB/lMfDDUk62CgWWz2lS3qTttfZbb3w9bwojLTnxGg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=A4yVex8cgEEkRy8iLQx9FLWICPY/WsvVWVoSHyjLIj+LkbdBBB2ZhxET2KsIpkWta
-	 Dflo5ECPDc8BG/4uK7J1WYDwnn1ZukZfkmhUEtmYE6SkyG06BKzh/+h+7EJw+/DZwb
-	 l7Wb6tc6rFE3ROcr1OFDHrX4GP8CFPTBEz0l/9Kw=
+	b=rjGj6dnR52AzvCeYiUK6D5aCgcabqQi/Y+q9G64iDVcC75xTkK0l3/LTc4hRRH0QK
+	 c/8/oR5r1rO538UsGIEg8PyUNLx1byx6z0gwYWb8dX1BL6q60Co0eZT5863NWS/cDy
+	 XDi/UFkjUPSBter7UBPaF7+QreNgdaNqk4LkiC6I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ingo Molnar <mingo@kernel.org>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Dmitriy Vyukov <dvyukov@google.com>,
-	Ian Rogers <irogers@google.com>,
-	James Clark <james.clark@linaro.org>,
-	Jiri Olsa <jolsa@kernel.org>,
-	Kan Liang <kan.liang@linux.intel.com>,
-	Namhyung Kim <namhyung@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Arnaldo Carvalho de Melo <acme@redhat.com>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Stephen Boyd <sboyd@kernel.org>,
+	"Rob Herring (Arm)" <robh@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 420/780] tools build: Dont set libunwind as available if test-all.c build succeeds
-Date: Tue, 17 Jun 2025 17:22:08 +0200
-Message-ID: <20250617152508.576153672@linuxfoundation.org>
+Subject: [PATCH 6.12 163/512] of: unittest: Unlock on error in unittest_data_add()
+Date: Tue, 17 Jun 2025 17:22:09 +0200
+Message-ID: <20250617152426.216668335@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
-References: <20250617152451.485330293@linuxfoundation.org>
+In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
+References: <20250617152419.512865572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,113 +63,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnaldo Carvalho de Melo <acme@redhat.com>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-[ Upstream commit 6559b83e4e71ba77461c8d6e6af7b89693c8e677 ]
+[ Upstream commit 493e6cb63a21e9f009dc4c209fd311f2bb777656 ]
 
-The tools/build/feature/test-all.c file tries to detect the expected,
-most common set of libraries/features we expect to have available to
-build perf with.
+The of_overlay_mutex_unlock() was accidentally deleted if "of_root" is
+NULL.  Change this to a goto unlock.
 
-At some point libunwind was deemed not to be part of that set of
-libries, but the patches making it to be opt-in ended up forgetting some
-details, fix one more.
-
-Testing it:
-
-  $ rm -rf /tmp/build/$(basename $PWD)/ ; mkdir -p /tmp/build/$(basename $PWD)/
-  $ rpm -q libunwind-devel
-  libunwind-devel-1.8.0-3.fc40.x86_64
-  $ make -k LIBUNWIND=1 CORESIGHT=1 O=/tmp/build/$(basename $PWD)/ -C tools/perf install-bin |& grep unwind && ldd ~/bin/perf | grep unwind
-  ...                               libunwind: [ on  ]
-    CC      /tmp/build/perf-tools-next/arch/x86/tests/dwarf-unwind.o
-    CC      /tmp/build/perf-tools-next/arch/x86/util/unwind-libunwind.o
-    CC      /tmp/build/perf-tools-next/util/arm64-frame-pointer-unwind-support.o
-    CC      /tmp/build/perf-tools-next/tests/dwarf-unwind.o
-    CC      /tmp/build/perf-tools-next/util/unwind-libunwind-local.o
-    CC      /tmp/build/perf-tools-next/util/unwind-libunwind.o
-	  libunwind-x86_64.so.8 => /lib64/libunwind-x86_64.so.8 (0x00007f615a549000)
-	  libunwind.so.8 => /lib64/libunwind.so.8 (0x00007f615a52f000)
-  $ sudo rpm -e libunwind-devel
-  $ rm -rf /tmp/build/$(basename $PWD)/ ; mkdir -p /tmp/build/$(basename $PWD)/
-  $ make -k LIBUNWIND=1 CORESIGHT=1 O=/tmp/build/$(basename $PWD)/ -C tools/perf install-bin |& grep unwind && ldd ~/bin/perf | grep unwind
-  Makefile.config:653: No libunwind found. Please install libunwind-dev[el] >= 1.1 and/or set LIBUNWIND_DIR
-  ...                               libunwind: [ OFF ]
-    CC      /tmp/build/perf-tools-next/arch/x86/tests/dwarf-unwind.o
-    CC      /tmp/build/perf-tools-next/arch/x86/util/unwind-libdw.o
-    CC      /tmp/build/perf-tools-next/util/arm64-frame-pointer-unwind-support.o
-    CC      /tmp/build/perf-tools-next/tests/dwarf-unwind.o
-    CC      /tmp/build/perf-tools-next/util/unwind-libdw.o
-  $
-
-Should be in a separate patch, but tired now, so also adding a message
-about the need to use LIBUNWIND=1 in the output when its not available,
-so done here as well.
-
-So, now when the devel files are not available we get:
-
-  $ make -k LIBUNWIND=1 CORESIGHT=1 O=/tmp/build/$(basename $PWD)/ -C tools/perf install-bin |& grep unwind && ldd ~/bin/perf | grep unwind
-  Makefile.config:653: No libunwind found. Please install libunwind-dev[el] >= 1.1 and/or set LIBUNWIND_DIR and set LIBUNWIND=1 in the make command line as it is opt-in now
-  ...                               libunwind: [ OFF ]
-  $
-
-Fixes: 13e17c9ff49119aa ("perf build: Make libunwind opt-in rather than opt-out")
-Reported-by: Ingo Molnar <mingo@kernel.org>
-Tested-by: Ingo Molnar <mingo@kernel.org>
-Cc: Adrian Hunter <adrian.hunter@intel.com>
-Cc: Dmitriy Vyukov <dvyukov@google.com>
-Cc: Ian Rogers <irogers@google.com>
-Cc: James Clark <james.clark@linaro.org>
-Cc: Jiri Olsa <jolsa@kernel.org>
-Cc: Kan Liang <kan.liang@linux.intel.com>
-Cc: Namhyung Kim <namhyung@kernel.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Link: https://lore.kernel.org/r/Z_AnsW9oJzFbhIFC@x1
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Fixes: d1eabd218ede ("of: unittest: treat missing of_root as error instead of fixing up")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Reviewed-by: Stephen Boyd <sboyd@kernel.org>
+Link: https://lore.kernel.org/r/aBHZ1DvXiBcZkWmk@stanley.mountain
+Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/build/Makefile.feature | 1 -
- tools/perf/Makefile.config   | 4 +++-
- 2 files changed, 3 insertions(+), 2 deletions(-)
+ drivers/of/unittest.c | 10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
 
-diff --git a/tools/build/Makefile.feature b/tools/build/Makefile.feature
-index 1f44ca677ad3d..48e3f124b98ac 100644
---- a/tools/build/Makefile.feature
-+++ b/tools/build/Makefile.feature
-@@ -87,7 +87,6 @@ FEATURE_TESTS_BASIC :=                  \
-         libtracefs                      \
-         libcpupower                     \
-         libcrypto                       \
--        libunwind                       \
-         pthread-attr-setaffinity-np     \
-         pthread-barrier     		\
-         reallocarray                    \
-diff --git a/tools/perf/Makefile.config b/tools/perf/Makefile.config
-index b7769a22fe1af..e0c20a5c19cfe 100644
---- a/tools/perf/Makefile.config
-+++ b/tools/perf/Makefile.config
-@@ -625,6 +625,8 @@ endif
- ifndef NO_LIBUNWIND
-   have_libunwind :=
+diff --git a/drivers/of/unittest.c b/drivers/of/unittest.c
+index 576e9beefc7c8..9a72f75e5c2d8 100644
+--- a/drivers/of/unittest.c
++++ b/drivers/of/unittest.c
+@@ -1916,15 +1916,16 @@ static int __init unittest_data_add(void)
+ 	rc = of_resolve_phandles(unittest_data_node);
+ 	if (rc) {
+ 		pr_err("%s: Failed to resolve phandles (rc=%i)\n", __func__, rc);
+-		of_overlay_mutex_unlock();
+-		return -EINVAL;
++		rc = -EINVAL;
++		goto unlock;
+ 	}
  
-+  $(call feature_check,libunwind)
-+
-   $(call feature_check,libunwind-x86)
-   ifeq ($(feature-libunwind-x86), 1)
-     $(call detected,CONFIG_LIBUNWIND_X86)
-@@ -649,7 +651,7 @@ ifndef NO_LIBUNWIND
-   endif
+ 	/* attach the sub-tree to live tree */
+ 	if (!of_root) {
+ 		pr_warn("%s: no live tree to attach sub-tree\n", __func__);
+ 		kfree(unittest_data);
+-		return -ENODEV;
++		rc = -ENODEV;
++		goto unlock;
+ 	}
  
-   ifneq ($(feature-libunwind), 1)
--    $(warning No libunwind found. Please install libunwind-dev[el] >= 1.1 and/or set LIBUNWIND_DIR)
-+    $(warning No libunwind found. Please install libunwind-dev[el] >= 1.1 and/or set LIBUNWIND_DIR and set LIBUNWIND=1 in the make command line as it is opt-in now)
-     NO_LOCAL_LIBUNWIND := 1
-   else
-     have_libunwind := 1
+ 	EXPECT_BEGIN(KERN_INFO,
+@@ -1943,9 +1944,10 @@ static int __init unittest_data_add(void)
+ 	EXPECT_END(KERN_INFO,
+ 		   "Duplicate name in testcase-data, renamed to \"duplicate-name#1\"");
+ 
++unlock:
+ 	of_overlay_mutex_unlock();
+ 
+-	return 0;
++	return rc;
+ }
+ 
+ #ifdef CONFIG_OF_OVERLAY
 -- 
 2.39.5
 
