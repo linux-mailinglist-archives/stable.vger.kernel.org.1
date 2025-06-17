@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-154280-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153689-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF51FADD7AE
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:48:03 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 377A2ADD633
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:31:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8A9BC7AC8D4
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:46:38 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DEC0D19E138E
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:18:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A25E2DFF2C;
-	Tue, 17 Jun 2025 16:44:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 784142EF2BD;
+	Tue, 17 Jun 2025 16:12:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rqZkWvOs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g4z6roKb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 054F38F54;
-	Tue, 17 Jun 2025 16:44:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33C342EF2B7;
+	Tue, 17 Jun 2025 16:12:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750178682; cv=none; b=L4zX+w8ZhHa/pAJrU/b4wEWMlt5gnQ6bwwTyJfLoBZt1t1KEA/TsuBqzFQYzG/qOokuUIxs31QZxKcHM3/xCcvDYQp5y0+x26YZ5JWT1NMuBHr/x8qdnFfUyeX549LeuG87N2EjJ+rAVQ9ozixF8iru6bGFJP0FtlBMe/VfCmWg=
+	t=1750176771; cv=none; b=nIh4E/ndf7yNLmc8UGWLViOv3LUs4WkiFxGYnD+wev+PAi/PZtX8NcmwGHovm57A+vQeSqWbcF1EiYr5XKr5vVjLUk6q6VtqCbbQM4MbDHIsck1vxtf5qXFXYd6flZy0FxuxaCkbzye/jeoE6ziORxUAlaD2YKpchXGAIQbdSe0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750178682; c=relaxed/simple;
-	bh=9Z+XW2vy53Qr1Sj7gucB5nEwTNxkm6KIJ0UemzABZwk=;
+	s=arc-20240116; t=1750176771; c=relaxed/simple;
+	bh=DM5A2eRTmcxTIE19qhF3m6D33z16UHs6qTKugyJQ2w0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=WnZlfo/FyNtirU1X+seQIRf53z0etAOSkLkB/QbzoikAuup3L6uPaTK4ulXWa3QQOY2jCi7cBS+ogkNfKZqFM55YOeHsDD1+iKL2KlXlI2ugOFh+HPtT66/ORWiseWvODQ0Ez3X27XjmS51Z7hBcIFlYYz2TVIarP7a7jTifzdw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rqZkWvOs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69FE2C4CEE3;
-	Tue, 17 Jun 2025 16:44:41 +0000 (UTC)
+	 MIME-Version; b=jt4xED4XFNRqeVuYrHIb4J5MwH5/E2aRG1WkcJRBcqirpC3A03Cgn/i0yD7LTylDcnypTcNgGBqit47dPEbSw7V4opWAGlK57PiQWSFfr2SSbb3/rGrUlH8LNpktvmLRa3upL4XHFsNdmpRnzHfoQ8p4Bq1G59MoIQ9LNsnRZig=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g4z6roKb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97FE8C4CEE3;
+	Tue, 17 Jun 2025 16:12:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750178681;
-	bh=9Z+XW2vy53Qr1Sj7gucB5nEwTNxkm6KIJ0UemzABZwk=;
+	s=korg; t=1750176771;
+	bh=DM5A2eRTmcxTIE19qhF3m6D33z16UHs6qTKugyJQ2w0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rqZkWvOs8IqHgmswqYGWJouMb2PSI93vlbaQmc6Uti/oonCirExreERjePEbsA7Gv
-	 ArI/iZvUeQJAus4hxKcC4LBJ3+6UIoh+fOOABOe5r6swoOGWPV91Gr5dfsoxQSy882
-	 xynzaxxYu5EFtT4PPEr3tsOXHU+A30A4tHg2xwTc=
+	b=g4z6roKbwMhywwTL77T5loUaelJtP4OCpkagNFIeb62LrPr1ZtyzKhqScrcZufctQ
+	 8/pzKlwaeYJBTC2TjBD5rF/V/9TKcTN+LhJP4H7BfoJVSVoulqnxuzKFm4Q3G7gbR2
+	 w01sA0VWFWj2euiveFX2VHei34n4Qkjd4gNDrFJs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>,
-	Marcelo Schmitt <marcelo.schmitt@analog.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Joel Stanley <joel@jms.id.au>,
+	Andrew Jeffery <andrew@codeconstruct.com.au>,
+	Arnd Bergmann <arnd@arndb.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 522/780] iio: adc: ad7124: Fix 3dB filter frequency reading
-Date: Tue, 17 Jun 2025 17:23:50 +0200
-Message-ID: <20250617152512.772837592@linuxfoundation.org>
+Subject: [PATCH 6.12 265/512] ARM: aspeed: Dont select SRAM
+Date: Tue, 17 Jun 2025 17:23:51 +0200
+Message-ID: <20250617152430.329459784@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
-References: <20250617152451.485330293@linuxfoundation.org>
+In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
+References: <20250617152419.512865572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,47 +61,41 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
+From: Joel Stanley <joel@jms.id.au>
 
-[ Upstream commit 8712e4986e7ce42a14c762c4c350f290989986a5 ]
+[ Upstream commit e4f59f873c3ffe2a0150e11115a83e2dfb671dbf ]
 
-The sinc4 filter has a factor 0.23 between Output Data Rate and f_{3dB}
-and for sinc3 the factor is 0.272 according to the data sheets for
-ad7124-4 (Rev. E.) and ad7124-8 (Rev. F).
+The ASPEED devices have SRAM, but don't require it for basic function
+(or any function; there's no known users of the driver).
 
-Fixes: cef2760954cf ("iio: adc: ad7124: add 3db filter")
-Signed-off-by: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
-Reviewed-by: Marcelo Schmitt <marcelo.schmitt@analog.com>
-Link: https://patch.msgid.link/20250317115247.3735016-6-u.kleine-koenig@baylibre.com
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Fixes: 8c2ed9bcfbeb ("arm: Add Aspeed machine")
+Signed-off-by: Joel Stanley <joel@jms.id.au>
+Link: https://patch.msgid.link/20250115103942.421429-1-joel@jms.id.au
+Signed-off-by: Andrew Jeffery <andrew@codeconstruct.com.au>
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iio/adc/ad7124.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/arm/mach-aspeed/Kconfig | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/drivers/iio/adc/ad7124.c b/drivers/iio/adc/ad7124.c
-index 3ea81a98e4553..7d5d84a07cae1 100644
---- a/drivers/iio/adc/ad7124.c
-+++ b/drivers/iio/adc/ad7124.c
-@@ -301,9 +301,9 @@ static int ad7124_get_3db_filter_freq(struct ad7124_state *st,
- 
- 	switch (st->channels[channel].cfg.filter_type) {
- 	case AD7124_SINC3_FILTER:
--		return DIV_ROUND_CLOSEST(fadc * 230, 1000);
-+		return DIV_ROUND_CLOSEST(fadc * 272, 1000);
- 	case AD7124_SINC4_FILTER:
--		return DIV_ROUND_CLOSEST(fadc * 262, 1000);
-+		return DIV_ROUND_CLOSEST(fadc * 230, 1000);
- 	default:
- 		return -EINVAL;
- 	}
+diff --git a/arch/arm/mach-aspeed/Kconfig b/arch/arm/mach-aspeed/Kconfig
+index 080019aa6fcd8..fcf287edd0e5e 100644
+--- a/arch/arm/mach-aspeed/Kconfig
++++ b/arch/arm/mach-aspeed/Kconfig
+@@ -2,7 +2,6 @@
+ menuconfig ARCH_ASPEED
+ 	bool "Aspeed BMC architectures"
+ 	depends on (CPU_LITTLE_ENDIAN && ARCH_MULTI_V5) || ARCH_MULTI_V6 || ARCH_MULTI_V7
+-	select SRAM
+ 	select WATCHDOG
+ 	select ASPEED_WATCHDOG
+ 	select MFD_SYSCON
 -- 
 2.39.5
 
