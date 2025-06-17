@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-153046-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153050-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 61DADADD209
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 17:38:13 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AE710ADD245
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 17:40:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4E1F93A5964
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 15:37:49 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4A91E7A1960
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 15:37:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C8C492ECD20;
-	Tue, 17 Jun 2025 15:38:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E05AA2EA487;
+	Tue, 17 Jun 2025 15:38:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UxnRYoQ1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v9KzsEu8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 835512E88A5;
-	Tue, 17 Jun 2025 15:38:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E21C20F090;
+	Tue, 17 Jun 2025 15:38:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750174691; cv=none; b=Yc0suJzkzVphIayOESdpvE6UBODvDsnILrqkKvHSgkfoL+R3RNbHvZXu2COWY3CNkrzbTy2V5JEZU+cPBk5vjPO83TE5ugllcfS5NPNGjrlb5vLQGjRz7UtXmd34uEr6SdpmhaD/QEpPXZ4E/+P+hudY0BpzVOibVqJBEJhX/iE=
+	t=1750174704; cv=none; b=fPaQ2fufPKmE0FJnB1uuZHSpoCNmv/LkK/StaA8N23+t4wZtli00myUOuEoB7RJBaepboFuYGUIFWJBiNg1IVibnhj0+2n2tmHmVF/201qDylY7gH4/SA5iBlRBGBiAFC85gIyoGhesb9QB1e73udIEx1doHJf/ogqb5QgKy03o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750174691; c=relaxed/simple;
-	bh=4lwwZl75SK8I30Uhy+x+guOruuTSfUu0ZQ9OIFFGxXg=;
+	s=arc-20240116; t=1750174704; c=relaxed/simple;
+	bh=cxUsCSvQK5K4TuqAEArgS5Yqt4zFh1wR01mijHlAJps=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MicNKZ5IBYIWw/GGRwgqWAx/bYfq31Rekvx4je3kUoo+wEJj+cCOVDEMU7by7btFV+1nYfgf6LC62gHh5QQUwPy2I3wa7etFWMmXq5kHRlheMlavRfCqm2dJYN8HfRo0Ni5yC63o50zVKG0H2WeRqOlaIEAKocxt1A0OL9q7zoM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UxnRYoQ1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7916C4CEE3;
-	Tue, 17 Jun 2025 15:38:10 +0000 (UTC)
+	 MIME-Version; b=ZMrIjRlFxDgAI/adL078OAePZEDSPvLH51wbT2quE/fTVHIKMnmSLetIEWGl6fwJ902tRIeB9laaDiS4OZqYO+qL2x806q7M1IDTKIwtt0+7FXq31VETym+Cd8utq+iiw4v3rE38PkvwWcO5taJFYJLhOQGpW+Dxq5c2jEoNLFE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v9KzsEu8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E0CFC4CEE3;
+	Tue, 17 Jun 2025 15:38:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750174691;
-	bh=4lwwZl75SK8I30Uhy+x+guOruuTSfUu0ZQ9OIFFGxXg=;
+	s=korg; t=1750174704;
+	bh=cxUsCSvQK5K4TuqAEArgS5Yqt4zFh1wR01mijHlAJps=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UxnRYoQ1rYl+XFy+7Mrgq0gWnJ15d5E1EaPBL1Pld/ELY+n7EeM5WheOyZnB0WY82
-	 05q8anLMpwhCv/uDcYNtUcHuHQI9b48FN4JS6xbGhY6t6DieI9NvDbIG8FotiDEPXO
-	 +izwv2or8PUNs8jQUIng0X5goymJCXwOi/JfMLOE=
+	b=v9KzsEu8M7HtcDK+RIZ0peNU+T3y19kBmL9mPhr0AZJr8m849fnP8HtbSzIc98yqS
+	 EZpEFW1w6F9lpOzJFtzprc/0LsKFSVcfQQKojxOOma25D/3KxAJ3j02trU09vdFPUq
+	 Pt90wG+6pFkC80XkcWRy5cSNxarqazbxAGSTspcA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mingcong Bai <jeffbai@aosc.io>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Jiaqing Zhao <jiaqing.zhao@linux.intel.com>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 051/512] ACPI: resource: fix a typo for MECHREVO in irq1_edge_low_force_override[]
-Date: Tue, 17 Jun 2025 17:20:17 +0200
-Message-ID: <20250617152421.603700740@linuxfoundation.org>
+Subject: [PATCH 6.12 052/512] x86/mtrr: Check if fixed-range MTRRs exist in mtrr_save_fixed_ranges()
+Date: Tue, 17 Jun 2025 17:20:18 +0200
+Message-ID: <20250617152421.643926260@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
 References: <20250617152419.512865572@linuxfoundation.org>
@@ -66,37 +66,44 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Mingcong Bai <jeffbai@aosc.io>
+From: Jiaqing Zhao <jiaqing.zhao@linux.intel.com>
 
-[ Upstream commit 113e04276018bd13978051d8b05a613b4d390cc9 ]
+[ Upstream commit 824c6384e8d9275d4ec7204f3f79a4ac6bc10379 ]
 
-The vendor name for MECHREVO was incorrectly spelled in commit
-b53f09ecd602 ("ACPI: resource: Do IRQ override on MECHREV GM7XG0M").
+When suspending, save_processor_state() calls mtrr_save_fixed_ranges()
+to save fixed-range MTRRs.
 
-Correct this typo in this trivial patch.
+On platforms without fixed-range MTRRs like the ACRN hypervisor which
+has removed fixed-range MTRR emulation, accessing these MSRs will
+trigger an unchecked MSR access error. Make sure fixed-range MTRRs are
+supported before access to prevent such error.
 
-Fixes: b53f09ecd602 ("ACPI: resource: Do IRQ override on MECHREV GM7XG0M")
-Signed-off-by: Mingcong Bai <jeffbai@aosc.io>
-Link: https://patch.msgid.link/20250417073947.47419-1-jeffbai@aosc.io
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Since mtrr_state.have_fixed is only set when MTRRs are present and
+enabled, checking the CPU feature flag in mtrr_save_fixed_ranges() is
+unnecessary.
+
+Fixes: 3ebad5905609 ("[PATCH] x86: Save and restore the fixed-range MTRRs of the BSP when suspending")
+Signed-off-by: Jiaqing Zhao <jiaqing.zhao@linux.intel.com>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Link: https://lore.kernel.org/20250509170633.3411169-2-jiaqing.zhao@linux.intel.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/resource.c | 2 +-
+ arch/x86/kernel/cpu/mtrr/generic.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/acpi/resource.c b/drivers/acpi/resource.c
-index 14c7bac4100b4..7d59c6c9185fc 100644
---- a/drivers/acpi/resource.c
-+++ b/drivers/acpi/resource.c
-@@ -534,7 +534,7 @@ static const struct dmi_system_id irq1_level_low_skip_override[] = {
-  */
- static const struct dmi_system_id irq1_edge_low_force_override[] = {
- 	{
--		/* MECHREV Jiaolong17KS Series GM7XG0M */
-+		/* MECHREVO Jiaolong17KS Series GM7XG0M */
- 		.matches = {
- 			DMI_MATCH(DMI_BOARD_NAME, "GM7XG0M"),
- 		},
+diff --git a/arch/x86/kernel/cpu/mtrr/generic.c b/arch/x86/kernel/cpu/mtrr/generic.c
+index 7b29ebda024f4..1ececfce7a46a 100644
+--- a/arch/x86/kernel/cpu/mtrr/generic.c
++++ b/arch/x86/kernel/cpu/mtrr/generic.c
+@@ -591,7 +591,7 @@ static void get_fixed_ranges(mtrr_type *frs)
+ 
+ void mtrr_save_fixed_ranges(void *info)
+ {
+-	if (boot_cpu_has(X86_FEATURE_MTRR))
++	if (mtrr_state.have_fixed)
+ 		get_fixed_ranges(mtrr_state.fixed_ranges);
+ }
+ 
 -- 
 2.39.5
 
