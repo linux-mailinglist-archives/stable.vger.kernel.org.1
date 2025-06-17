@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-152889-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153345-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C0049ADD151
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 17:28:32 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B3B3CADD3DC
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:03:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A702D3BA921
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 15:28:08 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A2028166396
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 15:58:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 225452EB5AD;
-	Tue, 17 Jun 2025 15:28:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41A7F2F2C6B;
+	Tue, 17 Jun 2025 15:54:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mUHOb8Wl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K6+3MsLq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D02F22E3B06;
-	Tue, 17 Jun 2025 15:28:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0BB72F2C64;
+	Tue, 17 Jun 2025 15:54:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750174107; cv=none; b=F1eXPXO87pc/J8ida4GGo0ct3o9WCm20hzIjWo0QfNrkyt0i2chHhe5vx0pFXNtlMUCqU2fXiCqd6PJgzwq6Qr25UD3kCo5Cj11LAVIFIFEmd7/w7YMmoC1kpjZJQ+eeIMZnXkBIWw2a4hwPW7Y6I69uURDtQsMD8CoVjDlEdBw=
+	t=1750175649; cv=none; b=gAlVpyE8pVLnBr1pSBvKcBL/Xundwv3XwxCAVcKBJVb/JDHBFYGIyKGFrinSXrdspQeTmTN9zFyiHrSzN7Lexf+DAn+pmt7uKrjjZ4rALM1pslOQgU2avThUweF+kqX3o7HspokAGli4afWpdVuycbONjF9bxXX5knQuzvNvMzU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750174107; c=relaxed/simple;
-	bh=iY5aj+maLzqR3R0NWr79UVC8CUHUAmFBFpD6UqTxSgk=;
+	s=arc-20240116; t=1750175649; c=relaxed/simple;
+	bh=t3ZWamaGPA7srMqFRXERs7kWP3c1/koVy6W4j9B4y3k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Xd7IrHwqR75UgxOxB0JMPWZRf0S2Bck5KDdmnOVZwCAk686XiFqg+aDFMsFrO9mdSA7d0vyqURJ6r+eR0UNufid0VGyD4XmHJcwGmHVv2wHNBvydHSUNLH70IRED6yUYRqhBasoSL1QjDfB0wclBJfjIIGQPQ/LYhOhgstSh79Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mUHOb8Wl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E31C8C4CEE3;
-	Tue, 17 Jun 2025 15:28:26 +0000 (UTC)
+	 MIME-Version; b=uubXV8oZSjs12ELu5XCKMa2wGR+SuYSj0k6cMsstq1LNFC4VieTqcd8mmxyczb0W8WTTL2gGp0/TDExs4afNPmIjBLhbbfA5IpQhv8shPd90/0s0xTRIZioijMokGbfBjHyB73Lmml1hvJExmqUJlFJPB8Ve7YV3XrvKSKmjW2c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K6+3MsLq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62934C4CEE3;
+	Tue, 17 Jun 2025 15:54:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750174107;
-	bh=iY5aj+maLzqR3R0NWr79UVC8CUHUAmFBFpD6UqTxSgk=;
+	s=korg; t=1750175648;
+	bh=t3ZWamaGPA7srMqFRXERs7kWP3c1/koVy6W4j9B4y3k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mUHOb8WlS0b+9ddghrreAlWdVAsty5rap3n+ldqt8IRwIfYMOPYJNm9GhGAKImt20
-	 lDr/3V7L+yKj/tCYTO6D3UN3oQNYubJXBzHce27gcah8G817+3EAjB2JX2Szbvj63L
-	 7ARAxRFxpxrCcN3hst5O0lPlM/SYto+SeyuB+3bw=
+	b=K6+3MsLqexNXRJXFEJeGDdQpF2t4InZo+y9JOa12PxwyERK3ehRxZWIkYMfYUfN3s
+	 DsdUI2N9MMvqkZYnzWhGv45IIZNH5lCdc096C9GkncTnVOxpkD2KPrnORcF3YarRXy
+	 MbRownHN03emMYF6XuTN8y+t0ukxM67Axf0TBAyI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jeongjun Park <aha310510@gmail.com>,
-	Pan Taixi <pantaixi@huaweicloud.com>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>
-Subject: [PATCH 6.6 001/356] tracing: Fix compilation warning on arm32
+	Anton Protopopov <a.s.protopopov@gmail.com>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 150/512] bpf: Fix uninitialized values in BPF_{CORE,PROBE}_READ
 Date: Tue, 17 Jun 2025 17:21:56 +0200
-Message-ID: <20250617152338.280970833@linuxfoundation.org>
+Message-ID: <20250617152425.683638630@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152338.212798615@linuxfoundation.org>
-References: <20250617152338.212798615@linuxfoundation.org>
+In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
+References: <20250617152419.512865572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,57 +62,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pan Taixi <pantaixi@huaweicloud.com>
+From: Anton Protopopov <a.s.protopopov@gmail.com>
 
-commit 2fbdb6d8e03b70668c0876e635506540ae92ab05 upstream.
+[ Upstream commit 41d4ce6df3f4945341ec509a840cc002a413b6cc ]
 
-On arm32, size_t is defined to be unsigned int, while PAGE_SIZE is
-unsigned long. This hence triggers a compilation warning as min()
-asserts the type of two operands to be equal. Casting PAGE_SIZE to size_t
-solves this issue and works on other target architectures as well.
+With the latest LLVM bpf selftests build will fail with
+the following error message:
 
-Compilation warning details:
+    progs/profiler.inc.h:710:31: error: default initialization of an object of type 'typeof ((parent_task)->real_cred->uid.val)' (aka 'const unsigned int') leaves the object uninitialized and is incompatible with C++ [-Werror,-Wdefault-const-init-unsafe]
+      710 |         proc_exec_data->parent_uid = BPF_CORE_READ(parent_task, real_cred, uid.val);
+          |                                      ^
+    tools/testing/selftests/bpf/tools/include/bpf/bpf_core_read.h:520:35: note: expanded from macro 'BPF_CORE_READ'
+      520 |         ___type((src), a, ##__VA_ARGS__) __r;                               \
+          |                                          ^
 
-kernel/trace/trace.c: In function 'tracing_splice_read_pipe':
-./include/linux/minmax.h:20:28: warning: comparison of distinct pointer types lacks a cast
-  (!!(sizeof((typeof(x) *)1 == (typeof(y) *)1)))
-                            ^
-./include/linux/minmax.h:26:4: note: in expansion of macro '__typecheck'
-   (__typecheck(x, y) && __no_side_effects(x, y))
-    ^~~~~~~~~~~
+This happens because BPF_CORE_READ (and other macro) declare the
+variable __r using the ___type macro which can inherit const modifier
+from intermediate types.
 
-...
+Fix this by using __typeof_unqual__, when supported. (And when it
+is not supported, the problem shouldn't appear, as older compilers
+haven't complained.)
 
-kernel/trace/trace.c:6771:8: note: in expansion of macro 'min'
-        min((size_t)trace_seq_used(&iter->seq),
-        ^~~
-
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/20250526013731.1198030-1-pantaixi@huaweicloud.com
-Fixes: f5178c41bb43 ("tracing: Fix oob write in trace_seq_to_buffer()")
-Reviewed-by: Jeongjun Park <aha310510@gmail.com>
-Signed-off-by: Pan Taixi <pantaixi@huaweicloud.com>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 792001f4f7aa ("libbpf: Add user-space variants of BPF_CORE_READ() family of macros")
+Fixes: a4b09a9ef945 ("libbpf: Add non-CO-RE variants of BPF_CORE_READ() macro family")
+Signed-off-by: Anton Protopopov <a.s.protopopov@gmail.com>
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Link: https://lore.kernel.org/bpf/20250502193031.3522715-1-a.s.protopopov@gmail.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/trace/trace.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ tools/lib/bpf/bpf_core_read.h | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
---- a/kernel/trace/trace.c
-+++ b/kernel/trace/trace.c
-@@ -7023,7 +7023,7 @@ static ssize_t tracing_splice_read_pipe(
- 		ret = trace_seq_to_buffer(&iter->seq,
- 					  page_address(spd.pages[i]),
- 					  min((size_t)trace_seq_used(&iter->seq),
--						  PAGE_SIZE));
-+						  (size_t)PAGE_SIZE));
- 		if (ret < 0) {
- 			__free_page(spd.pages[i]);
- 			break;
+diff --git a/tools/lib/bpf/bpf_core_read.h b/tools/lib/bpf/bpf_core_read.h
+index c0e13cdf96607..b997c68bd9453 100644
+--- a/tools/lib/bpf/bpf_core_read.h
++++ b/tools/lib/bpf/bpf_core_read.h
+@@ -388,7 +388,13 @@ extern void *bpf_rdonly_cast(const void *obj, __u32 btf_id) __ksym __weak;
+ #define ___arrow10(a, b, c, d, e, f, g, h, i, j) a->b->c->d->e->f->g->h->i->j
+ #define ___arrow(...) ___apply(___arrow, ___narg(__VA_ARGS__))(__VA_ARGS__)
+ 
++#if defined(__clang__) && (__clang_major__ >= 19)
++#define ___type(...) __typeof_unqual__(___arrow(__VA_ARGS__))
++#elif defined(__GNUC__) && (__GNUC__ >= 14)
++#define ___type(...) __typeof_unqual__(___arrow(__VA_ARGS__))
++#else
+ #define ___type(...) typeof(___arrow(__VA_ARGS__))
++#endif
+ 
+ #define ___read(read_fn, dst, src_type, src, accessor)			    \
+ 	read_fn((void *)(dst), sizeof(*(dst)), &((src_type)(src))->accessor)
+-- 
+2.39.5
+
 
 
 
