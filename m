@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-153365-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-154109-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B3BFADD425
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:07:15 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 365C2ADD8E0
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 19:00:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 65D2E3AE06B
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 15:58:54 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 726C61898CAB
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:42:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD8F22EA146;
-	Tue, 17 Jun 2025 15:55:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F34602E8E05;
+	Tue, 17 Jun 2025 16:35:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YXHVs6gX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pK5RegIP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75CBD2EA164;
-	Tue, 17 Jun 2025 15:55:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE8A32E8E06;
+	Tue, 17 Jun 2025 16:35:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750175715; cv=none; b=Qsh+6c7Dri4MVZgBP9n6+q1ESAKcWgbz/M2HpB0eKLBSIkpGgvBDGFihGb+JzmStgEO8THUmoYecU9C06PDGg7DA7rV3Rfm1f/19oTqTMzbgKmBvar7dJNDETcvoNtYtzVj94Vw/vS6MmRTSl3rq1OFfaET7DVhZ/ph4fcdp2gU=
+	t=1750178131; cv=none; b=oKe1M1K1Zjr13FHzKbC9Rj5bd6nbUViK0wj1rKSZY/ptX6Hv+N7vLBjWBmkKliG4mSmHDqpt9BrR4MiWcEry7heOEr6p4T2sFYsn6XzkY97boGGfOZUykZu6kEN/z5qyyApiVpRh0o+ivHJeraXVoEZ0WNzFyOfOtH+0L9Q3Zbs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750175715; c=relaxed/simple;
-	bh=QS3WWtsOWzB7j1aB6vaLLhaFVzfCUBnxDdEvW9a5dWA=;
+	s=arc-20240116; t=1750178131; c=relaxed/simple;
+	bh=HVNkpjAUQ7n7po7TtEfn35uzbajtFXwJit+dTKjkWnw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=a6Pi5232EJ2jZhvQpyNGemLbo/bL4hpC9rkWN2bFxWcwemJsKWtRsNwW+1wnb4yXRp1DbFr+KSdbIbGXimVUs3ObHEWVynXtJcaQ0DkIcRBI7xoGkf42VBf0uE+MuvIoItSf7CxCcOpBL5PaV5jvBGZ1RzA14vT7rLga2FLGDj8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YXHVs6gX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01C6DC4CEE3;
-	Tue, 17 Jun 2025 15:55:14 +0000 (UTC)
+	 MIME-Version; b=DdP9dk3CFI7LabcO8NplYxeZuhx4CKrauOu8DB03iYTlzdvVRqrIH+y0XZFu+U0E9ctr5MTFvM69qMXq9ARQ+bGTm/sAagrh2Lr+fRJH2/JEaGRltn0Bg8h8Ufw9YGEI6qS7FgCT4RsVdKORsQxNQvvxqMsIPztJoerFCFbYKZk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pK5RegIP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F2B9C4CEE3;
+	Tue, 17 Jun 2025 16:35:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750175715;
-	bh=QS3WWtsOWzB7j1aB6vaLLhaFVzfCUBnxDdEvW9a5dWA=;
+	s=korg; t=1750178131;
+	bh=HVNkpjAUQ7n7po7TtEfn35uzbajtFXwJit+dTKjkWnw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YXHVs6gX0s6Wbk9orTZhr6PwK3EINAWqe3G4TvezPyvEX46NF9Kf+W1rhXQlHV92g
-	 YrYtP4IPq+6PzFcrQkGUM4vKQsSRg1z39tI1n8kwRBo+tRhBFkM5dUjsWmYim3xlNc
-	 PKtfxRugf8mkAX1BqXFfhrIO740THk+WRy61trUw=
+	b=pK5RegIPMePaHU+V0o0dI6yuDyeGkcf2nADMj33VNT4dHEqdfOV9evzyTm2Y9/lP7
+	 SyeREKpJxFfr4fJ6JB9F93FGEFNXTsRk26hHGSqyh3pLsHEZnC01YRJ8bQUqhhjKQt
+	 8Z4HelNDbPokGsItt9Wyj7yHdATttFE1bJ/f0vcY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sagarika Sharma <sharmasagarika@google.com>,
-	Minh-Anh Nguyen <minhanhdn@google.com>,
-	YiFei Zhu <zhuyifei@google.com>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Quentin Monnet <qmo@kernel.org>,
+	Henry Martin <bsdhenrymartin@gmail.com>,
+	Andrew Jeffery <andrew@codeconstruct.com.au>,
+	Arnd Bergmann <arnd@arndb.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 156/512] bpftool: Fix regression of "bpftool cgroup tree" EINVAL on older kernels
+Subject: [PATCH 6.15 414/780] soc: aspeed: Add NULL check in aspeed_lpc_enable_snoop()
 Date: Tue, 17 Jun 2025 17:22:02 +0200
-Message-ID: <20250617152425.929259868@linuxfoundation.org>
+Message-ID: <20250617152508.334502814@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
-References: <20250617152419.512865572@linuxfoundation.org>
+In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
+References: <20250617152451.485330293@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,61 +63,75 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: YiFei Zhu <zhuyifei@google.com>
+From: Henry Martin <bsdhenrymartin@gmail.com>
 
-[ Upstream commit 43745d11bfd9683abdf08ad7a5cc403d6a9ffd15 ]
+[ Upstream commit f1706e0e1a74b095cbc60375b9b1e6205f5f4c98 ]
 
-If cgroup_has_attached_progs queries an attach type not supported
-by the running kernel, due to the kernel being older than the bpftool
-build, it would encounter an -EINVAL from BPF_PROG_QUERY syscall.
+devm_kasprintf() returns NULL when memory allocation fails. Currently,
+aspeed_lpc_enable_snoop() does not check for this case, which results in a
+NULL pointer dereference.
 
-Prior to commit 98b303c9bf05 ("bpftool: Query only cgroup-related
-attach types"), this EINVAL would be ignored by the function, allowing
-the function to only consider supported attach types. The commit
-changed so that, instead of querying all attach types, only attach
-types from the array `cgroup_attach_types` is queried. The assumption
-is that because these are only cgroup attach types, they should all
-be supported. Unfortunately this assumption may be false when the
-kernel is older than the bpftool build, where the attach types queried
-by bpftool is not yet implemented in the kernel. This would result in
-errors such as:
+Add NULL check after devm_kasprintf() to prevent this issue.
 
-  $ bpftool cgroup tree
-  CgroupPath
-  ID       AttachType      AttachFlags     Name
-  Error: can't query bpf programs attached to /sys/fs/cgroup: Invalid argument
-
-This patch restores the logic of ignoring EINVAL from prior to that patch.
-
-Fixes: 98b303c9bf05 ("bpftool: Query only cgroup-related attach types")
-Reported-by: Sagarika Sharma <sharmasagarika@google.com>
-Reported-by: Minh-Anh Nguyen <minhanhdn@google.com>
-Signed-off-by: YiFei Zhu <zhuyifei@google.com>
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Acked-by: Quentin Monnet <qmo@kernel.org>
-Link: https://lore.kernel.org/bpf/20250428211536.1651456-1-zhuyifei@google.com
+Fixes: 3772e5da4454 ("drivers/misc: Aspeed LPC snoop output using misc chardev")
+Signed-off-by: Henry Martin <bsdhenrymartin@gmail.com>
+Link: https://patch.msgid.link/20250401074647.21300-1-bsdhenrymartin@gmail.com
+[arj: Fix Fixes: tag to use subject from 3772e5da4454]
+Signed-off-by: Andrew Jeffery <andrew@codeconstruct.com.au>
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/bpf/bpftool/cgroup.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/soc/aspeed/aspeed-lpc-snoop.c | 15 +++++++++++++--
+ 1 file changed, 13 insertions(+), 2 deletions(-)
 
-diff --git a/tools/bpf/bpftool/cgroup.c b/tools/bpf/bpftool/cgroup.c
-index 9af426d432993..afab728468bf6 100644
---- a/tools/bpf/bpftool/cgroup.c
-+++ b/tools/bpf/bpftool/cgroup.c
-@@ -221,7 +221,7 @@ static int cgroup_has_attached_progs(int cgroup_fd)
- 	for (i = 0; i < ARRAY_SIZE(cgroup_attach_types); i++) {
- 		int count = count_attached_bpf_progs(cgroup_fd, cgroup_attach_types[i]);
+diff --git a/drivers/soc/aspeed/aspeed-lpc-snoop.c b/drivers/soc/aspeed/aspeed-lpc-snoop.c
+index 57ba855f375d9..ef8f355589a58 100644
+--- a/drivers/soc/aspeed/aspeed-lpc-snoop.c
++++ b/drivers/soc/aspeed/aspeed-lpc-snoop.c
+@@ -200,11 +200,15 @@ static int aspeed_lpc_enable_snoop(struct aspeed_lpc_snoop *lpc_snoop,
+ 	lpc_snoop->chan[channel].miscdev.minor = MISC_DYNAMIC_MINOR;
+ 	lpc_snoop->chan[channel].miscdev.name =
+ 		devm_kasprintf(dev, GFP_KERNEL, "%s%d", DEVICE_NAME, channel);
++	if (!lpc_snoop->chan[channel].miscdev.name) {
++		rc = -ENOMEM;
++		goto err_free_fifo;
++	}
+ 	lpc_snoop->chan[channel].miscdev.fops = &snoop_fops;
+ 	lpc_snoop->chan[channel].miscdev.parent = dev;
+ 	rc = misc_register(&lpc_snoop->chan[channel].miscdev);
+ 	if (rc)
+-		return rc;
++		goto err_free_fifo;
  
--		if (count < 0)
-+		if (count < 0 && errno != EINVAL)
- 			return -1;
+ 	/* Enable LPC snoop channel at requested port */
+ 	switch (channel) {
+@@ -221,7 +225,8 @@ static int aspeed_lpc_enable_snoop(struct aspeed_lpc_snoop *lpc_snoop,
+ 		hicrb_en = HICRB_ENSNP1D;
+ 		break;
+ 	default:
+-		return -EINVAL;
++		rc = -EINVAL;
++		goto err_misc_deregister;
+ 	}
  
- 		if (count > 0) {
+ 	regmap_update_bits(lpc_snoop->regmap, HICR5, hicr5_en, hicr5_en);
+@@ -231,6 +236,12 @@ static int aspeed_lpc_enable_snoop(struct aspeed_lpc_snoop *lpc_snoop,
+ 		regmap_update_bits(lpc_snoop->regmap, HICRB,
+ 				hicrb_en, hicrb_en);
+ 
++	return 0;
++
++err_misc_deregister:
++	misc_deregister(&lpc_snoop->chan[channel].miscdev);
++err_free_fifo:
++	kfifo_free(&lpc_snoop->chan[channel].fifo);
+ 	return rc;
+ }
+ 
 -- 
 2.39.5
 
