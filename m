@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-154064-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-154450-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 24C01ADD7D1
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:49:30 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id DF13FADD919
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 19:02:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 86E142C8356
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:38:32 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 476AE4044F5
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:54:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92FC4285049;
-	Tue, 17 Jun 2025 16:33:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6E6A23A9B3;
+	Tue, 17 Jun 2025 16:53:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dbqeeN5p"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iKTnvXtj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 503EE188006;
-	Tue, 17 Jun 2025 16:33:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 707842FA631;
+	Tue, 17 Jun 2025 16:53:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750177987; cv=none; b=gxEfooXsD7Yvsu7JTZ3haynpltRgFP4z/6eX9/azK0UmZIL9AbeL7waEYW2QKC2e6tWLioHHP2z5Jx9MNcYm2PZpvhK5TphJnN3vuIAfxingTIIGs4ebzesFqfM0wV9go0z9Phtg02GY4kA62KzTLPXhtb5x1g7dRfP2owCTRGM=
+	t=1750179225; cv=none; b=dGU8Walw1zfwjNJFyOA/5wFpuGYP5R+Z0PhUSNIF+Pni2Mhb2EAv+p/0X3pJalgOOkHhL8OmYg2XGBVN43Zm/h39k6mV7SMrCNQF9WItyReSzeHJhGgikEJ1hdrD39j8iUewKTIQ24ZMP7Ld4Lwu69zLGreh1fPUlwhDqkfl4Xs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750177987; c=relaxed/simple;
-	bh=+hca7Cbi6Sbv9nHeLCZTtP6ZHDZHeRFoNAFsf+YKHRM=;
+	s=arc-20240116; t=1750179225; c=relaxed/simple;
+	bh=a4oxds3GucSYMb9BrZ5lvf9APJfMhlca6HlRJYYo25M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dpWmxKcED69sZCfUS2P3Tr00V8Hk1z7h3N4oLZyejydzJwFmZr/MGiunZj0KNzbVc8BauwvVoqmYJpPtacM2fgZEzLhUYt7sWL8lTOvUOrnh7aUkx1XSn577znWdbxcSHYKJLYGHmrX7HEaA7x/pHMy3N8YF32b4LNw6eouqhhk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dbqeeN5p; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B45C1C4CEE3;
-	Tue, 17 Jun 2025 16:33:06 +0000 (UTC)
+	 MIME-Version; b=LxAoaSQOz6zsbekxqAFjbwVYWJRncMEh3XNiunZTcINV+Y1MubAI7tbpWTD6kkA+OEW4KO0hvKIt43+n4/2l6mPN+fSayg0Usj6CtlvOhNv0aDEtRrE2xzQPh3PDxk7Ys8ytQBq9CWrfWiEvnycMwlScounK0Xh4VpeU/vZJ6/k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iKTnvXtj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5A91C4CEE3;
+	Tue, 17 Jun 2025 16:53:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750177987;
-	bh=+hca7Cbi6Sbv9nHeLCZTtP6ZHDZHeRFoNAFsf+YKHRM=;
+	s=korg; t=1750179225;
+	bh=a4oxds3GucSYMb9BrZ5lvf9APJfMhlca6HlRJYYo25M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dbqeeN5p0rBgV2uaertH0Ecu5Ia18KQwmPSvoAkGoilIzF2g5mmLqy4cV4rDnbnPn
-	 ALCG/96euVSUDjNJ1HcppjxcfpBBeElq5xFUsb7nFlVDYkIj0jdT2BDfbIJFHGSg9u
-	 jQRtMQ1d7LbtqozWIqbDCSpg51O7OHotfOws7SC4=
+	b=iKTnvXtjV7dprMotlhss5WV3jv1wF0s1ZEJgPo9jPgu1kTw52r4o78aKyEnUXk66H
+	 qpf6vy8R7HbGMd+vGBIgHqQKzJUxWAHFiKFN/0r2MjQTDmTzuTTOGZtFIp1kjWPqU2
+	 ejbPH5oRaek4+OpxMAtq15OIo1P1KEePK5xeLJ1I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Caleb Connolly <caleb.connolly@linaro.org>,
-	Loic Poulain <loic.poulain@oss.qualcomm.com>,
-	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
+	Jonathan Greental <yonatan02greental@gmail.com>,
+	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 428/512] ath10k: snoc: fix unbalanced IRQ enable in crash recovery
-Date: Tue, 17 Jun 2025 17:26:34 +0200
-Message-ID: <20250617152436.909693050@linuxfoundation.org>
+Subject: [PATCH 6.15 687/780] powerpc/powernv/memtrace: Fix out of bounds issue in memtrace mmap
+Date: Tue, 17 Jun 2025 17:26:35 +0200
+Message-ID: <20250617152519.468065293@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
-References: <20250617152419.512865572@linuxfoundation.org>
+In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
+References: <20250617152451.485330293@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,51 +63,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Caleb Connolly <caleb.connolly@linaro.org>
+From: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
 
-[ Upstream commit 1650d32b92b01db03a1a95d69ee74fcbc34d4b00 ]
+[ Upstream commit cd097df4596f3a1e9d75eb8520162de1eb8485b2 ]
 
-In ath10k_snoc_hif_stop() we skip disabling the IRQs in the crash
-recovery flow, but we still unconditionally call enable again in
-ath10k_snoc_hif_start().
+memtrace mmap issue has an out of bounds issue. This patch fixes the by
+checking that the requested mapping region size should stay within the
+allocated region size.
 
-We can't check the ATH10K_FLAG_CRASH_FLUSH bit since it is cleared
-before hif_start() is called, so instead check the
-ATH10K_SNOC_FLAG_RECOVERY flag and skip enabling the IRQs during crash
-recovery.
-
-This fixes unbalanced IRQ enable splats that happen after recovering from
-a crash.
-
-Fixes: 0e622f67e041 ("ath10k: add support for WCN3990 firmware crash recovery")
-Signed-off-by: Caleb Connolly <caleb.connolly@linaro.org>
-Tested-by: Loic Poulain <loic.poulain@oss.qualcomm.com>
-Link: https://patch.msgid.link/20250318205043.1043148-1-caleb.connolly@linaro.org
-Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+Reported-by: Jonathan Greental <yonatan02greental@gmail.com>
+Fixes: 08a022ad3dfa ("powerpc/powernv/memtrace: Allow mmaping trace buffers")
+Signed-off-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
+Link: https://patch.msgid.link/20250610021227.361980-1-maddy@linux.ibm.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath10k/snoc.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ arch/powerpc/platforms/powernv/memtrace.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath10k/snoc.c b/drivers/net/wireless/ath/ath10k/snoc.c
-index 0fe47d51013c7..59f7ccb33fde3 100644
---- a/drivers/net/wireless/ath/ath10k/snoc.c
-+++ b/drivers/net/wireless/ath/ath10k/snoc.c
-@@ -937,7 +937,9 @@ static int ath10k_snoc_hif_start(struct ath10k *ar)
+diff --git a/arch/powerpc/platforms/powernv/memtrace.c b/arch/powerpc/platforms/powernv/memtrace.c
+index 4ac9808e55a44..2ea30b3433541 100644
+--- a/arch/powerpc/platforms/powernv/memtrace.c
++++ b/arch/powerpc/platforms/powernv/memtrace.c
+@@ -48,11 +48,15 @@ static ssize_t memtrace_read(struct file *filp, char __user *ubuf,
+ static int memtrace_mmap(struct file *filp, struct vm_area_struct *vma)
+ {
+ 	struct memtrace_entry *ent = filp->private_data;
++	unsigned long ent_nrpages = ent->size >> PAGE_SHIFT;
++	unsigned long vma_nrpages = vma_pages(vma);
  
- 	dev_set_threaded(ar->napi_dev, true);
- 	ath10k_core_napi_enable(ar);
--	ath10k_snoc_irq_enable(ar);
-+	/* IRQs are left enabled when we restart due to a firmware crash */
-+	if (!test_bit(ATH10K_SNOC_FLAG_RECOVERY, &ar_snoc->flags))
-+		ath10k_snoc_irq_enable(ar);
- 	ath10k_snoc_rx_post(ar);
+-	if (ent->size < vma->vm_end - vma->vm_start)
++	/* The requested page offset should be within object's page count */
++	if (vma->vm_pgoff >= ent_nrpages)
+ 		return -EINVAL;
  
- 	clear_bit(ATH10K_SNOC_FLAG_RECOVERY, &ar_snoc->flags);
+-	if (vma->vm_pgoff << PAGE_SHIFT >= ent->size)
++	/* The requested mapping range should remain within the bounds */
++	if (vma_nrpages > ent_nrpages - vma->vm_pgoff)
+ 		return -EINVAL;
+ 
+ 	vma->vm_page_prot = pgprot_noncached(vma->vm_page_prot);
 -- 
 2.39.5
 
