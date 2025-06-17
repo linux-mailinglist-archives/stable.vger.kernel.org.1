@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-154113-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153427-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A1F4FADD8AC
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:58:04 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0691AADD49A
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:12:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id ADE1919450FB
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:42:37 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DFBB419478AF
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:03:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1BA882EA143;
-	Tue, 17 Jun 2025 16:35:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 799162DFF33;
+	Tue, 17 Jun 2025 15:58:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mdIVUtmx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SfvpKVXa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C98E62E92CD;
-	Tue, 17 Jun 2025 16:35:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35AC32DFF08;
+	Tue, 17 Jun 2025 15:58:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750178144; cv=none; b=DGEoZPaEkAPMLm1JvYKnssyifCEEwg6qZXFCJfcgvUDljklRS0xoVTYYhBOgfiVMAtNDovseW78BD9zFYw0p4yLZXyEXPyJ82aZgeBVLZDhSzVOTNu5QWEo8ObA2oPZjlkEmAbehbFZPrdn+F8VugWO6XyhNeexkyep3eaeV58U=
+	t=1750175927; cv=none; b=r0MyKuZ0qgnmqC6xMVcO++C1FJ8J8K8Y4XJqwUZJTjJiXzVtE1Xn7NLoOU8WYNCj9cqq7qavZ9PJ4SMGziq7Rosd+zC74vmD/B+MYWKEMBBcLj8JUNu2uodUSLQiQZuktwPF85ezzxDFYFwcX3E2Cumxa4xNQvUS8aZKbeyPF5E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750178144; c=relaxed/simple;
-	bh=4jgiDB1c4ICennXf5qRlsdpmcgdM5AA9d7RHwd86GS0=;
+	s=arc-20240116; t=1750175927; c=relaxed/simple;
+	bh=ht2mKmB+X/ZDhYgBQhXERrsyJgw4Bj5IhrJS5tTRjFU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iXozTANMAi/EMGZ2DZwFmnNEnIZPL8wAyez2UBKAVp4rnSgvhyGsO9Gh/jMtyoG8yHRfwoCLqNDHOIy4r6RIz2pSJOKp0NNUip6KtkrEBMxA0ZA2pDzX8JPv4lg15lnj3cH7hBaJiUYEj5uAKdQwyCdt3RjqW/bE0osJNRZY85A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mdIVUtmx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3951DC4CEE3;
-	Tue, 17 Jun 2025 16:35:44 +0000 (UTC)
+	 MIME-Version; b=qUKY0sNFyjKFwnSs8gV/BlBW5ozNKke/+MA4USf79RDiZz7i9/H5cpEHlQs/0rgRfPTKNIfjIKtcYRuDDumQxGrRksMB2h8eVx2ovYgnB/9pEw4DRFsGXoo0x17Dwqpnd9DlWBY6rRA2mEQLA3qvImF9CyInNQ1CB/gqTkL1xVU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SfvpKVXa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 996ACC4CEE3;
+	Tue, 17 Jun 2025 15:58:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750178144;
-	bh=4jgiDB1c4ICennXf5qRlsdpmcgdM5AA9d7RHwd86GS0=;
+	s=korg; t=1750175927;
+	bh=ht2mKmB+X/ZDhYgBQhXERrsyJgw4Bj5IhrJS5tTRjFU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mdIVUtmx7xFZ1LNLyu3VXzqE9mdMGMQspZzOArjYjXAACbaxL4jUVs1+OQ/roR4wW
-	 pGbdpkWXbEi15n8yIfl0lMMNRuLhUzRzu5v4+kHEbW/OEc5xgFzMLUpD/9NV8hBh0p
-	 efDB1m1m5hSTxwKo+8stStcxK+WuVzj8hd/2TSzo=
+	b=SfvpKVXacSNaFUv4C+Ppe1mcuFoCTGJXwI/SEreR1YO0W9vQXmH5DPR80PiA3J5J8
+	 NVm03IWcyAJymdQ3B2ZSP7HwoSoHetx4IAM/ZvdV5uXcrkLtt7vAsosXXDxJZIY7dT
+	 7tsvyxzCXUkc//z3/DDffTKe1j5DzEfFzeD1iDWo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sergey Shtylyov <s.shtylyov@omp.ru>,
-	Helge Deller <deller@gmx.de>,
+	Ilan Peer <ilan.peer@intel.com>,
+	Johannes Berg <johannes.berg@intel.com>,
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 416/780] fbdev: core: fbcvt: avoid division by 0 in fb_cvt_hperiod()
+Subject: [PATCH 6.12 158/512] wifi: iwlfiwi: mvm: Fix the rate reporting
 Date: Tue, 17 Jun 2025 17:22:04 +0200
-Message-ID: <20250617152508.414646553@linuxfoundation.org>
+Message-ID: <20250617152426.016736907@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
-References: <20250617152451.485330293@linuxfoundation.org>
+In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
+References: <20250617152419.512865572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,44 +63,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sergey Shtylyov <s.shtylyov@omp.ru>
+From: Ilan Peer <ilan.peer@intel.com>
 
-[ Upstream commit 3f6dae09fc8c306eb70fdfef70726e1f154e173a ]
+[ Upstream commit 8f7561209eda7d6998708f06376e8dd2dc52f3b8 ]
 
-In fb_find_mode_cvt(), iff mode->refresh somehow happens to be 0x80000000,
-cvt.f_refresh will become 0 when multiplying it by 2 due to overflow. It's
-then passed to fb_cvt_hperiod(), where it's used as a divider -- division
-by 0 will result in kernel oops. Add a sanity check for cvt.f_refresh to
-avoid such overflow...
+The rate validation in mac80211 considers a rate to be valid iff both
+the rate index and the count are positive. When the rate scaling is
+managed in the driver and not enough traffic passed to set the actual
+rate, the driver set the rate to be the optimal rate. However, the rate
+count is not set and thus the rate is considered not valid. Fix it by
+setting the count to 1.
 
-Found by Linux Verification Center (linuxtesting.org) with the Svace static
-analysis tool.
-
-Fixes: 96fe6a2109db ("[PATCH] fbdev: Add VESA Coordinated Video Timings (CVT) support")
-Signed-off-by: Sergey Shtylyov <s.shtylyov@omp.ru>
-Signed-off-by: Helge Deller <deller@gmx.de>
+Fixes: 3e99b4d28219 ("wifi: mac80211: Sanity check tx bitrate if not provided by driver")
+Signed-off-by: Ilan Peer <ilan.peer@intel.com>
+Reviewed-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Link: https://patch.msgid.link/20250503224232.0d1d1e022d63.I76833c14ba1d66f9bea5c32b25a54d8b36f229ba@changeid
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/video/fbdev/core/fbcvt.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/wireless/intel/iwlwifi/mvm/rs.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/video/fbdev/core/fbcvt.c b/drivers/video/fbdev/core/fbcvt.c
-index 64843464c6613..cd3821bd82e56 100644
---- a/drivers/video/fbdev/core/fbcvt.c
-+++ b/drivers/video/fbdev/core/fbcvt.c
-@@ -312,7 +312,7 @@ int fb_find_mode_cvt(struct fb_videomode *mode, int margins, int rb)
- 	cvt.f_refresh = cvt.refresh;
- 	cvt.interlace = 1;
- 
--	if (!cvt.xres || !cvt.yres || !cvt.refresh) {
-+	if (!cvt.xres || !cvt.yres || !cvt.refresh || cvt.f_refresh > INT_MAX) {
- 		printk(KERN_INFO "fbcvt: Invalid input parameters\n");
- 		return 1;
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/rs.c b/drivers/net/wireless/intel/iwlwifi/mvm/rs.c
+index a8c4e354e2ce7..5f8f245804443 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/rs.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/rs.c
+@@ -2,6 +2,7 @@
+ /******************************************************************************
+  *
+  * Copyright(c) 2005 - 2014, 2018 - 2023 Intel Corporation. All rights reserved.
++ * Copyright(c) 2025 Intel Corporation
+  * Copyright(c) 2013 - 2015 Intel Mobile Communications GmbH
+  * Copyright(c) 2016 - 2017 Intel Deutschland GmbH
+  *****************************************************************************/
+@@ -2709,6 +2710,7 @@ static void rs_drv_get_rate(void *mvm_r, struct ieee80211_sta *sta,
+ 							  optimal_rate);
+ 		iwl_mvm_hwrate_to_tx_rate_v1(last_ucode_rate, info->band,
+ 					     &txrc->reported_rate);
++		txrc->reported_rate.count = 1;
  	}
+ 	spin_unlock_bh(&lq_sta->pers.lock);
+ }
 -- 
 2.39.5
 
