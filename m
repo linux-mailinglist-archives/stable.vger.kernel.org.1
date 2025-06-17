@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-154510-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-154194-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3C340ADD9EE
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 19:11:06 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5FF77ADD900
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 19:01:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2EFF917F169
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:57:40 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0A2F83AC799
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:44:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56EDC2FA627;
-	Tue, 17 Jun 2025 16:57:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE472285060;
+	Tue, 17 Jun 2025 16:40:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="crYs7yzs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ai3U9g3s"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 131D4CA4B;
-	Tue, 17 Jun 2025 16:57:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A555285055;
+	Tue, 17 Jun 2025 16:40:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750179439; cv=none; b=RIg0n7Eg2EX4IFFTXFjzr+wp7OIfmcFxNdeNUTEdOjaDbAp5Nw666wGLAP5LAurufT3nEg4JXlfL/ESjHk99BGxo8He2ROa5TmWrlOkkFqIO+/JwvgQrnulsuEkU0JIUBwjuQUOJD50ajTh9FkDnjZ0YWQ+iynNV069l9ETjyhI=
+	t=1750178406; cv=none; b=SE5xrfXH1Bw+tNkh6gvwUfLtSmodGSjX5UnEu6IBt6gZyAZ8qV2RwQe/kTguS3bA7Sk/MuN0keryMPZNZnAsozBPW/0p0v7va4aTMtqNqPWEpaZFTj2vMmuA+43SpzJD7F9JungkJXHfIsGAxj71Q9v4ZPVw8d8hcuZkCwEnwjs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750179439; c=relaxed/simple;
-	bh=TqQBF8chDFRlQyuMeEMm9DXWE/+VnC7ZMTOM3gOF3Oc=;
+	s=arc-20240116; t=1750178406; c=relaxed/simple;
+	bh=Dd960/mSBKiX13a2ISlXRcpWxWbPq5SJd8bGApVqVdM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ImlbIO8AGjfhaV3D+DB8zHDwOX5gCRRv2Xroisrbqxu3Sygk0e/Zdi2PbOqfMpHT/3OQ+Bb0iRJpiW95BMN31lI2iymPeIRXSSpXOQ9eD0yOk2Zx0RCsKFE84XVZRzJ8fVJ4TV9hFzq5sGNkMXzm7NI3zFSXStGBLVJ+RWLBiMo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=crYs7yzs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92232C4CEE3;
-	Tue, 17 Jun 2025 16:57:18 +0000 (UTC)
+	 MIME-Version; b=tWTQdzDQ0gxihvZHxysVTWgPlsUlp5TG7Qgtd701wmiUx44aDcdCUv0CSBnz68c4ooRbHqxY46LVirSxXAkizyRYM98vCIBTiCbu2GXcRrDEQez/evMCTeX2LANZuDVLEq0G6C6VoOLRzNtyUkKAaqWXP8YHWYD1MxJgVSKhF9Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ai3U9g3s; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1640AC4CEE3;
+	Tue, 17 Jun 2025 16:40:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750179438;
-	bh=TqQBF8chDFRlQyuMeEMm9DXWE/+VnC7ZMTOM3gOF3Oc=;
+	s=korg; t=1750178406;
+	bh=Dd960/mSBKiX13a2ISlXRcpWxWbPq5SJd8bGApVqVdM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=crYs7yzs0MHyk2R7bzf01j9u+nB2BT4q9FqcqTmHFFqcadd18Kw+nc06XdchVPA7G
-	 7IVf8f6RnnPKpB0y5P0os8MBMNHFLVSUdayNLHfrIZw6sQIFJncKAVKYAcFi86GqmS
-	 6wkjLaluPlWUsuqGqV3GNrgzqK2sMDqMnD37+S6I=
+	b=Ai3U9g3s2uoX1fApamboLCG+J9E87B2RcNm60Gkb+ZlnXbwbO/+t2RAmAOR7I3Lgi
+	 4lVZKTd2a182zZWLZiAC1EnHipzHeg8HTB58TnFy1e/Byc01B4U9YXA5pc85SvuqoJ
+	 TEYqZwaTGt2Phm5j/SDdoHot6YU0SWN8uLJoWJFE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+d8f72178ab6783a7daea@syzkaller.appspotmail.com,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.15 747/780] ALSA: usb-audio: Kill timer properly at removal
+	Dave Penkler <dpenkler@gmail.com>
+Subject: [PATCH 6.12 489/512] usb: usbtmc: Fix read_stb function and get_stb ioctl
 Date: Tue, 17 Jun 2025 17:27:35 +0200
-Message-ID: <20250617152521.919707938@linuxfoundation.org>
+Message-ID: <20250617152439.447414663@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
-References: <20250617152451.485330293@linuxfoundation.org>
+In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
+References: <20250617152419.512865572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,54 +60,74 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Takashi Iwai <tiwai@suse.de>
+From: Dave Penkler <dpenkler@gmail.com>
 
-commit 0718a78f6a9f04b88d0dc9616cc216b31c5f3cf1 upstream.
+commit acb3dac2805d3342ded7dbbd164add32bbfdf21c upstream.
 
-The USB-audio MIDI code initializes the timer, but in a rare case, the
-driver might be freed without the disconnect call.  This leaves the
-timer in an active state while the assigned object is released via
-snd_usbmidi_free(), which ends up with a kernel warning when the debug
-configuration is enabled, as spotted by fuzzer.
+The usbtmc488_ioctl_read_stb function relied on a positive return from
+usbtmc_get_stb to reset the srq condition in the driver. The
+USBTMC_IOCTL_GET_STB case tested for a positive return to return the stb
+to the user.
 
-For avoiding the problem, put timer_shutdown_sync() at
-snd_usbmidi_free(), so that the timer can be killed properly.
-While we're at it, replace the existing timer_delete_sync() at the
-disconnect callback with timer_shutdown_sync(), too.
+Commit: <cac01bd178d6> ("usb: usbtmc: Fix erroneous get_stb ioctl
+error returns") changed the return value of usbtmc_get_stb to 0 on
+success instead of returning the value of usb_control_msg which is
+positive in the normal case. This change caused the function
+usbtmc488_ioctl_read_stb and the USBTMC_IOCTL_GET_STB ioctl to no
+longer function correctly.
 
-Reported-by: syzbot+d8f72178ab6783a7daea@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/681c70d7.050a0220.a19a9.00c6.GAE@google.com
-Cc: <stable@vger.kernel.org>
-Link: https://patch.msgid.link/20250519212031.14436-1-tiwai@suse.de
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Change the test in usbtmc488_ioctl_read_stb to test for failure
+first and return the failure code immediately.
+Change the test for the USBTMC_IOCTL_GET_STB ioctl to test for 0
+instead of a positive value.
+
+Fixes: cac01bd178d6 ("usb: usbtmc: Fix erroneous get_stb ioctl error returns")
+Cc: stable@vger.kernel.org
+Signed-off-by: Dave Penkler <dpenkler@gmail.com>
+Link: https://lore.kernel.org/r/20250521121656.18174-3-dpenkler@gmail.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/usb/midi.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/usb/class/usbtmc.c |   17 +++++++++--------
+ 1 file changed, 9 insertions(+), 8 deletions(-)
 
---- a/sound/usb/midi.c
-+++ b/sound/usb/midi.c
-@@ -1530,6 +1530,7 @@ static void snd_usbmidi_free(struct snd_
- 			snd_usbmidi_in_endpoint_delete(ep->in);
- 	}
- 	mutex_destroy(&umidi->mutex);
-+	timer_shutdown_sync(&umidi->error_timer);
- 	kfree(umidi);
+--- a/drivers/usb/class/usbtmc.c
++++ b/drivers/usb/class/usbtmc.c
+@@ -565,14 +565,15 @@ static int usbtmc488_ioctl_read_stb(stru
+ 
+ 	rv = usbtmc_get_stb(file_data, &stb);
+ 
+-	if (rv > 0) {
+-		srq_asserted = atomic_xchg(&file_data->srq_asserted,
+-					srq_asserted);
+-		if (srq_asserted)
+-			stb |= 0x40; /* Set RQS bit */
++	if (rv < 0)
++		return rv;
++
++	srq_asserted = atomic_xchg(&file_data->srq_asserted, srq_asserted);
++	if (srq_asserted)
++		stb |= 0x40; /* Set RQS bit */
++
++	rv = put_user(stb, (__u8 __user *)arg);
+ 
+-		rv = put_user(stb, (__u8 __user *)arg);
+-	}
+ 	return rv;
+ 
  }
+@@ -2201,7 +2202,7 @@ static long usbtmc_ioctl(struct file *fi
  
-@@ -1553,7 +1554,7 @@ void snd_usbmidi_disconnect(struct list_
- 	spin_unlock_irq(&umidi->disc_lock);
- 	up_write(&umidi->disc_rwsem);
+ 	case USBTMC_IOCTL_GET_STB:
+ 		retval = usbtmc_get_stb(file_data, &tmp_byte);
+-		if (retval > 0)
++		if (!retval)
+ 			retval = put_user(tmp_byte, (__u8 __user *)arg);
+ 		break;
  
--	timer_delete_sync(&umidi->error_timer);
-+	timer_shutdown_sync(&umidi->error_timer);
- 
- 	for (i = 0; i < MIDI_MAX_ENDPOINTS; ++i) {
- 		struct snd_usb_midi_endpoint *ep = &umidi->endpoints[i];
 
 
 
