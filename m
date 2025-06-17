@@ -1,53 +1,56 @@
-Return-Path: <stable+bounces-153291-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153296-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9405FADD3D2
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:02:37 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 377C5ADD3D3
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:02:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E844E3BFF08
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 15:54:39 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B2AE119449C2
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 15:55:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53A3B2EA151;
-	Tue, 17 Jun 2025 15:51:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D0DA2F3624;
+	Tue, 17 Jun 2025 15:51:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WZvbkUS7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fpnsnXvY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F96E2DFF3D;
-	Tue, 17 Jun 2025 15:51:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AC452F3620;
+	Tue, 17 Jun 2025 15:51:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750175481; cv=none; b=asG8n36d4+UGl9gwiHeYvENF+QcK8Mkv9mYMagK3z3toYt5k/q0oo82bkQd3fNzeH9HYJ3D3MwKaLoNtCjOMmc7TcEWrU3xel8VAwZcGQ1dMBEM9NQgZmBrG5aM3SeED7F7z7i2r+Zu827Ob971++9P4J58w0+OKukClsQCJYlE=
+	t=1750175493; cv=none; b=CIatdDktq5OY4AyP9fEZNy8mx8cx4/bsAFUAzSqJwHpjQ1kXihVzRwoYYVlkU/Gxa+TxKp9V4sqt2wWwXKrwdGl1LnGQmQ+OTzOHo197Ry95fXYcUGphKxsxt++50XU4p+RwW4nRNLT8ax/z7jKO9M5W8+wkn5SHM+Gi1vndU20=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750175481; c=relaxed/simple;
-	bh=tz62SUgiUe5nn81QlMzWwov5E9khfBR3guccP5qDEvg=;
+	s=arc-20240116; t=1750175493; c=relaxed/simple;
+	bh=ggC2utJQ3Wt6HitZPeq0eTFX5nSa8P5GbB+SbIP2TC4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fuCrGK/H7d1vxQLv0qS4uaYPHhoKlaokD1EOnoepzHe/vKx1MJ8s5mK+R0Vjv4Z6fZRZJLeIFxpodJmR4tc+JzTsUAJUPYjYQurkOpMCl+UmmvOkLitRKFI+gH11Fxv1XkdC+cprkCzUWLF4nxXa6LKCjN8+9ubIfqeFhJaH29I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WZvbkUS7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71B28C4CEE3;
-	Tue, 17 Jun 2025 15:51:20 +0000 (UTC)
+	 MIME-Version; b=C5E57j5KPz8oMWJkmhfaOkITSQMxWge7YTitfuZxLCVndesQoFEv/63vYDJnf2dg7ZcPiFFd1gwXr5hJ4SvcghVtTkX7PsbhcFjYNtqHGnR7z2wQLPIrnfOi45GbqkEgV3pbpsQHDl/ufEq1tf7FgX085KUNHrUj8MaptOtV2aQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fpnsnXvY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D41FC4CEE3;
+	Tue, 17 Jun 2025 15:51:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750175480;
-	bh=tz62SUgiUe5nn81QlMzWwov5E9khfBR3guccP5qDEvg=;
+	s=korg; t=1750175492;
+	bh=ggC2utJQ3Wt6HitZPeq0eTFX5nSa8P5GbB+SbIP2TC4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WZvbkUS7qph6VBpb+f9PeVIEU6+udQSdpsOE1ECQGTiWfL18grGRWCdncA5yD91wZ
-	 prQFuY0uNA3sw9TYCQDRuaC8qnqeOj5tyG5utthqc1v22N/JPEf4pGVFLda+bPuWpn
-	 DiZXXoAUrYkdsd5pRiOmtTQZVmF4hqtO+R9drrcM=
+	b=fpnsnXvYsOAQy4Eo+8RKragumSJJdOeZikwU+VpZDvrZqcPGgRgNnlVH2sh3DsHRO
+	 Bp/TzqW7V99FEjfodc0MkIQJ7XOPojyIT8SJLJHbiFqYSmWA+Ma+DOfQ44oykrJ/0I
+	 2zLd1eyW5oZoaoUusY80wSDilHm4YuakBGVFnBhI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ian Forbes <ian.forbes@broadcom.com>,
-	Zack Rusin <zack.rusin@broadcom.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Stefan Wahren <wahrenst@gmx.net>,
+	Maxime Ripard <mripard@kernel.org>,
+	David Turner <david.turner@raspberrypi.com>,
+	Dave Stevenson <dave.stevenson@raspberrypi.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 092/780] drm/vmwgfx: Fix dumb buffer leak
-Date: Tue, 17 Jun 2025 17:16:40 +0200
-Message-ID: <20250617152455.261364410@linuxfoundation.org>
+Subject: [PATCH 6.15 093/780] drm/vc4: hdmi: Call HDMI hotplug helper on disconnect
+Date: Tue, 17 Jun 2025 17:16:41 +0200
+Message-ID: <20250617152455.300821602@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
 References: <20250617152451.485330293@linuxfoundation.org>
@@ -66,133 +69,46 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Ian Forbes <ian.forbes@broadcom.com>
+From: Stefan Wahren <wahrenst@gmx.net>
 
-[ Upstream commit f42c09e614f1bda96f5690be8d0bb273234febbc ]
+[ Upstream commit 34f051accedb642087fdcf19b3501fe150fbee49 ]
 
-Dumb buffers were not being freed because the GEM reference that was
-acquired in gb_surface_define was not dropped like it is in the 2D case.
-Dropping this ref uncovered a few additional issues with freeing the
-resources associated with dirty tracking in vmw_bo_free/release.
+drm_atomic_helper_connector_hdmi_hotplug() must be called
+regardless of the connection status, otherwise the HDMI audio
+disconnect event won't be notified.
 
-Additionally the TTM object associated with the surface were also leaking
-which meant that when the ttm_object_file was closed at process exit the
-destructor unreferenced an already destroyed surface.
-
-The solution is to remove the destructor from the vmw_user_surface
-associated with the dumb_buffer and immediately unreferencing the TTM
-object which his removes it from the ttm_object_file.
-
-This also allows the early return in vmw_user_surface_base_release for the
-dumb buffer case to be removed as it should no longer occur.
-
-The chain of references now has the GEM handle(s) owning the dumb buffer.
-The GEM handles have a singular GEM reference to the vmw_bo which is
-dropped when all handles are closed. When the GEM reference count hits
-zero the vmw_bo is freed which then unreferences the surface via
-vmw_resource_release in vmw_bo_release.
-
-Fixes: d6667f0ddf46 ("drm/vmwgfx: Fix handling of dumb buffers")
-Signed-off-by: Ian Forbes <ian.forbes@broadcom.com>
-Reviewed-by: Zack Rusin <zack.rusin@broadcom.com>
-Signed-off-by: Zack Rusin <zack.rusin@broadcom.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20250123204424.836896-1-ian.forbes@broadcom.com
+Fixes: 2ea9ec5d2c20 ("drm/vc4: hdmi: use drm_atomic_helper_connector_hdmi_hotplug()")
+Suggested-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Signed-off-by: Stefan Wahren <wahrenst@gmx.net>
+Reviewed-by: Maxime Ripard <mripard@kernel.org>
+Signed-off-by: David Turner <david.turner@raspberrypi.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20250317-vc4_hotplug-v4-2-2af625629186@raspberrypi.com
+Signed-off-by: Dave Stevenson <dave.stevenson@raspberrypi.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/vmwgfx/vmwgfx_bo.c       |  6 ++++--
- drivers/gpu/drm/vmwgfx/vmwgfx_resource.c |  2 +-
- drivers/gpu/drm/vmwgfx/vmwgfx_surface.c  | 18 ++++++++++++------
- 3 files changed, 17 insertions(+), 9 deletions(-)
+ drivers/gpu/drm/vc4/vc4_hdmi.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/vmwgfx/vmwgfx_bo.c b/drivers/gpu/drm/vmwgfx/vmwgfx_bo.c
-index aa13e4061ff15..f30df3dc871fd 100644
---- a/drivers/gpu/drm/vmwgfx/vmwgfx_bo.c
-+++ b/drivers/gpu/drm/vmwgfx/vmwgfx_bo.c
-@@ -51,11 +51,13 @@ static void vmw_bo_release(struct vmw_bo *vbo)
- 			mutex_lock(&res->dev_priv->cmdbuf_mutex);
- 			(void)vmw_resource_reserve(res, false, true);
- 			vmw_resource_mob_detach(res);
-+			if (res->dirty)
-+				res->func->dirty_free(res);
- 			if (res->coherent)
- 				vmw_bo_dirty_release(res->guest_memory_bo);
- 			res->guest_memory_bo = NULL;
- 			res->guest_memory_offset = 0;
--			vmw_resource_unreserve(res, false, false, false, NULL,
-+			vmw_resource_unreserve(res, true, false, false, NULL,
- 					       0);
- 			mutex_unlock(&res->dev_priv->cmdbuf_mutex);
- 		}
-@@ -73,9 +75,9 @@ static void vmw_bo_free(struct ttm_buffer_object *bo)
- {
- 	struct vmw_bo *vbo = to_vmw_bo(&bo->base);
- 
--	WARN_ON(vbo->dirty);
- 	WARN_ON(!RB_EMPTY_ROOT(&vbo->res_tree));
- 	vmw_bo_release(vbo);
-+	WARN_ON(vbo->dirty);
- 	kfree(vbo);
- }
- 
-diff --git a/drivers/gpu/drm/vmwgfx/vmwgfx_resource.c b/drivers/gpu/drm/vmwgfx/vmwgfx_resource.c
-index a73af8a355fbf..c4d5fe5f330f9 100644
---- a/drivers/gpu/drm/vmwgfx/vmwgfx_resource.c
-+++ b/drivers/gpu/drm/vmwgfx/vmwgfx_resource.c
-@@ -273,7 +273,7 @@ int vmw_user_resource_lookup_handle(struct vmw_private *dev_priv,
- 		goto out_bad_resource;
- 
- 	res = converter->base_obj_to_res(base);
--	kref_get(&res->kref);
-+	vmw_resource_reference(res);
- 
- 	*p_res = res;
- 	ret = 0;
-diff --git a/drivers/gpu/drm/vmwgfx/vmwgfx_surface.c b/drivers/gpu/drm/vmwgfx/vmwgfx_surface.c
-index 1f7626f6ac0b1..d7a8070330ba5 100644
---- a/drivers/gpu/drm/vmwgfx/vmwgfx_surface.c
-+++ b/drivers/gpu/drm/vmwgfx/vmwgfx_surface.c
-@@ -658,7 +658,7 @@ static void vmw_user_surface_free(struct vmw_resource *res)
- 	struct vmw_user_surface *user_srf =
- 	    container_of(srf, struct vmw_user_surface, srf);
- 
--	WARN_ON_ONCE(res->dirty);
-+	WARN_ON(res->dirty);
- 	if (user_srf->master)
- 		drm_master_put(&user_srf->master);
- 	kfree(srf->offsets);
-@@ -689,8 +689,7 @@ static void vmw_user_surface_base_release(struct ttm_base_object **p_base)
- 	 * Dumb buffers own the resource and they'll unref the
- 	 * resource themselves
+diff --git a/drivers/gpu/drm/vc4/vc4_hdmi.c b/drivers/gpu/drm/vc4/vc4_hdmi.c
+index 37238a12baa58..37a7d45695f23 100644
+--- a/drivers/gpu/drm/vc4/vc4_hdmi.c
++++ b/drivers/gpu/drm/vc4/vc4_hdmi.c
+@@ -372,13 +372,13 @@ static void vc4_hdmi_handle_hotplug(struct vc4_hdmi *vc4_hdmi,
+ 	 * the lock for now.
  	 */
--	if (res && res->guest_memory_bo && res->guest_memory_bo->is_dumb)
--		return;
-+	WARN_ON(res && res->guest_memory_bo && res->guest_memory_bo->is_dumb);
  
- 	vmw_resource_unreference(&res);
- }
-@@ -2370,12 +2369,19 @@ int vmw_dumb_create(struct drm_file *file_priv,
- 	vbo = res->guest_memory_bo;
- 	vbo->is_dumb = true;
- 	vbo->dumb_surface = vmw_res_to_srf(res);
--
-+	drm_gem_object_put(&vbo->tbo.base);
-+	/*
-+	 * Unset the user surface dtor since this in not actually exposed
-+	 * to userspace. The suface is owned via the dumb_buffer's GEM handle
-+	 */
-+	struct vmw_user_surface *usurf = container_of(vbo->dumb_surface,
-+						struct vmw_user_surface, srf);
-+	usurf->prime.base.refcount_release = NULL;
- err:
- 	if (res)
- 		vmw_resource_unreference(&res);
--	if (ret)
--		ttm_ref_object_base_unref(tfile, arg.rep.handle);
++	drm_atomic_helper_connector_hdmi_hotplug(connector, status);
 +
-+	ttm_ref_object_base_unref(tfile, arg.rep.handle);
+ 	if (status == connector_status_disconnected) {
+ 		cec_phys_addr_invalidate(vc4_hdmi->cec_adap);
+ 		return;
+ 	}
  
- 	return ret;
- }
+-	drm_atomic_helper_connector_hdmi_hotplug(connector, status);
+-
+ 	cec_s_phys_addr(vc4_hdmi->cec_adap,
+ 			connector->display_info.source_physical_address, false);
+ 
 -- 
 2.39.5
 
