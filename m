@@ -1,53 +1,55 @@
-Return-Path: <stable+bounces-153867-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153869-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 64E49ADD75C
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:44:02 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8A0F7ADD70A
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:40:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EC53919455A1
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:28:05 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0DD794A1C5B
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:27:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B2A542E8DE0;
-	Tue, 17 Jun 2025 16:22:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C5562E8DF6;
+	Tue, 17 Jun 2025 16:22:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CHEUyu3r"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZeYLMn9C"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7146D2DFF1B;
-	Tue, 17 Jun 2025 16:22:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F4422E8DEF;
+	Tue, 17 Jun 2025 16:22:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750177353; cv=none; b=KJmIiir7cIUcmwdheKLF5aaKGHjetgJYeSvEjrx2TH/tMKPMtxENpHfhE58MgxzIH5leYjKYNimFDsByQSQkBD4UBDHSWt1kehxjIPYuV6xUq9SOrXkXfYwqJVBZ14/IK+KTfdQdAc0+B7Tr6yLb/VSDzdYmMt4c19mCKURdwgI=
+	t=1750177360; cv=none; b=MYvows+ebEDjcj4I3j7Oof3/yepmGE0K7aNeFu1aPK1IJW5xs2CqOTAWVF4gSCbPY12GJawSihXzKWyO8HnEGWvZlFQoxlgnC3AFOe1W05CTJdSGoA5Dcuibo8y+jLSQ+RokdwLQBtqeSRXeEMuxgD8mBDd8pWBeJPfbK40Pfsc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750177353; c=relaxed/simple;
-	bh=4RDlr5qFhnwE+IqXGQTEk189gN9LmAbILar1TZm7D9w=;
+	s=arc-20240116; t=1750177360; c=relaxed/simple;
+	bh=JxuogJNZ9XWerLU9GfzOjfbvehVSSeRmAU31+8ihJcE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RTAHRBpPS8vzu20RghAtHk3weArvCwG9wQ2Qj7Alo6ciqGbq70uRGQEvuzWY4zysFtKqTbBvyIFBIYDvwNcA0XOMTe8bfOvME58nu9bweEjwPSkpVYwD+hthcgHy/EUYelkovK4IByhrjGxO6BvTk0DNn0FUu4RgUk5n3qESbrU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CHEUyu3r; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5B1DC4CEE3;
-	Tue, 17 Jun 2025 16:22:32 +0000 (UTC)
+	 MIME-Version; b=PQBPCopgcOd7U2xw6BNV6p8HcB5DX8StkfvYRGIDyxfeVr/Rg49um5Mk+10GCqDecTslhncgcAGpzwJN7k3X2xIxylDZjS8uS1ECJzJv7+rIT+hKoxFaAxxRiTChFC2u5erjngs+yzjfwZiRNAU3+kCiZ4uM92YiINNNIJPbqbs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZeYLMn9C; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68518C4CEE7;
+	Tue, 17 Jun 2025 16:22:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750177353;
-	bh=4RDlr5qFhnwE+IqXGQTEk189gN9LmAbILar1TZm7D9w=;
+	s=korg; t=1750177359;
+	bh=JxuogJNZ9XWerLU9GfzOjfbvehVSSeRmAU31+8ihJcE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CHEUyu3rtrLSAjW2ALGokqBjNyNLTfgl60r3s8GBENfyc8ristUFimqPLVU5Xv3Bq
-	 D2rlBfkAPDfhcrpgLgOh+KmpwHXr9RIxntmPZpwQF+pyzagwGCi0EQ0Q80N9N7zXHb
-	 fF8up6YKpDkVHv0Gf2imsnTbY6rt4Hspd/INGo0Q=
+	b=ZeYLMn9CSKcMfR9T0cqvOJ0QPqmPm2/g2AF1MNpPu2Ipt6rD3rGtwQhPsKtDkKdNj
+	 umI8N8Y3jmhX3nng4goN0rcq1kb+CCe7UOwiA1NP9eL5E8K0Kzw/4fihKrqTW/7w52
+	 NL3BIPh32y4zB4T5SIgmSWND24AyUXLZrkqXP4Z4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Junhao He <hejunhao3@huawei.com>,
+	Yabin Cui <yabinc@google.com>,
+	James Clark <james.clark@linaro.org>,
+	Leo Yan <leo.yan@arm.com>,
 	Suzuki K Poulose <suzuki.poulose@arm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 331/512] coresight: Fixes devices owner field for registered using coresight_init_driver()
-Date: Tue, 17 Jun 2025 17:24:57 +0200
-Message-ID: <20250617152433.025010167@linuxfoundation.org>
+Subject: [PATCH 6.12 332/512] coresight: catu: Introduce refcount and spinlock for enabling/disabling
+Date: Tue, 17 Jun 2025 17:24:58 +0200
+Message-ID: <20250617152433.064526609@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
 References: <20250617152419.512865572@linuxfoundation.org>
@@ -66,172 +68,107 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Junhao He <hejunhao3@huawei.com>
+From: Yabin Cui <yabinc@google.com>
 
-[ Upstream commit 9f52aecc952ddf307571517d5c91136c8c4e87c9 ]
+[ Upstream commit a03a0a08c6fe5e50c1b12ea41b9e228e7f649c22 ]
 
-The coresight_init_driver() of the coresight-core module is called from
-the sub coresgiht device (such as tmc/stm/funnle/...) module. It calls
-amba_driver_register() and Platform_driver_register(), which are macro
-functions that use the coresight-core's module to initialize the caller's
-owner field.  Therefore, when the sub coresight device calls
-coresight_init_driver(), an incorrect THIS_MODULE value is captured.
+When tracing ETM data on multiple CPUs concurrently via the
+perf interface, the CATU device is shared across different CPU
+paths. This can lead to race conditions when multiple CPUs attempt
+to enable or disable the CATU device simultaneously.
 
-The sub coesgiht modules can be removed while their callbacks are
-running, resulting in a general protection failure.
+To address these race conditions, this patch introduces the
+following changes:
 
-Add module parameter to coresight_init_driver() so can be called
-with the module of the callback.
+1. The enable and disable operations for the CATU device are not
+   reentrant. Therefore, a spinlock is added to ensure that only
+   one CPU can enable or disable a given CATU device at any point
+   in time.
 
-Fixes: 075b7cd7ad7d ("coresight: Add helpers registering/removing both AMBA and platform drivers")
-Signed-off-by: Junhao He <hejunhao3@huawei.com>
+2. A reference counter is used to manage the enable/disable state
+   of the CATU device. The device is enabled when the first CPU
+   requires it and is only disabled when the last CPU finishes
+   using it. This ensures the device remains active as long as at
+   least one CPU needs it.
+
+Fixes: fcacb5c154ba ("coresight: Introduce support for Coresight Address Translation Unit")
+Signed-off-by: Yabin Cui <yabinc@google.com>
+Reviewed-by: James Clark <james.clark@linaro.org>
+Reviewed-by: Leo Yan <leo.yan@arm.com>
 Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
-Link: https://lore.kernel.org/r/20240918035327.9710-1-hejunhao3@huawei.com
+Link: https://lore.kernel.org/r/20250429231301.1952246-2-yabinc@google.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hwtracing/coresight/coresight-catu.c       | 2 +-
- drivers/hwtracing/coresight/coresight-core.c       | 6 +++---
- drivers/hwtracing/coresight/coresight-cpu-debug.c  | 3 ++-
- drivers/hwtracing/coresight/coresight-funnel.c     | 3 ++-
- drivers/hwtracing/coresight/coresight-replicator.c | 3 ++-
- drivers/hwtracing/coresight/coresight-stm.c        | 2 +-
- drivers/hwtracing/coresight/coresight-tmc-core.c   | 2 +-
- drivers/hwtracing/coresight/coresight-tpiu.c       | 2 +-
- include/linux/coresight.h                          | 2 +-
- 9 files changed, 14 insertions(+), 11 deletions(-)
+ drivers/hwtracing/coresight/coresight-catu.c | 25 +++++++++++++-------
+ drivers/hwtracing/coresight/coresight-catu.h |  1 +
+ 2 files changed, 18 insertions(+), 8 deletions(-)
 
 diff --git a/drivers/hwtracing/coresight/coresight-catu.c b/drivers/hwtracing/coresight/coresight-catu.c
-index d8ad64ea81f11..8cf85ff216bbe 100644
+index 8cf85ff216bbe..25fd02955c38d 100644
 --- a/drivers/hwtracing/coresight/coresight-catu.c
 +++ b/drivers/hwtracing/coresight/coresight-catu.c
-@@ -702,7 +702,7 @@ static int __init catu_init(void)
+@@ -458,12 +458,17 @@ static int catu_enable_hw(struct catu_drvdata *drvdata, enum cs_mode cs_mode,
+ static int catu_enable(struct coresight_device *csdev, enum cs_mode mode,
+ 		       void *data)
  {
- 	int ret;
+-	int rc;
++	int rc = 0;
+ 	struct catu_drvdata *catu_drvdata = csdev_to_catu_drvdata(csdev);
  
--	ret = coresight_init_driver("catu", &catu_driver, &catu_platform_driver);
-+	ret = coresight_init_driver("catu", &catu_driver, &catu_platform_driver, THIS_MODULE);
- 	tmc_etr_set_catu_ops(&etr_catu_buf_ops);
- 	return ret;
- }
-diff --git a/drivers/hwtracing/coresight/coresight-core.c b/drivers/hwtracing/coresight/coresight-core.c
-index c42aa9fddab9b..c7e35a431ab00 100644
---- a/drivers/hwtracing/coresight/coresight-core.c
-+++ b/drivers/hwtracing/coresight/coresight-core.c
-@@ -1422,17 +1422,17 @@ module_init(coresight_init);
- module_exit(coresight_exit);
- 
- int coresight_init_driver(const char *drv, struct amba_driver *amba_drv,
--			  struct platform_driver *pdev_drv)
-+			  struct platform_driver *pdev_drv, struct module *owner)
- {
- 	int ret;
- 
--	ret = amba_driver_register(amba_drv);
-+	ret = __amba_driver_register(amba_drv, owner);
- 	if (ret) {
- 		pr_err("%s: error registering AMBA driver\n", drv);
- 		return ret;
- 	}
- 
--	ret = platform_driver_register(pdev_drv);
-+	ret = __platform_driver_register(pdev_drv, owner);
- 	if (!ret)
- 		return 0;
- 
-diff --git a/drivers/hwtracing/coresight/coresight-cpu-debug.c b/drivers/hwtracing/coresight/coresight-cpu-debug.c
-index 75962dae9aa18..cc599c5ef4b22 100644
---- a/drivers/hwtracing/coresight/coresight-cpu-debug.c
-+++ b/drivers/hwtracing/coresight/coresight-cpu-debug.c
-@@ -774,7 +774,8 @@ static struct platform_driver debug_platform_driver = {
- 
- static int __init debug_init(void)
- {
--	return coresight_init_driver("debug", &debug_driver, &debug_platform_driver);
-+	return coresight_init_driver("debug", &debug_driver, &debug_platform_driver,
-+				     THIS_MODULE);
+-	CS_UNLOCK(catu_drvdata->base);
+-	rc = catu_enable_hw(catu_drvdata, mode, data);
+-	CS_LOCK(catu_drvdata->base);
++	guard(raw_spinlock_irqsave)(&catu_drvdata->spinlock);
++	if (csdev->refcnt == 0) {
++		CS_UNLOCK(catu_drvdata->base);
++		rc = catu_enable_hw(catu_drvdata, mode, data);
++		CS_LOCK(catu_drvdata->base);
++	}
++	if (!rc)
++		csdev->refcnt++;
+ 	return rc;
  }
  
- static void __exit debug_exit(void)
-diff --git a/drivers/hwtracing/coresight/coresight-funnel.c b/drivers/hwtracing/coresight/coresight-funnel.c
-index 5a819c8970fbf..8f451b051ddc3 100644
---- a/drivers/hwtracing/coresight/coresight-funnel.c
-+++ b/drivers/hwtracing/coresight/coresight-funnel.c
-@@ -433,7 +433,8 @@ static struct amba_driver dynamic_funnel_driver = {
+@@ -486,12 +491,15 @@ static int catu_disable_hw(struct catu_drvdata *drvdata)
  
- static int __init funnel_init(void)
+ static int catu_disable(struct coresight_device *csdev, void *__unused)
  {
--	return coresight_init_driver("funnel", &dynamic_funnel_driver, &funnel_driver);
-+	return coresight_init_driver("funnel", &dynamic_funnel_driver, &funnel_driver,
-+				     THIS_MODULE);
+-	int rc;
++	int rc = 0;
+ 	struct catu_drvdata *catu_drvdata = csdev_to_catu_drvdata(csdev);
+ 
+-	CS_UNLOCK(catu_drvdata->base);
+-	rc = catu_disable_hw(catu_drvdata);
+-	CS_LOCK(catu_drvdata->base);
++	guard(raw_spinlock_irqsave)(&catu_drvdata->spinlock);
++	if (--csdev->refcnt == 0) {
++		CS_UNLOCK(catu_drvdata->base);
++		rc = catu_disable_hw(catu_drvdata);
++		CS_LOCK(catu_drvdata->base);
++	}
+ 	return rc;
  }
  
- static void __exit funnel_exit(void)
-diff --git a/drivers/hwtracing/coresight/coresight-replicator.c b/drivers/hwtracing/coresight/coresight-replicator.c
-index 3e55be9c84186..f7607c72857c5 100644
---- a/drivers/hwtracing/coresight/coresight-replicator.c
-+++ b/drivers/hwtracing/coresight/coresight-replicator.c
-@@ -438,7 +438,8 @@ static struct amba_driver dynamic_replicator_driver = {
+@@ -550,6 +558,7 @@ static int __catu_probe(struct device *dev, struct resource *res)
+ 	dev->platform_data = pdata;
  
- static int __init replicator_init(void)
- {
--	return coresight_init_driver("replicator", &dynamic_replicator_driver, &replicator_driver);
-+	return coresight_init_driver("replicator", &dynamic_replicator_driver, &replicator_driver,
-+				     THIS_MODULE);
- }
+ 	drvdata->base = base;
++	raw_spin_lock_init(&drvdata->spinlock);
+ 	catu_desc.access = CSDEV_ACCESS_IOMEM(base);
+ 	catu_desc.pdata = pdata;
+ 	catu_desc.dev = dev;
+diff --git a/drivers/hwtracing/coresight/coresight-catu.h b/drivers/hwtracing/coresight/coresight-catu.h
+index 141feac1c14b0..755776cd19c5b 100644
+--- a/drivers/hwtracing/coresight/coresight-catu.h
++++ b/drivers/hwtracing/coresight/coresight-catu.h
+@@ -65,6 +65,7 @@ struct catu_drvdata {
+ 	void __iomem *base;
+ 	struct coresight_device *csdev;
+ 	int irq;
++	raw_spinlock_t spinlock;
+ };
  
- static void __exit replicator_exit(void)
-diff --git a/drivers/hwtracing/coresight/coresight-stm.c b/drivers/hwtracing/coresight/coresight-stm.c
-index cb3e04755c992..65bc50a6d3e9a 100644
---- a/drivers/hwtracing/coresight/coresight-stm.c
-+++ b/drivers/hwtracing/coresight/coresight-stm.c
-@@ -1047,7 +1047,7 @@ static struct platform_driver stm_platform_driver = {
- 
- static int __init stm_init(void)
- {
--	return coresight_init_driver("stm", &stm_driver, &stm_platform_driver);
-+	return coresight_init_driver("stm", &stm_driver, &stm_platform_driver, THIS_MODULE);
- }
- 
- static void __exit stm_exit(void)
-diff --git a/drivers/hwtracing/coresight/coresight-tmc-core.c b/drivers/hwtracing/coresight/coresight-tmc-core.c
-index 3a482fd2cb225..475fa4bb6813b 100644
---- a/drivers/hwtracing/coresight/coresight-tmc-core.c
-+++ b/drivers/hwtracing/coresight/coresight-tmc-core.c
-@@ -741,7 +741,7 @@ static struct platform_driver tmc_platform_driver = {
- 
- static int __init tmc_init(void)
- {
--	return coresight_init_driver("tmc", &tmc_driver, &tmc_platform_driver);
-+	return coresight_init_driver("tmc", &tmc_driver, &tmc_platform_driver, THIS_MODULE);
- }
- 
- static void __exit tmc_exit(void)
-diff --git a/drivers/hwtracing/coresight/coresight-tpiu.c b/drivers/hwtracing/coresight/coresight-tpiu.c
-index b048e146fbb10..f9ecd05cbe5c5 100644
---- a/drivers/hwtracing/coresight/coresight-tpiu.c
-+++ b/drivers/hwtracing/coresight/coresight-tpiu.c
-@@ -318,7 +318,7 @@ static struct platform_driver tpiu_platform_driver = {
- 
- static int __init tpiu_init(void)
- {
--	return coresight_init_driver("tpiu", &tpiu_driver, &tpiu_platform_driver);
-+	return coresight_init_driver("tpiu", &tpiu_driver, &tpiu_platform_driver, THIS_MODULE);
- }
- 
- static void __exit tpiu_exit(void)
-diff --git a/include/linux/coresight.h b/include/linux/coresight.h
-index f106b10251118..59f99b7da43f5 100644
---- a/include/linux/coresight.h
-+++ b/include/linux/coresight.h
-@@ -683,7 +683,7 @@ coresight_find_output_type(struct coresight_platform_data *pdata,
- 			   union coresight_dev_subtype subtype);
- 
- int coresight_init_driver(const char *drv, struct amba_driver *amba_drv,
--			  struct platform_driver *pdev_drv);
-+			  struct platform_driver *pdev_drv, struct module *owner);
- 
- void coresight_remove_driver(struct amba_driver *amba_drv,
- 			     struct platform_driver *pdev_drv);
+ #define CATU_REG32(name, offset)					\
 -- 
 2.39.5
 
