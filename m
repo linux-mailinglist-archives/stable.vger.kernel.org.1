@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-153103-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153107-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A62CADD250
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 17:41:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 885B1ADD258
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 17:41:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 36DD317D778
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 15:41:17 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 34A1717D896
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 15:41:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DCEC42ECD22;
-	Tue, 17 Jun 2025 15:41:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 051472ECD30;
+	Tue, 17 Jun 2025 15:41:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0i9z6o7k"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rQm9RG+Y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A5AC2DF3C9;
-	Tue, 17 Jun 2025 15:41:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B233A2EBDCC;
+	Tue, 17 Jun 2025 15:41:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750174874; cv=none; b=ZVWQSfJHuCKiN7GVGQxOdudn2NIfsKaDcIk+EiFDtgTCzhEIyvRBGaICuXAMnJIV22bGgcOpFbVxL1hnR7V0XapqiF1oKsk3jsgk7Pr9aSgdr0bmh/TVCFxqF23Izlzd6fIuVhDYYVqfvFozIMMiCAvBPIcuDQISX3SvVZmd/54=
+	t=1750174886; cv=none; b=ST1n5ejqojj7o2Mk/KCwDDeBsGJBaiSygd/3lQEKs1CyX6hDX9H+WDqd8xpw8m2x82nVaMX0dbSXd+oF3f6GwPI6lcOrahfYExFG7s88dwB0kfGQ63qA7/E2fl2gKW062+8L9mFsfCr487c8BLTLx0tSEnD6RjlqfRKTtsWMPrs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750174874; c=relaxed/simple;
-	bh=ZQeCBo96ryQbRInQ9axv96PX170iV7JjpyIO8YrdtU4=;
+	s=arc-20240116; t=1750174886; c=relaxed/simple;
+	bh=oowcxXkBPCRlRaRHiwVcI1Mi/UQ5rBmhOTN+MY7rGDI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KAGUivROJawoT4m+gSsMlhgH8mcjhRdtD/2OAuz+sSopPcuXmyHYHD1wmiYashD7zmrf/dK99BZcIrbe11xy0zUXWkRQbSV5trrPiQFMrShEmtybNekOQGBKH7dm/CO+ek4kFtXSOiELyYXO94a1Em2rCY6qY8ZMsjgvGAWUxlI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0i9z6o7k; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 288CEC4CEE7;
-	Tue, 17 Jun 2025 15:41:13 +0000 (UTC)
+	 MIME-Version; b=WpBfAaz7+7P6lvPyU3pgs+G/I6TlC/zlAqy951BU+l0DZk9mddQMmRVvoc0CF7Ux0saLpm2mP2/8UmNZAPkt1GtNcRH3tdlbs1bh6trsgXr2YuUll0erPuhwDPjbcJMqUNdroebCVq6bfaM6/aCKfwGrUYsnGbuBkyl1OU2i55A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rQm9RG+Y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A7B8C4CEF0;
+	Tue, 17 Jun 2025 15:41:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750174874;
-	bh=ZQeCBo96ryQbRInQ9axv96PX170iV7JjpyIO8YrdtU4=;
+	s=korg; t=1750174886;
+	bh=oowcxXkBPCRlRaRHiwVcI1Mi/UQ5rBmhOTN+MY7rGDI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0i9z6o7kRv4V3V3cPYYbIDIN6TbavWtG5oxex+ntg9uPHXqIZFxqvrrHtqmaB10II
-	 8t6qMPCsDi1FVWDkCAqnHDiRnyq9uSUtjKOM26PwGRFriDTL0BxRlLrDrcttIEkvK6
-	 656AgCDEfZM2AsSqnP93feF7CPLOJcP3463udRuA=
+	b=rQm9RG+Y7OEwT+t5ZeZW4p8F+psSRPh458I3QOQL/TSLayibsNExtvLVKDH2L5L2W
+	 Fxb7Z6FBTH5u9ONJNtIaHAMA9pvLvB+EUb5MhDsL7fViQs4d7ey7DAQye1oelZNbFt
+	 dfiC7UCLWJBnSfWwyLdgJhXYvJb7krKREnpe1k2o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zizhi Wo <wozizhi@huawei.com>,
-	Yu Kuai <yukuai3@huawei.com>,
-	Ming Lei <ming.lei@redhat.com>,
-	Jens Axboe <axboe@kernel.dk>,
+	"Ahmed S. Darwish" <darwi@linutronix.de>,
+	Ingo Molnar <mingo@kernel.org>,
+	Andrew Cooper <andrew.cooper3@citrix.com>,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	John Ogness <john.ogness@linutronix.de>,
+	x86-cpuid@lists.linux.dev,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 029/780] blk-throttle: Fix wrong tg->[bytes/io]_disp update in __tg_update_carryover()
-Date: Tue, 17 Jun 2025 17:15:37 +0200
-Message-ID: <20250617152452.689954820@linuxfoundation.org>
+Subject: [PATCH 6.15 030/780] x86/cpu: Sanitize CPUID(0x80000000) output
+Date: Tue, 17 Jun 2025 17:15:38 +0200
+Message-ID: <20250617152452.731151133@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
 References: <20250617152451.485330293@linuxfoundation.org>
@@ -68,78 +70,90 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Zizhi Wo <wozizhi@huawei.com>
+From: Ahmed S. Darwish <darwi@linutronix.de>
 
-[ Upstream commit f66cf69eb8765341bbeff0e92a7d0d2027f62452 ]
+[ Upstream commit cc663ba3fe383a628a812f893cc98aafff39ab04 ]
 
-In commit 6cc477c36875 ("blk-throttle: carry over directly"), the carryover
-bytes/ios was be carried to [bytes/io]_disp. However, its update mechanism
-has some issues.
+CPUID(0x80000000).EAX returns the max extended CPUID leaf available.  On
+x86-32 machines without an extended CPUID range, a CPUID(0x80000000)
+query will just repeat the output of the last valid standard CPUID leaf
+on the CPU; i.e., a garbage values.  Current tip:x86/cpu code protects against
+this by doing:
 
-In __tg_update_carryover(), we calculate "bytes" and "ios" to represent the
-carryover, but the computation when updating [bytes/io]_disp is incorrect.
-And if the sq->nr_queued is empty, we may not update tg->[bytes/io]_disp to
-0 in tg_update_carryover(). We should set it to 0 in non carryover case.
-This patch fixes the issue.
+	eax = cpuid_eax(0x80000000);
+	c->extended_cpuid_level = eax;
 
-Fixes: 6cc477c36875 ("blk-throttle: carry over directly")
-Signed-off-by: Zizhi Wo <wozizhi@huawei.com>
-Reviewed-by: Yu Kuai <yukuai3@huawei.com>
-Reviewed-by: Ming Lei <ming.lei@redhat.com>
-Link: https://lore.kernel.org/r/20250417132054.2866409-2-wozizhi@huaweicloud.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+	if ((eax & 0xffff0000) == 0x80000000) {
+		// CPU has an extended CPUID range. Check for 0x80000001
+		if (eax >= 0x80000001) {
+			cpuid(0x80000001, ...);
+		}
+	}
+
+This is correct so far.  Afterwards though, the same possibly broken EAX
+value is used to check the availability of other extended CPUID leaves:
+
+	if (c->extended_cpuid_level >= 0x80000007)
+		...
+	if (c->extended_cpuid_level >= 0x80000008)
+		...
+	if (c->extended_cpuid_level >= 0x8000000a)
+		...
+	if (c->extended_cpuid_level >= 0x8000001f)
+		...
+
+which is invalid.  Fix this by immediately setting the CPU's max extended
+CPUID leaf to zero if CPUID(0x80000000).EAX doesn't indicate a valid
+CPUID extended range.
+
+While at it, add a comment, similar to kernel/head_32.S, clarifying the
+CPUID(0x80000000) sanity check.
+
+References: 8a50e5135af0 ("x86-32: Use symbolic constants, safer CPUID when enabling EFER.NX")
+Fixes: 3da99c977637 ("x86: make (early)_identify_cpu more the same between 32bit and 64 bit")
+Signed-off-by: Ahmed S. Darwish <darwi@linutronix.de>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Cc: Andrew Cooper <andrew.cooper3@citrix.com>
+Cc: H. Peter Anvin <hpa@zytor.com>
+Cc: John Ogness <john.ogness@linutronix.de>
+Cc: x86-cpuid@lists.linux.dev
+Link: https://lore.kernel.org/r/20250506050437.10264-3-darwi@linutronix.de
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- block/blk-throttle.c | 22 ++++++++++++++++------
- 1 file changed, 16 insertions(+), 6 deletions(-)
+ arch/x86/kernel/cpu/common.c | 17 +++++++++--------
+ 1 file changed, 9 insertions(+), 8 deletions(-)
 
-diff --git a/block/blk-throttle.c b/block/blk-throttle.c
-index d6dd2e0478749..7437de947120e 100644
---- a/block/blk-throttle.c
-+++ b/block/blk-throttle.c
-@@ -644,6 +644,18 @@ static void __tg_update_carryover(struct throtl_grp *tg, bool rw,
- 	u64 bps_limit = tg_bps_limit(tg, rw);
- 	u32 iops_limit = tg_iops_limit(tg, rw);
+diff --git a/arch/x86/kernel/cpu/common.c b/arch/x86/kernel/cpu/common.c
+index 0ff057ff11ce9..5de4a879232a6 100644
+--- a/arch/x86/kernel/cpu/common.c
++++ b/arch/x86/kernel/cpu/common.c
+@@ -1005,17 +1005,18 @@ void get_cpu_cap(struct cpuinfo_x86 *c)
+ 		c->x86_capability[CPUID_D_1_EAX] = eax;
+ 	}
  
+-	/* AMD-defined flags: level 0x80000001 */
 +	/*
-+	 * If the queue is empty, carryover handling is not needed. In such cases,
-+	 * tg->[bytes/io]_disp should be reset to 0 to avoid impacting the dispatch
-+	 * of subsequent bios. The same handling applies when the previous BPS/IOPS
-+	 * limit was set to max.
++	 * Check if extended CPUID leaves are implemented: Max extended
++	 * CPUID leaf must be in the 0x80000001-0x8000ffff range.
 +	 */
-+	if (tg->service_queue.nr_queued[rw] == 0) {
-+		tg->bytes_disp[rw] = 0;
-+		tg->io_disp[rw] = 0;
-+		return;
-+	}
-+
- 	/*
- 	 * If config is updated while bios are still throttled, calculate and
- 	 * accumulate how many bytes/ios are waited across changes. And
-@@ -656,8 +668,8 @@ static void __tg_update_carryover(struct throtl_grp *tg, bool rw,
- 	if (iops_limit != UINT_MAX)
- 		*ios = calculate_io_allowed(iops_limit, jiffy_elapsed) -
- 			tg->io_disp[rw];
--	tg->bytes_disp[rw] -= *bytes;
--	tg->io_disp[rw] -= *ios;
-+	tg->bytes_disp[rw] = -*bytes;
-+	tg->io_disp[rw] = -*ios;
- }
+ 	eax = cpuid_eax(0x80000000);
+-	c->extended_cpuid_level = eax;
++	c->extended_cpuid_level = ((eax & 0xffff0000) == 0x80000000) ? eax : 0;
  
- static void tg_update_carryover(struct throtl_grp *tg)
-@@ -665,10 +677,8 @@ static void tg_update_carryover(struct throtl_grp *tg)
- 	long long bytes[2] = {0};
- 	int ios[2] = {0};
+-	if ((eax & 0xffff0000) == 0x80000000) {
+-		if (eax >= 0x80000001) {
+-			cpuid(0x80000001, &eax, &ebx, &ecx, &edx);
++	if (c->extended_cpuid_level >= 0x80000001) {
++		cpuid(0x80000001, &eax, &ebx, &ecx, &edx);
  
--	if (tg->service_queue.nr_queued[READ])
--		__tg_update_carryover(tg, READ, &bytes[READ], &ios[READ]);
--	if (tg->service_queue.nr_queued[WRITE])
--		__tg_update_carryover(tg, WRITE, &bytes[WRITE], &ios[WRITE]);
-+	__tg_update_carryover(tg, READ, &bytes[READ], &ios[READ]);
-+	__tg_update_carryover(tg, WRITE, &bytes[WRITE], &ios[WRITE]);
+-			c->x86_capability[CPUID_8000_0001_ECX] = ecx;
+-			c->x86_capability[CPUID_8000_0001_EDX] = edx;
+-		}
++		c->x86_capability[CPUID_8000_0001_ECX] = ecx;
++		c->x86_capability[CPUID_8000_0001_EDX] = edx;
+ 	}
  
- 	/* see comments in struct throtl_grp for meaning of these fields. */
- 	throtl_log(&tg->service_queue, "%s: %lld %lld %d %d\n", __func__,
+ 	if (c->extended_cpuid_level >= 0x80000007) {
 -- 
 2.39.5
 
