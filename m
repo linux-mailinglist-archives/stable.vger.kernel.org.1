@@ -1,57 +1,62 @@
-Return-Path: <stable+bounces-153455-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-154174-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id CBF5AADD4AA
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:12:56 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 72BD2ADD896
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:57:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EA4FA404FC4
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:04:15 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9A3261BC06AA
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:44:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EEB142F2343;
-	Tue, 17 Jun 2025 16:00:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4972C2DFF3E;
+	Tue, 17 Jun 2025 16:39:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s314YIEY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="phJwXoEm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8905238C1E;
-	Tue, 17 Jun 2025 16:00:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05135285059;
+	Tue, 17 Jun 2025 16:39:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750176018; cv=none; b=RzrmjVovvoiBTCNoZPBdErlyLant9ROFEZPXuckiGXbd4cVl9R2w79Zrb1pxqpGY3dLsFQGBmuK30vzhWLNdo8XKyl1mHwuNOl/jCv0MMdxeR4+fUxRMXjTrJAQfkt/rnkpRNyMHVrbtaBQMcf+2M4+tBlRdrXjJddkQG5iBxuw=
+	t=1750178341; cv=none; b=R2sImE3SV7GAqownktkMckhCvUAI1QO/2qfl5kYVKsO/SZO2+mmluw8h9ez4Jg/w1ridSh8MDoJEwcU2iTOwC1oft1p1z00TKdjI0oJ5swljwvEvzsy6qQOV7uBDLmTxiV9SlNdyZDNT8Cv+tTECHDvcok3j9TtKmpc0mo6wt9g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750176018; c=relaxed/simple;
-	bh=ySDgh8fMhDF9DWnx8HniqqFRhIE31xVgp+Dx0wWcyRw=;
+	s=arc-20240116; t=1750178341; c=relaxed/simple;
+	bh=2G89DD0shL4qifgBmqINvGr/IChj/MI8rHw4/4zS0U8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bv+UYD3+YLHWd9heZeofFkspVhFBFLFyCt8V6KVQutwzJlMwh8Ta2pWpvOtkApMhgdR3PeVimqzJGbwm/x58a92DLWmcIAyb4cAl0+Cp2hjB9RAFDAFhGREeUUkCB6pkrN4ZyOieyt2nkbAOiqPxUI1rGFgW1mXWpw0OkU/UfyA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s314YIEY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 117F3C4CEE7;
-	Tue, 17 Jun 2025 16:00:17 +0000 (UTC)
+	 MIME-Version; b=bmEivIAwMmpFybU/NVzbfiZC2Pdxsa+d0+rB1OJ3H09XMkff+FhLwv4RHNacO6U75mrkPboAgf3fujhuMRCwRBATO599PgAgKYod+wOJl0f0SudSlF5p/g4EbnbfBm2r3bBEQrh1S/HhHas2fDKngxL8PGCVbNdxcgF1W2acvQE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=phJwXoEm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A5F0C4CEE3;
+	Tue, 17 Jun 2025 16:39:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750176018;
-	bh=ySDgh8fMhDF9DWnx8HniqqFRhIE31xVgp+Dx0wWcyRw=;
+	s=korg; t=1750178340;
+	bh=2G89DD0shL4qifgBmqINvGr/IChj/MI8rHw4/4zS0U8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=s314YIEY3bPgLU5UVHzdQv2c+ukWbh+ZFxWHyiSIDU6lO6Lj4/OyBNLzCOeiOdanu
-	 M0zScxQqSTlXE2sr69YNhvj1a6XViizrbeyYobomDFNscea7Y2YfnYNivhoyHO1cXF
-	 aZQgb8wRhlZgrf1fUVcgENCp2Q+mY4BUimNqQjCY=
+	b=phJwXoEm15xOl57zCtTiqEe7i9c2/gYxYT70GqISEfT3ZOqHf3hSVyGGVBXKpSzsU
+	 joPtBTtoRDy1KMbi6KEMfLLyMIV8eudi9Hwl/riGjsD0hbwCt+YgBXSSArjj0tr9s7
+	 dmXPUNhZyWC4Dyp3KXrXaTpaqhr+w5d/YPNHqSwE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peter Chiu <chui-hao.chiu@mediatek.com>,
-	Shayne Chen <shayne.chen@mediatek.com>,
-	Felix Fietkau <nbd@nbd.name>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+	Ian Rogers <irogers@google.com>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Kan Liang <kan.liang@linux.intel.com>,
+	Namhyung Kim <namhyung@kernel.org>,
+	Tony Jones <tonyj@suse.de>,
+	Arnaldo Carvalho de Melo <acme@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 188/512] wifi: mt76: mt7996: set EHT max ampdu length capability
+Subject: [PATCH 6.15 446/780] perf scripts python: exported-sql-viewer.py: Fix pattern matching with Python 3
 Date: Tue, 17 Jun 2025 17:22:34 +0200
-Message-ID: <20250617152427.259254294@linuxfoundation.org>
+Message-ID: <20250617152509.617727133@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
-References: <20250617152419.512865572@linuxfoundation.org>
+In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
+References: <20250617152451.485330293@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,42 +68,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peter Chiu <chui-hao.chiu@mediatek.com>
+From: Adrian Hunter <adrian.hunter@intel.com>
 
-[ Upstream commit 8b2f574845e33d02e7fbad2d3192a8b717567afa ]
+[ Upstream commit 17e548405a81665fd14cee960db7d093d1396400 ]
 
-Set the max AMPDU length in the EHT MAC CAP. Without this patch, the
-peer station cannot obtain the correct capability, which prevents
-achieving peak throughput on the 2 GHz band.
+The script allows the user to enter patterns to find symbols.
 
-Fixes: 1816ad9381e0 ("wifi: mt76: mt7996: add max mpdu len capability")
-Signed-off-by: Peter Chiu <chui-hao.chiu@mediatek.com>
-Signed-off-by: Shayne Chen <shayne.chen@mediatek.com>
-Link: https://patch.msgid.link/20250515032952.1653494-3-shayne.chen@mediatek.com
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
+The pattern matching characters are converted for use in SQL.
+
+For PostgreSQL the conversion involves using the Python maketrans()
+method which is slightly different in Python 3 compared with Python 2.
+
+Fix to work in Python 3.
+
+Fixes: beda0e725e5f06ac ("perf script python: Add Python3 support to exported-sql-viewer.py")
+Signed-off-by: Adrian Hunter <adrian.hunter@intel.com>
+Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
+Cc: Ian Rogers <irogers@google.com>
+Cc: Jiri Olsa <jolsa@kernel.org>
+Cc: Kan Liang <kan.liang@linux.intel.com>
+Cc: Namhyung Kim <namhyung@kernel.org>
+Cc: Tony Jones <tonyj@suse.de>
+Link: https://lore.kernel.org/r/20250512093932.79854-4-adrian.hunter@intel.com
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/mediatek/mt76/mt7996/init.c | 3 +++
- 1 file changed, 3 insertions(+)
+ tools/perf/scripts/python/exported-sql-viewer.py | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/init.c b/drivers/net/wireless/mediatek/mt76/mt7996/init.c
-index d8a013812d1e3..c550385541143 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7996/init.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7996/init.c
-@@ -1193,6 +1193,9 @@ mt7996_init_eht_caps(struct mt7996_phy *phy, enum nl80211_band band,
- 		u8_encode_bits(IEEE80211_EHT_MAC_CAP0_MAX_MPDU_LEN_11454,
- 			       IEEE80211_EHT_MAC_CAP0_MAX_MPDU_LEN_MASK);
- 
-+	eht_cap_elem->mac_cap_info[1] |=
-+		IEEE80211_EHT_MAC_CAP1_MAX_AMPDU_LEN_MASK;
-+
- 	eht_cap_elem->phy_cap_info[0] =
- 		IEEE80211_EHT_PHY_CAP0_NDP_4_EHT_LFT_32_GI |
- 		IEEE80211_EHT_PHY_CAP0_SU_BEAMFORMER |
+diff --git a/tools/perf/scripts/python/exported-sql-viewer.py b/tools/perf/scripts/python/exported-sql-viewer.py
+index 121cf61ba1b34..e0b2e7268ef68 100755
+--- a/tools/perf/scripts/python/exported-sql-viewer.py
++++ b/tools/perf/scripts/python/exported-sql-viewer.py
+@@ -680,7 +680,10 @@ class CallGraphModelBase(TreeModel):
+ 				s = value.replace("%", "\\%")
+ 				s = s.replace("_", "\\_")
+ 				# Translate * and ? into SQL LIKE pattern characters % and _
+-				trans = string.maketrans("*?", "%_")
++				if sys.version_info[0] == 3:
++					trans = str.maketrans("*?", "%_")
++				else:
++					trans = string.maketrans("*?", "%_")
+ 				match = " LIKE '" + str(s).translate(trans) + "'"
+ 			else:
+ 				match = " GLOB '" + str(value) + "'"
 -- 
 2.39.5
 
