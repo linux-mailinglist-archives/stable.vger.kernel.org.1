@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-154104-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-154107-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 22AD0ADD849
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:53:54 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A57E4ADD886
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:56:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3BC3919E8389
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:42:26 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DC5114A56C4
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:42:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D9E122E8E09;
-	Tue, 17 Jun 2025 16:35:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A7502E8E11;
+	Tue, 17 Jun 2025 16:35:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HdUut/fI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="whEsx+SR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9697C2E8E05;
-	Tue, 17 Jun 2025 16:35:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 290712E8E05;
+	Tue, 17 Jun 2025 16:35:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750178115; cv=none; b=Dhn424W33tijeoufn7N9B3hxZ34pryTvBI+2tdsQEh3vcMvrTi1DKQgweTr+lUe57iNKPM7BQ4cdj6Fe07aza+x5fC66sByFLkDvenG1OaeV6MbrClIRnEx/DL6c9xV8f96H37E2Di4wOjB/63Db6BEe6oM/bNjsqA+4LdE58LA=
+	t=1750178125; cv=none; b=Csvnp7gXglSgPN8nJMuEU5hk2TNV+TqFMkufSYH/6jRkuae/SvhFhXJz3MXkokPv7/trbWoe8V37evP+v2Se3y/LRbpWtoyD03//JDjTSRc/JrMrVakhE/24XENdIj3x1h7WpYm3waqh1qwXccoQ73TboTZugIy3fGrkveY76G0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750178115; c=relaxed/simple;
-	bh=icd3bLlFczpTNQ35MCFX0It+KhV+D6Rfrs9GvZEIkX0=;
+	s=arc-20240116; t=1750178125; c=relaxed/simple;
+	bh=3yQR18S9kCDi43+FeFUrdVziQ3bGQwBKPRBTjPleVXo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ELc1IFhTav/c98fPFMOGwDmhpZrzTJGWMpYORnOAl1z6KSt8Q4/uECOqNcK/n/FRZdy7QhTGk1E0VttPL4HvfkE4Q+ho3D6RZD6oicKX0ux7ZVVnvrx9VIdHWxAmM7YOaItmYmS3uZ8TOU+MvsTaRG6xYCzEARUOWV1v+RXvEaA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HdUut/fI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4A2FC4CEE3;
-	Tue, 17 Jun 2025 16:35:14 +0000 (UTC)
+	 MIME-Version:Content-Type; b=cIcr+soDNMCeG1aRKbEqceTwtp97jBDNryUokTn3JGHXm/FtQVL943RZbEgN7iE4utf78xtm1vU4sd1bp60PKE6Fp3T2cbi6xhvR5IyBLNgXgG2xvFr944KJP1poeJkRpy4CNghDmD5AgnCDYFz7Jf2KMIAqi/Z0jgw6ezak92g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=whEsx+SR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8BAD7C4CEE3;
+	Tue, 17 Jun 2025 16:35:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750178115;
-	bh=icd3bLlFczpTNQ35MCFX0It+KhV+D6Rfrs9GvZEIkX0=;
+	s=korg; t=1750178125;
+	bh=3yQR18S9kCDi43+FeFUrdVziQ3bGQwBKPRBTjPleVXo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HdUut/fIzy8mvbK3SizuErBkVEUvyPum3xrS2m6THPgJIWLeXHafjnAF6lXDs+AxM
-	 aEeYjgjiDjzNbKKoyi41hq2lk0BldmzK3oQjqYpgxSqRBfAro3LcTUiIT0ddjZtMYe
-	 qHoNY/AFh3mP8TSQMJpMHZs83vUDLVEAebr28s7A=
+	b=whEsx+SRamhvt2O+v7znTooHtVrhvse9Qkh2N9zxoPGf5HAzk59rNkdM/5eiOz+hT
+	 3+VduqRc7WnkKxwiRMaxdbyFR8oasC2/cjPFX8BMa2rTpofF+rBKEz1PFlKYbDKzKD
+	 +FM4zGbRVWeYCFJpHZFZySDV3Ndd32jqQwMjDJLw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Joel Stanley <joel@jms.id.au>,
+	Su Hui <suhui@nfschina.com>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
 	Andrew Jeffery <andrew@codeconstruct.com.au>,
 	Arnd Bergmann <arnd@arndb.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 412/780] ARM: aspeed: Dont select SRAM
-Date: Tue, 17 Jun 2025 17:22:00 +0200
-Message-ID: <20250617152508.242155950@linuxfoundation.org>
+Subject: [PATCH 6.15 413/780] soc: aspeed: lpc: Fix impossible judgment condition
+Date: Tue, 17 Jun 2025 17:22:01 +0200
+Message-ID: <20250617152508.291174358@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
 References: <20250617152451.485330293@linuxfoundation.org>
@@ -61,41 +62,48 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Joel Stanley <joel@jms.id.au>
+From: Su Hui <suhui@nfschina.com>
 
-[ Upstream commit e4f59f873c3ffe2a0150e11115a83e2dfb671dbf ]
+[ Upstream commit d9f0a97e859bdcef51f9c187b1eb712eb13fd3ff ]
 
-The ASPEED devices have SRAM, but don't require it for basic function
-(or any function; there's no known users of the driver).
+smatch error：
+drivers/soc/aspeed/aspeed-lpc-snoop.c:169
+aspeed_lpc_snoop_config_irq() warn: platform_get_irq() does not return zero
 
-Fixes: 8c2ed9bcfbeb ("arm: Add Aspeed machine")
-Signed-off-by: Joel Stanley <joel@jms.id.au>
-Link: https://patch.msgid.link/20250115103942.421429-1-joel@jms.id.au
+platform_get_irq() return non-zero IRQ number or negative error code,
+change '!lpc_snoop->irq' to 'lpc_snoop->irq < 0' to fix this.
+
+Fixes: 9f4f9ae81d0a ("drivers/misc: add Aspeed LPC snoop driver")
+Signed-off-by: Su Hui <suhui@nfschina.com>
+Reviewed-by: Dan Carpenter <dan.carpenter@linaro.org>
+Link: https://lore.kernel.org/r/20231027020703.1231875-1-suhui@nfschina.com
 Signed-off-by: Andrew Jeffery <andrew@codeconstruct.com.au>
 Signed-off-by: Arnd Bergmann <arnd@arndb.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/mach-aspeed/Kconfig | 1 -
- 1 file changed, 1 deletion(-)
+ drivers/soc/aspeed/aspeed-lpc-snoop.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm/mach-aspeed/Kconfig b/arch/arm/mach-aspeed/Kconfig
-index 080019aa6fcd8..fcf287edd0e5e 100644
---- a/arch/arm/mach-aspeed/Kconfig
-+++ b/arch/arm/mach-aspeed/Kconfig
-@@ -2,7 +2,6 @@
- menuconfig ARCH_ASPEED
- 	bool "Aspeed BMC architectures"
- 	depends on (CPU_LITTLE_ENDIAN && ARCH_MULTI_V5) || ARCH_MULTI_V6 || ARCH_MULTI_V7
--	select SRAM
- 	select WATCHDOG
- 	select ASPEED_WATCHDOG
- 	select MFD_SYSCON
+diff --git a/drivers/soc/aspeed/aspeed-lpc-snoop.c b/drivers/soc/aspeed/aspeed-lpc-snoop.c
+index 9ab5ba9cf1d61..57ba855f375d9 100644
+--- a/drivers/soc/aspeed/aspeed-lpc-snoop.c
++++ b/drivers/soc/aspeed/aspeed-lpc-snoop.c
+@@ -166,7 +166,7 @@ static int aspeed_lpc_snoop_config_irq(struct aspeed_lpc_snoop *lpc_snoop,
+ 	int rc;
+ 
+ 	lpc_snoop->irq = platform_get_irq(pdev, 0);
+-	if (!lpc_snoop->irq)
++	if (lpc_snoop->irq < 0)
+ 		return -ENODEV;
+ 
+ 	rc = devm_request_irq(dev, lpc_snoop->irq,
 -- 
 2.39.5
 
