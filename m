@@ -1,52 +1,51 @@
-Return-Path: <stable+bounces-154555-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-154540-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 95EDEADDA27
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 19:13:58 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 07389ADD8D1
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:59:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E438C2C5B31
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:59:37 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DF9B87A4644
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:57:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CCF3C2FA62F;
-	Tue, 17 Jun 2025 16:59:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C4C92FA626;
+	Tue, 17 Jun 2025 16:58:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QQRZhqOu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dsuZIDxx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AFAD2FA626;
-	Tue, 17 Jun 2025 16:59:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3871BCA4B;
+	Tue, 17 Jun 2025 16:58:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750179575; cv=none; b=pukvyDKpP5CDWwAYNgI/MkBHGoJtbHkH/jYCLDKX1sJVeX/SdPR/kRTg7LU8p5WlRn/fgDtvTAQqKDS/+IExqRO+X2yTybHD/IAlmdJWq9fymWoh/7LsJVvrAd4Q/s0PIfqguNBvtoKNfZYzb65Rm00CtjLVzO9GKi8kJwoe1e0=
+	t=1750179539; cv=none; b=GcmGPjn8CCl/4TSqSULrJVwYBEsRaxxFg+xEQW8AE46R62ZsE4+lLYHUCcXZD9APRGvHLaapT8JcWxwVNGh6IQ09yxVUnB4gEvvu+z3bBIZw8j/gxSnGvXERIaEo4WV6oTAmzTVEMpbL1EnQFuQSfymbPsYLEfr51WqfqpBJPRU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750179575; c=relaxed/simple;
-	bh=S7OBUG+qdI/ezqG/wEovP6WuHrWcOl6CBbdrwFv/3Gc=;
+	s=arc-20240116; t=1750179539; c=relaxed/simple;
+	bh=zf2G9YreUnqGS8NHdy3HGBrOB6VBioSSbkrEWcQiMP0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=tlYu92+ObfPYjFMsxs0wI5PuGIxVDB4oVGlBQ5eYkMIR9NbW29PmKUjmKciS0qvuE1D8ennSWUgJLHtsx+aFHgL/u/RmNdNFGww/CtaEzKtKhdq50ed2e7uNaMUXZK8RzzuZHgDQcJ5Ds+jzMJ1ZNR3vW9qGm8+NnNScpbt6gC0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QQRZhqOu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0505C4CEE3;
-	Tue, 17 Jun 2025 16:59:34 +0000 (UTC)
+	 MIME-Version; b=HnZS7k71EgNG2qBCixbV9YD5RM9xnp6G5bWj0XLC/09QYJGX5LXWwK0ReKTbUW8mdJgnruBp0lUQpQb0K8KH5tsUdHgigHFVK3RToWR79bcBm1LM8dwTeVIBZSkph2yZzGDNt0/i0aB2pKJJ4x8ROSJjTglSd1DXxyAxYdWODVY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dsuZIDxx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9AED8C4CEE3;
+	Tue, 17 Jun 2025 16:58:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750179575;
-	bh=S7OBUG+qdI/ezqG/wEovP6WuHrWcOl6CBbdrwFv/3Gc=;
+	s=korg; t=1750179539;
+	bh=zf2G9YreUnqGS8NHdy3HGBrOB6VBioSSbkrEWcQiMP0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QQRZhqOuRnBKF4hY1TRcIAPwTjFvVMYboYrjwpUpqe717tHfguidkJGPJH+pPb/Hh
-	 X+dj7qmkR8shaSIErKbz4lYXeem/j/76yUBrZlTJzeoeqwuZKISSiTRGmbOYJV+xF0
-	 ffLGAsBgWOcLZzMbv93+zIC4NHl8F4WXTXfkYgOw=
+	b=dsuZIDxxULChsw3xvUGOmtX/zLh3+68BydQ6v+2iodMd2lf8/SZLWgKqbaxm0MHML
+	 gMNEQobGVI6oLt/wy/2OfOF0nIT91ey9fqyWEvUajFG8fgTZRvBdN5ztP+mteV4iTJ
+	 YuH/94z3zBh2Jl6fnSZYeZA6fkLv+Z8IBD71EeKA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"=?UTF-8?q?N=C3=ADcolas=20F . =20R . =20A . =20Prado?=" <nfraprado@collabora.com>,
-	Mark Brown <broonie@kernel.org>
-Subject: [PATCH 6.15 776/780] regulator: dt-bindings: mt6357: Drop fixed compatible requirement
-Date: Tue, 17 Jun 2025 17:28:04 +0200
-Message-ID: <20250617152523.111501346@linuxfoundation.org>
+	Arnd Bergmann <arnd@arndb.de>
+Subject: [PATCH 6.15 777/780] usb: misc: onboard_usb_dev: fix build warning for CONFIG_USB_ONBOARD_DEV_USB5744=n
+Date: Tue, 17 Jun 2025 17:28:05 +0200
+Message-ID: <20250617152523.150202935@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
 References: <20250617152451.485330293@linuxfoundation.org>
@@ -59,128 +58,72 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nícolas F. R. A. Prado <nfraprado@collabora.com>
+From: Arnd Bergmann <arnd@arndb.de>
 
-commit 9cfdd7752ba5f8cc9b8191e8c9aeeec246241fa4 upstream.
+commit 662a9ece32add94469138ae66999ee16cb37a531 upstream.
 
-Some of the regulators on the MT6357 PMIC currently reference the
-fixed-regulator dt-binding, which enforces the presence of a
-regulator-fixed compatible. However since all regulators on the MT6357
-PMIC are handled by a single mt6357-regulator driver, probed through
-MFD, the compatibles don't serve any purpose. In fact they cause
-failures in the DT kselftest since they aren't probed by the fixed
-regulator driver as would be expected. Furthermore this is the only
-dt-binding in this family like this: mt6359-regulator and
-mt6358-regulator don't require those compatibles.
+When the USB5744 option is disabled, the onboard_usb driver warns about
+unused functions:
 
-Commit d77e89b7b03f ("arm64: dts: mediatek: mt6357: Drop regulator-fixed
-compatibles") removed the compatibles from Devicetree, but missed
-updating the binding, which still requires them, introducing dt-binding
-errors. Remove the compatible requirement by referencing the plain
-regulator dt-binding instead to fix the dt-binding errors.
+drivers/usb/misc/onboard_usb_dev.c:358:12: error: 'onboard_dev_5744_i2c_write_byte' defined but not used [-Werror=unused-function]
+  358 | static int onboard_dev_5744_i2c_write_byte(struct i2c_client *client, u16 addr, u8 data)
+      |            ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+drivers/usb/misc/onboard_usb_dev.c:313:12: error: 'onboard_dev_5744_i2c_read_byte' defined but not used [-Werror=unused-function]
+  313 | static int onboard_dev_5744_i2c_read_byte(struct i2c_client *client, u16 addr, u8 *data)
+      |            ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Fixes: d77e89b7b03f ("arm64: dts: mediatek: mt6357: Drop regulator-fixed compatibles")
-Signed-off-by: Nícolas F. R. A. Prado <nfraprado@collabora.com>
-Link: https://patch.msgid.link/20250514-mt6357-regulator-fixed-compatibles-removal-bindings-v1-1-2421e9cc6cc7@collabora.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Extend the #ifdef block a little further to cover all of these functions.
+Ideally we'd use use if(IS_ENABLED()) instead, but that doesn't currently
+work because the i2c_transfer() and i2c_smbus_write_word_data() function
+declarations are hidden  when CONFIG_I2C is disabled.
+
+Fixes: 1143d41922c0 ("usb: misc: onboard_usb_dev: Fix usb5744 initialization sequence")
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Link: https://lore.kernel.org/r/20250523120947.2170302-1-arnd@kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- Documentation/devicetree/bindings/regulator/mediatek,mt6357-regulator.yaml |   12 ----------
- 1 file changed, 1 insertion(+), 11 deletions(-)
+ drivers/usb/misc/onboard_usb_dev.c |    7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
---- a/Documentation/devicetree/bindings/regulator/mediatek,mt6357-regulator.yaml
-+++ b/Documentation/devicetree/bindings/regulator/mediatek,mt6357-regulator.yaml
-@@ -33,7 +33,7 @@ patternProperties:
+--- a/drivers/usb/misc/onboard_usb_dev.c
++++ b/drivers/usb/misc/onboard_usb_dev.c
+@@ -310,6 +310,7 @@ static void onboard_dev_attach_usb_drive
+ 		pr_err("Failed to attach USB driver: %pe\n", ERR_PTR(err));
+ }
  
-   "^ldo-v(camio18|aud28|aux18|io18|io28|rf12|rf18|cn18|cn28|fe28)$":
-     type: object
--    $ref: fixed-regulator.yaml#
-+    $ref: regulator.yaml#
-     unevaluatedProperties: false
-     description:
-       Properties for single fixed LDO regulator.
-@@ -112,7 +112,6 @@ examples:
-           regulator-enable-ramp-delay = <220>;
-         };
-         mt6357_vfe28_reg: ldo-vfe28 {
--          compatible = "regulator-fixed";
-           regulator-name = "vfe28";
-           regulator-min-microvolt = <2800000>;
-           regulator-max-microvolt = <2800000>;
-@@ -125,14 +124,12 @@ examples:
-           regulator-enable-ramp-delay = <110>;
-         };
-         mt6357_vrf18_reg: ldo-vrf18 {
--          compatible = "regulator-fixed";
-           regulator-name = "vrf18";
-           regulator-min-microvolt = <1800000>;
-           regulator-max-microvolt = <1800000>;
-           regulator-enable-ramp-delay = <110>;
-         };
-         mt6357_vrf12_reg: ldo-vrf12 {
--          compatible = "regulator-fixed";
-           regulator-name = "vrf12";
-           regulator-min-microvolt = <1200000>;
-           regulator-max-microvolt = <1200000>;
-@@ -157,14 +154,12 @@ examples:
-           regulator-enable-ramp-delay = <264>;
-         };
-         mt6357_vcn28_reg: ldo-vcn28 {
--          compatible = "regulator-fixed";
-           regulator-name = "vcn28";
-           regulator-min-microvolt = <2800000>;
-           regulator-max-microvolt = <2800000>;
-           regulator-enable-ramp-delay = <264>;
-         };
-         mt6357_vcn18_reg: ldo-vcn18 {
--          compatible = "regulator-fixed";
-           regulator-name = "vcn18";
-           regulator-min-microvolt = <1800000>;
-           regulator-max-microvolt = <1800000>;
-@@ -183,7 +178,6 @@ examples:
-           regulator-enable-ramp-delay = <264>;
-         };
-         mt6357_vcamio_reg: ldo-vcamio18 {
--          compatible = "regulator-fixed";
-           regulator-name = "vcamio";
-           regulator-min-microvolt = <1800000>;
-           regulator-max-microvolt = <1800000>;
-@@ -212,28 +206,24 @@ examples:
-           regulator-always-on;
-         };
-         mt6357_vaux18_reg: ldo-vaux18 {
--          compatible = "regulator-fixed";
-           regulator-name = "vaux18";
-           regulator-min-microvolt = <1800000>;
-           regulator-max-microvolt = <1800000>;
-           regulator-enable-ramp-delay = <264>;
-         };
-         mt6357_vaud28_reg: ldo-vaud28 {
--          compatible = "regulator-fixed";
-           regulator-name = "vaud28";
-           regulator-min-microvolt = <2800000>;
-           regulator-max-microvolt = <2800000>;
-           regulator-enable-ramp-delay = <264>;
-         };
-         mt6357_vio28_reg: ldo-vio28 {
--          compatible = "regulator-fixed";
-           regulator-name = "vio28";
-           regulator-min-microvolt = <2800000>;
-           regulator-max-microvolt = <2800000>;
-           regulator-enable-ramp-delay = <264>;
-         };
-         mt6357_vio18_reg: ldo-vio18 {
--          compatible = "regulator-fixed";
-           regulator-name = "vio18";
-           regulator-min-microvolt = <1800000>;
-           regulator-max-microvolt = <1800000>;
++#if IS_ENABLED(CONFIG_USB_ONBOARD_DEV_USB5744)
+ static int onboard_dev_5744_i2c_read_byte(struct i2c_client *client, u16 addr, u8 *data)
+ {
+ 	struct i2c_msg msg[2];
+@@ -388,7 +389,6 @@ static int onboard_dev_5744_i2c_write_by
+ 
+ static int onboard_dev_5744_i2c_init(struct i2c_client *client)
+ {
+-#if IS_ENABLED(CONFIG_USB_ONBOARD_DEV_USB5744)
+ 	struct device *dev = &client->dev;
+ 	int ret;
+ 	u8 reg;
+@@ -417,10 +417,13 @@ static int onboard_dev_5744_i2c_init(str
+ 		return dev_err_probe(dev, ret, "USB Attach with SMBus command failed\n");
+ 
+ 	return ret;
++}
+ #else
++static int onboard_dev_5744_i2c_init(struct i2c_client *client)
++{
+ 	return -ENODEV;
+-#endif
+ }
++#endif
+ 
+ static int onboard_dev_probe(struct platform_device *pdev)
+ {
 
 
 
