@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-153902-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153904-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5AD2FADD6D1
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:37:38 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id AF930ADD6D3
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:37:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B03054A24C2
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:28:38 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0F8FB18879D2
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:29:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C79F12E8E19;
-	Tue, 17 Jun 2025 16:24:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C31B2E8E1C;
+	Tue, 17 Jun 2025 16:24:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NSwsal3W"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pOZ0+gZg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84F652E8E17;
-	Tue, 17 Jun 2025 16:24:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18ECB2E8E13;
+	Tue, 17 Jun 2025 16:24:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750177467; cv=none; b=hSADhngc4MhItbOy9SGC2Gn3WjqwbTQ/Nyu71LK3zqV11arM1TorL8Nz42ODq/T2xobbhDd5sr6f6dcBOPN7H76Sxiva+kWEdVreLjywLlBaEnqFO8XRpF9wWuLEpMVp6rHjD49NOB1S1fkzJvXpkrTZ0He3L2NmINETg4kJRsY=
+	t=1750177474; cv=none; b=Hb5I85Pgad6iXWx5bOzbWwxFJiCW79I70fqdBJBAdJ0qyG2jWhGO7UHeNU2wa81brEipSR3sA6Yltx6kx36lRdRdxYfXkBQRUllKmYNstGdAUR9EHtKsfkFYBiMIH131L6Vo5tnKvlZQuWSxKSz/HYsJVs0C5yFMYa9zXkWm1dE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750177467; c=relaxed/simple;
-	bh=XUcz4GEi/dn4hzvvFhwJ5o+uD+vf2+VCeWTHEf/tzQw=;
+	s=arc-20240116; t=1750177474; c=relaxed/simple;
+	bh=zZUJfVpzHgCzcNhYMEFJfo2icc4cHWAK7kPkebAG8+c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YhiVwQWZ6lnh8hchzDj0F2ykTf2Ex1g0mUPkUeFw9hwp9BsUdIhofc75WLtzK+lxcopSkFrzaeO8WpnGj6aEX6CanyAM+140fIm+YBW2ums5R8quufLetkAq8fNOKWHpSbehK1DTebfwP8O/JyHFd0RCQ+WB+NbqlSFDgoO0qow=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NSwsal3W; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E794EC4CEE3;
-	Tue, 17 Jun 2025 16:24:26 +0000 (UTC)
+	 MIME-Version; b=iKKcqUyUcud32Oaj0OLO5XnNnDr/mTaAH/38dZpLZ5P/p05MkLS+VvVbEZEHLLVyH4iK+WBudLX/9pxRR52tN/IWDwodPlPHfy6QIYJrH/saR0gBAbEH0B2IhoCMtUpoM4yoEudCF9IG6zrAQjGYQ4+8hwczvYck+aKCn88tIvw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pOZ0+gZg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7AEEDC4CEE3;
+	Tue, 17 Jun 2025 16:24:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750177467;
-	bh=XUcz4GEi/dn4hzvvFhwJ5o+uD+vf2+VCeWTHEf/tzQw=;
+	s=korg; t=1750177474;
+	bh=zZUJfVpzHgCzcNhYMEFJfo2icc4cHWAK7kPkebAG8+c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NSwsal3WEdPQURV+XMNoBV2YdDxTHpWEJWCWZ7Efq+xQ7v4RJhp2e53Zk4yluBLXt
-	 8vMvSw34kX/OhwobejIoDy8MwShH3OCu/pG9St8HlBqxg4B49ukoYCm7afdjwR42Kt
-	 0iTDyNxinT3uhLeW+dlfVJaj++93ZEIEdRXSjbWU=
+	b=pOZ0+gZgkRA0XvovUK8iYoqCzdBuYJwEExAG9BKw54yNydSg5gMxYh7Iyq8NM5WRN
+	 WIgZRNwROwwbyN18dD1IYRfJ2xw64uP15b1zZPUBNSfe9Ja4dpFNZMIeUgH7wS479G
+	 PHbbDg0RQknGLI1wUFmJoLTQ/oo++R5cvSJu5fCo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	zepta <z3ptaa@gmail.com>,
-	Kees Cook <kees@kernel.org>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Michal Luczaj <mhal@rbox.co>,
+	Jiayuan Chen <jiayuan.chen@linux.dev>,
+	Martin KaFai Lau <martin.lau@kernel.org>,
+	John Fastabend <john.fastabend@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 311/780] Bluetooth: btintel: Check dsbr size from EFI variable
-Date: Tue, 17 Jun 2025 17:20:19 +0200
-Message-ID: <20250617152504.135100095@linuxfoundation.org>
+Subject: [PATCH 6.15 312/780] bpf, sockmap: Avoid using sk_socket after free when sending
+Date: Tue, 17 Jun 2025 17:20:20 +0200
+Message-ID: <20250617152504.174038411@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
 References: <20250617152451.485330293@linuxfoundation.org>
@@ -67,56 +68,123 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Kees Cook <kees@kernel.org>
+From: Jiayuan Chen <jiayuan.chen@linux.dev>
 
-[ Upstream commit 3aa1dc3c9060e335e82e9c182bf3d1db29220b1b ]
+[ Upstream commit 8259eb0e06d8f64c700f5fbdb28a5c18e10de291 ]
 
-Since the size of struct btintel_dsbr is already known, we can just
-start there instead of querying the EFI variable size. If the final
-result doesn't match what we expect also fail. This fixes a stack buffer
-overflow when the EFI variable is larger than struct btintel_dsbr.
+The sk->sk_socket is not locked or referenced in backlog thread, and
+during the call to skb_send_sock(), there is a race condition with
+the release of sk_socket. All types of sockets(tcp/udp/unix/vsock)
+will be affected.
 
-Reported-by: zepta <z3ptaa@gmail.com>
-Closes: https://lore.kernel.org/all/CAPBS6KoaWV9=dtjTESZiU6KK__OZX0KpDk-=JEH8jCHFLUYv3Q@mail.gmail.com
-Fixes: eb9e749c0182 ("Bluetooth: btintel: Allow configuring drive strength of BRI")
-Signed-off-by: Kees Cook <kees@kernel.org>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Race conditions:
+'''
+CPU0                               CPU1
+
+backlog::skb_send_sock
+  sendmsg_unlocked
+    sock_sendmsg
+      sock_sendmsg_nosec
+                                   close(fd):
+                                     ...
+                                     ops->release() -> sock_map_close()
+                                     sk_socket->ops = NULL
+                                     free(socket)
+      sock->ops->sendmsg
+            ^
+            panic here
+'''
+
+The ref of psock become 0 after sock_map_close() executed.
+'''
+void sock_map_close()
+{
+    ...
+    if (likely(psock)) {
+    ...
+    // !! here we remove psock and the ref of psock become 0
+    sock_map_remove_links(sk, psock)
+    psock = sk_psock_get(sk);
+    if (unlikely(!psock))
+        goto no_psock; <=== Control jumps here via goto
+        ...
+        cancel_delayed_work_sync(&psock->work); <=== not executed
+        sk_psock_put(sk, psock);
+        ...
+}
+'''
+
+Based on the fact that we already wait for the workqueue to finish in
+sock_map_close() if psock is held, we simply increase the psock
+reference count to avoid race conditions.
+
+With this patch, if the backlog thread is running, sock_map_close() will
+wait for the backlog thread to complete and cancel all pending work.
+
+If no backlog running, any pending work that hasn't started by then will
+fail when invoked by sk_psock_get(), as the psock reference count have
+been zeroed, and sk_psock_drop() will cancel all jobs via
+cancel_delayed_work_sync().
+
+In summary, we require synchronization to coordinate the backlog thread
+and close() thread.
+
+The panic I catched:
+'''
+Workqueue: events sk_psock_backlog
+RIP: 0010:sock_sendmsg+0x21d/0x440
+RAX: 0000000000000000 RBX: ffffc9000521fad8 RCX: 0000000000000001
+...
+Call Trace:
+ <TASK>
+ ? die_addr+0x40/0xa0
+ ? exc_general_protection+0x14c/0x230
+ ? asm_exc_general_protection+0x26/0x30
+ ? sock_sendmsg+0x21d/0x440
+ ? sock_sendmsg+0x3e0/0x440
+ ? __pfx_sock_sendmsg+0x10/0x10
+ __skb_send_sock+0x543/0xb70
+ sk_psock_backlog+0x247/0xb80
+...
+'''
+
+Fixes: 4b4647add7d3 ("sock_map: avoid race between sock_map_close and sk_psock_put")
+Reported-by: Michal Luczaj <mhal@rbox.co>
+Signed-off-by: Jiayuan Chen <jiayuan.chen@linux.dev>
+Signed-off-by: Martin KaFai Lau <martin.lau@kernel.org>
+Reviewed-by: John Fastabend <john.fastabend@gmail.com>
+Link: https://lore.kernel.org/r/20250516141713.291150-1-jiayuan.chen@linux.dev
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/bluetooth/btintel.c | 10 ++--------
- 1 file changed, 2 insertions(+), 8 deletions(-)
+ net/core/skmsg.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/drivers/bluetooth/btintel.c b/drivers/bluetooth/btintel.c
-index 48e2f400957bc..46d9bbd8e411b 100644
---- a/drivers/bluetooth/btintel.c
-+++ b/drivers/bluetooth/btintel.c
-@@ -2719,7 +2719,7 @@ static int btintel_uefi_get_dsbr(u32 *dsbr_var)
- 	} __packed data;
+diff --git a/net/core/skmsg.c b/net/core/skmsg.c
+index 061f1409bd5a9..6d689918c2b39 100644
+--- a/net/core/skmsg.c
++++ b/net/core/skmsg.c
+@@ -656,6 +656,13 @@ static void sk_psock_backlog(struct work_struct *work)
+ 	bool ingress;
+ 	int ret;
  
- 	efi_status_t status;
--	unsigned long data_size = 0;
-+	unsigned long data_size = sizeof(data);
- 	efi_guid_t guid = EFI_GUID(0xe65d8884, 0xd4af, 0x4b20, 0x8d, 0x03,
- 				   0x77, 0x2e, 0xcc, 0x3d, 0xa5, 0x31);
++	/* Increment the psock refcnt to synchronize with close(fd) path in
++	 * sock_map_close(), ensuring we wait for backlog thread completion
++	 * before sk_socket freed. If refcnt increment fails, it indicates
++	 * sock_map_close() completed with sk_socket potentially already freed.
++	 */
++	if (!sk_psock_get(psock->sk))
++		return;
+ 	mutex_lock(&psock->work_mutex);
+ 	while ((skb = skb_peek(&psock->ingress_skb))) {
+ 		len = skb->len;
+@@ -707,6 +714,7 @@ static void sk_psock_backlog(struct work_struct *work)
+ 	}
+ end:
+ 	mutex_unlock(&psock->work_mutex);
++	sk_psock_put(psock->sk, psock);
+ }
  
-@@ -2729,16 +2729,10 @@ static int btintel_uefi_get_dsbr(u32 *dsbr_var)
- 	if (!efi_rt_services_supported(EFI_RT_SUPPORTED_GET_VARIABLE))
- 		return -EOPNOTSUPP;
- 
--	status = efi.get_variable(BTINTEL_EFI_DSBR, &guid, NULL, &data_size,
--				  NULL);
--
--	if (status != EFI_BUFFER_TOO_SMALL || !data_size)
--		return -EIO;
--
- 	status = efi.get_variable(BTINTEL_EFI_DSBR, &guid, NULL, &data_size,
- 				  &data);
- 
--	if (status != EFI_SUCCESS)
-+	if (status != EFI_SUCCESS || data_size != sizeof(data))
- 		return -ENXIO;
- 
- 	*dsbr_var = data.dsbr;
+ struct sk_psock *sk_psock_init(struct sock *sk, int node)
 -- 
 2.39.5
 
