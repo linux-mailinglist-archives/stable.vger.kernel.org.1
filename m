@@ -1,53 +1,55 @@
-Return-Path: <stable+bounces-152966-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-152988-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 67FB3ADD1B5
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 17:34:07 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 02582ADD1C7
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 17:34:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 53D2E3BD958
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 15:33:15 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A876717CC6D
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 15:34:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CDBFC2DF3CB;
-	Tue, 17 Jun 2025 15:33:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 97FAD2E9730;
+	Tue, 17 Jun 2025 15:34:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NlU2SO0i"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FKnDbRw8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A48E1E8332;
-	Tue, 17 Jun 2025 15:33:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51985221F1F;
+	Tue, 17 Jun 2025 15:34:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750174417; cv=none; b=uarxBfqp22MNyV1yqbF3Yhk274YxZu3/Bslb0JQQj7rj7bkPoQe+45g2BkP8XZ1+I2Xux9GQrEhrAGt+9bcw3tQFca8MGBikCUmSU8MEai9vD6JF3ZSzdr/KdweaD3umdGEMb6i6703VQ+reuWMdiFhug/oUYhdTl+pwboQv7fQ=
+	t=1750174493; cv=none; b=XM8OHx+WtuLqmCO7nSKbmB5wKenMorMb8t5sW3dm28Q+vHoTHi/3iSBZ9jTUQuTnSayhvoJ3ftUr3ZaE1mFee71zKgLwDosjQ8kA3zNsqptUEWVwsFOVkXcB1bG1VBHe+/OOh329oP2VeWJqAQhIRYD7gZ/nh3FQPgmcPAh6bY0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750174417; c=relaxed/simple;
-	bh=DSCtUuEd+Y3Q14Exa79xiF2i1CzwFVscAIzTL4yIDQ8=;
+	s=arc-20240116; t=1750174493; c=relaxed/simple;
+	bh=arGGswOsHxsUIlbbNMlsAWorcx11h7iHg9DIhmfaMgU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PJrVCnQ0Y6ggO+OlIe4FlkhmvKsNcHOC/7KgTSQYANXxCJG2GFOaLmCEN3VDUTuc5aWhSEpqUoeRp9PTWAe/0Ki+EkvZ2htmTx4QdapVklAolbYbHLDMI+YU/oO2XHRp1Fadzze0c5Ys3EECXX4ajhwpOLXCv89RZzhAbwifd6k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NlU2SO0i; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2659C4CEE7;
-	Tue, 17 Jun 2025 15:33:36 +0000 (UTC)
+	 MIME-Version; b=p1aKsNi4vhIQ/RWwDcs8ps7DBzVarXUfHNdDOnRnOzo6VULMf4K/XVje0OlZotHtQlk7uo7U2OwpyIv/ACWGGzL/IMD/yFGBcju8TrUUedRaJs0shov6GklRMI3MAJjxIRHb5/qAkT3HOEdZxQdaaexl0LRy5yf3B2kfPbZE6dI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FKnDbRw8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE243C4CEE3;
+	Tue, 17 Jun 2025 15:34:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750174417;
-	bh=DSCtUuEd+Y3Q14Exa79xiF2i1CzwFVscAIzTL4yIDQ8=;
+	s=korg; t=1750174493;
+	bh=arGGswOsHxsUIlbbNMlsAWorcx11h7iHg9DIhmfaMgU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NlU2SO0iZF79kyYGrdPv5uCGpTgqC4wj3M/b0e9StE6H3YhNzmJKBCjbWFaTFiYLd
-	 Vfiz/vLP6qz1bPJ4GSQPzOi+I89hbG1bRUgiEFp0btGR2G+Q0in+n1BuOC6YgA+vZE
-	 Nc9jvqptVpB021aQ0YAwzwPDCwKI73aJJjl0YgrI=
+	b=FKnDbRw809OoljflV1SoF1JKRUHg6iLnYLWaST5QTInviJD3OTXKjHzr9RZV3SCAT
+	 MAsi/O55SdsGb38AwWfstdeJ+ZVqGqkGwAUbJ6TKTnZrhfVsHCSO1s8wdos2j7erNR
+	 O49Ic4Wed5iESKwMytkgXDfEez25gWnt8LHgt+vw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Charles Han <hanchunchao@inspur.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Alex Bee <knaerzche@gmail.com>,
+	Jonas Karlman <jonas@kwiboo.se>,
+	Nicolas Dufresne <nicolas.dufresne@collabora.com>,
+	Hans Verkuil <hverkuil@xs4all.nl>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 057/356] drm/amd/pp: Fix potential NULL pointer dereference in atomctrl_initialize_mc_reg_table
-Date: Tue, 17 Jun 2025 17:22:52 +0200
-Message-ID: <20250617152340.529837483@linuxfoundation.org>
+Subject: [PATCH 6.6 058/356] media: rkvdec: Fix frame size enumeration
+Date: Tue, 17 Jun 2025 17:22:53 +0200
+Message-ID: <20250617152340.569788603@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250617152338.212798615@linuxfoundation.org>
 References: <20250617152338.212798615@linuxfoundation.org>
@@ -66,51 +68,54 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Charles Han <hanchunchao@inspur.com>
+From: Jonas Karlman <jonas@kwiboo.se>
 
-[ Upstream commit 820116a39f96bdc7d426c33a804b52f53700a919 ]
+[ Upstream commit f270005b99fa19fee9a6b4006e8dee37c10f1944 ]
 
-The function atomctrl_initialize_mc_reg_table() and
-atomctrl_initialize_mc_reg_table_v2_2() does not check the return
-value of smu_atom_get_data_table(). If smu_atom_get_data_table()
-fails to retrieve vram_info, it returns NULL which is later
-dereferenced.
+The VIDIOC_ENUM_FRAMESIZES ioctl should return all frame sizes (i.e.
+width and height in pixels) that the device supports for the given pixel
+format.
 
-Fixes: b3892e2bb519 ("drm/amd/pp: Use atombios api directly in powerplay (v2)")
-Fixes: 5f92b48cf62c ("drm/amd/pm: add mc register table initialization")
-Signed-off-by: Charles Han <hanchunchao@inspur.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+It doesn't make a lot of sense to return the frame-sizes in a stepwise
+manner, which is used to enforce hardware alignments requirements for
+CAPTURE buffers, for coded formats.
+
+Instead, applications should receive an indication, about the maximum
+supported frame size for that hardware decoder, via a continuous
+frame-size enumeration.
+
+Fixes: cd33c830448b ("media: rkvdec: Add the rkvdec driver")
+Suggested-by: Alex Bee <knaerzche@gmail.com>
+Signed-off-by: Jonas Karlman <jonas@kwiboo.se>
+Reviewed-by: Nicolas Dufresne <nicolas.dufresne@collabora.com>
+Signed-off-by: Nicolas Dufresne <nicolas.dufresne@collabora.com>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/pm/powerplay/hwmgr/ppatomctrl.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ drivers/staging/media/rkvdec/rkvdec.c | 10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/ppatomctrl.c b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/ppatomctrl.c
-index 1fbd23922082a..7e37354a03411 100644
---- a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/ppatomctrl.c
-+++ b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/ppatomctrl.c
-@@ -144,6 +144,10 @@ int atomctrl_initialize_mc_reg_table(
- 	vram_info = (ATOM_VRAM_INFO_HEADER_V2_1 *)
- 		smu_atom_get_data_table(hwmgr->adev,
- 				GetIndexIntoMasterTable(DATA, VRAM_Info), &size, &frev, &crev);
-+	if (!vram_info) {
-+		pr_err("Could not retrieve the VramInfo table!");
-+		return -EINVAL;
-+	}
+diff --git a/drivers/staging/media/rkvdec/rkvdec.c b/drivers/staging/media/rkvdec/rkvdec.c
+index ac398b5a97360..a1d941b0be00b 100644
+--- a/drivers/staging/media/rkvdec/rkvdec.c
++++ b/drivers/staging/media/rkvdec/rkvdec.c
+@@ -213,8 +213,14 @@ static int rkvdec_enum_framesizes(struct file *file, void *priv,
+ 	if (!fmt)
+ 		return -EINVAL;
  
- 	if (module_index >= vram_info->ucNumOfVRAMModule) {
- 		pr_err("Invalid VramInfo table.");
-@@ -181,6 +185,10 @@ int atomctrl_initialize_mc_reg_table_v2_2(
- 	vram_info = (ATOM_VRAM_INFO_HEADER_V2_2 *)
- 		smu_atom_get_data_table(hwmgr->adev,
- 				GetIndexIntoMasterTable(DATA, VRAM_Info), &size, &frev, &crev);
-+	if (!vram_info) {
-+		pr_err("Could not retrieve the VramInfo table!");
-+		return -EINVAL;
-+	}
+-	fsize->type = V4L2_FRMSIZE_TYPE_STEPWISE;
+-	fsize->stepwise = fmt->frmsize;
++	fsize->type = V4L2_FRMSIZE_TYPE_CONTINUOUS;
++	fsize->stepwise.min_width = 1;
++	fsize->stepwise.max_width = fmt->frmsize.max_width;
++	fsize->stepwise.step_width = 1;
++	fsize->stepwise.min_height = 1;
++	fsize->stepwise.max_height = fmt->frmsize.max_height;
++	fsize->stepwise.step_height = 1;
++
+ 	return 0;
+ }
  
- 	if (module_index >= vram_info->ucNumOfVRAMModule) {
- 		pr_err("Invalid VramInfo table.");
 -- 
 2.39.5
 
