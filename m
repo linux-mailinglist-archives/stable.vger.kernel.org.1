@@ -1,57 +1,65 @@
-Return-Path: <stable+bounces-153462-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-154154-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0CA7AADD4D7
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:14:48 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6DCA0ADD8C0
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:58:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C07BB194827F
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:05:08 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 556704A3A22
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:43:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 526EA2E9732;
-	Tue, 17 Jun 2025 16:00:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3BE52EE26A;
+	Tue, 17 Jun 2025 16:37:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MLU/1eHx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="acbsBqX8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 094702DFF17;
-	Tue, 17 Jun 2025 16:00:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9041A2ED868;
+	Tue, 17 Jun 2025 16:37:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750176042; cv=none; b=pq93OWCw+0khKr39cU9l/Z3JTJfzmasvRyBIqagYzUU+AhVLAo5uMJ3algDVeehapeLTuLJ3Ft14hEaqQF/gSXB/o8Nusb09xCDNM1oy7LThb6w8Su5rGOO+HZtQ5ewX7+jTOTBCYmIQuiL/fcmX9KhsSjwQO9lqiKnp5tomayI=
+	t=1750178275; cv=none; b=KJrF6MvNq/hDuLdPGmI0W0dp79SnOFbLi5DHbVt4I7OWjgeHmuqADJYB1NX1LYUaoUl1eV9VESd4dt/uk3D03hvvl31CRYydycsb/ebrncCJWUMUFWfSmBT0SZAr5EFK411TW3Ap7zgSu/+melVgFYHOiahtVFqnnYRX+yv/2xg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750176042; c=relaxed/simple;
-	bh=JOaAehxhkiE1Ei3JeRUCn4YAqe/7B9/Bf5bJV40MezU=;
+	s=arc-20240116; t=1750178275; c=relaxed/simple;
+	bh=8zMtpQq+ygZonZaB7Or0iy+Gciy5EW68pZweEzfPI5M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DQol2rLWuY6D+SHH9chwKiK/RqE1qAU+Sfc2K5Cuov5geqdrZtJV25D0OaYpYbK61zYOp8HlGatQI1i9oYb1ij8R2VRl7ZCTZ+BJtYKhIx9K80K0lNKg3+Mcuzl4KRoSLyhJAYiz/WTPyKna9NVbqGc/ouFINCVjqWHkdT45F8o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MLU/1eHx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 398D4C4CEF1;
-	Tue, 17 Jun 2025 16:00:40 +0000 (UTC)
+	 MIME-Version; b=Ihy1IUJckJGaVSoRp2Zf4uESg7t2OSms6aGAAx4AHMiGru89ZnDhYY9kVKRhp0xx5PbFlEK2gD7ZQJgE+15fJ5wQAQlEF+PG8hTZ0iVxNY9/kp+00Vqq6SeL87zxB6FBL043Y8o6vQv1WSOVDczK9+Uutaxf8AbmsmTgr/WuZvs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=acbsBqX8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2628C4CEE3;
+	Tue, 17 Jun 2025 16:37:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750176041;
-	bh=JOaAehxhkiE1Ei3JeRUCn4YAqe/7B9/Bf5bJV40MezU=;
+	s=korg; t=1750178275;
+	bh=8zMtpQq+ygZonZaB7Or0iy+Gciy5EW68pZweEzfPI5M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MLU/1eHx1cecZlvJO/rGsh5uKuSnRCUBjtnP9MkmSsmCCmAWfHYd4tudydQs+2C1a
-	 ctj6bswNk5BK1oYMMToR+IsKF0m+BIe+9vANvF6DD3pfsHAPl7LxKp7Km4MJQ2GXiD
-	 WzU6lOiYGeAP0Z/j3La0OIdxjTmNviXxpcvOi0Gg=
+	b=acbsBqX8Vte1ZD2Hqg9ap/8WRPMXRhfcUInTT1PCA+nVoChEUbFFyJOj70OWlrbVg
+	 2y3ZCmZBRklIIlpwri82s2Op7xdfG9tZuyK7hptVvx8UX1QwuGzZPxgZ5Oa7JkSEJt
+	 kYmFTvIesCJD2lfmMqLT6MCxPFUrTaZoVi4yxzFc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Longfang Liu <liulongfang@huawei.com>,
-	Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>,
-	Alex Williamson <alex.williamson@redhat.com>,
+	Ian Rogers <irogers@google.com>,
+	Namhyung Kim <namhyung@kernel.org>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+	Ingo Molnar <mingo@redhat.com>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Kan Liang <kan.liang@linux.intel.com>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Namhyung Kim <namhyung.kim@lge.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Arnaldo Carvalho de Melo <acme@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 178/512] hisi_acc_vfio_pci: bugfix live migration function without VF device driver
-Date: Tue, 17 Jun 2025 17:22:24 +0200
-Message-ID: <20250617152426.852340007@linuxfoundation.org>
+Subject: [PATCH 6.15 437/780] perf symbol-minimal: Fix double free in filename__read_build_id
+Date: Tue, 17 Jun 2025 17:22:25 +0200
+Message-ID: <20250617152509.259678393@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
-References: <20250617152419.512865572@linuxfoundation.org>
+In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
+References: <20250617152451.485330293@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,82 +71,125 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Longfang Liu <liulongfang@huawei.com>
+From: Ian Rogers <irogers@google.com>
 
-[ Upstream commit 2777a40998deb36f96b6afc48bd397cf58a4edf0 ]
+[ Upstream commit fa9c4977fbfbca182f9e410d57b3f98356a9d917 ]
 
-If the VF device driver is not loaded in the Guest OS and we attempt to
-perform device data migration, the address of the migrated data will
-be NULL.
-The live migration recovery operation on the destination side will
-access a null address value, which will cause access errors.
+Running the "perf script task-analyzer tests" with address sanitizer
+showed a double free:
+```
+FAIL: "test_csv_extended_times" Error message: "Failed to find required string:'Out-Out;'."
+=================================================================
+==19190==ERROR: AddressSanitizer: attempting double-free on 0x50b000017b10 in thread T0:
+    #0 0x55da9601c78a in free (perf+0x26078a) (BuildId: e7ef50e08970f017a96fde6101c5e2491acc674a)
+    #1 0x55da96640c63 in filename__read_build_id tools/perf/util/symbol-minimal.c:221:2
 
-Therefore, live migration of VMs without added VF device drivers
-does not require device data migration.
-In addition, when the queue address data obtained by the destination
-is empty, device queue recovery processing will not be performed.
+0x50b000017b10 is located 0 bytes inside of 112-byte region [0x50b000017b10,0x50b000017b80)
+freed by thread T0 here:
+    #0 0x55da9601ce40 in realloc (perf+0x260e40) (BuildId: e7ef50e08970f017a96fde6101c5e2491acc674a)
+    #1 0x55da96640ad6 in filename__read_build_id tools/perf/util/symbol-minimal.c:204:10
 
-Fixes: b0eed085903e ("hisi_acc_vfio_pci: Add support for VFIO live migration")
-Signed-off-by: Longfang Liu <liulongfang@huawei.com>
-Reviewed-by: Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>
-Link: https://lore.kernel.org/r/20250510081155.55840-6-liulongfang@huawei.com
-Signed-off-by: Alex Williamson <alex.williamson@redhat.com>
+previously allocated by thread T0 here:
+    #0 0x55da9601ca23 in malloc (perf+0x260a23) (BuildId: e7ef50e08970f017a96fde6101c5e2491acc674a)
+    #1 0x55da966407e7 in filename__read_build_id tools/perf/util/symbol-minimal.c:181:9
+
+SUMMARY: AddressSanitizer: double-free (perf+0x26078a) (BuildId: e7ef50e08970f017a96fde6101c5e2491acc674a) in free
+==19190==ABORTING
+FAIL: "invocation of perf script report task-analyzer --csv-summary csvsummary --summary-extended command failed" Error message: ""
+FAIL: "test_csvsummary_extended" Error message: "Failed to find required string:'Out-Out;'."
+---- end(-1) ----
+132: perf script task-analyzer tests                                 : FAILED!
+```
+
+The buf_size if always set to phdr->p_filesz, but that may be 0
+causing a free and realloc to return NULL. This is treated in
+filename__read_build_id like a failure and the buffer is freed again.
+
+To avoid this problem only grow buf, meaning the buf_size will never
+be 0. This also reduces the number of memory (re)allocations.
+
+Fixes: b691f64360ecec49 ("perf symbols: Implement poor man's ELF parser")
+Signed-off-by: Ian Rogers <irogers@google.com>
+Acked-by: Namhyung Kim <namhyung@kernel.org>
+Cc: Adrian Hunter <adrian.hunter@intel.com>
+Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
+Cc: Ingo Molnar <mingo@redhat.com>
+Cc: Jiri Olsa <jolsa@kernel.org>
+Cc: Kan Liang <kan.liang@linux.intel.com>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Namhyung Kim <namhyung.kim@lge.com>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Link: https://lore.kernel.org/r/20250501070003.22251-1-irogers@google.com
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../vfio/pci/hisilicon/hisi_acc_vfio_pci.c    | 22 +++++++++++++------
- 1 file changed, 15 insertions(+), 7 deletions(-)
+ tools/perf/util/symbol-minimal.c | 34 +++++++++++++++++---------------
+ 1 file changed, 18 insertions(+), 16 deletions(-)
 
-diff --git a/drivers/vfio/pci/hisilicon/hisi_acc_vfio_pci.c b/drivers/vfio/pci/hisilicon/hisi_acc_vfio_pci.c
-index 81e9a4d362fbc..68300fcd3c41b 100644
---- a/drivers/vfio/pci/hisilicon/hisi_acc_vfio_pci.c
-+++ b/drivers/vfio/pci/hisilicon/hisi_acc_vfio_pci.c
-@@ -426,13 +426,6 @@ static int vf_qm_check_match(struct hisi_acc_vf_core_device *hisi_acc_vdev,
- 		return -EINVAL;
- 	}
+diff --git a/tools/perf/util/symbol-minimal.c b/tools/perf/util/symbol-minimal.c
+index c6f369b5d893f..d8da3da01fe6b 100644
+--- a/tools/perf/util/symbol-minimal.c
++++ b/tools/perf/util/symbol-minimal.c
+@@ -147,18 +147,19 @@ int filename__read_build_id(const char *filename, struct build_id *bid)
+ 			if (phdr->p_type != PT_NOTE)
+ 				continue;
  
--	ret = qm_write_regs(vf_qm, QM_VF_STATE, &vf_data->vf_qm_state, 1);
--	if (ret) {
--		dev_err(dev, "failed to write QM_VF_STATE\n");
--		return ret;
--	}
+-			buf_size = phdr->p_filesz;
+ 			offset = phdr->p_offset;
+-			tmp = realloc(buf, buf_size);
+-			if (tmp == NULL)
+-				goto out_free;
 -
--	hisi_acc_vdev->vf_qm_state = vf_data->vf_qm_state;
- 	hisi_acc_vdev->match_done = true;
- 	return 0;
- }
-@@ -498,6 +491,20 @@ static int vf_qm_load_data(struct hisi_acc_vf_core_device *hisi_acc_vdev,
- 	if (migf->total_length < sizeof(struct acc_vf_data))
- 		return -EINVAL;
+-			buf = tmp;
++			if (phdr->p_filesz > buf_size) {
++				buf_size = phdr->p_filesz;
++				tmp = realloc(buf, buf_size);
++				if (tmp == NULL)
++					goto out_free;
++				buf = tmp;
++			}
+ 			fseek(fp, offset, SEEK_SET);
+-			if (fread(buf, buf_size, 1, fp) != 1)
++			if (fread(buf, phdr->p_filesz, 1, fp) != 1)
+ 				goto out_free;
  
-+	if (!vf_data->eqe_dma || !vf_data->aeqe_dma ||
-+	    !vf_data->sqc_dma || !vf_data->cqc_dma) {
-+		dev_info(dev, "resume dma addr is NULL!\n");
-+		hisi_acc_vdev->vf_qm_state = QM_NOT_READY;
-+		return 0;
-+	}
-+
-+	ret = qm_write_regs(qm, QM_VF_STATE, &vf_data->vf_qm_state, 1);
-+	if (ret) {
-+		dev_err(dev, "failed to write QM_VF_STATE\n");
-+		return -EINVAL;
-+	}
-+	hisi_acc_vdev->vf_qm_state = vf_data->vf_qm_state;
-+
- 	qm->eqe_dma = vf_data->eqe_dma;
- 	qm->aeqe_dma = vf_data->aeqe_dma;
- 	qm->sqc_dma = vf_data->sqc_dma;
-@@ -1371,6 +1378,7 @@ static int hisi_acc_vfio_pci_migrn_init_dev(struct vfio_device *core_vdev)
- 	hisi_acc_vdev->vf_id = pci_iov_vf_id(pdev) + 1;
- 	hisi_acc_vdev->pf_qm = pf_qm;
- 	hisi_acc_vdev->vf_dev = pdev;
-+	hisi_acc_vdev->vf_qm_state = QM_NOT_READY;
- 	mutex_init(&hisi_acc_vdev->state_mutex);
+-			ret = read_build_id(buf, buf_size, bid, need_swap);
++			ret = read_build_id(buf, phdr->p_filesz, bid, need_swap);
+ 			if (ret == 0) {
+ 				ret = bid->size;
+ 				break;
+@@ -199,18 +200,19 @@ int filename__read_build_id(const char *filename, struct build_id *bid)
+ 			if (phdr->p_type != PT_NOTE)
+ 				continue;
  
- 	core_vdev->migration_flags = VFIO_MIGRATION_STOP_COPY | VFIO_MIGRATION_PRE_COPY;
+-			buf_size = phdr->p_filesz;
+ 			offset = phdr->p_offset;
+-			tmp = realloc(buf, buf_size);
+-			if (tmp == NULL)
+-				goto out_free;
+-
+-			buf = tmp;
++			if (phdr->p_filesz > buf_size) {
++				buf_size = phdr->p_filesz;
++				tmp = realloc(buf, buf_size);
++				if (tmp == NULL)
++					goto out_free;
++				buf = tmp;
++			}
+ 			fseek(fp, offset, SEEK_SET);
+-			if (fread(buf, buf_size, 1, fp) != 1)
++			if (fread(buf, phdr->p_filesz, 1, fp) != 1)
+ 				goto out_free;
+ 
+-			ret = read_build_id(buf, buf_size, bid, need_swap);
++			ret = read_build_id(buf, phdr->p_filesz, bid, need_swap);
+ 			if (ret == 0) {
+ 				ret = bid->size;
+ 				break;
 -- 
 2.39.5
 
