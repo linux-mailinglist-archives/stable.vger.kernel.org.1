@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-153532-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-154226-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D634ADD4FB
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:15:53 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2BFCAADD8A3
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:57:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0342D2C4EC6
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:07:33 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 002E71BC0B61
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:46:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF0C82EA172;
-	Tue, 17 Jun 2025 16:04:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 878572EF287;
+	Tue, 17 Jun 2025 16:41:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QrgxOTit"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OHpDOGC0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CAEE2F2371;
-	Tue, 17 Jun 2025 16:04:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42483236457;
+	Tue, 17 Jun 2025 16:41:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750176268; cv=none; b=A7sTq95mofHebqnF5Yb+N/CmnXpNtZ4IvdRX9aIOt755HnQm+F44AUpHEOP5AfsM9dEkcz/9EX1xUPksRdV+jk9nl89z4o6TPMyfLDcv4UfuygCltiLcq8Psmof0Zj+JubZrGwStEZeP7eJQRO4JXmUdMxQh35kmsPGrS8PTD4c=
+	t=1750178510; cv=none; b=DqF8MM4yewstKJqIAyANEVUm2hTkTee8Wc3SdPucBQ0Axz5xa67S60FXqneRwJAvuvQSlSiEKLL2u4U8S3fG89j/niJYeE9CwUdV1t/8KpRC2G6eaDQknYKxGwpqvOpltULIS/gAcjwEdkxk8Plmuyp0eHdQ4Eaei+Tg0J3Mwfo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750176268; c=relaxed/simple;
-	bh=YpTL3RNBnA5lAvblWv67rgAZtw7mlbB5W1YuKAyE9hM=;
+	s=arc-20240116; t=1750178510; c=relaxed/simple;
+	bh=8AJ6QxtIogRDap0XUqCspSRwLrlhqpPlyhoeVgWq9Dw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=H/FOP29sNglyhxPInq8IfVAAbsBxX6Q9E/gM7mOYAbPn+33RtWpGOQjVPELExEb+532BwgNqVdexBKvpHqq1EGS08sAM+dBAX4ZXJWyijjEMCS+IGXB+SHxpLxaeQFn9Ju4jGMSd0IgylG2wdLUlTzvLcsm4s0WK8OIKDAF5qTg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QrgxOTit; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E31F9C4CEE3;
-	Tue, 17 Jun 2025 16:04:27 +0000 (UTC)
+	 MIME-Version; b=iAvWCaD4NF2rfwPxPyJlXFwZhcKZ25OgMvMdOAh/MIWiq+f+DsIOlI7+naO7w/CHt5JAXGbXsmCZiG56rHMkeG/ZbCD1QHY/nlTWbB3wRQwl98FZlnwSCE05Bd2eO3Z0CYtaNromBfYL+WEVKWMlCsKMN4OYeb/9iqM8XB9Uto0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OHpDOGC0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA16FC4CEE7;
+	Tue, 17 Jun 2025 16:41:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750176268;
-	bh=YpTL3RNBnA5lAvblWv67rgAZtw7mlbB5W1YuKAyE9hM=;
+	s=korg; t=1750178510;
+	bh=8AJ6QxtIogRDap0XUqCspSRwLrlhqpPlyhoeVgWq9Dw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QrgxOTit1TmE5ecr6JDK6I3hEfh3+Ghr3asNdLGZdvQ3YosDGSsKEv7l28Qz4gsP/
-	 XTyoV5z0JiTSEdfL1mSCpsgpRvSNAfRkKHHaU53rHaGhCo9AOZcSpbaiutrsRmI+Jy
-	 XWTETk9zytqZyTxq85u8rZnrshyE3Fh87ioIRi50=
+	b=OHpDOGC0EaQuRvU30eFkB1Sh0H3Ftrh+/YGMYwalgnIeWFPxRYIuStWwS+UwbJ1bD
+	 Z3HwMWJVmK3pUmEgXadwGmTgOcBFn4VaqlXzz2E1ECjXkPadlvYsW4xPQW/17qrwQX
+	 u2pQovhp58BZNLq15r8WfXnBSQyI39D7wKL2ajiU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hariprasad Kelam <hkelam@marvell.com>,
-	Simon Horman <horms@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
+	David Hildenbrand <david@redhat.com>,
+	Claudio Imbrenda <imbrenda@linux.ibm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 212/512] octeontx2-pf: QOS: Refactor TC_HTB_LEAF_DEL_LAST callback
+Subject: [PATCH 6.15 470/780] s390/uv: Always return 0 from s390_wiggle_split_folio() if successful
 Date: Tue, 17 Jun 2025 17:22:58 +0200
-Message-ID: <20250617152428.220669573@linuxfoundation.org>
+Message-ID: <20250617152510.629776263@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
-References: <20250617152419.512865572@linuxfoundation.org>
+In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
+References: <20250617152451.485330293@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,62 +62,94 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hariprasad Kelam <hkelam@marvell.com>
+From: David Hildenbrand <david@redhat.com>
 
-[ Upstream commit 67af4ec948e8ce3ea53a9cf614d01fddf172e56d ]
+[ Upstream commit bd428b8c79ed8e8658570e70c62c0092500e2eac ]
 
-This patch addresses below issues,
+Let's consistently return 0 if the operation was successful, and just
+detect ourselves whether splitting is required -- folio_test_large() is
+a cheap operation.
 
-1. Active traffic on the leaf node must be stopped before its send queue
-   is reassigned to the parent. This patch resolves the issue by marking
-   the node as 'Inner'.
+Update the documentation.
 
-2. During a system reboot, the interface receives TC_HTB_LEAF_DEL
-   and TC_HTB_LEAF_DEL_LAST callbacks to delete its HTB queues.
-   In the case of TC_HTB_LEAF_DEL_LAST, although the same send queue
-   is reassigned to the parent, the current logic still attempts to update
-   the real number of queues, leadning to below warnings
+Should we simply always return -EAGAIN instead of 0, so we don't have
+to handle it in the caller? Not sure, staring at the documentation, this
+way looks a bit cleaner.
 
-        New queues can't be registered after device unregistration.
-        WARNING: CPU: 0 PID: 6475 at net/core/net-sysfs.c:1714
-        netdev_queue_update_kobjects+0x1e4/0x200
-
-Fixes: 5e6808b4c68d ("octeontx2-pf: Add support for HTB offload")
-Signed-off-by: Hariprasad Kelam <hkelam@marvell.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20250522115842.1499666-1-hkelam@marvell.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: David Hildenbrand <david@redhat.com>
+Link: https://lore.kernel.org/r/20250516123946.1648026-3-david@redhat.com
+Message-ID: <20250516123946.1648026-3-david@redhat.com>
+Reviewed-by: Claudio Imbrenda <imbrenda@linux.ibm.com>
+Signed-off-by: Claudio Imbrenda <imbrenda@linux.ibm.com>
+Stable-dep-of: ab73b29efd36 ("s390/uv: Improve splitting of large folios that cannot be split while dirty")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/marvell/octeontx2/nic/qos.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ arch/s390/kernel/uv.c | 22 ++++++++++++----------
+ 1 file changed, 12 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/qos.c b/drivers/net/ethernet/marvell/octeontx2/nic/qos.c
-index 35acc07bd9648..5765bac119f0e 100644
---- a/drivers/net/ethernet/marvell/octeontx2/nic/qos.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/nic/qos.c
-@@ -1638,6 +1638,7 @@ static int otx2_qos_leaf_del_last(struct otx2_nic *pfvf, u16 classid, bool force
- 	if (!node->is_static)
- 		dwrr_del_node = true;
- 
-+	WRITE_ONCE(node->qid, OTX2_QOS_QID_INNER);
- 	/* destroy the leaf node */
- 	otx2_qos_disable_sq(pfvf, qid);
- 	otx2_qos_destroy_node(pfvf, node);
-@@ -1682,9 +1683,6 @@ static int otx2_qos_leaf_del_last(struct otx2_nic *pfvf, u16 classid, bool force
- 	}
- 	kfree(new_cfg);
- 
--	/* update tx_real_queues */
--	otx2_qos_update_tx_netdev_queues(pfvf);
--
- 	return 0;
+diff --git a/arch/s390/kernel/uv.c b/arch/s390/kernel/uv.c
+index 2cc3b599c7fe3..f6ddb2b54032e 100644
+--- a/arch/s390/kernel/uv.c
++++ b/arch/s390/kernel/uv.c
+@@ -324,34 +324,36 @@ static int make_folio_secure(struct mm_struct *mm, struct folio *folio, struct u
  }
  
+ /**
+- * s390_wiggle_split_folio() - try to drain extra references to a folio and optionally split.
++ * s390_wiggle_split_folio() - try to drain extra references to a folio and
++ *			       split the folio if it is large.
+  * @mm:    the mm containing the folio to work on
+  * @folio: the folio
+- * @split: whether to split a large folio
+  *
+  * Context: Must be called while holding an extra reference to the folio;
+  *          the mm lock should not be held.
+- * Return: 0 if the folio was split successfully;
+- *         -EAGAIN if the folio was not split successfully but another attempt
+- *                 can be made, or if @split was set to false;
+- *         -EINVAL in case of other errors. See split_folio().
++ * Return: 0 if the operation was successful;
++ *	   -EAGAIN if splitting the large folio was not successful,
++ *		   but another attempt can be made;
++ *	   -EINVAL in case of other folio splitting errors. See split_folio().
+  */
+-static int s390_wiggle_split_folio(struct mm_struct *mm, struct folio *folio, bool split)
++static int s390_wiggle_split_folio(struct mm_struct *mm, struct folio *folio)
+ {
+ 	int rc;
+ 
+ 	lockdep_assert_not_held(&mm->mmap_lock);
+ 	folio_wait_writeback(folio);
+ 	lru_add_drain_all();
+-	if (split) {
++
++	if (folio_test_large(folio)) {
+ 		folio_lock(folio);
+ 		rc = split_folio(folio);
+ 		folio_unlock(folio);
+ 
+ 		if (rc != -EBUSY)
+ 			return rc;
++		return -EAGAIN;
+ 	}
+-	return -EAGAIN;
++	return 0;
+ }
+ 
+ int make_hva_secure(struct mm_struct *mm, unsigned long hva, struct uv_cb_header *uvcb)
+@@ -394,7 +396,7 @@ int make_hva_secure(struct mm_struct *mm, unsigned long hva, struct uv_cb_header
+ 	mmap_read_unlock(mm);
+ 
+ 	if (rc == -E2BIG || rc == -EBUSY) {
+-		rc = s390_wiggle_split_folio(mm, folio, rc == -E2BIG);
++		rc = s390_wiggle_split_folio(mm, folio);
+ 		if (!rc)
+ 			rc = -EAGAIN;
+ 	}
 -- 
 2.39.5
 
