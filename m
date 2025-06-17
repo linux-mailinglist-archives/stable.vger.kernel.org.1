@@ -1,62 +1,59 @@
-Return-Path: <stable+bounces-153709-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153712-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C1BDCADD5E7
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:28:14 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CA670ADD61F
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:30:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8AB104071F8
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:20:29 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 837FA178EDD
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:21:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C8D302ED857;
-	Tue, 17 Jun 2025 16:13:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0F2B2EE5F7;
+	Tue, 17 Jun 2025 16:14:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y4GZp/Ln"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SPzaZ9/T"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83D322F94B0;
-	Tue, 17 Jun 2025 16:13:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BF372EE5EC;
+	Tue, 17 Jun 2025 16:14:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750176836; cv=none; b=ZWizAkwL4BQW/v4KVA7m5V13bgmi7r31lHV7YOj43lit+oKX1qKR6VQ1VQjCycpGF5XaasABdqdSexstiFDRRdL8BMBNAddUI8SoynAQgxXk0T8nc2fqmlFM1Jo58HowSF29chOpSnOltfmxrGbJm93g5JfasA1oflYjzLF0lvQ=
+	t=1750176846; cv=none; b=pJxWwW5JReX+RuCzkdDrnvdfNBVvdmBPvnzBh/O5SAU4HSopfM9gs9YaLmqudiIfsW64INnkEzR2HdQhSH5LT4FMLkmwtc25lxF1RK5cP3lRyyY/8rAwWamXexe6TBqdJnMqdAcM+ZOuib6GJPPEOWd7sx3/HvX0BaR5vdusgLM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750176836; c=relaxed/simple;
-	bh=ZCffNo5gSMHEYFixzNYHUpMrdet5sgPXpke45uxsWZ4=;
+	s=arc-20240116; t=1750176846; c=relaxed/simple;
+	bh=X3gD5hyQNrUhiKCBB96vnzpZUongkCQH5bLpWM0Jb6k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YaiFN1xiwSPq3Bt0dkirJTXpHj7KAMMYnCtaRBvAsIN/WzJpfwZ1Ugk0SAAg+IKb2dNNcKlPWWMC4gikVNnraM2UrwsfxSWFLa7pmDyvwjLNI+Dvsi3wnktNXb7Has1rzWzM4kp3Eks2dg+jBXAnZGFw2XM9BdXWZrZ1H77SdYM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y4GZp/Ln; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF36BC4CEE3;
-	Tue, 17 Jun 2025 16:13:55 +0000 (UTC)
+	 MIME-Version; b=IHfeUQLdJOUsexmdLCY5tfzFcjl8EDnFWcMESQwDLsLF947rLRzI85UvX+GGS4ABC8v6Pq++dGIvhPruhoGEBNOtb5yDbAtrt1kA+A2atMe8sk648pcQlI8VZImY+nIYd8v02Yn5dtWUobxD6xeY9jhnCL2EZp0yg+U0Ip+zWkI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SPzaZ9/T; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4CB9C4CEE7;
+	Tue, 17 Jun 2025 16:14:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750176836;
-	bh=ZCffNo5gSMHEYFixzNYHUpMrdet5sgPXpke45uxsWZ4=;
+	s=korg; t=1750176846;
+	bh=X3gD5hyQNrUhiKCBB96vnzpZUongkCQH5bLpWM0Jb6k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Y4GZp/LnzAuEsLqAO5CmkAvtEnXhGi43nCZmIhvVxdn1K3rwkG+q4zX5ycnctWbjD
-	 KMG/5O7M17jWBLMVqpNn8eExlVbg1elEyG3OM9/elMnPwCDsRvoUhrFI9RLn45dyIN
-	 FfCcLe8NZZ0X1roMIqVYL83LQ8DUIbnkpJ/FfHsk=
+	b=SPzaZ9/T4nFzRMZO6MLBe+bidjfaUk69nfOo2Tj4IRQ/fFZY48T1uw3DohRTsKg8Q
+	 7LYPQ0n8XypAJDf+3XOiA7LdNwJI0kEy1BPJrk+d4lWYPJvz5WBDkbgL3q2HtfmkxL
+	 A95B+s7/noqBvk/eh4F5PRImnvMNftLJ9F3zHdlM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Ingo Molnar <mingo@kernel.org>,
 	Adrian Hunter <adrian.hunter@intel.com>,
-	Dmitriy Vyukov <dvyukov@google.com>,
-	Howard Chu <howardchu95@gmail.com>,
 	Ian Rogers <irogers@google.com>,
+	James Clark <james.clark@linaro.org>,
 	Jiri Olsa <jolsa@kernel.org>,
 	Kan Liang <kan.liang@linux.intel.com>,
 	Namhyung Kim <namhyung@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	"Frank Ch. Eigler" <fche@redhat.com>,
 	Arnaldo Carvalho de Melo <acme@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 271/512] perf build: Warn when libdebuginfod devel files are not available
-Date: Tue, 17 Jun 2025 17:23:57 +0200
-Message-ID: <20250617152430.575957386@linuxfoundation.org>
+Subject: [PATCH 6.12 272/512] perf ui browser hists: Set actions->thread before calling do_zoom_thread()
+Date: Tue, 17 Jun 2025 17:23:58 +0200
+Message-ID: <20250617152430.613838781@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
 References: <20250617152419.512865572@linuxfoundation.org>
@@ -77,107 +74,57 @@ Content-Transfer-Encoding: 8bit
 
 From: Arnaldo Carvalho de Melo <acme@redhat.com>
 
-[ Upstream commit 4fce4b91fd1aabb326c46e237eb4b19ab72598f8 ]
+[ Upstream commit 1741189d843a1d5ef38538bc52a3760e2e46cb2e ]
 
-While working on 'perf version --build-options' I noticed that:
+In 7cecb7fe8388d5c3 ("perf hists: Move sort__has_comm into struct
+perf_hpp_list") it assumes that act->thread is set prior to calling
+do_zoom_thread().
 
-  $ perf version --build-options
-  perf version 6.15.rc1.g312a07a00d31
-                   aio: [ on  ]  # HAVE_AIO_SUPPORT
-                   bpf: [ on  ]  # HAVE_LIBBPF_SUPPORT
-         bpf_skeletons: [ on  ]  # HAVE_BPF_SKEL
-            debuginfod: [ OFF ]  # HAVE_DEBUGINFOD_SUPPORT
-  <SNIP>
+This doesn't happen when we use ESC or the Left arrow key to Zoom out of
+a specific thread, making this operation not to work and we get stuck
+into the thread zoom.
 
-And looking at tools/perf/Makefile.config I also noticed that it is not
-opt-in, meaning we will attempt to build with it in all normal cases.
+In 6422184b087ff435 ("perf hists browser: Simplify zooming code using
+pstack_peek()") it says no need to set actions->thread, and at that
+point that was true, but in 7cecb7fe8388d5c3 a actions->thread == NULL
+check was added before the zoom out of thread could kick in.
 
-So add the usual warning at build time to let the user know that
-something recommended is missing, now we see:
+We can zoom out using the alternative 't' thread zoom toggle hotkey to
+finally set actions->thread before calling do_zoom_thread() and zoom
+out, but lets also fix the ESC/Zoom out of thread case.
 
-  Makefile.config:563: No elfutils/debuginfod.h found, no debuginfo server support, please install elfutils-debuginfod-client-devel or equivalent
-
-And after following the recommendation:
-
-  $ perf check feature debuginfod
-            debuginfod: [ on  ]  # HAVE_DEBUGINFOD_SUPPORT
-  $ ldd ~/bin/perf | grep debuginfo
-	libdebuginfod.so.1 => /lib64/libdebuginfod.so.1 (0x00007fee5cf5f000)
-  $
-
-With this feature on several perf tools will fetch what is needed and
-not require all the contents of the debuginfo packages, for instance:
-
-  # rpm -qa | grep kernel-debuginfo
-  # pahole --running_kernel_vmlinux
-  pahole: couldn't find a vmlinux that matches the running kernel
-  HINT: Maybe you're inside a container or missing a debuginfo package?
-  #
-  # perf trace -e open* perf probe --vars icmp_rcv
-      0.000 ( 0.005 ms): perf/97391 openat(dfd: CWD, filename: "/etc/ld.so.cache", flags: RDONLY|CLOEXEC) = 3
-      0.014 ( 0.004 ms): perf/97391 openat(dfd: CWD, filename: "/lib64/libm.so.6", flags: RDONLY|CLOEXEC) = 3
-  <SNIP>
-  32130.100 ( 0.008 ms): perf/97391 openat(dfd: CWD, filename: "/root/.cache/debuginfod_client/aa3c82b4a13f9c0e0301bebb20fe958c4db6f362/debuginfo") = 3
-  <SNIP>
-  Available variables at icmp_rcv
-        @<icmp_rcv+0>
-                struct sk_buff* skb
-  <SNIP>
-  #
-  # pahole --running_kernel_vmlinux
-  /root/.cache/debuginfod_client/aa3c82b4a13f9c0e0301bebb20fe958c4db6f362/debuginfo
-  # file /root/.cache/debuginfod_client/aa3c82b4a13f9c0e0301bebb20fe958c4db6f362/debuginfo
-  /root/.cache/debuginfod_client/aa3c82b4a13f9c0e0301bebb20fe958c4db6f362/debuginfo: ELF 64-bit LSB executable, x86-64, version 1 (SYSV), statically linked, BuildID[sha1]=aa3c82b4a13f9c0e0301bebb20fe958c4db6f362, with debug_info, not stripped
-  # ls -la /root/.cache/debuginfod_client/aa3c82b4a13f9c0e0301bebb20fe958c4db6f362/debuginfo
-  -r--------. 1 root root 475401512 Mar 27 21:00 /root/.cache/debuginfod_client/aa3c82b4a13f9c0e0301bebb20fe958c4db6f362/debuginfo
-  #
-
-Then, cached:
-
-  # perf stat --null perf probe --vars icmp_rcv
-  Available variables at icmp_rcv
-        @<icmp_rcv+0>
-                struct sk_buff* skb
-
-   Performance counter stats for 'perf probe --vars icmp_rcv':
-
-       0.671389041 seconds time elapsed
-
-       0.519176000 seconds user
-       0.150860000 seconds sys
-
-Fixes: c7a14fdcb3fa7736 ("perf build-ids: Fall back to debuginfod query if debuginfo not found")
+Fixes: 7cecb7fe8388d5c3 ("perf hists: Move sort__has_comm into struct perf_hpp_list")
+Reported-by: Ingo Molnar <mingo@kernel.org>
 Tested-by: Ingo Molnar <mingo@kernel.org>
 Cc: Adrian Hunter <adrian.hunter@intel.com>
-Cc: Dmitriy Vyukov <dvyukov@google.com>
-Cc: Howard Chu <howardchu95@gmail.com>
 Cc: Ian Rogers <irogers@google.com>
+Cc: James Clark <james.clark@linaro.org>
 Cc: Jiri Olsa <jolsa@kernel.org>
 Cc: Kan Liang <kan.liang@linux.intel.com>
 Cc: Namhyung Kim <namhyung@kernel.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Frank Ch. Eigler <fche@redhat.com>
-Link: https://lore.kernel.org/r/Z_dkNDj9EPFwPqq1@gmail.com
-[ Folded patch from Ingo to have the debian/ubuntu devel package added build warning message ]
+Link: https://lore.kernel.org/r/Z_TYux5fUg2pW-pF@gmail.com
 Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/Makefile.config | 2 ++
- 1 file changed, 2 insertions(+)
+ tools/perf/ui/browsers/hists.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tools/perf/Makefile.config b/tools/perf/Makefile.config
-index b102a4c525e4b..a2034fa183254 100644
---- a/tools/perf/Makefile.config
-+++ b/tools/perf/Makefile.config
-@@ -569,6 +569,8 @@ ifndef NO_LIBELF
-     ifeq ($(feature-libdebuginfod), 1)
-       CFLAGS += -DHAVE_DEBUGINFOD_SUPPORT
-       EXTLIBS += -ldebuginfod
-+    else
-+      $(warning No elfutils/debuginfod.h found, no debuginfo server support, please install libdebuginfod-dev/elfutils-debuginfod-client-devel or equivalent)
-     endif
-   endif
- 
+diff --git a/tools/perf/ui/browsers/hists.c b/tools/perf/ui/browsers/hists.c
+index 49ba82bf33918..3283b6313bab8 100644
+--- a/tools/perf/ui/browsers/hists.c
++++ b/tools/perf/ui/browsers/hists.c
+@@ -3267,10 +3267,10 @@ static int evsel__hists_browse(struct evsel *evsel, int nr_events, const char *h
+ 				/*
+ 				 * No need to set actions->dso here since
+ 				 * it's just to remove the current filter.
+-				 * Ditto for thread below.
+ 				 */
+ 				do_zoom_dso(browser, actions);
+ 			} else if (top == &browser->hists->thread_filter) {
++				actions->thread = thread;
+ 				do_zoom_thread(browser, actions);
+ 			} else if (top == &browser->hists->socket_filter) {
+ 				do_zoom_socket(browser, actions);
 -- 
 2.39.5
 
