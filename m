@@ -1,53 +1,55 @@
-Return-Path: <stable+bounces-153933-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153935-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3E61EADD749
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:43:26 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id E294DADD80F
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:51:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6B40C1947266
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:31:14 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 145A019E0A21
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:31:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7414F2EF2B5;
-	Tue, 17 Jun 2025 16:26:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA26E2F94B1;
+	Tue, 17 Jun 2025 16:26:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a4Dvghy8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x9dd1riq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BEB22F949B;
-	Tue, 17 Jun 2025 16:26:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A62AB2F94A6;
+	Tue, 17 Jun 2025 16:26:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750177568; cv=none; b=jwfny58U/eACjnrnngVVIwx15Wviqss3okiWB34efemAI3klDqhmSns9LBriGz+8oYTUBJjyr/gZvNnU86LGQ2AJs/67Pgja5T/T9p4Z/RTa9I14wl17tV3rwOPYJ2qyiRGiamKaVAIq3qOmRwAWVThuCzXEIdGutjstiT7BRDo=
+	t=1750177575; cv=none; b=KMG9fR0Bviy13u3cUQJZfq01464TtCoJlkjfbJcZJomUSQFSWlWSkdb80J/iDWICOdnb+aeuLre34+r3tef4byvxJtEPZvQkk+NFGQPSEExz2DFcCjfGcI3QIl3zUTGuqyaQK6uzAwGuJkMeM9O1QjwVio+bP0W5szmJ2S0ySl8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750177568; c=relaxed/simple;
-	bh=0gnEpFr/pReHqP+23FI2vfdsDzaaUId/xcFD/BCLBPM=;
+	s=arc-20240116; t=1750177575; c=relaxed/simple;
+	bh=0pVOQCgGUx8VO6aaBkJaG0KPrMO5lFAFdD1xJ3dcmCw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Zn2cyrWv9kG4tGECwifTMAmvp31W6QROISgTmSHLtb8OxYj0yP6d+uN52MJllt/RFVhimyGrb2H5z7SgUCeJ69VWcWCu+dABVuR9HbkCNtW/xj7OVSZNO//2VSIILXLgbXMuAo/dn1gjNywIWfysPxSOi3KWojE2vZuMET55aPM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a4Dvghy8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A772EC4CEE3;
-	Tue, 17 Jun 2025 16:26:07 +0000 (UTC)
+	 MIME-Version; b=POUW1g6tY0kEDlV9bokGDYqug7SdwqRaxBTyOB7UO5+iwdlMs1bkWdTH6ZFTX0tYeySf2R9wKP/CBLVVqhjS02ok/J4fGNbNBnfWdm3GbpIYOXvNKsTvZvIlDIMomSkFpqM+gA7VHUa0WtLKyqcoHfkxN/QjZMRP2uqdTCZU05w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x9dd1riq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 142CFC4CEE3;
+	Tue, 17 Jun 2025 16:26:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750177568;
-	bh=0gnEpFr/pReHqP+23FI2vfdsDzaaUId/xcFD/BCLBPM=;
+	s=korg; t=1750177575;
+	bh=0pVOQCgGUx8VO6aaBkJaG0KPrMO5lFAFdD1xJ3dcmCw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=a4Dvghy8b0rh1GVyaKKYvk8WrLXM40ubTX3VhHBqz+iHvtd28q7hhkIibsi2Nvcgh
-	 mCL7Uy1lkCKiu7+uPfqh/YFShmtkEpqvxKTDNkmX7dPNDBQdduChuuVBwd6SfzrNBe
-	 gyBJSXQEQO4tiD1X+aW8UBkK0gKUFN+332yTM6x8=
+	b=x9dd1riqsQxuJmC8SBtE8ax0W/dyxBctPuldssoJoVxUYlK2/U2ilkhHTmZVf2gHX
+	 S6Dxte7J84EFSRmuNU1L8fiTn4ilPZ/SR39uvhuuAHsWc4yJVeD/1wVzSQ3Np+kP+b
+	 5haI7kmc5v3809y3KQvSfvFQf64z5a5Lp3pQlLvw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yonghong Song <yonghong.song@linux.dev>,
-	Andrii Nakryiko <andrii@kernel.org>,
+	Wei Fang <wei.fang@nxp.com>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 325/780] bpf: Do not include stack ptr register in precision backtracking bookkeeping
-Date: Tue, 17 Jun 2025 17:20:33 +0200
-Message-ID: <20250617152504.686594558@linuxfoundation.org>
+Subject: [PATCH 6.15 326/780] net: phy: clear phydev->devlink when the link is deleted
+Date: Tue, 17 Jun 2025 17:20:34 +0200
+Message-ID: <20250617152504.725307366@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
 References: <20250617152451.485330293@linuxfoundation.org>
@@ -66,206 +68,59 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Yonghong Song <yonghong.song@linux.dev>
+From: Wei Fang <wei.fang@nxp.com>
 
-[ Upstream commit e2d2115e56c4a02377189bfc3a9a7933552a7b0f ]
+[ Upstream commit 0795b05a59b1371b18ffbf09d385296b12e9f5d5 ]
 
-Yi Lai reported an issue ([1]) where the following warning appears
-in kernel dmesg:
-  [   60.643604] verifier backtracking bug
-  [   60.643635] WARNING: CPU: 10 PID: 2315 at kernel/bpf/verifier.c:4302 __mark_chain_precision+0x3a6c/0x3e10
-  [   60.648428] Modules linked in: bpf_testmod(OE)
-  [   60.650471] CPU: 10 UID: 0 PID: 2315 Comm: test_progs Tainted: G           OE       6.15.0-rc4-gef11287f8289-dirty #327 PREEMPT(full)
-  [   60.654385] Tainted: [O]=OOT_MODULE, [E]=UNSIGNED_MODULE
-  [   60.656682] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.14.0-0-g155821a1990b-prebuilt.qemu.org 04/01/2014
-  [   60.660475] RIP: 0010:__mark_chain_precision+0x3a6c/0x3e10
-  [   60.662814] Code: 5a 30 84 89 ea e8 c4 d9 01 00 80 3d 3e 7d d8 04 00 0f 85 60 fa ff ff c6 05 31 7d d8 04
-                       01 48 c7 c7 00 58 30 84 e8 c4 06 a5 ff <0f> 0b e9 46 fa ff ff 48 ...
-  [   60.668720] RSP: 0018:ffff888116cc7298 EFLAGS: 00010246
-  [   60.671075] RAX: 54d70e82dfd31900 RBX: ffff888115b65e20 RCX: 0000000000000000
-  [   60.673659] RDX: 0000000000000001 RSI: 0000000000000004 RDI: 00000000ffffffff
-  [   60.676241] RBP: 0000000000000400 R08: ffff8881f6f23bd3 R09: 1ffff1103ede477a
-  [   60.678787] R10: dffffc0000000000 R11: ffffed103ede477b R12: ffff888115b60ae8
-  [   60.681420] R13: 1ffff11022b6cbc4 R14: 00000000fffffff2 R15: 0000000000000001
-  [   60.684030] FS:  00007fc2aedd80c0(0000) GS:ffff88826fa8a000(0000) knlGS:0000000000000000
-  [   60.686837] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-  [   60.689027] CR2: 000056325369e000 CR3: 000000011088b002 CR4: 0000000000370ef0
-  [   60.691623] Call Trace:
-  [   60.692821]  <TASK>
-  [   60.693960]  ? __pfx_verbose+0x10/0x10
-  [   60.695656]  ? __pfx_disasm_kfunc_name+0x10/0x10
-  [   60.697495]  check_cond_jmp_op+0x16f7/0x39b0
-  [   60.699237]  do_check+0x58fa/0xab10
-  ...
+There is a potential crash issue when disabling and re-enabling the
+network port. When disabling the network port, phy_detach() calls
+device_link_del() to remove the device link, but it does not clear
+phydev->devlink, so phydev->devlink is not a NULL pointer. Then the
+network port is re-enabled, but if phy_attach_direct() fails before
+calling device_link_add(), the code jumps to the "error" label and
+calls phy_detach(). Since phydev->devlink retains the old value from
+the previous attach/detach cycle, device_link_del() uses the old value,
+which accesses a NULL pointer and causes a crash. The simplified crash
+log is as follows.
 
-Further analysis shows the warning is at line 4302 as below:
+[   24.702421] Call trace:
+[   24.704856]  device_link_put_kref+0x20/0x120
+[   24.709124]  device_link_del+0x30/0x48
+[   24.712864]  phy_detach+0x24/0x168
+[   24.716261]  phy_attach_direct+0x168/0x3a4
+[   24.720352]  phylink_fwnode_phy_connect+0xc8/0x14c
+[   24.725140]  phylink_of_phy_connect+0x1c/0x34
 
-  4294                 /* static subprog call instruction, which
-  4295                  * means that we are exiting current subprog,
-  4296                  * so only r1-r5 could be still requested as
-  4297                  * precise, r0 and r6-r10 or any stack slot in
-  4298                  * the current frame should be zero by now
-  4299                  */
-  4300                 if (bt_reg_mask(bt) & ~BPF_REGMASK_ARGS) {
-  4301                         verbose(env, "BUG regs %x\n", bt_reg_mask(bt));
-  4302                         WARN_ONCE(1, "verifier backtracking bug");
-  4303                         return -EFAULT;
-  4304                 }
+Therefore, phydev->devlink needs to be cleared when the device link is
+deleted.
 
-With the below test (also in the next patch):
-  __used __naked static void __bpf_jmp_r10(void)
-  {
-	asm volatile (
-	"r2 = 2314885393468386424 ll;"
-	"goto +0;"
-	"if r2 <= r10 goto +3;"
-	"if r1 >= -1835016 goto +0;"
-	"if r2 <= 8 goto +0;"
-	"if r3 <= 0 goto +0;"
-	"exit;"
-	::: __clobber_all);
-  }
-
-  SEC("?raw_tp")
-  __naked void bpf_jmp_r10(void)
-  {
-	asm volatile (
-	"r3 = 0 ll;"
-	"call __bpf_jmp_r10;"
-	"r0 = 0;"
-	"exit;"
-	::: __clobber_all);
-  }
-
-The following is the verifier failure log:
-  0: (18) r3 = 0x0                      ; R3_w=0
-  2: (85) call pc+2
-  caller:
-   R10=fp0
-  callee:
-   frame1: R1=ctx() R3_w=0 R10=fp0
-  5: frame1: R1=ctx() R3_w=0 R10=fp0
-  ; asm volatile ("                                 \ @ verifier_precision.c:184
-  5: (18) r2 = 0x20202000256c6c78       ; frame1: R2_w=0x20202000256c6c78
-  7: (05) goto pc+0
-  8: (bd) if r2 <= r10 goto pc+3        ; frame1: R2_w=0x20202000256c6c78 R10=fp0
-  9: (35) if r1 >= 0xffe3fff8 goto pc+0         ; frame1: R1=ctx()
-  10: (b5) if r2 <= 0x8 goto pc+0
-  mark_precise: frame1: last_idx 10 first_idx 0 subseq_idx -1
-  mark_precise: frame1: regs=r2 stack= before 9: (35) if r1 >= 0xffe3fff8 goto pc+0
-  mark_precise: frame1: regs=r2 stack= before 8: (bd) if r2 <= r10 goto pc+3
-  mark_precise: frame1: regs=r2,r10 stack= before 7: (05) goto pc+0
-  mark_precise: frame1: regs=r2,r10 stack= before 5: (18) r2 = 0x20202000256c6c78
-  mark_precise: frame1: regs=r10 stack= before 2: (85) call pc+2
-  BUG regs 400
-
-The main failure reason is due to r10 in precision backtracking bookkeeping.
-Actually r10 is always precise and there is no need to add it for the precision
-backtracking bookkeeping.
-
-One way to fix the issue is to prevent bt_set_reg() if any src/dst reg is
-r10. Andrii suggested to go with push_insn_history() approach to avoid
-explicitly checking r10 in backtrack_insn().
-
-This patch added push_insn_history() support for cond_jmp like 'rX <op> rY'
-operations. In check_cond_jmp_op(), if any of rX or rY is a stack pointer,
-push_insn_history() will record such information, and later backtrack_insn()
-will do bt_set_reg() properly for those register(s).
-
-  [1] https://lore.kernel.org/bpf/Z%2F8q3xzpU59CIYQE@ly-workstation/
-
-Reported by: Yi Lai <yi1.lai@linux.intel.com>
-
-Fixes: 407958a0e980 ("bpf: encapsulate precision backtracking bookkeeping")
-Signed-off-by: Yonghong Song <yonghong.song@linux.dev>
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Link: https://lore.kernel.org/bpf/20250524041335.4046126-1-yonghong.song@linux.dev
+Fixes: bc66fa87d4fd ("net: phy: Add link between phy dev and mac dev")
+Signed-off-by: Wei Fang <wei.fang@nxp.com>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Link: https://patch.msgid.link/20250523083759.3741168-1-wei.fang@nxp.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/bpf_verifier.h | 12 ++++++++----
- kernel/bpf/verifier.c        | 18 ++++++++++++++++--
- 2 files changed, 24 insertions(+), 6 deletions(-)
+ drivers/net/phy/phy_device.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/include/linux/bpf_verifier.h b/include/linux/bpf_verifier.h
-index 9734544b6957c..d1f02f8e3e55f 100644
---- a/include/linux/bpf_verifier.h
-+++ b/include/linux/bpf_verifier.h
-@@ -356,7 +356,11 @@ enum {
- 	INSN_F_SPI_MASK = 0x3f, /* 6 bits */
- 	INSN_F_SPI_SHIFT = 3, /* shifted 3 bits to the left */
+diff --git a/drivers/net/phy/phy_device.c b/drivers/net/phy/phy_device.c
+index cc1bfd22fb812..7d5e76a3db0e9 100644
+--- a/drivers/net/phy/phy_device.c
++++ b/drivers/net/phy/phy_device.c
+@@ -1727,8 +1727,10 @@ void phy_detach(struct phy_device *phydev)
+ 	struct module *ndev_owner = NULL;
+ 	struct mii_bus *bus;
  
--	INSN_F_STACK_ACCESS = BIT(9), /* we need 10 bits total */
-+	INSN_F_STACK_ACCESS = BIT(9),
-+
-+	INSN_F_DST_REG_STACK = BIT(10), /* dst_reg is PTR_TO_STACK */
-+	INSN_F_SRC_REG_STACK = BIT(11), /* src_reg is PTR_TO_STACK */
-+	/* total 12 bits are used now. */
- };
- 
- static_assert(INSN_F_FRAMENO_MASK + 1 >= MAX_CALL_FRAMES);
-@@ -365,9 +369,9 @@ static_assert(INSN_F_SPI_MASK + 1 >= MAX_BPF_STACK / 8);
- struct bpf_insn_hist_entry {
- 	u32 idx;
- 	/* insn idx can't be bigger than 1 million */
--	u32 prev_idx : 22;
--	/* special flags, e.g., whether insn is doing register stack spill/load */
--	u32 flags : 10;
-+	u32 prev_idx : 20;
-+	/* special INSN_F_xxx flags */
-+	u32 flags : 12;
- 	/* additional registers that need precision tracking when this
- 	 * jump is backtracked, vector of six 10-bit records
- 	 */
-diff --git a/kernel/bpf/verifier.c b/kernel/bpf/verifier.c
-index 54c6953a8b84c..efa7014117129 100644
---- a/kernel/bpf/verifier.c
-+++ b/kernel/bpf/verifier.c
-@@ -4413,8 +4413,10 @@ static int backtrack_insn(struct bpf_verifier_env *env, int idx, int subseq_idx,
- 			 * before it would be equally necessary to
- 			 * propagate it to dreg.
- 			 */
--			bt_set_reg(bt, dreg);
--			bt_set_reg(bt, sreg);
-+			if (!hist || !(hist->flags & INSN_F_SRC_REG_STACK))
-+				bt_set_reg(bt, sreg);
-+			if (!hist || !(hist->flags & INSN_F_DST_REG_STACK))
-+				bt_set_reg(bt, dreg);
- 		} else if (BPF_SRC(insn->code) == BPF_K) {
- 			 /* dreg <cond> K
- 			  * Only dreg still needs precision before
-@@ -16377,6 +16379,7 @@ static int check_cond_jmp_op(struct bpf_verifier_env *env,
- 	struct bpf_reg_state *eq_branch_regs;
- 	struct linked_regs linked_regs = {};
- 	u8 opcode = BPF_OP(insn->code);
-+	int insn_flags = 0;
- 	bool is_jmp32;
- 	int pred = -1;
- 	int err;
-@@ -16435,6 +16438,9 @@ static int check_cond_jmp_op(struct bpf_verifier_env *env,
- 				insn->src_reg);
- 			return -EACCES;
- 		}
-+
-+		if (src_reg->type == PTR_TO_STACK)
-+			insn_flags |= INSN_F_SRC_REG_STACK;
- 	} else {
- 		if (insn->src_reg != BPF_REG_0) {
- 			verbose(env, "BPF_JMP/JMP32 uses reserved fields\n");
-@@ -16446,6 +16452,14 @@ static int check_cond_jmp_op(struct bpf_verifier_env *env,
- 		__mark_reg_known(src_reg, insn->imm);
- 	}
- 
-+	if (dst_reg->type == PTR_TO_STACK)
-+		insn_flags |= INSN_F_DST_REG_STACK;
-+	if (insn_flags) {
-+		err = push_insn_history(env, this_branch, insn_flags, 0);
-+		if (err)
-+			return err;
+-	if (phydev->devlink)
++	if (phydev->devlink) {
+ 		device_link_del(phydev->devlink);
++		phydev->devlink = NULL;
 +	}
-+
- 	is_jmp32 = BPF_CLASS(insn->code) == BPF_JMP32;
- 	pred = is_branch_taken(dst_reg, src_reg, opcode, is_jmp32);
- 	if (pred >= 0) {
+ 
+ 	if (phydev->sysfs_links) {
+ 		if (dev)
 -- 
 2.39.5
 
