@@ -1,53 +1,56 @@
-Return-Path: <stable+bounces-153951-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153953-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A774ADD7C3
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:48:58 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 575FBADD719
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:41:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6BDA24A3F66
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:31:28 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B454E4A20A1
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:32:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D8F1B2EE5F2;
-	Tue, 17 Jun 2025 16:27:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B75482F3627;
+	Tue, 17 Jun 2025 16:27:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="n+ZZwzdf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ppBTJFw4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92A392EE5FD;
-	Tue, 17 Jun 2025 16:27:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72B0D2EE60B;
+	Tue, 17 Jun 2025 16:27:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750177623; cv=none; b=FX0p3nWnHWE30VwUEC3XFqTOnP3k/aKnng/oLNoqhRFcgfrMukkJK/6ZkI4XkAywPBuAP/2T9Nw36Ow1Rt+mKx0fs0MU0og4+ZWdbifspNA/TTHucwlgZfJExFUyuxoXwu7oE/1kw5OAKGU1ZLBBC8NcVIdK5qvxHiyyMg/4t1s=
+	t=1750177629; cv=none; b=HoX0i0k4KUZtHgZs25WqgVCNRZBOQ/huECtpNTnGsnZpvPOlhBOdZYtntreUgwV8LI1kWSMMVJhkXPSjL4NVC1fbIgUD63BslNXrVIdy9/9plSnqBkfR5keLXmTGdr5Br7YSLQpV9NpYHAElzzGmGDA0Fn2tbEGgnGqqiH5rrJk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750177623; c=relaxed/simple;
-	bh=N6MrBABJWcqIeC5vGF93OyczJow1eXYDYj1Uwe1a70M=;
+	s=arc-20240116; t=1750177629; c=relaxed/simple;
+	bh=SXoZo2Ngs0fS6q+UX/70oAv5f78zWGcQTNDlz3zVTTw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=p+rEUpR+f0hqP4PBUt9G8EBJvGF+fNZ0CxgldNd5E15yLCcPF8F6XSy8AyiIWh8z0ELOMYl4QmAML1wbwriSbvAEhrHvaWgmxq7r3vB93qfXgHrRY13E/gEESWtLxRgRqf1j0HOxSVzm5OWApQUWVT1tsFomZvKolZlxk0X0RQc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=n+ZZwzdf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0241CC4CEE7;
-	Tue, 17 Jun 2025 16:27:02 +0000 (UTC)
+	 MIME-Version; b=FyXPVUw71Y1XHOxfXXJOCCJ0vEtZwDbYpUwI2LUIk7vPpjnSr6hcrnUUjShi8ktUa0nkGX9bGo70hEN8nvsCKYMpOw8piIbdixpOCZP5uvpf8KCplc6KOsLrfrEL/lPz/LWkDokWd9sV+T5T4oBMy+X/t2wzvdBMC2FMf6qPOz8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ppBTJFw4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7309C4CEE7;
+	Tue, 17 Jun 2025 16:27:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750177623;
-	bh=N6MrBABJWcqIeC5vGF93OyczJow1eXYDYj1Uwe1a70M=;
+	s=korg; t=1750177629;
+	bh=SXoZo2Ngs0fS6q+UX/70oAv5f78zWGcQTNDlz3zVTTw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=n+ZZwzdfVe5mJpPpQOMgmI4vuDjM4nqbG8fUTzEW2RkiXrsk26NnADNRr7Sud/9R2
-	 ITobJHpWMu2RX7slTirjFnohrs99DwCYp7tny6+bNPrMIRMFY3Jo0ipKLZvsVpRqy9
-	 eE085Eo7uHpOLT1dBdDeXaOT4bZ4gZ6O4dOr3dSY=
+	b=ppBTJFw4iL3jkO7vmzgcFxr9C5Ikiz28bcd2K50UVb1+MOphPbAkT1+nWFJKFoOjV
+	 l5bpQtZ/f5BMktgG237dxUyqL0Yc62MZ7jBY0c46yuLYq9meAXaTgg/9CvdcL1Nmzw
+	 WV81nbyE9e18udZP1VWFEf91xI2R8BdoKo5+bAJY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Horatiu Vultur <horatiu.vultur@microchip.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	syzbot+aa5bb5f6860e08a60450@syzkaller.appspotmail.com,
+	Qi Han <hanqi@vivo.com>,
+	Chao Yu <chao@kernel.org>,
+	Zhiguo Niu <zhiguo.niu@unisoc.com>,
+	Jaegeuk Kim <jaegeuk@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 337/780] net: phy: mscc: Stop clearing the the UDPv4 checksum for L2 frames
-Date: Tue, 17 Jun 2025 17:20:45 +0200
-Message-ID: <20250617152505.177148062@linuxfoundation.org>
+Subject: [PATCH 6.15 338/780] f2fs: fix to skip f2fs_balance_fs() if checkpoint is disabled
+Date: Tue, 17 Jun 2025 17:20:46 +0200
+Message-ID: <20250617152505.216746274@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
 References: <20250617152451.485330293@linuxfoundation.org>
@@ -66,45 +69,110 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Horatiu Vultur <horatiu.vultur@microchip.com>
+From: Chao Yu <chao@kernel.org>
 
-[ Upstream commit 57a92d14659df3e7e7e0052358c8cc68bbbc3b5e ]
+[ Upstream commit c836d3b8d94e3dd381e7d4bb918875084f85715e ]
 
-We have noticed that when PHY timestamping is enabled, L2 frames seems
-to be modified by changing two 2 bytes with a value of 0. The place were
-these 2 bytes seems to be random(or I couldn't find a pattern).  In most
-of the cases the userspace can ignore these frames but if for example
-those 2 bytes are in the correction field there is nothing to do.  This
-seems to happen when configuring the HW for IPv4 even that the flow is
-not enabled.
-These 2 bytes correspond to the UDPv4 checksum and once we don't enable
-clearing the checksum when using L2 frames then the frame doesn't seem
-to be changed anymore.
+Syzbot reports a f2fs bug as below:
 
-Fixes: 7d272e63e0979d ("net: phy: mscc: timestamping and PHC support")
-Signed-off-by: Horatiu Vultur <horatiu.vultur@microchip.com>
-Link: https://patch.msgid.link/20250523082716.2935895-1-horatiu.vultur@microchip.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+INFO: task syz-executor328:5856 blocked for more than 144 seconds.
+      Not tainted 6.15.0-rc6-syzkaller-00208-g3c21441eeffc #0
+"echo 0 > /proc/sys/kernel/hung_task_timeout_secs" disables this message.
+task:syz-executor328 state:D stack:24392 pid:5856  tgid:5832  ppid:5826   task_flags:0x400040 flags:0x00004006
+Call Trace:
+ <TASK>
+ context_switch kernel/sched/core.c:5382 [inline]
+ __schedule+0x168f/0x4c70 kernel/sched/core.c:6767
+ __schedule_loop kernel/sched/core.c:6845 [inline]
+ schedule+0x165/0x360 kernel/sched/core.c:6860
+ io_schedule+0x81/0xe0 kernel/sched/core.c:7742
+ f2fs_balance_fs+0x4b4/0x780 fs/f2fs/segment.c:444
+ f2fs_map_blocks+0x3af1/0x43b0 fs/f2fs/data.c:1791
+ f2fs_expand_inode_data+0x653/0xaf0 fs/f2fs/file.c:1872
+ f2fs_fallocate+0x4f5/0x990 fs/f2fs/file.c:1975
+ vfs_fallocate+0x6a0/0x830 fs/open.c:338
+ ioctl_preallocate fs/ioctl.c:290 [inline]
+ file_ioctl fs/ioctl.c:-1 [inline]
+ do_vfs_ioctl+0x1b8f/0x1eb0 fs/ioctl.c:885
+ __do_sys_ioctl fs/ioctl.c:904 [inline]
+ __se_sys_ioctl+0x82/0x170 fs/ioctl.c:892
+ do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+ do_syscall_64+0xf6/0x210 arch/x86/entry/syscall_64.c:94
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+
+The root cause is after commit 84b5bb8bf0f6 ("f2fs: modify
+f2fs_is_checkpoint_ready logic to allow more data to be written with the
+CP disable"), we will get chance to allow f2fs_is_checkpoint_ready() to
+return true once below conditions are all true:
+1. checkpoint is disabled
+2. there are not enough free segments
+3. there are enough free blocks
+
+Then it will cause f2fs_balance_fs() to trigger foreground GC.
+
+void f2fs_balance_fs(struct f2fs_sb_info *sbi, bool need)
+...
+	if (!f2fs_is_checkpoint_ready(sbi))
+		return;
+
+And the testcase mounts f2fs image w/ gc_merge,checkpoint=disable, so deadloop
+will happen through below race condition:
+
+- f2fs_do_shutdown		- vfs_fallocate				- gc_thread_func
+				 - file_start_write
+				  - __sb_start_write(SB_FREEZE_WRITE)
+				 - f2fs_fallocate
+				  - f2fs_expand_inode_data
+				   - f2fs_map_blocks
+				    - f2fs_balance_fs
+				     - prepare_to_wait
+				     - wake_up(gc_wait_queue_head)
+				     - io_schedule
+ - bdev_freeze
+  - freeze_super
+   - sb->s_writers.frozen = SB_FREEZE_WRITE;
+   - sb_wait_write(sb, SB_FREEZE_WRITE);
+									 - if (sbi->sb->s_writers.frozen >= SB_FREEZE_WRITE) continue;
+									 : cause deadloop
+
+This patch fix to add check condition in f2fs_balance_fs(), so that if
+checkpoint is disabled, we will just skip trigger foreground GC to
+avoid such deadloop issue.
+
+Meanwhile let's remove f2fs_is_checkpoint_ready() check condition in
+f2fs_balance_fs(), since it's redundant, due to the main logic in the
+function is to check:
+a) whether checkpoint is disabled
+b) there is enough free segments
+
+f2fs_balance_fs() still has all logics after f2fs_is_checkpoint_ready()'s
+removal.
+
+Reported-by: syzbot+aa5bb5f6860e08a60450@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/linux-f2fs-devel/682d743a.a00a0220.29bc26.0289.GAE@google.com
+Fixes: 84b5bb8bf0f6 ("f2fs: modify f2fs_is_checkpoint_ready logic to allow more data to be written with the CP disable")
+Cc: Qi Han <hanqi@vivo.com>
+Signed-off-by: Chao Yu <chao@kernel.org>
+Reviewed-by: Zhiguo Niu <zhiguo.niu@unisoc.com>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/phy/mscc/mscc_ptp.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ fs/f2fs/segment.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/phy/mscc/mscc_ptp.c b/drivers/net/phy/mscc/mscc_ptp.c
-index 6f96f2679f0bf..6b800081eed52 100644
---- a/drivers/net/phy/mscc/mscc_ptp.c
-+++ b/drivers/net/phy/mscc/mscc_ptp.c
-@@ -946,7 +946,9 @@ static int vsc85xx_ip1_conf(struct phy_device *phydev, enum ts_blk blk,
- 	/* UDP checksum offset in IPv4 packet
- 	 * according to: https://tools.ietf.org/html/rfc768
- 	 */
--	val |= IP1_NXT_PROT_UDP_CHKSUM_OFF(26) | IP1_NXT_PROT_UDP_CHKSUM_CLEAR;
-+	val |= IP1_NXT_PROT_UDP_CHKSUM_OFF(26);
-+	if (enable)
-+		val |= IP1_NXT_PROT_UDP_CHKSUM_CLEAR;
- 	vsc85xx_ts_write_csr(phydev, blk, MSCC_ANA_IP1_NXT_PROT_UDP_CHKSUM,
- 			     val);
+diff --git a/fs/f2fs/segment.c b/fs/f2fs/segment.c
+index 2a71e70c9ac97..41ca73622c8d4 100644
+--- a/fs/f2fs/segment.c
++++ b/fs/f2fs/segment.c
+@@ -424,7 +424,7 @@ void f2fs_balance_fs(struct f2fs_sb_info *sbi, bool need)
+ 	if (need && excess_cached_nats(sbi))
+ 		f2fs_balance_fs_bg(sbi, false);
  
+-	if (!f2fs_is_checkpoint_ready(sbi))
++	if (unlikely(is_sbi_flag_set(sbi, SBI_CP_DISABLED)))
+ 		return;
+ 
+ 	/*
 -- 
 2.39.5
 
