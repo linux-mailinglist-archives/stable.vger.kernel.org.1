@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-153950-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153419-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 51CF3ADD7B9
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:48:20 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1B873ADD45D
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:09:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 932EA19E532A
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:32:00 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 98EF22C20AD
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:02:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B12A12EE5F0;
-	Tue, 17 Jun 2025 16:27:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BBA142ECEA7;
+	Tue, 17 Jun 2025 15:58:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ukFFzwip"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="136CJFWz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B0872EE5E7;
-	Tue, 17 Jun 2025 16:27:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7900A2ECEA6;
+	Tue, 17 Jun 2025 15:58:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750177620; cv=none; b=u0HvobxESOhhKOeVB0r4jiQSDuzZwK6TMxhKa5I5McMqZc5ADzuev8tSIDdDmUnf2vFJo/eqZf60posJHzZUP7J4hyVklFHfhHf6WWhLx+T5TLQJQT/PDI5+VH/EHlKmNhs1X9TUbaKanTCkfayOSbMpGEGiQ6AIW4hupZwSKIU=
+	t=1750175900; cv=none; b=tSuv7JvBikknoKpboF2xI3m+Okn3N8Ao0w3ZrrP72WATvhWK1FebBeFbapDv74giq8QOnXCkYbBo/fxvG9QWoBqCeVps49f9ayyyzeDiKrdkwZKeHyOFiWu69crhxJDVG6ZkQs0lWHfxe1OW+jGAoaFaxTvCF1dVo26oxwCaGoo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750177620; c=relaxed/simple;
-	bh=GVUnNDNhJ96B2YEM6QJxyWV0a0o8T4+sDiWXVTPYFi0=;
+	s=arc-20240116; t=1750175900; c=relaxed/simple;
+	bh=cmVXHO8FeSsSncakzoNCJgwqcnJIWy0jtA/aDPtuTd0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=C/QdlLlIKtNZHza8Ar5meJVAQQnopBgCXgMWPCJeJzCHwl4/2S+gc0Z1I6Qp3DtT06eqme9EKZ+f2JkO28WRjOxmHutsDlSdtULXebA7lglb6alJNjJjgtyw7ekWKOfYaXDEeWuWQ9EcxHSB3DHnLJncPEwg7I8jQrdRfgo694A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ukFFzwip; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC40CC4CEE3;
-	Tue, 17 Jun 2025 16:26:59 +0000 (UTC)
+	 MIME-Version; b=EcaQ3z7zm6EwmtuEAY/jdObBOJtaq90sSuOK+gijeLEkVa0Z1q5zp2KVKz1BAMDba0TeDsbBB/Zye3JrtkD/5AS6zIFiT8n+CvzlvOZ4wvbvJr8wLPixJas4wW6gNZO9gEFvJTocBijfP47xGTsUFGxgUe3I+LjxgV6q41ApxQ4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=136CJFWz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC1B1C4CEE3;
+	Tue, 17 Jun 2025 15:58:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750177620;
-	bh=GVUnNDNhJ96B2YEM6QJxyWV0a0o8T4+sDiWXVTPYFi0=;
+	s=korg; t=1750175900;
+	bh=cmVXHO8FeSsSncakzoNCJgwqcnJIWy0jtA/aDPtuTd0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ukFFzwipkWlNzRR5LTvfKaiZmmrsL134WQ2wFQUM40RA2O7/dvf6nmOb0n0nnqEWw
-	 hO6W7B4Z+q5Vh0NhdZWN0IIT9RW0VDc5Ru3NactrSzZanyMv7Gf9iN4e3q6QdKcLt3
-	 0+Bm7IWAnVbB9rTdQ7AtBn7rNbp6LZzm2D39Y/R4=
+	b=136CJFWznUZkOzaHa7y+fIVGFiMk0dGlX/5KZZtPP9mQJgF4Nl8bI9bzLKQGNyFzb
+	 n84rmHQPI+Qb3oMaYSBvwAM94pWZvdF1g5E/0KoEnNRm9eHA8aLjQihffw3o1aqG7N
+	 4fAUHGmLdqLasl/BMugQ6vQY+E5IakAjKynww2jc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Sasha Levin <sashal@kernel.org>,
-	Chris Bainbridge <chris.bainbridge@gmail.com>
-Subject: [PATCH 6.12 372/512] PM: sleep: Fix power.is_suspended cleanup for direct-complete devices
+	Hans Zhang <18255117159@163.com>,
+	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 223/356] PCI: cadence: Fix runtime atomic count underflow
 Date: Tue, 17 Jun 2025 17:25:38 +0200
-Message-ID: <20250617152434.669777516@linuxfoundation.org>
+Message-ID: <20250617152347.181636607@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
-References: <20250617152419.512865572@linuxfoundation.org>
+In-Reply-To: <20250617152338.212798615@linuxfoundation.org>
+References: <20250617152338.212798615@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,62 +62,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+From: Hans Zhang <18255117159@163.com>
 
-[ Upstream commit d46c4c839c20a599a0eb8d73708ce401f9c7d06d ]
+[ Upstream commit 8805f32a96d3b97cef07999fa6f52112678f7e65 ]
 
-Commit 03f1444016b7 ("PM: sleep: Fix handling devices with direct_complete
-set on errors") caused power.is_suspended to be set for devices with
-power.direct_complete set, but it forgot to ensure the clearing of that
-flag for them in device_resume(), so power.is_suspended is still set for
-them during the next system suspend-resume cycle.
+If the call to pci_host_probe() in cdns_pcie_host_setup() fails, PM
+runtime count is decremented in the error path using pm_runtime_put_sync().
+But the runtime count is not incremented by this driver, but only by the
+callers (cdns_plat_pcie_probe/j721e_pcie_probe). And the callers also
+decrement the runtime PM count in their error path. So this leads to the
+below warning from the PM core:
 
-If that cycle is aborted in dpm_suspend(), the subsequent invocation of
-dpm_resume() will trigger a device_resume() call for every device and
-because power.is_suspended is set for the devices in question, they will
-not be skipped by device_resume() as expected which causes scary error
-messages to be logged (as appropriate).
+	"runtime PM usage count underflow!"
 
-To address this issue, move the clearing of power.is_suspended in
-device_resume() immediately after the power.is_suspended check so it
-will be always cleared for all devices processed by that function.
+So fix it by getting rid of pm_runtime_put_sync() in the error path and
+directly return the errno.
 
-Fixes: 03f1444016b7 ("PM: sleep: Fix handling devices with direct_complete set on errors")
-Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/4280
-Reported-and-tested-by: Chris Bainbridge <chris.bainbridge@gmail.com>
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
-Link: https://patch.msgid.link/4990586.GXAFRqVoOG@rjwysocki.net
+Fixes: 49e427e6bdd1 ("Merge branch 'pci/host-probe-refactor'")
+Signed-off-by: Hans Zhang <18255117159@163.com>
+Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Link: https://patch.msgid.link/20250419133058.162048-1-18255117159@163.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/base/power/main.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/pci/controller/cadence/pcie-cadence-host.c | 11 +----------
+ 1 file changed, 1 insertion(+), 10 deletions(-)
 
-diff --git a/drivers/base/power/main.c b/drivers/base/power/main.c
-index 1abe61f11525d..faf4cdec23f04 100644
---- a/drivers/base/power/main.c
-+++ b/drivers/base/power/main.c
-@@ -916,6 +916,8 @@ static void device_resume(struct device *dev, pm_message_t state, bool async)
- 	if (!dev->power.is_suspended)
- 		goto Complete;
+diff --git a/drivers/pci/controller/cadence/pcie-cadence-host.c b/drivers/pci/controller/cadence/pcie-cadence-host.c
+index 8af95e9da7cec..741e10a575ec7 100644
+--- a/drivers/pci/controller/cadence/pcie-cadence-host.c
++++ b/drivers/pci/controller/cadence/pcie-cadence-host.c
+@@ -570,14 +570,5 @@ int cdns_pcie_host_setup(struct cdns_pcie_rc *rc)
+ 	if (!bridge->ops)
+ 		bridge->ops = &cdns_pcie_host_ops;
  
-+	dev->power.is_suspended = false;
-+
- 	if (dev->power.direct_complete) {
- 		/* Match the pm_runtime_disable() in __device_suspend(). */
- 		pm_runtime_enable(dev);
-@@ -971,7 +973,6 @@ static void device_resume(struct device *dev, pm_message_t state, bool async)
- 
-  End:
- 	error = dpm_run_callback(callback, dev, state, info);
--	dev->power.is_suspended = false;
- 
- 	device_unlock(dev);
- 	dpm_watchdog_clear(&wd);
+-	ret = pci_host_probe(bridge);
+-	if (ret < 0)
+-		goto err_init;
+-
+-	return 0;
+-
+- err_init:
+-	pm_runtime_put_sync(dev);
+-
+-	return ret;
++	return pci_host_probe(bridge);
+ }
 -- 
 2.39.5
 
