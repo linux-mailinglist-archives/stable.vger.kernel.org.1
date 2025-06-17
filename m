@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-153023-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153025-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D487ADD1F3
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 17:37:00 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id EFFDEADD1F8
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 17:37:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C46431898740
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 15:37:15 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 536B018985E2
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 15:37:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 909632ECD20;
-	Tue, 17 Jun 2025 15:36:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08ADA2ECD0B;
+	Tue, 17 Jun 2025 15:37:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RgTCrinZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qCVXsULy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D9D02DF3C9;
-	Tue, 17 Jun 2025 15:36:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B68B52DF3C9;
+	Tue, 17 Jun 2025 15:37:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750174618; cv=none; b=Lubz121Iv3E1OaQV2u80UZZHwP8grC73yn6uzLcRSMuIibkLxOQkkIsOhZW22t+vtVq67WbCLsFUWwe8hbUP5e9Pn1dV3EOMAnoAS6tc4Mrm+0Q5DkGgfNEmnMFrDB04cOwkLe7+q0q79u+xlyYF/a0KkFp80spRdoD9w/BzfzY=
+	t=1750174624; cv=none; b=Fn7lGCMqluXOuMbOY5znadXwt5PSij8ZD8jOQcUk7LSM9Yt5OHtY5JAbPXiR/6ohimr5Naf+h40GV35QFhSeeLksTjlVzKLU+d7suHPg6hZsjfI5yfqF4XVl6P0U41aF+BP67hnM38bqvkCbjJgaIGMhQiHMdusg5b5NROMvonY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750174618; c=relaxed/simple;
-	bh=Un+KMoQK8D/aIkzMlDQpRF0XDkWHfj5Y9T3dDXoLUnA=;
+	s=arc-20240116; t=1750174624; c=relaxed/simple;
+	bh=/hxMS/T8FOTdT0zgx0R+0oMQMdv7340ldV6iqP5wRfw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OMSss+rc3iU2bdb8vkC5z13Sg7ADfOTp7Tnri3e7bYhU7z/IAwVhwKjhCafp0dju/aPCBfq5E7Lv46QeN7do1Dw5gsHYqTLR7CRA3G8L1xjF3pFR+m/PntWvdbRA+JvraukXEzb9ulvZJuYgemdvor8DooZe79Yt8pXQMhceFz0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RgTCrinZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3328C4CEE7;
-	Tue, 17 Jun 2025 15:36:57 +0000 (UTC)
+	 MIME-Version; b=R/JiXK4igSn8EmpYY+Fgh2y9Kz/m4Bzu/Zyv7wL64w0GI3MLnR3jLdy6cjqbeneYPqh0Wyn6bfxNRz7DcvL6yVnTkkQtcuLdkNUiO2ddnWBX/E+zYGA8ER9i/5Nkm2y5uQAN5K5S3IpK4vEj7rCCvfeZ5Ohu0HyO1lKh68HDwY4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qCVXsULy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D60D6C4CEE3;
+	Tue, 17 Jun 2025 15:37:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750174618;
-	bh=Un+KMoQK8D/aIkzMlDQpRF0XDkWHfj5Y9T3dDXoLUnA=;
+	s=korg; t=1750174624;
+	bh=/hxMS/T8FOTdT0zgx0R+0oMQMdv7340ldV6iqP5wRfw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RgTCrinZZsiVjekOwwrvN+P4DTR4cXowhMmvpEVmjktezMGofR08iSlxLfKBodom/
-	 8uayebWRhHhHpjU1Kvt+tyeoHPBgK/f377WEiVbS3L7MC1euGHrt2Ybeea1ZrManXn
-	 SX61JjseLFltMNhQ5kwkkIsjCH0Zl/hzjhlIuTDs=
+	b=qCVXsULy2ggU1/KCvjoWRn1EGkUq/U3ltyYsU/m35ZW56W81oBgXBk/lbmS3kB+gH
+	 uYkiwwoHrcPtQ+tsnmsnkCkZFZUftDYa6MTIzYZtS09Z/XOaDJRRKFryhlgGihE80U
+	 tzFRcz4fjn7oCfzDZwhbFqs45HMX12VpfQSUtUSk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Maharaja Kennadyrajan <maharaja.kennadyrajan@oss.qualcomm.com>,
-	Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>,
-	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
+	Junxian Huang <huangjunxian6@hisilicon.com>,
+	Leon Romanovsky <leon@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 095/356] wifi: ath12k: fix node corruption in ar->arvifs list
-Date: Tue, 17 Jun 2025 17:23:30 +0200
-Message-ID: <20250617152342.043627408@linuxfoundation.org>
+Subject: [PATCH 6.6 096/356] RDMA/hns: Include hnae3.h in hns_roce_hw_v2.h
+Date: Tue, 17 Jun 2025 17:23:31 +0200
+Message-ID: <20250617152342.082915162@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250617152338.212798615@linuxfoundation.org>
 References: <20250617152338.212798615@linuxfoundation.org>
@@ -67,77 +66,91 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Maharaja Kennadyrajan <maharaja.kennadyrajan@oss.qualcomm.com>
+From: Junxian Huang <huangjunxian6@hisilicon.com>
 
-[ Upstream commit 823435bd23108d6f8be89ea2d025c0e2e3769c51 ]
+[ Upstream commit 2b11d33de23262cb20d1dcb24b586dbb8f54d463 ]
 
-In current WLAN recovery code flow, ath12k_core_halt() only reinitializes
-the "arvifs" list head. This will cause the list node immediately following
-the list head to become an invalid list node. Because the prev of that node
-still points to the list head "arvifs", but the next of the list head
-"arvifs" no longer points to that list node.
+hns_roce_hw_v2.h has a direct dependency on hnae3.h due to the
+inline function hns_roce_write64(), but it doesn't include this
+header currently. This leads to that files including
+hns_roce_hw_v2.h must also include hnae3.h to avoid compilation
+errors, even if they themselves don't really rely on hnae3.h.
+This doesn't make sense, hns_roce_hw_v2.h should include hnae3.h
+directly.
 
-When a WLAN recovery occurs during the execution of a vif removal, and it
-happens before the spin_lock_bh(&ar->data_lock) in
-ath12k_mac_vdev_delete(), list_del() will detect the previously mentioned
-situation, thereby triggering a kernel panic.
-
-The fix is to remove and reinitialize all vif list nodes from the list head
-"arvifs" during WLAN halt. The reinitialization is to make the list nodes
-valid, ensuring that the list_del() in ath12k_mac_vdev_delete() can execute
-normally.
-
-Call trace:
-__list_del_entry_valid_or_report+0xd4/0x100 (P)
-ath12k_mac_remove_link_interface.isra.0+0xf8/0x2e4 [ath12k]
-ath12k_scan_vdev_clean_work+0x40/0x164 [ath12k]
-cfg80211_wiphy_work+0xfc/0x100
-process_one_work+0x164/0x2d0
-worker_thread+0x254/0x380
-kthread+0xfc/0x100
-ret_from_fork+0x10/0x20
-
-The change is mostly copied from the ath11k patch:
-https://lore.kernel.org/all/20250320053145.3445187-1-quic_stonez@quicinc.com/
-
-Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.4.1-00199-QCAHKSWPL_SILICONZ-1
-
-Fixes: d889913205cf ("wifi: ath12k: driver for Qualcomm Wi-Fi 7 devices")
-Signed-off-by: Maharaja Kennadyrajan <maharaja.kennadyrajan@oss.qualcomm.com>
-Reviewed-by: Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>
-Link: https://patch.msgid.link/20250416021724.2162519-1-maharaja.kennadyrajan@oss.qualcomm.com
-Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+Fixes: d3743fa94ccd ("RDMA/hns: Fix the chip hanging caused by sending doorbell during reset")
+Signed-off-by: Junxian Huang <huangjunxian6@hisilicon.com>
+Link: https://patch.msgid.link/20250421132750.1363348-6-huangjunxian6@hisilicon.com
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath12k/core.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ drivers/infiniband/hw/hns/hns_roce_ah.c       | 1 -
+ drivers/infiniband/hw/hns/hns_roce_hw_v2.c    | 1 -
+ drivers/infiniband/hw/hns/hns_roce_hw_v2.h    | 1 +
+ drivers/infiniband/hw/hns/hns_roce_main.c     | 1 -
+ drivers/infiniband/hw/hns/hns_roce_restrack.c | 1 -
+ 5 files changed, 1 insertion(+), 4 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath12k/core.c b/drivers/net/wireless/ath/ath12k/core.c
-index 3df8059d55129..1b07a183aaedc 100644
---- a/drivers/net/wireless/ath/ath12k/core.c
-+++ b/drivers/net/wireless/ath/ath12k/core.c
-@@ -657,6 +657,7 @@ static int ath12k_core_reconfigure_on_crash(struct ath12k_base *ab)
+diff --git a/drivers/infiniband/hw/hns/hns_roce_ah.c b/drivers/infiniband/hw/hns/hns_roce_ah.c
+index 3df032ddda189..e99890e0c8c37 100644
+--- a/drivers/infiniband/hw/hns/hns_roce_ah.c
++++ b/drivers/infiniband/hw/hns/hns_roce_ah.c
+@@ -33,7 +33,6 @@
+ #include <linux/pci.h>
+ #include <rdma/ib_addr.h>
+ #include <rdma/ib_cache.h>
+-#include "hnae3.h"
+ #include "hns_roce_device.h"
+ #include "hns_roce_hw_v2.h"
  
- void ath12k_core_halt(struct ath12k *ar)
- {
-+	struct list_head *pos, *n;
- 	struct ath12k_base *ab = ar->ab;
+diff --git a/drivers/infiniband/hw/hns/hns_roce_hw_v2.c b/drivers/infiniband/hw/hns/hns_roce_hw_v2.c
+index aded0a7f42838..9d23d4b5c1285 100644
+--- a/drivers/infiniband/hw/hns/hns_roce_hw_v2.c
++++ b/drivers/infiniband/hw/hns/hns_roce_hw_v2.c
+@@ -42,7 +42,6 @@
+ #include <rdma/ib_umem.h>
+ #include <rdma/uverbs_ioctl.h>
  
- 	lockdep_assert_held(&ar->conf_mutex);
-@@ -671,7 +672,12 @@ void ath12k_core_halt(struct ath12k *ar)
+-#include "hnae3.h"
+ #include "hns_roce_common.h"
+ #include "hns_roce_device.h"
+ #include "hns_roce_cmd.h"
+diff --git a/drivers/infiniband/hw/hns/hns_roce_hw_v2.h b/drivers/infiniband/hw/hns/hns_roce_hw_v2.h
+index b8e17721f6fde..7875283eb9d63 100644
+--- a/drivers/infiniband/hw/hns/hns_roce_hw_v2.h
++++ b/drivers/infiniband/hw/hns/hns_roce_hw_v2.h
+@@ -34,6 +34,7 @@
+ #define _HNS_ROCE_HW_V2_H
  
- 	rcu_assign_pointer(ab->pdevs_active[ar->pdev_idx], NULL);
- 	synchronize_rcu();
--	INIT_LIST_HEAD(&ar->arvifs);
-+
-+	spin_lock_bh(&ar->data_lock);
-+	list_for_each_safe(pos, n, &ar->arvifs)
-+		list_del_init(pos);
-+	spin_unlock_bh(&ar->data_lock);
-+
- 	idr_init(&ar->txmgmt_idr);
- }
+ #include <linux/bitops.h>
++#include "hnae3.h"
  
+ #define HNS_ROCE_V2_MAX_RC_INL_INN_SZ		32
+ #define HNS_ROCE_V2_MTT_ENTRY_SZ		64
+diff --git a/drivers/infiniband/hw/hns/hns_roce_main.c b/drivers/infiniband/hw/hns/hns_roce_main.c
+index a7e4c951f8fe4..5f39a25064d10 100644
+--- a/drivers/infiniband/hw/hns/hns_roce_main.c
++++ b/drivers/infiniband/hw/hns/hns_roce_main.c
+@@ -37,7 +37,6 @@
+ #include <rdma/ib_smi.h>
+ #include <rdma/ib_user_verbs.h>
+ #include <rdma/ib_cache.h>
+-#include "hnae3.h"
+ #include "hns_roce_common.h"
+ #include "hns_roce_device.h"
+ #include "hns_roce_hem.h"
+diff --git a/drivers/infiniband/hw/hns/hns_roce_restrack.c b/drivers/infiniband/hw/hns/hns_roce_restrack.c
+index 081a01de30553..1fb5e24683647 100644
+--- a/drivers/infiniband/hw/hns/hns_roce_restrack.c
++++ b/drivers/infiniband/hw/hns/hns_roce_restrack.c
+@@ -4,7 +4,6 @@
+ #include <rdma/rdma_cm.h>
+ #include <rdma/restrack.h>
+ #include <uapi/rdma/rdma_netlink.h>
+-#include "hnae3.h"
+ #include "hns_roce_common.h"
+ #include "hns_roce_device.h"
+ #include "hns_roce_hw_v2.h"
 -- 
 2.39.5
 
