@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-154311-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153783-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 12572ADD8F7
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 19:01:22 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1EA09ADD685
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:34:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5D9E81BC1467
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:49:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 05C644A0439
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:23:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 008AA285076;
-	Tue, 17 Jun 2025 16:46:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E66152EA15A;
+	Tue, 17 Jun 2025 16:18:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JSEA7GG3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nhLEZMHC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0CF92FA642;
-	Tue, 17 Jun 2025 16:46:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3E5C18E025;
+	Tue, 17 Jun 2025 16:18:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750178782; cv=none; b=FVjn9mXgmtxDmoaYi8HYKhQed1JR/XabfbJsnQ5tbcI8Iyv1wi3EMsW0A9VDuCT6FmPkt35Qta7BCmwwp3tUZJ8au57WwWCpy3/KamHZqUv03XEIpMa1eNzrESv1Sm0EmN6YvyIdW/vgU6BUjVs/B06qYqTjvkF1IZatFUVsRoE=
+	t=1750177084; cv=none; b=eWcYIEWZd1bcyRUPGutgAUpAQVgt+p35qIbgxPg3jhB0GqBZeCyro2ne3ovs6VNQi7RwhRlItqIRHkJwvQJQiVJPXKmat6G9J0AqnhcXEZuzG+MD9yBep6GWy9OoxEQP1JUNwSoWsevc+HP4TC0+1jjIGC48d8GO/Yu+1JBZvAE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750178782; c=relaxed/simple;
-	bh=6BxRuQF9p2lwJ/Uk9PbNcaUTeeNs8dk2Ir7zu4fT9b0=;
+	s=arc-20240116; t=1750177084; c=relaxed/simple;
+	bh=nat7DGFeRNyPGVQNYniapC+khKVdZTphAyUBP+JGyOg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kUGAFI+nv7r1jbKoqKxdQSxWbVjPvGsqu9x0gOOLqXNhIo9wNS+3mYZdCBugSp3hsVibRcaCJa+x5mQV818kX6uScTzMxemJeAYy0DgAqY8g7nkr+Kli2ncIiP4bE9fZYrSa1t19BSD3QP82c7exJ+UuuqBP2MAXWnfkpig8HMI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JSEA7GG3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F90DC4CEE3;
-	Tue, 17 Jun 2025 16:46:21 +0000 (UTC)
+	 MIME-Version; b=gBLGBP0xWv4Zpa1fhboWbKgQpTmZmUQhmAQHkZ0jcLPDelDshG7YGW1dGll5wdsV4tjYSblQoUVnhiIh25ra2LNJTrAqdRmpukkxXZkoZJNXIf03y9T76e50EL9DQkae8Ml7qzvfKX+UlpBnszs2BvakaWwYCqhagl6SUR1nKqI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nhLEZMHC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BADEAC4CEE3;
+	Tue, 17 Jun 2025 16:18:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750178782;
-	bh=6BxRuQF9p2lwJ/Uk9PbNcaUTeeNs8dk2Ir7zu4fT9b0=;
+	s=korg; t=1750177084;
+	bh=nat7DGFeRNyPGVQNYniapC+khKVdZTphAyUBP+JGyOg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JSEA7GG3+Pqm/hu3RbcWi12WC099lIN4pk4TGdTBAj1TQJI74u+ExZ7M1Q4ANzRB8
-	 ca61X14tJap6gZPq1zZ7x8b8WQ1Na/VUysriE6nkr4ASu/fK7wDyP1jp+w3O7x1NrN
-	 cvN3tNVK3P4rRE3tCc+D5/ISyD/n8hRz5U2BpyMw=
+	b=nhLEZMHCDW+SvSVH/2gVGgqWPPMhTe9kKWK75Mvv/3FbA8PbCM2BsWmk59xSWiyGZ
+	 lJLp3buuLNKXg+OqaBTi0hHrUPu+q+QgesPVFZCWo0r4Y5XLwNJ2APtlNo+UdhJKkt
+	 F6jcBOPezWZINpL7g4+jyHQC4Cq2ZaX1f4IzItCo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Douglas Anderson <dianders@chromium.org>,
-	Damon Ding <damon.ding@rock-chips.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	Peng Fan <peng.fan@nxp.com>,
+	Jassi Brar <jassisinghbrar@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 553/780] drm/bridge: analogix_dp: Remove CONFIG_PM related check in analogix_dp_bind()/analogix_dp_unbind()
+Subject: [PATCH 6.12 295/512] mailbox: imx: Fix TXDB_V2 sending
 Date: Tue, 17 Jun 2025 17:24:21 +0200
-Message-ID: <20250617152514.024084307@linuxfoundation.org>
+Message-ID: <20250617152431.551512419@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
-References: <20250617152451.485330293@linuxfoundation.org>
+In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
+References: <20250617152419.512865572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,93 +62,75 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Damon Ding <damon.ding@rock-chips.com>
+From: Peng Fan <peng.fan@nxp.com>
 
-[ Upstream commit c71db051142a74b255cb61b84d8fedae3b70952f ]
+[ Upstream commit f5cb07ec6aabd1bb56adbdeb5f0d70cb524db2cd ]
 
-Remove the check related to CONFIG_PM in order to make the code more
-concise, as the CONFIG_PM should be a required option for many drivers.
+i.MX95 features several processing domains, Cortex-M7, Cortex-A55
+secure, Cortex-A55 non-secure. Each domain could communicate with
+SCMI firmware with a dedicated MU. But the current NXP SCMI firmware
+is not a RTOS, all processing logic codes are in interrupt context.
+So if high priority Cortex-M7 is communicating with SCMI firmware and
+requires a bit more time to handle the SCMI call, Linux MU TXDB_V2
+will be timeout with high possiblity in 1000us(the current value in
+imx-mailbox.c). Per NXP SCMI firmware design, if timeout, there is
+no recover logic, so SCMI agents should never timeout and always
+wait until the check condition met.
 
-In addition, it is preferable to use devm_pm_runtime_enable() instead of
-manually invoking pm_runtime_enable() followed by pm_runtime_disable().
+Based on the upper reason, enlarge the timeout value to 10ms which
+is less chance to timeout, and retry if timeout really happends.
 
-Suggested-by: Douglas Anderson <dianders@chromium.org>
-Reviewed-by: Douglas Anderson <dianders@chromium.org>
-Signed-off-by: Damon Ding <damon.ding@rock-chips.com>
-Link: https://lore.kernel.org/r/20250310104114.2608063-3-damon.ding@rock-chips.com
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Stable-dep-of: fd03f82a026c ("drm/bridge: analogix_dp: Fix clk-disable removal")
+Fixes: 5bfe4067d350 ("mailbox: imx: support channel type tx doorbell v2")
+Signed-off-by: Peng Fan <peng.fan@nxp.com>
+Signed-off-by: Jassi Brar <jassisinghbrar@gmail.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../drm/bridge/analogix/analogix_dp_core.c    | 30 ++++---------------
- 1 file changed, 6 insertions(+), 24 deletions(-)
+ drivers/mailbox/imx-mailbox.c | 21 +++++++++++++++------
+ 1 file changed, 15 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/gpu/drm/bridge/analogix/analogix_dp_core.c b/drivers/gpu/drm/bridge/analogix/analogix_dp_core.c
-index 533a6e17cf674..b7a96f5bc0074 100644
---- a/drivers/gpu/drm/bridge/analogix/analogix_dp_core.c
-+++ b/drivers/gpu/drm/bridge/analogix/analogix_dp_core.c
-@@ -1688,15 +1688,11 @@ int analogix_dp_bind(struct analogix_dp_device *dp, struct drm_device *drm_dev)
- 	dp->drm_dev = drm_dev;
- 	dp->encoder = dp->plat_data->encoder;
+diff --git a/drivers/mailbox/imx-mailbox.c b/drivers/mailbox/imx-mailbox.c
+index f815dab3be50c..0657bd3d8f97b 100644
+--- a/drivers/mailbox/imx-mailbox.c
++++ b/drivers/mailbox/imx-mailbox.c
+@@ -226,7 +226,7 @@ static int imx_mu_generic_tx(struct imx_mu_priv *priv,
+ {
+ 	u32 *arg = data;
+ 	u32 val;
+-	int ret;
++	int ret, count;
  
--	if (IS_ENABLED(CONFIG_PM)) {
--		pm_runtime_use_autosuspend(dp->dev);
--		pm_runtime_set_autosuspend_delay(dp->dev, 100);
--		pm_runtime_enable(dp->dev);
--	} else {
--		ret = analogix_dp_resume(dp);
+ 	switch (cp->type) {
+ 	case IMX_MU_TYPE_TX:
+@@ -240,11 +240,20 @@ static int imx_mu_generic_tx(struct imx_mu_priv *priv,
+ 	case IMX_MU_TYPE_TXDB_V2:
+ 		imx_mu_write(priv, IMX_MU_xCR_GIRn(priv->dcfg->type, cp->idx),
+ 			     priv->dcfg->xCR[IMX_MU_GCR]);
+-		ret = readl_poll_timeout(priv->base + priv->dcfg->xCR[IMX_MU_GCR], val,
+-					 !(val & IMX_MU_xCR_GIRn(priv->dcfg->type, cp->idx)),
+-					 0, 1000);
 -		if (ret)
--			return ret;
--	}
-+	pm_runtime_use_autosuspend(dp->dev);
-+	pm_runtime_set_autosuspend_delay(dp->dev, 100);
-+	ret = devm_pm_runtime_enable(dp->dev);
-+	if (ret)
-+		return ret;
- 
- 	dp->aux.name = "DP-AUX";
- 	dp->aux.transfer = analogix_dpaux_transfer;
-@@ -1706,7 +1702,7 @@ int analogix_dp_bind(struct analogix_dp_device *dp, struct drm_device *drm_dev)
- 	ret = drm_dp_aux_register(&dp->aux);
- 	if (ret) {
- 		DRM_ERROR("failed to register AUX (%d)\n", ret);
--		goto err_disable_pm_runtime;
-+		return ret;
- 	}
- 
- 	ret = analogix_dp_create_bridge(drm_dev, dp);
-@@ -1719,13 +1715,6 @@ int analogix_dp_bind(struct analogix_dp_device *dp, struct drm_device *drm_dev)
- 
- err_unregister_aux:
- 	drm_dp_aux_unregister(&dp->aux);
--err_disable_pm_runtime:
--	if (IS_ENABLED(CONFIG_PM)) {
--		pm_runtime_dont_use_autosuspend(dp->dev);
--		pm_runtime_disable(dp->dev);
--	} else {
--		analogix_dp_suspend(dp);
--	}
- 
- 	return ret;
- }
-@@ -1742,13 +1731,6 @@ void analogix_dp_unbind(struct analogix_dp_device *dp)
- 	}
- 
- 	drm_dp_aux_unregister(&dp->aux);
--
--	if (IS_ENABLED(CONFIG_PM)) {
--		pm_runtime_dont_use_autosuspend(dp->dev);
--		pm_runtime_disable(dp->dev);
--	} else {
--		analogix_dp_suspend(dp);
--	}
- }
- EXPORT_SYMBOL_GPL(analogix_dp_unbind);
- 
+-			dev_warn_ratelimited(priv->dev, "channel type: %d failure\n", cp->type);
++		ret = -ETIMEDOUT;
++		count = 0;
++		while (ret && (count < 10)) {
++			ret =
++			readl_poll_timeout(priv->base + priv->dcfg->xCR[IMX_MU_GCR], val,
++					   !(val & IMX_MU_xCR_GIRn(priv->dcfg->type, cp->idx)),
++					   0, 10000);
++
++			if (ret) {
++				dev_warn_ratelimited(priv->dev,
++						     "channel type: %d timeout, %d times, retry\n",
++						     cp->type, ++count);
++			}
++		}
+ 		break;
+ 	default:
+ 		dev_warn_ratelimited(priv->dev, "Send data on wrong channel type: %d\n", cp->type);
 -- 
 2.39.5
 
