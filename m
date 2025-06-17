@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-154048-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-154050-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 00CC1ADD89B
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:57:43 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 55921ADD820
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:52:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6459019E748F
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:38:07 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 14D4E4A4022
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:37:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2DDF52EF295;
-	Tue, 17 Jun 2025 16:32:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B26662EE5FF;
+	Tue, 17 Jun 2025 16:32:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s6bcce5g"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="B6yIAjhT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC9FF2EE5EE;
-	Tue, 17 Jun 2025 16:32:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FCCF1ADC97;
+	Tue, 17 Jun 2025 16:32:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750177935; cv=none; b=k4iU3NkPJmuy78xhI2bLg+o0PF8hw6bwd8LZ5ooP+rQTb0aoxHNMwsE0S+7hwLQJH2O9eytydmoDmJWZG/y7Fvp85+6HpJxD15dSB6TIkMZZNhBiRMK4xyFu5kT6tDptjqgAmbEx/ud/2omElqI2IdeX1N5CEbtKq0v9NuKchFA=
+	t=1750177941; cv=none; b=l1s1QWV2cbw3xvR49eNkiUgN6el/ySoy/3+R2a3KCqRDmgKwvCnRd7vuS2z6WIMhIBfYomS8v3QbOGX5SKlTLsuctrLRt6VaRcP4liiyRXcnP6h7AZBxX5ysE7FNx2z7kqAa9rOJGehyG1TmJhb7hzVSv4zjnPY3a8v2+ieJO/Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750177935; c=relaxed/simple;
-	bh=be7H0RCuekhgXndJzyeQWSm5E5MwYy8DLrLSZKNcvOc=;
+	s=arc-20240116; t=1750177941; c=relaxed/simple;
+	bh=Fv7XeuZPUQjdnW6PsBvTXU5z7CztmHrhaGyV1FHg71U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZzNcSDVbuESbWMCSXa+LQxmysrVxKRXBRxyKfceXfm+fsl2TQJD6zcewp0vyZnNEOqn2fzpaUK9dMmLxZ1YGJoL8RsE7FVUmeMkfT5zbmNLMawlm0C1Qcq5oBT4oQeo4trTEhCPYC9vUUdctobuR08GF3Boc/nasLyzu1ttSByE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s6bcce5g; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66F9FC4CEE3;
-	Tue, 17 Jun 2025 16:32:14 +0000 (UTC)
+	 MIME-Version; b=PbfWAnzZE0kY4yD1i1yukum6uA+zgkTRVpsQ8uBjYbRGh+8gaGX3Izmq4VvS4xFFEK9SKoZgESccYUELP0MXLNvPSn4vMwuMm9HLbKOs5M9NQh3flNnOjIwryB7TnP90MDeqzoUi2qVV+gaCLzzFPxMvtia7ZCd0bAvBxAE3UPE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=B6yIAjhT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D34BAC4CEE3;
+	Tue, 17 Jun 2025 16:32:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750177934;
-	bh=be7H0RCuekhgXndJzyeQWSm5E5MwYy8DLrLSZKNcvOc=;
+	s=korg; t=1750177941;
+	bh=Fv7XeuZPUQjdnW6PsBvTXU5z7CztmHrhaGyV1FHg71U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=s6bcce5gCqFXeQhGhC0Dw4WSq2gg2LBHTBBXnUi0CvOOmVRDNzaYTaP4wcR9ksJ9d
-	 QpQbGs3JcT19W8JXBQrKbNyan5iK+calAKnFRuCVN6O9xqvHsETCFRDIEoGyruy/H1
-	 pQCwylIjOFDaj2FUiuE5aYsxkBLPbTAxHxVze0L4=
+	b=B6yIAjhTn8JiHvxv3/Z3Bg/ytebViJccOTfHAb1BGsgbDvjSktkWQQ41xEsF7XVAy
+	 hSBZ73OqqX+J3xY43FWCnXuEXqya5ylG9goSEpOcKstGWl4I3tkx8kbn2IqGdJUgOU
+	 SPum4wVPOr3ZJJzmSSs0r9ake8Nj3KyIahxZWdRI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andre Przywara <andre.przywara@arm.com>,
-	Chen-Yu Tsai <wens@csie.org>,
+	Peter Robinson <pbrobinson@gmail.com>,
+	Diederik de Haas <didi.debian@cknow.org>,
+	Heiko Stuebner <heiko@sntech.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 385/780] arm64: dts: allwinner: a100: set maximum MMC frequency
-Date: Tue, 17 Jun 2025 17:21:33 +0200
-Message-ID: <20250617152507.138908685@linuxfoundation.org>
+Subject: [PATCH 6.15 386/780] arm64: dts: rockchip: Update eMMC for NanoPi R5 series
+Date: Tue, 17 Jun 2025 17:21:34 +0200
+Message-ID: <20250617152507.179783688@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
 References: <20250617152451.485330293@linuxfoundation.org>
@@ -66,53 +67,43 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Andre Przywara <andre.przywara@arm.com>
+From: Peter Robinson <pbrobinson@gmail.com>
 
-[ Upstream commit d8f10550448b03d3c5c6d9392119205c65ebfc89 ]
+[ Upstream commit 8eca9e979a1efbcc3d090f6eb3f4da621e7c87e0 ]
 
-The manual for the Allwinner A133 SoC mentions that the maximum
-supported MMC frequency is 150 MHz, for all of the MMC devices.
+Add the 3.3v and 1.8v regulators that are connected to
+the eMMC on the R5 series devices, as well as adding the
+eMMC data strobe, and enable eMMC HS200 mode as the
+Foresee FEMDNN0xxG-A3A55 modules support it.
 
-Describe that in the DT entry, to help drivers setting the right
-interface frequency.
-
-Fixes: fcfbb8d9ec58 ("arm64: allwinner: a100: Add MMC related nodes")
-Signed-off-by: Andre Przywara <andre.przywara@arm.com>
-Link: https://patch.msgid.link/20250505202416.23753-1-andre.przywara@arm.com
-Signed-off-by: Chen-Yu Tsai <wens@csie.org>
+Fixes: c8ec73b05a95d ("arm64: dts: rockchip: create common dtsi for NanoPi R5 series")
+Signed-off-by: Peter Robinson <pbrobinson@gmail.com>
+Reviewed-by: Diederik de Haas <didi.debian@cknow.org>
+Link: https://lore.kernel.org/r/20250506222531.625157-1-pbrobinson@gmail.com
+Signed-off-by: Heiko Stuebner <heiko@sntech.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/allwinner/sun50i-a100.dtsi | 3 +++
- 1 file changed, 3 insertions(+)
+ arch/arm64/boot/dts/rockchip/rk3568-nanopi-r5s.dtsi | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/arch/arm64/boot/dts/allwinner/sun50i-a100.dtsi b/arch/arm64/boot/dts/allwinner/sun50i-a100.dtsi
-index f9f6fea03b744..bd366389b2389 100644
---- a/arch/arm64/boot/dts/allwinner/sun50i-a100.dtsi
-+++ b/arch/arm64/boot/dts/allwinner/sun50i-a100.dtsi
-@@ -252,6 +252,7 @@
- 			interrupts = <GIC_SPI 39 IRQ_TYPE_LEVEL_HIGH>;
- 			pinctrl-names = "default";
- 			pinctrl-0 = <&mmc0_pins>;
-+			max-frequency = <150000000>;
- 			status = "disabled";
- 			#address-cells = <1>;
- 			#size-cells = <0>;
-@@ -267,6 +268,7 @@
- 			interrupts = <GIC_SPI 40 IRQ_TYPE_LEVEL_HIGH>;
- 			pinctrl-names = "default";
- 			pinctrl-0 = <&mmc1_pins>;
-+			max-frequency = <150000000>;
- 			status = "disabled";
- 			#address-cells = <1>;
- 			#size-cells = <0>;
-@@ -282,6 +284,7 @@
- 			interrupts = <GIC_SPI 41 IRQ_TYPE_LEVEL_HIGH>;
- 			pinctrl-names = "default";
- 			pinctrl-0 = <&mmc2_pins>;
-+			max-frequency = <150000000>;
- 			status = "disabled";
- 			#address-cells = <1>;
- 			#size-cells = <0>;
+diff --git a/arch/arm64/boot/dts/rockchip/rk3568-nanopi-r5s.dtsi b/arch/arm64/boot/dts/rockchip/rk3568-nanopi-r5s.dtsi
+index 00c479aa18711..a28b4af10d13a 100644
+--- a/arch/arm64/boot/dts/rockchip/rk3568-nanopi-r5s.dtsi
++++ b/arch/arm64/boot/dts/rockchip/rk3568-nanopi-r5s.dtsi
+@@ -486,9 +486,12 @@
+ &sdhci {
+ 	bus-width = <8>;
+ 	max-frequency = <200000000>;
++	mmc-hs200-1_8v;
+ 	non-removable;
+ 	pinctrl-names = "default";
+-	pinctrl-0 = <&emmc_bus8 &emmc_clk &emmc_cmd>;
++	pinctrl-0 = <&emmc_bus8 &emmc_clk &emmc_cmd &emmc_datastrobe>;
++	vmmc-supply = <&vcc_3v3>;
++	vqmmc-supply = <&vcc_1v8>;
+ 	status = "okay";
+ };
+ 
 -- 
 2.39.5
 
