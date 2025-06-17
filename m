@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-153577-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-154244-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 66525ADD5AD
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:24:21 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9A930ADD951
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 19:05:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 08C111946749
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:10:28 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4BCCB2C6BD6
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:47:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D11C2DFF24;
-	Tue, 17 Jun 2025 16:06:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48C372EA16E;
+	Tue, 17 Jun 2025 16:42:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="apgqCdGY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Lf0TKNDH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE2C92F2365;
-	Tue, 17 Jun 2025 16:06:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 061592EA161;
+	Tue, 17 Jun 2025 16:42:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750176411; cv=none; b=dMjawz0+mYtkw2E7U/LUznPz3FJ9P7gqXSa8oBewnI1emsXstmfDjvrnLKoIyqQqUHQIIMVN7doJasNMViqChR/Tvo2oIL8zuytlCAaAEWOyqhrLdRRrYYiuEH3RoclzT8dbvDajrkuoHpug7H+0775PKfFr7mPxvjYC/0BPwFc=
+	t=1750178565; cv=none; b=ihaaCeXThL766GC07ZgpXdPt35JEFHtCxCm0tCgFzlbQuvIWpEW6IalG/LKhJMPL/TIClkNidJyOWTTnWd7gj+g+G3EhLlaOWlnyzGdvv4EZaD/OveAlFgymJxYnf1XTbFD1uTFGLc5RPh9xsf8b7+LoeHk0OqjhR7X7Zw4TFkE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750176411; c=relaxed/simple;
-	bh=MADa4wPpy2LakqcVZYPQiBfK2m8KCqkfdPgE2ckrGqg=;
+	s=arc-20240116; t=1750178565; c=relaxed/simple;
+	bh=o9IL9hfjMaDKQoNarJUgR51hqLNlwIgBd6Jmt0xkt18=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UeyNyF8GMGj6rpdUz2BVCqtWvzq6V6thbmfcmAat8yNUrDpyZxno58K/nVrTq7eb34PEGMozm66nofzwpfLxueR9rolBxbZR3Yu6d7JHZz6qwKIPPDut/05evJeelJHRCR7AjljmD9MlBkK9uzknc41UBLhiasPCJG5X5mQ+vs0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=apgqCdGY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 477AAC4CEE3;
-	Tue, 17 Jun 2025 16:06:51 +0000 (UTC)
+	 MIME-Version; b=IoihQSWUk7iv/FVw6IJ55PbjFnIabQdanPTOxHjMgB8v8jWujnZQgPGEXvf2+PYcn0xLvR4GReQI/APpS/MfHaV54egB7KnMPHP5S8yTWmQ/+mCD2V1fXiR4nS7cxNEtdtdExmG+FjHpQBz2VBOvwEB6FG5gy7FNHfGI1RNRNHA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Lf0TKNDH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 135E2C4CEE3;
+	Tue, 17 Jun 2025 16:42:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750176411;
-	bh=MADa4wPpy2LakqcVZYPQiBfK2m8KCqkfdPgE2ckrGqg=;
+	s=korg; t=1750178564;
+	bh=o9IL9hfjMaDKQoNarJUgR51hqLNlwIgBd6Jmt0xkt18=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=apgqCdGYhAF4Xsz361gsVFuC9R0QS6rVjZ2anoZUVXKW0XWNAqDh+5p/zhQSJVh9U
-	 2S048EOHNKgHeESGfPH48tvu13mMFdqiLrnAAI9do4U9C1R2nLx/jgtOOjmM3trXHv
-	 ma+koZbx6Y2E8m+/tUh74nDDMpHifFgtIQfgm07M=
+	b=Lf0TKNDHV9WgErP8pInlCQP+sUfTKo4NDV/mEtki9hF+Ir7sKFNsRsc3sREKBu2mI
+	 zSM/nA03S3qAUhRBsMy0zPSScIAq9DUlh8elbhn2AUefJzfSSo+VnioC46Qa6HC0ry
+	 aMCmeHD5T9yfi/o9VUwxX7EtFzJHHav860NJ1UWs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xilin Wu <wuxilin123@gmail.com>,
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
-	Bjorn Andersson <andersson@kernel.org>,
+	Amir Goldstein <amir73il@gmail.com>,
+	Jan Kara <jack@suse.cz>,
+	Christian Brauner <brauner@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 227/512] arm64: dts: qcom: sm8250: Fix CPU7 opp table
-Date: Tue, 17 Jun 2025 17:23:13 +0200
-Message-ID: <20250617152428.821018683@linuxfoundation.org>
+Subject: [PATCH 6.15 486/780] exportfs: require ->fh_to_parent() to encode connectable file handles
+Date: Tue, 17 Jun 2025 17:23:14 +0200
+Message-ID: <20250617152511.282187346@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
-References: <20250617152419.512865572@linuxfoundation.org>
+In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
+References: <20250617152451.485330293@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,43 +63,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xilin Wu <wuxilin123@gmail.com>
+From: Amir Goldstein <amir73il@gmail.com>
 
-[ Upstream commit 28f997b89967afdc0855d8aa7538b251fb44f654 ]
+[ Upstream commit 5402c4d4d2000a9baa30c1157c97152ec6383733 ]
 
-There is a typo in cpu7_opp9. Fix it to get rid of the following
-errors.
+When user requests a connectable file handle explicitly with the
+AT_HANDLE_CONNECTABLE flag, fail the request if filesystem (e.g. nfs)
+does not know how to decode a connected non-dir dentry.
 
-[    0.198043] cpu cpu7: Voltage update failed freq=1747200
-[    0.198052] cpu cpu7: failed to update OPP for freq=1747200
-
-Fixes: 8e0e8016cb79 ("arm64: dts: qcom: sm8250: Add CPU opp tables")
-Signed-off-by: Xilin Wu <wuxilin123@gmail.com>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Link: https://lore.kernel.org/r/20250308-fix-sm8250-cpufreq-v1-1-8a0226721399@gmail.com
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Fixes: c374196b2b9f ("fs: name_to_handle_at() support for "explicit connectable" file handles")
+Signed-off-by: Amir Goldstein <amir73il@gmail.com>
+Link: https://lore.kernel.org/20250525104731.1461704-1-amir73il@gmail.com
+Reviewed-by: Jan Kara <jack@suse.cz>
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/sm8250.dtsi | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ include/linux/exportfs.h | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-diff --git a/arch/arm64/boot/dts/qcom/sm8250.dtsi b/arch/arm64/boot/dts/qcom/sm8250.dtsi
-index faa36d17b9f2c..e17937f76806c 100644
---- a/arch/arm64/boot/dts/qcom/sm8250.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sm8250.dtsi
-@@ -606,7 +606,7 @@
- 		};
+diff --git a/include/linux/exportfs.h b/include/linux/exportfs.h
+index fc93f0abf513c..25c4a5afbd443 100644
+--- a/include/linux/exportfs.h
++++ b/include/linux/exportfs.h
+@@ -314,6 +314,9 @@ static inline bool exportfs_can_decode_fh(const struct export_operations *nop)
+ static inline bool exportfs_can_encode_fh(const struct export_operations *nop,
+ 					  int fh_flags)
+ {
++	if (!nop)
++		return false;
++
+ 	/*
+ 	 * If a non-decodeable file handle was requested, we only need to make
+ 	 * sure that filesystem did not opt-out of encoding fid.
+@@ -321,6 +324,13 @@ static inline bool exportfs_can_encode_fh(const struct export_operations *nop,
+ 	if (fh_flags & EXPORT_FH_FID)
+ 		return exportfs_can_encode_fid(nop);
  
- 		cpu7_opp9: opp-1747200000 {
--			opp-hz = /bits/ 64 <1708800000>;
-+			opp-hz = /bits/ 64 <1747200000>;
- 			opp-peak-kBps = <5412000 42393600>;
- 		};
- 
++	/*
++	 * If a connectable file handle was requested, we need to make sure that
++	 * filesystem can also decode connected file handles.
++	 */
++	if ((fh_flags & EXPORT_FH_CONNECTABLE) && !nop->fh_to_parent)
++		return false;
++
+ 	/*
+ 	 * If a decodeable file handle was requested, we need to make sure that
+ 	 * filesystem can also decode file handles.
 -- 
 2.39.5
 
