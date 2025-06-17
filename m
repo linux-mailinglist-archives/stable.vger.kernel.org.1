@@ -1,52 +1,52 @@
-Return-Path: <stable+bounces-152979-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-152981-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C50CDADD1BC
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 17:34:20 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id A9150ADD1D8
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 17:35:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 711D917C832
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 15:34:21 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 832727A9528
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 15:33:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 411552ECD0A;
-	Tue, 17 Jun 2025 15:34:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4FC02EBDC0;
+	Tue, 17 Jun 2025 15:34:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m7nVbBc8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RoiFXZQu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F12431E8332;
-	Tue, 17 Jun 2025 15:34:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71FC5293443;
+	Tue, 17 Jun 2025 15:34:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750174459; cv=none; b=dS64UHhkFLoRaRGL1K/AmMjkHzg61x09FQTYABlCSSMZ00b5aBvUtZBKMWAykkEvivxpbtHUEEFp6GTwIB1R96HShTghPNNHyE3MqwHT0/PxsuktLnWefjMD971yN3bodtq50MZoJIi8CWk5Jijsb/0D+Mi/f5+HQfi5Qp0r6sc=
+	t=1750174465; cv=none; b=Z7F6NWfaauIDfeAjSMWBynGNxFwTNfRMj3yEPo9pOcDbmkQL7s5XRowo3QzCoEabYVdScNPQpucykiru0Z7naxpRS50nYNkhlhMXHK7fzZuj9ShYBhfu5xR9k3BVBDbPWRyGcrUQBuyqHFuflVbJzZkpqj3PyNfvSWogldv3IRM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750174459; c=relaxed/simple;
-	bh=Sz48beAtrTaV/fHyMCVyUx/QcGDmuVDgVDS+LRZQDxk=;
+	s=arc-20240116; t=1750174465; c=relaxed/simple;
+	bh=jQ00OOuTx9dyxC5UkcFyhV0VXL0aLL5dkbz9xGYnzXg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eo9tYgqHcN8HZ4Sd/uUs6Fx5vWsuLanJetnC4rqfKSJnWrcccKW6UWt9k2MiwXAP6vgxeSH8ielyFUnHYjl2vWo76Ncl2SixlKBTHVHEkbjmvINMnD2Nl9/rQ1fSiz5M+0xXeNgZ4s+7qJFn1nsLLAl+ybEtiJoZmBa29VZhs9k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m7nVbBc8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6045AC4CEE3;
-	Tue, 17 Jun 2025 15:34:18 +0000 (UTC)
+	 MIME-Version; b=NBrnE1FkEG8nGhxAsMT/N1XEZ9z4sc7sISzCBKamu6BIydj5NIosSgvqxEYx8x4QyFf01j/SPQmmOSTExw3Gdpn+IOMdU5/0jUISvfzrGn8y7kOQ6Dew+mH+IkaByPktTxSMRElrHTtkdZfM9cQ4kUepmZ2PEGJ7nP4fz0sfbSk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RoiFXZQu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E847BC4CEE3;
+	Tue, 17 Jun 2025 15:34:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750174458;
-	bh=Sz48beAtrTaV/fHyMCVyUx/QcGDmuVDgVDS+LRZQDxk=;
+	s=korg; t=1750174465;
+	bh=jQ00OOuTx9dyxC5UkcFyhV0VXL0aLL5dkbz9xGYnzXg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=m7nVbBc8OCH/GV3uAf3ov0/FI6mEufPURN6wKazttUU5ZbMcYfLQZeBJxjFgFtLZY
-	 wd1yWb5zuOyFGH1xHmWBKOBFuAKWfp9GM04b3HLdvLkc5l70dt85C2AcHATlmfdG6S
-	 GVWCEeOZDyRakvqP6nvVc+eCvlxtOkneyMsZ0uhY=
+	b=RoiFXZQudoNi7i5lMDLaNhIhMZVwT5sOlM22nadmt7BOkeh+877oXU26NrgJR2hJ9
+	 +FDQHKNOEIDKO7k1eEyiE0HV8tPSF00oPp+4t7Cty44UzLBiAv7rBqWOGmpuBXXmYx
+	 rPB9WtPYaGZRcerUCjHgF7MlhPL613UwWxhDXoSI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 022/512] crypto: marvell/cesa - Handle zero-length skcipher requests
-Date: Tue, 17 Jun 2025 17:19:48 +0200
-Message-ID: <20250617152420.431835686@linuxfoundation.org>
+Subject: [PATCH 6.12 023/512] crypto: marvell/cesa - Avoid empty transfer descriptor
+Date: Tue, 17 Jun 2025 17:19:49 +0200
+Message-ID: <20250617152420.470626914@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
 References: <20250617152419.512865572@linuxfoundation.org>
@@ -67,32 +67,32 @@ Content-Transfer-Encoding: 8bit
 
 From: Herbert Xu <herbert@gondor.apana.org.au>
 
-[ Upstream commit 8a4e047c6cc07676f637608a9dd675349b5de0a7 ]
+[ Upstream commit 1bafd82d9a40cf09c6c40f1c09cc35b7050b1a9f ]
 
-Do not access random memory for zero-length skcipher requests.
-Just return 0.
+The user may set req->src even if req->nbytes == 0.  If there
+is no data to hash from req->src, do not generate an empty TDMA
+descriptor.
 
-Fixes: f63601fd616a ("crypto: marvell/cesa - add a new driver for Marvell's CESA")
+Fixes: db509a45339f ("crypto: marvell/cesa - add TDMA support")
 Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/crypto/marvell/cesa/cipher.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/crypto/marvell/cesa/hash.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/crypto/marvell/cesa/cipher.c b/drivers/crypto/marvell/cesa/cipher.c
-index 0f37dfd42d850..3876e3ce822f4 100644
---- a/drivers/crypto/marvell/cesa/cipher.c
-+++ b/drivers/crypto/marvell/cesa/cipher.c
-@@ -459,6 +459,9 @@ static int mv_cesa_skcipher_queue_req(struct skcipher_request *req,
- 	struct mv_cesa_skcipher_req *creq = skcipher_request_ctx(req);
- 	struct mv_cesa_engine *engine;
- 
-+	if (!req->cryptlen)
-+		return 0;
-+
- 	ret = mv_cesa_skcipher_req_init(req, tmpl);
+diff --git a/drivers/crypto/marvell/cesa/hash.c b/drivers/crypto/marvell/cesa/hash.c
+index f150861ceaf69..6815eddc90681 100644
+--- a/drivers/crypto/marvell/cesa/hash.c
++++ b/drivers/crypto/marvell/cesa/hash.c
+@@ -663,7 +663,7 @@ static int mv_cesa_ahash_dma_req_init(struct ahash_request *req)
  	if (ret)
- 		return ret;
+ 		goto err_free_tdma;
+ 
+-	if (iter.src.sg) {
++	if (iter.base.len > iter.src.op_offset) {
+ 		/*
+ 		 * Add all the new data, inserting an operation block and
+ 		 * launch command between each full SRAM block-worth of
 -- 
 2.39.5
 
