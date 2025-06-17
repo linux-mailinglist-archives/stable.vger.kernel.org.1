@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-153756-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153759-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9DC3EADD63B
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:31:22 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 03DA2ADD636
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:31:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F19D62C647B
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:23:02 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 938495A0AAA
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:22:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D87C285052;
-	Tue, 17 Jun 2025 16:16:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C22A8285057;
+	Tue, 17 Jun 2025 16:16:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qwyze6ei"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KWSa1z/h"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0431A28504A;
-	Tue, 17 Jun 2025 16:16:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E0BD285049;
+	Tue, 17 Jun 2025 16:16:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750176998; cv=none; b=k77YB+zoGIDR2gtZR0fON6z+mtLsWrKQJjg0PpnD2BbDBYBsPBbgH2t4LNRKt31KkO+HPSp7E+qIo/Ufe+VCvIhoVZu9bYsu3PN3KF7Koc8KhHTdnDkJ2WWTA0uiTUmZWN+DJZsimcBdLnOzZSJtYG4lB3fPJOZ3U9tPFezP9vE=
+	t=1750177007; cv=none; b=nnGhmPT3KhG89dLo51ym/nc8ezy2zRBRrCoBz4kGhTk7c1Tr1NACwVhFetR1UOFETyK/Nk0iaO5EHZQ4LSrg/ZkL+o3RZActW75BpG5sMx3riSz3c+snHkX0cch67E23PJIDXBeUkIc5u6/FiseLXkQ3g1lWvGD2TuzkLQeo3UE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750176998; c=relaxed/simple;
-	bh=Gd9HPLAInEel218diRDaOuzya3XkpeN81cE+EskeXw8=;
+	s=arc-20240116; t=1750177007; c=relaxed/simple;
+	bh=q0XLe6NPCUD4TBxWUVZiL/k89ipae0OVyXskYRjIl0o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MxVpIsg7s4RSpMJFsiz6P3HVo1cckeQLUGjAY3NkJ4VOBTs+i7m6+E8g4mhnuiIpBrqMBAiBnFmMOSZh5y2Jr3L+x9Wb5p3lQTg1VmGHSGKJCu0uq4Tg3+Fs6j3hZpxIfZLjUOcebW11VsenaUyJs9Y8MagYPhy2m2ZXsF5UTOM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qwyze6ei; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 889AFC4CEE3;
-	Tue, 17 Jun 2025 16:16:37 +0000 (UTC)
+	 MIME-Version; b=MW7NplXxrRF98HPYqTjq/98Ld9iHFrB9F9DtqW9IhcQWey49XvIimykrY1c7depNEqScT0Gc4buos/4HW25IfW82XOMpFoBxeQeCPIIZQHOVcm8A3D9fwKE2Sy4KRn0vWrEwrOvO5XsbWAM+JFz0vtf5LcocruSdOQj0h/jSJsQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KWSa1z/h; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB46EC4CEE3;
+	Tue, 17 Jun 2025 16:16:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750176997;
-	bh=Gd9HPLAInEel218diRDaOuzya3XkpeN81cE+EskeXw8=;
+	s=korg; t=1750177007;
+	bh=q0XLe6NPCUD4TBxWUVZiL/k89ipae0OVyXskYRjIl0o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qwyze6eiVZP8fOPKUJRxRN6ojOPvV/m2ofE+7P0nFsUuO359r+YdBFekrRGLagn3i
-	 cKjWZYLtwQ786KiwkdNMASZti//yZ+Vivyg5dBLIjFqMHVtCy+AqzT3sh5vjuFKGWP
-	 6ft35ZjeOMlvQkR+UIW2+uLuZFW/duIPZqfwNfIA=
+	b=KWSa1z/hn8BX5iW5kEY+HfTJG+CxMPebMaVpbTdjkrAU8klIV8U9/5Unlf3mgMByO
+	 N+Jb2bKwDi1jIKrruNPU5ORuQcnAHnu+/i/Aw9Wsb79znEOk4EMLURHT8AgY6WeLeN
+	 TcSRxViymISH+87BCenziRaCDIAmVRzoOCQJyYO4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sagarika Sharma <sharmasagarika@google.com>,
-	Minh-Anh Nguyen <minhanhdn@google.com>,
-	YiFei Zhu <zhuyifei@google.com>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Quentin Monnet <qmo@kernel.org>,
+	Henry Martin <bsdhenrymartin@gmail.com>,
+	Dave Stevenson <dave.stevenson@raspberrypi.com>,
+	Stefan Wahren <wahrenst@gmx.net>,
+	Stephen Boyd <sboyd@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 247/780] bpftool: Fix regression of "bpftool cgroup tree" EINVAL on older kernels
-Date: Tue, 17 Jun 2025 17:19:15 +0200
-Message-ID: <20250617152501.509936316@linuxfoundation.org>
+Subject: [PATCH 6.15 248/780] clk: bcm: rpi: Add NULL check in raspberrypi_clk_register()
+Date: Tue, 17 Jun 2025 17:19:16 +0200
+Message-ID: <20250617152501.550078246@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
 References: <20250617152451.485330293@linuxfoundation.org>
@@ -69,57 +68,40 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: YiFei Zhu <zhuyifei@google.com>
+From: Henry Martin <bsdhenrymartin@gmail.com>
 
-[ Upstream commit 43745d11bfd9683abdf08ad7a5cc403d6a9ffd15 ]
+[ Upstream commit 73c46d9a93d071ca69858dea3f569111b03e549e ]
 
-If cgroup_has_attached_progs queries an attach type not supported
-by the running kernel, due to the kernel being older than the bpftool
-build, it would encounter an -EINVAL from BPF_PROG_QUERY syscall.
+devm_kasprintf() returns NULL when memory allocation fails. Currently,
+raspberrypi_clk_register() does not check for this case, which results
+in a NULL pointer dereference.
 
-Prior to commit 98b303c9bf05 ("bpftool: Query only cgroup-related
-attach types"), this EINVAL would be ignored by the function, allowing
-the function to only consider supported attach types. The commit
-changed so that, instead of querying all attach types, only attach
-types from the array `cgroup_attach_types` is queried. The assumption
-is that because these are only cgroup attach types, they should all
-be supported. Unfortunately this assumption may be false when the
-kernel is older than the bpftool build, where the attach types queried
-by bpftool is not yet implemented in the kernel. This would result in
-errors such as:
+Add NULL check after devm_kasprintf() to prevent this issue.
 
-  $ bpftool cgroup tree
-  CgroupPath
-  ID       AttachType      AttachFlags     Name
-  Error: can't query bpf programs attached to /sys/fs/cgroup: Invalid argument
-
-This patch restores the logic of ignoring EINVAL from prior to that patch.
-
-Fixes: 98b303c9bf05 ("bpftool: Query only cgroup-related attach types")
-Reported-by: Sagarika Sharma <sharmasagarika@google.com>
-Reported-by: Minh-Anh Nguyen <minhanhdn@google.com>
-Signed-off-by: YiFei Zhu <zhuyifei@google.com>
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Acked-by: Quentin Monnet <qmo@kernel.org>
-Link: https://lore.kernel.org/bpf/20250428211536.1651456-1-zhuyifei@google.com
+Fixes: 93d2725affd6 ("clk: bcm: rpi: Discover the firmware clocks")
+Signed-off-by: Henry Martin <bsdhenrymartin@gmail.com>
+Reviewed-by: Dave Stevenson <dave.stevenson@raspberrypi.com>
+Link: https://lore.kernel.org/r/20250402020513.42628-1-bsdhenrymartin@gmail.com
+Reviewed-by: Stefan Wahren <wahrenst@gmx.net>
+Signed-off-by: Stephen Boyd <sboyd@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/bpf/bpftool/cgroup.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/clk/bcm/clk-raspberrypi.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/tools/bpf/bpftool/cgroup.c b/tools/bpf/bpftool/cgroup.c
-index 93b139bfb9880..3f1d6be512151 100644
---- a/tools/bpf/bpftool/cgroup.c
-+++ b/tools/bpf/bpftool/cgroup.c
-@@ -221,7 +221,7 @@ static int cgroup_has_attached_progs(int cgroup_fd)
- 	for (i = 0; i < ARRAY_SIZE(cgroup_attach_types); i++) {
- 		int count = count_attached_bpf_progs(cgroup_fd, cgroup_attach_types[i]);
+diff --git a/drivers/clk/bcm/clk-raspberrypi.c b/drivers/clk/bcm/clk-raspberrypi.c
+index 0e1fe3759530a..720acc10f8aa4 100644
+--- a/drivers/clk/bcm/clk-raspberrypi.c
++++ b/drivers/clk/bcm/clk-raspberrypi.c
+@@ -286,6 +286,8 @@ static struct clk_hw *raspberrypi_clk_register(struct raspberrypi_clk *rpi,
+ 	init.name = devm_kasprintf(rpi->dev, GFP_KERNEL,
+ 				   "fw-clk-%s",
+ 				   rpi_firmware_clk_names[id]);
++	if (!init.name)
++		return ERR_PTR(-ENOMEM);
+ 	init.ops = &raspberrypi_firmware_clk_ops;
+ 	init.flags = CLK_GET_RATE_NOCACHE;
  
--		if (count < 0)
-+		if (count < 0 && errno != EINVAL)
- 			return -1;
- 
- 		if (count > 0) {
 -- 
 2.39.5
 
