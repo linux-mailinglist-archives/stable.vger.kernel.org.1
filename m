@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-154236-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-154513-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A244ADD865
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:55:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7CEF5ADDA4B
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 19:16:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BA5584A46D8
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:46:16 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C6C325A6948
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:57:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99E992E8E02;
-	Tue, 17 Jun 2025 16:42:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2AD3B2FA64B;
+	Tue, 17 Jun 2025 16:57:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Tjx4MEgV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DDtQlUOX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5581B2E7181;
-	Tue, 17 Jun 2025 16:42:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB9352FA622;
+	Tue, 17 Jun 2025 16:57:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750178538; cv=none; b=jA7+QCJVgXKXV85MY2CqB53k7iWEy4Ir+uwoUJVwg/oonEZ3P1isHXlgeNtjHZy2adiKfVfxnV29bCvG83Ecqrz1Xtxoer5eU2Sk2iz6Y8AlxEx/qSNTysKKJ2STIZtFpMR0ntkFOj1gp3NQdo0AOyfgUFSFidVM0zIGJGmuk44=
+	t=1750179449; cv=none; b=rbqz4eE2/5pRHkwzvHsryZN/+T2aetYerXsRSRTnpLT2f79Lj6g/j7Go9oi/EWudLjtqll24qTNhUOqAnEZKzyxx3K6oBapgNce9isXszfPXgF/aHRquyRqg/P/CWBNpyVSbXC9i+eqpVnJjlzWf6u84OaFjau2BfL7XquID72g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750178538; c=relaxed/simple;
-	bh=ZEprKMF5XeyFAsYBnHOVBd0r5gYgPRflJXflub+TSyw=;
+	s=arc-20240116; t=1750179449; c=relaxed/simple;
+	bh=FcnXAvZdekjgyLZ+EG6xP3+L+6YkeXL9mauIHzyfKBA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JPHeSSSeJyRNNCTM43XHfy6uJ15FQ/KR0fBkFos7Ck7ptU4UuFTd14Gs073SUVGcM8XEZztqR2O81yYQV6fHI6GMFePXyvvFm4WnV/5qhx3v0D9PwymwatwrSeAbiYANoWVOL4Mxr8SZ07SOIfb13/TN1OG4J2yPo4rA8ZGO0B0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Tjx4MEgV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9CF2C4CEE3;
-	Tue, 17 Jun 2025 16:42:17 +0000 (UTC)
+	 MIME-Version; b=Y0if8Zqx2YswXw4jiPbLIBhFaIdg580421HCpdrw5hFaNSMyH6MKUWqR/hJvIDJ7kyv9aIjpLKcMrsSQEUDVDYiOQhL2vNxsl8rpZoOID5zkZHrDREMd+d3jhs1c9eMOplapUPlRjKL9F/Ri7RKfNyKNOsNTsnlOY+Q7RWM6gB4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DDtQlUOX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A947C4CEE3;
+	Tue, 17 Jun 2025 16:57:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750178538;
-	bh=ZEprKMF5XeyFAsYBnHOVBd0r5gYgPRflJXflub+TSyw=;
+	s=korg; t=1750179448;
+	bh=FcnXAvZdekjgyLZ+EG6xP3+L+6YkeXL9mauIHzyfKBA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Tjx4MEgVnfoLE/p+Lmg3Ubnpc+SD9uiimiv5Z7ubfw0ODIl8EzdeuRmGBf74swxq3
-	 c6jSxLLsvrJI5TVAwMheAsiQtj5cFZ5S0Dk6OnIzVsoLR4QUCGTq12fgeoU+Us0uL0
-	 hbUBd4/WTDMSTgTJb/5V7WEi6O68F91STSrT/FcY=
+	b=DDtQlUOXAeyPJy/TpNsZkmGmJlayveYgzQ5LYQA9DXNOvPxR0+Q3t3AV34eyUpocE
+	 43THLw2RtNwJdGlMdY2oPGtH99VkyhqE8ZzrXzGEf4PhihtzM29jHtkqtTHnOTOpyC
+	 ACKaFnRlgUUAtXwKXA7tbDb21s8HTCvpH/uWQRDA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Jonathan Stroud <jonathan.stroud@amd.com>,
-	Radhey Shyam Pandey <radhey.shyam.pandey@amd.com>
-Subject: [PATCH 6.12 492/512] usb: misc: onboard_usb_dev: Fix usb5744 initialization sequence
+	Madhavan Srinivasan <maddy@linux.ibm.com>
+Subject: [PATCH 6.15 750/780] powerpc/kernel: Fix ppc_save_regs inclusion in build
 Date: Tue, 17 Jun 2025 17:27:38 +0200
-Message-ID: <20250617152439.567916068@linuxfoundation.org>
+Message-ID: <20250617152522.046087495@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
-References: <20250617152419.512865572@linuxfoundation.org>
+In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
+References: <20250617152451.485330293@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,172 +60,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jonathan Stroud <jonathan.stroud@amd.com>
+From: Madhavan Srinivasan <maddy@linux.ibm.com>
 
-commit 1143d41922c0f87504f095417ba1870167970143 upstream.
+commit 93bd4a80efeb521314485a06d8c21157240497bb upstream.
 
-Introduce i2c APIs to read/write for proper configuration register
-programming. It ensures that read-modify-write sequence is performed
-and reserved bit in Runtime Flags 2 register are not touched.
+Recent patch fixed an old commit
+'fc2a5a6161a2 ("powerpc/64s: ppc_save_regs is now needed for all 64s builds")'
+which is to include building of ppc_save_reg.c only when XMON
+and KEXEC_CORE and PPC_BOOK3S are enabled. This was valid, since
+ppc_save_regs was called only in replay_system_reset() of old
+irq.c which was under BOOK3S.
 
-Also legacy smbus block write inserted an extra count value into the
-i2c data stream which breaks the register write on the usb5744.
+But there has been multiple refactoring of irq.c and have
+added call to ppc_save_regs() from __replay_soft_interrupts
+-> replay_soft_interrupts which is part of irq_64.c included
+under CONFIG_PPC64. And since ppc_save_regs is called in
+CRASH_DUMP path as part of crash_setup_regs in kexec.h,
+CONFIG_PPC32 also needs it.
 
-Switching to new read/write i2c APIs fixes both issues.
+So with this recent patch which enabled the building of
+ppc_save_regs.c caused a build break when none of these
+(XMON, KEXEC_CORE, BOOK3S) where enabled as part of config.
+Patch to enable building of ppc_save_regs.c by defaults.
 
-Fixes: 6782311d04df ("usb: misc: onboard_usb_dev: add Microchip usb5744 SMBus programming support")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Jonathan Stroud <jonathan.stroud@amd.com>
-Co-developed-by: Radhey Shyam Pandey <radhey.shyam.pandey@amd.com>
-Signed-off-by: Radhey Shyam Pandey <radhey.shyam.pandey@amd.com>
-Link: https://lore.kernel.org/r/1747398760-284021-1-git-send-email-radhey.shyam.pandey@amd.com
+Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
+Link: https://patch.msgid.link/20250511041111.841158-1-maddy@linux.ibm.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/misc/onboard_usb_dev.c | 100 +++++++++++++++++++++++++----
- 1 file changed, 87 insertions(+), 13 deletions(-)
+ arch/powerpc/kernel/Makefile |    2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/drivers/usb/misc/onboard_usb_dev.c b/drivers/usb/misc/onboard_usb_dev.c
-index 40bc98019e0b..1048e3912068 100644
---- a/drivers/usb/misc/onboard_usb_dev.c
-+++ b/drivers/usb/misc/onboard_usb_dev.c
-@@ -36,9 +36,10 @@
- #define USB5744_CMD_CREG_ACCESS			0x99
- #define USB5744_CMD_CREG_ACCESS_LSB		0x37
- #define USB5744_CREG_MEM_ADDR			0x00
-+#define USB5744_CREG_MEM_RD_ADDR		0x04
- #define USB5744_CREG_WRITE			0x00
--#define USB5744_CREG_RUNTIMEFLAGS2		0x41
--#define USB5744_CREG_RUNTIMEFLAGS2_LSB		0x1D
-+#define USB5744_CREG_READ			0x01
-+#define USB5744_CREG_RUNTIMEFLAGS2		0x411D
- #define USB5744_CREG_BYPASS_UDC_SUSPEND		BIT(3)
+--- a/arch/powerpc/kernel/Makefile
++++ b/arch/powerpc/kernel/Makefile
+@@ -160,9 +160,7 @@ endif
  
- static void onboard_dev_attach_usb_driver(struct work_struct *work);
-@@ -309,11 +310,88 @@ static void onboard_dev_attach_usb_driver(struct work_struct *work)
- 		pr_err("Failed to attach USB driver: %pe\n", ERR_PTR(err));
- }
+ obj64-$(CONFIG_PPC_TRANSACTIONAL_MEM)	+= tm.o
  
-+static int onboard_dev_5744_i2c_read_byte(struct i2c_client *client, u16 addr, u8 *data)
-+{
-+	struct i2c_msg msg[2];
-+	u8 rd_buf[3];
-+	int ret;
-+
-+	u8 wr_buf[7] = {0, USB5744_CREG_MEM_ADDR, 4,
-+			USB5744_CREG_READ, 1,
-+			addr >> 8 & 0xff,
-+			addr & 0xff};
-+	msg[0].addr = client->addr;
-+	msg[0].flags = 0;
-+	msg[0].len = sizeof(wr_buf);
-+	msg[0].buf = wr_buf;
-+
-+	ret = i2c_transfer(client->adapter, msg, 1);
-+	if (ret < 0)
-+		return ret;
-+
-+	wr_buf[0] = USB5744_CMD_CREG_ACCESS;
-+	wr_buf[1] = USB5744_CMD_CREG_ACCESS_LSB;
-+	wr_buf[2] = 0;
-+	msg[0].len = 3;
-+
-+	ret = i2c_transfer(client->adapter, msg, 1);
-+	if (ret < 0)
-+		return ret;
-+
-+	wr_buf[0] = 0;
-+	wr_buf[1] = USB5744_CREG_MEM_RD_ADDR;
-+	msg[0].len = 2;
-+
-+	msg[1].addr = client->addr;
-+	msg[1].flags = I2C_M_RD;
-+	msg[1].len = 2;
-+	msg[1].buf = rd_buf;
-+
-+	ret = i2c_transfer(client->adapter, msg, 2);
-+	if (ret < 0)
-+		return ret;
-+	*data = rd_buf[1];
-+
-+	return 0;
-+}
-+
-+static int onboard_dev_5744_i2c_write_byte(struct i2c_client *client, u16 addr, u8 data)
-+{
-+	struct i2c_msg msg[2];
-+	int ret;
-+
-+	u8 wr_buf[8] = {0, USB5744_CREG_MEM_ADDR, 5,
-+			USB5744_CREG_WRITE, 1,
-+			addr >> 8 & 0xff,
-+			addr & 0xff,
-+			data};
-+	msg[0].addr = client->addr;
-+	msg[0].flags = 0;
-+	msg[0].len = sizeof(wr_buf);
-+	msg[0].buf = wr_buf;
-+
-+	ret = i2c_transfer(client->adapter, msg, 1);
-+	if (ret < 0)
-+		return ret;
-+
-+	msg[0].len = 3;
-+	wr_buf[0] = USB5744_CMD_CREG_ACCESS;
-+	wr_buf[1] = USB5744_CMD_CREG_ACCESS_LSB;
-+	wr_buf[2] = 0;
-+
-+	ret = i2c_transfer(client->adapter, msg, 1);
-+	if (ret < 0)
-+		return ret;
-+
-+	return 0;
-+}
-+
- static int onboard_dev_5744_i2c_init(struct i2c_client *client)
- {
- #if IS_ENABLED(CONFIG_USB_ONBOARD_DEV_USB5744)
- 	struct device *dev = &client->dev;
- 	int ret;
-+	u8 reg;
+-ifneq ($(CONFIG_XMON)$(CONFIG_KEXEC_CORE)$(CONFIG_PPC_BOOK3S),)
+ obj-y				+= ppc_save_regs.o
+-endif
  
- 	/*
- 	 * Set BYPASS_UDC_SUSPEND bit to ensure MCU is always enabled
-@@ -321,21 +399,17 @@ static int onboard_dev_5744_i2c_init(struct i2c_client *client)
- 	 * The command writes 5 bytes to memory and single data byte in
- 	 * configuration register.
- 	 */
--	char wr_buf[7] = {USB5744_CREG_MEM_ADDR, 5,
--			  USB5744_CREG_WRITE, 1,
--			  USB5744_CREG_RUNTIMEFLAGS2,
--			  USB5744_CREG_RUNTIMEFLAGS2_LSB,
--			  USB5744_CREG_BYPASS_UDC_SUSPEND};
-+	ret = onboard_dev_5744_i2c_read_byte(client,
-+					     USB5744_CREG_RUNTIMEFLAGS2, &reg);
-+	if (ret)
-+		return dev_err_probe(dev, ret, "CREG_RUNTIMEFLAGS2 read failed\n");
- 
--	ret = i2c_smbus_write_block_data(client, 0, sizeof(wr_buf), wr_buf);
-+	reg |= USB5744_CREG_BYPASS_UDC_SUSPEND;
-+	ret = onboard_dev_5744_i2c_write_byte(client,
-+					      USB5744_CREG_RUNTIMEFLAGS2, reg);
- 	if (ret)
- 		return dev_err_probe(dev, ret, "BYPASS_UDC_SUSPEND bit configuration failed\n");
- 
--	ret = i2c_smbus_write_word_data(client, USB5744_CMD_CREG_ACCESS,
--					USB5744_CMD_CREG_ACCESS_LSB);
--	if (ret)
--		return dev_err_probe(dev, ret, "Configuration Register Access Command failed\n");
--
- 	/* Send SMBus command to boot hub. */
- 	ret = i2c_smbus_write_word_data(client, USB5744_CMD_ATTACH,
- 					USB5744_CMD_ATTACH_LSB);
--- 
-2.49.0
-
+ obj-$(CONFIG_EPAPR_PARAVIRT)	+= epapr_paravirt.o epapr_hcalls.o
+ obj-$(CONFIG_KVM_GUEST)		+= kvm.o kvm_emul.o
 
 
 
