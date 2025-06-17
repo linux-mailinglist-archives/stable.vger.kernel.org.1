@@ -1,54 +1,52 @@
-Return-Path: <stable+bounces-153169-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153172-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD79CADD2E9
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 17:51:22 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 62C99ADD2EF
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 17:51:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3FD97162851
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 15:49:05 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5790C401840
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 15:48:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B9132ECD1C;
-	Tue, 17 Jun 2025 15:45:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 70A9520C497;
+	Tue, 17 Jun 2025 15:45:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XSlW4VDw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TXEgQNPs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0ACA2ECE81;
-	Tue, 17 Jun 2025 15:45:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E6EB2EA16B;
+	Tue, 17 Jun 2025 15:45:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750175101; cv=none; b=Wfh9W1jWYJ4WCgAcp6FusdNlhJItG2AYP+yubxX0bgJhPSZOoBOFBOHH2CU0J9kisY3uqc5OtaR/pXWgeH+2CnFu5X+Bu+5aVjZGMRcorMPGjlk83GBotQPQsELN1XIrxVjlpW67Q9Xjuu1KA2BJOuU8jJebe1IIkSevxZ5mZGs=
+	t=1750175111; cv=none; b=Hm5CKg/zE9XVPuPnUYkRRH09VuY1dJdzG9lVBu+9u5sKAAwJV3Mq1gCpzgLnvYetL2eMhnmh+FGLOBZC4an2Hy7GECfw4D+BQh8lGM6b0QrJXViYHvBa8fvgej7ZMXV8X+6NvPKNDMzQiDBOapW8oCAd8ywmMi0OjwRDdbKK7rI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750175101; c=relaxed/simple;
-	bh=4HDVizlx01AD8M1apxipEPYGJ4zsrrPrLspJkmdJZ6A=;
+	s=arc-20240116; t=1750175111; c=relaxed/simple;
+	bh=kGJNOFMG8ftysTD3OSIV5xEn17bZ8Mne/oUrwJeXUk4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TlhsoZuY1PYk3b6UzHDwZjfYr2MzogfhNA4OT/Ib/6vbaiOduihuKAVSFg7LwCk3btkwZ3YRx8voKcTX2vWbksYcoouZbr76rfMxIRdyqO3UiQGNo2HH+LRnfHXa0+JGx909tVxrF1pYHDJIYhIr6VmCSKtdQo6avBpsotthxa8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XSlW4VDw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4394C4CEE3;
-	Tue, 17 Jun 2025 15:45:00 +0000 (UTC)
+	 MIME-Version; b=DI518tQYCi97RelXiLWXvksg+qyGlosxJilbwhKfyknZa2yumMe/1jzf9eqKBS8xrsiTxEjKBTYFLxpJ2QLa1QNp6gVAGjbD6jV+AdXTerDpxDT4l/x997Wd3y4Zm76Sc6NjZHfiMOwc3+VnUUYfugAKM+2FXfGkXHo7FvIklKI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TXEgQNPs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9060DC4CEE3;
+	Tue, 17 Jun 2025 15:45:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750175101;
-	bh=4HDVizlx01AD8M1apxipEPYGJ4zsrrPrLspJkmdJZ6A=;
+	s=korg; t=1750175111;
+	bh=kGJNOFMG8ftysTD3OSIV5xEn17bZ8Mne/oUrwJeXUk4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XSlW4VDwuAVESshzsRdLX80hTaPEJqDhyYALH/KGrwb3BYfZ0ZS5Lcfz+MzMSVa8g
-	 EZpSTNMHfh/j0Woj5IYSAXWcprR5HVCqxXJ5SayjPY0Y0xGsoU73/mZ3SzUsNrN9jY
-	 iJZrVA4WtV4/6AP61FzUvijKWpgBJxozxS8O7W3A=
+	b=TXEgQNPsk84iO+rxDW02WSJXt6tqlfxVc/kZBGHaOBrK64RVilwUxRUfEtTnbvrCw
+	 K9fWD3gNMGrKjMCfZKVOS47jaQSbpoXNDE1mZTaPeMr6JP61dHY3BUjJWEtTsekZ7X
+	 eNK3Rdua3tb6dZHwLvz4NP+9e9fcWGm2zyXV6AWQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tzung-Bi Shih <tzungbi@kernel.org>,
-	David Gow <davidgow@google.com>,
-	Shuah Khan <skhan@linuxfoundation.org>,
+	Andreas Gruenbacher <agruenba@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 049/780] kunit: Fix wrong parameter to kunit_deactivate_static_stub()
-Date: Tue, 17 Jun 2025 17:15:57 +0200
-Message-ID: <20250617152453.497813700@linuxfoundation.org>
+Subject: [PATCH 6.15 050/780] gfs2: Move gfs2_trans_add_databufs
+Date: Tue, 17 Jun 2025 17:15:58 +0200
+Message-ID: <20250617152453.538147457@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
 References: <20250617152451.485330293@linuxfoundation.org>
@@ -67,39 +65,136 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Tzung-Bi Shih <tzungbi@kernel.org>
+From: Andreas Gruenbacher <agruenba@redhat.com>
 
-[ Upstream commit 772e50a76ee664e75581624f512df4e45582605a ]
+[ Upstream commit d50a64e3c55e59e45e415c65531b0d76ad4cea36 ]
 
-kunit_deactivate_static_stub() accepts real_fn_addr instead of
-replacement_addr.  In the case, it always passes NULL to
-kunit_deactivate_static_stub().
+Move gfs2_trans_add_databufs() to trans.c.  Pass in a glock instead of
+a gfs2_inode.
 
-Fix it.
-
-Link: https://lore.kernel.org/r/20250520082050.2254875-1-tzungbi@kernel.org
-Fixes: e047c5eaa763 ("kunit: Expose 'static stub' API to redirect functions")
-Signed-off-by: Tzung-Bi Shih <tzungbi@kernel.org>
-Reviewed-by: David Gow <davidgow@google.com>
-Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
+Signed-off-by: Andreas Gruenbacher <agruenba@redhat.com>
+Stable-dep-of: 5a90f8d49922 ("gfs2: Don't start unnecessary transactions during log flush")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- lib/kunit/static_stub.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/gfs2/aops.c  | 23 +----------------------
+ fs/gfs2/aops.h  |  2 --
+ fs/gfs2/bmap.c  |  3 ++-
+ fs/gfs2/trans.c | 21 +++++++++++++++++++++
+ fs/gfs2/trans.h |  2 ++
+ 5 files changed, 26 insertions(+), 25 deletions(-)
 
-diff --git a/lib/kunit/static_stub.c b/lib/kunit/static_stub.c
-index 92b2cccd5e763..484fd85251b41 100644
---- a/lib/kunit/static_stub.c
-+++ b/lib/kunit/static_stub.c
-@@ -96,7 +96,7 @@ void __kunit_activate_static_stub(struct kunit *test,
+diff --git a/fs/gfs2/aops.c b/fs/gfs2/aops.c
+index 68fc8af14700d..ed2c708a215a4 100644
+--- a/fs/gfs2/aops.c
++++ b/fs/gfs2/aops.c
+@@ -37,27 +37,6 @@
+ #include "aops.h"
  
- 	/* If the replacement address is NULL, deactivate the stub. */
- 	if (!replacement_addr) {
--		kunit_deactivate_static_stub(test, replacement_addr);
-+		kunit_deactivate_static_stub(test, real_fn_addr);
- 		return;
+ 
+-void gfs2_trans_add_databufs(struct gfs2_inode *ip, struct folio *folio,
+-			     size_t from, size_t len)
+-{
+-	struct buffer_head *head = folio_buffers(folio);
+-	unsigned int bsize = head->b_size;
+-	struct buffer_head *bh;
+-	size_t to = from + len;
+-	size_t start, end;
+-
+-	for (bh = head, start = 0; bh != head || !start;
+-	     bh = bh->b_this_page, start = end) {
+-		end = start + bsize;
+-		if (end <= from)
+-			continue;
+-		if (start >= to)
+-			break;
+-		set_buffer_uptodate(bh);
+-		gfs2_trans_add_data(ip->i_gl, bh);
+-	}
+-}
+-
+ /**
+  * gfs2_get_block_noalloc - Fills in a buffer head with details about a block
+  * @inode: The inode
+@@ -133,7 +112,7 @@ static int __gfs2_jdata_write_folio(struct folio *folio,
+ 					inode->i_sb->s_blocksize,
+ 					BIT(BH_Dirty)|BIT(BH_Uptodate));
+ 		}
+-		gfs2_trans_add_databufs(ip, folio, 0, folio_size(folio));
++		gfs2_trans_add_databufs(ip->i_gl, folio, 0, folio_size(folio));
  	}
+ 	return gfs2_write_jdata_folio(folio, wbc);
+ }
+diff --git a/fs/gfs2/aops.h b/fs/gfs2/aops.h
+index a10c4334d2489..f9fa41aaeaf41 100644
+--- a/fs/gfs2/aops.h
++++ b/fs/gfs2/aops.h
+@@ -9,7 +9,5 @@
+ #include "incore.h"
  
+ void adjust_fs_space(struct inode *inode);
+-void gfs2_trans_add_databufs(struct gfs2_inode *ip, struct folio *folio,
+-			     size_t from, size_t len);
+ 
+ #endif /* __AOPS_DOT_H__ */
+diff --git a/fs/gfs2/bmap.c b/fs/gfs2/bmap.c
+index 366516b98b3f3..b81984def58ec 100644
+--- a/fs/gfs2/bmap.c
++++ b/fs/gfs2/bmap.c
+@@ -988,7 +988,8 @@ static void gfs2_iomap_put_folio(struct inode *inode, loff_t pos,
+ 	struct gfs2_sbd *sdp = GFS2_SB(inode);
+ 
+ 	if (!gfs2_is_stuffed(ip))
+-		gfs2_trans_add_databufs(ip, folio, offset_in_folio(folio, pos),
++		gfs2_trans_add_databufs(ip->i_gl, folio,
++					offset_in_folio(folio, pos),
+ 					copied);
+ 
+ 	folio_unlock(folio);
+diff --git a/fs/gfs2/trans.c b/fs/gfs2/trans.c
+index f8ae2c666fd60..075f7e9abe47c 100644
+--- a/fs/gfs2/trans.c
++++ b/fs/gfs2/trans.c
+@@ -226,6 +226,27 @@ void gfs2_trans_add_data(struct gfs2_glock *gl, struct buffer_head *bh)
+ 	unlock_buffer(bh);
+ }
+ 
++void gfs2_trans_add_databufs(struct gfs2_glock *gl, struct folio *folio,
++			     size_t from, size_t len)
++{
++	struct buffer_head *head = folio_buffers(folio);
++	unsigned int bsize = head->b_size;
++	struct buffer_head *bh;
++	size_t to = from + len;
++	size_t start, end;
++
++	for (bh = head, start = 0; bh != head || !start;
++	     bh = bh->b_this_page, start = end) {
++		end = start + bsize;
++		if (end <= from)
++			continue;
++		if (start >= to)
++			break;
++		set_buffer_uptodate(bh);
++		gfs2_trans_add_data(gl, bh);
++	}
++}
++
+ void gfs2_trans_add_meta(struct gfs2_glock *gl, struct buffer_head *bh)
+ {
+ 
+diff --git a/fs/gfs2/trans.h b/fs/gfs2/trans.h
+index f8ce5302280d3..790c55f59e612 100644
+--- a/fs/gfs2/trans.h
++++ b/fs/gfs2/trans.h
+@@ -42,6 +42,8 @@ int gfs2_trans_begin(struct gfs2_sbd *sdp, unsigned int blocks,
+ 
+ void gfs2_trans_end(struct gfs2_sbd *sdp);
+ void gfs2_trans_add_data(struct gfs2_glock *gl, struct buffer_head *bh);
++void gfs2_trans_add_databufs(struct gfs2_glock *gl, struct folio *folio,
++			     size_t from, size_t len);
+ void gfs2_trans_add_meta(struct gfs2_glock *gl, struct buffer_head *bh);
+ void gfs2_trans_add_revoke(struct gfs2_sbd *sdp, struct gfs2_bufdata *bd);
+ void gfs2_trans_remove_revoke(struct gfs2_sbd *sdp, u64 blkno, unsigned int len);
 -- 
 2.39.5
 
