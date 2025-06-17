@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-152986-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-152989-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C7457ADD1C3
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 17:34:48 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A49EADD1C8
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 17:34:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 78B1517CC4F
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 15:34:49 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2C2E817CCB9
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 15:35:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 336082E9753;
-	Tue, 17 Jun 2025 15:34:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14A722E9730;
+	Tue, 17 Jun 2025 15:34:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tnpucTzX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D/GcZcbL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3E38221F1F;
-	Tue, 17 Jun 2025 15:34:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3B25221F1F;
+	Tue, 17 Jun 2025 15:34:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750174487; cv=none; b=e5MujeY+nrrYkDpNpJW/0jChdDPFqTX2VzRnM26g5lrgXcmh6uDGd+5rG0nKyX2FOBQ9E9qxN0jIi53raxPPbuWM12s1gWJpJKDFlbJl2UJaOUE0eT3OjJS3/XvI3oUH8LxMDqfbU9wKfNbjnlaqZ01COckXP+GhRmm72bC9d18=
+	t=1750174496; cv=none; b=n4Vr3ChIacHC9Ra8IawaJsC8mOfkLmiZVdo/EvSZjMb9VUzUozDlI02F5hBKpZtc8ahdoBM0IVL5C7T9ratB4GwsP22AdIfI5Lj1wFXdg8wXev9zqEjqS2yClPrRRJikEktF1JHLCzQTMhesE9ekm+gmHROibE0kIeJbZgd/RyY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750174487; c=relaxed/simple;
-	bh=jHbCFU8AlipbQvhbFwm3Gny1/QvpF2RiI/QppTNdOtM=;
+	s=arc-20240116; t=1750174496; c=relaxed/simple;
+	bh=TcV2H8mpWVX6pe861USilE5cu0zoKqFJzGPIjinclxw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TYyO+pFF8YKQdWeVPY77bKu9HqYrlLEAGzb+FqjM8cTxTO/hMXZwvokwErm8v7FclUeUsuQLP88W9prAGDCMPl9ALWSgNjOj3cbGvDHfiOvoHuV2ueO74pNF6dsD9gmXCgYp5ZfPdY1ZWxjjWrJB7yaj/lXK4RoiyjCclO3vDYQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tnpucTzX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6FC4FC4CEE3;
-	Tue, 17 Jun 2025 15:34:46 +0000 (UTC)
+	 MIME-Version; b=EFT+BlCfPE0qC1srkV4i//y+fLcpnzyDZPdlPnXBQXVtpQVVmPQrsfdCejmDn3w7yO3RqLgFn62mtHXtIfFpciTIhNA9WTTSzpX4On03aSJ4xZKtfPEWlhzRP0y42NqMZ4NDcOYEL0RgbEozwARxNyHH7kZoLrGX98Cb/z6qMwA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D/GcZcbL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D54D5C4CEE3;
+	Tue, 17 Jun 2025 15:34:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750174486;
-	bh=jHbCFU8AlipbQvhbFwm3Gny1/QvpF2RiI/QppTNdOtM=;
+	s=korg; t=1750174496;
+	bh=TcV2H8mpWVX6pe861USilE5cu0zoKqFJzGPIjinclxw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tnpucTzXSIucF8RrZT0bjR47/LcbTtLywL+ypesgKxHUDP3FHfd17yqLU82OBUZ8b
-	 piTTxkTxIkb1YgVTwZcaGzPZLyZD6u7A0lwLT9pU/vGvc5bdv0vbtXXOk6uAWhkx4/
-	 qWgv5mryQLCwuHkGJ8IDZNxSrMgmGdybSGMDTU2E=
+	b=D/GcZcbLsvQtN7ofxaJ/8zDkGinPdI8zxK0ARAoT6FnfVOivZ1h3B31dUUt68N9EX
+	 Iladse/FrozXjaPIm+CCDokdHmLXUelljUMguVxpTfAdagsmpU8sef30a/w8OTCMcV
+	 mqbxuhO0qOHJ6bJB0BNaAyjYhyvGNST2HuDbUtHg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jiucheng Xu <jiucheng.xu@amlogic.com>,
-	Anand Moon <linux.amoon@gmail.com>,
-	Will Deacon <will@kernel.org>,
+	Chen-Yu Tsai <wenst@chromium.org>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Chun-Kuang Hu <chunkuang.hu@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 075/356] perf/amlogic: Replace smp_processor_id() with raw_smp_processor_id() in meson_ddr_pmu_create()
-Date: Tue, 17 Jun 2025 17:23:10 +0200
-Message-ID: <20250617152341.239754868@linuxfoundation.org>
+Subject: [PATCH 6.6 076/356] drm/mediatek: mtk_drm_drv: Fix kobject put for mtk_mutex device ptr
+Date: Tue, 17 Jun 2025 17:23:11 +0200
+Message-ID: <20250617152341.279348780@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250617152338.212798615@linuxfoundation.org>
 References: <20250617152338.212798615@linuxfoundation.org>
@@ -67,77 +67,105 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Anand Moon <linux.amoon@gmail.com>
+From: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
 
-[ Upstream commit 097469a2b0f12b91b4f27b9e9e4f2c46484cde30 ]
+[ Upstream commit 22918591fb747a6d16801e74a170cf98e886f83b ]
 
-The Amlogic DDR PMU driver meson_ddr_pmu_create() function incorrectly uses
-smp_processor_id(), which assumes disabled preemption. This leads to kernel
-warnings during module loading because meson_ddr_pmu_create() can be called
-in a preemptible context.
+This driver is taking a kobject for mtk_mutex only once per mmsys
+device for each drm-mediatek driver instance, differently from the
+behavior with other components, but it is decrementing the kobj's
+refcount in a loop and once per mmsys: this is not right and will
+result in a refcount_t underflow warning when mediatek-drm returns
+multiple probe deferrals in one boot (or when manually bound and
+unbound).
 
-Following kernel warning and stack trace:
-[   31.745138] [   T2289] BUG: using smp_processor_id() in preemptible [00000000] code: (udev-worker)/2289
-[   31.745154] [   T2289] caller is debug_smp_processor_id+0x28/0x38
-[   31.745172] [   T2289] CPU: 4 UID: 0 PID: 2289 Comm: (udev-worker) Tainted: GW 6.14.0-0-MANJARO-ARM #1 59519addcbca6ba8de735e151fd7b9e97aac7ff0
-[   31.745181] [   T2289] Tainted: [W]=WARN
-[   31.745183] [   T2289] Hardware name: Hardkernel ODROID-N2Plus (DT)
-[   31.745188] [   T2289] Call trace:
-[   31.745191] [   T2289]  show_stack+0x28/0x40 (C)
-[   31.745199] [   T2289]  dump_stack_lvl+0x4c/0x198
-[   31.745205] [   T2289]  dump_stack+0x20/0x50
-[   31.745209] [   T2289]  check_preemption_disabled+0xec/0xf0
-[   31.745213] [   T2289]  debug_smp_processor_id+0x28/0x38
-[   31.745216] [   T2289]  meson_ddr_pmu_create+0x200/0x560 [meson_ddr_pmu_g12 8095101c49676ad138d9961e3eddaee10acca7bd]
-[   31.745237] [   T2289]  g12_ddr_pmu_probe+0x20/0x38 [meson_ddr_pmu_g12 8095101c49676ad138d9961e3eddaee10acca7bd]
-[   31.745246] [   T2289]  platform_probe+0x98/0xe0
-[   31.745254] [   T2289]  really_probe+0x144/0x3f8
-[   31.745258] [   T2289]  __driver_probe_device+0xb8/0x180
-[   31.745261] [   T2289]  driver_probe_device+0x54/0x268
-[   31.745264] [   T2289]  __driver_attach+0x11c/0x288
-[   31.745267] [   T2289]  bus_for_each_dev+0xfc/0x160
-[   31.745274] [   T2289]  driver_attach+0x34/0x50
-[   31.745277] [   T2289]  bus_add_driver+0x160/0x2b0
-[   31.745281] [   T2289]  driver_register+0x78/0x120
-[   31.745285] [   T2289]  __platform_driver_register+0x30/0x48
-[   31.745288] [   T2289]  init_module+0x30/0xfe0 [meson_ddr_pmu_g12 8095101c49676ad138d9961e3eddaee10acca7bd]
-[   31.745298] [   T2289]  do_one_initcall+0x11c/0x438
-[   31.745303] [   T2289]  do_init_module+0x68/0x228
-[   31.745311] [   T2289]  load_module+0x118c/0x13a8
-[   31.745315] [   T2289]  __arm64_sys_finit_module+0x274/0x390
-[   31.745320] [   T2289]  invoke_syscall+0x74/0x108
-[   31.745326] [   T2289]  el0_svc_common+0x90/0xf8
-[   31.745330] [   T2289]  do_el0_svc+0x2c/0x48
-[   31.745333] [   T2289]  el0_svc+0x60/0x150
-[   31.745337] [   T2289]  el0t_64_sync_handler+0x80/0x118
-[   31.745341] [   T2289]  el0t_64_sync+0x1b8/0x1c0
+Besides that, the refcount for mutex_dev was not decremented for
+error cases in mtk_drm_bind(), causing another refcount_t warning
+but this time for overflow, when the failure happens not during
+driver bind but during component bind.
 
-Changes replaces smp_processor_id() with raw_smp_processor_id() to
-ensure safe CPU ID retrieval in preemptible contexts.
+In order to fix one of the reasons why this is happening, remove
+the put_device(xx->mutex_dev) loop from the mtk_drm_kms_init()'s
+put_mutex_dev label (and drop the label) and add a single call to
+correctly free the single incremented refcount of mutex_dev to
+the mtk_drm_unbind() function to fix the refcount_t underflow.
 
-Cc: Jiucheng Xu <jiucheng.xu@amlogic.com>
-Fixes: 2016e2113d35 ("perf/amlogic: Add support for Amlogic meson G12 SoC DDR PMU driver")
-Signed-off-by: Anand Moon <linux.amoon@gmail.com>
-Link: https://lore.kernel.org/r/20250407063206.5211-1-linux.amoon@gmail.com
-Signed-off-by: Will Deacon <will@kernel.org>
+Moreover, add the same call to the error cases in mtk_drm_bind()
+to fix the refcount_t overflow.
+
+Fixes: 1ef7ed48356c ("drm/mediatek: Modify mediatek-drm for mt8195 multi mmsys support")
+Reviewed-by: Chen-Yu Tsai <wenst@chromium.org>
+Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Link: https://patchwork.kernel.org/project/dri-devel/patch/20250403104741.71045-2-angelogioacchino.delregno@collabora.com/
+Signed-off-by: Chun-Kuang Hu <chunkuang.hu@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/perf/amlogic/meson_ddr_pmu_core.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/mediatek/mtk_drm_drv.c | 17 ++++++++++-------
+ 1 file changed, 10 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/perf/amlogic/meson_ddr_pmu_core.c b/drivers/perf/amlogic/meson_ddr_pmu_core.c
-index bbc7285fd934a..5f8699612a9ad 100644
---- a/drivers/perf/amlogic/meson_ddr_pmu_core.c
-+++ b/drivers/perf/amlogic/meson_ddr_pmu_core.c
-@@ -510,7 +510,7 @@ int meson_ddr_pmu_create(struct platform_device *pdev)
+diff --git a/drivers/gpu/drm/mediatek/mtk_drm_drv.c b/drivers/gpu/drm/mediatek/mtk_drm_drv.c
+index 8b41a07c3641f..108cab35ce485 100644
+--- a/drivers/gpu/drm/mediatek/mtk_drm_drv.c
++++ b/drivers/gpu/drm/mediatek/mtk_drm_drv.c
+@@ -431,7 +431,7 @@ static int mtk_drm_kms_init(struct drm_device *drm)
  
- 	fmt_attr_fill(pmu->info.hw_info->fmt_attr);
+ 	ret = drmm_mode_config_init(drm);
+ 	if (ret)
+-		goto put_mutex_dev;
++		return ret;
  
--	pmu->cpu = smp_processor_id();
-+	pmu->cpu = raw_smp_processor_id();
+ 	drm->mode_config.min_width = 64;
+ 	drm->mode_config.min_height = 64;
+@@ -450,7 +450,7 @@ static int mtk_drm_kms_init(struct drm_device *drm)
+ 		drm->dev_private = private->all_drm_private[i];
+ 		ret = component_bind_all(private->all_drm_private[i]->dev, drm);
+ 		if (ret)
+-			goto put_mutex_dev;
++			return ret;
+ 	}
  
- 	name = devm_kasprintf(&pdev->dev, GFP_KERNEL, DDR_PERF_DEV_NAME);
- 	if (!name)
+ 	/*
+@@ -532,9 +532,6 @@ static int mtk_drm_kms_init(struct drm_device *drm)
+ err_component_unbind:
+ 	for (i = 0; i < private->data->mmsys_dev_num; i++)
+ 		component_unbind_all(private->all_drm_private[i]->dev, drm);
+-put_mutex_dev:
+-	for (i = 0; i < private->data->mmsys_dev_num; i++)
+-		put_device(private->all_drm_private[i]->mutex_dev);
+ 
+ 	return ret;
+ }
+@@ -608,8 +605,10 @@ static int mtk_drm_bind(struct device *dev)
+ 		return 0;
+ 
+ 	drm = drm_dev_alloc(&mtk_drm_driver, dev);
+-	if (IS_ERR(drm))
+-		return PTR_ERR(drm);
++	if (IS_ERR(drm)) {
++		ret = PTR_ERR(drm);
++		goto err_put_dev;
++	}
+ 
+ 	private->drm_master = true;
+ 	drm->dev_private = private;
+@@ -635,6 +634,8 @@ static int mtk_drm_bind(struct device *dev)
+ 	drm_dev_put(drm);
+ 	for (i = 0; i < private->data->mmsys_dev_num; i++)
+ 		private->all_drm_private[i]->drm = NULL;
++err_put_dev:
++	put_device(private->mutex_dev);
+ 	return ret;
+ }
+ 
+@@ -647,6 +648,8 @@ static void mtk_drm_unbind(struct device *dev)
+ 		drm_dev_unregister(private->drm);
+ 		mtk_drm_kms_deinit(private->drm);
+ 		drm_dev_put(private->drm);
++
++		put_device(private->mutex_dev);
+ 	}
+ 	private->mtk_drm_bound = false;
+ 	private->drm_master = false;
 -- 
 2.39.5
 
