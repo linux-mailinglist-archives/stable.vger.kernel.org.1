@@ -1,57 +1,63 @@
-Return-Path: <stable+bounces-153392-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153914-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A7BB7ADD424
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:07:13 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3E380ADD7AA
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:47:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2977B17D7F6
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:00:54 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 768C019479FC
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:29:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 418F72ED173;
-	Tue, 17 Jun 2025 15:56:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88F712EB5D8;
+	Tue, 17 Jun 2025 16:25:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cXwAYiyG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vELxwecx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E56E02ED170;
-	Tue, 17 Jun 2025 15:56:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 411292EB5CE;
+	Tue, 17 Jun 2025 16:25:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750175814; cv=none; b=mp8HZ5Nw96Ew1AFsFHU4N3FfwUfnaWbIA2ZM9D6Px14qjD9wWgth7O1XsbW7lHDi9a9UPTXjKlN4gYMHzaSaGubAqR5cLZHeFyBt6odfvEAo1hWsUXYn5uHGFsGKbBrrEO9HR0V2JTzrilhfld0gObnKbGK3mFAkkFIR8b7IlIY=
+	t=1750177507; cv=none; b=gTpFdfdsZVW2ZxcFnbH3G/t+KCaJMKsdOZd+ESa7k/iI0Zr2IwTMb+wvNeK7mq3YYr1CYIyK3LKpKJnsZLdx+n/oreUlJQdHzC/Fv0fwzjsPj5Lnk+vE8YNdv3EVYHvmAtpJ2MfEFLWKp8PTxDK+h1SvUK1u8XpGuJv24GHGxTc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750175814; c=relaxed/simple;
-	bh=S9PVAPyXZMdE+sYEtbr8Yp80K061Dn3TvBOFYlrqtwU=;
+	s=arc-20240116; t=1750177507; c=relaxed/simple;
+	bh=wWov2uJ7Jxnq3JVW9mLntW+Nfc5/Kx1kqS3207PUuBk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZGQ8fXAZGpyP7sl8GkG7Oknn5gvwD/EAunMhx+MSKQ3kT1se6B0737CuIofajUkTuxjna8IRAYmSKOGqw+L/pY2UYcmdre56NOnKHr96YZwws9bHB37luXe0Fv77zXlfAo0OSOOGBpRZVn2dTAa5ytXXqp7Wm+Kak/Uins5HNPo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cXwAYiyG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79308C4CEE3;
-	Tue, 17 Jun 2025 15:56:53 +0000 (UTC)
+	 MIME-Version; b=Gq1Gss6tnDKENVeP5sixa5UoXIphkvMGtD6ZKVf8Nz5G+vausNSSnOvYFlfuh3zgApuRqXtCR7UUfEf4ls2vTdYwfA+PqU7Hc71mpzMJRd5jZDxV+Fnp6PhtG67nJaoK9Y16SMECesNf6tNCsX0tPMKpNWqB6zT0uNpMkGADxog=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vELxwecx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 420ABC4CEE3;
+	Tue, 17 Jun 2025 16:25:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750175813;
-	bh=S9PVAPyXZMdE+sYEtbr8Yp80K061Dn3TvBOFYlrqtwU=;
+	s=korg; t=1750177506;
+	bh=wWov2uJ7Jxnq3JVW9mLntW+Nfc5/Kx1kqS3207PUuBk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cXwAYiyGzGRitbicutxu/4o2kzDO4msdp1tFeqJQi3/cXPTuV3p/wGSKOFWdKiUah
-	 4BXsq6gRNwfcm++Nk2LiA8POuxtjDXCfHm7pIZ1oye0vxrHNjR37PLXz6xvRG/KW5m
-	 q5QNCX7CfpwHYYycrG8w8TVfhGp7KuJ1oZz7JDVg=
+	b=vELxwecxwZWUSWHn3js/gx/B8a1q1A4NTKWV2V7cXrWPn4/5RcR/MY1eI1kYgJnup
+	 bs/dcFoGoXtemNcCLnRLKLJzCH0bOTNsqQ8Xdv1hgZyphZI7MdzigOeZ4dK2Fpi5AP
+	 3ZFSoopNzB/2JXnjKVolhyQumE6gyqZO47yA61Ok=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kent Overstreet <kent.overstreet@linux.dev>,
-	Benjamin Marzinski <bmarzins@redhat.com>,
-	Mikulas Patocka <mpatocka@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 206/356] dm-flakey: make corrupting read bios work
-Date: Tue, 17 Jun 2025 17:25:21 +0200
-Message-ID: <20250617152346.503109548@linuxfoundation.org>
+	Dawid Osuchowski <dawid.osuchowski@linux.intel.com>,
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	Jacob Keller <jacob.e.keller@intel.com>,
+	Michal Kubiak <michal.kubiak@intel.com>,
+	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
+	Simon Horman <horms@kernel.org>,
+	Jesse Brandeburg <jbrandeburg@cloudflare.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Sasha Levin <sashal@kernel.org>,
+	Saritha Sanigani <sarithax.sanigani@intel.com>
+Subject: [PATCH 6.12 356/512] ice: fix Tx scheduler error handling in XDP callback
+Date: Tue, 17 Jun 2025 17:25:22 +0200
+Message-ID: <20250617152434.001829051@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152338.212798615@linuxfoundation.org>
-References: <20250617152338.212798615@linuxfoundation.org>
+In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
+References: <20250617152419.512865572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,182 +69,184 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Benjamin Marzinski <bmarzins@redhat.com>
+From: Michal Kubiak <michal.kubiak@intel.com>
 
-[ Upstream commit 13e79076c89f6e96a6cca8f6df38b40d025907b4 ]
+[ Upstream commit 0153f36041b8e52019ebfa8629c13bf8f9b0a951 ]
 
-dm-flakey corrupts the read bios in the endio function.  However, the
-corrupt_bio_* functions checked bio_has_data() to see if there was data
-to corrupt. Since this was the endio function, there was no data left to
-complete, so bio_has_data() was always false. Fix this by saving a copy
-of the bio's bi_iter in flakey_map(), and using this to initialize the
-iter for corrupting the read bios. This patch also skips cloning the bio
-for write bios with no data.
+When the XDP program is loaded, the XDP callback adds new Tx queues.
+This means that the callback must update the Tx scheduler with the new
+queue number. In the event of a Tx scheduler failure, the XDP callback
+should also fail and roll back any changes previously made for XDP
+preparation.
 
-Reported-by: Kent Overstreet <kent.overstreet@linux.dev>
-Fixes: a3998799fb4df ("dm flakey: add corrupt_bio_byte feature")
-Signed-off-by: Benjamin Marzinski <bmarzins@redhat.com>
-Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
+The previous implementation had a bug that not all changes made by the
+XDP callback were rolled back. This caused the crash with the following
+call trace:
+
+[  +9.549584] ice 0000:ca:00.0: Failed VSI LAN queue config for XDP, error: -5
+[  +0.382335] Oops: general protection fault, probably for non-canonical address 0x50a2250a90495525: 0000 [#1] SMP NOPTI
+[  +0.010710] CPU: 103 UID: 0 PID: 0 Comm: swapper/103 Not tainted 6.14.0-net-next-mar-31+ #14 PREEMPT(voluntary)
+[  +0.010175] Hardware name: Intel Corporation M50CYP2SBSTD/M50CYP2SBSTD, BIOS SE5C620.86B.01.01.0005.2202160810 02/16/2022
+[  +0.010946] RIP: 0010:__ice_update_sample+0x39/0xe0 [ice]
+
+[...]
+
+[  +0.002715] Call Trace:
+[  +0.002452]  <IRQ>
+[  +0.002021]  ? __die_body.cold+0x19/0x29
+[  +0.003922]  ? die_addr+0x3c/0x60
+[  +0.003319]  ? exc_general_protection+0x17c/0x400
+[  +0.004707]  ? asm_exc_general_protection+0x26/0x30
+[  +0.004879]  ? __ice_update_sample+0x39/0xe0 [ice]
+[  +0.004835]  ice_napi_poll+0x665/0x680 [ice]
+[  +0.004320]  __napi_poll+0x28/0x190
+[  +0.003500]  net_rx_action+0x198/0x360
+[  +0.003752]  ? update_rq_clock+0x39/0x220
+[  +0.004013]  handle_softirqs+0xf1/0x340
+[  +0.003840]  ? sched_clock_cpu+0xf/0x1f0
+[  +0.003925]  __irq_exit_rcu+0xc2/0xe0
+[  +0.003665]  common_interrupt+0x85/0xa0
+[  +0.003839]  </IRQ>
+[  +0.002098]  <TASK>
+[  +0.002106]  asm_common_interrupt+0x26/0x40
+[  +0.004184] RIP: 0010:cpuidle_enter_state+0xd3/0x690
+
+Fix this by performing the missing unmapping of XDP queues from
+q_vectors and setting the XDP rings pointer back to NULL after all those
+queues are released.
+Also, add an immediate exit from the XDP callback in case of ring
+preparation failure.
+
+Fixes: efc2214b6047 ("ice: Add support for XDP")
+Reviewed-by: Dawid Osuchowski <dawid.osuchowski@linux.intel.com>
+Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
+Signed-off-by: Michal Kubiak <michal.kubiak@intel.com>
+Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Tested-by: Jesse Brandeburg <jbrandeburg@cloudflare.com>
+Tested-by: Saritha Sanigani <sarithax.sanigani@intel.com> (A Contingent Worker at Intel)
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/md/dm-flakey.c | 54 ++++++++++++++++++++++--------------------
- 1 file changed, 28 insertions(+), 26 deletions(-)
+ drivers/net/ethernet/intel/ice/ice_main.c | 47 ++++++++++++++++-------
+ 1 file changed, 33 insertions(+), 14 deletions(-)
 
-diff --git a/drivers/md/dm-flakey.c b/drivers/md/dm-flakey.c
-index aeb9ecaf9a207..ada679f4fca67 100644
---- a/drivers/md/dm-flakey.c
-+++ b/drivers/md/dm-flakey.c
-@@ -47,7 +47,8 @@ enum feature_flag_bits {
- };
- 
- struct per_bio_data {
--	bool bio_submitted;
-+	bool bio_can_corrupt;
-+	struct bvec_iter saved_iter;
- };
- 
- static int parse_features(struct dm_arg_set *as, struct flakey_c *fc,
-@@ -339,7 +340,8 @@ static void flakey_map_bio(struct dm_target *ti, struct bio *bio)
- }
- 
- static void corrupt_bio_common(struct bio *bio, unsigned int corrupt_bio_byte,
--			       unsigned char corrupt_bio_value)
-+			       unsigned char corrupt_bio_value,
-+			       struct bvec_iter start)
- {
- 	struct bvec_iter iter;
- 	struct bio_vec bvec;
-@@ -348,7 +350,7 @@ static void corrupt_bio_common(struct bio *bio, unsigned int corrupt_bio_byte,
- 	 * Overwrite the Nth byte of the bio's data, on whichever page
- 	 * it falls.
- 	 */
--	bio_for_each_segment(bvec, bio, iter) {
-+	__bio_for_each_segment(bvec, bio, iter, start) {
- 		if (bio_iter_len(bio, iter) > corrupt_bio_byte) {
- 			unsigned char *segment = bvec_kmap_local(&bvec);
- 			segment[corrupt_bio_byte] = corrupt_bio_value;
-@@ -357,36 +359,31 @@ static void corrupt_bio_common(struct bio *bio, unsigned int corrupt_bio_byte,
- 				"(rw=%c bi_opf=%u bi_sector=%llu size=%u)\n",
- 				bio, corrupt_bio_value, corrupt_bio_byte,
- 				(bio_data_dir(bio) == WRITE) ? 'w' : 'r', bio->bi_opf,
--				(unsigned long long)bio->bi_iter.bi_sector,
--				bio->bi_iter.bi_size);
-+				(unsigned long long)start.bi_sector,
-+				start.bi_size);
- 			break;
- 		}
- 		corrupt_bio_byte -= bio_iter_len(bio, iter);
+diff --git a/drivers/net/ethernet/intel/ice/ice_main.c b/drivers/net/ethernet/intel/ice/ice_main.c
+index 63d2105fce933..d1abd21cfc647 100644
+--- a/drivers/net/ethernet/intel/ice/ice_main.c
++++ b/drivers/net/ethernet/intel/ice/ice_main.c
+@@ -2761,6 +2761,27 @@ void ice_map_xdp_rings(struct ice_vsi *vsi)
  	}
  }
  
--static void corrupt_bio_data(struct bio *bio, struct flakey_c *fc)
-+static void corrupt_bio_data(struct bio *bio, struct flakey_c *fc,
-+			     struct bvec_iter start)
- {
- 	unsigned int corrupt_bio_byte = fc->corrupt_bio_byte - 1;
- 
--	if (!bio_has_data(bio))
--		return;
--
--	corrupt_bio_common(bio, corrupt_bio_byte, fc->corrupt_bio_value);
-+	corrupt_bio_common(bio, corrupt_bio_byte, fc->corrupt_bio_value, start);
- }
- 
--static void corrupt_bio_random(struct bio *bio)
-+static void corrupt_bio_random(struct bio *bio, struct bvec_iter start)
- {
- 	unsigned int corrupt_byte;
- 	unsigned char corrupt_value;
- 
--	if (!bio_has_data(bio))
--		return;
--
--	corrupt_byte = get_random_u32() % bio->bi_iter.bi_size;
-+	corrupt_byte = get_random_u32() % start.bi_size;
- 	corrupt_value = get_random_u8();
- 
--	corrupt_bio_common(bio, corrupt_byte, corrupt_value);
-+	corrupt_bio_common(bio, corrupt_byte, corrupt_value, start);
- }
- 
- static void clone_free(struct bio *clone)
-@@ -481,7 +478,7 @@ static int flakey_map(struct dm_target *ti, struct bio *bio)
- 	unsigned int elapsed;
- 	struct per_bio_data *pb = dm_per_bio_data(bio, sizeof(struct per_bio_data));
- 
--	pb->bio_submitted = false;
-+	pb->bio_can_corrupt = false;
- 
- 	if (op_is_zone_mgmt(bio_op(bio)))
- 		goto map_bio;
-@@ -490,10 +487,11 @@ static int flakey_map(struct dm_target *ti, struct bio *bio)
- 	elapsed = (jiffies - fc->start_time) / HZ;
- 	if (elapsed % (fc->up_interval + fc->down_interval) >= fc->up_interval) {
- 		bool corrupt_fixed, corrupt_random;
--		/*
--		 * Flag this bio as submitted while down.
--		 */
--		pb->bio_submitted = true;
++/**
++ * ice_unmap_xdp_rings - Unmap XDP rings from interrupt vectors
++ * @vsi: the VSI with XDP rings being unmapped
++ */
++static void ice_unmap_xdp_rings(struct ice_vsi *vsi)
++{
++	int v_idx;
 +
-+		if (bio_has_data(bio)) {
-+			pb->bio_can_corrupt = true;
-+			pb->saved_iter = bio->bi_iter;
-+		}
++	ice_for_each_q_vector(vsi, v_idx) {
++		struct ice_q_vector *q_vector = vsi->q_vectors[v_idx];
++		struct ice_tx_ring *ring;
++
++		ice_for_each_tx_ring(ring, q_vector->tx)
++			if (!ring->tx_buf || !ice_ring_is_xdp(ring))
++				break;
++
++		/* restore the value of last node prior to XDP setup */
++		q_vector->tx.tx_ring = ring;
++	}
++}
++
+ /**
+  * ice_prepare_xdp_rings - Allocate, configure and setup Tx rings for XDP
+  * @vsi: VSI to bring up Tx rings used by XDP
+@@ -2824,7 +2845,7 @@ int ice_prepare_xdp_rings(struct ice_vsi *vsi, struct bpf_prog *prog,
+ 	if (status) {
+ 		dev_err(dev, "Failed VSI LAN queue config for XDP, error: %d\n",
+ 			status);
+-		goto clear_xdp_rings;
++		goto unmap_xdp_rings;
+ 	}
  
- 		/*
- 		 * Error reads if neither corrupt_bio_byte or drop_writes or error_writes are set.
-@@ -516,6 +514,8 @@ static int flakey_map(struct dm_target *ti, struct bio *bio)
- 			return DM_MAPIO_SUBMITTED;
- 		}
+ 	/* assign the prog only when it's not already present on VSI;
+@@ -2840,6 +2861,8 @@ int ice_prepare_xdp_rings(struct ice_vsi *vsi, struct bpf_prog *prog,
+ 		ice_vsi_assign_bpf_prog(vsi, prog);
  
-+		if (!pb->bio_can_corrupt)
-+			goto map_bio;
- 		/*
- 		 * Corrupt matching writes.
- 		 */
-@@ -535,9 +535,11 @@ static int flakey_map(struct dm_target *ti, struct bio *bio)
- 			struct bio *clone = clone_bio(ti, fc, bio);
- 			if (clone) {
- 				if (corrupt_fixed)
--					corrupt_bio_data(clone, fc);
-+					corrupt_bio_data(clone, fc,
-+							 clone->bi_iter);
- 				if (corrupt_random)
--					corrupt_bio_random(clone);
-+					corrupt_bio_random(clone,
-+							   clone->bi_iter);
- 				submit_bio(clone);
- 				return DM_MAPIO_SUBMITTED;
- 			}
-@@ -559,21 +561,21 @@ static int flakey_end_io(struct dm_target *ti, struct bio *bio,
- 	if (op_is_zone_mgmt(bio_op(bio)))
- 		return DM_ENDIO_DONE;
+ 	return 0;
++unmap_xdp_rings:
++	ice_unmap_xdp_rings(vsi);
+ clear_xdp_rings:
+ 	ice_for_each_xdp_txq(vsi, i)
+ 		if (vsi->xdp_rings[i]) {
+@@ -2856,6 +2879,8 @@ int ice_prepare_xdp_rings(struct ice_vsi *vsi, struct bpf_prog *prog,
+ 	mutex_unlock(&pf->avail_q_mutex);
  
--	if (!*error && pb->bio_submitted && (bio_data_dir(bio) == READ)) {
-+	if (!*error && pb->bio_can_corrupt && (bio_data_dir(bio) == READ)) {
- 		if (fc->corrupt_bio_byte) {
- 			if ((fc->corrupt_bio_rw == READ) &&
- 			    all_corrupt_bio_flags_match(bio, fc)) {
- 				/*
- 				 * Corrupt successful matching READs while in down state.
- 				 */
--				corrupt_bio_data(bio, fc);
-+				corrupt_bio_data(bio, fc, pb->saved_iter);
- 			}
+ 	devm_kfree(dev, vsi->xdp_rings);
++	vsi->xdp_rings = NULL;
++
+ 	return -ENOMEM;
+ }
+ 
+@@ -2871,7 +2896,7 @@ int ice_destroy_xdp_rings(struct ice_vsi *vsi, enum ice_xdp_cfg cfg_type)
+ {
+ 	u16 max_txqs[ICE_MAX_TRAFFIC_CLASS] = { 0 };
+ 	struct ice_pf *pf = vsi->back;
+-	int i, v_idx;
++	int i;
+ 
+ 	/* q_vectors are freed in reset path so there's no point in detaching
+ 	 * rings
+@@ -2879,17 +2904,7 @@ int ice_destroy_xdp_rings(struct ice_vsi *vsi, enum ice_xdp_cfg cfg_type)
+ 	if (cfg_type == ICE_XDP_CFG_PART)
+ 		goto free_qmap;
+ 
+-	ice_for_each_q_vector(vsi, v_idx) {
+-		struct ice_q_vector *q_vector = vsi->q_vectors[v_idx];
+-		struct ice_tx_ring *ring;
+-
+-		ice_for_each_tx_ring(ring, q_vector->tx)
+-			if (!ring->tx_buf || !ice_ring_is_xdp(ring))
+-				break;
+-
+-		/* restore the value of last node prior to XDP setup */
+-		q_vector->tx.tx_ring = ring;
+-	}
++	ice_unmap_xdp_rings(vsi);
+ 
+ free_qmap:
+ 	mutex_lock(&pf->avail_q_mutex);
+@@ -3034,11 +3049,14 @@ ice_xdp_setup_prog(struct ice_vsi *vsi, struct bpf_prog *prog,
+ 		xdp_ring_err = ice_vsi_determine_xdp_res(vsi);
+ 		if (xdp_ring_err) {
+ 			NL_SET_ERR_MSG_MOD(extack, "Not enough Tx resources for XDP");
++			goto resume_if;
+ 		} else {
+ 			xdp_ring_err = ice_prepare_xdp_rings(vsi, prog,
+ 							     ICE_XDP_CFG_FULL);
+-			if (xdp_ring_err)
++			if (xdp_ring_err) {
+ 				NL_SET_ERR_MSG_MOD(extack, "Setting up XDP Tx resources failed");
++				goto resume_if;
++			}
  		}
- 		if (fc->random_read_corrupt) {
- 			u64 rnd = get_random_u64();
- 			u32 rem = do_div(rnd, PROBABILITY_BASE);
- 			if (rem < fc->random_read_corrupt)
--				corrupt_bio_random(bio);
-+				corrupt_bio_random(bio, pb->saved_iter);
- 		}
- 		if (test_bit(ERROR_READS, &fc->flags)) {
- 			/*
+ 		xdp_features_set_redirect_target(vsi->netdev, true);
+ 		/* reallocate Rx queues that are used for zero-copy */
+@@ -3056,6 +3074,7 @@ ice_xdp_setup_prog(struct ice_vsi *vsi, struct bpf_prog *prog,
+ 			NL_SET_ERR_MSG_MOD(extack, "Freeing XDP Rx resources failed");
+ 	}
+ 
++resume_if:
+ 	if (if_running)
+ 		ret = ice_up(vsi);
+ 
 -- 
 2.39.5
 
