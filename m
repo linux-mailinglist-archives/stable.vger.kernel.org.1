@@ -1,61 +1,58 @@
-Return-Path: <stable+bounces-154517-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153732-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id A8190ADD8A2
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:57:51 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C793ADD70F
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:40:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 64E007AAF85
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:56:29 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 275011883BFD
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:22:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 321F22FA638;
-	Tue, 17 Jun 2025 16:57:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 548402DFF28;
+	Tue, 17 Jun 2025 16:15:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YSM6OW75"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2iJ9vaLK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEECE2FA623;
-	Tue, 17 Jun 2025 16:57:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CCC6236A73;
+	Tue, 17 Jun 2025 16:15:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750179462; cv=none; b=QUpGuEOeYiicvkcwo3SWaxdg7//AkmU5lONBILbyETu3kU8lNXdC3qcuBeuepKZOByfvy0aL9kk03XTCyoMhu53DZRVZXxbQKimb5zEVukDpsfXgJSJPTG/+Blo3E8lJMj62cyBDHkYDpUUNc8cJpxTjcRVQLJrkM7XQGhOM2eM=
+	t=1750176912; cv=none; b=fckBkXPDf15Z6AZNUMxS/g3Ytjp2vkZu4yWK+ojbe20Penb1oL85NGSKSsTm8E4PCjb9evXBpqBXvW/x+lS2M9dqyF4i9QL7VNvW463Ejysl/KzKgnSJeITEdVlk14JFOTmvga1ahlvhX1uxGiGuqXVRCw108GiqS1dUQLaOpj0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750179462; c=relaxed/simple;
-	bh=bGYgiib5zEydSqkIG2vIolAB/0l3a8WfRK4BTT7E5yo=;
+	s=arc-20240116; t=1750176912; c=relaxed/simple;
+	bh=scB0jWfO8XyXa93xKOsaRPcT0nS+IvFgIePkLpAKgUM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jFO3mzZlEGkWHU3qTqZH4OpjHXKjZ23si2QJf3euivTM27NAOHw1RjQb0/Vs1KFH7tPlWrAjeXYgMCaEdAEd+uJT8zQTWMjro6xNlwKy2/EAlcwOSvL/ZCI7dOVCyrdBzQi0jOo+1qjwbElEOg0o5RiWedbcd7rGK6ren9lZP8o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YSM6OW75; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E7E9C4CEE3;
-	Tue, 17 Jun 2025 16:57:41 +0000 (UTC)
+	 MIME-Version; b=hF6o0WawkUGuROhK1YrjLf05VzPrsnY5MvEIZk0kW8D0VAXkEffhQgh5w9U+kjzPVH907w5GUPBWmTeAKcuROcZz6cJ8v/8y229kz46ovqEmUSUYOq1TmLNlnHlpAL6dZnXQJIYaA/cOBPawM1EeKRV8ggd++tlnUeO7HqZecQM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2iJ9vaLK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67766C4CEE3;
+	Tue, 17 Jun 2025 16:15:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750179461;
-	bh=bGYgiib5zEydSqkIG2vIolAB/0l3a8WfRK4BTT7E5yo=;
+	s=korg; t=1750176911;
+	bh=scB0jWfO8XyXa93xKOsaRPcT0nS+IvFgIePkLpAKgUM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YSM6OW75c2c3ZWX5qCULJIuuFz1DYoDQ17biV3JYnv6soaDUxUZTpj/3ctrb2FDv7
-	 oQBMpiRfWx1+rwmjgmMaZ9OfLMTBJpQc6NhYrdhMzVDgHkMPDGSWyypQFaLq5hVpIt
-	 teBieYwZgJC6uvMWpT/myIZMVr68CNUk6ErZqjg8=
+	b=2iJ9vaLKKgfL9qAYdTftF3iN027y8ob2aZO9bqyp5nEYTc0FKV+NQpU+9lmKLIh+C
+	 8S1feADLqK8VpsrU3VIxMczy8iQOdciyVQpvch7MIq2l+IhLqb4MkRJY3xIGCtlP+X
+	 Lt3Ua5RM9c7u2QTt5/oiirMvsV8nUx01EOTCLJn4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	linux-cifs@vger.kernel.org,
-	David Howells <dhowells@redhat.com>,
-	Jay Shin <jaeshin@redhat.com>,
-	Pierguido Lambri <plambri@redhat.com>,
-	Shyam Prasad N <sprasad@microsoft.com>,
-	"Paulo Alcantara (Red Hat)" <pc@manguebit.org>,
-	Steve French <stfrench@microsoft.com>,
+	Gerrard Tai <gerrard.tai@starlabs.sg>,
+	Eric Dumazet <edumazet@google.com>,
+	Zhengchao Shao <shaozhengchao@huawei.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 736/780] smb: client: fix perf regression with deferred closes
+Subject: [PATCH 6.6 329/356] net_sched: tbf: fix a race in tbf_change()
 Date: Tue, 17 Jun 2025 17:27:24 +0200
-Message-ID: <20250617152521.476104026@linuxfoundation.org>
+Message-ID: <20250617152351.390760074@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
-References: <20250617152451.485330293@linuxfoundation.org>
+In-Reply-To: <20250617152338.212798615@linuxfoundation.org>
+References: <20250617152338.212798615@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,125 +64,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paulo Alcantara <pc@manguebit.org>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit b64af6bcd3b0f3fc633d6a70adb0991737abfef4 ]
+[ Upstream commit 43eb466041216d25dedaef1c383ad7bd89929cbc ]
 
-Customer reported that one of their applications started failing to
-open files with STATUS_INSUFFICIENT_RESOURCES due to NetApp server
-hitting the maximum number of opens to same file that it would allow
-for a single client connection.
+Gerrard Tai reported a race condition in TBF, whenever SFQ perturb timer
+fires at the wrong time.
 
-It turned out the client was failing to reuse open handles with
-deferred closes because matching ->f_flags directly without masking
-off O_CREAT|O_EXCL|O_TRUNC bits first broke the comparision and then
-client ended up with thousands of deferred closes to same file.  Those
-bits are already satisfied on the original open, so no need to check
-them against existing open handles.
+The race is as follows:
 
-Reproducer:
+CPU 0                                 CPU 1
+[1]: lock root
+[2]: qdisc_tree_flush_backlog()
+[3]: unlock root
+ |
+ |                                    [5]: lock root
+ |                                    [6]: rehash
+ |                                    [7]: qdisc_tree_reduce_backlog()
+ |
+[4]: qdisc_put()
 
- #include <stdio.h>
- #include <stdlib.h>
- #include <string.h>
- #include <unistd.h>
- #include <fcntl.h>
- #include <pthread.h>
+This can be abused to underflow a parent's qlen.
 
- #define NR_THREADS      4
- #define NR_ITERATIONS   2500
- #define TEST_FILE       "/mnt/1/test/dir/foo"
+Calling qdisc_purge_queue() instead of qdisc_tree_flush_backlog()
+should fix the race, because all packets will be purged from the qdisc
+before releasing the lock.
 
- static char buf[64];
-
- static void *worker(void *arg)
- {
-         int i, j;
-         int fd;
-
-         for (i = 0; i < NR_ITERATIONS; i++) {
-                 fd = open(TEST_FILE, O_WRONLY|O_CREAT|O_APPEND, 0666);
-                 for (j = 0; j < 16; j++)
-                         write(fd, buf, sizeof(buf));
-                 close(fd);
-         }
- }
-
- int main(int argc, char *argv[])
- {
-         pthread_t t[NR_THREADS];
-         int fd;
-         int i;
-
-         fd = open(TEST_FILE, O_WRONLY|O_CREAT|O_TRUNC, 0666);
-         close(fd);
-         memset(buf, 'a', sizeof(buf));
-         for (i = 0; i < NR_THREADS; i++)
-                 pthread_create(&t[i], NULL, worker, NULL);
-         for (i = 0; i < NR_THREADS; i++)
-                 pthread_join(t[i], NULL);
-         return 0;
- }
-
-Before patch:
-
-$ mount.cifs //srv/share /mnt/1 -o ...
-$ mkdir -p /mnt/1/test/dir
-$ gcc repro.c && ./a.out
-...
-number of opens: 1391
-
-After patch:
-
-$ mount.cifs //srv/share /mnt/1 -o ...
-$ mkdir -p /mnt/1/test/dir
-$ gcc repro.c && ./a.out
-...
-number of opens: 1
-
-Cc: linux-cifs@vger.kernel.org
-Cc: David Howells <dhowells@redhat.com>
-Cc: Jay Shin <jaeshin@redhat.com>
-Cc: Pierguido Lambri <plambri@redhat.com>
-Fixes: b8ea3b1ff544 ("smb: enable reuse of deferred file handles for write operations")
-Acked-by: Shyam Prasad N <sprasad@microsoft.com>
-Signed-off-by: Paulo Alcantara (Red Hat) <pc@manguebit.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Fixes: b05972f01e7d ("net: sched: tbf: don't call qdisc_put() while holding tree lock")
+Reported-by: Gerrard Tai <gerrard.tai@starlabs.sg>
+Suggested-by: Gerrard Tai <gerrard.tai@starlabs.sg>
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Cc: Zhengchao Shao <shaozhengchao@huawei.com>
+Link: https://patch.msgid.link/20250611111515.1983366-4-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/client/file.c | 9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ net/sched/sch_tbf.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/smb/client/file.c b/fs/smb/client/file.c
-index d2df10b8e6fd8..9835672267d27 100644
---- a/fs/smb/client/file.c
-+++ b/fs/smb/client/file.c
-@@ -999,15 +999,18 @@ int cifs_open(struct inode *inode, struct file *file)
- 		rc = cifs_get_readable_path(tcon, full_path, &cfile);
+diff --git a/net/sched/sch_tbf.c b/net/sched/sch_tbf.c
+index f92174008499b..61dd5c8f23101 100644
+--- a/net/sched/sch_tbf.c
++++ b/net/sched/sch_tbf.c
+@@ -452,7 +452,7 @@ static int tbf_change(struct Qdisc *sch, struct nlattr *opt,
+ 
+ 	sch_tree_lock(sch);
+ 	if (child) {
+-		qdisc_tree_flush_backlog(q->qdisc);
++		qdisc_purge_queue(q->qdisc);
+ 		old = q->qdisc;
+ 		q->qdisc = child;
  	}
- 	if (rc == 0) {
--		if (file->f_flags == cfile->f_flags) {
-+		unsigned int oflags = file->f_flags & ~(O_CREAT|O_EXCL|O_TRUNC);
-+		unsigned int cflags = cfile->f_flags & ~(O_CREAT|O_EXCL|O_TRUNC);
-+
-+		if (cifs_convert_flags(oflags, 0) == cifs_convert_flags(cflags, 0) &&
-+		    (oflags & (O_SYNC|O_DIRECT)) == (cflags & (O_SYNC|O_DIRECT))) {
- 			file->private_data = cfile;
- 			spin_lock(&CIFS_I(inode)->deferred_lock);
- 			cifs_del_deferred_close(cfile);
- 			spin_unlock(&CIFS_I(inode)->deferred_lock);
- 			goto use_cache;
--		} else {
--			_cifsFileInfo_put(cfile, true, false);
- 		}
-+		_cifsFileInfo_put(cfile, true, false);
- 	} else {
- 		/* hard link on the defeered close file */
- 		rc = cifs_get_hardlink_path(tcon, inode, file);
 -- 
 2.39.5
 
