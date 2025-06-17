@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-153063-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153066-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 24D16ADD21C
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 17:39:10 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EB1B0ADD220
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 17:39:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 86B7B1896CEB
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 15:39:25 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7F22D17D44C
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 15:39:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 32FEC2ECD1B;
-	Tue, 17 Jun 2025 15:39:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6C952ECE87;
+	Tue, 17 Jun 2025 15:39:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ahswMYCa"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Qg49S8Sb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DAC9F20F090;
-	Tue, 17 Jun 2025 15:39:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 707A12ECD22;
+	Tue, 17 Jun 2025 15:39:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750174746; cv=none; b=Q7iht3zAXmxg9ks7NjYVUCTVoBtVMNVsf66244uxz2yFMBoz5H60wSyjboXwgUUR2bmInpItSb03l8Sn9Oyy+i94Vgo8GJBQv0MUTe9qASAny9R92gd7ARw/jJ/YJYQUkLcWsDwBoO6r8DswOTcU9hERkctsk7A8pcbOjkliFQs=
+	t=1750174756; cv=none; b=ibmA+dRhasS3tIoD3LPJu4zaLYvwTwRsbvORx7uTVIf8FHpEV9uWqL3Be1UkeLwhYQtEbro8SDXWMd49Hl6vkPP+X8y69J7Ax6TlLLmGKUIInVTgMltzdp7d+or6Bz/UIenTCFmJ2say7pHJIQRkx5+1yyFVSjFi9bvLd6Mp5UU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750174746; c=relaxed/simple;
-	bh=JfUvE6FFEpIInQlwSEx4iQ/GVrmBkkbnrQ80hwNlzTw=;
+	s=arc-20240116; t=1750174756; c=relaxed/simple;
+	bh=VAgO2QwwZjYSOrvvvaYBXnuHXD9WPu+z0CfuW4t9N7E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SUrZ8h/Y7ceJBk9TtRX05Cg/1pN1vcQ9dER8D6hTY11vjbLmjH5VEH6+wW8B4LTycQwkN5Qtk6An/YQtN715FRs4C1kHUMgvArKMyCmiOGguLFouPzkpeI8yGH1QEQHCv86hcue1FB7UYjVjCtzzHoOOuE1R8IYIVM250UzjGF8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ahswMYCa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 221CBC4CEE3;
-	Tue, 17 Jun 2025 15:39:05 +0000 (UTC)
+	 MIME-Version:Content-Type; b=RTQddl/J0+9PX3EdJr1iU8X1BiXL8/45n+1O+ObZaPrSR77toQkIMPT82vyw4tKmPJB5FjCLgJnwPjviVffeQjlzQ3YvVxkZnwVbGvnQyRlNtLsmb5g/leleXhDS/iBeC7y9rB7DF5veAP7RmOE9qMAHAMs3AGNIGE5Mna7Azu0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Qg49S8Sb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BBB1EC4CEE3;
+	Tue, 17 Jun 2025 15:39:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750174746;
-	bh=JfUvE6FFEpIInQlwSEx4iQ/GVrmBkkbnrQ80hwNlzTw=;
+	s=korg; t=1750174756;
+	bh=VAgO2QwwZjYSOrvvvaYBXnuHXD9WPu+z0CfuW4t9N7E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ahswMYCazX9CiqCEk3WXcPKY4oBtSrOLB3jzTNpeWx2mWVUkCNnNY74tJEF45xsAl
-	 x7dZreADAHXmZxkjI1TnnT70Zsb3ZF97lLXfQRzeFLSISwyX7tO7MOO4BK8GFVVlQx
-	 ApSUtZTxBBdVcrGbb5ZLxtgnz8+CsxXN3dguvRCk=
+	b=Qg49S8SbjFEiCWv2o/gGl2ze9wCmLpHlA0BB0Es1dJsv9NzFCQhkcnMvgB/GsR3AU
+	 m3FkUJ9nnldke6OH5WOkfOKuKJZYRpzwiD6Kixb06GHERrRzSyfqn4EW9f0IoJGc0S
+	 ZVk/e7QZnT0f5ZTi+G4R8mN4GocKrMgOTNpymubM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
+	=?UTF-8?q?Martin=20Povi=C5=A1er?= <povik+lin@cutebit.org>,
+	James Calligeros <jcalligeros99@gmail.com>,
 	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 056/512] spi: sh-msiof: Fix maximum DMA transfer size
-Date: Tue, 17 Jun 2025 17:20:22 +0200
-Message-ID: <20250617152421.809539548@linuxfoundation.org>
+Subject: [PATCH 6.12 057/512] ASoC: apple: mca: Constrain channels according to TDM mask
+Date: Tue, 17 Jun 2025 17:20:23 +0200
+Message-ID: <20250617152421.854202707@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
 References: <20250617152419.512865572@linuxfoundation.org>
@@ -60,75 +61,72 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Geert Uytterhoeven <geert+renesas@glider.be>
+From: Martin Povišer <povik+lin@cutebit.org>
 
-[ Upstream commit 0941d5166629cb766000530945e54b4e49680c68 ]
+[ Upstream commit e717c661e2d1a660e96c40b0fe9933e23a1d7747 ]
 
-The maximum amount of data to transfer in a single DMA request is
-calculated from the FIFO sizes (which is technically not 100% correct,
-but a simplification, as it is limited by the maximum word count values
-in the Transmit and Control Data Registers).  However, in case there is
-both data to transmit and to receive, the transmit limit is overwritten
-by the receive limit.
+We don't (and can't) configure the hardware correctly if the number of
+channels exceeds the weight of the TDM mask. Report that constraint in
+startup of FE.
 
-Fix this by using the minimum applicable FIFO size instead.  Move the
-calculation outside the loop, so it is not repeated for each individual
-DMA transfer.
-
-As currently tx_fifo_size is always equal to rx_fifo_size, this bug had
-no real impact.
-
-Fixes: fe78d0b7691c0274 ("spi: sh-msiof: Fix FIFO size to 64 word from 256 word")
-Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Link: https://patch.msgid.link/d9961767a97758b2614f2ee8afe1bd56dc900a60.1747401908.git.geert+renesas@glider.be
+Fixes: 3df5d0d97289 ("ASoC: apple: mca: Start new platform driver")
+Signed-off-by: Martin Povišer <povik+lin@cutebit.org>
+Signed-off-by: James Calligeros <jcalligeros99@gmail.com>
+Link: https://patch.msgid.link/20250518-mca-fixes-v1-1-ee1015a695f6@gmail.com
 Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi-sh-msiof.c | 13 +++++++------
- 1 file changed, 7 insertions(+), 6 deletions(-)
+ sound/soc/apple/mca.c | 23 +++++++++++++++++++++++
+ 1 file changed, 23 insertions(+)
 
-diff --git a/drivers/spi/spi-sh-msiof.c b/drivers/spi/spi-sh-msiof.c
-index 3519656515ea1..1870f8c852131 100644
---- a/drivers/spi/spi-sh-msiof.c
-+++ b/drivers/spi/spi-sh-msiof.c
-@@ -918,6 +918,7 @@ static int sh_msiof_transfer_one(struct spi_controller *ctlr,
- 	void *rx_buf = t->rx_buf;
- 	unsigned int len = t->len;
- 	unsigned int bits = t->bits_per_word;
-+	unsigned int max_wdlen = 256;
- 	unsigned int bytes_per_word;
- 	unsigned int words;
- 	int n;
-@@ -931,17 +932,17 @@ static int sh_msiof_transfer_one(struct spi_controller *ctlr,
- 	if (!spi_controller_is_target(p->ctlr))
- 		sh_msiof_spi_set_clk_regs(p, t);
+diff --git a/sound/soc/apple/mca.c b/sound/soc/apple/mca.c
+index c9e7d40c47cc1..4a4ec1c09e132 100644
+--- a/sound/soc/apple/mca.c
++++ b/sound/soc/apple/mca.c
+@@ -464,6 +464,28 @@ static int mca_configure_serdes(struct mca_cluster *cl, int serdes_unit,
+ 	return -EINVAL;
+ }
  
-+	if (tx_buf)
-+		max_wdlen = min(max_wdlen, p->tx_fifo_size);
-+	if (rx_buf)
-+		max_wdlen = min(max_wdlen, p->rx_fifo_size);
++static int mca_fe_startup(struct snd_pcm_substream *substream,
++			  struct snd_soc_dai *dai)
++{
++	struct mca_cluster *cl = mca_dai_to_cluster(dai);
++	unsigned int mask, nchannels;
 +
- 	while (ctlr->dma_tx && len > 15) {
- 		/*
- 		 *  DMA supports 32-bit words only, hence pack 8-bit and 16-bit
- 		 *  words, with byte resp. word swapping.
- 		 */
--		unsigned int l = 0;
--
--		if (tx_buf)
--			l = min(round_down(len, 4), p->tx_fifo_size * 4);
--		if (rx_buf)
--			l = min(round_down(len, 4), p->rx_fifo_size * 4);
-+		unsigned int l = min(round_down(len, 4), max_wdlen * 4);
++	if (cl->tdm_slots) {
++		if (substream->stream == SNDRV_PCM_STREAM_PLAYBACK)
++			mask = cl->tdm_tx_mask;
++		else
++			mask = cl->tdm_rx_mask;
++
++		nchannels = hweight32(mask);
++	} else {
++		nchannels = 2;
++	}
++
++	return snd_pcm_hw_constraint_minmax(substream->runtime,
++					    SNDRV_PCM_HW_PARAM_CHANNELS,
++					    1, nchannels);
++}
++
+ static int mca_fe_set_tdm_slot(struct snd_soc_dai *dai, unsigned int tx_mask,
+ 			       unsigned int rx_mask, int slots, int slot_width)
+ {
+@@ -680,6 +702,7 @@ static int mca_fe_hw_params(struct snd_pcm_substream *substream,
+ }
  
- 		if (bits <= 8) {
- 			copy32 = copy_bswap32;
+ static const struct snd_soc_dai_ops mca_fe_ops = {
++	.startup = mca_fe_startup,
+ 	.set_fmt = mca_fe_set_fmt,
+ 	.set_bclk_ratio = mca_set_bclk_ratio,
+ 	.set_tdm_slot = mca_fe_set_tdm_slot,
 -- 
 2.39.5
 
