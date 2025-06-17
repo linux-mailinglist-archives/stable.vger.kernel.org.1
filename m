@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-153412-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-154389-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 849DBADD438
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:07:55 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4040BADD8DD
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:59:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2D07F17FA2F
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:01:24 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 91FCD1889A9D
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:52:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07EF42ED879;
-	Tue, 17 Jun 2025 15:57:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2B762FA62E;
+	Tue, 17 Jun 2025 16:50:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hUkUg8Ss"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JPI31/jv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6BE42ED876;
-	Tue, 17 Jun 2025 15:57:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FB382FA62C;
+	Tue, 17 Jun 2025 16:50:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750175876; cv=none; b=nLmlQWA0b7xV1rAxL4PuTIUgepBqsnShBKzsnnmXX03iQYA+bGkW5ni2bQ42QNf6fBKm9I3OOAu+SRUhn2sx58olXu6HgLglniGeaTJ9gOmDtsM4Q6qqoHRGxnSBYeUTSNXHJ7fxjasLheSFFjvh9jVVnJMt9sk/8whSDLedG1U=
+	t=1750179038; cv=none; b=f9glpPAIZFae9Yr9XDTOpo4D1xo55j3XeMyrj1nN8PBYGCK8oTm9Y1hOhD0s66usssSNBFp1fUJRvWlRxKURfWyhbFt1jstF+5mVIWq+6iS7LG9FH2J4uGzvDVH6qF5c4Mlg0nF9vgJDm3lfBO6kvpE5HfT7WxtNL8kuXZpIXUM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750175876; c=relaxed/simple;
-	bh=7aIWQpK92g6NhykeyRJBLUN6XUaY/mhBJ0buvNzZiwA=;
+	s=arc-20240116; t=1750179038; c=relaxed/simple;
+	bh=UmjZUpxBYsW5YK+AdAGP/LbFcx1jCmOJ8TogB73Ejmg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ergkiOrpAhbmqAUGuxwLUu8xx8qVyY0RTK71JiA7mi7DMB0MUuyc/Rzqwk/LbUwWSI6AmCx8avGD9/yoH9DrM3JJNJzKTyeixnjKRN9MdLLRbIqW3JQ0hY5k7TWqyix3rIfat0L7lM9ORNOKskcbxzS1TIZ6iUmaoMfP+9cVsjM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hUkUg8Ss; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C25FCC4CEF0;
-	Tue, 17 Jun 2025 15:57:55 +0000 (UTC)
+	 MIME-Version:Content-Type; b=aJiTvZQZHY3LKRNz8xE4PHLD6DSDCGKSW0shgX+VMN2zQ2FIZeJ76QcsidJT7RNzZZxnxiP/imGJP1ZrB47wB3Ersnh5A+mdree+RY0mJvxg31SdVxt8SRgJihATdBhl7V/0m950ITAtfCBS7RwYPfPuD7x4+oRVoDcpf+j0XHs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JPI31/jv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6FD3DC4CEE3;
+	Tue, 17 Jun 2025 16:50:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750175876;
-	bh=7aIWQpK92g6NhykeyRJBLUN6XUaY/mhBJ0buvNzZiwA=;
+	s=korg; t=1750179036;
+	bh=UmjZUpxBYsW5YK+AdAGP/LbFcx1jCmOJ8TogB73Ejmg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hUkUg8SsxPCzZPvCf3a0tRJMP7UgWD9KRiwpi2ENOMGrQN+RE/jLb5MCEaFbG1LjC
-	 GA7zA5SbYp+4x3nxIAXDR8fDz8aQsfmQNvH+rINf/FwaKi/stT2W74siEih6M4wL1l
-	 Sd5cyEhx40xtXqQrVVZronJjovzqkqQfOldcdsMU=
+	b=JPI31/jvNrtIUNjA4wPoqGKc/vpRE/q1SWKM1EtRyVcVQTPlMu+ZU53buhxjwIS9a
+	 dm+qqB9QlRCkUWIVLcypsLy8UozNWmRQm1Yk9i2mw4zVZMezLclRyNWA1m8elUbJik
+	 jXiSHxC3kZKaz0fihuvMzBrKtUKwIALgZ4zCIgYU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wolfram Sang <wsa+renesas@sang-engineering.com>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	=?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
+	Matthew Brost <matthew.brost@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 221/356] rtc: sh: assign correct interrupts with DT
+Subject: [PATCH 6.15 628/780] drm/xe: Rework eviction rejection of bound external bos
 Date: Tue, 17 Jun 2025 17:25:36 +0200
-Message-ID: <20250617152347.100287277@linuxfoundation.org>
+Message-ID: <20250617152517.047148040@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152338.212798615@linuxfoundation.org>
-References: <20250617152338.212798615@linuxfoundation.org>
+In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
+References: <20250617152451.485330293@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,55 +60,241 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wolfram Sang <wsa+renesas@sang-engineering.com>
+From: Thomas Hellström <thomas.hellstrom@linux.intel.com>
 
-[ Upstream commit 8f2efdbc303fe7baa83843d3290dd6ea5ba3276c ]
+[ Upstream commit 5cc3325584c425069c1c3355c775314d64bf8770 ]
 
-The DT bindings for this driver define the interrupts in the order as
-they are numbered in the interrupt controller. The old platform_data,
-however, listed them in a different order. So, for DT based platforms,
-they are mixed up. Assign them specifically for DT, so we can keep the
-bindings stable. After the fix, 'rtctest' passes again on the Renesas
-Genmai board (RZ-A1 / R7S72100).
+For preempt_fence mode VM's we're rejecting eviction of
+shared bos during VM_BIND. However, since we do this in the
+move() callback, we're getting an eviction failure warning from
+TTM. The TTM callback intended for these things is
+eviction_valuable().
 
-Fixes: dab5aec64bf5 ("rtc: sh: add support for rza series")
-Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
-Link: https://lore.kernel.org/r/20250227134256.9167-11-wsa+renesas@sang-engineering.com
-Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+However, the latter doesn't pass in the struct ttm_operation_ctx
+needed to determine whether the caller needs this.
+
+Instead, attach the needed information to the vm under the
+vm->resv, until we've been able to update TTM to provide the
+needed information. And add sufficient lockdep checks to prevent
+misuse and races.
+
+v2:
+- Fix a copy-paste error in xe_vm_clear_validating()
+v3:
+- Fix kerneldoc errors.
+
+Signed-off-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
+Fixes: 0af944f0e308 ("drm/xe: Reject BO eviction if BO is bound to current VM")
+Reviewed-by: Matthew Brost <matthew.brost@intel.com>
+Link: https://lore.kernel.org/r/20250528164105.234718-1-thomas.hellstrom@linux.intel.com
+(cherry picked from commit 9d5558649f68e2e84a87a909631b30e15ca0f8ec)
+Signed-off-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/rtc/rtc-sh.c | 12 +++++++++---
- 1 file changed, 9 insertions(+), 3 deletions(-)
+ drivers/gpu/drm/xe/xe_bo.c       | 46 ++++++++++++---------
+ drivers/gpu/drm/xe/xe_vm.h       | 69 ++++++++++++++++++++++++++++++++
+ drivers/gpu/drm/xe/xe_vm_types.h |  8 ++++
+ 3 files changed, 105 insertions(+), 18 deletions(-)
 
-diff --git a/drivers/rtc/rtc-sh.c b/drivers/rtc/rtc-sh.c
-index cd146b5741431..341b1b776e1a3 100644
---- a/drivers/rtc/rtc-sh.c
-+++ b/drivers/rtc/rtc-sh.c
-@@ -485,9 +485,15 @@ static int __init sh_rtc_probe(struct platform_device *pdev)
- 		return -ENOENT;
+diff --git a/drivers/gpu/drm/xe/xe_bo.c b/drivers/gpu/drm/xe/xe_bo.c
+index 64f9c936eea06..b98526d271f2f 100644
+--- a/drivers/gpu/drm/xe/xe_bo.c
++++ b/drivers/gpu/drm/xe/xe_bo.c
+@@ -816,21 +816,6 @@ static int xe_bo_move(struct ttm_buffer_object *ttm_bo, bool evict,
+ 		goto out;
  	}
  
--	rtc->periodic_irq = ret;
--	rtc->carry_irq = platform_get_irq(pdev, 1);
--	rtc->alarm_irq = platform_get_irq(pdev, 2);
-+	if (!pdev->dev.of_node) {
-+		rtc->periodic_irq = ret;
-+		rtc->carry_irq = platform_get_irq(pdev, 1);
-+		rtc->alarm_irq = platform_get_irq(pdev, 2);
-+	} else {
-+		rtc->alarm_irq = ret;
-+		rtc->periodic_irq = platform_get_irq(pdev, 1);
-+		rtc->carry_irq = platform_get_irq(pdev, 2);
-+	}
+-	/* Reject BO eviction if BO is bound to current VM. */
+-	if (evict && ctx->resv) {
+-		struct drm_gpuvm_bo *vm_bo;
+-
+-		drm_gem_for_each_gpuvm_bo(vm_bo, &bo->ttm.base) {
+-			struct xe_vm *vm = gpuvm_to_vm(vm_bo->vm);
+-
+-			if (xe_vm_resv(vm) == ctx->resv &&
+-			    xe_vm_in_preempt_fence_mode(vm)) {
+-				ret = -EBUSY;
+-				goto out;
+-			}
+-		}
+-	}
+-
+ 	/*
+ 	 * Failed multi-hop where the old_mem is still marked as
+ 	 * TTM_PL_FLAG_TEMPORARY, should just be a dummy move.
+@@ -1023,6 +1008,25 @@ static long xe_bo_shrink_purge(struct ttm_operation_ctx *ctx,
+ 	return lret;
+ }
  
- 	res = platform_get_resource(pdev, IORESOURCE_IO, 0);
- 	if (!res)
++static bool
++xe_bo_eviction_valuable(struct ttm_buffer_object *bo, const struct ttm_place *place)
++{
++	struct drm_gpuvm_bo *vm_bo;
++
++	if (!ttm_bo_eviction_valuable(bo, place))
++		return false;
++
++	if (!xe_bo_is_xe_bo(bo))
++		return true;
++
++	drm_gem_for_each_gpuvm_bo(vm_bo, &bo->base) {
++		if (xe_vm_is_validating(gpuvm_to_vm(vm_bo->vm)))
++			return false;
++	}
++
++	return true;
++}
++
+ /**
+  * xe_bo_shrink() - Try to shrink an xe bo.
+  * @ctx: The struct ttm_operation_ctx used for shrinking.
+@@ -1057,7 +1061,7 @@ long xe_bo_shrink(struct ttm_operation_ctx *ctx, struct ttm_buffer_object *bo,
+ 	    (flags.purge && !xe_tt->purgeable))
+ 		return -EBUSY;
+ 
+-	if (!ttm_bo_eviction_valuable(bo, &place))
++	if (!xe_bo_eviction_valuable(bo, &place))
+ 		return -EBUSY;
+ 
+ 	if (!xe_bo_is_xe_bo(bo) || !xe_bo_get_unless_zero(xe_bo))
+@@ -1418,7 +1422,7 @@ const struct ttm_device_funcs xe_ttm_funcs = {
+ 	.io_mem_pfn = xe_ttm_io_mem_pfn,
+ 	.access_memory = xe_ttm_access_memory,
+ 	.release_notify = xe_ttm_bo_release_notify,
+-	.eviction_valuable = ttm_bo_eviction_valuable,
++	.eviction_valuable = xe_bo_eviction_valuable,
+ 	.delete_mem_notify = xe_ttm_bo_delete_mem_notify,
+ 	.swap_notify = xe_ttm_bo_swap_notify,
+ };
+@@ -2260,6 +2264,8 @@ int xe_bo_validate(struct xe_bo *bo, struct xe_vm *vm, bool allow_res_evict)
+ 		.no_wait_gpu = false,
+ 		.gfp_retry_mayfail = true,
+ 	};
++	struct pin_cookie cookie;
++	int ret;
+ 
+ 	if (vm) {
+ 		lockdep_assert_held(&vm->lock);
+@@ -2269,8 +2275,12 @@ int xe_bo_validate(struct xe_bo *bo, struct xe_vm *vm, bool allow_res_evict)
+ 		ctx.resv = xe_vm_resv(vm);
+ 	}
+ 
++	cookie = xe_vm_set_validating(vm, allow_res_evict);
+ 	trace_xe_bo_validate(bo);
+-	return ttm_bo_validate(&bo->ttm, &bo->placement, &ctx);
++	ret = ttm_bo_validate(&bo->ttm, &bo->placement, &ctx);
++	xe_vm_clear_validating(vm, allow_res_evict, cookie);
++
++	return ret;
+ }
+ 
+ bool xe_bo_is_xe_bo(struct ttm_buffer_object *bo)
+diff --git a/drivers/gpu/drm/xe/xe_vm.h b/drivers/gpu/drm/xe/xe_vm.h
+index 0ef811fc2bdee..494af6bdc646b 100644
+--- a/drivers/gpu/drm/xe/xe_vm.h
++++ b/drivers/gpu/drm/xe/xe_vm.h
+@@ -301,6 +301,75 @@ void xe_vm_snapshot_capture_delayed(struct xe_vm_snapshot *snap);
+ void xe_vm_snapshot_print(struct xe_vm_snapshot *snap, struct drm_printer *p);
+ void xe_vm_snapshot_free(struct xe_vm_snapshot *snap);
+ 
++/**
++ * xe_vm_set_validating() - Register this task as currently making bos resident
++ * @allow_res_evict: Allow eviction of buffer objects bound to @vm when
++ * validating.
++ * @vm: Pointer to the vm or NULL.
++ *
++ * Register this task as currently making bos resident for the vm. Intended
++ * to avoid eviction by the same task of shared bos bound to the vm.
++ * Call with the vm's resv lock held.
++ *
++ * Return: A pin cookie that should be used for xe_vm_clear_validating().
++ */
++static inline struct pin_cookie xe_vm_set_validating(struct xe_vm *vm,
++						     bool allow_res_evict)
++{
++	struct pin_cookie cookie = {};
++
++	if (vm && !allow_res_evict) {
++		xe_vm_assert_held(vm);
++		cookie = lockdep_pin_lock(&xe_vm_resv(vm)->lock.base);
++		/* Pairs with READ_ONCE in xe_vm_is_validating() */
++		WRITE_ONCE(vm->validating, current);
++	}
++
++	return cookie;
++}
++
++/**
++ * xe_vm_clear_validating() - Unregister this task as currently making bos resident
++ * @vm: Pointer to the vm or NULL
++ * @allow_res_evict: Eviction from @vm was allowed. Must be set to the same
++ * value as for xe_vm_set_validation().
++ * @cookie: Cookie obtained from xe_vm_set_validating().
++ *
++ * Register this task as currently making bos resident for the vm. Intended
++ * to avoid eviction by the same task of shared bos bound to the vm.
++ * Call with the vm's resv lock held.
++ */
++static inline void xe_vm_clear_validating(struct xe_vm *vm, bool allow_res_evict,
++					  struct pin_cookie cookie)
++{
++	if (vm && !allow_res_evict) {
++		lockdep_unpin_lock(&xe_vm_resv(vm)->lock.base, cookie);
++		/* Pairs with READ_ONCE in xe_vm_is_validating() */
++		WRITE_ONCE(vm->validating, NULL);
++	}
++}
++
++/**
++ * xe_vm_is_validating() - Whether bos bound to the vm are currently being made resident
++ * by the current task.
++ * @vm: Pointer to the vm.
++ *
++ * If this function returns %true, we should be in a vm resv locked region, since
++ * the current process is the same task that called xe_vm_set_validating().
++ * The function asserts that that's indeed the case.
++ *
++ * Return: %true if the task is currently making bos resident, %false otherwise.
++ */
++static inline bool xe_vm_is_validating(struct xe_vm *vm)
++{
++	/* Pairs with WRITE_ONCE in xe_vm_is_validating() */
++	if (READ_ONCE(vm->validating) == current) {
++		xe_vm_assert_held(vm);
++		return true;
++	}
++	return false;
++}
++
+ #if IS_ENABLED(CONFIG_DRM_XE_USERPTR_INVAL_INJECT)
+ void xe_vma_userptr_force_invalidate(struct xe_userptr_vma *uvma);
+ #else
+diff --git a/drivers/gpu/drm/xe/xe_vm_types.h b/drivers/gpu/drm/xe/xe_vm_types.h
+index 84fa41b9fa20f..0882674ce1cba 100644
+--- a/drivers/gpu/drm/xe/xe_vm_types.h
++++ b/drivers/gpu/drm/xe/xe_vm_types.h
+@@ -310,6 +310,14 @@ struct xe_vm {
+ 	 * protected by the vm resv.
+ 	 */
+ 	u64 tlb_flush_seqno;
++	/**
++	 * @validating: The task that is currently making bos resident for this vm.
++	 * Protected by the VM's resv for writing. Opportunistic reading can be done
++	 * using READ_ONCE. Note: This is a workaround for the
++	 * TTM eviction_valuable() callback not being passed a struct
++	 * ttm_operation_context(). Future work might want to address this.
++	 */
++	struct task_struct *validating;
+ 	/** @batch_invalidate_tlb: Always invalidate TLB before batch start */
+ 	bool batch_invalidate_tlb;
+ 	/** @xef: XE file handle for tracking this VM's drm client */
 -- 
 2.39.5
 
