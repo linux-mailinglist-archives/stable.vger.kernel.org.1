@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-153687-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-154133-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B9ECADD5BA
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:25:18 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 190D1ADD827
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:52:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5389E3AC1FB
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:17:55 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 48CC53A872B
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:42:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 096172ED168;
-	Tue, 17 Jun 2025 16:12:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0BEF12ECEB1;
+	Tue, 17 Jun 2025 16:36:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NasHOaDR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bsHNwT7s"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9CB4285065;
-	Tue, 17 Jun 2025 16:12:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAF832ECEAA;
+	Tue, 17 Jun 2025 16:36:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750176764; cv=none; b=HubSGzxEa1pz4UT8G0oEtqFkBlFSxdTx1LE1bQ00LHL81dodI1Rjm2N80Q7ulmOWxLpv9YJfmyZIijFR6vYK/VXhFBZH5dE05xe5QyN7lmqNfYWrytXHs4x4jT2iKYPY6nke0Sk4n9cD/f5XkH8s6qM9dg+cpDOaZ8kfC5qncho=
+	t=1750178207; cv=none; b=bzZeVG/G5/ghn1Os79/MAF0rMyfrYgygmvqNplXPjcdQNzXk1xZjEb65GFvcVb0bvxXF0FmjbKy6fO2+tUb9Dl+L9/phj8EM5s+TZunTQonMt2FtXehJm2I5gQJf6/yBWSrSyB+NJuN/GZigOH70KpwKlmG1QZ+oqwYEQ0Yojtg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750176764; c=relaxed/simple;
-	bh=iLMlm5mH1fVDcuY3IAtw7n+2W4TUuAScqo/m/hs/Q/U=;
+	s=arc-20240116; t=1750178207; c=relaxed/simple;
+	bh=AgrlHYfMaz7AfsgNN5sySumFfiHJ2S83C+JedbmcRoo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AwTbPgnjHcUU/trkRdDZ7iNBSiCPFJW80E1wVa3sfS0PPqA4LD1O2UUiCzxH7Zqe4aS0+DoilXKnuAVKKaOUdUYtkONYULVONG+EYefYRRXPuRpqDavWABNXue0AaO+KTl1cGFUWIQ7Bu5Nrq2cXD8XEwVHkpeDEVyVpAJEV9fI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NasHOaDR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A21FC4CEE3;
-	Tue, 17 Jun 2025 16:12:43 +0000 (UTC)
+	 MIME-Version; b=ZsrU1E0QU5jTDNu7OHdEc1Vy2nbNbeuLgP9UY8U6u+FhCuxlOglO8EbwACH7JukQkzlE+mH8am0yzOnypSiuj7/Ki7C7VN3saPxTlkIx1cLdCvq33uFKYT5dFw5YKl+L8k6h6UxRJdeeZUiNqZiSy5kEv3oMPB57l2wiSIEemtQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bsHNwT7s; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3386CC4CEE3;
+	Tue, 17 Jun 2025 16:36:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750176764;
-	bh=iLMlm5mH1fVDcuY3IAtw7n+2W4TUuAScqo/m/hs/Q/U=;
+	s=korg; t=1750178207;
+	bh=AgrlHYfMaz7AfsgNN5sySumFfiHJ2S83C+JedbmcRoo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NasHOaDRt/eVmH89HzWrpYfjncV8H6r8hjEq/nE0oZOSlnOXOkiGDNXO4HtHGgiQO
-	 JQsH6djR9bFuJjfCoImcBuIYmCX0eqcnftP7K81hI7gcGWBQqRvFMhs0pmU9rMgQth
-	 3/z+Eb6v8Rgq7g0xHLB3WIjL/dtLGsZOXKYDJXy4=
+	b=bsHNwT7s++Ivf8CMP5dRA5cwMoUXDGI1uqvI1Od+sfRm3o+dLXK7IoCGqBUKizZqg
+	 wD5htmzyrqoRrSw0mGan/qiSycWrCzLa9N3EcZ04YAAlYtMmCYMqhjCtSq4zAtuXDt
+	 PPeesREF7o00On77Um6pXwrbrtwa6StDRcxXbb/k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
+	Daniel Jurgens <danielj@nvidia.com>,
+	Moshe Shemesh <moshe@nvidia.com>,
+	Amir Tzin <amirtz@nvidia.com>,
+	Mark Bloch <mbloch@nvidia.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 311/356] drm/meson: use vclk_freq instead of pixel_freq in debug print
-Date: Tue, 17 Jun 2025 17:27:06 +0200
-Message-ID: <20250617152350.683889817@linuxfoundation.org>
+Subject: [PATCH 6.12 461/512] net/mlx5: Fix ECVF vports unload on shutdown flow
+Date: Tue, 17 Jun 2025 17:27:07 +0200
+Message-ID: <20250617152438.248023402@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152338.212798615@linuxfoundation.org>
-References: <20250617152338.212798615@linuxfoundation.org>
+In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
+References: <20250617152419.512865572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,48 +65,108 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+From: Amir Tzin <amirtz@nvidia.com>
 
-[ Upstream commit faf2f8382088e8c74bd6eeb236c8c9190e61615e ]
+[ Upstream commit 687560d8a9a2d654829ad0da1ec24242f1de711d ]
 
-meson_vclk_vic_supported_freq() has a debug print which includes the
-pixel freq. However, within the whole function the pixel freq is
-irrelevant, other than checking the end of the params array. Switch to
-printing the vclk_freq which is being compared / matched against the
-inputs to the function to avoid confusion when analyzing error reports
-from users.
+Fix shutdown flow UAF when a virtual function is created on the embedded
+chip (ECVF) of a BlueField device. In such case the vport acl ingress
+table is not properly destroyed.
 
-Fixes: e5fab2ec9ca4 ("drm/meson: vclk: add support for YUV420 setup")
-Signed-off-by: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
-Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
-Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
-Link: https://lore.kernel.org/r/20250606221031.3419353-1-martin.blumenstingl@googlemail.com
+ECVF functionality is independent of ecpf_vport_exists capability and
+thus functions mlx5_eswitch_(enable|disable)_pf_vf_vports() should not
+test it when enabling/disabling ECVF vports.
+
+kernel log:
+[] refcount_t: underflow; use-after-free.
+[] WARNING: CPU: 3 PID: 1 at lib/refcount.c:28
+   refcount_warn_saturate+0x124/0x220
+----------------
+[] Call trace:
+[] refcount_warn_saturate+0x124/0x220
+[] tree_put_node+0x164/0x1e0 [mlx5_core]
+[] mlx5_destroy_flow_table+0x98/0x2c0 [mlx5_core]
+[] esw_acl_ingress_table_destroy+0x28/0x40 [mlx5_core]
+[] esw_acl_ingress_lgcy_cleanup+0x80/0xf4 [mlx5_core]
+[] esw_legacy_vport_acl_cleanup+0x44/0x60 [mlx5_core]
+[] esw_vport_cleanup+0x64/0x90 [mlx5_core]
+[] mlx5_esw_vport_disable+0xc0/0x1d0 [mlx5_core]
+[] mlx5_eswitch_unload_ec_vf_vports+0xcc/0x150 [mlx5_core]
+[] mlx5_eswitch_disable_sriov+0x198/0x2a0 [mlx5_core]
+[] mlx5_device_disable_sriov+0xb8/0x1e0 [mlx5_core]
+[] mlx5_sriov_detach+0x40/0x50 [mlx5_core]
+[] mlx5_unload+0x40/0xc4 [mlx5_core]
+[] mlx5_unload_one_devl_locked+0x6c/0xe4 [mlx5_core]
+[] mlx5_unload_one+0x3c/0x60 [mlx5_core]
+[] shutdown+0x7c/0xa4 [mlx5_core]
+[] pci_device_shutdown+0x3c/0xa0
+[] device_shutdown+0x170/0x340
+[] __do_sys_reboot+0x1f4/0x2a0
+[] __arm64_sys_reboot+0x2c/0x40
+[] invoke_syscall+0x78/0x100
+[] el0_svc_common.constprop.0+0x54/0x184
+[] do_el0_svc+0x30/0xac
+[] el0_svc+0x48/0x160
+[] el0t_64_sync_handler+0xa4/0x12c
+[] el0t_64_sync+0x1a4/0x1a8
+[] --[ end trace 9c4601d68c70030e ]---
+
+Fixes: a7719b29a821 ("net/mlx5: Add management of EC VF vports")
+Reviewed-by: Daniel Jurgens <danielj@nvidia.com>
+Reviewed-by: Moshe Shemesh <moshe@nvidia.com>
+Signed-off-by: Amir Tzin <amirtz@nvidia.com>
+Signed-off-by: Mark Bloch <mbloch@nvidia.com>
+Link: https://patch.msgid.link/20250610151514.1094735-3-mbloch@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/meson/meson_vclk.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ .../net/ethernet/mellanox/mlx5/core/eswitch.c | 21 ++++++++++++-------
+ 1 file changed, 13 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/gpu/drm/meson/meson_vclk.c b/drivers/gpu/drm/meson/meson_vclk.c
-index 3325580d885d0..c4123bb958e4c 100644
---- a/drivers/gpu/drm/meson/meson_vclk.c
-+++ b/drivers/gpu/drm/meson/meson_vclk.c
-@@ -790,9 +790,9 @@ meson_vclk_vic_supported_freq(struct meson_drm *priv,
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/eswitch.c b/drivers/net/ethernet/mellanox/mlx5/core/eswitch.c
+index 7aef30dbd82d6..6544546a1153f 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/eswitch.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/eswitch.c
+@@ -1295,12 +1295,15 @@ mlx5_eswitch_enable_pf_vf_vports(struct mlx5_eswitch *esw,
+ 		ret = mlx5_eswitch_load_pf_vf_vport(esw, MLX5_VPORT_ECPF, enabled_events);
+ 		if (ret)
+ 			goto ecpf_err;
+-		if (mlx5_core_ec_sriov_enabled(esw->dev)) {
+-			ret = mlx5_eswitch_load_ec_vf_vports(esw, esw->esw_funcs.num_ec_vfs,
+-							     enabled_events);
+-			if (ret)
+-				goto ec_vf_err;
+-		}
++	}
++
++	/* Enable ECVF vports */
++	if (mlx5_core_ec_sriov_enabled(esw->dev)) {
++		ret = mlx5_eswitch_load_ec_vf_vports(esw,
++						     esw->esw_funcs.num_ec_vfs,
++						     enabled_events);
++		if (ret)
++			goto ec_vf_err;
  	}
  
- 	for (i = 0 ; params[i].pixel_freq ; ++i) {
--		DRM_DEBUG_DRIVER("i = %d pixel_freq = %lluHz alt = %lluHz\n",
--				 i, params[i].pixel_freq,
--				 PIXEL_FREQ_1000_1001(params[i].pixel_freq));
-+		DRM_DEBUG_DRIVER("i = %d vclk_freq = %lluHz alt = %lluHz\n",
-+				 i, params[i].vclk_freq,
-+				 PIXEL_FREQ_1000_1001(params[i].vclk_freq));
- 		DRM_DEBUG_DRIVER("i = %d phy_freq = %lluHz alt = %lluHz\n",
- 				 i, params[i].phy_freq,
- 				 PHY_FREQ_1000_1001(params[i].phy_freq));
+ 	/* Enable VF vports */
+@@ -1331,9 +1334,11 @@ void mlx5_eswitch_disable_pf_vf_vports(struct mlx5_eswitch *esw)
+ {
+ 	mlx5_eswitch_unload_vf_vports(esw, esw->esw_funcs.num_vfs);
+ 
++	if (mlx5_core_ec_sriov_enabled(esw->dev))
++		mlx5_eswitch_unload_ec_vf_vports(esw,
++						 esw->esw_funcs.num_ec_vfs);
++
+ 	if (mlx5_ecpf_vport_exists(esw->dev)) {
+-		if (mlx5_core_ec_sriov_enabled(esw->dev))
+-			mlx5_eswitch_unload_ec_vf_vports(esw, esw->esw_funcs.num_vfs);
+ 		mlx5_eswitch_unload_pf_vf_vport(esw, MLX5_VPORT_ECPF);
+ 	}
+ 
 -- 
 2.39.5
 
