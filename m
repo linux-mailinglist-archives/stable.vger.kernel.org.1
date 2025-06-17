@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-154213-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153516-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 29AA3ADD92F
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 19:03:39 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 53BF1ADD4E9
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:15:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7230819E4974
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:45:34 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C47422C4C15
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:07:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6BA8B2356CE;
-	Tue, 17 Jun 2025 16:41:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF4EB2EA148;
+	Tue, 17 Jun 2025 16:03:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Dz7GYaM7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pKEIkbEq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 272282EA756;
-	Tue, 17 Jun 2025 16:41:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D18A2DFF09;
+	Tue, 17 Jun 2025 16:03:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750178468; cv=none; b=SHJ0XkqgommmZPZ7RP0qAUQ9FozOSnC5y/KGti+3/HoGVGyXn+5rkIq6eRrSXiLgyEMG2tsbtPE2JTo67xR6jg9bepcBAcD3WO+wDUbcWQytVajYRvIyWQJ1w1SyQ2aKYDDPWEcruE/WflkM/leEESeXIVG+KAcv1UyRRdhLkkk=
+	t=1750176216; cv=none; b=OzTYR3y1jaCuP6hn2e9MG9ekNXhnNm3yH2adN8IgQj7nqDtB+rqrFHT7F1VXwhBj11fzgLtc1qv3ra4nR0ElwhB2MpxGlGynVkSO8lxrR/FAxwYHnZuTzjXkVY2rFNnvxFKZ8JFbfJBJR0eCdq5woBteNTszOEAGcI/KqIDZBtI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750178468; c=relaxed/simple;
-	bh=XGAZxw/WjnxopWRXhIxE+4r5cebz99zjBG7lD1EMstM=;
+	s=arc-20240116; t=1750176216; c=relaxed/simple;
+	bh=eC2zpRVSEUaaKJtzNumIhIQDzJ9as2XeLOYg5Dk85so=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QsI21i/rH885GFoKah0Iqv67xBwdriGB9Tb2+T2RkzUEEnexekaA+TMtRckV6l3qK2v42RA83vwOJshuvNfx2wX2GBivyQBnqOk7zgkGZyzdbuBxLS2qOcPC7iMc96tNbRob+385pCnLnRpzRBzVVECUjBAUl8izOjNvJD48d60=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Dz7GYaM7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8CDCDC4CEE3;
-	Tue, 17 Jun 2025 16:41:07 +0000 (UTC)
+	 MIME-Version; b=L5rjWcRLqHmgVxqtY1n4AJOgins8niuML8zoS7CiJbJIRIHowgvKJ9h0Z5ECP2w5nelkTeSMMGJ/8cyoTu7Tn8mOaYB+NCZn7grC/4UsOoWeNJ7x2oCMiSP8fitWTu1XsaQLIFRP22PqDMyq2yIOFT4wQrLARcfn/7sMuz2dUsg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pKEIkbEq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5E10C4CEF0;
+	Tue, 17 Jun 2025 16:03:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750178468;
-	bh=XGAZxw/WjnxopWRXhIxE+4r5cebz99zjBG7lD1EMstM=;
+	s=korg; t=1750176216;
+	bh=eC2zpRVSEUaaKJtzNumIhIQDzJ9as2XeLOYg5Dk85so=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Dz7GYaM7KI16yd1QMD7lcA8E3O9z85hgGaBncwrgDP5z16hDv/sRU0Lg/zp9NjUn5
-	 NqjnWnbSllfyvSSq6M8S8lEOuHhgV8LL29IfuPnMet5iInjAdSTR8rWwnWE9SdBxmf
-	 tS776Zbh25DtxUcIj6y/1WJOKCmdo6xtOco6XOBM=
+	b=pKEIkbEq5we7bd0IR3dYcvhImJSzdi0HbbdBsHt2QgGAoYEjJ4rsCZgWEQUF6mqo0
+	 zyJ/+cWGYRZIcRGMZT4kQv8qHMmpkjfh8L8TsoQYshzQt70Rbn2CaJ/7SzKA1RtQP/
+	 1ATF5TJRf4DEzFB0nA4ISESvibBmH0W/scR8qvAM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peng Fan <peng.fan@nxp.com>,
-	Jassi Brar <jassisinghbrar@gmail.com>,
+	Alexander Lobakin <alobakin@pm.me>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Russell King <linux@armlinux.org.uk>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 464/780] mailbox: imx: Fix TXDB_V2 sending
-Date: Tue, 17 Jun 2025 17:22:52 +0200
-Message-ID: <20250617152510.384791329@linuxfoundation.org>
+Subject: [PATCH 6.12 207/512] net: phy: fix up const issues in to_mdio_device() and to_phy_device()
+Date: Tue, 17 Jun 2025 17:22:53 +0200
+Message-ID: <20250617152428.022005317@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
-References: <20250617152451.485330293@linuxfoundation.org>
+In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
+References: <20250617152419.512865572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,75 +65,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peng Fan <peng.fan@nxp.com>
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
-[ Upstream commit f5cb07ec6aabd1bb56adbdeb5f0d70cb524db2cd ]
+[ Upstream commit e9cb929670a1e98b592b30f03f06e9e20110f318 ]
 
-i.MX95 features several processing domains, Cortex-M7, Cortex-A55
-secure, Cortex-A55 non-secure. Each domain could communicate with
-SCMI firmware with a dedicated MU. But the current NXP SCMI firmware
-is not a RTOS, all processing logic codes are in interrupt context.
-So if high priority Cortex-M7 is communicating with SCMI firmware and
-requires a bit more time to handle the SCMI call, Linux MU TXDB_V2
-will be timeout with high possiblity in 1000us(the current value in
-imx-mailbox.c). Per NXP SCMI firmware design, if timeout, there is
-no recover logic, so SCMI agents should never timeout and always
-wait until the check condition met.
+Both to_mdio_device() and to_phy_device() "throw away" the const pointer
+attribute passed to them and return a non-const pointer, which generally
+is not a good thing overall.  Fix this up by using container_of_const()
+which was designed for this very problem.
 
-Based on the upper reason, enlarge the timeout value to 10ms which
-is less chance to timeout, and retry if timeout really happends.
-
-Fixes: 5bfe4067d350 ("mailbox: imx: support channel type tx doorbell v2")
-Signed-off-by: Peng Fan <peng.fan@nxp.com>
-Signed-off-by: Jassi Brar <jassisinghbrar@gmail.com>
+Cc: Alexander Lobakin <alobakin@pm.me>
+Cc: Andrew Lunn <andrew@lunn.ch>
+Cc: Heiner Kallweit <hkallweit1@gmail.com>
+Cc: Russell King <linux@armlinux.org.uk>
+Fixes: 7eab14de73a8 ("mdio, phy: fix -Wshadow warnings triggered by nested container_of()")
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://patch.msgid.link/2025052246-conduit-glory-8fc9@gregkh
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mailbox/imx-mailbox.c | 21 +++++++++++++++------
- 1 file changed, 15 insertions(+), 6 deletions(-)
+ include/linux/mdio.h | 5 +----
+ include/linux/phy.h  | 5 +----
+ 2 files changed, 2 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/mailbox/imx-mailbox.c b/drivers/mailbox/imx-mailbox.c
-index 6ef8338add0d6..6778afc64a048 100644
---- a/drivers/mailbox/imx-mailbox.c
-+++ b/drivers/mailbox/imx-mailbox.c
-@@ -226,7 +226,7 @@ static int imx_mu_generic_tx(struct imx_mu_priv *priv,
- {
- 	u32 *arg = data;
- 	u32 val;
--	int ret;
-+	int ret, count;
+diff --git a/include/linux/mdio.h b/include/linux/mdio.h
+index efeca5bd7600b..84b0805918372 100644
+--- a/include/linux/mdio.h
++++ b/include/linux/mdio.h
+@@ -45,10 +45,7 @@ struct mdio_device {
+ 	unsigned int reset_deassert_delay;
+ };
  
- 	switch (cp->type) {
- 	case IMX_MU_TYPE_TX:
-@@ -240,11 +240,20 @@ static int imx_mu_generic_tx(struct imx_mu_priv *priv,
- 	case IMX_MU_TYPE_TXDB_V2:
- 		imx_mu_write(priv, IMX_MU_xCR_GIRn(priv->dcfg->type, cp->idx),
- 			     priv->dcfg->xCR[IMX_MU_GCR]);
--		ret = readl_poll_timeout(priv->base + priv->dcfg->xCR[IMX_MU_GCR], val,
--					 !(val & IMX_MU_xCR_GIRn(priv->dcfg->type, cp->idx)),
--					 0, 1000);
--		if (ret)
--			dev_warn_ratelimited(priv->dev, "channel type: %d failure\n", cp->type);
-+		ret = -ETIMEDOUT;
-+		count = 0;
-+		while (ret && (count < 10)) {
-+			ret =
-+			readl_poll_timeout(priv->base + priv->dcfg->xCR[IMX_MU_GCR], val,
-+					   !(val & IMX_MU_xCR_GIRn(priv->dcfg->type, cp->idx)),
-+					   0, 10000);
-+
-+			if (ret) {
-+				dev_warn_ratelimited(priv->dev,
-+						     "channel type: %d timeout, %d times, retry\n",
-+						     cp->type, ++count);
-+			}
-+		}
- 		break;
- 	default:
- 		dev_warn_ratelimited(priv->dev, "Send data on wrong channel type: %d\n", cp->type);
+-static inline struct mdio_device *to_mdio_device(const struct device *dev)
+-{
+-	return container_of(dev, struct mdio_device, dev);
+-}
++#define to_mdio_device(__dev)	container_of_const(__dev, struct mdio_device, dev)
+ 
+ /* struct mdio_driver_common: Common to all MDIO drivers */
+ struct mdio_driver_common {
+diff --git a/include/linux/phy.h b/include/linux/phy.h
+index 945264f457d8a..dfc7b97f9648d 100644
+--- a/include/linux/phy.h
++++ b/include/linux/phy.h
+@@ -792,10 +792,7 @@ struct phy_device {
+ #define PHY_F_NO_IRQ		0x80000000
+ #define PHY_F_RXC_ALWAYS_ON	0x40000000
+ 
+-static inline struct phy_device *to_phy_device(const struct device *dev)
+-{
+-	return container_of(to_mdio_device(dev), struct phy_device, mdio);
+-}
++#define to_phy_device(__dev)	container_of_const(to_mdio_device(__dev), struct phy_device, mdio)
+ 
+ /**
+  * struct phy_tdr_config - Configuration of a TDR raw test
 -- 
 2.39.5
 
