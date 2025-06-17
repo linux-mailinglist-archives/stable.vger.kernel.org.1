@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-153457-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153979-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 009CBADD545
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:19:08 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BF65EADD7C5
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:49:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 377E019481B0
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:05:00 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E5B323BD455
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:33:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 649342F2375;
-	Tue, 17 Jun 2025 16:00:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84C1E231A37;
+	Tue, 17 Jun 2025 16:28:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h1ItIem3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q4dDjSCz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E0262F2346;
-	Tue, 17 Jun 2025 16:00:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A240238C0A;
+	Tue, 17 Jun 2025 16:28:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750176025; cv=none; b=kbnPK5JH4sNI8hUxsQv7JV85ktx55f/znrycZsq/wowKJEIOLQLgbHTJT0R9ne0YjRnh2z/jCjNu1jJk6PLULz9VNc2jMtgvtDlnHRHP5AufUeJ0MTZGb1/4iPiyjXKd18Xv2mk/qGSF564ooozb4ZZNuxxaf2xhSeFpmX+ZNhs=
+	t=1750177714; cv=none; b=MscrBV+Rbyu65IHPyERIRMRiYlcN1csRFVIuuKRAZWxO+nFcK7aPcOoLp/ifw+9MdMZdg0ptbEMSfza3v4G8q9/geZSQitS+ax8wyrE1i7jUmNS5WSPTvBx7Kt+JrmeIJ3QPB0RPsFlG1m9o/gO8y6x9sMQlHFThFmRxGvL15sE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750176025; c=relaxed/simple;
-	bh=72fRlqSn8QxVJonmzNRJM+8TyU4k3gXTIoMqMN8npVQ=;
+	s=arc-20240116; t=1750177714; c=relaxed/simple;
+	bh=uB4IFMb7KM5juBOpZv10i78lxEv3wX6il79QCJi71T4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=g/wUY8nE8YHfcArnzZhthAi/0hKl2cS68ftuPMioceRdc6KSwiGbp+RqGDXMsmmRD/uNyYKsrUF8/TNDVFVHbmuROWYhLlDEfDpFZW9NooDwV7j4HJ5H+a4FUXXNo8w1KRcLaWx4StXkwFBFYd9M3NC5XYrR57oVDC4+w6/tags=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=h1ItIem3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 801C2C4CEE7;
-	Tue, 17 Jun 2025 16:00:24 +0000 (UTC)
+	 MIME-Version; b=rtwxZOpDcCd31ZkwRnTgb4kkVjjcqZwqu0Vbdle+m+f9OKTPAD2BXUWZBF8JHX5KC02Zsx2d+VWQuRHe3AjqOYE7vu9uF6PSrp+t/WqvubgaRUbgxFSC4g6ImPn320t6ND6uDLotq+DEFtdaNSJ0OfIw9hts8qWFkei51IO6u6A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q4dDjSCz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3DB0C4CEE3;
+	Tue, 17 Jun 2025 16:28:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750176025;
-	bh=72fRlqSn8QxVJonmzNRJM+8TyU4k3gXTIoMqMN8npVQ=;
+	s=korg; t=1750177714;
+	bh=uB4IFMb7KM5juBOpZv10i78lxEv3wX6il79QCJi71T4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=h1ItIem3OmuzPm+3GbzFu7VCxvUP1ouFV1ayeSf1qWmeFJqmtSte2LH502c+d6OIi
-	 QP8VqNbECxPMh2LJ6HPdkt7v0jtthT4AvHUnyZbBlQu/cbOssttVdARbTWY4jTJBKG
-	 NHTXs0dRbR+nC9hCHli2TQGUcyJzL/OnGK8ZH2x8=
+	b=q4dDjSCzi9jEzBCHeDcpRj52Zp77x5G8lkMXjQ+NzUYPVoH41OVAuoqfA+ZPE1ddA
+	 Xw9eOsqLkNzPcQKkEAQELxT3VxoILxytZqiN/ZzFnPAqn6ZIetoNq1Aze55RrQic40
+	 GT+2K0wZ5cVnp4GSq4LOjx7EfXMNqFKGYb7uHwq0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Brian Pellegrino <bpellegrino@arka.org>,
-	Sam Winchenbach <swinchenbach@arka.org>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Petr Machata <petrm@nvidia.com>,
+	Ido Schimmel <idosch@nvidia.com>,
+	David Ahern <dsahern@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 236/356] iio: filter: admv8818: Support frequencies >= 2^32
+Subject: [PATCH 6.12 385/512] seg6: Fix validation of nexthop addresses
 Date: Tue, 17 Jun 2025 17:25:51 +0200
-Message-ID: <20250617152347.702959390@linuxfoundation.org>
+Message-ID: <20250617152435.184844813@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152338.212798615@linuxfoundation.org>
-References: <20250617152338.212798615@linuxfoundation.org>
+In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
+References: <20250617152419.512865572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,73 +64,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Brian Pellegrino <bpellegrino@arka.org>
+From: Ido Schimmel <idosch@nvidia.com>
 
-[ Upstream commit 9016776f1301627de78a633bda7c898425a56572 ]
+[ Upstream commit 7632fedb266d93ed0ed9f487133e6c6314a9b2d1 ]
 
-This patch allows writing u64 values to the ADMV8818's high and low-pass
-filter frequencies. It includes the following changes:
+The kernel currently validates that the length of the provided nexthop
+address does not exceed the specified length. This can lead to the
+kernel reading uninitialized memory if user space provided a shorter
+length than the specified one.
 
-- Rejects negative frequencies in admv8818_write_raw.
-- Adds a write_raw_get_fmt function to admv8818's iio_info, returning
-  IIO_VAL_INT_64 for the high and low-pass filter 3dB frequency channels.
+Fix by validating that the provided length exactly matches the specified
+one.
 
-Fixes: f34fe888ad05 ("iio:filter:admv8818: add support for ADMV8818")
-Signed-off-by: Brian Pellegrino <bpellegrino@arka.org>
-Signed-off-by: Sam Winchenbach <swinchenbach@arka.org>
-Link: https://patch.msgid.link/20250328174831.227202-7-sam.winchenbach@framepointer.org
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Fixes: d1df6fd8a1d2 ("ipv6: sr: define core operations for seg6local lightweight tunnel")
+Reviewed-by: Petr Machata <petrm@nvidia.com>
+Signed-off-by: Ido Schimmel <idosch@nvidia.com>
+Reviewed-by: David Ahern <dsahern@kernel.org>
+Link: https://patch.msgid.link/20250604113252.371528-1-idosch@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iio/filter/admv8818.c | 17 +++++++++++++++++
- 1 file changed, 17 insertions(+)
+ net/ipv6/seg6_local.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/iio/filter/admv8818.c b/drivers/iio/filter/admv8818.c
-index 380e119b3cf54..cc8ce0fe74e7c 100644
---- a/drivers/iio/filter/admv8818.c
-+++ b/drivers/iio/filter/admv8818.c
-@@ -402,6 +402,19 @@ static int admv8818_read_lpf_freq(struct admv8818_state *st, u64 *lpf_freq)
- 	return ret;
- }
- 
-+static int admv8818_write_raw_get_fmt(struct iio_dev *indio_dev,
-+								struct iio_chan_spec const *chan,
-+								long mask)
-+{
-+	switch (mask) {
-+	case IIO_CHAN_INFO_LOW_PASS_FILTER_3DB_FREQUENCY:
-+	case IIO_CHAN_INFO_HIGH_PASS_FILTER_3DB_FREQUENCY:
-+		return IIO_VAL_INT_64;
-+	default:
-+		return -EINVAL;
-+	}
-+}
-+
- static int admv8818_write_raw(struct iio_dev *indio_dev,
- 			      struct iio_chan_spec const *chan,
- 			      int val, int val2, long info)
-@@ -410,6 +423,9 @@ static int admv8818_write_raw(struct iio_dev *indio_dev,
- 
- 	u64 freq = ((u64)val2 << 32 | (u32)val);
- 
-+	if ((s64)freq < 0)
-+		return -EINVAL;
-+
- 	switch (info) {
- 	case IIO_CHAN_INFO_LOW_PASS_FILTER_3DB_FREQUENCY:
- 		return admv8818_lpf_select(st, freq);
-@@ -571,6 +587,7 @@ static int admv8818_set_mode(struct iio_dev *indio_dev,
- 
- static const struct iio_info admv8818_info = {
- 	.write_raw = admv8818_write_raw,
-+	.write_raw_get_fmt = admv8818_write_raw_get_fmt,
- 	.read_raw = admv8818_read_raw,
- 	.debugfs_reg_access = &admv8818_reg_access,
- };
+diff --git a/net/ipv6/seg6_local.c b/net/ipv6/seg6_local.c
+index c74705ead9849..e445a0a45568d 100644
+--- a/net/ipv6/seg6_local.c
++++ b/net/ipv6/seg6_local.c
+@@ -1644,10 +1644,8 @@ static const struct nla_policy seg6_local_policy[SEG6_LOCAL_MAX + 1] = {
+ 	[SEG6_LOCAL_SRH]	= { .type = NLA_BINARY },
+ 	[SEG6_LOCAL_TABLE]	= { .type = NLA_U32 },
+ 	[SEG6_LOCAL_VRFTABLE]	= { .type = NLA_U32 },
+-	[SEG6_LOCAL_NH4]	= { .type = NLA_BINARY,
+-				    .len = sizeof(struct in_addr) },
+-	[SEG6_LOCAL_NH6]	= { .type = NLA_BINARY,
+-				    .len = sizeof(struct in6_addr) },
++	[SEG6_LOCAL_NH4]	= NLA_POLICY_EXACT_LEN(sizeof(struct in_addr)),
++	[SEG6_LOCAL_NH6]	= NLA_POLICY_EXACT_LEN(sizeof(struct in6_addr)),
+ 	[SEG6_LOCAL_IIF]	= { .type = NLA_U32 },
+ 	[SEG6_LOCAL_OIF]	= { .type = NLA_U32 },
+ 	[SEG6_LOCAL_BPF]	= { .type = NLA_NESTED },
 -- 
 2.39.5
 
