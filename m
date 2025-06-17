@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-154263-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-154265-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 118DEADD7A5
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:47:37 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7BE8AADD86D
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:55:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D5F487AC762
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:46:14 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 406D119E6312
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:47:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D7032E3AEB;
-	Tue, 17 Jun 2025 16:43:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ECEA723AE84;
+	Tue, 17 Jun 2025 16:43:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e41kr7+B"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zKU7fNG5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38F8B235071;
-	Tue, 17 Jun 2025 16:43:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA1F923B600;
+	Tue, 17 Jun 2025 16:43:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750178627; cv=none; b=BgSabzaOrQbBx8d0YdSSiJmRG3VlmqHJl50PMtDcI0b3Dgq/TNM1me+SRMxqhWi28s3cu5A2ceCvTZBV6walGUCQtbhbXTXc0drxhsQVxl9A5J4SEvPfOKuzNqGjIHQ8h69LFDN+S2Ub2hV3wSJMfpWO8tBLRyl8ghreTzkjwfU=
+	t=1750178633; cv=none; b=Jlw4c32zzngs8N44EKbn2SrPrR9dYZc6Y7YwqFFWDF5TId9JFqWxG12ufuDovb6MITwsrgAbT6Vba8hnGH2RBmFnr94agA0ekygFf8HbVJvnvC6/o0Z0FbOzml1/cmLu3xag5DKIujI4H1kQeQg9zyu9zHtNVeN0D6fgak3VtS4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750178627; c=relaxed/simple;
-	bh=aEZoANTy29/Is4dCxCLfSh3rUmCXc2hdur3PHeYhIOg=;
+	s=arc-20240116; t=1750178633; c=relaxed/simple;
+	bh=2ilIhE20stBjkj5lYd571e5ar7eLzUdJ7UykSqKGZ0c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Q+dp4tKYLgnW5Ed8cblznvC9M2+EQ7meUH+nrvu909kNpA965IGxL3SH5puQbzU5cMT7hpLVUSVjjC0ddgBXdkYu/igkVdenpXGpfK2dZ8KB1fZfIx7l+vVkcbxzGyoyKHFUiHTG4axeQNyn3L5l8b160bg06b8W7n1nOyDGTdI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e41kr7+B; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E59AC4CEE3;
-	Tue, 17 Jun 2025 16:43:46 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Ho1RuUGO70gP2gU65HzS2rhzvhQYk0GLIPCOA5bi1WeLz3L2zmF7viXQg5cmvoJBBoopDkCs0Vs0uYGrtqyVF8dyOhKrfN3qdgRztxflV7xKQUcDr1zi1joJ7fPaJJF2CcL6fKY7P/JyPh7La8JsCEXHJdTPjJlPp0FW1mTNsvE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zKU7fNG5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17E9AC4CEE3;
+	Tue, 17 Jun 2025 16:43:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750178627;
-	bh=aEZoANTy29/Is4dCxCLfSh3rUmCXc2hdur3PHeYhIOg=;
+	s=korg; t=1750178633;
+	bh=2ilIhE20stBjkj5lYd571e5ar7eLzUdJ7UykSqKGZ0c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=e41kr7+BcIC4Ch83d6/CC81oUUX2sPueKHy7PAtoZXGsUvS3jD7rHXu3IxPK+B2sK
-	 QUhxWagfKTEGD7Ea6ERuTY3FbAJNW+m3hkjl8fcEs3BS5+i/3AiAiG2Kiq8CVgNrrP
-	 hneCWR7Ro9inFaXPbnt2F0p1y5IsVHIexDd6xNUQ=
+	b=zKU7fNG5j7rPdQ3niiIuLz08vIvH9U2ZEZLW+wugVeJuNuvhfJYAFYYd1ojfT6VVi
+	 Q6McjVjE9vzAACMMJrbsBrWh3ZKfQ9sVcFbuMy205HWTcrw3TOVMlzcniTONm0w4X9
+	 qjrDO5ya2/MlQgXx/71f42Hdg/y6sDUm0PIi4SK8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kathiravan Thirumoorthy <kathiravan.thirumoorthy@oss.qualcomm.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	Bard Liao <yung-chuan.liao@linux.intel.com>,
+	Ranjani Sridharan <ranjani.sridharan@linux.intel.com>,
+	=?UTF-8?q?P=C3=A9ter=20Ujfalusi?= <peter.ujfalusi@linux.intel.com>,
 	Vinod Koul <vkoul@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 504/780] phy: qcom-qusb2: reuse the IPQ6018 settings for IPQ5424
-Date: Tue, 17 Jun 2025 17:23:32 +0200
-Message-ID: <20250617152512.021254101@linuxfoundation.org>
+Subject: [PATCH 6.15 505/780] soundwire: only compute port params in specific stream states
+Date: Tue, 17 Jun 2025 17:23:33 +0200
+Message-ID: <20250617152512.062495193@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
 References: <20250617152451.485330293@linuxfoundation.org>
@@ -61,48 +62,51 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kathiravan Thirumoorthy <kathiravan.thirumoorthy@oss.qualcomm.com>
+From: Bard Liao <yung-chuan.liao@linux.intel.com>
 
-[ Upstream commit 25c36b54eafc98b3ef004e2037cea1328d9b8bc5 ]
+[ Upstream commit 62ada17a6217a50fbd1b23f10899890f56effc97 ]
 
-With the settings used in the commit 9c56a1de296e ("phy: qcom-qusb2: add
-QUSB2 support for IPQ5424"), compliance test cases especially
-eye-diagram (Host High-speed Signal Quality) tests are failing.
+Currently, sdw_compute_master_ports() is blindly called for every single
+Manager runtime. However, we should not take into account the stream's
+bandwidth if the stream is just allocated or already deprepared.
 
-Reuse the IPQ6018 settings for IPQ5424 as mentioned in the Hardware
-Design Document which helps to meet all the complaince requirement test
-cases.
-
-Fixes: 9c56a1de296e ("phy: qcom-qusb2: add QUSB2 support for IPQ5424")
-Signed-off-by: Kathiravan Thirumoorthy <kathiravan.thirumoorthy@oss.qualcomm.com>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Link: https://lore.kernel.org/r/20250415-revert_hs_phy_settings-v3-2-3a8f86211b59@oss.qualcomm.com
+Fixes: 25befdf32aa4 ("soundwire: generic_bandwidth_allocation: count the bandwidth of active streams only")
+Link: https://github.com/thesofproject/linux/issues/5398
+Signed-off-by: Bard Liao <yung-chuan.liao@linux.intel.com>
+Reviewed-by: Ranjani Sridharan <ranjani.sridharan@linux.intel.com>
+Reviewed-by: Péter Ujfalusi <peter.ujfalusi@linux.intel.com>
+Link: https://lore.kernel.org/r/20250508062029.6596-1-yung-chuan.liao@linux.intel.com
 Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/phy/qualcomm/phy-qcom-qusb2.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/soundwire/generic_bandwidth_allocation.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/drivers/phy/qualcomm/phy-qcom-qusb2.c b/drivers/phy/qualcomm/phy-qcom-qusb2.c
-index 81b9e9349c3eb..49c37c53b38e7 100644
---- a/drivers/phy/qualcomm/phy-qcom-qusb2.c
-+++ b/drivers/phy/qualcomm/phy-qcom-qusb2.c
-@@ -929,6 +929,9 @@ static const struct phy_ops qusb2_phy_gen_ops = {
+diff --git a/drivers/soundwire/generic_bandwidth_allocation.c b/drivers/soundwire/generic_bandwidth_allocation.c
+index 1cfaccf43eac5..c18f0c16f9297 100644
+--- a/drivers/soundwire/generic_bandwidth_allocation.c
++++ b/drivers/soundwire/generic_bandwidth_allocation.c
+@@ -204,6 +204,13 @@ static void _sdw_compute_port_params(struct sdw_bus *bus,
+ 			port_bo = 1;
  
- static const struct of_device_id qusb2_phy_of_match_table[] = {
- 	{
-+		.compatible	= "qcom,ipq5424-qusb2-phy",
-+		.data		= &ipq6018_phy_cfg,
-+	}, {
- 		.compatible	= "qcom,ipq6018-qusb2-phy",
- 		.data		= &ipq6018_phy_cfg,
- 	}, {
+ 			list_for_each_entry(m_rt, &bus->m_rt_list, bus_node) {
++				/*
++				 * Only runtimes with CONFIGURED, PREPARED, ENABLED, and DISABLED
++				 * states should be included in the bandwidth calculation.
++				 */
++				if (m_rt->stream->state > SDW_STREAM_DISABLED ||
++				    m_rt->stream->state < SDW_STREAM_CONFIGURED)
++					continue;
+ 				sdw_compute_master_ports(m_rt, &params[i], &port_bo, hstop);
+ 			}
+ 
 -- 
 2.39.5
 
