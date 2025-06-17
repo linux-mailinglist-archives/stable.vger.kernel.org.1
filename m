@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-153056-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153118-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E934ADD210
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 17:38:54 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6BB1DADD269
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 17:42:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 50F5A17D31E
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 15:38:47 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 66A673B171D
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 15:41:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6AD32ECD22;
-	Tue, 17 Jun 2025 15:38:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DFBFA2ECD0B;
+	Tue, 17 Jun 2025 15:42:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pLVOKwDK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cnv+OSEw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7017420F090;
-	Tue, 17 Jun 2025 15:38:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B67420F090;
+	Tue, 17 Jun 2025 15:42:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750174724; cv=none; b=FK1D04NFU+HEBHTGNW8rOT59WnP9siMi1gluDHNEqB5TuzXYTk4i7l2XmnzLDYR1La/WAn7crmpQPU9axQr2j9h83pXvU816FjwV7hbG5M/m6EMmB6hMFpMLbSNEGKIGk0Kb0xDNdoefkl7EJHDeyM2uRVbACOB3s9+whxz4ANA=
+	t=1750174921; cv=none; b=CLXC2pDtp5uyCI0fpcMxYJF8NpGouEY74HrQBAXBfxqXaDzLffyMTeDPaPzXIh8/f3r2L7YSY8TzzUkekfEDRuRgxqzAUyHXfDDPTgKg+63Zl1ZE0CbZlhyhTT2yQchjn3fxL/mTU2yOBmP0pRHIicOdKx+okrC+bJgfm8mnXTM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750174724; c=relaxed/simple;
-	bh=gt3NNMBs8jshSCjviRvU0w2hyuC/Ai6fEDxfHfQGjPc=;
+	s=arc-20240116; t=1750174921; c=relaxed/simple;
+	bh=4tXelUGmqGmZYQSrzbeZq1A14okw6CAeMhWG5LMrwNY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ir5i97wj0cYilyUjUXUuwdY7U9ybfpGI5HH3sl6PhTeadWs8vJhllQB887tyg5g3GbjSfbKdga4JCdDKQk9qiqbZRSOrcXFISQZei7rHI+PqfTnm3KdXyApajqAwTADdFCxvoDTMjvsSgTLD8ImUrE4mwnVU/u5Nk88PMqtRo70=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pLVOKwDK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D7D8C4CEE3;
-	Tue, 17 Jun 2025 15:38:43 +0000 (UTC)
+	 MIME-Version; b=TMptGXQ/sK0BrsnNbMlE96S89P10+CcmFL5wauCVV8HdfB8Q3e7CocLB+1ysAFOxC4/e2iSdPBSlQ6TUhaOAd4wMnKNOlxjAUTPe+1dJfoDx1oemzjoVCNjH0cKoMMGUQrZ2wHTxdvmAi7enpnGYppwNwhCT7FLgd2IRp9jaPK4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cnv+OSEw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4872C4CEE7;
+	Tue, 17 Jun 2025 15:42:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750174724;
-	bh=gt3NNMBs8jshSCjviRvU0w2hyuC/Ai6fEDxfHfQGjPc=;
+	s=korg; t=1750174921;
+	bh=4tXelUGmqGmZYQSrzbeZq1A14okw6CAeMhWG5LMrwNY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pLVOKwDKDzvLAOyZJ3lUT8+HUgTlPiouf3M3bcORg2X4RqA0eWrAtJPoIZLE2NfHK
-	 OEn01MtO+oeynHbDsfjIcO2If4DRnnDwpoT/1fk2muaBwP2DDnx3lLucy4o3JTLo3z
-	 3IMqScH8ViS8OGbKK/FWs1t/QO6alQczmBEwaoPA=
+	b=cnv+OSEwL0vmoi85IkblR6K+eRHu2SpjHe2NjBcEekatZ7hC+UNPmu+xMT/XSA/Pw
+	 rcSyGJHuiMQOjwPklrklurM2V3Xfa0VQDzZhAJumRP0nMeVb0hK93XJMJVF5KVuvHr
+	 lRxW0oiqLt7b3mEy6K6q8h0H0PlMavNwV905NRdY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Chen-Yu Tsai <wenst@chromium.org>,
-	Daniel Lezcano <daniel.lezcano@linaro.org>,
+	Armin Wolf <W_Armin@gmx.de>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 054/512] thermal/drivers/mediatek/lvts: Fix debugfs unregister on failure
-Date: Tue, 17 Jun 2025 17:20:20 +0200
-Message-ID: <20250617152421.726913858@linuxfoundation.org>
+Subject: [PATCH 6.12 055/512] ACPI: OSI: Stop advertising support for "3.0 _SCP Extensions"
+Date: Tue, 17 Jun 2025 17:20:21 +0200
+Message-ID: <20250617152421.767319124@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
 References: <20250617152419.512865572@linuxfoundation.org>
@@ -67,77 +66,42 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+From: Armin Wolf <W_Armin@gmx.de>
 
-[ Upstream commit b49825661af93d9b8d7236f914803f136896f8fd ]
+[ Upstream commit 8cf4fdac9bdead7bca15fc56fdecdf78d11c3ec6 ]
 
-When running the probe function for this driver, the function
-lvts_debugfs_init() gets called in lvts_domain_init() which, in
-turn, gets called in lvts_probe() before registering threaded
-interrupt handlers.
+As specified in section 5.7.2 of the ACPI specification the feature
+group string "3.0 _SCP Extensions" implies that the operating system
+evaluates the _SCP control method with additional parameters.
 
-Even though it's unlikely, the last call may fail and, if it does,
-there's nothing removing the already created debugfs folder and
-files.
+However the ACPI thermal driver evaluates the _SCP control method
+without those additional parameters, conflicting with the above
+feature group string advertised to the firmware thru _OSI.
 
-In order to fix that, instead of calling the lvts debugfs cleanup
-function upon failure, register a devm action that will take care
-of calling that upon failure or driver removal.
+Stop advertising support for this feature string to avoid confusing
+the ACPI firmware.
 
-Since devm was used, also delete the call to lvts_debugfs_exit()
-in the lvts_remove() callback, as now that's done automatically.
-
-Fixes: f5f633b18234 ("thermal/drivers/mediatek: Add the Low Voltage Thermal Sensor driver")
-Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Reviewed-by: Chen-Yu Tsai <wenst@chromium.org>
-Link: https://lore.kernel.org/r/20250402083852.20624-1-angelogioacchino.delregno@collabora.com
-Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
+Fixes: e5f660ebef68 ("ACPI / osi: Collect _OSI handling into one single file")
+Signed-off-by: Armin Wolf <W_Armin@gmx.de>
+Link: https://patch.msgid.link/20250410165456.4173-2-W_Armin@gmx.de
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/thermal/mediatek/lvts_thermal.c | 16 ++++++++--------
- 1 file changed, 8 insertions(+), 8 deletions(-)
+ drivers/acpi/osi.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/drivers/thermal/mediatek/lvts_thermal.c b/drivers/thermal/mediatek/lvts_thermal.c
-index 3295b27ab70d2..944c28a0c4736 100644
---- a/drivers/thermal/mediatek/lvts_thermal.c
-+++ b/drivers/thermal/mediatek/lvts_thermal.c
-@@ -209,6 +209,13 @@ static const struct debugfs_reg32 lvts_regs[] = {
- 	LVTS_DEBUG_FS_REGS(LVTS_CLKEN),
+diff --git a/drivers/acpi/osi.c b/drivers/acpi/osi.c
+index df9328c850bd3..f2c943b934be0 100644
+--- a/drivers/acpi/osi.c
++++ b/drivers/acpi/osi.c
+@@ -42,7 +42,6 @@ static struct acpi_osi_entry
+ osi_setup_entries[OSI_STRING_ENTRIES_MAX] __initdata = {
+ 	{"Module Device", true},
+ 	{"Processor Device", true},
+-	{"3.0 _SCP Extensions", true},
+ 	{"Processor Aggregator Device", true},
  };
  
-+static void lvts_debugfs_exit(void *data)
-+{
-+	struct lvts_domain *lvts_td = data;
-+
-+	debugfs_remove_recursive(lvts_td->dom_dentry);
-+}
-+
- static int lvts_debugfs_init(struct device *dev, struct lvts_domain *lvts_td)
- {
- 	struct debugfs_regset32 *regset;
-@@ -241,12 +248,7 @@ static int lvts_debugfs_init(struct device *dev, struct lvts_domain *lvts_td)
- 		debugfs_create_regset32("registers", 0400, dentry, regset);
- 	}
- 
--	return 0;
--}
--
--static void lvts_debugfs_exit(struct lvts_domain *lvts_td)
--{
--	debugfs_remove_recursive(lvts_td->dom_dentry);
-+	return devm_add_action_or_reset(dev, lvts_debugfs_exit, lvts_td);
- }
- 
- #else
-@@ -1352,8 +1354,6 @@ static void lvts_remove(struct platform_device *pdev)
- 
- 	for (i = 0; i < lvts_td->num_lvts_ctrl; i++)
- 		lvts_ctrl_set_enable(&lvts_td->lvts_ctrl[i], false);
--
--	lvts_debugfs_exit(lvts_td);
- }
- 
- static const struct lvts_ctrl_data mt7988_lvts_ap_data_ctrl[] = {
 -- 
 2.39.5
 
