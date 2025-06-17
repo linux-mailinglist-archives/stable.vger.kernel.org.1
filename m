@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-153818-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153820-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 45C86ADD66B
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:33:16 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 27312ADD6DF
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:38:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3FFFA7A3D8A
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:24:22 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 004A1164984
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:25:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC85B2EE27F;
-	Tue, 17 Jun 2025 16:19:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 709C02EE28A;
+	Tue, 17 Jun 2025 16:20:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G3sCOfvp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nTwXjs4e"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88E8E2ED84A;
-	Tue, 17 Jun 2025 16:19:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 296A02EE286;
+	Tue, 17 Jun 2025 16:20:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750177195; cv=none; b=MOu2ixqfkJvvps9Kk+e7nZBjTgm+x/eUsBntgT2Sd/lQNrdF/uUN3Y2g3HkynW+76zlXj+0QGXWDWD/EkgqP28VJ7qTBsZ+iZwCxUnVBauVcsnUoDc2FST4PT3A15RsLZBdKSim3qfgd55+LM1Zgkg35ldUmHS4COeSHM3mNBDk=
+	t=1750177202; cv=none; b=X4g/Wr2sfszLzGYexrS1ro6upRGPEUOuaATFfB+R7fYbQw1lgtgx0/ccxZizpL5FzQ12tsJ6joe0vQp97+K1n0t5zNROy9gD3lRYvP1VPMG7MWIotUQ0T9p7Ux5fGKL6KxuvRr7qeftgxHuY73AeePGzkNhxtADclESP8RnRing=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750177195; c=relaxed/simple;
-	bh=yHOrWKvR43kb8Z7jJ5xyqKVDc9w2QSzWkYpPkn60YH4=;
+	s=arc-20240116; t=1750177202; c=relaxed/simple;
+	bh=3ceKxB66v8R6Ks33kTiiALSx83H9SBNiL9x0WrkJjgI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TAPgg+8eOHi4D4N5Uro8ACs2DbLMmMNnBv8MiYVRnODTEnqeYBK5Tb9S0L29zCW/Ytd4k73f0h5DSyKQHDJwe6Am06eEO+NWiNTaYKxNsP4O1C1RtIcDWWTq8nxvCzxzZ67MYDNjGuAvqAdmkkLttlhG0s2ac4Is2YwyzR6E9rs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G3sCOfvp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED409C4CEE7;
-	Tue, 17 Jun 2025 16:19:54 +0000 (UTC)
+	 MIME-Version; b=IZ7eOWJXx3388K/EdyaCJIM4DqsshwU5a1UpPwGFv734bs7cHQafb9OIgb900F8J2YQUMbsEp74TujAV1QJTbIO+E9Bu0Vawxk2XE33PMzMNVDSW9eafGrZQDmTljqXqdc+xz+L/zwlg7zgch/9y0xCs/IimcBkQ2ZIufXKSfqs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nTwXjs4e; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80B7BC4CEE3;
+	Tue, 17 Jun 2025 16:20:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750177195;
-	bh=yHOrWKvR43kb8Z7jJ5xyqKVDc9w2QSzWkYpPkn60YH4=;
+	s=korg; t=1750177202;
+	bh=3ceKxB66v8R6Ks33kTiiALSx83H9SBNiL9x0WrkJjgI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=G3sCOfvpUwDmU3O6SSiCCDj7jV+pD7zac/d2PXFkmO1Ej4zQVglXhVhCz4K3vVLNf
-	 OKQOHMYrneJHoBJkiT4RJbsrAiDyoRIU1vSn4KO0xjrgWVxL/uvdrODSI5ZGx/ulE6
-	 xPob18fSEEnO+dJV5JRVfKLszLLsJFns2OT7PKCc=
+	b=nTwXjs4eByn0NF2KNzUjy+8vHrA5Cm3topSkzsX1S/oWRMDzBqmiF66yngRZ+N/y2
+	 Ufb8jBAWpJrxVMVSLsnCWGw+44dwIYw2Rl9KD5BvoKve9ZPOywLQjQNxhWVg7RAxZa
+	 gLZ51Tz/ahllxZ0onhQ+7QaDhrT4j/6JVB00dIp4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chin-Yen Lee <timlee@realtek.com>,
-	Ping-Ke Shih <pkshih@realtek.com>,
+	Rolf Eike Beer <eb@emlix.com>,
+	Lu Baolu <baolu.lu@linux.intel.com>,
+	Joerg Roedel <jroedel@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 270/780] wifi: rtw89: fix firmware scan delay unit for WiFi 6 chips
-Date: Tue, 17 Jun 2025 17:19:38 +0200
-Message-ID: <20250617152502.462482078@linuxfoundation.org>
+Subject: [PATCH 6.15 271/780] iommu: remove duplicate selection of DMAR_TABLE
+Date: Tue, 17 Jun 2025 17:19:39 +0200
+Message-ID: <20250617152502.503347273@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
 References: <20250617152451.485330293@linuxfoundation.org>
@@ -66,36 +67,34 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Chin-Yen Lee <timlee@realtek.com>
+From: Rolf Eike Beer <eb@emlix.com>
 
-[ Upstream commit 3cc35394fac15d533639c9c9e42f28d28936a4a0 ]
+[ Upstream commit 9548feff840a05d61783e6316d08ed37e115f3b1 ]
 
-The scan delay unit of firmware command for WiFi 6 chips is
-microsecond, but is wrong set now and lead to abnormal work
-for net-detect. Correct the unit to avoid the error.
+This is already done in intel/Kconfig.
 
-Fixes: e99dd80c8a18 ("wifi: rtw89: wow: add delay option for net-detect")
-Signed-off-by: Chin-Yen Lee <timlee@realtek.com>
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
-Link: https://patch.msgid.link/20250513125203.6858-1-pkshih@realtek.com
+Fixes: 70bad345e622 ("iommu: Fix compilation without CONFIG_IOMMU_INTEL")
+Signed-off-by: Rolf Eike Beer <eb@emlix.com>
+Reviewed-by: Lu Baolu <baolu.lu@linux.intel.com>
+Link: https://lore.kernel.org/r/2232605.Mh6RI2rZIc@devpool92.emlix.com
+Signed-off-by: Joerg Roedel <jroedel@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/realtek/rtw89/fw.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/iommu/Kconfig | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/drivers/net/wireless/realtek/rtw89/fw.c b/drivers/net/wireless/realtek/rtw89/fw.c
-index 8643b17866f89..6c52b0425f2ea 100644
---- a/drivers/net/wireless/realtek/rtw89/fw.c
-+++ b/drivers/net/wireless/realtek/rtw89/fw.c
-@@ -5477,7 +5477,7 @@ int rtw89_fw_h2c_scan_list_offload_be(struct rtw89_dev *rtwdev, int ch_num,
- 	return 0;
- }
- 
--#define RTW89_SCAN_DELAY_TSF_UNIT 104800
-+#define RTW89_SCAN_DELAY_TSF_UNIT 1000000
- int rtw89_fw_h2c_scan_offload_ax(struct rtw89_dev *rtwdev,
- 				 struct rtw89_scan_option *option,
- 				 struct rtw89_vif_link *rtwvif_link,
+diff --git a/drivers/iommu/Kconfig b/drivers/iommu/Kconfig
+index cd750f512deee..bad585b45a31d 100644
+--- a/drivers/iommu/Kconfig
++++ b/drivers/iommu/Kconfig
+@@ -199,7 +199,6 @@ source "drivers/iommu/riscv/Kconfig"
+ config IRQ_REMAP
+ 	bool "Support for Interrupt Remapping"
+ 	depends on X86_64 && X86_IO_APIC && PCI_MSI && ACPI
+-	select DMAR_TABLE if INTEL_IOMMU
+ 	help
+ 	  Supports Interrupt remapping for IO-APIC and MSI devices.
+ 	  To use x2apic mode in the CPU's which support x2APIC enhancements or
 -- 
 2.39.5
 
