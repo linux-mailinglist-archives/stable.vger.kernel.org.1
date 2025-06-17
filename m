@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-153224-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153227-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 07CF2ADD331
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 17:54:35 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3DD76ADD306
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 17:52:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BFCA03BFDC3
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 15:50:42 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 395BB7A9A3C
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 15:49:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF6192E88B1;
-	Tue, 17 Jun 2025 15:47:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 728512DFF2A;
+	Tue, 17 Jun 2025 15:48:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WIbMoo3X"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P6Olthrh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BDED2DFF22;
-	Tue, 17 Jun 2025 15:47:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 216512EA14F;
+	Tue, 17 Jun 2025 15:48:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750175274; cv=none; b=Z3S7KZkAN6/8Zp1YZsj6kV3etfi+8eF14RKedhSNvVpJivTmnP0Dp96XGJsiDmnwEEFU0C8wsM/z/3uCHsSVwhj92EaXcAoeacdFXyFQeRXUFlJobimWCqn8mhVIpz077aWuBhauQz5/hjwvhaw2CV/JJ8SUSmoPLNxGFUb5COg=
+	t=1750175284; cv=none; b=N5mqwWKefK/NSiX6TUNgYYgdOCbKKUqwLu+FZ39wqB0UbaaQ7JAojKKaoG/4yezxlpoAyy51dZwSWyEpnp4nbqxdQISNOiZT7u3JdH+kWqd8LAvEWWmElHXztOEjmtKrjeU9qAxcYwk5wOt2UG2mqfGj6X4HInwlu6eJLem048E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750175274; c=relaxed/simple;
-	bh=7Zg+inp6c56P0SKZqRsXCTEoqeJE5uzbgDUsaCmUUHs=;
+	s=arc-20240116; t=1750175284; c=relaxed/simple;
+	bh=dVcKa67pkXNf20oihiI6q2gWjP9yAMDBha9zzalTAXQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KDH7buHgZ9uTShPdrHAUmhdWLiJMgmevYnMyF/2RdTFMK4l6K15aJlDiDUyiKW4jA8urc3sjvYtCQ8YnU0kB/3RgjyF9PLeTek96CTnYrBfCUgksW9X9Gi2nlUuYc+baJqpNPcj9R9CDRgjA5/FlVg61FxuVEiz7qU+5JnHLw8s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WIbMoo3X; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0F66C4CEE3;
-	Tue, 17 Jun 2025 15:47:53 +0000 (UTC)
+	 MIME-Version:Content-Type; b=rwes8+xvQfYf41Dh5X5XBNwe/cenCxbhpSvoDeAUrRGFrBkqhdUvGFrsaAhqEEdhN8HCOWLQMysHopk1bL3Op+tQrVjo2df/mlhTDkQWPTSKzPvakThOf5eWjhwaY4Uk48XRWRx5Ji1RPKWF0TO+hiy6Yeetgmg1FT7MISm/xkg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P6Olthrh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 853E6C4CEF0;
+	Tue, 17 Jun 2025 15:48:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750175274;
-	bh=7Zg+inp6c56P0SKZqRsXCTEoqeJE5uzbgDUsaCmUUHs=;
+	s=korg; t=1750175284;
+	bh=dVcKa67pkXNf20oihiI6q2gWjP9yAMDBha9zzalTAXQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WIbMoo3X5UH5f6rGwlS+ZFMpthOa1b+7LhP94GbKaWNcZ+WW0vH+AWLFL92MSCnVL
-	 bkBVE267b1c3IP0JdB7/TCxxInBP7R47pCisWZlZ4M/ExbzuIfWRNPu3xjey9VEnje
-	 fFek5DLbyrvwYbGH8gqBXiIpKW/60WAEpT3vjNVs=
+	b=P6Olthrhm/LnK9+x1r0mrUYAmBlOBkz3ivQjVf2fYdo7LCXvpwNPhpXJHRe308Agy
+	 pNF6aTpUAbL+KjqBqjB1akzOScXe8c0sMV5JMmTzX7E9vLE9Hov2qTzNu2hXEljK39
+	 1zWPL2Un5ASTlYTjP/6PjADPknibBPV95Bn7n4pY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kees Cook <kees@kernel.org>,
-	Peter Ujfalusi <peter.ujfalusi@linux.intel.com>,
+	Thorsten Blum <thorsten.blum@linux.dev>,
+	=?UTF-8?q?Amadeusz=20S=C5=82awi=C5=84ski?= <amadeuszx.slawinski@linux.intel.com>,
 	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 069/780] ASoC: SOF: ipc4-pcm: Adjust pipeline_list->pipelines allocation type
-Date: Tue, 17 Jun 2025 17:16:17 +0200
-Message-ID: <20250617152454.326619287@linuxfoundation.org>
+Subject: [PATCH 6.15 070/780] ASoC: Intel: avs: Fix kcalloc() sizes
+Date: Tue, 17 Jun 2025 17:16:18 +0200
+Message-ID: <20250617152454.367141504@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
 References: <20250617152451.485330293@linuxfoundation.org>
@@ -61,50 +61,48 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kees Cook <kees@kernel.org>
+From: Thorsten Blum <thorsten.blum@linux.dev>
 
-[ Upstream commit 00a371adbbfb46db561db85a9d7b53b2363880a1 ]
+[ Upstream commit d20df86b056b95845f6ed52da1010059202a0c23 ]
 
-In preparation for making the kmalloc family of allocators type aware,
-we need to make sure that the returned type from the allocation matches
-the type of the variable being assigned. (Before, the allocator would
-always return "void *", which can be implicitly cast to any pointer type.)
+rlist, clist, and slist are allocated using sizeof(pointer) instead of
+sizeof(*pointer). Fix the allocations by using sizeof(*pointer) and
+avoid overallocating memory on 64-bit systems.
 
-The assigned type is "struct snd_sof_pipeline **", but the returned type
-will be "struct snd_sof_widget **". These are the same size allocation
-(pointer size) but the types don't match. Adjust the allocation type to
-match the assignment.
-
-Signed-off-by: Kees Cook <kees@kernel.org>
-Fixes: 9c04363d222b ("ASoC: SOF: Introduce struct snd_sof_pipeline")
-Acked-by: Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
-Link: https://patch.msgid.link/20250426062511.work.859-kees@kernel.org
+Fixes: f2f847461fb7 ("ASoC: Intel: avs: Constrain path based on BE capabilities")
+Signed-off-by: Thorsten Blum <thorsten.blum@linux.dev>
+Reviewed-by: Amadeusz Sławiński <amadeuszx.slawinski@linux.intel.com>
+Link: https://patch.msgid.link/20250426141342.94134-2-thorsten.blum@linux.dev
 Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/sof/ipc4-pcm.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ sound/soc/intel/avs/path.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/sound/soc/sof/ipc4-pcm.c b/sound/soc/sof/ipc4-pcm.c
-index c09b424ab863d..8eee3e1aadf93 100644
---- a/sound/soc/sof/ipc4-pcm.c
-+++ b/sound/soc/sof/ipc4-pcm.c
-@@ -784,7 +784,8 @@ static int sof_ipc4_pcm_setup(struct snd_sof_dev *sdev, struct snd_sof_pcm *spcm
+diff --git a/sound/soc/intel/avs/path.c b/sound/soc/intel/avs/path.c
+index cafb8c6198bed..8f1bf8d0af8f9 100644
+--- a/sound/soc/intel/avs/path.c
++++ b/sound/soc/intel/avs/path.c
+@@ -131,9 +131,9 @@ int avs_path_set_constraint(struct avs_dev *adev, struct avs_tplg_path_template
+ 	list_for_each_entry(path_template, &template->path_list, node)
+ 		i++;
  
- 		/* allocate memory for max number of pipeline IDs */
- 		pipeline_list->pipelines = kcalloc(ipc4_data->max_num_pipelines,
--						   sizeof(struct snd_sof_widget *), GFP_KERNEL);
-+						   sizeof(*pipeline_list->pipelines),
-+						   GFP_KERNEL);
- 		if (!pipeline_list->pipelines) {
- 			sof_ipc4_pcm_free(sdev, spcm);
- 			return -ENOMEM;
+-	rlist = kcalloc(i, sizeof(rlist), GFP_KERNEL);
+-	clist = kcalloc(i, sizeof(clist), GFP_KERNEL);
+-	slist = kcalloc(i, sizeof(slist), GFP_KERNEL);
++	rlist = kcalloc(i, sizeof(*rlist), GFP_KERNEL);
++	clist = kcalloc(i, sizeof(*clist), GFP_KERNEL);
++	slist = kcalloc(i, sizeof(*slist), GFP_KERNEL);
+ 
+ 	i = 0;
+ 	list_for_each_entry(path_template, &template->path_list, node) {
 -- 
 2.39.5
 
