@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-154194-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-154511-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5FF77ADD900
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 19:01:33 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A58B8ADD970
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 19:06:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0A2F83AC799
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:44:14 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 988732C24EC
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:57:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE472285060;
-	Tue, 17 Jun 2025 16:40:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E9C62FA63D;
+	Tue, 17 Jun 2025 16:57:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ai3U9g3s"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M6iyj7/x"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A555285055;
-	Tue, 17 Jun 2025 16:40:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1912FCA4B;
+	Tue, 17 Jun 2025 16:57:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750178406; cv=none; b=SE5xrfXH1Bw+tNkh6gvwUfLtSmodGSjX5UnEu6IBt6gZyAZ8qV2RwQe/kTguS3bA7Sk/MuN0keryMPZNZnAsozBPW/0p0v7va4aTMtqNqPWEpaZFTj2vMmuA+43SpzJD7F9JungkJXHfIsGAxj71Q9v4ZPVw8d8hcuZkCwEnwjs=
+	t=1750179442; cv=none; b=PQWqKdnPi0oDogIrK1Y30MdyrAdFMEgfo4m09g1Tru25gGLzZee80JouiMDeTo+FT7KdfWQpIIur3WVAAl/15c/V4tHSmMyyQZJOE4uLkbunJ1YEv/oF+1J3FfIf86BqjTWyn24baNrzWSzcxXsE5qQjbIn4kj8ZxLcxa6s8hN4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750178406; c=relaxed/simple;
-	bh=Dd960/mSBKiX13a2ISlXRcpWxWbPq5SJd8bGApVqVdM=;
+	s=arc-20240116; t=1750179442; c=relaxed/simple;
+	bh=btCiPbTb8r9U/o/nvqr5xkZO9spu66etZZE+nGEveq0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tWTQdzDQ0gxihvZHxysVTWgPlsUlp5TG7Qgtd701wmiUx44aDcdCUv0CSBnz68c4ooRbHqxY46LVirSxXAkizyRYM98vCIBTiCbu2GXcRrDEQez/evMCTeX2LANZuDVLEq0G6C6VoOLRzNtyUkKAaqWXP8YHWYD1MxJgVSKhF9Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ai3U9g3s; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1640AC4CEE3;
-	Tue, 17 Jun 2025 16:40:05 +0000 (UTC)
+	 MIME-Version; b=LHqxhMp5UsbQVNvMaPzgfXX70PGxTQ6L+ucXxG38pkkSXE7+60j3nO436O4+f93YJwXi9c/YQXY/foJMLfdAePhoylkHlVDpaECKWFkc9veG6o9vCgjL088JVU/fW9r9kPlynHg+yz+a4DFVknvtSxtav6OFThlHWOAQJ5DXDoE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M6iyj7/x; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A09F1C4CEE3;
+	Tue, 17 Jun 2025 16:57:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750178406;
-	bh=Dd960/mSBKiX13a2ISlXRcpWxWbPq5SJd8bGApVqVdM=;
+	s=korg; t=1750179442;
+	bh=btCiPbTb8r9U/o/nvqr5xkZO9spu66etZZE+nGEveq0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ai3U9g3s2uoX1fApamboLCG+J9E87B2RcNm60Gkb+ZlnXbwbO/+t2RAmAOR7I3Lgi
-	 4lVZKTd2a182zZWLZiAC1EnHipzHeg8HTB58TnFy1e/Byc01B4U9YXA5pc85SvuqoJ
-	 TEYqZwaTGt2Phm5j/SDdoHot6YU0SWN8uLJoWJFE=
+	b=M6iyj7/x3vYhuW/W3l5l74gyXhcApMylpgMsUMy00+nY8tXDapxafwWprQ7fFnoIt
+	 o4pvzKqYKsqbJwY8oxAuOoR8y4Lf0lHQyyr7HK0yaTmSgIAgHhCWfATuXSAr8pmb13
+	 /VyPsyY87/2boP/WGCwu3f6QK8Dscq60+2hlIlmM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dave Penkler <dpenkler@gmail.com>
-Subject: [PATCH 6.12 489/512] usb: usbtmc: Fix read_stb function and get_stb ioctl
-Date: Tue, 17 Jun 2025 17:27:35 +0200
-Message-ID: <20250617152439.447414663@linuxfoundation.org>
+	David Heimann <d@dmeh.net>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 6.15 748/780] ALSA: usb-audio: Add implicit feedback quirk for RODE AI-1
+Date: Tue, 17 Jun 2025 17:27:36 +0200
+Message-ID: <20250617152521.963835691@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
-References: <20250617152419.512865572@linuxfoundation.org>
+In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
+References: <20250617152451.485330293@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,74 +61,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dave Penkler <dpenkler@gmail.com>
+From: David Heimann <d@dmeh.net>
 
-commit acb3dac2805d3342ded7dbbd164add32bbfdf21c upstream.
+commit 6a3439a417b910e662c666993798e0691bc81147 upstream.
 
-The usbtmc488_ioctl_read_stb function relied on a positive return from
-usbtmc_get_stb to reset the srq condition in the driver. The
-USBTMC_IOCTL_GET_STB case tested for a positive return to return the stb
-to the user.
+The RODE AI-1 audio interface requires implicit feedback sync between
+playback endpoint 0x03 and feedback endpoint 0x84 on interface 3, but
+doesn't advertise this in its USB descriptors.
 
-Commit: <cac01bd178d6> ("usb: usbtmc: Fix erroneous get_stb ioctl
-error returns") changed the return value of usbtmc_get_stb to 0 on
-success instead of returning the value of usb_control_msg which is
-positive in the normal case. This change caused the function
-usbtmc488_ioctl_read_stb and the USBTMC_IOCTL_GET_STB ioctl to no
-longer function correctly.
+Without this quirk, the device receives audio data but produces no output.
 
-Change the test in usbtmc488_ioctl_read_stb to test for failure
-first and return the failure code immediately.
-Change the test for the USBTMC_IOCTL_GET_STB ioctl to test for 0
-instead of a positive value.
-
-Fixes: cac01bd178d6 ("usb: usbtmc: Fix erroneous get_stb ioctl error returns")
-Cc: stable@vger.kernel.org
-Signed-off-by: Dave Penkler <dpenkler@gmail.com>
-Link: https://lore.kernel.org/r/20250521121656.18174-3-dpenkler@gmail.com
+Signed-off-by: David Heimann <d@dmeh.net>
+Cc: <stable@vger.kernel.org>
+Link: https://patch.msgid.link/084dc88c-1193-4a94-a002-5599adff936c@app.fastmail.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/class/usbtmc.c |   17 +++++++++--------
- 1 file changed, 9 insertions(+), 8 deletions(-)
+ sound/usb/implicit.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/usb/class/usbtmc.c
-+++ b/drivers/usb/class/usbtmc.c
-@@ -565,14 +565,15 @@ static int usbtmc488_ioctl_read_stb(stru
- 
- 	rv = usbtmc_get_stb(file_data, &stb);
- 
--	if (rv > 0) {
--		srq_asserted = atomic_xchg(&file_data->srq_asserted,
--					srq_asserted);
--		if (srq_asserted)
--			stb |= 0x40; /* Set RQS bit */
-+	if (rv < 0)
-+		return rv;
-+
-+	srq_asserted = atomic_xchg(&file_data->srq_asserted, srq_asserted);
-+	if (srq_asserted)
-+		stb |= 0x40; /* Set RQS bit */
-+
-+	rv = put_user(stb, (__u8 __user *)arg);
- 
--		rv = put_user(stb, (__u8 __user *)arg);
--	}
- 	return rv;
- 
- }
-@@ -2201,7 +2202,7 @@ static long usbtmc_ioctl(struct file *fi
- 
- 	case USBTMC_IOCTL_GET_STB:
- 		retval = usbtmc_get_stb(file_data, &tmp_byte);
--		if (retval > 0)
-+		if (!retval)
- 			retval = put_user(tmp_byte, (__u8 __user *)arg);
- 		break;
- 
+--- a/sound/usb/implicit.c
++++ b/sound/usb/implicit.c
+@@ -57,6 +57,7 @@ static const struct snd_usb_implicit_fb_
+ 	IMPLICIT_FB_FIXED_DEV(0x31e9, 0x0002, 0x81, 2), /* Solid State Logic SSL2+ */
+ 	IMPLICIT_FB_FIXED_DEV(0x0499, 0x172f, 0x81, 2), /* Steinberg UR22C */
+ 	IMPLICIT_FB_FIXED_DEV(0x0d9a, 0x00df, 0x81, 2), /* RTX6001 */
++	IMPLICIT_FB_FIXED_DEV(0x19f7, 0x000a, 0x84, 3), /* RODE AI-1 */
+ 	IMPLICIT_FB_FIXED_DEV(0x22f0, 0x0006, 0x81, 3), /* Allen&Heath Qu-16 */
+ 	IMPLICIT_FB_FIXED_DEV(0x1686, 0xf029, 0x82, 2), /* Zoom UAC-2 */
+ 	IMPLICIT_FB_FIXED_DEV(0x2466, 0x8003, 0x86, 2), /* Fractal Audio Axe-Fx II */
 
 
 
