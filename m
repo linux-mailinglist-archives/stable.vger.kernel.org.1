@@ -1,63 +1,56 @@
-Return-Path: <stable+bounces-154371-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153851-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C633ADD968
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 19:06:00 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C452ADD68D
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:35:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 71D431948035
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:52:04 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E6959403800
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:26:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E763C2DE20A;
-	Tue, 17 Jun 2025 16:49:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EAFB22EF298;
+	Tue, 17 Jun 2025 16:21:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h/4mXb6w"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DR15T1e5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A30BA1E1C22;
-	Tue, 17 Jun 2025 16:49:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A76E42DFF02;
+	Tue, 17 Jun 2025 16:21:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750178981; cv=none; b=U9/zhlAf6Iw3uYVQBY7KZVchsPT1t6nc9s1qLIyG9myb4OBJJXmd1YsLC7XgT8OJr5iJGT6c4d1jwjYmm0pa9Uc3CZmnNgUhz8+qipxG/YteOQVqXAoZnxpOVHvqFrfwyO/rDbsHmIkb7TW9b0d6h+sSiT2xJkkfWXuznAG/lx0=
+	t=1750177302; cv=none; b=M9IYD+j5CML1q+60w6xOhMfZAajuW0XRzaB9koPQ+6MrXY7ksaD2v14HIGdJquB3zSPTQHvNYb7wlOm/TP/MkY6fhw2NE31g/738q//nGAx3C51wu7zSPBdr1k5I3XfQpgL1PV9FXjEF85z6I6PNxuHEumCH4ganTjm/uxgkAeo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750178981; c=relaxed/simple;
-	bh=Sx+M5vtC/p01iD3zOEq62VL4Cey6+BgoyPjZ2rIsW0M=;
+	s=arc-20240116; t=1750177302; c=relaxed/simple;
+	bh=3LKG0Fq88AmXqHmzTeuZWV7CvQ/dPt9AcAnahiV7mIQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UX0yNY7YBV8EMI2i5Q2NR194FPGF5uLZAaSsHGi+OjeEFlK/WNf3FOI0K8Yk2WzsawP/BVsmv5yYZfAf/FpqB6VxrrGE0R3Wu5+RdRn2nLQCfyAmj6JbsBJlG+3ZK69Ql3yJRWsI0pVwIQ3eYxND9ObbvISMwseAA/akAsy/Mjk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=h/4mXb6w; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9EEDBC4CEE3;
-	Tue, 17 Jun 2025 16:49:40 +0000 (UTC)
+	 MIME-Version; b=juRjnrDInzD/YBzOUoE3LJG9ok5DgVu9++O67nFEec/FDx4ozoIpVBuOSdV5Yt+eyrGyfU/2IToeQTJMTJoP3SACgviY7avNu2PDm0mDLMaoCH0HWMOwyxxoZd4GjEtLVhm7X+TWaOB+c+4OplbJNufe+QKac2cc5tzSnhQGFKE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DR15T1e5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15A80C4CEE3;
+	Tue, 17 Jun 2025 16:21:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750178981;
-	bh=Sx+M5vtC/p01iD3zOEq62VL4Cey6+BgoyPjZ2rIsW0M=;
+	s=korg; t=1750177302;
+	bh=3LKG0Fq88AmXqHmzTeuZWV7CvQ/dPt9AcAnahiV7mIQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=h/4mXb6wmLCDjpfOINqkhSXmYA8eGr/kL6Bkr6aWxewQ1vHOTUuSQwsq+OzkQrbSI
-	 hTdar8ggH1tR6PMTqxCb4XleX3BLNLUMv9neG51uZuvZOBtqM4hIoG0R+yb7goMJ41
-	 8/Jp2OHeoVOHiy3iRKdXGhPcaaCuMtquJsk+28E0=
+	b=DR15T1e5QasYw5rzd49BW1VtkCmDAu7ft2Bi4NXkUUHK2VrcvDW2Ck7KDDVT696db
+	 hxGMqBFJlwZEzp99yOUmdm7se6PO8xBw7FECL3DK76vjTXzxXViIgTrKpvodhRlRC2
+	 FfwuvMLx87ECyh7/VJoKaFdt9zFCj4ZT9/sIncrc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jesus Narvaez <jesus.narvaez@intel.com>,
-	Daniele Ceraolo Spurio <daniele.ceraolospurio@intel.com>,
-	Alan Previn <alan.previn.teres.alexis@intel.com>,
-	Anshuman Gupta <anshuman.gupta@intel.com>,
-	Mousumi Jana <mousumi.jana@intel.com>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>,
-	Matt Roper <matthew.d.roper@intel.com>,
-	John Harrison <John.C.Harrison@Intel.com>,
-	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
+	Sam Winchenbach <swinchenbach@arka.org>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 582/780] drm/i915/guc: Check if expecting reply before decrementing outstanding_submission_g2h
+Subject: [PATCH 6.12 324/512] iio: filter: admv8818: fix band 4, state 15
 Date: Tue, 17 Jun 2025 17:24:50 +0200
-Message-ID: <20250617152515.186794111@linuxfoundation.org>
+Message-ID: <20250617152432.729697313@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
-References: <20250617152451.485330293@linuxfoundation.org>
+In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
+References: <20250617152419.512865572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,54 +62,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jesus Narvaez <jesus.narvaez@intel.com>
+From: Sam Winchenbach <swinchenbach@arka.org>
 
-[ Upstream commit c557fd1050f6691dde36818dfc1a4c415c42901b ]
+[ Upstream commit ef0ce24f590ac075d5eda11f2d6434b303333ed6 ]
 
-When sending a H2G message where a reply is expected in
-guc_submission_send_busy_loop(), outstanding_submission_g2h is
-incremented before the send. However, if there is an error sending the
-message, outstanding_submission_g2h is decremented without checking if a
-reply is expected.
+Corrects the upper range of LPF Band 4 from 18.5 GHz to 18.85 GHz per
+the ADMV8818 datasheet
 
-Therefore, check if reply is expected when there is a failure before
-decrementing outstanding_submission_g2h.
-
-Fixes: 2f2cc53b5fe7 ("drm/i915/guc: Close deregister-context race against CT-loss")
-Signed-off-by: Jesus Narvaez <jesus.narvaez@intel.com>
-Cc: Daniele Ceraolo Spurio <daniele.ceraolospurio@intel.com>
-Cc: Alan Previn <alan.previn.teres.alexis@intel.com>
-Cc: Anshuman Gupta <anshuman.gupta@intel.com>
-Cc: Mousumi Jana <mousumi.jana@intel.com>
-Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
-Cc: Matt Roper <matthew.d.roper@intel.com>
-Reviewed-by: Daniele Ceraolo Spurio <daniele.ceraolospurio@intel.com>
-Signed-off-by: John Harrison <John.C.Harrison@Intel.com>
-Link: https://lore.kernel.org/r/20250514225224.4142684-1-jesus.narvaez@intel.com
-(cherry picked from commit a6a26786f22a4ab0227bcf610510c4c9c2df0808)
-Signed-off-by: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
+Fixes: f34fe888ad05 ("iio:filter:admv8818: add support for ADMV8818")
+Signed-off-by: Sam Winchenbach <swinchenbach@arka.org>
+Link: https://patch.msgid.link/20250328174831.227202-3-sam.winchenbach@framepointer.org
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/i915/gt/uc/intel_guc_submission.c | 2 +-
+ drivers/iio/filter/admv8818.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/i915/gt/uc/intel_guc_submission.c b/drivers/gpu/drm/i915/gt/uc/intel_guc_submission.c
-index f8cb7c630d5b8..108331a699958 100644
---- a/drivers/gpu/drm/i915/gt/uc/intel_guc_submission.c
-+++ b/drivers/gpu/drm/i915/gt/uc/intel_guc_submission.c
-@@ -633,7 +633,7 @@ static int guc_submission_send_busy_loop(struct intel_guc *guc,
- 		atomic_inc(&guc->outstanding_submission_g2h);
+diff --git a/drivers/iio/filter/admv8818.c b/drivers/iio/filter/admv8818.c
+index d85b7d3de8660..3d8740caa1455 100644
+--- a/drivers/iio/filter/admv8818.c
++++ b/drivers/iio/filter/admv8818.c
+@@ -103,7 +103,7 @@ static const unsigned long long freq_range_lpf[4][2] = {
+ 	{2050000000ULL, 3850000000ULL},
+ 	{3350000000ULL, 7250000000ULL},
+ 	{7000000000, 13000000000},
+-	{12550000000, 18500000000}
++	{12550000000, 18850000000}
+ };
  
- 	ret = intel_guc_send_busy_loop(guc, action, len, g2h_len_dw, loop);
--	if (ret)
-+	if (ret && g2h_len_dw)
- 		atomic_dec(&guc->outstanding_submission_g2h);
- 
- 	return ret;
+ static const struct regmap_config admv8818_regmap_config = {
 -- 
 2.39.5
 
