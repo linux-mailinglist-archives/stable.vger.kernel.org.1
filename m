@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-153796-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-154206-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 31210ADD6B6
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:36:42 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3BD34ADD855
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:54:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2D4D94A0999
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:24:35 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 60E2A17B78C
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:44:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B224C2ED161;
-	Tue, 17 Jun 2025 16:18:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10DCA2EA72E;
+	Tue, 17 Jun 2025 16:40:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NoUkhRpI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kfigPqUA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CFB02EF2AD;
-	Tue, 17 Jun 2025 16:18:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF7C92E8DE4;
+	Tue, 17 Jun 2025 16:40:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750177126; cv=none; b=Il0Ay0BEGdwY8VVyfa51nx0f1cvkhB7MutvkLlMp5NcsN5lbbnwY8zjVldTYKwBE689THAsKg9pNU0I7NKkKcSPEvCjIg2OSoEoO2Ly3broFIy9qQEG3OPvpvii0BvUYs0iqZ5uiSY2iauG+wOjKHc/mtsJOWfdcCcigDCyICt0=
+	t=1750178445; cv=none; b=Rc4eDAQXwji+wNAtIT30CEXCuZ1DuWRZ3C2MwfemTim/5NR2XTVicqUJ0maWzFeF6VBevBL4xtNwarq1BQoEfPwzXIGOVfonxSr+kW8R93AB4zUUsm2ng+y+cUJTksr2U4qIfAAmrVI4P+NjwWN6jhQ+EQvGq787QfHJAtuT+vc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750177126; c=relaxed/simple;
-	bh=LNqOb85gFdGh5yO++TLRkR0ZfMiw8f/i817NgVmlTlE=;
+	s=arc-20240116; t=1750178445; c=relaxed/simple;
+	bh=Izl8cuBTgk0Kep/Yyr6GlVn0njFF4/p0HmhTyir4nHI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VkLgayJqg+hfLXd+hWyMxNz7E6FuAI1hx4+7oiN2yQaLAimyDuGRUX00pcH/3AtyXot1LVqyPB6lmMojxEyuDNiZBlT8e1fh3CJRHazg9Gbi+wJ6GDsmJGvbYibqvZXBpg8zyXrACTUF38v1YaZBzcd7oSUb6aie//odMLmuz5o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NoUkhRpI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 842EDC4CEE3;
-	Tue, 17 Jun 2025 16:18:45 +0000 (UTC)
+	 MIME-Version; b=rmvPXvnSD9z8YMJzxwEpiuxW/hZAK+E08NZ6VFOm1T1SrGAxcBTMxe/GNIyvTfAG/bgsojTR6MRVUWf5i86d91pgvTMNS0GjS2dCMh0Kh3+yrAzmBESaiNEFqF1OODQHkxliuJM4cLnRaDgvFDtfbNFcNRlOxIsJsrZPdhduB/s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kfigPqUA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2EDA6C4CEE3;
+	Tue, 17 Jun 2025 16:40:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750177126;
-	bh=LNqOb85gFdGh5yO++TLRkR0ZfMiw8f/i817NgVmlTlE=;
+	s=korg; t=1750178445;
+	bh=Izl8cuBTgk0Kep/Yyr6GlVn0njFF4/p0HmhTyir4nHI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NoUkhRpI+WQuZgZw5s6+FEUKl01cxYP6tJUjul+3n1i2fqLCzibKmZeB1roFUdJBw
-	 eTrdBouthUvpPURlnd0B6LTmdUluOkyGB6UuT7RC9MnG7pR/18W1S7Kdo+b0cywcV7
-	 IsYXE9OiN3otewrd1VZdtUmnaw85qhfpgRkteg2g=
+	b=kfigPqUA5OaR7WbZYt+l+OL/7VYNRhHGYdXQ6w0IwOD0iAm2/NaN23YOpQoq5KjEK
+	 ZL2cKKOrFLadJqk8Mg/MzILbdThRcrSGh0OiLwY8PzfyLUN3HlI0+bdN1/cUHtp41o
+	 AaD3PcfMHYWDjoTlB3yCb1JNROECYHRcUFdxNud8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Amit Sunil Dhamne <amitsd@google.com>,
-	Badhri Jagan Sridharan <badhri@google.com>,
-	Kyle Tso <kyletso@google.com>,
-	stable <stable@kernel.org>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Subject: [PATCH 6.6 350/356] usb: typec: tcpm/tcpci_maxim: Fix bounds check in process_rx()
-Date: Tue, 17 Jun 2025 17:27:45 +0200
-Message-ID: <20250617152352.219722185@linuxfoundation.org>
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Tzvetomir Stoyanov <tz.stoyanov@gmail.com>,
+	syzbot+05d673e83ec640f0ced9@syzkaller.appspotmail.com,
+	Dmitry Antipov <dmantipov@yandex.ru>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>
+Subject: [PATCH 6.12 500/512] ring-buffer: Fix buffer locking in ring_buffer_subbuf_order_set()
+Date: Tue, 17 Jun 2025 17:27:46 +0200
+Message-ID: <20250617152439.886871922@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152338.212798615@linuxfoundation.org>
-References: <20250617152338.212798615@linuxfoundation.org>
+In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
+References: <20250617152419.512865572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,49 +65,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Amit Sunil Dhamne <amitsd@google.com>
+From: Dmitry Antipov <dmantipov@yandex.ru>
 
-commit 0736299d090f5c6a1032678705c4bc0a9511a3db upstream.
+commit 40ee2afafc1d9fe3aa44a6fbe440d78a5c96a72e upstream.
 
-Register read of TCPC_RX_BYTE_CNT returns the total size consisting of:
+Enlarge the critical section in ring_buffer_subbuf_order_set() to
+ensure that error handling takes place with per-buffer mutex held,
+thus preventing list corruption and other concurrency-related issues.
 
-  PD message (pending read) size + 1 Byte for Frame Type (SOP*)
-
-This is validated against the max PD message (`struct pd_message`) size
-without accounting for the extra byte for the frame type. Note that the
-struct pd_message does not contain a field for the frame_type. This
-results in false negatives when the "PD message (pending read)" is equal
-to the max PD message size.
-
-Fixes: 6f413b559f86 ("usb: typec: tcpci_maxim: Chip level TCPC driver")
-Signed-off-by: Amit Sunil Dhamne <amitsd@google.com>
-Signed-off-by: Badhri Jagan Sridharan <badhri@google.com>
-Reviewed-by: Kyle Tso <kyletso@google.com>
-Cc: stable <stable@kernel.org>
-Link: https://lore.kernel.org/stable/20250502-b4-new-fix-pd-rx-count-v1-1-e5711ed09b3d%40google.com
-Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Link: https://lore.kernel.org/r/20250502-b4-new-fix-pd-rx-count-v1-1-e5711ed09b3d@google.com
+Cc: stable@vger.kernel.org
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Cc: Tzvetomir Stoyanov <tz.stoyanov@gmail.com>
+Link: https://lore.kernel.org/20250606112242.1510605-1-dmantipov@yandex.ru
+Reported-by: syzbot+05d673e83ec640f0ced9@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=05d673e83ec640f0ced9
+Fixes: f9b94daa542a8 ("ring-buffer: Set new size of the ring buffer sub page")
+Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/typec/tcpm/tcpci_maxim_core.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ kernel/trace/ring_buffer.c |    4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
---- a/drivers/usb/typec/tcpm/tcpci_maxim_core.c
-+++ b/drivers/usb/typec/tcpm/tcpci_maxim_core.c
-@@ -145,7 +145,8 @@ static void process_rx(struct max_tcpci_
- 		return;
+--- a/kernel/trace/ring_buffer.c
++++ b/kernel/trace/ring_buffer.c
+@@ -6754,7 +6754,7 @@ int ring_buffer_subbuf_order_set(struct
+ 	old_size = buffer->subbuf_size;
+ 
+ 	/* prevent another thread from changing buffer sizes */
+-	mutex_lock(&buffer->mutex);
++	guard(mutex)(&buffer->mutex);
+ 	atomic_inc(&buffer->record_disabled);
+ 
+ 	/* Make sure all commits have finished */
+@@ -6859,7 +6859,6 @@ int ring_buffer_subbuf_order_set(struct
  	}
  
--	if (count > sizeof(struct pd_message) || count + 1 > TCPC_RECEIVE_BUFFER_LEN) {
-+	if (count > sizeof(struct pd_message) + 1 ||
-+	    count + 1 > TCPC_RECEIVE_BUFFER_LEN) {
- 		dev_err(chip->dev, "Invalid TCPC_RX_BYTE_CNT %d\n", count);
- 		return;
- 	}
+ 	atomic_dec(&buffer->record_disabled);
+-	mutex_unlock(&buffer->mutex);
+ 
+ 	return 0;
+ 
+@@ -6868,7 +6867,6 @@ error:
+ 	buffer->subbuf_size = old_size;
+ 
+ 	atomic_dec(&buffer->record_disabled);
+-	mutex_unlock(&buffer->mutex);
+ 
+ 	for_each_buffer_cpu(buffer, cpu) {
+ 		cpu_buffer = buffer->buffers[cpu];
 
 
 
