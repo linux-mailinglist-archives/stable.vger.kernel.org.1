@@ -1,57 +1,61 @@
-Return-Path: <stable+bounces-154409-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-154040-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 25463ADD8FE
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 19:01:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B5677ADD75E
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:44:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 752684A1B6D
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:53:20 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DB4CE4A3E5E
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:37:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 450A328506C;
-	Tue, 17 Jun 2025 16:51:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA29B2EE5E7;
+	Tue, 17 Jun 2025 16:31:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qnqXMFbb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o4ufJA/o"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F392A28505E;
-	Tue, 17 Jun 2025 16:51:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C7392EE29D;
+	Tue, 17 Jun 2025 16:31:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750179103; cv=none; b=j0rrr/HPklh0+/RWGMZgPBL+xGcLqGL7PioVdzkJ0diE8qd0p+Lrgolcn/mrq9SnGNCMCm1FT/yEwsKQ09qrMLq0gOtSmjyvtGovz6PYkpo4JGAmTs31i5Ccag9/BWCA+c74bwVIW4vuxcNoIkpLxcK1ak7FndY1esmpNa3YMkk=
+	t=1750177909; cv=none; b=QtNDk+zZon+aIBWgjYQOAE9Muu3BePFejNSWAxP2NH+soiXJsphFUGp97iP48uRpZx5PsWrZrzNT3bXxbB6Adw3TgqLiMZQCmcR3X/u9LYWyiqXIxMB2nB7DChXJ52dSUJLCUZQjbeRlYTaPheA/VrgYglP4QUQYFAg8MT30bnk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750179103; c=relaxed/simple;
-	bh=96oCCOnnanvtIN60l39iqSt0gZ3QXoLO1BHNmFVE/7o=;
+	s=arc-20240116; t=1750177909; c=relaxed/simple;
+	bh=NqDxoLVhvg5NBOGeghX1X3pbqq2/eD5rcWamWGP46dE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=f+a7yGQ3/cPqUcVdTXhxGgQRUzDXf/mpCtpdqWeNXM/ZbGsBt/wWfRIX/cfecjlkqFgFPTiia8s6hDzi530NcqmAokcPRil9PxMKDoB4Pi0g3nhiGAv7PJZ9VH7FZ1RgJWYHgh83TvJsXrAWApeu1S1e82/jVZoPiZkVNivcfG4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qnqXMFbb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3B18C4CEF0;
-	Tue, 17 Jun 2025 16:51:41 +0000 (UTC)
+	 MIME-Version; b=WQtsXEkwn8AQus58n3LFPRCF52Z8XmvYB88JGjDXyKq2Yddv0H23iRjAF2VVbqDAicZmGGmVvBriUdG2yZmDOm6X+m3QcUa/kjqWdhpwh10IOCFOYGXYERm1uGWay7bA25UcnldoIV+op5mNVurpRzxhNddNM4WH8FZvKTXv48Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o4ufJA/o; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E250AC4CEE3;
+	Tue, 17 Jun 2025 16:31:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750179102;
-	bh=96oCCOnnanvtIN60l39iqSt0gZ3QXoLO1BHNmFVE/7o=;
+	s=korg; t=1750177909;
+	bh=NqDxoLVhvg5NBOGeghX1X3pbqq2/eD5rcWamWGP46dE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qnqXMFbbd/VaTdTZuBwJvQTwfMiGApvW+vvRjLg6AUsw5QkwhLIBPiouNjJQfXEsx
-	 fjeIbUgwmO0RLSCXtJJRrjRj/maaB0NKaSrxQF+GizFT0jW5cpy32Ne4HTRXf42g4U
-	 /6S5cphbDQURCYFzWtnaa3YOslXpcMmkn4Suq8hE=
+	b=o4ufJA/o9ZgLo/wyirbcgk1RGLWZhak/W7vDVnjg1970xs8KGenVty0pK+n98cB7c
+	 FcwPV51Pm7EcjvUlIjMPQz3PmgW6bhQ9AT49DFJJC0PzqUMNQuMCCcowDyxgkNZw+3
+	 qucrTUCntpIzpxnYq/OE9gQzfCMresbqRM98XU8o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christian Brauner <brauner@kernel.org>,
-	Jeff Layton <jlayton@kernel.org>,
+	Jens Axboe <axboe@kernel.dk>,
+	Anuj Gupta <anuj20.g@samsung.com>,
+	Nitesh Shetty <nj.shetty@samsung.com>,
 	Al Viro <viro@zeniv.linux.org.uk>,
+	Christian Brauner <brauner@kernel.org>,
+	Keith Busch <kbusch@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 649/780] fs/fhandle.c: fix a race in call of has_locked_children()
-Date: Tue, 17 Jun 2025 17:25:57 +0200
-Message-ID: <20250617152517.909257386@linuxfoundation.org>
+Subject: [PATCH 6.12 392/512] iov_iter: use iov_offset for length calculation in iov_iter_aligned_bvec
+Date: Tue, 17 Jun 2025 17:25:58 +0200
+Message-ID: <20250617152435.470995678@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
-References: <20250617152451.485330293@linuxfoundation.org>
+In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
+References: <20250617152419.512865572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,92 +67,90 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Al Viro <viro@zeniv.linux.org.uk>
+From: Nitesh Shetty <nj.shetty@samsung.com>
 
-[ Upstream commit 1f282cdc1d219c4a557f7009e81bc792820d9d9a ]
+[ Upstream commit 334d7c4fb60cf21e0abac134d92fe49e9b04377e ]
 
-may_decode_fh() is calling has_locked_children() while holding no locks.
-That's an oopsable race...
+If iov_offset is non-zero, then we need to consider iov_offset in length
+calculation, otherwise we might pass smaller IOs such as 512 bytes, in
+below scenario [1].
 
-The rest of the callers are safe since they are holding namespace_sem and
-are guaranteed a positive refcount on the mount in question.
+This issue is reproducible using lib-uring test/fixed-seg.c application
+with fixed buffer on a 512 LBA formatted device.
 
-Rename the current has_locked_children() to __has_locked_children(), make
-it static and switch the fs/namespace.c users to it.
+[1]
 
-Make has_locked_children() a wrapper for __has_locked_children(), calling
-the latter under read_seqlock_excl(&mount_lock).
+At present we pass the alignment check, for 512 LBA formatted devices,
+len_mask = 511 when IO is smaller, i->count = 512 has an offset,
+i->io_offset = 3584 with bvec values, bvec->bv_offset = 256,
+bvec->bv_len = 3840.  In short, the first 256 bytes are in the current
+page, next 256 bytes are in the another page.  Ideally we expect to
+fail the IO.
 
-Reviewed-by: Christian Brauner <brauner@kernel.org>
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
-Fixes: 620c266f3949 ("fhandle: relax open_by_handle_at() permission checks")
-Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
+I can think of 2 userspace scenarios where we experience this.
+
+a: From userspace, we observe a different behaviour when device LBA
+   size is 512 vs 4096 bytes.  For 4096 LBA formatted device, I see the
+   same liburing test [2] failing, whereas 512 the test passes without
+   this.  This is reproducible everytime.
+
+   [2] https://github.com/axboe/liburing/
+
+b: Although I was not able to reproduce the below condition, but I
+   suspect below case should be possible from user space for devices
+   with 512 LBA formatted device.  Lets say from userspace while
+   allocating a virtually single chunk of memory, if we get 2 physical
+   chunk of memory, and IO happens to be at the boundary of first
+   physical chunk with length crossing first chunk, then we allow IOs
+   to proceed and hence we might map wrong physical address length and
+   proceed with IO rather than failing.
+
+: --- a/test/fixed-seg.c
+: +++ b/test/fixed-seg.c
+: @@ -64,7 +64,7 @@ static int test(struct io_uring *ring, int fd, int
+: vec_off)
+: 		return T_EXIT_FAIL;
+: 	}
+:
+: -       ret = read_it(ring, fd, 4096, vec_off);
+: +       ret = read_it(ring, fd, 4096, 7*512 + 256);
+: 	if (ret) {
+: 		fprintf(stderr, "4096 0 failed\n");
+: 		return T_EXIT_FAIL;
+
+Effectively this is a write crossing the page boundary.
+
+Link: https://lkml.kernel.org/r/20250428095849.11709-1-nj.shetty@samsung.com
+Fixes: 2263639f96f2 ("iov_iter: streamline iovec/bvec alignment iteration")
+Reviewed-by: Jens Axboe <axboe@kernel.dk>
+Reviewed-by: Anuj Gupta <anuj20.g@samsung.com>
+Signed-off-by: Nitesh Shetty <nj.shetty@samsung.com>
+Cc: Al Viro <viro@zeniv.linux.org.uk>
+Cc: Christian Brauner <brauner@kernel.org>
+Cc: Keith Busch <kbusch@kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/namespace.c | 18 ++++++++++++++----
- 1 file changed, 14 insertions(+), 4 deletions(-)
+ lib/iov_iter.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/namespace.c b/fs/namespace.c
-index 1b466c54a357d..216807f772cd2 100644
---- a/fs/namespace.c
-+++ b/fs/namespace.c
-@@ -2424,7 +2424,7 @@ void drop_collected_mounts(struct vfsmount *mnt)
- 	namespace_unlock();
- }
+diff --git a/lib/iov_iter.c b/lib/iov_iter.c
+index bdb37d572e97c..8ede6be556a96 100644
+--- a/lib/iov_iter.c
++++ b/lib/iov_iter.c
+@@ -820,7 +820,7 @@ static bool iov_iter_aligned_bvec(const struct iov_iter *i, unsigned addr_mask,
+ 	size_t size = i->count;
  
--bool has_locked_children(struct mount *mnt, struct dentry *dentry)
-+static bool __has_locked_children(struct mount *mnt, struct dentry *dentry)
- {
- 	struct mount *child;
+ 	do {
+-		size_t len = bvec->bv_len;
++		size_t len = bvec->bv_len - skip;
  
-@@ -2438,6 +2438,16 @@ bool has_locked_children(struct mount *mnt, struct dentry *dentry)
- 	return false;
- }
- 
-+bool has_locked_children(struct mount *mnt, struct dentry *dentry)
-+{
-+	bool res;
-+
-+	read_seqlock_excl(&mount_lock);
-+	res = __has_locked_children(mnt, dentry);
-+	read_sequnlock_excl(&mount_lock);
-+	return res;
-+}
-+
- /*
-  * Check that there aren't references to earlier/same mount namespaces in the
-  * specified subtree.  Such references can act as pins for mount namespaces
-@@ -2498,7 +2508,7 @@ struct vfsmount *clone_private_mount(const struct path *path)
- 			return ERR_PTR(-EINVAL);
- 	}
- 
--	if (has_locked_children(old_mnt, path->dentry))
-+	if (__has_locked_children(old_mnt, path->dentry))
- 		return ERR_PTR(-EINVAL);
- 
- 	new_mnt = clone_mnt(old_mnt, path->dentry, CL_PRIVATE);
-@@ -3035,7 +3045,7 @@ static struct mount *__do_loopback(struct path *old_path, int recurse)
- 	if (!may_copy_tree(old_path))
- 		return mnt;
- 
--	if (!recurse && has_locked_children(old, old_path->dentry))
-+	if (!recurse && __has_locked_children(old, old_path->dentry))
- 		return mnt;
- 
- 	if (recurse)
-@@ -3428,7 +3438,7 @@ static int do_set_group(struct path *from_path, struct path *to_path)
- 		goto out;
- 
- 	/* From mount should not have locked children in place of To's root */
--	if (has_locked_children(from, to->mnt.mnt_root))
-+	if (__has_locked_children(from, to->mnt.mnt_root))
- 		goto out;
- 
- 	/* Setting sharing groups is only allowed on private mounts */
+ 		if (len > size)
+ 			len = size;
 -- 
 2.39.5
 
