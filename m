@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-154110-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-154503-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 63E44ADD84A
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:53:54 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 03B67ADDA6F
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 19:19:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BF8654A2117
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:42:18 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 55B155A62BB
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:56:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53ACD2E8E1E;
-	Tue, 17 Jun 2025 16:35:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 936BD2FA635;
+	Tue, 17 Jun 2025 16:56:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e/CkNbFV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u/C79SmE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C7B1285048;
-	Tue, 17 Jun 2025 16:35:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38BF52FA626;
+	Tue, 17 Jun 2025 16:56:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750178135; cv=none; b=IsNnavI3MngxLqOH3DhkXZUfUk5t11KPZbJMikOtCCzqceYjy/l9vYLYnHKF/HDG5qGTfafSpEvdnH4ylaZG6kBMvWHh73jCUcwAWM9H+82eQrtH3Av/p4BmXbfwAjGX3I0HomTRRjrRoEyxSn2NcdWmAwPTkEiYwGdgKqrwR3c=
+	t=1750179417; cv=none; b=ggMXd/x141EK4YjobRjxWXxcFC2rgozmF6GEI9EzOn/vUJDCslpwHxk1M0n2mcKHZ1hWPqDGHg92H+xb5M/seolx+vUyh68pwuiQDoV4hKB2vl0kkwA2VAduF1YVHGDbDDoOXfwi9vL2jCD/DMrYvbs+LiomBN8kB4gUbA3lAFA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750178135; c=relaxed/simple;
-	bh=iSnAhAzBAwItEoGA/8D6zPbhUUkPjAofK8EG+MXdE6w=;
+	s=arc-20240116; t=1750179417; c=relaxed/simple;
+	bh=0LMr2JGEGdt87tSnaw6vYgsKY8dVBpfbt5vHTihLIMM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fGQnQh2Rr1ICdCVsgkWwmO9Gy6PkjaMWjadzMH8jHmfz0Ib+WAYgbV5M6H/sqqwMXap9dZzdSyIn0mtguVfb+OJ1NQF7KwVsJrz/3AbqlSN+0cXyhgs/iOUsNa7r0tMkxst2igmm840fuaj/ZVhTJ/GD3SI9aLOhmgr7qimxLx0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e/CkNbFV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 623FBC4CEE3;
-	Tue, 17 Jun 2025 16:35:34 +0000 (UTC)
+	 MIME-Version; b=Deukr9FJnDWXGeip6etBBdRrj4ZCrogwZeVUJUAuy4Hwms+lhXkEUt1HVx9GDZsoSSzl9eiGlp8RfQQf1eWqfpdZ6t8DTvTtn1Re6e05t6A3RXoCBfN8SXIoW2Tae6x1PHFx62yzrPxLd0yUMAjPOGZ2FvTOYC+k3mA99X7eb6o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u/C79SmE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A46BBC4CEE3;
+	Tue, 17 Jun 2025 16:56:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750178134;
-	bh=iSnAhAzBAwItEoGA/8D6zPbhUUkPjAofK8EG+MXdE6w=;
+	s=korg; t=1750179417;
+	bh=0LMr2JGEGdt87tSnaw6vYgsKY8dVBpfbt5vHTihLIMM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=e/CkNbFVIyvhP0CIy0XyS0Qc12IXQc+NeHZ804kDRskpvCrdsz4380fD2IIzPbDmZ
-	 7f52YL0G11VrUgtQ/dGJpE0bA5wKqNAjB/xTkpgyi6kdrJHbUMdfzcEuNAyv3jLZlK
-	 hIcpsAmqL9Kar1qu48HiWCa/Z2uKtw1dLE9Sl8u4=
+	b=u/C79SmEoHj54sCv9P4f8gfIQdiXXILH8k4axtSTIp9dyNqrd1jbe6vOPZ25XvFE6
+	 dOCkdxhNPzsAc1b7AWqKlWYXVG271CxprKaHB0lG0LCS3M8SulX35EkaZqc9pOwy9l
+	 G+p40izRerzxdkGIbehw2efWTEhrne4YgDJcgngY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xu Lu <luxu.kernel@bytedance.com>,
-	Yunhui Cui <cuiyunhui@bytedance.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Moshe Shemesh <moshe@nvidia.com>,
+	Tariq Toukan <tariqt@nvidia.com>,
+	Mark Bloch <mbloch@nvidia.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 451/512] ACPI: CPPC: Fix NULL pointer dereference when nosmp is used
+Subject: [PATCH 6.15 709/780] net/mlx5: Ensure fw pages are always allocated on same NUMA
 Date: Tue, 17 Jun 2025 17:26:57 +0200
-Message-ID: <20250617152437.841564210@linuxfoundation.org>
+Message-ID: <20250617152520.368865527@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
-References: <20250617152419.512865572@linuxfoundation.org>
+In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
+References: <20250617152451.485330293@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,50 +64,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yunhui Cui <cuiyunhui@bytedance.com>
+From: Moshe Shemesh <moshe@nvidia.com>
 
-[ Upstream commit 15eece6c5b05e5f9db0711978c3e3b7f1a2cfe12 ]
+[ Upstream commit f37258133c1e95e61db532e14067e28b4881bf24 ]
 
-With nosmp in cmdline, other CPUs are not brought up, leaving
-their cpc_desc_ptr NULL. CPU0's iteration via for_each_possible_cpu()
-dereferences these NULL pointers, causing panic.
+When firmware asks the driver to allocate more pages, using event of
+give_pages, the driver should always allocate it from same NUMA, the
+original device NUMA. Current code uses dev_to_node() which can result
+in different NUMA as it is changed by other driver flows, such as
+mlx5_dma_zalloc_coherent_node(). Instead, use saved numa node for
+allocating firmware pages.
 
-Panic backtrace:
-
-[    0.401123] Unable to handle kernel NULL pointer dereference at virtual address 00000000000000b8
-...
-[    0.403255] [<ffffffff809a5818>] cppc_allow_fast_switch+0x6a/0xd4
-...
-Kernel panic - not syncing: Attempted to kill init!
-
-Fixes: 3cc30dd00a58 ("cpufreq: CPPC: Enable fast_switch")
-Reported-by: Xu Lu <luxu.kernel@bytedance.com>
-Signed-off-by: Yunhui Cui <cuiyunhui@bytedance.com>
-Link: https://patch.msgid.link/20250604023036.99553-1-cuiyunhui@bytedance.com
-[ rjw: New subject ]
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Fixes: 311c7c71c9bb ("net/mlx5e: Allocate DMA coherent memory on reader NUMA node")
+Signed-off-by: Moshe Shemesh <moshe@nvidia.com>
+Reviewed-by: Tariq Toukan <tariqt@nvidia.com>
+Signed-off-by: Mark Bloch <mbloch@nvidia.com>
+Link: https://patch.msgid.link/20250610151514.1094735-2-mbloch@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/cppc_acpi.c | 2 +-
+ drivers/net/ethernet/mellanox/mlx5/core/pagealloc.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/acpi/cppc_acpi.c b/drivers/acpi/cppc_acpi.c
-index e78e3754d99e1..dab941dc984a9 100644
---- a/drivers/acpi/cppc_acpi.c
-+++ b/drivers/acpi/cppc_acpi.c
-@@ -463,7 +463,7 @@ bool cppc_allow_fast_switch(void)
- 	struct cpc_desc *cpc_ptr;
- 	int cpu;
- 
--	for_each_possible_cpu(cpu) {
-+	for_each_present_cpu(cpu) {
- 		cpc_ptr = per_cpu(cpc_desc_ptr, cpu);
- 		desired_reg = &cpc_ptr->cpc_regs[DESIRED_PERF];
- 		if (!CPC_IN_SYSTEM_MEMORY(desired_reg) &&
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/pagealloc.c b/drivers/net/ethernet/mellanox/mlx5/core/pagealloc.c
+index 972e8e9df585b..9bc9bd83c2324 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/pagealloc.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/pagealloc.c
+@@ -291,7 +291,7 @@ static void free_4k(struct mlx5_core_dev *dev, u64 addr, u32 function)
+ static int alloc_system_page(struct mlx5_core_dev *dev, u32 function)
+ {
+ 	struct device *device = mlx5_core_dma_dev(dev);
+-	int nid = dev_to_node(device);
++	int nid = dev->priv.numa_node;
+ 	struct page *page;
+ 	u64 zero_addr = 1;
+ 	u64 addr;
 -- 
 2.39.5
 
