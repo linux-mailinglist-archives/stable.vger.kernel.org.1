@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-153549-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153490-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id B9F8EADD43F
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:08:19 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A87B1ADD4C1
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:13:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 33C277A74DB
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:06:56 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A753F1757F5
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:05:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6484A2ECD22;
-	Tue, 17 Jun 2025 16:05:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 446FE2ED865;
+	Tue, 17 Jun 2025 16:02:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YoBjmuGh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WqVnyz72"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F51420A5EA;
-	Tue, 17 Jun 2025 16:05:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F37292ECE99;
+	Tue, 17 Jun 2025 16:02:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750176322; cv=none; b=U7g0PJvnuNPEC3z64BWW7srUQmGVRE1n90VaGC7JWSf+A+GyQBYYlQn3QLE48QcrqlVx3SLUz/Lx6ZRhhu7E4bJgxmvDkGE8h1zN0Rk4KulMEOnz/nPQwL3GdE5/GBUhbBzkJbZK7zb+Px/TsT4zW0+UfirURhUGdRkI/X9UfFY=
+	t=1750176131; cv=none; b=S6Zf4t39ZqoYibDxAyhDh3YGzoigMSQOZ2DkFDyEaosqrvutROZV1Fc1l2A2R1VEu7lGxgOWEB9QiSL/CQ7IzLEMIbzlhQl9UYwBYHt1XWk2eTOXAQg8J0H9UFliOa86JwWzQI72o4H9QvTRjttgR8nVnh8gN/Ra/arGebmANME=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750176322; c=relaxed/simple;
-	bh=5ZfWgy9esgahb0QqQijGFmO8QmsKCjGb6OQMi39jBxY=;
+	s=arc-20240116; t=1750176131; c=relaxed/simple;
+	bh=w41V/a9PDHNCZz5/x68i+dQ2y35+6q6th9jUv9b4rzI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QkwmXEeJvDiF4XYeqro2pvdTY1L9m2lQh6cCq0Y60K3CyKMlNOEvd2w+mIUBlM9SQwd5fmyIvGxKVLK5yflZoXSqhdbIUXeHdsGAnL5ww/t/kWJg2CHQMIa3sObkOSCTR6SNEiC8yFDzInBQMkPvZ2EJ1HIK4Jn/MvCTFFNibfU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YoBjmuGh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C5D6C4CEE3;
-	Tue, 17 Jun 2025 16:05:20 +0000 (UTC)
+	 MIME-Version; b=QB4d7hBmgJ+Q35e+wMo+uXqOuiAiq7K8thEeNg2Pmg5hzHLeCow8xIPcylgyeLTIHUA7MJwTv1wJM3cpRoSjZsZsATMJcnN4zkgi6PSQynsRPjFi9/qX0VYK6sbW9kJNGnHaDBHVM9vmP58zEo++wH64k2C8gT83gja7BqojdtM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WqVnyz72; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 633F2C4CEE3;
+	Tue, 17 Jun 2025 16:02:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750176321;
-	bh=5ZfWgy9esgahb0QqQijGFmO8QmsKCjGb6OQMi39jBxY=;
+	s=korg; t=1750176130;
+	bh=w41V/a9PDHNCZz5/x68i+dQ2y35+6q6th9jUv9b4rzI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YoBjmuGhxDhgeq/ZHnQlrk8lIPWDu2PPkhkewPJ0w0tOrH30Cz4K6w+blGoBsowuL
-	 6mEwpOT4lXA+H/EoaXD0LGUgVeiE6024JFIWtJ7BoO6mVTQ7/sbt9E1uWBGUvgble0
-	 4Qk/S9oGe77GiWU1Dvce0ZOXom8WN6Ex2SN/fdoQ=
+	b=WqVnyz723lYq23IE2i1roMOel49IAEFtE2os9DACwAwJyVapg1WXpByq+PBbeOxx4
+	 xSRPyQpyIbTlysYMfaJvWMg3i9qKBi4E/3WlEqct8WV/XJpk3PcOjHX1nfa3E/QpXa
+	 AdcegU7ohbtW/vGIZleAjw6/eXxXrLgEmJHo2TxE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Detlev Casanova <detlev.casanova@collabora.com>,
-	Nicolas Dufresne <nicolas.dufresne@collabora.com>,
-	Hans Verkuil <hverkuil@xs4all.nl>,
+	NeilBrown <neil@brown.name>,
+	Christoph Hellwig <hch@lst.de>,
+	Chuck Lever <chuck.lever@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 153/780] media: verisilicon: Free post processor buffers on error
-Date: Tue, 17 Jun 2025 17:17:41 +0200
-Message-ID: <20250617152457.730557260@linuxfoundation.org>
+Subject: [PATCH 6.15 154/780] svcrdma: Reduce the number of rdma_rw contexts per-QP
+Date: Tue, 17 Jun 2025 17:17:42 +0200
+Message-ID: <20250617152457.769401628@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
 References: <20250617152451.485330293@linuxfoundation.org>
@@ -67,45 +67,93 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Detlev Casanova <detlev.casanova@collabora.com>
+From: Chuck Lever <chuck.lever@oracle.com>
 
-[ Upstream commit 11beb0fc346e00c412b3bfd19013206f6b655604 ]
+[ Upstream commit 59243315890578a040a2d50ae9e001a2ef2fcb62 ]
 
-During initialization, the post processor allocates the same number of
-buffers as the buf queue.
-As the init function is called in streamon(), if an allocation fails,
-streamon will return an error and streamoff() will not be called, keeping
-all post processor buffers allocated.
+There is an upper bound on the number of rdma_rw contexts that can
+be created per QP.
 
-To avoid that, all post proc buffers are freed in case of an allocation
-error.
+This invisible upper bound is because rdma_create_qp() adds one or
+more additional SQEs for each ctxt that the ULP requests via
+qp_attr.cap.max_rdma_ctxs. The QP's actual Send Queue length is on
+the order of the sum of qp_attr.cap.max_send_wr and a factor times
+qp_attr.cap.max_rdma_ctxs. The factor can be up to three, depending
+on whether MR operations are required before RDMA Reads.
 
-Fixes: 26711491a807 ("media: verisilicon: Refactor postprocessor to store more buffers")
-Signed-off-by: Detlev Casanova <detlev.casanova@collabora.com>
-Reviewed-by: Nicolas Dufresne <nicolas.dufresne@collabora.com>
-Signed-off-by: Nicolas Dufresne <nicolas.dufresne@collabora.com>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+This limit is not visible to RDMA consumers via dev->attrs. When the
+limit is surpassed, QP creation fails with -ENOMEM. For example:
+
+svcrdma's estimate of the number of rdma_rw contexts it needs is
+three times the number of pages in RPCSVC_MAXPAGES. When MAXPAGES
+is about 260, the internally-computed SQ length should be:
+
+64 credits + 10 backlog + 3 * (3 * 260) = 2414
+
+Which is well below the advertised qp_max_wr of 32768.
+
+If RPCSVC_MAXPAGES is increased to 4MB, that's 1040 pages:
+
+64 credits + 10 backlog + 3 * (3 * 1040) = 9434
+
+However, QP creation fails. Dynamic printk for mlx5 shows:
+
+calc_sq_size:618:(pid 1514): send queue size (9326 * 256 / 64 -> 65536) exceeds limits(32768)
+
+Although 9326 is still far below qp_max_wr, QP creation still
+fails.
+
+Because the total SQ length calculation is opaque to RDMA consumers,
+there doesn't seem to be much that can be done about this except for
+consumers to try to keep the requested rdma_rw ctxt count low.
+
+Fixes: 2da0f610e733 ("svcrdma: Increase the per-transport rw_ctx count")
+Reviewed-by: NeilBrown <neil@brown.name>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/platform/verisilicon/hantro_postproc.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ net/sunrpc/xprtrdma/svc_rdma_transport.c | 14 ++++++++------
+ 1 file changed, 8 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/media/platform/verisilicon/hantro_postproc.c b/drivers/media/platform/verisilicon/hantro_postproc.c
-index c435a393e0cb7..9f559a13d409b 100644
---- a/drivers/media/platform/verisilicon/hantro_postproc.c
-+++ b/drivers/media/platform/verisilicon/hantro_postproc.c
-@@ -250,8 +250,10 @@ int hantro_postproc_init(struct hantro_ctx *ctx)
- 
- 	for (i = 0; i < num_buffers; i++) {
- 		ret = hantro_postproc_alloc(ctx, i);
--		if (ret)
-+		if (ret) {
-+			hantro_postproc_free(ctx);
- 			return ret;
-+		}
+diff --git a/net/sunrpc/xprtrdma/svc_rdma_transport.c b/net/sunrpc/xprtrdma/svc_rdma_transport.c
+index aca8bdf65d729..ca6172822b68a 100644
+--- a/net/sunrpc/xprtrdma/svc_rdma_transport.c
++++ b/net/sunrpc/xprtrdma/svc_rdma_transport.c
+@@ -406,12 +406,12 @@ static void svc_rdma_xprt_done(struct rpcrdma_notification *rn)
+  */
+ static struct svc_xprt *svc_rdma_accept(struct svc_xprt *xprt)
+ {
++	unsigned int ctxts, rq_depth, maxpayload;
+ 	struct svcxprt_rdma *listen_rdma;
+ 	struct svcxprt_rdma *newxprt = NULL;
+ 	struct rdma_conn_param conn_param;
+ 	struct rpcrdma_connect_private pmsg;
+ 	struct ib_qp_init_attr qp_attr;
+-	unsigned int ctxts, rq_depth;
+ 	struct ib_device *dev;
+ 	int ret = 0;
+ 	RPC_IFDEBUG(struct sockaddr *sap);
+@@ -462,12 +462,14 @@ static struct svc_xprt *svc_rdma_accept(struct svc_xprt *xprt)
+ 		newxprt->sc_max_bc_requests = 2;
  	}
  
- 	return 0;
+-	/* Arbitrarily estimate the number of rw_ctxs needed for
+-	 * this transport. This is enough rw_ctxs to make forward
+-	 * progress even if the client is using one rkey per page
+-	 * in each Read chunk.
++	/* Arbitrary estimate of the needed number of rdma_rw contexts.
+ 	 */
+-	ctxts = 3 * RPCSVC_MAXPAGES;
++	maxpayload = min(xprt->xpt_server->sv_max_payload,
++			 RPCSVC_MAXPAYLOAD_RDMA);
++	ctxts = newxprt->sc_max_requests * 3 *
++		rdma_rw_mr_factor(dev, newxprt->sc_port_num,
++				  maxpayload >> PAGE_SHIFT);
++
+ 	newxprt->sc_sq_depth = rq_depth + ctxts;
+ 	if (newxprt->sc_sq_depth > dev->attrs.max_qp_wr)
+ 		newxprt->sc_sq_depth = dev->attrs.max_qp_wr;
 -- 
 2.39.5
 
