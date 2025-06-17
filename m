@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-153681-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153703-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4BE4DADD5CF
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:26:14 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 63FDFADD64E
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:32:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CF70719477D8
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:18:11 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B1CFD2C42F1
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:20:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C1CB2ECD39;
-	Tue, 17 Jun 2025 16:12:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F7DD2F94AC;
+	Tue, 17 Jun 2025 16:13:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a99eWVVm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Q7FEDXnq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 176582ECD33;
-	Tue, 17 Jun 2025 16:12:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F139F2F9499;
+	Tue, 17 Jun 2025 16:13:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750176745; cv=none; b=M6KS1Oo4t/53LMR8k1YVorDqwz9U/iZwpKRjBOFHnkao4edesVpowZlOWkBcI7hmjEAoYWsQTgFqjYNovBPdYqT9RYRsUtI/1AIwZBW3sDvyfLbK5NXdQwRoJp9yaUHCiYPaebJeXiGgGu6CD/8uB05PF2HkxZmhG+oXPsfSRjk=
+	t=1750176817; cv=none; b=pSdQSgqBz1YNE0MCCS0IQHZ4aWGfDPgNSgBfYCncMIsxseYdt2HZMSpGZPzkPQeGoMMir+y9CzWJK2Lzneb9kkTAwdUE3Jno/Y7+rUi39bwRTCeUghmZU2lAhujYf/7wzbUbKu2NBDFqWmbVB/I8U9Gx0ViVtww1Jh6yJhqzt4E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750176745; c=relaxed/simple;
-	bh=9avUdZG3y2T9sdXEjabQHBjf5HWpkjHLj/AmGScn4XQ=;
+	s=arc-20240116; t=1750176817; c=relaxed/simple;
+	bh=FTxgQHBTx7nOk67lE2rdxKyqA8h4q00fc8GkPNbp46s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nA8tu3RSyb1dLXS0p1HJhObJ+Fq/TV2lVVUcUQpIRMftvioa51q+Q+gQAMa6Ag+UG1s8XrKiXqvwit3vv9kyvrKtvFucnVFXLyoVtn3abWlqCwJx61FOFOKyaBa4guMVAYiVjd8HzjC72nDN+VgihLalPKTAICqKXjmJTtDoViw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a99eWVVm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C793C4CEE7;
-	Tue, 17 Jun 2025 16:12:24 +0000 (UTC)
+	 MIME-Version; b=ZRCRc5kb9D/PkR+rkm8SfoqqAL/bAsmmkpAENdsXcV3VHn+rkC5Uh33nk3FchCOz0oQ2l+d57LGLAawnc69qbtRpFiKotuZ1yEPMYaFlpjovHoB+kYMFuydH3mvSizYFexRB2ZUCjIk/AYjWo7/H2lM1ZhQHjgXkST7TE01zPu8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Q7FEDXnq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F8CDC4CEE3;
+	Tue, 17 Jun 2025 16:13:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750176745;
-	bh=9avUdZG3y2T9sdXEjabQHBjf5HWpkjHLj/AmGScn4XQ=;
+	s=korg; t=1750176816;
+	bh=FTxgQHBTx7nOk67lE2rdxKyqA8h4q00fc8GkPNbp46s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=a99eWVVmFWON5NywRwjZKk9/tCrTdz5FweULBlhrJ9T9Uzfo2UN1Ukl9osLicX5QB
-	 PT93QVRU+RmiYIHR3kqywlHkw4bibLMy6nHKsHA7YXFBhl8jZdV38YiNT7siJ4gyK7
-	 UDf/WMI9DKQ6JjyVo2Vx+08YlYbxY8A+Mxwd2k2I=
+	b=Q7FEDXnqKpgmFW0qv6otxQ3AS8xG3bWavHrULliwCeGK7hIfaoaFRMjuW2XRmFhlx
+	 tBzI8JxXqaKXQkv4skAl3U8/rQJwXG/j3M41AroglFB+18P50/FZGGfWy9HNWeR73v
+	 V8t85sKoDRjnMuvyKknCZ6yC+oG2iaMiCWeD988c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+4edb496c3cad6e953a31@syzkaller.appspotmail.com,
-	Zhu Yanjun <yanjun.zhu@linux.dev>,
+	Junxian Huang <huangjunxian6@hisilicon.com>,
 	Leon Romanovsky <leon@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 215/780] RDMA/rxe: Fix "trying to register non-static key in rxe_qp_do_cleanup" bug
-Date: Tue, 17 Jun 2025 17:18:43 +0200
-Message-ID: <20250617152500.214309743@linuxfoundation.org>
+Subject: [PATCH 6.15 216/780] RDMA/hns: Include hnae3.h in hns_roce_hw_v2.h
+Date: Tue, 17 Jun 2025 17:18:44 +0200
+Message-ID: <20250617152500.254943418@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
 References: <20250617152451.485330293@linuxfoundation.org>
@@ -67,87 +66,91 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Zhu Yanjun <yanjun.zhu@linux.dev>
+From: Junxian Huang <huangjunxian6@hisilicon.com>
 
-[ Upstream commit 1c7eec4d5f3b39cdea2153abaebf1b7229a47072 ]
+[ Upstream commit 2b11d33de23262cb20d1dcb24b586dbb8f54d463 ]
 
-Call Trace:
- <TASK>
- __dump_stack lib/dump_stack.c:94 [inline]
- dump_stack_lvl+0x116/0x1f0 lib/dump_stack.c:120
- assign_lock_key kernel/locking/lockdep.c:986 [inline]
- register_lock_class+0x4a3/0x4c0 kernel/locking/lockdep.c:1300
- __lock_acquire+0x99/0x1ba0 kernel/locking/lockdep.c:5110
- lock_acquire kernel/locking/lockdep.c:5866 [inline]
- lock_acquire+0x179/0x350 kernel/locking/lockdep.c:5823
- __timer_delete_sync+0x152/0x1b0 kernel/time/timer.c:1644
- rxe_qp_do_cleanup+0x5c3/0x7e0 drivers/infiniband/sw/rxe/rxe_qp.c:815
- execute_in_process_context+0x3a/0x160 kernel/workqueue.c:4596
- __rxe_cleanup+0x267/0x3c0 drivers/infiniband/sw/rxe/rxe_pool.c:232
- rxe_create_qp+0x3f7/0x5f0 drivers/infiniband/sw/rxe/rxe_verbs.c:604
- create_qp+0x62d/0xa80 drivers/infiniband/core/verbs.c:1250
- ib_create_qp_kernel+0x9f/0x310 drivers/infiniband/core/verbs.c:1361
- ib_create_qp include/rdma/ib_verbs.h:3803 [inline]
- rdma_create_qp+0x10c/0x340 drivers/infiniband/core/cma.c:1144
- rds_ib_setup_qp+0xc86/0x19a0 net/rds/ib_cm.c:600
- rds_ib_cm_initiate_connect+0x1e8/0x3d0 net/rds/ib_cm.c:944
- rds_rdma_cm_event_handler_cmn+0x61f/0x8c0 net/rds/rdma_transport.c:109
- cma_cm_event_handler+0x94/0x300 drivers/infiniband/core/cma.c:2184
- cma_work_handler+0x15b/0x230 drivers/infiniband/core/cma.c:3042
- process_one_work+0x9cc/0x1b70 kernel/workqueue.c:3238
- process_scheduled_works kernel/workqueue.c:3319 [inline]
- worker_thread+0x6c8/0xf10 kernel/workqueue.c:3400
- kthread+0x3c2/0x780 kernel/kthread.c:464
- ret_from_fork+0x45/0x80 arch/x86/kernel/process.c:153
- ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
- </TASK>
+hns_roce_hw_v2.h has a direct dependency on hnae3.h due to the
+inline function hns_roce_write64(), but it doesn't include this
+header currently. This leads to that files including
+hns_roce_hw_v2.h must also include hnae3.h to avoid compilation
+errors, even if they themselves don't really rely on hnae3.h.
+This doesn't make sense, hns_roce_hw_v2.h should include hnae3.h
+directly.
 
-The root cause is as below:
-
-In the function rxe_create_qp, the function rxe_qp_from_init is called
-to create qp, if this function rxe_qp_from_init fails, rxe_cleanup will
-be called to handle all the allocated resources, including the timers:
-retrans_timer and rnr_nak_timer.
-
-The function rxe_qp_from_init calls the function rxe_qp_init_req to
-initialize the timers: retrans_timer and rnr_nak_timer.
-
-But these timers are initialized in the end of rxe_qp_init_req.
-If some errors occur before the initialization of these timers, this
-problem will occur.
-
-The solution is to check whether these timers are initialized or not.
-If these timers are not initialized, ignore these timers.
-
-Fixes: 8700e3e7c485 ("Soft RoCE driver")
-Reported-by: syzbot+4edb496c3cad6e953a31@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=4edb496c3cad6e953a31
-Signed-off-by: Zhu Yanjun <yanjun.zhu@linux.dev>
-Link: https://patch.msgid.link/20250419080741.1515231-1-yanjun.zhu@linux.dev
+Fixes: d3743fa94ccd ("RDMA/hns: Fix the chip hanging caused by sending doorbell during reset")
+Signed-off-by: Junxian Huang <huangjunxian6@hisilicon.com>
+Link: https://patch.msgid.link/20250421132750.1363348-6-huangjunxian6@hisilicon.com
 Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/sw/rxe/rxe_qp.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ drivers/infiniband/hw/hns/hns_roce_ah.c       | 1 -
+ drivers/infiniband/hw/hns/hns_roce_hw_v2.c    | 1 -
+ drivers/infiniband/hw/hns/hns_roce_hw_v2.h    | 1 +
+ drivers/infiniband/hw/hns/hns_roce_main.c     | 1 -
+ drivers/infiniband/hw/hns/hns_roce_restrack.c | 1 -
+ 5 files changed, 1 insertion(+), 4 deletions(-)
 
-diff --git a/drivers/infiniband/sw/rxe/rxe_qp.c b/drivers/infiniband/sw/rxe/rxe_qp.c
-index 7975fb0e2782f..f2af3e0aef35b 100644
---- a/drivers/infiniband/sw/rxe/rxe_qp.c
-+++ b/drivers/infiniband/sw/rxe/rxe_qp.c
-@@ -811,7 +811,12 @@ static void rxe_qp_do_cleanup(struct work_struct *work)
- 	spin_unlock_irqrestore(&qp->state_lock, flags);
- 	qp->qp_timeout_jiffies = 0;
+diff --git a/drivers/infiniband/hw/hns/hns_roce_ah.c b/drivers/infiniband/hw/hns/hns_roce_ah.c
+index 4fc5b9d5fea87..307c35888b300 100644
+--- a/drivers/infiniband/hw/hns/hns_roce_ah.c
++++ b/drivers/infiniband/hw/hns/hns_roce_ah.c
+@@ -33,7 +33,6 @@
+ #include <linux/pci.h>
+ #include <rdma/ib_addr.h>
+ #include <rdma/ib_cache.h>
+-#include "hnae3.h"
+ #include "hns_roce_device.h"
+ #include "hns_roce_hw_v2.h"
  
--	if (qp_type(qp) == IB_QPT_RC) {
-+	/* In the function timer_setup, .function is initialized. If .function
-+	 * is NULL, it indicates the function timer_setup is not called, the
-+	 * timer is not initialized. Or else, the timer is initialized.
-+	 */
-+	if (qp_type(qp) == IB_QPT_RC && qp->retrans_timer.function &&
-+		qp->rnr_nak_timer.function) {
- 		timer_delete_sync(&qp->retrans_timer);
- 		timer_delete_sync(&qp->rnr_nak_timer);
- 	}
+diff --git a/drivers/infiniband/hw/hns/hns_roce_hw_v2.c b/drivers/infiniband/hw/hns/hns_roce_hw_v2.c
+index 160e8927d364e..59352d1b62099 100644
+--- a/drivers/infiniband/hw/hns/hns_roce_hw_v2.c
++++ b/drivers/infiniband/hw/hns/hns_roce_hw_v2.c
+@@ -43,7 +43,6 @@
+ #include <rdma/ib_umem.h>
+ #include <rdma/uverbs_ioctl.h>
+ 
+-#include "hnae3.h"
+ #include "hns_roce_common.h"
+ #include "hns_roce_device.h"
+ #include "hns_roce_cmd.h"
+diff --git a/drivers/infiniband/hw/hns/hns_roce_hw_v2.h b/drivers/infiniband/hw/hns/hns_roce_hw_v2.h
+index 91a5665465ffb..bc7466830eaf9 100644
+--- a/drivers/infiniband/hw/hns/hns_roce_hw_v2.h
++++ b/drivers/infiniband/hw/hns/hns_roce_hw_v2.h
+@@ -34,6 +34,7 @@
+ #define _HNS_ROCE_HW_V2_H
+ 
+ #include <linux/bitops.h>
++#include "hnae3.h"
+ 
+ #define HNS_ROCE_V2_MAX_RC_INL_INN_SZ		32
+ #define HNS_ROCE_V2_MTT_ENTRY_SZ		64
+diff --git a/drivers/infiniband/hw/hns/hns_roce_main.c b/drivers/infiniband/hw/hns/hns_roce_main.c
+index 8d0b63d4b50a6..e7a497cc125cc 100644
+--- a/drivers/infiniband/hw/hns/hns_roce_main.c
++++ b/drivers/infiniband/hw/hns/hns_roce_main.c
+@@ -37,7 +37,6 @@
+ #include <rdma/ib_smi.h>
+ #include <rdma/ib_user_verbs.h>
+ #include <rdma/ib_cache.h>
+-#include "hnae3.h"
+ #include "hns_roce_common.h"
+ #include "hns_roce_device.h"
+ #include "hns_roce_hem.h"
+diff --git a/drivers/infiniband/hw/hns/hns_roce_restrack.c b/drivers/infiniband/hw/hns/hns_roce_restrack.c
+index 356d988169497..f637b73b946e4 100644
+--- a/drivers/infiniband/hw/hns/hns_roce_restrack.c
++++ b/drivers/infiniband/hw/hns/hns_roce_restrack.c
+@@ -4,7 +4,6 @@
+ #include <rdma/rdma_cm.h>
+ #include <rdma/restrack.h>
+ #include <uapi/rdma/rdma_netlink.h>
+-#include "hnae3.h"
+ #include "hns_roce_common.h"
+ #include "hns_roce_device.h"
+ #include "hns_roce_hw_v2.h"
 -- 
 2.39.5
 
