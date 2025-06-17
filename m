@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-153855-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-154363-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 197D6ADD6FD
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:39:30 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D348ADD8C6
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:58:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0906E162ACA
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:27:15 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AF9EA3A4CD9
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:50:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BBB5F2EF282;
-	Tue, 17 Jun 2025 16:21:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5291236453;
+	Tue, 17 Jun 2025 16:49:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z0shGmBR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XUr+phUb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7542B2ECEA6;
-	Tue, 17 Jun 2025 16:21:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B54C18E025;
+	Tue, 17 Jun 2025 16:49:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750177315; cv=none; b=STbLHDdX9GYtLJrAs9pdjDMG3THt0AAimTw/sN9fbbnfZi/Uop6c6Ziqdx7zxKm8oKYS68YuVwvwQck42jRvMumpqLi8SR0nSD5oB2eC4Yb5BIujcpaW4VSv+7azle4fkzJzKV9oHyTib3Txr/twuvo/dw4y6iiSFo5i24ufMgo=
+	t=1750178955; cv=none; b=rhkkHLLr8DMmi6jVOH6KXp4O2eELxPjL8agVJmLr42x9Ur2npWWgo9QUMQv133VRWDbOa0CB+hm4jb/CDJdIRhG4g5k6DQhefflcKa+Mns9Irxprdl62wRTAL4zk8qbLw2YLW11wwqk3Hx3xJ9XXWUp0/PEy5JUgVI+AG6GR31U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750177315; c=relaxed/simple;
-	bh=TpfZcHSBRwj/mLsbRKCsWZXfpBSrtbogjXCmDagdPoM=;
+	s=arc-20240116; t=1750178955; c=relaxed/simple;
+	bh=PYy94iyQ//WLbpayI9YRfkg/2XTpufnni3+8RGMtDuI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=d1mrhSUwYm2E4zbvSn7dsKVaTc7KzMFKDSKYyFz+zUH1wU2Lncd/hw0uFj66LI7VbnBtdF5Lp6mt4PkHSjKd4Zd8drG6YK+t5SmNmZlsjFOWmrvSfjn/BD5Q3p4OKgOKkESV6/c7dX0ulkInNuWClJyLtlx11mKC8/tk07NtykA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z0shGmBR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0AD8C4CEE3;
-	Tue, 17 Jun 2025 16:21:54 +0000 (UTC)
+	 MIME-Version:Content-Type; b=e7wo1nIaSxsLb3qYtb4EBdeWDtIJRaaZIica4vVL40ATs+bYtEkJsLtjrNV0hD02UMNb/AYTIlIvj9LwD2x8AmqEJnlCUUeELIaQl9p6crafKu1ROPWPxoNDMqQqvabJIhNCiyrUQQm6i4j6a48S//Q79mS/pUDd+QlLlcG5wwA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XUr+phUb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4947C4CEE3;
+	Tue, 17 Jun 2025 16:49:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750177315;
-	bh=TpfZcHSBRwj/mLsbRKCsWZXfpBSrtbogjXCmDagdPoM=;
+	s=korg; t=1750178955;
+	bh=PYy94iyQ//WLbpayI9YRfkg/2XTpufnni3+8RGMtDuI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=z0shGmBRQtzKGooutEZ9VRXOKOUXM6MRnREm0tuLB6alZxyvMzotLO4NMdcYYJG5U
-	 XExQ8lDzghjZZw6BOsmIMk4cP4dOVCdhs8ytQp010yCVhCdwwUWxVL5im0qzcjU3s0
-	 vALwUNKsZuHjeCLNLgXr0/uKJQtztPkfeUUPM0d8=
+	b=XUr+phUbMNH4UtSTFaeBVCywjNpQkSHYz1P0ohIszqG3UdOzSct8s1XL3vxyPoA3P
+	 Deqljd4NSxpJowm/DwuyfUd4Mn0ZxdHFpWDL0svObKX7IrwQeHPe1q6Zdn6EvgiLdT
+	 o/ZrNxllbKlui9U/SdPF8cNs06TeldTAMthdUz+I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
-	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	=?UTF-8?q?=C3=81lvaro=20Fern=C3=A1ndez=20Rojas?= <noltari@gmail.com>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 317/512] PCI/DPC: Initialize aer_err_info before using it
-Date: Tue, 17 Jun 2025 17:24:43 +0200
-Message-ID: <20250617152432.457585073@linuxfoundation.org>
+Subject: [PATCH 6.15 576/780] net: dsa: tag_brcm: legacy: fix pskb_may_pull length
+Date: Tue, 17 Jun 2025 17:24:44 +0200
+Message-ID: <20250617152514.934054089@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
-References: <20250617152419.512865572@linuxfoundation.org>
+In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
+References: <20250617152451.485330293@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,45 +64,40 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bjorn Helgaas <bhelgaas@google.com>
+From: Álvaro Fernández Rojas <noltari@gmail.com>
 
-[ Upstream commit a424b598e6a6c1e69a2bb801d6fd16e805ab2c38 ]
+[ Upstream commit efdddc4484859082da6c7877ed144c8121c8ea55 ]
 
-Previously the struct aer_err_info "info" was allocated on the stack
-without being initialized, so it contained junk except for the fields we
-explicitly set later.
+BRCM_LEG_PORT_ID was incorrectly used for pskb_may_pull length.
+The correct check is BRCM_LEG_TAG_LEN + VLAN_HLEN, or 10 bytes.
 
-Initialize "info" at declaration so it starts as all zeros.
-
-Fixes: 8aefa9b0d910 ("PCI/DPC: Print AER status in DPC event handling")
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Tested-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
-Reviewed-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Link: https://patch.msgid.link/20250522232339.1525671-2-helgaas@kernel.org
+Fixes: 964dbf186eaa ("net: dsa: tag_brcm: add support for legacy tags")
+Signed-off-by: Álvaro Fernández Rojas <noltari@gmail.com>
+Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Link: https://patch.msgid.link/20250529124406.2513779-1-noltari@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/pcie/dpc.c | 2 +-
+ net/dsa/tag_brcm.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/pci/pcie/dpc.c b/drivers/pci/pcie/dpc.c
-index 2b6ef7efa3c11..8096e4858553e 100644
---- a/drivers/pci/pcie/dpc.c
-+++ b/drivers/pci/pcie/dpc.c
-@@ -260,7 +260,7 @@ static int dpc_get_aer_uncorrect_severity(struct pci_dev *dev,
- void dpc_process_error(struct pci_dev *pdev)
- {
- 	u16 cap = pdev->dpc_cap, status, source, reason, ext_reason;
--	struct aer_err_info info;
-+	struct aer_err_info info = {};
+diff --git a/net/dsa/tag_brcm.c b/net/dsa/tag_brcm.c
+index 8c3c068728e51..fe75821623a4f 100644
+--- a/net/dsa/tag_brcm.c
++++ b/net/dsa/tag_brcm.c
+@@ -257,7 +257,7 @@ static struct sk_buff *brcm_leg_tag_rcv(struct sk_buff *skb,
+ 	int source_port;
+ 	u8 *brcm_tag;
  
- 	pci_read_config_word(pdev, cap + PCI_EXP_DPC_STATUS, &status);
- 	pci_read_config_word(pdev, cap + PCI_EXP_DPC_SOURCE_ID, &source);
+-	if (unlikely(!pskb_may_pull(skb, BRCM_LEG_PORT_ID)))
++	if (unlikely(!pskb_may_pull(skb, BRCM_LEG_TAG_LEN + VLAN_HLEN)))
+ 		return NULL;
+ 
+ 	brcm_tag = dsa_etype_header_pos_rx(skb);
 -- 
 2.39.5
 
