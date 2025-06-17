@@ -1,56 +1,60 @@
-Return-Path: <stable+bounces-154087-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-154460-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D3850ADD808
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:51:31 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5AA4EADD9E8
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 19:10:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E25863AA505
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:41:06 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 18C551BC2FA2
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:55:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92F7F2FA659;
-	Tue, 17 Jun 2025 16:34:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF8F52FA647;
+	Tue, 17 Jun 2025 16:54:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dqPXEnPG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LrDDzUEh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50E7B2FA656;
-	Tue, 17 Jun 2025 16:34:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C93A2FA626;
+	Tue, 17 Jun 2025 16:54:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750178059; cv=none; b=bWQUVhdO9/NB5pMyGixL0rCdIu3CNXesiIqtFTX91YeVlKC6ECp0FtJGtHPcoPjczq3CBLs+aev88d+925ENcPRQHicGk5Hu0NcaYH3WELIH6QYliT08MknmOY4dauNYbouGWNgumdlJ/4TV4X6BaZvQTwNBq/F4iUXMFBh3erw=
+	t=1750179259; cv=none; b=MM8wfnIsu1HoCp9EVDLE9cSSppOgDEplBy41tQwz+JF/R/7BVlAjrikT3FuGlU8F/aaYlG/JTsj72aBKq7LXYZlr4YmxzzqUZ/Ur9SHLisy9R2sWugEg2t33o12XYzCBSb+mN35372O8gDlCIUYXC5KvUwYiCsv956VK2aodTGY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750178059; c=relaxed/simple;
-	bh=bR8HequTPWmhYxzOb38sw/b0x6A3B5Sp3cTipEhWzQg=;
+	s=arc-20240116; t=1750179259; c=relaxed/simple;
+	bh=BXugR84bWh2OkV8qb+eYFvIpkX5fwIzyQDFbNmsIT6I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=hjz6bQfrdqnx8DW9Kki9eKYjX9lGkHO32YziLPf6Q96KqqoBUX6B+AlyC0hIw0pS0Z0AoIieA6zGn9pVKbsC6rGHMwbrzkLeEFEAuH2h62m7lEQOyRYGcNDlxkTozr47JW8eJLhUM6X5TFKwUwyEG94nzsTdJWGl1DAAaoipyis=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dqPXEnPG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B271DC4CEE3;
-	Tue, 17 Jun 2025 16:34:18 +0000 (UTC)
+	 MIME-Version; b=EPndOsF4m/IA3QCCjdUWyitrFWENtz4ShXFkMJIGbFNcqqdY2BP7WPUmAXhcf8ZXBC7lkMGBYibrGsiLtcq0HKs/VPztAMm0mh4/RZdZJAnf9YRZQuJLo/l6M8X8UWs1o9cPd2nGDHlumLFuQ4Djf4/KWfIjC3AKHoH56ny3nIs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LrDDzUEh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 840CEC4CEE7;
+	Tue, 17 Jun 2025 16:54:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750178059;
-	bh=bR8HequTPWmhYxzOb38sw/b0x6A3B5Sp3cTipEhWzQg=;
+	s=korg; t=1750179258;
+	bh=BXugR84bWh2OkV8qb+eYFvIpkX5fwIzyQDFbNmsIT6I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dqPXEnPG2+F1/X7xJa0t94JnvyXn3JQ3JvG1eopbqpSmBk+3BDGuu642EWiG/6Tt0
-	 NWTbbEbtgE5dBzxOdq43/iNT18MmT+hm6RaFQNjNsVq0zd6PsjAuS3uUJjD+PsWHCs
-	 /1PqV39nD9Oge5aOxqdgDQVo/Fem4lEUswB/V9nA=
+	b=LrDDzUEhdKmP+qr2iq06fNYN++J6U1rLoF3pp3vduOmgA0EjNGqmO3zw0F0qyTUGD
+	 3xRj0YlrMcpKqDdsfZFbtEir96Wj/IpY9Spccekm/zmeIDpMuKx/j6tZr5SUStZzYd
+	 F2MD33xK55KkJAcZS9kR6rEYRueB5d1WnNqy/n1E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?F=C3=A9lix=20Pi=C3=A9dallu?= <felix.piedallu@non.se.com>,
-	Mark Brown <broonie@kernel.org>,
+	Ahmed Zaki <ahmed.zaki@intel.com>,
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	Marcin Szycik <marcin.szycik@linux.intel.com>,
+	Simon Horman <horms@kernel.org>,
+	Rafal Romanowski <rafal.romanowski@intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 438/512] spi: omap2-mcspi: Disable multi mode when CS should be kept asserted after message
+Subject: [PATCH 6.15 696/780] iavf: fix reset_task for early reset event
 Date: Tue, 17 Jun 2025 17:26:44 +0200
-Message-ID: <20250617152437.317708431@linuxfoundation.org>
+Message-ID: <20250617152519.840804955@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
-References: <20250617152419.512865572@linuxfoundation.org>
+In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
+References: <20250617152451.485330293@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,56 +64,99 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Félix Piédallu <felix.piedallu@non.se.com>
+From: Ahmed Zaki <ahmed.zaki@intel.com>
 
-[ Upstream commit a5bf5272295d3f058adeee025d2a0b6625f8ba7b ]
+[ Upstream commit 0c6f4631436ecea841f1583b98255aedd7495b18 ]
 
-When the last transfer of a SPI message has the cs_change flag, the CS is kept
-asserted after the message.
-Multi-mode can't respect this as CS is deasserted by the hardware at the end of
-the message.
+If a reset event is received from the PF early in the init cycle, the
+state machine hangs for about 25 seconds.
 
-Disable multi-mode when not applicable to the current message.
+Reproducer:
+  echo 1 > /sys/class/net/$PF0/device/sriov_numvfs
+  ip link set dev $PF0 vf 0 mac $NEW_MAC
 
-Fixes: d153ff4056cb ("spi: omap2-mcspi: Add support for MULTI-mode")
-Signed-off-by: Félix Piédallu <felix.piedallu@non.se.com>
-Link: https://patch.msgid.link/20250606-cs_change_fix-v1-1-27191a98a2e5@non.se.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+The log shows:
+  [792.620416] ice 0000:5e:00.0: Enabling 1 VFs
+  [792.738812] iavf 0000:5e:01.0: enabling device (0000 -> 0002)
+  [792.744182] ice 0000:5e:00.0: Enabling 1 VFs with 17 vectors and 16 queues per VF
+  [792.839964] ice 0000:5e:00.0: Setting MAC 52:54:00:00:00:11 on VF 0. VF driver will be reinitialized
+  [813.389684] iavf 0000:5e:01.0: Failed to communicate with PF; waiting before retry
+  [818.635918] iavf 0000:5e:01.0: Hardware came out of reset. Attempting reinit.
+  [818.766273] iavf 0000:5e:01.0: Multiqueue Enabled: Queue pair count = 16
+
+Fix it by scheduling the reset task and making the reset task capable of
+resetting early in the init cycle.
+
+Fixes: ef8693eb90ae3 ("i40evf: refactor reset handling")
+Signed-off-by: Ahmed Zaki <ahmed.zaki@intel.com>
+Tested-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+Signed-off-by: Marcin Szycik <marcin.szycik@linux.intel.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Tested-by: Rafal Romanowski <rafal.romanowski@intel.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi-omap2-mcspi.c | 12 +++++++++---
- 1 file changed, 9 insertions(+), 3 deletions(-)
+ drivers/net/ethernet/intel/iavf/iavf_main.c     | 11 +++++++++++
+ drivers/net/ethernet/intel/iavf/iavf_virtchnl.c | 17 +++++++++++++++++
+ 2 files changed, 28 insertions(+)
 
-diff --git a/drivers/spi/spi-omap2-mcspi.c b/drivers/spi/spi-omap2-mcspi.c
-index 532b2e9c31d0d..05766b98de36f 100644
---- a/drivers/spi/spi-omap2-mcspi.c
-+++ b/drivers/spi/spi-omap2-mcspi.c
-@@ -1287,9 +1287,15 @@ static int omap2_mcspi_prepare_message(struct spi_controller *ctlr,
- 			mcspi->use_multi_mode = false;
- 		}
+diff --git a/drivers/net/ethernet/intel/iavf/iavf_main.c b/drivers/net/ethernet/intel/iavf/iavf_main.c
+index 2c0bb41809a41..81d7249d1149c 100644
+--- a/drivers/net/ethernet/intel/iavf/iavf_main.c
++++ b/drivers/net/ethernet/intel/iavf/iavf_main.c
+@@ -3209,6 +3209,17 @@ static void iavf_reset_task(struct work_struct *work)
+ 	}
  
--		/* Check if transfer asks to change the CS status after the transfer */
--		if (!tr->cs_change)
--			mcspi->use_multi_mode = false;
-+		if (list_is_last(&tr->transfer_list, &msg->transfers)) {
-+			/* Check if transfer asks to keep the CS status after the whole message */
-+			if (tr->cs_change)
-+				mcspi->use_multi_mode = false;
-+		} else {
-+			/* Check if transfer asks to change the CS status after the transfer */
-+			if (!tr->cs_change)
-+				mcspi->use_multi_mode = false;
+ continue_reset:
++	/* If we are still early in the state machine, just restart. */
++	if (adapter->state <= __IAVF_INIT_FAILED) {
++		iavf_shutdown_adminq(hw);
++		iavf_change_state(adapter, __IAVF_STARTUP);
++		iavf_startup(adapter);
++		queue_delayed_work(adapter->wq, &adapter->watchdog_task,
++				   msecs_to_jiffies(30));
++		netdev_unlock(netdev);
++		return;
++	}
++
+ 	/* We don't use netif_running() because it may be true prior to
+ 	 * ndo_open() returning, so we can't assume it means all our open
+ 	 * tasks have finished, since we're not holding the rtnl_lock here.
+diff --git a/drivers/net/ethernet/intel/iavf/iavf_virtchnl.c b/drivers/net/ethernet/intel/iavf/iavf_virtchnl.c
+index a6f0e5990be25..07f0d0a0f1e28 100644
+--- a/drivers/net/ethernet/intel/iavf/iavf_virtchnl.c
++++ b/drivers/net/ethernet/intel/iavf/iavf_virtchnl.c
+@@ -79,6 +79,23 @@ iavf_poll_virtchnl_msg(struct iavf_hw *hw, struct iavf_arq_event_info *event,
+ 			return iavf_status_to_errno(status);
+ 		received_op =
+ 		    (enum virtchnl_ops)le32_to_cpu(event->desc.cookie_high);
++
++		if (received_op == VIRTCHNL_OP_EVENT) {
++			struct iavf_adapter *adapter = hw->back;
++			struct virtchnl_pf_event *vpe =
++				(struct virtchnl_pf_event *)event->msg_buf;
++
++			if (vpe->event != VIRTCHNL_EVENT_RESET_IMPENDING)
++				continue;
++
++			dev_info(&adapter->pdev->dev, "Reset indication received from the PF\n");
++			if (!(adapter->flags & IAVF_FLAG_RESET_PENDING))
++				iavf_schedule_reset(adapter,
++						    IAVF_FLAG_RESET_PENDING);
++
++			return -EIO;
 +		}
- 
- 		/*
- 		 * If at least one message is not compatible, switch back to single mode
++
+ 		if (op_to_poll == received_op)
+ 			break;
+ 	}
 -- 
 2.39.5
 
