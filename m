@@ -1,63 +1,60 @@
-Return-Path: <stable+bounces-154331-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153834-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 49699ADD99C
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 19:08:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 880E0ADD6E0
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:38:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 89656404F7F
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:49:19 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 661614A1014
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:25:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 424F22DFF0E;
-	Tue, 17 Jun 2025 16:47:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 906B72F9497;
+	Tue, 17 Jun 2025 16:20:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VcCKAch5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ov6pVI57"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F26982CCC5;
-	Tue, 17 Jun 2025 16:47:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4ACF52F9492;
+	Tue, 17 Jun 2025 16:20:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750178855; cv=none; b=uRQRxgFzqiHpRZGCWaI/9EvaHpo9m6Qo7U/8aTNvJK56V9cAbEmVDKyDGaUwIc6XboLJgRY7CS3KpQOXLmTLUu1q+Rt99tnLNpDkicKnbf9PypiRDKYhlqm5XCgZHs533+1olc7BJxy/kb0LalL8ysk7dZjKRobRytUBtO3vK14=
+	t=1750177248; cv=none; b=V4p20wW/0jtz39anw8ZhDmAgofu/Wnjh/ZG/POb68qS+fximUlwnI8Th6OeJT9lI/s3TPE2DWTtrFLVOKiqmFXCoew5IjHVGi3fKbigNzvHUqb8UNR1FmyqTddb56YwJNBHGkEKH8IV9kpxbCJcpJtIJSrv+mSX2kIVLM/Mqkz0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750178855; c=relaxed/simple;
-	bh=BEqgaaVFcJzcruturGGgvgQ0DKHJSQjXsJRomT4AM5s=;
+	s=arc-20240116; t=1750177248; c=relaxed/simple;
+	bh=d/sOActGyxksS981kqg1LbxdqGJVundRozjeOgnNfyI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cfybgq0dcF8wSet/u4oRxwAItHEpPFvtuS4qX/SPeos5wopiHrjGpjBCqx2DoVNLB9jRpi8ZQGkZOVT73BpLKPj9/cqFo0m+4eF8/UAKOVDb11Z/aQ0hWMHaSaG/Ta7rU8mbN507JkuYUlJB97G6/SWKfvMklk2MDmm3WyX4vIc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VcCKAch5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE995C4CEE3;
-	Tue, 17 Jun 2025 16:47:33 +0000 (UTC)
+	 MIME-Version; b=lhsRxpCeecmiCbFfcCNyyu5LjHPEXkuO/VNnAZGgn8aCZ5KfkSBe5k7/7WBgDxgMo5GlELnKU60Hf4Ptn3wRff1mmkb0R3GaOQRBLalSebOdT2EF+Yc+28oBqH8q0pwvZ1AWfirWqO2QrGfD+cb/u/s6Mecq7JdknbhgN6M9VXA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ov6pVI57; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6092C4CEE3;
+	Tue, 17 Jun 2025 16:20:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750178854;
-	bh=BEqgaaVFcJzcruturGGgvgQ0DKHJSQjXsJRomT4AM5s=;
+	s=korg; t=1750177248;
+	bh=d/sOActGyxksS981kqg1LbxdqGJVundRozjeOgnNfyI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VcCKAch5Pmg6RtVA/0L9jQkT4UkQxjNbotuNW36d9Is572IXI4FXmCZitFXvng5RY
-	 sSAv4ttawuONTDp+vh+AHO8eq2bK6MXzcPjKoRnbZdjNhdlkuJumiox8Gp76g4Ojad
-	 0T4JQGgW/LNxtBfg8S7TP45JuqfM/MrqTqgP9bdQ=
+	b=Ov6pVI57sTeKj/8TX9QRb2dAFrjhHJFN6qBApKUF6jfLgWA2grBMOO8WOsxMUe3jm
+	 xEtgQKBS34XUZtRtSov2J3aUtwV2G4CWeTcICHkBk9EnnpJyOToE3TnINfKpmXs6dL
+	 zyrXfbd6fSOrn1emfadn9Osw0aml/nRqc5lsewOE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dawid Osuchowski <dawid.osuchowski@linux.intel.com>,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Michal Kubiak <michal.kubiak@intel.com>,
-	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
-	Simon Horman <horms@kernel.org>,
-	Jesse Brandeburg <jbrandeburg@cloudflare.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Sasha Levin <sashal@kernel.org>,
-	Saritha Sanigani <sarithax.sanigani@intel.com>
-Subject: [PATCH 6.15 571/780] ice: fix Tx scheduler error handling in XDP callback
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Denis Benato <benato.denis96@gmail.com>,
+	Yijun Shen <Yijun_Shen@Dell.com>,
+	David Perry <david.perry@amd.com>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 313/512] PCI: Explicitly put devices into D0 when initializing
 Date: Tue, 17 Jun 2025 17:24:39 +0200
-Message-ID: <20250617152514.730247276@linuxfoundation.org>
+Message-ID: <20250617152432.297176178@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
-References: <20250617152451.485330293@linuxfoundation.org>
+In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
+References: <20250617152419.512865572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,184 +66,110 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michal Kubiak <michal.kubiak@intel.com>
+From: Mario Limonciello <mario.limonciello@amd.com>
 
-[ Upstream commit 0153f36041b8e52019ebfa8629c13bf8f9b0a951 ]
+[ Upstream commit 4d4c10f763d7808fbade28d83d237411603bca05 ]
 
-When the XDP program is loaded, the XDP callback adds new Tx queues.
-This means that the callback must update the Tx scheduler with the new
-queue number. In the event of a Tx scheduler failure, the XDP callback
-should also fail and roll back any changes previously made for XDP
-preparation.
+AMD BIOS team has root caused an issue that NVMe storage failed to come
+back from suspend to a lack of a call to _REG when NVMe device was probed.
 
-The previous implementation had a bug that not all changes made by the
-XDP callback were rolled back. This caused the crash with the following
-call trace:
+112a7f9c8edbf ("PCI/ACPI: Call _REG when transitioning D-states") added
+support for calling _REG when transitioning D-states, but this only works
+if the device actually "transitions" D-states.
 
-[  +9.549584] ice 0000:ca:00.0: Failed VSI LAN queue config for XDP, error: -5
-[  +0.382335] Oops: general protection fault, probably for non-canonical address 0x50a2250a90495525: 0000 [#1] SMP NOPTI
-[  +0.010710] CPU: 103 UID: 0 PID: 0 Comm: swapper/103 Not tainted 6.14.0-net-next-mar-31+ #14 PREEMPT(voluntary)
-[  +0.010175] Hardware name: Intel Corporation M50CYP2SBSTD/M50CYP2SBSTD, BIOS SE5C620.86B.01.01.0005.2202160810 02/16/2022
-[  +0.010946] RIP: 0010:__ice_update_sample+0x39/0xe0 [ice]
+967577b062417 ("PCI/PM: Keep runtime PM enabled for unbound PCI devices")
+added support for runtime PM on PCI devices, but never actually
+'explicitly' sets the device to D0.
 
-[...]
+To make sure that devices are in D0 and that platform methods such as
+_REG are called, explicitly set all devices into D0 during initialization.
 
-[  +0.002715] Call Trace:
-[  +0.002452]  <IRQ>
-[  +0.002021]  ? __die_body.cold+0x19/0x29
-[  +0.003922]  ? die_addr+0x3c/0x60
-[  +0.003319]  ? exc_general_protection+0x17c/0x400
-[  +0.004707]  ? asm_exc_general_protection+0x26/0x30
-[  +0.004879]  ? __ice_update_sample+0x39/0xe0 [ice]
-[  +0.004835]  ice_napi_poll+0x665/0x680 [ice]
-[  +0.004320]  __napi_poll+0x28/0x190
-[  +0.003500]  net_rx_action+0x198/0x360
-[  +0.003752]  ? update_rq_clock+0x39/0x220
-[  +0.004013]  handle_softirqs+0xf1/0x340
-[  +0.003840]  ? sched_clock_cpu+0xf/0x1f0
-[  +0.003925]  __irq_exit_rcu+0xc2/0xe0
-[  +0.003665]  common_interrupt+0x85/0xa0
-[  +0.003839]  </IRQ>
-[  +0.002098]  <TASK>
-[  +0.002106]  asm_common_interrupt+0x26/0x40
-[  +0.004184] RIP: 0010:cpuidle_enter_state+0xd3/0x690
-
-Fix this by performing the missing unmapping of XDP queues from
-q_vectors and setting the XDP rings pointer back to NULL after all those
-queues are released.
-Also, add an immediate exit from the XDP callback in case of ring
-preparation failure.
-
-Fixes: efc2214b6047 ("ice: Add support for XDP")
-Reviewed-by: Dawid Osuchowski <dawid.osuchowski@linux.intel.com>
-Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
-Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
-Signed-off-by: Michal Kubiak <michal.kubiak@intel.com>
-Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Tested-by: Jesse Brandeburg <jbrandeburg@cloudflare.com>
-Tested-by: Saritha Sanigani <sarithax.sanigani@intel.com> (A Contingent Worker at Intel)
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Fixes: 967577b062417 ("PCI/PM: Keep runtime PM enabled for unbound PCI devices")
+Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Tested-by: Denis Benato <benato.denis96@gmail.com>
+Tested-By: Yijun Shen <Yijun_Shen@Dell.com>
+Tested-By: David Perry <david.perry@amd.com>
+Reviewed-by: Rafael J. Wysocki <rafael@kernel.org>
+Link: https://patch.msgid.link/20250424043232.1848107-1-superm1@kernel.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/ice/ice_main.c | 47 ++++++++++++++++-------
- 1 file changed, 33 insertions(+), 14 deletions(-)
+ drivers/pci/pci-driver.c |  6 ------
+ drivers/pci/pci.c        | 13 ++++++++++---
+ drivers/pci/pci.h        |  1 +
+ 3 files changed, 11 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/ice/ice_main.c b/drivers/net/ethernet/intel/ice/ice_main.c
-index d390157b59fe1..82d472f1d781a 100644
---- a/drivers/net/ethernet/intel/ice/ice_main.c
-+++ b/drivers/net/ethernet/intel/ice/ice_main.c
-@@ -2740,6 +2740,27 @@ void ice_map_xdp_rings(struct ice_vsi *vsi)
- 	}
+diff --git a/drivers/pci/pci-driver.c b/drivers/pci/pci-driver.c
+index 35270172c8331..a90990157e0b7 100644
+--- a/drivers/pci/pci-driver.c
++++ b/drivers/pci/pci-driver.c
+@@ -555,12 +555,6 @@ static void pci_pm_default_resume(struct pci_dev *pci_dev)
+ 	pci_enable_wake(pci_dev, PCI_D0, false);
  }
  
-+/**
-+ * ice_unmap_xdp_rings - Unmap XDP rings from interrupt vectors
-+ * @vsi: the VSI with XDP rings being unmapped
-+ */
-+static void ice_unmap_xdp_rings(struct ice_vsi *vsi)
+-static void pci_pm_power_up_and_verify_state(struct pci_dev *pci_dev)
+-{
+-	pci_power_up(pci_dev);
+-	pci_update_current_state(pci_dev, PCI_D0);
+-}
+-
+ static void pci_pm_default_resume_early(struct pci_dev *pci_dev)
+ {
+ 	pci_pm_power_up_and_verify_state(pci_dev);
+diff --git a/drivers/pci/pci.c b/drivers/pci/pci.c
+index 7ca5422feb2d4..1a6639dbe81b3 100644
+--- a/drivers/pci/pci.c
++++ b/drivers/pci/pci.c
+@@ -3185,6 +3185,12 @@ void pci_d3cold_disable(struct pci_dev *dev)
+ }
+ EXPORT_SYMBOL_GPL(pci_d3cold_disable);
+ 
++void pci_pm_power_up_and_verify_state(struct pci_dev *pci_dev)
 +{
-+	int v_idx;
-+
-+	ice_for_each_q_vector(vsi, v_idx) {
-+		struct ice_q_vector *q_vector = vsi->q_vectors[v_idx];
-+		struct ice_tx_ring *ring;
-+
-+		ice_for_each_tx_ring(ring, q_vector->tx)
-+			if (!ring->tx_buf || !ice_ring_is_xdp(ring))
-+				break;
-+
-+		/* restore the value of last node prior to XDP setup */
-+		q_vector->tx.tx_ring = ring;
-+	}
++	pci_power_up(pci_dev);
++	pci_update_current_state(pci_dev, PCI_D0);
 +}
 +
  /**
-  * ice_prepare_xdp_rings - Allocate, configure and setup Tx rings for XDP
-  * @vsi: VSI to bring up Tx rings used by XDP
-@@ -2803,7 +2824,7 @@ int ice_prepare_xdp_rings(struct ice_vsi *vsi, struct bpf_prog *prog,
- 	if (status) {
- 		dev_err(dev, "Failed VSI LAN queue config for XDP, error: %d\n",
- 			status);
--		goto clear_xdp_rings;
-+		goto unmap_xdp_rings;
- 	}
+  * pci_pm_init - Initialize PM functions of given PCI device
+  * @dev: PCI device to handle.
+@@ -3195,9 +3201,6 @@ void pci_pm_init(struct pci_dev *dev)
+ 	u16 status;
+ 	u16 pmc;
  
- 	/* assign the prog only when it's not already present on VSI;
-@@ -2819,6 +2840,8 @@ int ice_prepare_xdp_rings(struct ice_vsi *vsi, struct bpf_prog *prog,
- 		ice_vsi_assign_bpf_prog(vsi, prog);
+-	pm_runtime_forbid(&dev->dev);
+-	pm_runtime_set_active(&dev->dev);
+-	pm_runtime_enable(&dev->dev);
+ 	device_enable_async_suspend(&dev->dev);
+ 	dev->wakeup_prepared = false;
  
- 	return 0;
-+unmap_xdp_rings:
-+	ice_unmap_xdp_rings(vsi);
- clear_xdp_rings:
- 	ice_for_each_xdp_txq(vsi, i)
- 		if (vsi->xdp_rings[i]) {
-@@ -2835,6 +2858,8 @@ int ice_prepare_xdp_rings(struct ice_vsi *vsi, struct bpf_prog *prog,
- 	mutex_unlock(&pf->avail_q_mutex);
- 
- 	devm_kfree(dev, vsi->xdp_rings);
-+	vsi->xdp_rings = NULL;
-+
- 	return -ENOMEM;
+@@ -3259,6 +3262,10 @@ void pci_pm_init(struct pci_dev *dev)
+ 	pci_read_config_word(dev, PCI_STATUS, &status);
+ 	if (status & PCI_STATUS_IMM_READY)
+ 		dev->imm_ready = 1;
++	pci_pm_power_up_and_verify_state(dev);
++	pm_runtime_forbid(&dev->dev);
++	pm_runtime_set_active(&dev->dev);
++	pm_runtime_enable(&dev->dev);
  }
  
-@@ -2850,7 +2875,7 @@ int ice_destroy_xdp_rings(struct ice_vsi *vsi, enum ice_xdp_cfg cfg_type)
- {
- 	u16 max_txqs[ICE_MAX_TRAFFIC_CLASS] = { 0 };
- 	struct ice_pf *pf = vsi->back;
--	int i, v_idx;
-+	int i;
- 
- 	/* q_vectors are freed in reset path so there's no point in detaching
- 	 * rings
-@@ -2858,17 +2883,7 @@ int ice_destroy_xdp_rings(struct ice_vsi *vsi, enum ice_xdp_cfg cfg_type)
- 	if (cfg_type == ICE_XDP_CFG_PART)
- 		goto free_qmap;
- 
--	ice_for_each_q_vector(vsi, v_idx) {
--		struct ice_q_vector *q_vector = vsi->q_vectors[v_idx];
--		struct ice_tx_ring *ring;
--
--		ice_for_each_tx_ring(ring, q_vector->tx)
--			if (!ring->tx_buf || !ice_ring_is_xdp(ring))
--				break;
--
--		/* restore the value of last node prior to XDP setup */
--		q_vector->tx.tx_ring = ring;
--	}
-+	ice_unmap_xdp_rings(vsi);
- 
- free_qmap:
- 	mutex_lock(&pf->avail_q_mutex);
-@@ -3013,11 +3028,14 @@ ice_xdp_setup_prog(struct ice_vsi *vsi, struct bpf_prog *prog,
- 		xdp_ring_err = ice_vsi_determine_xdp_res(vsi);
- 		if (xdp_ring_err) {
- 			NL_SET_ERR_MSG_MOD(extack, "Not enough Tx resources for XDP");
-+			goto resume_if;
- 		} else {
- 			xdp_ring_err = ice_prepare_xdp_rings(vsi, prog,
- 							     ICE_XDP_CFG_FULL);
--			if (xdp_ring_err)
-+			if (xdp_ring_err) {
- 				NL_SET_ERR_MSG_MOD(extack, "Setting up XDP Tx resources failed");
-+				goto resume_if;
-+			}
- 		}
- 		xdp_features_set_redirect_target(vsi->netdev, true);
- 		/* reallocate Rx queues that are used for zero-copy */
-@@ -3035,6 +3053,7 @@ ice_xdp_setup_prog(struct ice_vsi *vsi, struct bpf_prog *prog,
- 			NL_SET_ERR_MSG_MOD(extack, "Freeing XDP Rx resources failed");
- 	}
- 
-+resume_if:
- 	if (if_running)
- 		ret = ice_up(vsi);
- 
+ static unsigned long pci_ea_flags(struct pci_dev *dev, u8 prop)
+diff --git a/drivers/pci/pci.h b/drivers/pci/pci.h
+index 65df6d2ac0032..c1a5874eeb6cf 100644
+--- a/drivers/pci/pci.h
++++ b/drivers/pci/pci.h
+@@ -146,6 +146,7 @@ void pci_dev_adjust_pme(struct pci_dev *dev);
+ void pci_dev_complete_resume(struct pci_dev *pci_dev);
+ void pci_config_pm_runtime_get(struct pci_dev *dev);
+ void pci_config_pm_runtime_put(struct pci_dev *dev);
++void pci_pm_power_up_and_verify_state(struct pci_dev *pci_dev);
+ void pci_pm_init(struct pci_dev *dev);
+ void pci_ea_init(struct pci_dev *dev);
+ void pci_msi_init(struct pci_dev *dev);
 -- 
 2.39.5
 
