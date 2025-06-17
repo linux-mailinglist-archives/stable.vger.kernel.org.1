@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-153605-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153609-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 34089ADD563
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:20:26 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id A0E8FADD572
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:21:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9C00A40158B
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:11:03 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id ADBB318990F8
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:12:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E73202F2377;
-	Tue, 17 Jun 2025 16:08:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9CB272ECEA2;
+	Tue, 17 Jun 2025 16:08:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BRJO1Dvf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZcQ9+Usn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0F352E9738;
-	Tue, 17 Jun 2025 16:08:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C2BB2ECD1F;
+	Tue, 17 Jun 2025 16:08:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750176502; cv=none; b=Sy2yGgwct+QCh8hiNYWjVYtoFNvpFqTW4wL9X5sWncsjwPaaAYRiunVYeCI+9WfbtLqzRM45njN9H9WPxaFYjVpS6EDltuT7IF8V4tqSdZDe6HnLq1kc8dPd2TXma2GurjbwbirZLAdWB/j3fhWPQ19XNsvK1Dh59e5aX9Al314=
+	t=1750176515; cv=none; b=gjXepTf1zGPphdK0O8mO+vie7vfGrdd28OPv0z+J/NRyOTlgNo7mOdkGTV3NfDLi/ssElMEhPf/oCDytP48+Md2DyUh8aCv+OB7dbFDoXIyOtx9m55zkAiVIlZtxTAFfXBJDouosfJUIMgITBCsxaXL33JZ8HMAOi4sTwZqZw7s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750176502; c=relaxed/simple;
-	bh=ss/cr8GhKgjUesKJ5GdLWmj/xoBq+Dqvc7kbLXr/giM=;
+	s=arc-20240116; t=1750176515; c=relaxed/simple;
+	bh=2NSBx9a3+blILm4gkFNNJFQ0Ah1fIGJGM9l/gD9mcI8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QWGirVDJ05weFEudr/h7mMu/4slWtY0G8rpy5BAdHS/i0xIIHPAT0bB1amabdMXa8TefqF8VWUPexyeL1e/Sw6EsOzaJAfXptBeLxa9tEusWblgWtjkCOKJtv5QqxKjJPKzbD9WJp03WTTJbrUh017Q5D+rqNzBIJCfKyh/2lLI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BRJO1Dvf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95A43C4CEE3;
-	Tue, 17 Jun 2025 16:08:21 +0000 (UTC)
+	 MIME-Version; b=dm/mp8ponKIaPevfZDXEdw1QsLzXlZVMPMTgUFnwZiE/BG+cTkOIOGUltZdp5dX7BiZQnP+cwCbwK+R+C5/oFbLQoNJhJAW3oDG9pMUfm6QeL3TH/FbrMItD9YzfybNYFDqdQ4ehtwaCq5sZn60gZUZiek9FAe/gzSdrb2azwtQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZcQ9+Usn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0CAEC4CEE3;
+	Tue, 17 Jun 2025 16:08:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750176502;
-	bh=ss/cr8GhKgjUesKJ5GdLWmj/xoBq+Dqvc7kbLXr/giM=;
+	s=korg; t=1750176515;
+	bh=2NSBx9a3+blILm4gkFNNJFQ0Ah1fIGJGM9l/gD9mcI8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BRJO1DvffTSCp6EgBX83bomYp8KYHZoOR2FW7bpX54Jpzn3PelL1wGukibZh4BRTR
-	 XuzI8aKBQhq50avjd7z1Ceg4KEwStJ//faOymugxw8tTntqTnXRwdLtZYK+MiAyHvI
-	 LpTDi/8symIRw8ELbsary/vcxjt6fn6LRXsRV1/g=
+	b=ZcQ9+UsnLmVXyHGdKxokgtjuoez6Kx+WgrnUTFT1k35iGg7FuinPJyQppPdNnNluM
+	 ZzNrIDIeCCcbR7WJXHVDN1A/jYTG6qkXkT4329+Msh4m6aH09g1UbzpKUJOESNaQ+z
+	 NEPyqUDNrwNTi6pwZbPEiWQPNhzq5ZDuD2M+jgkM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aaradhana Sahu <aaradhana.sahu@oss.qualcomm.com>,
-	Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>,
+	Ramya Gnanasekar <ramya.gnanasekar@oss.qualcomm.com>,
 	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 177/780] wifi: ath12k: Resolve multicast packet drop by populating key_cipher in ath12k_install_key()
-Date: Tue, 17 Jun 2025 17:18:05 +0200
-Message-ID: <20250617152458.683893436@linuxfoundation.org>
+Subject: [PATCH 6.15 178/780] wifi: ath12k: Fix WMI tag for EHT rate in peer assoc
+Date: Tue, 17 Jun 2025 17:18:06 +0200
+Message-ID: <20250617152458.723336821@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
 References: <20250617152451.485330293@linuxfoundation.org>
@@ -67,54 +66,40 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Aaradhana Sahu <aaradhana.sahu@oss.qualcomm.com>
+From: Ramya Gnanasekar <ramya.gnanasekar@oss.qualcomm.com>
 
-[ Upstream commit d61c0b3c63462d17e63e5a2b4815e0f1ad17f57e ]
+[ Upstream commit 1a0e65750b55d2cf5de4a9bf7d6d55718784bdb7 ]
 
-Currently, the key_cipher in the ath12k_vif structure, which represents the
-group cipher of the MLD AP, is populated when the link address matches the
-ieee80211_vif address within ath12k_install_key().
+Incorrect WMI tag is used for EHT rate update from host to firmware
+while encoding peer assoc WMI.
 
-However, in MLD AP, the link address and ieee80211_vif address can differ.
-Due to this key_cipher is not populated and multicast packets don't get the
-correct cipher information and resulting multicast packets drop.
+Correct the WMI tag used for EHT rate update from WMI_TAG_HE_RATE_SET
+to the proper tag. This ensures firmware does not mistakenly update HE rate during parsing.
 
-To fix this, compare the link address with the arvif->bssid instead of the
-ieee80211_vif address.
+Found during code review. Compile tested only.
 
-Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.3.1-00209-QCAHKSWPL_SILICONZ-1
-
-Fixes: 3dd2c68f206ef ("wifi: ath12k: prepare vif data structure for MLO handling")
-Signed-off-by: Aaradhana Sahu <aaradhana.sahu@oss.qualcomm.com>
-Reviewed-by: Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>
-Link: https://patch.msgid.link/20250403082207.3323938-2-aaradhana.sahu@oss.qualcomm.com
+Fixes: 5b70ec6036c1 ("wifi: ath12k: add WMI support for EHT peer")
+Signed-off-by: Ramya Gnanasekar <ramya.gnanasekar@oss.qualcomm.com>
+Link: https://patch.msgid.link/20250409152341.944628-1-ramya.gnanasekar@oss.qualcomm.com
 Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath12k/mac.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/net/wireless/ath/ath12k/wmi.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/ath/ath12k/mac.c b/drivers/net/wireless/ath/ath12k/mac.c
-index a1fad297ca357..3883dab6771b8 100644
---- a/drivers/net/wireless/ath/ath12k/mac.c
-+++ b/drivers/net/wireless/ath/ath12k/mac.c
-@@ -4605,7 +4605,6 @@ static int ath12k_install_key(struct ath12k_link_vif *arvif,
- 		.macaddr = macaddr,
- 	};
- 	struct ath12k_vif *ahvif = arvif->ahvif;
--	struct ieee80211_vif *vif = ath12k_ahvif_to_vif(ahvif);
+diff --git a/drivers/net/wireless/ath/ath12k/wmi.c b/drivers/net/wireless/ath/ath12k/wmi.c
+index 6d1ea5f3a791b..6374e86f89f3d 100644
+--- a/drivers/net/wireless/ath/ath12k/wmi.c
++++ b/drivers/net/wireless/ath/ath12k/wmi.c
+@@ -2351,7 +2351,7 @@ int ath12k_wmi_send_peer_assoc_cmd(struct ath12k *ar,
  
- 	lockdep_assert_wiphy(ath12k_ar_to_hw(ar)->wiphy);
+ 	for (i = 0; i < arg->peer_eht_mcs_count; i++) {
+ 		eht_mcs = ptr;
+-		eht_mcs->tlv_header = ath12k_wmi_tlv_cmd_hdr(WMI_TAG_HE_RATE_SET,
++		eht_mcs->tlv_header = ath12k_wmi_tlv_cmd_hdr(WMI_TAG_EHT_RATE_SET,
+ 							     sizeof(*eht_mcs));
  
-@@ -4658,7 +4657,7 @@ static int ath12k_install_key(struct ath12k_link_vif *arvif,
- 	if (!wait_for_completion_timeout(&ar->install_key_done, 1 * HZ))
- 		return -ETIMEDOUT;
- 
--	if (ether_addr_equal(macaddr, vif->addr))
-+	if (ether_addr_equal(macaddr, arvif->bssid))
- 		ahvif->key_cipher = key->cipher;
- 
- 	return ar->install_key_status ? -EINVAL : 0;
+ 		eht_mcs->rx_mcs_set = cpu_to_le32(arg->peer_eht_rx_mcs_set[i]);
 -- 
 2.39.5
 
