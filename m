@@ -1,67 +1,57 @@
-Return-Path: <stable+bounces-154146-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153489-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E638ADD899
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:57:37 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id DA4EAADD404
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:05:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 87DD22C1D99
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:43:30 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A5AA27A1BE1
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:04:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A5B92ED855;
-	Tue, 17 Jun 2025 16:37:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 017DB2ED86C;
+	Tue, 17 Jun 2025 16:02:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iIdJZUzr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SEhW3Q5j"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 462142CCC5;
-	Tue, 17 Jun 2025 16:37:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B23E72ED862;
+	Tue, 17 Jun 2025 16:02:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750178249; cv=none; b=O+iPmnZ4I2uNhXn7JzoekWS98O2o10iX7+lVJ11V1RBgFXQhh7R4g19+qOWfl4GNRiuXLA5Nf8ach/1vavTSkOApuVeeGmwbnTbw2FS2z9xgZS5yD3AecdcgpEvm/nMBUwHe4zqSzkQzY2SheBmhQxH4BIoocSVJng84Uu77QZQ=
+	t=1750176127; cv=none; b=YpbKMAmUGv5ERwT/0A7gNzH756jpy6IC8sEiSTgcreJ2ZuT307ucaGPVF3GkCxGHxMP3hpbm4VCAOQHgjq0TvsAUTu8s7Db78J9OKP/WwlhTCTUFXZRcYaS9Jzi0lT8Jda+ZdziuktU+o7DZnhwmuf2V4hWy0RBV47a7ITP/Dxw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750178249; c=relaxed/simple;
-	bh=jNm+qWDLcQxG5n4S4FxFGhFm0MH7Y0l0U61wIy0M3uA=;
+	s=arc-20240116; t=1750176127; c=relaxed/simple;
+	bh=F8k7WLPgWW152UwJORSPl5Fx4Phfs0Blk3yAah5k5Xk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=awUxBmN2SU7QIua5+hwAsfn5o3i/lFIuwFrijtmjhW3ffkM8ewrtUa05h4tTDXbDWbnk+En0CPfZIZuhnv9g9TwdWh+JsBgsCd8v0BkyM14Sozo5Xyiqk+clp4OYha7kFVfkQ5bSSu2LrqestYojSqWEES2iPVkc4qft07uiN/Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iIdJZUzr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F60AC4CEE3;
-	Tue, 17 Jun 2025 16:37:28 +0000 (UTC)
+	 MIME-Version; b=WAAgVo5HBD1AYXLDBi6NVaTPQwDvPcyIJKh7u0A+1pGvA5tUh/7cq5gm7Wzyb9AB2904g9IbmayFhbslBKsojZYRajppbQtwF1hMTJPP1J4UdY5Bzy2RgPywKHmR10ie3kRzvnC68msLGFHxf6u2Bx2guV7rEs3vBaBqA4/ymSQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SEhW3Q5j; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37690C4CEE7;
+	Tue, 17 Jun 2025 16:02:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750178249;
-	bh=jNm+qWDLcQxG5n4S4FxFGhFm0MH7Y0l0U61wIy0M3uA=;
+	s=korg; t=1750176127;
+	bh=F8k7WLPgWW152UwJORSPl5Fx4Phfs0Blk3yAah5k5Xk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iIdJZUzrNFyvGMYOgpjSaxHEMBV+aZuLWCSSaN1bfXWbt7u9uy9Ocl6lEzEjt8PAr
-	 +rKtM0Ciu+MtJlRYSfz7m21Ddx/thC7ncSfPBY82jBkVivJJywXNVLK706G75fpJdP
-	 qxa9qDKzwOsfNmuyJ+/x9JHIO0MjGuin3bnHxLnc=
+	b=SEhW3Q5jICRZpPKAg2rZGj7ZmXNrN4LQBwRwfaC9Q3ijW5Rj62rfC6+KVPYSfMfRo
+	 DpmeF9NlABd9ItAhKXdY79dlM2T2ObVzjT8cA7H3oQBiRbbes8vLcGEEuDxAANFNgo
+	 yS+uPdGf5I378WNRBZzRp+J/GWirHD5QL1TznFKM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stephane Eranian <eranian@google.com>,
-	James Clark <james.clark@linaro.org>,
-	Ian Rogers <irogers@google.com>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-	Ingo Molnar <mingo@redhat.com>,
-	Jiri Olsa <jolsa@kernel.org>,
-	Kan Liang <kan.liang@linux.intel.com>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Namhyung Kim <namhyung@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Thomas Richter <tmricht@linux.ibm.com>,
-	Arnaldo Carvalho de Melo <acme@redhat.com>,
+	Rajat Soni <quic_rajson@quicinc.com>,
+	Raj Kumar Bhagat <quic_rajkbhag@quicinc.com>,
+	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 433/780] perf tool_pmu: Fix aggregation on duration_time
+Subject: [PATCH 6.12 175/512] wifi: ath12k: fix memory leak in ath12k_service_ready_ext_event
 Date: Tue, 17 Jun 2025 17:22:21 +0200
-Message-ID: <20250617152509.101604690@linuxfoundation.org>
+Message-ID: <20250617152426.723539587@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
-References: <20250617152451.485330293@linuxfoundation.org>
+In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
+References: <20250617152419.512865572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -73,87 +63,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ian Rogers <irogers@google.com>
+From: Rajat Soni <quic_rajson@quicinc.com>
 
-[ Upstream commit 68cb1567439fa325ba980f3b5b67f95d3953eafd ]
+[ Upstream commit 89142d34d5602c7447827beb181fa06eb08b9d5c ]
 
-evsel__count_has_error() fails counters when the enabled or running time
-are 0. The duration_time event reads 0 when the cpu_map_idx != 0 to
-avoid aggregating time over CPUs. Change the enable and running time
-to always have a ratio of 100% so that evsel__count_has_error won't
-fail.
+Currently, in ath12k_service_ready_ext_event(), svc_rdy_ext.mac_phy_caps
+is not freed in the failure case, causing a memory leak. The following
+trace is observed in kmemleak:
 
-Before:
-```
-$ sudo /tmp/perf/perf stat --per-core -a -M UNCORE_FREQ sleep 1
+unreferenced object 0xffff8b3eb5789c00 (size 1024):
+ comm "softirq", pid 0, jiffies 4294942577
+ hex dump (first 32 bytes):
+   00 00 00 00 01 00 00 00 00 00 00 00 7b 00 00 10  ............{...
+   01 00 00 00 00 00 00 00 01 00 00 00 1f 38 00 00  .............8..
+ backtrace (crc 44e1c357):
+   __kmalloc_noprof+0x30b/0x410
+   ath12k_wmi_mac_phy_caps_parse+0x84/0x100 [ath12k]
+   ath12k_wmi_tlv_iter+0x5e/0x140 [ath12k]
+   ath12k_wmi_svc_rdy_ext_parse+0x308/0x4c0 [ath12k]
+   ath12k_wmi_tlv_iter+0x5e/0x140 [ath12k]
+   ath12k_service_ready_ext_event.isra.0+0x44/0xd0 [ath12k]
+   ath12k_wmi_op_rx+0x2eb/0xd70 [ath12k]
+   ath12k_htc_rx_completion_handler+0x1f4/0x330 [ath12k]
+   ath12k_ce_recv_process_cb+0x218/0x300 [ath12k]
+   ath12k_pci_ce_workqueue+0x1b/0x30 [ath12k]
+   process_one_work+0x219/0x680
+   bh_worker+0x198/0x1f0
+   tasklet_action+0x13/0x30
+   handle_softirqs+0xca/0x460
+   __irq_exit_rcu+0xbe/0x110
+   irq_exit_rcu+0x9/0x30
 
- Performance counter stats for 'system wide':
+Free svc_rdy_ext.mac_phy_caps in the error case to fix this memory leak.
 
-S0-D0-C0              1      2,615,819,485      UNC_CLOCK.SOCKET                 #     2.61 UNCORE_FREQ
-S0-D0-C0              2      <not counted>      duration_time
+Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.4.1-00199-QCAHKSWPL_SILICONZ-1
 
-       1.002111784 seconds time elapsed
-```
-
-After:
-```
-$ perf stat --per-core -a -M UNCORE_FREQ sleep 1
-
- Performance counter stats for 'system wide':
-
-S0-D0-C0              1        758,160,296      UNC_CLOCK.SOCKET                 #     0.76 UNCORE_FREQ
-S0-D0-C0              2      1,003,438,246      duration_time
-
-       1.002486017 seconds time elapsed
-```
-
-Note: the metric reads the value a different way and isn't impacted.
-
-Fixes: 240505b2d0adcdc8 ("perf tool_pmu: Factor tool events into their own PMU")
-Reported-by: Stephane Eranian <eranian@google.com>
-Reviewed-by: James Clark <james.clark@linaro.org>
-Signed-off-by: Ian Rogers <irogers@google.com>
-Cc: Adrian Hunter <adrian.hunter@intel.com>
-Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
-Cc: Ian Rogers <irogers@google.com>
-Cc: Ingo Molnar <mingo@redhat.com>
-Cc: Jiri Olsa <jolsa@kernel.org>
-Cc: Kan Liang <kan.liang@linux.intel.com>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Namhyung Kim <namhyung@kernel.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Thomas Richter <tmricht@linux.ibm.com>
-Link: https://lore.kernel.org/r/20250423050358.94310-1-irogers@google.com
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Fixes: d889913205cf ("wifi: ath12k: driver for Qualcomm Wi-Fi 7 devices")
+Signed-off-by: Rajat Soni <quic_rajson@quicinc.com>
+Signed-off-by: Raj Kumar Bhagat <quic_rajkbhag@quicinc.com>
+Link: https://patch.msgid.link/20250430-wmi-mem-leak-v1-1-fcc9b49c2ddc@quicinc.com
+Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/util/tool_pmu.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ drivers/net/wireless/ath/ath12k/wmi.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/tools/perf/util/tool_pmu.c b/tools/perf/util/tool_pmu.c
-index 97b327d1ce4a0..727a10e3f9900 100644
---- a/tools/perf/util/tool_pmu.c
-+++ b/tools/perf/util/tool_pmu.c
-@@ -486,8 +486,14 @@ int evsel__tool_pmu_read(struct evsel *evsel, int cpu_map_idx, int thread)
- 		delta_start *= 1000000000 / ticks_per_sec;
- 	}
- 	count->val    = delta_start;
--	count->ena    = count->run = delta_start;
- 	count->lost   = 0;
-+	/*
-+	 * The values of enabled and running must make a ratio of 100%. The
-+	 * exact values don't matter as long as they are non-zero to avoid
-+	 * issues with evsel__count_has_error.
-+	 */
-+	count->ena++;
-+	count->run++;
+diff --git a/drivers/net/wireless/ath/ath12k/wmi.c b/drivers/net/wireless/ath/ath12k/wmi.c
+index b2e586811858e..17ac54047f9a7 100644
+--- a/drivers/net/wireless/ath/ath12k/wmi.c
++++ b/drivers/net/wireless/ath/ath12k/wmi.c
+@@ -4372,6 +4372,7 @@ static int ath12k_service_ready_ext_event(struct ath12k_base *ab,
  	return 0;
- }
  
+ err:
++	kfree(svc_rdy_ext.mac_phy_caps);
+ 	ath12k_wmi_free_dbring_caps(ab);
+ 	return ret;
+ }
 -- 
 2.39.5
 
