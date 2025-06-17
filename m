@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-153899-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-154385-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 386C7ADD728
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:41:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A40D8ADD9F6
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 19:11:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B5CCF3B51B3
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:28:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AF3814A65AA
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:51:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D76292E8E0B;
-	Tue, 17 Jun 2025 16:24:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3EF1C285057;
+	Tue, 17 Jun 2025 16:50:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lrX00LLE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Hg+xjc1/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 947C7204F73;
-	Tue, 17 Jun 2025 16:24:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E533E2264DD;
+	Tue, 17 Jun 2025 16:50:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750177457; cv=none; b=EOIOmNGh76fQ2+Zaqu2+EGZKLCrDIi/vkxTZIsuRuLgpH7deCNsGnNSS0YNONBw2a2qddhczfX30ipWyY0PvRhXgoi0qDZCKah6i5mJw0U9pqeZIp4IvfkvXeDI6nLaVuVggiHO/gMStEBG5pviv2Hv+/N2v1irjAM3jaNtnW8Q=
+	t=1750179024; cv=none; b=DkQ4H5Bmbb6shgGPodykg8MmS36OaKDkTUPLNd8ZvC0hJf8hR98XnjJnmkzXZLClXxhI4avSuRL06lKrbm/QWC9oVhHWkAfchv1BIMEzliJgPGqaqRIxeqSIED5uXZ3E/+N6l/Q5aa9sglZnCZKSn8slwaLLPZjMNZjiwhrMK6Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750177457; c=relaxed/simple;
-	bh=o0OhMUDSwa2YCiicJBtLofGdMrPLVWv9z1maglfK4PM=;
+	s=arc-20240116; t=1750179024; c=relaxed/simple;
+	bh=V9GzvwQLnMndw6rMvXjtRdT6DmSy7y0tCku+4hAHRpU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=e2Uf3z0aZwemrWi/oKoSV+k9kvQpnZU8faGY2iz0FnF/rYtg19/TMLHOmWtPfxY5cgUymu70b/rWPMYJF4XvnpIm1lFfFVS5T8A4Nw4xnx0oZhXswaJkEnK9WfN46CWRbamSfAP1/ZxLHYi2739rRpOSsjiTAjzx7KeIGs6TmEY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lrX00LLE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03DAFC4CEE3;
-	Tue, 17 Jun 2025 16:24:16 +0000 (UTC)
+	 MIME-Version; b=i563Y0PlpAxmvD3tHsXK2nDpiNShsOdvLxbIcsKXClFNI3uTqtQulnnCMhs1f/rP7ih+OVjTo6ZQP2DjJHlIeFSkl09RJ9pgt8wSdj0KYTAmOxkx4BBfCmqu1MddVg06w0RQlMQTP7UzMw39XoJvwslqntzd12pPk0T/aCz25lU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Hg+xjc1/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 558FAC4CEE3;
+	Tue, 17 Jun 2025 16:50:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750177457;
-	bh=o0OhMUDSwa2YCiicJBtLofGdMrPLVWv9z1maglfK4PM=;
+	s=korg; t=1750179023;
+	bh=V9GzvwQLnMndw6rMvXjtRdT6DmSy7y0tCku+4hAHRpU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lrX00LLE0GSVmRKq7DJQ0zH1QLiKP1utvUljmOKsNtL9fK4SOIHwYFFHhPEVs2g0I
-	 MK94KsyjoSbnKbb4pXD+XwXXhluZqYQ8P8d47icnhPZQ3mR0ArHXK/spBCQ62+KFvK
-	 +yAml8j39SPPmDP/0D5LYiZPa+h5Qfi+GpaXaVv0=
+	b=Hg+xjc1/6iISZuP4/cCh1vCQQg495TuNyAdDos6vA3L7Effd/DpU+J++OyAfGvpSB
+	 bhHR78Q6FKwrPjTaEXqiD/d5pO2t6T+FIlPCnGJyK9+HLSK2xBU9k1D9Fx7jwfN0yh
+	 NLN7mEGSJmR6/UuziBj0HWrUq+VdGoDsdGOCHMQI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+f0c4a4aba757549ae26c@syzkaller.appspotmail.com,
-	Charalampos Mitrodimas <charmitro@posteo.net>,
-	Tung Nguyen <tung.quang.nguyen@est.tech>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Florian Westphal <fw@strlen.de>,
+	Stefano Brivio <sbrivio@redhat.com>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 349/512] net: tipc: fix refcount warning in tipc_aead_encrypt
+Subject: [PATCH 6.15 607/780] netfilter: nf_set_pipapo_avx2: fix initial map fill
 Date: Tue, 17 Jun 2025 17:25:15 +0200
-Message-ID: <20250617152433.726327604@linuxfoundation.org>
+Message-ID: <20250617152516.203093884@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
-References: <20250617152419.512865572@linuxfoundation.org>
+In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
+References: <20250617152451.485330293@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,59 +63,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Charalampos Mitrodimas <charmitro@posteo.net>
+From: Florian Westphal <fw@strlen.de>
 
-[ Upstream commit f29ccaa07cf3d35990f4d25028cc55470d29372b ]
+[ Upstream commit ea77c397bff8b6d59f6d83dae1425b08f465e8b5 ]
 
-syzbot reported a refcount warning [1] caused by calling get_net() on
-a network namespace that is being destroyed (refcount=0). This happens
-when a TIPC discovery timer fires during network namespace cleanup.
+If the first field doesn't cover the entire start map, then we must zero
+out the remainder, else we leak those bits into the next match round map.
 
-The recently added get_net() call in commit e279024617134 ("net/tipc:
-fix slab-use-after-free Read in tipc_aead_encrypt_done") attempts to
-hold a reference to the network namespace. However, if the namespace
-is already being destroyed, its refcount might be zero, leading to the
-use-after-free warning.
+The early fix was incomplete and did only fix up the generic C
+implementation.
 
-Replace get_net() with maybe_get_net(), which safely checks if the
-refcount is non-zero before incrementing it. If the namespace is being
-destroyed, return -ENODEV early, after releasing the bearer reference.
+A followup patch adds a test case to nft_concat_range.sh.
 
-[1]: https://lore.kernel.org/all/68342b55.a70a0220.253bc2.0091.GAE@google.com/T/#m12019cf9ae77e1954f666914640efa36d52704a2
-
-Reported-by: syzbot+f0c4a4aba757549ae26c@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/all/68342b55.a70a0220.253bc2.0091.GAE@google.com/T/#m12019cf9ae77e1954f666914640efa36d52704a2
-Fixes: e27902461713 ("net/tipc: fix slab-use-after-free Read in tipc_aead_encrypt_done")
-Signed-off-by: Charalampos Mitrodimas <charmitro@posteo.net>
-Reviewed-by: Tung Nguyen <tung.quang.nguyen@est.tech>
-Link: https://patch.msgid.link/20250527-net-tipc-warning-v2-1-df3dc398a047@posteo.net
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: 791a615b7ad2 ("netfilter: nf_set_pipapo: fix initial map fill")
+Signed-off-by: Florian Westphal <fw@strlen.de>
+Reviewed-by: Stefano Brivio <sbrivio@redhat.com>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/tipc/crypto.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ net/netfilter/nft_set_pipapo_avx2.c | 21 ++++++++++++++++++++-
+ 1 file changed, 20 insertions(+), 1 deletion(-)
 
-diff --git a/net/tipc/crypto.c b/net/tipc/crypto.c
-index 8584893b47851..79f91b6ca8c84 100644
---- a/net/tipc/crypto.c
-+++ b/net/tipc/crypto.c
-@@ -818,7 +818,11 @@ static int tipc_aead_encrypt(struct tipc_aead *aead, struct sk_buff *skb,
- 	}
+diff --git a/net/netfilter/nft_set_pipapo_avx2.c b/net/netfilter/nft_set_pipapo_avx2.c
+index c15db28c5ebc4..be7c16c79f711 100644
+--- a/net/netfilter/nft_set_pipapo_avx2.c
++++ b/net/netfilter/nft_set_pipapo_avx2.c
+@@ -1113,6 +1113,25 @@ bool nft_pipapo_avx2_estimate(const struct nft_set_desc *desc, u32 features,
+ 	return true;
+ }
  
- 	/* Get net to avoid freed tipc_crypto when delete namespace */
--	get_net(aead->crypto->net);
-+	if (!maybe_get_net(aead->crypto->net)) {
-+		tipc_bearer_put(b);
-+		rc = -ENODEV;
-+		goto exit;
-+	}
++/**
++ * pipapo_resmap_init_avx2() - Initialise result map before first use
++ * @m:		Matching data, including mapping table
++ * @res_map:	Result map
++ *
++ * Like pipapo_resmap_init() but do not set start map bits covered by the first field.
++ */
++static inline void pipapo_resmap_init_avx2(const struct nft_pipapo_match *m, unsigned long *res_map)
++{
++	const struct nft_pipapo_field *f = m->f;
++	int i;
++
++	/* Starting map doesn't need to be set to all-ones for this implementation,
++	 * but we do need to zero the remaining bits, if any.
++	 */
++	for (i = f->bsize; i < m->bsize_max; i++)
++		res_map[i] = 0ul;
++}
++
+ /**
+  * nft_pipapo_avx2_lookup() - Lookup function for AVX2 implementation
+  * @net:	Network namespace
+@@ -1171,7 +1190,7 @@ bool nft_pipapo_avx2_lookup(const struct net *net, const struct nft_set *set,
+ 	res  = scratch->map + (map_index ? m->bsize_max : 0);
+ 	fill = scratch->map + (map_index ? 0 : m->bsize_max);
  
- 	/* Now, do encrypt */
- 	rc = crypto_aead_encrypt(req);
+-	/* Starting map doesn't need to be set for this implementation */
++	pipapo_resmap_init_avx2(m, res);
+ 
+ 	nft_pipapo_avx2_prepare();
+ 
 -- 
 2.39.5
 
