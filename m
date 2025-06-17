@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-152943-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-152945-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F2DC4ADD193
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 17:32:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CA717ADD194
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 17:32:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 51DC017C632
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 15:32:37 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D183A17C615
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 15:32:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CED682ECD23;
-	Tue, 17 Jun 2025 15:32:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 464CC23B633;
+	Tue, 17 Jun 2025 15:32:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SzsNelTZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0kZRqyar"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AF602E9737;
-	Tue, 17 Jun 2025 15:32:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 033352DF3C9;
+	Tue, 17 Jun 2025 15:32:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750174342; cv=none; b=Qs+XL2rzfyqPn3B4xbXEj/ZO+mhsTeUtJo21cXAnl1H8w1Ndfhb+FFNqseeviCu9vifmlPclBamaUlNG7ykKfFI0ny4IZOJatoTrG0Pv2WQq6zb/tzm6/mCN64p+wmeVOfPg6COXPz+rCTq3rxWG3bzQ40QRaKQbLGeRoDE20wA=
+	t=1750174349; cv=none; b=rrkuP3JHpEtQ+2gJtDT0YvxCnobx2iDCVLgezQ2MbKZ4AJl2LFOJLuRTMeXsxYgAydOie4DaxQ3JJL/yJ3jp9crdIkqOrBnjoS3QXjk4QqDO/MPbDOOACuk9BBL0nBMjudlIO422yfap1C2zYahYMZ58yyLIbroZSAQqZvAkdX4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750174342; c=relaxed/simple;
-	bh=7wykokKsXkUvkjiAiYY3iHLgxNBeseTEKXSXExr5154=;
+	s=arc-20240116; t=1750174349; c=relaxed/simple;
+	bh=V/Udh08FOJYOZrZATy2l6UaqUu3RRobnvxwJJK9YkrE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ncbL0j8MvZ41/xxNuqjqlCbT2ceHgneqPf1bFXshyLU65nRp2LLXDUied9pAGeTJ1Lwiy2Z3gYpU2PbL38VwO20BNdCcHVAQRW5I8KLVMWuKsSs/zdhImdlPf5q36Bh0ATzz7wBCvYJe6giZxWxSYEkNVysPhglJ9jjuVOaGwIQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SzsNelTZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC0DFC4CEE7;
-	Tue, 17 Jun 2025 15:32:21 +0000 (UTC)
+	 MIME-Version; b=vEssJZ9pp3vnkPzh/nf7Zy7o1fOWJ+/F2NoX2k7o3Z8oNjy1bAy5vDDsr2Xf+v5xXjIytGj0c32GVDQEb5ieASlTmI6YGARnMR423v1H7ndkXZ3zQ6+0aVfidD6AVxOa5TPDzvPq9hmD3Waibw/CJRBU3Hx3X2p7MBeCBuKxOIg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0kZRqyar; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65919C4CEF0;
+	Tue, 17 Jun 2025 15:32:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750174342;
-	bh=7wykokKsXkUvkjiAiYY3iHLgxNBeseTEKXSXExr5154=;
+	s=korg; t=1750174348;
+	bh=V/Udh08FOJYOZrZATy2l6UaqUu3RRobnvxwJJK9YkrE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SzsNelTZSBzSoJTwUHXmz6o9Hsro4okbrgRvRiMUIczMEsZNuMMcpc0/gBkT067jX
-	 oYrk37T30W6c1JaYbx+zbAGkrjScVZfqfDcQ/zFK+KkyqVjuwOwH/DORDysM7Hfr/q
-	 k7js6VzaopIr5gdV+5/4NbaLxeyMUjbjNWZ6YnWQ=
+	b=0kZRqyarBHqppn/3jqVpdPwqlOcQllAcTqinY5TffDbcEMZDq3GKYE+r0HPNSM+hy
+	 VJPrmVIBggfmk6qFMHVEifVzBuFoPRsGSFq7s6A8whoiMP06twN7x1bOUn5r5tJG2u
+	 oQ3Z0/1LXPObH17Cmw5xzp7CQiv7cPFFwTYDT/P8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Martin=20Povi=C5=A1er?= <povik+lin@cutebit.org>,
-	James Calligeros <jcalligeros99@gmail.com>,
-	Mark Brown <broonie@kernel.org>,
+	Ian Forbes <ian.forbes@broadcom.com>,
+	Zack Rusin <zack.rusin@broadcom.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 054/356] ASoC: apple: mca: Constrain channels according to TDM mask
-Date: Tue, 17 Jun 2025 17:22:49 +0200
-Message-ID: <20250617152340.408931992@linuxfoundation.org>
+Subject: [PATCH 6.6 055/356] drm/vmwgfx: Add seqno waiter for sync_files
+Date: Tue, 17 Jun 2025 17:22:50 +0200
+Message-ID: <20250617152340.449168079@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250617152338.212798615@linuxfoundation.org>
 References: <20250617152338.212798615@linuxfoundation.org>
@@ -61,72 +60,93 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Martin Povišer <povik+lin@cutebit.org>
+From: Ian Forbes <ian.forbes@broadcom.com>
 
-[ Upstream commit e717c661e2d1a660e96c40b0fe9933e23a1d7747 ]
+[ Upstream commit 0039a3b35b10d9c15d3d26320532ab56cc566750 ]
 
-We don't (and can't) configure the hardware correctly if the number of
-channels exceeds the weight of the TDM mask. Report that constraint in
-startup of FE.
+Because sync_files are passive waiters they do not participate in
+the processing of fences like the traditional vmw_fence_wait IOCTL.
+If userspace exclusively uses sync_files for synchronization then
+nothing in the kernel actually processes fence updates as interrupts
+for fences are masked and ignored if the kernel does not indicate to the
+SVGA device that there are active waiters.
 
-Fixes: 3df5d0d97289 ("ASoC: apple: mca: Start new platform driver")
-Signed-off-by: Martin Povišer <povik+lin@cutebit.org>
-Signed-off-by: James Calligeros <jcalligeros99@gmail.com>
-Link: https://patch.msgid.link/20250518-mca-fixes-v1-1-ee1015a695f6@gmail.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+This oversight results in a bug where the entire GUI can freeze waiting
+on a sync_file that will never be signalled as we've masked the interrupts
+to signal its completion. This bug is incredibly racy as any process which
+interacts with the fencing code via the 3D stack can process the stuck
+fences on behalf of the stuck process causing it to run again. Even a
+simple app like eglinfo is enough to resume the stuck process. Usually
+this bug is seen at a login screen like GDM because there are no other
+3D apps running.
+
+By adding a seqno waiter we re-enable interrupt based processing of the
+dma_fences associated with the sync_file which is signalled as part of a
+dma_fence_callback.
+
+This has likely been broken since it was initially added to the kernel in
+2017 but has gone unnoticed until mutter recently started using sync_files
+heavily over the course of 2024 as part of their explicit sync support.
+
+Fixes: c906965dee22 ("drm/vmwgfx: Add export fence to file descriptor support")
+Signed-off-by: Ian Forbes <ian.forbes@broadcom.com>
+Signed-off-by: Zack Rusin <zack.rusin@broadcom.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20250228200633.642417-1-ian.forbes@broadcom.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/apple/mca.c | 23 +++++++++++++++++++++++
- 1 file changed, 23 insertions(+)
+ drivers/gpu/drm/vmwgfx/vmwgfx_execbuf.c | 26 +++++++++++++++++++++++++
+ 1 file changed, 26 insertions(+)
 
-diff --git a/sound/soc/apple/mca.c b/sound/soc/apple/mca.c
-index ce77934f3eef3..0e96caa607fb8 100644
---- a/sound/soc/apple/mca.c
-+++ b/sound/soc/apple/mca.c
-@@ -464,6 +464,28 @@ static int mca_configure_serdes(struct mca_cluster *cl, int serdes_unit,
- 	return -EINVAL;
+diff --git a/drivers/gpu/drm/vmwgfx/vmwgfx_execbuf.c b/drivers/gpu/drm/vmwgfx/vmwgfx_execbuf.c
+index 5fef0b31c1179..b129ce873af3f 100644
+--- a/drivers/gpu/drm/vmwgfx/vmwgfx_execbuf.c
++++ b/drivers/gpu/drm/vmwgfx/vmwgfx_execbuf.c
+@@ -4083,6 +4083,23 @@ static int vmw_execbuf_tie_context(struct vmw_private *dev_priv,
+ 	return 0;
  }
  
-+static int mca_fe_startup(struct snd_pcm_substream *substream,
-+			  struct snd_soc_dai *dai)
++/*
++ * DMA fence callback to remove a seqno_waiter
++ */
++struct seqno_waiter_rm_context {
++	struct dma_fence_cb base;
++	struct vmw_private *dev_priv;
++};
++
++static void seqno_waiter_rm_cb(struct dma_fence *f, struct dma_fence_cb *cb)
 +{
-+	struct mca_cluster *cl = mca_dai_to_cluster(dai);
-+	unsigned int mask, nchannels;
++	struct seqno_waiter_rm_context *ctx =
++		container_of(cb, struct seqno_waiter_rm_context, base);
 +
-+	if (cl->tdm_slots) {
-+		if (substream->stream == SNDRV_PCM_STREAM_PLAYBACK)
-+			mask = cl->tdm_tx_mask;
-+		else
-+			mask = cl->tdm_rx_mask;
-+
-+		nchannels = hweight32(mask);
-+	} else {
-+		nchannels = 2;
-+	}
-+
-+	return snd_pcm_hw_constraint_minmax(substream->runtime,
-+					    SNDRV_PCM_HW_PARAM_CHANNELS,
-+					    1, nchannels);
++	vmw_seqno_waiter_remove(ctx->dev_priv);
++	kfree(ctx);
 +}
 +
- static int mca_fe_set_tdm_slot(struct snd_soc_dai *dai, unsigned int tx_mask,
- 			       unsigned int rx_mask, int slots, int slot_width)
- {
-@@ -680,6 +702,7 @@ static int mca_fe_hw_params(struct snd_pcm_substream *substream,
- }
+ int vmw_execbuf_process(struct drm_file *file_priv,
+ 			struct vmw_private *dev_priv,
+ 			void __user *user_commands, void *kernel_commands,
+@@ -4263,6 +4280,15 @@ int vmw_execbuf_process(struct drm_file *file_priv,
+ 		} else {
+ 			/* Link the fence with the FD created earlier */
+ 			fd_install(out_fence_fd, sync_file->file);
++			struct seqno_waiter_rm_context *ctx =
++				kmalloc(sizeof(*ctx), GFP_KERNEL);
++			ctx->dev_priv = dev_priv;
++			vmw_seqno_waiter_add(dev_priv);
++			if (dma_fence_add_callback(&fence->base, &ctx->base,
++						   seqno_waiter_rm_cb) < 0) {
++				vmw_seqno_waiter_remove(dev_priv);
++				kfree(ctx);
++			}
+ 		}
+ 	}
  
- static const struct snd_soc_dai_ops mca_fe_ops = {
-+	.startup = mca_fe_startup,
- 	.set_fmt = mca_fe_set_fmt,
- 	.set_bclk_ratio = mca_set_bclk_ratio,
- 	.set_tdm_slot = mca_fe_set_tdm_slot,
 -- 
 2.39.5
 
