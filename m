@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-153358-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-154104-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C0393ADD41F
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:06:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 22AD0ADD849
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:53:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6E5091942C84
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 15:58:45 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3BC3919E8389
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:42:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BDB2E2DFF21;
-	Tue, 17 Jun 2025 15:54:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D9E122E8E09;
+	Tue, 17 Jun 2025 16:35:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NDtQ8Vbx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HdUut/fI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 795242DFF1D;
-	Tue, 17 Jun 2025 15:54:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9697C2E8E05;
+	Tue, 17 Jun 2025 16:35:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750175691; cv=none; b=mYWu3E0Y0EVBlyJUtrnxa+ajJM/XjR4pySgIpzYiRiRWQuxwNWVrgYDrclWv0EGmOScmesefrPqT4ub8SPqsjNZhrf0l1uGlJzgtc6XLb5UuPUFBNfWJOKxc+xjNAx4vPWO/lG/3fQSK52yTI8pznzshe/zLuM4oY0Y/3esfGk4=
+	t=1750178115; cv=none; b=Dhn424W33tijeoufn7N9B3hxZ34pryTvBI+2tdsQEh3vcMvrTi1DKQgweTr+lUe57iNKPM7BQ4cdj6Fe07aza+x5fC66sByFLkDvenG1OaeV6MbrClIRnEx/DL6c9xV8f96H37E2Di4wOjB/63Db6BEe6oM/bNjsqA+4LdE58LA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750175691; c=relaxed/simple;
-	bh=TN9zV3kugQAhTLcV9Yf/N84tuBoMkPLZoRIbyjHfamU=;
+	s=arc-20240116; t=1750178115; c=relaxed/simple;
+	bh=icd3bLlFczpTNQ35MCFX0It+KhV+D6Rfrs9GvZEIkX0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jXMPpTPXZd5wgSNmfaOaHCT7fspNmDcGBo0szNdSG4VC8ktxaJTL/9sdvpAOu6FKWV2pLcXICph/sOkbu1bPoLZWCGqJCe4lQu0mj+qB+ykGlPM86xxYdd8xJkoA0kbY47FF576TOEFgSGomsMqv7/H4w0kDd+A/R2vQY6xyocY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NDtQ8Vbx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB638C4CEE3;
-	Tue, 17 Jun 2025 15:54:50 +0000 (UTC)
+	 MIME-Version; b=ELc1IFhTav/c98fPFMOGwDmhpZrzTJGWMpYORnOAl1z6KSt8Q4/uECOqNcK/n/FRZdy7QhTGk1E0VttPL4HvfkE4Q+ho3D6RZD6oicKX0ux7ZVVnvrx9VIdHWxAmM7YOaItmYmS3uZ8TOU+MvsTaRG6xYCzEARUOWV1v+RXvEaA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HdUut/fI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4A2FC4CEE3;
+	Tue, 17 Jun 2025 16:35:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750175691;
-	bh=TN9zV3kugQAhTLcV9Yf/N84tuBoMkPLZoRIbyjHfamU=;
+	s=korg; t=1750178115;
+	bh=icd3bLlFczpTNQ35MCFX0It+KhV+D6Rfrs9GvZEIkX0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NDtQ8VbxM02RPecoeRzGgXBbhiTtE727e00UjTYaTR2l+rY3grPjEkFJfL4Oc2gWW
-	 QRWPDTBTAq7dCOnw0DMVzhBX7iyPrlTRof8mI5/iQvHy5E1+z2fOplaEc2XJq9ME4C
-	 IfeUzjsgmSLnHVVuIrOja6Dc9HtIgornxHpM6v+A=
+	b=HdUut/fIzy8mvbK3SizuErBkVEUvyPum3xrS2m6THPgJIWLeXHafjnAF6lXDs+AxM
+	 aEeYjgjiDjzNbKKoyi41hq2lk0BldmzK3oQjqYpgxSqRBfAro3LcTUiIT0ddjZtMYe
+	 qHoNY/AFh3mP8TSQMJpMHZs83vUDLVEAebr28s7A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Luca Weiss <luca.weiss@fairphone.com>,
-	Taniya Das <quic_tdas@quicinc.com>,
-	Bjorn Andersson <andersson@kernel.org>,
+	Joel Stanley <joel@jms.id.au>,
+	Andrew Jeffery <andrew@codeconstruct.com.au>,
+	Arnd Bergmann <arnd@arndb.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 154/512] clk: qcom: gcc-sm6350: Add *_wait_val values for GDSCs
+Subject: [PATCH 6.15 412/780] ARM: aspeed: Dont select SRAM
 Date: Tue, 17 Jun 2025 17:22:00 +0200
-Message-ID: <20250617152425.848881972@linuxfoundation.org>
+Message-ID: <20250617152508.242155950@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
-References: <20250617152419.512865572@linuxfoundation.org>
+In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
+References: <20250617152451.485330293@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,57 +63,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luca Weiss <luca.weiss@fairphone.com>
+From: Joel Stanley <joel@jms.id.au>
 
-[ Upstream commit afdfd829a99e467869e3ca1955fb6c6e337c340a ]
+[ Upstream commit e4f59f873c3ffe2a0150e11115a83e2dfb671dbf ]
 
-Compared to the msm-4.19 driver the mainline GDSC driver always sets the
-bits for en_rest, en_few & clk_dis, and if those values are not set
-per-GDSC in the respective driver then the default value from the GDSC
-driver is used. The downstream driver only conditionally sets
-clk_dis_wait_val if qcom,clk-dis-wait-val is given in devicetree.
+The ASPEED devices have SRAM, but don't require it for basic function
+(or any function; there's no known users of the driver).
 
-Correct this situation by explicitly setting those values. For all GDSCs
-the reset value of those bits are used.
-
-Fixes: 131abae905df ("clk: qcom: Add SM6350 GCC driver")
-Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
-Reviewed-by: Taniya Das <quic_tdas@quicinc.com>
-Link: https://lore.kernel.org/r/20250425-sm6350-gdsc-val-v1-3-1f252d9c5e4e@fairphone.com
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Fixes: 8c2ed9bcfbeb ("arm: Add Aspeed machine")
+Signed-off-by: Joel Stanley <joel@jms.id.au>
+Link: https://patch.msgid.link/20250115103942.421429-1-joel@jms.id.au
+Signed-off-by: Andrew Jeffery <andrew@codeconstruct.com.au>
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/qcom/gcc-sm6350.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ arch/arm/mach-aspeed/Kconfig | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/drivers/clk/qcom/gcc-sm6350.c b/drivers/clk/qcom/gcc-sm6350.c
-index 74346dc026068..a4d6dff9d0f7f 100644
---- a/drivers/clk/qcom/gcc-sm6350.c
-+++ b/drivers/clk/qcom/gcc-sm6350.c
-@@ -2320,6 +2320,9 @@ static struct clk_branch gcc_video_xo_clk = {
- 
- static struct gdsc usb30_prim_gdsc = {
- 	.gdscr = 0x1a004,
-+	.en_rest_wait_val = 0x2,
-+	.en_few_wait_val = 0x2,
-+	.clk_dis_wait_val = 0xf,
- 	.pd = {
- 		.name = "usb30_prim_gdsc",
- 	},
-@@ -2328,6 +2331,9 @@ static struct gdsc usb30_prim_gdsc = {
- 
- static struct gdsc ufs_phy_gdsc = {
- 	.gdscr = 0x3a004,
-+	.en_rest_wait_val = 0x2,
-+	.en_few_wait_val = 0x2,
-+	.clk_dis_wait_val = 0xf,
- 	.pd = {
- 		.name = "ufs_phy_gdsc",
- 	},
+diff --git a/arch/arm/mach-aspeed/Kconfig b/arch/arm/mach-aspeed/Kconfig
+index 080019aa6fcd8..fcf287edd0e5e 100644
+--- a/arch/arm/mach-aspeed/Kconfig
++++ b/arch/arm/mach-aspeed/Kconfig
+@@ -2,7 +2,6 @@
+ menuconfig ARCH_ASPEED
+ 	bool "Aspeed BMC architectures"
+ 	depends on (CPU_LITTLE_ENDIAN && ARCH_MULTI_V5) || ARCH_MULTI_V6 || ARCH_MULTI_V7
+-	select SRAM
+ 	select WATCHDOG
+ 	select ASPEED_WATCHDOG
+ 	select MFD_SYSCON
 -- 
 2.39.5
 
