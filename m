@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-153763-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153785-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 54BB3ADD67C
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:34:18 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D88DEADD658
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:32:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 21FF419E2DA4
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:23:40 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7922D4A0492
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:23:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20366285074;
-	Tue, 17 Jun 2025 16:17:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4D8B2EA169;
+	Tue, 17 Jun 2025 16:18:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ikg19snG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mOwyF0F5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D11D7285045;
-	Tue, 17 Jun 2025 16:16:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61B052EA161;
+	Tue, 17 Jun 2025 16:18:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750177019; cv=none; b=X1fkB4onDmc043we4YZHM4pnHMLz2ZlHXjqreCgkNGZbUBDXxSplhLAvIFyzeic8Ym1FAVr/6LzxRXLv9F1fn1ZMlj9G3NCd+2wxVYf1BZM3vBWhLMuuFv+PA4tKMHrs/PsvMjOZi8GJwX4esthSBSVUvv64TYS/AYLrUh/Ey00=
+	t=1750177090; cv=none; b=m4tSrOr58F2fY9KqKH8yqzpkoha0g/06cVDx+Sa6zFSfwr+M0Z+MkSCnFPzMWN9pCfturpQKjF5NEaikq3u+hN2TiKmoI4VvorippmEnFXxliiTCnuIyohTIEYHUvzknWFtUB9GWDovBhl8xXQp7hp/8wx+UuKNUjPTmHsIWiGk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750177019; c=relaxed/simple;
-	bh=SQRTIeqF5S7Jyn4kyXc1XRZdfrgjHIoZc+fAG5iOJm4=;
+	s=arc-20240116; t=1750177090; c=relaxed/simple;
+	bh=k/DeqxEE9aETQbQgIig1HlNuQTm2CBQhP5MDIxM64N4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=R+SU57bJs6ISGjesi/BmJfVxkYt/JOHzHwDg1lG6vaEVYo1JFV7z3UyxGXw9pwbkI+K2D1LA6UIQawhsAf9V58y08Fu+AqIvC45m5dklcrXF43mnwrSBR93o9FSISJsUT1HSmPtotHQzzoO2K0sWzjWh6X06hsVbgWfV4PcH7Tw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ikg19snG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40956C4CEE3;
-	Tue, 17 Jun 2025 16:16:59 +0000 (UTC)
+	 MIME-Version; b=Ffdi34eRdYKgxRohTQPDKhXdou/E9bBhtx33Ts5WbXCWk6PVeRyAML+aD1LXb1PITGnP9CT2uCkLUIOmBOsDtkcu5LJhQKgmH0SCFJtBUGV8E2p7CXAcMku4fUpB8qzeFMWAf9PZvWzjQ1+vHdnkYVAohmjZqWILMzy5FaOf9iE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mOwyF0F5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C56BAC4CEE3;
+	Tue, 17 Jun 2025 16:18:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750177019;
-	bh=SQRTIeqF5S7Jyn4kyXc1XRZdfrgjHIoZc+fAG5iOJm4=;
+	s=korg; t=1750177090;
+	bh=k/DeqxEE9aETQbQgIig1HlNuQTm2CBQhP5MDIxM64N4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ikg19snG4B95ANtGMIY8RQYHw6gIOzehNla9ES35Mn1iH4sUIxtAHzFEJuSKGLRiq
-	 DErlL+L1CdN4FrqKldiO18BUxpvQLBX+0DgHL4btzHi4Gc5kU2UzVDKAc8yAOjJrya
-	 CoI5uYf0tCroYAD0fUsclZ4FMvn+pVP9OIABc09w=
+	b=mOwyF0F5Wd4yU4bXFi4hG356urkfDXcjgMV0NKtZGmmZNLVbLFGNC/xuCEm8KamQc
+	 mIR+TVmvQmNQChaX3EsPh1/f7OlbS/U19BDSjf9MV4Hj/JT4ztJy+lNBLCwHdYF7EI
+	 vELJriZu9+92pqniPO0oWPQE47UbfD0aloiR0rkQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhongqiu Duan <dzq.aishenghu0@gmail.com>,
 	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Stefano Brivio <sbrivio@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 236/780] netfilter: nft_quota: match correctly when the quota just depleted
-Date: Tue, 17 Jun 2025 17:19:04 +0200
-Message-ID: <20250617152501.070442586@linuxfoundation.org>
+Subject: [PATCH 6.15 237/780] netfilter: nft_set_pipapo: prevent overflow in lookup table allocation
+Date: Tue, 17 Jun 2025 17:19:05 +0200
+Message-ID: <20250617152501.110661635@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
 References: <20250617152451.485330293@linuxfoundation.org>
@@ -66,76 +66,154 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Zhongqiu Duan <dzq.aishenghu0@gmail.com>
+From: Pablo Neira Ayuso <pablo@netfilter.org>
 
-[ Upstream commit bfe7cfb65c753952735c3eed703eba9a8b96a18d ]
+[ Upstream commit 4c5c6aa9967dbe55bd017bb509885928d0f31206 ]
 
-The xt_quota compares skb length with remaining quota, but the nft_quota
-compares it with consumed bytes.
+When calculating the lookup table size, ensure the following
+multiplication does not overflow:
 
-The xt_quota can match consumed bytes up to quota at maximum. But the
-nft_quota break match when consumed bytes equal to quota.
+- desc->field_len[] maximum value is U8_MAX multiplied by
+  NFT_PIPAPO_GROUPS_PER_BYTE(f) that can be 2, worst case.
+- NFT_PIPAPO_BUCKETS(f->bb) is 2^8, worst case.
+- sizeof(unsigned long), from sizeof(*f->lt), lt in
+  struct nft_pipapo_field.
 
-i.e., nft_quota match consumed bytes in [0, quota - 1], not [0, quota].
+Then, use check_mul_overflow() to multiply by bucket size and then use
+check_add_overflow() to the alignment for avx2 (if needed). Finally, add
+lt_size_check_overflow() helper and use it to consolidate this.
 
-Fixes: 795595f68d6c ("netfilter: nft_quota: dump consumed quota")
-Signed-off-by: Zhongqiu Duan <dzq.aishenghu0@gmail.com>
+While at it, replace leftover allocation using the GFP_KERNEL to
+GFP_KERNEL_ACCOUNT for consistency, in pipapo_resize().
+
+Fixes: 3c4287f62044 ("nf_tables: Add set type for arbitrary concatenation of ranges")
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Reviewed-by: Stefano Brivio <sbrivio@redhat.com>
 Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nft_quota.c | 20 +++++++++++++-------
- 1 file changed, 13 insertions(+), 7 deletions(-)
+ net/netfilter/nft_set_pipapo.c | 58 ++++++++++++++++++++++++++--------
+ 1 file changed, 44 insertions(+), 14 deletions(-)
 
-diff --git a/net/netfilter/nft_quota.c b/net/netfilter/nft_quota.c
-index 9b2d7463d3d32..df0798da2329b 100644
---- a/net/netfilter/nft_quota.c
-+++ b/net/netfilter/nft_quota.c
-@@ -19,10 +19,16 @@ struct nft_quota {
- };
- 
- static inline bool nft_overquota(struct nft_quota *priv,
--				 const struct sk_buff *skb)
-+				 const struct sk_buff *skb,
-+				 bool *report)
- {
--	return atomic64_add_return(skb->len, priv->consumed) >=
--	       atomic64_read(&priv->quota);
-+	u64 consumed = atomic64_add_return(skb->len, priv->consumed);
-+	u64 quota = atomic64_read(&priv->quota);
-+
-+	if (report)
-+		*report = consumed >= quota;
-+
-+	return consumed > quota;
+diff --git a/net/netfilter/nft_set_pipapo.c b/net/netfilter/nft_set_pipapo.c
+index 7be342b495f5f..0529e4ef75207 100644
+--- a/net/netfilter/nft_set_pipapo.c
++++ b/net/netfilter/nft_set_pipapo.c
+@@ -683,6 +683,30 @@ static int pipapo_realloc_mt(struct nft_pipapo_field *f,
+ 	return 0;
  }
  
- static inline bool nft_quota_invert(struct nft_quota *priv)
-@@ -34,7 +40,7 @@ static inline void nft_quota_do_eval(struct nft_quota *priv,
- 				     struct nft_regs *regs,
- 				     const struct nft_pktinfo *pkt)
++
++/**
++ * lt_calculate_size() - Get storage size for lookup table with overflow check
++ * @groups:	Amount of bit groups
++ * @bb:		Number of bits grouped together in lookup table buckets
++ * @bsize:	Size of each bucket in lookup table, in longs
++ *
++ * Return: allocation size including alignment overhead, negative on overflow
++ */
++static ssize_t lt_calculate_size(unsigned int groups, unsigned int bb,
++				 unsigned int bsize)
++{
++	ssize_t ret = groups * NFT_PIPAPO_BUCKETS(bb) * sizeof(long);
++
++	if (check_mul_overflow(ret, bsize, &ret))
++		return -1;
++	if (check_add_overflow(ret, NFT_PIPAPO_ALIGN_HEADROOM, &ret))
++		return -1;
++	if (ret > INT_MAX)
++		return -1;
++
++	return ret;
++}
++
+ /**
+  * pipapo_resize() - Resize lookup or mapping table, or both
+  * @f:		Field containing lookup and mapping tables
+@@ -701,6 +725,7 @@ static int pipapo_resize(struct nft_pipapo_field *f,
+ 	long *new_lt = NULL, *new_p, *old_lt = f->lt, *old_p;
+ 	unsigned int new_bucket_size, copy;
+ 	int group, bucket, err;
++	ssize_t lt_size;
+ 
+ 	if (rules >= NFT_PIPAPO_RULE0_MAX)
+ 		return -ENOSPC;
+@@ -719,10 +744,11 @@ static int pipapo_resize(struct nft_pipapo_field *f,
+ 	else
+ 		copy = new_bucket_size;
+ 
+-	new_lt = kvzalloc(f->groups * NFT_PIPAPO_BUCKETS(f->bb) *
+-			  new_bucket_size * sizeof(*new_lt) +
+-			  NFT_PIPAPO_ALIGN_HEADROOM,
+-			  GFP_KERNEL);
++	lt_size = lt_calculate_size(f->groups, f->bb, new_bucket_size);
++	if (lt_size < 0)
++		return -ENOMEM;
++
++	new_lt = kvzalloc(lt_size, GFP_KERNEL_ACCOUNT);
+ 	if (!new_lt)
+ 		return -ENOMEM;
+ 
+@@ -907,7 +933,7 @@ static void pipapo_lt_bits_adjust(struct nft_pipapo_field *f)
  {
--	if (nft_overquota(priv, pkt->skb) ^ nft_quota_invert(priv))
-+	if (nft_overquota(priv, pkt->skb, NULL) ^ nft_quota_invert(priv))
- 		regs->verdict.code = NFT_BREAK;
- }
+ 	unsigned int groups, bb;
+ 	unsigned long *new_lt;
+-	size_t lt_size;
++	ssize_t lt_size;
  
-@@ -51,13 +57,13 @@ static void nft_quota_obj_eval(struct nft_object *obj,
- 			       const struct nft_pktinfo *pkt)
- {
- 	struct nft_quota *priv = nft_obj_data(obj);
--	bool overquota;
-+	bool overquota, report;
+ 	lt_size = f->groups * NFT_PIPAPO_BUCKETS(f->bb) * f->bsize *
+ 		  sizeof(*f->lt);
+@@ -917,15 +943,17 @@ static void pipapo_lt_bits_adjust(struct nft_pipapo_field *f)
+ 		groups = f->groups * 2;
+ 		bb = NFT_PIPAPO_GROUP_BITS_LARGE_SET;
  
--	overquota = nft_overquota(priv, pkt->skb);
-+	overquota = nft_overquota(priv, pkt->skb, &report);
- 	if (overquota ^ nft_quota_invert(priv))
- 		regs->verdict.code = NFT_BREAK;
+-		lt_size = groups * NFT_PIPAPO_BUCKETS(bb) * f->bsize *
+-			  sizeof(*f->lt);
++		lt_size = lt_calculate_size(groups, bb, f->bsize);
++		if (lt_size < 0)
++			return;
+ 	} else if (f->bb == NFT_PIPAPO_GROUP_BITS_LARGE_SET &&
+ 		   lt_size < NFT_PIPAPO_LT_SIZE_LOW) {
+ 		groups = f->groups / 2;
+ 		bb = NFT_PIPAPO_GROUP_BITS_SMALL_SET;
  
--	if (overquota &&
-+	if (report &&
- 	    !test_and_set_bit(NFT_QUOTA_DEPLETED_BIT, &priv->flags))
- 		nft_obj_notify(nft_net(pkt), obj->key.table, obj, 0, 0,
- 			       NFT_MSG_NEWOBJ, 0, nft_pf(pkt), 0, GFP_ATOMIC);
+-		lt_size = groups * NFT_PIPAPO_BUCKETS(bb) * f->bsize *
+-			  sizeof(*f->lt);
++		lt_size = lt_calculate_size(groups, bb, f->bsize);
++		if (lt_size < 0)
++			return;
+ 
+ 		/* Don't increase group width if the resulting lookup table size
+ 		 * would exceed the upper size threshold for a "small" set.
+@@ -936,7 +964,7 @@ static void pipapo_lt_bits_adjust(struct nft_pipapo_field *f)
+ 		return;
+ 	}
+ 
+-	new_lt = kvzalloc(lt_size + NFT_PIPAPO_ALIGN_HEADROOM, GFP_KERNEL_ACCOUNT);
++	new_lt = kvzalloc(lt_size, GFP_KERNEL_ACCOUNT);
+ 	if (!new_lt)
+ 		return;
+ 
+@@ -1451,13 +1479,15 @@ static struct nft_pipapo_match *pipapo_clone(struct nft_pipapo_match *old)
+ 
+ 	for (i = 0; i < old->field_count; i++) {
+ 		unsigned long *new_lt;
++		ssize_t lt_size;
+ 
+ 		memcpy(dst, src, offsetof(struct nft_pipapo_field, lt));
+ 
+-		new_lt = kvzalloc(src->groups * NFT_PIPAPO_BUCKETS(src->bb) *
+-				  src->bsize * sizeof(*dst->lt) +
+-				  NFT_PIPAPO_ALIGN_HEADROOM,
+-				  GFP_KERNEL_ACCOUNT);
++		lt_size = lt_calculate_size(src->groups, src->bb, src->bsize);
++		if (lt_size < 0)
++			goto out_lt;
++
++		new_lt = kvzalloc(lt_size, GFP_KERNEL_ACCOUNT);
+ 		if (!new_lt)
+ 			goto out_lt;
+ 
 -- 
 2.39.5
 
