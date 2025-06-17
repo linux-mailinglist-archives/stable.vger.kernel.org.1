@@ -1,58 +1,63 @@
-Return-Path: <stable+bounces-154386-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153988-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B2E9ADD8DC
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:59:51 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id ADAA5ADD811
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:51:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F3D385A3367
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:51:56 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EAF7719E61F9
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:34:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC30D1A2632;
-	Tue, 17 Jun 2025 16:50:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B5BF285076;
+	Tue, 17 Jun 2025 16:29:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kGZGOwCf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LGvqji9R"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0CB4285059;
-	Tue, 17 Jun 2025 16:50:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E453A18E025;
+	Tue, 17 Jun 2025 16:29:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750179027; cv=none; b=S3pp1FboWDaOUe1BnQjqqgZLmwqf7G5Eryphhy7t+dNWbibnN5YFzcOCTMngmrsAG5sO3yzILdUquyEWzVVg5MPVQF2oXuH4CUmaiOxI3bLyFf8yZzTM3fnunXexCVX1QlvBtSryVejpkxvCvuuXbZLrS8b/br6nkZftkrJ47X8=
+	t=1750177744; cv=none; b=g+EOZjoxYRRDp4J1EoEUBcFsoAQNF+FfyRTl+GYB1HYWR9dhq2CDhQVY9GXEKOHqrvipUH+NF4UGkJ3FIwKLjilcYISFGPkREDvXBRXjFcSmwmwe54y8OzB2LLRmvQthQxMAOqoOPZzU9umMZv4G2AGR5w7jKwlkD8hQKomC6zg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750179027; c=relaxed/simple;
-	bh=/pZhvcBat39raKEwMyzITJqnYKu9SYyqO3XPsGN33QI=;
+	s=arc-20240116; t=1750177744; c=relaxed/simple;
+	bh=u79NLbnF099fAbhHVaUs99wYbA/F/omksV7+Ia3uqks=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OG+2cju5DJr5UhLAcV7cutO08C75eDKoOVwgaNnnABXac2mf4TkVPjpSD3dq+/fJRBstExF0G7nslttk/WrUgcrgST6/bGVVK1PjOddaj4cIUxwweeGAGtJYGSKJIxCUyWWkw+Q72iMs3o0f0OAOBoT8rkOe2TLI/uQ6Hx6Gp4g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kGZGOwCf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98A8DC4CEE3;
-	Tue, 17 Jun 2025 16:50:26 +0000 (UTC)
+	 MIME-Version; b=p7r4HRa+LrHeX26nVQQ4W+Qc3x+hMMQrBGU41pK5N9ThGfGOYooHMZDJo3pLzwZBRVeWt0ZouarUoLpn/J2/bD2lltzwIBkfQh5/qr03XkYzmJ2Wa+GNZBR/vOid+/9zTDV6r9LDgFB6vB2bBV0mEZRAN8t2RFCrkP1225DUc/4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LGvqji9R; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1ED16C4CEE7;
+	Tue, 17 Jun 2025 16:29:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750179027;
-	bh=/pZhvcBat39raKEwMyzITJqnYKu9SYyqO3XPsGN33QI=;
+	s=korg; t=1750177743;
+	bh=u79NLbnF099fAbhHVaUs99wYbA/F/omksV7+Ia3uqks=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kGZGOwCfpfeAbDWQyZP6d0NUzqws1SZxRvTnr+jDPMKtZuKXRDleWHeZwLmq677e3
-	 fSbL9IGYFseR3gtqoiml7rPSzO1OBFxkOIRlYR3FE99VSgaWjqCtEARkG525ow+WWf
-	 wtRZMn9g/zDymty898w7FGK6F6WVt/XWsewccpj4=
+	b=LGvqji9Rjtd/sMUZKEqFM6HjkeF4MXj0lhNqIf3zM5+drGDwKefW0HP/wHbvvJwhP
+	 XrnJ527skhsEQhYqgo/ZNkRG/ISLEY9EkaKWSXujygz+BY8NH0S6J17mz3pAxlmkAe
+	 ifyB0UijnWspILKJGndyBBlkb8WPkTLOYXJ0OzGU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Petr Machata <petrm@nvidia.com>,
-	Ido Schimmel <idosch@nvidia.com>,
-	David Ahern <dsahern@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Jesus Narvaez <jesus.narvaez@intel.com>,
+	Daniele Ceraolo Spurio <daniele.ceraolospurio@intel.com>,
+	Alan Previn <alan.previn.teres.alexis@intel.com>,
+	Anshuman Gupta <anshuman.gupta@intel.com>,
+	Mousumi Jana <mousumi.jana@intel.com>,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>,
+	Matt Roper <matthew.d.roper@intel.com>,
+	John Harrison <John.C.Harrison@Intel.com>,
+	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 625/780] seg6: Fix validation of nexthop addresses
+Subject: [PATCH 6.12 367/512] drm/i915/guc: Handle race condition where wakeref count drops below 0
 Date: Tue, 17 Jun 2025 17:25:33 +0200
-Message-ID: <20250617152516.929770334@linuxfoundation.org>
+Message-ID: <20250617152434.456709686@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
-References: <20250617152451.485330293@linuxfoundation.org>
+In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
+References: <20250617152419.512865572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,50 +69,84 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ido Schimmel <idosch@nvidia.com>
+From: Jesus Narvaez <jesus.narvaez@intel.com>
 
-[ Upstream commit 7632fedb266d93ed0ed9f487133e6c6314a9b2d1 ]
+[ Upstream commit 0323a5127e7c534cfc88efe0f850a0cb777e938b ]
 
-The kernel currently validates that the length of the provided nexthop
-address does not exceed the specified length. This can lead to the
-kernel reading uninitialized memory if user space provided a shorter
-length than the specified one.
+There is a rare race condition when preparing for a reset where
+guc_lrc_desc_unpin() could be in the process of deregistering a context
+while a different thread is scrubbing outstanding contexts and it alters
+the context state and does a wakeref put. Then, if there is a failure
+with deregister_context(), a second wakeref put could occur. As a result
+the wakeref count could drop below 0 and fail an INTEL_WAKEREF_BUG_ON()
+check.
 
-Fix by validating that the provided length exactly matches the specified
-one.
+Therefore if there is a failure with deregister_context(), undo the
+context state changes and do a wakeref put only if the context was set
+to be destroyed earlier.
 
-Fixes: d1df6fd8a1d2 ("ipv6: sr: define core operations for seg6local lightweight tunnel")
-Reviewed-by: Petr Machata <petrm@nvidia.com>
-Signed-off-by: Ido Schimmel <idosch@nvidia.com>
-Reviewed-by: David Ahern <dsahern@kernel.org>
-Link: https://patch.msgid.link/20250604113252.371528-1-idosch@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+v2: Expand comment to better explain change. (Daniele)
+v3: Removed addition to the original comment. (Daniele)
+
+Fixes: 2f2cc53b5fe7 ("drm/i915/guc: Close deregister-context race against CT-loss")
+Signed-off-by: Jesus Narvaez <jesus.narvaez@intel.com>
+Cc: Daniele Ceraolo Spurio <daniele.ceraolospurio@intel.com>
+Cc: Alan Previn <alan.previn.teres.alexis@intel.com>
+Cc: Anshuman Gupta <anshuman.gupta@intel.com>
+Cc: Mousumi Jana <mousumi.jana@intel.com>
+Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Cc: Matt Roper <matthew.d.roper@intel.com>
+Reviewed-by: Daniele Ceraolo Spurio <daniele.ceraolospurio@intel.com>
+Signed-off-by: John Harrison <John.C.Harrison@Intel.com>
+Link: https://lore.kernel.org/r/20250528230551.1855177-1-jesus.narvaez@intel.com
+(cherry picked from commit f36a75aba1c3176d177964bca76f86a075d2943a)
+Signed-off-by: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv6/seg6_local.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ .../gpu/drm/i915/gt/uc/intel_guc_submission.c   | 17 ++++++++++++++---
+ 1 file changed, 14 insertions(+), 3 deletions(-)
 
-diff --git a/net/ipv6/seg6_local.c b/net/ipv6/seg6_local.c
-index ac1dbd492c22d..a11a02b4ba95b 100644
---- a/net/ipv6/seg6_local.c
-+++ b/net/ipv6/seg6_local.c
-@@ -1644,10 +1644,8 @@ static const struct nla_policy seg6_local_policy[SEG6_LOCAL_MAX + 1] = {
- 	[SEG6_LOCAL_SRH]	= { .type = NLA_BINARY },
- 	[SEG6_LOCAL_TABLE]	= { .type = NLA_U32 },
- 	[SEG6_LOCAL_VRFTABLE]	= { .type = NLA_U32 },
--	[SEG6_LOCAL_NH4]	= { .type = NLA_BINARY,
--				    .len = sizeof(struct in_addr) },
--	[SEG6_LOCAL_NH6]	= { .type = NLA_BINARY,
--				    .len = sizeof(struct in6_addr) },
-+	[SEG6_LOCAL_NH4]	= NLA_POLICY_EXACT_LEN(sizeof(struct in_addr)),
-+	[SEG6_LOCAL_NH6]	= NLA_POLICY_EXACT_LEN(sizeof(struct in6_addr)),
- 	[SEG6_LOCAL_IIF]	= { .type = NLA_U32 },
- 	[SEG6_LOCAL_OIF]	= { .type = NLA_U32 },
- 	[SEG6_LOCAL_BPF]	= { .type = NLA_NESTED },
+diff --git a/drivers/gpu/drm/i915/gt/uc/intel_guc_submission.c b/drivers/gpu/drm/i915/gt/uc/intel_guc_submission.c
+index 00e2cf92d99c7..b48373b166779 100644
+--- a/drivers/gpu/drm/i915/gt/uc/intel_guc_submission.c
++++ b/drivers/gpu/drm/i915/gt/uc/intel_guc_submission.c
+@@ -3422,18 +3422,29 @@ static inline int guc_lrc_desc_unpin(struct intel_context *ce)
+ 	 * GuC is active, lets destroy this context, but at this point we can still be racing
+ 	 * with suspend, so we undo everything if the H2G fails in deregister_context so
+ 	 * that GuC reset will find this context during clean up.
++	 *
++	 * There is a race condition where the reset code could have altered
++	 * this context's state and done a wakeref put before we try to
++	 * deregister it here. So check if the context is still set to be
++	 * destroyed before undoing earlier changes, to avoid two wakeref puts
++	 * on the same context.
+ 	 */
+ 	ret = deregister_context(ce, ce->guc_id.id);
+ 	if (ret) {
++		bool pending_destroyed;
+ 		spin_lock_irqsave(&ce->guc_state.lock, flags);
+-		set_context_registered(ce);
+-		clr_context_destroyed(ce);
++		pending_destroyed = context_destroyed(ce);
++		if (pending_destroyed) {
++			set_context_registered(ce);
++			clr_context_destroyed(ce);
++		}
+ 		spin_unlock_irqrestore(&ce->guc_state.lock, flags);
+ 		/*
+ 		 * As gt-pm is awake at function entry, intel_wakeref_put_async merely decrements
+ 		 * the wakeref immediately but per function spec usage call this after unlock.
+ 		 */
+-		intel_wakeref_put_async(&gt->wakeref);
++		if (pending_destroyed)
++			intel_wakeref_put_async(&gt->wakeref);
+ 	}
+ 
+ 	return ret;
 -- 
 2.39.5
 
