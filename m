@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-153924-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153926-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4BEEFADD746
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:43:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 77E0BADD701
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:39:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 971DE194618F
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:30:32 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A0AE31943467
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:30:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 04CA42ED84B;
-	Tue, 17 Jun 2025 16:25:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E7A372ED844;
+	Tue, 17 Jun 2025 16:25:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T+1HGMAw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ddFhZpI8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B361F2ED844;
-	Tue, 17 Jun 2025 16:25:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A09D32ED174;
+	Tue, 17 Jun 2025 16:25:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750177539; cv=none; b=oxIFGZjEoxh9OZ3jzUQzYz/GR6iLZgyAfmyJTIrnHWR7fi/gSUWe8AY0INO737zJ/agcpVvWJEnneP0PqILG8tc/BZtm8AkALJ0/8YapamrdbaEXjhPrCMa81bhJWpUWrPnY1I7weSaMEj0rforj08Wc0Wg7xdmtw6JqHRPQhIk=
+	t=1750177547; cv=none; b=eUxvb/x4v1j77lPeRO65MOKB3Pm/o8DDBFjXnEoiHxR7FisDjT64CYA+eURu98Ri2PMbhcTAM+yEwd6jDcKXf4FOrCLsstCgYkUjePiJB9JYC/BN6O1xGKNLZdchaNEo1uJiEEEfttiFfXsjoDvzX9klYbKvY4XpXhkESsy2VjE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750177539; c=relaxed/simple;
-	bh=jEhiZIbG5iC/n09BcwoabuJ5BQZOVqOmNRn+P6uCIak=;
+	s=arc-20240116; t=1750177547; c=relaxed/simple;
+	bh=WWSLFjI+2GUR5v/EHJtj91SrNTJTG2p7TUEHr1Bcfew=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Gd1pO/TV+2c0z6TGaIQIWZxMYr1w2YyQFNMpKgHRJLQZ3uZTG9UMd9pO8DUQTkBq8UR+Xgr3+r9DcWmtCHXBau6DnKMJx34WR3plXj1MnaojmH7o5mrBalNYgDCdbgsWWxw4+i/KtUTAGGyIxmCIwS4mUdXgjhT4cj/I8jlkMtg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T+1HGMAw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22A2CC4CEE3;
-	Tue, 17 Jun 2025 16:25:38 +0000 (UTC)
+	 MIME-Version; b=RUfJpnhu9nMrBw6rd9npycqiU3HZItypzMKfu/T42+huAVVG7lbPXM0ZRiM394fxGLIBom/u8wI3i2T28+O3s/4nVlu+Dug9m9myQ8QZAOWrezoUZ+PjozdGnbpYnIR/ppXklQ7/TZ49vWt6He2vB9m0ZJqeY4ybT9YvVCXhTwc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ddFhZpI8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2F12C4CEE3;
+	Tue, 17 Jun 2025 16:25:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750177539;
-	bh=jEhiZIbG5iC/n09BcwoabuJ5BQZOVqOmNRn+P6uCIak=;
+	s=korg; t=1750177546;
+	bh=WWSLFjI+2GUR5v/EHJtj91SrNTJTG2p7TUEHr1Bcfew=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=T+1HGMAwusHNi2kF+q5q0vCeCKzWxq2hf/0e9k6jQHxZcl3gWd5Cw3Q4Ss4neBAF8
-	 ElwBRdAT+ets2CHjD3cXh1KTu3JjYzoPA+xu5rS8cSXWpxK6n6UITYJabnwMtdP1Q5
-	 VmTM84nrEelSmAoqbalRQJSc9XNob+nRoZ+qs7LU=
+	b=ddFhZpI80y9j4DEmB4y52KZ9JWQ94C/sxYfTIGturel+sbiibQfEvjSdatUALJCkM
+	 tE1wkCpH97ejFGGrJ3ZjDlg561Vg2GtMspNHDytkHV7Q6N5hucTe3o3FgVr4KhA7bl
+	 Xmzycrqav3nA9TLMLXzK5GKDszQ4Sn2vc4qI+58g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Suraj Gupta <suraj.gupta2@amd.com>,
-	Sean Anderson <sean.anderson@linux.dev>,
+	syzbot+b191b5ccad8d7a986286@syzkaller.appspotmail.com,
+	Stanislav Fomichev <stfomichev@gmail.com>,
+	Willem de Bruijn <willemb@google.com>,
 	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 321/780] net: xilinx: axienet: Fix Tx skb circular buffer occupancy check in dmaengine xmit
-Date: Tue, 17 Jun 2025 17:20:29 +0200
-Message-ID: <20250617152504.523237951@linuxfoundation.org>
+Subject: [PATCH 6.15 322/780] af_packet: move notifiers packet_dev_mc out of rcu critical section
+Date: Tue, 17 Jun 2025 17:20:30 +0200
+Message-ID: <20250617152504.565248588@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
 References: <20250617152451.485330293@linuxfoundation.org>
@@ -67,57 +68,134 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Suraj Gupta <suraj.gupta2@amd.com>
+From: Stanislav Fomichev <stfomichev@gmail.com>
 
-[ Upstream commit 32374234ab0101881e7d0c6a8ef7ebce566c46c9 ]
+[ Upstream commit d8d85ef0a631df9127f202e6371bb33a0b589952 ]
 
-In Dmaengine flow, driver maintains struct skbuf_dma_descriptor rings each
-element of which corresponds to a skb. In Tx datapath, compare available
-space in skb ring with number of skbs instead of skb fragments.
-Replace x * (MAX_SKB_FRAGS) in netif_txq_completed_wake() and
-netif_txq_maybe_stop() with x * (1 skb) to fix the comparison.
+Syzkaller reports the following issue:
 
-Fixes: 6a91b846af85 ("net: axienet: Introduce dmaengine support")
-Signed-off-by: Suraj Gupta <suraj.gupta2@amd.com>
-Reviewed-by: Sean Anderson <sean.anderson@linux.dev>
-Link: https://patch.msgid.link/20250521181608.669554-1-suraj.gupta2@amd.com
+ BUG: sleeping function called from invalid context at kernel/locking/mutex.c:578
+ __mutex_lock+0x106/0xe80 kernel/locking/mutex.c:746
+ team_change_rx_flags+0x38/0x220 drivers/net/team/team_core.c:1781
+ dev_change_rx_flags net/core/dev.c:9145 [inline]
+ __dev_set_promiscuity+0x3f8/0x590 net/core/dev.c:9189
+ netif_set_promiscuity+0x50/0xe0 net/core/dev.c:9201
+ dev_set_promiscuity+0x126/0x260 net/core/dev_api.c:286 packet_dev_mc net/packet/af_packet.c:3698 [inline]
+ packet_dev_mclist_delete net/packet/af_packet.c:3722 [inline]
+ packet_notifier+0x292/0xa60 net/packet/af_packet.c:4247
+ notifier_call_chain+0x1b3/0x3e0 kernel/notifier.c:85
+ call_netdevice_notifiers_extack net/core/dev.c:2214 [inline]
+ call_netdevice_notifiers net/core/dev.c:2228 [inline]
+ unregister_netdevice_many_notify+0x15d8/0x2330 net/core/dev.c:11972
+ rtnl_delete_link net/core/rtnetlink.c:3522 [inline]
+ rtnl_dellink+0x488/0x710 net/core/rtnetlink.c:3564
+ rtnetlink_rcv_msg+0x7cf/0xb70 net/core/rtnetlink.c:6955
+ netlink_rcv_skb+0x219/0x490 net/netlink/af_netlink.c:2534
+
+Calling `PACKET_ADD_MEMBERSHIP` on an ops-locked device can trigger
+the `NETDEV_UNREGISTER` notifier, which may require disabling promiscuous
+and/or allmulti mode. Both of these operations require acquiring
+the netdev instance lock.
+
+Move the call to `packet_dev_mc` outside of the RCU critical section.
+The `mclist` modifications (add, del, flush, unregister) are protected by
+the RTNL, not the RCU. The RCU only protects the `sklist` and its
+associated `sks`. The delayed operation on the `mclist` entry remains
+within the RTNL.
+
+Reported-by: syzbot+b191b5ccad8d7a986286@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=b191b5ccad8d7a986286
+Fixes: ad7c7b2172c3 ("net: hold netdev instance lock during sysfs operations")
+Signed-off-by: Stanislav Fomichev <stfomichev@gmail.com>
+Reviewed-by: Willem de Bruijn <willemb@google.com>
+Link: https://patch.msgid.link/20250522031129.3247266-1-stfomichev@gmail.com
 Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/xilinx/xilinx_axienet_main.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ net/packet/af_packet.c | 21 ++++++++++++++++-----
+ net/packet/internal.h  |  1 +
+ 2 files changed, 17 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/net/ethernet/xilinx/xilinx_axienet_main.c b/drivers/net/ethernet/xilinx/xilinx_axienet_main.c
-index 054abf283ab33..5f912b27bfd7f 100644
---- a/drivers/net/ethernet/xilinx/xilinx_axienet_main.c
-+++ b/drivers/net/ethernet/xilinx/xilinx_axienet_main.c
-@@ -880,7 +880,7 @@ static void axienet_dma_tx_cb(void *data, const struct dmaengine_result *result)
- 	dev_consume_skb_any(skbuf_dma->skb);
- 	netif_txq_completed_wake(txq, 1, len,
- 				 CIRC_SPACE(lp->tx_ring_head, lp->tx_ring_tail, TX_BD_NUM_MAX),
--				 2 * MAX_SKB_FRAGS);
-+				 2);
+diff --git a/net/packet/af_packet.c b/net/packet/af_packet.c
+index d4dba06297c33..20be2c47cf419 100644
+--- a/net/packet/af_packet.c
++++ b/net/packet/af_packet.c
+@@ -3713,15 +3713,15 @@ static int packet_dev_mc(struct net_device *dev, struct packet_mclist *i,
  }
  
- /**
-@@ -914,7 +914,7 @@ axienet_start_xmit_dmaengine(struct sk_buff *skb, struct net_device *ndev)
+ static void packet_dev_mclist_delete(struct net_device *dev,
+-				     struct packet_mclist **mlp)
++				     struct packet_mclist **mlp,
++				     struct list_head *list)
+ {
+ 	struct packet_mclist *ml;
  
- 	dma_dev = lp->tx_chan->device;
- 	sg_len = skb_shinfo(skb)->nr_frags + 1;
--	if (CIRC_SPACE(lp->tx_ring_head, lp->tx_ring_tail, TX_BD_NUM_MAX) <= sg_len) {
-+	if (CIRC_SPACE(lp->tx_ring_head, lp->tx_ring_tail, TX_BD_NUM_MAX) <= 1) {
- 		netif_stop_queue(ndev);
- 		if (net_ratelimit())
- 			netdev_warn(ndev, "TX ring unexpectedly full\n");
-@@ -964,7 +964,7 @@ axienet_start_xmit_dmaengine(struct sk_buff *skb, struct net_device *ndev)
- 	txq = skb_get_tx_queue(lp->ndev, skb);
- 	netdev_tx_sent_queue(txq, skb->len);
- 	netif_txq_maybe_stop(txq, CIRC_SPACE(lp->tx_ring_head, lp->tx_ring_tail, TX_BD_NUM_MAX),
--			     MAX_SKB_FRAGS + 1, 2 * MAX_SKB_FRAGS);
-+			     1, 2);
+ 	while ((ml = *mlp) != NULL) {
+ 		if (ml->ifindex == dev->ifindex) {
+-			packet_dev_mc(dev, ml, -1);
++			list_add(&ml->remove_list, list);
+ 			*mlp = ml->next;
+-			kfree(ml);
+ 		} else
+ 			mlp = &ml->next;
+ 	}
+@@ -3769,6 +3769,7 @@ static int packet_mc_add(struct sock *sk, struct packet_mreq_max *mreq)
+ 	memcpy(i->addr, mreq->mr_address, i->alen);
+ 	memset(i->addr + i->alen, 0, sizeof(i->addr) - i->alen);
+ 	i->count = 1;
++	INIT_LIST_HEAD(&i->remove_list);
+ 	i->next = po->mclist;
+ 	po->mclist = i;
+ 	err = packet_dev_mc(dev, i, 1);
+@@ -4233,9 +4234,11 @@ static int packet_getsockopt(struct socket *sock, int level, int optname,
+ static int packet_notifier(struct notifier_block *this,
+ 			   unsigned long msg, void *ptr)
+ {
+-	struct sock *sk;
+ 	struct net_device *dev = netdev_notifier_info_to_dev(ptr);
+ 	struct net *net = dev_net(dev);
++	struct packet_mclist *ml, *tmp;
++	LIST_HEAD(mclist);
++	struct sock *sk;
  
- 	dmaengine_submit(dma_tx_desc);
- 	dma_async_issue_pending(lp->tx_chan);
+ 	rcu_read_lock();
+ 	sk_for_each_rcu(sk, &net->packet.sklist) {
+@@ -4244,7 +4247,8 @@ static int packet_notifier(struct notifier_block *this,
+ 		switch (msg) {
+ 		case NETDEV_UNREGISTER:
+ 			if (po->mclist)
+-				packet_dev_mclist_delete(dev, &po->mclist);
++				packet_dev_mclist_delete(dev, &po->mclist,
++							 &mclist);
+ 			fallthrough;
+ 
+ 		case NETDEV_DOWN:
+@@ -4277,6 +4281,13 @@ static int packet_notifier(struct notifier_block *this,
+ 		}
+ 	}
+ 	rcu_read_unlock();
++
++	/* packet_dev_mc might grab instance locks so can't run under rcu */
++	list_for_each_entry_safe(ml, tmp, &mclist, remove_list) {
++		packet_dev_mc(dev, ml, -1);
++		kfree(ml);
++	}
++
+ 	return NOTIFY_DONE;
+ }
+ 
+diff --git a/net/packet/internal.h b/net/packet/internal.h
+index d5d70712007ad..1e743d0316fdd 100644
+--- a/net/packet/internal.h
++++ b/net/packet/internal.h
+@@ -11,6 +11,7 @@ struct packet_mclist {
+ 	unsigned short		type;
+ 	unsigned short		alen;
+ 	unsigned char		addr[MAX_ADDR_LEN];
++	struct list_head	remove_list;
+ };
+ 
+ /* kbdq - kernel block descriptor queue */
 -- 
 2.39.5
 
