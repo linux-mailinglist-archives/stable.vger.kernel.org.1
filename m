@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-153703-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153725-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 63FDFADD64E
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:32:16 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1C2F2ADD619
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:30:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B1CFD2C42F1
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:20:45 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7AB9216C618
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:21:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F7DD2F94AC;
-	Tue, 17 Jun 2025 16:13:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4E862EF285;
+	Tue, 17 Jun 2025 16:14:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Q7FEDXnq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fYBS2gi5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F139F2F9499;
-	Tue, 17 Jun 2025 16:13:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B1D32DFF13;
+	Tue, 17 Jun 2025 16:14:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750176817; cv=none; b=pSdQSgqBz1YNE0MCCS0IQHZ4aWGfDPgNSgBfYCncMIsxseYdt2HZMSpGZPzkPQeGoMMir+y9CzWJK2Lzneb9kkTAwdUE3Jno/Y7+rUi39bwRTCeUghmZU2lAhujYf/7wzbUbKu2NBDFqWmbVB/I8U9Gx0ViVtww1Jh6yJhqzt4E=
+	t=1750176888; cv=none; b=Wb4yHFUu+cr8CNLd3XponJ7KQs96FSXBEzfHdYz+Um0cWSUTozJI7q5qiBD5WxYVA2Ebyfqeqi0sSYi+OJEg9xg7yVkp+KP2277ueyGZX+613tllqS0IyuY9++t6iqX5QvoBAFfza4Ct70r+ey6md8UPf7xobVDIPYJUgcNt8sQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750176817; c=relaxed/simple;
-	bh=FTxgQHBTx7nOk67lE2rdxKyqA8h4q00fc8GkPNbp46s=;
+	s=arc-20240116; t=1750176888; c=relaxed/simple;
+	bh=zhET5Jzul07dbAMaHky9z51AIkAPZ4BEFE3Y4x0AUAU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZRCRc5kb9D/PkR+rkm8SfoqqAL/bAsmmkpAENdsXcV3VHn+rkC5Uh33nk3FchCOz0oQ2l+d57LGLAawnc69qbtRpFiKotuZ1yEPMYaFlpjovHoB+kYMFuydH3mvSizYFexRB2ZUCjIk/AYjWo7/H2lM1ZhQHjgXkST7TE01zPu8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Q7FEDXnq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F8CDC4CEE3;
-	Tue, 17 Jun 2025 16:13:36 +0000 (UTC)
+	 MIME-Version; b=RkWAv1ve9M5LteUuC5t0qDCbQr6hR6E7uZqlYxRzb+v87t5bzftYQwdpRmuXlx5VdjSY0H+V0SSUonCfyTEzR+cY4/py+awG4PFmM6K6cbpacurXrjb36A7SU5Daa1tLUwF+vGyZFqBvyfaHJIcpSXg5uVIABfZb/mHybpOu8kM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fYBS2gi5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED7E4C4CEE7;
+	Tue, 17 Jun 2025 16:14:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750176816;
-	bh=FTxgQHBTx7nOk67lE2rdxKyqA8h4q00fc8GkPNbp46s=;
+	s=korg; t=1750176888;
+	bh=zhET5Jzul07dbAMaHky9z51AIkAPZ4BEFE3Y4x0AUAU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Q7FEDXnqKpgmFW0qv6otxQ3AS8xG3bWavHrULliwCeGK7hIfaoaFRMjuW2XRmFhlx
-	 tBzI8JxXqaKXQkv4skAl3U8/rQJwXG/j3M41AroglFB+18P50/FZGGfWy9HNWeR73v
-	 V8t85sKoDRjnMuvyKknCZ6yC+oG2iaMiCWeD988c=
+	b=fYBS2gi5UzE0N6OcoEoj+16lZaO27yf79gWLZOtw7DbVko6ZFbxaSs+91F0/yQatS
+	 O/PfF6+XFWoyiTJak/6MWGtjAQYykjDiOJCzlyEv7w9/eRmiaW4NRJk7RbyHmOqulO
+	 66nOZ0xRp5fmNhgUCFBwSsS0TRiFbK2wS4y94KDg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Junxian Huang <huangjunxian6@hisilicon.com>,
-	Leon Romanovsky <leon@kernel.org>,
+	Yihang Li <liyihang9@huawei.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 216/780] RDMA/hns: Include hnae3.h in hns_roce_hw_v2.h
-Date: Tue, 17 Jun 2025 17:18:44 +0200
-Message-ID: <20250617152500.254943418@linuxfoundation.org>
+Subject: [PATCH 6.15 217/780] scsi: hisi_sas: Call I_T_nexus after soft reset for SATA disk
+Date: Tue, 17 Jun 2025 17:18:45 +0200
+Message-ID: <20250617152500.294492281@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
 References: <20250617152451.485330293@linuxfoundation.org>
@@ -66,91 +66,77 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Junxian Huang <huangjunxian6@hisilicon.com>
+From: Yihang Li <liyihang9@huawei.com>
 
-[ Upstream commit 2b11d33de23262cb20d1dcb24b586dbb8f54d463 ]
+[ Upstream commit e4d953ca557e02edd3aed7390043e1b8ad1c9723 ]
 
-hns_roce_hw_v2.h has a direct dependency on hnae3.h due to the
-inline function hns_roce_write64(), but it doesn't include this
-header currently. This leads to that files including
-hns_roce_hw_v2.h must also include hnae3.h to avoid compilation
-errors, even if they themselves don't really rely on hnae3.h.
-This doesn't make sense, hns_roce_hw_v2.h should include hnae3.h
-directly.
+In commit 21c7e972475e ("scsi: hisi_sas: Disable SATA disk phy for severe
+I_T nexus reset failure"), if the softreset fails upon certain
+conditions, the PHY connected to the disk is disabled directly. Manual
+recovery is required, which is inconvenient for users in actual use.
 
-Fixes: d3743fa94ccd ("RDMA/hns: Fix the chip hanging caused by sending doorbell during reset")
-Signed-off-by: Junxian Huang <huangjunxian6@hisilicon.com>
-Link: https://patch.msgid.link/20250421132750.1363348-6-huangjunxian6@hisilicon.com
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+In addition, SATA disks do not support simultaneous connection of multiple
+hosts. Therefore, when multiple controllers are connected to a SATA disk
+at the same time, the controller which is connected later failed to issue
+an ATA softreset to the SATA disk. As a result, the PHY associated with
+the disk is disabled and cannot be automatically recovered.
+
+Now that, we will not focus on the execution result of softreset. No
+matter whether the execution is successful or not, we will directly carry
+out I_T_nexus_reset.
+
+Fixes: 21c7e972475e ("scsi: hisi_sas: Disable SATA disk phy for severe I_T nexus reset failure")
+Signed-off-by: Yihang Li <liyihang9@huawei.com>
+Link: https://lore.kernel.org/r/20250414080845.1220997-4-liyihang9@huawei.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/hw/hns/hns_roce_ah.c       | 1 -
- drivers/infiniband/hw/hns/hns_roce_hw_v2.c    | 1 -
- drivers/infiniband/hw/hns/hns_roce_hw_v2.h    | 1 +
- drivers/infiniband/hw/hns/hns_roce_main.c     | 1 -
- drivers/infiniband/hw/hns/hns_roce_restrack.c | 1 -
- 5 files changed, 1 insertion(+), 4 deletions(-)
+ drivers/scsi/hisi_sas/hisi_sas_main.c | 29 +++++----------------------
+ 1 file changed, 5 insertions(+), 24 deletions(-)
 
-diff --git a/drivers/infiniband/hw/hns/hns_roce_ah.c b/drivers/infiniband/hw/hns/hns_roce_ah.c
-index 4fc5b9d5fea87..307c35888b300 100644
---- a/drivers/infiniband/hw/hns/hns_roce_ah.c
-+++ b/drivers/infiniband/hw/hns/hns_roce_ah.c
-@@ -33,7 +33,6 @@
- #include <linux/pci.h>
- #include <rdma/ib_addr.h>
- #include <rdma/ib_cache.h>
--#include "hnae3.h"
- #include "hns_roce_device.h"
- #include "hns_roce_hw_v2.h"
+diff --git a/drivers/scsi/hisi_sas/hisi_sas_main.c b/drivers/scsi/hisi_sas/hisi_sas_main.c
+index 944cf2fb05617..d3981b6779316 100644
+--- a/drivers/scsi/hisi_sas/hisi_sas_main.c
++++ b/drivers/scsi/hisi_sas/hisi_sas_main.c
+@@ -1885,33 +1885,14 @@ static int hisi_sas_I_T_nexus_reset(struct domain_device *device)
+ 	}
+ 	hisi_sas_dereg_device(hisi_hba, device);
  
-diff --git a/drivers/infiniband/hw/hns/hns_roce_hw_v2.c b/drivers/infiniband/hw/hns/hns_roce_hw_v2.c
-index 160e8927d364e..59352d1b62099 100644
---- a/drivers/infiniband/hw/hns/hns_roce_hw_v2.c
-+++ b/drivers/infiniband/hw/hns/hns_roce_hw_v2.c
-@@ -43,7 +43,6 @@
- #include <rdma/ib_umem.h>
- #include <rdma/uverbs_ioctl.h>
+-	rc = hisi_sas_debug_I_T_nexus_reset(device);
+-	if (rc == TMF_RESP_FUNC_COMPLETE && dev_is_sata(device)) {
+-		struct sas_phy *local_phy;
+-
++	if (dev_is_sata(device)) {
+ 		rc = hisi_sas_softreset_ata_disk(device);
+-		switch (rc) {
+-		case -ECOMM:
+-			rc = -ENODEV;
+-			break;
+-		case TMF_RESP_FUNC_FAILED:
+-		case -EMSGSIZE:
+-		case -EIO:
+-			local_phy = sas_get_local_phy(device);
+-			rc = sas_phy_enable(local_phy, 0);
+-			if (!rc) {
+-				local_phy->enabled = 0;
+-				dev_err(dev, "Disabled local phy of ATA disk %016llx due to softreset fail (%d)\n",
+-					SAS_ADDR(device->sas_addr), rc);
+-				rc = -ENODEV;
+-			}
+-			sas_put_local_phy(local_phy);
+-			break;
+-		default:
+-			break;
+-		}
++		if (rc == TMF_RESP_FUNC_FAILED)
++			dev_err(dev, "ata disk %016llx reset (%d)\n",
++				SAS_ADDR(device->sas_addr), rc);
+ 	}
  
--#include "hnae3.h"
- #include "hns_roce_common.h"
- #include "hns_roce_device.h"
- #include "hns_roce_cmd.h"
-diff --git a/drivers/infiniband/hw/hns/hns_roce_hw_v2.h b/drivers/infiniband/hw/hns/hns_roce_hw_v2.h
-index 91a5665465ffb..bc7466830eaf9 100644
---- a/drivers/infiniband/hw/hns/hns_roce_hw_v2.h
-+++ b/drivers/infiniband/hw/hns/hns_roce_hw_v2.h
-@@ -34,6 +34,7 @@
- #define _HNS_ROCE_HW_V2_H
++	rc = hisi_sas_debug_I_T_nexus_reset(device);
+ 	if ((rc == TMF_RESP_FUNC_COMPLETE) || (rc == -ENODEV))
+ 		hisi_sas_release_task(hisi_hba, device);
  
- #include <linux/bitops.h>
-+#include "hnae3.h"
- 
- #define HNS_ROCE_V2_MAX_RC_INL_INN_SZ		32
- #define HNS_ROCE_V2_MTT_ENTRY_SZ		64
-diff --git a/drivers/infiniband/hw/hns/hns_roce_main.c b/drivers/infiniband/hw/hns/hns_roce_main.c
-index 8d0b63d4b50a6..e7a497cc125cc 100644
---- a/drivers/infiniband/hw/hns/hns_roce_main.c
-+++ b/drivers/infiniband/hw/hns/hns_roce_main.c
-@@ -37,7 +37,6 @@
- #include <rdma/ib_smi.h>
- #include <rdma/ib_user_verbs.h>
- #include <rdma/ib_cache.h>
--#include "hnae3.h"
- #include "hns_roce_common.h"
- #include "hns_roce_device.h"
- #include "hns_roce_hem.h"
-diff --git a/drivers/infiniband/hw/hns/hns_roce_restrack.c b/drivers/infiniband/hw/hns/hns_roce_restrack.c
-index 356d988169497..f637b73b946e4 100644
---- a/drivers/infiniband/hw/hns/hns_roce_restrack.c
-+++ b/drivers/infiniband/hw/hns/hns_roce_restrack.c
-@@ -4,7 +4,6 @@
- #include <rdma/rdma_cm.h>
- #include <rdma/restrack.h>
- #include <uapi/rdma/rdma_netlink.h>
--#include "hnae3.h"
- #include "hns_roce_common.h"
- #include "hns_roce_device.h"
- #include "hns_roce_hw_v2.h"
 -- 
 2.39.5
 
