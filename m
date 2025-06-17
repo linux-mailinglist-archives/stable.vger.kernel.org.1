@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-154468-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153555-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD439ADD926
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 19:03:24 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id BA7B1ADD58C
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:22:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CE3A05A5759
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:55:18 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7AFDF19E0CF1
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:08:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA0D32367D9;
-	Tue, 17 Jun 2025 16:54:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7DD512ECE83;
+	Tue, 17 Jun 2025 16:05:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JL2Ap/I9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C3p2ZPyL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8446621B9FC;
-	Tue, 17 Jun 2025 16:54:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39A512F2355;
+	Tue, 17 Jun 2025 16:05:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750179284; cv=none; b=PgPioeb9O2wugUnvP9cCkZzG+qXI/f1DuG/rcdt2UH3DRuwhNpDrCl6pVMTHtdZjdAIdQAzPkzcDXnRBkubRhRQuI7pO/Lcyx553xdck6pxN8Ag/5At7LWh7J2tVnrBAHqDAIuDgo0k12Fmu3BuBDXbl+IGERauBky2bjLBadI8=
+	t=1750176341; cv=none; b=DdnE6nYn/q/e07ylnDPhiKPbC0uX6h87m7YcxXNrfnwQDCnrhuuHybYyb1ZL+a8JwDbpebHm/5smUVaAvlXIndLmnH58Zt4M8L0NwP5T/MUxEAPEiBeDwYZ9N8h9ruNf2lGMUeioJAM9wSRbEclOXH5fFYsOwWJzqHw5mjZcLKs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750179284; c=relaxed/simple;
-	bh=/gNxgSHISKjrL5TakiNS/Zu09F0uLKyHUdzBMCZKXwc=;
+	s=arc-20240116; t=1750176341; c=relaxed/simple;
+	bh=vD5MnLwrv3SPQLdmkmI9tcBQiFDxnFmVzKBv4ApBy/8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RvqN+DO3afpdaR2At8i6xs3iVq9119vTlne8omwM8dhIomnqxDBZhjZ8EuJkzRl/F5WqWaIXY0qxzWHvXsEtyzTOMp1Xo0pZzAKGF80q/eZuKPVHkxnabFU7VUZmMOdLFRLCerHQ58br8km6Uw2YrhmlGnIiUKvz839/IEjXrE0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JL2Ap/I9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA4BDC4CEE3;
-	Tue, 17 Jun 2025 16:54:43 +0000 (UTC)
+	 MIME-Version; b=aVIUoooc7mxUSL05M2aHjO+hFdCJRLuXxxZIbr6SNfW05Hs1h/rFKc/oS7xpY6u6WtG/CfLErZoS5iq9x01/8CZoyp5Asbys0JhmV5/J1+RGTR313uhq9XJGB0uc/0+Qf6ym29ghCflkmaN3Zu6HrktBgNoWkvd210nUOskZbxM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C3p2ZPyL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9BA84C4CEE3;
+	Tue, 17 Jun 2025 16:05:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750179284;
-	bh=/gNxgSHISKjrL5TakiNS/Zu09F0uLKyHUdzBMCZKXwc=;
+	s=korg; t=1750176341;
+	bh=vD5MnLwrv3SPQLdmkmI9tcBQiFDxnFmVzKBv4ApBy/8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JL2Ap/I9cYtw+9aQ45Tp8KxwlST+m5iBt+UrNrzzA1LTALl0gl62OD0BbmhvRik+s
-	 5b1hK9rd6KHOoSLtpzKSgk4VYP9FThVYYc7luMYy6DORwMjqFwfmZHzZeltDgwReeT
-	 4L5qlDsLfsszcvEbhEZab7FOzwGyqJniv4uuy3pE=
+	b=C3p2ZPyLOhptZoncE+svdpkM/N9bRMnmbv+GVGjOLJ/srwv4NXmyKr2qJ7YS4Fk7u
+	 TYHCK2ToseKh/+B9pqxSYz5/QECVzVj52nt8IfmWw1AJqdK/oo6WZXNON9UIocDD2g
+	 JDgrGz1+WMdpH8wyAyi9TLodeKZaPcWVLukU1Ylk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Baochen Qiang <quic_bqiang@quicinc.com>,
-	Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>,
-	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
+	Petr Machata <petrm@nvidia.com>,
+	Ido Schimmel <idosch@nvidia.com>,
+	David Ahern <dsahern@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 675/780] wifi: ath11k: move some firmware stats related functions outside of debugfs
+Subject: [PATCH 6.6 268/356] seg6: Fix validation of nexthop addresses
 Date: Tue, 17 Jun 2025 17:26:23 +0200
-Message-ID: <20250617152518.958009440@linuxfoundation.org>
+Message-ID: <20250617152348.993645605@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
-References: <20250617152451.485330293@linuxfoundation.org>
+In-Reply-To: <20250617152338.212798615@linuxfoundation.org>
+References: <20250617152338.212798615@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,449 +64,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Baochen Qiang <quic_bqiang@quicinc.com>
+From: Ido Schimmel <idosch@nvidia.com>
 
-[ Upstream commit 72610ed7d79da17ee09102534d6c696a4ea8a08e ]
+[ Upstream commit 7632fedb266d93ed0ed9f487133e6c6314a9b2d1 ]
 
-Commit b488c766442f ("ath11k: report rssi of each chain to mac80211 for QCA6390/WCN6855")
-and commit c3b39553fc77 ("ath11k: add signal report to mac80211 for QCA6390 and WCN6855")
-call debugfs functions in mac ops. Those functions are no-ops if CONFIG_ATH11K_DEBUGFS is
-not enabled, thus cause wrong status reported.
+The kernel currently validates that the length of the provided nexthop
+address does not exceed the specified length. This can lead to the
+kernel reading uninitialized memory if user space provided a shorter
+length than the specified one.
 
-Move them to mac.c.
+Fix by validating that the provided length exactly matches the specified
+one.
 
-Besides, since WMI_REQUEST_RSSI_PER_CHAIN_STAT and WMI_REQUEST_VDEV_STAT stats could also
-be requested via mac ops, process them directly in ath11k_update_stats_event().
-
-Tested-on: WCN6855 hw2.0 PCI WLAN.HSP.1.1-03125-QCAHSPSWPL_V1_V2_SILICONZ_LITE-3.6510.37
-
-Fixes: b488c766442f ("ath11k: report rssi of each chain to mac80211 for QCA6390/WCN6855")
-Fixes: c3b39553fc77 ("ath11k: add signal report to mac80211 for QCA6390 and WCN6855")
-Signed-off-by: Baochen Qiang <quic_bqiang@quicinc.com>
-Reviewed-by: Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>
-Link: https://patch.msgid.link/20250220082448.31039-5-quic_bqiang@quicinc.com
-Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+Fixes: d1df6fd8a1d2 ("ipv6: sr: define core operations for seg6local lightweight tunnel")
+Reviewed-by: Petr Machata <petrm@nvidia.com>
+Signed-off-by: Ido Schimmel <idosch@nvidia.com>
+Reviewed-by: David Ahern <dsahern@kernel.org>
+Link: https://patch.msgid.link/20250604113252.371528-1-idosch@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath11k/debugfs.c | 126 ++--------------------
- drivers/net/wireless/ath/ath11k/debugfs.h |  10 +-
- drivers/net/wireless/ath/ath11k/mac.c     |  88 ++++++++++++++-
- drivers/net/wireless/ath/ath11k/mac.h     |   4 +-
- drivers/net/wireless/ath/ath11k/wmi.c     |  45 +++++++-
- 5 files changed, 135 insertions(+), 138 deletions(-)
+ net/ipv6/seg6_local.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath11k/debugfs.c b/drivers/net/wireless/ath/ath11k/debugfs.c
-index ccf0e62c7d7ae..5d46f8e4c231f 100644
---- a/drivers/net/wireless/ath/ath11k/debugfs.c
-+++ b/drivers/net/wireless/ath/ath11k/debugfs.c
-@@ -93,58 +93,14 @@ void ath11k_debugfs_add_dbring_entry(struct ath11k *ar,
- 	spin_unlock_bh(&dbr_data->lock);
- }
- 
--static void ath11k_debugfs_fw_stats_reset(struct ath11k *ar)
--{
--	spin_lock_bh(&ar->data_lock);
--	ath11k_fw_stats_pdevs_free(&ar->fw_stats.pdevs);
--	ath11k_fw_stats_vdevs_free(&ar->fw_stats.vdevs);
--	ar->fw_stats.num_vdev_recvd = 0;
--	ar->fw_stats.num_bcn_recvd = 0;
--	spin_unlock_bh(&ar->data_lock);
--}
--
- void ath11k_debugfs_fw_stats_process(struct ath11k *ar, struct ath11k_fw_stats *stats)
- {
- 	struct ath11k_base *ab = ar->ab;
--	struct ath11k_pdev *pdev;
- 	bool is_end = true;
--	size_t total_vdevs_started = 0;
--	int i;
--
--	/* WMI_REQUEST_PDEV_STAT request has been already processed */
--
--	if (stats->stats_id == WMI_REQUEST_RSSI_PER_CHAIN_STAT) {
--		complete(&ar->fw_stats_done);
--		return;
--	}
--
--	if (stats->stats_id == WMI_REQUEST_VDEV_STAT) {
--		if (list_empty(&stats->vdevs)) {
--			ath11k_warn(ab, "empty vdev stats");
--			return;
--		}
--		/* FW sends all the active VDEV stats irrespective of PDEV,
--		 * hence limit until the count of all VDEVs started
--		 */
--		for (i = 0; i < ab->num_radios; i++) {
--			pdev = rcu_dereference(ab->pdevs_active[i]);
--			if (pdev && pdev->ar)
--				total_vdevs_started += ar->num_started_vdevs;
--		}
--
--		if (total_vdevs_started)
--			is_end = ((++ar->fw_stats.num_vdev_recvd) ==
--				  total_vdevs_started);
--
--		list_splice_tail_init(&stats->vdevs,
--				      &ar->fw_stats.vdevs);
--
--		if (is_end)
--			complete(&ar->fw_stats_done);
--
--		return;
--	}
- 
-+	/* WMI_REQUEST_PDEV_STAT, WMI_REQUEST_RSSI_PER_CHAIN_STAT and
-+	 * WMI_REQUEST_VDEV_STAT requests have been already processed.
-+	 */
- 	if (stats->stats_id == WMI_REQUEST_BCN_STAT) {
- 		if (list_empty(&stats->bcn)) {
- 			ath11k_warn(ab, "empty bcn stats");
-@@ -165,76 +121,6 @@ void ath11k_debugfs_fw_stats_process(struct ath11k *ar, struct ath11k_fw_stats *
- 	}
- }
- 
--static int ath11k_debugfs_fw_stats_request(struct ath11k *ar,
--					   struct stats_request_params *req_param)
--{
--	struct ath11k_base *ab = ar->ab;
--	unsigned long time_left;
--	int ret;
--
--	lockdep_assert_held(&ar->conf_mutex);
--
--	ath11k_debugfs_fw_stats_reset(ar);
--
--	reinit_completion(&ar->fw_stats_complete);
--	reinit_completion(&ar->fw_stats_done);
--
--	ret = ath11k_wmi_send_stats_request_cmd(ar, req_param);
--
--	if (ret) {
--		ath11k_warn(ab, "could not request fw stats (%d)\n",
--			    ret);
--		return ret;
--	}
--
--	time_left = wait_for_completion_timeout(&ar->fw_stats_complete, 1 * HZ);
--	if (!time_left)
--		return -ETIMEDOUT;
--
--	/* FW stats can get split when exceeding the stats data buffer limit.
--	 * In that case, since there is no end marking for the back-to-back
--	 * received 'update stats' event, we keep a 3 seconds timeout in case,
--	 * fw_stats_done is not marked yet
--	 */
--	time_left = wait_for_completion_timeout(&ar->fw_stats_done, 3 * HZ);
--	if (!time_left)
--		return -ETIMEDOUT;
--
--	return 0;
--}
--
--int ath11k_debugfs_get_fw_stats(struct ath11k *ar, u32 pdev_id,
--				u32 vdev_id, u32 stats_id)
--{
--	struct ath11k_base *ab = ar->ab;
--	struct stats_request_params req_param;
--	int ret;
--
--	mutex_lock(&ar->conf_mutex);
--
--	if (ar->state != ATH11K_STATE_ON) {
--		ret = -ENETDOWN;
--		goto err_unlock;
--	}
--
--	req_param.pdev_id = pdev_id;
--	req_param.vdev_id = vdev_id;
--	req_param.stats_id = stats_id;
--
--	ret = ath11k_debugfs_fw_stats_request(ar, &req_param);
--	if (ret)
--		ath11k_warn(ab, "failed to request fw stats: %d\n", ret);
--
--	ath11k_dbg(ab, ATH11K_DBG_WMI,
--		   "debug get fw stat pdev id %d vdev id %d stats id 0x%x\n",
--		   pdev_id, vdev_id, stats_id);
--
--err_unlock:
--	mutex_unlock(&ar->conf_mutex);
--
--	return ret;
--}
--
- static int ath11k_open_pdev_stats(struct inode *inode, struct file *file)
- {
- 	struct ath11k *ar = inode->i_private;
-@@ -260,7 +146,7 @@ static int ath11k_open_pdev_stats(struct inode *inode, struct file *file)
- 	req_param.vdev_id = 0;
- 	req_param.stats_id = WMI_REQUEST_PDEV_STAT;
- 
--	ret = ath11k_debugfs_fw_stats_request(ar, &req_param);
-+	ret = ath11k_mac_fw_stats_request(ar, &req_param);
- 	if (ret) {
- 		ath11k_warn(ab, "failed to request fw pdev stats: %d\n", ret);
- 		goto err_free;
-@@ -331,7 +217,7 @@ static int ath11k_open_vdev_stats(struct inode *inode, struct file *file)
- 	req_param.vdev_id = 0;
- 	req_param.stats_id = WMI_REQUEST_VDEV_STAT;
- 
--	ret = ath11k_debugfs_fw_stats_request(ar, &req_param);
-+	ret = ath11k_mac_fw_stats_request(ar, &req_param);
- 	if (ret) {
- 		ath11k_warn(ar->ab, "failed to request fw vdev stats: %d\n", ret);
- 		goto err_free;
-@@ -407,7 +293,7 @@ static int ath11k_open_bcn_stats(struct inode *inode, struct file *file)
- 			continue;
- 
- 		req_param.vdev_id = arvif->vdev_id;
--		ret = ath11k_debugfs_fw_stats_request(ar, &req_param);
-+		ret = ath11k_mac_fw_stats_request(ar, &req_param);
- 		if (ret) {
- 			ath11k_warn(ar->ab, "failed to request fw bcn stats: %d\n", ret);
- 			goto err_free;
-diff --git a/drivers/net/wireless/ath/ath11k/debugfs.h b/drivers/net/wireless/ath/ath11k/debugfs.h
-index a39e458637b01..ed7fec177588f 100644
---- a/drivers/net/wireless/ath/ath11k/debugfs.h
-+++ b/drivers/net/wireless/ath/ath11k/debugfs.h
-@@ -1,7 +1,7 @@
- /* SPDX-License-Identifier: BSD-3-Clause-Clear */
- /*
-  * Copyright (c) 2018-2019 The Linux Foundation. All rights reserved.
-- * Copyright (c) 2021-2022 Qualcomm Innovation Center, Inc. All rights reserved.
-+ * Copyright (c) 2021-2022, 2025 Qualcomm Innovation Center, Inc. All rights reserved.
-  */
- 
- #ifndef _ATH11K_DEBUGFS_H_
-@@ -273,8 +273,6 @@ void ath11k_debugfs_unregister(struct ath11k *ar);
- void ath11k_debugfs_fw_stats_process(struct ath11k *ar, struct ath11k_fw_stats *stats);
- 
- void ath11k_debugfs_fw_stats_init(struct ath11k *ar);
--int ath11k_debugfs_get_fw_stats(struct ath11k *ar, u32 pdev_id,
--				u32 vdev_id, u32 stats_id);
- 
- static inline bool ath11k_debugfs_is_pktlog_lite_mode_enabled(struct ath11k *ar)
- {
-@@ -381,12 +379,6 @@ static inline int ath11k_debugfs_rx_filter(struct ath11k *ar)
- 	return 0;
- }
- 
--static inline int ath11k_debugfs_get_fw_stats(struct ath11k *ar,
--					      u32 pdev_id, u32 vdev_id, u32 stats_id)
--{
--	return 0;
--}
--
- static inline void
- ath11k_debugfs_add_dbring_entry(struct ath11k *ar,
- 				enum wmi_direct_buffer_module id,
-diff --git a/drivers/net/wireless/ath/ath11k/mac.c b/drivers/net/wireless/ath/ath11k/mac.c
-index d97273b205d9f..4763b271309aa 100644
---- a/drivers/net/wireless/ath/ath11k/mac.c
-+++ b/drivers/net/wireless/ath/ath11k/mac.c
-@@ -8991,6 +8991,86 @@ static void ath11k_mac_put_chain_rssi(struct station_info *sinfo,
- 	}
- }
- 
-+static void ath11k_mac_fw_stats_reset(struct ath11k *ar)
-+{
-+	spin_lock_bh(&ar->data_lock);
-+	ath11k_fw_stats_pdevs_free(&ar->fw_stats.pdevs);
-+	ath11k_fw_stats_vdevs_free(&ar->fw_stats.vdevs);
-+	ar->fw_stats.num_vdev_recvd = 0;
-+	ar->fw_stats.num_bcn_recvd = 0;
-+	spin_unlock_bh(&ar->data_lock);
-+}
-+
-+int ath11k_mac_fw_stats_request(struct ath11k *ar,
-+				struct stats_request_params *req_param)
-+{
-+	struct ath11k_base *ab = ar->ab;
-+	unsigned long time_left;
-+	int ret;
-+
-+	lockdep_assert_held(&ar->conf_mutex);
-+
-+	ath11k_mac_fw_stats_reset(ar);
-+
-+	reinit_completion(&ar->fw_stats_complete);
-+	reinit_completion(&ar->fw_stats_done);
-+
-+	ret = ath11k_wmi_send_stats_request_cmd(ar, req_param);
-+
-+	if (ret) {
-+		ath11k_warn(ab, "could not request fw stats (%d)\n",
-+			    ret);
-+		return ret;
-+	}
-+
-+	time_left = wait_for_completion_timeout(&ar->fw_stats_complete, 1 * HZ);
-+	if (!time_left)
-+		return -ETIMEDOUT;
-+
-+	/* FW stats can get split when exceeding the stats data buffer limit.
-+	 * In that case, since there is no end marking for the back-to-back
-+	 * received 'update stats' event, we keep a 3 seconds timeout in case,
-+	 * fw_stats_done is not marked yet
-+	 */
-+	time_left = wait_for_completion_timeout(&ar->fw_stats_done, 3 * HZ);
-+	if (!time_left)
-+		return -ETIMEDOUT;
-+
-+	return 0;
-+}
-+
-+static int ath11k_mac_get_fw_stats(struct ath11k *ar, u32 pdev_id,
-+				   u32 vdev_id, u32 stats_id)
-+{
-+	struct ath11k_base *ab = ar->ab;
-+	struct stats_request_params req_param;
-+	int ret;
-+
-+	mutex_lock(&ar->conf_mutex);
-+
-+	if (ar->state != ATH11K_STATE_ON) {
-+		ret = -ENETDOWN;
-+		goto err_unlock;
-+	}
-+
-+	req_param.pdev_id = pdev_id;
-+	req_param.vdev_id = vdev_id;
-+	req_param.stats_id = stats_id;
-+
-+	ret = ath11k_mac_fw_stats_request(ar, &req_param);
-+	if (ret)
-+		ath11k_warn(ab, "failed to request fw stats: %d\n", ret);
-+
-+	ath11k_dbg(ab, ATH11K_DBG_WMI,
-+		   "debug get fw stat pdev id %d vdev id %d stats id 0x%x\n",
-+		   pdev_id, vdev_id, stats_id);
-+
-+err_unlock:
-+	mutex_unlock(&ar->conf_mutex);
-+
-+	return ret;
-+}
-+
- static void ath11k_mac_op_sta_statistics(struct ieee80211_hw *hw,
- 					 struct ieee80211_vif *vif,
- 					 struct ieee80211_sta *sta,
-@@ -9028,8 +9108,8 @@ static void ath11k_mac_op_sta_statistics(struct ieee80211_hw *hw,
- 	if (!(sinfo->filled & BIT_ULL(NL80211_STA_INFO_CHAIN_SIGNAL)) &&
- 	    arsta->arvif->vdev_type == WMI_VDEV_TYPE_STA &&
- 	    ar->ab->hw_params.supports_rssi_stats &&
--	    !ath11k_debugfs_get_fw_stats(ar, ar->pdev->pdev_id, 0,
--					 WMI_REQUEST_RSSI_PER_CHAIN_STAT)) {
-+	    !ath11k_mac_get_fw_stats(ar, ar->pdev->pdev_id, 0,
-+				     WMI_REQUEST_RSSI_PER_CHAIN_STAT)) {
- 		ath11k_mac_put_chain_rssi(sinfo, arsta, "fw stats", true);
- 	}
- 
-@@ -9037,8 +9117,8 @@ static void ath11k_mac_op_sta_statistics(struct ieee80211_hw *hw,
- 	if (!signal &&
- 	    arsta->arvif->vdev_type == WMI_VDEV_TYPE_STA &&
- 	    ar->ab->hw_params.supports_rssi_stats &&
--	    !(ath11k_debugfs_get_fw_stats(ar, ar->pdev->pdev_id, 0,
--					WMI_REQUEST_VDEV_STAT)))
-+	    !(ath11k_mac_get_fw_stats(ar, ar->pdev->pdev_id, 0,
-+				      WMI_REQUEST_VDEV_STAT)))
- 		signal = arsta->rssi_beacon;
- 
- 	ath11k_dbg(ar->ab, ATH11K_DBG_MAC,
-diff --git a/drivers/net/wireless/ath/ath11k/mac.h b/drivers/net/wireless/ath/ath11k/mac.h
-index f5800fbecff89..5e61eea1bb037 100644
---- a/drivers/net/wireless/ath/ath11k/mac.h
-+++ b/drivers/net/wireless/ath/ath11k/mac.h
-@@ -1,7 +1,7 @@
- /* SPDX-License-Identifier: BSD-3-Clause-Clear */
- /*
-  * Copyright (c) 2018-2019 The Linux Foundation. All rights reserved.
-- * Copyright (c) 2021-2023 Qualcomm Innovation Center, Inc. All rights reserved.
-+ * Copyright (c) 2021-2023, 2025 Qualcomm Innovation Center, Inc. All rights reserved.
-  */
- 
- #ifndef ATH11K_MAC_H
-@@ -179,4 +179,6 @@ int ath11k_mac_vif_set_keepalive(struct ath11k_vif *arvif,
- void ath11k_mac_fill_reg_tpc_info(struct ath11k *ar,
- 				  struct ieee80211_vif *vif,
- 				  struct ieee80211_chanctx_conf *ctx);
-+int ath11k_mac_fw_stats_request(struct ath11k *ar,
-+				struct stats_request_params *req_param);
- #endif
-diff --git a/drivers/net/wireless/ath/ath11k/wmi.c b/drivers/net/wireless/ath/ath11k/wmi.c
-index 27cb0bb06b93c..98811726d33bf 100644
---- a/drivers/net/wireless/ath/ath11k/wmi.c
-+++ b/drivers/net/wireless/ath/ath11k/wmi.c
-@@ -8158,6 +8158,11 @@ static void ath11k_peer_assoc_conf_event(struct ath11k_base *ab, struct sk_buff
- static void ath11k_update_stats_event(struct ath11k_base *ab, struct sk_buff *skb)
- {
- 	struct ath11k_fw_stats stats = {};
-+	size_t total_vdevs_started = 0;
-+	struct ath11k_pdev *pdev;
-+	bool is_end = true;
-+	int i;
-+
- 	struct ath11k *ar;
- 	int ret;
- 
-@@ -8184,7 +8189,8 @@ static void ath11k_update_stats_event(struct ath11k_base *ab, struct sk_buff *sk
- 
- 	spin_lock_bh(&ar->data_lock);
- 
--	/* WMI_REQUEST_PDEV_STAT can be requested via .get_txpower mac ops or via
-+	/* WMI_REQUEST_PDEV_STAT, WMI_REQUEST_VDEV_STAT and
-+	 * WMI_REQUEST_RSSI_PER_CHAIN_STAT can be requested via mac ops or via
- 	 * debugfs fw stats. Therefore, processing it separately.
- 	 */
- 	if (stats.stats_id == WMI_REQUEST_PDEV_STAT) {
-@@ -8193,9 +8199,40 @@ static void ath11k_update_stats_event(struct ath11k_base *ab, struct sk_buff *sk
- 		goto complete;
- 	}
- 
--	/* WMI_REQUEST_VDEV_STAT, WMI_REQUEST_BCN_STAT and WMI_REQUEST_RSSI_PER_CHAIN_STAT
--	 * are currently requested only via debugfs fw stats. Hence, processing these
--	 * in debugfs context
-+	if (stats.stats_id == WMI_REQUEST_RSSI_PER_CHAIN_STAT) {
-+		complete(&ar->fw_stats_done);
-+		goto complete;
-+	}
-+
-+	if (stats.stats_id == WMI_REQUEST_VDEV_STAT) {
-+		if (list_empty(&stats.vdevs)) {
-+			ath11k_warn(ab, "empty vdev stats");
-+			goto complete;
-+		}
-+		/* FW sends all the active VDEV stats irrespective of PDEV,
-+		 * hence limit until the count of all VDEVs started
-+		 */
-+		for (i = 0; i < ab->num_radios; i++) {
-+			pdev = rcu_dereference(ab->pdevs_active[i]);
-+			if (pdev && pdev->ar)
-+				total_vdevs_started += ar->num_started_vdevs;
-+		}
-+
-+		if (total_vdevs_started)
-+			is_end = ((++ar->fw_stats.num_vdev_recvd) ==
-+				  total_vdevs_started);
-+
-+		list_splice_tail_init(&stats.vdevs,
-+				      &ar->fw_stats.vdevs);
-+
-+		if (is_end)
-+			complete(&ar->fw_stats_done);
-+
-+		goto complete;
-+	}
-+
-+	/* WMI_REQUEST_BCN_STAT is currently requested only via debugfs fw stats.
-+	 * Hence, processing it in debugfs context
- 	 */
- 	ath11k_debugfs_fw_stats_process(ar, &stats);
- 
+diff --git a/net/ipv6/seg6_local.c b/net/ipv6/seg6_local.c
+index c434940131b1d..7f295b9c13744 100644
+--- a/net/ipv6/seg6_local.c
++++ b/net/ipv6/seg6_local.c
+@@ -1638,10 +1638,8 @@ static const struct nla_policy seg6_local_policy[SEG6_LOCAL_MAX + 1] = {
+ 	[SEG6_LOCAL_SRH]	= { .type = NLA_BINARY },
+ 	[SEG6_LOCAL_TABLE]	= { .type = NLA_U32 },
+ 	[SEG6_LOCAL_VRFTABLE]	= { .type = NLA_U32 },
+-	[SEG6_LOCAL_NH4]	= { .type = NLA_BINARY,
+-				    .len = sizeof(struct in_addr) },
+-	[SEG6_LOCAL_NH6]	= { .type = NLA_BINARY,
+-				    .len = sizeof(struct in6_addr) },
++	[SEG6_LOCAL_NH4]	= NLA_POLICY_EXACT_LEN(sizeof(struct in_addr)),
++	[SEG6_LOCAL_NH6]	= NLA_POLICY_EXACT_LEN(sizeof(struct in6_addr)),
+ 	[SEG6_LOCAL_IIF]	= { .type = NLA_U32 },
+ 	[SEG6_LOCAL_OIF]	= { .type = NLA_U32 },
+ 	[SEG6_LOCAL_BPF]	= { .type = NLA_NESTED },
 -- 
 2.39.5
 
