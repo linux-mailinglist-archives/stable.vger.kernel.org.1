@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-153660-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-154300-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 66236ADD5C4
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:25:39 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C2013ADDA05
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 19:12:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 77FBE17F914
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:17:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0F4193AA225
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:48:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 714B42264A1;
-	Tue, 17 Jun 2025 16:11:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 414642ECD39;
+	Tue, 17 Jun 2025 16:45:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pk18M+wy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tXVDpubx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B95720CCE4;
-	Tue, 17 Jun 2025 16:11:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F313E2FA642;
+	Tue, 17 Jun 2025 16:45:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750176680; cv=none; b=YXgKlZhemhB56eGhEF2Qo9iASv8zKeeSlWvPZWPOmmsMw82/fnrHCtB1cSux0jDbN9JSLBGV/edCQvB+BMT50CwFraSQZfqEIO4H7l4J5i3ScDhclb/9TJBXB2WCwi2pnWxJNAm4QNnkurdGKrjcI1MjVY6X9mhLeDYwi/zmlL4=
+	t=1750178748; cv=none; b=CeblffueLMHDwcO1tPqa21WQSFqwkNljnbn1SrDHCjRHdESEufNFqZNifwUqhL2npQPiyA/NPlVg3M8pHwymQb47BQQeLIipa8KycbubY8MYnIuXXAsaeyQRjH7M50w0x12Nzb4nm9vHRCaX5T5KhNt4chQWh7uCcq/U/iPMU8o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750176680; c=relaxed/simple;
-	bh=gqsGsbqBP40m91G3wvVh9uvMgfDyEx1In/8d+g14I08=;
+	s=arc-20240116; t=1750178748; c=relaxed/simple;
+	bh=Qewyp0retrK4Q+fGQd9EyLVA8y9lKGLIypLtMVNrwBA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uQ5krcZ6m1rfIh470GdUi4M7iGyd6N9WhZVYiGkNGdjkkbH3NcYvn0u+9aGgaXBOBfd0S5wxiUaF/4suJXQoyieUoPm9EmAZVHPhrkR50Jsw1oaTcDQpcMA2v9Clmig9W1X+lQdsWVR9H7QM4Ox4T+QJY3UAK5QJjVtiwku9Ga0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pk18M+wy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8697C4CEE3;
-	Tue, 17 Jun 2025 16:11:19 +0000 (UTC)
+	 MIME-Version; b=UwBMvFS7oWOq8J2MM53QF8lF7c9usB5HmYY/abON1gh2bIGqkkkYsL+WyIn1l1Tbk0I9J4sSRGUKfprlwZpzcFAg0f4iXkwp4SJv6YDoyeT7U8g+GzTl0zKwtbW2i2bjaKWH8B/Rb3oRwcVuLBdybxdsH0tYfw7IJsw1hshkBu0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tXVDpubx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C15DC4CEE3;
+	Tue, 17 Jun 2025 16:45:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750176680;
-	bh=gqsGsbqBP40m91G3wvVh9uvMgfDyEx1In/8d+g14I08=;
+	s=korg; t=1750178747;
+	bh=Qewyp0retrK4Q+fGQd9EyLVA8y9lKGLIypLtMVNrwBA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pk18M+wyPaE9Tn+8MJJrKjgv9TEySPF+YGlzv3HF3jU+cKV8siOnKBnMz+GYjGONN
-	 lmU8S70YPEcg90sz+ZxLBzys+C0guybU86yKqaoimtAwkb8bDvL5Vcr8U7QBGBzbtJ
-	 rfso31B71YXxjlhP7x3VuG2dbmcFED941kIxVgSE=
+	b=tXVDpubx0SdWkE0GnIGhMaHvKnmc5QVcVmL4Q2vBUK6rPQxKu116x7swQjs4IKZh3
+	 gJx2qDxMbDtR1TekyrbBSNWu3Fxc8drVmsYnuWEIvDqRhZ+Si1XycJVq1y2/Qe4RVD
+	 sYKygglA1gjYBFBi9/8evnbT78zZoYrhWgSW+MlE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wentao Liang <vulab@iscas.ac.cn>,
-	Ryusuke Konishi <konishi.ryusuke@gmail.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
+	Liu Dalin <liudalin@kylinsec.com.cn>,
+	Binbin Zhou <zhoubinbin@loongson.cn>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 253/512] nilfs2: add pointer check for nilfs_direct_propagate()
+Subject: [PATCH 6.15 511/780] rtc: loongson: Add missing alarm notifications for ACPI RTC events
 Date: Tue, 17 Jun 2025 17:23:39 +0200
-Message-ID: <20250617152429.852412009@linuxfoundation.org>
+Message-ID: <20250617152512.325131268@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
-References: <20250617152419.512865572@linuxfoundation.org>
+In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
+References: <20250617152451.485330293@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,58 +63,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wentao Liang <vulab@iscas.ac.cn>
+From: Liu Dalin <liudalin@kylinsec.com.cn>
 
-[ Upstream commit f43f02429295486059605997bc43803527d69791 ]
+[ Upstream commit 5af9f1fa576874b24627d4c05e3a84672204c200 ]
 
-Patch series "nilfs2: improve sanity checks in dirty state propagation".
+When an application sets and enables an alarm on Loongson RTC devices,
+the alarm notification fails to propagate to userspace because the
+ACPI event handler omits calling rtc_update_irq().
 
-This fixes one missed check for block mapping anomalies and one improper
-return of an error code during a preparation step for log writing, thereby
-improving checking for filesystem corruption on writeback.
+As a result, processes waiting via select() or poll() on RTC device
+files fail to receive alarm notifications.
 
-This patch (of 2):
+The ACPI interrupt is also triggered multiple times. In loongson_rtc_handler,
+we need to clear TOY_MATCH0_REG to resolve this issue.
 
-In nilfs_direct_propagate(), the printer get from nilfs_direct_get_ptr()
-need to be checked to ensure it is not an invalid pointer.
-
-If the pointer value obtained by nilfs_direct_get_ptr() is
-NILFS_BMAP_INVALID_PTR, means that the metadata (in this case, i_bmap in
-the nilfs_inode_info struct) that should point to the data block at the
-buffer head of the argument is corrupted and the data block is orphaned,
-meaning that the file system has lost consistency.
-
-Add a value check and return -EINVAL when it is an invalid pointer.
-
-Link: https://lkml.kernel.org/r/20250428173808.6452-1-konishi.ryusuke@gmail.com
-Link: https://lkml.kernel.org/r/20250428173808.6452-2-konishi.ryusuke@gmail.com
-Fixes: 36a580eb489f ("nilfs2: direct block mapping")
-Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
-Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Fixes: 09471d8f5b39 ("rtc: loongson: clear TOY_MATCH0_REG in loongson_rtc_isr()")
+Fixes: 1b733a9ebc3d ("rtc: Add rtc driver for the Loongson family chips")
+Signed-off-by: Liu Dalin <liudalin@kylinsec.com.cn>
+Reviewed-by: Binbin Zhou <zhoubinbin@loongson.cn>
+Link: https://lore.kernel.org/r/20250509084416.7979-1-liudalin@kylinsec.com.cn
+Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nilfs2/direct.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/rtc/rtc-loongson.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/fs/nilfs2/direct.c b/fs/nilfs2/direct.c
-index 893ab36824cc2..2d8dc6b35b547 100644
---- a/fs/nilfs2/direct.c
-+++ b/fs/nilfs2/direct.c
-@@ -273,6 +273,9 @@ static int nilfs_direct_propagate(struct nilfs_bmap *bmap,
- 	dat = nilfs_bmap_get_dat(bmap);
- 	key = nilfs_bmap_data_get_key(bmap, bh);
- 	ptr = nilfs_direct_get_ptr(bmap, key);
-+	if (ptr == NILFS_BMAP_INVALID_PTR)
-+		return -EINVAL;
+diff --git a/drivers/rtc/rtc-loongson.c b/drivers/rtc/rtc-loongson.c
+index 97e5625c064ce..2ca7ffd5d7a92 100644
+--- a/drivers/rtc/rtc-loongson.c
++++ b/drivers/rtc/rtc-loongson.c
+@@ -129,6 +129,14 @@ static u32 loongson_rtc_handler(void *id)
+ {
+ 	struct loongson_rtc_priv *priv = (struct loongson_rtc_priv *)id;
+ 
++	rtc_update_irq(priv->rtcdev, 1, RTC_AF | RTC_IRQF);
 +
- 	if (!buffer_nilfs_volatile(bh)) {
- 		oldreq.pr_entry_nr = ptr;
- 		newreq.pr_entry_nr = ptr;
++	/*
++	 * The TOY_MATCH0_REG should be cleared 0 here,
++	 * otherwise the interrupt cannot be cleared.
++	 */
++	regmap_write(priv->regmap, TOY_MATCH0_REG, 0);
++
+ 	spin_lock(&priv->lock);
+ 	/* Disable RTC alarm wakeup and interrupt */
+ 	writel(readl(priv->pm_base + PM1_EN_REG) & ~RTC_EN,
 -- 
 2.39.5
 
