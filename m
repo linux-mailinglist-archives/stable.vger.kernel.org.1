@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-154137-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-154485-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6353AADD832
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:53:00 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2FAC7ADD91E
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 19:03:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C6EF54A3585
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:43:18 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8B30719E4BD3
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:56:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 391CB2ED179;
-	Tue, 17 Jun 2025 16:37:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD5982FA637;
+	Tue, 17 Jun 2025 16:55:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MQQU0wxj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zaVVTmN0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA3C02ED165;
-	Tue, 17 Jun 2025 16:36:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B0A02FA623;
+	Tue, 17 Jun 2025 16:55:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750178220; cv=none; b=sv37RzwbU2PmHA7wLBjFtmz8GJx4gIa2/58U0ZB4+Y9fr2RnhFX4teIFVIc+nnQXqCCbwUmxrLaOwpzXrM1uRW48k77pHzpxUvFeDINPDUbvDtva5qlBbSJRq/+RhG93f5WtUAf26D4pxXIwwFR9bOnVa7RIQ4kd56fdZu0DFH8=
+	t=1750179358; cv=none; b=DAQGQ2GO/M2yEN/SGIVmqZzkR6REsZ3TkO36ypE4pMDxCHIEfIbRoKO5nsFmHe0uKcmJV7F5wRZPCVxRx3ArhQvdGM2Imrm42iamrmnGBPhjfnX3gUjYCB/i42pr5YnBLHEOqm/AeXGMqxISBdZq2xxxB0ukxuE9p9YNk28z5Xw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750178220; c=relaxed/simple;
-	bh=DHOo6qnZZYCA3prIseip1GpmySopar0pzf0FFh2DgvI=;
+	s=arc-20240116; t=1750179358; c=relaxed/simple;
+	bh=6OubKKOs+kP6A+GilocvmXNMW4a3iyZFKnsGcTaa7Gw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZRVzRQAEUOBxBhVLl1KXGQRpYKEIIT/OMCcA518CW36oR0b/kIiL/ANYhBzsJadrQmOXwW2JzHhZ3Q9S9WcqY/G0KLUeIm61l0aQNFqJoa9gZEKARGuJqZOk/sMDn45br5UyZywCxpy9OqQpaEyF4xQdEWAVk+ozENlKUHNIfSM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MQQU0wxj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D792C4CEE3;
-	Tue, 17 Jun 2025 16:36:59 +0000 (UTC)
+	 MIME-Version; b=TmmTxg7W6aK2Hl8ehdwsUakRaOqrb3Wj+GG3ikyicubQlVzFkLc/WL37rDxSdawXZX2S1I9Qpz+w62AdX2OVXkqWEH9GWY9w6W/UmKd7lMl6aFqwk4upQZfV2x1U3TS4M6FCr6og3sYUmt8NSKLYIK1oYrTuJiQrGehe6ykTuzk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zaVVTmN0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8A1AC4CEE3;
+	Tue, 17 Jun 2025 16:55:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750178219;
-	bh=DHOo6qnZZYCA3prIseip1GpmySopar0pzf0FFh2DgvI=;
+	s=korg; t=1750179358;
+	bh=6OubKKOs+kP6A+GilocvmXNMW4a3iyZFKnsGcTaa7Gw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MQQU0wxjuVD2ScMaZNuDfH2d8a1+eE+fMdF7lD4M7BiZlLivvBoV9lyWNe8wzRTSl
-	 d9BhmEGYL4L8lSJUq4Tk5IOaD4RF+JviFv+3daWnyhpyx0gvD3P5GJHS95W78Ix39y
-	 onBwZ6V7I5qu1uXl+ax3/jD/1A0ve5DPr4+c4A4o=
+	b=zaVVTmN0+piqGppUwXQwfzDCr2ENjynCc3sQIiqNNOBpmaLq/zcxmuzywMdbL55dJ
+	 wXiaCiz1VEicNN/U5rIQKaIcGqjdjffhdoxJACMUhyXBodBgvUp1EmBBW89jzpk+2z
+	 7jYn7SR0OcchWflebiAlXq7G23HCofHXxZXRet3I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yevgeny Kliteynik <kliteyn@nvidia.com>,
-	Mark Bloch <mbloch@nvidia.com>,
+	Breno Leitao <leitao@debian.org>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 463/512] net/mlx5: HWS, fix missing ip_version handling in definer
+Subject: [PATCH 6.15 721/780] net: drv: netdevsim: dont napi_complete() from netpoll
 Date: Tue, 17 Jun 2025 17:27:09 +0200
-Message-ID: <20250617152438.343813704@linuxfoundation.org>
+Message-ID: <20250617152520.856717621@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
-References: <20250617152419.512865572@linuxfoundation.org>
+In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
+References: <20250617152451.485330293@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,40 +62,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yevgeny Kliteynik <kliteyn@nvidia.com>
+From: Jakub Kicinski <kuba@kernel.org>
 
-[ Upstream commit b5e3c76f35ee7e814c2469c73406c5bbf110d89c ]
+[ Upstream commit 1264971017b4d7141352a7fe29021bdfce5d885d ]
 
-Fix missing field handling in definer - outer IP version.
+netdevsim supports netpoll. Make sure we don't call napi_complete()
+from it, since it may not be scheduled. Breno reports hitting a
+warning in napi_complete_done():
 
-Fixes: 74a778b4a63f ("net/mlx5: HWS, added definers handling")
-Signed-off-by: Yevgeny Kliteynik <kliteyn@nvidia.com>
-Signed-off-by: Mark Bloch <mbloch@nvidia.com>
-Link: https://patch.msgid.link/20250610151514.1094735-6-mbloch@nvidia.com
+WARNING: CPU: 14 PID: 104 at net/core/dev.c:6592 napi_complete_done+0x2cc/0x560
+  __napi_poll+0x2d8/0x3a0
+  handle_softirqs+0x1fe/0x710
+
+This is presumably after netpoll stole the SCHED bit prematurely.
+
+Reported-by: Breno Leitao <leitao@debian.org>
+Fixes: 3762ec05a9fb ("netdevsim: add NAPI support")
+Tested-by: Breno Leitao <leitao@debian.org>
+Link: https://patch.msgid.link/20250611174643.2769263-1-kuba@kernel.org
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../ethernet/mellanox/mlx5/core/steering/hws/mlx5hws_definer.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/net/netdevsim/netdev.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/steering/hws/mlx5hws_definer.c b/drivers/net/ethernet/mellanox/mlx5/core/steering/hws/mlx5hws_definer.c
-index ab5f8f07f1f7e..72b19b05c0cf4 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/steering/hws/mlx5hws_definer.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/steering/hws/mlx5hws_definer.c
-@@ -558,6 +558,9 @@ hws_definer_conv_outer(struct mlx5hws_definer_conv_data *cd,
- 	HWS_SET_HDR(fc, match_param, IP_PROTOCOL_O,
- 		    outer_headers.ip_protocol,
- 		    eth_l3_outer.protocol_next_header);
-+	HWS_SET_HDR(fc, match_param, IP_VERSION_O,
-+		    outer_headers.ip_version,
-+		    eth_l3_outer.ip_version);
- 	HWS_SET_HDR(fc, match_param, IP_TTL_O,
- 		    outer_headers.ttl_hoplimit,
- 		    eth_l3_outer.time_to_live_hop_limit);
+diff --git a/drivers/net/netdevsim/netdev.c b/drivers/net/netdevsim/netdev.c
+index 0e0321a7ddd71..31a06e71be25b 100644
+--- a/drivers/net/netdevsim/netdev.c
++++ b/drivers/net/netdevsim/netdev.c
+@@ -369,7 +369,8 @@ static int nsim_poll(struct napi_struct *napi, int budget)
+ 	int done;
+ 
+ 	done = nsim_rcv(rq, budget);
+-	napi_complete(napi);
++	if (done < budget)
++		napi_complete_done(napi, done);
+ 
+ 	return done;
+ }
 -- 
 2.39.5
 
