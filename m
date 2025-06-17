@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-153141-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153145-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 15D2DADD299
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 17:45:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5586AADD29F
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 17:45:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1AFEA16C506
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 15:43:27 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 613F917DBF6
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 15:43:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C905D2ECD20;
-	Tue, 17 Jun 2025 15:43:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A93E2ECD1B;
+	Tue, 17 Jun 2025 15:43:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gn+e4BWA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J+KxR92C"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 874A81E8332;
-	Tue, 17 Jun 2025 15:43:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBA412EA487;
+	Tue, 17 Jun 2025 15:43:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750175003; cv=none; b=IHr0W7sOhNdH5LY8k7Z8hw3ahrlC2I+v53NIBkt2jZxJmZu2CHTJPDVuRAENsJUX/b5NEfM/a+Cgt3BnMDhKYSqAQdfsptRQYWSMI0jDCRaMaegvQh5+hHe2zx2w6yX8jjQseZYYYVxqftac08KiIyb9fuuDjc4q9DGHLCz0SlU=
+	t=1750175022; cv=none; b=Fb7Acv5UdGjuxU8eO50PfhiF7A89gS0Ycw8Yg40LT/3yrJ0pYSEVW4DHsHyPx4n6JYBAw2SEHTWtbLMbqOJlhxoNGprUK84tGL7y/SrNnzd8sI/a53jcq2UeE3nobjmrcyjBuCGl+G0pg17XwnQYqWZZI9qDGGb+Ug4l1g+Gn/0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750175003; c=relaxed/simple;
-	bh=VCs4wzm4XLikx5RIaSnaSkpEq130fbz1v+ROIzJCbTk=;
+	s=arc-20240116; t=1750175022; c=relaxed/simple;
+	bh=90K4R90REaktKIuXJjRjTMnJq/8WIS03Ii0+lxZgEnQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qmVRE8v6Dlg3d7VlWRdpmsu6GYrxoV47AKEZizfzoRDY73CY2sCVNcgkhOgP9T82TncarM6IUx7cY5o7m8MubsMm3L+BOrSARQ8wxJXciMo80AyUa8ldikIjHVdatZuK7aWvWcrMMbhzIfJZ5/C3o4JtAOKROfYCYBp6KH+AdtU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gn+e4BWA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 062E2C4CEE7;
-	Tue, 17 Jun 2025 15:43:22 +0000 (UTC)
+	 MIME-Version; b=isHcFms1/C+SyLO6LwZtfCPqEcvslxtl1qz9O1v4yOK1wZP2wJvyZkL+JDN0oaCY6pAm7yyCcuksGpfbzM9AijlrU8HoLDFAR6Pw1g4iN2vWRP5VBdvgPHGSFd/k3ieaXUtSHp0uZunA6pHnI/NgV0rJpp7k+fuzyFvZG+RdVj4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J+KxR92C; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66FECC4CEE7;
+	Tue, 17 Jun 2025 15:43:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750175003;
-	bh=VCs4wzm4XLikx5RIaSnaSkpEq130fbz1v+ROIzJCbTk=;
+	s=korg; t=1750175022;
+	bh=90K4R90REaktKIuXJjRjTMnJq/8WIS03Ii0+lxZgEnQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gn+e4BWAYbfGWYl6WsCm2scQqy4TsfP//p8m+/nom/55BE5nIS7BOaxufuXsZaWV5
-	 Hlazq69dRAWUfj2qlY6UMckAblYfZrx/v9h49NrL3zoMVbFIpr6dAVn0Y9gbSgzR7v
-	 pMbV1nX8Ft0h2/j59XwuZlUqzFq+zLjpYo5NvWis=
+	b=J+KxR92CrSUaYw7XYD1IK3uDBqB7swP1y/HTYMky3Vc/Lr8vRchMQr51XbbCdexGG
+	 iq1w9U45hJKHAlRlc0F0MA5VRKWkmrT8+QT5gVtXUCj6Uk917XzZE23LbNPURr8fhz
+	 NxBIjQD44hZIn8gblYUwNR82KFh9w2VEIijeuvcg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -46,9 +46,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Shayne Chen <shayne.chen@mediatek.com>,
 	Felix Fietkau <nbd@nbd.name>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 135/356] wifi: mt76: mt7996: set EHT max ampdu length capability
-Date: Tue, 17 Jun 2025 17:24:10 +0200
-Message-ID: <20250617152343.668223793@linuxfoundation.org>
+Subject: [PATCH 6.6 136/356] wifi: mt76: mt7996: fix RX buffer size of MCU event
+Date: Tue, 17 Jun 2025 17:24:11 +0200
+Message-ID: <20250617152343.708120633@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250617152338.212798615@linuxfoundation.org>
 References: <20250617152338.212798615@linuxfoundation.org>
@@ -67,38 +67,69 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Peter Chiu <chui-hao.chiu@mediatek.com>
+From: Shayne Chen <shayne.chen@mediatek.com>
 
-[ Upstream commit 8b2f574845e33d02e7fbad2d3192a8b717567afa ]
+[ Upstream commit 42cb27af34de4acf680606fad2c1f2932110591f ]
 
-Set the max AMPDU length in the EHT MAC CAP. Without this patch, the
-peer station cannot obtain the correct capability, which prevents
-achieving peak throughput on the 2 GHz band.
+Some management frames are first processed by the firmware and then
+passed to the driver through the MCU event rings. In CONNAC3, event rings
+do not support scatter-gather and have a size limitation of 2048 bytes.
+If a packet sized between 1728 and 2048 bytes arrives from an event ring,
+the ring will hang because the driver attempts to use scatter-gather to
+process it.
 
-Fixes: 1816ad9381e0 ("wifi: mt76: mt7996: add max mpdu len capability")
+To fix this, include the size of struct skb_shared_info in the MCU RX
+buffer size to prevent scatter-gather from being used for event skb in
+mt76_dma_rx_fill_buf().
+
+Fixes: 98686cd21624 ("wifi: mt76: mt7996: add driver for MediaTek Wi-Fi 7 (802.11be) devices")
+Co-developed-by: Peter Chiu <chui-hao.chiu@mediatek.com>
 Signed-off-by: Peter Chiu <chui-hao.chiu@mediatek.com>
 Signed-off-by: Shayne Chen <shayne.chen@mediatek.com>
-Link: https://patch.msgid.link/20250515032952.1653494-3-shayne.chen@mediatek.com
+Link: https://patch.msgid.link/20250515032952.1653494-7-shayne.chen@mediatek.com
 Signed-off-by: Felix Fietkau <nbd@nbd.name>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/mediatek/mt76/mt7996/init.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/net/wireless/mediatek/mt76/mt7996/dma.c    | 4 ++--
+ drivers/net/wireless/mediatek/mt76/mt7996/mt7996.h | 3 +++
+ 2 files changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/init.c b/drivers/net/wireless/mediatek/mt76/mt7996/init.c
-index 0a701dcb8a92c..375a3d6f4b384 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7996/init.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7996/init.c
-@@ -735,6 +735,9 @@ mt7996_init_eht_caps(struct mt7996_phy *phy, enum nl80211_band band,
- 		u8_encode_bits(IEEE80211_EHT_MAC_CAP0_MAX_MPDU_LEN_11454,
- 			       IEEE80211_EHT_MAC_CAP0_MAX_MPDU_LEN_MASK);
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/dma.c b/drivers/net/wireless/mediatek/mt76/mt7996/dma.c
+index 586e247a1e064..04c9fd0e6b002 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7996/dma.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7996/dma.c
+@@ -300,7 +300,7 @@ int mt7996_dma_init(struct mt7996_dev *dev)
+ 	ret = mt76_queue_alloc(dev, &dev->mt76.q_rx[MT_RXQ_MCU],
+ 			       MT_RXQ_ID(MT_RXQ_MCU),
+ 			       MT7996_RX_MCU_RING_SIZE,
+-			       MT_RX_BUF_SIZE,
++			       MT7996_RX_MCU_BUF_SIZE,
+ 			       MT_RXQ_RING_BASE(MT_RXQ_MCU));
+ 	if (ret)
+ 		return ret;
+@@ -309,7 +309,7 @@ int mt7996_dma_init(struct mt7996_dev *dev)
+ 	ret = mt76_queue_alloc(dev, &dev->mt76.q_rx[MT_RXQ_MCU_WA],
+ 			       MT_RXQ_ID(MT_RXQ_MCU_WA),
+ 			       MT7996_RX_MCU_RING_SIZE_WA,
+-			       MT_RX_BUF_SIZE,
++			       MT7996_RX_MCU_BUF_SIZE,
+ 			       MT_RXQ_RING_BASE(MT_RXQ_MCU_WA));
+ 	if (ret)
+ 		return ret;
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mt7996.h b/drivers/net/wireless/mediatek/mt76/mt7996/mt7996.h
+index 25bb365612314..7d2074e2b635e 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7996/mt7996.h
++++ b/drivers/net/wireless/mediatek/mt76/mt7996/mt7996.h
+@@ -27,6 +27,9 @@
+ #define MT7996_RX_RING_SIZE		1536
+ #define MT7996_RX_MCU_RING_SIZE		512
+ #define MT7996_RX_MCU_RING_SIZE_WA	1024
++/* scatter-gather of mcu event is not supported in connac3 */
++#define MT7996_RX_MCU_BUF_SIZE		(2048 + \
++					 SKB_DATA_ALIGN(sizeof(struct skb_shared_info)))
  
-+	eht_cap_elem->mac_cap_info[1] |=
-+		IEEE80211_EHT_MAC_CAP1_MAX_AMPDU_LEN_MASK;
-+
- 	eht_cap_elem->phy_cap_info[0] =
- 		IEEE80211_EHT_PHY_CAP0_NDP_4_EHT_LFT_32_GI |
- 		IEEE80211_EHT_PHY_CAP0_SU_BEAMFORMER |
+ #define MT7996_FIRMWARE_WA		"mediatek/mt7996/mt7996_wa.bin"
+ #define MT7996_FIRMWARE_WM		"mediatek/mt7996/mt7996_wm.bin"
 -- 
 2.39.5
 
