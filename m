@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-152992-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-152994-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB9EFADD1D1
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 17:35:23 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3CC6DADD1F7
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 17:37:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E2B9F3BD743
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 15:34:58 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 593547ABFBB
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 15:34:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CAE652ECD21;
-	Tue, 17 Jun 2025 15:35:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B2C682ECD30;
+	Tue, 17 Jun 2025 15:35:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j/t5HI32"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lQOQo7/q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 876CE2DF3C9;
-	Tue, 17 Jun 2025 15:35:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F7CF221F1F;
+	Tue, 17 Jun 2025 15:35:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750174511; cv=none; b=aM1Gt67vJJhH57/ytupqdVjqxH81P6yhVuLYSO15BjYWiA0NP4uCUyIO2WG8vmQIp3Av/TEKk3hK2oEz1BrV9/jvKpYQgqnb/YSwAzli6SGn6sIVJ/leuh5tV9U7HZD663nCEToSev3tv3WWWsokklpmVaQ3CcVA1bRWl4UzojE=
+	t=1750174517; cv=none; b=j6+TIkP70JhhQ2flyokqcDhfgf3CL0dhVALuV26Y2ZJTodfUKuhRenrbAUtWLwSyfEsCIMWbrWl3NuMQlgB18ICvN5HzhlkRMRHB1jTDtpaYkyOD4UMpMbi+s2RLZNthcXNOHMObuLDn7N0GNYyjomV5XKJOWP2Mc9bKmejwX9o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750174511; c=relaxed/simple;
-	bh=q9Rq33MRrxNLfTI+F4sia/9ns/IW9R9+tNZG3PPyNbw=;
+	s=arc-20240116; t=1750174517; c=relaxed/simple;
+	bh=vLEqN4+2oCpnoF9VSbiOOQK/ZErEAovFhTfvB420Ty0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YxbMZbHGi8z+I61PPzwHutQ8htxo5/s/zFyM/znuDavIFLxk8uJTP4bRKBbFi2Zz8QGmiDbo8xD/ZY9zvtuqZe4hBtjQjmXqAiuuztgbaizjZk1d9d8pLuymthwVeVjCqUKWzgQ778+6p6wEs1Snxjjn0E+Or98+5nKnnaWUJeM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j/t5HI32; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E279CC4CEE7;
-	Tue, 17 Jun 2025 15:35:10 +0000 (UTC)
+	 MIME-Version; b=r5+MbfVYZDFgEYXNFgfSRBtKNRsnRNDSHxkOXqS1tbRjmiD1oFB5PGIyZe5+nmWC+e2zrx6l5IV5/ij9KJ6q+uF7+5zyxLyv+J9NiZFzzd3BNyXLdGoVOE4Y0JV2Nsr4kwP+uHBiOGGLwJ0cMm6nmzd28ELhh+ULZ2tsqUZ+eHw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lQOQo7/q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D86CCC4CEE3;
+	Tue, 17 Jun 2025 15:35:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750174511;
-	bh=q9Rq33MRrxNLfTI+F4sia/9ns/IW9R9+tNZG3PPyNbw=;
+	s=korg; t=1750174517;
+	bh=vLEqN4+2oCpnoF9VSbiOOQK/ZErEAovFhTfvB420Ty0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=j/t5HI32kWR83hYFVD2XpBavtEk2WkARTVNJ3Xi1EdKpf5Zm6DqpK4e1DsV+ebmQs
-	 rwc/C+nzTIr/VX80U0Or19xSJfVtdOTdlPZYtyo6Hs/3b3iyPi0tSU+sx97k6QqBmz
-	 nL1nrRg2aqIw0r+KGqxjWHAh0mI64fICDCa4G+WM=
+	b=lQOQo7/qnu8GaCjkb/uk9/OapkTCVP44UrfZAVbvEvvazBMV1oOio5HhTjwcmONBK
+	 JiRbV8o6c8Ujp4Up8itdTPCnZGanmo+xJuC8Z16pDz8bc878oAaeAZbE0SSVxbTFRz
+	 z5U4AzJWBnB/7wsvya3gLFjaUZMVUh8xp9oYji14=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Qu Wenruo <wqu@suse.com>,
+	Filipe Manana <fdmanana@suse.com>,
 	David Sterba <dsterba@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 028/512] btrfs: scrub: fix a wrong error type when metadata bytenr mismatches
-Date: Tue, 17 Jun 2025 17:19:54 +0200
-Message-ID: <20250617152420.699438376@linuxfoundation.org>
+Subject: [PATCH 6.12 029/512] btrfs: fix invalid data space release when truncating block in NOCOW mode
+Date: Tue, 17 Jun 2025 17:19:55 +0200
+Message-ID: <20250617152420.738957220@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
 References: <20250617152419.512865572@linuxfoundation.org>
@@ -66,36 +67,54 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Qu Wenruo <wqu@suse.com>
+From: Filipe Manana <fdmanana@suse.com>
 
-[ Upstream commit f2c19541e421b3235efc515dad88b581f00592ae ]
+[ Upstream commit d3914d6030aa6be2993dfc223d096ff93018c236 ]
 
-When the bytenr doesn't match for a metadata tree block, we will report
-it as an csum error, which is incorrect and should be reported as a
-metadata error instead.
+If when truncating a block we fail to reserve data space and then we
+proceed anyway because we can do a NOCOW write, if we later get an error
+when trying to get the folio from the inode's mapping, we end up releasing
+data space that we haven't reserved, screwing up the bytes_may_use counter
+from the data space_info, eventually resulting in an underflow when all
+other reservations done by other tasks are released, if any, or right away
+if there are no other reservations at the moment.
 
-Fixes: a3ddbaebc7c9 ("btrfs: scrub: introduce a helper to verify one metadata block")
-Signed-off-by: Qu Wenruo <wqu@suse.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
+This is because when we get an error when trying to grab the block's folio
+we call btrfs_delalloc_release_space(), which releases metadata (which we
+have reserved) and data (which we haven't reserved).
+
+Fix this by calling btrfs_delalloc_release_space() only if we did reserve
+data space, that is, if we aren't falling back to NOCOW, meaning the local
+variable @only_release_metadata has a false value, otherwise release only
+metadata by calling btrfs_delalloc_release_metadata().
+
+Fixes: 6d4572a9d71d ("btrfs: allow btrfs_truncate_block() to fallback to nocow for data space reservation")
+Reviewed-by: Qu Wenruo <wqu@suse.com>
+Signed-off-by: Filipe Manana <fdmanana@suse.com>
 Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/scrub.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/btrfs/inode.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/fs/btrfs/scrub.c b/fs/btrfs/scrub.c
-index 51eb41d18c3e5..3fcc7c092c5ec 100644
---- a/fs/btrfs/scrub.c
-+++ b/fs/btrfs/scrub.c
-@@ -619,7 +619,7 @@ static void scrub_verify_one_metadata(struct scrub_stripe *stripe, int sector_nr
- 	memcpy(on_disk_csum, header->csum, fs_info->csum_size);
- 
- 	if (logical != btrfs_stack_header_bytenr(header)) {
--		bitmap_set(&stripe->csum_error_bitmap, sector_nr, sectors_per_tree);
-+		bitmap_set(&stripe->meta_error_bitmap, sector_nr, sectors_per_tree);
- 		bitmap_set(&stripe->error_bitmap, sector_nr, sectors_per_tree);
- 		btrfs_warn_rl(fs_info,
- 		"tree block %llu mirror %u has bad bytenr, has %llu want %llu",
+diff --git a/fs/btrfs/inode.c b/fs/btrfs/inode.c
+index 9ce1270addb04..1ab5b0c1b9b76 100644
+--- a/fs/btrfs/inode.c
++++ b/fs/btrfs/inode.c
+@@ -4857,8 +4857,11 @@ int btrfs_truncate_block(struct btrfs_inode *inode, loff_t from, loff_t len,
+ 	folio = __filemap_get_folio(mapping, index,
+ 				    FGP_LOCK | FGP_ACCESSED | FGP_CREAT, mask);
+ 	if (IS_ERR(folio)) {
+-		btrfs_delalloc_release_space(inode, data_reserved, block_start,
+-					     blocksize, true);
++		if (only_release_metadata)
++			btrfs_delalloc_release_metadata(inode, blocksize, true);
++		else
++			btrfs_delalloc_release_space(inode, data_reserved,
++						     block_start, blocksize, true);
+ 		btrfs_delalloc_release_extents(inode, blocksize);
+ 		ret = -ENOMEM;
+ 		goto out;
 -- 
 2.39.5
 
