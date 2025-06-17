@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-153269-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153292-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E7314ADD3A7
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:00:24 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 856B8ADD3B4
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:01:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9D35C1943E1F
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 15:53:53 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6325A3BFFDE
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 15:54:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 975B02EE614;
-	Tue, 17 Jun 2025 15:50:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A78432EA155;
+	Tue, 17 Jun 2025 15:51:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1/KieOy5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JVaTIS+c"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53A882ECE99;
-	Tue, 17 Jun 2025 15:50:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64F5E2DFF3D;
+	Tue, 17 Jun 2025 15:51:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750175412; cv=none; b=m5YnQCrc51maYmUDXRyJRy1PMMkI9uSjnAwQ6uhYVMk6mkjEWld3Q9+/wyaMpqlxQGXNwGyJi6C9UH6V2fS46dJgpyifWL7thxW/w8Z6t2KUk5YhgmyU1Atg2n4wpx2SK9oO3gLmplgl7gxWxC0RP0l1E5sNuwu+VO0pa+fAJC4=
+	t=1750175484; cv=none; b=Ka4q4boK7NiEkLTeWZyyOKjoqpA4P2waafSX62B17A3++g4VBkc5O5F5H/d+Tytvpb2SlLbm+YltNNsvmDp4Mkx/ca/guSo1d6ZUsHouKY16fDyv0nCFfS+kISLSo9DTmVrxftTPx+vjbG3Axn2vqSF/ZRl0Io26hOsiJ1cdeLA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750175412; c=relaxed/simple;
-	bh=Fz8U5wk5gCuM/c6mrfTC7weBb01v2RlBsRJtY4yrd+c=;
+	s=arc-20240116; t=1750175484; c=relaxed/simple;
+	bh=M/bfGGCIU/BL0lWShhomj0byhI+ThxTOnyFbnNVyhxI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=o2sDQvHABpbkrnsKclzMdD2VpUtbARWtdPQEjoPWkeEBvYbarmR7SGnFLsaXlFxAUxBNuXwCKAXTy5CSNol9bRPx8PQfyLAvhHMnFifq57G5sg23HlUBwYNWyXGzwCptXP4f7uLFKIaEAq8oi9O1ACqXuNTTkLmvHATDK0fz6Gg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1/KieOy5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9193C4CEE3;
-	Tue, 17 Jun 2025 15:50:11 +0000 (UTC)
+	 MIME-Version; b=Y22WxWBnUfWkTwUbcE/gbobA0TpjrMw4NmBjUmvJ+LzfwSVPA/z01hk/M3BVQ3MPOmgQ+EN2jjLK7Qk59eV+itXKfeE4bUHz+VeApum/7AObY1AxLv3GKBoRoFiJLM4pMcDwdajkGA/SlFW+oxRxQLeub1n7GGMzorkP0dxHv60=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JVaTIS+c; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 830C3C4CEE3;
+	Tue, 17 Jun 2025 15:51:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750175412;
-	bh=Fz8U5wk5gCuM/c6mrfTC7weBb01v2RlBsRJtY4yrd+c=;
+	s=korg; t=1750175484;
+	bh=M/bfGGCIU/BL0lWShhomj0byhI+ThxTOnyFbnNVyhxI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1/KieOy5l+0j9y/SfOMlqjRqmwya9PXXizqEyYm2LUdyeb8/6IK//KrLFD8vQvhEI
-	 cJAa/73vqkO6l96YpR+HgYsTDIT8SKeJjULIvTmf7FFozWaDw4FBSzCopPL+Ux1eCW
-	 LIXD3KQ3xnnyMPmSyOORXVo6QDudfepBA+oJNdwE=
+	b=JVaTIS+cJtXKSTVXjZG0sn1hMSj8ou634ydsZjirldVqzPIk2cAszO5RXJyhDLHsQ
+	 sH3P5zvmcU2gN0D+kEDyaWQfFviL4dpZ0uPBYHLmUUMXJ5wwshkHfOKVYDVVdeVsR3
+	 IXydkrte+mtNszi4Cjo7uaXBXq110yL11pZhQQGw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wolfram Sang <wsa+renesas@sang-engineering.com>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>,
-	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
+	Chen-Yu Tsai <wenst@chromium.org>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 165/356] ARM: dts: at91: at91sam9263: fix NAND chip selects
-Date: Tue, 17 Jun 2025 17:24:40 +0200
-Message-ID: <20250617152344.862861338@linuxfoundation.org>
+Subject: [PATCH 6.6 166/356] arm64: dts: mediatek: mt8195: Reparent vdec1/2 and venc1 power domains
+Date: Tue, 17 Jun 2025 17:24:41 +0200
+Message-ID: <20250617152344.904024660@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250617152338.212798615@linuxfoundation.org>
 References: <20250617152338.212798615@linuxfoundation.org>
@@ -67,65 +66,107 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Wolfram Sang <wsa+renesas@sang-engineering.com>
+From: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
 
-[ Upstream commit c72ede1c24be689733bcd2233a3a56f2478429c8 ]
+[ Upstream commit 394f29033324e2317bfd6a7ed99b9a60832b36a2 ]
 
-NAND did not work on my USB-A9263. I discovered that the offending
-commit converted the PIO bank for chip selects wrongly, so all A9263
-boards need to be fixed.
+By hardware, the first and second core of the video decoder IP
+need the VDEC_SOC to be powered up in order to be able to be
+accessed (both internally, by firmware, and externally, by the
+kernel).
+Similarly, for the video encoder IP, the second core needs the
+first core to be powered up in order to be accessible.
 
-Fixes: 1004a2977bdc ("ARM: dts: at91: Switch to the new NAND bindings")
-Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
-Reviewed-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
-Link: https://lore.kernel.org/r/20250402210446.5972-2-wsa+renesas@sang-engineering.com
-Signed-off-by: Claudiu Beznea <claudiu.beznea@tuxon.dev>
+Fix that by reparenting the VDEC1/2 power domains to be children
+of VDEC0 (VDEC_SOC), and the VENC1 to be a child of VENC0.
+
+Fixes: 2b515194bf0c ("arm64: dts: mt8195: Add power domains controller")
+Reviewed-by: Chen-Yu Tsai <wenst@chromium.org>
+Link: https://lore.kernel.org/r/20250402090615.25871-3-angelogioacchino.delregno@collabora.com
+Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/boot/dts/microchip/at91sam9263ek.dts | 2 +-
- arch/arm/boot/dts/microchip/tny_a9263.dts     | 2 +-
- arch/arm/boot/dts/microchip/usb_a9263.dts     | 2 +-
- 3 files changed, 3 insertions(+), 3 deletions(-)
+ arch/arm64/boot/dts/mediatek/mt8195.dtsi | 50 +++++++++++++-----------
+ 1 file changed, 27 insertions(+), 23 deletions(-)
 
-diff --git a/arch/arm/boot/dts/microchip/at91sam9263ek.dts b/arch/arm/boot/dts/microchip/at91sam9263ek.dts
-index ce8baff6a9f4e..e42e1a75a715d 100644
---- a/arch/arm/boot/dts/microchip/at91sam9263ek.dts
-+++ b/arch/arm/boot/dts/microchip/at91sam9263ek.dts
-@@ -152,7 +152,7 @@
- 				nand@3 {
- 					reg = <0x3 0x0 0x800000>;
- 					rb-gpios = <&pioA 22 GPIO_ACTIVE_HIGH>;
--					cs-gpios = <&pioA 15 GPIO_ACTIVE_HIGH>;
-+					cs-gpios = <&pioD 15 GPIO_ACTIVE_HIGH>;
- 					nand-bus-width = <8>;
- 					nand-ecc-mode = "soft";
- 					nand-on-flash-bbt;
-diff --git a/arch/arm/boot/dts/microchip/tny_a9263.dts b/arch/arm/boot/dts/microchip/tny_a9263.dts
-index 62b7d9f9a926c..c8b6318aaa838 100644
---- a/arch/arm/boot/dts/microchip/tny_a9263.dts
-+++ b/arch/arm/boot/dts/microchip/tny_a9263.dts
-@@ -64,7 +64,7 @@
- 				nand@3 {
- 					reg = <0x3 0x0 0x800000>;
- 					rb-gpios = <&pioA 22 GPIO_ACTIVE_HIGH>;
--					cs-gpios = <&pioA 15 GPIO_ACTIVE_HIGH>;
-+					cs-gpios = <&pioD 15 GPIO_ACTIVE_HIGH>;
- 					nand-bus-width = <8>;
- 					nand-ecc-mode = "soft";
- 					nand-on-flash-bbt;
-diff --git a/arch/arm/boot/dts/microchip/usb_a9263.dts b/arch/arm/boot/dts/microchip/usb_a9263.dts
-index 25c643067b2ec..454176ce6d3ff 100644
---- a/arch/arm/boot/dts/microchip/usb_a9263.dts
-+++ b/arch/arm/boot/dts/microchip/usb_a9263.dts
-@@ -84,7 +84,7 @@
- 				nand@3 {
- 					reg = <0x3 0x0 0x800000>;
- 					rb-gpios = <&pioA 22 GPIO_ACTIVE_HIGH>;
--					cs-gpios = <&pioA 15 GPIO_ACTIVE_HIGH>;
-+					cs-gpios = <&pioD 15 GPIO_ACTIVE_HIGH>;
- 					nand-bus-width = <8>;
- 					nand-ecc-mode = "soft";
- 					nand-on-flash-bbt;
+diff --git a/arch/arm64/boot/dts/mediatek/mt8195.dtsi b/arch/arm64/boot/dts/mediatek/mt8195.dtsi
+index 7ba30209ba9a9..22604d3abde3b 100644
+--- a/arch/arm64/boot/dts/mediatek/mt8195.dtsi
++++ b/arch/arm64/boot/dts/mediatek/mt8195.dtsi
+@@ -617,22 +617,6 @@
+ 					#size-cells = <0>;
+ 					#power-domain-cells = <1>;
+ 
+-					power-domain@MT8195_POWER_DOMAIN_VDEC1 {
+-						reg = <MT8195_POWER_DOMAIN_VDEC1>;
+-						clocks = <&vdecsys CLK_VDEC_LARB1>;
+-						clock-names = "vdec1-0";
+-						mediatek,infracfg = <&infracfg_ao>;
+-						#power-domain-cells = <0>;
+-					};
+-
+-					power-domain@MT8195_POWER_DOMAIN_VENC_CORE1 {
+-						reg = <MT8195_POWER_DOMAIN_VENC_CORE1>;
+-						clocks = <&vencsys_core1 CLK_VENC_CORE1_LARB>;
+-						clock-names = "venc1-larb";
+-						mediatek,infracfg = <&infracfg_ao>;
+-						#power-domain-cells = <0>;
+-					};
+-
+ 					power-domain@MT8195_POWER_DOMAIN_VDOSYS0 {
+ 						reg = <MT8195_POWER_DOMAIN_VDOSYS0>;
+ 						clocks = <&topckgen CLK_TOP_CFG_VDO0>,
+@@ -678,15 +662,25 @@
+ 							clocks = <&vdecsys_soc CLK_VDEC_SOC_LARB1>;
+ 							clock-names = "vdec0-0";
+ 							mediatek,infracfg = <&infracfg_ao>;
++							#address-cells = <1>;
++							#size-cells = <0>;
+ 							#power-domain-cells = <0>;
+-						};
+ 
+-						power-domain@MT8195_POWER_DOMAIN_VDEC2 {
+-							reg = <MT8195_POWER_DOMAIN_VDEC2>;
+-							clocks = <&vdecsys_core1 CLK_VDEC_CORE1_LARB1>;
+-							clock-names = "vdec2-0";
+-							mediatek,infracfg = <&infracfg_ao>;
+-							#power-domain-cells = <0>;
++							power-domain@MT8195_POWER_DOMAIN_VDEC1 {
++								reg = <MT8195_POWER_DOMAIN_VDEC1>;
++								clocks = <&vdecsys CLK_VDEC_LARB1>;
++								clock-names = "vdec1-0";
++								mediatek,infracfg = <&infracfg_ao>;
++								#power-domain-cells = <0>;
++							};
++
++							power-domain@MT8195_POWER_DOMAIN_VDEC2 {
++								reg = <MT8195_POWER_DOMAIN_VDEC2>;
++								clocks = <&vdecsys_core1 CLK_VDEC_CORE1_LARB1>;
++								clock-names = "vdec2-0";
++								mediatek,infracfg = <&infracfg_ao>;
++								#power-domain-cells = <0>;
++							};
+ 						};
+ 
+ 						power-domain@MT8195_POWER_DOMAIN_VENC {
+@@ -694,7 +688,17 @@
+ 							clocks = <&vencsys CLK_VENC_LARB>;
+ 							clock-names = "venc0-larb";
+ 							mediatek,infracfg = <&infracfg_ao>;
++							#address-cells = <1>;
++							#size-cells = <0>;
+ 							#power-domain-cells = <0>;
++
++							power-domain@MT8195_POWER_DOMAIN_VENC_CORE1 {
++								reg = <MT8195_POWER_DOMAIN_VENC_CORE1>;
++								clocks = <&vencsys_core1 CLK_VENC_CORE1_LARB>;
++								clock-names = "venc1-larb";
++								mediatek,infracfg = <&infracfg_ao>;
++								#power-domain-cells = <0>;
++							};
+ 						};
+ 
+ 						power-domain@MT8195_POWER_DOMAIN_VDOSYS1 {
 -- 
 2.39.5
 
