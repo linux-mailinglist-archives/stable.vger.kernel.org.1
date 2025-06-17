@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-154027-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-154038-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 54BEAADD798
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:46:54 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 76FFAADD783
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:45:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8002519E0261
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:37:26 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7DA6519E3358
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:37:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 193A42EE28B;
-	Tue, 17 Jun 2025 16:31:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C7C432ED86C;
+	Tue, 17 Jun 2025 16:31:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hUqT0mS/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rdJuA2Qe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C711A2ED84B;
-	Tue, 17 Jun 2025 16:31:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 837CD2EA16C;
+	Tue, 17 Jun 2025 16:31:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750177871; cv=none; b=opcmnrC7VCnXbG/lwFQOeQX4nwQqCLT18/qVl8ETxozjWrOM/+1RfmIFsGs1kxzBdJ+Q5IP2yQ9FBGlQmxiseS4U0af8SuklRT1NEXt1lvbaHK6siQUPaaR+ENrBHMJ6n7Q16GjEQnkaob+9MUfgpUqngz1KOZR44vK7Wu/+NKk=
+	t=1750177906; cv=none; b=b2JwpAwyJpn1heZPRoOcO4c2GGLs4zKgp8kJN2AhTYrJCikIrsjqmCRhRi3wRMWBTeYpSMj9CeRhUYOpv9y0QzqPLcCyHkMbYmOajqEM3c8xuzbHYzNdbBmog60F+poK4haT7JmuAJOUZKYGz3N1hi969bqduNuayk1E4piHsSw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750177871; c=relaxed/simple;
-	bh=VojeSEBk0VRqdcmMD1gNrQR+fY4XyWiYW2JALcBZaMI=;
+	s=arc-20240116; t=1750177906; c=relaxed/simple;
+	bh=00xV8eZVWlqtYP2yj1RCjP+xRj5Wbg1rWAyy/6XeS1k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZKuDYLmGI7JfjfwqrjEx/L0KJxNKvLuLNekxMjbyhBULaQ7mm3YRbBZRLIRrh0jS6GjXBM9iKuaPkXT+/2aUjqMmrMqP7Br2IFwEH+BVi0+SwhXfOFjexgXhEkYnaBFXYX/3Sk+92PC3nzqdM1MTn8T4/XomkG7hoOC8r1bXAu8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hUqT0mS/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D395C4CEE3;
-	Tue, 17 Jun 2025 16:31:10 +0000 (UTC)
+	 MIME-Version; b=qLpu2yymcUlhFDt91Df43jVvOqr/TPsYkQpEmx8NlhR9IzcZtwnnGGuavbC8p01zd0pFC2CcUkOpPKl/Y8o34GO4WIsmRYzPUnS7+YtrkO1QOQiKu+3dnIwfLyFHxhIJcCXFiKJUwQwSiLtuni4P/DTB0ZbsrUJZ/hQmV9AUGic=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rdJuA2Qe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9BF23C4CEE3;
+	Tue, 17 Jun 2025 16:31:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750177871;
-	bh=VojeSEBk0VRqdcmMD1gNrQR+fY4XyWiYW2JALcBZaMI=;
+	s=korg; t=1750177906;
+	bh=00xV8eZVWlqtYP2yj1RCjP+xRj5Wbg1rWAyy/6XeS1k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hUqT0mS/a3E6UFU6Cwt/VsLhNmfU0g+0Bvda/o0vyH3O5cDtzoSozsHmX0tltjFGk
-	 97k2QrUI9Fr5Xuza67Cs1gDuWVTB/wA0DBWYXZm60UEUNfsgvIQ18IgfcBLEkYdDkB
-	 nFvtPn0csfbE3rGqv5lA4Orj/GrdV1GX7J01+s7M=
+	b=rdJuA2QeM0og69EXCMhPQt7Ehw1WOEPlCWEGUhUJd0kcx6L8izGj7El02Iaox9vgZ
+	 oBcWTiDH+MjmYHVsYfFw8mQKUseUxXDDz8ei1tEisKX1XnVY9s/1lA9+ViUW5z2QZJ
+	 NoAPwckCXb3J+3qn3RO30vqaxWQClIcfP7lrYIYs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jyothi Kumar Seerapu <quic_jseerapu@quicinc.com>,
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	Stephan Gerhold <stephan.gerhold@linaro.org>,
 	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 357/780] arm64: dts: qcom: sm8750: Correct clocks property for uart14 node
-Date: Tue, 17 Jun 2025 17:21:05 +0200
-Message-ID: <20250617152505.996481324@linuxfoundation.org>
+Subject: [PATCH 6.15 358/780] arm64: dts: qcom: sc8280xp-x13s: Drop duplicate DMIC supplies
+Date: Tue, 17 Jun 2025 17:21:06 +0200
+Message-ID: <20250617152506.037579218@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
 References: <20250617152451.485330293@linuxfoundation.org>
@@ -67,38 +66,51 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Jyothi Kumar Seerapu <quic_jseerapu@quicinc.com>
+From: Stephan Gerhold <stephan.gerhold@linaro.org>
 
-[ Upstream commit 515551e65635b988f2afa9e8683a6b57d6cfba36 ]
+[ Upstream commit a2e617f4e6981aa514a569e927f90b0d39bb31b2 ]
 
-Correct the clocks property for the uart14 node to fix UART functionality
-on QUP2_SE6. The current failure is due to an incorrect clocks assignment.
+The WCD938x codec provides two controls for each of the MIC_BIASn outputs:
 
-Change the clocks property to GCC_QUPV3_WRAP2_S6_CLK to resolve the issue.
+ - "MIC BIASn" enables an internal regulator to generate the output
+   with a configurable voltage (qcom,micbiasN-microvolt).
 
-Signed-off-by: Jyothi Kumar Seerapu <quic_jseerapu@quicinc.com>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Fixes: 068c3d3c83be ("arm64: dts: qcom: Add base SM8750 dtsi")
-Link: https://lore.kernel.org/r/20250312104358.2558-1-quic_jseerapu@quicinc.com
+ - "VA MIC BIASn" enables "pull-up mode" that bypasses the internal
+   regulator and directly outputs fixed 1.8V from the VDD_PX pin.
+   This is intended for low-power VA (voice activation) use cases.
+
+The audio-routing setup for the ThinkPad X13s currently specifies both
+as power supplies for the DMICs, but only one of them can be active
+at the same time. In practice, only the internal regulator is used
+with the current setup because the driver prefers it over pull-up mode.
+
+Make this more clear by dropping the redundant routes to the pull-up
+"VA MIC BIASn" supply. There is no functional difference except that we
+skip briefly switching to pull-up mode when shutting down the microphone.
+
+Fixes: 2e498f35c385 ("arm64: dts: qcom: sc8280xp-x13s: fix va dmic dai links and routing")
+Signed-off-by: Stephan Gerhold <stephan.gerhold@linaro.org>
+Link: https://lore.kernel.org/r/20241203-x1e80100-va-mic-bias-v1-1-0dfd4d9b492c@linaro.org
 Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/sm8750.dtsi | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm64/boot/dts/qcom/sc8280xp-lenovo-thinkpad-x13s.dts | 3 ---
+ 1 file changed, 3 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/qcom/sm8750.dtsi b/arch/arm64/boot/dts/qcom/sm8750.dtsi
-index d08a2dbeb0f79..e8bb587a7813f 100644
---- a/arch/arm64/boot/dts/qcom/sm8750.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sm8750.dtsi
-@@ -993,7 +993,7 @@
+diff --git a/arch/arm64/boot/dts/qcom/sc8280xp-lenovo-thinkpad-x13s.dts b/arch/arm64/boot/dts/qcom/sc8280xp-lenovo-thinkpad-x13s.dts
+index f3190f408f4b2..0f1ebd869ce31 100644
+--- a/arch/arm64/boot/dts/qcom/sc8280xp-lenovo-thinkpad-x13s.dts
++++ b/arch/arm64/boot/dts/qcom/sc8280xp-lenovo-thinkpad-x13s.dts
+@@ -1202,9 +1202,6 @@
+ 		"VA DMIC0", "MIC BIAS1",
+ 		"VA DMIC1", "MIC BIAS1",
+ 		"VA DMIC2", "MIC BIAS3",
+-		"VA DMIC0", "VA MIC BIAS1",
+-		"VA DMIC1", "VA MIC BIAS1",
+-		"VA DMIC2", "VA MIC BIAS3",
+ 		"TX SWR_ADC1", "ADC2_OUTPUT";
  
- 				interrupts = <GIC_SPI 461 IRQ_TYPE_LEVEL_HIGH>;
- 
--				clocks = <&gcc GCC_QUPV3_WRAP2_S5_CLK>;
-+				clocks = <&gcc GCC_QUPV3_WRAP2_S6_CLK>;
- 				clock-names = "se";
- 
- 				interconnects =	<&clk_virt MASTER_QUP_CORE_2 QCOM_ICC_TAG_ALWAYS
+ 	wcd-playback-dai-link {
 -- 
 2.39.5
 
