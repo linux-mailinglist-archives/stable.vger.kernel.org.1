@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-154387-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153406-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E4BA2ADDA26
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 19:13:54 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E91CBADD433
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:07:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 630D73B670D
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:51:58 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4FCAF17F525
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:01:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2D1B2DFF1B;
-	Tue, 17 Jun 2025 16:50:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4040F2ECE8F;
+	Tue, 17 Jun 2025 15:57:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZRsgdsb5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="olWSVu/g"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78250215793;
-	Tue, 17 Jun 2025 16:50:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDD9F28E8;
+	Tue, 17 Jun 2025 15:57:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750179030; cv=none; b=pgDpI2j3JIPEavNoIo9sa6rejm2aQFo5qgYwbzsHS0OlCOXoSGOg2PYrXlBW8Jy7hVdxAXVTeWh5TaAJen03rYDPK4g76iNr11urrut72QaqHxTaNzvoNfgfSwUFrLgTXfWEJtghIhxemkmzk/kpllK0o0ORslGCD9beVhn2Qbg=
+	t=1750175857; cv=none; b=n6wNkzkoR2V9b13O046Q9Gc3yBYXNXAocY6pH2aA3pC24DP28/zt39jrew4LvywOSV0Nhpd2/cqtKVXymxxk5JCu4TXy4RxPX7qsbJdS0llOmjSBViHaakvokj97BogswPMM1NBKeW13ifPKlrWyKzWEZYLd8j7RrPhZcxxEdzI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750179030; c=relaxed/simple;
-	bh=xaoyet6vyDY8fWImqvgFmMVrbMIDy5z1aM9n+y93kjk=;
+	s=arc-20240116; t=1750175857; c=relaxed/simple;
+	bh=0q6TKhevpYccwViA+BeI7S5JdKBo2Z1e1upMkoXaFzY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=LDVzq+8EhO+E3CJiXAoj+kvWxe5GGMrg1f6phC0YrmPmEwFZb5qFSZkIRGH7rr//C3z5V9LqIKyGqXu1oHLL222dJeLPRlVtWV6KK1iUyAiKkmIxUJTnAqnF1XG8Prvnkd/DfDi3UKyb205GNQ+fPLovqsq7PY7psDdKV8vgMuk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZRsgdsb5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC4DAC4CEE3;
-	Tue, 17 Jun 2025 16:50:29 +0000 (UTC)
+	 MIME-Version; b=jYRCDedYjTwK80X3owKqgUNAW1m+CbmYs39DMLMI72lB4EwLFlOZDfP3CmgBD+hBJ1dOpYzOQBQ4W2kmki0k/4u7fU8CrftXQBdo4ZuoLiXk3omZOAw0tLstCG9syWnIxhddfc8sNviy022FFvcQKHmu6BKJtpi07hzzh5Vq4hY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=olWSVu/g; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B0B8C4CEE3;
+	Tue, 17 Jun 2025 15:57:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750179030;
-	bh=xaoyet6vyDY8fWImqvgFmMVrbMIDy5z1aM9n+y93kjk=;
+	s=korg; t=1750175856;
+	bh=0q6TKhevpYccwViA+BeI7S5JdKBo2Z1e1upMkoXaFzY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZRsgdsb5hhxQw+mK5ep4GTGtFoq9mDdgkEbtJQCJPnDOUWqZqV0h1qLjzsvHEkIjz
-	 ctcRNLugpTjqrEKzoqL1hCar5H6kSEpHGUI8KWqlqiX2S+cg90SiXMgV1nlHiFFPvg
-	 HGtQw+u6VkTipn3xmGlOd7mCwCDeuX1dr0pDcXgo=
+	b=olWSVu/gbE3yIJBtdIHphMA/leSvX3DeU5BToyMVoqSnyJso+L4fq0oAkt8FRZR36
+	 YuklS1iFA3fzMLzMm+HlF24MD4RhD56s48EF55mRhQ3rZO6t/lWzHAwVbY0Macmte3
+	 nuyq4Ta8v/jc/Wzg0YOI1xK4UJ714zm3Pvk18a8Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Matthew Auld <matthew.auld@intel.com>,
-	Matthew Brost <matthew.brost@intel.com>,
-	=?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
+	Li Lingfeng <lilingfeng3@huawei.com>,
+	Anna Schumaker <anna.schumaker@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 626/780] drm/xe/vm: move xe_svm_init() earlier
+Subject: [PATCH 6.6 219/356] nfs: ignore SB_RDONLY when remounting nfs
 Date: Tue, 17 Jun 2025 17:25:34 +0200
-Message-ID: <20250617152516.968947120@linuxfoundation.org>
+Message-ID: <20250617152347.017549458@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
-References: <20250617152451.485330293@linuxfoundation.org>
+In-Reply-To: <20250617152338.212798615@linuxfoundation.org>
+References: <20250617152338.212798615@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,82 +60,76 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthew Auld <matthew.auld@intel.com>
+From: Li Lingfeng <lilingfeng3@huawei.com>
 
-[ Upstream commit 8cf8cde41ad01150afbd1327ad1942387787f7fd ]
+[ Upstream commit 80c4de6ab44c14e910117a02f2f8241ffc6ec54a ]
 
-In xe_vm_close_and_put() we need to be able to call xe_svm_fini(),
-however during vm creation we can call this on the error path, before
-having actually initialised the svm state, leading to various splats
-followed by a fatal NPD.
+In some scenarios, when mounting NFS, more than one superblock may be
+created. The final superblock used is the last one created, but only the
+first superblock carries the ro flag passed from user space. If a ro flag
+is added to the superblock via remount, it will trigger the issue
+described in Link[1].
 
-Fixes: 6fd979c2f331 ("drm/xe: Add SVM init / close / fini to faulting VMs")
-Link: https://gitlab.freedesktop.org/drm/xe/kernel/-/issues/4967
-Signed-off-by: Matthew Auld <matthew.auld@intel.com>
-Cc: Matthew Brost <matthew.brost@intel.com>
-Reviewed-by: Matthew Brost <matthew.brost@intel.com>
-Link: https://lore.kernel.org/r/20250514152424.149591-4-matthew.auld@intel.com
-(cherry picked from commit 4f296d77cf49fcb5f90b4674123ad7f3a0676165)
-Signed-off-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
+Link[2] attempted to address this by marking the superblock as ro during
+the initial mount. However, this introduced a new problem in scenarios
+where multiple mount points share the same superblock:
+[root@a ~]# mount /dev/sdb /mnt/sdb
+[root@a ~]# echo "/mnt/sdb *(rw,no_root_squash)" > /etc/exports
+[root@a ~]# echo "/mnt/sdb/test_dir2 *(ro,no_root_squash)" >> /etc/exports
+[root@a ~]# systemctl restart nfs-server
+[root@a ~]# mount -t nfs -o rw 127.0.0.1:/mnt/sdb/test_dir1 /mnt/test_mp1
+[root@a ~]# mount | grep nfs4
+127.0.0.1:/mnt/sdb/test_dir1 on /mnt/test_mp1 type nfs4 (rw,relatime,...
+[root@a ~]# mount -t nfs -o ro 127.0.0.1:/mnt/sdb/test_dir2 /mnt/test_mp2
+[root@a ~]# mount | grep nfs4
+127.0.0.1:/mnt/sdb/test_dir1 on /mnt/test_mp1 type nfs4 (ro,relatime,...
+127.0.0.1:/mnt/sdb/test_dir2 on /mnt/test_mp2 type nfs4 (ro,relatime,...
+[root@a ~]#
+
+When mounting the second NFS, the shared superblock is marked as ro,
+causing the previous NFS mount to become read-only.
+
+To resolve both issues, the ro flag is no longer applied to the superblock
+during remount. Instead, the ro flag on the mount is used to control
+whether the mount point is read-only.
+
+Fixes: 281cad46b34d ("NFS: Create a submount rpc_op")
+Link[1]: https://lore.kernel.org/all/20240604112636.236517-3-lilingfeng@huaweicloud.com/
+Link[2]: https://lore.kernel.org/all/20241130035818.1459775-1-lilingfeng3@huawei.com/
+Signed-off-by: Li Lingfeng <lilingfeng3@huawei.com>
+Signed-off-by: Anna Schumaker <anna.schumaker@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/xe/xe_vm.c | 19 ++++++++++++-------
- 1 file changed, 12 insertions(+), 7 deletions(-)
+ fs/nfs/super.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-diff --git a/drivers/gpu/drm/xe/xe_vm.c b/drivers/gpu/drm/xe/xe_vm.c
-index 367c84b90e9ef..737172013a8f9 100644
---- a/drivers/gpu/drm/xe/xe_vm.c
-+++ b/drivers/gpu/drm/xe/xe_vm.c
-@@ -1681,10 +1681,16 @@ struct xe_vm *xe_vm_create(struct xe_device *xe, u32 flags)
- 	if (flags & XE_VM_FLAG_LR_MODE)
- 		xe_pm_runtime_get_noresume(xe);
+diff --git a/fs/nfs/super.c b/fs/nfs/super.c
+index 59bf4b2c0f86e..4e72ee57fc8fc 100644
+--- a/fs/nfs/super.c
++++ b/fs/nfs/super.c
+@@ -1020,6 +1020,16 @@ int nfs_reconfigure(struct fs_context *fc)
  
-+	if (flags & XE_VM_FLAG_FAULT_MODE) {
-+		err = xe_svm_init(vm);
-+		if (err)
-+			goto err_no_resv;
-+	}
+ 	sync_filesystem(sb);
+ 
++	/*
++	 * The SB_RDONLY flag has been removed from the superblock during
++	 * mounts to prevent interference between different filesystems.
++	 * Similarly, it is also necessary to ignore the SB_RDONLY flag
++	 * during reconfiguration; otherwise, it may also result in the
++	 * creation of redundant superblocks when mounting a directory with
++	 * different rw and ro flags multiple times.
++	 */
++	fc->sb_flags_mask &= ~SB_RDONLY;
 +
- 	vm_resv_obj = drm_gpuvm_resv_object_alloc(&xe->drm);
- 	if (!vm_resv_obj) {
- 		err = -ENOMEM;
--		goto err_no_resv;
-+		goto err_svm_fini;
- 	}
- 
- 	drm_gpuvm_init(&vm->gpuvm, "Xe VM", DRM_GPUVM_RESV_PROTECTED, &xe->drm,
-@@ -1757,12 +1763,6 @@ struct xe_vm *xe_vm_create(struct xe_device *xe, u32 flags)
- 		}
- 	}
- 
--	if (flags & XE_VM_FLAG_FAULT_MODE) {
--		err = xe_svm_init(vm);
--		if (err)
--			goto err_close;
--	}
--
- 	if (number_tiles > 1)
- 		vm->composite_fence_ctx = dma_fence_context_alloc(1);
- 
-@@ -1776,6 +1776,11 @@ struct xe_vm *xe_vm_create(struct xe_device *xe, u32 flags)
- 	xe_vm_close_and_put(vm);
- 	return ERR_PTR(err);
- 
-+err_svm_fini:
-+	if (flags & XE_VM_FLAG_FAULT_MODE) {
-+		vm->size = 0; /* close the vm */
-+		xe_svm_fini(vm);
-+	}
- err_no_resv:
- 	mutex_destroy(&vm->snap_mutex);
- 	for_each_tile(tile, xe, id)
+ 	/*
+ 	 * Userspace mount programs that send binary options generally send
+ 	 * them populated with default values. We have no way to know which
 -- 
 2.39.5
 
