@@ -1,55 +1,53 @@
-Return-Path: <stable+bounces-153274-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153277-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4FD5FADD3A6
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:00:24 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0AEC5ADD374
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 17:58:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AD9033BE475
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 15:53:54 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 11E23168E95
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 15:54:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94BC72F2C6C;
-	Tue, 17 Jun 2025 15:50:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F7DF2ECD27;
+	Tue, 17 Jun 2025 15:50:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e9g7U280"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l3D/W56n"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E9202ECEAD;
-	Tue, 17 Jun 2025 15:50:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 402E02F2379;
+	Tue, 17 Jun 2025 15:50:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750175432; cv=none; b=beIBaByKvL5YtODy/pQ3LAA6d0RZ90AmnY4+BGraqOGnvv4xIujidsxqGMZVbjx/wWdvC9qd5gQuIsIRYBLwxO8TFBR84kBJQ28Sjc7MfYN83nSdAHP9/IWnNjE9LicfH5gdkfwR84b+/PBklXmMehowxbsajQfneeOTU9S7O34=
+	t=1750175441; cv=none; b=DlBi14xphwSirzNT4vlVgRS2ZlJ94UhGGz1y/JkMN5TmP5czv9zRVNCAHonxBcM0wY43/0D8H2lkGShzWzxjyepm3fSyo1qfz7iVrkNn+vD7WagUR3QTDEkdf/lb9I0kIhQWGyS4CHosMow1YuwiiHUOZlx1C6PkqRsRU1TwTkw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750175432; c=relaxed/simple;
-	bh=UkjrNNGXWMBvmGVTO1NjnHho/182TmYx9KFTYQJvPys=;
+	s=arc-20240116; t=1750175441; c=relaxed/simple;
+	bh=iWdH0rqHZd2JcLX37jajw5HNCFlSTni/bLXyIw9qjGg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ehs3v0xBa4U6jBpXBoN3wiBka4KPT1t+i785GwuMqzCqOxALkB3BE8fBej1SU/wlGIbkobDZwho8+XVN8/X/ZqJm1u9WLZxg2duSm1j8JPrrs7P47ikOZg5Hg5+6nT36ZnN5HZLTV/D3cU5fbmNVi8p5xPvYCsPKQVbM+vBt+GQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e9g7U280; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97D0BC4CEE3;
-	Tue, 17 Jun 2025 15:50:31 +0000 (UTC)
+	 MIME-Version; b=YprRfv6j9PmAa7cl8KFGx9zePjoPrbbcmUHXgtjhfDXwGEXxgkwDEICGyO3S78pbHoO8OWim0LL7bj+ZHNeYeMjDpJJdcqjuooE7d95mFcCeUTHsK7IRNJUTyg9DL+iU8AOZ6lB3Mu7USSM+kcWjXLSUjbnfm3xWxzU+arQi+Cs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l3D/W56n; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3403C4CEE3;
+	Tue, 17 Jun 2025 15:50:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750175432;
-	bh=UkjrNNGXWMBvmGVTO1NjnHho/182TmYx9KFTYQJvPys=;
+	s=korg; t=1750175441;
+	bh=iWdH0rqHZd2JcLX37jajw5HNCFlSTni/bLXyIw9qjGg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=e9g7U280RBvOkD/UR5F7aSaal0/fJXR8+4Tbu7qJcU7/NNWMsIe8mNvhd/oENqYs1
-	 ApvaWlU6giRbWBO2Dhv/Vqqi/vF5XDNjMdNsvJCu3e+4inZQclNJBvfLQXXr+OEdVp
-	 40d2Mt9BJ3y3BbIwMSOb4zhif0AA3xbS+cw+YDzg=
+	b=l3D/W56n50wSNwp/a1uUy8B2SlRw5zTBHeI/9EOjH5o+qK7vOwDXIRR0GCqSJ8vmb
+	 pKIqELkgD2aCY0OKM7yGAkILvOgnzsiY/B+EQqEL+wsOAsfm6ylPVmU78Xn3JwmmOq
+	 0U8nbPnFSx/s3+H9KUVjwV+oYAl+QcJpfTYOKYFE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexandre Ghiti <alexghiti@rivosinc.com>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Mark Pearson <mpearson-lenovo@squebb.ca>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Ian Forbes <ian.forbes@broadcom.com>,
+	Zack Rusin <zack.rusin@broadcom.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 087/780] ACPI: platform_profile: Avoid initializing on non-ACPI platforms
-Date: Tue, 17 Jun 2025 17:16:35 +0200
-Message-ID: <20250617152455.057654696@linuxfoundation.org>
+Subject: [PATCH 6.15 088/780] drm/vmwgfx: Add seqno waiter for sync_files
+Date: Tue, 17 Jun 2025 17:16:36 +0200
+Message-ID: <20250617152455.097671366@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
 References: <20250617152451.485330293@linuxfoundation.org>
@@ -68,65 +66,87 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Alexandre Ghiti <alexghiti@rivosinc.com>
+From: Ian Forbes <ian.forbes@broadcom.com>
 
-[ Upstream commit dd133162c9cff5951a692fab9811fadf46a46457 ]
+[ Upstream commit 0039a3b35b10d9c15d3d26320532ab56cc566750 ]
 
-The platform profile driver is loaded even on platforms that do not have
-ACPI enabled. The initialization of the sysfs entries was recently moved
-from platform_profile_register() to the module init call, and those
-entries need acpi_kobj to be initialized which is not the case when ACPI
-is disabled.
+Because sync_files are passive waiters they do not participate in
+the processing of fences like the traditional vmw_fence_wait IOCTL.
+If userspace exclusively uses sync_files for synchronization then
+nothing in the kernel actually processes fence updates as interrupts
+for fences are masked and ignored if the kernel does not indicate to the
+SVGA device that there are active waiters.
 
-This results in the following warning:
+This oversight results in a bug where the entire GUI can freeze waiting
+on a sync_file that will never be signalled as we've masked the interrupts
+to signal its completion. This bug is incredibly racy as any process which
+interacts with the fencing code via the 3D stack can process the stuck
+fences on behalf of the stuck process causing it to run again. Even a
+simple app like eglinfo is enough to resume the stuck process. Usually
+this bug is seen at a login screen like GDM because there are no other
+3D apps running.
 
- WARNING: CPU: 5 PID: 1 at fs/sysfs/group.c:131 internal_create_group+0xa22/0xdd8
- Modules linked in:
- CPU: 5 UID: 0 PID: 1 Comm: swapper/0 Tainted: G        W           6.15.0-rc7-dirty #6 PREEMPT
- Tainted: [W]=WARN
- Hardware name: riscv-virtio,qemu (DT)
- epc : internal_create_group+0xa22/0xdd8
-  ra : internal_create_group+0xa22/0xdd8
+By adding a seqno waiter we re-enable interrupt based processing of the
+dma_fences associated with the sync_file which is signalled as part of a
+dma_fence_callback.
 
- Call Trace:
+This has likely been broken since it was initially added to the kernel in
+2017 but has gone unnoticed until mutter recently started using sync_files
+heavily over the course of 2024 as part of their explicit sync support.
 
- internal_create_group+0xa22/0xdd8
- sysfs_create_group+0x22/0x2e
- platform_profile_init+0x74/0xb2
- do_one_initcall+0x198/0xa9e
- kernel_init_freeable+0x6d8/0x780
- kernel_init+0x28/0x24c
- ret_from_fork+0xe/0x18
-
-Fix this by checking if ACPI is enabled before trying to create sysfs
-entries.
-
-Fixes: 77be5cacb2c2 ("ACPI: platform_profile: Create class for ACPI platform profile")
-Signed-off-by: Alexandre Ghiti <alexghiti@rivosinc.com>
-Reviewed-by: Arnd Bergmann <arnd@arndb.de>
-Reviewed-by: Mark Pearson <mpearson-lenovo@squebb.ca>
-Link: https://patch.msgid.link/20250522141410.31315-1-alexghiti@rivosinc.com
-[ rjw: Subject and changelog edits ]
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Fixes: c906965dee22 ("drm/vmwgfx: Add export fence to file descriptor support")
+Signed-off-by: Ian Forbes <ian.forbes@broadcom.com>
+Signed-off-by: Zack Rusin <zack.rusin@broadcom.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20250228200633.642417-1-ian.forbes@broadcom.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/platform_profile.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/gpu/drm/vmwgfx/vmwgfx_execbuf.c | 26 +++++++++++++++++++++++++
+ 1 file changed, 26 insertions(+)
 
-diff --git a/drivers/acpi/platform_profile.c b/drivers/acpi/platform_profile.c
-index ffbfd32f4cf1b..b43f4459a4f61 100644
---- a/drivers/acpi/platform_profile.c
-+++ b/drivers/acpi/platform_profile.c
-@@ -688,6 +688,9 @@ static int __init platform_profile_init(void)
- {
- 	int err;
+diff --git a/drivers/gpu/drm/vmwgfx/vmwgfx_execbuf.c b/drivers/gpu/drm/vmwgfx/vmwgfx_execbuf.c
+index 2e52d73eba484..ea741bc4ac3fc 100644
+--- a/drivers/gpu/drm/vmwgfx/vmwgfx_execbuf.c
++++ b/drivers/gpu/drm/vmwgfx/vmwgfx_execbuf.c
+@@ -4086,6 +4086,23 @@ static int vmw_execbuf_tie_context(struct vmw_private *dev_priv,
+ 	return 0;
+ }
  
-+	if (acpi_disabled)
-+		return -EOPNOTSUPP;
++/*
++ * DMA fence callback to remove a seqno_waiter
++ */
++struct seqno_waiter_rm_context {
++	struct dma_fence_cb base;
++	struct vmw_private *dev_priv;
++};
 +
- 	err = class_register(&platform_profile_class);
- 	if (err)
- 		return err;
++static void seqno_waiter_rm_cb(struct dma_fence *f, struct dma_fence_cb *cb)
++{
++	struct seqno_waiter_rm_context *ctx =
++		container_of(cb, struct seqno_waiter_rm_context, base);
++
++	vmw_seqno_waiter_remove(ctx->dev_priv);
++	kfree(ctx);
++}
++
+ int vmw_execbuf_process(struct drm_file *file_priv,
+ 			struct vmw_private *dev_priv,
+ 			void __user *user_commands, void *kernel_commands,
+@@ -4266,6 +4283,15 @@ int vmw_execbuf_process(struct drm_file *file_priv,
+ 		} else {
+ 			/* Link the fence with the FD created earlier */
+ 			fd_install(out_fence_fd, sync_file->file);
++			struct seqno_waiter_rm_context *ctx =
++				kmalloc(sizeof(*ctx), GFP_KERNEL);
++			ctx->dev_priv = dev_priv;
++			vmw_seqno_waiter_add(dev_priv);
++			if (dma_fence_add_callback(&fence->base, &ctx->base,
++						   seqno_waiter_rm_cb) < 0) {
++				vmw_seqno_waiter_remove(dev_priv);
++				kfree(ctx);
++			}
+ 		}
+ 	}
+ 
 -- 
 2.39.5
 
