@@ -1,58 +1,53 @@
-Return-Path: <stable+bounces-153436-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153439-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A0CC0ADD4BA
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:13:30 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B2D19ADD4C6
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:14:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 33B2A403A36
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:03:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E4AFE407DB9
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:03:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C456E2EA145;
-	Tue, 17 Jun 2025 15:59:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E555E2EA175;
+	Tue, 17 Jun 2025 15:59:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PzXIdJD5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JXp3lr9y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E0142CCC5;
-	Tue, 17 Jun 2025 15:59:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9560F2EA16D;
+	Tue, 17 Jun 2025 15:59:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750175956; cv=none; b=Q3CXVpyfHSvE7FpNBMJ1r/KNjKYSY2PG0TWXIHTW18dpXLu8VCtqzoMm29cOJkdeSpbfV8abT4Oc5K4/Dnd91gJLgbHE4yWp2bRKEs2Xy2crn0a3AXceMNqb/HwiBINjnqcbLt2r4/Ww/h2sIDIlX1TbBZoSzxGY0ijgruzt+6o=
+	t=1750175966; cv=none; b=X6rnDfP4iSXck/aaLKWZ5h1SYdVfQXTs23hHVgls6d11rnb3R9yz53nyYafRhkmdGykqqNgjrkymVpzkyTcZzZqC+5e5iGrOLTNfjO4Y4nS58+dNYZbtwvUjFT60n8H4HMPih1xCf2xFNUgdnhgkVztaFSXN1i3bTbhkgc2Td2k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750175956; c=relaxed/simple;
-	bh=eLBaqaIcrVvkaQ7JgM6I/LpoFBfnZJYpk3WdNXAPtdU=;
+	s=arc-20240116; t=1750175966; c=relaxed/simple;
+	bh=PfUJVSsumcsq1XsV7neHOst5x5PmxIypYL/fyTAS27k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=de1SbWSeXpK1hrrWoYytVLyb4HXVvfQZ8mSHrMJD9ehSZG8K8Q1corvPBdPeXs57HTdELoBipoywE0BpDjR3kde9Iggb/fIfYJi9CSjnHT6aK8dT71ef6E7d3zq+onESSRovEwMGvu8AOhx8gwbV+wfGGCAjzKlCBtVllssLj2A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PzXIdJD5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF8AAC4CEE7;
-	Tue, 17 Jun 2025 15:59:15 +0000 (UTC)
+	 MIME-Version; b=YQdUZSsxgzWph6OH+gI5aSjoF5RJCg4kiCwcZBgRKRyV+TiBah2yeGLCJTYMHpoTNvAaVvlxx+isgs/0V47Sy146HMoB6oDjujMfSnWqTmziL0hEi/s8Qq9yXonIbe/clnp9o3+8E65OTo7t6GoHVPnScewAOJCoJIvQnl52SqM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JXp3lr9y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5CD9C4CEE3;
+	Tue, 17 Jun 2025 15:59:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750175956;
-	bh=eLBaqaIcrVvkaQ7JgM6I/LpoFBfnZJYpk3WdNXAPtdU=;
+	s=korg; t=1750175966;
+	bh=PfUJVSsumcsq1XsV7neHOst5x5PmxIypYL/fyTAS27k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PzXIdJD5Xd/IbUiN65pCHIosbdboEr7z2UQwS1tLd7SbVrCDGUpp7edmCEHB0Jdes
-	 /3Sr5CSS/rxfC4VKdK+wQiHrHmNakjsGTu0VdIkDvk+asFMqHxgJ587nNpoKsoflMq
-	 WGTl2Gtu5SIdLub8kKa3bqi86mcSpfhUpYriF/cY=
+	b=JXp3lr9yI92npNdMT1mXCsDDZBUp0RLTO0L6g4Pm/gbh/HlKPAeMQBU/1d1NcjOmQ
+	 wjwv5521wR0Z/p6IZ6eIzj4Aet/zP/FzSUr3YrjXl1WO7krZik9ok6WfxmXKXByK0/
+	 Zk82OgHUWpUBNchRZpODU5CcNBX0oidST9kcQwX0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mark Rutland <mark.rutland@arm.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	David Spickett <david.spickett@arm.com>,
-	Luis Machado <luis.machado@arm.com>,
-	Marc Zyngier <maz@kernel.org>,
-	Mark Brown <broonie@kernel.org>,
-	Will Deacon <will@kernel.org>,
+	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
+	Kees Cook <kees@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 138/780] kselftest/arm64: fp-ptrace: Fix expected FPMR value when PSTATE.SM is changed
-Date: Tue, 17 Jun 2025 17:17:26 +0200
-Message-ID: <20250617152457.119196842@linuxfoundation.org>
+Subject: [PATCH 6.15 139/780] overflow: Fix direct struct member initialization in _DEFINE_FLEX()
+Date: Tue, 17 Jun 2025 17:17:27 +0200
+Message-ID: <20250617152457.158845894@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
 References: <20250617152451.485330293@linuxfoundation.org>
@@ -71,100 +66,83 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Mark Rutland <mark.rutland@arm.com>
+From: Gustavo A. R. Silva <gustavoars@kernel.org>
 
-[ Upstream commit 78b23877dbba7dbcda2b89383d17bed82ce8f663 ]
+[ Upstream commit 47e36ed7840661a9f7fb53554a1b04a5f8daffea ]
 
-The fp-ptrace test suite expects that FPMR is set to zero when PSTATE.SM
-is changed via ptrace, but ptrace has never altered FPMR in this way,
-and the test logic erroneously relies upon (and has concealed) a bug
-where task_fpsimd_load() would unexpectedly and non-deterministically
-clobber FPMR.
+Currently, to statically initialize the struct members of the `type`
+object created by _DEFINE_FLEX(), the internal `obj` member must be
+explicitly referenced at the call site. See:
 
-Using ptrace, FPMR can only be altered by writing to the NT_ARM_FPMR
-regset. The value of PSTATE.SM can be altered by writing to the
-NT_ARM_SVE or NT_ARM_SSVE regsets, and/or by changing the SME vector
-length (when writing to the NT_ARM_SVE, NT_ARM_SSVE, or NT_ARM_ZA
-regsets), but none of these writes will change the value of FPMR.
+struct flex {
+        int a;
+        int b;
+        struct foo flex_array[];
+};
 
-The task_fpsimd_load() bug was introduced with the initial FPMR support
-in commit:
+_DEFINE_FLEX(struct flex, instance, flex_array,
+                 FIXED_SIZE, = {
+                        .obj = {
+                                .a = 0,
+                                .b = 1,
+                        },
+                });
 
-  203f2b95a882 ("arm64/fpsimd: Support FEAT_FPMR")
+This leaks _DEFINE_FLEX() internal implementation details and make
+the helper harder to use and read.
 
-The incorrect FPMR test code was introduced in commit:
+Fix this and allow for a more natural and intuitive C99 init-style:
 
-  7dbd26d0b22d ("kselftest/arm64: Add FPMR coverage to fp-ptrace")
+_DEFINE_FLEX(struct flex, instance, flex_array,
+                 FIXED_SIZE, = {
+                        .a = 0,
+                        .b = 1,
+                });
 
-Subsequently, the task_fpsimd_load() bug was fixed in commit:
+Note that before these changes, the `initializer` argument was optional,
+but now it's required.
 
-  e5fa85fce08b ("arm64/fpsimd: Don't corrupt FPMR when streaming mode changes")
+Also, update "counter" member initialization in DEFINE_FLEX().
 
-... whereupon the fp-ptrace FPMR tests started failing reliably, e.g.
-
-| # # Mismatch in saved FPMR: 915058000 != 0
-| # not ok 25 SVE write, SVE 64->64, SME 64/0->64/1
-
-Fix this by changing the test to expect that FPMR is *NOT* changed when
-PSTATE.SM is changed via ptrace, matching the extant behaviour.
-
-I've chosen to update the test code rather than modifying ptrace to zero
-FPMR when PSTATE.SM changes. Not zeroing FPMR is simpler overall, and
-allows the NT_ARM_FPMR regset to be handled independently from other
-regsets, leaving less scope for error.
-
-Fixes: 7dbd26d0b22d ("kselftest/arm64: Add FPMR coverage to fp-ptrace")
-Signed-off-by: Mark Rutland <mark.rutland@arm.com>
-Cc: Catalin Marinas <catalin.marinas@arm.com>
-Cc: David Spickett <david.spickett@arm.com>
-Cc: Luis Machado <luis.machado@arm.com>
-Cc: Marc Zyngier <maz@kernel.org>
-Cc: Mark Brown <broonie@kernel.org>
-Cc: Will Deacon <will@kernel.org>
-Link: https://lore.kernel.org/r/20250508132644.1395904-22-mark.rutland@arm.com
-Signed-off-by: Will Deacon <will@kernel.org>
+Fixes: 26dd68d293fd ("overflow: add DEFINE_FLEX() for on-stack allocs")
+Signed-off-by: Gustavo A. R. Silva <gustavoars@kernel.org>
+Link: https://lore.kernel.org/r/aBQVeyKfLOkO9Yss@kspp
+Signed-off-by: Kees Cook <kees@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/arm64/fp/fp-ptrace.c | 14 +-------------
- 1 file changed, 1 insertion(+), 13 deletions(-)
+ include/linux/overflow.h | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/tools/testing/selftests/arm64/fp/fp-ptrace.c b/tools/testing/selftests/arm64/fp/fp-ptrace.c
-index 4930e03a7b990..762048eb354ff 100644
---- a/tools/testing/selftests/arm64/fp/fp-ptrace.c
-+++ b/tools/testing/selftests/arm64/fp/fp-ptrace.c
-@@ -891,18 +891,11 @@ static void set_initial_values(struct test_config *config)
- {
- 	int vq = __sve_vq_from_vl(vl_in(config));
- 	int sme_vq = __sve_vq_from_vl(config->sme_vl_in);
--	bool sm_change;
+diff --git a/include/linux/overflow.h b/include/linux/overflow.h
+index 0c7e3dcfe8670..823a53cd9a193 100644
+--- a/include/linux/overflow.h
++++ b/include/linux/overflow.h
+@@ -396,7 +396,7 @@ static inline size_t __must_check size_sub(size_t minuend, size_t subtrahend)
+  * @name: Name for a variable to define.
+  * @member: Name of the array member.
+  * @count: Number of elements in the array; must be compile-time const.
+- * @initializer: initializer expression (could be empty for no init).
++ * @initializer: Initializer expression (e.g., pass `= { }` at minimum).
+  */
+ #define _DEFINE_FLEX(type, name, member, count, initializer...)			\
+ 	_Static_assert(__builtin_constant_p(count),				\
+@@ -404,7 +404,7 @@ static inline size_t __must_check size_sub(size_t minuend, size_t subtrahend)
+ 	union {									\
+ 		u8 bytes[struct_size_t(type, member, count)];			\
+ 		type obj;							\
+-	} name##_u initializer;							\
++	} name##_u = { .obj initializer };					\
+ 	type *name = (type *)&name##_u
  
- 	svcr_in = config->svcr_in;
- 	svcr_expected = config->svcr_expected;
- 	svcr_out = 0;
+ /**
+@@ -438,6 +438,6 @@ static inline size_t __must_check size_sub(size_t minuend, size_t subtrahend)
+  * Use __struct_size(@NAME) to get compile-time size of it afterwards.
+  */
+ #define DEFINE_FLEX(TYPE, NAME, MEMBER, COUNTER, COUNT)	\
+-	_DEFINE_FLEX(TYPE, NAME, MEMBER, COUNT, = { .obj.COUNTER = COUNT, })
++	_DEFINE_FLEX(TYPE, NAME, MEMBER, COUNT, = { .COUNTER = COUNT, })
  
--	if (sme_supported() &&
--	    (svcr_in & SVCR_SM) != (svcr_expected & SVCR_SM))
--		sm_change = true;
--	else
--		sm_change = false;
--
- 	fill_random(&v_in, sizeof(v_in));
- 	memcpy(v_expected, v_in, sizeof(v_in));
- 	memset(v_out, 0, sizeof(v_out));
-@@ -953,12 +946,7 @@ static void set_initial_values(struct test_config *config)
- 	if (fpmr_supported()) {
- 		fill_random(&fpmr_in, sizeof(fpmr_in));
- 		fpmr_in &= FPMR_SAFE_BITS;
--
--		/* Entering or exiting streaming mode clears FPMR */
--		if (sm_change)
--			fpmr_expected = 0;
--		else
--			fpmr_expected = fpmr_in;
-+		fpmr_expected = fpmr_in;
- 	} else {
- 		fpmr_in = 0;
- 		fpmr_expected = 0;
+ #endif /* __LINUX_OVERFLOW_H */
 -- 
 2.39.5
 
