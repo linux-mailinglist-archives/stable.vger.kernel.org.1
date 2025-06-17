@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-153574-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-154243-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D0EE2ADD544
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:19:07 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B81FCADD864
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:54:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 422062C2AE0
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:10:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 47EC54A0F3F
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:46:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A7AA2EF286;
-	Tue, 17 Jun 2025 16:06:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6EFA2EA16A;
+	Tue, 17 Jun 2025 16:42:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gsw9uaAh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="An8xtmiD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F86B2DFF00;
-	Tue, 17 Jun 2025 16:06:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6051E285048;
+	Tue, 17 Jun 2025 16:42:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750176402; cv=none; b=icH/mo3RfVbOr+x0ksN8AD8073o13wz358f7uDrqv0qR0lcqCtrY0iWJpXH9bfUBQw68k1cpyfeb2l45IOrjmIoIKG8zTesBh38GKScUqXFXkQ3JWFPEPOgYO26we6yMGElmlkmcw0gM4q7XobKj0PwNj0lS2uBWuKi8M5zO7yc=
+	t=1750178561; cv=none; b=BsvSlpgN06kwTJwncBN/VK08lm/uay+HcO9EBlcO1qHAFCsvB+pGybEqa3AC4aQT5bxWlxjrlx4h46jXPda4rHLCAyRCQ2LTNiNGajoYRJ4iUkCfVFNlSGtHdSNrLCn62w1D/rdUwi8o5G7W2GERYI7b1SuKBaEcZrCNcgLKIU0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750176402; c=relaxed/simple;
-	bh=y2MrZHMVzJG389A7qQ1DCM1HT+PkkIKuLGsl9qaghfE=;
+	s=arc-20240116; t=1750178561; c=relaxed/simple;
+	bh=FUldUU2rSJIj2WtTj4dT0ERCpIRqvKa0GLSC9x0dvOU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=l49bHRfe2hfakZ2mKVP4DBJDioU6zoud6o+lCYUVznLYBsiXAOixGCS4G1pzzyPzJWeldZbtyNmuHLKGoz0S+8uJwZs0LNpKyNW3+fHjlDUIb9sVGLnzhJnTrqZks/bcpuHWeHydAwl0/LjqpW0r2BTcfis7gdCaXGwE0UvdyYo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gsw9uaAh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73539C4CEE3;
-	Tue, 17 Jun 2025 16:06:41 +0000 (UTC)
+	 MIME-Version; b=bWYhxQRFHca0AWJVQKhtO6MEBopUy6WF1yckxZQmKy/Y7wVo1g4rVRDVucD2kKpsIhi+eVCvOiGO3KwdGRF+UnFIi6GN1s7rfEPqSPCLlrp8hL+C8VhQjVaKT0t7ERbY0zKNVpBXh2ukaYXh29yIgXdSrP5IXXWE4jQmaGuPOhc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=An8xtmiD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3F31C4CEE3;
+	Tue, 17 Jun 2025 16:42:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750176401;
-	bh=y2MrZHMVzJG389A7qQ1DCM1HT+PkkIKuLGsl9qaghfE=;
+	s=korg; t=1750178561;
+	bh=FUldUU2rSJIj2WtTj4dT0ERCpIRqvKa0GLSC9x0dvOU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gsw9uaAhX39rBZjJUPgUFdslVxkk+Ql6Y72iba0Fd80Xjcw07S2AbY/NqJ/KdDZrF
-	 G3OCX/Oda3d11u4p8vzuOjadDuK7bzm2pcI/LWxLjSKqydGPWIlLRxHiSawVNDO0Qf
-	 nzLO2JJBZlAuThlqXyaWUERTjssIlTdRh+Pm2lQw=
+	b=An8xtmiDz7TJyQHFlCzVn9fxtfeFFREAxhW8yrI6rG3YQTfwA8j65yAUjnYBcmFcM
+	 FdbTMmCI/ej4ESdsGyKGix/vgKZpSgVlmUG8Q4SJRTX+mNkYaLk/t20kFxb9Dei2so
+	 X4JK3WGTryrMywNXQrrAtCazJI928CI8OIFH1dmI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Luca Weiss <luca.weiss@fairphone.com>,
-	Stephan Gerhold <stephan.gerhold@linaro.org>,
-	Bjorn Andersson <andersson@kernel.org>,
+	Pekka Ristola <pekkarr@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Christian Brauner <brauner@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 226/512] arm64: dts: qcom: sm8350: Reenable crypto & cryptobam
-Date: Tue, 17 Jun 2025 17:23:12 +0200
-Message-ID: <20250617152428.778167093@linuxfoundation.org>
+Subject: [PATCH 6.15 485/780] rust: file: mark `LocalFile` as `repr(transparent)`
+Date: Tue, 17 Jun 2025 17:23:13 +0200
+Message-ID: <20250617152511.240571547@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
-References: <20250617152419.512865572@linuxfoundation.org>
+In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
+References: <20250617152451.485330293@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,61 +64,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luca Weiss <luca.weiss@fairphone.com>
+From: Pekka Ristola <pekkarr@protonmail.com>
 
-[ Upstream commit 75eefd474469abf95aa9ef6da8161d69f86b98b4 ]
+[ Upstream commit 15ecd83dc06277385ad71dc7ea26911d9a79acaf ]
 
-When num-channels and qcom,num-ees is not provided in devicetree, the
-driver will try to read these values from the registers during probe but
-this fails if the interconnect is not on and then crashes the system.
+Unsafe code in `LocalFile`'s methods assumes that the type has the same
+layout as the inner `bindings::file`. This is not guaranteed by the default
+struct representation in Rust, but requires specifying the `transparent`
+representation.
 
-So we can provide these properties in devicetree (queried after patching
-BAM driver to enable the necessary interconnect) so we can probe
-cryptobam without reading registers and then also use the QCE as
-expected.
+The `File` struct (which also wraps `bindings::file`) is already marked as
+`repr(transparent)`, so this change makes their layouts equivalent.
 
-Fixes: 4d29db204361 ("arm64: dts: qcom: sm8350: fix BAM DMA crash and reboot")
-Fixes: f1040a7fe8f0 ("arm64: dts: qcom: sm8350: Add Crypto Engine support")
-Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
-Signed-off-by: Stephan Gerhold <stephan.gerhold@linaro.org>
-Link: https://lore.kernel.org/r/20250212-bam-dma-fixes-v1-1-f560889e65d8@linaro.org
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Fixes: 851849824bb5 ("rust: file: add Rust abstraction for `struct file`")
+Closes: https://github.com/Rust-for-Linux/linux/issues/1165
+Signed-off-by: Pekka Ristola <pekkarr@protonmail.com>
+Link: https://lore.kernel.org/20250527204636.12573-1-pekkarr@protonmail.com
+Reviewed-by: Benno Lossin <lossin@kernel.org>
+Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/sm8350.dtsi | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ rust/kernel/fs/file.rs | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/arm64/boot/dts/qcom/sm8350.dtsi b/arch/arm64/boot/dts/qcom/sm8350.dtsi
-index 404473fa491ae..0be8f2befec7c 100644
---- a/arch/arm64/boot/dts/qcom/sm8350.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sm8350.dtsi
-@@ -1806,11 +1806,11 @@
- 			interrupts = <GIC_SPI 272 IRQ_TYPE_LEVEL_HIGH>;
- 			#dma-cells = <1>;
- 			qcom,ee = <0>;
-+			qcom,num-ees = <4>;
-+			num-channels = <16>;
- 			qcom,controlled-remotely;
- 			iommus = <&apps_smmu 0x594 0x0011>,
- 				 <&apps_smmu 0x596 0x0011>;
--			/* FIXME: Probing BAM DMA causes some abort and system hang */
--			status = "fail";
- 		};
- 
- 		crypto: crypto@1dfa000 {
-@@ -1822,8 +1822,6 @@
- 				 <&apps_smmu 0x596 0x0011>;
- 			interconnects = <&aggre2_noc MASTER_CRYPTO 0 &mc_virt SLAVE_EBI1 0>;
- 			interconnect-names = "memory";
--			/* FIXME: dependency BAM DMA is disabled */
--			status = "disabled";
- 		};
- 
- 		ipa: ipa@1e40000 {
+diff --git a/rust/kernel/fs/file.rs b/rust/kernel/fs/file.rs
+index 13a0e44cd1aa8..138693bdeb3fd 100644
+--- a/rust/kernel/fs/file.rs
++++ b/rust/kernel/fs/file.rs
+@@ -219,6 +219,7 @@ unsafe impl AlwaysRefCounted for File {
+ ///   must be on the same thread as this file.
+ ///
+ /// [`assume_no_fdget_pos`]: LocalFile::assume_no_fdget_pos
++#[repr(transparent)]
+ pub struct LocalFile {
+     inner: Opaque<bindings::file>,
+ }
 -- 
 2.39.5
 
