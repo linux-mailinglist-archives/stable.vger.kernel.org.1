@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-153943-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153955-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 45F7BADD720
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:41:33 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DD77DADD694
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:35:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9A01D4A3B31
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:31:02 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2C9F07A2B71
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:31:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 49CD32E9730;
-	Tue, 17 Jun 2025 16:26:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10BD52F2C4B;
+	Tue, 17 Jun 2025 16:27:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KR0tFDUL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ubLG3zOW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F196A285053;
-	Tue, 17 Jun 2025 16:26:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF0AC2EF282;
+	Tue, 17 Jun 2025 16:27:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750177602; cv=none; b=no4uRpdxyoYoGmHx6Aa9EAE5LoAmSpZZmpZOIOOUokhkEAw01bm/zffIJguWDEtBZzPc5aQFK6xiJexug6FOvAYvuBLSnUiilYjRWbdbFjEPr9gFrxO+a7Uu4S1dRKg4xNcwBG2sNFdo0ajWVDCWD28HNIVgo7UX4D062fSBiDM=
+	t=1750177635; cv=none; b=B3LGLIaSyE+1GJApRRuhCyjXhbLPyXZKMd9H2uca6hersE4p6sfgB4CYqLClWxRvcZZEY9t0USb+HdDmziSMNfmdoH9A07nOS1nqUla+CxoCXFc/qJ40Q+67zuwxT87Qi4N+M/VCkdEN2hqv2jX7ipLqaXPcz8ZoXRNkI4y09UY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750177602; c=relaxed/simple;
-	bh=1qEtxk5eaHFO7TKelh+6lrmCRFTIGyB/vdEtCkr08q4=;
+	s=arc-20240116; t=1750177635; c=relaxed/simple;
+	bh=rkgl8ZT68Az0s6QCrBr280g4SZOqHyINRgsU6w5dCrM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=U0zI60Oa9+MDjT2qjvQIf86SN+Z2GO7UmCTiEwI/zVcVWE16fyVUOOYI/dxHA55H4Sa0Gy+8s+8Q7gl6a4iOkmXNdW9QLHsj8yv2vuWxOZaV6rC4IBQBrFpgHMgZL24SJ/k2aZRd5LvNxFqxoV9Zm11D0dtsUMoe1oa0e/L4fVA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KR0tFDUL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2877C4CEE3;
-	Tue, 17 Jun 2025 16:26:40 +0000 (UTC)
+	 MIME-Version; b=C8hBoV++NP/V4aGB/KkMxUEqekhPQjM/6YHmtOvT+yr0dSJLwyvsaOOqb+0tsx3QOQY7DWZEFqyN1gDkCt9Z+pHH+LNfpj6+61zXUIVy9Ziepni3/1e0BWPKor4nTW+oSRNJCoKrjuc3L3ixbmJ40lmZOgxcfHtZg5yJk3xp7UM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ubLG3zOW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36E86C4CEE3;
+	Tue, 17 Jun 2025 16:27:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750177601;
-	bh=1qEtxk5eaHFO7TKelh+6lrmCRFTIGyB/vdEtCkr08q4=;
+	s=korg; t=1750177635;
+	bh=rkgl8ZT68Az0s6QCrBr280g4SZOqHyINRgsU6w5dCrM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KR0tFDULqMLDh76HSLeKXrMqJYeeTDpzToo626IsQMz4FXTBSPNCCKfi4831G4dg5
-	 vugMIUH2EsfHXNvBxp/+rbqABohj1u49/vGGqTWnoBBkqXTLpEiqk21FuVAVvrZjMy
-	 BgryjMxp7MMQZSsCyTl9nDsC39gI21FLk0EbZtOA=
+	b=ubLG3zOWrot9U/EbrhMrMKf1iDUaP1z027JxnpM49+q+U5IntSwERp9iTpBvuCRV2
+	 X4dKs0hyFwr6WA+GdBUzwD6ozB18+cWadlFUfElDuh5NHc3jiXtJKgWWzuyEO/QM+4
+	 LKjZJrSFE2zlCfZCGqgbkIzjWesQHYsqUI1XA2t4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nitin Singh <nitsingh@nvidia.com>,
-	Jeremy Kerr <jk@codeconstruct.com.au>,
+	Alexander Lobakin <alobakin@pm.me>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Russell King <linux@armlinux.org.uk>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 328/780] net: mctp: start tx queue on netdev open
-Date: Tue, 17 Jun 2025 17:20:36 +0200
-Message-ID: <20250617152504.810834148@linuxfoundation.org>
+Subject: [PATCH 6.15 329/780] net: phy: fix up const issues in to_mdio_device() and to_phy_device()
+Date: Tue, 17 Jun 2025 17:20:37 +0200
+Message-ID: <20250617152504.850752368@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
 References: <20250617152451.485330293@linuxfoundation.org>
@@ -67,36 +69,61 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Jeremy Kerr <jk@codeconstruct.com.au>
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
-[ Upstream commit 126cd7852a62c6fab11a4a4cb6fa96421929ab69 ]
+[ Upstream commit e9cb929670a1e98b592b30f03f06e9e20110f318 ]
 
-We stop queues in ndo_stop, so they need to be restarted in ndo_open.
-This allows us to resume tx after a link down/up cycle.
+Both to_mdio_device() and to_phy_device() "throw away" the const pointer
+attribute passed to them and return a non-const pointer, which generally
+is not a good thing overall.  Fix this up by using container_of_const()
+which was designed for this very problem.
 
-Suggested-by: Nitin Singh <nitsingh@nvidia.com>
-Fixes: 0791c0327a6e ("net: mctp: Add MCTP USB transport driver")
-Signed-off-by: Jeremy Kerr <jk@codeconstruct.com.au>
-Link: https://patch.msgid.link/20250526-dev-mctp-usb-v1-1-c7bd6cb75aa0@codeconstruct.com.au
+Cc: Alexander Lobakin <alobakin@pm.me>
+Cc: Andrew Lunn <andrew@lunn.ch>
+Cc: Heiner Kallweit <hkallweit1@gmail.com>
+Cc: Russell King <linux@armlinux.org.uk>
+Fixes: 7eab14de73a8 ("mdio, phy: fix -Wshadow warnings triggered by nested container_of()")
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://patch.msgid.link/2025052246-conduit-glory-8fc9@gregkh
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/mctp/mctp-usb.c | 2 ++
- 1 file changed, 2 insertions(+)
+ include/linux/mdio.h | 5 +----
+ include/linux/phy.h  | 5 +----
+ 2 files changed, 2 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/net/mctp/mctp-usb.c b/drivers/net/mctp/mctp-usb.c
-index e8d4b01c3f345..775a386d0aca1 100644
---- a/drivers/net/mctp/mctp-usb.c
-+++ b/drivers/net/mctp/mctp-usb.c
-@@ -257,6 +257,8 @@ static int mctp_usb_open(struct net_device *dev)
+diff --git a/include/linux/mdio.h b/include/linux/mdio.h
+index 3c3deac57894e..e43ff9f980a46 100644
+--- a/include/linux/mdio.h
++++ b/include/linux/mdio.h
+@@ -45,10 +45,7 @@ struct mdio_device {
+ 	unsigned int reset_deassert_delay;
+ };
  
- 	WRITE_ONCE(mctp_usb->stopped, false);
+-static inline struct mdio_device *to_mdio_device(const struct device *dev)
+-{
+-	return container_of(dev, struct mdio_device, dev);
+-}
++#define to_mdio_device(__dev)	container_of_const(__dev, struct mdio_device, dev)
  
-+	netif_start_queue(dev);
-+
- 	return mctp_usb_rx_queue(mctp_usb, GFP_KERNEL);
- }
+ /* struct mdio_driver_common: Common to all MDIO drivers */
+ struct mdio_driver_common {
+diff --git a/include/linux/phy.h b/include/linux/phy.h
+index a2bfae80c4497..bef68f6af99a9 100644
+--- a/include/linux/phy.h
++++ b/include/linux/phy.h
+@@ -744,10 +744,7 @@ struct phy_device {
+ #define PHY_F_NO_IRQ		0x80000000
+ #define PHY_F_RXC_ALWAYS_ON	0x40000000
  
+-static inline struct phy_device *to_phy_device(const struct device *dev)
+-{
+-	return container_of(to_mdio_device(dev), struct phy_device, mdio);
+-}
++#define to_phy_device(__dev)	container_of_const(to_mdio_device(__dev), struct phy_device, mdio)
+ 
+ /**
+  * struct phy_tdr_config - Configuration of a TDR raw test
 -- 
 2.39.5
 
