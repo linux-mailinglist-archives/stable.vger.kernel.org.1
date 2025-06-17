@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-153227-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153231-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3DD76ADD306
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 17:52:36 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9EEDCADD341
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 17:55:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 395BB7A9A3C
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 15:49:53 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8D43A402C67
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 15:51:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 728512DFF2A;
-	Tue, 17 Jun 2025 15:48:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22AB12EF282;
+	Tue, 17 Jun 2025 15:48:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P6Olthrh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PDFldgg4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 216512EA14F;
-	Tue, 17 Jun 2025 15:48:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B75242EA176;
+	Tue, 17 Jun 2025 15:48:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750175284; cv=none; b=N5mqwWKefK/NSiX6TUNgYYgdOCbKKUqwLu+FZ39wqB0UbaaQ7JAojKKaoG/4yezxlpoAyy51dZwSWyEpnp4nbqxdQISNOiZT7u3JdH+kWqd8LAvEWWmElHXztOEjmtKrjeU9qAxcYwk5wOt2UG2mqfGj6X4HInwlu6eJLem048E=
+	t=1750175296; cv=none; b=Ea5FVZaxihsF5l9YHtICZCni7UpA1pWoSyMl5xkv0Mi2mFoWX+NHc2TxqI8vYVk3cCeWFS7qmPBkTUQsXbml8cjI4l23CWcCVRivLFKnm0O4MMVrDih4rN7XTJNE4hrUUbPOIU0VlUKLmLjpod/P1XW2kzn8fJVRhSHW5viWSRo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750175284; c=relaxed/simple;
-	bh=dVcKa67pkXNf20oihiI6q2gWjP9yAMDBha9zzalTAXQ=;
+	s=arc-20240116; t=1750175296; c=relaxed/simple;
+	bh=6hQvvdYL1LxQrOYmz8K8/3SQBhk5APkmby1odPgwovE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=rwes8+xvQfYf41Dh5X5XBNwe/cenCxbhpSvoDeAUrRGFrBkqhdUvGFrsaAhqEEdhN8HCOWLQMysHopk1bL3Op+tQrVjo2df/mlhTDkQWPTSKzPvakThOf5eWjhwaY4Uk48XRWRx5Ji1RPKWF0TO+hiy6Yeetgmg1FT7MISm/xkg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P6Olthrh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 853E6C4CEF0;
-	Tue, 17 Jun 2025 15:48:03 +0000 (UTC)
+	 MIME-Version; b=HXI9UJYdn+T7Q6wKtyjMxGVrHF2T1U60b5yXppu3kp+Ykye9BIG+GCtzAHAG8n4l0hqhngof4uaP/JhvbmWsV/TFkcO3NQ6VKg/4E/u53xaTait8xO2XGc5K1aGvQjfinm2aob07SNsgDBkB/oPSck7ba+xSlP0K1NGiqCtzyq4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PDFldgg4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22D14C4CEF0;
+	Tue, 17 Jun 2025 15:48:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750175284;
-	bh=dVcKa67pkXNf20oihiI6q2gWjP9yAMDBha9zzalTAXQ=;
+	s=korg; t=1750175296;
+	bh=6hQvvdYL1LxQrOYmz8K8/3SQBhk5APkmby1odPgwovE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=P6Olthrhm/LnK9+x1r0mrUYAmBlOBkz3ivQjVf2fYdo7LCXvpwNPhpXJHRe308Agy
-	 pNF6aTpUAbL+KjqBqjB1akzOScXe8c0sMV5JMmTzX7E9vLE9Hov2qTzNu2hXEljK39
-	 1zWPL2Un5ASTlYTjP/6PjADPknibBPV95Bn7n4pY=
+	b=PDFldgg4crPc7OPCjoAsxoKgPHqkbNQJTvPnOa2TMMSOqvYnqTdg6UTuk1T7w3TjL
+	 HlRGk1Ovz0MERqJyFnj4o463t+jTQzKJ9qcgq2utelgvch3CRg/jo2/x3d273POSCk
+	 FxPhTM3we057qOz4krZL7Jz7SYD8RHk9pyPmD2vw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thorsten Blum <thorsten.blum@linux.dev>,
-	=?UTF-8?q?Amadeusz=20S=C5=82awi=C5=84ski?= <amadeuszx.slawinski@linux.intel.com>,
+	Vijendar Mukunda <Vijendar.Mukunda@amd.com>,
+	Ranjani Sridharan <ranjani.sridharan@linux.intel.com>,
+	Bard Liao <yung-chuan.liao@linux.intel.com>,
 	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 070/780] ASoC: Intel: avs: Fix kcalloc() sizes
-Date: Tue, 17 Jun 2025 17:16:18 +0200
-Message-ID: <20250617152454.367141504@linuxfoundation.org>
+Subject: [PATCH 6.15 071/780] ASoC: SOF: amd: add missing acp descriptor field
+Date: Tue, 17 Jun 2025 17:16:19 +0200
+Message-ID: <20250617152454.407199803@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
 References: <20250617152451.485330293@linuxfoundation.org>
@@ -61,48 +62,42 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thorsten Blum <thorsten.blum@linux.dev>
+From: Vijendar Mukunda <Vijendar.Mukunda@amd.com>
 
-[ Upstream commit d20df86b056b95845f6ed52da1010059202a0c23 ]
+[ Upstream commit 7c2bad7b95db5b4b978853cd4dd042ae3ec83e63 ]
 
-rlist, clist, and slist are allocated using sizeof(pointer) instead of
-sizeof(*pointer). Fix the allocations by using sizeof(*pointer) and
-avoid overallocating memory on 64-bit systems.
+Add missing acp descriptor field acp_error_stat for ACP7.0 platform.
 
-Fixes: f2f847461fb7 ("ASoC: Intel: avs: Constrain path based on BE capabilities")
-Signed-off-by: Thorsten Blum <thorsten.blum@linux.dev>
-Reviewed-by: Amadeusz Sławiński <amadeuszx.slawinski@linux.intel.com>
-Link: https://patch.msgid.link/20250426141342.94134-2-thorsten.blum@linux.dev
+Fixes: 490be7ba2a01 ("ASoC: SOF: amd: add support for acp7.0 based platform")
+
+Signed-off-by: Vijendar Mukunda <Vijendar.Mukunda@amd.com>
+Reviewed-by: Ranjani Sridharan <ranjani.sridharan@linux.intel.com>
+Reviewed-by: Bard Liao <yung-chuan.liao@linux.intel.com>
+Link: https://patch.msgid.link/20250502154445.3008598-3-Vijendar.Mukunda@amd.com
 Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/intel/avs/path.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ sound/soc/sof/amd/pci-acp70.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/sound/soc/intel/avs/path.c b/sound/soc/intel/avs/path.c
-index cafb8c6198bed..8f1bf8d0af8f9 100644
---- a/sound/soc/intel/avs/path.c
-+++ b/sound/soc/intel/avs/path.c
-@@ -131,9 +131,9 @@ int avs_path_set_constraint(struct avs_dev *adev, struct avs_tplg_path_template
- 	list_for_each_entry(path_template, &template->path_list, node)
- 		i++;
- 
--	rlist = kcalloc(i, sizeof(rlist), GFP_KERNEL);
--	clist = kcalloc(i, sizeof(clist), GFP_KERNEL);
--	slist = kcalloc(i, sizeof(slist), GFP_KERNEL);
-+	rlist = kcalloc(i, sizeof(*rlist), GFP_KERNEL);
-+	clist = kcalloc(i, sizeof(*clist), GFP_KERNEL);
-+	slist = kcalloc(i, sizeof(*slist), GFP_KERNEL);
- 
- 	i = 0;
- 	list_for_each_entry(path_template, &template->path_list, node) {
+diff --git a/sound/soc/sof/amd/pci-acp70.c b/sound/soc/sof/amd/pci-acp70.c
+index 8fa1170a2161e..9108f1139ff2d 100644
+--- a/sound/soc/sof/amd/pci-acp70.c
++++ b/sound/soc/sof/amd/pci-acp70.c
+@@ -33,6 +33,7 @@ static const struct sof_amd_acp_desc acp70_chip_info = {
+ 	.ext_intr_cntl = ACP70_EXTERNAL_INTR_CNTL,
+ 	.ext_intr_stat	= ACP70_EXT_INTR_STAT,
+ 	.ext_intr_stat1	= ACP70_EXT_INTR_STAT1,
++	.acp_error_stat = ACP70_ERROR_STATUS,
+ 	.dsp_intr_base	= ACP70_DSP_SW_INTR_BASE,
+ 	.acp_sw0_i2s_err_reason = ACP7X_SW0_I2S_ERROR_REASON,
+ 	.sram_pte_offset = ACP70_SRAM_PTE_OFFSET,
 -- 
 2.39.5
 
