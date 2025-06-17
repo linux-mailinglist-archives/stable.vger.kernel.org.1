@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-154515-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153784-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9076AADD953
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 19:05:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9C25CADD704
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:39:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 11E511BC0FB1
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:58:02 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C704519E3101
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:24:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 837642FA633;
-	Tue, 17 Jun 2025 16:57:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A3A82EA167;
+	Tue, 17 Jun 2025 16:18:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="URagdDtB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2lob0M9U"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F8B72FA624;
-	Tue, 17 Jun 2025 16:57:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 365A220B807;
+	Tue, 17 Jun 2025 16:18:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750179455; cv=none; b=SOO7H5m35+FZljFiGayn2bQ7ukwotBK0WKrLtqJfQ1tljJwtQZVcNcc0mVJp5pKKAJIB1HJwu6RupLgRzC56lLc/0X4x682pA43/j4Qe13zSvt9CaV5fUrEgNlZzNlYCx8AOqqFQxPYALIxQgbX5ZVAKTCAZ4s07DMe8RZJIxFU=
+	t=1750177087; cv=none; b=fSM5VNhhV66Gt8/cNGAxt5AlypcI9AmZCGZGxKTd+MaM9XWdX7nm1a2kU6djgqUElYjQ1Seu0uT+1hQhxT7VXo8pAtr9k4lhu4IvzB+YA0v26LqNRa1cKCEnSUICY3t4krQJgdGEL7YkZl+LwWs5zODtstj01RlL87BuYcdp2aU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750179455; c=relaxed/simple;
-	bh=mYO40vBGiCJpcdjHE0DBahhWJ1/e511UFm2h5fAtQc4=;
+	s=arc-20240116; t=1750177087; c=relaxed/simple;
+	bh=33tm+DYyXJJvtotchUNsw5+STpSUGpCRfaLqbmdWqsQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MUUq3oC6wZtlcVkZ6LvEEzZGz+NeT+BtBadrf0UPWCbHp/M9y+yrGXHPbVO9e6ZRZFMXqSvIQ28tMjnVWQqoYQCXPzZS5Hf+RY5Pno7Hdp5j9NR/XdnbxnsAVP1T4RIIQpY/uIZggghScEBITq315FdPUdHDVTHQpAtTMV5amW0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=URagdDtB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2A61C4CEE3;
-	Tue, 17 Jun 2025 16:57:34 +0000 (UTC)
+	 MIME-Version; b=I3KtKEVEWMwP/iFn6xNsCwIFJXxLcu7MjN4MDa7p+wx1uE1TfIatJAtqHOQlsdAPlutIdFNGeoWPssOhcbqxMbjJG0qkphEh+G6F2+M8mAsgX5qgxJ/1tifgbWgEy3OWpiUsIsSlu2aK+XBz6OYUuKoTC0vhz/6uE9X6uDr9SnI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2lob0M9U; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99B54C4CEE3;
+	Tue, 17 Jun 2025 16:18:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750179455;
-	bh=mYO40vBGiCJpcdjHE0DBahhWJ1/e511UFm2h5fAtQc4=;
+	s=korg; t=1750177087;
+	bh=33tm+DYyXJJvtotchUNsw5+STpSUGpCRfaLqbmdWqsQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=URagdDtBKjWwx/ALN6JOpYi5MFiDVuGyW3A00jBY4FjjmBFmSBtM7NOuW+pvfTfiV
-	 RMdqfGaHbf9ZJg7yI1rFQkJ2Fyg93SbnHD+DMCjcIlNu8mzLqB54T6FcVX3jHircc4
-	 imPmSLXYOFJpu1RV7wMSxP6TCJS1Im7wLsjW3EgM=
+	b=2lob0M9U/i55OpqvU+vJyhJLHfzTcmFBcGvLzTf/o2q1cxd27SvOUGX8VdJn+xzNd
+	 F8oTZlQvg+Vd9Pf8IFSUMpSS3JBj9rJUCOy665VDh/vd8XacPclBHzFYJK/r+f3JmF
+	 au1AsGMzRueM+Vcd0vzTIzUNIHnOccjbWOx/HvBA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	stable <stable@kernel.org>,
-	Peter Korsgaard <peter@korsgaard.com>,
-	Michal Simek <michal.simek@amd.com>,
-	Srinivas Kandagatla <srini@kernel.org>
-Subject: [PATCH 6.15 752/780] nvmem: zynqmp_nvmem: unbreak driver after cleanup
-Date: Tue, 17 Jun 2025 17:27:40 +0200
-Message-ID: <20250617152522.126403011@linuxfoundation.org>
+	Wupeng Ma <mawupeng1@huawei.com>
+Subject: [PATCH 6.6 346/356] VMCI: fix race between vmci_host_setup_notify and vmci_ctx_unset_notify
+Date: Tue, 17 Jun 2025 17:27:41 +0200
+Message-ID: <20250617152352.065902957@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
-References: <20250617152451.485330293@linuxfoundation.org>
+In-Reply-To: <20250617152338.212798615@linuxfoundation.org>
+References: <20250617152338.212798615@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,42 +61,100 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peter Korsgaard <peter@korsgaard.com>
+From: Wupeng Ma <mawupeng1@huawei.com>
 
-commit fe8abdd175d7b547ae1a612757e7902bcd62e9cf upstream.
+commit 1bd6406fb5f36c2bb1e96e27d4c3e9f4d09edde4 upstream.
 
-Commit 29be47fcd6a0 ("nvmem: zynqmp_nvmem: zynqmp_nvmem_probe cleanup")
-changed the driver to expect the device pointer to be passed as the
-"context", but in nvmem the context parameter comes from nvmem_config.priv
-which is never set - Leading to null pointer exceptions when the device is
-accessed.
+During our test, it is found that a warning can be trigger in try_grab_folio
+as follow:
 
-Fixes: 29be47fcd6a0 ("nvmem: zynqmp_nvmem: zynqmp_nvmem_probe cleanup")
+  ------------[ cut here ]------------
+  WARNING: CPU: 0 PID: 1678 at mm/gup.c:147 try_grab_folio+0x106/0x130
+  Modules linked in:
+  CPU: 0 UID: 0 PID: 1678 Comm: syz.3.31 Not tainted 6.15.0-rc5 #163 PREEMPT(undef)
+  RIP: 0010:try_grab_folio+0x106/0x130
+  Call Trace:
+   <TASK>
+   follow_huge_pmd+0x240/0x8e0
+   follow_pmd_mask.constprop.0.isra.0+0x40b/0x5c0
+   follow_pud_mask.constprop.0.isra.0+0x14a/0x170
+   follow_page_mask+0x1c2/0x1f0
+   __get_user_pages+0x176/0x950
+   __gup_longterm_locked+0x15b/0x1060
+   ? gup_fast+0x120/0x1f0
+   gup_fast_fallback+0x17e/0x230
+   get_user_pages_fast+0x5f/0x80
+   vmci_host_unlocked_ioctl+0x21c/0xf80
+  RIP: 0033:0x54d2cd
+  ---[ end trace 0000000000000000 ]---
+
+Digging into the source, context->notify_page may init by get_user_pages_fast
+and can be seen in vmci_ctx_unset_notify which will try to put_page. However
+get_user_pages_fast is not finished here and lead to following
+try_grab_folio warning. The race condition is shown as follow:
+
+cpu0			cpu1
+vmci_host_do_set_notify
+vmci_host_setup_notify
+get_user_pages_fast(uva, 1, FOLL_WRITE, &context->notify_page);
+lockless_pages_from_mm
+gup_pgd_range
+gup_huge_pmd  // update &context->notify_page
+			vmci_host_do_set_notify
+			vmci_ctx_unset_notify
+			notify_page = context->notify_page;
+			if (notify_page)
+			put_page(notify_page);	// page is freed
+__gup_longterm_locked
+__get_user_pages
+follow_trans_huge_pmd
+try_grab_folio // warn here
+
+To slove this, use local variable page to make notify_page can be seen
+after finish get_user_pages_fast.
+
+Fixes: a1d88436d53a ("VMCI: Fix two UVA mapping bugs")
 Cc: stable <stable@kernel.org>
-Signed-off-by: Peter Korsgaard <peter@korsgaard.com>
-Reviewed-by: Michal Simek <michal.simek@amd.com>
-Tested-by: Michal Simek <michal.simek@amd.com>
-Signed-off-by: Srinivas Kandagatla <srini@kernel.org>
-Link: https://lore.kernel.org/r/20250509122407.11763-3-srini@kernel.org
+Closes: https://lore.kernel.org/all/e91da589-ad57-3969-d979-879bbd10dddd@huawei.com/
+Signed-off-by: Wupeng Ma <mawupeng1@huawei.com>
+Link: https://lore.kernel.org/r/20250510033040.901582-1-mawupeng1@huawei.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/nvmem/zynqmp_nvmem.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/misc/vmw_vmci/vmci_host.c |   11 +++++------
+ 1 file changed, 5 insertions(+), 6 deletions(-)
 
---- a/drivers/nvmem/zynqmp_nvmem.c
-+++ b/drivers/nvmem/zynqmp_nvmem.c
-@@ -213,6 +213,7 @@ static int zynqmp_nvmem_probe(struct pla
- 	econfig.word_size = 1;
- 	econfig.size = ZYNQMP_NVMEM_SIZE;
- 	econfig.dev = dev;
-+	econfig.priv = dev;
- 	econfig.add_legacy_fixed_of_cells = true;
- 	econfig.reg_read = zynqmp_nvmem_read;
- 	econfig.reg_write = zynqmp_nvmem_write;
+--- a/drivers/misc/vmw_vmci/vmci_host.c
++++ b/drivers/misc/vmw_vmci/vmci_host.c
+@@ -227,6 +227,7 @@ static int drv_cp_harray_to_user(void __
+ static int vmci_host_setup_notify(struct vmci_ctx *context,
+ 				  unsigned long uva)
+ {
++	struct page *page;
+ 	int retval;
+ 
+ 	if (context->notify_page) {
+@@ -243,13 +244,11 @@ static int vmci_host_setup_notify(struct
+ 	/*
+ 	 * Lock physical page backing a given user VA.
+ 	 */
+-	retval = get_user_pages_fast(uva, 1, FOLL_WRITE, &context->notify_page);
+-	if (retval != 1) {
+-		context->notify_page = NULL;
++	retval = get_user_pages_fast(uva, 1, FOLL_WRITE, &page);
++	if (retval != 1)
+ 		return VMCI_ERROR_GENERIC;
+-	}
+-	if (context->notify_page == NULL)
+-		return VMCI_ERROR_UNAVAILABLE;
++
++	context->notify_page = page;
+ 
+ 	/*
+ 	 * Map the locked page and set up notify pointer.
 
 
 
