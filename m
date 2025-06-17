@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-153287-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153291-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D59EAADD3B9
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:01:48 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9405FADD3D2
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:02:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0F7C53BFC57
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 15:54:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E844E3BFF08
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 15:54:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55F512EA14A;
-	Tue, 17 Jun 2025 15:51:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53A3B2EA151;
+	Tue, 17 Jun 2025 15:51:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TASV4xwP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WZvbkUS7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 099C62EA143;
-	Tue, 17 Jun 2025 15:51:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F96E2DFF3D;
+	Tue, 17 Jun 2025 15:51:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750175472; cv=none; b=iF0X5Lzslnbq9OyfbHGQmAqV+/W065H55dYSwR8LMlZEQUoX3A/0JlowZHgoJQ/Cp0KzQg/MbXOLvrV2lJMKOKeyo3Lpkj2aY2RvqhqToGI50hend2gC6DCmbJj7DLTJdGjXHlCXTaLV5IfUkucxxqda/RaVN4N+X/vm0PyMDx4=
+	t=1750175481; cv=none; b=asG8n36d4+UGl9gwiHeYvENF+QcK8Mkv9mYMagK3z3toYt5k/q0oo82bkQd3fNzeH9HYJ3D3MwKaLoNtCjOMmc7TcEWrU3xel8VAwZcGQ1dMBEM9NQgZmBrG5aM3SeED7F7z7i2r+Zu827Ob971++9P4J58w0+OKukClsQCJYlE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750175472; c=relaxed/simple;
-	bh=YvrvUYEBYaUw5u/Ev1tweaRTEfqkbvHuGaoANjpxQqU=;
+	s=arc-20240116; t=1750175481; c=relaxed/simple;
+	bh=tz62SUgiUe5nn81QlMzWwov5E9khfBR3guccP5qDEvg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rfNFu7u1ssVJUUfTvo1B0I1IN9ZxtMiy/MgrUIdBysv9niUauIhz/uqvXPiPXxQnGblNbV4NXZBoRo9WfkmD5GU1BxQXGnUPfDvfQ9Z5hwKhlZptaRcIT1VcZjdeDG++zJjrRWVzcAzIJIhU7aBDm7o72GceOv1fCDeMxJEj+B0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TASV4xwP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8DCEEC4CEE3;
-	Tue, 17 Jun 2025 15:51:11 +0000 (UTC)
+	 MIME-Version; b=fuCrGK/H7d1vxQLv0qS4uaYPHhoKlaokD1EOnoepzHe/vKx1MJ8s5mK+R0Vjv4Z6fZRZJLeIFxpodJmR4tc+JzTsUAJUPYjYQurkOpMCl+UmmvOkLitRKFI+gH11Fxv1XkdC+cprkCzUWLF4nxXa6LKCjN8+9ubIfqeFhJaH29I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WZvbkUS7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71B28C4CEE3;
+	Tue, 17 Jun 2025 15:51:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750175471;
-	bh=YvrvUYEBYaUw5u/Ev1tweaRTEfqkbvHuGaoANjpxQqU=;
+	s=korg; t=1750175480;
+	bh=tz62SUgiUe5nn81QlMzWwov5E9khfBR3guccP5qDEvg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TASV4xwPe+Acpctriwz9ULebGTmqPq/E0v5bMUfSE/r6Aj548aaZHbi03977aA2YO
-	 Ga5YJUMgZ4BhwMp469ymfY7aCh7X3Li7J7nVRQFKW7WJ32KNoddOop7zONzG4M4Ayc
-	 5S8KUB929Iaa5Zc21JyAzAAX+sbM8T/Ry2YGi4lc=
+	b=WZvbkUS7qph6VBpb+f9PeVIEU6+udQSdpsOE1ECQGTiWfL18grGRWCdncA5yD91wZ
+	 prQFuY0uNA3sw9TYCQDRuaC8qnqeOj5tyG5utthqc1v22N/JPEf4pGVFLda+bPuWpn
+	 DiZXXoAUrYkdsd5pRiOmtTQZVmF4hqtO+R9drrcM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vignesh Raman <vignesh.raman@collabora.com>,
-	Daniel Stone <daniels@collabora.com>,
-	Helen Koike <helen.fornazier@gmail.com>,
+	Ian Forbes <ian.forbes@broadcom.com>,
+	Zack Rusin <zack.rusin@broadcom.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 091/780] drm/ci: fix merge request rules
-Date: Tue, 17 Jun 2025 17:16:39 +0200
-Message-ID: <20250617152455.222206705@linuxfoundation.org>
+Subject: [PATCH 6.15 092/780] drm/vmwgfx: Fix dumb buffer leak
+Date: Tue, 17 Jun 2025 17:16:40 +0200
+Message-ID: <20250617152455.261364410@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
 References: <20250617152451.485330293@linuxfoundation.org>
@@ -67,76 +66,133 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Vignesh Raman <vignesh.raman@collabora.com>
+From: Ian Forbes <ian.forbes@broadcom.com>
 
-[ Upstream commit 10646ddac2917b31c985ceff0e4982c42a9c924b ]
+[ Upstream commit f42c09e614f1bda96f5690be8d0bb273234febbc ]
 
-Merge request pipelines were only created when changes
-were made to drivers/gpu/drm/ci/, causing MRs that
-didn't touch this path to break. Fix MR pipeline rules
-to trigger jobs for all changes.
+Dumb buffers were not being freed because the GEM reference that was
+acquired in gb_surface_define was not dropped like it is in the 2D case.
+Dropping this ref uncovered a few additional issues with freeing the
+resources associated with dirty tracking in vmw_bo_free/release.
 
-Run jobs automatically for marge-bot and scheduled
-pipelines, but in all other cases run manually. Also
-remove CI_PROJECT_NAMESPACE checks specific to mesa.
+Additionally the TTM object associated with the surface were also leaking
+which meant that when the ttm_object_file was closed at process exit the
+destructor unreferenced an already destroyed surface.
 
-Fixes: df54f04f2020 ("drm/ci: update gitlab rules")
-Signed-off-by: Vignesh Raman <vignesh.raman@collabora.com>
-Reviewed-by: Daniel Stone <daniels@collabora.com>
-Signed-off-by: Helen Koike <helen.fornazier@gmail.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20250228132620.556079-1-vignesh.raman@collabora.com
+The solution is to remove the destructor from the vmw_user_surface
+associated with the dumb_buffer and immediately unreferencing the TTM
+object which his removes it from the ttm_object_file.
+
+This also allows the early return in vmw_user_surface_base_release for the
+dumb buffer case to be removed as it should no longer occur.
+
+The chain of references now has the GEM handle(s) owning the dumb buffer.
+The GEM handles have a singular GEM reference to the vmw_bo which is
+dropped when all handles are closed. When the GEM reference count hits
+zero the vmw_bo is freed which then unreferences the surface via
+vmw_resource_release in vmw_bo_release.
+
+Fixes: d6667f0ddf46 ("drm/vmwgfx: Fix handling of dumb buffers")
+Signed-off-by: Ian Forbes <ian.forbes@broadcom.com>
+Reviewed-by: Zack Rusin <zack.rusin@broadcom.com>
+Signed-off-by: Zack Rusin <zack.rusin@broadcom.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20250123204424.836896-1-ian.forbes@broadcom.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/ci/gitlab-ci.yml | 19 ++++---------------
- 1 file changed, 4 insertions(+), 15 deletions(-)
+ drivers/gpu/drm/vmwgfx/vmwgfx_bo.c       |  6 ++++--
+ drivers/gpu/drm/vmwgfx/vmwgfx_resource.c |  2 +-
+ drivers/gpu/drm/vmwgfx/vmwgfx_surface.c  | 18 ++++++++++++------
+ 3 files changed, 17 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/gpu/drm/ci/gitlab-ci.yml b/drivers/gpu/drm/ci/gitlab-ci.yml
-index f04aabe8327c6..b06b9e7d3d09b 100644
---- a/drivers/gpu/drm/ci/gitlab-ci.yml
-+++ b/drivers/gpu/drm/ci/gitlab-ci.yml
-@@ -143,11 +143,11 @@ stages:
-     # Pre-merge pipeline
-     - if: &is-pre-merge $CI_PIPELINE_SOURCE == "merge_request_event"
-     # Push to a branch on a fork
--    - if: &is-fork-push $CI_PROJECT_NAMESPACE != "mesa" && $CI_PIPELINE_SOURCE == "push"
-+    - if: &is-fork-push $CI_PIPELINE_SOURCE == "push"
-     # nightly pipeline
-     - if: &is-scheduled-pipeline $CI_PIPELINE_SOURCE == "schedule"
-     # pipeline for direct pushes that bypassed the CI
--    - if: &is-direct-push $CI_PROJECT_NAMESPACE == "mesa" && $CI_PIPELINE_SOURCE == "push" && $GITLAB_USER_LOGIN != "marge-bot"
-+    - if: &is-direct-push $CI_PIPELINE_SOURCE == "push" && $GITLAB_USER_LOGIN != "marge-bot"
+diff --git a/drivers/gpu/drm/vmwgfx/vmwgfx_bo.c b/drivers/gpu/drm/vmwgfx/vmwgfx_bo.c
+index aa13e4061ff15..f30df3dc871fd 100644
+--- a/drivers/gpu/drm/vmwgfx/vmwgfx_bo.c
++++ b/drivers/gpu/drm/vmwgfx/vmwgfx_bo.c
+@@ -51,11 +51,13 @@ static void vmw_bo_release(struct vmw_bo *vbo)
+ 			mutex_lock(&res->dev_priv->cmdbuf_mutex);
+ 			(void)vmw_resource_reserve(res, false, true);
+ 			vmw_resource_mob_detach(res);
++			if (res->dirty)
++				res->func->dirty_free(res);
+ 			if (res->coherent)
+ 				vmw_bo_dirty_release(res->guest_memory_bo);
+ 			res->guest_memory_bo = NULL;
+ 			res->guest_memory_offset = 0;
+-			vmw_resource_unreserve(res, false, false, false, NULL,
++			vmw_resource_unreserve(res, true, false, false, NULL,
+ 					       0);
+ 			mutex_unlock(&res->dev_priv->cmdbuf_mutex);
+ 		}
+@@ -73,9 +75,9 @@ static void vmw_bo_free(struct ttm_buffer_object *bo)
+ {
+ 	struct vmw_bo *vbo = to_vmw_bo(&bo->base);
  
+-	WARN_ON(vbo->dirty);
+ 	WARN_ON(!RB_EMPTY_ROOT(&vbo->res_tree));
+ 	vmw_bo_release(vbo);
++	WARN_ON(vbo->dirty);
+ 	kfree(vbo);
+ }
  
- # Rules applied to every job in the pipeline
-@@ -170,26 +170,15 @@ stages:
-     - !reference [.disable-farm-mr-rules, rules]
-     # Never run immediately after merging, as we just ran everything
-     - !reference [.never-post-merge-rules, rules]
--    # Build everything in merge pipelines, if any files affecting the pipeline
--    # were changed
-+    # Build everything in merge pipelines
-     - if: *is-merge-attempt
--      changes: &all_paths
--      - drivers/gpu/drm/ci/**/*
-       when: on_success
-     # Same as above, but for pre-merge pipelines
-     - if: *is-pre-merge
--      changes:
--        *all_paths
-       when: manual
--    # Skip everything for pre-merge and merge pipelines which don't change
--    # anything in the build
--    - if: *is-merge-attempt
--      when: never
--    - if: *is-pre-merge
--      when: never
-     # Build everything after someone bypassed the CI
-     - if: *is-direct-push
--      when: on_success
-+      when: manual
-     # Build everything in scheduled pipelines
-     - if: *is-scheduled-pipeline
-       when: on_success
+diff --git a/drivers/gpu/drm/vmwgfx/vmwgfx_resource.c b/drivers/gpu/drm/vmwgfx/vmwgfx_resource.c
+index a73af8a355fbf..c4d5fe5f330f9 100644
+--- a/drivers/gpu/drm/vmwgfx/vmwgfx_resource.c
++++ b/drivers/gpu/drm/vmwgfx/vmwgfx_resource.c
+@@ -273,7 +273,7 @@ int vmw_user_resource_lookup_handle(struct vmw_private *dev_priv,
+ 		goto out_bad_resource;
+ 
+ 	res = converter->base_obj_to_res(base);
+-	kref_get(&res->kref);
++	vmw_resource_reference(res);
+ 
+ 	*p_res = res;
+ 	ret = 0;
+diff --git a/drivers/gpu/drm/vmwgfx/vmwgfx_surface.c b/drivers/gpu/drm/vmwgfx/vmwgfx_surface.c
+index 1f7626f6ac0b1..d7a8070330ba5 100644
+--- a/drivers/gpu/drm/vmwgfx/vmwgfx_surface.c
++++ b/drivers/gpu/drm/vmwgfx/vmwgfx_surface.c
+@@ -658,7 +658,7 @@ static void vmw_user_surface_free(struct vmw_resource *res)
+ 	struct vmw_user_surface *user_srf =
+ 	    container_of(srf, struct vmw_user_surface, srf);
+ 
+-	WARN_ON_ONCE(res->dirty);
++	WARN_ON(res->dirty);
+ 	if (user_srf->master)
+ 		drm_master_put(&user_srf->master);
+ 	kfree(srf->offsets);
+@@ -689,8 +689,7 @@ static void vmw_user_surface_base_release(struct ttm_base_object **p_base)
+ 	 * Dumb buffers own the resource and they'll unref the
+ 	 * resource themselves
+ 	 */
+-	if (res && res->guest_memory_bo && res->guest_memory_bo->is_dumb)
+-		return;
++	WARN_ON(res && res->guest_memory_bo && res->guest_memory_bo->is_dumb);
+ 
+ 	vmw_resource_unreference(&res);
+ }
+@@ -2370,12 +2369,19 @@ int vmw_dumb_create(struct drm_file *file_priv,
+ 	vbo = res->guest_memory_bo;
+ 	vbo->is_dumb = true;
+ 	vbo->dumb_surface = vmw_res_to_srf(res);
+-
++	drm_gem_object_put(&vbo->tbo.base);
++	/*
++	 * Unset the user surface dtor since this in not actually exposed
++	 * to userspace. The suface is owned via the dumb_buffer's GEM handle
++	 */
++	struct vmw_user_surface *usurf = container_of(vbo->dumb_surface,
++						struct vmw_user_surface, srf);
++	usurf->prime.base.refcount_release = NULL;
+ err:
+ 	if (res)
+ 		vmw_resource_unreference(&res);
+-	if (ret)
+-		ttm_ref_object_base_unref(tfile, arg.rep.handle);
++
++	ttm_ref_object_base_unref(tfile, arg.rep.handle);
+ 
+ 	return ret;
+ }
 -- 
 2.39.5
 
