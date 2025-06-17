@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-153985-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153987-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D1D4CADD830
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:52:58 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id B20F7ADD77A
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:45:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E33F019E3939
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:34:34 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 85B2D4A2D09
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:34:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30014285072;
-	Tue, 17 Jun 2025 16:28:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B75B20B807;
+	Tue, 17 Jun 2025 16:29:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XMQx8LM6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J2HIKUbt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7D35239E85;
-	Tue, 17 Jun 2025 16:28:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB29C221F14;
+	Tue, 17 Jun 2025 16:29:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750177733; cv=none; b=uwNi7K5sqvpH1bR8gIR1orHSXxvhmWquUcWDGQMoj5ohoL9sHJBat06WYhbeGEEkq2DhGd5mfVZMdI8EPaHKcEWhHInsCSTaxfnbUCxajhbl+ifMlOrO5Cx4ADOrv9xpeNYKmpnjMJ/i1xAY6WH+VLg6BJdDPBqQ3RKeL1V0aD4=
+	t=1750177741; cv=none; b=j4621xWjIQJgQullzanrgPYB6zQaJihxJBZJYiGla6vafxSw1TQghVxUBfEYn9aNkI06SMXx3618g3Fexil3U3/I3RRq2nJqYjRWV+O6ei5XKNND+4O4JN9H0L5yUVMh25WighX95zEJGbSjw5A+00JYTWrY7T8yK/ezMiewOPc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750177733; c=relaxed/simple;
-	bh=tBMVdGS8+QKkJv/gcZbcfAu3ekgAjhguwMCt8LJYJoY=;
+	s=arc-20240116; t=1750177741; c=relaxed/simple;
+	bh=MJk9HwJsAVjG04PGKKANtecZM1f0crFt8l/5C+LdCSI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=hX85flvitAAyfitxape3pGOaQno4ZjKj+3t1VkeMrxXG5Cw26kUW+HBzWJ3nSmCdvBP/+w8ZXWaIv9aZ/VNfQL6kUjUMnTt6Gi/bWM0+PzcNCoOSWxkZ4nTePxx8p2dDUlw7Aam1cgDTRFNDsDPQCfDyXKWCXp8pM99lr30O5RY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XMQx8LM6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4894AC4CEF0;
-	Tue, 17 Jun 2025 16:28:53 +0000 (UTC)
+	 MIME-Version:Content-Type; b=JKOFR0SYBYtnokEs9jpH++L80QnVQYTgdiVkr5XLn6DVkHweuW2xg3Aph8lVyXQrAuRAUd0vpScBQ6sG1e5nulnivxDOTDShr91l+NxIHeScBTXF3Jg17mpyWEhu1BqIYf7kPP0+7t9JJpSlNZWlb7k0tjvr9ZO+BLDA3s8fJXA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J2HIKUbt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D6F4C4CEE3;
+	Tue, 17 Jun 2025 16:28:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750177733;
-	bh=tBMVdGS8+QKkJv/gcZbcfAu3ekgAjhguwMCt8LJYJoY=;
+	s=korg; t=1750177740;
+	bh=MJk9HwJsAVjG04PGKKANtecZM1f0crFt8l/5C+LdCSI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XMQx8LM6kEaRWHxyYzY6u8Wvrs64ArdYB3JFdObqGvF4a9quJMXn7zvYNgObGxFW6
-	 PNaNWFUSD6icVjcpgsQzsQvY6AFQ0PWy4SprK8QG02Vck0jrfd0MEe3KRWb/XrP1RC
-	 xywkzL3DgkVCw4aai26EJkaI9y6ISPtTF0nZfZsg=
+	b=J2HIKUbt8q+4SG+9D8pSm3gY4mFMH7zPcbv8Su34CAhii0ycZY5ysd2si/Me7+qbf
+	 Pn/iQzUI8eTwPH8I1zFgtEE3C4jaUng47OmYfnAsWdxupehgtP8T6sGQ/cSZuQIc1A
+	 CZdOqBR388+5SeP+TIwzKRFUVwS6xcgu04qySiOM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -46,9 +46,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Cezary Rojewski <cezary.rojewski@intel.com>,
 	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 388/512] ASoC: codecs: hda: Fix RPM usage count underflow
-Date: Tue, 17 Jun 2025 17:25:54 +0200
-Message-ID: <20250617152435.306347971@linuxfoundation.org>
+Subject: [PATCH 6.12 389/512] ASoC: Intel: avs: Fix deadlock when the failing IPC is SET_D0IX
+Date: Tue, 17 Jun 2025 17:25:55 +0200
+Message-ID: <20250617152435.345631835@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
 References: <20250617152419.512865572@linuxfoundation.org>
@@ -70,53 +70,38 @@ Content-Transfer-Encoding: 8bit
 
 From: Cezary Rojewski <cezary.rojewski@intel.com>
 
-[ Upstream commit ff0045de4ee0288dec683690f66f2f369b7d3466 ]
+[ Upstream commit 9ad1f3cd0d60444c69948854c7e50d2a61b63755 ]
 
-RPM manipulation in hda_codec_probe_complete()'s error path is
-superfluous and leads to RPM usage count underflow if the
-build-controls operation fails.
+The procedure handling IPC timeouts and EXCEPTION_CAUGHT notification
+shall cancel any D0IX work before proceeding with DSP recovery. If
+SET_D0IX called from delayed_work is the failing IPC the procedure will
+deadlock. Conditionally skip cancelling the work to fix that.
 
-hda_codec_probe_complete() is called in:
-
-1) hda_codec_probe() for all non-HDMI codecs
-2) in card->late_probe() for HDMI codecs
-
-Error path for hda_codec_probe() takes care of bus' RPM already.
-For 2) if late_probe() fails, ASoC performs card cleanup what
-triggers hda_codec_remote() - same treatment is in 1).
-
-Fixes: b5df2a7dca1c ("ASoC: codecs: Add HD-Audio codec driver")
+Fixes: 335c4cbd201d ("ASoC: Intel: avs: D0ix power state support")
 Reviewed-by: Amadeusz Sławiński <amadeuszx.slawinski@linux.intel.com>
 Signed-off-by: Cezary Rojewski <cezary.rojewski@intel.com>
-Link: https://patch.msgid.link/20250530141025.2942936-2-cezary.rojewski@intel.com
+Link: https://patch.msgid.link/20250530141025.2942936-3-cezary.rojewski@intel.com
 Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/codecs/hda.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ sound/soc/intel/avs/ipc.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/sound/soc/codecs/hda.c b/sound/soc/codecs/hda.c
-index ddc00927313cf..dc7794c9ac44c 100644
---- a/sound/soc/codecs/hda.c
-+++ b/sound/soc/codecs/hda.c
-@@ -152,7 +152,7 @@ int hda_codec_probe_complete(struct hda_codec *codec)
- 	ret = snd_hda_codec_build_controls(codec);
- 	if (ret < 0) {
- 		dev_err(&hdev->dev, "unable to create controls %d\n", ret);
--		goto out;
-+		return ret;
- 	}
+diff --git a/sound/soc/intel/avs/ipc.c b/sound/soc/intel/avs/ipc.c
+index 4fba46e77c470..eff1d46040da6 100644
+--- a/sound/soc/intel/avs/ipc.c
++++ b/sound/soc/intel/avs/ipc.c
+@@ -169,7 +169,9 @@ static void avs_dsp_exception_caught(struct avs_dev *adev, union avs_notify_msg
  
- 	/* Bus suspended codecs as it does not manage their pm */
-@@ -160,7 +160,7 @@ int hda_codec_probe_complete(struct hda_codec *codec)
- 	/* rpm was forbidden in snd_hda_codec_device_new() */
- 	snd_hda_codec_set_power_save(codec, 2000);
- 	snd_hda_codec_register(codec);
--out:
-+
- 	/* Complement pm_runtime_get_sync(bus) in probe */
- 	pm_runtime_mark_last_busy(bus->dev);
- 	pm_runtime_put_autosuspend(bus->dev);
+ 	dev_crit(adev->dev, "communication severed, rebooting dsp..\n");
+ 
+-	cancel_delayed_work_sync(&ipc->d0ix_work);
++	/* Avoid deadlock as the exception may be the response to SET_D0IX. */
++	if (current_work() != &ipc->d0ix_work.work)
++		cancel_delayed_work_sync(&ipc->d0ix_work);
+ 	ipc->in_d0ix = false;
+ 	/* Re-enabled on recovery completion. */
+ 	pm_runtime_disable(adev->dev);
 -- 
 2.39.5
 
