@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-153035-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153039-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2CCA7ADD1FF
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 17:37:38 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 96358ADD203
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 17:37:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CBF5717D148
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 15:37:38 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7CA653BDE5B
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 15:37:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A955F2EB5AB;
-	Tue, 17 Jun 2025 15:37:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 062D42ECD20;
+	Tue, 17 Jun 2025 15:37:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="erItK4tJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aps7TItQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6487D2DF3C9;
-	Tue, 17 Jun 2025 15:37:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B66742E9730;
+	Tue, 17 Jun 2025 15:37:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750174656; cv=none; b=F1KjtV3pe7z3ONNxAp1OO7/PFvZncrU8bGYQo6opcbl6CbxZaydlZE/8AHdjcKFmaKeKYn5x3fuZoUJhQgDvY73dTkwo1p4sW6Vs+udHkzKOsUUVe0nYjy7UoAW83mup20ai+UOkWISW+07AanFI1alopULyiW2DCCDDPzgcW7Q=
+	t=1750174669; cv=none; b=dtSMfMoDQtNMl0VCwJWGTHSfnSdu/BT08y91VnGvmm+jCU7QEK1pdSrIqYePtfOWxO7miZC6DL4YG12WJPXv3e2txwOX2hjvTN7d8EsjBUuM8M7SdsbNJQVtxu9jL9sd70ovp40th9jJMe+87VB1vXq+HD9HETGZB12GEfrI49w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750174656; c=relaxed/simple;
-	bh=JypuzBis73hv2S0zz4bsC4aywDqJOnJUn41Jn552veo=;
+	s=arc-20240116; t=1750174669; c=relaxed/simple;
+	bh=fAqqKKUZFC0oqu0sRo6JyJMeAlTCYeJyPJDE06Ac/Ko=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Igf7WlM0xmSRvxLiqJtUoupSbs8HNecGmkirVXP18Iua5mSDJ3pWiObXcBO0qQ+f7QOaDgh/THiC1OElprdpFagHZYEvBP2U1TcrowojryJHDex2KAORH8aknioXQAJTbJcs5svIAZ0gL8Bfk58DLWHP+PkPQY2UWOGMpXlxCeE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=erItK4tJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9E69C4CEF0;
-	Tue, 17 Jun 2025 15:37:35 +0000 (UTC)
+	 MIME-Version; b=YipaSaBw97B1xgZJaX9x4cVOD1Hc2iutk3sEqcuJhkOd29TNumgz9WIK2kvz4ioomaxQAnxFf5tBpqWMStv+ye/ciE/FVjkFh59cy9VnFA1F6LAJ9+H9dG1lV5OEYbzPxYX09KVS0dvS4t1HHPY2BOcqybBOoxl298Eg6wWN1wU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aps7TItQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1C1FC4CEE3;
+	Tue, 17 Jun 2025 15:37:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750174656;
-	bh=JypuzBis73hv2S0zz4bsC4aywDqJOnJUn41Jn552veo=;
+	s=korg; t=1750174669;
+	bh=fAqqKKUZFC0oqu0sRo6JyJMeAlTCYeJyPJDE06Ac/Ko=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=erItK4tJJspralb6SGsNSMdH/6NLjukmr4jG2jLcARWWb+WlnFBRsaDO5jQ8Lu8e/
-	 2IdRzSGHOfNJXvstZ6ODxmQs3GzG1oX7hiji7GrIHvdq2TIJUuCLIXSLsY9T8wvwtr
-	 mdQzSiv48HbjTeFJ9HYXGQ6WQHlQGRJUFpmqDYSs=
+	b=aps7TItQBLZhBzid4mXXwZFo6bHJFjpbxtZbfBwH2ib6ZnO2wxK5tRZBhqNhjZpT8
+	 Xd+0edHx0IRgk0fdbSKYpAQYdX0THDJn4lDO22/rVxhtQZRIpX5pb91Xb315MtU+Rn
+	 x55y5Urec1FXAxGEYYE3Y/gfdTRRZq++FK4wQgNg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jonathan Wiepert <jonathan.wiepert@gmail.com>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Mykyta Yatsenko <mykyta.yatsenko5@gmail.com>,
+	Jason Gunthorpe <jgg@nvidia.com>,
+	Lu Baolu <baolu.lu@linux.intel.com>,
+	Joerg Roedel <jroedel@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 099/356] Use thread-safe function pointer in libbpf_print
-Date: Tue, 17 Jun 2025 17:23:34 +0200
-Message-ID: <20250617152342.210098182@linuxfoundation.org>
+Subject: [PATCH 6.6 100/356] iommu: Protect against overflow in iommu_pgsize()
+Date: Tue, 17 Jun 2025 17:23:35 +0200
+Message-ID: <20250617152342.252621034@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250617152338.212798615@linuxfoundation.org>
 References: <20250617152338.212798615@linuxfoundation.org>
@@ -67,37 +67,54 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Jonathan Wiepert <jonathan.wiepert@gmail.com>
+From: Jason Gunthorpe <jgg@nvidia.com>
 
-[ Upstream commit 91dbac4076537b464639953c055c460d2bdfc7ea ]
+[ Upstream commit e586e22974d2b7acbef3c6c3e01b2d5ce69efe33 ]
 
-This patch fixes a thread safety bug where libbpf_print uses the
-global variable storing the print function pointer rather than the local
-variable that had the print function set via __atomic_load_n.
+On a 32 bit system calling:
+ iommu_map(0, 0x40000000)
 
-Fixes: f1cb927cdb62 ("libbpf: Ensure print callback usage is thread-safe")
-Signed-off-by: Jonathan Wiepert <jonathan.wiepert@gmail.com>
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Acked-by: Mykyta Yatsenko <mykyta.yatsenko5@gmail.com>
-Link: https://lore.kernel.org/bpf/20250424221457.793068-1-jonathan.wiepert@gmail.com
+When using the AMD V1 page table type with a domain->pgsize of 0xfffff000
+causes iommu_pgsize() to miscalculate a result of:
+  size=0x40000000 count=2
+
+count should be 1. This completely corrupts the mapping process.
+
+This is because the final test to adjust the pagesize malfunctions when
+the addition overflows. Use check_add_overflow() to prevent this.
+
+Fixes: b1d99dc5f983 ("iommu: Hook up '->unmap_pages' driver callback")
+Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
+Reviewed-by: Lu Baolu <baolu.lu@linux.intel.com>
+Link: https://lore.kernel.org/r/0-v1-3ad28fc2e3a3+163327-iommu_overflow_pgsize_jgg@nvidia.com
+Signed-off-by: Joerg Roedel <jroedel@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/lib/bpf/libbpf.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/iommu/iommu.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/tools/lib/bpf/libbpf.c b/tools/lib/bpf/libbpf.c
-index 18e96375dc319..5dc2e55553358 100644
---- a/tools/lib/bpf/libbpf.c
-+++ b/tools/lib/bpf/libbpf.c
-@@ -246,7 +246,7 @@ void libbpf_print(enum libbpf_print_level level, const char *format, ...)
- 	old_errno = errno;
+diff --git a/drivers/iommu/iommu.c b/drivers/iommu/iommu.c
+index f2b3a4e2e54fc..3fa5699b9ff19 100644
+--- a/drivers/iommu/iommu.c
++++ b/drivers/iommu/iommu.c
+@@ -2382,6 +2382,7 @@ static size_t iommu_pgsize(struct iommu_domain *domain, unsigned long iova,
+ 	unsigned int pgsize_idx, pgsize_idx_next;
+ 	unsigned long pgsizes;
+ 	size_t offset, pgsize, pgsize_next;
++	size_t offset_end;
+ 	unsigned long addr_merge = paddr | iova;
  
- 	va_start(args, format);
--	__libbpf_pr(level, format, args);
-+	print_fn(level, format, args);
- 	va_end(args);
+ 	/* Page sizes supported by the hardware and small enough for @size */
+@@ -2422,7 +2423,8 @@ static size_t iommu_pgsize(struct iommu_domain *domain, unsigned long iova,
+ 	 * If size is big enough to accommodate the larger page, reduce
+ 	 * the number of smaller pages.
+ 	 */
+-	if (offset + pgsize_next <= size)
++	if (!check_add_overflow(offset, pgsize_next, &offset_end) &&
++	    offset_end <= size)
+ 		size = offset;
  
- 	errno = old_errno;
+ out_set_count:
 -- 
 2.39.5
 
