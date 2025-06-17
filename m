@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-153218-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153221-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E4CECADD31E
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 17:53:38 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id DB06AADD321
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 17:53:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5AADD16587B
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 15:51:00 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CC599161BCA
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 15:51:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10ACD2DFF32;
-	Tue, 17 Jun 2025 15:47:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F5362DFF39;
+	Tue, 17 Jun 2025 15:47:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nNG8AO+e"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PCECPBoF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B57312DFF2C;
-	Tue, 17 Jun 2025 15:47:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0B5D2DFF2A;
+	Tue, 17 Jun 2025 15:47:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750175254; cv=none; b=qT3nJfijufBgXL9wykAf/0R2ZPw2y5cIOSRNCKSDE1QNFLHH3dEZ+2g1lnt5LEEOwUvkEWiC0Ibqhwb/BjDxWf47ctGkgoQazitkU8cnPxPuTRMn842GUmnnPpc0Z+8VeqV/bLzQyWTcx0ubS6DXws2x3eGS36N3HgWYdaNctks=
+	t=1750175264; cv=none; b=AP3Rvhjtn6JFJBf96ujfesVQMw1hjNzIF3K+xuZ4T8K9ayz3bomSAMQfLYmm6aGFZCfrzbH4xVIOJ2YwGaY2bRQgcpjDOtuhF92qP0Lm0Ea+VSkqnLgI3rQfT7Vq76ntl0V2lMYqrUgfeBTrCtwdL78XwTeWrJ88iHLaDUJjq/I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750175254; c=relaxed/simple;
-	bh=HviFDJSEjr96H49vcTrowhU2XWxGDm+Redp5d1CCyds=;
+	s=arc-20240116; t=1750175264; c=relaxed/simple;
+	bh=Q/EsvUV8HUPMpy83DQEEwuwRf9id1feptKRXT3JGbeo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jj4NTemMmV0CZmIH/Gu/DT00qRjIxgt9MUy/GRutBqMPE6g4GK+Wo030j6FOWoxuObYn9LwXeYS2hxWTpkN8D0l7lLgIX3ggVJ9q1NtOtnD3+kU54GQNnI5kSa3ONoX15+JUtwT7qwWIHXGmzBr0xoqvrN3y2QQ+E0OXSQ/9yR0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nNG8AO+e; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27821C4CEE3;
-	Tue, 17 Jun 2025 15:47:33 +0000 (UTC)
+	 MIME-Version; b=AqkJsu0y6822q4ZUILo/rUlWpUPXFP0UfaY7AazR3XQLQXOJCMdTnDqtLcTof1NzSCyuWrLs9DNA4Hf2F+0IlVfx947aaNZmegn4izgZHSnva/GRdyGdENL0fN3YFEwL0LlOGCmf3haLFBo4s06J3K+H/Tw/lfIeriyq4CUMEJI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PCECPBoF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F743C4CEE3;
+	Tue, 17 Jun 2025 15:47:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750175254;
-	bh=HviFDJSEjr96H49vcTrowhU2XWxGDm+Redp5d1CCyds=;
+	s=korg; t=1750175264;
+	bh=Q/EsvUV8HUPMpy83DQEEwuwRf9id1feptKRXT3JGbeo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nNG8AO+e9WIyVmWY90As7IqIwX6cDFMIDid2eTG2wA18Jvhb1cyBVk8P3xDoF7OZh
-	 p0i37L6fW5ZkZSmYQYlMtwTR9ynbRj+g9eW5BoL5Hu9gGl1+XPO/hEiwabCuiHYvJe
-	 6CBZs9kf8coCSp46+/KrfbEESlZVSM+7+CuDYqno=
+	b=PCECPBoFkK75310/dkpL6OLre/dPAKu1mwVt8+kFQjQ1FdkxzWylDOuq1Y9PSYvYu
+	 ufJyMBphZ+gMHVjHRqD1ZZeY23m58B7NVkLM/w3mi3e+1emuiJZk4VCGximvQw+ZLV
+	 C8kYuZWL0yEc8Zr4zEF6q8hGVero2gTq3VGUc5Hc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Sebastian Reichel <sebastian.reichel@collabora.com>,
+	Benson Leung <bleung@chromium.org>,
+	Jameson Thies <jthies@google.com>,
+	Abhishek Pandit-Subedi <abhishekpandit@chromium.org>,
+	Tzung-Bi Shih <tzungbi@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 067/780] power: supply: max77705: Fix workqueue error handling in probe
-Date: Tue, 17 Jun 2025 17:16:15 +0200
-Message-ID: <20250617152454.233190200@linuxfoundation.org>
+Subject: [PATCH 6.15 068/780] platform/chrome: cros_ec_typec: Set Pin Assignment E in DP PORT VDO
+Date: Tue, 17 Jun 2025 17:16:16 +0200
+Message-ID: <20250617152454.279255738@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
 References: <20250617152451.485330293@linuxfoundation.org>
@@ -67,62 +68,54 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Benson Leung <bleung@chromium.org>
 
-[ Upstream commit 11741b8e382d34b13277497ab91123d8b0b5c2db ]
+[ Upstream commit a9635ef0ca12e7914f42bfa7ca6a019f606c2817 ]
 
-The create_singlethread_workqueue() doesn't return error pointers, it
-returns NULL.  Also cleanup the workqueue on the error paths.
+Pin C and D are used on C-to-C cable applications including docks,
+and for USB-C adapters that convert from DP over USB-C to other
+video standards.
 
-Fixes: a6a494c8e3ce ("power: supply: max77705: Add charger driver for Maxim 77705")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Link: https://lore.kernel.org/r/547656e3-4a5f-4f2e-802b-4edcb7c576b0@stanley.mountain
-Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
+Pin Assignment E is intended to be used with adapter from USB-C to DP
+plugs or receptacles.
+
+All Chromebook USB-C DFPs support DisplayPort Alternate Mode as the DP
+Source with support for all 3 pin assignments. Pin Assignment E is required
+in order to support if the user attaches a Pin E C-to-DP cable.
+
+Without this, the displayport.c alt mode driver will error out of
+dp_altmode_probe with an -ENODEV, as it cannot find a compatible matching
+pin assignment between the DFP_D and UFP_D.
+
+Fixes: dbb3fc0ffa95 ("platform/chrome: cros_ec_typec: Displayport support")
+
+Signed-off-by: Benson Leung <bleung@chromium.org>
+Reviewed-by: Jameson Thies <jthies@google.com>
+Reviewed-by: Abhishek Pandit-Subedi <abhishekpandit@chromium.org>
+Link: https://lore.kernel.org/r/20250428174828.13939-1-bleung@chromium.org
+Signed-off-by: Tzung-Bi Shih <tzungbi@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/power/supply/max77705_charger.c | 20 ++++++++++++++------
- 1 file changed, 14 insertions(+), 6 deletions(-)
+ drivers/platform/chrome/cros_ec_typec.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/power/supply/max77705_charger.c b/drivers/power/supply/max77705_charger.c
-index eec5e9ef795ef..329b430d0e506 100644
---- a/drivers/power/supply/max77705_charger.c
-+++ b/drivers/power/supply/max77705_charger.c
-@@ -545,20 +545,28 @@ static int max77705_charger_probe(struct i2c_client *i2c)
- 		return dev_err_probe(dev, ret, "failed to add irq chip\n");
+diff --git a/drivers/platform/chrome/cros_ec_typec.c b/drivers/platform/chrome/cros_ec_typec.c
+index d2228720991ff..7678e3d05fd36 100644
+--- a/drivers/platform/chrome/cros_ec_typec.c
++++ b/drivers/platform/chrome/cros_ec_typec.c
+@@ -22,8 +22,10 @@
  
- 	chg->wqueue = create_singlethread_workqueue(dev_name(dev));
--	if (IS_ERR(chg->wqueue))
--		return dev_err_probe(dev, PTR_ERR(chg->wqueue), "failed to create workqueue\n");
-+	if (!chg->wqueue)
-+		return dev_err_probe(dev, -ENOMEM, "failed to create workqueue\n");
+ #define DRV_NAME "cros-ec-typec"
  
- 	ret = devm_work_autocancel(dev, &chg->chgin_work, max77705_chgin_isr_work);
--	if (ret)
--		return dev_err_probe(dev, ret, "failed to initialize interrupt work\n");
-+	if (ret) {
-+		dev_err_probe(dev, ret, "failed to initialize interrupt work\n");
-+		goto destroy_wq;
-+	}
+-#define DP_PORT_VDO	(DP_CONF_SET_PIN_ASSIGN(BIT(DP_PIN_ASSIGN_C) | BIT(DP_PIN_ASSIGN_D)) | \
+-				DP_CAP_DFP_D | DP_CAP_RECEPTACLE)
++#define DP_PORT_VDO	(DP_CAP_DFP_D | DP_CAP_RECEPTACLE | \
++			 DP_CONF_SET_PIN_ASSIGN(BIT(DP_PIN_ASSIGN_C) | \
++						BIT(DP_PIN_ASSIGN_D) | \
++						BIT(DP_PIN_ASSIGN_E)))
  
- 	max77705_charger_initialize(chg);
- 
- 	ret = max77705_charger_enable(chg);
--	if (ret)
--		return dev_err_probe(dev, ret, "failed to enable charge\n");
-+	if (ret) {
-+		dev_err_probe(dev, ret, "failed to enable charge\n");
-+		goto destroy_wq;
-+	}
- 
- 	return devm_add_action_or_reset(dev, max77705_charger_disable, chg);
-+
-+destroy_wq:
-+	destroy_workqueue(chg->wqueue);
-+	return ret;
- }
- 
- static const struct of_device_id max77705_charger_of_match[] = {
+ static void cros_typec_role_switch_quirk(struct fwnode_handle *fwnode)
+ {
 -- 
 2.39.5
 
