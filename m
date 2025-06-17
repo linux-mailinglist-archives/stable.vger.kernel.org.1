@@ -1,119 +1,258 @@
-Return-Path: <stable+bounces-152866-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-152867-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 48682ADCEAD
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:05:21 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C5C6EADCF41
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:18:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EE624177508
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 14:05:21 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 123411882407
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 14:12:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE961156C40;
-	Tue, 17 Jun 2025 14:05:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF0442EE5F5;
+	Tue, 17 Jun 2025 14:07:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RJ6iyeTD"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="YF6dU/yU"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9AD311885AB
-	for <stable@vger.kernel.org>; Tue, 17 Jun 2025 14:05:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2CC22EE5F0;
+	Tue, 17 Jun 2025 14:07:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750169115; cv=none; b=Wg1yS8y9h54NHXLz/JevetXt6Ckiidy8K9gbpFxeNad+TjiGP3/0V1YIGstrBpLQnbM01Ud/7FpUwYeOudSe36YU1uNF5DMPCBDSLXjobGbL4HHfEWtWXHCaFoAclbxcFEk/NwcQuCgLdkZttxmjBtBxK76ZwrnixduIX27m7FM=
+	t=1750169274; cv=none; b=ZKtX1jibzFLl5pSnQZ7tjvFHER+aevkWtS03oSlgGNwg2dVy3VYLdH2y968+cpUAi28nNVJDhfiY0iUgHn5WiBkIKqe81UD8cSWJvRYb+WK+54QVHKmB9ThPN2sknSuzui0C/oo14FUyZtL7zKotbUYjs7PhAZlWJCAMUUMT1DM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750169115; c=relaxed/simple;
-	bh=PoXsMVMd4LH4FWaXCgOKsTLtrYq+kS0nfoFKY1fHWxA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=PLgd9XMKvGmygmGZzxIYHkteO7iqiNM0AK9tzYQrZ/JKWt/s6MA7UAEu6oSMAnkvcmBOawQtRNZ4df6FrAsN3s2/LwMLfGysuR3E6hxq1RjvF1F0MKV58qE+ZNly7+m5fUksG2j7z6mY9D10fKIal9YoOHlKffTSfSMs3plAYe4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RJ6iyeTD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D79BCC4CEE3;
-	Tue, 17 Jun 2025 14:05:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750169115;
-	bh=PoXsMVMd4LH4FWaXCgOKsTLtrYq+kS0nfoFKY1fHWxA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=RJ6iyeTD67JBDLuNG8L13rTmKKgbeVj3iT1mrH6BjxBPbYsSDBLGT3nA4ba4pAx+V
-	 ExWcWRucZNmnLMIbWIh6ifQI5CRPHTtscbjxQYz9XmYZktxtJ99/13pq3+WUJGgbxT
-	 EkZS2mTVQHUwK7qcunv8Ykxsmf6yC/sqw8S2X2GI=
-Date: Tue, 17 Jun 2025 16:05:12 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Philip =?iso-8859-1?Q?M=FCller?= <philm@manjaro.org>
-Cc: Laura Nao <laura.nao@collabora.com>, stable@vger.kernel.org,
-	Uday M Bhat <uday.m.bhat@intel.com>
-Subject: Re: 5.10 kernel series fails to build on newer toolchain: FAILED
- unresolved symbol filp_close
-Message-ID: <2025061742-underhand-defeat-eb33@gregkh>
-References: <34d5cd2e-1a9e-4898-8528-9e8c2e32b2a4@manjaro.org>
- <20250320112806.332385-1-laura.nao@collabora.com>
- <0e228177-991c-4637-9f06-267f5d4c0382@manjaro.org>
- <2025040121-strongbox-sculptor-15a1@gregkh>
- <722c3acd-6735-4882-a4b1-ed5c75fd4339@manjaro.org>
- <2025060532-cadmium-shaking-833e@gregkh>
- <1faa145a-65eb-4650-a5a1-6e9f9989b73f@manjaro.org>
+	s=arc-20240116; t=1750169274; c=relaxed/simple;
+	bh=T9OOKaWhoj7DDQMb3Wq83dKkPhFhOwOHgz5YBg7VX0A=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=jwsrb/z0QygzZjKXy1wMDmfndyGHGX+/pWKfgYsPojzd8dVuUiGaw3ugHkMRxhn9jKofwvKSPaA1gW+WS8+F2md8H/lH2plmOTQ81lH7lEsnvWrWpdeVJ6r6UL2/devk+/8Rx5Xn47L+48JTGjAvi0CAoSIXMswnr+RSW19E53w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=YF6dU/yU; arc=none smtp.client-ip=209.85.128.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-43edecbfb94so64713365e9.1;
+        Tue, 17 Jun 2025 07:07:52 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1750169271; x=1750774071; darn=vger.kernel.org;
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=ivq55s2BMYHtBsi6ov4cvhAeXemkfqjF3TqYbcPyrek=;
+        b=YF6dU/yUWnMDXH+0iZvNmZRKfWybpeihtFjRaAb9OuIm8+UDO/FTew6ajV2yuGF3RI
+         IYxOe4fR1z6AZ+loFp1WxKxrpfxMplk9RexpWSDjAOHwym3ljBtqJrKRYNvaVHPoQ0Y6
+         21i/9Nt48EwVPJDQCo6751iBDK5yMKPgPLpwnRSQuWsNm1uNm6Uf+dRXSjLiD/a1AMZU
+         eUpYvn3y1r2EC+ivtBdSUCqOMOVmisyKC6dn1EiKteM/qHu/TxLsHtWAN7HXDAlIvcqL
+         LV9tuv5Pgn2Mz0UVQw/ovy2aqMsPdLebH2g7Zwr28eg9krL7ciR5OiN3YPh9glEvlRrI
+         PZ4Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1750169271; x=1750774071;
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=ivq55s2BMYHtBsi6ov4cvhAeXemkfqjF3TqYbcPyrek=;
+        b=YCAB8qlHwSJX9hRDWqfM9iB64wWFW5SOKE2p+GJYiTYgJ9MNp5P8bBmzINatlBFV25
+         +Y0+D60OHTk0irQMTgWDDCaKkwJB23+Oc+27W2TmwZbyxqOuZ8ppM1CxkL0OHA02EXW+
+         H6R/nZIa7kyQO51dJ56mX6fsoKJlgN1u6GF5B0LrtzSNp3YjIUiSWVqc0JjD5yZtvz4t
+         q910UhORXKDOSNoOB24wWJi44MM+R3ABUjBtXy23OEH/TILOwLv4d55T0XgHkHQyWgqe
+         qRduajXgIdRwjAh4jbaG03/uQ+Lg+Xh4O8i5yYcxWMKwVulJ/LXGQTslFH3LjsAHND/L
+         KZFg==
+X-Forwarded-Encrypted: i=1; AJvYcCUgUBxzlpmG0OfV8qhgE/2XiBwmBGCNqyP7UvdR/gO2wwuyRDpcPEsOzKax7LY+sy+SFcQ=@vger.kernel.org, AJvYcCVTdX1H6WAlXXYn2CtVzhHCMhkbtAHb7Wydr/svRbJuK++QVSnZI3DJ0QSRU5leK4X3/9Qm7yLT@vger.kernel.org
+X-Gm-Message-State: AOJu0Yydp/V+6VcYfmYrGebgv/kvyB6R8mLNUDE8e/2cZvRw2o7GhpVj
+	7SgunADXGwBh5wICODApxONY6TBoS+hv8p16syq7fWh1KJfDWfHr9vIDdj+LW7oT
+X-Gm-Gg: ASbGncvVIxr7tpKYUtalp7Yae7W51ur59M99PZxNMAhS5g38ZhF63ywjWrbKSDc/5v7
+	Fc6LrfQIRlTHaRzzk6wymb0Xh/xMdpnhYoOH5B5fJppQFk8ta3sOSy0wjtIRTSPYLbdDvDN1lI1
+	titb3/uafr1q60HqmYxK+Y/77C6L3W913J2xJGqYzAvVZu5sZobfxvaemm74z2p+KPp4kfkKU2o
+	LMW3RuYzAj+bFUPLB8yLcXOw4EsHN/TCmLP2wEI1btSGE5fCY4tIyUzcu58eBh5DYCsm3XBlp0s
+	AsGtV2RYRwFj0iOJgzh/MDMIF5bVcTnnMnHRB1w6BjZ5QCVLgeGnjbFdmHgDd5zmeupcS1Kqpzv
+	Kb6dIcWm3nAFRA5WNWo96481dQAWT/PpxTeAXmpQV0JLqkU81KLj/m0tLwuyS
+X-Google-Smtp-Source: AGHT+IEn0WTjWbmm00QmPIHfwddk7luUQZW7M2S1aERg6+R2OMINz4LEs0GXI9SJ+s+ic8d5hJwAvQ==
+X-Received: by 2002:a05:600c:1e1d:b0:442:ccfa:1461 with SMTP id 5b1f17b1804b1-4533ca6ace2mr140067735e9.13.1750169270591;
+        Tue, 17 Jun 2025 07:07:50 -0700 (PDT)
+Received: from mail.gmail.com (2a01cb0889497e00112ae8a423a3e4b4.ipv6.abo.wanadoo.fr. [2a01:cb08:8949:7e00:112a:e8a4:23a3:e4b4])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4531fe85260sm167432695e9.0.2025.06.17.07.07.49
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 17 Jun 2025 07:07:49 -0700 (PDT)
+Date: Tue, 17 Jun 2025 16:07:48 +0200
+From: Paul Chaignon <paul.chaignon@gmail.com>
+To: stable@vger.kernel.org
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Sasha Levin <sashal@kernel.org>, netdev@vger.kernel.org,
+	bpf@vger.kernel.org, "David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	David Ahern <dsahern@kernel.org>, Tom Herbert <tom@herbertland.com>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Andrii Nakryiko <andrii@kernel.org>
+Subject: [PATCH stable 6.1-6.12 1/2] net: Fix checksum update for ILA
+ adj-transport
+Message-ID: <6520b247c2d367849f41689f71961e9741b1b7eb.1750168920.git.paul.chaignon@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <1faa145a-65eb-4650-a5a1-6e9f9989b73f@manjaro.org>
 
-On Sun, Jun 08, 2025 at 08:27:35AM +0200, Philip Müller wrote:
-> On 6/5/25 10:46, Greg KH wrote:
-> > I have no context here, sorry...
-> 
-> So basically, starting with GCC 15.1 the kernel series doesn't compile again
-> and errors out with: FAILED unresolved symbol filp_close. I tested now
-> v5.10.237 as well, which failed similar to v5.10.238.
-> 
-> There are some Debian reports out there:
-> 
-> https://linux.debian.bugs.dist.narkive.com/2JKeaFga/bug-1104662-failed-unresolved-symbol-filp-close-linux-kernel-5-10-237
-> https://www.mail-archive.com/debian-kernel@lists.debian.org/msg142397.html
-> 
-> And I also found this one:
-> 
-> https://lists-ec2.96boards.org/archives/list/linux-stable-mirror@lists.linaro.org/thread/7XFQI52N3KGUGFLPWCSJZW6DDFZCOXP4/
-> 
-> For GCC 14.1 I had to add the gnu 11 patch, which was discussed already.
-> Also 5.4 and 5.15 still compile with the newer toolchain ...
-> 
-> -- 
-> Best, Philip
+[ Upstream commit 6043b794c7668c19dabc4a93c75b924a19474d59 ]
 
-> Commit b3bee1e7c3f2b1b77182302c7b2131c804175870 x86/boot: Compile boot code with -std=gnu11 too
-> fixed a build failure when compiling with GCC 15. The same change is required for linux-5.10.236.
-> 
-> Signed-off-by: Chris Clayton <chris2553@googlemail.com>
-> Modified-by: Philip Mueller <philm@manjaro.org>
-> Link: https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=b3bee1e7c3f2b1b77182302c7b2131c804175870
-> 
-> 
-> diff -rup linux-5.10.236.orig/arch/x86/Makefile linux-5.10.236/arch/x86/Makefile
-> --- linux-5.10.236.orig/arch/x86/Makefile	2025-04-10 13:37:44.000000000 +0100
-> +++ linux-5.10.236/arch/x86/Makefile	2025-04-26 19:37:38.294386968 +0100
-> @@ -31,7 +31,7 @@ endif
->  CODE16GCC_CFLAGS := -m32 -Wa,$(srctree)/arch/x86/boot/code16gcc.h
->  M16_CFLAGS	 := $(call cc-option, -m16, $(CODE16GCC_CFLAGS))
->  
-> -REALMODE_CFLAGS	:= $(M16_CFLAGS) -g -Os -DDISABLE_BRANCH_PROFILING -D__DISABLE_EXPORTS \
-> +REALMODE_CFLAGS	:= -std=gnu11 $(M16_CFLAGS) -g -Os -DDISABLE_BRANCH_PROFILING -D__DISABLE_EXPORTS \
->  		   -Wall -Wstrict-prototypes -march=i386 -mregparm=3 \
->  		   -fno-strict-aliasing -fomit-frame-pointer -fno-pic \
->  		   -mno-mmx -mno-sse $(call cc-option,-fcf-protection=none)
+During ILA address translations, the L4 checksums can be handled in
+different ways. One of them, adj-transport, consist in parsing the
+transport layer and updating any found checksum. This logic relies on
+inet_proto_csum_replace_by_diff and produces an incorrect skb->csum when
+in state CHECKSUM_COMPLETE.
 
-Can you resend this in a format we can apply it in?
+This bug can be reproduced with a simple ILA to SIR mapping, assuming
+packets are received with CHECKSUM_COMPLETE:
 
-Also for the newer kernels, this was only backported to 6.6.y, so
-anything older than that should need this, right?
+  $ ip a show dev eth0
+  14: eth0@if15: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc noqueue state UP group default qlen 1000
+      link/ether 62:ae:35:9e:0f:8d brd ff:ff:ff:ff:ff:ff link-netnsid 0
+      inet6 3333:0:0:1::c078/64 scope global
+         valid_lft forever preferred_lft forever
+      inet6 fd00:10:244:1::c078/128 scope global nodad
+         valid_lft forever preferred_lft forever
+      inet6 fe80::60ae:35ff:fe9e:f8d/64 scope link proto kernel_ll
+         valid_lft forever preferred_lft forever
+  $ ip ila add loc_match fd00:10:244:1 loc 3333:0:0:1 \
+      csum-mode adj-transport ident-type luid dev eth0
 
-thanks,
+Then I hit [fd00:10:244:1::c078]:8000 with a server listening only on
+[3333:0:0:1::c078]:8000. With the bug, the SYN packet is dropped with
+SKB_DROP_REASON_TCP_CSUM after inet_proto_csum_replace_by_diff changed
+skb->csum. The translation and drop are visible on pwru [1] traces:
 
-greg k-h
+  IFACE   TUPLE                                                        FUNC
+  eth0:9  [fd00:10:244:3::3d8]:51420->[fd00:10:244:1::c078]:8000(tcp)  ipv6_rcv
+  eth0:9  [fd00:10:244:3::3d8]:51420->[fd00:10:244:1::c078]:8000(tcp)  ip6_rcv_core
+  eth0:9  [fd00:10:244:3::3d8]:51420->[fd00:10:244:1::c078]:8000(tcp)  nf_hook_slow
+  eth0:9  [fd00:10:244:3::3d8]:51420->[fd00:10:244:1::c078]:8000(tcp)  inet_proto_csum_replace_by_diff
+  eth0:9  [fd00:10:244:3::3d8]:51420->[3333:0:0:1::c078]:8000(tcp)     tcp_v6_early_demux
+  eth0:9  [fd00:10:244:3::3d8]:51420->[3333:0:0:1::c078]:8000(tcp)     ip6_route_input
+  eth0:9  [fd00:10:244:3::3d8]:51420->[3333:0:0:1::c078]:8000(tcp)     ip6_input
+  eth0:9  [fd00:10:244:3::3d8]:51420->[3333:0:0:1::c078]:8000(tcp)     ip6_input_finish
+  eth0:9  [fd00:10:244:3::3d8]:51420->[3333:0:0:1::c078]:8000(tcp)     ip6_protocol_deliver_rcu
+  eth0:9  [fd00:10:244:3::3d8]:51420->[3333:0:0:1::c078]:8000(tcp)     raw6_local_deliver
+  eth0:9  [fd00:10:244:3::3d8]:51420->[3333:0:0:1::c078]:8000(tcp)     ipv6_raw_deliver
+  eth0:9  [fd00:10:244:3::3d8]:51420->[3333:0:0:1::c078]:8000(tcp)     tcp_v6_rcv
+  eth0:9  [fd00:10:244:3::3d8]:51420->[3333:0:0:1::c078]:8000(tcp)     __skb_checksum_complete
+  eth0:9  [fd00:10:244:3::3d8]:51420->[3333:0:0:1::c078]:8000(tcp)     kfree_skb_reason(SKB_DROP_REASON_TCP_CSUM)
+  eth0:9  [fd00:10:244:3::3d8]:51420->[3333:0:0:1::c078]:8000(tcp)     skb_release_head_state
+  eth0:9  [fd00:10:244:3::3d8]:51420->[3333:0:0:1::c078]:8000(tcp)     skb_release_data
+  eth0:9  [fd00:10:244:3::3d8]:51420->[3333:0:0:1::c078]:8000(tcp)     skb_free_head
+  eth0:9  [fd00:10:244:3::3d8]:51420->[3333:0:0:1::c078]:8000(tcp)     kfree_skbmem
+
+This is happening because inet_proto_csum_replace_by_diff is updating
+skb->csum when it shouldn't. The L4 checksum is updated such that it
+"cancels" the IPv6 address change in terms of checksum computation, so
+the impact on skb->csum is null.
+
+Note this would be different for an IPv4 packet since three fields
+would be updated: the IPv4 address, the IP checksum, and the L4
+checksum. Two would cancel each other and skb->csum would still need
+to be updated to take the L4 checksum change into account.
+
+This patch fixes it by passing an ipv6 flag to
+inet_proto_csum_replace_by_diff, to skip the skb->csum update if we're
+in the IPv6 case. Note the behavior of the only other user of
+inet_proto_csum_replace_by_diff, the BPF subsystem, is left as is in
+this patch and fixed in the subsequent patch.
+
+With the fix, using the reproduction from above, I can confirm
+skb->csum is not touched by inet_proto_csum_replace_by_diff and the TCP
+SYN proceeds to the application after the ILA translation.
+
+Link: https://github.com/cilium/pwru [1]
+Fixes: 65d7ab8de582 ("net: Identifier Locator Addressing module")
+Signed-off-by: Paul Chaignon <paul.chaignon@gmail.com>
+Acked-by: Daniel Borkmann <daniel@iogearbox.net>
+Link: https://patch.msgid.link/b5539869e3550d46068504feb02d37653d939c0b.1748509484.git.paul.chaignon@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Paul Chaignon <paul.chaignon@gmail.com>
+---
+ include/net/checksum.h    | 2 +-
+ net/core/filter.c         | 2 +-
+ net/core/utils.c          | 4 ++--
+ net/ipv6/ila/ila_common.c | 6 +++---
+ 4 files changed, 7 insertions(+), 7 deletions(-)
+
+diff --git a/include/net/checksum.h b/include/net/checksum.h
+index 1338cb92c8e7..28b101f26636 100644
+--- a/include/net/checksum.h
++++ b/include/net/checksum.h
+@@ -158,7 +158,7 @@ void inet_proto_csum_replace16(__sum16 *sum, struct sk_buff *skb,
+ 			       const __be32 *from, const __be32 *to,
+ 			       bool pseudohdr);
+ void inet_proto_csum_replace_by_diff(__sum16 *sum, struct sk_buff *skb,
+-				     __wsum diff, bool pseudohdr);
++				     __wsum diff, bool pseudohdr, bool ipv6);
+ 
+ static __always_inline
+ void inet_proto_csum_replace2(__sum16 *sum, struct sk_buff *skb,
+diff --git a/net/core/filter.c b/net/core/filter.c
+index 99b23fd2f509..e0d978c1a4cd 100644
+--- a/net/core/filter.c
++++ b/net/core/filter.c
+@@ -1999,7 +1999,7 @@ BPF_CALL_5(bpf_l4_csum_replace, struct sk_buff *, skb, u32, offset,
+ 		if (unlikely(from != 0))
+ 			return -EINVAL;
+ 
+-		inet_proto_csum_replace_by_diff(ptr, skb, to, is_pseudo);
++		inet_proto_csum_replace_by_diff(ptr, skb, to, is_pseudo, false);
+ 		break;
+ 	case 2:
+ 		inet_proto_csum_replace2(ptr, skb, from, to, is_pseudo);
+diff --git a/net/core/utils.c b/net/core/utils.c
+index 27f4cffaae05..b8c21a859e27 100644
+--- a/net/core/utils.c
++++ b/net/core/utils.c
+@@ -473,11 +473,11 @@ void inet_proto_csum_replace16(__sum16 *sum, struct sk_buff *skb,
+ EXPORT_SYMBOL(inet_proto_csum_replace16);
+ 
+ void inet_proto_csum_replace_by_diff(__sum16 *sum, struct sk_buff *skb,
+-				     __wsum diff, bool pseudohdr)
++				     __wsum diff, bool pseudohdr, bool ipv6)
+ {
+ 	if (skb->ip_summed != CHECKSUM_PARTIAL) {
+ 		csum_replace_by_diff(sum, diff);
+-		if (skb->ip_summed == CHECKSUM_COMPLETE && pseudohdr)
++		if (skb->ip_summed == CHECKSUM_COMPLETE && pseudohdr && !ipv6)
+ 			skb->csum = ~csum_sub(diff, skb->csum);
+ 	} else if (pseudohdr) {
+ 		*sum = ~csum_fold(csum_add(diff, csum_unfold(*sum)));
+diff --git a/net/ipv6/ila/ila_common.c b/net/ipv6/ila/ila_common.c
+index 95e9146918cc..b8d43ed4689d 100644
+--- a/net/ipv6/ila/ila_common.c
++++ b/net/ipv6/ila/ila_common.c
+@@ -86,7 +86,7 @@ static void ila_csum_adjust_transport(struct sk_buff *skb,
+ 
+ 			diff = get_csum_diff(ip6h, p);
+ 			inet_proto_csum_replace_by_diff(&th->check, skb,
+-							diff, true);
++							diff, true, true);
+ 		}
+ 		break;
+ 	case NEXTHDR_UDP:
+@@ -97,7 +97,7 @@ static void ila_csum_adjust_transport(struct sk_buff *skb,
+ 			if (uh->check || skb->ip_summed == CHECKSUM_PARTIAL) {
+ 				diff = get_csum_diff(ip6h, p);
+ 				inet_proto_csum_replace_by_diff(&uh->check, skb,
+-								diff, true);
++								diff, true, true);
+ 				if (!uh->check)
+ 					uh->check = CSUM_MANGLED_0;
+ 			}
+@@ -111,7 +111,7 @@ static void ila_csum_adjust_transport(struct sk_buff *skb,
+ 
+ 			diff = get_csum_diff(ip6h, p);
+ 			inet_proto_csum_replace_by_diff(&ih->icmp6_cksum, skb,
+-							diff, true);
++							diff, true, true);
+ 		}
+ 		break;
+ 	}
+-- 
+2.43.0
+
 
