@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-153128-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153131-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 26554ADD282
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 17:43:38 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 25827ADD27C
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 17:43:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 96B963BEDA5
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 15:42:24 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A0CA3189BB68
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 15:43:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 433342E9753;
-	Tue, 17 Jun 2025 15:42:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE3D62ECE87;
+	Tue, 17 Jun 2025 15:42:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cpmO0lDr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S2rshDIv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F27422ECE81;
-	Tue, 17 Jun 2025 15:42:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C32B23B633;
+	Tue, 17 Jun 2025 15:42:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750174953; cv=none; b=op5Yi0kBORA1BUNd3tKHRRGwP228rFpRJmWVO3wwIYRZGKH3eEoyDKw9/z8ZBxzYPjQwDTkAVJM6ASTBWY70+Le7w+ovzvjGDcXSXryTsK569DiY/mFpMvIMbm0Dt1JURqegL2t11+3rb+3IrQJjtHBHpduOJ7FMdG7ZLQLz1rg=
+	t=1750174962; cv=none; b=VbZiTLLFbr40OO2F50pWow32+f8F+MKlCWU04Jff7TST1VpgihoBazZjVZkbMUaGx2ZyxJAHzFdGKHGtI+Gp8MMyCQmiVqI/l7bpYh6hQlQtvqehNGw/as8YQ3ke4DuJKp0o5Q5HLTUdCW3Au6AcjPWli8z4GE9/+ZlQDyhyGtk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750174953; c=relaxed/simple;
-	bh=vQOvazko0pxgF5jKmEiTh7RYQsVhWfRDyeTYB0Ofkxw=;
+	s=arc-20240116; t=1750174962; c=relaxed/simple;
+	bh=9xl/tnJh/kSqWYJ9Ov8P2Q1V60kJJSuRr8uEPId4+Lo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=IKGA9OJ1T/TwcCzaYpI0g5w0fu+zxyINtdTycXeN2d24egK5e1WPLgdX7+1t3Dm4+QAo7jn4fWt5fqRccIceddeWm10hR+6xcV5xhtk9rQRjYPytWxvfJSCBmBNyHv35+aUy3ij7zxEIbb+eqy2tLTzYQsQozrKAWGDRCHz5kaU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cpmO0lDr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 439C0C4CEE3;
-	Tue, 17 Jun 2025 15:42:32 +0000 (UTC)
+	 MIME-Version; b=gi4ttenEPUF3Rmngj5c0189SXuCmPtyNtzdLm5oHmDARtBMrfxH7JgGxRhCUHXC1BAedFtt1FDXgcfBFOQ6GSGV2DvXTMtuxv5UIZ+hTeED4n9yxFMW/c5olN0d6gJ9qAIJeFyTBTefExvmoRlfvUknj5l9Z1lXrNQ3/FU8YBb0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S2rshDIv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 019F0C4CEE3;
+	Tue, 17 Jun 2025 15:42:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750174952;
-	bh=vQOvazko0pxgF5jKmEiTh7RYQsVhWfRDyeTYB0Ofkxw=;
+	s=korg; t=1750174962;
+	bh=9xl/tnJh/kSqWYJ9Ov8P2Q1V60kJJSuRr8uEPId4+Lo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cpmO0lDrCFfVLfOXGAxHelnQhuntnBlmtsy78xgDOnZq1edCLMSoefReuJduKKrWh
-	 V5JUpQsCJ64zHQ+ZE5EvexbaWVRDs+l0HcYWhTGzCgUsYg585DlWBKrVeGiYCgE6eN
-	 JPWXPnnAiuUAPxTpz7ClC9EVQrQUFz2uRIlQ+nVI=
+	b=S2rshDIvGrmSCgaeA2ML6ha22kNw68os8O4/IL9fRB+dOyblbIdB9Aa4HZMoXMdjp
+	 bnjfRzwU5f5BhFSYPQ4Edo117Eal8PMw7omfW/dcJD/EazcV6sUrGVLYVe/ngeVtCN
+	 Dq5Gy+p07i90wSqQn35KARr+Wi9JZoWeVtzCVCqg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Robert Morris <rtm@csail.mit.edu>,
-	=?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>,
-	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
+	"ping.gao" <ping.gao@samsung.com>,
+	Peter Wang <peter.wang@mediatek.com>,
+	Bart Van Assche <bvanassche@acm.org>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 131/356] wifi: ath9k_htc: Abort software beacon handling if disabled
-Date: Tue, 17 Jun 2025 17:24:06 +0200
-Message-ID: <20250617152343.509939695@linuxfoundation.org>
+Subject: [PATCH 6.6 132/356] scsi: ufs: mcq: Delete ufshcd_release_scsi_cmd() in ufshcd_mcq_abort()
+Date: Tue, 17 Jun 2025 17:24:07 +0200
+Message-ID: <20250617152343.548826552@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250617152338.212798615@linuxfoundation.org>
 References: <20250617152338.212798615@linuxfoundation.org>
@@ -61,50 +62,61 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Toke Høiland-Jørgensen <toke@toke.dk>
+From: ping.gao <ping.gao@samsung.com>
 
-[ Upstream commit ac4e317a95a1092b5da5b9918b7118759342641c ]
+[ Upstream commit 53755903b9357e69b2dd6a02fafbb1e30c741895 ]
 
-A malicious USB device can send a WMI_SWBA_EVENTID event from an
-ath9k_htc-managed device before beaconing has been enabled. This causes
-a device-by-zero error in the driver, leading to either a crash or an
-out of bounds read.
+After UFS_ABORT_TASK has been processed successfully, the host will
+generate MCQ IRQ for ABORT TAG with response OCS_ABORTED. This results in
+ufshcd_compl_one_cqe() calling ufshcd_release_scsi_cmd().
 
-Prevent this by aborting the handling in ath9k_htc_swba() if beacons are
-not enabled.
+But ufshcd_mcq_abort() already calls ufshcd_release_scsi_cmd(), resulting
+in __ufshcd_release() being called twice. This means
+hba->clk_gating.active_reqs will be decreased twice, making it go
+negative.
 
-Reported-by: Robert Morris <rtm@csail.mit.edu>
-Closes: https://lore.kernel.org/r/88967.1743099372@localhost
-Fixes: 832f6a18fc2a ("ath9k_htc: Add beacon slots")
-Signed-off-by: Toke Høiland-Jørgensen <toke@toke.dk>
-Link: https://patch.msgid.link/20250402112217.58533-1-toke@toke.dk
-Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+Delete ufshcd_release_scsi_cmd() in ufshcd_mcq_abort().
+
+Fixes: f1304d442077 ("scsi: ufs: mcq: Added ufshcd_mcq_abort()")
+Signed-off-by: ping.gao <ping.gao@samsung.com>
+Link: https://lore.kernel.org/r/20250516083812.3894396-1-ping.gao@samsung.com
+Reviewed-by: Peter Wang <peter.wang@mediatek.com>
+Reviewed-by: Bart Van Assche <bvanassche@acm.org>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath9k/htc_drv_beacon.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/ufs/core/ufs-mcq.c | 6 ------
+ 1 file changed, 6 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath9k/htc_drv_beacon.c b/drivers/net/wireless/ath/ath9k/htc_drv_beacon.c
-index 533471e694007..18c7654bc539d 100644
---- a/drivers/net/wireless/ath/ath9k/htc_drv_beacon.c
-+++ b/drivers/net/wireless/ath/ath9k/htc_drv_beacon.c
-@@ -290,6 +290,9 @@ void ath9k_htc_swba(struct ath9k_htc_priv *priv,
- 	struct ath_common *common = ath9k_hw_common(priv->ah);
- 	int slot;
+diff --git a/drivers/ufs/core/ufs-mcq.c b/drivers/ufs/core/ufs-mcq.c
+index 411109a5ebbff..14864cfc24223 100644
+--- a/drivers/ufs/core/ufs-mcq.c
++++ b/drivers/ufs/core/ufs-mcq.c
+@@ -629,7 +629,6 @@ int ufshcd_mcq_abort(struct scsi_cmnd *cmd)
+ 	int tag = scsi_cmd_to_rq(cmd)->tag;
+ 	struct ufshcd_lrb *lrbp = &hba->lrb[tag];
+ 	struct ufs_hw_queue *hwq;
+-	unsigned long flags;
+ 	int err;
  
-+	if (!priv->cur_beacon_conf.enable_beacon)
-+		return;
-+
- 	if (swba->beacon_pending != 0) {
- 		priv->beacon.bmisscnt++;
- 		if (priv->beacon.bmisscnt > BSTUCK_THRESHOLD) {
+ 	/* Skip task abort in case previous aborts failed and report failure */
+@@ -668,10 +667,5 @@ int ufshcd_mcq_abort(struct scsi_cmnd *cmd)
+ 		return FAILED;
+ 	}
+ 
+-	spin_lock_irqsave(&hwq->cq_lock, flags);
+-	if (ufshcd_cmd_inflight(lrbp->cmd))
+-		ufshcd_release_scsi_cmd(hba, lrbp);
+-	spin_unlock_irqrestore(&hwq->cq_lock, flags);
+-
+ 	return SUCCESS;
+ }
 -- 
 2.39.5
 
