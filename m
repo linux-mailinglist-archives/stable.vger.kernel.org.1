@@ -1,53 +1,55 @@
-Return-Path: <stable+bounces-153120-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153065-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E3282ADD26D
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 17:42:31 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 69E59ADD264
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 17:42:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B789B189B0F8
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 15:42:37 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 270A87A86AE
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 15:37:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E2822ECE9A;
-	Tue, 17 Jun 2025 15:42:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B8572ECD35;
+	Tue, 17 Jun 2025 15:39:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ejIA51ia"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Tk5LRV9P"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A2E12ECE95;
-	Tue, 17 Jun 2025 15:42:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 168832ECD2F;
+	Tue, 17 Jun 2025 15:39:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750174927; cv=none; b=hQ1f3BgJxYv8nRe+LwKmNqTteyUCbcX3700gVEWrJmQ4/GjLqlfE8uvGjMms3OQY0jsuHRVQUqCSfyQzm1fHnu/GxNNx37ue6qpFvqrQW7qEU2Y0iEHqQoj2SMahtiom5rphZKZg2XPuzsE3+XrY5PYb7RzpZyM8ZmEw2jZ1PzE=
+	t=1750174753; cv=none; b=qv4MTevTphO+8f6M4sH8s15xK788wGJeADQibcbuIrpacPKuJdjUXA0e/EUrIcTULSkGPOwiIJmGx+q6/XaK0wA0VLGxs4gR1QSc+gEWKg20/3HBUit1Z9ozgFVFGcB0BBnBEa8o1WhbTzlZBBrcIw3/0iVTfidskGmmBY+fe98=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750174927; c=relaxed/simple;
-	bh=FEqDVQ8fCMjUf6KKBtHVX20W3U2birkZCCW4sRqb3x0=;
+	s=arc-20240116; t=1750174753; c=relaxed/simple;
+	bh=9yK2za4+x3DfCaSwJE1lS2VAJ/L06Nu1X5H4PFoGbMI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Bgh5iaFf3W5kquokocgOELBARGH5H0I8AFNcgGERbrdhCDM+sH9VKhf9n6PTfTabJ1e+Pa/k+XTRPbz/gjd4TZeR2I/Gnl/KAM+TkPnO1Z5u5ulkIyk09L7TQpHECdyHWrpgsiUTjR5bkYLbX2qCVsObHnvlrNwJ4tyQpbNpk6M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ejIA51ia; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74277C4CEF0;
-	Tue, 17 Jun 2025 15:42:06 +0000 (UTC)
+	 MIME-Version; b=b4zaoHqUrGP7HvOz1z4R+cvLma4Uu4Gf8WI5kdeYmRQgkLOCxgXqv+RzuOtemluwDhWsst0LMiQ78dFbvd4Gks3V4eP8DrK/xpZn6v9zUc16PyBDMnRQtaeH3LOElUDvZFW1p7YWb1iMdoTb1tsv3vgrWkAW7dSH4dxv8IecmU4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Tk5LRV9P; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78752C4CEE7;
+	Tue, 17 Jun 2025 15:39:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750174926;
-	bh=FEqDVQ8fCMjUf6KKBtHVX20W3U2birkZCCW4sRqb3x0=;
+	s=korg; t=1750174753;
+	bh=9yK2za4+x3DfCaSwJE1lS2VAJ/L06Nu1X5H4PFoGbMI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ejIA51iapFSi6GPF3KbVaxDvucSqzD2bhncqAnLkHa8l46IwT0nc9KOLIt9g5AOVQ
-	 tGwUDQ6VhsVWhr2B8C7GC7K5I2LLWrBNkDdPGhlmtDEp1gWT/bsyAjXmsvxYxZyT6Q
-	 O4Eq9g4fAnN/AlS96PLoCJHxx+GZOaveIKTRaOhU=
+	b=Tk5LRV9PkM/sHDWgDrXsNMYD4s2IialrbjubEF/RLj4qU7rd4l5yBJAklDIcs/Wij
+	 bgVjo4kW1oNr3eJb+DsHpQaLbqhx4j/nvWDgbMnC1gb7HX9AFQqD+JhovkLmrXgO5Z
+	 nAGKupqhbpB2T8LBo3ctPLNh8o8pYrbgCw/qHKQA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Anton Protopopov <a.s.protopopov@gmail.com>,
-	Andrii Nakryiko <andrii@kernel.org>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Tom Zanussi <zanussi@kernel.org>,
+	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 109/356] bpf: Fix uninitialized values in BPF_{CORE,PROBE}_READ
-Date: Tue, 17 Jun 2025 17:23:44 +0200
-Message-ID: <20250617152342.605506986@linuxfoundation.org>
+Subject: [PATCH 6.6 110/356] tracing: Move histogram trigger variables from stack to per CPU structure
+Date: Tue, 17 Jun 2025 17:23:45 +0200
+Message-ID: <20250617152342.644479982@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250617152338.212798615@linuxfoundation.org>
 References: <20250617152338.212798615@linuxfoundation.org>
@@ -66,56 +68,236 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Anton Protopopov <a.s.protopopov@gmail.com>
+From: Steven Rostedt <rostedt@goodmis.org>
 
-[ Upstream commit 41d4ce6df3f4945341ec509a840cc002a413b6cc ]
+[ Upstream commit 7ab0fc61ce73040f89b12d76a8279995ec283541 ]
 
-With the latest LLVM bpf selftests build will fail with
-the following error message:
+The histogram trigger has three somewhat large arrays on the kernel stack:
 
-    progs/profiler.inc.h:710:31: error: default initialization of an object of type 'typeof ((parent_task)->real_cred->uid.val)' (aka 'const unsigned int') leaves the object uninitialized and is incompatible with C++ [-Werror,-Wdefault-const-init-unsafe]
-      710 |         proc_exec_data->parent_uid = BPF_CORE_READ(parent_task, real_cred, uid.val);
-          |                                      ^
-    tools/testing/selftests/bpf/tools/include/bpf/bpf_core_read.h:520:35: note: expanded from macro 'BPF_CORE_READ'
-      520 |         ___type((src), a, ##__VA_ARGS__) __r;                               \
-          |                                          ^
+	unsigned long entries[HIST_STACKTRACE_DEPTH];
+	u64 var_ref_vals[TRACING_MAP_VARS_MAX];
+	char compound_key[HIST_KEY_SIZE_MAX];
 
-This happens because BPF_CORE_READ (and other macro) declare the
-variable __r using the ___type macro which can inherit const modifier
-from intermediate types.
+Checking the function event_hist_trigger() stack frame size, it currently
+uses 816 bytes for its stack frame due to these variables!
 
-Fix this by using __typeof_unqual__, when supported. (And when it
-is not supported, the problem shouldn't appear, as older compilers
-haven't complained.)
+Instead, allocate a per CPU structure that holds these arrays for each
+context level (normal, softirq, irq and NMI). That is, each CPU will have
+4 of these structures. This will be allocated when the first histogram
+trigger is enabled and freed when the last is disabled. When the
+histogram callback triggers, it will request this structure. The request
+will disable preemption, get the per CPU structure at the index of the
+per CPU variable, and increment that variable.
 
-Fixes: 792001f4f7aa ("libbpf: Add user-space variants of BPF_CORE_READ() family of macros")
-Fixes: a4b09a9ef945 ("libbpf: Add non-CO-RE variants of BPF_CORE_READ() macro family")
-Signed-off-by: Anton Protopopov <a.s.protopopov@gmail.com>
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Link: https://lore.kernel.org/bpf/20250502193031.3522715-1-a.s.protopopov@gmail.com
+The callback will use the arrays in this structure to perform its work and
+then release the structure. That in turn will simply decrement the per CPU
+index and enable preemption.
+
+Moving the variables from the kernel stack to the per CPU structure brings
+the stack frame of event_hist_trigger() down to just 112 bytes.
+
+Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Cc: Tom Zanussi <zanussi@kernel.org>
+Link: https://lore.kernel.org/20250407123851.74ea8d58@gandalf.local.home
+Fixes: 067fe038e70f6 ("tracing: Add variable reference handling to hist triggers")
+Reviewed-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/lib/bpf/bpf_core_read.h | 6 ++++++
- 1 file changed, 6 insertions(+)
+ kernel/trace/trace_events_hist.c | 120 +++++++++++++++++++++++++++----
+ 1 file changed, 105 insertions(+), 15 deletions(-)
 
-diff --git a/tools/lib/bpf/bpf_core_read.h b/tools/lib/bpf/bpf_core_read.h
-index e2b9e8415c044..b3fc384595a9f 100644
---- a/tools/lib/bpf/bpf_core_read.h
-+++ b/tools/lib/bpf/bpf_core_read.h
-@@ -312,7 +312,13 @@ enum bpf_enum_value_kind {
- #define ___arrow10(a, b, c, d, e, f, g, h, i, j) a->b->c->d->e->f->g->h->i->j
- #define ___arrow(...) ___apply(___arrow, ___narg(__VA_ARGS__))(__VA_ARGS__)
+diff --git a/kernel/trace/trace_events_hist.c b/kernel/trace/trace_events_hist.c
+index e6f9cbc622c75..29fcd8787344f 100644
+--- a/kernel/trace/trace_events_hist.c
++++ b/kernel/trace/trace_events_hist.c
+@@ -5257,17 +5257,94 @@ hist_trigger_actions(struct hist_trigger_data *hist_data,
+ 	}
+ }
  
-+#if defined(__clang__) && (__clang_major__ >= 19)
-+#define ___type(...) __typeof_unqual__(___arrow(__VA_ARGS__))
-+#elif defined(__GNUC__) && (__GNUC__ >= 14)
-+#define ___type(...) __typeof_unqual__(___arrow(__VA_ARGS__))
-+#else
- #define ___type(...) typeof(___arrow(__VA_ARGS__))
-+#endif
++/*
++ * The hist_pad structure is used to save information to create
++ * a histogram from the histogram trigger. It's too big to store
++ * on the stack, so when the histogram trigger is initialized
++ * a percpu array of 4 hist_pad structures is allocated.
++ * This will cover every context from normal, softirq, irq and NMI
++ * in the very unlikely event that a tigger happens at each of
++ * these contexts and interrupts a currently active trigger.
++ */
++struct hist_pad {
++	unsigned long		entries[HIST_STACKTRACE_DEPTH];
++	u64			var_ref_vals[TRACING_MAP_VARS_MAX];
++	char			compound_key[HIST_KEY_SIZE_MAX];
++};
++
++static struct hist_pad __percpu *hist_pads;
++static DEFINE_PER_CPU(int, hist_pad_cnt);
++static refcount_t hist_pad_ref;
++
++/* One hist_pad for every context (normal, softirq, irq, NMI) */
++#define MAX_HIST_CNT 4
++
++static int alloc_hist_pad(void)
++{
++	lockdep_assert_held(&event_mutex);
++
++	if (refcount_read(&hist_pad_ref)) {
++		refcount_inc(&hist_pad_ref);
++		return 0;
++	}
++
++	hist_pads = __alloc_percpu(sizeof(struct hist_pad) * MAX_HIST_CNT,
++				   __alignof__(struct hist_pad));
++	if (!hist_pads)
++		return -ENOMEM;
++
++	refcount_set(&hist_pad_ref, 1);
++	return 0;
++}
++
++static void free_hist_pad(void)
++{
++	lockdep_assert_held(&event_mutex);
++
++	if (!refcount_dec_and_test(&hist_pad_ref))
++		return;
++
++	free_percpu(hist_pads);
++	hist_pads = NULL;
++}
++
++static struct hist_pad *get_hist_pad(void)
++{
++	struct hist_pad *hist_pad;
++	int cnt;
++
++	if (WARN_ON_ONCE(!hist_pads))
++		return NULL;
++
++	preempt_disable();
++
++	hist_pad = per_cpu_ptr(hist_pads, smp_processor_id());
++
++	if (this_cpu_read(hist_pad_cnt) == MAX_HIST_CNT) {
++		preempt_enable();
++		return NULL;
++	}
++
++	cnt = this_cpu_inc_return(hist_pad_cnt) - 1;
++
++	return &hist_pad[cnt];
++}
++
++static void put_hist_pad(void)
++{
++	this_cpu_dec(hist_pad_cnt);
++	preempt_enable();
++}
++
+ static void event_hist_trigger(struct event_trigger_data *data,
+ 			       struct trace_buffer *buffer, void *rec,
+ 			       struct ring_buffer_event *rbe)
+ {
+ 	struct hist_trigger_data *hist_data = data->private_data;
+ 	bool use_compound_key = (hist_data->n_keys > 1);
+-	unsigned long entries[HIST_STACKTRACE_DEPTH];
+-	u64 var_ref_vals[TRACING_MAP_VARS_MAX];
+-	char compound_key[HIST_KEY_SIZE_MAX];
+ 	struct tracing_map_elt *elt = NULL;
+ 	struct hist_field *key_field;
++	struct hist_pad *hist_pad;
+ 	u64 field_contents;
+ 	void *key = NULL;
+ 	unsigned int i;
+@@ -5275,12 +5352,18 @@ static void event_hist_trigger(struct event_trigger_data *data,
+ 	if (unlikely(!rbe))
+ 		return;
  
- #define ___read(read_fn, dst, src_type, src, accessor)			    \
- 	read_fn((void *)(dst), sizeof(*(dst)), &((src_type)(src))->accessor)
+-	memset(compound_key, 0, hist_data->key_size);
++	hist_pad = get_hist_pad();
++	if (!hist_pad)
++		return;
++
++	memset(hist_pad->compound_key, 0, hist_data->key_size);
+ 
+ 	for_each_hist_key_field(i, hist_data) {
+ 		key_field = hist_data->fields[i];
+ 
+ 		if (key_field->flags & HIST_FIELD_FL_STACKTRACE) {
++			unsigned long *entries = hist_pad->entries;
++
+ 			memset(entries, 0, HIST_STACKTRACE_SIZE);
+ 			if (key_field->field) {
+ 				unsigned long *stack, n_entries;
+@@ -5304,26 +5387,31 @@ static void event_hist_trigger(struct event_trigger_data *data,
+ 		}
+ 
+ 		if (use_compound_key)
+-			add_to_key(compound_key, key, key_field, rec);
++			add_to_key(hist_pad->compound_key, key, key_field, rec);
+ 	}
+ 
+ 	if (use_compound_key)
+-		key = compound_key;
++		key = hist_pad->compound_key;
+ 
+ 	if (hist_data->n_var_refs &&
+-	    !resolve_var_refs(hist_data, key, var_ref_vals, false))
+-		return;
++	    !resolve_var_refs(hist_data, key, hist_pad->var_ref_vals, false))
++		goto out;
+ 
+ 	elt = tracing_map_insert(hist_data->map, key);
+ 	if (!elt)
+-		return;
++		goto out;
+ 
+-	hist_trigger_elt_update(hist_data, elt, buffer, rec, rbe, var_ref_vals);
++	hist_trigger_elt_update(hist_data, elt, buffer, rec, rbe, hist_pad->var_ref_vals);
+ 
+-	if (resolve_var_refs(hist_data, key, var_ref_vals, true))
+-		hist_trigger_actions(hist_data, elt, buffer, rec, rbe, key, var_ref_vals);
++	if (resolve_var_refs(hist_data, key, hist_pad->var_ref_vals, true)) {
++		hist_trigger_actions(hist_data, elt, buffer, rec, rbe,
++				     key, hist_pad->var_ref_vals);
++	}
+ 
+ 	hist_poll_wakeup();
++
++ out:
++	put_hist_pad();
+ }
+ 
+ static void hist_trigger_stacktrace_print(struct seq_file *m,
+@@ -6168,6 +6256,9 @@ static int event_hist_trigger_init(struct event_trigger_data *data)
+ {
+ 	struct hist_trigger_data *hist_data = data->private_data;
+ 
++	if (alloc_hist_pad() < 0)
++		return -ENOMEM;
++
+ 	if (!data->ref && hist_data->attrs->name)
+ 		save_named_trigger(hist_data->attrs->name, data);
+ 
+@@ -6212,6 +6303,7 @@ static void event_hist_trigger_free(struct event_trigger_data *data)
+ 
+ 		destroy_hist_data(hist_data);
+ 	}
++	free_hist_pad();
+ }
+ 
+ static struct event_trigger_ops event_hist_trigger_ops = {
+@@ -6227,9 +6319,7 @@ static int event_hist_trigger_named_init(struct event_trigger_data *data)
+ 
+ 	save_named_trigger(data->named_data->name, data);
+ 
+-	event_hist_trigger_init(data->named_data);
+-
+-	return 0;
++	return event_hist_trigger_init(data->named_data);
+ }
+ 
+ static void event_hist_trigger_named_free(struct event_trigger_data *data)
 -- 
 2.39.5
 
