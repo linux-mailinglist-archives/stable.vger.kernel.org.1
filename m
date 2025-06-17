@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-154253-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-154264-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD487ADD9DC
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 19:10:22 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7EA4DADD8D9
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:59:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 640CE19E1484
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:47:37 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 559964061FD
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:47:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 291392EA73A;
-	Tue, 17 Jun 2025 16:43:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B07AA2ECD33;
+	Tue, 17 Jun 2025 16:43:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1NpJNGNf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wKNSHwOJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5AD42EA17F;
-	Tue, 17 Jun 2025 16:43:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CBAB235071;
+	Tue, 17 Jun 2025 16:43:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750178594; cv=none; b=bTu9u5VX0byocgkBgwlJclZqVwylyxSaHh3t80UcalgbFcJ2w9vrNhwXc8oJyYmrL/U7cl2NAhuYvNcMtZBsyFLrgz4H6e2TJAhHZXUtb+lZcJfrZ8Pe9rTyEVhqROMFXHAQ0nohlUi7Mv9/6pfr4NfCOBCng10D3SV1CGU/pC0=
+	t=1750178630; cv=none; b=t5Y9oYsGFQB1lJJEUxl+JqxKgDNw/PzQ47LrGMM6Ot+jjpaI+88BwV4iu7HELM0K4PoAwhCfxMl3zxHusqWmZaMWeD008MhIaFAbJrlrMTr/DOt9iqcaISIlyfOePDewCbCvcjXxnpxgvAPs5x3QWjTm5wXwAjgBKYqx+p+enSk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750178594; c=relaxed/simple;
-	bh=SIaYDl5A5MvyJL5aGnvUNlGPnmoZPDN9vRlUUMg7128=;
+	s=arc-20240116; t=1750178630; c=relaxed/simple;
+	bh=ZHaurgGNDU9AAgCwBh6f0ogMBvG8gTNWj1lUtmrfyw4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=elb1GGCcdJdNAL9NKiCiwEeHfJXMlK/f6pas+w+ZqavgMufuuxCjMnhfWbnzGbWOjFt8a/T3KzXd/V3anPMuoWtusrSLDtMGtB441tFHtwwjYtLwMr3AjwW1ZMzo5vhOD/zbLQZGcV8sznQhndIlC4ke3pYapOA//1E9e9s89pI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1NpJNGNf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45F0FC4CEE3;
-	Tue, 17 Jun 2025 16:43:14 +0000 (UTC)
+	 MIME-Version; b=giOPEE8i/0ZNzImzSTcMKVYiyWYNN5iFklX4dUuN12UpQsh9iQHntsIvKSzsH6emygLtx3dQo+VBUX718y+qNVotGIxiC9tGusN8I1T07EA68Ingwve0D+eAFi+bUL/79T3fdQriwwg2PqPdHi6b4j5LaceTSG4kGfKGecBEKUw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wKNSHwOJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C85F2C4CEE3;
+	Tue, 17 Jun 2025 16:43:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750178594;
-	bh=SIaYDl5A5MvyJL5aGnvUNlGPnmoZPDN9vRlUUMg7128=;
+	s=korg; t=1750178630;
+	bh=ZHaurgGNDU9AAgCwBh6f0ogMBvG8gTNWj1lUtmrfyw4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1NpJNGNfqn+GZWQr4gbmqOTNQRAhBV3LK3uw7b710OPrk8rVcg9vlOK8lZW4ci+PP
-	 2UPmPOzgb3nm8OsPJJgFzf28Fm7ZNh0w96s3rMydn5PxrCCQayY967Lm1TCD16iH4/
-	 T9XLP7CqcunJv7QHrzqwUVXZRxOORGxnRQZjq5P0=
+	b=wKNSHwOJO7b3SPgy6SygBqDb3+xDphLDpNlV1VanlZTWSTGgwkCDfR9WvavZTlNzx
+	 BEiw4zzASk8Oc9L4RZIxDkAlcmLlrVkUsfBzxciJfi5z6JSf7/y1nGpnohyMHM2gNK
+	 pOtwwBAi33tblAMzwCmuhn3OPj3Vg6541REToN2Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -45,9 +45,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	NeilBrown <neil@brown.name>,
 	Anna Schumaker <anna.schumaker@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 477/780] nfs_localio: use cmpxchg() to install new nfs_file_localio
-Date: Tue, 17 Jun 2025 17:23:05 +0200
-Message-ID: <20250617152510.914463800@linuxfoundation.org>
+Subject: [PATCH 6.15 478/780] nfs_localio: always hold nfsd net ref with nfsd_file ref
+Date: Tue, 17 Jun 2025 17:23:06 +0200
+Message-ID: <20250617152510.952480233@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
 References: <20250617152451.485330293@linuxfoundation.org>
@@ -68,115 +68,175 @@ Content-Transfer-Encoding: 8bit
 
 From: NeilBrown <neil@brown.name>
 
-[ Upstream commit ed9be317330c7390df7db9e1d046698c02001bd2 ]
+[ Upstream commit 77e82fb2c6c27c122e785f543ae0062f7783c886 ]
 
-Rather than using nfs_uuid.lock to protect installing
-a new ro_file or rw_file, change to use cmpxchg().
-Removing the file already uses xchg() so this improves symmetry
-and also makes the code a little simpler.
+Having separate nfsd_file_put and nfsd_file_put_local in struct
+nfsd_localio_operations doesn't make much sense.  The difference is that
+nfsd_file_put doesn't drop a reference to the nfs_net which is what
+keeps nfsd from shutting down.
 
-Also remove the optimisation of not taking the lock, and not removing
-the nfs_file_localio from the linked list, when both ->ro_file and
-->rw_file are already NULL.  Given that ->nfs_uuid was not NULL, it is
-extremely unlikely that neither ->ro_file or ->rw_file is NULL so
-this optimisation can be of little value and it complicates
-understanding of the code - why can the list_del_init() be skipped?
+Currently, if nfsd tries to shutdown it will invalidate the files stored
+in the list from the nfs_uuid and this will drop all references to the
+nfsd net that the client holds.  But the client could still hold some
+references to nfsd_files for active IO.  So nfsd might think is has
+completely shut down local IO, but hasn't and has no way to wait for
+those active IO requests to complete.
 
-Finally, move the assignment of NULL to ->nfs_uuid until after
-the last action on the nfs_file_localio (the list_del_init).  As soon as
-this is NULL a racing nfs_close_local_fh() can bypass all the locking
-and go on to free the nfs_file_localio, so we must be certain to be
-finished with it first.
+So this patch changes nfsd_file_get to nfsd_file_get_local and has it
+increase the ref count on the nfsd net and it replaces all calls to
+->nfsd_put_file to ->nfsd_put_file_local.
+
+It also changes ->nfsd_open_local_fh to return with the refcount on the
+net elevated precisely when a valid nfsd_file is returned.
+
+This means that whenever the client holds a valid nfsd_file, there will
+be an associated count on the nfsd net, and so the count can only reach
+zero when all nfsd_files have been returned.
+
+nfs_local_file_put() is changed to call nfs_to_nfsd_file_put_local()
+instead of replacing calls to one with calls to the other because this
+will help a later patch which changes nfs_to_nfsd_file_put_local() to
+take an __rcu pointer while nfs_local_file_put() doesn't.
 
 Fixes: 86e00412254a ("nfs: cache all open LOCALIO nfsd_file(s) in client")
 Signed-off-by: NeilBrown <neil@brown.name>
 Signed-off-by: Anna Schumaker <anna.schumaker@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfs/localio.c           | 11 +++--------
- fs/nfs_common/nfslocalio.c | 39 +++++++++++++++++---------------------
- 2 files changed, 20 insertions(+), 30 deletions(-)
+ fs/nfs/localio.c           |  4 ++--
+ fs/nfs_common/nfslocalio.c |  5 ++---
+ fs/nfsd/filecache.c        | 21 +++++++++++++++++++++
+ fs/nfsd/filecache.h        |  1 +
+ fs/nfsd/localio.c          |  9 +++++++--
+ include/linux/nfslocalio.h |  3 +--
+ 6 files changed, 34 insertions(+), 9 deletions(-)
 
 diff --git a/fs/nfs/localio.c b/fs/nfs/localio.c
-index 4ec952f9f47dd..595903c215235 100644
+index 595903c215235..8fb08c3ad563b 100644
 --- a/fs/nfs/localio.c
 +++ b/fs/nfs/localio.c
-@@ -280,14 +280,9 @@ nfs_local_open_fh(struct nfs_client *clp, const struct cred *cred,
- 			return NULL;
- 		rcu_read_lock();
- 		/* try to swap in the pointer */
--		spin_lock(&clp->cl_uuid.lock);
--		nf = rcu_dereference_protected(*pnf, 1);
--		if (!nf) {
--			nf = new;
--			new = NULL;
--			rcu_assign_pointer(*pnf, nf);
--		}
--		spin_unlock(&clp->cl_uuid.lock);
-+		nf = unrcu_pointer(cmpxchg(pnf, NULL, RCU_INITIALIZER(new)));
-+		if (!nf)
-+			swap(nf, new);
- 	}
- 	nf = nfs_local_file_get(nf);
- 	rcu_read_unlock();
+@@ -209,12 +209,12 @@ EXPORT_SYMBOL_GPL(nfs_local_probe_async);
+ 
+ static inline struct nfsd_file *nfs_local_file_get(struct nfsd_file *nf)
+ {
+-	return nfs_to->nfsd_file_get(nf);
++	return nfs_to->nfsd_file_get_local(nf);
+ }
+ 
+ static inline void nfs_local_file_put(struct nfsd_file *nf)
+ {
+-	nfs_to->nfsd_file_put(nf);
++	nfs_to_nfsd_file_put_local(nf);
+ }
+ 
+ /*
 diff --git a/fs/nfs_common/nfslocalio.c b/fs/nfs_common/nfslocalio.c
-index 6a0bdea6d6449..bdf251332b6b8 100644
+index bdf251332b6b8..f6821b2c87a2f 100644
 --- a/fs/nfs_common/nfslocalio.c
 +++ b/fs/nfs_common/nfslocalio.c
-@@ -273,8 +273,8 @@ EXPORT_SYMBOL_GPL(nfs_open_local_fh);
+@@ -262,9 +262,8 @@ struct nfsd_file *nfs_open_local_fh(nfs_uuid_t *uuid,
+ 	/* We have an implied reference to net thanks to nfsd_net_try_get */
+ 	localio = nfs_to->nfsd_open_local_fh(net, uuid->dom, rpc_clnt,
+ 					     cred, nfs_fh, fmode);
+-	if (IS_ERR(localio))
+-		nfs_to_nfsd_net_put(net);
+-	else
++	nfs_to_nfsd_net_put(net);
++	if (!IS_ERR(localio))
+ 		nfs_uuid_add_file(uuid, nfl);
  
- void nfs_close_local_fh(struct nfs_file_localio *nfl)
- {
--	struct nfsd_file *ro_nf = NULL;
--	struct nfsd_file *rw_nf = NULL;
-+	struct nfsd_file *ro_nf;
-+	struct nfsd_file *rw_nf;
- 	nfs_uuid_t *nfs_uuid;
- 
- 	rcu_read_lock();
-@@ -285,28 +285,23 @@ void nfs_close_local_fh(struct nfs_file_localio *nfl)
- 		return;
- 	}
- 
--	ro_nf = rcu_access_pointer(nfl->ro_file);
--	rw_nf = rcu_access_pointer(nfl->rw_file);
--	if (ro_nf || rw_nf) {
--		spin_lock(&nfs_uuid->lock);
--		if (ro_nf)
--			ro_nf = rcu_dereference_protected(xchg(&nfl->ro_file, NULL), 1);
--		if (rw_nf)
--			rw_nf = rcu_dereference_protected(xchg(&nfl->rw_file, NULL), 1);
--
--		/* Remove nfl from nfs_uuid->files list */
--		RCU_INIT_POINTER(nfl->nfs_uuid, NULL);
--		list_del_init(&nfl->list);
--		spin_unlock(&nfs_uuid->lock);
--		rcu_read_unlock();
-+	ro_nf = unrcu_pointer(xchg(&nfl->ro_file, NULL));
-+	rw_nf = unrcu_pointer(xchg(&nfl->rw_file, NULL));
- 
--		if (ro_nf)
--			nfs_to_nfsd_file_put_local(ro_nf);
--		if (rw_nf)
--			nfs_to_nfsd_file_put_local(rw_nf);
--		return;
--	}
-+	spin_lock(&nfs_uuid->lock);
-+	/* Remove nfl from nfs_uuid->files list */
-+	list_del_init(&nfl->list);
-+	spin_unlock(&nfs_uuid->lock);
- 	rcu_read_unlock();
-+	/* Now we can allow racing nfs_close_local_fh() to
-+	 * skip the locking.
-+	 */
-+	RCU_INIT_POINTER(nfl->nfs_uuid, NULL);
-+
-+	if (ro_nf)
-+		nfs_to_nfsd_file_put_local(ro_nf);
-+	if (rw_nf)
-+		nfs_to_nfsd_file_put_local(rw_nf);
+ 	return localio;
+diff --git a/fs/nfsd/filecache.c b/fs/nfsd/filecache.c
+index ab85e6a2454f4..eedf2af8ee6ec 100644
+--- a/fs/nfsd/filecache.c
++++ b/fs/nfsd/filecache.c
+@@ -386,6 +386,27 @@ nfsd_file_put_local(struct nfsd_file *nf)
+ 	return net;
  }
- EXPORT_SYMBOL_GPL(nfs_close_local_fh);
+ 
++/**
++ * nfsd_file_get_local - get nfsd_file reference and reference to net
++ * @nf: nfsd_file of which to put the reference
++ *
++ * Get reference to both the nfsd_file and nf->nf_net.
++ */
++struct nfsd_file *
++nfsd_file_get_local(struct nfsd_file *nf)
++{
++	struct net *net = nf->nf_net;
++
++	if (nfsd_net_try_get(net)) {
++		nf = nfsd_file_get(nf);
++		if (!nf)
++			nfsd_net_put(net);
++	} else {
++		nf = NULL;
++	}
++	return nf;
++}
++
+ /**
+  * nfsd_file_file - get the backing file of an nfsd_file
+  * @nf: nfsd_file of which to access the backing file.
+diff --git a/fs/nfsd/filecache.h b/fs/nfsd/filecache.h
+index 5865f9c727121..cd02f91aaef13 100644
+--- a/fs/nfsd/filecache.h
++++ b/fs/nfsd/filecache.h
+@@ -63,6 +63,7 @@ int nfsd_file_cache_start_net(struct net *net);
+ void nfsd_file_cache_shutdown_net(struct net *net);
+ void nfsd_file_put(struct nfsd_file *nf);
+ struct net *nfsd_file_put_local(struct nfsd_file *nf);
++struct nfsd_file *nfsd_file_get_local(struct nfsd_file *nf);
+ struct nfsd_file *nfsd_file_get(struct nfsd_file *nf);
+ struct file *nfsd_file_file(struct nfsd_file *nf);
+ void nfsd_file_close_inode_sync(struct inode *inode);
+diff --git a/fs/nfsd/localio.c b/fs/nfsd/localio.c
+index 238647fa379e3..2c0afd1067ea6 100644
+--- a/fs/nfsd/localio.c
++++ b/fs/nfsd/localio.c
+@@ -29,8 +29,7 @@ static const struct nfsd_localio_operations nfsd_localio_ops = {
+ 	.nfsd_net_put  = nfsd_net_put,
+ 	.nfsd_open_local_fh = nfsd_open_local_fh,
+ 	.nfsd_file_put_local = nfsd_file_put_local,
+-	.nfsd_file_get = nfsd_file_get,
+-	.nfsd_file_put = nfsd_file_put,
++	.nfsd_file_get_local = nfsd_file_get_local,
+ 	.nfsd_file_file = nfsd_file_file,
+ };
+ 
+@@ -71,6 +70,9 @@ nfsd_open_local_fh(struct net *net, struct auth_domain *dom,
+ 	if (nfs_fh->size > NFS4_FHSIZE)
+ 		return ERR_PTR(-EINVAL);
+ 
++	if (!nfsd_net_try_get(net))
++		return ERR_PTR(-ENXIO);
++
+ 	/* nfs_fh -> svc_fh */
+ 	fh_init(&fh, NFS4_FHSIZE);
+ 	fh.fh_handle.fh_size = nfs_fh->size;
+@@ -92,6 +94,9 @@ nfsd_open_local_fh(struct net *net, struct auth_domain *dom,
+ 	if (rq_cred.cr_group_info)
+ 		put_group_info(rq_cred.cr_group_info);
+ 
++	if (IS_ERR(localio))
++		nfsd_net_put(net);
++
+ 	return localio;
+ }
+ EXPORT_SYMBOL_GPL(nfsd_open_local_fh);
+diff --git a/include/linux/nfslocalio.h b/include/linux/nfslocalio.h
+index 9aa8a43843d71..c3f34bae60e13 100644
+--- a/include/linux/nfslocalio.h
++++ b/include/linux/nfslocalio.h
+@@ -66,8 +66,7 @@ struct nfsd_localio_operations {
+ 						const struct nfs_fh *,
+ 						const fmode_t);
+ 	struct net *(*nfsd_file_put_local)(struct nfsd_file *);
+-	struct nfsd_file *(*nfsd_file_get)(struct nfsd_file *);
+-	void (*nfsd_file_put)(struct nfsd_file *);
++	struct nfsd_file *(*nfsd_file_get_local)(struct nfsd_file *);
+ 	struct file *(*nfsd_file_file)(struct nfsd_file *);
+ } ____cacheline_aligned;
  
 -- 
 2.39.5
