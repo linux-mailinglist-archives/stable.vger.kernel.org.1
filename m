@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-153652-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153654-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0DC62ADD581
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:21:51 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 94610ADD60D
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:29:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A819C7B02DE
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:15:15 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4F6611940B62
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:16:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC7BA28504A;
-	Tue, 17 Jun 2025 16:10:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5607D285057;
+	Tue, 17 Jun 2025 16:11:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NMqoqlge"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FzAHCuO9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7629285047;
-	Tue, 17 Jun 2025 16:10:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12FB228504D;
+	Tue, 17 Jun 2025 16:11:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750176654; cv=none; b=U/4lBUXkvfCKf3UFO6kvJA2BhELo53AkLGlfwiEkKPgVrt8x4DDY2P+DM7r1OJyNR8HD06/LvY2fhUIn7N5yGipp6KLOBk2sf0nAUoaLxcOAWzqy3fKdvCxBzBy3hwFw3Hiytn7WbcGewsXjmHocb459Yc0YrjchWSOEOS7DLtU=
+	t=1750176661; cv=none; b=OJgwFOV3rxYzDCkY4MMhffxwm6irTLpUlnLHocNRFzgV54+fPJNWowa1zS0G4xmh272q4efmeBNB94q5ZQOVqfMzYuC9Ix0EyAjgCsRxjviHLUNNa2FJsy8SNOTg1sEPt/csvqZu4w+o6+YxyW2+0RB49tOnr56RxP1KsKL5gUY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750176654; c=relaxed/simple;
-	bh=gd4KhyasyusT9/oGWVqpUXhKKIL5mr5yImb8Qte+USc=;
+	s=arc-20240116; t=1750176661; c=relaxed/simple;
+	bh=NYVNEL2vjlzhzwamzMVR2ArZlx6s5HqC1Z4nvrsvuCk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=n0YQ36Z20m0GvWajznArL1EPwm9CpQ8xfWmDzId/vfCbLrEX/o2FoESRi8MZGalsW/5Afa9h6WY8mAMLPx3edpYxOtAEGv6I/A/wmkbRSzh2KaghASM/msSkX2zq86sNjKGiZeuDpfWex/vZyUmw9l6tWt8l8P9IcuudwsRbE9k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NMqoqlge; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15AD0C4CEE3;
-	Tue, 17 Jun 2025 16:10:53 +0000 (UTC)
+	 MIME-Version; b=mvV+iFHLTa6lw3lPdFLVIkk9OxY2ZGdQesND/qnSnl6KzcvlF2GN9k/MQtvu/mPBuoDJNQWFUX+4PU5oF7ZRyHYYJejGpNDu9HObQ4g8kGbj1Vk0k7ZDg0EqfAOLqcgaooqn+TB2cJqCTU89kj9uPPlX7vBU6MSqncyd7Ggx7r0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FzAHCuO9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 766D6C4CEE3;
+	Tue, 17 Jun 2025 16:11:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750176654;
-	bh=gd4KhyasyusT9/oGWVqpUXhKKIL5mr5yImb8Qte+USc=;
+	s=korg; t=1750176660;
+	bh=NYVNEL2vjlzhzwamzMVR2ArZlx6s5HqC1Z4nvrsvuCk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NMqoqlgewkFiFixHqTYMSoBACRLB1pJVWYku3hm4bTdSWOVMRu2ci4+n6PeSfWUvS
-	 nreo6dQEoD5bzwotky5xPd+msrp2ZDLNMpZNuiY+TTFmu5rsSc4PenTCB+fQSVXECc
-	 0514vSEZ7O2O9dd3fbYcOCOx7CA2LoJTlDwdUwzY=
+	b=FzAHCuO9rLv5Im5h0ovAuWh/J+HAXsjVbRKbbP+m+3ZYuanpePjU/cEArkQ6UbPpZ
+	 X9Mll8lV1LihgfDaA6O2TRYvDCF71JKNhX4EUpmrzjB4rq5SOSDBeVY79IamSZ5hps
+	 n5UyhP5vpyP9j/LAFHDSqKijashxG1DEmTHtHvaY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
+	Rodrigo Gobbi <rodrigo.gobbi.7@gmail.com>,
+	kernel test robot <lkp@intel.com>,
+	Dan Carpenter <error27@gmail.com>,
 	Baochen Qiang <quic_bqiang@quicinc.com>,
-	Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>,
 	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 301/356] wifi: ath11k: dont wait when there is no vdev started
-Date: Tue, 17 Jun 2025 17:26:56 +0200
-Message-ID: <20250617152350.287904337@linuxfoundation.org>
+Subject: [PATCH 6.6 302/356] wifi: ath11k: validate ath11k_crypto_mode on top of ath11k_core_qmi_firmware_ready
+Date: Tue, 17 Jun 2025 17:26:57 +0200
+Message-ID: <20250617152350.326423886@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250617152338.212798615@linuxfoundation.org>
 References: <20250617152338.212798615@linuxfoundation.org>
@@ -67,74 +69,77 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Baochen Qiang <quic_bqiang@quicinc.com>
+From: Rodrigo Gobbi <rodrigo.gobbi.7@gmail.com>
 
-[ Upstream commit 3b6d00fa883075dcaf49221538230e038a9c0b43 ]
+[ Upstream commit b0d226a60856a1b765bb9a3848c7b2322fd08c47 ]
 
-For WMI_REQUEST_VDEV_STAT request, firmware might split response into
-multiple events dut to buffer limit, hence currently in
-ath11k_debugfs_fw_stats_process() we wait until all events received.
-In case there is no vdev started, this results in that below condition
-would never get satisfied
+if ath11k_crypto_mode is invalid (not ATH11K_CRYPT_MODE_SW/ATH11K_CRYPT_MODE_HW),
+ath11k_core_qmi_firmware_ready() will not undo some actions that was previously
+started/configured. Do the validation as soon as possible in order to avoid
+undoing actions in that case and also to fix the following smatch warning:
 
-	((++ar->fw_stats.num_vdev_recvd) == total_vdevs_started)
+drivers/net/wireless/ath/ath11k/core.c:2166 ath11k_core_qmi_firmware_ready()
+warn: missing unwind goto?
 
-finally the requestor would be blocked until wait time out.
-
-The same applies to WMI_REQUEST_BCN_STAT request as well due to:
-
-	((++ar->fw_stats.num_bcn_recvd) == ar->num_started_vdevs)
-
-Change to check the number of started vdev first: if it is zero, finish
-wait directly; if not, follow the old way.
-
-Tested-on: WCN6855 hw2.0 PCI WLAN.HSP.1.1-03125-QCAHSPSWPL_V1_V2_SILICONZ_LITE-3.6510.37
-
-Fixes: d5c65159f289 ("ath11k: driver for Qualcomm IEEE 802.11ax devices")
-Signed-off-by: Baochen Qiang <quic_bqiang@quicinc.com>
-Reviewed-by: Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>
-Link: https://patch.msgid.link/20250220082448.31039-4-quic_bqiang@quicinc.com
+Signed-off-by: Rodrigo Gobbi <rodrigo.gobbi.7@gmail.com>
+Reported-by: kernel test robot <lkp@intel.com>
+Reported-by: Dan Carpenter <error27@gmail.com>
+Closes: https://lore.kernel.org/r/202304151955.oqAetVFd-lkp@intel.com/
+Fixes: aa2092a9bab3 ("ath11k: add raw mode and software crypto support")
+Reviewed-by: Baochen Qiang <quic_bqiang@quicinc.com>
+Link: https://patch.msgid.link/20250522200519.16858-1-rodrigo.gobbi.7@gmail.com
 Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath11k/debugfs.c | 10 +++++++---
- 1 file changed, 7 insertions(+), 3 deletions(-)
+ drivers/net/wireless/ath/ath11k/core.c | 28 +++++++++++++-------------
+ 1 file changed, 14 insertions(+), 14 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath11k/debugfs.c b/drivers/net/wireless/ath/ath11k/debugfs.c
-index 5a375d6680594..50bc17127e68a 100644
---- a/drivers/net/wireless/ath/ath11k/debugfs.c
-+++ b/drivers/net/wireless/ath/ath11k/debugfs.c
-@@ -107,7 +107,7 @@ void ath11k_debugfs_fw_stats_process(struct ath11k *ar, struct ath11k_fw_stats *
+diff --git a/drivers/net/wireless/ath/ath11k/core.c b/drivers/net/wireless/ath/ath11k/core.c
+index 12c5f50f61f90..609d8387c41f3 100644
+--- a/drivers/net/wireless/ath/ath11k/core.c
++++ b/drivers/net/wireless/ath/ath11k/core.c
+@@ -1638,6 +1638,20 @@ int ath11k_core_qmi_firmware_ready(struct ath11k_base *ab)
  {
- 	struct ath11k_base *ab = ar->ab;
- 	struct ath11k_pdev *pdev;
--	bool is_end;
-+	bool is_end = true;
- 	size_t total_vdevs_started = 0;
- 	int i;
+ 	int ret;
  
-@@ -132,7 +132,9 @@ void ath11k_debugfs_fw_stats_process(struct ath11k *ar, struct ath11k_fw_stats *
- 				total_vdevs_started += ar->num_started_vdevs;
- 		}
++	switch (ath11k_crypto_mode) {
++	case ATH11K_CRYPT_MODE_SW:
++		set_bit(ATH11K_FLAG_HW_CRYPTO_DISABLED, &ab->dev_flags);
++		set_bit(ATH11K_FLAG_RAW_MODE, &ab->dev_flags);
++		break;
++	case ATH11K_CRYPT_MODE_HW:
++		clear_bit(ATH11K_FLAG_HW_CRYPTO_DISABLED, &ab->dev_flags);
++		clear_bit(ATH11K_FLAG_RAW_MODE, &ab->dev_flags);
++		break;
++	default:
++		ath11k_info(ab, "invalid crypto_mode: %d\n", ath11k_crypto_mode);
++		return -EINVAL;
++	}
++
+ 	ret = ath11k_core_start_firmware(ab, ab->fw_mode);
+ 	if (ret) {
+ 		ath11k_err(ab, "failed to start firmware: %d\n", ret);
+@@ -1656,20 +1670,6 @@ int ath11k_core_qmi_firmware_ready(struct ath11k_base *ab)
+ 		goto err_firmware_stop;
+ 	}
  
--		is_end = ((++ar->fw_stats.num_vdev_recvd) == total_vdevs_started);
-+		if (total_vdevs_started)
-+			is_end = ((++ar->fw_stats.num_vdev_recvd) ==
-+				  total_vdevs_started);
+-	switch (ath11k_crypto_mode) {
+-	case ATH11K_CRYPT_MODE_SW:
+-		set_bit(ATH11K_FLAG_HW_CRYPTO_DISABLED, &ab->dev_flags);
+-		set_bit(ATH11K_FLAG_RAW_MODE, &ab->dev_flags);
+-		break;
+-	case ATH11K_CRYPT_MODE_HW:
+-		clear_bit(ATH11K_FLAG_HW_CRYPTO_DISABLED, &ab->dev_flags);
+-		clear_bit(ATH11K_FLAG_RAW_MODE, &ab->dev_flags);
+-		break;
+-	default:
+-		ath11k_info(ab, "invalid crypto_mode: %d\n", ath11k_crypto_mode);
+-		return -EINVAL;
+-	}
+-
+ 	if (ath11k_frame_mode == ATH11K_HW_TXRX_RAW)
+ 		set_bit(ATH11K_FLAG_RAW_MODE, &ab->dev_flags);
  
- 		list_splice_tail_init(&stats->vdevs,
- 				      &ar->fw_stats.vdevs);
-@@ -151,7 +153,9 @@ void ath11k_debugfs_fw_stats_process(struct ath11k *ar, struct ath11k_fw_stats *
- 		/* Mark end until we reached the count of all started VDEVs
- 		 * within the PDEV
- 		 */
--		is_end = ((++ar->fw_stats.num_bcn_recvd) == ar->num_started_vdevs);
-+		if (ar->num_started_vdevs)
-+			is_end = ((++ar->fw_stats.num_bcn_recvd) ==
-+				  ar->num_started_vdevs);
- 
- 		list_splice_tail_init(&stats->bcn,
- 				      &ar->fw_stats.bcn);
 -- 
 2.39.5
 
