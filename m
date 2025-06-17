@@ -1,60 +1,57 @@
-Return-Path: <stable+bounces-154227-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153478-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0B75CADD8D4
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:59:27 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6A2CBADD523
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:17:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EFFA94A6790
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:46:24 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5662A1944EBD
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:05:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C47BF2EF2AA;
-	Tue, 17 Jun 2025 16:41:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3239B2ED168;
+	Tue, 17 Jun 2025 16:01:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kzLVlFE+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eLM5eP0D"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 737171ADC97;
-	Tue, 17 Jun 2025 16:41:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E204C2EA143;
+	Tue, 17 Jun 2025 16:01:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750178513; cv=none; b=s+XLA4nXev+a2MzfjFFPSwZWYfWEKk5DMXjpliZBSAqLxKGV8AIzHX5GOsOUaJ+vFZ4Bap7tX6aE/6U9CBysTg4ha+MCXKGi4I8uXtB6z3wuuwvD4SAN+5H37oumuoFllJqi1i25RinqMmJiIBoBKT5NAblZDHmCX5PsGQi2O2Y=
+	t=1750176094; cv=none; b=huWThAhyvveNWVMgH8I106EVXkVBOnhfhVEovU5WsJipRHZAbv9IWpayhlTALkPRjZaTl1WrsjSZ3ixIlsXuZlxHxYtXCqybO4sBY6RlILo59xzVU/18LNv8cA1ECFoLCKib7a/AI70ALwwxOTtxDv3qlooZhwB+74ssLWYZcww=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750178513; c=relaxed/simple;
-	bh=abDzn3/HuW9FrQlHz+9AyJ3SUWrN2ItQN3YuRAJJunI=;
+	s=arc-20240116; t=1750176094; c=relaxed/simple;
+	bh=Wx61f8/kLPr2il8I8T6f+koVqwnYtuGBbUg/a+UCXjE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ni30HnxxCU6mscxj/pkaGSaTyUKa2hcNEDKj2E7+uWcxTmsosKU8rcHZMQLmq3yPRBXLBAWKHVveIZGyFskG4pyejtiYcn2sYvMLNn0tX7/5IPOPBOF4WHhSW2fFoTFNDdZePaZ2RK2fvxBIqf3MyHSkO38WYo9whh+vjbGqJgk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kzLVlFE+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6427C4CEE3;
-	Tue, 17 Jun 2025 16:41:52 +0000 (UTC)
+	 MIME-Version; b=XmsMwlV96RO46+jjJ/+DS28UBET4Bbsk17nndElwbGp5UeCa7rX8Y1nzCEDLuGzHCVwNIF/QkPRJbh2AzmKIybU4hGKrVlIeAJlmkGDOiS6Dxkoe4WwwYmSSjbOSKHtjSKVpQOoykus2m10EdQE6IuSis77++mODNpQLol38SAY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eLM5eP0D; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 526FCC4CEE3;
+	Tue, 17 Jun 2025 16:01:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750178513;
-	bh=abDzn3/HuW9FrQlHz+9AyJ3SUWrN2ItQN3YuRAJJunI=;
+	s=korg; t=1750176093;
+	bh=Wx61f8/kLPr2il8I8T6f+koVqwnYtuGBbUg/a+UCXjE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kzLVlFE+goJp6k6TODFuAuRDbdR0A/yjmr5jpb0TTm05DykqnRDAEOQTBUHc3PJb+
-	 59ytng4Y76t4W1pEJUTRqA2VNnNeTuKz1O0kQ3Fj3douica7mVPI+6ETnlIG0IOIlH
-	 16bjuoH4Q621orYX6+J3ajfKCEvAP8bEsVE1JQuI=
+	b=eLM5eP0DG0k43cPBjtk+gBpEv7/ZRw23OReABq3WDtCXEXI1/LJtXux23E2zvhWeJ
+	 xj0HVUjceyX29wF44UcJMKVdG84wQdaoUPaews13xf6NpK0hdcb4h2UKxiL7quh2Kv
+	 hC2fSPOHaPDPLjySnalt20nWrXCsLmdDsk75NOzI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+25b83a6f2c702075fcbc@syzkaller.appspotmail.com,
-	David Howells <dhowells@redhat.com>,
-	Paulo Alcantara <pc@manguebit.com>,
-	netfs@lists.linux.dev,
-	linux-fsdevel@vger.kernel.org,
-	Christian Brauner <brauner@kernel.org>,
+	zepta <z3ptaa@gmail.com>,
+	Kees Cook <kees@kernel.org>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 453/780] netfs: Fix oops in write-retry from mis-resetting the subreq iterator
+Subject: [PATCH 6.12 195/512] Bluetooth: btintel: Check dsbr size from EFI variable
 Date: Tue, 17 Jun 2025 17:22:41 +0200
-Message-ID: <20250617152509.915938838@linuxfoundation.org>
+Message-ID: <20250617152427.539914737@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
-References: <20250617152451.485330293@linuxfoundation.org>
+In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
+References: <20250617152419.512865572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,82 +63,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Howells <dhowells@redhat.com>
+From: Kees Cook <kees@kernel.org>
 
-[ Upstream commit 4481f7f2b3df123ec77e828c849138f75cff2bf2 ]
+[ Upstream commit 3aa1dc3c9060e335e82e9c182bf3d1db29220b1b ]
 
-Fix the resetting of the subrequest iterator in netfs_retry_write_stream()
-to use the iterator-reset function as the iterator may have been shortened
-by a previous retry.  In such a case, the amount of data to be written by
-the subrequest is not "subreq->len" but "subreq->len -
-subreq->transferred".
+Since the size of struct btintel_dsbr is already known, we can just
+start there instead of querying the EFI variable size. If the final
+result doesn't match what we expect also fail. This fixes a stack buffer
+overflow when the EFI variable is larger than struct btintel_dsbr.
 
-Without this, KASAN may see an error in iov_iter_revert():
-
-   BUG: KASAN: slab-out-of-bounds in iov_iter_revert lib/iov_iter.c:633 [inline]
-   BUG: KASAN: slab-out-of-bounds in iov_iter_revert+0x443/0x5a0 lib/iov_iter.c:611
-   Read of size 4 at addr ffff88802912a0b8 by task kworker/u32:7/1147
-
-   CPU: 1 UID: 0 PID: 1147 Comm: kworker/u32:7 Not tainted 6.15.0-rc6-syzkaller-00052-g9f35e33144ae #0 PREEMPT(full)
-   Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2~bpo12+1 04/01/2014
-   Workqueue: events_unbound netfs_write_collection_worker
-   Call Trace:
-    <TASK>
-    __dump_stack lib/dump_stack.c:94 [inline]
-    dump_stack_lvl+0x116/0x1f0 lib/dump_stack.c:120
-    print_address_description mm/kasan/report.c:408 [inline]
-    print_report+0xc3/0x670 mm/kasan/report.c:521
-    kasan_report+0xe0/0x110 mm/kasan/report.c:634
-    iov_iter_revert lib/iov_iter.c:633 [inline]
-    iov_iter_revert+0x443/0x5a0 lib/iov_iter.c:611
-    netfs_retry_write_stream fs/netfs/write_retry.c:44 [inline]
-    netfs_retry_writes+0x166d/0x1a50 fs/netfs/write_retry.c:231
-    netfs_collect_write_results fs/netfs/write_collect.c:352 [inline]
-    netfs_write_collection_worker+0x23fd/0x3830 fs/netfs/write_collect.c:374
-    process_one_work+0x9cf/0x1b70 kernel/workqueue.c:3238
-    process_scheduled_works kernel/workqueue.c:3319 [inline]
-    worker_thread+0x6c8/0xf10 kernel/workqueue.c:3400
-    kthread+0x3c2/0x780 kernel/kthread.c:464
-    ret_from_fork+0x45/0x80 arch/x86/kernel/process.c:153
-    ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
-    </TASK>
-
-Fixes: cd0277ed0c18 ("netfs: Use new folio_queue data type and iterator instead of xarray iter")
-Reported-by: syzbot+25b83a6f2c702075fcbc@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=25b83a6f2c702075fcbc
-Signed-off-by: David Howells <dhowells@redhat.com>
-Link: https://lore.kernel.org/20250519090707.2848510-2-dhowells@redhat.com
-Tested-by: syzbot+25b83a6f2c702075fcbc@syzkaller.appspotmail.com
-cc: Paulo Alcantara <pc@manguebit.com>
-cc: netfs@lists.linux.dev
-cc: linux-fsdevel@vger.kernel.org
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+Reported-by: zepta <z3ptaa@gmail.com>
+Closes: https://lore.kernel.org/all/CAPBS6KoaWV9=dtjTESZiU6KK__OZX0KpDk-=JEH8jCHFLUYv3Q@mail.gmail.com
+Fixes: eb9e749c0182 ("Bluetooth: btintel: Allow configuring drive strength of BRI")
+Signed-off-by: Kees Cook <kees@kernel.org>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/netfs/write_retry.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/bluetooth/btintel.c | 10 ++--------
+ 1 file changed, 2 insertions(+), 8 deletions(-)
 
-diff --git a/fs/netfs/write_retry.c b/fs/netfs/write_retry.c
-index 545d33079a77d..9b1ca8b0f4dd6 100644
---- a/fs/netfs/write_retry.c
-+++ b/fs/netfs/write_retry.c
-@@ -39,9 +39,10 @@ static void netfs_retry_write_stream(struct netfs_io_request *wreq,
- 			if (test_bit(NETFS_SREQ_FAILED, &subreq->flags))
- 				break;
- 			if (__test_and_clear_bit(NETFS_SREQ_NEED_RETRY, &subreq->flags)) {
--				struct iov_iter source = subreq->io_iter;
-+				struct iov_iter source;
+diff --git a/drivers/bluetooth/btintel.c b/drivers/bluetooth/btintel.c
+index 645047fb92fd2..51d6d91ed4041 100644
+--- a/drivers/bluetooth/btintel.c
++++ b/drivers/bluetooth/btintel.c
+@@ -2705,7 +2705,7 @@ static int btintel_uefi_get_dsbr(u32 *dsbr_var)
+ 	} __packed data;
  
--				iov_iter_revert(&source, subreq->len - source.count);
-+				netfs_reset_iter(subreq);
-+				source = subreq->io_iter;
- 				netfs_get_subrequest(subreq, netfs_sreq_trace_get_resubmit);
- 				netfs_reissue_write(stream, subreq, &source);
- 			}
+ 	efi_status_t status;
+-	unsigned long data_size = 0;
++	unsigned long data_size = sizeof(data);
+ 	efi_guid_t guid = EFI_GUID(0xe65d8884, 0xd4af, 0x4b20, 0x8d, 0x03,
+ 				   0x77, 0x2e, 0xcc, 0x3d, 0xa5, 0x31);
+ 
+@@ -2715,16 +2715,10 @@ static int btintel_uefi_get_dsbr(u32 *dsbr_var)
+ 	if (!efi_rt_services_supported(EFI_RT_SUPPORTED_GET_VARIABLE))
+ 		return -EOPNOTSUPP;
+ 
+-	status = efi.get_variable(BTINTEL_EFI_DSBR, &guid, NULL, &data_size,
+-				  NULL);
+-
+-	if (status != EFI_BUFFER_TOO_SMALL || !data_size)
+-		return -EIO;
+-
+ 	status = efi.get_variable(BTINTEL_EFI_DSBR, &guid, NULL, &data_size,
+ 				  &data);
+ 
+-	if (status != EFI_SUCCESS)
++	if (status != EFI_SUCCESS || data_size != sizeof(data))
+ 		return -ENXIO;
+ 
+ 	*dsbr_var = data.dsbr;
 -- 
 2.39.5
 
