@@ -1,60 +1,62 @@
-Return-Path: <stable+bounces-153837-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-154332-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC5FDADD6AB
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:36:11 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C3EBDADD8E9
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 19:00:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0EAF83BE0C0
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:25:46 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0FE0C4A768C
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:49:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 648E92F94A3;
-	Tue, 17 Jun 2025 16:20:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 355942E3AEB;
+	Tue, 17 Jun 2025 16:47:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kgZZ8rv7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Cfphxwcy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FDD22F9492;
-	Tue, 17 Jun 2025 16:20:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E608415B0EC;
+	Tue, 17 Jun 2025 16:47:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750177258; cv=none; b=tbhwrJPY7G350f7fwUIgHRAfoaJBCM3wHtQnHJ/H4a0PMRgk+0B4QzEOq4w00q42YX5rqDEOLTigmTWA8SNIvc06ax58mYKKItrBERqcahmlINvJE0Ik9AmWfQyEEkoG7kb/RzBRxnqvDATfoUuu4Xg/k2r87FuS7QQX8m15ks4=
+	t=1750178858; cv=none; b=Vu/TnjYxEC3lhHIwxqEfcNAJd9fTvyIqmqI0MO9/uP8ch/abbdNOSqi1DvGdsR5aq/hNmMYf+Tvjuy88agAmjX33K8WbfiGddCuvlXciWcNvq/xB7TeMK8VJtom8b8ocYRXzc4FMtYZNw4pupvqI64GhxIoosAoaTEhTSzLfpgE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750177258; c=relaxed/simple;
-	bh=k2pVnRAv8qNj22NTVAH/63kYJLru6jhyh2R34yOX3KE=;
+	s=arc-20240116; t=1750178858; c=relaxed/simple;
+	bh=IOhaYVK6hnkEGxLdcoP55UVEbOURDhoZtYx41ymT8uE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aDLgQhjb5bz6NDJ+vpK6G31j4X3TT5Fh48Ak2IhidQUlsuav2OkKiwEfsFWlaCd2E0EFiPG/YbtF5y5/3woDdqD3MUaF0fQHATSTxi7VhRQXbWi2mzsxV04NXXUOLpDM/sileuyUICqn3rp8gqPCuYPnJO6vCB1p6lDD0sXkujs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kgZZ8rv7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 839BFC4CEE3;
-	Tue, 17 Jun 2025 16:20:57 +0000 (UTC)
+	 MIME-Version; b=hl2Dvc2LVsOQEN66gVcQ0IPGcFVeXqAOPcQpEc2RxlAeMwVen/WsZ7EeyuJZ+4rvDbacZdTKEA36y4IqPIvrqyLhZ74UvJgLV3HW5qYn9wgMdRMvyI3wGkGZetvWdgJVeobcD8jI/HSYXfk6gmiKYMFASY0bOyAJMhFSbnN3kjM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Cfphxwcy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5764CC4CEE3;
+	Tue, 17 Jun 2025 16:47:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750177258;
-	bh=k2pVnRAv8qNj22NTVAH/63kYJLru6jhyh2R34yOX3KE=;
+	s=korg; t=1750178857;
+	bh=IOhaYVK6hnkEGxLdcoP55UVEbOURDhoZtYx41ymT8uE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kgZZ8rv73IImMbKzEAtKJ63FBOST4ZUBHlJOa5H3ALepldCF43NGQ+RDT0NpEwKPu
-	 4sOHrbOo53Ogih6phb8pVUqslFeJ4ZMoHg9TRfcyjtq6wioUEhTvFjfAZccCKjZAHP
-	 Yh2hDbDvCAOaKk7ecbru2BCw27ak+cS0IQHK4ulw=
+	b=Cfphxwcyf4nIiQxaAzL5I3Vbihpa5EcZRQse/O4mjGQU6i3QGZUoQz5Yn6VxU463S
+	 fzXxCQ8B0NAVHYWfBMPZUrAeO1CagZHnZXdYst4KZ6fDBcKdfey6SKdLsB443EKlXJ
+	 0/b2i/VmT14KxCe8f+DmMvvGZDE2YxHBUKd0JJd8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chenyuan Yang <chenyuan0y@gmail.com>,
-	Johan Hovold <johan@kernel.org>,
-	Krzysztof Kozlowski <krzk@kernel.org>,
-	Johan Hovold <johan+linaro@kernel.org>,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
-	Vinod Koul <vkoul@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 314/512] phy: qcom-qmp-usb: Fix an NULL vs IS_ERR() bug
+	Dawid Osuchowski <dawid.osuchowski@linux.intel.com>,
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	Jacob Keller <jacob.e.keller@intel.com>,
+	Michal Kubiak <michal.kubiak@intel.com>,
+	Simon Horman <horms@kernel.org>,
+	Jesse Brandeburg <jbrandeburg@cloudflare.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Sasha Levin <sashal@kernel.org>,
+	Saritha Sanigani <sarithax.sanigani@intel.com>
+Subject: [PATCH 6.15 572/780] ice: create new Tx scheduler nodes for new queues only
 Date: Tue, 17 Jun 2025 17:24:40 +0200
-Message-ID: <20250617152432.339053084@linuxfoundation.org>
+Message-ID: <20250617152514.769586020@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
-References: <20250617152419.512865572@linuxfoundation.org>
+In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
+References: <20250617152451.485330293@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,58 +68,74 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chenyuan Yang <chenyuan0y@gmail.com>
+From: Michal Kubiak <michal.kubiak@intel.com>
 
-[ Upstream commit d14402a38c2d868cacb1facaf9be908ca6558e59 ]
+[ Upstream commit 6fa2942578472c9cab13a8fc1dae0d830193e0a1 ]
 
-The qmp_usb_iomap() helper function currently returns the raw result of
-devm_ioremap() for non-exclusive mappings. Since devm_ioremap() may return
-a NULL pointer and the caller only checks error pointers with IS_ERR(),
-NULL could bypass the check and lead to an invalid dereference.
+The current implementation of the Tx scheduler tree attempts
+to create nodes for all Tx queues, ignoring the fact that some
+queues may already exist in the tree. For example, if the VSI
+already has 128 Tx queues and the user requests for 16 new queues,
+the Tx scheduler will compute the tree for 272 queues (128 existing
+queues + 144 new queues), instead of 144 queues (128 existing queues
+and 16 new queues).
+Fix that by modifying the node count calculation algorithm to skip
+the queues that already exist in the tree.
 
-Fix the issue by checking if devm_ioremap() returns NULL. When it does,
-qmp_usb_iomap() now returns an error pointer via IOMEM_ERR_PTR(-ENOMEM),
-ensuring safe and consistent error handling.
-
-Signed-off-by: Chenyuan Yang <chenyuan0y@gmail.com>
-Fixes: a5d6b1ac56cb ("phy: qcom-qmp-usb: fix memleak on probe deferral")
-CC: Johan Hovold <johan@kernel.org>
-CC: Krzysztof Kozlowski <krzk@kernel.org>
-Reviewed-by: Johan Hovold <johan+linaro@kernel.org>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Link: https://lore.kernel.org/r/20250414125050.2118619-1-chenyuan0y@gmail.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Fixes: 5513b920a4f7 ("ice: Update Tx scheduler tree for VSI multi-Tx queue support")
+Reviewed-by: Dawid Osuchowski <dawid.osuchowski@linux.intel.com>
+Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
+Signed-off-by: Michal Kubiak <michal.kubiak@intel.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Tested-by: Jesse Brandeburg <jbrandeburg@cloudflare.com>
+Tested-by: Saritha Sanigani <sarithax.sanigani@intel.com> (A Contingent Worker at Intel)
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/phy/qualcomm/phy-qcom-qmp-usb.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/intel/ice/ice_sched.c | 11 ++++++-----
+ 1 file changed, 6 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/phy/qualcomm/phy-qcom-qmp-usb.c b/drivers/phy/qualcomm/phy-qcom-qmp-usb.c
-index 8e2cd2c178d6b..c12efd127a612 100644
---- a/drivers/phy/qualcomm/phy-qcom-qmp-usb.c
-+++ b/drivers/phy/qualcomm/phy-qcom-qmp-usb.c
-@@ -2044,12 +2044,16 @@ static void __iomem *qmp_usb_iomap(struct device *dev, struct device_node *np,
- 					int index, bool exclusive)
+diff --git a/drivers/net/ethernet/intel/ice/ice_sched.c b/drivers/net/ethernet/intel/ice/ice_sched.c
+index 6ca13c5dcb14e..6524875b34d39 100644
+--- a/drivers/net/ethernet/intel/ice/ice_sched.c
++++ b/drivers/net/ethernet/intel/ice/ice_sched.c
+@@ -1604,16 +1604,16 @@ ice_sched_get_agg_node(struct ice_port_info *pi, struct ice_sched_node *tc_node,
+ /**
+  * ice_sched_calc_vsi_child_nodes - calculate number of VSI child nodes
+  * @hw: pointer to the HW struct
+- * @num_qs: number of queues
++ * @num_new_qs: number of new queues that will be added to the tree
+  * @num_nodes: num nodes array
+  *
+  * This function calculates the number of VSI child nodes based on the
+  * number of queues.
+  */
+ static void
+-ice_sched_calc_vsi_child_nodes(struct ice_hw *hw, u16 num_qs, u16 *num_nodes)
++ice_sched_calc_vsi_child_nodes(struct ice_hw *hw, u16 num_new_qs, u16 *num_nodes)
  {
- 	struct resource res;
-+	void __iomem *mem;
+-	u16 num = num_qs;
++	u16 num = num_new_qs;
+ 	u8 i, qgl, vsil;
  
- 	if (!exclusive) {
- 		if (of_address_to_resource(np, index, &res))
- 			return IOMEM_ERR_PTR(-EINVAL);
- 
--		return devm_ioremap(dev, res.start, resource_size(&res));
-+		mem = devm_ioremap(dev, res.start, resource_size(&res));
-+		if (!mem)
-+			return IOMEM_ERR_PTR(-ENOMEM);
-+		return mem;
+ 	qgl = ice_sched_get_qgrp_layer(hw);
+@@ -1863,8 +1863,9 @@ ice_sched_update_vsi_child_nodes(struct ice_port_info *pi, u16 vsi_handle,
+ 			return status;
  	}
  
- 	return devm_of_iomap(dev, np, index, NULL);
+-	if (new_numqs)
+-		ice_sched_calc_vsi_child_nodes(hw, new_numqs, new_num_nodes);
++	ice_sched_calc_vsi_child_nodes(hw, new_numqs - prev_numqs,
++				       new_num_nodes);
++
+ 	/* Keep the max number of queue configuration all the time. Update the
+ 	 * tree only if number of queues > previous number of queues. This may
+ 	 * leave some extra nodes in the tree if number of queues < previous
 -- 
 2.39.5
 
