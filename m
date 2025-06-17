@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-153296-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153299-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 377C5ADD3D3
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:02:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F322EADD3D9
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:03:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B2AE119449C2
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 15:55:40 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A9E721898F13
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 15:55:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D0DA2F3624;
-	Tue, 17 Jun 2025 15:51:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6D222EA16E;
+	Tue, 17 Jun 2025 15:51:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fpnsnXvY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TRB1E5Zr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AC452F3620;
-	Tue, 17 Jun 2025 15:51:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A255C2E9753;
+	Tue, 17 Jun 2025 15:51:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750175493; cv=none; b=CIatdDktq5OY4AyP9fEZNy8mx8cx4/bsAFUAzSqJwHpjQ1kXihVzRwoYYVlkU/Gxa+TxKp9V4sqt2wWwXKrwdGl1LnGQmQ+OTzOHo197Ry95fXYcUGphKxsxt++50XU4p+RwW4nRNLT8ax/z7jKO9M5W8+wkn5SHM+Gi1vndU20=
+	t=1750175502; cv=none; b=SazrWlrqmC5R17gGq5paN4JU1pBqYvpWtBqdW1R3u0VQLXQisH0yk5Kd0KN5qAoty3y5Cf4httsN5Yt+07kcCrorE/9y3t78hTZ2yYm3GszjGkqGU3gQIvO74qMGV5vv8RaB5rq7Dk0f+qgQDgB8baBMlQuuYIaEAdPcY83Ur4A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750175493; c=relaxed/simple;
-	bh=ggC2utJQ3Wt6HitZPeq0eTFX5nSa8P5GbB+SbIP2TC4=;
+	s=arc-20240116; t=1750175502; c=relaxed/simple;
+	bh=M12dxQy0491kS0/affHWFca/tUBLtFXFt8QPWeMuQEM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=C5E57j5KPz8oMWJkmhfaOkITSQMxWge7YTitfuZxLCVndesQoFEv/63vYDJnf2dg7ZcPiFFd1gwXr5hJ4SvcghVtTkX7PsbhcFjYNtqHGnR7z2wQLPIrnfOi45GbqkEgV3pbpsQHDl/ufEq1tf7FgX085KUNHrUj8MaptOtV2aQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fpnsnXvY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D41FC4CEE3;
-	Tue, 17 Jun 2025 15:51:32 +0000 (UTC)
+	 MIME-Version; b=rPAHQMM5PVxMqsY7cSt2wbZtvukbDcyRLwlwGFr3bb4VWmw9WdSZuVAqWiWhXV6sM6Nl+Q4Lb8lTQEsO/ytiiz4eH1TrDEkC6r8POkvDomKyRhljaxgJNLbLVHXCZGbtVOwKQ97elAoIhetkD1tKmuayYcaKKKlvs+UBwqLNt1Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TRB1E5Zr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12CE9C4CEE3;
+	Tue, 17 Jun 2025 15:51:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750175492;
-	bh=ggC2utJQ3Wt6HitZPeq0eTFX5nSa8P5GbB+SbIP2TC4=;
+	s=korg; t=1750175502;
+	bh=M12dxQy0491kS0/affHWFca/tUBLtFXFt8QPWeMuQEM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fpnsnXvYsOAQy4Eo+8RKragumSJJdOeZikwU+VpZDvrZqcPGgRgNnlVH2sh3DsHRO
-	 Bp/TzqW7V99FEjfodc0MkIQJ7XOPojyIT8SJLJHbiFqYSmWA+Ma+DOfQ44oykrJ/0I
-	 2zLd1eyW5oZoaoUusY80wSDilHm4YuakBGVFnBhI=
+	b=TRB1E5ZrmtuahBm+VC2mZoITXtyw2UfBg8y/22g2JGxTEITgpiakDnGS7/S4Syed8
+	 DVw2kwArA5u4HBVRnLko6TO5N+6np87mA7++4TZU9tCH6QxzSHg2MHVYP6VGObiRfQ
+	 Wj5iAzRgN2yvEBHaRA5lLziybnW4EVnf3Ra/PwBg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Stefan Wahren <wahrenst@gmx.net>,
-	Maxime Ripard <mripard@kernel.org>,
-	David Turner <david.turner@raspberrypi.com>,
-	Dave Stevenson <dave.stevenson@raspberrypi.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>,
+	Badal Nilawar <badal.nilawar@intel.com>,
+	Anshuman Gupta <anshuman.gupta@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 093/780] drm/vc4: hdmi: Call HDMI hotplug helper on disconnect
-Date: Tue, 17 Jun 2025 17:16:41 +0200
-Message-ID: <20250617152455.300821602@linuxfoundation.org>
+Subject: [PATCH 6.15 094/780] drm/xe/d3cold: Set power state to D3Cold during s2idle/s3
+Date: Tue, 17 Jun 2025 17:16:42 +0200
+Message-ID: <20250617152455.341516718@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
 References: <20250617152451.485330293@linuxfoundation.org>
@@ -69,46 +68,43 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Stefan Wahren <wahrenst@gmx.net>
+From: Badal Nilawar <badal.nilawar@intel.com>
 
-[ Upstream commit 34f051accedb642087fdcf19b3501fe150fbee49 ]
+[ Upstream commit f945dd89fa8da3f662508165453dafdb4035d9d3 ]
 
-drm_atomic_helper_connector_hdmi_hotplug() must be called
-regardless of the connection status, otherwise the HDMI audio
-disconnect event won't be notified.
+According to pci core guidelines, pci_save_config is recommended when the
+driver explicitly needs to set the pci power state. As of now xe kmd is
+only doing pci_save_config while entering to s2idle/s3 state, which makes
+pci core think that device driver has already applied required pci power
+state. This leads to GPU remain in D0 state. To fix the issue setting
+the pci power state to D3Cold.
 
-Fixes: 2ea9ec5d2c20 ("drm/vc4: hdmi: use drm_atomic_helper_connector_hdmi_hotplug()")
-Suggested-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Signed-off-by: Stefan Wahren <wahrenst@gmx.net>
-Reviewed-by: Maxime Ripard <mripard@kernel.org>
-Signed-off-by: David Turner <david.turner@raspberrypi.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20250317-vc4_hotplug-v4-2-2af625629186@raspberrypi.com
-Signed-off-by: Dave Stevenson <dave.stevenson@raspberrypi.com>
+Fixes:dd08ebf6c352 ("drm/xe: Introduce a new DRM driver for Intel GPUs")
+
+Cc: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Signed-off-by: Badal Nilawar <badal.nilawar@intel.com>
+Signed-off-by: Anshuman Gupta <anshuman.gupta@intel.com>
+Reviewed-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Link: https://lore.kernel.org/r/20250327161914.432552-1-badal.nilawar@intel.com
+Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/vc4/vc4_hdmi.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/xe/xe_pci.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/gpu/drm/vc4/vc4_hdmi.c b/drivers/gpu/drm/vc4/vc4_hdmi.c
-index 37238a12baa58..37a7d45695f23 100644
---- a/drivers/gpu/drm/vc4/vc4_hdmi.c
-+++ b/drivers/gpu/drm/vc4/vc4_hdmi.c
-@@ -372,13 +372,13 @@ static void vc4_hdmi_handle_hotplug(struct vc4_hdmi *vc4_hdmi,
- 	 * the lock for now.
- 	 */
+diff --git a/drivers/gpu/drm/xe/xe_pci.c b/drivers/gpu/drm/xe/xe_pci.c
+index f4d108dc49b1b..30f7ce06c8969 100644
+--- a/drivers/gpu/drm/xe/xe_pci.c
++++ b/drivers/gpu/drm/xe/xe_pci.c
+@@ -922,6 +922,7 @@ static int xe_pci_suspend(struct device *dev)
  
-+	drm_atomic_helper_connector_hdmi_hotplug(connector, status);
-+
- 	if (status == connector_status_disconnected) {
- 		cec_phys_addr_invalidate(vc4_hdmi->cec_adap);
- 		return;
- 	}
+ 	pci_save_state(pdev);
+ 	pci_disable_device(pdev);
++	pci_set_power_state(pdev, PCI_D3cold);
  
--	drm_atomic_helper_connector_hdmi_hotplug(connector, status);
--
- 	cec_s_phys_addr(vc4_hdmi->cec_adap,
- 			connector->display_info.source_physical_address, false);
- 
+ 	return 0;
+ }
 -- 
 2.39.5
 
