@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-154211-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153509-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 43D81ADD780
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:45:18 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id BBE59ADD511
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:16:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0AC7B7A9E57
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:43:56 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B9FED3A9A41
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:06:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4598B285041;
-	Tue, 17 Jun 2025 16:41:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA1C62EF292;
+	Tue, 17 Jun 2025 16:03:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FOjukrQx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VM8NPG1n"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 015EE2EA72C;
-	Tue, 17 Jun 2025 16:41:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85AD82DFF10;
+	Tue, 17 Jun 2025 16:03:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750178462; cv=none; b=nrhDNB5OjNBiSfT8pZHokNBZ+sf2CXL8sWuFX6hiBDNxsRjEZHZsg6eGLwvdNrk95ITIFgYPJaN9/GKetoT/OWjAfJ7mhX/JF9B2RH2FB+2fqk7jdplpWq7eLRNeUov7rj/bjVoHwXF2b1kY64Cnffp7USyO3tofzBCQbEBwz90=
+	t=1750176193; cv=none; b=awKj0srl1zFf9z0UIKIxsLiCViQqkvGf23Evrgi4c1jBvP21er7V2orFtAXHHXOfwMk4oDjHOECLwTG4IAAq/7HG+AA+h3VSl6a47fwfVYL552oMPkmEWPDflBthkkdJdpm4u7ABmGlvArWhFY6jzkeFlTScfCyk8KxZPu7E+p4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750178462; c=relaxed/simple;
-	bh=9b8p/QYhNLzkaTf4+CjLU9qMu8NoDTt3skTCjD0y9Yk=;
+	s=arc-20240116; t=1750176193; c=relaxed/simple;
+	bh=RzH3W9pVSo8zwTN5YBbOLYGU3Wk5gnqXgRPNKnqT3j8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RwgdPtaEpT3U/HTo73ljA9hHY7Lhwsga9Sn/GQGLrocpji6kHiOkdyhkfrGvQCxMFqh5ZKd/u/6ntwk5JAy1BEjTj0Xn2qzUcO5znDlO1TJnROd9cJTKhA55UtoUT34zFhf962/7C9F7VMumDOmLK4/PXBiRi8ahojcq8okLhCA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FOjukrQx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C247C4CEE3;
-	Tue, 17 Jun 2025 16:41:01 +0000 (UTC)
+	 MIME-Version; b=WSt/lA4N9tjl3ByvCTRWsqfmf7pV2nCYx42FCuooLlO9C1qdCvIv2hBQiWmE8dlaOxtuls5mKMBlzPJ5RwmHs/txLisjdjLWaQh6bFbh9geWqY8XjAkywzGH8RRhrBAv9raDXQTLVgkTxAcG1B74pnaqpDuxJN7zulesxn9E8do=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VM8NPG1n; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72903C4CEE3;
+	Tue, 17 Jun 2025 16:03:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750178461;
-	bh=9b8p/QYhNLzkaTf4+CjLU9qMu8NoDTt3skTCjD0y9Yk=;
+	s=korg; t=1750176193;
+	bh=RzH3W9pVSo8zwTN5YBbOLYGU3Wk5gnqXgRPNKnqT3j8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FOjukrQxOZ3aFFXJc55eRYw6iJDsERhXyEYHzdaPsCR80btRX9lWtlPV6XR1TM43I
-	 qZ4vZvppsOFPUS44WsWnw6y8WopJJRyRGQAA1Dd7iRhrpR+HH+6rmUn44rSQ0ggpNq
-	 o4l9fo9kwRKzsPUFPZXQr6BQ4vcHjx0qlw1yodMQ=
+	b=VM8NPG1nOCentgRGUrK5XynWjZqNaECpxXjtwdZy8meUYllkVcPvQ06kQ9PcCles8
+	 IWY6/L3dpdPv5T8bLMJKprdHiCbT/etav2Pkf/jm+Kc+560Odu6/zc2gojTk8sy/Gp
+	 KoCPllraXEM3tVvYboZDHl0xKMVY7Q+edmybzrEE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yue Haibing <yuehaibing@huawei.com>,
-	Jassi Brar <jassisinghbrar@gmail.com>,
+	syzbot+0903f6d7f285e41cdf10@syzkaller.appspotmail.com,
+	KaFai Wan <mannkafai@gmail.com>,
+	Alexei Starovoitov <ast@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 463/780] mailbox: mchp-ipc-sbi: Fix COMPILE_TEST build error
+Subject: [PATCH 6.12 205/512] bpf: Avoid __bpf_prog_ret0_warn when jit fails
 Date: Tue, 17 Jun 2025 17:22:51 +0200
-Message-ID: <20250617152510.342268937@linuxfoundation.org>
+Message-ID: <20250617152427.943152190@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
-References: <20250617152451.485330293@linuxfoundation.org>
+In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
+References: <20250617152419.512865572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,50 +63,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yue Haibing <yuehaibing@huawei.com>
+From: KaFai Wan <mannkafai@gmail.com>
 
-[ Upstream commit d635ba4207c31940398c41caa0cedd80f3b9c9c7 ]
+[ Upstream commit 86bc9c742426a16b52a10ef61f5b721aecca2344 ]
 
-If COMPILE_TEST is y but RISCV_SBI is n, build fails:
+syzkaller reported an issue:
 
-drivers/mailbox/mailbox-mchp-ipc-sbi.c: In function 'mchp_ipc_sbi_chan_send':
-drivers/mailbox/mailbox-mchp-ipc-sbi.c:119:23: error: storage size of 'ret' isn't known
-	struct sbiret ret;
-	              ^~~
-  CC      drivers/nvmem/lpc18xx_otp.o
-drivers/mailbox/mailbox-mchp-ipc-sbi.c:121:15: error: implicit declaration of function 'sbi_ecall' [-Werror=implicit-function-declaration]
-	ret = sbi_ecall(SBI_EXT_MICROCHIP_TECHNOLOGY, command, channel,
-	      ^~~~~~~~~
+WARNING: CPU: 3 PID: 217 at kernel/bpf/core.c:2357 __bpf_prog_ret0_warn+0xa/0x20 kernel/bpf/core.c:2357
+Modules linked in:
+CPU: 3 UID: 0 PID: 217 Comm: kworker/u32:6 Not tainted 6.15.0-rc4-syzkaller-00040-g8bac8898fe39
+RIP: 0010:__bpf_prog_ret0_warn+0xa/0x20 kernel/bpf/core.c:2357
+Call Trace:
+ <TASK>
+ bpf_dispatcher_nop_func include/linux/bpf.h:1316 [inline]
+ __bpf_prog_run include/linux/filter.h:718 [inline]
+ bpf_prog_run include/linux/filter.h:725 [inline]
+ cls_bpf_classify+0x74a/0x1110 net/sched/cls_bpf.c:105
+ ...
 
-move COMPILE_TEST to ARCH_MICROCHIP dependency as other drivers.
+When creating bpf program, 'fp->jit_requested' depends on bpf_jit_enable.
+This issue is triggered because of CONFIG_BPF_JIT_ALWAYS_ON is not set
+and bpf_jit_enable is set to 1, causing the arch to attempt JIT the prog,
+but jit failed due to FAULT_INJECTION. As a result, incorrectly
+treats the program as valid, when the program runs it calls
+`__bpf_prog_ret0_warn` and triggers the WARN_ON_ONCE(1).
 
-Fixes: e4b1d67e7141 ("mailbox: add Microchip IPC support")
-Signed-off-by: Yue Haibing <yuehaibing@huawei.com>
-Signed-off-by: Jassi Brar <jassisinghbrar@gmail.com>
+Reported-by: syzbot+0903f6d7f285e41cdf10@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/bpf/6816e34e.a70a0220.254cdc.002c.GAE@google.com
+Fixes: fa9dd599b4da ("bpf: get rid of pure_initcall dependency to enable jits")
+Signed-off-by: KaFai Wan <mannkafai@gmail.com>
+Link: https://lore.kernel.org/r/20250526133358.2594176-1-mannkafai@gmail.com
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mailbox/Kconfig | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ kernel/bpf/core.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/mailbox/Kconfig b/drivers/mailbox/Kconfig
-index ed52db272f4d0..e8445cda7c618 100644
---- a/drivers/mailbox/Kconfig
-+++ b/drivers/mailbox/Kconfig
-@@ -191,8 +191,8 @@ config POLARFIRE_SOC_MAILBOX
+diff --git a/kernel/bpf/core.c b/kernel/bpf/core.c
+index a713cc7b00849..68a327158989b 100644
+--- a/kernel/bpf/core.c
++++ b/kernel/bpf/core.c
+@@ -2419,7 +2419,7 @@ struct bpf_prog *bpf_prog_select_runtime(struct bpf_prog *fp, int *err)
+ 	/* In case of BPF to BPF calls, verifier did all the prep
+ 	 * work with regards to JITing, etc.
+ 	 */
+-	bool jit_needed = false;
++	bool jit_needed = fp->jit_requested;
  
- config MCHP_SBI_IPC_MBOX
- 	tristate "Microchip Inter-processor Communication (IPC) SBI driver"
--	depends on RISCV_SBI || COMPILE_TEST
--	depends on ARCH_MICROCHIP
-+	depends on RISCV_SBI
-+	depends on ARCH_MICROCHIP || COMPILE_TEST
- 	help
- 	  Mailbox implementation for Microchip devices with an
- 	  Inter-process communication (IPC) controller.
+ 	if (fp->bpf_func)
+ 		goto finalize;
 -- 
 2.39.5
 
