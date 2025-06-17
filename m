@@ -1,129 +1,244 @@
-Return-Path: <stable+bounces-152839-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-152840-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1CBE4ADCCA1
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 15:13:11 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 54B0AADCCF8
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 15:22:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C253B3B50BE
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 13:07:51 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5C7E7171BB9
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 13:17:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0F442E2650;
-	Tue, 17 Jun 2025 13:05:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3BF742E717B;
+	Tue, 17 Jun 2025 13:17:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="mFpJ1kjM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rGzLfnev"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lf1-f48.google.com (mail-lf1-f48.google.com [209.85.167.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D63F22E2641;
-	Tue, 17 Jun 2025 13:05:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBEE05C96
+	for <stable@vger.kernel.org>; Tue, 17 Jun 2025 13:17:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750165510; cv=none; b=keSK4dWo3/uoL8KIp5+6fDzhLjaT8eEBJch9x+US33nLEbY062cIObXOyKT4Xd8tUNppULAUfIOPXScGPsYYhO3Yc6vCAzUn692cmkgIfVTsWtq7eVlhdKAgxll75/0C+fHR3zspEM4lDSw53/HIGCGq8tzDdUapDM2CJVMkW8E=
+	t=1750166262; cv=none; b=DpVygUbEc0hdz1CXRZp8VIDJBNm5iP1gK7rp6TMRqk5FfPg1jwJ0QVQcmM8EI4B+GWlMce1x06YzQlvYP8KnC1RMz9onsdsG83EV3x68Z3+5SkR00Pq4HNd6p2tD0ETBiSUlICsuTUopJb7Xa2g+UAEFF6ZXqG9B5St4XtcSeUw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750165510; c=relaxed/simple;
-	bh=xUevxqP7qeHQyrqc8eeur3FyUDeFXsqRS6sO3KTeE1s=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=HNWdlsg4zOEIMtqiGt9aBbT6/shQ4P9Km8O4V44cliw+ZARfeFybys0i1ud7hzgDAnQvi8UxwNe86tGcF11gRgirlTGnRXqdhbcEE79tZjuF/wZkx6cyv1r/mRYwYm3dXq3rXImV6DkaUydoWiNrOFU1Hh+z4JVao86JtqGdtNg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=mFpJ1kjM; arc=none smtp.client-ip=209.85.167.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lf1-f48.google.com with SMTP id 2adb3069b0e04-553be4d2fbfso2760078e87.0;
-        Tue, 17 Jun 2025 06:05:08 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1750165507; x=1750770307; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=hQ7rt4e14DyPGgHQFy3EQy+5G7wFsrLkDEYIps9brIY=;
-        b=mFpJ1kjMUtq7TTL3NIxllOppRvClAn2qAeHE0EOYP4PuE/JeLxUyfI+P16t6AmDEaT
-         bD9GhHgbpuPQz0l2XSGq9GOQUL00V0/XCExL0kJiCuIoSrHTE9ccDigfR8WrcIDhsMwb
-         IA7/q3vlA8Ppo2LkcgWRl4H/SPwNwWoP3pHjGsNsFYuM/hp6eodu2rLLhxZ8W5byzILD
-         Uwlly9uXTtg5yK1QHTff8lr09M1ZhISPhVXh+lXBoYkTCwApBW25yR4KcBUIX+YR+JuK
-         4x1yXJSVl/hYinXCgXjiPlhUKQ40o31NS8lBFrcYPsegVZN0nW95cRjDBe+8Uzy9ztrZ
-         tgmQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1750165507; x=1750770307;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=hQ7rt4e14DyPGgHQFy3EQy+5G7wFsrLkDEYIps9brIY=;
-        b=Kh9k5XSCbKONoCGMFgChv5LiA5/qPMu2sPtP+JEg5QeBNdtn0hPRwVJW0+abWHfPcs
-         eWONetTkNZiKoTXtd+wtbjE35SgiE0iUnO8G1R5089obmZiQ2nSr9JyIxYOp1u9eE1B9
-         7x9aoit/iqpZ+wiDbrLvZGINtm5ur+wWp1rwibATAZnquBe27rYY/OxMa3HA5XaBHGUq
-         FDZLnanbS42bYvW5kpXHfAqeCyzDH1pvNrM0eY8kq7lpqUOHc6l5QDEj6ZCyxyQxbBC/
-         akiW+NSPa4gcpvDtbFecFRxvAWqWDrmBqlFaccJmktWQiHMHap+4UqD+22QqNKvZChj4
-         BDnQ==
-X-Forwarded-Encrypted: i=1; AJvYcCU8NvdvMGt1ChVgl0cjtCzt1eG367C6N/0Lb/WHAQsKvz/KlhYC9IvIBow7Q06OQwZjXerhYUvj@vger.kernel.org, AJvYcCXwm7vroIx8qCsBeScma4DrB61d5g/FLr9Z8jcQUzKPHZAa19aOA33u3utlQPBZNciKUgvHfkAvH0/DvW8=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxgQm9l4BcThJyvX+PcMwP6Pv3tBKQNUkwMiH1Hvg0yebshE5HG
-	4bpQv2VqEw+76Cf7Zrt9nQMzm8mqmGKbD4lY660xqXI67wDwrv+tfu+b
-X-Gm-Gg: ASbGncu5+MzBxwhmOJF7MEslvMO+wQD+xH271OJQHzmce9gMY5XQXGzMLB/MUw5RSjS
-	GUNssieKfzx+fk3bYyuXIuI/d3/BSF6C+VLKn9JzcYm8+PmYqwDUcYqy7YQEODE3IWciT8pkkOb
-	fdFjAzJL11sMqSEfGNTmdqhwbwFYB9UIutSANtdTGNbqqzH5bKkRSDxiOBJicmVdM7uwRLDO86f
-	9saz+GIzr5bcl2XlTfe8QS4f935Ag0ZcFMWVkc6vqgUQ/hHmfK1YmpTVeW4Du+FJmXKv9AlmOJm
-	K5SikhQyge35TVbWFa0tSOCcvVQi1Zx2nE+pe47y2pmYUP/Vblag+vpF62/8uuOn+AfCA01+ZKA
-	VAV8cTb5RO+oQFihqYQ==
-X-Google-Smtp-Source: AGHT+IHHo3gWM8jne4M/ik8SRuW9s/CXCSDuf5VVjjbmz065W7Ty2nNpgRR2fJksE2eb2m1Q59uOcg==
-X-Received: by 2002:a05:6512:15a2:b0:553:2ef3:f73d with SMTP id 2adb3069b0e04-553b6e8851amr3027873e87.14.1750165506269;
-        Tue, 17 Jun 2025 06:05:06 -0700 (PDT)
-Received: from localhost.localdomain (soda.int.kasm.eu. [2001:678:a5c:1202:4fb5:f16a:579c:6dcb])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-553ac1f91ddsm1900394e87.250.2025.06.17.06.05.05
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 17 Jun 2025 06:05:05 -0700 (PDT)
-From: Klara Modin <klarasmodin@gmail.com>
-To: paul.walmsley@sifive.com,
-	palmer@dabbelt.com,
-	aou@eecs.berkeley.edu,
-	alex@ghiti.fr,
-	conor.dooley@microchip.com,
-	valentina.fernandezalanis@microchip.com
-Cc: linux-riscv@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	Klara Modin <klarasmodin@gmail.com>,
-	stable@vger.kernel.org
-Subject: [PATCH] riscv: export boot_cpu_hartid
-Date: Tue, 17 Jun 2025 14:58:47 +0200
-Message-ID: <20250617125847.23829-1-klarasmodin@gmail.com>
-X-Mailer: git-send-email 2.49.0
+	s=arc-20240116; t=1750166262; c=relaxed/simple;
+	bh=K7ug0PCrh21aqpY2ppC3yBsZYfmgtqaYomlQzjt90hs=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=DB4/WFhKK6ptpFzufMnVSrzApAFCdsYl8ccOOA1WJvendLLNvp4SRmL82UBAEC2efTMDsUuV1fe2sMarNmlmJQD0sI91D2tFs6UCmxCp1oGuZ3tLVPj2xW+lEiCFCQ0m916W42NyUTgMZ+z91yLT69ADLQ+zn6NzUWqpvTiE9qY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rGzLfnev; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8CAAC4CEEE;
+	Tue, 17 Jun 2025 13:17:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1750166261;
+	bh=K7ug0PCrh21aqpY2ppC3yBsZYfmgtqaYomlQzjt90hs=;
+	h=Subject:To:Cc:From:Date:From;
+	b=rGzLfnevvjXqhGtbPRvQEpGJ6/SLaOGEKTAeASVB6KC2ZfphrZ6cThSL9XT1wTI2V
+	 qA4K1Lykp8DsALUySl050yw1Foz2rGEknkgmQyNWh2aL7FOqegcuH5Cc3S5PEJrf3j
+	 eybVRuqP1mRvRbMR6xVwpD36FEUmKEclIgrNQRxo=
+Subject: FAILED: patch "[PATCH] HID: usbhid: Eliminate recurrent out-of-bounds bug in" failed to apply to 5.15-stable tree
+To: linuxhid@cosmicgizmosystems.com,jkosina@suse.com,mhklinux@outlook.com
+Cc: <stable@vger.kernel.org>
+From: <gregkh@linuxfoundation.org>
+Date: Tue, 17 Jun 2025 15:17:38 +0200
+Message-ID: <2025061738-circus-skipping-ed0c@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
-The mailbox controller driver for the Microchip Inter-processor
-Communication can be built as a module. It uses cpuid_to_hartid_map and
-commit 4783ce32b080 ("riscv: export __cpuid_to_hartid_map") enables that
-to work for SMP. However, cpuid_to_hartid_map uses boot_cpu_hartid on
-non-SMP kernels and this driver can be useful in such configurations[1].
 
-Export boot_cpu_hartid so the driver can be built as a module on non-SMP
-kernels as well.
+The patch below does not apply to the 5.15-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
 
-Link: https://lore.kernel.org/lkml/20250617-confess-reimburse-876101e099cb@spud/ [1]
+To reproduce the conflict and resubmit, you may use the following commands:
+
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
+git checkout FETCH_HEAD
+git cherry-pick -x fe7f7ac8e0c708446ff017453add769ffc15deed
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025061738-circus-skipping-ed0c@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
+
+Possible dependencies:
+
+
+
+thanks,
+
+greg k-h
+
+------------------ original commit in Linus's tree ------------------
+
+From fe7f7ac8e0c708446ff017453add769ffc15deed Mon Sep 17 00:00:00 2001
+From: Terry Junge <linuxhid@cosmicgizmosystems.com>
+Date: Wed, 12 Mar 2025 15:23:31 -0700
+Subject: [PATCH] HID: usbhid: Eliminate recurrent out-of-bounds bug in
+ usbhid_parse()
+
+Update struct hid_descriptor to better reflect the mandatory and
+optional parts of the HID Descriptor as per USB HID 1.11 specification.
+Note: the kernel currently does not parse any optional HID class
+descriptors, only the mandatory report descriptor.
+
+Update all references to member element desc[0] to rpt_desc.
+
+Add test to verify bLength and bNumDescriptors values are valid.
+
+Replace the for loop with direct access to the mandatory HID class
+descriptor member for the report descriptor. This eliminates the
+possibility of getting an out-of-bounds fault.
+
+Add a warning message if the HID descriptor contains any unsupported
+optional HID class descriptors.
+
+Reported-by: syzbot+c52569baf0c843f35495@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=c52569baf0c843f35495
+Fixes: f043bfc98c19 ("HID: usbhid: fix out-of-bounds bug")
 Cc: stable@vger.kernel.org
-Fixes: e4b1d67e7141 ("mailbox: add Microchip IPC support")
-Signed-off-by: Klara Modin <klarasmodin@gmail.com>
----
- arch/riscv/kernel/setup.c | 1 +
- 1 file changed, 1 insertion(+)
+Signed-off-by: Terry Junge <linuxhid@cosmicgizmosystems.com>
+Reviewed-by: Michael Kelley <mhklinux@outlook.com>
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
 
-diff --git a/arch/riscv/kernel/setup.c b/arch/riscv/kernel/setup.c
-index f7c9a1caa83e..14888e5ea19a 100644
---- a/arch/riscv/kernel/setup.c
-+++ b/arch/riscv/kernel/setup.c
-@@ -50,6 +50,7 @@ atomic_t hart_lottery __section(".sdata")
- #endif
- ;
- unsigned long boot_cpu_hartid;
-+EXPORT_SYMBOL_GPL(boot_cpu_hartid);
+diff --git a/drivers/hid/hid-hyperv.c b/drivers/hid/hid-hyperv.c
+index 0fb210e40a41..9eafff0b6ea4 100644
+--- a/drivers/hid/hid-hyperv.c
++++ b/drivers/hid/hid-hyperv.c
+@@ -192,7 +192,7 @@ static void mousevsc_on_receive_device_info(struct mousevsc_dev *input_device,
+ 		goto cleanup;
  
- /*
-  * Place kernel memory regions on the resource tree so that
--- 
-2.49.0
+ 	input_device->report_desc_size = le16_to_cpu(
+-					desc->desc[0].wDescriptorLength);
++					desc->rpt_desc.wDescriptorLength);
+ 	if (input_device->report_desc_size == 0) {
+ 		input_device->dev_info_status = -EINVAL;
+ 		goto cleanup;
+@@ -210,7 +210,7 @@ static void mousevsc_on_receive_device_info(struct mousevsc_dev *input_device,
+ 
+ 	memcpy(input_device->report_desc,
+ 	       ((unsigned char *)desc) + desc->bLength,
+-	       le16_to_cpu(desc->desc[0].wDescriptorLength));
++	       le16_to_cpu(desc->rpt_desc.wDescriptorLength));
+ 
+ 	/* Send the ack */
+ 	memset(&ack, 0, sizeof(struct mousevsc_prt_msg));
+diff --git a/drivers/hid/usbhid/hid-core.c b/drivers/hid/usbhid/hid-core.c
+index 44c2351b870f..fc2b92dfc242 100644
+--- a/drivers/hid/usbhid/hid-core.c
++++ b/drivers/hid/usbhid/hid-core.c
+@@ -984,12 +984,11 @@ static int usbhid_parse(struct hid_device *hid)
+ 	struct usb_host_interface *interface = intf->cur_altsetting;
+ 	struct usb_device *dev = interface_to_usbdev (intf);
+ 	struct hid_descriptor *hdesc;
++	struct hid_class_descriptor *hcdesc;
+ 	u32 quirks = 0;
+ 	unsigned int rsize = 0;
+ 	char *rdesc;
+-	int ret, n;
+-	int num_descriptors;
+-	size_t offset = offsetof(struct hid_descriptor, desc);
++	int ret;
+ 
+ 	quirks = hid_lookup_quirk(hid);
+ 
+@@ -1011,20 +1010,19 @@ static int usbhid_parse(struct hid_device *hid)
+ 		return -ENODEV;
+ 	}
+ 
+-	if (hdesc->bLength < sizeof(struct hid_descriptor)) {
+-		dbg_hid("hid descriptor is too short\n");
++	if (!hdesc->bNumDescriptors ||
++	    hdesc->bLength != sizeof(*hdesc) +
++			      (hdesc->bNumDescriptors - 1) * sizeof(*hcdesc)) {
++		dbg_hid("hid descriptor invalid, bLen=%hhu bNum=%hhu\n",
++			hdesc->bLength, hdesc->bNumDescriptors);
+ 		return -EINVAL;
+ 	}
+ 
+ 	hid->version = le16_to_cpu(hdesc->bcdHID);
+ 	hid->country = hdesc->bCountryCode;
+ 
+-	num_descriptors = min_t(int, hdesc->bNumDescriptors,
+-	       (hdesc->bLength - offset) / sizeof(struct hid_class_descriptor));
+-
+-	for (n = 0; n < num_descriptors; n++)
+-		if (hdesc->desc[n].bDescriptorType == HID_DT_REPORT)
+-			rsize = le16_to_cpu(hdesc->desc[n].wDescriptorLength);
++	if (hdesc->rpt_desc.bDescriptorType == HID_DT_REPORT)
++		rsize = le16_to_cpu(hdesc->rpt_desc.wDescriptorLength);
+ 
+ 	if (!rsize || rsize > HID_MAX_DESCRIPTOR_SIZE) {
+ 		dbg_hid("weird size of report descriptor (%u)\n", rsize);
+@@ -1052,6 +1050,11 @@ static int usbhid_parse(struct hid_device *hid)
+ 		goto err;
+ 	}
+ 
++	if (hdesc->bNumDescriptors > 1)
++		hid_warn(intf,
++			"%u unsupported optional hid class descriptors\n",
++			(int)(hdesc->bNumDescriptors - 1));
++
+ 	hid->quirks |= quirks;
+ 
+ 	return 0;
+diff --git a/drivers/usb/gadget/function/f_hid.c b/drivers/usb/gadget/function/f_hid.c
+index 740311c4fa24..c7a05f842745 100644
+--- a/drivers/usb/gadget/function/f_hid.c
++++ b/drivers/usb/gadget/function/f_hid.c
+@@ -144,8 +144,8 @@ static struct hid_descriptor hidg_desc = {
+ 	.bcdHID				= cpu_to_le16(0x0101),
+ 	.bCountryCode			= 0x00,
+ 	.bNumDescriptors		= 0x1,
+-	/*.desc[0].bDescriptorType	= DYNAMIC */
+-	/*.desc[0].wDescriptorLenght	= DYNAMIC */
++	/*.rpt_desc.bDescriptorType	= DYNAMIC */
++	/*.rpt_desc.wDescriptorLength	= DYNAMIC */
+ };
+ 
+ /* Super-Speed Support */
+@@ -939,8 +939,8 @@ static int hidg_setup(struct usb_function *f,
+ 			struct hid_descriptor hidg_desc_copy = hidg_desc;
+ 
+ 			VDBG(cdev, "USB_REQ_GET_DESCRIPTOR: HID\n");
+-			hidg_desc_copy.desc[0].bDescriptorType = HID_DT_REPORT;
+-			hidg_desc_copy.desc[0].wDescriptorLength =
++			hidg_desc_copy.rpt_desc.bDescriptorType = HID_DT_REPORT;
++			hidg_desc_copy.rpt_desc.wDescriptorLength =
+ 				cpu_to_le16(hidg->report_desc_length);
+ 
+ 			length = min_t(unsigned short, length,
+@@ -1210,8 +1210,8 @@ static int hidg_bind(struct usb_configuration *c, struct usb_function *f)
+ 	 * We can use hidg_desc struct here but we should not relay
+ 	 * that its content won't change after returning from this function.
+ 	 */
+-	hidg_desc.desc[0].bDescriptorType = HID_DT_REPORT;
+-	hidg_desc.desc[0].wDescriptorLength =
++	hidg_desc.rpt_desc.bDescriptorType = HID_DT_REPORT;
++	hidg_desc.rpt_desc.wDescriptorLength =
+ 		cpu_to_le16(hidg->report_desc_length);
+ 
+ 	hidg_hs_in_ep_desc.bEndpointAddress =
+diff --git a/include/linux/hid.h b/include/linux/hid.h
+index ef9a90ca0fbd..daae1d6d11a7 100644
+--- a/include/linux/hid.h
++++ b/include/linux/hid.h
+@@ -740,8 +740,9 @@ struct hid_descriptor {
+ 	__le16 bcdHID;
+ 	__u8  bCountryCode;
+ 	__u8  bNumDescriptors;
++	struct hid_class_descriptor rpt_desc;
+ 
+-	struct hid_class_descriptor desc[1];
++	struct hid_class_descriptor opt_descs[];
+ } __attribute__ ((packed));
+ 
+ #define HID_DEVICE(b, g, ven, prod)					\
 
 
