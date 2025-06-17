@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-153986-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-154043-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA4C6ADD7CE
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:49:27 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id EEDA1ADD79D
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:47:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A7BFC4A508F
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:33:56 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A6D8419E73FB
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:38:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6DCC4237162;
-	Tue, 17 Jun 2025 16:28:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F96C2EE60A;
+	Tue, 17 Jun 2025 16:31:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YXfGEyD/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jeRzxqNG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A64A221F14;
-	Tue, 17 Jun 2025 16:28:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0CF41ADC97;
+	Tue, 17 Jun 2025 16:31:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750177737; cv=none; b=t86DeDj1IYjOpi5oFg+bkDAMbf3v6q+Fd8xIz2fV7mRqe/n0s9uoheV2oBdRWbxHMwilH9l/3bgqOLI/M6RYv12YcNbwI7KgK0cteMTpDLe3a8ODgkqnUykeLCcVgDQqC/a65QVt/hPbBrIka5TjnvvX/x/tuDnWgNvtwYOfTOw=
+	t=1750177919; cv=none; b=oikNxc5Ms4nyxLT/Ungj92vHz+becqGE+vKDnTow5HstGrXRD6EFf0JF3uDq5T0ePjuPxPdCP/dEjAzAtvW6XD/EGVzOV/xeUZnwyOzx7zuEe+2UlArS/B6SEUO9F5rUaZk/PKQy2FVZSvrtIOjwRjtK1MRtskWaQ4PjCZMtYzQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750177737; c=relaxed/simple;
-	bh=BA9JKuTb/e0ybNatljyd8anjTyWI0I+YI7gEi4lyH0Q=;
+	s=arc-20240116; t=1750177919; c=relaxed/simple;
+	bh=HQSJkV+VwNRnO5B7o5sBuau5k2knXEp8o8ZbBh4avQQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Z+lifHm1Gd8RgmiZjYbTL1ey2UNQrStlPPwuK34vuXn0EhwvgByHFT5NdC+sO8y3TNESvlY7dHQFUuF6QtakwYUXr8lIDj7mbiFESy7CGTC1JwjBEDgkQPVVvdgTyL7mULybVbE2cHoo445bKXM+OKkPS0jxAFg43M9AvxaCe20=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YXfGEyD/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C373C4CEE3;
-	Tue, 17 Jun 2025 16:28:56 +0000 (UTC)
+	 MIME-Version; b=ovbLRWAPYOKbY9c/JjRvbRTgbKIzbRY6HVtWAvvj3HHfIDW08cMDX13edyS3GS+cktNgshrUN2HQjK8aF8UEN1zCanOeGCYSGwDUiRzkgfRwMfStmTmicuMnSx41ioNowLuGpe+5Rj9flwrrjpz8tYJ2WRrrkWyjW+tKKc2Nyt0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jeRzxqNG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 544A1C4CEE3;
+	Tue, 17 Jun 2025 16:31:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750177737;
-	bh=BA9JKuTb/e0ybNatljyd8anjTyWI0I+YI7gEi4lyH0Q=;
+	s=korg; t=1750177918;
+	bh=HQSJkV+VwNRnO5B7o5sBuau5k2knXEp8o8ZbBh4avQQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YXfGEyD/hMpIgIc+C3po52aUQRKPjLakQEfvkS62VcdXEDxTDbo0tgFDQ4OuIux3Q
-	 Qtyrab9VL7huukwtpvDN4qI4PZm6nwWSjngmhAsnmjm+6hqdHyNu6Xb8aePek3q2tK
-	 gG1akWSBOulaZPq9BxUUEwt/0Nl9fwOXysSB3W4Q=
+	b=jeRzxqNG/mQIqHYCbUXRSKv8wCCRtNXD5lcSFVmsW8T6zHjl3xoNTMNRtP3mJ1JQy
+	 +PjOLiSRX24Tab5JN49ErCXFgagJPzNeu6KS3J7pcuh0ea32AdnQ9nsWJd6z4LyyDR
+	 Xz4z7Pg0BChvqEwC73LCtqGAADubqSdnjao/DFnc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Luca Weiss <luca.weiss@fairphone.com>,
-	Stephan Gerhold <stephan.gerhold@linaro.org>,
+	Manikanta Mylavarapu <quic_mmanikan@quicinc.com>,
 	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 353/780] arm64: dts: qcom: sm8350: Reenable crypto & cryptobam
-Date: Tue, 17 Jun 2025 17:21:01 +0200
-Message-ID: <20250617152505.836129809@linuxfoundation.org>
+Subject: [PATCH 6.15 354/780] arm64: dts: qcom: ipq9574: fix the msi interrupt numbers of pcie3
+Date: Tue, 17 Jun 2025 17:21:02 +0200
+Message-ID: <20250617152505.876377836@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
 References: <20250617152451.485330293@linuxfoundation.org>
@@ -67,57 +66,51 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Luca Weiss <luca.weiss@fairphone.com>
+From: Manikanta Mylavarapu <quic_mmanikan@quicinc.com>
 
-[ Upstream commit 75eefd474469abf95aa9ef6da8161d69f86b98b4 ]
+[ Upstream commit c87d58bc7f831bf3d887e6ec846246cb673c2e50 ]
 
-When num-channels and qcom,num-ees is not provided in devicetree, the
-driver will try to read these values from the registers during probe but
-this fails if the interconnect is not on and then crashes the system.
+The MSI interrupt numbers of the PCIe3 controller are incorrect. Due
+to this, the functional bring up of the QDSP6 processor on the PCIe
+endpoint has failed. Correct the MSI interrupt numbers to properly
+bring up the QDSP6 processor on the PCIe endpoint.
 
-So we can provide these properties in devicetree (queried after patching
-BAM driver to enable the necessary interconnect) so we can probe
-cryptobam without reading registers and then also use the QCE as
-expected.
-
-Fixes: 4d29db204361 ("arm64: dts: qcom: sm8350: fix BAM DMA crash and reboot")
-Fixes: f1040a7fe8f0 ("arm64: dts: qcom: sm8350: Add Crypto Engine support")
-Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
-Signed-off-by: Stephan Gerhold <stephan.gerhold@linaro.org>
-Link: https://lore.kernel.org/r/20250212-bam-dma-fixes-v1-1-f560889e65d8@linaro.org
+Fixes: d80c7fbfa908 ("arm64: dts: qcom: ipq9574: Add PCIe PHYs and controller nodes")
+Signed-off-by: Manikanta Mylavarapu <quic_mmanikan@quicinc.com>
+Link: https://lore.kernel.org/r/20250313071422.510-1-quic_mmanikan@quicinc.com
 Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/sm8350.dtsi | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ arch/arm64/boot/dts/qcom/ipq9574.dtsi | 16 ++++++++--------
+ 1 file changed, 8 insertions(+), 8 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/qcom/sm8350.dtsi b/arch/arm64/boot/dts/qcom/sm8350.dtsi
-index f055600d6cfe5..a86d0067634e8 100644
---- a/arch/arm64/boot/dts/qcom/sm8350.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sm8350.dtsi
-@@ -1806,11 +1806,11 @@
- 			interrupts = <GIC_SPI 272 IRQ_TYPE_LEVEL_HIGH>;
- 			#dma-cells = <1>;
- 			qcom,ee = <0>;
-+			qcom,num-ees = <4>;
-+			num-channels = <16>;
- 			qcom,controlled-remotely;
- 			iommus = <&apps_smmu 0x594 0x0011>,
- 				 <&apps_smmu 0x596 0x0011>;
--			/* FIXME: Probing BAM DMA causes some abort and system hang */
--			status = "fail";
- 		};
+diff --git a/arch/arm64/boot/dts/qcom/ipq9574.dtsi b/arch/arm64/boot/dts/qcom/ipq9574.dtsi
+index 3c02351fbb156..b790a6b288abb 100644
+--- a/arch/arm64/boot/dts/qcom/ipq9574.dtsi
++++ b/arch/arm64/boot/dts/qcom/ipq9574.dtsi
+@@ -974,14 +974,14 @@
+ 			ranges = <0x01000000 0x0 0x00000000 0x18200000 0x0 0x100000>,
+ 				 <0x02000000 0x0 0x18300000 0x18300000 0x0 0x7d00000>;
  
- 		crypto: crypto@1dfa000 {
-@@ -1822,8 +1822,6 @@
- 				 <&apps_smmu 0x596 0x0011>;
- 			interconnects = <&aggre2_noc MASTER_CRYPTO 0 &mc_virt SLAVE_EBI1 0>;
- 			interconnect-names = "memory";
--			/* FIXME: dependency BAM DMA is disabled */
--			status = "disabled";
- 		};
- 
- 		ipa: ipa@1e40000 {
+-			interrupts = <GIC_SPI 126 IRQ_TYPE_LEVEL_HIGH>,
+-				     <GIC_SPI 128 IRQ_TYPE_LEVEL_HIGH>,
+-				     <GIC_SPI 129 IRQ_TYPE_LEVEL_HIGH>,
+-				     <GIC_SPI 130 IRQ_TYPE_LEVEL_HIGH>,
+-				     <GIC_SPI 137 IRQ_TYPE_LEVEL_HIGH>,
+-				     <GIC_SPI 141 IRQ_TYPE_LEVEL_HIGH>,
+-				     <GIC_SPI 142 IRQ_TYPE_LEVEL_HIGH>,
+-				     <GIC_SPI 143 IRQ_TYPE_LEVEL_HIGH>;
++			interrupts = <GIC_SPI 221 IRQ_TYPE_LEVEL_HIGH>,
++				     <GIC_SPI 222 IRQ_TYPE_LEVEL_HIGH>,
++				     <GIC_SPI 225 IRQ_TYPE_LEVEL_HIGH>,
++				     <GIC_SPI 312 IRQ_TYPE_LEVEL_HIGH>,
++				     <GIC_SPI 326 IRQ_TYPE_LEVEL_HIGH>,
++				     <GIC_SPI 415 IRQ_TYPE_LEVEL_HIGH>,
++				     <GIC_SPI 494 IRQ_TYPE_LEVEL_HIGH>,
++				     <GIC_SPI 495 IRQ_TYPE_LEVEL_HIGH>;
+ 			interrupt-names = "msi0",
+ 					  "msi1",
+ 					  "msi2",
 -- 
 2.39.5
 
