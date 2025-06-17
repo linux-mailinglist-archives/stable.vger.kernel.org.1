@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-154019-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-154021-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9D2EEADD787
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:45:44 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D0906ADD850
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:54:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6C80419E6FDE
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:37:07 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C74034A01BD
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:36:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB15A2ED856;
-	Tue, 17 Jun 2025 16:30:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 396B32EE261;
+	Tue, 17 Jun 2025 16:30:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v1n+r6Ub"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ML42HthA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 978FE2ED84A;
-	Tue, 17 Jun 2025 16:30:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E97452ED153;
+	Tue, 17 Jun 2025 16:30:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750177845; cv=none; b=PP85xv3YGnPYOSrx5H6dl1ah+OwhN+gjORnWCPmE9i28ELIDUB4XDSziyocg325CK1DXoQwjnIzYMFmvB9hDiePADaZ7BtHumhcTf+ZhsqHdXY0AVDzlyf6xF+FESHvj34w+Eq9f1BSdgxCUmgagSzs8gGX36Gp1GRNoFQ42YkA=
+	t=1750177852; cv=none; b=jSb1O4sgLDtTWXm9EyqNMNgi0qqXev+U9R0kgLASZntWgCwIrSi1x2u6cEMBF6dsvxUU8qrR7i6+CTLKXDKXbfmejz+N1Q2IQW2KjpXTNHHXfkTcCi4AtbTDNO+hVV5blbCFK+LrcZTiBxsICpGdsHH6TKHetMEEjOVxBwXZY4I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750177845; c=relaxed/simple;
-	bh=ZGoym5ssVRf2irud4bWiVbRy8+MB6aQBd1UYXES2Yf8=;
+	s=arc-20240116; t=1750177852; c=relaxed/simple;
+	bh=EnqYr/n9DCcCG3SwJ2RqFrMyhDVZbZeo1vABALC5dxA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Nfg00gPBEH7q9CP0pxeiEm+83V8C5xJPR/zUpgKzJvPJN4rfEJaNDRDcNqPOuX8V1eSVmFiNhBWBGK1lQjTQfMg2dB1sgof/x6pEZhescV88btgwsam0AFqSgo07hNkflyPPvlGovbYxQWznyEj+CP2qBLq+E2FVLwg/vXfTFuo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v1n+r6Ub; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04078C4CEE3;
-	Tue, 17 Jun 2025 16:30:44 +0000 (UTC)
+	 MIME-Version; b=qiqrgGFdCz+OfsLlGpWYdf7z/dxldR/KhtjupXU3pCD34B6j3YkuYZJLwE291uButSnSBU8Fz+e9bCGYiZ2TWTi8lL4vM1rK/P4i8AZ+pz9slmkyM33k6l8+86rVXGnbg+Bi1l2mCSpRzdjPAtuoTI8tzaL+0F/lkp8m0jBrWwE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ML42HthA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59361C4CEE3;
+	Tue, 17 Jun 2025 16:30:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750177845;
-	bh=ZGoym5ssVRf2irud4bWiVbRy8+MB6aQBd1UYXES2Yf8=;
+	s=korg; t=1750177851;
+	bh=EnqYr/n9DCcCG3SwJ2RqFrMyhDVZbZeo1vABALC5dxA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=v1n+r6UbUFm7tyNoyZyhRQW3PcWciZm+mbBYEvTvT2jz98ZhT4zld4W45o2nkUOR9
-	 9Fg8z6Ut49Np/FD9VwA5DH9MDsLZTMZC79VRyj32fZxeVt8JdTdJwFZzRW9Xo8vH8p
-	 4jDahsvvSxksRZl84NvdJwwh0gGwErq2Q2vgwy9o=
+	b=ML42HthAXSuv8+FvbFxd+b/YLqeGjYNmVAjwWVx7XwCKEnFglZUrh2Xo9ULZ5FnKE
+	 JFF7s9rOwW9/030xg8FUePyLmYcn3A+1XpQMg21TQP5H4Baqsxj04fOzXlmPd8+xtp
+	 nM7Z1CU4uQ5+nMR0FRRuPEhtOSKRt3VnArkLPnl4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pin-yen Lin <treapking@chromium.org>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Adam Ford <aford173@gmail.com>,
+	Shawn Guo <shawnguo@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 371/780] arm64: dts: mt8183: Add port node to mt8183.dtsi
-Date: Tue, 17 Jun 2025 17:21:19 +0200
-Message-ID: <20250617152506.558626755@linuxfoundation.org>
+Subject: [PATCH 6.15 372/780] arm64: dts: imx8mm-beacon: Fix RTC capacitive load
+Date: Tue, 17 Jun 2025 17:21:20 +0200
+Message-ID: <20250617152506.604938063@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
 References: <20250617152451.485330293@linuxfoundation.org>
@@ -66,61 +66,35 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Pin-yen Lin <treapking@chromium.org>
+From: Adam Ford <aford173@gmail.com>
 
-[ Upstream commit d15059f7be59f887c1a370037cc2337c2ff2ad56 ]
+[ Upstream commit 2e98d456666d63f897ba153210bcef9d78ba0f3a ]
 
-Add the port node to fix the binding schema check. Also update
-mt8183-kukui to reference the new port node.
+Although not noticeable when used every day, the RTC appears to drift when
+left to sit over time.  This is due to the capacitive load not being
+properly set. Fix RTC drift by correcting the capacitive load setting
+from 7000 to 12500, which matches the actual hardware configuration.
 
-Fixes: 88ec840270e6 ("arm64: dts: mt8183: Add dsi node")
-Fixes: 27eaf34df364 ("arm64: dts: mt8183: config dsi node")
-Signed-off-by: Pin-yen Lin <treapking@chromium.org>
-Link: https://lore.kernel.org/r/20250423040354.2847447-1-treapking@chromium.org
-Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Fixes: 593816fa2f35 ("arm64: dts: imx: Add Beacon i.MX8m-Mini development kit")
+Signed-off-by: Adam Ford <aford173@gmail.com>
+Signed-off-by: Shawn Guo <shawnguo@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/mediatek/mt8183-kukui.dtsi | 10 +++-------
- arch/arm64/boot/dts/mediatek/mt8183.dtsi       |  4 ++++
- 2 files changed, 7 insertions(+), 7 deletions(-)
+ arch/arm64/boot/dts/freescale/imx8mm-beacon-som.dtsi | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/arm64/boot/dts/mediatek/mt8183-kukui.dtsi b/arch/arm64/boot/dts/mediatek/mt8183-kukui.dtsi
-index e1495f1900a7b..f9ca6b3720e91 100644
---- a/arch/arm64/boot/dts/mediatek/mt8183-kukui.dtsi
-+++ b/arch/arm64/boot/dts/mediatek/mt8183-kukui.dtsi
-@@ -259,14 +259,10 @@
- 			};
- 		};
+diff --git a/arch/arm64/boot/dts/freescale/imx8mm-beacon-som.dtsi b/arch/arm64/boot/dts/freescale/imx8mm-beacon-som.dtsi
+index 62ed64663f495..9ba0cb89fa24e 100644
+--- a/arch/arm64/boot/dts/freescale/imx8mm-beacon-som.dtsi
++++ b/arch/arm64/boot/dts/freescale/imx8mm-beacon-som.dtsi
+@@ -233,6 +233,7 @@
+ 	rtc: rtc@51 {
+ 		compatible = "nxp,pcf85263";
+ 		reg = <0x51>;
++		quartz-load-femtofarads = <12500>;
  	};
-+};
- 
--	ports {
--		port {
--			dsi_out: endpoint {
--				remote-endpoint = <&panel_in>;
--			};
--		};
--	};
-+&dsi_out {
-+	remote-endpoint = <&panel_in>;
  };
  
- &gic {
-diff --git a/arch/arm64/boot/dts/mediatek/mt8183.dtsi b/arch/arm64/boot/dts/mediatek/mt8183.dtsi
-index 0aa34e5bbaaa8..3c1fe80e64b9c 100644
---- a/arch/arm64/boot/dts/mediatek/mt8183.dtsi
-+++ b/arch/arm64/boot/dts/mediatek/mt8183.dtsi
-@@ -1836,6 +1836,10 @@
- 			phys = <&mipi_tx0>;
- 			phy-names = "dphy";
- 			status = "disabled";
-+
-+			port {
-+				dsi_out: endpoint { };
-+			};
- 		};
- 
- 		dpi0: dpi@14015000 {
 -- 
 2.39.5
 
