@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-153751-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-154182-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 03863ADD620
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:30:31 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id C3343ADD803
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:51:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 46A0B3B9582
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:22:23 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 032C419E26D2
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:44:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 677B62E88B1;
-	Tue, 17 Jun 2025 16:16:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE3552E8DFA;
+	Tue, 17 Jun 2025 16:39:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hyozGz7d"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UnUjCuo5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21D29216E2A;
-	Tue, 17 Jun 2025 16:16:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 897322DFF1B;
+	Tue, 17 Jun 2025 16:39:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750176981; cv=none; b=tB4AbtjGRNh02ibagg1BQAmCvtLNSJyyS8zkzg9R7B7QQ66tAaUyTBEV8pGHooa2GFDcCuDOS6mgtIUMn+8yY1FVkCyhHkxfMfXRjF/tfC9BuEObYABMzd3EJ+FnfMQlhi/3v2WHexGMcCe56QPNMN8EddwBxH7+hJ00HcAxuYA=
+	t=1750178367; cv=none; b=nYi+WZxCgzWqXi8Dp88AFrlHcmLtyKh/4bFL3zsaDkFwg5cIftDg1/wfbVkjOq9gekM2wnF6dqrvUTjH+bg/t9bY2rFV+UNKJnn15Nw+iHzzkFwIXi0kWTU0YQlsqEksNzSxLsQHhHP6wnAVeXk5WHylIUgEQY9Xr5NY9SCHS5o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750176981; c=relaxed/simple;
-	bh=VBcoML0cLGuOeR+zgCnn+Kv3SgfjK13wjAOVGQhwaLQ=;
+	s=arc-20240116; t=1750178367; c=relaxed/simple;
+	bh=dGTAhsvYyfl0rbe/q/Kf/vs47VBQjgsDx5XtCbMINbQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=E74WJ1AIjaqV0Km4G8FBGqYUEQ3sSjIsCSXNp03az8E40zQjq/KxbKO83V9St1tEPzwZqoXE+nPLO5npyKjG8GQkpgfJWUWjhVEiDzBodz7K1VNad7omIuPs0lyEAa4S1lsLIAUgNciO/iulWrcXFuROmVLcO9QT5mOxIiGo9s8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hyozGz7d; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9DA0DC4CEE3;
-	Tue, 17 Jun 2025 16:16:20 +0000 (UTC)
+	 MIME-Version; b=IDoIoMQWEGFfSBfJT8gtXeEfpcr1GnH94IVjze1u9hyEvKLVg+lXFWtGElsef/RnxxAk6oUtsP1CgMuOL9v5u42Dtm6RF5urm+5lDBd3lNe500Mo97sbN+OHiJW09bTluMwoIU8qho7uLHSvtFukUmN38EXKf7lbTa/7ZSrrFwU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UnUjCuo5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E42BC4CEE7;
+	Tue, 17 Jun 2025 16:39:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750176981;
-	bh=VBcoML0cLGuOeR+zgCnn+Kv3SgfjK13wjAOVGQhwaLQ=;
+	s=korg; t=1750178367;
+	bh=dGTAhsvYyfl0rbe/q/Kf/vs47VBQjgsDx5XtCbMINbQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hyozGz7dQEqqxye3Dp6bRIbfyyTb14PSCoRrFPHzCRyj9GD3HD9RsHAY2akcqqwtp
-	 t4UvWpdds45nPFDcAkUBrsYm1/3vF5+YfVG0dC/o6+yvFT2b8HgTWzhs+EZOD01y+7
-	 GyyGTxfmN3gEjwJPhrjGwWaqFs/4UZ/NAXZnVNX0=
+	b=UnUjCuo5tdStzOwliGPLwoLmSYRXG5DKvWjSCQp5QpCWlDsIef8qnBRzhmmLBiXYH
+	 ED4TMM7J5BIYcY2oYtu31ib/XLjwHZ8CZ7UN+dcQglkb4h+431Ibngz3YJ7TkspI9r
+	 uSPCvG6pnRHc42QxLncXIOQoPmCcpsmSwZ34D8lk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Suleiman Souhlal <suleiman@google.com>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Jiri Olsa <jolsa@kernel.org>
-Subject: [PATCH 6.6 336/356] tools/resolve_btfids: Fix build when cross compiling kernel with clang.
+	David Heimann <d@dmeh.net>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 6.12 485/512] ALSA: usb-audio: Add implicit feedback quirk for RODE AI-1
 Date: Tue, 17 Jun 2025 17:27:31 +0200
-Message-ID: <20250617152351.657942786@linuxfoundation.org>
+Message-ID: <20250617152439.272449266@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152338.212798615@linuxfoundation.org>
-References: <20250617152338.212798615@linuxfoundation.org>
+In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
+References: <20250617152419.512865572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,44 +61,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Suleiman Souhlal <suleiman@google.com>
+From: David Heimann <d@dmeh.net>
 
-commit a298bbab903e3fb4cbe16d36d6195e68fad1b776 upstream.
+commit 6a3439a417b910e662c666993798e0691bc81147 upstream.
 
-When cross compiling the kernel with clang, we need to override
-CLANG_CROSS_FLAGS when preparing the step libraries.
+The RODE AI-1 audio interface requires implicit feedback sync between
+playback endpoint 0x03 and feedback endpoint 0x84 on interface 3, but
+doesn't advertise this in its USB descriptors.
 
-Prior to commit d1d096312176 ("tools: fix annoying "mkdir -p ..." logs
-when building tools in parallel"), MAKEFLAGS would have been set to a
-value that wouldn't set a value for CLANG_CROSS_FLAGS, hiding the
-fact that we weren't properly overriding it.
+Without this quirk, the device receives audio data but produces no output.
 
-Fixes: 56a2df7615fa ("tools/resolve_btfids: Compile resolve_btfids as host program")
-Signed-off-by: Suleiman Souhlal <suleiman@google.com>
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Acked-by: Jiri Olsa <jolsa@kernel.org>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/bpf/20250606074538.1608546-1-suleiman@google.com
+Signed-off-by: David Heimann <d@dmeh.net>
+Cc: <stable@vger.kernel.org>
+Link: https://patch.msgid.link/084dc88c-1193-4a94-a002-5599adff936c@app.fastmail.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/bpf/resolve_btfids/Makefile |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ sound/usb/implicit.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/tools/bpf/resolve_btfids/Makefile
-+++ b/tools/bpf/resolve_btfids/Makefile
-@@ -19,7 +19,7 @@ endif
- 
- # Overrides for the prepare step libraries.
- HOST_OVERRIDES := AR="$(HOSTAR)" CC="$(HOSTCC)" LD="$(HOSTLD)" ARCH="$(HOSTARCH)" \
--		  CROSS_COMPILE="" EXTRA_CFLAGS="$(HOSTCFLAGS)"
-+		  CROSS_COMPILE="" CLANG_CROSS_FLAGS="" EXTRA_CFLAGS="$(HOSTCFLAGS)"
- 
- RM      ?= rm
- HOSTCC  ?= gcc
+--- a/sound/usb/implicit.c
++++ b/sound/usb/implicit.c
+@@ -57,6 +57,7 @@ static const struct snd_usb_implicit_fb_
+ 	IMPLICIT_FB_FIXED_DEV(0x31e9, 0x0002, 0x81, 2), /* Solid State Logic SSL2+ */
+ 	IMPLICIT_FB_FIXED_DEV(0x0499, 0x172f, 0x81, 2), /* Steinberg UR22C */
+ 	IMPLICIT_FB_FIXED_DEV(0x0d9a, 0x00df, 0x81, 2), /* RTX6001 */
++	IMPLICIT_FB_FIXED_DEV(0x19f7, 0x000a, 0x84, 3), /* RODE AI-1 */
+ 	IMPLICIT_FB_FIXED_DEV(0x22f0, 0x0006, 0x81, 3), /* Allen&Heath Qu-16 */
+ 	IMPLICIT_FB_FIXED_DEV(0x1686, 0xf029, 0x82, 2), /* Zoom UAC-2 */
+ 	IMPLICIT_FB_FIXED_DEV(0x2466, 0x8003, 0x86, 2), /* Fractal Audio Axe-Fx II */
 
 
 
