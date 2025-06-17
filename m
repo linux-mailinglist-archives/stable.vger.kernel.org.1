@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-154117-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153620-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 47D6DADD8B7
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:58:34 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D4B8ADD587
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:22:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 096CB4A5804
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:42:28 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E2F7F403EDB
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:12:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E0722EA147;
-	Tue, 17 Jun 2025 16:35:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B07232ED848;
+	Tue, 17 Jun 2025 16:09:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WAtfxaiS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j0Ow15yh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3957A2E9738;
-	Tue, 17 Jun 2025 16:35:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6ACF52ED843;
+	Tue, 17 Jun 2025 16:09:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750178158; cv=none; b=fXxZK/iFn3jwC+PQSiHh4OLE0OoNwyR9kNHjz9hORHWZM2wDYTVXMwVcsINQLGhn6QKXfP2MvnlMzFznAc1yl41S9Xec9M7rkqdTD4ZjucUU3r2u3qzLmMwJ1cUzh8TxMAeRTlafDJfe9Xi+AT6W7KWUCVPYCbLCyXNiW9GwfWw=
+	t=1750176552; cv=none; b=m3N3Kepp/qyHXMlcqrxgMkHqrpdbTCxdwlVPeVoxF2TMNLn9y7QpCG/Wl9huILqjFy7F37zva2nklfwvaRuo/ZAjngyq9mheBzkgU59b8XGBpayMTgV5pZbZxjfu3IjImiKAHLpTp48dAjqq/8qHvS6pXQR9ENThSlvKZz3slb4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750178158; c=relaxed/simple;
-	bh=AJ8DUJ6JhmVbc4KTaBj0WWUb3j704MbhuOvSOiZnjVY=;
+	s=arc-20240116; t=1750176552; c=relaxed/simple;
+	bh=GVul3O3jtWpWGVvZ+OBmWVc3GfiIbEOy3NXgeg9Pbks=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sTNBUuxo2aJhPUbeYwOmHnRcO6858/HYNUffES2CZc5jW2BDebzDyn8u536FCWGhws2h1CgMnZwgScitpLjEnudVCZg2rSi4/z2jMlCFaLJnri8eU3Mpx8qH05Cy2xF98t/DgI6KaQ+vXG0Nkf7Ekul94qLva4QWfKH4bR9jHAw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WAtfxaiS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53D05C4CEE3;
-	Tue, 17 Jun 2025 16:35:57 +0000 (UTC)
+	 MIME-Version; b=CUH3BTPA4MGOuMfdgKUC9FqSB9K7LrGB/6g8InV0kTbmNtuwIO772hZmxScMQrV7pFsjRC9thZ73BfwFTeGKEbxkq74kzXNbM4zEHqBG3ZnPR7D5J7CMx98BypYXIq8SmRqsXYeILIAa++642hEU0fWvSVwdH5QzQp74yfRUk34=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j0Ow15yh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6FB8EC4CEE3;
+	Tue, 17 Jun 2025 16:09:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750178157;
-	bh=AJ8DUJ6JhmVbc4KTaBj0WWUb3j704MbhuOvSOiZnjVY=;
+	s=korg; t=1750176550;
+	bh=GVul3O3jtWpWGVvZ+OBmWVc3GfiIbEOy3NXgeg9Pbks=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WAtfxaiSkcTx+JaUfMEkbST8pS4rdjtfUuxm5YXhHoueeca/DGp8aqu9q/MCV6IXN
-	 09q+KNR9ZUIdFYvDP1fOC0skg/vHhwLdDnzsXbijnvZxHnTmbnkGMIJqQq4/7Gmsw2
-	 mPFAS+jyfFKLA41dHCfRgC0Ag77AYK3SorsGO7CY=
+	b=j0Ow15yhqsoQlnpMhlHsR427Ok6ghcmZPCMSqe5jqPoBlQ5YvsjyeEGxvmHl7xDbj
+	 dQFlkzJ3VkzyW3e+Gbg0dqTDlXuOgkArGBkduDAdfM6tqX/8CDpl+SV13bkcH4WhGF
+	 gbXvjEewd9WDGV8bLzKiuuXoc74Q0SXuuyJhPEqw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alok Tiwari <alok.a.tiwari@oracle.com>,
-	Mike Christie <michael.christie@oracle.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	syzbot+feb0dc579bbe30a13190@syzkaller.appspotmail.com,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 441/512] scsi: iscsi: Fix incorrect error path labels for flashnode operations
+Subject: [PATCH 6.6 292/356] Bluetooth: MGMT: Fix UAF on mgmt_remove_adv_monitor_complete
 Date: Tue, 17 Jun 2025 17:26:47 +0200
-Message-ID: <20250617152437.437550171@linuxfoundation.org>
+Message-ID: <20250617152349.930706584@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
-References: <20250617152419.512865572@linuxfoundation.org>
+In-Reply-To: <20250617152338.212798615@linuxfoundation.org>
+References: <20250617152338.212798615@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,101 +62,231 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alok Tiwari <alok.a.tiwari@oracle.com>
+From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 
-[ Upstream commit 9b17621366d210ffee83262a8754086ebbde5e55 ]
+[ Upstream commit e6ed54e86aae9e4f7286ce8d5c73780f91b48d1c ]
 
-Correct the error handling goto labels used when host lookup fails in
-various flashnode-related event handlers:
+This reworks MGMT_OP_REMOVE_ADV_MONITOR to not use mgmt_pending_add to
+avoid crashes like bellow:
 
- - iscsi_new_flashnode()
- - iscsi_del_flashnode()
- - iscsi_login_flashnode()
- - iscsi_logout_flashnode()
- - iscsi_logout_flashnode_sid()
+==================================================================
+BUG: KASAN: slab-use-after-free in mgmt_remove_adv_monitor_complete+0xe5/0x540 net/bluetooth/mgmt.c:5406
+Read of size 8 at addr ffff88801c53f318 by task kworker/u5:5/5341
 
-scsi_host_put() is not required when shost is NULL, so jumping to the
-correct label avoids unnecessary operations. These functions previously
-jumped to the wrong goto label (put_host), which did not match the
-intended cleanup logic.
+CPU: 0 UID: 0 PID: 5341 Comm: kworker/u5:5 Not tainted 6.15.0-syzkaller-10402-g4cb6c8af8591 #0 PREEMPT(full)
+Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2~bpo12+1 04/01/2014
+Workqueue: hci0 hci_cmd_sync_work
+Call Trace:
+ <TASK>
+ dump_stack_lvl+0x189/0x250 lib/dump_stack.c:120
+ print_address_description mm/kasan/report.c:408 [inline]
+ print_report+0xd2/0x2b0 mm/kasan/report.c:521
+ kasan_report+0x118/0x150 mm/kasan/report.c:634
+ mgmt_remove_adv_monitor_complete+0xe5/0x540 net/bluetooth/mgmt.c:5406
+ hci_cmd_sync_work+0x261/0x3a0 net/bluetooth/hci_sync.c:334
+ process_one_work kernel/workqueue.c:3238 [inline]
+ process_scheduled_works+0xade/0x17b0 kernel/workqueue.c:3321
+ worker_thread+0x8a0/0xda0 kernel/workqueue.c:3402
+ kthread+0x711/0x8a0 kernel/kthread.c:464
+ ret_from_fork+0x3fc/0x770 arch/x86/kernel/process.c:148
+ ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
+ </TASK>
 
-Use the correct exit labels (exit_new_fnode, exit_del_fnode, etc.) to
-ensure proper error handling.  Also remove the unused put_host label
-under iscsi_new_flashnode() as it is no longer needed.
+Allocated by task 5987:
+ kasan_save_stack mm/kasan/common.c:47 [inline]
+ kasan_save_track+0x3e/0x80 mm/kasan/common.c:68
+ poison_kmalloc_redzone mm/kasan/common.c:377 [inline]
+ __kasan_kmalloc+0x93/0xb0 mm/kasan/common.c:394
+ kasan_kmalloc include/linux/kasan.h:260 [inline]
+ __kmalloc_cache_noprof+0x230/0x3d0 mm/slub.c:4358
+ kmalloc_noprof include/linux/slab.h:905 [inline]
+ kzalloc_noprof include/linux/slab.h:1039 [inline]
+ mgmt_pending_new+0x65/0x240 net/bluetooth/mgmt_util.c:252
+ mgmt_pending_add+0x34/0x120 net/bluetooth/mgmt_util.c:279
+ remove_adv_monitor+0x103/0x1b0 net/bluetooth/mgmt.c:5454
+ hci_mgmt_cmd+0x9c9/0xef0 net/bluetooth/hci_sock.c:1719
+ hci_sock_sendmsg+0x6ca/0xef0 net/bluetooth/hci_sock.c:1839
+ sock_sendmsg_nosec net/socket.c:712 [inline]
+ __sock_sendmsg+0x219/0x270 net/socket.c:727
+ sock_write_iter+0x258/0x330 net/socket.c:1131
+ new_sync_write fs/read_write.c:593 [inline]
+ vfs_write+0x548/0xa90 fs/read_write.c:686
+ ksys_write+0x145/0x250 fs/read_write.c:738
+ do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+ do_syscall_64+0xfa/0x3b0 arch/x86/entry/syscall_64.c:94
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
 
-No functional changes beyond accurate error path correction.
+Freed by task 5989:
+ kasan_save_stack mm/kasan/common.c:47 [inline]
+ kasan_save_track+0x3e/0x80 mm/kasan/common.c:68
+ kasan_save_free_info+0x46/0x50 mm/kasan/generic.c:576
+ poison_slab_object mm/kasan/common.c:247 [inline]
+ __kasan_slab_free+0x62/0x70 mm/kasan/common.c:264
+ kasan_slab_free include/linux/kasan.h:233 [inline]
+ slab_free_hook mm/slub.c:2380 [inline]
+ slab_free mm/slub.c:4642 [inline]
+ kfree+0x18e/0x440 mm/slub.c:4841
+ mgmt_pending_foreach+0xc9/0x120 net/bluetooth/mgmt_util.c:242
+ mgmt_index_removed+0x10d/0x2f0 net/bluetooth/mgmt.c:9366
+ hci_sock_bind+0xbe9/0x1000 net/bluetooth/hci_sock.c:1314
+ __sys_bind_socket net/socket.c:1810 [inline]
+ __sys_bind+0x2c3/0x3e0 net/socket.c:1841
+ __do_sys_bind net/socket.c:1846 [inline]
+ __se_sys_bind net/socket.c:1844 [inline]
+ __x64_sys_bind+0x7a/0x90 net/socket.c:1844
+ do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+ do_syscall_64+0xfa/0x3b0 arch/x86/entry/syscall_64.c:94
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
 
-Fixes: c6a4bb2ef596 ("[SCSI] scsi_transport_iscsi: Add flash node mgmt support")
-Signed-off-by: Alok Tiwari <alok.a.tiwari@oracle.com>
-Link: https://lore.kernel.org/r/20250530193012.3312911-1-alok.a.tiwari@oracle.com
-Reviewed-by: Mike Christie <michael.christie@oracle.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Fixes: 66bd095ab5d4 ("Bluetooth: advmon offload MSFT remove monitor")
+Closes: https://syzkaller.appspot.com/bug?extid=feb0dc579bbe30a13190
+Reported-by: syzbot+feb0dc579bbe30a13190@syzkaller.appspotmail.com
+Tested-by: syzbot+feb0dc579bbe30a13190@syzkaller.appspotmail.com
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/scsi_transport_iscsi.c | 11 +++++------
- 1 file changed, 5 insertions(+), 6 deletions(-)
+ include/net/bluetooth/hci_core.h |  1 -
+ net/bluetooth/hci_core.c         |  4 +---
+ net/bluetooth/mgmt.c             | 37 ++++++++++----------------------
+ 3 files changed, 12 insertions(+), 30 deletions(-)
 
-diff --git a/drivers/scsi/scsi_transport_iscsi.c b/drivers/scsi/scsi_transport_iscsi.c
-index 8274fe0ec7146..7a5bebf5b096c 100644
---- a/drivers/scsi/scsi_transport_iscsi.c
-+++ b/drivers/scsi/scsi_transport_iscsi.c
-@@ -3526,7 +3526,7 @@ static int iscsi_new_flashnode(struct iscsi_transport *transport,
- 		pr_err("%s could not find host no %u\n",
- 		       __func__, ev->u.new_flashnode.host_no);
- 		err = -ENODEV;
--		goto put_host;
-+		goto exit_new_fnode;
+diff --git a/include/net/bluetooth/hci_core.h b/include/net/bluetooth/hci_core.h
+index e9214ccfde2d7..1304877813137 100644
+--- a/include/net/bluetooth/hci_core.h
++++ b/include/net/bluetooth/hci_core.h
+@@ -2305,7 +2305,6 @@ void mgmt_advertising_added(struct sock *sk, struct hci_dev *hdev,
+ 			    u8 instance);
+ void mgmt_advertising_removed(struct sock *sk, struct hci_dev *hdev,
+ 			      u8 instance);
+-void mgmt_adv_monitor_removed(struct hci_dev *hdev, u16 handle);
+ int mgmt_phy_configuration_changed(struct hci_dev *hdev, struct sock *skip);
+ void mgmt_adv_monitor_device_lost(struct hci_dev *hdev, u16 handle,
+ 				  bdaddr_t *bdaddr, u8 addr_type);
+diff --git a/net/bluetooth/hci_core.c b/net/bluetooth/hci_core.c
+index febfd389ecf43..023ad47a385bf 100644
+--- a/net/bluetooth/hci_core.c
++++ b/net/bluetooth/hci_core.c
+@@ -1862,10 +1862,8 @@ void hci_free_adv_monitor(struct hci_dev *hdev, struct adv_monitor *monitor)
+ 	if (monitor->handle)
+ 		idr_remove(&hdev->adv_monitors_idr, monitor->handle);
+ 
+-	if (monitor->state != ADV_MONITOR_STATE_NOT_REGISTERED) {
++	if (monitor->state != ADV_MONITOR_STATE_NOT_REGISTERED)
+ 		hdev->adv_monitors_cnt--;
+-		mgmt_adv_monitor_removed(hdev, monitor->handle);
+-	}
+ 
+ 	kfree(monitor);
+ }
+diff --git a/net/bluetooth/mgmt.c b/net/bluetooth/mgmt.c
+index 589c3a481e4c1..fda492bf0cd47 100644
+--- a/net/bluetooth/mgmt.c
++++ b/net/bluetooth/mgmt.c
+@@ -5165,24 +5165,14 @@ static void mgmt_adv_monitor_added(struct sock *sk, struct hci_dev *hdev,
+ 	mgmt_event(MGMT_EV_ADV_MONITOR_ADDED, hdev, &ev, sizeof(ev), sk);
+ }
+ 
+-void mgmt_adv_monitor_removed(struct hci_dev *hdev, u16 handle)
++static void mgmt_adv_monitor_removed(struct sock *sk, struct hci_dev *hdev,
++				     u16 handle)
+ {
+ 	struct mgmt_ev_adv_monitor_removed ev;
+-	struct mgmt_pending_cmd *cmd;
+-	struct sock *sk_skip = NULL;
+-	struct mgmt_cp_remove_adv_monitor *cp;
+-
+-	cmd = pending_find(MGMT_OP_REMOVE_ADV_MONITOR, hdev);
+-	if (cmd) {
+-		cp = cmd->param;
+-
+-		if (cp->monitor_handle)
+-			sk_skip = cmd->sk;
+-	}
+ 
+ 	ev.monitor_handle = cpu_to_le16(handle);
+ 
+-	mgmt_event(MGMT_EV_ADV_MONITOR_REMOVED, hdev, &ev, sizeof(ev), sk_skip);
++	mgmt_event(MGMT_EV_ADV_MONITOR_REMOVED, hdev, &ev, sizeof(ev), sk);
+ }
+ 
+ static int read_adv_mon_features(struct sock *sk, struct hci_dev *hdev,
+@@ -5284,8 +5274,7 @@ static int __add_adv_patterns_monitor(struct sock *sk, struct hci_dev *hdev,
+ 
+ 	if (pending_find(MGMT_OP_SET_LE, hdev) ||
+ 	    pending_find(MGMT_OP_ADD_ADV_PATTERNS_MONITOR, hdev) ||
+-	    pending_find(MGMT_OP_ADD_ADV_PATTERNS_MONITOR_RSSI, hdev) ||
+-	    pending_find(MGMT_OP_REMOVE_ADV_MONITOR, hdev)) {
++	    pending_find(MGMT_OP_ADD_ADV_PATTERNS_MONITOR_RSSI, hdev)) {
+ 		status = MGMT_STATUS_BUSY;
+ 		goto unlock;
+ 	}
+@@ -5455,8 +5444,7 @@ static void mgmt_remove_adv_monitor_complete(struct hci_dev *hdev,
+ 	struct mgmt_pending_cmd *cmd = data;
+ 	struct mgmt_cp_remove_adv_monitor *cp;
+ 
+-	if (status == -ECANCELED ||
+-	    cmd != pending_find(MGMT_OP_REMOVE_ADV_MONITOR, hdev))
++	if (status == -ECANCELED)
+ 		return;
+ 
+ 	hci_dev_lock(hdev);
+@@ -5465,12 +5453,14 @@ static void mgmt_remove_adv_monitor_complete(struct hci_dev *hdev,
+ 
+ 	rp.monitor_handle = cp->monitor_handle;
+ 
+-	if (!status)
++	if (!status) {
++		mgmt_adv_monitor_removed(cmd->sk, hdev, cp->monitor_handle);
+ 		hci_update_passive_scan(hdev);
++	}
+ 
+ 	mgmt_cmd_complete(cmd->sk, cmd->index, cmd->opcode,
+ 			  mgmt_status(status), &rp, sizeof(rp));
+-	mgmt_pending_remove(cmd);
++	mgmt_pending_free(cmd);
+ 
+ 	hci_dev_unlock(hdev);
+ 	bt_dev_dbg(hdev, "remove monitor %d complete, status %d",
+@@ -5480,10 +5470,6 @@ static void mgmt_remove_adv_monitor_complete(struct hci_dev *hdev,
+ static int mgmt_remove_adv_monitor_sync(struct hci_dev *hdev, void *data)
+ {
+ 	struct mgmt_pending_cmd *cmd = data;
+-
+-	if (cmd != pending_find(MGMT_OP_REMOVE_ADV_MONITOR, hdev))
+-		return -ECANCELED;
+-
+ 	struct mgmt_cp_remove_adv_monitor *cp = cmd->param;
+ 	u16 handle = __le16_to_cpu(cp->monitor_handle);
+ 
+@@ -5502,14 +5488,13 @@ static int remove_adv_monitor(struct sock *sk, struct hci_dev *hdev,
+ 	hci_dev_lock(hdev);
+ 
+ 	if (pending_find(MGMT_OP_SET_LE, hdev) ||
+-	    pending_find(MGMT_OP_REMOVE_ADV_MONITOR, hdev) ||
+ 	    pending_find(MGMT_OP_ADD_ADV_PATTERNS_MONITOR, hdev) ||
+ 	    pending_find(MGMT_OP_ADD_ADV_PATTERNS_MONITOR_RSSI, hdev)) {
+ 		status = MGMT_STATUS_BUSY;
+ 		goto unlock;
  	}
  
- 	index = transport->new_flashnode(shost, data, len);
-@@ -3536,7 +3536,6 @@ static int iscsi_new_flashnode(struct iscsi_transport *transport,
- 	else
- 		err = -EIO;
+-	cmd = mgmt_pending_add(sk, MGMT_OP_REMOVE_ADV_MONITOR, hdev, data, len);
++	cmd = mgmt_pending_new(sk, MGMT_OP_REMOVE_ADV_MONITOR, hdev, data, len);
+ 	if (!cmd) {
+ 		status = MGMT_STATUS_NO_RESOURCES;
+ 		goto unlock;
+@@ -5519,7 +5504,7 @@ static int remove_adv_monitor(struct sock *sk, struct hci_dev *hdev,
+ 				  mgmt_remove_adv_monitor_complete);
  
--put_host:
- 	scsi_host_put(shost);
+ 	if (err) {
+-		mgmt_pending_remove(cmd);
++		mgmt_pending_free(cmd);
  
- exit_new_fnode:
-@@ -3561,7 +3560,7 @@ static int iscsi_del_flashnode(struct iscsi_transport *transport,
- 		pr_err("%s could not find host no %u\n",
- 		       __func__, ev->u.del_flashnode.host_no);
- 		err = -ENODEV;
--		goto put_host;
-+		goto exit_del_fnode;
- 	}
- 
- 	idx = ev->u.del_flashnode.flashnode_idx;
-@@ -3603,7 +3602,7 @@ static int iscsi_login_flashnode(struct iscsi_transport *transport,
- 		pr_err("%s could not find host no %u\n",
- 		       __func__, ev->u.login_flashnode.host_no);
- 		err = -ENODEV;
--		goto put_host;
-+		goto exit_login_fnode;
- 	}
- 
- 	idx = ev->u.login_flashnode.flashnode_idx;
-@@ -3655,7 +3654,7 @@ static int iscsi_logout_flashnode(struct iscsi_transport *transport,
- 		pr_err("%s could not find host no %u\n",
- 		       __func__, ev->u.logout_flashnode.host_no);
- 		err = -ENODEV;
--		goto put_host;
-+		goto exit_logout_fnode;
- 	}
- 
- 	idx = ev->u.logout_flashnode.flashnode_idx;
-@@ -3705,7 +3704,7 @@ static int iscsi_logout_flashnode_sid(struct iscsi_transport *transport,
- 		pr_err("%s could not find host no %u\n",
- 		       __func__, ev->u.logout_flashnode.host_no);
- 		err = -ENODEV;
--		goto put_host;
-+		goto exit_logout_sid;
- 	}
- 
- 	session = iscsi_session_lookup(ev->u.logout_flashnode_sid.sid);
+ 		if (err == -ENOMEM)
+ 			status = MGMT_STATUS_NO_RESOURCES;
 -- 
 2.39.5
 
