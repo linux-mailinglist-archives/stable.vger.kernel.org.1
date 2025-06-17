@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-153807-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-154210-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 902F1ADD683
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:34:35 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id A20CAADD80D
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:51:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 03E5A406758
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:25:00 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 562CB4A0B78
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:45:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62E2F2F2367;
-	Tue, 17 Jun 2025 16:19:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F5EF2EA754;
+	Tue, 17 Jun 2025 16:40:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h72R6FBH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oBQWBUl8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DB572F235C;
-	Tue, 17 Jun 2025 16:19:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16E2B285041;
+	Tue, 17 Jun 2025 16:40:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750177160; cv=none; b=FhifsYrypCEZu2+9F6nNIgx1aSMzCM2iPG5CZNOEp+Lgxj/MHhmh+dUa4Ww4SMWKdizQDyQZAX2BgxOryJ6b4OwMlj+CtBDKFvpobH+nZt6b19LCR4KCwuYzx4xUvggqas5Gxciv31ivfwyReFX5dKl1thRxUk7hPR7oNkUYGTA=
+	t=1750178459; cv=none; b=NsEgu65ZhlD8MgbnS7PaFb0Sfavc7cFfGbfFK473Cc5EsEVDpBi714x6Qnojf44FpREgPKfSq3PwyPtw3dHFZH2bKHZIMusHbsxqfk0RLERuOfsCOuPEQ0xJaNL9sJ3qXcLBURAIFslQHGlfyB6YqaSpdTbxoIoJyrF8GLPJ/LU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750177160; c=relaxed/simple;
-	bh=yESWEhmf0Uawvd972r8fKzTDw8EgnsN9LZaEFGQXo/Y=;
+	s=arc-20240116; t=1750178459; c=relaxed/simple;
+	bh=lDAoUGUokhW5GzHoIzgjTrLawXqclDljGsqrBZ0Dl4Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HZPMC5kkC0ijLOlx/UQym4HVAOvCAU9wSOiAseyIHdRJu0Cqvk0qTL27EFwz8E2KwOduzmWRVLy5eftxMPt1vJRe95CztqmAsT4jmzPtDoaH1dWGNaHjgJJEppzIq7EiySY8M8jxRjBoW67pgSnNAkJYc5D3A4Hwl17Z5zDOvPs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=h72R6FBH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33638C4CEE3;
-	Tue, 17 Jun 2025 16:19:18 +0000 (UTC)
+	 MIME-Version; b=fzgB/yQWMiJkzYtEaLH5FKwIIfArwGIwY8CxVrdKVRtnGlzC0uD5/tRl2qkWplXYgwYQMR5cZfdUlbKBUNfx+eS8AIZ61HSxJ0k4cicBFJgNCnfo4lA0dz6VJE6WQC1zBndaQAZU1WyIX5v6m5xXyGG6tDt0QpwFsRFzGIOmEEM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oBQWBUl8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7AFF1C4CEE7;
+	Tue, 17 Jun 2025 16:40:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750177158;
-	bh=yESWEhmf0Uawvd972r8fKzTDw8EgnsN9LZaEFGQXo/Y=;
+	s=korg; t=1750178459;
+	bh=lDAoUGUokhW5GzHoIzgjTrLawXqclDljGsqrBZ0Dl4Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=h72R6FBH+4MvMjqx/tfexAYyXU7YC+gF0DfsQJny/IwnzKw5PT1EqXEYbtoNzRRwJ
-	 hvmv5thxOSr2iA/FaTxdXt4+zGQTZVf3uusTJfigR7RUu+GSB13IEN2Gng+M2OJMkz
-	 ViYJfuQ8QqpAyaBmbblN3vrl6S158tgr2VNtFEFk=
+	b=oBQWBUl83aJnZvX9dJW4GSdONC8aNVBRLN3ganR+WzfvkFVSMRmXXYmJ54GceglMx
+	 j57MACMaSTW7V6tZ8VWKpBZ3FUBAJk/qQsbO7KJJUv/64cJaxUNnCTWaGfnv+dmUfT
+	 RitRs/+xr493Rbg1DBo3g0do2FALaf+wIF8WCqiA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot <syzkaller@googlegroups.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Kuniyuki Iwashima <kuniyu@amazon.com>,
-	Paul Moore <paul@paul-moore.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.6 353/356] calipso: unlock rcu before returning -EAFNOSUPPORT
+	Dave Chinner <dchinner@redhat.com>,
+	Bill ODonnell <bodonnel@redhat.com>,
+	"Darrick J. Wong" <djwong@kernel.org>,
+	Carlos Maiolino <cem@kernel.org>
+Subject: [PATCH 6.12 502/512] xfs: dont assume perags are initialised when trimming AGs
 Date: Tue, 17 Jun 2025 17:27:48 +0200
-Message-ID: <20250617152352.345822501@linuxfoundation.org>
+Message-ID: <20250617152439.963290794@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152338.212798615@linuxfoundation.org>
-References: <20250617152338.212798615@linuxfoundation.org>
+In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
+References: <20250617152419.512865572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,46 +63,91 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Dave Chinner <dchinner@redhat.com>
 
-commit 3cae906e1a6184cdc9e4d260e4dbdf9a118d94ad upstream.
+commit 23be716b1c4f3f3a6c00ee38d51a57ef7db9ef7d upstream.
 
-syzbot reported that a recent patch forgot to unlock rcu
-in the error path.
+When running fstrim immediately after mounting a V4 filesystem,
+the fstrim fails to trim all the free space in the filesystem. It
+only trims the first extent in the by-size free space tree in each
+AG and then returns. If a second fstrim is then run, it runs
+correctly and the entire free space in the filesystem is iterated
+and discarded correctly.
 
-Adopt the convention that netlbl_conn_setattr() is already using.
+The problem lies in the setup of the trim cursor - it assumes that
+pag->pagf_longest is valid without either reading the AGF first or
+checking if xfs_perag_initialised_agf(pag) is true or not.
 
-Fixes: 6e9f2df1c550 ("calipso: Don't call calipso functions for AF_INET sk.")
-Reported-by: syzbot <syzkaller@googlegroups.com>
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Cc: Kuniyuki Iwashima <kuniyu@amazon.com>
-Acked-by: Paul Moore <paul@paul-moore.com>
-Link: https://patch.msgid.link/20250604133826.1667664-1-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+As a result, when a filesystem is mounted without reading the AGF
+(e.g. a clean mount on a v4 filesystem) and the first operation is a
+fstrim call, pag->pagf_longest is zero and so the free extent search
+starts at the wrong end of the by-size btree and exits after
+discarding the first record in the tree.
+
+Fix this by deferring the initialisation of tcur->count to after
+we have locked the AGF and guaranteed that the perag is properly
+initialised. We trigger this on tcur->count == 0 after locking the
+AGF, as this will only occur on the first call to
+xfs_trim_gather_extents() for each AG. If we need to iterate,
+tcur->count will be set to the length of the record we need to
+restart at, so we can use this to ensure we only sample a valid
+pag->pagf_longest value for the iteration.
+
+Signed-off-by: Dave Chinner <dchinner@redhat.com>
+Reviewed-by: Bill O'Donnell <bodonnel@redhat.com>
+Reviewed-by: Darrick J. Wong <djwong@kernel.org>
+Fixes: 89cfa899608f ("xfs: reduce AGF hold times during fstrim operations")
+Cc: <stable@vger.kernel.org> # v6.6
+Signed-off-by: Carlos Maiolino <cem@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/netlabel/netlabel_kapi.c |    6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ fs/xfs/xfs_discard.c |   17 ++++++++++++++++-
+ 1 file changed, 16 insertions(+), 1 deletion(-)
 
---- a/net/netlabel/netlabel_kapi.c
-+++ b/net/netlabel/netlabel_kapi.c
-@@ -1140,8 +1140,10 @@ int netlbl_conn_setattr(struct sock *sk,
- 		break;
- #if IS_ENABLED(CONFIG_IPV6)
- 	case AF_INET6:
--		if (sk->sk_family != AF_INET6)
--			return -EAFNOSUPPORT;
-+		if (sk->sk_family != AF_INET6) {
-+			ret_val = -EAFNOSUPPORT;
-+			goto conn_setattr_return;
-+		}
+--- a/fs/xfs/xfs_discard.c
++++ b/fs/xfs/xfs_discard.c
+@@ -146,6 +146,14 @@ xfs_discard_extents(
+ 	return error;
+ }
  
- 		addr6 = (struct sockaddr_in6 *)addr;
- 		entry = netlbl_domhsh_getentry_af6(secattr->domain,
++/*
++ * Care must be taken setting up the trim cursor as the perags may not have been
++ * initialised when the cursor is initialised. e.g. a clean mount which hasn't
++ * read in AGFs and the first operation run on the mounted fs is a trim. This
++ * can result in perag fields that aren't initialised until
++ * xfs_trim_gather_extents() calls xfs_alloc_read_agf() to lock down the AG for
++ * the free space search.
++ */
+ struct xfs_trim_cur {
+ 	xfs_agblock_t	start;
+ 	xfs_extlen_t	count;
+@@ -183,6 +191,14 @@ xfs_trim_gather_extents(
+ 	if (error)
+ 		goto out_trans_cancel;
+ 
++	/*
++	 * First time through tcur->count will not have been initialised as
++	 * pag->pagf_longest is not guaranteed to be valid before we read
++	 * the AGF buffer above.
++	 */
++	if (!tcur->count)
++		tcur->count = pag->pagf_longest;
++
+ 	if (tcur->by_bno) {
+ 		/* sub-AG discard request always starts at tcur->start */
+ 		cur = xfs_bnobt_init_cursor(mp, tp, agbp, pag);
+@@ -329,7 +345,6 @@ xfs_trim_perag_extents(
+ {
+ 	struct xfs_trim_cur	tcur = {
+ 		.start		= start,
+-		.count		= pag->pagf_longest,
+ 		.end		= end,
+ 		.minlen		= minlen,
+ 	};
 
 
 
