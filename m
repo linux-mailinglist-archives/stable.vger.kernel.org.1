@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-154243-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153577-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B81FCADD864
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:54:56 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 66525ADD5AD
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:24:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 47EC54A0F3F
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:46:44 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 08C111946749
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:10:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6EFA2EA16A;
-	Tue, 17 Jun 2025 16:42:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D11C2DFF24;
+	Tue, 17 Jun 2025 16:06:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="An8xtmiD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="apgqCdGY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6051E285048;
-	Tue, 17 Jun 2025 16:42:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE2C92F2365;
+	Tue, 17 Jun 2025 16:06:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750178561; cv=none; b=BsvSlpgN06kwTJwncBN/VK08lm/uay+HcO9EBlcO1qHAFCsvB+pGybEqa3AC4aQT5bxWlxjrlx4h46jXPda4rHLCAyRCQ2LTNiNGajoYRJ4iUkCfVFNlSGtHdSNrLCn62w1D/rdUwi8o5G7W2GERYI7b1SuKBaEcZrCNcgLKIU0=
+	t=1750176411; cv=none; b=dMjawz0+mYtkw2E7U/LUznPz3FJ9P7gqXSa8oBewnI1emsXstmfDjvrnLKoIyqQqUHQIIMVN7doJasNMViqChR/Tvo2oIL8zuytlCAaAEWOyqhrLdRRrYYiuEH3RoclzT8dbvDajrkuoHpug7H+0775PKfFr7mPxvjYC/0BPwFc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750178561; c=relaxed/simple;
-	bh=FUldUU2rSJIj2WtTj4dT0ERCpIRqvKa0GLSC9x0dvOU=;
+	s=arc-20240116; t=1750176411; c=relaxed/simple;
+	bh=MADa4wPpy2LakqcVZYPQiBfK2m8KCqkfdPgE2ckrGqg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bWYhxQRFHca0AWJVQKhtO6MEBopUy6WF1yckxZQmKy/Y7wVo1g4rVRDVucD2kKpsIhi+eVCvOiGO3KwdGRF+UnFIi6GN1s7rfEPqSPCLlrp8hL+C8VhQjVaKT0t7ERbY0zKNVpBXh2ukaYXh29yIgXdSrP5IXXWE4jQmaGuPOhc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=An8xtmiD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3F31C4CEE3;
-	Tue, 17 Jun 2025 16:42:40 +0000 (UTC)
+	 MIME-Version; b=UeyNyF8GMGj6rpdUz2BVCqtWvzq6V6thbmfcmAat8yNUrDpyZxno58K/nVrTq7eb34PEGMozm66nofzwpfLxueR9rolBxbZR3Yu6d7JHZz6qwKIPPDut/05evJeelJHRCR7AjljmD9MlBkK9uzknc41UBLhiasPCJG5X5mQ+vs0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=apgqCdGY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 477AAC4CEE3;
+	Tue, 17 Jun 2025 16:06:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750178561;
-	bh=FUldUU2rSJIj2WtTj4dT0ERCpIRqvKa0GLSC9x0dvOU=;
+	s=korg; t=1750176411;
+	bh=MADa4wPpy2LakqcVZYPQiBfK2m8KCqkfdPgE2ckrGqg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=An8xtmiDz7TJyQHFlCzVn9fxtfeFFREAxhW8yrI6rG3YQTfwA8j65yAUjnYBcmFcM
-	 FdbTMmCI/ej4ESdsGyKGix/vgKZpSgVlmUG8Q4SJRTX+mNkYaLk/t20kFxb9Dei2so
-	 X4JK3WGTryrMywNXQrrAtCazJI928CI8OIFH1dmI=
+	b=apgqCdGYhAF4Xsz361gsVFuC9R0QS6rVjZ2anoZUVXKW0XWNAqDh+5p/zhQSJVh9U
+	 2S048EOHNKgHeESGfPH48tvu13mMFdqiLrnAAI9do4U9C1R2nLx/jgtOOjmM3trXHv
+	 ma+koZbx6Y2E8m+/tUh74nDDMpHifFgtIQfgm07M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pekka Ristola <pekkarr@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Christian Brauner <brauner@kernel.org>,
+	Xilin Wu <wuxilin123@gmail.com>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 485/780] rust: file: mark `LocalFile` as `repr(transparent)`
+Subject: [PATCH 6.12 227/512] arm64: dts: qcom: sm8250: Fix CPU7 opp table
 Date: Tue, 17 Jun 2025 17:23:13 +0200
-Message-ID: <20250617152511.240571547@linuxfoundation.org>
+Message-ID: <20250617152428.821018683@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
-References: <20250617152451.485330293@linuxfoundation.org>
+In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
+References: <20250617152419.512865572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,46 +63,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pekka Ristola <pekkarr@protonmail.com>
+From: Xilin Wu <wuxilin123@gmail.com>
 
-[ Upstream commit 15ecd83dc06277385ad71dc7ea26911d9a79acaf ]
+[ Upstream commit 28f997b89967afdc0855d8aa7538b251fb44f654 ]
 
-Unsafe code in `LocalFile`'s methods assumes that the type has the same
-layout as the inner `bindings::file`. This is not guaranteed by the default
-struct representation in Rust, but requires specifying the `transparent`
-representation.
+There is a typo in cpu7_opp9. Fix it to get rid of the following
+errors.
 
-The `File` struct (which also wraps `bindings::file`) is already marked as
-`repr(transparent)`, so this change makes their layouts equivalent.
+[    0.198043] cpu cpu7: Voltage update failed freq=1747200
+[    0.198052] cpu cpu7: failed to update OPP for freq=1747200
 
-Fixes: 851849824bb5 ("rust: file: add Rust abstraction for `struct file`")
-Closes: https://github.com/Rust-for-Linux/linux/issues/1165
-Signed-off-by: Pekka Ristola <pekkarr@protonmail.com>
-Link: https://lore.kernel.org/20250527204636.12573-1-pekkarr@protonmail.com
-Reviewed-by: Benno Lossin <lossin@kernel.org>
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+Fixes: 8e0e8016cb79 ("arm64: dts: qcom: sm8250: Add CPU opp tables")
+Signed-off-by: Xilin Wu <wuxilin123@gmail.com>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Link: https://lore.kernel.org/r/20250308-fix-sm8250-cpufreq-v1-1-8a0226721399@gmail.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- rust/kernel/fs/file.rs | 1 +
- 1 file changed, 1 insertion(+)
+ arch/arm64/boot/dts/qcom/sm8250.dtsi | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/rust/kernel/fs/file.rs b/rust/kernel/fs/file.rs
-index 13a0e44cd1aa8..138693bdeb3fd 100644
---- a/rust/kernel/fs/file.rs
-+++ b/rust/kernel/fs/file.rs
-@@ -219,6 +219,7 @@ unsafe impl AlwaysRefCounted for File {
- ///   must be on the same thread as this file.
- ///
- /// [`assume_no_fdget_pos`]: LocalFile::assume_no_fdget_pos
-+#[repr(transparent)]
- pub struct LocalFile {
-     inner: Opaque<bindings::file>,
- }
+diff --git a/arch/arm64/boot/dts/qcom/sm8250.dtsi b/arch/arm64/boot/dts/qcom/sm8250.dtsi
+index faa36d17b9f2c..e17937f76806c 100644
+--- a/arch/arm64/boot/dts/qcom/sm8250.dtsi
++++ b/arch/arm64/boot/dts/qcom/sm8250.dtsi
+@@ -606,7 +606,7 @@
+ 		};
+ 
+ 		cpu7_opp9: opp-1747200000 {
+-			opp-hz = /bits/ 64 <1708800000>;
++			opp-hz = /bits/ 64 <1747200000>;
+ 			opp-peak-kBps = <5412000 42393600>;
+ 		};
+ 
 -- 
 2.39.5
 
