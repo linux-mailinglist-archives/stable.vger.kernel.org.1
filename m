@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-153776-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153779-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E316BADD661
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:32:44 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B4F4ADD646
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:31:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2EBCE19E305E
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:24:13 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 563342C6603
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:24:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB6AB2EA14C;
-	Tue, 17 Jun 2025 16:17:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9BCAE22FE11;
+	Tue, 17 Jun 2025 16:17:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kkeFDZ01"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oE1Pjsxo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9927A2E7163;
-	Tue, 17 Jun 2025 16:17:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55B722EA150;
+	Tue, 17 Jun 2025 16:17:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750177061; cv=none; b=PWu/tJUrX1Gd9w/lT7T4hRAxAhDMIAy6ZTxbiprqDjoQ/fimBj1owYq782N5NCGkllRxOmkqZ5snNG5QcMyhq/wNr90NqKCnXrdFVdK48i8fDcHk3ekEvUqpYtATerBV4OQ6OB/YqpOoahn/Tm9P2YUy8lpnmDecDbD/AnNTG0U=
+	t=1750177071; cv=none; b=X0A4nTk07P6c4/cE1EYxoYXlRbEfyEk1kCJk+nWK+T3y1QulhHrdz/EVD86HjGiPdKpq9FYZDzGZtnNvb0QeUYK3pZGqcuooywlwqYXNE9GMAKOC28SrIigLpyhthojsCG09FNZQLP8BuSdgHjsV0KafEzZ2YvNJLL/toxGGU/s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750177061; c=relaxed/simple;
-	bh=eTKNM8o1/oam6DjP3TrOcH4d9HR95M3D4mrwojfkGnI=;
+	s=arc-20240116; t=1750177071; c=relaxed/simple;
+	bh=bsFFjW/hOOCfdKjEdASymUoi2LmQjkn89H4GEDpFPww=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=QgE8J/WMMmV/BZTXYvKiGpjyFQvJHDFE4uujl9E5Y1Z9kAGNNjzxSzSd6K4lwuJDX9jPV4UEh3B5Gx/S45n6d5stfFDB9KmvEWjKYmOouz8ybOfW3mFNaNuWJeSD8YM6eX+nLhumZNfqT+n2e7Ytp5M1OgUbET6hkoh3T+zbiOY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kkeFDZ01; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 076B9C4CEE3;
-	Tue, 17 Jun 2025 16:17:40 +0000 (UTC)
+	 MIME-Version; b=AElnmLuYbLH9nPyFUQMYRJLY74XLwfPoHEEbPX2v0sLU3cjY0kU22m3twusyXNBBqcPyHoT9DRMKogjIPm+xWYj70TKXyfTyltVRrE3tkLCSCTcGCHbGvE7JCc1pV7HwKEPodRkGO5WndTFqvJMPqFHyS2C30dQ0XFldGxbXRLA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oE1Pjsxo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB12DC4CEE3;
+	Tue, 17 Jun 2025 16:17:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750177061;
-	bh=eTKNM8o1/oam6DjP3TrOcH4d9HR95M3D4mrwojfkGnI=;
+	s=korg; t=1750177071;
+	bh=bsFFjW/hOOCfdKjEdASymUoi2LmQjkn89H4GEDpFPww=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kkeFDZ01tZRjAV6gvx8UEnfxRKfuLaro5O4OMeYhf0f+FEj5dr7HsgRj04LPn8ALW
-	 h9d+VaCM3G67qjjc8SCwNBrUpZvOqn53uM2IYTE4ESyduKY+I8PFMz24+UCCpUlz/n
-	 HU/sr7a9y36BTKTerttB9dKWclq0i7NQBLHo+e8w=
+	b=oE1PjsxoIJbKifrfTLMni6nPZQJT6tQZKX8EisFz7rZTj1P7uM8X2zAJFDb9W+q7P
+	 t3a0jqekoRmQGb6XDT+5k/wptfv3+K08o0RBGTyXoTJXbXzemAlr1fJN5POTDjlkT0
+	 isIucPRvXGJZKklpfppHUi8gV0cHRETF7BOHLgVk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Bj=C3=B6rn=20T=C3=B6pel?= <bjorn@kernel.org>,
-	Pu Lehui <pulehui@huawei.com>,
-	Peilin Ye <yepeilin@google.com>,
+	Luis Gerhorst <luis.gerhorst@fau.de>,
+	Kumar Kartikeya Dwivedi <memxor@gmail.com>,
+	Eduard Zingerman <eddyz87@gmail.com>,
 	Alexei Starovoitov <ast@kernel.org>,
-	Sasha Levin <sashal@kernel.org>,
-	=?UTF-8?q?Bj=C3=B6rn=20T=C3=B6pel?= <bjorn@rivosinc.com>
-Subject: [PATCH 6.15 253/780] selftests/bpf: Avoid passing out-of-range values to __retval()
-Date: Tue, 17 Jun 2025 17:19:21 +0200
-Message-ID: <20250617152501.762109171@linuxfoundation.org>
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.15 254/780] selftests/bpf: Fix caps for __xlated/jited_unpriv
+Date: Tue, 17 Jun 2025 17:19:22 +0200
+Message-ID: <20250617152501.802776808@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
 References: <20250617152451.485330293@linuxfoundation.org>
@@ -63,226 +62,74 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peilin Ye <yepeilin@google.com>
+From: Luis Gerhorst <luis.gerhorst@fau.de>
 
-[ Upstream commit 6e492ffcab6064cd7b317dc1f49fb9f92407aaa7 ]
+[ Upstream commit cf15cdc0f0f39a5c6315200808ec3e3995b0c2d2 ]
 
-Currently, we pass 0x1234567890abcdef to __retval() for the following
-two tests:
+Currently, __xlated_unpriv and __jited_unpriv do not work because the
+BPF syscall will overwrite info.jited_prog_len and info.xlated_prog_len
+with 0 if the process is not bpf_capable(). This bug was not noticed
+before, because there is no test that actually uses
+__xlated_unpriv/__jited_unpriv.
 
-  verifier_load_acquire/load_acquire_64
-  verifier_store_release/store_release_64
+To resolve this, simply restore the capabilities earlier (but still
+after loading the program). Adding this here unconditionally is fine
+because the function first checks that the capabilities were initialized
+before attempting to restore them.
 
-However, the upper 32 bits of that value are being ignored, since
-__retval() expects an int.  Actually, the tests would still pass even if
-I change '__retval(0x1234567890abcdef)' to e.g. '__retval(0x90abcdef)'.
+This will be important later when we add tests that check whether a
+speculation barrier was inserted in the correct location.
 
-Restructure the tests a bit to test the entire 64-bit values properly.
-Do the same to their 8-, 16- and 32-bit variants as well to keep the
-style consistent.
-
-Fixes: ff3afe5da998 ("selftests/bpf: Add selftests for load-acquire and store-release instructions")
-Acked-by: Björn Töpel <bjorn@kernel.org>
-Reviewed-by: Pu Lehui <pulehui@huawei.com>
-Tested-by: Björn Töpel <bjorn@rivosinc.com> # QEMU/RVA23
-Signed-off-by: Peilin Ye <yepeilin@google.com>
-Link: https://lore.kernel.org/r/d67f4c6f6ee0d0388cbce1f4892ec4176ee2d604.1746588351.git.yepeilin@google.com
+Signed-off-by: Luis Gerhorst <luis.gerhorst@fau.de>
+Fixes: 9c9f73391310 ("selftests/bpf: allow checking xlated programs in verifier_* tests")
+Fixes: 7d743e4c759c ("selftests/bpf: __jited test tag to check disassembly after jit")
+Acked-by: Kumar Kartikeya Dwivedi <memxor@gmail.com>
+Tested-by: Eduard Zingerman <eddyz87@gmail.com>
+Link: https://lore.kernel.org/r/20250501073603.1402960-2-luis.gerhorst@fau.de
 Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../bpf/progs/verifier_load_acquire.c         | 40 +++++++++++++------
- .../bpf/progs/verifier_store_release.c        | 32 +++++++++++----
- 2 files changed, 52 insertions(+), 20 deletions(-)
+ tools/testing/selftests/bpf/test_loader.c | 14 ++++++++------
+ 1 file changed, 8 insertions(+), 6 deletions(-)
 
-diff --git a/tools/testing/selftests/bpf/progs/verifier_load_acquire.c b/tools/testing/selftests/bpf/progs/verifier_load_acquire.c
-index 77698d5a19e44..a696ab84bfd66 100644
---- a/tools/testing/selftests/bpf/progs/verifier_load_acquire.c
-+++ b/tools/testing/selftests/bpf/progs/verifier_load_acquire.c
-@@ -10,65 +10,81 @@
+diff --git a/tools/testing/selftests/bpf/test_loader.c b/tools/testing/selftests/bpf/test_loader.c
+index 49f2fc61061f5..9551d8d5f8f9f 100644
+--- a/tools/testing/selftests/bpf/test_loader.c
++++ b/tools/testing/selftests/bpf/test_loader.c
+@@ -1042,6 +1042,14 @@ void run_subtest(struct test_loader *tester,
+ 	emit_verifier_log(tester->log_buf, false /*force*/);
+ 	validate_msgs(tester->log_buf, &subspec->expect_msgs, emit_verifier_log);
  
- SEC("socket")
- __description("load-acquire, 8-bit")
--__success __success_unpriv __retval(0x12)
-+__success __success_unpriv __retval(0)
- __naked void load_acquire_8(void)
- {
- 	asm volatile (
-+	"r0 = 0;"
- 	"w1 = 0x12;"
- 	"*(u8 *)(r10 - 1) = w1;"
--	".8byte %[load_acquire_insn];" // w0 = load_acquire((u8 *)(r10 - 1));
-+	".8byte %[load_acquire_insn];" // w2 = load_acquire((u8 *)(r10 - 1));
-+	"if r2 == r1 goto 1f;"
-+	"r0 = 1;"
-+"1:"
- 	"exit;"
- 	:
- 	: __imm_insn(load_acquire_insn,
--		     BPF_ATOMIC_OP(BPF_B, BPF_LOAD_ACQ, BPF_REG_0, BPF_REG_10, -1))
-+		     BPF_ATOMIC_OP(BPF_B, BPF_LOAD_ACQ, BPF_REG_2, BPF_REG_10, -1))
- 	: __clobber_all);
- }
++	/* Restore capabilities because the kernel will silently ignore requests
++	 * for program info (such as xlated program text) if we are not
++	 * bpf-capable. Also, for some reason test_verifier executes programs
++	 * with all capabilities restored. Do the same here.
++	 */
++	if (restore_capabilities(&caps))
++		goto tobj_cleanup;
++
+ 	if (subspec->expect_xlated.cnt) {
+ 		err = get_xlated_program_text(bpf_program__fd(tprog),
+ 					      tester->log_buf, tester->log_buf_sz);
+@@ -1067,12 +1075,6 @@ void run_subtest(struct test_loader *tester,
+ 	}
  
- SEC("socket")
- __description("load-acquire, 16-bit")
--__success __success_unpriv __retval(0x1234)
-+__success __success_unpriv __retval(0)
- __naked void load_acquire_16(void)
- {
- 	asm volatile (
-+	"r0 = 0;"
- 	"w1 = 0x1234;"
- 	"*(u16 *)(r10 - 2) = w1;"
--	".8byte %[load_acquire_insn];" // w0 = load_acquire((u16 *)(r10 - 2));
-+	".8byte %[load_acquire_insn];" // w2 = load_acquire((u16 *)(r10 - 2));
-+	"if r2 == r1 goto 1f;"
-+	"r0 = 1;"
-+"1:"
- 	"exit;"
- 	:
- 	: __imm_insn(load_acquire_insn,
--		     BPF_ATOMIC_OP(BPF_H, BPF_LOAD_ACQ, BPF_REG_0, BPF_REG_10, -2))
-+		     BPF_ATOMIC_OP(BPF_H, BPF_LOAD_ACQ, BPF_REG_2, BPF_REG_10, -2))
- 	: __clobber_all);
- }
- 
- SEC("socket")
- __description("load-acquire, 32-bit")
--__success __success_unpriv __retval(0x12345678)
-+__success __success_unpriv __retval(0)
- __naked void load_acquire_32(void)
- {
- 	asm volatile (
-+	"r0 = 0;"
- 	"w1 = 0x12345678;"
- 	"*(u32 *)(r10 - 4) = w1;"
--	".8byte %[load_acquire_insn];" // w0 = load_acquire((u32 *)(r10 - 4));
-+	".8byte %[load_acquire_insn];" // w2 = load_acquire((u32 *)(r10 - 4));
-+	"if r2 == r1 goto 1f;"
-+	"r0 = 1;"
-+"1:"
- 	"exit;"
- 	:
- 	: __imm_insn(load_acquire_insn,
--		     BPF_ATOMIC_OP(BPF_W, BPF_LOAD_ACQ, BPF_REG_0, BPF_REG_10, -4))
-+		     BPF_ATOMIC_OP(BPF_W, BPF_LOAD_ACQ, BPF_REG_2, BPF_REG_10, -4))
- 	: __clobber_all);
- }
- 
- SEC("socket")
- __description("load-acquire, 64-bit")
--__success __success_unpriv __retval(0x1234567890abcdef)
-+__success __success_unpriv __retval(0)
- __naked void load_acquire_64(void)
- {
- 	asm volatile (
-+	"r0 = 0;"
- 	"r1 = 0x1234567890abcdef ll;"
- 	"*(u64 *)(r10 - 8) = r1;"
--	".8byte %[load_acquire_insn];" // r0 = load_acquire((u64 *)(r10 - 8));
-+	".8byte %[load_acquire_insn];" // r2 = load_acquire((u64 *)(r10 - 8));
-+	"if r2 == r1 goto 1f;"
-+	"r0 = 1;"
-+"1:"
- 	"exit;"
- 	:
- 	: __imm_insn(load_acquire_insn,
--		     BPF_ATOMIC_OP(BPF_DW, BPF_LOAD_ACQ, BPF_REG_0, BPF_REG_10, -8))
-+		     BPF_ATOMIC_OP(BPF_DW, BPF_LOAD_ACQ, BPF_REG_2, BPF_REG_10, -8))
- 	: __clobber_all);
- }
- 
-diff --git a/tools/testing/selftests/bpf/progs/verifier_store_release.c b/tools/testing/selftests/bpf/progs/verifier_store_release.c
-index c0442d5bb049d..022d03d983595 100644
---- a/tools/testing/selftests/bpf/progs/verifier_store_release.c
-+++ b/tools/testing/selftests/bpf/progs/verifier_store_release.c
-@@ -11,13 +11,17 @@
- 
- SEC("socket")
- __description("store-release, 8-bit")
--__success __success_unpriv __retval(0x12)
-+__success __success_unpriv __retval(0)
- __naked void store_release_8(void)
- {
- 	asm volatile (
-+	"r0 = 0;"
- 	"w1 = 0x12;"
- 	".8byte %[store_release_insn];" // store_release((u8 *)(r10 - 1), w1);
--	"w0 = *(u8 *)(r10 - 1);"
-+	"w2 = *(u8 *)(r10 - 1);"
-+	"if r2 == r1 goto 1f;"
-+	"r0 = 1;"
-+"1:"
- 	"exit;"
- 	:
- 	: __imm_insn(store_release_insn,
-@@ -27,13 +31,17 @@ __naked void store_release_8(void)
- 
- SEC("socket")
- __description("store-release, 16-bit")
--__success __success_unpriv __retval(0x1234)
-+__success __success_unpriv __retval(0)
- __naked void store_release_16(void)
- {
- 	asm volatile (
-+	"r0 = 0;"
- 	"w1 = 0x1234;"
- 	".8byte %[store_release_insn];" // store_release((u16 *)(r10 - 2), w1);
--	"w0 = *(u16 *)(r10 - 2);"
-+	"w2 = *(u16 *)(r10 - 2);"
-+	"if r2 == r1 goto 1f;"
-+	"r0 = 1;"
-+"1:"
- 	"exit;"
- 	:
- 	: __imm_insn(store_release_insn,
-@@ -43,13 +51,17 @@ __naked void store_release_16(void)
- 
- SEC("socket")
- __description("store-release, 32-bit")
--__success __success_unpriv __retval(0x12345678)
-+__success __success_unpriv __retval(0)
- __naked void store_release_32(void)
- {
- 	asm volatile (
-+	"r0 = 0;"
- 	"w1 = 0x12345678;"
- 	".8byte %[store_release_insn];" // store_release((u32 *)(r10 - 4), w1);
--	"w0 = *(u32 *)(r10 - 4);"
-+	"w2 = *(u32 *)(r10 - 4);"
-+	"if r2 == r1 goto 1f;"
-+	"r0 = 1;"
-+"1:"
- 	"exit;"
- 	:
- 	: __imm_insn(store_release_insn,
-@@ -59,13 +71,17 @@ __naked void store_release_32(void)
- 
- SEC("socket")
- __description("store-release, 64-bit")
--__success __success_unpriv __retval(0x1234567890abcdef)
-+__success __success_unpriv __retval(0)
- __naked void store_release_64(void)
- {
- 	asm volatile (
-+	"r0 = 0;"
- 	"r1 = 0x1234567890abcdef ll;"
- 	".8byte %[store_release_insn];" // store_release((u64 *)(r10 - 8), r1);
--	"r0 = *(u64 *)(r10 - 8);"
-+	"r2 = *(u64 *)(r10 - 8);"
-+	"if r2 == r1 goto 1f;"
-+	"r0 = 1;"
-+"1:"
- 	"exit;"
- 	:
- 	: __imm_insn(store_release_insn,
+ 	if (should_do_test_run(spec, subspec)) {
+-		/* For some reason test_verifier executes programs
+-		 * with all capabilities restored. Do the same here.
+-		 */
+-		if (restore_capabilities(&caps))
+-			goto tobj_cleanup;
+-
+ 		/* Do bpf_map__attach_struct_ops() for each struct_ops map.
+ 		 * This should trigger bpf_struct_ops->reg callback on kernel side.
+ 		 */
 -- 
 2.39.5
 
