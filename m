@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-153009-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153011-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D3FFEADD1E5
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 17:36:16 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 59313ADD1E7
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 17:36:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C163B3BDB27
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 15:35:52 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 44A5E3BDBB8
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 15:35:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC9762ECD1B;
-	Tue, 17 Jun 2025 15:36:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C34002EB5AB;
+	Tue, 17 Jun 2025 15:36:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KMPwmAJO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LHrxiQGP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A4A518A6AE;
-	Tue, 17 Jun 2025 15:36:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81AE918A6AE;
+	Tue, 17 Jun 2025 15:36:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750174574; cv=none; b=W3MgkNhBXCXnyA60j/kx8UvxSBNKXD2ldPJqbOLTzsM+QwlqXgYYF1/koia+RXGiQzYk78RVsjuDITjJj5W5/UQykamkLM80QeE6HiMEz1AkINs5pweGG+0EN+uqICOQzSSDlFbl6gy05i8JtoSmV1PNNgPc1qw9PHEZRBAW2lU=
+	t=1750174580; cv=none; b=tf3YZXHljHwA0VMGxZ4NQl9ZO4IZdROL46Ku5C8FEvkFGNoR7IZldGFBQ87QpuuZdyyAU3dYPbKeNddQsIr0PnTGIryfnBovSgD74wJhID+wwjrfiOodF/MZLYUYQmz+G/yHE0UYNxudXBQKOPce0aE69HqpC5TZpGIeY/Gt1dE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750174574; c=relaxed/simple;
-	bh=6AQhV45gVCmHzaE6FhajLni/ZG1G0qMGyKL8T1MNHX4=;
+	s=arc-20240116; t=1750174580; c=relaxed/simple;
+	bh=9AogUGnM62OCn5ULMiGpJCVLfHpSG+rQH5YRCu77xPI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=qme3COCyQ7xfwiIdSrVyI+N3Ffj3nBJakjZ4sRwZIvswg6zwe6Qr5XefspMhN7bhyC/Flw+0aHmxDi6r7+xYqkV44Ep6+0XJPAevn5xIAD5DUO1adMjb2VK3gzxKhMvZT6aKf50m39SIS1x6YB3dcnWNXqaVMeI6RBx3uY1Qorg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KMPwmAJO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 022E0C4CEE3;
-	Tue, 17 Jun 2025 15:36:13 +0000 (UTC)
+	 MIME-Version; b=YHaDYBUfmBjA8RdhNA8DIQt9OYtjlfBnn+hdvCsO+n6OYv0Fewf3xmXdpV+1wk8enH881AieP4DzN7fMjiHLpEp7nysSOXKQTlsuhiWAbekHV0cGTG16cdz48Tx2HNJfjLt0+Mc4tSxtQMGzyyqsPIMK9MDtAulf02eQg17cX/k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LHrxiQGP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C0B6C4CEE3;
+	Tue, 17 Jun 2025 15:36:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750174574;
-	bh=6AQhV45gVCmHzaE6FhajLni/ZG1G0qMGyKL8T1MNHX4=;
+	s=korg; t=1750174580;
+	bh=9AogUGnM62OCn5ULMiGpJCVLfHpSG+rQH5YRCu77xPI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KMPwmAJOVSxq2LEgJwHVYeOEdTLU55254G7/r0Ta/MDT8m+XUNS8Xcy+WQP1HFTtJ
-	 v81rSQgSbhMrRrW8xiATHogQ39LASysLG6b1k7cGLjINgoW2plBKlyH+27KeFKNa8S
-	 KBc4X7WmBdzOkcSs8I+9Z9mY8k45nDO/pw0IUmW0=
+	b=LHrxiQGPuLqgOOayQHM/yTqdQM9vrSKfvry+61YXrQihKDfegWDdSpc0N2u6ZrzPX
+	 4hscWuEFSbnJqJsLx/neaspl9wsQkxd7eMVF/5a+ViqIAlGphEBNhAUFqMSibB3M3n
+	 zna7xrKB0Im4FqczcgugZjxOCLVuKdMfIuomqTtY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jemmy Wong <jemmywong512@gmail.com>,
-	Willy Tarreau <w@1wt.eu>,
-	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <linux@weissschuh.net>,
+	Neal Gompa <neal@gompa.dev>,
+	Hector Martin <marcan@marcan.st>,
+	James Calligeros <jcalligeros99@gmail.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 037/512] tools/nolibc/types.h: fix mismatched parenthesis in minor()
-Date: Tue, 17 Jun 2025 17:20:03 +0200
-Message-ID: <20250617152421.054801233@linuxfoundation.org>
+Subject: [PATCH 6.12 038/512] ASoC: tas2764: Enable main IRQs
+Date: Tue, 17 Jun 2025 17:20:04 +0200
+Message-ID: <20250617152421.093456061@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
 References: <20250617152419.512865572@linuxfoundation.org>
@@ -61,42 +62,45 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jemmy Wong <jemmywong512@gmail.com>
+From: Hector Martin <marcan@marcan.st>
 
-[ Upstream commit 9c138ac9392228835b520fd4dbb07e636b34a867 ]
+[ Upstream commit dd50f0e38563f15819059c923bf142200453e003 ]
 
-Fix an imbalance where opening parentheses exceed closing ones.
+IRQ handling was added in commit dae191fb957f ("ASoC: tas2764: Add IRQ
+handling") however that same commit masks all interrupts coming from
+the chip. Unmask the "main" interrupts so that we can see and
+deal with a number of errors including clock, voltage, and current.
 
-Fixes: eba6d00d38e7c ("tools/nolibc/types: move makedev to types.h and make it a macro")
-Signed-off-by: Jemmy Wong <jemmywong512@gmail.com>
-Acked-by: Willy Tarreau <w@1wt.eu>
-Link: https://lore.kernel.org/r/20250411073624.22153-1-jemmywong512@gmail.com
-Signed-off-by: Thomas Weißschuh <linux@weissschuh.net>
+Fixes: dae191fb957f ("ASoC: tas2764: Add IRQ handling")
+Reviewed-by: Neal Gompa <neal@gompa.dev>
+Signed-off-by: Hector Martin <marcan@marcan.st>
+Signed-off-by: James Calligeros <jcalligeros99@gmail.com>
+Link: https://patch.msgid.link/20250406-apple-codec-changes-v5-4-50a00ec850a3@gmail.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/include/nolibc/types.h | 2 +-
+ sound/soc/codecs/tas2764.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tools/include/nolibc/types.h b/tools/include/nolibc/types.h
-index b26a5d0c417c7..32d0929c633bb 100644
---- a/tools/include/nolibc/types.h
-+++ b/tools/include/nolibc/types.h
-@@ -201,7 +201,7 @@ struct stat {
- /* WARNING, it only deals with the 4096 first majors and 256 first minors */
- #define makedev(major, minor) ((dev_t)((((major) & 0xfff) << 8) | ((minor) & 0xff)))
- #define major(dev) ((unsigned int)(((dev) >> 8) & 0xfff))
--#define minor(dev) ((unsigned int)(((dev) & 0xff))
-+#define minor(dev) ((unsigned int)((dev) & 0xff))
+diff --git a/sound/soc/codecs/tas2764.c b/sound/soc/codecs/tas2764.c
+index 39a7d39536fe6..4326555aac032 100644
+--- a/sound/soc/codecs/tas2764.c
++++ b/sound/soc/codecs/tas2764.c
+@@ -540,7 +540,7 @@ static int tas2764_codec_probe(struct snd_soc_component *component)
+ 	tas2764_reset(tas2764);
  
- #ifndef offsetof
- #define offsetof(TYPE, FIELD) ((size_t) &((TYPE *)0)->FIELD)
+ 	if (tas2764->irq) {
+-		ret = snd_soc_component_write(tas2764->component, TAS2764_INT_MASK0, 0xff);
++		ret = snd_soc_component_write(tas2764->component, TAS2764_INT_MASK0, 0x00);
+ 		if (ret < 0)
+ 			return ret;
+ 
 -- 
 2.39.5
 
