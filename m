@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-153166-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153180-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E457ADD304
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 17:52:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4EE06ADD32B
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 17:54:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id ABF871885D96
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 15:49:16 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 634E11890D8F
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 15:49:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4BCC2ECD1B;
-	Tue, 17 Jun 2025 15:44:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 749822EE5E1;
+	Tue, 17 Jun 2025 15:45:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vfl9rnQL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kaOODZf4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 621F22F2379;
-	Tue, 17 Jun 2025 15:44:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E49E2ED872;
+	Tue, 17 Jun 2025 15:45:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750175092; cv=none; b=g56cuBrh6A4nzzInExEpXg0jUATyRHjOhfCMTL0VeXs6B/BttOErxVE0EDh/fh1sr6zH2N0S6f8c8BcX1XuHGZ9onsh1LxOsPFk+Uy+VdadMYH/u3E9Lunn9hBcylOZpxfx4BoxDGdfQgtjuomXgx+c8iyZzOy2WzGHZpxXtLOU=
+	t=1750175137; cv=none; b=Ry6a/9/9yYjwf2M2rsMaSo6h9SzT5Y9eH/eRy3tWla7qz6ISKwAvoRy1r5UipSD4PILhVwdkVs8LGjOWYfxaX73WXtItBuISQ/EGUpXXpoI/BVyfX6gcCwKmeHpnsUz783666X1Pv+uN6qn+Qey/GnQ7oHvPUFLIzGf52a9k9Q8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750175092; c=relaxed/simple;
-	bh=dnihI/WzpqUJB8BLB8mm3Q0kQB4XcOCuq+KnVYNFVzo=;
+	s=arc-20240116; t=1750175137; c=relaxed/simple;
+	bh=Aj6E+fv1/OWcH66QY0dcPP7d66kk0PvBtLzrpnhq8hQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RP8C8Au0DJotpGqR8EXug6GDwHBWNBUNGDCySuH/teUJKOttJ9+iGxq5p7fZXiG/VhuatWPNIjgAHWRVHwO68YAco0TJVSBs5AyajGQnKWMkx7cFsgt24Tgd+N7RW0JBnvjEH8TghMb4l7pJ808QjhvPT9IWHobDJu8Sb+KVdZ4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vfl9rnQL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C1D7C4CEE7;
-	Tue, 17 Jun 2025 15:44:51 +0000 (UTC)
+	 MIME-Version; b=aJOsEJ7fb0Cje6C/O8C+MIY52yRfjOAuSdTGjiYR6QJCXjiHBEvahmPSN2GtzX0hq+68kE1CciOy7cv6I1qAH34A02nMsbN/58wQ0ou+2jBFJglbi3+jyw730nTd1prjyU6UnILwbgDslUE2Jiew8tfeKIqhPSnqUxpNLkVzg2U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kaOODZf4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92E0CC4CEF1;
+	Tue, 17 Jun 2025 15:45:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750175091;
-	bh=dnihI/WzpqUJB8BLB8mm3Q0kQB4XcOCuq+KnVYNFVzo=;
+	s=korg; t=1750175137;
+	bh=Aj6E+fv1/OWcH66QY0dcPP7d66kk0PvBtLzrpnhq8hQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vfl9rnQLULDGWmcd163gTW5pdyngSYWQAavK659E03PGbHE6NagKHClnCwA9TDsJT
-	 eq7152GdEY1gE3H4L09x5XrrzCDvYItbee66RvF6ER+d0uwCnCp6ouH7oreuQrWstT
-	 WCVlYkKb6Jy1cjpKom3yYWcsVwN7eTwSHeh3kjdA=
+	b=kaOODZf4pfmGk2puJKuRunONIczmzZ67tUiESQNBw4bRRv5SQEzF7lBz/ycJPmlMY
+	 vbEr8vCoHhgpJ53H7U7od6EHHUooZCmw3Uzig5QhvytJIaWHQ3qGjdinIItyTSGBVI
+	 KWsrvazzrMAIKm+V24oWZXNrkFXAyHpo8880Vdy0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Casey Connolly <casey.connolly@linaro.org>,
-	David Heidelberg <david@ixit.cz>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
+	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 076/512] drm/panel: samsung-sofef00: Drop s6e3fc2x01 support
-Date: Tue, 17 Jun 2025 17:20:42 +0200
-Message-ID: <20250617152422.664797254@linuxfoundation.org>
+Subject: [PATCH 6.12 077/512] drm/bridge: lt9611uxc: Fix an error handling path in lt9611uxc_probe()
+Date: Tue, 17 Jun 2025 17:20:43 +0200
+Message-ID: <20250617152422.704641795@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
 References: <20250617152419.512865572@linuxfoundation.org>
@@ -67,94 +67,42 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Casey Connolly <casey.connolly@linaro.org>
+From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 
-[ Upstream commit e1eb7293ab4107e9e19fa609835e657fe30dfec7 ]
+[ Upstream commit b848cd418aebdb313364b4843f41fae82281a823 ]
 
-We never properly supported this panel and always used the wrong init
-sequence. Drop support so we can move it to it's own proper driver.
+If lt9611uxc_audio_init() fails, some resources still need to be released
+before returning the error code.
 
-Fixes: 5933baa36e26 ("drm/panel/samsung-sofef00: Add panel for OnePlus 6/T devices")
-Signed-off-by: Casey Connolly <casey.connolly@linaro.org>
-Signed-off-by: David Heidelberg <david@ixit.cz>
-Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
-Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
-Link: https://lore.kernel.org/r/20250419-drop-s6e3fc2x01-support-v1-1-05edfe0d27aa@ixit.cz
+Use the existing error handling path.
+
+Fixes: 0cbbd5b1a012 ("drm: bridge: add support for lontium LT9611UXC bridge")
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Link: https://lore.kernel.org/r/f167608e392c6b4d7d7f6e45e3c21878feb60cbd.1744958833.git.christophe.jaillet@wanadoo.fr
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/panel/panel-samsung-sofef00.c | 34 ++-----------------
- 1 file changed, 2 insertions(+), 32 deletions(-)
+ drivers/gpu/drm/bridge/lontium-lt9611uxc.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/panel/panel-samsung-sofef00.c b/drivers/gpu/drm/panel/panel-samsung-sofef00.c
-index 04ce925b3d9db..49cfa84b34f0c 100644
---- a/drivers/gpu/drm/panel/panel-samsung-sofef00.c
-+++ b/drivers/gpu/drm/panel/panel-samsung-sofef00.c
-@@ -22,7 +22,6 @@ struct sofef00_panel {
- 	struct mipi_dsi_device *dsi;
- 	struct regulator *supply;
- 	struct gpio_desc *reset_gpio;
--	const struct drm_display_mode *mode;
- };
+diff --git a/drivers/gpu/drm/bridge/lontium-lt9611uxc.c b/drivers/gpu/drm/bridge/lontium-lt9611uxc.c
+index 4d1d40e1f1b4d..748bed8acd2d9 100644
+--- a/drivers/gpu/drm/bridge/lontium-lt9611uxc.c
++++ b/drivers/gpu/drm/bridge/lontium-lt9611uxc.c
+@@ -879,7 +879,11 @@ static int lt9611uxc_probe(struct i2c_client *client)
+ 		}
+ 	}
  
- static inline
-@@ -159,26 +158,11 @@ static const struct drm_display_mode enchilada_panel_mode = {
- 	.height_mm = 145,
- };
+-	return lt9611uxc_audio_init(dev, lt9611uxc);
++	ret = lt9611uxc_audio_init(dev, lt9611uxc);
++	if (ret)
++		goto err_remove_bridge;
++
++	return 0;
  
--static const struct drm_display_mode fajita_panel_mode = {
--	.clock = (1080 + 72 + 16 + 36) * (2340 + 32 + 4 + 18) * 60 / 1000,
--	.hdisplay = 1080,
--	.hsync_start = 1080 + 72,
--	.hsync_end = 1080 + 72 + 16,
--	.htotal = 1080 + 72 + 16 + 36,
--	.vdisplay = 2340,
--	.vsync_start = 2340 + 32,
--	.vsync_end = 2340 + 32 + 4,
--	.vtotal = 2340 + 32 + 4 + 18,
--	.width_mm = 68,
--	.height_mm = 145,
--};
--
- static int sofef00_panel_get_modes(struct drm_panel *panel, struct drm_connector *connector)
- {
- 	struct drm_display_mode *mode;
--	struct sofef00_panel *ctx = to_sofef00_panel(panel);
- 
--	mode = drm_mode_duplicate(connector->dev, ctx->mode);
-+	mode = drm_mode_duplicate(connector->dev, &enchilada_panel_mode);
- 	if (!mode)
- 		return -ENOMEM;
- 
-@@ -239,13 +223,6 @@ static int sofef00_panel_probe(struct mipi_dsi_device *dsi)
- 	if (!ctx)
- 		return -ENOMEM;
- 
--	ctx->mode = of_device_get_match_data(dev);
--
--	if (!ctx->mode) {
--		dev_err(dev, "Missing device mode\n");
--		return -ENODEV;
--	}
--
- 	ctx->supply = devm_regulator_get(dev, "vddio");
- 	if (IS_ERR(ctx->supply))
- 		return dev_err_probe(dev, PTR_ERR(ctx->supply),
-@@ -295,14 +272,7 @@ static void sofef00_panel_remove(struct mipi_dsi_device *dsi)
- }
- 
- static const struct of_device_id sofef00_panel_of_match[] = {
--	{ // OnePlus 6 / enchilada
--		.compatible = "samsung,sofef00",
--		.data = &enchilada_panel_mode,
--	},
--	{ // OnePlus 6T / fajita
--		.compatible = "samsung,s6e3fc2x01",
--		.data = &fajita_panel_mode,
--	},
-+	{ .compatible = "samsung,sofef00" },
- 	{ /* sentinel */ }
- };
- MODULE_DEVICE_TABLE(of, sofef00_panel_of_match);
+ err_remove_bridge:
+ 	free_irq(client->irq, lt9611uxc);
 -- 
 2.39.5
 
