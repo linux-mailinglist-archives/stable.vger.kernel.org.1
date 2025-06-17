@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-153853-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-154341-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 73C7EADD6F4
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:39:03 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 416AFADD983
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 19:07:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AC568407381
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:26:47 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CEEE95A267C
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:50:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 628132EF285;
-	Tue, 17 Jun 2025 16:21:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 022EC2DFF36;
+	Tue, 17 Jun 2025 16:48:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q7fb5uCu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="by5pJlAV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E75A2EE61A;
-	Tue, 17 Jun 2025 16:21:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B16842FA62D;
+	Tue, 17 Jun 2025 16:48:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750177309; cv=none; b=iol+FmUBdsfcONl1qEOeAmYdSuE8p/BubkYndxSpU+4oJZ42ohce6p0HBvM8zMiN8Wmc3gT7NU9PEdC5ljWvrtwg7WcBgQiKTOMSc18cexIdQ3E7+ZShZbpNgixaFWd1IR1TksxMjKTlny4oVgl6BiKpF52q9dt9CFBOz83AZTs=
+	t=1750178886; cv=none; b=aZZ5G7Wo/ESHkQT8uAWU/k2lIm9DmxGLQLZIMSnMq4AGSYjRsX8atkEfpQEJ4qmXE7ym9bzK+vE22W60J7DN4oubGA6hO0jOkJKqWN2aGfrm1B5fj5XCwpyGGm1ukTmpuOCO2a2QTxylvxR8NtpGgr8O2IO18nIOWWTZ5P5eHsA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750177309; c=relaxed/simple;
-	bh=uofsRUT0Uv8LgMgkTbsIT2aNGwU9yq5xfZ8VHEqGMVY=;
+	s=arc-20240116; t=1750178886; c=relaxed/simple;
+	bh=frNbLBIhXU/4UxpFfNcFoAaYWSMQtZI5oofYHu+sGGc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PhmfsIiQI2rJOasuZk26KhuXwQ9uLEZSwe/lw6l4PkI/L3hCfB1biVH3wUVgxZ+HNAjSoXFEKt6mVLFmycNSUZ94/KxunLrDCO0Ji/5CjuZPwQCfpfU1E6xgS/ha3zarTmzGAp1rKJnpHYPUimPGECaKoNupbjMjfXl98hgKbP0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q7fb5uCu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B4CBC4CEE3;
-	Tue, 17 Jun 2025 16:21:48 +0000 (UTC)
+	 MIME-Version:Content-Type; b=S+Qc9oQO8pf8OhqJ/22rre64pkb1tG2arOiO79GS7p+g67JyR/xY6dYaUnpKj/vsoLkX1rJpAVW64etswESRz3/1fsKvVPm1A7VVM8EGOCGZwSXCxonhiuNNADIec6vsJzicFx3+ytA7opB7KdCBULHrLaZfuocXQp+dI5N7lpY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=by5pJlAV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21513C4CEE3;
+	Tue, 17 Jun 2025 16:48:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750177309;
-	bh=uofsRUT0Uv8LgMgkTbsIT2aNGwU9yq5xfZ8VHEqGMVY=;
+	s=korg; t=1750178886;
+	bh=frNbLBIhXU/4UxpFfNcFoAaYWSMQtZI5oofYHu+sGGc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=q7fb5uCuZl1fPp/IxgK/E6IeiyaOt9QY4m5rn9eG5Q82FHYJT+2UkM8yihXMtulTo
-	 8c35XuA2VNiunPTbIuCDYDtABXRzC9llAv5UdQlmRQ3hyfFKJRzN71DzHNIXeMPN72
-	 A4eKfz2bunFyLNKrDxpbU8YceUifIqsNeHhxe6MU=
+	b=by5pJlAVNm+hKV5/MUTF/jXzaK/s9o2J1cnjBNdqgVSRXhmy8bnPRjEsauMWDPuU1
+	 2Bu5HW53FnQiy8WXkLotB/BfUP1kAWrbuHs0v6JocUHjb/9UelfRG2VDljPPzLtSmD
+	 yo0kGxWE1mMXFJt9k+kOwEZ4zOoQlxXNIYonMegg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sam Winchenbach <swinchenbach@arka.org>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	=?UTF-8?q?Jouni=20H=C3=B6gander?= <jouni.hogander@intel.com>,
+	Ankit Nautiyal <ankit.k.nautiyal@intel.com>,
+	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 325/512] iio: filter: admv8818: fix integer overflow
+Subject: [PATCH 6.15 583/780] drm/i915/psr: Fix using wrong mask in REG_FIELD_PREP
 Date: Tue, 17 Jun 2025 17:24:51 +0200
-Message-ID: <20250617152432.769405194@linuxfoundation.org>
+Message-ID: <20250617152515.227508836@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
-References: <20250617152419.512865572@linuxfoundation.org>
+In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
+References: <20250617152451.485330293@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,41 +61,46 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sam Winchenbach <swinchenbach@arka.org>
+From: Jouni Högander <jouni.hogander@intel.com>
 
-[ Upstream commit fb6009a28d77edec4eb548b5875dae8c79b88467 ]
+[ Upstream commit 57d63c6cd0851d3af612a556ec61b0f2a9bd522f ]
 
-HZ_PER_MHZ is only unsigned long. This math overflows, leading to
-incorrect results.
+Wrong mask is used in PORT_ALPM_LFPS_CTL_FIRST_LFPS_HALF_CYCLE_DURATION and
+PORT_ALPM_LFPS_CTL_LAST_LFPS_HALF_CYCLE_DURATION.
 
-Fixes: f34fe888ad05 ("iio:filter:admv8818: add support for ADMV8818")
-Signed-off-by: Sam Winchenbach <swinchenbach@arka.org>
-Link: https://patch.msgid.link/20250328174831.227202-4-sam.winchenbach@framepointer.org
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Fixes: 295099580f04 ("drm/i915/psr: Add missing ALPM AUX-Less register definitions")
+Signed-off-by: Jouni Högander <jouni.hogander@intel.com>
+Reviewed-by: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
+Link: https://lore.kernel.org/r/20250526120512.1702815-12-jouni.hogander@intel.com
+(cherry picked from commit 8097128a40ff378761034ec72cdbf6f46e466dc0)
+Signed-off-by: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iio/filter/admv8818.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/i915/display/intel_psr_regs.h | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/iio/filter/admv8818.c b/drivers/iio/filter/admv8818.c
-index 3d8740caa1455..cd3aff9a2f7bf 100644
---- a/drivers/iio/filter/admv8818.c
-+++ b/drivers/iio/filter/admv8818.c
-@@ -154,7 +154,7 @@ static int __admv8818_hpf_select(struct admv8818_state *st, u64 freq)
- 	}
+diff --git a/drivers/gpu/drm/i915/display/intel_psr_regs.h b/drivers/gpu/drm/i915/display/intel_psr_regs.h
+index 795e6b9cc575c..248136456048e 100644
+--- a/drivers/gpu/drm/i915/display/intel_psr_regs.h
++++ b/drivers/gpu/drm/i915/display/intel_psr_regs.h
+@@ -325,8 +325,8 @@
+ #define  PORT_ALPM_LFPS_CTL_LFPS_HALF_CYCLE_DURATION_MASK	REG_GENMASK(20, 16)
+ #define  PORT_ALPM_LFPS_CTL_LFPS_HALF_CYCLE_DURATION(val)	REG_FIELD_PREP(PORT_ALPM_LFPS_CTL_LFPS_HALF_CYCLE_DURATION_MASK, val)
+ #define  PORT_ALPM_LFPS_CTL_FIRST_LFPS_HALF_CYCLE_DURATION_MASK	REG_GENMASK(12, 8)
+-#define  PORT_ALPM_LFPS_CTL_FIRST_LFPS_HALF_CYCLE_DURATION(val)	REG_FIELD_PREP(PORT_ALPM_LFPS_CTL_LFPS_HALF_CYCLE_DURATION_MASK, val)
++#define  PORT_ALPM_LFPS_CTL_FIRST_LFPS_HALF_CYCLE_DURATION(val)	REG_FIELD_PREP(PORT_ALPM_LFPS_CTL_FIRST_LFPS_HALF_CYCLE_DURATION_MASK, val)
+ #define  PORT_ALPM_LFPS_CTL_LAST_LFPS_HALF_CYCLE_DURATION_MASK	REG_GENMASK(4, 0)
+-#define  PORT_ALPM_LFPS_CTL_LAST_LFPS_HALF_CYCLE_DURATION(val)	REG_FIELD_PREP(PORT_ALPM_LFPS_CTL_LFPS_HALF_CYCLE_DURATION_MASK, val)
++#define  PORT_ALPM_LFPS_CTL_LAST_LFPS_HALF_CYCLE_DURATION(val)	REG_FIELD_PREP(PORT_ALPM_LFPS_CTL_LAST_LFPS_HALF_CYCLE_DURATION_MASK, val)
  
- 	/* Close HPF frequency gap between 12 and 12.5 GHz */
--	if (freq >= 12000 * HZ_PER_MHZ && freq <= 12500 * HZ_PER_MHZ) {
-+	if (freq >= 12000ULL * HZ_PER_MHZ && freq < 12500ULL * HZ_PER_MHZ) {
- 		hpf_band = 3;
- 		hpf_step = 15;
- 	}
+ #endif /* __INTEL_PSR_REGS_H__ */
 -- 
 2.39.5
 
