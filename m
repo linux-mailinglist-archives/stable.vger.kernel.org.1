@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-154042-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-154411-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1799AADD874
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:55:59 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id BA098ADD83A
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:53:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4051E2C3DBE
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:37:44 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 85CD77A3F15
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:52:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3709D2EE601;
-	Tue, 17 Jun 2025 16:31:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C56DE28505E;
+	Tue, 17 Jun 2025 16:51:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yeqZJTP7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lrrJrFiK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E62D81ADC97;
-	Tue, 17 Jun 2025 16:31:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8055420CCFB;
+	Tue, 17 Jun 2025 16:51:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750177916; cv=none; b=pmWs1Ozy9McOaMA4SLyDEizjKRXYUMSV0iAbxOmRT7cyTBMU6MoxuS0cFB9aPCcLIc4KWaBcRbqujErJG0ZdNji8W/OGkDQCbUANwgs+Vjk5wHsFmv0quVR0gw9x8oiApJOzlLxDvDCCoSFulhRnm7QeITAJhAbK9IdAhA4b+44=
+	t=1750179108; cv=none; b=Cr052QrVnmMDQOPPfwxiaIu82TIzlj4tvq1wkWHFIrIqnaJ6p4NBkjo69x2fIBoGQa5E2Sb18oZTr6wltO7HRJJ2ksqZcdHcH0R3Ewcs1kelVb6l7vHeLPtqrVqSbbIo5EBlqXbcWPM8/h15q+m//uzd0yS7j84RSXPS7roez/w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750177916; c=relaxed/simple;
-	bh=7q05u2ghaZk6YnJYaCyKAcX4caVVvb5KAVBXHUo2nxg=;
+	s=arc-20240116; t=1750179108; c=relaxed/simple;
+	bh=+sD7ObQsBwgkOrwZR7ZIEnW5/n66MnFMyPHsNXac0SA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IpXzbAyX2/SdzwdxpOD9GBfrkp0jntLk6CZBX1ZcM995QiB7/AfJEsp7TKXq6fbx2wn2CBwUjihObD7okhWCI41U1KDFBizeHWE1k8wVvflYGyJJy6cyOL6cZu6WCOWus+bfDghB8r9DvxeECJhi6uVeeg7wWrnmqyqzg2ZBo0o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yeqZJTP7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26DADC4CEE3;
-	Tue, 17 Jun 2025 16:31:54 +0000 (UTC)
+	 MIME-Version; b=h4ng0GxBHLpRX4x5RdWni2c1ba/C/8a86fpu+5J1r1ISYOl19fEVEDKhvBCuntnxmxZn3+3ySldrJNafffO8nyeXDz0YHlKXaxZoepTx1hWKmSgSuteGp8vbxuGjRVgeSN7yBngubwW06uN/0foGUmLYlexljYCdnrEkvFbcQe4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lrrJrFiK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA2FBC4CEE7;
+	Tue, 17 Jun 2025 16:51:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750177915;
-	bh=7q05u2ghaZk6YnJYaCyKAcX4caVVvb5KAVBXHUo2nxg=;
+	s=korg; t=1750179108;
+	bh=+sD7ObQsBwgkOrwZR7ZIEnW5/n66MnFMyPHsNXac0SA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yeqZJTP72rjAggbNb+CVOFweeo8XWQRKx+RiUwMGT7R7eMqjUFvLou/q4xa/SwDpZ
-	 xxi45a/yOdg6i5WJ3xIbKoWScTaSN8E0jegIddCTlSLR9eujHhs97XRyY7ARFqx/em
-	 UBbGo8V8I+Z9vDQNHtKTEHNxS0ptd8a7RfaVT6fU=
+	b=lrrJrFiKtbXibbyUUdErHVMfioAuPeeRrlHRRlNg9rOLu5sZZcOX7LfnU8gWyB1cP
+	 cgG+agMNIAsFIfCL8gN+cp8J5mi/1WYSjdknmjw3RShLZ7qUs+Q4ZYblp4LjDHd9IP
+	 JcJc2BDGIBuwX5pA1aqCx0XZLY8DuOzpr/ZvSDUk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
+	Stephen Brennan <stephen.s.brennan@oracle.com>,
 	Christian Brauner <brauner@kernel.org>,
-	Al Viro <viro@zeniv.linux.org.uk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 393/512] path_overmount(): avoid false negatives
+Subject: [PATCH 6.15 651/780] fs: convert mount flags to enum
 Date: Tue, 17 Jun 2025 17:25:59 +0200
-Message-ID: <20250617152435.511543354@linuxfoundation.org>
+Message-ID: <20250617152517.987576316@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
-References: <20250617152419.512865572@linuxfoundation.org>
+In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
+References: <20250617152451.485330293@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,70 +62,137 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Al Viro <viro@zeniv.linux.org.uk>
+From: Stephen Brennan <stephen.s.brennan@oracle.com>
 
-[ Upstream commit 5f31c549382bcddbbd754c72c5433b19420d485d ]
+[ Upstream commit 101f2bbab541116ab861b9c3ac0ece07a7eaa756 ]
 
-Holding namespace_sem is enough to make sure that result remains valid.
-It is *not* enough to avoid false negatives from __lookup_mnt().  Mounts
-can be unhashed outside of namespace_sem (stuck children getting detached
-on final mntput() of lazy-umounted mount) and having an unrelated mount
-removed from the hash chain while we traverse it may end up with false
-negative from __lookup_mnt().  We need to sample and recheck the seqlock
-component of mount_lock...
+In prior kernel versions (5.8-6.8), commit 9f6c61f96f2d9 ("proc/mounts:
+add cursor") introduced MNT_CURSOR, a flag used by readers from
+/proc/mounts to keep their place while reading the file. Later, commit
+2eea9ce4310d8 ("mounts: keep list of mounts in an rbtree") removed this
+flag and its value has since been repurposed.
 
-Bug predates the introduction of path_overmount() - it had come from
-the code in finish_automount() that got abstracted into that helper.
+For debuggers iterating over the list of mounts, cursors should be
+skipped as they are irrelevant. Detecting whether an element is a cursor
+can be difficult. Since the MNT_CURSOR flag is a preprocessor constant,
+it's not present in debuginfo, and since its value is repurposed, we
+cannot hard-code it. For this specific issue, cursors are possible to
+detect in other ways, but ideally, we would be able to read the mount
+flag definitions out of the debuginfo. For that reason, convert the
+mount flags to an enum.
 
-Reviewed-by: Christian Brauner <brauner@kernel.org>
-Fixes: 26df6034fdb2 ("fix automount/automount race properly")
-Fixes: 6ac392815628 ("fs: allow to mount beneath top mount")
-Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
+Link: https://github.com/osandov/drgn/pull/496
+Signed-off-by: Stephen Brennan <stephen.s.brennan@oracle.com>
+Link: https://lore.kernel.org/20250507223402.2795029-1-stephen.s.brennan@oracle.com
+Signed-off-by: Christian Brauner <brauner@kernel.org>
+Stable-dep-of: bab77c0d191e ("finish_automount(): don't leak MNT_LOCKED from parent to child")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/namespace.c | 19 +++++++++++++------
- 1 file changed, 13 insertions(+), 6 deletions(-)
+ include/linux/mount.h | 87 ++++++++++++++++++++++---------------------
+ 1 file changed, 45 insertions(+), 42 deletions(-)
 
-diff --git a/fs/namespace.c b/fs/namespace.c
-index c1ac585e41e36..1cb236af29bec 100644
---- a/fs/namespace.c
-+++ b/fs/namespace.c
-@@ -3176,18 +3176,25 @@ static int do_set_group(struct path *from_path, struct path *to_path)
-  * Check if path is overmounted, i.e., if there's a mount on top of
-  * @path->mnt with @path->dentry as mountpoint.
-  *
-- * Context: This function expects namespace_lock() to be held.
-+ * Context: namespace_sem must be held at least shared.
-+ * MUST NOT be called under lock_mount_hash() (there one should just
-+ * call __lookup_mnt() and check if it returns NULL).
-  * Return: If path is overmounted true is returned, false if not.
-  */
- static inline bool path_overmounted(const struct path *path)
- {
-+	unsigned seq = read_seqbegin(&mount_lock);
-+	bool no_child;
-+
- 	rcu_read_lock();
--	if (unlikely(__lookup_mnt(path->mnt, path->dentry))) {
--		rcu_read_unlock();
--		return true;
--	}
-+	no_child = !__lookup_mnt(path->mnt, path->dentry);
- 	rcu_read_unlock();
--	return false;
-+	if (need_seqretry(&mount_lock, seq)) {
-+		read_seqlock_excl(&mount_lock);
-+		no_child = !__lookup_mnt(path->mnt, path->dentry);
-+		read_sequnlock_excl(&mount_lock);
-+	}
-+	return unlikely(!no_child);
- }
+diff --git a/include/linux/mount.h b/include/linux/mount.h
+index dcc17ce8a959e..6904ad33ee7a3 100644
+--- a/include/linux/mount.h
++++ b/include/linux/mount.h
+@@ -22,48 +22,51 @@ struct fs_context;
+ struct file;
+ struct path;
  
- /**
+-#define MNT_NOSUID	0x01
+-#define MNT_NODEV	0x02
+-#define MNT_NOEXEC	0x04
+-#define MNT_NOATIME	0x08
+-#define MNT_NODIRATIME	0x10
+-#define MNT_RELATIME	0x20
+-#define MNT_READONLY	0x40	/* does the user want this to be r/o? */
+-#define MNT_NOSYMFOLLOW	0x80
+-
+-#define MNT_SHRINKABLE	0x100
+-#define MNT_WRITE_HOLD	0x200
+-
+-#define MNT_SHARED	0x1000	/* if the vfsmount is a shared mount */
+-#define MNT_UNBINDABLE	0x2000	/* if the vfsmount is a unbindable mount */
+-/*
+- * MNT_SHARED_MASK is the set of flags that should be cleared when a
+- * mount becomes shared.  Currently, this is only the flag that says a
+- * mount cannot be bind mounted, since this is how we create a mount
+- * that shares events with another mount.  If you add a new MNT_*
+- * flag, consider how it interacts with shared mounts.
+- */
+-#define MNT_SHARED_MASK	(MNT_UNBINDABLE)
+-#define MNT_USER_SETTABLE_MASK  (MNT_NOSUID | MNT_NODEV | MNT_NOEXEC \
+-				 | MNT_NOATIME | MNT_NODIRATIME | MNT_RELATIME \
+-				 | MNT_READONLY | MNT_NOSYMFOLLOW)
+-#define MNT_ATIME_MASK (MNT_NOATIME | MNT_NODIRATIME | MNT_RELATIME )
+-
+-#define MNT_INTERNAL_FLAGS (MNT_SHARED | MNT_WRITE_HOLD | MNT_INTERNAL | \
+-			    MNT_DOOMED | MNT_SYNC_UMOUNT | MNT_MARKED)
+-
+-#define MNT_INTERNAL	0x4000
+-
+-#define MNT_LOCK_ATIME		0x040000
+-#define MNT_LOCK_NOEXEC		0x080000
+-#define MNT_LOCK_NOSUID		0x100000
+-#define MNT_LOCK_NODEV		0x200000
+-#define MNT_LOCK_READONLY	0x400000
+-#define MNT_LOCKED		0x800000
+-#define MNT_DOOMED		0x1000000
+-#define MNT_SYNC_UMOUNT		0x2000000
+-#define MNT_MARKED		0x4000000
+-#define MNT_UMOUNT		0x8000000
++enum mount_flags {
++	MNT_NOSUID	= 0x01,
++	MNT_NODEV	= 0x02,
++	MNT_NOEXEC	= 0x04,
++	MNT_NOATIME	= 0x08,
++	MNT_NODIRATIME	= 0x10,
++	MNT_RELATIME	= 0x20,
++	MNT_READONLY	= 0x40, /* does the user want this to be r/o? */
++	MNT_NOSYMFOLLOW	= 0x80,
++
++	MNT_SHRINKABLE	= 0x100,
++	MNT_WRITE_HOLD	= 0x200,
++
++	MNT_SHARED	= 0x1000, /* if the vfsmount is a shared mount */
++	MNT_UNBINDABLE	= 0x2000, /* if the vfsmount is a unbindable mount */
++
++	MNT_INTERNAL	= 0x4000,
++
++	MNT_LOCK_ATIME		= 0x040000,
++	MNT_LOCK_NOEXEC		= 0x080000,
++	MNT_LOCK_NOSUID		= 0x100000,
++	MNT_LOCK_NODEV		= 0x200000,
++	MNT_LOCK_READONLY	= 0x400000,
++	MNT_LOCKED		= 0x800000,
++	MNT_DOOMED		= 0x1000000,
++	MNT_SYNC_UMOUNT		= 0x2000000,
++	MNT_MARKED		= 0x4000000,
++	MNT_UMOUNT		= 0x8000000,
++
++	/*
++	 * MNT_SHARED_MASK is the set of flags that should be cleared when a
++	 * mount becomes shared.  Currently, this is only the flag that says a
++	 * mount cannot be bind mounted, since this is how we create a mount
++	 * that shares events with another mount.  If you add a new MNT_*
++	 * flag, consider how it interacts with shared mounts.
++	 */
++	MNT_SHARED_MASK	= MNT_UNBINDABLE,
++	MNT_USER_SETTABLE_MASK  = MNT_NOSUID | MNT_NODEV | MNT_NOEXEC
++				  | MNT_NOATIME | MNT_NODIRATIME | MNT_RELATIME
++				  | MNT_READONLY | MNT_NOSYMFOLLOW,
++	MNT_ATIME_MASK = MNT_NOATIME | MNT_NODIRATIME | MNT_RELATIME,
++
++	MNT_INTERNAL_FLAGS = MNT_SHARED | MNT_WRITE_HOLD | MNT_INTERNAL |
++			     MNT_DOOMED | MNT_SYNC_UMOUNT | MNT_MARKED,
++};
+ 
+ struct vfsmount {
+ 	struct dentry *mnt_root;	/* root of the mounted tree */
 -- 
 2.39.5
 
