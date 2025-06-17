@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-153271-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153274-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1F127ADD3B3
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:01:19 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4FD5FADD3A6
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:00:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C004D19442E5
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 15:54:29 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AD9033BE475
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 15:53:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8EDC12F3656;
-	Tue, 17 Jun 2025 15:50:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94BC72F2C6C;
+	Tue, 17 Jun 2025 15:50:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kPkKCEQq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e9g7U280"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A4D42F2C41;
-	Tue, 17 Jun 2025 15:50:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E9202ECEAD;
+	Tue, 17 Jun 2025 15:50:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750175423; cv=none; b=CE6vQVLQuFZcmmyG+OCy0U6LnwXcF3PEjXlRSH2g3qClJav0D0K3mUMGaTcmI1VGzwnnwvYmX0phnASIk/bEP4+l2FoRlymAnBmRb+DoxoSxQfRvzYX3eLkoZ1fPDkAjNb7TtyNZZKCvJiTamwzysNy/REb5pHN0Cvsl+QYqAD0=
+	t=1750175432; cv=none; b=beIBaByKvL5YtODy/pQ3LAA6d0RZ90AmnY4+BGraqOGnvv4xIujidsxqGMZVbjx/wWdvC9qd5gQuIsIRYBLwxO8TFBR84kBJQ28Sjc7MfYN83nSdAHP9/IWnNjE9LicfH5gdkfwR84b+/PBklXmMehowxbsajQfneeOTU9S7O34=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750175423; c=relaxed/simple;
-	bh=hUN0BFYMjwI1svQL+RBOemtKZHRTdJ7o27yMzfneW+A=;
+	s=arc-20240116; t=1750175432; c=relaxed/simple;
+	bh=UkjrNNGXWMBvmGVTO1NjnHho/182TmYx9KFTYQJvPys=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tHuw+BSiTrjzVIyaJtOTU9OFDfwUZz2h+IEI1rCbK2+Nxn+LqDDauku4lkpWnh+m/QgoRTrmESaYHU2zmp2/jCm+kmEMctbt2DoqzoNWevdw821OVhwiSeDgJAT4GlixYC5BQlepKECVj+qJdjGcyOhJuGtwGP5wqQuHEvV4Zrc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kPkKCEQq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0475C4CEE3;
-	Tue, 17 Jun 2025 15:50:22 +0000 (UTC)
+	 MIME-Version; b=ehs3v0xBa4U6jBpXBoN3wiBka4KPT1t+i785GwuMqzCqOxALkB3BE8fBej1SU/wlGIbkobDZwho8+XVN8/X/ZqJm1u9WLZxg2duSm1j8JPrrs7P47ikOZg5Hg5+6nT36ZnN5HZLTV/D3cU5fbmNVi8p5xPvYCsPKQVbM+vBt+GQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e9g7U280; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97D0BC4CEE3;
+	Tue, 17 Jun 2025 15:50:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750175423;
-	bh=hUN0BFYMjwI1svQL+RBOemtKZHRTdJ7o27yMzfneW+A=;
+	s=korg; t=1750175432;
+	bh=UkjrNNGXWMBvmGVTO1NjnHho/182TmYx9KFTYQJvPys=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kPkKCEQq1L9EyEbpIBrALkyI7RJfQOLxo3HqDqMXMZXUO2FNJ1AgvxK2aT+MThOKt
-	 apxpr6SXYxGZwzaEmXLnjO8FhOKeSbGzULr4z9ayInx1MlZR1ZUw5OhTftbLG/fZ3v
-	 wpyBGm3v3IivvTVld1cesN6FkOaGRV0uhAlHZ9ZE=
+	b=e9g7U280RBvOkD/UR5F7aSaal0/fJXR8+4Tbu7qJcU7/NNWMsIe8mNvhd/oENqYs1
+	 ApvaWlU6giRbWBO2Dhv/Vqqi/vF5XDNjMdNsvJCu3e+4inZQclNJBvfLQXXr+OEdVp
+	 40d2Mt9BJ3y3BbIwMSOb4zhif0AA3xbS+cw+YDzg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jaroslav Kysela <perex@perex.cz>,
-	Takashi Iwai <tiwai@suse.com>,
-	Takashi Iwai <tiwai@suse.de>,
+	Alexandre Ghiti <alexghiti@rivosinc.com>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Mark Pearson <mpearson-lenovo@squebb.ca>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 086/780] ALSA: core: fix up bus match const issues.
-Date: Tue, 17 Jun 2025 17:16:34 +0200
-Message-ID: <20250617152455.017708106@linuxfoundation.org>
+Subject: [PATCH 6.15 087/780] ACPI: platform_profile: Avoid initializing on non-ACPI platforms
+Date: Tue, 17 Jun 2025 17:16:35 +0200
+Message-ID: <20250617152455.057654696@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
 References: <20250617152451.485330293@linuxfoundation.org>
@@ -67,116 +68,65 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+From: Alexandre Ghiti <alexghiti@rivosinc.com>
 
-[ Upstream commit 62f134ab190c5fd5c9f68fe638ad8e13bb8a4cb4 ]
+[ Upstream commit dd133162c9cff5951a692fab9811fadf46a46457 ]
 
-In commit d69d80484598 ("driver core: have match() callback in struct
-bus_type take a const *"), the match bus callback was changed to have
-the driver be a const pointer.  Unfortunately that const attribute was
-thrown away when container_of() is called, which is not correct and was
-not caught by the compiler due to how container_of() is implemented.
-Fix this up by correctly preserving the const attribute of the driver
-passed to the bus match function which requires the hdac_driver match
-function to also take a const pointer for the driver structure.
+The platform profile driver is loaded even on platforms that do not have
+ACPI enabled. The initialization of the sysfs entries was recently moved
+from platform_profile_register() to the module init call, and those
+entries need acpi_kobj to be initialized which is not the case when ACPI
+is disabled.
 
-Cc: Jaroslav Kysela <perex@perex.cz>
-Cc: Takashi Iwai <tiwai@suse.com>
-Fixes: d69d80484598 ("driver core: have match() callback in struct bus_type take a const *")
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Link: https://patch.msgid.link/2025052204-hyphen-thermal-3e72@gregkh
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+This results in the following warning:
+
+ WARNING: CPU: 5 PID: 1 at fs/sysfs/group.c:131 internal_create_group+0xa22/0xdd8
+ Modules linked in:
+ CPU: 5 UID: 0 PID: 1 Comm: swapper/0 Tainted: G        W           6.15.0-rc7-dirty #6 PREEMPT
+ Tainted: [W]=WARN
+ Hardware name: riscv-virtio,qemu (DT)
+ epc : internal_create_group+0xa22/0xdd8
+  ra : internal_create_group+0xa22/0xdd8
+
+ Call Trace:
+
+ internal_create_group+0xa22/0xdd8
+ sysfs_create_group+0x22/0x2e
+ platform_profile_init+0x74/0xb2
+ do_one_initcall+0x198/0xa9e
+ kernel_init_freeable+0x6d8/0x780
+ kernel_init+0x28/0x24c
+ ret_from_fork+0xe/0x18
+
+Fix this by checking if ACPI is enabled before trying to create sysfs
+entries.
+
+Fixes: 77be5cacb2c2 ("ACPI: platform_profile: Create class for ACPI platform profile")
+Signed-off-by: Alexandre Ghiti <alexghiti@rivosinc.com>
+Reviewed-by: Arnd Bergmann <arnd@arndb.de>
+Reviewed-by: Mark Pearson <mpearson-lenovo@squebb.ca>
+Link: https://patch.msgid.link/20250522141410.31315-1-alexghiti@rivosinc.com
+[ rjw: Subject and changelog edits ]
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/sound/hdaudio.h  | 4 ++--
- sound/core/seq_device.c  | 2 +-
- sound/hda/hda_bus_type.c | 6 +++---
- sound/pci/hda/hda_bind.c | 4 ++--
- 4 files changed, 8 insertions(+), 8 deletions(-)
+ drivers/acpi/platform_profile.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/include/sound/hdaudio.h b/include/sound/hdaudio.h
-index b098ceadbe74b..9a70048adbc06 100644
---- a/include/sound/hdaudio.h
-+++ b/include/sound/hdaudio.h
-@@ -223,7 +223,7 @@ struct hdac_driver {
- 	struct device_driver driver;
- 	int type;
- 	const struct hda_device_id *id_table;
--	int (*match)(struct hdac_device *dev, struct hdac_driver *drv);
-+	int (*match)(struct hdac_device *dev, const struct hdac_driver *drv);
- 	void (*unsol_event)(struct hdac_device *dev, unsigned int event);
- 
- 	/* fields used by ext bus APIs */
-@@ -235,7 +235,7 @@ struct hdac_driver {
- #define drv_to_hdac_driver(_drv) container_of(_drv, struct hdac_driver, driver)
- 
- const struct hda_device_id *
--hdac_get_device_id(struct hdac_device *hdev, struct hdac_driver *drv);
-+hdac_get_device_id(struct hdac_device *hdev, const struct hdac_driver *drv);
- 
- /*
-  * Bus verb operators
-diff --git a/sound/core/seq_device.c b/sound/core/seq_device.c
-index 4492be5d2317c..bac9f86037342 100644
---- a/sound/core/seq_device.c
-+++ b/sound/core/seq_device.c
-@@ -43,7 +43,7 @@ MODULE_LICENSE("GPL");
- static int snd_seq_bus_match(struct device *dev, const struct device_driver *drv)
+diff --git a/drivers/acpi/platform_profile.c b/drivers/acpi/platform_profile.c
+index ffbfd32f4cf1b..b43f4459a4f61 100644
+--- a/drivers/acpi/platform_profile.c
++++ b/drivers/acpi/platform_profile.c
+@@ -688,6 +688,9 @@ static int __init platform_profile_init(void)
  {
- 	struct snd_seq_device *sdev = to_seq_dev(dev);
--	struct snd_seq_driver *sdrv = to_seq_drv(drv);
-+	const struct snd_seq_driver *sdrv = to_seq_drv(drv);
+ 	int err;
  
- 	return strcmp(sdrv->id, sdev->id) == 0 &&
- 		sdrv->argsize == sdev->argsize;
-diff --git a/sound/hda/hda_bus_type.c b/sound/hda/hda_bus_type.c
-index 7545ace7b0ee4..eb72a7af2e56e 100644
---- a/sound/hda/hda_bus_type.c
-+++ b/sound/hda/hda_bus_type.c
-@@ -21,7 +21,7 @@ MODULE_LICENSE("GPL");
-  * driver id_table and returns the matching device id entry.
-  */
- const struct hda_device_id *
--hdac_get_device_id(struct hdac_device *hdev, struct hdac_driver *drv)
-+hdac_get_device_id(struct hdac_device *hdev, const struct hdac_driver *drv)
- {
- 	if (drv->id_table) {
- 		const struct hda_device_id *id  = drv->id_table;
-@@ -38,7 +38,7 @@ hdac_get_device_id(struct hdac_device *hdev, struct hdac_driver *drv)
- }
- EXPORT_SYMBOL_GPL(hdac_get_device_id);
- 
--static int hdac_codec_match(struct hdac_device *dev, struct hdac_driver *drv)
-+static int hdac_codec_match(struct hdac_device *dev, const struct hdac_driver *drv)
- {
- 	if (hdac_get_device_id(dev, drv))
- 		return 1;
-@@ -49,7 +49,7 @@ static int hdac_codec_match(struct hdac_device *dev, struct hdac_driver *drv)
- static int hda_bus_match(struct device *dev, const struct device_driver *drv)
- {
- 	struct hdac_device *hdev = dev_to_hdac_dev(dev);
--	struct hdac_driver *hdrv = drv_to_hdac_driver(drv);
-+	const struct hdac_driver *hdrv = drv_to_hdac_driver(drv);
- 
- 	if (hdev->type != hdrv->type)
- 		return 0;
-diff --git a/sound/pci/hda/hda_bind.c b/sound/pci/hda/hda_bind.c
-index 9521e5e0e6e6f..1fef350d821ef 100644
---- a/sound/pci/hda/hda_bind.c
-+++ b/sound/pci/hda/hda_bind.c
-@@ -18,10 +18,10 @@
- /*
-  * find a matching codec id
-  */
--static int hda_codec_match(struct hdac_device *dev, struct hdac_driver *drv)
-+static int hda_codec_match(struct hdac_device *dev, const struct hdac_driver *drv)
- {
- 	struct hda_codec *codec = container_of(dev, struct hda_codec, core);
--	struct hda_codec_driver *driver =
-+	const struct hda_codec_driver *driver =
- 		container_of(drv, struct hda_codec_driver, core);
- 	const struct hda_device_id *list;
- 	/* check probe_id instead of vendor_id if set */
++	if (acpi_disabled)
++		return -EOPNOTSUPP;
++
+ 	err = class_register(&platform_profile_class);
+ 	if (err)
+ 		return err;
 -- 
 2.39.5
 
