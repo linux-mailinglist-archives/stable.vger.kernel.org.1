@@ -1,61 +1,57 @@
-Return-Path: <stable+bounces-153510-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-154423-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CEEA0ADD4C4
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:14:10 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8F58FADD8E4
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 19:00:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C71532C4A56
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:06:41 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2CACB1945D26
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:53:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0548D2DFF00;
-	Tue, 17 Jun 2025 16:03:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F767285057;
+	Tue, 17 Jun 2025 16:52:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KpqINan0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0MLC2cwq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6B582F2365;
-	Tue, 17 Jun 2025 16:03:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A759235067;
+	Tue, 17 Jun 2025 16:52:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750176196; cv=none; b=FBeUDjjsgsWC8Jl8AvYy4UMcdYB3pitsarq/YLDf6KMqk9Zj8yx/ldFnQqwHkbQiv/w3COzW+AakS0F5stDpJ9dOFlWIlv+adhBGn35Eh3MjW+SJfDo7C/GktCeP5s8Pv4zEBBxy5ZFvy8Rs6kcAlhYXB+ccG60oLJ0m+LWV7v4=
+	t=1750179143; cv=none; b=E7lIhitnrBw3rip/yEkb8w6uGaJWyp/1c39+fvwFvXaEG+AAKiI4CK26igYGj3jpEkkurQz6ibSaVnvtQO91e7SPybCIhXvTHQK8wVi+Vr2CPGD18QKmOFbukjaVah2RJ8liEMf+sXFi3xXY4AiEx2Uo8sE5+yvg7tLtFhs50ac=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750176196; c=relaxed/simple;
-	bh=VsKjSNsEktiDXbpFM0/OifQ7xb2gFSyD18W9hmkr1rU=;
+	s=arc-20240116; t=1750179143; c=relaxed/simple;
+	bh=HBudM3XE/4tqk9qfwhTSgfKtWtxAxYNrvvuItqlxLCU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FhlmYgy38xZzodRap6FJKWslm28Gehw1vJuTCWoZk5+dkBQKO+QJZtl3ZxRugBfmEYwxGa8l2eEBzhCgb/5osIOvKFOMOcH/ACIguwSo4xg4YlcQmcGanlIlB3XA+Y/Tow5S2tgpHQjFZ0VldHNXt53iLO2UzG4fHW1a/y6wNHE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KpqINan0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24BEEC4CEE3;
-	Tue, 17 Jun 2025 16:03:15 +0000 (UTC)
+	 MIME-Version:Content-Type; b=P04g3v669gMnT/ucYYE9IO9xvHT5hQVGMJFMjTOrBgc6VFjjVVEasaRsPR191KDqkbCXq7eNcjlWv0MmNx1ZHE3CpmZ5FJKAzZRIkV10ScA33V04Qo6kuiwmCOJMlHWemYnsJp0OOQne4VWrLmwS7nlc16nPaPuftc6YxcXieG8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0MLC2cwq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E213C4CEE3;
+	Tue, 17 Jun 2025 16:52:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750176196;
-	bh=VsKjSNsEktiDXbpFM0/OifQ7xb2gFSyD18W9hmkr1rU=;
+	s=korg; t=1750179143;
+	bh=HBudM3XE/4tqk9qfwhTSgfKtWtxAxYNrvvuItqlxLCU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KpqINan01bve5j+8it0iKXqMjesNy0ficHkNJYV6NRqelsgAbY5Wp5MOMu2jH1S+2
-	 etpSWZyBSOGVJQRew1IgVn1M1FZnaVJNVAGMztJhOSaQK4TfU+KdoNN3QVZtYDqZqM
-	 MCnCKhJd93hXfReAqXf28OcWWNcPDWvxOdRL3n9Y=
+	b=0MLC2cwqWDnXXp9ky5bfHcxj9VHjzgd+Db2ljtQPCnN00+MGzLfxQc/ictkvnDCOw
+	 jMULQqGKAf8rJyrtY47iXBJ+JQviGyEnnpahj0vE2tIK5UGrzU+8snHe/MoQdJCbrw
+	 yq5GztZvI3eUDorK/+EbVTPubS3UpaiJqV3miIl4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dawid Osuchowski <dawid.osuchowski@linux.intel.com>,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-	Michal Kubiak <michal.kubiak@intel.com>,
-	Simon Horman <horms@kernel.org>,
-	Jesse Brandeburg <jbrandeburg@cloudflare.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Sasha Levin <sashal@kernel.org>,
-	Saritha Sanigani <sarithax.sanigani@intel.com>
-Subject: [PATCH 6.6 254/356] ice: fix rebuilding the Tx scheduler tree for large queue counts
+	=?UTF-8?q?Andr=C3=A9=20Draszik?= <andre.draszik@linaro.org>,
+	Peter Griffin <peter.griffin@linaro.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.15 661/780] pinctrl: samsung: add gs101 specific eint suspend/resume callbacks
 Date: Tue, 17 Jun 2025 17:26:09 +0200
-Message-ID: <20250617152348.432115005@linuxfoundation.org>
+Message-ID: <20250617152518.381324716@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152338.212798615@linuxfoundation.org>
-References: <20250617152338.212798615@linuxfoundation.org>
+In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
+References: <20250617152451.485330293@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,317 +61,198 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michal Kubiak <michal.kubiak@intel.com>
+From: Peter Griffin <peter.griffin@linaro.org>
 
-[ Upstream commit 73145e6d81070d34a21431c9e0d7aaf2f29ca048 ]
+[ Upstream commit bdbe0a0f71003b997d6a2dbe4bc7b5b0438207c7 ]
 
-The current implementation of the Tx scheduler allows the tree to be
-rebuilt as the user adds more Tx queues to the VSI. In such a case,
-additional child nodes are added to the tree to support the new number
-of queues.
-Unfortunately, this algorithm does not take into account that the limit
-of the VSI support node may be exceeded, so an additional node in the
-VSI layer may be required to handle all the requested queues.
+gs101 differs to other SoCs in that fltcon1 register doesn't
+always exist. Additionally the offset of fltcon0 is not fixed
+and needs to use the newly added eint_fltcon_offset variable.
 
-Such a scenario occurs when adding XDP Tx queues on machines with many
-CPUs. Although the driver still respects the queue limit returned by
-the FW, the Tx scheduler was unable to add those queues to its tree
-and returned one of the errors below.
-
-Such a scenario occurs when adding XDP Tx queues on machines with many
-CPUs (e.g. at least 321 CPUs, if there is already 128 Tx/Rx queue pairs).
-Although the driver still respects the queue limit returned by the FW,
-the Tx scheduler was unable to add those queues to its tree and returned
-the following errors:
-
-     Failed VSI LAN queue config for XDP, error: -5
-or:
-     Failed to set LAN Tx queue context, error: -22
-
-Fix this problem by extending the tree rebuild algorithm to check if the
-current VSI node can support the requested number of queues. If it
-cannot, create as many additional VSI support nodes as necessary to
-handle all the required Tx queues. Symmetrically, adjust the VSI node
-removal algorithm to remove all nodes associated with the given VSI.
-Also, make the search for the next free VSI node more restrictive. That is,
-add queue group nodes only to the VSI support nodes that have a matching
-VSI handle.
-Finally, fix the comment describing the tree update algorithm to better
-reflect the current scenario.
-
-Fixes: b0153fdd7e8a ("ice: update VSI config dynamically")
-Reviewed-by: Dawid Osuchowski <dawid.osuchowski@linux.intel.com>
-Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
-Signed-off-by: Michal Kubiak <michal.kubiak@intel.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Tested-by: Jesse Brandeburg <jbrandeburg@cloudflare.com>
-Tested-by: Saritha Sanigani <sarithax.sanigani@intel.com> (A Contingent Worker at Intel)
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Fixes: 4a8be01a1a7a ("pinctrl: samsung: Add gs101 SoC pinctrl configuration")
+Cc: stable@vger.kernel.org  # depends on the previous three patches
+Reviewed-by: André Draszik <andre.draszik@linaro.org>
+Signed-off-by: Peter Griffin <peter.griffin@linaro.org>
+Link: https://lore.kernel.org/r/20250402-pinctrl-fltcon-suspend-v6-3-78ce0d4eb30c@linaro.org
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/ice/ice_sched.c | 170 +++++++++++++++++----
- 1 file changed, 142 insertions(+), 28 deletions(-)
+ .../pinctrl/samsung/pinctrl-exynos-arm64.c    | 24 +++----
+ drivers/pinctrl/samsung/pinctrl-exynos.c      | 71 +++++++++++++++++++
+ drivers/pinctrl/samsung/pinctrl-exynos.h      |  2 +
+ 3 files changed, 85 insertions(+), 12 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/ice/ice_sched.c b/drivers/net/ethernet/intel/ice/ice_sched.c
-index e40a5f9a893d5..c2de166f05515 100644
---- a/drivers/net/ethernet/intel/ice/ice_sched.c
-+++ b/drivers/net/ethernet/intel/ice/ice_sched.c
-@@ -84,6 +84,27 @@ ice_sched_find_node_by_teid(struct ice_sched_node *start_node, u32 teid)
- 	return NULL;
+diff --git a/drivers/pinctrl/samsung/pinctrl-exynos-arm64.c b/drivers/pinctrl/samsung/pinctrl-exynos-arm64.c
+index 4b5d4e436a337..9fd894729a7b8 100644
+--- a/drivers/pinctrl/samsung/pinctrl-exynos-arm64.c
++++ b/drivers/pinctrl/samsung/pinctrl-exynos-arm64.c
+@@ -1762,15 +1762,15 @@ static const struct samsung_pin_ctrl gs101_pin_ctrl[] __initconst = {
+ 		.pin_banks	= gs101_pin_alive,
+ 		.nr_banks	= ARRAY_SIZE(gs101_pin_alive),
+ 		.eint_wkup_init = exynos_eint_wkup_init,
+-		.suspend	= exynos_pinctrl_suspend,
+-		.resume		= exynos_pinctrl_resume,
++		.suspend	= gs101_pinctrl_suspend,
++		.resume		= gs101_pinctrl_resume,
+ 	}, {
+ 		/* pin banks of gs101 pin-controller (FAR_ALIVE) */
+ 		.pin_banks	= gs101_pin_far_alive,
+ 		.nr_banks	= ARRAY_SIZE(gs101_pin_far_alive),
+ 		.eint_wkup_init = exynos_eint_wkup_init,
+-		.suspend	= exynos_pinctrl_suspend,
+-		.resume		= exynos_pinctrl_resume,
++		.suspend	= gs101_pinctrl_suspend,
++		.resume		= gs101_pinctrl_resume,
+ 	}, {
+ 		/* pin banks of gs101 pin-controller (GSACORE) */
+ 		.pin_banks	= gs101_pin_gsacore,
+@@ -1784,29 +1784,29 @@ static const struct samsung_pin_ctrl gs101_pin_ctrl[] __initconst = {
+ 		.pin_banks	= gs101_pin_peric0,
+ 		.nr_banks	= ARRAY_SIZE(gs101_pin_peric0),
+ 		.eint_gpio_init = exynos_eint_gpio_init,
+-		.suspend	= exynos_pinctrl_suspend,
+-		.resume		= exynos_pinctrl_resume,
++		.suspend	= gs101_pinctrl_suspend,
++		.resume		= gs101_pinctrl_resume,
+ 	}, {
+ 		/* pin banks of gs101 pin-controller (PERIC1) */
+ 		.pin_banks	= gs101_pin_peric1,
+ 		.nr_banks	= ARRAY_SIZE(gs101_pin_peric1),
+ 		.eint_gpio_init = exynos_eint_gpio_init,
+-		.suspend	= exynos_pinctrl_suspend,
+-		.resume	= exynos_pinctrl_resume,
++		.suspend	= gs101_pinctrl_suspend,
++		.resume		= gs101_pinctrl_resume,
+ 	}, {
+ 		/* pin banks of gs101 pin-controller (HSI1) */
+ 		.pin_banks	= gs101_pin_hsi1,
+ 		.nr_banks	= ARRAY_SIZE(gs101_pin_hsi1),
+ 		.eint_gpio_init = exynos_eint_gpio_init,
+-		.suspend	= exynos_pinctrl_suspend,
+-		.resume		= exynos_pinctrl_resume,
++		.suspend	= gs101_pinctrl_suspend,
++		.resume		= gs101_pinctrl_resume,
+ 	}, {
+ 		/* pin banks of gs101 pin-controller (HSI2) */
+ 		.pin_banks	= gs101_pin_hsi2,
+ 		.nr_banks	= ARRAY_SIZE(gs101_pin_hsi2),
+ 		.eint_gpio_init = exynos_eint_gpio_init,
+-		.suspend	= exynos_pinctrl_suspend,
+-		.resume		= exynos_pinctrl_resume,
++		.suspend	= gs101_pinctrl_suspend,
++		.resume		= gs101_pinctrl_resume,
+ 	},
+ };
+ 
+diff --git a/drivers/pinctrl/samsung/pinctrl-exynos.c b/drivers/pinctrl/samsung/pinctrl-exynos.c
+index 18c327f7e3133..0879684338c77 100644
+--- a/drivers/pinctrl/samsung/pinctrl-exynos.c
++++ b/drivers/pinctrl/samsung/pinctrl-exynos.c
+@@ -800,6 +800,41 @@ void exynos_pinctrl_suspend(struct samsung_pin_bank *bank)
+ 	}
  }
  
-+/**
-+ * ice_sched_find_next_vsi_node - find the next node for a given VSI
-+ * @vsi_node: VSI support node to start search with
-+ *
-+ * Return: Next VSI support node, or NULL.
-+ *
-+ * The function returns a pointer to the next node from the VSI layer
-+ * assigned to the given VSI, or NULL if there is no such a node.
-+ */
-+static struct ice_sched_node *
-+ice_sched_find_next_vsi_node(struct ice_sched_node *vsi_node)
++void gs101_pinctrl_suspend(struct samsung_pin_bank *bank)
 +{
-+	unsigned int vsi_handle = vsi_node->vsi_handle;
++	struct exynos_eint_gpio_save *save = bank->soc_priv;
++	const void __iomem *regs = bank->eint_base;
 +
-+	while ((vsi_node = vsi_node->sibling) != NULL)
-+		if (vsi_node->vsi_handle == vsi_handle)
-+			break;
++	if (bank->eint_type == EINT_TYPE_GPIO) {
++		save->eint_con = readl(regs + EXYNOS_GPIO_ECON_OFFSET
++				       + bank->eint_offset);
 +
-+	return vsi_node;
-+}
++		save->eint_fltcon0 = readl(regs + EXYNOS_GPIO_EFLTCON_OFFSET
++					   + bank->eint_fltcon_offset);
 +
- /**
-  * ice_aqc_send_sched_elem_cmd - send scheduling elements cmd
-  * @hw: pointer to the HW struct
-@@ -1096,8 +1117,10 @@ ice_sched_add_nodes_to_layer(struct ice_port_info *pi,
- 		if (parent->num_children < max_child_nodes) {
- 			new_num_nodes = max_child_nodes - parent->num_children;
- 		} else {
--			/* This parent is full, try the next sibling */
--			parent = parent->sibling;
-+			/* This parent is full,
-+			 * try the next available sibling.
-+			 */
-+			parent = ice_sched_find_next_vsi_node(parent);
- 			/* Don't modify the first node TEID memory if the
- 			 * first node was added already in the above call.
- 			 * Instead send some temp memory for all other
-@@ -1538,12 +1561,23 @@ ice_sched_get_free_qparent(struct ice_port_info *pi, u16 vsi_handle, u8 tc,
- 	/* get the first queue group node from VSI sub-tree */
- 	qgrp_node = ice_sched_get_first_node(pi, vsi_node, qgrp_layer);
- 	while (qgrp_node) {
-+		struct ice_sched_node *next_vsi_node;
++		/* fltcon1 register only exists for pins 4-7 */
++		if (bank->nr_pins > 4)
++			save->eint_fltcon1 = readl(regs +
++						EXYNOS_GPIO_EFLTCON_OFFSET
++						+ bank->eint_fltcon_offset + 4);
 +
- 		/* make sure the qgroup node is part of the VSI subtree */
- 		if (ice_sched_find_node_in_subtree(pi->hw, vsi_node, qgrp_node))
- 			if (qgrp_node->num_children < max_children &&
- 			    qgrp_node->owner == owner)
- 				break;
- 		qgrp_node = qgrp_node->sibling;
-+		if (qgrp_node)
-+			continue;
++		save->eint_mask = readl(regs + bank->irq_chip->eint_mask
++					+ bank->eint_offset);
 +
-+		next_vsi_node = ice_sched_find_next_vsi_node(vsi_node);
-+		if (!next_vsi_node)
-+			break;
-+
-+		vsi_node = next_vsi_node;
-+		qgrp_node = ice_sched_get_first_node(pi, vsi_node, qgrp_layer);
- 	}
- 
- 	/* Select the best queue group */
-@@ -1789,7 +1823,11 @@ ice_sched_add_vsi_support_nodes(struct ice_port_info *pi, u16 vsi_handle,
- 		if (!parent)
- 			return -EIO;
- 
--		if (i == vsil)
-+		/* Do not modify the VSI handle for already existing VSI nodes,
-+		 * (if no new VSI node was added to the tree).
-+		 * Assign the VSI handle only to newly added VSI nodes.
-+		 */
-+		if (i == vsil && num_added)
- 			parent->vsi_handle = vsi_handle;
- 	}
- 
-@@ -1822,6 +1860,41 @@ ice_sched_add_vsi_to_topo(struct ice_port_info *pi, u16 vsi_handle, u8 tc)
- 					       num_nodes);
- }
- 
-+/**
-+ * ice_sched_recalc_vsi_support_nodes - recalculate VSI support nodes count
-+ * @hw: pointer to the HW struct
-+ * @vsi_node: pointer to the leftmost VSI node that needs to be extended
-+ * @new_numqs: new number of queues that has to be handled by the VSI
-+ * @new_num_nodes: pointer to nodes count table to modify the VSI layer entry
-+ *
-+ * This function recalculates the number of supported nodes that need to
-+ * be added after adding more Tx queues for a given VSI.
-+ * The number of new VSI support nodes that shall be added will be saved
-+ * to the @new_num_nodes table for the VSI layer.
-+ */
-+static void
-+ice_sched_recalc_vsi_support_nodes(struct ice_hw *hw,
-+				   struct ice_sched_node *vsi_node,
-+				   unsigned int new_numqs, u16 *new_num_nodes)
-+{
-+	u32 vsi_nodes_cnt = 1;
-+	u32 max_queue_cnt = 1;
-+	u32 qgl, vsil;
-+
-+	qgl = ice_sched_get_qgrp_layer(hw);
-+	vsil = ice_sched_get_vsi_layer(hw);
-+
-+	for (u32 i = vsil; i <= qgl; i++)
-+		max_queue_cnt *= hw->max_children[i];
-+
-+	while ((vsi_node = ice_sched_find_next_vsi_node(vsi_node)) != NULL)
-+		vsi_nodes_cnt++;
-+
-+	if (new_numqs > (max_queue_cnt * vsi_nodes_cnt))
-+		new_num_nodes[vsil] = DIV_ROUND_UP(new_numqs, max_queue_cnt) -
-+				      vsi_nodes_cnt;
-+}
-+
- /**
-  * ice_sched_update_vsi_child_nodes - update VSI child nodes
-  * @pi: port information structure
-@@ -1873,16 +1946,25 @@ ice_sched_update_vsi_child_nodes(struct ice_port_info *pi, u16 vsi_handle,
- 			return status;
- 	}
- 
-+	ice_sched_recalc_vsi_support_nodes(hw, vsi_node,
-+					   new_numqs, new_num_nodes);
- 	ice_sched_calc_vsi_child_nodes(hw, new_numqs - prev_numqs,
- 				       new_num_nodes);
- 
--	/* Keep the max number of queue configuration all the time. Update the
--	 * tree only if number of queues > previous number of queues. This may
-+	/* Never decrease the number of queues in the tree. Update the tree
-+	 * only if number of queues > previous number of queues. This may
- 	 * leave some extra nodes in the tree if number of queues < previous
- 	 * number but that wouldn't harm anything. Removing those extra nodes
- 	 * may complicate the code if those nodes are part of SRL or
- 	 * individually rate limited.
-+	 * Also, add the required VSI support nodes if the existing ones cannot
-+	 * handle the requested new number of queues.
- 	 */
-+	status = ice_sched_add_vsi_support_nodes(pi, vsi_handle, tc_node,
-+						 new_num_nodes);
-+	if (status)
-+		return status;
-+
- 	status = ice_sched_add_vsi_child_nodes(pi, vsi_handle, tc_node,
- 					       new_num_nodes, owner);
- 	if (status)
-@@ -2023,6 +2105,58 @@ static bool ice_sched_is_leaf_node_present(struct ice_sched_node *node)
- 	return (node->info.data.elem_type == ICE_AQC_ELEM_TYPE_LEAF);
- }
- 
-+/**
-+ * ice_sched_rm_vsi_subtree - remove all nodes assigned to a given VSI
-+ * @pi: port information structure
-+ * @vsi_node: pointer to the leftmost node of the VSI to be removed
-+ * @owner: LAN or RDMA
-+ * @tc: TC number
-+ *
-+ * Return: Zero in case of success, or -EBUSY if the VSI has leaf nodes in TC.
-+ *
-+ * This function removes all the VSI support nodes associated with a given VSI
-+ * and its LAN or RDMA children nodes from the scheduler tree.
-+ */
-+static int
-+ice_sched_rm_vsi_subtree(struct ice_port_info *pi,
-+			 struct ice_sched_node *vsi_node, u8 owner, u8 tc)
-+{
-+	u16 vsi_handle = vsi_node->vsi_handle;
-+	bool all_vsi_nodes_removed = true;
-+	int j = 0;
-+
-+	while (vsi_node) {
-+		struct ice_sched_node *next_vsi_node;
-+
-+		if (ice_sched_is_leaf_node_present(vsi_node)) {
-+			ice_debug(pi->hw, ICE_DBG_SCHED, "VSI has leaf nodes in TC %d\n", tc);
-+			return -EBUSY;
-+		}
-+		while (j < vsi_node->num_children) {
-+			if (vsi_node->children[j]->owner == owner)
-+				ice_free_sched_node(pi, vsi_node->children[j]);
-+			else
-+				j++;
-+		}
-+
-+		next_vsi_node = ice_sched_find_next_vsi_node(vsi_node);
-+
-+		/* remove the VSI if it has no children */
-+		if (!vsi_node->num_children)
-+			ice_free_sched_node(pi, vsi_node);
-+		else
-+			all_vsi_nodes_removed = false;
-+
-+		vsi_node = next_vsi_node;
++		pr_debug("%s: save     con %#010x\n",
++			 bank->name, save->eint_con);
++		pr_debug("%s: save fltcon0 %#010x\n",
++			 bank->name, save->eint_fltcon0);
++		if (bank->nr_pins > 4)
++			pr_debug("%s: save fltcon1 %#010x\n",
++				 bank->name, save->eint_fltcon1);
++		pr_debug("%s: save    mask %#010x\n",
++			 bank->name, save->eint_mask);
++	} else if (bank->eint_type == EINT_TYPE_WKUP) {
++		exynos_set_wakeup(bank);
 +	}
-+
-+	/* clean up aggregator related VSI info if any */
-+	if (all_vsi_nodes_removed)
-+		ice_sched_rm_agg_vsi_info(pi, vsi_handle);
-+
-+	return 0;
 +}
 +
- /**
-  * ice_sched_rm_vsi_cfg - remove the VSI and its children nodes
-  * @pi: port information structure
-@@ -2049,7 +2183,6 @@ ice_sched_rm_vsi_cfg(struct ice_port_info *pi, u16 vsi_handle, u8 owner)
+ void exynosautov920_pinctrl_suspend(struct samsung_pin_bank *bank)
+ {
+ 	struct exynos_eint_gpio_save *save = bank->soc_priv;
+@@ -819,6 +854,42 @@ void exynosautov920_pinctrl_suspend(struct samsung_pin_bank *bank)
+ 	}
+ }
  
- 	ice_for_each_traffic_class(i) {
- 		struct ice_sched_node *vsi_node, *tc_node;
--		u8 j = 0;
- 
- 		tc_node = ice_sched_get_tc_node(pi, i);
- 		if (!tc_node)
-@@ -2059,31 +2192,12 @@ ice_sched_rm_vsi_cfg(struct ice_port_info *pi, u16 vsi_handle, u8 owner)
- 		if (!vsi_node)
- 			continue;
- 
--		if (ice_sched_is_leaf_node_present(vsi_node)) {
--			ice_debug(pi->hw, ICE_DBG_SCHED, "VSI has leaf nodes in TC %d\n", i);
--			status = -EBUSY;
-+		status = ice_sched_rm_vsi_subtree(pi, vsi_node, owner, i);
-+		if (status)
- 			goto exit_sched_rm_vsi_cfg;
--		}
--		while (j < vsi_node->num_children) {
--			if (vsi_node->children[j]->owner == owner) {
--				ice_free_sched_node(pi, vsi_node->children[j]);
- 
--				/* reset the counter again since the num
--				 * children will be updated after node removal
--				 */
--				j = 0;
--			} else {
--				j++;
--			}
--		}
--		/* remove the VSI if it has no children */
--		if (!vsi_node->num_children) {
--			ice_free_sched_node(pi, vsi_node);
--			vsi_ctx->sched.vsi_node[i] = NULL;
-+		vsi_ctx->sched.vsi_node[i] = NULL;
- 
--			/* clean up aggregator related VSI info if any */
--			ice_sched_rm_agg_vsi_info(pi, vsi_handle);
--		}
- 		if (owner == ICE_SCHED_NODE_OWNER_LAN)
- 			vsi_ctx->sched.max_lanq[i] = 0;
- 		else
++void gs101_pinctrl_resume(struct samsung_pin_bank *bank)
++{
++	struct exynos_eint_gpio_save *save = bank->soc_priv;
++
++	void __iomem *regs = bank->eint_base;
++	void __iomem *eint_fltcfg0 = regs + EXYNOS_GPIO_EFLTCON_OFFSET
++		     + bank->eint_fltcon_offset;
++
++	if (bank->eint_type == EINT_TYPE_GPIO) {
++		pr_debug("%s:     con %#010x => %#010x\n", bank->name,
++			 readl(regs + EXYNOS_GPIO_ECON_OFFSET
++			       + bank->eint_offset), save->eint_con);
++
++		pr_debug("%s: fltcon0 %#010x => %#010x\n", bank->name,
++			 readl(eint_fltcfg0), save->eint_fltcon0);
++
++		/* fltcon1 register only exists for pins 4-7 */
++		if (bank->nr_pins > 4)
++			pr_debug("%s: fltcon1 %#010x => %#010x\n", bank->name,
++				 readl(eint_fltcfg0 + 4), save->eint_fltcon1);
++
++		pr_debug("%s:    mask %#010x => %#010x\n", bank->name,
++			 readl(regs + bank->irq_chip->eint_mask
++			       + bank->eint_offset), save->eint_mask);
++
++		writel(save->eint_con, regs + EXYNOS_GPIO_ECON_OFFSET
++		       + bank->eint_offset);
++		writel(save->eint_fltcon0, eint_fltcfg0);
++
++		if (bank->nr_pins > 4)
++			writel(save->eint_fltcon1, eint_fltcfg0 + 4);
++		writel(save->eint_mask, regs + bank->irq_chip->eint_mask
++		       + bank->eint_offset);
++	}
++}
++
+ void exynos_pinctrl_resume(struct samsung_pin_bank *bank)
+ {
+ 	struct exynos_eint_gpio_save *save = bank->soc_priv;
+diff --git a/drivers/pinctrl/samsung/pinctrl-exynos.h b/drivers/pinctrl/samsung/pinctrl-exynos.h
+index 3a771862b4b17..2bee52b61b931 100644
+--- a/drivers/pinctrl/samsung/pinctrl-exynos.h
++++ b/drivers/pinctrl/samsung/pinctrl-exynos.h
+@@ -244,6 +244,8 @@ void exynosautov920_pinctrl_resume(struct samsung_pin_bank *bank);
+ void exynosautov920_pinctrl_suspend(struct samsung_pin_bank *bank);
+ void exynos_pinctrl_suspend(struct samsung_pin_bank *bank);
+ void exynos_pinctrl_resume(struct samsung_pin_bank *bank);
++void gs101_pinctrl_suspend(struct samsung_pin_bank *bank);
++void gs101_pinctrl_resume(struct samsung_pin_bank *bank);
+ struct samsung_retention_ctrl *
+ exynos_retention_init(struct samsung_pinctrl_drv_data *drvdata,
+ 		      const struct samsung_retention_data *data);
 -- 
 2.39.5
 
