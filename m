@@ -1,150 +1,188 @@
-Return-Path: <stable+bounces-152875-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-152877-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 47131ADCFDC
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:31:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1E01FADCFE7
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:32:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0E67019429CA
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 14:25:12 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4D9C6188C326
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 14:26:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 859EE2E06CF;
-	Tue, 17 Jun 2025 14:24:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D6C762EF661;
+	Tue, 17 Jun 2025 14:26:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x+sk5ytS"
+	dkim=pass (2048-bit key) header.d=raspberrypi.com header.i=@raspberrypi.com header.b="jO2e/Yd+"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-vk1-f170.google.com (mail-vk1-f170.google.com [209.85.221.170])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 447432DE1E5
-	for <stable@vger.kernel.org>; Tue, 17 Jun 2025 14:24:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F080C2EF654
+	for <stable@vger.kernel.org>; Tue, 17 Jun 2025 14:26:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750170260; cv=none; b=aJJj7vhVZjiedBlREDiZ+el4ZWtuThXilc6izAp6NOyh6p9/u5hympggGnOTrNSP/6Z6zMv2WgGQiuFHCiKzB/jNey4sdvyZeQIOc69L07hjhRb0BfurIkt7e5wAM/HfP+qIaiFr9TEFTgv3WM2lB2NwAZFQBH6yNWqXhQ59aes=
+	t=1750170390; cv=none; b=TMyndVg7gLvPvF4BT5FJAdPzrzPlCZWKsj45Bp48Ch5MruZJ2yxlHD3IsWAqm99F3KrcOhsiaJTT5gL7anw86IuW4NMf2oEZHXD7qn/+gGa/iOO/VkJdMts02aua3qTuk4Kn9PGVjNeuhv8b0MhhsKCAyiq72tOk0Q4qsakC320=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750170260; c=relaxed/simple;
-	bh=TL0gmgBskp3yWkYq2PfOrPuPyI+HfMn0bGMnT9KGJYk=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=nRUNL9xHKz875Lpr19m8ZYUD/A8APMOhV5j6U8yTH/B1IHbGYMWIc9gn3EHYfO9wbrQ4pZCaLku1sb7L/6+opifyu/NBurxDfU7j/TwCXCEnPRnV/l5zFDWs9n8B0CKheCv4jIjWboiswHtTh6SksLPlg1zmX6NoMES7S0ypHug=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x+sk5ytS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 546DDC4CEE3;
-	Tue, 17 Jun 2025 14:24:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750170259;
-	bh=TL0gmgBskp3yWkYq2PfOrPuPyI+HfMn0bGMnT9KGJYk=;
-	h=Subject:To:Cc:From:Date:From;
-	b=x+sk5ytSpKXo52zgT8zGd+mtLxTN2KwlDjwexTiim/yECpgRStVeOka+3aj4aAuLF
-	 TtnSKqW/giBniiTCEjFBTy8sKNFMI+4A9pCThJZsfm+GxYhS3U8mPqA2EH6dwEXxwl
-	 rIWxSnL/l1EYS9ZtHrEa2oPtsBroeen0IYeCPG0E=
-Subject: FAILED: patch "[PATCH] usb: cdnsp: Fix issue with detecting command completion event" failed to apply to 5.4-stable tree
-To: pawell@cadence.com,gregkh@linuxfoundation.org,peter.chen@kernel.org,stable@kernel.org
-Cc: <stable@vger.kernel.org>
-From: <gregkh@linuxfoundation.org>
-Date: Tue, 17 Jun 2025 16:24:08 +0200
-Message-ID: <2025061708-cameo-caring-38a0@gregkh>
+	s=arc-20240116; t=1750170390; c=relaxed/simple;
+	bh=wMbM76puJf3UDfEqOtCoByazKLQLkepWM70O2hu1zPc=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=D+Nen1SekPlvKrv6EVwQRZh8tjo4V6ROH/iGI/6RliEab1VmxrSMYgAsU0NccjX6VnESsvhMFasSNrXlpXEK5y8IsBp8qpl/PthnM53npEV4cBQ8IqzqJXmgh3xeVga2fXhySpPWwkxYnrFyuzXO98MFME4Kvi4UXktvxbnwAGU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=raspberrypi.com; spf=pass smtp.mailfrom=raspberrypi.com; dkim=pass (2048-bit key) header.d=raspberrypi.com header.i=@raspberrypi.com header.b=jO2e/Yd+; arc=none smtp.client-ip=209.85.221.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=raspberrypi.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=raspberrypi.com
+Received: by mail-vk1-f170.google.com with SMTP id 71dfb90a1353d-52f28e83e13so225471e0c.2
+        for <stable@vger.kernel.org>; Tue, 17 Jun 2025 07:26:27 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=raspberrypi.com; s=google; t=1750170387; x=1750775187; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=YpOAwhaaQKzA9a+hLMz4Fdbv7o6Lk/Fl/Twzh3KUUnM=;
+        b=jO2e/Yd+YTwoy9wqucU68iPPCaVMqxMwUTPSVLZWeiQn8M0v0VAJwjyxlERLC3+Kdy
+         pfJdBsGew4sDLv/X4cmfi+A1Vdyt1hlySAq1gIs6R/jzGxh2o9SF/EIxl/Lra7et93Y9
+         ziQSA6MmLj22VSrW3+4w6aCdPnx5Ph6SqWVuDox8j5Rp8r8bGfTWs/IZTwG9oGtJVtoW
+         ydkzfoj+mFx2ok1d8VpOVSAvY+E1ofSGnUHG2l4rWYGhPD7IZNc4qlKRFR4GtDu1m8xb
+         VCgnrOzljBUfjov3SLdENzegOJ6rIUHbSD/ky1tiNnYqqaemhZbwC9/cxUuko88u6AYQ
+         VoNQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1750170387; x=1750775187;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=YpOAwhaaQKzA9a+hLMz4Fdbv7o6Lk/Fl/Twzh3KUUnM=;
+        b=ZacHt+OeZ4/cUaitA2sncdG7dNvH6LugagZE3b60jIt6KygMbab7FSIevAVx8CWfnp
+         Q5kstBlHtsQIvnK/7488KKeRGvYdGp2HSItdELjXwlGAwSYIKB4Rdkv4p2BR01VbTbi/
+         tolHfhta4Qla4T/BBWAO9Pmt3xcw9CwHz1ja/580mkOUEWKlh6cVBzOmBGhgmeedGfe7
+         q2pQ//bfP2ktBiquFBIay6L173T8LOJBvmiaULDAHnlIDRF5S2o5IL23Cuqq4x5FovDW
+         uCXEjT6jxMF1UAC1isJUJujR9i3qdXPf+lt6jWBy3Tqj0UmjdmRBkQ+tIqPIEb2IxgK3
+         R3IQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVFDjeIW/aPz3WiRBHYgf2QIpKEqxh861fiIwfwVq9yi26lH36KBO+ie6LmvCGLpbASafulPzs=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw2zau5cZOTyJa5mxe9A+aeFkxyWuUc7oD/AG5oES0BeDRYWf+v
+	8BMH1Xj+RjIKZP5++HvitmZmqPSSWtSs3UNkIri02ELCthWKXWsHnUVCxhUUoLqEK8wwMb+gRKO
+	A33ZXbqiEDJk+0xkZtz0eIWx9r+s/bIzceatwbkePnA==
+X-Gm-Gg: ASbGncvaW8jVPvZuZyxI5yn4k95dsia/hH707LL60qqtU0pO1gUjsceRLpbplUWIo99
+	CgMrKkTQkGHDZXYABj7qixeS8FO4Sh+NbJ9YFB5aYCYAFPoM8igW+wCCz9/DgLoqV9pELuZoiWd
+	ohX0eefOdSvwTLXHQIYWmcmVy1e6g99Lyc1p2ySu2/
+X-Google-Smtp-Source: AGHT+IEvy629BwKiuNFR6pwMejlGO2WAZGwWZVOcmHQsFf0NqpfbXWmZwN4PhhADQC4Yr8/b+9IDSb34HzZ3UTA0+E8=
+X-Received: by 2002:a05:6122:4881:b0:530:2422:68a8 with SMTP id
+ 71dfb90a1353d-53172c40e8cmr906039e0c.1.1750170386532; Tue, 17 Jun 2025
+ 07:26:26 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
-Content-Transfer-Encoding: 8bit
+References: <20250617-pispbe-mainline-split-jobs-handling-v6-v8-0-e58ae199c17d@ideasonboard.com>
+ <20250617-pispbe-mainline-split-jobs-handling-v6-v8-4-e58ae199c17d@ideasonboard.com>
+In-Reply-To: <20250617-pispbe-mainline-split-jobs-handling-v6-v8-4-e58ae199c17d@ideasonboard.com>
+From: Naushir Patuck <naush@raspberrypi.com>
+Date: Tue, 17 Jun 2025 15:25:52 +0100
+X-Gm-Features: Ac12FXxY2MjozgnKj7SQp4qGI8gl5dx5KqJMAcZDD_ubJWJD9OKIvfSseMEz2Tk
+Message-ID: <CAEmqJPoxHSgXBp+EH+MWQVHVwYL2N5CnOwC-7W+AFWt1k7Zv+Q@mail.gmail.com>
+Subject: Re: [PATCH v8 4/4] media: pisp_be: Fix pm_runtime underrun in probe
+To: Jacopo Mondi <jacopo.mondi@ideasonboard.com>
+Cc: Nick Hollinghurst <nick.hollinghurst@raspberrypi.com>, 
+	David Plowman <david.plowman@raspberrypi.com>, 
+	Dave Stevenson <dave.stevenson@raspberrypi.com>, 
+	Laurent Pinchart <laurent.pinchart@ideasonboard.com>, 
+	Raspberry Pi Kernel Maintenance <kernel-list@raspberrypi.com>, Mauro Carvalho Chehab <mchehab@kernel.org>, 
+	Florian Fainelli <florian.fainelli@broadcom.com>, 
+	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>, 
+	Sakari Ailus <sakari.ailus@linux.intel.com>, Hans Verkuil <hverkuil@xs4all.nl>, 
+	linux-media@vger.kernel.org, linux-rpi-kernel@lists.infradead.org, 
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
+	stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+
+Hi Jacopo,
+
+Thank you for this fix.
+
+On Tue, 17 Jun 2025 at 14:54, Jacopo Mondi
+<jacopo.mondi@ideasonboard.com> wrote:
+>
+> During the probe() routine, the PiSP BE driver needs to power up the
+> interface in order to identify and initialize the hardware.
+>
+> The driver resumes the interface by calling the
+> pispbe_runtime_resume() function directly, without going
+> through the pm_runtime helpers, but later suspends it by calling
+> pm_runtime_put_autosuspend().
+>
+> This causes a PM usage count imbalance at probe time, notified by the
+> runtime_pm framework with the below message in the system log:
+>
+>  pispbe 1000880000.pisp_be: Runtime PM usage count underflow!
+>
+> Fix this by resuming the interface using the pm runtime helpers instead
+> of calling the resume function directly and use the pm_runtime framework
+> in the probe() error path. While at it, remove manual suspend of the
+> interface in the remove() function. The driver cannot be unloaded if in
+> use, so simply disable runtime pm.
+>
+> To simplify the implementation, make the driver depend on PM as the
+> RPI5 platform where the ISP is integrated in uses the PM framework by
+> default.
+>
+> Fixes: 12187bd5d4f8 ("media: raspberrypi: Add support for PiSP BE")
+> Cc: stable@vger.kernel.org
+> Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+> Signed-off-by: Jacopo Mondi <jacopo.mondi@ideasonboard.com>
+
+Tested-by: Naushir Patuck <naush@raspberrypi.com>
+Reviewed-by: Naushir Patuck <naush@raspberrypi.com>
 
 
-The patch below does not apply to the 5.4-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
-
-To reproduce the conflict and resubmit, you may use the following commands:
-
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
-git checkout FETCH_HEAD
-git cherry-pick -x f4ecdc352646f7d23f348e5c544dbe3212c94fc8
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025061708-cameo-caring-38a0@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
-
-Possible dependencies:
-
-
-
-thanks,
-
-greg k-h
-
------------------- original commit in Linus's tree ------------------
-
-From f4ecdc352646f7d23f348e5c544dbe3212c94fc8 Mon Sep 17 00:00:00 2001
-From: Pawel Laszczak <pawell@cadence.com>
-Date: Tue, 13 May 2025 05:30:09 +0000
-Subject: [PATCH] usb: cdnsp: Fix issue with detecting command completion event
-
-In some cases, there is a small-time gap in which CMD_RING_BUSY can be
-cleared by controller but adding command completion event to event ring
-will be delayed. As the result driver will return error code.
-
-This behavior has been detected on usbtest driver (test 9) with
-configuration including ep1in/ep1out bulk and ep2in/ep2out isoc
-endpoint.
-
-Probably this gap occurred because controller was busy with adding some
-other events to event ring.
-
-The CMD_RING_BUSY is cleared to '0' when the Command Descriptor has been
-executed and not when command completion event has been added to event
-ring.
-
-To fix this issue for this test the small delay is sufficient less than
-10us) but to make sure the problem doesn't happen again in the future
-the patch introduces 10 retries to check with delay about 20us before
-returning error code.
-
-Fixes: 3d82904559f4 ("usb: cdnsp: cdns3 Add main part of Cadence USBSSP DRD Driver")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Pawel Laszczak <pawell@cadence.com>
-Acked-by: Peter Chen <peter.chen@kernel.org>
-Link: https://lore.kernel.org/r/PH7PR07MB9538AA45362ACCF1B94EE9B7DD96A@PH7PR07MB9538.namprd07.prod.outlook.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-
-diff --git a/drivers/usb/cdns3/cdnsp-gadget.c b/drivers/usb/cdns3/cdnsp-gadget.c
-index cd1e00daf43f..55f95f41b3b4 100644
---- a/drivers/usb/cdns3/cdnsp-gadget.c
-+++ b/drivers/usb/cdns3/cdnsp-gadget.c
-@@ -548,6 +548,7 @@ int cdnsp_wait_for_cmd_compl(struct cdnsp_device *pdev)
- 	dma_addr_t cmd_deq_dma;
- 	union cdnsp_trb *event;
- 	u32 cycle_state;
-+	u32 retry = 10;
- 	int ret, val;
- 	u64 cmd_dma;
- 	u32  flags;
-@@ -579,8 +580,23 @@ int cdnsp_wait_for_cmd_compl(struct cdnsp_device *pdev)
- 		flags = le32_to_cpu(event->event_cmd.flags);
- 
- 		/* Check the owner of the TRB. */
--		if ((flags & TRB_CYCLE) != cycle_state)
-+		if ((flags & TRB_CYCLE) != cycle_state) {
-+			/*
-+			 * Give some extra time to get chance controller
-+			 * to finish command before returning error code.
-+			 * Checking CMD_RING_BUSY is not sufficient because
-+			 * this bit is cleared to '0' when the Command
-+			 * Descriptor has been executed by controller
-+			 * and not when command completion event has
-+			 * be added to event ring.
-+			 */
-+			if (retry--) {
-+				udelay(20);
-+				continue;
-+			}
-+
- 			return -EINVAL;
-+		}
- 
- 		cmd_dma = le64_to_cpu(event->event_cmd.cmd_trb);
- 
-
+> ---
+>  drivers/media/platform/raspberrypi/pisp_be/Kconfig   | 1 +
+>  drivers/media/platform/raspberrypi/pisp_be/pisp_be.c | 5 ++---
+>  2 files changed, 3 insertions(+), 3 deletions(-)
+>
+> diff --git a/drivers/media/platform/raspberrypi/pisp_be/Kconfig b/drivers/media/platform/raspberrypi/pisp_be/Kconfig
+> index 46765a2e4c4d1573757ff842f208834216e582cb..a9e51fd94aadc6add70f883bfcea0c9fa91f0c4b 100644
+> --- a/drivers/media/platform/raspberrypi/pisp_be/Kconfig
+> +++ b/drivers/media/platform/raspberrypi/pisp_be/Kconfig
+> @@ -3,6 +3,7 @@ config VIDEO_RASPBERRYPI_PISP_BE
+>         depends on V4L_PLATFORM_DRIVERS
+>         depends on VIDEO_DEV
+>         depends on ARCH_BCM2835 || COMPILE_TEST
+> +       depends on PM
+>         select VIDEO_V4L2_SUBDEV_API
+>         select MEDIA_CONTROLLER
+>         select VIDEOBUF2_DMA_CONTIG
+> diff --git a/drivers/media/platform/raspberrypi/pisp_be/pisp_be.c b/drivers/media/platform/raspberrypi/pisp_be/pisp_be.c
+> index ccc6cb99868b842ac0d295f9ec28470303e60788..be794a12362020f42b3cf5bd291b4a1625543b5f 100644
+> --- a/drivers/media/platform/raspberrypi/pisp_be/pisp_be.c
+> +++ b/drivers/media/platform/raspberrypi/pisp_be/pisp_be.c
+> @@ -1725,7 +1725,7 @@ static int pispbe_probe(struct platform_device *pdev)
+>         pm_runtime_use_autosuspend(pispbe->dev);
+>         pm_runtime_enable(pispbe->dev);
+>
+> -       ret = pispbe_runtime_resume(pispbe->dev);
+> +       ret = pm_runtime_resume_and_get(pispbe->dev);
+>         if (ret)
+>                 goto pm_runtime_disable_err;
+>
+> @@ -1747,7 +1747,7 @@ static int pispbe_probe(struct platform_device *pdev)
+>  disable_devs_err:
+>         pispbe_destroy_devices(pispbe);
+>  pm_runtime_suspend_err:
+> -       pispbe_runtime_suspend(pispbe->dev);
+> +       pm_runtime_put(pispbe->dev);
+>  pm_runtime_disable_err:
+>         pm_runtime_dont_use_autosuspend(pispbe->dev);
+>         pm_runtime_disable(pispbe->dev);
+> @@ -1761,7 +1761,6 @@ static void pispbe_remove(struct platform_device *pdev)
+>
+>         pispbe_destroy_devices(pispbe);
+>
+> -       pispbe_runtime_suspend(pispbe->dev);
+>         pm_runtime_dont_use_autosuspend(pispbe->dev);
+>         pm_runtime_disable(pispbe->dev);
+>  }
+>
+> --
+> 2.49.0
+>
 
