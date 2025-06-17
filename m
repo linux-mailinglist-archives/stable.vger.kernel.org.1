@@ -1,53 +1,55 @@
-Return-Path: <stable+bounces-153078-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153081-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6B5D6ADD236
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 17:40:21 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A8C0ADD237
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 17:40:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 000293BE634
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 15:39:51 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0D995189934A
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 15:40:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91ABC2ECD20;
-	Tue, 17 Jun 2025 15:39:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 182992ECD3E;
+	Tue, 17 Jun 2025 15:40:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c721wdp7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b6qvHVJF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C9BC2EA487;
-	Tue, 17 Jun 2025 15:39:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5CF42EA487;
+	Tue, 17 Jun 2025 15:40:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750174795; cv=none; b=HVwr/bvTphp2nEk5+8qzgRLSZ3jk9wV5smi9pFiRdo4WzO9axgfhBV/LhdVLuitCxWzO8Tp9BMf+So9zV7lA8wiobqbRBTV/NNcouN2O/09XJE6ubCSmOgKlGGEhy3w8n58OqcYuEoD8ktnU8ji6c4aS5i8YkFAf2lRe8S/hl+Y=
+	t=1750174804; cv=none; b=rr5JRmzJ8JZpsOS+2qgHHNgJTDsCI+6Hml1BmDa4qIjG1YLgQMS1YAp+E5isU7vOVnWNd3/aMZjnnjQgc7Xfke4ytHKzfyt+uqEvhwMN69l9Hhyk+bcWG1kTrCYAMrbqNEEFaftoMww0GDIu2bLr6PUY5vhoYUo5KfQY7lpFYGM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750174795; c=relaxed/simple;
-	bh=b7ymUgux2RduL95prAhnYhopc4V/96ihV/Y4qMruiLA=;
+	s=arc-20240116; t=1750174804; c=relaxed/simple;
+	bh=4DskMkXS1QfhBORXv1nE9Ab8hqbILmuk8I6k9hPuCd8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=X3i6fOGcovvB5v/YbvYgq2R68daHJiZUfOb6e6CW9LcKP1P1nmx+mvrLOKx71BH8/qOQx+p5vt0V+vmY1He0shDiCQstCqpjvEVdkFN8rjPZ4ODG6Ic3Yrguv0KH2XZc99tbi9Lhr/OOUP3NRXVgZvsBGW8E9H9OzAHKxU9xkNI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c721wdp7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB86CC4CEE3;
-	Tue, 17 Jun 2025 15:39:54 +0000 (UTC)
+	 MIME-Version; b=BpxCYPoEMBeE8uQsXqd3yzsorfh3Iw4NvSJtGP5rrtQQocseTlRAdIlNLNmXP9n+NaH+5wuVOPoBf9DSCGOAktlHmvQkdSdBxxY16SR4ha4lvUGQKSzFnTOrVsmBQMlOtEofGEYqLiE3P0XhsZ30Zo6f+NQM6qQiVbAz6dgZ7EI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b6qvHVJF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32772C4CEE3;
+	Tue, 17 Jun 2025 15:40:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750174795;
-	bh=b7ymUgux2RduL95prAhnYhopc4V/96ihV/Y4qMruiLA=;
+	s=korg; t=1750174804;
+	bh=4DskMkXS1QfhBORXv1nE9Ab8hqbILmuk8I6k9hPuCd8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=c721wdp74LLl+t2tl1Su2MRQgdX+GokN6oMKG8eKGNXQa9F/1HCu/Zm+62U5vmgSf
-	 TO/Cst4c807NHzGXxINgM1mu2kDlxnk7ATN+9iw95xReBJAZt4GO0zLiUgiiw8wC1M
-	 YGSvdFPTP0E3/Pc7bROUE+2+jjz6AOnjwx97WRpA=
+	b=b6qvHVJFsNvbEluWMM7s06gSO1j0U2wVsnm7Kw2j9JeWevwgqTZBEOqi5vTxrxIOR
+	 pT0/v9yOiDPFnQ6Zcz3pO0BSgYn9nnn3LCkZODZEHtMiuo0UI+hIDEKtCiWpJV+BDd
+	 N19JAvIjdsbrXIXmw5zj41MLw4xTtdQzPc3NTZGc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ian Forbes <ian.forbes@broadcom.com>,
-	Zack Rusin <zack.rusin@broadcom.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>,
+	Badal Nilawar <badal.nilawar@intel.com>,
+	Anshuman Gupta <anshuman.gupta@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 061/512] drm/vmwgfx: Fix dumb buffer leak
-Date: Tue, 17 Jun 2025 17:20:27 +0200
-Message-ID: <20250617152422.035203033@linuxfoundation.org>
+Subject: [PATCH 6.12 062/512] drm/xe/d3cold: Set power state to D3Cold during s2idle/s3
+Date: Tue, 17 Jun 2025 17:20:28 +0200
+Message-ID: <20250617152422.082658452@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
 References: <20250617152419.512865572@linuxfoundation.org>
@@ -66,132 +68,42 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Ian Forbes <ian.forbes@broadcom.com>
+From: Badal Nilawar <badal.nilawar@intel.com>
 
-[ Upstream commit f42c09e614f1bda96f5690be8d0bb273234febbc ]
+[ Upstream commit f945dd89fa8da3f662508165453dafdb4035d9d3 ]
 
-Dumb buffers were not being freed because the GEM reference that was
-acquired in gb_surface_define was not dropped like it is in the 2D case.
-Dropping this ref uncovered a few additional issues with freeing the
-resources associated with dirty tracking in vmw_bo_free/release.
+According to pci core guidelines, pci_save_config is recommended when the
+driver explicitly needs to set the pci power state. As of now xe kmd is
+only doing pci_save_config while entering to s2idle/s3 state, which makes
+pci core think that device driver has already applied required pci power
+state. This leads to GPU remain in D0 state. To fix the issue setting
+the pci power state to D3Cold.
 
-Additionally the TTM object associated with the surface were also leaking
-which meant that when the ttm_object_file was closed at process exit the
-destructor unreferenced an already destroyed surface.
+Fixes:dd08ebf6c352 ("drm/xe: Introduce a new DRM driver for Intel GPUs")
 
-The solution is to remove the destructor from the vmw_user_surface
-associated with the dumb_buffer and immediately unreferencing the TTM
-object which his removes it from the ttm_object_file.
-
-This also allows the early return in vmw_user_surface_base_release for the
-dumb buffer case to be removed as it should no longer occur.
-
-The chain of references now has the GEM handle(s) owning the dumb buffer.
-The GEM handles have a singular GEM reference to the vmw_bo which is
-dropped when all handles are closed. When the GEM reference count hits
-zero the vmw_bo is freed which then unreferences the surface via
-vmw_resource_release in vmw_bo_release.
-
-Fixes: d6667f0ddf46 ("drm/vmwgfx: Fix handling of dumb buffers")
-Signed-off-by: Ian Forbes <ian.forbes@broadcom.com>
-Reviewed-by: Zack Rusin <zack.rusin@broadcom.com>
-Signed-off-by: Zack Rusin <zack.rusin@broadcom.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20250123204424.836896-1-ian.forbes@broadcom.com
+Cc: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Signed-off-by: Badal Nilawar <badal.nilawar@intel.com>
+Signed-off-by: Anshuman Gupta <anshuman.gupta@intel.com>
+Reviewed-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Link: https://lore.kernel.org/r/20250327161914.432552-1-badal.nilawar@intel.com
+Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/vmwgfx/vmwgfx_bo.c       |  6 ++++--
- drivers/gpu/drm/vmwgfx/vmwgfx_resource.c |  2 +-
- drivers/gpu/drm/vmwgfx/vmwgfx_surface.c  | 18 ++++++++++++------
- 3 files changed, 17 insertions(+), 9 deletions(-)
+ drivers/gpu/drm/xe/xe_pci.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/gpu/drm/vmwgfx/vmwgfx_bo.c b/drivers/gpu/drm/vmwgfx/vmwgfx_bo.c
-index ad61373332cc2..e8e49f13cfa2c 100644
---- a/drivers/gpu/drm/vmwgfx/vmwgfx_bo.c
-+++ b/drivers/gpu/drm/vmwgfx/vmwgfx_bo.c
-@@ -51,11 +51,13 @@ static void vmw_bo_release(struct vmw_bo *vbo)
- 			mutex_lock(&res->dev_priv->cmdbuf_mutex);
- 			(void)vmw_resource_reserve(res, false, true);
- 			vmw_resource_mob_detach(res);
-+			if (res->dirty)
-+				res->func->dirty_free(res);
- 			if (res->coherent)
- 				vmw_bo_dirty_release(res->guest_memory_bo);
- 			res->guest_memory_bo = NULL;
- 			res->guest_memory_offset = 0;
--			vmw_resource_unreserve(res, false, false, false, NULL,
-+			vmw_resource_unreserve(res, true, false, false, NULL,
- 					       0);
- 			mutex_unlock(&res->dev_priv->cmdbuf_mutex);
- 		}
-@@ -73,9 +75,9 @@ static void vmw_bo_free(struct ttm_buffer_object *bo)
- {
- 	struct vmw_bo *vbo = to_vmw_bo(&bo->base);
+diff --git a/drivers/gpu/drm/xe/xe_pci.c b/drivers/gpu/drm/xe/xe_pci.c
+index 025d649434673..23028afbbe1d1 100644
+--- a/drivers/gpu/drm/xe/xe_pci.c
++++ b/drivers/gpu/drm/xe/xe_pci.c
+@@ -910,6 +910,7 @@ static int xe_pci_suspend(struct device *dev)
  
--	WARN_ON(vbo->dirty);
- 	WARN_ON(!RB_EMPTY_ROOT(&vbo->res_tree));
- 	vmw_bo_release(vbo);
-+	WARN_ON(vbo->dirty);
- 	kfree(vbo);
- }
+ 	pci_save_state(pdev);
+ 	pci_disable_device(pdev);
++	pci_set_power_state(pdev, PCI_D3cold);
  
-diff --git a/drivers/gpu/drm/vmwgfx/vmwgfx_resource.c b/drivers/gpu/drm/vmwgfx/vmwgfx_resource.c
-index a73af8a355fbf..c4d5fe5f330f9 100644
---- a/drivers/gpu/drm/vmwgfx/vmwgfx_resource.c
-+++ b/drivers/gpu/drm/vmwgfx/vmwgfx_resource.c
-@@ -273,7 +273,7 @@ int vmw_user_resource_lookup_handle(struct vmw_private *dev_priv,
- 		goto out_bad_resource;
- 
- 	res = converter->base_obj_to_res(base);
--	kref_get(&res->kref);
-+	vmw_resource_reference(res);
- 
- 	*p_res = res;
- 	ret = 0;
-diff --git a/drivers/gpu/drm/vmwgfx/vmwgfx_surface.c b/drivers/gpu/drm/vmwgfx/vmwgfx_surface.c
-index 1f7626f6ac0b1..d7a8070330ba5 100644
---- a/drivers/gpu/drm/vmwgfx/vmwgfx_surface.c
-+++ b/drivers/gpu/drm/vmwgfx/vmwgfx_surface.c
-@@ -658,7 +658,7 @@ static void vmw_user_surface_free(struct vmw_resource *res)
- 	struct vmw_user_surface *user_srf =
- 	    container_of(srf, struct vmw_user_surface, srf);
- 
--	WARN_ON_ONCE(res->dirty);
-+	WARN_ON(res->dirty);
- 	if (user_srf->master)
- 		drm_master_put(&user_srf->master);
- 	kfree(srf->offsets);
-@@ -689,8 +689,7 @@ static void vmw_user_surface_base_release(struct ttm_base_object **p_base)
- 	 * Dumb buffers own the resource and they'll unref the
- 	 * resource themselves
- 	 */
--	if (res && res->guest_memory_bo && res->guest_memory_bo->is_dumb)
--		return;
-+	WARN_ON(res && res->guest_memory_bo && res->guest_memory_bo->is_dumb);
- 
- 	vmw_resource_unreference(&res);
- }
-@@ -2370,12 +2369,19 @@ int vmw_dumb_create(struct drm_file *file_priv,
- 	vbo = res->guest_memory_bo;
- 	vbo->is_dumb = true;
- 	vbo->dumb_surface = vmw_res_to_srf(res);
--
-+	drm_gem_object_put(&vbo->tbo.base);
-+	/*
-+	 * Unset the user surface dtor since this in not actually exposed
-+	 * to userspace. The suface is owned via the dumb_buffer's GEM handle
-+	 */
-+	struct vmw_user_surface *usurf = container_of(vbo->dumb_surface,
-+						struct vmw_user_surface, srf);
-+	usurf->prime.base.refcount_release = NULL;
- err:
- 	if (res)
- 		vmw_resource_unreference(&res);
--	if (ret)
--		ttm_ref_object_base_unref(tfile, arg.rep.handle);
-+
-+	ttm_ref_object_base_unref(tfile, arg.rep.handle);
- 
- 	return ret;
+ 	return 0;
  }
 -- 
 2.39.5
