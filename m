@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-152878-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-152879-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 25E69ADCFFA
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:34:41 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A729ADCFCC
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:30:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6897418981E3
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 14:29:43 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0F1F27A6D65
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 14:28:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 559BC2EF65E;
-	Tue, 17 Jun 2025 14:29:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ECFCD2EF663;
+	Tue, 17 Jun 2025 14:29:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eTpN8Fy0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nl+FvD4L"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FF672EF65D
-	for <stable@vger.kernel.org>; Tue, 17 Jun 2025 14:29:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A94422EF66A
+	for <stable@vger.kernel.org>; Tue, 17 Jun 2025 14:29:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750170553; cv=none; b=lWAO+sn58wFAAr3r1SvRdmeQ55VAp32LexJXLwv9st6yd9B3hHkKus+Ah6/SpvbWgKIKpAoP7OiDj76CF8acaRkvSa1o1VvV4bnJ3QKkEA08AWvrXu+KmSPvYv6kRHW40YqsEwiGeOwu0xWuo7jQm2H9Myk/A7eNs1Jjl5Mh67M=
+	t=1750170599; cv=none; b=luov7HJg+lBKjINMRerv2c5zAPUxiHbcspOJhpfgUKfYu3UPNsprEoGh2zeZGDqYtmNYlwwPnoQlK/LUQ2onSBjnPsbUBlsr9rTGmYfJWcNMbsWKSELYhbXklCXEw4cIzcdowgSOoavDwmWORDpFpvPPHSMOZ27N+9LROrfnPX4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750170553; c=relaxed/simple;
-	bh=V9fntNyVYUgJGKgF6S4szw6L88oUySMO66Fqe+rse44=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=kVhs3tfMowh5CQmT67yhfVX47S2+Sgxv24CPK8QxrtZS8+VncnJW1CBBijGyM4XtHlLYQlHd/Xw/eqtFSBlhBwvJIePFvHfzYZHyF0s05sE5llKRWEDobRx7HDhCbn5U6kSLR8+dGs4OP7Gy3Y8HUQET1ff8Ddymy9GJ0qrwqc8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eTpN8Fy0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F304C4CEE3;
-	Tue, 17 Jun 2025 14:29:11 +0000 (UTC)
+	s=arc-20240116; t=1750170599; c=relaxed/simple;
+	bh=ipG489oPH94sNMt8Uxqw6ghmMm37Aktq0jLkPX5AeQc=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=SRXuwzvthSECP7gHMKS88dUnWiH3/NSidQMwSTWx1+1bCbrVYNsN/yja5bODP54Efs+zCn3epDMeS7/nkBaiS6Yh9isC2K5vr83Koe4RvBawHXIe4cO1dwfXqpilWP8SJEeHaggW4KSWjprgGvI/8dVJMPh/mdpHtuaj/5jy1vE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nl+FvD4L; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6B39C4CEE3;
+	Tue, 17 Jun 2025 14:29:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750170552;
-	bh=V9fntNyVYUgJGKgF6S4szw6L88oUySMO66Fqe+rse44=;
+	s=korg; t=1750170599;
+	bh=ipG489oPH94sNMt8Uxqw6ghmMm37Aktq0jLkPX5AeQc=;
 	h=Subject:To:Cc:From:Date:From;
-	b=eTpN8Fy0IMpoEHjpoHcHZCxogpJPnD/jHvK5yhV9j8svf6v9pC5u6cyw7p9sO2D56
-	 XIgFHKcR2cxL09fAAhjLP98aTaGPk80QCoqGH5T1iAhWs1WfJgQwbSceggmx8ZtM1m
-	 kXk1A0QO0ai6ocrmO/DO/hMl2nYXBgiFfp1OGjVM=
-Subject: FAILED: patch "[PATCH] xfs: don't assume perags are initialised when trimming AGs" failed to apply to 6.6-stable tree
-To: dchinner@redhat.com,bodonnel@redhat.com,cem@kernel.org,djwong@kernel.org,stable@vger.kernel.org
+	b=nl+FvD4L1KzrXENtdZSsbRWyWThqm1vazocZGwzHQNSeYK7G26JBrVstLIAcfyah2
+	 XE3vPv5mfXi5mg4zuX5H/n/avVy80Kv8uWoANFW0kGhOcYfuydDdAbLPsoMYRz2ZSg
+	 YtXyq2SeD0z5abGXmIpHYS6HEmm8wo1hQhQaPBlk=
+Subject: FAILED: patch "[PATCH] x86/hyperv: Fix APIC ID and VP index confusion in" failed to apply to 6.12-stable tree
+To: romank@linux.microsoft.com,mhklinux@outlook.com,wei.liu@kernel.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Tue, 17 Jun 2025 16:29:09 +0200
-Message-ID: <2025061709-overboard-duplicate-5035@gregkh>
+Date: Tue, 17 Jun 2025 16:29:56 +0200
+Message-ID: <2025061756-shale-squiggly-9c9a@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.6-stable tree.
+The patch below does not apply to the 6.12-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.12.y
 git checkout FETCH_HEAD
-git cherry-pick -x 23be716b1c4f3f3a6c00ee38d51a57ef7db9ef7d
+git cherry-pick -x 86c48271e0d60c82665e9fd61277002391efcef7
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025061709-overboard-duplicate-5035@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025061756-shale-squiggly-9c9a@gregkh' --subject-prefix 'PATCH 6.12.y' HEAD^..
 
 Possible dependencies:
 
@@ -77,85 +77,248 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 23be716b1c4f3f3a6c00ee38d51a57ef7db9ef7d Mon Sep 17 00:00:00 2001
-From: Dave Chinner <dchinner@redhat.com>
-Date: Thu, 1 May 2025 09:27:24 +1000
-Subject: [PATCH] xfs: don't assume perags are initialised when trimming AGs
+From 86c48271e0d60c82665e9fd61277002391efcef7 Mon Sep 17 00:00:00 2001
+From: Roman Kisel <romank@linux.microsoft.com>
+Date: Wed, 7 May 2025 11:22:25 -0700
+Subject: [PATCH] x86/hyperv: Fix APIC ID and VP index confusion in
+ hv_snp_boot_ap()
 
-When running fstrim immediately after mounting a V4 filesystem,
-the fstrim fails to trim all the free space in the filesystem. It
-only trims the first extent in the by-size free space tree in each
-AG and then returns. If a second fstrim is then run, it runs
-correctly and the entire free space in the filesystem is iterated
-and discarded correctly.
+To start an application processor in SNP-isolated guest, a hypercall
+is used that takes a virtual processor index. The hv_snp_boot_ap()
+function uses that START_VP hypercall but passes as VP index to it
+what it receives as a wakeup_secondary_cpu_64 callback: the APIC ID.
 
-The problem lies in the setup of the trim cursor - it assumes that
-pag->pagf_longest is valid without either reading the AGF first or
-checking if xfs_perag_initialised_agf(pag) is true or not.
+As those two aren't generally interchangeable, that may lead to hung
+APs if the VP index and the APIC ID don't match up.
 
-As a result, when a filesystem is mounted without reading the AGF
-(e.g. a clean mount on a v4 filesystem) and the first operation is a
-fstrim call, pag->pagf_longest is zero and so the free extent search
-starts at the wrong end of the by-size btree and exits after
-discarding the first record in the tree.
+Update the parameter names to avoid confusion as to what the parameter
+is. Use the APIC ID to the VP index conversion to provide the correct
+input to the hypercall.
 
-Fix this by deferring the initialisation of tcur->count to after
-we have locked the AGF and guaranteed that the perag is properly
-initialised. We trigger this on tcur->count == 0 after locking the
-AGF, as this will only occur on the first call to
-xfs_trim_gather_extents() for each AG. If we need to iterate,
-tcur->count will be set to the length of the record we need to
-restart at, so we can use this to ensure we only sample a valid
-pag->pagf_longest value for the iteration.
+Cc: stable@vger.kernel.org
+Fixes: 44676bb9d566 ("x86/hyperv: Add smp support for SEV-SNP guest")
+Signed-off-by: Roman Kisel <romank@linux.microsoft.com>
+Reviewed-by: Michael Kelley <mhklinux@outlook.com>
+Link: https://lore.kernel.org/r/20250507182227.7421-2-romank@linux.microsoft.com
+Signed-off-by: Wei Liu <wei.liu@kernel.org>
+Message-ID: <20250507182227.7421-2-romank@linux.microsoft.com>
 
-Signed-off-by: Dave Chinner <dchinner@redhat.com>
-Reviewed-by: Bill O'Donnell <bodonnel@redhat.com>
-Reviewed-by: Darrick J. Wong <djwong@kernel.org>
-Fixes: 89cfa899608f ("xfs: reduce AGF hold times during fstrim operations")
-Cc: <stable@vger.kernel.org> # v6.6
-Signed-off-by: Carlos Maiolino <cem@kernel.org>
-
-diff --git a/fs/xfs/xfs_discard.c b/fs/xfs/xfs_discard.c
-index c1a306268ae4..94d0873bcd62 100644
---- a/fs/xfs/xfs_discard.c
-+++ b/fs/xfs/xfs_discard.c
-@@ -167,6 +167,14 @@ xfs_discard_extents(
- 	return error;
+diff --git a/arch/x86/hyperv/hv_init.c b/arch/x86/hyperv/hv_init.c
+index 3b569291dfed..9a8fc144e195 100644
+--- a/arch/x86/hyperv/hv_init.c
++++ b/arch/x86/hyperv/hv_init.c
+@@ -672,3 +672,36 @@ bool hv_is_hyperv_initialized(void)
+ 	return hypercall_msr.enable;
+ }
+ EXPORT_SYMBOL_GPL(hv_is_hyperv_initialized);
++
++int hv_apicid_to_vp_index(u32 apic_id)
++{
++	u64 control;
++	u64 status;
++	unsigned long irq_flags;
++	struct hv_get_vp_from_apic_id_in *input;
++	u32 *output, ret;
++
++	local_irq_save(irq_flags);
++
++	input = *this_cpu_ptr(hyperv_pcpu_input_arg);
++	memset(input, 0, sizeof(*input));
++	input->partition_id = HV_PARTITION_ID_SELF;
++	input->apic_ids[0] = apic_id;
++
++	output = *this_cpu_ptr(hyperv_pcpu_output_arg);
++
++	control = HV_HYPERCALL_REP_COMP_1 | HVCALL_GET_VP_INDEX_FROM_APIC_ID;
++	status = hv_do_hypercall(control, input, output);
++	ret = output[0];
++
++	local_irq_restore(irq_flags);
++
++	if (!hv_result_success(status)) {
++		pr_err("failed to get vp index from apic id %d, status %#llx\n",
++		       apic_id, status);
++		return -EINVAL;
++	}
++
++	return ret;
++}
++EXPORT_SYMBOL_GPL(hv_apicid_to_vp_index);
+diff --git a/arch/x86/hyperv/hv_vtl.c b/arch/x86/hyperv/hv_vtl.c
+index ac3d27a766d5..2f32ac1ae40e 100644
+--- a/arch/x86/hyperv/hv_vtl.c
++++ b/arch/x86/hyperv/hv_vtl.c
+@@ -211,41 +211,9 @@ static int hv_vtl_bringup_vcpu(u32 target_vp_index, int cpu, u64 eip_ignored)
+ 	return ret;
  }
  
-+/*
-+ * Care must be taken setting up the trim cursor as the perags may not have been
-+ * initialised when the cursor is initialised. e.g. a clean mount which hasn't
-+ * read in AGFs and the first operation run on the mounted fs is a trim. This
-+ * can result in perag fields that aren't initialised until
-+ * xfs_trim_gather_extents() calls xfs_alloc_read_agf() to lock down the AG for
-+ * the free space search.
-+ */
- struct xfs_trim_cur {
- 	xfs_agblock_t	start;
- 	xfs_extlen_t	count;
-@@ -204,6 +212,14 @@ xfs_trim_gather_extents(
- 	if (error)
- 		goto out_trans_cancel;
- 
-+	/*
-+	 * First time through tcur->count will not have been initialised as
-+	 * pag->pagf_longest is not guaranteed to be valid before we read
-+	 * the AGF buffer above.
-+	 */
-+	if (!tcur->count)
-+		tcur->count = pag->pagf_longest;
-+
- 	if (tcur->by_bno) {
- 		/* sub-AG discard request always starts at tcur->start */
- 		cur = xfs_bnobt_init_cursor(mp, tp, agbp, pag);
-@@ -350,7 +366,6 @@ xfs_trim_perag_extents(
+-static int hv_vtl_apicid_to_vp_id(u32 apic_id)
+-{
+-	u64 control;
+-	u64 status;
+-	unsigned long irq_flags;
+-	struct hv_get_vp_from_apic_id_in *input;
+-	u32 *output, ret;
+-
+-	local_irq_save(irq_flags);
+-
+-	input = *this_cpu_ptr(hyperv_pcpu_input_arg);
+-	memset(input, 0, sizeof(*input));
+-	input->partition_id = HV_PARTITION_ID_SELF;
+-	input->apic_ids[0] = apic_id;
+-
+-	output = *this_cpu_ptr(hyperv_pcpu_output_arg);
+-
+-	control = HV_HYPERCALL_REP_COMP_1 | HVCALL_GET_VP_ID_FROM_APIC_ID;
+-	status = hv_do_hypercall(control, input, output);
+-	ret = output[0];
+-
+-	local_irq_restore(irq_flags);
+-
+-	if (!hv_result_success(status)) {
+-		pr_err("failed to get vp id from apic id %d, status %#llx\n",
+-		       apic_id, status);
+-		return -EINVAL;
+-	}
+-
+-	return ret;
+-}
+-
+ static int hv_vtl_wakeup_secondary_cpu(u32 apicid, unsigned long start_eip)
  {
- 	struct xfs_trim_cur	tcur = {
- 		.start		= start,
--		.count		= pag->pagf_longest,
- 		.end		= end,
- 		.minlen		= minlen,
- 	};
+-	int vp_id, cpu;
++	int vp_index, cpu;
+ 
+ 	/* Find the logical CPU for the APIC ID */
+ 	for_each_present_cpu(cpu) {
+@@ -256,18 +224,18 @@ static int hv_vtl_wakeup_secondary_cpu(u32 apicid, unsigned long start_eip)
+ 		return -EINVAL;
+ 
+ 	pr_debug("Bringing up CPU with APIC ID %d in VTL2...\n", apicid);
+-	vp_id = hv_vtl_apicid_to_vp_id(apicid);
++	vp_index = hv_apicid_to_vp_index(apicid);
+ 
+-	if (vp_id < 0) {
++	if (vp_index < 0) {
+ 		pr_err("Couldn't find CPU with APIC ID %d\n", apicid);
+ 		return -EINVAL;
+ 	}
+-	if (vp_id > ms_hyperv.max_vp_index) {
+-		pr_err("Invalid CPU id %d for APIC ID %d\n", vp_id, apicid);
++	if (vp_index > ms_hyperv.max_vp_index) {
++		pr_err("Invalid CPU id %d for APIC ID %d\n", vp_index, apicid);
+ 		return -EINVAL;
+ 	}
+ 
+-	return hv_vtl_bringup_vcpu(vp_id, cpu, start_eip);
++	return hv_vtl_bringup_vcpu(vp_index, cpu, start_eip);
+ }
+ 
+ int __init hv_vtl_early_init(void)
+diff --git a/arch/x86/hyperv/ivm.c b/arch/x86/hyperv/ivm.c
+index 77bf05f06b9e..0cc239cdb4da 100644
+--- a/arch/x86/hyperv/ivm.c
++++ b/arch/x86/hyperv/ivm.c
+@@ -9,6 +9,7 @@
+ #include <linux/bitfield.h>
+ #include <linux/types.h>
+ #include <linux/slab.h>
++#include <linux/cpu.h>
+ #include <asm/svm.h>
+ #include <asm/sev.h>
+ #include <asm/io.h>
+@@ -288,7 +289,7 @@ static void snp_cleanup_vmsa(struct sev_es_save_area *vmsa)
+ 		free_page((unsigned long)vmsa);
+ }
+ 
+-int hv_snp_boot_ap(u32 cpu, unsigned long start_ip)
++int hv_snp_boot_ap(u32 apic_id, unsigned long start_ip)
+ {
+ 	struct sev_es_save_area *vmsa = (struct sev_es_save_area *)
+ 		__get_free_page(GFP_KERNEL | __GFP_ZERO);
+@@ -297,10 +298,27 @@ int hv_snp_boot_ap(u32 cpu, unsigned long start_ip)
+ 	u64 ret, retry = 5;
+ 	struct hv_enable_vp_vtl *start_vp_input;
+ 	unsigned long flags;
++	int cpu, vp_index;
+ 
+ 	if (!vmsa)
+ 		return -ENOMEM;
+ 
++	/* Find the Hyper-V VP index which might be not the same as APIC ID */
++	vp_index = hv_apicid_to_vp_index(apic_id);
++	if (vp_index < 0 || vp_index > ms_hyperv.max_vp_index)
++		return -EINVAL;
++
++	/*
++	 * Find the Linux CPU number for addressing the per-CPU data, and it
++	 * might not be the same as APIC ID.
++	 */
++	for_each_present_cpu(cpu) {
++		if (arch_match_cpu_phys_id(cpu, apic_id))
++			break;
++	}
++	if (cpu >= nr_cpu_ids)
++		return -EINVAL;
++
+ 	native_store_gdt(&gdtr);
+ 
+ 	vmsa->gdtr.base = gdtr.address;
+@@ -348,7 +366,7 @@ int hv_snp_boot_ap(u32 cpu, unsigned long start_ip)
+ 	start_vp_input = (struct hv_enable_vp_vtl *)ap_start_input_arg;
+ 	memset(start_vp_input, 0, sizeof(*start_vp_input));
+ 	start_vp_input->partition_id = -1;
+-	start_vp_input->vp_index = cpu;
++	start_vp_input->vp_index = vp_index;
+ 	start_vp_input->target_vtl.target_vtl = ms_hyperv.vtl;
+ 	*(u64 *)&start_vp_input->vp_context = __pa(vmsa) | 1;
+ 
+diff --git a/arch/x86/include/asm/mshyperv.h b/arch/x86/include/asm/mshyperv.h
+index bab5ccfc60a7..0b9a3a307d06 100644
+--- a/arch/x86/include/asm/mshyperv.h
++++ b/arch/x86/include/asm/mshyperv.h
+@@ -268,11 +268,11 @@ int hv_unmap_ioapic_interrupt(int ioapic_id, struct hv_interrupt_entry *entry);
+ #ifdef CONFIG_AMD_MEM_ENCRYPT
+ bool hv_ghcb_negotiate_protocol(void);
+ void __noreturn hv_ghcb_terminate(unsigned int set, unsigned int reason);
+-int hv_snp_boot_ap(u32 cpu, unsigned long start_ip);
++int hv_snp_boot_ap(u32 apic_id, unsigned long start_ip);
+ #else
+ static inline bool hv_ghcb_negotiate_protocol(void) { return false; }
+ static inline void hv_ghcb_terminate(unsigned int set, unsigned int reason) {}
+-static inline int hv_snp_boot_ap(u32 cpu, unsigned long start_ip) { return 0; }
++static inline int hv_snp_boot_ap(u32 apic_id, unsigned long start_ip) { return 0; }
+ #endif
+ 
+ #if defined(CONFIG_AMD_MEM_ENCRYPT) || defined(CONFIG_INTEL_TDX_GUEST)
+@@ -306,6 +306,7 @@ static __always_inline u64 hv_raw_get_msr(unsigned int reg)
+ {
+ 	return __rdmsr(reg);
+ }
++int hv_apicid_to_vp_index(u32 apic_id);
+ 
+ #else /* CONFIG_HYPERV */
+ static inline void hyperv_init(void) {}
+@@ -327,6 +328,7 @@ static inline void hv_set_msr(unsigned int reg, u64 value) { }
+ static inline u64 hv_get_msr(unsigned int reg) { return 0; }
+ static inline void hv_set_non_nested_msr(unsigned int reg, u64 value) { }
+ static inline u64 hv_get_non_nested_msr(unsigned int reg) { return 0; }
++static inline int hv_apicid_to_vp_index(u32 apic_id) { return -EINVAL; }
+ #endif /* CONFIG_HYPERV */
+ 
+ 
+diff --git a/include/hyperv/hvgdk_mini.h b/include/hyperv/hvgdk_mini.h
+index cf0923dc727d..2d431b53f587 100644
+--- a/include/hyperv/hvgdk_mini.h
++++ b/include/hyperv/hvgdk_mini.h
+@@ -475,7 +475,7 @@ union hv_vp_assist_msr_contents {	 /* HV_REGISTER_VP_ASSIST_PAGE */
+ #define HVCALL_CREATE_PORT				0x0095
+ #define HVCALL_CONNECT_PORT				0x0096
+ #define HVCALL_START_VP					0x0099
+-#define HVCALL_GET_VP_ID_FROM_APIC_ID			0x009a
++#define HVCALL_GET_VP_INDEX_FROM_APIC_ID			0x009a
+ #define HVCALL_FLUSH_GUEST_PHYSICAL_ADDRESS_SPACE	0x00af
+ #define HVCALL_FLUSH_GUEST_PHYSICAL_ADDRESS_LIST	0x00b0
+ #define HVCALL_SIGNAL_EVENT_DIRECT			0x00c0
 
 
