@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-152969-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-152971-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 64273ADD1CC
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 17:35:09 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id ADE92ADD1CE
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 17:35:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CB97F7A3266
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 15:32:29 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5D7F27A4762
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 15:32:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D0852EBDC0;
-	Tue, 17 Jun 2025 15:33:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4CB8A2EB5AB;
+	Tue, 17 Jun 2025 15:33:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jLSMJCgF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E8cI16L8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 289C023B633;
-	Tue, 17 Jun 2025 15:33:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A57623B633;
+	Tue, 17 Jun 2025 15:33:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750174427; cv=none; b=hqELdwGMsIv6TycLESt9GIvYBTBajN1UZwX5uFLEJEe8GsfYcdJWIuDB/Xw6l9y+M7IdQGjgSRJi5IlnccW6JxLyeoGMR0IV+nnkDFbaXr/5fib3dcUfKyOxM9yRNb/PXPR0/dT2Gnqfpii4KHE3MHp9+UZHOn/Jx3rLdcqUHSQ=
+	t=1750174434; cv=none; b=Hy1zXlb2mPdpenrtDshEmX6ZnXhRYt0ZqyJd6YgqMj1TXNOabfeX7qMk4zWghvwdxJCtt2jJhEMO2MrYEQ9IupUoK/AoMdxkfb+i0PY/8cMUWx9T00zWGBS9mCLroSLpeY3812EE1lABvKKQZnG6mOO421ohdDAHVsdundi9db4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750174427; c=relaxed/simple;
-	bh=4wZWHtGHXZwplyCa2QXPQgAoWn5M+8jEsxFN7mf1DBQ=;
+	s=arc-20240116; t=1750174434; c=relaxed/simple;
+	bh=gBStC8i7spQ9RNZt5szXonOXSJvsgg/EO+5h9gBl9Bo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=tC6x2TVLdTnp3nJdMpOtgupY1/zpWy4hDtiIEH4TqjO+IqohB5gqWHhz+UawBoAIBoIWonJRyEOIg/cfaicPERc8FfSlOiIX1pGFAW3lIb6n5zEUpQUUdRsB3MnQHeveb5D5wpzLW4ZbF/01YBAPOjrpUi6VsoMIhgWjFm3LRFg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jLSMJCgF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8605AC4CEE3;
-	Tue, 17 Jun 2025 15:33:46 +0000 (UTC)
+	 MIME-Version; b=mgIWconrw2HEAx2GnteWESlsw/ikzbjCr8XRFXrmvgn5O6rjUTc5KuXTMJvaunBg3HMdfgAVHx7rX996jCGnfkaoZXu+ga5qw1qIfXRB8lyPtmkSy+EqFPSGUJusn1Pinf7c1nj82x0A6BlmOY796AWbOJcoNykumECSVCU9N2o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E8cI16L8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19223C4CEE3;
+	Tue, 17 Jun 2025 15:33:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750174427;
-	bh=4wZWHtGHXZwplyCa2QXPQgAoWn5M+8jEsxFN7mf1DBQ=;
+	s=korg; t=1750174433;
+	bh=gBStC8i7spQ9RNZt5szXonOXSJvsgg/EO+5h9gBl9Bo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jLSMJCgFwEDW1iO9z/apxTAH9c4h1/WI8RQXBCkfavoHE1hBNU8fWRL5VPdCP/Mzi
-	 m78ztzAygG/S8RPNUVDi97TMKBpAtVlABsLi+0ybpUmzR5l5xXFC/XBbWZo72EnSfh
-	 pHsfBjfy1NsdDJTLKnvWLRylMob6w/Dcn0ttlzGg=
+	b=E8cI16L8hEItpbVphyvhf0TKG6ivBjiT/p82XK4ct2XU1rgRxPqSTsQjO/40K4dYg
+	 RYYBtJ8yMyciSP4bSUpGb8papIIM0Vu5aOifyw4X/Kn7uFgFPgRsvnfZVRy6HheWNy
+	 d4BLhd5dRiHBgl4Um/2fJuWI/mTH5XtUaqejuPwU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Kornel=20Dul=C4=99ba?= <korneld@google.com>,
-	Anshuman Khandual <anshuman.khandual@arm.com>,
-	Will Deacon <will@kernel.org>,
+	Neill Kapron <nkapron@google.com>,
+	Kees Cook <kees@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 067/356] arm64: Support ARM64_VA_BITS=52 when setting ARCH_MMAP_RND_BITS_MAX
-Date: Tue, 17 Jun 2025 17:23:02 +0200
-Message-ID: <20250617152340.924595252@linuxfoundation.org>
+Subject: [PATCH 6.6 068/356] selftests/seccomp: fix syscall_restart test for arm compat
+Date: Tue, 17 Jun 2025 17:23:03 +0200
+Message-ID: <20250617152340.965075968@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250617152338.212798615@linuxfoundation.org>
 References: <20250617152338.212798615@linuxfoundation.org>
@@ -61,58 +60,57 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kornel Dulęba <korneld@google.com>
+From: Neill Kapron <nkapron@google.com>
 
-[ Upstream commit f101c56447717c595d803894ba0e215f56c6fba4 ]
+[ Upstream commit 797002deed03491215a352ace891749b39741b69 ]
 
-When the 52-bit virtual addressing was introduced the select like
-ARCH_MMAP_RND_BITS_MAX logic was never updated to account for it.
-Because of that the rnd max bits knob is set to the default value of 18
-when ARM64_VA_BITS=52.
-Fix this by setting ARCH_MMAP_RND_BITS_MAX to the same value that would
-be used if 48-bit addressing was used. Higher values can't used here
-because 52-bit addressing is used only if the caller provides a hint to
-mmap, with a fallback to 48-bit. The knob in question is an upper bound
-for what the user can set in /proc/sys/vm/mmap_rnd_bits, which in turn
-is used to determine how many random bits can be inserted into the base
-address used for mmap allocations. Since 48-bit allocations are legal
-with ARM64_VA_BITS=52, we need to make sure that the base address is
-small enough to facilitate this.
+The inconsistencies in the systcall ABI between arm and arm-compat can
+can cause a failure in the syscall_restart test due to the logic
+attempting to work around the differences. The 'machine' field for an
+ARM64 device running in compat mode can report 'armv8l' or 'armv8b'
+which matches with the string 'arm' when only examining the first three
+characters of the string.
 
-Fixes: b6d00d47e81a ("arm64: mm: Introduce 52-bit Kernel VAs")
-Signed-off-by: Kornel Dulęba <korneld@google.com>
-Reviewed-by: Anshuman Khandual <anshuman.khandual@arm.com>
-Link: https://lore.kernel.org/r/20250417114754.3238273-1-korneld@google.com
-Signed-off-by: Will Deacon <will@kernel.org>
+This change adds additional validation to the workaround logic to make
+sure we only take the arm path when running natively, not in arm-compat.
+
+Fixes: 256d0afb11d6 ("selftests/seccomp: build and pass on arm64")
+Signed-off-by: Neill Kapron <nkapron@google.com>
+Link: https://lore.kernel.org/r/20250427094103.3488304-2-nkapron@google.com
+Signed-off-by: Kees Cook <kees@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/Kconfig | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ tools/testing/selftests/seccomp/seccomp_bpf.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm64/Kconfig b/arch/arm64/Kconfig
-index 658c6a61ab6fb..4ecba0690938c 100644
---- a/arch/arm64/Kconfig
-+++ b/arch/arm64/Kconfig
-@@ -304,9 +304,9 @@ config ARCH_MMAP_RND_BITS_MAX
- 	default 24 if ARM64_VA_BITS=39
- 	default 27 if ARM64_VA_BITS=42
- 	default 30 if ARM64_VA_BITS=47
--	default 29 if ARM64_VA_BITS=48 && ARM64_64K_PAGES
--	default 31 if ARM64_VA_BITS=48 && ARM64_16K_PAGES
--	default 33 if ARM64_VA_BITS=48
-+	default 29 if (ARM64_VA_BITS=48 || ARM64_VA_BITS=52) && ARM64_64K_PAGES
-+	default 31 if (ARM64_VA_BITS=48 || ARM64_VA_BITS=52) && ARM64_16K_PAGES
-+	default 33 if (ARM64_VA_BITS=48 || ARM64_VA_BITS=52)
- 	default 14 if ARM64_64K_PAGES
- 	default 16 if ARM64_16K_PAGES
- 	default 18
+diff --git a/tools/testing/selftests/seccomp/seccomp_bpf.c b/tools/testing/selftests/seccomp/seccomp_bpf.c
+index cacf6507f6905..15325ca35f1e2 100644
+--- a/tools/testing/selftests/seccomp/seccomp_bpf.c
++++ b/tools/testing/selftests/seccomp/seccomp_bpf.c
+@@ -3154,12 +3154,15 @@ TEST(syscall_restart)
+ 	ret = get_syscall(_metadata, child_pid);
+ #if defined(__arm__)
+ 	/*
+-	 * FIXME:
+ 	 * - native ARM registers do NOT expose true syscall.
+ 	 * - compat ARM registers on ARM64 DO expose true syscall.
++	 * - values of utsbuf.machine include 'armv8l' or 'armb8b'
++	 *   for ARM64 running in compat mode.
+ 	 */
+ 	ASSERT_EQ(0, uname(&utsbuf));
+-	if (strncmp(utsbuf.machine, "arm", 3) == 0) {
++	if ((strncmp(utsbuf.machine, "arm", 3) == 0) &&
++	    (strncmp(utsbuf.machine, "armv8l", 6) != 0) &&
++	    (strncmp(utsbuf.machine, "armv8b", 6) != 0)) {
+ 		EXPECT_EQ(__NR_nanosleep, ret);
+ 	} else
+ #endif
 -- 
 2.39.5
 
