@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-153612-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153615-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A42BEADD560
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:20:15 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 535EEADD5F2
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:29:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 927262C5F08
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:12:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 03E5D1948245
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:13:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D3D02ECD36;
-	Tue, 17 Jun 2025 16:08:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 759C42ED153;
+	Tue, 17 Jun 2025 16:08:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IjeqWXpk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kg7Hgxgq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AB792EB5CE;
-	Tue, 17 Jun 2025 16:08:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3104E2F362C;
+	Tue, 17 Jun 2025 16:08:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750176526; cv=none; b=OkXGzlltK2dkMHshaktRw79Pw8pWOqbqpM1d42bp2TvAOBPKfN9xfz4Qito2OByqJA1bN+pbR1Pxu+Udr7j2ALog2+PDWdYWY66Fn+LKtjN20nGRKGaQ4g96nZzjnixNDjBE4k+oO1ms7MGuMM1igZsyzm/fU3+U0J57iY70y2o=
+	t=1750176535; cv=none; b=rl2Jpv1X0OMGJL2edp2tUzdZw2RZI2K0/44qtawsktVbbqx0Vi+f67QzPDUDV3wmy15a/WItZ+XpJIJ8RsCxtAsgMJRWTlMZpEofvbNO+1XSy4VidyrSSSNqrLJwTZ/EDjd2DgiwQB5zy/HJvjJ7d/8zEuPquB3M50gL/jelKPY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750176526; c=relaxed/simple;
-	bh=IQ8P9EzTY0nSqtUPfky5Uk3WynUnCgTq+OdKp7uoXsg=;
+	s=arc-20240116; t=1750176535; c=relaxed/simple;
+	bh=8YnolWLG41LWxjEibj7TR9wr6q8M5DNkuyRWaoTTm3U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BNcmeB8791bbfFhzayeRnUSam+7WB8KZbRvs1nWdYej09hDFubDigYY99mLuZ66x0m5GyUU8HqdjL186qAWtVy3d68tx0RwqTrBDjiunKvUURh9t2we/5bER4peyZVJR7jjzA2/8lPru4blN3gnFboA8XvzhefHxTXo4MmfDlw8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IjeqWXpk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D805C4CEE3;
-	Tue, 17 Jun 2025 16:08:44 +0000 (UTC)
+	 MIME-Version; b=D4tShLLRDrvmivvSurIyEzsDFqI+4M3oykFbFah6P4mBvSX/TfVJ55YvcwnahKO/fOWWhw6L8FwFdDFUKxLepOcKiWPu5xgJ1AIUvQ/ThvNBC0FdDu7p8ION6WbOqvG2/v4e3PFmn8KvtIQd5hHd8pNAQ+kIKQpze1hDgnwO0CQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kg7Hgxgq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43837C4CEE3;
+	Tue, 17 Jun 2025 16:08:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750176524;
-	bh=IQ8P9EzTY0nSqtUPfky5Uk3WynUnCgTq+OdKp7uoXsg=;
+	s=korg; t=1750176534;
+	bh=8YnolWLG41LWxjEibj7TR9wr6q8M5DNkuyRWaoTTm3U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IjeqWXpkSovd13MDhPBcglz6KLMU9hVyJAU1MsFUtwPczpi3OtTf3ZGVtIM5NqlhN
-	 uiFVJYxlrlXFcR71VQLtIvQC5Igld9dZmVUsnlyoVRkPV7D6IWGDLVk92B9QSPOpGd
-	 s4zQhSKFn03hfSMU1tYuFTxEvAZ3Gak4ExgHBoUQ=
+	b=kg7Hgxgqh60mayPr6r3+tvZvgycagA2lYvg1k1PkPCWohQJbtL7aDKhV5hndLpXzq
+	 jt1CeZ6XQH5rUWXjKzy8+kesupafuzhuzPmXY+PNUnJmFUJdi9g34n7rGHoYGsKaW2
+	 cAs1ONKm0b6EVtFKb2ibqweZoe3vx3Hzlpb9FkZo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Cosmin Ratiu <cratiu@nvidia.com>,
-	Leon Romanovsky <leonro@nvidia.com>,
-	Nikolay Aleksandrov <razor@blackwall.org>,
-	Hangbin Liu <liuhangbin@gmail.com>,
-	Steffen Klassert <steffen.klassert@secunet.com>,
+	Zhen XIN <zhen.xin@nokia-sbell.com>,
+	Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
+	Ping-Ke Shih <pkshih@realtek.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 198/780] bonding: Fix multiple long standing offload races
-Date: Tue, 17 Jun 2025 17:18:26 +0200
-Message-ID: <20250617152459.533957131@linuxfoundation.org>
+Subject: [PATCH 6.15 199/780] wifi: rtw88: sdio: map mgmt frames to queue TX_DESC_QSEL_MGMT
+Date: Tue, 17 Jun 2025 17:18:27 +0200
+Message-ID: <20250617152459.573292226@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
 References: <20250617152451.485330293@linuxfoundation.org>
@@ -69,218 +67,44 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Cosmin Ratiu <cratiu@nvidia.com>
+From: Zhen XIN <zhen.xin@nokia-sbell.com>
 
-[ Upstream commit d2fddbd3479928e52061e1c8dd302006b6283ce8 ]
+[ Upstream commit b2effcdc237979dcc533d446a792fc54fd0e1213 ]
 
-Refactor the bonding ipsec offload operations to fix a number of
-long-standing control plane races between state migration and user
-deletion and a few other issues.
+The rtw88-sdio do not work in AP mode due to the lack of TX status report
+for management frames.
 
-xfrm state deletion can happen concurrently with
-bond_change_active_slave() operation. This manifests itself as a
-bond_ipsec_del_sa() call with x->lock held, followed by a
-bond_ipsec_free_sa() a bit later from a wq. The alternate path of
-these calls coming from xfrm_dev_state_flush() can't happen, as that
-needs the RTNL lock and bond_change_active_slave() already holds it.
+Map the management frames to queue TX_DESC_QSEL_MGMT, which enables the
+chip to generate TX reports for these frames
 
-1. bond_ipsec_del_sa_all() might call xdo_dev_state_delete() a second
-   time on an xfrm state that was concurrently killed. This is bad.
-2. bond_ipsec_add_sa_all() can add a state on the new device, but
-   pending bond_ipsec_free_sa() calls from the old device will then hit
-   the WARN_ON() and then, worse, call xdo_dev_state_free() on the new
-   device without a corresponding xdo_dev_state_delete().
-3. Resolve a sleeping in atomic context introduced by the mentioned
-   "Fixes" commit.
+Tested-on: rtl8723ds
 
-bond_ipsec_del_sa_all() and bond_ipsec_add_sa_all() now acquire x->lock
-and check for x->km.state to help with problems 1 and 2. And since
-xso.real_dev is now a private pointer managed by the bonding driver in
-xfrm state, make better use of it to fully fix problems 1 and 2. In
-bond_ipsec_del_sa_all(), set xso.real_dev to NULL while holding both the
-mutex and x->lock, which makes sure that neither bond_ipsec_del_sa() nor
-bond_ipsec_free_sa() could run concurrently.
-
-Fix problem 3 by moving the list cleanup (which requires the mutex) from
-bond_ipsec_del_sa() (called from atomic context) to bond_ipsec_free_sa()
-
-Finally, simplify bond_ipsec_del_sa() and bond_ipsec_free_sa() by using
-xso->real_dev directly, since it's now protected by locks and can be
-trusted to always reflect the offload device.
-
-Fixes: 2aeeef906d5a ("bonding: change ipsec_lock from spin lock to mutex")
-Signed-off-by: Cosmin Ratiu <cratiu@nvidia.com>
-Reviewed-by: Leon Romanovsky <leonro@nvidia.com>
-Reviewed-by: Nikolay Aleksandrov <razor@blackwall.org>
-Reviewed-by: Hangbin Liu <liuhangbin@gmail.com>
-Tested-by: Hangbin Liu <liuhangbin@gmail.com>
-Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
+Fixes: 65371a3f14e7 ("wifi: rtw88: sdio: Add HCI implementation for SDIO based chipsets")
+Signed-off-by: Zhen XIN <zhen.xin@nokia-sbell.com>
+Reviewed-by: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+Link: https://patch.msgid.link/20250410154217.1849977-3-zhen.xin@nokia-sbell.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/bonding/bond_main.c | 82 +++++++++++++++------------------
- include/net/xfrm.h              |  7 ++-
- 2 files changed, 41 insertions(+), 48 deletions(-)
+ drivers/net/wireless/realtek/rtw88/sdio.c | 5 +----
+ 1 file changed, 1 insertion(+), 4 deletions(-)
 
-diff --git a/drivers/net/bonding/bond_main.c b/drivers/net/bonding/bond_main.c
-index 14ebbe82a2c5b..4461220bcd58d 100644
---- a/drivers/net/bonding/bond_main.c
-+++ b/drivers/net/bonding/bond_main.c
-@@ -545,7 +545,20 @@ static void bond_ipsec_add_sa_all(struct bonding *bond)
- 			slave_warn(bond_dev, real_dev, "%s: failed to add SA\n", __func__);
- 			continue;
- 		}
-+
-+		spin_lock_bh(&ipsec->xs->lock);
-+		/* xs might have been killed by the user during the migration
-+		 * to the new dev, but bond_ipsec_del_sa() should have done
-+		 * nothing, as xso.real_dev is NULL.
-+		 * Delete it from the device we just added it to. The pending
-+		 * bond_ipsec_free_sa() call will do the rest of the cleanup.
-+		 */
-+		if (ipsec->xs->km.state == XFRM_STATE_DEAD &&
-+		    real_dev->xfrmdev_ops->xdo_dev_state_delete)
-+			real_dev->xfrmdev_ops->xdo_dev_state_delete(real_dev,
-+								    ipsec->xs);
- 		ipsec->xs->xso.real_dev = real_dev;
-+		spin_unlock_bh(&ipsec->xs->lock);
- 	}
- out:
- 	mutex_unlock(&bond->ipsec_lock);
-@@ -560,48 +573,20 @@ static void bond_ipsec_del_sa(struct net_device *bond_dev,
- 			      struct xfrm_state *xs)
- {
- 	struct net_device *real_dev;
--	netdevice_tracker tracker;
--	struct bond_ipsec *ipsec;
--	struct bonding *bond;
--	struct slave *slave;
- 
--	if (!bond_dev)
-+	if (!bond_dev || !xs->xso.real_dev)
- 		return;
- 
--	rcu_read_lock();
--	bond = netdev_priv(bond_dev);
--	slave = rcu_dereference(bond->curr_active_slave);
--	real_dev = slave ? slave->dev : NULL;
--	netdev_hold(real_dev, &tracker, GFP_ATOMIC);
--	rcu_read_unlock();
--
--	if (!slave)
--		goto out;
--
--	if (!xs->xso.real_dev)
--		goto out;
--
--	WARN_ON(xs->xso.real_dev != real_dev);
-+	real_dev = xs->xso.real_dev;
- 
- 	if (!real_dev->xfrmdev_ops ||
- 	    !real_dev->xfrmdev_ops->xdo_dev_state_delete ||
- 	    netif_is_bond_master(real_dev)) {
- 		slave_warn(bond_dev, real_dev, "%s: no slave xdo_dev_state_delete\n", __func__);
--		goto out;
-+		return;
- 	}
- 
- 	real_dev->xfrmdev_ops->xdo_dev_state_delete(real_dev, xs);
--out:
--	netdev_put(real_dev, &tracker);
--	mutex_lock(&bond->ipsec_lock);
--	list_for_each_entry(ipsec, &bond->ipsec_list, list) {
--		if (ipsec->xs == xs) {
--			list_del(&ipsec->list);
--			kfree(ipsec);
--			break;
--		}
--	}
--	mutex_unlock(&bond->ipsec_lock);
- }
- 
- static void bond_ipsec_del_sa_all(struct bonding *bond)
-@@ -629,9 +614,15 @@ static void bond_ipsec_del_sa_all(struct bonding *bond)
- 				   __func__);
- 			continue;
- 		}
-+
-+		spin_lock_bh(&ipsec->xs->lock);
- 		ipsec->xs->xso.real_dev = NULL;
--		real_dev->xfrmdev_ops->xdo_dev_state_delete(real_dev,
--							    ipsec->xs);
-+		/* Don't double delete states killed by the user. */
-+		if (ipsec->xs->km.state != XFRM_STATE_DEAD)
-+			real_dev->xfrmdev_ops->xdo_dev_state_delete(real_dev,
-+								    ipsec->xs);
-+		spin_unlock_bh(&ipsec->xs->lock);
-+
- 		if (real_dev->xfrmdev_ops->xdo_dev_state_free)
- 			real_dev->xfrmdev_ops->xdo_dev_state_free(real_dev,
- 								  ipsec->xs);
-@@ -643,34 +634,33 @@ static void bond_ipsec_free_sa(struct net_device *bond_dev,
- 			       struct xfrm_state *xs)
- {
- 	struct net_device *real_dev;
--	netdevice_tracker tracker;
-+	struct bond_ipsec *ipsec;
- 	struct bonding *bond;
--	struct slave *slave;
- 
- 	if (!bond_dev)
- 		return;
- 
--	rcu_read_lock();
- 	bond = netdev_priv(bond_dev);
--	slave = rcu_dereference(bond->curr_active_slave);
--	real_dev = slave ? slave->dev : NULL;
--	netdev_hold(real_dev, &tracker, GFP_ATOMIC);
--	rcu_read_unlock();
--
--	if (!slave)
--		goto out;
- 
-+	mutex_lock(&bond->ipsec_lock);
- 	if (!xs->xso.real_dev)
- 		goto out;
- 
--	WARN_ON(xs->xso.real_dev != real_dev);
-+	real_dev = xs->xso.real_dev;
- 
- 	xs->xso.real_dev = NULL;
--	if (real_dev && real_dev->xfrmdev_ops &&
-+	if (real_dev->xfrmdev_ops &&
- 	    real_dev->xfrmdev_ops->xdo_dev_state_free)
- 		real_dev->xfrmdev_ops->xdo_dev_state_free(real_dev, xs);
- out:
--	netdev_put(real_dev, &tracker);
-+	list_for_each_entry(ipsec, &bond->ipsec_list, list) {
-+		if (ipsec->xs == xs) {
-+			list_del(&ipsec->list);
-+			kfree(ipsec);
-+			break;
-+		}
-+	}
-+	mutex_unlock(&bond->ipsec_lock);
- }
- 
- /**
-diff --git a/include/net/xfrm.h b/include/net/xfrm.h
-index 01783dc3d0e32..1f1861c57e2ad 100644
---- a/include/net/xfrm.h
-+++ b/include/net/xfrm.h
-@@ -154,8 +154,11 @@ struct xfrm_dev_offload {
- 	 */
- 	struct net_device	*dev;
- 	netdevice_tracker	dev_tracker;
--	/* This is a private pointer used by the bonding driver.
--	 * Device drivers should not use it.
-+	/* This is a private pointer used by the bonding driver (and eventually
-+	 * should be moved there). Device drivers should not use it.
-+	 * Protected by xfrm_state.lock AND bond.ipsec_lock in most cases,
-+	 * except in the .xdo_dev_state_del() flow, where only xfrm_state.lock
-+	 * is held.
- 	 */
- 	struct net_device	*real_dev;
- 	unsigned long		offload_handle;
+diff --git a/drivers/net/wireless/realtek/rtw88/sdio.c b/drivers/net/wireless/realtek/rtw88/sdio.c
+index 6209a49312f17..ba600d40bba46 100644
+--- a/drivers/net/wireless/realtek/rtw88/sdio.c
++++ b/drivers/net/wireless/realtek/rtw88/sdio.c
+@@ -718,10 +718,7 @@ static u8 rtw_sdio_get_tx_qsel(struct rtw_dev *rtwdev, struct sk_buff *skb,
+ 	case RTW_TX_QUEUE_H2C:
+ 		return TX_DESC_QSEL_H2C;
+ 	case RTW_TX_QUEUE_MGMT:
+-		if (rtw_chip_wcpu_11n(rtwdev))
+-			return TX_DESC_QSEL_HIGH;
+-		else
+-			return TX_DESC_QSEL_MGMT;
++		return TX_DESC_QSEL_MGMT;
+ 	case RTW_TX_QUEUE_HI0:
+ 		return TX_DESC_QSEL_HIGH;
+ 	default:
 -- 
 2.39.5
 
