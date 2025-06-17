@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-154012-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-154014-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6B25BADD82D
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:52:45 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A0D10ADD7CD
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:49:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6BD674A5EA8
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:36:08 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A9C5B19E2A33
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:36:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D99F52F1995;
-	Tue, 17 Jun 2025 16:30:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62B502F19A7;
+	Tue, 17 Jun 2025 16:30:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R5RezfR8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KBL/oX3u"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94CAA2F198B;
-	Tue, 17 Jun 2025 16:30:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E94D2F198B;
+	Tue, 17 Jun 2025 16:30:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750177822; cv=none; b=PpgaJ6Q9zP0YSY1XZ+e6RA8AQyzbcnsrCRGc7F2ypTPSsYeJQiEOi4OayQX/krpgW3Ei1E91mvzFebICFgGNyGQJifwfe/R9nYj9Cq4UG9j3shJtbKhGHbSQqbTVUgpMtOrFqnIs7axOl0ablrUhMRhtdLhDh8Xn1z3+uJkvedQ=
+	t=1750177829; cv=none; b=kUJsnRBmOLm5qA0wmoNuUvYInBpd69WBAZodMa/0D8Yg/mlEE9jyR8anlT/Z/MtwVIoZmvwAarfvtnSbfGT75OQxCX3ti73Qtb19s0axaLrdJ466xYH5ZBDU8iVhRShBvI/JMUZz9ayyIKYPpFKZvkCIl1o674pAqZmd9U65Zs0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750177822; c=relaxed/simple;
-	bh=W+N46b8+ci+NiTdJH7uuuHf52KnSEyDPO5ikvw9k/SY=;
+	s=arc-20240116; t=1750177829; c=relaxed/simple;
+	bh=ZpPK4zC7mIPW/Ewg/lngX0lL5lJaPr5qI/mKM3PCkJI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VhbRlHv4SFY07EWfEEQqXsGALjmtGP5l5nY0CdWQBv5tFMHg7UxODsWCEPi6w73DcmHL7dcdRPmmod756gUEC92q2IfkcR2pe9gvhd16jbEoK4k0V5L0IggAss11P3rqeOfGncM6are9tHGQ76v+pDTT8M2NiRz+SYWbW8G9PFc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R5RezfR8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EDEEAC4CEE3;
-	Tue, 17 Jun 2025 16:30:21 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Iqesgf9ly1FfXazFzQzbpnsH3XbaXoXTU5gFaboU8+hiviYdEXJwSLT56SNiJMxk7spzr5aYs9PMmol5fQROpNhkNxKJRBVw6fwOEId3p95i4uEjG+NZZhu2sdEn7rvM1qzszTY/MUo4Ao6rHLCg9CepGU4eTqMEcBGf/nUZG4Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KBL/oX3u; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81760C4CEF0;
+	Tue, 17 Jun 2025 16:30:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750177822;
-	bh=W+N46b8+ci+NiTdJH7uuuHf52KnSEyDPO5ikvw9k/SY=;
+	s=korg; t=1750177829;
+	bh=ZpPK4zC7mIPW/Ewg/lngX0lL5lJaPr5qI/mKM3PCkJI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=R5RezfR8mSwx9rDyhUJUzlv6iBU2d/jYSuPWKXYA7jbKNIDjS0fHa33rAmJwVpCJJ
-	 ZE69jgZVrAJPGeHdZHd04zPl0QldtA6JBFUfEdnO21L7DmPjiAX6tXrUTxXoK66zCW
-	 ppjarHEW/up1rwWQNk1ryRgzm4bM1eg0Oe+VuTgk=
+	b=KBL/oX3uTPssasy0XZviex+m2UW/6AZQi6WE/W8vfU/u5TOJKeHxp+tEZq58ZJmRn
+	 qWak7lo7zNWErIXqLUjjJfLFoCrslR6oEJOga2hIS0a8Q+rkJlUWU6zwONn3qI7tIa
+	 ECQmAryEtPz8TY0NNiGi9AAD9N//Rc+XqTOGsUK0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexey Minnekhanov <alexeymin@postmarketos.org>,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
-	Bjorn Andersson <andersson@kernel.org>,
+	Tudor Ambarus <tudor.ambarus@linaro.org>,
+	=?UTF-8?q?Andr=C3=A9=20Draszik?= <andre.draszik@linaro.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 368/780] arm64: dts: qcom: sdm660-xiaomi-lavender: Add missing SD card detect GPIO
-Date: Tue, 17 Jun 2025 17:21:16 +0200
-Message-ID: <20250617152506.438040730@linuxfoundation.org>
+Subject: [PATCH 6.15 369/780] firmware: exynos-acpm: fix reading longer results
+Date: Tue, 17 Jun 2025 17:21:17 +0200
+Message-ID: <20250617152506.478633307@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
 References: <20250617152451.485330293@linuxfoundation.org>
@@ -61,43 +61,117 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexey Minnekhanov <alexeymin@postmarketos.org>
+From: André Draszik <andre.draszik@linaro.org>
 
-[ Upstream commit 2eca6af66709de0d1ba14cdf8b6d200a1337a3a2 ]
+[ Upstream commit 67af3cd813695fd3e6432b0849c453250c4685aa ]
 
-During initial porting these cd-gpios were missed. Having card detect is
-beneficial because driver does not need to do polling every second and it
-can just use IRQ. SD card detection in U-Boot is also fixed by this.
+ACPM commands that return more than 8 bytes currently don't work
+correctly, as this driver ignores any such returned bytes.
 
-Fixes: cf85e9aee210 ("arm64: dts: qcom: sdm660-xiaomi-lavender: Add eMMC and SD")
-Signed-off-by: Alexey Minnekhanov <alexeymin@postmarketos.org>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Link: https://lore.kernel.org/r/20250415130101.1429281-1-alexeymin@postmarketos.org
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+This is evident in at least acpm_pmic_bulk_read(), where up to 8
+registers can be read back and those 8 register values are placed
+starting at &xfer->rxd[8].
+
+The reason is that xfter->rxlen is initialized with the size of a
+pointer (8 bytes), rather than the size of the byte array that pointer
+points to (16 bytes)
+
+Update the code such that we set the number of bytes expected to be the
+size of the rx buffer.
+
+Note1: While different commands have different lengths rx buffers, we
+have to specify the same length for all rx buffers since acpm_get_rx()
+assumes they're all the same length.
+
+Note2: The different commands also have different lengths tx buffers,
+but before switching the code to use the minimum possible length, some
+more testing would have to be done to ensure this works correctly in
+all situations. It seems wiser to just apply this fix here without
+additional logic changes for now.
+
+Fixes: a88927b534ba ("firmware: add Exynos ACPM protocol driver")
+Reviewed-by: Tudor Ambarus <tudor.ambarus@linaro.org>
+Signed-off-by: André Draszik <andre.draszik@linaro.org>
+Link: https://lore.kernel.org/r/20250319-acpm-fixes-v2-1-ac2c1bcf322b@linaro.org
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/sdm660-xiaomi-lavender.dts | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/firmware/samsung/exynos-acpm-pmic.c | 16 ++++++++--------
+ 1 file changed, 8 insertions(+), 8 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/qcom/sdm660-xiaomi-lavender.dts b/arch/arm64/boot/dts/qcom/sdm660-xiaomi-lavender.dts
-index 7167f75bced3f..0b4d71c14a772 100644
---- a/arch/arm64/boot/dts/qcom/sdm660-xiaomi-lavender.dts
-+++ b/arch/arm64/boot/dts/qcom/sdm660-xiaomi-lavender.dts
-@@ -404,6 +404,8 @@
- &sdhc_2 {
- 	status = "okay";
+diff --git a/drivers/firmware/samsung/exynos-acpm-pmic.c b/drivers/firmware/samsung/exynos-acpm-pmic.c
+index 85e90d236da21..39b33a356ebd2 100644
+--- a/drivers/firmware/samsung/exynos-acpm-pmic.c
++++ b/drivers/firmware/samsung/exynos-acpm-pmic.c
+@@ -43,13 +43,13 @@ static inline u32 acpm_pmic_get_bulk(u32 data, unsigned int i)
+ 	return (data >> (ACPM_PMIC_BULK_SHIFT * i)) & ACPM_PMIC_BULK_MASK;
+ }
  
-+	cd-gpios = <&tlmm 54 GPIO_ACTIVE_HIGH>;
-+
- 	vmmc-supply = <&vreg_l5b_2p95>;
- 	vqmmc-supply = <&vreg_l2b_2p95>;
- };
+-static void acpm_pmic_set_xfer(struct acpm_xfer *xfer, u32 *cmd,
++static void acpm_pmic_set_xfer(struct acpm_xfer *xfer, u32 *cmd, size_t cmdlen,
+ 			       unsigned int acpm_chan_id)
+ {
+ 	xfer->txd = cmd;
+ 	xfer->rxd = cmd;
+-	xfer->txlen = sizeof(cmd);
+-	xfer->rxlen = sizeof(cmd);
++	xfer->txlen = cmdlen;
++	xfer->rxlen = cmdlen;
+ 	xfer->acpm_chan_id = acpm_chan_id;
+ }
+ 
+@@ -71,7 +71,7 @@ int acpm_pmic_read_reg(const struct acpm_handle *handle,
+ 	int ret;
+ 
+ 	acpm_pmic_init_read_cmd(cmd, type, reg, chan);
+-	acpm_pmic_set_xfer(&xfer, cmd, acpm_chan_id);
++	acpm_pmic_set_xfer(&xfer, cmd, sizeof(cmd), acpm_chan_id);
+ 
+ 	ret = acpm_do_xfer(handle, &xfer);
+ 	if (ret)
+@@ -104,7 +104,7 @@ int acpm_pmic_bulk_read(const struct acpm_handle *handle,
+ 		return -EINVAL;
+ 
+ 	acpm_pmic_init_bulk_read_cmd(cmd, type, reg, chan, count);
+-	acpm_pmic_set_xfer(&xfer, cmd, acpm_chan_id);
++	acpm_pmic_set_xfer(&xfer, cmd, sizeof(cmd), acpm_chan_id);
+ 
+ 	ret = acpm_do_xfer(handle, &xfer);
+ 	if (ret)
+@@ -144,7 +144,7 @@ int acpm_pmic_write_reg(const struct acpm_handle *handle,
+ 	int ret;
+ 
+ 	acpm_pmic_init_write_cmd(cmd, type, reg, chan, value);
+-	acpm_pmic_set_xfer(&xfer, cmd, acpm_chan_id);
++	acpm_pmic_set_xfer(&xfer, cmd, sizeof(cmd), acpm_chan_id);
+ 
+ 	ret = acpm_do_xfer(handle, &xfer);
+ 	if (ret)
+@@ -184,7 +184,7 @@ int acpm_pmic_bulk_write(const struct acpm_handle *handle,
+ 		return -EINVAL;
+ 
+ 	acpm_pmic_init_bulk_write_cmd(cmd, type, reg, chan, count, buf);
+-	acpm_pmic_set_xfer(&xfer, cmd, acpm_chan_id);
++	acpm_pmic_set_xfer(&xfer, cmd, sizeof(cmd), acpm_chan_id);
+ 
+ 	ret = acpm_do_xfer(handle, &xfer);
+ 	if (ret)
+@@ -214,7 +214,7 @@ int acpm_pmic_update_reg(const struct acpm_handle *handle,
+ 	int ret;
+ 
+ 	acpm_pmic_init_update_cmd(cmd, type, reg, chan, value, mask);
+-	acpm_pmic_set_xfer(&xfer, cmd, acpm_chan_id);
++	acpm_pmic_set_xfer(&xfer, cmd, sizeof(cmd), acpm_chan_id);
+ 
+ 	ret = acpm_do_xfer(handle, &xfer);
+ 	if (ret)
 -- 
 2.39.5
 
