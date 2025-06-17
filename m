@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-154182-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153755-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C3343ADD803
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:51:20 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E0C0ADD63D
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:31:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 032C419E26D2
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:44:38 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 204993B1E0B
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:22:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE3552E8DFA;
-	Tue, 17 Jun 2025 16:39:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3BD492E8DFC;
+	Tue, 17 Jun 2025 16:16:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UnUjCuo5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Fic6qAVx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 897322DFF1B;
-	Tue, 17 Jun 2025 16:39:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBECD285045;
+	Tue, 17 Jun 2025 16:16:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750178367; cv=none; b=nYi+WZxCgzWqXi8Dp88AFrlHcmLtyKh/4bFL3zsaDkFwg5cIftDg1/wfbVkjOq9gekM2wnF6dqrvUTjH+bg/t9bY2rFV+UNKJnn15Nw+iHzzkFwIXi0kWTU0YQlsqEksNzSxLsQHhHP6wnAVeXk5WHylIUgEQY9Xr5NY9SCHS5o=
+	t=1750176995; cv=none; b=ZS926HRmAJ+XTDk0IqlNf1hilL6VdyYsa44Lk0TWhm+i41fCldz1X2SXgvUDveJlnN21Q1HWwWthaQTSunSWd9n84EzHx8ZKckfKXlMH3QghYrfvfw6gLNx/fRs3z5943lUotSLfBAmjl1Sn2vUbBJRXYWCjPUzBEpeOLY7nAx4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750178367; c=relaxed/simple;
-	bh=dGTAhsvYyfl0rbe/q/Kf/vs47VBQjgsDx5XtCbMINbQ=;
+	s=arc-20240116; t=1750176995; c=relaxed/simple;
+	bh=Vooa8az4y3M3ajEBID6eXJboL1o++emRPvVWZ0M8Uf4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IDoIoMQWEGFfSBfJT8gtXeEfpcr1GnH94IVjze1u9hyEvKLVg+lXFWtGElsef/RnxxAk6oUtsP1CgMuOL9v5u42Dtm6RF5urm+5lDBd3lNe500Mo97sbN+OHiJW09bTluMwoIU8qho7uLHSvtFukUmN38EXKf7lbTa/7ZSrrFwU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UnUjCuo5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E42BC4CEE7;
-	Tue, 17 Jun 2025 16:39:26 +0000 (UTC)
+	 MIME-Version; b=Si4S+zI2gjyDHQ3DmMeVn30j5kaMyTZIbm2xukqJN2gTP5pbo9u9kBHHBNK67NrNI8Xt5Cv2a4GnpSsSHh7KYEzkANtNJFrhqkbDsCNtX/pU9qCmOK+mM6l1F7joNmwhOOeN8k3KekM589aMCzzl/GH3KwJizzqLoTH405X+gRk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Fic6qAVx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72C0DC4CEF0;
+	Tue, 17 Jun 2025 16:16:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750178367;
-	bh=dGTAhsvYyfl0rbe/q/Kf/vs47VBQjgsDx5XtCbMINbQ=;
+	s=korg; t=1750176994;
+	bh=Vooa8az4y3M3ajEBID6eXJboL1o++emRPvVWZ0M8Uf4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UnUjCuo5tdStzOwliGPLwoLmSYRXG5DKvWjSCQp5QpCWlDsIef8qnBRzhmmLBiXYH
-	 ED4TMM7J5BIYcY2oYtu31ib/XLjwHZ8CZ7UN+dcQglkb4h+431Ibngz3YJ7TkspI9r
-	 uSPCvG6pnRHc42QxLncXIOQoPmCcpsmSwZ34D8lk=
+	b=Fic6qAVxzsgbiP2VWFx7lxC2FkdXMWUrZwqSsCqiXY/zekSgl+D5EqW8ZTI4mgo4q
+	 QQYsSRJDpEBWtBeH1eJTjqHPjfnNNlveej4y4knA43PgsCqGAw1yUEdytqAT2StdvM
+	 7REOfzJYwblxC3GicRMkiajdTZhjEu7rDy5P7Heo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	David Heimann <d@dmeh.net>,
 	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.12 485/512] ALSA: usb-audio: Add implicit feedback quirk for RODE AI-1
-Date: Tue, 17 Jun 2025 17:27:31 +0200
-Message-ID: <20250617152439.272449266@linuxfoundation.org>
+Subject: [PATCH 6.6 337/356] ALSA: usb-audio: Add implicit feedback quirk for RODE AI-1
+Date: Tue, 17 Jun 2025 17:27:32 +0200
+Message-ID: <20250617152351.697563218@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
-References: <20250617152419.512865572@linuxfoundation.org>
+In-Reply-To: <20250617152338.212798615@linuxfoundation.org>
+References: <20250617152338.212798615@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,7 +61,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
