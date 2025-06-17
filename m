@@ -1,57 +1,64 @@
-Return-Path: <stable+bounces-154383-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153396-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C26A5ADDA3A
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 19:15:16 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 43AA7ADD42A
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:07:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 04D0E5A32E8
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:51:53 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4012017E689
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:01:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 050D32DFF1D;
-	Tue, 17 Jun 2025 16:50:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F43D2ED846;
+	Tue, 17 Jun 2025 15:57:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CcfuaKZU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RC6pUSrt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4CFA2264DD;
-	Tue, 17 Jun 2025 16:50:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B49012ED153;
+	Tue, 17 Jun 2025 15:57:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750179017; cv=none; b=Sk6nFz6sQ9plAGA320mczArMv/n7X7OvnDq9Q93lLh2qVL4FQHYn0ITVmwsRNHgySv7ZZvOC/mjEeuSBlv6Ygq2/1E/Z89H437U3TK/moq965TU4w8RAS5Ggo8FoKFokt5LaBegnHmc4Xxw5bOm1tCT6qZrKKJyNlF9MI5NL+QY=
+	t=1750175825; cv=none; b=hQln1RHF2c3cnlLCwZvonepdV5sYD3lXzZgiFdT1nWigAFjULHcF3JWFiR5/hGgF+94ixzFpzxkeK5xFSb+mymYuqkfruPm082bSgQvHrmgnnX1uPPe7EqQu+Qw/bVwCLpU82+eZChuANL8Nb0oMowAtnNRZT3QmeLVwPQl+78g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750179017; c=relaxed/simple;
-	bh=99PzaP/SA9cGpvi8PETLFxAF/tzV8R2XhvYqJLZ/B8U=;
+	s=arc-20240116; t=1750175825; c=relaxed/simple;
+	bh=qW4rZUenSQW6c1DyPiV/tQgqG3WiqguNRtSqBjIggJ8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lJuMXq+cVaaECehHOg+3lt89fI0GM302wN0x6BuUjRVIvIPF/A7wywq9MRRF7PD7UnklbISX9wyohd39GlZkFAYQm5IqFoBFr0IhzoMA8rCPgzrWYEodQZvK7Yl7F77BjqospYWKcg0+hDho47V/+qry9GrfXCbBp/M7W78nrho=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CcfuaKZU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB217C4CEE3;
-	Tue, 17 Jun 2025 16:50:16 +0000 (UTC)
+	 MIME-Version; b=AmZP/HTi30Afo+Y5Q0P9h2uV/Y0GaZfTzp53KUR1+hG4IMEp90RvZ3wBG7bgwzPsPV5ap6+Hg2FVUDvMceLsTcW3Nc1fZmP/BvDIGV0tii/U4Mjbok/nJLvqeQut9LVVuHv0gC7vcGH5SOHMgsqfx+II2MxNQ1jiO+F1/gwbDMA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RC6pUSrt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6A46C4CEE3;
+	Tue, 17 Jun 2025 15:57:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750179017;
-	bh=99PzaP/SA9cGpvi8PETLFxAF/tzV8R2XhvYqJLZ/B8U=;
+	s=korg; t=1750175825;
+	bh=qW4rZUenSQW6c1DyPiV/tQgqG3WiqguNRtSqBjIggJ8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CcfuaKZUnMk5QsYQGRpA1facq5XUujEnubRKp0RBccKkzgLyjA0GF215XCr+uyA0p
-	 TCv0QCaXUg+hWYYAADudyVtIVbCGGQIWaHxrde2orEyh01fRSV3YnQIsi5qs8qLW6A
-	 rUjuD6Wj1Px/ZAKPIsE1HkG/XqCRTBJ7smKRZETE=
+	b=RC6pUSrtjKj47nX6tBVzg2auc6qvPpy95fEcyA20VqVMzt4h56wgZS2sJ5tC6ZwGg
+	 msqFDpc5FpjH3Sx468izqG9sBDjxT8nFw241fgrI+5o6Ruwk4jeMa3umyh24nTHi1z
+	 /bFvVxJFwExsKcpF+3oMENBkyS/2e/0IL6FO8qmU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	Jason Xing <kerneljasonxing@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Ian Rogers <irogers@google.com>,
+	Dapeng Mi <dapeng1.mi@linux.intel.com>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+	Andi Kleen <ak@linux.intel.com>,
+	Ingo Molnar <mingo@redhat.com>,
+	Kan Liang <kan.liang@linux.intel.com>,
+	Namhyung Kim <namhyung@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Arnaldo Carvalho de Melo <acme@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 623/780] net: annotate data-races around cleanup_net_task
+Subject: [PATCH 6.6 216/356] perf record: Fix incorrect --user-regs comments
 Date: Tue, 17 Jun 2025 17:25:31 +0200
-Message-ID: <20250617152516.846460726@linuxfoundation.org>
+Message-ID: <20250617152346.900594408@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
-References: <20250617152451.485330293@linuxfoundation.org>
+In-Reply-To: <20250617152338.212798615@linuxfoundation.org>
+References: <20250617152338.212798615@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,65 +70,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Dapeng Mi <dapeng1.mi@linux.intel.com>
 
-[ Upstream commit 535caaca921c653b1f9838fbd5c4e9494cafc3d9 ]
+[ Upstream commit a4a859eb6704a8aa46aa1cec5396c8d41383a26b ]
 
-from_cleanup_net() reads cleanup_net_task locklessly.
+The comment of "--user-regs" option is not correct, fix it.
 
-Add READ_ONCE()/WRITE_ONCE() annotations to avoid
-a potential KCSAN warning, even if the race is harmless.
+"on interrupt," -> "in user space,"
 
-Fixes: 0734d7c3d93c ("net: expedite synchronize_net() for cleanup_net()")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Jason Xing <kerneljasonxing@gmail.com>
-Link: https://patch.msgid.link/20250604093928.1323333-1-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 84c417422798c897 ("perf record: Support direct --user-regs arguments")
+Reviewed-by: Ian Rogers <irogers@google.com>
+Signed-off-by: Dapeng Mi <dapeng1.mi@linux.intel.com>
+Cc: Adrian Hunter <adrian.hunter@intel.com>
+Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
+Cc: Andi Kleen <ak@linux.intel.com>
+Cc: Ingo Molnar <mingo@redhat.com>
+Cc: Kan Liang <kan.liang@linux.intel.com>
+Cc: Namhyung Kim <namhyung@kernel.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Link: https://lore.kernel.org/r/20250403060810.196028-1-dapeng1.mi@linux.intel.com
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/core/dev.c           | 2 +-
- net/core/net_namespace.c | 4 ++--
- 2 files changed, 3 insertions(+), 3 deletions(-)
+ tools/perf/builtin-record.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/core/dev.c b/net/core/dev.c
-index 0d891634c6927..2b20aadaf9268 100644
---- a/net/core/dev.c
-+++ b/net/core/dev.c
-@@ -10393,7 +10393,7 @@ static void dev_index_release(struct net *net, int ifindex)
- static bool from_cleanup_net(void)
- {
- #ifdef CONFIG_NET_NS
--	return current == cleanup_net_task;
-+	return current == READ_ONCE(cleanup_net_task);
- #else
- 	return false;
- #endif
-diff --git a/net/core/net_namespace.c b/net/core/net_namespace.c
-index b0dfdf791ece5..599f6a89ae581 100644
---- a/net/core/net_namespace.c
-+++ b/net/core/net_namespace.c
-@@ -600,7 +600,7 @@ static void cleanup_net(struct work_struct *work)
- 	LIST_HEAD(net_exit_list);
- 	LIST_HEAD(dev_kill_list);
- 
--	cleanup_net_task = current;
-+	WRITE_ONCE(cleanup_net_task, current);
- 
- 	/* Atomically snapshot the list of namespaces to cleanup */
- 	net_kill_list = llist_del_all(&cleanup_list);
-@@ -676,7 +676,7 @@ static void cleanup_net(struct work_struct *work)
- 		put_user_ns(net->user_ns);
- 		net_passive_dec(net);
- 	}
--	cleanup_net_task = NULL;
-+	WRITE_ONCE(cleanup_net_task, NULL);
- }
- 
- /**
+diff --git a/tools/perf/builtin-record.c b/tools/perf/builtin-record.c
+index b94ae33a343c2..81f77c0505fde 100644
+--- a/tools/perf/builtin-record.c
++++ b/tools/perf/builtin-record.c
+@@ -3427,7 +3427,7 @@ static struct option __record_options[] = {
+ 		    "sample selected machine registers on interrupt,"
+ 		    " use '-I?' to list register names", parse_intr_regs),
+ 	OPT_CALLBACK_OPTARG(0, "user-regs", &record.opts.sample_user_regs, NULL, "any register",
+-		    "sample selected machine registers on interrupt,"
++		    "sample selected machine registers in user space,"
+ 		    " use '--user-regs=?' to list register names", parse_user_regs),
+ 	OPT_BOOLEAN(0, "running-time", &record.opts.running_time,
+ 		    "Record running/enabled time of read (:S) events"),
 -- 
 2.39.5
 
