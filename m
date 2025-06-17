@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-153285-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153288-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2731CADD3C1
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:02:07 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1BB44ADD3AC
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:00:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 43C541944575
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 15:54:51 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6A4B53BFD07
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 15:54:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB0F12DFF21;
-	Tue, 17 Jun 2025 15:51:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 738D62EA14E;
+	Tue, 17 Jun 2025 15:51:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o1JryE5i"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Rz3VGohI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65D442DFF1D;
-	Tue, 17 Jun 2025 15:51:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 313562DFF0B;
+	Tue, 17 Jun 2025 15:51:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750175466; cv=none; b=ZukrNS+Ls6Aa3gMfZ1hyIDe5mM4wwJ2DZFQDpCflhbAn6tX24IUgovBJvPeAyNJINApurInWAGxum7gaJYov8/FyGfP8PAHQIsrOIjTcTvKiv8eSMTjSCj7bIiyA0LVJKShXGTqjsVOyvCyMoieNM7zZT5cuj04BEB+pZPpsXb4=
+	t=1750175476; cv=none; b=TbVn/WjJ2VtQ0ZuenZBpt73iJOVrLFkpnDFXvF45xw/woFuHAK/s1JhLa/YpSors8oj0c4rI8tyFylb73h7hkf3W6wpsufsE+fi6IAMM786QeKG7QPyBEEr+dugEfzMHCXGVaZbYUcrAEnbIME+kqZcO/4Y3ncoKC50unQD/xCk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750175466; c=relaxed/simple;
-	bh=Y6Am4dWHTvLa7rpBYWFy82Uc69I7DtxPJSOuI3tM0LA=;
+	s=arc-20240116; t=1750175476; c=relaxed/simple;
+	bh=kKNOB9Fcd6vZjhrfrGq0Atq4+io0KRWVrBOdX1DNRsA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MPrtMNEGeUBzfVhBabF7A+nK09bUlEq7DKACiK5jqCujB5rIkVmyIkuXxAeKh1UZNwWC02mcoldxR9huCCzJysCJ1/HaBxm+TyS3F44Xm8s3qWTgevgOXulTIbp0FWQoxB9+YwgqBmN+w8Fs+w8+Xy8nSWk+f3NDUhlJVmP1eJg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o1JryE5i; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8F7EC4CEE7;
-	Tue, 17 Jun 2025 15:51:05 +0000 (UTC)
+	 MIME-Version; b=fKfTB9YWtTxbdJFgxDLHiY0pLoW3SAfgGS1XEMzyAGhEC6ZEOq+JmeCbYbEVFXp2tTiitC77C4VtfIGptq0t3hSkrOPW5Psu4Mb2W2X05+Lmkg0J1GbMY3Yi3OykRWaclDP/JErDxinIx+LRfdpojZS76qdKhgAWDnOqze74pLg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Rz3VGohI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5EB0DC4CEF2;
+	Tue, 17 Jun 2025 15:51:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750175466;
-	bh=Y6Am4dWHTvLa7rpBYWFy82Uc69I7DtxPJSOuI3tM0LA=;
+	s=korg; t=1750175474;
+	bh=kKNOB9Fcd6vZjhrfrGq0Atq4+io0KRWVrBOdX1DNRsA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=o1JryE5iRWZxeLSFkufeC3vyAehg2wwHdCHcuKaWSo+7ThA54ZN7Ksr5ZxN7ul4L9
-	 rb3GMBSqNlll6DxausTT7TqfeJN8mHjnriUVtSX3mvTbOR9tnbywmQJvx34ttFiE0f
-	 uSS1TRdz5oNpuuuGK0Ptb0yOKuCoIPJHYoRkgpFI=
+	b=Rz3VGohIwKctQt96uJ97NrxVRwarYBTa/0GddKTYwfn/xBwHSWDGikePcpIGXjPIg
+	 IG4D2t1QLalUib8mDvLqJa12D+j6PfSWf4ePGgsGu02xPeKk2dWJAplU/7B5KAvlQO
+	 jefSXZ86KQlraee3kTLxCH8MRgt/tWd7Lb69lU28=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Prasanth Babu Mantena <p-mantena@ti.com>,
-	Nishanth Menon <nm@ti.com>,
+	syzbot+65761fc25a137b9c8c6e@syzkaller.appspotmail.com,
+	Phillip Lougher <phillip@squashfs.org.uk>,
+	Andrew Morton <akpm@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 179/356] arm64: dts: ti: k3-j721e-common-proc-board: Enable OSPI1 on J721E
-Date: Tue, 17 Jun 2025 17:24:54 +0200
-Message-ID: <20250617152345.421084380@linuxfoundation.org>
+Subject: [PATCH 6.6 180/356] Squashfs: check return result of sb_min_blocksize
+Date: Tue, 17 Jun 2025 17:24:55 +0200
+Message-ID: <20250617152345.458591828@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250617152338.212798615@linuxfoundation.org>
 References: <20250617152338.212798615@linuxfoundation.org>
@@ -66,34 +67,64 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Prasanth Babu Mantena <p-mantena@ti.com>
+From: Phillip Lougher <phillip@squashfs.org.uk>
 
-[ Upstream commit 6b8deb2ff0d31848c43a73f6044e69ba9276b3ec ]
+[ Upstream commit 734aa85390ea693bb7eaf2240623d41b03705c84 ]
 
-J721E SoM has MT25QU512AB Serial NOR flash connected to
-OSPI1 controller. Enable ospi1 node in device tree.
+Syzkaller reports an "UBSAN: shift-out-of-bounds in squashfs_bio_read" bug.
 
-Fixes: 73676c480b72 ("arm64: dts: ti: k3-j721e: Enable OSPI nodes at the board level")
-Signed-off-by: Prasanth Babu Mantena <p-mantena@ti.com>
-Link: https://lore.kernel.org/r/20250507050701.3007209-1-p-mantena@ti.com
-Signed-off-by: Nishanth Menon <nm@ti.com>
+Syzkaller forks multiple processes which after mounting the Squashfs
+filesystem, issues an ioctl("/dev/loop0", LOOP_SET_BLOCK_SIZE, 0x8000).
+Now if this ioctl occurs at the same time another process is in the
+process of mounting a Squashfs filesystem on /dev/loop0, the failure
+occurs.  When this happens the following code in squashfs_fill_super()
+fails.
+
+----
+msblk->devblksize = sb_min_blocksize(sb, SQUASHFS_DEVBLK_SIZE);
+msblk->devblksize_log2 = ffz(~msblk->devblksize);
+----
+
+sb_min_blocksize() returns 0, which means msblk->devblksize is set to 0.
+
+As a result, ffz(~msblk->devblksize) returns 64, and msblk->devblksize_log2
+is set to 64.
+
+This subsequently causes the
+
+UBSAN: shift-out-of-bounds in fs/squashfs/block.c:195:36
+shift exponent 64 is too large for 64-bit type 'u64' (aka
+'unsigned long long')
+
+This commit adds a check for a 0 return by sb_min_blocksize().
+
+Link: https://lkml.kernel.org/r/20250409024747.876480-1-phillip@squashfs.org.uk
+Fixes: 0aa666190509 ("Squashfs: super block operations")
+Reported-by: syzbot+65761fc25a137b9c8c6e@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/all/67f0dd7a.050a0220.0a13.0230.GAE@google.com/
+Signed-off-by: Phillip Lougher <phillip@squashfs.org.uk>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/ti/k3-j721e-common-proc-board.dts | 1 +
- 1 file changed, 1 insertion(+)
+ fs/squashfs/super.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/arch/arm64/boot/dts/ti/k3-j721e-common-proc-board.dts b/arch/arm64/boot/dts/ti/k3-j721e-common-proc-board.dts
-index fe5207ac7d85d..90ae8e948671d 100644
---- a/arch/arm64/boot/dts/ti/k3-j721e-common-proc-board.dts
-+++ b/arch/arm64/boot/dts/ti/k3-j721e-common-proc-board.dts
-@@ -557,6 +557,7 @@
- &ospi1 {
- 	pinctrl-names = "default";
- 	pinctrl-0 = <&mcu_fss0_ospi1_pins_default>;
-+	status = "okay";
+diff --git a/fs/squashfs/super.c b/fs/squashfs/super.c
+index 22e812808e5cf..3a27d4268b3c4 100644
+--- a/fs/squashfs/super.c
++++ b/fs/squashfs/super.c
+@@ -202,6 +202,11 @@ static int squashfs_fill_super(struct super_block *sb, struct fs_context *fc)
+ 	msblk->panic_on_errors = (opts->errors == Opt_errors_panic);
  
- 	flash@0 {
- 		compatible = "jedec,spi-nor";
+ 	msblk->devblksize = sb_min_blocksize(sb, SQUASHFS_DEVBLK_SIZE);
++	if (!msblk->devblksize) {
++		errorf(fc, "squashfs: unable to set blocksize\n");
++		return -EINVAL;
++	}
++
+ 	msblk->devblksize_log2 = ffz(~msblk->devblksize);
+ 
+ 	mutex_init(&msblk->meta_index_mutex);
 -- 
 2.39.5
 
