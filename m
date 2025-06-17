@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-153508-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153511-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D2377ADD4CB
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:14:23 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C6B1CADD520
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:17:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EE6A417A007
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:06:38 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3E708194174E
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:06:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F5BD2DFF1F;
-	Tue, 17 Jun 2025 16:03:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 501B12DFF1D;
+	Tue, 17 Jun 2025 16:03:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H8RaJzH8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0ruQ7Rrp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEEF62DFF03;
-	Tue, 17 Jun 2025 16:03:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 036DF2DFF1B;
+	Tue, 17 Jun 2025 16:03:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750176189; cv=none; b=PEv8o01roo+JzWLbR6HUxFxehMIdZNq5s2/opKRDvedUqwXZCDOCbPDt4lyGpJoYcpUqKP32qW8Ghu4maOQa9Xtu+bJm2rLMiHh7hLzwDdZMyMokY0zIoogNivZOkC+P3Pv3xnIhd1wHzRIXY4YDquIQYPcvDBf6GYQCAB0SqP8=
+	t=1750176200; cv=none; b=bqLe9dii2Qn928ftClHTpkBbI+HiMtzrrf0NZCoFaGCgMH3Izqj4jU3W2q7w2wunvOs9Peh7NxS+b6DFA3dAIPGGlTV4jItppCBYKKsQOwYzo/8Ew+S71Yr8pNKMdgRW+sd0aM8A8qiO2Amrmsegkxx8zsZvkU86Rx2ehVZ8eAg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750176189; c=relaxed/simple;
-	bh=GtFdO1Zi0adLfrh7//JCQE4+8Mfk60MARHj1z/Ikt00=;
+	s=arc-20240116; t=1750176200; c=relaxed/simple;
+	bh=WQpOpqiwbHrLBf/3tR/Ad1ZfO+qnR8Rev63TPFOgi8k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Xf0GHH3FIzj06ALET2toPnGleYUtKPEKNdGd/EikA4plHMrdbLUYN2tcm+uDrWeyUXsXJW24hAH+KDWAI93E3oL5ugLDxW72Qit3lU/B8vBbUgS3pQxSLOM/6Hl24ScAS1okjukSPqcqzAWmYK4nMl24mhCv2NJbMONrycBwOrU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H8RaJzH8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D261C4CEE3;
-	Tue, 17 Jun 2025 16:03:08 +0000 (UTC)
+	 MIME-Version; b=YkrjNwM2EPu9WyfZmn0l5+KdvjtS0aG4AAILAel/BkuysM8bzbEsaDKeZhNk6P2GCRfHB3Suir9B+P6GiCSTrdVvljJrCIJiKispwBjBUPNBUpn3Ef9FiizPkz8vJqS1pf6SvsKSs9w3N0Cwn1fMipTtQ+c98NsYrCzRVSgOXCs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0ruQ7Rrp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 674A1C4CEE3;
+	Tue, 17 Jun 2025 16:03:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750176189;
-	bh=GtFdO1Zi0adLfrh7//JCQE4+8Mfk60MARHj1z/Ikt00=;
+	s=korg; t=1750176199;
+	bh=WQpOpqiwbHrLBf/3tR/Ad1ZfO+qnR8Rev63TPFOgi8k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=H8RaJzH8kh+fd9xBGph0N93DhPu1A+Yr1t1oSV5B1YIpzzpIMQxwVeKqfzmUqTAYl
-	 WY5OcYTqC3EWw3X676/zpQiDpUxG+RhMvJ1kt06NELlTBFsZ7XKY3L9j7OnEeOwW4+
-	 5FbOhn+Oyo4lRMb54X4uDwHgFysrV6V4E0/gmwKk=
+	b=0ruQ7RrpAJzW7KS/pf8DfNizh2G8kX4eMwRxN0qDpNQxhsxTxVkrQte69FATDQsxZ
+	 etxAHcoiDGv6p/rrAHkMoHQwO18PTsSosAztMzV6bC2TfBsWl5pXup4n/TAVXju8Gg
+	 YcEJiWZ1S25Ev0qwegyTbd/84W9M/gGOS4fyffDo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Carlos Llamas <cmllamas@google.com>,
-	Andrii Nakryiko <andrii@kernel.org>,
+	P Praneesh <praneesh.p@oss.qualcomm.com>,
+	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 163/780] libbpf: Fix implicit memfd_create() for bionic
-Date: Tue, 17 Jun 2025 17:17:51 +0200
-Message-ID: <20250617152458.125460932@linuxfoundation.org>
+Subject: [PATCH 6.15 164/780] wifi: ath12k: Fix memory leak during vdev_id mismatch
+Date: Tue, 17 Jun 2025 17:17:52 +0200
+Message-ID: <20250617152458.164798055@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
 References: <20250617152451.485330293@linuxfoundation.org>
@@ -66,86 +66,66 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Carlos Llamas <cmllamas@google.com>
+From: P Praneesh <praneesh.p@oss.qualcomm.com>
 
-[ Upstream commit 75011ad69bc54396703867b5434f1622343a848e ]
+[ Upstream commit 75ec94db880b1e4b4f9182885d60db0db6e2ee56 ]
 
-Since memfd_create() is not consistently available across different
-bionic libc implementations, using memfd_create() directly can break
-some Android builds:
+Currently driver enables vdev_id check as part of the bank configuration
+in ath12k_dp_tx_get_vdev_bank_config(). This check ensures that the vdev_id
+configured in the bank register aligns with the vdev_id in the packet's
+address search table within the firmware. If there is a mismatch, the
+firmware forwards the packet with the HTT status
+HAL_WBM_REL_HTT_TX_COMP_STATUS_VDEVID_MISMATCH. Since driver does not
+handle this vdev_id mismatch HTT status, the corresponding buffers are not
+freed properly, causing a memory leak. Fix this issue by adding handling to
+free the buffers when a vdev_id mismatch HTT status is encountered.
 
-  tools/lib/bpf/linker.c:576:7: error: implicit declaration of function 'memfd_create' [-Werror,-Wimplicit-function-declaration]
-    576 |         fd = memfd_create(filename, 0);
-        |              ^
+Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.4.1-00199-QCAHKSWPL_SILICONZ-1
+Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0.c5-00481-QCAHMTSWPL_V1.0_V2.0_SILICONZ-
 
-To fix this, relocate and inline the sys_memfd_create() helper so that
-it can be used in "linker.c". Similar issues were previously fixed by
-commit 9fa5e1a180aa ("libbpf: Call memfd_create() syscall directly").
-
-Fixes: 6d5e5e5d7ce1 ("libbpf: Extend linker API to support in-memory ELF files")
-Signed-off-by: Carlos Llamas <cmllamas@google.com>
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Link: https://lore.kernel.org/bpf/20250330211325.530677-1-cmllamas@google.com
+Fixes: d889913205cf ("wifi: ath12k: driver for Qualcomm Wi-Fi 7 devices")
+Signed-off-by: P Praneesh <praneesh.p@oss.qualcomm.com>
+Link: https://patch.msgid.link/20250402174032.2651221-1-praneesh.p@oss.qualcomm.com
+Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/lib/bpf/libbpf.c          | 9 ---------
- tools/lib/bpf/libbpf_internal.h | 9 +++++++++
- tools/lib/bpf/linker.c          | 2 +-
- 3 files changed, 10 insertions(+), 10 deletions(-)
+ drivers/net/wireless/ath/ath12k/dp_tx.c    | 1 +
+ drivers/net/wireless/ath/ath12k/hal_desc.h | 3 ++-
+ 2 files changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/tools/lib/bpf/libbpf.c b/tools/lib/bpf/libbpf.c
-index 6b85060f07b3b..37d563e140515 100644
---- a/tools/lib/bpf/libbpf.c
-+++ b/tools/lib/bpf/libbpf.c
-@@ -1725,15 +1725,6 @@ static Elf64_Sym *find_elf_var_sym(const struct bpf_object *obj, const char *nam
- 	return ERR_PTR(-ENOENT);
- }
+diff --git a/drivers/net/wireless/ath/ath12k/dp_tx.c b/drivers/net/wireless/ath/ath12k/dp_tx.c
+index ced232bf4aed0..1e2788df476c2 100644
+--- a/drivers/net/wireless/ath/ath12k/dp_tx.c
++++ b/drivers/net/wireless/ath/ath12k/dp_tx.c
+@@ -585,6 +585,7 @@ ath12k_dp_tx_process_htt_tx_complete(struct ath12k_base *ab,
+ 	case HAL_WBM_REL_HTT_TX_COMP_STATUS_TTL:
+ 	case HAL_WBM_REL_HTT_TX_COMP_STATUS_REINJ:
+ 	case HAL_WBM_REL_HTT_TX_COMP_STATUS_INSPECT:
++	case HAL_WBM_REL_HTT_TX_COMP_STATUS_VDEVID_MISMATCH:
+ 		ath12k_dp_tx_free_txbuf(ab, msdu, mac_id, tx_ring);
+ 		break;
+ 	case HAL_WBM_REL_HTT_TX_COMP_STATUS_MEC_NOTIFY:
+diff --git a/drivers/net/wireless/ath/ath12k/hal_desc.h b/drivers/net/wireless/ath/ath12k/hal_desc.h
+index 3e8983b85de86..63d279fab3224 100644
+--- a/drivers/net/wireless/ath/ath12k/hal_desc.h
++++ b/drivers/net/wireless/ath/ath12k/hal_desc.h
+@@ -1,7 +1,7 @@
+ /* SPDX-License-Identifier: BSD-3-Clause-Clear */
+ /*
+  * Copyright (c) 2018-2021 The Linux Foundation. All rights reserved.
+- * Copyright (c) 2021-2022, 2024 Qualcomm Innovation Center, Inc. All rights reserved.
++ * Copyright (c) 2021-2022, 2024-2025 Qualcomm Innovation Center, Inc. All rights reserved.
+  */
+ #include "core.h"
  
--/* Some versions of Android don't provide memfd_create() in their libc
-- * implementation, so avoid complications and just go straight to Linux
-- * syscall.
-- */
--static int sys_memfd_create(const char *name, unsigned flags)
--{
--	return syscall(__NR_memfd_create, name, flags);
--}
--
- #ifndef MFD_CLOEXEC
- #define MFD_CLOEXEC 0x0001U
- #endif
-diff --git a/tools/lib/bpf/libbpf_internal.h b/tools/lib/bpf/libbpf_internal.h
-index 76669c73dcd16..477a3b3389a09 100644
---- a/tools/lib/bpf/libbpf_internal.h
-+++ b/tools/lib/bpf/libbpf_internal.h
-@@ -667,6 +667,15 @@ static inline int sys_dup3(int oldfd, int newfd, int flags)
- 	return syscall(__NR_dup3, oldfd, newfd, flags);
- }
+@@ -1298,6 +1298,7 @@ enum hal_wbm_htt_tx_comp_status {
+ 	HAL_WBM_REL_HTT_TX_COMP_STATUS_REINJ,
+ 	HAL_WBM_REL_HTT_TX_COMP_STATUS_INSPECT,
+ 	HAL_WBM_REL_HTT_TX_COMP_STATUS_MEC_NOTIFY,
++	HAL_WBM_REL_HTT_TX_COMP_STATUS_VDEVID_MISMATCH,
+ 	HAL_WBM_REL_HTT_TX_COMP_STATUS_MAX,
+ };
  
-+/* Some versions of Android don't provide memfd_create() in their libc
-+ * implementation, so avoid complications and just go straight to Linux
-+ * syscall.
-+ */
-+static inline int sys_memfd_create(const char *name, unsigned flags)
-+{
-+	return syscall(__NR_memfd_create, name, flags);
-+}
-+
- /* Point *fixed_fd* to the same file that *tmp_fd* points to.
-  * Regardless of success, *tmp_fd* is closed.
-  * Whatever *fixed_fd* pointed to is closed silently.
-diff --git a/tools/lib/bpf/linker.c b/tools/lib/bpf/linker.c
-index 800e0ef09c378..56f5068e2ebab 100644
---- a/tools/lib/bpf/linker.c
-+++ b/tools/lib/bpf/linker.c
-@@ -573,7 +573,7 @@ int bpf_linker__add_buf(struct bpf_linker *linker, void *buf, size_t buf_sz,
- 
- 	snprintf(filename, sizeof(filename), "mem:%p+%zu", buf, buf_sz);
- 
--	fd = memfd_create(filename, 0);
-+	fd = sys_memfd_create(filename, 0);
- 	if (fd < 0) {
- 		ret = -errno;
- 		pr_warn("failed to create memfd '%s': %s\n", filename, errstr(ret));
 -- 
 2.39.5
 
