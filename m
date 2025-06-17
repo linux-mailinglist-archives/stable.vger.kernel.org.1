@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-153308-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153245-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C82B3ADD3F1
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:04:42 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A3835ADD36A
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 17:57:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C4A111944C08
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 15:56:07 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 697033AAAFE
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 15:51:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2BA922F2361;
-	Tue, 17 Jun 2025 15:52:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B7E32EF28A;
+	Tue, 17 Jun 2025 15:49:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hWowq5Sh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QG84wYML"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DAC172F2358;
-	Tue, 17 Jun 2025 15:52:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29DE22F237F;
+	Tue, 17 Jun 2025 15:49:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750175530; cv=none; b=FOZplAoRP8wofHciIqjMkov+lj9Jm4BkIZS5VEFa/ZkhR+Grw+FNqA+vnFc/uTKsOp7ld4eLofVIKPuvKeaxT4Ja1FO7EVsIbXWU+VJqHwC+h6hGxSI0mcuOUwrJ0G9OktHd9NFwbPArSgTaNH33kuD4Lys4dm4fzfjoBdPlIWY=
+	t=1750175342; cv=none; b=auxAgTI4EPgiyIJYMl+5VBmi/1MlbZi8ikMMIBSDuWv4K4ud2YspBmWDf/95O+4WzGvty8/pnUdb5rJaO/Qof7AJ22QW07rzBnJR938yjORdFwYorFVW61J1q2cX0iEM348XiO6QCSGydaLj4UNxCpI/+OBxG0plgodYGlqQBDM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750175530; c=relaxed/simple;
-	bh=Ie3hSuRrrBycS1tA6TLT4ei7YYKRDbfV/sFHq0Yppk8=;
+	s=arc-20240116; t=1750175342; c=relaxed/simple;
+	bh=jngA7PtLvzZFxEPN6jQo+UT60KPhZzPLBXeOMi/i/wM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=EKrAfla4+oSVE92E/OZG5moeo9JjkzqEnQzpJXh3BUdcXpUGAw4CvzAhf6qbybH+PgJs0qxGkoNtVREFEpLDwsMqBsoZJf9JbixKob/sGDNUK1K/2kQPSQ4H1Ur8TaB4LboPpZEFP2op3qLjsUucY9rydF7yXM8ZunKw9ATyV00=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hWowq5Sh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 656B1C4CEE3;
-	Tue, 17 Jun 2025 15:52:09 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Jz5kxpKlJW1sxz7ZgBjLn3vIjA4VBC3uz9kntLBDT0LZV/ynpSXZO5IJaQVkcPJlVxvYqHVFqAQjl2Zi4brc59DzqvuhIP0QtzCjK5vX+zHlOIUBgSInKRchWFZudHFrj/pCHBzo2K4UNDNaaFtO59dKmKwl6AVG0ag1xvacV1A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QG84wYML; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 411F8C4CEE3;
+	Tue, 17 Jun 2025 15:49:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750175529;
-	bh=Ie3hSuRrrBycS1tA6TLT4ei7YYKRDbfV/sFHq0Yppk8=;
+	s=korg; t=1750175341;
+	bh=jngA7PtLvzZFxEPN6jQo+UT60KPhZzPLBXeOMi/i/wM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hWowq5ShAAqAVHL6V8Bmb69XBhaOcx6GP5WNjKLP6ox7lSug9BCPU4Hr/96n7cUB5
-	 WffnyoT1VYMkqoaxowdOWD5C6qKp0sZ/WvvWepLgSSFJF0CspCHjKy4aGLnYFnOnvB
-	 QAJoQTj/77TQLOqjywzM04DtPVUynP3LQwgjmCOU=
+	b=QG84wYMLh4C1CMT2tKAXzuKVLpke734y83QRQ6EQSAE+nfjq3Vcm5pENtMdMEVkAY
+	 lSvreBN3zyHaP/WJ5SkHCB+sNHM0+Sz1vKz5Gm6GUvnvyQ9psXc4iLiEuWj8MvOcnW
+	 f9DAG3lxKiMRMq0eJzXXhaE8F51PyoWYFIae3ocQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
+	Alexander Dahl <ada@thorsis.com>,
 	=?UTF-8?q?Bence=20Cs=C3=B3k=C3=A1s?= <csokas.bence@prolan.hu>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 074/780] PM: runtime: Add new devm functions
-Date: Tue, 17 Jun 2025 17:16:22 +0200
-Message-ID: <20250617152454.526110139@linuxfoundation.org>
+Subject: [PATCH 6.15 075/780] spi: atmel-quadspi: Fix unbalanced pm_runtime by using devm_ API
+Date: Tue, 17 Jun 2025 17:16:23 +0200
+Message-ID: <20250617152454.564695628@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
 References: <20250617152451.485330293@linuxfoundation.org>
@@ -69,108 +70,64 @@ Content-Transfer-Encoding: 8bit
 
 From: Bence Csókás <csokas.bence@prolan.hu>
 
-[ Upstream commit 73db799bf5efc5a04654bb3ff6c9bf63a0dfa473 ]
+[ Upstream commit 8856eafcc05ecf54d6dd2b6c67804fefd276472c ]
 
-Add `devm_pm_runtime_set_active_enabled()` and
-`devm_pm_runtime_get_noresume()` for simplifying
-common cases in drivers.
+Fix unbalanced PM in error path of `atmel_qspi_probe()`
+by using `devm_pm_runtime_*()` functions.
 
+Reported-by: Alexander Dahl <ada@thorsis.com>
+Closes: https://lore.kernel.org/linux-spi/20250110-paycheck-irregular-bcddab1276c7@thorsis.com/
+Fixes: 5af42209a4d2 ("spi: atmel-quadspi: Add support for sama7g5 QSPI")
 Signed-off-by: Bence Csókás <csokas.bence@prolan.hu>
-Link: https://patch.msgid.link/20250327195928.680771-3-csokas.bence@prolan.hu
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Stable-dep-of: 8856eafcc05e ("spi: atmel-quadspi: Fix unbalanced pm_runtime by using devm_ API")
+Link: https://patch.msgid.link/20250327195928.680771-4-csokas.bence@prolan.hu
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/base/power/runtime.c | 44 ++++++++++++++++++++++++++++++++++++
- include/linux/pm_runtime.h   |  4 ++++
- 2 files changed, 48 insertions(+)
+ drivers/spi/atmel-quadspi.c | 17 ++++-------------
+ 1 file changed, 4 insertions(+), 13 deletions(-)
 
-diff --git a/drivers/base/power/runtime.c b/drivers/base/power/runtime.c
-index 0e127b0329c00..205a4f8828b0a 100644
---- a/drivers/base/power/runtime.c
-+++ b/drivers/base/power/runtime.c
-@@ -1568,6 +1568,32 @@ void pm_runtime_enable(struct device *dev)
- }
- EXPORT_SYMBOL_GPL(pm_runtime_enable);
+diff --git a/drivers/spi/atmel-quadspi.c b/drivers/spi/atmel-quadspi.c
+index 244ac01068629..e7b61dc4ce676 100644
+--- a/drivers/spi/atmel-quadspi.c
++++ b/drivers/spi/atmel-quadspi.c
+@@ -1436,22 +1436,17 @@ static int atmel_qspi_probe(struct platform_device *pdev)
  
-+static void pm_runtime_set_suspended_action(void *data)
-+{
-+	pm_runtime_set_suspended(data);
-+}
-+
-+/**
-+ * devm_pm_runtime_set_active_enabled - set_active version of devm_pm_runtime_enable.
-+ *
-+ * @dev: Device to handle.
-+ */
-+int devm_pm_runtime_set_active_enabled(struct device *dev)
-+{
-+	int err;
-+
-+	err = pm_runtime_set_active(dev);
+ 	pm_runtime_set_autosuspend_delay(&pdev->dev, 500);
+ 	pm_runtime_use_autosuspend(&pdev->dev);
+-	pm_runtime_set_active(&pdev->dev);
+-	pm_runtime_enable(&pdev->dev);
+-	pm_runtime_get_noresume(&pdev->dev);
++	devm_pm_runtime_set_active_enabled(&pdev->dev);
++	devm_pm_runtime_get_noresume(&pdev->dev);
+ 
+ 	err = atmel_qspi_init(aq);
+ 	if (err)
+ 		goto dma_release;
+ 
+ 	err = spi_register_controller(ctrl);
+-	if (err) {
+-		pm_runtime_put_noidle(&pdev->dev);
+-		pm_runtime_disable(&pdev->dev);
+-		pm_runtime_set_suspended(&pdev->dev);
+-		pm_runtime_dont_use_autosuspend(&pdev->dev);
 +	if (err)
-+		return err;
+ 		goto dma_release;
+-	}
 +
-+	err = devm_add_action_or_reset(dev, pm_runtime_set_suspended_action, dev);
-+	if (err)
-+		return err;
-+
-+	return devm_pm_runtime_enable(dev);
-+}
-+EXPORT_SYMBOL_GPL(devm_pm_runtime_set_active_enabled);
-+
- static void pm_runtime_disable_action(void *data)
- {
- 	pm_runtime_dont_use_autosuspend(data);
-@@ -1590,6 +1616,24 @@ int devm_pm_runtime_enable(struct device *dev)
+ 	pm_runtime_mark_last_busy(&pdev->dev);
+ 	pm_runtime_put_autosuspend(&pdev->dev);
+ 
+@@ -1530,10 +1525,6 @@ static void atmel_qspi_remove(struct platform_device *pdev)
+ 		 */
+ 		dev_warn(&pdev->dev, "Failed to resume device on remove\n");
+ 	}
+-
+-	pm_runtime_disable(&pdev->dev);
+-	pm_runtime_dont_use_autosuspend(&pdev->dev);
+-	pm_runtime_put_noidle(&pdev->dev);
  }
- EXPORT_SYMBOL_GPL(devm_pm_runtime_enable);
  
-+static void pm_runtime_put_noidle_action(void *data)
-+{
-+	pm_runtime_put_noidle(data);
-+}
-+
-+/**
-+ * devm_pm_runtime_get_noresume - devres-enabled version of pm_runtime_get_noresume.
-+ *
-+ * @dev: Device to handle.
-+ */
-+int devm_pm_runtime_get_noresume(struct device *dev)
-+{
-+	pm_runtime_get_noresume(dev);
-+
-+	return devm_add_action_or_reset(dev, pm_runtime_put_noidle_action, dev);
-+}
-+EXPORT_SYMBOL_GPL(devm_pm_runtime_get_noresume);
-+
- /**
-  * pm_runtime_forbid - Block runtime PM of a device.
-  * @dev: Device to handle.
-diff --git a/include/linux/pm_runtime.h b/include/linux/pm_runtime.h
-index 7fb5a459847ef..756b842dcd309 100644
---- a/include/linux/pm_runtime.h
-+++ b/include/linux/pm_runtime.h
-@@ -96,7 +96,9 @@ extern void pm_runtime_new_link(struct device *dev);
- extern void pm_runtime_drop_link(struct device_link *link);
- extern void pm_runtime_release_supplier(struct device_link *link);
- 
-+int devm_pm_runtime_set_active_enabled(struct device *dev);
- extern int devm_pm_runtime_enable(struct device *dev);
-+int devm_pm_runtime_get_noresume(struct device *dev);
- 
- /**
-  * pm_suspend_ignore_children - Set runtime PM behavior regarding children.
-@@ -294,7 +296,9 @@ static inline bool pm_runtime_blocked(struct device *dev) { return true; }
- static inline void pm_runtime_allow(struct device *dev) {}
- static inline void pm_runtime_forbid(struct device *dev) {}
- 
-+static inline int devm_pm_runtime_set_active_enabled(struct device *dev) { return 0; }
- static inline int devm_pm_runtime_enable(struct device *dev) { return 0; }
-+static inline int devm_pm_runtime_get_noresume(struct device *dev) { return 0; }
- 
- static inline void pm_suspend_ignore_children(struct device *dev, bool enable) {}
- static inline void pm_runtime_get_noresume(struct device *dev) {}
+ static int __maybe_unused atmel_qspi_suspend(struct device *dev)
 -- 
 2.39.5
 
