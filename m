@@ -1,56 +1,53 @@
-Return-Path: <stable+bounces-154538-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-154506-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 44880ADD9AE
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 19:08:31 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AA70BADDA11
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 19:12:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4548B19E104A
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:59:17 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D53462C5A32
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:57:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C98B2FA635;
-	Tue, 17 Jun 2025 16:58:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48D6B2FA652;
+	Tue, 17 Jun 2025 16:57:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ajfU/v83"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EPdg3+rc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4F3C2FA62E;
-	Tue, 17 Jun 2025 16:58:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05519188006;
+	Tue, 17 Jun 2025 16:57:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750179532; cv=none; b=RhYVJY87B0OMf486qu5nsHXjJbYAM4lMZy2Jvv1YCOmWzB0TfR5fdzOEg5nXKPuH2bSBC22l5DmbGPvMUboB8FkRb8qsicBjgqC+3T2JPGORoZMymgvCsx6r5dmhBgW/wD2584xl0GbBciOhK0PMCTfBCaFdRLWNLvzJQNghZJA=
+	t=1750179427; cv=none; b=jRmj7wpGWKwcYdZCSBzKAHOmpwR8oUhJgkbskN810smI3LRiBscLaLr80t7x9eeQA7jPh0NiqzObb+TQgnofl4K+XVowZEg5EPvu4LOuUYXYvlJiI78ZiWW+I2kiuZ0IK3nl/k/cIAq/zZeuJDjl54/vKqpHVI1dFdok6elSGzg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750179532; c=relaxed/simple;
-	bh=BJc40qBk2rQrOJWXKxS6n4gRX8RxKiW1ciLYqErwHbc=;
+	s=arc-20240116; t=1750179427; c=relaxed/simple;
+	bh=3wFYP99NyffCEc1ptxtJkT66mYhBV6T2A5cHCtPD9dc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AEFhFdF3fezKIUZcDcSB46hSsOfbxGLkO93Vs7GD/zryIgn7KQm2kTczARi7dH0Ss3tFn2OINwpihqPplJNEbzX3y3randgh/ypqRrJOW+Hx0W86Y/MYRGPjroKD886F5wTrPL2q6l6QzahgwGlw1aZpFLvzqU6QmLOen+9Dpjc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ajfU/v83; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C350C4CEE3;
-	Tue, 17 Jun 2025 16:58:51 +0000 (UTC)
+	 MIME-Version; b=OX0MF23Mfc4oR8SxEa50GkwoFjRQjqatTVuheUdROAffoDxg+MlEpZtkIz4TXpg/dm6h7wvIzUZHdB33C6TRu0Dn0/kpbyWxAlPRyeCG8RcA1gKK38qeIqovOrzDf2hmUOsDBvotHhp9JGNl0S90bjWTcEp4SYd4VOr939a+1HU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EPdg3+rc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 167D4C4CEF2;
+	Tue, 17 Jun 2025 16:57:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750179532;
-	bh=BJc40qBk2rQrOJWXKxS6n4gRX8RxKiW1ciLYqErwHbc=;
+	s=korg; t=1750179426;
+	bh=3wFYP99NyffCEc1ptxtJkT66mYhBV6T2A5cHCtPD9dc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ajfU/v83dyyHNAYoq9YmtDVH8LkFmt/VqDfkcpdfd4uzyB3KPpIKB2X1sOdU3Qexv
-	 QFHGNzPEjsxvRbJAxTXCSEpTug35Yrib+CZmridykR1WLcj6QbveBPMmxNJ9kyvjux
-	 F0X6jVCHuSaL51FopHqBBeGlINvH6iEGM6xgCG2M=
+	b=EPdg3+rcTMZ2RxTa8DUp+qrldLRtfX52MH9n60fApuvXCoy5Ho3Q6NE91EfPYVB8m
+	 xucfNcpFBM1PqOYXCtMXnr4axW1bYWsf/+V7TRD4d7pKCds4YVZ7mnjJRpnYN131/R
+	 /DandArKbZ/MHFafcHwCWJQk6LwITCVfLt+58KYE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bart Van Assche <bvanassche@acm.org>,
-	Christoph Hellwig <hch@lst.de>,
-	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
-	Damien Le Moal <dlemoal@kernel.org>,
+	Keith Busch <kbusch@kernel.org>,
 	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 734/780] block: dont use submit_bio_noacct_nocheck in blk_zone_wplug_bio_work
-Date: Tue, 17 Jun 2025 17:27:22 +0200
-Message-ID: <20250617152521.394761805@linuxfoundation.org>
+Subject: [PATCH 6.15 735/780] io_uring: consistently use rcu semantics with sqpoll thread
+Date: Tue, 17 Jun 2025 17:27:23 +0200
+Message-ID: <20250617152521.435619100@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
 References: <20250617152451.485330293@linuxfoundation.org>
@@ -69,59 +66,181 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Christoph Hellwig <hch@lst.de>
+From: Keith Busch <kbusch@kernel.org>
 
-[ Upstream commit cf625013d8741c01407bbb4a60c111b61b9fa69d ]
+[ Upstream commit c538f400fae22725580842deb2bef546701b64bd ]
 
-Bios queued up in the zone write plug have already gone through all all
-preparation in the submit_bio path, including the freeze protection.
+The sqpoll thread is dereferenced with rcu read protection in one place,
+so it needs to be annotated as an __rcu type, and should consistently
+use rcu helpers for access and assignment to make sparse happy.
 
-Submitting them through submit_bio_noacct_nocheck duplicates the work
-and can can cause deadlocks when freezing a queue with pending bio
-write plugs.
+Since most of the accesses occur under the sqd->lock, we can use
+rcu_dereference_protected() without declaring an rcu read section.
+Provide a simple helper to get the thread from a locked context.
 
-Go straight to ->submit_bio or blk_mq_submit_bio to bypass the
-superfluous extra freeze protection and checks.
-
-Fixes: 9b1ce7f0c6f8 ("block: Implement zone append emulation")
-Reported-by: Bart Van Assche <bvanassche@acm.org>
-Signed-off-by: Christoph Hellwig <hch@lst.de>
-Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
-Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
-Tested-by: Damien Le Moal <dlemoal@kernel.org>
-Link: https://lore.kernel.org/r/20250611044416.2351850-1-hch@lst.de
+Fixes: ac0b8b327a5677d ("io_uring: fix use-after-free of sq->thread in __io_uring_show_fdinfo()")
+Signed-off-by: Keith Busch <kbusch@kernel.org>
+Link: https://lore.kernel.org/r/20250611205343.1821117-1-kbusch@meta.com
+[axboe: fold in fix for register.c]
 Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- block/blk-zoned.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ io_uring/io_uring.c |  4 ++--
+ io_uring/register.c |  7 +++++--
+ io_uring/sqpoll.c   | 34 ++++++++++++++++++++++++----------
+ io_uring/sqpoll.h   |  8 +++++++-
+ 4 files changed, 38 insertions(+), 15 deletions(-)
 
-diff --git a/block/blk-zoned.c b/block/blk-zoned.c
-index 8f15d1aa6eb89..45c91016cef38 100644
---- a/block/blk-zoned.c
-+++ b/block/blk-zoned.c
-@@ -1306,7 +1306,6 @@ static void blk_zone_wplug_bio_work(struct work_struct *work)
- 	spin_unlock_irqrestore(&zwplug->lock, flags);
+diff --git a/io_uring/io_uring.c b/io_uring/io_uring.c
+index 9266d4f2016ad..e5466f6568269 100644
+--- a/io_uring/io_uring.c
++++ b/io_uring/io_uring.c
+@@ -2913,7 +2913,7 @@ static __cold void io_ring_exit_work(struct work_struct *work)
+ 			struct task_struct *tsk;
  
- 	bdev = bio->bi_bdev;
--	submit_bio_noacct_nocheck(bio);
+ 			io_sq_thread_park(sqd);
+-			tsk = sqd->thread;
++			tsk = sqpoll_task_locked(sqd);
+ 			if (tsk && tsk->io_uring && tsk->io_uring->io_wq)
+ 				io_wq_cancel_cb(tsk->io_uring->io_wq,
+ 						io_cancel_ctx_cb, ctx, true);
+@@ -3150,7 +3150,7 @@ __cold void io_uring_cancel_generic(bool cancel_all, struct io_sq_data *sqd)
+ 	s64 inflight;
+ 	DEFINE_WAIT(wait);
+ 
+-	WARN_ON_ONCE(sqd && sqd->thread != current);
++	WARN_ON_ONCE(sqd && sqpoll_task_locked(sqd) != current);
+ 
+ 	if (!current->io_uring)
+ 		return;
+diff --git a/io_uring/register.c b/io_uring/register.c
+index cc23a4c205cd4..a59589249fce7 100644
+--- a/io_uring/register.c
++++ b/io_uring/register.c
+@@ -273,6 +273,8 @@ static __cold int io_register_iowq_max_workers(struct io_ring_ctx *ctx,
+ 	if (ctx->flags & IORING_SETUP_SQPOLL) {
+ 		sqd = ctx->sq_data;
+ 		if (sqd) {
++			struct task_struct *tsk;
++
+ 			/*
+ 			 * Observe the correct sqd->lock -> ctx->uring_lock
+ 			 * ordering. Fine to drop uring_lock here, we hold
+@@ -282,8 +284,9 @@ static __cold int io_register_iowq_max_workers(struct io_ring_ctx *ctx,
+ 			mutex_unlock(&ctx->uring_lock);
+ 			mutex_lock(&sqd->lock);
+ 			mutex_lock(&ctx->uring_lock);
+-			if (sqd->thread)
+-				tctx = sqd->thread->io_uring;
++			tsk = sqpoll_task_locked(sqd);
++			if (tsk)
++				tctx = tsk->io_uring;
+ 		}
+ 	} else {
+ 		tctx = current->io_uring;
+diff --git a/io_uring/sqpoll.c b/io_uring/sqpoll.c
+index 0625a421626f4..268d2fbe6160c 100644
+--- a/io_uring/sqpoll.c
++++ b/io_uring/sqpoll.c
+@@ -30,7 +30,7 @@ enum {
+ void io_sq_thread_unpark(struct io_sq_data *sqd)
+ 	__releases(&sqd->lock)
+ {
+-	WARN_ON_ONCE(sqd->thread == current);
++	WARN_ON_ONCE(sqpoll_task_locked(sqd) == current);
  
  	/*
- 	 * blk-mq devices will reuse the extra reference on the request queue
-@@ -1314,8 +1313,12 @@ static void blk_zone_wplug_bio_work(struct work_struct *work)
- 	 * path for BIO-based devices will not do that. So drop this extra
- 	 * reference here.
- 	 */
--	if (bdev_test_flag(bdev, BD_HAS_SUBMIT_BIO))
-+	if (bdev_test_flag(bdev, BD_HAS_SUBMIT_BIO)) {
-+		bdev->bd_disk->fops->submit_bio(bio);
- 		blk_queue_exit(bdev->bd_disk->queue);
-+	} else {
-+		blk_mq_submit_bio(bio);
-+	}
+ 	 * Do the dance but not conditional clear_bit() because it'd race with
+@@ -46,24 +46,32 @@ void io_sq_thread_unpark(struct io_sq_data *sqd)
+ void io_sq_thread_park(struct io_sq_data *sqd)
+ 	__acquires(&sqd->lock)
+ {
+-	WARN_ON_ONCE(data_race(sqd->thread) == current);
++	struct task_struct *tsk;
  
- put_zwplug:
- 	/* Drop the reference we took in disk_zone_wplug_schedule_bio_work(). */
+ 	atomic_inc(&sqd->park_pending);
+ 	set_bit(IO_SQ_THREAD_SHOULD_PARK, &sqd->state);
+ 	mutex_lock(&sqd->lock);
+-	if (sqd->thread)
+-		wake_up_process(sqd->thread);
++
++	tsk = sqpoll_task_locked(sqd);
++	if (tsk) {
++		WARN_ON_ONCE(tsk == current);
++		wake_up_process(tsk);
++	}
+ }
+ 
+ void io_sq_thread_stop(struct io_sq_data *sqd)
+ {
+-	WARN_ON_ONCE(sqd->thread == current);
++	struct task_struct *tsk;
++
+ 	WARN_ON_ONCE(test_bit(IO_SQ_THREAD_SHOULD_STOP, &sqd->state));
+ 
+ 	set_bit(IO_SQ_THREAD_SHOULD_STOP, &sqd->state);
+ 	mutex_lock(&sqd->lock);
+-	if (sqd->thread)
+-		wake_up_process(sqd->thread);
++	tsk = sqpoll_task_locked(sqd);
++	if (tsk) {
++		WARN_ON_ONCE(tsk == current);
++		wake_up_process(tsk);
++	}
+ 	mutex_unlock(&sqd->lock);
+ 	wait_for_completion(&sqd->exited);
+ }
+@@ -486,7 +494,10 @@ __cold int io_sq_offload_create(struct io_ring_ctx *ctx,
+ 			goto err_sqpoll;
+ 		}
+ 
+-		sqd->thread = tsk;
++		mutex_lock(&sqd->lock);
++		rcu_assign_pointer(sqd->thread, tsk);
++		mutex_unlock(&sqd->lock);
++
+ 		task_to_put = get_task_struct(tsk);
+ 		ret = io_uring_alloc_task_context(tsk, ctx);
+ 		wake_up_new_task(tsk);
+@@ -514,10 +525,13 @@ __cold int io_sqpoll_wq_cpu_affinity(struct io_ring_ctx *ctx,
+ 	int ret = -EINVAL;
+ 
+ 	if (sqd) {
++		struct task_struct *tsk;
++
+ 		io_sq_thread_park(sqd);
+ 		/* Don't set affinity for a dying thread */
+-		if (sqd->thread)
+-			ret = io_wq_cpu_affinity(sqd->thread->io_uring, mask);
++		tsk = sqpoll_task_locked(sqd);
++		if (tsk)
++			ret = io_wq_cpu_affinity(tsk->io_uring, mask);
+ 		io_sq_thread_unpark(sqd);
+ 	}
+ 
+diff --git a/io_uring/sqpoll.h b/io_uring/sqpoll.h
+index 4171666b1cf4c..b83dcdec9765f 100644
+--- a/io_uring/sqpoll.h
++++ b/io_uring/sqpoll.h
+@@ -8,7 +8,7 @@ struct io_sq_data {
+ 	/* ctx's that are using this sqd */
+ 	struct list_head	ctx_list;
+ 
+-	struct task_struct	*thread;
++	struct task_struct __rcu *thread;
+ 	struct wait_queue_head	wait;
+ 
+ 	unsigned		sq_thread_idle;
+@@ -29,3 +29,9 @@ void io_sq_thread_unpark(struct io_sq_data *sqd);
+ void io_put_sq_data(struct io_sq_data *sqd);
+ void io_sqpoll_wait_sq(struct io_ring_ctx *ctx);
+ int io_sqpoll_wq_cpu_affinity(struct io_ring_ctx *ctx, cpumask_var_t mask);
++
++static inline struct task_struct *sqpoll_task_locked(struct io_sq_data *sqd)
++{
++	return rcu_dereference_protected(sqd->thread,
++					 lockdep_is_held(&sqd->lock));
++}
 -- 
 2.39.5
 
