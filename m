@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-154294-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153786-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE55BADD7BD
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:48:25 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A513CADD66D
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:33:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E2F7C7AD562
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:46:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C9CE64A04BE
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:23:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BAA7B2FA62F;
-	Tue, 17 Jun 2025 16:45:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E98162EA16D;
+	Tue, 17 Jun 2025 16:18:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xf2EWrm6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x6lPR6RR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 722202FA622;
-	Tue, 17 Jun 2025 16:45:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A875D20B807;
+	Tue, 17 Jun 2025 16:18:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750178728; cv=none; b=A+egFwpt62gUY8Oqohl4SP0T3qPV00aOjmHf8W54RKctY+53PSliK/o4x3Ba/ErlfmpFoHXn0cu/EmVWaJVolLU80/phz41rO8nrSmeP/FTR2wxXHhGKsoa3beK65e1Y8B45zTZes7E6koLB5UrUEPCE9HgY1WNWUV6wbAMiyEw=
+	t=1750177093; cv=none; b=a16Of7OIKkWPp4FT/lK2+FgqeaMzJMTs4QlksMtlTKk7j231kwTnetSLI1xj4ElQsmKmM+PGtvGroe1LKG3Cb2kYtySqZBOyRkj83l974ntVtajgX5O60zRN6DylsorpQaWWjQwDbhOYt5P5EPJpubtJI2oqrbkqUNviURFBAM8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750178728; c=relaxed/simple;
-	bh=9RFEfGTuxXh+7Ea9bHdmcjYFv83F4vrG/Wu0Dhm4p3s=;
+	s=arc-20240116; t=1750177093; c=relaxed/simple;
+	bh=NhmoHB5BSLGJ9BFqRULlbHP7TqncaPX3lBkM8yWlldg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pU1RderOEJH/Wls33RQpY+gZHzXuLy3VJYlHz+LwIhlAMww3vzATCNcd11EFE6sOJ030g0nAGzcp6yIPlgHQd8UH9UNtH/FzFwmNtXPyggfz9t+Mjw0anzfmxC496r8BY5mRktLQnHGkuTgnx+Z+cEgLRhqNTc279fG8ZDmUAYw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xf2EWrm6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0775C4CEE3;
-	Tue, 17 Jun 2025 16:45:27 +0000 (UTC)
+	 MIME-Version; b=KDd91pd/E/sXfJXJJVbhYL2KFKI5P+1RB3y8fPahQONA7fnMTNOOq0fQAcn2Dfa2gy4m2BBiO2TE4KseOkNNsTPKFV4QbrZfCDIcA7iYLUp76Qu9DMQpd3sy6oipDAOKrAAp0wNfuvRPZnsfzQy4xL75BrLeoAN83eLU3Jeawyc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x6lPR6RR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14583C4CEE7;
+	Tue, 17 Jun 2025 16:18:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750178728;
-	bh=9RFEfGTuxXh+7Ea9bHdmcjYFv83F4vrG/Wu0Dhm4p3s=;
+	s=korg; t=1750177093;
+	bh=NhmoHB5BSLGJ9BFqRULlbHP7TqncaPX3lBkM8yWlldg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xf2EWrm6kIWaP4L6mDNLUyS31PJCitLnAWYIQD7oeirQKzSLPRU47WDiGIRUIYDue
-	 ogqduFa/OAGV3otcuFIn5wqcJJxyLcpg05QPdd/dtRAMsseA8MiWvF/u1ihKE/78Xo
-	 p/a8HAP+n+4D0bEQ4YkMyBiUSdO80chLUo3eg8MA=
+	b=x6lPR6RRxLRe5GC8g8rHjjIC6w5kVXkRCt1SkHeESbuNwdGQKle5rZtmuz+dACOeg
+	 /902HgP1UI3Ih7s+C/OU//QOntGx1m1zwPA34GbRg7WIPcHz1gU9kxM/kxGotbohJm
+	 3mivCggS+u7MccDg1KBv9VxpW4oYUcZNkeZvkae0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yeoreum Yun <yeoreum.yun@arm.com>,
-	Leo Yan <leo.yan@arm.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Mikhail Arkhipov <m.arhipov@rosa.ru>,
+	Miquel Raynal <miquel.raynal@bootlin.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 535/780] coresight: holding cscfg_csdev_lock while removing cscfg from csdev
+Subject: [PATCH 6.12 277/512] mtd: nand: ecc-mxic: Fix use of uninitialized variable ret
 Date: Tue, 17 Jun 2025 17:24:03 +0200
-Message-ID: <20250617152513.296204596@linuxfoundation.org>
+Message-ID: <20250617152430.821063419@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
-References: <20250617152451.485330293@linuxfoundation.org>
+In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
+References: <20250617152419.512865572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,60 +62,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yeoreum Yun <yeoreum.yun@arm.com>
+From: Mikhail Arkhipov <m.arhipov@rosa.ru>
 
-[ Upstream commit 53b9e2659719b04f5ba7593f2af0f2335f75e94a ]
+[ Upstream commit d95846350aac72303036a70c4cdc69ae314aa26d ]
 
-There'll be possible race scenario for coresight config:
+If ctx->steps is zero, the loop processing ECC steps is skipped,
+and the variable ret remains uninitialized. It is later checked
+and returned, which leads to undefined behavior and may cause
+unpredictable results in user space or kernel crashes.
 
-CPU0                                          CPU1
-(perf enable)                                 load module
-                                              cscfg_load_config_sets()
-                                              activate config. // sysfs
-                                              (sys_active_cnt == 1)
-...
-cscfg_csdev_enable_active_config()
-  lock(csdev->cscfg_csdev_lock)
-                                              deactivate config // sysfs
-                                              (sys_activec_cnt == 0)
-                                              cscfg_unload_config_sets()
-  <iterating config_csdev_list>               cscfg_remove_owned_csdev_configs()
-  // here load config activate by CPU1
-  unlock(csdev->cscfg_csdev_lock)
+This scenario can be triggered in edge cases such as misconfigured
+geometry, ECC engine misuse, or if ctx->steps is not validated
+after initialization.
 
-iterating config_csdev_list could be raced with config_csdev_list's
-entry delete.
+Initialize ret to zero before the loop to ensure correct and safe
+behavior regardless of the ctx->steps value.
 
-To resolve this race , hold csdev->cscfg_csdev_lock() while
-cscfg_remove_owned_csdev_configs()
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
 
-Fixes: 02bd588e12df ("coresight: configuration: Update API to permit dynamic load/unload")
-Signed-off-by: Yeoreum Yun <yeoreum.yun@arm.com>
-Reviewed-by: Leo Yan <leo.yan@arm.com>
-Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
-Link: https://lore.kernel.org/r/20250514161951.3427590-3-yeoreum.yun@arm.com
+Fixes: 48e6633a9fa2 ("mtd: nand: mxic-ecc: Add Macronix external ECC engine support")
+Signed-off-by: Mikhail Arkhipov <m.arhipov@rosa.ru>
+Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hwtracing/coresight/coresight-syscfg.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/mtd/nand/ecc-mxic.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/hwtracing/coresight/coresight-syscfg.c b/drivers/hwtracing/coresight/coresight-syscfg.c
-index a70c1454b4106..23017612f2eae 100644
---- a/drivers/hwtracing/coresight/coresight-syscfg.c
-+++ b/drivers/hwtracing/coresight/coresight-syscfg.c
-@@ -395,6 +395,8 @@ static void cscfg_remove_owned_csdev_configs(struct coresight_device *csdev, voi
- 	if (list_empty(&csdev->config_csdev_list))
- 		return;
+diff --git a/drivers/mtd/nand/ecc-mxic.c b/drivers/mtd/nand/ecc-mxic.c
+index 47e10945b8d27..63cb206269dd9 100644
+--- a/drivers/mtd/nand/ecc-mxic.c
++++ b/drivers/mtd/nand/ecc-mxic.c
+@@ -614,7 +614,7 @@ static int mxic_ecc_finish_io_req_external(struct nand_device *nand,
+ {
+ 	struct mxic_ecc_engine *mxic = nand_to_mxic(nand);
+ 	struct mxic_ecc_ctx *ctx = nand_to_ecc_ctx(nand);
+-	int nents, step, ret;
++	int nents, step, ret = 0;
  
-+  guard(raw_spinlock_irqsave)(&csdev->cscfg_csdev_lock);
-+
- 	list_for_each_entry_safe(config_csdev, tmp, &csdev->config_csdev_list, node) {
- 		if (config_csdev->config_desc->load_owner == load_owner)
- 			list_del(&config_csdev->node);
+ 	if (req->mode == MTD_OPS_RAW)
+ 		return 0;
+-- 
+2.39.5
+
+
+
+	q->limit = ctl->limit;
+ 	if (child) {
+-		qdisc_tree_flush_backlog(q->qdisc);
++		qdisc_purge_queue(q->qdisc);
+ 		old_child = q->qdisc;
+ 		q->qdisc = child;
+ 	}
 -- 
 2.39.5
 
