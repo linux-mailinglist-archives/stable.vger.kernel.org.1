@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-154279-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153683-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D98D7ADD8E1
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 19:00:06 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 49517ADD5D0
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:26:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 14E411942F72
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:48:13 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8A1612C5474
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:17:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 03FCD28505F;
-	Tue, 17 Jun 2025 16:44:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4DCAD2ECE95;
+	Tue, 17 Jun 2025 16:12:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NCaxfNrv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AQZ6vPab"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5F018F54;
-	Tue, 17 Jun 2025 16:44:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A2202ECE88;
+	Tue, 17 Jun 2025 16:12:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750178678; cv=none; b=q7nbpvoGr1ouL7nHo0HDHV1C+/zCHN9b7nSUTwHMON/KRAfATdN/xwELaGeRn6HvO9AJrzN14p8DYvlkBeUjBMcdXN5vTWDISpWJwNh7HSNmcB0wDcGe50Ll6+c0oTvvvyYQ7p2uOcTmOeBTdBSk6IXKtdx/p6fMaubKKCsX9oU=
+	t=1750176753; cv=none; b=PFDsQOutH90nZROL5Enwag9MKE5kqu+hsZVRvqKEm+t/mKwhV4EFgUx/WOxDw+88lQs9NovfOK46AZmsJDfldThH9jszeRt6oH2sLD8Eq/nE1G+7a0w/8EP8E+pRQb2owe/StxvZIgRYFYse1t/HuzwjR/Mi16ANe5y02+2NNEI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750178678; c=relaxed/simple;
-	bh=/tj+tRhDkWDj+jcK4WHT0FHERCG6od9/H8eDWRgnSU8=;
+	s=arc-20240116; t=1750176753; c=relaxed/simple;
+	bh=9CyAkas/YeMyxIBxmnCFbQjdxLWBAhW+p47Jpb4dT9E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qne+K1frcTKMov3F72e2nToWC4qIO8LoZeEqkTaqUq3Al7iuh2hYUsRbiEiPwwGLhqAtO2QzSzRQ90tgSJMxJoY08yYCm0S7mGTTdcWNz18e0q9NwX+kqQK0X5aCmppeaF86tjQKVR1Td37VQQWDb+xxrZFz54xT1oTFTEv3EBw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NCaxfNrv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25F12C4CEE3;
-	Tue, 17 Jun 2025 16:44:37 +0000 (UTC)
+	 MIME-Version; b=GKHNcC5tDlRMYe+LLfdymxnYoU01Hj71Bq7HBJgFHhC/6Oco9rgWHD+ta7hd8h2+5WyB9fCXWoCqfnbCgNYRdhaSudua4CiSte+/stMrU9ZqQxYw0TO84ZcAUd9DUvSkzAahTGyRC78IFuRH0kRgDXty+IbdywvSZVCdagbqp/s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AQZ6vPab; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F143C4CEE3;
+	Tue, 17 Jun 2025 16:12:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750178678;
-	bh=/tj+tRhDkWDj+jcK4WHT0FHERCG6od9/H8eDWRgnSU8=;
+	s=korg; t=1750176751;
+	bh=9CyAkas/YeMyxIBxmnCFbQjdxLWBAhW+p47Jpb4dT9E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NCaxfNrvlnpnkb6UivnfdZCaOF7p57DEAVPQHn4rw6ULy1o2tUpyyyqiGF2fV8yGC
-	 tShkFdj8tPbTatUs/zExcoHzdr4qLWXiuwvsmRoKtHCmL+1QWfDAkqzLEKEY2M00Yf
-	 3oHjZ/hHHt5+zF+h14cBcTKV/54GDjqHaH1+nAug=
+	b=AQZ6vPabgfKwL8nj/z9c0vok7d4UTeoy43dMKzuI60VWRUwA2MuDb9srYrbBrq2sG
+	 0u0RPD8KaDB3KyAQKHhkg7emlbkY3+wwQYxZSyUMFRcREEk4s3MgDzdSsEvIzAmfoG
+	 WObHuQihWhztq6p0k6HnM3bhDFgwoPM+4OKe7c3s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Brian Pellegrino <bpellegrino@arka.org>,
-	Sam Winchenbach <swinchenbach@arka.org>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Thuan Nguyen <thuan.nguyen-hong@banvien.com.vn>,
+	Duy Nguyen <duy.nguyen.rh@renesas.com>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 521/780] iio: filter: admv8818: Support frequencies >= 2^32
+Subject: [PATCH 6.12 263/512] arm64: dts: renesas: white-hawk-ard-audio: Fix TPU0 groups
 Date: Tue, 17 Jun 2025 17:23:49 +0200
-Message-ID: <20250617152512.733705927@linuxfoundation.org>
+Message-ID: <20250617152430.241552957@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
-References: <20250617152451.485330293@linuxfoundation.org>
+In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
+References: <20250617152419.512865572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,72 +64,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Brian Pellegrino <bpellegrino@arka.org>
+From: Thuan Nguyen <thuan.nguyen-hong@banvien.com.vn>
 
-[ Upstream commit 9016776f1301627de78a633bda7c898425a56572 ]
+[ Upstream commit 652eea251dd852f02cef6223f367220acb3d1867 ]
 
-This patch allows writing u64 values to the ADMV8818's high and low-pass
-filter frequencies. It includes the following changes:
+White Hawk ARD audio uses a clock generated by the TPU, but commit
+3d144ef10a44 ("pinctrl: renesas: r8a779g0: Fix TPU suffixes") renamed
+pin group "tpu_to0_a" to "tpu_to0_b".  Update DTS accordingly otherwise
+the sound driver does not receive a clock signal.
 
-- Rejects negative frequencies in admv8818_write_raw.
-- Adds a write_raw_get_fmt function to admv8818's iio_info, returning
-  IIO_VAL_INT_64 for the high and low-pass filter 3dB frequency channels.
-
-Fixes: f34fe888ad05 ("iio:filter:admv8818: add support for ADMV8818")
-Signed-off-by: Brian Pellegrino <bpellegrino@arka.org>
-Signed-off-by: Sam Winchenbach <swinchenbach@arka.org>
-Link: https://patch.msgid.link/20250328174831.227202-7-sam.winchenbach@framepointer.org
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Fixes: 3d144ef10a448f89 ("pinctrl: renesas: r8a779g0: Fix TPU suffixes")
+Signed-off-by: Thuan Nguyen <thuan.nguyen-hong@banvien.com.vn>
+Signed-off-by: Duy Nguyen <duy.nguyen.rh@renesas.com>
+Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Acked-by: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
+Link: https://lore.kernel.org/TYCPR01MB8740608B675365215ADB0374B49CA@TYCPR01MB8740.jpnprd01.prod.outlook.com
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iio/filter/admv8818.c | 17 +++++++++++++++++
- 1 file changed, 17 insertions(+)
+ .../boot/dts/renesas/r8a779g0-white-hawk-ard-audio-da7212.dtso  | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/iio/filter/admv8818.c b/drivers/iio/filter/admv8818.c
-index 380e119b3cf54..cc8ce0fe74e7c 100644
---- a/drivers/iio/filter/admv8818.c
-+++ b/drivers/iio/filter/admv8818.c
-@@ -402,6 +402,19 @@ static int admv8818_read_lpf_freq(struct admv8818_state *st, u64 *lpf_freq)
- 	return ret;
- }
+diff --git a/arch/arm64/boot/dts/renesas/r8a779g0-white-hawk-ard-audio-da7212.dtso b/arch/arm64/boot/dts/renesas/r8a779g0-white-hawk-ard-audio-da7212.dtso
+index e6cf304c77ee9..5d820bd32ff67 100644
+--- a/arch/arm64/boot/dts/renesas/r8a779g0-white-hawk-ard-audio-da7212.dtso
++++ b/arch/arm64/boot/dts/renesas/r8a779g0-white-hawk-ard-audio-da7212.dtso
+@@ -108,7 +108,7 @@
+ 	};
  
-+static int admv8818_write_raw_get_fmt(struct iio_dev *indio_dev,
-+								struct iio_chan_spec const *chan,
-+								long mask)
-+{
-+	switch (mask) {
-+	case IIO_CHAN_INFO_LOW_PASS_FILTER_3DB_FREQUENCY:
-+	case IIO_CHAN_INFO_HIGH_PASS_FILTER_3DB_FREQUENCY:
-+		return IIO_VAL_INT_64;
-+	default:
-+		return -EINVAL;
-+	}
-+}
-+
- static int admv8818_write_raw(struct iio_dev *indio_dev,
- 			      struct iio_chan_spec const *chan,
- 			      int val, int val2, long info)
-@@ -410,6 +423,9 @@ static int admv8818_write_raw(struct iio_dev *indio_dev,
- 
- 	u64 freq = ((u64)val2 << 32 | (u32)val);
- 
-+	if ((s64)freq < 0)
-+		return -EINVAL;
-+
- 	switch (info) {
- 	case IIO_CHAN_INFO_LOW_PASS_FILTER_3DB_FREQUENCY:
- 		return admv8818_lpf_select(st, freq);
-@@ -571,6 +587,7 @@ static int admv8818_set_mode(struct iio_dev *indio_dev,
- 
- static const struct iio_info admv8818_info = {
- 	.write_raw = admv8818_write_raw,
-+	.write_raw_get_fmt = admv8818_write_raw_get_fmt,
- 	.read_raw = admv8818_read_raw,
- 	.debugfs_reg_access = &admv8818_reg_access,
+ 	tpu0_pins: tpu0 {
+-		groups = "tpu_to0_a";
++		groups = "tpu_to0_b";
+ 		function = "tpu";
+ 	};
  };
 -- 
 2.39.5
