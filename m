@@ -1,51 +1,64 @@
-Return-Path: <stable+bounces-152750-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-152751-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3DBDFADC0FD
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 06:44:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 82465ADC124
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 06:57:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E51C91659D1
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 04:44:27 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2D57317480E
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 04:57:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7645B2367A9;
-	Tue, 17 Jun 2025 04:44:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3FB9823A563;
+	Tue, 17 Jun 2025 04:57:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="doM/DNkC"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=hmeau.com header.i=@hmeau.com header.b="N3YUIUtE"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from abb.hmeau.com (abb.hmeau.com [144.6.53.87])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 003ED1C2324;
-	Tue, 17 Jun 2025 04:44:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EEE91E49F;
+	Tue, 17 Jun 2025 04:57:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=144.6.53.87
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750135462; cv=none; b=QvnV/ws/mVUACBvOo/nG1q/GKzJNg4Pedd7UG21o1UM6Fk3GMSsOttWS95IAYrqFUgSUNdwUv8Njb01ox7oQbD53LZJtiDD3ABtyJS/MnVlwnK3ewvVWk3ir8R37t5Gc+nNKfVsLFmWzrvYyEMkqiU5Ro/e4bne3eoH9CSPhTdY=
+	t=1750136249; cv=none; b=kGCJH3m0IVR6VW4rpqFJu57Gxh0vgugZntnz9VUqouKRE8Y7YPmFmLwWWgys07W7eTVxnNBd4zKYxS4ebWK2Z8hPZZTghg0t0iJhWyZttrrGzO78SFKYcauKOJV7YAGD6XY3T4Bxpy/uHOqhBF9GKODqu+I98S5v3vaiPn1V8iQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750135462; c=relaxed/simple;
-	bh=5KBa+R1tdlOHE+ZXYldd1KYSQaKJNKKrgl09m283kjw=;
+	s=arc-20240116; t=1750136249; c=relaxed/simple;
+	bh=q/Kg1esu+cPgiA6+vrjnz5edDszeYiU+GwkduGfZsCo=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=G6g+WPFQVj/ndRcdsw8595a8gvld3OgLips+c1deX4C29mZJBaStabb7Gnu/gZu24MUWIL+1gNnTmdT+C4+AhvVJ9fXGJDUg3y0epG/eYQRcl073/yBjCCiDuw1wGBO63zuPyMN84ZxfJ8kdGKhuWp3tPmlw//fP5Qj08vRWXLI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=doM/DNkC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0967CC4CEE3;
-	Tue, 17 Jun 2025 04:44:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750135461;
-	bh=5KBa+R1tdlOHE+ZXYldd1KYSQaKJNKKrgl09m283kjw=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=doM/DNkC2x/imx8GgAkEYJmA/AvK7I+fKikJREBdlD6ipSp0ZE4caJ7rprjJz134o
-	 e6eZbNgiC4thh5nADhlY4lMgIePF/56xg/LTpR0YHYYxD6BQZ/ruqYKKKtF7WmOcMm
-	 P9SBh+KvG9KYrz31m8TvSCTONMYf7x8k0I7lqSRI=
-Date: Tue, 17 Jun 2025 06:44:18 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Aidan Stewart <astewart@tektelic.com>
-Cc: jirislaby@kernel.org, tony@atomide.com, linux-serial@vger.kernel.org,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH] serial: core: restore of_node information in sysfs
-Message-ID: <2025061746-raking-gusto-d1f3@gregkh>
-References: <20250616162154.9057-1-astewart@tektelic.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=MpFo4XmIzZkyrYGLiFAmNpFKQCLZ0jQBv/YSOW1kG/JDynGVNwLsCjWADoeTtAR+won+HuxHW9bldRV4wnVgsbyiej+8s46442hgkIFPrekXPjIyZpskcbQcbqWtV6yy+tYYkTGkFFtbrJjRGdjAsscGTO8uMbudElv0X5vK3t8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gondor.apana.org.au; spf=pass smtp.mailfrom=gondor.apana.org.au; dkim=pass (2048-bit key) header.d=hmeau.com header.i=@hmeau.com header.b=N3YUIUtE; arc=none smtp.client-ip=144.6.53.87
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gondor.apana.org.au
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gondor.apana.org.au
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=hmeau.com;
+	s=formenos; h=In-Reply-To:Content-Type:MIME-Version:References:Message-ID:
+	Subject:Cc:To:From:Date:Sender:Reply-To:Content-Transfer-Encoding:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+	List-Post:List-Owner:List-Archive;
+	bh=obGrpb+Tpt/ckRKGUcPmCd/zRt19JMaRenjkRk+pawg=; b=N3YUIUtE+4qPAnXDNKxp/Lcjea
+	j3olYwLpvlijPT8rN3RniQXfKb1utGoUGWj4E8uORjMDlW9mCzQQhKx835IRbjelkxC622V7zkIYO
+	Xl7zsCBBkClvk9HEnj8sMeKcLw6izMlMdcuCrqvw7pyzkOPdp9tyEJIqkjBoKzxqsW1GslT6bmloz
+	HlBRBIJ6lZYxwjScC9nxiDu3jKm7grRQ+CMWQsWbs4AwugTokaW34GTVwE+LCs3sq8ijuXLYhLYRC
+	7UGc6A/C6sHn+LYDLuMbKQGDOzcaj/8N9p3E2D1wrnSOLgqA/D7EdBKHX9hrrdf3xZ0+3H09plDjw
+	Ykorhndw==;
+Received: from loth.rohan.me.apana.org.au ([192.168.167.2])
+	by formenos.hmeau.com with smtp (Exim 4.96 #2 (Debian))
+	id 1uRO8T-000ZxS-1V;
+	Tue, 17 Jun 2025 12:57:06 +0800
+Received: by loth.rohan.me.apana.org.au (sSMTP sendmail emulation); Tue, 17 Jun 2025 12:57:05 +0800
+Date: Tue, 17 Jun 2025 12:57:05 +0800
+From: Herbert Xu <herbert@gondor.apana.org.au>
+To: Giovanni Cabiddu <giovanni.cabiddu@intel.com>
+Cc: ebiggers@kernel.org, linux-crypto@vger.kernel.org, qat-linux@intel.com,
+	stable@vger.kernel.org
+Subject: Re: [PATCH] crypto: qat - lower priority for skcipher and aead
+ algorithms
+Message-ID: <aFD1obs5rQaMLA4u@gondor.apana.org.au>
+References: <20250613103309.22440-1-giovanni.cabiddu@intel.com>
+ <aE-a-q_wQ5qNFcF_@gondor.apana.org.au>
+ <aFAyBgwCUN2NLXOE@gcabiddu-mobl.ger.corp.intel.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -54,40 +67,23 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250616162154.9057-1-astewart@tektelic.com>
+In-Reply-To: <aFAyBgwCUN2NLXOE@gcabiddu-mobl.ger.corp.intel.com>
 
-On Mon, Jun 16, 2025 at 10:21:54AM -0600, Aidan Stewart wrote:
-> Since in v6.8-rc1, the of_node symlink under tty devices is
-> missing. This breaks any udev rules relying on this information.
-> 
-> Link the of_node information in the serial controller device with the
-> parent defined in the device tree. This will also apply to the serial
-> device which takes the serial controller as a parent device.
-> 
-> Fixes: b286f4e87e32 ("serial: core: Move tty and serdev to be children of serial core port device")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Aidan Stewart <astewart@tektelic.com>
-> ---
->  drivers/tty/serial/serial_base_bus.c | 4 ++++
->  1 file changed, 4 insertions(+)
-> 
-> diff --git a/drivers/tty/serial/serial_base_bus.c b/drivers/tty/serial/serial_base_bus.c
-> index 5d1677f1b651..0e4bf7a3e775 100644
-> --- a/drivers/tty/serial/serial_base_bus.c
-> +++ b/drivers/tty/serial/serial_base_bus.c
-> @@ -73,6 +73,10 @@ static int serial_base_device_init(struct uart_port *port,
->  	dev->bus = &serial_base_bus_type;
->  	dev->release = release;
->  
-> +	if (IS_ENABLED(CONFIG_OF)) {
-> +		device_set_of_node_from_dev(dev, parent_dev);
-> +	}
+On Mon, Jun 16, 2025 at 04:02:30PM +0100, Giovanni Cabiddu wrote:
+>
+> This level of performance is observed in userspace, where it is possible
+> to (1) batch requests to amortize MMIO overhead (e.g., multiple requests
+> per write), (2) submit requests asynchronously, (3) use flat buffers
+> instead of scatter-gather lists, and (4) rely on polling rather than
+> interrupts.
 
-Did this pass checkpatch.pl?
+So is batching a large number of 4K requests requests sufficient
+to achieve the maximum throughput? Or does it require physically
+contiguous memory much greater than 4K in size?
 
-And why is the if statement needed?
-
-thanks,
-
-greg k-h
+Cheers,
+-- 
+Email: Herbert Xu <herbert@gondor.apana.org.au>
+Home Page: http://gondor.apana.org.au/~herbert/
+PGP Key: http://gondor.apana.org.au/~herbert/pubkey.txt
 
