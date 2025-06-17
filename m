@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-153049-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153058-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 124E4ADD20B
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 17:38:26 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1EF14ADD256
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 17:41:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BBFD817D163
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 15:38:26 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 559EE7A4027
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 15:37:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3DE52EB5AB;
-	Tue, 17 Jun 2025 15:38:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE11B2ECD0B;
+	Tue, 17 Jun 2025 15:38:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iGy4ApU2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qKxkduTE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DCA820F090;
-	Tue, 17 Jun 2025 15:38:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A89F02E88A5;
+	Tue, 17 Jun 2025 15:38:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750174701; cv=none; b=bpk1ZJaOG55XCkTn0qj9tDwpYOQJxkAThACYx+MX9RJgTzh3vybp3Q1TErzbzobw28S31Vesjz11U+xRm148K2SH9UE1H7PhbLqjy1RmGXJnf2Q6wlnAMKAbeh/nxYnMiwzoDOVid+2NZOPpGHdUkHcK1wlNRpoBdRNsASc3xzE=
+	t=1750174730; cv=none; b=rZyrjRQCVd+BFvfZ4AkV8uaumQXcbfkTsSAAD82ragBefiAtKawsqOk4hj+2CTtmL4aYYrcwqOVyf34fAZS6NSsoAKO9o3l7YJIrJHTKnr1J70soVq5KLKCRGFPJ2Njd7ftsk4RmLlq/PlgVMrbW1TH3hxnXtK5L55/66RjdmCk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750174701; c=relaxed/simple;
-	bh=XHD6z/FZLerpbr3pTIQCEPhnijP8Uhv7EmichDEbZbo=;
+	s=arc-20240116; t=1750174730; c=relaxed/simple;
+	bh=Dxs9SiARaLNgbLYtXrbSO/VzZywDAdc+TVIB7JrWZw0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MFhqkS0DxMcajZE/beNJT+8UnQCKt0HvlckRFOFnv9WwjgdoOBMYjcR0mLA7waqNi9slunRu5YRus6v1oiRhVjguzBFn9tO+1cX2aV5UbJGR/KJC2ORvXJTjSGkS5FLU4/qkQr1f3cyRGqprxPkxLRoxCg6gZLGLhtImUsy7EyM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iGy4ApU2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE9DEC4CEE3;
-	Tue, 17 Jun 2025 15:38:20 +0000 (UTC)
+	 MIME-Version; b=amkWcgNGfrxrrYIesn5YFCH2ai7+qPPW2WvmYQyugnJMs5drNp3QWPUZDFulSCdgJ8HLwiPcEyWSeXHHL/hXAVqacusx/wPnjjKr5Zg1i2xvU/s7eZV2r3tRRIDeQSdlSkMzsbqJwd2fKgv6BQyO72oePQcePC5rQq0O4rSYNbw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qKxkduTE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 109BBC4CEE3;
+	Tue, 17 Jun 2025 15:38:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750174701;
-	bh=XHD6z/FZLerpbr3pTIQCEPhnijP8Uhv7EmichDEbZbo=;
+	s=korg; t=1750174730;
+	bh=Dxs9SiARaLNgbLYtXrbSO/VzZywDAdc+TVIB7JrWZw0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iGy4ApU2yhpNMr9k0aigXi5ByT+GJTgJs6/w+rbCjO66BKhkcR/Ss4Pker/SxZM9i
-	 IWTwlCkNLqG2CYS+7ZQl+mYsTTKlzqGDBDKISbsegqbd2T8iZCs1Qv0por/ScVPnZh
-	 UW6//zervm8Vo3BP5xMOYJpcuEYUIKwtyB78362Q=
+	b=qKxkduTEzemG+CRQDtff/S1lplXs01m3XkutDLwgD9OtRlP8JO40hKMM5RQ1wvv8f
+	 /sq7FEeVI8qNvBrn49zp6xR0b50DgFUehiRG6g8KMn8MIRL5nmoccCHnHv4URQR5n6
+	 icXu4NkTClOX4OZ/kcX30rwgURwDXu3vl64NrEGk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ovidiu Panait <ovidiu.panait.oss@gmail.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
+	Tzung-Bi Shih <tzungbi@kernel.org>,
+	David Gow <davidgow@google.com>,
+	Shuah Khan <skhan@linuxfoundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 033/512] crypto: sun8i-ce - move fallback ahash_request to the end of the struct
-Date: Tue, 17 Jun 2025 17:19:59 +0200
-Message-ID: <20250617152420.898131012@linuxfoundation.org>
+Subject: [PATCH 6.12 034/512] kunit: Fix wrong parameter to kunit_deactivate_static_stub()
+Date: Tue, 17 Jun 2025 17:20:00 +0200
+Message-ID: <20250617152420.936862081@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
 References: <20250617152419.512865572@linuxfoundation.org>
@@ -66,38 +67,39 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Ovidiu Panait <ovidiu.panait.oss@gmail.com>
+From: Tzung-Bi Shih <tzungbi@kernel.org>
 
-[ Upstream commit c822831b426307a6ca426621504d3c7f99765a39 ]
+[ Upstream commit 772e50a76ee664e75581624f512df4e45582605a ]
 
-'struct ahash_request' has a flexible array at the end, so it must be the
-last member in a struct, to avoid overwriting other struct members.
+kunit_deactivate_static_stub() accepts real_fn_addr instead of
+replacement_addr.  In the case, it always passes NULL to
+kunit_deactivate_static_stub().
 
-Therefore, move 'fallback_req' to the end of the 'sun8i_ce_hash_reqctx'
-struct.
+Fix it.
 
-Fixes: 56f6d5aee88d ("crypto: sun8i-ce - support hash algorithms")
-Signed-off-by: Ovidiu Panait <ovidiu.panait.oss@gmail.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Link: https://lore.kernel.org/r/20250520082050.2254875-1-tzungbi@kernel.org
+Fixes: e047c5eaa763 ("kunit: Expose 'static stub' API to redirect functions")
+Signed-off-by: Tzung-Bi Shih <tzungbi@kernel.org>
+Reviewed-by: David Gow <davidgow@google.com>
+Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/crypto/allwinner/sun8i-ce/sun8i-ce.h | 2 +-
+ lib/kunit/static_stub.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/crypto/allwinner/sun8i-ce/sun8i-ce.h b/drivers/crypto/allwinner/sun8i-ce/sun8i-ce.h
-index 3b5c2af013d0d..83df4d7190531 100644
---- a/drivers/crypto/allwinner/sun8i-ce/sun8i-ce.h
-+++ b/drivers/crypto/allwinner/sun8i-ce/sun8i-ce.h
-@@ -308,8 +308,8 @@ struct sun8i_ce_hash_tfm_ctx {
-  * @flow:	the flow to use for this request
-  */
- struct sun8i_ce_hash_reqctx {
--	struct ahash_request fallback_req;
- 	int flow;
-+	struct ahash_request fallback_req; // keep at the end
- };
+diff --git a/lib/kunit/static_stub.c b/lib/kunit/static_stub.c
+index 92b2cccd5e763..484fd85251b41 100644
+--- a/lib/kunit/static_stub.c
++++ b/lib/kunit/static_stub.c
+@@ -96,7 +96,7 @@ void __kunit_activate_static_stub(struct kunit *test,
  
- /*
+ 	/* If the replacement address is NULL, deactivate the stub. */
+ 	if (!replacement_addr) {
+-		kunit_deactivate_static_stub(test, replacement_addr);
++		kunit_deactivate_static_stub(test, real_fn_addr);
+ 		return;
+ 	}
+ 
 -- 
 2.39.5
 
