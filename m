@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-153691-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153695-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 743EBADD5C7
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:25:45 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 495A7ADD5CD
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:26:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 85DEC407F45
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:18:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DB7BB3BE941
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:18:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E4C3E2F237A;
-	Tue, 17 Jun 2025 16:12:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F55D2ED173;
+	Tue, 17 Jun 2025 16:13:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1OR3TLnZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aBiTwpHM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0A3C2EF657;
-	Tue, 17 Jun 2025 16:12:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF7AF2EB5CE;
+	Tue, 17 Jun 2025 16:13:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750176777; cv=none; b=Jya9GuD39l5YeuaZjmYPsx5hmp0FLmHxnp6g6gW6im0eZA+4DieDedDI9E0pUfwH+a7KLw/SFjJBv3fFDY8cfJ8Pq8Kl37MkK75X7LbogvwyDz02bqfA/X8ur8zHhYi3Qq3pzXqPtVH8jvne8brBqrhwB+BBgnRi2do9psDZEfQ=
+	t=1750176791; cv=none; b=DqNRjgZ8ZJ4sGWD6bFC+sZ3dGIaaD2AXg2lVmIo4dLUgVeTwP34nT44GMd3echEdzGd1Yw88Z/SstYmxNvrVfXCXFRjinDTw9+33BW+H2A40JM8EMP12/HwI1v39BdINKsp93HXJOCi6vDZtfTdes84Xt0ppe8h4BKaLF63P3kI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750176777; c=relaxed/simple;
-	bh=Q84nh8uDAtXTxQFo+JhMvQWRggVjuQyJcrBdscJUgqM=;
+	s=arc-20240116; t=1750176791; c=relaxed/simple;
+	bh=e9X2iPjQSgyDeLEtaFGsLTsu5lwrGuPYxhCm5+1N8KA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Aln92gaLSI7IqVbJC/0GuUufcPobfJE4iw/CJejad09WSDSL0o6osajq/cGT93I19frdKS1Hpjeyjcs8tl+AuBFWx/27EcHjcywMs2zZPyq9DcwzDF+emeKbjDdEJJXhwHrtNaXl0eywezQteHdHl68EePTi4BEuwzqS5s05AgM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1OR3TLnZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12007C4CEE7;
-	Tue, 17 Jun 2025 16:12:56 +0000 (UTC)
+	 MIME-Version; b=n5y1KtbXgq0j/45/XZf69yfrQfi3RhSg3/Kv+w8cTMYsdekHcccUh+OgJ94PTaaFREV8SIcIX+bd+MgAFS0jzTu/DVFRIa51ZjNKcegS/EnF1QaZcA1/lLPgTIKwLy//dTDMD5sdunK0sR/+byDUzcuaJb0cs70/CRmEqa+eMQ4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aBiTwpHM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44F8DC4CEE3;
+	Tue, 17 Jun 2025 16:13:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750176777;
-	bh=Q84nh8uDAtXTxQFo+JhMvQWRggVjuQyJcrBdscJUgqM=;
+	s=korg; t=1750176790;
+	bh=e9X2iPjQSgyDeLEtaFGsLTsu5lwrGuPYxhCm5+1N8KA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1OR3TLnZVV/fBYTYEcQPOu+q0Xtg4kjT1mewtuu2yugS82KmMUjKxnrGAfmd6JtyI
-	 uhSVrHESY6xlz0d2Dew4Pyce6DYqtUMSud2AMpxwT31nlrQP5fjJ+ErArJ66utd4aT
-	 MCNTf2ceK1irZjV0+lHbJyx7JohfwCzyyyPfH2ak=
+	b=aBiTwpHMiDOJJjF00au8q4ktxp+GelmfsoGs1xie1cwI0pSZ+Y1CHkYFgoX8J4/Oe
+	 yRrbtTYfV4G4G9x4u5CdosdprP3v0dCXzB6GVg8+/RtHgYsr7d0Ude4BqwY9vdGle/
+	 jU5tP2I22dt/1uvKt3asUDtVjEU/Y4C06sCYiTq8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hangbin Liu <liuhangbin@gmail.com>,
-	Jay Vosburgh <jv@jvosburgh.net>,
-	"David S. Miller" <davem@davemloft.net>,
+	Chao Yu <chao@kernel.org>,
+	Jaegeuk Kim <jaegeuk@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 225/780] bonding: assign random address if device address is same as bond
-Date: Tue, 17 Jun 2025 17:18:53 +0200
-Message-ID: <20250617152500.621041445@linuxfoundation.org>
+Subject: [PATCH 6.15 226/780] f2fs: clean up w/ fscrypt_is_bounce_page()
+Date: Tue, 17 Jun 2025 17:18:54 +0200
+Message-ID: <20250617152500.661872568@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
 References: <20250617152451.485330293@linuxfoundation.org>
@@ -67,90 +66,33 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Hangbin Liu <liuhangbin@gmail.com>
+From: Chao Yu <chao@kernel.org>
 
-[ Upstream commit 5c3bf6cba7911f470afd748606be5c03a9512fcc ]
+[ Upstream commit 0c708e35cf26449ca317fcbfc274704660b6d269 ]
 
-This change addresses a MAC address conflict issue in failover scenarios,
-similar to the problem described in commit a951bc1e6ba5 ("bonding: correct
-the MAC address for 'follow' fail_over_mac policy").
+Just cleanup, no logic changes.
 
-In fail_over_mac=follow mode, the bonding driver expects the formerly active
-slave to swap MAC addresses with the newly active slave during failover.
-However, under certain conditions, two slaves may end up with the same MAC
-address, which breaks this policy:
-
-1) ip link set eth0 master bond0
-   -> bond0 adopts eth0's MAC address (MAC0).
-
-2) ip link set eth1 master bond0
-   -> eth1 is added as a backup with its own MAC (MAC1).
-
-3) ip link set eth0 nomaster
-   -> eth0 is released and restores its MAC (MAC0).
-   -> eth1 becomes the active slave, and bond0 assigns MAC0 to eth1.
-
-4) ip link set eth0 master bond0
-   -> eth0 is re-added to bond0, now both eth0 and eth1 have MAC0.
-
-This results in a MAC address conflict and violates the expected behavior
-of the failover policy.
-
-To fix this, we assign a random MAC address to any newly added slave if
-its current MAC address matches that of the bond. The original (permanent)
-MAC address is saved and will be restored when the device is released
-from the bond.
-
-This ensures that each slave has a unique MAC address during failover
-transitions, preserving the integrity of the fail_over_mac=follow policy.
-
-Fixes: 3915c1e8634a ("bonding: Add "follow" option to fail_over_mac")
-Signed-off-by: Hangbin Liu <liuhangbin@gmail.com>
-Acked-by: Jay Vosburgh <jv@jvosburgh.net>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+Stable-dep-of: aa1be8dd6416 ("f2fs: fix to detect gcing page in f2fs_is_cp_guaranteed()")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/bonding/bond_main.c | 25 ++++++++++++++++++-------
- 1 file changed, 18 insertions(+), 7 deletions(-)
+ fs/f2fs/data.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/bonding/bond_main.c b/drivers/net/bonding/bond_main.c
-index 4461220bcd58d..17ae4b819a597 100644
---- a/drivers/net/bonding/bond_main.c
-+++ b/drivers/net/bonding/bond_main.c
-@@ -2115,15 +2115,26 @@ int bond_enslave(struct net_device *bond_dev, struct net_device *slave_dev,
- 		 * set the master's mac address to that of the first slave
- 		 */
- 		memcpy(ss.__data, bond_dev->dev_addr, bond_dev->addr_len);
--		ss.ss_family = slave_dev->type;
--		res = dev_set_mac_address(slave_dev, (struct sockaddr *)&ss,
--					  extack);
--		if (res) {
--			slave_err(bond_dev, slave_dev, "Error %d calling set_mac_address\n", res);
--			goto err_restore_mtu;
--		}
-+	} else if (bond->params.fail_over_mac == BOND_FOM_FOLLOW &&
-+		   BOND_MODE(bond) == BOND_MODE_ACTIVEBACKUP &&
-+		   memcmp(slave_dev->dev_addr, bond_dev->dev_addr, bond_dev->addr_len) == 0) {
-+		/* Set slave to random address to avoid duplicate mac
-+		 * address in later fail over.
-+		 */
-+		eth_random_addr(ss.__data);
-+	} else {
-+		goto skip_mac_set;
- 	}
+diff --git a/fs/f2fs/data.c b/fs/f2fs/data.c
+index 54f89f0ee69b1..5a7888a5923ca 100644
+--- a/fs/f2fs/data.c
++++ b/fs/f2fs/data.c
+@@ -53,7 +53,7 @@ bool f2fs_is_cp_guaranteed(struct page *page)
+ 	struct inode *inode;
+ 	struct f2fs_sb_info *sbi;
  
-+	ss.ss_family = slave_dev->type;
-+	res = dev_set_mac_address(slave_dev, (struct sockaddr *)&ss, extack);
-+	if (res) {
-+		slave_err(bond_dev, slave_dev, "Error %d calling set_mac_address\n", res);
-+		goto err_restore_mtu;
-+	}
-+
-+skip_mac_set:
-+
- 	/* set no_addrconf flag before open to prevent IPv6 addrconf */
- 	slave_dev->priv_flags |= IFF_NO_ADDRCONF;
+-	if (!mapping)
++	if (fscrypt_is_bounce_page(page))
+ 		return false;
  
+ 	inode = mapping->host;
 -- 
 2.39.5
 
