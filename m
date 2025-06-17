@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-154404-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153895-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 05A68ADDA0E
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 19:12:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CBEF0ADD6B4
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:36:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D29E01884A5D
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:53:28 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EF8A119E0AC4
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:29:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6EA923815F;
-	Tue, 17 Jun 2025 16:51:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE6CE28ECE8;
+	Tue, 17 Jun 2025 16:24:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h5v5s7+B"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Nrn8nJIf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A54132FA622;
-	Tue, 17 Jun 2025 16:51:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB2A222DF80;
+	Tue, 17 Jun 2025 16:24:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750179086; cv=none; b=VCOepVkG25V3Jsye/iLKgaaFEpyfd4KNxcYN9tMoe/BVBGi+ivYe+tM9COHp9bR/xH76nZ4XTXcn/oOcy+DPau+Gp/L91aIdWHqL1/KXlFrWZGA+AirETIWrnH8wIWGziREtcOkFW6eLgiDBWzjBqmPmCiREu1EilycIv+nrGV0=
+	t=1750177444; cv=none; b=q2SEANIQTqcQHVLUuszWRu9uAaFmgAiblIKTgawTwy55taxrzkRaidzY1wmUfwPZPRzMh9Zer5AxTR+aMnQPuOGDm4sbFvgB+9gs+ZyamRleEfCHluEXd5unNzmdv/iS6EHR7ChU2KstMv8IzbUy28dL7KriHt97Z9h7kUo7mVM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750179086; c=relaxed/simple;
-	bh=7sQueLPaupOUTpFm5QXWFKcT9qHfIE7FAcTDrJ/ezMI=;
+	s=arc-20240116; t=1750177444; c=relaxed/simple;
+	bh=wRPUB39eZpTCgqxY/J/oxE04Tm1k49t1AWOxfOW77pg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=c/cajZro4XvomRWH/OtCzJ+cUsHsuCL6UgF6AgBcLjWl1544ip8hSklCNaYLa4YXe+JEQT8B7QiPlU+IeiFKyg4/uhx+IZlJGAKNd3SA+1DZrDFknqNyfMP0iZyZ5l+fnlWHHsW0/9B2aPOAYA0iZc8DrgWbKrSNjSxZkVw4D6k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=h5v5s7+B; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36C08C4CEE3;
-	Tue, 17 Jun 2025 16:51:26 +0000 (UTC)
+	 MIME-Version; b=tFboAbnAnm8dIXNChXupnG3Lu3nmBonzwK/rp4pS8f6gXY6+5Q+JX9LySuLIiO5dA/poLDrStsQ+0q2zpaa5Kn5ingBSIDICaWGeVumzg0j1DEyBwPGknqxzcNDxRscdCGTv50FpaMNdOh89ZKroB0QGDNse4RDU6bRZ8RoPPLY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Nrn8nJIf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34C23C4CEE3;
+	Tue, 17 Jun 2025 16:24:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750179086;
-	bh=7sQueLPaupOUTpFm5QXWFKcT9qHfIE7FAcTDrJ/ezMI=;
+	s=korg; t=1750177444;
+	bh=wRPUB39eZpTCgqxY/J/oxE04Tm1k49t1AWOxfOW77pg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=h5v5s7+BUQk3DkRlpjwLNTN9VWBNHb/Uwet01HKV6LCLDYgVVejQaUpYCLnfluwe3
-	 qowtHDCVmax6/z7XYqk7rUYTTNM6C2KofywHLhxGA5TcNqNaF9WmOOzunrNp4xR2b/
-	 dFwJdssWb3Cy9vLa0UZlNHHgdjcAA7kre+/Rc8vE=
+	b=Nrn8nJIfPkP/fd2LEYuMtlnV7cBR+hhNuihZ36sks7v9kIKjGh+vAA0CJlNpnsmuO
+	 F5Cb/b/gsANO7FaxFIyweaWv68aZSQvXW/neSgGfIrNBJkeAoiwgpHXV6qWMlghELI
+	 tir1PvDSOS5VLbhBZhG5L9AE1Xq1GW5SBhD5qeJ4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johannes Berg <johannes.berg@intel.com>,
-	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+	Quentin Schulz <quentin.schulz@cherry.de>,
+	Maxime Chevallier <maxime.chevallier@bootlin.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 605/780] wifi: iwlwifi: mld: avoid panic on init failure
+Subject: [PATCH 6.12 347/512] net: stmmac: platform: guarantee uniqueness of bus_id
 Date: Tue, 17 Jun 2025 17:25:13 +0200
-Message-ID: <20250617152516.120811019@linuxfoundation.org>
+Message-ID: <20250617152433.649613033@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
-References: <20250617152451.485330293@linuxfoundation.org>
+In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
+References: <20250617152419.512865572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,50 +63,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+From: Quentin Schulz <quentin.schulz@cherry.de>
 
-[ Upstream commit 960c7e6d388034d219dafffa6da0a5c2ccd5ff30 ]
+[ Upstream commit eb7fd7aa35bfcc1e1fda4ecc42ccfcb526cdc780 ]
 
-In case of an error during init, in_hw_restart will be set, but it will
-never get cleared.
-Instead, we will retry to init again, and then we will act like we are in a
-restart when we are actually not.
+bus_id is currently derived from the ethernetX alias. If one is missing
+for the device, 0 is used. If ethernet0 points to another stmmac device
+or if there are 2+ stmmac devices without an ethernet alias, then bus_id
+will be 0 for all of those.
 
-This causes (among others) to a NULL pointer dereference when canceling
-rx_omi::finished_work, that was not even initialized, because we thought
-that we are in hw_restart.
+This is an issue because the bus_id is used to generate the mdio bus id
+(new_bus->id in drivers/net/ethernet/stmicro/stmmac/stmmac_mdio.c
+stmmac_mdio_register) and this needs to be unique.
 
-Set in_hw_restart to true only if the fw is running, then we know that
-FW was loaded successfully and we are not going to the retry loop.
+This allows to avoid needing to define ethernet aliases for devices with
+multiple stmmac controllers (such as the Rockchip RK3588) for multiple
+stmmac devices to probe properly.
 
-Fixes: 7391b2a4f7db ("wifi: iwlwifi: rework firmware error handling")
-Reviewed-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Link: https://patch.msgid.link/20250604061200.e0040e0a4b09.Iae469a0abe6bfa3c26d8a88c066bad75c2e8f121@changeid
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Obviously, the bus_id isn't guaranteed to be stable across reboots if no
+alias is set for the device but that is easily fixed by simply adding an
+alias if this is desired.
+
+Fixes: 25c83b5c2e82 ("dt:net:stmmac: Add support to dwmac version 3.610 and 3.710")
+Signed-off-by: Quentin Schulz <quentin.schulz@cherry.de>
+Reviewed-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
+Link: https://patch.msgid.link/20250527-stmmac-mdio-bus_id-v2-1-a5ca78454e3c@cherry.de
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/intel/iwlwifi/mld/mld.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/stmicro/stmmac/stmmac_platform.c | 11 +++++++++--
+ 1 file changed, 9 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mld/mld.c b/drivers/net/wireless/intel/iwlwifi/mld/mld.c
-index 73d2166a4c257..7a098942dc802 100644
---- a/drivers/net/wireless/intel/iwlwifi/mld/mld.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mld/mld.c
-@@ -638,7 +638,8 @@ iwl_mld_nic_error(struct iwl_op_mode *op_mode,
- 	 * It might not actually be true that we'll restart, but the
- 	 * setting doesn't matter if we're going to be unbound either.
- 	 */
--	if (type != IWL_ERR_TYPE_RESET_HS_TIMEOUT)
-+	if (type != IWL_ERR_TYPE_RESET_HS_TIMEOUT &&
-+	    mld->fw_status.running)
- 		mld->fw_status.in_hw_restart = true;
- }
+diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_platform.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_platform.c
+index aaf008bdbbcd4..8fd868b671a26 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/stmmac_platform.c
++++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_platform.c
+@@ -419,6 +419,7 @@ stmmac_probe_config_dt(struct platform_device *pdev, u8 *mac)
+ 	struct device_node *np = pdev->dev.of_node;
+ 	struct plat_stmmacenet_data *plat;
+ 	struct stmmac_dma_cfg *dma_cfg;
++	static int bus_id = -ENODEV;
+ 	int phy_mode;
+ 	void *ret;
+ 	int rc;
+@@ -454,8 +455,14 @@ stmmac_probe_config_dt(struct platform_device *pdev, u8 *mac)
+ 	of_property_read_u32(np, "max-speed", &plat->max_speed);
  
+ 	plat->bus_id = of_alias_get_id(np, "ethernet");
+-	if (plat->bus_id < 0)
+-		plat->bus_id = 0;
++	if (plat->bus_id < 0) {
++		if (bus_id < 0)
++			bus_id = of_alias_get_highest_id("ethernet");
++		/* No ethernet alias found, init at -1 so first bus_id is 0 */
++		if (bus_id < 0)
++			bus_id = -1;
++		plat->bus_id = ++bus_id;
++	}
+ 
+ 	/* Default to phy auto-detection */
+ 	plat->phy_addr = -1;
 -- 
 2.39.5
 
