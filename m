@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-152962-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-152964-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 00EDAADD1A4
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 17:33:27 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 142D4ADD1C5
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 17:34:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 638321897363
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 15:33:42 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1C2237A1A40
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 15:32:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1EB692E9730;
-	Tue, 17 Jun 2025 15:33:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5F822ECD0A;
+	Tue, 17 Jun 2025 15:33:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2mQE2AR5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Aw/F4max"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C99081E8332;
-	Tue, 17 Jun 2025 15:33:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71E9B293443;
+	Tue, 17 Jun 2025 15:33:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750174404; cv=none; b=VmwZGMdUrGcHh6En/b/24iTvOUthqbIBPvcL7anplBsV0cmTV4QEcGN3AKciMBNnFjoKif5lvfLbV2Us0gwoOt2l+KtB+VsonL/DAHI5ol3HOi6hoW4CYd0t2kMQT/kPnzzkOZrfE7CWNhvn14DpWgKl/c5TaIpX+St6H4vsC2w=
+	t=1750174411; cv=none; b=cZamIsjDfj7mIyhWIgLWR3MJHtO7sjAtWlQK/vsY/7AB4mc82OCKRbeCdHFWYBtOQw/sKQzO/D647cE9YxJrcXI/A4ZI2uv8uapxpFZoZzwZRA4o61BlsFpdMzQqhqqd2bB7dWuOFNTNstOBshCT+mRb9f8Y2NGstiFatfa0i7Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750174404; c=relaxed/simple;
-	bh=s2cuhzCb0RmK9Nkluxo2SnzqwFPzq15/1hp4AOaDk7c=;
+	s=arc-20240116; t=1750174411; c=relaxed/simple;
+	bh=au4zXKKfdEgKepJ/qFsk8ZY87A6Fo6DKtdTXH77hOVM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=K6qljVuDgg1cp15zKoh+35YrKgRz7+RjMe/JjHLc3KhXxdGBMg0tjmElT/pOnKkvVB3CvltDBUHXpWFkGkvR4Lv75ESD1DfRnBXYsn958UpqVj2kPj0QN+nTLERg/sDaBVXKY0E+GSbPssd2cnty0En5XTl0BBawClwHJkEgp78=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2mQE2AR5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37508C4CEE3;
-	Tue, 17 Jun 2025 15:33:24 +0000 (UTC)
+	 MIME-Version; b=L1L4jWfe21IWstRTUXuqr5GbtMA0gShljoAyCb2mvp7LPyn/U5RbtFpkQUBK2ca4crZZsuMFo4dU3WiEkbPL/HWJA3KQwYYAvtG0qg3n8Q7ZYSiwBrexVGyb4OZYoypikYBFPFzlgSxrtqmk3Nrh9p2j0j54tLokAJR3pml8ruM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Aw/F4max; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73663C4CEE3;
+	Tue, 17 Jun 2025 15:33:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750174404;
-	bh=s2cuhzCb0RmK9Nkluxo2SnzqwFPzq15/1hp4AOaDk7c=;
+	s=korg; t=1750174410;
+	bh=au4zXKKfdEgKepJ/qFsk8ZY87A6Fo6DKtdTXH77hOVM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2mQE2AR5nmFZePh++KpqUnG+L+PaN63HOOKLyPXUZockH9UknCkqmt6VQLhYPkn9L
-	 gbGDIp4Qv5uaKanhRntBBa+ta8NhHcgB/CCz1Eu7TOWS6LwadDHd5b8m6o9myUl21/
-	 22df4F9rRr/eneUX5mJ4wR2QCADKnCC3BFGPuvgY=
+	b=Aw/F4maxbAEkgiDnpCx+Qugg2nmVcKfp8WC0cgcxGm1Hu+WvtKE6KrZw+qA5NCrPN
+	 PnaQPeQAqWA3MPBpme1+I9PYGoaPh1YquTALhQSQg/EcjPxWmT9D7h4qgKE34H0GsV
+	 oFauU7BpsRa2+u0eW7YtlHdl5CsBWWphnAHwG7qs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Guenter Roeck <linux@roeck-us.net>,
-	Kees Cook <kees@kernel.org>,
+	Joshua Thompson <funaho@jurai.org>,
+	Finn Thain <fthain@linux-m68k.org>,
+	Geert Uytterhoeven <geert@linux-m68k.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 064/356] watchdog: exar: Shorten identity name to fit correctly
-Date: Tue, 17 Jun 2025 17:22:59 +0200
-Message-ID: <20250617152340.808230508@linuxfoundation.org>
+Subject: [PATCH 6.6 065/356] m68k: mac: Fix macintosh_config for Mac II
+Date: Tue, 17 Jun 2025 17:23:00 +0200
+Message-ID: <20250617152340.847317535@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250617152338.212798615@linuxfoundation.org>
 References: <20250617152338.212798615@linuxfoundation.org>
@@ -66,42 +67,44 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Kees Cook <kees@kernel.org>
+From: Finn Thain <fthain@linux-m68k.org>
 
-[ Upstream commit 8e28276a569addb8a2324439ae473848ee52b056 ]
+[ Upstream commit 52ae3f5da7e5adbe3d1319573b55dac470abb83c ]
 
-The static initializer for struct watchdog_info::identity is too long
-and gets initialized without a trailing NUL byte. Since the length
-of "identity" is part of UAPI and tied to ioctls, just shorten
-the name of the device. Avoids the warning seen with GCC 15's
--Wunterminated-string-initialization option:
+When booted on my Mac II, the kernel prints this:
 
-drivers/watchdog/exar_wdt.c:224:27: warning: initializer-string for array of 'unsigned char' truncates NUL terminator but destination lacks 'nonstring' attribute (33 chars into 32 available) [-Wunterminated-string-initialization]
-  224 |         .identity       = "Exar/MaxLinear XR28V38x Watchdog",
-      |                           ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    Detected Macintosh model: 6
+    Apple Macintosh Unknown
 
-Fixes: 81126222bd3a ("watchdog: Exar/MaxLinear XR28V38x driver")
-Reviewed-by: Guenter Roeck <linux@roeck-us.net>
-Link: https://lore.kernel.org/r/20250415225246.work.458-kees@kernel.org
-Signed-off-by: Kees Cook <kees@kernel.org>
+The catch-all entry ("Unknown") is mac_data_table[0] which is only needed
+in the unlikely event that the bootinfo model ID can't be matched.
+When model ID is 6, the search should begin and end at mac_data_table[1].
+Fix the off-by-one error that causes this problem.
+
+Cc: Joshua Thompson <funaho@jurai.org>
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Signed-off-by: Finn Thain <fthain@linux-m68k.org>
+Reviewed-by: Geert Uytterhoeven <geert@linux-m68k.org>
+Link: https://lore.kernel.org/d0f30a551064ca4810b1c48d5a90954be80634a9.1745453246.git.fthain@linux-m68k.org
+Signed-off-by: Geert Uytterhoeven <geert@linux-m68k.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/watchdog/exar_wdt.c | 2 +-
+ arch/m68k/mac/config.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/watchdog/exar_wdt.c b/drivers/watchdog/exar_wdt.c
-index 7c61ff3432711..c2e3bb08df899 100644
---- a/drivers/watchdog/exar_wdt.c
-+++ b/drivers/watchdog/exar_wdt.c
-@@ -221,7 +221,7 @@ static const struct watchdog_info exar_wdt_info = {
- 	.options	= WDIOF_KEEPALIVEPING |
- 			  WDIOF_SETTIMEOUT |
- 			  WDIOF_MAGICCLOSE,
--	.identity	= "Exar/MaxLinear XR28V38x Watchdog",
-+	.identity	= "Exar XR28V38x Watchdog",
- };
+diff --git a/arch/m68k/mac/config.c b/arch/m68k/mac/config.c
+index 382f656c29eae..9f5603e01a688 100644
+--- a/arch/m68k/mac/config.c
++++ b/arch/m68k/mac/config.c
+@@ -801,7 +801,7 @@ static void __init mac_identify(void)
+ 	}
  
- static const struct watchdog_ops exar_wdt_ops = {
+ 	macintosh_config = mac_data_table;
+-	for (m = macintosh_config; m->ident != -1; m++) {
++	for (m = &mac_data_table[1]; m->ident != -1; m++) {
+ 		if (m->ident == model) {
+ 			macintosh_config = m;
+ 			break;
 -- 
 2.39.5
 
