@@ -1,87 +1,88 @@
-Return-Path: <stable+bounces-152746-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-152747-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 538B2ADBFE5
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 05:31:54 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E32EADBFF8
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 05:42:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E32AD166A0A
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 03:31:54 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 205DF3AA00F
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 03:41:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F14A51922FB;
-	Tue, 17 Jun 2025 03:31:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C4011F8AD3;
+	Tue, 17 Jun 2025 03:42:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="dVsMuar8"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="V4HietNh"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lf1-f51.google.com (mail-lf1-f51.google.com [209.85.167.51])
+Received: from mail-lf1-f47.google.com (mail-lf1-f47.google.com [209.85.167.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE3A51BC3F
-	for <stable@vger.kernel.org>; Tue, 17 Jun 2025 03:31:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63FB328399
+	for <stable@vger.kernel.org>; Tue, 17 Jun 2025 03:42:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750131107; cv=none; b=JSDiAOsh4UBrbpjeh/DFU+/LmzB3MI3sYCIpI0K9aNk3bxCSfS/G5gDhnopAUksf7IEvHQ6I2ipTAkRbVXPn55d80uByW4/DmQ0rvc5cDrBsHzGGiBRCn1w1jcOvwGub8UmDgGmb91LJjN3AFobZa/ffK3bIqaXmRtXZOjIsb7Q=
+	t=1750131732; cv=none; b=B3NEdSCYaQBIIKp2rlC2Tmyo5KrM15LlC5YlQBv9MT1p/QePC7OWqSMTEmndgUGhyBUQkOWwpGiIo++xHl1EDChKhmBWXJG/mm2JqopQHIs+Z1wZw3RG2as84qgunD15jgD7+6t4O7XzapN13er6KjFcJVqZl7F+Q94yuJgG/Cg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750131107; c=relaxed/simple;
-	bh=ieph6lxJ3Hbp+Rp377DeV7BoLQycTf5gx8twwmnu68g=;
+	s=arc-20240116; t=1750131732; c=relaxed/simple;
+	bh=djidobfX+nc9lhuiH0b/pzhC4MdvYONOrN/Qx0eVxj8=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=G+RFzj0Pyfie2D4It/0jmCbsCdwMukF2rpauk7WKuxtZMjuz95HYvsXIcjOQ6qBC6RNJRU2A5MMAc+bNjeLlc8/ON1l72DHt0wudZ5rmxwCq8P0+Z/Y9aGj8H2qQm1LIt8pnk2SILq0dnI3S3fJFk0aCKSod2FTz/s1BHJWgneY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=dVsMuar8; arc=none smtp.client-ip=209.85.167.51
+	 To:Cc:Content-Type; b=nSp1wIwhtRrJUNxcduVY560bPgBblzD4qrQ7rOMHog+VGaLrLo96Eu1u1ZBScLQa2jDXpQ49SlJeniN5KM/90c5NxAwTOtw1mH7TQP14+5qNJVgVgQYotwWfq6gXP5xHp9vOPk2wLqjm2YxwW8UL75jQeluImk5JCYAM4FRw8JM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=V4HietNh; arc=none smtp.client-ip=209.85.167.47
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Received: by mail-lf1-f51.google.com with SMTP id 2adb3069b0e04-551f007a303so2340e87.1
-        for <stable@vger.kernel.org>; Mon, 16 Jun 2025 20:31:45 -0700 (PDT)
+Received: by mail-lf1-f47.google.com with SMTP id 2adb3069b0e04-553a66c3567so2629e87.1
+        for <stable@vger.kernel.org>; Mon, 16 Jun 2025 20:42:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1750131104; x=1750735904; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1750131728; x=1750736528; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=mwhOByNmuLKBhb5Mlg+5pTuchaKObMpIf2JB0S1ADBY=;
-        b=dVsMuar8yrm/G2igr5QLyMut8oumHNdvZ+caLjegkbHueNVglAbTmx5qO6NH/MjyPL
-         l2Egjfts32ZxPXFcETD1Cq3swij9aywwkQmjoE0Ji8c49tovTcApwBMYxFKuFcEsKP5R
-         ObOcnqpDNRkD6iY48hVioCOb34EEr/E6t8zJK9WZkQ2VezXkisLyZZRVRJfuEgBpANQc
-         PRZ8JAsuqLzztuXPBhmx/WCP8sxXHx/9GESGEsNSBTNlXIIyhO0ByJ+rRwXly9/NV0ji
-         F/M8JKkEV0XMeEypiy6rqZhvfDXokKaGKDql7rK0DTX9iAx5U7+XhA4yrkts9FGXymA9
-         WNKw==
+        bh=J2NfvF9el5AdBL6AJbnbuT3bMWgWET/InEPeyPfqQjQ=;
+        b=V4HietNh9nQrkml34ljwOhBdMb2lVgp9iPPy7g6nfZ0ON3/FPUdugOIY4eN8SQyT/U
+         kl8OPGR/vaPZQ9JgVX6nxPttVhlbrZOR7dE9AFA7aExh1jYLxIIW+2gbI1CmqOlhXLQR
+         9MR7uY13UxDBCApUDpwyyV270esl+pQZwUw1WbBFCPMw8HjPLJado3YC/lfhK7rVcL1A
+         2b/4FoibtsnjhUoq2WiVrxXQpWUY0hKB+7WAWas2TGLyKOb7xwu+WmL6K0asVkCQEntB
+         ntwRy/Bb211qWK3Aom11OhbtUQ+9y1rESuL5FQNgoK5zu+dEr66RDzyCkVuKC5FKvFp2
+         g97A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1750131104; x=1750735904;
+        d=1e100.net; s=20230601; t=1750131728; x=1750736528;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=mwhOByNmuLKBhb5Mlg+5pTuchaKObMpIf2JB0S1ADBY=;
-        b=OUE/rpX1WvQ54ineuJgdceb9jnJrp0YbGgf9EF7da9j/h9y2NsC5MibQoKYOF+QHzI
-         ODZyQNbdAqHNxytFk9Yhza+ofgroNZGJL+1B4oz87DnZx3a6scNjRAYxA/lO1sHDxMCu
-         sTaAScu4plc6WBRvhKh/Wi1NXgsni2/xUU5eTKI7/nT6D9L/oG+rTgDJxAZpe6/CVcpw
-         Cnd1YDd9o6JyhLKwKObjNJmvGU9FTR1cUIEVnoqs46SSVQcJjYVBM7r8ORuse0TtGK+3
-         YVgw3MsduBZLOd3AOKIi/UMZoDXiIQCnBBGSaBTA2qdRPCZSXesUk2+iYZHNz7sSu7fg
-         KBuQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXnyOWox3x2xh8/AzUxgxHT99AZMndN3jNXoJx19Gfk6RVpeFHa7gQhCLkRJHYrxTZM0efdM0w=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz4MCf5LYKrb+XyT0wIGVRHhsE2xgP5PAtv1BbTEArgEG3I5NIy
-	kKdLDvrDOpI2DbuYBN9XcQ4ZD/VquDRrQa3KMMX9T/S667MvWeFvG0LDDxSkfgHYJhD3osXOKKI
-	gU6Lg0Vy/UE0Mzs8eZnF3wSgcb3n7t5WGoBCcsHb7
-X-Gm-Gg: ASbGnctSJJYm0Yf94mUMrn1inVlua/oa+TcPmndsMcrQh50BYc9Dzf5xMjC2251I80I
-	0zDPrA2s1cn29SqlZXuc1iv42ulj4lNmc7ZW128tzQYNvf6vEp0xj9aVVDVHpEflHA9XU4E5GCw
-	GGZwu1dMr6MzEYFZn5i499YXBqLXslhOVlE4H/LWnjuHRu5lbpFieMCDWsVXrZidEQgf0cWfY=
-X-Google-Smtp-Source: AGHT+IGyuaznBGQp3QUnLGhxV3KnZapR1/Gtg7nZI85N47EBN9ZMHFJ3qlouR/mC0M+rb+Bp7XeJeYNp9yNbpRoZJj4=
-X-Received: by 2002:ac2:5deb:0:b0:553:50d2:5c20 with SMTP id
- 2adb3069b0e04-553b80b051cmr508080e87.6.1750131103855; Mon, 16 Jun 2025
- 20:31:43 -0700 (PDT)
+        bh=J2NfvF9el5AdBL6AJbnbuT3bMWgWET/InEPeyPfqQjQ=;
+        b=mYqhHxjYFNZlLQRt/JTzyBHxAhrTZvDg6R7EuQIapoe38GcvuwHqTaYCIwMtSMVvvS
+         k9QuJtGwbzmbDhBT3vsVwKiWHsKB5GR/uYmIeg0yRWkAFgm0Dk9Yd4Ue/yD493LnkSd6
+         ikGFca2DtKKj3Rhi3vbz5fK6N0z26VAjguLdmAAZw0LCCjSlawx96731ZTO+y3R9k+pB
+         67WgMv7qWYUnfQO22ax4A9XkNro0cNV0oi8gfsVCIGWXesfr6Uo6+qzCUop0lD7wj/Fz
+         0SWRjjkS5f/FnSF4OuvlDYKTSg7QglrMwGqxRAUSg92igKM1cEnFI6CV9REmwYHbpsGw
+         /2og==
+X-Forwarded-Encrypted: i=1; AJvYcCUQWtJaSiCOxt+QmzvKGMcfSeWQHEx9DDftWgDYucVL1gJfnDWIjVGbnjSSnwsXegdlcAypW6I=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwyNqKpLxjke9QFk2baUaRaIV+U8FTEgRDnG+9HTxSFWUORM11s
+	BUKJW1KY5FTSZ1/lN5YtzufYfyYLj6QW8VPdQ6Ey0YC6LAyJJqxiGBv151QVjv0iLxWk0zVoDeQ
+	YR4zvCQfyQ1T7ZXgwC+ty94sR5FtefBivyaRgUzq6
+X-Gm-Gg: ASbGncvL1isPHM9UxklPv3v3FCEWkmCxtiYKPCAIp1OfAtvQr2X4BfhXa/OQ7SPJuoN
+	cCJ8gLAAG1eL/bme257oChXr2/rgqt/IUhwjTkkEr9B71vBgl0bsEBP5IiSb3QMn7tg7rtM+AyJ
+	eYOZvjvzhjzP5dIKoGgxcsH74FLbq2dwOLd4EDnL47OYDjaqwYes/BUQ884zBr55fsKs/SXPkH3
+	3UkXUdE+g==
+X-Google-Smtp-Source: AGHT+IE1HGuS/UXcZN38gJ3Om7o1YtfpFub9gZFI04jZyWXYK0MsDeD+zd2QDgtR2tqTqw6L383temVsLjgXJcMqHOI=
+X-Received: by 2002:a19:3854:0:b0:543:e496:81d2 with SMTP id
+ 2adb3069b0e04-553b80b35f5mr477852e87.4.1750131728234; Mon, 16 Jun 2025
+ 20:42:08 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250616132152.1544096-1-khtsai@google.com> <20250616132152.1544096-2-khtsai@google.com>
- <2025061634-heavily-outrage-603a@gregkh>
-In-Reply-To: <2025061634-heavily-outrage-603a@gregkh>
+References: <20250616132152.1544096-1-khtsai@google.com> <2025061642-likeness-heaving-dd75@gregkh>
+In-Reply-To: <2025061642-likeness-heaving-dd75@gregkh>
 From: Kuen-Han Tsai <khtsai@google.com>
-Date: Tue, 17 Jun 2025 11:31:17 +0800
-X-Gm-Features: AX0GCFsjBA1PsPOxoPnvm17MTnEeKtIwkTEYPQhKjxWr5yq-Sg5ZoYFB0zEugGg
-Message-ID: <CAKzKK0oB83B3EwX75NTFd55E0qQ=QwNpKv3hUf9Oe3ZF3AAzrQ@mail.gmail.com>
-Subject: Re: [PATCH 2/2] usb: gadget: u_serial: Fix race condition in TTY wakeup
+Date: Tue, 17 Jun 2025 11:41:41 +0800
+X-Gm-Features: AX0GCFsqS6ELG_timUPRELpGtN16JVLYdXgKdTK3Tm3fK47Rt6YG8b1h0yiBp8Y
+Message-ID: <CAKzKK0ou8gt4iBcpz9cs8V42BaOi29waXd1zCw+Cad9fs=NEtg@mail.gmail.com>
+Subject: Re: [PATCH 1/2] Revert "usb: gadget: u_serial: Add null pointer check
+ in gs_start_io"
 To: Greg KH <gregkh@linuxfoundation.org>
 Cc: prashanth.k@oss.qualcomm.com, hulianqin@vivo.com, 
 	krzysztof.kozlowski@linaro.org, mwalle@kernel.org, jirislaby@kernel.org, 
@@ -90,75 +91,39 @@ Cc: prashanth.k@oss.qualcomm.com, hulianqin@vivo.com,
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, Jun 16, 2025 at 10:17=E2=80=AFPM Greg KH <gregkh@linuxfoundation.or=
+On Mon, Jun 16, 2025 at 10:18=E2=80=AFPM Greg KH <gregkh@linuxfoundation.or=
 g> wrote:
 >
-> On Mon, Jun 16, 2025 at 09:21:47PM +0800, Kuen-Han Tsai wrote:
-> > A race condition occurs when gs_start_io() calls either gs_start_rx() o=
-r
-> > gs_start_tx(), as those functions briefly drop the port_lock for
-> > usb_ep_queue(). This allows gs_close() and gserial_disconnect() to clea=
-r
-> > port.tty and port_usb, respectively.
+> On Mon, Jun 16, 2025 at 09:21:46PM +0800, Kuen-Han Tsai wrote:
+> > This reverts commit ffd603f214237e250271162a5b325c6199a65382.
 > >
-> > Use the null-safe TTY Port helper function to wake up TTY.
+> > Commit ffd603f21423 ("usb: gadget: u_serial: Add null pointer check in
+> > gs_start_io") adds null pointer checks at the beginning of the
+> > gs_start_io() function to prevent a null pointer dereference. However,
+> > these checks are redundant because the function's comment already
+> > requires callers to hold the port_lock and ensure port.tty and port_usb
+> > are not null. All existing callers already follow these rules.
+> >
+> > The true cause of the null pointer dereference is a race condition. Whe=
+n
+> > gs_start_io() calls either gs_start_rx() or gs_start_tx(), the port_loc=
+k
+> > is temporarily released for usb_ep_queue(). This allows port.tty and
+> > port_usb to be cleared.
 > >
 > > Cc: stable@vger.kernel.org
-> > Fixes: 35f95fd7f234 ("TTY: usb/u_serial, use tty from tty_port")
-> > Signed-off-by: Kuen-Han Tsai <khtsai@google.com>
-> > ---
-> > Explanation:
-> >     CPU1:                            CPU2:
-> >     gserial_connect() // lock
-> >                                      gs_close() // await lock
-> >     gs_start_rx()     // unlock
-> >     usb_ep_queue()
-> >                                      gs_close() // lock, reset port_tty=
- and unlock
-> >     gs_start_rx()     // lock
-> >     tty_wakeup()      // dereference
+> > Fixes: ffd603f21423 ("usb: gadget: u_serial: Add null pointer check in =
+gs_start_io")
 >
-> Why isn't this up in the changelog?
-
-Thanks for the suggestion. I'll move this part up in the changelog.
-
+> As this is removing unneeded checks, why is it cc: stable?  What bug is
+> being resolved here?
 >
-> >
-> > Stack traces:
-> > [   51.494375][  T278] ttyGS1: shutdown
-> > [   51.494817][  T269] android_work: sent uevent USB_STATE=3DDISCONNECT=
-ED
-> > [   52.115792][ T1508] usb: [dm_bind] generic ttyGS1: super speed IN/ep=
-1in OUT/ep1out
-> > [   52.516288][ T1026] android_work: sent uevent USB_STATE=3DCONNECTED
-> > [   52.551667][ T1533] gserial_connect: start ttyGS1
-> > [   52.565634][ T1533] [khtsai] enter gs_start_io, ttyGS1, port->port.t=
-ty=3D0000000046bd4060
-> > [   52.565671][ T1533] [khtsai] gs_start_rx, unlock port ttyGS1
-> > [   52.591552][ T1533] [khtsai] gs_start_rx, lock port ttyGS1
-> > [   52.619901][ T1533] [khtsai] gs_start_rx, unlock port ttyGS1
-> > [   52.638659][ T1325] [khtsai] gs_close, lock port ttyGS1
-> > [   52.656842][ T1325] gs_close: ttyGS1 (0000000046bd4060,00000000be975=
-0a5) ...
-> > [   52.683005][ T1325] [khtsai] gs_close, clear ttyGS1
-> > [   52.683007][ T1325] gs_close: ttyGS1 (0000000046bd4060,00000000be975=
-0a5) done!
-> > [   52.708643][ T1325] [khtsai] gs_close, unlock port ttyGS1
-> > [   52.747592][ T1533] [khtsai] gs_start_rx, lock port ttyGS1
-> > [   52.747616][ T1533] [khtsai] gs_start_io, ttyGS1, going to call tty_=
-wakeup(), port->port.tty=3D0000000000000000
-> > [   52.747629][ T1533] Unable to handle kernel NULL pointer dereference=
- at virtual address 00000000000001f8
->
-> What is [khtsai] from?
->
-> thanks,
+> confused,
 >
 > greg k-h
 
-I added the "[khtsai]" logs for debugging and left them in the traces
-because they clearly reveal the sequence of events that led to the
-problem.
+Sorry for not using the "cc: stable" correctly. I'll remove it and send
+out a new version soon.
 
 Regards,
 Kuen-Han
