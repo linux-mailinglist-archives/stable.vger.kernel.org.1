@@ -1,53 +1,55 @@
-Return-Path: <stable+bounces-153239-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153243-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D0E7ADD336
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 17:54:50 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id ED2F7ADD317
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 17:53:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5A10D16A371
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 15:51:51 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AC4B37A4550
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 15:50:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A8DD2F234E;
-	Tue, 17 Jun 2025 15:48:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E45E52F2372;
+	Tue, 17 Jun 2025 15:48:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oBMpGqw+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bElzat0r"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E991F2F234A;
-	Tue, 17 Jun 2025 15:48:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F5052F236E;
+	Tue, 17 Jun 2025 15:48:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750175323; cv=none; b=PggvE91Q0EnmpaivJKtp70vhW9WD97Zj5Agt3bP4NTQXUOMiclzi+Ghmd04jPTyz38ZLs3DLNNrQNMyYRJ4sA7ifTicpCL9HJVfTfNMrLCPzaDEn7xvZMExd0kWtGjmnJS1Ex10qD8vN55wjWkwnqCryftoy8I64iJxESL/XDxI=
+	t=1750175335; cv=none; b=WOEQAOe1IeBjK+i8TVtihtDcjojiA/3c/g8m0BbFnaz9OsYVuHfcW4wMqaU5vx4rD8LSB0tPRECwSOSQZAnX6V81LxM9KbQOKSnECXw9MZY9h5uE1HV9e20ub+TvfhL137GnHZKEe1tzoosmMX066/gi8PofPmJ3FbApfMMueKc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750175323; c=relaxed/simple;
-	bh=y5kBlYa1MC5SP7OzcAnKFlBYVm+NhAvDE3MYjsWJFIo=;
+	s=arc-20240116; t=1750175335; c=relaxed/simple;
+	bh=RZgaJDfWLpoEGySOCNA2dlVZm7bE74vYkFx4cU3I6D8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TovgRIjKYKShBiN0zGnyMEWHHA5jgZgEfMyIBGSLXbrSaRVbKkySWYcV2KMggDSsN9qKeJMnvCN5kSSJElJEi0q7r73feL5K6D/T2pppj21plp4xm8FXdWsFLcj7tO9uB3HkNH5k66XieeWraSgIy7sn8FJAbSwuusIlSBB3tto=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oBMpGqw+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 597F4C4CEE3;
-	Tue, 17 Jun 2025 15:48:42 +0000 (UTC)
+	 MIME-Version; b=hII1F0TFee8pFSgzeMdytH0K6c32t0QXVUjm0GU36j7WN6U86vEchglamM9dIy4m4IJ7hpjoEW6hAFg2XOissgHA7V38U/kSKYkNdyRJl2FtSMB0IHYaikLBUCRmRKRoNQpVFINu88kGk6o2owcqVXPgCjKoOJAezf6a1rhYojc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bElzat0r; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16807C4CEF0;
+	Tue, 17 Jun 2025 15:48:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750175322;
-	bh=y5kBlYa1MC5SP7OzcAnKFlBYVm+NhAvDE3MYjsWJFIo=;
+	s=korg; t=1750175335;
+	bh=RZgaJDfWLpoEGySOCNA2dlVZm7bE74vYkFx4cU3I6D8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oBMpGqw+hUQM1EfOEiPW6U6on+5Yg9IFCZ4gqUom477nUKjXmBUyf/0Rp5lqN2sgs
-	 8OTO7iRkUy+HmNBl/Z0j5jhnAcnaAA9VXYJSpMv1i9V0qNXP5WeSTBX5NDmX5zef8g
-	 fpfA1GL7bCsCGE79f30J5hzhsp0Cuawv2vIvKmkQ=
+	b=bElzat0rygcE813cUgY3fu8rMum1ieCPMeXWOSjG0T9zfXi5IWD0Lz8EeZgTH8nMc
+	 oQkQa5h4KbnaADSkzo9bZf37FbQ3Uwq3XVcaNvuxPtnGNu9M9KpXUongrUMJVqCCMk
+	 bPOXjHM/7s5odDtwMx/LPjK6ZdItBIpt8/kzfmsY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Terry Tritton <terry.tritton@linaro.org>,
-	Kees Cook <kees@kernel.org>,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	Akhil P Oommen <quic_akhilpo@quicinc.com>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	Rob Clark <robdclark@chromium.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 097/512] selftests/seccomp: fix negative_ENOSYS tracer tests on arm32
-Date: Tue, 17 Jun 2025 17:21:03 +0200
-Message-ID: <20250617152423.512368053@linuxfoundation.org>
+Subject: [PATCH 6.12 098/512] drm/msm/a6xx: Disable rgb565_predicator on Adreno 7c3
+Date: Tue, 17 Jun 2025 17:21:04 +0200
+Message-ID: <20250617152423.569894313@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
 References: <20250617152419.512865572@linuxfoundation.org>
@@ -66,48 +68,37 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Terry Tritton <terry.tritton@linaro.org>
+From: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
 
-[ Upstream commit 73989c998814d82c71d523c104c398925470d59e ]
+[ Upstream commit 5a9c1bea011fb42088ba08ceaa252fb20e695626 ]
 
-TRACE_syscall.ptrace.negative_ENOSYS and TRACE_syscall.seccomp.negative_ENOSYS
-on arm32 are being reported as failures instead of skipping.
+This feature is supposed to be enabled with UBWC v4 or later.
+Implementations of this SKU feature an effective UBWC version of 3, so
+disable it, in line with the BSP kernel.
 
-The teardown_trace_fixture function sets the test to KSFT_FAIL in case of a
-non 0 return value from the tracer process.
-Due to _metadata now being shared between the forked processes the tracer is
-returning the KSFT_SKIP value set by the tracee which is non 0.
-
-Remove the setting of the _metadata.exit_code in teardown_trace_fixture.
-
-Fixes: 24cf65a62266 ("selftests/harness: Share _metadata between forked processes")
-Signed-off-by: Terry Tritton <terry.tritton@linaro.org>
-Link: https://lore.kernel.org/r/20250509115622.64775-1-terry.tritton@linaro.org
-Signed-off-by: Kees Cook <kees@kernel.org>
+Reported-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Reviewed-by: Akhil P Oommen <quic_akhilpo@quicinc.com>
+Fixes: 192f4ee3e408 ("drm/msm/a6xx: Add support for Adreno 7c Gen 3 gpu")
+Signed-off-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Patchwork: https://patchwork.freedesktop.org/patch/651759/
+Signed-off-by: Rob Clark <robdclark@chromium.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/seccomp/seccomp_bpf.c | 6 ------
- 1 file changed, 6 deletions(-)
+ drivers/gpu/drm/msm/adreno/a6xx_gpu.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/tools/testing/selftests/seccomp/seccomp_bpf.c b/tools/testing/selftests/seccomp/seccomp_bpf.c
-index abc32e4352df3..60c84d935a2b0 100644
---- a/tools/testing/selftests/seccomp/seccomp_bpf.c
-+++ b/tools/testing/selftests/seccomp/seccomp_bpf.c
-@@ -1618,14 +1618,8 @@ void teardown_trace_fixture(struct __test_metadata *_metadata,
- {
- 	if (tracer) {
- 		int status;
--		/*
--		 * Extract the exit code from the other process and
--		 * adopt it for ourselves in case its asserts failed.
--		 */
- 		ASSERT_EQ(0, kill(tracer, SIGUSR1));
- 		ASSERT_EQ(tracer, waitpid(tracer, &status, 0));
--		if (WEXITSTATUS(status))
--			_metadata->exit_code = KSFT_FAIL;
+diff --git a/drivers/gpu/drm/msm/adreno/a6xx_gpu.c b/drivers/gpu/drm/msm/adreno/a6xx_gpu.c
+index d903ad9c0b5fb..d2189441aa38a 100644
+--- a/drivers/gpu/drm/msm/adreno/a6xx_gpu.c
++++ b/drivers/gpu/drm/msm/adreno/a6xx_gpu.c
+@@ -554,7 +554,6 @@ static void a6xx_calc_ubwc_config(struct adreno_gpu *gpu)
+ 	if (adreno_is_7c3(gpu)) {
+ 		gpu->ubwc_config.highest_bank_bit = 14;
+ 		gpu->ubwc_config.amsbc = 1;
+-		gpu->ubwc_config.rgb565_predicator = 1;
+ 		gpu->ubwc_config.uavflagprd_inv = 2;
+ 		gpu->ubwc_config.macrotile_mode = 1;
  	}
- }
- 
 -- 
 2.39.5
 
