@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-154427-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-154024-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6BF23ADD9E0
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 19:10:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E9A4ADD84B
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:53:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C876C1BC278A
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:54:11 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B591B19E2C09
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:37:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3B082CCC5;
-	Tue, 17 Jun 2025 16:52:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5AEC2EE27F;
+	Tue, 17 Jun 2025 16:31:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RvK7Xvqk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o29xFmQA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE2B22FA649;
-	Tue, 17 Jun 2025 16:52:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 622B22EE266;
+	Tue, 17 Jun 2025 16:31:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750179158; cv=none; b=GgRJg6z2ffRYwalJGUgDpjxfjqfi6ZDhmKSrJsQBcmnS0Es2Rhqgt7SbkFsB5Hzz6oma7AGBifaY5aWO1m5Ynm38m40G4rpsa/qrc+YmeFaC4QcXLQnbhQrXcnktNDQ/OIpk1TZBHx6pmoU13AMQEE/gQnXF9fNp5mmHzGBX/Pg=
+	t=1750177861; cv=none; b=QX5aurizska0wKivOzJtX/6hTFa0OAgfQbECh+Eo5WXAPmAPgI2Rw8RNbNq7BUzUsdJFaAWpn4ASFEzagl2LB31v7hR0WYzB1Bly6t+bGoeHk9/OcRHyMxOztBq7u8qgE2j1tUty6jGwVRW40MaxwlShjITt+pqgVlzjb2/jDKk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750179158; c=relaxed/simple;
-	bh=ixf3Iaa9/6nmqiFS4BrM2X/iOvwss2LWrSmXih8uHw8=;
+	s=arc-20240116; t=1750177861; c=relaxed/simple;
+	bh=/FcBhdOiUYV8RNXiDevVrSVss8AyIOLaXyb2yj+JCV4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Gt1yyRGZ5nhmAsshRumX2PWaqWfQM3YOaaCoTdzZwRROCr+M5PqBGjvcIUDygFYGZBx/0ZartBTECSXZ4+kOZX8E4wX17VXidt25ze/swD76h8AEcbeIDMjH7Yie2534HQAN9m/hlER69W4ZarCx+iEu5PSQ8Ys905efVJe0Q1s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RvK7Xvqk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B80B5C4CEE3;
-	Tue, 17 Jun 2025 16:52:35 +0000 (UTC)
+	 MIME-Version; b=ArDGeb6gi0jKmSJVgY257hKPOUAxXYCabtDHQqtVKoJzTJiWC562dTWwRd4+zJhpummR2XgoE+TowKjQW8Wo8LmCkUbdTYScczSnmiF5WbR6xGxqnPvkUN2FK5nJgJLY7ZHRYnc+jGoB/rMnK720oSDW3AbYHeh4gcrx4txdDqc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o29xFmQA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9E5AC4CEE3;
+	Tue, 17 Jun 2025 16:31:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750179156;
-	bh=ixf3Iaa9/6nmqiFS4BrM2X/iOvwss2LWrSmXih8uHw8=;
+	s=korg; t=1750177861;
+	bh=/FcBhdOiUYV8RNXiDevVrSVss8AyIOLaXyb2yj+JCV4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RvK7Xvqk04AFu0fmRdDe0wiCYyPvTzf6qBeqaO2HwLi5b7MGihPXjJ/cIHrF0bKwy
-	 XZEaq8rEHjJMbEynv73lonDylKNgW3NIlqa+/ktwwBNVCaz4kPhNOnNWPfC9HOj+y2
-	 F6MAv8Z5xDnMx2OuwpuQIA9opzrg6Otgc1cPq+oc=
+	b=o29xFmQAii5Q02AkEPXgWU9PMPwR163qipJQLi6x7tvvnqhMI4Wkapa4BszA01/5H
+	 OsWovT3xKfxSvLa539PCRe3ESmSBDo6cSDlotXcyu0F00KuyhzChhWbUm1RkdZ9LwO
+	 QkIEVBk2phQDWJb2eBYwYjn1qk8kT08KBdcncV8k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chandrashekar Devegowda <chandrashekar.devegowda@intel.com>,
-	Kiran K <kiran.k@intel.com>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>,
+	Shawn Lin <shawn.lin@rock-chips.com>,
+	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 665/780] Bluetooth: btintel_pcie: Increase the tx and rx descriptor count
+Subject: [PATCH 6.12 407/512] pmdomain: core: Introduce dev_pm_genpd_rpm_always_on()
 Date: Tue, 17 Jun 2025 17:26:13 +0200
-Message-ID: <20250617152518.547949930@linuxfoundation.org>
+Message-ID: <20250617152436.068025031@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
-References: <20250617152451.485330293@linuxfoundation.org>
+In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
+References: <20250617152419.512865572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,109 +63,120 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chandrashekar Devegowda <chandrashekar.devegowda@intel.com>
+From: Ulf Hansson <ulf.hansson@linaro.org>
 
-[ Upstream commit 2dd711102ce69ae41f65d09c012441227d4aa983 ]
+[ Upstream commit cd3fa304ba5c93ce57b9b55b3cd893af2be96527 ]
 
-This change addresses latency issues observed in HID use cases where
-events arrive in bursts. By increasing the Rx descriptor count to 64,
-the firmware can handle bursty data more effectively, reducing latency
-and preventing buffer overflows.
+For some usecases a consumer driver requires its device to remain power-on
+from the PM domain perspective during runtime. Using dev PM qos along with
+the genpd governors, doesn't work for this case as would potentially
+prevent the device from being runtime suspended too.
 
-Signed-off-by: Chandrashekar Devegowda <chandrashekar.devegowda@intel.com>
-Signed-off-by: Kiran K <kiran.k@intel.com>
-Fixes: c2b636b3f788 ("Bluetooth: btintel_pcie: Add support for PCIe transport")
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+To support these usecases, let's introduce dev_pm_genpd_rpm_always_on() to
+allow consumers drivers to dynamically control the behaviour in genpd for a
+device that is attached to it.
+
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Signed-off-by: Shawn Lin <shawn.lin@rock-chips.com>
+Acked-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Link: https://lore.kernel.org/r/1738736156-119203-4-git-send-email-shawn.lin@rock-chips.com
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Stable-dep-of: 08f959759e1e ("mmc: sdhci-of-dwcmshc: add PD workaround on RK3576")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/bluetooth/btintel_pcie.c | 24 ++++++++++++------------
- drivers/bluetooth/btintel_pcie.h |  7 +++++--
- 2 files changed, 17 insertions(+), 14 deletions(-)
+ drivers/pmdomain/core.c   | 35 +++++++++++++++++++++++++++++++++++
+ include/linux/pm_domain.h |  7 +++++++
+ 2 files changed, 42 insertions(+)
 
-diff --git a/drivers/bluetooth/btintel_pcie.c b/drivers/bluetooth/btintel_pcie.c
-index a1bfc76fa29b2..a4883523ccc9e 100644
---- a/drivers/bluetooth/btintel_pcie.c
-+++ b/drivers/bluetooth/btintel_pcie.c
-@@ -1665,8 +1665,8 @@ static int btintel_pcie_alloc(struct btintel_pcie_data *data)
- 	 *  + size of index * Number of queues(2) * type of index array(4)
- 	 *  + size of context information
- 	 */
--	total = (sizeof(struct tfd) + sizeof(struct urbd0) + sizeof(struct frbd)
--		+ sizeof(struct urbd1)) * BTINTEL_DESCS_COUNT;
-+	total = (sizeof(struct tfd) + sizeof(struct urbd0)) * BTINTEL_PCIE_TX_DESCS_COUNT;
-+	total += (sizeof(struct frbd) + sizeof(struct urbd1)) * BTINTEL_PCIE_RX_DESCS_COUNT;
+diff --git a/drivers/pmdomain/core.c b/drivers/pmdomain/core.c
+index 05913e9fe0821..8b1f894f5e790 100644
+--- a/drivers/pmdomain/core.c
++++ b/drivers/pmdomain/core.c
+@@ -697,6 +697,37 @@ bool dev_pm_genpd_get_hwmode(struct device *dev)
+ }
+ EXPORT_SYMBOL_GPL(dev_pm_genpd_get_hwmode);
  
- 	/* Add the sum of size of index array and size of ci struct */
- 	total += (sizeof(u16) * BTINTEL_PCIE_NUM_QUEUES * 4) + sizeof(struct ctx_info);
-@@ -1691,36 +1691,36 @@ static int btintel_pcie_alloc(struct btintel_pcie_data *data)
- 	data->dma_v_addr = v_addr;
- 
- 	/* Setup descriptor count */
--	data->txq.count = BTINTEL_DESCS_COUNT;
--	data->rxq.count = BTINTEL_DESCS_COUNT;
-+	data->txq.count = BTINTEL_PCIE_TX_DESCS_COUNT;
-+	data->rxq.count = BTINTEL_PCIE_RX_DESCS_COUNT;
- 
- 	/* Setup tfds */
- 	data->txq.tfds_p_addr = p_addr;
- 	data->txq.tfds = v_addr;
- 
--	p_addr += (sizeof(struct tfd) * BTINTEL_DESCS_COUNT);
--	v_addr += (sizeof(struct tfd) * BTINTEL_DESCS_COUNT);
-+	p_addr += (sizeof(struct tfd) * BTINTEL_PCIE_TX_DESCS_COUNT);
-+	v_addr += (sizeof(struct tfd) * BTINTEL_PCIE_TX_DESCS_COUNT);
- 
- 	/* Setup urbd0 */
- 	data->txq.urbd0s_p_addr = p_addr;
- 	data->txq.urbd0s = v_addr;
- 
--	p_addr += (sizeof(struct urbd0) * BTINTEL_DESCS_COUNT);
--	v_addr += (sizeof(struct urbd0) * BTINTEL_DESCS_COUNT);
-+	p_addr += (sizeof(struct urbd0) * BTINTEL_PCIE_TX_DESCS_COUNT);
-+	v_addr += (sizeof(struct urbd0) * BTINTEL_PCIE_TX_DESCS_COUNT);
- 
- 	/* Setup FRBD*/
- 	data->rxq.frbds_p_addr = p_addr;
- 	data->rxq.frbds = v_addr;
- 
--	p_addr += (sizeof(struct frbd) * BTINTEL_DESCS_COUNT);
--	v_addr += (sizeof(struct frbd) * BTINTEL_DESCS_COUNT);
-+	p_addr += (sizeof(struct frbd) * BTINTEL_PCIE_RX_DESCS_COUNT);
-+	v_addr += (sizeof(struct frbd) * BTINTEL_PCIE_RX_DESCS_COUNT);
- 
- 	/* Setup urbd1 */
- 	data->rxq.urbd1s_p_addr = p_addr;
- 	data->rxq.urbd1s = v_addr;
- 
--	p_addr += (sizeof(struct urbd1) * BTINTEL_DESCS_COUNT);
--	v_addr += (sizeof(struct urbd1) * BTINTEL_DESCS_COUNT);
-+	p_addr += (sizeof(struct urbd1) * BTINTEL_PCIE_RX_DESCS_COUNT);
-+	v_addr += (sizeof(struct urbd1) * BTINTEL_PCIE_RX_DESCS_COUNT);
- 
- 	/* Setup data buffers for txq */
- 	err = btintel_pcie_setup_txq_bufs(data, &data->txq);
-diff --git a/drivers/bluetooth/btintel_pcie.h b/drivers/bluetooth/btintel_pcie.h
-index 3f59138dfcca4..a94910ccd5d3c 100644
---- a/drivers/bluetooth/btintel_pcie.h
-+++ b/drivers/bluetooth/btintel_pcie.h
-@@ -135,8 +135,11 @@ enum btintel_pcie_tlv_type {
- /* Default interrupt timeout in msec */
- #define BTINTEL_DEFAULT_INTR_TIMEOUT_MS	3000
- 
--/* The number of descriptors in TX/RX queues */
--#define BTINTEL_DESCS_COUNT	16
-+/* The number of descriptors in TX queues */
-+#define BTINTEL_PCIE_TX_DESCS_COUNT	32
++/**
++ * dev_pm_genpd_rpm_always_on() - Control if the PM domain can be powered off.
++ *
++ * @dev: Device for which the PM domain may need to stay on for.
++ * @on: Value to set or unset for the condition.
++ *
++ * For some usecases a consumer driver requires its device to remain power-on
++ * from the PM domain perspective during runtime. This function allows the
++ * behaviour to be dynamically controlled for a device attached to a genpd.
++ *
++ * It is assumed that the users guarantee that the genpd wouldn't be detached
++ * while this routine is getting called.
++ *
++ * Return: Returns 0 on success and negative error values on failures.
++ */
++int dev_pm_genpd_rpm_always_on(struct device *dev, bool on)
++{
++	struct generic_pm_domain *genpd;
 +
-+/* The number of descriptors in RX queues */
-+#define BTINTEL_PCIE_RX_DESCS_COUNT	64
++	genpd = dev_to_genpd_safe(dev);
++	if (!genpd)
++		return -ENODEV;
++
++	genpd_lock(genpd);
++	dev_gpd_data(dev)->rpm_always_on = on;
++	genpd_unlock(genpd);
++
++	return 0;
++}
++EXPORT_SYMBOL_GPL(dev_pm_genpd_rpm_always_on);
++
+ static int _genpd_power_on(struct generic_pm_domain *genpd, bool timed)
+ {
+ 	unsigned int state_idx = genpd->state_idx;
+@@ -868,6 +899,10 @@ static int genpd_power_off(struct generic_pm_domain *genpd, bool one_dev_on,
+ 		if (!pm_runtime_suspended(pdd->dev) ||
+ 			irq_safe_dev_in_sleep_domain(pdd->dev, genpd))
+ 			not_suspended++;
++
++		/* The device may need its PM domain to stay powered on. */
++		if (to_gpd_data(pdd)->rpm_always_on)
++			return -EBUSY;
+ 	}
  
- /* Number of Queue for TX and RX
-  * It indicates the index of the IA(Index Array)
+ 	if (not_suspended > 1 || (not_suspended == 1 && !one_dev_on))
+diff --git a/include/linux/pm_domain.h b/include/linux/pm_domain.h
+index cf4b11be37097..c6716f474ba45 100644
+--- a/include/linux/pm_domain.h
++++ b/include/linux/pm_domain.h
+@@ -251,6 +251,7 @@ struct generic_pm_domain_data {
+ 	unsigned int default_pstate;
+ 	unsigned int rpm_pstate;
+ 	bool hw_mode;
++	bool rpm_always_on;
+ 	void *data;
+ };
+ 
+@@ -283,6 +284,7 @@ ktime_t dev_pm_genpd_get_next_hrtimer(struct device *dev);
+ void dev_pm_genpd_synced_poweroff(struct device *dev);
+ int dev_pm_genpd_set_hwmode(struct device *dev, bool enable);
+ bool dev_pm_genpd_get_hwmode(struct device *dev);
++int dev_pm_genpd_rpm_always_on(struct device *dev, bool on);
+ 
+ extern struct dev_power_governor simple_qos_governor;
+ extern struct dev_power_governor pm_domain_always_on_gov;
+@@ -366,6 +368,11 @@ static inline bool dev_pm_genpd_get_hwmode(struct device *dev)
+ 	return false;
+ }
+ 
++static inline int dev_pm_genpd_rpm_always_on(struct device *dev, bool on)
++{
++	return -EOPNOTSUPP;
++}
++
+ #define simple_qos_governor		(*(struct dev_power_governor *)(NULL))
+ #define pm_domain_always_on_gov		(*(struct dev_power_governor *)(NULL))
+ #endif
 -- 
 2.39.5
 
