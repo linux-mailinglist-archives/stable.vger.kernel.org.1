@@ -1,69 +1,57 @@
-Return-Path: <stable+bounces-153399-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153936-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 25E7DADD42E
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:07:28 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 63315ADD7C8
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:49:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C00DF17EBE7
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:01:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5B9D6189C210
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:31:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED14C2ED855;
-	Tue, 17 Jun 2025 15:57:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C2B02F94AD;
+	Tue, 17 Jun 2025 16:26:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="p5fTXr8Y"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kTQ59reY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8FB82ED17C;
-	Tue, 17 Jun 2025 15:57:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 596FD2F94A9;
+	Tue, 17 Jun 2025 16:26:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750175834; cv=none; b=sxvMN74IggS1PQS2d3uGoztP8ZhR6QZdLHx6p7lry/PBi4yiTGd/Lu1IAmHm262yatc5uJHWStkDEI2BuiTaaGYdrvaB97+5mDOlo51LQa8/nzsX49SSqSxMThHDeemBFQEbPZM/4CLUWU5pnup6aOSHCabUMeYu6AvA/A5j8E0=
+	t=1750177579; cv=none; b=ZSAj8MApJWpDTaN55QPeEzyHFFTXReAp23/g/5u7AMNCZ1veiYnK2N/vYtHTUlMDZ1/Kv2Wc3I7I3KslMIXbzNaPhehYguVWcLcFJXUgs06lCP7ZRujBY0Ooc+Ea1o8pWOSkqnOL1DYmsojR3Tl9RdGnn0GUCnpmyEfoQ2/pW2s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750175834; c=relaxed/simple;
-	bh=2X98Nb9/jV+v+5pvTZKSzMPSMO1jQy6Nb7Gk0wZXqxo=;
+	s=arc-20240116; t=1750177579; c=relaxed/simple;
+	bh=LVw9vogv6ScAXG9ROFrbbXuSkVPAF3K2tbi+ItTLNCM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ul77iKmj3W7ZH1WXzuStH3a/5fXp1PTvqQT+QlsGD2y8kKC2IbQJm65YyvnM/yPBzeAGTFzqnaYwq1b7AVZ+xl+qp98Pg53UqSxiTlqvNrmfMOqs+928lFqyW/IsQmmpukRBf+D2FXRDwtNqosP/8hnZMi2bUrFp8D5uiNDL1A8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=p5fTXr8Y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C42DEC4CEF0;
-	Tue, 17 Jun 2025 15:57:13 +0000 (UTC)
+	 MIME-Version:Content-Type; b=GdFfcuGn+962RAtLqc4TGTNFJ2hmlgFrufSxsPd68/ziVhC/iFf8SnVG2OOOERtVeOYPcYWKJ0IbyhwLr6EV0RclOKAW3jU4JFIwHuCbEQZs6rAsrKS5EBWgxE6pL1J6c0p13flPWvC+o7D0Km5wVdaVicCtrF/OqNCzO9XSpYU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kTQ59reY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE029C4CEE3;
+	Tue, 17 Jun 2025 16:26:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750175834;
-	bh=2X98Nb9/jV+v+5pvTZKSzMPSMO1jQy6Nb7Gk0wZXqxo=;
+	s=korg; t=1750177579;
+	bh=LVw9vogv6ScAXG9ROFrbbXuSkVPAF3K2tbi+ItTLNCM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=p5fTXr8YItltCS+uZ0jMPO2d2cPerp8VjMZq5hgKNWNbuhPR2P+KSdAy9EvS3Ttlv
-	 0bEz5hzZ3P7fhoVSFY5YgvzrLA6YF7eS1XWJdeiDmxqc31zwWFuowk+lfDf9sHNSHz
-	 i0T7/ovJt1I7tXliplnaeoKYRlUJDe9uhfdNe8+k=
+	b=kTQ59reY0SynkDFzbu+V76feQ+DuUd4sf66RtUA9Ce/wW2c+l9Vpijo30Afw0t9i/
+	 02+9T+Zkrg9XxGGUwuGyMIDI8acP9sd/bvmfwklv8l4UumGZCZsjNQzHQ/rVuantJ6
+	 9pJ3sIuYa/iTnx5b3Y8d3cMjnRVKJGviAv6fp1B0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Howard Chu <howardchu95@gmail.com>,
-	Anubhav Shelat <ashelat@redhat.com>,
-	Namhyung Kim <namhyung@kernel.org>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-	Dapeng Mi <dapeng1.mi@linux.intel.com>,
-	Ian Rogers <irogers@google.com>,
-	Ingo Molnar <mingo@redhat.com>,
-	James Clark <james.clark@linaro.org>,
-	Jiri Olsa <jolsa@kernel.org>,
-	Kan Liang <kan.liang@linux.intel.com>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Michael Petlan <mpetlan@redhat.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Arnaldo Carvalho de Melo <acme@redhat.com>,
+	=?UTF-8?q?Jouni=20H=C3=B6gander?= <jouni.hogander@intel.com>,
+	Ankit Nautiyal <ankit.k.nautiyal@intel.com>,
+	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 217/356] perf trace: Always print return value for syscalls returning a pid
+Subject: [PATCH 6.12 366/512] drm/i915/psr: Fix using wrong mask in REG_FIELD_PREP
 Date: Tue, 17 Jun 2025 17:25:32 +0200
-Message-ID: <20250617152346.940828976@linuxfoundation.org>
+Message-ID: <20250617152434.416140030@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152338.212798615@linuxfoundation.org>
-References: <20250617152338.212798615@linuxfoundation.org>
+In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
+References: <20250617152419.512865572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -73,71 +61,46 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Anubhav Shelat <ashelat@redhat.com>
+From: Jouni Högander <jouni.hogander@intel.com>
 
-[ Upstream commit c7a48ea9b919e2fa0e4a1d9938fdb03e9afe276c ]
+[ Upstream commit 57d63c6cd0851d3af612a556ec61b0f2a9bd522f ]
 
-The syscalls that were consistently observed were set_robust_list and
-rseq. This is because perf cannot find their child process.
+Wrong mask is used in PORT_ALPM_LFPS_CTL_FIRST_LFPS_HALF_CYCLE_DURATION and
+PORT_ALPM_LFPS_CTL_LAST_LFPS_HALF_CYCLE_DURATION.
 
-This change ensures that the return value is always printed.
-
-Before:
-     0.256 ( 0.001 ms): set_robust_list(head: 0x7f09c77dba20, len: 24)                        =
-     0.259 ( 0.001 ms): rseq(rseq: 0x7f09c77dc0e0, rseq_len: 32, sig: 1392848979)             =
-After:
-     0.270 ( 0.002 ms): set_robust_list(head: 0x7f0bb14a6a20, len: 24)                        = 0
-     0.273 ( 0.002 ms): rseq(rseq: 0x7f0bb14a70e0, rseq_len: 32, sig: 1392848979)             = 0
-
-Committer notes:
-
-As discussed in the thread in the Link: tag below, these two don't
-return a pid, but for syscalls returning one, we need to print the
-result and if we manage to find the children in 'perf trace' data
-structures, then print its name as well.
-
-Fixes: 11c8e39f5133aed9 ("perf trace: Infrastructure to show COMM strings for syscalls returning PIDs")
-Reviewed-by: Howard Chu <howardchu95@gmail.com>
-Signed-off-by: Anubhav Shelat <ashelat@redhat.com>
-Acked-by: Namhyung Kim <namhyung@kernel.org>
-Cc: Adrian Hunter <adrian.hunter@intel.com>
-Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
-Cc: Dapeng Mi <dapeng1.mi@linux.intel.com>
-Cc: Ian Rogers <irogers@google.com>
-Cc: Ingo Molnar <mingo@redhat.com>
-Cc: James Clark <james.clark@linaro.org>
-Cc: Jiri Olsa <jolsa@kernel.org>
-Cc: Kan Liang <kan.liang@linux.intel.com>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Michael Petlan <mpetlan@redhat.com>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Link: https://lore.kernel.org/r/20250403160411.159238-2-ashelat@redhat.com
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Fixes: 295099580f04 ("drm/i915/psr: Add missing ALPM AUX-Less register definitions")
+Signed-off-by: Jouni Högander <jouni.hogander@intel.com>
+Reviewed-by: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
+Link: https://lore.kernel.org/r/20250526120512.1702815-12-jouni.hogander@intel.com
+(cherry picked from commit 8097128a40ff378761034ec72cdbf6f46e466dc0)
+Signed-off-by: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/builtin-trace.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/i915/display/intel_psr_regs.h | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/tools/perf/builtin-trace.c b/tools/perf/builtin-trace.c
-index 908509df007ba..7ee3285af10c9 100644
---- a/tools/perf/builtin-trace.c
-+++ b/tools/perf/builtin-trace.c
-@@ -2586,8 +2586,8 @@ errno_print: {
- 	else if (sc->fmt->errpid) {
- 		struct thread *child = machine__find_thread(trace->host, ret, ret);
+diff --git a/drivers/gpu/drm/i915/display/intel_psr_regs.h b/drivers/gpu/drm/i915/display/intel_psr_regs.h
+index 642bb15fb5475..25c0424e34db2 100644
+--- a/drivers/gpu/drm/i915/display/intel_psr_regs.h
++++ b/drivers/gpu/drm/i915/display/intel_psr_regs.h
+@@ -314,8 +314,8 @@
+ #define  PORT_ALPM_LFPS_CTL_LFPS_HALF_CYCLE_DURATION_MASK	REG_GENMASK(20, 16)
+ #define  PORT_ALPM_LFPS_CTL_LFPS_HALF_CYCLE_DURATION(val)	REG_FIELD_PREP(PORT_ALPM_LFPS_CTL_LFPS_HALF_CYCLE_DURATION_MASK, val)
+ #define  PORT_ALPM_LFPS_CTL_FIRST_LFPS_HALF_CYCLE_DURATION_MASK	REG_GENMASK(12, 8)
+-#define  PORT_ALPM_LFPS_CTL_FIRST_LFPS_HALF_CYCLE_DURATION(val)	REG_FIELD_PREP(PORT_ALPM_LFPS_CTL_LFPS_HALF_CYCLE_DURATION_MASK, val)
++#define  PORT_ALPM_LFPS_CTL_FIRST_LFPS_HALF_CYCLE_DURATION(val)	REG_FIELD_PREP(PORT_ALPM_LFPS_CTL_FIRST_LFPS_HALF_CYCLE_DURATION_MASK, val)
+ #define  PORT_ALPM_LFPS_CTL_LAST_LFPS_HALF_CYCLE_DURATION_MASK	REG_GENMASK(4, 0)
+-#define  PORT_ALPM_LFPS_CTL_LAST_LFPS_HALF_CYCLE_DURATION(val)	REG_FIELD_PREP(PORT_ALPM_LFPS_CTL_LFPS_HALF_CYCLE_DURATION_MASK, val)
++#define  PORT_ALPM_LFPS_CTL_LAST_LFPS_HALF_CYCLE_DURATION(val)	REG_FIELD_PREP(PORT_ALPM_LFPS_CTL_LAST_LFPS_HALF_CYCLE_DURATION_MASK, val)
  
-+		fprintf(trace->output, "%ld", ret);
- 		if (child != NULL) {
--			fprintf(trace->output, "%ld", ret);
- 			if (thread__comm_set(child))
- 				fprintf(trace->output, " (%s)", thread__comm_str(child));
- 			thread__put(child);
+ #endif /* __INTEL_PSR_REGS_H__ */
 -- 
 2.39.5
 
