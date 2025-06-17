@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-153775-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-154238-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2CC5EADD689
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:35:02 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id E1F64ADD905
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 19:01:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8EED719E3053
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:24:11 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C8D9D4A4037
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:46:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99B502EA146;
-	Tue, 17 Jun 2025 16:17:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15B6C2EA145;
+	Tue, 17 Jun 2025 16:42:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BpusspH2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Uvj5n1W5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5555D2E7163;
-	Tue, 17 Jun 2025 16:17:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4AB3285053;
+	Tue, 17 Jun 2025 16:42:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750177058; cv=none; b=jbr8N39SnT3avPzAi1BHgTP8P/toalPUka2HJiwvhK2tenN/ds5lHE62qjsCU2bFY2MJDkHL4lykqqMAR8bB7EQLwoEJd3I/zNYm445vadyfhWDFVvSXR97GT5YYBe668lNcwcBcxGzTPtUwmLJTuSDPENARVfwM6ry/VitVTOQ=
+	t=1750178544; cv=none; b=e+CIi7wMPtDzmQihHQUmid2OssjoxCq88CBRCAmQf80ppJVIyefn5xD3w9fU0MpryuP0cicC/BbGqbsCSXzxmiNC695aWWHkJdUNDQIG5RWMlAEt6arEXf8iaPGeXbZTb5vrdxsASGAPO1CW5Ea4SoQf5+x5uJTIQ3H5BF6dxb0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750177058; c=relaxed/simple;
-	bh=cAzXAqlWV0Gn8ueh66IyB6o2oU8BhdFPikGrHUQJjM8=;
+	s=arc-20240116; t=1750178544; c=relaxed/simple;
+	bh=kGtHrxhxaKR9slxIYntfiBDjFAw2RW27kUuEeBVaQ7E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=VKTlFokXF8L718wXqQ5nhSPdNrwLMmxMpc61ZmMsTEkM5NcxfgS0aLz3v5AIe3rZIPInjqbOFCQFQPTmCzIrdPu+wehjM1UGAywBWKKLK0NbSe5ypzRsGIReqh2bD5hzuEdJNX7gOwymWb2e799+rijdIHOZJouBLgP5vl+ka2g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BpusspH2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7C95C4CEE3;
-	Tue, 17 Jun 2025 16:17:37 +0000 (UTC)
+	 MIME-Version; b=SQg5DB0KNnYJoKdpvrRcvMQBs6Tht3A4YGqib6Y495Der5Zv0qiIdB6QL/viDIPc9PVHmLRMLK/Di04E/UnXN0ji2nmyGTKA87j+wDTjPjkLHvEoJHevwxn0iysYyt61bqMf0yt4+aMUUh8AcHAvoKZyZX2u2ID/SELctWvQm7g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Uvj5n1W5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34391C4CEE3;
+	Tue, 17 Jun 2025 16:42:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750177058;
-	bh=cAzXAqlWV0Gn8ueh66IyB6o2oU8BhdFPikGrHUQJjM8=;
+	s=korg; t=1750178544;
+	bh=kGtHrxhxaKR9slxIYntfiBDjFAw2RW27kUuEeBVaQ7E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BpusspH2S91Le30z3KJqK8KpRNfk0fIlEislb423wy7d17AhSUguvVbF74+NpnG2E
-	 zpj5bOAEzWXM8mRekyj9jgPRQ/Layfp9eGQzqBVGISXD4AoViOv5vEs4rEkK9aOy8r
-	 qoNZbxslivXfAYnJaOKzKKkFnIi5ujw+hB0mYubg=
+	b=Uvj5n1W5vSYpGvbTIQCvF4wTy+uka6WcW74Al/GWc2sWwpgbop6ICypc9kEWK2+KK
+	 MRVQIhTIYjEU3AddOuIAxMOtSrbSmlvzkKq11B3AcBfHyuKe2pisGFnBJPsf8kzz+V
+	 /J5tIgLwdpHKvuVMeW8ukIoRB9ZGjF4h5HHZf/3M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Beno=C3=AEt=20Sevens?= <bsevens@google.com>,
-	Oleg Nesterov <oleg@redhat.com>,
-	Linus Torvalds <torvalds@linux-foundation.org>
-Subject: [PATCH 6.6 343/356] posix-cpu-timers: fix race between handle_posix_cpu_timers() and posix_cpu_timer_del()
-Date: Tue, 17 Jun 2025 17:27:38 +0200
-Message-ID: <20250617152351.942295762@linuxfoundation.org>
+	stable <stable@kernel.org>,
+	Pawel Laszczak <pawell@cadence.com>,
+	Peter Chen <peter.chen@kernel.org>
+Subject: [PATCH 6.12 493/512] usb: cdnsp: Fix issue with detecting command completion event
+Date: Tue, 17 Jun 2025 17:27:39 +0200
+Message-ID: <20250617152439.607034054@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152338.212798615@linuxfoundation.org>
-References: <20250617152338.212798615@linuxfoundation.org>
+In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
+References: <20250617152419.512865572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,60 +60,82 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Oleg Nesterov <oleg@redhat.com>
+From: Pawel Laszczak <pawell@cadence.com>
 
-commit f90fff1e152dedf52b932240ebbd670d83330eca upstream.
+commit f4ecdc352646f7d23f348e5c544dbe3212c94fc8 upstream.
 
-If an exiting non-autoreaping task has already passed exit_notify() and
-calls handle_posix_cpu_timers() from IRQ, it can be reaped by its parent
-or debugger right after unlock_task_sighand().
+In some cases, there is a small-time gap in which CMD_RING_BUSY can be
+cleared by controller but adding command completion event to event ring
+will be delayed. As the result driver will return error code.
 
-If a concurrent posix_cpu_timer_del() runs at that moment, it won't be
-able to detect timer->it.cpu.firing != 0: cpu_timer_task_rcu() and/or
-lock_task_sighand() will fail.
+This behavior has been detected on usbtest driver (test 9) with
+configuration including ep1in/ep1out bulk and ep2in/ep2out isoc
+endpoint.
 
-Add the tsk->exit_state check into run_posix_cpu_timers() to fix this.
+Probably this gap occurred because controller was busy with adding some
+other events to event ring.
 
-This fix is not needed if CONFIG_POSIX_CPU_TIMERS_TASK_WORK=y, because
-exit_task_work() is called before exit_notify(). But the check still
-makes sense, task_work_add(&tsk->posix_cputimers_work.work) will fail
-anyway in this case.
+The CMD_RING_BUSY is cleared to '0' when the Command Descriptor has been
+executed and not when command completion event has been added to event
+ring.
 
-Cc: stable@vger.kernel.org
-Reported-by: Benoît Sevens <bsevens@google.com>
-Fixes: 0bdd2ed4138e ("sched: run_posix_cpu_timers: Don't check ->exit_state, use lock_task_sighand()")
-Signed-off-by: Oleg Nesterov <oleg@redhat.com>
-Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
+To fix this issue for this test the small delay is sufficient less than
+10us) but to make sure the problem doesn't happen again in the future
+the patch introduces 10 retries to check with delay about 20us before
+returning error code.
+
+Fixes: 3d82904559f4 ("usb: cdnsp: cdns3 Add main part of Cadence USBSSP DRD Driver")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Pawel Laszczak <pawell@cadence.com>
+Acked-by: Peter Chen <peter.chen@kernel.org>
+Link: https://lore.kernel.org/r/PH7PR07MB9538AA45362ACCF1B94EE9B7DD96A@PH7PR07MB9538.namprd07.prod.outlook.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/time/posix-cpu-timers.c |    9 +++++++++
- 1 file changed, 9 insertions(+)
+ drivers/usb/cdns3/cdnsp-gadget.c |   18 +++++++++++++++++-
+ 1 file changed, 17 insertions(+), 1 deletion(-)
 
---- a/kernel/time/posix-cpu-timers.c
-+++ b/kernel/time/posix-cpu-timers.c
-@@ -1438,6 +1438,15 @@ void run_posix_cpu_timers(void)
- 	lockdep_assert_irqs_disabled();
+--- a/drivers/usb/cdns3/cdnsp-gadget.c
++++ b/drivers/usb/cdns3/cdnsp-gadget.c
+@@ -546,6 +546,7 @@ int cdnsp_wait_for_cmd_compl(struct cdns
+ 	dma_addr_t cmd_deq_dma;
+ 	union cdnsp_trb *event;
+ 	u32 cycle_state;
++	u32 retry = 10;
+ 	int ret, val;
+ 	u64 cmd_dma;
+ 	u32  flags;
+@@ -577,8 +578,23 @@ int cdnsp_wait_for_cmd_compl(struct cdns
+ 		flags = le32_to_cpu(event->event_cmd.flags);
  
- 	/*
-+	 * Ensure that release_task(tsk) can't happen while
-+	 * handle_posix_cpu_timers() is running. Otherwise, a concurrent
-+	 * posix_cpu_timer_del() may fail to lock_task_sighand(tsk) and
-+	 * miss timer->it.cpu.firing != 0.
-+	 */
-+	if (tsk->exit_state)
-+		return;
+ 		/* Check the owner of the TRB. */
+-		if ((flags & TRB_CYCLE) != cycle_state)
++		if ((flags & TRB_CYCLE) != cycle_state) {
++			/*
++			 * Give some extra time to get chance controller
++			 * to finish command before returning error code.
++			 * Checking CMD_RING_BUSY is not sufficient because
++			 * this bit is cleared to '0' when the Command
++			 * Descriptor has been executed by controller
++			 * and not when command completion event has
++			 * be added to event ring.
++			 */
++			if (retry--) {
++				udelay(20);
++				continue;
++			}
 +
-+	/*
- 	 * If the actual expiry is deferred to task work context and the
- 	 * work is already scheduled there is no point to do anything here.
- 	 */
+ 			return -EINVAL;
++		}
+ 
+ 		cmd_dma = le64_to_cpu(event->event_cmd.cmd_trb);
+ 
 
 
 
