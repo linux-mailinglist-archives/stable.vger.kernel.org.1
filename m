@@ -1,56 +1,62 @@
-Return-Path: <stable+bounces-153391-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-154132-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E8E8ADD456
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:09:19 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 53A54ADD872
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:55:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C889219467BD
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:01:07 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7C51A4A5B8E
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:43:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88EBF2ECE90;
-	Tue, 17 Jun 2025 15:56:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C430F2E264E;
+	Tue, 17 Jun 2025 16:36:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VWKXC8NA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hbOMWUrA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FE8A2ED171;
-	Tue, 17 Jun 2025 15:56:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 810FA2135A0;
+	Tue, 17 Jun 2025 16:36:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750175809; cv=none; b=DEp1BbDRAFOFoFunbqLIX61Sc5RFeqw3vI1gxMPu6fkS+tp+fv363BMn4rWb6msRqWi70bgTre4c1fNjxwQf880Yamp5qM/HHkC44+JZ+Y6bZP9+idgHEcN5Nsgfi9sAikaY7TrIzYxDAxg+xOId/8EVNJe6/JW4owT6YwGXhAU=
+	t=1750178204; cv=none; b=GOQtvRBgrAWfvh48uWE0fknpOzW31fPANt+kEbi5GrYZJBdDD5E3UAxuVneB7BJXfnAmuoxv5HYkwy6OKJBHNaa4TBFCU53qkaD4u3aF7Bq3dKv/T12t3myVQuWSH3bl8k9oicXiolktUaO9qXZ3EYlQSH7ONEGke/3BOisePZg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750175809; c=relaxed/simple;
-	bh=4AFVNmvA4g3tBZ9Tw+BHIFAn1HbvB3PQrByKvkwqqdY=;
+	s=arc-20240116; t=1750178204; c=relaxed/simple;
+	bh=4FMsVL4QFVFmJqN+mX0ocYQzgzlS+p1xIPZ1sWYbu/M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lWEpzMZbHAvZceK7Y6zmpRxUjZ9K2GdZ601jpZkH7BOoRok5nYDOHZovkr71Ltwsae3tYZqw6K5P3cSBUs34twhDozoT73Oa2W3Hwz+z9g5QjJXFAtUFCeC1N6Lde2V/DA9vo42f7ls7mcpVV96vS4a8vn7OwJcvRqpZedbZBT8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VWKXC8NA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A93CEC4CEE3;
-	Tue, 17 Jun 2025 15:56:48 +0000 (UTC)
+	 MIME-Version; b=T5CjH2h39IEdp102o0G/ZVd3Jr0DWoDPnnYwY39oj09CwdxZR3Z9jb/yXxy95Z3MZT3oeV7eYHyzNYKVPWPnMP4RSR5pUU34WRsdfKd7C/szIezvZp7MgD6hEdGZs0wynfNjbxgTfGm/77rULPd6TreSApQoti9jrMEd1SV5u9E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hbOMWUrA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08446C4CEE3;
+	Tue, 17 Jun 2025 16:36:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750175809;
-	bh=4AFVNmvA4g3tBZ9Tw+BHIFAn1HbvB3PQrByKvkwqqdY=;
+	s=korg; t=1750178204;
+	bh=4FMsVL4QFVFmJqN+mX0ocYQzgzlS+p1xIPZ1sWYbu/M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VWKXC8NAoo540F5idP1J2VYfXgAaa2W9O66unsFo73XlxvkQkcIGc3CC8MTEfA0h9
-	 fxHbybQgBjjG5tMvh80c5IeNn/9ikICfv6HwUCgCmkedDqZWcOikEdzJbaammhoTxU
-	 meGCGbWWdL+hY1fmlnOSlkCLJjDg64CC0fFhodwU=
+	b=hbOMWUrARey7zz1bz/D2zlml54GK++uy91TNgYEu1zVUTKnQYG+jhS5IdYjA1UzqE
+	 xYPw50xmKYtBRU6I9o8ft9T+8Op4R6kYrncn2vCyQ0dfyDBDhqUY6r4Y2Z+otLOjx9
+	 HiShic1MMl6qpVxfbs/0vqvENbMsFO1zQluLL6qI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Anton Protopopov <a.s.protopopov@gmail.com>,
+	Ingo Molnar <mingo@kernel.org>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Ian Rogers <irogers@google.com>,
+	James Clark <james.clark@linaro.org>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Kan Liang <kan.liang@linux.intel.com>,
+	Namhyung Kim <namhyung@kernel.org>,
+	Arnaldo Carvalho de Melo <acme@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 165/512] libbpf: Use proper errno value in nlattr
-Date: Tue, 17 Jun 2025 17:22:11 +0200
-Message-ID: <20250617152426.296032748@linuxfoundation.org>
+Subject: [PATCH 6.15 424/780] perf ui browser hists: Set actions->thread before calling do_zoom_thread()
+Date: Tue, 17 Jun 2025 17:22:12 +0200
+Message-ID: <20250617152508.737469192@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
-References: <20250617152419.512865572@linuxfoundation.org>
+In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
+References: <20250617152451.485330293@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,77 +68,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Anton Protopopov <a.s.protopopov@gmail.com>
+From: Arnaldo Carvalho de Melo <acme@redhat.com>
 
-[ Upstream commit fd5fd538a1f4b34cee6823ba0ddda2f7a55aca96 ]
+[ Upstream commit 1741189d843a1d5ef38538bc52a3760e2e46cb2e ]
 
-Return value of the validate_nla() function can be propagated all the
-way up to users of libbpf API. In case of error this libbpf version
-of validate_nla returns -1 which will be seen as -EPERM from user's
-point of view. Instead, return a more reasonable -EINVAL.
+In 7cecb7fe8388d5c3 ("perf hists: Move sort__has_comm into struct
+perf_hpp_list") it assumes that act->thread is set prior to calling
+do_zoom_thread().
 
-Fixes: bbf48c18ee0c ("libbpf: add error reporting in XDP")
-Suggested-by: Andrii Nakryiko <andrii@kernel.org>
-Signed-off-by: Anton Protopopov <a.s.protopopov@gmail.com>
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Link: https://lore.kernel.org/bpf/20250510182011.2246631-1-a.s.protopopov@gmail.com
+This doesn't happen when we use ESC or the Left arrow key to Zoom out of
+a specific thread, making this operation not to work and we get stuck
+into the thread zoom.
+
+In 6422184b087ff435 ("perf hists browser: Simplify zooming code using
+pstack_peek()") it says no need to set actions->thread, and at that
+point that was true, but in 7cecb7fe8388d5c3 a actions->thread == NULL
+check was added before the zoom out of thread could kick in.
+
+We can zoom out using the alternative 't' thread zoom toggle hotkey to
+finally set actions->thread before calling do_zoom_thread() and zoom
+out, but lets also fix the ESC/Zoom out of thread case.
+
+Fixes: 7cecb7fe8388d5c3 ("perf hists: Move sort__has_comm into struct perf_hpp_list")
+Reported-by: Ingo Molnar <mingo@kernel.org>
+Tested-by: Ingo Molnar <mingo@kernel.org>
+Cc: Adrian Hunter <adrian.hunter@intel.com>
+Cc: Ian Rogers <irogers@google.com>
+Cc: James Clark <james.clark@linaro.org>
+Cc: Jiri Olsa <jolsa@kernel.org>
+Cc: Kan Liang <kan.liang@linux.intel.com>
+Cc: Namhyung Kim <namhyung@kernel.org>
+Link: https://lore.kernel.org/r/Z_TYux5fUg2pW-pF@gmail.com
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/lib/bpf/nlattr.c | 15 +++++++--------
- 1 file changed, 7 insertions(+), 8 deletions(-)
+ tools/perf/ui/browsers/hists.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tools/lib/bpf/nlattr.c b/tools/lib/bpf/nlattr.c
-index 975e265eab3bf..06663f9ea581f 100644
---- a/tools/lib/bpf/nlattr.c
-+++ b/tools/lib/bpf/nlattr.c
-@@ -63,16 +63,16 @@ static int validate_nla(struct nlattr *nla, int maxtype,
- 		minlen = nla_attr_minlen[pt->type];
- 
- 	if (libbpf_nla_len(nla) < minlen)
--		return -1;
-+		return -EINVAL;
- 
- 	if (pt->maxlen && libbpf_nla_len(nla) > pt->maxlen)
--		return -1;
-+		return -EINVAL;
- 
- 	if (pt->type == LIBBPF_NLA_STRING) {
- 		char *data = libbpf_nla_data(nla);
- 
- 		if (data[libbpf_nla_len(nla) - 1] != '\0')
--			return -1;
-+			return -EINVAL;
- 	}
- 
- 	return 0;
-@@ -118,19 +118,18 @@ int libbpf_nla_parse(struct nlattr *tb[], int maxtype, struct nlattr *head,
- 		if (policy) {
- 			err = validate_nla(nla, maxtype, policy);
- 			if (err < 0)
--				goto errout;
-+				return err;
- 		}
- 
--		if (tb[type])
-+		if (tb[type]) {
- 			pr_warn("Attribute of type %#x found multiple times in message, "
- 				"previous attribute is being ignored.\n", type);
-+		}
- 
- 		tb[type] = nla;
- 	}
- 
--	err = 0;
--errout:
--	return err;
-+	return 0;
- }
- 
- /**
+diff --git a/tools/perf/ui/browsers/hists.c b/tools/perf/ui/browsers/hists.c
+index 35c10509b797f..992d1c822a97a 100644
+--- a/tools/perf/ui/browsers/hists.c
++++ b/tools/perf/ui/browsers/hists.c
+@@ -3274,10 +3274,10 @@ static int evsel__hists_browse(struct evsel *evsel, int nr_events, const char *h
+ 				/*
+ 				 * No need to set actions->dso here since
+ 				 * it's just to remove the current filter.
+-				 * Ditto for thread below.
+ 				 */
+ 				do_zoom_dso(browser, actions);
+ 			} else if (top == &browser->hists->thread_filter) {
++				actions->thread = thread;
+ 				do_zoom_thread(browser, actions);
+ 			} else if (top == &browser->hists->socket_filter) {
+ 				do_zoom_socket(browser, actions);
 -- 
 2.39.5
 
