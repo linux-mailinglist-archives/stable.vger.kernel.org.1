@@ -1,117 +1,117 @@
-Return-Path: <stable+bounces-152761-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-152762-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0BF12ADC54D
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 10:46:53 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id DF66AADC59E
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 11:02:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 687CF1894D84
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 08:47:08 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2C47C189385B
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 09:03:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C59528DB57;
-	Tue, 17 Jun 2025 08:46:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A489A290DBC;
+	Tue, 17 Jun 2025 09:02:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RXmPsthd"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="RF8fAesh"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f49.google.com (mail-lf1-f49.google.com [209.85.167.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C63C423B601;
-	Tue, 17 Jun 2025 08:46:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DA32220F34
+	for <stable@vger.kernel.org>; Tue, 17 Jun 2025 09:02:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750150007; cv=none; b=q6EHs57lGeyDUc689RuEeNWiL5Bya7QqertaK08dsoG3jNAQEbWSfAualBy4ib0vszsCIuiC6GL//UXwdL03RW4+RMvRNmim8RtSUCELFyFEXwvmuYvZKauWeVa32wGvlJhNbwNlO8OMg+fQuOm+NCN00Mv2Hc9Y/4iFm8TcMqU=
+	t=1750150963; cv=none; b=TeW/i+w2W3gtKfwLhN6JrHievShg1RhhyRxuji3NH76IE++mH9rkAlyJRdMH+XMst+1MB2FKSh4COVnQR3+2tsVd2PPFYmKXMUi0qAZaMxhSK02HjVXN583rZihoXVO4+AG7abT0MizHrfbR17LlahbDY9PH/iJ15lN38gZYlvo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750150007; c=relaxed/simple;
-	bh=UOC+kxOE3OLiMAYZQ8H+yk57DcCQ6dMktSpb1jyC+6A=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=S486Z+4+w7BLS2XE2ngMf0BoyaieGjiI5Vxv6MafLkf8CUGMBK+kwPt1kGy0PCCg5FoVvSiwhn5SfhQcQ7AuxjWU8RIMhY/DeW8nkPJteFMa7PYvZSb457T5QlxvoIFJlLdzKfAIu3r5LYrM8MnyjL+iTsI1gKj4K6vsHAcgAso=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RXmPsthd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57CBBC4CEE3;
-	Tue, 17 Jun 2025 08:46:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1750150007;
-	bh=UOC+kxOE3OLiMAYZQ8H+yk57DcCQ6dMktSpb1jyC+6A=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=RXmPsthdJOuimlL4S/oQli4WOuXI41v/dyqIfStlaJikD3cjHFQNJ9QJpwfoD76gl
-	 TItbD3NTfoq4+GgKg1wTFekzpYALQb+GNBiXwThN32ghyR3zGQBwPDD4YePHNNpOqL
-	 fdi+tx0QysjjARUkFKCoD2amPfQ7ldaGbHJJM3tOeZjvwKs06QrpPtqWV/RAPZyYgr
-	 wtseBup9QqemwmilqI9W63RIEk5GpxWAr9lcWv8uteeT/Y4kv+4tJsvHTOFmHsxVaC
-	 g8M7YKSPof+JYC2CgL7kAdOyGdS5aRzZivIn9HZ2IgbjKE0dRGE8aWXFKNSfIEX8hA
-	 gm8qc8Kn1FwBA==
-Received: from johan by xi.lan with local (Exim 4.97.1)
-	(envelope-from <johan@kernel.org>)
-	id 1uRRxt-000000003p7-16ok;
-	Tue, 17 Jun 2025 10:46:45 +0200
-Date: Tue, 17 Jun 2025 10:46:45 +0200
-From: Johan Hovold <johan@kernel.org>
-To: Praneesh P <praneesh.p@oss.qualcomm.com>
-Cc: Baochen Qiang <quic_bqiang@quicinc.com>,
-	P Praneesh <quic_ppranees@quicinc.com>,
-	Johan Hovold <johan+linaro@kernel.org>,
-	Jeff Johnson <jjohnson@kernel.org>,
-	Miaoqing Pan <quic_miaoqing@quicinc.com>,
-	Remi Pommarel <repk@triplefau.lt>, linux-wireless@vger.kernel.org,
-	ath12k@lists.infradead.org, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH v2 1/4] wifi: ath12k: fix dest ring-buffer corruption
-Message-ID: <aFErdeZlT-Hm63pu@hovoldconsulting.com>
-References: <20250604144509.28374-1-johan+linaro@kernel.org>
- <20250604144509.28374-2-johan+linaro@kernel.org>
- <6f3eb9fa-617e-4434-8fc4-33dd92c4bdd2@quicinc.com>
- <aEFqsghEuJc3xxlU@hovoldconsulting.com>
- <ed06d62a-4b98-443a-a2ed-c92058bb521a@quicinc.com>
- <63c2c889-0a09-4b25-a1d2-2aaa92d75d9f@oss.qualcomm.com>
+	s=arc-20240116; t=1750150963; c=relaxed/simple;
+	bh=hZpp8NilOYk4lk2aLMATM3rJ4jK41OW6tkT22EaNR68=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=QF+Ri2jlulc9Ce2tKmXHLODFJciBVlPyFGqWw0/BMoGJAHS2ofhK3PskYqW54JTlJzsHDp1QSTnUkAHSRGGT9CGAonpN8ytJIUtqxseqAs0rl6zFu1yHxJ7v7NV26jSJsyRGRAp8eZ/9F6q+p6LaQZmwNW2EfV9AgXIus6NvHt4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=RF8fAesh; arc=none smtp.client-ip=209.85.167.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-lf1-f49.google.com with SMTP id 2adb3069b0e04-553bcf41429so270048e87.3
+        for <stable@vger.kernel.org>; Tue, 17 Jun 2025 02:02:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1750150959; x=1750755759; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=p6FSyDeLV5tNzI8jmBk6dfrtvJpCsYW4RkOqJj3Og0s=;
+        b=RF8fAeshrVI5aNgHBrI+v4jsYBHw1T9TD5djqPMGUlFm9/QOZIFOQsBrO2Yn0hX3Rl
+         roiEWZIuHYWaCHMhuc63tY1pv7QaKRKspyOfCvs/XRavK0914EP2W3ngmawnWJitf9PH
+         30kvNGLLToIcYLnzQVXR8Rgf1/Nse8O9ZnJIA/dxdfzHtj1T/9mlZU6A5ZydQdCs4eQF
+         AXFxgEO3j4vOGd9utqYFz5N7Ci8+9d+OmEgP3n626UqRTba28hHEZvCtBquVP4dlLXHh
+         niTU0CZ7vOiPlN29KE7H8PdX6ArvIUsVaQGbdJOyAZ9YAcjuS87uWp2JlI5hnG0XzblK
+         kW7A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1750150959; x=1750755759;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=p6FSyDeLV5tNzI8jmBk6dfrtvJpCsYW4RkOqJj3Og0s=;
+        b=oSRyNTvcocshW4hG5LyezDfYi8XbTWv7vB9ISDTQyVahbHaslEMxBoasoZ3A2pAEkB
+         1bxdnDuaUOvNRokqQsf6QyWHxv5ULbrJ5xVITSVVLdo1OCHdDfllc4rTJz/1PK7XP8LK
+         cz5AvDKhxJ7piWmkkieH7clpB0sZs2SdR+Q16xF3ejQCyABub5SpSt2JLADIhUv9cliI
+         mJQzba2VGc0Fxor3gFzgdJblz0u6Zh7SoYb2LGUSGiUDO+zfHMYWdX0/8UmNSP4vXuIM
+         PFacn2eIBNpJ+yR4HCkNjY5nsRqcDfp6/HIwGT/QaG9oqCn8Vv4WfbaQ/424AouvtXfk
+         z/Xg==
+X-Forwarded-Encrypted: i=1; AJvYcCWac3PVN6pSTWufPxSr98I5yClkskw9o+No+XBRzEv/vXAPKDBcgdXXmzxTBTdARAuNhtz/peU=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzB3abe98UyHV/mg+M0D7Pq/QvewjlL36rXv4JgsF8vCVD182Nm
+	+BO3jOcSwbIdMd8VUiggB64xn0HfuoUCt4DQ4JSm84G40rG/9TwRfppYsN5wKVa7S1I=
+X-Gm-Gg: ASbGncuc4YrrgbDlHfNHsCtEV6/g/V9M2XXODCr9Gljrnfp0M3fdzYErwGnmjCDPyee
+	k1frTWL8sg4IDbo6lEdoxd2Ka5ViFz9loBCayZyQxbp654ZV8gGCh1xV/8UeeUy21ytWfscgO8K
+	6/9qZAGhQwfy6SInt6CWLRIhWh+ZcauOJgUnY9hE2FtpvM6w64QA8MRuImnpKN84lDFzEB9SLU7
+	2/4OmIMbokfrMOdXSCYiT+8xkHaHp4yZoJR9Jo3n5l1jVxCsPSbDc3T2aV/wBZSaojzR3q0bj3e
+	KxQsfMXj6qB41tLRxT5hR//zof/tKTA7wlOzQRqXTNwUQHH7yLOyLVsqGFGEraTr2kS35Dsed+C
+	IU2mvIYKqYfjtZRQgT+cyX/MDmztms/HWizlrIGB+
+X-Google-Smtp-Source: AGHT+IEv7meiVd5tMWXL+doCxvXY8Z6vYW1YGEvunNjM0gGLHZU0DJ0LcAS77/p7fgnwyjuHi+JcZw==
+X-Received: by 2002:a05:6512:691:b0:553:2a11:9cce with SMTP id 2adb3069b0e04-553b6f4cc69mr1044756e87.14.1750150958516;
+        Tue, 17 Jun 2025 02:02:38 -0700 (PDT)
+Received: from [192.168.1.4] (88-112-131-206.elisa-laajakaista.fi. [88.112.131.206])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-553ac120167sm1823733e87.20.2025.06.17.02.02.37
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 17 Jun 2025 02:02:38 -0700 (PDT)
+Message-ID: <3b2f1bba-6dde-4f7d-ad87-219306e37829@linaro.org>
+Date: Tue, 17 Jun 2025 12:02:37 +0300
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <63c2c889-0a09-4b25-a1d2-2aaa92d75d9f@oss.qualcomm.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/2] media: qcom: camss: csiphy-3ph: Fix inadvertent
+ dropping of SDM660/SDM670 phy init
+Content-Language: ru-RU
+To: Bryan O'Donoghue <bryan.odonoghue@linaro.org>,
+ Robert Foss <rfoss@kernel.org>, Todor Tomov <todor.too@gmail.com>,
+ Mauro Carvalho Chehab <mchehab@kernel.org>, Hans Verkuil
+ <hverkuil@xs4all.nl>, Depeng Shao <quic_depengs@quicinc.com>,
+ Hans Verkuil <hans.verkuil@cisco.com>
+Cc: linux-media@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org
+References: <20250612-linux-next-25-05-30-daily-reviews-v1-0-88ba033a9a03@linaro.org>
+ <20250612-linux-next-25-05-30-daily-reviews-v1-1-88ba033a9a03@linaro.org>
+From: Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>
+In-Reply-To: <20250612-linux-next-25-05-30-daily-reviews-v1-1-88ba033a9a03@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Mon, Jun 16, 2025 at 02:59:24PM +0530, Praneesh P wrote:
-> On 6/5/2025 4:19 PM, Baochen Qiang wrote:
-> > On 6/5/2025 6:00 PM, Johan Hovold wrote:
-> >> On Thu, Jun 05, 2025 at 04:41:32PM +0800, Baochen Qiang wrote:
-> >>> On 6/4/2025 10:45 PM, Johan Hovold wrote:
+On 6/12/25 11:07, Bryan O'Donoghue wrote:
+> The moving of init sequence hook from gen2() to subdev_init() doesn't
+> account for gen1 devices such as SDM660 and SDM670. The switch should find
+> the right offset for gen2 PHYs only, not reject gen1. Remove the default
+> error case to restore gen1 CSIPHY support.
+> 
+> Cc: stable@vger.kernel.org
+> Fixes: fbce0ca24c3a ("media: qcom: camss: csiphy-3ph: Move CSIPHY variables to data field inside csiphy struct")
+> Signed-off-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
 
-> >>>> Add the missing memory barrier to make sure that destination ring
-> >>>> descriptors are read after the head pointers to avoid using stale data
-> >>>> on weakly ordered architectures like aarch64.
-> >>>>
-> >>>> The barrier is added to the ath12k_hal_srng_access_begin() helper for
-> >>>> symmetry with follow-on fixes for source ring buffer corruption which
-> >>>> will add barriers to ath12k_hal_srng_access_end().
-> >>>>
-> >>>> Note that this may fix the empty descriptor issue recently worked around
-> >>>> by commit 51ad34a47e9f ("wifi: ath12k: Add drop descriptor handling for
-> >>>> monitor ring").
+Reviewed-by: Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>
 
-> >>> why? I would expect drunk cookies are valid in case of HAL_MON_DEST_INFO0_EMPTY_DESC,
-> >>> rather than anything caused by reordering.
-
-> >> Based on a quick look it seemed like this could possibly fall in the
-> >> same category as some of the other workarounds I've spotted while
-> >> looking into these ordering issues (e.g. f9fff67d2d7c ("wifi: ath11k:
-> >> Fix SKB corruption in REO destination ring")).
-> >>
-> >> If you say this one is clearly unrelated, I'll drop the comment.
-
-> > Praneesh, could you comment here since you made that change?
-
-> Empty/Drop descriptor is intentionally issued by the hardware during 
-> backpressure scenario
-> and is unrelated to the issue discussed in this patch series.
-
-Thanks for confirming. I've dropped this comment in v3:
-
-	https://lore.kernel.org/lkml/20250617084402.14475-1-johan+linaro@kernel.org/
-
-Johan
+--
+Best wishes,
+Vladimir
 
