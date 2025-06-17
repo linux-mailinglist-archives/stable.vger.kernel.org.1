@@ -1,61 +1,57 @@
-Return-Path: <stable+bounces-154296-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153660-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 44F67ADDA24
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 19:13:50 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 66236ADD5C4
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:25:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DBE633B98CF
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:47:56 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 77FBE17F914
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:17:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66EC22FA63B;
-	Tue, 17 Jun 2025 16:45:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 714B42264A1;
+	Tue, 17 Jun 2025 16:11:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="12JpbbTn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pk18M+wy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 239492FA629;
-	Tue, 17 Jun 2025 16:45:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B95720CCE4;
+	Tue, 17 Jun 2025 16:11:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750178735; cv=none; b=YXNLceGINw3JdDhMfcdN2yDa8Bd8es8j6ML01KH5EG7K70qi3bM77Ij2p6HhGSLJ+hxTQwvOUz7U2jgXoVJjW45rHvaUdRyucW+RranUfgwCMPFfKJMl+2LmPby7Su0rDbSnG/zTiPKWNPTyKZo7H9EzxTtCWAj3U+9GDgndpDo=
+	t=1750176680; cv=none; b=YXgKlZhemhB56eGhEF2Qo9iASv8zKeeSlWvPZWPOmmsMw82/fnrHCtB1cSux0jDbN9JSLBGV/edCQvB+BMT50CwFraSQZfqEIO4H7l4J5i3ScDhclb/9TJBXB2WCwi2pnWxJNAm4QNnkurdGKrjcI1MjVY6X9mhLeDYwi/zmlL4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750178735; c=relaxed/simple;
-	bh=1EP1vp7V0QqH7hsrztGCOZxB7dDYyw1zKEMpJGv5LI0=;
+	s=arc-20240116; t=1750176680; c=relaxed/simple;
+	bh=gqsGsbqBP40m91G3wvVh9uvMgfDyEx1In/8d+g14I08=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=cFl+MYcx5FZu5AStwiewrpS3++ryADkAejJpBvTLtAkf3TfhO8WlTvT+ieQsbj2SNCCY+zZYXDrhpbIas/dFJzQ2WSVfrEM8ihc7zdg2U9iFoIr9u4yE8HcutOV+S4uy0Gcug8lsNvHpcO5f8kONq5Zd5EKPxIMCH+4x2vLRKLc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=12JpbbTn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73B2BC4CEE3;
-	Tue, 17 Jun 2025 16:45:34 +0000 (UTC)
+	 MIME-Version; b=uQ5krcZ6m1rfIh470GdUi4M7iGyd6N9WhZVYiGkNGdjkkbH3NcYvn0u+9aGgaXBOBfd0S5wxiUaF/4suJXQoyieUoPm9EmAZVHPhrkR50Jsw1oaTcDQpcMA2v9Clmig9W1X+lQdsWVR9H7QM4Ox4T+QJY3UAK5QJjVtiwku9Ga0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pk18M+wy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8697C4CEE3;
+	Tue, 17 Jun 2025 16:11:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750178734;
-	bh=1EP1vp7V0QqH7hsrztGCOZxB7dDYyw1zKEMpJGv5LI0=;
+	s=korg; t=1750176680;
+	bh=gqsGsbqBP40m91G3wvVh9uvMgfDyEx1In/8d+g14I08=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=12JpbbTn2L31OzCPRXsXcjrAb55XChqolj0jKqFAfpBd8aFiL3kR0B9VEgG8oUu5w
-	 HmdaxkzVQRfpbZdOswfZdI9SDFNybIWmGrqjzn+SuFtcFy5LUaJapBNaINPBKqC/kT
-	 B/qCaiqv8Wu1nsab950WrKVdZ6lUvNb/FPr7n7C4=
+	b=pk18M+wyPaE9Tn+8MJJrKjgv9TEySPF+YGlzv3HF3jU+cKV8siOnKBnMz+GYjGONN
+	 lmU8S70YPEcg90sz+ZxLBzys+C0guybU86yKqaoimtAwkb8bDvL5Vcr8U7QBGBzbtJ
+	 rfso31B71YXxjlhP7x3VuG2dbmcFED941kIxVgSE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Brian Norris <briannorris@google.com>,
-	Brian Norris <briannorris@chromium.org>,
-	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
-	Konrad Dybcio <konradybcio@kernel.org>,
+	Wentao Liang <vulab@iscas.ac.cn>,
+	Ryusuke Konishi <konishi.ryusuke@gmail.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 510/780] PCI/pwrctrl: Cancel outstanding rescan work when unregistering
-Date: Tue, 17 Jun 2025 17:23:38 +0200
-Message-ID: <20250617152512.282869254@linuxfoundation.org>
+Subject: [PATCH 6.12 253/512] nilfs2: add pointer check for nilfs_direct_propagate()
+Date: Tue, 17 Jun 2025 17:23:39 +0200
+Message-ID: <20250617152429.852412009@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
-References: <20250617152451.485330293@linuxfoundation.org>
+In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
+References: <20250617152419.512865572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,53 +61,60 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Brian Norris <briannorris@google.com>
+From: Wentao Liang <vulab@iscas.ac.cn>
 
-[ Upstream commit 8b926f237743f020518162c62b93cb7107a2b5eb ]
+[ Upstream commit f43f02429295486059605997bc43803527d69791 ]
 
-It's possible to trigger use-after-free here by:
+Patch series "nilfs2: improve sanity checks in dirty state propagation".
 
-  (a) forcing rescan_work_func() to take a long time and
-  (b) utilizing a pwrctrl driver that may be unloaded for some reason
+This fixes one missed check for block mapping anomalies and one improper
+return of an error code during a preparation step for log writing, thereby
+improving checking for filesystem corruption on writeback.
 
-Cancel outstanding work to ensure it is finished before we allow our data
-structures to be cleaned up.
+This patch (of 2):
 
-[bhelgaas: tidy commit log]
-Fixes: 8f62819aaace ("PCI/pwrctl: Rescan bus on a separate thread")
-Signed-off-by: Brian Norris <briannorris@google.com>
-Signed-off-by: Brian Norris <briannorris@chromium.org>
-Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Acked-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Cc: Konrad Dybcio <konradybcio@kernel.org>
-Link: https://patch.msgid.link/20250409115313.1.Ia319526ed4ef06bec3180378c9a008340cec9658@changeid
+In nilfs_direct_propagate(), the printer get from nilfs_direct_get_ptr()
+need to be checked to ensure it is not an invalid pointer.
+
+If the pointer value obtained by nilfs_direct_get_ptr() is
+NILFS_BMAP_INVALID_PTR, means that the metadata (in this case, i_bmap in
+the nilfs_inode_info struct) that should point to the data block at the
+buffer head of the argument is corrupted and the data block is orphaned,
+meaning that the file system has lost consistency.
+
+Add a value check and return -EINVAL when it is an invalid pointer.
+
+Link: https://lkml.kernel.org/r/20250428173808.6452-1-konishi.ryusuke@gmail.com
+Link: https://lkml.kernel.org/r/20250428173808.6452-2-konishi.ryusuke@gmail.com
+Fixes: 36a580eb489f ("nilfs2: direct block mapping")
+Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
+Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/pwrctrl/core.c | 2 ++
- 1 file changed, 2 insertions(+)
+ fs/nilfs2/direct.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/pci/pwrctrl/core.c b/drivers/pci/pwrctrl/core.c
-index 9cc7e2b7f2b56..6bdbfed584d6d 100644
---- a/drivers/pci/pwrctrl/core.c
-+++ b/drivers/pci/pwrctrl/core.c
-@@ -101,6 +101,8 @@ EXPORT_SYMBOL_GPL(pci_pwrctrl_device_set_ready);
-  */
- void pci_pwrctrl_device_unset_ready(struct pci_pwrctrl *pwrctrl)
- {
-+	cancel_work_sync(&pwrctrl->work);
+diff --git a/fs/nilfs2/direct.c b/fs/nilfs2/direct.c
+index 893ab36824cc2..2d8dc6b35b547 100644
+--- a/fs/nilfs2/direct.c
++++ b/fs/nilfs2/direct.c
+@@ -273,6 +273,9 @@ static int nilfs_direct_propagate(struct nilfs_bmap *bmap,
+ 	dat = nilfs_bmap_get_dat(bmap);
+ 	key = nilfs_bmap_data_get_key(bmap, bh);
+ 	ptr = nilfs_direct_get_ptr(bmap, key);
++	if (ptr == NILFS_BMAP_INVALID_PTR)
++		return -EINVAL;
 +
- 	/*
- 	 * We don't have to delete the link here. Typically, this function
- 	 * is only called when the power control device is being detached. If
+ 	if (!buffer_nilfs_volatile(bh)) {
+ 		oldreq.pr_entry_nr = ptr;
+ 		newreq.pr_entry_nr = ptr;
 -- 
 2.39.5
 
