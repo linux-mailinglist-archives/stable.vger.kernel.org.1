@@ -1,53 +1,55 @@
-Return-Path: <stable+bounces-153029-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153032-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A967ADD21E
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 17:39:19 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 93B85ADD1FE
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 17:37:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AF3A37AD022
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 15:35:58 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CE11A3BC662
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 15:37:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C31D2ECD0B;
-	Tue, 17 Jun 2025 15:37:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D34CC2ECD20;
+	Tue, 17 Jun 2025 15:37:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="toi2yLil"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YXd725I2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB50E2DF3C9;
-	Tue, 17 Jun 2025 15:37:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90CBE2E9730;
+	Tue, 17 Jun 2025 15:37:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750174637; cv=none; b=szt27n2aFN4Vu8dpulttLQiz+lHWZSIXivNe+d2nXToNRou4I3nfl2f/kxPwj4i9tvlKmTF8yU1WSngZB0/R6+CfrS5j6bIbDgOCNQKA/VA2Uoj8/UCYwS7psYwWgN8j80MtkVZMzuonq2YRh5P84eMy7v13MqT7YyV2AYq6vbw=
+	t=1750174646; cv=none; b=kPpjdOegzMNrAP9LK+Y+sQ+/dxKRLzlyETJwtaYF/FDxiLTkKYVO6I0FzLLDMEYt9Alj5B6forsaI5j/l7SNllH96ODrTVir56qwEv+CvlBjdf6n1Kgupipl1NjMFam4JK7m/kpvxK7sqyaQq6/m3BT+MTwW+7ZHbh/vp/eBWM0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750174637; c=relaxed/simple;
-	bh=oRpDrBhBKUw8QYSE5hs3GPQqCe4y9UOprZ/Lo07Oy6U=;
+	s=arc-20240116; t=1750174646; c=relaxed/simple;
+	bh=WlbSV8j9fwu9Oumj2sEACHVxftyb72CDMsmKmdHuhDE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CQXuNTBvseEEbjdAreV1VH1oaDdLMtvaG40FXDnPh2PHnT+1YzpRZiuQv3AXLB1aqQfWVvbx/+KN7G9bUBI2GtCqNMKlodDQTd4t7zQE6PdefyuSEtZ65xxi9x5FVqtCi7BGYu3fzyFImHy1L9kapeP3k9RayPQsRk753gZ4yuc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=toi2yLil; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5AA45C4CEE3;
-	Tue, 17 Jun 2025 15:37:16 +0000 (UTC)
+	 MIME-Version; b=O4tLA1faLDhVwl4KMy12ie/W4X3fIRhN/kuFL140Pbzeki5W8RDe61k+eDiMSHLXSNFl5w24BH4vXnRLIX67SxHaH9IdNbZF+nRS/YdGeSOAv/9OyGqW2RjcONZIPYM4vM4DkMoIkKHDKPEEAeRnzo8adEuwqodKYheO5nITq/Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YXd725I2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F313BC4CEF2;
+	Tue, 17 Jun 2025 15:37:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750174636;
-	bh=oRpDrBhBKUw8QYSE5hs3GPQqCe4y9UOprZ/Lo07Oy6U=;
+	s=korg; t=1750174646;
+	bh=WlbSV8j9fwu9Oumj2sEACHVxftyb72CDMsmKmdHuhDE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=toi2yLild7M1F1jsg23qd02s1vDq044mzHOSQ94wWeazj31tgvVjXEGUtDDJKI5p9
-	 aGMxvzWYkR9dKBV6NRfG1lx1aDcsOy9NkzPCoGG63+nP1mMG2n4CbT842Z0FM1xNnM
-	 v5IItbq9oiZ18qdVwB+Cw6k/e+uOwu8wwpgt7h0I=
+	b=YXd725I2jaxBvf2BXkVV2Y9/xaKk/6ZOFFRbA1QWOJB1HCk/a/VmpSj3XWsjQmfA6
+	 1fFWgIKL7e79ArTM5o+ibyu6NPuwleqLpmgyFRCqh3HQKevcRT3gN2X71HyZSIG8vS
+	 dw2GH0EHYECB03yFPKZcucyUL8QAgG+/b6//voVA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yihang Li <liyihang9@huawei.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Tao Chen <chen.dylane@linux.dev>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Namhyung Kim <namhyung@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 097/356] scsi: hisi_sas: Call I_T_nexus after soft reset for SATA disk
-Date: Tue, 17 Jun 2025 17:23:32 +0200
-Message-ID: <20250617152342.130673988@linuxfoundation.org>
+Subject: [PATCH 6.6 098/356] libbpf: Remove sample_period init in perf_buffer
+Date: Tue, 17 Jun 2025 17:23:33 +0200
+Message-ID: <20250617152342.170817377@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250617152338.212798615@linuxfoundation.org>
 References: <20250617152338.212798615@linuxfoundation.org>
@@ -66,77 +68,37 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Yihang Li <liyihang9@huawei.com>
+From: Tao Chen <chen.dylane@linux.dev>
 
-[ Upstream commit e4d953ca557e02edd3aed7390043e1b8ad1c9723 ]
+[ Upstream commit 64821d25f05ac468d435e61669ae745ce5a633ea ]
 
-In commit 21c7e972475e ("scsi: hisi_sas: Disable SATA disk phy for severe
-I_T nexus reset failure"), if the softreset fails upon certain
-conditions, the PHY connected to the disk is disabled directly. Manual
-recovery is required, which is inconvenient for users in actual use.
+It seems that sample_period is not used in perf buffer. Actually, only
+wakeup_events are meaningful to enable events aggregation for wakeup notification.
+Remove sample_period setting code to avoid confusion.
 
-In addition, SATA disks do not support simultaneous connection of multiple
-hosts. Therefore, when multiple controllers are connected to a SATA disk
-at the same time, the controller which is connected later failed to issue
-an ATA softreset to the SATA disk. As a result, the PHY associated with
-the disk is disabled and cannot be automatically recovered.
-
-Now that, we will not focus on the execution result of softreset. No
-matter whether the execution is successful or not, we will directly carry
-out I_T_nexus_reset.
-
-Fixes: 21c7e972475e ("scsi: hisi_sas: Disable SATA disk phy for severe I_T nexus reset failure")
-Signed-off-by: Yihang Li <liyihang9@huawei.com>
-Link: https://lore.kernel.org/r/20250414080845.1220997-4-liyihang9@huawei.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Fixes: fb84b8224655 ("libbpf: add perf buffer API")
+Signed-off-by: Tao Chen <chen.dylane@linux.dev>
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Acked-by: Jiri Olsa <jolsa@kernel.org>
+Acked-by: Namhyung Kim <namhyung@kernel.org>
+Link: https://lore.kernel.org/bpf/20250423163901.2983689-1-chen.dylane@linux.dev
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/hisi_sas/hisi_sas_main.c | 29 +++++----------------------
- 1 file changed, 5 insertions(+), 24 deletions(-)
+ tools/lib/bpf/libbpf.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/drivers/scsi/hisi_sas/hisi_sas_main.c b/drivers/scsi/hisi_sas/hisi_sas_main.c
-index 7e64661d215bd..3ad58250bf6b2 100644
---- a/drivers/scsi/hisi_sas/hisi_sas_main.c
-+++ b/drivers/scsi/hisi_sas/hisi_sas_main.c
-@@ -1844,33 +1844,14 @@ static int hisi_sas_I_T_nexus_reset(struct domain_device *device)
- 	}
- 	hisi_sas_dereg_device(hisi_hba, device);
+diff --git a/tools/lib/bpf/libbpf.c b/tools/lib/bpf/libbpf.c
+index ca764ed3aaa91..18e96375dc319 100644
+--- a/tools/lib/bpf/libbpf.c
++++ b/tools/lib/bpf/libbpf.c
+@@ -12453,7 +12453,6 @@ struct perf_buffer *perf_buffer__new(int map_fd, size_t page_cnt,
+ 	attr.config = PERF_COUNT_SW_BPF_OUTPUT;
+ 	attr.type = PERF_TYPE_SOFTWARE;
+ 	attr.sample_type = PERF_SAMPLE_RAW;
+-	attr.sample_period = sample_period;
+ 	attr.wakeup_events = sample_period;
  
--	rc = hisi_sas_debug_I_T_nexus_reset(device);
--	if (rc == TMF_RESP_FUNC_COMPLETE && dev_is_sata(device)) {
--		struct sas_phy *local_phy;
--
-+	if (dev_is_sata(device)) {
- 		rc = hisi_sas_softreset_ata_disk(device);
--		switch (rc) {
--		case -ECOMM:
--			rc = -ENODEV;
--			break;
--		case TMF_RESP_FUNC_FAILED:
--		case -EMSGSIZE:
--		case -EIO:
--			local_phy = sas_get_local_phy(device);
--			rc = sas_phy_enable(local_phy, 0);
--			if (!rc) {
--				local_phy->enabled = 0;
--				dev_err(dev, "Disabled local phy of ATA disk %016llx due to softreset fail (%d)\n",
--					SAS_ADDR(device->sas_addr), rc);
--				rc = -ENODEV;
--			}
--			sas_put_local_phy(local_phy);
--			break;
--		default:
--			break;
--		}
-+		if (rc == TMF_RESP_FUNC_FAILED)
-+			dev_err(dev, "ata disk %016llx reset (%d)\n",
-+				SAS_ADDR(device->sas_addr), rc);
- 	}
- 
-+	rc = hisi_sas_debug_I_T_nexus_reset(device);
- 	if ((rc == TMF_RESP_FUNC_COMPLETE) || (rc == -ENODEV))
- 		hisi_sas_release_task(hisi_hba, device);
- 
+ 	p.attr = &attr;
 -- 
 2.39.5
 
