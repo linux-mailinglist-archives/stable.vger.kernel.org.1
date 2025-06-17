@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-154381-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153389-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 578A0ADD8F8
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 19:01:22 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 664A6ADD44F
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:09:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AA5042C26F6
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:52:14 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E0D9519464FB
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:00:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B09C2DFF10;
-	Tue, 17 Jun 2025 16:50:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 662ED2ECD2F;
+	Tue, 17 Jun 2025 15:56:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ydl4UWkj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vt2Wybod"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08F1E2264DD;
-	Tue, 17 Jun 2025 16:50:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 239C92F237C;
+	Tue, 17 Jun 2025 15:56:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750179011; cv=none; b=VS86Mufe8nIvE+/mCR6sKlYPFCQYOA7OiuYAcGcPHlWhWfeBgYQFzVBsw93VXg3asWIVlqe2mduaCHt5pwfv+bGWvBUNygFl1UultBESzD+zh7XReLAWUxuARbM78e22Jj8dy94S0/SsnAbFmU6lt4R6vZ690SACQbAExjzCXvU=
+	t=1750175800; cv=none; b=fmP1+ap9zoM4q1/eBLKEYnrHb28AHjqfgt6Dvt5PABF3rdC8BngYDw7kpZ/gyhandmdfDksppb6dqffkGGU6GeM+w3lHqJVvpgdEUUjjbRe+IuVvRcLibve9f+c1lHUPVJCPvI97afkApE3q7vc7xnFpU7Y+KAHWSx7Tq8Wlk14=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750179011; c=relaxed/simple;
-	bh=ZxwWB3jf9O4mpWkFacwMnj82MvLl091Q8za3NancVV8=;
+	s=arc-20240116; t=1750175800; c=relaxed/simple;
+	bh=iUfJRxbysRYkT+/Y88xWX41H3Zu/kk+BiD1IpxzLo68=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mHa56Oz4wKP4DJJ9s/1zPRq6gzs+rUR31QHSUDloaGNzfFIjDShnF2RMnLf1f0FGpfXc878WGJlhW0GsTzBkCSh+eC5Pb2cpqT9mgXavMp3J1ucYLiYaDwyhYYKlRnpX+2Ig5cY+VQkMO1iEXAsn3dDDiLz8h0vL4lX6WCSxc6I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ydl4UWkj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6CDD3C4CEF0;
-	Tue, 17 Jun 2025 16:50:10 +0000 (UTC)
+	 MIME-Version; b=HJ8AEBDr7xPrPKIOSCsMBlTiM6tF2EfsBfdLQfHZsI6Sh91raDbDwPHWq0JOZkKF1EGtk0HSFPJA2Om+0KlawzGrgxkq3d8dmeegkE8iC8+yZakB0WQW2fPhLFC4H9g5oNtCRcqv9xhG4V3TPSJZ8FOgiFY91kPkqnyjVOEYeDo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vt2Wybod; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E3EDC4CEE3;
+	Tue, 17 Jun 2025 15:56:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750179010;
-	bh=ZxwWB3jf9O4mpWkFacwMnj82MvLl091Q8za3NancVV8=;
+	s=korg; t=1750175800;
+	bh=iUfJRxbysRYkT+/Y88xWX41H3Zu/kk+BiD1IpxzLo68=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ydl4UWkjwutV6j3/75Yg+Xy0r3FFcrwVOyGy3k3JJHZgrEUxKSECiXEDDJFOJnllh
-	 xbXFuf9Tu5MJeHcLInelZ4kl8fdjDo4LJ6LE+yWoQ530RjlUO17qlZBYdMRBqxoux0
-	 AyJygvU9+u9CXUL1rfo2xBMh6x/qQ/evP6FAi9Gg=
+	b=vt2WybodgCpWqBG4Pu6ZUVpgV2/9vpLcvXBuY0JJ5LRZwt2yCLHnwJ9ahMGIi+sOE
+	 STHjW9YDJyISOEBZcToVlWpu+dBREK/1jD6NX+zVE8UGvdtidRnCDGkJM21MXmhBHY
+	 tZNbmoL/q79z6UBWgXrBp6xU1zYk8tuI6tHl0J7Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Simon Horman <horms@kernel.org>,
-	Willem de Bruijn <willemb@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Alexey Gladkov <legion@kernel.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Lee Jones <lee@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 621/780] selftests: drv-net: tso: fix the GRE device name
+Subject: [PATCH 6.6 214/356] mfd: stmpe-spi: Correct the name used in MODULE_DEVICE_TABLE
 Date: Tue, 17 Jun 2025 17:25:29 +0200
-Message-ID: <20250617152516.764891379@linuxfoundation.org>
+Message-ID: <20250617152346.823873158@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
-References: <20250617152451.485330293@linuxfoundation.org>
+In-Reply-To: <20250617152338.212798615@linuxfoundation.org>
+References: <20250617152338.212798615@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,43 +63,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jakub Kicinski <kuba@kernel.org>
+From: Alexey Gladkov <legion@kernel.org>
 
-[ Upstream commit c68804c934e3197e34560744854c57cf88dff8e7 ]
+[ Upstream commit 59d60c16ed41475f3b5f7b605e75fbf8e3628720 ]
 
-The device type for IPv4 GRE is "gre" not "ipgre",
-unlike for IPv6 which uses "ip6gre".
+The name used in the macro does not exist.
 
-Not sure how I missed this when writing the test, perhaps
-because all HW I have access to is on an IPv6-only network.
+drivers/mfd/stmpe-spi.c:132:26: error: use of undeclared identifier 'stmpe_id'
+  132 | MODULE_DEVICE_TABLE(spi, stmpe_id);
 
-Fixes: 0d0f4174f6c8 ("selftests: drv-net: add a simple TSO test")
-Reviewed-by: Simon Horman <horms@kernel.org>
-Reviewed-by: Willem de Bruijn <willemb@google.com>
-Link: https://patch.msgid.link/20250604012031.891242-1-kuba@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: e789995d5c61 ("mfd: Add support for STMPE SPI interface")
+Signed-off-by: Alexey Gladkov <legion@kernel.org>
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Link: https://lore.kernel.org/r/79d5a847303e45a46098f2d827d3d8a249a32be3.1745591072.git.legion@kernel.org
+Signed-off-by: Lee Jones <lee@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/drivers/net/hw/tso.py | 2 +-
+ drivers/mfd/stmpe-spi.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tools/testing/selftests/drivers/net/hw/tso.py b/tools/testing/selftests/drivers/net/hw/tso.py
-index e1ecb92f79d9b..eec647e7ec19c 100755
---- a/tools/testing/selftests/drivers/net/hw/tso.py
-+++ b/tools/testing/selftests/drivers/net/hw/tso.py
-@@ -216,7 +216,7 @@ def main() -> None:
-             ("",            "6", "tx-tcp6-segmentation",          None),
-             ("vxlan",        "", "tx-udp_tnl-segmentation",       ("vxlan",  True,  "id 100 dstport 4789 noudpcsum")),
-             ("vxlan_csum",   "", "tx-udp_tnl-csum-segmentation",  ("vxlan",  False, "id 100 dstport 4789 udpcsum")),
--            ("gre",         "4", "tx-gre-segmentation",           ("ipgre",  False,  "")),
-+            ("gre",         "4", "tx-gre-segmentation",           ("gre",    False,  "")),
-             ("gre",         "6", "tx-gre-segmentation",           ("ip6gre", False,  "")),
-         )
+diff --git a/drivers/mfd/stmpe-spi.c b/drivers/mfd/stmpe-spi.c
+index 792236f56399a..b9cc85ea2c401 100644
+--- a/drivers/mfd/stmpe-spi.c
++++ b/drivers/mfd/stmpe-spi.c
+@@ -129,7 +129,7 @@ static const struct spi_device_id stmpe_spi_id[] = {
+ 	{ "stmpe2403", STMPE2403 },
+ 	{ }
+ };
+-MODULE_DEVICE_TABLE(spi, stmpe_id);
++MODULE_DEVICE_TABLE(spi, stmpe_spi_id);
  
+ static struct spi_driver stmpe_spi_driver = {
+ 	.driver = {
 -- 
 2.39.5
 
