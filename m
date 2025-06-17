@@ -1,57 +1,65 @@
-Return-Path: <stable+bounces-153522-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-154220-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6B7EEADD562
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:20:21 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id E43A2ADD9C0
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 19:09:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C918B19E099A
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:07:26 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C08311942E5A
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:45:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A8162EA165;
-	Tue, 17 Jun 2025 16:03:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1BCB32FA659;
+	Tue, 17 Jun 2025 16:41:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nKeTpaky"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eBpoEEuC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBA862F234A;
-	Tue, 17 Jun 2025 16:03:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8F2A2FA62D;
+	Tue, 17 Jun 2025 16:41:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750176235; cv=none; b=NTjm0vXhi7VsvZgXPJBtyHoDPNN8ycQrh9c6sAlpOSEX1KRsqjmlrFLgi/zhScQC8s93Yic/2DIqHd4aG/QNlQZwEcEvXuCSAWEV3NaFqfM0qg/mG7cQaM4tUPbAuJK8wJ4bXOxvhTjNA7RaXK0O4IAJNimNHc5ttNUG9L6Gqgw=
+	t=1750178491; cv=none; b=ectQWb+kB3cYYLCcqkrdEywoFmNncJR3W04HnpIscuyS7MzF2sVO56wqKAZVo4TS87OdTsBc4pBXsn7sp0zmVAQ/bxyPuyYcIqNv0g59z8ZwAXjjwrWdyPIhvVDgk53oCgmpfDcJuFWWwYgmhWKayKMI10wyll/jQPabuK1/a5Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750176235; c=relaxed/simple;
-	bh=JrUmZYWvyxoqg3oIxU/Ny5kX9a33XwxLpyDDnlvYmvU=;
+	s=arc-20240116; t=1750178491; c=relaxed/simple;
+	bh=kh+uQBwfUR3c2Mtcg1RMKRG5BG7RzcQIM50IF1AmC9Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WdSx4A/fai/WSGkHoz0hkgHwCYiTbKpyf2iPgHt6QBsvDLWxOybxZGuDVVNR0oR1FQLU9Ug0ARZCdkFyc9hUOaiXLPs2PD3o/inC0Prpi0fFRwa4TAdFNO9FGuzOU7ILbkAgtuJ0mHDdg54d0x6S4curkpUv5vkwjQ5SS+4qRdI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nKeTpaky; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4122FC4CEE3;
-	Tue, 17 Jun 2025 16:03:55 +0000 (UTC)
+	 MIME-Version; b=rKZF8KZi7Om7a2a89tPIke/6yK0+V5PkgL0gVVK3TuNSLe9NnqliYvq8ugrdSz3ALuwgMAPtlxm7xqGOfJVYG1wmPTnsQv2w1wDiaOxt+tJSkg6MxKxtpc4GGHETqH1A2KcrFpxfKdGaSmm7tRbd3RhzqX4vx0MA5BPMx1kArHc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eBpoEEuC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29019C4CEE3;
+	Tue, 17 Jun 2025 16:41:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750176235;
-	bh=JrUmZYWvyxoqg3oIxU/Ny5kX9a33XwxLpyDDnlvYmvU=;
+	s=korg; t=1750178491;
+	bh=kh+uQBwfUR3c2Mtcg1RMKRG5BG7RzcQIM50IF1AmC9Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nKeTpakycTmJZA1EHa7SCKc9HV98/nK9Gm0ySHDfFNPS6UlsUQztpXuHHmEe9UP2d
-	 /G83uyRoYfpTJrR1nEKNv7p+SRO/nTzDj5zxGNYTstBq3Tg7GOxN2yIMUcoze8nRSD
-	 o/+R0nEhEEfk3PH2l2S+rf2lQh9d2mmywNvGZQZY=
+	b=eBpoEEuCUgXn0wKncBCtIDH5Ch7FQtyIlDp94hV93cDP7/iGVwzEyNMWPBlJxhwOq
+	 xqd0KCsKn3yXNrsBqkaxr86ui7WkafYFuAnjshYgHWdxRGTbBBBhmartsSJSYq7+xE
+	 TxocOOhSAPSPAvCKPcQf/AF1BFBkUHC/+A6JPNA0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thangaraj Samynathan <thangaraj.s@microchip.com>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Ian Rogers <irogers@google.com>,
+	Namhyung Kim <namhyung@kernel.org>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+	Ingo Molnar <mingo@redhat.com>,
+	James Clark <james.clark@linaro.org>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Kan Liang <kan.liang@linux.intel.com>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Arnaldo Carvalho de Melo <acme@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 209/512] net: lan743x: Fix PHY reset handling during initialization and WOL
+Subject: [PATCH 6.15 467/780] perf pmu: Avoid segv for missing name/alias_name in wildcarding
 Date: Tue, 17 Jun 2025 17:22:55 +0200
-Message-ID: <20250617152428.101813807@linuxfoundation.org>
+Message-ID: <20250617152510.506586276@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
-References: <20250617152419.512865572@linuxfoundation.org>
+In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
+References: <20250617152451.485330293@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,67 +71,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thangaraj Samynathan <thangaraj.s@microchip.com>
+From: Ian Rogers <irogers@google.com>
 
-[ Upstream commit 82d1096ca8b5dbb3158d707e6fb3ad21c3403a49 ]
+[ Upstream commit 2a2a7f5e7deffa363b438308812989ded126a48a ]
 
-Remove lan743x_phy_init from lan743x_hardware_init as it resets the PHY
-registers, causing WOL to fail on subsequent attempts. Add a call to
-lan743x_hw_reset_phy in the probe function to ensure the PHY is reset
-during device initialization.
+The pmu name or alias_name fields may be NULL and should be skipped if
+so. This is done in all loops of perf_pmu___name_match except the
+final wildcard loop which was an oversight.
 
-Fixes: 23f0703c125be ("lan743x: Add main source files for new lan743x driver")
-Signed-off-by: Thangaraj Samynathan <thangaraj.s@microchip.com>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Link: https://patch.msgid.link/20250526053048.287095-3-thangaraj.s@microchip.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 63e287131cf0c59b ("perf pmu: Rename name matching for no suffix or wildcard variants")
+Signed-off-by: Ian Rogers <irogers@google.com>
+Acked-by: Namhyung Kim <namhyung@kernel.org>
+Cc: Adrian Hunter <adrian.hunter@intel.com>
+Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
+Cc: Ingo Molnar <mingo@redhat.com>
+Cc: James Clark <james.clark@linaro.org>
+Cc: Jiri Olsa <jolsa@kernel.org>
+Cc: Kan Liang <kan.liang@linux.intel.com>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Link: https://lore.kernel.org/r/20250527215035.187992-1-irogers@google.com
+[ Fixup the Fixes: tag to the right commit ]
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/microchip/lan743x_main.c | 13 ++++---------
- 1 file changed, 4 insertions(+), 9 deletions(-)
+ tools/perf/util/pmu.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/net/ethernet/microchip/lan743x_main.c b/drivers/net/ethernet/microchip/lan743x_main.c
-index 8d53a35a2b561..9836fbbea0cc2 100644
---- a/drivers/net/ethernet/microchip/lan743x_main.c
-+++ b/drivers/net/ethernet/microchip/lan743x_main.c
-@@ -1346,11 +1346,6 @@ static int lan743x_hw_reset_phy(struct lan743x_adapter *adapter)
- 				  50000, 1000000);
- }
+diff --git a/tools/perf/util/pmu.c b/tools/perf/util/pmu.c
+index b7ebac5ab1d11..e2e3969e12d36 100644
+--- a/tools/perf/util/pmu.c
++++ b/tools/perf/util/pmu.c
+@@ -2052,6 +2052,9 @@ static bool perf_pmu___name_match(const struct perf_pmu *pmu, const char *to_mat
+ 	for (size_t i = 0; i < ARRAY_SIZE(names); i++) {
+ 		const char *name = names[i];
  
--static int lan743x_phy_init(struct lan743x_adapter *adapter)
--{
--	return lan743x_hw_reset_phy(adapter);
--}
--
- static void lan743x_phy_interface_select(struct lan743x_adapter *adapter)
- {
- 	u32 id_rev;
-@@ -3505,10 +3500,6 @@ static int lan743x_hardware_init(struct lan743x_adapter *adapter,
- 	if (ret)
- 		return ret;
- 
--	ret = lan743x_phy_init(adapter);
--	if (ret)
--		return ret;
--
- 	ret = lan743x_ptp_init(adapter);
- 	if (ret)
- 		return ret;
-@@ -3642,6 +3633,10 @@ static int lan743x_pcidev_probe(struct pci_dev *pdev,
- 	if (ret)
- 		goto cleanup_pci;
- 
-+	ret = lan743x_hw_reset_phy(adapter);
-+	if (ret)
-+		goto cleanup_pci;
++		if (!name)
++			continue;
 +
- 	ret = lan743x_hardware_init(adapter, pdev);
- 	if (ret)
- 		goto cleanup_pci;
+ 		if (wildcard && perf_pmu__match_wildcard_uncore(name, to_match))
+ 			return true;
+ 		if (!wildcard && perf_pmu__match_ignoring_suffix_uncore(name, to_match))
 -- 
 2.39.5
 
