@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-153258-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153280-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6FAA8ADD37A
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 17:58:53 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A784ADD3BD
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:01:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9351D3A69D7
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 15:52:44 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AF56E1893E99
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 15:54:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ADA422ED87A;
-	Tue, 17 Jun 2025 15:49:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7EF0F2DFF10;
+	Tue, 17 Jun 2025 15:50:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hn2XQpUn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JVpcZzCI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 674C72ECD33;
-	Tue, 17 Jun 2025 15:49:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 383982DFF04;
+	Tue, 17 Jun 2025 15:50:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750175377; cv=none; b=ovb5K5hXtMQT4FKmSXIZbflhDBJRro+QTPRO+rP0d6uWMn/gNDkVlGpIPx5uN5KUwbwLKC26oJ78a/2asw0XIoZiOdrKFWipTWjEUN1Sic4cTp6e/jUG+N7UwWszNX5lBAZi5/3dy2x8rXbZCNKPTGiV8M7YAY8C8H6kuAliEUc=
+	t=1750175450; cv=none; b=nG2R6AAmHYx5EYdz4JLPTxbbHCK2lwQyH5cdj7hW6Jo7S5TWUiOkUwyLAKbWbrLzyKEFAMP+WjInHD3rHJx1H6+uC74/lbcbr0mZarJqER5eK+r0lWVzGmFn/FYb+WfxojrB1PGW6u+5owZvarSFdO0uMUHmIwKVV/tx61f0W74=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750175377; c=relaxed/simple;
-	bh=0rN6BOkuTqZ/eIWkjHtG6//Vgx6PbFPo1GNXOYA58LQ=;
+	s=arc-20240116; t=1750175450; c=relaxed/simple;
+	bh=4+M2YerSgqb6H+IC4/8TKONFkIHyBKpizfQj/Czkr/4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pqFr2h5hQNutLWPusNZkDpgPVLnuiyhubmqh0wkZYUdXXxjpKKPzGupBdEEoA37jqQ/w7YySOqja47Wq4sIr7pcgKblXzRaELg7xYciTtnefiqdFYKse3jCkXVIsbXryYIYHN2ej1bJX++pXNUVourr9cdf/K+dOn0MtBy8Hje8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hn2XQpUn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC017C4CEE3;
-	Tue, 17 Jun 2025 15:49:36 +0000 (UTC)
+	 MIME-Version; b=i9uZPx+imAvqLEAXG8C27RzGjsfOdhNPmvyEOSql8S6o8hwV+FqiWX38mmo9eoJrx0XyIyz6rroLoZhorVJbvdwh6dgSlhora/WlmwFq4dkMUwQ8uuYBVZxDwTHPs2Sx72E5vRNWQ1JeXCKcgMUdxxrZU/iAFqB+ggh1ja0Up2E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JVpcZzCI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9CED5C4CEE3;
+	Tue, 17 Jun 2025 15:50:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750175377;
-	bh=0rN6BOkuTqZ/eIWkjHtG6//Vgx6PbFPo1GNXOYA58LQ=;
+	s=korg; t=1750175450;
+	bh=4+M2YerSgqb6H+IC4/8TKONFkIHyBKpizfQj/Czkr/4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hn2XQpUnaTkLGD4Aze3t+BspJmH05MC9fpnt0BE/kfzSMQsOjCLdNv7sWcUWgDwZe
-	 cYtiwFDYqm1HQj1iBpe8rKkxuc9LWKsG32hdt18rWAUykf4EdOL26c6AuplBhcIywl
-	 Eu8/7yuVSk8xhTmsOf0rEgmkYyooMY+D43XeyZio=
+	b=JVpcZzCI5bsQ6Orj82/X4dxXhdzQBTeuCUcGDd3dFW8pqqcHCSo1hqPaeHzW87Au/
+	 oem5UzEuBiTB432WUNMsakBfx5WmL1mkkhH5DLeqnBRds/yKl+gz7qssMfmvn0f6MV
+	 N7dH0WkzW55CWSFDzppJzQKhvnS8Ef3SaeiUcX8M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jiaqing Zhao <jiaqing.zhao@linux.intel.com>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Mario Limonciello <mario.limonciello@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 076/780] x86/mtrr: Check if fixed-range MTRRs exist in mtrr_save_fixed_ranges()
-Date: Tue, 17 Jun 2025 17:16:24 +0200
-Message-ID: <20250617152454.605874811@linuxfoundation.org>
+Subject: [PATCH 6.15 077/780] PM: sleep: Print PM debug messages during hibernation
+Date: Tue, 17 Jun 2025 17:16:25 +0200
+Message-ID: <20250617152454.647873186@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
 References: <20250617152451.485330293@linuxfoundation.org>
@@ -66,44 +66,78 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Jiaqing Zhao <jiaqing.zhao@linux.intel.com>
+From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-[ Upstream commit 824c6384e8d9275d4ec7204f3f79a4ac6bc10379 ]
+[ Upstream commit 1b17d4525bca3916644c41e01522df8fa0f8b90b ]
 
-When suspending, save_processor_state() calls mtrr_save_fixed_ranges()
-to save fixed-range MTRRs.
+Commit cdb8c100d8a4 ("include/linux/suspend.h: Only show pm_pr_dbg
+messages at suspend/resume") caused PM debug messages to only be
+printed during system-wide suspend and resume in progress, but it
+forgot about hibernation.
 
-On platforms without fixed-range MTRRs like the ACRN hypervisor which
-has removed fixed-range MTRR emulation, accessing these MSRs will
-trigger an unchecked MSR access error. Make sure fixed-range MTRRs are
-supported before access to prevent such error.
+Address this by adding a check for hibernation in progress to
+pm_debug_messages_should_print().
 
-Since mtrr_state.have_fixed is only set when MTRRs are present and
-enabled, checking the CPU feature flag in mtrr_save_fixed_ranges() is
-unnecessary.
-
-Fixes: 3ebad5905609 ("[PATCH] x86: Save and restore the fixed-range MTRRs of the BSP when suspending")
-Signed-off-by: Jiaqing Zhao <jiaqing.zhao@linux.intel.com>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Link: https://lore.kernel.org/20250509170633.3411169-2-jiaqing.zhao@linux.intel.com
+Fixes: cdb8c100d8a4 ("include/linux/suspend.h: Only show pm_pr_dbg messages at suspend/resume")
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
+Link: https://patch.msgid.link/4998903.GXAFRqVoOG@rjwysocki.net
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kernel/cpu/mtrr/generic.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ kernel/power/hibernate.c | 5 +++++
+ kernel/power/main.c      | 3 ++-
+ kernel/power/power.h     | 4 ++++
+ 3 files changed, 11 insertions(+), 1 deletion(-)
 
-diff --git a/arch/x86/kernel/cpu/mtrr/generic.c b/arch/x86/kernel/cpu/mtrr/generic.c
-index e2c6b471d2302..8c18327eb10bb 100644
---- a/arch/x86/kernel/cpu/mtrr/generic.c
-+++ b/arch/x86/kernel/cpu/mtrr/generic.c
-@@ -593,7 +593,7 @@ static void get_fixed_ranges(mtrr_type *frs)
- 
- void mtrr_save_fixed_ranges(void *info)
- {
--	if (boot_cpu_has(X86_FEATURE_MTRR))
-+	if (mtrr_state.have_fixed)
- 		get_fixed_ranges(mtrr_state.fixed_ranges);
+diff --git a/kernel/power/hibernate.c b/kernel/power/hibernate.c
+index 23c0f4e6cb2ff..5af9c7ee98cd4 100644
+--- a/kernel/power/hibernate.c
++++ b/kernel/power/hibernate.c
+@@ -90,6 +90,11 @@ void hibernate_release(void)
+ 	atomic_inc(&hibernate_atomic);
  }
  
++bool hibernation_in_progress(void)
++{
++	return !atomic_read(&hibernate_atomic);
++}
++
+ bool hibernation_available(void)
+ {
+ 	return nohibernate == 0 &&
+diff --git a/kernel/power/main.c b/kernel/power/main.c
+index 6254814d48171..0622e7dacf172 100644
+--- a/kernel/power/main.c
++++ b/kernel/power/main.c
+@@ -613,7 +613,8 @@ bool pm_debug_messages_on __read_mostly;
+ 
+ bool pm_debug_messages_should_print(void)
+ {
+-	return pm_debug_messages_on && pm_suspend_target_state != PM_SUSPEND_ON;
++	return pm_debug_messages_on && (hibernation_in_progress() ||
++		pm_suspend_target_state != PM_SUSPEND_ON);
+ }
+ EXPORT_SYMBOL_GPL(pm_debug_messages_should_print);
+ 
+diff --git a/kernel/power/power.h b/kernel/power/power.h
+index c352dea2f67b5..f8496f40b54fa 100644
+--- a/kernel/power/power.h
++++ b/kernel/power/power.h
+@@ -71,10 +71,14 @@ extern void enable_restore_image_protection(void);
+ static inline void enable_restore_image_protection(void) {}
+ #endif /* CONFIG_STRICT_KERNEL_RWX */
+ 
++extern bool hibernation_in_progress(void);
++
+ #else /* !CONFIG_HIBERNATION */
+ 
+ static inline void hibernate_reserved_size_init(void) {}
+ static inline void hibernate_image_size_init(void) {}
++
++static inline bool hibernation_in_progress(void) { return false; }
+ #endif /* !CONFIG_HIBERNATION */
+ 
+ #define power_attr(_name) \
 -- 
 2.39.5
 
