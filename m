@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-154375-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-154377-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AC0FDADD9D4
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 19:10:05 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2AC0BADD936
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 19:03:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2352A406FE5
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:51:30 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 10C404A765E
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:52:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D9686236A73;
-	Tue, 17 Jun 2025 16:49:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3132E28505A;
+	Tue, 17 Jun 2025 16:49:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S+x7hgjk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ziKPYaj6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93BC61E98E3;
-	Tue, 17 Jun 2025 16:49:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1AA1285043;
+	Tue, 17 Jun 2025 16:49:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750178994; cv=none; b=u+MIIsWhsDjEv56xNeR8otu3qkyulPahAPwn3s+s6Z9bz3XnEltMbziK9g1Wf/tpruDlXR2XQ4iQCm05+jSgnnMHg5NV3MFDl/uIy/hyaWqaM+to9mUT5iRkLNPsyRqNBqZBJo91ONzeZLKTzHWgf2R6aK3jYXW1gsyOFm+sqAs=
+	t=1750178998; cv=none; b=KsapPct2Y18PIKQXJ9Enn396auOL4OzyGCg0kbHA8gSl6qDzlYF+Uv3BWbcXaMR5imuu3FRwk2/d4KGWO5kJT8SNiyc3Y3+ZSZVk5ZCJno7Ub6VZyaMSvrpJg44Z+d7w/ChNQH2tCjOKgj5HcbFXREWgxE3e/QNnzp0CytzgFMg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750178994; c=relaxed/simple;
-	bh=XkeuJ8XbQKwFjQbZC1Cta5uLIdKMIDJtrNbRHXme3+A=;
+	s=arc-20240116; t=1750178998; c=relaxed/simple;
+	bh=5Y8eoszF+tdeVA2Rg43N5vfMgA4C4nUY3aEKNTIHlMc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=r8Y44LtuTEgZqk4SyVWOLgTnq1UDGj5KMTemCeyLmPtGSp04flHptZJvkzN5+nQykx2/5kts6LyfruvRLY6ouav01I2huN45609LebWbpHmxuCU9mmZRfWY15Ivts/vtvRSYsiveZf74Y2/KlD880Y1+yx4o1TqYhKDWfB7nFYM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S+x7hgjk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B866BC4CEF0;
-	Tue, 17 Jun 2025 16:49:53 +0000 (UTC)
+	 MIME-Version; b=sSpozYJtBZQV2eNf+2V0/YSWuGCnmItaCwqMxxCGa3+TBeCmEGsRrkllGMbD8MbgbhdZrAeLQIg853IFyU6B/QlXpEPtEo7eExJgKwTZfvDLXEeQumdAsXOjlUx6MAAqmLnAadDADMmsgY6raZzlge6+AEeShF84ssMPPzPzYqw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ziKPYaj6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53C9DC4CEE3;
+	Tue, 17 Jun 2025 16:49:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750178994;
-	bh=XkeuJ8XbQKwFjQbZC1Cta5uLIdKMIDJtrNbRHXme3+A=;
+	s=korg; t=1750178997;
+	bh=5Y8eoszF+tdeVA2Rg43N5vfMgA4C4nUY3aEKNTIHlMc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=S+x7hgjkpAn/YXHhvHors6AQSPTzBHaX9XMJ43MK7wyky5LP4G4V+tL+Kvr4Dj68j
-	 0YH30p5zIxs/FIjcRlQZXjngJT1CLTVpYqX/qZ9Nww1e4KrhFVKBy0lJ65rQERMEqO
-	 8KQvLGg6mZswXLtm2zJYW53+IB9ozmocrwKxdq2A=
+	b=ziKPYaj6JWOY5HcpRDU/uB2VZd+kCD5r3mBYT4SAw9t2nBlBuf6/skWpsYyuA0kU0
+	 CdZWJ59JCiIEtjRRr399GD1n0TMPrOUC75acC+lzxTzXswS/6LA1K1G/Aq8DhEIN7I
+	 mHCKMgSXtplf2/ZfEb3Hf4519w5z6g/HlfbZNh+M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lachlan Hodges <lachlan.hodges@morsemicro.com>,
-	Johannes Berg <johannes.berg@intel.com>,
+	Daniele Palmas <dnlplm@gmail.com>,
+	Loic Poulain <loic.poulain@oss.qualcomm.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 616/780] wifi: cfg80211/mac80211: correctly parse S1G beacon optional elements
-Date: Tue, 17 Jun 2025 17:25:24 +0200
-Message-ID: <20250617152516.567682141@linuxfoundation.org>
+Subject: [PATCH 6.15 617/780] net: wwan: mhi_wwan_mbim: use correct mux_id for multiplexing
+Date: Tue, 17 Jun 2025 17:25:25 +0200
+Message-ID: <20250617152516.608644854@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
 References: <20250617152451.485330293@linuxfoundation.org>
@@ -66,243 +67,67 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Lachlan Hodges <lachlan.hodges@morsemicro.com>
+From: Daniele Palmas <dnlplm@gmail.com>
 
-[ Upstream commit 1e1f706fc2ce90eaaf3480b3d5f27885960d751c ]
+[ Upstream commit 501fe52aa908c96f2c9b8d54767938a1a5960354 ]
 
-S1G beacons are not traditional beacons but a type of extension frame.
-Extension frames contain the frame control and duration fields, followed
-by zero or more optional fields before the frame body. These optional
-fields are distinct from the variable length elements.
+Recent Qualcomm chipsets like SDX72/75 require MBIM sessionId mapping
+to muxId in the range (0x70-0x8F) for the PCIe tethered use.
 
-The presence of optional fields is indicated in the frame control field.
-To correctly locate the elements offset, the frame control must be parsed
-to identify which optional fields are present. Currently, mac80211 parses
-S1G beacons based on fixed assumptions about the frame layout, without
-inspecting the frame control field. This can result in incorrect offsets
-to the "variable" portion of the frame.
+This has been partially addressed by the referenced commit, mapping
+the default data call to muxId = 112, but the multiplexed data calls
+scenario was not properly considered, mapping sessionId = 1 to muxId
+1, while it should have been 113.
 
-Properly parse S1G beacon frames by using the field lengths defined in
-IEEE 802.11-2024, section 9.3.4.3, ensuring that the elements offset is
-calculated accurately.
+Fix this by moving the session_id assignment logic to mhi_mbim_newlink,
+in order to map sessionId = n to muxId = n + WDS_BIND_MUX_DATA_PORT_MUX_ID.
 
-Fixes: 9eaffe5078ca ("cfg80211: convert S1G beacon to scan results")
-Fixes: cd418ba63f0c ("mac80211: convert S1G beacon to scan results")
-Signed-off-by: Lachlan Hodges <lachlan.hodges@morsemicro.com>
-Link: https://patch.msgid.link/20250603053538.468562-1-lachlan.hodges@morsemicro.com
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Fixes: 65bc58c3dcad ("net: wwan: mhi: make default data link id configurable")
+Signed-off-by: Daniele Palmas <dnlplm@gmail.com>
+Reviewed-by: Loic Poulain <loic.poulain@oss.qualcomm.com>
+Link: https://patch.msgid.link/20250603091204.2802840-1-dnlplm@gmail.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/ieee80211.h | 79 ++++++++++++++++++++++++++++++++++-----
- net/mac80211/mlme.c       |  7 +---
- net/mac80211/scan.c       | 11 +++---
- net/wireless/scan.c       | 18 ++++-----
- 4 files changed, 83 insertions(+), 32 deletions(-)
+ drivers/net/wwan/mhi_wwan_mbim.c | 9 +++------
+ 1 file changed, 3 insertions(+), 6 deletions(-)
 
-diff --git a/include/linux/ieee80211.h b/include/linux/ieee80211.h
-index 457b4fba88bd0..7edc3fb0641cb 100644
---- a/include/linux/ieee80211.h
-+++ b/include/linux/ieee80211.h
-@@ -111,6 +111,8 @@
+diff --git a/drivers/net/wwan/mhi_wwan_mbim.c b/drivers/net/wwan/mhi_wwan_mbim.c
+index 8755c5e6a65b3..c814fbd756a1e 100644
+--- a/drivers/net/wwan/mhi_wwan_mbim.c
++++ b/drivers/net/wwan/mhi_wwan_mbim.c
+@@ -550,8 +550,8 @@ static int mhi_mbim_newlink(void *ctxt, struct net_device *ndev, u32 if_id,
+ 	struct mhi_mbim_link *link = wwan_netdev_drvpriv(ndev);
+ 	struct mhi_mbim_context *mbim = ctxt;
  
- /* bits unique to S1G beacon */
- #define IEEE80211_S1G_BCN_NEXT_TBTT	0x100
-+#define IEEE80211_S1G_BCN_CSSID		0x200
-+#define IEEE80211_S1G_BCN_ANO		0x400
+-	link->session = if_id;
+ 	link->mbim = mbim;
++	link->session = mhi_mbim_get_link_mux_id(link->mbim->mdev->mhi_cntrl) + if_id;
+ 	link->ndev = ndev;
+ 	u64_stats_init(&link->rx_syncp);
+ 	u64_stats_init(&link->tx_syncp);
+@@ -607,7 +607,7 @@ static int mhi_mbim_probe(struct mhi_device *mhi_dev, const struct mhi_device_id
+ {
+ 	struct mhi_controller *cntrl = mhi_dev->mhi_cntrl;
+ 	struct mhi_mbim_context *mbim;
+-	int err, link_id;
++	int err;
  
- /* see 802.11ah-2016 9.9 NDP CMAC frames */
- #define IEEE80211_S1G_1MHZ_NDP_BITS	25
-@@ -153,9 +155,6 @@
+ 	mbim = devm_kzalloc(&mhi_dev->dev, sizeof(*mbim), GFP_KERNEL);
+ 	if (!mbim)
+@@ -628,11 +628,8 @@ static int mhi_mbim_probe(struct mhi_device *mhi_dev, const struct mhi_device_id
+ 	/* Number of transfer descriptors determines size of the queue */
+ 	mbim->rx_queue_sz = mhi_get_free_desc_count(mhi_dev, DMA_FROM_DEVICE);
  
- #define IEEE80211_ANO_NETTYPE_WILD              15
- 
--/* bits unique to S1G beacon */
--#define IEEE80211_S1G_BCN_NEXT_TBTT    0x100
+-	/* Get the corresponding mux_id from mhi */
+-	link_id = mhi_mbim_get_link_mux_id(cntrl);
 -
- /* control extension - for IEEE80211_FTYPE_CTL | IEEE80211_STYPE_CTL_EXT */
- #define IEEE80211_CTL_EXT_POLL		0x2000
- #define IEEE80211_CTL_EXT_SPR		0x3000
-@@ -627,6 +626,42 @@ static inline bool ieee80211_is_s1g_beacon(__le16 fc)
- 	       cpu_to_le16(IEEE80211_FTYPE_EXT | IEEE80211_STYPE_S1G_BEACON);
+ 	/* Register wwan link ops with MHI controller representing WWAN instance */
+-	return wwan_register_ops(&cntrl->mhi_dev->dev, &mhi_mbim_wwan_ops, mbim, link_id);
++	return wwan_register_ops(&cntrl->mhi_dev->dev, &mhi_mbim_wwan_ops, mbim, 0);
  }
  
-+/**
-+ * ieee80211_s1g_has_next_tbtt - check if IEEE80211_S1G_BCN_NEXT_TBTT
-+ * @fc: frame control bytes in little-endian byteorder
-+ * Return: whether or not the frame contains the variable-length
-+ *	next TBTT field
-+ */
-+static inline bool ieee80211_s1g_has_next_tbtt(__le16 fc)
-+{
-+	return ieee80211_is_s1g_beacon(fc) &&
-+		(fc & cpu_to_le16(IEEE80211_S1G_BCN_NEXT_TBTT));
-+}
-+
-+/**
-+ * ieee80211_s1g_has_ano - check if IEEE80211_S1G_BCN_ANO
-+ * @fc: frame control bytes in little-endian byteorder
-+ * Return: whether or not the frame contains the variable-length
-+ *	ANO field
-+ */
-+static inline bool ieee80211_s1g_has_ano(__le16 fc)
-+{
-+	return ieee80211_is_s1g_beacon(fc) &&
-+		(fc & cpu_to_le16(IEEE80211_S1G_BCN_ANO));
-+}
-+
-+/**
-+ * ieee80211_s1g_has_cssid - check if IEEE80211_S1G_BCN_CSSID
-+ * @fc: frame control bytes in little-endian byteorder
-+ * Return: whether or not the frame contains the variable-length
-+ *	compressed SSID field
-+ */
-+static inline bool ieee80211_s1g_has_cssid(__le16 fc)
-+{
-+	return ieee80211_is_s1g_beacon(fc) &&
-+		(fc & cpu_to_le16(IEEE80211_S1G_BCN_CSSID));
-+}
-+
- /**
-  * ieee80211_is_s1g_short_beacon - check if frame is an S1G short beacon
-  * @fc: frame control bytes in little-endian byteorder
-@@ -1245,16 +1280,40 @@ struct ieee80211_ext {
- 			u8 change_seq;
- 			u8 variable[0];
- 		} __packed s1g_beacon;
--		struct {
--			u8 sa[ETH_ALEN];
--			__le32 timestamp;
--			u8 change_seq;
--			u8 next_tbtt[3];
--			u8 variable[0];
--		} __packed s1g_short_beacon;
- 	} u;
- } __packed __aligned(2);
- 
-+/**
-+ * ieee80211_s1g_optional_len - determine length of optional S1G beacon fields
-+ * @fc: frame control bytes in little-endian byteorder
-+ * Return: total length in bytes of the optional fixed-length fields
-+ *
-+ * S1G beacons may contain up to three optional fixed-length fields that
-+ * precede the variable-length elements. Whether these fields are present
-+ * is indicated by flags in the frame control field.
-+ *
-+ * From IEEE 802.11-2024 section 9.3.4.3:
-+ *  - Next TBTT field may be 0 or 3 bytes
-+ *  - Short SSID field may be 0 or 4 bytes
-+ *  - Access Network Options (ANO) field may be 0 or 1 byte
-+ */
-+static inline size_t
-+ieee80211_s1g_optional_len(__le16 fc)
-+{
-+	size_t len = 0;
-+
-+	if (ieee80211_s1g_has_next_tbtt(fc))
-+		len += 3;
-+
-+	if (ieee80211_s1g_has_cssid(fc))
-+		len += 4;
-+
-+	if (ieee80211_s1g_has_ano(fc))
-+		len += 1;
-+
-+	return len;
-+}
-+
- #define IEEE80211_TWT_CONTROL_NDP			BIT(0)
- #define IEEE80211_TWT_CONTROL_RESP_MODE			BIT(1)
- #define IEEE80211_TWT_CONTROL_NEG_TYPE_BROADCAST	BIT(3)
-diff --git a/net/mac80211/mlme.c b/net/mac80211/mlme.c
-index 35eaf0812c5b2..53d5ffad87be8 100644
---- a/net/mac80211/mlme.c
-+++ b/net/mac80211/mlme.c
-@@ -7220,11 +7220,8 @@ static void ieee80211_rx_mgmt_beacon(struct ieee80211_link_data *link,
- 	bssid = ieee80211_get_bssid(hdr, len, sdata->vif.type);
- 	if (ieee80211_is_s1g_beacon(mgmt->frame_control)) {
- 		struct ieee80211_ext *ext = (void *) mgmt;
--
--		if (ieee80211_is_s1g_short_beacon(ext->frame_control))
--			variable = ext->u.s1g_short_beacon.variable;
--		else
--			variable = ext->u.s1g_beacon.variable;
-+		variable = ext->u.s1g_beacon.variable +
-+			   ieee80211_s1g_optional_len(ext->frame_control);
- 	}
- 
- 	baselen = (u8 *) variable - (u8 *) mgmt;
-diff --git a/net/mac80211/scan.c b/net/mac80211/scan.c
-index cb70790718858..5a56487dab69c 100644
---- a/net/mac80211/scan.c
-+++ b/net/mac80211/scan.c
-@@ -260,6 +260,7 @@ void ieee80211_scan_rx(struct ieee80211_local *local, struct sk_buff *skb)
- 	struct ieee80211_mgmt *mgmt = (void *)skb->data;
- 	struct ieee80211_bss *bss;
- 	struct ieee80211_channel *channel;
-+	struct ieee80211_ext *ext;
- 	size_t min_hdr_len = offsetof(struct ieee80211_mgmt,
- 				      u.probe_resp.variable);
- 
-@@ -269,12 +270,10 @@ void ieee80211_scan_rx(struct ieee80211_local *local, struct sk_buff *skb)
- 		return;
- 
- 	if (ieee80211_is_s1g_beacon(mgmt->frame_control)) {
--		if (ieee80211_is_s1g_short_beacon(mgmt->frame_control))
--			min_hdr_len = offsetof(struct ieee80211_ext,
--					       u.s1g_short_beacon.variable);
--		else
--			min_hdr_len = offsetof(struct ieee80211_ext,
--					       u.s1g_beacon);
-+		ext = (struct ieee80211_ext *)mgmt;
-+		min_hdr_len =
-+			offsetof(struct ieee80211_ext, u.s1g_beacon.variable) +
-+			ieee80211_s1g_optional_len(ext->frame_control);
- 	}
- 
- 	if (skb->len < min_hdr_len)
-diff --git a/net/wireless/scan.c b/net/wireless/scan.c
-index ddd3a97f6609d..e8a4fe44ec2d8 100644
---- a/net/wireless/scan.c
-+++ b/net/wireless/scan.c
-@@ -3250,6 +3250,7 @@ cfg80211_inform_bss_frame_data(struct wiphy *wiphy,
- 	const u8 *ie;
- 	size_t ielen;
- 	u64 tsf;
-+	size_t s1g_optional_len;
- 
- 	if (WARN_ON(!mgmt))
- 		return NULL;
-@@ -3264,12 +3265,11 @@ cfg80211_inform_bss_frame_data(struct wiphy *wiphy,
- 
- 	if (ieee80211_is_s1g_beacon(mgmt->frame_control)) {
- 		ext = (void *) mgmt;
--		if (ieee80211_is_s1g_short_beacon(mgmt->frame_control))
--			min_hdr_len = offsetof(struct ieee80211_ext,
--					       u.s1g_short_beacon.variable);
--		else
--			min_hdr_len = offsetof(struct ieee80211_ext,
--					       u.s1g_beacon.variable);
-+		s1g_optional_len =
-+			ieee80211_s1g_optional_len(ext->frame_control);
-+		min_hdr_len =
-+			offsetof(struct ieee80211_ext, u.s1g_beacon.variable) +
-+			s1g_optional_len;
- 	} else {
- 		/* same for beacons */
- 		min_hdr_len = offsetof(struct ieee80211_mgmt,
-@@ -3285,11 +3285,7 @@ cfg80211_inform_bss_frame_data(struct wiphy *wiphy,
- 		const struct ieee80211_s1g_bcn_compat_ie *compat;
- 		const struct element *elem;
- 
--		if (ieee80211_is_s1g_short_beacon(mgmt->frame_control))
--			ie = ext->u.s1g_short_beacon.variable;
--		else
--			ie = ext->u.s1g_beacon.variable;
--
-+		ie = ext->u.s1g_beacon.variable + s1g_optional_len;
- 		elem = cfg80211_find_elem(WLAN_EID_S1G_BCN_COMPAT, ie, ielen);
- 		if (!elem)
- 			return NULL;
+ static void mhi_mbim_remove(struct mhi_device *mhi_dev)
 -- 
 2.39.5
 
