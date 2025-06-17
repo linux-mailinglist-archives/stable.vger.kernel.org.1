@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-154390-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153950-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA9C7ADD903
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 19:01:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 51CF3ADD7B9
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:48:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 16ACE19E69AF
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:52:42 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 932EA19E532A
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:32:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9AE202FA63E;
-	Tue, 17 Jun 2025 16:50:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B12A12EE5F0;
+	Tue, 17 Jun 2025 16:27:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s0X5uIna"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ukFFzwip"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5749A2FA624;
-	Tue, 17 Jun 2025 16:50:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B0872EE5E7;
+	Tue, 17 Jun 2025 16:27:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750179040; cv=none; b=G4U3G/rLTDc9tZ0V7u+bKqSxZi/k8A0azJD/qSwlWo8OEKKYOOzrbqADvEn+EAWqYBfkZGGXh7i8s+ZJGQyGM4bqzj0lo4ii221tLUO4Edry2mYIQsGzHJRXq8QhKzXg8TNGbgIIVSC8cZGVMudizSwAgKebk1ZTGo44w5dPYxI=
+	t=1750177620; cv=none; b=u0HvobxESOhhKOeVB0r4jiQSDuzZwK6TMxhKa5I5McMqZc5ADzuev8tSIDdDmUnf2vFJo/eqZf60posJHzZUP7J4hyVklFHfhHf6WWhLx+T5TLQJQT/PDI5+VH/EHlKmNhs1X9TUbaKanTCkfayOSbMpGEGiQ6AIW4hupZwSKIU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750179040; c=relaxed/simple;
-	bh=eOwLZ8ZDWuzc4LdFgN3c/RpwKTVqu4usey1RcgSkSdU=;
+	s=arc-20240116; t=1750177620; c=relaxed/simple;
+	bh=GVUnNDNhJ96B2YEM6QJxyWV0a0o8T4+sDiWXVTPYFi0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=F10fJjjogJ6c8CFlxPxPWlhElK4d7Ju1Va3Tqvko03JeLmXdv1yCmmDAHiAn2zomBXSFChU8S2Mvy3/PPaxrlMPACtJN0lz0hm1Ffw5cfqjjWAaAqeE32up4PJFRkmDJubhwMixT1RpJGMyPXi8mv/wiVflUf65ZXSyNssLOYcg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s0X5uIna; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2AF6C4CEE3;
-	Tue, 17 Jun 2025 16:50:39 +0000 (UTC)
+	 MIME-Version; b=C/QdlLlIKtNZHza8Ar5meJVAQQnopBgCXgMWPCJeJzCHwl4/2S+gc0Z1I6Qp3DtT06eqme9EKZ+f2JkO28WRjOxmHutsDlSdtULXebA7lglb6alJNjJjgtyw7ekWKOfYaXDEeWuWQ9EcxHSB3DHnLJncPEwg7I8jQrdRfgo694A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ukFFzwip; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC40CC4CEE3;
+	Tue, 17 Jun 2025 16:26:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750179040;
-	bh=eOwLZ8ZDWuzc4LdFgN3c/RpwKTVqu4usey1RcgSkSdU=;
+	s=korg; t=1750177620;
+	bh=GVUnNDNhJ96B2YEM6QJxyWV0a0o8T4+sDiWXVTPYFi0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=s0X5uInad6vmvuJdBVP6hbV/KFXKGTkkPKx62nVl8NmCT/WyfMRv28RBVDT8hnx/B
-	 cz/5KeDhSeesZlHbEefVxUFh5i6rebvpkF3XbCWbqiDylzTb8E8v8mZ8EBpCrwAKmC
-	 RqkYIs9yecWQ5UzQQj+z58U+X0nTDEfbFIH6zaNo=
+	b=ukFFzwipkWlNzRR5LTvfKaiZmmrsL134WQ2wFQUM40RA2O7/dvf6nmOb0n0nnqEWw
+	 hO6W7B4Z+q5Vh0NhdZWN0IIT9RW0VDc5Ru3NactrSzZanyMv7Gf9iN4e3q6QdKcLt3
+	 0+Bm7IWAnVbB9rTdQ7AtBn7rNbp6LZzm2D39Y/R4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniele Ceraolo Spurio <daniele.ceraolospurio@intel.com>,
-	John Harrison <John.C.Harrison@Intel.com>,
-	=?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 629/780] drm/xe/pxp: Use the correct define in the set_property_funcs array
-Date: Tue, 17 Jun 2025 17:25:37 +0200
-Message-ID: <20250617152517.090842716@linuxfoundation.org>
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Sasha Levin <sashal@kernel.org>,
+	Chris Bainbridge <chris.bainbridge@gmail.com>
+Subject: [PATCH 6.12 372/512] PM: sleep: Fix power.is_suspended cleanup for direct-complete devices
+Date: Tue, 17 Jun 2025 17:25:38 +0200
+Message-ID: <20250617152434.669777516@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
-References: <20250617152451.485330293@linuxfoundation.org>
+In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
+References: <20250617152419.512865572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,46 +61,64 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniele Ceraolo Spurio <daniele.ceraolospurio@intel.com>
+From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-[ Upstream commit 6bf4d5649230ca65725ec4793333fb5eba18d646 ]
+[ Upstream commit d46c4c839c20a599a0eb8d73708ce401f9c7d06d ]
 
-The define of the extension type was accidentally used instead of the
-one of the property itself. They're both zero, so no functional issue,
-but we should use the correct define for code correctness.
+Commit 03f1444016b7 ("PM: sleep: Fix handling devices with direct_complete
+set on errors") caused power.is_suspended to be set for devices with
+power.direct_complete set, but it forgot to ensure the clearing of that
+flag for them in device_resume(), so power.is_suspended is still set for
+them during the next system suspend-resume cycle.
 
-Fixes: 41a97c4a1294 ("drm/xe/pxp/uapi: Add API to mark a BO as using PXP")
-Signed-off-by: Daniele Ceraolo Spurio <daniele.ceraolospurio@intel.com>
-Cc: John Harrison <John.C.Harrison@Intel.com>
-Reviewed-by: John Harrison <John.C.Harrison@Intel.com>
-Link: https://lore.kernel.org/r/20250522225401.3953243-6-daniele.ceraolospurio@intel.com
-(cherry picked from commit 1d891ee820fd0fbb4101eacb0d922b5050a24933)
-Signed-off-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
+If that cycle is aborted in dpm_suspend(), the subsequent invocation of
+dpm_resume() will trigger a device_resume() call for every device and
+because power.is_suspended is set for the devices in question, they will
+not be skipped by device_resume() as expected which causes scary error
+messages to be logged (as appropriate).
+
+To address this issue, move the clearing of power.is_suspended in
+device_resume() immediately after the power.is_suspended check so it
+will be always cleared for all devices processed by that function.
+
+Fixes: 03f1444016b7 ("PM: sleep: Fix handling devices with direct_complete set on errors")
+Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/4280
+Reported-and-tested-by: Chris Bainbridge <chris.bainbridge@gmail.com>
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
+Link: https://patch.msgid.link/4990586.GXAFRqVoOG@rjwysocki.net
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/xe/xe_bo.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/base/power/main.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/xe/xe_bo.c b/drivers/gpu/drm/xe/xe_bo.c
-index b98526d271f2f..5922302c3e00c 100644
---- a/drivers/gpu/drm/xe/xe_bo.c
-+++ b/drivers/gpu/drm/xe/xe_bo.c
-@@ -2396,7 +2396,7 @@ typedef int (*xe_gem_create_set_property_fn)(struct xe_device *xe,
- 					     u64 value);
+diff --git a/drivers/base/power/main.c b/drivers/base/power/main.c
+index 1abe61f11525d..faf4cdec23f04 100644
+--- a/drivers/base/power/main.c
++++ b/drivers/base/power/main.c
+@@ -916,6 +916,8 @@ static void device_resume(struct device *dev, pm_message_t state, bool async)
+ 	if (!dev->power.is_suspended)
+ 		goto Complete;
  
- static const xe_gem_create_set_property_fn gem_create_set_property_funcs[] = {
--	[DRM_XE_GEM_CREATE_EXTENSION_SET_PROPERTY] = gem_create_set_pxp_type,
-+	[DRM_XE_GEM_CREATE_SET_PROPERTY_PXP_TYPE] = gem_create_set_pxp_type,
- };
++	dev->power.is_suspended = false;
++
+ 	if (dev->power.direct_complete) {
+ 		/* Match the pm_runtime_disable() in __device_suspend(). */
+ 		pm_runtime_enable(dev);
+@@ -971,7 +973,6 @@ static void device_resume(struct device *dev, pm_message_t state, bool async)
  
- static int gem_create_user_ext_set_property(struct xe_device *xe,
+  End:
+ 	error = dpm_run_callback(callback, dev, state, info);
+-	dev->power.is_suspended = false;
+ 
+ 	device_unlock(dev);
+ 	dpm_watchdog_clear(&wd);
 -- 
 2.39.5
 
