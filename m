@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-152963-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-152965-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id A0AD9ADD1C2
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 17:34:47 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0250EADD1B4
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 17:34:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E2C7D7A15F1
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 15:32:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 624B53BD8B9
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 15:33:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 36B912E9753;
-	Tue, 17 Jun 2025 15:33:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E10391E8332;
+	Tue, 17 Jun 2025 15:33:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L/fiZsRO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yOqWROyh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E774623B633;
-	Tue, 17 Jun 2025 15:33:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 971E52DF3CB;
+	Tue, 17 Jun 2025 15:33:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750174408; cv=none; b=hlk0BM3iFv6EAQ+hYFlGj+JsQxdodUgr+exRBou52xeKAhD8efn3uhazJCSepn6/c/NgZgj8WGEH5jUksFR+3R0rzXV0LReS1fiuXo92+zB1efhKJHq4k6RuGQuqU0dKl6g5iycpyDyP3sTLmMS+yL/Xy9qq04VQplK+ljKkGd0=
+	t=1750174414; cv=none; b=FSyBzBFf6qE4lFFpFvjSseZy5L+paC5s981pfV1oUtGAgHrbwt4hPa4aV1C68qiD7aYUS8d5s6uLB3r2GPZF9/BmldOXaSK3JrgvyM12DBTEMSssP4+2A//22EZFTbGpRYIZeapKV1n5aC/1x8E+XQfjkLumoxQ/pZvpmqJwh7A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750174408; c=relaxed/simple;
-	bh=V+jYs8ZGLWmqJcP6Wa7qdrFxxP29zwxuIq+tvPcTWXc=;
+	s=arc-20240116; t=1750174414; c=relaxed/simple;
+	bh=nGq7zTQxdMTgfx4e7bDXHIKAYntGYUBZ4r3U7GqMcos=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dg8e/jlzXhJvs59VscK1zLw4JGoBU7htdWySedOlhCKPk8WkXudRuOYOFitLJpP+E1cbnxs4vBwh9lJUSDgB/5iFqsP2NN3usNGjnhm5llUDNBKv1Th5FUMNNbMz2ViSYVhFP1KVTHkTddcLmBOB0nubpO9gBS7h7MALqiU8EGs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L/fiZsRO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61624C4CEE7;
-	Tue, 17 Jun 2025 15:33:27 +0000 (UTC)
+	 MIME-Version; b=t+givCYztH0yD/yKA+d1JomHsvEZZtlP+iXT1Dpn1F8aTN90/LkWVmIkqaOuiNhN5SIQByMpZ+zL77jW6XdHIMLfw98FJqlxCX+PkCfVzW+AAOBnZh7w7HpCuEY4SuFm6TdbKwdsByW8TYffTgWcENYqRNEV4J9uUhUudZIrRM8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yOqWROyh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6F08C4CEE3;
+	Tue, 17 Jun 2025 15:33:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750174407;
-	bh=V+jYs8ZGLWmqJcP6Wa7qdrFxxP29zwxuIq+tvPcTWXc=;
+	s=korg; t=1750174414;
+	bh=nGq7zTQxdMTgfx4e7bDXHIKAYntGYUBZ4r3U7GqMcos=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=L/fiZsROZI7nVkdiQgAS33kdVcWwf/pNAl04rkzxj+VC7arALagSIVhAzXGWIAhBO
-	 Od3hyizkeaNVB11BHE5/tKXm8VhlrdjW8aBcrKC2GZbo+0xADCs0nySDzSGqIp0dn1
-	 21lFc/fCkRHFUM51LKV2uKTgJflhTLXb1eEVEyEQ=
+	b=yOqWROyh6gdjwtUbXcvRvSYgXLvDz55I+myyVYNX1otG4Qtwt7mxKmllVnQ46b11s
+	 VfJhDckx2hNMVHm+/w+4pZk2P3QUjAl8qFE1hoO9oAhJXnNvghXh/GbHOzQieuHIcP
+	 sqBmTKQXl2NenkVFge1UNcvlsLdberbeLPwTCLrE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Annie Li <jiayanli@google.com>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>,
+	Ovidiu Panait <ovidiu.panait.oss@gmail.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 015/512] x86/microcode/AMD: Do not return error when microcode update is not necessary
-Date: Tue, 17 Jun 2025 17:19:41 +0200
-Message-ID: <20250617152420.144852037@linuxfoundation.org>
+Subject: [PATCH 6.12 016/512] crypto: sun8i-ce - undo runtime PM changes during driver removal
+Date: Tue, 17 Jun 2025 17:19:42 +0200
+Message-ID: <20250617152420.183756985@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
 References: <20250617152419.512865572@linuxfoundation.org>
@@ -66,43 +66,76 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Annie Li <jiayanli@google.com>
+From: Ovidiu Panait <ovidiu.panait.oss@gmail.com>
 
-[ Upstream commit b43dc4ab097859c24e2a6993119c927cffc856aa ]
+[ Upstream commit 9334f427576e6d361a409959b52246b0aa10476f ]
 
-After
+The pm_runtime_use_autosuspend() call must be undone with
+pm_runtime_dont_use_autosuspend() at driver exit, but this is not
+currently handled in the driver.
 
-  6f059e634dcd("x86/microcode: Clarify the late load logic"),
+To fix this issue and at the same time simplify error handling, switch
+to devm_pm_runtime_enable(). It will call both pm_runtime_disable() and
+pm_runtime_dont_use_autosuspend() during driver removal.
 
-if the load is up-to-date, the AMD side returns UCODE_OK which leads to
-load_late_locked() returning -EBADFD.
-
-Handle UCODE_OK in the switch case to avoid this error.
-
-  [ bp: Massage commit message. ]
-
-Fixes: 6f059e634dcd ("x86/microcode: Clarify the late load logic")
-Signed-off-by: Annie Li <jiayanli@google.com>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Link: https://lore.kernel.org/20250430053424.77438-1-jiayanli@google.com
+Fixes: 06f751b61329 ("crypto: allwinner - Add sun8i-ce Crypto Engine")
+Signed-off-by: Ovidiu Panait <ovidiu.panait.oss@gmail.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kernel/cpu/microcode/core.c | 2 ++
- 1 file changed, 2 insertions(+)
+ .../crypto/allwinner/sun8i-ce/sun8i-ce-core.c   | 17 ++++++-----------
+ 1 file changed, 6 insertions(+), 11 deletions(-)
 
-diff --git a/arch/x86/kernel/cpu/microcode/core.c b/arch/x86/kernel/cpu/microcode/core.c
-index 079f046ee26d1..e8021d3e58824 100644
---- a/arch/x86/kernel/cpu/microcode/core.c
-+++ b/arch/x86/kernel/cpu/microcode/core.c
-@@ -696,6 +696,8 @@ static int load_late_locked(void)
- 		return load_late_stop_cpus(true);
- 	case UCODE_NFOUND:
- 		return -ENOENT;
-+	case UCODE_OK:
-+		return 0;
- 	default:
- 		return -EBADFD;
+diff --git a/drivers/crypto/allwinner/sun8i-ce/sun8i-ce-core.c b/drivers/crypto/allwinner/sun8i-ce/sun8i-ce-core.c
+index e55e58e164db3..fcc6832a065cb 100644
+--- a/drivers/crypto/allwinner/sun8i-ce/sun8i-ce-core.c
++++ b/drivers/crypto/allwinner/sun8i-ce/sun8i-ce-core.c
+@@ -832,13 +832,12 @@ static int sun8i_ce_pm_init(struct sun8i_ce_dev *ce)
+ 	err = pm_runtime_set_suspended(ce->dev);
+ 	if (err)
+ 		return err;
+-	pm_runtime_enable(ce->dev);
+-	return err;
+-}
+ 
+-static void sun8i_ce_pm_exit(struct sun8i_ce_dev *ce)
+-{
+-	pm_runtime_disable(ce->dev);
++	err = devm_pm_runtime_enable(ce->dev);
++	if (err)
++		return err;
++
++	return 0;
+ }
+ 
+ static int sun8i_ce_get_clks(struct sun8i_ce_dev *ce)
+@@ -1041,7 +1040,7 @@ static int sun8i_ce_probe(struct platform_device *pdev)
+ 			       "sun8i-ce-ns", ce);
+ 	if (err) {
+ 		dev_err(ce->dev, "Cannot request CryptoEngine Non-secure IRQ (err=%d)\n", err);
+-		goto error_irq;
++		goto error_pm;
  	}
+ 
+ 	err = sun8i_ce_register_algs(ce);
+@@ -1082,8 +1081,6 @@ static int sun8i_ce_probe(struct platform_device *pdev)
+ 	return 0;
+ error_alg:
+ 	sun8i_ce_unregister_algs(ce);
+-error_irq:
+-	sun8i_ce_pm_exit(ce);
+ error_pm:
+ 	sun8i_ce_free_chanlist(ce, MAXFLOW - 1);
+ 	return err;
+@@ -1104,8 +1101,6 @@ static void sun8i_ce_remove(struct platform_device *pdev)
+ #endif
+ 
+ 	sun8i_ce_free_chanlist(ce, MAXFLOW - 1);
+-
+-	sun8i_ce_pm_exit(ce);
+ }
+ 
+ static const struct of_device_id sun8i_ce_crypto_of_match_table[] = {
 -- 
 2.39.5
 
