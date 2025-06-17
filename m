@@ -1,112 +1,95 @@
-Return-Path: <stable+bounces-152858-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-152859-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0064EADCE3C
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 15:51:50 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3BCFEADCE67
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 15:56:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BA40816BDDA
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 13:51:43 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3ADA83B1180
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 13:51:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22CC72E3AF9;
-	Tue, 17 Jun 2025 13:51:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D903A2DBF41;
+	Tue, 17 Jun 2025 13:51:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="d5z3hu0T"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cYjATir2"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8236F2DE1F9
-	for <stable@vger.kernel.org>; Tue, 17 Jun 2025 13:51:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B1612E2653;
+	Tue, 17 Jun 2025 13:51:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750168265; cv=none; b=MxA29h1jh5KmCxM3XHBT0pAJoB3nBiKcu99qWz7G4qeT9pE88AFH7c5ZLaW5hh60YXDQ3+O/TVpDxfNuYkQYa4B6oPjiMVy31CTTj5OvJfqEgHwmG8TCY+P7mHxiD9nD5GZNqc/mD1aAdu4X0cHwkdG2yHR00mFqWkUcV18Kxpk=
+	t=1750168270; cv=none; b=JWCkuhHQ4jErH6G/+Q8YUBP5/+Bqm9qOsHatKUpCKxEeUUtzIbF3huKdZcsxiGgN+jR2miiJPx1yOikXpNXzVVXJX8qYdcl4uDq1Kfs4j1nJGjPFD6lgucUZyuV9u4IfxSCxJ+atTWRL/nUhq6OGry5BB2mCLxuPqRFIlQOAJmk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750168265; c=relaxed/simple;
-	bh=oblIbLPaqrXVUT3EQc2wh4ZJeO7Rv/Ddz0Kv3NAxSpI=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=M56b6RyjDrCB9waAebHAlo1N5IcWFqv7hzYyUWjn6xPZ/ZDykrNU2KwEU/1PG08A4VvbdEpclhNkF9RvhbgyBortVY5AYHHj38x1SenXm1TnckMcJEjXE/N8DzD2uVz2N09agjNtaTMg5bW6MEf4Yftg9e7vBZ/NR3Y0+h5ZfHM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=d5z3hu0T; arc=none smtp.client-ip=192.198.163.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1750168263; x=1781704263;
-  h=from:to:cc:subject:in-reply-to:references:date:
-   message-id:mime-version;
-  bh=oblIbLPaqrXVUT3EQc2wh4ZJeO7Rv/Ddz0Kv3NAxSpI=;
-  b=d5z3hu0T4+AzzSxgIjvjynu5j3ULkOWkJVddFOLSttJclVwGVEBqmOnj
-   ZzB1RwS3mD9/2UyDdDRJEn2WASN+VOZEVPNEW4aYeObShfmmowkdKmz/r
-   CLlTmfzaNXSoK/i39bYThWAeqnsRekpgX7aKdhxI+jAj8AGhcOO3Y/IwH
-   818Mudnl9cwCoi8jatuyMQZaHM4W08uUALsjSRcgqLPp5+gs2pkWqqlDz
-   3MT1ir434cWzDnjn3xsU0YT5GxMfgvCAcKofet+2XUo9ELXqnqkgXcG9J
-   QDPBtHeV6dq4Ta6+jlznoAtHvrlRD6aTEPNl2s9jMcD/c9/Q7rpg+FB2x
-   A==;
-X-CSE-ConnectionGUID: Pkb7l4HhRdSPaCMosPbDzQ==
-X-CSE-MsgGUID: Nfq2IH9mQDGAIjv3+jscOA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11467"; a="39952664"
-X-IronPort-AV: E=Sophos;i="6.16,243,1744095600"; 
-   d="scan'208";a="39952664"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
-  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Jun 2025 06:51:03 -0700
-X-CSE-ConnectionGUID: vlPePXCbSMeJKDhDTdmHVQ==
-X-CSE-MsgGUID: UMuJwXBfQzu4kKORQebYCQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,243,1744095600"; 
-   d="scan'208";a="149267460"
-Received: from cpetruta-mobl1.ger.corp.intel.com (HELO localhost) ([10.245.246.111])
-  by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Jun 2025 06:51:00 -0700
-From: Jani Nikula <jani.nikula@intel.com>
-To: Vas Novikov <vasya.novikov@gmail.com>, stable@vger.kernel.org
-Cc: regressions@lists.linux.dev, Ankit Nautiyal
- <ankit.k.nautiyal@intel.com>, Suraj Kandpal <suraj.kandpal@intel.com>,
- Khaled Almahallawy <khaled.almahallawy@intel.com>, Rodrigo Vivi
- <rodrigo.vivi@intel.com>, intel-gfx@lists.freedesktop.org, Christian
- Heusel <christian@heusel.eu>
-Subject: Re: [REGRESSION][BISECTED] intel iGPU with HDMI PLL stopped working
- at 1080p@120Hz 1efd5384
-In-Reply-To: <33046593-17e3-4bdc-9d4a-94dc94ef5e81@gmail.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-References: <8d7c7958-9558-4c8a-a81a-e9310f2d8852@gmail.com>
- <afa8a7b2ced71e77655fb54f49b702c71506017d@intel.com>
- <33046593-17e3-4bdc-9d4a-94dc94ef5e81@gmail.com>
-Date: Tue, 17 Jun 2025 16:50:57 +0300
-Message-ID: <72c9ef36e81ddce8a9e91c5f3652489f5fa2d78d@intel.com>
+	s=arc-20240116; t=1750168270; c=relaxed/simple;
+	bh=NWi+uRXta8oWQebfHIDMx01woZcJZET5T+yzw/3Gd44=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=iKCcx6Ek0jmy5R66fr5ZbxxzZqGeHh7jtiTaPvsosJaXfrMBmMyokYcH8jmb/6CkS10adILNyGjIz4lfE1qrMh7Ak6p5AB9VvE5GpZjSFrtXT2KPjGJhx1LNHlfwu085Lhdl3wIAoIXB12CD/yj1p9UL219//u0BxwA+ugKAErU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cYjATir2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15E09C4CEE3;
+	Tue, 17 Jun 2025 13:51:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1750168270;
+	bh=NWi+uRXta8oWQebfHIDMx01woZcJZET5T+yzw/3Gd44=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=cYjATir2kiHog9o2WQxMaTt0elCL1GM/j20v5EEpvmuO8KRqZlQHAht565DJn0hCF
+	 IEZF/tHt3mY9njXYLJbEYY1Km22mbxJXmtK32TSk/roQe76m7hXMXreUYYig9CcDjT
+	 2+Hx+2o8ZifqmtalfyiukEiMi5pLVuLrsyC6qyqQ=
+Date: Tue, 17 Jun 2025 15:51:07 +0200
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Chuck Lever <chuck.lever@oracle.com>
+Cc: Sasha Levin <sashal@kernel.org>, Masahiro Yamada <masahiroy@kernel.org>,
+	"stable@vger.kernel.org" <stable@vger.kernel.org>,
+	"kdevops@lists.linux.dev" <kdevops@lists.linux.dev>
+Subject: Re: Request for backport of 358de8b4f201 to LTS kernels
+Message-ID: <2025061709-remedy-unfreeze-0a29@gregkh>
+References: <612fbc1f-ab02-4048-b210-425c93bbbc53@oracle.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <612fbc1f-ab02-4048-b210-425c93bbbc53@oracle.com>
 
-On Tue, 17 Jun 2025, Vas Novikov <vasya.novikov@gmail.com> wrote:
-> Hi Jani and everyone,
->
-> On 17/06/2025 12.33, Jani Nikula wrote:
->> Does [1] help?
->
-> The patch works. (Applied on top of 6.16.0-rc2-1.1-mainline, built by 
-> Christian @gromit who helped again.)
->
-> The patch (or the new kernel) also have a side effect of xrandr allowing 
-> a completely new refresh rate, ~144Hz. This new refresh also seems to 
-> work (I cannot easily disambiguate 144 versus 120, but I can tell it's 
-> not 60Hz). So as far as my hardware is concerned, this patch leaves the 
-> whole system working in all scenarios that I've tested.
+On Mon, Jun 09, 2025 at 04:30:19PM -0400, Chuck Lever wrote:
+> Hi Greg & Sasha !
+> 
+> I ran into some trouble in my nightly CI systems that test v6.6.y and
+> v6.1.y. Using "make binrpm-pkg" followed by "rpm -iv ..." results in the
+> test systems being unbootable because the vmlinuz file is never copied
+> to /boot. The test systems are imaged with Fedora 39.
+> 
+> I found a related Fedora bug:
+> 
+>   https://bugzilla.redhat.com/show_bug.cgi?id=2239008
+> 
+> It appears there is a missing fix in LTS kernels. I bisected the kernel
+> fix to:
+> 
+>   358de8b4f201 ("kbuild: rpm-pkg: simplify installkernel %post")
+> 
+> which includes a "Cc: stable" tag but does not appear in
+> origin/linux-6.6.y, origin/linux-6.1.y, or origin/5.15.y (I did not look
+> further back than that).
+> 
+> Would it be appropriate to apply 358de8b4f201 to LTS kernels?
 
-Thanks a lot for testing! Ankit will send a v2 of it, and I think we'll
-have it in mainline and backported to stable in a few weeks.
+Perhaps, if someone actually backported it to apply there, did you try
+it?  :)
 
-There's no need to file that bug report, this will suffice.
+At the time, this was reported:
+	https://lore.kernel.org/all/2024021932-lavish-expel-58e5@gregkh/
+	https://lore.kernel.org/r/2024021934-spree-discard-c389@gregkh
+	https://lore.kernel.org/r/2024021930-prozac-outfield-8653@gregkh
+but no one did anything about it.
 
+thanks,
 
-BR,
-Jani.
-
-
--- 
-Jani Nikula, Intel
+greg k-h
 
