@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-153767-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-154337-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 55717ADD667
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:32:58 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 153E2ADD96C
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 19:06:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DE207406575
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:23:05 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4DE0C4A104A
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:50:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 053C7218EA8;
-	Tue, 17 Jun 2025 16:17:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3103A2E8E19;
+	Tue, 17 Jun 2025 16:47:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="McsZ+EiC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Mnxk+YTl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B773D1A9B48;
-	Tue, 17 Jun 2025 16:17:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1D082DFF10;
+	Tue, 17 Jun 2025 16:47:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750177032; cv=none; b=cGA6uV5THH1GBnF02DfqYsw2pHl03fyr9BdCZ7avFmxE8bRUlN568Ir6+AehsKCzDARgY1uePnQ3Rihahrgrn+HMnJg8Iz9yweuTipzeDC2gCpHoUV53B1zlo/DiD1Jok4wZ83014kJBSd3Lz2yjVuLTUf8LXKe+/xSqscoOiS8=
+	t=1750178874; cv=none; b=HhOa9UF5hh1423ygZe2sPepIcRj0E9WGELfa3bNbbrRIJvOJk7ZBNA7kQ2mfqIpMdm/CFI1FnlfBOzb2NdiZR3MQcWX+0VclSeB3rBIC6sFYlXHeD5AgiSyyjiMa4uzNVyw22ElPqcq48AgPt2jNA1vzmYfsywrNzuXj2Oj5hHU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750177032; c=relaxed/simple;
-	bh=GJk3FbPGf+h8Ue6QCVOCtj7YqmLZSyR+CsM330XSK8k=;
+	s=arc-20240116; t=1750178874; c=relaxed/simple;
+	bh=9Gn5g37TLaxHAcsj91PnIaNpO5iVj2IpghnH/4ER7xY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LmZtAMPxNWfcdc5nmZCgQXA2K9O9I+KleWPNyCUjbRzZQ0qxLOQBzzBFz8vRw+TTOzxTeTxlRlCsBfG07CT/PkHEpQBXpTpu+Tmc2dcsj3NVr2dSch47o63XRqJbokAABdx5kfM9rMaVvDcUAh/6gzgaE9LU1oYFoVEguA65DfY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=McsZ+EiC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3EADFC4CEE7;
-	Tue, 17 Jun 2025 16:17:12 +0000 (UTC)
+	 MIME-Version; b=fTMJtdOYzWFDeWX9Rbq/Jt2ARPRhbjntAl15rPxcnPd6M+3AyvpKA2aaQTmuJRcKSbtCDTdU3zCkV44puDtzoYWFiVRAxFa0wf9Lu19afL3Q9PnI9K1oEjqJX2A9QSca8+ZIsh+ggEnEBwdsz2q2H0fsvcITeBQH/lWdzUbEgWQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Mnxk+YTl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5076BC4CEE3;
+	Tue, 17 Jun 2025 16:47:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750177032;
-	bh=GJk3FbPGf+h8Ue6QCVOCtj7YqmLZSyR+CsM330XSK8k=;
+	s=korg; t=1750178873;
+	bh=9Gn5g37TLaxHAcsj91PnIaNpO5iVj2IpghnH/4ER7xY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=McsZ+EiCzET68K7CrWe7h0MaVz/7dIKMh+aXJdPLEUQfZic9iMbj5rWOyRZxxf8CU
-	 PkZGPoMdGISVwmNa2rSfbL7kJEGUJ/i/y98broKMvFipnoxHZw8NbOCKOSStGu85Df
-	 gi0mpF9chTitu98LfS+9mG8XFR2vFXTI3z+1UsSQ=
+	b=Mnxk+YTl7b4jntzMzWuBs4nuYIYAW1nYgoRibtpvQqRB+//wCSSX15dzDy81CxvuB
+	 GDnw5M6OrgFQbP9mR7pfXZt70EQt9ejRpVZUZMxWOzZ/DItxwNr04jH9XZq9qed1Bd
+	 3Lh0UQID2y4JNIu57WUHUkM8RRELERqK8gOzSJ3g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Bjorn Andersson <andersson@kernel.org>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 290/512] rpmsg: qcom_smd: Fix uninitialized return variable in __qcom_smd_send()
+Subject: [PATCH 6.15 548/780] USB: typec: fix const issue in typec_match()
 Date: Tue, 17 Jun 2025 17:24:16 +0200
-Message-ID: <20250617152431.355966102@linuxfoundation.org>
+Message-ID: <20250617152513.827710054@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
-References: <20250617152419.512865572@linuxfoundation.org>
+In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
+References: <20250617152451.485330293@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,39 +61,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
-[ Upstream commit 5de775df3362090a6e90046d1f2d83fe62489aa0 ]
+[ Upstream commit ae4432e01dd967a64f6670a152d91d5328032726 ]
 
-The "ret" variable isn't initialized if we don't enter the loop.  For
-example,  if "channel->state" is not SMD_CHANNEL_OPENED.
+typec_match() takes a const pointer, and then decides to cast it away
+into a non-const one, which is not a good thing to do overall.  Fix this
+up by properly setting the pointers to be const to preserve that
+attribute.
 
-Fixes: 33e3820dda88 ("rpmsg: smd: Use spinlock in tx path")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Link: https://lore.kernel.org/r/aAkhvV0nSbrsef1P@stanley.mountain
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Link: https://lore.kernel.org/r/2025052126-scholar-stainless-ad55@gregkh
+Fixes: d69d80484598 ("driver core: have match() callback in struct bus_type take a const *")
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/rpmsg/qcom_smd.c | 2 +-
+ drivers/usb/typec/bus.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/rpmsg/qcom_smd.c b/drivers/rpmsg/qcom_smd.c
-index 43f601c84b4fc..79d35ab43729e 100644
---- a/drivers/rpmsg/qcom_smd.c
-+++ b/drivers/rpmsg/qcom_smd.c
-@@ -746,7 +746,7 @@ static int __qcom_smd_send(struct qcom_smd_channel *channel, const void *data,
- 	__le32 hdr[5] = { cpu_to_le32(len), };
- 	int tlen = sizeof(hdr) + len;
- 	unsigned long flags;
--	int ret;
-+	int ret = 0;
+diff --git a/drivers/usb/typec/bus.c b/drivers/usb/typec/bus.c
+index ae90688d23e40..a884cec9ab7e8 100644
+--- a/drivers/usb/typec/bus.c
++++ b/drivers/usb/typec/bus.c
+@@ -449,7 +449,7 @@ ATTRIBUTE_GROUPS(typec);
  
- 	/* Word aligned channels only accept word size aligned data */
- 	if (channel->info_word && len % 4)
+ static int typec_match(struct device *dev, const struct device_driver *driver)
+ {
+-	struct typec_altmode_driver *drv = to_altmode_driver(driver);
++	const struct typec_altmode_driver *drv = to_altmode_driver(driver);
+ 	struct typec_altmode *altmode = to_typec_altmode(dev);
+ 	const struct typec_device_id *id;
+ 
 -- 
 2.39.5
 
