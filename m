@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-153516-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-154215-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 53BF1ADD4E9
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:15:21 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 23690ADD825
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:52:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C47422C4C15
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:07:02 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 26C044A105C
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:45:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF4EB2EA148;
-	Tue, 17 Jun 2025 16:03:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3DA362FA626;
+	Tue, 17 Jun 2025 16:41:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pKEIkbEq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c1ZmuT+m"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D18A2DFF09;
-	Tue, 17 Jun 2025 16:03:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECF992FA621;
+	Tue, 17 Jun 2025 16:41:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750176216; cv=none; b=OzTYR3y1jaCuP6hn2e9MG9ekNXhnNm3yH2adN8IgQj7nqDtB+rqrFHT7F1VXwhBj11fzgLtc1qv3ra4nR0ElwhB2MpxGlGynVkSO8lxrR/FAxwYHnZuTzjXkVY2rFNnvxFKZ8JFbfJBJR0eCdq5woBteNTszOEAGcI/KqIDZBtI=
+	t=1750178475; cv=none; b=mh/dvC+5hidnJd5qfuWU4W42EO3q2GFvdOr+Vl/fDi7A7UlcBOEvPfvzOm9maG3u3kHJMn3/Oc7ZSH6ZoOPtU80FChS4G79OUzCiLzSmFpPtBZA4WrtjzcVP691LKHCPM/v/vVbEuWJi18dOATHS9AVlhoDDSx6DfRYwWWTRX2I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750176216; c=relaxed/simple;
-	bh=eC2zpRVSEUaaKJtzNumIhIQDzJ9as2XeLOYg5Dk85so=;
+	s=arc-20240116; t=1750178475; c=relaxed/simple;
+	bh=w5HdXiLLYzQX56g0eD6i3Y8KKhlk36X/aGU3JPUiT1k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=L5rjWcRLqHmgVxqtY1n4AJOgins8niuML8zoS7CiJbJIRIHowgvKJ9h0Z5ECP2w5nelkTeSMMGJ/8cyoTu7Tn8mOaYB+NCZn7grC/4UsOoWeNJ7x2oCMiSP8fitWTu1XsaQLIFRP22PqDMyq2yIOFT4wQrLARcfn/7sMuz2dUsg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pKEIkbEq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5E10C4CEF0;
-	Tue, 17 Jun 2025 16:03:35 +0000 (UTC)
+	 MIME-Version; b=mtxTpXBmQdtu18X3qB5VSFOJzTynKVp7ehXH0aMxwS1CvDlexsni/pf48G1y7n96LrunuF5/YBx1NfbCAY5qbzypc3LSUwu+3/DzwALuf9GZQr/7y3HchIlL4QxltV4decr7ALte9/wZefkcIIsGSt+3JfrIxvm/XsggyMj5Zsg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c1ZmuT+m; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C9B5C4CEE3;
+	Tue, 17 Jun 2025 16:41:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750176216;
-	bh=eC2zpRVSEUaaKJtzNumIhIQDzJ9as2XeLOYg5Dk85so=;
+	s=korg; t=1750178474;
+	bh=w5HdXiLLYzQX56g0eD6i3Y8KKhlk36X/aGU3JPUiT1k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pKEIkbEq5we7bd0IR3dYcvhImJSzdi0HbbdBsHt2QgGAoYEjJ4rsCZgWEQUF6mqo0
-	 zyJ/+cWGYRZIcRGMZT4kQv8qHMmpkjfh8L8TsoQYshzQt70Rbn2CaJ/7SzKA1RtQP/
-	 1ATF5TJRf4DEzFB0nA4ISESvibBmH0W/scR8qvAM=
+	b=c1ZmuT+mEpj78A55QRxIoxHDDZFjGn3lOP52aYl7R5gAgE0JfQy272ayPKZ9k4XzP
+	 PHMZB1l6PPo/eIUXou0vKn7fGYU7VFKjM36zQYLR0Kbno9diZzd3BHN2YUGirQeYpC
+	 JrQFVHhqxojt9uFCNiz+07jC4l1DRNxFGaInF5kI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexander Lobakin <alobakin@pm.me>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Russell King <linux@armlinux.org.uk>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Jason-JH Lin <jason-jh.lin@mediatek.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Jassi Brar <jassisinghbrar@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 207/512] net: phy: fix up const issues in to_mdio_device() and to_phy_device()
+Subject: [PATCH 6.15 465/780] mailbox: mtk-cmdq: Refine GCE_GCTL_VALUE setting
 Date: Tue, 17 Jun 2025 17:22:53 +0200
-Message-ID: <20250617152428.022005317@linuxfoundation.org>
+Message-ID: <20250617152510.428420255@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
-References: <20250617152419.512865572@linuxfoundation.org>
+In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
+References: <20250617152451.485330293@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,65 +63,146 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+From: Jason-JH Lin <jason-jh.lin@mediatek.com>
 
-[ Upstream commit e9cb929670a1e98b592b30f03f06e9e20110f318 ]
+[ Upstream commit 9fcebcb37c3e0a4b6eb40768cc5a5faebf166fbe ]
 
-Both to_mdio_device() and to_phy_device() "throw away" the const pointer
-attribute passed to them and return a non-const pointer, which generally
-is not a good thing overall.  Fix this up by using container_of_const()
-which was designed for this very problem.
+Add cmdq_gctl_value_toggle() to configure GCE_CTRL_BY_SW and GCE_DDR_EN
+together in the same GCE_GCTL_VALUE register.
 
-Cc: Alexander Lobakin <alobakin@pm.me>
-Cc: Andrew Lunn <andrew@lunn.ch>
-Cc: Heiner Kallweit <hkallweit1@gmail.com>
-Cc: Russell King <linux@armlinux.org.uk>
-Fixes: 7eab14de73a8 ("mdio, phy: fix -Wshadow warnings triggered by nested container_of()")
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Link: https://patch.msgid.link/2025052246-conduit-glory-8fc9@gregkh
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+For the SoCs whose GCE is located in MMINFRA and uses MMINFRA_AO power,
+this allows it to be written without enabling the clocks. Otherwise, all
+GCE registers should be written after the GCE clocks are enabled.
+Move this function into cmdq_runtime_resume() and cmdq_runtime_suspend()
+to ensure it is called when the GCE clock is enabled.
+
+Fixes: 7abd037aa581 ("mailbox: mtk-cmdq: add gce ddr enable support flow")
+Signed-off-by: Jason-JH Lin <jason-jh.lin@mediatek.com>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Signed-off-by: Jassi Brar <jassisinghbrar@gmail.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/mdio.h | 5 +----
- include/linux/phy.h  | 5 +----
- 2 files changed, 2 insertions(+), 8 deletions(-)
+ drivers/mailbox/mtk-cmdq-mailbox.c | 51 +++++++++++++-----------------
+ 1 file changed, 22 insertions(+), 29 deletions(-)
 
-diff --git a/include/linux/mdio.h b/include/linux/mdio.h
-index efeca5bd7600b..84b0805918372 100644
---- a/include/linux/mdio.h
-+++ b/include/linux/mdio.h
-@@ -45,10 +45,7 @@ struct mdio_device {
- 	unsigned int reset_deassert_delay;
+diff --git a/drivers/mailbox/mtk-cmdq-mailbox.c b/drivers/mailbox/mtk-cmdq-mailbox.c
+index d186865b8dce6..ab4e8d1954a16 100644
+--- a/drivers/mailbox/mtk-cmdq-mailbox.c
++++ b/drivers/mailbox/mtk-cmdq-mailbox.c
+@@ -92,18 +92,6 @@ struct gce_plat {
+ 	u32 gce_num;
  };
  
--static inline struct mdio_device *to_mdio_device(const struct device *dev)
+-static void cmdq_sw_ddr_enable(struct cmdq *cmdq, bool enable)
 -{
--	return container_of(dev, struct mdio_device, dev);
+-	WARN_ON(clk_bulk_enable(cmdq->pdata->gce_num, cmdq->clocks));
+-
+-	if (enable)
+-		writel(GCE_DDR_EN | GCE_CTRL_BY_SW, cmdq->base + GCE_GCTL_VALUE);
+-	else
+-		writel(GCE_CTRL_BY_SW, cmdq->base + GCE_GCTL_VALUE);
+-
+-	clk_bulk_disable(cmdq->pdata->gce_num, cmdq->clocks);
 -}
-+#define to_mdio_device(__dev)	container_of_const(__dev, struct mdio_device, dev)
+-
+ u8 cmdq_get_shift_pa(struct mbox_chan *chan)
+ {
+ 	struct cmdq *cmdq = container_of(chan->mbox, struct cmdq, mbox);
+@@ -112,6 +100,19 @@ u8 cmdq_get_shift_pa(struct mbox_chan *chan)
+ }
+ EXPORT_SYMBOL(cmdq_get_shift_pa);
  
- /* struct mdio_driver_common: Common to all MDIO drivers */
- struct mdio_driver_common {
-diff --git a/include/linux/phy.h b/include/linux/phy.h
-index 945264f457d8a..dfc7b97f9648d 100644
---- a/include/linux/phy.h
-+++ b/include/linux/phy.h
-@@ -792,10 +792,7 @@ struct phy_device {
- #define PHY_F_NO_IRQ		0x80000000
- #define PHY_F_RXC_ALWAYS_ON	0x40000000
++static void cmdq_gctl_value_toggle(struct cmdq *cmdq, bool ddr_enable)
++{
++	u32 val = cmdq->pdata->control_by_sw ? GCE_CTRL_BY_SW : 0;
++
++	if (!cmdq->pdata->control_by_sw && !cmdq->pdata->sw_ddr_en)
++		return;
++
++	if (cmdq->pdata->sw_ddr_en && ddr_enable)
++		val |= GCE_DDR_EN;
++
++	writel(val, cmdq->base + GCE_GCTL_VALUE);
++}
++
+ static int cmdq_thread_suspend(struct cmdq *cmdq, struct cmdq_thread *thread)
+ {
+ 	u32 status;
+@@ -140,16 +141,10 @@ static void cmdq_thread_resume(struct cmdq_thread *thread)
+ static void cmdq_init(struct cmdq *cmdq)
+ {
+ 	int i;
+-	u32 gctl_regval = 0;
  
--static inline struct phy_device *to_phy_device(const struct device *dev)
--{
--	return container_of(to_mdio_device(dev), struct phy_device, mdio);
--}
-+#define to_phy_device(__dev)	container_of_const(to_mdio_device(__dev), struct phy_device, mdio)
+ 	WARN_ON(clk_bulk_enable(cmdq->pdata->gce_num, cmdq->clocks));
+-	if (cmdq->pdata->control_by_sw)
+-		gctl_regval = GCE_CTRL_BY_SW;
+-	if (cmdq->pdata->sw_ddr_en)
+-		gctl_regval |= GCE_DDR_EN;
  
- /**
-  * struct phy_tdr_config - Configuration of a TDR raw test
+-	if (gctl_regval)
+-		writel(gctl_regval, cmdq->base + GCE_GCTL_VALUE);
++	cmdq_gctl_value_toggle(cmdq, true);
+ 
+ 	writel(CMDQ_THR_ACTIVE_SLOT_CYCLES, cmdq->base + CMDQ_THR_SLOT_CYCLES);
+ 	for (i = 0; i <= CMDQ_MAX_EVENT; i++)
+@@ -315,14 +310,21 @@ static irqreturn_t cmdq_irq_handler(int irq, void *dev)
+ static int cmdq_runtime_resume(struct device *dev)
+ {
+ 	struct cmdq *cmdq = dev_get_drvdata(dev);
++	int ret;
+ 
+-	return clk_bulk_enable(cmdq->pdata->gce_num, cmdq->clocks);
++	ret = clk_bulk_enable(cmdq->pdata->gce_num, cmdq->clocks);
++	if (ret)
++		return ret;
++
++	cmdq_gctl_value_toggle(cmdq, true);
++	return 0;
+ }
+ 
+ static int cmdq_runtime_suspend(struct device *dev)
+ {
+ 	struct cmdq *cmdq = dev_get_drvdata(dev);
+ 
++	cmdq_gctl_value_toggle(cmdq, false);
+ 	clk_bulk_disable(cmdq->pdata->gce_num, cmdq->clocks);
+ 	return 0;
+ }
+@@ -347,9 +349,6 @@ static int cmdq_suspend(struct device *dev)
+ 	if (task_running)
+ 		dev_warn(dev, "exist running task(s) in suspend\n");
+ 
+-	if (cmdq->pdata->sw_ddr_en)
+-		cmdq_sw_ddr_enable(cmdq, false);
+-
+ 	return pm_runtime_force_suspend(dev);
+ }
+ 
+@@ -360,9 +359,6 @@ static int cmdq_resume(struct device *dev)
+ 	WARN_ON(pm_runtime_force_resume(dev));
+ 	cmdq->suspended = false;
+ 
+-	if (cmdq->pdata->sw_ddr_en)
+-		cmdq_sw_ddr_enable(cmdq, true);
+-
+ 	return 0;
+ }
+ 
+@@ -370,9 +366,6 @@ static void cmdq_remove(struct platform_device *pdev)
+ {
+ 	struct cmdq *cmdq = platform_get_drvdata(pdev);
+ 
+-	if (cmdq->pdata->sw_ddr_en)
+-		cmdq_sw_ddr_enable(cmdq, false);
+-
+ 	if (!IS_ENABLED(CONFIG_PM))
+ 		cmdq_runtime_suspend(&pdev->dev);
+ 
 -- 
 2.39.5
 
