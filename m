@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-154089-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-154091-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E91F0ADD83F
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:53:36 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 97B3BADD81D
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:52:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 244B917F6A9
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:41:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D386E4A7ECA
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:41:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25D5F2FA65C;
-	Tue, 17 Jun 2025 16:34:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9A5A212B28;
+	Tue, 17 Jun 2025 16:34:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EDUdrdb3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F7Lh1ZhO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4D8B2FA638;
-	Tue, 17 Jun 2025 16:34:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81EBE2FA638;
+	Tue, 17 Jun 2025 16:34:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750178065; cv=none; b=BqjDW8QpAWTHKz/TLYPYrgKJGLmrYKNNbThBrQsUY1reZl2ljngS5Vcugay3SYkRJVG6Wr5cLLuVAYh2x4Q7KSkngESh3BaRqWM1OF73RmBvmSKQAqEhz0obVuRJJJ0abaQIn8CZiU8v+oX764fs1vG3z0lmg6U+sArqBZXkWRE=
+	t=1750178072; cv=none; b=OpBAiVBdmZuTZiEXJZ2NWolnUQA9AFN25fetOZ5FGoxsdczXps43ynppSfWOzVRtrfQvfC6/Ix3bwaCT9ZZKNvWxcH3cTjPyfujApa9xczhuAnCnGhm25Qoi4lGW5aCKq8Hi1TADw/v93XFVRHz5e/RXuJ8dYi/X1KxpahId1ss=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750178065; c=relaxed/simple;
-	bh=vAhx18E97u8es9oHibh+DRShnS4nTtZW27/f6+pkqvA=;
+	s=arc-20240116; t=1750178072; c=relaxed/simple;
+	bh=woz5wZRqZC3wQoZqf+9EjI106chsKnhyg4PHVRBgmxQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=X6MsNh58Lo2OM4QJ3vMgXt/tZWWxHxolWgitu+JfOmLflg3newkWg7QNxh+O1afitUBZsCKkprcONISsaGJ5889E9TIEDrQ0hNtHjdAePWDOKVB8poi8q+kgSG4BD2YE8g7jtB1/Ifidk59Ktsbc5H+em91qSTY6fr1FX0IPGgc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EDUdrdb3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44F9AC4CEE3;
-	Tue, 17 Jun 2025 16:34:25 +0000 (UTC)
+	 MIME-Version; b=j3NZTnDtKKX03aFnzM6T3dzjzUQR9Za75GkRuidhJqfFH5LA3tUEvz/TiwBf+SzYUZZnA25jVvpWONsUNENlHRaLZPyVx1pkvDJEHnWh9XovFZFxnPaRPtI6Dq3iiZtMLZiH3XG7IeOWXD7rUvgl4zNV+5lTi4CZkUY46kFpGQo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F7Lh1ZhO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E59BCC4CEE3;
+	Tue, 17 Jun 2025 16:34:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750178065;
-	bh=vAhx18E97u8es9oHibh+DRShnS4nTtZW27/f6+pkqvA=;
+	s=korg; t=1750178072;
+	bh=woz5wZRqZC3wQoZqf+9EjI106chsKnhyg4PHVRBgmxQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EDUdrdb37eNxxgyLdpVaM6TjCoKAMV1dRC1qh3a9XUsOB4h+cPAEk6jptMjHgfZ31
-	 D7MHGJFocxGVZweRFF4a4xO8yl5vEX88ZwuDTpL7a2Pjql8KHhCIIP7RI0InQyvTaL
-	 Wtswz9Zq6qiphaBtPlMZxibGVDK7YHjZFM1CpSmY=
+	b=F7Lh1ZhOOxCPWOk5BqtAUoZqqrAhJsDeX4Y2IPwAUX89sZPka2+aLGgMscbBV49ZW
+	 Y1vx/2VrmZelu8KdGtBTxbmU4JoGctmqn65Ez6zuiR7rqYyMi3rtdkRB3+arY7U7cv
+	 pciBEmNuZiIYL9e6Po3xQnOe15TEu+PVc1O8FTkE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexey Minnekhanov <alexeymin@postmarketos.org>,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	Abel Vesa <abel.vesa@linaro.org>,
+	Johan Hovold <johan+linaro@kernel.org>,
 	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 381/780] arm64: dts: qcom: sda660-ifc6560: Fix dt-validate warning
-Date: Tue, 17 Jun 2025 17:21:29 +0200
-Message-ID: <20250617152506.975037922@linuxfoundation.org>
+Subject: [PATCH 6.15 382/780] arm64: dts: qcom: x1e001de-devkit: Describe USB retimers resets pin configs
+Date: Tue, 17 Jun 2025 17:21:30 +0200
+Message-ID: <20250617152507.016806540@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
 References: <20250617152451.485330293@linuxfoundation.org>
@@ -67,45 +68,98 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Alexey Minnekhanov <alexeymin@postmarketos.org>
+From: Abel Vesa <abel.vesa@linaro.org>
 
-[ Upstream commit f5110806b41eaa0eb0ab1bf2787876a580c6246c ]
+[ Upstream commit f76fdcd2550991c854a698a9f881b1579455fc0a ]
 
-If you remove clocks property, you should remove clock-names, too.
-Fixes warning with dtbs check:
+Currently, on the X Elite Devkit, the pin configuration of the reset
+gpios for all three PS8830 USB retimers are left configured by the
+bootloader.
 
- 'clocks' is a dependency of 'clock-names'
+Fix that by describing their pin configuration.
 
-Fixes: 34279d6e3f32c ("arm64: dts: qcom: sdm660: Add initial Inforce IFC6560 board support")
-Signed-off-by: Alexey Minnekhanov <alexeymin@postmarketos.org>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Link: https://lore.kernel.org/r/20250504115120.1432282-4-alexeymin@postmarketos.org
+Fixes: 019e1ee32fec ("arm64: dts: qcom: x1e001de-devkit: Enable external DP support")
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Signed-off-by: Abel Vesa <abel.vesa@linaro.org>
+Reviewed-by: Johan Hovold <johan+linaro@kernel.org>
+Link: https://lore.kernel.org/r/20250422-x1e001de-devkit-dts-fix-retimer-gpios-v2-1-0129c4f2b6d7@linaro.org
 Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/sda660-inforce-ifc6560.dts | 2 ++
- 1 file changed, 2 insertions(+)
+ arch/arm64/boot/dts/qcom/x1e001de-devkit.dts | 32 ++++++++++++++++++++
+ 1 file changed, 32 insertions(+)
 
-diff --git a/arch/arm64/boot/dts/qcom/sda660-inforce-ifc6560.dts b/arch/arm64/boot/dts/qcom/sda660-inforce-ifc6560.dts
-index d402f4c85b11d..ee696317f78cc 100644
---- a/arch/arm64/boot/dts/qcom/sda660-inforce-ifc6560.dts
-+++ b/arch/arm64/boot/dts/qcom/sda660-inforce-ifc6560.dts
-@@ -175,6 +175,7 @@
- 	 * BAM DMA interconnects support is in place.
- 	 */
- 	/delete-property/ clocks;
-+	/delete-property/ clock-names;
+diff --git a/arch/arm64/boot/dts/qcom/x1e001de-devkit.dts b/arch/arm64/boot/dts/qcom/x1e001de-devkit.dts
+index f5063a0df9fbf..8f4482ade0f98 100644
+--- a/arch/arm64/boot/dts/qcom/x1e001de-devkit.dts
++++ b/arch/arm64/boot/dts/qcom/x1e001de-devkit.dts
+@@ -790,6 +790,9 @@
+ 
+ 		reset-gpios = <&tlmm 185 GPIO_ACTIVE_HIGH>;
+ 
++		pinctrl-0 = <&rtmr2_default>;
++		pinctrl-names = "default";
++
+ 		orientation-switch;
+ 		retimer-switch;
+ 
+@@ -845,6 +848,9 @@
+ 
+ 		reset-gpios = <&pm8550_gpios 10 GPIO_ACTIVE_HIGH>;
+ 
++		pinctrl-0 = <&rtmr0_default>;
++		pinctrl-names = "default";
++
+ 		retimer-switch;
+ 		orientation-switch;
+ 
+@@ -900,6 +906,9 @@
+ 
+ 		reset-gpios = <&tlmm 176 GPIO_ACTIVE_HIGH>;
+ 
++		pinctrl-0 = <&rtmr1_default>;
++		pinctrl-names = "default";
++
+ 		retimer-switch;
+ 		orientation-switch;
+ 
+@@ -1018,6 +1027,15 @@
  };
  
- &blsp1_uart2 {
-@@ -187,6 +188,7 @@
- 	 * BAM DMA interconnects support is in place.
- 	 */
- 	/delete-property/ clocks;
-+	/delete-property/ clock-names;
- };
+ &pm8550_gpios {
++	rtmr0_default: rtmr0-reset-n-active-state {
++		pins = "gpio10";
++		function = "normal";
++		power-source = <1>; /* 1.8 V */
++		bias-disable;
++		input-disable;
++		output-enable;
++	};
++
+ 	usb0_3p3_reg_en: usb0-3p3-reg-en-state {
+ 		pins = "gpio11";
+ 		function = "normal";
+@@ -1205,6 +1223,20 @@
+ 		};
+ 	};
  
- &blsp2_uart1 {
++	rtmr1_default: rtmr1-reset-n-active-state {
++		pins = "gpio176";
++		function = "gpio";
++		drive-strength = <2>;
++		bias-disable;
++	};
++
++	rtmr2_default: rtmr2-reset-n-active-state {
++		pins = "gpio185";
++		function = "gpio";
++		drive-strength = <2>;
++		bias-disable;
++	};
++
+ 	rtmr1_1p15_reg_en: rtmr1-1p15-reg-en-state {
+ 		pins = "gpio188";
+ 		function = "gpio";
 -- 
 2.39.5
 
