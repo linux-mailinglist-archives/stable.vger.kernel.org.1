@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-153956-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153958-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5990FADD782
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:45:21 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D4A35ADD795
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:46:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 21C65164D54
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:32:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4CD46407B6C
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:32:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 858EA2DFF18;
-	Tue, 17 Jun 2025 16:27:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 074822EE61A;
+	Tue, 17 Jun 2025 16:27:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XTV3bnI9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uMaUAJ7h"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41A2E23A9B3;
-	Tue, 17 Jun 2025 16:27:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B85AA2DFF10;
+	Tue, 17 Jun 2025 16:27:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750177639; cv=none; b=CVo7xFMdYnC9kr+paCDTTV9afCZCn8LO8NWIygqeV8iV+Fs/bSIGfDGmIfsfvXMg40EmoB6HKJhxKja8vnXBUA0cRQe1GE0fj4b+45viekSk2qtBh3wgNu6OTrz/e4PmiZhJ1a14eyz4Lu/FxHOFjJpGvChOgccA2ffXsVb9TyY=
+	t=1750177645; cv=none; b=HFq3QDZ6QyVY/aG7MtcZzBl0JFwTPTqp+nNZkxZeFuaoEIZkqi9Mltz929G990NaHOzPd21V+Dt/RyTWnoLdZ8sdYWBa/263F+7YKpjf2XkU6E2sxlrWTfbxVOwodFct1ehVY2XbTOnl12FrfQMNK8OaybU995m7jdN1KWSU/do=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750177639; c=relaxed/simple;
-	bh=9nP+Ozyg+4jwEV6eif+y+HPcY5rYdOzZmKvXSqkq4nQ=;
+	s=arc-20240116; t=1750177645; c=relaxed/simple;
+	bh=HBc+1N2hTk9YLF37I6y2/NrKqnk2DxbN9XOb/itrw/U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qka+4XPNhQEebImjGIuPzxb/yoD81V7y+3vp2tpc0DMxdr7t/FCYyRY2g/e+LJSc65IXELosGnZiBcpi6nPzNRh6AWqSW9Sj5HoFtiId3Xcv7OESj9IbVVZkaC35jsEpp9r/fJ27e9nRagygHKqNsGkOWDqDBJ1bWDfwb4l6/vg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XTV3bnI9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7334CC4CEE3;
-	Tue, 17 Jun 2025 16:27:18 +0000 (UTC)
+	 MIME-Version; b=nIL9+wK2DTVWJRUaZ0kWa+0M8FSTbSAdpBanpRnfiUvYNx5aOdMx3ChNNuE623qJcd9BHCerWID0VyE+PAACSGlIlTwgFLtXuVmQG8khTOiOtXmjhQ38Y3i0HgTIs/LYc6XPVyXqmv+xScAh93i6omm8e1Y7ktCJxHfcLzlckHc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uMaUAJ7h; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1FB72C4CEE3;
+	Tue, 17 Jun 2025 16:27:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750177639;
-	bh=9nP+Ozyg+4jwEV6eif+y+HPcY5rYdOzZmKvXSqkq4nQ=;
+	s=korg; t=1750177645;
+	bh=HBc+1N2hTk9YLF37I6y2/NrKqnk2DxbN9XOb/itrw/U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XTV3bnI9pdWZwqm1M4JDONmP3hsxP1oHFlyNJmJIvZm09dDpnw7VRIh1nmJTB3pdu
-	 5zyaEaQ2ZlYpwID4NuqIfGxlPMHXLRxJiofD2lzlya6xJv14PoBJphPuWKIzT+VfsS
-	 6HLaFZyACg9AClPsoD/nidiD3bq1zBXmCrilercA=
+	b=uMaUAJ7hA5VDz+BgRnHZ2gP3WGQaUA4hvygW/Sk7BklIottFvX/gNvARhszs5sH0+
+	 gqqrmf5y8v3VtRgrxCIQ58HW8Eey3GTc5MbH9jJTOnxWEKh5RSjZQ7mtUAVODKOHFn
+	 WVWpbomJa4tg8jli/RMMKG5EZJH68gqIungoNiLM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -46,9 +46,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Chao Yu <chao@kernel.org>,
 	Jaegeuk Kim <jaegeuk@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 339/780] f2fs: use d_inode(dentry) cleanup dentry->d_inode
-Date: Tue, 17 Jun 2025 17:20:47 +0200
-Message-ID: <20250617152505.257042622@linuxfoundation.org>
+Subject: [PATCH 6.15 340/780] f2fs: fix to correct check conditions in f2fs_cross_rename
+Date: Tue, 17 Jun 2025 17:20:48 +0200
+Message-ID: <20250617152505.303459358@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
 References: <20250617152451.485330293@linuxfoundation.org>
@@ -69,71 +69,32 @@ Content-Transfer-Encoding: 8bit
 
 From: Zhiguo Niu <zhiguo.niu@unisoc.com>
 
-[ Upstream commit a6c397a31f58a1d577c2c8d04b624e9baa31951c ]
+[ Upstream commit 9883494c45a13dc88d27dde4f988c04823b42a2f ]
 
-no logic changes.
+Should be "old_dir" here.
 
+Fixes: 5c57132eaf52 ("f2fs: support project quota")
 Signed-off-by: Zhiguo Niu <zhiguo.niu@unisoc.com>
 Reviewed-by: Chao Yu <chao@kernel.org>
 Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
-Stable-dep-of: 9883494c45a1 ("f2fs: fix to correct check conditions in f2fs_cross_rename")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/f2fs/namei.c | 8 ++++----
- fs/f2fs/super.c | 4 ++--
- 2 files changed, 6 insertions(+), 6 deletions(-)
+ fs/f2fs/namei.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/fs/f2fs/namei.c b/fs/f2fs/namei.c
-index 8f8b9b843bdf4..faa5191cf4ca6 100644
+index faa5191cf4ca6..28137d499f8f6 100644
 --- a/fs/f2fs/namei.c
 +++ b/fs/f2fs/namei.c
-@@ -414,7 +414,7 @@ static int f2fs_link(struct dentry *old_dentry, struct inode *dir,
- 
- 	if (is_inode_flag_set(dir, FI_PROJ_INHERIT) &&
- 			(!projid_eq(F2FS_I(dir)->i_projid,
--			F2FS_I(old_dentry->d_inode)->i_projid)))
-+			F2FS_I(inode)->i_projid)))
- 		return -EXDEV;
- 
- 	err = f2fs_dquot_initialize(dir);
-@@ -914,7 +914,7 @@ static int f2fs_rename(struct mnt_idmap *idmap, struct inode *old_dir,
- 
- 	if (is_inode_flag_set(new_dir, FI_PROJ_INHERIT) &&
- 			(!projid_eq(F2FS_I(new_dir)->i_projid,
--			F2FS_I(old_dentry->d_inode)->i_projid)))
-+			F2FS_I(old_inode)->i_projid)))
- 		return -EXDEV;
- 
- 	/*
-@@ -1107,10 +1107,10 @@ static int f2fs_cross_rename(struct inode *old_dir, struct dentry *old_dentry,
- 
+@@ -1108,7 +1108,7 @@ static int f2fs_cross_rename(struct inode *old_dir, struct dentry *old_dentry,
  	if ((is_inode_flag_set(new_dir, FI_PROJ_INHERIT) &&
  			!projid_eq(F2FS_I(new_dir)->i_projid,
--			F2FS_I(old_dentry->d_inode)->i_projid)) ||
-+			F2FS_I(old_inode)->i_projid)) ||
- 	    (is_inode_flag_set(new_dir, FI_PROJ_INHERIT) &&
+ 			F2FS_I(old_inode)->i_projid)) ||
+-	    (is_inode_flag_set(new_dir, FI_PROJ_INHERIT) &&
++	    (is_inode_flag_set(old_dir, FI_PROJ_INHERIT) &&
  			!projid_eq(F2FS_I(old_dir)->i_projid,
--			F2FS_I(new_dentry->d_inode)->i_projid)))
-+			F2FS_I(new_inode)->i_projid)))
+ 			F2FS_I(new_inode)->i_projid)))
  		return -EXDEV;
- 
- 	err = f2fs_dquot_initialize(old_dir);
-diff --git a/fs/f2fs/super.c b/fs/f2fs/super.c
-index 7a3bc85df6a7a..386326f7a440e 100644
---- a/fs/f2fs/super.c
-+++ b/fs/f2fs/super.c
-@@ -1882,9 +1882,9 @@ static int f2fs_statfs(struct dentry *dentry, struct kstatfs *buf)
- 	buf->f_fsid    = u64_to_fsid(id);
- 
- #ifdef CONFIG_QUOTA
--	if (is_inode_flag_set(dentry->d_inode, FI_PROJ_INHERIT) &&
-+	if (is_inode_flag_set(d_inode(dentry), FI_PROJ_INHERIT) &&
- 			sb_has_quota_limits_enabled(sb, PRJQUOTA)) {
--		f2fs_statfs_project(sb, F2FS_I(dentry->d_inode)->i_projid, buf);
-+		f2fs_statfs_project(sb, F2FS_I(d_inode(dentry))->i_projid, buf);
- 	}
- #endif
- 	return 0;
 -- 
 2.39.5
 
