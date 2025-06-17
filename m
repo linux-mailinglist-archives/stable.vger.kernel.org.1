@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-154453-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153603-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 31269ADD9C3
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 19:09:22 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9DFB5ADD57E
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:21:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 89DF25A5053
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:54:42 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5B523194354A
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:11:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94FCF2FA633;
-	Tue, 17 Jun 2025 16:53:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45D39238C0A;
+	Tue, 17 Jun 2025 16:08:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cg0qp2ZF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dkEWz2L+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51D1BCA4B;
-	Tue, 17 Jun 2025 16:53:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03F6828E8;
+	Tue, 17 Jun 2025 16:08:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750179235; cv=none; b=QYU5NCLTg2amemuvCLxpD149FJ1+m8xaAgyceV0SqA1o7S4EyQ1k/Qid9fc+BD3fw5hfwRHLt6KSmt7XBAISxdY5TfIQTsnJc8iJxOwV9DHluaI961vmvOdLzTigU7V1tiC7VhnKg1++RccXNeae+Eu2fEe0OqM9CZk3L27HV1s=
+	t=1750176499; cv=none; b=bLg3bnE/Oirz3em6wm/8E8HRGRBmANICTNDGSH28SP9jttEm3QsMvGRlMmfT78w+iHuDitTZo1UChlTaiThaIVMZw4Q3uQ6OYLSHnHjQnzgySL0G1qgbvEUwb9WAAIHCWQ2/T4O9la8bI59Pd2p48FkxoIluW0MSSv55o6ogcXU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750179235; c=relaxed/simple;
-	bh=FwntFBhyjBL6Bc+IQCKAVqLvYR7IpFEKWIZWg6m5mZk=;
+	s=arc-20240116; t=1750176499; c=relaxed/simple;
+	bh=CK/WWCXMNJmG5iD7DcpVpuxbloIUEDZtTV74cj3pPIg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PatXdmdzxNHglv068h/dGroW/ngArHRAoCpTYfM5heKraahscwyAxgRecSPDTPf8yPnmHB2ieX8Tg48we4A6GGlLM312k8PGVDEI45QGHg++i/5F/zL4bKGZV7DO/IRB6Xq5TmtdEqVPtCy3CwVCPGhVqDTrB5+e7gy+QbTEvMo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cg0qp2ZF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC49FC4CEE3;
-	Tue, 17 Jun 2025 16:53:54 +0000 (UTC)
+	 MIME-Version; b=hM7Ds32nQwF3f6PVDH3tGUZPL1MhI7FiZ01t9ae1HJJMsUt0xC0Qi8sQ3dgG1tU6pXAE9Fu3TnTlSxoBpFL2RTlluO9yyGmPp1X47Wq7fRrchKdZN/6GP8ymJByNXAH76LxmqomtQXB6cTrit3/7EtpkjVUIVgoiOyDV+EpG/6A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dkEWz2L+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E8F3C4CEE3;
+	Tue, 17 Jun 2025 16:08:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750179235;
-	bh=FwntFBhyjBL6Bc+IQCKAVqLvYR7IpFEKWIZWg6m5mZk=;
+	s=korg; t=1750176495;
+	bh=CK/WWCXMNJmG5iD7DcpVpuxbloIUEDZtTV74cj3pPIg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cg0qp2ZFWQzr6fOYYwVUsgP/04orpZ3ekwj/c8hc9NRMZtU7YHYHUg66kSfGq2GpP
-	 l+zxwLNblUt62IGfQgvispSAnNtFv7V0dFUEPOSXP+YTN0ppHXq8zs00H1vb778b4s
-	 w/2l8BHymNrRvhzn8eSTGlbU1JjS+TuBFZLGMrkI=
+	b=dkEWz2L+klyKBALhGI6dpXwp+iBLqSXHcEeNGJDaN4ZJC3/NePKeE5cB3eIXyB2Bb
+	 qiWMJTR9JajPl2I+iTUe15oKZj6iE19YrpA/7u+23V8SVJ+4tkeO89EI/y+Ob0nvhK
+	 4c163cKL8sER8G2RBbpC0aw/gyUVyQ2BauOZf+kg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gabriel Dalimonte <gabriel.dalimonte@gmail.com>,
-	Maxime Ripard <mripard@kernel.org>,
+	Judith Mendez <jm@ti.com>,
+	Moteen Shah <m-shah@ti.com>,
+	Nishanth Menon <nm@ti.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 689/780] drm/vc4: fix infinite EPROBE_DEFER loop
-Date: Tue, 17 Jun 2025 17:26:37 +0200
-Message-ID: <20250617152519.546508134@linuxfoundation.org>
+Subject: [PATCH 6.6 283/356] arm64: dts: ti: k3-am65-main: Add missing taps to sdhci0
+Date: Tue, 17 Jun 2025 17:26:38 +0200
+Message-ID: <20250617152349.581501167@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
-References: <20250617152451.485330293@linuxfoundation.org>
+In-Reply-To: <20250617152338.212798615@linuxfoundation.org>
+References: <20250617152338.212798615@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,60 +63,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gabriel Dalimonte <gabriel.dalimonte@gmail.com>
+From: Judith Mendez <jm@ti.com>
 
-[ Upstream commit c0317ad44f45b3c1f0ff46a4e28d14c7bccdedf4 ]
+[ Upstream commit f55c9f087cc2e2252d44ffd9d58def2066fc176e ]
 
-`vc4_hdmi_audio_init` calls `devm_snd_dmaengine_pcm_register` which may
-return EPROBE_DEFER. Calling `drm_connector_hdmi_audio_init` adds a
-child device. The driver model docs[1] state that adding a child device
-prior to returning EPROBE_DEFER may result in an infinite loop.
+For am65x, add missing ITAPDLYSEL values for Default Speed and High
+Speed SDR modes to sdhci0 node according to the device datasheet [0].
 
-[1] https://www.kernel.org/doc/html/v6.14/driver-api/driver-model/driver.html
+[0] https://www.ti.com/lit/gpn/am6548
 
-Fixes: 9640f1437a88 ("drm/vc4: hdmi: switch to using generic HDMI Codec infrastructure")
-Signed-off-by: Gabriel Dalimonte <gabriel.dalimonte@gmail.com>
-Link: https://lore.kernel.org/r/20250601-vc4-audio-inf-probe-v2-1-9ad43c7b6147@gmail.com
-Signed-off-by: Maxime Ripard <mripard@kernel.org>
+Fixes: eac99d38f861 ("arm64: dts: ti: k3-am654-main: Update otap-del-sel values")
+Cc: stable@vger.kernel.org
+Signed-off-by: Judith Mendez <jm@ti.com>
+Reviewed-by: Moteen Shah <m-shah@ti.com>
+Link: https://lore.kernel.org/r/20250429173009.33994-1-jm@ti.com
+Signed-off-by: Nishanth Menon <nm@ti.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/vc4/vc4_hdmi.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ arch/arm64/boot/dts/ti/k3-am65-main.dtsi | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/gpu/drm/vc4/vc4_hdmi.c b/drivers/gpu/drm/vc4/vc4_hdmi.c
-index 37a7d45695f23..176aba27b03d3 100644
---- a/drivers/gpu/drm/vc4/vc4_hdmi.c
-+++ b/drivers/gpu/drm/vc4/vc4_hdmi.c
-@@ -559,12 +559,6 @@ static int vc4_hdmi_connector_init(struct drm_device *dev,
- 	if (ret)
- 		return ret;
- 
--	ret = drm_connector_hdmi_audio_init(connector, dev->dev,
--					    &vc4_hdmi_audio_funcs,
--					    8, false, -1);
--	if (ret)
--		return ret;
--
- 	drm_connector_helper_add(connector, &vc4_hdmi_connector_helper_funcs);
- 
- 	/*
-@@ -2274,6 +2268,12 @@ static int vc4_hdmi_audio_init(struct vc4_hdmi *vc4_hdmi)
- 		return ret;
- 	}
- 
-+	ret = drm_connector_hdmi_audio_init(&vc4_hdmi->connector, dev,
-+					    &vc4_hdmi_audio_funcs, 8, false,
-+					    -1);
-+	if (ret)
-+		return ret;
-+
- 	dai_link->cpus		= &vc4_hdmi->audio.cpu;
- 	dai_link->codecs	= &vc4_hdmi->audio.codec;
- 	dai_link->platforms	= &vc4_hdmi->audio.platform;
+diff --git a/arch/arm64/boot/dts/ti/k3-am65-main.dtsi b/arch/arm64/boot/dts/ti/k3-am65-main.dtsi
+index 9c5de448351e9..0523bd0da80c7 100644
+--- a/arch/arm64/boot/dts/ti/k3-am65-main.dtsi
++++ b/arch/arm64/boot/dts/ti/k3-am65-main.dtsi
+@@ -448,6 +448,8 @@ sdhci0: mmc@4f80000 {
+ 		ti,otap-del-sel-ddr50 = <0x5>;
+ 		ti,otap-del-sel-ddr52 = <0x5>;
+ 		ti,otap-del-sel-hs200 = <0x5>;
++		ti,itap-del-sel-legacy = <0xa>;
++		ti,itap-del-sel-mmc-hs = <0x1>;
+ 		ti,itap-del-sel-ddr52 = <0x0>;
+ 		dma-coherent;
+ 	};
 -- 
 2.39.5
 
