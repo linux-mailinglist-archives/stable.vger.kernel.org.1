@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-153717-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-154491-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8518EADD623
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:30:39 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id B016FADD881
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:56:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 425472C63FF
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:21:23 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6FBC97A9CB4
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:55:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F41FE2F3648;
-	Tue, 17 Jun 2025 16:14:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A326C2FA624;
+	Tue, 17 Jun 2025 16:56:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CtXdlhUK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="djVJETxS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B18292EF297;
-	Tue, 17 Jun 2025 16:14:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58F75CA4B;
+	Tue, 17 Jun 2025 16:56:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750176862; cv=none; b=Zl3x9vfY9BXkAmj64mtL18lkYmN/ZT8dyAlw29KHPegRZxqCQF9VcZ9GFJkxfbg2qX8Xyx4MAIvc9WvjghJUNSLRulI9R8YOuk48bdvPTA4a6vrKAjYCOUiivwqHYh1l0OJaMzDSRIQGqHTSHi6NYB4Ev/trQMTsptx2N7mf94g=
+	t=1750179379; cv=none; b=l51eQivwL54nV82bxvvKAV/WzZW+VLE1KHBUhT1jfg+juHsWVbSxFuCu67xMBtrDOUPreAJZIp1zT1HHDrpUyiAP9rEwGs/B15GsexDacw87jbWrzk/Zfo+BbxP4T7tSNchB5j12j/J3mb5IlBcT00PUZEc7JoGvGdG04T06agA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750176862; c=relaxed/simple;
-	bh=osnnhtOlVUHEhwU7Cgvas2yPhiG3pjAmRS/fUzKNQuo=;
+	s=arc-20240116; t=1750179379; c=relaxed/simple;
+	bh=09NFfwhfTmnmfXYAjSSDXtP/jjG2vrY6EdNGNRRhqvE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WeuV2izuwZWYMxHB0k+ahm2A8Qu3VM/K8JARUvmRi24kNkVye61EZR4cF9/HOwiQWFflJIxbUmLgq2fIoBLWIoix7ajhlMAeQg8INukWvSx/9A6U2M4SDm0JxorECt0JpeKPXI1iamY4aMA0c3mpsYsrDHabfdbaCiwff5f6cwo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CtXdlhUK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3828C4CEE3;
-	Tue, 17 Jun 2025 16:14:21 +0000 (UTC)
+	 MIME-Version; b=NxUq5Qkm3daGllHC286ygbdPEQ55sp6+W7dpAMKszptt1hpiI5r0lD0WUgTVMwpTPWjTuOwFWx7Y6WGnI66vz04glCZGBZZKuT8/CqyUHgo4FAm1C7iWgRcHzl15OmvWxSIgGaA0+XLWZ7SyHeg44N2UkV/QPLX/IIVrA5Mge7w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=djVJETxS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 740E1C4CEE3;
+	Tue, 17 Jun 2025 16:56:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750176862;
-	bh=osnnhtOlVUHEhwU7Cgvas2yPhiG3pjAmRS/fUzKNQuo=;
+	s=korg; t=1750179377;
+	bh=09NFfwhfTmnmfXYAjSSDXtP/jjG2vrY6EdNGNRRhqvE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CtXdlhUKEhmnKBbTVXGcl6lS9ljaiPA6LsfY8kbt9Ivv5+b6zOjh2eafMD9EsvO9i
-	 /7X0GUygCOUCsgQMIXDWhTpxGO8hcKVwoaC84RPS1LyRrnXGe+0rcQ0z9pOd72lPJP
-	 Ib4hBX5h8PPd5GEth0xNGQfchZa1+CNe5YcKC3Ic=
+	b=djVJETxSOBHtsEOtzdC5GpooVNrPZSJNFvtfn0F+WQBRASwRlS6ry7gjK2KqD6DR3
+	 HIXMWBYApPW0OtdMi86aV7zEPe6qnR2kJqC4nuBnZtvVe57LgJPn8ZJ1VzqXhlKz5w
+	 4eydEv7Tk9dOWMbcQTI3OdSMOVU18/LzKFgXxTs8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Christian Brauner <brauner@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 320/356] Bluetooth: Fix NULL pointer deference on eir_get_service_data
+Subject: [PATCH 6.15 727/780] gfs2: pass through holder from the VFS for freeze/thaw
 Date: Tue, 17 Jun 2025 17:27:15 +0200
-Message-ID: <20250617152351.039178473@linuxfoundation.org>
+Message-ID: <20250617152521.097934531@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152338.212798615@linuxfoundation.org>
-References: <20250617152338.212798615@linuxfoundation.org>
+In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
+References: <20250617152451.485330293@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,52 +61,99 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+From: Christian Brauner <brauner@kernel.org>
 
-[ Upstream commit 20a2aa01f5aeb6daad9aeaa7c33dd512c58d81eb ]
+[ Upstream commit 62a2175ddf7e72941868f164b7c1f92e00f213bd ]
 
-The len parameter is considered optional so it can be NULL so it cannot
-be used for skipping to next entry of EIR_SERVICE_DATA.
+The filesystem's freeze/thaw functions can be called from contexts where
+the holder isn't userspace but the kernel, e.g., during systemd
+suspend/hibernate. So pass through the freeze/thaw flags from the VFS
+instead of hard-coding them.
 
-Fixes: 8f9ae5b3ae80 ("Bluetooth: eir: Add helpers for managing service data")
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bluetooth/eir.c | 10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
+ fs/gfs2/super.c | 14 ++++++++------
+ 1 file changed, 8 insertions(+), 6 deletions(-)
 
-diff --git a/net/bluetooth/eir.c b/net/bluetooth/eir.c
-index 1bc51e2b05a34..3e1713673ecc9 100644
---- a/net/bluetooth/eir.c
-+++ b/net/bluetooth/eir.c
-@@ -366,17 +366,19 @@ u8 eir_create_scan_rsp(struct hci_dev *hdev, u8 instance, u8 *ptr)
+diff --git a/fs/gfs2/super.c b/fs/gfs2/super.c
+index 54f1efd47a3e5..0bd7827e6371e 100644
+--- a/fs/gfs2/super.c
++++ b/fs/gfs2/super.c
+@@ -674,7 +674,7 @@ static int gfs2_sync_fs(struct super_block *sb, int wait)
+ 	return sdp->sd_log_error;
+ }
  
- void *eir_get_service_data(u8 *eir, size_t eir_len, u16 uuid, size_t *len)
+-static int gfs2_do_thaw(struct gfs2_sbd *sdp)
++static int gfs2_do_thaw(struct gfs2_sbd *sdp, enum freeze_holder who)
  {
--	while ((eir = eir_get_data(eir, eir_len, EIR_SERVICE_DATA, len))) {
-+	size_t dlen;
-+
-+	while ((eir = eir_get_data(eir, eir_len, EIR_SERVICE_DATA, &dlen))) {
- 		u16 value = get_unaligned_le16(eir);
+ 	struct super_block *sb = sdp->sd_vfs;
+ 	int error;
+@@ -682,7 +682,7 @@ static int gfs2_do_thaw(struct gfs2_sbd *sdp)
+ 	error = gfs2_freeze_lock_shared(sdp);
+ 	if (error)
+ 		goto fail;
+-	error = thaw_super(sb, FREEZE_HOLDER_USERSPACE);
++	error = thaw_super(sb, who);
+ 	if (!error)
+ 		return 0;
  
- 		if (uuid == value) {
- 			if (len)
--				*len -= 2;
-+				*len = dlen - 2;
- 			return &eir[2];
- 		}
+@@ -710,7 +710,7 @@ void gfs2_freeze_func(struct work_struct *work)
+ 	gfs2_freeze_unlock(sdp);
+ 	set_bit(SDF_FROZEN, &sdp->sd_flags);
  
--		eir += *len;
--		eir_len -= *len;
-+		eir += dlen;
-+		eir_len -= dlen;
+-	error = gfs2_do_thaw(sdp);
++	error = gfs2_do_thaw(sdp, FREEZE_HOLDER_USERSPACE);
+ 	if (error)
+ 		goto out;
+ 
+@@ -728,6 +728,7 @@ void gfs2_freeze_func(struct work_struct *work)
+ /**
+  * gfs2_freeze_super - prevent further writes to the filesystem
+  * @sb: the VFS structure for the filesystem
++ * @who: freeze flags
+  *
+  */
+ 
+@@ -744,7 +745,7 @@ static int gfs2_freeze_super(struct super_block *sb, enum freeze_holder who)
  	}
  
- 	return NULL;
+ 	for (;;) {
+-		error = freeze_super(sb, FREEZE_HOLDER_USERSPACE);
++		error = freeze_super(sb, who);
+ 		if (error) {
+ 			fs_info(sdp, "GFS2: couldn't freeze filesystem: %d\n",
+ 				error);
+@@ -758,7 +759,7 @@ static int gfs2_freeze_super(struct super_block *sb, enum freeze_holder who)
+ 			break;
+ 		}
+ 
+-		error = gfs2_do_thaw(sdp);
++		error = gfs2_do_thaw(sdp, who);
+ 		if (error)
+ 			goto out;
+ 
+@@ -796,6 +797,7 @@ static int gfs2_freeze_fs(struct super_block *sb)
+ /**
+  * gfs2_thaw_super - reallow writes to the filesystem
+  * @sb: the VFS structure for the filesystem
++ * @who: freeze flags
+  *
+  */
+ 
+@@ -814,7 +816,7 @@ static int gfs2_thaw_super(struct super_block *sb, enum freeze_holder who)
+ 	atomic_inc(&sb->s_active);
+ 	gfs2_freeze_unlock(sdp);
+ 
+-	error = gfs2_do_thaw(sdp);
++	error = gfs2_do_thaw(sdp, who);
+ 
+ 	if (!error) {
+ 		clear_bit(SDF_FREEZE_INITIATOR, &sdp->sd_flags);
 -- 
 2.39.5
 
