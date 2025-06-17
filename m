@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-152994-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-152996-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3CC6DADD1F7
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 17:37:04 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 53514ADD1D9
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 17:35:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 593547ABFBB
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 15:34:06 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 14EAA3BD710
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 15:35:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B2C682ECD30;
-	Tue, 17 Jun 2025 15:35:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6A842EBDC0;
+	Tue, 17 Jun 2025 15:35:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lQOQo7/q"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oWhoUqJ9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F7CF221F1F;
-	Tue, 17 Jun 2025 15:35:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 630FD221F1F;
+	Tue, 17 Jun 2025 15:35:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750174517; cv=none; b=j6+TIkP70JhhQ2flyokqcDhfgf3CL0dhVALuV26Y2ZJTodfUKuhRenrbAUtWLwSyfEsCIMWbrWl3NuMQlgB18ICvN5HzhlkRMRHB1jTDtpaYkyOD4UMpMbi+s2RLZNthcXNOHMObuLDn7N0GNYyjomV5XKJOWP2Mc9bKmejwX9o=
+	t=1750174529; cv=none; b=D/NTctEOi6GWUlPsGHM+zOAO7mwh1KNLGCFiylg2DugK5qobYNfYyAUWR0Xh6GdKtjBDDMsg5vLdzNbyW4djew5e9YzebUyWTO3ttweJGYx+VeesqN1zS8tL3qt3i0+1arhPMQ4oGhtGfBdEhAyG1dEUlnaK9490Z4dT5JFIRp8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750174517; c=relaxed/simple;
-	bh=vLEqN4+2oCpnoF9VSbiOOQK/ZErEAovFhTfvB420Ty0=;
+	s=arc-20240116; t=1750174529; c=relaxed/simple;
+	bh=n1ddIwVP5OQGyNOs/B4Ho+vXcNoEIRxeVdCOxRD6olc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=r5+MbfVYZDFgEYXNFgfSRBtKNRsnRNDSHxkOXqS1tbRjmiD1oFB5PGIyZe5+nmWC+e2zrx6l5IV5/ij9KJ6q+uF7+5zyxLyv+J9NiZFzzd3BNyXLdGoVOE4Y0JV2Nsr4kwP+uHBiOGGLwJ0cMm6nmzd28ELhh+ULZ2tsqUZ+eHw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lQOQo7/q; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D86CCC4CEE3;
-	Tue, 17 Jun 2025 15:35:16 +0000 (UTC)
+	 MIME-Version; b=Ah7d+lW2MLmoZOEjHahGszFVVAi7/EQw1SHP794IYePWIlH3dP9wnIIAZbrp7+A+GrKSgIjHdyYEL7ERPdegN/xzenbt4K85/mn33JKAl68hyNSjjBMtl756gMfVKVyU40RygRoFcZvIgtTlwpgcD/c+Vr0rhwp3ugHEQ+eWAcY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oWhoUqJ9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6E8FC4CEE3;
+	Tue, 17 Jun 2025 15:35:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750174517;
-	bh=vLEqN4+2oCpnoF9VSbiOOQK/ZErEAovFhTfvB420Ty0=;
+	s=korg; t=1750174529;
+	bh=n1ddIwVP5OQGyNOs/B4Ho+vXcNoEIRxeVdCOxRD6olc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lQOQo7/qnu8GaCjkb/uk9/OapkTCVP44UrfZAVbvEvvazBMV1oOio5HhTjwcmONBK
-	 JiRbV8o6c8Ujp4Up8itdTPCnZGanmo+xJuC8Z16pDz8bc878oAaeAZbE0SSVxbTFRz
-	 z5U4AzJWBnB/7wsvya3gLFjaUZMVUh8xp9oYji14=
+	b=oWhoUqJ9fvPkK15pW0gRfHdamJMLCJBuMj3duD+wlSdkioQIWMjvjXf7FVZ4sPl8i
+	 OYeCPT2E+LfBbirfj+wVsYqVJOXOjqyXxF2kufd1rGJU0azagRPSqTbograNz0lUQ/
+	 qTrDpiwTRGtZXq6525KN7M1mDWsFx4XhD6wujEZM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Qu Wenruo <wqu@suse.com>,
-	Filipe Manana <fdmanana@suse.com>,
-	David Sterba <dsterba@suse.com>,
+	kernel test robot <lkp@intel.com>,
+	Yongliang Gao <leonylgao@tencent.com>,
+	Neeraj Upadhyay <Neeraj.Upadhyay@amd.com>,
+	Boqun Feng <boqun.feng@gmail.com>,
+	Joel Fernandes <joelagnelf@nvidia.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 029/512] btrfs: fix invalid data space release when truncating block in NOCOW mode
-Date: Tue, 17 Jun 2025 17:19:55 +0200
-Message-ID: <20250617152420.738957220@linuxfoundation.org>
+Subject: [PATCH 6.12 030/512] rcu/cpu_stall_cputime: fix the hardirq count for x86 architecture
+Date: Tue, 17 Jun 2025 17:19:56 +0200
+Message-ID: <20250617152420.780669857@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
 References: <20250617152419.512865572@linuxfoundation.org>
@@ -67,54 +69,102 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Filipe Manana <fdmanana@suse.com>
+From: Yongliang Gao <leonylgao@tencent.com>
 
-[ Upstream commit d3914d6030aa6be2993dfc223d096ff93018c236 ]
+[ Upstream commit da6b85598af30e9fec34d82882d7e1e39f3da769 ]
 
-If when truncating a block we fail to reserve data space and then we
-proceed anyway because we can do a NOCOW write, if we later get an error
-when trying to get the folio from the inode's mapping, we end up releasing
-data space that we haven't reserved, screwing up the bytes_may_use counter
-from the data space_info, eventually resulting in an underflow when all
-other reservations done by other tasks are released, if any, or right away
-if there are no other reservations at the moment.
+When counting the number of hardirqs in the x86 architecture,
+it is essential to add arch_irq_stat_cpu to ensure accuracy.
 
-This is because when we get an error when trying to grab the block's folio
-we call btrfs_delalloc_release_space(), which releases metadata (which we
-have reserved) and data (which we haven't reserved).
+For example, a CPU loop within the rcu_read_lock function.
 
-Fix this by calling btrfs_delalloc_release_space() only if we did reserve
-data space, that is, if we aren't falling back to NOCOW, meaning the local
-variable @only_release_metadata has a false value, otherwise release only
-metadata by calling btrfs_delalloc_release_metadata().
+Before:
+[   70.910184] rcu: INFO: rcu_preempt self-detected stall on CPU
+[   70.910436] rcu:     3-....: (4999 ticks this GP) idle=***
+[   70.910711] rcu:              hardirqs   softirqs   csw/system
+[   70.910870] rcu:      number:        0        657            0
+[   70.911024] rcu:     cputime:        0          0         2498   ==> 2498(ms)
+[   70.911278] rcu:     (t=5001 jiffies g=3677 q=29 ncpus=8)
 
-Fixes: 6d4572a9d71d ("btrfs: allow btrfs_truncate_block() to fallback to nocow for data space reservation")
-Reviewed-by: Qu Wenruo <wqu@suse.com>
-Signed-off-by: Filipe Manana <fdmanana@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
+After:
+[   68.046132] rcu: INFO: rcu_preempt self-detected stall on CPU
+[   68.046354] rcu:     2-....: (4999 ticks this GP) idle=***
+[   68.046628] rcu:              hardirqs   softirqs   csw/system
+[   68.046793] rcu:      number:     2498        663            0
+[   68.046951] rcu:     cputime:        0          0         2496   ==> 2496(ms)
+[   68.047244] rcu:     (t=5000 jiffies g=3825 q=4 ncpus=8)
+
+Fixes: be42f00b73a0 ("rcu: Add RCU stall diagnosis information")
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202501090842.SfI6QPGS-lkp@intel.com/
+Signed-off-by: Yongliang Gao <leonylgao@tencent.com>
+Reviewed-by: Neeraj Upadhyay <Neeraj.Upadhyay@amd.com>
+Link: https://lore.kernel.org/r/20250216084109.3109837-1-leonylgao@gmail.com
+Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
+Signed-off-by: Joel Fernandes <joelagnelf@nvidia.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/inode.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ kernel/rcu/tree.c       | 10 +++++++---
+ kernel/rcu/tree.h       |  2 +-
+ kernel/rcu/tree_stall.h |  4 ++--
+ 3 files changed, 10 insertions(+), 6 deletions(-)
 
-diff --git a/fs/btrfs/inode.c b/fs/btrfs/inode.c
-index 9ce1270addb04..1ab5b0c1b9b76 100644
---- a/fs/btrfs/inode.c
-+++ b/fs/btrfs/inode.c
-@@ -4857,8 +4857,11 @@ int btrfs_truncate_block(struct btrfs_inode *inode, loff_t from, loff_t len,
- 	folio = __filemap_get_folio(mapping, index,
- 				    FGP_LOCK | FGP_ACCESSED | FGP_CREAT, mask);
- 	if (IS_ERR(folio)) {
--		btrfs_delalloc_release_space(inode, data_reserved, block_start,
--					     blocksize, true);
-+		if (only_release_metadata)
-+			btrfs_delalloc_release_metadata(inode, blocksize, true);
-+		else
-+			btrfs_delalloc_release_space(inode, data_reserved,
-+						     block_start, blocksize, true);
- 		btrfs_delalloc_release_extents(inode, blocksize);
- 		ret = -ENOMEM;
- 		goto out;
+diff --git a/kernel/rcu/tree.c b/kernel/rcu/tree.c
+index 4ed8632195217..cefa831c8cb32 100644
+--- a/kernel/rcu/tree.c
++++ b/kernel/rcu/tree.c
+@@ -802,6 +802,10 @@ static int rcu_watching_snap_save(struct rcu_data *rdp)
+ 	return 0;
+ }
+ 
++#ifndef arch_irq_stat_cpu
++#define arch_irq_stat_cpu(cpu) 0
++#endif
++
+ /*
+  * Returns positive if the specified CPU has passed through a quiescent state
+  * by virtue of being in or having passed through an dynticks idle state since
+@@ -937,9 +941,9 @@ static int rcu_watching_snap_recheck(struct rcu_data *rdp)
+ 			rsrp->cputime_irq     = kcpustat_field(kcsp, CPUTIME_IRQ, cpu);
+ 			rsrp->cputime_softirq = kcpustat_field(kcsp, CPUTIME_SOFTIRQ, cpu);
+ 			rsrp->cputime_system  = kcpustat_field(kcsp, CPUTIME_SYSTEM, cpu);
+-			rsrp->nr_hardirqs = kstat_cpu_irqs_sum(rdp->cpu);
+-			rsrp->nr_softirqs = kstat_cpu_softirqs_sum(rdp->cpu);
+-			rsrp->nr_csw = nr_context_switches_cpu(rdp->cpu);
++			rsrp->nr_hardirqs = kstat_cpu_irqs_sum(cpu) + arch_irq_stat_cpu(cpu);
++			rsrp->nr_softirqs = kstat_cpu_softirqs_sum(cpu);
++			rsrp->nr_csw = nr_context_switches_cpu(cpu);
+ 			rsrp->jiffies = jiffies;
+ 			rsrp->gp_seq = rdp->gp_seq;
+ 		}
+diff --git a/kernel/rcu/tree.h b/kernel/rcu/tree.h
+index a9a811d9d7a37..1bba2225e7448 100644
+--- a/kernel/rcu/tree.h
++++ b/kernel/rcu/tree.h
+@@ -168,7 +168,7 @@ struct rcu_snap_record {
+ 	u64		cputime_irq;	/* Accumulated cputime of hard irqs */
+ 	u64		cputime_softirq;/* Accumulated cputime of soft irqs */
+ 	u64		cputime_system; /* Accumulated cputime of kernel tasks */
+-	unsigned long	nr_hardirqs;	/* Accumulated number of hard irqs */
++	u64		nr_hardirqs;	/* Accumulated number of hard irqs */
+ 	unsigned int	nr_softirqs;	/* Accumulated number of soft irqs */
+ 	unsigned long long nr_csw;	/* Accumulated number of task switches */
+ 	unsigned long   jiffies;	/* Track jiffies value */
+diff --git a/kernel/rcu/tree_stall.h b/kernel/rcu/tree_stall.h
+index 4432db6d0b99b..4d524a2212a8d 100644
+--- a/kernel/rcu/tree_stall.h
++++ b/kernel/rcu/tree_stall.h
+@@ -457,8 +457,8 @@ static void print_cpu_stat_info(int cpu)
+ 	rsr.cputime_system  = kcpustat_field(kcsp, CPUTIME_SYSTEM, cpu);
+ 
+ 	pr_err("\t         hardirqs   softirqs   csw/system\n");
+-	pr_err("\t number: %8ld %10d %12lld\n",
+-		kstat_cpu_irqs_sum(cpu) - rsrp->nr_hardirqs,
++	pr_err("\t number: %8lld %10d %12lld\n",
++		kstat_cpu_irqs_sum(cpu) + arch_irq_stat_cpu(cpu) - rsrp->nr_hardirqs,
+ 		kstat_cpu_softirqs_sum(cpu) - rsrp->nr_softirqs,
+ 		nr_context_switches_cpu(cpu) - rsrp->nr_csw);
+ 	pr_err("\tcputime: %8lld %10lld %12lld   ==> %d(ms)\n",
 -- 
 2.39.5
 
