@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-153581-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-154447-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 47F57ADD53B
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:18:52 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 78C33ADDA2B
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 19:14:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5E9303BEBD9
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:09:54 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3B1845A4EA7
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:54:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A659B2DFF2B;
-	Tue, 17 Jun 2025 16:07:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E712A1DF271;
+	Tue, 17 Jun 2025 16:53:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="B3e7b04b"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SvSIJG/W"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 604E42DFF1B;
-	Tue, 17 Jun 2025 16:07:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A49C62FA622;
+	Tue, 17 Jun 2025 16:53:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750176424; cv=none; b=UI3W3E8uf2uW3a1tdNK1wtzJI3wZee5pivf0w7Lbi9YkWOvkkpHz26rOI3aME6LSZlgsTjdBLkkAl+5BGSxQp25DIReYZQB2W203yKTQC71MQJFHnn9uXJXEihDRvA8Y+oXX/KKiqVqCKDF3cl/3WvKgccCiUSPT1LyRudovDFc=
+	t=1750179215; cv=none; b=VmaJEHMbW1qEjEFMcT7VYnAwS7nSdnHzoFBsqBCTqCPV3NcP4LNl90YZsug0OAUVozszzo57KDdGVSREenPK5PYrTXmOPisFcI2qxPhcm1relSFmqJmeZkZrhI/YigNtr9iViZ+JZT7ZOWmGg7WdnmIutuWN7RoZ/Rbq4fATMzA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750176424; c=relaxed/simple;
-	bh=WWEqq9yoUgZxIVYTQBvTiCuvK7FhrG1r/446Uqniv70=;
+	s=arc-20240116; t=1750179215; c=relaxed/simple;
+	bh=PGCpX6G401g8BpxcJW6+6sm7Ci5ws469GZ+4owbYAyU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=d+RzXzlao64DFfv9Lo+bQm4KHvg9Q/oP7OHsr+7VIMXeDmF3BKABKipO2pRmGvg6Dpc8FZ6xsEJccAfyKCUFpTGsHVaTHyIM0hD38dnOpseMv9xU7OTPsx7WaqYoYnihxJkNfHgTSH4QZ/iDiMVBTbE7iiVHEV4vePXXtKHz7xs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=B3e7b04b; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD8A4C4CEE7;
-	Tue, 17 Jun 2025 16:07:03 +0000 (UTC)
+	 MIME-Version; b=BWCij0jV7wQP3PmDayuEKzlLc4aqTxhddc9bX+D3RRhP1ADRaXR8aUlWh4d17qrkaV9V4U+XgQGQzQVQee0882UVFCLtwVhxOTqgwo61u2PzSQiUhytjkYHIJU1oJzpygo8XuPiMEBKIzB/+nJt3iSr/5TvvmfEGZNywajvmK0M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SvSIJG/W; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B4D6C4CEF0;
+	Tue, 17 Jun 2025 16:53:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750176424;
-	bh=WWEqq9yoUgZxIVYTQBvTiCuvK7FhrG1r/446Uqniv70=;
+	s=korg; t=1750179215;
+	bh=PGCpX6G401g8BpxcJW6+6sm7Ci5ws469GZ+4owbYAyU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=B3e7b04bHvGsRB2HO47U6JST0Ybrc4rIxljcYb2S/QoIpxxiVACTIckarq6QFFKXK
-	 hV8+L/b6/ipZpVQArzvrYm+qaf5G+H4VE72Tk9NWvNnmmvwp7T4YwaXpzvOK0xcO8O
-	 jxmJdw79rVW9fWv97KF53qPAJ1t/5/lalEOhk9sc=
+	b=SvSIJG/Woa+oPiASYjG3rPN8dm1SWbTNj8u2rIxamjdgjHtm64plv7dektD5x2Xu8
+	 MjJKVAJCX+ngDs9O+U6qCsGkrRUfWj/qIx76TvHxVpZmMyCEuEumySdivXXdujqVcg
+	 H01qYDHVn7qtfF2scDvRbYVmMWLh80vDHwgb4RzI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christian Brauner <brauner@kernel.org>,
-	"Orlando, Noah" <Noah.Orlando@deshaw.com>,
-	Al Viro <viro@zeniv.linux.org.uk>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Lizhi Hou <lizhi.hou@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 276/356] do_change_type(): refuse to operate on unmounted/not ours mounts
-Date: Tue, 17 Jun 2025 17:26:31 +0200
-Message-ID: <20250617152349.302755393@linuxfoundation.org>
+Subject: [PATCH 6.15 684/780] accel/amdxdna: Fix incorrect PSP firmware size
+Date: Tue, 17 Jun 2025 17:26:32 +0200
+Message-ID: <20250617152519.335584999@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152338.212798615@linuxfoundation.org>
-References: <20250617152338.212798615@linuxfoundation.org>
+In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
+References: <20250617152451.485330293@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,42 +62,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Al Viro <viro@zeniv.linux.org.uk>
+From: Lizhi Hou <lizhi.hou@amd.com>
 
-[ Upstream commit 12f147ddd6de7382dad54812e65f3f08d05809fc ]
+[ Upstream commit 779a0c9e06a91d0007f2a4f4071e3b9a8102b15e ]
 
-Ensure that propagation settings can only be changed for mounts located
-in the caller's mount namespace. This change aligns permission checking
-with the rest of mount(2).
+The incorrect PSP firmware size is used for initializing. It may
+cause error for newer version firmware.
 
-Reviewed-by: Christian Brauner <brauner@kernel.org>
-Fixes: 07b20889e305 ("beginning of the shared-subtree proper")
-Reported-by: "Orlando, Noah" <Noah.Orlando@deshaw.com>
-Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
+Fixes: 8c9ff1b181ba ("accel/amdxdna: Add a new driver for AMD AI Engine")
+Acked-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Lizhi Hou <lizhi.hou@amd.com>
+Link: https://lore.kernel.org/r/20250604143217.1386272-1-lizhi.hou@amd.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/namespace.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/accel/amdxdna/aie2_psp.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/fs/namespace.c b/fs/namespace.c
-index 4d8afd0e1eb8f..eab9185e22858 100644
---- a/fs/namespace.c
-+++ b/fs/namespace.c
-@@ -2557,6 +2557,10 @@ static int do_change_type(struct path *path, int ms_flags)
- 		return -EINVAL;
+diff --git a/drivers/accel/amdxdna/aie2_psp.c b/drivers/accel/amdxdna/aie2_psp.c
+index dc3a072ce3b6d..f28a060a88109 100644
+--- a/drivers/accel/amdxdna/aie2_psp.c
++++ b/drivers/accel/amdxdna/aie2_psp.c
+@@ -126,8 +126,8 @@ struct psp_device *aie2m_psp_create(struct drm_device *ddev, struct psp_config *
+ 	psp->ddev = ddev;
+ 	memcpy(psp->psp_regs, conf->psp_regs, sizeof(psp->psp_regs));
  
- 	namespace_lock();
-+	if (!check_mnt(mnt)) {
-+		err = -EINVAL;
-+		goto out_unlock;
-+	}
- 	if (type == MS_SHARED) {
- 		err = invent_group_ids(mnt, recurse);
- 		if (err)
+-	psp->fw_buf_sz = ALIGN(conf->fw_size, PSP_FW_ALIGN) + PSP_FW_ALIGN;
+-	psp->fw_buffer = drmm_kmalloc(ddev, psp->fw_buf_sz, GFP_KERNEL);
++	psp->fw_buf_sz = ALIGN(conf->fw_size, PSP_FW_ALIGN);
++	psp->fw_buffer = drmm_kmalloc(ddev, psp->fw_buf_sz + PSP_FW_ALIGN, GFP_KERNEL);
+ 	if (!psp->fw_buffer) {
+ 		drm_err(ddev, "no memory for fw buffer");
+ 		return NULL;
 -- 
 2.39.5
 
