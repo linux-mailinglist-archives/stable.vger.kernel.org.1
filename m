@@ -1,128 +1,205 @@
-Return-Path: <stable+bounces-152881-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-152882-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4349BADD00D
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:38:01 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E42C1ADD02D
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:42:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 664101889DE8
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 14:33:59 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0A69A1896CE0
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 14:40:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 031B41F30A2;
-	Tue, 17 Jun 2025 14:33:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 618D820A5F2;
+	Tue, 17 Jun 2025 14:40:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel-dk.20230601.gappssmtp.com header.i=@kernel-dk.20230601.gappssmtp.com header.b="aVyKvt/E"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="dr1uiFbg"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-io1-f47.google.com (mail-io1-f47.google.com [209.85.166.47])
+Received: from mail-qt1-f177.google.com (mail-qt1-f177.google.com [209.85.160.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 710991F4184
-	for <stable@vger.kernel.org>; Tue, 17 Jun 2025 14:33:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71D6F201004
+	for <stable@vger.kernel.org>; Tue, 17 Jun 2025 14:40:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750170820; cv=none; b=CAGnx2sdbzsZyCzEgzC659NMYwzBvHZbksF9Fr3At6t0MQWSfEwbHp4Sy6jj+Jd7TDRTWo/D7m62JaJg/65Gwmgg/WH5oyaT6DzfErQugrT3UyYT2uxvsrZhxsdNie6dwUQdkWGejAihq6oihIM2PWfF/H6M8c+bqXsOCknqQUU=
+	t=1750171216; cv=none; b=tuRcQEFbcTz0i3qnAhRDrQKq6q1rjhytgxgNScg7eLR3KKxw87ckOCz5ryQvd5ICWH4pcR5I12KW6V8xFUMvukcBATKxiPEhsPg2MqsWtuW/DOM8dYxg5XearHF8MMPr1yW0CTmSsGNZYOcSkelVLMRBs/CMpeRFUN5QKNJYXsE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750170820; c=relaxed/simple;
-	bh=X86HvNn1Etq4nfLYP7kZKqHceHvSsBHdbCb2iw1RucI=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=kSH80T/33nZodzkzcbdm215TewrxI5tACs+KFuaRx0V3IfAJ/Jx5w6Z/ACilLx8nr3MtWyLeljg8lv59i/HmI5xCCviEQvBfr12Fxh4adJxxI1RPrlFtyTxSVH8SK63szA8OSZ0Gvfut5SUIwyl6P7HP1a6fC/kZjCcoUEEx7Ns=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.dk; spf=pass smtp.mailfrom=kernel.dk; dkim=pass (2048-bit key) header.d=kernel-dk.20230601.gappssmtp.com header.i=@kernel-dk.20230601.gappssmtp.com header.b=aVyKvt/E; arc=none smtp.client-ip=209.85.166.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.dk
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kernel.dk
-Received: by mail-io1-f47.google.com with SMTP id ca18e2360f4ac-86efcef9194so193231239f.0
-        for <stable@vger.kernel.org>; Tue, 17 Jun 2025 07:33:38 -0700 (PDT)
+	s=arc-20240116; t=1750171216; c=relaxed/simple;
+	bh=cUXZQqG7DzX0GtxXItOumFyrJm5/2rKRGtM8x5Npnng=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=ebUbb2/ATZasByYRuz3RRczlcQxWCVB03LsV+ZprFmNA0rH/t5nLcrnGMDAsT/Ucl+2Zp+fsXry82sHk20dtq8S+3oagNqe4Z5NHl8fU98nmI0tnuJoISVcGnzx5cp7LmQUN4wCnEAe5LW3DZ2WKyN6/X6h+uRf5fkU94f35VGI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=dr1uiFbg; arc=none smtp.client-ip=209.85.160.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Received: by mail-qt1-f177.google.com with SMTP id d75a77b69052e-4a43d2d5569so72445341cf.0
+        for <stable@vger.kernel.org>; Tue, 17 Jun 2025 07:40:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernel-dk.20230601.gappssmtp.com; s=20230601; t=1750170817; x=1750775617; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=BCezzKmxg1dgls52hhf0FjWDJWNalyuVnEBl6kLUIsM=;
-        b=aVyKvt/ELE+/HQnZ+OOhR+RmL4uFjI104LoAu5i1nFnyxjiZBx6i+qkai2+PQnoajp
-         jooLHOOGvbpQO72qVy4TnU/TrWIJiIOLcr5hu6uKkiUb2uPiBXxQxPNgb85FhIIe6BL+
-         l9CUb8Fbd0K4ZTZ4FQpel31vZC+7+bosMcX9ed6omi3TUsaYgyaJgAEKeAMhXDHxrhc3
-         bo1ekf4qo1E8htkESzTPj7p+nIOKetamHn765ixsVjVwPm1TGJmXjPM5s4uclKURkwiv
-         6cAeoKKR3p4xf52aSuRrb4vGb0l3yaSypwlhAvGbZFiULKXextI3pxO5sir4zZUz4bij
-         qecQ==
+        d=google.com; s=20230601; t=1750171213; x=1750776013; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=C5K9o5kJSAp6iDgSUrLzT/cKuEe6lvhFFGHzOOhMiRY=;
+        b=dr1uiFbgCPoPUvJBoM2UMSIEVFYVSHDq+aO1Uw6kTuNV4WfEoVANnpibzj/OnB4xjR
+         InB0cjvcPXse6kIna66sdEpuhA4A6g8EWUSJsYu0KuzVy53LnLmnbLNZbtt+OEF57Zna
+         h7njyDVqrNt0ACEetbX6v+0j3AIClsmjbmhfFiLIIfeykGNBjOuQp7Ct3ZlEA6Vs87vz
+         gsNnncvFHKCOfsWCipRxyKQVPWOQs7PwgIZwjagDOVDc9eJx/KYRCrofiFR3Hrn9RpTU
+         lbv0zO5kKbq/1HtTvIyK2UIz3/ohDZtHerX+ZwnOL9pieAW5QdtnCdWMzleD6iUeu+n1
+         NzDA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1750170817; x=1750775617;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=BCezzKmxg1dgls52hhf0FjWDJWNalyuVnEBl6kLUIsM=;
-        b=qZd+qn+xs6VCRRk1AsexHwwSPD3Uh59lDnL8jY44/23MGQ3vd2sdetGhmjtGl9UJ38
-         qA1TFPvaWgEq7sRUrDilkjGC0WFPWblCTkxJUm24nU+3l2r8FPdyKs7v6WoVQvC+7HCc
-         aWKyRIb5usXwbhPcQ8ZT9iawWqlkIVQHxpmqLFI1e4u9l+zw880mzATDT/Utl849B6+a
-         A8fqKlcjKH6Bg0hJnMmR/EoZtFn7VToLCrCLnJsvuoCKZoyp641LxxtVrML8qK+A3NHP
-         Ykn7O8M3LM8eDz4RE7eEO/PMZrtUNXVwHcudD6siXxNlVy8UUpoK/zKNt4O2OaP9PsKv
-         lyXA==
-X-Gm-Message-State: AOJu0Yzb5nLbcYzFbynx8yzSm0H42RLjdK1XC+JXXzmLEDVDYYCx+Cjy
-	q5PUTp3cNxX0llqjpODYndi0z4zXqkHBeyNK5g7PWTv97pDWr6m5t7Au9QOXoja6sxGwLFP9iev
-	Lts4U
-X-Gm-Gg: ASbGncu8ADgh+g3hvgIfT9ngmjcQiuHFojoPlamd/JSXFP/9K/ybIfEeIKbDfkvRix2
-	80l+b2ipPXFPvqQKBKVwkEC8axzTUk2oOc+HxCmSKEkNwoBaRzaNwqMlDjT0kHEsN1TB8V5XN5i
-	fw2tJJ/yRL3no548e43byXbkPh8EHBv99iY/Yw1Q3FBOnIk5fDkmyF5US904pgBvMCA6+EhYN3B
-	3FE2P+HPpB4stOtJItd4p71JrKKkLJchcTV7llFuDP2nJr4yqEL72RsP2Ipnw83AmJOMXnLuYGJ
-	SZsHI1cfDifgCjUBAiFvym4cExTIef6aNm4pAqU40ux9Yan9c5HGoH3EnQ==
-X-Google-Smtp-Source: AGHT+IElwZBiNQWjAWiOaLDmFDWjeem/vEkkaIJRBl2vN7cHOMMAs4NEHzDFTPVIStswodG8NWhemg==
-X-Received: by 2002:a05:6602:608a:b0:873:f23:a39 with SMTP id ca18e2360f4ac-875dec1b0c0mr1567734539f.0.1750170817403;
-        Tue, 17 Jun 2025 07:33:37 -0700 (PDT)
-Received: from [192.168.1.116] ([96.43.243.2])
-        by smtp.gmail.com with ESMTPSA id ca18e2360f4ac-87607473814sm16490539f.34.2025.06.17.07.33.36
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 17 Jun 2025 07:33:36 -0700 (PDT)
-Message-ID: <a9c5a443-b2de-498b-a8ea-d5a59d41a480@kernel.dk>
-Date: Tue, 17 Jun 2025 08:33:36 -0600
+        d=1e100.net; s=20230601; t=1750171213; x=1750776013;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=C5K9o5kJSAp6iDgSUrLzT/cKuEe6lvhFFGHzOOhMiRY=;
+        b=Zo6jjaG8DDENs9yhk+1l2cpLJTaDcYagDe2gl97okV5l1qIEfTLBcnNcJQikGTnmFL
+         wQOkTbNW619rRFku/fl8pgKFZi4VBm5N+sDQECy8rmOvgSuDvYTGLDwAwwDZSSxD60cl
+         P4tXQhi5KA2EYbH1BvqSqHAt2n7/ojAJiZvhrZg7Q1wu4X0P5znZ9WGVJ5ZjKX/Y3I89
+         E7ofY9L651kZFuLURvlHNM/DtFO4Q/GQD+dVUrsD8YgHsc43HHCS32MIy/t6CRQJUl4q
+         UPrvscGoqLclp3Vr8XADpEuhUa2TDQbyNOFfYx9pXf58AXcGtX9H8FYN9CuMbtVjsb6/
+         nuRA==
+X-Forwarded-Encrypted: i=1; AJvYcCWQ2uLNKBmxybL3Nr5dgSniN/+ur109ztYP6omcqNGx7LttLLyc1zGT72fK8+dMB7ZKeHFn+iU=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwHt/0bmUjvuWEZ/SSgpgycmd/yfJoarUYCKSgBFlSCbuEg03H9
+	qIEmHmOnSdWkzCdiMSB6N69Abobv6xEjaZg8M7016s6eRsH2Xi7iH5WSHejx6uvliY+aHMBf162
+	hdt6w3FCaeHYLu4quW02gwQadSPfZT9hIWOfXojc8
+X-Gm-Gg: ASbGncshCg7J3OEhy+nvx5K30tBjgGSthVDEt8lh4BTPbxTRBRTQvXS+EJpYL+R3Nn3
+	bFWZPXRr4qt6ewkQVcBhPDgs8FvLxmorV8bcg0sgqUue2cXHC/6BXPKDgelFTcEn9bNPKZo4C6t
+	cIrSUxBBmg6La+0INfNfsYU7q2JmlFUExYz6UaYR2x3nzZsq5N2cMBJQ==
+X-Google-Smtp-Source: AGHT+IFHv8Z3oFVpowvUAXafkTH6WF9Yixxu8ZXDLBLf/hOMBEUUPB1ZWNHXBla9hqWIPyalMkb3f6PNupNnGc++V9U=
+X-Received: by 2002:ac8:57c1:0:b0:4a6:f81a:443f with SMTP id
+ d75a77b69052e-4a73c5339ccmr197302721cf.12.1750171212881; Tue, 17 Jun 2025
+ 07:40:12 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: Revert of a commit in 6.6-stable
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable <stable@vger.kernel.org>
-References: <906ba919-32e6-4534-bbad-2cd18e1098ca@kernel.dk>
- <313f2335-626f-4eea-8502-d5c3773db35a@kernel.dk>
- <2025061702-print-cohesive-3a1b@gregkh>
-Content-Language: en-US
-From: Jens Axboe <axboe@kernel.dk>
-In-Reply-To: <2025061702-print-cohesive-3a1b@gregkh>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+References: <20250522224433.3219290-1-sashal@kernel.org> <CANn89i+jADLAqpg-gOyHFZiFEb0Pks46h=9d8-FiPa1_HEv3YA@mail.gmail.com>
+ <aEspV8Ttk7uBM4Gx@lappy> <175e6075-a930-196d-37ce-7f2815141d07@kernel.org> <PAXPR07MB7984096843D96583972BF35BA376A@PAXPR07MB7984.eurprd07.prod.outlook.com>
+In-Reply-To: <PAXPR07MB7984096843D96583972BF35BA376A@PAXPR07MB7984.eurprd07.prod.outlook.com>
+From: Eric Dumazet <edumazet@google.com>
+Date: Tue, 17 Jun 2025 07:40:01 -0700
+X-Gm-Features: AX0GCFufhnAB1BpO7_CQEVHFzQus2hBm9r-C6pgCcOSckJBt5Dx2C2be1-BCkII
+Message-ID: <CANn89iJ1Fwg8BnYRnnevFQnZia4R4hYUGtKSrwcL2-XjKFLWBg@mail.gmail.com>
+Subject: Re: Patch "tcp: reorganize tcp_in_ack_event() and tcp_count_delivered()"
+ has been added to the 6.6-stable tree
+To: "Chia-Yu Chang (Nokia)" <chia-yu.chang@nokia-bell-labs.com>
+Cc: =?UTF-8?Q?Ilpo_J=C3=A4rvinen?= <ij@kernel.org>, 
+	Sasha Levin <sashal@kernel.org>, "stable@vger.kernel.org" <stable@vger.kernel.org>, 
+	"stable-commits@vger.kernel.org" <stable-commits@vger.kernel.org>, Neal Cardwell <ncardwell@google.com>, 
+	"David S. Miller" <davem@davemloft.net>, David Ahern <dsahern@kernel.org>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+	Kuniyuki Iwashima <kuniyu@google.com>, Willem de Bruijn <willemb@google.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 6/17/25 7:43 AM, Greg Kroah-Hartman wrote:
-> On Thu, Jun 12, 2025 at 11:49:46AM -0600, Jens Axboe wrote:
->> On 6/12/25 11:38 AM, Jens Axboe wrote:
->>> Hi Greg and crew,
->>>
->>> Can you revert:
->>>
->>> commit 746e7d285dcb96caa1845fbbb62b14bf4010cdfb
->>> Author: Jens Axboe <axboe@kernel.dk>
->>> Date:   Wed May 7 08:07:09 2025 -0600
->>>
->>>     io_uring: ensure deferred completions are posted for multishot
->>>
->>> in 6.6-stable? There's some missing dependencies that makes this not
->>> work right, I'll bring it back in a series instead.
->>
->> Oh, and revert it in 6.1-stable as well. Here's the 6.1-stable
->> commit:
->>
->> commit b82c386898f7b00cb49abe3fbd622017aaa61230
->> Author: Jens Axboe <axboe@kernel.dk>
->> Date:   Wed May 7 08:07:09 2025 -0600
->>
->>     io_uring: ensure deferred completions are posted for multishot
-> 
-> Both now reverted, thanks,
+On Sat, Jun 14, 2025 at 6:55=E2=80=AFAM Chia-Yu Chang (Nokia)
+<chia-yu.chang@nokia-bell-labs.com> wrote:
+>
+> > -----Original Message-----
+> > From: Ilpo J=C3=A4rvinen <ij@kernel.org>
+> > Sent: Thursday, June 12, 2025 11:17 PM
+> > To: Sasha Levin <sashal@kernel.org>; Chia-Yu Chang (Nokia) <chia-yu.cha=
+ng@nokia-bell-labs.com>
+> > Cc: Eric Dumazet <edumazet@google.com>; stable@vger.kernel.org; stable-=
+commits@vger.kernel.org; Neal Cardwell <ncardwell@google.com>; David S. Mil=
+ler <davem@davemloft.net>; David Ahern <dsahern@kernel.org>; Jakub Kicinski=
+ <kuba@kernel.org>; Paolo Abeni <pabeni@redhat.com>; Simon Horman <horms@ke=
+rnel.org>; Kuniyuki Iwashima <kuniyu@google.com>; Willem de Bruijn <willemb=
+@google.com>
+> > Subject: Re: Patch "tcp: reorganize tcp_in_ack_event() and tcp_count_de=
+livered()" has been added to the 6.6-stable tree
+> >
+> >
+> > CAUTION: This is an external email. Please be very careful when clickin=
+g links or opening attachments. See the URL nok.it/ext for additional infor=
+mation.
+> >
+> >
+> >
+> > + Chia-Yu
+> >
+> >
+> > On Thu, 12 Jun 2025, Sasha Levin wrote:
+> > > On Thu, Jun 12, 2025 at 01:40:57AM -0700, Eric Dumazet wrote:
+> > > > On Thu, May 22, 2025 at 3:44=E2=80=AFPM Sasha Levin <sashal@kernel.=
+org> wrote:
+> > > > >
+> > > > > This is a note to let you know that I've just added the patch
+> > > > > titled
+> > > > >
+> > > > >     tcp: reorganize tcp_in_ack_event() and tcp_count_delivered()
+> > > > >
+> > > > > to the 6.6-stable tree which can be found at:
+> > > > >
+> > > > > https://eur03.safelinks.protection.outlook.com/?url=3Dhttp%3A%2F%=
+2Fw
+> > > > > ww.kernel.org%2Fgit%2F%3Fp%3Dlinux%2Fkernel%2Fgit%2Fstable%2Fstab=
+l
+> > > > > e-queue.git%3Ba%3Dsummary&data=3D05%7C02%7Cchia-yu.chang%40nokia-=
+bel
+> > > > > l-labs.com%7C449db2278c004aa84d7b08dda9f68c8c%7C5d4717519675428d9=
+1
+> > > > > 7b70f44f9630b0%7C0%7C0%7C638853598557368335%7CUnknown%7CTWFpbGZsb=
+3
+> > > > > d8eyJFbXB0eU1hcGkiOnRydWUsIlYiOiIwLjAuMDAwMCIsIlAiOiJXaW4zMiIsIkF=
+O
+> > > > > IjoiTWFpbCIsIldUIjoyfQ%3D%3D%7C0%7C%7C%7C&sdata=3DZ6AfId4r6Ys1V4s=
+Gov
+> > > > > 8bdOct72AAUdfVgFTo7NMOibU%3D&reserved=3D0
+> > > > >
+> > > > > The filename of the patch is:
+> > > > >      tcp-reorganize-tcp_in_ack_event-and-tcp_count_delive.patch
+> > > > > and it can be found in the queue-6.6 subdirectory.
+> > > > >
+> > > > > If you, or anyone else, feels it should not be added to the stabl=
+e
+> > > > > tree, please let <stable@vger.kernel.org> know about it.
+> > > > >
+> > > > >
+> > > >
+> > > > May I ask why this patch was backported to stable versions  ?
+> >
+> > As you see Eric, you got no answer to a very direct question.
+> >
+> > I've long since stopped caring unless a change really looks dangerous (=
+this one didn't) what they take into stable, especially since they tend to =
+ignore on-what-grounds questions.
+> >
+> > > > This is causing a packetdrill test to fail.
+> > >
+> > > Is this an issue upstream as well? Should we just drop it from stable=
+?
+> >
+> > It's long since I've done anything with packetdrill so it will take som=
+e time for me to test. Maybe Chia-Yu can check this faster (but I assume it=
+'s also problem in mainline as this is reported by Eric).
+> >
+> > --
+> >  i.
+>
+> Hi Eric,
+>
+> I've checked the failure case and could reproduce it using the latest pac=
+ketdrill.
+>
+> The root cause is because delaying the tcp_in_ack_event() call does have =
+an impact on update_alpha(), which uses the values of the latest delivered =
+and delivered_ce updated by tcp_clean_rtx_queue().
+> Therefore, tcp_plb_update_state() will use these values to update the sta=
+te for TCP PLB.
+> While before this patch, update_alpha() is called before tcp_clean_rtx_qu=
+eue(), and thus delivered and delivered_ce are not updated yet.
+>
+> This is also in upstream as well.
+> So, one question is why tcp_plb_update_state() uses non-latest delivered =
+and delivered_ce before?
 
-Thanks!
+This was the prior behavior, and having an LTS change breaking
+whatever expectations the code had was unexpected.
 
--- 
-Jens Axboe
+The test apparently had a comment "// Flowlabel will change next
+round", instead of trying to fix the off-by-one trigger.
 
+Your patch was fine, I have no idea why it landed in stable trees.
 
