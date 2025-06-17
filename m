@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-154150-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153440-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 70CC5ADD80E
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:51:42 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3E7F4ADD4BB
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:13:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4F58A407541
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:43:11 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 312B81947CA7
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:04:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9E802ED86C;
-	Tue, 17 Jun 2025 16:37:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6F2C2EA177;
+	Tue, 17 Jun 2025 15:59:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FIdEPPL/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bIPrMOzx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 770F9235071;
-	Tue, 17 Jun 2025 16:37:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6360B2DFF0B;
+	Tue, 17 Jun 2025 15:59:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750178262; cv=none; b=aQNTZzynwfAETR/bia6OTqER8ZHyQ0QmR3ubKa22oRmzyeEQc83zb2DZcGTdOONQWIlAX7U9Cj/Ao/EYZ65hZjLirKD9WgtngaYQBQmgra0vpklpSnXVxqPEu74Nqt+A55JHZG5v+w/KOb97cLvVt81FXj44eu40x5QHCdnW5vY=
+	t=1750175969; cv=none; b=bQ2+WOnbDL5MqBc5obeC7nwIvbClZBB/sdsOfp0CyikZmp60RAhkSDNHLW3x7eClPzhSfzj5SPWzEyHjjoePCxoGdvU5BNLCQiWVKwnhzFBupahrQAt5IFOFXLhYD9qaeF2JjohaVWJGZxP6nIF4qkdj26eFZ6dfr+CQohxq6jI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750178262; c=relaxed/simple;
-	bh=f7KRrr692difgai4LJzx8nFLMNyG9ANfAfTtodQadyM=;
+	s=arc-20240116; t=1750175969; c=relaxed/simple;
+	bh=i0StvP6HcX48wFE0JyvgLRRAzuw3cQBOm1553WQhZtE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=skvoPmaou4hCsWj26OhyUbYdL61RJZav8Cfmp5ajSVnoksjA4tNum3ZzvxSPOYc9IlvHJBUp+CcOgBzsd/0BpCgFc3jSnECE0R+D508EuawjODrYNhl1ai299k9ZhnxYmXzEVVB6R0dBEba21nP+91xmfq5cOYhdZ9GIEoLffzs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FIdEPPL/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9506C4CEE3;
-	Tue, 17 Jun 2025 16:37:41 +0000 (UTC)
+	 MIME-Version; b=K7QjvJRHFXDWqeM8S1HiQOGjav4RU35Xc7l3j6IW8MYtO3JKzMCbq4xu2EQZ7P+P8Uj64Ietczsz92uxPKemA8nhbeaUYHgax39grOHgb+0omMKWZsLefUP6yjgY2w83BajggF0c0nro1cKbN4OfwuHsZneOsj2wwGSm5qXIJ8Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bIPrMOzx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C728DC4CEE3;
+	Tue, 17 Jun 2025 15:59:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750178262;
-	bh=f7KRrr692difgai4LJzx8nFLMNyG9ANfAfTtodQadyM=;
+	s=korg; t=1750175969;
+	bh=i0StvP6HcX48wFE0JyvgLRRAzuw3cQBOm1553WQhZtE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FIdEPPL/pmn3Dq8kAWe5y4TjxKyfIwrMmXwbJ716v3q/wYqZtS0jDISy200MBTCsW
-	 r2MMgIKI2TDfDTV6WqxlU1iX+e7o0LJ3jMC1gEm/Hbppdq1H4M93V2ilncR3uMm6Ry
-	 hFxv1SJRYEgoWRJjODQJfgnZpd5OZo5fw3mC26Bs=
+	b=bIPrMOzxLyhZU3oMvEKkdp07K03hXS1xZRre5GTFh/dXR3XuVRGeICDQhtZq6nJUI
+	 2fN5AOjUjdt4Bz+7T5JrMjtVe+FF5bxOlH/emtWjv9mCk2EP6QuLMEd9AkSUO99AyZ
+	 65meagmCq4nEi+bMDgwWoJRU8NiQDvhKUD/F6TJE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mikhail Arkhipov <m.arhipov@rosa.ru>,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
+	Longfang Liu <liulongfang@huawei.com>,
+	Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>,
+	Alex Williamson <alex.williamson@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 435/780] mtd: nand: ecc-mxic: Fix use of uninitialized variable ret
+Subject: [PATCH 6.12 177/512] hisi_acc_vfio_pci: add eq and aeq interruption restore
 Date: Tue, 17 Jun 2025 17:22:23 +0200
-Message-ID: <20250617152509.181017514@linuxfoundation.org>
+Message-ID: <20250617152426.814678000@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
-References: <20250617152451.485330293@linuxfoundation.org>
+In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
+References: <20250617152419.512865572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,49 +63,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mikhail Arkhipov <m.arhipov@rosa.ru>
+From: Longfang Liu <liulongfang@huawei.com>
 
-[ Upstream commit d95846350aac72303036a70c4cdc69ae314aa26d ]
+[ Upstream commit 3495cec0787721ba7a9d5c19d0bbb66d182de584 ]
 
-If ctx->steps is zero, the loop processing ECC steps is skipped,
-and the variable ret remains uninitialized. It is later checked
-and returned, which leads to undefined behavior and may cause
-unpredictable results in user space or kernel crashes.
+In order to ensure that the task packets of the accelerator
+device are not lost during the migration process, it is necessary
+to send an EQ and AEQ command to the device after the live migration
+is completed and to update the completion position of the task queue.
 
-This scenario can be triggered in edge cases such as misconfigured
-geometry, ECC engine misuse, or if ctx->steps is not validated
-after initialization.
+Let the device recheck the completed tasks data and if there are
+uncollected packets, device resend a task completion interrupt
+to the software.
 
-Initialize ret to zero before the loop to ensure correct and safe
-behavior regardless of the ctx->steps value.
-
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
-
-Fixes: 48e6633a9fa2 ("mtd: nand: mxic-ecc: Add Macronix external ECC engine support")
-Signed-off-by: Mikhail Arkhipov <m.arhipov@rosa.ru>
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Fixes: b0eed085903e ("hisi_acc_vfio_pci: Add support for VFIO live migration")
+Signed-off-by: Longfang Liu <liulongfang@huawei.com>
+Reviewed-by: Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>
+Link: https://lore.kernel.org/r/20250510081155.55840-3-liulongfang@huawei.com
+Signed-off-by: Alex Williamson <alex.williamson@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mtd/nand/ecc-mxic.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/vfio/pci/hisilicon/hisi_acc_vfio_pci.c | 16 ++++++++++++++++
+ 1 file changed, 16 insertions(+)
 
-diff --git a/drivers/mtd/nand/ecc-mxic.c b/drivers/mtd/nand/ecc-mxic.c
-index 56b56f726b998..1bf9a5a64b87a 100644
---- a/drivers/mtd/nand/ecc-mxic.c
-+++ b/drivers/mtd/nand/ecc-mxic.c
-@@ -614,7 +614,7 @@ static int mxic_ecc_finish_io_req_external(struct nand_device *nand,
- {
- 	struct mxic_ecc_engine *mxic = nand_to_mxic(nand);
- 	struct mxic_ecc_ctx *ctx = nand_to_ecc_ctx(nand);
--	int nents, step, ret;
-+	int nents, step, ret = 0;
+diff --git a/drivers/vfio/pci/hisilicon/hisi_acc_vfio_pci.c b/drivers/vfio/pci/hisilicon/hisi_acc_vfio_pci.c
+index ec38977336778..81e9a4d362fbc 100644
+--- a/drivers/vfio/pci/hisilicon/hisi_acc_vfio_pci.c
++++ b/drivers/vfio/pci/hisilicon/hisi_acc_vfio_pci.c
+@@ -470,6 +470,19 @@ static int vf_qm_get_match_data(struct hisi_acc_vf_core_device *hisi_acc_vdev,
+ 	return 0;
+ }
  
- 	if (req->mode == MTD_OPS_RAW)
- 		return 0;
++static void vf_qm_xeqc_save(struct hisi_qm *qm,
++			    struct hisi_acc_vf_migration_file *migf)
++{
++	struct acc_vf_data *vf_data = &migf->vf_data;
++	u16 eq_head, aeq_head;
++
++	eq_head = vf_data->qm_eqc_dw[0] & 0xFFFF;
++	qm_db(qm, 0, QM_DOORBELL_CMD_EQ, eq_head, 0);
++
++	aeq_head = vf_data->qm_aeqc_dw[0] & 0xFFFF;
++	qm_db(qm, 0, QM_DOORBELL_CMD_AEQ, aeq_head, 0);
++}
++
+ static int vf_qm_load_data(struct hisi_acc_vf_core_device *hisi_acc_vdev,
+ 			   struct hisi_acc_vf_migration_file *migf)
+ {
+@@ -566,6 +579,9 @@ static int vf_qm_state_save(struct hisi_acc_vf_core_device *hisi_acc_vdev,
+ 	}
+ 
+ 	migf->total_length = sizeof(struct acc_vf_data);
++	/* Save eqc and aeqc interrupt information */
++	vf_qm_xeqc_save(vf_qm, migf);
++
+ 	return 0;
+ }
+ 
 -- 
 2.39.5
 
