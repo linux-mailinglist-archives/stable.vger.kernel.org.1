@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-153022-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153024-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 23749ADD1F2
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 17:36:57 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1D359ADD1F6
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 17:37:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C938217D017
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 15:36:57 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BD9B917D073
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 15:37:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 97E852ECD0B;
-	Tue, 17 Jun 2025 15:36:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ACF182EB5AB;
+	Tue, 17 Jun 2025 15:37:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VjiE3sgc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G7k0s1oc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56C742DF3C9;
-	Tue, 17 Jun 2025 15:36:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A3FC18A6AE;
+	Tue, 17 Jun 2025 15:37:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750174615; cv=none; b=gDLW2QrqjKC1PXeOuQ6ldDAMQf/68a68nC2xPmGILTPt1046cMgqMVuIjMKVQvLghlWkrVuSvSUvvQPPOQJT86fErYnIb8MKDTsa0jqxmcKTskS9I7D6KHS3y6A/o8jVz6vGnNaQ8vSrUO2LVO1kvIdiT2ZR0WyD8u7rcv0j3kQ=
+	t=1750174621; cv=none; b=rZif2dkjMZRi34eijhGm5yAmXVAZEH4YTWBx3iB8wMF2WPCgv/vGNwWXf4Qnw1dlpTVuEA2d6uYivkevK/24Qiv+vdTOYNpEblvbNr/svjLWNUc+IN08e9fkkKfXvVlfcCmvBfjkQo7gwVfuYsnlkfBvaL16vVu8GcwZSsf+j/w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750174615; c=relaxed/simple;
-	bh=Rrzx1AMw1NPD6jPsTfr9dby+Y5CRGRUpJ0reI908Qes=;
+	s=arc-20240116; t=1750174621; c=relaxed/simple;
+	bh=OBU/Kh97nF0ZyP/QguJyJlC1Y//p7kly2PUrFPQu4VY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TQBiUoGkMXo+URXoiPX2Xu6m5jlJ8j3xKqW0XhiL1aLje+cndkXfCe3PSTu24LRqYUAIV+d6rmsjLyU7XLf5x6t9CsQusKFT3AAJcEzEtwEasRv9Rnig+Fc//XbvKyapHAui5btFirDUGPFN0S+sziwprOeB25si7uLHbn58oGo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VjiE3sgc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9ADBC4CEE3;
-	Tue, 17 Jun 2025 15:36:54 +0000 (UTC)
+	 MIME-Version; b=XO+ZEKFhH4X5v431XHd7N7pcFkWAyfk09dPO740pcDRO3t6vFujcbFL3y5mhCek9L+HYRNf/28KS9HaqDDSSw5u0BLj6YwNou4r5HX3Ez3KVrzLI8N1pyk2jvaQWhbQzD35jehVT7dlImXW+cWyeQMmAXMwmWYpf5HxrtNDL5mA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G7k0s1oc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C46DAC4CEE7;
+	Tue, 17 Jun 2025 15:37:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750174615;
-	bh=Rrzx1AMw1NPD6jPsTfr9dby+Y5CRGRUpJ0reI908Qes=;
+	s=korg; t=1750174621;
+	bh=OBU/Kh97nF0ZyP/QguJyJlC1Y//p7kly2PUrFPQu4VY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VjiE3sgccB2fg/39vXfy3ypDRaagqDADBBTSdyd2RHbuuaHg800Mj09gwxxkGtF7Y
-	 K+mbUxUbQTjYtd45YkJsrLria2he6DUedgsh+SQtPBmAYMx+Gz9xId5NmbQ2/9k7Nl
-	 9ezsvyT7wnTL3SQF1aS7L6bjjwsf9/gJhC03MnJA=
+	b=G7k0s1ocdix9/+ZpwYHMCRY+3JuyUSTttcRmObnqOsAQM8kXcNGnTJKXFZa+Kc7uI
+	 9Zts7xhaqKlcl+q6VsuTIWkFV2xcr3aslGE+UJX4uInIcQoayNtyCugD4lzi/vcH7O
+	 MwRE7cxqImf4dUDBMRT6Hti1vh21BhASirZFBjJ4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -45,9 +45,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Vishwaroop A <va@nvidia.com>,
 	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 043/512] spi: tegra210-quad: Fix X1_X2_X4 encoding and support x4 transfers
-Date: Tue, 17 Jun 2025 17:20:09 +0200
-Message-ID: <20250617152421.290781398@linuxfoundation.org>
+Subject: [PATCH 6.12 044/512] spi: tegra210-quad: remove redundant error handling code
+Date: Tue, 17 Jun 2025 17:20:10 +0200
+Message-ID: <20250617152421.328306494@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
 References: <20250617152419.512865572@linuxfoundation.org>
@@ -68,81 +68,36 @@ Content-Transfer-Encoding: 8bit
 
 From: Vishwaroop A <va@nvidia.com>
 
-[ Upstream commit dcb06c638a1174008a985849fa30fc0da7d08904 ]
+[ Upstream commit 400d9f1a27cc2fceabdb1ed93eaf0b89b6d32ba5 ]
 
-This patch corrects the QSPI_COMMAND_X1_X2_X4 and QSPI_ADDRESS_X1_X2_X4
-macros to properly encode the bus width for x1, x2, and x4 transfers.
-Although these macros were previously incorrect, they were not being
-used in the driver, so no functionality was affected.
-
-The patch updates tegra_qspi_cmd_config() and tegra_qspi_addr_config()
-function calls to use the actual bus width from the transfer, instead of
-hardcoding it to 0 (which implied x1 mode). This change enables proper
-support for x1, x2, and x4 data transfers by correctly configuring the
-interface width for commands and addresses.
-
-These modifications improve the QSPI driver's flexibility and prepare it
-for future use cases that may require different bus widths for commands
-and addresses.
+Remove unnecessary error handling code that terminated transfers and
+executed delay on errors. This code was redundant as error handling is
+already done at a higher level in the SPI core.
 
 Fixes: 1b8342cc4a38 ("spi: tegra210-quad: combined sequence mode")
 Signed-off-by: Vishwaroop A <va@nvidia.com>
-Link: https://patch.msgid.link/20250416110606.2737315-2-va@nvidia.com
+Link: https://patch.msgid.link/20250416110606.2737315-3-va@nvidia.com
 Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi-tegra210-quad.c | 12 ++++--------
- 1 file changed, 4 insertions(+), 8 deletions(-)
+ drivers/spi/spi-tegra210-quad.c | 4 ----
+ 1 file changed, 4 deletions(-)
 
 diff --git a/drivers/spi/spi-tegra210-quad.c b/drivers/spi/spi-tegra210-quad.c
-index 2d48ad844fb80..fd6863e89cddd 100644
+index fd6863e89cddd..30ed4120a2ef1 100644
 --- a/drivers/spi/spi-tegra210-quad.c
 +++ b/drivers/spi/spi-tegra210-quad.c
-@@ -134,7 +134,7 @@
- #define QSPI_COMMAND_VALUE_SET(X)		(((x) & 0xFF) << 0)
+@@ -1175,10 +1175,6 @@ static int tegra_qspi_combined_seq_xfer(struct tegra_qspi *tqspi,
  
- #define QSPI_CMB_SEQ_CMD_CFG			0x1a0
--#define QSPI_COMMAND_X1_X2_X4(x)		(((x) & 0x3) << 13)
-+#define QSPI_COMMAND_X1_X2_X4(x)		((((x) >> 1) & 0x3) << 13)
- #define QSPI_COMMAND_X1_X2_X4_MASK		(0x03 << 13)
- #define QSPI_COMMAND_SDR_DDR			BIT(12)
- #define QSPI_COMMAND_SIZE_SET(x)		(((x) & 0xFF) << 0)
-@@ -147,7 +147,7 @@
- #define QSPI_ADDRESS_VALUE_SET(X)		(((x) & 0xFFFF) << 0)
+ exit:
+ 	msg->status = ret;
+-	if (ret < 0) {
+-		tegra_qspi_transfer_end(spi);
+-		spi_transfer_delay_exec(xfer);
+-	}
  
- #define QSPI_CMB_SEQ_ADDR_CFG			0x1ac
--#define QSPI_ADDRESS_X1_X2_X4(x)		(((x) & 0x3) << 13)
-+#define QSPI_ADDRESS_X1_X2_X4(x)		((((x) >> 1) & 0x3) << 13)
- #define QSPI_ADDRESS_X1_X2_X4_MASK		(0x03 << 13)
- #define QSPI_ADDRESS_SDR_DDR			BIT(12)
- #define QSPI_ADDRESS_SIZE_SET(x)		(((x) & 0xFF) << 0)
-@@ -1036,10 +1036,6 @@ static u32 tegra_qspi_addr_config(bool is_ddr, u8 bus_width, u8 len)
- {
- 	u32 addr_config = 0;
- 
--	/* Extract Address configuration and value */
--	is_ddr = 0; //Only SDR mode supported
--	bus_width = 0; //X1 mode
--
- 	if (is_ddr)
- 		addr_config |= QSPI_ADDRESS_SDR_DDR;
- 	else
-@@ -1079,13 +1075,13 @@ static int tegra_qspi_combined_seq_xfer(struct tegra_qspi *tqspi,
- 		switch (transfer_phase) {
- 		case CMD_TRANSFER:
- 			/* X1 SDR mode */
--			cmd_config = tegra_qspi_cmd_config(false, 0,
-+			cmd_config = tegra_qspi_cmd_config(false, xfer->tx_nbits,
- 							   xfer->len);
- 			cmd_value = *((const u8 *)(xfer->tx_buf));
- 			break;
- 		case ADDR_TRANSFER:
- 			/* X1 SDR mode */
--			addr_config = tegra_qspi_addr_config(false, 0,
-+			addr_config = tegra_qspi_addr_config(false, xfer->tx_nbits,
- 							     xfer->len);
- 			address_value = *((const u32 *)(xfer->tx_buf));
- 			break;
+ 	return ret;
+ }
 -- 
 2.39.5
 
