@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-153459-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153463-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 233DCADD49C
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:12:14 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E26BADD4A2
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:12:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5EADE40801E
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:04:23 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D6C3A16C169
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:05:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40FAF2264B8;
-	Tue, 17 Jun 2025 16:00:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 90D8E2ECE87;
+	Tue, 17 Jun 2025 16:00:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LeByX9vj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Or2yyTdR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF6B62F2346;
-	Tue, 17 Jun 2025 16:00:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 495FA2ECD3C;
+	Tue, 17 Jun 2025 16:00:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750176032; cv=none; b=GY6Bahz7VWRTHVAltcmbQe/re+VC5iksl20/TTG0mTHwQn/l8HBwU3nQZHjwcj9ejY7yUPHmEpdnZP5xtbbqlsG/lzshjQ730dNS97oFu0SKGadE6Mb+fh/FS2gwOTJ+cDIBBMFlKD+tcPR8NvBmeOYtaO1NY65szMVHjScddOg=
+	t=1750176045; cv=none; b=i8vGbQWxrMy68Y6jLsC5y3Qgy0DVz+qGXvmmjPZoVkvOCyn0EDRzcz7W5mXD8IaqM4PlfLlvR5HTx6TYaoyLXZsUPAK3NVAhwYdzhXj0/iRMaiZr+bVSz69UpnT+uxlWzWnNufqzCFXs9GUuRw123+1UoyT6z6qQBXrcgMXb3Is=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750176032; c=relaxed/simple;
-	bh=a84EBeaHRiQkh+0elfnmRohm/PIbOtkzeNRllRVnWUI=;
+	s=arc-20240116; t=1750176045; c=relaxed/simple;
+	bh=vHIf8jSGGyk87ZchPhnViWCo6nqqRZYy6cMdnb2ax0I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BuMW/wd83ljWemD3yjTV6LLIzOh5pHiEnVmnZ5ovHTyCF++1c5/MytN9FmR09kIrLN+NWDrYWaWsJ3xehcfPRjh01Rx/RMbtljt3I/WEWnd0fJPJM0B2F9He2bI5gcBKzZU1MoQNAzeDZ4Nhu9bSA51My+7svpMVEjXrJZfi7WU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LeByX9vj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12F5AC4CEF1;
-	Tue, 17 Jun 2025 16:00:30 +0000 (UTC)
+	 MIME-Version; b=Ud9Z7tSmaHmsN1SyMdRNhXeY0xD7wGaw2ofbMz+wTPXDe/TOnfdTObolQZH/VCiOs8783SmyGgnnZTUF0srN+7sBsQfP7SysoGRtMzhigdslFiw8evPADXMTzWj3CDVPogXEKs0sJOc3IrKILf+hBWLd6kPZIIx/oDx2Myq8nds=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Or2yyTdR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AAA52C4CEF1;
+	Tue, 17 Jun 2025 16:00:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750176031;
-	bh=a84EBeaHRiQkh+0elfnmRohm/PIbOtkzeNRllRVnWUI=;
+	s=korg; t=1750176045;
+	bh=vHIf8jSGGyk87ZchPhnViWCo6nqqRZYy6cMdnb2ax0I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LeByX9vjh1t/7hL0+F2++CdCBtIhW98l9GoCsA0NjiJpBOlwSdTdX99RqNvXpqySz
-	 9VAOK2BB8/ypgeGDn+bm6cwMq8JlKK1AQ6krgAaWcpALtbL13xw4YH7GlsYv6EnjlQ
-	 Xk41TmCYsDCTwBAbJGM+8FYUn5gC6Ruz+AgL9ZQ0=
+	b=Or2yyTdR+ZCZB+p6pWrfbvPwMtqAqtqh+df8buzyiE0/x3DnY9wtnm3UMiMw9IEjp
+	 x7DtWjlG4bqiUjISuXNAHkrqt3dZOempRri2e6IWlrO4DCH8pOjwJoul8LEdqLVsrA
+	 HFRk55NNnJXluPW3VXYC/6/mmT12bkTDOXPuZUns=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
+	Abhinav Kumar <quic_abhinavk@quicinc.com>,
 	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
-	Akhil P Oommen <quic_akhilpo@quicinc.com>,
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
-	Rob Clark <robdclark@chromium.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 145/780] drm/msm/a6xx: Disable rgb565_predicator on Adreno 7c3
-Date: Tue, 17 Jun 2025 17:17:33 +0200
-Message-ID: <20250617152457.413334965@linuxfoundation.org>
+	Aleksandrs Vinarskis <alex.vinarskis@gmail.com>,
+	Johan Hovold <johan+linaro@kernel.org>,
+	Rob Clark <robdclark@gmail.com>,
+	Sasha Levin <sashal@kernel.org>,
+	Jessica Zhang <quic_jesszhan@quicinc.com>
+Subject: [PATCH 6.15 146/780] drm/msm/dp: Fix support of LTTPR initialization
+Date: Tue, 17 Jun 2025 17:17:34 +0200
+Message-ID: <20250617152457.452388510@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
 References: <20250617152451.485330293@linuxfoundation.org>
@@ -68,37 +70,68 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+From: Aleksandrs Vinarskis <alex.vinarskis@gmail.com>
 
-[ Upstream commit 5a9c1bea011fb42088ba08ceaa252fb20e695626 ]
+[ Upstream commit 9351d3d302060d114de2f0c648579c0aadbd8f72 ]
 
-This feature is supposed to be enabled with UBWC v4 or later.
-Implementations of this SKU feature an effective UBWC version of 3, so
-disable it, in line with the BSP kernel.
+Initialize LTTPR before msm_dp_panel_read_sink_caps, as DPTX shall
+(re)read DPRX caps after LTTPR detection, as required by DP 2.1a,
+Section 3.6.7.6.1.
 
-Reported-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Reviewed-by: Akhil P Oommen <quic_akhilpo@quicinc.com>
-Fixes: 192f4ee3e408 ("drm/msm/a6xx: Add support for Adreno 7c Gen 3 gpu")
-Signed-off-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Patchwork: https://patchwork.freedesktop.org/patch/651759/
-Signed-off-by: Rob Clark <robdclark@chromium.org>
+Fixes: 72d0af4accd9 ("drm/msm/dp: Add support for LTTPR handling")
+Reviewed-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Signed-off-by: Aleksandrs Vinarskis <alex.vinarskis@gmail.com>
+Tested-by: Jessica Zhang <quic_jesszhan@quicinc.com> # SA8775P
+Tested-by: Johan Hovold <johan+linaro@kernel.org>
+Tested-by: Rob Clark <robdclark@gmail.com>
+Patchwork: https://patchwork.freedesktop.org/patch/652301/
+Link: https://lore.kernel.org/r/20250507230113.14270-2-alex.vinarskis@gmail.com
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/msm/adreno/a6xx_gpu.c | 1 -
- 1 file changed, 1 deletion(-)
+ drivers/gpu/drm/msm/dp/dp_display.c | 13 +++++++++----
+ 1 file changed, 9 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/gpu/drm/msm/adreno/a6xx_gpu.c b/drivers/gpu/drm/msm/adreno/a6xx_gpu.c
-index 242d02d48c0cd..90991ba5a4ae1 100644
---- a/drivers/gpu/drm/msm/adreno/a6xx_gpu.c
-+++ b/drivers/gpu/drm/msm/adreno/a6xx_gpu.c
-@@ -655,7 +655,6 @@ static void a6xx_calc_ubwc_config(struct adreno_gpu *gpu)
- 	if (adreno_is_7c3(gpu)) {
- 		gpu->ubwc_config.highest_bank_bit = 14;
- 		gpu->ubwc_config.amsbc = 1;
--		gpu->ubwc_config.rgb565_predicator = 1;
- 		gpu->ubwc_config.uavflagprd_inv = 2;
- 		gpu->ubwc_config.macrotile_mode = 1;
- 	}
+diff --git a/drivers/gpu/drm/msm/dp/dp_display.c b/drivers/gpu/drm/msm/dp/dp_display.c
+index bbc47d86ae9e6..fc07cce68382a 100644
+--- a/drivers/gpu/drm/msm/dp/dp_display.c
++++ b/drivers/gpu/drm/msm/dp/dp_display.c
+@@ -367,12 +367,12 @@ static int msm_dp_display_send_hpd_notification(struct msm_dp_display_private *d
+ 	return 0;
+ }
+ 
+-static void msm_dp_display_lttpr_init(struct msm_dp_display_private *dp)
++static void msm_dp_display_lttpr_init(struct msm_dp_display_private *dp, u8 *dpcd)
+ {
+ 	u8 lttpr_caps[DP_LTTPR_COMMON_CAP_SIZE];
+ 	int rc;
+ 
+-	if (drm_dp_read_lttpr_common_caps(dp->aux, dp->panel->dpcd, lttpr_caps))
++	if (drm_dp_read_lttpr_common_caps(dp->aux, dpcd, lttpr_caps))
+ 		return;
+ 
+ 	rc = drm_dp_lttpr_init(dp->aux, drm_dp_lttpr_count(lttpr_caps));
+@@ -385,12 +385,17 @@ static int msm_dp_display_process_hpd_high(struct msm_dp_display_private *dp)
+ 	struct drm_connector *connector = dp->msm_dp_display.connector;
+ 	const struct drm_display_info *info = &connector->display_info;
+ 	int rc = 0;
++	u8 dpcd[DP_RECEIVER_CAP_SIZE];
+ 
+-	rc = msm_dp_panel_read_sink_caps(dp->panel, connector);
++	rc = drm_dp_read_dpcd_caps(dp->aux, dpcd);
+ 	if (rc)
+ 		goto end;
+ 
+-	msm_dp_display_lttpr_init(dp);
++	msm_dp_display_lttpr_init(dp, dpcd);
++
++	rc = msm_dp_panel_read_sink_caps(dp->panel, connector);
++	if (rc)
++		goto end;
+ 
+ 	msm_dp_link_process_request(dp->link);
+ 
 -- 
 2.39.5
 
