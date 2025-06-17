@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-154063-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153369-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 911C9ADD8A6
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:57:56 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1ECCFADD431
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:07:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 825E140650F
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:38:06 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9FC1E3BDF93
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 15:59:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6AD8F285046;
-	Tue, 17 Jun 2025 16:33:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C25E2EA149;
+	Tue, 17 Jun 2025 15:55:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RB6WZy4e"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QBntJAEO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 276F6188006;
-	Tue, 17 Jun 2025 16:33:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC2902EA14C;
+	Tue, 17 Jun 2025 15:55:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750177984; cv=none; b=P34CHYLo36RrcvXXD2bH+l9axk2idE3ZYJFPar6uZ00sVD+6kzWAJyj/e6J1RbFy8NigUzm2wVwtKrq1wKkcrPiebcmjpHTa7AoV4piUCV8tOH2dfSbnVCSW+1D+cUhrPwuNaoy3N2JZHG3wJ22vH+HyB9b28JolF9s9JDozokA=
+	t=1750175732; cv=none; b=c+nXAKwgWepebkvQBg+DdtGBhTUaXfD0qC10ZMw0sZ/divLXv7X6PI3toMCWLhgQYH0ur+pyPmHW818YRyjTfU0B3g3qxQ7JhkJ4mqJhVA2llecm7mYcgE1aHzpQNl4Zj1m0TsBoNinb+ukk/BXpShRlYdna7l1/VKt3I5tH5n0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750177984; c=relaxed/simple;
-	bh=ngcMMIZ6UsniJ4DJIQZb1k/lmw2Hyr0q55TVUk4MRPg=;
+	s=arc-20240116; t=1750175732; c=relaxed/simple;
+	bh=xO9LGuFw+vnf0wgP3qunMf2SCSMXNJTmRE+dsVjyF3o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CI8GWowoooo+WMs8XDXaGTgsOwnS+EV5Az0rp69kWWkZuZyIJV+fiJ+vGqxg8mwd29Y55ktaorxDYOY+sTq0yKnFKc4n7I5raa883SCllG1QSbBOgmRhQ8GYVd+hH4QU27Bqmd4r0zlg3WhjHihfwhFcUOq+iwSf3r257upOJB8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RB6WZy4e; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89966C4CEE7;
-	Tue, 17 Jun 2025 16:33:03 +0000 (UTC)
+	 MIME-Version; b=KhRsuPMLbzOnnegj44BF5Z68M98HYInP9i6e9K9bMVUuAd19cBABSeKfELV2wVqFFgLx2SO9PePz8krs2ylvLaqqf57r3VaHHw47byKxdZxj0KZr+DfzZoHobtDZGqZaRwZWfLyz8C4Kecfa2+GT3I7tlzPtPQ+3zXI23KJiFMw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QBntJAEO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A806AC4CEE3;
+	Tue, 17 Jun 2025 15:55:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750177984;
-	bh=ngcMMIZ6UsniJ4DJIQZb1k/lmw2Hyr0q55TVUk4MRPg=;
+	s=korg; t=1750175731;
+	bh=xO9LGuFw+vnf0wgP3qunMf2SCSMXNJTmRE+dsVjyF3o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RB6WZy4eiS8XNjThiQOxz5O5sxHEKxvOyZnn81LrNVAAh1AQZ0GWmqIt4NClEzqrr
-	 uSevBJGn5Kcv92XdAHjqjzepIGRKO7fYX5beO0JmVBwYQex2Ubl3Yy2duWfC3AQInD
-	 0hiYUb3hnWXiXmwh4WlbDB809N1+gLWAg0W6HYko=
+	b=QBntJAEOvIHDZZ4OTsc7WeczPZStoAbUCZ5U6IPbPCYVjeu4J94FZSAmyEPGMAiit
+	 hxsCD8TJ9cnjJmW8kaOQSK0PCKyfsNyvhInbO3Yd5sNeTef8TsehHSfOYLRpvEO4XI
+	 ZpvydXhfxXP8ivCSGy1mabprgSZELSd02N16tF00=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+65761fc25a137b9c8c6e@syzkaller.appspotmail.com,
-	Phillip Lougher <phillip@squashfs.org.uk>,
-	Andrew Morton <akpm@linux-foundation.org>,
+	Junxian Huang <huangjunxian6@hisilicon.com>,
+	Leon Romanovsky <leon@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 392/780] Squashfs: check return result of sb_min_blocksize
+Subject: [PATCH 6.12 134/512] RDMA/hns: Include hnae3.h in hns_roce_hw_v2.h
 Date: Tue, 17 Jun 2025 17:21:40 +0200
-Message-ID: <20250617152507.418605674@linuxfoundation.org>
+Message-ID: <20250617152425.025562320@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
-References: <20250617152451.485330293@linuxfoundation.org>
+In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
+References: <20250617152419.512865572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,68 +62,95 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Phillip Lougher <phillip@squashfs.org.uk>
+From: Junxian Huang <huangjunxian6@hisilicon.com>
 
-[ Upstream commit 734aa85390ea693bb7eaf2240623d41b03705c84 ]
+[ Upstream commit 2b11d33de23262cb20d1dcb24b586dbb8f54d463 ]
 
-Syzkaller reports an "UBSAN: shift-out-of-bounds in squashfs_bio_read" bug.
+hns_roce_hw_v2.h has a direct dependency on hnae3.h due to the
+inline function hns_roce_write64(), but it doesn't include this
+header currently. This leads to that files including
+hns_roce_hw_v2.h must also include hnae3.h to avoid compilation
+errors, even if they themselves don't really rely on hnae3.h.
+This doesn't make sense, hns_roce_hw_v2.h should include hnae3.h
+directly.
 
-Syzkaller forks multiple processes which after mounting the Squashfs
-filesystem, issues an ioctl("/dev/loop0", LOOP_SET_BLOCK_SIZE, 0x8000).
-Now if this ioctl occurs at the same time another process is in the
-process of mounting a Squashfs filesystem on /dev/loop0, the failure
-occurs.  When this happens the following code in squashfs_fill_super()
-fails.
-
-----
-msblk->devblksize = sb_min_blocksize(sb, SQUASHFS_DEVBLK_SIZE);
-msblk->devblksize_log2 = ffz(~msblk->devblksize);
-----
-
-sb_min_blocksize() returns 0, which means msblk->devblksize is set to 0.
-
-As a result, ffz(~msblk->devblksize) returns 64, and msblk->devblksize_log2
-is set to 64.
-
-This subsequently causes the
-
-UBSAN: shift-out-of-bounds in fs/squashfs/block.c:195:36
-shift exponent 64 is too large for 64-bit type 'u64' (aka
-'unsigned long long')
-
-This commit adds a check for a 0 return by sb_min_blocksize().
-
-Link: https://lkml.kernel.org/r/20250409024747.876480-1-phillip@squashfs.org.uk
-Fixes: 0aa666190509 ("Squashfs: super block operations")
-Reported-by: syzbot+65761fc25a137b9c8c6e@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/all/67f0dd7a.050a0220.0a13.0230.GAE@google.com/
-Signed-off-by: Phillip Lougher <phillip@squashfs.org.uk>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Fixes: d3743fa94ccd ("RDMA/hns: Fix the chip hanging caused by sending doorbell during reset")
+Signed-off-by: Junxian Huang <huangjunxian6@hisilicon.com>
+Link: https://patch.msgid.link/20250421132750.1363348-6-huangjunxian6@hisilicon.com
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/squashfs/super.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/infiniband/hw/hns/hns_roce_ah.c       | 1 -
+ drivers/infiniband/hw/hns/hns_roce_hw_v2.c    | 1 -
+ drivers/infiniband/hw/hns/hns_roce_hw_v2.h    | 1 +
+ drivers/infiniband/hw/hns/hns_roce_main.c     | 1 -
+ drivers/infiniband/hw/hns/hns_roce_restrack.c | 1 -
+ 5 files changed, 1 insertion(+), 4 deletions(-)
 
-diff --git a/fs/squashfs/super.c b/fs/squashfs/super.c
-index 67c55fe32ce88..992ea0e372572 100644
---- a/fs/squashfs/super.c
-+++ b/fs/squashfs/super.c
-@@ -202,6 +202,11 @@ static int squashfs_fill_super(struct super_block *sb, struct fs_context *fc)
- 	msblk->panic_on_errors = (opts->errors == Opt_errors_panic);
+diff --git a/drivers/infiniband/hw/hns/hns_roce_ah.c b/drivers/infiniband/hw/hns/hns_roce_ah.c
+index 4fc5b9d5fea87..307c35888b300 100644
+--- a/drivers/infiniband/hw/hns/hns_roce_ah.c
++++ b/drivers/infiniband/hw/hns/hns_roce_ah.c
+@@ -33,7 +33,6 @@
+ #include <linux/pci.h>
+ #include <rdma/ib_addr.h>
+ #include <rdma/ib_cache.h>
+-#include "hnae3.h"
+ #include "hns_roce_device.h"
+ #include "hns_roce_hw_v2.h"
  
- 	msblk->devblksize = sb_min_blocksize(sb, SQUASHFS_DEVBLK_SIZE);
-+	if (!msblk->devblksize) {
-+		errorf(fc, "squashfs: unable to set blocksize\n");
-+		return -EINVAL;
-+	}
-+
- 	msblk->devblksize_log2 = ffz(~msblk->devblksize);
+diff --git a/drivers/infiniband/hw/hns/hns_roce_hw_v2.c b/drivers/infiniband/hw/hns/hns_roce_hw_v2.c
+index f5c3e560df58d..985b9d7d69f20 100644
+--- a/drivers/infiniband/hw/hns/hns_roce_hw_v2.c
++++ b/drivers/infiniband/hw/hns/hns_roce_hw_v2.c
+@@ -43,7 +43,6 @@
+ #include <rdma/ib_umem.h>
+ #include <rdma/uverbs_ioctl.h>
  
- 	mutex_init(&msblk->meta_index_mutex);
+-#include "hnae3.h"
+ #include "hns_roce_common.h"
+ #include "hns_roce_device.h"
+ #include "hns_roce_cmd.h"
+diff --git a/drivers/infiniband/hw/hns/hns_roce_hw_v2.h b/drivers/infiniband/hw/hns/hns_roce_hw_v2.h
+index 91a5665465ffb..bc7466830eaf9 100644
+--- a/drivers/infiniband/hw/hns/hns_roce_hw_v2.h
++++ b/drivers/infiniband/hw/hns/hns_roce_hw_v2.h
+@@ -34,6 +34,7 @@
+ #define _HNS_ROCE_HW_V2_H
+ 
+ #include <linux/bitops.h>
++#include "hnae3.h"
+ 
+ #define HNS_ROCE_V2_MAX_RC_INL_INN_SZ		32
+ #define HNS_ROCE_V2_MTT_ENTRY_SZ		64
+diff --git a/drivers/infiniband/hw/hns/hns_roce_main.c b/drivers/infiniband/hw/hns/hns_roce_main.c
+index 8d0b63d4b50a6..e7a497cc125cc 100644
+--- a/drivers/infiniband/hw/hns/hns_roce_main.c
++++ b/drivers/infiniband/hw/hns/hns_roce_main.c
+@@ -37,7 +37,6 @@
+ #include <rdma/ib_smi.h>
+ #include <rdma/ib_user_verbs.h>
+ #include <rdma/ib_cache.h>
+-#include "hnae3.h"
+ #include "hns_roce_common.h"
+ #include "hns_roce_device.h"
+ #include "hns_roce_hem.h"
+diff --git a/drivers/infiniband/hw/hns/hns_roce_restrack.c b/drivers/infiniband/hw/hns/hns_roce_restrack.c
+index 356d988169497..f637b73b946e4 100644
+--- a/drivers/infiniband/hw/hns/hns_roce_restrack.c
++++ b/drivers/infiniband/hw/hns/hns_roce_restrack.c
+@@ -4,7 +4,6 @@
+ #include <rdma/rdma_cm.h>
+ #include <rdma/restrack.h>
+ #include <uapi/rdma/rdma_netlink.h>
+-#include "hnae3.h"
+ #include "hns_roce_common.h"
+ #include "hns_roce_device.h"
+ #include "hns_roce_hw_v2.h"
 -- 
 2.39.5
 
