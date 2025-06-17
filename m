@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-153491-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-154002-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 842A2ADD4B4
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:13:20 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5B8CEADD7B0
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:48:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 49E252C459C
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:05:55 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 89E6618856CF
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:35:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6FD412ED87A;
-	Tue, 17 Jun 2025 16:02:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68E672ECE86;
+	Tue, 17 Jun 2025 16:29:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ImnOxjt2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aDdfVp4B"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BEDD2ED877;
-	Tue, 17 Jun 2025 16:02:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25AD22E8E10;
+	Tue, 17 Jun 2025 16:29:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750176134; cv=none; b=HVH9XaqzbiELA7HMLPpmzWZLuCm8FMVxNC93HIRScZfLgiv52IigENVaqD3Cj8wH3FBlX9POkh23RbMUIj8Wt/pxtTaji2uzk4aNIyauWeqwEimWsv0yZOkN6uFGQEf47j9w8hGZXB0MCgVOwfUqmBoPR4gZ/2VRkPiacAhED0c=
+	t=1750177790; cv=none; b=a6v3fh7cRPv4yNOQiVBzmLXcE1B5IdZbXlZdJ/nCI/G8h3fggSVBSAXsKFiJ+GRpjjr5SGhQzuamNXZjR1vdNr9pb28SZixfHZptxIK3PxYGVLFw7Vj9klk2p8BOJA+NZdikeC6PkhcWWNEngbUL9qM+K5+5vlYN39DQ0xGsR64=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750176134; c=relaxed/simple;
-	bh=XSH42miACtDUDeda3JC3CJwlb+SYuGGRrdYHw2kwEoE=;
+	s=arc-20240116; t=1750177790; c=relaxed/simple;
+	bh=/9BuMgKBqxWpShBcH/ig3JUtS5dLq8kulDG3HxaG4cU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UHZxMX7Hf98qe3UBM9EFon5U8KKK13zQtrt/fimeOhnKJQzt91zZJypK+KuPeI/0KdTZKX/DBP5xANJQAQ4iVHVSPCONH2Mt799cNs8l7/nzpIw/aQl82gmiqSpwFfGvJoSOUkMTyydximdHTt60lerIay2AK3bKJN1xKPy8TYc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ImnOxjt2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8DBA4C4CEE3;
-	Tue, 17 Jun 2025 16:02:13 +0000 (UTC)
+	 MIME-Version:Content-Type; b=p/HqdNb7aD0FsE2PnoFTSIKnr22g4360i3nHSGy2BfU7AXN7bRlvETxL3ROmBhDvsuqMpRAxRYMfC5FtiN+b0NC7eaCrIVmfX+aD6lR8IxpeZpM18fvuyz48SnPbCMInMmVKpNGElyCjPFDV8cvCil7gHN0/DWaE8RYY688Nufg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aDdfVp4B; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C9DCC4CEE7;
+	Tue, 17 Jun 2025 16:29:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750176134;
-	bh=XSH42miACtDUDeda3JC3CJwlb+SYuGGRrdYHw2kwEoE=;
+	s=korg; t=1750177790;
+	bh=/9BuMgKBqxWpShBcH/ig3JUtS5dLq8kulDG3HxaG4cU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ImnOxjt2Ve0WxTH0iMAmO+zQIu0IrjKux95y3/AXSB0P9UtVMRDRo1WnHrf6wW1dA
-	 07tTpZf6JD7+GnfpZW7OFgDyVybR4/qKt1cgAZRDevJ+AQl1Ff243Q39rLolEnxxra
-	 EnTuS4xnn9Iwxo14AHF71lpSAk74yYsu7NTbvBUY=
+	b=aDdfVp4B18faq5FGc+49+G/mHXNitZoNITJYhKzfHXZ+Anywn85vOQyK5R+sE5eOU
+	 Ax2yqL+C5+1Y1hFjD8NZE5/XRx0vX+xFGsApU1CJEVJerwxAs5qnI2ADOtv3y7eTpj
+	 LUSBwlo0emmb2SWeGUV/vsq3dT6BqCUpJSozar8Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Maxime Chevallier <maxime.chevallier@bootlin.com>,
-	Horatiu Vultur <horatiu.vultur@microchip.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Boyuan Zhang <boyuan.zhang@amd.com>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 248/356] net: lan966x: Make sure to insert the vlan tags also in host mode
+Subject: [PATCH 6.12 397/512] drm/amd/pm: add inst to dpm_set_vcn_enable
 Date: Tue, 17 Jun 2025 17:26:03 +0200
-Message-ID: <20250617152348.189314248@linuxfoundation.org>
+Message-ID: <20250617152435.674429732@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152338.212798615@linuxfoundation.org>
-References: <20250617152338.212798615@linuxfoundation.org>
+In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
+References: <20250617152419.512865572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,116 +61,234 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Horatiu Vultur <horatiu.vultur@microchip.com>
+From: Boyuan Zhang <boyuan.zhang@amd.com>
 
-[ Upstream commit 27eab4c644236a9324084a70fe79e511cbd07393 ]
+[ Upstream commit 8b7f3529cd7bca239404d7279056e566639ac055 ]
 
-When running these commands on DUT (and similar at the other end)
-ip link set dev eth0 up
-ip link add link eth0 name eth0.10 type vlan id 10
-ip addr add 10.0.0.1/24 dev eth0.10
-ip link set dev eth0.10 up
-ping 10.0.0.2
+Add an instance parameter to the existing function dpm_set_vcn_enable()
+for future implementation. Re-write all pptable functions accordingly.
 
-The ping will fail.
+v2: Remove duplicated dpm_set_vcn_enable() functions in v1. Instead,
+adding instance parameter to existing functions.
 
-The reason why is failing is because, the network interfaces for lan966x
-have a flag saying that the HW can insert the vlan tags into the
-frames(NETIF_F_HW_VLAN_CTAG_TX). Meaning that the frames that are
-transmitted don't have the vlan tag inside the skb data, but they have
-it inside the skb. We already get that vlan tag and put it in the IFH
-but the problem is that we don't configure the HW to rewrite the frame
-when the interface is in host mode.
-The fix consists in actually configuring the HW to insert the vlan tag
-if it is different than 0.
-
-Reviewed-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
-Fixes: 6d2c186afa5d ("net: lan966x: Add vlan support.")
-Signed-off-by: Horatiu Vultur <horatiu.vultur@microchip.com>
-Link: https://patch.msgid.link/20250528093619.3738998-1-horatiu.vultur@microchip.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Boyuan Zhang <boyuan.zhang@amd.com>
+Suggested-by: Christian König <christian.koenig@amd.com>
+Suggested-by: Alex Deucher <alexander.deucher@amd.com>
+Acked-by: Christian König <christian.koenig@amd.com>
+Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Stable-dep-of: ee7360fc27d6 ("drm/amdgpu: read back register after written for VCN v4.0.5")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../ethernet/microchip/lan966x/lan966x_main.c |  1 +
- .../ethernet/microchip/lan966x/lan966x_main.h |  1 +
- .../microchip/lan966x/lan966x_switchdev.c     |  1 +
- .../ethernet/microchip/lan966x/lan966x_vlan.c | 21 +++++++++++++++++++
- 4 files changed, 24 insertions(+)
+ drivers/gpu/drm/amd/pm/swsmu/amdgpu_smu.c               | 2 +-
+ drivers/gpu/drm/amd/pm/swsmu/inc/amdgpu_smu.h           | 2 +-
+ drivers/gpu/drm/amd/pm/swsmu/inc/smu_v13_0.h            | 3 ++-
+ drivers/gpu/drm/amd/pm/swsmu/inc/smu_v14_0.h            | 3 ++-
+ drivers/gpu/drm/amd/pm/swsmu/smu11/arcturus_ppt.c       | 4 +++-
+ drivers/gpu/drm/amd/pm/swsmu/smu11/navi10_ppt.c         | 4 +++-
+ drivers/gpu/drm/amd/pm/swsmu/smu11/sienna_cichlid_ppt.c | 4 +++-
+ drivers/gpu/drm/amd/pm/swsmu/smu11/vangogh_ppt.c        | 4 +++-
+ drivers/gpu/drm/amd/pm/swsmu/smu12/renoir_ppt.c         | 4 +++-
+ drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0.c          | 3 ++-
+ drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_5_ppt.c    | 4 +++-
+ drivers/gpu/drm/amd/pm/swsmu/smu13/yellow_carp_ppt.c    | 4 +++-
+ drivers/gpu/drm/amd/pm/swsmu/smu14/smu_v14_0.c          | 3 ++-
+ 13 files changed, 31 insertions(+), 13 deletions(-)
 
-diff --git a/drivers/net/ethernet/microchip/lan966x/lan966x_main.c b/drivers/net/ethernet/microchip/lan966x/lan966x_main.c
-index 05f6c92275830..b424e75fd40c4 100644
---- a/drivers/net/ethernet/microchip/lan966x/lan966x_main.c
-+++ b/drivers/net/ethernet/microchip/lan966x/lan966x_main.c
-@@ -881,6 +881,7 @@ static int lan966x_probe_port(struct lan966x *lan966x, u32 p,
- 	lan966x_vlan_port_set_vlan_aware(port, 0);
- 	lan966x_vlan_port_set_vid(port, HOST_PVID, false, false);
- 	lan966x_vlan_port_apply(port);
-+	lan966x_vlan_port_rew_host(port);
+diff --git a/drivers/gpu/drm/amd/pm/swsmu/amdgpu_smu.c b/drivers/gpu/drm/amd/pm/swsmu/amdgpu_smu.c
+index 3fd8da5dc761e..59c083a16962d 100644
+--- a/drivers/gpu/drm/amd/pm/swsmu/amdgpu_smu.c
++++ b/drivers/gpu/drm/amd/pm/swsmu/amdgpu_smu.c
+@@ -255,7 +255,7 @@ static int smu_dpm_set_vcn_enable(struct smu_context *smu,
+ 	if (atomic_read(&power_gate->vcn_gated) ^ enable)
+ 		return 0;
  
+-	ret = smu->ppt_funcs->dpm_set_vcn_enable(smu, enable);
++	ret = smu->ppt_funcs->dpm_set_vcn_enable(smu, enable, 0xff);
+ 	if (!ret)
+ 		atomic_set(&power_gate->vcn_gated, !enable);
+ 
+diff --git a/drivers/gpu/drm/amd/pm/swsmu/inc/amdgpu_smu.h b/drivers/gpu/drm/amd/pm/swsmu/inc/amdgpu_smu.h
+index 2b8a18ce25d94..4e92295ac1b2d 100644
+--- a/drivers/gpu/drm/amd/pm/swsmu/inc/amdgpu_smu.h
++++ b/drivers/gpu/drm/amd/pm/swsmu/inc/amdgpu_smu.h
+@@ -744,7 +744,7 @@ struct pptable_funcs {
+ 	 * @dpm_set_vcn_enable: Enable/disable VCN engine dynamic power
+ 	 *                      management.
+ 	 */
+-	int (*dpm_set_vcn_enable)(struct smu_context *smu, bool enable);
++	int (*dpm_set_vcn_enable)(struct smu_context *smu, bool enable, int inst);
+ 
+ 	/**
+ 	 * @dpm_set_jpeg_enable: Enable/disable JPEG engine dynamic power
+diff --git a/drivers/gpu/drm/amd/pm/swsmu/inc/smu_v13_0.h b/drivers/gpu/drm/amd/pm/swsmu/inc/smu_v13_0.h
+index 30178dde6d49f..6d46728e7627e 100644
+--- a/drivers/gpu/drm/amd/pm/swsmu/inc/smu_v13_0.h
++++ b/drivers/gpu/drm/amd/pm/swsmu/inc/smu_v13_0.h
+@@ -255,7 +255,8 @@ int smu_v13_0_wait_for_event(struct smu_context *smu, enum smu_event_type event,
+ 			     uint64_t event_arg);
+ 
+ int smu_v13_0_set_vcn_enable(struct smu_context *smu,
+-			     bool enable);
++			      bool enable,
++			      int inst);
+ 
+ int smu_v13_0_set_jpeg_enable(struct smu_context *smu,
+ 			      bool enable);
+diff --git a/drivers/gpu/drm/amd/pm/swsmu/inc/smu_v14_0.h b/drivers/gpu/drm/amd/pm/swsmu/inc/smu_v14_0.h
+index 3c1b4aa4a68d7..d2289592accc0 100644
+--- a/drivers/gpu/drm/amd/pm/swsmu/inc/smu_v14_0.h
++++ b/drivers/gpu/drm/amd/pm/swsmu/inc/smu_v14_0.h
+@@ -210,7 +210,8 @@ int smu_v14_0_wait_for_event(struct smu_context *smu, enum smu_event_type event,
+ 			     uint64_t event_arg);
+ 
+ int smu_v14_0_set_vcn_enable(struct smu_context *smu,
+-			     bool enable);
++			      bool enable,
++			      int inst);
+ 
+ int smu_v14_0_set_jpeg_enable(struct smu_context *smu,
+ 			      bool enable);
+diff --git a/drivers/gpu/drm/amd/pm/swsmu/smu11/arcturus_ppt.c b/drivers/gpu/drm/amd/pm/swsmu/smu11/arcturus_ppt.c
+index d4b954b22441c..4251c64d00dbe 100644
+--- a/drivers/gpu/drm/amd/pm/swsmu/smu11/arcturus_ppt.c
++++ b/drivers/gpu/drm/amd/pm/swsmu/smu11/arcturus_ppt.c
+@@ -2031,7 +2031,9 @@ static bool arcturus_is_dpm_running(struct smu_context *smu)
+ 	return !!(feature_enabled & SMC_DPM_FEATURE);
+ }
+ 
+-static int arcturus_dpm_set_vcn_enable(struct smu_context *smu, bool enable)
++static int arcturus_dpm_set_vcn_enable(struct smu_context *smu,
++					bool enable,
++					int inst)
+ {
+ 	int ret = 0;
+ 
+diff --git a/drivers/gpu/drm/amd/pm/swsmu/smu11/navi10_ppt.c b/drivers/gpu/drm/amd/pm/swsmu/smu11/navi10_ppt.c
+index 27c1892b2c749..48b0eb6dd4ff4 100644
+--- a/drivers/gpu/drm/amd/pm/swsmu/smu11/navi10_ppt.c
++++ b/drivers/gpu/drm/amd/pm/swsmu/smu11/navi10_ppt.c
+@@ -1135,7 +1135,9 @@ static int navi10_set_default_dpm_table(struct smu_context *smu)
  	return 0;
  }
-diff --git a/drivers/net/ethernet/microchip/lan966x/lan966x_main.h b/drivers/net/ethernet/microchip/lan966x/lan966x_main.h
-index b65d58a1552b5..5a16d76eb000d 100644
---- a/drivers/net/ethernet/microchip/lan966x/lan966x_main.h
-+++ b/drivers/net/ethernet/microchip/lan966x/lan966x_main.h
-@@ -549,6 +549,7 @@ void lan966x_vlan_port_apply(struct lan966x_port *port);
- bool lan966x_vlan_cpu_member_cpu_vlan_mask(struct lan966x *lan966x, u16 vid);
- void lan966x_vlan_port_set_vlan_aware(struct lan966x_port *port,
- 				      bool vlan_aware);
-+void lan966x_vlan_port_rew_host(struct lan966x_port *port);
- int lan966x_vlan_port_set_vid(struct lan966x_port *port,
- 			      u16 vid,
- 			      bool pvid,
-diff --git a/drivers/net/ethernet/microchip/lan966x/lan966x_switchdev.c b/drivers/net/ethernet/microchip/lan966x/lan966x_switchdev.c
-index 1c88120eb291a..bcb4db76b75cd 100644
---- a/drivers/net/ethernet/microchip/lan966x/lan966x_switchdev.c
-+++ b/drivers/net/ethernet/microchip/lan966x/lan966x_switchdev.c
-@@ -297,6 +297,7 @@ static void lan966x_port_bridge_leave(struct lan966x_port *port,
- 	lan966x_vlan_port_set_vlan_aware(port, false);
- 	lan966x_vlan_port_set_vid(port, HOST_PVID, false, false);
- 	lan966x_vlan_port_apply(port);
-+	lan966x_vlan_port_rew_host(port);
- }
  
- int lan966x_port_changeupper(struct net_device *dev,
-diff --git a/drivers/net/ethernet/microchip/lan966x/lan966x_vlan.c b/drivers/net/ethernet/microchip/lan966x/lan966x_vlan.c
-index 3c44660128dae..ffb245fb7d678 100644
---- a/drivers/net/ethernet/microchip/lan966x/lan966x_vlan.c
-+++ b/drivers/net/ethernet/microchip/lan966x/lan966x_vlan.c
-@@ -149,6 +149,27 @@ void lan966x_vlan_port_set_vlan_aware(struct lan966x_port *port,
- 	port->vlan_aware = vlan_aware;
- }
- 
-+/* When the interface is in host mode, the interface should not be vlan aware
-+ * but it should insert all the tags that it gets from the network stack.
-+ * The tags are not in the data of the frame but actually in the skb and the ifh
-+ * is configured already to get this tag. So what we need to do is to update the
-+ * rewriter to insert the vlan tag for all frames which have a vlan tag
-+ * different than 0.
-+ */
-+void lan966x_vlan_port_rew_host(struct lan966x_port *port)
-+{
-+	struct lan966x *lan966x = port->lan966x;
-+	u32 val;
-+
-+	/* Tag all frames except when VID=0*/
-+	val = REW_TAG_CFG_TAG_CFG_SET(2);
-+
-+	/* Update only some bits in the register */
-+	lan_rmw(val,
-+		REW_TAG_CFG_TAG_CFG,
-+		lan966x, REW_TAG_CFG(port->chip_port));
-+}
-+
- void lan966x_vlan_port_apply(struct lan966x_port *port)
+-static int navi10_dpm_set_vcn_enable(struct smu_context *smu, bool enable)
++static int navi10_dpm_set_vcn_enable(struct smu_context *smu,
++				      bool enable,
++				      int inst)
  {
- 	struct lan966x *lan966x = port->lan966x;
+ 	int ret = 0;
+ 
+diff --git a/drivers/gpu/drm/amd/pm/swsmu/smu11/sienna_cichlid_ppt.c b/drivers/gpu/drm/amd/pm/swsmu/smu11/sienna_cichlid_ppt.c
+index 1af90990d05c8..063bb60ff70f0 100644
+--- a/drivers/gpu/drm/amd/pm/swsmu/smu11/sienna_cichlid_ppt.c
++++ b/drivers/gpu/drm/amd/pm/swsmu/smu11/sienna_cichlid_ppt.c
+@@ -1152,7 +1152,9 @@ static int sienna_cichlid_set_default_dpm_table(struct smu_context *smu)
+ 	return 0;
+ }
+ 
+-static int sienna_cichlid_dpm_set_vcn_enable(struct smu_context *smu, bool enable)
++static int sienna_cichlid_dpm_set_vcn_enable(struct smu_context *smu,
++					      bool enable,
++					      int inst)
+ {
+ 	struct amdgpu_device *adev = smu->adev;
+ 	int i, ret = 0;
+diff --git a/drivers/gpu/drm/amd/pm/swsmu/smu11/vangogh_ppt.c b/drivers/gpu/drm/amd/pm/swsmu/smu11/vangogh_ppt.c
+index 9bca748ac2e94..6a7c5f60b3ada 100644
+--- a/drivers/gpu/drm/amd/pm/swsmu/smu11/vangogh_ppt.c
++++ b/drivers/gpu/drm/amd/pm/swsmu/smu11/vangogh_ppt.c
+@@ -461,7 +461,9 @@ static int vangogh_init_smc_tables(struct smu_context *smu)
+ 	return smu_v11_0_init_smc_tables(smu);
+ }
+ 
+-static int vangogh_dpm_set_vcn_enable(struct smu_context *smu, bool enable)
++static int vangogh_dpm_set_vcn_enable(struct smu_context *smu,
++				       bool enable,
++				       int inst)
+ {
+ 	int ret = 0;
+ 
+diff --git a/drivers/gpu/drm/amd/pm/swsmu/smu12/renoir_ppt.c b/drivers/gpu/drm/amd/pm/swsmu/smu12/renoir_ppt.c
+index 1a8a42b176e52..a21be0971bb3f 100644
+--- a/drivers/gpu/drm/amd/pm/swsmu/smu12/renoir_ppt.c
++++ b/drivers/gpu/drm/amd/pm/swsmu/smu12/renoir_ppt.c
+@@ -645,7 +645,9 @@ static enum amd_pm_state_type renoir_get_current_power_state(struct smu_context
+ 	return pm_type;
+ }
+ 
+-static int renoir_dpm_set_vcn_enable(struct smu_context *smu, bool enable)
++static int renoir_dpm_set_vcn_enable(struct smu_context *smu,
++				      bool enable,
++				      int inst)
+ {
+ 	int ret = 0;
+ 
+diff --git a/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0.c b/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0.c
+index 4f78c84da780c..52da68bbaaf03 100644
+--- a/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0.c
++++ b/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0.c
+@@ -2088,7 +2088,8 @@ int smu_v13_0_get_current_pcie_link_speed(struct smu_context *smu)
+ }
+ 
+ int smu_v13_0_set_vcn_enable(struct smu_context *smu,
+-			     bool enable)
++			      bool enable,
++			      int inst)
+ {
+ 	struct amdgpu_device *adev = smu->adev;
+ 	int i, ret = 0;
+diff --git a/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_5_ppt.c b/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_5_ppt.c
+index 9c2c43bfed0bb..3204917f91bf6 100644
+--- a/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_5_ppt.c
++++ b/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_5_ppt.c
+@@ -193,7 +193,9 @@ static int smu_v13_0_5_system_features_control(struct smu_context *smu, bool en)
+ 	return ret;
+ }
+ 
+-static int smu_v13_0_5_dpm_set_vcn_enable(struct smu_context *smu, bool enable)
++static int smu_v13_0_5_dpm_set_vcn_enable(struct smu_context *smu,
++					   bool enable,
++					   int inst)
+ {
+ 	int ret = 0;
+ 
+diff --git a/drivers/gpu/drm/amd/pm/swsmu/smu13/yellow_carp_ppt.c b/drivers/gpu/drm/amd/pm/swsmu/smu13/yellow_carp_ppt.c
+index 260c339f89c5d..0890951351f97 100644
+--- a/drivers/gpu/drm/amd/pm/swsmu/smu13/yellow_carp_ppt.c
++++ b/drivers/gpu/drm/amd/pm/swsmu/smu13/yellow_carp_ppt.c
+@@ -220,7 +220,9 @@ static int yellow_carp_system_features_control(struct smu_context *smu, bool en)
+ 	return ret;
+ }
+ 
+-static int yellow_carp_dpm_set_vcn_enable(struct smu_context *smu, bool enable)
++static int yellow_carp_dpm_set_vcn_enable(struct smu_context *smu,
++					   bool enable,
++					   int inst)
+ {
+ 	int ret = 0;
+ 
+diff --git a/drivers/gpu/drm/amd/pm/swsmu/smu14/smu_v14_0.c b/drivers/gpu/drm/amd/pm/swsmu/smu14/smu_v14_0.c
+index e5f619c979d80..73bd75c34a76e 100644
+--- a/drivers/gpu/drm/amd/pm/swsmu/smu14/smu_v14_0.c
++++ b/drivers/gpu/drm/amd/pm/swsmu/smu14/smu_v14_0.c
+@@ -1492,7 +1492,8 @@ int smu_v14_0_set_single_dpm_table(struct smu_context *smu,
+ }
+ 
+ int smu_v14_0_set_vcn_enable(struct smu_context *smu,
+-			     bool enable)
++			      bool enable,
++			      int inst)
+ {
+ 	struct amdgpu_device *adev = smu->adev;
+ 	int i, ret = 0;
 -- 
 2.39.5
 
