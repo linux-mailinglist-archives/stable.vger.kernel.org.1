@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-153498-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153502-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id F205CADD50F
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:16:49 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7474DADD4CA
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:14:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2A14A406437
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:05:59 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D2515179193
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:06:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E5BF2EF284;
-	Tue, 17 Jun 2025 16:02:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 95D232DFF0E;
+	Tue, 17 Jun 2025 16:02:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IBvnhrdz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IZmzxQbD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D2412ED87D;
-	Tue, 17 Jun 2025 16:02:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50B942EF287;
+	Tue, 17 Jun 2025 16:02:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750176157; cv=none; b=Z8BIN/Pk8obFZWZwxDfzS/uJm89Pl2QlCdYUMHwospfn25aQfbMBaD03GXqkTZTitg147tp3VSqSofbQdruzm22lKyMLCDggXw8OGHeVtvfwrWqMQoXpOW1eRyo92/5t1aUtM/N/rCLz97HAAW+KAMZ0atw8tdrZ8EQvJbPY4xQ=
+	t=1750176170; cv=none; b=rHtUbkaOJD7iEHChaS0u3fUnXB5dyCjXw3WmIQMbiXYd/GPP9pBTJVEHYxxhkemydgsG+G7PsJdHX9g7NnYR6FSkipPk8ifxiNWzowaEHI68cT3NNKBjd01n2I7EAgUoXZmkSdGmHIbE9+PjDxI8OS644znDF2xq7snz1dLz9mY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750176157; c=relaxed/simple;
-	bh=YUEFEYYjk6Y2X9IbN7hIMTvyiyULxuvttbE7CFlVa+8=;
+	s=arc-20240116; t=1750176170; c=relaxed/simple;
+	bh=AAvqcEscDnxnKkQ/o3TJG34JO/oWwyOSjUYIVgJuI5Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UW1KQ3MZQMhxoHzSJl4EVR0RUSyf2JzovYG3673IGpoVKSKg3ObMwkWYlkztRGhbeeGk9zpw9UsB51tdJ8yIOrEGtQfQd/xvDk+WjxOL91TU9aAXZVWPPqiqMX8bpttEy+9EB4uprpvXBlu+7UKfP+vPtKY+k6rwbnoTiOBcWjc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IBvnhrdz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97FBDC4CEE3;
-	Tue, 17 Jun 2025 16:02:36 +0000 (UTC)
+	 MIME-Version; b=gzzxK1dTe4kjkTwJbfk5oS/dqPbJQXeIZJVwwn2WYGFeciRd6uF6Gdu1SrG/d49x9kd2gVhgHOlY2cASeulp9P6a7naIqJ075ZMJdqaHyrasRZhuG/FpxqDlAkb9w78QI5b3UE7lcMMo/uWuZJ1x+15U48AiL1vFhmqgWK+pJq8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IZmzxQbD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B266EC4CEE3;
+	Tue, 17 Jun 2025 16:02:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750176157;
-	bh=YUEFEYYjk6Y2X9IbN7hIMTvyiyULxuvttbE7CFlVa+8=;
+	s=korg; t=1750176170;
+	bh=AAvqcEscDnxnKkQ/o3TJG34JO/oWwyOSjUYIVgJuI5Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IBvnhrdzWKq21ikkhYE1SBYtGfJCLmx8utKOQGsxNHnYblWhSLX5ORW/gwVxUluet
-	 +cAo65k9BmVSFk1lrx1ckLJRwfd2cQsW6d2ltWFaYrocblwbLhxMdV+LL+e7GLgXkz
-	 E2EDjR3xp/rUtC3zUBIzs6ml0aooiFwSEVp1+s+4=
+	b=IZmzxQbDSF5x4fBdQd75nSG7MMeBnKAdnsX8VPv1proTANwJSPrYjlJAYGEQIx4LK
+	 hPwjjaH3uRmQ5Kkuyki1TEqxUrexD6Q5EKmhUnL6PM4ULeQO0A32jqhtv3fbLCHq40
+	 dUtAVKJa+fgDJRshlGxNs800NShL7JOa1hBLojwQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Jocelyn Falempe <jfalempe@redhat.com>,
-	Javier Martinez Canillas <javierm@redhat.com>,
+	Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>,
+	Karthikeyan Periyasamy <quic_periyasa@quicinc.com>,
+	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 160/780] drm/panic: Use a decimal fifo to avoid u64 by u64 divide
-Date: Tue, 17 Jun 2025 17:17:48 +0200
-Message-ID: <20250617152458.007540079@linuxfoundation.org>
+Subject: [PATCH 6.15 161/780] wifi: ath12k: fix NULL access in assign channel context handler
+Date: Tue, 17 Jun 2025 17:17:49 +0200
+Message-ID: <20250617152458.046421185@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
 References: <20250617152451.485330293@linuxfoundation.org>
@@ -67,128 +67,44 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Jocelyn Falempe <jfalempe@redhat.com>
+From: Karthikeyan Periyasamy <quic_periyasa@quicinc.com>
 
-[ Upstream commit 675008f196ca5c8d8413204e861cc2a2238581aa ]
+[ Upstream commit ea24531d00f782f4e659e8c74578b7ac144720ca ]
 
-On 32bits ARM, u64/u64 is not supported [1], so change the algorithm
-to use a simple fifo with decimal digits as u8 instead.
-This is slower but should compile on all architecture.
+Currently, when ath12k_mac_assign_vif_to_vdev() fails, the radio handle
+(ar) gets accessed from the link VIF handle (arvif) for debug logging, This
+is incorrect. In the fail scenario, radio handle is NULL. Fix the NULL
+access, avoid radio handle access by moving to the hardware debug logging
+helper function (ath12k_hw_warn).
 
-Link: https://lore.kernel.org/dri-devel/CANiq72ke45eOwckMhWHvmwxc03dxr4rnxxKvx+HvWdBLopZfrQ@mail.gmail.com/ [1]
-Reported-by: Miguel Ojeda <ojeda@kernel.org>
-Closes: https://lore.kernel.org/dri-devel/CANiq72ke45eOwckMhWHvmwxc03dxr4rnxxKvx+HvWdBLopZfrQ@mail.gmail.com/
-Fixes: ccb8ce526807 ("ARM: 9441/1: rust: Enable Rust support for ARMv7")
-Signed-off-by: Jocelyn Falempe <jfalempe@redhat.com>
-Link: https://lore.kernel.org/r/20250418165059.560503-1-jfalempe@redhat.com
-Acked-by: Javier Martinez Canillas <javierm@redhat.com>
+Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.3.1-00173-QCAHKSWPL_SILICONZ-1
+Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0.c5-00481-QCAHMTSWPL_V1.0_V2.0_SILICONZ-3
+
+Fixes: 90570ba4610b ("wifi: ath12k: do not return invalid link id for scan link")
+Reviewed-by: Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>
+Signed-off-by: Karthikeyan Periyasamy <quic_periyasa@quicinc.com>
+Link: https://patch.msgid.link/20250324062518.2752822-8-quic_periyasa@quicinc.com
+Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/drm_panic_qr.rs | 71 ++++++++++++++++++++++-----------
- 1 file changed, 48 insertions(+), 23 deletions(-)
+ drivers/net/wireless/ath/ath12k/mac.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/drm_panic_qr.rs b/drivers/gpu/drm/drm_panic_qr.rs
-index ba6724aed51c9..de2ddf5dbbd3f 100644
---- a/drivers/gpu/drm/drm_panic_qr.rs
-+++ b/drivers/gpu/drm/drm_panic_qr.rs
-@@ -366,8 +366,48 @@ impl Segment<'_> {
-         SegmentIterator {
-             segment: self,
-             offset: 0,
--            carry: 0,
--            carry_len: 0,
-+            decfifo: Default::default(),
-+        }
-+    }
-+}
-+
-+/// Max fifo size is 17 (max push) + 2 (max remaining)
-+const MAX_FIFO_SIZE: usize = 19;
-+
-+/// A simple Decimal digit FIFO
-+#[derive(Default)]
-+struct DecFifo {
-+    decimals: [u8; MAX_FIFO_SIZE],
-+    len: usize,
-+}
-+
-+impl DecFifo {
-+    fn push(&mut self, data: u64, len: usize) {
-+        let mut chunk = data;
-+        for i in (0..self.len).rev() {
-+            self.decimals[i + len] = self.decimals[i];
-+        }
-+        for i in 0..len {
-+            self.decimals[i] = (chunk % 10) as u8;
-+            chunk /= 10;
-+        }
-+        self.len += len;
-+    }
-+
-+    /// Pop 3 decimal digits from the FIFO
-+    fn pop3(&mut self) -> Option<(u16, usize)> {
-+        if self.len == 0 {
-+            None
-+        } else {
-+            let poplen = 3.min(self.len);
-+            self.len -= poplen;
-+            let mut out = 0;
-+            let mut exp = 1;
-+            for i in 0..poplen {
-+                out += self.decimals[self.len + i] as u16 * exp;
-+                exp *= 10;
-+            }
-+            Some((out, NUM_CHARS_BITS[poplen]))
-         }
-     }
- }
-@@ -375,8 +415,7 @@ impl Segment<'_> {
- struct SegmentIterator<'a> {
-     segment: &'a Segment<'a>,
-     offset: usize,
--    carry: u64,
--    carry_len: usize,
-+    decfifo: DecFifo,
- }
+diff --git a/drivers/net/wireless/ath/ath12k/mac.c b/drivers/net/wireless/ath/ath12k/mac.c
+index dfa05f0ee6c9f..c20fd92000dfe 100644
+--- a/drivers/net/wireless/ath/ath12k/mac.c
++++ b/drivers/net/wireless/ath/ath12k/mac.c
+@@ -9462,8 +9462,8 @@ ath12k_mac_op_assign_vif_chanctx(struct ieee80211_hw *hw,
  
- impl Iterator for SegmentIterator<'_> {
-@@ -394,31 +433,17 @@ impl Iterator for SegmentIterator<'_> {
-                 }
-             }
-             Segment::Numeric(data) => {
--                if self.carry_len < 3 && self.offset < data.len() {
--                    // If there are less than 3 decimal digits in the carry,
--                    // take the next 7 bytes of input, and add them to the carry.
-+                if self.decfifo.len < 3 && self.offset < data.len() {
-+                    // If there are less than 3 decimal digits in the fifo,
-+                    // take the next 7 bytes of input, and push them to the fifo.
-                     let mut buf = [0u8; 8];
-                     let len = 7.min(data.len() - self.offset);
-                     buf[..len].copy_from_slice(&data[self.offset..self.offset + len]);
-                     let chunk = u64::from_le_bytes(buf);
--                    let pow = u64::pow(10, BYTES_TO_DIGITS[len] as u32);
--                    self.carry = chunk + self.carry * pow;
-+                    self.decfifo.push(chunk, BYTES_TO_DIGITS[len]);
-                     self.offset += len;
--                    self.carry_len += BYTES_TO_DIGITS[len];
--                }
--                match self.carry_len {
--                    0 => None,
--                    len => {
--                        // take the next 3 decimal digits of the carry
--                        // and return 10bits of numeric data.
--                        let out_len = 3.min(len);
--                        self.carry_len -= out_len;
--                        let pow = u64::pow(10, self.carry_len as u32);
--                        let out = (self.carry / pow) as u16;
--                        self.carry %= pow;
--                        Some((out, NUM_CHARS_BITS[out_len]))
--                    }
-                 }
-+                self.decfifo.pop3()
-             }
-         }
-     }
+ 	ar = ath12k_mac_assign_vif_to_vdev(hw, arvif, ctx);
+ 	if (!ar) {
+-		ath12k_warn(arvif->ar->ab, "failed to assign chanctx for vif %pM link id %u link vif is already started",
+-			    vif->addr, link_id);
++		ath12k_hw_warn(ah, "failed to assign chanctx for vif %pM link id %u link vif is already started",
++			       vif->addr, link_id);
+ 		return -EINVAL;
+ 	}
+ 
 -- 
 2.39.5
 
