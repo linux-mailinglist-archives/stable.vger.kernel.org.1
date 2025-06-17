@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-153531-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153536-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D3A4FADD502
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:16:02 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 04970ADD4E5
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:15:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0E2932C4E0C
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:07:25 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4F1BE1945FE8
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:07:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 672B61A2632;
-	Tue, 17 Jun 2025 16:04:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D2772376E6;
+	Tue, 17 Jun 2025 16:04:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KO8jgmre"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xtPX23Eq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2505E2F2340;
-	Tue, 17 Jun 2025 16:04:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E92EC2F2368;
+	Tue, 17 Jun 2025 16:04:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750176265; cv=none; b=O+CFZKd0L89gRSLW0yI5/lybbeAyWZxVMIN1hfsq+PtopgfCU+dlJ3XWne9IUxK56J3U/c2UnOVileT1twRZBowGa4wLzLXiOv2SiFBn0H9OuwBB/VNRrNBMFM7I6+a9AmFH3nlh+MnnC8bpkvkavkVv72mN/+XxbP/HxtE3Ny8=
+	t=1750176279; cv=none; b=UMx76OTYqE4KOe1l5hsHCZI7yyc04KeS1WDqZGQ4UcjUbdKDLCtpJ/gAPFbv+GdFtOFeHQ0G4qGsgdea1zaOHvvDbRbr8S0RlPbE8hZr8jRksd4rjb7iaRmutlXqSDLnGFCNUUe5rMcUKYRf7AOnWdxx4BK6w1y+7FyQWPBhspE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750176265; c=relaxed/simple;
-	bh=3odTpND66rAcQlNjMxe9r2IEVyvP8BytCWBsm1SGejU=;
+	s=arc-20240116; t=1750176279; c=relaxed/simple;
+	bh=qoNSDkNnNibqHpT+2jO/e+zWclqcGNPht/HVi8HfnUo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pxEeU9TnxpvON6rCf4s2gCECkYODuId0OSXzha8XUxFYR8AKJCD8HAuuBCveAGgm7E5M3WAagl9ZFsC+H84qXNZZqK5EJBEVSdrNcjbJESosSGtOFliRHVL9s6odFS54djJtdv8gIJ7ul+PwnzZobhclAtLhU5lb53s0ia1C6Kc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KO8jgmre; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8695AC4CEE3;
-	Tue, 17 Jun 2025 16:04:24 +0000 (UTC)
+	 MIME-Version; b=nc82q1k8w9XHaZXMVzK2y08ACMaCSRTaoOUkBUGYne0Qm0idSjiL5fNC1vT4NmnvFdY+8jeq6Cq/IqChKHn1OI7W6Vj7XlagSggZruQatKQusGN24H9VY3wABt2ksNkHou3XcVBq/kIFvZtOrC8BgeRJ2TCkZBQtyNkW81R0JZE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xtPX23Eq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC708C4CEF0;
+	Tue, 17 Jun 2025 16:04:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750176265;
-	bh=3odTpND66rAcQlNjMxe9r2IEVyvP8BytCWBsm1SGejU=;
+	s=korg; t=1750176278;
+	bh=qoNSDkNnNibqHpT+2jO/e+zWclqcGNPht/HVi8HfnUo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KO8jgmreaRZKttDpc2zHJ6odnDDsZxKIVjfphyIcx1Lv8eYPmD6bb6is/raq+GNt2
-	 NhHVtE7Fh92jTo/AJ83NXeEoRstKJvEtWo8TOHtTMoFamxbKiqrstBtkLBSSJSU2yp
-	 /9m29gFe4zk0vQRews9pFaSbz/1hxM9FeiMUYfSs=
+	b=xtPX23EqdCXBjy03HHd5hcXBQDoBLviJ1tgkU+rTQTFrMYfYdrwo0cvmOIM/PRXX3
+	 wRMOEYSLWEFiCXqhvg//K5MyGD664/zoMYrTTTSUYeBqDJhQ47SoW1yi0IUeZWYnK4
+	 Fs4f3X6BCRWFIApDOwuBV5rbGAL01yu74RtzVV8w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Saket Kumar Bhaskar <skb99@linux.ibm.com>,
-	Andrii Nakryiko <andrii@kernel.org>,
+	Jiayuan Chen <jiayuan.chen@linux.dev>,
+	John Fastabend <john.fastabend@gmail.com>,
+	Alexei Starovoitov <ast@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 170/780] selftests/bpf: Fix bpf_nf selftest failure
-Date: Tue, 17 Jun 2025 17:17:58 +0200
-Message-ID: <20250617152458.406575271@linuxfoundation.org>
+Subject: [PATCH 6.15 171/780] bpf: fix ktls panic with sockmap
+Date: Tue, 17 Jun 2025 17:17:59 +0200
+Message-ID: <20250617152458.444599544@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
 References: <20250617152451.485330293@linuxfoundation.org>
@@ -66,41 +67,121 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Saket Kumar Bhaskar <skb99@linux.ibm.com>
+From: Jiayuan Chen <jiayuan.chen@linux.dev>
 
-[ Upstream commit 967e8def1100cb4b08c28a54d27ce69563fdf281 ]
+[ Upstream commit 54a3ecaeeeae8176da8badbd7d72af1017032c39 ]
 
-For systems with missing iptables-legacy tool this selftest fails.
+[ 2172.936997] ------------[ cut here ]------------
+[ 2172.936999] kernel BUG at lib/iov_iter.c:629!
+......
+[ 2172.944996] PKRU: 55555554
+[ 2172.945155] Call Trace:
+[ 2172.945299]  <TASK>
+[ 2172.945428]  ? die+0x36/0x90
+[ 2172.945601]  ? do_trap+0xdd/0x100
+[ 2172.945795]  ? iov_iter_revert+0x178/0x180
+[ 2172.946031]  ? iov_iter_revert+0x178/0x180
+[ 2172.946267]  ? do_error_trap+0x7d/0x110
+[ 2172.946499]  ? iov_iter_revert+0x178/0x180
+[ 2172.946736]  ? exc_invalid_op+0x50/0x70
+[ 2172.946961]  ? iov_iter_revert+0x178/0x180
+[ 2172.947197]  ? asm_exc_invalid_op+0x1a/0x20
+[ 2172.947446]  ? iov_iter_revert+0x178/0x180
+[ 2172.947683]  ? iov_iter_revert+0x5c/0x180
+[ 2172.947913]  tls_sw_sendmsg_locked.isra.0+0x794/0x840
+[ 2172.948206]  tls_sw_sendmsg+0x52/0x80
+[ 2172.948420]  ? inet_sendmsg+0x1f/0x70
+[ 2172.948634]  __sys_sendto+0x1cd/0x200
+[ 2172.948848]  ? find_held_lock+0x2b/0x80
+[ 2172.949072]  ? syscall_trace_enter+0x140/0x270
+[ 2172.949330]  ? __lock_release.isra.0+0x5e/0x170
+[ 2172.949595]  ? find_held_lock+0x2b/0x80
+[ 2172.949817]  ? syscall_trace_enter+0x140/0x270
+[ 2172.950211]  ? lockdep_hardirqs_on_prepare+0xda/0x190
+[ 2172.950632]  ? ktime_get_coarse_real_ts64+0xc2/0xd0
+[ 2172.951036]  __x64_sys_sendto+0x24/0x30
+[ 2172.951382]  do_syscall_64+0x90/0x170
+......
 
-Add check to find if iptables-legacy tool is available and skip the
-test if the tool is missing.
+After calling bpf_exec_tx_verdict(), the size of msg_pl->sg may increase,
+e.g., when the BPF program executes bpf_msg_push_data().
 
-Fixes: de9c8d848d90 ("selftests/bpf: S/iptables/iptables-legacy/ in the bpf_nf and xdp_synproxy test")
-Signed-off-by: Saket Kumar Bhaskar <skb99@linux.ibm.com>
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Link: https://lore.kernel.org/bpf/20250409095633.33653-1-skb99@linux.ibm.com
+If the BPF program sets cork_bytes and sg.size is smaller than cork_bytes,
+it will return -ENOSPC and attempt to roll back to the non-zero copy
+logic. However, during rollback, msg->msg_iter is reset, but since
+msg_pl->sg.size has been increased, subsequent executions will exceed the
+actual size of msg_iter.
+'''
+iov_iter_revert(&msg->msg_iter, msg_pl->sg.size - orig_size);
+'''
+
+The changes in this commit are based on the following considerations:
+
+1. When cork_bytes is set, rolling back to non-zero copy logic is
+pointless and can directly go to zero-copy logic.
+
+2. We can not calculate the correct number of bytes to revert msg_iter.
+
+Assume the original data is "abcdefgh" (8 bytes), and after 3 pushes
+by the BPF program, it becomes 11-byte data: "abc?de?fgh?".
+Then, we set cork_bytes to 6, which means the first 6 bytes have been
+processed, and the remaining 5 bytes "?fgh?" will be cached until the
+length meets the cork_bytes requirement.
+
+However, some data in "?fgh?" is not within 'sg->msg_iter'
+(but in msg_pl instead), especially the data "?" we pushed.
+
+So it doesn't seem as simple as just reverting through an offset of
+msg_iter.
+
+3. For non-TLS sockets in tcp_bpf_sendmsg, when a "cork" situation occurs,
+the user-space send() doesn't return an error, and the returned length is
+the same as the input length parameter, even if some data is cached.
+
+Additionally, I saw that the current non-zero-copy logic for handling
+corking is written as:
+'''
+line 1177
+else if (ret != -EAGAIN) {
+	if (ret == -ENOSPC)
+		ret = 0;
+	goto send_end;
+'''
+
+So it's ok to just return 'copied' without error when a "cork" situation
+occurs.
+
+Fixes: fcb14cb1bdac ("new iov_iter flavour - ITER_UBUF")
+Fixes: d3b18ad31f93 ("tls: add bpf support to sk_msg handling")
+Signed-off-by: Jiayuan Chen <jiayuan.chen@linux.dev>
+Acked-by: John Fastabend <john.fastabend@gmail.com>
+Link: https://lore.kernel.org/r/20250219052015.274405-2-jiayuan.chen@linux.dev
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/bpf/prog_tests/bpf_nf.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ net/tls/tls_sw.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/tools/testing/selftests/bpf/prog_tests/bpf_nf.c b/tools/testing/selftests/bpf/prog_tests/bpf_nf.c
-index dbd13f8e42a7a..dd6512fa652be 100644
---- a/tools/testing/selftests/bpf/prog_tests/bpf_nf.c
-+++ b/tools/testing/selftests/bpf/prog_tests/bpf_nf.c
-@@ -63,6 +63,12 @@ static void test_bpf_nf_ct(int mode)
- 		.repeat = 1,
- 	);
- 
-+	if (SYS_NOFAIL("iptables-legacy --version")) {
-+		fprintf(stdout, "Missing required iptables-legacy tool\n");
-+		test__skip();
-+		return;
-+	}
-+
- 	skel = test_bpf_nf__open_and_load();
- 	if (!ASSERT_OK_PTR(skel, "test_bpf_nf__open_and_load"))
- 		return;
+diff --git a/net/tls/tls_sw.c b/net/tls/tls_sw.c
+index 914d4e1516a3c..f3d7d19482da9 100644
+--- a/net/tls/tls_sw.c
++++ b/net/tls/tls_sw.c
+@@ -1120,9 +1120,13 @@ static int tls_sw_sendmsg_locked(struct sock *sk, struct msghdr *msg,
+ 					num_async++;
+ 				else if (ret == -ENOMEM)
+ 					goto wait_for_memory;
+-				else if (ctx->open_rec && ret == -ENOSPC)
++				else if (ctx->open_rec && ret == -ENOSPC) {
++					if (msg_pl->cork_bytes) {
++						ret = 0;
++						goto send_end;
++					}
+ 					goto rollback_iter;
+-				else if (ret != -EAGAIN)
++				} else if (ret != -EAGAIN)
+ 					goto send_end;
+ 			}
+ 			continue;
 -- 
 2.39.5
 
