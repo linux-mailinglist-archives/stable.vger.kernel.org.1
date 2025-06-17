@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-153697-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-154137-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F2BEADD5CC
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:26:02 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6353AADD832
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:53:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 288572C3CC6
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:19:28 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C6EF54A3585
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:43:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC2932EE27C;
-	Tue, 17 Jun 2025 16:13:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 391CB2ED179;
+	Tue, 17 Jun 2025 16:37:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CrXJgx1a"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MQQU0wxj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 891712EE277;
-	Tue, 17 Jun 2025 16:13:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA3C02ED165;
+	Tue, 17 Jun 2025 16:36:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750176797; cv=none; b=aFy5wIP/MycLkJn334DwtBUbi0EMVnKcwFtUXeA4E6oZRfOvBP1oGco5cXn+mXs4/9bAAL6/sqixN6E+u04CrsPIzfRaa9qLT55+q6p4vAj6Dw0pl1zlonFgOoKwjmPYkiF3ML1I2s8Osp5G1eXr4UwGyRE7t1cbRXgv+XqQols=
+	t=1750178220; cv=none; b=sv37RzwbU2PmHA7wLBjFtmz8GJx4gIa2/58U0ZB4+Y9fr2RnhFX4teIFVIc+nnQXqCCbwUmxrLaOwpzXrM1uRW48k77pHzpxUvFeDINPDUbvDtva5qlBbSJRq/+RhG93f5WtUAf26D4pxXIwwFR9bOnVa7RIQ4kd56fdZu0DFH8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750176797; c=relaxed/simple;
-	bh=Xcb3Swoeh2X4FTV94Lsx/6CigMtcZVAOCYvSnb8CWqw=;
+	s=arc-20240116; t=1750178220; c=relaxed/simple;
+	bh=DHOo6qnZZYCA3prIseip1GpmySopar0pzf0FFh2DgvI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=axzsCcVMJ5sVVKL3wnOIajk6h6Xy/AjxqzeW4OlOxf7hHTjyoqvS8vIilWTuaH0PHptPKpTB8G0ym/+aCp7h0jhBhHhKdz84GForI56fT6IpRHnPPLtE/Rf0ym1f5zXYif8CAOQNOltmAN8qBNqnVAuyDy4sET9wgdxx3U3eQr4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CrXJgx1a; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5409C4CEE3;
-	Tue, 17 Jun 2025 16:13:16 +0000 (UTC)
+	 MIME-Version; b=ZRVzRQAEUOBxBhVLl1KXGQRpYKEIIT/OMCcA518CW36oR0b/kIiL/ANYhBzsJadrQmOXwW2JzHhZ3Q9S9WcqY/G0KLUeIm61l0aQNFqJoa9gZEKARGuJqZOk/sMDn45br5UyZywCxpy9OqQpaEyF4xQdEWAVk+ozENlKUHNIfSM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MQQU0wxj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D792C4CEE3;
+	Tue, 17 Jun 2025 16:36:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750176797;
-	bh=Xcb3Swoeh2X4FTV94Lsx/6CigMtcZVAOCYvSnb8CWqw=;
+	s=korg; t=1750178219;
+	bh=DHOo6qnZZYCA3prIseip1GpmySopar0pzf0FFh2DgvI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CrXJgx1aPe4Q+vPShjv2oqYuTRljWWBi30NYjr4q2QpWxrLicEZKyFIDEneQaMPLW
-	 yhoFG7VIK/2L6AEtMa4pZFX0eC2GO8WS3AwnLqMwu6R8VK4goaHyqy99ncqINPrORG
-	 jJ5ZcPGCL3cToXBqxlf1ZQPx++LUHaocrxrUYJ1E=
+	b=MQQU0wxjuVD2ScMaZNuDfH2d8a1+eE+fMdF7lD4M7BiZlLivvBoV9lyWNe8wzRTSl
+	 d9BhmEGYL4L8lSJUq4Tk5IOaD4RF+JviFv+3daWnyhpyx0gvD3P5GJHS95W78Ix39y
+	 onBwZ6V7I5qu1uXl+ax3/jD/1A0ve5DPr4+c4A4o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Robert Malz <robert.malz@canonical.com>,
-	Rafal Romanowski <rafal.romanowski@intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Yevgeny Kliteynik <kliteyn@nvidia.com>,
+	Mark Bloch <mbloch@nvidia.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 314/356] i40e: retry VFLR handling if there is ongoing VF reset
+Subject: [PATCH 6.12 463/512] net/mlx5: HWS, fix missing ip_version handling in definer
 Date: Tue, 17 Jun 2025 17:27:09 +0200
-Message-ID: <20250617152350.801715791@linuxfoundation.org>
+Message-ID: <20250617152438.343813704@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152338.212798615@linuxfoundation.org>
-References: <20250617152338.212798615@linuxfoundation.org>
+In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
+References: <20250617152419.512865572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,46 +63,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Robert Malz <robert.malz@canonical.com>
+From: Yevgeny Kliteynik <kliteyn@nvidia.com>
 
-[ Upstream commit fb4e9239e029954a37a00818b21e837cebf2aa10 ]
+[ Upstream commit b5e3c76f35ee7e814c2469c73406c5bbf110d89c ]
 
-When a VFLR interrupt is received during a VF reset initiated from a
-different source, the VFLR may be not fully handled. This can
-leave the VF in an undefined state.
-To address this, set the I40E_VFLR_EVENT_PENDING bit again during VFLR
-handling if the reset is not yet complete. This ensures the driver
-will properly complete the VF reset in such scenarios.
+Fix missing field handling in definer - outer IP version.
 
-Fixes: 52424f974bc5 ("i40e: Fix VF hang when reset is triggered on another VF")
-Signed-off-by: Robert Malz <robert.malz@canonical.com>
-Tested-by: Rafal Romanowski <rafal.romanowski@intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Fixes: 74a778b4a63f ("net/mlx5: HWS, added definers handling")
+Signed-off-by: Yevgeny Kliteynik <kliteyn@nvidia.com>
+Signed-off-by: Mark Bloch <mbloch@nvidia.com>
+Link: https://patch.msgid.link/20250610151514.1094735-6-mbloch@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ .../ethernet/mellanox/mlx5/core/steering/hws/mlx5hws_definer.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c b/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c
-index 348869f05020f..80036942dc764 100644
---- a/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c
-+++ b/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c
-@@ -4332,7 +4332,10 @@ int i40e_vc_process_vflr_event(struct i40e_pf *pf)
- 		reg = rd32(hw, I40E_GLGEN_VFLRSTAT(reg_idx));
- 		if (reg & BIT(bit_idx))
- 			/* i40e_reset_vf will clear the bit in GLGEN_VFLRSTAT */
--			i40e_reset_vf(vf, true);
-+			if (!i40e_reset_vf(vf, true)) {
-+				/* At least one VF did not finish resetting, retry next time */
-+				set_bit(__I40E_VFLR_EVENT_PENDING, pf->state);
-+			}
- 	}
- 
- 	return 0;
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/steering/hws/mlx5hws_definer.c b/drivers/net/ethernet/mellanox/mlx5/core/steering/hws/mlx5hws_definer.c
+index ab5f8f07f1f7e..72b19b05c0cf4 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/steering/hws/mlx5hws_definer.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/steering/hws/mlx5hws_definer.c
+@@ -558,6 +558,9 @@ hws_definer_conv_outer(struct mlx5hws_definer_conv_data *cd,
+ 	HWS_SET_HDR(fc, match_param, IP_PROTOCOL_O,
+ 		    outer_headers.ip_protocol,
+ 		    eth_l3_outer.protocol_next_header);
++	HWS_SET_HDR(fc, match_param, IP_VERSION_O,
++		    outer_headers.ip_version,
++		    eth_l3_outer.ip_version);
+ 	HWS_SET_HDR(fc, match_param, IP_TTL_O,
+ 		    outer_headers.ttl_hoplimit,
+ 		    eth_l3_outer.time_to_live_hop_limit);
 -- 
 2.39.5
 
