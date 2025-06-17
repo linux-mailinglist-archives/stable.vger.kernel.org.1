@@ -1,69 +1,116 @@
-Return-Path: <stable+bounces-152843-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-152844-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A5D16ADCD12
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 15:25:48 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D9999ADCD99
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 15:39:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3E8B21898F2D
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 13:21:12 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 203C9188C01A
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 13:38:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9EDCD2DE20E;
-	Tue, 17 Jun 2025 13:19:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tfmFXcHA"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 395F92E264B;
+	Tue, 17 Jun 2025 13:37:30 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E2D62248A0
-	for <stable@vger.kernel.org>; Tue, 17 Jun 2025 13:19:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D408E2E7626
+	for <stable@vger.kernel.org>; Tue, 17 Jun 2025 13:37:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750166384; cv=none; b=oKWOs6dFclvwBDlS0pHDpfAm5kgRT5X0cg6qAd6R5wTAe4vvmGko2NTrNPf1jAHlJ/pnVn7mS6A3iX2o4CfMxdQm8NeunsSrHwkL174Rs2oVbYSkUKH067/fVK9KoqefponKT+KB8cWBzKXNCYEHpuw7u+Wa9I3ktSLuzscKO5I=
+	t=1750167450; cv=none; b=UGGmPgvgZDxcgBei0bHuHJKvIqlZgwd5M/Ujq+Ri3F0XBVjgIoKvR1sW7D0I6RrBLi5W3JGUI8qTYHdRBG84d4CqByxd1h2XQiENZMfrr6II11rZ6eHhSZeCjooGeaXyIbl3mpB4A1McoTd+Qi07XreWYI71aO2rbEm+v3vg9B0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750166384; c=relaxed/simple;
-	bh=I69wXrHRwhqwHjn2d6mq/P0uYEIZ2ebu1bhx6iosMqo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=WJ7zh0M4DHUdKQK+iHkVyXaFtBkKh41KLn/JN5b5ZAPUZ1GKSqPA/URM8R+JYXQ/Vg9vjMUSaxJsr9Q8Y6/4iMBYXsyw7TRefYbG7co7WjUt0XlYZUoiNT6Z5lLNB7k53UfsBZTOfmYmNbgidsBpsnkMJa2HtwzQN0zHD19DUpw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tfmFXcHA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 846C1C4CEE3;
-	Tue, 17 Jun 2025 13:19:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750166383;
-	bh=I69wXrHRwhqwHjn2d6mq/P0uYEIZ2ebu1bhx6iosMqo=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=tfmFXcHArxbkbUxL0XTy4lX4O5+HZKI44In8zhT1Igl0pPOIf8KbYTVxQXvUPWMVW
-	 hrRZUAr9zoD47dPLzuLGtYSJqGDmBk/cwm/iIypAWJt3daI2Te6E6BjQ79KGftswJE
-	 pbxaAAa2Sp43d5UteAZGUeedagooWg77800yKZZI=
-Date: Tue, 17 Jun 2025 15:19:40 +0200
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Jens Axboe <axboe@kernel.dk>
-Cc: stable <stable@vger.kernel.org>, Rom Lemarchand <romlem@google.com>
-Subject: Re: 6.6-stable inclusion request
-Message-ID: <2025061734-mongrel-reward-0b9a@gregkh>
-References: <407299b0-1318-4943-902d-aa1708259722@kernel.dk>
+	s=arc-20240116; t=1750167450; c=relaxed/simple;
+	bh=Pc8JHBbxvWF1v9D1C2yskMvAYPnDtTgZ6bovL5Q/00o=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=taiYaFh66Pj3nRk0Oa5Jjw9tKApTYiHkf9/ByM/PIjxh0uT+mpAmY16bXkCrTfMwyblkBZxr2ZBP8XRUnktOQ5uHG9r0+/aawEMgm+B+VmdkNdm8aIHzPYA8skphyu1e45zRgVmsdUWfh8s/YYoZo6Jx6ey+lnTG9CfGD+U5UB0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 18B1C150C;
+	Tue, 17 Jun 2025 06:37:06 -0700 (PDT)
+Received: from lakrids.cambridge.arm.com (usa-sjc-imap-foss1.foss.arm.com [10.121.207.14])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 5D6073F673;
+	Tue, 17 Jun 2025 06:37:25 -0700 (PDT)
+From: Mark Rutland <mark.rutland@arm.com>
+To: linux-arm-kernel@lists.infradead.org
+Cc: broonie@kernel.org,
+	catalin.marinas@arm.com,
+	kvmarm@lists.linux.dev,
+	mark.rutland@arm.com,
+	maz@kernel.org,
+	oliver.upton@linux.dev,
+	stable@vger.kernel.org,
+	tabba@google.com,
+	will@kernel.org
+Subject: [PATCH 0/7] KVM: arm64: trap fixes and cleanup
+Date: Tue, 17 Jun 2025 14:37:11 +0100
+Message-Id: <20250617133718.4014181-1-mark.rutland@arm.com>
+X-Mailer: git-send-email 2.30.2
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <407299b0-1318-4943-902d-aa1708259722@kernel.dk>
+Content-Transfer-Encoding: 8bit
 
-On Thu, Jun 12, 2025 at 11:40:15AM -0600, Jens Axboe wrote:
-> Hi,
-> 
-> Can you add these three patches to 6.6-stable? It fixes a behavioral
-> change with 6.6-stable that Rom reported, affecting OpenBMC. Other
-> stable versions not affected, as they got the required fixes on top
-> backported already.
+This series fixes some issues with the way KVM manages traps in VHE
+mode, with some cleanups/simplifications atop.
 
-Now queued up, thanks.
+Patch 1 fixes a theoretical issue with debug register manipulation,
+which has been around forever. This was found by inspection while
+working on other fixes.
 
-greg k-h
+Patch 2 fixes an issue with NV where a host may take unexpected traps as
+a result of a guest hypervisor's configuration of CPTR_EL2.
+
+Patch 5 fixes an issue with NV where a guest hypervisor's configuration
+of CPTR_EL2 may not be taken into account when running a guest guest,
+incorrectly permitting usage of SVE when this should be trapped to the
+guest hypervisor.
+
+The other patches in the series are prepartory work and cleanup.
+
+Originally I intended to simplify/cleanup to kvm_hyp_handle_fpsimd() and
+kvm_hyp_save_fpsimd_host(), as discussed with Will on an earlier series:
+
+  https://lore.kernel.org/linux-arm-kernel/20250210161242.GC7568@willie-the-truck/
+  https://lore.kernel.org/linux-arm-kernel/Z6owjEPNaJ55e9LM@J2N7QTR9R3/
+  https://lore.kernel.org/linux-arm-kernel/20250210180637.GA7926@willie-the-truck/
+  https://lore.kernel.org/linux-arm-kernel/Z6pbeIsIMWexiDta@J2N7QTR9R3/
+
+In the process of implementing that, I realised that the CPTR trap
+management wasn't quite right for NV, and found the potential issue with
+debug register configuration.
+
+I've given the series some light testing on a fast model so far; any
+further testing and/or review would be much appreciated.
+
+The series is based on the 'kvmarm-fixes-6.16-2' tag from the kvmarm
+tree.
+
+Mark.
+
+Mark Rutland (7):
+  KVM: arm64: VHE: Synchronize restore of host debug registers
+  KVM: arm64: VHE: Synchronize CPTR trap deactivation
+  KVM: arm64: Reorganise CPTR trap manipulation
+  KVM: arm64: Remove ad-hoc CPTR manipulation from fpsimd_sve_sync()
+  KVM: arm64: Remove ad-hoc CPTR manipulation from
+    kvm_hyp_handle_fpsimd()
+  KVM: arm64: Remove cpacr_clear_set()
+  KVM: arm64: VHE: Centralize ISBs when returning to host
+
+ arch/arm64/include/asm/kvm_emulate.h    |  62 ----------
+ arch/arm64/include/asm/kvm_host.h       |   6 +-
+ arch/arm64/kvm/hyp/include/hyp/switch.h | 147 ++++++++++++++++++++++--
+ arch/arm64/kvm/hyp/nvhe/hyp-main.c      |   5 +-
+ arch/arm64/kvm/hyp/nvhe/switch.c        |  59 ----------
+ arch/arm64/kvm/hyp/vhe/switch.c         | 107 +++--------------
+ 6 files changed, 158 insertions(+), 228 deletions(-)
+
+-- 
+2.30.2
+
 
