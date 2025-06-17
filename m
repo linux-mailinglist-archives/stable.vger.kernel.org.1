@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-153235-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153238-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 28406ADD349
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 17:55:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DB46CADD351
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 17:55:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2EF6F4017FA
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 15:51:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A75193A184F
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 15:51:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77B672ED151;
-	Tue, 17 Jun 2025 15:48:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35D2F2F2349;
+	Tue, 17 Jun 2025 15:48:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vh81lnCT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TTJH94SD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36621204F73;
-	Tue, 17 Jun 2025 15:48:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6C772EBDCE;
+	Tue, 17 Jun 2025 15:48:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750175310; cv=none; b=Np8xLXg4U/m9b+NZ8qrqoLwXVIVgaFnOG5/9N0JOxcxJ7Zh1xNHX7zr3DEkocCieA2+NJGcNeDZ+hUZ64oxELhWw204p4bqe8d6Z2dMx669g7ZYiSKRurOqFH8gx22WoDy0L4SVtM2nhxB82GT2FOmZyZOhFBosDUOVzvY6gwXY=
+	t=1750175320; cv=none; b=JsnJwgFlcETbzPZW8jS7Log9+2HWdFKy0Gq31WHhC2YuSZKPTifdbUSxbQIrBnntzi8leRMQgur6dYxZHvb4qoLDeocfsnViWt3WjHIvdqWFyfKTbfYSemPxHTY6T4MEuxKEuSSsjsBPKM5toUR725H9zpw1WiqU+oeNcjw9O4g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750175310; c=relaxed/simple;
-	bh=gBSY0N4GZi7iJdktVtZSjV04Mf9riTqPUSttatp3CTs=;
+	s=arc-20240116; t=1750175320; c=relaxed/simple;
+	bh=RYpmZ/f6OLJULaSoquh4eNKFrfMNPJXyInN/x8c+MUY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WSMgrUJyhVP7PfvLa2nUsjdpxisSbw2Er0Sah7j3UVQYvGctcOmvWawH1w86ddCu3/qKGF0ruA9zt6JQT4p2Js/Q0y+IgESLavOQG6dNhWIGGa5D/lXgEUZIjB84Go9OXuskGeJhSAE0cqORe9naGQ/ff9QH6Q7UIffuHf+/2fY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vh81lnCT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D498C4CEE7;
-	Tue, 17 Jun 2025 15:48:29 +0000 (UTC)
+	 MIME-Version; b=f3882xDmVUk5l0CxnNf9kePzwUgB7ex8MO1jx7m2k3I+5mqSjI5bbYJJgUlcu7dUhv4rHyvfQ8aX25xms86014TUQY2YyPUQGjpkK89DePQf6Xy3nQFOZrlDyHnPF9cFRJXfU+W9YvsIZU9bKvYEDVZufzBSCYk1X1FMraqLN4M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TTJH94SD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 134A3C4CEE3;
+	Tue, 17 Jun 2025 15:48:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750175309;
-	bh=gBSY0N4GZi7iJdktVtZSjV04Mf9riTqPUSttatp3CTs=;
+	s=korg; t=1750175319;
+	bh=RYpmZ/f6OLJULaSoquh4eNKFrfMNPJXyInN/x8c+MUY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vh81lnCTNJS+WzC8bC3HcNeL6O26QLkC1v/a+Pn2wsihc1b9zd6SC+y1txal7YU75
-	 efZ520xTN8iQwvXqWfFt+HBpv6SyBP2BwFfiWm147WD7KLTO56fS7JQ04Zui7JRxT8
-	 3j3ky/hc0LQErf0d/TzZJ+Y5j9OIQyLI9BF1iy3M=
+	b=TTJH94SDQjRzIP4gncH6Q3Ff5vvESxx7pNFPtNArkt15Eu9eKlX7XKDHAHPvl4C4A
+	 sdTRk52zMaOz/z1SVqiH2Nu4p+Eu1KYKLzIBt2vMEb3bBH+9dAa2wzMJGkdDV/JZ9x
+	 nfHtC4cCLmMCB5aM6wV5oIvovnSLpEIEZ9quPZqs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stephan Gerhold <stephan.gerhold@linaro.org>,
-	Bjorn Andersson <andersson@kernel.org>,
+	Wolfram Sang <wsa+renesas@sang-engineering.com>,
+	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 163/356] arm64: dts: qcom: sc8280xp-x13s: Drop duplicate DMIC supplies
-Date: Tue, 17 Jun 2025 17:24:38 +0200
-Message-ID: <20250617152344.780037319@linuxfoundation.org>
+Subject: [PATCH 6.6 164/356] ARM: dts: at91: usb_a9263: fix GPIO for Dataflash chip select
+Date: Tue, 17 Jun 2025 17:24:39 +0200
+Message-ID: <20250617152344.818205771@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250617152338.212798615@linuxfoundation.org>
 References: <20250617152338.212798615@linuxfoundation.org>
@@ -66,51 +66,37 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Stephan Gerhold <stephan.gerhold@linaro.org>
+From: Wolfram Sang <wsa+renesas@sang-engineering.com>
 
-[ Upstream commit a2e617f4e6981aa514a569e927f90b0d39bb31b2 ]
+[ Upstream commit 67ba341e57ab158423818ed33bfa1c40eb0e5e7e ]
 
-The WCD938x codec provides two controls for each of the MIC_BIASn outputs:
+Dataflash did not work on my board. After checking schematics and using
+the proper GPIO, it works now. Also, make it active low to avoid:
 
- - "MIC BIASn" enables an internal regulator to generate the output
-   with a configurable voltage (qcom,micbiasN-microvolt).
+flash@0 enforce active low on GPIO handle
 
- - "VA MIC BIASn" enables "pull-up mode" that bypasses the internal
-   regulator and directly outputs fixed 1.8V from the VDD_PX pin.
-   This is intended for low-power VA (voice activation) use cases.
-
-The audio-routing setup for the ThinkPad X13s currently specifies both
-as power supplies for the DMICs, but only one of them can be active
-at the same time. In practice, only the internal regulator is used
-with the current setup because the driver prefers it over pull-up mode.
-
-Make this more clear by dropping the redundant routes to the pull-up
-"VA MIC BIASn" supply. There is no functional difference except that we
-skip briefly switching to pull-up mode when shutting down the microphone.
-
-Fixes: 2e498f35c385 ("arm64: dts: qcom: sc8280xp-x13s: fix va dmic dai links and routing")
-Signed-off-by: Stephan Gerhold <stephan.gerhold@linaro.org>
-Link: https://lore.kernel.org/r/20241203-x1e80100-va-mic-bias-v1-1-0dfd4d9b492c@linaro.org
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Fixes: 2432d201468d ("ARM: at91: dt: usb-a9263: add dataflash support")
+Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
+Link: https://lore.kernel.org/r/20250404112742.67416-2-wsa+renesas@sang-engineering.com
+Signed-off-by: Claudiu Beznea <claudiu.beznea@tuxon.dev>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/sc8280xp-lenovo-thinkpad-x13s.dts | 3 ---
- 1 file changed, 3 deletions(-)
+ arch/arm/boot/dts/microchip/usb_a9263.dts | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm64/boot/dts/qcom/sc8280xp-lenovo-thinkpad-x13s.dts b/arch/arm64/boot/dts/qcom/sc8280xp-lenovo-thinkpad-x13s.dts
-index 5c2894fcfa4a0..5498e84bfead0 100644
---- a/arch/arm64/boot/dts/qcom/sc8280xp-lenovo-thinkpad-x13s.dts
-+++ b/arch/arm64/boot/dts/qcom/sc8280xp-lenovo-thinkpad-x13s.dts
-@@ -985,9 +985,6 @@
- 		"VA DMIC0", "MIC BIAS1",
- 		"VA DMIC1", "MIC BIAS1",
- 		"VA DMIC2", "MIC BIAS3",
--		"VA DMIC0", "VA MIC BIAS1",
--		"VA DMIC1", "VA MIC BIAS1",
--		"VA DMIC2", "VA MIC BIAS3",
- 		"TX SWR_ADC1", "ADC2_OUTPUT";
+diff --git a/arch/arm/boot/dts/microchip/usb_a9263.dts b/arch/arm/boot/dts/microchip/usb_a9263.dts
+index 45745915b2e16..25c643067b2ec 100644
+--- a/arch/arm/boot/dts/microchip/usb_a9263.dts
++++ b/arch/arm/boot/dts/microchip/usb_a9263.dts
+@@ -58,7 +58,7 @@
+ 			};
  
- 	wcd-playback-dai-link {
+ 			spi0: spi@fffa4000 {
+-				cs-gpios = <&pioB 15 GPIO_ACTIVE_HIGH>;
++				cs-gpios = <&pioA 5 GPIO_ACTIVE_LOW>;
+ 				status = "okay";
+ 				flash@0 {
+ 					compatible = "atmel,at45", "atmel,dataflash";
 -- 
 2.39.5
 
