@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-154412-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153501-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 65193ADD83C
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:53:26 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id E1529ADD4BE
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:13:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EB20B7AE6F8
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:52:03 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 529372C4936
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:06:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01DAB235071;
-	Tue, 17 Jun 2025 16:51:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3705D2E9730;
+	Tue, 17 Jun 2025 16:02:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dpgUZ9oZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zXFZCdke"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC3EA2FA658;
-	Tue, 17 Jun 2025 16:51:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5F0E2EF28A;
+	Tue, 17 Jun 2025 16:02:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750179111; cv=none; b=IiwwSFB2Bel6fjeumb0XC+mZgba1wWFnFdXCIF6s5M8gygDxTQPsjjFenVl+kaDsC5oc5Jz6Lv1c0QLEJy2m9pNkqAaFAgpx+4ZWIETNxUfGl5G/qox6B+TmA9qbZuPoQwkViHf6/4YG0IppgJa+c+UibkXnXdeP2jyWKTPZSHs=
+	t=1750176167; cv=none; b=Ga7wlAJbwZCH9XPqO/VEwmeoOiHZsFQNHgsDbHAZ2igoDKMHQGr7OhTYWs/xpCr7plMGBEGXXy72SYRLGLMPEYoAtm/VhjNuQs0CZzvcob5NASohKOfcO9O52jteQGnoDPMNgVk0Xx855WOebnjetBlT4YIoNTtP2HiP6+v1dR8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750179111; c=relaxed/simple;
-	bh=0P92VuA0gmOjHEsbbbgnjP/j/C5fy3zaq7lGNE9j3Pg=;
+	s=arc-20240116; t=1750176167; c=relaxed/simple;
+	bh=DBY+sGN/MtYQOCdQiRxGXE/hvMUmo3cTMFwNBFjrSv0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qMVhAK/QZvNjYev6ByJZO7yxqzZKdvJIK8NC4brxX7tUxVLp3MRRH04UCDxrHdSwuSZvze3V9+Se0AvK+3fn4loJt92G082tKnZDw7RcNE/Il2a6VlJbiY6QHaIo3j9q/hkanKOi44G0A65BnXX81F3nwsGfyRPtMeENvma47c8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dpgUZ9oZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D1EAC4CEE3;
-	Tue, 17 Jun 2025 16:51:50 +0000 (UTC)
+	 MIME-Version; b=JACc809wD6xc4ZzyX9c0jYJCvLkqVlwLP89Yf+wOsNZ8bUlqiOBgzk1XyugOIs/+C5JSf5rHOXnWo7Wq/Xe5QavH1KK2z9W5r1bBWC/zaE2WJpyHv014ihSsnZtScRdyEBjkGNfhHcre0bgddLuNZ88CkSA1Gat2mP1OPTyCtn4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zXFZCdke; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 558E7C4CEE7;
+	Tue, 17 Jun 2025 16:02:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750179111;
-	bh=0P92VuA0gmOjHEsbbbgnjP/j/C5fy3zaq7lGNE9j3Pg=;
+	s=korg; t=1750176166;
+	bh=DBY+sGN/MtYQOCdQiRxGXE/hvMUmo3cTMFwNBFjrSv0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dpgUZ9oZCNVfH89+g/6I4VNjy4/PCVuX99B3LbxZQQ5seuI20oM/5qwFPz19yDoNY
-	 8s8WvUEHVxatfJYVVC7Gf15iaFNSeeaqHIt2XlgCyVDBGLOcKoqC4QcVbRqMWEEM+N
-	 KJfmZ2z967GXvstoYUHvZI42PtSfq7+teLod5JNY=
+	b=zXFZCdkecL+VEQ5tt7+5TQ4HwsRrxoXWb+f3+L3z5bLsQKE0wpbELI3g/v2oPaYBM
+	 Gb++oOvfILMwoRuYDvcsqqzGO0Ozmv+NGdvquvcJx4HOxY1ctfMgz2ZkRGdPOVs6g4
+	 CO0ZFHphlqpOJRkXZkyIjS+eFM2oRjYyWNF0OyHQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christian Brauner <brauner@kernel.org>,
-	Al Viro <viro@zeniv.linux.org.uk>,
+	syzbot+f0c4a4aba757549ae26c@syzkaller.appspotmail.com,
+	Charalampos Mitrodimas <charmitro@posteo.net>,
+	Tung Nguyen <tung.quang.nguyen@est.tech>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 652/780] finish_automount(): dont leak MNT_LOCKED from parent to child
+Subject: [PATCH 6.6 245/356] net: tipc: fix refcount warning in tipc_aead_encrypt
 Date: Tue, 17 Jun 2025 17:26:00 +0200
-Message-ID: <20250617152518.026292035@linuxfoundation.org>
+Message-ID: <20250617152348.070114815@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
-References: <20250617152451.485330293@linuxfoundation.org>
+In-Reply-To: <20250617152338.212798615@linuxfoundation.org>
+References: <20250617152338.212798615@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,56 +64,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Al Viro <viro@zeniv.linux.org.uk>
+From: Charalampos Mitrodimas <charmitro@posteo.net>
 
-[ Upstream commit bab77c0d191e241d2d59a845c7ed68bfa6e1b257 ]
+[ Upstream commit f29ccaa07cf3d35990f4d25028cc55470d29372b ]
 
-Intention for MNT_LOCKED had always been to protect the internal
-mountpoints within a subtree that got copied across the userns boundary,
-not the mountpoint that tree got attached to - after all, it _was_
-exposed before the copying.
+syzbot reported a refcount warning [1] caused by calling get_net() on
+a network namespace that is being destroyed (refcount=0). This happens
+when a TIPC discovery timer fires during network namespace cleanup.
 
-For roots of secondary copies that is enforced in attach_recursive_mnt() -
-MNT_LOCKED is explicitly stripped for those.  For the root of primary
-copy we are almost always guaranteed that MNT_LOCKED won't be there,
-so attach_recursive_mnt() doesn't bother.  Unfortunately, one call
-chain got overlooked - triggering e.g. NFS referral will have the
-submount inherit the public flags from parent; that's fine for such
-things as read-only, nosuid, etc., but not for MNT_LOCKED.
+The recently added get_net() call in commit e279024617134 ("net/tipc:
+fix slab-use-after-free Read in tipc_aead_encrypt_done") attempts to
+hold a reference to the network namespace. However, if the namespace
+is already being destroyed, its refcount might be zero, leading to the
+use-after-free warning.
 
-This is particularly pointless since the mount attached by finish_automount()
-is usually expirable, which makes any protection granted by MNT_LOCKED
-null and void; just wait for a while and that mount will go away on its own.
+Replace get_net() with maybe_get_net(), which safely checks if the
+refcount is non-zero before incrementing it. If the namespace is being
+destroyed, return -ENODEV early, after releasing the bearer reference.
 
-Include MNT_LOCKED into the set of flags to be ignored by do_add_mount() - it
-really is an internal flag.
+[1]: https://lore.kernel.org/all/68342b55.a70a0220.253bc2.0091.GAE@google.com/T/#m12019cf9ae77e1954f666914640efa36d52704a2
 
-Reviewed-by: Christian Brauner <brauner@kernel.org>
-Fixes: 5ff9d8a65ce8 ("vfs: Lock in place mounts from more privileged users")
-Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
+Reported-by: syzbot+f0c4a4aba757549ae26c@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/all/68342b55.a70a0220.253bc2.0091.GAE@google.com/T/#m12019cf9ae77e1954f666914640efa36d52704a2
+Fixes: e27902461713 ("net/tipc: fix slab-use-after-free Read in tipc_aead_encrypt_done")
+Signed-off-by: Charalampos Mitrodimas <charmitro@posteo.net>
+Reviewed-by: Tung Nguyen <tung.quang.nguyen@est.tech>
+Link: https://patch.msgid.link/20250527-net-tipc-warning-v2-1-df3dc398a047@posteo.net
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/mount.h | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ net/tipc/crypto.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/include/linux/mount.h b/include/linux/mount.h
-index 6904ad33ee7a3..1a3136e53eaa0 100644
---- a/include/linux/mount.h
-+++ b/include/linux/mount.h
-@@ -65,7 +65,8 @@ enum mount_flags {
- 	MNT_ATIME_MASK = MNT_NOATIME | MNT_NODIRATIME | MNT_RELATIME,
+diff --git a/net/tipc/crypto.c b/net/tipc/crypto.c
+index 8584893b47851..79f91b6ca8c84 100644
+--- a/net/tipc/crypto.c
++++ b/net/tipc/crypto.c
+@@ -818,7 +818,11 @@ static int tipc_aead_encrypt(struct tipc_aead *aead, struct sk_buff *skb,
+ 	}
  
- 	MNT_INTERNAL_FLAGS = MNT_SHARED | MNT_WRITE_HOLD | MNT_INTERNAL |
--			     MNT_DOOMED | MNT_SYNC_UMOUNT | MNT_MARKED,
-+			     MNT_DOOMED | MNT_SYNC_UMOUNT | MNT_MARKED |
-+			     MNT_LOCKED,
- };
+ 	/* Get net to avoid freed tipc_crypto when delete namespace */
+-	get_net(aead->crypto->net);
++	if (!maybe_get_net(aead->crypto->net)) {
++		tipc_bearer_put(b);
++		rc = -ENODEV;
++		goto exit;
++	}
  
- struct vfsmount {
+ 	/* Now, do encrypt */
+ 	rc = crypto_aead_encrypt(req);
 -- 
 2.39.5
 
