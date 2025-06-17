@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-153753-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153756-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9041BADD632
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:31:02 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9DC3EADD63B
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:31:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 180447A6389
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:21:32 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F19D62C647B
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:23:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3F882E8E0D;
-	Tue, 17 Jun 2025 16:16:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D87C285052;
+	Tue, 17 Jun 2025 16:16:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iZ9/1T5X"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qwyze6ei"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 945DD2E8DFC;
-	Tue, 17 Jun 2025 16:16:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0431A28504A;
+	Tue, 17 Jun 2025 16:16:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750176987; cv=none; b=hxs/gS5ETFlifzm1+qrM2YFdE9orRoYkNwy/JxyU+p+6PrXy6FZXhR6NQYY+sKMS4udk51q4NU4UmPyiqNFjJyXOew1adpYVIamK4S1ws36CvPgq39xKyje05G5ESXQ3Z2As/GepF9eVjL8xOKuQENL5SbUosWqh7ZGX3Lhbzy0=
+	t=1750176998; cv=none; b=k77YB+zoGIDR2gtZR0fON6z+mtLsWrKQJjg0PpnD2BbDBYBsPBbgH2t4LNRKt31KkO+HPSp7E+qIo/Ufe+VCvIhoVZu9bYsu3PN3KF7Koc8KhHTdnDkJ2WWTA0uiTUmZWN+DJZsimcBdLnOzZSJtYG4lB3fPJOZ3U9tPFezP9vE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750176987; c=relaxed/simple;
-	bh=syJAWsSup3LWXZh7L3Avgbt7aqFoBAeaxMOFeZy4uQ4=;
+	s=arc-20240116; t=1750176998; c=relaxed/simple;
+	bh=Gd9HPLAInEel218diRDaOuzya3XkpeN81cE+EskeXw8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LUlKP1kW6rAfViHvlm+lN8kfKr+VEjYKtHZxpeimDaPPA+BSLTiVv5z89x9b1OjpNZelLkxMWFz2gmsFAbSgX0JrOgEAcJM5Jg3g/fULepzLjj3+hWrcs35Rmw87dp/b+UFOGXxvOigziFOwYO5J8+CNuS6gDUrZ+e+uPsu8JAY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iZ9/1T5X; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1857FC4CEE7;
-	Tue, 17 Jun 2025 16:16:26 +0000 (UTC)
+	 MIME-Version; b=MxVpIsg7s4RSpMJFsiz6P3HVo1cckeQLUGjAY3NkJ4VOBTs+i7m6+E8g4mhnuiIpBrqMBAiBnFmMOSZh5y2Jr3L+x9Wb5p3lQTg1VmGHSGKJCu0uq4Tg3+Fs6j3hZpxIfZLjUOcebW11VsenaUyJs9Y8MagYPhy2m2ZXsF5UTOM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qwyze6ei; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 889AFC4CEE3;
+	Tue, 17 Jun 2025 16:16:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750176987;
-	bh=syJAWsSup3LWXZh7L3Avgbt7aqFoBAeaxMOFeZy4uQ4=;
+	s=korg; t=1750176997;
+	bh=Gd9HPLAInEel218diRDaOuzya3XkpeN81cE+EskeXw8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iZ9/1T5Xo0MxE7mfoTCKBZeX5opxKSyD6Dw2hjwOIgAD0A0MZpgUAxxfnRd6IUFYH
-	 MRf+I5cMiFNAjC0pPfyWi86wp3fszt2HXhzHorGl8VIOvdODHj63biRflYaAJlcnp0
-	 0rzAq7Sy0RSz5n+eq/+LxvrMhBSKzHv3P+x3KvUg=
+	b=qwyze6eiVZP8fOPKUJRxRN6ojOPvV/m2ofE+7P0nFsUuO359r+YdBFekrRGLagn3i
+	 cKjWZYLtwQ786KiwkdNMASZti//yZ+Vivyg5dBLIjFqMHVtCy+AqzT3sh5vjuFKGWP
+	 6ft35ZjeOMlvQkR+UIW2+uLuZFW/duIPZqfwNfIA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Luca Weiss <luca.weiss@fairphone.com>,
-	Taniya Das <quic_tdas@quicinc.com>,
-	Bjorn Andersson <andersson@kernel.org>,
+	Sagarika Sharma <sharmasagarika@google.com>,
+	Minh-Anh Nguyen <minhanhdn@google.com>,
+	YiFei Zhu <zhuyifei@google.com>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Quentin Monnet <qmo@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 246/780] clk: qcom: gpucc-sm6350: Add *_wait_val values for GDSCs
-Date: Tue, 17 Jun 2025 17:19:14 +0200
-Message-ID: <20250617152501.472159042@linuxfoundation.org>
+Subject: [PATCH 6.15 247/780] bpftool: Fix regression of "bpftool cgroup tree" EINVAL on older kernels
+Date: Tue, 17 Jun 2025 17:19:15 +0200
+Message-ID: <20250617152501.509936316@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
 References: <20250617152451.485330293@linuxfoundation.org>
@@ -67,54 +69,57 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Luca Weiss <luca.weiss@fairphone.com>
+From: YiFei Zhu <zhuyifei@google.com>
 
-[ Upstream commit d988b0b866c2aeb23aa74022b5bbd463165a7a33 ]
+[ Upstream commit 43745d11bfd9683abdf08ad7a5cc403d6a9ffd15 ]
 
-Compared to the msm-4.19 driver the mainline GDSC driver always sets the
-bits for en_rest, en_few & clk_dis, and if those values are not set
-per-GDSC in the respective driver then the default value from the GDSC
-driver is used. The downstream driver only conditionally sets
-clk_dis_wait_val if qcom,clk-dis-wait-val is given in devicetree.
+If cgroup_has_attached_progs queries an attach type not supported
+by the running kernel, due to the kernel being older than the bpftool
+build, it would encounter an -EINVAL from BPF_PROG_QUERY syscall.
 
-Correct this situation by explicitly setting those values. For all GDSCs
-the reset value of those bits are used, with the exception of
-gpu_cx_gdsc which has an explicit value (qcom,clk-dis-wait-val = <8>).
+Prior to commit 98b303c9bf05 ("bpftool: Query only cgroup-related
+attach types"), this EINVAL would be ignored by the function, allowing
+the function to only consider supported attach types. The commit
+changed so that, instead of querying all attach types, only attach
+types from the array `cgroup_attach_types` is queried. The assumption
+is that because these are only cgroup attach types, they should all
+be supported. Unfortunately this assumption may be false when the
+kernel is older than the bpftool build, where the attach types queried
+by bpftool is not yet implemented in the kernel. This would result in
+errors such as:
 
-Fixes: 013804a727a0 ("clk: qcom: Add GPU clock controller driver for SM6350")
-Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
-Reviewed-by: Taniya Das <quic_tdas@quicinc.com>
-Link: https://lore.kernel.org/r/20250425-sm6350-gdsc-val-v1-4-1f252d9c5e4e@fairphone.com
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+  $ bpftool cgroup tree
+  CgroupPath
+  ID       AttachType      AttachFlags     Name
+  Error: can't query bpf programs attached to /sys/fs/cgroup: Invalid argument
+
+This patch restores the logic of ignoring EINVAL from prior to that patch.
+
+Fixes: 98b303c9bf05 ("bpftool: Query only cgroup-related attach types")
+Reported-by: Sagarika Sharma <sharmasagarika@google.com>
+Reported-by: Minh-Anh Nguyen <minhanhdn@google.com>
+Signed-off-by: YiFei Zhu <zhuyifei@google.com>
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Acked-by: Quentin Monnet <qmo@kernel.org>
+Link: https://lore.kernel.org/bpf/20250428211536.1651456-1-zhuyifei@google.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/qcom/gpucc-sm6350.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ tools/bpf/bpftool/cgroup.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/clk/qcom/gpucc-sm6350.c b/drivers/clk/qcom/gpucc-sm6350.c
-index 35ed0500bc593..ee89c42413f88 100644
---- a/drivers/clk/qcom/gpucc-sm6350.c
-+++ b/drivers/clk/qcom/gpucc-sm6350.c
-@@ -413,6 +413,9 @@ static struct clk_branch gpu_cc_gx_vsense_clk = {
- static struct gdsc gpu_cx_gdsc = {
- 	.gdscr = 0x106c,
- 	.gds_hw_ctrl = 0x1540,
-+	.en_rest_wait_val = 0x2,
-+	.en_few_wait_val = 0x2,
-+	.clk_dis_wait_val = 0x8,
- 	.pd = {
- 		.name = "gpu_cx_gdsc",
- 	},
-@@ -423,6 +426,9 @@ static struct gdsc gpu_cx_gdsc = {
- static struct gdsc gpu_gx_gdsc = {
- 	.gdscr = 0x100c,
- 	.clamp_io_ctrl = 0x1508,
-+	.en_rest_wait_val = 0x2,
-+	.en_few_wait_val = 0x2,
-+	.clk_dis_wait_val = 0x2,
- 	.pd = {
- 		.name = "gpu_gx_gdsc",
- 		.power_on = gdsc_gx_do_nothing_enable,
+diff --git a/tools/bpf/bpftool/cgroup.c b/tools/bpf/bpftool/cgroup.c
+index 93b139bfb9880..3f1d6be512151 100644
+--- a/tools/bpf/bpftool/cgroup.c
++++ b/tools/bpf/bpftool/cgroup.c
+@@ -221,7 +221,7 @@ static int cgroup_has_attached_progs(int cgroup_fd)
+ 	for (i = 0; i < ARRAY_SIZE(cgroup_attach_types); i++) {
+ 		int count = count_attached_bpf_progs(cgroup_fd, cgroup_attach_types[i]);
+ 
+-		if (count < 0)
++		if (count < 0 && errno != EINVAL)
+ 			return -1;
+ 
+ 		if (count > 0) {
 -- 
 2.39.5
 
