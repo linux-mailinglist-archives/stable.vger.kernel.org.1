@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-154145-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153713-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 04F46ADD750
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:43:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E6E1EADD600
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:29:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id ACED17A1BA2
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:42:08 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8CDCA7A1C43
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:19:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5BBC72ED846;
-	Tue, 17 Jun 2025 16:37:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25EAB2EE5ED;
+	Tue, 17 Jun 2025 16:14:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jvwZPUFj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kyQnY2vs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1780C2DFF0A;
-	Tue, 17 Jun 2025 16:37:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D508E2F94B0;
+	Tue, 17 Jun 2025 16:14:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750178246; cv=none; b=PUIBxV6vv9mkuMTBi9+T+A7KoHrVlHYSnFoPtu5itfs5VXzNU4XMjOjYFG2ehqxkA5Js3obF0f7mTz+9acXfBpxVcdW3GCWjzYOlQVpAkSboIzm3lUMl8HbyQs8s30y/6j/7QdvRNWh71rDGZLee/EDkHPyZVqJEnpcvEPcKx94=
+	t=1750176849; cv=none; b=DwgWmjOyn5jHGQVNC6rlOe7fMuDdT8MU4aiynZgfih6xJOvyIa4LmmacAklzloqM34LsyBaB8Pk27AA15FjMkuoQwAgymueUV6uql92oN0Ka9Z7YTiFJAugpUR95b+YBCjjBrCI32nRjTrqiUdHlDC3MlvgRfPIHGXzr+C2As08=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750178246; c=relaxed/simple;
-	bh=6TO/yT9GfzcaQ4hkPRTDfx3IAh6ORqytCeZqLHq6t24=;
+	s=arc-20240116; t=1750176849; c=relaxed/simple;
+	bh=GpuTkOvlFon9FPWmwptXF1mvwZrWBtNcRXEc+oF345s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AYOo9DBf0dUrQmxPkfCYb8bQ/J/bikGJ0N7UX8JRrTPFpRzHHmaiIW/uSyZj2CR6J/qWsrJQxaOO+BYlXJQSS9EnEWnftcP7dsTVXN2LJBt6Z4gPzgVY3O87CB9RLSGygTf354q2qu206UrGvjqv5td5l+SA1Gxfd/77i2Glp2A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jvwZPUFj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B7E0C4CEF0;
-	Tue, 17 Jun 2025 16:37:25 +0000 (UTC)
+	 MIME-Version; b=pAAH1xKEARGs5Ukkz8oaXaGzVStSZB5wT7GN/LVHa5PaYTw9HChfWlD9gSZ/J5skjotgXoJoDY8y5kHeQGB2zQAdr9eXxRd2G99JRqEhhHwcU0XLDdQmYQ/Ac4CLt5wLtQ17eM9OfH3oXyzi5zllz2UT+7modNAWUmPjZkysaCQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kyQnY2vs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0F67C4CEE3;
+	Tue, 17 Jun 2025 16:14:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750178246;
-	bh=6TO/yT9GfzcaQ4hkPRTDfx3IAh6ORqytCeZqLHq6t24=;
+	s=korg; t=1750176849;
+	bh=GpuTkOvlFon9FPWmwptXF1mvwZrWBtNcRXEc+oF345s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jvwZPUFjSeJoCvoqBNZ38LiUstY9LQ4efT4ZbpkKdpxbxrepEDMMiETrctY1G5IXm
-	 hNXdNpSEJ6pWNPzXz5a8Em9yIqdSnoD68YNeQkGIeVzPm0QXVayBqY2taCPjoBpcDf
-	 P1rI/n67CJ2kLjNTmlkiXSdkesb1nNXv6hPqFCWg=
+	b=kyQnY2vs62ixQ/D5ML33VAU9p7vDbzSfE5lSl2lSGQADfd66RKxxwamZmK5uE5s8O
+	 K/bazEdvLiONcWkzWDklZJBFJYnA1UU1BepS0XP5KDPlFTXhKGJF2sa9dnWxwClBNu
+	 Qw2tk2ghtsR5nX+d2iYBoP3hbVABW7NNLJYjuAKc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gerrard Tai <gerrard.tai@starlabs.sg>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Jakub Raczynski <j.raczynski@samsung.com>,
+	Wenjing Shan <wenjing.shan@samsung.com>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 468/512] net_sched: ets: fix a race in ets_qdisc_change()
+Subject: [PATCH 6.6 319/356] net/mdiobus: Fix potential out-of-bounds clause 45 read/write access
 Date: Tue, 17 Jun 2025 17:27:14 +0200
-Message-ID: <20250617152438.541204910@linuxfoundation.org>
+Message-ID: <20250617152351.000349066@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
-References: <20250617152419.512865572@linuxfoundation.org>
+In-Reply-To: <20250617152338.212798615@linuxfoundation.org>
+References: <20250617152338.212798615@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,60 +63,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Jakub Raczynski <j.raczynski@samsung.com>
 
-[ Upstream commit d92adacdd8c2960be856e0b82acc5b7c5395fddb ]
+[ Upstream commit 260388f79e94fb3026c419a208ece8358bb7b555 ]
 
-Gerrard Tai reported a race condition in ETS, whenever SFQ perturb timer
-fires at the wrong time.
+When using publicly available tools like 'mdio-tools' to read/write data
+from/to network interface and its PHY via C45 (clause 45) mdiobus,
+there is no verification of parameters passed to the ioctl and
+it accepts any mdio address.
+Currently there is support for 32 addresses in kernel via PHY_MAX_ADDR define,
+but it is possible to pass higher value than that via ioctl.
+While read/write operation should generally fail in this case,
+mdiobus provides stats array, where wrong address may allow out-of-bounds
+read/write.
 
-The race is as follows:
+Fix that by adding address verification before C45 read/write operation.
+While this excludes this access from any statistics, it improves security of
+read/write operation.
 
-CPU 0                                 CPU 1
-[1]: lock root
-[2]: qdisc_tree_flush_backlog()
-[3]: unlock root
- |
- |                                    [5]: lock root
- |                                    [6]: rehash
- |                                    [7]: qdisc_tree_reduce_backlog()
- |
-[4]: qdisc_put()
-
-This can be abused to underflow a parent's qlen.
-
-Calling qdisc_purge_queue() instead of qdisc_tree_flush_backlog()
-should fix the race, because all packets will be purged from the qdisc
-before releasing the lock.
-
-Fixes: b05972f01e7d ("net: sched: tbf: don't call qdisc_put() while holding tree lock")
-Reported-by: Gerrard Tai <gerrard.tai@starlabs.sg>
-Suggested-by: Gerrard Tai <gerrard.tai@starlabs.sg>
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Link: https://patch.msgid.link/20250611111515.1983366-5-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 4e4aafcddbbf ("net: mdio: Add dedicated C45 API to MDIO bus drivers")
+Signed-off-by: Jakub Raczynski <j.raczynski@samsung.com>
+Reported-by: Wenjing Shan <wenjing.shan@samsung.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sched/sch_ets.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/phy/mdio_bus.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/net/sched/sch_ets.c b/net/sched/sch_ets.c
-index 2c069f0181c62..037f764822b96 100644
---- a/net/sched/sch_ets.c
-+++ b/net/sched/sch_ets.c
-@@ -661,7 +661,7 @@ static int ets_qdisc_change(struct Qdisc *sch, struct nlattr *opt,
- 	for (i = q->nbands; i < oldbands; i++) {
- 		if (i >= q->nstrict && q->classes[i].qdisc->q.qlen)
- 			list_del_init(&q->classes[i].alist);
--		qdisc_tree_flush_backlog(q->classes[i].qdisc);
-+		qdisc_purge_queue(q->classes[i].qdisc);
- 	}
- 	WRITE_ONCE(q->nstrict, nstrict);
- 	memcpy(q->prio2band, priomap, sizeof(priomap));
+diff --git a/drivers/net/phy/mdio_bus.c b/drivers/net/phy/mdio_bus.c
+index 103998969d44c..e02706b7cc1ed 100644
+--- a/drivers/net/phy/mdio_bus.c
++++ b/drivers/net/phy/mdio_bus.c
+@@ -946,6 +946,9 @@ int __mdiobus_c45_read(struct mii_bus *bus, int addr, int devad, u32 regnum)
+ 
+ 	lockdep_assert_held_once(&bus->mdio_lock);
+ 
++	if (addr >= PHY_MAX_ADDR)
++		return -ENXIO;
++
+ 	if (bus->read_c45)
+ 		retval = bus->read_c45(bus, addr, devad, regnum);
+ 	else
+@@ -977,6 +980,9 @@ int __mdiobus_c45_write(struct mii_bus *bus, int addr, int devad, u32 regnum,
+ 
+ 	lockdep_assert_held_once(&bus->mdio_lock);
+ 
++	if (addr >= PHY_MAX_ADDR)
++		return -ENXIO;
++
+ 	if (bus->write_c45)
+ 		err = bus->write_c45(bus, addr, devad, regnum, val);
+ 	else
 -- 
 2.39.5
 
