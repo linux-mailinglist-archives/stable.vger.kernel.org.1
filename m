@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-154176-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153458-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 24F1EADD974
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 19:06:26 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AC523ADD4D6
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:14:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 193BE1BC06D3
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:44:30 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 08BD640568C
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:04:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3CFD2E8DE5;
-	Tue, 17 Jun 2025 16:39:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4EDF20C497;
+	Tue, 17 Jun 2025 16:00:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ww/K6Ts8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d4NQIbjs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F7C32DFF1B;
-	Tue, 17 Jun 2025 16:39:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6109A2F2346;
+	Tue, 17 Jun 2025 16:00:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750178347; cv=none; b=D604CVv05/l7kxStqgaLSfWnWk0TMtxd7havxmeuOs/1QWnvKsEy9rzUBIh/5Ej62BIiFH8ucC4HkSH/ArB7zGZALAX0lWP7sz/ghCO6YlCUGMtJ8E4h3XglOn5ymaNkqj1Jch46uamvduxekIwIiYuQTGnwLXpiauOil+S9Rwk=
+	t=1750176028; cv=none; b=HBV/IOXqMwgqqCiqw/wcQi4lu3SoXfB8XZlEAfnM9l3ywC/tGqHOmdDZBVtj/FLv9fiWCf+kv7LH/Y0l8CP6LgTjKyf84kSbUbW3UTxyWzI66YfFxPkzxOiu0hm9UNqdhRF/2aUYdqDaDq7itu90MA2RQsg/1zq0EWd66e1mwFI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750178347; c=relaxed/simple;
-	bh=s+Bvk112ZRmZ41FdVwY81mWQFnWDWyqIjeBqahuy3rk=;
+	s=arc-20240116; t=1750176028; c=relaxed/simple;
+	bh=9FUMA3PFEytFAjW9vMDwgc40h+V7hDQPe1JlAQsGCQc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tiaF2JXP7usUxfUKwumBJOWTBsJLT2Pss6Xf2saenaVXT9pvRd2BtC9Y0ppIwDax5eqEaKygSgVNVcQCoyqjJQymQhTvi8OMcvt22KWjUGJjweHBbwmi8z4J6on3mYgLAieBBZa4YtvJE6le9UOSFC/S9XUY+5wcsGUhkJGIWtk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ww/K6Ts8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1775C4CEE3;
-	Tue, 17 Jun 2025 16:39:06 +0000 (UTC)
+	 MIME-Version; b=Fl6WmM0j/XtgQiiXn7wAm5jWmiEf4lBfOxiU8GFJBJOgld6ajfqL3ApGimKVYQrU7ltucLJUu7j2f+hWM/D9JOGMAP1XOap4P2HKlSAlQco5B3kTVjKmHlvxUR9cbMeVxvUXfikxvsDhoEcE8nNNoYJqETTRYbZT8BNU/8/chr0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d4NQIbjs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C35FEC4CEE3;
+	Tue, 17 Jun 2025 16:00:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750178347;
-	bh=s+Bvk112ZRmZ41FdVwY81mWQFnWDWyqIjeBqahuy3rk=;
+	s=korg; t=1750176028;
+	bh=9FUMA3PFEytFAjW9vMDwgc40h+V7hDQPe1JlAQsGCQc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ww/K6Ts8SxGcEGNvckY/y9nmdPdGFt62LYAZ/SZJ7LQwosehK5YztOW7SXjDngxB3
-	 74tXgGlJ3cs0TzilpTIe5AXKzGz3BgTHzdeWHQ9rLS5Dpiw7EHRQ0A909VaqA2sCUb
-	 fsAWvn1qcCkjip0AGjBxZ9rfsw9nCsD9DdLHEhac=
+	b=d4NQIbjsQXlAqBOb+AxNALNOZ26WKPPONiMTFsGzY4GgWAfRJlNMLUuIbgkckeZCp
+	 cZgm8BWC3dsHROoO9IrOPz4JfXl3BGXXF2HPjViuu420tg44yKUGQveXunVZzpIadC
+	 hFqwKmvRUmZEi3bnXDVMteoJEM1dAXP4L8KQ9XDk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
-	Bjorn Andersson <andersson@kernel.org>,
+	Peter Chiu <chui-hao.chiu@mediatek.com>,
+	Shayne Chen <shayne.chen@mediatek.com>,
+	Felix Fietkau <nbd@nbd.name>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 447/780] remoteproc: qcom_wcnss_iris: Add missing put_device() on error in probe
+Subject: [PATCH 6.12 189/512] wifi: mt76: mt7996: fix RX buffer size of MCU event
 Date: Tue, 17 Jun 2025 17:22:35 +0200
-Message-ID: <20250617152509.657281657@linuxfoundation.org>
+Message-ID: <20250617152427.298075072@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
-References: <20250617152451.485330293@linuxfoundation.org>
+In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
+References: <20250617152419.512865572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,45 +63,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Shayne Chen <shayne.chen@mediatek.com>
 
-[ Upstream commit 0cb4b1b97041d8a1f773425208ded253c1cb5869 ]
+[ Upstream commit 42cb27af34de4acf680606fad2c1f2932110591f ]
 
-The device_del() call matches with the device_add() but we also need
-to call put_device() to trigger the qcom_iris_release().
+Some management frames are first processed by the firmware and then
+passed to the driver through the MCU event rings. In CONNAC3, event rings
+do not support scatter-gather and have a size limitation of 2048 bytes.
+If a packet sized between 1728 and 2048 bytes arrives from an event ring,
+the ring will hang because the driver attempts to use scatter-gather to
+process it.
 
-Fixes: 1fcef985c8bd ("remoteproc: qcom: wcnss: Fix race with iris probe")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Link: https://lore.kernel.org/r/4604f7e0-3217-4095-b28a-3ff8b5afad3a@stanley.mountain
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+To fix this, include the size of struct skb_shared_info in the MCU RX
+buffer size to prevent scatter-gather from being used for event skb in
+mt76_dma_rx_fill_buf().
+
+Fixes: 98686cd21624 ("wifi: mt76: mt7996: add driver for MediaTek Wi-Fi 7 (802.11be) devices")
+Co-developed-by: Peter Chiu <chui-hao.chiu@mediatek.com>
+Signed-off-by: Peter Chiu <chui-hao.chiu@mediatek.com>
+Signed-off-by: Shayne Chen <shayne.chen@mediatek.com>
+Link: https://patch.msgid.link/20250515032952.1653494-7-shayne.chen@mediatek.com
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/remoteproc/qcom_wcnss_iris.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/net/wireless/mediatek/mt76/mt7996/dma.c    | 4 ++--
+ drivers/net/wireless/mediatek/mt76/mt7996/mt7996.h | 3 +++
+ 2 files changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/remoteproc/qcom_wcnss_iris.c b/drivers/remoteproc/qcom_wcnss_iris.c
-index b989718776bdb..2b52b403eb3f7 100644
---- a/drivers/remoteproc/qcom_wcnss_iris.c
-+++ b/drivers/remoteproc/qcom_wcnss_iris.c
-@@ -196,6 +196,7 @@ struct qcom_iris *qcom_iris_probe(struct device *parent, bool *use_48mhz_xo)
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/dma.c b/drivers/net/wireless/mediatek/mt76/mt7996/dma.c
+index 69a7d9b2e38bd..4b68d2fc5e094 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7996/dma.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7996/dma.c
+@@ -493,7 +493,7 @@ int mt7996_dma_init(struct mt7996_dev *dev)
+ 	ret = mt76_queue_alloc(dev, &dev->mt76.q_rx[MT_RXQ_MCU],
+ 			       MT_RXQ_ID(MT_RXQ_MCU),
+ 			       MT7996_RX_MCU_RING_SIZE,
+-			       MT_RX_BUF_SIZE,
++			       MT7996_RX_MCU_BUF_SIZE,
+ 			       MT_RXQ_RING_BASE(MT_RXQ_MCU));
+ 	if (ret)
+ 		return ret;
+@@ -502,7 +502,7 @@ int mt7996_dma_init(struct mt7996_dev *dev)
+ 	ret = mt76_queue_alloc(dev, &dev->mt76.q_rx[MT_RXQ_MCU_WA],
+ 			       MT_RXQ_ID(MT_RXQ_MCU_WA),
+ 			       MT7996_RX_MCU_RING_SIZE_WA,
+-			       MT_RX_BUF_SIZE,
++			       MT7996_RX_MCU_BUF_SIZE,
+ 			       MT_RXQ_RING_BASE(MT_RXQ_MCU_WA));
+ 	if (ret)
+ 		return ret;
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mt7996.h b/drivers/net/wireless/mediatek/mt76/mt7996/mt7996.h
+index ab8c9070630b0..425fd030bee00 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7996/mt7996.h
++++ b/drivers/net/wireless/mediatek/mt76/mt7996/mt7996.h
+@@ -28,6 +28,9 @@
+ #define MT7996_RX_RING_SIZE		1536
+ #define MT7996_RX_MCU_RING_SIZE		512
+ #define MT7996_RX_MCU_RING_SIZE_WA	1024
++/* scatter-gather of mcu event is not supported in connac3 */
++#define MT7996_RX_MCU_BUF_SIZE		(2048 + \
++					 SKB_DATA_ALIGN(sizeof(struct skb_shared_info)))
  
- err_device_del:
- 	device_del(&iris->dev);
-+	put_device(&iris->dev);
- 
- 	return ERR_PTR(ret);
- }
-@@ -203,4 +204,5 @@ struct qcom_iris *qcom_iris_probe(struct device *parent, bool *use_48mhz_xo)
- void qcom_iris_remove(struct qcom_iris *iris)
- {
- 	device_del(&iris->dev);
-+	put_device(&iris->dev);
- }
+ #define MT7996_FIRMWARE_WA		"mediatek/mt7996/mt7996_wa.bin"
+ #define MT7996_FIRMWARE_WM		"mediatek/mt7996/mt7996_wm.bin"
 -- 
 2.39.5
 
