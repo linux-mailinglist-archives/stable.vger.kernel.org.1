@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-153984-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153986-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E2AD7ADD7E8
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:50:26 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id CA4C6ADD7CE
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:49:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7FE452C51F4
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:34:18 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A7BFC4A508F
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:33:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E16EA28506A;
-	Tue, 17 Jun 2025 16:28:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6DCC4237162;
+	Tue, 17 Jun 2025 16:28:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U2R8g7g6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YXfGEyD/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C4E31FBEA8;
-	Tue, 17 Jun 2025 16:28:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A64A221F14;
+	Tue, 17 Jun 2025 16:28:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750177730; cv=none; b=m2L/YhPNaFWyVWLJvZasV8vM4p3B40qXksPss4k9HXliNUjESY5A1eMNio8Fb7qySW4w3N2N1mJMeocuC4eEWI3sWO1dE5g3HKUDLan1zskdreca2KmkIgmkbsPKzAgvVk/ZRR1ECAazy4oE/R4eL1ccOrPZtNhywF18pIE27ik=
+	t=1750177737; cv=none; b=t86DeDj1IYjOpi5oFg+bkDAMbf3v6q+Fd8xIz2fV7mRqe/n0s9uoheV2oBdRWbxHMwilH9l/3bgqOLI/M6RYv12YcNbwI7KgK0cteMTpDLe3a8ODgkqnUykeLCcVgDQqC/a65QVt/hPbBrIka5TjnvvX/x/tuDnWgNvtwYOfTOw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750177730; c=relaxed/simple;
-	bh=P8I1eLoCjC200O2C3vTY9lfWN43iZIVarnmwd16DhTc=;
+	s=arc-20240116; t=1750177737; c=relaxed/simple;
+	bh=BA9JKuTb/e0ybNatljyd8anjTyWI0I+YI7gEi4lyH0Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=F0Tt25qFTGRFpRVFPqNM+r73dbU8VxVomHHOYZxTbYkqbQBZ+mFwCt/nk15T0UHMXW9AgIcOkSHr+f/vja5IO9vKCdZz7ApY7Wmxio+SXv0ncrAa+TAVngqV+IAYsPtLV4633qERwVd8tNoE08RkmzK4onthqbxeVSSDGj2x9gI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U2R8g7g6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 055C3C4CEE3;
-	Tue, 17 Jun 2025 16:28:49 +0000 (UTC)
+	 MIME-Version; b=Z+lifHm1Gd8RgmiZjYbTL1ey2UNQrStlPPwuK34vuXn0EhwvgByHFT5NdC+sO8y3TNESvlY7dHQFUuF6QtakwYUXr8lIDj7mbiFESy7CGTC1JwjBEDgkQPVVvdgTyL7mULybVbE2cHoo445bKXM+OKkPS0jxAFg43M9AvxaCe20=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YXfGEyD/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C373C4CEE3;
+	Tue, 17 Jun 2025 16:28:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750177730;
-	bh=P8I1eLoCjC200O2C3vTY9lfWN43iZIVarnmwd16DhTc=;
+	s=korg; t=1750177737;
+	bh=BA9JKuTb/e0ybNatljyd8anjTyWI0I+YI7gEi4lyH0Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=U2R8g7g6ArnWYT79B9ylouYFhutqw8JvKtTK1rfG1t02fMZ9i00iyi9fC1dRPCsH4
-	 ThajVwgjLuOFmXPfwhM8weVJABjiKIEgxA0SNAhOMFh1gCeU9T7YHYEJ4nI7CQkmKt
-	 Urs5dlRJVSJDON4SlCU433dLLnFH5llIcF1/XRpU=
+	b=YXfGEyD/hMpIgIc+C3po52aUQRKPjLakQEfvkS62VcdXEDxTDbo0tgFDQ4OuIux3Q
+	 Qtyrab9VL7huukwtpvDN4qI4PZm6nwWSjngmhAsnmjm+6hqdHyNu6Xb8aePek3q2tK
+	 gG1akWSBOulaZPq9BxUUEwt/0Nl9fwOXysSB3W4Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
-	Dzmitry Sankouski <dsankouski@gmail.com>,
+	Luca Weiss <luca.weiss@fairphone.com>,
+	Stephan Gerhold <stephan.gerhold@linaro.org>,
 	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 352/780] arm64: dts: qcom: sdm845-starqltechn: remove excess reserved gpios
-Date: Tue, 17 Jun 2025 17:21:00 +0200
-Message-ID: <20250617152505.793861285@linuxfoundation.org>
+Subject: [PATCH 6.15 353/780] arm64: dts: qcom: sm8350: Reenable crypto & cryptobam
+Date: Tue, 17 Jun 2025 17:21:01 +0200
+Message-ID: <20250617152505.836129809@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
 References: <20250617152451.485330293@linuxfoundation.org>
@@ -67,40 +67,57 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Dzmitry Sankouski <dsankouski@gmail.com>
+From: Luca Weiss <luca.weiss@fairphone.com>
 
-[ Upstream commit fb5fce873b952f8b1c5f7edcabcc8611ef45ea7a ]
+[ Upstream commit 75eefd474469abf95aa9ef6da8161d69f86b98b4 ]
 
-Starqltechn has 2 reserved gpio ranges <27 4>, <85 4>.
-<27 4> is spi for eSE(embedded Secure Element).
-<85 4> is spi for fingerprint.
+When num-channels and qcom,num-ees is not provided in devicetree, the
+driver will try to read these values from the registers during probe but
+this fails if the interconnect is not on and then crashes the system.
 
-Remove excess reserved gpio regions.
+So we can provide these properties in devicetree (queried after patching
+BAM driver to enable the necessary interconnect) so we can probe
+cryptobam without reading registers and then also use the QCE as
+expected.
 
-Fixes: d711b22eee55 ("arm64: dts: qcom: starqltechn: add initial device tree for starqltechn")
-Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Signed-off-by: Dzmitry Sankouski <dsankouski@gmail.com>
-Link: https://lore.kernel.org/r/20250225-starqltechn_integration_upstream-v9-5-a5d80375cb66@gmail.com
+Fixes: 4d29db204361 ("arm64: dts: qcom: sm8350: fix BAM DMA crash and reboot")
+Fixes: f1040a7fe8f0 ("arm64: dts: qcom: sm8350: Add Crypto Engine support")
+Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
+Signed-off-by: Stephan Gerhold <stephan.gerhold@linaro.org>
+Link: https://lore.kernel.org/r/20250212-bam-dma-fixes-v1-1-f560889e65d8@linaro.org
 Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/sdm845-samsung-starqltechn.dts | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ arch/arm64/boot/dts/qcom/sm8350.dtsi | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/qcom/sdm845-samsung-starqltechn.dts b/arch/arm64/boot/dts/qcom/sdm845-samsung-starqltechn.dts
-index 8a0d63bd594b3..5948b401165ce 100644
---- a/arch/arm64/boot/dts/qcom/sdm845-samsung-starqltechn.dts
-+++ b/arch/arm64/boot/dts/qcom/sdm845-samsung-starqltechn.dts
-@@ -418,7 +418,8 @@
- };
+diff --git a/arch/arm64/boot/dts/qcom/sm8350.dtsi b/arch/arm64/boot/dts/qcom/sm8350.dtsi
+index f055600d6cfe5..a86d0067634e8 100644
+--- a/arch/arm64/boot/dts/qcom/sm8350.dtsi
++++ b/arch/arm64/boot/dts/qcom/sm8350.dtsi
+@@ -1806,11 +1806,11 @@
+ 			interrupts = <GIC_SPI 272 IRQ_TYPE_LEVEL_HIGH>;
+ 			#dma-cells = <1>;
+ 			qcom,ee = <0>;
++			qcom,num-ees = <4>;
++			num-channels = <16>;
+ 			qcom,controlled-remotely;
+ 			iommus = <&apps_smmu 0x594 0x0011>,
+ 				 <&apps_smmu 0x596 0x0011>;
+-			/* FIXME: Probing BAM DMA causes some abort and system hang */
+-			status = "fail";
+ 		};
  
- &tlmm {
--	gpio-reserved-ranges = <0 4>, <27 4>, <81 4>, <85 4>;
-+	gpio-reserved-ranges = <27 4>, /* SPI (eSE - embedded Secure Element) */
-+			       <85 4>; /* SPI (fingerprint reader) */
+ 		crypto: crypto@1dfa000 {
+@@ -1822,8 +1822,6 @@
+ 				 <&apps_smmu 0x596 0x0011>;
+ 			interconnects = <&aggre2_noc MASTER_CRYPTO 0 &mc_virt SLAVE_EBI1 0>;
+ 			interconnect-names = "memory";
+-			/* FIXME: dependency BAM DMA is disabled */
+-			status = "disabled";
+ 		};
  
- 	sdc2_clk_state: sdc2-clk-state {
- 		pins = "sdc2_clk";
+ 		ipa: ipa@1e40000 {
 -- 
 2.39.5
 
