@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-153814-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-154321-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E5DBADD65C
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:32:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CE8D8ADD9DE
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 19:10:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9217919E373E
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:25:52 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AB97A19476A9
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:49:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B313A2EE27E;
-	Tue, 17 Jun 2025 16:19:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 856B42DFF30;
+	Tue, 17 Jun 2025 16:46:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b7Oe3vjw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kZWiYETC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F46622FF2B;
-	Tue, 17 Jun 2025 16:19:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42D44231A37;
+	Tue, 17 Jun 2025 16:46:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750177182; cv=none; b=Lp3gB0iORBlTVUE1/Y+YE2U/l8r4gQoE0NJ4CCl4jfx1EPJTk7mHKnfGpW3lMSLrrNVEURDI/qE34sidhSYpiPOr92rE8o72Zu2kD5YMYjBa/B3pTVdfS4tOLMVqjkLyhlQfXZo9Te904tBI1JkYidvB3JN29uqovLypVSbEzEI=
+	t=1750178816; cv=none; b=KDpHBwogyJeNSP2LHZHvcKyDkhVbL8V0VbvRbKcglxyVj9l3gaxOW1oKj//juOKfig+ejwagwyQggqRS12JK3NeJWBFU8p5XdG+Z6r07C6OmxFqgFtP622kNKM6BTFHseSO0+xMCbV0fWtOVstRLduxsfpMdm+0BED+5FvndhCo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750177182; c=relaxed/simple;
-	bh=jUSFWYZzE3i5bK62/4OVdoDu82r5TUE/SijGCVHsdbg=;
+	s=arc-20240116; t=1750178816; c=relaxed/simple;
+	bh=jDlUQn8nBW69QAaZMuLSKKQc/wTLycrHyMs1MkfgqJk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ImTOeqxW6l1FLMIc1It6g88mBsYD8N29RjXVy+CEpdKMg0UEryfElgla8NC5qNVmrFlT6i2co2ePHUcKSbHIXPAMKPgCtWd6GDCnOyFqYotpRdMyawjff4+BBwQmnakXLM2fQ4wxfBjoMYjFiYJ/+plD9lF6Fkwj5whoM8v9xPI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b7Oe3vjw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2849C4CEE3;
-	Tue, 17 Jun 2025 16:19:41 +0000 (UTC)
+	 MIME-Version; b=rV/6Uu5WLSBHeTjgR9zDn4kTpkafXTOKXbHi1MC68rjt1fQ8gNMBNqgcOoaQDki1UIVkFK3Q9tOmFaDef+fwDBOrEj6h7t5M1clN2BdIftvcjHeU7fEOIgI9bnP3WfPOm0VrdFBWGb2BpPUXdSMb3gsw3Z42i4i7O1fI9mCdYmo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kZWiYETC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B07EAC4CEE3;
+	Tue, 17 Jun 2025 16:46:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750177182;
-	bh=jUSFWYZzE3i5bK62/4OVdoDu82r5TUE/SijGCVHsdbg=;
+	s=korg; t=1750178816;
+	bh=jDlUQn8nBW69QAaZMuLSKKQc/wTLycrHyMs1MkfgqJk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=b7Oe3vjweyzQf7ARz53/VUFlVMKjN/Xe17bC3IOSF+uNN7drGi3IVogamgKz4I2P1
-	 A80MzLPvSm5rMPsDD8PNISf0kZOniZ7zRY+LOGZsLOS2X0hVFPX+Ty7LqE/JpzSLNG
-	 tZm33XNvWg82yJtwwn+jQsnLNsNYCpD4JbvDaP78=
+	b=kZWiYETCO1u30GxY6ceuxnhqnkVmX97t324goUgB2seRaqYIoBU4/nRwWHU7ywRU2
+	 5miBQt2i59fbPGHrtvWZVv61J3CbOTZx0dtiYkKaVSv+lcj1apPULGJMHI4x53R4eh
+	 LeGcV4VsRd/YRxuWi7lUU4kJNyYO/ORaFkgsgeA0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Pali=20Roh=C3=A1r?= <pali@kernel.org>,
-	Steve French <stfrench@microsoft.com>,
+	syzbot+f0c4a4aba757549ae26c@syzkaller.appspotmail.com,
+	Charalampos Mitrodimas <charmitro@posteo.net>,
+	Tung Nguyen <tung.quang.nguyen@est.tech>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 304/512] cifs: Fix validation of SMB1 query reparse point response
+Subject: [PATCH 6.15 562/780] net: tipc: fix refcount warning in tipc_aead_encrypt
 Date: Tue, 17 Jun 2025 17:24:30 +0200
-Message-ID: <20250617152431.918593308@linuxfoundation.org>
+Message-ID: <20250617152514.376908724@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
-References: <20250617152419.512865572@linuxfoundation.org>
+In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
+References: <20250617152451.485330293@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,85 +62,61 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pali Rohár <pali@kernel.org>
+From: Charalampos Mitrodimas <charmitro@posteo.net>
 
-[ Upstream commit 56e84c64fc257a95728ee73165456b025c48d408 ]
+[ Upstream commit f29ccaa07cf3d35990f4d25028cc55470d29372b ]
 
-Validate the SMB1 query reparse point response per [MS-CIFS] section
-2.2.7.2 NT_TRANSACT_IOCTL.
+syzbot reported a refcount warning [1] caused by calling get_net() on
+a network namespace that is being destroyed (refcount=0). This happens
+when a TIPC discovery timer fires during network namespace cleanup.
 
-NT_TRANSACT_IOCTL response contains one word long setup data after which is
-ByteCount member. So check that SetupCount is 1 before trying to read and
-use ByteCount member.
+The recently added get_net() call in commit e279024617134 ("net/tipc:
+fix slab-use-after-free Read in tipc_aead_encrypt_done") attempts to
+hold a reference to the network namespace. However, if the namespace
+is already being destroyed, its refcount might be zero, leading to the
+use-after-free warning.
 
-Output setup data contains ReturnedDataLen member which is the output
-length of executed IOCTL command by remote system. So check that output was
-not truncated before transferring over network.
+Replace get_net() with maybe_get_net(), which safely checks if the
+refcount is non-zero before incrementing it. If the namespace is being
+destroyed, return -ENODEV early, after releasing the bearer reference.
 
-Change MaxSetupCount of NT_TRANSACT_IOCTL request from 4 to 1 as io_rsp
-structure already expects one word long output setup data. This should
-prevent server sending incompatible structure (in case it would be extended
-in future, which is unlikely).
+[1]: https://lore.kernel.org/all/68342b55.a70a0220.253bc2.0091.GAE@google.com/T/#m12019cf9ae77e1954f666914640efa36d52704a2
 
-Change MaxParameterCount of NT_TRANSACT_IOCTL request from 2 to 0 as
-NT IOCTL does not have any documented output parameters and this function
-does not parse any output parameters at all.
-
-Fixes: ed3e0a149b58 ("smb: client: implement ->query_reparse_point() for SMB1")
-Signed-off-by: Pali Rohár <pali@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Reported-by: syzbot+f0c4a4aba757549ae26c@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/all/68342b55.a70a0220.253bc2.0091.GAE@google.com/T/#m12019cf9ae77e1954f666914640efa36d52704a2
+Fixes: e27902461713 ("net/tipc: fix slab-use-after-free Read in tipc_aead_encrypt_done")
+Signed-off-by: Charalampos Mitrodimas <charmitro@posteo.net>
+Reviewed-by: Tung Nguyen <tung.quang.nguyen@est.tech>
+Link: https://patch.msgid.link/20250527-net-tipc-warning-v2-1-df3dc398a047@posteo.net
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/client/cifssmb.c | 20 ++++++++++++++++++--
- 1 file changed, 18 insertions(+), 2 deletions(-)
+ net/tipc/crypto.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/fs/smb/client/cifssmb.c b/fs/smb/client/cifssmb.c
-index 8667f403a0ab6..cf8d9de2298fc 100644
---- a/fs/smb/client/cifssmb.c
-+++ b/fs/smb/client/cifssmb.c
-@@ -2780,10 +2780,10 @@ int cifs_query_reparse_point(const unsigned int xid,
- 
- 	io_req->TotalParameterCount = 0;
- 	io_req->TotalDataCount = 0;
--	io_req->MaxParameterCount = cpu_to_le32(2);
-+	io_req->MaxParameterCount = cpu_to_le32(0);
- 	/* BB find exact data count max from sess structure BB */
- 	io_req->MaxDataCount = cpu_to_le32(CIFSMaxBufSize & 0xFFFFFF00);
--	io_req->MaxSetupCount = 4;
-+	io_req->MaxSetupCount = 1;
- 	io_req->Reserved = 0;
- 	io_req->ParameterOffset = 0;
- 	io_req->DataCount = 0;
-@@ -2810,6 +2810,22 @@ int cifs_query_reparse_point(const unsigned int xid,
- 		goto error;
+diff --git a/net/tipc/crypto.c b/net/tipc/crypto.c
+index 8584893b47851..79f91b6ca8c84 100644
+--- a/net/tipc/crypto.c
++++ b/net/tipc/crypto.c
+@@ -818,7 +818,11 @@ static int tipc_aead_encrypt(struct tipc_aead *aead, struct sk_buff *skb,
  	}
  
-+	/* SetupCount must be 1, otherwise offset to ByteCount is incorrect. */
-+	if (io_rsp->SetupCount != 1) {
-+		rc = -EIO;
-+		goto error;
+ 	/* Get net to avoid freed tipc_crypto when delete namespace */
+-	get_net(aead->crypto->net);
++	if (!maybe_get_net(aead->crypto->net)) {
++		tipc_bearer_put(b);
++		rc = -ENODEV;
++		goto exit;
 +	}
-+
-+	/*
-+	 * ReturnedDataLen is output length of executed IOCTL.
-+	 * DataCount is output length transferred over network.
-+	 * Check that we have full FSCTL_GET_REPARSE_POINT buffer.
-+	 */
-+	if (data_count != le16_to_cpu(io_rsp->ReturnedDataLen)) {
-+		rc = -EIO;
-+		goto error;
-+	}
-+
- 	end = 2 + get_bcc(&io_rsp->hdr) + (__u8 *)&io_rsp->ByteCount;
- 	start = (__u8 *)&io_rsp->hdr.Protocol + data_offset;
- 	if (start >= end) {
+ 
+ 	/* Now, do encrypt */
+ 	rc = crypto_aead_encrypt(req);
 -- 
 2.39.5
 
