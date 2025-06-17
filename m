@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-153628-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-154140-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 04217ADD584
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:21:55 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B77C5ADD91D
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 19:03:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 856D52C66EB
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:13:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6F7F85A02DC
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:42:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79D6D2EE5FA;
-	Tue, 17 Jun 2025 16:09:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DBEFD2ED844;
+	Tue, 17 Jun 2025 16:37:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z/6jzwov"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dUHfpP3i"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EC002ED17E;
-	Tue, 17 Jun 2025 16:09:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 979BC2FA64D;
+	Tue, 17 Jun 2025 16:37:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750176575; cv=none; b=aG+QI9z9KpI/xC9qMh3w5VkEUqnnFLEywRvZkJa3hgf1lfq5a4tdelcJDJHx+z5vDUHxb/AayOrpAEGNB4n8du8lNKozcCeY6KeuQhZH9qBw9AiJ+SOEUOnlVAuJiJfJk8LepjDZPGzhQbFLrJZakS9rQC0+03TmDhpvKkZ90x4=
+	t=1750178229; cv=none; b=PjsEXGRenM8iZYj7mjV30Qk0qXVjGV/Y4QpmwpkLWgeZnQ0y6c6D0AKXuD6utdJy6c26GCaeprupVSGyhdWqkF31o+0pTaih5/DXXwAma2LJ+zis+njzqGy61sRp5k6Y7Y9s98d5UkwYnDynPFXow/LZz0nKFjsNjsFHLLFOjhg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750176575; c=relaxed/simple;
-	bh=ohBQFCuefq6cFN0glx2JFgoEGuFa69P9ZE8aqfkgBUU=;
+	s=arc-20240116; t=1750178229; c=relaxed/simple;
+	bh=qnkdNJlzd5zntKXFFMkdjjoRACA0O/91M5sMI++XvP0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SBBcnKUcJLW0LfxICezxov4BF82vd9+EDkmYWK8ixS4nWaawlGrGFcb5blHBjC0aYmy+RKjDI8AqtNRuIRY3oEjxvfKAgeZozHuonAQ0mEC3w10ZYdIbh77vlrV5nfSIHBKQTnQ/+5HxhiwYzQTcQ+TqWQC/t4zYc49Pd5XdUfo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z/6jzwov; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 609D7C4CEF0;
-	Tue, 17 Jun 2025 16:09:33 +0000 (UTC)
+	 MIME-Version; b=O7KRRcqIOqm2DCFU0uow9unShbJBUHFrsYxMUZu1rtJJ+Bjr9NdPwKhE3RJz46lku+EE2aItU2KVmdTz990wq31AFQHhONW6F0AsuhGAbMvHaAR9QUsrw6q4aMevp6w/CJPqvnYCPyN2hvoHo+2PrOkdXL6hYnAmWl+6+oJvq0A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dUHfpP3i; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 057FAC4CEE3;
+	Tue, 17 Jun 2025 16:37:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750176573;
-	bh=ohBQFCuefq6cFN0glx2JFgoEGuFa69P9ZE8aqfkgBUU=;
+	s=korg; t=1750178229;
+	bh=qnkdNJlzd5zntKXFFMkdjjoRACA0O/91M5sMI++XvP0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Z/6jzwovTdWsBjYZay1stPZvv2+z3LEW9gpMsEHSqIp0Huq5GdGhGu9XydBQZ2WhC
-	 7CNrhqRNxSuXrRg0bGryQH2cm4MqRhrQXTY2Ai+K7jPEomg32I+wpj+N9kOJJFXPgS
-	 yeernNi9oUtO8ihkbNYvOnkQcg19gaXbwGUCBeBg=
+	b=dUHfpP3i+xBJ+mlEJPTARHhrikPCws8DYjLwfpxLvQyux6ZN2GV+a+TlF1xcPitlJ
+	 +wWM/shHq5VXvsM0Wb7UYChwkB/Mg+skexSUDvC1DjuhUQBqKqbV3sZJyxP/WIf4AB
+	 b5S/gErkQUHkJKdOlA+RqkTrWoo5qWi3avnXuw5k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+0a7039d5d9986ff4ecec@syzkaller.appspotmail.com,
-	syzbot+cc0cc52e7f43dc9e6df1@syzkaller.appspotmail.com,
-	Dmitry Antipov <dmantipov@yandex.ru>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Jonathan Greental <yonatan02greental@gmail.com>,
+	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 294/356] Bluetooth: MGMT: Protect mgmt_pending list with its own lock
+Subject: [PATCH 6.12 443/512] powerpc/powernv/memtrace: Fix out of bounds issue in memtrace mmap
 Date: Tue, 17 Jun 2025 17:26:49 +0200
-Message-ID: <20250617152350.009066193@linuxfoundation.org>
+Message-ID: <20250617152437.514354093@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152338.212798615@linuxfoundation.org>
-References: <20250617152338.212798615@linuxfoundation.org>
+In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
+References: <20250617152419.512865572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,628 +63,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+From: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
 
-[ Upstream commit 6fe26f694c824b8a4dbf50c635bee1302e3f099c ]
+[ Upstream commit cd097df4596f3a1e9d75eb8520162de1eb8485b2 ]
 
-This uses a mutex to protect from concurrent access of mgmt_pending
-list which can cause crashes like:
+memtrace mmap issue has an out of bounds issue. This patch fixes the by
+checking that the requested mapping region size should stay within the
+allocated region size.
 
-==================================================================
-BUG: KASAN: slab-use-after-free in hci_sock_get_channel+0x60/0x68 net/bluetooth/hci_sock.c:91
-Read of size 2 at addr ffff0000c48885b2 by task syz.4.334/7318
-
-CPU: 0 UID: 0 PID: 7318 Comm: syz.4.334 Not tainted 6.15.0-rc7-syzkaller-g187899f4124a #0 PREEMPT
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 02/12/2025
-Call trace:
- show_stack+0x2c/0x3c arch/arm64/kernel/stacktrace.c:466 (C)
- __dump_stack+0x30/0x40 lib/dump_stack.c:94
- dump_stack_lvl+0xd8/0x12c lib/dump_stack.c:120
- print_address_description+0xa8/0x254 mm/kasan/report.c:408
- print_report+0x68/0x84 mm/kasan/report.c:521
- kasan_report+0xb0/0x110 mm/kasan/report.c:634
- __asan_report_load2_noabort+0x20/0x2c mm/kasan/report_generic.c:379
- hci_sock_get_channel+0x60/0x68 net/bluetooth/hci_sock.c:91
- mgmt_pending_find+0x7c/0x140 net/bluetooth/mgmt_util.c:223
- pending_find net/bluetooth/mgmt.c:947 [inline]
- remove_adv_monitor+0x44/0x1a4 net/bluetooth/mgmt.c:5445
- hci_mgmt_cmd+0x780/0xc00 net/bluetooth/hci_sock.c:1712
- hci_sock_sendmsg+0x544/0xbb0 net/bluetooth/hci_sock.c:1832
- sock_sendmsg_nosec net/socket.c:712 [inline]
- __sock_sendmsg net/socket.c:727 [inline]
- sock_write_iter+0x25c/0x378 net/socket.c:1131
- new_sync_write fs/read_write.c:591 [inline]
- vfs_write+0x62c/0x97c fs/read_write.c:684
- ksys_write+0x120/0x210 fs/read_write.c:736
- __do_sys_write fs/read_write.c:747 [inline]
- __se_sys_write fs/read_write.c:744 [inline]
- __arm64_sys_write+0x7c/0x90 fs/read_write.c:744
- __invoke_syscall arch/arm64/kernel/syscall.c:35 [inline]
- invoke_syscall+0x98/0x2b8 arch/arm64/kernel/syscall.c:49
- el0_svc_common+0x130/0x23c arch/arm64/kernel/syscall.c:132
- do_el0_svc+0x48/0x58 arch/arm64/kernel/syscall.c:151
- el0_svc+0x58/0x17c arch/arm64/kernel/entry-common.c:767
- el0t_64_sync_handler+0x78/0x108 arch/arm64/kernel/entry-common.c:786
- el0t_64_sync+0x198/0x19c arch/arm64/kernel/entry.S:600
-
-Allocated by task 7037:
- kasan_save_stack mm/kasan/common.c:47 [inline]
- kasan_save_track+0x40/0x78 mm/kasan/common.c:68
- kasan_save_alloc_info+0x44/0x54 mm/kasan/generic.c:562
- poison_kmalloc_redzone mm/kasan/common.c:377 [inline]
- __kasan_kmalloc+0x9c/0xb4 mm/kasan/common.c:394
- kasan_kmalloc include/linux/kasan.h:260 [inline]
- __do_kmalloc_node mm/slub.c:4327 [inline]
- __kmalloc_noprof+0x2fc/0x4c8 mm/slub.c:4339
- kmalloc_noprof include/linux/slab.h:909 [inline]
- sk_prot_alloc+0xc4/0x1f0 net/core/sock.c:2198
- sk_alloc+0x44/0x3ac net/core/sock.c:2254
- bt_sock_alloc+0x4c/0x300 net/bluetooth/af_bluetooth.c:148
- hci_sock_create+0xa8/0x194 net/bluetooth/hci_sock.c:2202
- bt_sock_create+0x14c/0x24c net/bluetooth/af_bluetooth.c:132
- __sock_create+0x43c/0x91c net/socket.c:1541
- sock_create net/socket.c:1599 [inline]
- __sys_socket_create net/socket.c:1636 [inline]
- __sys_socket+0xd4/0x1c0 net/socket.c:1683
- __do_sys_socket net/socket.c:1697 [inline]
- __se_sys_socket net/socket.c:1695 [inline]
- __arm64_sys_socket+0x7c/0x94 net/socket.c:1695
- __invoke_syscall arch/arm64/kernel/syscall.c:35 [inline]
- invoke_syscall+0x98/0x2b8 arch/arm64/kernel/syscall.c:49
- el0_svc_common+0x130/0x23c arch/arm64/kernel/syscall.c:132
- do_el0_svc+0x48/0x58 arch/arm64/kernel/syscall.c:151
- el0_svc+0x58/0x17c arch/arm64/kernel/entry-common.c:767
- el0t_64_sync_handler+0x78/0x108 arch/arm64/kernel/entry-common.c:786
- el0t_64_sync+0x198/0x19c arch/arm64/kernel/entry.S:600
-
-Freed by task 6607:
- kasan_save_stack mm/kasan/common.c:47 [inline]
- kasan_save_track+0x40/0x78 mm/kasan/common.c:68
- kasan_save_free_info+0x58/0x70 mm/kasan/generic.c:576
- poison_slab_object mm/kasan/common.c:247 [inline]
- __kasan_slab_free+0x68/0x88 mm/kasan/common.c:264
- kasan_slab_free include/linux/kasan.h:233 [inline]
- slab_free_hook mm/slub.c:2380 [inline]
- slab_free mm/slub.c:4642 [inline]
- kfree+0x17c/0x474 mm/slub.c:4841
- sk_prot_free net/core/sock.c:2237 [inline]
- __sk_destruct+0x4f4/0x760 net/core/sock.c:2332
- sk_destruct net/core/sock.c:2360 [inline]
- __sk_free+0x320/0x430 net/core/sock.c:2371
- sk_free+0x60/0xc8 net/core/sock.c:2382
- sock_put include/net/sock.h:1944 [inline]
- mgmt_pending_free+0x88/0x118 net/bluetooth/mgmt_util.c:290
- mgmt_pending_remove+0xec/0x104 net/bluetooth/mgmt_util.c:298
- mgmt_set_powered_complete+0x418/0x5cc net/bluetooth/mgmt.c:1355
- hci_cmd_sync_work+0x204/0x33c net/bluetooth/hci_sync.c:334
- process_one_work+0x7e8/0x156c kernel/workqueue.c:3238
- process_scheduled_works kernel/workqueue.c:3319 [inline]
- worker_thread+0x958/0xed8 kernel/workqueue.c:3400
- kthread+0x5fc/0x75c kernel/kthread.c:464
- ret_from_fork+0x10/0x20 arch/arm64/kernel/entry.S:847
-
-Fixes: a380b6cff1a2 ("Bluetooth: Add generic mgmt helper API")
-Closes: https://syzkaller.appspot.com/bug?extid=0a7039d5d9986ff4ecec
-Closes: https://syzkaller.appspot.com/bug?extid=cc0cc52e7f43dc9e6df1
-Reported-by: syzbot+0a7039d5d9986ff4ecec@syzkaller.appspotmail.com
-Tested-by: syzbot+0a7039d5d9986ff4ecec@syzkaller.appspotmail.com
-Tested-by: syzbot+cc0cc52e7f43dc9e6df1@syzkaller.appspotmail.com
-Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Reported-by: Jonathan Greental <yonatan02greental@gmail.com>
+Fixes: 08a022ad3dfa ("powerpc/powernv/memtrace: Allow mmaping trace buffers")
+Signed-off-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
+Link: https://patch.msgid.link/20250610021227.361980-1-maddy@linux.ibm.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/bluetooth/hci_core.h |   1 +
- net/bluetooth/hci_core.c         |   1 +
- net/bluetooth/mgmt.c             | 101 +++++++++++++++----------------
- net/bluetooth/mgmt_util.c        |  32 ++++++++--
- net/bluetooth/mgmt_util.h        |   4 +-
- 5 files changed, 80 insertions(+), 59 deletions(-)
+ arch/powerpc/platforms/powernv/memtrace.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/include/net/bluetooth/hci_core.h b/include/net/bluetooth/hci_core.h
-index 1304877813137..d63af08c6cdc2 100644
---- a/include/net/bluetooth/hci_core.h
-+++ b/include/net/bluetooth/hci_core.h
-@@ -542,6 +542,7 @@ struct hci_dev {
- 	struct hci_conn_hash	conn_hash;
- 
- 	struct list_head	mesh_pending;
-+	struct mutex		mgmt_pending_lock;
- 	struct list_head	mgmt_pending;
- 	struct list_head	reject_list;
- 	struct list_head	accept_list;
-diff --git a/net/bluetooth/hci_core.c b/net/bluetooth/hci_core.c
-index 023ad47a385bf..32f7bd0e89168 100644
---- a/net/bluetooth/hci_core.c
-+++ b/net/bluetooth/hci_core.c
-@@ -2490,6 +2490,7 @@ struct hci_dev *hci_alloc_dev_priv(int sizeof_priv)
- 
- 	mutex_init(&hdev->lock);
- 	mutex_init(&hdev->req_lock);
-+	mutex_init(&hdev->mgmt_pending_lock);
- 
- 	ida_init(&hdev->unset_handle_ida);
- 
-diff --git a/net/bluetooth/mgmt.c b/net/bluetooth/mgmt.c
-index fda492bf0cd47..44174f59b31e6 100644
---- a/net/bluetooth/mgmt.c
-+++ b/net/bluetooth/mgmt.c
-@@ -1433,22 +1433,17 @@ static void settings_rsp(struct mgmt_pending_cmd *cmd, void *data)
- 
- 	send_settings_rsp(cmd->sk, cmd->opcode, match->hdev);
- 
--	list_del(&cmd->list);
--
- 	if (match->sk == NULL) {
- 		match->sk = cmd->sk;
- 		sock_hold(match->sk);
- 	}
--
--	mgmt_pending_free(cmd);
- }
- 
- static void cmd_status_rsp(struct mgmt_pending_cmd *cmd, void *data)
+diff --git a/arch/powerpc/platforms/powernv/memtrace.c b/arch/powerpc/platforms/powernv/memtrace.c
+index 877720c645151..35471b679638a 100644
+--- a/arch/powerpc/platforms/powernv/memtrace.c
++++ b/arch/powerpc/platforms/powernv/memtrace.c
+@@ -48,11 +48,15 @@ static ssize_t memtrace_read(struct file *filp, char __user *ubuf,
+ static int memtrace_mmap(struct file *filp, struct vm_area_struct *vma)
  {
- 	u8 *status = data;
- 
--	mgmt_cmd_status(cmd->sk, cmd->index, cmd->opcode, *status);
--	mgmt_pending_remove(cmd);
-+	mgmt_cmd_status(cmd->sk, cmd->hdev->id, cmd->opcode, *status);
- }
- 
- static void cmd_complete_rsp(struct mgmt_pending_cmd *cmd, void *data)
-@@ -1462,8 +1457,6 @@ static void cmd_complete_rsp(struct mgmt_pending_cmd *cmd, void *data)
- 
- 	if (cmd->cmd_complete) {
- 		cmd->cmd_complete(cmd, match->mgmt_status);
--		mgmt_pending_remove(cmd);
--
- 		return;
- 	}
- 
-@@ -1472,13 +1465,13 @@ static void cmd_complete_rsp(struct mgmt_pending_cmd *cmd, void *data)
- 
- static int generic_cmd_complete(struct mgmt_pending_cmd *cmd, u8 status)
- {
--	return mgmt_cmd_complete(cmd->sk, cmd->index, cmd->opcode, status,
-+	return mgmt_cmd_complete(cmd->sk, cmd->hdev->id, cmd->opcode, status,
- 				 cmd->param, cmd->param_len);
- }
- 
- static int addr_cmd_complete(struct mgmt_pending_cmd *cmd, u8 status)
- {
--	return mgmt_cmd_complete(cmd->sk, cmd->index, cmd->opcode, status,
-+	return mgmt_cmd_complete(cmd->sk, cmd->hdev->id, cmd->opcode, status,
- 				 cmd->param, sizeof(struct mgmt_addr_info));
- }
- 
-@@ -1518,7 +1511,7 @@ static void mgmt_set_discoverable_complete(struct hci_dev *hdev, void *data,
- 
- 	if (err) {
- 		u8 mgmt_err = mgmt_status(err);
--		mgmt_cmd_status(cmd->sk, cmd->index, cmd->opcode, mgmt_err);
-+		mgmt_cmd_status(cmd->sk, cmd->hdev->id, cmd->opcode, mgmt_err);
- 		hci_dev_clear_flag(hdev, HCI_LIMITED_DISCOVERABLE);
- 		goto done;
- 	}
-@@ -1693,7 +1686,7 @@ static void mgmt_set_connectable_complete(struct hci_dev *hdev, void *data,
- 
- 	if (err) {
- 		u8 mgmt_err = mgmt_status(err);
--		mgmt_cmd_status(cmd->sk, cmd->index, cmd->opcode, mgmt_err);
-+		mgmt_cmd_status(cmd->sk, cmd->hdev->id, cmd->opcode, mgmt_err);
- 		goto done;
- 	}
- 
-@@ -1930,8 +1923,8 @@ static void set_ssp_complete(struct hci_dev *hdev, void *data, int err)
- 			new_settings(hdev, NULL);
- 		}
- 
--		mgmt_pending_foreach(MGMT_OP_SET_SSP, hdev, cmd_status_rsp,
--				     &mgmt_err);
-+		mgmt_pending_foreach(MGMT_OP_SET_SSP, hdev, true,
-+				     cmd_status_rsp, &mgmt_err);
- 		return;
- 	}
- 
-@@ -1941,7 +1934,7 @@ static void set_ssp_complete(struct hci_dev *hdev, void *data, int err)
- 		changed = hci_dev_test_and_clear_flag(hdev, HCI_SSP_ENABLED);
- 	}
- 
--	mgmt_pending_foreach(MGMT_OP_SET_SSP, hdev, settings_rsp, &match);
-+	mgmt_pending_foreach(MGMT_OP_SET_SSP, hdev, true, settings_rsp, &match);
- 
- 	if (changed)
- 		new_settings(hdev, match.sk);
-@@ -2061,12 +2054,12 @@ static void set_le_complete(struct hci_dev *hdev, void *data, int err)
- 	bt_dev_dbg(hdev, "err %d", err);
- 
- 	if (status) {
--		mgmt_pending_foreach(MGMT_OP_SET_LE, hdev, cmd_status_rsp,
--							&status);
-+		mgmt_pending_foreach(MGMT_OP_SET_LE, hdev, true, cmd_status_rsp,
-+				     &status);
- 		return;
- 	}
- 
--	mgmt_pending_foreach(MGMT_OP_SET_LE, hdev, settings_rsp, &match);
-+	mgmt_pending_foreach(MGMT_OP_SET_LE, hdev, true, settings_rsp, &match);
- 
- 	new_settings(hdev, match.sk);
- 
-@@ -2125,7 +2118,7 @@ static void set_mesh_complete(struct hci_dev *hdev, void *data, int err)
- 	struct sock *sk = cmd->sk;
- 
- 	if (status) {
--		mgmt_pending_foreach(MGMT_OP_SET_MESH_RECEIVER, hdev,
-+		mgmt_pending_foreach(MGMT_OP_SET_MESH_RECEIVER, hdev, true,
- 				     cmd_status_rsp, &status);
- 		return;
- 	}
-@@ -2566,7 +2559,7 @@ static void mgmt_class_complete(struct hci_dev *hdev, void *data, int err)
- 
- 	bt_dev_dbg(hdev, "err %d", err);
- 
--	mgmt_cmd_complete(cmd->sk, cmd->index, cmd->opcode,
-+	mgmt_cmd_complete(cmd->sk, cmd->hdev->id, cmd->opcode,
- 			  mgmt_status(err), hdev->dev_class, 3);
- 
- 	mgmt_pending_free(cmd);
-@@ -3354,7 +3347,7 @@ static int pairing_complete(struct mgmt_pending_cmd *cmd, u8 status)
- 	bacpy(&rp.addr.bdaddr, &conn->dst);
- 	rp.addr.type = link_to_bdaddr(conn->type, conn->dst_type);
- 
--	err = mgmt_cmd_complete(cmd->sk, cmd->index, MGMT_OP_PAIR_DEVICE,
-+	err = mgmt_cmd_complete(cmd->sk, cmd->hdev->id, MGMT_OP_PAIR_DEVICE,
- 				status, &rp, sizeof(rp));
- 
- 	/* So we don't get further callbacks for this connection */
-@@ -5243,7 +5236,7 @@ static void mgmt_add_adv_patterns_monitor_complete(struct hci_dev *hdev,
- 		hci_update_passive_scan(hdev);
- 	}
- 
--	mgmt_cmd_complete(cmd->sk, cmd->index, cmd->opcode,
-+	mgmt_cmd_complete(cmd->sk, cmd->hdev->id, cmd->opcode,
- 			  mgmt_status(status), &rp, sizeof(rp));
- 	mgmt_pending_remove(cmd);
- 
-@@ -5458,7 +5451,7 @@ static void mgmt_remove_adv_monitor_complete(struct hci_dev *hdev,
- 		hci_update_passive_scan(hdev);
- 	}
- 
--	mgmt_cmd_complete(cmd->sk, cmd->index, cmd->opcode,
-+	mgmt_cmd_complete(cmd->sk, cmd->hdev->id, cmd->opcode,
- 			  mgmt_status(status), &rp, sizeof(rp));
- 	mgmt_pending_free(cmd);
- 
-@@ -5857,7 +5850,7 @@ static void start_discovery_complete(struct hci_dev *hdev, void *data, int err)
- 	    cmd != pending_find(MGMT_OP_START_SERVICE_DISCOVERY, hdev))
- 		return;
- 
--	mgmt_cmd_complete(cmd->sk, cmd->index, cmd->opcode, mgmt_status(err),
-+	mgmt_cmd_complete(cmd->sk, cmd->hdev->id, cmd->opcode, mgmt_status(err),
- 			  cmd->param, 1);
- 	mgmt_pending_remove(cmd);
- 
-@@ -6095,7 +6088,7 @@ static void stop_discovery_complete(struct hci_dev *hdev, void *data, int err)
- 
- 	bt_dev_dbg(hdev, "err %d", err);
- 
--	mgmt_cmd_complete(cmd->sk, cmd->index, cmd->opcode, mgmt_status(err),
-+	mgmt_cmd_complete(cmd->sk, cmd->hdev->id, cmd->opcode, mgmt_status(err),
- 			  cmd->param, 1);
- 	mgmt_pending_remove(cmd);
- 
-@@ -6320,7 +6313,7 @@ static void set_advertising_complete(struct hci_dev *hdev, void *data, int err)
- 	u8 status = mgmt_status(err);
- 
- 	if (status) {
--		mgmt_pending_foreach(MGMT_OP_SET_ADVERTISING, hdev,
-+		mgmt_pending_foreach(MGMT_OP_SET_ADVERTISING, hdev, true,
- 				     cmd_status_rsp, &status);
- 		return;
- 	}
-@@ -6330,7 +6323,7 @@ static void set_advertising_complete(struct hci_dev *hdev, void *data, int err)
- 	else
- 		hci_dev_clear_flag(hdev, HCI_ADVERTISING);
- 
--	mgmt_pending_foreach(MGMT_OP_SET_ADVERTISING, hdev, settings_rsp,
-+	mgmt_pending_foreach(MGMT_OP_SET_ADVERTISING, hdev, true, settings_rsp,
- 			     &match);
- 
- 	new_settings(hdev, match.sk);
-@@ -6674,7 +6667,7 @@ static void set_bredr_complete(struct hci_dev *hdev, void *data, int err)
- 		 */
- 		hci_dev_clear_flag(hdev, HCI_BREDR_ENABLED);
- 
--		mgmt_cmd_status(cmd->sk, cmd->index, cmd->opcode, mgmt_err);
-+		mgmt_cmd_status(cmd->sk, cmd->hdev->id, cmd->opcode, mgmt_err);
- 	} else {
- 		send_settings_rsp(cmd->sk, MGMT_OP_SET_BREDR, hdev);
- 		new_settings(hdev, cmd->sk);
-@@ -6811,7 +6804,7 @@ static void set_secure_conn_complete(struct hci_dev *hdev, void *data, int err)
- 	if (err) {
- 		u8 mgmt_err = mgmt_status(err);
- 
--		mgmt_cmd_status(cmd->sk, cmd->index, cmd->opcode, mgmt_err);
-+		mgmt_cmd_status(cmd->sk, cmd->hdev->id, cmd->opcode, mgmt_err);
- 		goto done;
- 	}
- 
-@@ -7258,7 +7251,7 @@ static void get_conn_info_complete(struct hci_dev *hdev, void *data, int err)
- 		rp.max_tx_power = HCI_TX_POWER_INVALID;
- 	}
- 
--	mgmt_cmd_complete(cmd->sk, cmd->index, MGMT_OP_GET_CONN_INFO, status,
-+	mgmt_cmd_complete(cmd->sk, cmd->hdev->id, MGMT_OP_GET_CONN_INFO, status,
- 			  &rp, sizeof(rp));
- 
- 	mgmt_pending_free(cmd);
-@@ -7418,7 +7411,7 @@ static void get_clock_info_complete(struct hci_dev *hdev, void *data, int err)
- 	}
- 
- complete:
--	mgmt_cmd_complete(cmd->sk, cmd->index, cmd->opcode, status, &rp,
-+	mgmt_cmd_complete(cmd->sk, cmd->hdev->id, cmd->opcode, status, &rp,
- 			  sizeof(rp));
- 
- 	mgmt_pending_free(cmd);
-@@ -8622,10 +8615,10 @@ static void add_advertising_complete(struct hci_dev *hdev, void *data, int err)
- 	rp.instance = cp->instance;
- 
- 	if (err)
--		mgmt_cmd_status(cmd->sk, cmd->index, cmd->opcode,
-+		mgmt_cmd_status(cmd->sk, cmd->hdev->id, cmd->opcode,
- 				mgmt_status(err));
- 	else
--		mgmt_cmd_complete(cmd->sk, cmd->index, cmd->opcode,
-+		mgmt_cmd_complete(cmd->sk, cmd->hdev->id, cmd->opcode,
- 				  mgmt_status(err), &rp, sizeof(rp));
- 
- 	add_adv_complete(hdev, cmd->sk, cp->instance, err);
-@@ -8813,10 +8806,10 @@ static void add_ext_adv_params_complete(struct hci_dev *hdev, void *data,
- 
- 		hci_remove_adv_instance(hdev, cp->instance);
- 
--		mgmt_cmd_status(cmd->sk, cmd->index, cmd->opcode,
-+		mgmt_cmd_status(cmd->sk, cmd->hdev->id, cmd->opcode,
- 				mgmt_status(err));
- 	} else {
--		mgmt_cmd_complete(cmd->sk, cmd->index, cmd->opcode,
-+		mgmt_cmd_complete(cmd->sk, cmd->hdev->id, cmd->opcode,
- 				  mgmt_status(err), &rp, sizeof(rp));
- 	}
- 
-@@ -8964,10 +8957,10 @@ static void add_ext_adv_data_complete(struct hci_dev *hdev, void *data, int err)
- 	rp.instance = cp->instance;
- 
- 	if (err)
--		mgmt_cmd_status(cmd->sk, cmd->index, cmd->opcode,
-+		mgmt_cmd_status(cmd->sk, cmd->hdev->id, cmd->opcode,
- 				mgmt_status(err));
- 	else
--		mgmt_cmd_complete(cmd->sk, cmd->index, cmd->opcode,
-+		mgmt_cmd_complete(cmd->sk, cmd->hdev->id, cmd->opcode,
- 				  mgmt_status(err), &rp, sizeof(rp));
- 
- 	mgmt_pending_free(cmd);
-@@ -9126,10 +9119,10 @@ static void remove_advertising_complete(struct hci_dev *hdev, void *data,
- 	rp.instance = cp->instance;
- 
- 	if (err)
--		mgmt_cmd_status(cmd->sk, cmd->index, cmd->opcode,
-+		mgmt_cmd_status(cmd->sk, cmd->hdev->id, cmd->opcode,
- 				mgmt_status(err));
- 	else
--		mgmt_cmd_complete(cmd->sk, cmd->index, cmd->opcode,
-+		mgmt_cmd_complete(cmd->sk, cmd->hdev->id, cmd->opcode,
- 				  MGMT_STATUS_SUCCESS, &rp, sizeof(rp));
- 
- 	mgmt_pending_free(cmd);
-@@ -9400,7 +9393,7 @@ void mgmt_index_removed(struct hci_dev *hdev)
- 	if (test_bit(HCI_QUIRK_RAW_DEVICE, &hdev->quirks))
- 		return;
- 
--	mgmt_pending_foreach(0, hdev, cmd_complete_rsp, &match);
-+	mgmt_pending_foreach(0, hdev, true, cmd_complete_rsp, &match);
- 
- 	if (hci_dev_test_flag(hdev, HCI_UNCONFIGURED)) {
- 		mgmt_index_event(MGMT_EV_UNCONF_INDEX_REMOVED, hdev, NULL, 0,
-@@ -9438,7 +9431,8 @@ void mgmt_power_on(struct hci_dev *hdev, int err)
- 		hci_update_passive_scan(hdev);
- 	}
- 
--	mgmt_pending_foreach(MGMT_OP_SET_POWERED, hdev, settings_rsp, &match);
-+	mgmt_pending_foreach(MGMT_OP_SET_POWERED, hdev, true, settings_rsp,
-+			     &match);
- 
- 	new_settings(hdev, match.sk);
- 
-@@ -9453,7 +9447,8 @@ void __mgmt_power_off(struct hci_dev *hdev)
- 	struct cmd_lookup match = { NULL, hdev };
- 	u8 zero_cod[] = { 0, 0, 0 };
- 
--	mgmt_pending_foreach(MGMT_OP_SET_POWERED, hdev, settings_rsp, &match);
-+	mgmt_pending_foreach(MGMT_OP_SET_POWERED, hdev, true, settings_rsp,
-+			     &match);
- 
- 	/* If the power off is because of hdev unregistration let
- 	 * use the appropriate INVALID_INDEX status. Otherwise use
-@@ -9467,7 +9462,7 @@ void __mgmt_power_off(struct hci_dev *hdev)
- 	else
- 		match.mgmt_status = MGMT_STATUS_NOT_POWERED;
- 
--	mgmt_pending_foreach(0, hdev, cmd_complete_rsp, &match);
-+	mgmt_pending_foreach(0, hdev, true, cmd_complete_rsp, &match);
- 
- 	if (memcmp(hdev->dev_class, zero_cod, sizeof(zero_cod)) != 0) {
- 		mgmt_limited_event(MGMT_EV_CLASS_OF_DEV_CHANGED, hdev,
-@@ -9708,7 +9703,6 @@ static void unpair_device_rsp(struct mgmt_pending_cmd *cmd, void *data)
- 	device_unpaired(hdev, &cp->addr.bdaddr, cp->addr.type, cmd->sk);
- 
- 	cmd->cmd_complete(cmd, 0);
--	mgmt_pending_remove(cmd);
- }
- 
- bool mgmt_powering_down(struct hci_dev *hdev)
-@@ -9761,8 +9755,8 @@ void mgmt_disconnect_failed(struct hci_dev *hdev, bdaddr_t *bdaddr,
- 	struct mgmt_cp_disconnect *cp;
- 	struct mgmt_pending_cmd *cmd;
- 
--	mgmt_pending_foreach(MGMT_OP_UNPAIR_DEVICE, hdev, unpair_device_rsp,
--			     hdev);
-+	mgmt_pending_foreach(MGMT_OP_UNPAIR_DEVICE, hdev, true,
-+			     unpair_device_rsp, hdev);
- 
- 	cmd = pending_find(MGMT_OP_DISCONNECT, hdev);
- 	if (!cmd)
-@@ -9955,7 +9949,7 @@ void mgmt_auth_enable_complete(struct hci_dev *hdev, u8 status)
- 
- 	if (status) {
- 		u8 mgmt_err = mgmt_status(status);
--		mgmt_pending_foreach(MGMT_OP_SET_LINK_SECURITY, hdev,
-+		mgmt_pending_foreach(MGMT_OP_SET_LINK_SECURITY, hdev, true,
- 				     cmd_status_rsp, &mgmt_err);
- 		return;
- 	}
-@@ -9965,8 +9959,8 @@ void mgmt_auth_enable_complete(struct hci_dev *hdev, u8 status)
- 	else
- 		changed = hci_dev_test_and_clear_flag(hdev, HCI_LINK_SECURITY);
- 
--	mgmt_pending_foreach(MGMT_OP_SET_LINK_SECURITY, hdev, settings_rsp,
--			     &match);
-+	mgmt_pending_foreach(MGMT_OP_SET_LINK_SECURITY, hdev, true,
-+			     settings_rsp, &match);
- 
- 	if (changed)
- 		new_settings(hdev, match.sk);
-@@ -9990,9 +9984,12 @@ void mgmt_set_class_of_dev_complete(struct hci_dev *hdev, u8 *dev_class,
- {
- 	struct cmd_lookup match = { NULL, hdev, mgmt_status(status) };
- 
--	mgmt_pending_foreach(MGMT_OP_SET_DEV_CLASS, hdev, sk_lookup, &match);
--	mgmt_pending_foreach(MGMT_OP_ADD_UUID, hdev, sk_lookup, &match);
--	mgmt_pending_foreach(MGMT_OP_REMOVE_UUID, hdev, sk_lookup, &match);
-+	mgmt_pending_foreach(MGMT_OP_SET_DEV_CLASS, hdev, false, sk_lookup,
-+			     &match);
-+	mgmt_pending_foreach(MGMT_OP_ADD_UUID, hdev, false, sk_lookup,
-+			     &match);
-+	mgmt_pending_foreach(MGMT_OP_REMOVE_UUID, hdev, false, sk_lookup,
-+			     &match);
- 
- 	if (!status) {
- 		mgmt_limited_event(MGMT_EV_CLASS_OF_DEV_CHANGED, hdev, dev_class,
-diff --git a/net/bluetooth/mgmt_util.c b/net/bluetooth/mgmt_util.c
-index dba6a0d66500f..4ba500c377a4c 100644
---- a/net/bluetooth/mgmt_util.c
-+++ b/net/bluetooth/mgmt_util.c
-@@ -217,30 +217,47 @@ int mgmt_cmd_complete(struct sock *sk, u16 index, u16 cmd, u8 status,
- struct mgmt_pending_cmd *mgmt_pending_find(unsigned short channel, u16 opcode,
- 					   struct hci_dev *hdev)
- {
--	struct mgmt_pending_cmd *cmd;
-+	struct mgmt_pending_cmd *cmd, *tmp;
-+
-+	mutex_lock(&hdev->mgmt_pending_lock);
- 
--	list_for_each_entry(cmd, &hdev->mgmt_pending, list) {
-+	list_for_each_entry_safe(cmd, tmp, &hdev->mgmt_pending, list) {
- 		if (hci_sock_get_channel(cmd->sk) != channel)
- 			continue;
--		if (cmd->opcode == opcode)
-+
-+		if (cmd->opcode == opcode) {
-+			mutex_unlock(&hdev->mgmt_pending_lock);
- 			return cmd;
-+		}
- 	}
- 
-+	mutex_unlock(&hdev->mgmt_pending_lock);
-+
- 	return NULL;
- }
- 
--void mgmt_pending_foreach(u16 opcode, struct hci_dev *hdev,
-+void mgmt_pending_foreach(u16 opcode, struct hci_dev *hdev, bool remove,
- 			  void (*cb)(struct mgmt_pending_cmd *cmd, void *data),
- 			  void *data)
- {
- 	struct mgmt_pending_cmd *cmd, *tmp;
- 
-+	mutex_lock(&hdev->mgmt_pending_lock);
-+
- 	list_for_each_entry_safe(cmd, tmp, &hdev->mgmt_pending, list) {
- 		if (opcode > 0 && cmd->opcode != opcode)
- 			continue;
- 
-+		if (remove)
-+			list_del(&cmd->list);
-+
- 		cb(cmd, data);
-+
-+		if (remove)
-+			mgmt_pending_free(cmd);
- 	}
-+
-+	mutex_unlock(&hdev->mgmt_pending_lock);
- }
- 
- struct mgmt_pending_cmd *mgmt_pending_new(struct sock *sk, u16 opcode,
-@@ -254,7 +271,7 @@ struct mgmt_pending_cmd *mgmt_pending_new(struct sock *sk, u16 opcode,
- 		return NULL;
- 
- 	cmd->opcode = opcode;
--	cmd->index = hdev->id;
-+	cmd->hdev = hdev;
- 
- 	cmd->param = kmemdup(data, len, GFP_KERNEL);
- 	if (!cmd->param) {
-@@ -280,7 +297,9 @@ struct mgmt_pending_cmd *mgmt_pending_add(struct sock *sk, u16 opcode,
- 	if (!cmd)
- 		return NULL;
- 
-+	mutex_lock(&hdev->mgmt_pending_lock);
- 	list_add_tail(&cmd->list, &hdev->mgmt_pending);
-+	mutex_unlock(&hdev->mgmt_pending_lock);
- 
- 	return cmd;
- }
-@@ -294,7 +313,10 @@ void mgmt_pending_free(struct mgmt_pending_cmd *cmd)
- 
- void mgmt_pending_remove(struct mgmt_pending_cmd *cmd)
- {
-+	mutex_lock(&cmd->hdev->mgmt_pending_lock);
- 	list_del(&cmd->list);
-+	mutex_unlock(&cmd->hdev->mgmt_pending_lock);
-+
- 	mgmt_pending_free(cmd);
- }
- 
-diff --git a/net/bluetooth/mgmt_util.h b/net/bluetooth/mgmt_util.h
-index f2ba994ab1d84..024e51dd69375 100644
---- a/net/bluetooth/mgmt_util.h
-+++ b/net/bluetooth/mgmt_util.h
-@@ -33,7 +33,7 @@ struct mgmt_mesh_tx {
- struct mgmt_pending_cmd {
- 	struct list_head list;
- 	u16 opcode;
--	int index;
-+	struct hci_dev *hdev;
- 	void *param;
- 	size_t param_len;
- 	struct sock *sk;
-@@ -54,7 +54,7 @@ int mgmt_cmd_complete(struct sock *sk, u16 index, u16 cmd, u8 status,
- 
- struct mgmt_pending_cmd *mgmt_pending_find(unsigned short channel, u16 opcode,
- 					   struct hci_dev *hdev);
--void mgmt_pending_foreach(u16 opcode, struct hci_dev *hdev,
-+void mgmt_pending_foreach(u16 opcode, struct hci_dev *hdev, bool remove,
- 			  void (*cb)(struct mgmt_pending_cmd *cmd, void *data),
- 			  void *data);
- struct mgmt_pending_cmd *mgmt_pending_add(struct sock *sk, u16 opcode,
+ 	struct memtrace_entry *ent = filp->private_data;
++	unsigned long ent_nrpages = ent->size >> PAGE_SHIFT;
++	unsigned long vma_nrpages = vma_pages(vma);
+ 
+-	if (ent->size < vma->vm_end - vma->vm_start)
++	/* The requested page offset should be within object's page count */
++	if (vma->vm_pgoff >= ent_nrpages)
+ 		return -EINVAL;
+ 
+-	if (vma->vm_pgoff << PAGE_SHIFT >= ent->size)
++	/* The requested mapping range should remain within the bounds */
++	if (vma_nrpages > ent_nrpages - vma->vm_pgoff)
+ 		return -EINVAL;
+ 
+ 	vma->vm_page_prot = pgprot_noncached(vma->vm_page_prot);
 -- 
 2.39.5
 
