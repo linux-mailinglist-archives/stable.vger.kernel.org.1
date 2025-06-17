@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-154083-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-154459-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 06945ADD821
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:52:18 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3DFE3ADD9EA
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 19:10:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F1D4719E4FDB
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:41:40 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1B8ED5A54CF
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:55:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED1632FA64B;
-	Tue, 17 Jun 2025 16:34:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2DFEC1F9F7A;
+	Tue, 17 Jun 2025 16:54:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pAftVlfb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y4EM3h0h"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9A892FA644;
-	Tue, 17 Jun 2025 16:34:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB02C2FA647;
+	Tue, 17 Jun 2025 16:54:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750178046; cv=none; b=MOn1TJp03ohOUOqviSUtVI3nJnaJ5T6Zw4q72JEzBeZw/I5empdwZSyGETAhshDDBzSaIA8PEFnsO64fGoq/SOsk30xEb3tEtlYaS1GtQV+3b4TeoPk7gmR0foIIXF92pAF+VPa0Di1Iat4YbGfiucU5Ytp4ushO6q7rqAoqljo=
+	t=1750179255; cv=none; b=Q4DRHzNm1NDTVGfnNn5bn+vfHZM1AYmF3SONw4LsmTPs35jQBHDBV+CnjohfkJx4eE10CmDVGhzj3VLVKmZaACves+VPUdstUYnXr76tgODLBqMaBynphKVqEvHZvSkd6dKDo+jfx/YH3imZEGG5DkB83TeEa31ZwKgw+rBZEuY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750178046; c=relaxed/simple;
-	bh=9Pa3qeumsF47zbyGk1PNT5mKQHtIm54ZZX3z+cf/5eU=;
+	s=arc-20240116; t=1750179255; c=relaxed/simple;
+	bh=RCjCOo0uuHUxVs5jGeurtDb7xDHx28ul/ncYWNb4Kfk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=S8sd7gqdH6rWBGBxLp53KpiNwH6q/42uJPs56jjJ5sjtZ3k0LBMvwVH6SFuKOcAG81+XVAGsIFisGaVubSxSmb9a6pAW3iJnnk9EY0tEDdRzPfsV+x6/U+qskWoMw6sRDT7vCodekyBpHsb2eSAiWtdMMln0It37hz8w2+NJPBE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pAftVlfb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E37E7C4CEE7;
-	Tue, 17 Jun 2025 16:34:05 +0000 (UTC)
+	 MIME-Version; b=kUBh9kiyOgKKDM0CMFlubpa4kDhYysWWYnZ3PxB4usawoIYIKLkgrBAal94PfdvBA8eFuTiRY7KY9eNDaifCodjH3Rv+S9AyMVrwC43c3qIv7fPEXwxg3kvsT6vLPwB1ZmFQFwPpWhTAsjUp/fBPEWPVA1EiucjVttfBFRyo89Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y4EM3h0h; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40CF3C4CEE7;
+	Tue, 17 Jun 2025 16:54:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750178046;
-	bh=9Pa3qeumsF47zbyGk1PNT5mKQHtIm54ZZX3z+cf/5eU=;
+	s=korg; t=1750179254;
+	bh=RCjCOo0uuHUxVs5jGeurtDb7xDHx28ul/ncYWNb4Kfk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pAftVlfbQGQbvRk5xeaoHbbijMHtEIs1sH4QfV+o3xeOord2Z+aV1TnrYa+j3JIhM
-	 MBkyu+/mWoj0f8Lh/qNRVTh7DCPwdcrLteCY8WpJ4hjXNJ2HyjKC8OnJ+d3XeU3WQB
-	 gmGVqUkW/ANdJWvrAQ5f+8TyZ6H4JWIivVhyOytY=
+	b=Y4EM3h0hbH3LN2PKiaYmi3tizAL1uG9xv/rYzC84gc5YYsvkM0MxKyqwhFEEK4/tt
+	 f2YuSGXU1sEcwzAQfVclPLgxkRQTQXCkEY+0sdNO6eNCoUEM9T2sHbX/nM7C0pakOS
+	 09GsZudRZkBP3/u9DwXClb1H/r7jYF/5u71huF0Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Baochen Qiang <quic_bqiang@quicinc.com>,
-	Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>,
-	Parth Pancholi <parth.pancholi@toradex.com>,
-	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
+	Robert Malz <robert.malz@canonical.com>,
+	Rafal Romanowski <rafal.romanowski@intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 436/512] wifi: ath12k: fix GCC_GCC_PCIE_HOT_RST definition for WCN7850
-Date: Tue, 17 Jun 2025 17:26:42 +0200
-Message-ID: <20250617152437.238305339@linuxfoundation.org>
+Subject: [PATCH 6.15 695/780] i40e: retry VFLR handling if there is ongoing VF reset
+Date: Tue, 17 Jun 2025 17:26:43 +0200
+Message-ID: <20250617152519.801783118@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
-References: <20250617152419.512865572@linuxfoundation.org>
+In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
+References: <20250617152451.485330293@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,118 +63,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Baochen Qiang <quic_bqiang@quicinc.com>
+From: Robert Malz <robert.malz@canonical.com>
 
-[ Upstream commit 7588a893cde5385ad308400ff167d29a29913b3a ]
+[ Upstream commit fb4e9239e029954a37a00818b21e837cebf2aa10 ]
 
-GCC_GCC_PCIE_HOT_RST is wrongly defined for WCN7850, causing kernel crash
-on some specific platforms.
+When a VFLR interrupt is received during a VF reset initiated from a
+different source, the VFLR may be not fully handled. This can
+leave the VF in an undefined state.
+To address this, set the I40E_VFLR_EVENT_PENDING bit again during VFLR
+handling if the reset is not yet complete. This ensures the driver
+will properly complete the VF reset in such scenarios.
 
-Since this register is divergent for WCN7850 and QCN9274, move it to
-register table to allow different definitions. Then correct the register
-address for WCN7850 to fix this issue.
-
-Note IPQ5332 is not affected as it is not PCIe based device.
-
-Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0.c5-00481-QCAHMTSWPL_V1.0_V2.0_SILICONZ-3
-
-Signed-off-by: Baochen Qiang <quic_bqiang@quicinc.com>
-Reviewed-by: Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>
-Reported-by: Parth Pancholi <parth.pancholi@toradex.com>
-Closes: https://lore.kernel.org/all/86899b2235a59c9134603beebe08f2bb0b244ea0.camel@gmail.com
-Fixes: d889913205cf ("wifi: ath12k: driver for Qualcomm Wi-Fi 7 devices")
-Tested-by: Parth Pancholi <parth.pancholi@toradex.com>
-Link: https://patch.msgid.link/20250523-ath12k-wrong-global-reset-addr-v1-1-3b06eb556196@quicinc.com
-Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+Fixes: 52424f974bc5 ("i40e: Fix VF hang when reset is triggered on another VF")
+Signed-off-by: Robert Malz <robert.malz@canonical.com>
+Tested-by: Rafal Romanowski <rafal.romanowski@intel.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath12k/hw.c  | 6 ++++++
- drivers/net/wireless/ath/ath12k/hw.h  | 2 ++
- drivers/net/wireless/ath/ath12k/pci.c | 6 +++---
- drivers/net/wireless/ath/ath12k/pci.h | 4 +++-
- 4 files changed, 14 insertions(+), 4 deletions(-)
+ drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/ath/ath12k/hw.c b/drivers/net/wireless/ath/ath12k/hw.c
-index 5bffc428f19f5..e3eb22bb9e1cb 100644
---- a/drivers/net/wireless/ath/ath12k/hw.c
-+++ b/drivers/net/wireless/ath/ath12k/hw.c
-@@ -686,6 +686,8 @@ static const struct ath12k_hw_regs qcn9274_v1_regs = {
- 	.hal_umac_ce0_dest_reg_base = 0x01b81000,
- 	.hal_umac_ce1_src_reg_base = 0x01b82000,
- 	.hal_umac_ce1_dest_reg_base = 0x01b83000,
-+
-+	.gcc_gcc_pcie_hot_rst = 0x1e38338,
- };
+diff --git a/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c b/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c
+index 22d5b1ec2289f..88e6bef69342c 100644
+--- a/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c
++++ b/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c
+@@ -4328,7 +4328,10 @@ int i40e_vc_process_vflr_event(struct i40e_pf *pf)
+ 		reg = rd32(hw, I40E_GLGEN_VFLRSTAT(reg_idx));
+ 		if (reg & BIT(bit_idx))
+ 			/* i40e_reset_vf will clear the bit in GLGEN_VFLRSTAT */
+-			i40e_reset_vf(vf, true);
++			if (!i40e_reset_vf(vf, true)) {
++				/* At least one VF did not finish resetting, retry next time */
++				set_bit(__I40E_VFLR_EVENT_PENDING, pf->state);
++			}
+ 	}
  
- static const struct ath12k_hw_regs qcn9274_v2_regs = {
-@@ -775,6 +777,8 @@ static const struct ath12k_hw_regs qcn9274_v2_regs = {
- 	.hal_umac_ce0_dest_reg_base = 0x01b81000,
- 	.hal_umac_ce1_src_reg_base = 0x01b82000,
- 	.hal_umac_ce1_dest_reg_base = 0x01b83000,
-+
-+	.gcc_gcc_pcie_hot_rst = 0x1e38338,
- };
- 
- static const struct ath12k_hw_regs wcn7850_regs = {
-@@ -860,6 +864,8 @@ static const struct ath12k_hw_regs wcn7850_regs = {
- 	.hal_umac_ce0_dest_reg_base = 0x01b81000,
- 	.hal_umac_ce1_src_reg_base = 0x01b82000,
- 	.hal_umac_ce1_dest_reg_base = 0x01b83000,
-+
-+	.gcc_gcc_pcie_hot_rst = 0x1e40304,
- };
- 
- static const struct ath12k_hw_hal_params ath12k_hw_hal_params_qcn9274 = {
-diff --git a/drivers/net/wireless/ath/ath12k/hw.h b/drivers/net/wireless/ath/ath12k/hw.h
-index acb81b5798ac1..862b11325a902 100644
---- a/drivers/net/wireless/ath/ath12k/hw.h
-+++ b/drivers/net/wireless/ath/ath12k/hw.h
-@@ -355,6 +355,8 @@ struct ath12k_hw_regs {
- 	u32 hal_reo_cmd_ring_base;
- 
- 	u32 hal_reo_status_ring_base;
-+
-+	u32 gcc_gcc_pcie_hot_rst;
- };
- 
- static inline const char *ath12k_bd_ie_type_str(enum ath12k_bd_ie_type type)
-diff --git a/drivers/net/wireless/ath/ath12k/pci.c b/drivers/net/wireless/ath/ath12k/pci.c
-index 1068cc07bc9f6..26f4b440c26d2 100644
---- a/drivers/net/wireless/ath/ath12k/pci.c
-+++ b/drivers/net/wireless/ath/ath12k/pci.c
-@@ -290,10 +290,10 @@ static void ath12k_pci_enable_ltssm(struct ath12k_base *ab)
- 
- 	ath12k_dbg(ab, ATH12K_DBG_PCI, "pci ltssm 0x%x\n", val);
- 
--	val = ath12k_pci_read32(ab, GCC_GCC_PCIE_HOT_RST);
-+	val = ath12k_pci_read32(ab, GCC_GCC_PCIE_HOT_RST(ab));
- 	val |= GCC_GCC_PCIE_HOT_RST_VAL;
--	ath12k_pci_write32(ab, GCC_GCC_PCIE_HOT_RST, val);
--	val = ath12k_pci_read32(ab, GCC_GCC_PCIE_HOT_RST);
-+	ath12k_pci_write32(ab, GCC_GCC_PCIE_HOT_RST(ab), val);
-+	val = ath12k_pci_read32(ab, GCC_GCC_PCIE_HOT_RST(ab));
- 
- 	ath12k_dbg(ab, ATH12K_DBG_PCI, "pci pcie_hot_rst 0x%x\n", val);
- 
-diff --git a/drivers/net/wireless/ath/ath12k/pci.h b/drivers/net/wireless/ath/ath12k/pci.h
-index 31584a7ad80eb..9321674eef8b8 100644
---- a/drivers/net/wireless/ath/ath12k/pci.h
-+++ b/drivers/net/wireless/ath/ath12k/pci.h
-@@ -28,7 +28,9 @@
- #define PCIE_PCIE_PARF_LTSSM			0x1e081b0
- #define PARM_LTSSM_VALUE			0x111
- 
--#define GCC_GCC_PCIE_HOT_RST			0x1e38338
-+#define GCC_GCC_PCIE_HOT_RST(ab) \
-+	((ab)->hw_params->regs->gcc_gcc_pcie_hot_rst)
-+
- #define GCC_GCC_PCIE_HOT_RST_VAL		0x10
- 
- #define PCIE_PCIE_INT_ALL_CLEAR			0x1e08228
+ 	return 0;
 -- 
 2.39.5
 
