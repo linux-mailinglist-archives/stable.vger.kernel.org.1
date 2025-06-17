@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-153686-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-154280-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id C69B1ADD5B2
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:24:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CF51FADD7AE
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:48:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C10D97B0C09
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:16:57 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8A9BC7AC8D4
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:46:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C56272ED16B;
-	Tue, 17 Jun 2025 16:12:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A25E2DFF2C;
+	Tue, 17 Jun 2025 16:44:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tpTg4FLJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rqZkWvOs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E8AD2ED168;
-	Tue, 17 Jun 2025 16:12:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 054F38F54;
+	Tue, 17 Jun 2025 16:44:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750176761; cv=none; b=KAvdsaCKc8jwt/21S0cqhaG/x9Mh3e+QKAhiVC3a5hGnkMIHjKfStnhAh22Q08tDzGxnLUgMpS1wkwd5lz6E2vQuM6KDeQZDnOs0mVsqjJIk7u3n6RqtmGAsJJZiL3RJ/+kwgEnJ2wyLvXTVWqT0StXy+uGffIMGTRWMMIkETHw=
+	t=1750178682; cv=none; b=L4zX+w8ZhHa/pAJrU/b4wEWMlt5gnQ6bwwTyJfLoBZt1t1KEA/TsuBqzFQYzG/qOokuUIxs31QZxKcHM3/xCcvDYQp5y0+x26YZ5JWT1NMuBHr/x8qdnFfUyeX549LeuG87N2EjJ+rAVQ9ozixF8iru6bGFJP0FtlBMe/VfCmWg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750176761; c=relaxed/simple;
-	bh=JugRCIzUUks3BiLCtA0T5nuII2ea97IK8RFpCbEtVCc=;
+	s=arc-20240116; t=1750178682; c=relaxed/simple;
+	bh=9Z+XW2vy53Qr1Sj7gucB5nEwTNxkm6KIJ0UemzABZwk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bjdJaPAnqb3C5OwC40bs34jHOoQEnBJVKZor5y/tZnlVUro+kNg1qu2/DE6LntWBnXTs4Ek+iVn4bM82ShYsOEiB+BM8vd6a4IUOOtURzK2eP8kFp08BNGUa+ZItq9lpdk6mM13/ABZiO0/nD+My1BLdIANVEb6HyjPRfOSv55w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tpTg4FLJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9DCFC4CEE3;
-	Tue, 17 Jun 2025 16:12:40 +0000 (UTC)
+	 MIME-Version:Content-Type; b=WnZlfo/FyNtirU1X+seQIRf53z0etAOSkLkB/QbzoikAuup3L6uPaTK4ulXWa3QQOY2jCi7cBS+ogkNfKZqFM55YOeHsDD1+iKL2KlXlI2ugOFh+HPtT66/ORWiseWvODQ0Ez3X27XjmS51Z7hBcIFlYYz2TVIarP7a7jTifzdw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rqZkWvOs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69FE2C4CEE3;
+	Tue, 17 Jun 2025 16:44:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750176761;
-	bh=JugRCIzUUks3BiLCtA0T5nuII2ea97IK8RFpCbEtVCc=;
+	s=korg; t=1750178681;
+	bh=9Z+XW2vy53Qr1Sj7gucB5nEwTNxkm6KIJ0UemzABZwk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tpTg4FLJOWO+K35aPKnPtQ7eW4OcqN74G436DD+ckOc55zKHrruksCPOP4g1IV7KK
-	 vEaiFzJEUwYRUNp7u79QbfQ7RfkbXrCYKnshFlrcTv5mHoeFB7A+uc5AaIUdBdHaUu
-	 YlU98Afq6dMIu23EcqXCUr01Kmn3O0gFcxiJxNqY=
+	b=rqZkWvOs8IqHgmswqYGWJouMb2PSI93vlbaQmc6Uti/oonCirExreERjePEbsA7Gv
+	 ArI/iZvUeQJAus4hxKcC4LBJ3+6UIoh+fOOABOe5r6swoOGWPV91Gr5dfsoxQSy882
+	 xynzaxxYu5EFtT4PPEr3tsOXHU+A30A4tHg2xwTc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Julien Massot <julien.massot@collabora.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>,
+	Marcelo Schmitt <marcelo.schmitt@analog.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 264/512] arm64: dts: mt6359: Rename RTC node to match binding expectations
+Subject: [PATCH 6.15 522/780] iio: adc: ad7124: Fix 3dB filter frequency reading
 Date: Tue, 17 Jun 2025 17:23:50 +0200
-Message-ID: <20250617152430.289723871@linuxfoundation.org>
+Message-ID: <20250617152512.772837592@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
-References: <20250617152419.512865572@linuxfoundation.org>
+In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
+References: <20250617152451.485330293@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,46 +61,47 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Julien Massot <julien.massot@collabora.com>
+From: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
 
-[ Upstream commit cfe035d8662cfbd6edff9bd89c4b516bbb34c350 ]
+[ Upstream commit 8712e4986e7ce42a14c762c4c350f290989986a5 ]
 
-Rename the node 'mt6359rtc' to 'rtc', as required by the binding.
+The sinc4 filter has a factor 0.23 between Output Data Rate and f_{3dB}
+and for sinc3 the factor is 0.272 according to the data sheets for
+ad7124-4 (Rev. E.) and ad7124-8 (Rev. F).
 
-Fix the following dtb-check error:
-
-mediatek/mt8395-radxa-nio-12l.dtb: pmic: 'mt6359rtc' do not match
-any of the regexes: 'pinctrl-[0-9]+'
-
-Fixes: 3b7d143be4b7 ("arm64: dts: mt6359: add PMIC MT6359 related nodes")
-Signed-off-by: Julien Massot <julien.massot@collabora.com>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Link: https://lore.kernel.org/r/20250514-mt8395-dtb-errors-v2-3-d67b9077c59a@collabora.com
-Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Fixes: cef2760954cf ("iio: adc: ad7124: add 3db filter")
+Signed-off-by: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
+Reviewed-by: Marcelo Schmitt <marcelo.schmitt@analog.com>
+Link: https://patch.msgid.link/20250317115247.3735016-6-u.kleine-koenig@baylibre.com
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/mediatek/mt6359.dtsi | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/iio/adc/ad7124.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/mediatek/mt6359.dtsi b/arch/arm64/boot/dts/mediatek/mt6359.dtsi
-index 57af3e7899841..779d6dfb55c00 100644
---- a/arch/arm64/boot/dts/mediatek/mt6359.dtsi
-+++ b/arch/arm64/boot/dts/mediatek/mt6359.dtsi
-@@ -298,7 +298,7 @@
- 			};
- 		};
+diff --git a/drivers/iio/adc/ad7124.c b/drivers/iio/adc/ad7124.c
+index 3ea81a98e4553..7d5d84a07cae1 100644
+--- a/drivers/iio/adc/ad7124.c
++++ b/drivers/iio/adc/ad7124.c
+@@ -301,9 +301,9 @@ static int ad7124_get_3db_filter_freq(struct ad7124_state *st,
  
--		mt6359rtc: mt6359rtc {
-+		mt6359rtc: rtc {
- 			compatible = "mediatek,mt6358-rtc";
- 		};
- 	};
+ 	switch (st->channels[channel].cfg.filter_type) {
+ 	case AD7124_SINC3_FILTER:
+-		return DIV_ROUND_CLOSEST(fadc * 230, 1000);
++		return DIV_ROUND_CLOSEST(fadc * 272, 1000);
+ 	case AD7124_SINC4_FILTER:
+-		return DIV_ROUND_CLOSEST(fadc * 262, 1000);
++		return DIV_ROUND_CLOSEST(fadc * 230, 1000);
+ 	default:
+ 		return -EINVAL;
+ 	}
 -- 
 2.39.5
 
