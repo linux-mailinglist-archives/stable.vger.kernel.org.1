@@ -1,130 +1,129 @@
-Return-Path: <stable+bounces-152853-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-152854-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF112ADCDFC
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 15:48:03 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 011E8ADCDE0
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 15:46:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 366F13B9A71
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 13:45:19 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B164C188CEDA
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 13:46:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22B2C2E2EF4;
-	Tue, 17 Jun 2025 13:44:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 12C9C2DE20F;
+	Tue, 17 Jun 2025 13:44:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="AH27B0LQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jUKHjELU"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ed1-f51.google.com (mail-ed1-f51.google.com [209.85.208.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F2662E2671
-	for <stable@vger.kernel.org>; Tue, 17 Jun 2025 13:44:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C07D02DE1FA
+	for <stable@vger.kernel.org>; Tue, 17 Jun 2025 13:44:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750167843; cv=none; b=efHPBVK+vjeBjj/G/gud2X4l8bNlA1qOw4ffQuYEzhR/eiA0tsjI4pR6EqCJjod/Jl5EFF3BFpBASYnilNaY2oRKgD4JwRdHM5USls8h8daGoewM8xRTkkCusB+8nukSKzPOcLBlgSJEoAQyK++JBZmp44FPozx4PTQwy6liOG0=
+	t=1750167869; cv=none; b=dNqfY11ELKYXXyQkrUH5MfW+AwkBtXg6yYVq0aH7bkOUQ5l8RXHZLbjC2HoGi77WuU9sftjgzycGD7yJlF+BmvJyUpG6C9vj5399J6FzNPxxRo3sDi5GAXhcovus4jxyrLwaNxYlDy1G+ERROgI3dVRgHJbSpCShsphtPqBVu/g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750167843; c=relaxed/simple;
-	bh=BFQ9SO2t1J71+CICyMv1OPoOaaKRRkwWmkwVe0QJxP0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=HP2jOUxVeMHgeNc2ey9T4GlrhSiLC6lWmgSbhUkHdepjgwym47TS/wsxP0Sz5s6BItdxt0HAT+bgOONxK/3cA1lNymFg0dBy4JXHiMd8muc+hySqUMsSTp5sC24J/6S5N0S8zBydRwJGVPSE3jiC7u1wDjr4dsPumJF3zqaZYZI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=AH27B0LQ; arc=none smtp.client-ip=209.85.208.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ed1-f51.google.com with SMTP id 4fb4d7f45d1cf-6077d0b9bbeso10550576a12.3
-        for <stable@vger.kernel.org>; Tue, 17 Jun 2025 06:44:01 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1750167840; x=1750772640; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=zecGBL4EFfqvJ1+S5Ps/tbhcKJ3SUOGOERPfVCGUV9U=;
-        b=AH27B0LQQC2ayBySy8ZR8I75kphnB298dWIqrZg8uUoRaOOzZQ5r3LXWIBPMHW/ODA
-         6NlmaWDD5TBcPLDf5+vsLc7ukUBJQ3issHE1I37kdzA0KGm/Jr7Ct0bUmHgW3z+Bmn2q
-         fWm2MqXOLqkkhxl+YtcUJXOdMgh/6vuYQ+XLQOgT4h3+0l70Q9mSx/KVyVqAroWEm3qw
-         4gR8Hi4ARJ4K+fj2WgMtN4VTvgDumeoDUkGPiyR+IwYVXByRdUbwMcHtVWoZG+44oP7Y
-         4OWxGztcjvcEjwXo5PpTPreOOIVlUC6JEY7mI7ptLZpmIg6BzNnGsFEnBfNFhmAyKZ1n
-         KQQw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1750167840; x=1750772640;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=zecGBL4EFfqvJ1+S5Ps/tbhcKJ3SUOGOERPfVCGUV9U=;
-        b=CUFv2PObNavRzptPOtDK8DfRo2p64cQwRIkGNZFhx0OGfrqzKCrkNc5OkKdItx7PZx
-         EVyu+miZgW0hqcbf+ECRJProRwkDT4/ncCOZMC774gvQoY5qnsTb4itPzKUKOgTUxGOC
-         umOmXVkD0b0U1nKzXeh+3MvQP1XH/wj8W37Y93tiDcnkqfxNKmRWlbWifyBvrymjX02Z
-         WC4QN/hiyP9vqoMX6DWYJgjLGv8CqQqQ1FbYQK1gPVGgOVOQaZVQEFgojhVQVi6yQSoY
-         B+a+vMZyW0cTOC2CyDIer8aejefyhjYAZpB2IxGQRMfspjPRtLkHInf9+0BBKr3Wddoc
-         ErMA==
-X-Forwarded-Encrypted: i=1; AJvYcCUMRbQsLQCyCJlTL0eXoE5rdSBdswAtx4T3H0zUWEjFsLtC6znGZ1rAZP0vBeM8+bjG1NBQXuQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0YztR1wxGEbTlFVnRQFnaHOhbL59Pju/vXqONuzpCkfkgXFGcZC2
-	FoPzhJdbDl5RO66aMRn0jFs84B5oNCDsSsAaOegHNlzEpKtKaWHp5Yca
-X-Gm-Gg: ASbGncucotqCAtHnHZi7lH89VjD3fTklKcfZ3ceshXWnu3rddy/g2qlwchBc4QNTRhe
-	2SgBuskI4tLVKrt5/o6DFnVwaDfd0gxWfqe7Mkr2r9U7cxSoY1xxODh6JJ0p0GcsRfPMWo/ZJSh
-	O99pnHf0u6xsVZBsrabQmhmvx94RpoGFU3jUPt5PWtHutIR5EfPXkEsGlG4Lzne+sKqBFaZF9fV
-	RJMxdpMI8trlIQtZZ/0DJ6gsAID4ozuvh/w8Q2UXYP6+K9wdp+HilMuEPmm8P+mWIEK2ve5E/dJ
-	WyCh96UGdU2zU1aHIPASfOnGVyQmv7AQiNiun+BqSldK+2Yttdm5eyvVvnQbKHKlOAh4wn6778C
-	Bcmdza6S/l9hXrzZW4JrODZg6+Z62EgZyz6QELi0Rl1pq
-X-Google-Smtp-Source: AGHT+IGgIlcS/PryJ7lnGbffSNLneJYZk5+uA1B/WOdMk8Ma6F8q8Mlo7t8zz4EebhjQz/a0cLH/aA==
-X-Received: by 2002:a17:906:478d:b0:ad8:9b5d:2c1b with SMTP id a640c23a62f3a-adfad29dd5bmr1181198766b.9.1750167840364;
-        Tue, 17 Jun 2025 06:44:00 -0700 (PDT)
-Received: from [192.168.75.93] (217-122-252-220.cable.dynamic.v4.ziggo.nl. [217.122.252.220])
-        by smtp.googlemail.com with ESMTPSA id a640c23a62f3a-adec81bb9cesm864213666b.49.2025.06.17.06.43.59
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 17 Jun 2025 06:44:00 -0700 (PDT)
-Message-ID: <33046593-17e3-4bdc-9d4a-94dc94ef5e81@gmail.com>
-Date: Tue, 17 Jun 2025 15:43:59 +0200
+	s=arc-20240116; t=1750167869; c=relaxed/simple;
+	bh=BfaKeFtc8o/tlow8RhnB2t9XFMwWDWO5CRkQer2Hy5U=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=fC2pwmdEwfFtpQQ1Cw5KFU7Uo2pDmhCZUEswuNHvr1/xTu53i2SpN5r4BB6PObc8WUPm6+CoeWVSUqe3XMFvvwP4HEpS/7XCP6e5nIJ7WaBq3ehVAq4/h7Rf9lgh1NPKetaXhGds6ohu8cpc4zGK6UP1A+XZPn0AoMlDAtPW5Vk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jUKHjELU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA029C4CEE3;
+	Tue, 17 Jun 2025 13:44:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1750167869;
+	bh=BfaKeFtc8o/tlow8RhnB2t9XFMwWDWO5CRkQer2Hy5U=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=jUKHjELU0NYYuBehj36QfMlyje5I6h9rgz1OYFmzK+IfsXNSr6boMiGWNQAd1S2ej
+	 2D2OgBbPHVJX0Wkty57vaMEPJptstZoCe1yHRpXOiBFOstAZtJlE09ZS2XrP+XmPKD
+	 9N3xJO6sUIKw3S5X3yQWH2cXlM+O7DuE7XdmCoOo=
+Date: Tue, 17 Jun 2025 15:44:26 +0200
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
+Cc: stable@vger.kernel.org, Salvatore Bonaccorso <carnil@debian.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Alexandre Chartre <alexandre.chartre@oracle.com>,
+	holger@applied-asynchrony.com
+Subject: Re: [RFC PATCH 5.10 16/16] x86/its: FineIBT-paranoid vs ITS
+Message-ID: <2025061751-wrongdoer-rebuttal-b789@gregkh>
+References: <20250610-its-5-10-v1-0-64f0ae98c98d@linux.intel.com>
+ <20250610-its-5-10-v1-16-64f0ae98c98d@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [REGRESSION][BISECTED] intel iGPU with HDMI PLL stopped working
- at 1080p@120Hz 1efd5384
-To: Jani Nikula <jani.nikula@intel.com>, stable@vger.kernel.org
-Cc: regressions@lists.linux.dev, Ankit Nautiyal <ankit.k.nautiyal@intel.com>,
- Suraj Kandpal <suraj.kandpal@intel.com>,
- Khaled Almahallawy <khaled.almahallawy@intel.com>,
- Rodrigo Vivi <rodrigo.vivi@intel.com>, intel-gfx@lists.freedesktop.org,
- Christian Heusel <christian@heusel.eu>
-References: <8d7c7958-9558-4c8a-a81a-e9310f2d8852@gmail.com>
- <afa8a7b2ced71e77655fb54f49b702c71506017d@intel.com>
-Content-Language: nl-NL, en-US
-From: Vas Novikov <vasya.novikov@gmail.com>
-Autocrypt: addr=vasya.novikov@gmail.com; keydata=
- xjMEYrX2ChYJKwYBBAHaRw8BAQdAf/bzdTDerOW5j+qrayMzPOCKthCx8KYKZo20cty68aPN
- KFZhc2lsaSBOb3Zpa292IDx2YXN5YS5ub3Zpa292QGdtYWlsLmNvbT7CjwQTFggANxYhBLKE
- QxE9sGxECbI4ubmfrsbg1d9tBQJitfYKBQkJZgGAAhsDBAsJCAcFFQgJCgsFFgIDAQAACgkQ
- uZ+uxuDV321klwEAm5+HyBecp+ofMZ6Ors+OvrETLFQU2B9wCd/d/i2NjJABAIssTvgdxlqF
- I6GjehRMPURi6W1uFMPzzp9gM1yeYXEGzjgEYrX2ChIKKwYBBAGXVQEFAQEHQODm5qV0UQrP
- hcJkaZVbhtVmb90gN6rIuN0Q/xTmhqJ4AwEIB8J+BBgWCAAmFiEEsoRDET2wbEQJsji5uZ+u
- xuDV320FAmK19goFCQlmAYACGwwACgkQuZ+uxuDV322trQEA1Yj4GvOlEPfyuhMfX8P0Ah/8
- QXCqgdMQH7PaNgIFFokA/1DgWcc1XGFNRHpOGrJNnF4Ese1hWjYoqo2iBlURPQwP
-In-Reply-To: <afa8a7b2ced71e77655fb54f49b702c71506017d@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20250610-its-5-10-v1-16-64f0ae98c98d@linux.intel.com>
 
-Hi Jani and everyone,
+On Tue, Jun 10, 2025 at 12:46:10PM -0700, Pawan Gupta wrote:
+> From: Peter Zijlstra <peterz@infradead.org>
+> 
+> commit e52c1dc7455d32c8a55f9949d300e5e87d011fa6 upstream.
+> 
+> FineIBT-paranoid was using the retpoline bytes for the paranoid check,
+> disabling retpolines, because all parts that have IBT also have eIBRS
+> and thus don't need no stinking retpolines.
+> 
+> Except... ITS needs the retpolines for indirect calls must not be in
+> the first half of a cacheline :-/
+> 
+> So what was the paranoid call sequence:
+> 
+>   <fineibt_paranoid_start>:
+>    0:   41 ba 78 56 34 12       mov    $0x12345678, %r10d
+>    6:   45 3b 53 f7             cmp    -0x9(%r11), %r10d
+>    a:   4d 8d 5b <f0>           lea    -0x10(%r11), %r11
+>    e:   75 fd                   jne    d <fineibt_paranoid_start+0xd>
+>   10:   41 ff d3                call   *%r11
+>   13:   90                      nop
+> 
+> Now becomes:
+> 
+>   <fineibt_paranoid_start>:
+>    0:   41 ba 78 56 34 12       mov    $0x12345678, %r10d
+>    6:   45 3b 53 f7             cmp    -0x9(%r11), %r10d
+>    a:   4d 8d 5b f0             lea    -0x10(%r11), %r11
+>    e:   2e e8 XX XX XX XX	cs call __x86_indirect_paranoid_thunk_r11
+> 
+>   Where the paranoid_thunk looks like:
+> 
+>    1d:  <ea>                    (bad)
+>    __x86_indirect_paranoid_thunk_r11:
+>    1e:  75 fd                   jne 1d
+>    __x86_indirect_its_thunk_r11:
+>    20:  41 ff eb                jmp *%r11
+>    23:  cc                      int3
+> 
+> [ dhansen: remove initialization to false ]
+> 
+> [ pawan: move the its_static_thunk() definition to alternative.c. This is
+> 	 done to avoid a build failure due to circular dependency between
+> 	 kernel.h(asm-generic/bug.h) and asm/alternative.h which is neeed
+> 	 for WARN_ONCE(). ]
+> 
+> Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+> Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
+> Reviewed-by: Alexandre Chartre <alexandre.chartre@oracle.com>
+> [ Just a portion of the original commit, in order to fix a build issue
+>   in stable kernels due to backports ]
+> Tested-by: Holger Hoffstätte <holger@applied-asynchrony.com>
+> Link: https://lore.kernel.org/r/20250514113952.GB16434@noisy.programming.kicks-ass.net
+> Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> Signed-off-by: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
 
-On 17/06/2025 12.33, Jani Nikula wrote:
-> Does [1] help?
+Note, I did not sign off on the backports here, are you sure you want to
+do it this way?  :)
 
-The patch works. (Applied on top of 6.16.0-rc2-1.1-mainline, built by 
-Christian @gromit who helped again.)
+Also, I need someone to actually test this series before we can take
+them...
 
-The patch (or the new kernel) also have a side effect of xrandr allowing 
-a completely new refresh rate, ~144Hz. This new refresh also seems to 
-work (I cannot easily disambiguate 144 versus 120, but I can tell it's 
-not 60Hz). So as far as my hardware is concerned, this patch leaves the 
-whole system working in all scenarios that I've tested.
+thanks,
 
-Thanks!
-
-
-Kind regards,
-Vas
+greg k-h
 
