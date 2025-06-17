@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-153708-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153711-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D23A2ADD5F0
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:28:42 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 76454ADD64A
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:32:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3534A40713C
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:20:28 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 19F962C61FD
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:20:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A68B42ED855;
-	Tue, 17 Jun 2025 16:13:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A55CC2ED871;
+	Tue, 17 Jun 2025 16:14:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BVsbgeTF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NGG35S1M"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A34E2F94BA;
-	Tue, 17 Jun 2025 16:13:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62F8D2F94B0;
+	Tue, 17 Jun 2025 16:14:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750176833; cv=none; b=Aais15T0aUtG3EvX+qoU7FqXty9EikgQQRWfc9TIzke2w2KaR2KTcsygDDYfryavVTv/YzvINyhm2J2WDzk2y/Q3dOqVdCgIa8ux1gkFXNfF8jRrQ5nEVf+RKnhDQA+6XW/RGwFZhHOqWyJHT4c9o7wWFQn0v+V5e0874haJrrg=
+	t=1750176843; cv=none; b=lxnDciBKYy7tidx9Psjlns72/1pDbcirGskTYh1e/xPOJTyaMp0nUJNw82HAK4I7dyu+uw+mjQncp5iheqTKjtCkz69x9LnpYfX8vAmgGINSmTkkXi/T7QE3rp8boCbOZm70DWgZ2ce/EiJOjKYVqrvvPxDI7Y57MuuObdxk93U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750176833; c=relaxed/simple;
-	bh=mGM8Dq7DHc8ji/KTBbyRIV/SUdugJzU/MUvSO3wE/Ng=;
+	s=arc-20240116; t=1750176843; c=relaxed/simple;
+	bh=RoqXf0Bg3Hl2+lVPuYCI51xUcUEPMAVOe91NZaQMOR8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CYfCVlALyINbllFEvwFq/xveBr919iVyy2GV43+y53fDCLb8LVW3BPdB7iS+5LrQTtzOWgfWYG0bBsToeYX6XEg+Qx0upwCr0t9ReN9pDtS5pPmtfauIan5qSlmv16l8BV6iDHeki5onn2Wi078BRWYpdYY8j35WdokUAObKzaU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BVsbgeTF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD952C4CEE3;
-	Tue, 17 Jun 2025 16:13:52 +0000 (UTC)
+	 MIME-Version; b=UBRN3Bgt8Bcm4CbOu30ReWk2amrU36stn2oYupj12Gw05j3tu2EVmxOPJViMu9KbHFVrp7rTBpe4NbVfw7S7tcQT+2Ac+xru9lyiTa7gvI3s7HTLcnDmHD9Im/LpkIUShmirhtJDdAeI9xvSY4H94xkHfHg9qCI6uYkoRjxFGYY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NGG35S1M; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6F7DC4CEE3;
+	Tue, 17 Jun 2025 16:14:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750176833;
-	bh=mGM8Dq7DHc8ji/KTBbyRIV/SUdugJzU/MUvSO3wE/Ng=;
+	s=korg; t=1750176843;
+	bh=RoqXf0Bg3Hl2+lVPuYCI51xUcUEPMAVOe91NZaQMOR8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BVsbgeTFJa4B5/cGSWu+mOioiZOoqQyv138QncmhYhgMrksDanI47YMN6cj6LyyAE
-	 TrPOcx0RJsrxHPmCXAsWB4Gd0dG1jq1TfwH804Qx5vmTuWNfaIgOezDahG81UYpgV8
-	 GzPK6dk+N+U382eLrKd7QNm1UxFJzt/1z1vfI+W4=
+	b=NGG35S1Mo0Ng56Xsk7If1uaSeU7DmwPQbXuJjZ/hgSUHMHPlJKpmsctxEwVyh7Ldk
+	 OCAoHeoGb14BcvUsW3R99/jPmZ0KR8WyLv0vn8cXwO2/aN8Hok9Q8eaEGPBZjgHDE1
+	 v1Q8SxOBlMmmBVRa9izthdGpwej1miOtkrlTGROY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Scott Benesh <scott.benesh@microchip.com>,
-	Mike McGowen <mike.mcgowen@microchip.com>,
-	Don Brace <don.brace@microchip.com>,
-	Yi Zhang <yi.zhang@redhat.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Marc Dionne <marc.dionne@auristor.com>,
+	David Howells <dhowells@redhat.com>,
+	Chuck Lever <chuck.lever@oracle.com>,
+	Simon Horman <horms@kernel.org>,
+	linux-afs@lists.infradead.org,
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 230/780] scsi: smartpqi: Fix smp_processor_id() call trace for preemptible kernels
-Date: Tue, 17 Jun 2025 17:18:58 +0200
-Message-ID: <20250617152500.818377750@linuxfoundation.org>
+Subject: [PATCH 6.15 231/780] crypto/krb5: Fix change to use SG miter to use offset
+Date: Tue, 17 Jun 2025 17:18:59 +0200
+Message-ID: <20250617152500.858674718@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
 References: <20250617152451.485330293@linuxfoundation.org>
@@ -69,66 +71,57 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Yi Zhang <yi.zhang@redhat.com>
+From: David Howells <dhowells@redhat.com>
 
-[ Upstream commit 42d033cf4b517e91c187ad2fbd7b30fdc6d2d62c ]
+[ Upstream commit eed848871c96d4b5a7b06307755b75abd0cc7a06 ]
 
-Correct kernel call trace when calling smp_processor_id() when called in
-preemptible kernels by using raw_smp_processor_id().
+The recent patch to make the rfc3961 simplified code use sg_miter rather
+than manually walking the scatterlist to hash the contents of a buffer
+described by that scatterlist failed to take the starting offset into
+account.
 
-smp_processor_id() checks to see if preemption is disabled and if not,
-issue an error message followed by a call to dump_stack().
+This is indicated by the selftests reporting:
 
-Brief example of call trace:
-kernel:  check_preemption_disabled: 436 callbacks suppressed
-kernel:  BUG: using smp_processor_id() in preemptible [00000000]
-         code: kworker/u1025:0/2354
-kernel:  caller is pqi_scsi_queue_command+0x183/0x310 [smartpqi]
-kernel:  CPU: 129 PID: 2354 Comm: kworker/u1025:0
-kernel:  ...
-kernel:  Workqueue: writeback wb_workfn (flush-253:0)
-kernel:  Call Trace:
-kernel:   <TASK>
-kernel:   dump_stack_lvl+0x34/0x48
-kernel:   check_preemption_disabled+0xdd/0xe0
-kernel:   pqi_scsi_queue_command+0x183/0x310 [smartpqi]
-kernel:  ...
+    krb5: Running aes128-cts-hmac-sha256-128 mic
+    krb5: !!! TESTFAIL crypto/krb5/selftest.c:446
+    krb5: MIC mismatch
 
-Fixes: 283dcc1b142e ("scsi: smartpqi: add counter for parity write stream requests")
-Reviewed-by: Scott Benesh <scott.benesh@microchip.com>
-Reviewed-by: Mike McGowen <mike.mcgowen@microchip.com>
-Tested-by: Don Brace <don.brace@microchip.com>
-Signed-off-by: Yi Zhang <yi.zhang@redhat.com>
-Signed-off-by: Don Brace <don.brace@microchip.com>
-Link: https://lore.kernel.org/r/20250423183229.538572-5-don.brace@microchip.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Fix this by calling sg_miter_skip() before doing the loop to advance
+by the offset.
+
+This only affects packet signing modes and not full encryption in RxGK
+because, for full encryption, the message digest is handled inside the
+authenc and krb5enc drivers.
+
+Note: Nothing in linus/master uses the krb5lib, though the bug is there.
+It is used by AF_RXRPC's RxGK implementation in -next, no need to backport.
+
+Fixes: da6f9bf40ac2 ("crypto: krb5 - Use SG miter instead of doing it by hand")
+Reported-by: Marc Dionne <marc.dionne@auristor.com>
+Signed-off-by: David Howells <dhowells@redhat.com>
+cc: Chuck Lever <chuck.lever@oracle.com>
+cc: Simon Horman <horms@kernel.org>
+cc: linux-afs@lists.infradead.org
+Acked-by: Herbert Xu <herbert@gondor.apana.org.au>
+Link: https://patch.msgid.link/3824017.1745835726@warthog.procyon.org.uk
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/smartpqi/smartpqi_init.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ crypto/krb5/rfc3961_simplified.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/scsi/smartpqi/smartpqi_init.c b/drivers/scsi/smartpqi/smartpqi_init.c
-index 8a26eca4fdc9b..6c9dec7e3128f 100644
---- a/drivers/scsi/smartpqi/smartpqi_init.c
-+++ b/drivers/scsi/smartpqi/smartpqi_init.c
-@@ -5990,7 +5990,7 @@ static bool pqi_is_parity_write_stream(struct pqi_ctrl_info *ctrl_info,
- 			pqi_stream_data->next_lba = rmd.first_block +
- 				rmd.block_cnt;
- 			pqi_stream_data->last_accessed = jiffies;
--			per_cpu_ptr(device->raid_io_stats, smp_processor_id())->write_stream_cnt++;
-+				per_cpu_ptr(device->raid_io_stats, raw_smp_processor_id())->write_stream_cnt++;
- 			return true;
- 		}
+diff --git a/crypto/krb5/rfc3961_simplified.c b/crypto/krb5/rfc3961_simplified.c
+index 79180d28baa9f..e49cbdec7c404 100644
+--- a/crypto/krb5/rfc3961_simplified.c
++++ b/crypto/krb5/rfc3961_simplified.c
+@@ -89,6 +89,7 @@ int crypto_shash_update_sg(struct shash_desc *desc, struct scatterlist *sg,
  
-@@ -6069,7 +6069,7 @@ static int pqi_scsi_queue_command(struct Scsi_Host *shost, struct scsi_cmnd *scm
- 			rc = pqi_raid_bypass_submit_scsi_cmd(ctrl_info, device, scmd, queue_group);
- 			if (rc == 0 || rc == SCSI_MLQUEUE_HOST_BUSY) {
- 				raid_bypassed = true;
--				per_cpu_ptr(device->raid_io_stats, smp_processor_id())->raid_bypass_cnt++;
-+				per_cpu_ptr(device->raid_io_stats, raw_smp_processor_id())->raid_bypass_cnt++;
- 			}
- 		}
- 		if (!raid_bypassed)
+ 	sg_miter_start(&miter, sg, sg_nents(sg),
+ 		       SG_MITER_FROM_SG | SG_MITER_LOCAL);
++	sg_miter_skip(&miter, offset);
+ 	for (i = 0; i < len; i += n) {
+ 		sg_miter_next(&miter);
+ 		n = min(miter.length, len - i);
 -- 
 2.39.5
 
