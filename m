@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-154076-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-154079-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6BEDAADD82B
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:52:41 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E42C3ADD84D
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:54:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DAA604A72F9
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:39:17 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 679F119E8091
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:40:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2B682F3637;
-	Tue, 17 Jun 2025 16:33:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A1202F948D;
+	Tue, 17 Jun 2025 16:33:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w2AGAQ5m"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gZACHnUo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9EFC6285055;
-	Tue, 17 Jun 2025 16:33:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A859F2F9489;
+	Tue, 17 Jun 2025 16:33:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750178026; cv=none; b=ZoqSlYvnHB9MgfhRrS0Ccql5yGhuLw3ue5efNULeK3Y2/ynoP4deHgHpPAlPVM1z4wI7Go5oQOrDIVHEct7WgYRwFNR5LzQ1aBqJl5c20690sfQDup/837zZT1SiPSEkhTH5LUlngHI+KH6nFQbJxTMTzr2u39sn0blFBlZezGI=
+	t=1750178036; cv=none; b=epyKX8tvmikkPT+OrysLNRhHQXzTOKh6CO69QQyjZCz0jiN+CWkbed8w3ThH02ZAySYAS1FnHMgTBcXnl5nlnAYkS2TTB2KtBno5OJRJzygdX9DpInSqk2dR/t9z4ypv0lG0J84cFCPQC8mU6C66hpDgbrcdeGltMNWWfEuD6As=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750178026; c=relaxed/simple;
-	bh=hOZXAYhh6oNIppwh3fSTMHCa14n1/ntTnck8PPm4EIk=;
+	s=arc-20240116; t=1750178036; c=relaxed/simple;
+	bh=TQc3yZmCxpLFkjkyoOnhyCSpYLL6j+Yh7kEAdA5ByEg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ky0yfR1D6VlfcsXFbVaX8WuDdEX+Z9IROVfQvVkcgWI81WEKokkgPpM3Eof9MbRcs6KQex55eyZEBxwKEuWvOVC8ufhEruV+nNFvRLn0Q+UznNYzrp/l0vU2DgQ/GqOMC55bD0SPa/ipm0yzX2knMv9wH2VC/Dq0+nUdd8bMIY8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w2AGAQ5m; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0EC3EC4CEE3;
-	Tue, 17 Jun 2025 16:33:45 +0000 (UTC)
+	 MIME-Version; b=SW+fpUArdwlzTo3X5aXDW7naotU2mFHoys6GNDPQmNLm38OMrhRL2bl5vu1pAQMrMCc9M07p2RgXPVlOh/pMH+frV73aD63KUD6qml8up4cYLMTxq1vUe499dROwC1T7mWPAKylnN+fmQW39A4J/XHYdh0PFAJRpx1EyPF/3NxY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gZACHnUo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17953C4CEE3;
+	Tue, 17 Jun 2025 16:33:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750178026;
-	bh=hOZXAYhh6oNIppwh3fSTMHCa14n1/ntTnck8PPm4EIk=;
+	s=korg; t=1750178036;
+	bh=TQc3yZmCxpLFkjkyoOnhyCSpYLL6j+Yh7kEAdA5ByEg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=w2AGAQ5mOyvxYBQnZw1KCxI/VRPhexHZoHlfnmL/DNPrk/mnKYEXa0/ekNjfHBg1K
-	 Fibfz4/MWt7pXTZOd5Db0NxItD9IZXrat10BA1+RNXtSx0ep3oDCP9z4zW6wwuFeWP
-	 cARPsGP/3KuJpCOOw6GlBPT92rSXHLsOx3gYr2fE=
+	b=gZACHnUo3svFIPswLeW7eQGtPajWqS+4NmSWm6C+MFpym4ErlgmG5zC4CYaurnirn
+	 PkQsywm8m2e6oEYj5I7YW8HW8HNzJsfd19JoYgU/y5K/XQ/CFkTnUlAuzENRhvtrpJ
+	 UppK7zFt1ABgeMqSOqxRxdg/F0LryIrjHTTmLNZM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andre Przywara <andre.przywara@arm.com>,
-	"Rob Herring (Arm)" <robh@kernel.org>,
-	Chen-Yu Tsai <wens@csie.org>,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 398/780] dt-bindings: vendor-prefixes: Add Liontron name
-Date: Tue, 17 Jun 2025 17:21:46 +0200
-Message-ID: <20250617152507.661336553@linuxfoundation.org>
+Subject: [PATCH 6.15 399/780] ARM: dts: qcom: apq8064: add missing clocks to the timer node
+Date: Tue, 17 Jun 2025 17:21:47 +0200
+Message-ID: <20250617152507.700968197@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
 References: <20250617152451.485330293@linuxfoundation.org>
@@ -67,38 +67,36 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Andre Przywara <andre.przywara@arm.com>
+From: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
 
-[ Upstream commit 9baa27a2e9fc746143ab686b6dbe2d515284a4c5 ]
+[ Upstream commit 4b0eb149df58b6750cd8113e5ee5b3ac7cc51743 ]
 
-Liontron is a company based in Shenzen, China, making industrial
-development boards and embedded computers, mostly using Rockchip and
-Allwinner SoCs.
+In order to fix DT schema warning and describe hardware properly, add
+missing sleep clock to the timer node.
 
-Add their name to the list of vendors.
-
-Signed-off-by: Andre Przywara <andre.przywara@arm.com>
-Acked-by: Rob Herring (Arm) <robh@kernel.org>
-Link: https://patch.msgid.link/20250505164729.18175-2-andre.przywara@arm.com
-Signed-off-by: Chen-Yu Tsai <wens@csie.org>
+Fixes: f335b8af4fd5 ("ARM: dts: qcom: Add initial APQ8064 SoC and IFC6410 board device trees")
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Link: https://lore.kernel.org/r/20250318-fix-nexus-4-v2-6-bcedd1406790@oss.qualcomm.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- Documentation/devicetree/bindings/vendor-prefixes.yaml | 2 ++
+ arch/arm/boot/dts/qcom/qcom-apq8064.dtsi | 2 ++
  1 file changed, 2 insertions(+)
 
-diff --git a/Documentation/devicetree/bindings/vendor-prefixes.yaml b/Documentation/devicetree/bindings/vendor-prefixes.yaml
-index 86f6a19b28ae2..190ab40cf23af 100644
---- a/Documentation/devicetree/bindings/vendor-prefixes.yaml
-+++ b/Documentation/devicetree/bindings/vendor-prefixes.yaml
-@@ -864,6 +864,8 @@ patternProperties:
-     description: Linux-specific binding
-   "^linx,.*":
-     description: Linx Technologies
-+  "^liontron,.*":
-+    description: Shenzhen Liontron Technology Co., Ltd
-   "^liteon,.*":
-     description: LITE-ON Technology Corp.
-   "^litex,.*":
+diff --git a/arch/arm/boot/dts/qcom/qcom-apq8064.dtsi b/arch/arm/boot/dts/qcom/qcom-apq8064.dtsi
+index 5f1a6b4b76449..ba99e794dcd22 100644
+--- a/arch/arm/boot/dts/qcom/qcom-apq8064.dtsi
++++ b/arch/arm/boot/dts/qcom/qcom-apq8064.dtsi
+@@ -326,6 +326,8 @@
+ 				     <GIC_PPI 3 (GIC_CPU_MASK_SIMPLE(2) | IRQ_TYPE_EDGE_RISING)>;
+ 			reg = <0x0200a000 0x100>;
+ 			clock-frequency = <27000000>;
++			clocks = <&sleep_clk>;
++			clock-names = "sleep";
+ 			cpu-offset = <0x80000>;
+ 		};
+ 
 -- 
 2.39.5
 
