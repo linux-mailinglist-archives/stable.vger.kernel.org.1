@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-153647-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-154306-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A20DADD59A
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:23:23 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6240CADDA30
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 19:14:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9C32E1944C74
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:16:23 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 37FB34004B5
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:48:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D063C2DFF38;
-	Tue, 17 Jun 2025 16:10:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C81E23815F;
+	Tue, 17 Jun 2025 16:46:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D52knHdW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0HrrbV7L"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C87C2DFF08;
-	Tue, 17 Jun 2025 16:10:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 451A72356A4;
+	Tue, 17 Jun 2025 16:46:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750176637; cv=none; b=I1dULl3qc+ugAyBs4m86dpCYgl0wsuPxschDUfUiuEZhR7+LVqplpkAPuWP7EP+iXuIpRWsN2e0rJdiuGgMkZGJXWM9bxxVlSdtqgDV736vzY6oYh4Q+odIFrMoi/aBDGGFgzpIkdqkipUdWExdhtMu+YMGPjZO2m0Dtwmlt8AM=
+	t=1750178767; cv=none; b=JQuvN6UzKEfYZf/78uz4DEhiHK9oTMmpwuLYiTFyOuGtoGyAPMzvatQxWEbrHbZQhkH4jPeoY2GEVDG0jW6XMyjehHSfBgklJjie8G9cclh7VtxwZm+DYwzhjcrv7BmgZivcc7uFsAtu2gghlep3njVLDsRyj3QIyTB1fwjgo/Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750176637; c=relaxed/simple;
-	bh=PTtefIEL/2+CReQuHVVS5UpSe8K0zvVYC51wWL5pvo0=;
+	s=arc-20240116; t=1750178767; c=relaxed/simple;
+	bh=HRjJah2P6ZmD4Y2Qk/2IUkn6obCcICwfcCDFdyypGro=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KvgDeVL5lEI5NWTZX0nKKc7iqStLGIWKP4WcABuOfX7hXG/5rWlGFbB3c6tVLOnxqCWkhXpKHr/QVuf9sr9AhzSLAsn/2qQMj/fLCu/JMeBFy2WgxYdvpRRh9+WnTnUtoZstduYWyZxlyUlofQZtTOHJ5xXajqdXp1+SZaDfq0E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D52knHdW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F12B3C4CEE3;
-	Tue, 17 Jun 2025 16:10:36 +0000 (UTC)
+	 MIME-Version:Content-Type; b=ovS3lW9GtgzbqJqfrWbvak2qOBYd36gvR87087L6OTTy0ftkxthfhDSFMMO6oFct3ssKE3hQTMrEm0DP/ZrPNeM2bUySNEGdGi1hkoI6BaTAlE7sgNm9W2aWD7wUfnJrfs1ZafScukANcqZr7paIL5PHHoYqoQ8FAOWKX/bqqZ4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0HrrbV7L; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4B68C4CEE3;
+	Tue, 17 Jun 2025 16:46:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750176637;
-	bh=PTtefIEL/2+CReQuHVVS5UpSe8K0zvVYC51wWL5pvo0=;
+	s=korg; t=1750178767;
+	bh=HRjJah2P6ZmD4Y2Qk/2IUkn6obCcICwfcCDFdyypGro=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=D52knHdWa/4EHmhdwTmN/IYrFHhP9sU62KTinzrzbnp/xpadnxnkqL9ACpIJo/Noz
-	 9XRxXjIR/YTFdjzcl1w1sndN2GhKss89mFlua3YA+3Ndgeivcg+6+1VmKgq8c03cTh
-	 eSfoGRhx4LKheyEIKI6yhO7DeBmbxtv1CUgjmWZE=
+	b=0HrrbV7L3mW36rtjywvjLaPwSdiNpuvzyR0NBQR673hh7KaEoNcfkWGwltE40S5bt
+	 6MrI2EvI9N32SgbqRYo6lQ2xqdr0d+R+s9eWZQieuylfKCMGjw3EkF5kyAGLsUdAIV
+	 62MA5qao3jGJH9YFPPc1fY2oPAXIRLB2/7EdTvM0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Prasanth Babu Mantena <p-mantena@ti.com>,
-	Nishanth Menon <nm@ti.com>,
+	Zhe Qiao <qiaozhe@iscas.ac.cn>,
+	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 249/512] arm64: dts: ti: k3-j721e-common-proc-board: Enable OSPI1 on J721E
+Subject: [PATCH 6.15 507/780] PCI/ACPI: Fix allocated memory release on error in pci_acpi_scan_root()
 Date: Tue, 17 Jun 2025 17:23:35 +0200
-Message-ID: <20250617152429.694606916@linuxfoundation.org>
+Message-ID: <20250617152512.154160424@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
-References: <20250617152419.512865572@linuxfoundation.org>
+In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
+References: <20250617152451.485330293@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,40 +61,81 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Prasanth Babu Mantena <p-mantena@ti.com>
+From: Zhe Qiao <qiaozhe@iscas.ac.cn>
 
-[ Upstream commit 6b8deb2ff0d31848c43a73f6044e69ba9276b3ec ]
+[ Upstream commit 631b2af2f35737750af284be22e63da56bf20139 ]
 
-J721E SoM has MT25QU512AB Serial NOR flash connected to
-OSPI1 controller. Enable ospi1 node in device tree.
+In the pci_acpi_scan_root() function, when creating a PCI bus fails,
+we need to free up the previously allocated memory, which can avoid
+invalid memory usage and save resources.
 
-Fixes: 73676c480b72 ("arm64: dts: ti: k3-j721e: Enable OSPI nodes at the board level")
-Signed-off-by: Prasanth Babu Mantena <p-mantena@ti.com>
-Link: https://lore.kernel.org/r/20250507050701.3007209-1-p-mantena@ti.com
-Signed-off-by: Nishanth Menon <nm@ti.com>
+Fixes: 789befdfa389 ("arm64: PCI: Migrate ACPI related functions to pci-acpi.c")
+Signed-off-by: Zhe Qiao <qiaozhe@iscas.ac.cn>
+[kwilczynski: commit log]
+Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
+Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Link: https://lore.kernel.org/r/20250430060603.381504-1-qiaozhe@iscas.ac.cn
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/ti/k3-j721e-common-proc-board.dts | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/pci/pci-acpi.c | 23 +++++++++++++----------
+ 1 file changed, 13 insertions(+), 10 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/ti/k3-j721e-common-proc-board.dts b/arch/arm64/boot/dts/ti/k3-j721e-common-proc-board.dts
-index 8230d53cd6960..f7a557e6af547 100644
---- a/arch/arm64/boot/dts/ti/k3-j721e-common-proc-board.dts
-+++ b/arch/arm64/boot/dts/ti/k3-j721e-common-proc-board.dts
-@@ -557,6 +557,7 @@
- &ospi1 {
- 	pinctrl-names = "default";
- 	pinctrl-0 = <&mcu_fss0_ospi1_pins_default>;
-+	status = "okay";
+diff --git a/drivers/pci/pci-acpi.c b/drivers/pci/pci-acpi.c
+index af370628e5839..b78e0e4173244 100644
+--- a/drivers/pci/pci-acpi.c
++++ b/drivers/pci/pci-acpi.c
+@@ -1676,24 +1676,19 @@ struct pci_bus *pci_acpi_scan_root(struct acpi_pci_root *root)
+ 		return NULL;
  
- 	flash@0 {
- 		compatible = "jedec,spi-nor";
+ 	root_ops = kzalloc(sizeof(*root_ops), GFP_KERNEL);
+-	if (!root_ops) {
+-		kfree(ri);
+-		return NULL;
+-	}
++	if (!root_ops)
++		goto free_ri;
+ 
+ 	ri->cfg = pci_acpi_setup_ecam_mapping(root);
+-	if (!ri->cfg) {
+-		kfree(ri);
+-		kfree(root_ops);
+-		return NULL;
+-	}
++	if (!ri->cfg)
++		goto free_root_ops;
+ 
+ 	root_ops->release_info = pci_acpi_generic_release_info;
+ 	root_ops->prepare_resources = pci_acpi_root_prepare_resources;
+ 	root_ops->pci_ops = (struct pci_ops *)&ri->cfg->ops->pci_ops;
+ 	bus = acpi_pci_root_create(root, root_ops, &ri->common, ri->cfg);
+ 	if (!bus)
+-		return NULL;
++		goto free_cfg;
+ 
+ 	/* If we must preserve the resource configuration, claim now */
+ 	host = pci_find_host_bridge(bus);
+@@ -1710,6 +1705,14 @@ struct pci_bus *pci_acpi_scan_root(struct acpi_pci_root *root)
+ 		pcie_bus_configure_settings(child);
+ 
+ 	return bus;
++
++free_cfg:
++	pci_ecam_free(ri->cfg);
++free_root_ops:
++	kfree(root_ops);
++free_ri:
++	kfree(ri);
++	return NULL;
+ }
+ 
+ void pcibios_add_bus(struct pci_bus *bus)
 -- 
 2.39.5
 
