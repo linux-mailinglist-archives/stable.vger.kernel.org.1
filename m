@@ -1,57 +1,60 @@
-Return-Path: <stable+bounces-154095-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-154462-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 74E0AADD88F
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:57:09 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9292BADD925
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 19:03:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BF66B19E04F6
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:41:56 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 598AF4074A0
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:55:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E23A2356A4;
-	Tue, 17 Jun 2025 16:34:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8225202C38;
+	Tue, 17 Jun 2025 16:54:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="agIwQUUY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Bxrr7eJ5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF07A22DF80;
-	Tue, 17 Jun 2025 16:34:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A52862FA652;
+	Tue, 17 Jun 2025 16:54:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750178086; cv=none; b=U7O//x8YHoH2B2uI7LOkIugfCLMSQ5DV0s+FRlDypB6h0RztTuoqrYM9nyyjG+yInG/zj5kOlvXW8YYh+dIXb8KkAjyxHTlbejOvtOadVCAqHf0FZAb/xVdZht2HchKCYjLgdq37/sGlIDbycHDRbpflFwXD8cfdS+TQPmFFBLA=
+	t=1750179264; cv=none; b=O0FXhK5gWnFjQAtUimTToUUp2bTRWvmxPlb32cqF6MHr11peIyw1km/FxgxF6NVUbi3nlo2jgxyezjVpt0JxK70kuZKcDsaTrzBqWWxSd+uakTSMacb61mSh8G35jDeUgT2kyU/CT6sJNoyoGiKPDdb8Oms97/ozgIAsqv4kq1I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750178086; c=relaxed/simple;
-	bh=7L6zFq71B65z97zY2jwVUIlpktLew8FTmyUyD8iDsw8=;
+	s=arc-20240116; t=1750179264; c=relaxed/simple;
+	bh=2flbqWcw44L23PspSVO3FITDG998NyKYffeZihIKmRc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Qp893qg7cLLnN4rrbaOQfJpBBHJ2WvoGg0hDep8mPCB6BprZGkmOKeCidxo026Wd1OMxYWnHoaeDsSUdhQvJdhKhZWOKV5Zj5yx11iiT7x+pmOqQ953aB+rVk+27BJeXvMYMlXp0PcFFcw/IFv9RC61Mku4GkLxFCP+EZpzP8x8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=agIwQUUY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56555C4CEF0;
-	Tue, 17 Jun 2025 16:34:45 +0000 (UTC)
+	 MIME-Version; b=f99B8ORLd2vd9rOAP/42V1T49ts0j0vBi0nNpVDn5HVVsdgHlgK8rHWbSaPX2bYvLaOAAkOM8D3rSkjZN3r/lwrf1TdnSWNkxT8QPPGQXHwCyMKQ7D+15L6HYCXP67UP8shiAhlk4D6+Har2reuXsAqRJh/+0Bk88Y3798rSHss=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Bxrr7eJ5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16BDBC4CEE3;
+	Tue, 17 Jun 2025 16:54:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750178085;
-	bh=7L6zFq71B65z97zY2jwVUIlpktLew8FTmyUyD8iDsw8=;
+	s=korg; t=1750179264;
+	bh=2flbqWcw44L23PspSVO3FITDG998NyKYffeZihIKmRc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=agIwQUUYLNRKpn8S4uT4WYiLXirYN48RkzNz/jOR3NhYeMs773oNsVmkc0Clbc26S
-	 39vB5NXCQhhhpXXYMA+dnhHyFMoS1UCUxnkrUApVAHoWkLOpjhWOILSnqBqrLh2KJk
-	 8H8xqeC4LgIW9XWBbkdpa1ZXUG8g9kpPPEutEAo0=
+	b=Bxrr7eJ5mEThPVAA3KkLsniBIpQxACP4afqojdQk1tOIeea80Ui4NdiszeJckExFZ
+	 j1SWTAH7lzo9IrOnz/fgXgSe1a1SWpbArFskyNa3MrzBkcdx/wvnbeoJWxZRPXwurS
+	 FIAfN/rNgMpp6hu0HoMl5Pc8O2WkgumyqA/fRupA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wojciech Slenska <wojciech.slenska@gmail.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
-	Linus Walleij <linus.walleij@linaro.org>,
+	syzbot+846bb38dc67fe62cc733@syzkaller.appspotmail.com,
+	John <john.cs.hey@gmail.com>,
+	Joe Damato <jdamato@fastly.com>,
+	Stanislav Fomichev <sdf@fomichev.me>,
+	Jacob Keller <jacob.e.keller@intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 440/512] pinctrl: qcom: pinctrl-qcm2290: Add missing pins
+Subject: [PATCH 6.15 698/780] e1000: Move cancel_work_sync to avoid deadlock
 Date: Tue, 17 Jun 2025 17:26:46 +0200
-Message-ID: <20250617152437.398260717@linuxfoundation.org>
+Message-ID: <20250617152519.922570692@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
-References: <20250617152419.512865572@linuxfoundation.org>
+In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
+References: <20250617152451.485330293@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,59 +66,76 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wojciech Slenska <wojciech.slenska@gmail.com>
+From: Joe Damato <jdamato@fastly.com>
 
-[ Upstream commit 315345610faee8a0568b522dba9e35067d1732ab ]
+[ Upstream commit b4a8085ceefb7bbb12c2b71c55e71fc946c6929f ]
 
-Added the missing pins to the qcm2290_pins table.
+Previously, e1000_down called cancel_work_sync for the e1000 reset task
+(via e1000_down_and_stop), which takes RTNL.
 
-Signed-off-by: Wojciech Slenska <wojciech.slenska@gmail.com>
-Fixes: 48e049ef1238 ("pinctrl: qcom: Add QCM2290 pinctrl driver")
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Link: https://lore.kernel.org/20250523101437.59092-1-wojciech.slenska@gmail.com
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+As reported by users and syzbot, a deadlock is possible in the following
+scenario:
+
+CPU 0:
+  - RTNL is held
+  - e1000_close
+  - e1000_down
+  - cancel_work_sync (cancel / wait for e1000_reset_task())
+
+CPU 1:
+  - process_one_work
+  - e1000_reset_task
+  - take RTNL
+
+To remedy this, avoid calling cancel_work_sync from e1000_down
+(e1000_reset_task does nothing if the device is down anyway). Instead,
+call cancel_work_sync for e1000_reset_task when the device is being
+removed.
+
+Fixes: e400c7444d84 ("e1000: Hold RTNL when e1000_down can be called")
+Reported-by: syzbot+846bb38dc67fe62cc733@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/netdev/683837bf.a00a0220.52848.0003.GAE@google.com/
+Reported-by: John <john.cs.hey@gmail.com>
+Closes: https://lore.kernel.org/netdev/CAP=Rh=OEsn4y_2LvkO3UtDWurKcGPnZ_NPSXK=FbgygNXL37Sw@mail.gmail.com/
+Signed-off-by: Joe Damato <jdamato@fastly.com>
+Acked-by: Stanislav Fomichev <sdf@fomichev.me>
+Acked-by: Jacob Keller <jacob.e.keller@intel.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pinctrl/qcom/pinctrl-qcm2290.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
+ drivers/net/ethernet/intel/e1000/e1000_main.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/pinctrl/qcom/pinctrl-qcm2290.c b/drivers/pinctrl/qcom/pinctrl-qcm2290.c
-index f5c1c427b44e9..61b7c22e963c2 100644
---- a/drivers/pinctrl/qcom/pinctrl-qcm2290.c
-+++ b/drivers/pinctrl/qcom/pinctrl-qcm2290.c
-@@ -165,6 +165,10 @@ static const struct pinctrl_pin_desc qcm2290_pins[] = {
- 	PINCTRL_PIN(62, "GPIO_62"),
- 	PINCTRL_PIN(63, "GPIO_63"),
- 	PINCTRL_PIN(64, "GPIO_64"),
-+	PINCTRL_PIN(65, "GPIO_65"),
-+	PINCTRL_PIN(66, "GPIO_66"),
-+	PINCTRL_PIN(67, "GPIO_67"),
-+	PINCTRL_PIN(68, "GPIO_68"),
- 	PINCTRL_PIN(69, "GPIO_69"),
- 	PINCTRL_PIN(70, "GPIO_70"),
- 	PINCTRL_PIN(71, "GPIO_71"),
-@@ -179,12 +183,17 @@ static const struct pinctrl_pin_desc qcm2290_pins[] = {
- 	PINCTRL_PIN(80, "GPIO_80"),
- 	PINCTRL_PIN(81, "GPIO_81"),
- 	PINCTRL_PIN(82, "GPIO_82"),
-+	PINCTRL_PIN(83, "GPIO_83"),
-+	PINCTRL_PIN(84, "GPIO_84"),
-+	PINCTRL_PIN(85, "GPIO_85"),
- 	PINCTRL_PIN(86, "GPIO_86"),
- 	PINCTRL_PIN(87, "GPIO_87"),
- 	PINCTRL_PIN(88, "GPIO_88"),
- 	PINCTRL_PIN(89, "GPIO_89"),
- 	PINCTRL_PIN(90, "GPIO_90"),
- 	PINCTRL_PIN(91, "GPIO_91"),
-+	PINCTRL_PIN(92, "GPIO_92"),
-+	PINCTRL_PIN(93, "GPIO_93"),
- 	PINCTRL_PIN(94, "GPIO_94"),
- 	PINCTRL_PIN(95, "GPIO_95"),
- 	PINCTRL_PIN(96, "GPIO_96"),
+diff --git a/drivers/net/ethernet/intel/e1000/e1000_main.c b/drivers/net/ethernet/intel/e1000/e1000_main.c
+index 3f089c3d47b23..d8595e84326db 100644
+--- a/drivers/net/ethernet/intel/e1000/e1000_main.c
++++ b/drivers/net/ethernet/intel/e1000/e1000_main.c
+@@ -477,10 +477,6 @@ static void e1000_down_and_stop(struct e1000_adapter *adapter)
+ 
+ 	cancel_delayed_work_sync(&adapter->phy_info_task);
+ 	cancel_delayed_work_sync(&adapter->fifo_stall_task);
+-
+-	/* Only kill reset task if adapter is not resetting */
+-	if (!test_bit(__E1000_RESETTING, &adapter->flags))
+-		cancel_work_sync(&adapter->reset_task);
+ }
+ 
+ void e1000_down(struct e1000_adapter *adapter)
+@@ -1266,6 +1262,10 @@ static void e1000_remove(struct pci_dev *pdev)
+ 
+ 	unregister_netdev(netdev);
+ 
++	/* Only kill reset task if adapter is not resetting */
++	if (!test_bit(__E1000_RESETTING, &adapter->flags))
++		cancel_work_sync(&adapter->reset_task);
++
+ 	e1000_phy_hw_reset(hw);
+ 
+ 	kfree(adapter->tx_ring);
 -- 
 2.39.5
 
