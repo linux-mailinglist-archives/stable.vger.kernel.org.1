@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-154400-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153908-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB7D8ADD916
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 19:02:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DAAEFADD775
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:44:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5E6571BC22E7
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:53:23 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BF47619E479D
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:29:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8817021FF5F;
-	Tue, 17 Jun 2025 16:51:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76D2C2E9738;
+	Tue, 17 Jun 2025 16:24:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mFyqIfgg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Bb7wVhmf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4485A2FA638;
-	Tue, 17 Jun 2025 16:51:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30CE8224220;
+	Tue, 17 Jun 2025 16:24:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750179072; cv=none; b=j7Cek0s/xZmlcC7jaTQ4UpIJAEDKoOw2lks9kDmFdjx8rJC5zYHumckDPVnbtYa+BwogMaUmovSEfNBOnqloax/PkG7F+5ZtHi/XRXgY2X4yP2NvesdYrixjzjNNyZbb4wzC7TiK94wVIU/bLxvFc1kFFqvEif9DK8cUaM5yMXc=
+	t=1750177487; cv=none; b=YkMe9v3IAZ/3FgaSigJm3TExV0WZ9sV8nAtd+NQe9utLerPvasqNfUR/uriFpTL5rBnTWeYrhI5PqROJz8vTEYbL9pXRfp8yI91ejauGFbz8rp+G2JOfGTFzqksSHrtZMHm1kLzor0CL5vWdXJQKep15JcP0ph7ACbEsSDONCQk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750179072; c=relaxed/simple;
-	bh=EKiBf7UAsKt40NtogY3dqmnv+efz/6q1ynORpFEQl8A=;
+	s=arc-20240116; t=1750177487; c=relaxed/simple;
+	bh=VdPUrCoUYeE9LfJ+FU9GTOf2cKEBQLoWV1ZhMCS0p74=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FaOGZUx6oopoj9WmnqxKm7MVffRvkyt8jo5TdXtEjr8dfh8oTs5AOmC27tWu38iHhUsUSo7CFH/2I/1Oc1+vbblVqgnddqSyAPods/noA3RIript6UdJ1NZqEpAfALvpwrTMhJSygrDjmWoVCGVqk9n/4OkCLNfY5zL/C+88yiA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mFyqIfgg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0AA8C4CEE3;
-	Tue, 17 Jun 2025 16:51:11 +0000 (UTC)
+	 MIME-Version:Content-Type; b=i3fjH1S+ycBjYq46YdRHYIE8msaNv7yQ/fs9E8YcDhIYxU968UymC8OoNiETaYiuHdOpdGmkHEahFJ8Ry+VcWeUpSNnYKyW73f4rRJic3CdOBA88cQVwW0P3rTqXFBB+r29jkNFQgCI8VrWdpD3jkjaAFxcXinzlA+oWqqgNlTw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Bb7wVhmf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94D6FC4CEE3;
+	Tue, 17 Jun 2025 16:24:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750179072;
-	bh=EKiBf7UAsKt40NtogY3dqmnv+efz/6q1ynORpFEQl8A=;
+	s=korg; t=1750177487;
+	bh=VdPUrCoUYeE9LfJ+FU9GTOf2cKEBQLoWV1ZhMCS0p74=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mFyqIfggEYiKryp3hYSy7BQs9Woh6sZgbVBw/8pdjBICbJeEFRcGTLYI1p6X4d1pl
-	 sdqGaBgc0rbGqfF/lpAZ2PB8hhZgRbemmu2ts1PoXPVxQ1CLHjQtRG59ASBWZAnzGk
-	 ljP0jhbbsKeLyT2TIBl/qpi3/s7X2+Thb3M384lo=
+	b=Bb7wVhmfzVQs+9VPYdYexTv985DG7+oDwva9JE5hpFvDyD0Kh07D1Mb6rnB6lIrV/
+	 rRauB89Tr8pktv3dfTXdZPrr2oV1qzw/9Na+tJ7CG8YY8J2DAc4qwoNasKy78ZaF4E
+	 VhMd8i7u1karV1+ZKVtTsDeB/X7dDUHSldCx1U3E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Jonas Gorski <jonas.gorski@gmail.com>,
+	=?UTF-8?q?=C3=81lvaro=20Fern=C3=A1ndez=20Rojas?= <noltari@gmail.com>,
 	Florian Fainelli <florian.fainelli@broadcom.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 611/780] net: dsa: b53: do not enable RGMII delay on bcm63xx
+Subject: [PATCH 6.12 353/512] spi: bcm63xx-spi: fix shared reset
 Date: Tue, 17 Jun 2025 17:25:19 +0200
-Message-ID: <20250617152516.362513787@linuxfoundation.org>
+Message-ID: <20250617152433.882197250@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
-References: <20250617152451.485330293@linuxfoundation.org>
+In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
+References: <20250617152419.512865572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,63 +62,44 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jonas Gorski <jonas.gorski@gmail.com>
+From: Álvaro Fernández Rojas <noltari@gmail.com>
 
-[ Upstream commit 4af523551d876ab8b8057d1e5303a860fd736fcb ]
+[ Upstream commit 5ad20e3d8cfe3b2e42bbddc7e0ebaa74479bb589 ]
 
-bcm63xx's RGMII ports are always in MAC mode, never in PHY mode, so we
-shouldn't enable any delays and let the PHY handle any delays as
-necessary.
+Some bmips SoCs (bcm6362, bcm63268) share the same SPI reset for both SPI
+and HSSPI controllers, so reset shouldn't be exclusive.
 
-This fixes using RGMII ports with normal PHYs like BCM54612E, which will
-handle the delay in the PHY.
-
-Fixes: ce3bf94871f7 ("net: dsa: b53: add support for BCM63xx RGMIIs")
-Signed-off-by: Jonas Gorski <jonas.gorski@gmail.com>
+Fixes: 38807adeaf1e ("spi: bcm63xx-spi: add reset support")
+Reported-by: Jonas Gorski <jonas.gorski@gmail.com>
+Signed-off-by: Álvaro Fernández Rojas <noltari@gmail.com>
 Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
-Link: https://patch.msgid.link/20250602193953.1010487-3-jonas.gorski@gmail.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Link: https://patch.msgid.link/20250529130915.2519590-2-noltari@gmail.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/dsa/b53/b53_common.c | 19 +------------------
- 1 file changed, 1 insertion(+), 18 deletions(-)
+ drivers/spi/spi-bcm63xx.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/dsa/b53/b53_common.c b/drivers/net/dsa/b53/b53_common.c
-index a316f8c01d0a9..ba70fbcc0f8bc 100644
---- a/drivers/net/dsa/b53/b53_common.c
-+++ b/drivers/net/dsa/b53/b53_common.c
-@@ -1325,24 +1325,7 @@ static void b53_adjust_63xx_rgmii(struct dsa_switch *ds, int port,
- 		off = B53_RGMII_CTRL_P(port);
+diff --git a/drivers/spi/spi-bcm63xx.c b/drivers/spi/spi-bcm63xx.c
+index ef3a7226db125..a95badb7b7114 100644
+--- a/drivers/spi/spi-bcm63xx.c
++++ b/drivers/spi/spi-bcm63xx.c
+@@ -523,7 +523,7 @@ static int bcm63xx_spi_probe(struct platform_device *pdev)
+ 		return PTR_ERR(clk);
+ 	}
  
- 	b53_read8(dev, B53_CTRL_PAGE, off, &rgmii_ctrl);
--
--	switch (interface) {
--	case PHY_INTERFACE_MODE_RGMII_ID:
--		rgmii_ctrl |= (RGMII_CTRL_DLL_RXC | RGMII_CTRL_DLL_TXC);
--		break;
--	case PHY_INTERFACE_MODE_RGMII_RXID:
--		rgmii_ctrl &= ~(RGMII_CTRL_DLL_TXC);
--		rgmii_ctrl |= RGMII_CTRL_DLL_RXC;
--		break;
--	case PHY_INTERFACE_MODE_RGMII_TXID:
--		rgmii_ctrl &= ~(RGMII_CTRL_DLL_RXC);
--		rgmii_ctrl |= RGMII_CTRL_DLL_TXC;
--		break;
--	case PHY_INTERFACE_MODE_RGMII:
--	default:
--		rgmii_ctrl &= ~(RGMII_CTRL_DLL_RXC | RGMII_CTRL_DLL_TXC);
--		break;
--	}
-+	rgmii_ctrl &= ~(RGMII_CTRL_DLL_RXC | RGMII_CTRL_DLL_TXC);
+-	reset = devm_reset_control_get_optional_exclusive(dev, NULL);
++	reset = devm_reset_control_get_optional_shared(dev, NULL);
+ 	if (IS_ERR(reset))
+ 		return PTR_ERR(reset);
  
- 	if (port != dev->imp_port) {
- 		if (is63268(dev))
 -- 
 2.39.5
 
