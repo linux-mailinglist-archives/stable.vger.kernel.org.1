@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-153689-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-154281-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 377A2ADD633
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:31:07 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D665BADD960
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 19:05:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DEC0D19E138E
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:18:43 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8E8CF2C4CE0
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:48:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 784142EF2BD;
-	Tue, 17 Jun 2025 16:12:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3A4A2DFF2B;
+	Tue, 17 Jun 2025 16:44:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g4z6roKb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yWyZADi2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33C342EF2B7;
-	Tue, 17 Jun 2025 16:12:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 615198F54;
+	Tue, 17 Jun 2025 16:44:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750176771; cv=none; b=nIh4E/ndf7yNLmc8UGWLViOv3LUs4WkiFxGYnD+wev+PAi/PZtX8NcmwGHovm57A+vQeSqWbcF1EiYr5XKr5vVjLUk6q6VtqCbbQM4MbDHIsck1vxtf5qXFXYd6flZy0FxuxaCkbzye/jeoE6ziORxUAlaD2YKpchXGAIQbdSe0=
+	t=1750178685; cv=none; b=A0jOWpbcRtdImOyJbCtvXuqmjpY26t+X3BPxpJ+KlxEIqaGVuljVtphZJoRhSpKV+nQD5t2CFMKeNhxatlncN69wuibC2obQySkp6hL3t1NRkubc+z+FKAy3//myzF8det573xXWOPEOaRz5KUKLTnlLPKoy3DRBgdPVETYbpgI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750176771; c=relaxed/simple;
-	bh=DM5A2eRTmcxTIE19qhF3m6D33z16UHs6qTKugyJQ2w0=;
+	s=arc-20240116; t=1750178685; c=relaxed/simple;
+	bh=NdFoKe9IvmBmZfPtCJVrhbeSBPZv3U9cc9rI2nJiROo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jt4xED4XFNRqeVuYrHIb4J5MwH5/E2aRG1WkcJRBcqirpC3A03Cgn/i0yD7LTylDcnypTcNgGBqit47dPEbSw7V4opWAGlK57PiQWSFfr2SSbb3/rGrUlH8LNpktvmLRa3upL4XHFsNdmpRnzHfoQ8p4Bq1G59MoIQ9LNsnRZig=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g4z6roKb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97FE8C4CEE3;
-	Tue, 17 Jun 2025 16:12:50 +0000 (UTC)
+	 MIME-Version; b=tOX9LhMqewl+iCIhr2Zkzqph6JYm9uPWHFyteqct2M8aggJHPhTigp6NQxY0tvJEcoA8VLj1xrue0pmWzxjyT0SfPjAfGYl+X3RRluFkfa9QhYiYPTnrpOv9vv3fwgPzZVmGffv7xM8lkEVLvMaoXxrCSJQOWc36TjiL8FXdIw4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yWyZADi2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5CF9C4CEE3;
+	Tue, 17 Jun 2025 16:44:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750176771;
-	bh=DM5A2eRTmcxTIE19qhF3m6D33z16UHs6qTKugyJQ2w0=;
+	s=korg; t=1750178685;
+	bh=NdFoKe9IvmBmZfPtCJVrhbeSBPZv3U9cc9rI2nJiROo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=g4z6roKbwMhywwTL77T5loUaelJtP4OCpkagNFIeb62LrPr1ZtyzKhqScrcZufctQ
-	 8/pzKlwaeYJBTC2TjBD5rF/V/9TKcTN+LhJP4H7BfoJVSVoulqnxuzKFm4Q3G7gbR2
-	 w01sA0VWFWj2euiveFX2VHei34n4Qkjd4gNDrFJs=
+	b=yWyZADi2ATchfVr7+F+SEdmrfteE49EcPSTYH5P4v8GrTttRIDdHQpu2azjoW8fe4
+	 VdpdsXPoPIDBQ0p0Tk36KWrg3Sd9peVpP/aR6FzlE0kSwWXmXBnWW5HqbrNnTo7AVr
+	 qzLCOG2Lfh21SWq0fDcqQwCqfoXQDKI0qEhMYN/Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Joel Stanley <joel@jms.id.au>,
-	Andrew Jeffery <andrew@codeconstruct.com.au>,
-	Arnd Bergmann <arnd@arndb.de>,
+	Chenyuan Yang <chenyuan0y@gmail.com>,
+	Alan Stern <stern@rowland.harvard.edu>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 265/512] ARM: aspeed: Dont select SRAM
+Subject: [PATCH 6.15 523/780] usb: acpi: Prevent null pointer dereference in usb_acpi_add_usb4_devlink()
 Date: Tue, 17 Jun 2025 17:23:51 +0200
-Message-ID: <20250617152430.329459784@linuxfoundation.org>
+Message-ID: <20250617152512.813106021@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
-References: <20250617152419.512865572@linuxfoundation.org>
+In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
+References: <20250617152451.485330293@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,39 +62,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Joel Stanley <joel@jms.id.au>
+From: Chenyuan Yang <chenyuan0y@gmail.com>
 
-[ Upstream commit e4f59f873c3ffe2a0150e11115a83e2dfb671dbf ]
+[ Upstream commit 73fb0ec9436ae87bcae067ce35d6cdd72bade86c ]
 
-The ASPEED devices have SRAM, but don't require it for basic function
-(or any function; there's no known users of the driver).
+As demonstrated by the fix for update_port_device_state,
+commit 12783c0b9e2c ("usb: core: Prevent null pointer dereference in update_port_device_state"),
+usb_hub_to_struct_hub() can return NULL in certain scenarios,
+such as during hub driver unbind or teardown race conditions,
+even if the underlying usb_device structure exists.
 
-Fixes: 8c2ed9bcfbeb ("arm: Add Aspeed machine")
-Signed-off-by: Joel Stanley <joel@jms.id.au>
-Link: https://patch.msgid.link/20250115103942.421429-1-joel@jms.id.au
-Signed-off-by: Andrew Jeffery <andrew@codeconstruct.com.au>
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Plus, all other places that call usb_hub_to_struct_hub() in the same file
+do check for NULL return values.
+
+If usb_hub_to_struct_hub() returns NULL, the subsequent access to
+hub->ports[udev->portnum - 1] will cause a null pointer dereference.
+
+Signed-off-by: Chenyuan Yang <chenyuan0y@gmail.com>
+Fixes: f1bfb4a6fed6 ("usb: acpi: add device link between tunneled USB3 device and USB4 Host Interface")
+Acked-by: Alan Stern <stern@rowland.harvard.edu>
+Link: https://lore.kernel.org/r/20250417195032.1811338-1-chenyuan0y@gmail.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/mach-aspeed/Kconfig | 1 -
- 1 file changed, 1 deletion(-)
+ drivers/usb/core/usb-acpi.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/arch/arm/mach-aspeed/Kconfig b/arch/arm/mach-aspeed/Kconfig
-index 080019aa6fcd8..fcf287edd0e5e 100644
---- a/arch/arm/mach-aspeed/Kconfig
-+++ b/arch/arm/mach-aspeed/Kconfig
-@@ -2,7 +2,6 @@
- menuconfig ARCH_ASPEED
- 	bool "Aspeed BMC architectures"
- 	depends on (CPU_LITTLE_ENDIAN && ARCH_MULTI_V5) || ARCH_MULTI_V6 || ARCH_MULTI_V7
--	select SRAM
- 	select WATCHDOG
- 	select ASPEED_WATCHDOG
- 	select MFD_SYSCON
+diff --git a/drivers/usb/core/usb-acpi.c b/drivers/usb/core/usb-acpi.c
+index 935c0efea0b64..ea1ce8beb0cbb 100644
+--- a/drivers/usb/core/usb-acpi.c
++++ b/drivers/usb/core/usb-acpi.c
+@@ -165,6 +165,8 @@ static int usb_acpi_add_usb4_devlink(struct usb_device *udev)
+ 		return 0;
+ 
+ 	hub = usb_hub_to_struct_hub(udev->parent);
++	if (!hub)
++		return 0;
+ 	port_dev = hub->ports[udev->portnum - 1];
+ 
+ 	struct fwnode_handle *nhi_fwnode __free(fwnode_handle) =
 -- 
 2.39.5
 
