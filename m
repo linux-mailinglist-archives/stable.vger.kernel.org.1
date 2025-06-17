@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-153380-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153384-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D9A31ADD40F
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:06:06 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F8B2ADD47D
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:10:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0A324176C44
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:00:08 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 044091946323
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:00:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84A752F236C;
-	Tue, 17 Jun 2025 15:56:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08AB82F2376;
+	Tue, 17 Jun 2025 15:56:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jaX8+lze"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rVSMeyVJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42DD12F2346;
-	Tue, 17 Jun 2025 15:56:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B72602F2346;
+	Tue, 17 Jun 2025 15:56:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750175772; cv=none; b=LnOTY8/qKKdeJlYaqWtE2F3wiJD2EMJzg32XXikdkk1EcpYEVarPYEdMv5HwozUCYJ709/b2jYWsbTibhnhadgS8SZq00mT2OeDcqsPrzYbgf1Q6kcXESA5gRfPE0IwUxEZJOCjGQd64f5gVxqhWnjNOZFAXc5vQDRCPZY4/kbw=
+	t=1750175783; cv=none; b=nQiqEGvImG4bMtGEmYBqv6BzhQrXlySWPJFTLoX9bCubv/zOpTDBUmjDiVIfAxlWM8f9jzxSsjonmhIwkl+L6waypmvVG07lqJRdwkt9VMvzBCtWOmjmxa9J2JAf+LJGxqvUXMCKOUInEC2g1T+XEy9rhVqYE1EUemRnMzF1/EQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750175772; c=relaxed/simple;
-	bh=yottoYGwNWGNh/ki21ZopTNP0atZI8aQ80nMzAdYDI8=;
+	s=arc-20240116; t=1750175783; c=relaxed/simple;
+	bh=H95uAYvpOC/oCZLTVt8CG2yMayL4vVYB07gCcamByqQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=MXM+YaHafvWHiBeT+39sXg19lzq3LduZho5HgZW2/9Ag9m9Rv4BI3bIop5GoszsvLO3b4UXHKOgn9Bg1Ekosvnhmyw5HcJm5oBJR/3G/DYg25avLXEAY166i9FV8ybCazR/lNYdVE7eEJMtjVPmnlMRWmIUQyfDQeTrqmis/Dpc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jaX8+lze; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C65AFC4CEE3;
-	Tue, 17 Jun 2025 15:56:11 +0000 (UTC)
+	 MIME-Version; b=tSSwd1zANSDCkWBIIDzeswxsxnyNNXiZ37nQv3S4YO7ANe/4lBniWn0C8Ein3iu1R8EP0LgDNLf15zn0n/nK6r6UgILxhgF/d7Xfn5a/CrtDHml6xtgwbhFZtfnalKZMvPdsMvV9Xrs+T4TnHJbxVpmLRS5QpAyyuqtXe80/qNI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rVSMeyVJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 467EEC4CEE3;
+	Tue, 17 Jun 2025 15:56:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750175772;
-	bh=yottoYGwNWGNh/ki21ZopTNP0atZI8aQ80nMzAdYDI8=;
+	s=korg; t=1750175783;
+	bh=H95uAYvpOC/oCZLTVt8CG2yMayL4vVYB07gCcamByqQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jaX8+lzewZ+U2k3q5qVGxudGZX6sjdCEy/rACTe1ANMoAorQ912r45A6e4fS1Xq2N
-	 JDX2AkRLI0DPl20j/+2ZlKjCiVdUj09XyG8APzjJACgMWXUQTTVCEmCpCtYSysidy2
-	 eInO8wShu/le1M0Xm+YbU0QA0qcab+7EnQMwgdBU=
+	b=rVSMeyVJIFKAtW0GB2/3kct96kNI783txAj0w9sy26dxcNaZ+tgWRudC23VgWbpC5
+	 wA4WXKKRICcflurwESbh+kGAYg25K5MpYmGuwdFFBMXwSn4zeq2wR7f9QEauVzX2oq
+	 qicjM3Z0UfKd1BJQ+IVys527KtLj8UmhkSN+M1bI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>,
+	Guenter Roeck <linux@roeck-us.net>,
 	Kees Cook <kees@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 121/780] kunit/usercopy: Disable u64 test on 32-bit SPARC
-Date: Tue, 17 Jun 2025 17:17:09 +0200
-Message-ID: <20250617152456.428683519@linuxfoundation.org>
+Subject: [PATCH 6.15 122/780] watchdog: exar: Shorten identity name to fit correctly
+Date: Tue, 17 Jun 2025 17:17:10 +0200
+Message-ID: <20250617152456.482172558@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
 References: <20250617152451.485330293@linuxfoundation.org>
@@ -60,47 +60,48 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
+From: Kees Cook <kees@kernel.org>
 
-[ Upstream commit 0d6efa20e384a41a7f4afdcd8a0aec442c19d33e ]
+[ Upstream commit 8e28276a569addb8a2324439ae473848ee52b056 ]
 
-usercopy of 64 bit values does not work on 32-bit SPARC:
+The static initializer for struct watchdog_info::identity is too long
+and gets initialized without a trailing NUL byte. Since the length
+of "identity" is part of UAPI and tied to ioctls, just shorten
+the name of the device. Avoids the warning seen with GCC 15's
+-Wunterminated-string-initialization option:
 
-    # usercopy_test_valid: EXPECTATION FAILED at lib/tests/usercopy_kunit.c:209
-    Expected val_u64 == 0x5a5b5c5d6a6b6c6d, but
-        val_u64 == 1515936861 (0x5a5b5c5d)
-        0x5a5b5c5d6a6b6c6d == 6510899242581322861 (0x5a5b5c5d6a6b6c6d)
+drivers/watchdog/exar_wdt.c:224:27: warning: initializer-string for array of 'unsigned char' truncates NUL terminator but destination lacks 'nonstring' attribute (33 chars into 32 available) [-Wunterminated-string-initialization]
+  224 |         .identity       = "Exar/MaxLinear XR28V38x Watchdog",
+      |                           ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Disable the test.
-
-Fixes: 4c5d7bc63775 ("usercopy: Add tests for all get_user() sizes")
-Signed-off-by: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
-Link: https://lore.kernel.org/r/20250416-kunit-sparc-usercopy-v1-1-a772054db3af@linutronix.de
+Fixes: 81126222bd3a ("watchdog: Exar/MaxLinear XR28V38x driver")
+Reviewed-by: Guenter Roeck <linux@roeck-us.net>
+Link: https://lore.kernel.org/r/20250415225246.work.458-kees@kernel.org
 Signed-off-by: Kees Cook <kees@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- lib/tests/usercopy_kunit.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/watchdog/exar_wdt.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/lib/tests/usercopy_kunit.c b/lib/tests/usercopy_kunit.c
-index 77fa00a13df77..80f8abe10968c 100644
---- a/lib/tests/usercopy_kunit.c
-+++ b/lib/tests/usercopy_kunit.c
-@@ -27,6 +27,7 @@
- 			    !defined(CONFIG_MICROBLAZE) &&	\
- 			    !defined(CONFIG_NIOS2) &&		\
- 			    !defined(CONFIG_PPC32) &&		\
-+			    !defined(CONFIG_SPARC32) &&		\
- 			    !defined(CONFIG_SUPERH))
- # define TEST_U64
- #endif
+diff --git a/drivers/watchdog/exar_wdt.c b/drivers/watchdog/exar_wdt.c
+index 7c61ff3432711..c2e3bb08df899 100644
+--- a/drivers/watchdog/exar_wdt.c
++++ b/drivers/watchdog/exar_wdt.c
+@@ -221,7 +221,7 @@ static const struct watchdog_info exar_wdt_info = {
+ 	.options	= WDIOF_KEEPALIVEPING |
+ 			  WDIOF_SETTIMEOUT |
+ 			  WDIOF_MAGICCLOSE,
+-	.identity	= "Exar/MaxLinear XR28V38x Watchdog",
++	.identity	= "Exar XR28V38x Watchdog",
+ };
+ 
+ static const struct watchdog_ops exar_wdt_ops = {
 -- 
 2.39.5
 
