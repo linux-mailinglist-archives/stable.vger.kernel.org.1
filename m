@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-153688-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153691-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1802EADD5C0
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:25:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 743EBADD5C7
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:25:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E9AD5406D18
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:17:56 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 85DEC407F45
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:18:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 768D42ED170;
-	Tue, 17 Jun 2025 16:12:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E4C3E2F237A;
+	Tue, 17 Jun 2025 16:12:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j34Fv5n/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1OR3TLnZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 318322ED167;
-	Tue, 17 Jun 2025 16:12:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0A3C2EF657;
+	Tue, 17 Jun 2025 16:12:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750176768; cv=none; b=B8xwnEQSGtUonDFwCIhvTSzsZqWYu+zUqx50SZF/WIK/XeNC7wkl7QSMQ2wrII93jz5jVE4IsOZ1LMT8O9ioehR4BFGvw66zqGi1f/lblkY72e36m5WlnZ27rPyHj6yLJ3eHj2qb6paXbZOfQj3ChrCQxfdUd9i+pxYsmdWyiEY=
+	t=1750176777; cv=none; b=Jya9GuD39l5YeuaZjmYPsx5hmp0FLmHxnp6g6gW6im0eZA+4DieDedDI9E0pUfwH+a7KLw/SFjJBv3fFDY8cfJ8Pq8Kl37MkK75X7LbogvwyDz02bqfA/X8ur8zHhYi3Qq3pzXqPtVH8jvne8brBqrhwB+BBgnRi2do9psDZEfQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750176768; c=relaxed/simple;
-	bh=V6WyThVk89pb5V3QZq/IGD1SFrP4RspqcfdUi+Gl9dE=;
+	s=arc-20240116; t=1750176777; c=relaxed/simple;
+	bh=Q84nh8uDAtXTxQFo+JhMvQWRggVjuQyJcrBdscJUgqM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bQ4Rf4Zrd65M7O1VX9vb4BC8oKrVfeuAbMHfgJTFwtqYqaaG1LFGELbSpJdNo916nEauOROX8kOU4O/Lzzdv1LDrP4f1Y230VuVgkuD9tAxQ6Cy7SxxGHHUdxTES96cyPgkNY+z1AL3xBpnTYfFFa5/uouX17whdfiOdkVhuq3o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j34Fv5n/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54226C4CEE3;
-	Tue, 17 Jun 2025 16:12:47 +0000 (UTC)
+	 MIME-Version; b=Aln92gaLSI7IqVbJC/0GuUufcPobfJE4iw/CJejad09WSDSL0o6osajq/cGT93I19frdKS1Hpjeyjcs8tl+AuBFWx/27EcHjcywMs2zZPyq9DcwzDF+emeKbjDdEJJXhwHrtNaXl0eywezQteHdHl68EePTi4BEuwzqS5s05AgM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1OR3TLnZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12007C4CEE7;
+	Tue, 17 Jun 2025 16:12:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750176767;
-	bh=V6WyThVk89pb5V3QZq/IGD1SFrP4RspqcfdUi+Gl9dE=;
+	s=korg; t=1750176777;
+	bh=Q84nh8uDAtXTxQFo+JhMvQWRggVjuQyJcrBdscJUgqM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=j34Fv5n/gbSx3KTYj3UW7L9gGI8C84DsE1quUxvmVJSj42C94SpzuFP4l3eueEyxH
-	 WuvgLsAzoiPwE5yorBCxElHxMk0KK4cC9GFPTiQtThPsmL2cWTbnDMVpBdEuK2/zZG
-	 d0VU5yszd5A8FNsq1gDXjfQQUw4SYSdDV8XkN88Y=
+	b=1OR3TLnZVV/fBYTYEcQPOu+q0Xtg4kjT1mewtuu2yugS82KmMUjKxnrGAfmd6JtyI
+	 uhSVrHESY6xlz0d2Dew4Pyce6DYqtUMSud2AMpxwT31nlrQP5fjJ+ErArJ66utd4aT
+	 MCNTf2ceK1irZjV0+lHbJyx7JohfwCzyyyPfH2ak=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jason Gunthorpe <jgg@nvidia.com>,
-	Lu Baolu <baolu.lu@linux.intel.com>,
-	Joerg Roedel <jroedel@suse.de>,
+	Hangbin Liu <liuhangbin@gmail.com>,
+	Jay Vosburgh <jv@jvosburgh.net>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 224/780] iommu: Protect against overflow in iommu_pgsize()
-Date: Tue, 17 Jun 2025 17:18:52 +0200
-Message-ID: <20250617152500.576862682@linuxfoundation.org>
+Subject: [PATCH 6.15 225/780] bonding: assign random address if device address is same as bond
+Date: Tue, 17 Jun 2025 17:18:53 +0200
+Message-ID: <20250617152500.621041445@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
 References: <20250617152451.485330293@linuxfoundation.org>
@@ -67,54 +67,90 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Jason Gunthorpe <jgg@nvidia.com>
+From: Hangbin Liu <liuhangbin@gmail.com>
 
-[ Upstream commit e586e22974d2b7acbef3c6c3e01b2d5ce69efe33 ]
+[ Upstream commit 5c3bf6cba7911f470afd748606be5c03a9512fcc ]
 
-On a 32 bit system calling:
- iommu_map(0, 0x40000000)
+This change addresses a MAC address conflict issue in failover scenarios,
+similar to the problem described in commit a951bc1e6ba5 ("bonding: correct
+the MAC address for 'follow' fail_over_mac policy").
 
-When using the AMD V1 page table type with a domain->pgsize of 0xfffff000
-causes iommu_pgsize() to miscalculate a result of:
-  size=0x40000000 count=2
+In fail_over_mac=follow mode, the bonding driver expects the formerly active
+slave to swap MAC addresses with the newly active slave during failover.
+However, under certain conditions, two slaves may end up with the same MAC
+address, which breaks this policy:
 
-count should be 1. This completely corrupts the mapping process.
+1) ip link set eth0 master bond0
+   -> bond0 adopts eth0's MAC address (MAC0).
 
-This is because the final test to adjust the pagesize malfunctions when
-the addition overflows. Use check_add_overflow() to prevent this.
+2) ip link set eth1 master bond0
+   -> eth1 is added as a backup with its own MAC (MAC1).
 
-Fixes: b1d99dc5f983 ("iommu: Hook up '->unmap_pages' driver callback")
-Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
-Reviewed-by: Lu Baolu <baolu.lu@linux.intel.com>
-Link: https://lore.kernel.org/r/0-v1-3ad28fc2e3a3+163327-iommu_overflow_pgsize_jgg@nvidia.com
-Signed-off-by: Joerg Roedel <jroedel@suse.de>
+3) ip link set eth0 nomaster
+   -> eth0 is released and restores its MAC (MAC0).
+   -> eth1 becomes the active slave, and bond0 assigns MAC0 to eth1.
+
+4) ip link set eth0 master bond0
+   -> eth0 is re-added to bond0, now both eth0 and eth1 have MAC0.
+
+This results in a MAC address conflict and violates the expected behavior
+of the failover policy.
+
+To fix this, we assign a random MAC address to any newly added slave if
+its current MAC address matches that of the bond. The original (permanent)
+MAC address is saved and will be restored when the device is released
+from the bond.
+
+This ensures that each slave has a unique MAC address during failover
+transitions, preserving the integrity of the fail_over_mac=follow policy.
+
+Fixes: 3915c1e8634a ("bonding: Add "follow" option to fail_over_mac")
+Signed-off-by: Hangbin Liu <liuhangbin@gmail.com>
+Acked-by: Jay Vosburgh <jv@jvosburgh.net>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iommu/iommu.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/net/bonding/bond_main.c | 25 ++++++++++++++++++-------
+ 1 file changed, 18 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/iommu/iommu.c b/drivers/iommu/iommu.c
-index 5bc2fc969494f..e4628d9621610 100644
---- a/drivers/iommu/iommu.c
-+++ b/drivers/iommu/iommu.c
-@@ -2399,6 +2399,7 @@ static size_t iommu_pgsize(struct iommu_domain *domain, unsigned long iova,
- 	unsigned int pgsize_idx, pgsize_idx_next;
- 	unsigned long pgsizes;
- 	size_t offset, pgsize, pgsize_next;
-+	size_t offset_end;
- 	unsigned long addr_merge = paddr | iova;
+diff --git a/drivers/net/bonding/bond_main.c b/drivers/net/bonding/bond_main.c
+index 4461220bcd58d..17ae4b819a597 100644
+--- a/drivers/net/bonding/bond_main.c
++++ b/drivers/net/bonding/bond_main.c
+@@ -2115,15 +2115,26 @@ int bond_enslave(struct net_device *bond_dev, struct net_device *slave_dev,
+ 		 * set the master's mac address to that of the first slave
+ 		 */
+ 		memcpy(ss.__data, bond_dev->dev_addr, bond_dev->addr_len);
+-		ss.ss_family = slave_dev->type;
+-		res = dev_set_mac_address(slave_dev, (struct sockaddr *)&ss,
+-					  extack);
+-		if (res) {
+-			slave_err(bond_dev, slave_dev, "Error %d calling set_mac_address\n", res);
+-			goto err_restore_mtu;
+-		}
++	} else if (bond->params.fail_over_mac == BOND_FOM_FOLLOW &&
++		   BOND_MODE(bond) == BOND_MODE_ACTIVEBACKUP &&
++		   memcmp(slave_dev->dev_addr, bond_dev->dev_addr, bond_dev->addr_len) == 0) {
++		/* Set slave to random address to avoid duplicate mac
++		 * address in later fail over.
++		 */
++		eth_random_addr(ss.__data);
++	} else {
++		goto skip_mac_set;
+ 	}
  
- 	/* Page sizes supported by the hardware and small enough for @size */
-@@ -2439,7 +2440,8 @@ static size_t iommu_pgsize(struct iommu_domain *domain, unsigned long iova,
- 	 * If size is big enough to accommodate the larger page, reduce
- 	 * the number of smaller pages.
- 	 */
--	if (offset + pgsize_next <= size)
-+	if (!check_add_overflow(offset, pgsize_next, &offset_end) &&
-+	    offset_end <= size)
- 		size = offset;
++	ss.ss_family = slave_dev->type;
++	res = dev_set_mac_address(slave_dev, (struct sockaddr *)&ss, extack);
++	if (res) {
++		slave_err(bond_dev, slave_dev, "Error %d calling set_mac_address\n", res);
++		goto err_restore_mtu;
++	}
++
++skip_mac_set:
++
+ 	/* set no_addrconf flag before open to prevent IPv6 addrconf */
+ 	slave_dev->priv_flags |= IFF_NO_ADDRCONF;
  
- out_set_count:
 -- 
 2.39.5
 
