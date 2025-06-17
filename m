@@ -1,53 +1,55 @@
-Return-Path: <stable+bounces-153100-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153103-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B8C2ADD253
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 17:41:21 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8A62CADD250
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 17:41:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 523CD189A992
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 15:41:23 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 36DD317D778
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 15:41:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A813F2ECD0B;
-	Tue, 17 Jun 2025 15:41:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DCEC42ECD22;
+	Tue, 17 Jun 2025 15:41:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SsbqXHfQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0i9z6o7k"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 637082DF3C9;
-	Tue, 17 Jun 2025 15:41:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A5AC2DF3C9;
+	Tue, 17 Jun 2025 15:41:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750174865; cv=none; b=iGqqr7wrVzMceaFRMuNGQU+b4LD5wf1zWKj+4Op8zSjtPQipv6o1TLRTIY4wIug2Q0+eKJ76vQRxIqSQYhAKMVGmE+DypDQsbkTfT4chs9g++KfiScniPRpdAcDcyBJOJVfidpbhyW2TvOMv1wQNMAXmHVFf3+1WpWR7WkBs1Oc=
+	t=1750174874; cv=none; b=ZVWQSfJHuCKiN7GVGQxOdudn2NIfsKaDcIk+EiFDtgTCzhEIyvRBGaICuXAMnJIV22bGgcOpFbVxL1hnR7V0XapqiF1oKsk3jsgk7Pr9aSgdr0bmh/TVCFxqF23Izlzd6fIuVhDYYVqfvFozIMMiCAvBPIcuDQISX3SvVZmd/54=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750174865; c=relaxed/simple;
-	bh=jGWxR/SbUVqyWkKBiQfuCFy54rbOTnK7/kl3zsxHmgo=;
+	s=arc-20240116; t=1750174874; c=relaxed/simple;
+	bh=ZQeCBo96ryQbRInQ9axv96PX170iV7JjpyIO8YrdtU4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=usyplanoTACPPlrY74vAI0L4iKlWvdsRBtVGJrh/xE+4qhGaJAAI3e4Sueu7GCnid+a8KBnjxvyFIOr3Et8XTksWLq94T29vs8oyRdpGSKtrb7N/xD+cWiWeAZbYxXui4l8vtikJWjhN+KlmQzvn/MkkdQYXJj7pBaWYevJ5Uuo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SsbqXHfQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9A2DC4CEE3;
-	Tue, 17 Jun 2025 15:41:04 +0000 (UTC)
+	 MIME-Version; b=KAGUivROJawoT4m+gSsMlhgH8mcjhRdtD/2OAuz+sSopPcuXmyHYHD1wmiYashD7zmrf/dK99BZcIrbe11xy0zUXWkRQbSV5trrPiQFMrShEmtybNekOQGBKH7dm/CO+ek4kFtXSOiELyYXO94a1Em2rCY6qY8ZMsjgvGAWUxlI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0i9z6o7k; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 288CEC4CEE7;
+	Tue, 17 Jun 2025 15:41:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750174865;
-	bh=jGWxR/SbUVqyWkKBiQfuCFy54rbOTnK7/kl3zsxHmgo=;
+	s=korg; t=1750174874;
+	bh=ZQeCBo96ryQbRInQ9axv96PX170iV7JjpyIO8YrdtU4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SsbqXHfQaQ9dqumqWzoQi7ZKFHvv9wFM+F7Q7uByqngNi+Igrcw58r6LVg1exRKJK
-	 QBZ5I7P970dsd0/ivPBKpunAOwrH8lGPPlsSm8xuGduJRwlVTruvWLsgqPJyyJxiZG
-	 DDoaSrPry24BMEtmnDFNUuKHjX+i49TTkOQV5Fg0=
+	b=0i9z6o7kRv4V3V3cPYYbIDIN6TbavWtG5oxex+ntg9uPHXqIZFxqvrrHtqmaB10II
+	 8t6qMPCsDi1FVWDkCAqnHDiRnyq9uSUtjKOM26PwGRFriDTL0BxRlLrDrcttIEkvK6
+	 656AgCDEfZM2AsSqnP93feF7CPLOJcP3463udRuA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ovidiu Panait <ovidiu.panait.oss@gmail.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
+	Zizhi Wo <wozizhi@huawei.com>,
+	Yu Kuai <yukuai3@huawei.com>,
+	Ming Lei <ming.lei@redhat.com>,
+	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 028/780] crypto: sun8i-ce - undo runtime PM changes during driver removal
-Date: Tue, 17 Jun 2025 17:15:36 +0200
-Message-ID: <20250617152452.650065760@linuxfoundation.org>
+Subject: [PATCH 6.15 029/780] blk-throttle: Fix wrong tg->[bytes/io]_disp update in __tg_update_carryover()
+Date: Tue, 17 Jun 2025 17:15:37 +0200
+Message-ID: <20250617152452.689954820@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
 References: <20250617152451.485330293@linuxfoundation.org>
@@ -66,76 +68,78 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Ovidiu Panait <ovidiu.panait.oss@gmail.com>
+From: Zizhi Wo <wozizhi@huawei.com>
 
-[ Upstream commit 9334f427576e6d361a409959b52246b0aa10476f ]
+[ Upstream commit f66cf69eb8765341bbeff0e92a7d0d2027f62452 ]
 
-The pm_runtime_use_autosuspend() call must be undone with
-pm_runtime_dont_use_autosuspend() at driver exit, but this is not
-currently handled in the driver.
+In commit 6cc477c36875 ("blk-throttle: carry over directly"), the carryover
+bytes/ios was be carried to [bytes/io]_disp. However, its update mechanism
+has some issues.
 
-To fix this issue and at the same time simplify error handling, switch
-to devm_pm_runtime_enable(). It will call both pm_runtime_disable() and
-pm_runtime_dont_use_autosuspend() during driver removal.
+In __tg_update_carryover(), we calculate "bytes" and "ios" to represent the
+carryover, but the computation when updating [bytes/io]_disp is incorrect.
+And if the sq->nr_queued is empty, we may not update tg->[bytes/io]_disp to
+0 in tg_update_carryover(). We should set it to 0 in non carryover case.
+This patch fixes the issue.
 
-Fixes: 06f751b61329 ("crypto: allwinner - Add sun8i-ce Crypto Engine")
-Signed-off-by: Ovidiu Panait <ovidiu.panait.oss@gmail.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Fixes: 6cc477c36875 ("blk-throttle: carry over directly")
+Signed-off-by: Zizhi Wo <wozizhi@huawei.com>
+Reviewed-by: Yu Kuai <yukuai3@huawei.com>
+Reviewed-by: Ming Lei <ming.lei@redhat.com>
+Link: https://lore.kernel.org/r/20250417132054.2866409-2-wozizhi@huaweicloud.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../crypto/allwinner/sun8i-ce/sun8i-ce-core.c   | 17 ++++++-----------
- 1 file changed, 6 insertions(+), 11 deletions(-)
+ block/blk-throttle.c | 22 ++++++++++++++++------
+ 1 file changed, 16 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/crypto/allwinner/sun8i-ce/sun8i-ce-core.c b/drivers/crypto/allwinner/sun8i-ce/sun8i-ce-core.c
-index ec1ffda9ea32e..658f520cee0ca 100644
---- a/drivers/crypto/allwinner/sun8i-ce/sun8i-ce-core.c
-+++ b/drivers/crypto/allwinner/sun8i-ce/sun8i-ce-core.c
-@@ -832,13 +832,12 @@ static int sun8i_ce_pm_init(struct sun8i_ce_dev *ce)
- 	err = pm_runtime_set_suspended(ce->dev);
- 	if (err)
- 		return err;
--	pm_runtime_enable(ce->dev);
--	return err;
--}
+diff --git a/block/blk-throttle.c b/block/blk-throttle.c
+index d6dd2e0478749..7437de947120e 100644
+--- a/block/blk-throttle.c
++++ b/block/blk-throttle.c
+@@ -644,6 +644,18 @@ static void __tg_update_carryover(struct throtl_grp *tg, bool rw,
+ 	u64 bps_limit = tg_bps_limit(tg, rw);
+ 	u32 iops_limit = tg_iops_limit(tg, rw);
  
--static void sun8i_ce_pm_exit(struct sun8i_ce_dev *ce)
--{
--	pm_runtime_disable(ce->dev);
-+	err = devm_pm_runtime_enable(ce->dev);
-+	if (err)
-+		return err;
++	/*
++	 * If the queue is empty, carryover handling is not needed. In such cases,
++	 * tg->[bytes/io]_disp should be reset to 0 to avoid impacting the dispatch
++	 * of subsequent bios. The same handling applies when the previous BPS/IOPS
++	 * limit was set to max.
++	 */
++	if (tg->service_queue.nr_queued[rw] == 0) {
++		tg->bytes_disp[rw] = 0;
++		tg->io_disp[rw] = 0;
++		return;
++	}
 +
-+	return 0;
+ 	/*
+ 	 * If config is updated while bios are still throttled, calculate and
+ 	 * accumulate how many bytes/ios are waited across changes. And
+@@ -656,8 +668,8 @@ static void __tg_update_carryover(struct throtl_grp *tg, bool rw,
+ 	if (iops_limit != UINT_MAX)
+ 		*ios = calculate_io_allowed(iops_limit, jiffy_elapsed) -
+ 			tg->io_disp[rw];
+-	tg->bytes_disp[rw] -= *bytes;
+-	tg->io_disp[rw] -= *ios;
++	tg->bytes_disp[rw] = -*bytes;
++	tg->io_disp[rw] = -*ios;
  }
  
- static int sun8i_ce_get_clks(struct sun8i_ce_dev *ce)
-@@ -1041,7 +1040,7 @@ static int sun8i_ce_probe(struct platform_device *pdev)
- 			       "sun8i-ce-ns", ce);
- 	if (err) {
- 		dev_err(ce->dev, "Cannot request CryptoEngine Non-secure IRQ (err=%d)\n", err);
--		goto error_irq;
-+		goto error_pm;
- 	}
+ static void tg_update_carryover(struct throtl_grp *tg)
+@@ -665,10 +677,8 @@ static void tg_update_carryover(struct throtl_grp *tg)
+ 	long long bytes[2] = {0};
+ 	int ios[2] = {0};
  
- 	err = sun8i_ce_register_algs(ce);
-@@ -1082,8 +1081,6 @@ static int sun8i_ce_probe(struct platform_device *pdev)
- 	return 0;
- error_alg:
- 	sun8i_ce_unregister_algs(ce);
--error_irq:
--	sun8i_ce_pm_exit(ce);
- error_pm:
- 	sun8i_ce_free_chanlist(ce, MAXFLOW - 1);
- 	return err;
-@@ -1104,8 +1101,6 @@ static void sun8i_ce_remove(struct platform_device *pdev)
- #endif
+-	if (tg->service_queue.nr_queued[READ])
+-		__tg_update_carryover(tg, READ, &bytes[READ], &ios[READ]);
+-	if (tg->service_queue.nr_queued[WRITE])
+-		__tg_update_carryover(tg, WRITE, &bytes[WRITE], &ios[WRITE]);
++	__tg_update_carryover(tg, READ, &bytes[READ], &ios[READ]);
++	__tg_update_carryover(tg, WRITE, &bytes[WRITE], &ios[WRITE]);
  
- 	sun8i_ce_free_chanlist(ce, MAXFLOW - 1);
--
--	sun8i_ce_pm_exit(ce);
- }
- 
- static const struct of_device_id sun8i_ce_crypto_of_match_table[] = {
+ 	/* see comments in struct throtl_grp for meaning of these fields. */
+ 	throtl_log(&tg->service_queue, "%s: %lld %lld %d %d\n", __func__,
 -- 
 2.39.5
 
