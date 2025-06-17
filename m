@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-154141-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-154096-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 24D96ADD9C1
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 19:09:10 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id A3D8DADD939
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 19:04:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9648D5A02ED
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:42:59 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2A38719E4A5B
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:41:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29EEC2ED848;
-	Tue, 17 Jun 2025 16:37:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F61023815F;
+	Tue, 17 Jun 2025 16:34:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Hw7lzp9I"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DayB/GxX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA09B2FA64D;
-	Tue, 17 Jun 2025 16:37:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BF8118E025;
+	Tue, 17 Jun 2025 16:34:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750178232; cv=none; b=gejIC3qzF5ZUCT/kd+7AcW/+V8fE4zxjM4IAoUDk2CMyBV3iBXZFre4gtmJ9yB586kpKYcBLL/ceM6B3Tv0/uQMSz9kHvSpdLXlIEX/2FWl2/Eau5ix8527vKFygg7tKgSFYX2jyt0l7mx95g+rZa1SwQVUEJze9E/JLBvQuhhA=
+	t=1750178089; cv=none; b=qduQzWQZvlZZqge5OmShPGGdqVmo2LKPgjSRh+gGkC7yfKNa1Pq7dWmijW8f2sLjqpbeHyzK3EaXvXW9pVnUIVsMTptTKYZGxCFjk/q0r1HQ75Qzc8d2RiqD6mcTi+2rQNQ2qaLxfCnTJDUc3JiUoSpuG9L4xRFrLrZn/o5DNPk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750178232; c=relaxed/simple;
-	bh=DD/QbU4QLPxos/yMdtwDmTXQqTx64/4mLmjv0TT48Rw=;
+	s=arc-20240116; t=1750178089; c=relaxed/simple;
+	bh=+Sh9F4pJnDFECUiaEsdEcROJHCgJ5akjg5ZuI8Ii+dc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UPWw1Zi47gf8vGUHcP+96MM/0zfEKXCU1l+sxWJegba+hzuFXinR8cBiXMiE+Ib4KCvveLavN6IEe3xAkCWVhvbPwdUq5LHHUNd9nxkKFGc3h+fVcQEXOUHqIkP7Y7PI4XRUrWkaWoU8zwsWHStgfVaByJ4luZKhuDv9OQJJNPc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Hw7lzp9I; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 485C5C4CEE7;
-	Tue, 17 Jun 2025 16:37:12 +0000 (UTC)
+	 MIME-Version; b=SF6jaNZ1lF41cF4yJUed9hCb2gneeeJKsW2zGZFqmKS+QRzgZ6VVeFqg830mwaU6jaV16VRvKCP7rtWFkrm64+wpHxdLzFFiTUYX/nCPQRlH5yh8XGxNJOh0wN7ti0kXbjv5ZWwSHLOf+iRvWXI/ilU9WeHTjYg/4UbuEzRPGVc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DayB/GxX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 806BFC4CEE3;
+	Tue, 17 Jun 2025 16:34:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750178232;
-	bh=DD/QbU4QLPxos/yMdtwDmTXQqTx64/4mLmjv0TT48Rw=;
+	s=korg; t=1750178089;
+	bh=+Sh9F4pJnDFECUiaEsdEcROJHCgJ5akjg5ZuI8Ii+dc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Hw7lzp9Iw+gM65l6Z50NrTAjkxoUM7o2MBwWV2co5gWssvaGPDaC0bD8NDd0vr9PA
-	 pHndyW1qKBFX5Rp4wxlnq0NvULTN7M09Bhcb+22jFsr6MvA12+Jnzd0GkY2XHcyWFb
-	 Rim+P2bvfWZPDTiWdezun5sqdkbKUpomPVoRtOeg=
+	b=DayB/GxXeNp7D0mRhBFoVpe2v+FhVVqMYc/LTFH89wdEDP7KSSEPAmBj8dzfESbQA
+	 yUXOJ6n6IW3xoQp1tnKFJ5jqd8s5Ob5HHHVA3RwnbT8FDNhWWF81hHC9NO8JGD2Zja
+	 Z4NdNXZhVbJWO0y3B99TP8zJKNC/qnZQt0sP3FCo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
 	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 407/780] arm64: dts: qcom: msm8998: Use the header with DSI phy clock IDs
-Date: Tue, 17 Jun 2025 17:21:55 +0200
-Message-ID: <20250617152508.041847143@linuxfoundation.org>
+Subject: [PATCH 6.15 408/780] arm64: dts: qcom: msm8998: Remove mdss_hdmi_phy phandle argument
+Date: Tue, 17 Jun 2025 17:21:56 +0200
+Message-ID: <20250617152508.079227920@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
 References: <20250617152451.485330293@linuxfoundation.org>
@@ -68,72 +67,49 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+From: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
 
-[ Upstream commit f4220c41decc1944ef319c859840aa5405eee6fa ]
+[ Upstream commit 7ebdb205d4b9dd839a93a9b8975ce8ccf86b882a ]
 
-Use the header with DSI phy clock IDs to make code more readable.
+The node has #clock-cells = <0>, as it only provides a single clock
+output.
 
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Link: https://lore.kernel.org/r/20250408-dts-qcom-dsi-phy-clocks-v2-9-73b482a6dd02@linaro.org
+This leads to a turbo sneaky bug, where the dt checker shows that we
+have additional clocks in the array:
+
+clock-controller@c8c0000: clocks: [[3, 0], [39, 178], [156, 1],
+[156, 0], [157, 1], [157, 0], [158], [0], [0], [0], [39, 184]]
+is too long
+
+..which happens due to dtc interpreting <&mdss_hdmi_phy 0> as
+<&mdss_hdmi_phy>, <0> after taking cells into account.
+
+Remove the superfluous argument to both silence the warning and fix
+the index-based lookup of subsequent entries in "clocks".
+
+Fixes: 2150c87db80c ("arm64: dts: qcom: msm8998: add HDMI nodes")
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Signed-off-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Link: https://lore.kernel.org/r/20250327-topic-more_dt_bindings_fixes-v2-4-b763d958545f@oss.qualcomm.com
 Signed-off-by: Bjorn Andersson <andersson@kernel.org>
-Stable-dep-of: 7ebdb205d4b9 ("arm64: dts: qcom: msm8998: Remove mdss_hdmi_phy phandle argument")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/msm8998.dtsi | 17 +++++++++--------
- 1 file changed, 9 insertions(+), 8 deletions(-)
+ arch/arm64/boot/dts/qcom/msm8998.dtsi | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/arch/arm64/boot/dts/qcom/msm8998.dtsi b/arch/arm64/boot/dts/qcom/msm8998.dtsi
-index c2caad85c668d..7eca38440cd7e 100644
+index 7eca38440cd7e..fa6769320a238 100644
 --- a/arch/arm64/boot/dts/qcom/msm8998.dtsi
 +++ b/arch/arm64/boot/dts/qcom/msm8998.dtsi
-@@ -2,6 +2,7 @@
- /* Copyright (c) 2016, The Linux Foundation. All rights reserved. */
- 
- #include <dt-bindings/interrupt-controller/arm-gic.h>
-+#include <dt-bindings/clock/qcom,dsi-phy-28nm.h>
- #include <dt-bindings/clock/qcom,gcc-msm8998.h>
- #include <dt-bindings/clock/qcom,gpucc-msm8998.h>
- #include <dt-bindings/clock/qcom,mmcc-msm8998.h>
-@@ -2790,10 +2791,10 @@
- 				      "gpll0_div";
- 			clocks = <&rpmcc RPM_SMD_XO_CLK_SRC>,
- 				 <&gcc GCC_MMSS_GPLL0_CLK>,
--				 <&mdss_dsi0_phy 1>,
--				 <&mdss_dsi0_phy 0>,
--				 <&mdss_dsi1_phy 1>,
--				 <&mdss_dsi1_phy 0>,
-+				 <&mdss_dsi0_phy DSI_PIXEL_PLL_CLK>,
-+				 <&mdss_dsi0_phy DSI_BYTE_PLL_CLK>,
-+				 <&mdss_dsi1_phy DSI_PIXEL_PLL_CLK>,
-+				 <&mdss_dsi1_phy DSI_BYTE_PLL_CLK>,
- 				 <&mdss_hdmi_phy 0>,
+@@ -2795,7 +2795,7 @@
+ 				 <&mdss_dsi0_phy DSI_BYTE_PLL_CLK>,
+ 				 <&mdss_dsi1_phy DSI_PIXEL_PLL_CLK>,
+ 				 <&mdss_dsi1_phy DSI_BYTE_PLL_CLK>,
+-				 <&mdss_hdmi_phy 0>,
++				 <&mdss_hdmi_phy>,
  				 <0>,
  				 <0>,
-@@ -2932,8 +2933,8 @@
- 					      "bus";
- 				assigned-clocks = <&mmcc BYTE0_CLK_SRC>,
- 						  <&mmcc PCLK0_CLK_SRC>;
--				assigned-clock-parents = <&mdss_dsi0_phy 0>,
--							 <&mdss_dsi0_phy 1>;
-+				assigned-clock-parents = <&mdss_dsi0_phy DSI_BYTE_PLL_CLK>,
-+							 <&mdss_dsi0_phy DSI_PIXEL_PLL_CLK>;
- 
- 				operating-points-v2 = <&dsi_opp_table>;
- 				power-domains = <&rpmpd MSM8998_VDDCX>;
-@@ -3008,8 +3009,8 @@
- 					      "bus";
- 				assigned-clocks = <&mmcc BYTE1_CLK_SRC>,
- 						  <&mmcc PCLK1_CLK_SRC>;
--				assigned-clock-parents = <&mdss_dsi1_phy 0>,
--							 <&mdss_dsi1_phy 1>;
-+				assigned-clock-parents = <&mdss_dsi1_phy DSI_BYTE_PLL_CLK>,
-+							 <&mdss_dsi1_phy DSI_PIXEL_PLL_CLK>;
- 
- 				operating-points-v2 = <&dsi_opp_table>;
- 				power-domains = <&rpmpd MSM8998_VDDCX>;
+ 				 <&gcc GCC_MMSS_GPLL0_DIV_CLK>;
 -- 
 2.39.5
 
