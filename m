@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-153330-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153334-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B65FFADD3E5
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:04:11 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id C0962ADD3C5
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:02:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 74485404935
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 15:56:39 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 44169167405
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 15:57:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 21EAC2ED86F;
-	Tue, 17 Jun 2025 15:53:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E59BA2EE602;
+	Tue, 17 Jun 2025 15:53:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vipmIVGO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vr0/DdDk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D39562ECE8F;
-	Tue, 17 Jun 2025 15:53:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A288A28E8;
+	Tue, 17 Jun 2025 15:53:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750175600; cv=none; b=sDkMpy4XM9QDcGUKrB37QyisAQ1plZ/QEBv7kDxLLR4baSa5Tgsp9VMdr3pzrCDFZEjr2UKcCxIe1NJbMHJNFPoZrSbEszXPcWv0Jc2YuaSBwUlIU3o330Yzlc3sDgC83IfyGaD3UM1R2EYfXGDeT4KEvESC8+ke01PUP3nLuXE=
+	t=1750175613; cv=none; b=sH+MmcyVR9gt66SAa4sw4zMRMrmhtcIXulORgjEDmHn0DnSVlCGV5qVRotQSxbJloFafVCffmGz07cUAnICWN6nhZYUJomPUmx98CNfhmYE3dDeiQsibSTzBEWlWK1+i/Nkth9Hf8y87HPGEIUv5szLWclmgbODkp5hxJjUk3bY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750175600; c=relaxed/simple;
-	bh=6RYKsz1rYCcCLQVEaFWc6Z7ev0GOxoHmR5oAvV+hl68=;
+	s=arc-20240116; t=1750175613; c=relaxed/simple;
+	bh=nlQgucthSLVuemGGkMSKAcRw6eUSgIYtMR8NWKzxibQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IR+cyyVSPbzcx7U+kVCBRMvhwVnk1tt5l3bEjqUE2vNbcpwz4ZDM9GxvY+XNHQWKC134UTdhcGbOpMhMq4Xcl50rMHDGGkIo2AfkAqvqt+8jhFAcG2nxRpfOWXHpzEC3oCfGhHo2KDjhSAMCMN2eFN4NAPYnAGQmALjU4L26DgY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vipmIVGO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42CD8C4CEE3;
-	Tue, 17 Jun 2025 15:53:20 +0000 (UTC)
+	 MIME-Version; b=RoKRvrCPHV4aI8Hq9VEQFjW0CFBJEc2AsX75u+2WeesRMloaKc7rG7YnxpDkyr4olts/WayssgzeR+3mt8lS0fubVrRA/dE69DNOYZe7r+JUyib54/q18OkxUvC0xvMEpBIT+fIs7x9ysvG3KAZ08KBptNAgD8+d71ogTwMZGNw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vr0/DdDk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1244FC4CEE3;
+	Tue, 17 Jun 2025 15:53:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750175600;
-	bh=6RYKsz1rYCcCLQVEaFWc6Z7ev0GOxoHmR5oAvV+hl68=;
+	s=korg; t=1750175613;
+	bh=nlQgucthSLVuemGGkMSKAcRw6eUSgIYtMR8NWKzxibQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vipmIVGOep3oA8ySgKKsHNUsEk3fxPrTE4kvT0AGvAiVFgqcqDiQ/QbvrbjZUGtVK
-	 G5p40tZm8tI1kASfF7a/u6qF2eiqhJRhOLgfyPI/O8XBickJytxOIxrJv4k8hA2IZH
-	 4yYUuO46cDg256lbdLRuUL3Klbcja40nCPLWgeho=
+	b=vr0/DdDku0dvJldQ91IZTfCKhKTQ32/ZaUzyYGeIlwsRrYM3YY0Vq9fUkvDnct1ql
+	 Iq4PY3kWdpsmcFpqCDoPpvIh3IEdYSUj4vc3tit2WdaPkNFs+zlf/EX2GRjTYQJjdy
+	 gwzxx91we9dFRSSw3004qa4PzU+MKWfeoQsvA1ik=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mark Rutland <mark.rutland@arm.com>,
-	Marc Zyngier <maz@kernel.org>,
-	Mark Brown <broonie@kernel.org>,
-	Will Deacon <will@kernel.org>,
-	Catalin Marinas <catalin.marinas@arm.com>,
+	Liviu Dudau <liviu.dudau@arm.com>,
+	Steven Price <steven.price@arm.com>,
+	Boris Brezillon <boris.brezillon@collabora.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 105/780] arm64/fpsimd: Fix merging of FPSIMD state during signal return
-Date: Tue, 17 Jun 2025 17:16:53 +0200
-Message-ID: <20250617152455.779963864@linuxfoundation.org>
+Subject: [PATCH 6.15 106/780] drm/panthor: Fix GPU_COHERENCY_ACE[_LITE] definitions
+Date: Tue, 17 Jun 2025 17:16:54 +0200
+Message-ID: <20250617152455.818749591@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
 References: <20250617152451.485330293@linuxfoundation.org>
@@ -69,103 +67,45 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Mark Rutland <mark.rutland@arm.com>
+From: Boris Brezillon <boris.brezillon@collabora.com>
 
-[ Upstream commit c94f2f326146a34066a0070ed90b8bc656b1842f ]
+[ Upstream commit d1df2907fb69df56aad8e4a0734dac0778c234a7 ]
 
-For backwards compatibility reasons, when a signal return occurs which
-restores SVE state, the effective lower 128 bits of each of the SVE
-vector registers are restored from the corresponding FPSIMD vector
-register in the FPSIMD signal frame, overriding the values in the SVE
-signal frame. This is intended to be the case regardless of streaming
-mode.
+GPU_COHERENCY_ACE and GPU_COHERENCY_ACE_LITE definitions have been
+swapped.
 
-To make this happen, restore_sve_fpsimd_context() uses
-fpsimd_update_current_state() to merge the lower 128 bits from the
-FPSIMD signal frame into the SVE register state. Unfortunately,
-fpsimd_update_current_state() performs this merging dependent upon
-TIF_SVE, which is not always correct for streaming SVE register state:
+Changes in v2:
+- New patch
 
-* When restoring non-streaming SVE register state there is no observable
-  problem, as the signal return code configures TIF_SVE and the saved
-  fp_type to match before calling fpsimd_update_current_state(), which
-  observes either:
+Changes in v3:
+- Add Steve's R-b
 
-  - TIF_SVE set    AND  fp_type == FP_STATE_SVE
-  - TIF_SVE clear  AND  fp_type == FP_STATE_FPSIMD
-
-* On systems which have SME but not SVE, TIF_SVE cannot be set. Thus the
-  merging will never happen for the streaming SVE register state.
-
-* On systems which have SVE and SME, TIF_SVE can be set and cleared
-  independently of PSTATE.SM. Thus the merging may or may not happen for
-  streaming SVE register state.
-
-  As TIF_SVE can be cleared non-deterministically during syscalls
-  (including at the start of sigreturn()), the merging may occur
-  non-deterministically from the perspective of userspace.
-
-This logic has been broken since its introduction in commit:
-
-  85ed24dad2904f7c ("arm64/sme: Implement streaming SVE signal handling")
-
-... at which point both fpsimd_signal_preserve_current_state() and
-fpsimd_update_current_state() only checked TIF SVE. When PSTATE.SM==1
-and TIF_SVE was clear, signal delivery would place stale FPSIMD state
-into the FPSIMD signal frame, and signal return would not merge this
-into the restored register state.
-
-Subsequently, signal delivery was fixed as part of commit:
-
-  61da7c8e2a602f66 ("arm64/signal: Don't assume that TIF_SVE means we saved SVE state")
-
-... but signal restore was not given a corresponding fix, and when
-TIF_SVE was clear, signal restore would still fail to merge the FPSIMD
-state into the restored SVE register state. The 'Fixes' tag did not
-indicate that this had been broken since its introduction.
-
-Fix this by merging the FPSIMD state dependent upon the saved fp_type,
-matching what we (currently) do during signal delivery.
-
-As described above, when backporting this commit, it will also be
-necessary to backport commit:
-
-  61da7c8e2a602f66 ("arm64/signal: Don't assume that TIF_SVE means we saved SVE state")
-
-... and prior to commit:
-
-  baa8515281b30861 ("arm64/fpsimd: Track the saved FPSIMD state type separately to TIF_SVE")
-
-... it will be necessary for fpsimd_signal_preserve_current_state() and
-fpsimd_update_current_state() to consider both TIF_SVE and
-thread_sm_enabled(&current->thread), in place of the saved fp_type.
-
-Fixes: 85ed24dad290 ("arm64/sme: Implement streaming SVE signal handling")
-Signed-off-by: Mark Rutland <mark.rutland@arm.com>
-Cc: Marc Zyngier <maz@kernel.org>
-Cc: Mark Brown <broonie@kernel.org>
-Cc: Will Deacon <will@kernel.org>
-Reviewed-by: Mark Brown <broonie@kernel.org>
-Link: https://lore.kernel.org/r/20250409164010.3480271-10-mark.rutland@arm.com
-Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
+Reported-by: Liviu Dudau <liviu.dudau@arm.com>
+Fixes: 546b366600ef ("drm/panthor: Add GPU register definitions")
+Reviewed-by: Steven Price <steven.price@arm.com>
+Reviewed-by: Liviu Dudau <liviu.dudau@arm.com>
+Link: https://lore.kernel.org/r/20250404080933.2912674-2-boris.brezillon@collabora.com
+Signed-off-by: Boris Brezillon <boris.brezillon@collabora.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/kernel/fpsimd.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/panthor/panthor_regs.h | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm64/kernel/fpsimd.c b/arch/arm64/kernel/fpsimd.c
-index 7ae01f02e18b7..1edf797d2c710 100644
---- a/arch/arm64/kernel/fpsimd.c
-+++ b/arch/arm64/kernel/fpsimd.c
-@@ -1806,7 +1806,7 @@ void fpsimd_update_current_state(struct user_fpsimd_state const *state)
- 	get_cpu_fpsimd_context();
+diff --git a/drivers/gpu/drm/panthor/panthor_regs.h b/drivers/gpu/drm/panthor/panthor_regs.h
+index b7b3b3add1662..a7a323dc5cf92 100644
+--- a/drivers/gpu/drm/panthor/panthor_regs.h
++++ b/drivers/gpu/drm/panthor/panthor_regs.h
+@@ -133,8 +133,8 @@
+ #define GPU_COHERENCY_PROT_BIT(name)			BIT(GPU_COHERENCY_  ## name)
  
- 	current->thread.uw.fpsimd_state = *state;
--	if (test_thread_flag(TIF_SVE))
-+	if (current->thread.fp_type == FP_STATE_SVE)
- 		fpsimd_to_sve(current);
+ #define GPU_COHERENCY_PROTOCOL				0x304
+-#define   GPU_COHERENCY_ACE				0
+-#define   GPU_COHERENCY_ACE_LITE			1
++#define   GPU_COHERENCY_ACE_LITE			0
++#define   GPU_COHERENCY_ACE				1
+ #define   GPU_COHERENCY_NONE				31
  
- 	task_fpsimd_load();
+ #define MCU_CONTROL					0x700
 -- 
 2.39.5
 
