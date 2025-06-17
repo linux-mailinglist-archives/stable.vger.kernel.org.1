@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-153964-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153967-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B16AADD736
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:42:30 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id F328AADD83B
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:53:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4BA9340794A
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:32:27 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 28CA24A4776
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:32:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F47D2DFF28;
-	Tue, 17 Jun 2025 16:27:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5EE702DFF32;
+	Tue, 17 Jun 2025 16:27:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SDOZuzd3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Fh4I7zFz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B6068F54;
-	Tue, 17 Jun 2025 16:27:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19E5D2F94B2;
+	Tue, 17 Jun 2025 16:27:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750177665; cv=none; b=gNrFNkzc/G0328aTKV6QlsxuZeVS2NviqZ2i0mEFqZDJn8qgFjWjjHaPAasFJEArIBewMHOeRRAIM90BWDf/tyYZeOpEEKP6AdwDmCetrmeGic2Eyr6xut1kcL1pHKM154VfOy3O/5zV6dGLTeMHG3l6yK/WcITaOpINbmdOo5s=
+	t=1750177675; cv=none; b=WMucJjsX8h3ANdVOgUhPZeVgSpckD9oeHvSQwwaTL1gsdYBYiFUiOirBSpRr9T6qyjQUIeNh45hxjO3SA5TJewPgjYAtqQAX7AIfFnj/h0Cyk7uCZsXygbMh7EJNF9WBOtOlSHxZvObZKIUWheWF3cxpbEnhOOWVZ+mY87XYubg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750177665; c=relaxed/simple;
-	bh=/ahxeMgchp0wCLfuLhUiaIo+CJyp/eVUWlnS7RTUiAA=;
+	s=arc-20240116; t=1750177675; c=relaxed/simple;
+	bh=JcTJWUsMZ5AlyvopROO0akWxAksp2GbRm1Pi0vO0khA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Mwu+kFVk10x9ojC/NO7Cwsx5aTtvl95xZ3+uirgOiVTXBj3RGUKZb5Vx/0PutRGcrz9pvv3LpamZxRZpUnWi489CSGLzwpvQdAjcA8U16GJDvDxa3O7KrO/WRH348lL2Wpo3RrR7R5X/DXO9uurkFdqkoL0uQUmMqVZL9bzmVN0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SDOZuzd3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0591C4CEE3;
-	Tue, 17 Jun 2025 16:27:44 +0000 (UTC)
+	 MIME-Version; b=VkVQ1itQWix1atgqO1ZA/fMk4sUuGDbZD0i1lJn1Gk6sa142Omz1VG8zaTHsrp3LZN64LlU/ME0s81k+rwjawk0SxEkBoWR1efDK69vEIcwbBaVnnUm4yYG25y0c60st+7Oknm4lm+oEHMr86GwPDv5Z2I+5fjNi9vH8pwDQpBU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Fh4I7zFz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E39BC4CEE3;
+	Tue, 17 Jun 2025 16:27:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750177665;
-	bh=/ahxeMgchp0wCLfuLhUiaIo+CJyp/eVUWlnS7RTUiAA=;
+	s=korg; t=1750177675;
+	bh=JcTJWUsMZ5AlyvopROO0akWxAksp2GbRm1Pi0vO0khA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SDOZuzd3XZmbXYPmlpX7dAeduA1FI48TZIqcp3N7bLvyVZUOx99vmr69Ks9Max5jS
-	 p8xI65OG5l4jvh54GLM8hR2wPn8Mi7WPniEXBG4yPlUG3CZF4WDiWqeazpWx5ibUis
-	 5LHH1UhCi9s6dhN4c7l5Qt2tFyZzdVrgRgAt+958=
+	b=Fh4I7zFzn77P3P04egb3r767pk+Qk4k6+PtjgcoPVx4tIwT658oUxZ01HxeM1bUbw
+	 igGEUvjBwTXpvWyhCnfopVfJFDZzpPlQcaIy1xninY2P81v6fUicLj2KNlylJ1p3KO
+	 KrHZnEJeIVyUbwnCxA9LIHZBKsAdjH3kxM3ik38U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -47,9 +47,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
 	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 343/780] arm64: dts: qcom: sa8775p: Partially revert "arm64: dts: qcom: sa8775p: add QCrypto nodes"
-Date: Tue, 17 Jun 2025 17:20:51 +0200
-Message-ID: <20250617152505.421019994@linuxfoundation.org>
+Subject: [PATCH 6.15 344/780] arm64: dts: qcom: qcs8300: Partially revert "arm64: dts: qcom: qcs8300: add QCrypto nodes"
+Date: Tue, 17 Jun 2025 17:20:52 +0200
+Message-ID: <20250617152505.461857349@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
 References: <20250617152451.485330293@linuxfoundation.org>
@@ -70,50 +70,51 @@ Content-Transfer-Encoding: 8bit
 
 From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-[ Upstream commit 92979f12a201c54ea94b8b3c9f0737c33bb45e23 ]
+[ Upstream commit cdc117c40537c5babfa7f261360d5a98e434d59e ]
 
-Partially revert commit 7ff3da43ef44 ("arm64: dts: qcom: sa8775p: add
+Partially revert commit a86d84409947 ("arm64: dts: qcom: qcs8300: add
 QCrypto nodes") by dropping the untested QCE device node.  Devicetree
 bindings test failures were reported on mailing list on 16th of January
 and after two weeks still no fixes:
 
-  sa8775p-ride.dtb: crypto@1dfa000: compatible: 'oneOf' conditional failed, one must be fixed:
+  qcs8300-ride.dtb: crypto@1dfa000: compatible: 'oneOf' conditional failed, one must be fixed:
     ...
-    'qcom,sa8775p-qce' is not one of ['qcom,ipq4019-qce', 'qcom,sm8150-qce']
+    'qcom,qcs8300-qce' is not one of ['qcom,ipq4019-qce', 'qcom,sm8150-qce']
 
 Reported-by: Rob Herring <robh@kernel.org>
-Closes: https://lore.kernel.org/all/CAL_JsqJG_w9jyWjVR=QnPuJganG4uj9+9cEXZ__UAiCw2ZYZZA@mail.gmail.com/
+Closes: https://lore.kernel.org/all/CAL_JsqL0HzzGXnCD+z4GASeXNsBxrdw8-qyfHj8S+C2ucK6EPQ@mail.gmail.com/
 Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Link: https://lore.kernel.org/r/20250128115333.95021-1-krzysztof.kozlowski@linaro.org
+Link: https://lore.kernel.org/r/20250128115333.95021-2-krzysztof.kozlowski@linaro.org
 Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/sa8775p.dtsi | 11 -----------
- 1 file changed, 11 deletions(-)
+ arch/arm64/boot/dts/qcom/qcs8300.dtsi | 12 ------------
+ 1 file changed, 12 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/qcom/sa8775p.dtsi b/arch/arm64/boot/dts/qcom/sa8775p.dtsi
-index 2329460b21038..2010b7988b6cc 100644
---- a/arch/arm64/boot/dts/qcom/sa8775p.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sa8775p.dtsi
-@@ -2420,17 +2420,6 @@
+diff --git a/arch/arm64/boot/dts/qcom/qcs8300.dtsi b/arch/arm64/boot/dts/qcom/qcs8300.dtsi
+index 4a057f7c0d9fa..13b1121cdf175 100644
+--- a/arch/arm64/boot/dts/qcom/qcs8300.dtsi
++++ b/arch/arm64/boot/dts/qcom/qcs8300.dtsi
+@@ -798,18 +798,6 @@
  				 <&apps_smmu 0x481 0x00>;
  		};
  
 -		crypto: crypto@1dfa000 {
--			compatible = "qcom,sa8775p-qce", "qcom,qce";
+-			compatible = "qcom,qcs8300-qce", "qcom,qce";
 -			reg = <0x0 0x01dfa000 0x0 0x6000>;
 -			dmas = <&cryptobam 4>, <&cryptobam 5>;
 -			dma-names = "rx", "tx";
 -			iommus = <&apps_smmu 0x480 0x00>,
 -				 <&apps_smmu 0x481 0x00>;
--			interconnects = <&aggre2_noc MASTER_CRYPTO_CORE0 0 &mc_virt SLAVE_EBI1 0>;
+-			interconnects = <&aggre2_noc MASTER_CRYPTO_CORE0 QCOM_ICC_TAG_ALWAYS
+-					 &mc_virt SLAVE_EBI1 QCOM_ICC_TAG_ALWAYS>;
 -			interconnect-names = "memory";
 -		};
 -
- 		stm: stm@4002000 {
- 			compatible = "arm,coresight-stm", "arm,primecell";
- 			reg = <0x0 0x4002000 0x0 0x1000>,
+ 		ice: crypto@1d88000 {
+ 			compatible = "qcom,qcs8300-inline-crypto-engine",
+ 				     "qcom,inline-crypto-engine";
 -- 
 2.39.5
 
