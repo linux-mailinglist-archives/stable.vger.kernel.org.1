@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-153601-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153604-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A89F8ADD551
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:19:32 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id DE647ADD54D
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:19:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BB007407263
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:10:57 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CBFCA1947BAF
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:11:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A79E2DFF17;
-	Tue, 17 Jun 2025 16:08:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6EA8E2E92D7;
+	Tue, 17 Jun 2025 16:08:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MBnKnAFX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sDNICz7s"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1727A1A9B48;
-	Tue, 17 Jun 2025 16:08:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C58121018A;
+	Tue, 17 Jun 2025 16:08:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750176489; cv=none; b=VvtODh3WPXELnZJyfBC/KLE6QHghmwoYORStmg3prSgA7O7XvMDjhU7gAg28q/gG4eqjHVM1nup5Dmi2y/Dj0BTHHvcOjPAKulSWjyzg4btGPFvLsNJ4P70JPMV/4ou3UNMDVRxQhHno9sDXoajutCffF8AUreitS8BCA2rHtic=
+	t=1750176499; cv=none; b=O4yLnjx8SaVceRqKN2rNlqkgnL/ZBGyGSvHh/qmFEHHQexD98ch8fCUOUqo1BQUMQBUoDnTTBUt5B3R0RF5HM36VLjlyr6d8IFSI3A0elUv5bcMqEBRpzvvtzOJHMktEUyDB5sP5HEPxpPmnc5bNvlc1CYZ75PaCzFTgVJaUcz4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750176489; c=relaxed/simple;
-	bh=gdPiSNv4ssWZ8AEE4KoC365of7PLTryrDoJu2WqEyBk=;
+	s=arc-20240116; t=1750176499; c=relaxed/simple;
+	bh=zNjKFpfFzVJjeSIyJYTPg6K1nxd2JbU2lN7qGTmZUSA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=I+SCZ6TDiOTKufkte1ji84pab7mnbCPTa+e+/7Z3nIQnVXUHYFzRBUOC9qIFKSVfVojhDNYvaX18AboJLepVISrudYzcVsP/oWTqWvCD+1QRekh0fBMshaqFRmm44uOSc6TrbARYxZ+UIbCBdgsajMQtADSF6gcIhbvyo65DNg0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MBnKnAFX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82A7FC4CEE3;
-	Tue, 17 Jun 2025 16:08:08 +0000 (UTC)
+	 MIME-Version; b=aaZEWrkTyDTs0wx0aHitJEPncUq3uW1ZNPAGz72/nbYn0bcXc+SAGeH4wJdoAR7VfVfgP/NcseGEb1nq8jVh5Cfkc5Ovw2qRJHwyoh0/Z1NRdSOwWhR/xG/lqerKdEHl5fJkqhcPG9sRnBKGwZKQ0APczsGdSbKjyDCaH0utqjs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sDNICz7s; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5203DC4CEE7;
+	Tue, 17 Jun 2025 16:08:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750176489;
-	bh=gdPiSNv4ssWZ8AEE4KoC365of7PLTryrDoJu2WqEyBk=;
+	s=korg; t=1750176498;
+	bh=zNjKFpfFzVJjeSIyJYTPg6K1nxd2JbU2lN7qGTmZUSA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MBnKnAFXieVkwNQSuVBZxT2Q8pySWiZazIaSpg2hxsLrQwSDUaiVAD3EH1CcrGFY2
-	 qIS3mGQxFFadrA32S33k9FWE92CRzlHMGPDsgcK5B9J/xzGE4tXbkMMg60HmIOHGOy
-	 i0P6Ti40wrpKSPV4b0/1FdBvWjMboJaIGJ3HKg5g=
+	b=sDNICz7sLysD/dUZb+VI4DBwdiJEMB0QNYLN6by2fYxUKj+8NmMLf808ZZfnwowzr
+	 31AYhE9K0ZDaPzSW4QQjmjrXIiL1+SNSwgth5IDc3rMbHaV1Q0RRqpU2dp/zwiEX0f
+	 ClJCU4/OXeCDIh/E9KIuLDzOOXXioOYhvf7Sc4qI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -47,9 +47,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Nikolay Aleksandrov <razor@blackwall.org>,
 	Steffen Klassert <steffen.klassert@secunet.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 194/780] net/mlx5: Avoid using xso.real_dev unnecessarily
-Date: Tue, 17 Jun 2025 17:18:22 +0200
-Message-ID: <20250617152459.376198767@linuxfoundation.org>
+Subject: [PATCH 6.15 195/780] xfrm: Use xdo.dev instead of xdo.real_dev
+Date: Tue, 17 Jun 2025 17:18:23 +0200
+Message-ID: <20250617152459.416924012@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
 References: <20250617152451.485330293@linuxfoundation.org>
@@ -70,24 +70,11 @@ Content-Transfer-Encoding: 8bit
 
 From: Cosmin Ratiu <cratiu@nvidia.com>
 
-[ Upstream commit d79444e8c3d40b11f5e155e5591d53bd1e512e1f ]
+[ Upstream commit 25ac138f58e7d5c8bffa31e8891418d2819180c4 ]
 
-xso.real_dev is the active device of an offloaded xfrm state and is
-managed by bonding. As such, it's subject to change when states are
-migrated to a new device. Using it in places other than
-offloading/unoffloading the states is risky.
-
-This commit saves the device into the driver-specific struct
-mlx5e_ipsec_sa_entry and switches mlx5e_ipsec_init_macs() and
-mlx5e_ipsec_netevent_event() to make use of it.
-
-Additionally, mlx5e_xfrm_update_stats() used xso.real_dev to validate
-that correct net locks are held. But in a bonding config, the net of the
-master device is the same as the underlying devices, and the net is
-already a local var, so use that instead.
-
-The only remaining references to xso.real_dev are now in the
-.xdo_dev_state_add() / .xdo_dev_state_delete() path.
+The policy offload struct was reused from the state offload and
+real_dev was copied from dev, but it was never set to anything else.
+Simplify the code by always using xdo.dev for policies.
 
 Signed-off-by: Cosmin Ratiu <cratiu@nvidia.com>
 Reviewed-by: Leon Romanovsky <leonro@nvidia.com>
@@ -96,86 +83,64 @@ Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
 Stable-dep-of: fd4e41ebf66c ("bonding: Mark active offloaded xfrm_states")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../ethernet/mellanox/mlx5/core/en_accel/ipsec.c | 16 +++++-----------
- .../ethernet/mellanox/mlx5/core/en_accel/ipsec.h |  1 +
- 2 files changed, 6 insertions(+), 11 deletions(-)
+ drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec.c | 2 +-
+ net/xfrm/xfrm_device.c                                   | 2 --
+ net/xfrm/xfrm_state.c                                    | 2 --
+ 3 files changed, 1 insertion(+), 5 deletions(-)
 
 diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec.c b/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec.c
-index 2dd842aac6fc4..626e525c0f0d7 100644
+index 626e525c0f0d7..0dfbbe21936f3 100644
 --- a/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec.c
 +++ b/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec.c
-@@ -259,8 +259,7 @@ static void mlx5e_ipsec_init_macs(struct mlx5e_ipsec_sa_entry *sa_entry,
- 				  struct mlx5_accel_esp_xfrm_attrs *attrs)
+@@ -1164,7 +1164,7 @@ mlx5e_ipsec_build_accel_pol_attrs(struct mlx5e_ipsec_pol_entry *pol_entry,
+ static int mlx5e_xfrm_add_policy(struct xfrm_policy *x,
+ 				 struct netlink_ext_ack *extack)
  {
- 	struct mlx5_core_dev *mdev = mlx5e_ipsec_sa2dev(sa_entry);
--	struct xfrm_state *x = sa_entry->x;
--	struct net_device *netdev;
-+	struct net_device *netdev = sa_entry->dev;
- 	struct neighbour *n;
- 	u8 addr[ETH_ALEN];
- 	const void *pkey;
-@@ -270,8 +269,6 @@ static void mlx5e_ipsec_init_macs(struct mlx5e_ipsec_sa_entry *sa_entry,
- 	    attrs->type != XFRM_DEV_OFFLOAD_PACKET)
- 		return;
+-	struct net_device *netdev = x->xdo.real_dev;
++	struct net_device *netdev = x->xdo.dev;
+ 	struct mlx5e_ipsec_pol_entry *pol_entry;
+ 	struct mlx5e_priv *priv;
+ 	int err;
+diff --git a/net/xfrm/xfrm_device.c b/net/xfrm/xfrm_device.c
+index d62f76161d83e..4f4165ff738d2 100644
+--- a/net/xfrm/xfrm_device.c
++++ b/net/xfrm/xfrm_device.c
+@@ -378,7 +378,6 @@ int xfrm_dev_policy_add(struct net *net, struct xfrm_policy *xp,
  
--	netdev = x->xso.real_dev;
--
- 	mlx5_query_mac_address(mdev, addr);
- 	switch (attrs->dir) {
- 	case XFRM_DEV_OFFLOAD_IN:
-@@ -713,6 +710,7 @@ static int mlx5e_xfrm_add_state(struct xfrm_state *x,
- 		return -ENOMEM;
- 
- 	sa_entry->x = x;
-+	sa_entry->dev = netdev;
- 	sa_entry->ipsec = ipsec;
- 	/* Check if this SA is originated from acquire flow temporary SA */
- 	if (x->xso.flags & XFRM_DEV_OFFLOAD_FLAG_ACQ)
-@@ -855,8 +853,6 @@ static int mlx5e_ipsec_netevent_event(struct notifier_block *nb,
- 	struct mlx5e_ipsec_sa_entry *sa_entry;
- 	struct mlx5e_ipsec *ipsec;
- 	struct neighbour *n = ptr;
--	struct net_device *netdev;
--	struct xfrm_state *x;
- 	unsigned long idx;
- 
- 	if (event != NETEVENT_NEIGH_UPDATE || !(n->nud_state & NUD_VALID))
-@@ -876,11 +872,9 @@ static int mlx5e_ipsec_netevent_event(struct notifier_block *nb,
- 				continue;
- 		}
- 
--		x = sa_entry->x;
--		netdev = x->xso.real_dev;
- 		data = sa_entry->work->data;
- 
--		neigh_ha_snapshot(data->addr, n, netdev);
-+		neigh_ha_snapshot(data->addr, n, sa_entry->dev);
- 		queue_work(ipsec->wq, &sa_entry->work->work);
- 	}
- 
-@@ -996,8 +990,8 @@ static void mlx5e_xfrm_update_stats(struct xfrm_state *x)
- 	size_t headers;
- 
- 	lockdep_assert(lockdep_is_held(&x->lock) ||
--		       lockdep_is_held(&dev_net(x->xso.real_dev)->xfrm.xfrm_cfg_mutex) ||
--		       lockdep_is_held(&dev_net(x->xso.real_dev)->xfrm.xfrm_state_lock));
-+		       lockdep_is_held(&net->xfrm.xfrm_cfg_mutex) ||
-+		       lockdep_is_held(&net->xfrm.xfrm_state_lock));
- 
- 	if (x->xso.flags & XFRM_DEV_OFFLOAD_FLAG_ACQ)
- 		return;
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec.h b/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec.h
-index a63c2289f8af9..ffcd0cdeb7754 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec.h
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec.h
-@@ -274,6 +274,7 @@ struct mlx5e_ipsec_limits {
- struct mlx5e_ipsec_sa_entry {
- 	struct mlx5e_ipsec_esn_state esn_state;
- 	struct xfrm_state *x;
-+	struct net_device *dev;
- 	struct mlx5e_ipsec *ipsec;
- 	struct mlx5_accel_esp_xfrm_attrs attrs;
- 	void (*set_iv_op)(struct sk_buff *skb, struct xfrm_state *x,
+ 	xdo->dev = dev;
+ 	netdev_tracker_alloc(dev, &xdo->dev_tracker, GFP_ATOMIC);
+-	xdo->real_dev = dev;
+ 	xdo->type = XFRM_DEV_OFFLOAD_PACKET;
+ 	switch (dir) {
+ 	case XFRM_POLICY_IN:
+@@ -400,7 +399,6 @@ int xfrm_dev_policy_add(struct net *net, struct xfrm_policy *xp,
+ 	err = dev->xfrmdev_ops->xdo_dev_policy_add(xp, extack);
+ 	if (err) {
+ 		xdo->dev = NULL;
+-		xdo->real_dev = NULL;
+ 		xdo->type = XFRM_DEV_OFFLOAD_UNSPECIFIED;
+ 		xdo->dir = 0;
+ 		netdev_put(dev, &xdo->dev_tracker);
+diff --git a/net/xfrm/xfrm_state.c b/net/xfrm/xfrm_state.c
+index 07fe8e5daa32b..a98e193b55a3e 100644
+--- a/net/xfrm/xfrm_state.c
++++ b/net/xfrm/xfrm_state.c
+@@ -1552,7 +1552,6 @@ xfrm_state_find(const xfrm_address_t *daddr, const xfrm_address_t *saddr,
+ 			xso->type = XFRM_DEV_OFFLOAD_PACKET;
+ 			xso->dir = xdo->dir;
+ 			xso->dev = xdo->dev;
+-			xso->real_dev = xdo->real_dev;
+ 			xso->flags = XFRM_DEV_OFFLOAD_FLAG_ACQ;
+ 			netdev_hold(xso->dev, &xso->dev_tracker, GFP_ATOMIC);
+ 			error = xso->dev->xfrmdev_ops->xdo_dev_state_add(x, NULL);
+@@ -1560,7 +1559,6 @@ xfrm_state_find(const xfrm_address_t *daddr, const xfrm_address_t *saddr,
+ 				xso->dir = 0;
+ 				netdev_put(xso->dev, &xso->dev_tracker);
+ 				xso->dev = NULL;
+-				xso->real_dev = NULL;
+ 				xso->type = XFRM_DEV_OFFLOAD_UNSPECIFIED;
+ 				x->km.state = XFRM_STATE_DEAD;
+ 				to_put = x;
 -- 
 2.39.5
 
