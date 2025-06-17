@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-153610-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153550-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC675ADD557
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:19:54 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9175CADD4FE
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:15:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7EA2616AD53
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:12:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4F0C41942AF5
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:08:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 359812ECEAD;
-	Tue, 17 Jun 2025 16:08:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59FD020A5EA;
+	Tue, 17 Jun 2025 16:05:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FM3qRAn2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o1GuNw5s"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEF902ECEA8;
-	Tue, 17 Jun 2025 16:08:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1560118E025;
+	Tue, 17 Jun 2025 16:05:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750176519; cv=none; b=PPrxV3cMR+yxQuTaZkmdJ4oDDDqCjpY4cvsmHUkjuiRBEDH/UWlLqGXf298svjTU3KD9K3P1b3/ruCC8RFlhXb79ruGlDbiy+H4ARPV5mLPcdW6FWRuznWmf5brYNsRZCxpXt8ilasGEjon3Ip8GaQugARnXvB4UX15k2M/7RX0=
+	t=1750176325; cv=none; b=e6PJ2I9mqEmXLHOxfq7pnNQ2pIJm0P64KwPZeqOVyixzXFbIlAPrrkGHSjxBGCUOxlnwMRDR0Nt1Sfn59c7AgecsZv2Ql60j/tq7rkb1/CXrERnfTjiDgNjzJZ5AlrtRu/8fbRVR0FLQaGG7RoMmfo0MWpdUddfkMn1HFg1Ci3M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750176519; c=relaxed/simple;
-	bh=EN2QTMnyju9agqU/1POgWgZH2SJJmUyv+iRJCyP4c9k=;
+	s=arc-20240116; t=1750176325; c=relaxed/simple;
+	bh=rk+3b9lWcAwdnOc8Z2Z+WSM/M3fxXp4R5FsUmjVo0XM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Zsvv7sWiI7nnbEhqZwtw8MVMhtbwsTNgNmhf/42spL3KUByWJ6sm7XQa8Qr8M684Fl6MMVqxn4i/mEzAfb9PDOb97c3Qv+n9d2iLapeIAI53SzZKYMtUTaEP1oaOuFnpBEUr5AOh6YUl0qe8N1FZESAN3xRmLnEcECdttA5Yt6M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FM3qRAn2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9FDDC4CEE7;
-	Tue, 17 Jun 2025 16:08:37 +0000 (UTC)
+	 MIME-Version; b=Q79F58Z1m98LJTmeLOEPRTiibVLQAlwUwrgvcCG5gJxFD4MQ2SSNzHGgCp0/qfOjpP5MLjfKO4ClPr/J5hWZaP9FBr1Maks+eL9f9xIqj/cWPYw7EwEm/Jk/YApyHssef8PybDB5nbiP3DlaoZk2QJitovAvpy8ij9BhidLGUHg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o1GuNw5s; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F2ECC4CEE3;
+	Tue, 17 Jun 2025 16:05:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750176518;
-	bh=EN2QTMnyju9agqU/1POgWgZH2SJJmUyv+iRJCyP4c9k=;
+	s=korg; t=1750176324;
+	bh=rk+3b9lWcAwdnOc8Z2Z+WSM/M3fxXp4R5FsUmjVo0XM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FM3qRAn2oBo4o/6BfwpXfZoRaO/M1EfJdWupzZY99T5bniwMPE8+6YgluNyLoISZ+
-	 pWNH7sKazRJ8D1lRV0I0rhLLiPETec4uOuV2NS774s+NFKZulddn30BkAwq3NBBci/
-	 Ygm80sdH3gddYOyqgIi6GVYU30xmxUexFSZpjsfM=
+	b=o1GuNw5s9JtGoJT//qCnVGMzf49F8eNpBUxxKxZ/l6SaDjpfQ0fyuLyTxuwh0PZMH
+	 8pRZmxQ3wt/Pu5APggNUwjauZ+OtsJd4sn7CmbebAhPUl08843lM9KkVhespnthq2o
+	 bS/4xdClcRjdyymgaSZ6D7lYjkriYvQqNqJXQ5OE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daeho Jeong <daehojeong@google.com>,
-	Chao Yu <chao@kernel.org>,
-	Jaegeuk Kim <jaegeuk@kernel.org>,
+	Daniel Golle <daniel@makrotopia.org>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Christian Marangi <ansuelsmth@gmail.com>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 174/780] f2fs: zone: fix to avoid inconsistence in between SIT and SSA
-Date: Tue, 17 Jun 2025 17:18:02 +0200
-Message-ID: <20250617152458.568835094@linuxfoundation.org>
+Subject: [PATCH 6.15 175/780] net: phy: mediatek: permit to compile test GE SOC PHY driver
+Date: Tue, 17 Jun 2025 17:18:03 +0200
+Message-ID: <20250617152458.607006437@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
 References: <20250617152451.485330293@linuxfoundation.org>
@@ -67,73 +69,45 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Chao Yu <chao@kernel.org>
+From: Christian Marangi <ansuelsmth@gmail.com>
 
-[ Upstream commit 773704c1ef96a8b70d0d186ab725f50548de82c4 ]
+[ Upstream commit e5566162af8b9690e096d2e6089e4ed955a0d13d ]
 
-w/ below testcase, it will cause inconsistence in between SIT and SSA.
+When commit 462a3daad679 ("net: phy: mediatek: fix compile-test
+dependencies") fixed the dependency, it should have also introduced
+an or on COMPILE_TEST to permit this driver to be compile-tested even if
+NVMEM_MTK_EFUSE wasn't selected. The driver makes use of NVMEM API that
+are always compiled (return error) so the driver can actually be
+compiled even without that config.
 
-create_null_blk 512 2 1024 1024
-mkfs.f2fs -m /dev/nullb0
-mount /dev/nullb0 /mnt/f2fs/
-touch /mnt/f2fs/file
-f2fs_io pinfile set /mnt/f2fs/file
-fallocate -l 4GiB /mnt/f2fs/file
+Fix and simplify the dependency condition of this kernel config.
 
-F2FS-fs (nullb0): Inconsistent segment (0) type [1, 0] in SSA and SIT
-CPU: 5 UID: 0 PID: 2398 Comm: fallocate Tainted: G           O       6.13.0-rc1 #84
-Tainted: [O]=OOT_MODULE
-Hardware name: innotek GmbH VirtualBox/VirtualBox, BIOS VirtualBox 12/01/2006
-Call Trace:
- <TASK>
- dump_stack_lvl+0xb3/0xd0
- dump_stack+0x14/0x20
- f2fs_handle_critical_error+0x18c/0x220 [f2fs]
- f2fs_stop_checkpoint+0x38/0x50 [f2fs]
- do_garbage_collect+0x674/0x6e0 [f2fs]
- f2fs_gc_range+0x12b/0x230 [f2fs]
- f2fs_allocate_pinning_section+0x5c/0x150 [f2fs]
- f2fs_expand_inode_data+0x1cc/0x3c0 [f2fs]
- f2fs_fallocate+0x3c3/0x410 [f2fs]
- vfs_fallocate+0x15f/0x4b0
- __x64_sys_fallocate+0x4a/0x80
- x64_sys_call+0x15e8/0x1b80
- do_syscall_64+0x68/0x130
- entry_SYSCALL_64_after_hwframe+0x67/0x6f
-RIP: 0033:0x7f9dba5197ca
-F2FS-fs (nullb0): Stopped filesystem due to reason: 4
-
-The reason is f2fs_gc_range() may try to migrate block in curseg, however,
-its SSA block is not uptodate due to the last summary block data is still
-in cache of curseg.
-
-In this patch, we add a condition in f2fs_gc_range() to check whether
-section is opened or not, and skip block migration for opened section.
-
-Fixes: 9703d69d9d15 ("f2fs: support file pinning for zoned devices")
-Reviewed-by: Daeho Jeong <daehojeong@google.com>
-Cc: Daeho Jeong <daehojeong@google.com>
-Signed-off-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+Fixes: 462a3daad679 ("net: phy: mediatek: fix compile-test dependencies")
+Acked-by: Daniel Golle <daniel@makrotopia.org>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Signed-off-by: Christian Marangi <ansuelsmth@gmail.com>
+Acked-by: Arnd Bergmann <arnd@arndb.de>
+Link: https://patch.msgid.link/20250410100410.348-1-ansuelsmth@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/f2fs/gc.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/net/phy/mediatek/Kconfig | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/fs/f2fs/gc.c b/fs/f2fs/gc.c
-index 2b8f9239bede7..8b5a55b72264d 100644
---- a/fs/f2fs/gc.c
-+++ b/fs/f2fs/gc.c
-@@ -2066,6 +2066,9 @@ int f2fs_gc_range(struct f2fs_sb_info *sbi,
- 			.iroot = RADIX_TREE_INIT(gc_list.iroot, GFP_NOFS),
- 		};
+diff --git a/drivers/net/phy/mediatek/Kconfig b/drivers/net/phy/mediatek/Kconfig
+index 2a8ac5aed0f89..6a4c2b328c418 100644
+--- a/drivers/net/phy/mediatek/Kconfig
++++ b/drivers/net/phy/mediatek/Kconfig
+@@ -15,8 +15,7 @@ config MEDIATEK_GE_PHY
  
-+		if (IS_CURSEC(sbi, GET_SEC_FROM_SEG(sbi, segno)))
-+			continue;
-+
- 		do_garbage_collect(sbi, segno, &gc_list, FG_GC, true, false);
- 		put_gc_inode(&gc_list);
- 
+ config MEDIATEK_GE_SOC_PHY
+ 	tristate "MediaTek SoC Ethernet PHYs"
+-	depends on (ARM64 && ARCH_MEDIATEK) || COMPILE_TEST
+-	depends on NVMEM_MTK_EFUSE
++	depends on (ARM64 && ARCH_MEDIATEK && NVMEM_MTK_EFUSE) || COMPILE_TEST
+ 	select MTK_NET_PHYLIB
+ 	help
+ 	  Supports MediaTek SoC built-in Gigabit Ethernet PHYs.
 -- 
 2.39.5
 
