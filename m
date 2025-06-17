@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-154484-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153635-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 87836ADDA08
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 19:12:35 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 740B3ADD58E
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:22:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2C6224A80BC
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:56:05 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 01F2540465D
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:14:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64B4E2FA630;
-	Tue, 17 Jun 2025 16:55:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED6C92EF291;
+	Tue, 17 Jun 2025 16:09:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GZ2u82Ap"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VHdlqMbo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 221A82FA624;
-	Tue, 17 Jun 2025 16:55:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A92C82DFF14;
+	Tue, 17 Jun 2025 16:09:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750179355; cv=none; b=uKFV0eNus0ra25y8u+V376m14Bt5Mjigca+QlVqRJPJY0wYaMM1QsDSi+C8KOxlP/IZElTe4kTHD7QhtB02XpnyG7PiETjncs/gtEHfoAqi+eVRrMmrlYm8z+EALBKcEl02so61kL6tpewva/G8Jo6J+NaaZXUO3C8lEcTQD350=
+	t=1750176597; cv=none; b=psa6Li2Esj16qE4g3fnQUPQlGOiNeXAXy4+ziTUwjMyQp2TcLvh6mNJabb/6K/5wuEl+vCsQLcodTL57oY8bFrHPnEodMpoU+D+UMcJJiiWYtv59mmXhWGDDz+bI3B/EDf2tLRqk2fwXysHr7+MG2xXPGBm4+oKuD0aXzFIQ6KQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750179355; c=relaxed/simple;
-	bh=wUeSev2eFUkS0OkrCuN4XxiD4d08gPGamXvUlSDjeaw=;
+	s=arc-20240116; t=1750176597; c=relaxed/simple;
+	bh=CSO9S61RN2fFJTcpq8v6NI/ZxY3diLU3mzC2d6JItys=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=U2iuFjd7lmcWEgrA4QlKkWVjB3alpksl5oJKNZ1LFzRVPH9QkcoM/9oPtVqgaqOchP+FXR6O33XEElEQoa9fRMxmUy2YUdsYCPo26CgMfS5A130YSR+QZkOyetk7Qc4Vo5zx+djaGMByGKFkfk+msftS2rGehKmeO+9ig2ap8I8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GZ2u82Ap; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E5B0C4CEE3;
-	Tue, 17 Jun 2025 16:55:54 +0000 (UTC)
+	 MIME-Version; b=TraKWXPlMFb91MSGcafta3MKNrQmpQ3OWAHq7QZOfvUoX8m9gVakKeB92N5lNrQ4PASgrsDlIxpbENf4/UU5qc9KtbOfjLAeRtPaZxO/sVGtVzligJPVfr2M7o6dFpIMEijujLE5lfGhx9zDMMZnxAc1yXLQm5Lh2mqhJaqdDRQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VHdlqMbo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E60BC4CEE3;
+	Tue, 17 Jun 2025 16:09:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750179355;
-	bh=wUeSev2eFUkS0OkrCuN4XxiD4d08gPGamXvUlSDjeaw=;
+	s=korg; t=1750176597;
+	bh=CSO9S61RN2fFJTcpq8v6NI/ZxY3diLU3mzC2d6JItys=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GZ2u82ApMAcTVm5pIvNH7Ls/gbwNm/E8e1vfoNcn6LLednhkwvAbmmyUkCsy002UL
-	 5xaYRqX0DkQjPgSgZSNFtnehyGBQ7Z4BklV3UfHKFuMd9fNLfkm+4iuDqrogmwgB1N
-	 aHwSvk0iher673j58ZotY+oWvzvmduy69RzdqNsQ=
+	b=VHdlqMboCxAtUQatfbw0mPFA0mnjiXDVqN1+XSCEIOKwyGJ27P3mcHAnD/+MKXMZ5
+	 fUjPXm9SB2MAw4fVrtEysnmwdjtIFyQQ6e2U8xbggdxL9ep0aFplQQnL+s4vuNHRXK
+	 XdYu19ePzbehWHr/1OkO66XuOiJS/1mjV6i/D/Ic=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jakub Raczynski <j.raczynski@samsung.com>,
-	Wenjing Shan <wenjing.shan@samsung.com>,
-	"David S. Miller" <davem@davemloft.net>,
+	Caleb Connolly <caleb.connolly@linaro.org>,
+	Loic Poulain <loic.poulain@oss.qualcomm.com>,
+	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 703/780] net/mdiobus: Fix potential out-of-bounds read/write access
+Subject: [PATCH 6.6 296/356] ath10k: snoc: fix unbalanced IRQ enable in crash recovery
 Date: Tue, 17 Jun 2025 17:26:51 +0200
-Message-ID: <20250617152520.126469435@linuxfoundation.org>
+Message-ID: <20250617152350.087643471@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
-References: <20250617152451.485330293@linuxfoundation.org>
+In-Reply-To: <20250617152338.212798615@linuxfoundation.org>
+References: <20250617152338.212798615@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,60 +63,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jakub Raczynski <j.raczynski@samsung.com>
+From: Caleb Connolly <caleb.connolly@linaro.org>
 
-[ Upstream commit 0e629694126ca388916f059453a1c36adde219c4 ]
+[ Upstream commit 1650d32b92b01db03a1a95d69ee74fcbc34d4b00 ]
 
-When using publicly available tools like 'mdio-tools' to read/write data
-from/to network interface and its PHY via mdiobus, there is no verification of
-parameters passed to the ioctl and it accepts any mdio address.
-Currently there is support for 32 addresses in kernel via PHY_MAX_ADDR define,
-but it is possible to pass higher value than that via ioctl.
-While read/write operation should generally fail in this case,
-mdiobus provides stats array, where wrong address may allow out-of-bounds
-read/write.
+In ath10k_snoc_hif_stop() we skip disabling the IRQs in the crash
+recovery flow, but we still unconditionally call enable again in
+ath10k_snoc_hif_start().
 
-Fix that by adding address verification before read/write operation.
-While this excludes this access from any statistics, it improves security of
-read/write operation.
+We can't check the ATH10K_FLAG_CRASH_FLUSH bit since it is cleared
+before hif_start() is called, so instead check the
+ATH10K_SNOC_FLAG_RECOVERY flag and skip enabling the IRQs during crash
+recovery.
 
-Fixes: 080bb352fad00 ("net: phy: Maintain MDIO device and bus statistics")
-Signed-off-by: Jakub Raczynski <j.raczynski@samsung.com>
-Reported-by: Wenjing Shan <wenjing.shan@samsung.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+This fixes unbalanced IRQ enable splats that happen after recovering from
+a crash.
+
+Fixes: 0e622f67e041 ("ath10k: add support for WCN3990 firmware crash recovery")
+Signed-off-by: Caleb Connolly <caleb.connolly@linaro.org>
+Tested-by: Loic Poulain <loic.poulain@oss.qualcomm.com>
+Link: https://patch.msgid.link/20250318205043.1043148-1-caleb.connolly@linaro.org
+Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/phy/mdio_bus.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/net/wireless/ath/ath10k/snoc.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/phy/mdio_bus.c b/drivers/net/phy/mdio_bus.c
-index ede596c1a69d1..adb17ec937151 100644
---- a/drivers/net/phy/mdio_bus.c
-+++ b/drivers/net/phy/mdio_bus.c
-@@ -903,6 +903,9 @@ int __mdiobus_read(struct mii_bus *bus, int addr, u32 regnum)
+diff --git a/drivers/net/wireless/ath/ath10k/snoc.c b/drivers/net/wireless/ath/ath10k/snoc.c
+index 2c39bad7ebfb9..1d06d4125992d 100644
+--- a/drivers/net/wireless/ath/ath10k/snoc.c
++++ b/drivers/net/wireless/ath/ath10k/snoc.c
+@@ -937,7 +937,9 @@ static int ath10k_snoc_hif_start(struct ath10k *ar)
  
- 	lockdep_assert_held_once(&bus->mdio_lock);
+ 	dev_set_threaded(&ar->napi_dev, true);
+ 	ath10k_core_napi_enable(ar);
+-	ath10k_snoc_irq_enable(ar);
++	/* IRQs are left enabled when we restart due to a firmware crash */
++	if (!test_bit(ATH10K_SNOC_FLAG_RECOVERY, &ar_snoc->flags))
++		ath10k_snoc_irq_enable(ar);
+ 	ath10k_snoc_rx_post(ar);
  
-+	if (addr >= PHY_MAX_ADDR)
-+		return -ENXIO;
-+
- 	if (bus->read)
- 		retval = bus->read(bus, addr, regnum);
- 	else
-@@ -932,6 +935,9 @@ int __mdiobus_write(struct mii_bus *bus, int addr, u32 regnum, u16 val)
- 
- 	lockdep_assert_held_once(&bus->mdio_lock);
- 
-+	if (addr >= PHY_MAX_ADDR)
-+		return -ENXIO;
-+
- 	if (bus->write)
- 		err = bus->write(bus, addr, regnum, val);
- 	else
+ 	clear_bit(ATH10K_SNOC_FLAG_RECOVERY, &ar_snoc->flags);
 -- 
 2.39.5
 
