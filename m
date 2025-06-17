@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-154406-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153985-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 78E54ADD988
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 19:07:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D1D4CADD830
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:52:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 81FF019E37A3
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:53:31 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E33F019E3939
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:34:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D055285050;
-	Tue, 17 Jun 2025 16:51:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30014285072;
+	Tue, 17 Jun 2025 16:28:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y168APuW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XMQx8LM6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28B972FA630;
-	Tue, 17 Jun 2025 16:51:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7D35239E85;
+	Tue, 17 Jun 2025 16:28:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750179093; cv=none; b=MLzR8PmJDOQcwfw2P5vjQ3FRy5V2DqXNKBtOMe9dlrnAzaxaYo8fUk+3cTUZiAIAQIRqhkPOrXw3NpRkHU6sDQ2n6xFDezn2y23PwKOu9+ohoNSqPqGDIvYD9hyWlWaVODZyHpcWOjTPOazapy7CE7sodUTl5gZ3SYyq8fXSMkE=
+	t=1750177733; cv=none; b=uwNi7K5sqvpH1bR8gIR1orHSXxvhmWquUcWDGQMoj5ohoL9sHJBat06WYhbeGEEkq2DhGd5mfVZMdI8EPaHKcEWhHInsCSTaxfnbUCxajhbl+ifMlOrO5Cx4ADOrv9xpeNYKmpnjMJ/i1xAY6WH+VLg6BJdDPBqQ3RKeL1V0aD4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750179093; c=relaxed/simple;
-	bh=0SUb4EEoU7nVA6xdQZY7aAGQgxHnCtopSSOlQbEJHSA=;
+	s=arc-20240116; t=1750177733; c=relaxed/simple;
+	bh=tBMVdGS8+QKkJv/gcZbcfAu3ekgAjhguwMCt8LJYJoY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=YIiejfugfOAGoeXITSThsLMbG8apl116EWMwBr8w1ON2Dd5S7VAQdUl6IAbZ1E6cWYLD4HQJP04St1pEJbyAQBCZCt7SNg8qkcAy9RwXQhektH01cHIFzByLOUGJxwVh+lkwy2XT5xDkTsU8+9CNVrHsTZJQWgJKuu+D5Dt4kno=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y168APuW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B80CC4CEE3;
-	Tue, 17 Jun 2025 16:51:32 +0000 (UTC)
+	 MIME-Version:Content-Type; b=hX85flvitAAyfitxape3pGOaQno4ZjKj+3t1VkeMrxXG5Cw26kUW+HBzWJ3nSmCdvBP/+w8ZXWaIv9aZ/VNfQL6kUjUMnTt6Gi/bWM0+PzcNCoOSWxkZ4nTePxx8p2dDUlw7Aam1cgDTRFNDsDPQCfDyXKWCXp8pM99lr30O5RY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XMQx8LM6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4894AC4CEF0;
+	Tue, 17 Jun 2025 16:28:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750179093;
-	bh=0SUb4EEoU7nVA6xdQZY7aAGQgxHnCtopSSOlQbEJHSA=;
+	s=korg; t=1750177733;
+	bh=tBMVdGS8+QKkJv/gcZbcfAu3ekgAjhguwMCt8LJYJoY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Y168APuWh+smjf5bT2JH4aQwG1q11f+8piKAqicKiiugskc33ZH/iC65c44/+v1JA
-	 lSKQLMUAL125tjN3S6BdKNh9c94YWNFb1MZKf5Aj8T0FvkbSFNL9KbZhyMrsIc+1iN
-	 zyLN6XbeSAChQ7HvIUjC+kx2vAGvNSp5Yk01ZUOk=
+	b=XMQx8LM6kEaRWHxyYzY6u8Wvrs64ArdYB3JFdObqGvF4a9quJMXn7zvYNgObGxFW6
+	 PNaNWFUSD6icVjcpgsQzsQvY6AFQ0PWy4SprK8QG02Vck0jrfd0MEe3KRWb/XrP1RC
+	 xywkzL3DgkVCw4aai26EJkaI9y6ISPtTF0nZfZsg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -46,12 +46,12 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Cezary Rojewski <cezary.rojewski@intel.com>,
 	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 646/780] ASoC: Intel: avs: Verify content returned by parse_int_array()
+Subject: [PATCH 6.12 388/512] ASoC: codecs: hda: Fix RPM usage count underflow
 Date: Tue, 17 Jun 2025 17:25:54 +0200
-Message-ID: <20250617152517.791109035@linuxfoundation.org>
+Message-ID: <20250617152435.306347971@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
-References: <20250617152451.485330293@linuxfoundation.org>
+In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
+References: <20250617152419.512865572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,51 +64,59 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
 From: Cezary Rojewski <cezary.rojewski@intel.com>
 
-[ Upstream commit 93e246b6769bdacb09cfff4ea0f00fe5ab4f0d7a ]
+[ Upstream commit ff0045de4ee0288dec683690f66f2f369b7d3466 ]
 
-The first element of the returned array stores its length. If it is 0,
-any manipulation beyond the element at index 0 ends with null-ptr-deref.
+RPM manipulation in hda_codec_probe_complete()'s error path is
+superfluous and leads to RPM usage count underflow if the
+build-controls operation fails.
 
-Fixes: 5a565ba23abe ("ASoC: Intel: avs: Probing and firmware tracing over debugfs")
+hda_codec_probe_complete() is called in:
+
+1) hda_codec_probe() for all non-HDMI codecs
+2) in card->late_probe() for HDMI codecs
+
+Error path for hda_codec_probe() takes care of bus' RPM already.
+For 2) if late_probe() fails, ASoC performs card cleanup what
+triggers hda_codec_remote() - same treatment is in 1).
+
+Fixes: b5df2a7dca1c ("ASoC: codecs: Add HD-Audio codec driver")
 Reviewed-by: Amadeusz Sławiński <amadeuszx.slawinski@linux.intel.com>
 Signed-off-by: Cezary Rojewski <cezary.rojewski@intel.com>
-Link: https://patch.msgid.link/20250530141025.2942936-8-cezary.rojewski@intel.com
+Link: https://patch.msgid.link/20250530141025.2942936-2-cezary.rojewski@intel.com
 Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/intel/avs/debugfs.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ sound/soc/codecs/hda.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/sound/soc/intel/avs/debugfs.c b/sound/soc/intel/avs/debugfs.c
-index 8c4edda97f757..0e826ca20619c 100644
---- a/sound/soc/intel/avs/debugfs.c
-+++ b/sound/soc/intel/avs/debugfs.c
-@@ -373,7 +373,10 @@ static ssize_t trace_control_write(struct file *file, const char __user *from, s
- 		return ret;
+diff --git a/sound/soc/codecs/hda.c b/sound/soc/codecs/hda.c
+index ddc00927313cf..dc7794c9ac44c 100644
+--- a/sound/soc/codecs/hda.c
++++ b/sound/soc/codecs/hda.c
+@@ -152,7 +152,7 @@ int hda_codec_probe_complete(struct hda_codec *codec)
+ 	ret = snd_hda_codec_build_controls(codec);
+ 	if (ret < 0) {
+ 		dev_err(&hdev->dev, "unable to create controls %d\n", ret);
+-		goto out;
++		return ret;
+ 	}
  
- 	num_elems = *array;
--	resource_mask = array[1];
-+	if (!num_elems) {
-+		ret = -EINVAL;
-+		goto free_array;
-+	}
- 
- 	/*
- 	 * Disable if just resource mask is provided - no log priority flags.
-@@ -381,6 +384,7 @@ static ssize_t trace_control_write(struct file *file, const char __user *from, s
- 	 * Enable input format:   mask, prio1, .., prioN
- 	 * Where 'N' equals number of bits set in the 'mask'.
- 	 */
-+	resource_mask = array[1];
- 	if (num_elems == 1) {
- 		ret = disable_logs(adev, resource_mask);
- 	} else {
+ 	/* Bus suspended codecs as it does not manage their pm */
+@@ -160,7 +160,7 @@ int hda_codec_probe_complete(struct hda_codec *codec)
+ 	/* rpm was forbidden in snd_hda_codec_device_new() */
+ 	snd_hda_codec_set_power_save(codec, 2000);
+ 	snd_hda_codec_register(codec);
+-out:
++
+ 	/* Complement pm_runtime_get_sync(bus) in probe */
+ 	pm_runtime_mark_last_busy(bus->dev);
+ 	pm_runtime_put_autosuspend(bus->dev);
 -- 
 2.39.5
 
