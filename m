@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-153444-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-154428-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B4ECADD494
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:11:53 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id B9F31ADD954
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 19:05:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A178B407E16
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:03:37 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D86FE1946FF3
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:54:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 83C862F2C7C;
-	Tue, 17 Jun 2025 15:59:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A644285CA4;
+	Tue, 17 Jun 2025 16:52:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tEviTx3m"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DTNpif7g"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3862C2DFF3D;
-	Tue, 17 Jun 2025 15:59:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9BCE285077;
+	Tue, 17 Jun 2025 16:52:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750175983; cv=none; b=bNn/HA8nv4yk8VI3ib+gQtyPZp1F7IOiDeWSWGzt97lUjKXmEWMK8O37JrolDuVUJs2sPMj/GHadEtgiFbjZWrAVI5+bKqslHbLrrMHtmQ7hJvMbIIzqtsosQeyqU1N3OAqoVqpMXCH/+n6EnvBo4cbN/j/iGegld7nTA2YrQn8=
+	t=1750179159; cv=none; b=CNm7rPIgoaJxyuFIdTQ0zJEhau70ynJ7yxIA9lvKjwDa9PT/vD6dgxhN3ygpjRXDHYNu+mM1ehx3uFAqeoKIKvPkF/7Y+xtzY9LA6lRdsKTkdk3KXgpyA6l78NmsZaq8Fs4QL5Ygqq+3MDTOzAae7S2ahIhsQJlT9o8D/KZqK8I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750175983; c=relaxed/simple;
-	bh=/hbD7ry40RU7O3g3by5L2x3XWrUFmJ3z+pCR/BX6H98=;
+	s=arc-20240116; t=1750179159; c=relaxed/simple;
+	bh=30+gQ6oJURlLKs6y+DUPkuH9ALnxR1tlPc1Uxc0Acnc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZTCmRm1b5PLwh4glOPHtQXzTe/kv93ZL6vyBCdkyJeBjb7880S6a98XLHjkceNsf2HuOvTdnhUazVqprP39CubNzzTa4wSUYTa1IdXhbNfdmhmJ6ghL4WzSPK5ShSJDAL8r7QnMN68OExU9ZFQQ8o/tLOvT82TqyGqz/iTltcEM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tEviTx3m; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E153C4CEF1;
-	Tue, 17 Jun 2025 15:59:42 +0000 (UTC)
+	 MIME-Version:Content-Type; b=iyblkiwovC5ZEJEWXcxs55qELTTDJyUgPQC8zTgCsi4tfG+x+r+ahoK460B2qVkcdFHGtCsSNA31a8BXP67WFGg0ekIUvfE77mhHasbLwYQAOOubSe3CnNLOehg8wm90Iwgd/1BkzAiyWg7og1kKLslA4ik2L2uKUpt8rkLyeXE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DTNpif7g; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07AA1C4CEE3;
+	Tue, 17 Jun 2025 16:52:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750175983;
-	bh=/hbD7ry40RU7O3g3by5L2x3XWrUFmJ3z+pCR/BX6H98=;
+	s=korg; t=1750179159;
+	bh=30+gQ6oJURlLKs6y+DUPkuH9ALnxR1tlPc1Uxc0Acnc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tEviTx3mnGw4dvw5OgbpVOV9qd0Huyh9DDg5IHphUh2pfeVeBJDQDnoUWr5S5zoSK
-	 UXcPJHp9KJpTy6+qjSjqp8SJMyMKZEb0AhKyjLGzTuaXV40g6sRo0Q9hnT/0qyR+s9
-	 2qmsopwEZCCXNbY6AqVHdfBXzJWZGnVtObY+HeFU=
+	b=DTNpif7gs/0vKO+C0U3IulqsGQNasWqUjDNUUEqo6dS8W5FShGhyySAcQf3MfsW4O
+	 2b/UlXBqvPdr3rYyQzVCSMtv66VtWoD9oXvyQCLOXK0VgzBSxHqULWHDJGnW4yNbvO
+	 BGl4Z/yJxFbw8zfukrrO6bwmJbO9aAtc02I66pqo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Mika Westerberg <mika.westerberg@linux.intel.com>,
+	=?UTF-8?q?Amadeusz=20S=C5=82awi=C5=84ski?= <amadeuszx.slawinski@linux.intel.com>,
+	Cezary Rojewski <cezary.rojewski@intel.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 232/356] thunderbolt: Fix a logic error in wake on connect
+Subject: [PATCH 6.15 639/780] ASoC: Intel: avs: Fix PPLCxFMT calculation
 Date: Tue, 17 Jun 2025 17:25:47 +0200
-Message-ID: <20250617152347.533077158@linuxfoundation.org>
+Message-ID: <20250617152517.497022631@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152338.212798615@linuxfoundation.org>
-References: <20250617152338.212798615@linuxfoundation.org>
+In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
+References: <20250617152451.485330293@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,55 +61,70 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mario Limonciello <mario.limonciello@amd.com>
+From: Cezary Rojewski <cezary.rojewski@intel.com>
 
-[ Upstream commit 1a760d10ded372d113a0410c42be246315bbc2ff ]
+[ Upstream commit 347c8d6db7c9d65d93ef226849b273823f54eaea ]
 
-commit a5cfc9d65879c ("thunderbolt: Add wake on connect/disconnect
-on USB4 ports") introduced a sysfs file to control wake up policy
-for a given USB4 port that defaulted to disabled.
+HDAudio transfer types utilize SDxFMT for front-end (HOST) and PPLCxFMT
+for back-end (LINK) side when setting up the stream. BE's
+substream->runtime duplicates FE runtime so switch to using BE's
+hw_params to address incorrect format values on the LINK side when FE
+and BE formats differ.
 
-However when testing commit 4bfeea6ec1c02 ("thunderbolt: Use wake
-on connect and disconnect over suspend") I found that it was working
-even without making changes to the power/wakeup file (which defaults
-to disabled). This is because of a logic error doing a bitwise or
-of the wake-on-connect flag with device_may_wakeup() which should
-have been a logical AND.
+The problem is introduced with commit d070002a20fc ("ASoC: Intel: avs:
+HDA PCM BE operations") but the code has been shuffled around since then
+so direct 'Fixes:' tag does not apply.
 
-Adjust the logic so that policy is only applied when wakeup is
-actually enabled.
-
-Fixes: a5cfc9d65879c ("thunderbolt: Add wake on connect/disconnect on USB4 ports")
-Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
-Signed-off-by: Mika Westerberg <mika.westerberg@linux.intel.com>
+Reviewed-by: Amadeusz Sławiński <amadeuszx.slawinski@linux.intel.com>
+Signed-off-by: Cezary Rojewski <cezary.rojewski@intel.com>
+Link: https://patch.msgid.link/20250530141025.2942936-4-cezary.rojewski@intel.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/thunderbolt/usb4.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ sound/soc/intel/avs/pcm.c | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/thunderbolt/usb4.c b/drivers/thunderbolt/usb4.c
-index 8db9bd32f4738..e445516290f91 100644
---- a/drivers/thunderbolt/usb4.c
-+++ b/drivers/thunderbolt/usb4.c
-@@ -442,10 +442,10 @@ int usb4_switch_set_wake(struct tb_switch *sw, unsigned int flags)
- 			bool configured = val & PORT_CS_19_PC;
- 			usb4 = port->usb4;
+diff --git a/sound/soc/intel/avs/pcm.c b/sound/soc/intel/avs/pcm.c
+index 6116465c8f9b1..fc51fa1fd40d2 100644
+--- a/sound/soc/intel/avs/pcm.c
++++ b/sound/soc/intel/avs/pcm.c
+@@ -449,9 +449,10 @@ static int avs_dai_hda_be_hw_free(struct snd_pcm_substream *substream, struct sn
  
--			if (((flags & TB_WAKE_ON_CONNECT) |
-+			if (((flags & TB_WAKE_ON_CONNECT) &&
- 			      device_may_wakeup(&usb4->dev)) && !configured)
- 				val |= PORT_CS_19_WOC;
--			if (((flags & TB_WAKE_ON_DISCONNECT) |
-+			if (((flags & TB_WAKE_ON_DISCONNECT) &&
- 			      device_may_wakeup(&usb4->dev)) && configured)
- 				val |= PORT_CS_19_WOD;
- 			if ((flags & TB_WAKE_ON_USB4) && configured)
+ static int avs_dai_hda_be_prepare(struct snd_pcm_substream *substream, struct snd_soc_dai *dai)
+ {
+-	struct snd_pcm_runtime *runtime = substream->runtime;
++	struct snd_soc_pcm_runtime *be = snd_soc_substream_to_rtd(substream);
+ 	const struct snd_soc_pcm_stream *stream_info;
+ 	struct hdac_ext_stream *link_stream;
++	const struct snd_pcm_hw_params *p;
+ 	struct avs_dma_data *data;
+ 	unsigned int format_val;
+ 	unsigned int bits;
+@@ -459,14 +460,15 @@ static int avs_dai_hda_be_prepare(struct snd_pcm_substream *substream, struct sn
+ 
+ 	data = snd_soc_dai_get_dma_data(dai, substream);
+ 	link_stream = data->link_stream;
++	p = &be->dpcm[substream->stream].hw_params;
+ 
+ 	if (link_stream->link_prepared)
+ 		return 0;
+ 
+ 	stream_info = snd_soc_dai_get_pcm_stream(dai, substream->stream);
+-	bits = snd_hdac_stream_format_bits(runtime->format, runtime->subformat,
++	bits = snd_hdac_stream_format_bits(params_format(p), params_subformat(p),
+ 					   stream_info->sig_bits);
+-	format_val = snd_hdac_stream_format(runtime->channels, bits, runtime->rate);
++	format_val = snd_hdac_stream_format(params_channels(p), bits, params_rate(p));
+ 
+ 	snd_hdac_ext_stream_decouple(&data->adev->base.core, link_stream, true);
+ 	snd_hdac_ext_stream_reset(link_stream);
 -- 
 2.39.5
 
