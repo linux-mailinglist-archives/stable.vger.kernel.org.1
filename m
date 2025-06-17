@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-154378-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153925-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 14736ADD986
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 19:07:13 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 81B82ADD6E7
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:38:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AE79C189B4C5
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:52:25 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0FF7B2C3B52
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:30:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9ACD2E8E08;
-	Tue, 17 Jun 2025 16:50:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69CE32ED858;
+	Tue, 17 Jun 2025 16:25:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Az04VFkC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D1DlEuPq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65E8C2DFF18;
-	Tue, 17 Jun 2025 16:50:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 269CE2ED17B;
+	Tue, 17 Jun 2025 16:25:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750179001; cv=none; b=c4ReDaKNrNibfzY2ZYLI8E0bbaaaAkJJT31M8yHfd7JUh6EAjf5pKTyxC7ahyRCw0iBwLU4ewcr0DOr2PRktPpoUVfpAWG+2utbSSDu+yePBf+rRQQS26OwtlEH1gtwSM96SvRi9VhwvaZC1eyA56eDOcf/kwu9fvN6yhpBLIfw=
+	t=1750177543; cv=none; b=dN51fDlnMIpXyzn06XFd7Nxs4WCdgid242Q8m95aZyBFsQPsiGSQEzM61zsb5ajGgtZPisYJUnFfTqU9eW7wdp+PnjHLj13FbjbA/JuANYQWuPvKUC4q86m1BIQIK7S5obaGqhkq7CUoUYQ4B0N/2BjSiMIRjfw7EP6ZOcpEYLo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750179001; c=relaxed/simple;
-	bh=ckH5VFbzTPffED+CmH7PLM/OFis3Vv8A1yeTEhAGT/8=;
+	s=arc-20240116; t=1750177543; c=relaxed/simple;
+	bh=lf7+I//ydQmjtGjrS78o38ENyjIbotAmuZPj5nGtrVI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=km2ZLRSEI0USIfN/Wrph9WdZvOnyXEEMHRhe5SZnh2DZan4BKzhcx+rI7fWRKChjfPZdmnghGaZzOIH5pJ8mUS9F1xDEhi/rEw9ldA6f332V7lyRi8p26sQsQpqhAnjmEQom+dRmdwFTpnlSP4pG3xpq5qGYPVsjLsAiRqMYogw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Az04VFkC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF8F1C4CEE3;
-	Tue, 17 Jun 2025 16:50:00 +0000 (UTC)
+	 MIME-Version:Content-Type; b=D0+Bxgy1fCnO4vHOn2JAwAyv0mf+rYRVz28I9dABCgqvf+89D1VVnNuALHNlxmapJJzbeRDhoWR6vMLuRj06CJ6MKTiSKEV6OQnshOSjxXV9uZ19F70z3oBYPyqoTtwuwoG1SX5A1C+RfRA1sCmP5OlppgrWpd3Cz2OtKzi/+rA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D1DlEuPq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F5A3C4CEE3;
+	Tue, 17 Jun 2025 16:25:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750179001;
-	bh=ckH5VFbzTPffED+CmH7PLM/OFis3Vv8A1yeTEhAGT/8=;
+	s=korg; t=1750177543;
+	bh=lf7+I//ydQmjtGjrS78o38ENyjIbotAmuZPj5nGtrVI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Az04VFkCqSGO2a39Sp8u2C5XbOTqwQ/LbN/eHrtU/oBqJjOcnukICpFHoOVETZLAz
-	 qqHTA81/sI3CcsIqkVu74HTGr8w5/1CHP6PDdpxUNMXF63HsAFh2wvviTtHX32Q2/p
-	 49HApX0Wizh3+bNZHuxqNvssazj9fL+HkUNCC4a8=
+	b=D1DlEuPq9ratwnGotJ4czPqapDc3IkiTh+QU8cP8lg84xzOsGLgjb2/DVBSdXUG9v
+	 awBMivhHGyenZC1w4ZphNxKMbU8ZCewB8Q2KE6XJi4ouGLwtXiQwtSqRDmuWsb1U0y
+	 AYCfHxzcMeGW15SHqLw2IIXP/E2Dpt0ijnbvsU84=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
+	=?UTF-8?q?=C3=81lvaro=20Fern=C3=A1ndez=20Rojas?= <noltari@gmail.com>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
 	Jakub Kicinski <kuba@kernel.org>,
-	Donald Hunter <donald.hunter@gmail.com>,
-	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 618/780] netlink: specs: rt-link: add missing byte-order properties
-Date: Tue, 17 Jun 2025 17:25:26 +0200
-Message-ID: <20250617152516.647942827@linuxfoundation.org>
+Subject: [PATCH 6.12 361/512] net: dsa: tag_brcm: legacy: fix pskb_may_pull length
+Date: Tue, 17 Jun 2025 17:25:27 +0200
+Message-ID: <20250617152434.208963161@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
-References: <20250617152451.485330293@linuxfoundation.org>
+In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
+References: <20250617152419.512865572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,127 +61,43 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jakub Kicinski <kuba@kernel.org>
+From: Álvaro Fernández Rojas <noltari@gmail.com>
 
-[ Upstream commit de92258e3b22bd4ce920715cc91f09d788e5badf ]
+[ Upstream commit efdddc4484859082da6c7877ed144c8121c8ea55 ]
 
-A number of fields in the ip tunnels are lacking the big-endian
-designation. I suspect this is not intentional, as decoding
-the ports with the right endian seems objectively beneficial.
+BRCM_LEG_PORT_ID was incorrectly used for pskb_may_pull length.
+The correct check is BRCM_LEG_TAG_LEN + VLAN_HLEN, or 10 bytes.
 
-Fixes: 6ffdbb93a59c ("netlink: specs: rt_link: decode ip6tnl, vti and vti6 link attrs")
-Fixes: 077b6022d24b ("doc/netlink/specs: Add sub-message type to rt_link family")
+Fixes: 964dbf186eaa ("net: dsa: tag_brcm: add support for legacy tags")
+Signed-off-by: Álvaro Fernández Rojas <noltari@gmail.com>
+Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Link: https://patch.msgid.link/20250529124406.2513779-1-noltari@gmail.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Reviewed-by: Donald Hunter <donald.hunter@gmail.com>
-Link: https://patch.msgid.link/20250603135357.502626-2-kuba@kernel.org
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- Documentation/netlink/specs/rt_link.yaml | 15 +++++++++++++++
- 1 file changed, 15 insertions(+)
+ net/dsa/tag_brcm.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/Documentation/netlink/specs/rt_link.yaml b/Documentation/netlink/specs/rt_link.yaml
-index 6b9d5ee87d93a..ba767c42e8792 100644
---- a/Documentation/netlink/specs/rt_link.yaml
-+++ b/Documentation/netlink/specs/rt_link.yaml
-@@ -1778,15 +1778,19 @@ attribute-sets:
-       -
-         name: iflags
-         type: u16
-+        byte-order: big-endian
-       -
-         name: oflags
-         type: u16
-+        byte-order: big-endian
-       -
-         name: ikey
-         type: u32
-+        byte-order: big-endian
-       -
-         name: okey
-         type: u32
-+        byte-order: big-endian
-       -
-         name: local
-         type: binary
-@@ -1810,6 +1814,7 @@ attribute-sets:
-       -
-         name: flowinfo
-         type: u32
-+        byte-order: big-endian
-       -
-         name: flags
-         type: u32
-@@ -1822,9 +1827,11 @@ attribute-sets:
-       -
-         name: encap-sport
-         type: u16
-+        byte-order: big-endian
-       -
-         name: encap-dport
-         type: u16
-+        byte-order: big-endian
-       -
-         name: collect-metadata
-         type: flag
-@@ -1856,9 +1863,11 @@ attribute-sets:
-       -
-         name: ikey
-         type: u32
-+        byte-order: big-endian
-       -
-         name: okey
-         type: u32
-+        byte-order: big-endian
-       -
-         name: local
-         type: binary
-@@ -1908,6 +1917,7 @@ attribute-sets:
-       -
-         name: port
-         type: u16
-+        byte-order: big-endian
-       -
-         name: collect-metadata
-         type: flag
-@@ -1927,6 +1937,7 @@ attribute-sets:
-       -
-         name: label
-         type: u32
-+        byte-order: big-endian
-       -
-         name: ttl-inherit
-         type: u8
-@@ -1967,9 +1978,11 @@ attribute-sets:
-       -
-         name: flowinfo
-         type: u32
-+        byte-order: big-endian
-       -
-         name: flags
-         type: u16
-+        byte-order: big-endian
-       -
-         name: proto
-         type: u8
-@@ -1999,9 +2012,11 @@ attribute-sets:
-       -
-         name: encap-sport
-         type: u16
-+        byte-order: big-endian
-       -
-         name: encap-dport
-         type: u16
-+        byte-order: big-endian
-       -
-         name: collect-metadata
-         type: flag
+diff --git a/net/dsa/tag_brcm.c b/net/dsa/tag_brcm.c
+index 8c3c068728e51..fe75821623a4f 100644
+--- a/net/dsa/tag_brcm.c
++++ b/net/dsa/tag_brcm.c
+@@ -257,7 +257,7 @@ static struct sk_buff *brcm_leg_tag_rcv(struct sk_buff *skb,
+ 	int source_port;
+ 	u8 *brcm_tag;
+ 
+-	if (unlikely(!pskb_may_pull(skb, BRCM_LEG_PORT_ID)))
++	if (unlikely(!pskb_may_pull(skb, BRCM_LEG_TAG_LEN + VLAN_HLEN)))
+ 		return NULL;
+ 
+ 	brcm_tag = dsa_etype_header_pos_rx(skb);
 -- 
 2.39.5
 
