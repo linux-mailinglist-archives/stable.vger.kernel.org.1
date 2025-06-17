@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-153802-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-154317-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 89AF9ADD665
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:32:54 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7747CADD87C
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:56:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 738457A1BC7
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:23:47 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8D9FF40782C
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:49:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 00A962ED17D;
-	Tue, 17 Jun 2025 16:19:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5034D285075;
+	Tue, 17 Jun 2025 16:46:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lomWxWxP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SSgrS0fc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B196A2ECEBF;
-	Tue, 17 Jun 2025 16:19:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D5C42FA64F;
+	Tue, 17 Jun 2025 16:46:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750177145; cv=none; b=B4zW0YWb0IrY22BeE6IoltcheJ4tQD2voKxV0xjRjoCMepoAXGZ6PffJYTX/4gFh1m+Xuhplz4UQOTVYmQLTgJvUTG/v2fg/nAZVd4lKNHc/ua66I3ABC71DMOjtTjPzoCqDoTnkHXp6t4MqPCD0E8x1M0Ed1qKVKYh9U5BED/M=
+	t=1750178802; cv=none; b=Hly2bRvpptOfGmKMOAY6/ersDLaSpjNPiYU/nqUSpVp8WM0pOk5NmLJVXwASQPICc05JFNFjGb6pbSnztzJjK3yNaLUUe03j6jRl3/8703fW10MDXwxrBq+x+l65DEE0ZfnARJlfNCbpxBtKJhlxnIwUeCqZrzbzMgbO6xgkCM8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750177145; c=relaxed/simple;
-	bh=Ek/cC7uPKWdJC5XpiSyY4TgISbpoH+pf7rG8SK7Z5Ws=;
+	s=arc-20240116; t=1750178802; c=relaxed/simple;
+	bh=dBYAutuil/DQ06qRI57+BaIsiLHHsMWemORY1ujZHx8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Mq3v+VOMe6+8RYIvJonrWYtBGBe0kt4yV3Vdd6lCORJZMj/jmRkBO1jdp241h65PO5eMAtWHqtGy32S2l+v767yA1sYcIQXZ/62kfibGT9SDYE8XItAaNf/9P7mVDFNfQHFAQYskBHfnPat+PUPXOspz0I8wpNyj8SKO6F6z6lo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lomWxWxP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18E7BC4CEE3;
-	Tue, 17 Jun 2025 16:19:04 +0000 (UTC)
+	 MIME-Version:Content-Type; b=tKGQzubIw/8/TcVbKgu/C46f0X8LVpk5aNtEucoX0nvR7q7TUgHM/oDVyw4bMAPQvEi9heHZ62ipJQWvd+Q2SfAZXhsEPKkY1LM/7Rt4FkKLn/igMoZ5dnigHhRW9J7QbYE+L/imCAat1JwgTpKV2VyzgvfHH8HIzQLvJ1+W+RI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SSgrS0fc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C14BC4CEE3;
+	Tue, 17 Jun 2025 16:46:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750177145;
-	bh=Ek/cC7uPKWdJC5XpiSyY4TgISbpoH+pf7rG8SK7Z5Ws=;
+	s=korg; t=1750178801;
+	bh=dBYAutuil/DQ06qRI57+BaIsiLHHsMWemORY1ujZHx8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lomWxWxPUIz+/1imgQNRExox8IKO9IEJZKxb0z+goUAyngdJJXj/fHLk8x/Xiv5wr
-	 i1m97BxPy0TGcc+2kbD+VrohTWXQ56bdgNwKFgzA2jOPIOZeiEq4qSnatnoW23ILyy
-	 /U7ydqeGBo0q9wgZrzbEGh1ryX28oIeAt8YzU0R8=
+	b=SSgrS0fczgvJehHYAUMO8DUpY1lOJjsAOKdKutytZPmICz4Euj4Hyp2JKX7OoCaNs
+	 4ZQaoMBzAiToVPBMm8ttKv67b/+nIGvjooIM1uKk+ULvz7XDYHmzL2eIRb7XY9RWbB
+	 t29G8IqUSxReZ0R8Ha7PzhCFWwhm1uBJX/u9AMZE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Li Lingfeng <lilingfeng3@huawei.com>,
-	Anna Schumaker <anna.schumaker@oracle.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	syzbot+204a4382fcb3311f3858@syzkaller.appspotmail.com,
+	Dong Chenchen <dongchenchen2@huawei.com>,
+	=?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>,
+	Mina Almasry <almasrymina@google.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 301/512] nfs: ignore SB_RDONLY when remounting nfs
+Subject: [PATCH 6.15 559/780] page_pool: Fix use-after-free in page_pool_recycle_in_ring
 Date: Tue, 17 Jun 2025 17:24:27 +0200
-Message-ID: <20250617152431.792393831@linuxfoundation.org>
+Message-ID: <20250617152514.260664610@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
-References: <20250617152419.512865572@linuxfoundation.org>
+In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
+References: <20250617152451.485330293@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,76 +63,151 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Li Lingfeng <lilingfeng3@huawei.com>
+From: Dong Chenchen <dongchenchen2@huawei.com>
 
-[ Upstream commit 80c4de6ab44c14e910117a02f2f8241ffc6ec54a ]
+[ Upstream commit 271683bb2cf32e5126c592b5d5e6a756fa374fd9 ]
 
-In some scenarios, when mounting NFS, more than one superblock may be
-created. The final superblock used is the last one created, but only the
-first superblock carries the ro flag passed from user space. If a ro flag
-is added to the superblock via remount, it will trigger the issue
-described in Link[1].
+syzbot reported a uaf in page_pool_recycle_in_ring:
 
-Link[2] attempted to address this by marking the superblock as ro during
-the initial mount. However, this introduced a new problem in scenarios
-where multiple mount points share the same superblock:
-[root@a ~]# mount /dev/sdb /mnt/sdb
-[root@a ~]# echo "/mnt/sdb *(rw,no_root_squash)" > /etc/exports
-[root@a ~]# echo "/mnt/sdb/test_dir2 *(ro,no_root_squash)" >> /etc/exports
-[root@a ~]# systemctl restart nfs-server
-[root@a ~]# mount -t nfs -o rw 127.0.0.1:/mnt/sdb/test_dir1 /mnt/test_mp1
-[root@a ~]# mount | grep nfs4
-127.0.0.1:/mnt/sdb/test_dir1 on /mnt/test_mp1 type nfs4 (rw,relatime,...
-[root@a ~]# mount -t nfs -o ro 127.0.0.1:/mnt/sdb/test_dir2 /mnt/test_mp2
-[root@a ~]# mount | grep nfs4
-127.0.0.1:/mnt/sdb/test_dir1 on /mnt/test_mp1 type nfs4 (ro,relatime,...
-127.0.0.1:/mnt/sdb/test_dir2 on /mnt/test_mp2 type nfs4 (ro,relatime,...
-[root@a ~]#
+BUG: KASAN: slab-use-after-free in lock_release+0x151/0xa30 kernel/locking/lockdep.c:5862
+Read of size 8 at addr ffff8880286045a0 by task syz.0.284/6943
 
-When mounting the second NFS, the shared superblock is marked as ro,
-causing the previous NFS mount to become read-only.
+CPU: 0 UID: 0 PID: 6943 Comm: syz.0.284 Not tainted 6.13.0-rc3-syzkaller-gdfa94ce54f41 #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 09/13/2024
+Call Trace:
+ <TASK>
+ __dump_stack lib/dump_stack.c:94 [inline]
+ dump_stack_lvl+0x241/0x360 lib/dump_stack.c:120
+ print_address_description mm/kasan/report.c:378 [inline]
+ print_report+0x169/0x550 mm/kasan/report.c:489
+ kasan_report+0x143/0x180 mm/kasan/report.c:602
+ lock_release+0x151/0xa30 kernel/locking/lockdep.c:5862
+ __raw_spin_unlock_bh include/linux/spinlock_api_smp.h:165 [inline]
+ _raw_spin_unlock_bh+0x1b/0x40 kernel/locking/spinlock.c:210
+ spin_unlock_bh include/linux/spinlock.h:396 [inline]
+ ptr_ring_produce_bh include/linux/ptr_ring.h:164 [inline]
+ page_pool_recycle_in_ring net/core/page_pool.c:707 [inline]
+ page_pool_put_unrefed_netmem+0x748/0xb00 net/core/page_pool.c:826
+ page_pool_put_netmem include/net/page_pool/helpers.h:323 [inline]
+ page_pool_put_full_netmem include/net/page_pool/helpers.h:353 [inline]
+ napi_pp_put_page+0x149/0x2b0 net/core/skbuff.c:1036
+ skb_pp_recycle net/core/skbuff.c:1047 [inline]
+ skb_free_head net/core/skbuff.c:1094 [inline]
+ skb_release_data+0x6c4/0x8a0 net/core/skbuff.c:1125
+ skb_release_all net/core/skbuff.c:1190 [inline]
+ __kfree_skb net/core/skbuff.c:1204 [inline]
+ sk_skb_reason_drop+0x1c9/0x380 net/core/skbuff.c:1242
+ kfree_skb_reason include/linux/skbuff.h:1263 [inline]
+ __skb_queue_purge_reason include/linux/skbuff.h:3343 [inline]
 
-To resolve both issues, the ro flag is no longer applied to the superblock
-during remount. Instead, the ro flag on the mount is used to control
-whether the mount point is read-only.
+root cause is:
 
-Fixes: 281cad46b34d ("NFS: Create a submount rpc_op")
-Link[1]: https://lore.kernel.org/all/20240604112636.236517-3-lilingfeng@huaweicloud.com/
-Link[2]: https://lore.kernel.org/all/20241130035818.1459775-1-lilingfeng3@huawei.com/
-Signed-off-by: Li Lingfeng <lilingfeng3@huawei.com>
-Signed-off-by: Anna Schumaker <anna.schumaker@oracle.com>
+page_pool_recycle_in_ring
+  ptr_ring_produce
+    spin_lock(&r->producer_lock);
+    WRITE_ONCE(r->queue[r->producer++], ptr)
+      //recycle last page to pool
+				page_pool_release
+				  page_pool_scrub
+				    page_pool_empty_ring
+				      ptr_ring_consume
+				      page_pool_return_page  //release all page
+				  __page_pool_destroy
+				     free_percpu(pool->recycle_stats);
+				     free(pool) //free
+
+     spin_unlock(&r->producer_lock); //pool->ring uaf read
+  recycle_stat_inc(pool, ring);
+
+page_pool can be free while page pool recycle the last page in ring.
+Add producer-lock barrier to page_pool_release to prevent the page
+pool from being free before all pages have been recycled.
+
+recycle_stat_inc() is empty when CONFIG_PAGE_POOL_STATS is not
+enabled, which will trigger Wempty-body build warning. Add definition
+for pool stat macro to fix warning.
+
+Suggested-by: Jakub Kicinski <kuba@kernel.org>
+Link: https://lore.kernel.org/netdev/20250513083123.3514193-1-dongchenchen2@huawei.com
+Fixes: ff7d6b27f894 ("page_pool: refurbish version of page_pool code")
+Reported-by: syzbot+204a4382fcb3311f3858@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=204a4382fcb3311f3858
+Signed-off-by: Dong Chenchen <dongchenchen2@huawei.com>
+Reviewed-by: Toke Høiland-Jørgensen <toke@redhat.com>
+Reviewed-by: Mina Almasry <almasrymina@google.com>
+Link: https://patch.msgid.link/20250527114152.3119109-1-dongchenchen2@huawei.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfs/super.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+ net/core/page_pool.c | 27 ++++++++++++++-------------
+ 1 file changed, 14 insertions(+), 13 deletions(-)
 
-diff --git a/fs/nfs/super.c b/fs/nfs/super.c
-index 44e5cb00e2ccf..da5286514d8c7 100644
---- a/fs/nfs/super.c
-+++ b/fs/nfs/super.c
-@@ -1046,6 +1046,16 @@ int nfs_reconfigure(struct fs_context *fc)
+diff --git a/net/core/page_pool.c b/net/core/page_pool.c
+index 2b76848659418..2d9c51f480fb5 100644
+--- a/net/core/page_pool.c
++++ b/net/core/page_pool.c
+@@ -153,9 +153,9 @@ u64 *page_pool_ethtool_stats_get(u64 *data, const void *stats)
+ EXPORT_SYMBOL(page_pool_ethtool_stats_get);
  
- 	sync_filesystem(sb);
+ #else
+-#define alloc_stat_inc(pool, __stat)
+-#define recycle_stat_inc(pool, __stat)
+-#define recycle_stat_add(pool, __stat, val)
++#define alloc_stat_inc(...)	do { } while (0)
++#define recycle_stat_inc(...)	do { } while (0)
++#define recycle_stat_add(...)	do { } while (0)
+ #endif
  
-+	/*
-+	 * The SB_RDONLY flag has been removed from the superblock during
-+	 * mounts to prevent interference between different filesystems.
-+	 * Similarly, it is also necessary to ignore the SB_RDONLY flag
-+	 * during reconfiguration; otherwise, it may also result in the
-+	 * creation of redundant superblocks when mounting a directory with
-+	 * different rw and ro flags multiple times.
-+	 */
-+	fc->sb_flags_mask &= ~SB_RDONLY;
-+
- 	/*
- 	 * Userspace mount programs that send binary options generally send
- 	 * them populated with default values. We have no way to know which
+ static bool page_pool_producer_lock(struct page_pool *pool)
+@@ -741,19 +741,16 @@ void page_pool_return_page(struct page_pool *pool, netmem_ref netmem)
+ 
+ static bool page_pool_recycle_in_ring(struct page_pool *pool, netmem_ref netmem)
+ {
+-	int ret;
+-	/* BH protection not needed if current is softirq */
+-	if (in_softirq())
+-		ret = ptr_ring_produce(&pool->ring, (__force void *)netmem);
+-	else
+-		ret = ptr_ring_produce_bh(&pool->ring, (__force void *)netmem);
++	bool in_softirq, ret;
+ 
+-	if (!ret) {
++	/* BH protection not needed if current is softirq */
++	in_softirq = page_pool_producer_lock(pool);
++	ret = !__ptr_ring_produce(&pool->ring, (__force void *)netmem);
++	if (ret)
+ 		recycle_stat_inc(pool, ring);
+-		return true;
+-	}
++	page_pool_producer_unlock(pool, in_softirq);
+ 
+-	return false;
++	return ret;
+ }
+ 
+ /* Only allow direct recycling in special circumstances, into the
+@@ -1146,10 +1143,14 @@ static void page_pool_scrub(struct page_pool *pool)
+ 
+ static int page_pool_release(struct page_pool *pool)
+ {
++	bool in_softirq;
+ 	int inflight;
+ 
+ 	page_pool_scrub(pool);
+ 	inflight = page_pool_inflight(pool, true);
++	/* Acquire producer lock to make sure producers have exited. */
++	in_softirq = page_pool_producer_lock(pool);
++	page_pool_producer_unlock(pool, in_softirq);
+ 	if (!inflight)
+ 		__page_pool_destroy(pool);
+ 
 -- 
 2.39.5
 
