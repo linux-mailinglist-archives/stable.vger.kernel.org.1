@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-153199-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153202-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 35353ADD31B
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 17:53:32 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id EC1B8ADD31F
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 17:53:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 46ACC3B38EA
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 15:50:00 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D5EC93B66CE
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 15:50:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 956162ECEA8;
-	Tue, 17 Jun 2025 15:46:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20FB72ECD36;
+	Tue, 17 Jun 2025 15:46:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="moXeJhUi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1Vyp1uIp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51A602E88B1;
-	Tue, 17 Jun 2025 15:46:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D127A2F2C75;
+	Tue, 17 Jun 2025 15:46:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750175198; cv=none; b=jkS/5uCUbttq60NoutCp4coQ5/GwyvfAK+3L9RF5SavDg+iHnTNjB/iK31S/MG3VoRFC0RksVW6Pja4Ik2WS+pVOF4WFztEdz5TBTR8mmq0IOkjAurp2w4Rx6a/akyjqDLb+HQ96bfZ3NpqqQxA4UGOXQ51ASLBcjwKl161rL1E=
+	t=1750175207; cv=none; b=Wk1WGiDl/HHKo9mCWxifscbcJMSZKB31fqCgXWzvWtbkg0ChZ1tuXm+TFfKRPp7R4wBw8RToUvQNMRFgIlk4jeHRcoS1nSstOGSvPSjBiFzJYAfYq5Cfqa5+YFEBhl32InOGSoc3kFTp4Km0oi4ecNF4s1SplHD3TY31YsA3SRU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750175198; c=relaxed/simple;
-	bh=yN20wfAm7oaPXkpmhN1RqrEyuuoJ3rloItDRKyXGL4M=;
+	s=arc-20240116; t=1750175207; c=relaxed/simple;
+	bh=9HCrRW5sKaTlAn16f8b9/mYqQt9PjiuooFUO8mwGCTg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gbXlNCX+2Z9PB0deEsUtHd5hy6eRKMKM0jwtBp3MMH5aQBjgB6Dh3yjw0uvRG/WaPLzRBmWz/CmH8qD9JOHcxikdMgIayRpJM5DgMtvNYDPihnpOb6LucGjvSyp794tP/EFPRzgpLt8DSffpcsttHz6JNjV4Rpogm2xMtX4PzP8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=moXeJhUi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B32ACC4CEE3;
-	Tue, 17 Jun 2025 15:46:37 +0000 (UTC)
+	 MIME-Version:Content-Type; b=TTk+VRfRKfhh2xSUKT5HQULndFF8RJIquYnLGMBNCosiDEvMbfzq1l7fwwqxsRR+2M80dM7X6jK3EhnoCam5BaZj8fjkacMWhLbbOZ0SSXoeu99QOtktwPW9mUS5jgt33dGILu017ZCDtXjL1xE20/pxypKMfJAxISvOn3O0+i4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1Vyp1uIp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F212C4CEF0;
+	Tue, 17 Jun 2025 15:46:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750175198;
-	bh=yN20wfAm7oaPXkpmhN1RqrEyuuoJ3rloItDRKyXGL4M=;
+	s=korg; t=1750175207;
+	bh=9HCrRW5sKaTlAn16f8b9/mYqQt9PjiuooFUO8mwGCTg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=moXeJhUiCjvYNkgrTaeDrUGxRnxORskB9LoRnZq/qNDppKuY5De1M2jpG8UgVku96
-	 2E5z2IHyKzDojZuQ5nZHUmRuyN8y23VeoeODh2ciP/y1uP5jUSYj9/9dX/YST6B/dC
-	 4p6zAxDEM6i01WIDQ5k5gtYhr0cH6fS8eTajwS1E=
+	b=1Vyp1uIpR8Z1tEPPHyRg/z8Ib5CDFQ5TtE6WYqnUvNTyhwQyl6IBGC4+vJWWUgLhh
+	 f4Xi7UMC2bp4vRhaDrlDKjDHw+j0ma+FErxL6wdRVY14JolIgVNVATMI4BDsYlZd2S
+	 V1bhF1PpbYQWdRii58KJO7K7lBsY0RLVpd4yyj1g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	NeilBrown <neil@brown.name>,
-	Christoph Hellwig <hch@lst.de>,
-	Chuck Lever <chuck.lever@oracle.com>,
+	John <jw@nuclearfallout.net>,
+	=?UTF-8?q?Roger=20Pau=20Monn=C3=A9?= <roger.pau@citrix.com>,
+	Juergen Gross <jgross@suse.com>,
+	=?UTF-8?q?Marek=20Marczykowski-G=C3=B3recki?= <marmarek@invisiblethingslab.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 103/512] svcrdma: Reduce the number of rdma_rw contexts per-QP
-Date: Tue, 17 Jun 2025 17:21:09 +0200
-Message-ID: <20250617152423.770452568@linuxfoundation.org>
+Subject: [PATCH 6.12 104/512] xen/x86: fix initial memory balloon target
+Date: Tue, 17 Jun 2025 17:21:10 +0200
+Message-ID: <20250617152423.811406301@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
 References: <20250617152419.512865572@linuxfoundation.org>
@@ -61,99 +62,71 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chuck Lever <chuck.lever@oracle.com>
+From: Roger Pau Monne <roger.pau@citrix.com>
 
-[ Upstream commit 59243315890578a040a2d50ae9e001a2ef2fcb62 ]
+[ Upstream commit 74287971dbb3fe322bb316afd9e7fb5807e23bee ]
 
-There is an upper bound on the number of rdma_rw contexts that can
-be created per QP.
+When adding extra memory regions as ballooned pages also adjust the balloon
+target, otherwise when the balloon driver is started it will populate
+memory to match the target value and consume all the extra memory regions
+added.
 
-This invisible upper bound is because rdma_create_qp() adds one or
-more additional SQEs for each ctxt that the ULP requests via
-qp_attr.cap.max_rdma_ctxs. The QP's actual Send Queue length is on
-the order of the sum of qp_attr.cap.max_send_wr and a factor times
-qp_attr.cap.max_rdma_ctxs. The factor can be up to three, depending
-on whether MR operations are required before RDMA Reads.
+This made the usage of the Xen `dom0_mem=,max:` command line parameter for
+dom0 not work as expected, as the target won't be adjusted and when the
+balloon is started it will populate memory straight to the 'max:' value.
+It would equally affect domUs that have memory != maxmem.
 
-This limit is not visible to RDMA consumers via dev->attrs. When the
-limit is surpassed, QP creation fails with -ENOMEM. For example:
+Kernels built with CONFIG_XEN_UNPOPULATED_ALLOC are not affected, because
+the extra memory regions are consumed by the unpopulated allocation driver,
+and then balloon_add_regions() becomes a no-op.
 
-svcrdma's estimate of the number of rdma_rw contexts it needs is
-three times the number of pages in RPCSVC_MAXPAGES. When MAXPAGES
-is about 260, the internally-computed SQ length should be:
-
-64 credits + 10 backlog + 3 * (3 * 260) = 2414
-
-Which is well below the advertised qp_max_wr of 32768.
-
-If RPCSVC_MAXPAGES is increased to 4MB, that's 1040 pages:
-
-64 credits + 10 backlog + 3 * (3 * 1040) = 9434
-
-However, QP creation fails. Dynamic printk for mlx5 shows:
-
-calc_sq_size:618:(pid 1514): send queue size (9326 * 256 / 64 -> 65536) exceeds limits(32768)
-
-Although 9326 is still far below qp_max_wr, QP creation still
-fails.
-
-Because the total SQ length calculation is opaque to RDMA consumers,
-there doesn't seem to be much that can be done about this except for
-consumers to try to keep the requested rdma_rw ctxt count low.
-
-Fixes: 2da0f610e733 ("svcrdma: Increase the per-transport rw_ctx count")
-Reviewed-by: NeilBrown <neil@brown.name>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Reported-by: John <jw@nuclearfallout.net>
+Fixes: 87af633689ce ('x86/xen: fix balloon target initialization for PVH dom0')
+Signed-off-by: Roger Pau Monné <roger.pau@citrix.com>
+Reviewed-by: Juergen Gross <jgross@suse.com>
+Tested-by: Marek Marczykowski-Górecki <marmarek@invisiblethingslab.com>
+Message-ID: <20250514080427.28129-1-roger.pau@citrix.com>
+Signed-off-by: Juergen Gross <jgross@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sunrpc/xprtrdma/svc_rdma_transport.c | 14 ++++++++------
- 1 file changed, 8 insertions(+), 6 deletions(-)
+ drivers/xen/balloon.c | 13 ++++++++-----
+ 1 file changed, 8 insertions(+), 5 deletions(-)
 
-diff --git a/net/sunrpc/xprtrdma/svc_rdma_transport.c b/net/sunrpc/xprtrdma/svc_rdma_transport.c
-index aca8bdf65d729..ca6172822b68a 100644
---- a/net/sunrpc/xprtrdma/svc_rdma_transport.c
-+++ b/net/sunrpc/xprtrdma/svc_rdma_transport.c
-@@ -406,12 +406,12 @@ static void svc_rdma_xprt_done(struct rpcrdma_notification *rn)
-  */
- static struct svc_xprt *svc_rdma_accept(struct svc_xprt *xprt)
- {
-+	unsigned int ctxts, rq_depth, maxpayload;
- 	struct svcxprt_rdma *listen_rdma;
- 	struct svcxprt_rdma *newxprt = NULL;
- 	struct rdma_conn_param conn_param;
- 	struct rpcrdma_connect_private pmsg;
- 	struct ib_qp_init_attr qp_attr;
--	unsigned int ctxts, rq_depth;
- 	struct ib_device *dev;
- 	int ret = 0;
- 	RPC_IFDEBUG(struct sockaddr *sap);
-@@ -462,12 +462,14 @@ static struct svc_xprt *svc_rdma_accept(struct svc_xprt *xprt)
- 		newxprt->sc_max_bc_requests = 2;
+diff --git a/drivers/xen/balloon.c b/drivers/xen/balloon.c
+index 4bd31242bd773..e47bb157aa090 100644
+--- a/drivers/xen/balloon.c
++++ b/drivers/xen/balloon.c
+@@ -700,15 +700,18 @@ static int __init balloon_add_regions(void)
+ 
+ 		/*
+ 		 * Extra regions are accounted for in the physmap, but need
+-		 * decreasing from current_pages to balloon down the initial
+-		 * allocation, because they are already accounted for in
+-		 * total_pages.
++		 * decreasing from current_pages and target_pages to balloon
++		 * down the initial allocation, because they are already
++		 * accounted for in total_pages.
+ 		 */
+-		if (extra_pfn_end - start_pfn >= balloon_stats.current_pages) {
++		pages = extra_pfn_end - start_pfn;
++		if (pages >= balloon_stats.current_pages ||
++		    pages >= balloon_stats.target_pages) {
+ 			WARN(1, "Extra pages underflow current target");
+ 			return -ERANGE;
+ 		}
+-		balloon_stats.current_pages -= extra_pfn_end - start_pfn;
++		balloon_stats.current_pages -= pages;
++		balloon_stats.target_pages -= pages;
  	}
  
--	/* Arbitrarily estimate the number of rw_ctxs needed for
--	 * this transport. This is enough rw_ctxs to make forward
--	 * progress even if the client is using one rkey per page
--	 * in each Read chunk.
-+	/* Arbitrary estimate of the needed number of rdma_rw contexts.
- 	 */
--	ctxts = 3 * RPCSVC_MAXPAGES;
-+	maxpayload = min(xprt->xpt_server->sv_max_payload,
-+			 RPCSVC_MAXPAYLOAD_RDMA);
-+	ctxts = newxprt->sc_max_requests * 3 *
-+		rdma_rw_mr_factor(dev, newxprt->sc_port_num,
-+				  maxpayload >> PAGE_SHIFT);
-+
- 	newxprt->sc_sq_depth = rq_depth + ctxts;
- 	if (newxprt->sc_sq_depth > dev->attrs.max_qp_wr)
- 		newxprt->sc_sq_depth = dev->attrs.max_qp_wr;
+ 	return 0;
 -- 
 2.39.5
 
