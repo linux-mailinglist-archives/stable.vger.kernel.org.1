@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-153692-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-154303-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5080AADD5C8
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:25:47 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4CF6BADD9C6
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 19:09:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0FF4A7A4563
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:17:24 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C577D19E2980
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:49:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3085D2F2C52;
-	Tue, 17 Jun 2025 16:13:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66F1720B807;
+	Tue, 17 Jun 2025 16:45:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MrmSNJIl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lhkOSohf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3C872F2C4C;
-	Tue, 17 Jun 2025 16:13:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 225A42FA642;
+	Tue, 17 Jun 2025 16:45:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750176781; cv=none; b=Vjxe5dZyezG/xzlzXEJtDLPjqi5DjXyujLJ4bCnG4x/174T7X2lNAH37nSBpWnGreax03AGDfFS+oTHSsh3gf92iKBGevkJge9DGCvjECQZDqylizpIzNfqW9ShSvjPauGuiTS0Pc1RQhSQvUYdpmCfhl66n/2Hu2vthWvgUERQ=
+	t=1750178758; cv=none; b=Uk8/M6B0lATU4yueGtTUfp9KS0epbhkzB5xf3sZsl/tnfMEqLaP4IU5RKbgWar3YZgXYkpjttEBQ+Bvjk11K52QZk8MvYjuUXInjQz3jGXbWS0ZmdsT0uFsGqK3sTrUfH/Mqs4dCwp5PBhZOjjIdgWC35pUk/RjkGJzv6mtU2ck=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750176781; c=relaxed/simple;
-	bh=3EMR6JhJJdWTN3PtdI+jV1WNyGINwjnxPselo2K+85M=;
+	s=arc-20240116; t=1750178758; c=relaxed/simple;
+	bh=dghugeQD5Uv5n2e2BjTYobZbJy9utIEyUdCF3a+6yaQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WDKzrDEqMLLXv/IKJ4b9kStSlfmH1okTutTCga+kihzhH24YwL5vO61viNnMn5WEc0DYjP1A7Cf53iCO9sv+cvr49TKqMXAQkUM0kJKAVpQ4uvmurCmCsdFCKo6D9jnqcUA9SF1JjE+QDWbpmRRdlANJ7DQ1Aq754Aq2/lRz1is=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MrmSNJIl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 551B2C4CEE3;
-	Tue, 17 Jun 2025 16:13:00 +0000 (UTC)
+	 MIME-Version; b=k98/BIdYTittetakXJWeJryLa37vSbVvvummBRTGEiQBfbLfKmmy4YMfIGOKcIDaexLSdb6RyJK0kSMFAa8vJKhWcJrYNSs9VdfT3hJz9KF5Bgn5w/tXWRhVk8v/Vlja4yKmG2d6lGEyu7XNqVAz5+lyxuaOQoxUMVkTc+Hasdw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lhkOSohf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 327A4C4CEE3;
+	Tue, 17 Jun 2025 16:45:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750176780;
-	bh=3EMR6JhJJdWTN3PtdI+jV1WNyGINwjnxPselo2K+85M=;
+	s=korg; t=1750178757;
+	bh=dghugeQD5Uv5n2e2BjTYobZbJy9utIEyUdCF3a+6yaQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MrmSNJIl0hQsie1ns5HHZM1nAShuQDMTjxImsGFuk+0CIlgAN7dEgtPjYuGEh7Bsl
-	 AhCeZVd+mRs7qpA2P3way78oCRl+mUR2//0WzyQNFwIwhqpxlAU9DLKPBY7NhbtloP
-	 kXk9uvyNqTwVfZme3xL+QaUGLc7ENAcf446LYvq8=
+	b=lhkOSohf1VOuwFwppQibmsrsRbd1isvjGCrekpNpqneqjPGN3sp9nhYQTNcAEtd2g
+	 2Ra2VxZzHeLfHzq8gaAAWeETCl6u3ZZtnlg1RBEV6war3L5qQiJq/MjYPO7MqIGbe9
+	 HO8mUuyGrJZb/LpB7rRERwrQaWdk6tEYbOytlToA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andre Przywara <andre.przywara@arm.com>,
-	"Rob Herring (Arm)" <robh@kernel.org>,
-	Chen-Yu Tsai <wens@csie.org>,
+	Andrea Righi <arighi@nvidia.com>,
+	Tejun Heo <tj@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 256/512] dt-bindings: vendor-prefixes: Add Liontron name
+Subject: [PATCH 6.15 514/780] sched_ext: idle: Skip cross-node search with !CONFIG_NUMA
 Date: Tue, 17 Jun 2025 17:23:42 +0200
-Message-ID: <20250617152429.968435094@linuxfoundation.org>
+Message-ID: <20250617152512.442749413@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
-References: <20250617152419.512865572@linuxfoundation.org>
+In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
+References: <20250617152451.485330293@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,42 +62,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andre Przywara <andre.przywara@arm.com>
+From: Andrea Righi <arighi@nvidia.com>
 
-[ Upstream commit 9baa27a2e9fc746143ab686b6dbe2d515284a4c5 ]
+[ Upstream commit 9960be72a54cf0e4d47abdd4cacd1278835a3bb4 ]
 
-Liontron is a company based in Shenzen, China, making industrial
-development boards and embedded computers, mostly using Rockchip and
-Allwinner SoCs.
+In the idle CPU selection logic, attempting cross-node searches adds
+unnecessary complexity when CONFIG_NUMA is disabled.
 
-Add their name to the list of vendors.
+Since there's no meaningful concept of nodes in this case, simplify the
+logic by restricting the idle CPU search to the current node only.
 
-Signed-off-by: Andre Przywara <andre.przywara@arm.com>
-Acked-by: Rob Herring (Arm) <robh@kernel.org>
-Link: https://patch.msgid.link/20250505164729.18175-2-andre.przywara@arm.com
-Signed-off-by: Chen-Yu Tsai <wens@csie.org>
+Fixes: 48849271e6611 ("sched_ext: idle: Per-node idle cpumasks")
+Signed-off-by: Andrea Righi <arighi@nvidia.com>
+Signed-off-by: Tejun Heo <tj@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- Documentation/devicetree/bindings/vendor-prefixes.yaml | 2 ++
- 1 file changed, 2 insertions(+)
+ kernel/sched/ext_idle.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/Documentation/devicetree/bindings/vendor-prefixes.yaml b/Documentation/devicetree/bindings/vendor-prefixes.yaml
-index 71a1a399e1e1f..af9a8d43b2479 100644
---- a/Documentation/devicetree/bindings/vendor-prefixes.yaml
-+++ b/Documentation/devicetree/bindings/vendor-prefixes.yaml
-@@ -846,6 +846,8 @@ patternProperties:
-     description: Linux-specific binding
-   "^linx,.*":
-     description: Linx Technologies
-+  "^liontron,.*":
-+    description: Shenzhen Liontron Technology Co., Ltd
-   "^liteon,.*":
-     description: LITE-ON Technology Corp.
-   "^litex,.*":
+diff --git a/kernel/sched/ext_idle.c b/kernel/sched/ext_idle.c
+index e67a19a071c11..50b9f3af810d9 100644
+--- a/kernel/sched/ext_idle.c
++++ b/kernel/sched/ext_idle.c
+@@ -131,6 +131,7 @@ static s32 pick_idle_cpu_in_node(const struct cpumask *cpus_allowed, int node, u
+ 		goto retry;
+ }
+ 
++#ifdef CONFIG_NUMA
+ /*
+  * Tracks nodes that have not yet been visited when searching for an idle
+  * CPU across all available nodes.
+@@ -179,6 +180,13 @@ static s32 pick_idle_cpu_from_online_nodes(const struct cpumask *cpus_allowed, i
+ 
+ 	return cpu;
+ }
++#else
++static inline s32
++pick_idle_cpu_from_online_nodes(const struct cpumask *cpus_allowed, int node, u64 flags)
++{
++	return -EBUSY;
++}
++#endif
+ 
+ /*
+  * Find an idle CPU in the system, starting from @node.
 -- 
 2.39.5
 
