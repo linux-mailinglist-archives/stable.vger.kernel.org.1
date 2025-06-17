@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-153675-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153678-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 396F8ADD5E3
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:27:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 144DDADD655
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:32:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C58FB1945712
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:18:03 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C81211899097
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:18:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29E502EB5D8;
-	Tue, 17 Jun 2025 16:12:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 780262EB5D3;
+	Tue, 17 Jun 2025 16:12:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0L0rz3ox"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z8cT+3Ke"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9A762EB5C0;
-	Tue, 17 Jun 2025 16:12:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36698237162;
+	Tue, 17 Jun 2025 16:12:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750176727; cv=none; b=i+0/XcaP1UH1/7PiKhom8Ab6Z4iy1WiHOlb3BI0xEEDGTYZ/CU674E9WMcPr0NUo4ehEx9lNqeq5bCMYKVSYs2cykG+pQMZ79zD+o5jF5pGdkQ3A2qGnVpz/PbRMVeJRJRfZvc9SBV56vLoZNfiMq4TqCpSiy1IVFXUKmaqemkU=
+	t=1750176737; cv=none; b=N0mJN9sH8JrFdPvg/m873TwhkGw+TdqEu3UGWsPIMC2JYRQdZAu397Mpk5itW3Bl7PQb2Ga/Tsv3bc9GNPq8x+9P12SV+27jQ3+tJQRC/64QuuS0Dl1FtVmbvbGcgzbGNG6ICJ5u+ubLPF1PjnDIuQQ+yJujeUYfqwvGZGVqLdc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750176727; c=relaxed/simple;
-	bh=XyZqTJGd1TnqVIcwJCOFb9YIC86xypVDD4rtbhQp9S4=;
+	s=arc-20240116; t=1750176737; c=relaxed/simple;
+	bh=65qbZqD6h6bAXmbbYlksR+uI876uGT0aHi0yVGYQ52Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=g8EfC/qK6pj0zIx2xIrHj7x3r1oFyGbB5z3HiAQhpEtxeKdzwk/GhfJ0D2LaQRG4MDFGx/Ch/PYostiClTF7jWKAj9jDhFkh5V1eWSM0BHhT3qTOq/WklKqX8GNsOTNlJrmsGhbogMU/5Jd+BgNFOzmaKZwhm9suo45JQIsuMTY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0L0rz3ox; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A341C4CEE3;
-	Tue, 17 Jun 2025 16:12:05 +0000 (UTC)
+	 MIME-Version; b=Zt/+wmB8jQm5Qxui7RYbcT2U0A97qTX1pkcTCD5GuqHF3z5WcdeiK8ocYL/zHdnxYErWJ3YJyeqw9u1vQoCdWK3VkGdv9SvvyZMFWaKqrHXWsszFmbwOPIEUrvdxtCGUw3/90MXv2Ifz5XGxLeJtEA6j9McCOJ1flwHzRB7tRd0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z8cT+3Ke; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4730BC4CEE7;
+	Tue, 17 Jun 2025 16:12:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750176726;
-	bh=XyZqTJGd1TnqVIcwJCOFb9YIC86xypVDD4rtbhQp9S4=;
+	s=korg; t=1750176735;
+	bh=65qbZqD6h6bAXmbbYlksR+uI876uGT0aHi0yVGYQ52Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0L0rz3oxDKPB7ph9ViKVfNn4hsumxaqPcaSSwJ0IiEWdGHLDA7ck43R9VsFeX2t8K
-	 CfQX+rByuZSHnorhoTg8Ojboa+VqWhR5Tlhc9cLVIXzwFMmj/iKX6iAuC/gHNYHvhp
-	 Tu3BgCr0syR0sk5mdPMpjw93FYTAnwfXl7Qc8EBY=
+	b=z8cT+3Ke2uzzsmUkztctM7hY0iDIv/JIz4NkWw9l5R19LD4jD//6y7VxXNt9/hbWf
+	 4w/AZgr05mkA+Tc5cRWTC7Di2/g9md61QG7m6jubOTO6c02njweZz2o988kFCybLLm
+	 l2H1uvx7PEbScV2ckxi4Nw5oaA4Q/AmRu2tL17CQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tao Chen <chen.dylane@linux.dev>,
+	Jonathan Wiepert <jonathan.wiepert@gmail.com>,
 	Andrii Nakryiko <andrii@kernel.org>,
-	Jiri Olsa <jolsa@kernel.org>,
-	Namhyung Kim <namhyung@kernel.org>,
+	Mykyta Yatsenko <mykyta.yatsenko5@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 220/780] libbpf: Remove sample_period init in perf_buffer
-Date: Tue, 17 Jun 2025 17:18:48 +0200
-Message-ID: <20250617152500.419276128@linuxfoundation.org>
+Subject: [PATCH 6.15 221/780] Use thread-safe function pointer in libbpf_print
+Date: Tue, 17 Jun 2025 17:18:49 +0200
+Message-ID: <20250617152500.457415970@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
 References: <20250617152451.485330293@linuxfoundation.org>
@@ -68,37 +67,37 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Tao Chen <chen.dylane@linux.dev>
+From: Jonathan Wiepert <jonathan.wiepert@gmail.com>
 
-[ Upstream commit 64821d25f05ac468d435e61669ae745ce5a633ea ]
+[ Upstream commit 91dbac4076537b464639953c055c460d2bdfc7ea ]
 
-It seems that sample_period is not used in perf buffer. Actually, only
-wakeup_events are meaningful to enable events aggregation for wakeup notification.
-Remove sample_period setting code to avoid confusion.
+This patch fixes a thread safety bug where libbpf_print uses the
+global variable storing the print function pointer rather than the local
+variable that had the print function set via __atomic_load_n.
 
-Fixes: fb84b8224655 ("libbpf: add perf buffer API")
-Signed-off-by: Tao Chen <chen.dylane@linux.dev>
+Fixes: f1cb927cdb62 ("libbpf: Ensure print callback usage is thread-safe")
+Signed-off-by: Jonathan Wiepert <jonathan.wiepert@gmail.com>
 Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Acked-by: Jiri Olsa <jolsa@kernel.org>
-Acked-by: Namhyung Kim <namhyung@kernel.org>
-Link: https://lore.kernel.org/bpf/20250423163901.2983689-1-chen.dylane@linux.dev
+Acked-by: Mykyta Yatsenko <mykyta.yatsenko5@gmail.com>
+Link: https://lore.kernel.org/bpf/20250424221457.793068-1-jonathan.wiepert@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/lib/bpf/libbpf.c | 1 -
- 1 file changed, 1 deletion(-)
+ tools/lib/bpf/libbpf.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/tools/lib/bpf/libbpf.c b/tools/lib/bpf/libbpf.c
-index 087bb8daa46b5..2bc0e3bfdd491 100644
+index 2bc0e3bfdd491..147964bb64c8f 100644
 --- a/tools/lib/bpf/libbpf.c
 +++ b/tools/lib/bpf/libbpf.c
-@@ -13351,7 +13351,6 @@ struct perf_buffer *perf_buffer__new(int map_fd, size_t page_cnt,
- 	attr.config = PERF_COUNT_SW_BPF_OUTPUT;
- 	attr.type = PERF_TYPE_SOFTWARE;
- 	attr.sample_type = PERF_SAMPLE_RAW;
--	attr.sample_period = sample_period;
- 	attr.wakeup_events = sample_period;
+@@ -286,7 +286,7 @@ void libbpf_print(enum libbpf_print_level level, const char *format, ...)
+ 	old_errno = errno;
  
- 	p.attr = &attr;
+ 	va_start(args, format);
+-	__libbpf_pr(level, format, args);
++	print_fn(level, format, args);
+ 	va_end(args);
+ 
+ 	errno = old_errno;
 -- 
 2.39.5
 
