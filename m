@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-153228-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153241-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A4FDCADD30E
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 17:52:52 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 26B62ADD33A
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 17:55:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BE3E37AD353
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 15:50:14 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 182EB176240
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 15:52:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9DEA72ED146;
-	Tue, 17 Jun 2025 15:48:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D9F802F2362;
+	Tue, 17 Jun 2025 15:48:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IngvZoQb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h8ZQD0yp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57B972ED141;
-	Tue, 17 Jun 2025 15:48:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 955D92F235D;
+	Tue, 17 Jun 2025 15:48:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750175287; cv=none; b=hyzkzTn516d7kPaXPBbBT1O5Wud2pf81LmzU1mGZKOiMjzQzml9WdKOqY+a1LHVKXkDmNBFGYWyAmoT8+dkEvzpbOvdd7vtSdHEvxC/8skphr192hOPAvDxl9u+dt3qFkxxE8FNT8hg8ZXoF9tr4Ry+Ob7QjcjVEL3BOl1J25Bk=
+	t=1750175329; cv=none; b=hchdWMqyly/lOxcZCF10klNun803ima0gB9nGu1UqZTGnLBqUQRNYdeJlaP4IaxCpilc+yycAFRy5DYMvOvjGbTKGSBnd2K03DRrF3PJWdZU24D0zT14uY0r2b1I3ntYk/mV8OjHPNOArKmUXY/GKF+MNj25yvmS31m6J1KvrbE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750175287; c=relaxed/simple;
-	bh=W2HvXao7aFdZtnkMUqV/qYUx6UhML5I+rmEVM4z8c90=;
+	s=arc-20240116; t=1750175329; c=relaxed/simple;
+	bh=IwIYY3wrygYNJmYdNDlQ+20ylnVssXf4ugT5lp4tGPA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=lXj/hJTwALCsbMH0fyRRtZsb+2f/JPbSW9j3P0Tfcs3Sw7Ynikcij5LHm1OqGq9WBR+wdOZ20CO3ity82FT/A+SgRKvlJwsIn4mxBD4sBRBgdGDjok6QYideTI4aVZ/JpuJN58ZAnl+oT+J6EGjdUjnWLZzgw8dX2PiQ5hBPGqY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IngvZoQb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 665E8C4CEE3;
-	Tue, 17 Jun 2025 15:48:06 +0000 (UTC)
+	 MIME-Version; b=hBwbGJr+44jnWniYxFZ0MTZApUEamDcuVhMHQ8hVaEwAZyIa7kB0SVwY4GX9nmVDcBSMftNIqywqztRxgoLqevPv1AECGhlFp+iZvtUTAGs2MeA8QI4GpgFpQRkTwLVEI+uZWo6Zlnkg6VMq1wLbNq8mugO8PDfj69ocHwTl/ls=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=h8ZQD0yp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6089C4CEE7;
+	Tue, 17 Jun 2025 15:48:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750175286;
-	bh=W2HvXao7aFdZtnkMUqV/qYUx6UhML5I+rmEVM4z8c90=;
+	s=korg; t=1750175329;
+	bh=IwIYY3wrygYNJmYdNDlQ+20ylnVssXf4ugT5lp4tGPA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IngvZoQbOhu7tJEh1F72GQOwVjA2fp7A03bTRSCt5CgkWceuwEdJwkOuaIUu07SOF
-	 y99TLgqbAsZD3HezgXMOO05rOXt6E2R7dgj44N8vSoRczZubVXj6oKyuKKKLeidlwY
-	 aXPTc8xbDdDP5re1eA/ZTFx3HVUihDCBAPzy4/J8=
+	b=h8ZQD0ypzyV/aWu0bhURyXeiBDAREhg67CyvqRLHgrL7s5QGilwiFRRvlQfX3jtYB
+	 qvwFH+gq7cOnp3geyjgG1Q6VWSkulUkjD3CsaOOTfU4B3SoXvQlM39jpC2h1aDzDah
+	 DjmYge9h1TYk+x1ZUX6GxIHt9V/Q75+LCUWkq3vY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Neal Gompa <neal@gompa.dev>,
-	=?UTF-8?q?Martin=20Povi=C5=A1er?= <povik+lin@cutebit.org>,
+	Hector Martin <marcan@marcan.st>,
 	James Calligeros <jcalligeros99@gmail.com>,
 	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 055/780] ASoC: tas2764: Reinit cache on part reset
-Date: Tue, 17 Jun 2025 17:16:03 +0200
-Message-ID: <20250617152453.736371248@linuxfoundation.org>
+Subject: [PATCH 6.15 056/780] ASoC: tas2764: Enable main IRQs
+Date: Tue, 17 Jun 2025 17:16:04 +0200
+Message-ID: <20250617152453.783284790@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
 References: <20250617152451.485330293@linuxfoundation.org>
@@ -62,55 +62,45 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Martin Povišer <povik+lin@cutebit.org>
+From: Hector Martin <marcan@marcan.st>
 
-[ Upstream commit 592ab3936b096da5deb64d4c906edbeb989174d6 ]
+[ Upstream commit dd50f0e38563f15819059c923bf142200453e003 ]
 
-When the part is reset in component_probe, do not forget to reinit the
-regcache, otherwise the cache can get out of sync with the part's
-actual state. This fix is similar to commit 0a0342ede303
-("ASoC: tas2770: Reinit regcache on reset") which concerned the
-tas2770 driver.
+IRQ handling was added in commit dae191fb957f ("ASoC: tas2764: Add IRQ
+handling") however that same commit masks all interrupts coming from
+the chip. Unmask the "main" interrupts so that we can see and
+deal with a number of errors including clock, voltage, and current.
 
-Fixes: 827ed8a0fa50 ("ASoC: tas2764: Add the driver for the TAS2764")
+Fixes: dae191fb957f ("ASoC: tas2764: Add IRQ handling")
 Reviewed-by: Neal Gompa <neal@gompa.dev>
-Signed-off-by: Martin Povišer <povik+lin@cutebit.org>
+Signed-off-by: Hector Martin <marcan@marcan.st>
 Signed-off-by: James Calligeros <jcalligeros99@gmail.com>
-Link: https://patch.msgid.link/20250406-apple-codec-changes-v5-3-50a00ec850a3@gmail.com
+Link: https://patch.msgid.link/20250406-apple-codec-changes-v5-4-50a00ec850a3@gmail.com
 Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/codecs/tas2764.c | 3 +++
- 1 file changed, 3 insertions(+)
+ sound/soc/codecs/tas2764.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/sound/soc/codecs/tas2764.c b/sound/soc/codecs/tas2764.c
-index 08aa7ee342568..49b73b74b2d9d 100644
+index 49b73b74b2d9d..fbfe4d032df7b 100644
 --- a/sound/soc/codecs/tas2764.c
 +++ b/sound/soc/codecs/tas2764.c
-@@ -546,6 +546,8 @@ static uint8_t sn012776_bop_presets[] = {
- 	0x06, 0x3e, 0x37, 0x30, 0xff, 0xe6
- };
- 
-+static const struct regmap_config tas2764_i2c_regmap;
-+
- static int tas2764_codec_probe(struct snd_soc_component *component)
- {
- 	struct tas2764_priv *tas2764 = snd_soc_component_get_drvdata(component);
-@@ -559,6 +561,7 @@ static int tas2764_codec_probe(struct snd_soc_component *component)
- 	}
- 
- 	tas2764_reset(tas2764);
-+	regmap_reinit_cache(tas2764->regmap, &tas2764_i2c_regmap);
+@@ -564,7 +564,7 @@ static int tas2764_codec_probe(struct snd_soc_component *component)
+ 	regmap_reinit_cache(tas2764->regmap, &tas2764_i2c_regmap);
  
  	if (tas2764->irq) {
- 		ret = snd_soc_component_write(tas2764->component, TAS2764_INT_MASK0, 0xff);
+-		ret = snd_soc_component_write(tas2764->component, TAS2764_INT_MASK0, 0xff);
++		ret = snd_soc_component_write(tas2764->component, TAS2764_INT_MASK0, 0x00);
+ 		if (ret < 0)
+ 			return ret;
+ 
 -- 
 2.39.5
 
