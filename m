@@ -1,54 +1,81 @@
-Return-Path: <stable+bounces-153824-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153840-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 38B6DADD724
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:41:46 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D36A1ADD699
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:35:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5E800189787F
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:26:06 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CF4032C3516
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:26:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E4BD92ED856;
-	Tue, 17 Jun 2025 16:20:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 797A7285053;
+	Tue, 17 Jun 2025 16:21:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oyZQMp7r"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RXONdyWX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F8F722FF2B;
-	Tue, 17 Jun 2025 16:20:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B93F235071;
+	Tue, 17 Jun 2025 16:21:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750177216; cv=none; b=lK5ERYG9SscT7Lfq1BaK4f6Cs06xm/g4Swn1nNedvtXQmaZXOmtlhiPfNU1nrPKbyzJ8AafITMIUpvVdkneAx5jGV5pSWkTiNoWh+AB3qi79c4Ug5ODGRxV9s7EUuOqplpFZOBspVL0WaChiqSUUIqJytF/28lgkTQGWYQzm6ts=
+	t=1750177268; cv=none; b=j8Geie0CWZTy+bURK/Q9BZLAnRUUVdKCfv1yvkYg7+n3f3wcLA/Kk/I/+6x3495CODjlb5kosSmnswBFGbJw2VQzvO0CV4ZBDUfrd81qFAu8FuJv6r1DGc3oSP5863L+7ov+pKcp+H1l5/J4EYn9cRocPyNrCCAlQyJzEFwTuD4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750177216; c=relaxed/simple;
-	bh=Yt8QUY3ogpF68k5OAyZZHEKqQXDhW8Xq5eiUhfuF4HE=;
+	s=arc-20240116; t=1750177268; c=relaxed/simple;
+	bh=s6hvmo/MHvveAowtmfmbS+yemRNjBrS/ci8HUdPHP2g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KcJIpVeala7rI3+psQSvrUsvhxNKXO7lMc4mKAyEzsAr2M/SiDxmpzmcM4u3fr4PoJwzOmT8BEEBkJDAufsGkelWZPwUbfCH/C1vUw/18v8M1Rv2/q2LDLURYJjP0Fan/2tdsWbcy5iPG9lOwdf/c1o6E6eTftZDS5Q4QNP3vyk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oyZQMp7r; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3527C4CEE3;
-	Tue, 17 Jun 2025 16:20:14 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Oifvsrt68NdJYpogbo0thHP3uUZzBnhb7UHfTvNFbDuxYjIDJZluhj2cmpFn6mKThQV2nkEe1fMxewYjjZ/BJYOQ9DbEmRQ6XDU0OtuJw9oEGcAqU65KBVohky0YRco8/muielYOEV7N+5HR/TqH1NsHc7Rsb5qNJHSeWLRg4Zo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RXONdyWX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA6E7C4CEE3;
+	Tue, 17 Jun 2025 16:21:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750177215;
-	bh=Yt8QUY3ogpF68k5OAyZZHEKqQXDhW8Xq5eiUhfuF4HE=;
+	s=korg; t=1750177268;
+	bh=s6hvmo/MHvveAowtmfmbS+yemRNjBrS/ci8HUdPHP2g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oyZQMp7rr6fkZ/0aHYgxuQmKf/qpDCdCpU7h+lz/BG9WQNQx/zD+6wcx2N1BL/hGr
-	 7jIbNkYZ2KvmKbGqNGTJF1RgzHIL3RvIaaUMltpiFLy8okK9wWq7gINHP4fhlOrr/d
-	 o7GOFx5hNSoyDoH2YH6N27yWC/T6AtBbek2rvpaM=
+	b=RXONdyWXt5qNjdz8OIUEYM76VQFOKEvfjF0OOjoELkxsO6gFQbfVWwZ87I9qdSIpE
+	 F0DvaZlZCjTmQ6ikBjoybRgJzkF3fbZa+rcJOuxmCB++yvq6YU9k72vLzllIQn6jEa
+	 FggHfdaaWOjFeehRZrGAjknPNIQGXSgc7uAC7iio=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jason-JH Lin <jason-jh.lin@mediatek.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Jassi Brar <jassisinghbrar@gmail.com>,
+	Ian Rogers <irogers@google.com>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Gary Guo <gary@garyguo.net>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>,
+	Howard Chu <howardchu95@gmail.com>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Dmitry Vyukov <dvyukov@google.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Weilin Wang <weilin.wang@intel.com>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Arnaldo Carvalho de Melo <acme@kernel.org>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Namhyung Kim <namhyung@kernel.org>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	James Clark <james.clark@linaro.org>,
+	Jiapeng Chong <jiapeng.chong@linux.alibaba.com>,
+	Andi Kleen <ak@linux.intel.com>,
+	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+	Kan Liang <kan.liang@linux.intel.com>,
+	Stephen Brennan <stephen.s.brennan@oracle.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	Ingo Molnar <mingo@redhat.com>,
+	Trevor Gross <tmgross@umich.edu>,
+	linux-kernel@vger.kernel.org,
+	linux-perf-users@vger.kernel.org,
+	Arnaldo Carvalho de Melo <acme@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 296/512] mailbox: mtk-cmdq: Refine GCE_GCTL_VALUE setting
-Date: Tue, 17 Jun 2025 17:24:22 +0200
-Message-ID: <20250617152431.590983353@linuxfoundation.org>
+Subject: [PATCH 6.12 297/512] perf symbol: Fix use-after-free in filename__read_build_id
+Date: Tue, 17 Jun 2025 17:24:23 +0200
+Message-ID: <20250617152431.630745004@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
 References: <20250617152419.512865572@linuxfoundation.org>
@@ -61,148 +88,292 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jason-JH Lin <jason-jh.lin@mediatek.com>
+From: Ian Rogers <irogers@google.com>
 
-[ Upstream commit 9fcebcb37c3e0a4b6eb40768cc5a5faebf166fbe ]
+[ Upstream commit fef8f648bb47726d96a5701fe31ed606268da73d ]
 
-Add cmdq_gctl_value_toggle() to configure GCE_CTRL_BY_SW and GCE_DDR_EN
-together in the same GCE_GCTL_VALUE register.
+The same buf is used for the program headers and reading notes. As the
+notes memory may be reallocated then this corrupts the memory pointed
+to by the phdr. Using the same buffer is in any case a logic
+error. Rather than deal with the duplicated code, introduce an elf32
+boolean and a union for either the elf32 or elf64 headers that are in
+use. Let the program headers have their own memory and grow the buffer
+for notes as necessary.
 
-For the SoCs whose GCE is located in MMINFRA and uses MMINFRA_AO power,
-this allows it to be written without enabling the clocks. Otherwise, all
-GCE registers should be written after the GCE clocks are enabled.
-Move this function into cmdq_runtime_resume() and cmdq_runtime_suspend()
-to ensure it is called when the GCE clock is enabled.
+Before `perf list -j` compiled with asan would crash with:
+```
+==4176189==ERROR: AddressSanitizer: heap-use-after-free on address 0x5160000070b8 at pc 0x555d3b15075b bp 0x7ffebb5a8090 sp 0x7ffebb5a8088
+READ of size 8 at 0x5160000070b8 thread T0
+    #0 0x555d3b15075a in filename__read_build_id tools/perf/util/symbol-minimal.c:212:25
+    #1 0x555d3ae43aff in filename__sprintf_build_id tools/perf/util/build-id.c:110:8
+...
 
-Fixes: 7abd037aa581 ("mailbox: mtk-cmdq: add gce ddr enable support flow")
-Signed-off-by: Jason-JH Lin <jason-jh.lin@mediatek.com>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Signed-off-by: Jassi Brar <jassisinghbrar@gmail.com>
+0x5160000070b8 is located 312 bytes inside of 560-byte region [0x516000006f80,0x5160000071b0)
+freed by thread T0 here:
+    #0 0x555d3ab21840 in realloc (perf+0x264840) (BuildId: 12dff2f6629f738e5012abdf0e90055518e70b5e)
+    #1 0x555d3b1506e7 in filename__read_build_id tools/perf/util/symbol-minimal.c:206:11
+...
+
+previously allocated by thread T0 here:
+    #0 0x555d3ab21423 in malloc (perf+0x264423) (BuildId: 12dff2f6629f738e5012abdf0e90055518e70b5e)
+    #1 0x555d3b1503a2 in filename__read_build_id tools/perf/util/symbol-minimal.c:182:9
+...
+```
+
+Note: this bug is long standing and not introduced by the other asan
+fix in commit fa9c4977fbfb ("perf symbol-minimal: Fix double free in
+filename__read_build_id").
+
+Fixes: b691f64360ecec49 ("perf symbols: Implement poor man's ELF parser")
+Signed-off-by: Ian Rogers <irogers@google.com>
+Link: https://lore.kernel.org/r/20250528032637.198960-2-irogers@google.com
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Gary Guo <gary@garyguo.net>
+Cc: Alex Gaynor <alex.gaynor@gmail.com>
+Cc: Boqun Feng <boqun.feng@gmail.com>
+Cc: Howard Chu <howardchu95@gmail.com>
+Cc: Alice Ryhl <aliceryhl@google.com>
+Cc: Dmitry Vyukov <dvyukov@google.com>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Adrian Hunter <adrian.hunter@intel.com>
+Cc: Weilin Wang <weilin.wang@intel.com>
+Cc: Andreas Hindborg <a.hindborg@kernel.org>
+Cc: Arnaldo Carvalho de Melo <acme@kernel.org>
+Cc: Danilo Krummrich <dakr@kernel.org>
+Cc: Jiri Olsa <jolsa@kernel.org>
+Cc: Namhyung Kim <namhyung@kernel.org>
+Cc: Miguel Ojeda <ojeda@kernel.org>
+Cc: James Clark <james.clark@linaro.org>
+Cc: Jiapeng Chong <jiapeng.chong@linux.alibaba.com>
+Cc: Andi Kleen <ak@linux.intel.com>
+Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
+Cc: Kan Liang <kan.liang@linux.intel.com>
+Cc: Stephen Brennan <stephen.s.brennan@oracle.com>
+Cc: Benno Lossin <benno.lossin@proton.me>
+Cc: Björn Roy Baron <bjorn3_gh@protonmail.com>
+Cc: Ingo Molnar <mingo@redhat.com>
+Cc: Trevor Gross <tmgross@umich.edu>
+Cc: linux-kernel@vger.kernel.org
+Cc: linux-perf-users@vger.kernel.org
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mailbox/mtk-cmdq-mailbox.c | 51 +++++++++++++-----------------
- 1 file changed, 22 insertions(+), 29 deletions(-)
+ tools/perf/util/symbol-minimal.c | 168 +++++++++++++------------------
+ 1 file changed, 70 insertions(+), 98 deletions(-)
 
-diff --git a/drivers/mailbox/mtk-cmdq-mailbox.c b/drivers/mailbox/mtk-cmdq-mailbox.c
-index 9c43ed9bdd37b..d24f71819c3d6 100644
---- a/drivers/mailbox/mtk-cmdq-mailbox.c
-+++ b/drivers/mailbox/mtk-cmdq-mailbox.c
-@@ -92,18 +92,6 @@ struct gce_plat {
- 	u32 gce_num;
- };
- 
--static void cmdq_sw_ddr_enable(struct cmdq *cmdq, bool enable)
--{
--	WARN_ON(clk_bulk_enable(cmdq->pdata->gce_num, cmdq->clocks));
--
--	if (enable)
--		writel(GCE_DDR_EN | GCE_CTRL_BY_SW, cmdq->base + GCE_GCTL_VALUE);
--	else
--		writel(GCE_CTRL_BY_SW, cmdq->base + GCE_GCTL_VALUE);
--
--	clk_bulk_disable(cmdq->pdata->gce_num, cmdq->clocks);
--}
--
- u8 cmdq_get_shift_pa(struct mbox_chan *chan)
+diff --git a/tools/perf/util/symbol-minimal.c b/tools/perf/util/symbol-minimal.c
+index d8da3da01fe6b..36c1d3090689f 100644
+--- a/tools/perf/util/symbol-minimal.c
++++ b/tools/perf/util/symbol-minimal.c
+@@ -90,11 +90,23 @@ int filename__read_build_id(const char *filename, struct build_id *bid)
  {
- 	struct cmdq *cmdq = container_of(chan->mbox, struct cmdq, mbox);
-@@ -112,6 +100,19 @@ u8 cmdq_get_shift_pa(struct mbox_chan *chan)
- }
- EXPORT_SYMBOL(cmdq_get_shift_pa);
- 
-+static void cmdq_gctl_value_toggle(struct cmdq *cmdq, bool ddr_enable)
-+{
-+	u32 val = cmdq->pdata->control_by_sw ? GCE_CTRL_BY_SW : 0;
-+
-+	if (!cmdq->pdata->control_by_sw && !cmdq->pdata->sw_ddr_en)
-+		return;
-+
-+	if (cmdq->pdata->sw_ddr_en && ddr_enable)
-+		val |= GCE_DDR_EN;
-+
-+	writel(val, cmdq->base + GCE_GCTL_VALUE);
-+}
-+
- static int cmdq_thread_suspend(struct cmdq *cmdq, struct cmdq_thread *thread)
- {
- 	u32 status;
-@@ -140,16 +141,10 @@ static void cmdq_thread_resume(struct cmdq_thread *thread)
- static void cmdq_init(struct cmdq *cmdq)
- {
+ 	FILE *fp;
+ 	int ret = -1;
+-	bool need_swap = false;
++	bool need_swap = false, elf32;
+ 	u8 e_ident[EI_NIDENT];
+-	size_t buf_size;
+-	void *buf;
  	int i;
--	u32 gctl_regval = 0;
++	union {
++		struct {
++			Elf32_Ehdr ehdr32;
++			Elf32_Phdr *phdr32;
++		};
++		struct {
++			Elf64_Ehdr ehdr64;
++			Elf64_Phdr *phdr64;
++		};
++	} hdrs;
++	void *phdr;
++	size_t phdr_size;
++	void *buf = NULL;
++	size_t buf_size = 0;
  
- 	WARN_ON(clk_bulk_enable(cmdq->pdata->gce_num, cmdq->clocks));
--	if (cmdq->pdata->control_by_sw)
--		gctl_regval = GCE_CTRL_BY_SW;
--	if (cmdq->pdata->sw_ddr_en)
--		gctl_regval |= GCE_DDR_EN;
+ 	fp = fopen(filename, "r");
+ 	if (fp == NULL)
+@@ -108,119 +120,79 @@ int filename__read_build_id(const char *filename, struct build_id *bid)
+ 		goto out;
  
--	if (gctl_regval)
--		writel(gctl_regval, cmdq->base + GCE_GCTL_VALUE);
-+	cmdq_gctl_value_toggle(cmdq, true);
+ 	need_swap = check_need_swap(e_ident[EI_DATA]);
++	elf32 = e_ident[EI_CLASS] == ELFCLASS32;
  
- 	writel(CMDQ_THR_ACTIVE_SLOT_CYCLES, cmdq->base + CMDQ_THR_SLOT_CYCLES);
- 	for (i = 0; i <= CMDQ_MAX_EVENT; i++)
-@@ -315,14 +310,21 @@ static irqreturn_t cmdq_irq_handler(int irq, void *dev)
- static int cmdq_runtime_resume(struct device *dev)
- {
- 	struct cmdq *cmdq = dev_get_drvdata(dev);
-+	int ret;
- 
--	return clk_bulk_enable(cmdq->pdata->gce_num, cmdq->clocks);
-+	ret = clk_bulk_enable(cmdq->pdata->gce_num, cmdq->clocks);
-+	if (ret)
-+		return ret;
-+
-+	cmdq_gctl_value_toggle(cmdq, true);
-+	return 0;
- }
- 
- static int cmdq_runtime_suspend(struct device *dev)
- {
- 	struct cmdq *cmdq = dev_get_drvdata(dev);
- 
-+	cmdq_gctl_value_toggle(cmdq, false);
- 	clk_bulk_disable(cmdq->pdata->gce_num, cmdq->clocks);
- 	return 0;
- }
-@@ -347,9 +349,6 @@ static int cmdq_suspend(struct device *dev)
- 	if (task_running)
- 		dev_warn(dev, "exist running task(s) in suspend\n");
- 
--	if (cmdq->pdata->sw_ddr_en)
--		cmdq_sw_ddr_enable(cmdq, false);
+-	/* for simplicity */
+-	fseek(fp, 0, SEEK_SET);
 -
- 	return pm_runtime_force_suspend(dev);
- }
- 
-@@ -360,9 +359,6 @@ static int cmdq_resume(struct device *dev)
- 	WARN_ON(pm_runtime_force_resume(dev));
- 	cmdq->suspended = false;
- 
--	if (cmdq->pdata->sw_ddr_en)
--		cmdq_sw_ddr_enable(cmdq, true);
+-	if (e_ident[EI_CLASS] == ELFCLASS32) {
+-		Elf32_Ehdr ehdr;
+-		Elf32_Phdr *phdr;
 -
- 	return 0;
- }
+-		if (fread(&ehdr, sizeof(ehdr), 1, fp) != 1)
+-			goto out;
++	if (fread(elf32 ? (void *)&hdrs.ehdr32 : (void *)&hdrs.ehdr64,
++		  elf32 ? sizeof(hdrs.ehdr32) : sizeof(hdrs.ehdr64),
++		  1, fp) != 1)
++		goto out;
  
-@@ -370,9 +366,6 @@ static void cmdq_remove(struct platform_device *pdev)
- {
- 	struct cmdq *cmdq = platform_get_drvdata(pdev);
+-		if (need_swap) {
+-			ehdr.e_phoff = bswap_32(ehdr.e_phoff);
+-			ehdr.e_phentsize = bswap_16(ehdr.e_phentsize);
+-			ehdr.e_phnum = bswap_16(ehdr.e_phnum);
++	if (need_swap) {
++		if (elf32) {
++			hdrs.ehdr32.e_phoff = bswap_32(hdrs.ehdr32.e_phoff);
++			hdrs.ehdr32.e_phentsize = bswap_16(hdrs.ehdr32.e_phentsize);
++			hdrs.ehdr32.e_phnum = bswap_16(hdrs.ehdr32.e_phnum);
++		} else {
++			hdrs.ehdr64.e_phoff = bswap_64(hdrs.ehdr64.e_phoff);
++			hdrs.ehdr64.e_phentsize = bswap_16(hdrs.ehdr64.e_phentsize);
++			hdrs.ehdr64.e_phnum = bswap_16(hdrs.ehdr64.e_phnum);
+ 		}
++	}
++	phdr_size = elf32 ? hdrs.ehdr32.e_phentsize * hdrs.ehdr32.e_phnum
++			  : hdrs.ehdr64.e_phentsize * hdrs.ehdr64.e_phnum;
++	phdr = malloc(phdr_size);
++	if (phdr == NULL)
++		goto out;
  
--	if (cmdq->pdata->sw_ddr_en)
--		cmdq_sw_ddr_enable(cmdq, false);
+-		buf_size = ehdr.e_phentsize * ehdr.e_phnum;
+-		buf = malloc(buf_size);
+-		if (buf == NULL)
+-			goto out;
 -
- 	if (!IS_ENABLED(CONFIG_PM))
- 		cmdq_runtime_suspend(&pdev->dev);
+-		fseek(fp, ehdr.e_phoff, SEEK_SET);
+-		if (fread(buf, buf_size, 1, fp) != 1)
+-			goto out_free;
+-
+-		for (i = 0, phdr = buf; i < ehdr.e_phnum; i++, phdr++) {
+-			void *tmp;
+-			long offset;
+-
+-			if (need_swap) {
+-				phdr->p_type = bswap_32(phdr->p_type);
+-				phdr->p_offset = bswap_32(phdr->p_offset);
+-				phdr->p_filesz = bswap_32(phdr->p_filesz);
+-			}
+-
+-			if (phdr->p_type != PT_NOTE)
+-				continue;
+-
+-			offset = phdr->p_offset;
+-			if (phdr->p_filesz > buf_size) {
+-				buf_size = phdr->p_filesz;
+-				tmp = realloc(buf, buf_size);
+-				if (tmp == NULL)
+-					goto out_free;
+-				buf = tmp;
+-			}
+-			fseek(fp, offset, SEEK_SET);
+-			if (fread(buf, phdr->p_filesz, 1, fp) != 1)
+-				goto out_free;
++	fseek(fp, elf32 ? hdrs.ehdr32.e_phoff : hdrs.ehdr64.e_phoff, SEEK_SET);
++	if (fread(phdr, phdr_size, 1, fp) != 1)
++		goto out_free;
  
+-			ret = read_build_id(buf, phdr->p_filesz, bid, need_swap);
+-			if (ret == 0) {
+-				ret = bid->size;
+-				break;
+-			}
+-		}
+-	} else {
+-		Elf64_Ehdr ehdr;
+-		Elf64_Phdr *phdr;
++	if (elf32)
++		hdrs.phdr32 = phdr;
++	else
++		hdrs.phdr64 = phdr;
+ 
+-		if (fread(&ehdr, sizeof(ehdr), 1, fp) != 1)
+-			goto out;
++	for (i = 0; i < elf32 ? hdrs.ehdr32.e_phnum : hdrs.ehdr64.e_phnum; i++) {
++		size_t p_filesz;
+ 
+ 		if (need_swap) {
+-			ehdr.e_phoff = bswap_64(ehdr.e_phoff);
+-			ehdr.e_phentsize = bswap_16(ehdr.e_phentsize);
+-			ehdr.e_phnum = bswap_16(ehdr.e_phnum);
++			if (elf32) {
++				hdrs.phdr32[i].p_type = bswap_32(hdrs.phdr32[i].p_type);
++				hdrs.phdr32[i].p_offset = bswap_32(hdrs.phdr32[i].p_offset);
++				hdrs.phdr32[i].p_filesz = bswap_32(hdrs.phdr32[i].p_offset);
++			} else {
++				hdrs.phdr64[i].p_type = bswap_32(hdrs.phdr64[i].p_type);
++				hdrs.phdr64[i].p_offset = bswap_64(hdrs.phdr64[i].p_offset);
++				hdrs.phdr64[i].p_filesz = bswap_64(hdrs.phdr64[i].p_filesz);
++			}
+ 		}
++		if ((elf32 ? hdrs.phdr32[i].p_type : hdrs.phdr64[i].p_type) != PT_NOTE)
++			continue;
+ 
+-		buf_size = ehdr.e_phentsize * ehdr.e_phnum;
+-		buf = malloc(buf_size);
+-		if (buf == NULL)
+-			goto out;
+-
+-		fseek(fp, ehdr.e_phoff, SEEK_SET);
+-		if (fread(buf, buf_size, 1, fp) != 1)
+-			goto out_free;
+-
+-		for (i = 0, phdr = buf; i < ehdr.e_phnum; i++, phdr++) {
++		p_filesz = elf32 ? hdrs.phdr32[i].p_filesz : hdrs.phdr64[i].p_filesz;
++		if (p_filesz > buf_size) {
+ 			void *tmp;
+-			long offset;
+-
+-			if (need_swap) {
+-				phdr->p_type = bswap_32(phdr->p_type);
+-				phdr->p_offset = bswap_64(phdr->p_offset);
+-				phdr->p_filesz = bswap_64(phdr->p_filesz);
+-			}
+-
+-			if (phdr->p_type != PT_NOTE)
+-				continue;
+ 
+-			offset = phdr->p_offset;
+-			if (phdr->p_filesz > buf_size) {
+-				buf_size = phdr->p_filesz;
+-				tmp = realloc(buf, buf_size);
+-				if (tmp == NULL)
+-					goto out_free;
+-				buf = tmp;
+-			}
+-			fseek(fp, offset, SEEK_SET);
+-			if (fread(buf, phdr->p_filesz, 1, fp) != 1)
++			buf_size = p_filesz;
++			tmp = realloc(buf, buf_size);
++			if (tmp == NULL)
+ 				goto out_free;
++			buf = tmp;
++		}
++		fseek(fp, elf32 ? hdrs.phdr32[i].p_offset : hdrs.phdr64[i].p_offset, SEEK_SET);
++		if (fread(buf, p_filesz, 1, fp) != 1)
++			goto out_free;
+ 
+-			ret = read_build_id(buf, phdr->p_filesz, bid, need_swap);
+-			if (ret == 0) {
+-				ret = bid->size;
+-				break;
+-			}
++		ret = read_build_id(buf, p_filesz, bid, need_swap);
++		if (ret == 0) {
++			ret = bid->size;
++			break;
+ 		}
+ 	}
+ out_free:
+ 	free(buf);
++	free(phdr);
+ out:
+ 	fclose(fp);
+ 	return ret;
 -- 
 2.39.5
 
