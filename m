@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-154162-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153774-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EB7C6ADD89D
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:57:44 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A2B4ADD67B
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:34:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A3DF62C783A
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:43:52 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3A0C32C4BEC
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:23:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF0BD20C001;
-	Tue, 17 Jun 2025 16:38:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4F8D2EA144;
+	Tue, 17 Jun 2025 16:17:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Wf4vhOoC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SmNQbb3K"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA66323A9B3;
-	Tue, 17 Jun 2025 16:38:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F54B2EA147;
+	Tue, 17 Jun 2025 16:17:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750178301; cv=none; b=B5J6Zy9KA0066H9YOq4kcWU6SAAhVAGGRJaFkEcpoMItcegl9II0Y/Y1CIjWljVzwvA4lSgMdYT+1tVuX6I2aRlcvhMMFKmz6H3TAfKsMnjZX6ANNlKaIBcjLHc+5BlSxZ7+v8P9L+BeiBuRrETrSrtNWlUHnOayGzT2uLPQccw=
+	t=1750177055; cv=none; b=CqPVPSkhjOj+GZNZh/UOzNix+iqQstJWsiIoS3FvoxpPcLhJ3ixxPMtUUxEi9If5pgGdIqw0BKY4V1RHDc7REen+RkSdnygEsuoawUGnAZNyg6ojQq8ds6igkHcdiu5qmgYwg0OeD8UQOqoJsH7pmAEo63UUsh9DpsA2rJbSr2Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750178301; c=relaxed/simple;
-	bh=TG4Zg8nUig5u0tJhs9tNXmuinUOT2FSk/6WuTYc/2vQ=;
+	s=arc-20240116; t=1750177055; c=relaxed/simple;
+	bh=DSJCaVJ65dURo79OC2EpU+Xl8dvqi8j+YZVlCnolhmc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=edqMfeXUQFBjq6XAaSzSQpTvPL+fD0EppirWgN4YU+IkYEhiWjYM9OEYmt2DCfLXc4p6xfQ28XeA/9CkxvAGCCnBWWBarKYBKBZsoqQV2vQHLfPVyrM+IEo9ctKbrn5h9JSjHhjIHCBRgti96nWy6HpbAJzuY2gwWVfBvKJeqNw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Wf4vhOoC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C46DC4CEE3;
-	Tue, 17 Jun 2025 16:38:20 +0000 (UTC)
+	 MIME-Version; b=m9cGOy6jSzRGyPNCEI5Ppp+5V9xE/8Dp6UBNvqsBiNNvMDmGk2x3hFrJ4rNbkeh2uup3y2+v3utHYZTiXhGTl/y+7L6aX2/hF1jNaBPNHNJ+39pJjT4Ts6okKmw4dLecR62CgIT7c0KtfMMP6VEUALu1Qj8bxvISmUTWH11pdL8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SmNQbb3K; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74C9AC4CEE3;
+	Tue, 17 Jun 2025 16:17:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750178301;
-	bh=TG4Zg8nUig5u0tJhs9tNXmuinUOT2FSk/6WuTYc/2vQ=;
+	s=korg; t=1750177054;
+	bh=DSJCaVJ65dURo79OC2EpU+Xl8dvqi8j+YZVlCnolhmc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Wf4vhOoCqJZ2esHkxadpOlBHn3m29VZlkn+ZvWb1IblBzzafIi7iDyEohQTVJEXO0
-	 Ab6zL9x3Iyf+FHp70On1ESSz8dv96bmQcWFHfzaSZCPZTzdvQijH4PhjMukIVUfnKO
-	 RlJK3L8vvme/MItRjYmCZ3ZnwX5zmkmyG34EG7NA=
+	b=SmNQbb3Ke4mQONRytb8HptdJT9e/Ljycl2Mfo6ym1IAWf6soNKZC3EEvg2uMFffy+
+	 hQAFUmDa/ljmXrDmp5p96OjPEtTJwBmr4RzDAlObtu+blWFtt58fgUcO5arTY7neZU
+	 JAkKtBbfBRQSaJ3FtZFiCRS73Wamv/TO1sfJ8w8Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hannes Reinecke <hare@suse.de>,
-	Nilay Shroff <nilay@linux.ibm.com>,
-	Christoph Hellwig <hch@lst.de>,
-	Ming Lei <ming.lei@redhat.com>,
-	Jens Axboe <axboe@kernel.dk>,
+	Gerrard Tai <gerrard.tai@starlabs.sg>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 476/512] block: use q->elevator with ->elevator_lock held in elv_iosched_show()
+Subject: [PATCH 6.6 327/356] net_sched: prio: fix a race in prio_tune()
 Date: Tue, 17 Jun 2025 17:27:22 +0200
-Message-ID: <20250617152438.868820045@linuxfoundation.org>
+Message-ID: <20250617152351.312150156@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
-References: <20250617152419.512865572@linuxfoundation.org>
+In-Reply-To: <20250617152338.212798615@linuxfoundation.org>
+References: <20250617152338.212798615@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,50 +63,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ming Lei <ming.lei@redhat.com>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit 94209d27d14104ed828ca88cd5403a99162fe51a ]
+[ Upstream commit d35acc1be3480505b5931f17e4ea9b7617fea4d3 ]
 
-Use q->elevator with ->elevator_lock held in elv_iosched_show(), since
-the local cached elevator reference may become stale after getting
-->elevator_lock.
+Gerrard Tai reported a race condition in PRIO, whenever SFQ perturb timer
+fires at the wrong time.
 
-Reviewed-by: Hannes Reinecke <hare@suse.de>
-Reviewed-by: Nilay Shroff <nilay@linux.ibm.com>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Ming Lei <ming.lei@redhat.com>
-Link: https://lore.kernel.org/r/20250505141805.2751237-5-ming.lei@redhat.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+The race is as follows:
+
+CPU 0                                 CPU 1
+[1]: lock root
+[2]: qdisc_tree_flush_backlog()
+[3]: unlock root
+ |
+ |                                    [5]: lock root
+ |                                    [6]: rehash
+ |                                    [7]: qdisc_tree_reduce_backlog()
+ |
+[4]: qdisc_put()
+
+This can be abused to underflow a parent's qlen.
+
+Calling qdisc_purge_queue() instead of qdisc_tree_flush_backlog()
+should fix the race, because all packets will be purged from the qdisc
+before releasing the lock.
+
+Fixes: 7b8e0b6e6599 ("net: sched: prio: delay destroying child qdiscs on change")
+Reported-by: Gerrard Tai <gerrard.tai@starlabs.sg>
+Suggested-by: Gerrard Tai <gerrard.tai@starlabs.sg>
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Link: https://patch.msgid.link/20250611111515.1983366-2-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- block/elevator.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ net/sched/sch_prio.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/block/elevator.c b/block/elevator.c
-index 43ba4ab1ada7f..1f76e9efd7717 100644
---- a/block/elevator.c
-+++ b/block/elevator.c
-@@ -752,7 +752,6 @@ ssize_t elv_iosched_store(struct gendisk *disk, const char *buf,
- ssize_t elv_iosched_show(struct gendisk *disk, char *name)
- {
- 	struct request_queue *q = disk->queue;
--	struct elevator_queue *eq = q->elevator;
- 	struct elevator_type *cur = NULL, *e;
- 	int len = 0;
+diff --git a/net/sched/sch_prio.c b/net/sched/sch_prio.c
+index fdc5ef52c3ee9..fdd9caa41e80f 100644
+--- a/net/sched/sch_prio.c
++++ b/net/sched/sch_prio.c
+@@ -211,7 +211,7 @@ static int prio_tune(struct Qdisc *sch, struct nlattr *opt,
+ 	memcpy(q->prio2band, qopt->priomap, TC_PRIO_MAX+1);
  
-@@ -763,7 +762,7 @@ ssize_t elv_iosched_show(struct gendisk *disk, char *name)
- 		len += sprintf(name+len, "[none] ");
- 	} else {
- 		len += sprintf(name+len, "none ");
--		cur = eq->type;
-+		cur = q->elevator->type;
- 	}
+ 	for (i = q->bands; i < oldbands; i++)
+-		qdisc_tree_flush_backlog(q->queues[i]);
++		qdisc_purge_queue(q->queues[i]);
  
- 	spin_lock(&elv_list_lock);
+ 	for (i = oldbands; i < q->bands; i++) {
+ 		q->queues[i] = queues[i];
 -- 
 2.39.5
 
