@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-154138-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-154465-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 16D51ADD854
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:54:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DC47BADDA49
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 19:16:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 853FF3B6762
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:42:55 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C37B03BF85F
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:55:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6BC5B2ED17C;
-	Tue, 17 Jun 2025 16:37:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CAC4422DF80;
+	Tue, 17 Jun 2025 16:54:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZsyWuksB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CVWElEea"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 293811A5B9D;
-	Tue, 17 Jun 2025 16:37:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EC56221F14;
+	Tue, 17 Jun 2025 16:54:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750178223; cv=none; b=tIkKMm7uBPk3M+jQZWf7Spi6u98QFjSO5ZdFI65BbjblWY65q2z8v5z0BqSyHiGWRuFL3xgkiaTAAcTwMl/9/B2tImSsQDe0XhFuwTOUYbsUi53CQyL0uUnTyIIB8/nBZhicsUmJTAgI+3lEwbLhtBj+o175hDp7eRFZvddv/0c=
+	t=1750179274; cv=none; b=sJnLs4Wwo2MlUr/s1o/txjvAYzdIv5/ViatbYXndAQknsilBXVnad1bc6F+9gBSbfLdRnImz5oNnD77QDzFDbRpQtBstYW8DsWnJfJCaRbh6smtsytf1eERlFCZYwaRiqdMwHqszJQtq76o3CmZZ4gNvVOSLlAe8iTzsCg8wzxE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750178223; c=relaxed/simple;
-	bh=w9zD2uE2GgjJi1PAL9otV9V895iA8/LoXkl54HwEM2o=;
+	s=arc-20240116; t=1750179274; c=relaxed/simple;
+	bh=i5L2lCCUos5cjimQZHehqJ0Z+YkL2JjQl5Yq4Gul5UU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=SuY6yYjs/9uVWqbwhtDL0iuSP5gf15m7lJ+RzcgKayJaAEm0L7zBuY58Tl8TiywT95RaVJK6CBVomHa4lWIt+2P4Z+jsD1nS5Ll4NKY2LZzN/4mLZ0iEBtjXZ+EopybeEWwhWR57K6twarV+Bbzlvz886gtZNsNnExvB7cp7zk0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZsyWuksB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98418C4CEE3;
-	Tue, 17 Jun 2025 16:37:02 +0000 (UTC)
+	 MIME-Version; b=lpup32ET7HC8b5FFt7HGOZ0K+XDJ6+Fv7qC5n/mFXDJaEji+e0mKnO97wLJ0zEV7aAIrmcsBBN9lnhB8NgAZ9MHg9a/DD416uIoHVKYgzTjMBsXqe4GinzWDigU0yuXMSMadJ1mRQqxNikJ67RF6sluHt1jjEzifWoj2XgNZUiA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CVWElEea; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1C3BC4CEE3;
+	Tue, 17 Jun 2025 16:54:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750178223;
-	bh=w9zD2uE2GgjJi1PAL9otV9V895iA8/LoXkl54HwEM2o=;
+	s=korg; t=1750179274;
+	bh=i5L2lCCUos5cjimQZHehqJ0Z+YkL2JjQl5Yq4Gul5UU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZsyWuksBdgPrrQkdUsJhdpH1Fcnp2qrlP/VteH7bxauzIeK4xd/RPeQoPu0MruWt6
-	 6G96Fwu/wqbRGQIuyrt5/Pmii13J9Y0n0GR/SwZM5ox2Aw2xF55fZvTFVoTpIDrF0H
-	 mmC9+H1848LE5Hn475SuVtMCjGQO/1pKGIkwR250=
+	b=CVWElEeaX4WjfzZZrA9rR1O35lZgRrYQcmhOdpt/YOn4foq+5U+fTlZicBvkZCsmg
+	 zz6HiwvTQjZRY9YRXhPblY7PVuzM1vdDt7D5ciYIs5oAuK6OkwSVUwJ/IOyURelozJ
+	 ODHY37uNCeuGlXzN8gA37AHkYPmWSIRurgolNp1s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marcus Wichelmann <marcus.wichelmann@hetzner-cloud.de>,
-	Eric Dumazet <edumazet@google.com>,
-	=?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>,
+	Jakub Sitnicki <jakub@cloudflare.com>,
+	Michal Luczaj <mhal@rbox.co>,
+	Willem de Bruijn <willemb@google.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 442/512] net_sched: sch_sfq: fix a potential crash on gso_skb handling
+Subject: [PATCH 6.15 700/780] net: Fix TOCTOU issue in sk_is_readable()
 Date: Tue, 17 Jun 2025 17:26:48 +0200
-Message-ID: <20250617152437.475710833@linuxfoundation.org>
+Message-ID: <20250617152520.000913353@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
-References: <20250617152419.512865572@linuxfoundation.org>
+In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
+References: <20250617152451.485330293@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,72 +62,56 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Michal Luczaj <mhal@rbox.co>
 
-[ Upstream commit 82ffbe7776d0ac084031f114167712269bf3d832 ]
+[ Upstream commit 2660a544fdc0940bba15f70508a46cf9a6491230 ]
 
-SFQ has an assumption of always being able to queue at least one packet.
+sk->sk_prot->sock_is_readable is a valid function pointer when sk resides
+in a sockmap. After the last sk_psock_put() (which usually happens when
+socket is removed from sockmap), sk->sk_prot gets restored and
+sk->sk_prot->sock_is_readable becomes NULL.
 
-However, after the blamed commit, sch->q.len can be inflated by packets
-in sch->gso_skb, and an enqueue() on an empty SFQ qdisc can be followed
-by an immediate drop.
+This makes sk_is_readable() racy, if the value of sk->sk_prot is reloaded
+after the initial check. Which in turn may lead to a null pointer
+dereference.
 
-Fix sfq_drop() to properly clear q->tail in this situation.
+Ensure the function pointer does not turn NULL after the check.
 
-Tested:
-
-ip netns add lb
-ip link add dev to-lb type veth peer name in-lb netns lb
-ethtool -K to-lb tso off                 # force qdisc to requeue gso_skb
-ip netns exec lb ethtool -K in-lb gro on # enable NAPI
-ip link set dev to-lb up
-ip -netns lb link set dev in-lb up
-ip addr add dev to-lb 192.168.20.1/24
-ip -netns lb addr add dev in-lb 192.168.20.2/24
-tc qdisc replace dev to-lb root sfq limit 100
-
-ip netns exec lb netserver
-
-netperf -H 192.168.20.2 -l 100 &
-netperf -H 192.168.20.2 -l 100 &
-netperf -H 192.168.20.2 -l 100 &
-netperf -H 192.168.20.2 -l 100 &
-
-Fixes: a53851e2c321 ("net: sched: explicit locking in gso_cpu fallback")
-Reported-by: Marcus Wichelmann <marcus.wichelmann@hetzner-cloud.de>
-Closes: https://lore.kernel.org/netdev/9da42688-bfaa-4364-8797-e9271f3bdaef@hetzner-cloud.de/
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Toke Høiland-Jørgensen <toke@redhat.com>
-Link: https://patch.msgid.link/20250606165127.3629486-1-edumazet@google.com
+Fixes: 8934ce2fd081 ("bpf: sockmap redirect ingress support")
+Suggested-by: Jakub Sitnicki <jakub@cloudflare.com>
+Signed-off-by: Michal Luczaj <mhal@rbox.co>
+Reviewed-by: Willem de Bruijn <willemb@google.com>
+Link: https://patch.msgid.link/20250609-skisreadable-toctou-v1-1-d0dfb2d62c37@rbox.co
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sched/sch_sfq.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ include/net/sock.h | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/net/sched/sch_sfq.c b/net/sched/sch_sfq.c
-index 58b42dcf8f201..a903b3c468050 100644
---- a/net/sched/sch_sfq.c
-+++ b/net/sched/sch_sfq.c
-@@ -310,7 +310,10 @@ static unsigned int sfq_drop(struct Qdisc *sch, struct sk_buff **to_free)
- 		/* It is difficult to believe, but ALL THE SLOTS HAVE LENGTH 1. */
- 		x = q->tail->next;
- 		slot = &q->slots[x];
--		q->tail->next = slot->next;
-+		if (slot->next == x)
-+			q->tail = NULL; /* no more active slots */
-+		else
-+			q->tail->next = slot->next;
- 		q->ht[slot->hash] = SFQ_EMPTY_SLOT;
- 		goto drop;
- 	}
+diff --git a/include/net/sock.h b/include/net/sock.h
+index 694f954258d43..99470c6d24de8 100644
+--- a/include/net/sock.h
++++ b/include/net/sock.h
+@@ -2978,8 +2978,11 @@ int sock_ioctl_inout(struct sock *sk, unsigned int cmd,
+ int sk_ioctl(struct sock *sk, unsigned int cmd, void __user *arg);
+ static inline bool sk_is_readable(struct sock *sk)
+ {
+-	if (sk->sk_prot->sock_is_readable)
+-		return sk->sk_prot->sock_is_readable(sk);
++	const struct proto *prot = READ_ONCE(sk->sk_prot);
++
++	if (prot->sock_is_readable)
++		return prot->sock_is_readable(sk);
++
+ 	return false;
+ }
+ #endif	/* _SOCK_H */
 -- 
 2.39.5
 
