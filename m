@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-154153-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-154494-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 39BC2ADD755
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:43:49 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 02318ADD991
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 19:07:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 082507A02F4
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:42:19 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5CC8C17F24D
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:56:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 97CBA2EE263;
-	Tue, 17 Jun 2025 16:37:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D7B7B2FA62C;
+	Tue, 17 Jun 2025 16:56:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t/aJRhKO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c1wtdq4I"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54BFC2EA16C;
-	Tue, 17 Jun 2025 16:37:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92DED2FA622;
+	Tue, 17 Jun 2025 16:56:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750178272; cv=none; b=F2zGB7lqbYQljoSpjIAg3deu+Ermz0/uFA/WjCaDQMpbxt7NvxDKlZ4CE4F0vAkgNsEweaI7wFNhydPTNXgcSmZH7XIDcf2wPdyfp9i7+Zm8WxAFR6XBabAQNAbRB1mGQQKX/Va+22MyyrU/TPveraemBSHz9OrmLHbP2r9Wbrc=
+	t=1750179388; cv=none; b=XsZRS0w8hptzoms05KI2l9rEA8etkC4M00CPhVOvMcEj4TRfrNds1fPSzaDMf9L1R5khDxt2smIqowGEz4JBO2e514xsJZQ8gowNaI5p7ZkYVGFg06cy6PUZImlI1nMdaVzhi0+fq/nDY/zH9H4+VSS2IB6FavXRIJHXq/mNKOU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750178272; c=relaxed/simple;
-	bh=7kmcx2x+L6NMREY7++d38Sayl8p2dA909KHzuXCxdh8=;
+	s=arc-20240116; t=1750179388; c=relaxed/simple;
+	bh=AOEsaim+GaWkdGtqHKt9UJaboL7Udg2IlwA41nqH6J4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nsDgezO0GVOGDIVuhUjKptFtHmR3+U51mCX5rOpheH+hNv5dTQt2C8FVruRna76nJch1c/tzTw8YGqcn+t4abQPtt/EwuyrXmtfPt97AqpgxJGvygZbBQjv5azn/poeWMmQcDJB1LoqRcON9Bhs7s6XC5jbWsl8hCw5HulBlaoI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t/aJRhKO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0C86C4CEE3;
-	Tue, 17 Jun 2025 16:37:51 +0000 (UTC)
+	 MIME-Version; b=VHg7E18ONAhhcOHFepE28Z6nkT52ySShErzMgWJvZ8h6OMMaKTAfb8Sd2XCWmEX6X0S8vlYAW7kUw4T0lq18a1vfDtuMMQ6q+pYtYwbqvHbDVUxaaORWx7GCDCRpbMKLcG+Gi13oH7Fin29/GujCbBMmkr9kqD6z2Enc7cuNn7Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c1wtdq4I; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19AE9C4CEE3;
+	Tue, 17 Jun 2025 16:56:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750178272;
-	bh=7kmcx2x+L6NMREY7++d38Sayl8p2dA909KHzuXCxdh8=;
+	s=korg; t=1750179388;
+	bh=AOEsaim+GaWkdGtqHKt9UJaboL7Udg2IlwA41nqH6J4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=t/aJRhKOboZllhlRbIYih7S4n9x5/4mKDYftZNg67WC6e1tQ71GZTQ1xtvhDoSBol
-	 cQjK+Hh38UFjxy+vmFdi9v8G+DYXnHTx55DP0+thaBS/YvgXgTIh680Zzc5jCYLrAo
-	 1e3T2K0kLH5MqwwkJrKA2+2Jr955KFOTAWVl+/kA=
+	b=c1wtdq4IoY9+nY7kcYFO2h1xhfv7NhRyn3m64HWtmS4aECPwSfuVizaOqHPjtH2cL
+	 YdvTyUSmmO0TilCmQUWSJFT4US1bz/cSjI9AcKjAQWUnEQZ8ptPFHuKYBxBwDFMLla
+	 lM+jZCEu/ar4VxFsc8N1igfnlPs4HiF3F2sBA0vw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christian Brauner <brauner@kernel.org>,
+	Pavel Begunkov <asml.silence@gmail.com>,
+	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 472/512] gfs2: pass through holder from the VFS for freeze/thaw
+Subject: [PATCH 6.15 730/780] io_uring: fix spurious drain flushing
 Date: Tue, 17 Jun 2025 17:27:18 +0200
-Message-ID: <20250617152438.704212468@linuxfoundation.org>
+Message-ID: <20250617152521.224111538@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
-References: <20250617152419.512865572@linuxfoundation.org>
+In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
+References: <20250617152451.485330293@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,99 +62,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christian Brauner <brauner@kernel.org>
+From: Pavel Begunkov <asml.silence@gmail.com>
 
-[ Upstream commit 62a2175ddf7e72941868f164b7c1f92e00f213bd ]
+[ Upstream commit fde04c7e2775feb0746301e0ef86a04d3598c3fe ]
 
-The filesystem's freeze/thaw functions can be called from contexts where
-the holder isn't userspace but the kernel, e.g., during systemd
-suspend/hibernate. So pass through the freeze/thaw flags from the VFS
-instead of hard-coding them.
+io_queue_deferred() is not tolerant to spurious calls not completing
+some requests. You can have an inflight drain-marked request and another
+request that came after and got queued into the drain list. Now, if
+io_queue_deferred() is called before the first request completes, it'll
+check the 2nd req with req_need_defer(), find that there is no drain
+flag set, and queue it for execution.
 
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+To make io_queue_deferred() work, it should at least check sequences for
+the first request, and then we need also need to check if there is
+another drain request creating another bubble.
+
+Signed-off-by: Pavel Begunkov <asml.silence@gmail.com>
+Link: https://lore.kernel.org/r/972bde11b7d4ef25b3f5e3fd34f80e4d2aa345b8.1746788718.git.asml.silence@gmail.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/gfs2/super.c | 14 ++++++++------
- 1 file changed, 8 insertions(+), 6 deletions(-)
+ io_uring/io_uring.c | 14 +++++++++++++-
+ 1 file changed, 13 insertions(+), 1 deletion(-)
 
-diff --git a/fs/gfs2/super.c b/fs/gfs2/super.c
-index 6d62ff5cb445a..5ecb857cf74e3 100644
---- a/fs/gfs2/super.c
-+++ b/fs/gfs2/super.c
-@@ -674,7 +674,7 @@ static int gfs2_sync_fs(struct super_block *sb, int wait)
- 	return sdp->sd_log_error;
+diff --git a/io_uring/io_uring.c b/io_uring/io_uring.c
+index edda31a15c6e6..9266d4f2016ad 100644
+--- a/io_uring/io_uring.c
++++ b/io_uring/io_uring.c
+@@ -537,18 +537,30 @@ void io_req_queue_iowq(struct io_kiocb *req)
+ 	io_req_task_work_add(req);
  }
  
--static int gfs2_do_thaw(struct gfs2_sbd *sdp)
-+static int gfs2_do_thaw(struct gfs2_sbd *sdp, enum freeze_holder who)
++static bool io_drain_defer_seq(struct io_kiocb *req, u32 seq)
++{
++	struct io_ring_ctx *ctx = req->ctx;
++
++	return seq + READ_ONCE(ctx->cq_extra) != ctx->cached_cq_tail;
++}
++
+ static __cold noinline void io_queue_deferred(struct io_ring_ctx *ctx)
  {
- 	struct super_block *sb = sdp->sd_vfs;
- 	int error;
-@@ -682,7 +682,7 @@ static int gfs2_do_thaw(struct gfs2_sbd *sdp)
- 	error = gfs2_freeze_lock_shared(sdp);
- 	if (error)
- 		goto fail;
--	error = thaw_super(sb, FREEZE_HOLDER_USERSPACE);
-+	error = thaw_super(sb, who);
- 	if (!error)
- 		return 0;
++	bool drain_seen = false, first = true;
++
+ 	spin_lock(&ctx->completion_lock);
+ 	while (!list_empty(&ctx->defer_list)) {
+ 		struct io_defer_entry *de = list_first_entry(&ctx->defer_list,
+ 						struct io_defer_entry, list);
  
-@@ -710,7 +710,7 @@ void gfs2_freeze_func(struct work_struct *work)
- 	gfs2_freeze_unlock(sdp);
- 	set_bit(SDF_FROZEN, &sdp->sd_flags);
- 
--	error = gfs2_do_thaw(sdp);
-+	error = gfs2_do_thaw(sdp, FREEZE_HOLDER_USERSPACE);
- 	if (error)
- 		goto out;
- 
-@@ -728,6 +728,7 @@ void gfs2_freeze_func(struct work_struct *work)
- /**
-  * gfs2_freeze_super - prevent further writes to the filesystem
-  * @sb: the VFS structure for the filesystem
-+ * @who: freeze flags
-  *
-  */
- 
-@@ -744,7 +745,7 @@ static int gfs2_freeze_super(struct super_block *sb, enum freeze_holder who)
- 	}
- 
- 	for (;;) {
--		error = freeze_super(sb, FREEZE_HOLDER_USERSPACE);
-+		error = freeze_super(sb, who);
- 		if (error) {
- 			fs_info(sdp, "GFS2: couldn't freeze filesystem: %d\n",
- 				error);
-@@ -758,7 +759,7 @@ static int gfs2_freeze_super(struct super_block *sb, enum freeze_holder who)
+-		if (req_need_defer(de->req, de->seq))
++		drain_seen |= de->req->flags & REQ_F_IO_DRAIN;
++		if ((drain_seen || first) && io_drain_defer_seq(de->req, de->seq))
  			break;
- 		}
- 
--		error = gfs2_do_thaw(sdp);
-+		error = gfs2_do_thaw(sdp, who);
- 		if (error)
- 			goto out;
- 
-@@ -796,6 +797,7 @@ static int gfs2_freeze_fs(struct super_block *sb)
- /**
-  * gfs2_thaw_super - reallow writes to the filesystem
-  * @sb: the VFS structure for the filesystem
-+ * @who: freeze flags
-  *
-  */
- 
-@@ -814,7 +816,7 @@ static int gfs2_thaw_super(struct super_block *sb, enum freeze_holder who)
- 	atomic_inc(&sb->s_active);
- 	gfs2_freeze_unlock(sdp);
- 
--	error = gfs2_do_thaw(sdp);
-+	error = gfs2_do_thaw(sdp, who);
- 
- 	if (!error) {
- 		clear_bit(SDF_FREEZE_INITIATOR, &sdp->sd_flags);
++
+ 		list_del_init(&de->list);
+ 		io_req_task_queue(de->req);
+ 		kfree(de);
++		first = false;
+ 	}
+ 	spin_unlock(&ctx->completion_lock);
+ }
 -- 
 2.39.5
 
