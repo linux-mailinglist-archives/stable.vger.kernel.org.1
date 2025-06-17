@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-154008-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-154010-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED19EADD796
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:46:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 339DDADD77E
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:45:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EB6B64A36E2
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:36:14 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 744912C1AAF
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:36:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5CBE2ED161;
-	Tue, 17 Jun 2025 16:30:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45EE52F19A6;
+	Tue, 17 Jun 2025 16:30:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mRLqetRc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Cli885Gt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FAB32ED150;
-	Tue, 17 Jun 2025 16:30:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 021542F19A0;
+	Tue, 17 Jun 2025 16:30:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750177809; cv=none; b=ZJHH+UHT7hULjOrcJ4is/HbNUO3whIae1LKZY8RQUpjLDYzMaxsHrPdB9pBEc67p2+K7DqyTzAE21xUL2nlAddBjPRV59EHII0R6iPBQdDEAPgHBBZo7XI8bOEyXNOfkb3XLU1h5SPqjpx8raHu9EqgZyy8VDC9TuTEjUuctD7I=
+	t=1750177816; cv=none; b=kCzjklLmaal5CV7Y/2k+a9gHGcmfBlWudNuB/EbvlBORP9v40EnHoGpaYoUqShZRqLBTL21OeEq7v4Xt1oibek6/hiZ2e1lciQN37yqqIoFcx265hRe4Hebpi9t0i901JMaD3etrLgLQWOJxGNdCfNKOcamJzbc4PrgWNQhypBw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750177809; c=relaxed/simple;
-	bh=rhxqsohmuJ7rhhQmMqj630Qm3QH607dQ8N24Ou4ZxV4=;
+	s=arc-20240116; t=1750177816; c=relaxed/simple;
+	bh=TyN3ys2Dlidln4QxL7t5IDeINumH94fY94Q4cBzsyQ8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XSFXRTP7PRHX8C1fs9OZupAaSWYdIlEixLPAK3DWZD2L/xBDE7VLIblvUcD/MgEOrGpIGkWw5E2Tb+LC4lUmJG3ICj6BHdVX+0CCXPP3u4msa8cO33KxlfibneStVpWJDKDyGaSnFVDLJFK0/9Ne+25kds57gFozXP6IWkmDsW4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mRLqetRc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3BF7C4CEE3;
-	Tue, 17 Jun 2025 16:30:08 +0000 (UTC)
+	 MIME-Version; b=iD51eCIQ/cAem1uA1U6TJlWr/ALe22ecpPTZtFQtP7LxbRs9sGzB/3+NEqFPASESJuGMV6FSTk52x3darXnODpgxpBedfRqYJ1C3199sFt65Zxv1rUAFYQal2dED157cnn99+eo97AmmFNmTIImLSxqrEwDU/jUgumgyslGSJKE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Cli885Gt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66B1AC4CEE3;
+	Tue, 17 Jun 2025 16:30:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750177809;
-	bh=rhxqsohmuJ7rhhQmMqj630Qm3QH607dQ8N24Ou4ZxV4=;
+	s=korg; t=1750177815;
+	bh=TyN3ys2Dlidln4QxL7t5IDeINumH94fY94Q4cBzsyQ8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mRLqetRcO9o+PwHAxGWFL9SOAAQo9XLO2Dei5MGFGB+kKbK5+T510zfZv6TOXPS+U
-	 8TuIpBqq4LZWP6ZHn+jV2jc1q2FIG0TnCgEaFr8tC10GD0kutuzvBmGSIVjni4gbN5
-	 1kkUJDMniolj00DlN7NhAfFQM16A4XgrkNAIxycg=
+	b=Cli885Gt3kfKoeZzhxpvT30dYCODpZXfFqI6EFUeIrCuQIYu0XN9cVBQfu3nPbKGL
+	 6WZCccnto2EgN4H12WL8xDRD0oSR36Pdn7jPJi9oN2OwoR78YRxBfhUVDl/JyMEHA5
+	 iLBwPNA2NmIjJL6X0ZT8xg2xVWqY3UOQKi1ey1zM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Chen-Yu Tsai <wenst@chromium.org>,
-	Jason-JH Lin <jason-jh.lin@mediatek.com>,
 	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 366/780] arm64: dts: mediatek: mt8188: Fix IOMMU device for rdma0
-Date: Tue, 17 Jun 2025 17:21:14 +0200
-Message-ID: <20250617152506.359008786@linuxfoundation.org>
+Subject: [PATCH 6.15 367/780] arm64: dts: mediatek: mt8195: Reparent vdec1/2 and venc1 power domains
+Date: Tue, 17 Jun 2025 17:21:15 +0200
+Message-ID: <20250617152506.397955632@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
 References: <20250617152451.485330293@linuxfoundation.org>
@@ -67,51 +66,107 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Chen-Yu Tsai <wenst@chromium.org>
+From: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
 
-[ Upstream commit 267623000d11f6d483214be2484555f600393a12 ]
+[ Upstream commit 394f29033324e2317bfd6a7ed99b9a60832b36a2 ]
 
-Based on the comments in the MT8188 IOMMU binding header, the rdma0
-device specifies the wrong IOMMU device for the IOMMU port it is
-tied to:
+By hardware, the first and second core of the video decoder IP
+need the VDEC_SOC to be powered up in order to be able to be
+accessed (both internally, by firmware, and externally, by the
+kernel).
+Similarly, for the video encoder IP, the second core needs the
+first core to be powered up in order to be accessible.
 
-    This SoC have two MM IOMMU HWs, this is the connected information:
-    iommu-vdo: larb0/2/5/9/10/11A/11C/13/16B/17B/19/21
-    iommu-vpp: larb1/3/4/6/7/11B/12/14/15/16A/17A/23/27
+Fix that by reparenting the VDEC1/2 power domains to be children
+of VDEC0 (VDEC_SOC), and the VENC1 to be a child of VENC0.
 
-rdma0's endpoint is M4U_PORT_L1_DISP_RDMA0 (on larb1), which should use
-iommu-vpp, but it is currently tied to iommu-vdo.
-
-Somehow this went undetected until recently in Linux v6.15-rc1 with some
-IOMMU subsystem framework changes that caused the IOMMU to no longer
-work. The IOMMU would fail to probe if any devices associated with it
-could not be successfully attached. Prior to these changes, only the
-end device would be left without an IOMMU attached.
-
-Fixes: 7075b21d1a8e ("arm64: dts: mediatek: mt8188: Add display nodes for vdosys0")
-Signed-off-by: Chen-Yu Tsai <wenst@chromium.org>
-Reviewed-by: Jason-JH Lin <jason-jh.lin@mediatek.com>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Link: https://lore.kernel.org/r/20250408092303.3563231-1-wenst@chromium.org
+Fixes: 2b515194bf0c ("arm64: dts: mt8195: Add power domains controller")
+Reviewed-by: Chen-Yu Tsai <wenst@chromium.org>
+Link: https://lore.kernel.org/r/20250402090615.25871-3-angelogioacchino.delregno@collabora.com
 Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/mediatek/mt8188.dtsi | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm64/boot/dts/mediatek/mt8195.dtsi | 50 +++++++++++++-----------
+ 1 file changed, 27 insertions(+), 23 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/mediatek/mt8188.dtsi b/arch/arm64/boot/dts/mediatek/mt8188.dtsi
-index 69a8423d38589..29d35ca945973 100644
---- a/arch/arm64/boot/dts/mediatek/mt8188.dtsi
-+++ b/arch/arm64/boot/dts/mediatek/mt8188.dtsi
-@@ -2579,7 +2579,7 @@
- 			reg = <0 0x1c002000 0 0x1000>;
- 			clocks = <&vdosys0 CLK_VDO0_DISP_RDMA0>;
- 			interrupts = <GIC_SPI 638 IRQ_TYPE_LEVEL_HIGH 0>;
--			iommus = <&vdo_iommu M4U_PORT_L1_DISP_RDMA0>;
-+			iommus = <&vpp_iommu M4U_PORT_L1_DISP_RDMA0>;
- 			power-domains = <&spm MT8188_POWER_DOMAIN_VDOSYS0>;
- 			mediatek,gce-client-reg = <&gce0 SUBSYS_1c00XXXX 0x2000 0x1000>;
+diff --git a/arch/arm64/boot/dts/mediatek/mt8195.dtsi b/arch/arm64/boot/dts/mediatek/mt8195.dtsi
+index 4f2dc0a755661..1ded4b3f87605 100644
+--- a/arch/arm64/boot/dts/mediatek/mt8195.dtsi
++++ b/arch/arm64/boot/dts/mediatek/mt8195.dtsi
+@@ -617,22 +617,6 @@
+ 					#size-cells = <0>;
+ 					#power-domain-cells = <1>;
  
+-					power-domain@MT8195_POWER_DOMAIN_VDEC1 {
+-						reg = <MT8195_POWER_DOMAIN_VDEC1>;
+-						clocks = <&vdecsys CLK_VDEC_LARB1>;
+-						clock-names = "vdec1-0";
+-						mediatek,infracfg = <&infracfg_ao>;
+-						#power-domain-cells = <0>;
+-					};
+-
+-					power-domain@MT8195_POWER_DOMAIN_VENC_CORE1 {
+-						reg = <MT8195_POWER_DOMAIN_VENC_CORE1>;
+-						clocks = <&vencsys_core1 CLK_VENC_CORE1_LARB>;
+-						clock-names = "venc1-larb";
+-						mediatek,infracfg = <&infracfg_ao>;
+-						#power-domain-cells = <0>;
+-					};
+-
+ 					power-domain@MT8195_POWER_DOMAIN_VDOSYS0 {
+ 						reg = <MT8195_POWER_DOMAIN_VDOSYS0>;
+ 						clocks = <&topckgen CLK_TOP_CFG_VDO0>,
+@@ -678,15 +662,25 @@
+ 							clocks = <&vdecsys_soc CLK_VDEC_SOC_LARB1>;
+ 							clock-names = "vdec0-0";
+ 							mediatek,infracfg = <&infracfg_ao>;
++							#address-cells = <1>;
++							#size-cells = <0>;
+ 							#power-domain-cells = <0>;
+-						};
+ 
+-						power-domain@MT8195_POWER_DOMAIN_VDEC2 {
+-							reg = <MT8195_POWER_DOMAIN_VDEC2>;
+-							clocks = <&vdecsys_core1 CLK_VDEC_CORE1_LARB1>;
+-							clock-names = "vdec2-0";
+-							mediatek,infracfg = <&infracfg_ao>;
+-							#power-domain-cells = <0>;
++							power-domain@MT8195_POWER_DOMAIN_VDEC1 {
++								reg = <MT8195_POWER_DOMAIN_VDEC1>;
++								clocks = <&vdecsys CLK_VDEC_LARB1>;
++								clock-names = "vdec1-0";
++								mediatek,infracfg = <&infracfg_ao>;
++								#power-domain-cells = <0>;
++							};
++
++							power-domain@MT8195_POWER_DOMAIN_VDEC2 {
++								reg = <MT8195_POWER_DOMAIN_VDEC2>;
++								clocks = <&vdecsys_core1 CLK_VDEC_CORE1_LARB1>;
++								clock-names = "vdec2-0";
++								mediatek,infracfg = <&infracfg_ao>;
++								#power-domain-cells = <0>;
++							};
+ 						};
+ 
+ 						power-domain@MT8195_POWER_DOMAIN_VENC {
+@@ -694,7 +688,17 @@
+ 							clocks = <&vencsys CLK_VENC_LARB>;
+ 							clock-names = "venc0-larb";
+ 							mediatek,infracfg = <&infracfg_ao>;
++							#address-cells = <1>;
++							#size-cells = <0>;
+ 							#power-domain-cells = <0>;
++
++							power-domain@MT8195_POWER_DOMAIN_VENC_CORE1 {
++								reg = <MT8195_POWER_DOMAIN_VENC_CORE1>;
++								clocks = <&vencsys_core1 CLK_VENC_CORE1_LARB>;
++								clock-names = "venc1-larb";
++								mediatek,infracfg = <&infracfg_ao>;
++								#power-domain-cells = <0>;
++							};
+ 						};
+ 
+ 						power-domain@MT8195_POWER_DOMAIN_VDOSYS1 {
 -- 
 2.39.5
 
