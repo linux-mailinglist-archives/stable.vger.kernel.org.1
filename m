@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-152973-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-152975-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2EEFDADD1BA
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 17:34:17 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 02B58ADD1B8
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 17:34:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1A20F3BD496
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 15:33:38 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 537941894DE6
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 15:34:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66B652EB5AB;
-	Tue, 17 Jun 2025 15:34:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CCF052EB5AB;
+	Tue, 17 Jun 2025 15:34:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mEcOdF+u"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gFt7lhX+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24015293443;
-	Tue, 17 Jun 2025 15:34:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88CDD293443;
+	Tue, 17 Jun 2025 15:34:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750174440; cv=none; b=oxBBlhfN94GLo55RYt80yJnO+EWAX/7XhwFmVr8EL8CbyzHNIB+x83SUazU8B18Jn5N45PRpys6GBkVBrMBPyErGHeaTSEe16NKd58G1QIcx63tVKoYm8y2kuSr6WirGwbDm1sV0nYa1aU/EBZ5wJuusV5n8FprXMsRKyaBAh4Q=
+	t=1750174447; cv=none; b=QzDNMEw/dqPND3oYOnj6f1wHEGU2CjVEVwpl+bV1zNdnYUyr3xiWJF8Lhaj6NnFXLI3zaSPe2hx5mK4af0HerSo5Mk6tv5TV1AS3i4+uwZJ+RRnKAYW/y8hgJtn77zlhyC52a1IRkvNEi8EQNQjiWOZ3iHKhv5ShNcNnRla+a5g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750174440; c=relaxed/simple;
-	bh=w9egBynCop/A+TfGGgZHL8IY/kN3hqJQuhqQU4JPD3I=;
+	s=arc-20240116; t=1750174447; c=relaxed/simple;
+	bh=6l+60ocqVvQwhna7d0KvAtzOxUWHdN8zvRY5srvUq0U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=l3WFdFMXQeIscn3cKPtaeVBS3Tzk/Y4/FyBT7Ry34F8tKQZgJlsO1S2Y29urrdQsNBszbqj5baFWuLK4cLGPZcqvjfNm4pcyekxqqFMAtU+s0yf9UzjXVHgtbgMlSYFelRMEjizXZxz8MGdf27k61rdUzzYpkC2uFNi4Ins3cjU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mEcOdF+u; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 871C9C4CEE3;
-	Tue, 17 Jun 2025 15:33:59 +0000 (UTC)
+	 MIME-Version; b=gp1x369dBHNKhz2teYNAa7ePKxaO9JVow31Mc5yKtfFQF0Pxrl+NzVYkSWEcpkguAzx1oYlcXfIUtIXsyzDZHDEQv6b40rkt2vxtWDDdydna2ZeO1/D0B9mWTHd2PD2JgiCKH5TAEuJQzJuuVbLDh9ri4NYpXhvgrBuAwNCNi9A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gFt7lhX+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C452CC4CEE3;
+	Tue, 17 Jun 2025 15:34:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750174440;
-	bh=w9egBynCop/A+TfGGgZHL8IY/kN3hqJQuhqQU4JPD3I=;
+	s=korg; t=1750174446;
+	bh=6l+60ocqVvQwhna7d0KvAtzOxUWHdN8zvRY5srvUq0U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mEcOdF+ubju8nGCnTFllu7mToNTyD/UPCvcj4TCBDMkePduLCBhnZEMsiC4gIy/7s
-	 96Ct5Ha9TOT/9ztGQahl4hG5sVZKOQ280a7AKAHCYA1RjrClGGBSzMAHoCuhILBFS/
-	 5WzuI8duY5qTOOLbggvM2O4Q1r6Rh4/Th5tXuc9E=
+	b=gFt7lhX+vPhaMVDl0+Uw7XEXUFNZUxGsEUaA+C67L0ilEn0kalZKKFf7foiIwiVeb
+	 SiluC4X8q/uQApNdr1Uk4iosWf1V82UFUyKxf+0pWugN0hBvs2k4hgdIxB4uIjItxp
+	 2g2Vs8WqIT7+kEp/THw01eKlGRudng0s7QKrxpHo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Biju Das <biju.das.jz@bp.renesas.com>,
-	Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>,
-	Tomi Valkeinen <tomi.valkeinen+renesas@ideasonboard.com>,
+	Kees Cook <kees@kernel.org>,
+	Louis Chauvet <louis.chauvet@bootlin.com>,
+	Louis Chauvet <contact@louischauvet.fr>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 069/356] drm: rcar-du: Fix memory leak in rcar_du_vsps_init()
-Date: Tue, 17 Jun 2025 17:23:04 +0200
-Message-ID: <20250617152341.004088514@linuxfoundation.org>
+Subject: [PATCH 6.6 070/356] drm/vkms: Adjust vkms_state->active_planes allocation type
+Date: Tue, 17 Jun 2025 17:23:05 +0200
+Message-ID: <20250617152341.043777465@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250617152338.212798615@linuxfoundation.org>
 References: <20250617152338.212798615@linuxfoundation.org>
@@ -67,59 +67,42 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Biju Das <biju.das.jz@bp.renesas.com>
+From: Kees Cook <kees@kernel.org>
 
-[ Upstream commit 91e3bf09a90bb4340c0c3c51396e7531555efda4 ]
+[ Upstream commit 258aebf100540d36aba910f545d4d5ddf4ecaf0b ]
 
-The rcar_du_vsps_init() doesn't free the np allocated by
-of_parse_phandle_with_fixed_args() for the non-error case.
+In preparation for making the kmalloc family of allocators type aware,
+we need to make sure that the returned type from the allocation matches
+the type of the variable being assigned. (Before, the allocator would
+always return "void *", which can be implicitly cast to any pointer type.)
 
-Fix memory leak for the non-error case.
+The assigned type is "struct vkms_plane_state **", but the returned type
+will be "struct drm_plane **". These are the same size (pointer size), but
+the types don't match. Adjust the allocation type to match the assignment.
 
-While at it, replace the label 'error'->'done' as it applies to non-error
-case as well and update the error check condition for rcar_du_vsp_init()
-to avoid breakage in future, if it returns positive value.
-
-Fixes: 3e81374e2014 ("drm: rcar-du: Support multiple sources from the same VSP")
-Signed-off-by: Biju Das <biju.das.jz@bp.renesas.com>
-Reviewed-by: Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>
-Link: https://lore.kernel.org/r/20231116122424.80136-1-biju.das.jz@bp.renesas.com
-Signed-off-by: Tomi Valkeinen <tomi.valkeinen+renesas@ideasonboard.com>
+Signed-off-by: Kees Cook <kees@kernel.org>
+Reviewed-by: Louis Chauvet <louis.chauvet@bootlin.com>
+Fixes: 8b1865873651 ("drm/vkms: totally reworked crc data tracking")
+Link: https://lore.kernel.org/r/20250426061431.work.304-kees@kernel.org
+Signed-off-by: Louis Chauvet <contact@louischauvet.fr>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/renesas/rcar-du/rcar_du_kms.c | 10 ++++------
- 1 file changed, 4 insertions(+), 6 deletions(-)
+ drivers/gpu/drm/vkms/vkms_crtc.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/renesas/rcar-du/rcar_du_kms.c b/drivers/gpu/drm/renesas/rcar-du/rcar_du_kms.c
-index 70d8ad065bfa1..4c8fe83dd6101 100644
---- a/drivers/gpu/drm/renesas/rcar-du/rcar_du_kms.c
-+++ b/drivers/gpu/drm/renesas/rcar-du/rcar_du_kms.c
-@@ -705,7 +705,7 @@ static int rcar_du_vsps_init(struct rcar_du_device *rcdu)
- 		ret = of_parse_phandle_with_fixed_args(np, vsps_prop_name,
- 						       cells, i, &args);
- 		if (ret < 0)
--			goto error;
-+			goto done;
- 
- 		/*
- 		 * Add the VSP to the list or update the corresponding existing
-@@ -743,13 +743,11 @@ static int rcar_du_vsps_init(struct rcar_du_device *rcdu)
- 		vsp->dev = rcdu;
- 
- 		ret = rcar_du_vsp_init(vsp, vsps[i].np, vsps[i].crtcs_mask);
--		if (ret < 0)
--			goto error;
-+		if (ret)
-+			goto done;
+diff --git a/drivers/gpu/drm/vkms/vkms_crtc.c b/drivers/gpu/drm/vkms/vkms_crtc.c
+index 61e500b8c9da2..894c484f99e95 100644
+--- a/drivers/gpu/drm/vkms/vkms_crtc.c
++++ b/drivers/gpu/drm/vkms/vkms_crtc.c
+@@ -201,7 +201,7 @@ static int vkms_crtc_atomic_check(struct drm_crtc *crtc,
+ 		i++;
  	}
  
--	return 0;
--
--error:
-+done:
- 	for (i = 0; i < ARRAY_SIZE(vsps); ++i)
- 		of_node_put(vsps[i].np);
- 
+-	vkms_state->active_planes = kcalloc(i, sizeof(plane), GFP_KERNEL);
++	vkms_state->active_planes = kcalloc(i, sizeof(*vkms_state->active_planes), GFP_KERNEL);
+ 	if (!vkms_state->active_planes)
+ 		return -ENOMEM;
+ 	vkms_state->num_active_planes = i;
 -- 
 2.39.5
 
