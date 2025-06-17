@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-154265-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153640-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7BE8AADD86D
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:55:36 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id E8A0DADD542
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:19:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 406D119E6312
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:47:53 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9F2E57AF8BD
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:13:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ECEA723AE84;
-	Tue, 17 Jun 2025 16:43:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C16AD2ECEB8;
+	Tue, 17 Jun 2025 16:10:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zKU7fNG5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cL6+nENb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA1F923B600;
-	Tue, 17 Jun 2025 16:43:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D35B221550;
+	Tue, 17 Jun 2025 16:10:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750178633; cv=none; b=Jlw4c32zzngs8N44EKbn2SrPrR9dYZc6Y7YwqFFWDF5TId9JFqWxG12ufuDovb6MITwsrgAbT6Vba8hnGH2RBmFnr94agA0ekygFf8HbVJvnvC6/o0Z0FbOzml1/cmLu3xag5DKIujI4H1kQeQg9zyu9zHtNVeN0D6fgak3VtS4=
+	t=1750176613; cv=none; b=lMAysAzn+qg0pgDtDvIIbpPeBX4P+zvMwZG+4OyZrVLKZWlTD9azN5O8szazJQl3GEMmm6BN0RhcLD1vqgDGSi6gXzYKx9So526ysvmasPBzDxxtw2Xx8yHjUYwQPOIFi/WzODYfgOSwjybaoZzS+fLTi1MxN8XZr1Gz8l9NctI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750178633; c=relaxed/simple;
-	bh=2ilIhE20stBjkj5lYd571e5ar7eLzUdJ7UykSqKGZ0c=;
+	s=arc-20240116; t=1750176613; c=relaxed/simple;
+	bh=gCADqGiUYdb1xsqgtEky/9k0fAS3eno/fwZepIjZrgA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Ho1RuUGO70gP2gU65HzS2rhzvhQYk0GLIPCOA5bi1WeLz3L2zmF7viXQg5cmvoJBBoopDkCs0Vs0uYGrtqyVF8dyOhKrfN3qdgRztxflV7xKQUcDr1zi1joJ7fPaJJF2CcL6fKY7P/JyPh7La8JsCEXHJdTPjJlPp0FW1mTNsvE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zKU7fNG5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17E9AC4CEE3;
-	Tue, 17 Jun 2025 16:43:52 +0000 (UTC)
+	 MIME-Version; b=U3YPqk0GYGE0bsZhfjmBLpmd2Opd52zQxtzNHaK4SJSTqj026pUyDg1F6xhK2Q1224CPNr8Iv54BFVlN7PMKT2r9Fro8+c8kH29rz1ehyls+bwjSiw9Jo0dS7ueNUACSNZil0MBZGsauiGEMuXgXksuE4yIpXC7XBYONbcgnyyc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cL6+nENb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0A8DC4CEF1;
+	Tue, 17 Jun 2025 16:10:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750178633;
-	bh=2ilIhE20stBjkj5lYd571e5ar7eLzUdJ7UykSqKGZ0c=;
+	s=korg; t=1750176613;
+	bh=gCADqGiUYdb1xsqgtEky/9k0fAS3eno/fwZepIjZrgA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zKU7fNG5j7rPdQ3niiIuLz08vIvH9U2ZEZLW+wugVeJuNuvhfJYAFYYd1ojfT6VVi
-	 Q6McjVjE9vzAACMMJrbsBrWh3ZKfQ9sVcFbuMy205HWTcrw3TOVMlzcniTONm0w4X9
-	 qjrDO5ya2/MlQgXx/71f42Hdg/y6sDUm0PIi4SK8=
+	b=cL6+nENbMY6k+6yzq/258vK1RK/EHmkzld9vHJwDMTAwrKUll1roySS4dUs2D2pL4
+	 hczFGsB8FdVa6apQFx1tVm/PeXoUmjivIU7uet0RCvnfmSZE+iuLnLgsFMIng3BVwp
+	 hkE+Y+7jZPr3TyIo7x7Pzakq9sxNZiD6oW2UgBdg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bard Liao <yung-chuan.liao@linux.intel.com>,
-	Ranjani Sridharan <ranjani.sridharan@linux.intel.com>,
-	=?UTF-8?q?P=C3=A9ter=20Ujfalusi?= <peter.ujfalusi@linux.intel.com>,
-	Vinod Koul <vkoul@kernel.org>,
+	Aaron Kling <webgeek1234@gmail.com>,
+	Thierry Reding <treding@nvidia.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 505/780] soundwire: only compute port params in specific stream states
+Subject: [PATCH 6.12 247/512] arm64: tegra: Drop remaining serial clock-names and reset-names
 Date: Tue, 17 Jun 2025 17:23:33 +0200
-Message-ID: <20250617152512.062495193@linuxfoundation.org>
+Message-ID: <20250617152429.616508304@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
-References: <20250617152451.485330293@linuxfoundation.org>
+In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
+References: <20250617152419.512865572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,50 +60,156 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bard Liao <yung-chuan.liao@linux.intel.com>
+From: Aaron Kling <webgeek1234@gmail.com>
 
-[ Upstream commit 62ada17a6217a50fbd1b23f10899890f56effc97 ]
+[ Upstream commit 4cd763297c2203c6ba587d7d4a9105f96597b998 ]
 
-Currently, sdw_compute_master_ports() is blindly called for every single
-Manager runtime. However, we should not take into account the stream's
-bandwidth if the stream is just allocated or already deprepared.
+The referenced commit only removed some of the names, missing all that
+weren't in use at the time. The commit removes the rest.
 
-Fixes: 25befdf32aa4 ("soundwire: generic_bandwidth_allocation: count the bandwidth of active streams only")
-Link: https://github.com/thesofproject/linux/issues/5398
-Signed-off-by: Bard Liao <yung-chuan.liao@linux.intel.com>
-Reviewed-by: Ranjani Sridharan <ranjani.sridharan@linux.intel.com>
-Reviewed-by: Péter Ujfalusi <peter.ujfalusi@linux.intel.com>
-Link: https://lore.kernel.org/r/20250508062029.6596-1-yung-chuan.liao@linux.intel.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Fixes: 71de0a054d0e ("arm64: tegra: Drop serial clock-names and reset-names")
+Signed-off-by: Aaron Kling <webgeek1234@gmail.com>
+Link: https://lore.kernel.org/r/20250428-tegra-serial-fixes-v1-1-4f47c5d85bf6@gmail.com
+Signed-off-by: Thierry Reding <treding@nvidia.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/soundwire/generic_bandwidth_allocation.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ arch/arm64/boot/dts/nvidia/tegra186.dtsi | 12 ------------
+ arch/arm64/boot/dts/nvidia/tegra194.dtsi | 12 ------------
+ 2 files changed, 24 deletions(-)
 
-diff --git a/drivers/soundwire/generic_bandwidth_allocation.c b/drivers/soundwire/generic_bandwidth_allocation.c
-index 1cfaccf43eac5..c18f0c16f9297 100644
---- a/drivers/soundwire/generic_bandwidth_allocation.c
-+++ b/drivers/soundwire/generic_bandwidth_allocation.c
-@@ -204,6 +204,13 @@ static void _sdw_compute_port_params(struct sdw_bus *bus,
- 			port_bo = 1;
+diff --git a/arch/arm64/boot/dts/nvidia/tegra186.dtsi b/arch/arm64/boot/dts/nvidia/tegra186.dtsi
+index 2b3bb5d0af17b..f0b7949df92c0 100644
+--- a/arch/arm64/boot/dts/nvidia/tegra186.dtsi
++++ b/arch/arm64/boot/dts/nvidia/tegra186.dtsi
+@@ -621,9 +621,7 @@
+ 		reg-shift = <2>;
+ 		interrupts = <GIC_SPI 113 IRQ_TYPE_LEVEL_HIGH>;
+ 		clocks = <&bpmp TEGRA186_CLK_UARTB>;
+-		clock-names = "serial";
+ 		resets = <&bpmp TEGRA186_RESET_UARTB>;
+-		reset-names = "serial";
+ 		status = "disabled";
+ 	};
  
- 			list_for_each_entry(m_rt, &bus->m_rt_list, bus_node) {
-+				/*
-+				 * Only runtimes with CONFIGURED, PREPARED, ENABLED, and DISABLED
-+				 * states should be included in the bandwidth calculation.
-+				 */
-+				if (m_rt->stream->state > SDW_STREAM_DISABLED ||
-+				    m_rt->stream->state < SDW_STREAM_CONFIGURED)
-+					continue;
- 				sdw_compute_master_ports(m_rt, &params[i], &port_bo, hstop);
- 			}
+@@ -633,9 +631,7 @@
+ 		reg-shift = <2>;
+ 		interrupts = <GIC_SPI 115 IRQ_TYPE_LEVEL_HIGH>;
+ 		clocks = <&bpmp TEGRA186_CLK_UARTD>;
+-		clock-names = "serial";
+ 		resets = <&bpmp TEGRA186_RESET_UARTD>;
+-		reset-names = "serial";
+ 		status = "disabled";
+ 	};
+ 
+@@ -645,9 +641,7 @@
+ 		reg-shift = <2>;
+ 		interrupts = <GIC_SPI 116 IRQ_TYPE_LEVEL_HIGH>;
+ 		clocks = <&bpmp TEGRA186_CLK_UARTE>;
+-		clock-names = "serial";
+ 		resets = <&bpmp TEGRA186_RESET_UARTE>;
+-		reset-names = "serial";
+ 		status = "disabled";
+ 	};
+ 
+@@ -657,9 +651,7 @@
+ 		reg-shift = <2>;
+ 		interrupts = <GIC_SPI 117 IRQ_TYPE_LEVEL_HIGH>;
+ 		clocks = <&bpmp TEGRA186_CLK_UARTF>;
+-		clock-names = "serial";
+ 		resets = <&bpmp TEGRA186_RESET_UARTF>;
+-		reset-names = "serial";
+ 		status = "disabled";
+ 	};
+ 
+@@ -1236,9 +1228,7 @@
+ 		reg-shift = <2>;
+ 		interrupts = <GIC_SPI 114 IRQ_TYPE_LEVEL_HIGH>;
+ 		clocks = <&bpmp TEGRA186_CLK_UARTC>;
+-		clock-names = "serial";
+ 		resets = <&bpmp TEGRA186_RESET_UARTC>;
+-		reset-names = "serial";
+ 		status = "disabled";
+ 	};
+ 
+@@ -1248,9 +1238,7 @@
+ 		reg-shift = <2>;
+ 		interrupts = <GIC_SPI 118 IRQ_TYPE_LEVEL_HIGH>;
+ 		clocks = <&bpmp TEGRA186_CLK_UARTG>;
+-		clock-names = "serial";
+ 		resets = <&bpmp TEGRA186_RESET_UARTG>;
+-		reset-names = "serial";
+ 		status = "disabled";
+ 	};
+ 
+diff --git a/arch/arm64/boot/dts/nvidia/tegra194.dtsi b/arch/arm64/boot/dts/nvidia/tegra194.dtsi
+index 33f92b77cd9d9..c369507747851 100644
+--- a/arch/arm64/boot/dts/nvidia/tegra194.dtsi
++++ b/arch/arm64/boot/dts/nvidia/tegra194.dtsi
+@@ -766,9 +766,7 @@
+ 			reg-shift = <2>;
+ 			interrupts = <GIC_SPI 115 IRQ_TYPE_LEVEL_HIGH>;
+ 			clocks = <&bpmp TEGRA194_CLK_UARTD>;
+-			clock-names = "serial";
+ 			resets = <&bpmp TEGRA194_RESET_UARTD>;
+-			reset-names = "serial";
+ 			status = "disabled";
+ 		};
+ 
+@@ -778,9 +776,7 @@
+ 			reg-shift = <2>;
+ 			interrupts = <GIC_SPI 116 IRQ_TYPE_LEVEL_HIGH>;
+ 			clocks = <&bpmp TEGRA194_CLK_UARTE>;
+-			clock-names = "serial";
+ 			resets = <&bpmp TEGRA194_RESET_UARTE>;
+-			reset-names = "serial";
+ 			status = "disabled";
+ 		};
+ 
+@@ -790,9 +786,7 @@
+ 			reg-shift = <2>;
+ 			interrupts = <GIC_SPI 117 IRQ_TYPE_LEVEL_HIGH>;
+ 			clocks = <&bpmp TEGRA194_CLK_UARTF>;
+-			clock-names = "serial";
+ 			resets = <&bpmp TEGRA194_RESET_UARTF>;
+-			reset-names = "serial";
+ 			status = "disabled";
+ 		};
+ 
+@@ -817,9 +811,7 @@
+ 			reg-shift = <2>;
+ 			interrupts = <GIC_SPI 207 IRQ_TYPE_LEVEL_HIGH>;
+ 			clocks = <&bpmp TEGRA194_CLK_UARTH>;
+-			clock-names = "serial";
+ 			resets = <&bpmp TEGRA194_RESET_UARTH>;
+-			reset-names = "serial";
+ 			status = "disabled";
+ 		};
+ 
+@@ -1616,9 +1608,7 @@
+ 			reg-shift = <2>;
+ 			interrupts = <GIC_SPI 114 IRQ_TYPE_LEVEL_HIGH>;
+ 			clocks = <&bpmp TEGRA194_CLK_UARTC>;
+-			clock-names = "serial";
+ 			resets = <&bpmp TEGRA194_RESET_UARTC>;
+-			reset-names = "serial";
+ 			status = "disabled";
+ 		};
+ 
+@@ -1628,9 +1618,7 @@
+ 			reg-shift = <2>;
+ 			interrupts = <GIC_SPI 118 IRQ_TYPE_LEVEL_HIGH>;
+ 			clocks = <&bpmp TEGRA194_CLK_UARTG>;
+-			clock-names = "serial";
+ 			resets = <&bpmp TEGRA194_RESET_UARTG>;
+-			reset-names = "serial";
+ 			status = "disabled";
+ 		};
  
 -- 
 2.39.5
