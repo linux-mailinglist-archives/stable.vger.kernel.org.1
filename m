@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-154448-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153588-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id CBA41ADD9E5
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 19:10:35 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7BEFCADD556
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:19:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 14CFE4A1E30
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:55:00 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2156D19E12CE
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:11:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 37E9D238D49;
-	Tue, 17 Jun 2025 16:53:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45A592EA168;
+	Tue, 17 Jun 2025 16:07:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J/WRT7Q8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pJ2Kp+ND"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E742823771C;
-	Tue, 17 Jun 2025 16:53:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 021152EA15D;
+	Tue, 17 Jun 2025 16:07:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750179219; cv=none; b=js9j7gERskDVa+2M0v5GfZPy2vZzt4dLoFN9aTBEDfakcrpeaW9q0bky3BEDQIn3nYfHb0DHlwkc7rAMVXqNHz4tWxcNJZ/se0z/iS3nEgzHQtQrDFGCp2COoMe299Yv8NwlievKLkwxGM+vkyPPFcM3Ln0r0fikG232VyTPajk=
+	t=1750176447; cv=none; b=QV5MNdmgz6ZVbMJrvFYoUWqOswSCwZ8VHeJCMSgKFyRwGWJH795su8MJ8VfXHG4ZR/VGaZ8cTmYyKLPHG0pA3ihcTrNXXxQb8H+JdO3NhwJrz41/Kv2xsib81LZXj2A6NHROqFEaEFamS1x93ASbe1smx2RPfyBD14t7tHo3LBA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750179219; c=relaxed/simple;
-	bh=rymeGaQBapFTxmQo06/GSjlfLqkonPgYDLZNqDPBxBE=;
+	s=arc-20240116; t=1750176447; c=relaxed/simple;
+	bh=Ai/Bq6+VpCGLQWYbv5smlSJuNnz010uiZe55eoEYA60=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=V6jv1YBG0zAB0+qQhMN0SUCEsGK9Rua4N7IIbcaLl16QZ6E3GfyCjqErhx6ypcn+2DlRGjOa3l05I4y6HdQ3GmnO9I4tfObfvQBKkRjmRvOT9KsZY8gJw9xUqfdc3S74rZMLg09ZJed8kKwKa/7MtaaBKvGQE7x9Eh3XJD82iXE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J/WRT7Q8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E1AAC4CEE3;
-	Tue, 17 Jun 2025 16:53:38 +0000 (UTC)
+	 MIME-Version; b=S3xg8HbauU9XjGKb2IMp7I9P8FeC/1e4vMNqhwxvgK2hvs/Cy58o6b+z2RwGDaC7Zmhwl7958JPNbmh0bHZy1L9KqwPsCcPnQlzo8j5kXwjy2NmE77IlCzRZhFQ155ABUwP1v/VslVfftq3zW8PDaGXxULTwLcamFkbpIKFkAgU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pJ2Kp+ND; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65AE9C4CEE3;
+	Tue, 17 Jun 2025 16:07:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750179218;
-	bh=rymeGaQBapFTxmQo06/GSjlfLqkonPgYDLZNqDPBxBE=;
+	s=korg; t=1750176446;
+	bh=Ai/Bq6+VpCGLQWYbv5smlSJuNnz010uiZe55eoEYA60=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=J/WRT7Q8CAMW6ZNqcr4dkDl4yjk2JY6ooM4K63uENPaNAlDdZW2FWf4PSBu1c4mxD
-	 TQyoocnSaFoPXMsRUdLHI2kMKdl0hmLaA5bVFkIaaw1DPUllF903q+1bpUw2cWH7W+
-	 OY1fn0Iv99npRP0jmPi1+a6hYIGWg8fr2Roff0pQ=
+	b=pJ2Kp+NDxSoan7WaxnimFsb6p2k2aWSZb0inhLO4OY0FyzZTnCXbZTqacdu3zJWlB
+	 wtikK7Vaf1mn6rSPQdivDr2qLD02mUrb1+N6R0/kSJKBZfWL9GcElMrrKkn2MzDBhb
+	 kbK5tY/UM+HYjVr2eN9GXffszz7hgBWuYikaGP7c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alok Tiwari <alok.a.tiwari@oracle.com>,
-	Mike Christie <michael.christie@oracle.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Jakob Unterwurzacher <jakob.unterwurzacher@cherry.de>,
+	Vladimir Oltean <olteanv@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 685/780] scsi: iscsi: Fix incorrect error path labels for flashnode operations
+Subject: [PATCH 6.6 278/356] net: dsa: microchip: linearize skb for tail-tagging switches
 Date: Tue, 17 Jun 2025 17:26:33 +0200
-Message-ID: <20250617152519.384771436@linuxfoundation.org>
+Message-ID: <20250617152349.384743028@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
-References: <20250617152451.485330293@linuxfoundation.org>
+In-Reply-To: <20250617152338.212798615@linuxfoundation.org>
+References: <20250617152338.212798615@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,101 +63,100 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alok Tiwari <alok.a.tiwari@oracle.com>
+From: Jakob Unterwurzacher <jakobunt@gmail.com>
 
-[ Upstream commit 9b17621366d210ffee83262a8754086ebbde5e55 ]
+[ Upstream commit ba54bce747fa9e07896c1abd9b48545f7b4b31d2 ]
 
-Correct the error handling goto labels used when host lookup fails in
-various flashnode-related event handlers:
+The pointer arithmentic for accessing the tail tag only works
+for linear skbs.
 
- - iscsi_new_flashnode()
- - iscsi_del_flashnode()
- - iscsi_login_flashnode()
- - iscsi_logout_flashnode()
- - iscsi_logout_flashnode_sid()
+For nonlinear skbs, it reads uninitialized memory inside the
+skb headroom, essentially randomizing the tag. I have observed
+it gets set to 6 most of the time.
 
-scsi_host_put() is not required when shost is NULL, so jumping to the
-correct label avoids unnecessary operations. These functions previously
-jumped to the wrong goto label (put_host), which did not match the
-intended cleanup logic.
+Example where ksz9477_rcv thinks that the packet from port 1 comes from port 6
+(which does not exist for the ksz9896 that's in use), dropping the packet.
+Debug prints added by me (not included in this patch):
 
-Use the correct exit labels (exit_new_fnode, exit_del_fnode, etc.) to
-ensure proper error handling.  Also remove the unused put_host label
-under iscsi_new_flashnode() as it is no longer needed.
+	[  256.645337] ksz9477_rcv:323 tag0=6
+	[  256.645349] skb len=47 headroom=78 headlen=0 tailroom=0
+	               mac=(64,14) mac_len=14 net=(78,0) trans=78
+	               shinfo(txflags=0 nr_frags=1 gso(size=0 type=0 segs=0))
+	               csum(0x0 start=0 offset=0 ip_summed=0 complete_sw=0 valid=0 level=0)
+	               hash(0x0 sw=0 l4=0) proto=0x00f8 pkttype=1 iif=3
+	               priority=0x0 mark=0x0 alloc_cpu=0 vlan_all=0x0
+	               encapsulation=0 inner(proto=0x0000, mac=0, net=0, trans=0)
+	[  256.645377] dev name=end1 feat=0x0002e10200114bb3
+	[  256.645386] skb headroom: 00000000: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+	[  256.645395] skb headroom: 00000010: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+	[  256.645403] skb headroom: 00000020: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+	[  256.645411] skb headroom: 00000030: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+	[  256.645420] skb headroom: 00000040: ff ff ff ff ff ff 00 1c 19 f2 e2 db 08 06
+	[  256.645428] skb frag:     00000000: 00 01 08 00 06 04 00 01 00 1c 19 f2 e2 db 0a 02
+	[  256.645436] skb frag:     00000010: 00 83 00 00 00 00 00 00 0a 02 a0 2f 00 00 00 00
+	[  256.645444] skb frag:     00000020: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 01
+	[  256.645452] ksz_common_rcv:92 dsa_conduit_find_user returned NULL
 
-No functional changes beyond accurate error path correction.
+Call skb_linearize before trying to access the tag.
 
-Fixes: c6a4bb2ef596 ("[SCSI] scsi_transport_iscsi: Add flash node mgmt support")
-Signed-off-by: Alok Tiwari <alok.a.tiwari@oracle.com>
-Link: https://lore.kernel.org/r/20250530193012.3312911-1-alok.a.tiwari@oracle.com
-Reviewed-by: Mike Christie <michael.christie@oracle.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+This patch fixes ksz9477_rcv which is used by the ksz9896 I have at
+hand, and also applies the same fix to ksz8795_rcv which seems to have
+the same problem.
+
+Signed-off-by: Jakob Unterwurzacher <jakob.unterwurzacher@cherry.de>
+CC: stable@vger.kernel.org
+Fixes: 016e43a26bab ("net: dsa: ksz: Add KSZ8795 tag code")
+Fixes: 8b8010fb7876 ("dsa: add support for Microchip KSZ tail tagging")
+Reviewed-by: Vladimir Oltean <olteanv@gmail.com>
+Link: https://patch.msgid.link/20250515072920.2313014-1-jakob.unterwurzacher@cherry.de
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/scsi_transport_iscsi.c | 11 +++++------
- 1 file changed, 5 insertions(+), 6 deletions(-)
+ net/dsa/tag_ksz.c | 19 +++++++++++++++----
+ 1 file changed, 15 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/scsi/scsi_transport_iscsi.c b/drivers/scsi/scsi_transport_iscsi.c
-index 0b8c91bf793fc..c75a806496d67 100644
---- a/drivers/scsi/scsi_transport_iscsi.c
-+++ b/drivers/scsi/scsi_transport_iscsi.c
-@@ -3499,7 +3499,7 @@ static int iscsi_new_flashnode(struct iscsi_transport *transport,
- 		pr_err("%s could not find host no %u\n",
- 		       __func__, ev->u.new_flashnode.host_no);
- 		err = -ENODEV;
--		goto put_host;
-+		goto exit_new_fnode;
- 	}
+diff --git a/net/dsa/tag_ksz.c b/net/dsa/tag_ksz.c
+index 7bf87fa471a0c..0a16c04c4bfc4 100644
+--- a/net/dsa/tag_ksz.c
++++ b/net/dsa/tag_ksz.c
+@@ -139,7 +139,12 @@ static struct sk_buff *ksz8795_xmit(struct sk_buff *skb, struct net_device *dev)
  
- 	index = transport->new_flashnode(shost, data, len);
-@@ -3509,7 +3509,6 @@ static int iscsi_new_flashnode(struct iscsi_transport *transport,
- 	else
- 		err = -EIO;
+ static struct sk_buff *ksz8795_rcv(struct sk_buff *skb, struct net_device *dev)
+ {
+-	u8 *tag = skb_tail_pointer(skb) - KSZ_EGRESS_TAG_LEN;
++	u8 *tag;
++
++	if (skb_linearize(skb))
++		return NULL;
++
++	tag = skb_tail_pointer(skb) - KSZ_EGRESS_TAG_LEN;
  
--put_host:
- 	scsi_host_put(shost);
+ 	return ksz_common_rcv(skb, dev, tag[0] & 7, KSZ_EGRESS_TAG_LEN);
+ }
+@@ -301,10 +306,16 @@ static struct sk_buff *ksz9477_xmit(struct sk_buff *skb,
  
- exit_new_fnode:
-@@ -3534,7 +3533,7 @@ static int iscsi_del_flashnode(struct iscsi_transport *transport,
- 		pr_err("%s could not find host no %u\n",
- 		       __func__, ev->u.del_flashnode.host_no);
- 		err = -ENODEV;
--		goto put_host;
-+		goto exit_del_fnode;
- 	}
+ static struct sk_buff *ksz9477_rcv(struct sk_buff *skb, struct net_device *dev)
+ {
+-	/* Tag decoding */
+-	u8 *tag = skb_tail_pointer(skb) - KSZ_EGRESS_TAG_LEN;
+-	unsigned int port = tag[0] & KSZ9477_TAIL_TAG_EG_PORT_M;
+ 	unsigned int len = KSZ_EGRESS_TAG_LEN;
++	unsigned int port;
++	u8 *tag;
++
++	if (skb_linearize(skb))
++		return NULL;
++
++	/* Tag decoding */
++	tag = skb_tail_pointer(skb) - KSZ_EGRESS_TAG_LEN;
++	port = tag[0] & KSZ9477_TAIL_TAG_EG_PORT_M;
  
- 	idx = ev->u.del_flashnode.flashnode_idx;
-@@ -3576,7 +3575,7 @@ static int iscsi_login_flashnode(struct iscsi_transport *transport,
- 		pr_err("%s could not find host no %u\n",
- 		       __func__, ev->u.login_flashnode.host_no);
- 		err = -ENODEV;
--		goto put_host;
-+		goto exit_login_fnode;
- 	}
- 
- 	idx = ev->u.login_flashnode.flashnode_idx;
-@@ -3628,7 +3627,7 @@ static int iscsi_logout_flashnode(struct iscsi_transport *transport,
- 		pr_err("%s could not find host no %u\n",
- 		       __func__, ev->u.logout_flashnode.host_no);
- 		err = -ENODEV;
--		goto put_host;
-+		goto exit_logout_fnode;
- 	}
- 
- 	idx = ev->u.logout_flashnode.flashnode_idx;
-@@ -3678,7 +3677,7 @@ static int iscsi_logout_flashnode_sid(struct iscsi_transport *transport,
- 		pr_err("%s could not find host no %u\n",
- 		       __func__, ev->u.logout_flashnode.host_no);
- 		err = -ENODEV;
--		goto put_host;
-+		goto exit_logout_sid;
- 	}
- 
- 	session = iscsi_session_lookup(ev->u.logout_flashnode_sid.sid);
+ 	/* Extra 4-bytes PTP timestamp */
+ 	if (tag[0] & KSZ9477_PTP_TAG_INDICATION) {
 -- 
 2.39.5
 
