@@ -1,55 +1,53 @@
-Return-Path: <stable+bounces-153801-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153813-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3766DADD69E
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:35:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 50DF6ADD700
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:39:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C10CE19E34C0
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:25:21 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0C0E219E372D
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:25:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BFFAA2ED171;
-	Tue, 17 Jun 2025 16:19:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E76E2EE26B;
+	Tue, 17 Jun 2025 16:19:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EVAbmTcW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yrlLhzC3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D6502EA14E;
-	Tue, 17 Jun 2025 16:19:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A4702EE26E;
+	Tue, 17 Jun 2025 16:19:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750177142; cv=none; b=p2BrOzfMGPgzPjHysjqoLYkET+IHp03teyH5P5CN5GV7hVc5BFrgtqkI+F8RMKArqSLugxNsWkhFkBdWzsQVKPK84o7GARynyr70bD36L2aMEbs4qgdHYb6q6Fl7AQlUNHqevDDPelgxjnAZcW+o0YkJEyjztIeD0J5e6juewbE=
+	t=1750177179; cv=none; b=G4uxmFaYq7fmKEjAuPrdaIYxIEKtPBz8l3XhY3BPVd0hzfTLat9CJzdz1RF6aO1S+wh1OuW4baLZ0ujvGFjmt9O5TqfXihyBY85chxKoDAtAq4xX+9hgIw+Y8Ntn03r9ddVpFU6hbL6BP4LHyGQfD3hl3AJsNgAESPDdc8gEGBg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750177142; c=relaxed/simple;
-	bh=ZR2fujcdIMtUNdtqYCiMHk+gqfyXSP+Pjx8ZymjO3f0=;
+	s=arc-20240116; t=1750177179; c=relaxed/simple;
+	bh=nKyZ3lLtZcstYRDbjWccln1OattIEoo2b72AEMGlrN4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YeAZmqPBOAntFH6GaqdxEO83xfiXAhGgQ2fLEw7qqATJgN7mpnmunx5RmNDyXNgwmxtelB+3Xx+l82vAQkGpjA5QuUjqQLeShtl2FwJrtTQf2gH2diCOwDkShEIoiFDs6TxJhwg/szLuwz0BhibyTRspm1vwjsLJAL72k16pCQI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EVAbmTcW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2F3BC4CEE3;
-	Tue, 17 Jun 2025 16:19:01 +0000 (UTC)
+	 MIME-Version; b=e+q4/yt/w4lxvLjCze3U6UBoywJYsbmdJOY2vd9FM3KW+oRm7FhP05ENHfp2ao+Jjp3dXlEGM9dklIC7D2KWeyMYrAG2FDwAvP9BHzIe2JYEpeSSmlCmzcDD322wJhEY8FF7v6hyc5OY8m3Yx1PS3vIFINeKGGcKikoaHXa+P+E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yrlLhzC3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F6C0C4CEE3;
+	Tue, 17 Jun 2025 16:19:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750177142;
-	bh=ZR2fujcdIMtUNdtqYCiMHk+gqfyXSP+Pjx8ZymjO3f0=;
+	s=korg; t=1750177179;
+	bh=nKyZ3lLtZcstYRDbjWccln1OattIEoo2b72AEMGlrN4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EVAbmTcWp2Ww+btRUR24Ps1vZvUQsztee+9/QW8Mj0wZ8cAeQrZG0XdIyDxhvUPA1
-	 FRgqHHycPAvqBjIcDXcY9JRgTFVwS3T0WcXKybh3MgOvPEycOQZnVB2oI7Ib3gncK5
-	 XLv1yGKnQxNqBfkFgsTGJPBnGiN0pQOav6kCuHo0=
+	b=yrlLhzC3ffVU1wDwHxcf2jXyz+PUPb9Ir6gvC2g11f40HEltibXLhafD9CKu9gm9G
+	 cGuYuxGs8pXNxYSvr0mhNJRXiM73MyFhow1wA3Y5dEpHGz1bKLd+/OhcOIu7z9As28
+	 jMQSHiWhR0PIEqoJ3JybadeOV5OYbWoU2QT0y5pc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Cong Wang <xiyou.wangcong@gmail.com>,
-	Jiayuan Chen <jiayuan.chen@linux.dev>,
-	Martin KaFai Lau <martin.lau@kernel.org>,
-	John Fastabend <john.fastabend@gmail.com>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Anton Protopopov <a.s.protopopov@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 258/780] ktls, sockmap: Fix missing uncharge operation
-Date: Tue, 17 Jun 2025 17:19:26 +0200
-Message-ID: <20250617152501.962744596@linuxfoundation.org>
+Subject: [PATCH 6.15 259/780] libbpf: Use proper errno value in nlattr
+Date: Tue, 17 Jun 2025 17:19:27 +0200
+Message-ID: <20250617152502.004616222@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
 References: <20250617152451.485330293@linuxfoundation.org>
@@ -68,57 +66,73 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Jiayuan Chen <jiayuan.chen@linux.dev>
+From: Anton Protopopov <a.s.protopopov@gmail.com>
 
-[ Upstream commit 79f0c39ae7d3dc628c01b02f23ca5d01f9875040 ]
+[ Upstream commit fd5fd538a1f4b34cee6823ba0ddda2f7a55aca96 ]
 
-When we specify apply_bytes, we divide the msg into multiple segments,
-each with a length of 'send', and every time we send this part of the data
-using tcp_bpf_sendmsg_redir(), we use sk_msg_return_zero() to uncharge the
-memory of the specified 'send' size.
+Return value of the validate_nla() function can be propagated all the
+way up to users of libbpf API. In case of error this libbpf version
+of validate_nla returns -1 which will be seen as -EPERM from user's
+point of view. Instead, return a more reasonable -EINVAL.
 
-However, if the first segment of data fails to send, for example, the
-peer's buffer is full, we need to release all of the msg. When releasing
-the msg, we haven't uncharged the memory of the subsequent segments.
-
-This modification does not make significant logical changes, but only
-fills in the missing uncharge places.
-
-This issue has existed all along, until it was exposed after we added the
-apply test in test_sockmap:
-commit 3448ad23b34e ("selftests/bpf: Add apply_bytes test to test_txmsg_redir_wait_sndmem in test_sockmap")
-
-Fixes: d3b18ad31f93 ("tls: add bpf support to sk_msg handling")
-Reported-by: Cong Wang <xiyou.wangcong@gmail.com>
-Closes: https://lore.kernel.org/bpf/aAmIi0vlycHtbXeb@pop-os.localdomain/T/#t
-Signed-off-by: Jiayuan Chen <jiayuan.chen@linux.dev>
-Signed-off-by: Martin KaFai Lau <martin.lau@kernel.org>
-Acked-by: John Fastabend <john.fastabend@gmail.com>
-Reviewed-by: Cong Wang <xiyou.wangcong@gmail.com>
-Link: https://lore.kernel.org/r/20250425060015.6968-2-jiayuan.chen@linux.dev
+Fixes: bbf48c18ee0c ("libbpf: add error reporting in XDP")
+Suggested-by: Andrii Nakryiko <andrii@kernel.org>
+Signed-off-by: Anton Protopopov <a.s.protopopov@gmail.com>
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Link: https://lore.kernel.org/bpf/20250510182011.2246631-1-a.s.protopopov@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/tls/tls_sw.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ tools/lib/bpf/nlattr.c | 15 +++++++--------
+ 1 file changed, 7 insertions(+), 8 deletions(-)
 
-diff --git a/net/tls/tls_sw.c b/net/tls/tls_sw.c
-index f3d7d19482da9..fc88e34b7f33f 100644
---- a/net/tls/tls_sw.c
-+++ b/net/tls/tls_sw.c
-@@ -908,6 +908,13 @@ static int bpf_exec_tx_verdict(struct sk_msg *msg, struct sock *sk,
- 					    &msg_redir, send, flags);
- 		lock_sock(sk);
- 		if (err < 0) {
-+			/* Regardless of whether the data represented by
-+			 * msg_redir is sent successfully, we have already
-+			 * uncharged it via sk_msg_return_zero(). The
-+			 * msg->sg.size represents the remaining unprocessed
-+			 * data, which needs to be uncharged here.
-+			 */
-+			sk_mem_uncharge(sk, msg->sg.size);
- 			*copied -= sk_msg_free_nocharge(sk, &msg_redir);
- 			msg->sg.size = 0;
+diff --git a/tools/lib/bpf/nlattr.c b/tools/lib/bpf/nlattr.c
+index 975e265eab3bf..06663f9ea581f 100644
+--- a/tools/lib/bpf/nlattr.c
++++ b/tools/lib/bpf/nlattr.c
+@@ -63,16 +63,16 @@ static int validate_nla(struct nlattr *nla, int maxtype,
+ 		minlen = nla_attr_minlen[pt->type];
+ 
+ 	if (libbpf_nla_len(nla) < minlen)
+-		return -1;
++		return -EINVAL;
+ 
+ 	if (pt->maxlen && libbpf_nla_len(nla) > pt->maxlen)
+-		return -1;
++		return -EINVAL;
+ 
+ 	if (pt->type == LIBBPF_NLA_STRING) {
+ 		char *data = libbpf_nla_data(nla);
+ 
+ 		if (data[libbpf_nla_len(nla) - 1] != '\0')
+-			return -1;
++			return -EINVAL;
+ 	}
+ 
+ 	return 0;
+@@ -118,19 +118,18 @@ int libbpf_nla_parse(struct nlattr *tb[], int maxtype, struct nlattr *head,
+ 		if (policy) {
+ 			err = validate_nla(nla, maxtype, policy);
+ 			if (err < 0)
+-				goto errout;
++				return err;
  		}
+ 
+-		if (tb[type])
++		if (tb[type]) {
+ 			pr_warn("Attribute of type %#x found multiple times in message, "
+ 				"previous attribute is being ignored.\n", type);
++		}
+ 
+ 		tb[type] = nla;
+ 	}
+ 
+-	err = 0;
+-errout:
+-	return err;
++	return 0;
+ }
+ 
+ /**
 -- 
 2.39.5
 
