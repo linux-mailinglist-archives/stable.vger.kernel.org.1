@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-153995-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153997-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7CC86ADD772
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:44:54 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0FE81ADD72C
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:42:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BBAA219458A6
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:35:18 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7C9FD4A036F
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:35:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 738302EA16A;
-	Tue, 17 Jun 2025 16:29:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3CD192EA16D;
+	Tue, 17 Jun 2025 16:29:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nrTn5yNR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hAWW56Oj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DC292EA15F;
-	Tue, 17 Jun 2025 16:29:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED0492EA155;
+	Tue, 17 Jun 2025 16:29:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750177767; cv=none; b=XPHWTqefk2HdMJj4hbFzQ/yYaB7O42I1ITB/Pc1rUVVL4Eku86BGNP5JD8fi/Ol2kNCWvwA45gueH+czVyBwvmTx61JzRpn1TJZuTLQFn5xZsZsRDvNbUOPbZqaXbxbPnfmQ5UELqIWb2uY0GZ3MOiOc+n8NiTZQ06Bi/c3hOh0=
+	t=1750177774; cv=none; b=asf02cBIs/YEe1hT3Dk+4FBx+xGgtiVvVrQK3y3zbpS3/G1LPb+W8oiezeClT+XmqvpfwxiWl8SAYMsmBZTCcO8nKBwjGhR/COt8IxCwwEjAohNkzQmdlAfR1pWUnjPKCgMUmlw+9Y7W+KKNw4CKW7lEH8nJ8tG2iydsQK3+XUI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750177767; c=relaxed/simple;
-	bh=T92tT2jq8zzZ0Hzv5vibcsTsnI7R3h/2uN24nSontzQ=;
+	s=arc-20240116; t=1750177774; c=relaxed/simple;
+	bh=uJ0Twk80UpdM71ilQCRUNaBLIpeBP/qd4lDSyRzUrNo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OyLQNv+saFvxd35gBhHY4vNO984skgVOSEu9NHhOfaL+QsfYnDGB5cJWa2xkWUkEXcjwaNti8FNivLQnCJqmhjB4ZkPUNw1aMTRXBr1vk/+7vApyg1nsYCxy3xrSG2sx7jZP3EPbdnd/aLQLDxbyQd3Lum/upRgMqaLlw86M1gQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nrTn5yNR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8CEB2C4CEE7;
-	Tue, 17 Jun 2025 16:29:26 +0000 (UTC)
+	 MIME-Version; b=h/eyD47ccIRKAUul5FpIUbBsyjGiYBqQ77Hoq0uAYJXjp7gH/g/UKHs3tvjzSgvDrlwI5adamm3A2N/9H7SLiv9iSyfnzJlPGvyeEb3bqyNeAnivwkHkl22sLLw8Z2F1XC4yhR43sTXq0JyVwwH39gColnSKH1+9U3mKJ5QGdRo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hAWW56Oj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06C80C4CEE3;
+	Tue, 17 Jun 2025 16:29:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750177767;
-	bh=T92tT2jq8zzZ0Hzv5vibcsTsnI7R3h/2uN24nSontzQ=;
+	s=korg; t=1750177773;
+	bh=uJ0Twk80UpdM71ilQCRUNaBLIpeBP/qd4lDSyRzUrNo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nrTn5yNRhJrXph2v1Ul4zuWkXPsqIwnlhuxp0uxxeih++Gajre++WgkQFQWbY4aYx
-	 zttYlS0dMI7QE8eKlhshHkb6rZvkRJFM2tXZjW/CyFL+/5vUZGtjfy0TMY3Bzq6aOi
-	 5t0TcrubeRS6Fymd9h3c9MRAV5q+t/L+Fiwyvg78=
+	b=hAWW56OjMb+g0YZeAVocJeX59nTo/lQQM68LhA3CcgjyBXldfPHIWB3WKdGzz2Trb
+	 ob1pnOAhSzhgV+5T8WKC//gqVO3NUs/HuzoJZVZP41VXXUiVK7PTtKnaV5Uut4nXgA
+	 AwXRlYH2Q4GrN0/VbYJmmIFtvQsEwhXlAe7gPpJM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	Tingguo Cheng <quic_tingguoc@quicinc.com>,
+	Luca Weiss <luca.weiss@fairphone.com>,
 	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
 	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 360/780] arm64: dts: qcom: qcs615: remove disallowed property in spmi bus node
-Date: Tue, 17 Jun 2025 17:21:08 +0200
-Message-ID: <20250617152506.118644979@linuxfoundation.org>
+Subject: [PATCH 6.15 361/780] arm64: dts: qcom: sm8650: Fix domain-idle-state for CPU2
+Date: Tue, 17 Jun 2025 17:21:09 +0200
+Message-ID: <20250617152506.159122646@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
 References: <20250617152451.485330293@linuxfoundation.org>
@@ -68,39 +67,38 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Tingguo Cheng <quic_tingguoc@quicinc.com>
+From: Luca Weiss <luca.weiss@fairphone.com>
 
-[ Upstream commit 54040a3e3da67ef0e014e5f04f9f3fe680fc4b55 ]
+[ Upstream commit 9bb5ca464100e7c8f2d740148088f60e04fed8ed ]
 
-Remove the unevaluated 'cell-index' property from qcs615-ride.dtb
-spmi@c440000 to fix the Devicetree validation error reported by the
-kernel test robot.
+On SM8650 the CPUs 0-1 are "silver" (Cortex-A520), CPU 2-6 are "gold"
+(Cortex-A720) and CPU 7 is "gold-plus" (Cortex-X4).
 
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/r/202412272210.GpGmqcPC-lkp@intel.com/
-Fixes: 27554e2bef4d ("arm64: dts: qcom: qcs615: Adds SPMI support")
-Signed-off-by: Tingguo Cheng <quic_tingguoc@quicinc.com>
+So reference the correct "gold" idle-state for CPU core 2.
+
+Fixes: d2350377997f ("arm64: dts: qcom: add initial SM8650 dtsi")
+Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
 Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Link: https://lore.kernel.org/r/20250117-fix-kernel-test-robot-unexpected-property-issue-v2-1-0b68cf481249@quicinc.com
-[bjorn: Fixes commit message wording about LKP]
+Link: https://lore.kernel.org/r/20250314-sm8650-cpu2-sleep-v1-1-31d5c7c87a5d@fairphone.com
 Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/qcs615.dtsi | 1 -
- 1 file changed, 1 deletion(-)
+ arch/arm64/boot/dts/qcom/sm8650.dtsi | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm64/boot/dts/qcom/qcs615.dtsi b/arch/arm64/boot/dts/qcom/qcs615.dtsi
-index f4abfad474ea6..8db06d17eb474 100644
---- a/arch/arm64/boot/dts/qcom/qcs615.dtsi
-+++ b/arch/arm64/boot/dts/qcom/qcs615.dtsi
-@@ -3304,7 +3304,6 @@
- 			#interrupt-cells = <4>;
- 			#address-cells = <2>;
- 			#size-cells = <0>;
--			cell-index = <0>;
- 			qcom,channel = <0>;
- 			qcom,ee = <0>;
+diff --git a/arch/arm64/boot/dts/qcom/sm8650.dtsi b/arch/arm64/boot/dts/qcom/sm8650.dtsi
+index 36919efc888c2..bf6590e09a4c4 100644
+--- a/arch/arm64/boot/dts/qcom/sm8650.dtsi
++++ b/arch/arm64/boot/dts/qcom/sm8650.dtsi
+@@ -460,7 +460,7 @@
+ 		cpu_pd2: power-domain-cpu2 {
+ 			#power-domain-cells = <0>;
+ 			power-domains = <&cluster_pd>;
+-			domain-idle-states = <&silver_cpu_sleep_0>;
++			domain-idle-states = <&gold_cpu_sleep_0>;
  		};
+ 
+ 		cpu_pd3: power-domain-cpu3 {
 -- 
 2.39.5
 
