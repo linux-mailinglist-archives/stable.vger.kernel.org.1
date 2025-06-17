@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-154059-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-154061-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 221EBADD848
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:53:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3A781ADD8A0
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:57:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 363F019E1BB3
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:38:40 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 78DD619E22E1
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:38:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50F742DFF06;
-	Tue, 17 Jun 2025 16:32:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F12B823771C;
+	Tue, 17 Jun 2025 16:32:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IG4oIOnN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z28Twuma"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C6F120E71E;
-	Tue, 17 Jun 2025 16:32:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC783217F40;
+	Tue, 17 Jun 2025 16:32:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750177971; cv=none; b=qtZssy/31Wj4q4NKyrQSJbYNk2zGqivXYIBRe4IvpZ8zV9ktE/nQaTwNUQAtB3Wg+CaF8kDjT17tN/+Pk0esZxHlC1hrJIfkTtAa3SrYS/GT4WSies9MP8DwNeEf9sTP4MCMjBjJdc4Qua9tmGNYMqNQvw73D1c+N5EbjJnNbhw=
+	t=1750177977; cv=none; b=chRsiPKl0D7eCZeKjz9jTfS69DJX5GSep6wTTOwLQqrSCVsIGfY/+kGnZfaet+Xqlgc1L8Xn3K72foVyD5QaDf+6rmKerO9uJjr3wdz6JcjyZRJGHzUbdmfTYV7YGGFv6aEYA9s6PfeAiqKPxoSMXhaQAr5ms6cbVpyy/gYfBHc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750177971; c=relaxed/simple;
-	bh=DIlQO5q1fTu7eq9svwzncX28tHuo6uAsEmHr8XxDP58=;
+	s=arc-20240116; t=1750177977; c=relaxed/simple;
+	bh=C+oBOtgzENwIw+whEpnfKoBI5yAGSU3SJyHkVSjHeow=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bJPvZjSkEtRD8KDqg3bVmVEl6q2HY5mKWDLc4qkfw86LQ2GvVVZ/AyAo3Vj7Zt9Ml8fFO2k2+lcYz4wxUfqY+E5c67tjgEJs3OuowjJcjgTMDSNgcRE6BObb0luVh4Iecgk9LEwX4L5o8ZADsodYis1gFWcmlh9gGx3J1Tx4EWc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IG4oIOnN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F84EC4CEE7;
-	Tue, 17 Jun 2025 16:32:50 +0000 (UTC)
+	 MIME-Version:Content-Type; b=NGXL8LKlBm41jDqbLNiyRoWT08ICvT+L2eO1IXktQ8kVuF8PTPNePDAeOh6/6SRfo9wB/lejTehhqAleir0Cj2w5fidMoZyakyXPd7c1+EULdlROTYYfb2np1te89u0KICYs8fMt6pACt4HKILC48XtXuuORzqpDUMkXKlYljqA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z28Twuma; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C0F1C4CEE3;
+	Tue, 17 Jun 2025 16:32:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750177970;
-	bh=DIlQO5q1fTu7eq9svwzncX28tHuo6uAsEmHr8XxDP58=;
+	s=korg; t=1750177977;
+	bh=C+oBOtgzENwIw+whEpnfKoBI5yAGSU3SJyHkVSjHeow=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IG4oIOnNp3VvDWTFQ5VCBAXPzAy5s1k5gY7qbUSVQK2gsxRIMpgnkTYhvLFfLgkHI
-	 Bon+YBE20MqdIUgkz6RiWXTZvakL6nz2hb56p3whlY/8BWAc1F0cDyRA6gG43ZLnIk
-	 89/mZ7XYWbSWlUYbJL1uLn0tP17EK1wiiKKhL0+s=
+	b=Z28TwumaRBrZSADSiPZzxE/nrsqYKg1zXmsJLHUmVrESipSx0eL5MUiKPcYKUUg3i
+	 eZ/Ld3/xz+9ktf9dMEQG7T/Nd/G4STTO0XPCW101VAaSc6GaiylolXkQ3gA31cQdMD
+	 Gqs/Sqs5BO27L+naLx6Wo4QBTDNIKp0US9m/eSlk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Prasanth Babu Mantena <p-mantena@ti.com>,
-	Nishanth Menon <nm@ti.com>,
+	=?UTF-8?q?Barnab=C3=A1s=20Cz=C3=A9m=C3=A1n?= <barnabas.czeman@mainlining.org>,
+	Stephan Gerhold <stephan.gerhold@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 390/780] arm64: dts: ti: k3-j721e-common-proc-board: Enable OSPI1 on J721E
-Date: Tue, 17 Jun 2025 17:21:38 +0200
-Message-ID: <20250617152507.338701814@linuxfoundation.org>
+Subject: [PATCH 6.15 391/780] soc: qcom: smp2p: Fix fallback to qcom,ipc parse
+Date: Tue, 17 Jun 2025 17:21:39 +0200
+Message-ID: <20250617152507.378970312@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
 References: <20250617152451.485330293@linuxfoundation.org>
@@ -60,40 +61,46 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Prasanth Babu Mantena <p-mantena@ti.com>
+From: Barnabás Czémán <barnabas.czeman@mainlining.org>
 
-[ Upstream commit 6b8deb2ff0d31848c43a73f6044e69ba9276b3ec ]
+[ Upstream commit 421777a02bbd9cdabe0ae05a69ee06253150589d ]
 
-J721E SoM has MT25QU512AB Serial NOR flash connected to
-OSPI1 controller. Enable ospi1 node in device tree.
+mbox_request_channel() returning value was changed in case of error.
+It uses returning value of of_parse_phandle_with_args().
+It is returning with -ENOENT instead of -ENODEV when no mboxes property
+exists.
 
-Fixes: 73676c480b72 ("arm64: dts: ti: k3-j721e: Enable OSPI nodes at the board level")
-Signed-off-by: Prasanth Babu Mantena <p-mantena@ti.com>
-Link: https://lore.kernel.org/r/20250507050701.3007209-1-p-mantena@ti.com
-Signed-off-by: Nishanth Menon <nm@ti.com>
+Fixes: 24fdd5074b20 ("mailbox: use error ret code of of_parse_phandle_with_args()")
+Signed-off-by: Barnabás Czémán <barnabas.czeman@mainlining.org>
+Reviewed-by: Stephan Gerhold <stephan.gerhold@linaro.org>
+Tested-by: Stephan Gerhold <stephan.gerhold@linaro.org> # msm8939
+Link: https://lore.kernel.org/r/20250421-fix-qcom-smd-v1-2-574d071d3f27@mainlining.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/ti/k3-j721e-common-proc-board.dts | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/soc/qcom/smp2p.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm64/boot/dts/ti/k3-j721e-common-proc-board.dts b/arch/arm64/boot/dts/ti/k3-j721e-common-proc-board.dts
-index 4421852161dd6..da4e0cacd6d72 100644
---- a/arch/arm64/boot/dts/ti/k3-j721e-common-proc-board.dts
-+++ b/arch/arm64/boot/dts/ti/k3-j721e-common-proc-board.dts
-@@ -573,6 +573,7 @@
- &ospi1 {
- 	pinctrl-names = "default";
- 	pinctrl-0 = <&mcu_fss0_ospi1_pins_default>;
-+	status = "okay";
+diff --git a/drivers/soc/qcom/smp2p.c b/drivers/soc/qcom/smp2p.c
+index a3e88ced328a9..c9199d6fbe26e 100644
+--- a/drivers/soc/qcom/smp2p.c
++++ b/drivers/soc/qcom/smp2p.c
+@@ -575,7 +575,7 @@ static int qcom_smp2p_probe(struct platform_device *pdev)
+ 	smp2p->mbox_client.knows_txdone = true;
+ 	smp2p->mbox_chan = mbox_request_channel(&smp2p->mbox_client, 0);
+ 	if (IS_ERR(smp2p->mbox_chan)) {
+-		if (PTR_ERR(smp2p->mbox_chan) != -ENODEV)
++		if (PTR_ERR(smp2p->mbox_chan) != -ENOENT)
+ 			return PTR_ERR(smp2p->mbox_chan);
  
- 	flash@0 {
- 		compatible = "jedec,spi-nor";
+ 		smp2p->mbox_chan = NULL;
 -- 
 2.39.5
 
