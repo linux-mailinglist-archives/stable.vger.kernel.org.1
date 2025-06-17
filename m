@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-153132-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153136-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 65231ADD28C
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 17:44:14 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E6EAADD295
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 17:44:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A4E703BF636
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 15:42:47 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CE7D4168BE3
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 15:43:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AFE462ECD1B;
-	Tue, 17 Jun 2025 15:42:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1BB562ECD39;
+	Tue, 17 Jun 2025 15:43:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ph/DH9rc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vmtzqw5A"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B27A1E8332;
-	Tue, 17 Jun 2025 15:42:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C20562EA487;
+	Tue, 17 Jun 2025 15:43:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750174972; cv=none; b=Xet1Gd80Z91HrIdoS2twI7/anP/Wr+K4lDlZlAXSPy5GKpUob3tN1Ry0r0HAUxRp1AZKZt74K+leq96iuLezo2nTokj+LdqNQZxMU1WEeuLlJmpxrvbSMPcm9TNf8B3FMVL4lvQtBcJ9gN74djpEC9SK9+Uf+YlSUPlBwJt6UCg=
+	t=1750174983; cv=none; b=TSR6Q2QKfMyJ0DtOR9pl6PKovWJNTTBAUJeuHTzHRd/DYheUOXiN0i/wCSinx4BAkqplkBZq/vg7nbgPapEWCMPChxTrffNWpwOQ7b0cqee0XwmDiZ168Ctwkpk5Rd3tO6/nqUjhnC0bCpKWzN+gjpg52pwRpTy1DuW6NLXXwU8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750174972; c=relaxed/simple;
-	bh=icmQF3+HRMQOnJcYzmSl2cZEwXN+xKUBzOIptDpE8QE=;
+	s=arc-20240116; t=1750174983; c=relaxed/simple;
+	bh=5XxaZV6odZChrIbeJnfSrZVqaL9+jmeI4fDM12bKfUo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rnuV7P2in1233ilo2aoQIeMU40Aldd8OKb5ymYSC6iJELZaoUSvrkKcdoseh6g1VBlQeyp28tqIbar5nn1YyTBVvzH3xTZumeYNcX9WA5F1LwSQEPIVbuFAFOVhak2IumOy1EICr9jF10CsO8TwryhG4D2rqeUsNzaklG+/ulBM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ph/DH9rc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF2AAC4CEE3;
-	Tue, 17 Jun 2025 15:42:44 +0000 (UTC)
+	 MIME-Version; b=p4hdFDbayLBtX7s9J8S1jB05JnQOEAI2fo3587Psh242YRJW7TW0mJmN4tMmxdRLTVrpsDKkIatMdxfX1LmCiWdpuYAPeoqXHh4QaSmTSOlKBIBD6thq5qQnNrv1ddHhQMsvTpbSVcNPBhuC8PnIBHqd0gIwEilXvoE2nhVTBBg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vmtzqw5A; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4AC88C4CEE3;
+	Tue, 17 Jun 2025 15:43:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750174972;
-	bh=icmQF3+HRMQOnJcYzmSl2cZEwXN+xKUBzOIptDpE8QE=;
+	s=korg; t=1750174983;
+	bh=5XxaZV6odZChrIbeJnfSrZVqaL9+jmeI4fDM12bKfUo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ph/DH9rcPGuk3oMMnHYTdlIaf+W9n4TMoBb4XLXxXpdXiA+H3csoBX0jr+ZjM43d5
-	 iJaws2t0be+L9ZXWQUaLGvaODBMgg3DBy2Wy0yEehRPohpkYmtqymwR6LWy97Kz4KS
-	 JGlQzXxF2ydRtsjadXlCevJleaYViJSrFG93aVFg=
+	b=vmtzqw5AYcZEVZWAfE1ThMg6ilF/6NPlP3dU1K4HhmJvFMUvfW9R0I7BR0NRZEkTc
+	 OE2/Wov5+XvRxO3pyqZfTHkBRPc2hc9IaaQjMW1Dl/lhQc1iEwyt/+Io6YjmSHa+hh
+	 lnSm7QQ5EwVt5pYHISthiUF0G5byUSiUKgZ/aqy4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sheng Yong <shengyong1@xiaomi.com>,
-	Gao Xiang <hsiangkao@linux.alibaba.com>,
-	Hongbo Li <lihongbo22@huawei.com>,
+	Gaurav Batra <gbatra@linux.ibm.com>,
+	Nilay Shroff <nilay@linux.ibm.com>,
+	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 038/780] erofs: avoid using multiple devices with different type
-Date: Tue, 17 Jun 2025 17:15:46 +0200
-Message-ID: <20250617152453.050677172@linuxfoundation.org>
+Subject: [PATCH 6.15 039/780] powerpc/pseries/iommu: Fix kmemleak in TCE table userspace view
+Date: Tue, 17 Jun 2025 17:15:47 +0200
+Message-ID: <20250617152453.089683458@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
 References: <20250617152451.485330293@linuxfoundation.org>
@@ -67,62 +68,81 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Sheng Yong <shengyong1@xiaomi.com>
+From: Gaurav Batra <gbatra@linux.ibm.com>
 
-[ Upstream commit 9748f2f54f66743ac77275c34886a9f890e18409 ]
+[ Upstream commit d36e3f11fe8b55b801bdbe84ad51f612b1bd84da ]
 
-For multiple devices, both primary and extra devices should be the
-same type. `erofs_init_device` has already guaranteed that if the
-primary is a file-backed device, extra devices should also be
-regular files.
+When a device is opened by a userspace driver, via VFIO interface, DMA
+window is created. This DMA window has TCE Table and a corresponding
+data for userview of TCE table.
 
-However, if the primary is a block device while the extra device
-is a file-backed device, `erofs_init_device` will get an ENOTBLK,
-which is not treated as an error in `erofs_fc_get_tree`, and that
-leads to an UAF:
+When the userspace driver closes the device, all the above infrastructure
+is free'ed and the device control given back to kernel. Both DMA window
+and TCE table is getting free'ed. But due to a code bug, userview of the
+TCE table is not getting free'ed. This is resulting in a memory leak.
 
-  erofs_fc_get_tree
-    get_tree_bdev_flags(erofs_fc_fill_super)
-      erofs_read_superblock
-        erofs_init_device  // sbi->dif0 is not inited yet,
-                           // return -ENOTBLK
-      deactivate_locked_super
-        free(sbi)
-    if (err is -ENOTBLK)
-      sbi->dif0.file = filp_open()  // sbi UAF
+Befow is the information from KMEMLEAK
 
-So if -ENOTBLK is hitted in `erofs_init_device`, it means the
-primary device must be a block device, and the extra device
-is not a block device. The error can be converted to -EINVAL.
+unreferenced object 0xc008000022af0000 (size 16777216):
+  comm "senlib_unit_tes", pid 9346, jiffies 4294983174
+  hex dump (first 32 bytes):
+    00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+    00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+  backtrace (crc 0):
+    kmemleak_vmalloc+0xc8/0x1a0
+    __vmalloc_node_range+0x284/0x340
+    vzalloc+0x58/0x70
+    spapr_tce_create_table+0x4b0/0x8d0
+    tce_iommu_create_table+0xcc/0x170 [vfio_iommu_spapr_tce]
+    tce_iommu_create_window+0x144/0x2f0 [vfio_iommu_spapr_tce]
+    tce_iommu_ioctl.part.0+0x59c/0xc90 [vfio_iommu_spapr_tce]
+    vfio_fops_unl_ioctl+0x88/0x280 [vfio]
+    sys_ioctl+0xf4/0x160
+    system_call_exception+0x164/0x310
+    system_call_vectored_common+0xe8/0x278
+unreferenced object 0xc008000023b00000 (size 4194304):
+  comm "senlib_unit_tes", pid 9351, jiffies 4294984116
+  hex dump (first 32 bytes):
+    00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+    00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+  backtrace (crc 0):
+    kmemleak_vmalloc+0xc8/0x1a0
+    __vmalloc_node_range+0x284/0x340
+    vzalloc+0x58/0x70
+    spapr_tce_create_table+0x4b0/0x8d0
+    tce_iommu_create_table+0xcc/0x170 [vfio_iommu_spapr_tce]
+    tce_iommu_create_window+0x144/0x2f0 [vfio_iommu_spapr_tce]
+    tce_iommu_create_default_window+0x88/0x120 [vfio_iommu_spapr_tce]
+    tce_iommu_ioctl.part.0+0x57c/0xc90 [vfio_iommu_spapr_tce]
+    vfio_fops_unl_ioctl+0x88/0x280 [vfio]
+    sys_ioctl+0xf4/0x160
+    system_call_exception+0x164/0x310
+    system_call_vectored_common+0xe8/0x278
 
-Fixes: fb176750266a ("erofs: add file-backed mount support")
-Signed-off-by: Sheng Yong <shengyong1@xiaomi.com>
-Reviewed-by: Gao Xiang <hsiangkao@linux.alibaba.com>
-Reviewed-by: Hongbo Li <lihongbo22@huawei.com>
-Link: https://lore.kernel.org/r/20250515014837.3315886-1-shengyong1@xiaomi.com
-Signed-off-by: Gao Xiang <hsiangkao@linux.alibaba.com>
+Fixes: f431a8cde7f1 ("powerpc/iommu: Reimplement the iommu_table_group_ops for pSeries")
+Signed-off-by: Gaurav Batra <gbatra@linux.ibm.com>
+Reviewed-by: Nilay Shroff <nilay@linux.ibm.com>
+Reviewed-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
+Link: https://patch.msgid.link/20250512224653.35697-1-gbatra@linux.ibm.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/erofs/super.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ arch/powerpc/platforms/pseries/iommu.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/erofs/super.c b/fs/erofs/super.c
-index bcb99c3c2594b..6e57b9cc6ed2e 100644
---- a/fs/erofs/super.c
-+++ b/fs/erofs/super.c
-@@ -165,8 +165,11 @@ static int erofs_init_device(struct erofs_buf *buf, struct super_block *sb,
- 				filp_open(dif->path, O_RDONLY | O_LARGEFILE, 0) :
- 				bdev_file_open_by_path(dif->path,
- 						BLK_OPEN_READ, sb->s_type, NULL);
--		if (IS_ERR(file))
-+		if (IS_ERR(file)) {
-+			if (file == ERR_PTR(-ENOTBLK))
-+				return -EINVAL;
- 			return PTR_ERR(file);
-+		}
+diff --git a/arch/powerpc/platforms/pseries/iommu.c b/arch/powerpc/platforms/pseries/iommu.c
+index d6ebc19fb99c5..eec333dd2e598 100644
+--- a/arch/powerpc/platforms/pseries/iommu.c
++++ b/arch/powerpc/platforms/pseries/iommu.c
+@@ -197,7 +197,7 @@ static void tce_iommu_userspace_view_free(struct iommu_table *tbl)
  
- 		if (!erofs_is_fileio_mode(sbi)) {
- 			dif->dax_dev = fs_dax_get_by_bdev(file_bdev(file),
+ static void tce_free_pSeries(struct iommu_table *tbl)
+ {
+-	if (!tbl->it_userspace)
++	if (tbl->it_userspace)
+ 		tce_iommu_userspace_view_free(tbl);
+ }
+ 
 -- 
 2.39.5
 
