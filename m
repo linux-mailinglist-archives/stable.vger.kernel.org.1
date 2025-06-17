@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-154062-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153590-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A1765ADD7B1
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:48:10 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F456ADD55D
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:20:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 302CF3ABCD4
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:38:05 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9B6962C3A29
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:10:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7AA9C2264B7;
-	Tue, 17 Jun 2025 16:33:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA7B72135A0;
+	Tue, 17 Jun 2025 16:07:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LSSDilVQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X/xFzVMJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36E7E188006;
-	Tue, 17 Jun 2025 16:33:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 753552F2352;
+	Tue, 17 Jun 2025 16:07:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750177981; cv=none; b=u0uc6GzrmTWzfUD7zLtKD2hs8udE2Jr0za19UwuEdjkNzPTSeXHSU8UpYcaG9gJ2wv4F0odXNgb3gQ5sSw6nEWU48MB+SNX6f4ZS61TCa1QzGQ2Ddlruayx6/Yp6OZ/Vfw9FY4d+mJnWG2b9LJ/aRJ6w6BW6jrmpbaKu9Dr+75U=
+	t=1750176453; cv=none; b=DkcAbrAHR7zJEBETLxWTlnc/tmFTF6PZkDBa57Hss1xIAkMTpvTgD5iq5hlffx9W1/gQ6HG0J2uYY8FZstTlEcbKuQsSMpdWyqTJGA0QPQYuGCg3PBzhQ0PtJ/i45kr2ONZuCJGp2pwh6vYEhpbQeK4qGAzAbga0/2FlV66E+PU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750177981; c=relaxed/simple;
-	bh=esN/mIdLYg2PwSBHSlvQk2fb09q0U220ey1ptjxV9bY=;
+	s=arc-20240116; t=1750176453; c=relaxed/simple;
+	bh=0wYzuGcVpMImKBJeBp3ZsMOQjFVK2dCf0IJOgRfl59c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TAAlYM6OsHHHTFNlhLa22wjafzlE/Vlrpig1DeIHE75Mxq/QYO62fyDEoizghxxfO2LJfNn/Jchn6ZNunxK6v/6YhsTOOV0SnJPnOccMZTbTNoEwQy+31JP1TH+jrpMbpdP0hnjujeG9yXliUSPtyWyrBoecBleubNhTcx7niB4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LSSDilVQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46733C4CEE3;
-	Tue, 17 Jun 2025 16:33:00 +0000 (UTC)
+	 MIME-Version; b=c7fe8Os4VkFPksBiR3/fZHWeJwj8sxQluEO40q+O8OWsDkdX8ffzoEHJCCTKCdLGOX/5ZLQMTdf2eW5Q0AGk18rUXO+9jxkvu9PLESWA36GW16gFwI3nWsWYuetAYaFuEQS813ZJr3KERLeOxHnwfOtWLbfuZAzuc4ahAmay2mI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X/xFzVMJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D41B8C4CEE3;
+	Tue, 17 Jun 2025 16:07:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750177980;
-	bh=esN/mIdLYg2PwSBHSlvQk2fb09q0U220ey1ptjxV9bY=;
+	s=korg; t=1750176453;
+	bh=0wYzuGcVpMImKBJeBp3ZsMOQjFVK2dCf0IJOgRfl59c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LSSDilVQLOpq6NFvJnJo1vAqv3Go7qJQ41C/F++mL6YBGN+yeHeFj/DkVgX+7CBWE
-	 vfZd2cBC6w3L57oUCuu1bGPNFkZUEQVWbo70FPaW+c1Qk5+cBM+iTcB1H2vPeLIuyc
-	 cv8jse7M7ggcUpd20XYJeMP1hXw5k+WloLcRMepg=
+	b=X/xFzVMJ91ZrQ4Z7tWY1Ht1voc1slbnEIq7+DyvBZ17gOCgxsR5Or3uLF4ml3M+hI
+	 X/v6OYRdeGxLuk8UajsnzyAmHXUz504ytmNlNqPx9BdweJvKZ1qoHtg+NMB9s5hjJp
+	 GCoIsxLuhM38AcufqIBiSXnfVBchxYctOW1BZ1mk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jeongjun Park <aha310510@gmail.com>,
-	Richard Cochran <richardcochran@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Ulf Hansson <ulf.hansson@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 427/512] ptp: remove ptp->n_vclocks check logic in ptp_vclock_in_use()
-Date: Tue, 17 Jun 2025 17:26:33 +0200
-Message-ID: <20250617152436.871394859@linuxfoundation.org>
+Subject: [PATCH 6.6 279/356] pmdomain: core: Fix error checking in genpd_dev_pm_attach_by_id()
+Date: Tue, 17 Jun 2025 17:26:34 +0200
+Message-ID: <20250617152349.423427176@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
-References: <20250617152419.512865572@linuxfoundation.org>
+In-Reply-To: <20250617152338.212798615@linuxfoundation.org>
+References: <20250617152338.212798615@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,92 +62,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jeongjun Park <aha310510@gmail.com>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-[ Upstream commit 87f7ce260a3c838b49e1dc1ceedf1006795157a2 ]
+[ Upstream commit 0f5757667ec0aaf2456c3b76fcf0c6c3ea3591fe ]
 
-There is no disagreement that we should check both ptp->is_virtual_clock
-and ptp->n_vclocks to check if the ptp virtual clock is in use.
+The error checking for of_count_phandle_with_args() does not handle
+negative error codes correctly.  The problem is that "index" is a u32 so
+in the condition "if (index >= num_domains)" negative error codes stored
+in "num_domains" are type promoted to very high positive values and
+"index" is always going to be valid.
 
-However, when we acquire ptp->n_vclocks_mux to read ptp->n_vclocks in
-ptp_vclock_in_use(), we observe a recursive lock in the call trace
-starting from n_vclocks_store().
+Test for negative error codes first and then test if "index" is valid.
 
-============================================
-WARNING: possible recursive locking detected
-6.15.0-rc6 #1 Not tainted
---------------------------------------------
-syz.0.1540/13807 is trying to acquire lock:
-ffff888035a24868 (&ptp->n_vclocks_mux){+.+.}-{4:4}, at:
- ptp_vclock_in_use drivers/ptp/ptp_private.h:103 [inline]
-ffff888035a24868 (&ptp->n_vclocks_mux){+.+.}-{4:4}, at:
- ptp_clock_unregister+0x21/0x250 drivers/ptp/ptp_clock.c:415
-
-but task is already holding lock:
-ffff888030704868 (&ptp->n_vclocks_mux){+.+.}-{4:4}, at:
- n_vclocks_store+0xf1/0x6d0 drivers/ptp/ptp_sysfs.c:215
-
-other info that might help us debug this:
- Possible unsafe locking scenario:
-
-       CPU0
-       ----
-  lock(&ptp->n_vclocks_mux);
-  lock(&ptp->n_vclocks_mux);
-
- *** DEADLOCK ***
-....
-============================================
-
-The best way to solve this is to remove the logic that checks
-ptp->n_vclocks in ptp_vclock_in_use().
-
-The reason why this is appropriate is that any path that uses
-ptp->n_vclocks must unconditionally check if ptp->n_vclocks is greater
-than 0 before unregistering vclocks, and all functions are already
-written this way. And in the function that uses ptp->n_vclocks, we
-already get ptp->n_vclocks_mux before unregistering vclocks.
-
-Therefore, we need to remove the redundant check for ptp->n_vclocks in
-ptp_vclock_in_use() to prevent recursive locking.
-
-Fixes: 73f37068d540 ("ptp: support ptp physical/virtual clocks conversion")
-Signed-off-by: Jeongjun Park <aha310510@gmail.com>
-Acked-by: Richard Cochran <richardcochran@gmail.com>
-Link: https://patch.msgid.link/20250520160717.7350-1-aha310510@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 3ccf3f0cd197 ("PM / Domains: Enable genpd_dev_pm_attach_by_id|name() for single PM domain")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/aBxPQ8AI8N5v-7rL@stanley.mountain
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/ptp/ptp_private.h | 12 +-----------
- 1 file changed, 1 insertion(+), 11 deletions(-)
+ drivers/base/power/domain.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/ptp/ptp_private.h b/drivers/ptp/ptp_private.h
-index 18934e28469ee..528d86a33f37d 100644
---- a/drivers/ptp/ptp_private.h
-+++ b/drivers/ptp/ptp_private.h
-@@ -98,17 +98,7 @@ static inline int queue_cnt(const struct timestamp_event_queue *q)
- /* Check if ptp virtual clock is in use */
- static inline bool ptp_vclock_in_use(struct ptp_clock *ptp)
- {
--	bool in_use = false;
--
--	if (mutex_lock_interruptible(&ptp->n_vclocks_mux))
--		return true;
--
--	if (!ptp->is_virtual_clock && ptp->n_vclocks)
--		in_use = true;
--
--	mutex_unlock(&ptp->n_vclocks_mux);
--
--	return in_use;
-+	return !ptp->is_virtual_clock;
- }
+diff --git a/drivers/base/power/domain.c b/drivers/base/power/domain.c
+index d9d339b8b5710..d1dae47f3534b 100644
+--- a/drivers/base/power/domain.c
++++ b/drivers/base/power/domain.c
+@@ -2856,7 +2856,7 @@ struct device *genpd_dev_pm_attach_by_id(struct device *dev,
+ 	/* Verify that the index is within a valid range. */
+ 	num_domains = of_count_phandle_with_args(dev->of_node, "power-domains",
+ 						 "#power-domain-cells");
+-	if (index >= num_domains)
++	if (num_domains < 0 || index >= num_domains)
+ 		return NULL;
  
- /* Check if ptp clock shall be free running */
+ 	/* Allocate and register device on the genpd bus. */
 -- 
 2.39.5
 
