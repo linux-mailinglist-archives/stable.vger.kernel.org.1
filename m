@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-152947-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-152966-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 349AEADD1B2
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 17:34:01 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 67FB3ADD1B5
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 17:34:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5646D7AC33B
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 15:31:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 53D2E3BD958
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 15:33:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A762293443;
-	Tue, 17 Jun 2025 15:32:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CDBFC2DF3CB;
+	Tue, 17 Jun 2025 15:33:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gFt1XhBq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NlU2SO0i"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E82B62E9730;
-	Tue, 17 Jun 2025 15:32:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A48E1E8332;
+	Tue, 17 Jun 2025 15:33:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750174356; cv=none; b=Z4/XJWOWcfaEAkEYMEP9F1RjHHLRJ2xWf8W119sVv+OUjXROJr6mdEjh2jSNBzlsWfhxv7r8MACAWazjeF5RK8+6MGsVm7l4mVolHM4dAoAjuzt2gg6HGkm4UmiEBUPRPhVy3wIZHp3nLhD1sM7qi8Dii9qyfMZ/7FgqOPEvZ80=
+	t=1750174417; cv=none; b=uarxBfqp22MNyV1yqbF3Yhk274YxZu3/Bslb0JQQj7rj7bkPoQe+45g2BkP8XZ1+I2Xux9GQrEhrAGt+9bcw3tQFca8MGBikCUmSU8MEai9vD6JF3ZSzdr/KdweaD3umdGEMb6i6703VQ+reuWMdiFhug/oUYhdTl+pwboQv7fQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750174356; c=relaxed/simple;
-	bh=MGe5bzZoUTGtYC8LXLuXo+WEtvXCzjS7EnjrQxiPp4M=;
+	s=arc-20240116; t=1750174417; c=relaxed/simple;
+	bh=DSCtUuEd+Y3Q14Exa79xiF2i1CzwFVscAIzTL4yIDQ8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=C1foH8AVSxT3Xe3mN6UlquehMxRtDWLJCB1INYMBYRwWiH9IYuIwk0UU5ald4BNAFXz8vE8RyVuPjh0gPNdWExNeMa8EbBIjy+QGORuMQFJlC4smNHTNovo+ORjPeLW5Ku18pI+ggaAevrg6CwElPi6mo2aTf0mDBoc/8Yvqqy0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gFt1XhBq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE71FC4CEF2;
-	Tue, 17 Jun 2025 15:32:34 +0000 (UTC)
+	 MIME-Version; b=PJrVCnQ0Y6ggO+OlIe4FlkhmvKsNcHOC/7KgTSQYANXxCJG2GFOaLmCEN3VDUTuc5aWhSEpqUoeRp9PTWAe/0Ki+EkvZ2htmTx4QdapVklAolbYbHLDMI+YU/oO2XHRp1Fadzze0c5Ys3EECXX4ajhwpOLXCv89RZzhAbwifd6k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NlU2SO0i; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2659C4CEE7;
+	Tue, 17 Jun 2025 15:33:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750174355;
-	bh=MGe5bzZoUTGtYC8LXLuXo+WEtvXCzjS7EnjrQxiPp4M=;
+	s=korg; t=1750174417;
+	bh=DSCtUuEd+Y3Q14Exa79xiF2i1CzwFVscAIzTL4yIDQ8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gFt1XhBqlv7Ii550L4Jj9t3EvsuUWiDRaeLfHNpvel2J6OJjdcpXchYKz37bClGWq
-	 fWEXnOZRTDA4M6fmEio6qOmyaNfi4nFAMUmzrPioX+5iqLMRbqpg6IFC6rd5K5zRAG
-	 d0I7Gnhi+QVQpDaxXqvvQ7yQhRMFihoXK6iCP5QA=
+	b=NlU2SO0iZF79kyYGrdPv5uCGpTgqC4wj3M/b0e9StE6H3YhNzmJKBCjbWFaTFiYLd
+	 Vfiz/vLP6qz1bPJ4GSQPzOi+I89hbG1bRUgiEFp0btGR2G+Q0in+n1BuOC6YgA+vZE
+	 Nc9jvqptVpB021aQ0YAwzwPDCwKI73aJJjl0YgrI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Ma=C3=ADra=20Canal?= <mcanal@igalia.com>,
-	Maxime Ripard <mripard@kernel.org>,
+	Charles Han <hanchunchao@inspur.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 056/356] drm/vc4: tests: Use return instead of assert
-Date: Tue, 17 Jun 2025 17:22:51 +0200
-Message-ID: <20250617152340.489467007@linuxfoundation.org>
+Subject: [PATCH 6.6 057/356] drm/amd/pp: Fix potential NULL pointer dereference in atomctrl_initialize_mc_reg_table
+Date: Tue, 17 Jun 2025 17:22:52 +0200
+Message-ID: <20250617152340.529837483@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250617152338.212798615@linuxfoundation.org>
 References: <20250617152338.212798615@linuxfoundation.org>
@@ -60,115 +60,57 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maxime Ripard <mripard@kernel.org>
+From: Charles Han <hanchunchao@inspur.com>
 
-[ Upstream commit 9e26a3740cc08ef8bcdc5e5d824792cd677affce ]
+[ Upstream commit 820116a39f96bdc7d426c33a804b52f53700a919 ]
 
-The vc4_mock_atomic_add_output() and vc4_mock_atomic_del_output() assert
-that the functions they are calling didn't fail. Since some of them can
-return EDEADLK, we can't properly deal with it.
+The function atomctrl_initialize_mc_reg_table() and
+atomctrl_initialize_mc_reg_table_v2_2() does not check the return
+value of smu_atom_get_data_table(). If smu_atom_get_data_table()
+fails to retrieve vram_info, it returns NULL which is later
+dereferenced.
 
-Since both functions are expected to return an int, and all caller check
-the return value, let's just properly propagate the errors when they
-occur.
-
-Fixes: f759f5b53f1c ("drm/vc4: tests: Introduce a mocking infrastructure")
-Fixes: 76ec18dc5afa ("drm/vc4: tests: Add unit test suite for the PV muxing")
-Reviewed-by: Maíra Canal <mcanal@igalia.com>
-Link: https://lore.kernel.org/r/20250403-drm-vc4-kunit-failures-v2-1-e09195cc8840@kernel.org
-Signed-off-by: Maxime Ripard <mripard@kernel.org>
+Fixes: b3892e2bb519 ("drm/amd/pp: Use atombios api directly in powerplay (v2)")
+Fixes: 5f92b48cf62c ("drm/amd/pm: add mc register table initialization")
+Signed-off-by: Charles Han <hanchunchao@inspur.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/vc4/tests/vc4_mock_output.c | 36 ++++++++++++++-------
- 1 file changed, 24 insertions(+), 12 deletions(-)
+ drivers/gpu/drm/amd/pm/powerplay/hwmgr/ppatomctrl.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/drivers/gpu/drm/vc4/tests/vc4_mock_output.c b/drivers/gpu/drm/vc4/tests/vc4_mock_output.c
-index e70d7c3076acf..f0ddc223c1f83 100644
---- a/drivers/gpu/drm/vc4/tests/vc4_mock_output.c
-+++ b/drivers/gpu/drm/vc4/tests/vc4_mock_output.c
-@@ -75,24 +75,30 @@ int vc4_mock_atomic_add_output(struct kunit *test,
- 	int ret;
+diff --git a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/ppatomctrl.c b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/ppatomctrl.c
+index 1fbd23922082a..7e37354a03411 100644
+--- a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/ppatomctrl.c
++++ b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/ppatomctrl.c
+@@ -144,6 +144,10 @@ int atomctrl_initialize_mc_reg_table(
+ 	vram_info = (ATOM_VRAM_INFO_HEADER_V2_1 *)
+ 		smu_atom_get_data_table(hwmgr->adev,
+ 				GetIndexIntoMasterTable(DATA, VRAM_Info), &size, &frev, &crev);
++	if (!vram_info) {
++		pr_err("Could not retrieve the VramInfo table!");
++		return -EINVAL;
++	}
  
- 	encoder = vc4_find_encoder_by_type(drm, type);
--	KUNIT_ASSERT_NOT_ERR_OR_NULL(test, encoder);
-+	if (!encoder)
-+		return -ENODEV;
+ 	if (module_index >= vram_info->ucNumOfVRAMModule) {
+ 		pr_err("Invalid VramInfo table.");
+@@ -181,6 +185,10 @@ int atomctrl_initialize_mc_reg_table_v2_2(
+ 	vram_info = (ATOM_VRAM_INFO_HEADER_V2_2 *)
+ 		smu_atom_get_data_table(hwmgr->adev,
+ 				GetIndexIntoMasterTable(DATA, VRAM_Info), &size, &frev, &crev);
++	if (!vram_info) {
++		pr_err("Could not retrieve the VramInfo table!");
++		return -EINVAL;
++	}
  
- 	crtc = vc4_find_crtc_for_encoder(test, drm, encoder);
--	KUNIT_ASSERT_NOT_ERR_OR_NULL(test, crtc);
-+	if (!crtc)
-+		return -ENODEV;
- 
- 	output = encoder_to_vc4_dummy_output(encoder);
- 	conn = &output->connector;
- 	conn_state = drm_atomic_get_connector_state(state, conn);
--	KUNIT_ASSERT_NOT_ERR_OR_NULL(test, conn_state);
-+	if (IS_ERR(conn_state))
-+		return PTR_ERR(conn_state);
- 
- 	ret = drm_atomic_set_crtc_for_connector(conn_state, crtc);
--	KUNIT_EXPECT_EQ(test, ret, 0);
-+	if (ret)
-+		return ret;
- 
- 	crtc_state = drm_atomic_get_crtc_state(state, crtc);
--	KUNIT_ASSERT_NOT_ERR_OR_NULL(test, crtc_state);
-+	if (IS_ERR(crtc_state))
-+		return PTR_ERR(crtc_state);
- 
- 	ret = drm_atomic_set_mode_for_crtc(crtc_state, &default_mode);
--	KUNIT_EXPECT_EQ(test, ret, 0);
-+	if (ret)
-+		return ret;
- 
- 	crtc_state->active = true;
- 
-@@ -113,26 +119,32 @@ int vc4_mock_atomic_del_output(struct kunit *test,
- 	int ret;
- 
- 	encoder = vc4_find_encoder_by_type(drm, type);
--	KUNIT_ASSERT_NOT_ERR_OR_NULL(test, encoder);
-+	if (!encoder)
-+		return -ENODEV;
- 
- 	crtc = vc4_find_crtc_for_encoder(test, drm, encoder);
--	KUNIT_ASSERT_NOT_ERR_OR_NULL(test, crtc);
-+	if (!crtc)
-+		return -ENODEV;
- 
- 	crtc_state = drm_atomic_get_crtc_state(state, crtc);
--	KUNIT_ASSERT_NOT_ERR_OR_NULL(test, crtc_state);
-+	if (IS_ERR(crtc_state))
-+		return PTR_ERR(crtc_state);
- 
- 	crtc_state->active = false;
- 
- 	ret = drm_atomic_set_mode_for_crtc(crtc_state, NULL);
--	KUNIT_ASSERT_EQ(test, ret, 0);
-+	if (ret)
-+		return ret;
- 
- 	output = encoder_to_vc4_dummy_output(encoder);
- 	conn = &output->connector;
- 	conn_state = drm_atomic_get_connector_state(state, conn);
--	KUNIT_ASSERT_NOT_ERR_OR_NULL(test, conn_state);
-+	if (IS_ERR(conn_state))
-+		return PTR_ERR(conn_state);
- 
- 	ret = drm_atomic_set_crtc_for_connector(conn_state, NULL);
--	KUNIT_ASSERT_EQ(test, ret, 0);
-+	if (ret)
-+		return ret;
- 
- 	return 0;
- }
+ 	if (module_index >= vram_info->ucNumOfVRAMModule) {
+ 		pr_err("Invalid VramInfo table.");
 -- 
 2.39.5
 
