@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-154071-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-154453-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7A641ADD7BC
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:48:25 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 31269ADD9C3
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 19:09:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 882322C6F53
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:39:18 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 89DF25A5053
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:54:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D0E32F2354;
-	Tue, 17 Jun 2025 16:33:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94FCF2FA633;
+	Tue, 17 Jun 2025 16:53:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mx2v9M7q"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cg0qp2ZF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AAA82EF2A6;
-	Tue, 17 Jun 2025 16:33:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51D1BCA4B;
+	Tue, 17 Jun 2025 16:53:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750178010; cv=none; b=bk3UsrrvOUyOKVwIYjp+3uYVTethR7nlRZgJ2SRfIn6KWgH5jeZA4FTRwMEN6SfIrHMuoA2KgBsZE8AwZq8Q7y7nAMyV0r1/M8JaWoc10ZTx2a9pgR10lJhc7RiC0LEO2nF5/6EJczuMODwTbtz7/x5nJueEMKMa37PHsVD7lRs=
+	t=1750179235; cv=none; b=QYU5NCLTg2amemuvCLxpD149FJ1+m8xaAgyceV0SqA1o7S4EyQ1k/Qid9fc+BD3fw5hfwRHLt6KSmt7XBAISxdY5TfIQTsnJc8iJxOwV9DHluaI961vmvOdLzTigU7V1tiC7VhnKg1++RccXNeae+Eu2fEe0OqM9CZk3L27HV1s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750178010; c=relaxed/simple;
-	bh=7SmktlSpiYZWBRrBmuvcy7WOFovlq7a79dl3lJ4Y0s8=;
+	s=arc-20240116; t=1750179235; c=relaxed/simple;
+	bh=FwntFBhyjBL6Bc+IQCKAVqLvYR7IpFEKWIZWg6m5mZk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=B+obiPDnBq4+9Ntm7JW27+jml7jhkEeX5qt2A/NO92AFKTvdL3Q16UXDMx7RPC24eJkJBxr8tmKIDTOBS+jjVF4jHBa2zMYJpJN0JePVSOpd4RfCy3s85XSCVmjCVYC8R+V5BARINCH8R7vQLOmrVEjCi8NGWAzuPDt3aiHydO0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mx2v9M7q; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE777C4CEE3;
-	Tue, 17 Jun 2025 16:33:29 +0000 (UTC)
+	 MIME-Version; b=PatXdmdzxNHglv068h/dGroW/ngArHRAoCpTYfM5heKraahscwyAxgRecSPDTPf8yPnmHB2ieX8Tg48we4A6GGlLM312k8PGVDEI45QGHg++i/5F/zL4bKGZV7DO/IRB6Xq5TmtdEqVPtCy3CwVCPGhVqDTrB5+e7gy+QbTEvMo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cg0qp2ZF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC49FC4CEE3;
+	Tue, 17 Jun 2025 16:53:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750178010;
-	bh=7SmktlSpiYZWBRrBmuvcy7WOFovlq7a79dl3lJ4Y0s8=;
+	s=korg; t=1750179235;
+	bh=FwntFBhyjBL6Bc+IQCKAVqLvYR7IpFEKWIZWg6m5mZk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mx2v9M7q+QPVifnWikznL8P8M6bN5AzECg7THYHVcwNypHUaPQH91QwNmpM6qJC79
-	 Av7pTZorciJ17i7Lg4Dh1JRuEfPJoFo6C9YKy0EFlPJtlTEHbkuGh/jAPLamaZ5WWG
-	 dFH/GAENL9iU/DTH6oDIUVr66R3ubxjNpwDJHjVA=
+	b=cg0qp2ZFWQzr6fOYYwVUsgP/04orpZ3ekwj/c8hc9NRMZtU7YHYHUg66kSfGq2GpP
+	 l+zxwLNblUt62IGfQgvispSAnNtFv7V0dFUEPOSXP+YTN0ppHXq8zs00H1vb778b4s
+	 w/2l8BHymNrRvhzn8eSTGlbU1JjS+TuBFZLGMrkI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Baochen Qiang <quic_bqiang@quicinc.com>,
-	Kalle Valo <kvalo@kernel.org>,
-	Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>,
-	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
+	Gabriel Dalimonte <gabriel.dalimonte@gmail.com>,
+	Maxime Ripard <mripard@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 431/512] wifi: ath11k: dont use static variables in ath11k_debugfs_fw_stats_process()
+Subject: [PATCH 6.15 689/780] drm/vc4: fix infinite EPROBE_DEFER loop
 Date: Tue, 17 Jun 2025 17:26:37 +0200
-Message-ID: <20250617152437.037036599@linuxfoundation.org>
+Message-ID: <20250617152519.546508134@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
-References: <20250617152419.512865572@linuxfoundation.org>
+In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
+References: <20250617152451.485330293@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,130 +62,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Baochen Qiang <quic_bqiang@quicinc.com>
+From: Gabriel Dalimonte <gabriel.dalimonte@gmail.com>
 
-[ Upstream commit 2bcf73b2612dda7432f2c2eaad6679bd291791f2 ]
+[ Upstream commit c0317ad44f45b3c1f0ff46a4e28d14c7bccdedf4 ]
 
-Currently ath11k_debugfs_fw_stats_process() is using static variables to count
-firmware stat events. Taking num_vdev as an example, if for whatever reason (
-say ar->num_started_vdevs is 0 or firmware bug etc.) the following condition
+`vc4_hdmi_audio_init` calls `devm_snd_dmaengine_pcm_register` which may
+return EPROBE_DEFER. Calling `drm_connector_hdmi_audio_init` adds a
+child device. The driver model docs[1] state that adding a child device
+prior to returning EPROBE_DEFER may result in an infinite loop.
 
-	(++num_vdev) == total_vdevs_started
+[1] https://www.kernel.org/doc/html/v6.14/driver-api/driver-model/driver.html
 
-is not met, is_end is not set thus num_vdev won't be cleared. Next time when
-firmware stats is requested again, even if everything is working fine, we will
-fail due to the condition above will never be satisfied.
-
-The same applies to num_bcn as well.
-
-Change to use non-static counters so that we have a chance to clear them each
-time firmware stats is requested. Currently only ath11k_fw_stats_request() and
-ath11k_debugfs_fw_stats_request() are requesting firmware stats, so clear
-counters there.
-
-Tested-on: WCN6855 hw2.0 PCI WLAN.HSP.1.1-03125-QCAHSPSWPL_V1_V2_SILICONZ_LITE-3.6510.37
-
-Fixes: da3a9d3c1576 ("ath11k: refactor debugfs code into debugfs.c")
-Signed-off-by: Baochen Qiang <quic_bqiang@quicinc.com>
-Acked-by: Kalle Valo <kvalo@kernel.org>
-Reviewed-by: Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>
-Link: https://patch.msgid.link/20250220082448.31039-3-quic_bqiang@quicinc.com
-Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+Fixes: 9640f1437a88 ("drm/vc4: hdmi: switch to using generic HDMI Codec infrastructure")
+Signed-off-by: Gabriel Dalimonte <gabriel.dalimonte@gmail.com>
+Link: https://lore.kernel.org/r/20250601-vc4-audio-inf-probe-v2-1-9ad43c7b6147@gmail.com
+Signed-off-by: Maxime Ripard <mripard@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath11k/core.h    |  2 ++
- drivers/net/wireless/ath/ath11k/debugfs.c | 16 +++++++---------
- drivers/net/wireless/ath/ath11k/mac.c     |  2 ++
- 3 files changed, 11 insertions(+), 9 deletions(-)
+ drivers/gpu/drm/vc4/vc4_hdmi.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath11k/core.h b/drivers/net/wireless/ath/ath11k/core.h
-index bbf2ccfee3fc0..fcdec14eb3cfa 100644
---- a/drivers/net/wireless/ath/ath11k/core.h
-+++ b/drivers/net/wireless/ath/ath11k/core.h
-@@ -599,6 +599,8 @@ struct ath11k_fw_stats {
- 	struct list_head pdevs;
- 	struct list_head vdevs;
- 	struct list_head bcn;
-+	u32 num_vdev_recvd;
-+	u32 num_bcn_recvd;
- };
+diff --git a/drivers/gpu/drm/vc4/vc4_hdmi.c b/drivers/gpu/drm/vc4/vc4_hdmi.c
+index 37a7d45695f23..176aba27b03d3 100644
+--- a/drivers/gpu/drm/vc4/vc4_hdmi.c
++++ b/drivers/gpu/drm/vc4/vc4_hdmi.c
+@@ -559,12 +559,6 @@ static int vc4_hdmi_connector_init(struct drm_device *dev,
+ 	if (ret)
+ 		return ret;
  
- struct ath11k_dbg_htt_stats {
-diff --git a/drivers/net/wireless/ath/ath11k/debugfs.c b/drivers/net/wireless/ath/ath11k/debugfs.c
-index 1d03e3aab011d..27c93c0b4c223 100644
---- a/drivers/net/wireless/ath/ath11k/debugfs.c
-+++ b/drivers/net/wireless/ath/ath11k/debugfs.c
-@@ -98,6 +98,8 @@ static void ath11k_debugfs_fw_stats_reset(struct ath11k *ar)
- 	spin_lock_bh(&ar->data_lock);
- 	ath11k_fw_stats_pdevs_free(&ar->fw_stats.pdevs);
- 	ath11k_fw_stats_vdevs_free(&ar->fw_stats.vdevs);
-+	ar->fw_stats.num_vdev_recvd = 0;
-+	ar->fw_stats.num_bcn_recvd = 0;
- 	spin_unlock_bh(&ar->data_lock);
- }
+-	ret = drm_connector_hdmi_audio_init(connector, dev->dev,
+-					    &vc4_hdmi_audio_funcs,
+-					    8, false, -1);
+-	if (ret)
+-		return ret;
+-
+ 	drm_connector_helper_add(connector, &vc4_hdmi_connector_helper_funcs);
  
-@@ -106,7 +108,6 @@ void ath11k_debugfs_fw_stats_process(struct ath11k *ar, struct ath11k_fw_stats *
- 	struct ath11k_base *ab = ar->ab;
- 	struct ath11k_pdev *pdev;
- 	bool is_end;
--	static unsigned int num_vdev, num_bcn;
- 	size_t total_vdevs_started = 0;
- 	int i;
+ 	/*
+@@ -2274,6 +2268,12 @@ static int vc4_hdmi_audio_init(struct vc4_hdmi *vc4_hdmi)
+ 		return ret;
+ 	}
  
-@@ -131,15 +132,14 @@ void ath11k_debugfs_fw_stats_process(struct ath11k *ar, struct ath11k_fw_stats *
- 				total_vdevs_started += ar->num_started_vdevs;
- 		}
- 
--		is_end = ((++num_vdev) == total_vdevs_started);
-+		is_end = ((++ar->fw_stats.num_vdev_recvd) == total_vdevs_started);
- 
- 		list_splice_tail_init(&stats->vdevs,
- 				      &ar->fw_stats.vdevs);
- 
--		if (is_end) {
-+		if (is_end)
- 			complete(&ar->fw_stats_done);
--			num_vdev = 0;
--		}
++	ret = drm_connector_hdmi_audio_init(&vc4_hdmi->connector, dev,
++					    &vc4_hdmi_audio_funcs, 8, false,
++					    -1);
++	if (ret)
++		return ret;
 +
- 		return;
- 	}
- 
-@@ -151,15 +151,13 @@ void ath11k_debugfs_fw_stats_process(struct ath11k *ar, struct ath11k_fw_stats *
- 		/* Mark end until we reached the count of all started VDEVs
- 		 * within the PDEV
- 		 */
--		is_end = ((++num_bcn) == ar->num_started_vdevs);
-+		is_end = ((++ar->fw_stats.num_bcn_recvd) == ar->num_started_vdevs);
- 
- 		list_splice_tail_init(&stats->bcn,
- 				      &ar->fw_stats.bcn);
- 
--		if (is_end) {
-+		if (is_end)
- 			complete(&ar->fw_stats_done);
--			num_bcn = 0;
--		}
- 	}
- }
- 
-diff --git a/drivers/net/wireless/ath/ath11k/mac.c b/drivers/net/wireless/ath/ath11k/mac.c
-index 78c825244613b..9159ee20a33b8 100644
---- a/drivers/net/wireless/ath/ath11k/mac.c
-+++ b/drivers/net/wireless/ath/ath11k/mac.c
-@@ -9332,6 +9332,8 @@ static int ath11k_fw_stats_request(struct ath11k *ar,
- 
- 	spin_lock_bh(&ar->data_lock);
- 	ath11k_fw_stats_pdevs_free(&ar->fw_stats.pdevs);
-+	ar->fw_stats.num_vdev_recvd = 0;
-+	ar->fw_stats.num_bcn_recvd = 0;
- 	spin_unlock_bh(&ar->data_lock);
- 
- 	reinit_completion(&ar->fw_stats_complete);
+ 	dai_link->cpus		= &vc4_hdmi->audio.cpu;
+ 	dai_link->codecs	= &vc4_hdmi->audio.codec;
+ 	dai_link->platforms	= &vc4_hdmi->audio.platform;
 -- 
 2.39.5
 
