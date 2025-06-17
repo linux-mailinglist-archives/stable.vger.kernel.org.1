@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-153999-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-154001-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 82307ADD805
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:51:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BE95CADD7C7
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:49:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 46A2A403745
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:34:52 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 85883407A19
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:35:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E82182EBDCE;
-	Tue, 17 Jun 2025 16:29:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 02E062ECD3C;
+	Tue, 17 Jun 2025 16:29:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IsPiXriS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="npfwkoVT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3DFC2EB5CF;
-	Tue, 17 Jun 2025 16:29:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B250C2E8E10;
+	Tue, 17 Jun 2025 16:29:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750177780; cv=none; b=DZl6Kf9C2iebAhEwyR3sjlStMtMJVUbK5v1CR3YCyowQ3eteGxXeq7mLs2XlUgBpZaMWGbF6r36xdFeHlJCGgSt8WwMyZSzmfjRBtvdfnupFdxsGCdp+woTOUlKm2Aw4pmijzHmIqny6ezsMg/jEl/PVY3h5p31U/38yzOO9Qt4=
+	t=1750177786; cv=none; b=EKcoCFWRT1+XbO3pJCjbvfJA5YI12YFF+pShzcvO3qadkDop5CvPdbeQkpiFirZboZnVFUwy/KnibkjMV+2HKPbjBOpDG999ojiXW+pnQXbvDS0K1aYZcS4+K8+z4l15RKRpZYmcvt6fDlhksdgxcbwPd1QuhqiIQi2liDRfurM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750177780; c=relaxed/simple;
-	bh=P3Z+cejXi+BlI9dR0Kdom6YfuVijerW02F900iFhjao=;
+	s=arc-20240116; t=1750177786; c=relaxed/simple;
+	bh=bQQVny4vHOsqRdx2iArXo7MK7R0sGnUKWMMv0WxNvs4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=f3VPvXyCZ87bCA7pbGOaEcfG/iTA07aCzUAcnAmg/7T3DFaLlo9ejfh0qxv7oI0AFaeaCne2eM+8XbqBf0gS4+UXBLnR4gklI5H0oYkfrArhPpG7fKBdFU1HsNcy5JkgVQrmYGDCVqhaTxq8zsl77+maoBwIQk0r9oLFJ7V1j0Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IsPiXriS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6C90C4CEE3;
-	Tue, 17 Jun 2025 16:29:39 +0000 (UTC)
+	 MIME-Version; b=AxLVLKF5cjkS31ibeJXkSpUOOZyg63mTVN1Vw96RlifbkoKNYfXhl0HvOBNUwPcwcSam7xR+oNWVn7+TZ3XLzQ10qxKdv+wMmZ4w/b1zzfyHtVOpVc6tDpnIpAOoybx9wauoffSsNA6wtOP22RULEoo7xAYHh1OrIdRzAnZt1gA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=npfwkoVT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20C3EC4CEF0;
+	Tue, 17 Jun 2025 16:29:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750177780;
-	bh=P3Z+cejXi+BlI9dR0Kdom6YfuVijerW02F900iFhjao=;
+	s=korg; t=1750177786;
+	bh=bQQVny4vHOsqRdx2iArXo7MK7R0sGnUKWMMv0WxNvs4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IsPiXriSu9XvgkLIyd6nsNOvPOwrI0mAwOEPFFAtXRzY6bpqsWTy6GbuFkInHirZ1
-	 s119PDF0aamqAIojNcLbuEmhLl/OLPYqiUwDFaQ+5b5Iw7NuARPkX9SRs2b9Z4wmKu
-	 s7xh2uVsQMwH7VV3tZ40A4ly1J+Grs+RU70Kot8A=
+	b=npfwkoVTS14j8FK2TrdVrMHd9tHkc5/t6XgzNI5a8H72t8oWp9jnopKqdu6+iXNZ5
+	 0VRLk+pPqQaoP/jzLX3zhOeDrPtpGYcS6R8mVYPi20LgpmLnOhobA/GkDlia/PRDf5
+	 lS5p82kGD3kY36zENNleVqK4tpktHwsAjjpxOPAM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yao Zi <ziyao@disroot.org>,
 	Chukun Pan <amadeus@jmu.edu.cn>,
 	Heiko Stuebner <heiko@sntech.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 362/780] arm64: dts: rockchip: Add missing uart3 interrupt for RK3528
-Date: Tue, 17 Jun 2025 17:21:10 +0200
-Message-ID: <20250617152506.201541389@linuxfoundation.org>
+Subject: [PATCH 6.15 363/780] arm64: dts: rockchip: Move SHMEM memory to reserved memory on rk3588
+Date: Tue, 17 Jun 2025 17:21:11 +0200
+Message-ID: <20250617152506.241111342@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
 References: <20250617152451.485330293@linuxfoundation.org>
@@ -69,36 +68,48 @@ Content-Transfer-Encoding: 8bit
 
 From: Chukun Pan <amadeus@jmu.edu.cn>
 
-[ Upstream commit a37d21a9b45e47ed6bc1f94e738096c07db78a07 ]
+[ Upstream commit 8ecd096d018be8a6bd3bd930f3a41a85db66a67d ]
 
-The interrupt of uart3 node on rk3528 is missing, fix it.
+0x0 to 0xf0000000 are SDRAM memory areas where 0x10f000 is located.
+So move the SHMEM memory of arm_scmi to the reserved memory node.
 
-Fixes: 7983e6c379a9 ("arm64: dts: rockchip: Add base DT for rk3528 SoC")
-Reviewed-by: Yao Zi <ziyao@disroot.org>
+Fixes: c9211fa2602b ("arm64: dts: rockchip: Add base DT for rk3588 SoC")
 Signed-off-by: Chukun Pan <amadeus@jmu.edu.cn>
-Link: https://lore.kernel.org/r/20250401100020.944658-2-amadeus@jmu.edu.cn
+Link: https://lore.kernel.org/r/20250401090009.733771-2-amadeus@jmu.edu.cn
 Signed-off-by: Heiko Stuebner <heiko@sntech.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/rockchip/rk3528.dtsi | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ arch/arm64/boot/dts/rockchip/rk3588-base.dtsi | 15 +++++++--------
+ 1 file changed, 7 insertions(+), 8 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/rockchip/rk3528.dtsi b/arch/arm64/boot/dts/rockchip/rk3528.dtsi
-index 26c3559d6a6de..7f1ffd6003f58 100644
---- a/arch/arm64/boot/dts/rockchip/rk3528.dtsi
-+++ b/arch/arm64/boot/dts/rockchip/rk3528.dtsi
-@@ -404,9 +404,10 @@
+diff --git a/arch/arm64/boot/dts/rockchip/rk3588-base.dtsi b/arch/arm64/boot/dts/rockchip/rk3588-base.dtsi
+index 1e18ad93ba0eb..c52af310c7062 100644
+--- a/arch/arm64/boot/dts/rockchip/rk3588-base.dtsi
++++ b/arch/arm64/boot/dts/rockchip/rk3588-base.dtsi
+@@ -439,16 +439,15 @@
+ 		#clock-cells = <0>;
+ 	};
  
- 		uart3: serial@ffa08000 {
- 			compatible = "rockchip,rk3528-uart", "snps,dw-apb-uart";
-+			reg = <0x0 0xffa08000 0x0 0x100>;
- 			clocks = <&cru SCLK_UART3>, <&cru PCLK_UART3>;
- 			clock-names = "baudclk", "apb_pclk";
--			reg = <0x0 0xffa08000 0x0 0x100>;
-+			interrupts = <GIC_SPI 43 IRQ_TYPE_LEVEL_HIGH>;
- 			reg-io-width = <4>;
- 			reg-shift = <2>;
- 			status = "disabled";
+-	pmu_sram: sram@10f000 {
+-		compatible = "mmio-sram";
+-		reg = <0x0 0x0010f000 0x0 0x100>;
+-		ranges = <0 0x0 0x0010f000 0x100>;
+-		#address-cells = <1>;
+-		#size-cells = <1>;
++	reserved-memory {
++		#address-cells = <2>;
++		#size-cells = <2>;
++		ranges;
+ 
+-		scmi_shmem: sram@0 {
++		scmi_shmem: shmem@10f000 {
+ 			compatible = "arm,scmi-shmem";
+-			reg = <0x0 0x100>;
++			reg = <0x0 0x0010f000 0x0 0x100>;
++			no-map;
+ 		};
+ 	};
+ 
 -- 
 2.39.5
 
