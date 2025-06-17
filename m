@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-154526-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153816-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C33A5ADD9C2
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 19:09:17 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A457ADD6C8
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:37:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C043419E7692
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:58:42 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 43C812C1217
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:25:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D497E13B5B3;
-	Tue, 17 Jun 2025 16:58:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C6D82ED84B;
+	Tue, 17 Jun 2025 16:19:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Wwwg4NlP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dyZYBCkR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8ADE62FA654;
-	Tue, 17 Jun 2025 16:58:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDC4822FF2B;
+	Tue, 17 Jun 2025 16:19:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750179493; cv=none; b=ZqIrpknYanKxYjG5eWCYN4aj2XojYhjpLxZJx+Kg/FEuQrHDGDpi5TnTCgWUPs2BLlOGwOtTXNLXxzF/m9vg20SBC75uj7Rq22PxJt773wA19yUT5bY/nshlcXl9VENSsI+GAsvsKHIk43oDfw5eOF59NeJcqH9qQp0TwEy3k40=
+	t=1750177189; cv=none; b=hyRuZZTSENTmKqh16fV8BCsrT77VHwe3S6qODx028LdewkZhmZjp/H10FGGFix/cgKteAutdyVMMi4Fo8Ti70ZfYsa4l4x8mZusIfv+7HlKErsPFMKXsEm8H2GjegnlA3Toy8Nh09a/80WictcEDzLNWhHHLATz83ZqCKIc90FI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750179493; c=relaxed/simple;
-	bh=+cEXI/S87VoS6fz9dhJhUS/kH4gMyy/bjh4PkBzm2uo=;
+	s=arc-20240116; t=1750177189; c=relaxed/simple;
+	bh=b1HNtT1/bcYLZ/Kaqb8X1Zy9rnMH2ecWhuAPszfn590=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cNRHWS4+pefUtjI9VunagUkHlVl7hiXQ0RbCK2WF0XjArGv1UJtsgQOv2Jp4DoOgMjMKIkLRWYHrT4/hsOj5TcfszdnDNP1YdKnMSY5R/aDh5t9vLFRHOHgFmKN2iwINTJVm9IMG/Tpul/d7iOb5ddbEX90yqZHEAwULEFb+Kms=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Wwwg4NlP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8862C4CEE3;
-	Tue, 17 Jun 2025 16:58:12 +0000 (UTC)
+	 MIME-Version; b=o0yRBxxbXGz0zr+uu2o9y59/PsBIY+k/y9JccUWsH8JHlGI5xYOwtI34n2c9QA+6fng4emhBjsr5lHKe67fnikNBOnzwUTU5hSIdOalqxpAz0rUjCUQbPpTwmxTE+dnblqSijd7m7WQmwJkihRuy4RCIYwA7id1ITBAPBQUCsGQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dyZYBCkR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D2CEC4CEE3;
+	Tue, 17 Jun 2025 16:19:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750179493;
-	bh=+cEXI/S87VoS6fz9dhJhUS/kH4gMyy/bjh4PkBzm2uo=;
+	s=korg; t=1750177188;
+	bh=b1HNtT1/bcYLZ/Kaqb8X1Zy9rnMH2ecWhuAPszfn590=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Wwwg4NlPahkjpWjbj0UqFHGVTxGYCZJpYDcrTvi2Jxv8koZBbIwvRgsocI35DPqcf
-	 FtJbeDmN+j31uCDqMNbsVRYZP0mGiP70/g05gwkRid6qBiV6B1YVuYNvYnN3RC36VB
-	 zu9SjtfQAKUOJClsS82BbaXJPvgGl3IRVuKX0HzA=
+	b=dyZYBCkRZsnUb8ihnaYq/QBsm4mZV/zMXV2Mf/J8YtSG4gcupJV7NzgBKnc4w1ACX
+	 sWAkT1wOPJxHPbz1UzuDMzZGnPZBA6CxSs+Fj7rNRZiUU3uV/qdpD6+3xcJmL3dSpl
+	 is81BkXgtRtfvAzOtEJ7iPLuLGYJhlyxSS5ytgL0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Howells <dhowells@redhat.com>,
-	v9fs@lists.linux.dev,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Dominique Martinet <asmadeus@codewreck.org>,
-	Christian Brauner <brauner@kernel.org>
-Subject: [PATCH 6.15 762/780] 9p: Add a migrate_folio method
-Date: Tue, 17 Jun 2025 17:27:50 +0200
-Message-ID: <20250617152522.541972255@linuxfoundation.org>
+	I Hsin Cheng <richard120310@gmail.com>,
+	Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
+	Neil Armstrong <neil.armstrong@linaro.org>
+Subject: [PATCH 6.6 356/356] drm/meson: Use 1000ULL when operating with mode->clock
+Date: Tue, 17 Jun 2025 17:27:51 +0200
+Message-ID: <20250617152352.468424093@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
-References: <20250617152451.485330293@linuxfoundation.org>
+In-Reply-To: <20250617152338.212798615@linuxfoundation.org>
+References: <20250617152338.212798615@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,42 +62,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthew Wilcox (Oracle) <willy@infradead.org>
+From: I Hsin Cheng <richard120310@gmail.com>
 
-commit 03ddd7725ed1b39cf9251e1a420559f25dac49b3 upstream.
+commit eb0851e14432f3b87c77b704c835ac376deda03a upstream.
 
-The migration code used to be able to migrate dirty 9p folios by writing
-them back using writepage.  When the writepage method was removed,
-we neglected to add a migrate_folio method, which means that dirty 9p
-folios have been unmovable ever since.  This reduced our success at
-defragmenting memory on machines which use 9p heavily.
+Coverity scan reported the usage of "mode->clock * 1000" may lead to
+integer overflow. Use "1000ULL" instead of "1000"
+when utilizing it to avoid potential integer overflow issue.
 
-Fixes: 80105ed2fd27 (9p: Use netfslib read/write_iter)
-Cc: stable@vger.kernel.org
-Cc: David Howells <dhowells@redhat.com>
-Cc: v9fs@lists.linux.dev
-Signed-off-by: "Matthew Wilcox (Oracle)" <willy@infradead.org>
-Link: https://lore.kernel.org/r/20250402150005.2309458-2-willy@infradead.org
-Acked-by: Dominique Martinet <asmadeus@codewreck.org>
-Reviewed-by: David Howells <dhowells@redhat.com>
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+Link: https://scan5.scan.coverity.com/#/project-view/10074/10063?selectedIssue=1646759
+Signed-off-by: I Hsin Cheng <richard120310@gmail.com>
+Reviewed-by: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+Fixes: 1017560164b6 ("drm/meson: use unsigned long long / Hz for frequency types")
+Link: https://lore.kernel.org/r/20250505184338.678540-1-richard120310@gmail.com
+Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/9p/vfs_addr.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/gpu/drm/meson/meson_encoder_hdmi.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/fs/9p/vfs_addr.c
-+++ b/fs/9p/vfs_addr.c
-@@ -165,4 +165,5 @@ const struct address_space_operations v9
- 	.invalidate_folio	= netfs_invalidate_folio,
- 	.direct_IO		= noop_direct_IO,
- 	.writepages		= netfs_writepages,
-+	.migrate_folio		= filemap_migrate_folio,
- };
+--- a/drivers/gpu/drm/meson/meson_encoder_hdmi.c
++++ b/drivers/gpu/drm/meson/meson_encoder_hdmi.c
+@@ -75,7 +75,7 @@ static void meson_encoder_hdmi_set_vclk(
+ 	unsigned long long venc_freq;
+ 	unsigned long long hdmi_freq;
+ 
+-	vclk_freq = mode->clock * 1000;
++	vclk_freq = mode->clock * 1000ULL;
+ 
+ 	/* For 420, pixel clock is half unlike venc clock */
+ 	if (encoder_hdmi->output_bus_fmt == MEDIA_BUS_FMT_UYYVYY8_0_5X24)
+@@ -123,7 +123,7 @@ static enum drm_mode_status meson_encode
+ 	struct meson_encoder_hdmi *encoder_hdmi = bridge_to_meson_encoder_hdmi(bridge);
+ 	struct meson_drm *priv = encoder_hdmi->priv;
+ 	bool is_hdmi2_sink = display_info->hdmi.scdc.supported;
+-	unsigned long long clock = mode->clock * 1000;
++	unsigned long long clock = mode->clock * 1000ULL;
+ 	unsigned long long phy_freq;
+ 	unsigned long long vclk_freq;
+ 	unsigned long long venc_freq;
 
 
 
