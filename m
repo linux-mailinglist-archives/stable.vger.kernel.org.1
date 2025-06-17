@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-153398-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-154134-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6DCBFADD457
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:09:20 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D2931ADD744
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:43:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8E0D0406D86
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:00:38 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8B8C67A0FFD
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:41:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DBADF2ED844;
-	Tue, 17 Jun 2025 15:57:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4299D1E98E3;
+	Tue, 17 Jun 2025 16:36:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jMNHf3le"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fs5Df79/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F0F82ED17C;
-	Tue, 17 Jun 2025 15:57:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2B5A2135A0;
+	Tue, 17 Jun 2025 16:36:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750175831; cv=none; b=g5mh4rntAgv0jXeYuwC6uJn5MQUDFPKegoLZTxTEOsdMXN35voYP7a/XIMLG01980217kAp0dotEDwgBRmTjlkxIbirVsi+fpqC1nba8ukNhSoMC/GvZKTYecxU13ITZOlvlwnNYpnjWT6wu53otJG4tkDorlynNHWoBzqYEK5Q=
+	t=1750178211; cv=none; b=D48khL2byhVbwFe2T68gBHPOeLCHuyBdABO7W+9QWuV5J2D/cMMHjv4t95tNi0o7+CnSSmYKmhwysOINkrXhb3zWGkyJni7W9sAzO5NJkbExcyV75JsdKoBbKG3uxolSZbcP+epc89/IF6X0Rqndf5D+fDCHbRQx5SzHLGLPjGQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750175831; c=relaxed/simple;
-	bh=f+37sT0wk98b1czavWThPGk4jg8sjFzV9s0pmQjdpd8=;
+	s=arc-20240116; t=1750178211; c=relaxed/simple;
+	bh=mEROAW+kWOpag3cJVKvrUuC6PpmPTuoT60HGo3I7WzI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cnzxM5wFwuuCUrYCcDHyJiQkMwDFpRHAFiG0dt3BPktp4sGG/y0x+JSRzvDo837bQ8PbIy8YBOcEyq3ZlvrmnDq9lVEhGmt2VjkG3j2THnqSag5ZH6kV9IKTwXlqkvijnQkgQnbpnWRGmBOeW+r2SWeCWTj0C7phY9QR/V7yOZM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jMNHf3le; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F08BEC4CEF0;
-	Tue, 17 Jun 2025 15:57:10 +0000 (UTC)
+	 MIME-Version; b=OEUut2fBksAi13AYrPFd3uf2YwATdYMopZmfbmoHsiMTjJei9PFfM+FsroYxiOHi5zQf0eExDyDdYkPc1hJZMGIEyih9ztO6eIk671LUGzbR3AjCt/ckrPvYvuIniEk0u1V0lwLtzhPIyzhZA5GGc+9Ag9XC1DP/049D+jGPaX4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fs5Df79/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D8ACC4CEE3;
+	Tue, 17 Jun 2025 16:36:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750175831;
-	bh=f+37sT0wk98b1czavWThPGk4jg8sjFzV9s0pmQjdpd8=;
+	s=korg; t=1750178210;
+	bh=mEROAW+kWOpag3cJVKvrUuC6PpmPTuoT60HGo3I7WzI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jMNHf3ley671rXYV1R8uhVyBS45zoA7SQ+HhpJhtmapPknK+QnEX4Di/EX4hv8NaU
-	 Zd1OjeT3mPLvACLTqdT9ydqzbNPHhjYNhaTrgo54vPsTjXAxlerg/EkNRKaUni4oXc
-	 XEHIxzYef+N0N85iAjmhOsjR2bApyn8lese51g64=
+	b=fs5Df79/oWsNbtlJn4BM0S2fe/yI4QINZT3oJDMDEQfdnB6D01uIrALnhL+e2/8Fk
+	 nptOgK00/UGE4a59DDQeVbLQGICeULFQjy5Y163Cf0eWlFPp/ln5QfHtk4IcflHwfL
+	 C3buIvLo7w8vdJzMMduuzAdo19sOS33Kpai3QbM0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+45b0c89a0fc7ae8dbadc@syzkaller.appspotmail.com,
-	Alexei Starovoitov <ast@kernel.org>,
-	Tao Chen <chen.dylane@linux.dev>,
-	Andrii Nakryiko <andrii@kernel.org>,
+	Damien Le Moal <dlemoal@kernel.org>,
+	Benjamin Marzinski <bmarzins@redhat.com>,
+	Mikulas Patocka <mpatocka@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 167/512] bpf: Fix WARN() in get_bpf_raw_tp_regs
+Subject: [PATCH 6.15 425/780] dm: dont change md if dm_table_set_restrictions() fails
 Date: Tue, 17 Jun 2025 17:22:13 +0200
-Message-ID: <20250617152426.385319415@linuxfoundation.org>
+Message-ID: <20250617152508.779243869@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
-References: <20250617152419.512865572@linuxfoundation.org>
+In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
+References: <20250617152451.485330293@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,88 +63,83 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tao Chen <chen.dylane@linux.dev>
+From: Benjamin Marzinski <bmarzins@redhat.com>
 
-[ Upstream commit 3880cdbed1c4607e378f58fa924c5d6df900d1d3 ]
+[ Upstream commit 9eb7109a5bfc5b8226e9517e9f3cc6d414391884 ]
 
-syzkaller reported an issue:
+__bind was changing the disk capacity, geometry and mempools of the
+mapped device before calling dm_table_set_restrictions() which could
+fail, forcing dm to drop the new table. Failing here would leave the
+device using the old table but with the wrong capacity and mempools.
 
-WARNING: CPU: 3 PID: 5971 at kernel/trace/bpf_trace.c:1861 get_bpf_raw_tp_regs+0xa4/0x100 kernel/trace/bpf_trace.c:1861
-Modules linked in:
-CPU: 3 UID: 0 PID: 5971 Comm: syz-executor205 Not tainted 6.15.0-rc5-syzkaller-00038-g707df3375124 #0 PREEMPT(full)
-Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2~bpo12+1 04/01/2014
-RIP: 0010:get_bpf_raw_tp_regs+0xa4/0x100 kernel/trace/bpf_trace.c:1861
-RSP: 0018:ffffc90003636fa8 EFLAGS: 00010293
-RAX: 0000000000000000 RBX: 0000000000000003 RCX: ffffffff81c6bc4c
-RDX: ffff888032efc880 RSI: ffffffff81c6bc83 RDI: 0000000000000005
-RBP: ffff88806a730860 R08: 0000000000000005 R09: 0000000000000003
-R10: 0000000000000004 R11: 0000000000000000 R12: 0000000000000004
-R13: 0000000000000001 R14: ffffc90003637008 R15: 0000000000000900
-FS:  0000000000000000(0000) GS:ffff8880d6cdf000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00007f7baee09130 CR3: 0000000029f5a000 CR4: 0000000000352ef0
-DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-Call Trace:
- <TASK>
- ____bpf_get_stack_raw_tp kernel/trace/bpf_trace.c:1934 [inline]
- bpf_get_stack_raw_tp+0x24/0x160 kernel/trace/bpf_trace.c:1931
- bpf_prog_ec3b2eefa702d8d3+0x43/0x47
- bpf_dispatcher_nop_func include/linux/bpf.h:1316 [inline]
- __bpf_prog_run include/linux/filter.h:718 [inline]
- bpf_prog_run include/linux/filter.h:725 [inline]
- __bpf_trace_run kernel/trace/bpf_trace.c:2363 [inline]
- bpf_trace_run3+0x23f/0x5a0 kernel/trace/bpf_trace.c:2405
- __bpf_trace_mmap_lock_acquire_returned+0xfc/0x140 include/trace/events/mmap_lock.h:47
- __traceiter_mmap_lock_acquire_returned+0x79/0xc0 include/trace/events/mmap_lock.h:47
- __do_trace_mmap_lock_acquire_returned include/trace/events/mmap_lock.h:47 [inline]
- trace_mmap_lock_acquire_returned include/trace/events/mmap_lock.h:47 [inline]
- __mmap_lock_do_trace_acquire_returned+0x138/0x1f0 mm/mmap_lock.c:35
- __mmap_lock_trace_acquire_returned include/linux/mmap_lock.h:36 [inline]
- mmap_read_trylock include/linux/mmap_lock.h:204 [inline]
- stack_map_get_build_id_offset+0x535/0x6f0 kernel/bpf/stackmap.c:157
- __bpf_get_stack+0x307/0xa10 kernel/bpf/stackmap.c:483
- ____bpf_get_stack kernel/bpf/stackmap.c:499 [inline]
- bpf_get_stack+0x32/0x40 kernel/bpf/stackmap.c:496
- ____bpf_get_stack_raw_tp kernel/trace/bpf_trace.c:1941 [inline]
- bpf_get_stack_raw_tp+0x124/0x160 kernel/trace/bpf_trace.c:1931
- bpf_prog_ec3b2eefa702d8d3+0x43/0x47
+Move dm_table_set_restrictions() earlier in __bind(). Since it needs the
+capacity to be set, save the old version and restore it on failure.
 
-Tracepoint like trace_mmap_lock_acquire_returned may cause nested call
-as the corner case show above, which will be resolved with more general
-method in the future. As a result, WARN_ON_ONCE will be triggered. As
-Alexei suggested, remove the WARN_ON_ONCE first.
-
-Fixes: 9594dc3c7e71 ("bpf: fix nested bpf tracepoints with per-cpu data")
-Reported-by: syzbot+45b0c89a0fc7ae8dbadc@syzkaller.appspotmail.com
-Suggested-by: Alexei Starovoitov <ast@kernel.org>
-Signed-off-by: Tao Chen <chen.dylane@linux.dev>
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Link: https://lore.kernel.org/bpf/20250513042747.757042-1-chen.dylane@linux.dev
-
-Closes: https://lore.kernel.org/bpf/8bc2554d-1052-4922-8832-e0078a033e1d@gmail.com
+Fixes: bb37d77239af2 ("dm: introduce zone append emulation")
+Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
+Tested-by: Damien Le Moal <dlemoal@kernel.org>
+Signed-off-by: Benjamin Marzinski <bmarzins@redhat.com>
+Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/trace/bpf_trace.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/md/dm.c | 22 ++++++++++++----------
+ 1 file changed, 12 insertions(+), 10 deletions(-)
 
-diff --git a/kernel/trace/bpf_trace.c b/kernel/trace/bpf_trace.c
-index 042263e739e29..66075e86b691c 100644
---- a/kernel/trace/bpf_trace.c
-+++ b/kernel/trace/bpf_trace.c
-@@ -1828,7 +1828,7 @@ static struct pt_regs *get_bpf_raw_tp_regs(void)
- 	struct bpf_raw_tp_regs *tp_regs = this_cpu_ptr(&bpf_raw_tp_regs);
- 	int nest_level = this_cpu_inc_return(bpf_raw_tp_nest_level);
+diff --git a/drivers/md/dm.c b/drivers/md/dm.c
+index 5ab7574c0c76a..f5c5ccb6f8d25 100644
+--- a/drivers/md/dm.c
++++ b/drivers/md/dm.c
+@@ -2421,21 +2421,29 @@ static struct dm_table *__bind(struct mapped_device *md, struct dm_table *t,
+ 			       struct queue_limits *limits)
+ {
+ 	struct dm_table *old_map;
+-	sector_t size;
++	sector_t size, old_size;
+ 	int ret;
  
--	if (WARN_ON_ONCE(nest_level > ARRAY_SIZE(tp_regs->regs))) {
-+	if (nest_level > ARRAY_SIZE(tp_regs->regs)) {
- 		this_cpu_dec(bpf_raw_tp_nest_level);
- 		return ERR_PTR(-EBUSY);
+ 	lockdep_assert_held(&md->suspend_lock);
+ 
+ 	size = dm_table_get_size(t);
+ 
++	old_size = dm_get_size(md);
++	set_capacity(md->disk, size);
++
++	ret = dm_table_set_restrictions(t, md->queue, limits);
++	if (ret) {
++		set_capacity(md->disk, old_size);
++		old_map = ERR_PTR(ret);
++		goto out;
++	}
++
+ 	/*
+ 	 * Wipe any geometry if the size of the table changed.
+ 	 */
+-	if (size != dm_get_size(md))
++	if (size != old_size)
+ 		memset(&md->geometry, 0, sizeof(md->geometry));
+ 
+-	set_capacity(md->disk, size);
+-
+ 	dm_table_event_callback(t, event_callback, md);
+ 
+ 	if (dm_table_request_based(t)) {
+@@ -2468,12 +2476,6 @@ static struct dm_table *__bind(struct mapped_device *md, struct dm_table *t,
+ 		t->mempools = NULL;
  	}
+ 
+-	ret = dm_table_set_restrictions(t, md->queue, limits);
+-	if (ret) {
+-		old_map = ERR_PTR(ret);
+-		goto out;
+-	}
+-
+ 	old_map = rcu_dereference_protected(md->map, lockdep_is_held(&md->suspend_lock));
+ 	rcu_assign_pointer(md->map, (void *)t);
+ 	md->immutable_target_type = dm_table_get_immutable_target_type(t);
 -- 
 2.39.5
 
