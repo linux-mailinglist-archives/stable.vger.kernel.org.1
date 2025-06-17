@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-153488-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-154157-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 89BD2ADD4D5
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:14:44 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6B02FADD7ED
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:50:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 45A8F560233
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:05:26 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2DB1E1BC0634
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:44:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A7A72ED863;
-	Tue, 17 Jun 2025 16:02:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E438F2EE277;
+	Tue, 17 Jun 2025 16:38:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qeibXtSV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g/nRbBcr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA9942F2345;
-	Tue, 17 Jun 2025 16:02:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F2962EE26F;
+	Tue, 17 Jun 2025 16:38:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750176125; cv=none; b=Ra09tgHb12zDZD5+CDU6L6bH9v0zC/rJD7Hsc1Kd5+I8Lnq63yoxU85utAQ2S0TW2FTO3yfvxZAsGBXBc9dDpOMT8G2dhVdyGMMSulMk+wCgtWLKaJniwZv+zpMbLjTKb/rhCgkzVoKzezEzW50NStUx1f/a231ugVpU3ihsBF4=
+	t=1750178285; cv=none; b=Am/mS8rogJmN7DlyJEvoOc8G8uVIIH7cNE9Q9EGNbp69J1mry2nbjiI8jsSllEmwRPlDoiKlQ9nlD6M9q+c+m8lHEZMGwE5oRcuc3JPqhwitzSMUly4e24GQcODVS2wRiN2sx+CWzkhVhJ877WlywQMngM3OGYsKnFcP463bzJk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750176125; c=relaxed/simple;
-	bh=lQfAmT1ClX4k+oT/iz3nyvXlwrR8GbGTpmHHewclPXk=;
+	s=arc-20240116; t=1750178285; c=relaxed/simple;
+	bh=3QN4AatPJPqQAJgULRkfooIwGmTkS9kNNNeiGQVjS7o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=U02Em7Adye53uDWhZDtVv0nAInj3yPd8OG8rPqkhacJHc7lcpAK26uqIQRQSZP5ZdopEcs3atnsh9sfxfmAjNgDZ1Ga8vTv4lkI815cXyLZhPLFcfjNLtT/Zu5nOuazPJgBOTTN6QZPKWE2Dh7f+mINLzvGLo2ADw7VuC2httJU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qeibXtSV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48F92C4CEE3;
-	Tue, 17 Jun 2025 16:02:04 +0000 (UTC)
+	 MIME-Version; b=Y0S95RI47v9yeBd6LJ5zvCRhcsCvMbaX1342kf1abQIfxWv+O4CBlCwd4SnuYHTlUvxN3x3DifTyaNfRmPiLpOr9exx2twEaV/FDyNzYE8RoJ0XVTLilq373pobK4YRaqV3UIpPi/RAR5oi3jSBhMCpcJ2uAl+iTwKZgsGyO4E8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g/nRbBcr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1C78C4CEE3;
+	Tue, 17 Jun 2025 16:38:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750176124;
-	bh=lQfAmT1ClX4k+oT/iz3nyvXlwrR8GbGTpmHHewclPXk=;
+	s=korg; t=1750178285;
+	bh=3QN4AatPJPqQAJgULRkfooIwGmTkS9kNNNeiGQVjS7o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qeibXtSVtFXKEPgOwendqLxNBmM+Po2N08V9NXjphadZFNBGnzJN5MIaWOsRfRSJu
-	 Z+M6d74HuAaIUPp0QWfnWgLgPUqYeGf3p66IGFq7u69bRaZxf6z2F8QVE05xFFaq/u
-	 ey9A7RgDFlJdZKzE76G0DtxrTwnY/lkif4zYzoFo=
+	b=g/nRbBcrJS9SR6YHvH6kKjuR8GRruvtGaGRq9CEhreGbrwIfPWzlqo/N0f2wgu8kF
+	 a9nFwWIUJweWR7Mmq6InJT3R6S/jCf9SL0ceyDPxXtdyqfWOwViPiROVMGW1iZ2q13
+	 2GB3DqROZd59E4Wj+yi5wvuCWDlwwGawFjNb5WJg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"ping.gao" <ping.gao@samsung.com>,
-	Peter Wang <peter.wang@mediatek.com>,
-	Bart Van Assche <bvanassche@acm.org>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Damien Le Moal <dlemoal@kernel.org>,
+	Benjamin Marzinski <bmarzins@redhat.com>,
+	Mikulas Patocka <mpatocka@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 180/512] scsi: ufs: mcq: Delete ufshcd_release_scsi_cmd() in ufshcd_mcq_abort()
+Subject: [PATCH 6.15 438/780] dm: fix dm_blk_report_zones
 Date: Tue, 17 Jun 2025 17:22:26 +0200
-Message-ID: <20250617152426.947224394@linuxfoundation.org>
+Message-ID: <20250617152509.298477480@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
-References: <20250617152419.512865572@linuxfoundation.org>
+In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
+References: <20250617152451.485330293@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,59 +63,122 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: ping.gao <ping.gao@samsung.com>
+From: Benjamin Marzinski <bmarzins@redhat.com>
 
-[ Upstream commit 53755903b9357e69b2dd6a02fafbb1e30c741895 ]
+[ Upstream commit 37f53a2c60d03743e0eacf7a0c01c279776fef4e ]
 
-After UFS_ABORT_TASK has been processed successfully, the host will
-generate MCQ IRQ for ABORT TAG with response OCS_ABORTED. This results in
-ufshcd_compl_one_cqe() calling ufshcd_release_scsi_cmd().
+If dm_get_live_table() returned NULL, dm_put_live_table() was never
+called. Also, it is possible that md->zone_revalidate_map will change
+while calling this function. Only read it once, so that we are always
+using the same value. Otherwise we might miss a call to
+dm_put_live_table().
 
-But ufshcd_mcq_abort() already calls ufshcd_release_scsi_cmd(), resulting
-in __ufshcd_release() being called twice. This means
-hba->clk_gating.active_reqs will be decreased twice, making it go
-negative.
+Finally, while md->zone_revalidate_map is set and a process is calling
+blk_revalidate_disk_zones() to set up the zone append emulation
+resources, it is possible that another process, perhaps triggered by
+blkdev_report_zones_ioctl(), will call dm_blk_report_zones(). If
+blk_revalidate_disk_zones() fails, these resources can be freed while
+the other process is still using them, causing a use-after-free error.
 
-Delete ufshcd_release_scsi_cmd() in ufshcd_mcq_abort().
+blk_revalidate_disk_zones() will only ever be called when initially
+setting up the zone append emulation resources, such as when setting up
+a zoned dm-crypt table for the first time. Further table swaps will not
+set md->zone_revalidate_map or call blk_revalidate_disk_zones().
+However it must be called using the new table (referenced by
+md->zone_revalidate_map) and the new queue limits while the DM device is
+suspended. dm_blk_report_zones() needs some way to distinguish between a
+call from blk_revalidate_disk_zones(), which must be allowed to use
+md->zone_revalidate_map to access this not yet activated table, and all
+other calls to dm_blk_report_zones(), which should not be allowed while
+the device is suspended and cannot use md->zone_revalidate_map, since
+the zone resources might be freed by the process currently calling
+blk_revalidate_disk_zones().
 
-Fixes: f1304d442077 ("scsi: ufs: mcq: Added ufshcd_mcq_abort()")
-Signed-off-by: ping.gao <ping.gao@samsung.com>
-Link: https://lore.kernel.org/r/20250516083812.3894396-1-ping.gao@samsung.com
-Reviewed-by: Peter Wang <peter.wang@mediatek.com>
-Reviewed-by: Bart Van Assche <bvanassche@acm.org>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Solve this by tracking the process that sets md->zone_revalidate_map in
+dm_revalidate_zones() and only allowing that process to make use of it
+in dm_blk_report_zones().
+
+Fixes: f211268ed1f9b ("dm: Use the block layer zone append emulation")
+Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
+Tested-by: Damien Le Moal <dlemoal@kernel.org>
+Signed-off-by: Benjamin Marzinski <bmarzins@redhat.com>
+Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/ufs/core/ufs-mcq.c | 6 ------
- 1 file changed, 6 deletions(-)
+ drivers/md/dm-core.h |  1 +
+ drivers/md/dm-zone.c | 25 +++++++++++++++++--------
+ 2 files changed, 18 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/ufs/core/ufs-mcq.c b/drivers/ufs/core/ufs-mcq.c
-index 45b04f3c37764..420e943bb73a7 100644
---- a/drivers/ufs/core/ufs-mcq.c
-+++ b/drivers/ufs/core/ufs-mcq.c
-@@ -670,7 +670,6 @@ int ufshcd_mcq_abort(struct scsi_cmnd *cmd)
- 	int tag = scsi_cmd_to_rq(cmd)->tag;
- 	struct ufshcd_lrb *lrbp = &hba->lrb[tag];
- 	struct ufs_hw_queue *hwq;
--	unsigned long flags;
- 	int err;
+diff --git a/drivers/md/dm-core.h b/drivers/md/dm-core.h
+index 3637761f35853..f3a3f2ef63226 100644
+--- a/drivers/md/dm-core.h
++++ b/drivers/md/dm-core.h
+@@ -141,6 +141,7 @@ struct mapped_device {
+ #ifdef CONFIG_BLK_DEV_ZONED
+ 	unsigned int nr_zones;
+ 	void *zone_revalidate_map;
++	struct task_struct *revalidate_map_task;
+ #endif
  
- 	/* Skip task abort in case previous aborts failed and report failure */
-@@ -709,10 +708,5 @@ int ufshcd_mcq_abort(struct scsi_cmnd *cmd)
- 		return FAILED;
+ #ifdef CONFIG_IMA
+diff --git a/drivers/md/dm-zone.c b/drivers/md/dm-zone.c
+index 681058feb63b5..ff9a1a94eea96 100644
+--- a/drivers/md/dm-zone.c
++++ b/drivers/md/dm-zone.c
+@@ -56,24 +56,31 @@ int dm_blk_report_zones(struct gendisk *disk, sector_t sector,
+ {
+ 	struct mapped_device *md = disk->private_data;
+ 	struct dm_table *map;
+-	int srcu_idx, ret;
++	struct dm_table *zone_revalidate_map = md->zone_revalidate_map;
++	int srcu_idx, ret = -EIO;
++	bool put_table = false;
+ 
+-	if (!md->zone_revalidate_map) {
+-		/* Regular user context */
++	if (!zone_revalidate_map || md->revalidate_map_task != current) {
++		/*
++		 * Regular user context or
++		 * Zone revalidation during __bind() is in progress, but this
++		 * call is from a different process
++		 */
+ 		if (dm_suspended_md(md))
+ 			return -EAGAIN;
+ 
+ 		map = dm_get_live_table(md, &srcu_idx);
+-		if (!map)
+-			return -EIO;
++		put_table = true;
+ 	} else {
+ 		/* Zone revalidation during __bind() */
+-		map = md->zone_revalidate_map;
++		map = zone_revalidate_map;
  	}
  
--	spin_lock_irqsave(&hwq->cq_lock, flags);
--	if (ufshcd_cmd_inflight(lrbp->cmd))
--		ufshcd_release_scsi_cmd(hba, lrbp);
--	spin_unlock_irqrestore(&hwq->cq_lock, flags);
--
- 	return SUCCESS;
- }
+-	ret = dm_blk_do_report_zones(md, map, sector, nr_zones, cb, data);
++	if (map)
++		ret = dm_blk_do_report_zones(md, map, sector, nr_zones, cb,
++					     data);
+ 
+-	if (!md->zone_revalidate_map)
++	if (put_table)
+ 		dm_put_live_table(md, srcu_idx);
+ 
+ 	return ret;
+@@ -175,7 +182,9 @@ int dm_revalidate_zones(struct dm_table *t, struct request_queue *q)
+ 	 * our table for dm_blk_report_zones() to use directly.
+ 	 */
+ 	md->zone_revalidate_map = t;
++	md->revalidate_map_task = current;
+ 	ret = blk_revalidate_disk_zones(disk);
++	md->revalidate_map_task = NULL;
+ 	md->zone_revalidate_map = NULL;
+ 
+ 	if (ret) {
 -- 
 2.39.5
 
