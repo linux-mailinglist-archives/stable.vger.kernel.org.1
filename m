@@ -1,117 +1,189 @@
-Return-Path: <stable+bounces-152762-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-152763-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF66AADC59E
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 11:02:52 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id DB7B4ADC6D0
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 11:42:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2C47C189385B
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 09:03:08 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 778C21648A9
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 09:42:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A489A290DBC;
-	Tue, 17 Jun 2025 09:02:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F2EB292B4E;
+	Tue, 17 Jun 2025 09:42:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="RF8fAesh"
+	dkim=pass (2048-bit key) header.d=disroot.org header.i=@disroot.org header.b="BBArIcmN"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lf1-f49.google.com (mail-lf1-f49.google.com [209.85.167.49])
+Received: from layka.disroot.org (layka.disroot.org [178.21.23.139])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DA32220F34
-	for <stable@vger.kernel.org>; Tue, 17 Jun 2025 09:02:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0144321B91F
+	for <stable@vger.kernel.org>; Tue, 17 Jun 2025 09:42:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.21.23.139
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750150963; cv=none; b=TeW/i+w2W3gtKfwLhN6JrHievShg1RhhyRxuji3NH76IE++mH9rkAlyJRdMH+XMst+1MB2FKSh4COVnQR3+2tsVd2PPFYmKXMUi0qAZaMxhSK02HjVXN583rZihoXVO4+AG7abT0MizHrfbR17LlahbDY9PH/iJ15lN38gZYlvo=
+	t=1750153327; cv=none; b=WA2wGatFm3BBMLArYb3vkLZh0KEe4XA2EC45Modu/Eje4uPimhDfZN3ZSWWFrr2yhT7Tzzjdb+ua3S7ShgCrLeHL4/kxZnQNE450DLIwWyQ/bc4VBBinF1GHu30FWyU73GLEVz/0TrdS7QSsRb/ccTn9hmZmVvmlexHSi0srfto=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750150963; c=relaxed/simple;
-	bh=hZpp8NilOYk4lk2aLMATM3rJ4jK41OW6tkT22EaNR68=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=QF+Ri2jlulc9Ce2tKmXHLODFJciBVlPyFGqWw0/BMoGJAHS2ofhK3PskYqW54JTlJzsHDp1QSTnUkAHSRGGT9CGAonpN8ytJIUtqxseqAs0rl6zFu1yHxJ7v7NV26jSJsyRGRAp8eZ/9F6q+p6LaQZmwNW2EfV9AgXIus6NvHt4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=RF8fAesh; arc=none smtp.client-ip=209.85.167.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-lf1-f49.google.com with SMTP id 2adb3069b0e04-553bcf41429so270048e87.3
-        for <stable@vger.kernel.org>; Tue, 17 Jun 2025 02:02:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1750150959; x=1750755759; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=p6FSyDeLV5tNzI8jmBk6dfrtvJpCsYW4RkOqJj3Og0s=;
-        b=RF8fAeshrVI5aNgHBrI+v4jsYBHw1T9TD5djqPMGUlFm9/QOZIFOQsBrO2Yn0hX3Rl
-         roiEWZIuHYWaCHMhuc63tY1pv7QaKRKspyOfCvs/XRavK0914EP2W3ngmawnWJitf9PH
-         30kvNGLLToIcYLnzQVXR8Rgf1/Nse8O9ZnJIA/dxdfzHtj1T/9mlZU6A5ZydQdCs4eQF
-         AXFxgEO3j4vOGd9utqYFz5N7Ci8+9d+OmEgP3n626UqRTba28hHEZvCtBquVP4dlLXHh
-         niTU0CZ7vOiPlN29KE7H8PdX6ArvIUsVaQGbdJOyAZ9YAcjuS87uWp2JlI5hnG0XzblK
-         kW7A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1750150959; x=1750755759;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=p6FSyDeLV5tNzI8jmBk6dfrtvJpCsYW4RkOqJj3Og0s=;
-        b=oSRyNTvcocshW4hG5LyezDfYi8XbTWv7vB9ISDTQyVahbHaslEMxBoasoZ3A2pAEkB
-         1bxdnDuaUOvNRokqQsf6QyWHxv5ULbrJ5xVITSVVLdo1OCHdDfllc4rTJz/1PK7XP8LK
-         cz5AvDKhxJ7piWmkkieH7clpB0sZs2SdR+Q16xF3ejQCyABub5SpSt2JLADIhUv9cliI
-         mJQzba2VGc0Fxor3gFzgdJblz0u6Zh7SoYb2LGUSGiUDO+zfHMYWdX0/8UmNSP4vXuIM
-         PFacn2eIBNpJ+yR4HCkNjY5nsRqcDfp6/HIwGT/QaG9oqCn8Vv4WfbaQ/424AouvtXfk
-         z/Xg==
-X-Forwarded-Encrypted: i=1; AJvYcCWac3PVN6pSTWufPxSr98I5yClkskw9o+No+XBRzEv/vXAPKDBcgdXXmzxTBTdARAuNhtz/peU=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzB3abe98UyHV/mg+M0D7Pq/QvewjlL36rXv4JgsF8vCVD182Nm
-	+BO3jOcSwbIdMd8VUiggB64xn0HfuoUCt4DQ4JSm84G40rG/9TwRfppYsN5wKVa7S1I=
-X-Gm-Gg: ASbGncuc4YrrgbDlHfNHsCtEV6/g/V9M2XXODCr9Gljrnfp0M3fdzYErwGnmjCDPyee
-	k1frTWL8sg4IDbo6lEdoxd2Ka5ViFz9loBCayZyQxbp654ZV8gGCh1xV/8UeeUy21ytWfscgO8K
-	6/9qZAGhQwfy6SInt6CWLRIhWh+ZcauOJgUnY9hE2FtpvM6w64QA8MRuImnpKN84lDFzEB9SLU7
-	2/4OmIMbokfrMOdXSCYiT+8xkHaHp4yZoJR9Jo3n5l1jVxCsPSbDc3T2aV/wBZSaojzR3q0bj3e
-	KxQsfMXj6qB41tLRxT5hR//zof/tKTA7wlOzQRqXTNwUQHH7yLOyLVsqGFGEraTr2kS35Dsed+C
-	IU2mvIYKqYfjtZRQgT+cyX/MDmztms/HWizlrIGB+
-X-Google-Smtp-Source: AGHT+IEv7meiVd5tMWXL+doCxvXY8Z6vYW1YGEvunNjM0gGLHZU0DJ0LcAS77/p7fgnwyjuHi+JcZw==
-X-Received: by 2002:a05:6512:691:b0:553:2a11:9cce with SMTP id 2adb3069b0e04-553b6f4cc69mr1044756e87.14.1750150958516;
-        Tue, 17 Jun 2025 02:02:38 -0700 (PDT)
-Received: from [192.168.1.4] (88-112-131-206.elisa-laajakaista.fi. [88.112.131.206])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-553ac120167sm1823733e87.20.2025.06.17.02.02.37
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 17 Jun 2025 02:02:38 -0700 (PDT)
-Message-ID: <3b2f1bba-6dde-4f7d-ad87-219306e37829@linaro.org>
-Date: Tue, 17 Jun 2025 12:02:37 +0300
+	s=arc-20240116; t=1750153327; c=relaxed/simple;
+	bh=kEVr5LRDJXI5+NMKIDFQUd9VmCGFm55tC/Y7nPANTt8=;
+	h=MIME-Version:Date:From:To:Cc:Subject:In-Reply-To:References:
+	 Message-ID:Content-Type; b=AfTPO8cg6sJOBCdFLDoRQ3yKgJzq7MqvbI2bGx2OMMcOojxRmVO5a8rJ9WUK0Q0IalpuX/ogWQ7Ox8cw+gPnGF42Zqm3l+Wp5ansqk6mywSXu+pLGY9lzBzFoUNafk3euFT/3TFF62mMnBWZ0bHlh3U6OW/BMcJMQT/s+xRv35A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=disroot.org; spf=pass smtp.mailfrom=disroot.org; dkim=pass (2048-bit key) header.d=disroot.org header.i=@disroot.org header.b=BBArIcmN; arc=none smtp.client-ip=178.21.23.139
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=disroot.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=disroot.org
+Received: from mail01.disroot.lan (localhost [127.0.0.1])
+	by disroot.org (Postfix) with ESMTP id 7B0E425F98;
+	Tue, 17 Jun 2025 11:42:04 +0200 (CEST)
+X-Virus-Scanned: SPAM Filter at disroot.org
+Received: from layka.disroot.org ([127.0.0.1])
+ by localhost (disroot.org [127.0.0.1]) (amavis, port 10024) with ESMTP
+ id DLfz8DzFOpKU; Tue, 17 Jun 2025 11:42:03 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=disroot.org; s=mail;
+	t=1750153323; bh=kEVr5LRDJXI5+NMKIDFQUd9VmCGFm55tC/Y7nPANTt8=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=BBArIcmNxHIoKXxCgCBxozEjIHCMN0lxBNp8rZFkzi4cfUkTmHUYZA+btASY+rxE0
+	 Zk42MC5u/x40Y32dkU6MEq9405EV1UR2DhNI8mtSCelB1EOtsnKjYkm+qNFPmtjFup
+	 Xnb5iAjftrdy6AcGBVVFQaBW0EP1mU4N9lYhMgc7iOxlUrgDgbvXY2D1MUOe5jtyfo
+	 2L7b475uhTOlyAtprlcIMMw06ieRPzrRUOxzGS+MqMwcs3KmWSW4fyv+GhBaLcMd1e
+	 JOaJEZDqCoT9jxAsG2/W76gPiEMQZcfwYF6W+0HLBSMiUJSVT084pZYKoMKAD6hHlg
+	 aqi5zH64yEj4Q==
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/2] media: qcom: camss: csiphy-3ph: Fix inadvertent
- dropping of SDM660/SDM670 phy init
-Content-Language: ru-RU
-To: Bryan O'Donoghue <bryan.odonoghue@linaro.org>,
- Robert Foss <rfoss@kernel.org>, Todor Tomov <todor.too@gmail.com>,
- Mauro Carvalho Chehab <mchehab@kernel.org>, Hans Verkuil
- <hverkuil@xs4all.nl>, Depeng Shao <quic_depengs@quicinc.com>,
- Hans Verkuil <hans.verkuil@cisco.com>
-Cc: linux-media@vger.kernel.org, linux-arm-msm@vger.kernel.org,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org
-References: <20250612-linux-next-25-05-30-daily-reviews-v1-0-88ba033a9a03@linaro.org>
- <20250612-linux-next-25-05-30-daily-reviews-v1-1-88ba033a9a03@linaro.org>
-From: Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>
-In-Reply-To: <20250612-linux-next-25-05-30-daily-reviews-v1-1-88ba033a9a03@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Date: Tue, 17 Jun 2025 11:42:03 +0200
+From: machion@disroot.org
+To: Alex Deucher <alexdeucher@gmail.com>
+Cc: stable@vger.kernel.org, regressions@lists.linux.dev,
+ amd-gfx@lists.freedesktop.org, alexander.deucher@amd.com,
+ christian.koenig@amd.com
+Subject: Re: Unplayable framerates in game but specific kernel versions work,
+ maybe amdgpu problem
+In-Reply-To: <CADnq5_PkOuAHuDjMNXABEcenaZFZgU044G=9pTu=EgMr_grXbw@mail.gmail.com>
+References: <c415d9e0b08bcba068b01700225bf560@disroot.org>
+ <CADnq5_PX1dYF2Jd3q7ghaBjpPhNLq9EmFJtN1w6YOSfVo++7sA@mail.gmail.com>
+ <69b5ebaa719355994a383fa026dc3fba@disroot.org>
+ <CADnq5_PkOuAHuDjMNXABEcenaZFZgU044G=9pTu=EgMr_grXbw@mail.gmail.com>
+Message-ID: <fadf714ecdc2e3bd5bed0c3ee69177a1@disroot.org>
+X-Sender: machion@disroot.org
+Content-Type: text/plain; charset=UTF-8;
+ format=flowed
+Content-Transfer-Encoding: 8bit
 
-On 6/12/25 11:07, Bryan O'Donoghue wrote:
-> The moving of init sequence hook from gen2() to subdev_init() doesn't
-> account for gen1 devices such as SDM660 and SDM670. The switch should find
-> the right offset for gen2 PHYs only, not reject gen1. Remove the default
-> error case to restore gen1 CSIPHY support.
+I feared that.
+
+It seems a crazy problem, when many people are affected and in opposite 
+ways.
+This ReBAR/UEFI thing is also new to me, but I don't have this on my 
+system either (using BIOS/MBR).
+
+I hope, it can be fixed for all scenarios.
+
+Marion
+
+Am 2025-06-16 15:29, schrieb Alex Deucher:
+> On Fri, Jun 13, 2025 at 3:38 PM <machion@disroot.org> wrote:
+>> 
+>> Hi,
+>> sorry for the delay.
+>> Besides less time, I had to make myself familiar with bisecting and
+>> again kernel compiling. Last time I compiled the kernel myself was
+>> around 2010 I think.
+>> 
+>> Anyway it seems I found the bad commit. The result after bisecting 10
+>> commits is:
+>> 
+>> a53d959fe660341788cb8dbc3ac3330d90a09ecf is the first bad commit
+>> commit a53d959fe660341788cb8dbc3ac3330d90a09ecf
+>> Author: Christian König <christian.koenig@amd.com>
+>> Date:   Thu Mar 20 14:46:18 2025 +0100
+>> 
+>>      drm/amdgpu: immediately use GTT for new allocations
+>> 
+>>      commit a755906fb2b8370c43e91ba437ae1b3e228e8b02 upstream.
+>> 
+>>      Only use GTT as a fallback if we already have a backing store. 
+>> This
+>>      prevents evictions when an application constantly allocates and
+>> frees new
+>>      memory.
+>> 
+>>      Partially fixes
+>>      
+>> https://gitlab.freedesktop.org/drm/amd/-/issues/3844#note_2833985.
+>> 
+>>      Signed-off-by: Christian König <christian.koenig@amd.com>
+>>      Fixes: 216c1282dde3 ("drm/amdgpu: use GTT only as fallback for
+>> VRAM|GTT")
+>>      Acked-by: Alex Deucher <alexander.deucher@amd.com>
+>>      Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+>>      Cc: stable@vger.kernel.org
+>>      Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+>> 
+>>   drivers/gpu/drm/amd/amdgpu/amdgpu_object.c | 4 ++--
+>>   1 file changed, 2 insertions(+), 2 deletions(-)
 > 
-> Cc: stable@vger.kernel.org
-> Fixes: fbce0ca24c3a ("media: qcom: camss: csiphy-3ph: Move CSIPHY variables to data field inside csiphy struct")
-> Signed-off-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
-
-Reviewed-by: Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>
-
---
-Best wishes,
-Vladimir
+> Unfortunately reverting that commit will reintroduce a similar
+> performance issue for lots of other uses.  See:
+> https://gitlab.freedesktop.org/drm/amd/-/issues/3844#note_2827990
+> for a description of the fundemental problem.
+> 
+> Alex
+> 
+>> 
+>> Marion
+>> 
+>> 
+>> Am 2025-05-08 15:18, schrieb Alex Deucher:
+>> > On Thu, May 8, 2025 at 9:13 AM <machion@disroot.org> wrote:
+>> >>
+>> >> Hello kernel/driver developers,
+>> >>
+>> >> I hope, with my information it's possible to find a bug/problem in the
+>> >> kernel. Otherwise I am sorry, that I disturbed you.
+>> >> I only use LTS kernels, but I can narrow it down to a hand full of
+>> >> them,
+>> >> where it works.
+>> >>
+>> >> The PC: Manjaro Stable/Cinnamon/X11/AMD Ryzen 5 2600/Radeon HD
+>> >> 7790/8GB
+>> >> RAM
+>> >> I already asked the Manjaro community, but with no luck.
+>> >>
+>> >> The game: Hellpoint (GOG Linux latest version, Unity3D-Engine v2021),
+>> >> uses vulkan
+>> >>
+>> >> ---
+>> >>
+>> >> I came a long road of kernels. I had many versions of 5.4, 5.10, 5.15,
+>> >> 6.1 and 6.6 and and the game was always unplayable, because the frames
+>> >> where around 1fps (performance of PC is not the problem).
+>> >> I asked the mesa and cinnamon team for help in the past, but also with
+>> >> no luck.
+>> >> It never worked, till on 2025-03-29 when I installed 6.12.19 for the
+>> >> first time and it worked!
+>> >>
+>> >> But it only worked with 6.12.19, 6.12.20 and 6.12.21
+>> >> When I updated to 6.12.25, it was back to unplayable.
+>> >
+>> > Can you bisect to see what fixed it in 6.12.19 or what broke it in
+>> > 6.12.25?  For example if it was working in 6.12.21 and not working in
+>> > 6.12.25, you can bisect between 6.12.21 and .25.
+>> >
+>> > Alex
+>> >
+>> >>
+>> >> For testing I installed 6.14.4 with the same result. It doesn't work.
+>> >>
+>> >> I also compared file /proc/config.gz of both kernels (6.12.21 <>
+>> >> 6.14.4), but can't seem to see drastic changes to the graphical part.
+>> >>
+>> >> I presume it has something to do with amdgpu.
+>> >>
+>> >> If you need more information, I would be happy to help.
+>> >>
+>> >> Kind regards,
+>> >> Marion
 
