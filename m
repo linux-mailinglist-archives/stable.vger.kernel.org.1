@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-154454-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-154073-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6DD6EADD927
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 19:03:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5AEACADD824
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:52:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 630A75A52B2
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:54:54 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9F6424A31B0
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:38:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77351285044;
-	Tue, 17 Jun 2025 16:54:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 898EC2F2C41;
+	Tue, 17 Jun 2025 16:33:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AwKkxXyF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nijUAIi9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3186C23B600;
-	Tue, 17 Jun 2025 16:53:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4757A2DFF3C;
+	Tue, 17 Jun 2025 16:33:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750179240; cv=none; b=LabjfvUZWG2bOwXEtuWbJZg88XcuZ01EaB6xzzc7CwjNpVqBh6yOHO1huOevaDKGNtta1XOgbqt7utTd3SgSxpAwWKF9LFU89IFh93JyZfJblK6cQuStFqTEWs7fJiWsZ5UsahC0yb85JlfiftcSMTjQTN5N/5d9Dxb+AWbivhI=
+	t=1750178017; cv=none; b=XxbzrVaQSEUsju6TypGivTdd79LVbxDxJt1ChloQjkgXsttIw99PCsqNFw2acQRbhHRWL54Woxvy7Zc0qaNYxBDcgsPiuOVTJx8XVpC31Ufhc5YlRwPvGqTyNgWx2SX+oOIT1jkTrehUjbpyBPZ1kt50AyekrcYifv0yLSUUBOM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750179240; c=relaxed/simple;
-	bh=Mlt26PqOmlNp54wCu4oGPBQwgery6F7sXMPB7tuf5Sc=;
+	s=arc-20240116; t=1750178017; c=relaxed/simple;
+	bh=lAspYPpuXZvRL+19LOABBwkS8yo5eRIt3LtPzdCePhA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LkiaF4rdiTopXtqCNfksKEPgNu+HEfH/pyOnj5QJG9IZ5bYfCvph+aXEgtmf2kydN2kwZiR6zxsbFOFh2KXEKi9N7vszkHK9l3H4vuUF/+ynnlzRzOTuqIy+WahIIUMcziv+XYfC0/oSf60hBxeld925jZQ0JedZfWGPuXvTLbk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AwKkxXyF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1571BC4CEF4;
-	Tue, 17 Jun 2025 16:53:57 +0000 (UTC)
+	 MIME-Version; b=jz47UuTyk0x08O8iDijgqzpd/CIUuAJg6znkYyal3JsTG4V6UWt/332zedCbHUmOnXLGh5CAsDQsFrm55RoYK4L/I21p1nAaBuVh4M2abuFeBZ88rK8EI6COZqBwRINFezf17cDynz0QXUgh/HaVG4MOymuASZNHnfiuHE/VJjY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nijUAIi9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51B56C4CEF0;
+	Tue, 17 Jun 2025 16:33:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750179238;
-	bh=Mlt26PqOmlNp54wCu4oGPBQwgery6F7sXMPB7tuf5Sc=;
+	s=korg; t=1750178016;
+	bh=lAspYPpuXZvRL+19LOABBwkS8yo5eRIt3LtPzdCePhA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AwKkxXyFqmX2PkWgH4TRBtVq31TbyjTnGgi2SGgHdbIerKMNM7cO0FAvKKaYcV79V
-	 iAlBlFVfLN8RrEF6hC3MQSNajv4z+PWl7gEBO1Q1fl/BPMvLdTFpmhpfmabzL7aDqp
-	 tVZszC3p1izm3m61G2R2CpQyrfBuiehQtdfzcvJA=
+	b=nijUAIi93FmcUyMxfOqN8DGaRduJhL/OUTLhYCFTF/uvtYd6UFzaf3LeSLJMhtj1z
+	 jQwxxeZuwld9mC/ADdJhSebe1jmyf89seyAXlvBGCrxSlTgWiw1GSxE+MM5Jg/6JXS
+	 FqTmrGV8+xy2SlxqylJLlIQaMH6qsF+eOnz0R9cw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
+	Baochen Qiang <quic_bqiang@quicinc.com>,
+	Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>,
+	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 690/780] drm/meson: fix debug log statement when setting the HDMI clocks
+Subject: [PATCH 6.12 432/512] wifi: ath11k: dont wait when there is no vdev started
 Date: Tue, 17 Jun 2025 17:26:38 +0200
-Message-ID: <20250617152519.585835237@linuxfoundation.org>
+Message-ID: <20250617152437.077264558@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
-References: <20250617152451.485330293@linuxfoundation.org>
+In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
+References: <20250617152419.512865572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,41 +63,78 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+From: Baochen Qiang <quic_bqiang@quicinc.com>
 
-[ Upstream commit d17e61ab63fb7747b340d6a66bf1408cd5c6562b ]
+[ Upstream commit 3b6d00fa883075dcaf49221538230e038a9c0b43 ]
 
-The "phy" and "vclk" frequency labels were swapped, making it more
-difficult to debug driver errors. Swap the label order to make them
-match with the actual frequencies printed to correct this.
+For WMI_REQUEST_VDEV_STAT request, firmware might split response into
+multiple events dut to buffer limit, hence currently in
+ath11k_debugfs_fw_stats_process() we wait until all events received.
+In case there is no vdev started, this results in that below condition
+would never get satisfied
 
-Fixes: e5fab2ec9ca4 ("drm/meson: vclk: add support for YUV420 setup")
-Signed-off-by: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
-Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
-Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
-Link: https://lore.kernel.org/r/20250606203729.3311592-1-martin.blumenstingl@googlemail.com
+	((++ar->fw_stats.num_vdev_recvd) == total_vdevs_started)
+
+finally the requestor would be blocked until wait time out.
+
+The same applies to WMI_REQUEST_BCN_STAT request as well due to:
+
+	((++ar->fw_stats.num_bcn_recvd) == ar->num_started_vdevs)
+
+Change to check the number of started vdev first: if it is zero, finish
+wait directly; if not, follow the old way.
+
+Tested-on: WCN6855 hw2.0 PCI WLAN.HSP.1.1-03125-QCAHSPSWPL_V1_V2_SILICONZ_LITE-3.6510.37
+
+Fixes: d5c65159f289 ("ath11k: driver for Qualcomm IEEE 802.11ax devices")
+Signed-off-by: Baochen Qiang <quic_bqiang@quicinc.com>
+Reviewed-by: Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>
+Link: https://patch.msgid.link/20250220082448.31039-4-quic_bqiang@quicinc.com
+Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/meson/meson_encoder_hdmi.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/wireless/ath/ath11k/debugfs.c | 10 +++++++---
+ 1 file changed, 7 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/gpu/drm/meson/meson_encoder_hdmi.c b/drivers/gpu/drm/meson/meson_encoder_hdmi.c
-index c08fa93e50a30..2bccda1e52a17 100644
---- a/drivers/gpu/drm/meson/meson_encoder_hdmi.c
-+++ b/drivers/gpu/drm/meson/meson_encoder_hdmi.c
-@@ -108,7 +108,7 @@ static void meson_encoder_hdmi_set_vclk(struct meson_encoder_hdmi *encoder_hdmi,
- 		venc_freq /= 2;
+diff --git a/drivers/net/wireless/ath/ath11k/debugfs.c b/drivers/net/wireless/ath/ath11k/debugfs.c
+index 27c93c0b4c223..ccf0e62c7d7ae 100644
+--- a/drivers/net/wireless/ath/ath11k/debugfs.c
++++ b/drivers/net/wireless/ath/ath11k/debugfs.c
+@@ -107,7 +107,7 @@ void ath11k_debugfs_fw_stats_process(struct ath11k *ar, struct ath11k_fw_stats *
+ {
+ 	struct ath11k_base *ab = ar->ab;
+ 	struct ath11k_pdev *pdev;
+-	bool is_end;
++	bool is_end = true;
+ 	size_t total_vdevs_started = 0;
+ 	int i;
  
- 	dev_dbg(priv->dev,
--		"vclk:%lluHz phy=%lluHz venc=%lluHz hdmi=%lluHz enci=%d\n",
-+		"phy:%lluHz vclk=%lluHz venc=%lluHz hdmi=%lluHz enci=%d\n",
- 		phy_freq, vclk_freq, venc_freq, hdmi_freq,
- 		priv->venc.hdmi_use_enci);
+@@ -132,7 +132,9 @@ void ath11k_debugfs_fw_stats_process(struct ath11k *ar, struct ath11k_fw_stats *
+ 				total_vdevs_started += ar->num_started_vdevs;
+ 		}
  
+-		is_end = ((++ar->fw_stats.num_vdev_recvd) == total_vdevs_started);
++		if (total_vdevs_started)
++			is_end = ((++ar->fw_stats.num_vdev_recvd) ==
++				  total_vdevs_started);
+ 
+ 		list_splice_tail_init(&stats->vdevs,
+ 				      &ar->fw_stats.vdevs);
+@@ -151,7 +153,9 @@ void ath11k_debugfs_fw_stats_process(struct ath11k *ar, struct ath11k_fw_stats *
+ 		/* Mark end until we reached the count of all started VDEVs
+ 		 * within the PDEV
+ 		 */
+-		is_end = ((++ar->fw_stats.num_bcn_recvd) == ar->num_started_vdevs);
++		if (ar->num_started_vdevs)
++			is_end = ((++ar->fw_stats.num_bcn_recvd) ==
++				  ar->num_started_vdevs);
+ 
+ 		list_splice_tail_init(&stats->bcn,
+ 				      &ar->fw_stats.bcn);
 -- 
 2.39.5
 
