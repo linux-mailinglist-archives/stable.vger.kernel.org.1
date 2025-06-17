@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-153465-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-154181-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8D46DADD4C5
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:14:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BFFF3ADD8D8
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:59:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6AF304060AB
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:04:47 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E8C3A4A237A
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:43:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 073FA2ECE89;
-	Tue, 17 Jun 2025 16:00:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 282EA2E8DF4;
+	Tue, 17 Jun 2025 16:39:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WVlBADIa"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OIOu+029"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B750818E025;
-	Tue, 17 Jun 2025 16:00:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D57C72DFF3C;
+	Tue, 17 Jun 2025 16:39:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750176051; cv=none; b=hjfEN2AL+7YQKrDYZLusB+JRbAj8IuJ2wFw01xxqGzrxCanS4KbQnbp2TfaAXDWU9ytqFIe00g3MFWry6F5+HG7RdmQNdZzTHOm267M68XDPrbzcKRtpP1m88R9YeDoJK7dKW/g1YxAmd7ipNVLDvAV3+qXo2WgtrXAu4qKozmQ=
+	t=1750178363; cv=none; b=Yp/Jh7+dsK71mGb/j29iq2EC5fXrTiCm0PLNxBlSihpQ1mZfrZGjTLTnjtg/m4ybRN/GMKwS75Xd1pbd7G5rE7pW/K1hVpSSrHFawINUvBX6/wof7WmQIkI59JQ57LDcesBitIGDXin88GfzwExvd8o6T42nP2+077Q9jdMgRd4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750176051; c=relaxed/simple;
-	bh=9ndV3nnvFsYoKgqsPTQjtTrNW5PsYLrmfIs9PtNrKfo=;
+	s=arc-20240116; t=1750178363; c=relaxed/simple;
+	bh=R6oGSfcpfI6+ZCo4k2bv72DwIPcxl8kQnNLL91LFBkY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=e5zVzqSM5LlnIYi6CoZM7X3GaU0IhOrV/jxcPe3kiQTcYc9jaXlZ3YjOELGudN9caQmmvavf3bvYS0w4+sIuam7H3WGfE+H1FN38v7fP1JIJlOkllRWO0WL9CpEBoxNzYI472jYIfT4x22s3XHj+KfTOXYO5MkwPvAYD4maEZ64=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WVlBADIa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24452C4CEE3;
-	Tue, 17 Jun 2025 16:00:50 +0000 (UTC)
+	 MIME-Version; b=TkcpKrT5mKqo4Yhsc4Cg5L+ZdoU5yDw799og9oIFCFTnQnvmaK5OciTVQDPl8PtksoAvO5P+sbrQz1h+sRwu5A9RGA01NZb/glYyegtHgnf3/2g4OM7bLe2SNBGzhS26xu+MrIob91OGrfXUYpuEU1pPLIJCTIUDMfv2Sl6AemU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OIOu+029; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41AF8C4CEE3;
+	Tue, 17 Jun 2025 16:39:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750176051;
-	bh=9ndV3nnvFsYoKgqsPTQjtTrNW5PsYLrmfIs9PtNrKfo=;
+	s=korg; t=1750178363;
+	bh=R6oGSfcpfI6+ZCo4k2bv72DwIPcxl8kQnNLL91LFBkY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WVlBADIa7ejAc7X7RlGqH3Nyj//9P3/1KanDX44o0krOYv9a7wZipLJQF9uQ/7NYI
-	 cbWziUOshUsl5YpYQWAgGnVehV6ll5I/knFQvikQ+onKKCXUBfKzk0svESFEi3uqMW
-	 HUSV5jJpewCRtcdbKg6Ci3TgRp916cV5VdRELhNo=
+	b=OIOu+029L8aVvxYKx1Cyz9M/AYDIo4tCKsqNDdSTWqv7bl9CrYU9aE6xCj0oUDyd3
+	 qoY5e6L2G8JGebC9nlN+WrpHV8QJD2Am0hKi4ZUmdUvlyriizQppqVRtpqccRXz8sG
+	 CvpYCTyrISiNc+07sh9Mj84XxBD4fsvNsHJ8Dey4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Florian Westphal <fw@strlen.de>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Siddharth Vadapalli <s-vadapalli@ti.com>,
+	Beleswar Padhi <b-padhi@ti.com>,
+	Judith Mendez <jm@ti.com>,
+	Andrew Davis <afd@ti.com>,
+	Mathieu Poirier <mathieu.poirier@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 191/512] netfilter: xtables: support arpt_mark and ipv6 optstrip for iptables-nft only builds
+Subject: [PATCH 6.15 449/780] remoteproc: k3-r5: Drop check performed in k3_r5_rproc_{mbox_callback/kick}
 Date: Tue, 17 Jun 2025 17:22:37 +0200
-Message-ID: <20250617152427.376667311@linuxfoundation.org>
+Message-ID: <20250617152509.742354941@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
-References: <20250617152419.512865572@linuxfoundation.org>
+In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
+References: <20250617152451.485330293@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,68 +65,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Florian Westphal <fw@strlen.de>
+From: Siddharth Vadapalli <s-vadapalli@ti.com>
 
-[ Upstream commit c38eb2973c18d34a8081d173a6ad298461f4a37c ]
+[ Upstream commit 9995dbfc2235efabdb3759606d522e1a7ec3bdcb ]
 
-Its now possible to build a kernel that has no support for the classic
-xtables get/setsockopt interfaces and builtin tables.
+Commit f3f11cfe8907 ("remoteproc: k3-r5: Acquire mailbox handle during
+probe routine") introduced a check in the "k3_r5_rproc_mbox_callback()"
+and "k3_r5_rproc_kick()" callbacks, causing them to exit if the remote
+core's state is "RPROC_DETACHED". However, the "__rproc_attach()"
+function that is responsible for attaching to a remote core, updates
+the state of the remote core to "RPROC_ATTACHED" only after invoking
+"rproc_start_subdevices()".
 
-In this case, we have CONFIG_IP6_NF_MANGLE=n and
-CONFIG_IP_NF_ARPTABLES=n.
+The "rproc_start_subdevices()" function triggers the probe of the Virtio
+RPMsg devices associated with the remote core, which require that the
+"k3_r5_rproc_kick()" and "k3_r5_rproc_mbox_callback()" callbacks are
+functional. Hence, drop the check in the callbacks.
 
-For optstript, the ipv6 code is so small that we can enable it if
-netfilter ipv6 support exists. For mark, check if either classic
-arptables or NFT_ARP_COMPAT is set.
-
-Fixes: a9525c7f6219 ("netfilter: xtables: allow xtables-nft only builds")
-Signed-off-by: Florian Westphal <fw@strlen.de>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Fixes: f3f11cfe8907 ("remoteproc: k3-r5: Acquire mailbox handle during probe routine")
+Signed-off-by: Siddharth Vadapalli <s-vadapalli@ti.com>
+Signed-off-by: Beleswar Padhi <b-padhi@ti.com>
+Tested-by: Judith Mendez <jm@ti.com>
+Reviewed-by: Andrew Davis <afd@ti.com>
+Link: https://lore.kernel.org/r/20250513054510.3439842-2-b-padhi@ti.com
+Signed-off-by: Mathieu Poirier <mathieu.poirier@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/xt_TCPOPTSTRIP.c | 4 ++--
- net/netfilter/xt_mark.c        | 2 +-
- 2 files changed, 3 insertions(+), 3 deletions(-)
+ drivers/remoteproc/ti_k3_r5_remoteproc.c | 8 --------
+ 1 file changed, 8 deletions(-)
 
-diff --git a/net/netfilter/xt_TCPOPTSTRIP.c b/net/netfilter/xt_TCPOPTSTRIP.c
-index 30e99464171b7..93f064306901c 100644
---- a/net/netfilter/xt_TCPOPTSTRIP.c
-+++ b/net/netfilter/xt_TCPOPTSTRIP.c
-@@ -91,7 +91,7 @@ tcpoptstrip_tg4(struct sk_buff *skb, const struct xt_action_param *par)
- 	return tcpoptstrip_mangle_packet(skb, par, ip_hdrlen(skb));
- }
+diff --git a/drivers/remoteproc/ti_k3_r5_remoteproc.c b/drivers/remoteproc/ti_k3_r5_remoteproc.c
+index dbc513c5569cb..3fc0b97dec600 100644
+--- a/drivers/remoteproc/ti_k3_r5_remoteproc.c
++++ b/drivers/remoteproc/ti_k3_r5_remoteproc.c
+@@ -194,10 +194,6 @@ static void k3_r5_rproc_mbox_callback(struct mbox_client *client, void *data)
+ 	const char *name = kproc->rproc->name;
+ 	u32 msg = omap_mbox_message(data);
  
--#if IS_ENABLED(CONFIG_IP6_NF_MANGLE)
-+#if IS_ENABLED(CONFIG_IP6_NF_IPTABLES)
- static unsigned int
- tcpoptstrip_tg6(struct sk_buff *skb, const struct xt_action_param *par)
- {
-@@ -119,7 +119,7 @@ static struct xt_target tcpoptstrip_tg_reg[] __read_mostly = {
- 		.targetsize = sizeof(struct xt_tcpoptstrip_target_info),
- 		.me         = THIS_MODULE,
- 	},
--#if IS_ENABLED(CONFIG_IP6_NF_MANGLE)
-+#if IS_ENABLED(CONFIG_IP6_NF_IPTABLES)
- 	{
- 		.name       = "TCPOPTSTRIP",
- 		.family     = NFPROTO_IPV6,
-diff --git a/net/netfilter/xt_mark.c b/net/netfilter/xt_mark.c
-index 65b965ca40ea7..59b9d04400cac 100644
---- a/net/netfilter/xt_mark.c
-+++ b/net/netfilter/xt_mark.c
-@@ -48,7 +48,7 @@ static struct xt_target mark_tg_reg[] __read_mostly = {
- 		.targetsize     = sizeof(struct xt_mark_tginfo2),
- 		.me             = THIS_MODULE,
- 	},
--#if IS_ENABLED(CONFIG_IP_NF_ARPTABLES)
-+#if IS_ENABLED(CONFIG_IP_NF_ARPTABLES) || IS_ENABLED(CONFIG_NFT_COMPAT_ARP)
- 	{
- 		.name           = "MARK",
- 		.revision       = 2,
+-	/* Do not forward message from a detached core */
+-	if (kproc->rproc->state == RPROC_DETACHED)
+-		return;
+-
+ 	dev_dbg(dev, "mbox msg: 0x%x\n", msg);
+ 
+ 	switch (msg) {
+@@ -233,10 +229,6 @@ static void k3_r5_rproc_kick(struct rproc *rproc, int vqid)
+ 	mbox_msg_t msg = (mbox_msg_t)vqid;
+ 	int ret;
+ 
+-	/* Do not forward message to a detached core */
+-	if (kproc->rproc->state == RPROC_DETACHED)
+-		return;
+-
+ 	/* send the index of the triggered virtqueue in the mailbox payload */
+ 	ret = mbox_send_message(kproc->mbox, (void *)msg);
+ 	if (ret < 0)
 -- 
 2.39.5
 
