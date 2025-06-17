@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-153219-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153222-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF802ADD35A
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 17:56:25 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B96F7ADD32F
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 17:54:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 88030189B877
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 15:51:16 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6AAA83BFBE4
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 15:50:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D3772DFF2D;
-	Tue, 17 Jun 2025 15:47:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D24C2DFF3C;
+	Tue, 17 Jun 2025 15:47:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fpMX06Yq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1saB+E0H"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 065582DFF2A;
-	Tue, 17 Jun 2025 15:47:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE8D02DFF2A;
+	Tue, 17 Jun 2025 15:47:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750175258; cv=none; b=O+v/tNJx2ye7ViqI/0VgJJyJDDJ+QtJ/PDEc5EZWeqFrPL3WXxQt9lKQC6Pgf+UUUTD2DcbCBGt0xhjU/HhuObmhwnEgp0s85avTEakZ2K2kYz+fhpsUsd4ZACyt9aIPhQrOCL9UHON9s1XkxyECdjScRLsgcdDiGLXHCFIXtwQ=
+	t=1750175268; cv=none; b=sS58SHAYYs0kPFIztnxi7s/BvKl32/499wLInU7RrtS9SHLS9VY7jQ8Ph6dWBAzrf34PpkGxTMcPZ2tJyNpG4xtOR9TjM7HynMClteR5L9qDTG1SQdisTmyPCM8EgfNtE/CTGw3rqm/DMj1+gEent067377Ar+t1h3iFVeK7F1I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750175258; c=relaxed/simple;
-	bh=+MvLmrgvDjXKEQhu0L4jsiW03/TTsEqQ/HB9e7gQfFY=;
+	s=arc-20240116; t=1750175268; c=relaxed/simple;
+	bh=WQObP/BVuVZ0nKgakB8RkZok6WHADFyuLJmGvqztvs8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=efwBOLDhWIBugNhseH0OFbD2HreEJ0LDzcMqgugMglFWfrVnDPYb2A4ddzZX/s36NdxRqJYAOk+/Fch2cWgn/tunL5ctFi/DWdauizprj4yuXraAP96gsZon+vg7jmE9B1udtIjj6agHq5MxL5GT6VFQ10NnW+x/OyR9q4GnfXI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fpMX06Yq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69D65C4CEE3;
-	Tue, 17 Jun 2025 15:47:37 +0000 (UTC)
+	 MIME-Version; b=ss7hhhlqStpsEYA1thKoflA+2o3NcnO45NMGP6giHfIxoCSLis273XvPdwa1snWl3FPqzBolB5GRmeQi3P3bEYLP+V9mT1wlPl1V9nzMurKFrguLM88bsM6s4y73hrWke1eKyNFum0UZJCJ7QJ4Dc9Jtk1KrLV0jfxhno5Bknmg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1saB+E0H; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68CE2C4CEE3;
+	Tue, 17 Jun 2025 15:47:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750175257;
-	bh=+MvLmrgvDjXKEQhu0L4jsiW03/TTsEqQ/HB9e7gQfFY=;
+	s=korg; t=1750175267;
+	bh=WQObP/BVuVZ0nKgakB8RkZok6WHADFyuLJmGvqztvs8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fpMX06YqNicPiOfazEZDEsuovwwLxO3zU4+J8eAe1/cOvftUHSinGg+19Ay/STmZm
-	 4YrrejFwVsH28xcaOsVMCWxK5XEkabPCywN7yjQ09SAmDc9HFhKPBmQHHQy44h3Ei6
-	 I9ZajaeYW5NOUmWtpKLboMkN3WdEK/oOMTGCh4KQ=
+	b=1saB+E0HlMqPjSvaDzu4XbDfp+JPW2Shb+Njp2nGk7EcfSChDPaIE8JvJ7se4QLea
+	 13vC86lY/Rt7RBOnSYOuo56BBEeMv7YvG33dV13z9IRJhpx14IVlUyocf9suUAtYfa
+	 w06UuiTzZagHcQ9xwUuT03W+3Be7yaYIFL1/ABtI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
 	Dzmitry Sankouski <dsankouski@gmail.com>,
 	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 158/356] arm64: dts: qcom: sdm845-starqltechn: fix usb regulator mistake
-Date: Tue, 17 Jun 2025 17:24:33 +0200
-Message-ID: <20250617152344.585566675@linuxfoundation.org>
+Subject: [PATCH 6.6 159/356] arm64: dts: qcom: sdm845-starqltechn: refactor node order
+Date: Tue, 17 Jun 2025 17:24:34 +0200
+Message-ID: <20250617152344.624112934@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250617152338.212798615@linuxfoundation.org>
 References: <20250617152338.212798615@linuxfoundation.org>
@@ -69,42 +68,31 @@ Content-Transfer-Encoding: 8bit
 
 From: Dzmitry Sankouski <dsankouski@gmail.com>
 
-[ Upstream commit 242e4126ee007b95765c21a9d74651fdcf221f2b ]
-
-Usb regulator was wrongly pointed to vreg_l1a_0p875.
-However, on starqltechn it's powered from vreg_l5a_0p8.
+[ Upstream commit cba1dd3d851ebc1b6c5ae4000208a9753320694b ]
 
 Fixes: d711b22eee55 ("arm64: dts: qcom: starqltechn: add initial device tree for starqltechn")
-Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
 Signed-off-by: Dzmitry Sankouski <dsankouski@gmail.com>
-Link: https://lore.kernel.org/r/20250225-starqltechn_integration_upstream-v9-3-a5d80375cb66@gmail.com
+Link: https://lore.kernel.org/r/20250225-starqltechn_integration_upstream-v9-4-a5d80375cb66@gmail.com
 Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/sdm845-samsung-starqltechn.dts | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ arch/arm64/boot/dts/qcom/sdm845-samsung-starqltechn.dts | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/arch/arm64/boot/dts/qcom/sdm845-samsung-starqltechn.dts b/arch/arm64/boot/dts/qcom/sdm845-samsung-starqltechn.dts
-index 6fc30fd1262b8..f3f2b25883d81 100644
+index f3f2b25883d81..8a0d63bd594b3 100644
 --- a/arch/arm64/boot/dts/qcom/sdm845-samsung-starqltechn.dts
 +++ b/arch/arm64/boot/dts/qcom/sdm845-samsung-starqltechn.dts
-@@ -135,8 +135,6 @@
- 		vdda_sp_sensor:
- 		vdda_ufs1_core:
- 		vdda_ufs2_core:
--		vdda_usb1_ss_core:
--		vdda_usb2_ss_core:
- 		vreg_l1a_0p875: ldo1 {
- 			regulator-min-microvolt = <880000>;
- 			regulator-max-microvolt = <880000>;
-@@ -157,6 +155,7 @@
- 			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
- 		};
+@@ -382,8 +382,8 @@
+ };
  
-+		vdda_usb1_ss_core:
- 		vdd_wcss_cx:
- 		vdd_wcss_mx:
- 		vdda_wcss_pll:
+ &sdhc_2 {
+-	pinctrl-names = "default";
+ 	pinctrl-0 = <&sdc2_clk_state &sdc2_cmd_state &sdc2_data_state &sd_card_det_n_state>;
++	pinctrl-names = "default";
+ 	cd-gpios = <&tlmm 126 GPIO_ACTIVE_LOW>;
+ 	vmmc-supply = <&vreg_l21a_2p95>;
+ 	vqmmc-supply = <&vddpx_2>;
 -- 
 2.39.5
 
