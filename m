@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-153762-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153766-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 92C62ADD664
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:32:49 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6ED2DADD65E
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:32:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2945F5A0C32
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:22:59 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9DA8A40795C
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:23:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0CE232E8E19;
-	Tue, 17 Jun 2025 16:16:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE79E192B90;
+	Tue, 17 Jun 2025 16:17:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nMJz0D6L"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K/QRVly4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD194285045;
-	Tue, 17 Jun 2025 16:16:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AD3D1BD9D3;
+	Tue, 17 Jun 2025 16:17:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750177016; cv=none; b=JKbpSNphVNrGH/c0gznypYPvVpfSjhAUNFnWa9U5ZGXyvfB7ecgJHdDf6go79qd7PkeW/vyH8KNs3+7dwgAQ8zX67Zstw+XqRJNih5tJqkpY6/BiJ5Yyfwv+b+0psm5NtUvrLlhJDSGXOgZy6l/OlJWXO05LyTjUn5m9iWIv1cI=
+	t=1750177029; cv=none; b=VnhnokHTVx1Iky//gi7FtTvHhFf1b23FRm2+XCRlMRX0mVyhSO0YVagFBvRfcftWz2NzS/7eF/j1bAUQgp4Pj2SJV6UBsrfW148ssoWmCUTAT59rbEiCv3pbffoyyzAxSd3JgMBRmzMIV9EuN0fxU3I0qytnJ0EGnWTqf+/S3DM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750177016; c=relaxed/simple;
-	bh=m+ogHYYWoKCPbQxOQzZRuIB0tJKckvG3fMXBotDXYvQ=;
+	s=arc-20240116; t=1750177029; c=relaxed/simple;
+	bh=WFyK3zAndATWEZPdNyWZRCMkVOYGcPPXVZv4AUCx9Q4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=nIJsMnkgHfqniMAsdDQGyDWxDgcz2ZJhosxT+s40uVuzzaENsv0JFmHD/Rb/7QS+sPEPTf3S7dxMNofL+FqZ9C2zlApOeKRGPRjW87l7RiITUgW62uflNVKOersIRLBx6zD/yPkQWJ1QQ22ZToPH/GCaLLJQ2FrxqRbWbyH1DX8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nMJz0D6L; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2DE82C4CEE3;
-	Tue, 17 Jun 2025 16:16:56 +0000 (UTC)
+	 MIME-Version; b=KYOS/jUSi7z1+lK5hMEc1gH8GObj9ONrkf20wVoLoyFYvzZ0K0yAJ+oYK8REW2enPybJXqnF2Q6mud4Ri0UtPXf+2rqHR1M048C4HX5mqGgV8H4g6c97XzCJ/pGCo+qW3Gc4X3RQymgOk43vDCl63GFU2IRuWvhKZsrpydERK5M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K/QRVly4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 140CEC4CEE3;
+	Tue, 17 Jun 2025 16:17:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750177016;
-	bh=m+ogHYYWoKCPbQxOQzZRuIB0tJKckvG3fMXBotDXYvQ=;
+	s=korg; t=1750177029;
+	bh=WFyK3zAndATWEZPdNyWZRCMkVOYGcPPXVZv4AUCx9Q4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nMJz0D6LqOSifZhr7D+7SvOcmrBCLG/RsoDbhs6x8inUHkPEj+YvE6sbftoX3YmuN
-	 kp1umKwl4flfkiqWQ1c0HhexEeDWozKRm6G8iSJRQyTQHGa0KR0OYQ5vYOcyfBKU68
-	 zS0RDj97Eg+OpVQ1VcjNheUeEiRkf4JPlt68jPDY=
+	b=K/QRVly4nOUTvvIyTiWKc/Z9sTSUFucMLWcVYsVjm0DgZiqZnTSSVZ0STtlacxn9J
+	 RwBLcGQk3nrxC94nKf/sddGQOSAL5pLe5QAj1byZwQI2D2hOICQeFUqpcISk8If9Am
+	 DZLUe4qRm/VqCUAMzXJM3bRV8sxHRlkGAWC9bGF0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Richard Fitzgerald <rf@opensource.cirrus.com>,
-	Stephen Boyd <sboyd@kernel.org>,
+	Ilan Peer <ilan.peer@intel.com>,
+	Johannes Berg <johannes.berg@intel.com>,
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 249/780] clk: test: Forward-declare struct of_phandle_args in kunit/clk.h
-Date: Tue, 17 Jun 2025 17:19:17 +0200
-Message-ID: <20250617152501.590997599@linuxfoundation.org>
+Subject: [PATCH 6.15 250/780] wifi: iwlfiwi: mvm: Fix the rate reporting
+Date: Tue, 17 Jun 2025 17:19:18 +0200
+Message-ID: <20250617152501.633759099@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
 References: <20250617152451.485330293@linuxfoundation.org>
@@ -60,46 +61,53 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Richard Fitzgerald <rf@opensource.cirrus.com>
+From: Ilan Peer <ilan.peer@intel.com>
 
-[ Upstream commit 7a0c1872ee7db25d711ac29a55f36844a7108308 ]
+[ Upstream commit 8f7561209eda7d6998708f06376e8dd2dc52f3b8 ]
 
-Add a forward-declare of struct of_phandle_args to prevent the compiler
-warning:
+The rate validation in mac80211 considers a rate to be valid iff both
+the rate index and the count are positive. When the rate scaling is
+managed in the driver and not enough traffic passed to set the actual
+rate, the driver set the rate to be the optimal rate. However, the rate
+count is not set and thus the rate is considered not valid. Fix it by
+setting the count to 1.
 
-../include/kunit/clk.h:29:63: warning: ‘struct of_phandle_args’ declared
-inside parameter list will not be visible outside of this definition or
-declaration
-   struct clk_hw *(*get)(struct of_phandle_args *clkspec, void *data),
-
-Signed-off-by: Richard Fitzgerald <rf@opensource.cirrus.com>
-Link: https://lore.kernel.org/r/20250327125214.82598-1-rf@opensource.cirrus.com
-Fixes: a82fcb16d977 ("clk: test: Add test managed of_clk_add_hw_provider()")
-Signed-off-by: Stephen Boyd <sboyd@kernel.org>
+Fixes: 3e99b4d28219 ("wifi: mac80211: Sanity check tx bitrate if not provided by driver")
+Signed-off-by: Ilan Peer <ilan.peer@intel.com>
+Reviewed-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Link: https://patch.msgid.link/20250503224232.0d1d1e022d63.I76833c14ba1d66f9bea5c32b25a54d8b36f229ba@changeid
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/kunit/clk.h | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/wireless/intel/iwlwifi/mvm/rs.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/include/kunit/clk.h b/include/kunit/clk.h
-index 0afae7688157b..f226044cc78d1 100644
---- a/include/kunit/clk.h
-+++ b/include/kunit/clk.h
-@@ -6,6 +6,7 @@ struct clk;
- struct clk_hw;
- struct device;
- struct device_node;
-+struct of_phandle_args;
- struct kunit;
- 
- struct clk *
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/rs.c b/drivers/net/wireless/intel/iwlwifi/mvm/rs.c
+index 068c58e9c1eb4..c2729dab8e79e 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/rs.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/rs.c
+@@ -2,6 +2,7 @@
+ /******************************************************************************
+  *
+  * Copyright(c) 2005 - 2014, 2018 - 2023 Intel Corporation. All rights reserved.
++ * Copyright(c) 2025 Intel Corporation
+  * Copyright(c) 2013 - 2015 Intel Mobile Communications GmbH
+  * Copyright(c) 2016 - 2017 Intel Deutschland GmbH
+  *****************************************************************************/
+@@ -2709,6 +2710,7 @@ static void rs_drv_get_rate(void *mvm_r, struct ieee80211_sta *sta,
+ 							  optimal_rate);
+ 		iwl_mvm_hwrate_to_tx_rate_v1(last_ucode_rate, info->band,
+ 					     &txrc->reported_rate);
++		txrc->reported_rate.count = 1;
+ 	}
+ 	spin_unlock_bh(&lq_sta->pers.lock);
+ }
 -- 
 2.39.5
 
