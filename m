@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-153249-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153252-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 200F5ADD36F
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 17:58:15 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A9EDADD34F
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 17:55:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EB8963AE227
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 15:52:11 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5305B2C072F
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 15:52:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 32BF02F2343;
-	Tue, 17 Jun 2025 15:49:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC3E32ECD39;
+	Tue, 17 Jun 2025 15:49:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="n+CsDbCd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MZZ0Yu+X"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E08E32ED172;
-	Tue, 17 Jun 2025 15:49:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76A3D2E973E;
+	Tue, 17 Jun 2025 15:49:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750175352; cv=none; b=CCCBEBXQYpkqlJRZbi2GIJlfOEIEjBWXx3DPlHc1VyKbXSES9VyVIPNtL/frZZdovZf4JV9VAd90au74mAFBWdBT69O2mq1v78ciT/OnoxxF7hbueatx5XpcV8aymeZhmyZ647ZTxi24rmewzTH/9HVJ2O/TWaOQy+tnsBgI01E=
+	t=1750175361; cv=none; b=QUtXuRldHlB7XsNA3kZkNuSzvcoARitG44k5W3lzcLV2F6ituCoGVdikGGfnO4NjMrSpBEfnJMXfIcbUBof3RKZi9IpN9kGuhduPdZCJ9q3OsNwyUARL9DFSFNW0ITKnzEYXb74ZTP37t0VodptblU8r9G1KAjiMie2K7OVPcBk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750175352; c=relaxed/simple;
-	bh=Hmq3mvD6MsbAFJL1hMj7wiNVXJQk8y10Vje6ThQDy/c=;
+	s=arc-20240116; t=1750175361; c=relaxed/simple;
+	bh=5ckzj0Fq6CmJ5K1BzeZVb2OoRANcwWvwXVg3O/e9wH0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EZGIbUtLf0Rme5tkXorBF7j9GkHML6q84UXJqGZFI+ZtSw0pr5XmMK8WL9XurR7mg5l7TJ2KllsNKLB30QB9yixb0l4yGDo6G6ZcaqTtwqdICunCWzXcllXHHdQBe8Lxnz52CY7AFZObS9Q0rFiJ4srsdpGhieSecniV2qj2VZw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=n+CsDbCd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06D3FC4CEE3;
-	Tue, 17 Jun 2025 15:49:10 +0000 (UTC)
+	 MIME-Version; b=sn4POfRRCxiaM9ePJfUApQPLlCV8HRE0OI1W6xeJaXcBOVksGP8SvqbNjasnT/QxIyNzzFYoA2VdshxCAWsQhkFSZeJEg6d1uxffpIN5AiZWVh3WftiFLQa6a7xMfPctQyTY6ZRpYw7Lkveqc9cdpkXTMITOsh5Xk9e2x67urvs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MZZ0Yu+X; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D18FCC4CEE3;
+	Tue, 17 Jun 2025 15:49:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750175351;
-	bh=Hmq3mvD6MsbAFJL1hMj7wiNVXJQk8y10Vje6ThQDy/c=;
+	s=korg; t=1750175361;
+	bh=5ckzj0Fq6CmJ5K1BzeZVb2OoRANcwWvwXVg3O/e9wH0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=n+CsDbCdc7bayIGZeba+9XJoybUHEDmeFhkA+tLS8nWb2KtIDlP0yrfQOPjFA5m+j
-	 Sq0XIlCg4CHscyFFpo5BDzRyZZq/TPEwYZiiemdVNZGa++AUW693Wu3po6yZsUwyJg
-	 ktDJKriUjTw4txHlVDg6NSFSlUyKM0kU/ePweIbo=
+	b=MZZ0Yu+XJIRfc6Yi+YGWmR1uXx0Ex0Q7VD6n+GqBA2xadkRt7wWexBLepxUPxJO/7
+	 gcw6qjT+Kpe+ObleHnZ4DqXKNTYmeZsc0hc+bgTE98B3tSu5fcv36lBdcIQ9CJjp39
+	 ERTWIfQU8qYiCREPEOhM8+vp7cLe0QhEE8NmsOqU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
+	"yohan.joung" <yohan.joung@sk.com>,
 	Chao Yu <chao@kernel.org>,
 	Jaegeuk Kim <jaegeuk@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 118/512] f2fs: clean up unnecessary indentation
-Date: Tue, 17 Jun 2025 17:21:24 +0200
-Message-ID: <20250617152424.365601993@linuxfoundation.org>
+Subject: [PATCH 6.12 119/512] f2fs: prevent the current section from being selected as a victim during GC
+Date: Tue, 17 Jun 2025 17:21:25 +0200
+Message-ID: <20250617152424.405969939@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
 References: <20250617152419.512865572@linuxfoundation.org>
@@ -66,86 +67,64 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Jaegeuk Kim <jaegeuk@kernel.org>
+From: yohan.joung <yohan.joung@sk.com>
 
-[ Upstream commit 05d3273ad03fa5ea1177b4f3dfeeb6de4899b504 ]
+[ Upstream commit d26fecb03e1f1069480d41fa2a6cea87ebbb89b8 ]
 
-No functional change.
+When selecting a victim using next_victim_seg in a large section, the
+selected section might already have been cleared and designated as the
+new current section, making it actively in use.
+This behavior causes inconsistency between the SIT and SSA.
 
+F2FS-fs (dm-54): Inconsistent segment (70961) type [0, 1] in SSA and SIT
+Call trace:
+dump_backtrace+0xe8/0x10c
+show_stack+0x18/0x28
+dump_stack_lvl+0x50/0x6c
+dump_stack+0x18/0x28
+f2fs_stop_checkpoint+0x1c/0x3c
+do_garbage_collect+0x41c/0x271c
+f2fs_gc+0x27c/0x828
+gc_thread_func+0x290/0x88c
+kthread+0x11c/0x164
+ret_from_fork+0x10/0x20
+
+issue scenario
+segs_per_sec=2
+- seg#0 and seg#1 are all dirty
+- all valid blocks are removed in seg#1
+- gc select this sec and next_victim_seg=seg#0
+- migrate seg#0, next_victim_seg=seg#1
+- checkpoint -> sec(seg#0, seg#1)  becomes free
+- allocator assigns sec(seg#0, seg#1) to curseg
+- gc tries to migrate seg#1
+
+Fixes: e3080b0120a1 ("f2fs: support subsectional garbage collection")
+Signed-off-by: yohan.joung <yohan.joung@sk.com>
+Signed-off-by: Chao Yu <chao@kernel.org>
 Reviewed-by: Chao Yu <chao@kernel.org>
 Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/f2fs/segment.h | 40 ++++++++++++++++++++++++----------------
- 1 file changed, 24 insertions(+), 16 deletions(-)
+ fs/f2fs/segment.h | 5 +++++
+ 1 file changed, 5 insertions(+)
 
 diff --git a/fs/f2fs/segment.h b/fs/f2fs/segment.h
-index 0c004dd5595b9..25d3cda9bd5a3 100644
+index 25d3cda9bd5a3..05a342933f98f 100644
 --- a/fs/f2fs/segment.h
 +++ b/fs/f2fs/segment.h
-@@ -431,7 +431,6 @@ static inline void __set_free(struct f2fs_sb_info *sbi, unsigned int segno)
- 	unsigned int secno = GET_SEC_FROM_SEG(sbi, segno);
- 	unsigned int start_segno = GET_SEG_FROM_SEC(sbi, secno);
- 	unsigned int next;
--	unsigned int usable_segs = f2fs_usable_segs_in_sec(sbi);
+@@ -488,6 +488,11 @@ static inline void __set_test_and_free(struct f2fs_sb_info *sbi,
  
- 	spin_lock(&free_i->segmap_lock);
- 	clear_bit(segno, free_i->free_segmap);
-@@ -439,7 +438,7 @@ static inline void __set_free(struct f2fs_sb_info *sbi, unsigned int segno)
+ 	free_i->free_sections++;
  
- 	next = find_next_bit(free_i->free_segmap,
- 			start_segno + SEGS_PER_SEC(sbi), start_segno);
--	if (next >= start_segno + usable_segs) {
-+	if (next >= start_segno + f2fs_usable_segs_in_sec(sbi)) {
- 		clear_bit(secno, free_i->free_secmap);
- 		free_i->free_sections++;
- 	}
-@@ -465,22 +464,31 @@ static inline void __set_test_and_free(struct f2fs_sb_info *sbi,
- 	unsigned int secno = GET_SEC_FROM_SEG(sbi, segno);
- 	unsigned int start_segno = GET_SEG_FROM_SEC(sbi, secno);
- 	unsigned int next;
--	unsigned int usable_segs = f2fs_usable_segs_in_sec(sbi);
-+	bool ret;
- 
- 	spin_lock(&free_i->segmap_lock);
--	if (test_and_clear_bit(segno, free_i->free_segmap)) {
--		free_i->free_segments++;
--
--		if (!inmem && IS_CURSEC(sbi, secno))
--			goto skip_free;
--		next = find_next_bit(free_i->free_segmap,
--				start_segno + SEGS_PER_SEC(sbi), start_segno);
--		if (next >= start_segno + usable_segs) {
--			if (test_and_clear_bit(secno, free_i->free_secmap))
--				free_i->free_sections++;
--		}
--	}
--skip_free:
-+	ret = test_and_clear_bit(segno, free_i->free_segmap);
-+	if (!ret)
-+		goto unlock_out;
++	if (GET_SEC_FROM_SEG(sbi, sbi->next_victim_seg[BG_GC]) == secno)
++		sbi->next_victim_seg[BG_GC] = NULL_SEGNO;
++	if (GET_SEC_FROM_SEG(sbi, sbi->next_victim_seg[FG_GC]) == secno)
++		sbi->next_victim_seg[FG_GC] = NULL_SEGNO;
 +
-+	free_i->free_segments++;
-+
-+	if (!inmem && IS_CURSEC(sbi, secno))
-+		goto unlock_out;
-+
-+	/* check large section */
-+	next = find_next_bit(free_i->free_segmap,
-+			     start_segno + SEGS_PER_SEC(sbi), start_segno);
-+	if (next < start_segno + f2fs_usable_segs_in_sec(sbi))
-+		goto unlock_out;
-+
-+	ret = test_and_clear_bit(secno, free_i->free_secmap);
-+	if (!ret)
-+		goto unlock_out;
-+
-+	free_i->free_sections++;
-+
-+unlock_out:
+ unlock_out:
  	spin_unlock(&free_i->segmap_lock);
  }
- 
 -- 
 2.39.5
 
