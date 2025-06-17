@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-153448-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-152923-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 263D3ADD3E3
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:04:09 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2AAD2ADD17B
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 17:31:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E96217A1E03
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:02:46 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CB0F017C309
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 15:31:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8873C2EA17C;
-	Tue, 17 Jun 2025 15:59:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F4BB2DF3C9;
+	Tue, 17 Jun 2025 15:31:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NO969RHI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wzgVTdTY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4301A2EA15F;
-	Tue, 17 Jun 2025 15:59:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AAA92EF659;
+	Tue, 17 Jun 2025 15:31:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750175996; cv=none; b=ljc0CtbEwPGpON31fXbpDgFWJ9geuKeg5oTmZ2p1QKpqJMUSFtbaBQmLtY7ZIpM+J+DS5vQJzQkVSB/pLXEtO6xrCumT7EH1TxQJm/h0bVol/+1JFDgDF7sI6mmTwCHVExNG9UfSK6smNGvnqqs1cdwafBKjNeNTBL5zwfjEN5g=
+	t=1750174279; cv=none; b=FqVyVx6ujGLUrtsOLXu/5J22t06KlhiQjXfTj8mmPmcEJ5zoegrEeJEkzRplXX4a9FQpp1XZJVDgKjiUFaNPdMi/1MN4N1kZ3nX0rJQGxwxX8CSu45BhbKq0EjQ/96vDkRQmIZH1a6NpTjpGPnM0RbJ7x8G7G2RipflVAZJPzfQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750175996; c=relaxed/simple;
-	bh=Y3+vKKVUPGvlHLWY2U0dDmBV79SuixRpU/9T1itZ5CU=;
+	s=arc-20240116; t=1750174279; c=relaxed/simple;
+	bh=c6u6ToaMp+/CumCafUOXPKIqQsxeXIQ2OpAjIfw7zIY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=C9QaDQbav0f0dALDz+rElgZ3GZBZB2hoPAUUJgCfoA1Ej1/yRgtpB5m4Cm+YT8qoba8xaB2mQ3YAoYH22uwlhYGqZZHjA/tXHK8vRxrCj0WHCGPeuNd3axUZcLQIgRzVvLZ1EZfsSPXfyiooLVQTCBlVEAV6KT68ehibb+NPP5E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NO969RHI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9DE7AC4CEE3;
-	Tue, 17 Jun 2025 15:59:55 +0000 (UTC)
+	 MIME-Version; b=aPxj/cMcjr0bCwGZX1/dqmQ0INq4jgPaLSgVSnlnvMFwb2iHNOhKQpMNDXCs3ZqGCdcUF/kUhWprebmyNQemLHps2EttryZZrpH9WnQfKnXEtgtTYMVSmeeTRBv9vzYk/4XDkhMB4oQ+Suards9h/ikPO6uig2aIsIn3DWPUL4k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wzgVTdTY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6C7DC4CEE3;
+	Tue, 17 Jun 2025 15:31:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750175996;
-	bh=Y3+vKKVUPGvlHLWY2U0dDmBV79SuixRpU/9T1itZ5CU=;
+	s=korg; t=1750174279;
+	bh=c6u6ToaMp+/CumCafUOXPKIqQsxeXIQ2OpAjIfw7zIY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NO969RHIwVlv4r8c5xTd+OGeYJZKlKabFx1CpX+nyE+OBJJm8rIJLrNvFbwKj7QRZ
-	 /BHnJy6oVOMQToQ6OysgcrtGmEsWbXRdVRpf+dLOatlo/zg6+1w7o4HxLu15qs7gQc
-	 A0yVmIOZ5Eg8yVV5qQIrLUThS6ZuDLhwIuJvGWzU=
+	b=wzgVTdTY844gURr5D+OxdnBVSEUD1pUnWXnP4oKPWW9ET6lEs60NFL1AIyIxIZC+X
+	 xlfqWlWEGU7cNLpw2sGUi5sgAeVmdSHl2H6qs4zlAwLkZCPbncltHEwle5BtsswSQm
+	 HmLlNaxD2gZscDwss46AOqRSfyZFwXWBxvwoneCQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ming Yen Hsieh <mingyen.hsieh@mediatek.com>,
-	Felix Fietkau <nbd@nbd.name>,
+	Tzung-Bi Shih <tzungbi@kernel.org>,
+	David Gow <davidgow@google.com>,
+	Shuah Khan <skhan@linuxfoundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 186/512] wifi: mt76: mt7925: refine the sniffer commnad
+Subject: [PATCH 6.6 037/356] kunit: Fix wrong parameter to kunit_deactivate_static_stub()
 Date: Tue, 17 Jun 2025 17:22:32 +0200
-Message-ID: <20250617152427.182639533@linuxfoundation.org>
+Message-ID: <20250617152339.712546254@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
-References: <20250617152419.512865572@linuxfoundation.org>
+In-Reply-To: <20250617152338.212798615@linuxfoundation.org>
+References: <20250617152338.212798615@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,39 +63,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
+From: Tzung-Bi Shih <tzungbi@kernel.org>
 
-[ Upstream commit bd02eebfc0b3502fe8322cf229b4c801416d1007 ]
+[ Upstream commit 772e50a76ee664e75581624f512df4e45582605a ]
 
-Remove a duplicate call to `mt76_mcu_send_msg` to fix redundant operations
-in the sniffer command handling.
+kunit_deactivate_static_stub() accepts real_fn_addr instead of
+replacement_addr.  In the case, it always passes NULL to
+kunit_deactivate_static_stub().
 
-Fixes: c948b5da6bbe ("wifi: mt76: mt7925: add Mediatek Wi-Fi7 driver for mt7925 chips")
-Signed-off-by: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
-Link: https://patch.msgid.link/20250414013954.1151774-2-mingyen.hsieh@mediatek.com
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
+Fix it.
+
+Link: https://lore.kernel.org/r/20250520082050.2254875-1-tzungbi@kernel.org
+Fixes: e047c5eaa763 ("kunit: Expose 'static stub' API to redirect functions")
+Signed-off-by: Tzung-Bi Shih <tzungbi@kernel.org>
+Reviewed-by: David Gow <davidgow@google.com>
+Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/mediatek/mt76/mt7925/mcu.c | 2 --
- 1 file changed, 2 deletions(-)
+ lib/kunit/static_stub.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
-index 7ad9e1eaaa8f3..9a9900eba5020 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
-@@ -2087,8 +2087,6 @@ int mt7925_mcu_set_sniffer(struct mt792x_dev *dev, struct ieee80211_vif *vif,
- 		},
- 	};
+diff --git a/lib/kunit/static_stub.c b/lib/kunit/static_stub.c
+index 92b2cccd5e763..484fd85251b41 100644
+--- a/lib/kunit/static_stub.c
++++ b/lib/kunit/static_stub.c
+@@ -96,7 +96,7 @@ void __kunit_activate_static_stub(struct kunit *test,
  
--	mt76_mcu_send_msg(&dev->mt76, MCU_UNI_CMD(SNIFFER), &req, sizeof(req), true);
--
- 	return mt76_mcu_send_msg(&dev->mt76, MCU_UNI_CMD(SNIFFER), &req, sizeof(req),
- 				 true);
- }
+ 	/* If the replacement address is NULL, deactivate the stub. */
+ 	if (!replacement_addr) {
+-		kunit_deactivate_static_stub(test, replacement_addr);
++		kunit_deactivate_static_stub(test, real_fn_addr);
+ 		return;
+ 	}
+ 
 -- 
 2.39.5
 
