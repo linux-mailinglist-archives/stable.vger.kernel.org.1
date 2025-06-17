@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-154340-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-154351-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 55C05ADD8EB
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 19:00:44 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D27A6ADD8C8
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:58:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 12B741BC1956
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:50:42 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5329219E26A9
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:50:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A59E2DFF2B;
-	Tue, 17 Jun 2025 16:48:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6FBE42FA635;
+	Tue, 17 Jun 2025 16:48:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k3ErI1mD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cpxm0PkU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA4E02FA62D;
-	Tue, 17 Jun 2025 16:48:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C91E2FA628;
+	Tue, 17 Jun 2025 16:48:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750178883; cv=none; b=Q+XXkFOl9e+kSI2oG/fa2Vn4+BzwcfTHFNwCfwoGIZJL3nOMWGjoGFItym7a4hAj7tnxRreNqbKnaG1aC9vo0C3BFK9vxIrfn/B/ExqfmI8xKOlYn3AR/HDBEQMAwPi18fBwY/heyhrkOY4onjtOtMTAcFuhPskho9Ek5ud+qOc=
+	t=1750178919; cv=none; b=uSOgtgY5GbgxldgF0smfm+dQKJasq8XBZUKZF7coswbNAuqZXLqT+4qP9bMFKtjpLxGQkahWOHYmO4L9qvDkGOqcp4haXG6dTwdItFsxO9wq/lqtw9TOtAuPRekWP16kqtEA/98JQz6c/lMFEAX53gdlR/HGkdcjqNGgCahCm8U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750178883; c=relaxed/simple;
-	bh=cIKRa6QPSptRWTQ15DkbCkWDSIAzkM7ngJhnHgeTcp0=;
+	s=arc-20240116; t=1750178919; c=relaxed/simple;
+	bh=tVlvpykHaR/lcrm7j6Ffa+WJKkln0ug5YR0IFvmvICk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=i5FJVWxDiUxjUv8inGVYR7kIAjvLZwbVUnX9NUJcY9V4E7Z1MMZLL53XbuRqPIyW+KbSDm5M9aVGKwGfIlJ89J/meRjQtOAPKH1nDiGF5LGT7ecTA0nkc1jXMQXpBfPjwjCfR3hQ1TtaxQTvW/9uRso01bTdQvEjnyMCGsfNqu0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k3ErI1mD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2796BC4CEE3;
-	Tue, 17 Jun 2025 16:48:02 +0000 (UTC)
+	 MIME-Version; b=nWPK1IBWOACoRcmX9yIiSJ+5eqHoW32VFLwU+irQE/Z939AiM18xGRb6KQa42ZUk/dByv55hsoMbC1HuDtteWrBDu5jcwrWTvAYMP9H0t4ucSmgwrI8Tv+gOFTDc521+1m41x7hWWJsucKPnlkXiT4xv2ZeS1e0XO1Xq+6/pWzg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cpxm0PkU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90C11C4CEE3;
+	Tue, 17 Jun 2025 16:48:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750178883;
-	bh=cIKRa6QPSptRWTQ15DkbCkWDSIAzkM7ngJhnHgeTcp0=;
+	s=korg; t=1750178919;
+	bh=tVlvpykHaR/lcrm7j6Ffa+WJKkln0ug5YR0IFvmvICk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=k3ErI1mD1yDSQLDWURz7Fxr6p5mziabatbrAVc2CjXju+rgi4gRmvOqPablMgKXS2
-	 ko966DyKVNrgkGwjtprTL91pXyabk1Q2aJUT/e3mnGzxaKJp85b0ChljtyAv8xiq6L
-	 l/wBK4a3T+s7DsHxz1ofnMKuuAopgvzmRGvsDP7w=
+	b=cpxm0PkUrChtwScVZEQgtvxdRccgLyFCCJleSCWWVBeyTkwOGIr7deKJP49gKFh4l
+	 d1q+A2LlZOc0zTnUnQOjT7CZu3HzYFunFB3Vq+iWvs4KNONHJQuKUS5J9D8+eDtoJ4
+	 5dxLNUZoNPKyVVgPqpCdU8FUXSmQsm4FNy5NnLmg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Madhu Chittim <madhu.chittim@intel.com>,
-	Josh Hay <joshua.a.hay@intel.com>,
-	Brian Vazquez <brianvv@google.com>,
-	Luigi Rizzo <lrizzo@google.com>,
+	Joshua Hay <joshua.a.hay@intel.com>,
+	Emil Tantilov <emil.s.tantilov@intel.com>,
+	Ahmed Zaki <ahmed.zaki@intel.com>,
+	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
 	Simon Horman <horms@kernel.org>,
 	Samuel Salin <Samuel.salin@intel.com>,
 	Tony Nguyen <anthony.l.nguyen@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 574/780] idpf: fix a race in txq wakeup
-Date: Tue, 17 Jun 2025 17:24:42 +0200
-Message-ID: <20250617152514.854485896@linuxfoundation.org>
+Subject: [PATCH 6.15 575/780] idpf: avoid mailbox timeout delays during reset
+Date: Tue, 17 Jun 2025 17:24:43 +0200
+Message-ID: <20250617152514.895343941@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
 References: <20250617152451.485330293@linuxfoundation.org>
@@ -72,181 +71,99 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Brian Vazquez <brianvv@google.com>
+From: Emil Tantilov <emil.s.tantilov@intel.com>
 
-[ Upstream commit 7292af042bcf22e2c18b96ed250f78498a5b28ab ]
+[ Upstream commit 9dc63d8ff182150d7d7b318ab9389702a2c0a292 ]
 
-Add a helper function to correctly handle the lockless
-synchronization when the sender needs to block. The paradigm is
+Mailbox operations are not possible while the driver is in reset.
+Operations that require MBX exchange with the control plane will result
+in long delays if executed while a reset is in progress:
 
-        if (no_resources()) {
-                stop_queue();
-                barrier();
-                if (!no_resources())
-                        restart_queue();
-        }
+ethtool -L <inf> combined 8& echo 1 > /sys/class/net/<inf>/device/reset
+idpf 0000:83:00.0: HW reset detected
+idpf 0000:83:00.0: Device HW Reset initiated
+idpf 0000:83:00.0: Transaction timed-out (op:504 cookie:be00 vc_op:504 salt:be timeout:2000ms)
+idpf 0000:83:00.0: Transaction timed-out (op:508 cookie:bf00 vc_op:508 salt:bf timeout:2000ms)
+idpf 0000:83:00.0: Transaction timed-out (op:512 cookie:c000 vc_op:512 salt:c0 timeout:2000ms)
+idpf 0000:83:00.0: Transaction timed-out (op:510 cookie:c100 vc_op:510 salt:c1 timeout:2000ms)
+idpf 0000:83:00.0: Transaction timed-out (op:509 cookie:c200 vc_op:509 salt:c2 timeout:60000ms)
+idpf 0000:83:00.0: Transaction timed-out (op:509 cookie:c300 vc_op:509 salt:c3 timeout:60000ms)
+idpf 0000:83:00.0: Transaction timed-out (op:505 cookie:c400 vc_op:505 salt:c4 timeout:60000ms)
+idpf 0000:83:00.0: Failed to configure queues for vport 0, -62
 
-netif_subqueue_maybe_stop already handles the paradigm correctly, but
-the code split the check for resources in three parts, the first one
-(descriptors) followed the protocol, but the other two (completions and
-tx_buf) were only doing the first part and so race prone.
+Disable mailbox communication in case of a reset, unless it's done during
+a driver load, where the virtchnl operations are needed to configure the
+device.
 
-Luckily netif_subqueue_maybe_stop macro already allows you to use a
-function to evaluate the start/stop conditions so the fix only requires
-the right helper function to evaluate all the conditions at once.
-
-The patch removes idpf_tx_maybe_stop_common since it's no longer needed
-and instead adjusts separately the conditions for singleq and splitq.
-
-Note that idpf_tx_buf_hw_update doesn't need to check for resources
-since that will be covered in idpf_tx_splitq_frame.
-
-To reproduce:
-
-Reduce the threshold for pending completions to increase the chances of
-hitting this pause by changing your kernel:
-
-drivers/net/ethernet/intel/idpf/idpf_txrx.h
-
--#define IDPF_TX_COMPLQ_OVERFLOW_THRESH(txcq)   ((txcq)->desc_count >> 1)
-+#define IDPF_TX_COMPLQ_OVERFLOW_THRESH(txcq)   ((txcq)->desc_count >> 4)
-
-Use pktgen to force the host to push small pkts very aggressively:
-
-./pktgen_sample02_multiqueue.sh -i eth1 -s 100 -6 -d $IP -m $MAC \
-  -p 10000-10000 -t 16 -n 0 -v -x -c 64
-
-Fixes: 6818c4d5b3c2 ("idpf: add splitq start_xmit")
-Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
-Reviewed-by: Madhu Chittim <madhu.chittim@intel.com>
-Signed-off-by: Josh Hay <joshua.a.hay@intel.com>
-Signed-off-by: Brian Vazquez <brianvv@google.com>
-Signed-off-by: Luigi Rizzo <lrizzo@google.com>
+Fixes: 8077c727561aa ("idpf: add controlq init and reset checks")
+Co-developed-by: Joshua Hay <joshua.a.hay@intel.com>
+Signed-off-by: Joshua Hay <joshua.a.hay@intel.com>
+Signed-off-by: Emil Tantilov <emil.s.tantilov@intel.com>
+Reviewed-by: Ahmed Zaki <ahmed.zaki@intel.com>
+Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
 Reviewed-by: Simon Horman <horms@kernel.org>
 Tested-by: Samuel Salin <Samuel.salin@intel.com>
 Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../ethernet/intel/idpf/idpf_singleq_txrx.c   |  9 ++--
- drivers/net/ethernet/intel/idpf/idpf_txrx.c   | 45 +++++++------------
- drivers/net/ethernet/intel/idpf/idpf_txrx.h   |  8 ----
- 3 files changed, 22 insertions(+), 40 deletions(-)
+ drivers/net/ethernet/intel/idpf/idpf_lib.c     | 18 +++++++++++++-----
+ .../net/ethernet/intel/idpf/idpf_virtchnl.c    |  2 +-
+ .../net/ethernet/intel/idpf/idpf_virtchnl.h    |  1 +
+ 3 files changed, 15 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/idpf/idpf_singleq_txrx.c b/drivers/net/ethernet/intel/idpf/idpf_singleq_txrx.c
-index eae1b6f474e62..6ade54e213259 100644
---- a/drivers/net/ethernet/intel/idpf/idpf_singleq_txrx.c
-+++ b/drivers/net/ethernet/intel/idpf/idpf_singleq_txrx.c
-@@ -362,17 +362,18 @@ netdev_tx_t idpf_tx_singleq_frame(struct sk_buff *skb,
- {
- 	struct idpf_tx_offload_params offload = { };
- 	struct idpf_tx_buf *first;
-+	int csum, tso, needed;
- 	unsigned int count;
- 	__be16 protocol;
--	int csum, tso;
+diff --git a/drivers/net/ethernet/intel/idpf/idpf_lib.c b/drivers/net/ethernet/intel/idpf/idpf_lib.c
+index 3a033ce19cda2..2ed801398971c 100644
+--- a/drivers/net/ethernet/intel/idpf/idpf_lib.c
++++ b/drivers/net/ethernet/intel/idpf/idpf_lib.c
+@@ -1816,11 +1816,19 @@ void idpf_vc_event_task(struct work_struct *work)
+ 	if (test_bit(IDPF_REMOVE_IN_PROG, adapter->flags))
+ 		return;
  
- 	count = idpf_tx_desc_count_required(tx_q, skb);
- 	if (unlikely(!count))
- 		return idpf_tx_drop_skb(tx_q, skb);
- 
--	if (idpf_tx_maybe_stop_common(tx_q,
--				      count + IDPF_TX_DESCS_PER_CACHE_LINE +
--				      IDPF_TX_DESCS_FOR_CTX)) {
-+	needed = count + IDPF_TX_DESCS_PER_CACHE_LINE + IDPF_TX_DESCS_FOR_CTX;
-+	if (!netif_subqueue_maybe_stop(tx_q->netdev, tx_q->idx,
-+				       IDPF_DESC_UNUSED(tx_q),
-+				       needed, needed)) {
- 		idpf_tx_buf_hw_update(tx_q, tx_q->next_to_use, false);
- 
- 		u64_stats_update_begin(&tx_q->stats_sync);
-diff --git a/drivers/net/ethernet/intel/idpf/idpf_txrx.c b/drivers/net/ethernet/intel/idpf/idpf_txrx.c
-index 2d5f5c9f91ce1..aa16e4c1edbb8 100644
---- a/drivers/net/ethernet/intel/idpf/idpf_txrx.c
-+++ b/drivers/net/ethernet/intel/idpf/idpf_txrx.c
-@@ -2132,6 +2132,19 @@ void idpf_tx_splitq_build_flow_desc(union idpf_tx_flex_desc *desc,
- 	desc->flow.qw1.compl_tag = cpu_to_le16(params->compl_tag);
+-	if (test_bit(IDPF_HR_FUNC_RESET, adapter->flags) ||
+-	    test_bit(IDPF_HR_DRV_LOAD, adapter->flags)) {
+-		set_bit(IDPF_HR_RESET_IN_PROG, adapter->flags);
+-		idpf_init_hard_reset(adapter);
+-	}
++	if (test_bit(IDPF_HR_FUNC_RESET, adapter->flags))
++		goto func_reset;
++
++	if (test_bit(IDPF_HR_DRV_LOAD, adapter->flags))
++		goto drv_load;
++
++	return;
++
++func_reset:
++	idpf_vc_xn_shutdown(adapter->vcxn_mngr);
++drv_load:
++	set_bit(IDPF_HR_RESET_IN_PROG, adapter->flags);
++	idpf_init_hard_reset(adapter);
  }
  
-+/* Global conditions to tell whether the txq (and related resources)
-+ * has room to allow the use of "size" descriptors.
-+ */
-+static int idpf_txq_has_room(struct idpf_tx_queue *tx_q, u32 size)
-+{
-+	if (IDPF_DESC_UNUSED(tx_q) < size ||
-+	    IDPF_TX_COMPLQ_PENDING(tx_q->txq_grp) >
-+		IDPF_TX_COMPLQ_OVERFLOW_THRESH(tx_q->txq_grp->complq) ||
-+	    IDPF_TX_BUF_RSV_LOW(tx_q))
-+		return 0;
-+	return 1;
-+}
-+
  /**
-  * idpf_tx_maybe_stop_splitq - 1st level check for Tx splitq stop conditions
-  * @tx_q: the queue to be checked
-@@ -2142,29 +2155,11 @@ void idpf_tx_splitq_build_flow_desc(union idpf_tx_flex_desc *desc,
- static int idpf_tx_maybe_stop_splitq(struct idpf_tx_queue *tx_q,
- 				     unsigned int descs_needed)
+diff --git a/drivers/net/ethernet/intel/idpf/idpf_virtchnl.c b/drivers/net/ethernet/intel/idpf/idpf_virtchnl.c
+index 3d2413b8684fc..5d2ca007f6828 100644
+--- a/drivers/net/ethernet/intel/idpf/idpf_virtchnl.c
++++ b/drivers/net/ethernet/intel/idpf/idpf_virtchnl.c
+@@ -376,7 +376,7 @@ static void idpf_vc_xn_init(struct idpf_vc_xn_manager *vcxn_mngr)
+  * All waiting threads will be woken-up and their transaction aborted. Further
+  * operations on that object will fail.
+  */
+-static void idpf_vc_xn_shutdown(struct idpf_vc_xn_manager *vcxn_mngr)
++void idpf_vc_xn_shutdown(struct idpf_vc_xn_manager *vcxn_mngr)
  {
--	if (idpf_tx_maybe_stop_common(tx_q, descs_needed))
--		goto out;
--
--	/* If there are too many outstanding completions expected on the
--	 * completion queue, stop the TX queue to give the device some time to
--	 * catch up
--	 */
--	if (unlikely(IDPF_TX_COMPLQ_PENDING(tx_q->txq_grp) >
--		     IDPF_TX_COMPLQ_OVERFLOW_THRESH(tx_q->txq_grp->complq)))
--		goto splitq_stop;
--
--	/* Also check for available book keeping buffers; if we are low, stop
--	 * the queue to wait for more completions
--	 */
--	if (unlikely(IDPF_TX_BUF_RSV_LOW(tx_q)))
--		goto splitq_stop;
--
--	return 0;
--
--splitq_stop:
--	netif_stop_subqueue(tx_q->netdev, tx_q->idx);
-+	if (netif_subqueue_maybe_stop(tx_q->netdev, tx_q->idx,
-+				      idpf_txq_has_room(tx_q, descs_needed),
-+				      1, 1))
-+		return 0;
+ 	int i;
  
--out:
- 	u64_stats_update_begin(&tx_q->stats_sync);
- 	u64_stats_inc(&tx_q->q_stats.q_busy);
- 	u64_stats_update_end(&tx_q->stats_sync);
-@@ -2190,12 +2185,6 @@ void idpf_tx_buf_hw_update(struct idpf_tx_queue *tx_q, u32 val,
- 	nq = netdev_get_tx_queue(tx_q->netdev, tx_q->idx);
- 	tx_q->next_to_use = val;
+diff --git a/drivers/net/ethernet/intel/idpf/idpf_virtchnl.h b/drivers/net/ethernet/intel/idpf/idpf_virtchnl.h
+index 83da5d8da56bf..23271cf0a2160 100644
+--- a/drivers/net/ethernet/intel/idpf/idpf_virtchnl.h
++++ b/drivers/net/ethernet/intel/idpf/idpf_virtchnl.h
+@@ -66,5 +66,6 @@ int idpf_send_get_stats_msg(struct idpf_vport *vport);
+ int idpf_send_set_sriov_vfs_msg(struct idpf_adapter *adapter, u16 num_vfs);
+ int idpf_send_get_set_rss_key_msg(struct idpf_vport *vport, bool get);
+ int idpf_send_get_set_rss_lut_msg(struct idpf_vport *vport, bool get);
++void idpf_vc_xn_shutdown(struct idpf_vc_xn_manager *vcxn_mngr);
  
--	if (idpf_tx_maybe_stop_common(tx_q, IDPF_TX_DESC_NEEDED)) {
--		u64_stats_update_begin(&tx_q->stats_sync);
--		u64_stats_inc(&tx_q->q_stats.q_busy);
--		u64_stats_update_end(&tx_q->stats_sync);
--	}
--
- 	/* Force memory writes to complete before letting h/w
- 	 * know there are new descriptors to fetch.  (Only
- 	 * applicable for weak-ordered memory model archs,
-diff --git a/drivers/net/ethernet/intel/idpf/idpf_txrx.h b/drivers/net/ethernet/intel/idpf/idpf_txrx.h
-index b029f566e57cd..c192a6c547dd3 100644
---- a/drivers/net/ethernet/intel/idpf/idpf_txrx.h
-+++ b/drivers/net/ethernet/intel/idpf/idpf_txrx.h
-@@ -1037,12 +1037,4 @@ bool idpf_rx_singleq_buf_hw_alloc_all(struct idpf_rx_queue *rxq,
- 				      u16 cleaned_count);
- int idpf_tso(struct sk_buff *skb, struct idpf_tx_offload_params *off);
- 
--static inline bool idpf_tx_maybe_stop_common(struct idpf_tx_queue *tx_q,
--					     u32 needed)
--{
--	return !netif_subqueue_maybe_stop(tx_q->netdev, tx_q->idx,
--					  IDPF_DESC_UNUSED(tx_q),
--					  needed, needed);
--}
--
- #endif /* !_IDPF_TXRX_H_ */
+ #endif /* _IDPF_VIRTCHNL_H_ */
 -- 
 2.39.5
 
