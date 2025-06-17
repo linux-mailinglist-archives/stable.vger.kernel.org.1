@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-153830-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-154328-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A815EADD66C
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:33:18 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 66D22ADD8BB
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:58:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 47C6E2C810E
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:26:00 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1999D2C2A32
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:49:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96DC22F948D;
-	Tue, 17 Jun 2025 16:20:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0ACF2285048;
+	Tue, 17 Jun 2025 16:47:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ExI42M6q"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Sy3zJI6P"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 436DF2F9483;
-	Tue, 17 Jun 2025 16:20:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC0D11E98E3;
+	Tue, 17 Jun 2025 16:47:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750177238; cv=none; b=DCZPGUG7oPkw9NyZJFLnQz7mOcEsQoyqkWU2DJqmxyo4PyKZLkogYLCxUOjDwZJud08PUTPQ+2YX3hhwnQmQqIJWHdXIgIfY85iI4U1RDkGrSQAjv84g9AYbBHbuhnfhB9aWnXDwNOlWL/91InEjZVmyDGwMInDO3JzppMUGyFk=
+	t=1750178844; cv=none; b=EmkzE3BnZs7zu0Lbw+nfh90rjkNHpstbMoWEWE9MabjBupJ2SwTuTFiR9A9R/+j/1zH6F4LzD7rrxiNowvii8UPw0LqHtvT96yvHH17RUH4chqhmR2IDuz2wLBjMXL9ygIhynZGddL4T8reSywSJe7MHt8sF+VsgtAcJ/1/eUxk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750177238; c=relaxed/simple;
-	bh=FQhpJ5oatWvHtJcEATNn1sU7Z3R4zPar+BvDGDMx0GQ=;
+	s=arc-20240116; t=1750178844; c=relaxed/simple;
+	bh=NOQNt6kpQxn5+4Ar1RNgcsdjeFpMCsDe6E38O3Yn9n0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PJIKHoDij936zzdj7DXyffW73b2sRnYyYvSPmwwJsJfxcz4KFcbKprv8WtluqpVpT/WYA+hm1WyokRPsGGReOX80Xvy0Dq1DZaHLkjb14e0o9bochNePTsxJhYTqhSdD9UMLMNb/l28dEiFLxYG3ERa/MrSmDIWxjFXnbTuMQmo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ExI42M6q; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47DB0C4CEE3;
-	Tue, 17 Jun 2025 16:20:34 +0000 (UTC)
+	 MIME-Version; b=VRLpMq1PHthXRI78zvex6xVZiI5P4Mqfo5mLYy1LthJNx4nXRINCAbrZMB9rnKUSXlWNwtRIZxvDTobdp6qN/WYRFRCNU+iHAva+I/XlsjZfEiOSfVAp3KYJOYSIx25byUox1gc2G5hxOiTq8+Wv8p4rLCEqde6qa8mzfw8rzfc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Sy3zJI6P; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6AA1C4CEE3;
+	Tue, 17 Jun 2025 16:47:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750177234;
-	bh=FQhpJ5oatWvHtJcEATNn1sU7Z3R4zPar+BvDGDMx0GQ=;
+	s=korg; t=1750178844;
+	bh=NOQNt6kpQxn5+4Ar1RNgcsdjeFpMCsDe6E38O3Yn9n0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ExI42M6qqWzdaqSo9GWBXn4cIFW75xVCbdDJTwuK65rkbgfz3Ib1J39+Ozt9/bzn6
-	 6r3DTiTc5py04D5Bgc8nYRQVEma7VGuLZ5P5kYtfoPtFopo6snbeYxpJWOKXGQQ8Rm
-	 EyWBp3bOHTkm334PTfrWrz+1yqt6DMFLq861O2VI=
+	b=Sy3zJI6PxAiFi9A9pkSk4kd9EO7LinAl2PpZRPEDyZAkCI9RfLjmGqv6J9LDvSiB+
+	 Yska3pVQtyV7H71UC/gchQJXuVVNwURbSZ7swE+BzI+X3KTIiFT2nwBQfD7TdMyoc6
+	 hehAw+m3hMVLR2SXV1fWeZsJC4AIAKkMVFhJj6Qs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hans Zhang <18255117159@163.com>,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+	syzbot+5fe2d5bfbfbec0b675a0@syzkaller.appspotmail.com,
+	Dmitry Antipov <dmantipov@yandex.ru>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 311/512] PCI: cadence: Fix runtime atomic count underflow
+Subject: [PATCH 6.15 569/780] Bluetooth: MGMT: reject malformed HCI_CMD_SYNC commands
 Date: Tue, 17 Jun 2025 17:24:37 +0200
-Message-ID: <20250617152432.209859609@linuxfoundation.org>
+Message-ID: <20250617152514.649721570@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
-References: <20250617152419.512865572@linuxfoundation.org>
+In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
+References: <20250617152451.485330293@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,55 +63,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hans Zhang <18255117159@163.com>
+From: Dmitry Antipov <dmantipov@yandex.ru>
 
-[ Upstream commit 8805f32a96d3b97cef07999fa6f52112678f7e65 ]
+[ Upstream commit 03f1700b9b4d4f2fed3165370f3c23db76553178 ]
 
-If the call to pci_host_probe() in cdns_pcie_host_setup() fails, PM
-runtime count is decremented in the error path using pm_runtime_put_sync().
-But the runtime count is not incremented by this driver, but only by the
-callers (cdns_plat_pcie_probe/j721e_pcie_probe). And the callers also
-decrement the runtime PM count in their error path. So this leads to the
-below warning from the PM core:
+In 'mgmt_hci_cmd_sync()', check whether the size of parameters passed
+in 'struct mgmt_cp_hci_cmd_sync' matches the total size of the data
+(i.e. 'sizeof(struct mgmt_cp_hci_cmd_sync)' plus trailing bytes).
+Otherwise, large invalid 'params_len' will cause 'hci_cmd_sync_alloc()'
+to do 'skb_put_data()' from an area beyond the one actually passed to
+'mgmt_hci_cmd_sync()'.
 
-	"runtime PM usage count underflow!"
-
-So fix it by getting rid of pm_runtime_put_sync() in the error path and
-directly return the errno.
-
-Fixes: 49e427e6bdd1 ("Merge branch 'pci/host-probe-refactor'")
-Signed-off-by: Hans Zhang <18255117159@163.com>
-Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Link: https://patch.msgid.link/20250419133058.162048-1-18255117159@163.com
+Reported-by: syzbot+5fe2d5bfbfbec0b675a0@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=5fe2d5bfbfbec0b675a0
+Fixes: 827af4787e74 ("Bluetooth: MGMT: Add initial implementation of MGMT_OP_HCI_CMD_SYNC")
+Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/controller/cadence/pcie-cadence-host.c | 11 +----------
- 1 file changed, 1 insertion(+), 10 deletions(-)
+ net/bluetooth/mgmt.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/pci/controller/cadence/pcie-cadence-host.c b/drivers/pci/controller/cadence/pcie-cadence-host.c
-index 8af95e9da7cec..741e10a575ec7 100644
---- a/drivers/pci/controller/cadence/pcie-cadence-host.c
-+++ b/drivers/pci/controller/cadence/pcie-cadence-host.c
-@@ -570,14 +570,5 @@ int cdns_pcie_host_setup(struct cdns_pcie_rc *rc)
- 	if (!bridge->ops)
- 		bridge->ops = &cdns_pcie_host_ops;
+diff --git a/net/bluetooth/mgmt.c b/net/bluetooth/mgmt.c
+index 261926dccc7e8..14a9462fced5e 100644
+--- a/net/bluetooth/mgmt.c
++++ b/net/bluetooth/mgmt.c
+@@ -2566,7 +2566,8 @@ static int mgmt_hci_cmd_sync(struct sock *sk, struct hci_dev *hdev,
+ 	struct mgmt_pending_cmd *cmd;
+ 	int err;
  
--	ret = pci_host_probe(bridge);
--	if (ret < 0)
--		goto err_init;
--
--	return 0;
--
-- err_init:
--	pm_runtime_put_sync(dev);
--
--	return ret;
-+	return pci_host_probe(bridge);
- }
+-	if (len < sizeof(*cp))
++	if (len != (offsetof(struct mgmt_cp_hci_cmd_sync, params) +
++		    le16_to_cpu(cp->params_len)))
+ 		return mgmt_cmd_status(sk, hdev->id, MGMT_OP_HCI_CMD_SYNC,
+ 				       MGMT_STATUS_INVALID_PARAMS);
+ 
 -- 
 2.39.5
 
