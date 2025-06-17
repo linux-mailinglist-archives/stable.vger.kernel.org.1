@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-154281-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153693-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D665BADD960
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 19:05:49 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5AF80ADD60B
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:29:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8E8CF2C4CE0
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:48:00 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AE6CE19E025B
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:19:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3A4A2DFF2B;
-	Tue, 17 Jun 2025 16:44:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 908EA2F2C6A;
+	Tue, 17 Jun 2025 16:13:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yWyZADi2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ewOdoMTs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 615198F54;
-	Tue, 17 Jun 2025 16:44:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E1FA2EB5CE;
+	Tue, 17 Jun 2025 16:13:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750178685; cv=none; b=A0jOWpbcRtdImOyJbCtvXuqmjpY26t+X3BPxpJ+KlxEIqaGVuljVtphZJoRhSpKV+nQD5t2CFMKeNhxatlncN69wuibC2obQySkp6hL3t1NRkubc+z+FKAy3//myzF8det573xXWOPEOaRz5KUKLTnlLPKoy3DRBgdPVETYbpgI=
+	t=1750176784; cv=none; b=RZLSXQZAp0xq2lsy+ScjThh2Jlmft8EIdnwLOBpIkOj/FUGpc1zsW1cUHB55ZYDKslTRq+6owA9JY9DkZisn/ZRNkyilKSuNdYCvfDxPpXgWI+xdX+7wqkLHU9+w+ahP/7SEWWP7vLfXpIVNqwdT6stvIree7bNNwWgi0zUEStg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750178685; c=relaxed/simple;
-	bh=NdFoKe9IvmBmZfPtCJVrhbeSBPZv3U9cc9rI2nJiROo=;
+	s=arc-20240116; t=1750176784; c=relaxed/simple;
+	bh=P09Iy4mx32j+h7mlFAPcW9HmchYXP2M4ozqDtB9MkoM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tOX9LhMqewl+iCIhr2Zkzqph6JYm9uPWHFyteqct2M8aggJHPhTigp6NQxY0tvJEcoA8VLj1xrue0pmWzxjyT0SfPjAfGYl+X3RRluFkfa9QhYiYPTnrpOv9vv3fwgPzZVmGffv7xM8lkEVLvMaoXxrCSJQOWc36TjiL8FXdIw4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yWyZADi2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5CF9C4CEE3;
-	Tue, 17 Jun 2025 16:44:44 +0000 (UTC)
+	 MIME-Version:Content-Type; b=lqofM7rSqO9clZDUqgNOx155VJrBlfSZ9aCON5s2S+jcVMmsk0GCmvQ7MXh3RgKrJViV+IY+wptaPPSgTrH2AVoROzV4cimwB5qe5uCedWeeEzaIAjjAFJ9cydoS0rn52FCqBEdf9FtAvVHfgGD+4ry72HwqHWiGYJ9fKbTCzlk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ewOdoMTs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1CCAC4CEE3;
+	Tue, 17 Jun 2025 16:13:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750178685;
-	bh=NdFoKe9IvmBmZfPtCJVrhbeSBPZv3U9cc9rI2nJiROo=;
+	s=korg; t=1750176784;
+	bh=P09Iy4mx32j+h7mlFAPcW9HmchYXP2M4ozqDtB9MkoM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yWyZADi2ATchfVr7+F+SEdmrfteE49EcPSTYH5P4v8GrTttRIDdHQpu2azjoW8fe4
-	 VdpdsXPoPIDBQ0p0Tk36KWrg3Sd9peVpP/aR6FzlE0kSwWXmXBnWW5HqbrNnTo7AVr
-	 qzLCOG2Lfh21SWq0fDcqQwCqfoXQDKI0qEhMYN/Y=
+	b=ewOdoMTshGeSXoOeoy6mHXTL/HAoSftOwXO2RkXxRCuQfwuGEadXOQQ2wuGNDQhDE
+	 VLuDYKEBzKPmEMoJamGwd+G7MaaDdgaauGEFgphIIcfCaCYL1W1zPaUYBNmiShuPUb
+	 /qOjsz/Fav2kRyamWmOgQJQ1rW2k7wfRAwtEuUts=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chenyuan Yang <chenyuan0y@gmail.com>,
-	Alan Stern <stern@rowland.harvard.edu>,
+	Su Hui <suhui@nfschina.com>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Andrew Jeffery <andrew@codeconstruct.com.au>,
+	Arnd Bergmann <arnd@arndb.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 523/780] usb: acpi: Prevent null pointer dereference in usb_acpi_add_usb4_devlink()
-Date: Tue, 17 Jun 2025 17:23:51 +0200
-Message-ID: <20250617152512.813106021@linuxfoundation.org>
+Subject: [PATCH 6.12 266/512] soc: aspeed: lpc: Fix impossible judgment condition
+Date: Tue, 17 Jun 2025 17:23:52 +0200
+Message-ID: <20250617152430.368082932@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
-References: <20250617152451.485330293@linuxfoundation.org>
+In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
+References: <20250617152419.512865572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,51 +62,48 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chenyuan Yang <chenyuan0y@gmail.com>
+From: Su Hui <suhui@nfschina.com>
 
-[ Upstream commit 73fb0ec9436ae87bcae067ce35d6cdd72bade86c ]
+[ Upstream commit d9f0a97e859bdcef51f9c187b1eb712eb13fd3ff ]
 
-As demonstrated by the fix for update_port_device_state,
-commit 12783c0b9e2c ("usb: core: Prevent null pointer dereference in update_port_device_state"),
-usb_hub_to_struct_hub() can return NULL in certain scenarios,
-such as during hub driver unbind or teardown race conditions,
-even if the underlying usb_device structure exists.
+smatch error：
+drivers/soc/aspeed/aspeed-lpc-snoop.c:169
+aspeed_lpc_snoop_config_irq() warn: platform_get_irq() does not return zero
 
-Plus, all other places that call usb_hub_to_struct_hub() in the same file
-do check for NULL return values.
+platform_get_irq() return non-zero IRQ number or negative error code,
+change '!lpc_snoop->irq' to 'lpc_snoop->irq < 0' to fix this.
 
-If usb_hub_to_struct_hub() returns NULL, the subsequent access to
-hub->ports[udev->portnum - 1] will cause a null pointer dereference.
-
-Signed-off-by: Chenyuan Yang <chenyuan0y@gmail.com>
-Fixes: f1bfb4a6fed6 ("usb: acpi: add device link between tunneled USB3 device and USB4 Host Interface")
-Acked-by: Alan Stern <stern@rowland.harvard.edu>
-Link: https://lore.kernel.org/r/20250417195032.1811338-1-chenyuan0y@gmail.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 9f4f9ae81d0a ("drivers/misc: add Aspeed LPC snoop driver")
+Signed-off-by: Su Hui <suhui@nfschina.com>
+Reviewed-by: Dan Carpenter <dan.carpenter@linaro.org>
+Link: https://lore.kernel.org/r/20231027020703.1231875-1-suhui@nfschina.com
+Signed-off-by: Andrew Jeffery <andrew@codeconstruct.com.au>
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/core/usb-acpi.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/soc/aspeed/aspeed-lpc-snoop.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/usb/core/usb-acpi.c b/drivers/usb/core/usb-acpi.c
-index 935c0efea0b64..ea1ce8beb0cbb 100644
---- a/drivers/usb/core/usb-acpi.c
-+++ b/drivers/usb/core/usb-acpi.c
-@@ -165,6 +165,8 @@ static int usb_acpi_add_usb4_devlink(struct usb_device *udev)
- 		return 0;
+diff --git a/drivers/soc/aspeed/aspeed-lpc-snoop.c b/drivers/soc/aspeed/aspeed-lpc-snoop.c
+index 888b5840c0150..f06edc4cc5ea4 100644
+--- a/drivers/soc/aspeed/aspeed-lpc-snoop.c
++++ b/drivers/soc/aspeed/aspeed-lpc-snoop.c
+@@ -166,7 +166,7 @@ static int aspeed_lpc_snoop_config_irq(struct aspeed_lpc_snoop *lpc_snoop,
+ 	int rc;
  
- 	hub = usb_hub_to_struct_hub(udev->parent);
-+	if (!hub)
-+		return 0;
- 	port_dev = hub->ports[udev->portnum - 1];
+ 	lpc_snoop->irq = platform_get_irq(pdev, 0);
+-	if (!lpc_snoop->irq)
++	if (lpc_snoop->irq < 0)
+ 		return -ENODEV;
  
- 	struct fwnode_handle *nhi_fwnode __free(fwnode_handle) =
+ 	rc = devm_request_irq(dev, lpc_snoop->irq,
 -- 
 2.39.5
 
