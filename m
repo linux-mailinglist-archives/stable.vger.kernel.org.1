@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-153882-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-154356-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9C983ADD6F8
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:39:18 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 71403ADD7FF
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:51:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 59C753BFD9D
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:27:52 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9E18E7ADFD4
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:49:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AEFBB28505C;
-	Tue, 17 Jun 2025 16:23:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A08F2DFF3C;
+	Tue, 17 Jun 2025 16:48:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sVtDYl/W"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="prRIg0hz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66D65285047;
-	Tue, 17 Jun 2025 16:23:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46A831FBEA8;
+	Tue, 17 Jun 2025 16:48:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750177402; cv=none; b=jLrCMigqAnhGG/xS9GCAEyAmfJgxdMZUfJyoycUORG8YZai5UOx7cMghxIBvrl9szCnfPRrUonIgMRrUr846W0vg4ULgW5zCqakVLFfw/k1mEHnWYyZomBXZjjrpROdS/9BvBk0tpZ9N1p14NNPbbrjAPTML6Ff0rqerZlPqnUo=
+	t=1750178932; cv=none; b=FyxTvKHVmqIY7C68ygVY1aoXJZBZ+9QK0zxpPSoImcPHSz/ETDtOYa9d3XI9ze+cfPEbYFYUuLkmtfkwjxAqPWDD93CMea0mC2LIgFS2jmUMu2MJNJmryMAfU9OC0z3vWbfR4+U9vxX/xTq4Pl7oFScimCGHBVEsVOvZOjVkxzc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750177402; c=relaxed/simple;
-	bh=dxoM5M+E1vtvF65dAcOAf/SFyTqGpbmfGQqAXaW7JF0=;
+	s=arc-20240116; t=1750178932; c=relaxed/simple;
+	bh=5qPsKGinyHwuCvXkxgmNIbpDfmTylHcePJVmPjnlcCw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=G+ChZf9TEPUkNmlmOQ88x6E2yd+hg7hu4I3ruF0R1Us9Zohn3GOulMTVWKX6Ck/PbxP81mg1FcHyLajVM6v392KdDziN23X0DqIcY21oqakiOvjUE89jM1z9D7VjqWllgAAKutmWZ+C1UX6R2IjHq2yoQVeuzqYzxs2n1Ib6ieY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sVtDYl/W; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C91F4C4CEF0;
-	Tue, 17 Jun 2025 16:23:21 +0000 (UTC)
+	 MIME-Version; b=bGuWPwhozBvBupuTo3p+m7YkoGkETSbMuLfA+7X8vaHSsrMqWunvvZdxvPnEc1/PlaBSEkTJShqm5rhlwpkx20zbbmgwiGkNa1BtqwTqB93iinhDj6fJ77BifRHvEH2ZNrFMUzwUtpknbx9Pv1ryychXZs5Q/Cd10cAN55KsSOs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=prRIg0hz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4CB0C4CEE3;
+	Tue, 17 Jun 2025 16:48:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750177402;
-	bh=dxoM5M+E1vtvF65dAcOAf/SFyTqGpbmfGQqAXaW7JF0=;
+	s=korg; t=1750178932;
+	bh=5qPsKGinyHwuCvXkxgmNIbpDfmTylHcePJVmPjnlcCw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sVtDYl/WhTD294V3goFVKpwZx8hLvKDo10hIt9snKbqr/T53MSkOYWOPIR/y4Pt0x
-	 P0L0m+rUGouyq46S3wFQLNJS0BrjZiY+zFwCatxW4jBQTxJ5226ZJ4K3wQbIWH0fGC
-	 ZzwM+7EXdjRhTFwuJxT562vhzT7wOom0qlCjsRAU=
+	b=prRIg0hzUQIFSqJMcM/VLbSzUQBbJiarSi7ci35jNDvHIswL8YLAxHVZUl2WHhJP9
+	 XsCPUxfpPywJRVSpxvi/fffeT1H93U+ndE7alXBp9Qa+QH3+aTjj19bta2cCvvcesU
+	 sOtF+uo1lvecwlNnvbFGu2AVUlWw1icN0rgENn1U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Matteo Martelli <matteomartelli3@gmail.com>,
-	Marius Cristea <marius.cristea@microchip.com>,
-	David Lechner <dlechner@baylibre.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Jacob Keller <jacob.e.keller@intel.com>,
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	Rafal Romanowski <rafal.romanowski@intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 338/512] iio: adc: PAC1934: fix typo in documentation link
+Subject: [PATCH 6.15 596/780] iavf: sprinkle netdev_assert_locked() annotations
 Date: Tue, 17 Jun 2025 17:25:04 +0200
-Message-ID: <20250617152433.304012910@linuxfoundation.org>
+Message-ID: <20250617152515.758397059@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
-References: <20250617152419.512865572@linuxfoundation.org>
+In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
+References: <20250617152451.485330293@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,42 +64,108 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marius Cristea <marius.cristea@microchip.com>
+From: Przemek Kitszel <przemyslaw.kitszel@intel.com>
 
-[ Upstream commit 52c43d80fa8370eb877fc63b1fc1eec67e1b1410 ]
+[ Upstream commit 05702b5c949bd46243181833d4726f4c5e95f5e3 ]
 
-Fix a typo,(PAC1934 -> PAC193X), into the link from an application note
-related to the ACPI device definition.
+Lockdep annotations help in general, but here it is extra good, as next
+commit will remove crit lock.
 
-Fixes: 0fb528c8255b ("iio: adc: adding support for PAC193x")
-Reported-by: Matteo Martelli <matteomartelli3@gmail.com>
-Closes: https://patch.msgid.link/172794015844.2520.11909797050797595912@njaxe.localdomain
-Signed-off-by: Marius Cristea <marius.cristea@microchip.com>
-Reviewed-by: David Lechner <dlechner@baylibre.com>
-Link: https://patch.msgid.link/20250424-pac1934-doc_link-v1-1-9832445cb270@microchip.com
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
+Signed-off-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+Tested-by: Rafal Romanowski <rafal.romanowski@intel.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Stable-dep-of: 120f28a6f314 ("iavf: get rid of the crit lock")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iio/adc/pac1934.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/intel/iavf/iavf_ethtool.c |  6 ++++++
+ drivers/net/ethernet/intel/iavf/iavf_main.c    | 10 ++++++++++
+ 2 files changed, 16 insertions(+)
 
-diff --git a/drivers/iio/adc/pac1934.c b/drivers/iio/adc/pac1934.c
-index 7ef249d832866..c3f9fa307b84c 100644
---- a/drivers/iio/adc/pac1934.c
-+++ b/drivers/iio/adc/pac1934.c
-@@ -1081,7 +1081,7 @@ static int pac1934_chip_identify(struct pac1934_chip_info *info)
+diff --git a/drivers/net/ethernet/intel/iavf/iavf_ethtool.c b/drivers/net/ethernet/intel/iavf/iavf_ethtool.c
+index 288bb5b2e72ef..03d86fe80ad91 100644
+--- a/drivers/net/ethernet/intel/iavf/iavf_ethtool.c
++++ b/drivers/net/ethernet/intel/iavf/iavf_ethtool.c
+@@ -4,6 +4,8 @@
+ #include <linux/bitfield.h>
+ #include <linux/uaccess.h>
  
- /*
-  * documentation related to the ACPI device definition
-- * https://ww1.microchip.com/downloads/aemDocuments/documents/OTH/ApplicationNotes/ApplicationNotes/PAC1934-Integration-Notes-for-Microsoft-Windows-10-and-Windows-11-Driver-Support-DS00002534.pdf
-+ * https://ww1.microchip.com/downloads/aemDocuments/documents/OTH/ApplicationNotes/ApplicationNotes/PAC193X-Integration-Notes-for-Microsoft-Windows-10-and-Windows-11-Driver-Support-DS00002534.pdf
-  */
- static int pac1934_acpi_parse_channel_config(struct i2c_client *client,
- 					     struct pac1934_chip_info *info)
++#include <net/netdev_lock.h>
++
+ /* ethtool support for iavf */
+ #include "iavf.h"
+ 
+@@ -1259,6 +1261,8 @@ static int iavf_add_fdir_ethtool(struct iavf_adapter *adapter, struct ethtool_rx
+ 	int count = 50;
+ 	int err;
+ 
++	netdev_assert_locked(adapter->netdev);
++
+ 	if (!(adapter->flags & IAVF_FLAG_FDIR_ENABLED))
+ 		return -EOPNOTSUPP;
+ 
+@@ -1440,6 +1444,8 @@ iavf_set_adv_rss_hash_opt(struct iavf_adapter *adapter,
+ 	u64 hash_flds;
+ 	u32 hdrs;
+ 
++	netdev_assert_locked(adapter->netdev);
++
+ 	if (!ADV_RSS_SUPPORT(adapter))
+ 		return -EOPNOTSUPP;
+ 
+diff --git a/drivers/net/ethernet/intel/iavf/iavf_main.c b/drivers/net/ethernet/intel/iavf/iavf_main.c
+index 4b6963ffaba5f..bf8c7baf2ab8a 100644
+--- a/drivers/net/ethernet/intel/iavf/iavf_main.c
++++ b/drivers/net/ethernet/intel/iavf/iavf_main.c
+@@ -1292,6 +1292,8 @@ static void iavf_configure(struct iavf_adapter *adapter)
+  **/
+ static void iavf_up_complete(struct iavf_adapter *adapter)
+ {
++	netdev_assert_locked(adapter->netdev);
++
+ 	iavf_change_state(adapter, __IAVF_RUNNING);
+ 	clear_bit(__IAVF_VSI_DOWN, adapter->vsi.state);
+ 
+@@ -1417,6 +1419,8 @@ void iavf_down(struct iavf_adapter *adapter)
+ {
+ 	struct net_device *netdev = adapter->netdev;
+ 
++	netdev_assert_locked(netdev);
++
+ 	if (adapter->state <= __IAVF_DOWN_PENDING)
+ 		return;
+ 
+@@ -3078,6 +3082,8 @@ static void iavf_disable_vf(struct iavf_adapter *adapter)
+ 	struct iavf_vlan_filter *fv, *fvtmp;
+ 	struct iavf_cloud_filter *cf, *cftmp;
+ 
++	netdev_assert_locked(adapter->netdev);
++
+ 	adapter->flags |= IAVF_FLAG_PF_COMMS_FAILED;
+ 
+ 	/* We don't use netif_running() because it may be true prior to
+@@ -5194,6 +5200,8 @@ iavf_shaper_set(struct net_shaper_binding *binding,
+ 	struct iavf_ring *tx_ring;
+ 	int ret = 0;
+ 
++	netdev_assert_locked(adapter->netdev);
++
+ 	mutex_lock(&adapter->crit_lock);
+ 	if (handle->id >= adapter->num_active_queues)
+ 		goto unlock;
+@@ -5222,6 +5230,8 @@ static int iavf_shaper_del(struct net_shaper_binding *binding,
+ 	struct iavf_adapter *adapter = netdev_priv(binding->netdev);
+ 	struct iavf_ring *tx_ring;
+ 
++	netdev_assert_locked(adapter->netdev);
++
+ 	mutex_lock(&adapter->crit_lock);
+ 	if (handle->id >= adapter->num_active_queues)
+ 		goto unlock;
 -- 
 2.39.5
 
