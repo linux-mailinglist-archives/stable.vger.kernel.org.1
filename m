@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-153472-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153476-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9807BADD527
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:17:52 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 058C7ADD3FE
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:05:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 224A319E014C
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:05:37 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C52557A2BC5
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:04:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 107D72ECE9B;
-	Tue, 17 Jun 2025 16:01:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB34B2ED14E;
+	Tue, 17 Jun 2025 16:01:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MSItWsZ1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="n7GYe7Ul"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEB842E92CD;
-	Tue, 17 Jun 2025 16:01:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A768E2EA143;
+	Tue, 17 Jun 2025 16:01:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750176074; cv=none; b=qK5usqaAdAqKu6wbJEMkZgI0KmTuWpBq34qObZfQwizUhL3sVLiY3DGf/4ETCBdhNH5X0D4r2vTnPhfy+1R7SpCO7vTGu7/f2RhL8rI2d2ft6q7+YDnbmnxZucnWF9imNmgYHPYN+mEqhmj1p8hNd2WVfPJPL/T3aHfos6zRxwA=
+	t=1750176087; cv=none; b=ZCY8x6kusVYIdKmUS3afwK9VAUtRRBrPxZWajuuxXFf4EMGd/Ug3aHcUQi+hghzpsQepFdhtDYrYyfGEgr63nqa0+wmVA86dVk3+v6RgYZ1B8dtOtzMSVsbscoCxnMc2qXl6ypPxf+++FNVHnc/aX6ESIs9c+narVikmc0aFdaI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750176074; c=relaxed/simple;
-	bh=3v4tjjxXokqGuypTDdXzzPI6KuHSuQXGEqKq6dYvubg=;
+	s=arc-20240116; t=1750176087; c=relaxed/simple;
+	bh=KCQact9RXe45zTYa+leJoF8VmpnF6r8XRYDrTTxqx/Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=J9D3v0+PYuCnGZJJ/InsIukkG3yYFTbPMo1Dx2exS64IaQBf1/XRNGYt1o8hfpkz6Wk9Dm7bLufo1TbiLaUA9xE8FHsnAiXO4jAG090CZVbDR13K5/LLQgW3CuKuYK6tlhX9rkAO7Rr27YL/hb7Jyp80JRAYW6FZS+6hNvelCcs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MSItWsZ1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4868BC4CEE3;
-	Tue, 17 Jun 2025 16:01:14 +0000 (UTC)
+	 MIME-Version; b=TjwfzMAhfjHTKQHUc1QxDLtgFhio8r+xLQiEnr4o5fSgVE1FsxiU9NDcD32rk5aFqCiHuvZKMdKXyt9ipzlJLlPQV4ciZygdKlInoXeJ8NEGFsAX1m1YtYZfor5WHxStMnOCoT94WwQ9DxUQxSdwZUIh0lkGE0aXqWS4Nc6T61o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=n7GYe7Ul; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16926C4CEE3;
+	Tue, 17 Jun 2025 16:01:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750176074;
-	bh=3v4tjjxXokqGuypTDdXzzPI6KuHSuQXGEqKq6dYvubg=;
+	s=korg; t=1750176087;
+	bh=KCQact9RXe45zTYa+leJoF8VmpnF6r8XRYDrTTxqx/Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MSItWsZ1UVNUHX6QxS1wFzxX0g6sDIHC1rF4lB+v7L+/3mAyGZ5R1695xYS8o7p7z
-	 SVi5Z1vOSCUaTS/+Pnlr/34mOKOdT/0YYvFqWtZRK/4RwgoEGR32rA9pvyPaKHwFLh
-	 CrjrYWDPMwiVktnlTqboaI34oov7nFqT2X3Nkm10=
+	b=n7GYe7Ulw8dfMhAG+Pjlq7cp+wrV3+qd8AduyLDuBH31Si6f/YhNsGnhpCKyELtJQ
+	 bTOAn1phCMPPeG2BclNq1oIOM1YuN4ZuWk6v5s0jjg+HlN3do4MTN1rNPFqchDC597
+	 27L7nWZN2IfKtMcw5tLz4uWyCqUEIszymr11fm8w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ankit Nautiyal <ankit.k.nautiyal@intel.com>,
-	Luca Coelho <luciano.coelho@intel.com>,
-	Imre Deak <imre.deak@intel.com>,
-	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
+	Chen-Yu Tsai <wenst@chromium.org>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Chun-Kuang Hu <chunkuang.hu@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 149/780] drm/i915/dp_mst: Use the correct connector while computing the link BPP limit on MST
-Date: Tue, 17 Jun 2025 17:17:37 +0200
-Message-ID: <20250617152457.572680077@linuxfoundation.org>
+Subject: [PATCH 6.15 150/780] drm/mediatek: mtk_drm_drv: Fix kobject put for mtk_mutex device ptr
+Date: Tue, 17 Jun 2025 17:17:38 +0200
+Message-ID: <20250617152457.612745686@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
 References: <20250617152451.485330293@linuxfoundation.org>
@@ -68,106 +67,105 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Imre Deak <imre.deak@intel.com>
+From: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
 
-[ Upstream commit a92e390e0d438e021de0e52065121484b6cca675 ]
+[ Upstream commit 22918591fb747a6d16801e74a170cf98e886f83b ]
 
-Atm, on an MST link in DSC mode
-intel_dp_compute_config_link_bpp_limits() calculates the maximum link
-bpp limit using the MST root connector's DSC capabilities. That's not
-correct in general: the decompression could be performed by a branch
-device downstream of the root branch device or the sink itself.
+This driver is taking a kobject for mtk_mutex only once per mmsys
+device for each drm-mediatek driver instance, differently from the
+behavior with other components, but it is decrementing the kobj's
+refcount in a loop and once per mmsys: this is not right and will
+result in a refcount_t underflow warning when mediatek-drm returns
+multiple probe deferrals in one boot (or when manually bound and
+unbound).
 
-Fix the above by passing to intel_dp_compute_config_link_bpp_limits()
-the actual connector being modeset, containing the correct DSC
-capabilities.
+Besides that, the refcount for mutex_dev was not decremented for
+error cases in mtk_drm_bind(), causing another refcount_t warning
+but this time for overflow, when the failure happens not during
+driver bind but during component bind.
 
-Cc: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
-Fixes: 1c5b72daff46 ("drm/i915/dp: Set the DSC link limits in intel_dp_compute_config_link_bpp_limits")
-Reviewed-by: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
-Reviewed-by: Luca Coelho <luciano.coelho@intel.com>
-Signed-off-by: Imre Deak <imre.deak@intel.com>
-Link: https://lore.kernel.org/r/20250509180340.554867-2-imre.deak@intel.com
-(cherry picked from commit 266e2fcfe2ea0d062ea392cd22f6250ae0d11c04)
-Signed-off-by: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
+In order to fix one of the reasons why this is happening, remove
+the put_device(xx->mutex_dev) loop from the mtk_drm_kms_init()'s
+put_mutex_dev label (and drop the label) and add a single call to
+correctly free the single incremented refcount of mutex_dev to
+the mtk_drm_unbind() function to fix the refcount_t underflow.
+
+Moreover, add the same call to the error cases in mtk_drm_bind()
+to fix the refcount_t overflow.
+
+Fixes: 1ef7ed48356c ("drm/mediatek: Modify mediatek-drm for mt8195 multi mmsys support")
+Reviewed-by: Chen-Yu Tsai <wenst@chromium.org>
+Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Link: https://patchwork.kernel.org/project/dri-devel/patch/20250403104741.71045-2-angelogioacchino.delregno@collabora.com/
+Signed-off-by: Chun-Kuang Hu <chunkuang.hu@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/i915/display/intel_dp.c     | 7 ++++---
- drivers/gpu/drm/i915/display/intel_dp.h     | 1 +
- drivers/gpu/drm/i915/display/intel_dp_mst.c | 5 +++--
- 3 files changed, 8 insertions(+), 5 deletions(-)
+ drivers/gpu/drm/mediatek/mtk_drm_drv.c | 17 ++++++++++-------
+ 1 file changed, 10 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/gpu/drm/i915/display/intel_dp.c b/drivers/gpu/drm/i915/display/intel_dp.c
-index 392c3653d0d73..cd8f728d5fddc 100644
---- a/drivers/gpu/drm/i915/display/intel_dp.c
-+++ b/drivers/gpu/drm/i915/display/intel_dp.c
-@@ -2523,6 +2523,7 @@ intel_dp_dsc_compute_pipe_bpp_limits(struct intel_dp *intel_dp,
+diff --git a/drivers/gpu/drm/mediatek/mtk_drm_drv.c b/drivers/gpu/drm/mediatek/mtk_drm_drv.c
+index 74158b9d65035..5994e2a97dc13 100644
+--- a/drivers/gpu/drm/mediatek/mtk_drm_drv.c
++++ b/drivers/gpu/drm/mediatek/mtk_drm_drv.c
+@@ -470,7 +470,7 @@ static int mtk_drm_kms_init(struct drm_device *drm)
  
- bool
- intel_dp_compute_config_limits(struct intel_dp *intel_dp,
-+			       struct intel_connector *connector,
- 			       struct intel_crtc_state *crtc_state,
- 			       bool respect_downstream_limits,
- 			       bool dsc,
-@@ -2576,7 +2577,7 @@ intel_dp_compute_config_limits(struct intel_dp *intel_dp,
- 	intel_dp_test_compute_config(intel_dp, crtc_state, limits);
+ 	ret = drmm_mode_config_init(drm);
+ 	if (ret)
+-		goto put_mutex_dev;
++		return ret;
  
- 	return intel_dp_compute_config_link_bpp_limits(intel_dp,
--						       intel_dp->attached_connector,
-+						       connector,
- 						       crtc_state,
- 						       dsc,
- 						       limits);
-@@ -2637,7 +2638,7 @@ intel_dp_compute_link_config(struct intel_encoder *encoder,
- 	joiner_needs_dsc = intel_dp_joiner_needs_dsc(display, num_joined_pipes);
+ 	drm->mode_config.min_width = 64;
+ 	drm->mode_config.min_height = 64;
+@@ -489,7 +489,7 @@ static int mtk_drm_kms_init(struct drm_device *drm)
+ 		drm->dev_private = private->all_drm_private[i];
+ 		ret = component_bind_all(private->all_drm_private[i]->dev, drm);
+ 		if (ret)
+-			goto put_mutex_dev;
++			return ret;
+ 	}
  
- 	dsc_needed = joiner_needs_dsc || intel_dp->force_dsc_en ||
--		     !intel_dp_compute_config_limits(intel_dp, pipe_config,
-+		     !intel_dp_compute_config_limits(intel_dp, connector, pipe_config,
- 						     respect_downstream_limits,
- 						     false,
- 						     &limits);
-@@ -2671,7 +2672,7 @@ intel_dp_compute_link_config(struct intel_encoder *encoder,
- 			    str_yes_no(ret), str_yes_no(joiner_needs_dsc),
- 			    str_yes_no(intel_dp->force_dsc_en));
+ 	/*
+@@ -582,9 +582,6 @@ static int mtk_drm_kms_init(struct drm_device *drm)
+ err_component_unbind:
+ 	for (i = 0; i < private->data->mmsys_dev_num; i++)
+ 		component_unbind_all(private->all_drm_private[i]->dev, drm);
+-put_mutex_dev:
+-	for (i = 0; i < private->data->mmsys_dev_num; i++)
+-		put_device(private->all_drm_private[i]->mutex_dev);
  
--		if (!intel_dp_compute_config_limits(intel_dp, pipe_config,
-+		if (!intel_dp_compute_config_limits(intel_dp, connector, pipe_config,
- 						    respect_downstream_limits,
- 						    true,
- 						    &limits))
-diff --git a/drivers/gpu/drm/i915/display/intel_dp.h b/drivers/gpu/drm/i915/display/intel_dp.h
-index 9189db4c25946..98f90955fdb1d 100644
---- a/drivers/gpu/drm/i915/display/intel_dp.h
-+++ b/drivers/gpu/drm/i915/display/intel_dp.h
-@@ -194,6 +194,7 @@ void intel_dp_wait_source_oui(struct intel_dp *intel_dp);
- int intel_dp_output_bpp(enum intel_output_format output_format, int bpp);
+ 	return ret;
+ }
+@@ -655,8 +652,10 @@ static int mtk_drm_bind(struct device *dev)
+ 		return 0;
  
- bool intel_dp_compute_config_limits(struct intel_dp *intel_dp,
-+				    struct intel_connector *connector,
- 				    struct intel_crtc_state *crtc_state,
- 				    bool respect_downstream_limits,
- 				    bool dsc,
-diff --git a/drivers/gpu/drm/i915/display/intel_dp_mst.c b/drivers/gpu/drm/i915/display/intel_dp_mst.c
-index 6dc2d31ccb5a5..fe685f098ba9a 100644
---- a/drivers/gpu/drm/i915/display/intel_dp_mst.c
-+++ b/drivers/gpu/drm/i915/display/intel_dp_mst.c
-@@ -590,12 +590,13 @@ adjust_limits_for_dsc_hblank_expansion_quirk(struct intel_dp *intel_dp,
+ 	drm = drm_dev_alloc(&mtk_drm_driver, dev);
+-	if (IS_ERR(drm))
+-		return PTR_ERR(drm);
++	if (IS_ERR(drm)) {
++		ret = PTR_ERR(drm);
++		goto err_put_dev;
++	}
  
- static bool
- mst_stream_compute_config_limits(struct intel_dp *intel_dp,
--				 const struct intel_connector *connector,
-+				 struct intel_connector *connector,
- 				 struct intel_crtc_state *crtc_state,
- 				 bool dsc,
- 				 struct link_config_limits *limits)
- {
--	if (!intel_dp_compute_config_limits(intel_dp, crtc_state, false, dsc,
-+	if (!intel_dp_compute_config_limits(intel_dp, connector,
-+					    crtc_state, false, dsc,
- 					    limits))
- 		return false;
+ 	private->drm_master = true;
+ 	drm->dev_private = private;
+@@ -682,6 +681,8 @@ static int mtk_drm_bind(struct device *dev)
+ 	drm_dev_put(drm);
+ 	for (i = 0; i < private->data->mmsys_dev_num; i++)
+ 		private->all_drm_private[i]->drm = NULL;
++err_put_dev:
++	put_device(private->mutex_dev);
+ 	return ret;
+ }
  
+@@ -694,6 +695,8 @@ static void mtk_drm_unbind(struct device *dev)
+ 		drm_dev_unregister(private->drm);
+ 		mtk_drm_kms_deinit(private->drm);
+ 		drm_dev_put(private->drm);
++
++		put_device(private->mutex_dev);
+ 	}
+ 	private->mtk_drm_bound = false;
+ 	private->drm_master = false;
 -- 
 2.39.5
 
