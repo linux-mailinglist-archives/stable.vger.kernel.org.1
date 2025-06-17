@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-154037-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-154409-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A77C8ADD79E
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:47:12 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 25463ADD8FE
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 19:01:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2BCCF1898457
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:37:40 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 752684A1B6D
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:53:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ACB112ED857;
-	Tue, 17 Jun 2025 16:31:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 450A328506C;
+	Tue, 17 Jun 2025 16:51:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rSUHtUxD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qnqXMFbb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6867F2EA16C;
-	Tue, 17 Jun 2025 16:31:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F392A28505E;
+	Tue, 17 Jun 2025 16:51:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750177903; cv=none; b=U7dz4otx3inRDYPrpRf5xZI+3+4AT7hXwSplwB3bNI3/20SB/IMaasb6BeX5Q5VrbRZzM8wUcFQ/4dziph4KkY9ntMv0zIrkoRFQ8dLD8+z+KhkrLyxVrk2diPLLHv9DIaC/lFFDFswQEjFpIRLmycfxitHAaO09TD34lQ1NB4A=
+	t=1750179103; cv=none; b=j0rrr/HPklh0+/RWGMZgPBL+xGcLqGL7PioVdzkJ0diE8qd0p+Lrgolcn/mrq9SnGNCMCm1FT/yEwsKQ09qrMLq0gOtSmjyvtGovz6PYkpo4JGAmTs31i5Ccag9/BWCA+c74bwVIW4vuxcNoIkpLxcK1ak7FndY1esmpNa3YMkk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750177903; c=relaxed/simple;
-	bh=OtP2v9o1TSZg+/A52ji0CxcIiYK9RNevRLvzZHbzpWs=;
+	s=arc-20240116; t=1750179103; c=relaxed/simple;
+	bh=96oCCOnnanvtIN60l39iqSt0gZ3QXoLO1BHNmFVE/7o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tX8Jc/quNl/Cv7IUA35pX3seqBYgDuCjDHcM7Ds06vLuvRr5A2b0oJTSMuo9PSe9vHE1X9wONku+EE7Zi+rVOJztXfhQAX1l0iPJ3HeYkvLfZ1KlDroLgVPop1a9DDLIg29lq9hAMZUXXneLMSMPZQYh0TN8m42dEpeFywbKcp4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rSUHtUxD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A784C4CEE3;
-	Tue, 17 Jun 2025 16:31:42 +0000 (UTC)
+	 MIME-Version; b=f+a7yGQ3/cPqUcVdTXhxGgQRUzDXf/mpCtpdqWeNXM/ZbGsBt/wWfRIX/cfecjlkqFgFPTiia8s6hDzi530NcqmAokcPRil9PxMKDoB4Pi0g3nhiGAv7PJZ9VH7FZ1RgJWYHgh83TvJsXrAWApeu1S1e82/jVZoPiZkVNivcfG4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qnqXMFbb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3B18C4CEF0;
+	Tue, 17 Jun 2025 16:51:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750177903;
-	bh=OtP2v9o1TSZg+/A52ji0CxcIiYK9RNevRLvzZHbzpWs=;
+	s=korg; t=1750179102;
+	bh=96oCCOnnanvtIN60l39iqSt0gZ3QXoLO1BHNmFVE/7o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rSUHtUxD3i9S5ZA0Qyh7HOlT4KjniagCuThRfEadvx3FCZQROUNX/4F6Ax3UiF7ut
-	 GhNAvQBO3lL2GPLkZhfF37gcquUaopAr0jBaM+yZfpB+piMaFKpp6/8iOko4yk7qvi
-	 CQQ97GgaLfG8oZdD4XiizXLAPBLxFs6cdGw6+7/U=
+	b=qnqXMFbbd/VaTdTZuBwJvQTwfMiGApvW+vvRjLg6AUsw5QkwhLIBPiouNjJQfXEsx
+	 fjeIbUgwmO0RLSCXtJJRrjRj/maaB0NKaSrxQF+GizFT0jW5cpy32Ne4HTRXf42g4U
+	 /6S5cphbDQURCYFzWtnaa3YOslXpcMmkn4Suq8hE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yuuki NAGAO <wf.yn386@gmail.com>,
-	Mark Brown <broonie@kernel.org>,
+	Christian Brauner <brauner@kernel.org>,
+	Jeff Layton <jlayton@kernel.org>,
+	Al Viro <viro@zeniv.linux.org.uk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 391/512] ASoC: ti: omap-hdmi: Re-add dai_link->platform to fix card init
+Subject: [PATCH 6.15 649/780] fs/fhandle.c: fix a race in call of has_locked_children()
 Date: Tue, 17 Jun 2025 17:25:57 +0200
-Message-ID: <20250617152435.430882720@linuxfoundation.org>
+Message-ID: <20250617152517.909257386@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
-References: <20250617152419.512865572@linuxfoundation.org>
+In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
+References: <20250617152451.485330293@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,79 +63,92 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yuuki NAGAO <wf.yn386@gmail.com>
+From: Al Viro <viro@zeniv.linux.org.uk>
 
-[ Upstream commit bae071aa7bcd034054cec91666c80f812adeccd9 ]
+[ Upstream commit 1f282cdc1d219c4a557f7009e81bc792820d9d9a ]
 
-The removed dai_link->platform component cause a fail which
-is exposed at runtime. (ex: when a sound tool is used)
-This patch re-adds the dai_link->platform component to have
-a full card registered.
+may_decode_fh() is calling has_locked_children() while holding no locks.
+That's an oopsable race...
 
-Before this patch:
-$ aplay -l
-**** List of PLAYBACK Hardware Devices ****
-card 1: HDMI [HDMI], device 0: HDMI snd-soc-dummy-dai-0 []
-  Subdevices: 1/1
-  Subdevice #0: subdevice #0
+The rest of the callers are safe since they are holding namespace_sem and
+are guaranteed a positive refcount on the mount in question.
 
-$ speaker-test -D plughw:1,0 -t sine
-speaker-test 1.2.8
-Playback device is plughw:1,0
-Stream parameters are 48000Hz, S16_LE, 1 channels
-Sine wave rate is 440.0000Hz
-Playback open error: -22,Invalid argument
+Rename the current has_locked_children() to __has_locked_children(), make
+it static and switch the fs/namespace.c users to it.
 
-After this patch which restores the platform component:
-$ aplay -l
-**** List of PLAYBACK Hardware Devices ****
-card 0: HDMI [HDMI], device 0: HDMI snd-soc-dummy-dai-0 [HDMI snd-soc-dummy-dai-0]
-  Subdevices: 0/1
-  Subdevice #0: subdevice #0
+Make has_locked_children() a wrapper for __has_locked_children(), calling
+the latter under read_seqlock_excl(&mount_lock).
 
--> Resolve the playback error.
-
-Fixes: 3b0db249cf8f ("ASoC: ti: remove unnecessary dai_link->platform")
-
-Signed-off-by: Yuuki NAGAO <wf.yn386@gmail.com>
-Link: https://patch.msgid.link/20250531141341.81164-1-wf.yn386@gmail.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Reviewed-by: Christian Brauner <brauner@kernel.org>
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
+Fixes: 620c266f3949 ("fhandle: relax open_by_handle_at() permission checks")
+Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/ti/omap-hdmi.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ fs/namespace.c | 18 ++++++++++++++----
+ 1 file changed, 14 insertions(+), 4 deletions(-)
 
-diff --git a/sound/soc/ti/omap-hdmi.c b/sound/soc/ti/omap-hdmi.c
-index cf43ac19c4a6d..55e7cb96858fc 100644
---- a/sound/soc/ti/omap-hdmi.c
-+++ b/sound/soc/ti/omap-hdmi.c
-@@ -361,17 +361,20 @@ static int omap_hdmi_audio_probe(struct platform_device *pdev)
- 	if (!card->dai_link)
- 		return -ENOMEM;
+diff --git a/fs/namespace.c b/fs/namespace.c
+index 1b466c54a357d..216807f772cd2 100644
+--- a/fs/namespace.c
++++ b/fs/namespace.c
+@@ -2424,7 +2424,7 @@ void drop_collected_mounts(struct vfsmount *mnt)
+ 	namespace_unlock();
+ }
  
--	compnent = devm_kzalloc(dev, sizeof(*compnent), GFP_KERNEL);
-+	compnent = devm_kzalloc(dev, 2 * sizeof(*compnent), GFP_KERNEL);
- 	if (!compnent)
- 		return -ENOMEM;
--	card->dai_link->cpus		= compnent;
-+	card->dai_link->cpus		= &compnent[0];
- 	card->dai_link->num_cpus	= 1;
- 	card->dai_link->codecs		= &snd_soc_dummy_dlc;
- 	card->dai_link->num_codecs	= 1;
-+	card->dai_link->platforms	= &compnent[1];
-+	card->dai_link->num_platforms	= 1;
+-bool has_locked_children(struct mount *mnt, struct dentry *dentry)
++static bool __has_locked_children(struct mount *mnt, struct dentry *dentry)
+ {
+ 	struct mount *child;
  
- 	card->dai_link->name = card->name;
- 	card->dai_link->stream_name = card->name;
- 	card->dai_link->cpus->dai_name = dev_name(ad->dssdev);
-+	card->dai_link->platforms->name = dev_name(ad->dssdev);
- 	card->num_links = 1;
- 	card->dev = dev;
+@@ -2438,6 +2438,16 @@ bool has_locked_children(struct mount *mnt, struct dentry *dentry)
+ 	return false;
+ }
  
++bool has_locked_children(struct mount *mnt, struct dentry *dentry)
++{
++	bool res;
++
++	read_seqlock_excl(&mount_lock);
++	res = __has_locked_children(mnt, dentry);
++	read_sequnlock_excl(&mount_lock);
++	return res;
++}
++
+ /*
+  * Check that there aren't references to earlier/same mount namespaces in the
+  * specified subtree.  Such references can act as pins for mount namespaces
+@@ -2498,7 +2508,7 @@ struct vfsmount *clone_private_mount(const struct path *path)
+ 			return ERR_PTR(-EINVAL);
+ 	}
+ 
+-	if (has_locked_children(old_mnt, path->dentry))
++	if (__has_locked_children(old_mnt, path->dentry))
+ 		return ERR_PTR(-EINVAL);
+ 
+ 	new_mnt = clone_mnt(old_mnt, path->dentry, CL_PRIVATE);
+@@ -3035,7 +3045,7 @@ static struct mount *__do_loopback(struct path *old_path, int recurse)
+ 	if (!may_copy_tree(old_path))
+ 		return mnt;
+ 
+-	if (!recurse && has_locked_children(old, old_path->dentry))
++	if (!recurse && __has_locked_children(old, old_path->dentry))
+ 		return mnt;
+ 
+ 	if (recurse)
+@@ -3428,7 +3438,7 @@ static int do_set_group(struct path *from_path, struct path *to_path)
+ 		goto out;
+ 
+ 	/* From mount should not have locked children in place of To's root */
+-	if (has_locked_children(from, to->mnt.mnt_root))
++	if (__has_locked_children(from, to->mnt.mnt_root))
+ 		goto out;
+ 
+ 	/* Setting sharing groups is only allowed on private mounts */
 -- 
 2.39.5
 
