@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-153897-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-154373-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF03FADD737
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:42:31 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 91222ADD9B7
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 19:08:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0490A40760F
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:28:32 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 04A111898793
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:52:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4DB5B2E8E02;
-	Tue, 17 Jun 2025 16:24:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F5A3235071;
+	Tue, 17 Jun 2025 16:49:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wHwY2OpB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GfreC3vF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C48F204F73;
-	Tue, 17 Jun 2025 16:24:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA3852FA65D;
+	Tue, 17 Jun 2025 16:49:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750177451; cv=none; b=k8QK0npBQwtAtH4BkbV6PUMOo2nT30XJqLM/2ZGwrDhFm5DeSeJtMLBgb/KMdq8B0+1Zdt7NdwkgiCr4xKBKIE1xCd8jhxuCnYeXCEY4QQjX4ozsOtLrDA16VeDclhq2fYWs7AQyIhWQranFTy+EYuhwzitnIoYiCbNPomxuXm8=
+	t=1750178988; cv=none; b=EgYCNPpqy4LxDkq5/X1QX6Dh7hIBicYjFotkbjNpQQmXE6OJDUC6dxNMAzyAHFqHrvmKi2RRnjZ22t97099jV2+GYnUt4ew+h+kgY7iPDvk/7a6pjQvfKfmofrFp+sfnaAGWzT2pcnzoVoonRS2VAOUXs59IuBdrzWTdf9jPIh0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750177451; c=relaxed/simple;
-	bh=rvSrbNKj9aHhZs1wGggKt3h/baEalyDefPWCUhzQ+LU=;
+	s=arc-20240116; t=1750178988; c=relaxed/simple;
+	bh=D6XxDsy9ddTvoVICQzDH31Yyhohn8TxzZveTqKVsyGA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VQPYq3KuLpZ/qi8B0xXbSJqiDT3w9FV66tXISOCSZ+htaW7tqnl/qY6hFiYPXL9F6pWBg0lYe87l8mS1rw4PF3R3aT/nQuLOQwoqBW3gT48Q/AAdN9k+jgqmgayVQPCJfN47RYSvhtPsEssy6UE5S7e9i1fF38cPaB4RXY3v9yg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wHwY2OpB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70CEEC4CEE3;
-	Tue, 17 Jun 2025 16:24:10 +0000 (UTC)
+	 MIME-Version; b=Lc7anrckCcSOhU2zG4J7ZHeg1uuqF7cEInzWys/fcjtbodiv6Ia/CekkOi00TWAhBdwPbI3TYhgwiptBR5UMS5OuQ52mIWm540COm4b8sogxHuTncomB3kQXOUwTLMu+ze4c4RV/K2SN7fuJF588luACQCJxKnat8FyT0fwKExg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GfreC3vF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49F65C4CEE3;
+	Tue, 17 Jun 2025 16:49:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750177450;
-	bh=rvSrbNKj9aHhZs1wGggKt3h/baEalyDefPWCUhzQ+LU=;
+	s=korg; t=1750178987;
+	bh=D6XxDsy9ddTvoVICQzDH31Yyhohn8TxzZveTqKVsyGA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wHwY2OpBQTbkDgSQTDXOxKNTfUluquSqW2LiAsriV4dGhc1FaF9dbqQa1856Ox8Zj
-	 a4jlveVlcOlPk7KDhi3T0rlLxm+tjQ+5xo/HYWaG77joYN4qZESmmPqDj94AdNbjNg
-	 4yoS58R+o3T6sAxTWgjA7CAvvqU3uKQMVCkRhG+0=
+	b=GfreC3vFnyjztklThFi2ge2uC5H/ztXvIa8Dkq3h1xafMi3jj6xjU4Y6R0nLz5wHh
+	 4b5aWy1W/9f2a5b+zT/8cEFjQoyK2QLCaqOPRvu4HbfaU4GZSYimM69HGSS4whDzR1
+	 iz/3N/Pv8jKyb4Qjlsh+kTow8c1rnB8utlVXH2+A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alok Tiwari <alok.a.tiwari@oracle.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Michael Walle <mwalle@kernel.org>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 348/512] gve: Fix RX_BUFFERS_POSTED stat to report per-queue fill_cnt
+Subject: [PATCH 6.15 606/780] drm/panel-simple: fix the warnings for the Evervision VGG644804
 Date: Tue, 17 Jun 2025 17:25:14 +0200
-Message-ID: <20250617152433.688323471@linuxfoundation.org>
+Message-ID: <20250617152516.159437739@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
-References: <20250617152419.512865572@linuxfoundation.org>
+In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
+References: <20250617152451.485330293@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,41 +62,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alok Tiwari <alok.a.tiwari@oracle.com>
+From: Michael Walle <mwalle@kernel.org>
 
-[ Upstream commit f41a94aade120dc60322865f363cee7865f2df01 ]
+[ Upstream commit 5dc1ea903588a73fb03b3a3e5a041a7c63a4bccd ]
 
-Previously, the RX_BUFFERS_POSTED stat incorrectly reported the
-fill_cnt from RX queue 0 for all queues, resulting in inaccurate
-per-queue statistics.
-Fix this by correctly indexing priv->rx[idx].fill_cnt for each RX queue.
+The panel lacked the connector type which causes a warning. Adding the
+connector type reveals wrong bus_flags and bits per pixel. Fix all of
+it.
 
-Fixes: 24aeb56f2d38 ("gve: Add Gvnic stats AQ command and ethtool show/set-priv-flags.")
-Signed-off-by: Alok Tiwari <alok.a.tiwari@oracle.com>
-Link: https://patch.msgid.link/20250527130830.1812903-1-alok.a.tiwari@oracle.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: 1319f2178bdf ("drm/panel-simple: add Evervision VGG644804 panel entry")
+Signed-off-by: Michael Walle <mwalle@kernel.org>
+Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
+Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
+Link: https://lore.kernel.org/r/20250520074110.655114-1-mwalle@kernel.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/google/gve/gve_main.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/panel/panel-simple.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/google/gve/gve_main.c b/drivers/net/ethernet/google/gve/gve_main.c
-index 862c4575701fe..14f39d1f59d36 100644
---- a/drivers/net/ethernet/google/gve/gve_main.c
-+++ b/drivers/net/ethernet/google/gve/gve_main.c
-@@ -2207,7 +2207,7 @@ void gve_handle_report_stats(struct gve_priv *priv)
- 			};
- 			stats[stats_idx++] = (struct stats) {
- 				.stat_name = cpu_to_be32(RX_BUFFERS_POSTED),
--				.value = cpu_to_be64(priv->rx[0].fill_cnt),
-+				.value = cpu_to_be64(priv->rx[idx].fill_cnt),
- 				.queue_id = cpu_to_be32(idx),
- 			};
- 		}
+diff --git a/drivers/gpu/drm/panel/panel-simple.c b/drivers/gpu/drm/panel/panel-simple.c
+index 33a37539de574..3aaac96c0bfbf 100644
+--- a/drivers/gpu/drm/panel/panel-simple.c
++++ b/drivers/gpu/drm/panel/panel-simple.c
+@@ -2199,13 +2199,14 @@ static const struct display_timing evervision_vgg644804_timing = {
+ static const struct panel_desc evervision_vgg644804 = {
+ 	.timings = &evervision_vgg644804_timing,
+ 	.num_timings = 1,
+-	.bpc = 8,
++	.bpc = 6,
+ 	.size = {
+ 		.width = 115,
+ 		.height = 86,
+ 	},
+ 	.bus_format = MEDIA_BUS_FMT_RGB666_1X7X3_SPWG,
+-	.bus_flags = DRM_BUS_FLAG_DE_HIGH | DRM_BUS_FLAG_PIXDATA_SAMPLE_NEGEDGE,
++	.bus_flags = DRM_BUS_FLAG_DE_HIGH,
++	.connector_type = DRM_MODE_CONNECTOR_LVDS,
+ };
+ 
+ static const struct display_timing evervision_vgg804821_timing = {
 -- 
 2.39.5
 
