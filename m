@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-153881-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153883-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A26F3ADD698
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:35:40 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9DD2FADD690
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:35:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8926F16596B
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:28:15 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6351C19E42C9
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:28:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8646285059;
-	Tue, 17 Jun 2025 16:23:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC2C128505F;
+	Tue, 17 Jun 2025 16:23:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lg9t/mZm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sWt/DhhT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 747A1285041;
-	Tue, 17 Jun 2025 16:23:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A900B2356CE;
+	Tue, 17 Jun 2025 16:23:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750177400; cv=none; b=axx/UKr8XSKy05GjOfedcJjPfSlRrU0KxsghdZzOIvGhtbxfpSVj2Fb4hjl6u7+yEJNb7WmVfRnb6YeaP20OLy6F0cjiBIugmH6wGwn9d/usmCyH330DLqM4vcNxqwbrtpot7CU4bZKxWfN7l8pMNbZ594XXje0SDmJea4+J4yI=
+	t=1750177405; cv=none; b=Oym6qNAFKudrgDzVa0t0fVdVK84WFphdCAWJEEf53hQD1xvwV+rOgcpmYQwiUOpwy0KQDv7/fxXiglm5Xrgyoq+KxC/dFf318BcijkPmHRZUvooPhcLYfNa+UGVJvqzYkxn8xM/4eITJVjiQTcsa+SjtKhT4ySsDatSbzV1QGc0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750177400; c=relaxed/simple;
-	bh=VkOpgOSOMTs5FPZUBAD94mNmHXamHUQwI/tL8mcll6E=;
+	s=arc-20240116; t=1750177405; c=relaxed/simple;
+	bh=sdNFcs18DApL99/oC7c4c5kN/DQ9UHJUxRswG0+lNCE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uDgw6VRo6qi5n8/oeE2Mx2upNnz/bCByzOSpq8PjdliCAW1PZwLJqjMJv9r9jB44Y+yrgnV7imE5exw4XoiXLDv+vDCKM2I57c0hWaliAZtrbUMXaZ2T8dJ28T67+MpjOTLxff2re7lU7uWVkPU2zzKnTOeW6CtUtoqdSH4+P4E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lg9t/mZm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85549C4CEE3;
-	Tue, 17 Jun 2025 16:23:18 +0000 (UTC)
+	 MIME-Version; b=jWgyl7vKRUsR9iXqKU5hIaW0fT+7z9qJF7R/w9RP+sNKF4PMrIPaa1oO7M6DUU/z+SoaRczUefJj3glYwXMVbsk36ATPJVjz8HBCDIJAX6nBvKEyPaffBpeVEKXjoeAggpvqmDof91ZjS9O70ayOaJak+/DXQDEvqbAL1e8ErzI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sWt/DhhT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18B12C4CEE3;
+	Tue, 17 Jun 2025 16:23:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750177399;
-	bh=VkOpgOSOMTs5FPZUBAD94mNmHXamHUQwI/tL8mcll6E=;
+	s=korg; t=1750177405;
+	bh=sdNFcs18DApL99/oC7c4c5kN/DQ9UHJUxRswG0+lNCE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lg9t/mZmtsTet+hvqy5uxi4jvFRBuKk/jycLM/X69KWx9hiztSYNfkO5T7OJ93KF3
-	 5KWsdGAfQrC7u7OG6fQOtOXuT63krnYJPl1C8p3lrNXGnAicU/C/H1JGoAtGL42K7c
-	 VSOqiMvlSKaNopRoYlI3bumBYDYYLeUNpOtr91F4=
+	b=sWt/DhhTkMK+Zt0eMJJoQpBJa6hXU8dUIk51MqfpCJQnqi1YBtJ+jAH3oWncbyTjE
+	 Y9ZyEstJBRBNImeOQSxiEO3AkJS9/bH2zZhYhq2wFeuFyhFYdeyfYi16Sja8m+fdzD
+	 RBZ6KuvOZboYdcdNSNqp6YMWuVnwZNXB2TFRJS14=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michael Lo <michael.lo@mediatek.com>,
-	Ming Yen Hsieh <mingyen.hsieh@mediatek.com>,
+	Howard Hsu <howard-yh.hsu@mediatek.com>,
+	Shayne Chen <shayne.chen@mediatek.com>,
 	Felix Fietkau <nbd@nbd.name>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 300/780] wifi: mt76: mt7925: ensure all MCU commands wait for response
-Date: Tue, 17 Jun 2025 17:20:08 +0200
-Message-ID: <20250617152503.682223495@linuxfoundation.org>
+Subject: [PATCH 6.15 301/780] wifi: mt76: mt7996: fix beamformee SS field
+Date: Tue, 17 Jun 2025 17:20:09 +0200
+Message-ID: <20250617152503.726985432@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
 References: <20250617152451.485330293@linuxfoundation.org>
@@ -67,100 +67,44 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Michael Lo <michael.lo@mediatek.com>
+From: Howard Hsu <howard-yh.hsu@mediatek.com>
 
-[ Upstream commit aa97ff5782cf01cf2163593e1f57bbde63a06047 ]
+[ Upstream commit 5c78949fc7cd772d483a8abe126fe90937c0f002 ]
 
-Modify MCU command sending functions to wait for a response,
-ensuring consistent behavior across all commands and improves
-reliability by confirming that each command is processed
-successfully.
+Fix the beamformee SS field for the mt7996, mt7992 and mt7990 chipsets.
+For the mt7992, this value shall be set to 0x4, while the others shall
+be set to 0x3.
 
-Fixes: c948b5da6bbe ("wifi: mt76: mt7925: add Mediatek Wi-Fi7 driver for mt7925 chips")
-Signed-off-by: Michael Lo <michael.lo@mediatek.com>
-Signed-off-by: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
-Link: https://patch.msgid.link/20250414013954.1151774-3-mingyen.hsieh@mediatek.com
+Fixes: 5b20557593d4 ("wifi: mt76: connac: adjust phy capabilities based on band constraints")
+Signed-off-by: Howard Hsu <howard-yh.hsu@mediatek.com>
+Signed-off-by: Shayne Chen <shayne.chen@mediatek.com>
+Link: https://patch.msgid.link/20250515032952.1653494-2-shayne.chen@mediatek.com
 Signed-off-by: Felix Fietkau <nbd@nbd.name>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/mediatek/mt76/mt7925/mcu.c | 16 ++++++++--------
- 1 file changed, 8 insertions(+), 8 deletions(-)
+ drivers/net/wireless/mediatek/mt76/mt7996/init.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
-index 2bd9fc38a27f4..dea5b9bcb3fdf 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
-@@ -783,7 +783,7 @@ int mt7925_mcu_fw_log_2_host(struct mt792x_dev *dev, u8 ctrl)
- 	int ret;
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/init.c b/drivers/net/wireless/mediatek/mt76/mt7996/init.c
+index 5af52bd1f1f12..e99dfd1771d52 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7996/init.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7996/init.c
+@@ -1116,12 +1116,12 @@ mt7996_set_stream_he_txbf_caps(struct mt7996_phy *phy,
  
- 	ret = mt76_mcu_send_and_get_msg(&dev->mt76, MCU_UNI_CMD(WSYS_CONFIG),
--					&req, sizeof(req), false, NULL);
-+					&req, sizeof(req), true, NULL);
- 	return ret;
- }
+ 	c = IEEE80211_HE_PHY_CAP4_SU_BEAMFORMEE;
  
-@@ -1424,7 +1424,7 @@ int mt7925_mcu_set_eeprom(struct mt792x_dev *dev)
- 	};
+-	if (is_mt7996(phy->mt76->dev))
+-		c |= IEEE80211_HE_PHY_CAP4_BEAMFORMEE_MAX_STS_UNDER_80MHZ_4 |
+-		     (IEEE80211_HE_PHY_CAP4_BEAMFORMEE_MAX_STS_ABOVE_80MHZ_4 * non_2g);
+-	else
++	if (is_mt7992(phy->mt76->dev))
+ 		c |= IEEE80211_HE_PHY_CAP4_BEAMFORMEE_MAX_STS_UNDER_80MHZ_5 |
+ 		     (IEEE80211_HE_PHY_CAP4_BEAMFORMEE_MAX_STS_ABOVE_80MHZ_5 * non_2g);
++	else
++		c |= IEEE80211_HE_PHY_CAP4_BEAMFORMEE_MAX_STS_UNDER_80MHZ_4 |
++		     (IEEE80211_HE_PHY_CAP4_BEAMFORMEE_MAX_STS_ABOVE_80MHZ_4 * non_2g);
  
- 	return mt76_mcu_send_and_get_msg(&dev->mt76, MCU_UNI_CMD(EFUSE_CTRL),
--					 &req, sizeof(req), false, NULL);
-+					 &req, sizeof(req), true, NULL);
- }
- EXPORT_SYMBOL_GPL(mt7925_mcu_set_eeprom);
- 
-@@ -2762,7 +2762,7 @@ int mt7925_mcu_set_dbdc(struct mt76_phy *phy, bool enable)
- 	conf->band = 0; /* unused */
- 
- 	err = mt76_mcu_skb_send_msg(mdev, skb, MCU_UNI_CMD(SET_DBDC_PARMS),
--				    false);
-+				    true);
- 
- 	return err;
- }
-@@ -2870,7 +2870,7 @@ int mt7925_mcu_hw_scan(struct mt76_phy *phy, struct ieee80211_vif *vif,
- 	}
- 
- 	err = mt76_mcu_skb_send_msg(mdev, skb, MCU_UNI_CMD(SCAN_REQ),
--				    false);
-+				    true);
- 	if (err < 0)
- 		clear_bit(MT76_HW_SCANNING, &phy->state);
- 
-@@ -2976,7 +2976,7 @@ int mt7925_mcu_sched_scan_req(struct mt76_phy *phy,
- 	}
- 
- 	return mt76_mcu_skb_send_msg(mdev, skb, MCU_UNI_CMD(SCAN_REQ),
--				     false);
-+				     true);
- }
- EXPORT_SYMBOL_GPL(mt7925_mcu_sched_scan_req);
- 
-@@ -3012,7 +3012,7 @@ mt7925_mcu_sched_scan_enable(struct mt76_phy *phy,
- 		clear_bit(MT76_HW_SCHED_SCANNING, &phy->state);
- 
- 	return mt76_mcu_skb_send_msg(mdev, skb, MCU_UNI_CMD(SCAN_REQ),
--				     false);
-+				     true);
- }
- 
- int mt7925_mcu_cancel_hw_scan(struct mt76_phy *phy,
-@@ -3051,7 +3051,7 @@ int mt7925_mcu_cancel_hw_scan(struct mt76_phy *phy,
- 	}
- 
- 	return mt76_mcu_send_msg(phy->dev, MCU_UNI_CMD(SCAN_REQ),
--				 &req, sizeof(req), false);
-+				 &req, sizeof(req), true);
- }
- EXPORT_SYMBOL_GPL(mt7925_mcu_cancel_hw_scan);
- 
-@@ -3156,7 +3156,7 @@ int mt7925_mcu_set_channel_domain(struct mt76_phy *phy)
- 	memcpy(__skb_push(skb, sizeof(req)), &req, sizeof(req));
- 
- 	return mt76_mcu_skb_send_msg(dev, skb, MCU_UNI_CMD(SET_DOMAIN_INFO),
--				     false);
-+				     true);
- }
- EXPORT_SYMBOL_GPL(mt7925_mcu_set_channel_domain);
+ 	elem->phy_cap_info[4] |= c;
  
 -- 
 2.39.5
