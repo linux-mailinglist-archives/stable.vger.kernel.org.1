@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-154183-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153468-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 76CF7ADD852
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:54:23 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A2DA1ADD4A5
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:12:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 44CD71947D05
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:44:39 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 41F68168D99
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:05:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0BC552E8DFC;
-	Tue, 17 Jun 2025 16:39:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F20802ECE90;
+	Tue, 17 Jun 2025 16:01:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DVoE+mZo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JNKECMb2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDA2C2DFF1B;
-	Tue, 17 Jun 2025 16:39:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC82518E025;
+	Tue, 17 Jun 2025 16:01:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750178370; cv=none; b=utMVrnDgZv2qpd//4v1jpF1/d5XDmkuuMzcwjq720rMaHQjHtcp9FC+6RakAstMzfOsenb6qrImbUW6GxWHtuCnDPMikvobn2Lg81iMDAqZAsWNjcXlEbaUQFGYoxWYVMp8NZ7/omOD8+JhGjzSe9NTmmFxoAva6BqJ4ZR43hy4=
+	t=1750176062; cv=none; b=pC7vrbnlgCO6ThMu71k9Ay9xUh6sAxxqiCLDUDK7tfCepkz4h0ROjvtX6O6OOyTf4637AcWP6q46UqdV9Xz8gV0giiYXeq9xMfCIV4ZAAT2bUrnYU03QMNfF+NR2PHxpW6qoPYeKQZ8hDi0LP/4WCaFsjM+13qOB5WIqyfwxHKg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750178370; c=relaxed/simple;
-	bh=Qy6jQ1WQbFAXwd70yL/uidD8QO4mZMISFttelxSBPf0=;
+	s=arc-20240116; t=1750176062; c=relaxed/simple;
+	bh=HZFed2DZjmQ5t3EoH4BS1ApYjbBcFdgqvMhHUWtXlvs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XszxGm2bM7nCWvL3mZBsczxce+M4S3RyHUp0Rxkz9ZmKKyGbVHmacnp+eqkDmb2apv2YAjyjsu8SFc9wIvwq1XV7TWqGJJWKl/2/URfCjY57Ct2RYK0aX5uy6vQL6inhUgWFmri0sUFNkwZ2VEppecO/6dFtI+eGVh/QPUQT/+A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DVoE+mZo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8B01C4CEE3;
-	Tue, 17 Jun 2025 16:39:29 +0000 (UTC)
+	 MIME-Version; b=bSk+U97JYO7nWiM6+pYqXzSzQQq5hBJC4DWzGtjeGNF+FGoWQZIrD1cbtHUmKBwG8vGmulF8UWHV5iB7ImM6J8EJcC87Ex8aoVMWTLo1z61i8VjvDmuYYK8Vz9Qyem8krUoukSTL7NncWGDZS+6tHtaOhKyOAjJfIm+XTn0715I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JNKECMb2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19CE3C4CEE3;
+	Tue, 17 Jun 2025 16:01:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750178370;
-	bh=Qy6jQ1WQbFAXwd70yL/uidD8QO4mZMISFttelxSBPf0=;
+	s=korg; t=1750176062;
+	bh=HZFed2DZjmQ5t3EoH4BS1ApYjbBcFdgqvMhHUWtXlvs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DVoE+mZomKhBcVRY1M0NZXWE6uiTnXsXlp01o1QSL7fwR7viwFA6hrUoO92reLa3x
-	 vaVYagEp9dm8MEZzBIHq3wURXyC0D9upXfRj630D/Lzd4s8TKdYRe2SGUeai42iJTf
-	 VNMEI2rJMrSKyR7OU78iW3+ER3eYZuJM9HTAfJpI=
+	b=JNKECMb2P2kiRowH7k/dkid7FiaSX9rVOwJ0+qMG6nE6LWcfJBtror/D3n5Je4IaS
+	 dl5W/NOJgQwHI/gnlaqgcegEHbG3T+J0glkC/8u2GaRlE72jwwn8ZTiOirRlqTCn4y
+	 8co2Lk7thwrB25qOLUNbc7GanB9xYf0KRvCUfbcI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Siddharth Vadapalli <s-vadapalli@ti.com>,
-	Beleswar Padhi <b-padhi@ti.com>,
-	Judith Mendez <jm@ti.com>,
-	Andrew Davis <afd@ti.com>,
-	Mathieu Poirier <mathieu.poirier@linaro.org>,
+	Florian Westphal <fw@strlen.de>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 450/780] remoteproc: k3-dsp: Drop check performed in k3_dsp_rproc_{mbox_callback/kick}
+Subject: [PATCH 6.12 192/512] netfilter: nf_tables: nft_fib_ipv6: fix VRF ipv4/ipv6 result discrepancy
 Date: Tue, 17 Jun 2025 17:22:38 +0200
-Message-ID: <20250617152509.786737612@linuxfoundation.org>
+Message-ID: <20250617152427.416128904@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
-References: <20250617152451.485330293@linuxfoundation.org>
+In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
+References: <20250617152419.512865572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,65 +62,81 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Siddharth Vadapalli <s-vadapalli@ti.com>
+From: Florian Westphal <fw@strlen.de>
 
-[ Upstream commit 349d62ab207f55f039c3ddb40b36e95c2f0b3ed0 ]
+[ Upstream commit 8b53f46eb430fe5b42d485873b85331d2de2c469 ]
 
-Commit ea1d6fb5b571 ("remoteproc: k3-dsp: Acquire mailbox handle during
-probe routine") introduced a check in the "k3_dsp_rproc_mbox_callback()"
-and "k3_dsp_rproc_kick()" callbacks, causing them to exit if the remote
-core's state is "RPROC_DETACHED". However, the "__rproc_attach()"
-function that is responsible for attaching to a remote core, updates the
-state of the remote core to "RPROC_ATTACHED" only after invoking
-"rproc_start_subdevices()".
+With a VRF, ipv4 and ipv6 FIB expression behave differently.
 
-The "rproc_start_subdevices()" function triggers the probe of the Virtio
-RPMsg devices associated with the remote core, which require that the
-"k3_dsp_rproc_kick()" and "k3_dsp_rproc_mbox_callback()" callbacks are
-functional. Hence, drop the check in the callbacks.
+   fib daddr . iif oif
 
-Fixes: ea1d6fb5b571 ("remoteproc: k3-dsp: Acquire mailbox handle during probe routine")
-Signed-off-by: Siddharth Vadapalli <s-vadapalli@ti.com>
-Signed-off-by: Beleswar Padhi <b-padhi@ti.com>
-Tested-by: Judith Mendez <jm@ti.com>
-Reviewed-by: Andrew Davis <afd@ti.com>
-Link: https://lore.kernel.org/r/20250513054510.3439842-3-b-padhi@ti.com
-Signed-off-by: Mathieu Poirier <mathieu.poirier@linaro.org>
+Will return the input interface name for ipv4, but the real device
+for ipv6.  Example:
+
+If VRF device name is tvrf and real (incoming) device is veth0.
+First round is ok, both ipv4 and ipv6 will yield 'veth0'.
+
+But in the second round (incoming device will be set to "tvrf"), ipv4
+will yield "tvrf" whereas ipv6 returns "veth0" for the second round too.
+
+This makes ipv6 behave like ipv4.
+
+A followup patch will add a test case for this, without this change
+it will fail with:
+  get element inet t fibif6iif { tvrf . dead:1::99 . tvrf }
+  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  FAIL: did not find tvrf . dead:1::99 . tvrf in fibif6iif
+
+Alternatively we could either not do anything at all or change
+ipv4 to also return the lower/real device, however, nft (userspace)
+doc says "iif: if fib lookup provides a route then check its output
+interface is identical to the packets input interface." which is what
+the nft fib ipv4 behaviour is.
+
+Fixes: f6d0cbcf09c5 ("netfilter: nf_tables: add fib expression")
+Signed-off-by: Florian Westphal <fw@strlen.de>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/remoteproc/ti_k3_dsp_remoteproc.c | 8 --------
- 1 file changed, 8 deletions(-)
+ net/ipv6/netfilter/nft_fib_ipv6.c | 13 +++++++++----
+ 1 file changed, 9 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/remoteproc/ti_k3_dsp_remoteproc.c b/drivers/remoteproc/ti_k3_dsp_remoteproc.c
-index a695890254ff7..35e8c3cc313c3 100644
---- a/drivers/remoteproc/ti_k3_dsp_remoteproc.c
-+++ b/drivers/remoteproc/ti_k3_dsp_remoteproc.c
-@@ -115,10 +115,6 @@ static void k3_dsp_rproc_mbox_callback(struct mbox_client *client, void *data)
- 	const char *name = kproc->rproc->name;
- 	u32 msg = omap_mbox_message(data);
+diff --git a/net/ipv6/netfilter/nft_fib_ipv6.c b/net/ipv6/netfilter/nft_fib_ipv6.c
+index 7fd9d7b21cd42..f1f5640da6728 100644
+--- a/net/ipv6/netfilter/nft_fib_ipv6.c
++++ b/net/ipv6/netfilter/nft_fib_ipv6.c
+@@ -158,6 +158,7 @@ void nft_fib6_eval(const struct nft_expr *expr, struct nft_regs *regs,
+ {
+ 	const struct nft_fib *priv = nft_expr_priv(expr);
+ 	int noff = skb_network_offset(pkt->skb);
++	const struct net_device *found = NULL;
+ 	const struct net_device *oif = NULL;
+ 	u32 *dest = &regs->data[priv->dreg];
+ 	struct ipv6hdr *iph, _iph;
+@@ -203,11 +204,15 @@ void nft_fib6_eval(const struct nft_expr *expr, struct nft_regs *regs,
+ 	if (rt->rt6i_flags & (RTF_REJECT | RTF_ANYCAST | RTF_LOCAL))
+ 		goto put_rt_err;
  
--	/* Do not forward messages from a detached core */
--	if (kproc->rproc->state == RPROC_DETACHED)
--		return;
--
- 	dev_dbg(dev, "mbox msg: 0x%x\n", msg);
+-	if (oif && oif != rt->rt6i_idev->dev &&
+-	    l3mdev_master_ifindex_rcu(rt->rt6i_idev->dev) != oif->ifindex)
+-		goto put_rt_err;
++	if (!oif) {
++		found = rt->rt6i_idev->dev;
++	} else {
++		if (oif == rt->rt6i_idev->dev ||
++		    l3mdev_master_ifindex_rcu(rt->rt6i_idev->dev) == oif->ifindex)
++			found = oif;
++	}
  
- 	switch (msg) {
-@@ -159,10 +155,6 @@ static void k3_dsp_rproc_kick(struct rproc *rproc, int vqid)
- 	mbox_msg_t msg = (mbox_msg_t)vqid;
- 	int ret;
- 
--	/* Do not forward messages to a detached core */
--	if (kproc->rproc->state == RPROC_DETACHED)
--		return;
--
- 	/* send the index of the triggered virtqueue in the mailbox payload */
- 	ret = mbox_send_message(kproc->mbox, (void *)msg);
- 	if (ret < 0)
+-	nft_fib_store_result(dest, priv, rt->rt6i_idev->dev);
++	nft_fib_store_result(dest, priv, found);
+  put_rt_err:
+ 	ip6_rt_put(rt);
+ }
 -- 
 2.39.5
 
