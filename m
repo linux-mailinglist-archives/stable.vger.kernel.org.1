@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-153055-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153073-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id F24EEADD20F
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 17:38:53 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5F3CAADD22D
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 17:39:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 892DE1899629
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 15:38:58 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D45FE17D4DB
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 15:39:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 751622ECD0A;
-	Tue, 17 Jun 2025 15:38:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 412712EB5AB;
+	Tue, 17 Jun 2025 15:39:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WGrtuCw9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wDBftx5x"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 317B02DF3C9;
-	Tue, 17 Jun 2025 15:38:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1BD52DF3C9;
+	Tue, 17 Jun 2025 15:39:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750174721; cv=none; b=Nx4Dhvk4wqGz398OOJlfJx8rKmHW1erqDViP802Gx9ok/flez2UjJXDAtR3gMRpPXFHn1snRPsJENzbJ7IQ8m4aazAE5H00So3LKJRPwJKDfshxFd8kFX7rYaIfW5vLHkUfpA6Pz6rVAJeSjjQZ766QBOmUwCZjrTaxgizvAp+A=
+	t=1750174779; cv=none; b=T25ncFhyasZgTosXFgzm3lr4zNQo8gsghJJWlPPRJKWQNKcVQFuZZVXd7fsqq0+xOyy4pRKpOnX2aXxs0IvgnsNOzgmy+YcsIeEYpl64WPZTWN4NbOxjdk5hi60789GnB8cRu/s4J5d/ulhiimSXQ+3AdIHM2d/5xMV71fgsjAU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750174721; c=relaxed/simple;
-	bh=SASNGHRMcFKz2NJluvnZHAqWe/An3dW4c2ddq5Jj5iY=;
+	s=arc-20240116; t=1750174779; c=relaxed/simple;
+	bh=GUmgAZNfWdGQuVzt+kYVrLt+EiyPFmFBIr9fGLbZ5Ds=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Jj62U1Z6RD75Mezbr0JcRqH0oDgy32/BStcGv7d++IuVz3RTS1djmpLfhyRtcRu4cXGCLUfQHB/EcxrB/s5ZegjpoNQLrqIcTibnMYbQNdpufznSFp6hIkNzCVs/b6zw2Ii0naPBCH+XPoVp8eeHJ7n4IgJj3En3IdZDb26NoII=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WGrtuCw9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 396E1C4CEE3;
-	Tue, 17 Jun 2025 15:38:40 +0000 (UTC)
+	 MIME-Version; b=LMBBhNEtO69KfyMouWuqtMvEBZwNU+OUm7jztYarACKZD1NJOJfnWYp/9wJVSz4AN2KsnYUm3eQg9I1ALG2s3Nxs3q75nnyDNcY0ywhfCJ5avQVWD8cPXFv02A2iqjeH0OIBwCtJ9dV/+KidwycXJT9o2F8W4gdy+adzC9TLR6g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wDBftx5x; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61730C4CEE3;
+	Tue, 17 Jun 2025 15:39:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750174720;
-	bh=SASNGHRMcFKz2NJluvnZHAqWe/An3dW4c2ddq5Jj5iY=;
+	s=korg; t=1750174778;
+	bh=GUmgAZNfWdGQuVzt+kYVrLt+EiyPFmFBIr9fGLbZ5Ds=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WGrtuCw9Vkftv2pQyUk/p/zPEJrI5w6vJU+iTQ7zzW35ga3i5UMq3SB/aqZ5QbHn5
-	 bQpkO2DnDTvK8zgP1R9j95ZpyF4N8Tj5sF5rxSDshQVOneKpprmr5b00hdNdlYiIEh
-	 E6bDSMnYbji8GxYRHwDaBl2QcUQH8efoGXXGZWoI=
+	b=wDBftx5xiOM/SkDHY4qnbRjFhCxvRmg3+pPi7QFtNyZhSKMrq4vf6J/CUJSzYbAOY
+	 We3/NKoxLO1Qu7Kk+XoprNUmb5UJKS8P5cJcBw05fkRNJC9joYy4E/CLEx0SYz3nGe
+	 ZMTqyTajmUY/ko0upovJNY+ClCszdSfqJx5XlLEA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lorenzo Bianconi <lorenzo@kernel.org>,
-	Martin KaFai Lau <martin.lau@kernel.org>,
-	Stanislav Fomichev <sdf@fomichev.me>,
+	Huajian Yang <huajianyang@asrmicro.com>,
+	Florian Westphal <fw@strlen.de>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 105/356] bpf: Allow XDP dev-bound programs to perform XDP_REDIRECT into maps
-Date: Tue, 17 Jun 2025 17:23:40 +0200
-Message-ID: <20250617152342.450498864@linuxfoundation.org>
+Subject: [PATCH 6.6 106/356] netfilter: bridge: Move specific fragmented packet to slow_path instead of dropping it
+Date: Tue, 17 Jun 2025 17:23:41 +0200
+Message-ID: <20250617152342.487592803@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250617152338.212798615@linuxfoundation.org>
 References: <20250617152338.212798615@linuxfoundation.org>
@@ -67,89 +67,93 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Lorenzo Bianconi <lorenzo@kernel.org>
+From: Huajian Yang <huajianyang@asrmicro.com>
 
-[ Upstream commit 714070c4cb7a10ff57450a618a936775f3036245 ]
+[ Upstream commit aa04c6f45b9224b949aa35d4fa5f8d0ba07b23d4 ]
 
-In the current implementation if the program is dev-bound to a specific
-device, it will not be possible to perform XDP_REDIRECT into a DEVMAP
-or CPUMAP even if the program is running in the driver NAPI context and
-it is not attached to any map entry. This seems in contrast with the
-explanation available in bpf_prog_map_compatible routine.
-Fix the issue introducing __bpf_prog_map_compatible utility routine in
-order to avoid bpf_prog_is_dev_bound() check running bpf_check_tail_call()
-at program load time (bpf_prog_select_runtime()).
-Continue forbidding to attach a dev-bound program to XDP maps
-(BPF_MAP_TYPE_PROG_ARRAY, BPF_MAP_TYPE_DEVMAP and BPF_MAP_TYPE_CPUMAP).
+The config NF_CONNTRACK_BRIDGE will change the bridge forwarding for
+fragmented packets.
 
-Fixes: 3d76a4d3d4e59 ("bpf: XDP metadata RX kfuncs")
-Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
-Signed-off-by: Martin KaFai Lau <martin.lau@kernel.org>
-Acked-by: Stanislav Fomichev <sdf@fomichev.me>
+The original bridge does not know that it is a fragmented packet and
+forwards it directly, after NF_CONNTRACK_BRIDGE is enabled, function
+nf_br_ip_fragment and br_ip6_fragment will check the headroom.
+
+In original br_forward, insufficient headroom of skb may indeed exist,
+but there's still a way to save the skb in the device driver after
+dev_queue_xmit.So droping the skb will change the original bridge
+forwarding in some cases.
+
+Fixes: 3c171f496ef5 ("netfilter: bridge: add connection tracking system")
+Signed-off-by: Huajian Yang <huajianyang@asrmicro.com>
+Reviewed-by: Florian Westphal <fw@strlen.de>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/bpf/core.c | 27 ++++++++++++++++-----------
- 1 file changed, 16 insertions(+), 11 deletions(-)
+ net/bridge/netfilter/nf_conntrack_bridge.c | 12 ++++++------
+ net/ipv6/netfilter.c                       | 12 ++++++------
+ 2 files changed, 12 insertions(+), 12 deletions(-)
 
-diff --git a/kernel/bpf/core.c b/kernel/bpf/core.c
-index 81fd1bb994164..3f140b7527cfc 100644
---- a/kernel/bpf/core.c
-+++ b/kernel/bpf/core.c
-@@ -2258,8 +2258,8 @@ static unsigned int __bpf_prog_ret0_warn(const void *ctx,
- }
- #endif
+diff --git a/net/bridge/netfilter/nf_conntrack_bridge.c b/net/bridge/netfilter/nf_conntrack_bridge.c
+index 4fbfbafdfa027..4b4a396d97225 100644
+--- a/net/bridge/netfilter/nf_conntrack_bridge.c
++++ b/net/bridge/netfilter/nf_conntrack_bridge.c
+@@ -60,19 +60,19 @@ static int nf_br_ip_fragment(struct net *net, struct sock *sk,
+ 		struct ip_fraglist_iter iter;
+ 		struct sk_buff *frag;
  
--bool bpf_prog_map_compatible(struct bpf_map *map,
--			     const struct bpf_prog *fp)
-+static bool __bpf_prog_map_compatible(struct bpf_map *map,
-+				      const struct bpf_prog *fp)
- {
- 	enum bpf_prog_type prog_type = resolve_prog_type(fp);
- 	bool ret;
-@@ -2268,14 +2268,6 @@ bool bpf_prog_map_compatible(struct bpf_map *map,
- 	if (fp->kprobe_override)
- 		return false;
+-		if (first_len - hlen > mtu ||
+-		    skb_headroom(skb) < ll_rs)
++		if (first_len - hlen > mtu)
+ 			goto blackhole;
  
--	/* XDP programs inserted into maps are not guaranteed to run on
--	 * a particular netdev (and can run outside driver context entirely
--	 * in the case of devmap and cpumap). Until device checks
--	 * are implemented, prohibit adding dev-bound programs to program maps.
--	 */
--	if (bpf_prog_is_dev_bound(aux))
--		return false;
--
- 	spin_lock(&map->owner.lock);
- 	if (!map->owner.type) {
- 		/* There's no owner yet where we could check for
-@@ -2309,6 +2301,19 @@ bool bpf_prog_map_compatible(struct bpf_map *map,
- 	return ret;
- }
+-		if (skb_cloned(skb))
++		if (skb_cloned(skb) ||
++		    skb_headroom(skb) < ll_rs)
+ 			goto slow_path;
  
-+bool bpf_prog_map_compatible(struct bpf_map *map, const struct bpf_prog *fp)
-+{
-+	/* XDP programs inserted into maps are not guaranteed to run on
-+	 * a particular netdev (and can run outside driver context entirely
-+	 * in the case of devmap and cpumap). Until device checks
-+	 * are implemented, prohibit adding dev-bound programs to program maps.
-+	 */
-+	if (bpf_prog_is_dev_bound(fp->aux))
-+		return false;
-+
-+	return __bpf_prog_map_compatible(map, fp);
-+}
-+
- static int bpf_check_tail_call(const struct bpf_prog *fp)
- {
- 	struct bpf_prog_aux *aux = fp->aux;
-@@ -2321,7 +2326,7 @@ static int bpf_check_tail_call(const struct bpf_prog *fp)
- 		if (!map_type_contains_progs(map))
- 			continue;
+ 		skb_walk_frags(skb, frag) {
+-			if (frag->len > mtu ||
+-			    skb_headroom(frag) < hlen + ll_rs)
++			if (frag->len > mtu)
+ 				goto blackhole;
  
--		if (!bpf_prog_map_compatible(map, fp)) {
-+		if (!__bpf_prog_map_compatible(map, fp)) {
- 			ret = -EINVAL;
- 			goto out;
+-			if (skb_shared(frag))
++			if (skb_shared(frag) ||
++			    skb_headroom(frag) < hlen + ll_rs)
+ 				goto slow_path;
  		}
+ 
+diff --git a/net/ipv6/netfilter.c b/net/ipv6/netfilter.c
+index 7c4af48d529e1..606aae4e78a9a 100644
+--- a/net/ipv6/netfilter.c
++++ b/net/ipv6/netfilter.c
+@@ -163,20 +163,20 @@ int br_ip6_fragment(struct net *net, struct sock *sk, struct sk_buff *skb,
+ 		struct ip6_fraglist_iter iter;
+ 		struct sk_buff *frag2;
+ 
+-		if (first_len - hlen > mtu ||
+-		    skb_headroom(skb) < (hroom + sizeof(struct frag_hdr)))
++		if (first_len - hlen > mtu)
+ 			goto blackhole;
+ 
+-		if (skb_cloned(skb))
++		if (skb_cloned(skb) ||
++		    skb_headroom(skb) < (hroom + sizeof(struct frag_hdr)))
+ 			goto slow_path;
+ 
+ 		skb_walk_frags(skb, frag2) {
+-			if (frag2->len > mtu ||
+-			    skb_headroom(frag2) < (hlen + hroom + sizeof(struct frag_hdr)))
++			if (frag2->len > mtu)
+ 				goto blackhole;
+ 
+ 			/* Partially cloned skb? */
+-			if (skb_shared(frag2))
++			if (skb_shared(frag2) ||
++			    skb_headroom(frag2) < (hlen + hroom + sizeof(struct frag_hdr)))
+ 				goto slow_path;
+ 		}
+ 
 -- 
 2.39.5
 
