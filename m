@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-153440-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-154152-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3E7F4ADD4BB
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:13:35 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1AE08ADD7F5
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:50:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 312B81947CA7
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:04:11 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 795D42C752C
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:43:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6F2C2EA177;
-	Tue, 17 Jun 2025 15:59:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4EE7C2ED87D;
+	Tue, 17 Jun 2025 16:37:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bIPrMOzx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pMIuiI9M"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6360B2DFF0B;
-	Tue, 17 Jun 2025 15:59:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B6A1235071;
+	Tue, 17 Jun 2025 16:37:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750175969; cv=none; b=bQ2+WOnbDL5MqBc5obeC7nwIvbClZBB/sdsOfp0CyikZmp60RAhkSDNHLW3x7eClPzhSfzj5SPWzEyHjjoePCxoGdvU5BNLCQiWVKwnhzFBupahrQAt5IFOFXLhYD9qaeF2JjohaVWJGZxP6nIF4qkdj26eFZ6dfr+CQohxq6jI=
+	t=1750178269; cv=none; b=JDGV3QM5rN57RE4kx/fKIerd3cJ0zq5v++d+Mf6gOqEgRLRfZKPtB62rwJSWIoz4fe7VFZE3GWmY5htKlkX4ZoqvgY5ss+/FJCvTMVKw2I57A62BqVXorDo/Vzws3UWbvf3yMN3EgsQJOJphHvZeWwrBUs1i6uNngHXT8ATR6m8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750175969; c=relaxed/simple;
-	bh=i0StvP6HcX48wFE0JyvgLRRAzuw3cQBOm1553WQhZtE=;
+	s=arc-20240116; t=1750178269; c=relaxed/simple;
+	bh=FttFKwQxlksZ0cSyGqeVRTGHvhR7luBksFVy0NHwhks=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=K7QjvJRHFXDWqeM8S1HiQOGjav4RU35Xc7l3j6IW8MYtO3JKzMCbq4xu2EQZ7P+P8Uj64Ietczsz92uxPKemA8nhbeaUYHgax39grOHgb+0omMKWZsLefUP6yjgY2w83BajggF0c0nro1cKbN4OfwuHsZneOsj2wwGSm5qXIJ8Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bIPrMOzx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C728DC4CEE3;
-	Tue, 17 Jun 2025 15:59:28 +0000 (UTC)
+	 MIME-Version; b=c+PwgEsHrAM3XySf2wSSYviZdxmlWXJTSs6e+IYb1PCEbJTn3Ck+AlbQ39FsP671oBtQuNIQg2bz6hEg6EPSWURLoumlHMZvwzHnJ3v1+5r1+k1RJ5wIjkJX0nlwEzCX5vWnbo9S8bmtICzSVD7d+zk/d5k68gPAefHSLMUvzGM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pMIuiI9M; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D190C4CEE3;
+	Tue, 17 Jun 2025 16:37:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750175969;
-	bh=i0StvP6HcX48wFE0JyvgLRRAzuw3cQBOm1553WQhZtE=;
+	s=korg; t=1750178268;
+	bh=FttFKwQxlksZ0cSyGqeVRTGHvhR7luBksFVy0NHwhks=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bIPrMOzxLyhZU3oMvEKkdp07K03hXS1xZRre5GTFh/dXR3XuVRGeICDQhtZq6nJUI
-	 2fN5AOjUjdt4Bz+7T5JrMjtVe+FF5bxOlH/emtWjv9mCk2EP6QuLMEd9AkSUO99AyZ
-	 65meagmCq4nEi+bMDgwWoJRU8NiQDvhKUD/F6TJE=
+	b=pMIuiI9Mafli1KpzU8XSiPycWQt1oDp6o4EHZni/HTYun0Pj0ladhifXw5XMXU2Rm
+	 xs7mOhSPI+9OkT2uFdX7tLQNkUSLW78mmaV35PXad2tPZFKUjjb7S1Ljsp9JCeGbuG
+	 PKIl5Aqw5NtrogjCL9KcBsop6RxJ5J2obYUzbsB8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Longfang Liu <liulongfang@huawei.com>,
-	Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>,
-	Alex Williamson <alex.williamson@redhat.com>,
+	Alexei Safin <a.safin@rosa.ru>,
+	Guenter Roeck <linux@roeck-us.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 177/512] hisi_acc_vfio_pci: add eq and aeq interruption restore
-Date: Tue, 17 Jun 2025 17:22:23 +0200
-Message-ID: <20250617152426.814678000@linuxfoundation.org>
+Subject: [PATCH 6.15 436/780] hwmon: (asus-ec-sensors) check sensor index in read_string()
+Date: Tue, 17 Jun 2025 17:22:24 +0200
+Message-ID: <20250617152509.220481538@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
-References: <20250617152419.512865572@linuxfoundation.org>
+In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
+References: <20250617152451.485330293@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,67 +62,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Longfang Liu <liulongfang@huawei.com>
+From: Alexei Safin <a.safin@rosa.ru>
 
-[ Upstream commit 3495cec0787721ba7a9d5c19d0bbb66d182de584 ]
+[ Upstream commit 25be318324563c63cbd9cb53186203a08d2f83a1 ]
 
-In order to ensure that the task packets of the accelerator
-device are not lost during the migration process, it is necessary
-to send an EQ and AEQ command to the device after the live migration
-is completed and to update the completion position of the task queue.
+Prevent a potential invalid memory access when the requested sensor
+is not found.
 
-Let the device recheck the completed tasks data and if there are
-uncollected packets, device resend a task completion interrupt
-to the software.
+find_ec_sensor_index() may return a negative value (e.g. -ENOENT),
+but its result was used without checking, which could lead to
+undefined behavior when passed to get_sensor_info().
 
-Fixes: b0eed085903e ("hisi_acc_vfio_pci: Add support for VFIO live migration")
-Signed-off-by: Longfang Liu <liulongfang@huawei.com>
-Reviewed-by: Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>
-Link: https://lore.kernel.org/r/20250510081155.55840-3-liulongfang@huawei.com
-Signed-off-by: Alex Williamson <alex.williamson@redhat.com>
+Add a proper check to return -EINVAL if sensor_index is negative.
+
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
+
+Fixes: d0ddfd241e57 ("hwmon: (asus-ec-sensors) add driver for ASUS EC")
+Signed-off-by: Alexei Safin <a.safin@rosa.ru>
+Link: https://lore.kernel.org/r/20250424202654.5902-1-a.safin@rosa.ru
+[groeck: Return error code returned from find_ec_sensor_index]
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/vfio/pci/hisilicon/hisi_acc_vfio_pci.c | 16 ++++++++++++++++
- 1 file changed, 16 insertions(+)
+ drivers/hwmon/asus-ec-sensors.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/vfio/pci/hisilicon/hisi_acc_vfio_pci.c b/drivers/vfio/pci/hisilicon/hisi_acc_vfio_pci.c
-index ec38977336778..81e9a4d362fbc 100644
---- a/drivers/vfio/pci/hisilicon/hisi_acc_vfio_pci.c
-+++ b/drivers/vfio/pci/hisilicon/hisi_acc_vfio_pci.c
-@@ -470,6 +470,19 @@ static int vf_qm_get_match_data(struct hisi_acc_vf_core_device *hisi_acc_vdev,
- 	return 0;
- }
- 
-+static void vf_qm_xeqc_save(struct hisi_qm *qm,
-+			    struct hisi_acc_vf_migration_file *migf)
-+{
-+	struct acc_vf_data *vf_data = &migf->vf_data;
-+	u16 eq_head, aeq_head;
-+
-+	eq_head = vf_data->qm_eqc_dw[0] & 0xFFFF;
-+	qm_db(qm, 0, QM_DOORBELL_CMD_EQ, eq_head, 0);
-+
-+	aeq_head = vf_data->qm_aeqc_dw[0] & 0xFFFF;
-+	qm_db(qm, 0, QM_DOORBELL_CMD_AEQ, aeq_head, 0);
-+}
-+
- static int vf_qm_load_data(struct hisi_acc_vf_core_device *hisi_acc_vdev,
- 			   struct hisi_acc_vf_migration_file *migf)
+diff --git a/drivers/hwmon/asus-ec-sensors.c b/drivers/hwmon/asus-ec-sensors.c
+index 006ced5ab6e6a..c7c02a1f55d45 100644
+--- a/drivers/hwmon/asus-ec-sensors.c
++++ b/drivers/hwmon/asus-ec-sensors.c
+@@ -933,6 +933,10 @@ static int asus_ec_hwmon_read_string(struct device *dev,
  {
-@@ -566,6 +579,9 @@ static int vf_qm_state_save(struct hisi_acc_vf_core_device *hisi_acc_vdev,
- 	}
- 
- 	migf->total_length = sizeof(struct acc_vf_data);
-+	/* Save eqc and aeqc interrupt information */
-+	vf_qm_xeqc_save(vf_qm, migf);
+ 	struct ec_sensors_data *state = dev_get_drvdata(dev);
+ 	int sensor_index = find_ec_sensor_index(state, type, channel);
 +
- 	return 0;
- }
++	if (sensor_index < 0)
++		return sensor_index;
++
+ 	*str = get_sensor_info(state, sensor_index)->label;
  
+ 	return 0;
 -- 
 2.39.5
 
