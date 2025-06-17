@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-154405-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153437-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 012E6ADD99A
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 19:08:00 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CDCFBADD499
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:12:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 375AA189AE9A
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:53:30 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2087B3A4B43
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:03:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6896E238C0A;
-	Tue, 17 Jun 2025 16:51:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 165672F2C6A;
+	Tue, 17 Jun 2025 15:59:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ME4ziLrV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zo1AS+cZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 245BA2FA622;
-	Tue, 17 Jun 2025 16:51:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6A312ECEB2;
+	Tue, 17 Jun 2025 15:59:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750179090; cv=none; b=KUiwc3qCz9WSLR+cLtugPUgRjieENWDhnzSrv3zFpIY2wsZTIcphp6ubN8CshK4bQf7AZtbz+dWGA3EymbT/y2F+b4kyLn/9RVJNv25XvV/KcURhXSIoLdSdOP9Cy1FevG7ZnZsc75juJRCV0Oej2SutzYacsJH8yGSv1bnw+5Y=
+	t=1750175959; cv=none; b=UZUg720IFepyWUl33JEXtWD9w8988vR/cI5rqXlf7sQ5fTtN0Wsfzbr2HV1BPfbPkDw7OCml5qKnJTu3VBPU2pls1TqdBvZ4bjPXKf6rQ2NUIlvw+W31cAtI1bGL+rRgLtJTT2JyxO/8J62h5SF7Qgy+1KUqKTIoQu+5y/WJBYY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750179090; c=relaxed/simple;
-	bh=G+KGIqxpYEdDjr0NpVyy+IERpHQHHX0vj0p5E3x6+TE=;
+	s=arc-20240116; t=1750175959; c=relaxed/simple;
+	bh=hcmSfGrHlOGwER+KMI44Whvtj9uYzwPR7O8kVIMrH1w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=i2VohlUe+nJ9UZCCSV9OYGozKqdkq8cf8h/7qYZKfI1kRrhYlafDN+GQxrv0k5N/etWxRTcH2bthlVVsCnR70xWfW5fNIpASAn4EOrEzdi0NCLctc4AMJtC1/H2BxkQszF+F0DU1N4vj8lvugUWo/IzSDPCk6X2YSIkWUtQ5fEk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ME4ziLrV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56F8EC4CEE3;
-	Tue, 17 Jun 2025 16:51:29 +0000 (UTC)
+	 MIME-Version; b=KQw3uCXLkChlwKY9wOIx9vNREUU8rBzstAhgkXs45YbQXEq1PSIZUfapJbsqW5Uy15lhms6xQqTkSGq67V6TVexeZspqQmF6ni6qClt5cDtQPDXLw3VvdqMkWEr4Q7HsD/BUwYm3eGdBeqWxgGtTRof/w5wzubVwlmcK+E4Fg58=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zo1AS+cZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2EA07C4CEE3;
+	Tue, 17 Jun 2025 15:59:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750179089;
-	bh=G+KGIqxpYEdDjr0NpVyy+IERpHQHHX0vj0p5E3x6+TE=;
+	s=korg; t=1750175959;
+	bh=hcmSfGrHlOGwER+KMI44Whvtj9uYzwPR7O8kVIMrH1w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ME4ziLrVGs0MhIwOosar6htkNSo22e7wklTTwdRz2XmoecAwO/mkPIUaKOVKLdke6
-	 Ift/AP40F7j8xDjbW1sbiR+dlv9ACkjrpakwzxzwEhKew6imL/xvNnk/nF99uQhkp8
-	 feDTik0yYXw5M50ud81aDvvnGUIkbqPRZylvCL7o=
+	b=zo1AS+cZQap4x70u2rSg3QyD8U+Pm5SNj6eOAST4IE1LLTR+lrTrpTeJ4RWPlGY/4
+	 AswdHt4iijNrxPQVqfyCJIhPH30r4weYiPF3A7n00TH3AOx6L+c4FwXUvIaldhJ0ii
+	 33jtqQnL4MW78ahPzBaIZk2KiqSDSCds4pCIBL2I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Amadeusz=20S=C5=82awi=C5=84ski?= <amadeuszx.slawinski@linux.intel.com>,
-	Cezary Rojewski <cezary.rojewski@intel.com>,
-	Liam Girdwood <liam.r.girdwood@linux.intel.com>,
-	Mark Brown <broonie@kernel.org>,
+	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
+	Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 637/780] ALSA: hda: Allow to fetch hlink by ID
+Subject: [PATCH 6.6 230/356] usb: renesas_usbhs: Reorder clock handling and power management in probe
 Date: Tue, 17 Jun 2025 17:25:45 +0200
-Message-ID: <20250617152517.416436446@linuxfoundation.org>
+Message-ID: <20250617152347.454825218@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
-References: <20250617152451.485330293@linuxfoundation.org>
+In-Reply-To: <20250617152338.212798615@linuxfoundation.org>
+References: <20250617152338.212798615@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,115 +60,195 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cezary Rojewski <cezary.rojewski@intel.com>
+From: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
 
-[ Upstream commit 318c9eef63dd30b59dc8d63c7205ae997aa1e524 ]
+[ Upstream commit ffb34a60ce86656ba12d46e91f1ccc71dd221251 ]
 
-Starting with LNL platform, Intel HDAudio Links carry IDs specifying
-non-HDAudio transfer type they help facilitate e.g.: 0xC0 for I2S as
-defined by AZX_REG_ML_LEPTR_ID_INTEL_SSP.
+Reorder the initialization sequence in `usbhs_probe()` to enable runtime
+PM before accessing registers, preventing potential crashes due to
+uninitialized clocks.
 
-The mechanism accounts for LEPTR register as it is Reserved if
-LCAP.ALT for given Link equals 0.
+Currently, in the probe path, registers are accessed before enabling the
+clocks, leading to a synchronous external abort on the RZ/V2H SoC.
+The problematic call flow is as follows:
 
-Reviewed-by: Amadeusz Sławiński <amadeuszx.slawinski@linux.intel.com>
-Signed-off-by: Cezary Rojewski <cezary.rojewski@intel.com>
-Acked-by: Liam Girdwood <liam.r.girdwood@linux.intel.com>
-Link: https://patch.msgid.link/20250407112352.3720779-2-cezary.rojewski@intel.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Stable-dep-of: 347c8d6db7c9 ("ASoC: Intel: avs: Fix PPLCxFMT calculation")
+    usbhs_probe()
+        usbhs_sys_clock_ctrl()
+            usbhs_bset()
+                usbhs_write()
+                    iowrite16()  <-- Register access before enabling clocks
+
+Since `iowrite16()` is performed without ensuring the required clocks are
+enabled, this can lead to access errors. To fix this, enable PM runtime
+early in the probe function and ensure clocks are acquired before register
+access, preventing crashes like the following on RZ/V2H:
+
+[13.272640] Internal error: synchronous external abort: 0000000096000010 [#1] PREEMPT SMP
+[13.280814] Modules linked in: cec renesas_usbhs(+) drm_kms_helper fuse drm backlight ipv6
+[13.289088] CPU: 1 UID: 0 PID: 195 Comm: (udev-worker) Not tainted 6.14.0-rc7+ #98
+[13.296640] Hardware name: Renesas RZ/V2H EVK Board based on r9a09g057h44 (DT)
+[13.303834] pstate: 60400005 (nZCv daif +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+[13.310770] pc : usbhs_bset+0x14/0x4c [renesas_usbhs]
+[13.315831] lr : usbhs_probe+0x2e4/0x5ac [renesas_usbhs]
+[13.321138] sp : ffff8000827e3850
+[13.324438] x29: ffff8000827e3860 x28: 0000000000000000 x27: ffff8000827e3ca0
+[13.331554] x26: ffff8000827e3ba0 x25: ffff800081729668 x24: 0000000000000025
+[13.338670] x23: ffff0000c0f08000 x22: 0000000000000000 x21: ffff0000c0f08010
+[13.345783] x20: 0000000000000000 x19: ffff0000c3b52080 x18: 00000000ffffffff
+[13.352895] x17: 0000000000000000 x16: 0000000000000000 x15: ffff8000827e36ce
+[13.360009] x14: 00000000000003d7 x13: 00000000000003d7 x12: 0000000000000000
+[13.367122] x11: 0000000000000000 x10: 0000000000000aa0 x9 : ffff8000827e3750
+[13.374235] x8 : ffff0000c1850b00 x7 : 0000000003826060 x6 : 000000000000001c
+[13.381347] x5 : 000000030d5fcc00 x4 : ffff8000825c0000 x3 : 0000000000000000
+[13.388459] x2 : 0000000000000400 x1 : 0000000000000000 x0 : ffff0000c3b52080
+[13.395574] Call trace:
+[13.398013]  usbhs_bset+0x14/0x4c [renesas_usbhs] (P)
+[13.403076]  platform_probe+0x68/0xdc
+[13.406738]  really_probe+0xbc/0x2c0
+[13.410306]  __driver_probe_device+0x78/0x120
+[13.414653]  driver_probe_device+0x3c/0x154
+[13.418825]  __driver_attach+0x90/0x1a0
+[13.422647]  bus_for_each_dev+0x7c/0xe0
+[13.426470]  driver_attach+0x24/0x30
+[13.430032]  bus_add_driver+0xe4/0x208
+[13.433766]  driver_register+0x68/0x130
+[13.437587]  __platform_driver_register+0x24/0x30
+[13.442273]  renesas_usbhs_driver_init+0x20/0x1000 [renesas_usbhs]
+[13.448450]  do_one_initcall+0x60/0x1d4
+[13.452276]  do_init_module+0x54/0x1f8
+[13.456014]  load_module+0x1754/0x1c98
+[13.459750]  init_module_from_file+0x88/0xcc
+[13.464004]  __arm64_sys_finit_module+0x1c4/0x328
+[13.468689]  invoke_syscall+0x48/0x104
+[13.472426]  el0_svc_common.constprop.0+0xc0/0xe0
+[13.477113]  do_el0_svc+0x1c/0x28
+[13.480415]  el0_svc+0x30/0xcc
+[13.483460]  el0t_64_sync_handler+0x10c/0x138
+[13.487800]  el0t_64_sync+0x198/0x19c
+[13.491453] Code: 2a0103e1 12003c42 12003c63 8b010084 (79400084)
+[13.497522] ---[ end trace 0000000000000000 ]---
+
+Fixes: f1407d5c66240 ("usb: renesas_usbhs: Add Renesas USBHS common code")
+Signed-off-by: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
+Reviewed-by: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
+Tested-by: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
+Link: https://lore.kernel.org/r/20250407105002.107181-4-prabhakar.mahadev-lad.rj@bp.renesas.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/sound/hdaudio_ext.h         |  5 +++++
- sound/hda/ext/hdac_ext_controller.c | 18 ++++++++++++++++++
- 2 files changed, 23 insertions(+)
+ drivers/usb/renesas_usbhs/common.c | 50 +++++++++++++++++++++++-------
+ 1 file changed, 38 insertions(+), 12 deletions(-)
 
-diff --git a/include/sound/hdaudio_ext.h b/include/sound/hdaudio_ext.h
-index 4c7a40e149a59..60ec12e3b72f8 100644
---- a/include/sound/hdaudio_ext.h
-+++ b/include/sound/hdaudio_ext.h
-@@ -22,6 +22,7 @@ void snd_hdac_ext_bus_ppcap_enable(struct hdac_bus *chip, bool enable);
- void snd_hdac_ext_bus_ppcap_int_enable(struct hdac_bus *chip, bool enable);
+diff --git a/drivers/usb/renesas_usbhs/common.c b/drivers/usb/renesas_usbhs/common.c
+index 205820544f6f9..b720899725e53 100644
+--- a/drivers/usb/renesas_usbhs/common.c
++++ b/drivers/usb/renesas_usbhs/common.c
+@@ -674,10 +674,29 @@ static int usbhs_probe(struct platform_device *pdev)
+ 	INIT_DELAYED_WORK(&priv->notify_hotplug_work, usbhsc_notify_hotplug);
+ 	spin_lock_init(usbhs_priv_to_lock(priv));
  
- int snd_hdac_ext_bus_get_ml_capabilities(struct hdac_bus *bus);
-+struct hdac_ext_link *snd_hdac_ext_bus_get_hlink_by_id(struct hdac_bus *bus, u32 id);
- struct hdac_ext_link *snd_hdac_ext_bus_get_hlink_by_addr(struct hdac_bus *bus, int addr);
- struct hdac_ext_link *snd_hdac_ext_bus_get_hlink_by_name(struct hdac_bus *bus,
- 							 const char *codec_name);
-@@ -97,12 +98,16 @@ struct hdac_ext_link {
- 	void __iomem *ml_addr; /* link output stream reg pointer */
- 	u32 lcaps;   /* link capablities */
- 	u16 lsdiid;  /* link sdi identifier */
-+	u32 id;
- 
- 	int ref_count;
- 
- 	struct list_head list;
- };
- 
-+#define hdac_ext_link_alt(link)		((link)->lcaps & AZX_ML_HDA_LCAP_ALT)
-+#define hdac_ext_link_ofls(link)	((link)->lcaps & AZX_ML_HDA_LCAP_OFLS)
++	/*
++	 * Acquire clocks and enable power management (PM) early in the
++	 * probe process, as the driver accesses registers during
++	 * initialization. Ensure the device is active before proceeding.
++	 */
++	pm_runtime_enable(dev);
 +
- int snd_hdac_ext_bus_link_power_up(struct hdac_ext_link *hlink);
- int snd_hdac_ext_bus_link_power_down(struct hdac_ext_link *hlink);
- int snd_hdac_ext_bus_link_power_up_all(struct hdac_bus *bus);
-diff --git a/sound/hda/ext/hdac_ext_controller.c b/sound/hda/ext/hdac_ext_controller.c
-index 6199bb60ccf00..2ec1531d1c1b5 100644
---- a/sound/hda/ext/hdac_ext_controller.c
-+++ b/sound/hda/ext/hdac_ext_controller.c
-@@ -9,6 +9,7 @@
-  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  */
- 
-+#include <linux/bitfield.h>
- #include <linux/delay.h>
- #include <linux/slab.h>
- #include <sound/hda_register.h>
-@@ -81,6 +82,7 @@ int snd_hdac_ext_bus_get_ml_capabilities(struct hdac_bus *bus)
- 	int idx;
- 	u32 link_count;
- 	struct hdac_ext_link *hlink;
-+	u32 leptr;
- 
- 	link_count = readl(bus->mlcap + AZX_REG_ML_MLCD) + 1;
- 
-@@ -97,6 +99,11 @@ int snd_hdac_ext_bus_get_ml_capabilities(struct hdac_bus *bus)
- 		hlink->lcaps  = readl(hlink->ml_addr + AZX_REG_ML_LCAP);
- 		hlink->lsdiid = readw(hlink->ml_addr + AZX_REG_ML_LSDIID);
- 
-+		if (hdac_ext_link_alt(hlink)) {
-+			leptr = readl(hlink->ml_addr + AZX_REG_ML_LEPTR);
-+			hlink->id = FIELD_GET(AZX_REG_ML_LEPTR_ID, leptr);
-+		}
++	ret = usbhsc_clk_get(dev, priv);
++	if (ret)
++		goto probe_pm_disable;
 +
- 		/* since link in On, update the ref */
- 		hlink->ref_count = 1;
- 
-@@ -125,6 +132,17 @@ void snd_hdac_ext_link_free_all(struct hdac_bus *bus)
- }
- EXPORT_SYMBOL_GPL(snd_hdac_ext_link_free_all);
- 
-+struct hdac_ext_link *snd_hdac_ext_bus_get_hlink_by_id(struct hdac_bus *bus, u32 id)
-+{
-+	struct hdac_ext_link *hlink;
++	ret = pm_runtime_resume_and_get(dev);
++	if (ret)
++		goto probe_clk_put;
 +
-+	list_for_each_entry(hlink, &bus->hlink_list, list)
-+		if (hdac_ext_link_alt(hlink) && hlink->id == id)
-+			return hlink;
-+	return NULL;
-+}
-+EXPORT_SYMBOL_GPL(snd_hdac_ext_bus_get_hlink_by_id);
++	ret = usbhsc_clk_prepare_enable(priv);
++	if (ret)
++		goto probe_pm_put;
 +
- /**
-  * snd_hdac_ext_bus_get_hlink_by_addr - get hlink at specified address
-  * @bus: hlink's parent bus device
+ 	/* call pipe and module init */
+ 	ret = usbhs_pipe_probe(priv);
+ 	if (ret < 0)
+-		return ret;
++		goto probe_clk_dis_unprepare;
+ 
+ 	ret = usbhs_fifo_probe(priv);
+ 	if (ret < 0)
+@@ -694,10 +713,6 @@ static int usbhs_probe(struct platform_device *pdev)
+ 	if (ret)
+ 		goto probe_fail_rst;
+ 
+-	ret = usbhsc_clk_get(dev, priv);
+-	if (ret)
+-		goto probe_fail_clks;
+-
+ 	/*
+ 	 * deviece reset here because
+ 	 * USB device might be used in boot loader.
+@@ -710,7 +725,7 @@ static int usbhs_probe(struct platform_device *pdev)
+ 		if (ret) {
+ 			dev_warn(dev, "USB function not selected (GPIO)\n");
+ 			ret = -ENOTSUPP;
+-			goto probe_end_mod_exit;
++			goto probe_assert_rest;
+ 		}
+ 	}
+ 
+@@ -724,14 +739,19 @@ static int usbhs_probe(struct platform_device *pdev)
+ 	ret = usbhs_platform_call(priv, hardware_init, pdev);
+ 	if (ret < 0) {
+ 		dev_err(dev, "platform init failed.\n");
+-		goto probe_end_mod_exit;
++		goto probe_assert_rest;
+ 	}
+ 
+ 	/* reset phy for connection */
+ 	usbhs_platform_call(priv, phy_reset, pdev);
+ 
+-	/* power control */
+-	pm_runtime_enable(dev);
++	/*
++	 * Disable the clocks that were enabled earlier in the probe path,
++	 * and let the driver handle the clocks beyond this point.
++	 */
++	usbhsc_clk_disable_unprepare(priv);
++	pm_runtime_put(dev);
++
+ 	if (!usbhs_get_dparam(priv, runtime_pwctrl)) {
+ 		usbhsc_power_ctrl(priv, 1);
+ 		usbhs_mod_autonomy_mode(priv);
+@@ -748,9 +768,7 @@ static int usbhs_probe(struct platform_device *pdev)
+ 
+ 	return ret;
+ 
+-probe_end_mod_exit:
+-	usbhsc_clk_put(priv);
+-probe_fail_clks:
++probe_assert_rest:
+ 	reset_control_assert(priv->rsts);
+ probe_fail_rst:
+ 	usbhs_mod_remove(priv);
+@@ -758,6 +776,14 @@ static int usbhs_probe(struct platform_device *pdev)
+ 	usbhs_fifo_remove(priv);
+ probe_end_pipe_exit:
+ 	usbhs_pipe_remove(priv);
++probe_clk_dis_unprepare:
++	usbhsc_clk_disable_unprepare(priv);
++probe_pm_put:
++	pm_runtime_put(dev);
++probe_clk_put:
++	usbhsc_clk_put(priv);
++probe_pm_disable:
++	pm_runtime_disable(dev);
+ 
+ 	dev_info(dev, "probe failed (%d)\n", ret);
+ 
 -- 
 2.39.5
 
