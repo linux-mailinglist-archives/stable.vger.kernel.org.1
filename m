@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-153737-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-154339-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E0D51ADD63E
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:31:29 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id E8A0DADD897
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:57:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 62AA42C418B
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:22:18 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AA0AA161522
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:50:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF2912EF2AA;
-	Tue, 17 Jun 2025 16:15:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B645A2DFF2C;
+	Tue, 17 Jun 2025 16:48:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mn3Nn34V"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kf5FkLLz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A482A2DFF34;
-	Tue, 17 Jun 2025 16:15:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73B641A2632;
+	Tue, 17 Jun 2025 16:48:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750176933; cv=none; b=XY2eP9ixAAnerRQmC18vUgdGWvfQCtYjhq6BPJdBO4TrI3svzNvCVnnR3pezJ7Y4m8K5umK75zGCgxt0tRUAEvABAPQ3PexDJ0m5nWuYtmlRrnI6njyPGTZMiLMk7zWVrNyI+uThIV0gsest5aHjeSC9ooETd/5AHMLAl18MnG0=
+	t=1750178880; cv=none; b=SCPVyggYNnD6O5e/M0qZR65/XWj8Ou0VyNNzy5bM84BAYlwm2JNOikz3DSuvSMMENx715Z/L1lQeC1DfENnPF9KxZv4OAT5wFGre57SpmM54vg++fqGXAT+u1A6uhN1nF+HgUjmKfL4whcDjD6VzzQMhYvlr//Xyks90bDVCRak=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750176933; c=relaxed/simple;
-	bh=eiJD/keCcVBN8g8KSdR/16ufiqZVfwsjWcbJYjM+9L8=;
+	s=arc-20240116; t=1750178880; c=relaxed/simple;
+	bh=IBvwCBLN/ASl6t8K6G888PmsCb0C7SnyYuUZ+ZW+6Rg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=afFy8Foxr2QX/ijgIeW/DvLLp2mxtqGfszHBDLya0I/xgIeBLXV+mWoXe+yTTahMOFpEKac6+w4VRtPTSB3a0ePsT3ywE6cTf7NqSv9v97FNQJyQLd2qnvtsOuVoOTjXvIf6HtqhHotY1L+LBOCU+w388rsgtzfLuBfYrcX2Zc0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mn3Nn34V; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07501C4CEE3;
-	Tue, 17 Jun 2025 16:15:32 +0000 (UTC)
+	 MIME-Version; b=t/77qkuh52dwW7ziwawc4/Xp5HS//20RfczSZCp3Rnipz3aHzDie6krfXBtEIimVHy1nnW0xsUplZk/iDn9SqElwaLcPl6BJ1HutMAq92W4W0jCmn1AatMNtAaYd0gTWoH1kozZtJF1HXiaiKuOgUhM7ZOP9/ZsKiMA4pvZeKxc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kf5FkLLz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8D8DC4CEE3;
+	Tue, 17 Jun 2025 16:47:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750176933;
-	bh=eiJD/keCcVBN8g8KSdR/16ufiqZVfwsjWcbJYjM+9L8=;
+	s=korg; t=1750178880;
+	bh=IBvwCBLN/ASl6t8K6G888PmsCb0C7SnyYuUZ+ZW+6Rg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mn3Nn34VBSrisZzb1iLCkToR+wkcc73fAoTztjvCtT71Knw4X7d6tozYSvyJsqZNe
-	 rqwfP7L208nMKZKzghM77fMXH2OYGfXEoG7M3O3zNywpWjfbOS6xDMkhIl5w/tFD1f
-	 v4X+HRqkL0f9gJK87Q0BZ5YVVEouV9S4mhze/xy8=
+	b=kf5FkLLzX8B/xNgcCdb6YjXQ8bUKdFhw19on9qo9s7Sr80XhQqVtVe86chTLnxn7Y
+	 RSGJxI/tKQx1zCoxj2C4P9FVCo+zYPDPDjnxVZMLwYZlZpHPL/LBKXTKezUSTuYrzd
+	 6/bMQNCwYMBlJdudusu1piDe8wo/NRB2+qSHsbnE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kent Overstreet <kent.overstreet@linux.dev>,
-	Benjamin Marzinski <bmarzins@redhat.com>,
-	Mikulas Patocka <mpatocka@redhat.com>,
+	Christian Schrefl <chrisi.schrefl@gmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 281/512] dm-flakey: error all IOs when num_features is absent
-Date: Tue, 17 Jun 2025 17:24:07 +0200
-Message-ID: <20250617152430.983831399@linuxfoundation.org>
+Subject: [PATCH 6.15 540/780] rust: miscdevice: fix typo in MiscDevice::ioctl documentation
+Date: Tue, 17 Jun 2025 17:24:08 +0200
+Message-ID: <20250617152513.505821629@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
-References: <20250617152419.512865572@linuxfoundation.org>
+In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
+References: <20250617152451.485330293@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,70 +63,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Benjamin Marzinski <bmarzins@redhat.com>
+From: Christian Schrefl <chrisi.schrefl@gmail.com>
 
-[ Upstream commit 40ed054f39bc99eac09871c33198e501f4acdf24 ]
+[ Upstream commit 81e9edc1a8d657291409d70d93361d8277d226d8 ]
 
-dm-flakey would error all IOs if num_features was 0, but if it was
-absent, dm-flakey would never error any IO. Fix this so that no
-num_features works the same as num_features set to 0.
+Fixes one small typo (`utilties` to `utilities`) in the documentation of
+`MiscDevice::ioctl`.
 
-Fixes: aa7d7bc99fed7 ("dm flakey: add an "error_reads" option")
-Reported-by: Kent Overstreet <kent.overstreet@linux.dev>
-Signed-off-by: Benjamin Marzinski <bmarzins@redhat.com>
-Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
+Fixes: f893691e7426 ("rust: miscdevice: add base miscdevice abstraction")
+Signed-off-by: Christian Schrefl <chrisi.schrefl@gmail.com>
+Reviewed-by: Benno Lossin <lossin@kernel.org>
+Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+Link: https://lore.kernel.org/r/20250517-rust_miscdevice_fix_typo-v1-1-8c30a6237ba9@gmail.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/md/dm-flakey.c | 16 ++++++++--------
- 1 file changed, 8 insertions(+), 8 deletions(-)
+ rust/kernel/miscdevice.rs | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/md/dm-flakey.c b/drivers/md/dm-flakey.c
-index b690905ab89ff..806a80dd3bd9b 100644
---- a/drivers/md/dm-flakey.c
-+++ b/drivers/md/dm-flakey.c
-@@ -53,8 +53,8 @@ struct per_bio_data {
- static int parse_features(struct dm_arg_set *as, struct flakey_c *fc,
- 			  struct dm_target *ti)
- {
--	int r;
--	unsigned int argc;
-+	int r = 0;
-+	unsigned int argc = 0;
- 	const char *arg_name;
+diff --git a/rust/kernel/miscdevice.rs b/rust/kernel/miscdevice.rs
+index fa9ecc42602a4..15d10e5c1db7d 100644
+--- a/rust/kernel/miscdevice.rs
++++ b/rust/kernel/miscdevice.rs
+@@ -121,7 +121,7 @@ pub trait MiscDevice: Sized {
  
- 	static const struct dm_arg _args[] = {
-@@ -65,14 +65,13 @@ static int parse_features(struct dm_arg_set *as, struct flakey_c *fc,
- 		{0, PROBABILITY_BASE, "Invalid random corrupt argument"},
- 	};
- 
--	/* No feature arguments supplied. */
--	if (!as->argc)
--		return 0;
--
--	r = dm_read_arg_group(_args, as, &argc, &ti->error);
--	if (r)
-+	if (as->argc && (r = dm_read_arg_group(_args, as, &argc, &ti->error)))
- 		return r;
- 
-+	/* No feature arguments supplied. */
-+	if (!argc)
-+		goto error_all_io;
-+
- 	while (argc) {
- 		arg_name = dm_shift_arg(as);
- 		argc--;
-@@ -217,6 +216,7 @@ static int parse_features(struct dm_arg_set *as, struct flakey_c *fc,
- 	if (!fc->corrupt_bio_byte && !test_bit(ERROR_READS, &fc->flags) &&
- 	    !test_bit(DROP_WRITES, &fc->flags) && !test_bit(ERROR_WRITES, &fc->flags) &&
- 	    !fc->random_read_corrupt && !fc->random_write_corrupt) {
-+error_all_io:
- 		set_bit(ERROR_WRITES, &fc->flags);
- 		set_bit(ERROR_READS, &fc->flags);
- 	}
+     /// Handler for ioctls.
+     ///
+-    /// The `cmd` argument is usually manipulated using the utilties in [`kernel::ioctl`].
++    /// The `cmd` argument is usually manipulated using the utilities in [`kernel::ioctl`].
+     ///
+     /// [`kernel::ioctl`]: mod@crate::ioctl
+     fn ioctl(
 -- 
 2.39.5
 
