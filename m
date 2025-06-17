@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-154327-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153828-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C32AADD92A
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 19:03:32 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 01DDCADD6AC
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:36:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C569D4A3530
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:49:38 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9B9B24A0F00
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:25:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1CF12DE20A;
-	Tue, 17 Jun 2025 16:47:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF4D82F9484;
+	Tue, 17 Jun 2025 16:20:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xwWoX+oj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QD00eDQG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D03F2264D6;
-	Tue, 17 Jun 2025 16:47:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A984D2F9480;
+	Tue, 17 Jun 2025 16:20:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750178841; cv=none; b=Scy2B+Jc9NID8Gk4ljnpUN8HKYEdMnnG7XAaJWp0BzpPthIL9luItV8eeSqq5g5ktgCeAHwJwayUh7RixnwqgPwitVNqml99S5WO+u1A+4UakpaPPluFo/Eo615AE9+kaWDdTDnwLqkHme/qdG4lbAOnVHiFvoKM+UaSoq1eJ1Q=
+	t=1750177228; cv=none; b=nbZ+tAGHShubb/hGgTigL1BTOwCy4pQMzqK0Ulj8ml6AeUxAZW1cVjSaDDiRoLOL2y8Fh0eQmpl+3Fd7M6MVk2Gdc37E86fqm2EbFVThe13wT5MpuS+d2aVbjef4lZgaao/p7jdC9QRyIhi3c79oZDmz3sNrdyJrpdvskDjcB+8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750178841; c=relaxed/simple;
-	bh=xLqVsTCtoAT3QQ+2g1YkzEGJ//pt5L6//OxRBVDgFv4=;
+	s=arc-20240116; t=1750177228; c=relaxed/simple;
+	bh=T6IMXamBOQEFsoBEANpuAEU100gSmyVfIrn0VwGeANk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=M/SrOOwzJ5VNbL32z0vsBxUMbroXab23R1SGkfS1bZgZALir62rck0l1gaeTEHZvhlnKNPxtIWNZIX3WECAVI3Utv6JelGLOinmGeFrYjH6WTovevfNPxY68fSa/Xfye9ra0LCOkkx0eICrrHQew2YIxyoetNcZ1evfc1IZlUeU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xwWoX+oj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F121EC4CEE7;
-	Tue, 17 Jun 2025 16:47:20 +0000 (UTC)
+	 MIME-Version; b=ptiT+EyrQSwsl8cxMzQqDLJIUi4DmPW+DHf9ixSc9+mgqkxl2WjX6dRsCvJ+z3Aql9JIzYJWXcvDl1IHwpmJNdQ8qUsVuiGwqo9DafDNSgBWuZhyxPvNEuXGtYWCKHQDFVHT7x8+PCyDNSBHcAPCJewDFQxmGJ1b/kwTXcBt9Pc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QD00eDQG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B50FDC4CEE3;
+	Tue, 17 Jun 2025 16:20:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750178841;
-	bh=xLqVsTCtoAT3QQ+2g1YkzEGJ//pt5L6//OxRBVDgFv4=;
+	s=korg; t=1750177228;
+	bh=T6IMXamBOQEFsoBEANpuAEU100gSmyVfIrn0VwGeANk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xwWoX+ojh51AIZnhRDjuwgk09eNT3DjEDXAmy8ZVqzk5WKTO63axNBBX+wu3ys//E
-	 6NSx8LmRq/O3SrkMlNhM2M+gU+is7XQSSR3ks/441URj+g3eUXHdMEcthfsJrTGhPN
-	 FU92Fr91fH2HzeNHJpCbUxBH21e0wcDTZu94rDVw=
+	b=QD00eDQG4DiArHETJfIxbrTWQXAwX58tooRRvL6pCiVSleSxEJyXz2xLuiANAhygp
+	 mBTOlVaHwXV9zvGXCbS+v6rgTVw60b7XmycIkkoQnbYRm9ulwz2II3MrgkeX+aDda6
+	 HOjuZZe2Dy+b6jNfB58Pyv3+QL8SW8YRKgIh34Bw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jonas Gorski <jonas.gorski@gmail.com>,
-	=?UTF-8?q?=C3=81lvaro=20Fern=C3=A1ndez=20Rojas?= <noltari@gmail.com>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	Mark Brown <broonie@kernel.org>,
+	Jerome Brunet <jbrunet@baylibre.com>,
+	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 568/780] spi: bcm63xx-hsspi: fix shared reset
+Subject: [PATCH 6.12 310/512] PCI: rcar-gen4: set ep BAR4 fixed size
 Date: Tue, 17 Jun 2025 17:24:36 +0200
-Message-ID: <20250617152514.611202831@linuxfoundation.org>
+Message-ID: <20250617152432.167775942@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
-References: <20250617152451.485330293@linuxfoundation.org>
+In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
+References: <20250617152419.512865572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,44 +60,41 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Álvaro Fernández Rojas <noltari@gmail.com>
+From: Jerome Brunet <jbrunet@baylibre.com>
 
-[ Upstream commit 3d6d84c8f2f66d3fd6a43a1e2ce8e6b54c573960 ]
+[ Upstream commit b584ab12d59f646b9254b2b16ff197d612fd4935 ]
 
-Some bmips SoCs (bcm6362, bcm63268) share the same SPI reset for both SPI
-and HSSPI controllers, so reset shouldn't be exclusive.
+On rcar-gen4, the ep BAR4 has a fixed size of 256B. Document this
+constraint in the epc features of the platform.
 
-Fixes: 0eeadddbf09a ("spi: bcm63xx-hsspi: add reset support")
-Reported-by: Jonas Gorski <jonas.gorski@gmail.com>
-Signed-off-by: Álvaro Fernández Rojas <noltari@gmail.com>
-Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
-Link: https://patch.msgid.link/20250529130915.2519590-3-noltari@gmail.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: e311b3834dfa ("PCI: rcar-gen4: Add endpoint mode support")
+Signed-off-by: Jerome Brunet <jbrunet@baylibre.com>
+Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Link: https://patch.msgid.link/20250328-rcar-gen4-bar4-v1-1-10bb6ce9ee7f@baylibre.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi-bcm63xx-hsspi.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/pci/controller/dwc/pcie-rcar-gen4.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/spi/spi-bcm63xx-hsspi.c b/drivers/spi/spi-bcm63xx-hsspi.c
-index 644b44d2aef24..18261cbd413b4 100644
---- a/drivers/spi/spi-bcm63xx-hsspi.c
-+++ b/drivers/spi/spi-bcm63xx-hsspi.c
-@@ -745,7 +745,7 @@ static int bcm63xx_hsspi_probe(struct platform_device *pdev)
- 	if (IS_ERR(clk))
- 		return PTR_ERR(clk);
- 
--	reset = devm_reset_control_get_optional_exclusive(dev, NULL);
-+	reset = devm_reset_control_get_optional_shared(dev, NULL);
- 	if (IS_ERR(reset))
- 		return PTR_ERR(reset);
- 
+diff --git a/drivers/pci/controller/dwc/pcie-rcar-gen4.c b/drivers/pci/controller/dwc/pcie-rcar-gen4.c
+index 3a5511c3f7d97..5d77a01648606 100644
+--- a/drivers/pci/controller/dwc/pcie-rcar-gen4.c
++++ b/drivers/pci/controller/dwc/pcie-rcar-gen4.c
+@@ -403,6 +403,7 @@ static const struct pci_epc_features rcar_gen4_pcie_epc_features = {
+ 	.msix_capable = false,
+ 	.bar[BAR_1] = { .type = BAR_RESERVED, },
+ 	.bar[BAR_3] = { .type = BAR_RESERVED, },
++	.bar[BAR_4] = { .type = BAR_FIXED, .fixed_size = 256 },
+ 	.bar[BAR_5] = { .type = BAR_RESERVED, },
+ 	.align = SZ_1M,
+ };
 -- 
 2.39.5
 
