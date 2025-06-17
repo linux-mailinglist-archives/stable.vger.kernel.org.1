@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-153246-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153249-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B233ADD375
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 17:58:40 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 200F5ADD36F
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 17:58:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C3CED1942E5A
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 15:52:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EB8963AE227
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 15:52:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56984236457;
-	Tue, 17 Jun 2025 15:49:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 32BF02F2343;
+	Tue, 17 Jun 2025 15:49:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WdEDpFE/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="n+CsDbCd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12A7F2F2343;
-	Tue, 17 Jun 2025 15:49:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E08E32ED172;
+	Tue, 17 Jun 2025 15:49:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750175345; cv=none; b=SJDmDLm0FhE8N1z+UTEQ6gga7xFlNQmDxYCBsyscmIBWUsRzvKwDsb3bq71K9VfeJBvZXTP2XO+UfGA2v9B2fYt5jlSpi8thMmZEaJcTO/SmwWt6z0crZP56/xqcm1HpHepyHwsPXGf4DfYl2f1Ayjgb9DHbi13fmq9614tLjcU=
+	t=1750175352; cv=none; b=CCCBEBXQYpkqlJRZbi2GIJlfOEIEjBWXx3DPlHc1VyKbXSES9VyVIPNtL/frZZdovZf4JV9VAd90au74mAFBWdBT69O2mq1v78ciT/OnoxxF7hbueatx5XpcV8aymeZhmyZ647ZTxi24rmewzTH/9HVJ2O/TWaOQy+tnsBgI01E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750175345; c=relaxed/simple;
-	bh=uPoorEqsSN0vLQeF4F0Zwzd+cmvAVUEZNReWjsMofZ4=;
+	s=arc-20240116; t=1750175352; c=relaxed/simple;
+	bh=Hmq3mvD6MsbAFJL1hMj7wiNVXJQk8y10Vje6ThQDy/c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SAXdmMvwEaY0EdwRKcFMIGd4g0PvX3/MiHzGfPmq9AlWs1DPWpAu6xWhF4Wnjtqmxp3LyaTS3XGvZ4lNwcjD+VMZaNmw5YZabaJzRBzhCm523I6+pNbkCIMB5zKQqH6+rAK8pA25dg5Da42uEmQxj9S3+I0b6eNcasorbvZI5ew=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WdEDpFE/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7446FC4CEE3;
-	Tue, 17 Jun 2025 15:49:04 +0000 (UTC)
+	 MIME-Version; b=EZGIbUtLf0Rme5tkXorBF7j9GkHML6q84UXJqGZFI+ZtSw0pr5XmMK8WL9XurR7mg5l7TJ2KllsNKLB30QB9yixb0l4yGDo6G6ZcaqTtwqdICunCWzXcllXHHdQBe8Lxnz52CY7AFZObS9Q0rFiJ4srsdpGhieSecniV2qj2VZw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=n+CsDbCd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06D3FC4CEE3;
+	Tue, 17 Jun 2025 15:49:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750175344;
-	bh=uPoorEqsSN0vLQeF4F0Zwzd+cmvAVUEZNReWjsMofZ4=;
+	s=korg; t=1750175351;
+	bh=Hmq3mvD6MsbAFJL1hMj7wiNVXJQk8y10Vje6ThQDy/c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WdEDpFE/hVumyZh4XVinEPH5cOuOPRZm/9s3nYoiGpPoe0wDYYkR8bVBUfNadpefQ
-	 1Ci+SENjLRnQMXQodysZCFYu9N50Pjt+eflAILZx7ExxLdbu+puAWZ5iMBgVlhPxk6
-	 vQnrLiIHDryMOyj0bTcfxnAMgSDFzrob47/AL2VE=
+	b=n+CsDbCdc7bayIGZeba+9XJoybUHEDmeFhkA+tLS8nWb2KtIDlP0yrfQOPjFA5m+j
+	 Sq0XIlCg4CHscyFFpo5BDzRyZZq/TPEwYZiiemdVNZGa++AUW693Wu3po6yZsUwyJg
+	 ktDJKriUjTw4txHlVDg6NSFSlUyKM0kU/ePweIbo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>,
-	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
+	Chao Yu <chao@kernel.org>,
+	Jaegeuk Kim <jaegeuk@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 117/512] wifi: ath12k: Fix buffer overflow in debugfs
-Date: Tue, 17 Jun 2025 17:21:23 +0200
-Message-ID: <20250617152424.326578947@linuxfoundation.org>
+Subject: [PATCH 6.12 118/512] f2fs: clean up unnecessary indentation
+Date: Tue, 17 Jun 2025 17:21:24 +0200
+Message-ID: <20250617152424.365601993@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
 References: <20250617152419.512865572@linuxfoundation.org>
@@ -67,37 +66,86 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Jaegeuk Kim <jaegeuk@kernel.org>
 
-[ Upstream commit 8c7a5031a6b0d42e640fbd2d5d05f61f74e32dce ]
+[ Upstream commit 05d3273ad03fa5ea1177b4f3dfeeb6de4899b504 ]
 
-If the user tries to write more than 32 bytes then it results in memory
-corruption.  Fortunately, this is debugfs so it's limited to root users.
+No functional change.
 
-Fixes: 3f73c24f28b3 ("wifi: ath12k: Add support to enable debugfs_htt_stats")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Reviewed-by: Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>
-Link: https://patch.msgid.link/35daefbd-d493-41d9-b192-96177d521b40@stanley.mountain
-Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+Reviewed-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath12k/debugfs_htt_stats.c | 3 +++
- 1 file changed, 3 insertions(+)
+ fs/f2fs/segment.h | 40 ++++++++++++++++++++++++----------------
+ 1 file changed, 24 insertions(+), 16 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath12k/debugfs_htt_stats.c b/drivers/net/wireless/ath/ath12k/debugfs_htt_stats.c
-index f1b7e74aefe42..6f2e7ecc66af7 100644
---- a/drivers/net/wireless/ath/ath12k/debugfs_htt_stats.c
-+++ b/drivers/net/wireless/ath/ath12k/debugfs_htt_stats.c
-@@ -1646,6 +1646,9 @@ static ssize_t ath12k_write_htt_stats_type(struct file *file,
- 	const int size = 32;
- 	int num_args;
+diff --git a/fs/f2fs/segment.h b/fs/f2fs/segment.h
+index 0c004dd5595b9..25d3cda9bd5a3 100644
+--- a/fs/f2fs/segment.h
++++ b/fs/f2fs/segment.h
+@@ -431,7 +431,6 @@ static inline void __set_free(struct f2fs_sb_info *sbi, unsigned int segno)
+ 	unsigned int secno = GET_SEC_FROM_SEG(sbi, segno);
+ 	unsigned int start_segno = GET_SEG_FROM_SEC(sbi, secno);
+ 	unsigned int next;
+-	unsigned int usable_segs = f2fs_usable_segs_in_sec(sbi);
  
-+	if (count > size)
-+		return -EINVAL;
+ 	spin_lock(&free_i->segmap_lock);
+ 	clear_bit(segno, free_i->free_segmap);
+@@ -439,7 +438,7 @@ static inline void __set_free(struct f2fs_sb_info *sbi, unsigned int segno)
+ 
+ 	next = find_next_bit(free_i->free_segmap,
+ 			start_segno + SEGS_PER_SEC(sbi), start_segno);
+-	if (next >= start_segno + usable_segs) {
++	if (next >= start_segno + f2fs_usable_segs_in_sec(sbi)) {
+ 		clear_bit(secno, free_i->free_secmap);
+ 		free_i->free_sections++;
+ 	}
+@@ -465,22 +464,31 @@ static inline void __set_test_and_free(struct f2fs_sb_info *sbi,
+ 	unsigned int secno = GET_SEC_FROM_SEG(sbi, segno);
+ 	unsigned int start_segno = GET_SEG_FROM_SEC(sbi, secno);
+ 	unsigned int next;
+-	unsigned int usable_segs = f2fs_usable_segs_in_sec(sbi);
++	bool ret;
+ 
+ 	spin_lock(&free_i->segmap_lock);
+-	if (test_and_clear_bit(segno, free_i->free_segmap)) {
+-		free_i->free_segments++;
+-
+-		if (!inmem && IS_CURSEC(sbi, secno))
+-			goto skip_free;
+-		next = find_next_bit(free_i->free_segmap,
+-				start_segno + SEGS_PER_SEC(sbi), start_segno);
+-		if (next >= start_segno + usable_segs) {
+-			if (test_and_clear_bit(secno, free_i->free_secmap))
+-				free_i->free_sections++;
+-		}
+-	}
+-skip_free:
++	ret = test_and_clear_bit(segno, free_i->free_segmap);
++	if (!ret)
++		goto unlock_out;
 +
- 	char *buf __free(kfree) = kzalloc(size, GFP_KERNEL);
- 	if (!buf)
- 		return -ENOMEM;
++	free_i->free_segments++;
++
++	if (!inmem && IS_CURSEC(sbi, secno))
++		goto unlock_out;
++
++	/* check large section */
++	next = find_next_bit(free_i->free_segmap,
++			     start_segno + SEGS_PER_SEC(sbi), start_segno);
++	if (next < start_segno + f2fs_usable_segs_in_sec(sbi))
++		goto unlock_out;
++
++	ret = test_and_clear_bit(secno, free_i->free_secmap);
++	if (!ret)
++		goto unlock_out;
++
++	free_i->free_sections++;
++
++unlock_out:
+ 	spin_unlock(&free_i->segmap_lock);
+ }
+ 
 -- 
 2.39.5
 
