@@ -1,69 +1,57 @@
-Return-Path: <stable+bounces-153795-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-154316-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 91647ADD693
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:35:17 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D85AADD8F4
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 19:01:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AA248407CD3
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:24:33 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BE9C21BC1550
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:49:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25FD92ED16D;
-	Tue, 17 Jun 2025 16:18:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC813285077;
+	Tue, 17 Jun 2025 16:46:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FBH9XTWU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uwX19TJR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D28922ED161;
-	Tue, 17 Jun 2025 16:18:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8B6C285063;
+	Tue, 17 Jun 2025 16:46:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750177122; cv=none; b=FXgUWSzSBUPVsLwfA6Hqxg3QfSR7Mr0SyyV8mAtqLSrZzD9gQQEC4dS0WG7zx6UD6fl/F/vM6GJ4QqzjWRAnjuNYZSlLKqSBLWKEhsFDc0UgfgJOIAAH6Wf0g2JsBbBqtET8dqkxlBtaqt+OI4lqW56pb8Q7P4Su86BeCNnl0vw=
+	t=1750178798; cv=none; b=er632U16NTGeG4kgGeXAv1sb4Slxke+/FuKbCccVonOnA5wsXK3DjBCmi1c33JKbAkVeixrt/Px4IYnts92inK9iJo1Y6wmCxpmY7fIZ05dhSsD/SNj7QgnDzx7ilxMq+uo3GbeRs5hYT2Jr8W6ZbBLZBFPpvXMTSDdGAFXXZIQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750177122; c=relaxed/simple;
-	bh=Rg5rgER2JLwwrIIL2nN4yG5JEC/ew0XHQEb64zfzDFw=;
+	s=arc-20240116; t=1750178798; c=relaxed/simple;
+	bh=MTaqyqWfbj+FkdC3tgGv5JbYcPzZ9TWVNxKRFhDnSh4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cqVLW2HhdXeSUZsNeAdlhlKOba5fggeHXySFgtKT0ldjB/A8O27x6aBK4CjYoOtepLi7FXNrryl1Xt7+lTliJw9H/AAncKHhslPXNG1uiQ3u2lbWC4mzPYP+vCMNf790Mr2EFZtQVfc+clliEro0DiPaFqsed5Kj5Xg3nCzMGho=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FBH9XTWU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C17BC4CEE3;
-	Tue, 17 Jun 2025 16:18:42 +0000 (UTC)
+	 MIME-Version; b=qNMuv0wGFFbeGmUkZqiaqMTsrDhLgRuLEnPVBSm/1DAZqQrDeIIe0MgEXBlVzZQUTqRya8OnA4+7BuN3AKvZmnrxkjv3Quk0eNik/yymggJO5G83ezLyBG8NXG87t9kcW748FlY7I97wdUr930qVfZZbYpm03MmYBl2AZVNedrM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uwX19TJR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BBC07C4CEE3;
+	Tue, 17 Jun 2025 16:46:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750177122;
-	bh=Rg5rgER2JLwwrIIL2nN4yG5JEC/ew0XHQEb64zfzDFw=;
+	s=korg; t=1750178798;
+	bh=MTaqyqWfbj+FkdC3tgGv5JbYcPzZ9TWVNxKRFhDnSh4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FBH9XTWUVEGPgdMgNZU2N/IRuV16A4D+kIKcr96Gf/Cj0jcB1pGLmw+P6yHZUTh2I
-	 RLG51Sdt+U2RdgYe4B/meFc97RUUMsI32+W5N2ClGjFb8ebopJegovOdj7WnUMJXpP
-	 jtu2bmQ8SqCETFXR3s370w9y5n+6aZvkwJ/FaO9M=
+	b=uwX19TJRbk8OArQyA1ydAhN9MeckXu5N56nWDqHnNn6Hj6KjbN2Qxm483kVe7Bl19
+	 WrK1OKHs/SBbzVaQqU/UVVgyyv+cKihjsUGllfKkkxgTHvNK5OCJ515EWeXkumhVsk
+	 Y6Rub/pHsD4KDzcNKpO2dp3AFiAOQf8B0l9yVekE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Howard Chu <howardchu95@gmail.com>,
-	Anubhav Shelat <ashelat@redhat.com>,
-	Namhyung Kim <namhyung@kernel.org>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-	Dapeng Mi <dapeng1.mi@linux.intel.com>,
-	Ian Rogers <irogers@google.com>,
-	Ingo Molnar <mingo@redhat.com>,
-	James Clark <james.clark@linaro.org>,
-	Jiri Olsa <jolsa@kernel.org>,
-	Kan Liang <kan.liang@linux.intel.com>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Michael Petlan <mpetlan@redhat.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Arnaldo Carvalho de Melo <acme@redhat.com>,
+	Abel Wu <wuyun.abel@bytedance.com>,
+	Tengteng Yang <yangtengteng@bytedance.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 299/512] perf trace: Always print return value for syscalls returning a pid
-Date: Tue, 17 Jun 2025 17:24:25 +0200
-Message-ID: <20250617152431.711885365@linuxfoundation.org>
+Subject: [PATCH 6.15 558/780] Fix sock_exceed_buf_limit not being triggered in __sk_mem_raise_allocated
+Date: Tue, 17 Jun 2025 17:24:26 +0200
+Message-ID: <20250617152514.222149929@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
-References: <20250617152419.512865572@linuxfoundation.org>
+In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
+References: <20250617152451.485330293@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -75,69 +63,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Anubhav Shelat <ashelat@redhat.com>
+From: Tengteng Yang <yangtengteng@bytedance.com>
 
-[ Upstream commit c7a48ea9b919e2fa0e4a1d9938fdb03e9afe276c ]
+[ Upstream commit 8542d6fac25c03b4bf36b2d762cfe60fda8491bb ]
 
-The syscalls that were consistently observed were set_robust_list and
-rseq. This is because perf cannot find their child process.
+When a process under memory pressure is not part of any cgroup and
+the charged flag is false, trace_sock_exceed_buf_limit was not called
+as expected.
 
-This change ensures that the return value is always printed.
+This regression was introduced by commit 2def8ff3fdb6 ("sock:
+Code cleanup on __sk_mem_raise_allocated()"). The fix changes the
+default value of charged to true while preserving existing logic.
 
-Before:
-     0.256 ( 0.001 ms): set_robust_list(head: 0x7f09c77dba20, len: 24)                        =
-     0.259 ( 0.001 ms): rseq(rseq: 0x7f09c77dc0e0, rseq_len: 32, sig: 1392848979)             =
-After:
-     0.270 ( 0.002 ms): set_robust_list(head: 0x7f0bb14a6a20, len: 24)                        = 0
-     0.273 ( 0.002 ms): rseq(rseq: 0x7f0bb14a70e0, rseq_len: 32, sig: 1392848979)             = 0
-
-Committer notes:
-
-As discussed in the thread in the Link: tag below, these two don't
-return a pid, but for syscalls returning one, we need to print the
-result and if we manage to find the children in 'perf trace' data
-structures, then print its name as well.
-
-Fixes: 11c8e39f5133aed9 ("perf trace: Infrastructure to show COMM strings for syscalls returning PIDs")
-Reviewed-by: Howard Chu <howardchu95@gmail.com>
-Signed-off-by: Anubhav Shelat <ashelat@redhat.com>
-Acked-by: Namhyung Kim <namhyung@kernel.org>
-Cc: Adrian Hunter <adrian.hunter@intel.com>
-Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
-Cc: Dapeng Mi <dapeng1.mi@linux.intel.com>
-Cc: Ian Rogers <irogers@google.com>
-Cc: Ingo Molnar <mingo@redhat.com>
-Cc: James Clark <james.clark@linaro.org>
-Cc: Jiri Olsa <jolsa@kernel.org>
-Cc: Kan Liang <kan.liang@linux.intel.com>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Michael Petlan <mpetlan@redhat.com>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Link: https://lore.kernel.org/r/20250403160411.159238-2-ashelat@redhat.com
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Fixes: 2def8ff3fdb6 ("sock: Code cleanup on __sk_mem_raise_allocated()")
+Signed-off-by: Abel Wu <wuyun.abel@bytedance.com>
+Signed-off-by: Tengteng Yang <yangtengteng@bytedance.com>
+Link: https://patch.msgid.link/20250527030419.67693-1-yangtengteng@bytedance.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/builtin-trace.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/core/sock.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/tools/perf/builtin-trace.c b/tools/perf/builtin-trace.c
-index ee82e858ab200..ebe4fad0d4751 100644
---- a/tools/perf/builtin-trace.c
-+++ b/tools/perf/builtin-trace.c
-@@ -2873,8 +2873,8 @@ errno_print: {
- 	else if (sc->fmt->errpid) {
- 		struct thread *child = machine__find_thread(trace->host, ret, ret);
+diff --git a/net/core/sock.c b/net/core/sock.c
+index e54449c9ab0ba..5034d0fbd4a42 100644
+--- a/net/core/sock.c
++++ b/net/core/sock.c
+@@ -3234,16 +3234,16 @@ int __sk_mem_raise_allocated(struct sock *sk, int size, int amt, int kind)
+ {
+ 	struct mem_cgroup *memcg = mem_cgroup_sockets_enabled ? sk->sk_memcg : NULL;
+ 	struct proto *prot = sk->sk_prot;
+-	bool charged = false;
++	bool charged = true;
+ 	long allocated;
  
-+		fprintf(trace->output, "%ld", ret);
- 		if (child != NULL) {
--			fprintf(trace->output, "%ld", ret);
- 			if (thread__comm_set(child))
- 				fprintf(trace->output, " (%s)", thread__comm_str(child));
- 			thread__put(child);
+ 	sk_memory_allocated_add(sk, amt);
+ 	allocated = sk_memory_allocated(sk);
+ 
+ 	if (memcg) {
+-		if (!mem_cgroup_charge_skmem(memcg, amt, gfp_memcg_charge()))
++		charged = mem_cgroup_charge_skmem(memcg, amt, gfp_memcg_charge());
++		if (!charged)
+ 			goto suppress_allocation;
+-		charged = true;
+ 	}
+ 
+ 	/* Under limit. */
+@@ -3328,7 +3328,7 @@ int __sk_mem_raise_allocated(struct sock *sk, int size, int amt, int kind)
+ 
+ 	sk_memory_allocated_sub(sk, amt);
+ 
+-	if (charged)
++	if (memcg && charged)
+ 		mem_cgroup_uncharge_skmem(memcg, amt);
+ 
+ 	return 0;
 -- 
 2.39.5
 
