@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-153684-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-154131-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE707ADD5B9
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:25:07 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F903ADD92C
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 19:03:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 294C73B3F20
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:17:45 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AF42D5A0089
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:42:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30EB92ED14F;
-	Tue, 17 Jun 2025 16:12:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C19082ECE87;
+	Tue, 17 Jun 2025 16:36:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bCECj/JL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0dUEDb3k"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5B302ED147;
-	Tue, 17 Jun 2025 16:12:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CE302E264E;
+	Tue, 17 Jun 2025 16:36:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750176755; cv=none; b=CHMlYlNIdlSSPKSO+VFBhLyT10FDn1aTvPTwywFqOkIkoX9rz1QpqOdSy3prcXXOZwBOQSL2nUhcxODiQHCkzFoKCDNI4gulZYdG5V7yk/s+PjIhx8dWhe1h7MogJCXrsTHkR7ACJZVHnKBYSfNsLOC4OENiFv0l1WayBExjeM0=
+	t=1750178201; cv=none; b=elfw2YSc0POVTEuYN6NwF56TF0iKYM2uN4tQLy1u2rDHmJOQcn/+12CiSg0kBH+hVX/zPsldOl/XfZEJ/llQkULmkoTlAvFTg8b292Txd0B1lSVctEDi/FwImiHw+UeBNyTeeGjnlfcOOiTXpl0P2xy+QudjZUWO7E7GQ0ViK6o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750176755; c=relaxed/simple;
-	bh=iQH/ap1t6hI3C3hrPqoxOR0upVFeVOI4gN5+s1LgtbM=;
+	s=arc-20240116; t=1750178201; c=relaxed/simple;
+	bh=i6/EGNGfAUK81RAGjm6iZPNZW8jOrG5clD4s0eQaelA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=r62BYaz0OI4DK5Mj+X6sa/PgXm4jgEkZJx+c6RMl5L4cYHvk+2W1Vgdwv9NCbUwx7w6fxPDlqPoxszuLUjH7MRPOo/HTO6HHeflPbyxvl5gkbsAgpTGxio2vfIy6aoVEtopd4CKqNCx9PD6FOZrUBpVZ2EEWRk9Ss1YsNs0akjw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bCECj/JL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 536A1C4CEE3;
-	Tue, 17 Jun 2025 16:12:34 +0000 (UTC)
+	 MIME-Version; b=qiVnraw2Ww4chXGIegMv5GttE8FwxNiH5Dy3nw5ehMViVMuzceevXIgDtJgMqB4jnqMsZV28hpvG87CKDm4j1K1cqsmOuchGoOS48rZYJde4H2rVShebPKu01a0jTiERWQWuIKuhYdFh1oY+MaTYIrzwvvh0bRle3F+FUNKXZjE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0dUEDb3k; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D949FC4CEE3;
+	Tue, 17 Jun 2025 16:36:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750176754;
-	bh=iQH/ap1t6hI3C3hrPqoxOR0upVFeVOI4gN5+s1LgtbM=;
+	s=korg; t=1750178201;
+	bh=i6/EGNGfAUK81RAGjm6iZPNZW8jOrG5clD4s0eQaelA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bCECj/JLUt73afwjLW/3QZdF4RET/wS4PRYg4x3SyDN8MnHbzXLD6xYsfPSCKpY2M
-	 nPQeWgGgmawzUkHDl5JqeAYElQZiT8vb8jP9l5S5RLKDNHypAoRyMH0NKXaK3yLfZW
-	 6aO5hjz308rq91rA9wie/DJW1WwHpUJLXxgxXIVY=
+	b=0dUEDb3kZwgRf/ARb7HOl2FtGSCe7o29zhmxIhrIh4QJR9wCVGU+eG7N2GNsuLM7H
+	 8J1mrPpDxRHKsu10AvNJJZZH4CNYXpXbY8ez3heM9NZf9GpAx/LyTsKp7HT50b4yVt
+	 8FkqeVqBSlkyNOWExAQ0wnenO5Tqycv1ReCDfiKA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
+	Moshe Shemesh <moshe@nvidia.com>,
+	Tariq Toukan <tariqt@nvidia.com>,
+	Mark Bloch <mbloch@nvidia.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 310/356] drm/meson: fix debug log statement when setting the HDMI clocks
-Date: Tue, 17 Jun 2025 17:27:05 +0200
-Message-ID: <20250617152350.643970097@linuxfoundation.org>
+Subject: [PATCH 6.12 460/512] net/mlx5: Ensure fw pages are always allocated on same NUMA
+Date: Tue, 17 Jun 2025 17:27:06 +0200
+Message-ID: <20250617152438.209901929@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152338.212798615@linuxfoundation.org>
-References: <20250617152338.212798615@linuxfoundation.org>
+In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
+References: <20250617152419.512865572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,41 +64,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+From: Moshe Shemesh <moshe@nvidia.com>
 
-[ Upstream commit d17e61ab63fb7747b340d6a66bf1408cd5c6562b ]
+[ Upstream commit f37258133c1e95e61db532e14067e28b4881bf24 ]
 
-The "phy" and "vclk" frequency labels were swapped, making it more
-difficult to debug driver errors. Swap the label order to make them
-match with the actual frequencies printed to correct this.
+When firmware asks the driver to allocate more pages, using event of
+give_pages, the driver should always allocate it from same NUMA, the
+original device NUMA. Current code uses dev_to_node() which can result
+in different NUMA as it is changed by other driver flows, such as
+mlx5_dma_zalloc_coherent_node(). Instead, use saved numa node for
+allocating firmware pages.
 
-Fixes: e5fab2ec9ca4 ("drm/meson: vclk: add support for YUV420 setup")
-Signed-off-by: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
-Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
-Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
-Link: https://lore.kernel.org/r/20250606203729.3311592-1-martin.blumenstingl@googlemail.com
+Fixes: 311c7c71c9bb ("net/mlx5e: Allocate DMA coherent memory on reader NUMA node")
+Signed-off-by: Moshe Shemesh <moshe@nvidia.com>
+Reviewed-by: Tariq Toukan <tariqt@nvidia.com>
+Signed-off-by: Mark Bloch <mbloch@nvidia.com>
+Link: https://patch.msgid.link/20250610151514.1094735-2-mbloch@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/meson/meson_encoder_hdmi.c | 2 +-
+ drivers/net/ethernet/mellanox/mlx5/core/pagealloc.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/meson/meson_encoder_hdmi.c b/drivers/gpu/drm/meson/meson_encoder_hdmi.c
-index cd0e9e2d59ee7..73ec7ae48510a 100644
---- a/drivers/gpu/drm/meson/meson_encoder_hdmi.c
-+++ b/drivers/gpu/drm/meson/meson_encoder_hdmi.c
-@@ -108,7 +108,7 @@ static void meson_encoder_hdmi_set_vclk(struct meson_encoder_hdmi *encoder_hdmi,
- 		venc_freq /= 2;
- 
- 	dev_dbg(priv->dev,
--		"vclk:%lluHz phy=%lluHz venc=%lluHz hdmi=%lluHz enci=%d\n",
-+		"phy:%lluHz vclk=%lluHz venc=%lluHz hdmi=%lluHz enci=%d\n",
- 		phy_freq, vclk_freq, venc_freq, hdmi_freq,
- 		priv->venc.hdmi_use_enci);
- 
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/pagealloc.c b/drivers/net/ethernet/mellanox/mlx5/core/pagealloc.c
+index 972e8e9df585b..9bc9bd83c2324 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/pagealloc.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/pagealloc.c
+@@ -291,7 +291,7 @@ static void free_4k(struct mlx5_core_dev *dev, u64 addr, u32 function)
+ static int alloc_system_page(struct mlx5_core_dev *dev, u32 function)
+ {
+ 	struct device *device = mlx5_core_dma_dev(dev);
+-	int nid = dev_to_node(device);
++	int nid = dev->priv.numa_node;
+ 	struct page *page;
+ 	u64 zero_addr = 1;
+ 	u64 addr;
 -- 
 2.39.5
 
