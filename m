@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-153755-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-154184-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E0C0ADD63D
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:31:29 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id EA065ADD920
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 19:03:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 204993B1E0B
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:22:37 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7905B17FAA0
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:44:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3BD492E8DFC;
-	Tue, 17 Jun 2025 16:16:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 278412ECD08;
+	Tue, 17 Jun 2025 16:39:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Fic6qAVx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m+MRtCu0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBECD285045;
-	Tue, 17 Jun 2025 16:16:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFAC01A2632;
+	Tue, 17 Jun 2025 16:39:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750176995; cv=none; b=ZS926HRmAJ+XTDk0IqlNf1hilL6VdyYsa44Lk0TWhm+i41fCldz1X2SXgvUDveJlnN21Q1HWwWthaQTSunSWd9n84EzHx8ZKckfKXlMH3QghYrfvfw6gLNx/fRs3z5943lUotSLfBAmjl1Sn2vUbBJRXYWCjPUzBEpeOLY7nAx4=
+	t=1750178373; cv=none; b=pZuVxLfzSIsV1WgAIl/qaaeZy2MmS4IaQza301pvO+6KNWkPoFJheFmtplGqyAi1qC73epn7RMWzuZBP80zFEt8NquTHnfLQ7kIGFqrNCs44KcyfPK0SrnAMMpciVFpN9idgh0AwMoVWglZdhmuSOSS0IdtqNxkME3wwnhFsmik=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750176995; c=relaxed/simple;
-	bh=Vooa8az4y3M3ajEBID6eXJboL1o++emRPvVWZ0M8Uf4=;
+	s=arc-20240116; t=1750178373; c=relaxed/simple;
+	bh=68H1BjoyalK+OaFuPks/uGJrDydWsPTvmjs29xas8Ok=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Si4S+zI2gjyDHQ3DmMeVn30j5kaMyTZIbm2xukqJN2gTP5pbo9u9kBHHBNK67NrNI8Xt5Cv2a4GnpSsSHh7KYEzkANtNJFrhqkbDsCNtX/pU9qCmOK+mM6l1F7joNmwhOOeN8k3KekM589aMCzzl/GH3KwJizzqLoTH405X+gRk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Fic6qAVx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72C0DC4CEF0;
-	Tue, 17 Jun 2025 16:16:34 +0000 (UTC)
+	 MIME-Version; b=RUuEActlDndgERBVGZj8Wcfog0HeoOMAbNmuFm94meqKIfbetIpRUUVC1+g7kMKEfS0uLLsTdUdffQf2YT6jKO/bR5CM4JJ3ZG3cbmWKHUzKvwX3dbk5JQuoOT4zBWLHRv1pN7/+0Xjs44o+7AK9w0S6XQdg7uB/5p/NQSy7KS4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m+MRtCu0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3105C4CEE3;
+	Tue, 17 Jun 2025 16:39:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750176994;
-	bh=Vooa8az4y3M3ajEBID6eXJboL1o++emRPvVWZ0M8Uf4=;
+	s=korg; t=1750178373;
+	bh=68H1BjoyalK+OaFuPks/uGJrDydWsPTvmjs29xas8Ok=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Fic6qAVxzsgbiP2VWFx7lxC2FkdXMWUrZwqSsCqiXY/zekSgl+D5EqW8ZTI4mgo4q
-	 QQYsSRJDpEBWtBeH1eJTjqHPjfnNNlveej4y4knA43PgsCqGAw1yUEdytqAT2StdvM
-	 7REOfzJYwblxC3GicRMkiajdTZhjEu7rDy5P7Heo=
+	b=m+MRtCu04voGHuVPmHoyEUmECftOazrJ54wKLE3kqSzYB0lVk3KpNP62BecdRpzuQ
+	 oFcJiv+ycn/p4IXlEL/YEnEYLsdRtTS0Z8xTLTcvbxeHMM5DUtldWTNlb/fJYNve/+
+	 kDOgaa5Fzb1k2b9zDQaHKd9+24SDg/jfyMlZc8zY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Heimann <d@dmeh.net>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.6 337/356] ALSA: usb-audio: Add implicit feedback quirk for RODE AI-1
+	syzbot+c52569baf0c843f35495@syzkaller.appspotmail.com,
+	Terry Junge <linuxhid@cosmicgizmosystems.com>,
+	Michael Kelley <mhklinux@outlook.com>,
+	Jiri Kosina <jkosina@suse.com>
+Subject: [PATCH 6.12 486/512] HID: usbhid: Eliminate recurrent out-of-bounds bug in usbhid_parse()
 Date: Tue, 17 Jun 2025 17:27:32 +0200
-Message-ID: <20250617152351.697563218@linuxfoundation.org>
+Message-ID: <20250617152439.315939412@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152338.212798615@linuxfoundation.org>
-References: <20250617152338.212798615@linuxfoundation.org>
+In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
+References: <20250617152419.512865572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,39 +63,170 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Heimann <d@dmeh.net>
+From: Terry Junge <linuxhid@cosmicgizmosystems.com>
 
-commit 6a3439a417b910e662c666993798e0691bc81147 upstream.
+commit fe7f7ac8e0c708446ff017453add769ffc15deed upstream.
 
-The RODE AI-1 audio interface requires implicit feedback sync between
-playback endpoint 0x03 and feedback endpoint 0x84 on interface 3, but
-doesn't advertise this in its USB descriptors.
+Update struct hid_descriptor to better reflect the mandatory and
+optional parts of the HID Descriptor as per USB HID 1.11 specification.
+Note: the kernel currently does not parse any optional HID class
+descriptors, only the mandatory report descriptor.
 
-Without this quirk, the device receives audio data but produces no output.
+Update all references to member element desc[0] to rpt_desc.
 
-Signed-off-by: David Heimann <d@dmeh.net>
-Cc: <stable@vger.kernel.org>
-Link: https://patch.msgid.link/084dc88c-1193-4a94-a002-5599adff936c@app.fastmail.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Add test to verify bLength and bNumDescriptors values are valid.
+
+Replace the for loop with direct access to the mandatory HID class
+descriptor member for the report descriptor. This eliminates the
+possibility of getting an out-of-bounds fault.
+
+Add a warning message if the HID descriptor contains any unsupported
+optional HID class descriptors.
+
+Reported-by: syzbot+c52569baf0c843f35495@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=c52569baf0c843f35495
+Fixes: f043bfc98c19 ("HID: usbhid: fix out-of-bounds bug")
+Cc: stable@vger.kernel.org
+Signed-off-by: Terry Junge <linuxhid@cosmicgizmosystems.com>
+Reviewed-by: Michael Kelley <mhklinux@outlook.com>
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/usb/implicit.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/hid/hid-hyperv.c            |    4 ++--
+ drivers/hid/usbhid/hid-core.c       |   25 ++++++++++++++-----------
+ drivers/usb/gadget/function/f_hid.c |   12 ++++++------
+ include/linux/hid.h                 |    3 ++-
+ 4 files changed, 24 insertions(+), 20 deletions(-)
 
---- a/sound/usb/implicit.c
-+++ b/sound/usb/implicit.c
-@@ -57,6 +57,7 @@ static const struct snd_usb_implicit_fb_
- 	IMPLICIT_FB_FIXED_DEV(0x31e9, 0x0002, 0x81, 2), /* Solid State Logic SSL2+ */
- 	IMPLICIT_FB_FIXED_DEV(0x0499, 0x172f, 0x81, 2), /* Steinberg UR22C */
- 	IMPLICIT_FB_FIXED_DEV(0x0d9a, 0x00df, 0x81, 2), /* RTX6001 */
-+	IMPLICIT_FB_FIXED_DEV(0x19f7, 0x000a, 0x84, 3), /* RODE AI-1 */
- 	IMPLICIT_FB_FIXED_DEV(0x22f0, 0x0006, 0x81, 3), /* Allen&Heath Qu-16 */
- 	IMPLICIT_FB_FIXED_DEV(0x1686, 0xf029, 0x82, 2), /* Zoom UAC-2 */
- 	IMPLICIT_FB_FIXED_DEV(0x2466, 0x8003, 0x86, 2), /* Fractal Audio Axe-Fx II */
+--- a/drivers/hid/hid-hyperv.c
++++ b/drivers/hid/hid-hyperv.c
+@@ -192,7 +192,7 @@ static void mousevsc_on_receive_device_i
+ 		goto cleanup;
+ 
+ 	input_device->report_desc_size = le16_to_cpu(
+-					desc->desc[0].wDescriptorLength);
++					desc->rpt_desc.wDescriptorLength);
+ 	if (input_device->report_desc_size == 0) {
+ 		input_device->dev_info_status = -EINVAL;
+ 		goto cleanup;
+@@ -210,7 +210,7 @@ static void mousevsc_on_receive_device_i
+ 
+ 	memcpy(input_device->report_desc,
+ 	       ((unsigned char *)desc) + desc->bLength,
+-	       le16_to_cpu(desc->desc[0].wDescriptorLength));
++	       le16_to_cpu(desc->rpt_desc.wDescriptorLength));
+ 
+ 	/* Send the ack */
+ 	memset(&ack, 0, sizeof(struct mousevsc_prt_msg));
+--- a/drivers/hid/usbhid/hid-core.c
++++ b/drivers/hid/usbhid/hid-core.c
+@@ -984,12 +984,11 @@ static int usbhid_parse(struct hid_devic
+ 	struct usb_host_interface *interface = intf->cur_altsetting;
+ 	struct usb_device *dev = interface_to_usbdev (intf);
+ 	struct hid_descriptor *hdesc;
++	struct hid_class_descriptor *hcdesc;
+ 	u32 quirks = 0;
+ 	unsigned int rsize = 0;
+ 	char *rdesc;
+-	int ret, n;
+-	int num_descriptors;
+-	size_t offset = offsetof(struct hid_descriptor, desc);
++	int ret;
+ 
+ 	quirks = hid_lookup_quirk(hid);
+ 
+@@ -1011,20 +1010,19 @@ static int usbhid_parse(struct hid_devic
+ 		return -ENODEV;
+ 	}
+ 
+-	if (hdesc->bLength < sizeof(struct hid_descriptor)) {
+-		dbg_hid("hid descriptor is too short\n");
++	if (!hdesc->bNumDescriptors ||
++	    hdesc->bLength != sizeof(*hdesc) +
++			      (hdesc->bNumDescriptors - 1) * sizeof(*hcdesc)) {
++		dbg_hid("hid descriptor invalid, bLen=%hhu bNum=%hhu\n",
++			hdesc->bLength, hdesc->bNumDescriptors);
+ 		return -EINVAL;
+ 	}
+ 
+ 	hid->version = le16_to_cpu(hdesc->bcdHID);
+ 	hid->country = hdesc->bCountryCode;
+ 
+-	num_descriptors = min_t(int, hdesc->bNumDescriptors,
+-	       (hdesc->bLength - offset) / sizeof(struct hid_class_descriptor));
+-
+-	for (n = 0; n < num_descriptors; n++)
+-		if (hdesc->desc[n].bDescriptorType == HID_DT_REPORT)
+-			rsize = le16_to_cpu(hdesc->desc[n].wDescriptorLength);
++	if (hdesc->rpt_desc.bDescriptorType == HID_DT_REPORT)
++		rsize = le16_to_cpu(hdesc->rpt_desc.wDescriptorLength);
+ 
+ 	if (!rsize || rsize > HID_MAX_DESCRIPTOR_SIZE) {
+ 		dbg_hid("weird size of report descriptor (%u)\n", rsize);
+@@ -1052,6 +1050,11 @@ static int usbhid_parse(struct hid_devic
+ 		goto err;
+ 	}
+ 
++	if (hdesc->bNumDescriptors > 1)
++		hid_warn(intf,
++			"%u unsupported optional hid class descriptors\n",
++			(int)(hdesc->bNumDescriptors - 1));
++
+ 	hid->quirks |= quirks;
+ 
+ 	return 0;
+--- a/drivers/usb/gadget/function/f_hid.c
++++ b/drivers/usb/gadget/function/f_hid.c
+@@ -144,8 +144,8 @@ static struct hid_descriptor hidg_desc =
+ 	.bcdHID				= cpu_to_le16(0x0101),
+ 	.bCountryCode			= 0x00,
+ 	.bNumDescriptors		= 0x1,
+-	/*.desc[0].bDescriptorType	= DYNAMIC */
+-	/*.desc[0].wDescriptorLenght	= DYNAMIC */
++	/*.rpt_desc.bDescriptorType	= DYNAMIC */
++	/*.rpt_desc.wDescriptorLength	= DYNAMIC */
+ };
+ 
+ /* Super-Speed Support */
+@@ -939,8 +939,8 @@ static int hidg_setup(struct usb_functio
+ 			struct hid_descriptor hidg_desc_copy = hidg_desc;
+ 
+ 			VDBG(cdev, "USB_REQ_GET_DESCRIPTOR: HID\n");
+-			hidg_desc_copy.desc[0].bDescriptorType = HID_DT_REPORT;
+-			hidg_desc_copy.desc[0].wDescriptorLength =
++			hidg_desc_copy.rpt_desc.bDescriptorType = HID_DT_REPORT;
++			hidg_desc_copy.rpt_desc.wDescriptorLength =
+ 				cpu_to_le16(hidg->report_desc_length);
+ 
+ 			length = min_t(unsigned short, length,
+@@ -1210,8 +1210,8 @@ static int hidg_bind(struct usb_configur
+ 	 * We can use hidg_desc struct here but we should not relay
+ 	 * that its content won't change after returning from this function.
+ 	 */
+-	hidg_desc.desc[0].bDescriptorType = HID_DT_REPORT;
+-	hidg_desc.desc[0].wDescriptorLength =
++	hidg_desc.rpt_desc.bDescriptorType = HID_DT_REPORT;
++	hidg_desc.rpt_desc.wDescriptorLength =
+ 		cpu_to_le16(hidg->report_desc_length);
+ 
+ 	hidg_hs_in_ep_desc.bEndpointAddress =
+--- a/include/linux/hid.h
++++ b/include/linux/hid.h
+@@ -736,8 +736,9 @@ struct hid_descriptor {
+ 	__le16 bcdHID;
+ 	__u8  bCountryCode;
+ 	__u8  bNumDescriptors;
++	struct hid_class_descriptor rpt_desc;
+ 
+-	struct hid_class_descriptor desc[1];
++	struct hid_class_descriptor opt_descs[];
+ } __attribute__ ((packed));
+ 
+ #define HID_DEVICE(b, g, ven, prod)					\
 
 
 
