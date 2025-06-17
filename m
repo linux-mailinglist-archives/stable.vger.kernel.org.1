@@ -1,57 +1,54 @@
-Return-Path: <stable+bounces-154539-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-154228-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3DAA5ADDA03
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 19:12:18 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id AD583ADD9EB
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 19:11:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7BFF42C1D4D
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:58:58 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0B2AF406309
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:46:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 500C82FA627;
-	Tue, 17 Jun 2025 16:58:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01771285078;
+	Tue, 17 Jun 2025 16:41:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zmyf5YGU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sqRIiAY2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C15C2FA622;
-	Tue, 17 Jun 2025 16:58:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF7812FA655;
+	Tue, 17 Jun 2025 16:41:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750179536; cv=none; b=Fwc61r3k8bLYSVZHFL9QpEwVQ8EDBrCFxgzt2aRLDmz8q8ZuduE11UJBhDcX1oawgCjNlzUHjYHiw8WjSpBdwn+5rc2DdWFOBI8qHMrdqaCrCiZRJoywJKNbL6EG2ncWzsAClt1CLwcmxkPF7cqWVXKEz96QIFnV3GT61N0onZA=
+	t=1750178516; cv=none; b=iz8YTeiG5LtXoag+zIJuYDIzmbJdZ5egrY1W5/iKWMvdRwpFA1qGZ6opjVtUS+8tOU+9y8Q5VfJY7Hq5ohAiTdNv75UJQ/9mDlKIOQeyKovcum27yVmjOoKV/qS1iqQ+bcUkD0cqWq+XfPgq3942HreORIj9zlJcmFoY0oOdfQw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750179536; c=relaxed/simple;
-	bh=ddM6dqqhzF70X6gJq8abq66KBmsNxk6fPHwDDBL7QFU=;
+	s=arc-20240116; t=1750178516; c=relaxed/simple;
+	bh=rwOAQCRTtGFtG9avlpyDc0hNe146JwTbDpxdfMMdn4Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PXoP0eBCZu2pcbMCZB9XLwUq5rhQKNB0LlFCsIe4Qg3NDr9Sh46V8fpSxhyM1n8Iq84OVo/V1dYTt6JoNrURMMr01ciaHzfwIcNYkHHgyYgpEs52zgOtUEY8XIvX/78Kdu66pKGAtWgMpcaOeVWAduaNsawlGe47ZJYN5Sc5JUQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zmyf5YGU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70079C4CEE3;
-	Tue, 17 Jun 2025 16:58:55 +0000 (UTC)
+	 MIME-Version; b=Q+v2Kd4lhrhsfqfXlLmKVPeIXxj3sYRv1iejaNgLq+qCvDnhPOq15R2Bauz/f0ZrTVVvbQJPliiCz4OopRm81NmbCXmyc525bK6XifavBihhUpRtHvDchmh2rs8tnWdYdnZ4s+xtAGP2DNGvj+SFPQtE0CK8XsVobZo4OKprOeQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sqRIiAY2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D75D8C4CEE3;
+	Tue, 17 Jun 2025 16:41:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750179535;
-	bh=ddM6dqqhzF70X6gJq8abq66KBmsNxk6fPHwDDBL7QFU=;
+	s=korg; t=1750178516;
+	bh=rwOAQCRTtGFtG9avlpyDc0hNe146JwTbDpxdfMMdn4Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zmyf5YGUmz0HoMrwoGYBQx+8dL69kK7URgbRT3Iys+Ifdguf9CJ3B9PZ9dEovIbTN
-	 u8NriS7FCUUl4AOJ4Z9HXZklRRaPRpegCOMZhHTEhVR5+kuhT9i+rWbALwta0AS/79
-	 VHgsDex8yIkyFnv7MRvPwHXuk6CbLVP2fzsKI+q4=
+	b=sqRIiAY2aGT/ghUh+om3URGI12bef8PP5KgJRQrAEIxEDIT/BzSBkwLX7CdupjpXJ
+	 C8oPH3MsnWL3DXkC/uG2iSVSlk+sZrZBY1drQwLZ2pPiz8YjxJ5yjLSG0vmhfF4pJc
+	 uP/DGPKifgTsDvwhRUsg6PHCu0vZFrPsqdZ90fRM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Vincent Donnefort <vdonnefort@google.com>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>
-Subject: [PATCH 6.15 768/780] ring-buffer: Move cpus_read_lock() outside of buffer->mutex
+	Kees Cook <kees@kernel.org>
+Subject: [PATCH 6.12 510/512] overflow: Introduce __DEFINE_FLEX for having no initializer
 Date: Tue, 17 Jun 2025 17:27:56 +0200
-Message-ID: <20250617152522.789708120@linuxfoundation.org>
+Message-ID: <20250617152440.279873565@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
-References: <20250617152451.485330293@linuxfoundation.org>
+In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
+References: <20250617152419.512865572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,245 +60,85 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Steven Rostedt <rostedt@goodmis.org>
+From: Kees Cook <kees@kernel.org>
 
-commit c98cc9797b7009308fff73d41bc1d08642dab77a upstream.
+commit 5c78e793f78732b60276401f75cc1a101f9ad121 upstream.
 
-Running a modified trace-cmd record --nosplice where it does a mmap of the
-ring buffer when '--nosplice' is set, caused the following lockdep splat:
+While not yet in the tree, there is a proposed patch[1] that was
+depending on the prior behavior of _DEFINE_FLEX, which did not have an
+explicit initializer. Provide this via __DEFINE_FLEX now, which can also
+have attributes applied (e.g. __uninitialized).
 
- ======================================================
- WARNING: possible circular locking dependency detected
- 6.15.0-rc7-test-00002-gfb7d03d8a82f #551 Not tainted
- ------------------------------------------------------
- trace-cmd/1113 is trying to acquire lock:
- ffff888100062888 (&buffer->mutex){+.+.}-{4:4}, at: ring_buffer_map+0x11c/0xe70
+Examples of the resulting initializer behaviors can be seen here:
+https://godbolt.org/z/P7Go8Tr33
 
- but task is already holding lock:
- ffff888100a5f9f8 (&cpu_buffer->mapping_lock){+.+.}-{4:4}, at: ring_buffer_map+0xcf/0xe70
-
- which lock already depends on the new lock.
-
- the existing dependency chain (in reverse order) is:
-
- -> #5 (&cpu_buffer->mapping_lock){+.+.}-{4:4}:
-        __mutex_lock+0x192/0x18c0
-        ring_buffer_map+0xcf/0xe70
-        tracing_buffers_mmap+0x1c4/0x3b0
-        __mmap_region+0xd8d/0x1f70
-        do_mmap+0x9d7/0x1010
-        vm_mmap_pgoff+0x20b/0x390
-        ksys_mmap_pgoff+0x2e9/0x440
-        do_syscall_64+0x79/0x1c0
-        entry_SYSCALL_64_after_hwframe+0x76/0x7e
-
- -> #4 (&mm->mmap_lock){++++}-{4:4}:
-        __might_fault+0xa5/0x110
-        _copy_to_user+0x22/0x80
-        _perf_ioctl+0x61b/0x1b70
-        perf_ioctl+0x62/0x90
-        __x64_sys_ioctl+0x134/0x190
-        do_syscall_64+0x79/0x1c0
-        entry_SYSCALL_64_after_hwframe+0x76/0x7e
-
- -> #3 (&cpuctx_mutex){+.+.}-{4:4}:
-        __mutex_lock+0x192/0x18c0
-        perf_event_init_cpu+0x325/0x7c0
-        perf_event_init+0x52a/0x5b0
-        start_kernel+0x263/0x3e0
-        x86_64_start_reservations+0x24/0x30
-        x86_64_start_kernel+0x95/0xa0
-        common_startup_64+0x13e/0x141
-
- -> #2 (pmus_lock){+.+.}-{4:4}:
-        __mutex_lock+0x192/0x18c0
-        perf_event_init_cpu+0xb7/0x7c0
-        cpuhp_invoke_callback+0x2c0/0x1030
-        __cpuhp_invoke_callback_range+0xbf/0x1f0
-        _cpu_up+0x2e7/0x690
-        cpu_up+0x117/0x170
-        cpuhp_bringup_mask+0xd5/0x120
-        bringup_nonboot_cpus+0x13d/0x170
-        smp_init+0x2b/0xf0
-        kernel_init_freeable+0x441/0x6d0
-        kernel_init+0x1e/0x160
-        ret_from_fork+0x34/0x70
-        ret_from_fork_asm+0x1a/0x30
-
- -> #1 (cpu_hotplug_lock){++++}-{0:0}:
-        cpus_read_lock+0x2a/0xd0
-        ring_buffer_resize+0x610/0x14e0
-        __tracing_resize_ring_buffer.part.0+0x42/0x120
-        tracing_set_tracer+0x7bd/0xa80
-        tracing_set_trace_write+0x132/0x1e0
-        vfs_write+0x21c/0xe80
-        ksys_write+0xf9/0x1c0
-        do_syscall_64+0x79/0x1c0
-        entry_SYSCALL_64_after_hwframe+0x76/0x7e
-
- -> #0 (&buffer->mutex){+.+.}-{4:4}:
-        __lock_acquire+0x1405/0x2210
-        lock_acquire+0x174/0x310
-        __mutex_lock+0x192/0x18c0
-        ring_buffer_map+0x11c/0xe70
-        tracing_buffers_mmap+0x1c4/0x3b0
-        __mmap_region+0xd8d/0x1f70
-        do_mmap+0x9d7/0x1010
-        vm_mmap_pgoff+0x20b/0x390
-        ksys_mmap_pgoff+0x2e9/0x440
-        do_syscall_64+0x79/0x1c0
-        entry_SYSCALL_64_after_hwframe+0x76/0x7e
-
- other info that might help us debug this:
-
- Chain exists of:
-   &buffer->mutex --> &mm->mmap_lock --> &cpu_buffer->mapping_lock
-
-  Possible unsafe locking scenario:
-
-        CPU0                    CPU1
-        ----                    ----
-   lock(&cpu_buffer->mapping_lock);
-                                lock(&mm->mmap_lock);
-                                lock(&cpu_buffer->mapping_lock);
-   lock(&buffer->mutex);
-
-  *** DEADLOCK ***
-
- 2 locks held by trace-cmd/1113:
-  #0: ffff888106b847e0 (&mm->mmap_lock){++++}-{4:4}, at: vm_mmap_pgoff+0x192/0x390
-  #1: ffff888100a5f9f8 (&cpu_buffer->mapping_lock){+.+.}-{4:4}, at: ring_buffer_map+0xcf/0xe70
-
- stack backtrace:
- CPU: 5 UID: 0 PID: 1113 Comm: trace-cmd Not tainted 6.15.0-rc7-test-00002-gfb7d03d8a82f #551 PREEMPT
- Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
- Call Trace:
-  <TASK>
-  dump_stack_lvl+0x6e/0xa0
-  print_circular_bug.cold+0x178/0x1be
-  check_noncircular+0x146/0x160
-  __lock_acquire+0x1405/0x2210
-  lock_acquire+0x174/0x310
-  ? ring_buffer_map+0x11c/0xe70
-  ? ring_buffer_map+0x11c/0xe70
-  ? __mutex_lock+0x169/0x18c0
-  __mutex_lock+0x192/0x18c0
-  ? ring_buffer_map+0x11c/0xe70
-  ? ring_buffer_map+0x11c/0xe70
-  ? function_trace_call+0x296/0x370
-  ? __pfx___mutex_lock+0x10/0x10
-  ? __pfx_function_trace_call+0x10/0x10
-  ? __pfx___mutex_lock+0x10/0x10
-  ? _raw_spin_unlock+0x2d/0x50
-  ? ring_buffer_map+0x11c/0xe70
-  ? ring_buffer_map+0x11c/0xe70
-  ? __mutex_lock+0x5/0x18c0
-  ring_buffer_map+0x11c/0xe70
-  ? do_raw_spin_lock+0x12d/0x270
-  ? find_held_lock+0x2b/0x80
-  ? _raw_spin_unlock+0x2d/0x50
-  ? rcu_is_watching+0x15/0xb0
-  ? _raw_spin_unlock+0x2d/0x50
-  ? trace_preempt_on+0xd0/0x110
-  tracing_buffers_mmap+0x1c4/0x3b0
-  __mmap_region+0xd8d/0x1f70
-  ? ring_buffer_lock_reserve+0x99/0xff0
-  ? __pfx___mmap_region+0x10/0x10
-  ? ring_buffer_lock_reserve+0x99/0xff0
-  ? __pfx_ring_buffer_lock_reserve+0x10/0x10
-  ? __pfx_ring_buffer_lock_reserve+0x10/0x10
-  ? bpf_lsm_mmap_addr+0x4/0x10
-  ? security_mmap_addr+0x46/0xd0
-  ? lock_is_held_type+0xd9/0x130
-  do_mmap+0x9d7/0x1010
-  ? 0xffffffffc0370095
-  ? __pfx_do_mmap+0x10/0x10
-  vm_mmap_pgoff+0x20b/0x390
-  ? __pfx_vm_mmap_pgoff+0x10/0x10
-  ? 0xffffffffc0370095
-  ksys_mmap_pgoff+0x2e9/0x440
-  do_syscall_64+0x79/0x1c0
-  entry_SYSCALL_64_after_hwframe+0x76/0x7e
- RIP: 0033:0x7fb0963a7de2
- Code: 00 00 00 0f 1f 44 00 00 41 f7 c1 ff 0f 00 00 75 27 55 89 cd 53 48 89 fb 48 85 ff 74 3b 41 89 ea 48 89 df b8 09 00 00 00 0f 05 <48> 3d 00 f0 ff ff 77 76 5b 5d c3 0f 1f 00 48 8b 05 e1 9f 0d 00 64
- RSP: 002b:00007ffdcc8fb878 EFLAGS: 00000246 ORIG_RAX: 0000000000000009
- RAX: ffffffffffffffda RBX: 0000000000000000 RCX: 00007fb0963a7de2
- RDX: 0000000000000001 RSI: 0000000000001000 RDI: 0000000000000000
- RBP: 0000000000000001 R08: 0000000000000006 R09: 0000000000000000
- R10: 0000000000000001 R11: 0000000000000246 R12: 0000000000000000
- R13: 00007ffdcc8fbe68 R14: 00007fb096628000 R15: 00005633e01a5c90
-  </TASK>
-
-The issue is that cpus_read_lock() is taken within buffer->mutex. The
-memory mapped pages are taken with the mmap_lock held. The buffer->mutex
-is taken within the cpu_buffer->mapping_lock. There's quite a chain with
-all these locks, where the deadlock can be fixed by moving the
-cpus_read_lock() outside the taking of the buffer->mutex.
-
-Cc: stable@vger.kernel.org
-Cc: Masami Hiramatsu <mhiramat@kernel.org>
-Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Cc: Vincent Donnefort <vdonnefort@google.com>
-Link: https://lore.kernel.org/20250527105820.0f45d045@gandalf.local.home
-Fixes: 117c39200d9d7 ("ring-buffer: Introducing ring-buffer mapping functions")
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Link: https://lore.kernel.org/netdev/20250520205920.2134829-9-anthony.l.nguyen@intel.com [1]
+Fixes: 47e36ed78406 ("overflow: Fix direct struct member initialization in _DEFINE_FLEX()")
+Signed-off-by: Kees Cook <kees@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/trace/ring_buffer.c |   11 ++++++-----
- 1 file changed, 6 insertions(+), 5 deletions(-)
+ include/linux/overflow.h |   25 +++++++++++++++++++------
+ 1 file changed, 19 insertions(+), 6 deletions(-)
 
---- a/kernel/trace/ring_buffer.c
-+++ b/kernel/trace/ring_buffer.c
-@@ -2849,6 +2849,12 @@ int ring_buffer_resize(struct trace_buff
- 	if (nr_pages < 2)
- 		nr_pages = 2;
+--- a/include/linux/overflow.h
++++ b/include/linux/overflow.h
+@@ -389,25 +389,38 @@ static inline size_t __must_check size_s
+ 	struct_size((type *)NULL, member, count)
  
-+	/*
-+	 * Keep CPUs from coming online while resizing to synchronize
-+	 * with new per CPU buffers being created.
-+	 */
-+	guard(cpus_read_lock)();
+ /**
+- * _DEFINE_FLEX() - helper macro for DEFINE_FLEX() family.
+- * Enables caller macro to pass (different) initializer.
++ * __DEFINE_FLEX() - helper macro for DEFINE_FLEX() family.
++ * Enables caller macro to pass arbitrary trailing expressions
+  *
+  * @type: structure type name, including "struct" keyword.
+  * @name: Name for a variable to define.
+  * @member: Name of the array member.
+  * @count: Number of elements in the array; must be compile-time const.
+- * @initializer: Initializer expression (e.g., pass `= { }` at minimum).
++ * @trailer: Trailing expressions for attributes and/or initializers.
+  */
+-#define _DEFINE_FLEX(type, name, member, count, initializer...)			\
++#define __DEFINE_FLEX(type, name, member, count, trailer...)			\
+ 	_Static_assert(__builtin_constant_p(count),				\
+ 		       "onstack flex array members require compile-time const count"); \
+ 	union {									\
+ 		u8 bytes[struct_size_t(type, member, count)];			\
+ 		type obj;							\
+-	} name##_u = { .obj initializer };					\
++	} name##_u trailer;							\
+ 	type *name = (type *)&name##_u
+ 
+ /**
++ * _DEFINE_FLEX() - helper macro for DEFINE_FLEX() family.
++ * Enables caller macro to pass (different) initializer.
++ *
++ * @type: structure type name, including "struct" keyword.
++ * @name: Name for a variable to define.
++ * @member: Name of the array member.
++ * @count: Number of elements in the array; must be compile-time const.
++ * @initializer: Initializer expression (e.g., pass `= { }` at minimum).
++ */
++#define _DEFINE_FLEX(type, name, member, count, initializer...)			\
++	__DEFINE_FLEX(type, name, member, count, = { .obj initializer })
 +
- 	/* prevent another thread from changing buffer sizes */
- 	mutex_lock(&buffer->mutex);
- 	atomic_inc(&buffer->resizing);
-@@ -2893,7 +2899,6 @@ int ring_buffer_resize(struct trace_buff
- 			cond_resched();
- 		}
++/**
+  * DEFINE_RAW_FLEX() - Define an on-stack instance of structure with a trailing
+  * flexible array member, when it does not have a __counted_by annotation.
+  *
+@@ -421,7 +434,7 @@ static inline size_t __must_check size_s
+  * Use __struct_size(@name) to get compile-time size of it afterwards.
+  */
+ #define DEFINE_RAW_FLEX(type, name, member, count)	\
+-	_DEFINE_FLEX(type, name, member, count, = {})
++	__DEFINE_FLEX(type, name, member, count, = { })
  
--		cpus_read_lock();
- 		/*
- 		 * Fire off all the required work handlers
- 		 * We can't schedule on offline CPUs, but it's not necessary
-@@ -2933,7 +2938,6 @@ int ring_buffer_resize(struct trace_buff
- 			cpu_buffer->nr_pages_to_update = 0;
- 		}
- 
--		cpus_read_unlock();
- 	} else {
- 		cpu_buffer = buffer->buffers[cpu_id];
- 
-@@ -2961,8 +2965,6 @@ int ring_buffer_resize(struct trace_buff
- 			goto out_err;
- 		}
- 
--		cpus_read_lock();
--
- 		/* Can't run something on an offline CPU. */
- 		if (!cpu_online(cpu_id))
- 			rb_update_pages(cpu_buffer);
-@@ -2981,7 +2983,6 @@ int ring_buffer_resize(struct trace_buff
- 		}
- 
- 		cpu_buffer->nr_pages_to_update = 0;
--		cpus_read_unlock();
- 	}
- 
-  out:
+ /**
+  * DEFINE_FLEX() - Define an on-stack instance of structure with a trailing
 
 
 
