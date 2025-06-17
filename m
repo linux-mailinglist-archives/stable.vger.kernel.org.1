@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-154134-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153401-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D2931ADD744
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:43:10 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9AC2CADD46E
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:10:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8B8C67A0FFD
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:41:48 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EDBBA3A3518
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:00:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4299D1E98E3;
-	Tue, 17 Jun 2025 16:36:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0B4D2ED859;
+	Tue, 17 Jun 2025 15:57:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fs5Df79/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fVJV1S0D"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2B5A2135A0;
-	Tue, 17 Jun 2025 16:36:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 896C52E92CD;
+	Tue, 17 Jun 2025 15:57:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750178211; cv=none; b=D48khL2byhVbwFe2T68gBHPOeLCHuyBdABO7W+9QWuV5J2D/cMMHjv4t95tNi0o7+CnSSmYKmhwysOINkrXhb3zWGkyJni7W9sAzO5NJkbExcyV75JsdKoBbKG3uxolSZbcP+epc89/IF6X0Rqndf5D+fDCHbRQx5SzHLGLPjGQ=
+	t=1750175840; cv=none; b=cBdstHWEorJqkUGGZVuNCgNIpJQvqF2WxD63ioiwgtyNxpkau91QZttPCqapioNrpIOcNEMnptkS1YKWrQqaKu83wWdmMhPBY5/h5nkCFVWSEMnjNGjPD6ISNG3PH7TxxKWZJ1eZ/nYB0UBZ1a5pkjtq33ulJaZzw1zqPIayHhc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750178211; c=relaxed/simple;
-	bh=mEROAW+kWOpag3cJVKvrUuC6PpmPTuoT60HGo3I7WzI=;
+	s=arc-20240116; t=1750175840; c=relaxed/simple;
+	bh=yAzAa9Mg/zQx4IdnR9yg0NGCixpmxoKBTCyfiyTDn6g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OEUut2fBksAi13AYrPFd3uf2YwATdYMopZmfbmoHsiMTjJei9PFfM+FsroYxiOHi5zQf0eExDyDdYkPc1hJZMGIEyih9ztO6eIk671LUGzbR3AjCt/ckrPvYvuIniEk0u1V0lwLtzhPIyzhZA5GGc+9Ag9XC1DP/049D+jGPaX4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fs5Df79/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D8ACC4CEE3;
-	Tue, 17 Jun 2025 16:36:50 +0000 (UTC)
+	 MIME-Version; b=NYhbnkwAOk/c6oNjpXbCr0mlInUxnNHwfLXUuiDh3OPkccT89KOc1Z3WBPUjg6To+sRtGV021He070wWeUOhQEEZc7izur4P8ssuulYtAXrKQs4VKt/B5JvuGkUvrpUu8bwZ4h9efxnC5ESlKG4VYfI/LdNWPwpUYl4A1fHgOsI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fVJV1S0D; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2D11C4CEE3;
+	Tue, 17 Jun 2025 15:57:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750178210;
-	bh=mEROAW+kWOpag3cJVKvrUuC6PpmPTuoT60HGo3I7WzI=;
+	s=korg; t=1750175840;
+	bh=yAzAa9Mg/zQx4IdnR9yg0NGCixpmxoKBTCyfiyTDn6g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fs5Df79/oWsNbtlJn4BM0S2fe/yI4QINZT3oJDMDEQfdnB6D01uIrALnhL+e2/8Fk
-	 nptOgK00/UGE4a59DDQeVbLQGICeULFQjy5Y163Cf0eWlFPp/ln5QfHtk4IcflHwfL
-	 C3buIvLo7w8vdJzMMduuzAdo19sOS33Kpai3QbM0=
+	b=fVJV1S0DUfJGQSMUbCOq8+xFsuo5FjzXX0IZzvrmlPkgyzHJZJjj14wzMcfB97rBi
+	 a/WmPz4g51lopU6yu8g8Ql7HSEFJF2Sc98cN2B+z8I1D4t+0MqUzV8yQEK1AMgqCKX
+	 3YvwWA+fOwVtp8PNUDdlTEknx6N+eRNi+KJhUQ5w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Damien Le Moal <dlemoal@kernel.org>,
-	Benjamin Marzinski <bmarzins@redhat.com>,
-	Mikulas Patocka <mpatocka@redhat.com>,
+	Conor Dooley <conor.dooley@microchip.com>,
+	"Rob Herring (Arm)" <robh@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 425/780] dm: dont change md if dm_table_set_restrictions() fails
-Date: Tue, 17 Jun 2025 17:22:13 +0200
-Message-ID: <20250617152508.779243869@linuxfoundation.org>
+Subject: [PATCH 6.12 168/512] dt-bindings: soc: fsl,qman-fqd: Fix reserved-memory.yaml reference
+Date: Tue, 17 Jun 2025 17:22:14 +0200
+Message-ID: <20250617152426.429976092@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
-References: <20250617152451.485330293@linuxfoundation.org>
+In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
+References: <20250617152419.512865572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,83 +62,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Benjamin Marzinski <bmarzins@redhat.com>
+From: Rob Herring (Arm) <robh@kernel.org>
 
-[ Upstream commit 9eb7109a5bfc5b8226e9517e9f3cc6d414391884 ]
+[ Upstream commit 1090c38bbfd9ab7f22830c0e8a5c605e7d4ef084 ]
 
-__bind was changing the disk capacity, geometry and mempools of the
-mapped device before calling dm_table_set_restrictions() which could
-fail, forcing dm to drop the new table. Failing here would leave the
-device using the old table but with the wrong capacity and mempools.
+The reserved-memory.yaml reference needs the full path. No warnings were
+generated because the example has the wrong compatible string, so fix
+that too.
 
-Move dm_table_set_restrictions() earlier in __bind(). Since it needs the
-capacity to be set, save the old version and restore it on failure.
-
-Fixes: bb37d77239af2 ("dm: introduce zone append emulation")
-Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
-Tested-by: Damien Le Moal <dlemoal@kernel.org>
-Signed-off-by: Benjamin Marzinski <bmarzins@redhat.com>
-Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
+Fixes: 304a90c4f75d ("dt-bindings: soc: fsl: Convert q(b)man-* to yaml format")
+Acked-by: Conor Dooley <conor.dooley@microchip.com>
+Link: https://lore.kernel.org/r/20250507154231.1590634-1-robh@kernel.org
+Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/md/dm.c | 22 ++++++++++++----------
- 1 file changed, 12 insertions(+), 10 deletions(-)
+ Documentation/devicetree/bindings/soc/fsl/fsl,qman-fqd.yaml | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/md/dm.c b/drivers/md/dm.c
-index 5ab7574c0c76a..f5c5ccb6f8d25 100644
---- a/drivers/md/dm.c
-+++ b/drivers/md/dm.c
-@@ -2421,21 +2421,29 @@ static struct dm_table *__bind(struct mapped_device *md, struct dm_table *t,
- 			       struct queue_limits *limits)
- {
- 	struct dm_table *old_map;
--	sector_t size;
-+	sector_t size, old_size;
- 	int ret;
+diff --git a/Documentation/devicetree/bindings/soc/fsl/fsl,qman-fqd.yaml b/Documentation/devicetree/bindings/soc/fsl/fsl,qman-fqd.yaml
+index de0b4ae740ff2..a975bce599750 100644
+--- a/Documentation/devicetree/bindings/soc/fsl/fsl,qman-fqd.yaml
++++ b/Documentation/devicetree/bindings/soc/fsl/fsl,qman-fqd.yaml
+@@ -50,7 +50,7 @@ required:
+   - compatible
  
- 	lockdep_assert_held(&md->suspend_lock);
+ allOf:
+-  - $ref: reserved-memory.yaml
++  - $ref: /schemas/reserved-memory/reserved-memory.yaml
  
- 	size = dm_table_get_size(t);
+ unevaluatedProperties: false
  
-+	old_size = dm_get_size(md);
-+	set_capacity(md->disk, size);
-+
-+	ret = dm_table_set_restrictions(t, md->queue, limits);
-+	if (ret) {
-+		set_capacity(md->disk, old_size);
-+		old_map = ERR_PTR(ret);
-+		goto out;
-+	}
-+
- 	/*
- 	 * Wipe any geometry if the size of the table changed.
- 	 */
--	if (size != dm_get_size(md))
-+	if (size != old_size)
- 		memset(&md->geometry, 0, sizeof(md->geometry));
+@@ -61,7 +61,7 @@ examples:
+         #size-cells = <2>;
  
--	set_capacity(md->disk, size);
--
- 	dm_table_event_callback(t, event_callback, md);
- 
- 	if (dm_table_request_based(t)) {
-@@ -2468,12 +2476,6 @@ static struct dm_table *__bind(struct mapped_device *md, struct dm_table *t,
- 		t->mempools = NULL;
- 	}
- 
--	ret = dm_table_set_restrictions(t, md->queue, limits);
--	if (ret) {
--		old_map = ERR_PTR(ret);
--		goto out;
--	}
--
- 	old_map = rcu_dereference_protected(md->map, lockdep_is_held(&md->suspend_lock));
- 	rcu_assign_pointer(md->map, (void *)t);
- 	md->immutable_target_type = dm_table_get_immutable_target_type(t);
+         qman-fqd {
+-            compatible = "shared-dma-pool";
++            compatible = "fsl,qman-fqd";
+             size = <0 0x400000>;
+             alignment = <0 0x400000>;
+             no-map;
 -- 
 2.39.5
 
