@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-154369-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153849-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id AC5CFADD813
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:51:49 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3670DADD6F0
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:38:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9A0257A2321
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:50:20 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E845E4082F9
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:26:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89C552EA17E;
-	Tue, 17 Jun 2025 16:49:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 97F252EE609;
+	Tue, 17 Jun 2025 16:21:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kn7lZVD2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S5Pwp2WU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45FCC2EA178;
-	Tue, 17 Jun 2025 16:49:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 511212DFF0A;
+	Tue, 17 Jun 2025 16:21:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750178975; cv=none; b=Fy3UQAsQn2ml3+2iSAv4Py4f8RN005BudrWzToTOGJ1rxgfeRpvzaWKYKSGvwZzjXVLHbqDrFtVga3Y46hIGLtifC7lJxQKuP14ZLU2kYpIEACDG9/ci4znOJDrPV6qXJcyIgLViiY++txgJuo9JaFwWPGBWGdGUNzzpWNAm7bs=
+	t=1750177296; cv=none; b=av8zBdkmnkuLr6hOBlKBM+H6bn0UQPe0HSV+t+rYFZHt0lNt5oxyH3bq8Sx1IsQjOadX92F4vMe/YXFiWRAhkdwsxnRhCinyQ5gyjIFgE5rCVhgV+tC9CiZhsRzVbxxPoCSsTCTrgCDgV/cXlg6Q5II9HPa+b3AZRHD24yXlU+c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750178975; c=relaxed/simple;
-	bh=gURQXcYXp1krrGvWHg8xDAiBLwQvZRwA2WLsFwM3C8g=;
+	s=arc-20240116; t=1750177296; c=relaxed/simple;
+	bh=RZw+R8aktxuKN+xF6SMkhyKgIXgW7yOawilHae1I15Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OV/w7eUaLTqNoatGnalpSzRm1KbSdzTWzY7lhSnnzak8SmaPpUF3vGkYqiouesbHOG/27xBEgIAFS3F1Qi0Ltsb9jPJqDDpmbOFZPh7yuX5gmKrQfptrbDtYcHrFxziPaLuKOFzIInTW3RT4A/6jYzhESr8tSnsDEd7GkrbXyLM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kn7lZVD2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62199C4CEE3;
-	Tue, 17 Jun 2025 16:49:34 +0000 (UTC)
+	 MIME-Version; b=PcY3TXr+/u9m9NJ8KsqSWrAnMNMSeOPcf9MV1KlOK4bRpj4Uomf7HxT4cHVpKbV3ZFMURHm9Qeu+uO8r+GALhCd2/bWXyLXY2f264PwdKgojG2EMO3vR5Y1NlKjYaGjNG7azZND5oqTbMMuxLk/bUFIG+m/Wi2LvYViQ5bZ4aCM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S5Pwp2WU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0630C4CEE3;
+	Tue, 17 Jun 2025 16:21:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750178974;
-	bh=gURQXcYXp1krrGvWHg8xDAiBLwQvZRwA2WLsFwM3C8g=;
+	s=korg; t=1750177296;
+	bh=RZw+R8aktxuKN+xF6SMkhyKgIXgW7yOawilHae1I15Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kn7lZVD25cXQy0268eXWfahWSibnONU03/QODWdNaoZerVYQnWvWR/nvryIsoFNDi
-	 wOOnjsAlvozvg+pBitu4cTNwl+dzZm/s1x6kvMMe5rPW9pyWT2hqg2h3VBkhxK++8s
-	 VvxC3C8rNWxyOvJM0/ZDP3Z1T378CdR0j5xAlNrw=
+	b=S5Pwp2WUrbiUAAbARCPE/I/uqvMIpKgYjgLT2olNHizTzYbqBmG8nmC3HWOFCIFP3
+	 NQxcTtLKEaAxxz1fKD72v0j0K1wfMR87VUzUFetg6iaHb3ZqUauw2y73m35W4c/NnZ
+	 d2GWpCI5zPJAd/qrIHHHQ17z1gVg5DQ5HjG0yk4w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paul Chaignon <paul.chaignon@gmail.com>,
-	Alexei Starovoitov <ast@kernel.org>,
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Mika Westerberg <mika.westerberg@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 580/780] bpf: Clarify the meaning of BPF_F_PSEUDO_HDR
-Date: Tue, 17 Jun 2025 17:24:48 +0200
-Message-ID: <20250617152515.104288189@linuxfoundation.org>
+Subject: [PATCH 6.12 323/512] thunderbolt: Fix a logic error in wake on connect
+Date: Tue, 17 Jun 2025 17:24:49 +0200
+Message-ID: <20250617152432.691419642@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
-References: <20250617152451.485330293@linuxfoundation.org>
+In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
+References: <20250617152419.512865572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,57 +62,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paul Chaignon <paul.chaignon@gmail.com>
+From: Mario Limonciello <mario.limonciello@amd.com>
 
-[ Upstream commit 5a15a050df714959f0d5a57ac3201bd1c6594984 ]
+[ Upstream commit 1a760d10ded372d113a0410c42be246315bbc2ff ]
 
-In the bpf_l4_csum_replace helper, the BPF_F_PSEUDO_HDR flag should only
-be set if the modified header field is part of the pseudo-header.
+commit a5cfc9d65879c ("thunderbolt: Add wake on connect/disconnect
+on USB4 ports") introduced a sysfs file to control wake up policy
+for a given USB4 port that defaulted to disabled.
 
-If you modify for example the UDP ports and pass BPF_F_PSEUDO_HDR,
-inet_proto_csum_replace4 will update skb->csum even though it shouldn't
-(the port and the UDP checksum updates null each other).
+However when testing commit 4bfeea6ec1c02 ("thunderbolt: Use wake
+on connect and disconnect over suspend") I found that it was working
+even without making changes to the power/wakeup file (which defaults
+to disabled). This is because of a logic error doing a bitwise or
+of the wake-on-connect flag with device_may_wakeup() which should
+have been a logical AND.
 
-Signed-off-by: Paul Chaignon <paul.chaignon@gmail.com>
-Link: https://lore.kernel.org/r/5126ef84ba75425b689482cbc98bffe75e5d8ab0.1744102490.git.paul.chaignon@gmail.com
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
-Stable-dep-of: ead7f9b8de65 ("bpf: Fix L4 csum update on IPv6 in CHECKSUM_COMPLETE")
+Adjust the logic so that policy is only applied when wakeup is
+actually enabled.
+
+Fixes: a5cfc9d65879c ("thunderbolt: Add wake on connect/disconnect on USB4 ports")
+Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+Signed-off-by: Mika Westerberg <mika.westerberg@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/uapi/linux/bpf.h       | 2 +-
- tools/include/uapi/linux/bpf.h | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ drivers/thunderbolt/usb4.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/include/uapi/linux/bpf.h b/include/uapi/linux/bpf.h
-index fd404729b1154..bceb1950ec204 100644
---- a/include/uapi/linux/bpf.h
-+++ b/include/uapi/linux/bpf.h
-@@ -2051,7 +2051,7 @@ union bpf_attr {
-  * 		untouched (unless **BPF_F_MARK_ENFORCE** is added as well), and
-  * 		for updates resulting in a null checksum the value is set to
-  * 		**CSUM_MANGLED_0** instead. Flag **BPF_F_PSEUDO_HDR** indicates
-- * 		the checksum is to be computed against a pseudo-header.
-+ * 		that the modified header field is part of the pseudo-header.
-  *
-  * 		This helper works in combination with **bpf_csum_diff**\ (),
-  * 		which does not update the checksum in-place, but offers more
-diff --git a/tools/include/uapi/linux/bpf.h b/tools/include/uapi/linux/bpf.h
-index fd404729b1154..bceb1950ec204 100644
---- a/tools/include/uapi/linux/bpf.h
-+++ b/tools/include/uapi/linux/bpf.h
-@@ -2051,7 +2051,7 @@ union bpf_attr {
-  * 		untouched (unless **BPF_F_MARK_ENFORCE** is added as well), and
-  * 		for updates resulting in a null checksum the value is set to
-  * 		**CSUM_MANGLED_0** instead. Flag **BPF_F_PSEUDO_HDR** indicates
-- * 		the checksum is to be computed against a pseudo-header.
-+ * 		that the modified header field is part of the pseudo-header.
-  *
-  * 		This helper works in combination with **bpf_csum_diff**\ (),
-  * 		which does not update the checksum in-place, but offers more
+diff --git a/drivers/thunderbolt/usb4.c b/drivers/thunderbolt/usb4.c
+index 402fdf8b1cdec..57821b6f4e468 100644
+--- a/drivers/thunderbolt/usb4.c
++++ b/drivers/thunderbolt/usb4.c
+@@ -440,10 +440,10 @@ int usb4_switch_set_wake(struct tb_switch *sw, unsigned int flags)
+ 			bool configured = val & PORT_CS_19_PC;
+ 			usb4 = port->usb4;
+ 
+-			if (((flags & TB_WAKE_ON_CONNECT) |
++			if (((flags & TB_WAKE_ON_CONNECT) &&
+ 			      device_may_wakeup(&usb4->dev)) && !configured)
+ 				val |= PORT_CS_19_WOC;
+-			if (((flags & TB_WAKE_ON_DISCONNECT) |
++			if (((flags & TB_WAKE_ON_DISCONNECT) &&
+ 			      device_may_wakeup(&usb4->dev)) && configured)
+ 				val |= PORT_CS_19_WOD;
+ 			if ((flags & TB_WAKE_ON_USB4) && configured)
 -- 
 2.39.5
 
