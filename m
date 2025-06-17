@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-153815-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153818-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4918DADD6AF
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:36:18 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 45C86ADD66B
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:33:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 43CFC4A0D16
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:25:14 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3FFFA7A3D8A
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:24:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9AC02ED848;
-	Tue, 17 Jun 2025 16:19:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC85B2EE27F;
+	Tue, 17 Jun 2025 16:19:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VZjDN3nE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G3sCOfvp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4CC922FF2B;
-	Tue, 17 Jun 2025 16:19:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88E8E2ED84A;
+	Tue, 17 Jun 2025 16:19:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750177185; cv=none; b=t5DTgx6nNVX9OjZqGgAxooqSCDuQ/Z1wVkPOwAC7vws39c4hhGd58BGvRR+jiV9WSna4ysbmmBITbZtes/P/qGWva1mYc5NMmelVXvQbU90ZLB56CKbrogvl6N9N+j1pMrRASwU4wl+CHHSntRjf37nIsh569zMe7vrqMRHgIk4=
+	t=1750177195; cv=none; b=MOu2ixqfkJvvps9Kk+e7nZBjTgm+x/eUsBntgT2Sd/lQNrdF/uUN3Y2g3HkynW+76zlXj+0QGXWDWD/EkgqP28VJ7qTBsZ+iZwCxUnVBauVcsnUoDc2FST4PT3A15RsLZBdKSim3qfgd55+LM1Zgkg35ldUmHS4COeSHM3mNBDk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750177185; c=relaxed/simple;
-	bh=gIfvMX1BGxsHzlcW0XmPE11M3CP6bNdTT/ugIuiZp70=;
+	s=arc-20240116; t=1750177195; c=relaxed/simple;
+	bh=yHOrWKvR43kb8Z7jJ5xyqKVDc9w2QSzWkYpPkn60YH4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Hav+RVMlz7firLNDg90nD8CFrCMWvvNJuAd3vm5xyaEmb2qbpHcp7XmhcZ0IIPj69pwhXxEbrAZz8hzwu8S/am5Iu+SY1ihsDQ3PQMIPKJGG4u/Ieebct/UUODKq4KDy6mYnKFlKniEVzJMvuRWSI3ZDMVyLnR78zbucAa3mrek=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VZjDN3nE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 224A5C4CEE3;
-	Tue, 17 Jun 2025 16:19:44 +0000 (UTC)
+	 MIME-Version; b=TAPgg+8eOHi4D4N5Uro8ACs2DbLMmMNnBv8MiYVRnODTEnqeYBK5Tb9S0L29zCW/Ytd4k73f0h5DSyKQHDJwe6Am06eEO+NWiNTaYKxNsP4O1C1RtIcDWWTq8nxvCzxzZ67MYDNjGuAvqAdmkkLttlhG0s2ac4Is2YwyzR6E9rs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G3sCOfvp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED409C4CEE7;
+	Tue, 17 Jun 2025 16:19:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750177185;
-	bh=gIfvMX1BGxsHzlcW0XmPE11M3CP6bNdTT/ugIuiZp70=;
+	s=korg; t=1750177195;
+	bh=yHOrWKvR43kb8Z7jJ5xyqKVDc9w2QSzWkYpPkn60YH4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VZjDN3nEuuqN3r2BGWVs1e33ijK9jnjamfHko4Aje6JyhbCvbod/7JW7ValmFtqR2
-	 XSGSJa58aVtmTq/TySoNRunRvw5zJHhVwy8koIILb4EwN1dKlwCVHo8jZiSORFlN+Y
-	 ZGKN7yVRsxwehZPQ9qwU4xIVA6P1fIYKHN6jD6fI=
+	b=G3sCOfvpUwDmU3O6SSiCCDj7jV+pD7zac/d2PXFkmO1Ej4zQVglXhVhCz4K3vVLNf
+	 OKQOHMYrneJHoBJkiT4RJbsrAiDyoRIU1vSn4KO0xjrgWVxL/uvdrODSI5ZGx/ulE6
+	 xPob18fSEEnO+dJV5JRVfKLszLLsJFns2OT7PKCc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexey Kodanev <aleksei.kodanev@bell-sw.com>,
+	Chin-Yen Lee <timlee@realtek.com>,
 	Ping-Ke Shih <pkshih@realtek.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 269/780] wifi: rtw88: fix the para buffer size to avoid reading out of bounds
-Date: Tue, 17 Jun 2025 17:19:37 +0200
-Message-ID: <20250617152502.419944936@linuxfoundation.org>
+Subject: [PATCH 6.15 270/780] wifi: rtw89: fix firmware scan delay unit for WiFi 6 chips
+Date: Tue, 17 Jun 2025 17:19:38 +0200
+Message-ID: <20250617152502.462482078@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
 References: <20250617152451.485330293@linuxfoundation.org>
@@ -66,45 +66,36 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Alexey Kodanev <aleksei.kodanev@bell-sw.com>
+From: Chin-Yen Lee <timlee@realtek.com>
 
-[ Upstream commit 4c2c372de2e108319236203cce6de44d70ae15cd ]
+[ Upstream commit 3cc35394fac15d533639c9c9e42f28d28936a4a0 ]
 
-Set the size to 6 instead of 2, since 'para' array is passed to
-'rtw_fw_bt_wifi_control(rtwdev, para[0], &para[1])', which reads
-5 bytes:
+The scan delay unit of firmware command for WiFi 6 chips is
+microsecond, but is wrong set now and lead to abnormal work
+for net-detect. Correct the unit to avoid the error.
 
-void rtw_fw_bt_wifi_control(struct rtw_dev *rtwdev, u8 op_code, u8 *data)
-{
-    ...
-    SET_BT_WIFI_CONTROL_DATA1(h2c_pkt, *data);
-    SET_BT_WIFI_CONTROL_DATA2(h2c_pkt, *(data + 1));
-    ...
-    SET_BT_WIFI_CONTROL_DATA5(h2c_pkt, *(data + 4));
-
-Detected using the static analysis tool - Svace.
-Fixes: 4136214f7c46 ("rtw88: add BT co-existence support")
-Signed-off-by: Alexey Kodanev <aleksei.kodanev@bell-sw.com>
+Fixes: e99dd80c8a18 ("wifi: rtw89: wow: add delay option for net-detect")
+Signed-off-by: Chin-Yen Lee <timlee@realtek.com>
 Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
-Link: https://patch.msgid.link/20250513121304.124141-1-aleksei.kodanev@bell-sw.com
+Link: https://patch.msgid.link/20250513125203.6858-1-pkshih@realtek.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/realtek/rtw88/coex.c | 2 +-
+ drivers/net/wireless/realtek/rtw89/fw.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/realtek/rtw88/coex.c b/drivers/net/wireless/realtek/rtw88/coex.c
-index c929db1e53ca6..64904278ddad7 100644
---- a/drivers/net/wireless/realtek/rtw88/coex.c
-+++ b/drivers/net/wireless/realtek/rtw88/coex.c
-@@ -309,7 +309,7 @@ static void rtw_coex_tdma_timer_base(struct rtw_dev *rtwdev, u8 type)
- {
- 	struct rtw_coex *coex = &rtwdev->coex;
- 	struct rtw_coex_stat *coex_stat = &coex->stat;
--	u8 para[2] = {0};
-+	u8 para[6] = {};
- 	u8 times;
- 	u16 tbtt_interval = coex_stat->wl_beacon_interval;
+diff --git a/drivers/net/wireless/realtek/rtw89/fw.c b/drivers/net/wireless/realtek/rtw89/fw.c
+index 8643b17866f89..6c52b0425f2ea 100644
+--- a/drivers/net/wireless/realtek/rtw89/fw.c
++++ b/drivers/net/wireless/realtek/rtw89/fw.c
+@@ -5477,7 +5477,7 @@ int rtw89_fw_h2c_scan_list_offload_be(struct rtw89_dev *rtwdev, int ch_num,
+ 	return 0;
+ }
  
+-#define RTW89_SCAN_DELAY_TSF_UNIT 104800
++#define RTW89_SCAN_DELAY_TSF_UNIT 1000000
+ int rtw89_fw_h2c_scan_offload_ax(struct rtw89_dev *rtwdev,
+ 				 struct rtw89_scan_option *option,
+ 				 struct rtw89_vif_link *rtwvif_link,
 -- 
 2.39.5
 
