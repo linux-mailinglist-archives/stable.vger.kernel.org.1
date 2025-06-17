@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-153952-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-154393-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AC46FADD723
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:41:42 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 603A0ADD9BE
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 19:08:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B17452C6EF4
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:32:18 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0CCBA19E5B6D
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:52:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD2BB2F3629;
-	Tue, 17 Jun 2025 16:27:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A5C12FA63B;
+	Tue, 17 Jun 2025 16:50:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i2tXex49"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GONzvnJo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B1CD2F2351;
-	Tue, 17 Jun 2025 16:27:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 269252FA630;
+	Tue, 17 Jun 2025 16:50:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750177626; cv=none; b=lk2oh7Jt7rwh0QcngChvrfYFXItCKk8sYjKR17Hr5Ksu3VmkLt/InenekLINl772eporBiDQsiRwPHgSLjGMJAz1rWJypxgYQOSseRZBBEGOH5d4pWVIFXFU44tpgwFIrwTW7XF92JbBAKwFoLBW1D/yxoN9jZHliMXKJ/vlA4A=
+	t=1750179050; cv=none; b=X54d/cMLyg8s8cpbxDooazbR/FiBlcw8xE+4X7AMUbmuDJPR2tHN3hSKfLb4eh6f1RcSHUlAoP3Fa+kcO3VbMW+AvAg1nEpkGIiF4vB79QX05FDgu1E3hsuJ3DWaou4qKg6TUSaLZSRItB1JDyAF4717ehXT4nfz4FLfBAhw62o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750177626; c=relaxed/simple;
-	bh=aLQ60jhA6KvhnEr7Ai9xtigQnYx/mcs3aqKG1Vsw5+0=;
+	s=arc-20240116; t=1750179050; c=relaxed/simple;
+	bh=dvO9JJtEwNBtlJDMYOtdkd7wkNXkDY6WVDIti7H0xpE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DB2d0yk8VmD30rb+KlFZq6BQFufySFBDCIaI1fTVfuTcgM5xj59G8yjWML8c8KZ12UAZomT0FmSBXjcV+7+FCSJKQxCul+ggcE4cNJk5n/IpBLLHdaJ7HO62n0g8jSFht36QuqPfdsXl5AzsWwlFPFGcle5bUwCiwHH/xRqQQWc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i2tXex49; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01695C4CEE3;
-	Tue, 17 Jun 2025 16:27:05 +0000 (UTC)
+	 MIME-Version:Content-Type; b=IsIYDsQujedMTLLL4uaVRDjiAPGEWhVSUQ+3NaT/+mvScdJFAU1/GFM2x5KLL4mQoO8BB0lim2u32gu6eBeoUYMpsDaQKy/8/gvINJl5Aui9bUWTnPUTdYDb1MT46VO69ufBWMMYAU10hKedV4QNUKbV/3ymQkoHNCh1OMxdEAM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GONzvnJo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89EE3C4CEE3;
+	Tue, 17 Jun 2025 16:50:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750177626;
-	bh=aLQ60jhA6KvhnEr7Ai9xtigQnYx/mcs3aqKG1Vsw5+0=;
+	s=korg; t=1750179050;
+	bh=dvO9JJtEwNBtlJDMYOtdkd7wkNXkDY6WVDIti7H0xpE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=i2tXex49kOgjXEY7vjPwlLYAj3CKAEB0bYL4fgw53WU6h41MpuoYESg8YpTrti0Em
-	 ptiMJ/PJzwPJLz58+xt6cYFJsGLYxaQOPuoinget0l6T9lBPlwoO7ap9WsZ14wwJ++
-	 e8WLHAMmTdBINv1FGDMzmfVvjcDHgsC/8YGNyIDE=
+	b=GONzvnJoDoVm9jCzVLxGY7xB7VmRglwtwpRld3Q7ixdUViUs9ebPeyotr8yYcQJfo
+	 MNf8VTQaZe8iq3Q2ebEXW+hGVB6YBbxN6qg6HKM/1225bnb5qvNYs0/6LD4hh1I4S8
+	 +nrQkxTcpWpERcn+diqxF6Ck2OqYoJqXTGCNQSMU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chaitanya Kulkarni <chaitanyak@nvidia.com>,
-	Chaitanya Kulkarni <kch@nvidia.com>,
-	Christoph Hellwig <hch@lst.de>,
+	Ziqi Chen <quic_ziqichen@quicinc.com>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Bean Huo <beanhuo@micron.com>,
+	=?UTF-8?q?Lo=C3=AFc=20Minier?= <loic.minier@oss.qualcomm.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 373/512] nvme: fix command limits status code
-Date: Tue, 17 Jun 2025 17:25:39 +0200
-Message-ID: <20250617152434.713978007@linuxfoundation.org>
+Subject: [PATCH 6.15 632/780] scsi: ufs: qcom: Check gear against max gear in vop freq_to_gear()
+Date: Tue, 17 Jun 2025 17:25:40 +0200
+Message-ID: <20250617152517.210867795@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
-References: <20250617152419.512865572@linuxfoundation.org>
+In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
+References: <20250617152451.485330293@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,128 +63,60 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Keith Busch <kbusch@kernel.org>
+From: Ziqi Chen <quic_ziqichen@quicinc.com>
 
-[ Upstream commit 10f4a7cd724e34b7a6ff96e57ac49dc0cadececc ]
+[ Upstream commit 663d0c19f3acc0d697f623d34b8eb3b438bf2bda ]
 
-The command specific status code, 0x183, was introduced in the NVMe 2.0
-specification defined to "Command Size Limits Exceeded" and only ever
-applied to DSM and Copy commands.  Fix the name and, remove the
-incorrect translation to error codes and special treatment in the
-target code for it.
+The vop freq_to_gear() may return a gear greater than the negotiated max
+gear. Return the negotiated max gear if the mapped gear is greater.
 
-Fixes: 3b7c33b28a44d4 ("nvme.h: add Write Zeroes definitions")
-Cc: Chaitanya Kulkarni <chaitanyak@nvidia.com>
-Reviewed-by: Chaitanya Kulkarni <kch@nvidia.com>
-Signed-off-by: Christoph Hellwig <hch@lst.de>
+Fixes: c02fe9e222d1 ("scsi: ufs: qcom: Implement the freq_to_gear_speed() vop")
+Signed-off-by: Ziqi Chen <quic_ziqichen@quicinc.com>
+Link: https://lore.kernel.org/r/20250522021537.999107-2-quic_ziqichen@quicinc.com
+Reported-by: Neil Armstrong <neil.armstrong@linaro.org>
+Closes: https://lore.kernel.org/all/c7f2476a-943a-4d73-ad80-802c91e5f880@linaro.org/
+Tested-by: Neil Armstrong <neil.armstrong@linaro.org>
+Reviewed-by: Bean Huo <beanhuo@micron.com>
+Tested-by: Loïc Minier <loic.minier@oss.qualcomm.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nvme/host/constants.c     | 2 +-
- drivers/nvme/host/core.c          | 1 -
- drivers/nvme/host/pr.c            | 2 --
- drivers/nvme/target/core.c        | 9 +--------
- drivers/nvme/target/io-cmd-bdev.c | 9 +--------
- include/linux/nvme.h              | 2 +-
- 6 files changed, 4 insertions(+), 21 deletions(-)
+ drivers/ufs/host/ufs-qcom.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/nvme/host/constants.c b/drivers/nvme/host/constants.c
-index 2b9e6cfaf2a80..1a0058be58210 100644
---- a/drivers/nvme/host/constants.c
-+++ b/drivers/nvme/host/constants.c
-@@ -145,7 +145,7 @@ static const char * const nvme_statuses[] = {
- 	[NVME_SC_BAD_ATTRIBUTES] = "Conflicting Attributes",
- 	[NVME_SC_INVALID_PI] = "Invalid Protection Information",
- 	[NVME_SC_READ_ONLY] = "Attempted Write to Read Only Range",
--	[NVME_SC_ONCS_NOT_SUPPORTED] = "ONCS Not Supported",
-+	[NVME_SC_CMD_SIZE_LIM_EXCEEDED	] = "Command Size Limits Exceeded",
- 	[NVME_SC_ZONE_BOUNDARY_ERROR] = "Zoned Boundary Error",
- 	[NVME_SC_ZONE_FULL] = "Zone Is Full",
- 	[NVME_SC_ZONE_READ_ONLY] = "Zone Is Read Only",
-diff --git a/drivers/nvme/host/core.c b/drivers/nvme/host/core.c
-index 98dad1bdff440..eca764fede48f 100644
---- a/drivers/nvme/host/core.c
-+++ b/drivers/nvme/host/core.c
-@@ -284,7 +284,6 @@ static blk_status_t nvme_error_status(u16 status)
- 	case NVME_SC_NS_NOT_READY:
- 		return BLK_STS_TARGET;
- 	case NVME_SC_BAD_ATTRIBUTES:
--	case NVME_SC_ONCS_NOT_SUPPORTED:
- 	case NVME_SC_INVALID_OPCODE:
- 	case NVME_SC_INVALID_FIELD:
- 	case NVME_SC_INVALID_NS:
-diff --git a/drivers/nvme/host/pr.c b/drivers/nvme/host/pr.c
-index dc7922f226004..80dd09aa01a3b 100644
---- a/drivers/nvme/host/pr.c
-+++ b/drivers/nvme/host/pr.c
-@@ -82,8 +82,6 @@ static int nvme_status_to_pr_err(int status)
- 		return PR_STS_SUCCESS;
- 	case NVME_SC_RESERVATION_CONFLICT:
- 		return PR_STS_RESERVATION_CONFLICT;
--	case NVME_SC_ONCS_NOT_SUPPORTED:
--		return -EOPNOTSUPP;
- 	case NVME_SC_BAD_ATTRIBUTES:
- 	case NVME_SC_INVALID_OPCODE:
- 	case NVME_SC_INVALID_FIELD:
-diff --git a/drivers/nvme/target/core.c b/drivers/nvme/target/core.c
-index ed2424f8a396e..4606c88136669 100644
---- a/drivers/nvme/target/core.c
-+++ b/drivers/nvme/target/core.c
-@@ -62,14 +62,7 @@ inline u16 errno_to_nvme_status(struct nvmet_req *req, int errno)
- 		return  NVME_SC_LBA_RANGE | NVME_STATUS_DNR;
- 	case -EOPNOTSUPP:
- 		req->error_loc = offsetof(struct nvme_common_command, opcode);
--		switch (req->cmd->common.opcode) {
--		case nvme_cmd_dsm:
--		case nvme_cmd_write_zeroes:
--			return NVME_SC_ONCS_NOT_SUPPORTED | NVME_STATUS_DNR;
--		default:
--			return NVME_SC_INVALID_OPCODE | NVME_STATUS_DNR;
--		}
--		break;
-+		return NVME_SC_INVALID_OPCODE | NVME_STATUS_DNR;
- 	case -ENODATA:
- 		req->error_loc = offsetof(struct nvme_rw_command, nsid);
- 		return NVME_SC_ACCESS_DENIED;
-diff --git a/drivers/nvme/target/io-cmd-bdev.c b/drivers/nvme/target/io-cmd-bdev.c
-index eaf31c823cbe8..73ecbc13c5b23 100644
---- a/drivers/nvme/target/io-cmd-bdev.c
-+++ b/drivers/nvme/target/io-cmd-bdev.c
-@@ -145,15 +145,8 @@ u16 blk_to_nvme_status(struct nvmet_req *req, blk_status_t blk_sts)
- 		req->error_loc = offsetof(struct nvme_rw_command, slba);
- 		break;
- 	case BLK_STS_NOTSUPP:
-+		status = NVME_SC_INVALID_OPCODE | NVME_STATUS_DNR;
- 		req->error_loc = offsetof(struct nvme_common_command, opcode);
--		switch (req->cmd->common.opcode) {
--		case nvme_cmd_dsm:
--		case nvme_cmd_write_zeroes:
--			status = NVME_SC_ONCS_NOT_SUPPORTED | NVME_STATUS_DNR;
--			break;
--		default:
--			status = NVME_SC_INVALID_OPCODE | NVME_STATUS_DNR;
--		}
- 		break;
- 	case BLK_STS_MEDIUM:
- 		status = NVME_SC_ACCESS_DENIED;
-diff --git a/include/linux/nvme.h b/include/linux/nvme.h
-index 1c101f6fad2f3..84d4f0657b7a8 100644
---- a/include/linux/nvme.h
-+++ b/include/linux/nvme.h
-@@ -1954,7 +1954,7 @@ enum {
- 	NVME_SC_BAD_ATTRIBUTES		= 0x180,
- 	NVME_SC_INVALID_PI		= 0x181,
- 	NVME_SC_READ_ONLY		= 0x182,
--	NVME_SC_ONCS_NOT_SUPPORTED	= 0x183,
-+	NVME_SC_CMD_SIZE_LIM_EXCEEDED	= 0x183,
+diff --git a/drivers/ufs/host/ufs-qcom.c b/drivers/ufs/host/ufs-qcom.c
+index c0761ccc1381e..28515f89ce798 100644
+--- a/drivers/ufs/host/ufs-qcom.c
++++ b/drivers/ufs/host/ufs-qcom.c
+@@ -1924,7 +1924,7 @@ static int ufs_qcom_config_esi(struct ufs_hba *hba)
  
- 	/*
- 	 * I/O Command Set Specific - Fabrics commands:
+ static u32 ufs_qcom_freq_to_gear_speed(struct ufs_hba *hba, unsigned long freq)
+ {
+-	u32 gear = 0;
++	u32 gear = UFS_HS_DONT_CHANGE;
+ 
+ 	switch (freq) {
+ 	case 403000000:
+@@ -1946,10 +1946,10 @@ static u32 ufs_qcom_freq_to_gear_speed(struct ufs_hba *hba, unsigned long freq)
+ 		break;
+ 	default:
+ 		dev_err(hba->dev, "%s: Unsupported clock freq : %lu\n", __func__, freq);
+-		break;
++		return UFS_HS_DONT_CHANGE;
+ 	}
+ 
+-	return gear;
++	return min_t(u32, gear, hba->max_pwr_info.info.gear_rx);
+ }
+ 
+ /*
 -- 
 2.39.5
 
