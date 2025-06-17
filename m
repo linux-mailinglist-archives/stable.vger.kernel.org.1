@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-154216-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-154512-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1DDD9ADD844
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:53:48 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6CBD1ADD9F0
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 19:11:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DB2A55A1060
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:44:58 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D11D64A5ACB
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:57:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8EE412FA62C;
-	Tue, 17 Jun 2025 16:41:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A32362FA646;
+	Tue, 17 Jun 2025 16:57:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ncWaut6z"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TTBWrs9N"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4101F2FA625;
-	Tue, 17 Jun 2025 16:41:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EFF6CA4B;
+	Tue, 17 Jun 2025 16:57:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750178479; cv=none; b=q+pXW8HFPTNz1kCbk29TCzMl21mDHb2lK4uCCTrAntGPnCopUzhZ2Ew76f04yiPuCDuv6mx3HEVislnaxOWfnicHNbjUnmLoxphCgtZsuYw61OGkiQMe0iHEwokPOSY25oa/wMvNq3GrPy+HBuO/y0NtC53d/jwd+Ar3A5pDusY=
+	t=1750179445; cv=none; b=LiOoYtp5vuA4loCKFQ3QR+sbRuYLvcH6MpMYltU6jPgGrxeW3N1GjYsmAOihQkdhzZAwRengV2Hqc381ORZVT/TXSiL6t66rWnIF0LwBSTV54wMED/1wr6uFWgVAuCEB+3F+LsbH9dqPECCozoV/d4DekazXCOXz+dt4fvYmQXw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750178479; c=relaxed/simple;
-	bh=Jxvl1E82BpgHq7lf6Khh4VNHWyxjv7bnTJ6dRaxagNw=;
+	s=arc-20240116; t=1750179445; c=relaxed/simple;
+	bh=eitZQA/e5kJwxnYfLYFvySFeRfIEnuRNJ7BMT8ESdkc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=t6fH/rDLYbqoaK6xOVgv0pUbOvzxohpR14ULZ1jFh6DNfgAAnh0gX8NOHTNRjRxH2sEHGxS2f2uzPehm7q/4vrFia8Xl5C/8jv5pNeMuIX6OknupaW7sNH9kx97FAuaQfYM9Kgz4f5aN8sPwgqmP6w3IJroJUcb+6DUHI0f/OwQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ncWaut6z; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A562DC4CEE3;
-	Tue, 17 Jun 2025 16:41:18 +0000 (UTC)
+	 MIME-Version; b=rx3zAmV3uc8tHck6D6yOzunuzL5wHbO7Tk25NXPi5asAPZj6FSg6sisLCHne7upByufLAU1Wzbrj4X6PlnvQNdWB3gWfSlVyFReMNuxtb6VVRW0IyxSIceYQci4x0ro+5gmm47xCaq+AXxylgpapk1NsHTkSObxhmdbduzTBeNs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TTBWrs9N; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC431C4CEE3;
+	Tue, 17 Jun 2025 16:57:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750178479;
-	bh=Jxvl1E82BpgHq7lf6Khh4VNHWyxjv7bnTJ6dRaxagNw=;
+	s=korg; t=1750179445;
+	bh=eitZQA/e5kJwxnYfLYFvySFeRfIEnuRNJ7BMT8ESdkc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ncWaut6z9pm3kiUenZwBbou9LMVvB8o5sNh2rWsMmZYkKEq1jeHlX/kS37Uyt5z3S
-	 lFY1MBtNZ8/ciqd4fyY77a9XVXqn6DUCnauPnpivfRMaKIXCUoZGWJAh31gt2lG7Ax
-	 FMjeu8gsglHv4JMQZX0Z4HVxSDYg1RXNDT43RUH4=
+	b=TTBWrs9Nr2X3SlMaE04GGEpl017HHDZcOJ3fTzxY01awD2VdQItx9FVWk+E7sMbG2
+	 YUdODZKbv1Rl2DB8ltjHFkuaexE5uI7La3Rs+cQzfEoxcX3484ZqJKz1RyxB2Kb4vW
+	 LIs+VvQupKUu9kqWSdy2g0gvc+6CBFLPsata8YVA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Jiri Slaby (SUSE)" <jirislaby@kernel.org>,
-	Mans Rullgard <mans@mansr.com>
-Subject: [PATCH 6.12 491/512] tty: serial: 8250_omap: fix TX with DMA for am33xx
+	syzbot+c52569baf0c843f35495@syzkaller.appspotmail.com,
+	Terry Junge <linuxhid@cosmicgizmosystems.com>,
+	Michael Kelley <mhklinux@outlook.com>,
+	Jiri Kosina <jkosina@suse.com>
+Subject: [PATCH 6.15 749/780] HID: usbhid: Eliminate recurrent out-of-bounds bug in usbhid_parse()
 Date: Tue, 17 Jun 2025 17:27:37 +0200
-Message-ID: <20250617152439.526983064@linuxfoundation.org>
+Message-ID: <20250617152522.005181231@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
-References: <20250617152419.512865572@linuxfoundation.org>
+In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
+References: <20250617152451.485330293@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,105 +63,170 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiri Slaby (SUSE) <jirislaby@kernel.org>
+From: Terry Junge <linuxhid@cosmicgizmosystems.com>
 
-commit b495021a973e2468497689bd3e29b736747b896f upstream.
+commit fe7f7ac8e0c708446ff017453add769ffc15deed upstream.
 
-Commit 1788cf6a91d9 ("tty: serial: switch from circ_buf to kfifo")
-introduced an error in the TX DMA handling for 8250_omap.
+Update struct hid_descriptor to better reflect the mandatory and
+optional parts of the HID Descriptor as per USB HID 1.11 specification.
+Note: the kernel currently does not parse any optional HID class
+descriptors, only the mandatory report descriptor.
 
-When the OMAP_DMA_TX_KICK flag is set, the "skip_byte" is pulled from
-the kfifo and emitted directly in order to start the DMA. While the
-kfifo is updated, dma->tx_size is not decreased. This leads to
-uart_xmit_advance() called in omap_8250_dma_tx_complete() advancing the
-kfifo by one too much.
+Update all references to member element desc[0] to rpt_desc.
 
-In practice, transmitting N bytes has been seen to result in the last
-N-1 bytes being sent repeatedly.
+Add test to verify bLength and bNumDescriptors values are valid.
 
-This change fixes the problem by moving all of the dma setup after the
-OMAP_DMA_TX_KICK handling and using kfifo_len() instead of the DMA size
-for the 4-byte cutoff check. This slightly changes the behaviour at
-buffer wraparound, but it still transmits the correct bytes somehow.
+Replace the for loop with direct access to the mandatory HID class
+descriptor member for the report descriptor. This eliminates the
+possibility of getting an out-of-bounds fault.
 
-Now, the "skip_byte" would no longer be accounted to the stats. As
-previously, dma->tx_size included also this skip byte, up->icount.tx was
-updated by aforementioned uart_xmit_advance() in
-omap_8250_dma_tx_complete(). Fix this by using the uart_fifo_out()
-helper instead of bare kfifo_get().
+Add a warning message if the HID descriptor contains any unsupported
+optional HID class descriptors.
 
-Based on patch by Mans Rullgard <mans@mansr.com>
-
-Signed-off-by: "Jiri Slaby (SUSE)" <jirislaby@kernel.org>
-Fixes: 1788cf6a91d9 ("tty: serial: switch from circ_buf to kfifo")
-Link: https://lore.kernel.org/all/20250506150748.3162-1-mans@mansr.com/
-Reported-by: Mans Rullgard <mans@mansr.com>
+Reported-by: syzbot+c52569baf0c843f35495@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=c52569baf0c843f35495
+Fixes: f043bfc98c19 ("HID: usbhid: fix out-of-bounds bug")
 Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20250522053835.3495975-1-jirislaby@kernel.org
+Signed-off-by: Terry Junge <linuxhid@cosmicgizmosystems.com>
+Reviewed-by: Michael Kelley <mhklinux@outlook.com>
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/tty/serial/8250/8250_omap.c |   25 ++++++++++---------------
- 1 file changed, 10 insertions(+), 15 deletions(-)
+ drivers/hid/hid-hyperv.c            |    4 ++--
+ drivers/hid/usbhid/hid-core.c       |   25 ++++++++++++++-----------
+ drivers/usb/gadget/function/f_hid.c |   12 ++++++------
+ include/linux/hid.h                 |    3 ++-
+ 4 files changed, 24 insertions(+), 20 deletions(-)
 
---- a/drivers/tty/serial/8250/8250_omap.c
-+++ b/drivers/tty/serial/8250/8250_omap.c
-@@ -1168,16 +1168,6 @@ static int omap_8250_tx_dma(struct uart_
- 		return 0;
+--- a/drivers/hid/hid-hyperv.c
++++ b/drivers/hid/hid-hyperv.c
+@@ -192,7 +192,7 @@ static void mousevsc_on_receive_device_i
+ 		goto cleanup;
+ 
+ 	input_device->report_desc_size = le16_to_cpu(
+-					desc->desc[0].wDescriptorLength);
++					desc->rpt_desc.wDescriptorLength);
+ 	if (input_device->report_desc_size == 0) {
+ 		input_device->dev_info_status = -EINVAL;
+ 		goto cleanup;
+@@ -210,7 +210,7 @@ static void mousevsc_on_receive_device_i
+ 
+ 	memcpy(input_device->report_desc,
+ 	       ((unsigned char *)desc) + desc->bLength,
+-	       le16_to_cpu(desc->desc[0].wDescriptorLength));
++	       le16_to_cpu(desc->rpt_desc.wDescriptorLength));
+ 
+ 	/* Send the ack */
+ 	memset(&ack, 0, sizeof(struct mousevsc_prt_msg));
+--- a/drivers/hid/usbhid/hid-core.c
++++ b/drivers/hid/usbhid/hid-core.c
+@@ -984,12 +984,11 @@ static int usbhid_parse(struct hid_devic
+ 	struct usb_host_interface *interface = intf->cur_altsetting;
+ 	struct usb_device *dev = interface_to_usbdev (intf);
+ 	struct hid_descriptor *hdesc;
++	struct hid_class_descriptor *hcdesc;
+ 	u32 quirks = 0;
+ 	unsigned int rsize = 0;
+ 	char *rdesc;
+-	int ret, n;
+-	int num_descriptors;
+-	size_t offset = offsetof(struct hid_descriptor, desc);
++	int ret;
+ 
+ 	quirks = hid_lookup_quirk(hid);
+ 
+@@ -1011,20 +1010,19 @@ static int usbhid_parse(struct hid_devic
+ 		return -ENODEV;
  	}
  
--	sg_init_table(&sg, 1);
--	ret = kfifo_dma_out_prepare_mapped(&tport->xmit_fifo, &sg, 1,
--					   UART_XMIT_SIZE, dma->tx_addr);
--	if (ret != 1) {
--		serial8250_clear_THRI(p);
--		return 0;
--	}
--
--	dma->tx_size = sg_dma_len(&sg);
--
- 	if (priv->habit & OMAP_DMA_TX_KICK) {
- 		unsigned char c;
- 		u8 tx_lvl;
-@@ -1202,18 +1192,22 @@ static int omap_8250_tx_dma(struct uart_
- 			ret = -EBUSY;
- 			goto err;
- 		}
--		if (dma->tx_size < 4) {
-+		if (kfifo_len(&tport->xmit_fifo) < 4) {
- 			ret = -EINVAL;
- 			goto err;
- 		}
--		if (!kfifo_get(&tport->xmit_fifo, &c)) {
-+		if (!uart_fifo_out(&p->port, &c, 1)) {
- 			ret = -EINVAL;
- 			goto err;
- 		}
- 		skip_byte = c;
--		/* now we need to recompute due to kfifo_get */
--		kfifo_dma_out_prepare_mapped(&tport->xmit_fifo, &sg, 1,
--				UART_XMIT_SIZE, dma->tx_addr);
-+	}
-+
-+	sg_init_table(&sg, 1);
-+	ret = kfifo_dma_out_prepare_mapped(&tport->xmit_fifo, &sg, 1, UART_XMIT_SIZE, dma->tx_addr);
-+	if (ret != 1) {
-+		ret = -EINVAL;
-+		goto err;
+-	if (hdesc->bLength < sizeof(struct hid_descriptor)) {
+-		dbg_hid("hid descriptor is too short\n");
++	if (!hdesc->bNumDescriptors ||
++	    hdesc->bLength != sizeof(*hdesc) +
++			      (hdesc->bNumDescriptors - 1) * sizeof(*hcdesc)) {
++		dbg_hid("hid descriptor invalid, bLen=%hhu bNum=%hhu\n",
++			hdesc->bLength, hdesc->bNumDescriptors);
+ 		return -EINVAL;
  	}
  
- 	desc = dmaengine_prep_slave_sg(dma->txchan, &sg, 1, DMA_MEM_TO_DEV,
-@@ -1223,6 +1217,7 @@ static int omap_8250_tx_dma(struct uart_
+ 	hid->version = le16_to_cpu(hdesc->bcdHID);
+ 	hid->country = hdesc->bCountryCode;
+ 
+-	num_descriptors = min_t(int, hdesc->bNumDescriptors,
+-	       (hdesc->bLength - offset) / sizeof(struct hid_class_descriptor));
+-
+-	for (n = 0; n < num_descriptors; n++)
+-		if (hdesc->desc[n].bDescriptorType == HID_DT_REPORT)
+-			rsize = le16_to_cpu(hdesc->desc[n].wDescriptorLength);
++	if (hdesc->rpt_desc.bDescriptorType == HID_DT_REPORT)
++		rsize = le16_to_cpu(hdesc->rpt_desc.wDescriptorLength);
+ 
+ 	if (!rsize || rsize > HID_MAX_DESCRIPTOR_SIZE) {
+ 		dbg_hid("weird size of report descriptor (%u)\n", rsize);
+@@ -1052,6 +1050,11 @@ static int usbhid_parse(struct hid_devic
  		goto err;
  	}
  
-+	dma->tx_size = sg_dma_len(&sg);
- 	dma->tx_running = 1;
++	if (hdesc->bNumDescriptors > 1)
++		hid_warn(intf,
++			"%u unsupported optional hid class descriptors\n",
++			(int)(hdesc->bNumDescriptors - 1));
++
+ 	hid->quirks |= quirks;
  
- 	desc->callback = omap_8250_dma_tx_complete;
+ 	return 0;
+--- a/drivers/usb/gadget/function/f_hid.c
++++ b/drivers/usb/gadget/function/f_hid.c
+@@ -144,8 +144,8 @@ static struct hid_descriptor hidg_desc =
+ 	.bcdHID				= cpu_to_le16(0x0101),
+ 	.bCountryCode			= 0x00,
+ 	.bNumDescriptors		= 0x1,
+-	/*.desc[0].bDescriptorType	= DYNAMIC */
+-	/*.desc[0].wDescriptorLenght	= DYNAMIC */
++	/*.rpt_desc.bDescriptorType	= DYNAMIC */
++	/*.rpt_desc.wDescriptorLength	= DYNAMIC */
+ };
+ 
+ /* Super-Speed Support */
+@@ -939,8 +939,8 @@ static int hidg_setup(struct usb_functio
+ 			struct hid_descriptor hidg_desc_copy = hidg_desc;
+ 
+ 			VDBG(cdev, "USB_REQ_GET_DESCRIPTOR: HID\n");
+-			hidg_desc_copy.desc[0].bDescriptorType = HID_DT_REPORT;
+-			hidg_desc_copy.desc[0].wDescriptorLength =
++			hidg_desc_copy.rpt_desc.bDescriptorType = HID_DT_REPORT;
++			hidg_desc_copy.rpt_desc.wDescriptorLength =
+ 				cpu_to_le16(hidg->report_desc_length);
+ 
+ 			length = min_t(unsigned short, length,
+@@ -1210,8 +1210,8 @@ static int hidg_bind(struct usb_configur
+ 	 * We can use hidg_desc struct here but we should not relay
+ 	 * that its content won't change after returning from this function.
+ 	 */
+-	hidg_desc.desc[0].bDescriptorType = HID_DT_REPORT;
+-	hidg_desc.desc[0].wDescriptorLength =
++	hidg_desc.rpt_desc.bDescriptorType = HID_DT_REPORT;
++	hidg_desc.rpt_desc.wDescriptorLength =
+ 		cpu_to_le16(hidg->report_desc_length);
+ 
+ 	hidg_hs_in_ep_desc.bEndpointAddress =
+--- a/include/linux/hid.h
++++ b/include/linux/hid.h
+@@ -740,8 +740,9 @@ struct hid_descriptor {
+ 	__le16 bcdHID;
+ 	__u8  bCountryCode;
+ 	__u8  bNumDescriptors;
++	struct hid_class_descriptor rpt_desc;
+ 
+-	struct hid_class_descriptor desc[1];
++	struct hid_class_descriptor opt_descs[];
+ } __attribute__ ((packed));
+ 
+ #define HID_DEVICE(b, g, ven, prod)					\
 
 
 
