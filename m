@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-153858-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-154343-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6C9F5ADD6C0
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:36:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 45973ADD977
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 19:06:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1253A4A029A
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:27:19 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E137B4A7276
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:50:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 932DC238D49;
-	Tue, 17 Jun 2025 16:22:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56A9422FF2D;
+	Tue, 17 Jun 2025 16:48:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HpJXZufX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ptOMQnNq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C9A222AE7F;
-	Tue, 17 Jun 2025 16:22:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 117BE2FA62D;
+	Tue, 17 Jun 2025 16:48:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750177325; cv=none; b=QdA5LvXNRdDB1bq8u7HXVWA8xwsdWIDw+ZDyYRZXaHr45Me1MJJbKDdDGuR0NhzCqzJTxlBQ0MrnX2y+GEjVFJVrpueCevaNlgsq3Ds8IX38R9nnthMhVtmpjuVjxikIoJdT57HAywcY8x4iFozPvzTB/RMbfWYi/bgTOIxPBgQ=
+	t=1750178893; cv=none; b=hQnLrXH1dTNg2qFj5LvrwAQyGjfOlnnZoLCOkstOQY1RkLqKr6sIY6ZYRpCD64mqrey+8wkyODxrRxtVjE3L2QAdgm1PYt6OH+Ue1PUyejJnMNNUOB8Pntg9N6QVk6Z8BZXEHpUATPYdLhUfHsDPnGcnHWhPjVXuevbkXOMAqVg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750177325; c=relaxed/simple;
-	bh=P3WE7Zeq6ZxGmf26dZ5W2UuBHrEv55XMkxKNwYUyejY=;
+	s=arc-20240116; t=1750178893; c=relaxed/simple;
+	bh=CjiVsuLp+Wyaxrb2m8/CUDNSRQBFUwqY/1Ej7PDvD58=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cswCslzIz89y36Z4xqApLm33NCvwV0hWUY7YuRuPR++jzFCBmOvZ0ecOCEPiLVFlcl1YTawsanc6U/6Qv2rBsXZHcOkW9UTxqivz6/pqO3VJUYrZBOcptJlomHZ+45R+HllAGLS7xUIsmsT/YaU8/rq/5XWaGVhHfVWY5Cr4fa8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HpJXZufX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AEA90C4CEF0;
-	Tue, 17 Jun 2025 16:22:04 +0000 (UTC)
+	 MIME-Version:Content-Type; b=gyjOj9ntAeoeiV9r3w9CR/7aNfUMvLLU8O8u/huZEikyfJ6Xff1Y3awMrO6oAOLvVdo3FSqF1G7lpelNu9A07y1XgET659CQPUEViF0gkeEaUxCZIvQGpeSvPu/QfEprxF77Lja0tul8N2Pb8AKTfxvzLjYDrR3xDKxxVdSsJaI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ptOMQnNq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 752B4C4CEE3;
+	Tue, 17 Jun 2025 16:48:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750177325;
-	bh=P3WE7Zeq6ZxGmf26dZ5W2UuBHrEv55XMkxKNwYUyejY=;
+	s=korg; t=1750178892;
+	bh=CjiVsuLp+Wyaxrb2m8/CUDNSRQBFUwqY/1Ej7PDvD58=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HpJXZufXRZudjbSQ6TZxbN9CYAgbJwHSEnvwGXGWP3iZ7eisaAPN8lkEIbraHtq0F
-	 ietn+04E+sioahlDqP54kLO5JAnlSkzhwXsbr4vWtLiN5YXrFYgmpf3NwWAauhCl+P
-	 GSGE6svlAwpO9vXQm6VaFs1DAj0TNsehcvkQny7c=
+	b=ptOMQnNqHB/vCKqMvHdmFuhUmqS/fnJpWghRpL3n3aFKNSos1PxEZtS4AGNBbjSlo
+	 PHGnHtwuhFVUPkYFP0y0veVJPhNUn8RU1rnQs7UmLAGQEjAsP1dBjPw/q3MGmUBILR
+	 wQW7/oFoXBAAb6F2Gn5ima4LwBpSh9ff8rWDSv0g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Brian Pellegrino <bpellegrino@arka.org>,
-	Sam Winchenbach <swinchenbach@arka.org>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Yongting Lin <linyongting@gmail.com>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 327/512] iio: filter: admv8818: Support frequencies >= 2^32
+Subject: [PATCH 6.15 585/780] um: Fix tgkill compile error on old host OSes
 Date: Tue, 17 Jun 2025 17:24:53 +0200
-Message-ID: <20250617152432.852297225@linuxfoundation.org>
+Message-ID: <20250617152515.304988662@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
-References: <20250617152419.512865572@linuxfoundation.org>
+In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
+References: <20250617152451.485330293@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,75 +60,68 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Brian Pellegrino <bpellegrino@arka.org>
+From: Yongting Lin <linyongting@gmail.com>
 
-[ Upstream commit 9016776f1301627de78a633bda7c898425a56572 ]
+[ Upstream commit fd054188999ff19746cc09f4e0f196a113964db9 ]
 
-This patch allows writing u64 values to the ADMV8818's high and low-pass
-filter frequencies. It includes the following changes:
+tgkill is a quite old syscall since kernel 2.5.75, but unfortunately glibc
+doesn't support it before 2.30. Thus some systems fail to compile the
+latest UserMode Linux.
 
-- Rejects negative frequencies in admv8818_write_raw.
-- Adds a write_raw_get_fmt function to admv8818's iio_info, returning
-  IIO_VAL_INT_64 for the high and low-pass filter 3dB frequency channels.
+Here is the compile error I encountered when I tried to compile UML in
+my system shipped with glibc-2.28.
 
-Fixes: f34fe888ad05 ("iio:filter:admv8818: add support for ADMV8818")
-Signed-off-by: Brian Pellegrino <bpellegrino@arka.org>
-Signed-off-by: Sam Winchenbach <swinchenbach@arka.org>
-Link: https://patch.msgid.link/20250328174831.227202-7-sam.winchenbach@framepointer.org
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+    CALL    scripts/checksyscalls.sh
+    CC      arch/um/os-Linux/sigio.o
+  In file included from arch/um/os-Linux/sigio.c:17:
+  arch/um/os-Linux/sigio.c: In function ‘write_sigio_thread’:
+  arch/um/os-Linux/sigio.c:49:19: error: implicit declaration of function ‘tgkill’; did you mean ‘kill’? [-Werror=implicit-function-declaration]
+     CATCH_EINTR(r = tgkill(pid, pid, SIGIO));
+                     ^~~~~~
+  ./arch/um/include/shared/os.h:21:48: note: in definition of macro ‘CATCH_EINTR’
+  #define CATCH_EINTR(expr) while ((errno = 0, ((expr) < 0)) && (errno == EINTR))
+                                                ^~~~
+  cc1: some warnings being treated as errors
+
+Fix it by Replacing glibc call with raw syscall.
+
+Fixes: 33c9da5dfb18 ("um: Rewrite the sigio workaround based on epoll and tgkill")
+Signed-off-by: Yongting Lin <linyongting@gmail.com>
+Link: https://patch.msgid.link/20250527151222.40371-1-linyongting@gmail.com
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iio/filter/admv8818.c | 17 +++++++++++++++++
- 1 file changed, 17 insertions(+)
+ arch/um/os-Linux/sigio.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/iio/filter/admv8818.c b/drivers/iio/filter/admv8818.c
-index 380e119b3cf54..cc8ce0fe74e7c 100644
---- a/drivers/iio/filter/admv8818.c
-+++ b/drivers/iio/filter/admv8818.c
-@@ -402,6 +402,19 @@ static int admv8818_read_lpf_freq(struct admv8818_state *st, u64 *lpf_freq)
- 	return ret;
- }
+diff --git a/arch/um/os-Linux/sigio.c b/arch/um/os-Linux/sigio.c
+index a05a6ecee7561..6de145f8fe3d9 100644
+--- a/arch/um/os-Linux/sigio.c
++++ b/arch/um/os-Linux/sigio.c
+@@ -12,6 +12,7 @@
+ #include <signal.h>
+ #include <string.h>
+ #include <sys/epoll.h>
++#include <asm/unistd.h>
+ #include <kern_util.h>
+ #include <init.h>
+ #include <os.h>
+@@ -46,7 +47,7 @@ static void *write_sigio_thread(void *unused)
+ 			       __func__, errno);
+ 		}
  
-+static int admv8818_write_raw_get_fmt(struct iio_dev *indio_dev,
-+								struct iio_chan_spec const *chan,
-+								long mask)
-+{
-+	switch (mask) {
-+	case IIO_CHAN_INFO_LOW_PASS_FILTER_3DB_FREQUENCY:
-+	case IIO_CHAN_INFO_HIGH_PASS_FILTER_3DB_FREQUENCY:
-+		return IIO_VAL_INT_64;
-+	default:
-+		return -EINVAL;
-+	}
-+}
-+
- static int admv8818_write_raw(struct iio_dev *indio_dev,
- 			      struct iio_chan_spec const *chan,
- 			      int val, int val2, long info)
-@@ -410,6 +423,9 @@ static int admv8818_write_raw(struct iio_dev *indio_dev,
- 
- 	u64 freq = ((u64)val2 << 32 | (u32)val);
- 
-+	if ((s64)freq < 0)
-+		return -EINVAL;
-+
- 	switch (info) {
- 	case IIO_CHAN_INFO_LOW_PASS_FILTER_3DB_FREQUENCY:
- 		return admv8818_lpf_select(st, freq);
-@@ -571,6 +587,7 @@ static int admv8818_set_mode(struct iio_dev *indio_dev,
- 
- static const struct iio_info admv8818_info = {
- 	.write_raw = admv8818_write_raw,
-+	.write_raw_get_fmt = admv8818_write_raw_get_fmt,
- 	.read_raw = admv8818_read_raw,
- 	.debugfs_reg_access = &admv8818_reg_access,
- };
+-		CATCH_EINTR(r = tgkill(pid, pid, SIGIO));
++		CATCH_EINTR(r = syscall(__NR_tgkill, pid, pid, SIGIO));
+ 		if (r < 0)
+ 			printk(UM_KERN_ERR "%s: tgkill failed, errno = %d\n",
+ 			       __func__, errno);
 -- 
 2.39.5
 
