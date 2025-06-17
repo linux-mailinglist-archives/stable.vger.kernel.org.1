@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-153245-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153258-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A3835ADD36A
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 17:57:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6FAA8ADD37A
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 17:58:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 697033AAAFE
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 15:51:56 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9351D3A69D7
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 15:52:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B7E32EF28A;
-	Tue, 17 Jun 2025 15:49:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ADA422ED87A;
+	Tue, 17 Jun 2025 15:49:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QG84wYML"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hn2XQpUn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29DE22F237F;
-	Tue, 17 Jun 2025 15:49:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 674C72ECD33;
+	Tue, 17 Jun 2025 15:49:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750175342; cv=none; b=auxAgTI4EPgiyIJYMl+5VBmi/1MlbZi8ikMMIBSDuWv4K4ud2YspBmWDf/95O+4WzGvty8/pnUdb5rJaO/Qof7AJ22QW07rzBnJR938yjORdFwYorFVW61J1q2cX0iEM348XiO6QCSGydaLj4UNxCpI/+OBxG0plgodYGlqQBDM=
+	t=1750175377; cv=none; b=ovb5K5hXtMQT4FKmSXIZbflhDBJRro+QTPRO+rP0d6uWMn/gNDkVlGpIPx5uN5KUwbwLKC26oJ78a/2asw0XIoZiOdrKFWipTWjEUN1Sic4cTp6e/jUG+N7UwWszNX5lBAZi5/3dy2x8rXbZCNKPTGiV8M7YAY8C8H6kuAliEUc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750175342; c=relaxed/simple;
-	bh=jngA7PtLvzZFxEPN6jQo+UT60KPhZzPLBXeOMi/i/wM=;
+	s=arc-20240116; t=1750175377; c=relaxed/simple;
+	bh=0rN6BOkuTqZ/eIWkjHtG6//Vgx6PbFPo1GNXOYA58LQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Jz5kxpKlJW1sxz7ZgBjLn3vIjA4VBC3uz9kntLBDT0LZV/ynpSXZO5IJaQVkcPJlVxvYqHVFqAQjl2Zi4brc59DzqvuhIP0QtzCjK5vX+zHlOIUBgSInKRchWFZudHFrj/pCHBzo2K4UNDNaaFtO59dKmKwl6AVG0ag1xvacV1A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QG84wYML; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 411F8C4CEE3;
-	Tue, 17 Jun 2025 15:49:01 +0000 (UTC)
+	 MIME-Version; b=pqFr2h5hQNutLWPusNZkDpgPVLnuiyhubmqh0wkZYUdXXxjpKKPzGupBdEEoA37jqQ/w7YySOqja47Wq4sIr7pcgKblXzRaELg7xYciTtnefiqdFYKse3jCkXVIsbXryYIYHN2ej1bJX++pXNUVourr9cdf/K+dOn0MtBy8Hje8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hn2XQpUn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC017C4CEE3;
+	Tue, 17 Jun 2025 15:49:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750175341;
-	bh=jngA7PtLvzZFxEPN6jQo+UT60KPhZzPLBXeOMi/i/wM=;
+	s=korg; t=1750175377;
+	bh=0rN6BOkuTqZ/eIWkjHtG6//Vgx6PbFPo1GNXOYA58LQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QG84wYMLh4C1CMT2tKAXzuKVLpke734y83QRQ6EQSAE+nfjq3Vcm5pENtMdMEVkAY
-	 lSvreBN3zyHaP/WJ5SkHCB+sNHM0+Sz1vKz5Gm6GUvnvyQ9psXc4iLiEuWj8MvOcnW
-	 f9DAG3lxKiMRMq0eJzXXhaE8F51PyoWYFIae3ocQ=
+	b=hn2XQpUnaTkLGD4Aze3t+BspJmH05MC9fpnt0BE/kfzSMQsOjCLdNv7sWcUWgDwZe
+	 cYtiwFDYqm1HQj1iBpe8rKkxuc9LWKsG32hdt18rWAUykf4EdOL26c6AuplBhcIywl
+	 Eu8/7yuVSk8xhTmsOf0rEgmkYyooMY+D43XeyZio=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexander Dahl <ada@thorsis.com>,
-	=?UTF-8?q?Bence=20Cs=C3=B3k=C3=A1s?= <csokas.bence@prolan.hu>,
-	Mark Brown <broonie@kernel.org>,
+	Jiaqing Zhao <jiaqing.zhao@linux.intel.com>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 075/780] spi: atmel-quadspi: Fix unbalanced pm_runtime by using devm_ API
-Date: Tue, 17 Jun 2025 17:16:23 +0200
-Message-ID: <20250617152454.564695628@linuxfoundation.org>
+Subject: [PATCH 6.15 076/780] x86/mtrr: Check if fixed-range MTRRs exist in mtrr_save_fixed_ranges()
+Date: Tue, 17 Jun 2025 17:16:24 +0200
+Message-ID: <20250617152454.605874811@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
 References: <20250617152451.485330293@linuxfoundation.org>
@@ -61,73 +60,50 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bence Csókás <csokas.bence@prolan.hu>
+From: Jiaqing Zhao <jiaqing.zhao@linux.intel.com>
 
-[ Upstream commit 8856eafcc05ecf54d6dd2b6c67804fefd276472c ]
+[ Upstream commit 824c6384e8d9275d4ec7204f3f79a4ac6bc10379 ]
 
-Fix unbalanced PM in error path of `atmel_qspi_probe()`
-by using `devm_pm_runtime_*()` functions.
+When suspending, save_processor_state() calls mtrr_save_fixed_ranges()
+to save fixed-range MTRRs.
 
-Reported-by: Alexander Dahl <ada@thorsis.com>
-Closes: https://lore.kernel.org/linux-spi/20250110-paycheck-irregular-bcddab1276c7@thorsis.com/
-Fixes: 5af42209a4d2 ("spi: atmel-quadspi: Add support for sama7g5 QSPI")
-Signed-off-by: Bence Csókás <csokas.bence@prolan.hu>
-Link: https://patch.msgid.link/20250327195928.680771-4-csokas.bence@prolan.hu
-Signed-off-by: Mark Brown <broonie@kernel.org>
+On platforms without fixed-range MTRRs like the ACRN hypervisor which
+has removed fixed-range MTRR emulation, accessing these MSRs will
+trigger an unchecked MSR access error. Make sure fixed-range MTRRs are
+supported before access to prevent such error.
+
+Since mtrr_state.have_fixed is only set when MTRRs are present and
+enabled, checking the CPU feature flag in mtrr_save_fixed_ranges() is
+unnecessary.
+
+Fixes: 3ebad5905609 ("[PATCH] x86: Save and restore the fixed-range MTRRs of the BSP when suspending")
+Signed-off-by: Jiaqing Zhao <jiaqing.zhao@linux.intel.com>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Link: https://lore.kernel.org/20250509170633.3411169-2-jiaqing.zhao@linux.intel.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/atmel-quadspi.c | 17 ++++-------------
- 1 file changed, 4 insertions(+), 13 deletions(-)
+ arch/x86/kernel/cpu/mtrr/generic.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/spi/atmel-quadspi.c b/drivers/spi/atmel-quadspi.c
-index 244ac01068629..e7b61dc4ce676 100644
---- a/drivers/spi/atmel-quadspi.c
-+++ b/drivers/spi/atmel-quadspi.c
-@@ -1436,22 +1436,17 @@ static int atmel_qspi_probe(struct platform_device *pdev)
+diff --git a/arch/x86/kernel/cpu/mtrr/generic.c b/arch/x86/kernel/cpu/mtrr/generic.c
+index e2c6b471d2302..8c18327eb10bb 100644
+--- a/arch/x86/kernel/cpu/mtrr/generic.c
++++ b/arch/x86/kernel/cpu/mtrr/generic.c
+@@ -593,7 +593,7 @@ static void get_fixed_ranges(mtrr_type *frs)
  
- 	pm_runtime_set_autosuspend_delay(&pdev->dev, 500);
- 	pm_runtime_use_autosuspend(&pdev->dev);
--	pm_runtime_set_active(&pdev->dev);
--	pm_runtime_enable(&pdev->dev);
--	pm_runtime_get_noresume(&pdev->dev);
-+	devm_pm_runtime_set_active_enabled(&pdev->dev);
-+	devm_pm_runtime_get_noresume(&pdev->dev);
- 
- 	err = atmel_qspi_init(aq);
- 	if (err)
- 		goto dma_release;
- 
- 	err = spi_register_controller(ctrl);
--	if (err) {
--		pm_runtime_put_noidle(&pdev->dev);
--		pm_runtime_disable(&pdev->dev);
--		pm_runtime_set_suspended(&pdev->dev);
--		pm_runtime_dont_use_autosuspend(&pdev->dev);
-+	if (err)
- 		goto dma_release;
--	}
-+
- 	pm_runtime_mark_last_busy(&pdev->dev);
- 	pm_runtime_put_autosuspend(&pdev->dev);
- 
-@@ -1530,10 +1525,6 @@ static void atmel_qspi_remove(struct platform_device *pdev)
- 		 */
- 		dev_warn(&pdev->dev, "Failed to resume device on remove\n");
- 	}
--
--	pm_runtime_disable(&pdev->dev);
--	pm_runtime_dont_use_autosuspend(&pdev->dev);
--	pm_runtime_put_noidle(&pdev->dev);
+ void mtrr_save_fixed_ranges(void *info)
+ {
+-	if (boot_cpu_has(X86_FEATURE_MTRR))
++	if (mtrr_state.have_fixed)
+ 		get_fixed_ranges(mtrr_state.fixed_ranges);
  }
  
- static int __maybe_unused atmel_qspi_suspend(struct device *dev)
 -- 
 2.39.5
 
