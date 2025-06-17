@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-154415-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153494-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8145FADDA47
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 19:16:26 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3893FADD54A
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:19:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1E22C404EB9
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:53:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 95454189EECB
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:06:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF3E31DF271;
-	Tue, 17 Jun 2025 16:52:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91CD52EE60A;
+	Tue, 17 Jun 2025 16:02:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZTlS/q4i"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2CBjdVDw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 685E82FA64B;
-	Tue, 17 Jun 2025 16:52:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B9412EE60C;
+	Tue, 17 Jun 2025 16:02:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750179121; cv=none; b=Onn+NUmFr0gQlmT1jnlbz4Wgv75d+JDt2OrfFwW1q4W/qk1ZFoVitX8JIuy4LJKIzEEbOCfXkKYWJGCfoxF7NXyN3VexnO/mO+AILj4ADLI2WexBMvHz7fqTfNqsh5ygdA3Sd2RlNSIRU5m1fQoJv2OxgogQeSX9x5Ax5Smz/QI=
+	t=1750176144; cv=none; b=srJHLJn0UVrddTNZ9fCKzJQsMF3m1jFePWWejCN8FQeFNFl7qPInyMx1D5VMlt5mP1uK5a1K9r21rHT92PqNqljX39BnaUzvaa4Vh25vhVNsPCLxj+0TBc+xF9gV3WPow+KWljHwd0VJnvpPF8NBm/5tFvs8fCcvhKGDV5wkMpc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750179121; c=relaxed/simple;
-	bh=+EcobqS7Td1NDBFGDMuquSuJl98Sk4TjrPXUDPcKBD4=;
+	s=arc-20240116; t=1750176144; c=relaxed/simple;
+	bh=0GraZmJbY/y/3OtAK9Jf785+C1PDWUzjpuTT3QAIr5U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qBsEPvmcmfriJ8uWe0+8AM7Uuf5qHaHv2wbCs+5HyyOjp0xrfsBx8SXJDMBTkjJGga2SJ/3Oq0Q8CzNVQ8ibA5zPuacxg/Z/oLyZVH0c3Y1lInqQ7lbGAxpymW8xyikSAa2Sy9toDetcp7HgxKeP3l1zbe3Nzs84JsJ6hP10Mz4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZTlS/q4i; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CBDE3C4CEE3;
-	Tue, 17 Jun 2025 16:52:00 +0000 (UTC)
+	 MIME-Version:Content-Type; b=BrLWxd97iNdvm8uHsNliyFC3uO3NrBuRkoqS/kWwE1JS6IAxILDkkULAGcrfHHETZBUMUtINHXdpjJcJMO/OyiKqi9K6eSCUYidyYn2F3rOCbGo+175an3fkoqxnpJIsdhuOuSdddel8NjzUt2CtH5hEIgLbZz/JMbL8HlORpRw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2CBjdVDw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D466C4CEE3;
+	Tue, 17 Jun 2025 16:02:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750179121;
-	bh=+EcobqS7Td1NDBFGDMuquSuJl98Sk4TjrPXUDPcKBD4=;
+	s=korg; t=1750176144;
+	bh=0GraZmJbY/y/3OtAK9Jf785+C1PDWUzjpuTT3QAIr5U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZTlS/q4ipmJlWdhPwHJANmnA9+fXGKDRHX5RVqJeHEcZ4nz/pyoblSm1kNzYzXF4b
-	 neBNRz6OypUhxjaaCHDyFADRDJRkAPiv/fb/FDQQYDaLvnsrEANO79KY70p13boQ4y
-	 nR5UhDxmbzLqKfjKouSBga7k0l/qhhC0AVFGpbxc=
+	b=2CBjdVDwVxQcmI8+//q7DKUiY7vkitcAA79OAoNcJ0g8aQ9GHmPf3vVl0FxtsatQb
+	 tewbzPx4kHNv6f0rAlZnN7Xp9ykyTPCzof0e7JRQO7cUPcf7eZ0K8ExMFhL14UD15x
+	 6E+U69AKVy5t0gVI1xEgqQy/Lapz56d3K/xXsIDk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christian Brauner <brauner@kernel.org>,
-	"Orlando, Noah" <Noah.Orlando@deshaw.com>,
-	Al Viro <viro@zeniv.linux.org.uk>,
+	Jonas Gorski <jonas.gorski@gmail.com>,
+	=?UTF-8?q?=C3=81lvaro=20Fern=C3=A1ndez=20Rojas?= <noltari@gmail.com>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 655/780] clone_private_mnt(): make sure that caller has CAP_SYS_ADMIN in the right userns
-Date: Tue, 17 Jun 2025 17:26:03 +0200
-Message-ID: <20250617152518.146283204@linuxfoundation.org>
+Subject: [PATCH 6.6 249/356] spi: bcm63xx-spi: fix shared reset
+Date: Tue, 17 Jun 2025 17:26:04 +0200
+Message-ID: <20250617152348.227250921@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
-References: <20250617152451.485330293@linuxfoundation.org>
+In-Reply-To: <20250617152338.212798615@linuxfoundation.org>
+References: <20250617152338.212798615@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,50 +62,43 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Al Viro <viro@zeniv.linux.org.uk>
+From: Álvaro Fernández Rojas <noltari@gmail.com>
 
-[ Upstream commit c28f922c9dcee0e4876a2c095939d77fe7e15116 ]
+[ Upstream commit 5ad20e3d8cfe3b2e42bbddc7e0ebaa74479bb589 ]
 
-What we want is to verify there is that clone won't expose something
-hidden by a mount we wouldn't be able to undo.  "Wouldn't be able to undo"
-may be a result of MNT_LOCKED on a child, but it may also come from
-lacking admin rights in the userns of the namespace mount belongs to.
+Some bmips SoCs (bcm6362, bcm63268) share the same SPI reset for both SPI
+and HSSPI controllers, so reset shouldn't be exclusive.
 
-clone_private_mnt() checks the former, but not the latter.
-
-There's a number of rather confusing CAP_SYS_ADMIN checks in various
-userns during the mount, especially with the new mount API; they serve
-different purposes and in case of clone_private_mnt() they usually,
-but not always end up covering the missing check mentioned above.
-
-Reviewed-by: Christian Brauner <brauner@kernel.org>
-Reported-by: "Orlando, Noah" <Noah.Orlando@deshaw.com>
-Fixes: 427215d85e8d ("ovl: prevent private clone if bind mount is not allowed")
-Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
+Fixes: 38807adeaf1e ("spi: bcm63xx-spi: add reset support")
+Reported-by: Jonas Gorski <jonas.gorski@gmail.com>
+Signed-off-by: Álvaro Fernández Rojas <noltari@gmail.com>
+Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Link: https://patch.msgid.link/20250529130915.2519590-2-noltari@gmail.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/namespace.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/spi/spi-bcm63xx.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/namespace.c b/fs/namespace.c
-index 07bc500a248ec..163ffdc042284 100644
---- a/fs/namespace.c
-+++ b/fs/namespace.c
-@@ -2509,6 +2509,9 @@ struct vfsmount *clone_private_mount(const struct path *path)
- 			return ERR_PTR(-EINVAL);
+diff --git a/drivers/spi/spi-bcm63xx.c b/drivers/spi/spi-bcm63xx.c
+index ef3a7226db125..a95badb7b7114 100644
+--- a/drivers/spi/spi-bcm63xx.c
++++ b/drivers/spi/spi-bcm63xx.c
+@@ -523,7 +523,7 @@ static int bcm63xx_spi_probe(struct platform_device *pdev)
+ 		return PTR_ERR(clk);
  	}
  
-+        if (!ns_capable(old_mnt->mnt_ns->user_ns, CAP_SYS_ADMIN))
-+		return ERR_PTR(-EPERM);
-+
- 	if (__has_locked_children(old_mnt, path->dentry))
- 		return ERR_PTR(-EINVAL);
+-	reset = devm_reset_control_get_optional_exclusive(dev, NULL);
++	reset = devm_reset_control_get_optional_shared(dev, NULL);
+ 	if (IS_ERR(reset))
+ 		return PTR_ERR(reset);
  
 -- 
 2.39.5
