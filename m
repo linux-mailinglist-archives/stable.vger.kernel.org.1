@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-154242-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153607-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 62102ADD79C
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:47:09 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id EC157ADD5DA
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:27:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 024237ABB52
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:45:47 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D17831947164
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:11:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B536D2E9738;
-	Tue, 17 Jun 2025 16:42:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 095C8239E85;
+	Tue, 17 Jun 2025 16:08:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T4snEUR/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZJLVUkeh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71F1C285048;
-	Tue, 17 Jun 2025 16:42:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B93FF204F73;
+	Tue, 17 Jun 2025 16:08:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750178558; cv=none; b=aW9CI5USgm8sppgC3S+y+VlRxNwO0tbJSGqGyWYf2/dWycVP3qYvh293qwOpVb3N1vNqZdzJv5uS9PyV2RLhk3YjzgHohTqN+7eP/PUQeYp9DXXCgBZKkO8ahXF6cVmSEgJpcJBZUuj3UGnggkwgtUA96bVC51hL/GvXordBgIE=
+	t=1750176508; cv=none; b=e2W1+qDG0Cm/PNbNdhR2w0iSReSbKvnWOs12Z7+gs7ED7n8RheCo7aw677ibJBlIn4xLuKAswT9W1Bv0UeogOGk0BifyLiIwKSab8jXvNSH3O19+YQAY1z3uJGCmYs99Jyygik0PZyOOVcC9Jy6Mzld5Y5wsxu1zcSVSnqjWItQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750178558; c=relaxed/simple;
-	bh=Ii4pDaX26HXs2siS6sMxh9Gbwvy9qJ7jJYV83mdMVt0=;
+	s=arc-20240116; t=1750176508; c=relaxed/simple;
+	bh=loFO884+bg9B0evxwznv8h7d29vkdCuaLw70YMs0UAc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fqtZz8fS84CvVFMdUqIgCf1fbqzvCowq2+HvenaN4qorH98HOgSBQfQ/Nux53cpg2IJ2QnV+5gmpVaJaB0IMfOQVvyzXePqLlv3kJ5HmyByfAJ9i/23j3e3/cbOJDThQnT3F+QHgwmquvE3i8XZ+1bzoNvl16wVKFxVQREuHGBU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T4snEUR/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99EA0C4CEE3;
-	Tue, 17 Jun 2025 16:42:37 +0000 (UTC)
+	 MIME-Version; b=VKP0+qLVjmSmxCLEHsnQFxWA3C0dRyW6kMTxG64b9uyQwsZpCDOyU2CqPE2ROqlSs9nRV8lyAfO2WzVpbt/Y6YMc8lCiCs7fAKVFqYa6ywFm+GrYgbr0HhPAic7UXPjVCEwVpWTIMFauylqb3ce5JfSpCZBnHehMLIMIPlAX4hw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZJLVUkeh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2866EC4CEE3;
+	Tue, 17 Jun 2025 16:08:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750178558;
-	bh=Ii4pDaX26HXs2siS6sMxh9Gbwvy9qJ7jJYV83mdMVt0=;
+	s=korg; t=1750176508;
+	bh=loFO884+bg9B0evxwznv8h7d29vkdCuaLw70YMs0UAc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=T4snEUR/CzhBynfXE/LW9Dnsc65IKEg8R+kfoau5BUy38biry8AbfXaPE1h3jsDjJ
-	 CjVMBe7g3S7B8JEn7zn/jJIqaRGLQya/84Y+/mzgb90RyPLYX56w3sBL/9qdAOiuKC
-	 4LsQ4RqaBPcVBOGPISpNhva2PgXXwQg4F5AKkuZk=
+	b=ZJLVUkehgK103W4WDoHn2ehqWF1xjMOj1JxVYRGP8BcYC6QxyWtVsQikF5jeMCdK8
+	 ySosPMOQk3zbG82yZSGq2XLlKfkgK/OJGhgBs9DgUdsV6erEWWX7SRB27gmRBil9I9
+	 reJUdCIvSix6mPWe97MvIYBvcU0nVE0hECJseqk0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Anna Schumaker <anna@kernel.org>,
-	NeilBrown <neil@brown.name>,
-	Anna Schumaker <anna.schumaker@oracle.com>,
+	Mark Kettenis <kettenis@openbsd.org>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 476/780] nfs: fix incorrect handling of large-number NFS errors in nfs4_do_mkdir()
+Subject: [PATCH 6.12 218/512] arm64: dts: qcom: x1e80100: Mark usb_2 as dma-coherent
 Date: Tue, 17 Jun 2025 17:23:04 +0200
-Message-ID: <20250617152510.875149016@linuxfoundation.org>
+Message-ID: <20250617152428.463530810@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
-References: <20250617152451.485330293@linuxfoundation.org>
+In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
+References: <20250617152419.512865572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,122 +63,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: NeilBrown <neil@brown.name>
+From: Mark Kettenis <kettenis@openbsd.org>
 
-[ Upstream commit dd862da61e91123ca745e06c03ba39ce71a929d9 ]
+[ Upstream commit 45bd6ff900cfe5038e2718a900f153ded3fa5392 ]
 
-A recent commit introduced nfs4_do_mkdir() which reports an error from
-nfs4_call_sync() by returning it with ERR_PTR().
+Make this USB controller consistent with the others on this platform.
 
-This is a problem as nfs4_call_sync() can return negative NFS-specific
-errors with values larger than MAX_ERRNO (4095).  One example is
-NFS4ERR_DELAY which has value 10008.
-
-This "pointer" gets to PTR_ERR_OR_ZERO() in nfs4_proc_mkdir() which
-chooses ZERO because it isn't in the range of value errors.  Ultimately
-the pointer is dereferenced.
-
-This patch changes nfs4_do_mkdir() to report the dentry pointer and
-status separately - pointer as a return value, status in an "int *"
-parameter.
-
-The same separation is used for _nfs4_proc_mkdir() and the two are
-combined only in nfs4_proc_mkdir() after the status has passed through
-nfs4_handle_exception(), which ensures the error code does not exceed
-MAX_ERRNO.
-
-It also fixes a problem in the even when nfs4_handle_exception() updated
-the error value, the original 'alias' was still returned.
-
-Reported-by: Anna Schumaker <anna@kernel.org>
-Fixes: 8376583b84a1 ("nfs: change mkdir inode_operation to return alternate dentry if needed.")
-Signed-off-by: NeilBrown <neil@brown.name>
-Signed-off-by: Anna Schumaker <anna.schumaker@oracle.com>
+Fixes: 4af46b7bd66f ("arm64: dts: qcom: x1e80100: Add USB nodes")
+Signed-off-by: Mark Kettenis <kettenis@openbsd.org>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Link: https://lore.kernel.org/r/20250109205232.92336-1-kettenis@openbsd.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfs/nfs4proc.c | 32 ++++++++++++++++++++------------
- 1 file changed, 20 insertions(+), 12 deletions(-)
+ arch/arm64/boot/dts/qcom/x1e80100.dtsi | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/fs/nfs/nfs4proc.c b/fs/nfs/nfs4proc.c
-index b1d2122bd5a74..4b123bca65e12 100644
---- a/fs/nfs/nfs4proc.c
-+++ b/fs/nfs/nfs4proc.c
-@@ -5164,13 +5164,15 @@ static int nfs4_do_create(struct inode *dir, struct dentry *dentry, struct nfs4_
- }
+diff --git a/arch/arm64/boot/dts/qcom/x1e80100.dtsi b/arch/arm64/boot/dts/qcom/x1e80100.dtsi
+index 5a5abd5fa6585..948ce7dd8b058 100644
+--- a/arch/arm64/boot/dts/qcom/x1e80100.dtsi
++++ b/arch/arm64/boot/dts/qcom/x1e80100.dtsi
+@@ -4284,6 +4284,8 @@
+ 				phy-names = "usb2-phy";
+ 				maximum-speed = "high-speed";
  
- static struct dentry *nfs4_do_mkdir(struct inode *dir, struct dentry *dentry,
--				    struct nfs4_createdata *data)
-+				    struct nfs4_createdata *data, int *statusp)
- {
--	int status = nfs4_call_sync(NFS_SERVER(dir)->client, NFS_SERVER(dir), &data->msg,
-+	struct dentry *ret;
++				dma-coherent;
 +
-+	*statusp = nfs4_call_sync(NFS_SERVER(dir)->client, NFS_SERVER(dir), &data->msg,
- 				    &data->arg.seq_args, &data->res.seq_res, 1);
- 
--	if (status)
--		return ERR_PTR(status);
-+	if (*statusp)
-+		return NULL;
- 
- 	spin_lock(&dir->i_lock);
- 	/* Creating a directory bumps nlink in the parent */
-@@ -5179,7 +5181,11 @@ static struct dentry *nfs4_do_mkdir(struct inode *dir, struct dentry *dentry,
- 				      data->res.fattr->time_start,
- 				      NFS_INO_INVALID_DATA);
- 	spin_unlock(&dir->i_lock);
--	return nfs_add_or_obtain(dentry, data->res.fh, data->res.fattr);
-+	ret = nfs_add_or_obtain(dentry, data->res.fh, data->res.fattr);
-+	if (!IS_ERR(ret))
-+		return ret;
-+	*statusp = PTR_ERR(ret);
-+	return NULL;
- }
- 
- static void nfs4_free_createdata(struct nfs4_createdata *data)
-@@ -5240,17 +5246,18 @@ static int nfs4_proc_symlink(struct inode *dir, struct dentry *dentry,
- 
- static struct dentry *_nfs4_proc_mkdir(struct inode *dir, struct dentry *dentry,
- 				       struct iattr *sattr,
--				       struct nfs4_label *label)
-+				       struct nfs4_label *label, int *statusp)
- {
- 	struct nfs4_createdata *data;
--	struct dentry *ret = ERR_PTR(-ENOMEM);
-+	struct dentry *ret = NULL;
- 
-+	*statusp = -ENOMEM;
- 	data = nfs4_alloc_createdata(dir, &dentry->d_name, sattr, NF4DIR);
- 	if (data == NULL)
- 		goto out;
- 
- 	data->arg.label = label;
--	ret = nfs4_do_mkdir(dir, dentry, data);
-+	ret = nfs4_do_mkdir(dir, dentry, data, statusp);
- 
- 	nfs4_free_createdata(data);
- out:
-@@ -5273,11 +5280,12 @@ static struct dentry *nfs4_proc_mkdir(struct inode *dir, struct dentry *dentry,
- 	if (!(server->attr_bitmask[2] & FATTR4_WORD2_MODE_UMASK))
- 		sattr->ia_mode &= ~current_umask();
- 	do {
--		alias = _nfs4_proc_mkdir(dir, dentry, sattr, label);
--		err = PTR_ERR_OR_ZERO(alias);
-+		alias = _nfs4_proc_mkdir(dir, dentry, sattr, label, &err);
- 		trace_nfs4_mkdir(dir, &dentry->d_name, err);
--		err = nfs4_handle_exception(NFS_SERVER(dir), err,
--				&exception);
-+		if (err)
-+			alias = ERR_PTR(nfs4_handle_exception(NFS_SERVER(dir),
-+							      err,
-+							      &exception));
- 	} while (exception.retry);
- 	nfs4_label_release_security(label);
- 
+ 				ports {
+ 					#address-cells = <1>;
+ 					#size-cells = <0>;
 -- 
 2.39.5
 
