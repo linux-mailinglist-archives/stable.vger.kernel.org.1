@@ -1,101 +1,87 @@
-Return-Path: <stable+bounces-152766-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-152767-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B05FDADC85B
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 12:33:29 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5B097ADC894
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 12:46:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9AEE37A1308
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 10:32:05 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 46A823B30BA
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 10:46:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74667295DA5;
-	Tue, 17 Jun 2025 10:33:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57B9A1E9B08;
+	Tue, 17 Jun 2025 10:46:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="N0AMUn4+"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gntWNlhS"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yb1-f198.google.com (mail-yb1-f198.google.com [209.85.219.198])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE8E4289E2D
-	for <stable@vger.kernel.org>; Tue, 17 Jun 2025 10:33:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.10
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AAD8E249F9
+	for <stable@vger.kernel.org>; Tue, 17 Jun 2025 10:46:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.198
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750156400; cv=none; b=RITOjfLk32Es64i/nAaZl7oRbLUKvnkS2jFHLEJdCPTlz2LUgItbmc1gGUkQWxIppG4NJUMQ1QhdpF9ZiL/dktwjObcMC2or3UfDu/MBqDnxMyN8yzR7OUjUzVTvp3rrcjqhxGlcU9vpW8WZposG0pb9Uidh1k8/3QFauCwnZJw=
+	t=1750157190; cv=none; b=jMjrBl64gN2I/+Nfa2l227Q3Beqh2rGen09St8b6//W+fDcng88kIRNEuQgrDB5LQqAVJjuqE7bpSHmLIiAHsX9LCtXQnmuE3dFwMprAOZ+U5wH+tRTHWjqEL+DNadTv6of0Hv0OnCkk+/f9yws8gnozLCAAfAdNFK95dkHnzPs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750156400; c=relaxed/simple;
-	bh=Zn2TacU6UVNqCNeV3B0EXyrHPDXKd5MOwZRVE1Gwh9Q=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=eyGy/ylqrm4kSHjKcxaLdC1uJhFaYQLdv5bSdtoH6DOgIkeoLvo20luF0dnEkRY9dOjGsa5+bmJlgTDdMFrSP7E9TbH4/bePOg7QtPwDXd21gbnNO5pyFrNtQ7KmjNsFl7F5oQe/XYAbse/yN1ajtF1/FARFkJoeqt3gBVps5ZU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=N0AMUn4+; arc=none smtp.client-ip=192.198.163.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1750156399; x=1781692399;
-  h=from:to:cc:subject:in-reply-to:references:date:
-   message-id:mime-version;
-  bh=Zn2TacU6UVNqCNeV3B0EXyrHPDXKd5MOwZRVE1Gwh9Q=;
-  b=N0AMUn4+0KjhPscuL+3a6yOQsWRq9FIumwKeb7hBO4+qXOtY97tcJ/eK
-   HD7SNvxr4gj1qWhE2XIbw40HQWZNvJugFv5wnGjoViTxTOBs/3wPCzCbl
-   395zXkqVwiq9jbxMRhDM6PSz9QsX8ftCVnXJ+Cip8y6imRPcHcarLqft2
-   NMnFSrLC31HGXYfcHmKvtbfWYDMY3d8x97yo87odCfnsXpGC/4fn7L2dh
-   yvSddIReuwiJWOcAIKhrJmJ5RHrSwDgtJUHk9XK1fXWRC7/YTg6tS6Nad
-   ZR6UhKRjY4xkGAZsu61fAgFnsYDU3X6o/7hY/osifmGdeTl3MPjeVmoxR
-   A==;
-X-CSE-ConnectionGUID: Kmu9dW+gQxucjN6Nm594/Q==
-X-CSE-MsgGUID: vypM9bohQE2ionnmaTyaWA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11465"; a="63681485"
-X-IronPort-AV: E=Sophos;i="6.16,243,1744095600"; 
-   d="scan'208";a="63681485"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
-  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Jun 2025 03:33:18 -0700
-X-CSE-ConnectionGUID: HhE8r42OTjq16hAMe9DPfA==
-X-CSE-MsgGUID: NHu4dK6qToyDh3rQ6/RooA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,243,1744095600"; 
-   d="scan'208";a="153703458"
-Received: from cpetruta-mobl1.ger.corp.intel.com (HELO localhost) ([10.245.246.111])
-  by orviesa004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Jun 2025 03:33:16 -0700
-From: Jani Nikula <jani.nikula@intel.com>
-To: Vas Novikov <vasya.novikov@gmail.com>, stable@vger.kernel.org
-Cc: regressions@lists.linux.dev, Ankit Nautiyal
- <ankit.k.nautiyal@intel.com>, Suraj Kandpal <suraj.kandpal@intel.com>,
- Khaled Almahallawy <khaled.almahallawy@intel.com>, Rodrigo Vivi
- <rodrigo.vivi@intel.com>, intel-gfx@lists.freedesktop.org
-Subject: Re: [REGRESSION][BISECTED] intel iGPU with HDMI PLL stopped working
- at 1080p@120Hz 1efd5384
-In-Reply-To: <8d7c7958-9558-4c8a-a81a-e9310f2d8852@gmail.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-References: <8d7c7958-9558-4c8a-a81a-e9310f2d8852@gmail.com>
-Date: Tue, 17 Jun 2025 13:33:11 +0300
-Message-ID: <afa8a7b2ced71e77655fb54f49b702c71506017d@intel.com>
+	s=arc-20240116; t=1750157190; c=relaxed/simple;
+	bh=xAixyAgXiYUFN3RQLdbocUwo5duzg1jDNs0z/P9dW4I=;
+	h=MIME-Version:Message-ID:Date:Subject:From:To:Content-Type; b=GLFTnb8HEwaGS6YTrNceOK0U+uL9wqIRRGNcO8A8E0KyTwD6gDJU6wnTnlOn1WqLfpkLtaGKbPquEi04xDqUwuemxRFp2+1pK3ki+OiI4Y1yEs+zt00wLqpfKsUn/sC8Upq0EW+/mrTUC+InKbuR35Deesle0G6uvmtabJAArzw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gntWNlhS; arc=none smtp.client-ip=209.85.219.198
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-yb1-f198.google.com with SMTP id 3f1490d57ef6-e8193de20ddso8570394276.0
+        for <stable@vger.kernel.org>; Tue, 17 Jun 2025 03:46:28 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1750157187; x=1750761987; darn=vger.kernel.org;
+        h=to:from:subject:date:message-id:mime-version:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=/Gzlg59mRVB9fR31VGDma2jP04S0M3H5FDlvZFqDxWU=;
+        b=gntWNlhSIr0nwyPAE1B7RPyFHp+MyURxXBaQCkcg/xA5IDOggZS1gWVksrk+dPa8ot
+         cTfxwLfqt6o/Pu9ti86QAvgAIc/54o63vpGXF+xDBAVrVN+n6GGc5IewPBQAeBh/7SJp
+         zNtWOmym+FEcg8UVGXL1YQsOJWIYQ2HkGnh/S5X5BLG6iFPjs+0OB8fB0HX2BbtGUKAF
+         jE2Kebo5psSCHln83N3+HlsmWPShhn0UnvSriFbp7NOPlY1T48a5hm0xqtL/6HNxkIoB
+         i9HNlR/e4jSpbutq0t2JAlq52Jp5uKRFzNCP/WhMt3cv9zx1dXCfjuObEmkaGYlJnDWF
+         Z1BA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1750157187; x=1750761987;
+        h=to:from:subject:date:message-id:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=/Gzlg59mRVB9fR31VGDma2jP04S0M3H5FDlvZFqDxWU=;
+        b=fq+4vXj5maLQTgXGmrpHcG4dT2VciTcGs1U4Rx5WUUEg0aFK6w1ZerXTi0Wszsm8r4
+         UYzVOe7if3zc+7aITpCH0Kxw1K6sAcft5mFE2ma7j8rnG4iwHtRdU+e2j4O/4K4lGohD
+         PbWepFQNS7xrPamquokoWa7rsEljRnzjAUAhQ9PEWKfh1GnVe0yM5ejugKUC03ybTIG1
+         EWvNvwSc5Rf5vfDThleEMIQ0+nAY//29vndmXKkoY2Ne62iCkt1Fx4wlIqBK/vAQmg8D
+         RjaDcNNyTa5ysUvjARRb1wsCLMu/OthFbSbgMWXMqucuUFm3eUN+SUtMTQReB05r17lR
+         DAsw==
+X-Gm-Message-State: AOJu0Yyto52LIPPXZ5pTrpxljNDE3SLyoEfvPZaq1CoBa5gbZXg6cGA5
+	Tby9rg67RH14DvZcijQ9yRzAHabNzP+YT3qosXUIsXkoErjg5yHY98mv31Zx6c5zCWQWz8lli6F
+	2sC8=
+X-Google-Smtp-Source: AGHT+IF9SL2j6vtzn8doPES92ZIrCsNdYrg9v1xc8kDsDyg68BLs2oRhgccOWz+HSbob2gYK6mNC4Bh7/w==
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+X-Received: by 2002:a05:6902:1027:b0:e82:1c42:4bc1 with SMTP id
+ 3f1490d57ef6-e822abe20e1mr15371269276.5.1750157187715; Tue, 17 Jun 2025
+ 03:46:27 -0700 (PDT)
+Message-ID: <autogen-java-fc34ffed-c906-447c-838b-df71d852a987@google.com>
+Date: Tue, 17 Jun 2025 10:46:27 +0000
+Subject: stable@vger.kernel.org
+From: vicky685kg@gmail.com
+To: stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"; format=flowed; delsp=yes
 
-On Tue, 17 Jun 2025, Vas Novikov <vasya.novikov@gmail.com> wrote:
-> If any other information or anything is needed, please write.
+Hi there,
 
-Does [1] help?
+   Market trend is changing rapidly. Paid ads are not delivering much better  
+results. You must have to plan to move to organic marketing.
 
-If not, please file a bug as described at [2], in particular attach
-dmesg with debugs enabled all the way from boot to reproducing the
-problem.
+   If you would be interested, I can send complete marketing plan.
 
-Thanks,
-Jani.
+   Cheers!
 
-
-[1] https://lore.kernel.org/r/20250613061246.1118579-1-ankit.k.nautiyal@intel.com
-[2] https://drm.pages.freedesktop.org/intel-docs/how-to-file-i915-bugs.html
-
-
--- 
-Jani Nikula, Intel
+  Sendy
 
