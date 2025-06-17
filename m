@@ -1,57 +1,61 @@
-Return-Path: <stable+bounces-154016-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-154408-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D471BADD8C9
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:58:52 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6B097ADDA1B
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 19:13:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8F99D19E6E6E
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:36:53 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 96EEE4A76F7
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:52:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8D4E2EA14E;
-	Tue, 17 Jun 2025 16:30:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD710285067;
+	Tue, 17 Jun 2025 16:51:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TLCAIauw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RUwRuTvm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A51111E98E3;
-	Tue, 17 Jun 2025 16:30:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A8B020CCFB;
+	Tue, 17 Jun 2025 16:51:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750177835; cv=none; b=CNWZQy1TdqTPNlyScrDq8WtnPUQoNXtGRqBIgigRs6NzXArN89CMsXlRUN0havEKff87qMazwnxSHMWg6Tqz/RK+5Y7mIT2MMBI/GGT1sTpuaTlPa4yaEJO+tiz47a+flOs9LpzNt+jiNg4pr/gGbRU9cA9lUdmEp7EJP+48uXU=
+	t=1750179099; cv=none; b=FVDd9V2ph/NkQ5xNpEbH/jS/0PpMQ1wj4mTH3vzrRu96EwuMAjI4j1Ks6c7FJ9yC3HBBua7azYN2/ua/oytaSf5oGB3VCVab9vQpJV5yeBgG+m+dOoOQ3mwWfoSZ5wqXRHWWRkAfeFPN8gAfEDpJ7RoFjiZaiYQCsNix0X9+kl8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750177835; c=relaxed/simple;
-	bh=GMOw/QOm6tg6VFrmGzNpgoF6Da9UiwzZCMliGbmNiRc=;
+	s=arc-20240116; t=1750179099; c=relaxed/simple;
+	bh=rM3TKE21e8DUcCLE5tBH5W3ynH4BUh2VDU1DDc75jv0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=LQzl44ch73Zzhv86RPgd9GqmEaDWm8lrX6zenrSdmyOqmm021o+vDKUUzMdTCph9xZeYog41QBkrPe3TkfHB8JPs9x5RdBDtjulwxa0qo5vDBeUqbmXrBfLKn/iMuIbQZfSc/bT+wPIY6v2J996ENpZyEg5j09qWdPkDiK7ZRW0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TLCAIauw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14415C4CEE3;
-	Tue, 17 Jun 2025 16:30:34 +0000 (UTC)
+	 MIME-Version; b=t3eKJsEkEbQ0D1yXjfWj4gx0l2camx9VSgHWkFVCzy2hYgej/JhMs2Uh6jzBD2qIUXD2vjO//iI7+U3vjsr1IRmcqnBYihNeVzD3+FklYqFYg6xJsehnIq+UkBF/1v2ZGuX/JMmGO61OXQWz87GfPtST5psBG+Ng5I8XSEr9QZ4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RUwRuTvm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0DABC4CEE3;
+	Tue, 17 Jun 2025 16:51:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750177835;
-	bh=GMOw/QOm6tg6VFrmGzNpgoF6Da9UiwzZCMliGbmNiRc=;
+	s=korg; t=1750179099;
+	bh=rM3TKE21e8DUcCLE5tBH5W3ynH4BUh2VDU1DDc75jv0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TLCAIauwIzLrnPtzhCXgnBFfd+xTTlP/ICmr8ryczmdnTKh3Zt86XsCDZmcSKzJfE
-	 ytO/AvLiFZHBHaYuZOCii74mg9GgcnmXkuoKH9vhJdxe8ggmJrl2RksqryoB1h/fSj
-	 GKLjWnuD50qg6QUFaCubGFHjR2JbzxN5LhJuV5+4=
+	b=RUwRuTvmkGgtsv/1zRYdYsKeuQFAc8JjttIFtxZpmfuN88kicoyWLMjKptCeSXumh
+	 TEYIrOrLs5NkOUt1XHuOuJOw/pS0A0iQa2+8S3sttblbo8wUwy/pE7s3glZ/yIshAw
+	 6WZCu/fPShbPhove2qCdIyXI6SrwpLUw+S1ToIgU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Amadeusz=20S=C5=82awi=C5=84ski?= <amadeuszx.slawinski@linux.intel.com>,
-	Cezary Rojewski <cezary.rojewski@intel.com>,
-	Mark Brown <broonie@kernel.org>,
+	Jens Axboe <axboe@kernel.dk>,
+	Anuj Gupta <anuj20.g@samsung.com>,
+	Nitesh Shetty <nj.shetty@samsung.com>,
+	Al Viro <viro@zeniv.linux.org.uk>,
+	Christian Brauner <brauner@kernel.org>,
+	Keith Busch <kbusch@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 390/512] ASoC: Intel: avs: Verify content returned by parse_int_array()
+Subject: [PATCH 6.15 648/780] iov_iter: use iov_offset for length calculation in iov_iter_aligned_bvec
 Date: Tue, 17 Jun 2025 17:25:56 +0200
-Message-ID: <20250617152435.384707431@linuxfoundation.org>
+Message-ID: <20250617152517.869920311@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
-References: <20250617152419.512865572@linuxfoundation.org>
+In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
+References: <20250617152451.485330293@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,54 +65,92 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cezary Rojewski <cezary.rojewski@intel.com>
+From: Nitesh Shetty <nj.shetty@samsung.com>
 
-[ Upstream commit 93e246b6769bdacb09cfff4ea0f00fe5ab4f0d7a ]
+[ Upstream commit 334d7c4fb60cf21e0abac134d92fe49e9b04377e ]
 
-The first element of the returned array stores its length. If it is 0,
-any manipulation beyond the element at index 0 ends with null-ptr-deref.
+If iov_offset is non-zero, then we need to consider iov_offset in length
+calculation, otherwise we might pass smaller IOs such as 512 bytes, in
+below scenario [1].
 
-Fixes: 5a565ba23abe ("ASoC: Intel: avs: Probing and firmware tracing over debugfs")
-Reviewed-by: Amadeusz Sławiński <amadeuszx.slawinski@linux.intel.com>
-Signed-off-by: Cezary Rojewski <cezary.rojewski@intel.com>
-Link: https://patch.msgid.link/20250530141025.2942936-8-cezary.rojewski@intel.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+This issue is reproducible using lib-uring test/fixed-seg.c application
+with fixed buffer on a 512 LBA formatted device.
+
+[1]
+
+At present we pass the alignment check, for 512 LBA formatted devices,
+len_mask = 511 when IO is smaller, i->count = 512 has an offset,
+i->io_offset = 3584 with bvec values, bvec->bv_offset = 256,
+bvec->bv_len = 3840.  In short, the first 256 bytes are in the current
+page, next 256 bytes are in the another page.  Ideally we expect to
+fail the IO.
+
+I can think of 2 userspace scenarios where we experience this.
+
+a: From userspace, we observe a different behaviour when device LBA
+   size is 512 vs 4096 bytes.  For 4096 LBA formatted device, I see the
+   same liburing test [2] failing, whereas 512 the test passes without
+   this.  This is reproducible everytime.
+
+   [2] https://github.com/axboe/liburing/
+
+b: Although I was not able to reproduce the below condition, but I
+   suspect below case should be possible from user space for devices
+   with 512 LBA formatted device.  Lets say from userspace while
+   allocating a virtually single chunk of memory, if we get 2 physical
+   chunk of memory, and IO happens to be at the boundary of first
+   physical chunk with length crossing first chunk, then we allow IOs
+   to proceed and hence we might map wrong physical address length and
+   proceed with IO rather than failing.
+
+: --- a/test/fixed-seg.c
+: +++ b/test/fixed-seg.c
+: @@ -64,7 +64,7 @@ static int test(struct io_uring *ring, int fd, int
+: vec_off)
+: 		return T_EXIT_FAIL;
+: 	}
+:
+: -       ret = read_it(ring, fd, 4096, vec_off);
+: +       ret = read_it(ring, fd, 4096, 7*512 + 256);
+: 	if (ret) {
+: 		fprintf(stderr, "4096 0 failed\n");
+: 		return T_EXIT_FAIL;
+
+Effectively this is a write crossing the page boundary.
+
+Link: https://lkml.kernel.org/r/20250428095849.11709-1-nj.shetty@samsung.com
+Fixes: 2263639f96f2 ("iov_iter: streamline iovec/bvec alignment iteration")
+Reviewed-by: Jens Axboe <axboe@kernel.dk>
+Reviewed-by: Anuj Gupta <anuj20.g@samsung.com>
+Signed-off-by: Nitesh Shetty <nj.shetty@samsung.com>
+Cc: Al Viro <viro@zeniv.linux.org.uk>
+Cc: Christian Brauner <brauner@kernel.org>
+Cc: Keith Busch <kbusch@kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/intel/avs/debugfs.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ lib/iov_iter.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/sound/soc/intel/avs/debugfs.c b/sound/soc/intel/avs/debugfs.c
-index 1767ded4d9830..c9978fb9c74e2 100644
---- a/sound/soc/intel/avs/debugfs.c
-+++ b/sound/soc/intel/avs/debugfs.c
-@@ -372,7 +372,10 @@ static ssize_t trace_control_write(struct file *file, const char __user *from, s
- 		return ret;
+diff --git a/lib/iov_iter.c b/lib/iov_iter.c
+index bc9391e55d57e..9ce83ab71bacd 100644
+--- a/lib/iov_iter.c
++++ b/lib/iov_iter.c
+@@ -820,7 +820,7 @@ static bool iov_iter_aligned_bvec(const struct iov_iter *i, unsigned addr_mask,
+ 	size_t size = i->count;
  
- 	num_elems = *array;
--	resource_mask = array[1];
-+	if (!num_elems) {
-+		ret = -EINVAL;
-+		goto free_array;
-+	}
+ 	do {
+-		size_t len = bvec->bv_len;
++		size_t len = bvec->bv_len - skip;
  
- 	/*
- 	 * Disable if just resource mask is provided - no log priority flags.
-@@ -380,6 +383,7 @@ static ssize_t trace_control_write(struct file *file, const char __user *from, s
- 	 * Enable input format:   mask, prio1, .., prioN
- 	 * Where 'N' equals number of bits set in the 'mask'.
- 	 */
-+	resource_mask = array[1];
- 	if (num_elems == 1) {
- 		ret = disable_logs(adev, resource_mask);
- 	} else {
+ 		if (len > size)
+ 			len = size;
 -- 
 2.39.5
 
