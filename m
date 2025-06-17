@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-154127-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-154130-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A670EADD7FD
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:50:58 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F1CFADD8E6
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 19:00:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 491E856035A
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:42:35 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D23ED16EE78
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:43:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94F3C2ECD33;
-	Tue, 17 Jun 2025 16:36:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB3C02ECEA4;
+	Tue, 17 Jun 2025 16:36:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rAVitf4D"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Wod+5s8P"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51A731E1C22;
-	Tue, 17 Jun 2025 16:36:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77A192264D6;
+	Tue, 17 Jun 2025 16:36:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750178189; cv=none; b=gtCKJXMI159BhmE5GrPOqGEoM1sSBC/bmcxlR9rW9AfKRR8MrQpQk5d5yL4MW3dRaUh6SksGOjlePHjx9OHsW2CppsQSVCSr+vub4garDUpswZ+kQWeu142/EvZOKd0itI92OZH2BFOLr6gocQryKM2a5yrT7/nf4oJ+Vh3VkB4=
+	t=1750178198; cv=none; b=pbtDqPiRl++iPoNUkg0DNNvH7BoNyXzKUdJoVSaiWMfiGzm5YP17KpPPwMVuHK0G+hxgpJ0g6vvYkrSt8CCSaN2VHBqFFGYm6S0xTKOdBVdbN3WGXZQVzxAVde96F5TETT7yBKoQI/B2sqXFwtsI/S7dH3o+86Ftz8ZIJalkL+k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750178189; c=relaxed/simple;
-	bh=0TNpG1Rir+NbDmO+ZLArgEY3o9Ka7kuFMIH7bfo79fE=;
+	s=arc-20240116; t=1750178198; c=relaxed/simple;
+	bh=vQaYCV3cswK0bXRejsX24Bri7b/FHmhS+NNOqyOijhw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PQcji9DK7hxBAeYHydJ9X2qelLp65S/cE8m+bxtReispmBhsSM+H9iC0speDkYNPTO4t99ojREBWJ8hn09cYx4RgQBXluaNXQJaB8rsuyVl0v25gLBJ6+lLglpaUMXEHChZVzAkOndfI81u4a8I5fAM4PlEVv2BeY5M5AN6Tr3k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rAVitf4D; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8CBA8C4CEE3;
-	Tue, 17 Jun 2025 16:36:28 +0000 (UTC)
+	 MIME-Version; b=pgJPXr1IrrFc3gvqDaycW6v+uELhiDrQVbJqRF7YSTGKJ6g6bZnc3lXn2YJ7l64z1lNaxVSSqngduELH8gNoOufghhaYrrp2xDvRRASMfwftdBMiZEOIxtcdj1fPcuyCAQTHvb4CdRrDbdOWVfeFB+olaPMoedC9NddLn5tbf38=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Wod+5s8P; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B96DAC4CEE7;
+	Tue, 17 Jun 2025 16:36:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750178189;
-	bh=0TNpG1Rir+NbDmO+ZLArgEY3o9Ka7kuFMIH7bfo79fE=;
+	s=korg; t=1750178198;
+	bh=vQaYCV3cswK0bXRejsX24Bri7b/FHmhS+NNOqyOijhw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rAVitf4Dox4jedgz0ZH/qxQJgZKbaXXSiPEM2EskuAF91KpvVbVucdoMLZ7uRnddP
-	 7l4SDuvwoUHcaJ/ssCu7XOVQSTuiPMjJjqRRme9ptWhC4yd8iRK3YXpl/mWWC+e3W0
-	 z2uhwMoqfSk5C9xC7MH/LaL/m3Gjr0yoYBa/Klkc=
+	b=Wod+5s8P8baeSkmlujNVPy/Ei3uEB6OlWSiaUnVpwjoQ8FqfYDoRm50kGDIYPeKoe
+	 K54eMBGq9UR2aQSlSnOGu59PCy+jrbPNyTPD6l/OavtpLNFj5/wZBNuCcH5pRufQbT
+	 ScL5CNtdxrA9VpGFvZt5PsaM5M1i7TMefjXcZ6UM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -51,12 +51,11 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Kan Liang <kan.liang@linux.intel.com>,
 	Namhyung Kim <namhyung@kernel.org>,
 	Peter Zijlstra <peterz@infradead.org>,
-	"Frank Ch. Eigler" <fche@redhat.com>,
 	Arnaldo Carvalho de Melo <acme@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 422/780] perf build: Warn when libdebuginfod devel files are not available
-Date: Tue, 17 Jun 2025 17:22:10 +0200
-Message-ID: <20250617152508.659429609@linuxfoundation.org>
+Subject: [PATCH 6.15 423/780] tools build: Dont show libbfd build status as it is opt-in
+Date: Tue, 17 Jun 2025 17:22:11 +0200
+Message-ID: <20250617152508.698643634@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
 References: <20250617152451.485330293@linuxfoundation.org>
@@ -77,76 +76,21 @@ Content-Transfer-Encoding: 8bit
 
 From: Arnaldo Carvalho de Melo <acme@redhat.com>
 
-[ Upstream commit 4fce4b91fd1aabb326c46e237eb4b19ab72598f8 ]
+[ Upstream commit e0eb84cd518084582c0d1db5d904f31b16902fdc ]
 
-While working on 'perf version --build-options' I noticed that:
+Since dd317df072071903 ("perf build: Make binutil libraries opt in")
+doesn't try to build with binutils libraries, so showing that it is OFF
+when building causes just distraction, remove it from FEATURES_DISPLAY.
 
-  $ perf version --build-options
-  perf version 6.15.rc1.g312a07a00d31
-                   aio: [ on  ]  # HAVE_AIO_SUPPORT
-                   bpf: [ on  ]  # HAVE_LIBBPF_SUPPORT
-         bpf_skeletons: [ on  ]  # HAVE_BPF_SKEL
-            debuginfod: [ OFF ]  # HAVE_DEBUGINFOD_SUPPORT
-  <SNIP>
+For people that for some reason notice that there is always 'perf -vv',
+a short hand for 'perf version --build-options' and 'perf check feature
+libbfd' that now explains why it is not built:
 
-And looking at tools/perf/Makefile.config I also noticed that it is not
-opt-in, meaning we will attempt to build with it in all normal cases.
-
-So add the usual warning at build time to let the user know that
-something recommended is missing, now we see:
-
-  Makefile.config:563: No elfutils/debuginfod.h found, no debuginfo server support, please install elfutils-debuginfod-client-devel or equivalent
-
-And after following the recommendation:
-
-  $ perf check feature debuginfod
-            debuginfod: [ on  ]  # HAVE_DEBUGINFOD_SUPPORT
-  $ ldd ~/bin/perf | grep debuginfo
-	libdebuginfod.so.1 => /lib64/libdebuginfod.so.1 (0x00007fee5cf5f000)
+  $ perf check feature libbfd
+  libbfd: [ OFF ]  # HAVE_LIBBFD_SUPPORT ( tip: Deprecated, license incompatibility, use BUILD_NONDISTRO=1 and install binutils-dev[el] )
   $
 
-With this feature on several perf tools will fetch what is needed and
-not require all the contents of the debuginfo packages, for instance:
-
-  # rpm -qa | grep kernel-debuginfo
-  # pahole --running_kernel_vmlinux
-  pahole: couldn't find a vmlinux that matches the running kernel
-  HINT: Maybe you're inside a container or missing a debuginfo package?
-  #
-  # perf trace -e open* perf probe --vars icmp_rcv
-      0.000 ( 0.005 ms): perf/97391 openat(dfd: CWD, filename: "/etc/ld.so.cache", flags: RDONLY|CLOEXEC) = 3
-      0.014 ( 0.004 ms): perf/97391 openat(dfd: CWD, filename: "/lib64/libm.so.6", flags: RDONLY|CLOEXEC) = 3
-  <SNIP>
-  32130.100 ( 0.008 ms): perf/97391 openat(dfd: CWD, filename: "/root/.cache/debuginfod_client/aa3c82b4a13f9c0e0301bebb20fe958c4db6f362/debuginfo") = 3
-  <SNIP>
-  Available variables at icmp_rcv
-        @<icmp_rcv+0>
-                struct sk_buff* skb
-  <SNIP>
-  #
-  # pahole --running_kernel_vmlinux
-  /root/.cache/debuginfod_client/aa3c82b4a13f9c0e0301bebb20fe958c4db6f362/debuginfo
-  # file /root/.cache/debuginfod_client/aa3c82b4a13f9c0e0301bebb20fe958c4db6f362/debuginfo
-  /root/.cache/debuginfod_client/aa3c82b4a13f9c0e0301bebb20fe958c4db6f362/debuginfo: ELF 64-bit LSB executable, x86-64, version 1 (SYSV), statically linked, BuildID[sha1]=aa3c82b4a13f9c0e0301bebb20fe958c4db6f362, with debug_info, not stripped
-  # ls -la /root/.cache/debuginfod_client/aa3c82b4a13f9c0e0301bebb20fe958c4db6f362/debuginfo
-  -r--------. 1 root root 475401512 Mar 27 21:00 /root/.cache/debuginfod_client/aa3c82b4a13f9c0e0301bebb20fe958c4db6f362/debuginfo
-  #
-
-Then, cached:
-
-  # perf stat --null perf probe --vars icmp_rcv
-  Available variables at icmp_rcv
-        @<icmp_rcv+0>
-                struct sk_buff* skb
-
-   Performance counter stats for 'perf probe --vars icmp_rcv':
-
-       0.671389041 seconds time elapsed
-
-       0.519176000 seconds user
-       0.150860000 seconds sys
-
-Fixes: c7a14fdcb3fa7736 ("perf build-ids: Fall back to debuginfod query if debuginfo not found")
+Fixes: dd317df072071903 ("perf build: Make binutil libraries opt in")
 Tested-by: Ingo Molnar <mingo@kernel.org>
 Cc: Adrian Hunter <adrian.hunter@intel.com>
 Cc: Dmitriy Vyukov <dvyukov@google.com>
@@ -156,28 +100,26 @@ Cc: Jiri Olsa <jolsa@kernel.org>
 Cc: Kan Liang <kan.liang@linux.intel.com>
 Cc: Namhyung Kim <namhyung@kernel.org>
 Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Frank Ch. Eigler <fche@redhat.com>
-Link: https://lore.kernel.org/r/Z_dkNDj9EPFwPqq1@gmail.com
-[ Folded patch from Ingo to have the debian/ubuntu devel package added build warning message ]
+Link: https://lore.kernel.org/r/Z--pWmTHGb62_83e@gmail.com
 Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/Makefile.config | 2 ++
- 1 file changed, 2 insertions(+)
+ tools/build/Makefile.feature | 2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/tools/perf/Makefile.config b/tools/perf/Makefile.config
-index e0c20a5c19cfe..d1ea7bf449647 100644
---- a/tools/perf/Makefile.config
-+++ b/tools/perf/Makefile.config
-@@ -560,6 +560,8 @@ ifndef NO_LIBELF
-     ifeq ($(feature-libdebuginfod), 1)
-       CFLAGS += -DHAVE_DEBUGINFOD_SUPPORT
-       EXTLIBS += -ldebuginfod
-+    else
-+      $(warning No elfutils/debuginfod.h found, no debuginfo server support, please install libdebuginfod-dev/elfutils-debuginfod-client-devel or equivalent)
-     endif
-   endif
- 
+diff --git a/tools/build/Makefile.feature b/tools/build/Makefile.feature
+index 357749701239f..57bd995ce6afa 100644
+--- a/tools/build/Makefile.feature
++++ b/tools/build/Makefile.feature
+@@ -147,8 +147,6 @@ endif
+ FEATURE_DISPLAY ?=              \
+          libdw                  \
+          glibc                  \
+-         libbfd                 \
+-         libbfd-buildid		\
+          libelf                 \
+          libnuma                \
+          numa_num_possible_cpus \
 -- 
 2.39.5
 
