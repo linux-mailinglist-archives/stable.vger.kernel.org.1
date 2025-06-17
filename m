@@ -1,86 +1,130 @@
-Return-Path: <stable+bounces-152852-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-152853-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 75CACADCDCC
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 15:45:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AF112ADCDFC
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 15:48:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 183503B58B4
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 13:42:53 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 366F13B9A71
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 13:45:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2CB5E28C03B;
-	Tue, 17 Jun 2025 13:43:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22B2C2E2EF4;
+	Tue, 17 Jun 2025 13:44:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nnI0O+fL"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="AH27B0LQ"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f51.google.com (mail-ed1-f51.google.com [209.85.208.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D335A2E718F
-	for <stable@vger.kernel.org>; Tue, 17 Jun 2025 13:43:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F2662E2671
+	for <stable@vger.kernel.org>; Tue, 17 Jun 2025 13:44:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750167794; cv=none; b=ghCxcoVKSYP0EXEbd25avJxVInphhMg8ckaPauytvnPSfMXv88V94H2PtzZFGZ5ROmNv7jyfDipx4zH0sUhC4c2uuej2JL2VhaQ0aEM48l544DMZQiHYTB6MyD1yVgQ3F/A3kJVI+OIMZrdKW6hLkMdm5wpPv/Dru3G+lMIy1cc=
+	t=1750167843; cv=none; b=efHPBVK+vjeBjj/G/gud2X4l8bNlA1qOw4ffQuYEzhR/eiA0tsjI4pR6EqCJjod/Jl5EFF3BFpBASYnilNaY2oRKgD4JwRdHM5USls8h8daGoewM8xRTkkCusB+8nukSKzPOcLBlgSJEoAQyK++JBZmp44FPozx4PTQwy6liOG0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750167794; c=relaxed/simple;
-	bh=bwG0FE3meA+oM30CXfe0P6ugNBRT0AfQt3U6GUT9604=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=s9O1r4X2WjFm66xoRkWTigFfxnDNSSyCU3z4EJE01atQnubKtEh1TvV6x5Ir+AMHfXCAElbNi4/1HiXsOsrIYEX2ZwBydmVegSk8CXpYZiujFgub3C/noroEndflbVXn+Ldv9rJuW3s5pFhDTB30q2mjDxI5ep5BFHwuTYfFO8Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nnI0O+fL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0387C4CEE3;
-	Tue, 17 Jun 2025 13:43:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750167794;
-	bh=bwG0FE3meA+oM30CXfe0P6ugNBRT0AfQt3U6GUT9604=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=nnI0O+fLK+4vmlmHSLWTlEGMkD9GfieiQe4wHZ/j2P3oSu1csnPP6V0lWeBdRYl2+
-	 EQlZ0XOWK9r9UKQdQscGtD0ahckB+9IXCZqw6htsr3vRRrZ0K7XdoOYzoS3IOItrqO
-	 MIoL+HWVs+lDbs2LAjTpwRM0bidO8/QFR6gU3ul0=
-Date: Tue, 17 Jun 2025 15:43:11 +0200
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Jens Axboe <axboe@kernel.dk>
-Cc: stable <stable@vger.kernel.org>
-Subject: Re: Revert of a commit in 6.6-stable
-Message-ID: <2025061702-print-cohesive-3a1b@gregkh>
-References: <906ba919-32e6-4534-bbad-2cd18e1098ca@kernel.dk>
- <313f2335-626f-4eea-8502-d5c3773db35a@kernel.dk>
+	s=arc-20240116; t=1750167843; c=relaxed/simple;
+	bh=BFQ9SO2t1J71+CICyMv1OPoOaaKRRkwWmkwVe0QJxP0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=HP2jOUxVeMHgeNc2ey9T4GlrhSiLC6lWmgSbhUkHdepjgwym47TS/wsxP0Sz5s6BItdxt0HAT+bgOONxK/3cA1lNymFg0dBy4JXHiMd8muc+hySqUMsSTp5sC24J/6S5N0S8zBydRwJGVPSE3jiC7u1wDjr4dsPumJF3zqaZYZI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=AH27B0LQ; arc=none smtp.client-ip=209.85.208.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ed1-f51.google.com with SMTP id 4fb4d7f45d1cf-6077d0b9bbeso10550576a12.3
+        for <stable@vger.kernel.org>; Tue, 17 Jun 2025 06:44:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1750167840; x=1750772640; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=zecGBL4EFfqvJ1+S5Ps/tbhcKJ3SUOGOERPfVCGUV9U=;
+        b=AH27B0LQQC2ayBySy8ZR8I75kphnB298dWIqrZg8uUoRaOOzZQ5r3LXWIBPMHW/ODA
+         6NlmaWDD5TBcPLDf5+vsLc7ukUBJQ3issHE1I37kdzA0KGm/Jr7Ct0bUmHgW3z+Bmn2q
+         fWm2MqXOLqkkhxl+YtcUJXOdMgh/6vuYQ+XLQOgT4h3+0l70Q9mSx/KVyVqAroWEm3qw
+         4gR8Hi4ARJ4K+fj2WgMtN4VTvgDumeoDUkGPiyR+IwYVXByRdUbwMcHtVWoZG+44oP7Y
+         4OWxGztcjvcEjwXo5PpTPreOOIVlUC6JEY7mI7ptLZpmIg6BzNnGsFEnBfNFhmAyKZ1n
+         KQQw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1750167840; x=1750772640;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=zecGBL4EFfqvJ1+S5Ps/tbhcKJ3SUOGOERPfVCGUV9U=;
+        b=CUFv2PObNavRzptPOtDK8DfRo2p64cQwRIkGNZFhx0OGfrqzKCrkNc5OkKdItx7PZx
+         EVyu+miZgW0hqcbf+ECRJProRwkDT4/ncCOZMC774gvQoY5qnsTb4itPzKUKOgTUxGOC
+         umOmXVkD0b0U1nKzXeh+3MvQP1XH/wj8W37Y93tiDcnkqfxNKmRWlbWifyBvrymjX02Z
+         WC4QN/hiyP9vqoMX6DWYJgjLGv8CqQqQ1FbYQK1gPVGgOVOQaZVQEFgojhVQVi6yQSoY
+         B+a+vMZyW0cTOC2CyDIer8aejefyhjYAZpB2IxGQRMfspjPRtLkHInf9+0BBKr3Wddoc
+         ErMA==
+X-Forwarded-Encrypted: i=1; AJvYcCUMRbQsLQCyCJlTL0eXoE5rdSBdswAtx4T3H0zUWEjFsLtC6znGZ1rAZP0vBeM8+bjG1NBQXuQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0YztR1wxGEbTlFVnRQFnaHOhbL59Pju/vXqONuzpCkfkgXFGcZC2
+	FoPzhJdbDl5RO66aMRn0jFs84B5oNCDsSsAaOegHNlzEpKtKaWHp5Yca
+X-Gm-Gg: ASbGncucotqCAtHnHZi7lH89VjD3fTklKcfZ3ceshXWnu3rddy/g2qlwchBc4QNTRhe
+	2SgBuskI4tLVKrt5/o6DFnVwaDfd0gxWfqe7Mkr2r9U7cxSoY1xxODh6JJ0p0GcsRfPMWo/ZJSh
+	O99pnHf0u6xsVZBsrabQmhmvx94RpoGFU3jUPt5PWtHutIR5EfPXkEsGlG4Lzne+sKqBFaZF9fV
+	RJMxdpMI8trlIQtZZ/0DJ6gsAID4ozuvh/w8Q2UXYP6+K9wdp+HilMuEPmm8P+mWIEK2ve5E/dJ
+	WyCh96UGdU2zU1aHIPASfOnGVyQmv7AQiNiun+BqSldK+2Yttdm5eyvVvnQbKHKlOAh4wn6778C
+	Bcmdza6S/l9hXrzZW4JrODZg6+Z62EgZyz6QELi0Rl1pq
+X-Google-Smtp-Source: AGHT+IGgIlcS/PryJ7lnGbffSNLneJYZk5+uA1B/WOdMk8Ma6F8q8Mlo7t8zz4EebhjQz/a0cLH/aA==
+X-Received: by 2002:a17:906:478d:b0:ad8:9b5d:2c1b with SMTP id a640c23a62f3a-adfad29dd5bmr1181198766b.9.1750167840364;
+        Tue, 17 Jun 2025 06:44:00 -0700 (PDT)
+Received: from [192.168.75.93] (217-122-252-220.cable.dynamic.v4.ziggo.nl. [217.122.252.220])
+        by smtp.googlemail.com with ESMTPSA id a640c23a62f3a-adec81bb9cesm864213666b.49.2025.06.17.06.43.59
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 17 Jun 2025 06:44:00 -0700 (PDT)
+Message-ID: <33046593-17e3-4bdc-9d4a-94dc94ef5e81@gmail.com>
+Date: Tue, 17 Jun 2025 15:43:59 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <313f2335-626f-4eea-8502-d5c3773db35a@kernel.dk>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [REGRESSION][BISECTED] intel iGPU with HDMI PLL stopped working
+ at 1080p@120Hz 1efd5384
+To: Jani Nikula <jani.nikula@intel.com>, stable@vger.kernel.org
+Cc: regressions@lists.linux.dev, Ankit Nautiyal <ankit.k.nautiyal@intel.com>,
+ Suraj Kandpal <suraj.kandpal@intel.com>,
+ Khaled Almahallawy <khaled.almahallawy@intel.com>,
+ Rodrigo Vivi <rodrigo.vivi@intel.com>, intel-gfx@lists.freedesktop.org,
+ Christian Heusel <christian@heusel.eu>
+References: <8d7c7958-9558-4c8a-a81a-e9310f2d8852@gmail.com>
+ <afa8a7b2ced71e77655fb54f49b702c71506017d@intel.com>
+Content-Language: nl-NL, en-US
+From: Vas Novikov <vasya.novikov@gmail.com>
+Autocrypt: addr=vasya.novikov@gmail.com; keydata=
+ xjMEYrX2ChYJKwYBBAHaRw8BAQdAf/bzdTDerOW5j+qrayMzPOCKthCx8KYKZo20cty68aPN
+ KFZhc2lsaSBOb3Zpa292IDx2YXN5YS5ub3Zpa292QGdtYWlsLmNvbT7CjwQTFggANxYhBLKE
+ QxE9sGxECbI4ubmfrsbg1d9tBQJitfYKBQkJZgGAAhsDBAsJCAcFFQgJCgsFFgIDAQAACgkQ
+ uZ+uxuDV321klwEAm5+HyBecp+ofMZ6Ors+OvrETLFQU2B9wCd/d/i2NjJABAIssTvgdxlqF
+ I6GjehRMPURi6W1uFMPzzp9gM1yeYXEGzjgEYrX2ChIKKwYBBAGXVQEFAQEHQODm5qV0UQrP
+ hcJkaZVbhtVmb90gN6rIuN0Q/xTmhqJ4AwEIB8J+BBgWCAAmFiEEsoRDET2wbEQJsji5uZ+u
+ xuDV320FAmK19goFCQlmAYACGwwACgkQuZ+uxuDV322trQEA1Yj4GvOlEPfyuhMfX8P0Ah/8
+ QXCqgdMQH7PaNgIFFokA/1DgWcc1XGFNRHpOGrJNnF4Ese1hWjYoqo2iBlURPQwP
+In-Reply-To: <afa8a7b2ced71e77655fb54f49b702c71506017d@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Thu, Jun 12, 2025 at 11:49:46AM -0600, Jens Axboe wrote:
-> On 6/12/25 11:38 AM, Jens Axboe wrote:
-> > Hi Greg and crew,
-> > 
-> > Can you revert:
-> > 
-> > commit 746e7d285dcb96caa1845fbbb62b14bf4010cdfb
-> > Author: Jens Axboe <axboe@kernel.dk>
-> > Date:   Wed May 7 08:07:09 2025 -0600
-> > 
-> >     io_uring: ensure deferred completions are posted for multishot
-> > 
-> > in 6.6-stable? There's some missing dependencies that makes this not
-> > work right, I'll bring it back in a series instead.
-> 
-> Oh, and revert it in 6.1-stable as well. Here's the 6.1-stable
-> commit:
-> 
-> commit b82c386898f7b00cb49abe3fbd622017aaa61230
-> Author: Jens Axboe <axboe@kernel.dk>
-> Date:   Wed May 7 08:07:09 2025 -0600
-> 
->     io_uring: ensure deferred completions are posted for multishot
+Hi Jani and everyone,
 
-Both now reverted, thanks,
+On 17/06/2025 12.33, Jani Nikula wrote:
+> Does [1] help?
 
-greg k-h
+The patch works. (Applied on top of 6.16.0-rc2-1.1-mainline, built by 
+Christian @gromit who helped again.)
+
+The patch (or the new kernel) also have a side effect of xrandr allowing 
+a completely new refresh rate, ~144Hz. This new refresh also seems to 
+work (I cannot easily disambiguate 144 versus 120, but I can tell it's 
+not 60Hz). So as far as my hardware is concerned, this patch leaves the 
+whole system working in all scenarios that I've tested.
+
+Thanks!
+
+
+Kind regards,
+Vas
 
