@@ -1,56 +1,53 @@
-Return-Path: <stable+bounces-153764-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153767-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 24E2AADD63F
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:31:31 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 55717ADD667
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:32:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 85E4E2C6A46
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:23:26 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DE207406575
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:23:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 93986285045;
-	Tue, 17 Jun 2025 16:17:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 053C7218EA8;
+	Tue, 17 Jun 2025 16:17:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x4MhVnsW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="McsZ+EiC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50AB31BD9D3;
-	Tue, 17 Jun 2025 16:17:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B773D1A9B48;
+	Tue, 17 Jun 2025 16:17:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750177023; cv=none; b=by5EV/bDQVrxb8TFbnEbeixNg6VDk95ZAKrFuN33oxK0A+Gh8FfM2Y84WBEkT/B243ZG+8+FqbtZIK9X2kMloKXQY33aLb8TOe1cOXX9+7GI1bt6VI/jS4ATleo8+ohQlKuRml6q61+b49rz4eaCjDEL8445KWQ3thFehle3MYY=
+	t=1750177032; cv=none; b=cGA6uV5THH1GBnF02DfqYsw2pHl03fyr9BdCZ7avFmxE8bRUlN568Ir6+AehsKCzDARgY1uePnQ3Rihahrgrn+HMnJg8Iz9yweuTipzeDC2gCpHoUV53B1zlo/DiD1Jok4wZ83014kJBSd3Lz2yjVuLTUf8LXKe+/xSqscoOiS8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750177023; c=relaxed/simple;
-	bh=vtOUlwq7z0G6Iog3wXdo/bW33Dx+JLdbO/FbUKbvD4c=;
+	s=arc-20240116; t=1750177032; c=relaxed/simple;
+	bh=GJk3FbPGf+h8Ue6QCVOCtj7YqmLZSyR+CsM330XSK8k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mlPqvB4aQlL/vkWaEt7FFLWcEAGiBUvT7CcHNDKfFICbKhoSe58EetZ05vOC4htgSrb6/D4LQZTgZTYN38jxuhAk3gGn5VR1uBePsg2n8KWWK9+U5AoJ/MBAhTkxJ2AQ/PZqI16FVNVPM+QgzV01dX2sDoytUUoZNwORbuX4NdQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x4MhVnsW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BBFD0C4CEE3;
-	Tue, 17 Jun 2025 16:17:02 +0000 (UTC)
+	 MIME-Version; b=LmZtAMPxNWfcdc5nmZCgQXA2K9O9I+KleWPNyCUjbRzZQ0qxLOQBzzBFz8vRw+TTOzxTeTxlRlCsBfG07CT/PkHEpQBXpTpu+Tmc2dcsj3NVr2dSch47o63XRqJbokAABdx5kfM9rMaVvDcUAh/6gzgaE9LU1oYFoVEguA65DfY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=McsZ+EiC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3EADFC4CEE7;
+	Tue, 17 Jun 2025 16:17:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750177023;
-	bh=vtOUlwq7z0G6Iog3wXdo/bW33Dx+JLdbO/FbUKbvD4c=;
+	s=korg; t=1750177032;
+	bh=GJk3FbPGf+h8Ue6QCVOCtj7YqmLZSyR+CsM330XSK8k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=x4MhVnsWLwNmvtGKx+KoLgXKppizY2Acq1mEkn/0YeT4djl8fX/hTUtOPGwA650IR
-	 BrhKnXUHldFQvC50jlhFJroVM4tL3iud60sU/JrbtlOeeNXgePYo2KeXTxiXwAAbmJ
-	 vVBq6PPN2TmvhgMqO9RsGmKA6lwCPNOpDw8qUc4Q=
+	b=McsZ+EiCzET68K7CrWe7h0MaVz/7dIKMh+aXJdPLEUQfZic9iMbj5rWOyRZxxf8CU
+	 PkZGPoMdGISVwmNa2rSfbL7kJEGUJ/i/y98broKMvFipnoxHZw8NbOCKOSStGu85Df
+	 gi0mpF9chTitu98LfS+9mG8XFR2vFXTI3z+1UsSQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Siddharth Vadapalli <s-vadapalli@ti.com>,
-	Beleswar Padhi <b-padhi@ti.com>,
-	Judith Mendez <jm@ti.com>,
-	Andrew Davis <afd@ti.com>,
-	Mathieu Poirier <mathieu.poirier@linaro.org>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 289/512] remoteproc: k3-dsp: Drop check performed in k3_dsp_rproc_{mbox_callback/kick}
-Date: Tue, 17 Jun 2025 17:24:15 +0200
-Message-ID: <20250617152431.316074932@linuxfoundation.org>
+Subject: [PATCH 6.12 290/512] rpmsg: qcom_smd: Fix uninitialized return variable in __qcom_smd_send()
+Date: Tue, 17 Jun 2025 17:24:16 +0200
+Message-ID: <20250617152431.355966102@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
 References: <20250617152419.512865572@linuxfoundation.org>
@@ -69,61 +66,35 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Siddharth Vadapalli <s-vadapalli@ti.com>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-[ Upstream commit 349d62ab207f55f039c3ddb40b36e95c2f0b3ed0 ]
+[ Upstream commit 5de775df3362090a6e90046d1f2d83fe62489aa0 ]
 
-Commit ea1d6fb5b571 ("remoteproc: k3-dsp: Acquire mailbox handle during
-probe routine") introduced a check in the "k3_dsp_rproc_mbox_callback()"
-and "k3_dsp_rproc_kick()" callbacks, causing them to exit if the remote
-core's state is "RPROC_DETACHED". However, the "__rproc_attach()"
-function that is responsible for attaching to a remote core, updates the
-state of the remote core to "RPROC_ATTACHED" only after invoking
-"rproc_start_subdevices()".
+The "ret" variable isn't initialized if we don't enter the loop.  For
+example,  if "channel->state" is not SMD_CHANNEL_OPENED.
 
-The "rproc_start_subdevices()" function triggers the probe of the Virtio
-RPMsg devices associated with the remote core, which require that the
-"k3_dsp_rproc_kick()" and "k3_dsp_rproc_mbox_callback()" callbacks are
-functional. Hence, drop the check in the callbacks.
-
-Fixes: ea1d6fb5b571 ("remoteproc: k3-dsp: Acquire mailbox handle during probe routine")
-Signed-off-by: Siddharth Vadapalli <s-vadapalli@ti.com>
-Signed-off-by: Beleswar Padhi <b-padhi@ti.com>
-Tested-by: Judith Mendez <jm@ti.com>
-Reviewed-by: Andrew Davis <afd@ti.com>
-Link: https://lore.kernel.org/r/20250513054510.3439842-3-b-padhi@ti.com
-Signed-off-by: Mathieu Poirier <mathieu.poirier@linaro.org>
+Fixes: 33e3820dda88 ("rpmsg: smd: Use spinlock in tx path")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Link: https://lore.kernel.org/r/aAkhvV0nSbrsef1P@stanley.mountain
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/remoteproc/ti_k3_dsp_remoteproc.c | 8 --------
- 1 file changed, 8 deletions(-)
+ drivers/rpmsg/qcom_smd.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/remoteproc/ti_k3_dsp_remoteproc.c b/drivers/remoteproc/ti_k3_dsp_remoteproc.c
-index 8be3f631c1920..2ae0655ddf1d2 100644
---- a/drivers/remoteproc/ti_k3_dsp_remoteproc.c
-+++ b/drivers/remoteproc/ti_k3_dsp_remoteproc.c
-@@ -115,10 +115,6 @@ static void k3_dsp_rproc_mbox_callback(struct mbox_client *client, void *data)
- 	const char *name = kproc->rproc->name;
- 	u32 msg = omap_mbox_message(data);
+diff --git a/drivers/rpmsg/qcom_smd.c b/drivers/rpmsg/qcom_smd.c
+index 43f601c84b4fc..79d35ab43729e 100644
+--- a/drivers/rpmsg/qcom_smd.c
++++ b/drivers/rpmsg/qcom_smd.c
+@@ -746,7 +746,7 @@ static int __qcom_smd_send(struct qcom_smd_channel *channel, const void *data,
+ 	__le32 hdr[5] = { cpu_to_le32(len), };
+ 	int tlen = sizeof(hdr) + len;
+ 	unsigned long flags;
+-	int ret;
++	int ret = 0;
  
--	/* Do not forward messages from a detached core */
--	if (kproc->rproc->state == RPROC_DETACHED)
--		return;
--
- 	dev_dbg(dev, "mbox msg: 0x%x\n", msg);
- 
- 	switch (msg) {
-@@ -159,10 +155,6 @@ static void k3_dsp_rproc_kick(struct rproc *rproc, int vqid)
- 	mbox_msg_t msg = (mbox_msg_t)vqid;
- 	int ret;
- 
--	/* Do not forward messages to a detached core */
--	if (kproc->rproc->state == RPROC_DETACHED)
--		return;
--
- 	/* send the index of the triggered virtqueue in the mailbox payload */
- 	ret = mbox_send_message(kproc->mbox, (void *)msg);
- 	if (ret < 0)
+ 	/* Word aligned channels only accept word size aligned data */
+ 	if (channel->info_word && len % 4)
 -- 
 2.39.5
 
