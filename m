@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-153327-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153344-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C8F2ADD40B
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:06:01 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7ED29ADD3FC
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:05:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 17C84189ED1A
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 15:57:15 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 75B593A61F7
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 15:57:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D5292EF289;
-	Tue, 17 Jun 2025 15:53:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 369152F2C4C;
+	Tue, 17 Jun 2025 15:54:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PaeuIQrp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M2O9btZG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 095872EF286;
-	Tue, 17 Jun 2025 15:53:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4FC42EF657;
+	Tue, 17 Jun 2025 15:54:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750175591; cv=none; b=c9Q8nNrvc599oSQGq9VIXlmUZu6dnX7hhTNj+Q64EHISwQi5RZMv+eu60j4DRtAUt80buAQybFZDg43CUXQ0cDjdQ52bducSQXGNCV2de38i5NVUb+DFhon3gSD5muFsX5wNJy/nWsdzfFE+XZUaqVy47VGp7Xjqc6+jFOWzYIw=
+	t=1750175646; cv=none; b=jHkBLoW3hP2ey/GgOrUaGJ4IzFXbHVizfpOkg3pGFTykg+2gytpxhakKa+RUTL2ElkohPIQBpKBsh7xnwX18ul8O4JuC5RhDPrHJLm71elVlzj+lyePH0EDN2rCNSYeR9mwY9hHSYk6ZoTfbIT3cVkS4eL8opab2LJZuPzTCWIs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750175591; c=relaxed/simple;
-	bh=Lg44UIsWApHoNXq1A7Wm4IuD+tCT31NZ/5JpXk3OEcc=;
+	s=arc-20240116; t=1750175646; c=relaxed/simple;
+	bh=cYOty/x+VNZHPTkVCQbrSmk7fAqIRDHS5xyZF8+fMSo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Rxhtpxc18xb4EKtbweETqFzccSnApcMn9Vo30FakKyVaTtaLqm/PKfzUdDiMDJMJJYtLs1uk+IsfRmEZDl1Pu6qeTxs+zDVDVWH69yLz+aJxhEGVc3ooZkwxzU06InUzn+cUTSnDnxttHW78o2zCGWY2lSuSAvJ/UVkFRhwHBZg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PaeuIQrp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6CB79C4CEE3;
-	Tue, 17 Jun 2025 15:53:10 +0000 (UTC)
+	 MIME-Version; b=IENIs41Hm5WBtgVScyVwiaE0JP2FELjDMDVqSgb5wc+53+qu7FZkKj8cYTpLunyLxdNDf0MJNK524LFR3DTalQ47KTRMFhs8uE4vMA7ff/W/eIZ4TD4K6naEuIuRQqy+hckzmrGthr3JKiBEpOPZ/UrYvyvJj7uAGoFXn0Ltp7Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M2O9btZG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7845FC4CEE3;
+	Tue, 17 Jun 2025 15:54:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750175590;
-	bh=Lg44UIsWApHoNXq1A7Wm4IuD+tCT31NZ/5JpXk3OEcc=;
+	s=korg; t=1750175645;
+	bh=cYOty/x+VNZHPTkVCQbrSmk7fAqIRDHS5xyZF8+fMSo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PaeuIQrpXiUiEYpQKtIJmcdGBiKpt5Y+zGJ1M0l+/2ZAr6VQZqBaP7XMKa+/+T23W
-	 2aUP9+PGvMRy/eG9mmoy3ZLhzVtStPwT+BPLwzORuNpg5tUXCJylrW0RaZLVPmcMsQ
-	 zcu+6Qf6kdSiu09KjaWrxc30Far0JyC6TfufGqEY=
+	b=M2O9btZG/ThYfKBqHMO9x8OA31C8+6e8i0Y6tpjU0dHSLZJgfXC2/hs7nw2AnIAVS
+	 I9hDWlC7lPZ48Q2jYFXwT+m/m90EVj8PbMgp4gmNbHuVl8XqUurIdYJbk7nWjRVOd8
+	 fwqgBH+FE06h3E0l+HNsFJhtJ8+1mot9K5P97BQ8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mark Rutland <mark.rutland@arm.com>,
-	Marc Zyngier <maz@kernel.org>,
-	Mark Brown <broonie@kernel.org>,
-	Will Deacon <will@kernel.org>,
-	Catalin Marinas <catalin.marinas@arm.com>,
+	Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>,
+	Maciej Falkowski <maciej.falkowski@linux.intel.com>,
+	Lizhi Hou <lizhi.hou@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 104/780] arm64/fpsimd: Reset FPMR upon exec()
-Date: Tue, 17 Jun 2025 17:16:52 +0200
-Message-ID: <20250617152455.741113377@linuxfoundation.org>
+Subject: [PATCH 6.15 109/780] accel/amdxdna: Fix incorrect size of ERT_START_NPU commands
+Date: Tue, 17 Jun 2025 17:16:57 +0200
+Message-ID: <20250617152455.946817997@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
 References: <20250617152451.485330293@linuxfoundation.org>
@@ -69,48 +67,83 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Mark Rutland <mark.rutland@arm.com>
+From: Lizhi Hou <lizhi.hou@amd.com>
 
-[ Upstream commit a90878f297d3dba906a6261deccb1bd4a791ba52 ]
+[ Upstream commit 6c161732ea6467c6dea0c35810ca8e8d1ae135f1 ]
 
-An exec() is expected to reset all FPSIMD/SVE/SME state, and barring
-special handling of the vector lengths, the state is expected to reset
-to zero. This reset is handled in fpsimd_flush_thread(), which the core
-exec() code calls via flush_thread().
+When multiple ERT_START_NPU commands are combined in one buffer, the
+buffer size calculation is incorrect. Also, the condition to make sure
+the buffer size is not beyond 4K is also fixed.
 
-When support was added for FPMR, no logic was added to
-fpsimd_flush_thread() to reset the FPMR value, and thus it is
-erroneously inherited across an exec().
-
-Add the missing reset of FPMR.
-
-Fixes: 203f2b95a882 ("arm64/fpsimd: Support FEAT_FPMR")
-Signed-off-by: Mark Rutland <mark.rutland@arm.com>
-Cc: Marc Zyngier <maz@kernel.org>
-Cc: Mark Brown <broonie@kernel.org>
-Cc: Will Deacon <will@kernel.org>
-Reviewed-by: Mark Brown <broonie@kernel.org>
-Link: https://lore.kernel.org/r/20250409164010.3480271-9-mark.rutland@arm.com
-Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
+Fixes: aac243092b70 ("accel/amdxdna: Add command execution")
+Reviewed-by: Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>
+Reviewed-by: Maciej Falkowski <maciej.falkowski@linux.intel.com>
+Signed-off-by: Lizhi Hou <lizhi.hou@amd.com>
+Link: https://lore.kernel.org/r/20250409210013.10854-1-lizhi.hou@amd.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/kernel/fpsimd.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/accel/amdxdna/aie2_message.c  |  6 +++---
+ drivers/accel/amdxdna/aie2_msg_priv.h | 10 ++++------
+ 2 files changed, 7 insertions(+), 9 deletions(-)
 
-diff --git a/arch/arm64/kernel/fpsimd.c b/arch/arm64/kernel/fpsimd.c
-index 72ab9649c705b..7ae01f02e18b7 100644
---- a/arch/arm64/kernel/fpsimd.c
-+++ b/arch/arm64/kernel/fpsimd.c
-@@ -1663,6 +1663,9 @@ void fpsimd_flush_thread(void)
- 		current->thread.svcr = 0;
- 	}
+diff --git a/drivers/accel/amdxdna/aie2_message.c b/drivers/accel/amdxdna/aie2_message.c
+index bf4219e32cc19..82412eec9a4b8 100644
+--- a/drivers/accel/amdxdna/aie2_message.c
++++ b/drivers/accel/amdxdna/aie2_message.c
+@@ -525,7 +525,7 @@ aie2_cmdlist_fill_one_slot_cf(void *cmd_buf, u32 offset,
+ 	if (!payload)
+ 		return -EINVAL;
  
-+	if (system_supports_fpmr())
-+		current->thread.uw.fpmr = 0;
+-	if (!slot_cf_has_space(offset, payload_len))
++	if (!slot_has_space(*buf, offset, payload_len))
+ 		return -ENOSPC;
+ 
+ 	buf->cu_idx = cu_idx;
+@@ -558,7 +558,7 @@ aie2_cmdlist_fill_one_slot_dpu(void *cmd_buf, u32 offset,
+ 	if (payload_len < sizeof(*sn) || arg_sz > MAX_DPU_ARGS_SIZE)
+ 		return -EINVAL;
+ 
+-	if (!slot_dpu_has_space(offset, arg_sz))
++	if (!slot_has_space(*buf, offset, arg_sz))
+ 		return -ENOSPC;
+ 
+ 	buf->inst_buf_addr = sn->buffer;
+@@ -569,7 +569,7 @@ aie2_cmdlist_fill_one_slot_dpu(void *cmd_buf, u32 offset,
+ 	memcpy(buf->args, sn->prop_args, arg_sz);
+ 
+ 	/* Accurate buf size to hint firmware to do necessary copy */
+-	*size += sizeof(*buf) + arg_sz;
++	*size = sizeof(*buf) + arg_sz;
+ 	return 0;
+ }
+ 
+diff --git a/drivers/accel/amdxdna/aie2_msg_priv.h b/drivers/accel/amdxdna/aie2_msg_priv.h
+index 4e02e744b470e..6df9065b13f68 100644
+--- a/drivers/accel/amdxdna/aie2_msg_priv.h
++++ b/drivers/accel/amdxdna/aie2_msg_priv.h
+@@ -319,18 +319,16 @@ struct async_event_msg_resp {
+ } __packed;
+ 
+ #define MAX_CHAIN_CMDBUF_SIZE SZ_4K
+-#define slot_cf_has_space(offset, payload_size) \
+-	(MAX_CHAIN_CMDBUF_SIZE - ((offset) + (payload_size)) > \
+-	 offsetof(struct cmd_chain_slot_execbuf_cf, args[0]))
++#define slot_has_space(slot, offset, payload_size)		\
++	(MAX_CHAIN_CMDBUF_SIZE >= (offset) + (payload_size) +	\
++	 sizeof(typeof(slot)))
 +
- 	current->thread.fp_type = FP_STATE_FPSIMD;
+ struct cmd_chain_slot_execbuf_cf {
+ 	__u32 cu_idx;
+ 	__u32 arg_cnt;
+ 	__u32 args[] __counted_by(arg_cnt);
+ };
  
- 	put_cpu_fpsimd_context();
+-#define slot_dpu_has_space(offset, payload_size) \
+-	(MAX_CHAIN_CMDBUF_SIZE - ((offset) + (payload_size)) > \
+-	 offsetof(struct cmd_chain_slot_dpu, args[0]))
+ struct cmd_chain_slot_dpu {
+ 	__u64 inst_buf_addr;
+ 	__u32 inst_size;
 -- 
 2.39.5
 
