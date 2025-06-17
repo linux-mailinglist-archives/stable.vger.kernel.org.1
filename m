@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-154360-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153905-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 068C5ADDA21
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 19:13:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6DE0AADD722
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:41:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C9E804A728B
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:50:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CAFD44A2537
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:28:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A670122FE11;
-	Tue, 17 Jun 2025 16:49:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 83FD42E92C9;
+	Tue, 17 Jun 2025 16:24:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="scN4ybC5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1MuKx2fj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6057921FF5F;
-	Tue, 17 Jun 2025 16:49:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4153F2E8E13;
+	Tue, 17 Jun 2025 16:24:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750178945; cv=none; b=BDilaMSh37mqzZ8G+tNzmu25vp60nx0p1FjZhUQpc8UGRUAjdb2wMJfF9zrHt9t9Tmc9zBTyA1FuqyEXJnvCdBXryJgnzD7JG2BPlIADhL4g6ZEkHu9dv4kD1t2W3T4jAOqnGnVQmDjK8IHfZh0+UEyFIqUf3UzxI/Caueq93fk=
+	t=1750177477; cv=none; b=UzWs8IMr0WxLatzp+UPNPsYEnZnIdsS4glxLsjuqEBPpzSPlwKUCboLoNmK+zj/4KdjE5wyxWh3Q7Dluva9FwZN6shhoAS0yeVgfi1kd+pyeHBcJOPX4dYwabX8wFaHK9cZZ4EwZbQKTB4tG/0aPhucc3Hheg5AMjkhWAMtf1Ek=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750178945; c=relaxed/simple;
-	bh=/kWc70amw5cWEIxSDglFsdoosHbsUbsb/wyEDrhqU38=;
+	s=arc-20240116; t=1750177477; c=relaxed/simple;
+	bh=uappo9mZnpU0lnX3XihahV/x8cg4aGsZij9ogvFX5yY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ScnsM7gm9SZMceF7XaLFF9rxmJ1L6DFgTqL23ir6LCsTiAnkLbPZ38IkGWfZxXFnS9iIRgsdKKDmI70i+lZ2DDr2qkdkmVn34jglWK07e0KxPSMNWvX9hSUxlvaK+zgXWC69CKoHTPEzQFMxjxDK4694f1wigJLT5ir5n85EpTQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=scN4ybC5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5167C4CEE3;
-	Tue, 17 Jun 2025 16:49:04 +0000 (UTC)
+	 MIME-Version; b=STsedrou7STw6aNWcWuGxC9C+h7WFN2Pm2c1yZ10zrsDBfnSHD/HESvjc2e370Vym1MxCbe3JL1TfhPfQGbbtc/jPmAACdFVXWZdS9oUpxF1ADDotlcsQUFKn9eaDU1kp6tk1oVpupkP9qvYu8iZx6y+haFZrEhDa0E7Gx2nVFA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1MuKx2fj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A58B7C4CEE3;
+	Tue, 17 Jun 2025 16:24:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750178945;
-	bh=/kWc70amw5cWEIxSDglFsdoosHbsUbsb/wyEDrhqU38=;
+	s=korg; t=1750177477;
+	bh=uappo9mZnpU0lnX3XihahV/x8cg4aGsZij9ogvFX5yY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=scN4ybC5QVX3J2bENQ08n3a6gxltrZznf6PgZpSJdpcDDaEhxiPAVjCWcYQAC1kVt
-	 UzhxOQPBzKGs026hB4HQZh6xi6js2y2coyihBSGGSHIqQ4eRLPZhnDROrLIVBhlD5W
-	 7f8hTLSLKau6ZEAPrSKEFB/7suKpdEc7Iu345830=
+	b=1MuKx2fj0afG1bUvME97oLVe9Vl5j2PQGRURCeJ3magM7BIf5rasd63u0BWVLfbnQ
+	 eEyhPAtu0jyVDjrpGrA4yMoMi0iAkGqYHJjmTQ8bCm4EjfCN2pYtLgaamEOvHtIg8W
+	 a2SloO77sZSwxoUE2slfGSJa+XaaI3oglEQuWb+g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Caleb Sander Mateos <csander@purestorage.com>,
+	Jeff Moyer <jmoyer@redhat.com>,
+	Ming Lei <ming.lei@redhat.com>,
 	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 600/780] block: flip iter directions in blk_rq_integrity_map_user()
-Date: Tue, 17 Jun 2025 17:25:08 +0200
-Message-ID: <20250617152515.917851091@linuxfoundation.org>
+Subject: [PATCH 6.12 343/512] loop: add file_start_write() and file_end_write()
+Date: Tue, 17 Jun 2025 17:25:09 +0200
+Message-ID: <20250617152433.496225620@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
-References: <20250617152451.485330293@linuxfoundation.org>
+In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
+References: <20250617152419.512865572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,48 +63,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Caleb Sander Mateos <csander@purestorage.com>
+From: Ming Lei <ming.lei@redhat.com>
 
-[ Upstream commit 43a67dd812c5d3de163c0b6971046b4a4b633d3f ]
+[ Upstream commit 39d86db34e41b96bd86f1955cd0ce6cd9c5fca4c ]
 
-blk_rq_integrity_map_user() creates the ubuf iter with ITER_DEST for
-write-direction operations and ITER_SOURCE for read-direction ones.
-This is backwards; writes use the user buffer as a source for metadata
-and reads use it as a destination. Switch to the rq_data_dir() helper,
-which maps writes to ITER_SOURCE (WRITE) and reads to ITER_DEST(READ).
+file_start_write() and file_end_write() should be added around ->write_iter().
 
-Signed-off-by: Caleb Sander Mateos <csander@purestorage.com>
-Fixes: fe8f4ca7107e ("block: modify bio_integrity_map_user to accept iov_iter as argument")
-Link: https://lore.kernel.org/r/20250603184752.1185676-1-csander@purestorage.com
+Recently we switch to ->write_iter() from vfs_iter_write(), and the
+implied file_start_write() and file_end_write() are lost.
+
+Also we never add them for dio code path, so add them back for covering
+both.
+
+Cc: Jeff Moyer <jmoyer@redhat.com>
+Fixes: f2fed441c69b ("loop: stop using vfs_iter_{read,write} for buffered I/O")
+Fixes: bc07c10a3603 ("block: loop: support DIO & AIO")
+Signed-off-by: Ming Lei <ming.lei@redhat.com>
+Link: https://lore.kernel.org/r/20250527153405.837216-1-ming.lei@redhat.com
 Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- block/blk-integrity.c | 7 +------
- 1 file changed, 1 insertion(+), 6 deletions(-)
+ drivers/block/loop.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/block/blk-integrity.c b/block/blk-integrity.c
-index a1678f0a9f81f..e4e2567061f9d 100644
---- a/block/blk-integrity.c
-+++ b/block/blk-integrity.c
-@@ -117,13 +117,8 @@ int blk_rq_integrity_map_user(struct request *rq, void __user *ubuf,
+diff --git a/drivers/block/loop.c b/drivers/block/loop.c
+index 0843d229b0f76..e9a197474b9d8 100644
+--- a/drivers/block/loop.c
++++ b/drivers/block/loop.c
+@@ -323,11 +323,14 @@ static void lo_complete_rq(struct request *rq)
+ static void lo_rw_aio_do_completion(struct loop_cmd *cmd)
  {
- 	int ret;
- 	struct iov_iter iter;
--	unsigned int direction;
+ 	struct request *rq = blk_mq_rq_from_pdu(cmd);
++	struct loop_device *lo = rq->q->queuedata;
  
--	if (op_is_write(req_op(rq)))
--		direction = ITER_DEST;
+ 	if (!atomic_dec_and_test(&cmd->ref))
+ 		return;
+ 	kfree(cmd->bvec);
+ 	cmd->bvec = NULL;
++	if (req_op(rq) == REQ_OP_WRITE)
++		file_end_write(lo->lo_backing_file);
+ 	if (likely(!blk_should_fake_timeout(rq->q)))
+ 		blk_mq_complete_request(rq);
+ }
+@@ -402,9 +405,10 @@ static int lo_rw_aio(struct loop_device *lo, struct loop_cmd *cmd,
+ 		cmd->iocb.ki_flags = 0;
+ 	}
+ 
+-	if (rw == ITER_SOURCE)
++	if (rw == ITER_SOURCE) {
++		file_start_write(lo->lo_backing_file);
+ 		ret = file->f_op->write_iter(&cmd->iocb, &iter);
 -	else
--		direction = ITER_SOURCE;
--	iov_iter_ubuf(&iter, direction, ubuf, bytes);
-+	iov_iter_ubuf(&iter, rq_data_dir(rq), ubuf, bytes);
- 	ret = bio_integrity_map_user(rq->bio, &iter);
- 	if (ret)
- 		return ret;
++	} else
+ 		ret = file->f_op->read_iter(&cmd->iocb, &iter);
+ 
+ 	lo_rw_aio_do_completion(cmd);
 -- 
 2.39.5
 
