@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-154178-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153748-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 653F0ADD862
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:54:51 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id EAE31ADD62D
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:30:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2A0C45A0967
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:43:54 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9DA837AF2C0
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:21:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D0DE2E8DE7;
-	Tue, 17 Jun 2025 16:39:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5DDFA2DFF09;
+	Tue, 17 Jun 2025 16:16:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MnoL8jmd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="03QjBBP9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 298842DFF1B;
-	Tue, 17 Jun 2025 16:39:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19E772CCC5;
+	Tue, 17 Jun 2025 16:16:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750178354; cv=none; b=oMlXux6Wxll55j++whQstqel7HMwg0NR8f31AXtsq6HBucsxcrG3QLILZ8W+Lcdck59woykCnS6NZUSiB4qbcZnJBCFL63qlC2PoCKrmZacflBT8NQhI/Agq0ejxIX/KEZMzTBMb4bDhOJWaz7rqBSyaoHYXdLMDFnmzCf6teg8=
+	t=1750176970; cv=none; b=eDVibeIDi/bubCQij34334QGc2j9rnvuwyH0yy3swD1upj++0/du2CLdki+JI8pN+vSbmZ4JOL3n6Ub+TTHA06b2lfuELxaR48/p5DJ3kMzo3dAbeou6Wh30P15YBkc1XVX59v0cPcFSB+zG6/pgUybF8ZJ67BQ2dDr3SZvgMeQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750178354; c=relaxed/simple;
-	bh=Dgq50nzt/x3boONEJ36VvSkBijAXIUjhSoLWavbHH2I=;
+	s=arc-20240116; t=1750176970; c=relaxed/simple;
+	bh=ZtGO1Mj9Kl/0YWQgfZsZy20kD8m1Wih03InaQMCFVYo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=J85HvWXCuBq1zcIoPukcZwE7f7TQqFHn/WIxOCeXREZvDUNNJb/huH0uxQ/rDeRYVSD+ZdXenGgIZzkvBHxspGiXiDujSIubQdvb/u2mQLrmkoPdnAQwWXyMaBDcMfJv/6wMrtLxrJ8FYZWaK2Wlxq71mA7Usx2B3g+N+VftiE8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MnoL8jmd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84BAEC4CEE3;
-	Tue, 17 Jun 2025 16:39:13 +0000 (UTC)
+	 MIME-Version; b=KizY4aA4WDpWFId1Cvu8DweQIbOEggHglPnf2MYhEmD3HFQPMlT8A+aqLL8eC35j+I6n5NBWDzE7jb4q7wZGMO6LAWw5KxEULSPRUqEeJf+tFK98Sdw1BQhh1m16YgfW9mrqLSZ2PrwJgGQ0TLoGJnd9qwMOTgnfylrXI/Ed7VM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=03QjBBP9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D2A3C4CEE3;
+	Tue, 17 Jun 2025 16:16:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750178354;
-	bh=Dgq50nzt/x3boONEJ36VvSkBijAXIUjhSoLWavbHH2I=;
+	s=korg; t=1750176969;
+	bh=ZtGO1Mj9Kl/0YWQgfZsZy20kD8m1Wih03InaQMCFVYo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MnoL8jmdq51kybyBYs6Z/OknpRCAVR/gWNUdojcH+e3652HGEWfG1tlbnU5RbVMZc
-	 LskULCCkkxWEIWEU//uguBfkeJEaYnIsOx1sZT4Z5V8KplxKKkM7rPgVyw5jB/DT2f
-	 ReeF7uKCN3v9MCxqm+3Mkx2SsD7eAijw52sfzkig=
+	b=03QjBBP9alSC2mldWXnojW8x09Vh0WAK4ksC2TdcxeRl4olkj0Am0rpk9STy1bWJ0
+	 vnsduDN6I3o9Qpmb39u/XRa6OQTu6oEDIx2BEZdCsgSr0a0pmIqqpznX1HKW3hZWYP
+	 vC8Ghs+wLUEa4JvozsqKfamePResjWdDSSQyXqzE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Suleiman Souhlal <suleiman@google.com>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Jiri Olsa <jolsa@kernel.org>
-Subject: [PATCH 6.12 483/512] tools/resolve_btfids: Fix build when cross compiling kernel with clang.
-Date: Tue, 17 Jun 2025 17:27:29 +0200
-Message-ID: <20250617152439.185791071@linuxfoundation.org>
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Jens Axboe <axboe@kernel.dk>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 335/356] block: Fix bvec_set_folio() for very large folios
+Date: Tue, 17 Jun 2025 17:27:30 +0200
+Message-ID: <20250617152351.620228811@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
-References: <20250617152419.512865572@linuxfoundation.org>
+In-Reply-To: <20250617152338.212798615@linuxfoundation.org>
+References: <20250617152338.212798615@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,44 +62,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Suleiman Souhlal <suleiman@google.com>
+From: Matthew Wilcox (Oracle) <willy@infradead.org>
 
-commit a298bbab903e3fb4cbe16d36d6195e68fad1b776 upstream.
+[ Upstream commit 5e223e06ee7c6d8f630041a0645ac90e39a42cc6 ]
 
-When cross compiling the kernel with clang, we need to override
-CLANG_CROSS_FLAGS when preparing the step libraries.
+Similarly to 26064d3e2b4d ("block: fix adding folio to bio"), if
+we attempt to add a folio that is larger than 4GB, we'll silently
+truncate the offset and len.  Widen the parameters to size_t, assert
+that the length is less than 4GB and set the first page that contains
+the interesting data rather than the first page of the folio.
 
-Prior to commit d1d096312176 ("tools: fix annoying "mkdir -p ..." logs
-when building tools in parallel"), MAKEFLAGS would have been set to a
-value that wouldn't set a value for CLANG_CROSS_FLAGS, hiding the
-fact that we weren't properly overriding it.
-
-Fixes: 56a2df7615fa ("tools/resolve_btfids: Compile resolve_btfids as host program")
-Signed-off-by: Suleiman Souhlal <suleiman@google.com>
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Acked-by: Jiri Olsa <jolsa@kernel.org>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/bpf/20250606074538.1608546-1-suleiman@google.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 26db5ee15851 (block: add a bvec_set_folio helper)
+Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
+Link: https://lore.kernel.org/r/20250612144255.2850278-1-willy@infradead.org
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/bpf/resolve_btfids/Makefile |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ include/linux/bvec.h | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
---- a/tools/bpf/resolve_btfids/Makefile
-+++ b/tools/bpf/resolve_btfids/Makefile
-@@ -19,7 +19,7 @@ endif
+diff --git a/include/linux/bvec.h b/include/linux/bvec.h
+index bd1e361b351c5..99ab7b2bba27c 100644
+--- a/include/linux/bvec.h
++++ b/include/linux/bvec.h
+@@ -57,9 +57,12 @@ static inline void bvec_set_page(struct bio_vec *bv, struct page *page,
+  * @offset:	offset into the folio
+  */
+ static inline void bvec_set_folio(struct bio_vec *bv, struct folio *folio,
+-		unsigned int len, unsigned int offset)
++		size_t len, size_t offset)
+ {
+-	bvec_set_page(bv, &folio->page, len, offset);
++	unsigned long nr = offset / PAGE_SIZE;
++
++	WARN_ON_ONCE(len > UINT_MAX);
++	bvec_set_page(bv, folio_page(folio, nr), len, offset % PAGE_SIZE);
+ }
  
- # Overrides for the prepare step libraries.
- HOST_OVERRIDES := AR="$(HOSTAR)" CC="$(HOSTCC)" LD="$(HOSTLD)" ARCH="$(HOSTARCH)" \
--		  CROSS_COMPILE="" EXTRA_CFLAGS="$(HOSTCFLAGS)"
-+		  CROSS_COMPILE="" CLANG_CROSS_FLAGS="" EXTRA_CFLAGS="$(HOSTCFLAGS)"
- 
- RM      ?= rm
- HOSTCC  ?= gcc
+ /**
+-- 
+2.39.5
+
 
 
 
