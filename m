@@ -1,121 +1,61 @@
-Return-Path: <stable+bounces-154067-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153597-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8423EADD806
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:51:27 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id BF277ADD5B5
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:24:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 136B42C4E98
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:38:37 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 771EB19439F2
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:11:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A010C28505A;
-	Tue, 17 Jun 2025 16:33:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6A67238C1E;
+	Tue, 17 Jun 2025 16:07:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DoVluRmR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NQ0GGKCG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CEA68F54;
-	Tue, 17 Jun 2025 16:33:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 629F32F2377;
+	Tue, 17 Jun 2025 16:07:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750177997; cv=none; b=Mdk4hbG5v5xbs1nmiWE5+14dJtP+BFG7RDHOShsSq9cRQPmengKhBJFTxyJj9ceMxOPx3lfV2GC4FOREETVNOTTcBgz7yZjMAoYjL2uVVJJI6/RI++maV4i/aqAxt5pNlyM3NKyuftHPss6xAkGW0Wbp6oXnAyz7Mp04dE7dJsQ=
+	t=1750176476; cv=none; b=qB9336184tMdnFiUBNe1/ZHQ//BKv88EzXtdf/CVxdaahOwcBnZy3xU6GS7sFUtqxCSFcHbW9DeXfWSUx1Jf4L6fNeKT9QZMTAt6C1NStEcTbWF3dX9ZPmYndu5F6HUdyW87ekqhQl7btAuRw+BAHZ5WDKfcec3Khqw6WiZUdIo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750177997; c=relaxed/simple;
-	bh=ayaKlxVHRUROIUp4ENAPD1t5upaQH8w1kt8d4GfkCxw=;
+	s=arc-20240116; t=1750176476; c=relaxed/simple;
+	bh=S3Gn76mj+eB/JSH7ZeLYGQn6iN9SdoX7ll9XL0gSV84=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ZihEIxL19lNuhNca8M9NsNgcsTwHW/Tmbj6ZjCanqCv0He8Rif1N+VfDcM1iYyTwxQQz0VHErQ9dqT25gy6ngLD5AJnuNqw0+voKB/kA6JRUMv3LehqCTYy3YE5wRljw0jf1pOkHfp10n92fpf/U2nZYYjGiIUmA7QGO8ZlyV/c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DoVluRmR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40991C4CEE3;
-	Tue, 17 Jun 2025 16:33:16 +0000 (UTC)
+	 MIME-Version; b=eICRMvjzMryU7RWtVIQaVL+TZnvLJiggmsg3ZzgOkahpjmaspgSUaAHIvArfV5B0d/Iz8Fq6P3KiudGVWQJhFT8x+5fPt+ma05hznl+GQrX6WTq0iUUrHtsWWo4DkBAGzxFLsjgFqFUbdyrt2quRIb2XM0UVTvfHBxZX6DzuRQc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NQ0GGKCG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C563AC4CEE3;
+	Tue, 17 Jun 2025 16:07:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750177997;
-	bh=ayaKlxVHRUROIUp4ENAPD1t5upaQH8w1kt8d4GfkCxw=;
+	s=korg; t=1750176476;
+	bh=S3Gn76mj+eB/JSH7ZeLYGQn6iN9SdoX7ll9XL0gSV84=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DoVluRmRczELqHb/+aBB1ObjJJbcJk5tkLWIOfqC2yHX4LsUUijF/9wMG5vOMguYG
-	 rQdWgg5sci9PxksuKOl7bMHoQNjpv7nSgEqSwkmhL7cMLbIhDpXo5GiWgihleKPj07
-	 RqF7wUfsUtK2v4OkSlNCN/L7wyzziKn8jQi91waY=
+	b=NQ0GGKCGJT3tVO3GuZyyu3AquOn6AaxTxKhdATlUgCUjN4+joXSgWoYIMsDxzDfB2
+	 SME4PY0xa1W41hx+jFPRt9OsX4lAxkLe9nYpPcc3p/R5YoKOaWwnAquRWDEwYe1GOe
+	 g1uNRsmaLU4qfd/XPEVpL3u44sVhriC2aOr+JUjU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jeff Johnson <quic_jjohnson@quicinc.com>,
-	Easwar Hariharan <eahariha@linux.microsoft.com>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	Anna-Maria Behnsen <anna-maria@linutronix.de>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Christian Borntraeger <borntraeger@linux.ibm.com>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Daniel Mack <daniel@zonque.org>,
-	David Airlie <airlied@gmail.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Dick Kennedy <dick.kennedy@broadcom.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	Haojian Zhuang <haojian.zhuang@gmail.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Ilya Dryomov <idryomov@gmail.com>,
-	Jack Wang <jinpu.wang@cloud.ionos.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	James Bottomley <James.Bottomley@HansenPartnership.com>,
-	James Smart <james.smart@broadcom.com>,
-	Jaroslav Kysela <perex@perex.cz>,
-	Jeff Johnson <jjohnson@kernel.org>,
-	Jens Axboe <axboe@kernel.dk>,
-	Jeroen de Borst <jeroendb@google.com>,
-	Jiri Kosina <jikos@kernel.org>,
-	Joe Lawrence <joe.lawrence@redhat.com>,
-	Johan Hedberg <johan.hedberg@gmail.com>,
-	Josh Poimboeuf <jpoimboe@kernel.org>,
-	Jozsef Kadlecsik <kadlec@netfilter.org>,
-	Julia Lawall <julia.lawall@inria.fr>,
-	Kalle Valo <kvalo@kernel.org>,
-	Louis Peens <louis.peens@corigine.com>,
-	Lucas De Marchi <lucas.demarchi@intel.com>,
-	Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Marcel Holtmann <marcel@holtmann.org>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Miroslav Benes <mbenes@suse.cz>,
-	Naveen N Rao <naveen@kernel.org>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Nicolas Palix <nicolas.palix@imag.fr>,
-	Oded Gabbay <ogabbay@kernel.org>,
-	Ofir Bitton <obitton@habana.ai>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Petr Mladek <pmladek@suse.com>,
-	Praveen Kaligineedi <pkaligineedi@google.com>,
-	Ray Jui <rjui@broadcom.com>,
-	Robert Jarzmik <robert.jarzmik@free.fr>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>,
-	=?UTF-8?q?Roger=20Pau=20Monn=C3=A9?= <roger.pau@citrix.com>,
-	Russell King <linux@armlinux.org.uk>,
-	Scott Branden <sbranden@broadcom.com>,
-	Shailend Chand <shailend@google.com>,
-	Simona Vetter <simona@ffwll.ch>,
-	Simon Horman <horms@kernel.org>,
-	Sven Schnelle <svens@linux.ibm.com>,
-	Takashi Iwai <tiwai@suse.com>,
-	=?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	Vasily Gorbik <gor@linux.ibm.com>,
-	Xiubo Li <xiubli@redhat.com>,
+	Andrey Konovalov <andreyknvl@google.com>,
+	Marco Elver <elver@google.com>,
+	Alexander Potapenko <glider@google.com>,
+	Andrey Ryabinin <ryabinin.a.a@gmail.com>,
+	Dmitry Vyukov <dvyukov@google.com>,
+	kernel test robot <lkp@intel.com>,
 	Andrew Morton <akpm@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 429/512] wifi: ath11k: convert timeouts to secs_to_jiffies()
-Date: Tue, 17 Jun 2025 17:26:35 +0200
-Message-ID: <20250617152436.957381348@linuxfoundation.org>
+Subject: [PATCH 6.6 281/356] kasan: use unchecked __memset internally
+Date: Tue, 17 Jun 2025 17:26:36 +0200
+Message-ID: <20250617152349.503721984@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
-References: <20250617152419.512865572@linuxfoundation.org>
+In-Reply-To: <20250617152338.212798615@linuxfoundation.org>
+References: <20250617152338.212798615@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -125,122 +65,73 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Easwar Hariharan <eahariha@linux.microsoft.com>
+From: Andrey Konovalov <andreyknvl@google.com>
 
-[ Upstream commit b29425972c5234a59b6fb634125420ed74266377 ]
+[ Upstream commit 01a5ad81637672940844052404678678a0ec8854 ]
 
-Commit b35108a51cf7 ("jiffies: Define secs_to_jiffies()") introduced
-secs_to_jiffies().  As the value here is a multiple of 1000, use
-secs_to_jiffies() instead of msecs_to_jiffies to avoid the multiplication.
+KASAN code is supposed to use the unchecked __memset implementation when
+accessing its metadata.
 
-This is converted using scripts/coccinelle/misc/secs_to_jiffies.cocci with
-the following Coccinelle rules:
+Change uses of memset to __memset in mm/kasan/.
 
-@@ constant C; @@
-
-- msecs_to_jiffies(C * 1000)
-+ secs_to_jiffies(C)
-
-@@ constant C; @@
-
-- msecs_to_jiffies(C * MSEC_PER_SEC)
-+ secs_to_jiffies(C)
-
-Link: https://lkml.kernel.org/r/20241210-converge-secs-to-jiffies-v3-14-ddfefd7e9f2a@linux.microsoft.com
-Acked-by: Jeff Johnson <quic_jjohnson@quicinc.com>
-Signed-off-by: Easwar Hariharan <eahariha@linux.microsoft.com>
-Cc: Alexander Gordeev <agordeev@linux.ibm.com>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>
-Cc: Anna-Maria Behnsen <anna-maria@linutronix.de>
-Cc: Catalin Marinas <catalin.marinas@arm.com>
-Cc: Christian Borntraeger <borntraeger@linux.ibm.com>
-Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
-Cc: Daniel Mack <daniel@zonque.org>
-Cc: David Airlie <airlied@gmail.com>
-Cc: David S. Miller <davem@davemloft.net>
-Cc: Dick Kennedy <dick.kennedy@broadcom.com>
-Cc: Eric Dumazet <edumazet@google.com>
-Cc: Florian Fainelli <florian.fainelli@broadcom.com>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Haojian Zhuang <haojian.zhuang@gmail.com>
-Cc: Heiko Carstens <hca@linux.ibm.com>
-Cc: Ilya Dryomov <idryomov@gmail.com>
-Cc: Jack Wang <jinpu.wang@cloud.ionos.com>
-Cc: Jakub Kicinski <kuba@kernel.org>
-Cc: James Bottomley <James.Bottomley@HansenPartnership.com>
-Cc: James Smart <james.smart@broadcom.com>
-Cc: Jaroslav Kysela <perex@perex.cz>
-Cc: Jeff Johnson <jjohnson@kernel.org>
-Cc: Jens Axboe <axboe@kernel.dk>
-Cc: Jeroen de Borst <jeroendb@google.com>
-Cc: Jiri Kosina <jikos@kernel.org>
-Cc: Joe Lawrence <joe.lawrence@redhat.com>
-Cc: Johan Hedberg <johan.hedberg@gmail.com>
-Cc: Josh Poimboeuf <jpoimboe@kernel.org>
-Cc: Jozsef Kadlecsik <kadlec@netfilter.org>
-Cc: Julia Lawall <julia.lawall@inria.fr>
-Cc: Kalle Valo <kvalo@kernel.org>
-Cc: Louis Peens <louis.peens@corigine.com>
-Cc: Lucas De Marchi <lucas.demarchi@intel.com>
-Cc: Luiz Augusto von Dentz <luiz.dentz@gmail.com>
-Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
-Cc: Madhavan Srinivasan <maddy@linux.ibm.com>
-Cc: Marcel Holtmann <marcel@holtmann.org>
-Cc: Martin K. Petersen <martin.petersen@oracle.com>
-Cc: Maxime Ripard <mripard@kernel.org>
-Cc: Michael Ellerman <mpe@ellerman.id.au>
-Cc: Miroslav Benes <mbenes@suse.cz>
-Cc: Naveen N Rao <naveen@kernel.org>
-Cc: Nicholas Piggin <npiggin@gmail.com>
-Cc: Nicolas Palix <nicolas.palix@imag.fr>
-Cc: Oded Gabbay <ogabbay@kernel.org>
-Cc: Ofir Bitton <obitton@habana.ai>
-Cc: Pablo Neira Ayuso <pablo@netfilter.org>
-Cc: Paolo Abeni <pabeni@redhat.com>
-Cc: Petr Mladek <pmladek@suse.com>
-Cc: Praveen Kaligineedi <pkaligineedi@google.com>
-Cc: Ray Jui <rjui@broadcom.com>
-Cc: Robert Jarzmik <robert.jarzmik@free.fr>
-Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
-Cc: Roger Pau Monné <roger.pau@citrix.com>
-Cc: Russell King <linux@armlinux.org.uk>
-Cc: Scott Branden <sbranden@broadcom.com>
-Cc: Shailend Chand <shailend@google.com>
-Cc: Simona Vetter <simona@ffwll.ch>
-Cc: Simon Horman <horms@kernel.org>
-Cc: Sven Schnelle <svens@linux.ibm.com>
-Cc: Takashi Iwai <tiwai@suse.com>
-Cc: Thomas Hellström <thomas.hellstrom@linux.intel.com>
-Cc: Thomas Zimmermann <tzimmermann@suse.de>
-Cc: Vasily Gorbik <gor@linux.ibm.com>
-Cc: Xiubo Li <xiubli@redhat.com>
+Link: https://lkml.kernel.org/r/6f621966c6f52241b5aaa7220c348be90c075371.1696605143.git.andreyknvl@google.com
+Fixes: 59e6e098d1c1 ("kasan: introduce kasan_complete_mode_report_info")
+Fixes: 3c5c3cfb9ef4 ("kasan: support backing vmalloc space with real shadow memory")
+Signed-off-by: Andrey Konovalov <andreyknvl@google.com>
+Reviewed-by: Marco Elver <elver@google.com>
+Cc: Alexander Potapenko <glider@google.com>
+Cc: Andrey Ryabinin <ryabinin.a.a@gmail.com>
+Cc: Dmitry Vyukov <dvyukov@google.com>
+Cc: kernel test robot <lkp@intel.com>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Stable-dep-of: 9f6e82d11bb9 ("wifi: ath11k: avoid burning CPU in ath11k_debugfs_fw_stats_request()")
+Stable-dep-of: b6ea95a34cbd ("kasan: avoid sleepable page allocation from atomic context")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath11k/debugfs.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ mm/kasan/report.c | 4 ++--
+ mm/kasan/shadow.c | 2 +-
+ 2 files changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath11k/debugfs.c b/drivers/net/wireless/ath/ath11k/debugfs.c
-index 57281a135dd7f..bf192529e3fe2 100644
---- a/drivers/net/wireless/ath/ath11k/debugfs.c
-+++ b/drivers/net/wireless/ath/ath11k/debugfs.c
-@@ -178,7 +178,7 @@ static int ath11k_debugfs_fw_stats_request(struct ath11k *ar,
- 	 * received 'update stats' event, we keep a 3 seconds timeout in case,
- 	 * fw_stats_done is not marked yet
- 	 */
--	timeout = jiffies + msecs_to_jiffies(3 * 1000);
-+	timeout = jiffies + secs_to_jiffies(3);
+diff --git a/mm/kasan/report.c b/mm/kasan/report.c
+index ecced40e51032..465e6a53b3bf2 100644
+--- a/mm/kasan/report.c
++++ b/mm/kasan/report.c
+@@ -538,7 +538,7 @@ void kasan_report_invalid_free(void *ptr, unsigned long ip, enum kasan_report_ty
  
- 	ath11k_debugfs_fw_stats_reset(ar);
+ 	start_report(&flags, true);
  
+-	memset(&info, 0, sizeof(info));
++	__memset(&info, 0, sizeof(info));
+ 	info.type = type;
+ 	info.access_addr = ptr;
+ 	info.access_size = 0;
+@@ -576,7 +576,7 @@ bool kasan_report(const void *addr, size_t size, bool is_write,
+ 
+ 	start_report(&irq_flags, true);
+ 
+-	memset(&info, 0, sizeof(info));
++	__memset(&info, 0, sizeof(info));
+ 	info.type = KASAN_REPORT_ACCESS;
+ 	info.access_addr = addr;
+ 	info.access_size = size;
+diff --git a/mm/kasan/shadow.c b/mm/kasan/shadow.c
+index dd772f9d0f080..d687f09a7ae37 100644
+--- a/mm/kasan/shadow.c
++++ b/mm/kasan/shadow.c
+@@ -324,7 +324,7 @@ static int kasan_populate_vmalloc_pte(pte_t *ptep, unsigned long addr,
+ 	if (!page)
+ 		return -ENOMEM;
+ 
+-	memset((void *)page, KASAN_VMALLOC_INVALID, PAGE_SIZE);
++	__memset((void *)page, KASAN_VMALLOC_INVALID, PAGE_SIZE);
+ 	pte = pfn_pte(PFN_DOWN(__pa(page)), PAGE_KERNEL);
+ 
+ 	spin_lock(&init_mm.page_table_lock);
 -- 
 2.39.5
 
