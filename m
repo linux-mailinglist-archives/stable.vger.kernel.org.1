@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-153671-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-154476-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 37676ADD5A7
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:24:05 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id CEC29ADD944
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 19:04:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2EFD82C294F
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:17:43 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3BBED4A7F9D
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:55:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A293F2EA17C;
-	Tue, 17 Jun 2025 16:11:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E71C02FA653;
+	Tue, 17 Jun 2025 16:55:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mjRkaKot"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mSBTB2NF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B634237162;
-	Tue, 17 Jun 2025 16:11:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0B4E2FA64A;
+	Tue, 17 Jun 2025 16:55:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750176714; cv=none; b=MGI5oSz4gqiDeAnShUcsNUFADP/qYk2GPzluUi2y9YiO1TRsTqgJZED4EuXRZOuidcQd6jday3p/6afALkAsxLC+sf66hpdZKyL2F/bg+zgQ4a/M95YCTY+U1E0ldXwRm5nMeE0HOX6UiIZYBntqJkwEqimxC/n3ZO6HNa5apjg=
+	t=1750179329; cv=none; b=qgcXSBKixcLWYCkdXY+4R4cFteXqSE9lS9s9s/2j5nsaCxnsZmzIjCl0ods7BpcyxCDLoGfXuJOqe7DhVufvYoK4ANWk1xzraslmVMuEJG8kFxnePpBf2a1JG3Tzd+FcIrRu+Ab1Nttf7i1ZlHCqe1f0aqNTuUabs2t9suRYmLQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750176714; c=relaxed/simple;
-	bh=X8CnlJLkfooNguZV9X9T1njuB1z/WgT8U2TOrDcaTsE=;
+	s=arc-20240116; t=1750179329; c=relaxed/simple;
+	bh=gCnqkY3eLdworZaES2VQC4JQQoFFRGWYnT/prS8dWZg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=nN0NRlHWeZz5IoxsYpv4CCvmnDgyYKtcwmuJbJmhcSjzk3PMFk9BpKkVuie3pHRwD9tfipevZn33Z4gJGQGXQd+b9f1JEgpYLr4uxk+CffLXMgQmEk8aSd9kIp3PukOrY8AgVBZi3gHl/IoJ5aKYZwIWTXQTFHmWlfHkhoGLXkk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mjRkaKot; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0495C4CEE3;
-	Tue, 17 Jun 2025 16:11:53 +0000 (UTC)
+	 MIME-Version; b=I1KcVT7zgCYpfaVJkGdIunnxzEn6CRiln8bfwzt4xiQ8SruYDJIjU43GG6Q/ybVm+BXLQwCtFr/hxUOwTEDFdHd5Hg/Qao59KRr3Jnw8gXpgY6t4XF5zoa3c5Bsh5r/1SWy8X0qWbRDHuGUzjgquD/4G5ROZwsRKskKGsABxUcM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mSBTB2NF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD996C4CEE3;
+	Tue, 17 Jun 2025 16:55:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750176714;
-	bh=X8CnlJLkfooNguZV9X9T1njuB1z/WgT8U2TOrDcaTsE=;
+	s=korg; t=1750179329;
+	bh=gCnqkY3eLdworZaES2VQC4JQQoFFRGWYnT/prS8dWZg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mjRkaKotABopyKvwt+tV8eW4lVZ6hXaznirK7pPIbar4SBc8LEZafFQcV0jrMKk+A
-	 pVDZu1UvIrAiUWn7J9unMrMFkSsLyj6kB1/+4fu5Lz6hFSQWW5qLiel+koYaOn8C71
-	 mYb5wG/UCIErx1zlXCnO9X1HH38Fxujwlnr/50P0=
+	b=mSBTB2NFBB35JSt1hjwjF4JVBB7Xzqk/yLRBJn1c5K/6/+40C1U0qCoaJ0Roy4733
+	 swh4oKg99WtUBt8+bfe5/wO7AVOicrLeDi1HfTjpksn62tnweegz8CaqJoka4+BC36
+	 tvxE0qEHwwL6po/Msq4WccLJH98JUOwI+gwCWJek=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marcus Wichelmann <marcus.wichelmann@hetzner-cloud.de>,
-	Eric Dumazet <edumazet@google.com>,
-	=?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>,
+	Vlad Dogaru <vdogaru@nvidia.com>,
+	Yevgeny Kliteynik <kliteyn@nvidia.com>,
+	Mark Bloch <mbloch@nvidia.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 306/356] net_sched: sch_sfq: fix a potential crash on gso_skb handling
+Subject: [PATCH 6.15 713/780] net/mlx5: HWS, make sure the uplink is the last destination
 Date: Tue, 17 Jun 2025 17:27:01 +0200
-Message-ID: <20250617152350.489421654@linuxfoundation.org>
+Message-ID: <20250617152520.528149581@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152338.212798615@linuxfoundation.org>
-References: <20250617152338.212798615@linuxfoundation.org>
+In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
+References: <20250617152451.485330293@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,72 +62,102 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Vlad Dogaru <vdogaru@nvidia.com>
 
-[ Upstream commit 82ffbe7776d0ac084031f114167712269bf3d832 ]
+[ Upstream commit b8335829518ec5988294280e37d735799209d70d ]
 
-SFQ has an assumption of always being able to queue at least one packet.
+When there are more than one destinations, we create a FW flow
+table and provide it with all the destinations. FW requires to
+have wire as the last destination in the list (if it exists),
+otherwise the operation fails with FW syndrome.
 
-However, after the blamed commit, sch->q.len can be inflated by packets
-in sch->gso_skb, and an enqueue() on an empty SFQ qdisc can be followed
-by an immediate drop.
+This patch fixes the destination array action creation: if it
+contains a wire destination, it is moved to the end.
 
-Fix sfq_drop() to properly clear q->tail in this situation.
-
-Tested:
-
-ip netns add lb
-ip link add dev to-lb type veth peer name in-lb netns lb
-ethtool -K to-lb tso off                 # force qdisc to requeue gso_skb
-ip netns exec lb ethtool -K in-lb gro on # enable NAPI
-ip link set dev to-lb up
-ip -netns lb link set dev in-lb up
-ip addr add dev to-lb 192.168.20.1/24
-ip -netns lb addr add dev in-lb 192.168.20.2/24
-tc qdisc replace dev to-lb root sfq limit 100
-
-ip netns exec lb netserver
-
-netperf -H 192.168.20.2 -l 100 &
-netperf -H 192.168.20.2 -l 100 &
-netperf -H 192.168.20.2 -l 100 &
-netperf -H 192.168.20.2 -l 100 &
-
-Fixes: a53851e2c321 ("net: sched: explicit locking in gso_cpu fallback")
-Reported-by: Marcus Wichelmann <marcus.wichelmann@hetzner-cloud.de>
-Closes: https://lore.kernel.org/netdev/9da42688-bfaa-4364-8797-e9271f3bdaef@hetzner-cloud.de/
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Toke Høiland-Jørgensen <toke@redhat.com>
-Link: https://patch.msgid.link/20250606165127.3629486-1-edumazet@google.com
+Fixes: 504e536d9010 ("net/mlx5: HWS, added actions handling")
+Signed-off-by: Vlad Dogaru <vdogaru@nvidia.com>
+Reviewed-by: Yevgeny Kliteynik <kliteyn@nvidia.com>
+Signed-off-by: Mark Bloch <mbloch@nvidia.com>
+Link: https://patch.msgid.link/20250610151514.1094735-7-mbloch@nvidia.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sched/sch_sfq.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ .../mellanox/mlx5/core/steering/hws/action.c       | 14 +++++++-------
+ .../mellanox/mlx5/core/steering/hws/fs_hws.c       |  3 +++
+ .../mellanox/mlx5/core/steering/hws/mlx5hws.h      |  1 +
+ 3 files changed, 11 insertions(+), 7 deletions(-)
 
-diff --git a/net/sched/sch_sfq.c b/net/sched/sch_sfq.c
-index 002941d35b643..d564675a8be4d 100644
---- a/net/sched/sch_sfq.c
-+++ b/net/sched/sch_sfq.c
-@@ -310,7 +310,10 @@ static unsigned int sfq_drop(struct Qdisc *sch, struct sk_buff **to_free)
- 		/* It is difficult to believe, but ALL THE SLOTS HAVE LENGTH 1. */
- 		x = q->tail->next;
- 		slot = &q->slots[x];
--		q->tail->next = slot->next;
-+		if (slot->next == x)
-+			q->tail = NULL; /* no more active slots */
-+		else
-+			q->tail->next = slot->next;
- 		q->ht[slot->hash] = SFQ_EMPTY_SLOT;
- 		goto drop;
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/steering/hws/action.c b/drivers/net/ethernet/mellanox/mlx5/core/steering/hws/action.c
+index b5332c54d4fb0..17b8a3beb1173 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/steering/hws/action.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/steering/hws/action.c
+@@ -1361,8 +1361,8 @@ mlx5hws_action_create_dest_array(struct mlx5hws_context *ctx,
+ 	struct mlx5hws_cmd_set_fte_attr fte_attr = {0};
+ 	struct mlx5hws_cmd_forward_tbl *fw_island;
+ 	struct mlx5hws_action *action;
+-	u32 i /*, packet_reformat_id*/;
+-	int ret;
++	int ret, last_dest_idx = -1;
++	u32 i;
+ 
+ 	if (num_dest <= 1) {
+ 		mlx5hws_err(ctx, "Action must have multiple dests\n");
+@@ -1392,11 +1392,8 @@ mlx5hws_action_create_dest_array(struct mlx5hws_context *ctx,
+ 			dest_list[i].destination_id = dests[i].dest->dest_obj.obj_id;
+ 			fte_attr.action_flags |= MLX5_FLOW_CONTEXT_ACTION_FWD_DEST;
+ 			fte_attr.ignore_flow_level = ignore_flow_level;
+-			/* ToDo: In SW steering we have a handling of 'go to WIRE'
+-			 * destination here by upper layer setting 'is_wire_ft' flag
+-			 * if the destination is wire.
+-			 * This is because uplink should be last dest in the list.
+-			 */
++			if (dests[i].is_wire_ft)
++				last_dest_idx = i;
+ 			break;
+ 		case MLX5HWS_ACTION_TYP_VPORT:
+ 			dest_list[i].destination_type = MLX5_FLOW_DESTINATION_TYPE_VPORT;
+@@ -1420,6 +1417,9 @@ mlx5hws_action_create_dest_array(struct mlx5hws_context *ctx,
+ 		}
  	}
+ 
++	if (last_dest_idx != -1)
++		swap(dest_list[last_dest_idx], dest_list[num_dest - 1]);
++
+ 	fte_attr.dests_num = num_dest;
+ 	fte_attr.dests = dest_list;
+ 
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/steering/hws/fs_hws.c b/drivers/net/ethernet/mellanox/mlx5/core/steering/hws/fs_hws.c
+index 1b787cd66e6fd..29c5e00af1aa0 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/steering/hws/fs_hws.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/steering/hws/fs_hws.c
+@@ -966,6 +966,9 @@ static int mlx5_fs_fte_get_hws_actions(struct mlx5_flow_root_namespace *ns,
+ 			switch (attr->type) {
+ 			case MLX5_FLOW_DESTINATION_TYPE_FLOW_TABLE:
+ 				dest_action = mlx5_fs_get_dest_action_ft(fs_ctx, dst);
++				if (dst->dest_attr.ft->flags &
++				    MLX5_FLOW_TABLE_UPLINK_VPORT)
++					dest_actions[num_dest_actions].is_wire_ft = true;
+ 				break;
+ 			case MLX5_FLOW_DESTINATION_TYPE_FLOW_TABLE_NUM:
+ 				dest_action = mlx5_fs_get_dest_action_table_num(fs_ctx,
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/steering/hws/mlx5hws.h b/drivers/net/ethernet/mellanox/mlx5/core/steering/hws/mlx5hws.h
+index 8ed8a715a2eb2..173f7ed1c17c3 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/steering/hws/mlx5hws.h
++++ b/drivers/net/ethernet/mellanox/mlx5/core/steering/hws/mlx5hws.h
+@@ -211,6 +211,7 @@ struct mlx5hws_action_dest_attr {
+ 	struct mlx5hws_action *dest;
+ 	/* Optional reformat action */
+ 	struct mlx5hws_action *reformat;
++	bool is_wire_ft;
+ };
+ 
+ /**
 -- 
 2.39.5
 
