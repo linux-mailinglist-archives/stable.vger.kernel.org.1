@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-154497-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-154158-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D948ADD950
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 19:05:00 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id ADAEDADD82E
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:52:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6C1471947675
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:56:56 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EACA65A0608
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:43:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52D792FA62F;
-	Tue, 17 Jun 2025 16:56:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BFCE02EE278;
+	Tue, 17 Jun 2025 16:38:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j9WVKXu8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IAvDrJFe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2DE22FA625;
-	Tue, 17 Jun 2025 16:56:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75DBB2ED868;
+	Tue, 17 Jun 2025 16:38:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750179399; cv=none; b=BPdKgsQ8DTmxjihhc0QgsRUltLH/XtU1I31zBYWTuEbIwlNCJpb1SRi31EPI7nA5r2maxXCODx2qUyL4BMrQQ0E1ZOsFDYYtnaK9G6WAssJgt/1wXwYcwP+EQZwvxhLJ1/XBGelAyyEKUlaoisihDgYYqnjY25XIGwUj+C5PKa8=
+	t=1750178288; cv=none; b=YzqtE52U2x/4QBT/CGVvmNALodbznLjz8V91b4F0LCQ8pqK8kwkN0Z0vwMBIip05bc1TlVcz4fCQy3BOHbeDfJftXCNTLNRPCGvxpcxHPGf3V3ufLfIxuC8+FQuwzRJMGq7FKwy8HwyzJWz8I1d5E9wGssEcdXyc/pndbV65K8E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750179399; c=relaxed/simple;
-	bh=WfeON4poukMny33221lkE3pWOWhIycsdMJANlsZrJvI=;
+	s=arc-20240116; t=1750178288; c=relaxed/simple;
+	bh=le1y5g9jK3UUkF2bwjUF3vcGbwiIL0kTNQCegdYzTvk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=G702dWf/3eEPc4/dnyVcXSg7g7aRouXBqrBh+QmMsNg/AsIPpEuklbdSgJpYXtDTLiCEcEHVjhgSxqNpO5LJhThFqdlAfvXcPvjb4amv+LBcO15CT99JZYdWCvghGcsYRNw2ovxv2p2V9vmFVV8CK0+tEWVhofps+k6iyKnp8CE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j9WVKXu8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E37F3C4CEE3;
-	Tue, 17 Jun 2025 16:56:37 +0000 (UTC)
+	 MIME-Version; b=ZxpL6yrnnpCGnRBS0LMxiJenKF6KUEmaX+NOBg7bzSjK4XMGHLyGXQamWPj0iIHqGODF0KXUGxvPq/TtE343ptGkPdiJo9LEQl9AiM4Caqi2mh5JE3SSGznkVZM6PmwRiqt7oOPNM1UYtSNqWuGRCetZF5Z7n/HVMws4QyCI6W4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IAvDrJFe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E106DC4CEE3;
+	Tue, 17 Jun 2025 16:38:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750179398;
-	bh=WfeON4poukMny33221lkE3pWOWhIycsdMJANlsZrJvI=;
+	s=korg; t=1750178288;
+	bh=le1y5g9jK3UUkF2bwjUF3vcGbwiIL0kTNQCegdYzTvk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=j9WVKXu8ubiNw0pNVjpHnYIljCIwRZ49hK43OuFl053pVLbRflUBCB4NZEQPVSxBY
-	 OyMJIRc2IBt2tQmanbcFsAwhZ9VrjG5czY/gxdMn2POr9aj/e78YtQRro4kfhMLSGh
-	 1lIphaPwnBQZe0B2Ac+dtscboAth90RF40DdQX9g=
+	b=IAvDrJFeiyt1+y/m5Kd0rFjyQCXvD22a0WcA2uFbUsz9q1DSC/NNxnJRCvneO2phB
+	 uKdJPw6B1XsniptvqLajSE7p4VcCI2WuZx7ySTb3O62mfHs76ffyfmsYvYbPTXzjP3
+	 7ML5oxBZQfu3CeuEjOokKIIcejr2anaMAmIpmf0Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hannes Reinecke <hare@suse.de>,
-	Nilay Shroff <nilay@linux.ibm.com>,
+	Daniel Wagner <wagi@kernel.org>,
 	Christoph Hellwig <hch@lst.de>,
-	Ming Lei <ming.lei@redhat.com>,
-	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 732/780] block: use q->elevator with ->elevator_lock held in elv_iosched_show()
+Subject: [PATCH 6.12 474/512] nvmet-fcloop: access fcpreq only when holding reqlock
 Date: Tue, 17 Jun 2025 17:27:20 +0200
-Message-ID: <20250617152521.304523735@linuxfoundation.org>
+Message-ID: <20250617152438.783086834@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
-References: <20250617152451.485330293@linuxfoundation.org>
+In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
+References: <20250617152419.512865572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,50 +62,97 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ming Lei <ming.lei@redhat.com>
+From: Daniel Wagner <wagi@kernel.org>
 
-[ Upstream commit 94209d27d14104ed828ca88cd5403a99162fe51a ]
+[ Upstream commit 47a827cd7929d0550c3496d70b417fcb5649b27b ]
 
-Use q->elevator with ->elevator_lock held in elv_iosched_show(), since
-the local cached elevator reference may become stale after getting
-->elevator_lock.
+The abort handling logic expects that the state and the fcpreq are only
+accessed when holding the reqlock lock.
 
-Reviewed-by: Hannes Reinecke <hare@suse.de>
-Reviewed-by: Nilay Shroff <nilay@linux.ibm.com>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Ming Lei <ming.lei@redhat.com>
-Link: https://lore.kernel.org/r/20250505141805.2751237-5-ming.lei@redhat.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+While at it, only handle the aborts in the abort handler.
+
+Signed-off-by: Daniel Wagner <wagi@kernel.org>
+Signed-off-by: Christoph Hellwig <hch@lst.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- block/elevator.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/nvme/target/fcloop.c | 31 ++++++++++++++++---------------
+ 1 file changed, 16 insertions(+), 15 deletions(-)
 
-diff --git a/block/elevator.c b/block/elevator.c
-index b4d08026b02ce..dc4cadef728e5 100644
---- a/block/elevator.c
-+++ b/block/elevator.c
-@@ -744,7 +744,6 @@ ssize_t elv_iosched_store(struct gendisk *disk, const char *buf,
- ssize_t elv_iosched_show(struct gendisk *disk, char *name)
+diff --git a/drivers/nvme/target/fcloop.c b/drivers/nvme/target/fcloop.c
+index da195d61a9664..f1b5ffc00ce88 100644
+--- a/drivers/nvme/target/fcloop.c
++++ b/drivers/nvme/target/fcloop.c
+@@ -623,12 +623,13 @@ fcloop_fcp_recv_work(struct work_struct *work)
  {
- 	struct request_queue *q = disk->queue;
--	struct elevator_queue *eq = q->elevator;
- 	struct elevator_type *cur = NULL, *e;
- 	int len = 0;
+ 	struct fcloop_fcpreq *tfcp_req =
+ 		container_of(work, struct fcloop_fcpreq, fcp_rcv_work);
+-	struct nvmefc_fcp_req *fcpreq = tfcp_req->fcpreq;
++	struct nvmefc_fcp_req *fcpreq;
+ 	unsigned long flags;
+ 	int ret = 0;
+ 	bool aborted = false;
  
-@@ -753,7 +752,7 @@ ssize_t elv_iosched_show(struct gendisk *disk, char *name)
- 		len += sprintf(name+len, "[none] ");
- 	} else {
- 		len += sprintf(name+len, "none ");
--		cur = eq->type;
-+		cur = q->elevator->type;
+ 	spin_lock_irqsave(&tfcp_req->reqlock, flags);
++	fcpreq = tfcp_req->fcpreq;
+ 	switch (tfcp_req->inistate) {
+ 	case INI_IO_START:
+ 		tfcp_req->inistate = INI_IO_ACTIVE;
+@@ -643,16 +644,19 @@ fcloop_fcp_recv_work(struct work_struct *work)
  	}
+ 	spin_unlock_irqrestore(&tfcp_req->reqlock, flags);
  
- 	spin_lock(&elv_list_lock);
+-	if (unlikely(aborted))
+-		ret = -ECANCELED;
+-	else {
+-		if (likely(!check_for_drop(tfcp_req)))
+-			ret = nvmet_fc_rcv_fcp_req(tfcp_req->tport->targetport,
+-				&tfcp_req->tgt_fcp_req,
+-				fcpreq->cmdaddr, fcpreq->cmdlen);
+-		else
+-			pr_info("%s: dropped command ********\n", __func__);
++	if (unlikely(aborted)) {
++		/* the abort handler will call fcloop_call_host_done */
++		return;
++	}
++
++	if (unlikely(check_for_drop(tfcp_req))) {
++		pr_info("%s: dropped command ********\n", __func__);
++		return;
+ 	}
++
++	ret = nvmet_fc_rcv_fcp_req(tfcp_req->tport->targetport,
++				   &tfcp_req->tgt_fcp_req,
++				   fcpreq->cmdaddr, fcpreq->cmdlen);
+ 	if (ret)
+ 		fcloop_call_host_done(fcpreq, tfcp_req, ret);
+ }
+@@ -667,9 +671,10 @@ fcloop_fcp_abort_recv_work(struct work_struct *work)
+ 	unsigned long flags;
+ 
+ 	spin_lock_irqsave(&tfcp_req->reqlock, flags);
+-	fcpreq = tfcp_req->fcpreq;
+ 	switch (tfcp_req->inistate) {
+ 	case INI_IO_ABORTED:
++		fcpreq = tfcp_req->fcpreq;
++		tfcp_req->fcpreq = NULL;
+ 		break;
+ 	case INI_IO_COMPLETED:
+ 		completed = true;
+@@ -691,10 +696,6 @@ fcloop_fcp_abort_recv_work(struct work_struct *work)
+ 		nvmet_fc_rcv_fcp_abort(tfcp_req->tport->targetport,
+ 					&tfcp_req->tgt_fcp_req);
+ 
+-	spin_lock_irqsave(&tfcp_req->reqlock, flags);
+-	tfcp_req->fcpreq = NULL;
+-	spin_unlock_irqrestore(&tfcp_req->reqlock, flags);
+-
+ 	fcloop_call_host_done(fcpreq, tfcp_req, -ECANCELED);
+ 	/* call_host_done releases reference for abort downcall */
+ }
 -- 
 2.39.5
 
