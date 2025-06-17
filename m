@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-153553-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153556-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E2C6ADD516
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:16:59 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1D1FAADD504
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:16:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 89A6C2C53A9
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:08:22 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C9F112C0832
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:08:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D28BF2ECD37;
-	Tue, 17 Jun 2025 16:05:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5B91204F73;
+	Tue, 17 Jun 2025 16:05:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PRXOmA/V"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qBWabVn+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D0672F2346;
-	Tue, 17 Jun 2025 16:05:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62FD42F2346;
+	Tue, 17 Jun 2025 16:05:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750176334; cv=none; b=c8zqXityDNTmnzvtYxgNQ5gHYdnKr4OwgUqcGGRTOKHpu0OQ0tIdDmHsN5WO2SfxPqjXcP0tXmlkcrmjm7nISGi7+V/d9IsqOrKDAe7Ff74NwJXyaBLS792v+m8srgRM938fhNIj8RMfg/JsZb+IGfBJZanUmFZwU61aDOE3gP0=
+	t=1750176344; cv=none; b=QL64i/zTFDlqpkelnRhIeRhePFBcVegcCRoUBaxYQMobZEj+wS+g5xlh/FSJxidK+6UYad9jWMpFKHbhBEv7iQzQJj8QLKpUhJwi77Gn8Cr4r7h37ZR2E7jlgxpHldoBIGjRlzgtl8A0LJOHcwqN2qBSxYvdo8n27yfyhJWI3GY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750176334; c=relaxed/simple;
-	bh=cXHIzIrzF3uOMmEReQ5HgSgFjvPZeWg92DualDz8YPA=;
+	s=arc-20240116; t=1750176344; c=relaxed/simple;
+	bh=S1tHeLESWVTOzUU191tB8rNHssnUqVRsEwdy50ffVuo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gQIBKdv4WOc4FJgwjyU1XMWAhJZBLiK7HQq/UWPFiuA3gpWcJp6hZ5hCMqh2ntnAgaUh27v/4QtctFlo0oDZ1o5FRXcpoYLl5LZsVyLkcv27xkDfvgrVWYABmlfihmz5cLFzqbYzER/3bxJWqQJvxUGRe7HFyCVQyQMuNxgzZ8A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PRXOmA/V; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF801C4CEE3;
-	Tue, 17 Jun 2025 16:05:33 +0000 (UTC)
+	 MIME-Version; b=A+PMgO7l8Kyc6EXknCdE9rg2wzW0PQAbtlVpAz94OeLRlmGNXKt9/HzlLc/HBs7s5c490YR/wlKqQlg0sRRUq7p2GNR+1/Fo2tFQ0Jy3pdw0TsU6xfA5vp1JUkBmZfaeF7PU1a25BI0xIAITn8tO0pzAOGcljvzIVsCxrpRgFao=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qBWabVn+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6434C4CEE3;
+	Tue, 17 Jun 2025 16:05:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750176334;
-	bh=cXHIzIrzF3uOMmEReQ5HgSgFjvPZeWg92DualDz8YPA=;
+	s=korg; t=1750176344;
+	bh=S1tHeLESWVTOzUU191tB8rNHssnUqVRsEwdy50ffVuo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PRXOmA/VAOj5ofTdvMnwRyrdk0W2hwGFWF72PCBwImONV6UtnUiK9SNkq5Gzj4MQ0
-	 LOMWJRCbudZNa1uHJUsdkXIVG/abWUgbld9sHkaQtUE45UKD3P55L681qEoZ3gh1VY
-	 xF802f+fK5tBDcBSnqahvDDXfHlMPxGAtuRzTQ0M=
+	b=qBWabVn+iHUFAvC0gub4eiAUlcCCC7m/UB/eRKczuyzRfxTPXq6IfqIlKpF9tzNc1
+	 qgqz9CUcPZvx2XFQ0ptpmaBrSUQQpXOooPeQnxOqQCfqVsmoNUjFTvMdw1kfQncgAR
+	 sqZD7vd6hc0ly6RvYL1SR71kuyGPaXUhVAFTu9Wo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
+	Aditya Kumar Singh <aditya.kumar.singh@oss.qualcomm.com>,
 	Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>,
 	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 179/780] wifi: ath12k: Fix buffer overflow in debugfs
-Date: Tue, 17 Jun 2025 17:18:07 +0200
-Message-ID: <20250617152458.762527565@linuxfoundation.org>
+Subject: [PATCH 6.15 180/780] wifi: ath12k: fix SLUB BUG - Object already free in ath12k_reg_free()
+Date: Tue, 17 Jun 2025 17:18:08 +0200
+Message-ID: <20250617152458.802261156@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
 References: <20250617152451.485330293@linuxfoundation.org>
@@ -67,37 +67,92 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Aditya Kumar Singh <aditya.kumar.singh@oss.qualcomm.com>
 
-[ Upstream commit 8c7a5031a6b0d42e640fbd2d5d05f61f74e32dce ]
+[ Upstream commit 6d019abc402f58b25a7cab30b2d9af2f3173e4df ]
 
-If the user tries to write more than 32 bytes then it results in memory
-corruption.  Fortunately, this is debugfs so it's limited to root users.
+During rmmod of ath12k module with SLUB debug enabled, following print is
+seen -
 
-Fixes: 3f73c24f28b3 ("wifi: ath12k: Add support to enable debugfs_htt_stats")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+=============================================================================
+BUG kmalloc-1k (Not tainted): Object already free
+-----------------------------------------------------------------------------
+
+Allocated in ath12k_reg_build_regd+0x94/0xa20 [ath12k] age=10470 cpu=0 pid=0
+ __kmalloc_noprof+0xf4/0x368
+ ath12k_reg_build_regd+0x94/0xa20 [ath12k]
+ ath12k_wmi_op_rx+0x199c/0x2c14 [ath12k]
+ ath12k_htc_rx_completion_handler+0x398/0x554 [ath12k]
+ ath12k_ce_per_engine_service+0x248/0x368 [ath12k]
+ ath12k_pci_ce_workqueue+0x28/0x50 [ath12k]
+ process_one_work+0x14c/0x28c
+ bh_worker+0x22c/0x27c
+ workqueue_softirq_action+0x80/0x90
+ tasklet_action+0x14/0x3c
+ handle_softirqs+0x108/0x240
+ __do_softirq+0x14/0x20
+Freed in ath12k_reg_free+0x40/0x74 [ath12k] age=136 cpu=2 pid=166
+ kfree+0x148/0x248
+ ath12k_reg_free+0x40/0x74 [ath12k]
+ ath12k_core_hw_group_destroy+0x68/0xac [ath12k]
+ ath12k_core_deinit+0xd8/0x124 [ath12k]
+ ath12k_pci_remove+0x6c/0x130 [ath12k]
+ pci_device_remove+0x44/0xe8
+ device_remove+0x4c/0x80
+ device_release_driver_internal+0x1d0/0x22c
+ driver_detach+0x50/0x98
+ bus_remove_driver+0x70/0xf4
+ driver_unregister+0x30/0x60
+ pci_unregister_driver+0x24/0x9c
+ ath12k_pci_exit+0x18/0x24 [ath12k]
+ __arm64_sys_delete_module+0x1a0/0x2a8
+ invoke_syscall+0x48/0x110
+ el0_svc_common.constprop.0+0x40/0xe0
+Slab 0xfffffdffc0033600 objects=10 used=6 fp=0xffff000000cdcc00 flags=0x3fffe0000000240(workingset|head|node=0|zone=0|lastcpupid=0x1ffff)
+Object 0xffff000000cdcc00 @offset=19456 fp=0xffff000000cde400
+[...]
+
+This issue arises because in ath12k_core_hw_group_destroy(), each device
+calls ath12k_core_soc_destroy() for itself and all its partners within the
+same group. Since ath12k_core_hw_group_destroy() is invoked for each
+device, this results in a double free condition, eventually causing the
+SLUB bug.
+
+To resolve this, set the freed pointers to NULL. And since there could be
+a race condition to read these pointers, guard these with the available
+mutex lock.
+
+Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.3.1-00173-QCAHKSWPL_SILICONZ-1
+Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.4.1-00199-QCAHKSWPL_SILICONZ-1
+Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0.c5-00481-QCAHMTSWPL_V1.0_V2.0_SILICONZ-3
+
+Fixes: 6f245ea0ec6c ("wifi: ath12k: introduce device group abstraction")
+Signed-off-by: Aditya Kumar Singh <aditya.kumar.singh@oss.qualcomm.com>
 Reviewed-by: Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>
-Link: https://patch.msgid.link/35daefbd-d493-41d9-b192-96177d521b40@stanley.mountain
+Link: https://patch.msgid.link/20250408-fix_reboot_issues_with_hw_grouping-v4-1-95e7bf048595@oss.qualcomm.com
 Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath12k/debugfs_htt_stats.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/net/wireless/ath/ath12k/reg.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/net/wireless/ath/ath12k/debugfs_htt_stats.c b/drivers/net/wireless/ath/ath12k/debugfs_htt_stats.c
-index 1c0d5fa39a8dc..aeaf970339d4d 100644
---- a/drivers/net/wireless/ath/ath12k/debugfs_htt_stats.c
-+++ b/drivers/net/wireless/ath/ath12k/debugfs_htt_stats.c
-@@ -5377,6 +5377,9 @@ static ssize_t ath12k_write_htt_stats_type(struct file *file,
- 	const int size = 32;
- 	int num_args;
+diff --git a/drivers/net/wireless/ath/ath12k/reg.c b/drivers/net/wireless/ath/ath12k/reg.c
+index 439d61f284d89..7fa7cd301b757 100644
+--- a/drivers/net/wireless/ath/ath12k/reg.c
++++ b/drivers/net/wireless/ath/ath12k/reg.c
+@@ -777,8 +777,12 @@ void ath12k_reg_free(struct ath12k_base *ab)
+ {
+ 	int i;
  
-+	if (count > size)
-+		return -EINVAL;
-+
- 	char *buf __free(kfree) = kzalloc(size, GFP_KERNEL);
- 	if (!buf)
- 		return -ENOMEM;
++	mutex_lock(&ab->core_lock);
+ 	for (i = 0; i < ab->hw_params->max_radios; i++) {
+ 		kfree(ab->default_regd[i]);
+ 		kfree(ab->new_regd[i]);
++		ab->default_regd[i] = NULL;
++		ab->new_regd[i] = NULL;
+ 	}
++	mutex_unlock(&ab->core_lock);
+ }
 -- 
 2.39.5
 
