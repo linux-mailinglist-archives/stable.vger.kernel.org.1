@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-154049-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153568-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C37DAADD777
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:45:03 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B656DADD47C
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:10:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AA8B34A0917
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:37:53 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DF2707A75DD
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:08:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F9522EE273;
-	Tue, 17 Jun 2025 16:32:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC8F42EE60A;
+	Tue, 17 Jun 2025 16:06:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fUMFXbCk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IyAR49yz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 292112EE5FF;
-	Tue, 17 Jun 2025 16:32:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 991202F2351;
+	Tue, 17 Jun 2025 16:06:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750177938; cv=none; b=D7suG2u5jfcBi5kmGM+DCPwFgtdgto2edflKKfRKmK/eKdg/EroNizEgMWSyV7iuidNgPXNEt3bNFlu9c2LoruLMDKpRtbCBZCsJo+0F8XQ4W0KEN2p9I8uS1CZKyzQJWcr9qVVr5SilFQHf8xlpGUWCJj3JG4KwUTMyuLGyteg=
+	t=1750176383; cv=none; b=Cer8OtJczE8qblqHcGEa+1MC+IGyL0fcWSq/AnKIQWOiH9ewe7SE6ruIAR1cKvw04Sq0RMHsH/goxxa2h1KhHoAXcnlexXTRh395pRbhgR7t11LXu4tw4TcK01BEYJ7/3U/L+AQtsM3ju9GuKy1duteAO40k7BFlBKIWx0Ehy3w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750177938; c=relaxed/simple;
-	bh=ekNboKFFYXbB3pqvYgYg/3KJJS6ZnCVtRsPG8UDZgwU=;
+	s=arc-20240116; t=1750176383; c=relaxed/simple;
+	bh=cYV7uacDWOCxSv9ysEm9MEC0nuseopwFHOmIcnZ62IM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=a7CjMmKB8u8YgCAoLgZnaAlT1QM3jpUgAta7NKgPvn5FRg3XJ8T+Wg9WwfsIkUKCPj47ILJXj66COcyZEWDcu8kqwgezmiZN6QEfEI9mywIKpuom6UTs2J68VoTySUZZIQDAkLQazBGsQeQngI0pa+vZPMqrVqGBmMqMppGjx1c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fUMFXbCk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F101C4CEE3;
-	Tue, 17 Jun 2025 16:32:17 +0000 (UTC)
+	 MIME-Version:Content-Type; b=gZ9tHPyJymrncDE3DX0P+jzEia4AD5XxE1ypX0fqvpD432dn50SDZmLRC7gjdTPerCP5/0p4I9S8clASZfWGAuH/Ud4qDjyKx/esdReI2Vdnbfe4E3+Z6oR1I7iy4evv64s3BoEs+C8UnNndOHAeA2ohMMjFSH0VQsEYXQ+QAHs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IyAR49yz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E31FDC4CEE3;
+	Tue, 17 Jun 2025 16:06:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750177938;
-	bh=ekNboKFFYXbB3pqvYgYg/3KJJS6ZnCVtRsPG8UDZgwU=;
+	s=korg; t=1750176383;
+	bh=cYV7uacDWOCxSv9ysEm9MEC0nuseopwFHOmIcnZ62IM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fUMFXbCkeAO5xDcJFy/AXxGIDSMsx3qpXIm6IHq6LEnTzIr0zgBEtn1San5ObFajx
-	 z9Flr8PV08wkrJpxV14wRTW/BzcnkYYZZvyJkKesdNj1nlT1ekpgE4RT8e5wRplxmE
-	 lpEcBCITaPrBsxRe+o/2FPnmikwjOHLPx90L9JC0=
+	b=IyAR49yzNyL+urnbpxKb4r5yZFW9rkiYfjXKceR5nnXIoVxzkMtOBBee82pjpsnW4
+	 OQ4O3xMClDr4Llk44FFOL3nHe7MCchITpsh8dCULE+AzMCC+0uKlk1kLqmlangLFMR
+	 O1E/dCB8tO2xQD17ZLvZ0EW4Ly9x3s7N8Y2BfV0w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chandrashekar Devegowda <chandrashekar.devegowda@intel.com>,
-	Kiran K <kiran.k@intel.com>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	=?UTF-8?q?Amadeusz=20S=C5=82awi=C5=84ski?= <amadeuszx.slawinski@linux.intel.com>,
+	Cezary Rojewski <cezary.rojewski@intel.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 421/512] Bluetooth: btintel_pcie: Increase the tx and rx descriptor count
+Subject: [PATCH 6.6 272/356] ASoC: Intel: avs: Verify content returned by parse_int_array()
 Date: Tue, 17 Jun 2025 17:26:27 +0200
-Message-ID: <20250617152436.632935442@linuxfoundation.org>
+Message-ID: <20250617152349.146553941@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
-References: <20250617152419.512865572@linuxfoundation.org>
+In-Reply-To: <20250617152338.212798615@linuxfoundation.org>
+References: <20250617152338.212798615@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,111 +61,54 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chandrashekar Devegowda <chandrashekar.devegowda@intel.com>
+From: Cezary Rojewski <cezary.rojewski@intel.com>
 
-[ Upstream commit 2dd711102ce69ae41f65d09c012441227d4aa983 ]
+[ Upstream commit 93e246b6769bdacb09cfff4ea0f00fe5ab4f0d7a ]
 
-This change addresses latency issues observed in HID use cases where
-events arrive in bursts. By increasing the Rx descriptor count to 64,
-the firmware can handle bursty data more effectively, reducing latency
-and preventing buffer overflows.
+The first element of the returned array stores its length. If it is 0,
+any manipulation beyond the element at index 0 ends with null-ptr-deref.
 
-Signed-off-by: Chandrashekar Devegowda <chandrashekar.devegowda@intel.com>
-Signed-off-by: Kiran K <kiran.k@intel.com>
-Fixes: c2b636b3f788 ("Bluetooth: btintel_pcie: Add support for PCIe transport")
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Fixes: 5a565ba23abe ("ASoC: Intel: avs: Probing and firmware tracing over debugfs")
+Reviewed-by: Amadeusz Sławiński <amadeuszx.slawinski@linux.intel.com>
+Signed-off-by: Cezary Rojewski <cezary.rojewski@intel.com>
+Link: https://patch.msgid.link/20250530141025.2942936-8-cezary.rojewski@intel.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/bluetooth/btintel_pcie.c | 24 ++++++++++++------------
- drivers/bluetooth/btintel_pcie.h |  7 +++++--
- 2 files changed, 17 insertions(+), 14 deletions(-)
+ sound/soc/intel/avs/debugfs.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/bluetooth/btintel_pcie.c b/drivers/bluetooth/btintel_pcie.c
-index b8065b7ec70b6..c02d671396e24 100644
---- a/drivers/bluetooth/btintel_pcie.c
-+++ b/drivers/bluetooth/btintel_pcie.c
-@@ -1148,8 +1148,8 @@ static int btintel_pcie_alloc(struct btintel_pcie_data *data)
- 	 *  + size of index * Number of queues(2) * type of index array(4)
- 	 *  + size of context information
+diff --git a/sound/soc/intel/avs/debugfs.c b/sound/soc/intel/avs/debugfs.c
+index bdd388ec01eaf..26d0c3a5a9542 100644
+--- a/sound/soc/intel/avs/debugfs.c
++++ b/sound/soc/intel/avs/debugfs.c
+@@ -371,7 +371,10 @@ static ssize_t trace_control_write(struct file *file, const char __user *from, s
+ 		return ret;
+ 
+ 	num_elems = *array;
+-	resource_mask = array[1];
++	if (!num_elems) {
++		ret = -EINVAL;
++		goto free_array;
++	}
+ 
+ 	/*
+ 	 * Disable if just resource mask is provided - no log priority flags.
+@@ -379,6 +382,7 @@ static ssize_t trace_control_write(struct file *file, const char __user *from, s
+ 	 * Enable input format:   mask, prio1, .., prioN
+ 	 * Where 'N' equals number of bits set in the 'mask'.
  	 */
--	total = (sizeof(struct tfd) + sizeof(struct urbd0) + sizeof(struct frbd)
--		+ sizeof(struct urbd1)) * BTINTEL_DESCS_COUNT;
-+	total = (sizeof(struct tfd) + sizeof(struct urbd0)) * BTINTEL_PCIE_TX_DESCS_COUNT;
-+	total += (sizeof(struct frbd) + sizeof(struct urbd1)) * BTINTEL_PCIE_RX_DESCS_COUNT;
- 
- 	/* Add the sum of size of index array and size of ci struct */
- 	total += (sizeof(u16) * BTINTEL_PCIE_NUM_QUEUES * 4) + sizeof(struct ctx_info);
-@@ -1174,36 +1174,36 @@ static int btintel_pcie_alloc(struct btintel_pcie_data *data)
- 	data->dma_v_addr = v_addr;
- 
- 	/* Setup descriptor count */
--	data->txq.count = BTINTEL_DESCS_COUNT;
--	data->rxq.count = BTINTEL_DESCS_COUNT;
-+	data->txq.count = BTINTEL_PCIE_TX_DESCS_COUNT;
-+	data->rxq.count = BTINTEL_PCIE_RX_DESCS_COUNT;
- 
- 	/* Setup tfds */
- 	data->txq.tfds_p_addr = p_addr;
- 	data->txq.tfds = v_addr;
- 
--	p_addr += (sizeof(struct tfd) * BTINTEL_DESCS_COUNT);
--	v_addr += (sizeof(struct tfd) * BTINTEL_DESCS_COUNT);
-+	p_addr += (sizeof(struct tfd) * BTINTEL_PCIE_TX_DESCS_COUNT);
-+	v_addr += (sizeof(struct tfd) * BTINTEL_PCIE_TX_DESCS_COUNT);
- 
- 	/* Setup urbd0 */
- 	data->txq.urbd0s_p_addr = p_addr;
- 	data->txq.urbd0s = v_addr;
- 
--	p_addr += (sizeof(struct urbd0) * BTINTEL_DESCS_COUNT);
--	v_addr += (sizeof(struct urbd0) * BTINTEL_DESCS_COUNT);
-+	p_addr += (sizeof(struct urbd0) * BTINTEL_PCIE_TX_DESCS_COUNT);
-+	v_addr += (sizeof(struct urbd0) * BTINTEL_PCIE_TX_DESCS_COUNT);
- 
- 	/* Setup FRBD*/
- 	data->rxq.frbds_p_addr = p_addr;
- 	data->rxq.frbds = v_addr;
- 
--	p_addr += (sizeof(struct frbd) * BTINTEL_DESCS_COUNT);
--	v_addr += (sizeof(struct frbd) * BTINTEL_DESCS_COUNT);
-+	p_addr += (sizeof(struct frbd) * BTINTEL_PCIE_RX_DESCS_COUNT);
-+	v_addr += (sizeof(struct frbd) * BTINTEL_PCIE_RX_DESCS_COUNT);
- 
- 	/* Setup urbd1 */
- 	data->rxq.urbd1s_p_addr = p_addr;
- 	data->rxq.urbd1s = v_addr;
- 
--	p_addr += (sizeof(struct urbd1) * BTINTEL_DESCS_COUNT);
--	v_addr += (sizeof(struct urbd1) * BTINTEL_DESCS_COUNT);
-+	p_addr += (sizeof(struct urbd1) * BTINTEL_PCIE_RX_DESCS_COUNT);
-+	v_addr += (sizeof(struct urbd1) * BTINTEL_PCIE_RX_DESCS_COUNT);
- 
- 	/* Setup data buffers for txq */
- 	err = btintel_pcie_setup_txq_bufs(data, &data->txq);
-diff --git a/drivers/bluetooth/btintel_pcie.h b/drivers/bluetooth/btintel_pcie.h
-index 5f7747f334ab8..ee0eec0237afd 100644
---- a/drivers/bluetooth/btintel_pcie.h
-+++ b/drivers/bluetooth/btintel_pcie.h
-@@ -81,8 +81,11 @@ enum {
- /* Default interrupt timeout in msec */
- #define BTINTEL_DEFAULT_INTR_TIMEOUT_MS	3000
- 
--/* The number of descriptors in TX/RX queues */
--#define BTINTEL_DESCS_COUNT	16
-+/* The number of descriptors in TX queues */
-+#define BTINTEL_PCIE_TX_DESCS_COUNT	32
-+
-+/* The number of descriptors in RX queues */
-+#define BTINTEL_PCIE_RX_DESCS_COUNT	64
- 
- /* Number of Queue for TX and RX
-  * It indicates the index of the IA(Index Array)
++	resource_mask = array[1];
+ 	if (num_elems == 1) {
+ 		ret = disable_logs(adev, resource_mask);
+ 	} else {
 -- 
 2.39.5
 
