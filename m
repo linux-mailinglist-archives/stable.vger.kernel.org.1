@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-153781-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-154240-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 331A0ADD673
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:33:47 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3D38FADD96A
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 19:06:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 67C754A0406
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:23:40 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1C5804A1B5B
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:47:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13E042EA149;
-	Tue, 17 Jun 2025 16:17:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E00212E8E10;
+	Tue, 17 Jun 2025 16:42:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xpAnTS4k"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ihvo39j/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C369418E025;
-	Tue, 17 Jun 2025 16:17:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9AD8F2EA147;
+	Tue, 17 Jun 2025 16:42:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750177077; cv=none; b=mkTRNJarz2su69SSpg7oCgseDRUUMk06f4zsyReGvTQciv9Lr5PcVFE06sAOM8BTlhUSQp4NAFTuMHx7lX36eUQyb4rK9Wly1CwkAkR6WnhVT2X4orsAsQT7YKgazZYxUAHJJ0JVwkmcR85btG8XA7/gRBAZLBM8mJcvZ1vGP6g=
+	t=1750178551; cv=none; b=A4R6/3b1exsgdknpVOFYV5iRzRKuTFkPQacSQQPxSp2wTnotmz7DXesud+85MDuFuq2H2gBfMghUcPtrLcoMTcWp6ZNoefOrMBE1m2fDRGoKRRz8s2bJf3ry+lEyxUrA2tQ/ahcSjCMoyckzEAs3Uf7Wmu4fTY5ohfJZWPBW8xA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750177077; c=relaxed/simple;
-	bh=OrBA8WF8Sf7zrRqb+W9E777Z8AaP3rJlmZzI6s/x114=;
+	s=arc-20240116; t=1750178551; c=relaxed/simple;
+	bh=1kK1xeb325LPqOgROAjIO4CYZor1W3NJvrtHTLkQWqI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TdD+CJiCITK6PBH3m9A7EeARSuKJRJVWNGjB05Gobe5VUz70pBPxGss0oqMCgMWBxzC4hYgBC8ICEnbSDONKt76RVt0jSO0a1vPnmpPDO75FidovFuhgIKm23Aoq3hAvLK9Y35k5hLfZeXlOyz4K/IVlIylrLDmTxi0F8FcZm1M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xpAnTS4k; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 331DDC4CEE3;
-	Tue, 17 Jun 2025 16:17:57 +0000 (UTC)
+	 MIME-Version; b=DBj+KgkHrM3iqQGVjUxt1F7K9rA3qqmspKPIwlR2SketJFUAGM2oeMwbMUZA48tVqb8olFVX+DoLimbV9OrGNiaugdKo9k2c1tpq785/8Tbm/OqL4RDCld43mQtpkf+L27WAhF/BgAjB/x7FEdDnx4Y3bBn0kz9emDeACaD9SK8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ihvo39j/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ECB53C4CEE3;
+	Tue, 17 Jun 2025 16:42:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750177077;
-	bh=OrBA8WF8Sf7zrRqb+W9E777Z8AaP3rJlmZzI6s/x114=;
+	s=korg; t=1750178551;
+	bh=1kK1xeb325LPqOgROAjIO4CYZor1W3NJvrtHTLkQWqI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xpAnTS4kHTfbxfUvLg4PhVbA9dv2JZEMrA7213r/FLPGMmSp+xeAqdnCYSGfPPbO1
-	 K1OH+z89iVqInk65ILyyeEMSKkRbEWam7FNRvsH0IYMPqBOgY9/Y/zwPCtzJjUhuxP
-	 xmf4jgpnLA3hxYihFJ3zoerJc9QQWVnXsYFP9tgg=
+	b=Ihvo39j/ghln2vtnsyX0RLrLLqbxkhcghVzvNiNnh7wB59k86/XR2SQtZM1K0dGg2
+	 Kfc64yLFWNv9PO6miTouTKE28mGgngrDkj5TNjrD0pkGkKVxlG096DFTWHf4inbXwj
+	 G4ny2PtLu5v9W7zFETmM0hFn8UXHNToAplVGWqLc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dave Penkler <dpenkler@gmail.com>
-Subject: [PATCH 6.6 345/356] usb: usbtmc: Fix read_stb function and get_stb ioctl
+	stable <stable@kernel.org>,
+	Pawel Laszczak <pawell@cadence.com>,
+	Peter Chen <peter.chen@kernel.org>
+Subject: [PATCH 6.12 494/512] usb: cdnsp: Fix issue with detecting USB 3.2 speed
 Date: Tue, 17 Jun 2025 17:27:40 +0200
-Message-ID: <20250617152352.027254037@linuxfoundation.org>
+Message-ID: <20250617152439.645651762@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152338.212798615@linuxfoundation.org>
-References: <20250617152338.212798615@linuxfoundation.org>
+In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
+References: <20250617152419.512865572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,74 +62,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dave Penkler <dpenkler@gmail.com>
+From: Pawel Laszczak <pawell@cadence.com>
 
-commit acb3dac2805d3342ded7dbbd164add32bbfdf21c upstream.
+commit 2852788cfbe9ca1ab68509d65804413871f741f9 upstream.
 
-The usbtmc488_ioctl_read_stb function relied on a positive return from
-usbtmc_get_stb to reset the srq condition in the driver. The
-USBTMC_IOCTL_GET_STB case tested for a positive return to return the stb
-to the user.
+Patch adds support for detecting SuperSpeedPlus Gen1 x2 and
+SuperSpeedPlus Gen2 x2 speed.
 
-Commit: <cac01bd178d6> ("usb: usbtmc: Fix erroneous get_stb ioctl
-error returns") changed the return value of usbtmc_get_stb to 0 on
-success instead of returning the value of usb_control_msg which is
-positive in the normal case. This change caused the function
-usbtmc488_ioctl_read_stb and the USBTMC_IOCTL_GET_STB ioctl to no
-longer function correctly.
-
-Change the test in usbtmc488_ioctl_read_stb to test for failure
-first and return the failure code immediately.
-Change the test for the USBTMC_IOCTL_GET_STB ioctl to test for 0
-instead of a positive value.
-
-Fixes: cac01bd178d6 ("usb: usbtmc: Fix erroneous get_stb ioctl error returns")
-Cc: stable@vger.kernel.org
-Signed-off-by: Dave Penkler <dpenkler@gmail.com>
-Link: https://lore.kernel.org/r/20250521121656.18174-3-dpenkler@gmail.com
+Fixes: 3d82904559f4 ("usb: cdnsp: cdns3 Add main part of Cadence USBSSP DRD Driver")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Pawel Laszczak <pawell@cadence.com>
+Acked-by: Peter Chen <peter.chen@kernel.org>
+Link: https://lore.kernel.org/r/PH7PR07MB95387AD98EDCA695FECE52BADD96A@PH7PR07MB9538.namprd07.prod.outlook.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/class/usbtmc.c |   17 +++++++++--------
- 1 file changed, 9 insertions(+), 8 deletions(-)
+ drivers/usb/cdns3/cdnsp-gadget.c |    3 ++-
+ drivers/usb/cdns3/cdnsp-gadget.h |    4 ++++
+ 2 files changed, 6 insertions(+), 1 deletion(-)
 
---- a/drivers/usb/class/usbtmc.c
-+++ b/drivers/usb/class/usbtmc.c
-@@ -565,14 +565,15 @@ static int usbtmc488_ioctl_read_stb(stru
- 
- 	rv = usbtmc_get_stb(file_data, &stb);
- 
--	if (rv > 0) {
--		srq_asserted = atomic_xchg(&file_data->srq_asserted,
--					srq_asserted);
--		if (srq_asserted)
--			stb |= 0x40; /* Set RQS bit */
-+	if (rv < 0)
-+		return rv;
-+
-+	srq_asserted = atomic_xchg(&file_data->srq_asserted, srq_asserted);
-+	if (srq_asserted)
-+		stb |= 0x40; /* Set RQS bit */
-+
-+	rv = put_user(stb, (__u8 __user *)arg);
- 
--		rv = put_user(stb, (__u8 __user *)arg);
--	}
- 	return rv;
- 
- }
-@@ -2201,7 +2202,7 @@ static long usbtmc_ioctl(struct file *fi
- 
- 	case USBTMC_IOCTL_GET_STB:
- 		retval = usbtmc_get_stb(file_data, &tmp_byte);
--		if (retval > 0)
-+		if (!retval)
- 			retval = put_user(tmp_byte, (__u8 __user *)arg);
- 		break;
- 
+--- a/drivers/usb/cdns3/cdnsp-gadget.c
++++ b/drivers/usb/cdns3/cdnsp-gadget.c
+@@ -28,7 +28,8 @@
+ unsigned int cdnsp_port_speed(unsigned int port_status)
+ {
+ 	/*Detect gadget speed based on PORTSC register*/
+-	if (DEV_SUPERSPEEDPLUS(port_status))
++	if (DEV_SUPERSPEEDPLUS(port_status) ||
++	    DEV_SSP_GEN1x2(port_status) || DEV_SSP_GEN2x2(port_status))
+ 		return USB_SPEED_SUPER_PLUS;
+ 	else if (DEV_SUPERSPEED(port_status))
+ 		return USB_SPEED_SUPER;
+--- a/drivers/usb/cdns3/cdnsp-gadget.h
++++ b/drivers/usb/cdns3/cdnsp-gadget.h
+@@ -285,11 +285,15 @@ struct cdnsp_port_regs {
+ #define XDEV_HS			(0x3 << 10)
+ #define XDEV_SS			(0x4 << 10)
+ #define XDEV_SSP		(0x5 << 10)
++#define XDEV_SSP1x2		(0x6 << 10)
++#define XDEV_SSP2x2		(0x7 << 10)
+ #define DEV_UNDEFSPEED(p)	(((p) & DEV_SPEED_MASK) == (0x0 << 10))
+ #define DEV_FULLSPEED(p)	(((p) & DEV_SPEED_MASK) == XDEV_FS)
+ #define DEV_HIGHSPEED(p)	(((p) & DEV_SPEED_MASK) == XDEV_HS)
+ #define DEV_SUPERSPEED(p)	(((p) & DEV_SPEED_MASK) == XDEV_SS)
+ #define DEV_SUPERSPEEDPLUS(p)	(((p) & DEV_SPEED_MASK) == XDEV_SSP)
++#define DEV_SSP_GEN1x2(p)	(((p) & DEV_SPEED_MASK) == XDEV_SSP1x2)
++#define DEV_SSP_GEN2x2(p)	(((p) & DEV_SPEED_MASK) == XDEV_SSP2x2)
+ #define DEV_SUPERSPEED_ANY(p)	(((p) & DEV_SPEED_MASK) >= XDEV_SS)
+ #define DEV_PORT_SPEED(p)	(((p) >> 10) & 0x0f)
+ /* Port Link State Write Strobe - set this when changing link state */
 
 
 
