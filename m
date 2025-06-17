@@ -1,56 +1,53 @@
-Return-Path: <stable+bounces-153397-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153400-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id AAA62ADD47B
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:10:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CEE53ADD466
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:09:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 070E4188C1A7
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:01:17 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 65A96188D340
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:01:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF0252ED84B;
-	Tue, 17 Jun 2025 15:57:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A83B52ED851;
+	Tue, 17 Jun 2025 15:57:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Yabx6ImO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oLEIQTd/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B3EB2ED17D;
-	Tue, 17 Jun 2025 15:57:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 647C92ECE94;
+	Tue, 17 Jun 2025 15:57:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750175828; cv=none; b=r1f4lMPWYqqlXyRB+DqXthmPUdoRRIOmCTXFUJh7ftLboM372RVniy8sN2RWispEU3YRdax9iRjHjGj90I8GZQVTs1PLu3svd2MDrbO0/UJSA9cBCe7aNWfCe4Zc0WSNIYGDwbtOHMf/rnVhIddFs4HsM3GBkK+XSI01b798sck=
+	t=1750175837; cv=none; b=YUWHLWu/o/W0NPkQkwX8oy0qoTtPks8gchdgt7BzzPqxc/y17/PM+q0U/8v1vjBD3aDI7Fe7YUbgLtObe1WmLo0aMLnxo4kpyP25DBWW3eq2uI1iyOY9MA/CBYr9/tsJkjkLVz0l0k4cRQvkknGnauWOuddTKxChdel3HAS7BqM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750175828; c=relaxed/simple;
-	bh=dp1s5XUzzV3ZzOtiymMYGYh0CBiFdgHxHQPreT9hxpU=;
+	s=arc-20240116; t=1750175837; c=relaxed/simple;
+	bh=+5Gtjn8DbwxtcszkNbyt2IkqKQcHWS+WcJbRHYxLtvI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jXoJ11GsMExEmEg8VEkHuiKyE1NG40z7csTBhyAMLKrGBhXFGC9pPI8s670F5VEWzBQTcwf+n5KqlxFtmcBdkPLJaw4kUNyHlSJ9tMBqC7HkLTPL2IdYe/bfCkDtxvqqA4YsSWJQu40iov29ZkJiDtojXc0Al6X6ijEKapxhgfk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Yabx6ImO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EFCE7C4CEF0;
-	Tue, 17 Jun 2025 15:57:07 +0000 (UTC)
+	 MIME-Version; b=k/iu4pEawY/DOnyVN3C791d4XjKKUeoFwXbXgDDe0GfNLoppqduAhT4QhFqOm1x/EnTCnExseckL5ufM0UaViTspe7wYniifS2pLQsGs4txKXi8UcEZZlsbR3Fb0FMu5VI7X06OHbaljbFZ3WyaFf1vD4hUKQG5Fk2IhFn3vE8k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oLEIQTd/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E158CC4CEE3;
+	Tue, 17 Jun 2025 15:57:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750175828;
-	bh=dp1s5XUzzV3ZzOtiymMYGYh0CBiFdgHxHQPreT9hxpU=;
+	s=korg; t=1750175837;
+	bh=+5Gtjn8DbwxtcszkNbyt2IkqKQcHWS+WcJbRHYxLtvI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Yabx6ImOBARdxG13T+CTo8uHvEag3uEngyydQEmRezU8s9/XK15FUTbG6TQajF93r
-	 wFRnOAvddkovOde74h3y+VgCLCqP+ObDfTtWtKrrCptm1jQk8sOIovd95FlIE6Q0Al
-	 pl+KxRKgu2Z/nz50sKblkGWpbCs7clAvvbza5rwg=
+	b=oLEIQTd/vL52anvldWzn3+INpemI70nSuLeqgezXtpcnW9945ebbUXYpJBA4Xai3y
+	 CeHpLikljHmp291oWvltLU5utL23AW8gJVKTHFSMYjyqBxNmrSPz+pzLtPc7Jc/MZw
+	 USf4TBe3zaVJ8B6OcU5A/hIqoVeqP5/VK5qvojKk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Will Deacon <will@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Marc Zyngier <maz@kernel.org>,
-	Mark Brown <broonie@kernel.org>,
-	Catalin Marinas <catalin.marinas@arm.com>,
+	Neill Kapron <nkapron@google.com>,
+	Kees Cook <kees@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 126/780] arm64/fpsimd: Avoid warning when sve_to_fpsimd() is unused
-Date: Tue, 17 Jun 2025 17:17:14 +0200
-Message-ID: <20250617152456.641485801@linuxfoundation.org>
+Subject: [PATCH 6.15 127/780] selftests/seccomp: fix syscall_restart test for arm compat
+Date: Tue, 17 Jun 2025 17:17:15 +0200
+Message-ID: <20250617152456.680576057@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
 References: <20250617152451.485330293@linuxfoundation.org>
@@ -69,75 +66,51 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Mark Rutland <mark.rutland@arm.com>
+From: Neill Kapron <nkapron@google.com>
 
-[ Upstream commit f699c66691fb7e08a5a631c5baf5f2a19b7a6468 ]
+[ Upstream commit 797002deed03491215a352ace891749b39741b69 ]
 
-Historically fpsimd_to_sve() and sve_to_fpsimd() were (conditionally)
-called by functions which were defined regardless of CONFIG_ARM64_SVE.
-Hence it was necessary that both fpsimd_to_sve() and sve_to_fpsimd()
-were always defined and not guarded by ifdeffery.
+The inconsistencies in the systcall ABI between arm and arm-compat can
+can cause a failure in the syscall_restart test due to the logic
+attempting to work around the differences. The 'machine' field for an
+ARM64 device running in compat mode can report 'armv8l' or 'armv8b'
+which matches with the string 'arm' when only examining the first three
+characters of the string.
 
-As a result of the removal of fpsimd_signal_preserve_current_state() in
-commit:
+This change adds additional validation to the workaround logic to make
+sure we only take the arm path when running natively, not in arm-compat.
 
-  929fa99b1215966f ("arm64/fpsimd: signal: Always save+flush state early")
-
-... sve_to_fpsimd() has no callers when CONFIG_ARM64_SVE=n, resulting in
-a build-time warnign that it is unused:
-
-| arch/arm64/kernel/fpsimd.c:676:13: warning: unused function 'sve_to_fpsimd' [-Wunused-function]
-|   676 | static void sve_to_fpsimd(struct task_struct *task)
-|       |             ^~~~~~~~~~~~~
-| 1 warning generated.
-
-In contrast, fpsimd_to_sve() still has callers which are defined when
-CONFIG_ARM64_SVE=n, and it would be awkward to hide this behind
-ifdeffery and/or to use stub functions.
-
-For now, suppress the warning by marking both fpsimd_to_sve() and
-sve_to_fpsimd() as 'static inline', as we usually do for stub functions.
-The compiler will no longer warn if either function is unused.
-
-Aside from suppressing the warning, there should be no functional change
-as a result of this patch.
-
-Link: https://lore.kernel.org/linux-arm-kernel/20250429194600.GA26883@willie-the-truck/
-Reported-by: Will Deacon <will@kernel.org>
-Fixes: 929fa99b1215 ("arm64/fpsimd: signal: Always save+flush state early")
-Signed-off-by: Mark Rutland <mark.rutland@arm.com>
-Cc: Marc Zyngier <maz@kernel.org>
-Cc: Mark Brown <broonie@kernel.org>
-Cc: Will Deacon <will@kernel.org>
-Link: https://lore.kernel.org/r/20250430173240.4023627-1-mark.rutland@arm.com
-Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
+Fixes: 256d0afb11d6 ("selftests/seccomp: build and pass on arm64")
+Signed-off-by: Neill Kapron <nkapron@google.com>
+Link: https://lore.kernel.org/r/20250427094103.3488304-2-nkapron@google.com
+Signed-off-by: Kees Cook <kees@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/kernel/fpsimd.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ tools/testing/selftests/seccomp/seccomp_bpf.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm64/kernel/fpsimd.c b/arch/arm64/kernel/fpsimd.c
-index 1edf797d2c710..0e649d0e59b06 100644
---- a/arch/arm64/kernel/fpsimd.c
-+++ b/arch/arm64/kernel/fpsimd.c
-@@ -651,7 +651,7 @@ static void __fpsimd_to_sve(void *sst, struct user_fpsimd_state const *fst,
-  * task->thread.uw.fpsimd_state must be up to date before calling this
-  * function.
-  */
--static void fpsimd_to_sve(struct task_struct *task)
-+static inline void fpsimd_to_sve(struct task_struct *task)
- {
- 	unsigned int vq;
- 	void *sst = task->thread.sve_state;
-@@ -675,7 +675,7 @@ static void fpsimd_to_sve(struct task_struct *task)
-  * bytes of allocated kernel memory.
-  * task->thread.sve_state must be up to date before calling this function.
-  */
--static void sve_to_fpsimd(struct task_struct *task)
-+static inline void sve_to_fpsimd(struct task_struct *task)
- {
- 	unsigned int vq, vl;
- 	void const *sst = task->thread.sve_state;
+diff --git a/tools/testing/selftests/seccomp/seccomp_bpf.c b/tools/testing/selftests/seccomp/seccomp_bpf.c
+index b2f76a52215ad..53bf6a9c801f8 100644
+--- a/tools/testing/selftests/seccomp/seccomp_bpf.c
++++ b/tools/testing/selftests/seccomp/seccomp_bpf.c
+@@ -3166,12 +3166,15 @@ TEST(syscall_restart)
+ 	ret = get_syscall(_metadata, child_pid);
+ #if defined(__arm__)
+ 	/*
+-	 * FIXME:
+ 	 * - native ARM registers do NOT expose true syscall.
+ 	 * - compat ARM registers on ARM64 DO expose true syscall.
++	 * - values of utsbuf.machine include 'armv8l' or 'armb8b'
++	 *   for ARM64 running in compat mode.
+ 	 */
+ 	ASSERT_EQ(0, uname(&utsbuf));
+-	if (strncmp(utsbuf.machine, "arm", 3) == 0) {
++	if ((strncmp(utsbuf.machine, "arm", 3) == 0) &&
++	    (strncmp(utsbuf.machine, "armv8l", 6) != 0) &&
++	    (strncmp(utsbuf.machine, "armv8b", 6) != 0)) {
+ 		EXPECT_EQ(__NR_nanosleep, ret);
+ 	} else
+ #endif
 -- 
 2.39.5
 
