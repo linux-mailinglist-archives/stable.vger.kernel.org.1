@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-154187-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153475-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BD24DADD902
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 19:01:36 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C8FBADD4AE
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:13:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 06DB85A0A6F
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:44:05 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8DDF23A62D1
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:05:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE1B91A2632;
-	Tue, 17 Jun 2025 16:39:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A98DB2ECEA3;
+	Tue, 17 Jun 2025 16:01:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nfxr5b3D"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sirrTHIV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98EA2285059;
-	Tue, 17 Jun 2025 16:39:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6508E2ECE9D;
+	Tue, 17 Jun 2025 16:01:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750178383; cv=none; b=An6SA2FtY8nacF+bCkDfigzGRfDvWxcZ69YR/oj9FRwWuhvD5YWGbYy7hSWbE1iLlGUP80IQ62J4pLXTtnNG9rLQq/4f1zpl4R0m044aPn4gNLYmYymgaVGnZfrwEmBPOOQR4mM8McBHOufIdurQYx7SF93+/1plnc4QzRGxzVo=
+	t=1750176084; cv=none; b=Nh9ROeZxteMng7XanG2shJOsCYkdO/6Axa8ga5obp0ql64ZtWCXSV/Zn7rGYbM9XhkHUWuEoaNQsI7gUmUCf1ChF4dIKfNKQOJUAoQPy1YOWFAL3tskVLE/qUi5VA2JG1iUIw+ik91c5+gfM3bkga+XPGj4fm9SXwesNJnjkk+M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750178383; c=relaxed/simple;
-	bh=0Ae4qDSkWuprj23mDcIjEwwNpIt6HKVc/OOnQTvW8Pg=;
+	s=arc-20240116; t=1750176084; c=relaxed/simple;
+	bh=o21q1aMAgRQuNpYmF+WuVtH3530bQx9FZvGdL1nw5Gc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AROaIW1eF7VonNp/pRwX8mzx6fO035tujT2volypji7NHc1oBdyZMVKgSdyW1xpnGNdLbuGUHdIZwHM/YTXtmBqfwjt1zs3nMAkPQCiSkKQihpTCz7RoRduwsQ9geUthARJqKrFzzVfa6Ln4Ue5o2N0D5kEWJA1E7o6YSuLwh50=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nfxr5b3D; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0793CC4CEE3;
-	Tue, 17 Jun 2025 16:39:42 +0000 (UTC)
+	 MIME-Version; b=CKyAQyhaUiaTNmg4BanWQCn41OWcWJ0qSGVqoqaEFW5foVMa8tGDiy7GSehdAAWjcIU1SzeqKQ2HZXQCI1MN7KWnKnluUlvAA1DKCrDz6zsYdMWasX1+nXd5CaleDZkA4PS+V1pRCB4xMFbhByQJVE1PFU6w2scurKJ2iItf2Xs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sirrTHIV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6EA5C4CEE3;
+	Tue, 17 Jun 2025 16:01:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750178383;
-	bh=0Ae4qDSkWuprj23mDcIjEwwNpIt6HKVc/OOnQTvW8Pg=;
+	s=korg; t=1750176084;
+	bh=o21q1aMAgRQuNpYmF+WuVtH3530bQx9FZvGdL1nw5Gc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nfxr5b3Dy0Jsiml62Gl7RHa0MY3IUsOcMEDhx7QlbqVycYiiWDBm4WQZEme2mL7OF
-	 fsYSmLrXk2ow+lqA4dqI5bPufklnFAvzZeSwRZU8BkaAXNI/F3UmMu5AZMCtcb6Aj5
-	 nyW3a3mHXevx6yyvUswJOz43KPV5zTcz6n0tSqv0=
+	b=sirrTHIVJ0ct6+bE+RBnce8X337J3zCNsXLeUB8hfjU1a9GGJkuV7GsMuxc7DRCkH
+	 1SutJgEpLatA8+S6JdsahHL8vNpV3Uq9wj9LEFIwxllqNMzsAYR9dazv73/P9/L1yb
+	 qrmgvybqcXAGmgbYIKOr6xRP4enJqoFnPwVTfQtU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Bjorn Andersson <andersson@kernel.org>,
+	Dmitry Antipov <dmantipov@yandex.ru>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 452/780] rpmsg: qcom_smd: Fix uninitialized return variable in __qcom_smd_send()
+Subject: [PATCH 6.12 194/512] Bluetooth: MGMT: iterate over mesh commands in mgmt_mesh_foreach()
 Date: Tue, 17 Jun 2025 17:22:40 +0200
-Message-ID: <20250617152509.877292890@linuxfoundation.org>
+Message-ID: <20250617152427.502579518@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
-References: <20250617152451.485330293@linuxfoundation.org>
+In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
+References: <20250617152419.512865572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,39 +62,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Dmitry Antipov <dmantipov@yandex.ru>
 
-[ Upstream commit 5de775df3362090a6e90046d1f2d83fe62489aa0 ]
+[ Upstream commit 3bb88524b7d030160bb3c9b35f928b2778092111 ]
 
-The "ret" variable isn't initialized if we don't enter the loop.  For
-example,  if "channel->state" is not SMD_CHANNEL_OPENED.
+In 'mgmt_mesh_foreach()', iterate over mesh commands
+rather than generic mgmt ones. Compile tested only.
 
-Fixes: 33e3820dda88 ("rpmsg: smd: Use spinlock in tx path")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Link: https://lore.kernel.org/r/aAkhvV0nSbrsef1P@stanley.mountain
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Fixes: b338d91703fa ("Bluetooth: Implement support for Mesh")
+Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/rpmsg/qcom_smd.c | 2 +-
+ net/bluetooth/mgmt_util.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/rpmsg/qcom_smd.c b/drivers/rpmsg/qcom_smd.c
-index 40d386809d6b7..bb161def31753 100644
---- a/drivers/rpmsg/qcom_smd.c
-+++ b/drivers/rpmsg/qcom_smd.c
-@@ -746,7 +746,7 @@ static int __qcom_smd_send(struct qcom_smd_channel *channel, const void *data,
- 	__le32 hdr[5] = { cpu_to_le32(len), };
- 	int tlen = sizeof(hdr) + len;
- 	unsigned long flags;
--	int ret;
-+	int ret = 0;
+diff --git a/net/bluetooth/mgmt_util.c b/net/bluetooth/mgmt_util.c
+index 17ab909a7c07f..67db32a60c6a9 100644
+--- a/net/bluetooth/mgmt_util.c
++++ b/net/bluetooth/mgmt_util.c
+@@ -321,7 +321,7 @@ void mgmt_mesh_foreach(struct hci_dev *hdev,
+ {
+ 	struct mgmt_mesh_tx *mesh_tx, *tmp;
  
- 	/* Word aligned channels only accept word size aligned data */
- 	if (channel->info_word && len % 4)
+-	list_for_each_entry_safe(mesh_tx, tmp, &hdev->mgmt_pending, list) {
++	list_for_each_entry_safe(mesh_tx, tmp, &hdev->mesh_pending, list) {
+ 		if (!sk || mesh_tx->sk == sk)
+ 			cb(mesh_tx, data);
+ 	}
 -- 
 2.39.5
 
