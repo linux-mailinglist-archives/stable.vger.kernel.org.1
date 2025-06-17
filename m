@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-154056-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-154445-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 27B7CADD7B5
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:48:17 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id ED325ADD935
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 19:03:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BD7B2161E76
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:38:20 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3DAB61BC2C01
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:55:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C38112EF291;
-	Tue, 17 Jun 2025 16:32:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E18A236457;
+	Tue, 17 Jun 2025 16:53:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u+ENbhNX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iQNo45XE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 807122ECEA6;
-	Tue, 17 Jun 2025 16:32:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF2581E3DCF;
+	Tue, 17 Jun 2025 16:53:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750177961; cv=none; b=iEoAkC4fQmEaFQVx8aM1cFdPKbVEQSgbWFT4fA5rxadaZYrjRo2gWA4rXJf0HSYqd0D6wkz8gKw4ERDTwGpUECZIj5dVDS7RAyI6BXxN925rd5lMlZx2M0ENiJ/nFi87p05A6ptsotKUFprbiwzy82awI4dgjFg+Va66v2gWkSg=
+	t=1750179209; cv=none; b=bxnxVnlf9MtgYduxoK4v4XuHuD0cAPzTHiZm7BSxKjnJvskW+5xk48VXpskaDfpu6M2PyeTJ8AxoVOuiMYh+4RX6XZ0cpkcrYGWNjUmWp/R9fhmjFA43i9Irio0uD6IUIaIeKZYRPRw+vf9bQgsEMclJ8EYj6Sut0xlj0sxPgWU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750177961; c=relaxed/simple;
-	bh=rgXdq9XGbRufHQKV8IPsYxnQFy2TLHuna6QbdQTKBSc=;
+	s=arc-20240116; t=1750179209; c=relaxed/simple;
+	bh=2EW/sIDNgCWEkKlc3r48hJc2jnI9hycG9Zt4YkHJ/WM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HsENOzjjFtWAgG52ign7kzbLalf+M/jYOCoWYWlK79labx0jDrsj0rH90uqp3Bav6pbBgt2vFlAvZ3m7ArNQ/96C1pNmv4PXPa0t1uD7FwCmxeJJBayNmyMppzrAex2q/4gziGrap8G3FluoMJlp6GfCvsjPxxVS7vlq6ZYKyX0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u+ENbhNX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A202FC4CEE3;
-	Tue, 17 Jun 2025 16:32:40 +0000 (UTC)
+	 MIME-Version:Content-Type; b=YgqLBcs3sZYuGwPvDlIVKLcIfVS4BaAH5jAwKMqPbEYYZwogI4Tquh+HYfxBZBKut8sDqwIwg2Vd9GVuYWXVK3KE58E3se4jhZH4HHDbA4l+C5PdymqevZ1PYm+IJudVsq9RCYYB6ax37CN1oKfLf5ZvCz8BGV1oUP+UHxPEnHA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iQNo45XE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5EB8FC4CEE3;
+	Tue, 17 Jun 2025 16:53:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750177961;
-	bh=rgXdq9XGbRufHQKV8IPsYxnQFy2TLHuna6QbdQTKBSc=;
+	s=korg; t=1750179208;
+	bh=2EW/sIDNgCWEkKlc3r48hJc2jnI9hycG9Zt4YkHJ/WM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=u+ENbhNXI1A4BiJ4YoQWeKGiFlKnALzLNfSELbSE/AJonZyD1ywrHbU2re74PCo6c
-	 AorvKKHSH4k8bUY4dYQEB7wOZ137ufI+XjPjwWEAXjKPB5sqZjnyaqVp5Aj4yFPRTV
-	 kcru3bVEMliGPToc+8EvglbJvURWTlRvW7TisXdI=
+	b=iQNo45XEs5CIrp8hwpaBmKla+P6EAq3S+D2MjJR59rO1ARbqWORD8YAvJ/GidWLIa
+	 lex5wfkmz/Iv/qcbCWkwTPfSmAj3YwAEgud04H9dS7vLpoPE3rjAFr7DU7EBRO0a1n
+	 p0uCEBxIETdho+pVBQolOhS/AUl9wHuMfwt9hAZ4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Dr. David Alan Gilbert" <linux@treblig.org>,
-	Simon Horman <horms@kernel.org>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	=?UTF-8?q?F=C3=A9lix=20Pi=C3=A9dallu?= <felix.piedallu@non.se.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 424/512] Bluetooth: MGMT: Remove unused mgmt_pending_find_data
+Subject: [PATCH 6.15 682/780] spi: omap2-mcspi: Disable multi-mode when the previous message kept CS asserted
 Date: Tue, 17 Jun 2025 17:26:30 +0200
-Message-ID: <20250617152436.753734404@linuxfoundation.org>
+Message-ID: <20250617152519.248028150@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
-References: <20250617152419.512865572@linuxfoundation.org>
+In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
+References: <20250617152451.485330293@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,74 +60,85 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dr. David Alan Gilbert <linux@treblig.org>
+From: Félix Piédallu <felix.piedallu@non.se.com>
 
-[ Upstream commit 276af34d82f13bda0b2a4d9786c90b8bbf1cd064 ]
+[ Upstream commit 10c24e0d2f7cd2bc8a847cf750f01301ce67dbc8 ]
 
-mgmt_pending_find_data() last use was removed in 2021 by
-commit 5a7501374664 ("Bluetooth: hci_sync: Convert MGMT_OP_GET_CLOCK_INFO")
+When the last transfer of a SPI message has the cs_change flag, the CS is kept
+asserted after the message.
+The next message can't use multi-mode because the CS will be briefly deasserted
+before the first transfer.
 
-Remove it.
+Remove the early exit of the list_for_each_entry because the last transfer
+actually needs to be always checked.
 
-Signed-off-by: Dr. David Alan Gilbert <linux@treblig.org>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Stable-dep-of: 6fe26f694c82 ("Bluetooth: MGMT: Protect mgmt_pending list with its own lock")
+Fixes: d153ff4056cb ("spi: omap2-mcspi: Add support for MULTI-mode")
+Signed-off-by: Félix Piédallu <felix.piedallu@non.se.com>
+Link: https://patch.msgid.link/20250606-cs_change_fix-v1-2-27191a98a2e5@non.se.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bluetooth/mgmt_util.c | 17 -----------------
- net/bluetooth/mgmt_util.h |  4 ----
- 2 files changed, 21 deletions(-)
+ drivers/spi/spi-omap2-mcspi.c | 20 ++++++++++----------
+ 1 file changed, 10 insertions(+), 10 deletions(-)
 
-diff --git a/net/bluetooth/mgmt_util.c b/net/bluetooth/mgmt_util.c
-index 67db32a60c6a9..3713ff490c65d 100644
---- a/net/bluetooth/mgmt_util.c
-+++ b/net/bluetooth/mgmt_util.c
-@@ -229,23 +229,6 @@ struct mgmt_pending_cmd *mgmt_pending_find(unsigned short channel, u16 opcode,
- 	return NULL;
- }
+diff --git a/drivers/spi/spi-omap2-mcspi.c b/drivers/spi/spi-omap2-mcspi.c
+index e834fb42fd4ba..70bb74b3bd9c3 100644
+--- a/drivers/spi/spi-omap2-mcspi.c
++++ b/drivers/spi/spi-omap2-mcspi.c
+@@ -134,6 +134,7 @@ struct omap2_mcspi {
+ 	size_t			max_xfer_len;
+ 	u32			ref_clk_hz;
+ 	bool			use_multi_mode;
++	bool			last_msg_kept_cs;
+ };
  
--struct mgmt_pending_cmd *mgmt_pending_find_data(unsigned short channel,
--						u16 opcode,
--						struct hci_dev *hdev,
--						const void *data)
--{
--	struct mgmt_pending_cmd *cmd;
--
--	list_for_each_entry(cmd, &hdev->mgmt_pending, list) {
--		if (cmd->user_data != data)
--			continue;
--		if (cmd->opcode == opcode)
--			return cmd;
--	}
--
--	return NULL;
--}
--
- void mgmt_pending_foreach(u16 opcode, struct hci_dev *hdev,
- 			  void (*cb)(struct mgmt_pending_cmd *cmd, void *data),
- 			  void *data)
-diff --git a/net/bluetooth/mgmt_util.h b/net/bluetooth/mgmt_util.h
-index bdf978605d5a8..f2ba994ab1d84 100644
---- a/net/bluetooth/mgmt_util.h
-+++ b/net/bluetooth/mgmt_util.h
-@@ -54,10 +54,6 @@ int mgmt_cmd_complete(struct sock *sk, u16 index, u16 cmd, u8 status,
+ struct omap2_mcspi_cs {
+@@ -1269,6 +1270,10 @@ static int omap2_mcspi_prepare_message(struct spi_controller *ctlr,
+ 	 * multi-mode is applicable.
+ 	 */
+ 	mcspi->use_multi_mode = true;
++
++	if (mcspi->last_msg_kept_cs)
++		mcspi->use_multi_mode = false;
++
+ 	list_for_each_entry(tr, &msg->transfers, transfer_list) {
+ 		if (!tr->bits_per_word)
+ 			bits_per_word = msg->spi->bits_per_word;
+@@ -1289,22 +1294,17 @@ static int omap2_mcspi_prepare_message(struct spi_controller *ctlr,
  
- struct mgmt_pending_cmd *mgmt_pending_find(unsigned short channel, u16 opcode,
- 					   struct hci_dev *hdev);
--struct mgmt_pending_cmd *mgmt_pending_find_data(unsigned short channel,
--						u16 opcode,
--						struct hci_dev *hdev,
--						const void *data);
- void mgmt_pending_foreach(u16 opcode, struct hci_dev *hdev,
- 			  void (*cb)(struct mgmt_pending_cmd *cmd, void *data),
- 			  void *data);
+ 		if (list_is_last(&tr->transfer_list, &msg->transfers)) {
+ 			/* Check if transfer asks to keep the CS status after the whole message */
+-			if (tr->cs_change)
++			if (tr->cs_change) {
+ 				mcspi->use_multi_mode = false;
++				mcspi->last_msg_kept_cs = true;
++			} else {
++				mcspi->last_msg_kept_cs = false;
++			}
+ 		} else {
+ 			/* Check if transfer asks to change the CS status after the transfer */
+ 			if (!tr->cs_change)
+ 				mcspi->use_multi_mode = false;
+ 		}
+-
+-		/*
+-		 * If at least one message is not compatible, switch back to single mode
+-		 *
+-		 * The bits_per_word of certain transfer can be different, but it will have no
+-		 * impact on the signal itself.
+-		 */
+-		if (!mcspi->use_multi_mode)
+-			break;
+ 	}
+ 
+ 	omap2_mcspi_set_mode(ctlr);
 -- 
 2.39.5
 
