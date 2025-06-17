@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-154029-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153533-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB880ADD76D
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:44:42 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 29A21ADD593
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:22:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 353CE4A00B2
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:37:14 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 48B2E19E0B46
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:07:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B866B2EE292;
-	Tue, 17 Jun 2025 16:31:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 454342F2364;
+	Tue, 17 Jun 2025 16:04:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tuq3/xqt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DOIrsSrd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75A752ED84B;
-	Tue, 17 Jun 2025 16:31:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0231A2F2371;
+	Tue, 17 Jun 2025 16:04:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750177878; cv=none; b=Wcz1AxYomZM+pEYBvPdxpjY+c6TKCk9tnO4O19nuCdvkBzTBiDelR1H/dMhm6rAEBZkdS8K+q+1rNRBUtlMcqnvN0ClQcVkWliNe9m03904imjqLMLmBPVue4YIQgeSmajWHOEeTN8YuRLXYjwFkaLyY+j5S3ezyiyyivXiXPN0=
+	t=1750176272; cv=none; b=Nle+R3CW5Ph0FlL82EsFTxYCOc+fh/Q7epy1/f2IuFl/sBC9FRyuvLTWrgDyKm3ucTVhQ6d22qutxN8obr37DymT9TYXQ9yxA5INjXv4hj+itz4AStbDV/0je3I7NdceVM9zNetPBOKzQNif6MWP6qWH16sWS6+dyJfv24IMbUM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750177878; c=relaxed/simple;
-	bh=m6k+KXJQ4ybBBK7ypD5shrofSkiAZ8hV0FWGHEEraEs=;
+	s=arc-20240116; t=1750176272; c=relaxed/simple;
+	bh=zuAMXT/BRTEo6xmdT/CG/UXBzuPM9PJKotS0EWJRl0k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=IbM6V+GuqCjL/jnlDVcxyHRvLRkepzdQWeipbEbX9jKwDGDe+UTAE1014LM53C8f+wxVwBxS7cJSIJhzzDTR38JICIeKxk66HNZTWJ6jCV/uGw1wBNJlY6Oz0FBSveLvC6xao0O+ABralZLwEjZgy0rsXtyZELwB4huGqbZjDG4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tuq3/xqt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8B91C4CEE3;
-	Tue, 17 Jun 2025 16:31:17 +0000 (UTC)
+	 MIME-Version; b=TToinHrMa6L+4oRag1cCfFxyP+J6OAHy+Cuvl8Soh01F0iqiCF9byWdMKS4pX4mJ3JsJK1d7tkp6qxUIrhCyy5ha+7m3YAQAAZK+WW0GPtvWf04LVrmS/FYZMkCJDVOxXSkdkeaoIkVQOdPbRwsk1M5XEDp5s1cE+n9bPEUeYMs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DOIrsSrd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6532FC4CEE3;
+	Tue, 17 Jun 2025 16:04:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750177878;
-	bh=m6k+KXJQ4ybBBK7ypD5shrofSkiAZ8hV0FWGHEEraEs=;
+	s=korg; t=1750176271;
+	bh=zuAMXT/BRTEo6xmdT/CG/UXBzuPM9PJKotS0EWJRl0k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tuq3/xqtKj3hh389jqVkGdMV6EvoLWOLLyHEfVBg+FU+ZNtFZ2mCRShsCAcq14+oh
-	 89gaUj8+k+b4DgtHcpMLue50TH9lybpLqHfyQfkp9ZGfyk3lITq+hGwHYqMmJFMvQj
-	 AXUBCD3eviy+zxj/Oo7OsJB6bAgBtaTe+UHm4C+c=
+	b=DOIrsSrdq6/fpohxaP4s/sR5JnoWCo0rYm4RuuKqidiIJNiE44wBL1pR5jG8DqPBb
+	 WPECSFnCsCLHX+aklWZcTr5qa3H6SM417bbKDCKSjSve/CyGjxeQHKN42IeAWCkEC9
+	 2XvmdVyY+ybfH52suEUOn87eHjxzfjXsPs/pPFYU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stephan Gerhold <stephan.gerhold@linaro.org>,
-	Johan Hovold <johan+linaro@kernel.org>,
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
-	Bjorn Andersson <andersson@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 409/512] arm64: dts: qcom: x1e80100: Apply consistent critical thermal shutdown
-Date: Tue, 17 Jun 2025 17:26:15 +0200
-Message-ID: <20250617152436.148562976@linuxfoundation.org>
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Sasha Levin <sashal@kernel.org>,
+	Chris Bainbridge <chris.bainbridge@gmail.com>
+Subject: [PATCH 6.6 261/356] PM: sleep: Fix power.is_suspended cleanup for direct-complete devices
+Date: Tue, 17 Jun 2025 17:26:16 +0200
+Message-ID: <20250617152348.713019473@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
-References: <20250617152419.512865572@linuxfoundation.org>
+In-Reply-To: <20250617152338.212798615@linuxfoundation.org>
+References: <20250617152338.212798615@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,521 +61,64 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stephan Gerhold <stephan.gerhold@linaro.org>
+From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-[ Upstream commit 03f2b8eed73418269a158ccebad5d8d8f2f6daa1 ]
+[ Upstream commit d46c4c839c20a599a0eb8d73708ce401f9c7d06d ]
 
-The firmware configures the TSENS controller with a maximum temperature of
-120°C. When reaching that temperature, the hardware automatically triggers
-a reset of the entire platform. Some of the thermal zones in x1e80100.dtsi
-use a critical trip point of 125°C. It's impossible to reach those.
+Commit 03f1444016b7 ("PM: sleep: Fix handling devices with direct_complete
+set on errors") caused power.is_suspended to be set for devices with
+power.direct_complete set, but it forgot to ensure the clearing of that
+flag for them in device_resume(), so power.is_suspended is still set for
+them during the next system suspend-resume cycle.
 
-It's preferable to shut down the system cleanly before reaching the
-hardware trip point. Make the critical temperature trip points consistent
-by setting all of them to 115°C and apply a consistent hysteresis.
-The ACPI tables also specify 115°C as critical shutdown temperature.
+If that cycle is aborted in dpm_suspend(), the subsequent invocation of
+dpm_resume() will trigger a device_resume() call for every device and
+because power.is_suspended is set for the devices in question, they will
+not be skipped by device_resume() as expected which causes scary error
+messages to be logged (as appropriate).
 
-Cc: stable@vger.kernel.org
-Fixes: 4e915987ff5b ("arm64: dts: qcom: x1e80100: Enable tsens and thermal zone nodes")
-Signed-off-by: Stephan Gerhold <stephan.gerhold@linaro.org>
-Reviewed-by: Johan Hovold <johan+linaro@kernel.org>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Link: https://lore.kernel.org/r/20250219-x1e80100-thermal-fixes-v1-2-d110e44ac3f9@linaro.org
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+To address this issue, move the clearing of power.is_suspended in
+device_resume() immediately after the power.is_suspended check so it
+will be always cleared for all devices processed by that function.
+
+Fixes: 03f1444016b7 ("PM: sleep: Fix handling devices with direct_complete set on errors")
+Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/4280
+Reported-and-tested-by: Chris Bainbridge <chris.bainbridge@gmail.com>
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
+Link: https://patch.msgid.link/4990586.GXAFRqVoOG@rjwysocki.net
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/x1e80100.dtsi | 128 ++++++++++++-------------
- 1 file changed, 64 insertions(+), 64 deletions(-)
+ drivers/base/power/main.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/arch/arm64/boot/dts/qcom/x1e80100.dtsi b/arch/arm64/boot/dts/qcom/x1e80100.dtsi
-index 948ce7dd8b058..edfea03366b46 100644
---- a/arch/arm64/boot/dts/qcom/x1e80100.dtsi
-+++ b/arch/arm64/boot/dts/qcom/x1e80100.dtsi
-@@ -6414,8 +6414,8 @@ trip-point0 {
- 				};
+diff --git a/drivers/base/power/main.c b/drivers/base/power/main.c
+index 343d3c966e7a7..baa31194cf20d 100644
+--- a/drivers/base/power/main.c
++++ b/drivers/base/power/main.c
+@@ -897,6 +897,8 @@ static void __device_resume(struct device *dev, pm_message_t state, bool async)
+ 	if (!dev->power.is_suspended)
+ 		goto Complete;
  
- 				aoss0-critical {
--					temperature = <125000>;
--					hysteresis = <0>;
-+					temperature = <115000>;
-+					hysteresis = <1000>;
- 					type = "critical";
- 				};
- 			};
-@@ -6440,7 +6440,7 @@ trip-point1 {
- 				};
++	dev->power.is_suspended = false;
++
+ 	if (dev->power.direct_complete) {
+ 		/* Match the pm_runtime_disable() in __device_suspend(). */
+ 		pm_runtime_enable(dev);
+@@ -952,7 +954,6 @@ static void __device_resume(struct device *dev, pm_message_t state, bool async)
  
- 				cpu-critical {
--					temperature = <110000>;
-+					temperature = <115000>;
- 					hysteresis = <1000>;
- 					type = "critical";
- 				};
-@@ -6466,7 +6466,7 @@ trip-point1 {
- 				};
+  End:
+ 	error = dpm_run_callback(callback, dev, state, info);
+-	dev->power.is_suspended = false;
  
- 				cpu-critical {
--					temperature = <110000>;
-+					temperature = <115000>;
- 					hysteresis = <1000>;
- 					type = "critical";
- 				};
-@@ -6492,7 +6492,7 @@ trip-point1 {
- 				};
- 
- 				cpu-critical {
--					temperature = <110000>;
-+					temperature = <115000>;
- 					hysteresis = <1000>;
- 					type = "critical";
- 				};
-@@ -6518,7 +6518,7 @@ trip-point1 {
- 				};
- 
- 				cpu-critical {
--					temperature = <110000>;
-+					temperature = <115000>;
- 					hysteresis = <1000>;
- 					type = "critical";
- 				};
-@@ -6544,7 +6544,7 @@ trip-point1 {
- 				};
- 
- 				cpu-critical {
--					temperature = <110000>;
-+					temperature = <115000>;
- 					hysteresis = <1000>;
- 					type = "critical";
- 				};
-@@ -6570,7 +6570,7 @@ trip-point1 {
- 				};
- 
- 				cpu-critical {
--					temperature = <110000>;
-+					temperature = <115000>;
- 					hysteresis = <1000>;
- 					type = "critical";
- 				};
-@@ -6596,7 +6596,7 @@ trip-point1 {
- 				};
- 
- 				cpu-critical {
--					temperature = <110000>;
-+					temperature = <115000>;
- 					hysteresis = <1000>;
- 					type = "critical";
- 				};
-@@ -6622,7 +6622,7 @@ trip-point1 {
- 				};
- 
- 				cpu-critical {
--					temperature = <110000>;
-+					temperature = <115000>;
- 					hysteresis = <1000>;
- 					type = "critical";
- 				};
-@@ -6640,8 +6640,8 @@ trip-point0 {
- 				};
- 
- 				cpuss2-critical {
--					temperature = <125000>;
--					hysteresis = <0>;
-+					temperature = <115000>;
-+					hysteresis = <1000>;
- 					type = "critical";
- 				};
- 			};
-@@ -6658,8 +6658,8 @@ trip-point0 {
- 				};
- 
- 				cpuss2-critical {
--					temperature = <125000>;
--					hysteresis = <0>;
-+					temperature = <115000>;
-+					hysteresis = <1000>;
- 					type = "critical";
- 				};
- 			};
-@@ -6676,7 +6676,7 @@ trip-point0 {
- 				};
- 
- 				mem-critical {
--					temperature = <125000>;
-+					temperature = <115000>;
- 					hysteresis = <0>;
- 					type = "critical";
- 				};
-@@ -6694,7 +6694,7 @@ trip-point0 {
- 				};
- 
- 				video-critical {
--					temperature = <125000>;
-+					temperature = <115000>;
- 					hysteresis = <1000>;
- 					type = "critical";
- 				};
-@@ -6712,8 +6712,8 @@ trip-point0 {
- 				};
- 
- 				aoss0-critical {
--					temperature = <125000>;
--					hysteresis = <0>;
-+					temperature = <115000>;
-+					hysteresis = <1000>;
- 					type = "critical";
- 				};
- 			};
-@@ -6738,7 +6738,7 @@ trip-point1 {
- 				};
- 
- 				cpu-critical {
--					temperature = <110000>;
-+					temperature = <115000>;
- 					hysteresis = <1000>;
- 					type = "critical";
- 				};
-@@ -6764,7 +6764,7 @@ trip-point1 {
- 				};
- 
- 				cpu-critical {
--					temperature = <110000>;
-+					temperature = <115000>;
- 					hysteresis = <1000>;
- 					type = "critical";
- 				};
-@@ -6790,7 +6790,7 @@ trip-point1 {
- 				};
- 
- 				cpu-critical {
--					temperature = <110000>;
-+					temperature = <115000>;
- 					hysteresis = <1000>;
- 					type = "critical";
- 				};
-@@ -6816,7 +6816,7 @@ trip-point1 {
- 				};
- 
- 				cpu-critical {
--					temperature = <110000>;
-+					temperature = <115000>;
- 					hysteresis = <1000>;
- 					type = "critical";
- 				};
-@@ -6842,7 +6842,7 @@ trip-point1 {
- 				};
- 
- 				cpu-critical {
--					temperature = <110000>;
-+					temperature = <115000>;
- 					hysteresis = <1000>;
- 					type = "critical";
- 				};
-@@ -6868,7 +6868,7 @@ trip-point1 {
- 				};
- 
- 				cpu-critical {
--					temperature = <110000>;
-+					temperature = <115000>;
- 					hysteresis = <1000>;
- 					type = "critical";
- 				};
-@@ -6894,7 +6894,7 @@ trip-point1 {
- 				};
- 
- 				cpu-critical {
--					temperature = <110000>;
-+					temperature = <115000>;
- 					hysteresis = <1000>;
- 					type = "critical";
- 				};
-@@ -6920,7 +6920,7 @@ trip-point1 {
- 				};
- 
- 				cpu-critical {
--					temperature = <110000>;
-+					temperature = <115000>;
- 					hysteresis = <1000>;
- 					type = "critical";
- 				};
-@@ -6938,8 +6938,8 @@ trip-point0 {
- 				};
- 
- 				cpuss2-critical {
--					temperature = <125000>;
--					hysteresis = <0>;
-+					temperature = <115000>;
-+					hysteresis = <1000>;
- 					type = "critical";
- 				};
- 			};
-@@ -6956,8 +6956,8 @@ trip-point0 {
- 				};
- 
- 				cpuss2-critical {
--					temperature = <125000>;
--					hysteresis = <0>;
-+					temperature = <115000>;
-+					hysteresis = <1000>;
- 					type = "critical";
- 				};
- 			};
-@@ -6974,8 +6974,8 @@ trip-point0 {
- 				};
- 
- 				aoss0-critical {
--					temperature = <125000>;
--					hysteresis = <0>;
-+					temperature = <115000>;
-+					hysteresis = <1000>;
- 					type = "critical";
- 				};
- 			};
-@@ -7000,7 +7000,7 @@ trip-point1 {
- 				};
- 
- 				cpu-critical {
--					temperature = <110000>;
-+					temperature = <115000>;
- 					hysteresis = <1000>;
- 					type = "critical";
- 				};
-@@ -7026,7 +7026,7 @@ trip-point1 {
- 				};
- 
- 				cpu-critical {
--					temperature = <110000>;
-+					temperature = <115000>;
- 					hysteresis = <1000>;
- 					type = "critical";
- 				};
-@@ -7052,7 +7052,7 @@ trip-point1 {
- 				};
- 
- 				cpu-critical {
--					temperature = <110000>;
-+					temperature = <115000>;
- 					hysteresis = <1000>;
- 					type = "critical";
- 				};
-@@ -7078,7 +7078,7 @@ trip-point1 {
- 				};
- 
- 				cpu-critical {
--					temperature = <110000>;
-+					temperature = <115000>;
- 					hysteresis = <1000>;
- 					type = "critical";
- 				};
-@@ -7104,7 +7104,7 @@ trip-point1 {
- 				};
- 
- 				cpu-critical {
--					temperature = <110000>;
-+					temperature = <115000>;
- 					hysteresis = <1000>;
- 					type = "critical";
- 				};
-@@ -7130,7 +7130,7 @@ trip-point1 {
- 				};
- 
- 				cpu-critical {
--					temperature = <110000>;
-+					temperature = <115000>;
- 					hysteresis = <1000>;
- 					type = "critical";
- 				};
-@@ -7156,7 +7156,7 @@ trip-point1 {
- 				};
- 
- 				cpu-critical {
--					temperature = <110000>;
-+					temperature = <115000>;
- 					hysteresis = <1000>;
- 					type = "critical";
- 				};
-@@ -7182,7 +7182,7 @@ trip-point1 {
- 				};
- 
- 				cpu-critical {
--					temperature = <110000>;
-+					temperature = <115000>;
- 					hysteresis = <1000>;
- 					type = "critical";
- 				};
-@@ -7200,8 +7200,8 @@ trip-point0 {
- 				};
- 
- 				cpuss2-critical {
--					temperature = <125000>;
--					hysteresis = <0>;
-+					temperature = <115000>;
-+					hysteresis = <1000>;
- 					type = "critical";
- 				};
- 			};
-@@ -7218,8 +7218,8 @@ trip-point0 {
- 				};
- 
- 				cpuss2-critical {
--					temperature = <125000>;
--					hysteresis = <0>;
-+					temperature = <115000>;
-+					hysteresis = <1000>;
- 					type = "critical";
- 				};
- 			};
-@@ -7236,8 +7236,8 @@ trip-point0 {
- 				};
- 
- 				aoss0-critical {
--					temperature = <125000>;
--					hysteresis = <0>;
-+					temperature = <115000>;
-+					hysteresis = <1000>;
- 					type = "critical";
- 				};
- 			};
-@@ -7254,8 +7254,8 @@ trip-point0 {
- 				};
- 
- 				nsp0-critical {
--					temperature = <125000>;
--					hysteresis = <0>;
-+					temperature = <115000>;
-+					hysteresis = <1000>;
- 					type = "critical";
- 				};
- 			};
-@@ -7272,8 +7272,8 @@ trip-point0 {
- 				};
- 
- 				nsp1-critical {
--					temperature = <125000>;
--					hysteresis = <0>;
-+					temperature = <115000>;
-+					hysteresis = <1000>;
- 					type = "critical";
- 				};
- 			};
-@@ -7290,8 +7290,8 @@ trip-point0 {
- 				};
- 
- 				nsp2-critical {
--					temperature = <125000>;
--					hysteresis = <0>;
-+					temperature = <115000>;
-+					hysteresis = <1000>;
- 					type = "critical";
- 				};
- 			};
-@@ -7308,8 +7308,8 @@ trip-point0 {
- 				};
- 
- 				nsp3-critical {
--					temperature = <125000>;
--					hysteresis = <0>;
-+					temperature = <115000>;
-+					hysteresis = <1000>;
- 					type = "critical";
- 				};
- 			};
-@@ -7334,7 +7334,7 @@ trip-point1 {
- 				};
- 
- 				trip-point2 {
--					temperature = <125000>;
-+					temperature = <115000>;
- 					hysteresis = <1000>;
- 					type = "critical";
- 				};
-@@ -7360,7 +7360,7 @@ trip-point1 {
- 				};
- 
- 				trip-point2 {
--					temperature = <125000>;
-+					temperature = <115000>;
- 					hysteresis = <1000>;
- 					type = "critical";
- 				};
-@@ -7386,7 +7386,7 @@ trip-point1 {
- 				};
- 
- 				trip-point2 {
--					temperature = <125000>;
-+					temperature = <115000>;
- 					hysteresis = <1000>;
- 					type = "critical";
- 				};
-@@ -7412,7 +7412,7 @@ trip-point1 {
- 				};
- 
- 				trip-point2 {
--					temperature = <125000>;
-+					temperature = <115000>;
- 					hysteresis = <1000>;
- 					type = "critical";
- 				};
-@@ -7438,7 +7438,7 @@ trip-point1 {
- 				};
- 
- 				trip-point2 {
--					temperature = <125000>;
-+					temperature = <115000>;
- 					hysteresis = <1000>;
- 					type = "critical";
- 				};
-@@ -7464,7 +7464,7 @@ trip-point1 {
- 				};
- 
- 				trip-point2 {
--					temperature = <125000>;
-+					temperature = <115000>;
- 					hysteresis = <1000>;
- 					type = "critical";
- 				};
-@@ -7490,7 +7490,7 @@ trip-point1 {
- 				};
- 
- 				trip-point2 {
--					temperature = <125000>;
-+					temperature = <115000>;
- 					hysteresis = <1000>;
- 					type = "critical";
- 				};
-@@ -7516,7 +7516,7 @@ trip-point1 {
- 				};
- 
- 				trip-point2 {
--					temperature = <125000>;
-+					temperature = <115000>;
- 					hysteresis = <1000>;
- 					type = "critical";
- 				};
-@@ -7535,7 +7535,7 @@ trip-point0 {
- 
- 				camera0-critical {
- 					temperature = <115000>;
--					hysteresis = <0>;
-+					hysteresis = <1000>;
- 					type = "critical";
- 				};
- 			};
-@@ -7553,7 +7553,7 @@ trip-point0 {
- 
- 				camera0-critical {
- 					temperature = <115000>;
--					hysteresis = <0>;
-+					hysteresis = <1000>;
- 					type = "critical";
- 				};
- 			};
+ 	device_unlock(dev);
+ 	dpm_watchdog_clear(&wd);
 -- 
 2.39.5
 
