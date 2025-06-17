@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-154337-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153770-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 153E2ADD96C
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 19:06:11 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2DA77ADD6B2
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:36:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4DE0C4A104A
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:50:05 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CFB3319460D5
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:23:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3103A2E8E19;
-	Tue, 17 Jun 2025 16:47:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 859D428C024;
+	Tue, 17 Jun 2025 16:17:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Mnxk+YTl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="quzOaLHK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1D082DFF10;
-	Tue, 17 Jun 2025 16:47:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44A7028507B;
+	Tue, 17 Jun 2025 16:17:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750178874; cv=none; b=HhOa9UF5hh1423ygZe2sPepIcRj0E9WGELfa3bNbbrRIJvOJk7ZBNA7kQ2mfqIpMdm/CFI1FnlfBOzb2NdiZR3MQcWX+0VclSeB3rBIC6sFYlXHeD5AgiSyyjiMa4uzNVyw22ElPqcq48AgPt2jNA1vzmYfsywrNzuXj2Oj5hHU=
+	t=1750177042; cv=none; b=j+hj16yLm6stCyXV8xoLxaWQhEDE9tRgXh2lk7dR4EwR4JeAuUZuakwTfOkCUyLxU8Sc6BRVJdXg1SFwId4ZVnkeXTGL5yZ8WcWRLarQYVxjHe1dpUUgadMgZ9jitmu3q4SfCdN+dWt0NtWnzUbYeeSKiyFoaXgjUDmLijaii0g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750178874; c=relaxed/simple;
-	bh=9Gn5g37TLaxHAcsj91PnIaNpO5iVj2IpghnH/4ER7xY=;
+	s=arc-20240116; t=1750177042; c=relaxed/simple;
+	bh=ZXuhNfc2sc+3x2R4IYRYSfJ9ilswPqj4A+zbCyms4Tw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fTMJtdOYzWFDeWX9Rbq/Jt2ARPRhbjntAl15rPxcnPd6M+3AyvpKA2aaQTmuJRcKSbtCDTdU3zCkV44puDtzoYWFiVRAxFa0wf9Lu19afL3Q9PnI9K1oEjqJX2A9QSca8+ZIsh+ggEnEBwdsz2q2H0fsvcITeBQH/lWdzUbEgWQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Mnxk+YTl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5076BC4CEE3;
-	Tue, 17 Jun 2025 16:47:53 +0000 (UTC)
+	 MIME-Version; b=FnGVjaWDMiaFTwgsWuMIm9VAUuPvN0OSY+B+u1oJPKH2svl5tY97ulGZhD+t0dBUEgwfnmWLgBjCisMwekOGQRIjGoRQsJrHE6T8Tu15GdvBgR84FMAa7JvSlPBrigMwC02McTQH9zmL5oBgtdjA7XdRFrUpt/i/rNTrTINuVcg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=quzOaLHK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4DF2C4CEE3;
+	Tue, 17 Jun 2025 16:17:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750178873;
-	bh=9Gn5g37TLaxHAcsj91PnIaNpO5iVj2IpghnH/4ER7xY=;
+	s=korg; t=1750177042;
+	bh=ZXuhNfc2sc+3x2R4IYRYSfJ9ilswPqj4A+zbCyms4Tw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Mnxk+YTl7b4jntzMzWuBs4nuYIYAW1nYgoRibtpvQqRB+//wCSSX15dzDy81CxvuB
-	 GDnw5M6OrgFQbP9mR7pfXZt70EQt9ejRpVZUZMxWOzZ/DItxwNr04jH9XZq9qed1Bd
-	 3Lh0UQID2y4JNIu57WUHUkM8RRELERqK8gOzSJ3g=
+	b=quzOaLHKmpyRzaEuimhszKNNG8Jl152jRaLM/ZSnDep3tJFFEazu3JHkYUl264ZOw
+	 dmIMU/Bd5fXuxbAZSSmjvZnA/1WQ1odqlUsy8daMJHLngGOwj0uQ6kxT7TxyxJVuEA
+	 AqyGk+cpqVm87jYAC76/qJj6XzJf8hXOTmjLXw3w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Lee Jones <lee@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 548/780] USB: typec: fix const issue in typec_match()
-Date: Tue, 17 Jun 2025 17:24:16 +0200
-Message-ID: <20250617152513.827710054@linuxfoundation.org>
+Subject: [PATCH 6.12 291/512] mfd: exynos-lpass: Fix an error handling path in exynos_lpass_probe()
+Date: Tue, 17 Jun 2025 17:24:17 +0200
+Message-ID: <20250617152431.393826025@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
-References: <20250617152451.485330293@linuxfoundation.org>
+In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
+References: <20250617152419.512865572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,41 +63,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 
-[ Upstream commit ae4432e01dd967a64f6670a152d91d5328032726 ]
+[ Upstream commit 484f0f59f09edd1f6fa63703c12eb30d72a519ac ]
 
-typec_match() takes a const pointer, and then decides to cast it away
-into a non-const one, which is not a good thing to do overall.  Fix this
-up by properly setting the pointers to be const to preserve that
-attribute.
+If an error occurs after a successful regmap_init_mmio(), regmap_exit()
+should be called as already done in the .remove() function.
 
-Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Link: https://lore.kernel.org/r/2025052126-scholar-stainless-ad55@gregkh
-Fixes: d69d80484598 ("driver core: have match() callback in struct bus_type take a const *")
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Switch to devm_regmap_init_mmio() to avoid the leak and simplify the
+.remove() function.
+
+Fixes: c414df12bdf7 ("mfd: exynos-lpass: Add missing remove() function")
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Link: https://lore.kernel.org/r/38414eecb1096840946756ae86887aea2a489c1b.1745247209.git.christophe.jaillet@wanadoo.fr
+Signed-off-by: Lee Jones <lee@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/typec/bus.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/mfd/exynos-lpass.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/usb/typec/bus.c b/drivers/usb/typec/bus.c
-index ae90688d23e40..a884cec9ab7e8 100644
---- a/drivers/usb/typec/bus.c
-+++ b/drivers/usb/typec/bus.c
-@@ -449,7 +449,7 @@ ATTRIBUTE_GROUPS(typec);
+diff --git a/drivers/mfd/exynos-lpass.c b/drivers/mfd/exynos-lpass.c
+index e58990c85ed87..eedcfc22c3325 100644
+--- a/drivers/mfd/exynos-lpass.c
++++ b/drivers/mfd/exynos-lpass.c
+@@ -122,8 +122,8 @@ static int exynos_lpass_probe(struct platform_device *pdev)
+ 	if (IS_ERR(lpass->sfr0_clk))
+ 		return PTR_ERR(lpass->sfr0_clk);
  
- static int typec_match(struct device *dev, const struct device_driver *driver)
- {
--	struct typec_altmode_driver *drv = to_altmode_driver(driver);
-+	const struct typec_altmode_driver *drv = to_altmode_driver(driver);
- 	struct typec_altmode *altmode = to_typec_altmode(dev);
- 	const struct typec_device_id *id;
+-	lpass->top = regmap_init_mmio(dev, base_top,
+-					&exynos_lpass_reg_conf);
++	lpass->top = devm_regmap_init_mmio(dev, base_top,
++					   &exynos_lpass_reg_conf);
+ 	if (IS_ERR(lpass->top)) {
+ 		dev_err(dev, "LPASS top regmap initialization failed\n");
+ 		return PTR_ERR(lpass->top);
+@@ -145,7 +145,6 @@ static void exynos_lpass_remove(struct platform_device *pdev)
+ 	pm_runtime_disable(&pdev->dev);
+ 	if (!pm_runtime_status_suspended(&pdev->dev))
+ 		exynos_lpass_disable(lpass);
+-	regmap_exit(lpass->top);
+ }
  
+ static int __maybe_unused exynos_lpass_suspend(struct device *dev)
 -- 
 2.39.5
 
