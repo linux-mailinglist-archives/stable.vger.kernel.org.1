@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-154488-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153710-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A542FADDA00
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 19:12:10 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E87B9ADD5E5
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:27:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 86EF42C7808
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:56:10 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B97A72C606A
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:20:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C00C42FA62E;
-	Tue, 17 Jun 2025 16:56:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 184C92ED85C;
+	Tue, 17 Jun 2025 16:14:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f9TnHEqg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H0K16aA7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BC21CA4B;
-	Tue, 17 Jun 2025 16:56:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8BBA2F94B0;
+	Tue, 17 Jun 2025 16:13:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750179367; cv=none; b=F48e18E8IeVU3P6JubC/5Xl4ZSMcm6vg9ssPldKIjR+W9eV4o5RGAEljyeSIenCW2ZGpiDJMyDF1LqrrtKuzehY22gdZ2b7YOj7/Z6PqmUZ+LTnyyDNnI2WiIKCapm1YjaNWkSGO6R7biykShlbEAjCPuh3KcCuQdusY4JyFhBM=
+	t=1750176839; cv=none; b=r1R0Yi/LpvL9yDjZwLcpn1OeuNg1xsnGgG1cGnae/k5Tn1UwdEOSmRzetqPT6haSBoqeLZYxXLGNYBvBmD24TORmq69hymVypZWEGmuCFDLWvwmR+rLlklqkg4CSwBc+m0Y7gNzZ3plyKmxL5DGKE259lQFTLjWeyZSfinv0k5k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750179367; c=relaxed/simple;
-	bh=HUJmnm6QzfM5YxHOq788X8krKx80e2BGeJTsh5SPccg=;
+	s=arc-20240116; t=1750176839; c=relaxed/simple;
+	bh=1lpkFcYVzl+eAuYnD1mGq1VZkfiPkUgMQj/wLQN3H40=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tZUWI3IS242JpJobctMir098oR2PpwH3GdXVmf7uypYWxSBEMy58AIAVw9NYbjbC8SG1cA6g+XswcqqVI6jkNi+/JCkgx0jp41WIEWCarw0cbFeOgLc7pyZCAHNUS8WCXQfBEcDHpxUOO9FQZqQe67Rj4IegfJN7X7gnDgIlXGo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f9TnHEqg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EDFEAC4CEE3;
-	Tue, 17 Jun 2025 16:56:06 +0000 (UTC)
+	 MIME-Version; b=mt7914OBLNUV6+2ALzV6Q2BOtS/fBG3th5KaKAzAv5nel/iSMbWnCdjygpf1ZirIHYJwvIBf9Ngfen0eigEMVDecBMz5T6ESlDFok84Jm6efPGrvptrrtEQkbus2+/UgXdPiTdGhadWnEZEZMTqDPxXQef8zeKzXaGdufmy617k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H0K16aA7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37B9CC4CEE3;
+	Tue, 17 Jun 2025 16:13:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750179367;
-	bh=HUJmnm6QzfM5YxHOq788X8krKx80e2BGeJTsh5SPccg=;
+	s=korg; t=1750176839;
+	bh=1lpkFcYVzl+eAuYnD1mGq1VZkfiPkUgMQj/wLQN3H40=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=f9TnHEqgSJyNWOPdk4NG8rd7K51H2fK8gOqAZrLYn5tL/mN79rHA4UJBLXhryKKZ1
-	 TFEfUcfCSD4syoP1KY918gq7k5h0FxJncu7wTMHN/9Y/WpOXu+gxdpI4YDf/GrOAwz
-	 Wnti8+7LS7WpDNJDJzRi9i3SiYwrob6iZyx2JvOE=
+	b=H0K16aA7JNklHGh3v7zhNKpx+Uxi7VmY8WbOnAZ8reWNnrUToPG57bNMjRLkV37kJ
+	 F5k5eTYpd1hUxLZbuSl2VZpbkOO9YukNaMgPKvmD9w0zSCn/XvlnCmfzj3ixp0uS7z
+	 v9F5SdaFkfgdGslvMlpiCUPAr03gmbDklDA4hUL4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Filipe Manana <fdmanana@suse.com>,
-	David Sterba <dsterba@suse.com>,
+	Jakub Raczynski <j.raczynski@samsung.com>,
+	Wenjing Shan <wenjing.shan@samsung.com>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 724/780] btrfs: exit after state insertion failure at btrfs_convert_extent_bit()
-Date: Tue, 17 Jun 2025 17:27:12 +0200
-Message-ID: <20250617152520.976125044@linuxfoundation.org>
+Subject: [PATCH 6.6 318/356] net/mdiobus: Fix potential out-of-bounds read/write access
+Date: Tue, 17 Jun 2025 17:27:13 +0200
+Message-ID: <20250617152350.962012905@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
-References: <20250617152451.485330293@linuxfoundation.org>
+In-Reply-To: <20250617152338.212798615@linuxfoundation.org>
+References: <20250617152338.212798615@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,44 +63,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Filipe Manana <fdmanana@suse.com>
+From: Jakub Raczynski <j.raczynski@samsung.com>
 
-[ Upstream commit 3bf179e36da917c5d9bec71c714573ed1649b7c1 ]
+[ Upstream commit 0e629694126ca388916f059453a1c36adde219c4 ]
 
-If insert_state() state failed it returns an error pointer and we call
-extent_io_tree_panic() which will trigger a BUG() call. However if
-CONFIG_BUG is disabled, which is an uncommon and exotic scenario, then
-we fallthrough and call cache_state() which will dereference the error
-pointer, resulting in an invalid memory access.
+When using publicly available tools like 'mdio-tools' to read/write data
+from/to network interface and its PHY via mdiobus, there is no verification of
+parameters passed to the ioctl and it accepts any mdio address.
+Currently there is support for 32 addresses in kernel via PHY_MAX_ADDR define,
+but it is possible to pass higher value than that via ioctl.
+While read/write operation should generally fail in this case,
+mdiobus provides stats array, where wrong address may allow out-of-bounds
+read/write.
 
-So jump to the 'out' label after calling extent_io_tree_panic(), it also
-makes the code more clear besides dealing with the exotic scenario where
-CONFIG_BUG is disabled.
+Fix that by adding address verification before read/write operation.
+While this excludes this access from any statistics, it improves security of
+read/write operation.
 
-Signed-off-by: Filipe Manana <fdmanana@suse.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
+Fixes: 080bb352fad00 ("net: phy: Maintain MDIO device and bus statistics")
+Signed-off-by: Jakub Raczynski <j.raczynski@samsung.com>
+Reported-by: Wenjing Shan <wenjing.shan@samsung.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/extent-io-tree.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/phy/mdio_bus.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/fs/btrfs/extent-io-tree.c b/fs/btrfs/extent-io-tree.c
-index 13de6af279e52..92cfde37b1d33 100644
---- a/fs/btrfs/extent-io-tree.c
-+++ b/fs/btrfs/extent-io-tree.c
-@@ -1456,6 +1456,7 @@ int convert_extent_bit(struct extent_io_tree *tree, u64 start, u64 end,
- 		if (IS_ERR(inserted_state)) {
- 			ret = PTR_ERR(inserted_state);
- 			extent_io_tree_panic(tree, prealloc, "insert", ret);
-+			goto out;
- 		}
- 		cache_state(inserted_state, cached_state);
- 		if (inserted_state == prealloc)
+diff --git a/drivers/net/phy/mdio_bus.c b/drivers/net/phy/mdio_bus.c
+index 25dcaa49ab8be..103998969d44c 100644
+--- a/drivers/net/phy/mdio_bus.c
++++ b/drivers/net/phy/mdio_bus.c
+@@ -850,6 +850,9 @@ int __mdiobus_read(struct mii_bus *bus, int addr, u32 regnum)
+ 
+ 	lockdep_assert_held_once(&bus->mdio_lock);
+ 
++	if (addr >= PHY_MAX_ADDR)
++		return -ENXIO;
++
+ 	if (bus->read)
+ 		retval = bus->read(bus, addr, regnum);
+ 	else
+@@ -879,6 +882,9 @@ int __mdiobus_write(struct mii_bus *bus, int addr, u32 regnum, u16 val)
+ 
+ 	lockdep_assert_held_once(&bus->mdio_lock);
+ 
++	if (addr >= PHY_MAX_ADDR)
++		return -ENXIO;
++
+ 	if (bus->write)
+ 		err = bus->write(bus, addr, regnum, val);
+ 	else
 -- 
 2.39.5
 
