@@ -1,57 +1,61 @@
-Return-Path: <stable+bounces-154204-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153499-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 631D8ADD992
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 19:07:49 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 672C2ADD503
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:16:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 197274A23B5
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:44:32 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AEA2D189C213
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:06:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB27A2EA727;
-	Tue, 17 Jun 2025 16:40:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9FA002EF288;
+	Tue, 17 Jun 2025 16:02:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cD4FQePB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XV/n43Or"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86A7F2EA723;
-	Tue, 17 Jun 2025 16:40:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CAF32E92BC;
+	Tue, 17 Jun 2025 16:02:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750178439; cv=none; b=mcy0nZ22pdbuFpInmDXKruHrr+nmfTwO9WCNhp7Fmih1BOYGqEmQ33kQ2WH6TjkTtyrhG+3C1oByoRQrFOQalX0C7sCJH+omejQ2lOBdkh0L74BjmtRriV9skvOFxZADcJC2sYAQk4jHwoQU9212eRIl5lgoiX2MXQ/iBwjJwc8=
+	t=1750176160; cv=none; b=Wc/WLDnlyqjGuJ0S3Gi2jCVG9JqpdjmQwfipAQtpUQkPtad3pD7l2/zRApCcE7AeQZq3l9X35olvMjCu/ZzqsEf7W0sSNvM6RegQQ81fZ8AnDCN8mkH+hjH361sjFBNicg83YoWXjCYZpeGa+ugm4Ej1jOGXMsYMEvSMkAarGq0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750178439; c=relaxed/simple;
-	bh=ImxE09Gz7YQ3A3Ms0y6Yu60VLCNX+jNVjrdr9j2UNvk=;
+	s=arc-20240116; t=1750176160; c=relaxed/simple;
+	bh=cqJ6KEVFCOIMrkbHhRa47mSLVG7uCywsCHJU5/hQz7g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ai2iUyjZwcXuiXaboVP1wq3lAyq5JLWFxL8PmkG6I+F77HV+VqfP7WiWbpCtzuaNXbXpsxMyy6/jKryS+rIZhBEZYRWkOML95yUA5C6zLEZzTYL6+BgzEBtdFZ72XNqH13FDZ5zDAdcDUmpk0JzINW2hGu0E8Me1oMMHAYiUyKo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cD4FQePB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9BA93C4CEE3;
-	Tue, 17 Jun 2025 16:40:38 +0000 (UTC)
+	 MIME-Version; b=NPLhqXdC1XB27ajFqvneKI9mm3brQqMfa0Pre07mDwGXL1X6U5m7IZgYDaiCIVMcA1UUbErLvj0IajG+80zqJw0i5xUYSkP+aNlxkrLUNWw+SNgEVWteq2tban99/lcuN3zE2lhqo8Wlr8ZQY0ZvoP9yxk3gp03fTQFPSgJkI9E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XV/n43Or; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DBB81C4CEE3;
+	Tue, 17 Jun 2025 16:02:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750178439;
-	bh=ImxE09Gz7YQ3A3Ms0y6Yu60VLCNX+jNVjrdr9j2UNvk=;
+	s=korg; t=1750176160;
+	bh=cqJ6KEVFCOIMrkbHhRa47mSLVG7uCywsCHJU5/hQz7g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cD4FQePB8gaVSwXazDi/WaQ3e7Lg5yo/JuA7tXNkzPWfMAvF6jeLkXZe7Fs7VLr5z
-	 +lIObk/cN+oAM1AUr2Sqn0kz0Mid7wzTWcwgjzkjIbaAAPnUkryfXgSaj/EQAUwUG5
-	 M385nTb9E4+CGhjJRm2exhfYXrO7X9QEMA8JVQ0s=
+	b=XV/n43OrGqHTUb9hFfcJJ8ndGK3GNsWBkV0yarHrvkqSDj0mHKhCK1I3VqoIVR2rY
+	 f7MlOISxbXB39/Zy2LDTgZjSEc+kSj5wIpg1XsMLiS7jmUh58WHFDJdJU8c4PKVH3B
+	 IsnOP3oHWiiHZ4tAYFtvOGxy5SNc9q1irdBSDK04=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexey Gladkov <legion@kernel.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Lee Jones <lee@kernel.org>,
+	Jack Morgenstein <jackm@nvidia.com>,
+	Feng Liu <feliu@nvidia.com>,
+	Vlad Dumitrescu <vdumitrescu@nvidia.com>,
+	Leon Romanovsky <leonro@nvidia.com>,
+	Sharath Srinivasan <sharath.srinivasan@oracle.com>,
+	Kalesh AP <kalesh-anakkur.purayil@broadcom.com>,
+	Jason Gunthorpe <jgg@nvidia.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 460/780] mfd: stmpe-spi: Correct the name used in MODULE_DEVICE_TABLE
+Subject: [PATCH 6.12 202/512] RDMA/cma: Fix hang when cma_netevent_callback fails to queue_work
 Date: Tue, 17 Jun 2025 17:22:48 +0200
-Message-ID: <20250617152510.210110481@linuxfoundation.org>
+Message-ID: <20250617152427.817907236@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
-References: <20250617152451.485330293@linuxfoundation.org>
+In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
+References: <20250617152419.512865572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,42 +67,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexey Gladkov <legion@kernel.org>
+From: Jack Morgenstein <jackm@nvidia.com>
 
-[ Upstream commit 59d60c16ed41475f3b5f7b605e75fbf8e3628720 ]
+[ Upstream commit 92a251c3df8ea1991cd9fe00f1ab0cfce18d7711 ]
 
-The name used in the macro does not exist.
+The cited commit fixed a crash when cma_netevent_callback was called for
+a cma_id while work on that id from a previous call had not yet started.
+The work item was re-initialized in the second call, which corrupted the
+work item currently in the work queue.
 
-drivers/mfd/stmpe-spi.c:132:26: error: use of undeclared identifier 'stmpe_id'
-  132 | MODULE_DEVICE_TABLE(spi, stmpe_id);
+However, it left a problem when queue_work fails (because the item is
+still pending in the work queue from a previous call). In this case,
+cma_id_put (which is called in the work handler) is therefore not
+called. This results in a userspace process hang (zombie process).
 
-Fixes: e789995d5c61 ("mfd: Add support for STMPE SPI interface")
-Signed-off-by: Alexey Gladkov <legion@kernel.org>
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Link: https://lore.kernel.org/r/79d5a847303e45a46098f2d827d3d8a249a32be3.1745591072.git.legion@kernel.org
-Signed-off-by: Lee Jones <lee@kernel.org>
+Fix this by calling cma_id_put() if queue_work fails.
+
+Fixes: 45f5dcdd0497 ("RDMA/cma: Fix workqueue crash in cma_netevent_work_handler")
+Link: https://patch.msgid.link/r/4f3640b501e48d0166f312a64fdadf72b059bd04.1747827103.git.leon@kernel.org
+Signed-off-by: Jack Morgenstein <jackm@nvidia.com>
+Signed-off-by: Feng Liu <feliu@nvidia.com>
+Reviewed-by: Vlad Dumitrescu <vdumitrescu@nvidia.com>
+Signed-off-by: Leon Romanovsky <leonro@nvidia.com>
+Reviewed-by: Sharath Srinivasan <sharath.srinivasan@oracle.com>
+Reviewed-by: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
+Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mfd/stmpe-spi.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/infiniband/core/cma.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/mfd/stmpe-spi.c b/drivers/mfd/stmpe-spi.c
-index 792236f56399a..b9cc85ea2c401 100644
---- a/drivers/mfd/stmpe-spi.c
-+++ b/drivers/mfd/stmpe-spi.c
-@@ -129,7 +129,7 @@ static const struct spi_device_id stmpe_spi_id[] = {
- 	{ "stmpe2403", STMPE2403 },
- 	{ }
- };
--MODULE_DEVICE_TABLE(spi, stmpe_id);
-+MODULE_DEVICE_TABLE(spi, stmpe_spi_id);
- 
- static struct spi_driver stmpe_spi_driver = {
- 	.driver = {
+diff --git a/drivers/infiniband/core/cma.c b/drivers/infiniband/core/cma.c
+index 176d0b3e44887..81bc24a346d37 100644
+--- a/drivers/infiniband/core/cma.c
++++ b/drivers/infiniband/core/cma.c
+@@ -5231,7 +5231,8 @@ static int cma_netevent_callback(struct notifier_block *self,
+ 			   neigh->ha, ETH_ALEN))
+ 			continue;
+ 		cma_id_get(current_id);
+-		queue_work(cma_wq, &current_id->id.net_work);
++		if (!queue_work(cma_wq, &current_id->id.net_work))
++			cma_id_put(current_id);
+ 	}
+ out:
+ 	spin_unlock_irqrestore(&id_table_lock, flags);
 -- 
 2.39.5
 
