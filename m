@@ -1,60 +1,55 @@
-Return-Path: <stable+bounces-153832-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-154330-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1EF28ADD71F
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:41:32 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 975A3ADD885
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:56:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 30A7819E3931
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:26:18 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CEBFB189D475
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:49:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B813F2F948E;
-	Tue, 17 Jun 2025 16:20:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC45B2264D6;
+	Tue, 17 Jun 2025 16:47:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vy+0+Ps5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1FcDjDpA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73AB12F9483;
-	Tue, 17 Jun 2025 16:20:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7873E2CCC5;
+	Tue, 17 Jun 2025 16:47:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750177241; cv=none; b=CoS2+343xS9xh+wyURHwQ6sjqssuaLAq+OaokbXT+cT/OH7JTI3Mj+UG0FMCG+MggLCOJXN5X30UcwsGPrAL28duI+b7+LolMHE240Yoo7/CT0bXK3BASnoOOeLmIPlaF8uqGCYPStiib0xXWQZmroZkE2PsR5h9UPsCFtlHuRY=
+	t=1750178851; cv=none; b=YSeKDmhakJkd8VWH0S/va22yttNqz54kvvKIBaHFY9uh+tXDni8b+iyeMnmu1vgHTZkSKAkGfmf4YgWA08UcOsNR1k+zZCam+KSa3TwWYgXrBuc0CX9CUuiE24N5x/KQSQLd9Hr3EETKkT1wQBMILNhhZNwjBBbet+KjySQhErA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750177241; c=relaxed/simple;
-	bh=ef1vQEdwKmFjD6I1x9z/HUcpSx0xnydwrQEx0+mcIU4=;
+	s=arc-20240116; t=1750178851; c=relaxed/simple;
+	bh=CFND/5s+5pJuKgF9/RjZ8tvisOZ3fxqIYmndePlhk7w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=utqR1HvPOId1Gnw7QOub4IVSxhgWsqMzF61WD7ajDppOiga+cJuhWCl2mic52mRjsFC2vL+INoZcDqdKpZspXUnialWpTvcQ7nfK4pYlYZ0L0goWQqxMeWrCPsI/Saho9VlxOXdPzzRwmhB+ElQMTBE614ityyGHrC1nDT7wATY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vy+0+Ps5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CEA65C4CEE3;
-	Tue, 17 Jun 2025 16:20:40 +0000 (UTC)
+	 MIME-Version; b=PAkYoU1pcZFxwB/I0NFVIjl6HBZSccfaEsDk0DZd2pnit1ngvXES9vYLezRfuj6fpnBVLri9VwIxA70mVUi3FSZ3t68HSzgcl5T/UulSrifXUCrnbDH92QlHTZNWK2wwMjWo/kC+p1d+AIjm3iQTNfxa++goh90/S+hZVhvNfLw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1FcDjDpA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DCB7EC4CEF0;
+	Tue, 17 Jun 2025 16:47:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750177241;
-	bh=ef1vQEdwKmFjD6I1x9z/HUcpSx0xnydwrQEx0+mcIU4=;
+	s=korg; t=1750178851;
+	bh=CFND/5s+5pJuKgF9/RjZ8tvisOZ3fxqIYmndePlhk7w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vy+0+Ps5lBfGWSq032DLVrAzQLnxME1xc5vwvTBq9cYoSs5UgP5jpuujnAxUioi1V
-	 spWdCBP0wC6B9NRIdwM5TNotP4stO+/fh3mOUM1s/tdZncpm2sChGEERGeemae11Wo
-	 TgwSB8IGXrieBzknqOVXbQ9aqN3N9ljWG9R7rbss=
+	b=1FcDjDpAWLU8PjIQcenGVp6KNBu+IjWhuJso3bfeZVCY7V93doPXwlbUd3qou8qtn
+	 KLBi9+/LIBHgKz6lk7xcEaCFbL8OP8Bm5dmPcz66Pl7pnv3wSLe1DZ1dGDac2hWoOh
+	 70cVZxJVQMiZeC1Vhtfg08ZbtPSAhdC3jSjWeK3E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hector Martin <marcan@marcan.st>,
-	Alyssa Rosenzweig <alyssa@rosenzweig.io>,
-	Marc Zyngier <maz@kernel.org>,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-	Janne Grunau <j@jannau.net>,
-	"Rob Herring (Arm)" <robh@kernel.org>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 312/512] PCI: apple: Use gpiod_set_value_cansleep in probe flow
+Subject: [PATCH 6.15 570/780] Bluetooth: L2CAP: Fix not responding with L2CAP_CR_LE_ENCRYPTION
 Date: Tue, 17 Jun 2025 17:24:38 +0200
-Message-ID: <20250617152432.256618642@linuxfoundation.org>
+Message-ID: <20250617152514.688924226@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
-References: <20250617152419.512865572@linuxfoundation.org>
+In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
+References: <20250617152451.485330293@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,54 +61,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hector Martin <marcan@marcan.st>
+From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 
-[ Upstream commit 7334364f9de79a9a236dd0243ba574b8d2876e89 ]
+[ Upstream commit 03dba9cea72f977e873e4e60e220fa596959dd8f ]
 
-We're allowed to sleep here, so tell the GPIO core by using
-gpiod_set_value_cansleep instead of gpiod_set_value.
+Depending on the security set the response to L2CAP_LE_CONN_REQ shall be
+just L2CAP_CR_LE_ENCRYPTION if only encryption when BT_SECURITY_MEDIUM
+is selected since that means security mode 2 which doesn't require
+authentication which is something that is covered in the qualification
+test L2CAP/LE/CFC/BV-25-C.
 
-Fixes: 1e33888fbe44 ("PCI: apple: Add initial hardware bring-up")
-Signed-off-by: Hector Martin <marcan@marcan.st>
-Signed-off-by: Alyssa Rosenzweig <alyssa@rosenzweig.io>
-Signed-off-by: Marc Zyngier <maz@kernel.org>
-Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Tested-by: Janne Grunau <j@jannau.net>
-Reviewed-by: Rob Herring (Arm) <robh@kernel.org>
-Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Acked-by: Alyssa Rosenzweig <alyssa@rosenzweig.io>
-Link: https://patch.msgid.link/20250401091713.2765724-12-maz@kernel.org
+Link: https://github.com/bluez/bluez/issues/1270
+Fixes: 27e2d4c8d28b ("Bluetooth: Add basic LE L2CAP connect request receiving support")
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/controller/pcie-apple.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ net/bluetooth/l2cap_core.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/pci/controller/pcie-apple.c b/drivers/pci/controller/pcie-apple.c
-index fefab2758a064..ddc65368e77d1 100644
---- a/drivers/pci/controller/pcie-apple.c
-+++ b/drivers/pci/controller/pcie-apple.c
-@@ -541,7 +541,7 @@ static int apple_pcie_setup_port(struct apple_pcie *pcie,
- 	rmw_set(PORT_APPCLK_EN, port->base + PORT_APPCLK);
+diff --git a/net/bluetooth/l2cap_core.c b/net/bluetooth/l2cap_core.c
+index 042d3ac3b4a38..a5bde5db58efc 100644
+--- a/net/bluetooth/l2cap_core.c
++++ b/net/bluetooth/l2cap_core.c
+@@ -4870,7 +4870,8 @@ static int l2cap_le_connect_req(struct l2cap_conn *conn,
  
- 	/* Assert PERST# before setting up the clock */
--	gpiod_set_value(reset, 1);
-+	gpiod_set_value_cansleep(reset, 1);
- 
- 	ret = apple_pcie_setup_refclk(pcie, port);
- 	if (ret < 0)
-@@ -552,7 +552,7 @@ static int apple_pcie_setup_port(struct apple_pcie *pcie,
- 
- 	/* Deassert PERST# */
- 	rmw_set(PORT_PERST_OFF, port->base + PORT_PERST);
--	gpiod_set_value(reset, 0);
-+	gpiod_set_value_cansleep(reset, 0);
- 
- 	/* Wait for 100ms after PERST# deassertion (PCIe r5.0, 6.6.1) */
- 	msleep(100);
+ 	if (!smp_sufficient_security(conn->hcon, pchan->sec_level,
+ 				     SMP_ALLOW_STK)) {
+-		result = L2CAP_CR_LE_AUTHENTICATION;
++		result = pchan->sec_level == BT_SECURITY_MEDIUM ?
++			L2CAP_CR_LE_ENCRYPTION : L2CAP_CR_LE_AUTHENTICATION;
+ 		chan = NULL;
+ 		goto response_unlock;
+ 	}
 -- 
 2.39.5
 
