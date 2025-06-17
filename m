@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-154438-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153963-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF579ADD93C
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 19:04:18 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 48144ADD7BB
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:48:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 209101BC2910
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:54:37 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7D53516379B
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:32:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D89002DF3E9;
-	Tue, 17 Jun 2025 16:53:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5CE7D2ECD08;
+	Tue, 17 Jun 2025 16:27:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="koIbH1dg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bhb684Zz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 957A82DE1E5;
-	Tue, 17 Jun 2025 16:53:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A78B8F54;
+	Tue, 17 Jun 2025 16:27:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750179192; cv=none; b=Pt7253BRPVcnOlAi3xbDJkPvBZYx8dxbgZVvnlhJyOEMECt0WYRBc0GNRJYDYEg+7Z1Y5lhYolm7D8jisNTonHixFwEiyH9YXr3iElMz/nIb0Y3PM3X0nqsO7hC0V5qgm5hr4FWsTg4U5QaVLy29JZu5t/9lsOAEI2hn0K0Jpd8=
+	t=1750177662; cv=none; b=eTBqChudGxSsyoIV4oAfBp1iDiKBva8qATgkWimn9erxJklg7fwfsc0CJfyGU3hYX+qKmUIGFY6ie3bHEUBI0xiZkpEyvhOAePEv1Yz+QkMALW5FpgXJ07vuOr3qz8KdMWkkV/4Mbc3RCMPrtiSlyLKZF0RVRP5OWy1shT38/kQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750179192; c=relaxed/simple;
-	bh=eoa/O7dZTYiV2bwc6ZzqXOym/QSWuAiXQ0qulVU3Eak=;
+	s=arc-20240116; t=1750177662; c=relaxed/simple;
+	bh=pV38S/SUkuX+0gBB24UyzF2U8cBe+5hroHnBP4KkpQE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=lPrfA8O5/ZBHN9Gti4czG3KDRxb0DUkFGRwiUBrnBEJPB+xhs9poU8tIvuEnc6yoA/VRUIXkDznzw7HOqai+Nds/KtPS8OOLTmPXLz+niYCz8pgDrhO7Gi8EtVvRUlxzlbolNaHi/OONmtz8tPyDerysquYQyIPsOtPdBjOK2kw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=koIbH1dg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01FF9C4CEE3;
-	Tue, 17 Jun 2025 16:53:11 +0000 (UTC)
+	 MIME-Version; b=N6EZCT8SpHCYwu3RXygL4eDRcflBcAgCv4Vt8Nav7V/YjcN8J1tGo+Rs8Yw9uJxKAefeqtGVULLwAplbNw3gX7nhPzpfEZjemucfUFtIAwdnrGkT591xXJtqAa0fVV+cqxGWtcglC4IHrlueHbY5v2zjUTzk/So9xfVF79x1M7A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bhb684Zz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D200C4CEE3;
+	Tue, 17 Jun 2025 16:27:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750179192;
-	bh=eoa/O7dZTYiV2bwc6ZzqXOym/QSWuAiXQ0qulVU3Eak=;
+	s=korg; t=1750177662;
+	bh=pV38S/SUkuX+0gBB24UyzF2U8cBe+5hroHnBP4KkpQE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=koIbH1dgc/fKvJkhx029lqzuyhGNmMXVQigXnheK59mdeuXi9yeM3rDGerbvOUWyy
-	 KSFDtBYLnd2kfyoovyZbm7jRM85XTwmctKQxWLw99GVUij9Tnrg+S4pKGgaY3x3iI3
-	 bEbVrPfX0MmQEgy/zWBDe2qev0IxVOuMTOnbPxHg=
+	b=bhb684Zzw4dTlIUJNrxFeoWy7ySt9HXDpJjOd2An63iXXEOBR4jabdC4+IS9Pz/UH
+	 c7IC0drFDoQ+ZZ2SvBupYKOo2Hln+qmJgIktTw13mbQygQ4/pTJOeTvxogrjmX9PP9
+	 MpkO5UJhaXV3cUEMgFISHtO5HKpRz0xn911Uzzb4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Amadeusz=20S=C5=82awi=C5=84ski?= <amadeuszx.slawinski@linux.intel.com>,
-	Cezary Rojewski <cezary.rojewski@intel.com>,
-	Mark Brown <broonie@kernel.org>,
+	Meghana Malladi <m-malladi@ti.com>,
+	Simon Horman <horms@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 636/780] ASoC: Intel: avs: Fix deadlock when the failing IPC is SET_D0IX
+Subject: [PATCH 6.12 378/512] net: ti: icssg-prueth: Fix swapped TX stats for MII interfaces.
 Date: Tue, 17 Jun 2025 17:25:44 +0200
-Message-ID: <20250617152517.376675933@linuxfoundation.org>
+Message-ID: <20250617152434.911742449@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
-References: <20250617152451.485330293@linuxfoundation.org>
+In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
+References: <20250617152419.512865572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,47 +61,51 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cezary Rojewski <cezary.rojewski@intel.com>
+From: Meghana Malladi <m-malladi@ti.com>
 
-[ Upstream commit 9ad1f3cd0d60444c69948854c7e50d2a61b63755 ]
+[ Upstream commit 919d763d609428c2680ec8159257d9655f002f89 ]
 
-The procedure handling IPC timeouts and EXCEPTION_CAUGHT notification
-shall cancel any D0IX work before proceeding with DSP recovery. If
-SET_D0IX called from delayed_work is the failing IPC the procedure will
-deadlock. Conditionally skip cancelling the work to fix that.
+In MII mode, Tx lines are swapped for port0 and port1, which means
+Tx port0 receives data from PRU1 and the Tx port1 receives data from
+PRU0. This is an expected hardware behavior and reading the Tx stats
+needs to be handled accordingly in the driver. Update the driver to
+read Tx stats from the PRU1 for port0 and PRU0 for port1.
 
-Fixes: 335c4cbd201d ("ASoC: Intel: avs: D0ix power state support")
-Reviewed-by: Amadeusz Sławiński <amadeuszx.slawinski@linux.intel.com>
-Signed-off-by: Cezary Rojewski <cezary.rojewski@intel.com>
-Link: https://patch.msgid.link/20250530141025.2942936-3-cezary.rojewski@intel.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: c1e10d5dc7a1 ("net: ti: icssg-prueth: Add ICSSG Stats")
+Signed-off-by: Meghana Malladi <m-malladi@ti.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20250603052904.431203-1-m-malladi@ti.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/intel/avs/ipc.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/ti/icssg/icssg_stats.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/sound/soc/intel/avs/ipc.c b/sound/soc/intel/avs/ipc.c
-index 08ed9d96738a0..0314f9d4ea5f4 100644
---- a/sound/soc/intel/avs/ipc.c
-+++ b/sound/soc/intel/avs/ipc.c
-@@ -169,7 +169,9 @@ static void avs_dsp_exception_caught(struct avs_dev *adev, union avs_notify_msg
+diff --git a/drivers/net/ethernet/ti/icssg/icssg_stats.c b/drivers/net/ethernet/ti/icssg/icssg_stats.c
+index 6f0edae38ea24..172ae38381b45 100644
+--- a/drivers/net/ethernet/ti/icssg/icssg_stats.c
++++ b/drivers/net/ethernet/ti/icssg/icssg_stats.c
+@@ -29,6 +29,14 @@ void emac_update_hardware_stats(struct prueth_emac *emac)
+ 	spin_lock(&prueth->stats_lock);
  
- 	dev_crit(adev->dev, "communication severed, rebooting dsp..\n");
- 
--	cancel_delayed_work_sync(&ipc->d0ix_work);
-+	/* Avoid deadlock as the exception may be the response to SET_D0IX. */
-+	if (current_work() != &ipc->d0ix_work.work)
-+		cancel_delayed_work_sync(&ipc->d0ix_work);
- 	ipc->in_d0ix = false;
- 	/* Re-enabled on recovery completion. */
- 	pm_runtime_disable(adev->dev);
+ 	for (i = 0; i < ARRAY_SIZE(icssg_all_miig_stats); i++) {
++		/* In MII mode TX lines are swapped inside ICSSG, so read Tx stats
++		 * from slice1 for port0 and slice0 for port1 to get accurate Tx
++		 * stats for a given port
++		 */
++		if (emac->phy_if == PHY_INTERFACE_MODE_MII &&
++		    icssg_all_miig_stats[i].offset >= ICSSG_TX_PACKET_OFFSET &&
++		    icssg_all_miig_stats[i].offset <= ICSSG_TX_BYTE_OFFSET)
++			base = stats_base[slice ^ 1];
+ 		regmap_read(prueth->miig_rt,
+ 			    base + icssg_all_miig_stats[i].offset,
+ 			    &val);
 -- 
 2.39.5
 
