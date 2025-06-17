@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-154010-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-154012-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 339DDADD77E
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:45:12 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6B25BADD82D
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:52:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 744912C1AAF
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:36:19 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6BD674A5EA8
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:36:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45EE52F19A6;
-	Tue, 17 Jun 2025 16:30:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D99F52F1995;
+	Tue, 17 Jun 2025 16:30:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Cli885Gt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R5RezfR8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 021542F19A0;
-	Tue, 17 Jun 2025 16:30:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94CAA2F198B;
+	Tue, 17 Jun 2025 16:30:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750177816; cv=none; b=kCzjklLmaal5CV7Y/2k+a9gHGcmfBlWudNuB/EbvlBORP9v40EnHoGpaYoUqShZRqLBTL21OeEq7v4Xt1oibek6/hiZ2e1lciQN37yqqIoFcx265hRe4Hebpi9t0i901JMaD3etrLgLQWOJxGNdCfNKOcamJzbc4PrgWNQhypBw=
+	t=1750177822; cv=none; b=PpgaJ6Q9zP0YSY1XZ+e6RA8AQyzbcnsrCRGc7F2ypTPSsYeJQiEOi4OayQX/krpgW3Ei1E91mvzFebICFgGNyGQJifwfe/R9nYj9Cq4UG9j3shJtbKhGHbSQqbTVUgpMtOrFqnIs7axOl0ablrUhMRhtdLhDh8Xn1z3+uJkvedQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750177816; c=relaxed/simple;
-	bh=TyN3ys2Dlidln4QxL7t5IDeINumH94fY94Q4cBzsyQ8=;
+	s=arc-20240116; t=1750177822; c=relaxed/simple;
+	bh=W+N46b8+ci+NiTdJH7uuuHf52KnSEyDPO5ikvw9k/SY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iD51eCIQ/cAem1uA1U6TJlWr/ALe22ecpPTZtFQtP7LxbRs9sGzB/3+NEqFPASESJuGMV6FSTk52x3darXnODpgxpBedfRqYJ1C3199sFt65Zxv1rUAFYQal2dED157cnn99+eo97AmmFNmTIImLSxqrEwDU/jUgumgyslGSJKE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Cli885Gt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66B1AC4CEE3;
-	Tue, 17 Jun 2025 16:30:15 +0000 (UTC)
+	 MIME-Version; b=VhbRlHv4SFY07EWfEEQqXsGALjmtGP5l5nY0CdWQBv5tFMHg7UxODsWCEPi6w73DcmHL7dcdRPmmod756gUEC92q2IfkcR2pe9gvhd16jbEoK4k0V5L0IggAss11P3rqeOfGncM6are9tHGQ76v+pDTT8M2NiRz+SYWbW8G9PFc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R5RezfR8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EDEEAC4CEE3;
+	Tue, 17 Jun 2025 16:30:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750177815;
-	bh=TyN3ys2Dlidln4QxL7t5IDeINumH94fY94Q4cBzsyQ8=;
+	s=korg; t=1750177822;
+	bh=W+N46b8+ci+NiTdJH7uuuHf52KnSEyDPO5ikvw9k/SY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Cli885Gt3kfKoeZzhxpvT30dYCODpZXfFqI6EFUeIrCuQIYu0XN9cVBQfu3nPbKGL
-	 6WZCccnto2EgN4H12WL8xDRD0oSR36Pdn7jPJi9oN2OwoR78YRxBfhUVDl/JyMEHA5
-	 iLBwPNA2NmIjJL6X0ZT8xg2xVWqY3UOQKi1ey1zM=
+	b=R5RezfR8mSwx9rDyhUJUzlv6iBU2d/jYSuPWKXYA7jbKNIDjS0fHa33rAmJwVpCJJ
+	 ZE69jgZVrAJPGeHdZHd04zPl0QldtA6JBFUfEdnO21L7DmPjiAX6tXrUTxXoK66zCW
+	 ppjarHEW/up1rwWQNk1ryRgzm4bM1eg0Oe+VuTgk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chen-Yu Tsai <wenst@chromium.org>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Alexey Minnekhanov <alexeymin@postmarketos.org>,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 367/780] arm64: dts: mediatek: mt8195: Reparent vdec1/2 and venc1 power domains
-Date: Tue, 17 Jun 2025 17:21:15 +0200
-Message-ID: <20250617152506.397955632@linuxfoundation.org>
+Subject: [PATCH 6.15 368/780] arm64: dts: qcom: sdm660-xiaomi-lavender: Add missing SD card detect GPIO
+Date: Tue, 17 Jun 2025 17:21:16 +0200
+Message-ID: <20250617152506.438040730@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
 References: <20250617152451.485330293@linuxfoundation.org>
@@ -66,107 +67,37 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+From: Alexey Minnekhanov <alexeymin@postmarketos.org>
 
-[ Upstream commit 394f29033324e2317bfd6a7ed99b9a60832b36a2 ]
+[ Upstream commit 2eca6af66709de0d1ba14cdf8b6d200a1337a3a2 ]
 
-By hardware, the first and second core of the video decoder IP
-need the VDEC_SOC to be powered up in order to be able to be
-accessed (both internally, by firmware, and externally, by the
-kernel).
-Similarly, for the video encoder IP, the second core needs the
-first core to be powered up in order to be accessible.
+During initial porting these cd-gpios were missed. Having card detect is
+beneficial because driver does not need to do polling every second and it
+can just use IRQ. SD card detection in U-Boot is also fixed by this.
 
-Fix that by reparenting the VDEC1/2 power domains to be children
-of VDEC0 (VDEC_SOC), and the VENC1 to be a child of VENC0.
-
-Fixes: 2b515194bf0c ("arm64: dts: mt8195: Add power domains controller")
-Reviewed-by: Chen-Yu Tsai <wenst@chromium.org>
-Link: https://lore.kernel.org/r/20250402090615.25871-3-angelogioacchino.delregno@collabora.com
-Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Fixes: cf85e9aee210 ("arm64: dts: qcom: sdm660-xiaomi-lavender: Add eMMC and SD")
+Signed-off-by: Alexey Minnekhanov <alexeymin@postmarketos.org>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Link: https://lore.kernel.org/r/20250415130101.1429281-1-alexeymin@postmarketos.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/mediatek/mt8195.dtsi | 50 +++++++++++++-----------
- 1 file changed, 27 insertions(+), 23 deletions(-)
+ arch/arm64/boot/dts/qcom/sdm660-xiaomi-lavender.dts | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/arch/arm64/boot/dts/mediatek/mt8195.dtsi b/arch/arm64/boot/dts/mediatek/mt8195.dtsi
-index 4f2dc0a755661..1ded4b3f87605 100644
---- a/arch/arm64/boot/dts/mediatek/mt8195.dtsi
-+++ b/arch/arm64/boot/dts/mediatek/mt8195.dtsi
-@@ -617,22 +617,6 @@
- 					#size-cells = <0>;
- 					#power-domain-cells = <1>;
+diff --git a/arch/arm64/boot/dts/qcom/sdm660-xiaomi-lavender.dts b/arch/arm64/boot/dts/qcom/sdm660-xiaomi-lavender.dts
+index 7167f75bced3f..0b4d71c14a772 100644
+--- a/arch/arm64/boot/dts/qcom/sdm660-xiaomi-lavender.dts
++++ b/arch/arm64/boot/dts/qcom/sdm660-xiaomi-lavender.dts
+@@ -404,6 +404,8 @@
+ &sdhc_2 {
+ 	status = "okay";
  
--					power-domain@MT8195_POWER_DOMAIN_VDEC1 {
--						reg = <MT8195_POWER_DOMAIN_VDEC1>;
--						clocks = <&vdecsys CLK_VDEC_LARB1>;
--						clock-names = "vdec1-0";
--						mediatek,infracfg = <&infracfg_ao>;
--						#power-domain-cells = <0>;
--					};
--
--					power-domain@MT8195_POWER_DOMAIN_VENC_CORE1 {
--						reg = <MT8195_POWER_DOMAIN_VENC_CORE1>;
--						clocks = <&vencsys_core1 CLK_VENC_CORE1_LARB>;
--						clock-names = "venc1-larb";
--						mediatek,infracfg = <&infracfg_ao>;
--						#power-domain-cells = <0>;
--					};
--
- 					power-domain@MT8195_POWER_DOMAIN_VDOSYS0 {
- 						reg = <MT8195_POWER_DOMAIN_VDOSYS0>;
- 						clocks = <&topckgen CLK_TOP_CFG_VDO0>,
-@@ -678,15 +662,25 @@
- 							clocks = <&vdecsys_soc CLK_VDEC_SOC_LARB1>;
- 							clock-names = "vdec0-0";
- 							mediatek,infracfg = <&infracfg_ao>;
-+							#address-cells = <1>;
-+							#size-cells = <0>;
- 							#power-domain-cells = <0>;
--						};
- 
--						power-domain@MT8195_POWER_DOMAIN_VDEC2 {
--							reg = <MT8195_POWER_DOMAIN_VDEC2>;
--							clocks = <&vdecsys_core1 CLK_VDEC_CORE1_LARB1>;
--							clock-names = "vdec2-0";
--							mediatek,infracfg = <&infracfg_ao>;
--							#power-domain-cells = <0>;
-+							power-domain@MT8195_POWER_DOMAIN_VDEC1 {
-+								reg = <MT8195_POWER_DOMAIN_VDEC1>;
-+								clocks = <&vdecsys CLK_VDEC_LARB1>;
-+								clock-names = "vdec1-0";
-+								mediatek,infracfg = <&infracfg_ao>;
-+								#power-domain-cells = <0>;
-+							};
++	cd-gpios = <&tlmm 54 GPIO_ACTIVE_HIGH>;
 +
-+							power-domain@MT8195_POWER_DOMAIN_VDEC2 {
-+								reg = <MT8195_POWER_DOMAIN_VDEC2>;
-+								clocks = <&vdecsys_core1 CLK_VDEC_CORE1_LARB1>;
-+								clock-names = "vdec2-0";
-+								mediatek,infracfg = <&infracfg_ao>;
-+								#power-domain-cells = <0>;
-+							};
- 						};
- 
- 						power-domain@MT8195_POWER_DOMAIN_VENC {
-@@ -694,7 +688,17 @@
- 							clocks = <&vencsys CLK_VENC_LARB>;
- 							clock-names = "venc0-larb";
- 							mediatek,infracfg = <&infracfg_ao>;
-+							#address-cells = <1>;
-+							#size-cells = <0>;
- 							#power-domain-cells = <0>;
-+
-+							power-domain@MT8195_POWER_DOMAIN_VENC_CORE1 {
-+								reg = <MT8195_POWER_DOMAIN_VENC_CORE1>;
-+								clocks = <&vencsys_core1 CLK_VENC_CORE1_LARB>;
-+								clock-names = "venc1-larb";
-+								mediatek,infracfg = <&infracfg_ao>;
-+								#power-domain-cells = <0>;
-+							};
- 						};
- 
- 						power-domain@MT8195_POWER_DOMAIN_VDOSYS1 {
+ 	vmmc-supply = <&vreg_l5b_2p95>;
+ 	vqmmc-supply = <&vreg_l2b_2p95>;
+ };
 -- 
 2.39.5
 
