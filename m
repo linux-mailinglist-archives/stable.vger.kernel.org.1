@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-153575-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-154056-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6C569ADD51E
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:17:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 27B7CADD7B5
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:48:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 81EF62C56BC
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:10:10 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BD7B2161E76
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:38:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 970AE2DFF1D;
-	Tue, 17 Jun 2025 16:06:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C38112EF291;
+	Tue, 17 Jun 2025 16:32:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MyB26fgM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u+ENbhNX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51EC72DFF10;
-	Tue, 17 Jun 2025 16:06:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 807122ECEA6;
+	Tue, 17 Jun 2025 16:32:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750176405; cv=none; b=Qvjnsq3FILA/4DG7Pj4WvQox46AdUvx28nG9gUrA75Um8vxUWAi5YfxqTukp7RuL/PI2CZ1Ybg2avKQ1+PiwEZ6varPczxPfJRhQiTVhXJQmnGtX/33j73YGWWHszLmCoenfktTtaApCrATB8a/7g6mNzUsonHXBPjVcAHaoQb0=
+	t=1750177961; cv=none; b=iEoAkC4fQmEaFQVx8aM1cFdPKbVEQSgbWFT4fA5rxadaZYrjRo2gWA4rXJf0HSYqd0D6wkz8gKw4ERDTwGpUECZIj5dVDS7RAyI6BXxN925rd5lMlZx2M0ENiJ/nFi87p05A6ptsotKUFprbiwzy82awI4dgjFg+Va66v2gWkSg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750176405; c=relaxed/simple;
-	bh=9tCqIa0oY87+hi2UfkrB7fpl6uxSXwZujsywTM10DrU=;
+	s=arc-20240116; t=1750177961; c=relaxed/simple;
+	bh=rgXdq9XGbRufHQKV8IPsYxnQFy2TLHuna6QbdQTKBSc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AO6Y6RAxsGDgbOVoSpvGJlMdKofzMh5MwS6OtmE3xjS26PEp/3b0/IceqNSoW+lCu1x2rWkob4gTsONx8XhY4aBu/hZT4hZHWlb4WhCBvsngglaCvj7iEOFRNe9XPkoGJ6VryX6guLP3JFV+d24KeIizGF5Ej1BD7lkDoC6R8iQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MyB26fgM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3B68C4CEE3;
-	Tue, 17 Jun 2025 16:06:44 +0000 (UTC)
+	 MIME-Version; b=HsENOzjjFtWAgG52ign7kzbLalf+M/jYOCoWYWlK79labx0jDrsj0rH90uqp3Bav6pbBgt2vFlAvZ3m7ArNQ/96C1pNmv4PXPa0t1uD7FwCmxeJJBayNmyMppzrAex2q/4gziGrap8G3FluoMJlp6GfCvsjPxxVS7vlq6ZYKyX0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u+ENbhNX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A202FC4CEE3;
+	Tue, 17 Jun 2025 16:32:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750176405;
-	bh=9tCqIa0oY87+hi2UfkrB7fpl6uxSXwZujsywTM10DrU=;
+	s=korg; t=1750177961;
+	bh=rgXdq9XGbRufHQKV8IPsYxnQFy2TLHuna6QbdQTKBSc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MyB26fgMIFhjMh1Bx3RvXwNvdfggXhBh7CeX+KpV7jXLaL9oEYsICn8lQ0Z8TycMY
-	 rX2l3aPa4IssNVmTjcYymubE+0cnX8Y0MjOWooM2NarKJ0jDcMTqxdhicGw3B01qV4
-	 BQWmyW1OBkdq2lGQu+oif3BUcuBZmCP8WRWIkTms=
+	b=u+ENbhNXI1A4BiJ4YoQWeKGiFlKnALzLNfSELbSE/AJonZyD1ywrHbU2re74PCo6c
+	 AorvKKHSH4k8bUY4dYQEB7wOZ137ufI+XjPjwWEAXjKPB5sqZjnyaqVp5Aj4yFPRTV
+	 kcru3bVEMliGPToc+8EvglbJvURWTlRvW7TisXdI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christian Brauner <brauner@kernel.org>,
-	Al Viro <viro@zeniv.linux.org.uk>,
+	"Dr. David Alan Gilbert" <linux@treblig.org>,
+	Simon Horman <horms@kernel.org>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 274/356] path_overmount(): avoid false negatives
-Date: Tue, 17 Jun 2025 17:26:29 +0200
-Message-ID: <20250617152349.225203148@linuxfoundation.org>
+Subject: [PATCH 6.12 424/512] Bluetooth: MGMT: Remove unused mgmt_pending_find_data
+Date: Tue, 17 Jun 2025 17:26:30 +0200
+Message-ID: <20250617152436.753734404@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152338.212798615@linuxfoundation.org>
-References: <20250617152338.212798615@linuxfoundation.org>
+In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
+References: <20250617152419.512865572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,70 +63,72 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Al Viro <viro@zeniv.linux.org.uk>
+From: Dr. David Alan Gilbert <linux@treblig.org>
 
-[ Upstream commit 5f31c549382bcddbbd754c72c5433b19420d485d ]
+[ Upstream commit 276af34d82f13bda0b2a4d9786c90b8bbf1cd064 ]
 
-Holding namespace_sem is enough to make sure that result remains valid.
-It is *not* enough to avoid false negatives from __lookup_mnt().  Mounts
-can be unhashed outside of namespace_sem (stuck children getting detached
-on final mntput() of lazy-umounted mount) and having an unrelated mount
-removed from the hash chain while we traverse it may end up with false
-negative from __lookup_mnt().  We need to sample and recheck the seqlock
-component of mount_lock...
+mgmt_pending_find_data() last use was removed in 2021 by
+commit 5a7501374664 ("Bluetooth: hci_sync: Convert MGMT_OP_GET_CLOCK_INFO")
 
-Bug predates the introduction of path_overmount() - it had come from
-the code in finish_automount() that got abstracted into that helper.
+Remove it.
 
-Reviewed-by: Christian Brauner <brauner@kernel.org>
-Fixes: 26df6034fdb2 ("fix automount/automount race properly")
-Fixes: 6ac392815628 ("fs: allow to mount beneath top mount")
-Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
+Signed-off-by: Dr. David Alan Gilbert <linux@treblig.org>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Stable-dep-of: 6fe26f694c82 ("Bluetooth: MGMT: Protect mgmt_pending list with its own lock")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/namespace.c | 19 +++++++++++++------
- 1 file changed, 13 insertions(+), 6 deletions(-)
+ net/bluetooth/mgmt_util.c | 17 -----------------
+ net/bluetooth/mgmt_util.h |  4 ----
+ 2 files changed, 21 deletions(-)
 
-diff --git a/fs/namespace.c b/fs/namespace.c
-index ef3b2ae2957ec..7942a33451ba0 100644
---- a/fs/namespace.c
-+++ b/fs/namespace.c
-@@ -3020,18 +3020,25 @@ static int do_set_group(struct path *from_path, struct path *to_path)
-  * Check if path is overmounted, i.e., if there's a mount on top of
-  * @path->mnt with @path->dentry as mountpoint.
-  *
-- * Context: This function expects namespace_lock() to be held.
-+ * Context: namespace_sem must be held at least shared.
-+ * MUST NOT be called under lock_mount_hash() (there one should just
-+ * call __lookup_mnt() and check if it returns NULL).
-  * Return: If path is overmounted true is returned, false if not.
-  */
- static inline bool path_overmounted(const struct path *path)
- {
-+	unsigned seq = read_seqbegin(&mount_lock);
-+	bool no_child;
-+
- 	rcu_read_lock();
--	if (unlikely(__lookup_mnt(path->mnt, path->dentry))) {
--		rcu_read_unlock();
--		return true;
--	}
-+	no_child = !__lookup_mnt(path->mnt, path->dentry);
- 	rcu_read_unlock();
--	return false;
-+	if (need_seqretry(&mount_lock, seq)) {
-+		read_seqlock_excl(&mount_lock);
-+		no_child = !__lookup_mnt(path->mnt, path->dentry);
-+		read_sequnlock_excl(&mount_lock);
-+	}
-+	return unlikely(!no_child);
+diff --git a/net/bluetooth/mgmt_util.c b/net/bluetooth/mgmt_util.c
+index 67db32a60c6a9..3713ff490c65d 100644
+--- a/net/bluetooth/mgmt_util.c
++++ b/net/bluetooth/mgmt_util.c
+@@ -229,23 +229,6 @@ struct mgmt_pending_cmd *mgmt_pending_find(unsigned short channel, u16 opcode,
+ 	return NULL;
  }
  
- /**
+-struct mgmt_pending_cmd *mgmt_pending_find_data(unsigned short channel,
+-						u16 opcode,
+-						struct hci_dev *hdev,
+-						const void *data)
+-{
+-	struct mgmt_pending_cmd *cmd;
+-
+-	list_for_each_entry(cmd, &hdev->mgmt_pending, list) {
+-		if (cmd->user_data != data)
+-			continue;
+-		if (cmd->opcode == opcode)
+-			return cmd;
+-	}
+-
+-	return NULL;
+-}
+-
+ void mgmt_pending_foreach(u16 opcode, struct hci_dev *hdev,
+ 			  void (*cb)(struct mgmt_pending_cmd *cmd, void *data),
+ 			  void *data)
+diff --git a/net/bluetooth/mgmt_util.h b/net/bluetooth/mgmt_util.h
+index bdf978605d5a8..f2ba994ab1d84 100644
+--- a/net/bluetooth/mgmt_util.h
++++ b/net/bluetooth/mgmt_util.h
+@@ -54,10 +54,6 @@ int mgmt_cmd_complete(struct sock *sk, u16 index, u16 cmd, u8 status,
+ 
+ struct mgmt_pending_cmd *mgmt_pending_find(unsigned short channel, u16 opcode,
+ 					   struct hci_dev *hdev);
+-struct mgmt_pending_cmd *mgmt_pending_find_data(unsigned short channel,
+-						u16 opcode,
+-						struct hci_dev *hdev,
+-						const void *data);
+ void mgmt_pending_foreach(u16 opcode, struct hci_dev *hdev,
+ 			  void (*cb)(struct mgmt_pending_cmd *cmd, void *data),
+ 			  void *data);
 -- 
 2.39.5
 
