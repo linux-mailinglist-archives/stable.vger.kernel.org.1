@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-154449-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-154064-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D4B1BADDA01
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 19:12:11 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 24C01ADD7D1
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:49:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 751A01946E86
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:55:16 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 86E142C8356
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:38:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 70AF623771C;
-	Tue, 17 Jun 2025 16:53:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92FC4285049;
+	Tue, 17 Jun 2025 16:33:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="10VKi0cZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dbqeeN5p"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EC992FA622;
-	Tue, 17 Jun 2025 16:53:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 503EE188006;
+	Tue, 17 Jun 2025 16:33:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750179222; cv=none; b=tO+pkui51zMWxZROtscbofbDodXm9WffgKGqxx78oz81bAYj3FfRKyTlxa/d1F0NY4TGj+cnex1rqCbLmgIigkItFqoINHND1UtKnDnaqjMzBdkEyq7q7VNapWVltWyE07V0DtxD9gWwkou6TjvzcQSw4AaUzEm/1QDVrNFJqkM=
+	t=1750177987; cv=none; b=gxEfooXsD7Yvsu7JTZ3haynpltRgFP4z/6eX9/azK0UmZIL9AbeL7waEYW2QKC2e6tWLioHHP2z5Jx9MNcYm2PZpvhK5TphJnN3vuIAfxingTIIGs4ebzesFqfM0wV9go0z9Phtg02GY4kA62KzTLPXhtb5x1g7dRfP2owCTRGM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750179222; c=relaxed/simple;
-	bh=xJ0BwSxFxdUsUIlNJQDdcHSxKk+TgsZ56eVGY9d/bRk=;
+	s=arc-20240116; t=1750177987; c=relaxed/simple;
+	bh=+hca7Cbi6Sbv9nHeLCZTtP6ZHDZHeRFoNAFsf+YKHRM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=FeonUVDEef7K3WCVLuATGod3AT3ua8nD1PBxHodyf9SPJ0dO8tIaQOO3PGR5mb4eKbFJkQ4X6ekcmycizimhfyE6VPWdES2B5ZLVLtdwSgfvd/XUjQsm3V+pzzi0r1okJ29sJ8V5P2ikpwmTplpHwX7DSsj1sX1eHE1RNKkVYiU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=10VKi0cZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9262CC4CEE3;
-	Tue, 17 Jun 2025 16:53:41 +0000 (UTC)
+	 MIME-Version; b=dpWmxKcED69sZCfUS2P3Tr00V8Hk1z7h3N4oLZyejydzJwFmZr/MGiunZj0KNzbVc8BauwvVoqmYJpPtacM2fgZEzLhUYt7sWL8lTOvUOrnh7aUkx1XSn577znWdbxcSHYKJLYGHmrX7HEaA7x/pHMy3N8YF32b4LNw6eouqhhk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dbqeeN5p; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B45C1C4CEE3;
+	Tue, 17 Jun 2025 16:33:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750179222;
-	bh=xJ0BwSxFxdUsUIlNJQDdcHSxKk+TgsZ56eVGY9d/bRk=;
+	s=korg; t=1750177987;
+	bh=+hca7Cbi6Sbv9nHeLCZTtP6ZHDZHeRFoNAFsf+YKHRM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=10VKi0cZuqQ1Xb9QybAd/fzTwcR+QhlVUk34pHxLnucvJ++Y0/Yw6JWwZDIrCH1+H
-	 BX8CACiQidCQvwGkp4zJGU6RQdmOC8KK6WXN6rYVJDgarJqdh/5dKhV9p2DnfpyaE1
-	 UK+MN6ia1o0EqbjRuxKGHyikcuueL8w37QjS9nvE=
+	b=dbqeeN5p0rBgV2uaertH0Ecu5Ia18KQwmPSvoAkGoilIzF2g5mmLqy4cV4rDnbnPn
+	 ALCG/96euVSUDjNJ1HcppjxcfpBBeElq5xFUsb7nFlVDYkIj0jdT2BDfbIJFHGSg9u
+	 jQRtMQ1d7LbtqozWIqbDCSpg51O7OHotfOws7SC4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marcus Wichelmann <marcus.wichelmann@hetzner-cloud.de>,
-	Eric Dumazet <edumazet@google.com>,
-	=?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Caleb Connolly <caleb.connolly@linaro.org>,
+	Loic Poulain <loic.poulain@oss.qualcomm.com>,
+	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 686/780] net_sched: sch_sfq: fix a potential crash on gso_skb handling
+Subject: [PATCH 6.12 428/512] ath10k: snoc: fix unbalanced IRQ enable in crash recovery
 Date: Tue, 17 Jun 2025 17:26:34 +0200
-Message-ID: <20250617152519.428177953@linuxfoundation.org>
+Message-ID: <20250617152436.909693050@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
-References: <20250617152451.485330293@linuxfoundation.org>
+In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
+References: <20250617152419.512865572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,72 +61,53 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Caleb Connolly <caleb.connolly@linaro.org>
 
-[ Upstream commit 82ffbe7776d0ac084031f114167712269bf3d832 ]
+[ Upstream commit 1650d32b92b01db03a1a95d69ee74fcbc34d4b00 ]
 
-SFQ has an assumption of always being able to queue at least one packet.
+In ath10k_snoc_hif_stop() we skip disabling the IRQs in the crash
+recovery flow, but we still unconditionally call enable again in
+ath10k_snoc_hif_start().
 
-However, after the blamed commit, sch->q.len can be inflated by packets
-in sch->gso_skb, and an enqueue() on an empty SFQ qdisc can be followed
-by an immediate drop.
+We can't check the ATH10K_FLAG_CRASH_FLUSH bit since it is cleared
+before hif_start() is called, so instead check the
+ATH10K_SNOC_FLAG_RECOVERY flag and skip enabling the IRQs during crash
+recovery.
 
-Fix sfq_drop() to properly clear q->tail in this situation.
+This fixes unbalanced IRQ enable splats that happen after recovering from
+a crash.
 
-Tested:
-
-ip netns add lb
-ip link add dev to-lb type veth peer name in-lb netns lb
-ethtool -K to-lb tso off                 # force qdisc to requeue gso_skb
-ip netns exec lb ethtool -K in-lb gro on # enable NAPI
-ip link set dev to-lb up
-ip -netns lb link set dev in-lb up
-ip addr add dev to-lb 192.168.20.1/24
-ip -netns lb addr add dev in-lb 192.168.20.2/24
-tc qdisc replace dev to-lb root sfq limit 100
-
-ip netns exec lb netserver
-
-netperf -H 192.168.20.2 -l 100 &
-netperf -H 192.168.20.2 -l 100 &
-netperf -H 192.168.20.2 -l 100 &
-netperf -H 192.168.20.2 -l 100 &
-
-Fixes: a53851e2c321 ("net: sched: explicit locking in gso_cpu fallback")
-Reported-by: Marcus Wichelmann <marcus.wichelmann@hetzner-cloud.de>
-Closes: https://lore.kernel.org/netdev/9da42688-bfaa-4364-8797-e9271f3bdaef@hetzner-cloud.de/
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Toke Høiland-Jørgensen <toke@redhat.com>
-Link: https://patch.msgid.link/20250606165127.3629486-1-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 0e622f67e041 ("ath10k: add support for WCN3990 firmware crash recovery")
+Signed-off-by: Caleb Connolly <caleb.connolly@linaro.org>
+Tested-by: Loic Poulain <loic.poulain@oss.qualcomm.com>
+Link: https://patch.msgid.link/20250318205043.1043148-1-caleb.connolly@linaro.org
+Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sched/sch_sfq.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/net/wireless/ath/ath10k/snoc.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/net/sched/sch_sfq.c b/net/sched/sch_sfq.c
-index b912ad99aa15d..77fa02f2bfcd5 100644
---- a/net/sched/sch_sfq.c
-+++ b/net/sched/sch_sfq.c
-@@ -310,7 +310,10 @@ static unsigned int sfq_drop(struct Qdisc *sch, struct sk_buff **to_free)
- 		/* It is difficult to believe, but ALL THE SLOTS HAVE LENGTH 1. */
- 		x = q->tail->next;
- 		slot = &q->slots[x];
--		q->tail->next = slot->next;
-+		if (slot->next == x)
-+			q->tail = NULL; /* no more active slots */
-+		else
-+			q->tail->next = slot->next;
- 		q->ht[slot->hash] = SFQ_EMPTY_SLOT;
- 		goto drop;
- 	}
+diff --git a/drivers/net/wireless/ath/ath10k/snoc.c b/drivers/net/wireless/ath/ath10k/snoc.c
+index 0fe47d51013c7..59f7ccb33fde3 100644
+--- a/drivers/net/wireless/ath/ath10k/snoc.c
++++ b/drivers/net/wireless/ath/ath10k/snoc.c
+@@ -937,7 +937,9 @@ static int ath10k_snoc_hif_start(struct ath10k *ar)
+ 
+ 	dev_set_threaded(ar->napi_dev, true);
+ 	ath10k_core_napi_enable(ar);
+-	ath10k_snoc_irq_enable(ar);
++	/* IRQs are left enabled when we restart due to a firmware crash */
++	if (!test_bit(ATH10K_SNOC_FLAG_RECOVERY, &ar_snoc->flags))
++		ath10k_snoc_irq_enable(ar);
+ 	ath10k_snoc_rx_post(ar);
+ 
+ 	clear_bit(ATH10K_SNOC_FLAG_RECOVERY, &ar_snoc->flags);
 -- 
 2.39.5
 
