@@ -1,60 +1,56 @@
-Return-Path: <stable+bounces-154168-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-154170-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3BC46ADD83D
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:53:28 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B63FAADD88B
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:57:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B64B74A5F41
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:44:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 692A219E0A3A
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:44:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E7B028504C;
-	Tue, 17 Jun 2025 16:38:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6BD562DFF2A;
+	Tue, 17 Jun 2025 16:38:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eNGBfa+C"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Qlby7CG+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 485FB8F54;
-	Tue, 17 Jun 2025 16:38:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2976D8F54;
+	Tue, 17 Jun 2025 16:38:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750178321; cv=none; b=eC4Vzz8BoitXHKzkLHo4gTUMnM0aHpxVXwTVIOJwkIlbesg3gHqtERBYjWQScfAoXrFdI/5y5XWdnsyNOSzcpYGSTPfsS+keFihnmUieNhHCb1+dzn+oaNeKYjVedUc+3Qv++uZWxFHS/6CDzplgxU2svr4epe9m73rdc/kcwXw=
+	t=1750178328; cv=none; b=kmjD8OxP41n3MiOVkJ6TLc9YAC37+Lhn2a+3eOV8U9U/MmpmzXiy2JbIxq1U7EuPxIGPgGXFcOArZhgJGiCyzZ+vECaRIq/mpF+Ssh3k6HlAYw0RxH+ztmrCR1wsAB5BVWgBQItawWWCxRJP9O1h1Mtkyt0xwfePFyFk2bE0kZg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750178321; c=relaxed/simple;
-	bh=AnsWoaCB7kc+QDZF8z5AIGohtaghZD5ZWfGZfMJblGA=;
+	s=arc-20240116; t=1750178328; c=relaxed/simple;
+	bh=l6H+MxUwxkf+np03lsdtkPFIwWm000kfO10wx30QTD4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ipWRLdYWKZK5ODbjHVvvDLB04P+ujtYkZYtEepunpQAjPqmrgdUrSYvRxzlIazqtR5mComrBO8uTcPCn/EBIvqByx0ky/I0op38sbK1tU+OuJ0Jj4ZWvrpVNO62vCyKH1v8l6OUPbDlDDHX2oSt2+HN/leBmqFydN4XbQmXRvtk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eNGBfa+C; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3751C4CEE3;
-	Tue, 17 Jun 2025 16:38:40 +0000 (UTC)
+	 MIME-Version; b=uhmPChRe/CB5MGkRnWMcesz5TDerHzx7GtHySTBczPoTj4BmHr4y3RbuxQJAaw9Qrzzm3NsqArHgB9z+GCpERtRdLrNP+5UD6K6YRI6iAMeAo1d1ix717LqTUGINznucdBOY5imraxRf3cJYZwia1bmpqr2TeHBJB6QN8vXYjCo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Qlby7CG+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36DD6C4CEE3;
+	Tue, 17 Jun 2025 16:38:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750178321;
-	bh=AnsWoaCB7kc+QDZF8z5AIGohtaghZD5ZWfGZfMJblGA=;
+	s=korg; t=1750178327;
+	bh=l6H+MxUwxkf+np03lsdtkPFIwWm000kfO10wx30QTD4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eNGBfa+CHQaIrkIjZetJJwxFnyeHpJdNR4OMnF3KaDaIt4ZLDNUyaD7k3HPitJwO2
-	 UwLicoxexmcDku2zqsxYz9ff54IupcY+DpuKlb2jeRJoDF6/aY8wS5q6ZUavB7s9eh
-	 BYLVGL2Vo4vhQmt05uGosfKspuPSOGLj0K6PaRuo=
+	b=Qlby7CG+c+kj0+IItiT4WdvBZUj68oMKWARLMZH7XTFrEZ+/Aq+U9vUK4o4HObqe1
+	 NQpwFuMTayqP4scYBf9qKQxMTJnawWV/lU+0H5cSXzxxlzk2/72BTo8Zv64b29swZE
+	 x3LidOjFzoLsTY6FRwx+8N8fh23yuzyLG6eBMWvs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Howard Chu <howardchu95@gmail.com>,
-	Namhyung Kim <namhyung@kernel.org>,
-	Adrian Hunter <adrian.hunter@intel.com>,
+	Michael Petlan <mpetlan@redhat.com>,
 	Ian Rogers <irogers@google.com>,
-	Ingo Molnar <mingo@kernel.org>,
-	Jiri Olsa <jolsa@kernel.org>,
-	Kan Liang <kan.liang@linux.intel.com>,
-	Peter Zijlstra <peterz@infradead.org>,
+	Namhyung Kim <namhyung@kernel.org>,
+	Veronika Molnarova <vmolnaro@redhat.com>,
 	Arnaldo Carvalho de Melo <acme@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 443/780] perf trace: Fix leaks of struct thread in set_filter_loop_pids()
-Date: Tue, 17 Jun 2025 17:22:31 +0200
-Message-ID: <20250617152509.496216934@linuxfoundation.org>
+Subject: [PATCH 6.15 444/780] perf tests: Fix perf report tests installation
+Date: Tue, 17 Jun 2025 17:22:32 +0200
+Message-ID: <20250617152509.536035645@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
 References: <20250617152451.485330293@linuxfoundation.org>
@@ -73,49 +69,42 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Namhyung Kim <namhyung@kernel.org>
+From: Michael Petlan <mpetlan@redhat.com>
 
-[ Upstream commit 30d20fb1f84ad5c92706fe2c6cbb2d4cc293e671 ]
+[ Upstream commit 4bfe27140edf8dd1322326c79f5ae8d29ff7e43d ]
 
-I've found some leaks from 'perf trace -a'.
+There was a copy-paste mistake in the installation commands.
 
-It seems there are more leaks but this is what I can find for now.
+Also, we need to install stderr-whitelist.txt file, which contains
+allowed messages that are printed on stderr and should not cause test
+fail.
 
-Fixes: 082ab9a18e532864 ("perf trace: Filter out 'sshd' in the tracer ancestry in syswide tracing")
-Reviewed-by: Howard Chu <howardchu95@gmail.com>
-Signed-off-by: Namhyung Kim <namhyung@kernel.org>
-Cc: Adrian Hunter <adrian.hunter@intel.com>
+Fixes: 097fe67df1aa9cc7 ("perf testsuite: Install perf-report tests in the 'make install-tests -C tools/perf' target")
+Signed-off-by: Michael Petlan <mpetlan@redhat.com>
 Cc: Ian Rogers <irogers@google.com>
-Cc: Ingo Molnar <mingo@kernel.org>
-Cc: Jiri Olsa <jolsa@kernel.org>
-Cc: Kan Liang <kan.liang@linux.intel.com>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Link: https://lore.kernel.org/r/20250403054213.7021-1-namhyung@kernel.org
-[ split from a larget patch ]
+Cc: Namhyung Kim <namhyung@kernel.org>
+Link: https://lore.kernel.org/r/20250113182605.130719-6-vmolnaro@redhat.com
+Signed-off-by: Veronika Molnarova <vmolnaro@redhat.com>
 Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/builtin-trace.c | 3 +++
- 1 file changed, 3 insertions(+)
+ tools/perf/Makefile.perf | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/tools/perf/builtin-trace.c b/tools/perf/builtin-trace.c
-index f6b23319ea5f6..f98b5efb1f96c 100644
---- a/tools/perf/builtin-trace.c
-+++ b/tools/perf/builtin-trace.c
-@@ -4128,10 +4128,13 @@ static int trace__set_filter_loop_pids(struct trace *trace)
- 		if (!strcmp(thread__comm_str(parent), "sshd") ||
- 		    strstarts(thread__comm_str(parent), "gnome-terminal")) {
- 			pids[nr++] = thread__tid(parent);
-+			thread__put(parent);
- 			break;
- 		}
-+		thread__put(thread);
- 		thread = parent;
- 	}
-+	thread__put(thread);
- 
- 	err = evlist__append_tp_filter_pids(trace->evlist, nr, pids);
- 	if (!err && trace->filter_pids.map)
+diff --git a/tools/perf/Makefile.perf b/tools/perf/Makefile.perf
+index 979d4691221a0..a7ae5637dadee 100644
+--- a/tools/perf/Makefile.perf
++++ b/tools/perf/Makefile.perf
+@@ -1147,7 +1147,8 @@ install-tests: all install-gtk
+ 		$(INSTALL) -d -m 755 '$(DESTDIR_SQ)$(perfexec_instdir_SQ)/tests/shell/base_probe'; \
+ 		$(INSTALL) tests/shell/base_probe/*.sh '$(DESTDIR_SQ)$(perfexec_instdir_SQ)/tests/shell/base_probe'; \
+ 		$(INSTALL) -d -m 755 '$(DESTDIR_SQ)$(perfexec_instdir_SQ)/tests/shell/base_report'; \
+-		$(INSTALL) tests/shell/base_probe/*.sh '$(DESTDIR_SQ)$(perfexec_instdir_SQ)/tests/shell/base_report'; \
++		$(INSTALL) tests/shell/base_report/*.sh '$(DESTDIR_SQ)$(perfexec_instdir_SQ)/tests/shell/base_report'; \
++		$(INSTALL) tests/shell/base_report/*.txt '$(DESTDIR_SQ)$(perfexec_instdir_SQ)/tests/shell/base_report'; \
+ 		$(INSTALL) -d -m 755 '$(DESTDIR_SQ)$(perfexec_instdir_SQ)/tests/shell/coresight' ; \
+ 		$(INSTALL) tests/shell/coresight/*.sh '$(DESTDIR_SQ)$(perfexec_instdir_SQ)/tests/shell/coresight'
+ 	$(Q)$(MAKE) -C tests/shell/coresight install-tests
 -- 
 2.39.5
 
