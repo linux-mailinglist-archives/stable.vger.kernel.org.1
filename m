@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-154301-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153663-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 337A5ADD901
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 19:01:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 74B9EADD5AC
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:24:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 71F6D4A07ED
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:48:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4E43E3BB133
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:16:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A980212B28;
-	Tue, 17 Jun 2025 16:45:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF7B42DFF22;
+	Tue, 17 Jun 2025 16:11:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lHJ76Fnh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Fc+dS3ep"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4583F20C497;
-	Tue, 17 Jun 2025 16:45:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CA4028C024;
+	Tue, 17 Jun 2025 16:11:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750178751; cv=none; b=sSnDaJi9PsFZ+U59LR9ldZMxd22nlbIAPSndVzcT/fU+Qb/SuAvuQURNvs6CioZZr5k9dXakVoUqxkPXkBLWmaPLu9WsRrhDl+W0e2ssOtU5ls4bkODBIizGGwsJ/A3zkTx8nptaYH14RJkA4zTuM4LZbY0yBlM2jnNhUSSnKso=
+	t=1750176689; cv=none; b=bExUgIc3AlfrhGKW44nZHnC2t2ceLMCvQhTSM8vEmHwDZiTzqfNQGLxUh1OFXCFA8Y/dSsOnAS+9kYXNbkQ0XN1XPWxDtEhFmEPHUolgiGz+SlRNqqf6bXR+P3EogI8UdfWMxgGrwxJBFe+9ShaybyfjtjxFwU9rar1mzGEyLdU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750178751; c=relaxed/simple;
-	bh=XYqlDrs3MTM2nDQM9UNm3gA1OBww1PjCEwymFgOl38w=;
+	s=arc-20240116; t=1750176689; c=relaxed/simple;
+	bh=UJambC8+oPdfGi4k4l94NwTtoYs2n7loHeRc0ZjKN3k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uv57jQTErTfqK2dMGetgdUY7VWnvpgWSvd010BsQCcHgTvoRuX2g4777K9RvOHJo/LP6MVdPYnWRwpX2bXFknFwdmTpXwcXtAw5vfL91w3sWKRgIZskmEpmLrlEBKI2RoF/GC1vfKFmtG6pSPF43g1xuVDw4EQIbIr2cs2zS4ug=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lHJ76Fnh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0409C4CEE3;
-	Tue, 17 Jun 2025 16:45:50 +0000 (UTC)
+	 MIME-Version; b=lzFj1nn5LvThoq37T8lfYVTkJ6SuwMCSqnbfzJZYPtSBQQ6w306LVaQt4+xACJtRMF/P8NOrxTEehSzgHw01owXu8eqHdNE0WXxyZKZs/oXUnOBFpxd5gNx+ZQ51ZdHCWDn4r6m1TI2QFSCaycxOL63J3e2i9XQ5C03dqVN4eEw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Fc+dS3ep; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D563C4CEE3;
+	Tue, 17 Jun 2025 16:11:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750178751;
-	bh=XYqlDrs3MTM2nDQM9UNm3gA1OBww1PjCEwymFgOl38w=;
+	s=korg; t=1750176689;
+	bh=UJambC8+oPdfGi4k4l94NwTtoYs2n7loHeRc0ZjKN3k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lHJ76Fnh6wAOsVF/1azMEQsxTUjxzKEVbV+oqYHyZ3YxUcF4iBgHB+FuWFj8+VThj
-	 GZQWBsxvNcEArIvp+Rb0wFhkp5T8zAiDdxwQj6lgQZxzowd7EMTV4F9M7ZcAXbz/24
-	 BqN2519I12IgDR80mtt8Q2qP0nWiq/axEE7R/gQ0=
+	b=Fc+dS3epkqbFTjmKMFxcpXtDtgVYunh+m7VUZohi6RUqmGh2Qr5kt3flT339jmJIX
+	 vhHP3YN953Wg6HyM2Co/B36LHZ8VscX2PKtdSUaTudu5Nw9pp2gl77oIto+y7ZGSVo
+	 nBuQjNBWwQf3MLmUricHYq5N7ZRKXtETNCIuUcL0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Benno Lossin <benno.lossin@proton.me>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Miguel Ojeda <ojeda@kernel.org>,
+	Ryusuke Konishi <konishi.ryusuke@gmail.com>,
+	Wentao Liang <vulab@iscas.ac.cn>,
+	Andrew Morton <akpm@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 512/780] rust: pci: fix docs related to missing Markdown code spans
+Subject: [PATCH 6.12 254/512] nilfs2: do not propagate ENOENT error from nilfs_btree_propagate()
 Date: Tue, 17 Jun 2025 17:23:40 +0200
-Message-ID: <20250617152512.364614672@linuxfoundation.org>
+Message-ID: <20250617152429.890243013@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
-References: <20250617152451.485330293@linuxfoundation.org>
+In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
+References: <20250617152419.512865572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,78 +63,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Miguel Ojeda <ojeda@kernel.org>
+From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
 
-[ Upstream commit 1dbaf8b1bafb8557904eb54b98bb323a3061dd2c ]
+[ Upstream commit 8e39fbb1edbb4ec9d7c1124f403877fc167fcecd ]
 
-In particular:
+In preparation for writing logs, in nilfs_btree_propagate(), which makes
+parent and ancestor node blocks dirty starting from a modified data block
+or b-tree node block, if the starting block does not belong to the b-tree,
+i.e.  is isolated, nilfs_btree_do_lookup() called within the function
+fails with -ENOENT.
 
-  - Add missing Markdown code spans.
+In this case, even though -ENOENT is an internal code, it is propagated to
+the log writer via nilfs_bmap_propagate() and may be erroneously returned
+to system calls such as fsync().
 
-  - Improve title for `DeviceId`, adding a link to the struct in the
-    C side, rather than referring to `bindings::`.
+Fix this issue by changing the error code to -EINVAL in this case, and
+having the bmap layer detect metadata corruption and convert the error
+code appropriately.
 
-  - Convert `TODO` from documentation to a normal comment, and put code
-    in block.
-
-This was found using the Clippy `doc_markdown` lint, which we may want
-to enable.
-
-Fixes: 1bd8b6b2c5d3 ("rust: pci: add basic PCI device / driver abstractions")
-Reviewed-by: Benno Lossin <benno.lossin@proton.me>
-Acked-by: Danilo Krummrich <dakr@kernel.org>
-Link: https://lore.kernel.org/r/20250324210359.1199574-8-ojeda@kernel.org
-[ Prefixed link text with `struct`. - Miguel ]
-Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+Link: https://lkml.kernel.org/r/20250428173808.6452-3-konishi.ryusuke@gmail.com
+Fixes: 1f5abe7e7dbc ("nilfs2: replace BUG_ON and BUG calls triggerable from ioctl")
+Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+Cc: Wentao Liang <vulab@iscas.ac.cn>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- rust/kernel/pci.rs | 15 +++++++++------
- 1 file changed, 9 insertions(+), 6 deletions(-)
+ fs/nilfs2/btree.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/rust/kernel/pci.rs b/rust/kernel/pci.rs
-index c97d6d470b282..bbc453c6d9ea8 100644
---- a/rust/kernel/pci.rs
-+++ b/rust/kernel/pci.rs
-@@ -118,7 +118,9 @@ macro_rules! module_pci_driver {
- };
- }
+diff --git a/fs/nilfs2/btree.c b/fs/nilfs2/btree.c
+index ef5061bb56da1..9c51a4ac2627f 100644
+--- a/fs/nilfs2/btree.c
++++ b/fs/nilfs2/btree.c
+@@ -2103,11 +2103,13 @@ static int nilfs_btree_propagate(struct nilfs_bmap *btree,
  
--/// Abstraction for bindings::pci_device_id.
-+/// Abstraction for the PCI device ID structure ([`struct pci_device_id`]).
-+///
-+/// [`struct pci_device_id`]: https://docs.kernel.org/PCI/pci.html#c.pci_device_id
- #[repr(transparent)]
- #[derive(Clone, Copy)]
- pub struct DeviceId(bindings::pci_device_id);
-@@ -173,7 +175,7 @@ unsafe impl RawDeviceId for DeviceId {
-     }
- }
+ 	ret = nilfs_btree_do_lookup(btree, path, key, NULL, level + 1, 0);
+ 	if (ret < 0) {
+-		if (unlikely(ret == -ENOENT))
++		if (unlikely(ret == -ENOENT)) {
+ 			nilfs_crit(btree->b_inode->i_sb,
+ 				   "writing node/leaf block does not appear in b-tree (ino=%lu) at key=%llu, level=%d",
+ 				   btree->b_inode->i_ino,
+ 				   (unsigned long long)key, level);
++			ret = -EINVAL;
++		}
+ 		goto out;
+ 	}
  
--/// IdTable type for PCI
-+/// `IdTable` type for PCI.
- pub type IdTable<T> = &'static dyn kernel::device_id::IdTable<DeviceId, T>;
- 
- /// Create a PCI `IdTable` with its alias for modpost.
-@@ -224,10 +226,11 @@ macro_rules! pci_device_table {
- /// `Adapter` documentation for an example.
- pub trait Driver: Send {
-     /// The type holding information about each device id supported by the driver.
--    ///
--    /// TODO: Use associated_type_defaults once stabilized:
--    ///
--    /// type IdInfo: 'static = ();
-+    // TODO: Use `associated_type_defaults` once stabilized:
-+    //
-+    // ```
-+    // type IdInfo: 'static = ();
-+    // ```
-     type IdInfo: 'static;
- 
-     /// The table of device ids supported by the driver.
 -- 
 2.39.5
 
