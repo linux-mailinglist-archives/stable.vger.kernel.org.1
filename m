@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-154451-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153600-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1AF45ADD914
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 19:02:48 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id AB6B8ADD4A7
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:12:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9309D5A4FC9
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:54:39 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 24DF47ABCCB
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:10:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 695C02FA62E;
-	Tue, 17 Jun 2025 16:53:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 430942DFF1A;
+	Tue, 17 Jun 2025 16:08:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2CDnA3Si"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RvQ8bAQ4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24E222FA627;
-	Tue, 17 Jun 2025 16:53:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F204D239E9F;
+	Tue, 17 Jun 2025 16:08:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750179229; cv=none; b=B7hlaGgIzInJKuURmJWYBZ6XvoQVHp5yeHSbXdyLQ+23va8ymL+QFsfQeUTdpVxG3xvXPX5IgLVbc6zet8F/HOw9ZuUgUxV/kO/pa98gXmDQTrqtBzMFO13Ye+dWzgkXUZ08lHAtGh9dystlqddlLhNsphn+qWQagY+JlLo7maU=
+	t=1750176486; cv=none; b=n93PJfRAZlO3mog+9l9DrW0yswr1UItNntXfyIwx1w/NXoYBlZPb8epF9tdCfSVAxhC3wRoRa1pxTL4m+0r+64CJs/V39BZEqdTe34XVKckA4sTwXgtqtyDqQtTEznkAhDGfRHXN7n2Lc/KR8Wjh1XesMCN0em56loabBxMH1Sc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750179229; c=relaxed/simple;
-	bh=ExFLiFIc5kF50gZsm6BSoPU5G0n9IXE87DQZh+ILaqc=;
+	s=arc-20240116; t=1750176486; c=relaxed/simple;
+	bh=kzLi5Rktq+KCFYj8pjjZw8LsA6Ou8eObrQcO8nkc9tk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=E+caZODJrcB2IqPIzOd5SI8/a3kkbWIbVRZtOhWjILgN4n+bQ2jXVS2Y72TluwiUasAQjAhxz8BXzonj93SgwKF9O9g/zIxrRiwLQlBxcxM1xSNXUcqgxmeeUICZidDUF3hRe9AAwLBWbVY6dzPmkcZj+gSogdVjT1w2xQSkER4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2CDnA3Si; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3EBDFC4CEE3;
-	Tue, 17 Jun 2025 16:53:48 +0000 (UTC)
+	 MIME-Version; b=S/HQhicJNpRlXEuyPBOiI+FuSxez/zn5IBJY03NfKGCLu865ucF+GCB6/lQQt6sSgYJ51GkI64xMa8UtCkniQgtqRRxvCoC92MCQY+JMKDrAgTPwrYVPGgz9MWuchauZuFXVo038LiZWKuHasNDi2KiKTFtgY3b7C+d0HdK4/tk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RvQ8bAQ4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82EFEC4CEE3;
+	Tue, 17 Jun 2025 16:08:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750179228;
-	bh=ExFLiFIc5kF50gZsm6BSoPU5G0n9IXE87DQZh+ILaqc=;
+	s=korg; t=1750176485;
+	bh=kzLi5Rktq+KCFYj8pjjZw8LsA6Ou8eObrQcO8nkc9tk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2CDnA3SiJz1JkhApI7ODgB3mnkcnmL8AwgLX7xPt9Cj1tV7ZSwDlY2td4xkbszarA
-	 y/K0fTEM++nChxPSxYeOw/PhKm00rQytJJrMIrRHJk+63/I44FtpP184qvJJrzENBm
-	 bu2tY+wtvczEqq/eOMUJN/pSu5kkM3tXidRnYJ4c=
+	b=RvQ8bAQ4iyq0DF+4TgbX/6JWAJ0v2qnO6mZxodaF6iw86K1rZSXmZs6zObIBfM84q
+	 t6T23lcJEznC3K1KPomT/FeZXOddNDjsask1YlBnWwZ3ClMHQyjTvzE8NNygD2wIpF
+	 jEcyXlQ0fvwXleSlFtM781yrD5Ns2KjAqQ3nwp3Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jonathan Greental <yonatan02greental@gmail.com>,
-	Haren Myneni <haren@linux.ibm.com>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Judith Mendez <jm@ti.com>,
+	Nishanth Menon <nm@ti.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 688/780] powerpc/vas: Return -EINVAL if the offset is non-zero in mmap()
-Date: Tue, 17 Jun 2025 17:26:36 +0200
-Message-ID: <20250617152519.507646435@linuxfoundation.org>
+Subject: [PATCH 6.6 282/356] arm64: dts: ti: k3-am65-main: Fix sdhci node properties
+Date: Tue, 17 Jun 2025 17:26:37 +0200
+Message-ID: <20250617152349.543942981@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
-References: <20250617152451.485330293@linuxfoundation.org>
+In-Reply-To: <20250617152338.212798615@linuxfoundation.org>
+References: <20250617152338.212798615@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,54 +62,85 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Haren Myneni <haren@linux.ibm.com>
+From: Judith Mendez <jm@ti.com>
 
-[ Upstream commit 0d67f0dee6c9176bc09a5482dd7346e3a0f14d0b ]
+[ Upstream commit 8ffe9cb889f2b831a9d5bbb1f7ad42d30e31170f ]
 
-The user space calls mmap() to map VAS window paste address
-and the kernel returns the complete mapped page for each
-window. So return -EINVAL if non-zero is passed for offset
-parameter to mmap().
+Update otap-del-sel properties as per datasheet [0].
 
-See Documentation/arch/powerpc/vas-api.rst for mmap()
-restrictions.
+Add missing clkbuf-sel and itap-del-sel values also as per
+datasheet [0].
 
-Co-developed-by: Jonathan Greental <yonatan02greental@gmail.com>
-Signed-off-by: Jonathan Greental <yonatan02greental@gmail.com>
-Reported-by: Jonathan Greental <yonatan02greental@gmail.com>
-Fixes: dda44eb29c23 ("powerpc/vas: Add VAS user space API")
-Signed-off-by: Haren Myneni <haren@linux.ibm.com>
-Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
-Link: https://patch.msgid.link/20250610021227.361980-2-maddy@linux.ibm.com
+Move clkbuf-sel and ti,trm-icp above the otap-del-sel properties
+so the sdhci nodes could be more uniform across platforms.
+
+[0] https://www.ti.com/lit/ds/symlink/am6548.pdf
+
+Fixes: eac99d38f861 ("arm64: dts: ti: k3-am654-main: Update otap-del-sel values")
+Fixes: d7600d070fb0 ("arm64: dts: ti: k3-am65-main: Add support for sdhci1")
+Signed-off-by: Judith Mendez <jm@ti.com>
+Link: https://lore.kernel.org/r/20240423151732.3541894-2-jm@ti.com
+Signed-off-by: Nishanth Menon <nm@ti.com>
+Stable-dep-of: f55c9f087cc2 ("arm64: dts: ti: k3-am65-main: Add missing taps to sdhci0")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/platforms/book3s/vas-api.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
+ arch/arm64/boot/dts/ti/k3-am65-main.dtsi | 17 +++++++++++------
+ 1 file changed, 11 insertions(+), 6 deletions(-)
 
-diff --git a/arch/powerpc/platforms/book3s/vas-api.c b/arch/powerpc/platforms/book3s/vas-api.c
-index 0b6365d85d117..dc6f75d3ac6ef 100644
---- a/arch/powerpc/platforms/book3s/vas-api.c
-+++ b/arch/powerpc/platforms/book3s/vas-api.c
-@@ -521,6 +521,15 @@ static int coproc_mmap(struct file *fp, struct vm_area_struct *vma)
- 		return -EINVAL;
- 	}
+diff --git a/arch/arm64/boot/dts/ti/k3-am65-main.dtsi b/arch/arm64/boot/dts/ti/k3-am65-main.dtsi
+index 57befcce93b97..9c5de448351e9 100644
+--- a/arch/arm64/boot/dts/ti/k3-am65-main.dtsi
++++ b/arch/arm64/boot/dts/ti/k3-am65-main.dtsi
+@@ -436,6 +436,8 @@ sdhci0: mmc@4f80000 {
+ 		interrupts = <GIC_SPI 136 IRQ_TYPE_LEVEL_HIGH>;
+ 		mmc-ddr-1_8v;
+ 		mmc-hs200-1_8v;
++		ti,clkbuf-sel = <0x7>;
++		ti,trm-icp = <0x8>;
+ 		ti,otap-del-sel-legacy = <0x0>;
+ 		ti,otap-del-sel-mmc-hs = <0x0>;
+ 		ti,otap-del-sel-sd-hs = <0x0>;
+@@ -446,8 +448,7 @@ sdhci0: mmc@4f80000 {
+ 		ti,otap-del-sel-ddr50 = <0x5>;
+ 		ti,otap-del-sel-ddr52 = <0x5>;
+ 		ti,otap-del-sel-hs200 = <0x5>;
+-		ti,otap-del-sel-hs400 = <0x0>;
+-		ti,trm-icp = <0x8>;
++		ti,itap-del-sel-ddr52 = <0x0>;
+ 		dma-coherent;
+ 	};
  
-+	/*
-+	 * Map complete page to the paste address. So the user
-+	 * space should pass 0ULL to the offset parameter.
-+	 */
-+	if (vma->vm_pgoff) {
-+		pr_debug("Page offset unsupported to map paste address\n");
-+		return -EINVAL;
-+	}
-+
- 	/* Ensure instance has an open send window */
- 	if (!txwin) {
- 		pr_err("No send window open?\n");
+@@ -458,18 +459,22 @@ sdhci1: mmc@4fa0000 {
+ 		clocks = <&k3_clks 48 0>, <&k3_clks 48 1>;
+ 		clock-names = "clk_ahb", "clk_xin";
+ 		interrupts = <GIC_SPI 137 IRQ_TYPE_LEVEL_HIGH>;
++		ti,clkbuf-sel = <0x7>;
++		ti,trm-icp = <0x8>;
+ 		ti,otap-del-sel-legacy = <0x0>;
+ 		ti,otap-del-sel-mmc-hs = <0x0>;
+ 		ti,otap-del-sel-sd-hs = <0x0>;
+-		ti,otap-del-sel-sdr12 = <0x0>;
+-		ti,otap-del-sel-sdr25 = <0x0>;
++		ti,otap-del-sel-sdr12 = <0xf>;
++		ti,otap-del-sel-sdr25 = <0xf>;
+ 		ti,otap-del-sel-sdr50 = <0x8>;
+ 		ti,otap-del-sel-sdr104 = <0x7>;
+ 		ti,otap-del-sel-ddr50 = <0x4>;
+ 		ti,otap-del-sel-ddr52 = <0x4>;
+ 		ti,otap-del-sel-hs200 = <0x7>;
+-		ti,clkbuf-sel = <0x7>;
+-		ti,trm-icp = <0x8>;
++		ti,itap-del-sel-legacy = <0xa>;
++		ti,itap-del-sel-sd-hs = <0x1>;
++		ti,itap-del-sel-sdr12 = <0xa>;
++		ti,itap-del-sel-sdr25 = <0x1>;
+ 		dma-coherent;
+ 	};
+ 
 -- 
 2.39.5
 
