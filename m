@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-153587-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-154246-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 88DC1ADD53E
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:19:02 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7693DADD7A0
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:47:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BAED9194687E
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:10:42 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 36D267ABF59
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:45:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1AA03216E2A;
-	Tue, 17 Jun 2025 16:07:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 532A62EA172;
+	Tue, 17 Jun 2025 16:42:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rk38m1nA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XDN9tob3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC2A72F2341;
-	Tue, 17 Jun 2025 16:07:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DB3C2EA158;
+	Tue, 17 Jun 2025 16:42:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750176443; cv=none; b=W1AFJmAKvUBj7tnzPZNjYv4MS6g3KwT0ypUIKnpZ4aNmr9o6NKkXHyv9YoA4NRKwAJQPtl96mepUIx/4FS+j9gvvyz/pSMyQ0OV40f0l1Hfgb90uUrJpFG4owsGJpN+j82pkrr4o0C8dcnvuzg/dhlEQFDA+KX8ts8FNqCK2nWg=
+	t=1750178572; cv=none; b=XnH4jWiKrGwLqtmkbm++qzrqJuJILwsEgVTKnFz+o0RCZ6deLi0VGG7A5l8XlleiWSkX/+jT6MLRW/KcWNBZE8rNbLL/OfzeqcBNZgWCNBkNtJPQm8D+Z6gR6agcq26DX6oOQjBatFFjpwZLD/B9Rk/ub8cjmJxOJROZiLpMvnQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750176443; c=relaxed/simple;
-	bh=Ecms4bNEd7LGBj0iEGjWTOs/mXdpjpBZWkas7KrNudQ=;
+	s=arc-20240116; t=1750178572; c=relaxed/simple;
+	bh=jkrDJPLQ5cqFkYhyfJvQXzHQ6jX2EOgmn74GgDOGbVM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tBzrrd6nBlkcaK98PcEs5odSCeo8UNHp0EHrLW6c5u+6Ct14egBmpcoppq64atpAbjWdYkD1UOrCRTeLlrsoz9O0Ccz8mSwsypPMfA0I4dqwJNdgCHdXRtyp6BdWS9DqDIVJIhndKd9xFP+vkDtzd0dIIV4mEEL3fTdNB1yh9HE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rk38m1nA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E929C4CEE7;
-	Tue, 17 Jun 2025 16:07:23 +0000 (UTC)
+	 MIME-Version:Content-Type; b=XuniFJ3BJkalPq67j7+rdrpgovSuxkt7qjNGKCq+JxPUCZWKSQ28PnP41yV8S7yv7tAaX9v7rto72QZsOHtsa27jpDjmkDwOtSUhSN8NzBwgpD1XbJmGzXOTeiqCGafcFTABL1QMETrnNxYTPdraJ4mRjtvW2L15AzvrqWjxGpo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XDN9tob3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6EE5DC4CEE3;
+	Tue, 17 Jun 2025 16:42:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750176443;
-	bh=Ecms4bNEd7LGBj0iEGjWTOs/mXdpjpBZWkas7KrNudQ=;
+	s=korg; t=1750178571;
+	bh=jkrDJPLQ5cqFkYhyfJvQXzHQ6jX2EOgmn74GgDOGbVM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rk38m1nAd58Wi1k5Txnhxkh+v0o989jIymCxaLDXSqQ6VBVJxFVrw1ndypIjcmvco
-	 SXAF8LMja7Zu9GrqHtm0DLKDMJvbEmENbo4UIE8cYiD4C7OmZRr6bi9oR/F4tLq1Qu
-	 HMEMsFPBe45WkrTyHZfKQ//O4rCIKqtBuYApuKwg=
+	b=XDN9tob3bF+t8u/TCN4fMGF0SvtQmUxJNrmERfdttuNlVC1bhvkS3ES7PQHvvhc8f
+	 DQsXv/m6W1y3HMR/wQB0Ch9TfFToBw8wRUOCfB4Kg+vO/qVZuVEJ5/tA/XDmP53B0P
+	 4HT6Z8zkj+ORd25zypVwzpDkG+oJuuImtUPe9/ow=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chukun Pan <amadeus@jmu.edu.cn>,
-	Heiko Stuebner <heiko@sntech.de>,
+	=?UTF-8?q?Pali=20Roh=C3=A1r?= <pali@kernel.org>,
+	Steve French <stfrench@microsoft.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 230/512] arm64: dts: rockchip: Move SHMEM memory to reserved memory on rk3588
+Subject: [PATCH 6.15 488/780] cifs: Fix validation of SMB1 query reparse point response
 Date: Tue, 17 Jun 2025 17:23:16 +0200
-Message-ID: <20250617152428.951499721@linuxfoundation.org>
+Message-ID: <20250617152511.361902206@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
-References: <20250617152419.512865572@linuxfoundation.org>
+In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
+References: <20250617152451.485330293@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,56 +60,85 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chukun Pan <amadeus@jmu.edu.cn>
+From: Pali Rohár <pali@kernel.org>
 
-[ Upstream commit 8ecd096d018be8a6bd3bd930f3a41a85db66a67d ]
+[ Upstream commit 56e84c64fc257a95728ee73165456b025c48d408 ]
 
-0x0 to 0xf0000000 are SDRAM memory areas where 0x10f000 is located.
-So move the SHMEM memory of arm_scmi to the reserved memory node.
+Validate the SMB1 query reparse point response per [MS-CIFS] section
+2.2.7.2 NT_TRANSACT_IOCTL.
 
-Fixes: c9211fa2602b ("arm64: dts: rockchip: Add base DT for rk3588 SoC")
-Signed-off-by: Chukun Pan <amadeus@jmu.edu.cn>
-Link: https://lore.kernel.org/r/20250401090009.733771-2-amadeus@jmu.edu.cn
-Signed-off-by: Heiko Stuebner <heiko@sntech.de>
+NT_TRANSACT_IOCTL response contains one word long setup data after which is
+ByteCount member. So check that SetupCount is 1 before trying to read and
+use ByteCount member.
+
+Output setup data contains ReturnedDataLen member which is the output
+length of executed IOCTL command by remote system. So check that output was
+not truncated before transferring over network.
+
+Change MaxSetupCount of NT_TRANSACT_IOCTL request from 4 to 1 as io_rsp
+structure already expects one word long output setup data. This should
+prevent server sending incompatible structure (in case it would be extended
+in future, which is unlikely).
+
+Change MaxParameterCount of NT_TRANSACT_IOCTL request from 2 to 0 as
+NT IOCTL does not have any documented output parameters and this function
+does not parse any output parameters at all.
+
+Fixes: ed3e0a149b58 ("smb: client: implement ->query_reparse_point() for SMB1")
+Signed-off-by: Pali Rohár <pali@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/rockchip/rk3588-base.dtsi | 15 +++++++--------
- 1 file changed, 7 insertions(+), 8 deletions(-)
+ fs/smb/client/cifssmb.c | 20 ++++++++++++++++++--
+ 1 file changed, 18 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/rockchip/rk3588-base.dtsi b/arch/arm64/boot/dts/rockchip/rk3588-base.dtsi
-index 83e7e0fbe7839..ad4331bc07806 100644
---- a/arch/arm64/boot/dts/rockchip/rk3588-base.dtsi
-+++ b/arch/arm64/boot/dts/rockchip/rk3588-base.dtsi
-@@ -428,16 +428,15 @@
- 		#clock-cells = <0>;
- 	};
+diff --git a/fs/smb/client/cifssmb.c b/fs/smb/client/cifssmb.c
+index 477792c07d458..a3ba3346ed313 100644
+--- a/fs/smb/client/cifssmb.c
++++ b/fs/smb/client/cifssmb.c
+@@ -2753,10 +2753,10 @@ int cifs_query_reparse_point(const unsigned int xid,
  
--	pmu_sram: sram@10f000 {
--		compatible = "mmio-sram";
--		reg = <0x0 0x0010f000 0x0 0x100>;
--		ranges = <0 0x0 0x0010f000 0x100>;
--		#address-cells = <1>;
--		#size-cells = <1>;
-+	reserved-memory {
-+		#address-cells = <2>;
-+		#size-cells = <2>;
-+		ranges;
+ 	io_req->TotalParameterCount = 0;
+ 	io_req->TotalDataCount = 0;
+-	io_req->MaxParameterCount = cpu_to_le32(2);
++	io_req->MaxParameterCount = cpu_to_le32(0);
+ 	/* BB find exact data count max from sess structure BB */
+ 	io_req->MaxDataCount = cpu_to_le32(CIFSMaxBufSize & 0xFFFFFF00);
+-	io_req->MaxSetupCount = 4;
++	io_req->MaxSetupCount = 1;
+ 	io_req->Reserved = 0;
+ 	io_req->ParameterOffset = 0;
+ 	io_req->DataCount = 0;
+@@ -2783,6 +2783,22 @@ int cifs_query_reparse_point(const unsigned int xid,
+ 		goto error;
+ 	}
  
--		scmi_shmem: sram@0 {
-+		scmi_shmem: shmem@10f000 {
- 			compatible = "arm,scmi-shmem";
--			reg = <0x0 0x100>;
-+			reg = <0x0 0x0010f000 0x0 0x100>;
-+			no-map;
- 		};
- 	};
- 
++	/* SetupCount must be 1, otherwise offset to ByteCount is incorrect. */
++	if (io_rsp->SetupCount != 1) {
++		rc = -EIO;
++		goto error;
++	}
++
++	/*
++	 * ReturnedDataLen is output length of executed IOCTL.
++	 * DataCount is output length transferred over network.
++	 * Check that we have full FSCTL_GET_REPARSE_POINT buffer.
++	 */
++	if (data_count != le16_to_cpu(io_rsp->ReturnedDataLen)) {
++		rc = -EIO;
++		goto error;
++	}
++
+ 	end = 2 + get_bcc(&io_rsp->hdr) + (__u8 *)&io_rsp->ByteCount;
+ 	start = (__u8 *)&io_rsp->hdr.Protocol + data_offset;
+ 	if (start >= end) {
 -- 
 2.39.5
 
