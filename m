@@ -1,57 +1,62 @@
-Return-Path: <stable+bounces-153844-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-154340-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 84849ADD6E8
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:38:22 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 55C05ADD8EB
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 19:00:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DD7C9401AD6
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:26:22 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 12B741BC1956
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:50:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E1FB72EE5FB;
-	Tue, 17 Jun 2025 16:21:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A59E2DFF2B;
+	Tue, 17 Jun 2025 16:48:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DJV6Qewz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k3ErI1mD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C9602EE288;
-	Tue, 17 Jun 2025 16:21:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA4E02FA62D;
+	Tue, 17 Jun 2025 16:48:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750177280; cv=none; b=dnDEbqcXR5h7Rh8vAFX1yXATIQa7kjv/DOtKDZBTCYVbtvMTez1fBJ5HX8x44vHJPXx905+NV6mfG0vBpQW6XT8I8mwvXaZmuFdgfSuvjwG5vBYqWlQSHcKDyFLG0U4ef7CSdwfoeFx5kKMnFlBsaEPY6b7JMINnamv1ERqGmCg=
+	t=1750178883; cv=none; b=Q+XXkFOl9e+kSI2oG/fa2Vn4+BzwcfTHFNwCfwoGIZJL3nOMWGjoGFItym7a4hAj7tnxRreNqbKnaG1aC9vo0C3BFK9vxIrfn/B/ExqfmI8xKOlYn3AR/HDBEQMAwPi18fBwY/heyhrkOY4onjtOtMTAcFuhPskho9Ek5ud+qOc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750177280; c=relaxed/simple;
-	bh=z/bf9SVipV+Pi5bbk7KiYlA7knE3C7LbN5MqnhhXMVU=;
+	s=arc-20240116; t=1750178883; c=relaxed/simple;
+	bh=cIKRa6QPSptRWTQ15DkbCkWDSIAzkM7ngJhnHgeTcp0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=T6f/TzMXes2Fp969fxIkc6IUK0DdSj4J1HgXZJvIQ+W7hTxA6txuhXVWLdcLOKb4uWNS/CTa6uu39flsAHSuVbWM4OsxFG101fsktK1bHxbVhbZmcFnbpNT6w+iEMqxpIOMmMQ8JO7TPzFcXHGugSsRl3ezFXjQ3aFOKUl6JO00=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DJV6Qewz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2BFBDC4CEE7;
-	Tue, 17 Jun 2025 16:21:20 +0000 (UTC)
+	 MIME-Version; b=i5FJVWxDiUxjUv8inGVYR7kIAjvLZwbVUnX9NUJcY9V4E7Z1MMZLL53XbuRqPIyW+KbSDm5M9aVGKwGfIlJ89J/meRjQtOAPKH1nDiGF5LGT7ecTA0nkc1jXMQXpBfPjwjCfR3hQ1TtaxQTvW/9uRso01bTdQvEjnyMCGsfNqu0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k3ErI1mD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2796BC4CEE3;
+	Tue, 17 Jun 2025 16:48:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750177280;
-	bh=z/bf9SVipV+Pi5bbk7KiYlA7knE3C7LbN5MqnhhXMVU=;
+	s=korg; t=1750178883;
+	bh=cIKRa6QPSptRWTQ15DkbCkWDSIAzkM7ngJhnHgeTcp0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DJV6QewzCsArntziCyCWseZ1/naVzxPs3e9ZD2HxODx7n0ZflO/VVqCO/BDqJd9JL
-	 GyfxOZ6IpxXEOKmxBO3KNzgqLCMVveWsdkB6cdi55f4bld+3E5aqLS8S5063VdP+ii
-	 ZgKT694ZTdlwFuWoY72/wZuwWTjY/maGMhLvKxJc=
+	b=k3ErI1mD1yDSQLDWURz7Fxr6p5mziabatbrAVc2CjXju+rgi4gRmvOqPablMgKXS2
+	 ko966DyKVNrgkGwjtprTL91pXyabk1Q2aJUT/e3mnGzxaKJp85b0ChljtyAv8xiq6L
+	 l/wBK4a3T+s7DsHxz1ofnMKuuAopgvzmRGvsDP7w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhe Qiao <qiaozhe@iscas.ac.cn>,
-	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Jacob Keller <jacob.e.keller@intel.com>,
+	Madhu Chittim <madhu.chittim@intel.com>,
+	Josh Hay <joshua.a.hay@intel.com>,
+	Brian Vazquez <brianvv@google.com>,
+	Luigi Rizzo <lrizzo@google.com>,
+	Simon Horman <horms@kernel.org>,
+	Samuel Salin <Samuel.salin@intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 316/512] PCI/ACPI: Fix allocated memory release on error in pci_acpi_scan_root()
+Subject: [PATCH 6.15 574/780] idpf: fix a race in txq wakeup
 Date: Tue, 17 Jun 2025 17:24:42 +0200
-Message-ID: <20250617152432.418115840@linuxfoundation.org>
+Message-ID: <20250617152514.854485896@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
-References: <20250617152419.512865572@linuxfoundation.org>
+In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
+References: <20250617152451.485330293@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,81 +66,187 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhe Qiao <qiaozhe@iscas.ac.cn>
+From: Brian Vazquez <brianvv@google.com>
 
-[ Upstream commit 631b2af2f35737750af284be22e63da56bf20139 ]
+[ Upstream commit 7292af042bcf22e2c18b96ed250f78498a5b28ab ]
 
-In the pci_acpi_scan_root() function, when creating a PCI bus fails,
-we need to free up the previously allocated memory, which can avoid
-invalid memory usage and save resources.
+Add a helper function to correctly handle the lockless
+synchronization when the sender needs to block. The paradigm is
 
-Fixes: 789befdfa389 ("arm64: PCI: Migrate ACPI related functions to pci-acpi.c")
-Signed-off-by: Zhe Qiao <qiaozhe@iscas.ac.cn>
-[kwilczynski: commit log]
-Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
-Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Link: https://lore.kernel.org/r/20250430060603.381504-1-qiaozhe@iscas.ac.cn
+        if (no_resources()) {
+                stop_queue();
+                barrier();
+                if (!no_resources())
+                        restart_queue();
+        }
+
+netif_subqueue_maybe_stop already handles the paradigm correctly, but
+the code split the check for resources in three parts, the first one
+(descriptors) followed the protocol, but the other two (completions and
+tx_buf) were only doing the first part and so race prone.
+
+Luckily netif_subqueue_maybe_stop macro already allows you to use a
+function to evaluate the start/stop conditions so the fix only requires
+the right helper function to evaluate all the conditions at once.
+
+The patch removes idpf_tx_maybe_stop_common since it's no longer needed
+and instead adjusts separately the conditions for singleq and splitq.
+
+Note that idpf_tx_buf_hw_update doesn't need to check for resources
+since that will be covered in idpf_tx_splitq_frame.
+
+To reproduce:
+
+Reduce the threshold for pending completions to increase the chances of
+hitting this pause by changing your kernel:
+
+drivers/net/ethernet/intel/idpf/idpf_txrx.h
+
+-#define IDPF_TX_COMPLQ_OVERFLOW_THRESH(txcq)   ((txcq)->desc_count >> 1)
++#define IDPF_TX_COMPLQ_OVERFLOW_THRESH(txcq)   ((txcq)->desc_count >> 4)
+
+Use pktgen to force the host to push small pkts very aggressively:
+
+./pktgen_sample02_multiqueue.sh -i eth1 -s 100 -6 -d $IP -m $MAC \
+  -p 10000-10000 -t 16 -n 0 -v -x -c 64
+
+Fixes: 6818c4d5b3c2 ("idpf: add splitq start_xmit")
+Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
+Reviewed-by: Madhu Chittim <madhu.chittim@intel.com>
+Signed-off-by: Josh Hay <joshua.a.hay@intel.com>
+Signed-off-by: Brian Vazquez <brianvv@google.com>
+Signed-off-by: Luigi Rizzo <lrizzo@google.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Tested-by: Samuel Salin <Samuel.salin@intel.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/pci-acpi.c | 23 +++++++++++++----------
- 1 file changed, 13 insertions(+), 10 deletions(-)
+ .../ethernet/intel/idpf/idpf_singleq_txrx.c   |  9 ++--
+ drivers/net/ethernet/intel/idpf/idpf_txrx.c   | 45 +++++++------------
+ drivers/net/ethernet/intel/idpf/idpf_txrx.h   |  8 ----
+ 3 files changed, 22 insertions(+), 40 deletions(-)
 
-diff --git a/drivers/pci/pci-acpi.c b/drivers/pci/pci-acpi.c
-index af370628e5839..b78e0e4173244 100644
---- a/drivers/pci/pci-acpi.c
-+++ b/drivers/pci/pci-acpi.c
-@@ -1676,24 +1676,19 @@ struct pci_bus *pci_acpi_scan_root(struct acpi_pci_root *root)
- 		return NULL;
+diff --git a/drivers/net/ethernet/intel/idpf/idpf_singleq_txrx.c b/drivers/net/ethernet/intel/idpf/idpf_singleq_txrx.c
+index eae1b6f474e62..6ade54e213259 100644
+--- a/drivers/net/ethernet/intel/idpf/idpf_singleq_txrx.c
++++ b/drivers/net/ethernet/intel/idpf/idpf_singleq_txrx.c
+@@ -362,17 +362,18 @@ netdev_tx_t idpf_tx_singleq_frame(struct sk_buff *skb,
+ {
+ 	struct idpf_tx_offload_params offload = { };
+ 	struct idpf_tx_buf *first;
++	int csum, tso, needed;
+ 	unsigned int count;
+ 	__be16 protocol;
+-	int csum, tso;
  
- 	root_ops = kzalloc(sizeof(*root_ops), GFP_KERNEL);
--	if (!root_ops) {
--		kfree(ri);
--		return NULL;
--	}
-+	if (!root_ops)
-+		goto free_ri;
+ 	count = idpf_tx_desc_count_required(tx_q, skb);
+ 	if (unlikely(!count))
+ 		return idpf_tx_drop_skb(tx_q, skb);
  
- 	ri->cfg = pci_acpi_setup_ecam_mapping(root);
--	if (!ri->cfg) {
--		kfree(ri);
--		kfree(root_ops);
--		return NULL;
--	}
-+	if (!ri->cfg)
-+		goto free_root_ops;
+-	if (idpf_tx_maybe_stop_common(tx_q,
+-				      count + IDPF_TX_DESCS_PER_CACHE_LINE +
+-				      IDPF_TX_DESCS_FOR_CTX)) {
++	needed = count + IDPF_TX_DESCS_PER_CACHE_LINE + IDPF_TX_DESCS_FOR_CTX;
++	if (!netif_subqueue_maybe_stop(tx_q->netdev, tx_q->idx,
++				       IDPF_DESC_UNUSED(tx_q),
++				       needed, needed)) {
+ 		idpf_tx_buf_hw_update(tx_q, tx_q->next_to_use, false);
  
- 	root_ops->release_info = pci_acpi_generic_release_info;
- 	root_ops->prepare_resources = pci_acpi_root_prepare_resources;
- 	root_ops->pci_ops = (struct pci_ops *)&ri->cfg->ops->pci_ops;
- 	bus = acpi_pci_root_create(root, root_ops, &ri->common, ri->cfg);
- 	if (!bus)
--		return NULL;
-+		goto free_cfg;
- 
- 	/* If we must preserve the resource configuration, claim now */
- 	host = pci_find_host_bridge(bus);
-@@ -1710,6 +1705,14 @@ struct pci_bus *pci_acpi_scan_root(struct acpi_pci_root *root)
- 		pcie_bus_configure_settings(child);
- 
- 	return bus;
-+
-+free_cfg:
-+	pci_ecam_free(ri->cfg);
-+free_root_ops:
-+	kfree(root_ops);
-+free_ri:
-+	kfree(ri);
-+	return NULL;
+ 		u64_stats_update_begin(&tx_q->stats_sync);
+diff --git a/drivers/net/ethernet/intel/idpf/idpf_txrx.c b/drivers/net/ethernet/intel/idpf/idpf_txrx.c
+index 2d5f5c9f91ce1..aa16e4c1edbb8 100644
+--- a/drivers/net/ethernet/intel/idpf/idpf_txrx.c
++++ b/drivers/net/ethernet/intel/idpf/idpf_txrx.c
+@@ -2132,6 +2132,19 @@ void idpf_tx_splitq_build_flow_desc(union idpf_tx_flex_desc *desc,
+ 	desc->flow.qw1.compl_tag = cpu_to_le16(params->compl_tag);
  }
  
- void pcibios_add_bus(struct pci_bus *bus)
++/* Global conditions to tell whether the txq (and related resources)
++ * has room to allow the use of "size" descriptors.
++ */
++static int idpf_txq_has_room(struct idpf_tx_queue *tx_q, u32 size)
++{
++	if (IDPF_DESC_UNUSED(tx_q) < size ||
++	    IDPF_TX_COMPLQ_PENDING(tx_q->txq_grp) >
++		IDPF_TX_COMPLQ_OVERFLOW_THRESH(tx_q->txq_grp->complq) ||
++	    IDPF_TX_BUF_RSV_LOW(tx_q))
++		return 0;
++	return 1;
++}
++
+ /**
+  * idpf_tx_maybe_stop_splitq - 1st level check for Tx splitq stop conditions
+  * @tx_q: the queue to be checked
+@@ -2142,29 +2155,11 @@ void idpf_tx_splitq_build_flow_desc(union idpf_tx_flex_desc *desc,
+ static int idpf_tx_maybe_stop_splitq(struct idpf_tx_queue *tx_q,
+ 				     unsigned int descs_needed)
+ {
+-	if (idpf_tx_maybe_stop_common(tx_q, descs_needed))
+-		goto out;
+-
+-	/* If there are too many outstanding completions expected on the
+-	 * completion queue, stop the TX queue to give the device some time to
+-	 * catch up
+-	 */
+-	if (unlikely(IDPF_TX_COMPLQ_PENDING(tx_q->txq_grp) >
+-		     IDPF_TX_COMPLQ_OVERFLOW_THRESH(tx_q->txq_grp->complq)))
+-		goto splitq_stop;
+-
+-	/* Also check for available book keeping buffers; if we are low, stop
+-	 * the queue to wait for more completions
+-	 */
+-	if (unlikely(IDPF_TX_BUF_RSV_LOW(tx_q)))
+-		goto splitq_stop;
+-
+-	return 0;
+-
+-splitq_stop:
+-	netif_stop_subqueue(tx_q->netdev, tx_q->idx);
++	if (netif_subqueue_maybe_stop(tx_q->netdev, tx_q->idx,
++				      idpf_txq_has_room(tx_q, descs_needed),
++				      1, 1))
++		return 0;
+ 
+-out:
+ 	u64_stats_update_begin(&tx_q->stats_sync);
+ 	u64_stats_inc(&tx_q->q_stats.q_busy);
+ 	u64_stats_update_end(&tx_q->stats_sync);
+@@ -2190,12 +2185,6 @@ void idpf_tx_buf_hw_update(struct idpf_tx_queue *tx_q, u32 val,
+ 	nq = netdev_get_tx_queue(tx_q->netdev, tx_q->idx);
+ 	tx_q->next_to_use = val;
+ 
+-	if (idpf_tx_maybe_stop_common(tx_q, IDPF_TX_DESC_NEEDED)) {
+-		u64_stats_update_begin(&tx_q->stats_sync);
+-		u64_stats_inc(&tx_q->q_stats.q_busy);
+-		u64_stats_update_end(&tx_q->stats_sync);
+-	}
+-
+ 	/* Force memory writes to complete before letting h/w
+ 	 * know there are new descriptors to fetch.  (Only
+ 	 * applicable for weak-ordered memory model archs,
+diff --git a/drivers/net/ethernet/intel/idpf/idpf_txrx.h b/drivers/net/ethernet/intel/idpf/idpf_txrx.h
+index b029f566e57cd..c192a6c547dd3 100644
+--- a/drivers/net/ethernet/intel/idpf/idpf_txrx.h
++++ b/drivers/net/ethernet/intel/idpf/idpf_txrx.h
+@@ -1037,12 +1037,4 @@ bool idpf_rx_singleq_buf_hw_alloc_all(struct idpf_rx_queue *rxq,
+ 				      u16 cleaned_count);
+ int idpf_tso(struct sk_buff *skb, struct idpf_tx_offload_params *off);
+ 
+-static inline bool idpf_tx_maybe_stop_common(struct idpf_tx_queue *tx_q,
+-					     u32 needed)
+-{
+-	return !netif_subqueue_maybe_stop(tx_q->netdev, tx_q->idx,
+-					  IDPF_DESC_UNUSED(tx_q),
+-					  needed, needed);
+-}
+-
+ #endif /* !_IDPF_TXRX_H_ */
 -- 
 2.39.5
 
