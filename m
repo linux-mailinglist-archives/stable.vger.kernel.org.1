@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-153705-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153708-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 73079ADD672
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:33:39 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id D23A2ADD5F0
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:28:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 772CB1940A86
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:21:03 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3534A40713C
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:20:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE0782F94B7;
-	Tue, 17 Jun 2025 16:13:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A68B42ED855;
+	Tue, 17 Jun 2025 16:13:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Jio+/i4m"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BVsbgeTF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B5C22F94B1;
-	Tue, 17 Jun 2025 16:13:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A34E2F94BA;
+	Tue, 17 Jun 2025 16:13:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750176823; cv=none; b=Ihyw1vdPnz0PYGY60uEuVxkuPORg1n+tcLUNRjXpJTkg1XlMNoOXzDoGGnwhYj1y802d7HK9ErxhIA3TX1VvPb+AjJs1bHpOJsjizRyki3RIVwAsZmmtnu8pUnABU68HsPGQOk1Jh0eISkSqh4aM7O3m6oL7m5LyImZbwfgG2SI=
+	t=1750176833; cv=none; b=Aais15T0aUtG3EvX+qoU7FqXty9EikgQQRWfc9TIzke2w2KaR2KTcsygDDYfryavVTv/YzvINyhm2J2WDzk2y/Q3dOqVdCgIa8ux1gkFXNfF8jRrQ5nEVf+RKnhDQA+6XW/RGwFZhHOqWyJHT4c9o7wWFQn0v+V5e0874haJrrg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750176823; c=relaxed/simple;
-	bh=y3fpacXJ9t0gZen7ho/8sDMX/ZTAaVy9M0WKljdykTg=;
+	s=arc-20240116; t=1750176833; c=relaxed/simple;
+	bh=mGM8Dq7DHc8ji/KTBbyRIV/SUdugJzU/MUvSO3wE/Ng=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NNn8NXm0ELacEZxxPOg5hZHneblPOgs2Ai1qtDm+TJoKtY5sZ9Y0kJ5bQpbq6njE/g8/OCR0GY7mdMwvE0bw/sg6oE2ATQZmzJcQij2vBR0wqnlS0xuwyeE/bhxRWzmWvzskaTRQDXhaj3UxMocY/c0ODR8PEBD0HMmfRF+GLK0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Jio+/i4m; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7013C4CEE3;
-	Tue, 17 Jun 2025 16:13:42 +0000 (UTC)
+	 MIME-Version; b=CYfCVlALyINbllFEvwFq/xveBr919iVyy2GV43+y53fDCLb8LVW3BPdB7iS+5LrQTtzOWgfWYG0bBsToeYX6XEg+Qx0upwCr0t9ReN9pDtS5pPmtfauIan5qSlmv16l8BV6iDHeki5onn2Wi078BRWYpdYY8j35WdokUAObKzaU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BVsbgeTF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD952C4CEE3;
+	Tue, 17 Jun 2025 16:13:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750176823;
-	bh=y3fpacXJ9t0gZen7ho/8sDMX/ZTAaVy9M0WKljdykTg=;
+	s=korg; t=1750176833;
+	bh=mGM8Dq7DHc8ji/KTBbyRIV/SUdugJzU/MUvSO3wE/Ng=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Jio+/i4mvopAI3aMVvVFerinLkjsBDCA4mLLz0RJaFRua4NW9WSCYeIaSjzKfuE79
-	 v1YaaFIntJZkKgyzNBRJH8XQEOHY/5W6I0VfafouZJFWwxhFIGLed49abvf2d2bjqd
-	 Ouj75XqO7g00pWdl7Ycm/huPtUhOA0gwtzXKalgc=
+	b=BVsbgeTFJa4B5/cGSWu+mOioiZOoqQyv138QncmhYhgMrksDanI47YMN6cj6LyyAE
+	 TrPOcx0RJsrxHPmCXAsWB4Gd0dG1jq1TfwH804Qx5vmTuWNfaIgOezDahG81UYpgV8
+	 GzPK6dk+N+U382eLrKd7QNm1UxFJzt/1z1vfI+W4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Justin Tee <justin.tee@broadcom.com>,
+	Scott Benesh <scott.benesh@microchip.com>,
+	Mike McGowen <mike.mcgowen@microchip.com>,
+	Don Brace <don.brace@microchip.com>,
+	Yi Zhang <yi.zhang@redhat.com>,
 	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 229/780] scsi: lpfc: Avoid potential ndlp use-after-free in dev_loss_tmo_callbk
-Date: Tue, 17 Jun 2025 17:18:57 +0200
-Message-ID: <20250617152500.779085586@linuxfoundation.org>
+Subject: [PATCH 6.15 230/780] scsi: smartpqi: Fix smp_processor_id() call trace for preemptible kernels
+Date: Tue, 17 Jun 2025 17:18:58 +0200
+Message-ID: <20250617152500.818377750@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
 References: <20250617152451.485330293@linuxfoundation.org>
@@ -67,94 +69,66 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Justin Tee <justin.tee@broadcom.com>
+From: Yi Zhang <yi.zhang@redhat.com>
 
-[ Upstream commit b5162bb6aa1ec04dff4509b025883524b6d7e7ca ]
+[ Upstream commit 42d033cf4b517e91c187ad2fbd7b30fdc6d2d62c ]
 
-Smatch detected a potential use-after-free of an ndlp oject in
-dev_loss_tmo_callbk during driver unload or fatal error handling.
+Correct kernel call trace when calling smp_processor_id() when called in
+preemptible kernels by using raw_smp_processor_id().
 
-Fix by reordering code to avoid potential use-after-free if initial
-nodelist reference has been previously removed.
+smp_processor_id() checks to see if preemption is disabled and if not,
+issue an error message followed by a call to dump_stack().
 
-Fixes: 4281f44ea8bf ("scsi: lpfc: Prevent NDLP reference count underflow in dev_loss_tmo callback")
-Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
-Closes: https://lore.kernel.org/linux-scsi/41c1d855-9eb5-416f-ac12-8b61929201a3@stanley.mountain/
-Signed-off-by: Justin Tee <justin.tee@broadcom.com>
-Link: https://lore.kernel.org/r/20250425194806.3585-6-justintee8345@gmail.com
+Brief example of call trace:
+kernel:  check_preemption_disabled: 436 callbacks suppressed
+kernel:  BUG: using smp_processor_id() in preemptible [00000000]
+         code: kworker/u1025:0/2354
+kernel:  caller is pqi_scsi_queue_command+0x183/0x310 [smartpqi]
+kernel:  CPU: 129 PID: 2354 Comm: kworker/u1025:0
+kernel:  ...
+kernel:  Workqueue: writeback wb_workfn (flush-253:0)
+kernel:  Call Trace:
+kernel:   <TASK>
+kernel:   dump_stack_lvl+0x34/0x48
+kernel:   check_preemption_disabled+0xdd/0xe0
+kernel:   pqi_scsi_queue_command+0x183/0x310 [smartpqi]
+kernel:  ...
+
+Fixes: 283dcc1b142e ("scsi: smartpqi: add counter for parity write stream requests")
+Reviewed-by: Scott Benesh <scott.benesh@microchip.com>
+Reviewed-by: Mike McGowen <mike.mcgowen@microchip.com>
+Tested-by: Don Brace <don.brace@microchip.com>
+Signed-off-by: Yi Zhang <yi.zhang@redhat.com>
+Signed-off-by: Don Brace <don.brace@microchip.com>
+Link: https://lore.kernel.org/r/20250423183229.538572-5-don.brace@microchip.com
 Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/lpfc/lpfc_hbadisc.c | 32 +++++++++++++++++---------------
- 1 file changed, 17 insertions(+), 15 deletions(-)
+ drivers/scsi/smartpqi/smartpqi_init.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/scsi/lpfc/lpfc_hbadisc.c b/drivers/scsi/lpfc/lpfc_hbadisc.c
-index 179be6c5a43e0..c2ec4db672869 100644
---- a/drivers/scsi/lpfc/lpfc_hbadisc.c
-+++ b/drivers/scsi/lpfc/lpfc_hbadisc.c
-@@ -161,7 +161,7 @@ lpfc_dev_loss_tmo_callbk(struct fc_rport *rport)
- 	struct lpfc_hba   *phba;
- 	struct lpfc_work_evt *evtp;
- 	unsigned long iflags;
--	bool nvme_reg = false;
-+	bool drop_initial_node_ref = false;
- 
- 	ndlp = ((struct lpfc_rport_data *)rport->dd_data)->pnode;
- 	if (!ndlp)
-@@ -188,8 +188,13 @@ lpfc_dev_loss_tmo_callbk(struct fc_rport *rport)
- 		spin_lock_irqsave(&ndlp->lock, iflags);
- 		ndlp->rport = NULL;
- 
--		if (ndlp->fc4_xpt_flags & NVME_XPT_REGD)
--			nvme_reg = true;
-+		/* Only 1 thread can drop the initial node reference.
-+		 * If not registered for NVME and NLP_DROPPED flag is
-+		 * clear, remove the initial reference.
-+		 */
-+		if (!(ndlp->fc4_xpt_flags & NVME_XPT_REGD))
-+			if (!test_and_set_bit(NLP_DROPPED, &ndlp->nlp_flag))
-+				drop_initial_node_ref = true;
- 
- 		/* The scsi_transport is done with the rport so lpfc cannot
- 		 * call to unregister.
-@@ -200,13 +205,16 @@ lpfc_dev_loss_tmo_callbk(struct fc_rport *rport)
- 			/* If NLP_XPT_REGD was cleared in lpfc_nlp_unreg_node,
- 			 * unregister calls were made to the scsi and nvme
- 			 * transports and refcnt was already decremented. Clear
--			 * the NLP_XPT_REGD flag only if the NVME Rport is
-+			 * the NLP_XPT_REGD flag only if the NVME nrport is
- 			 * confirmed unregistered.
- 			 */
--			if (!nvme_reg && ndlp->fc4_xpt_flags & NLP_XPT_REGD) {
--				ndlp->fc4_xpt_flags &= ~NLP_XPT_REGD;
-+			if (ndlp->fc4_xpt_flags & NLP_XPT_REGD) {
-+				if (!(ndlp->fc4_xpt_flags & NVME_XPT_REGD))
-+					ndlp->fc4_xpt_flags &= ~NLP_XPT_REGD;
- 				spin_unlock_irqrestore(&ndlp->lock, iflags);
--				lpfc_nlp_put(ndlp); /* may free ndlp */
-+
-+				/* Release scsi transport reference */
-+				lpfc_nlp_put(ndlp);
- 			} else {
- 				spin_unlock_irqrestore(&ndlp->lock, iflags);
- 			}
-@@ -214,14 +222,8 @@ lpfc_dev_loss_tmo_callbk(struct fc_rport *rport)
- 			spin_unlock_irqrestore(&ndlp->lock, iflags);
+diff --git a/drivers/scsi/smartpqi/smartpqi_init.c b/drivers/scsi/smartpqi/smartpqi_init.c
+index 8a26eca4fdc9b..6c9dec7e3128f 100644
+--- a/drivers/scsi/smartpqi/smartpqi_init.c
++++ b/drivers/scsi/smartpqi/smartpqi_init.c
+@@ -5990,7 +5990,7 @@ static bool pqi_is_parity_write_stream(struct pqi_ctrl_info *ctrl_info,
+ 			pqi_stream_data->next_lba = rmd.first_block +
+ 				rmd.block_cnt;
+ 			pqi_stream_data->last_accessed = jiffies;
+-			per_cpu_ptr(device->raid_io_stats, smp_processor_id())->write_stream_cnt++;
++				per_cpu_ptr(device->raid_io_stats, raw_smp_processor_id())->write_stream_cnt++;
+ 			return true;
  		}
  
--		/* Only 1 thread can drop the initial node reference.  If
--		 * another thread has set NLP_DROPPED, this thread is done.
--		 */
--		if (nvme_reg || test_bit(NLP_DROPPED, &ndlp->nlp_flag))
--			return;
--
--		set_bit(NLP_DROPPED, &ndlp->nlp_flag);
--		lpfc_nlp_put(ndlp);
-+		if (drop_initial_node_ref)
-+			lpfc_nlp_put(ndlp);
- 		return;
- 	}
- 
+@@ -6069,7 +6069,7 @@ static int pqi_scsi_queue_command(struct Scsi_Host *shost, struct scsi_cmnd *scm
+ 			rc = pqi_raid_bypass_submit_scsi_cmd(ctrl_info, device, scmd, queue_group);
+ 			if (rc == 0 || rc == SCSI_MLQUEUE_HOST_BUSY) {
+ 				raid_bypassed = true;
+-				per_cpu_ptr(device->raid_io_stats, smp_processor_id())->raid_bypass_cnt++;
++				per_cpu_ptr(device->raid_io_stats, raw_smp_processor_id())->raid_bypass_cnt++;
+ 			}
+ 		}
+ 		if (!raid_bypassed)
 -- 
 2.39.5
 
