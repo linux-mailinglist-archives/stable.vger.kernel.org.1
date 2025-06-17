@@ -1,125 +1,183 @@
-Return-Path: <stable+bounces-152744-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-152745-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 627D8ADBE59
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 03:07:23 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 28C04ADBF68
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 05:02:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3F7597A5222
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 01:06:01 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1ED363A6261
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 03:01:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B32D9136327;
-	Tue, 17 Jun 2025 01:07:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46D5C20487E;
+	Tue, 17 Jun 2025 03:01:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="k7WTMyk7"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="PIcolLWy"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-vs1-f43.google.com (mail-vs1-f43.google.com [209.85.217.43])
+Received: from mail-vk1-f181.google.com (mail-vk1-f181.google.com [209.85.221.181])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06C8B2BF014;
-	Tue, 17 Jun 2025 01:07:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.217.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79B7B2AD11;
+	Tue, 17 Jun 2025 03:01:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750122436; cv=none; b=eIt2w4h+oXkbBIHKJw4bkawL6d+L3Osw/mB7t6M9ZnKd1APzs1PQG29Dw19RqUvVFUIfwjEGYLxySFtxq0XwDorA6iFxc+pkR7vfR7SvnRrQj1ifXYQsLQnlr2s5smd2jOjouchdwzIJ19/Es9aLeXur/JvCC6yRd/gH6WhPPBY=
+	t=1750129315; cv=none; b=pFkHuQP1nVgiINsfPS5VnVCadwhXrHoRUgt3/dsk1kLIRwMTTqHorv357wsu/EV4xUrFyS7TUtsm87GzvUkRMPv/Gyvs/bprnaLdczKN3kaz7SPYW4zv0JmMULPOnOyDa0Y8CkBGVdtNByxtR4OwZBlkFxVVszaxz64k4GNVRPI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750122436; c=relaxed/simple;
-	bh=HbFb6CshsF71RmYPnO4/VfKtNDtyBXqxqwWV9EAVx7U=;
+	s=arc-20240116; t=1750129315; c=relaxed/simple;
+	bh=+nsuOjHKSn+wU7zKSuad9aE9Iy7woMm2OR7+pFpohD4=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=P66+IIpKviXx5A+d8rJepFGoRe99TmePKVWahEjMVrfMGwqh7Yfxe7FMWAunjym96dDTkjXfSyp1bc/j7OpMSIRvblTWPyTQ2U/BWLjSOl0zeocrFAhviguXhFSpW7W8qH+mZ4yCIYGWlaz7rZQWDY7XtswL0KXNQssPSvXhtMA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=k7WTMyk7; arc=none smtp.client-ip=209.85.217.43
+	 To:Cc:Content-Type; b=FbJSCVcskO2RKsI0DC4mY+RHlpcEZz6784QciqAA9k7MjpSZovNse/rz33GtUpNaahGYceKsCKCo1GrH/5L9zq9jga6x3u421CkxWfm94Ne5LtHyl7VXjSwJ5gKvYx3MPmPMHunFlV61qynh64HIEsXfXWeqCPCOgEtd5YT2X/k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=PIcolLWy; arc=none smtp.client-ip=209.85.221.181
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-vs1-f43.google.com with SMTP id ada2fe7eead31-4e7ef5d6bffso1124152137.3;
-        Mon, 16 Jun 2025 18:07:14 -0700 (PDT)
+Received: by mail-vk1-f181.google.com with SMTP id 71dfb90a1353d-53145c74e15so902652e0c.0;
+        Mon, 16 Jun 2025 20:01:53 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1750122434; x=1750727234; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1750129312; x=1750734112; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=Ad9i9fPjljtJDZlJd+81Ng6OvEgS6Th4cAu7xxdqO2w=;
-        b=k7WTMyk7mBSx/L461HFpcxbD89opZTsXMXVLTb2+whJlyPiZHvyAxfkViUbHuX8KhQ
-         It69m0pZk+jt4WM0c2MwR+HPQuWNAxp1hNTObx7LA4BZyWm4pTD0Om+JSmXG9PFARzj4
-         AcDlUMjw41UgFj7WkVvNA9PZjD4PPMyBE+fi4H9HUoHU3X/hMbICI+8N6QPrfTSRRgco
-         Qrm+8ZYDh2qmHBesOZwDISfrRpUHsW6+I2oZAgvl/PPWfnF9fobNh4A1PbT1+6Mh19cV
-         E+htLk+xm3LlnNtl9lV586EFJ6Tn/hgkYaVJD8We16XmuBBq7D1CCgHLIzyr3um3jFlv
-         qL7w==
+        bh=u75Z/m51HLoqvQuvmxYYX48fqhq+BQTGNtp2KTyT5vE=;
+        b=PIcolLWyN6Gz8ITUKtFW/+VlulORLLPoW78e8zVyz26FaapMKximWdiJigiXFcstxm
+         RdddPeq/ognHf8maz7j+WGWFFqgfSZcwXIKTsJATPadB5E3f9eR6me3lFQL8xjVOEPh8
+         F2GyX9hd3RiYCEsB3dSFuTLesbqCFlGh8veFeTULvyli0GnSb2RinsfcjjWQPfDM53c9
+         UWrmNYPOwZ6HOjfcxGVKTHnEce4HqbqOAb8+uJUu9+1oNFcnE2kXwH7gEcZ4YresWSpL
+         Cu7ivCGwR5vdlhgdE9J6OTa9F7Im+LTDGdhUL1N5PFiUwjRrgzwKWMOpe1t1WAwV0hgV
+         9vDw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1750122434; x=1750727234;
+        d=1e100.net; s=20230601; t=1750129312; x=1750734112;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=Ad9i9fPjljtJDZlJd+81Ng6OvEgS6Th4cAu7xxdqO2w=;
-        b=hiOAz7lx32pMcEuBcqV5wxUEgEGL35KFdf2L0MTN7t2jJPemrmPAX7R4U0ySgCfttK
-         D2VGh4oJ8Dbcy6tmPvZwvkYwvDUbgRCn/68OAvmM728+h7NFa5srxt/MpfJDT4O7KH+k
-         /Fy7O2CQWZbdvx0+8ZipIU8Tv1p6+YbVTodk4IOj6IaORmvIfZy/4Fs9KBQSuzd0USus
-         I0h0jVVjJC6D4wJOBFC2Lxz5FBQ2XVKyaKjc/KBWZyC7AXvCe6aMGNpti1EZ8AHGQpdx
-         dxfV6oGciZCWb6uDVg6up5HrIz8U0JCHpHjwxyTzijiywBlT6OuGUQALJLsed7Z7pAGh
-         96Iw==
-X-Forwarded-Encrypted: i=1; AJvYcCWB8YPyR61YIS1bqN3+rh8LDjh9hKABWAo+7lXeDtaDyfMLT2ndt4pNE6GIbJ+pneaznsKZTfhQaPc0cfFiAQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzhzhq+cjOeejabz8d65AYs53wBc1hQhFLABR58ymiFw6j2D3QB
-	vVvP5R2LRVnUF0jI1UWjhkCxWlns42brtcdncIZ6XDfJx8Zh8WpKrw6bOAmbBZoiUlcaeTJhNCM
-	MHrDH4PM4U9M13oOCV7JMuh/3B+ppsaA=
-X-Gm-Gg: ASbGncteGD5K2bQewcQxJXUPtMt8PLMskmy5p4sEYBm6bYAY6Myx7qNaHC7S357TfQt
-	j9hAGc+F7pIrmqtAJuK4Ee85NWHD23toAQBnlEPEhj2IH9WAwCU+xyOSCoa9pbzjR+oX8U1W4Th
-	F1SVRjz0X/ZnHRVqfPY0zbZ4KrQb0ZN2KbZt8Jn3rdXYNwGQ==
-X-Google-Smtp-Source: AGHT+IGWWQh8EgOU8Ef1D3I8x2++wy4jP5/Q8SxZF1v6kp1G6N+898u98f+dgH2O8LhGvD3gGpWdgpqVD1X3QZp8f3Y=
-X-Received: by 2002:a05:6102:5488:b0:4e5:acea:2dec with SMTP id
- ada2fe7eead31-4e7f61b5971mr7608951137.7.1750122433867; Mon, 16 Jun 2025
- 18:07:13 -0700 (PDT)
+        bh=u75Z/m51HLoqvQuvmxYYX48fqhq+BQTGNtp2KTyT5vE=;
+        b=dUfujhTWZ2lKxSGTG0xKgQlaa8/8FY2eI/SmkPaVaLeDMG48ONyHBjrFhG5ZoxqiyU
+         w8EjlFKXyCUQJEtIEJdcxdERnwVHs0MhPOWJTpBjgeLq1gVcPIsVmY/zJ7XUHqxiLT+c
+         UF0WZA6UXunc9ER3IZ0+BOErTnzTB+geoRIB97k0duXazxJsu3ZJx0neXKUCoKYb7aJC
+         HM2Hi8TUyHI6PvRX2HWNiCf8I3KzfnTnXF9Yb/287kuBCkVJR5OA81is1u90KvWfmxpk
+         vv2Sc0qAUFKc4MD2gLS3R2aSPRahHasX1c5sDbJy+B0iTeUjezr/IM5Lgxpp5/1Jqk03
+         OPdw==
+X-Forwarded-Encrypted: i=1; AJvYcCWugO73FFW9yD5oTYjMzaz6TtmEDc8Ym2clC7kb8qAPOV/lTAdFdRemzk/HTh3dcLDa0GIWCUndAs+ll2M=@vger.kernel.org, AJvYcCX5xRzuzRKBNsRRZnaGa1gNUVmRKZpfcozXyHUMCTdStL3/TlwMt1eqvSIZWo8RuCZH2eFfkeVp@vger.kernel.org
+X-Gm-Message-State: AOJu0YxPWnce6bc49de5dvdlzrb8SHVJUr8ph/y0QDGzMBpKJ0px35qg
+	2D0FYddXiiHgoxkkB6oW8USuGS0nqpspEJHceDYqeooRALdZJIu6rvZ2jHDo2eLsIRgkjnqn/g5
+	rVLO3w8sR9NdLGRd3zel48os9gtxXkNo=
+X-Gm-Gg: ASbGncvYzihkad8iYqdeEDl7YlL0smFuw1xPDVF70qJY6012OVQpRo4qLFIbw28uyCB
+	7MZsinmcRwDVUHj4MNe7vUz8kbpER2uLLZSIKhK2PgGKznDgXk5J8iG452/BiqDO7xg9oiYTR0m
+	wfj1sWyVyBoUcgFAJjx94u6X9Gh8LTbg1NvjvO5fkpOOo=
+X-Google-Smtp-Source: AGHT+IH3O0bo9lTKoYDcGH9D7lVDop32g1C5r70VHXuxW/nd9qbrLusDr29m441OZsEZGw0CB3nvZH1Gj9WsqLJ29zk=
+X-Received: by 2002:a05:6122:3bd0:b0:531:3900:8551 with SMTP id
+ 71dfb90a1353d-5314989a8eamr6802796e0c.8.1750129312186; Mon, 16 Jun 2025
+ 20:01:52 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250615131317.1089541-1-sashal@kernel.org> <871prjvl32.fsf@nvidia.com>
-In-Reply-To: <871prjvl32.fsf@nvidia.com>
-From: Cong Wang <xiyou.wangcong@gmail.com>
-Date: Mon, 16 Jun 2025 18:07:02 -0700
-X-Gm-Features: AX0GCFvSn2m5B1OZPDO5gL24OrE9gJLHj7SYr1oo0WBhymbBpazp_Mlm-ZqC9eI
-Message-ID: <CAM_iQpW5m37WH5sKyEHemq8oJLDYWbakWpqGo51bAFpjYyC1wA@mail.gmail.com>
-Subject: Re: Patch "net: sch_ets: Add a new Qdisc" has been added to the
- 5.4-stable tree
-To: Petr Machata <petrm@nvidia.com>
-Cc: stable@vger.kernel.org, stable-commits@vger.kernel.org, petrm@mellanox.com, 
-	Jamal Hadi Salim <jhs@mojatatu.com>, Jiri Pirko <jiri@resnulli.us>, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>
+References: <20250616132539.63434-1-danisjiang@gmail.com> <aFCh-JXnifNXTgSt@codewreck.org>
+In-Reply-To: <aFCh-JXnifNXTgSt@codewreck.org>
+From: Danis Jiang <danisjiang@gmail.com>
+Date: Tue, 17 Jun 2025 11:01:40 +0800
+X-Gm-Features: AX0GCFtKyrfm9TIjR5SftUPZL2VQwc6OnrGk3iuj5hx40J4WFoWm2EVEyMO3TCo
+Message-ID: <CAHYQsXR43MGM826eHtEkmH4X2bM-amM29A38XUj+hMbNF2vDJQ@mail.gmail.com>
+Subject: Re: [PATCH] net/9p: Fix buffer overflow in USB transport layer
+To: asmadeus@codewreck.org
+Cc: ericvh@kernel.org, lucho@ionkov.net, linux_oss@crudebyte.com, 
+	v9fs@lists.linux.dev, linux-kernel@vger.kernel.org, security@kernel.org, 
+	stable@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, Jun 16, 2025 at 7:05=E2=80=AFAM Petr Machata <petrm@nvidia.com> wro=
-te:
+On Tue, Jun 17, 2025 at 7:00=E2=80=AFAM <asmadeus@codewreck.org> wrote:
 >
+> Yuhao Jiang wrote on Mon, Jun 16, 2025 at 09:25:39PM +0800:
+> > A buffer overflow vulnerability exists in the USB 9pfs transport layer
+> > where inconsistent size validation between packet header parsing and
+> > actual data copying allows a malicious USB host to overflow heap buffer=
+s.
+> >
+> > The issue occurs because:
+> > - usb9pfs_rx_header() validates only the declared size in packet header
+> > - usb9pfs_rx_complete() uses req->actual (actual received bytes) for me=
+mcpy
+> >
+> > This allows an attacker to craft packets with small declared size (bypa=
+ssing
+> > validation) but large actual payload (triggering overflow in memcpy).
+> >
+> > Add validation in usb9pfs_rx_complete() to ensure req->actual does not
+> > exceed the buffer capacity before copying data.
 >
-> Sasha Levin <sashal@kernel.org> writes:
+> Thanks for this check!
 >
-> > This is a note to let you know that I've just added the patch titled
-> >
-> >     net: sch_ets: Add a new Qdisc
-> >
-> > to the 5.4-stable tree which can be found at:
-> >     http://www.kernel.org/git/?p=3Dlinux/kernel/git/stable/stable-queue=
-.git;a=3Dsummary
-> >
-> > The filename of the patch is:
-> >      net-sch_ets-add-a-new-qdisc.patch
-> > and it can be found in the queue-5.4 subdirectory.
-> >
-> > If you, or anyone else, feels it should not be added to the stable tree=
-,
-> > please let <stable@vger.kernel.org> know about it.
->
-> Not sure what the motivation is to include a pure added feature to a
-> stable tree. But if you truly want the patch, then there were a couple
-> follow up fixes over the years. At least the following look like patches
-> to code that would be problematic in 5.4.y as well:
+> Did you reproduce this or was this static analysis found?
+> (to knowi if you tested wrt question below)
 
-I blindly guess it got accidentally pulled into -stable due to Fixes tag?
+I found this by static analysis.
 
-Could we drop this please?
+>
+> > Reported-by: Yuhao Jiang <danisjiang@gmail.com>
+> > Fixes: a3be076dc174 ("net/9p/usbg: Add new usb gadget function transpor=
+t")
+> > Cc: stable@vger.kernel.org
+> > Signed-off-by: Yuhao Jiang <danisjiang@gmail.com>
+> > ---
+> >  net/9p/trans_usbg.c | 9 +++++++++
+> >  1 file changed, 9 insertions(+)
+> >
+> > diff --git a/net/9p/trans_usbg.c b/net/9p/trans_usbg.c
+> > index 6b694f117aef..047a2862fc84 100644
+> > --- a/net/9p/trans_usbg.c
+> > +++ b/net/9p/trans_usbg.c
+> > @@ -242,6 +242,15 @@ static void usb9pfs_rx_complete(struct usb_ep *ep,=
+ struct usb_request *req)
+> >       if (!p9_rx_req)
+> >               return;
+> >
+> > +     /* Validate actual received size against buffer capacity */
+> > +     if (req->actual > p9_rx_req->rc.capacity) {
+> > +             dev_err(&cdev->gadget->dev,
+> > +                     "received data size %u exceeds buffer capacity %z=
+u\n",
+> > +                     req->actual, p9_rx_req->rc.capacity);
+> > +             p9_req_put(usb9pfs->client, p9_rx_req);
+>
+> I still haven't gotten around to setting up something to test this, and
+> even less the error case, but I'm not sure a single put is enough --
+> p9_client_cb does another put.
+> Conceptually I think it's better to mark the error and move on
+> e.g. (not even compile tested)
+> ```
+>         int status =3D REQ_STATUS_RCVD;
+>
+>         [...]
+>
+>         if (req->actual > p9_rx_req->rc.capacity) {
+>                 dev_err(...)
+>                 req->actual =3D 0;
+>                 status =3D REQ_STATUS_ERROR;
+>         }
+>
+>         memcpy(..)
+>
+>         p9_rx_req->rc.size =3D req->actual;
+>
+>         p9_client_cb(usb9pfs->client, p9_rx_req, status);
+>         p9_req_put(usb9pfs->client, p9_rx_req);
+>
+>         complete(&usb9pfs->received);
+> ```
+> (I'm not sure overriding req->actual is allowed, might be safer to use
+> an intermediate variable like status instead)
+>
+> What do you think?
+>
+> Thanks,
+> --
+> Dominique Martinet | Asmadeus
 
-Thanks for catching this!
+Yes, I think your patch is better, my initial patch forgot p9_client_cb.
+
+Thanks,
+Yuhao Jiang
 
