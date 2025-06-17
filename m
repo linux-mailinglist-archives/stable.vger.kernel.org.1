@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-154361-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153927-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3632AADDA23
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 19:13:46 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2BBD9ADD6F9
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:39:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 18C125A2BC2
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:50:43 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ACC8B4A3050
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:29:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59786221F14;
-	Tue, 17 Jun 2025 16:49:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2ACE2EE268;
+	Tue, 17 Jun 2025 16:25:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0eKeX93l"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HkfNtj4y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 141922FA626;
-	Tue, 17 Jun 2025 16:49:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EB062ED174;
+	Tue, 17 Jun 2025 16:25:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750178949; cv=none; b=EMZRaNNABLvK/1SjZ4wcoLjOKXoakDiMp1nBIbyrmu7sFE58YlUB+I1nekimxiNSU1o1Y6BDx5m4NdHLCPtidi+pLoyN8fFZQNxAEqQcg22lSlz/k7SVI+BvSWsmYfZbWo6jrdVM4+UadytKn7+Eh465E4RS1AP8kierLinmT/o=
+	t=1750177549; cv=none; b=hmj/xZALefP8bO9XKNrkROmIsmBBruDvawXOvjYSwdtmbi9unZVleEPPDiipYCYTGMrkax1JnKGFZ+/dMbg5OgI918cTR8BHIWZ77OEl+3t3VwqxYsvA/MjHoxM9gchN4f3aKjD8lUXqIAJqiw6J0LiyubSkfG22DXX85oo3oys=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750178949; c=relaxed/simple;
-	bh=990jIiYfhujheo4V7rl20ReJtJ/sOWv/JfuLdenXB1E=;
+	s=arc-20240116; t=1750177549; c=relaxed/simple;
+	bh=QCgQbm+7ezgTV/YdAMdd+aNs3kBiR2u1oFygenIJofw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oZo81Xft4D3ouYbltRvmo2QXKxCe3KUPP0E9To9M22q2dYq+hmeS+DT6NBAaC8QyXTtxXEFMmFNrpfehM26r3y7LPi255sTRe0VlSsMF/av3frmPB3YcFfBz2qSp234UCxuuHCuV6EmEPgjjL9DsZ0TodHHTQ8IyKxU8R0TZAjw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0eKeX93l; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2DC72C4CEE3;
-	Tue, 17 Jun 2025 16:49:07 +0000 (UTC)
+	 MIME-Version:Content-Type; b=BdTptWZCgO/a6rjGwvcgZfJMO/HlH2Mm7l/CLS5k4p7VgWsl8O9A0I4psxxRL927E6Ilw+47bC+BwaxUS4/QlJI03FB0Esr14aIw+zRXP/+ThRBo4EJeQw/XmVuLKnHnBio1zv1jH1u4wDSD35/9ejYiR6rV7bIBCisKY5Q+sQo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HkfNtj4y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12B74C4CEE3;
+	Tue, 17 Jun 2025 16:25:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750178948;
-	bh=990jIiYfhujheo4V7rl20ReJtJ/sOWv/JfuLdenXB1E=;
+	s=korg; t=1750177549;
+	bh=QCgQbm+7ezgTV/YdAMdd+aNs3kBiR2u1oFygenIJofw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0eKeX93lsTeTkjeCm82M1jAPh+UT+USOT6/37DD+9mpTdq3do7cDPFZx4nMoaqetM
-	 FRFCTcDTcSXIIk6VUgQhyvpGT/P0uWl2BWxugI9MasRrb6wDRlnub632zcnG/ymmIN
-	 R1U0rKuXQx88wRkzvyGsq1sw9zJJpGxW+5FMGwG0=
+	b=HkfNtj4ylNOai87PRmlXMApJV0xzbQUQJJDW2nHbELcOJbYW2yMQSTZ0jvZR+TQiQ
+	 G+EWnFLeZn8BsM3VsQsQPDfroLMZKAyFzCBJI998yjZBOsND1WryZyCxl0iWD8GJJC
+	 2BYTTTu1KJ79HE1JOONFfw89zWWJkkZ6E//UTLgs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chaitanya Kulkarni <chaitanyak@nvidia.com>,
-	Chaitanya Kulkarni <kch@nvidia.com>,
-	Christoph Hellwig <hch@lst.de>,
+	Lucas De Marchi <lucas.demarchi@intel.com>,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>,
+	=?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 601/780] nvme: fix command limits status code
-Date: Tue, 17 Jun 2025 17:25:09 +0200
-Message-ID: <20250617152515.957409524@linuxfoundation.org>
+Subject: [PATCH 6.12 344/512] drm/xe: Make xe_gt_freq part of the Documentation
+Date: Tue, 17 Jun 2025 17:25:10 +0200
+Message-ID: <20250617152433.534910898@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
-References: <20250617152451.485330293@linuxfoundation.org>
+In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
+References: <20250617152419.512865572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,128 +61,89 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Keith Busch <kbusch@kernel.org>
+From: Rodrigo Vivi <rodrigo.vivi@intel.com>
 
-[ Upstream commit 10f4a7cd724e34b7a6ff96e57ac49dc0cadececc ]
+[ Upstream commit 55f8aa083604ce098c9d6a0911c6bcde15d03a80 ]
 
-The command specific status code, 0x183, was introduced in the NVMe 2.0
-specification defined to "Command Size Limits Exceeded" and only ever
-applied to DSM and Copy commands.  Fix the name and, remove the
-incorrect translation to error codes and special treatment in the
-target code for it.
+The documentation was created with the creation of the component,
+however it has never been actually shown in the actual Documentation.
 
-Fixes: 3b7c33b28a44d4 ("nvme.h: add Write Zeroes definitions")
-Cc: Chaitanya Kulkarni <chaitanyak@nvidia.com>
-Reviewed-by: Chaitanya Kulkarni <kch@nvidia.com>
-Signed-off-by: Christoph Hellwig <hch@lst.de>
+While doing this, fixes the identation style, to avoid new warnings
+while building htmldocs.
+
+Fixes: bef52b5c7a19 ("drm/xe: Create a xe_gt_freq component for raw management and sysfs")
+Reviewed-by: Lucas De Marchi <lucas.demarchi@intel.com>
+Link: https://lore.kernel.org/r/20250521165146.39616-3-rodrigo.vivi@intel.com
+Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
+(cherry picked from commit af53f0fd99c3bbb3afd29f1612c9e88c5a92cc01)
+Signed-off-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nvme/host/constants.c     | 2 +-
- drivers/nvme/host/core.c          | 1 -
- drivers/nvme/host/pr.c            | 2 --
- drivers/nvme/target/core.c        | 9 +--------
- drivers/nvme/target/io-cmd-bdev.c | 9 +--------
- include/linux/nvme.h              | 2 +-
- 6 files changed, 4 insertions(+), 21 deletions(-)
+ Documentation/gpu/xe/index.rst      |  1 +
+ Documentation/gpu/xe/xe_gt_freq.rst | 14 ++++++++++++++
+ drivers/gpu/drm/xe/xe_gt_freq.c     |  2 ++
+ 3 files changed, 17 insertions(+)
+ create mode 100644 Documentation/gpu/xe/xe_gt_freq.rst
 
-diff --git a/drivers/nvme/host/constants.c b/drivers/nvme/host/constants.c
-index 2b9e6cfaf2a80..1a0058be58210 100644
---- a/drivers/nvme/host/constants.c
-+++ b/drivers/nvme/host/constants.c
-@@ -145,7 +145,7 @@ static const char * const nvme_statuses[] = {
- 	[NVME_SC_BAD_ATTRIBUTES] = "Conflicting Attributes",
- 	[NVME_SC_INVALID_PI] = "Invalid Protection Information",
- 	[NVME_SC_READ_ONLY] = "Attempted Write to Read Only Range",
--	[NVME_SC_ONCS_NOT_SUPPORTED] = "ONCS Not Supported",
-+	[NVME_SC_CMD_SIZE_LIM_EXCEEDED	] = "Command Size Limits Exceeded",
- 	[NVME_SC_ZONE_BOUNDARY_ERROR] = "Zoned Boundary Error",
- 	[NVME_SC_ZONE_FULL] = "Zone Is Full",
- 	[NVME_SC_ZONE_READ_ONLY] = "Zone Is Read Only",
-diff --git a/drivers/nvme/host/core.c b/drivers/nvme/host/core.c
-index 6b04473c0ab73..93a8119ad5ca6 100644
---- a/drivers/nvme/host/core.c
-+++ b/drivers/nvme/host/core.c
-@@ -286,7 +286,6 @@ static blk_status_t nvme_error_status(u16 status)
- 	case NVME_SC_NS_NOT_READY:
- 		return BLK_STS_TARGET;
- 	case NVME_SC_BAD_ATTRIBUTES:
--	case NVME_SC_ONCS_NOT_SUPPORTED:
- 	case NVME_SC_INVALID_OPCODE:
- 	case NVME_SC_INVALID_FIELD:
- 	case NVME_SC_INVALID_NS:
-diff --git a/drivers/nvme/host/pr.c b/drivers/nvme/host/pr.c
-index cf2d2c5039ddb..ca6a74607b139 100644
---- a/drivers/nvme/host/pr.c
-+++ b/drivers/nvme/host/pr.c
-@@ -82,8 +82,6 @@ static int nvme_status_to_pr_err(int status)
- 		return PR_STS_SUCCESS;
- 	case NVME_SC_RESERVATION_CONFLICT:
- 		return PR_STS_RESERVATION_CONFLICT;
--	case NVME_SC_ONCS_NOT_SUPPORTED:
--		return -EOPNOTSUPP;
- 	case NVME_SC_BAD_ATTRIBUTES:
- 	case NVME_SC_INVALID_OPCODE:
- 	case NVME_SC_INVALID_FIELD:
-diff --git a/drivers/nvme/target/core.c b/drivers/nvme/target/core.c
-index 245475c43127f..69b1ddff6731f 100644
---- a/drivers/nvme/target/core.c
-+++ b/drivers/nvme/target/core.c
-@@ -62,14 +62,7 @@ inline u16 errno_to_nvme_status(struct nvmet_req *req, int errno)
- 		return  NVME_SC_LBA_RANGE | NVME_STATUS_DNR;
- 	case -EOPNOTSUPP:
- 		req->error_loc = offsetof(struct nvme_common_command, opcode);
--		switch (req->cmd->common.opcode) {
--		case nvme_cmd_dsm:
--		case nvme_cmd_write_zeroes:
--			return NVME_SC_ONCS_NOT_SUPPORTED | NVME_STATUS_DNR;
--		default:
--			return NVME_SC_INVALID_OPCODE | NVME_STATUS_DNR;
--		}
--		break;
-+		return NVME_SC_INVALID_OPCODE | NVME_STATUS_DNR;
- 	case -ENODATA:
- 		req->error_loc = offsetof(struct nvme_rw_command, nsid);
- 		return NVME_SC_ACCESS_DENIED;
-diff --git a/drivers/nvme/target/io-cmd-bdev.c b/drivers/nvme/target/io-cmd-bdev.c
-index 83be0657e6df4..1cfa13d029bfa 100644
---- a/drivers/nvme/target/io-cmd-bdev.c
-+++ b/drivers/nvme/target/io-cmd-bdev.c
-@@ -145,15 +145,8 @@ u16 blk_to_nvme_status(struct nvmet_req *req, blk_status_t blk_sts)
- 		req->error_loc = offsetof(struct nvme_rw_command, slba);
- 		break;
- 	case BLK_STS_NOTSUPP:
-+		status = NVME_SC_INVALID_OPCODE | NVME_STATUS_DNR;
- 		req->error_loc = offsetof(struct nvme_common_command, opcode);
--		switch (req->cmd->common.opcode) {
--		case nvme_cmd_dsm:
--		case nvme_cmd_write_zeroes:
--			status = NVME_SC_ONCS_NOT_SUPPORTED | NVME_STATUS_DNR;
--			break;
--		default:
--			status = NVME_SC_INVALID_OPCODE | NVME_STATUS_DNR;
--		}
- 		break;
- 	case BLK_STS_MEDIUM:
- 		status = NVME_SC_ACCESS_DENIED;
-diff --git a/include/linux/nvme.h b/include/linux/nvme.h
-index 2479ed10f53e3..5d7afb6079f1d 100644
---- a/include/linux/nvme.h
-+++ b/include/linux/nvme.h
-@@ -2094,7 +2094,7 @@ enum {
- 	NVME_SC_BAD_ATTRIBUTES		= 0x180,
- 	NVME_SC_INVALID_PI		= 0x181,
- 	NVME_SC_READ_ONLY		= 0x182,
--	NVME_SC_ONCS_NOT_SUPPORTED	= 0x183,
-+	NVME_SC_CMD_SIZE_LIM_EXCEEDED	= 0x183,
- 
- 	/*
- 	 * I/O Command Set Specific - Fabrics commands:
+diff --git a/Documentation/gpu/xe/index.rst b/Documentation/gpu/xe/index.rst
+index 3f07aa3b54325..89bbdcccf8eb7 100644
+--- a/Documentation/gpu/xe/index.rst
++++ b/Documentation/gpu/xe/index.rst
+@@ -16,6 +16,7 @@ DG2, etc is provided to prototype the driver.
+    xe_migrate
+    xe_cs
+    xe_pm
++   xe_gt_freq
+    xe_pcode
+    xe_gt_mcr
+    xe_wa
+diff --git a/Documentation/gpu/xe/xe_gt_freq.rst b/Documentation/gpu/xe/xe_gt_freq.rst
+new file mode 100644
+index 0000000000000..c0811200e3275
+--- /dev/null
++++ b/Documentation/gpu/xe/xe_gt_freq.rst
+@@ -0,0 +1,14 @@
++.. SPDX-License-Identifier: (GPL-2.0+ OR MIT)
++
++==========================
++Xe GT Frequency Management
++==========================
++
++.. kernel-doc:: drivers/gpu/drm/xe/xe_gt_freq.c
++   :doc: Xe GT Frequency Management
++
++Internal API
++============
++
++.. kernel-doc:: drivers/gpu/drm/xe/xe_gt_freq.c
++   :internal:
+diff --git a/drivers/gpu/drm/xe/xe_gt_freq.c b/drivers/gpu/drm/xe/xe_gt_freq.c
+index ab76973f3e1e6..a05fde2c7b122 100644
+--- a/drivers/gpu/drm/xe/xe_gt_freq.c
++++ b/drivers/gpu/drm/xe/xe_gt_freq.c
+@@ -32,6 +32,7 @@
+  * Xe's Freq provides a sysfs API for frequency management:
+  *
+  * device/tile#/gt#/freq0/<item>_freq *read-only* files:
++ *
+  * - act_freq: The actual resolved frequency decided by PCODE.
+  * - cur_freq: The current one requested by GuC PC to the PCODE.
+  * - rpn_freq: The Render Performance (RP) N level, which is the minimal one.
+@@ -39,6 +40,7 @@
+  * - rp0_freq: The Render Performance (RP) 0 level, which is the maximum one.
+  *
+  * device/tile#/gt#/freq0/<item>_freq *read-write* files:
++ *
+  * - min_freq: Min frequency request.
+  * - max_freq: Max frequency request.
+  *             If max <= min, then freq_min becomes a fixed frequency request.
 -- 
 2.39.5
 
