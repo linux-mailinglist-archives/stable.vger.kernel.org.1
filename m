@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-153861-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153863-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 478EFADD6C2
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:37:05 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0738EADD6B1
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:36:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 172E64A0523
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:27:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C72654A1B57
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:27:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 958D42F2C6C;
-	Tue, 17 Jun 2025 16:22:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4899236A73;
+	Tue, 17 Jun 2025 16:22:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jDozvkwG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TUlNYpd3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 522D02F2C52;
-	Tue, 17 Jun 2025 16:22:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 598FD2DFF2E;
+	Tue, 17 Jun 2025 16:22:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750177334; cv=none; b=FQmcHR9Tbo0MnYJqT6Ldpukhaejy+XQ/oYDNvl3VtG/xxcidUmR5wN9VqMmdZMpHl6L4wTL2aY8txrLZQ4ghVTR2F93EV66pFAh3M/YctMNKf4jofM6gJ5d9YGfgUaFGlDE83WN1hhb0fPZk2nV2sRrhka0qHnzOvvRK3dyMerY=
+	t=1750177340; cv=none; b=geMFaw4hjvV7nu06Lu5aIcDA6UljKczUMBFcXU80E35JDU8bmW58fp1CLy+dLSc9p+Gyrsvuj+DGAZCb9w0zKMziuyKECeb0pz1emlhm1TkPld+iMXPxaWAqXJct7dxpcugvLULhhpNjlMmusrqGKn6RWYaOtdPF80Xl4MQG9d0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750177334; c=relaxed/simple;
-	bh=rQioJYMAbRgRFFeF6nVFfKT86PcM1wEtWeQ1q3bMVDQ=;
+	s=arc-20240116; t=1750177340; c=relaxed/simple;
+	bh=iA8boxvHaTzVo+6RCWbAvUza5GNNu1IVC82hAp5NiQo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fFiBElWj5N4LjvByomtKgLa0SaJbLcUaFOU3hMZ55T80LPQoZa2s7KRANSggT2wlShg/KwP/Z2AJQYe70ovQFPB2N7EIn2lmaHsDN5vUMg9hwwYkv67fWmihjaeUvgD4TrZpdnxhVjrbmXp0AUdwuYb1S5dGLsiM7OtmUs7jyQw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jDozvkwG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA863C4CEE3;
-	Tue, 17 Jun 2025 16:22:13 +0000 (UTC)
+	 MIME-Version; b=TX2HyG8jNuiN7xYsIwHhjm/r4I1WL7XtLRtw+8DWteW8TBKH9AcS6hWPeewa7/rWd8o/79/3C29Efu2JBQ13oEPQEjjkMXvdKPvZP4xrF4SHqkV5R1IVw+s63jC1338xYvltiDigKBVYjaFNZCAUW/hOzZQ/+nz2hPOCSM/n2sA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TUlNYpd3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C30DBC4CEE3;
+	Tue, 17 Jun 2025 16:22:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750177334;
-	bh=rQioJYMAbRgRFFeF6nVFfKT86PcM1wEtWeQ1q3bMVDQ=;
+	s=korg; t=1750177340;
+	bh=iA8boxvHaTzVo+6RCWbAvUza5GNNu1IVC82hAp5NiQo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jDozvkwGMezM4VnkBGqvkFEGlfpXE3DMHd/0ApEG47yG4ZwSJ0En1wBqEdevpo05H
-	 Cx0BiLhIrMJKEULLapiBY59uC0LuS1jZA5r4I5TLOgujiwPWmEFEJ+7OXPGdFvhTL4
-	 mXbCUhRb7edARPqWOF/PvhHF1dV2k4BUG8/PeokA=
+	b=TUlNYpd3cwcijDZ88V3Gs229ucuf8lve31J+hKQm3u4EjbNoISezpwuiP+PEjiPRV
+	 3R3nVq/WpDiEWrvlegoI46sOb3atZcK/yS4xqHM+5pTtLbbWbtknE2UWUZFFcZZf01
+	 lTvzcWS/9wkW2JPMifHcjppONPdV2Cvgtam4ThM8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -45,9 +45,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Qasim Ijaz <qasdev00@gmail.com>,
 	Felix Fietkau <nbd@nbd.name>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 291/780] wifi: mt76: mt7996: avoid NULL pointer dereference in mt7996_set_monitor()
-Date: Tue, 17 Jun 2025 17:19:59 +0200
-Message-ID: <20250617152503.318706112@linuxfoundation.org>
+Subject: [PATCH 6.15 292/780] wifi: mt76: mt7996: avoid null deref in mt7996_stop_phy()
+Date: Tue, 17 Jun 2025 17:20:00 +0200
+Message-ID: <20250617152503.358281454@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
 References: <20250617152451.485330293@linuxfoundation.org>
@@ -68,17 +68,18 @@ Content-Transfer-Encoding: 8bit
 
 From: Qasim Ijaz <qasdev00@gmail.com>
 
-[ Upstream commit cb423ddad0f6e6f55b1700422ab777b25597cc83 ]
+[ Upstream commit a0bdd3d1b94d22dd9d255fd148eb9183ea0a822f ]
 
-The function mt7996_set_monitor() dereferences phy before
-the NULL sanity check.
+In mt7996_stop_phy() the mt7996_phy structure is
+dereferenced before the null sanity check which could
+lead to a null deref.
 
-Fix this to avoid NULL pointer dereference by moving the
-dereference after the check.
+Fix by moving the dereference operation after the
+sanity check.
 
 Fixes: 69d54ce7491d ("wifi: mt76: mt7996: switch to single multi-radio wiphy")
 Signed-off-by: Qasim Ijaz <qasdev00@gmail.com>
-Link: https://patch.msgid.link/20250421112544.13430-1-qasdev00@gmail.com
+Link: https://patch.msgid.link/20250421111344.11484-1-qasdev00@gmail.com
 Signed-off-by: Felix Fietkau <nbd@nbd.name>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
@@ -86,24 +87,24 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 3 insertions(+), 1 deletion(-)
 
 diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/main.c b/drivers/net/wireless/mediatek/mt76/mt7996/main.c
-index 70823bbb165c7..5ec4f97932865 100644
+index 5ec4f97932865..8698c4345af0c 100644
 --- a/drivers/net/wireless/mediatek/mt76/mt7996/main.c
 +++ b/drivers/net/wireless/mediatek/mt76/mt7996/main.c
-@@ -414,11 +414,13 @@ static void mt7996_phy_set_rxfilter(struct mt7996_phy *phy)
+@@ -68,11 +68,13 @@ static int mt7996_start(struct ieee80211_hw *hw)
  
- static void mt7996_set_monitor(struct mt7996_phy *phy, bool enabled)
+ static void mt7996_stop_phy(struct mt7996_phy *phy)
  {
 -	struct mt7996_dev *dev = phy->dev;
 +	struct mt7996_dev *dev;
  
- 	if (!phy)
+ 	if (!phy || !test_bit(MT76_STATE_RUNNING, &phy->mt76->state))
  		return;
  
 +	dev = phy->dev;
 +
- 	if (enabled == !(phy->rxfilter & MT_WF_RFCR_DROP_OTHER_UC))
- 		return;
+ 	cancel_delayed_work_sync(&phy->mt76->mac_work);
  
+ 	mutex_lock(&dev->mt76.mutex);
 -- 
 2.39.5
 
