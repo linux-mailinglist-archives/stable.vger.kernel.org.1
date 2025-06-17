@@ -1,63 +1,53 @@
-Return-Path: <stable+bounces-152893-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-152942-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6BDB1ADD156
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 17:28:54 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id BC298ADD192
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 17:32:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EE4797A5404
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 15:27:31 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2999B1897076
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 15:32:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F1AC2EB5AD;
-	Tue, 17 Jun 2025 15:28:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8989D2E9730;
+	Tue, 17 Jun 2025 15:32:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TghcRuTR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PxGFDjIU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE2762EBDC7;
-	Tue, 17 Jun 2025 15:28:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 440172E9737;
+	Tue, 17 Jun 2025 15:32:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750174121; cv=none; b=UWRqDCtqWph+JdHVr7ZZI5Mc6D+nHUitCoBVmCLLHB4UTGpeUSv3XRAsK19T6//vz7Cr1KcnTG/lnAA78u4Xc8htmt7CtVMi70ePX6AKn2wAHGKfw75S+lLwGZOj7PSWHeYEzx3SayvwXxwzpLtgeTK/gcWdrwHTvdRsRPb6sBA=
+	t=1750174339; cv=none; b=fjCZ9xv72EiJ9hFk2Du4ydX9tJflleHWFpJu/8J8l1knLhmXesfK7nklqUDUMYkDMNg4dV1BTvJQp79qUnx6Bu2udxQQ2UN0Gnpe1svS2F/5/zLnwluko/TH2mZeqOinznFvrhJL4Kus+dhVR6c3hERDDG2065YRtq7+Q1tq/GE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750174121; c=relaxed/simple;
-	bh=OkNwazgR1FTUl6j/uJxmGgRLDkpDqAvH7sTAhw81n7M=;
+	s=arc-20240116; t=1750174339; c=relaxed/simple;
+	bh=fpWNPURxNgySLKKRo/LPDTcWtLEf4oyT+YD+QdvYiZw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Pi0+9YJWLztk6bSbw8dYeVW/TAr1jDImvRebbvs73S4QNkjqz+pKUPQYEyFYNfrQG6pOrKFCG5I7Q8nKDJsPD2Kf4P6VgdCRkM6QwOkhP5gysfU5WaxCtbq8pcfeFPvMXRV8rilF6fAWZbeRAL//U7UtGS4pvzR2u4q1/XYoRHA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TghcRuTR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27C2EC4CEE7;
-	Tue, 17 Jun 2025 15:28:40 +0000 (UTC)
+	 MIME-Version; b=dK5xkFz5opggMBKrGtEIIhIe26a0klI8U/m3IvfRteMvHUBgb7TmaL6Pu3xWUc10wzwa3UoZsfIg12d0HIWZe9i0aQ0q7506Y8vEVKceXULqPTXiChf6Apj1CYZBRtcTLKAVbJ7YDaEsAU5s/dmy77IC6fxu/TscATEPjdvfeBo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PxGFDjIU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A84FBC4CEE3;
+	Tue, 17 Jun 2025 15:32:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750174120;
-	bh=OkNwazgR1FTUl6j/uJxmGgRLDkpDqAvH7sTAhw81n7M=;
+	s=korg; t=1750174339;
+	bh=fpWNPURxNgySLKKRo/LPDTcWtLEf4oyT+YD+QdvYiZw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TghcRuTRCqbLzl9AYn6hEghlY5qa1uRKY4xAqG1vvQD1AnCDBrdWQ+DItJNegtGHP
-	 tpkKsFhvWjViGoJRbur6LJdA/sn6s3k1Iz+6/8WO+91NtdBJyC48nuL5JMrf1IxGQ4
-	 liTOgPsacwqbBIQurzNwCfbjitCEK7Ga9iC+9p+c=
+	b=PxGFDjIUV/KAb+1Z1myOeqOPXdGBbbYbikPrmohrJGa4mF0/Y5uekedbI/wFQu57f
+	 IG87EgaOYMvI2G1fadx8oHcucpvM1BcLfOrAh3FjcKMejOvLlriOZeeBxq/3MKRa5q
+	 LG4E8GJsyuYnDl69xtkQXDxa8yPjuRGJC9qexKds=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrew Cooper <andrew.cooper3@citrix.com>,
-	Ingo Molnar <mingo@kernel.org>,
-	Dave Hansen <dave.hansen@intel.com>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Rik van Riel <riel@surriel.com>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	Andy Lutomirski <luto@kernel.org>,
-	Brian Gerst <brgerst@gmail.com>,
-	Juergen Gross <jgross@suse.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Ovidiu Panait <ovidiu.panait.oss@gmail.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 002/512] x86/idle: Remove MFENCEs for X86_BUG_CLFLUSH_MONITOR in mwait_idle_with_hints() and prefer_mwait_c1_over_halt()
-Date: Tue, 17 Jun 2025 17:19:28 +0200
-Message-ID: <20250617152419.622968266@linuxfoundation.org>
+Subject: [PATCH 6.12 003/512] crypto: sun8i-ce-hash - fix error handling in sun8i_ce_hash_run()
+Date: Tue, 17 Jun 2025 17:19:29 +0200
+Message-ID: <20250617152419.664366627@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
 References: <20250617152419.512865572@linuxfoundation.org>
@@ -76,117 +66,129 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Andrew Cooper <andrew.cooper3@citrix.com>
+From: Ovidiu Panait <ovidiu.panait.oss@gmail.com>
 
-[ Upstream commit 1f13c60d84e880df6698441026e64f84c7110c49 ]
+[ Upstream commit ea4dd134ef332bd9e3e734c1ba0a1521f436b678 ]
 
-The following commit, 12 years ago:
+Rework error handling in sun8i_ce_hash_run() to unmap the dma buffers in
+case of failure. Currently, the dma unmap functions are not called if the
+function errors out at various points.
 
-  7e98b7192046 ("x86, idle: Use static_cpu_has() for CLFLUSH workaround, add barriers")
-
-added barriers around the CLFLUSH in mwait_idle_with_hints(), justified with:
-
-  ... and add memory barriers around it since the documentation is explicit
-  that CLFLUSH is only ordered with respect to MFENCE.
-
-This also triggered, 11 years ago, the same adjustment in:
-
-  f8e617f45829 ("sched/idle/x86: Optimize unnecessary mwait_idle() resched IPIs")
-
-during development, although it failed to get the static_cpu_has_bug() treatment.
-
-X86_BUG_CLFLUSH_MONITOR (a.k.a the AAI65 errata) is specific to Intel CPUs,
-and the SDM currently states:
-
-  Executions of the CLFLUSH instruction are ordered with respect to each
-  other and with respect to writes, locked read-modify-write instructions,
-  and fence instructions[1].
-
-With footnote 1 reading:
-
-  Earlier versions of this manual specified that executions of the CLFLUSH
-  instruction were ordered only by the MFENCE instruction.  All processors
-  implementing the CLFLUSH instruction also order it relative to the other
-  operations enumerated above.
-
-i.e. The SDM was incorrect at the time, and barriers should not have been
-inserted.  Double checking the original AAI65 errata (not available from
-intel.com any more) shows no mention of barriers either.
-
-Note: If this were a general codepath, the MFENCEs would be needed, because
-      AMD CPUs of the same vintage do sport otherwise-unordered CLFLUSHs.
-
-Remove the unnecessary barriers. Furthermore, use a plain alternative(),
-rather than static_cpu_has_bug() and/or no optimisation.  The workaround
-is a single instruction.
-
-Use an explicit %rax pointer rather than a general memory operand, because
-MONITOR takes the pointer implicitly in the same way.
-
-[ mingo: Cleaned up the commit a bit. ]
-
-Fixes: 7e98b7192046 ("x86, idle: Use static_cpu_has() for CLFLUSH workaround, add barriers")
-Signed-off-by: Andrew Cooper <andrew.cooper3@citrix.com>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Acked-by: Dave Hansen <dave.hansen@intel.com>
-Acked-by: Borislav Petkov (AMD) <bp@alien8.de>
-Cc: "H. Peter Anvin" <hpa@zytor.com>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Rik van Riel <riel@surriel.com>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: Andy Lutomirski <luto@kernel.org>
-Cc: Brian Gerst <brgerst@gmail.com>
-Cc: Juergen Gross <jgross@suse.com>
-Cc: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Link: https://lore.kernel.org/r/20250402172458.1378112-1-andrew.cooper3@citrix.com
+Fixes: 56f6d5aee88d1 ("crypto: sun8i-ce - support hash algorithms")
+Signed-off-by: Ovidiu Panait <ovidiu.panait.oss@gmail.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/include/asm/mwait.h | 9 +++------
- arch/x86/kernel/process.c    | 9 +++------
- 2 files changed, 6 insertions(+), 12 deletions(-)
+ .../crypto/allwinner/sun8i-ce/sun8i-ce-hash.c | 34 ++++++++++++-------
+ 1 file changed, 21 insertions(+), 13 deletions(-)
 
-diff --git a/arch/x86/include/asm/mwait.h b/arch/x86/include/asm/mwait.h
-index 920426d691ce7..3e4e85f71a6ad 100644
---- a/arch/x86/include/asm/mwait.h
-+++ b/arch/x86/include/asm/mwait.h
-@@ -117,13 +117,10 @@ static __always_inline void __sti_mwait(unsigned long eax, unsigned long ecx)
- static __always_inline void mwait_idle_with_hints(unsigned long eax, unsigned long ecx)
- {
- 	if (static_cpu_has_bug(X86_BUG_MONITOR) || !current_set_polling_and_test()) {
--		if (static_cpu_has_bug(X86_BUG_CLFLUSH_MONITOR)) {
--			mb();
--			clflush((void *)&current_thread_info()->flags);
--			mb();
--		}
-+		const void *addr = &current_thread_info()->flags;
+diff --git a/drivers/crypto/allwinner/sun8i-ce/sun8i-ce-hash.c b/drivers/crypto/allwinner/sun8i-ce/sun8i-ce-hash.c
+index 6072dd9f390b4..3f9d79ea01aaa 100644
+--- a/drivers/crypto/allwinner/sun8i-ce/sun8i-ce-hash.c
++++ b/drivers/crypto/allwinner/sun8i-ce/sun8i-ce-hash.c
+@@ -343,9 +343,8 @@ int sun8i_ce_hash_run(struct crypto_engine *engine, void *breq)
+ 	u32 common;
+ 	u64 byte_count;
+ 	__le32 *bf;
+-	void *buf = NULL;
++	void *buf, *result;
+ 	int j, i, todo;
+-	void *result = NULL;
+ 	u64 bs;
+ 	int digestsize;
+ 	dma_addr_t addr_res, addr_pad;
+@@ -365,14 +364,14 @@ int sun8i_ce_hash_run(struct crypto_engine *engine, void *breq)
+ 	buf = kcalloc(2, bs, GFP_KERNEL | GFP_DMA);
+ 	if (!buf) {
+ 		err = -ENOMEM;
+-		goto theend;
++		goto err_out;
+ 	}
+ 	bf = (__le32 *)buf;
  
--		__monitor((void *)&current_thread_info()->flags, 0, 0);
-+		alternative_input("", "clflush (%[addr])", X86_BUG_CLFLUSH_MONITOR, [addr] "a" (addr));
-+		__monitor(addr, 0, 0);
+ 	result = kzalloc(digestsize, GFP_KERNEL | GFP_DMA);
+ 	if (!result) {
+ 		err = -ENOMEM;
+-		goto theend;
++		goto err_free_buf;
+ 	}
  
- 		if (!need_resched()) {
- 			if (ecx & 1) {
-diff --git a/arch/x86/kernel/process.c b/arch/x86/kernel/process.c
-index c7ce3655b7078..8a9ddc4adf51b 100644
---- a/arch/x86/kernel/process.c
-+++ b/arch/x86/kernel/process.c
-@@ -906,13 +906,10 @@ static __init bool prefer_mwait_c1_over_halt(void)
- static __cpuidle void mwait_idle(void)
- {
- 	if (!current_set_polling_and_test()) {
--		if (this_cpu_has(X86_BUG_CLFLUSH_MONITOR)) {
--			mb(); /* quirk */
--			clflush((void *)&current_thread_info()->flags);
--			mb(); /* quirk */
--		}
-+		const void *addr = &current_thread_info()->flags;
+ 	flow = rctx->flow;
+@@ -398,7 +397,7 @@ int sun8i_ce_hash_run(struct crypto_engine *engine, void *breq)
+ 	if (nr_sgs <= 0 || nr_sgs > MAX_SG) {
+ 		dev_err(ce->dev, "Invalid sg number %d\n", nr_sgs);
+ 		err = -EINVAL;
+-		goto theend;
++		goto err_free_result;
+ 	}
  
--		__monitor((void *)&current_thread_info()->flags, 0, 0);
-+		alternative_input("", "clflush (%[addr])", X86_BUG_CLFLUSH_MONITOR, [addr] "a" (addr));
-+		__monitor(addr, 0, 0);
- 		if (!need_resched()) {
- 			__sti_mwait(0, 0);
- 			raw_local_irq_disable();
+ 	len = areq->nbytes;
+@@ -411,7 +410,7 @@ int sun8i_ce_hash_run(struct crypto_engine *engine, void *breq)
+ 	if (len > 0) {
+ 		dev_err(ce->dev, "remaining len %d\n", len);
+ 		err = -EINVAL;
+-		goto theend;
++		goto err_unmap_src;
+ 	}
+ 	addr_res = dma_map_single(ce->dev, result, digestsize, DMA_FROM_DEVICE);
+ 	cet->t_dst[0].addr = desc_addr_val_le32(ce, addr_res);
+@@ -419,7 +418,7 @@ int sun8i_ce_hash_run(struct crypto_engine *engine, void *breq)
+ 	if (dma_mapping_error(ce->dev, addr_res)) {
+ 		dev_err(ce->dev, "DMA map dest\n");
+ 		err = -EINVAL;
+-		goto theend;
++		goto err_unmap_src;
+ 	}
+ 
+ 	byte_count = areq->nbytes;
+@@ -441,7 +440,7 @@ int sun8i_ce_hash_run(struct crypto_engine *engine, void *breq)
+ 	}
+ 	if (!j) {
+ 		err = -EINVAL;
+-		goto theend;
++		goto err_unmap_result;
+ 	}
+ 
+ 	addr_pad = dma_map_single(ce->dev, buf, j * 4, DMA_TO_DEVICE);
+@@ -450,7 +449,7 @@ int sun8i_ce_hash_run(struct crypto_engine *engine, void *breq)
+ 	if (dma_mapping_error(ce->dev, addr_pad)) {
+ 		dev_err(ce->dev, "DMA error on padding SG\n");
+ 		err = -EINVAL;
+-		goto theend;
++		goto err_unmap_result;
+ 	}
+ 
+ 	if (ce->variant->hash_t_dlen_in_bits)
+@@ -463,16 +462,25 @@ int sun8i_ce_hash_run(struct crypto_engine *engine, void *breq)
+ 	err = sun8i_ce_run_task(ce, flow, crypto_ahash_alg_name(tfm));
+ 
+ 	dma_unmap_single(ce->dev, addr_pad, j * 4, DMA_TO_DEVICE);
+-	dma_unmap_sg(ce->dev, areq->src, ns, DMA_TO_DEVICE);
++
++err_unmap_result:
+ 	dma_unmap_single(ce->dev, addr_res, digestsize, DMA_FROM_DEVICE);
++	if (!err)
++		memcpy(areq->result, result, algt->alg.hash.base.halg.digestsize);
+ 
++err_unmap_src:
++	dma_unmap_sg(ce->dev, areq->src, ns, DMA_TO_DEVICE);
+ 
+-	memcpy(areq->result, result, algt->alg.hash.base.halg.digestsize);
+-theend:
+-	kfree(buf);
++err_free_result:
+ 	kfree(result);
++
++err_free_buf:
++	kfree(buf);
++
++err_out:
+ 	local_bh_disable();
+ 	crypto_finalize_hash_request(engine, breq, err);
+ 	local_bh_enable();
++
+ 	return 0;
+ }
 -- 
 2.39.5
 
