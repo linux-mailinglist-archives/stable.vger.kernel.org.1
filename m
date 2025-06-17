@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-153306-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153248-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3D3CEADD3E8
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:04:21 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 26EF7ADD34D
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 17:55:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0436D18991B4
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 15:56:05 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6278E17DC15
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 15:52:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53BA82F2362;
-	Tue, 17 Jun 2025 15:52:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 87BB42ED169;
+	Tue, 17 Jun 2025 15:49:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="alWiZ18N"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VlRwr/f8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 113142F2341;
-	Tue, 17 Jun 2025 15:52:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42EB6202C38;
+	Tue, 17 Jun 2025 15:49:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750175524; cv=none; b=IRNmBXh1vjiPizl7Bs4SkK8V/jnql0xgGj90IEsy/hIr3hH90rpaKpWWC6Ff8NWod+tjuNIviR4wPDVaFm6G8LMHknMkY1IH3q1bd0ClAOlXS0OChBTIwajAIWd3OST0oq+Mda4Wkl3G0jOJeSnlaXbxnhrWM62DHFdNFI/Td6Q=
+	t=1750175348; cv=none; b=DJ2foHPgo4st5Cs+31l8W182NN4wQxrVz0yFA6vGiGvgtZEUv0TouMY8cnjXoFZOyy9v3hnxlhYqzLVV+/8X8604uIFIi9qC2o/qGefBVxRsVHATUsBoZczxr5DC7fz9+FTgMAhBEmiHT8Bsdru00fhiNQDjXtc+I9RkFHg1zwU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750175524; c=relaxed/simple;
-	bh=vYxmsqenLOJWn/JO1j8MJDPTqyMaPrrYMCq4NgAMB2o=;
+	s=arc-20240116; t=1750175348; c=relaxed/simple;
+	bh=+mg0ztrN35vZyumNvhk1GozbyYRKVHpl2PUkHOrqxJg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pIcs+7OXs63F1lBxhaqYamyNJJurzoakRwElh0+Qh4J0S2DUHa5sT7WX0lkGI8ZnnD9jMPH80yB5FXnoR9rsEzsRo+KtVivfRadHWxgu0qdhnRAcqs9hQp5bqENnrCK/NzuxEAtwULxMMVeYUsoVt9OC+iTgC77zZ+Iy7JGP4OE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=alWiZ18N; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8CE0EC4CEE3;
-	Tue, 17 Jun 2025 15:52:03 +0000 (UTC)
+	 MIME-Version; b=gcOmbqtdgzn7bSZc5nbZdzJtU+5xEcSqAztSr1/S0CS/IqmZU8yjdMcGbjGAhveth1/TctmTwQr2mECmyTwloY/m5549GeQx2dI6BJcQo/o1dxn5Lqj7G1J5KJk48+dXlWlJjpBA4lFs+gHZ5LLWH3D2sJCgELz1B0g1dp0ainc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VlRwr/f8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E517C4CEE3;
+	Tue, 17 Jun 2025 15:49:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750175523;
-	bh=vYxmsqenLOJWn/JO1j8MJDPTqyMaPrrYMCq4NgAMB2o=;
+	s=korg; t=1750175348;
+	bh=+mg0ztrN35vZyumNvhk1GozbyYRKVHpl2PUkHOrqxJg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=alWiZ18NA8epvhlTqrnRqNKOw62AQeOfHlYyTQ4kfypPbN01uG+QNralu1nCUEaU0
-	 7CyqpQbWfGw2CcMg9K6TEpmrgCmKtD+mk75/rZhbHjQqzTZ0DzUtPDDUk/LLiTHTGZ
-	 qh8Hmvd4PPievO0/wmfOLUov+Bc0qesTZ7Hl6rWI=
+	b=VlRwr/f8sSc+JDfLlq2+PoBZOgZ2Y26Cfm6tfQWpy3/ZGFKJPqOEqnSjm2Dg70xzb
+	 6sLjEXLkOLVQKjUAezgtx3CZLO4zGKb9jRzBkGHVuRGVERIgKGDPDyqLh1tjXZoQQC
+	 PD1z+ZKql7UBEbzRG+1Wb8dFueRqBUnvnv4T3JmE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexey Minnekhanov <alexeymin@postmarketos.org>,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
-	Bjorn Andersson <andersson@kernel.org>,
+	Adam Ford <aford173@gmail.com>,
+	Shawn Guo <shawnguo@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 167/356] arm64: dts: qcom: sdm660-xiaomi-lavender: Add missing SD card detect GPIO
-Date: Tue, 17 Jun 2025 17:24:42 +0200
-Message-ID: <20250617152344.943558312@linuxfoundation.org>
+Subject: [PATCH 6.6 168/356] arm64: dts: imx8mm-beacon: Fix RTC capacitive load
+Date: Tue, 17 Jun 2025 17:24:43 +0200
+Message-ID: <20250617152344.980577851@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250617152338.212798615@linuxfoundation.org>
 References: <20250617152338.212798615@linuxfoundation.org>
@@ -67,37 +66,35 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Alexey Minnekhanov <alexeymin@postmarketos.org>
+From: Adam Ford <aford173@gmail.com>
 
-[ Upstream commit 2eca6af66709de0d1ba14cdf8b6d200a1337a3a2 ]
+[ Upstream commit 2e98d456666d63f897ba153210bcef9d78ba0f3a ]
 
-During initial porting these cd-gpios were missed. Having card detect is
-beneficial because driver does not need to do polling every second and it
-can just use IRQ. SD card detection in U-Boot is also fixed by this.
+Although not noticeable when used every day, the RTC appears to drift when
+left to sit over time.  This is due to the capacitive load not being
+properly set. Fix RTC drift by correcting the capacitive load setting
+from 7000 to 12500, which matches the actual hardware configuration.
 
-Fixes: cf85e9aee210 ("arm64: dts: qcom: sdm660-xiaomi-lavender: Add eMMC and SD")
-Signed-off-by: Alexey Minnekhanov <alexeymin@postmarketos.org>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Link: https://lore.kernel.org/r/20250415130101.1429281-1-alexeymin@postmarketos.org
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Fixes: 593816fa2f35 ("arm64: dts: imx: Add Beacon i.MX8m-Mini development kit")
+Signed-off-by: Adam Ford <aford173@gmail.com>
+Signed-off-by: Shawn Guo <shawnguo@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/sdm660-xiaomi-lavender.dts | 2 ++
- 1 file changed, 2 insertions(+)
+ arch/arm64/boot/dts/freescale/imx8mm-beacon-som.dtsi | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/arm64/boot/dts/qcom/sdm660-xiaomi-lavender.dts b/arch/arm64/boot/dts/qcom/sdm660-xiaomi-lavender.dts
-index 3c47410ba94c0..ec4245bbfffaf 100644
---- a/arch/arm64/boot/dts/qcom/sdm660-xiaomi-lavender.dts
-+++ b/arch/arm64/boot/dts/qcom/sdm660-xiaomi-lavender.dts
-@@ -404,6 +404,8 @@
- &sdhc_2 {
- 	status = "okay";
- 
-+	cd-gpios = <&tlmm 54 GPIO_ACTIVE_HIGH>;
-+
- 	vmmc-supply = <&vreg_l5b_2p95>;
- 	vqmmc-supply = <&vreg_l2b_2p95>;
+diff --git a/arch/arm64/boot/dts/freescale/imx8mm-beacon-som.dtsi b/arch/arm64/boot/dts/freescale/imx8mm-beacon-som.dtsi
+index f264102bdb274..8ab0e45f2ad31 100644
+--- a/arch/arm64/boot/dts/freescale/imx8mm-beacon-som.dtsi
++++ b/arch/arm64/boot/dts/freescale/imx8mm-beacon-som.dtsi
+@@ -231,6 +231,7 @@
+ 	rtc: rtc@51 {
+ 		compatible = "nxp,pcf85263";
+ 		reg = <0x51>;
++		quartz-load-femtofarads = <12500>;
+ 	};
  };
+ 
 -- 
 2.39.5
 
