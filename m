@@ -1,58 +1,61 @@
-Return-Path: <stable+bounces-154309-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153780-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 66E0BADD87B
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:56:18 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3A798ADD63C
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:31:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AE3F85A231A
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:48:47 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AB1AA194284E
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:24:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B517E2ECD3E;
-	Tue, 17 Jun 2025 16:46:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD58C2EA150;
+	Tue, 17 Jun 2025 16:17:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Cr7HhwGH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DIQMNmrJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71B9C20CCFB;
-	Tue, 17 Jun 2025 16:46:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A7A218E025;
+	Tue, 17 Jun 2025 16:17:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750178776; cv=none; b=rVMGI4VzfHWhWHW8rVeZzwsIMH2kNJYSovGMPljd08TnvMFKRE/KtHrApyfOEq5xukQ/6YkuSiIMKpGl+R+xLpZlcBYmYHFVOuDZ8kYIVoh2TSYmM4GIh2yyPbnABOkn2/bLDeQHrRviS6uhQospCPhpOzCad3LuwSG76BXosP0=
+	t=1750177074; cv=none; b=B6j7FMYfyc6r607ufr9x+vANzFzUZWFTOZaJ2mgJkaOaY4drO3e+lHM1zQso82Dap5yu+wYyLEq/vDCP3aEUPklBD6qWLxCRFA+9HRB+O+uiUbR33ztmU+oMH4+mF+hOQt/naf8FAa7JaYN6ykaycPEQVPe3D65ENwwBMixwIA0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750178776; c=relaxed/simple;
-	bh=CgUsTYw2qQp+hpojnToWhrzOLfYsJsTWHBmwviULC5k=;
+	s=arc-20240116; t=1750177074; c=relaxed/simple;
+	bh=USLTbBVXznbGKUmgZiALHReLIuTurNqxoNpHcQdsUjc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Y059qJleCV37PcTk1rU4ujZafrPvSwTAUt/CMtw79EckhHNZjBJAw61IfvN8b1ByBTNaeCX9Vva9iaOCeaOB+bmFHOA8/ld5qjN8fhHVoDGDQzKp2nsWjg+48i4UnsJ5tF7xwvMUCAyzAMwAK5PO5Syp3y8p1MpuicVvoEGWTyE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Cr7HhwGH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6F0AC4CEE3;
-	Tue, 17 Jun 2025 16:46:15 +0000 (UTC)
+	 MIME-Version; b=D6TRvFmTIM4wRaRJ33pA6HkhvaUpBKE5JsVNtbsdL55cBT5GZAvAk0fGxKXAkA18ThRJ3RD5OfWpLlB9stPBCbaErnVuMKuLGOqBiyKcM4qaFkZ7fOcuqZ4MPH2V1FrjZr+VvZGEv/t3OZfrIF5AhOAAtQGdfdhR5lFsHun1Eqg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DIQMNmrJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 086E7C4CEE3;
+	Tue, 17 Jun 2025 16:17:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750178776;
-	bh=CgUsTYw2qQp+hpojnToWhrzOLfYsJsTWHBmwviULC5k=;
+	s=korg; t=1750177074;
+	bh=USLTbBVXznbGKUmgZiALHReLIuTurNqxoNpHcQdsUjc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Cr7HhwGHVN+Ppz4l0uqF0K6cCnzJXFyODeg2VnEBs1kx+6VdE0K0Ui2g3MX/6to/X
-	 fNDoG6mydGnLUTmCmyoUYVN3rRO16gh8f94LOXolgirPviVQ0l0RTRjvDDPtLIjpi4
-	 uttxJUvwrIt+oNPzq5ljsadbkBgyv4CoVsNvmmKM=
+	b=DIQMNmrJOofyEkRraNkWaF7KVdO8gcZwZ+kwppZuc7zPSMDiDvqzkFHwkucVwGByA
+	 M8YnPmy5AGWpZ1sHB1k32lcLtr2vyKHTIp+F0rot9ptFZYA9fuwzGPlom84AvlouUD
+	 rfBZ5vE80lJnlM09sGDi0/UwsMmXk035as+AMVjY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Douglas Anderson <dianders@chromium.org>,
-	Damon Ding <damon.ding@rock-chips.com>,
-	Heiko Stuebner <heiko@sntech.de>,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	Ian Rogers <irogers@google.com>,
+	Leo Yan <leo.yan@arm.com>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	James Clark <james.clark@linaro.org>,
+	Kan Liang <kan.liang@linux.intel.com>,
+	Namhyung Kim <namhyung@kernel.org>,
+	Arnaldo Carvalho de Melo <acme@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 551/780] drm/bridge: analogix_dp: Remove the unnecessary calls to clk_disable_unprepare() during probing
-Date: Tue, 17 Jun 2025 17:24:19 +0200
-Message-ID: <20250617152513.943790921@linuxfoundation.org>
+Subject: [PATCH 6.12 294/512] perf tests switch-tracking: Fix timestamp comparison
+Date: Tue, 17 Jun 2025 17:24:20 +0200
+Message-ID: <20250617152431.513043210@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
-References: <20250617152451.485330293@linuxfoundation.org>
+In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
+References: <20250617152419.512865572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,86 +67,104 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Damon Ding <damon.ding@rock-chips.com>
+From: Leo Yan <leo.yan@arm.com>
 
-[ Upstream commit 6579a03e68ffa5feb2d2823dea16ca7466f6de16 ]
+[ Upstream commit 628e124404b3db5e10e17228e680a2999018ab33 ]
 
-With the commit f37952339cc2 ("drm/bridge: analogix_dp: handle clock via
-runtime PM"), the PM operations can help enable/disable the clock. The
-err_disable_clk label and clk_disable_unprepare() operations are no
-longer necessary because the analogix_dp_resume() will not be called
-during probing.
+The test might fail on the Arm64 platform with the error:
 
-Fixes: f37952339cc2 ("drm/bridge: analogix_dp: handle clock via runtime PM")
-Suggested-by: Douglas Anderson <dianders@chromium.org>
-Reviewed-by: Douglas Anderson <dianders@chromium.org>
-Signed-off-by: Damon Ding <damon.ding@rock-chips.com>
-Reviewed-by: Heiko Stuebner <heiko@sntech.de>
-Link: https://lore.kernel.org/r/20250302083043.3197235-1-damon.ding@rock-chips.com
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+  # perf test -vvv "Track with sched_switch"
+  Missing sched_switch events
+  #
+
+The issue is caused by incorrect handling of timestamp comparisons. The
+comparison result, a signed 64-bit value, was being directly cast to an
+int, leading to incorrect sorting for sched events.
+
+The case does not fail everytime, usually I can trigger the failure
+after run 20 ~ 30 times:
+
+  # while true; do perf test "Track with sched_switch"; done
+  106: Track with sched_switch                                         : Ok
+  106: Track with sched_switch                                         : Ok
+  106: Track with sched_switch                                         : Ok
+  106: Track with sched_switch                                         : Ok
+  106: Track with sched_switch                                         : Ok
+  106: Track with sched_switch                                         : Ok
+  106: Track with sched_switch                                         : Ok
+  106: Track with sched_switch                                         : Ok
+  106: Track with sched_switch                                         : Ok
+  106: Track with sched_switch                                         : Ok
+  106: Track with sched_switch                                         : Ok
+  106: Track with sched_switch                                         : Ok
+  106: Track with sched_switch                                         : Ok
+  106: Track with sched_switch                                         : Ok
+  106: Track with sched_switch                                         : FAILED!
+  106: Track with sched_switch                                         : Ok
+  106: Track with sched_switch                                         : Ok
+  106: Track with sched_switch                                         : Ok
+  106: Track with sched_switch                                         : Ok
+  106: Track with sched_switch                                         : Ok
+  106: Track with sched_switch                                         : Ok
+  106: Track with sched_switch                                         : Ok
+  106: Track with sched_switch                                         : Ok
+  106: Track with sched_switch                                         : FAILED!
+  106: Track with sched_switch                                         : Ok
+  106: Track with sched_switch                                         : Ok
+
+I used cross compiler to build Perf tool on my host machine and tested on
+Debian / Juno board.  Generally, I think this issue is not very specific
+to GCC versions.  As both internal CI and my local env can reproduce the
+issue.
+
+My Host Build compiler:
+
+  # aarch64-linux-gnu-gcc --version
+  aarch64-linux-gnu-gcc (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
+
+Juno Board:
+
+  # lsb_release -a
+  No LSB modules are available.
+  Distributor ID: Debian
+  Description:    Debian GNU/Linux 12 (bookworm)
+  Release:        12
+  Codename:       bookworm
+
+Fix this by explicitly returning 0, 1, or -1 based on whether the result
+is zero, positive, or negative.
+
+Fixes: d44bc558297222d9 ("perf tests: Add a test for tracking with sched_switch")
+Reviewed-by: Ian Rogers <irogers@google.com>
+Signed-off-by: Leo Yan <leo.yan@arm.com>
+Cc: Adrian Hunter <adrian.hunter@intel.com>
+Cc: James Clark <james.clark@linaro.org>
+Cc: Kan Liang <kan.liang@linux.intel.com>
+Cc: Namhyung Kim <namhyung@kernel.org>
+Link: https://lore.kernel.org/r/20250331172759.115604-1-leo.yan@arm.com
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../gpu/drm/bridge/analogix/analogix_dp_core.c | 18 +++++-------------
- 1 file changed, 5 insertions(+), 13 deletions(-)
+ tools/perf/tests/switch-tracking.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/bridge/analogix/analogix_dp_core.c b/drivers/gpu/drm/bridge/analogix/analogix_dp_core.c
-index 071168aa0c3bd..533a6e17cf674 100644
---- a/drivers/gpu/drm/bridge/analogix/analogix_dp_core.c
-+++ b/drivers/gpu/drm/bridge/analogix/analogix_dp_core.c
-@@ -1597,10 +1597,8 @@ analogix_dp_probe(struct device *dev, struct analogix_dp_plat_data *plat_data)
- 	}
+diff --git a/tools/perf/tests/switch-tracking.c b/tools/perf/tests/switch-tracking.c
+index 5cab17a1942e6..ee43d8fa2ed67 100644
+--- a/tools/perf/tests/switch-tracking.c
++++ b/tools/perf/tests/switch-tracking.c
+@@ -258,7 +258,7 @@ static int compar(const void *a, const void *b)
+ 	const struct event_node *nodeb = b;
+ 	s64 cmp = nodea->event_time - nodeb->event_time;
  
- 	dp->reg_base = devm_platform_ioremap_resource(pdev, 0);
--	if (IS_ERR(dp->reg_base)) {
--		ret = PTR_ERR(dp->reg_base);
--		goto err_disable_clk;
--	}
-+	if (IS_ERR(dp->reg_base))
-+		return ERR_CAST(dp->reg_base);
- 
- 	dp->force_hpd = of_property_read_bool(dev->of_node, "force-hpd");
- 
-@@ -1612,8 +1610,7 @@ analogix_dp_probe(struct device *dev, struct analogix_dp_plat_data *plat_data)
- 	if (IS_ERR(dp->hpd_gpiod)) {
- 		dev_err(dev, "error getting HDP GPIO: %ld\n",
- 			PTR_ERR(dp->hpd_gpiod));
--		ret = PTR_ERR(dp->hpd_gpiod);
--		goto err_disable_clk;
-+		return ERR_CAST(dp->hpd_gpiod);
- 	}
- 
- 	if (dp->hpd_gpiod) {
-@@ -1633,8 +1630,7 @@ analogix_dp_probe(struct device *dev, struct analogix_dp_plat_data *plat_data)
- 
- 	if (dp->irq == -ENXIO) {
- 		dev_err(&pdev->dev, "failed to get irq\n");
--		ret = -ENODEV;
--		goto err_disable_clk;
-+		return ERR_PTR(-ENODEV);
- 	}
- 
- 	ret = devm_request_threaded_irq(&pdev->dev, dp->irq,
-@@ -1643,15 +1639,11 @@ analogix_dp_probe(struct device *dev, struct analogix_dp_plat_data *plat_data)
- 					irq_flags, "analogix-dp", dp);
- 	if (ret) {
- 		dev_err(&pdev->dev, "failed to request irq\n");
--		goto err_disable_clk;
-+		return ERR_PTR(ret);
- 	}
- 	disable_irq(dp->irq);
- 
- 	return dp;
--
--err_disable_clk:
--	clk_disable_unprepare(dp->clock);
--	return ERR_PTR(ret);
+-	return cmp;
++	return cmp < 0 ? -1 : (cmp > 0 ? 1 : 0);
  }
- EXPORT_SYMBOL_GPL(analogix_dp_probe);
  
+ static int process_events(struct evlist *evlist,
 -- 
 2.39.5
 
