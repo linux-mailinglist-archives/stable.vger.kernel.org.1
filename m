@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-153433-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153436-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 90F82ADD4B3
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:13:16 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A0CC0ADD4BA
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:13:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 48311403212
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:03:06 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 33B2A403A36
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:03:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 571A22EA141;
-	Tue, 17 Jun 2025 15:59:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C456E2EA145;
+	Tue, 17 Jun 2025 15:59:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="szCaa+Dk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PzXIdJD5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11CD22DFF08;
-	Tue, 17 Jun 2025 15:59:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E0142CCC5;
+	Tue, 17 Jun 2025 15:59:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750175947; cv=none; b=KOL5KDTHVzB7er+e+XPa6wMr+oEgVF/uUTVoyXvI7Y7q7u+tiGAU6RLr4EKV7tACVjjsJb7IexZe+OTuT/vNFeDE0BD7UL5hh/FQ15um5IYwmPPza2McIKfJqdm0fF4W6ullG8vuew6noEQld9QzhZ7lwPDJy44ChPERa5lDhUo=
+	t=1750175956; cv=none; b=Q3CXVpyfHSvE7FpNBMJ1r/KNjKYSY2PG0TWXIHTW18dpXLu8VCtqzoMm29cOJkdeSpbfV8abT4Oc5K4/Dnd91gJLgbHE4yWp2bRKEs2Xy2crn0a3AXceMNqb/HwiBINjnqcbLt2r4/Ww/h2sIDIlX1TbBZoSzxGY0ijgruzt+6o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750175947; c=relaxed/simple;
-	bh=AJTr9ThU4fwaCBPY7n44AenpP0CimwszREqG5cmaf0g=;
+	s=arc-20240116; t=1750175956; c=relaxed/simple;
+	bh=eLBaqaIcrVvkaQ7JgM6I/LpoFBfnZJYpk3WdNXAPtdU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=o10YbYAQmUToYDloCV6A0VGUTrHxekpDyt4tb+mS6Z4Exl6mGiTPbxmzgKZ80NM0T2HTKfP+4gJJ4VuWtUVQgyvlqD3bi7XVJNadmM1Cvx1ufiNp6OSX0PATy2fGL0V+3E1MKtGcvyJ7C5J+wadLqTT1fiCBBEOjeaYUoAteSQw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=szCaa+Dk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D791C4CEE3;
-	Tue, 17 Jun 2025 15:59:05 +0000 (UTC)
+	 MIME-Version; b=de1SbWSeXpK1hrrWoYytVLyb4HXVvfQZ8mSHrMJD9ehSZG8K8Q1corvPBdPeXs57HTdELoBipoywE0BpDjR3kde9Iggb/fIfYJi9CSjnHT6aK8dT71ef6E7d3zq+onESSRovEwMGvu8AOhx8gwbV+wfGGCAjzKlCBtVllssLj2A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PzXIdJD5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF8AAC4CEE7;
+	Tue, 17 Jun 2025 15:59:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750175946;
-	bh=AJTr9ThU4fwaCBPY7n44AenpP0CimwszREqG5cmaf0g=;
+	s=korg; t=1750175956;
+	bh=eLBaqaIcrVvkaQ7JgM6I/LpoFBfnZJYpk3WdNXAPtdU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=szCaa+DkTg9nHj3BOgLzCIwZV8mkRjKVQS7Eyi+KsPacHmpZ5o8ujNdsEw8oUOwDN
-	 keblTUlYPCAAY8WdBK9WS6m5bBGo5PoTpCasfQ0V+a07UzH5VPFaH07eY0Ap4PNsMx
-	 g8rk9jsi7ALQ5z1RspywsJmLyc1ow6rZIUuQYmJQ=
+	b=PzXIdJD5Xd/IbUiN65pCHIosbdboEr7z2UQwS1tLd7SbVrCDGUpp7edmCEHB0Jdes
+	 /3Sr5CSS/rxfC4VKdK+wQiHrHmNakjsGTu0VdIkDvk+asFMqHxgJ587nNpoKsoflMq
+	 WGTl2Gtu5SIdLub8kKa3bqi86mcSpfhUpYriF/cY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shuai Xue <xueshuai@linux.alibaba.com>,
-	Huang Yiwei <quic_hyiwei@quicinc.com>,
-	Gavin Shan <gshan@redhat.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	David Spickett <david.spickett@arm.com>,
+	Luis Machado <luis.machado@arm.com>,
+	Marc Zyngier <maz@kernel.org>,
+	Mark Brown <broonie@kernel.org>,
 	Will Deacon <will@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 137/780] firmware: SDEI: Allow sdei initialization without ACPI_APEI_GHES
-Date: Tue, 17 Jun 2025 17:17:25 +0200
-Message-ID: <20250617152457.077965211@linuxfoundation.org>
+Subject: [PATCH 6.15 138/780] kselftest/arm64: fp-ptrace: Fix expected FPMR value when PSTATE.SM is changed
+Date: Tue, 17 Jun 2025 17:17:26 +0200
+Message-ID: <20250617152457.119196842@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
 References: <20250617152451.485330293@linuxfoundation.org>
@@ -69,134 +71,100 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Huang Yiwei <quic_hyiwei@quicinc.com>
+From: Mark Rutland <mark.rutland@arm.com>
 
-[ Upstream commit 59529bbe642de4eb2191a541d9b4bae7eb73862e ]
+[ Upstream commit 78b23877dbba7dbcda2b89383d17bed82ce8f663 ]
 
-SDEI usually initialize with the ACPI table, but on platforms where
-ACPI is not used, the SDEI feature can still be used to handle
-specific firmware calls or other customized purposes. Therefore, it
-is not necessary for ARM_SDE_INTERFACE to depend on ACPI_APEI_GHES.
+The fp-ptrace test suite expects that FPMR is set to zero when PSTATE.SM
+is changed via ptrace, but ptrace has never altered FPMR in this way,
+and the test logic erroneously relies upon (and has concealed) a bug
+where task_fpsimd_load() would unexpectedly and non-deterministically
+clobber FPMR.
 
-In commit dc4e8c07e9e2 ("ACPI: APEI: explicit init of HEST and GHES
-in acpi_init()"), to make APEI ready earlier, sdei_init was moved
-into acpi_ghes_init instead of being a standalone initcall, adding
-ACPI_APEI_GHES dependency to ARM_SDE_INTERFACE. This restricts the
-flexibility and usability of SDEI.
+Using ptrace, FPMR can only be altered by writing to the NT_ARM_FPMR
+regset. The value of PSTATE.SM can be altered by writing to the
+NT_ARM_SVE or NT_ARM_SSVE regsets, and/or by changing the SME vector
+length (when writing to the NT_ARM_SVE, NT_ARM_SSVE, or NT_ARM_ZA
+regsets), but none of these writes will change the value of FPMR.
 
-This patch corrects the dependency in Kconfig and splits sdei_init()
-into two separate functions: sdei_init() and acpi_sdei_init().
-sdei_init() will be called by arch_initcall and will only initialize
-the platform driver, while acpi_sdei_init() will initialize the
-device from acpi_ghes_init() when ACPI is ready. This allows the
-initialization of SDEI without ACPI_APEI_GHES enabled.
+The task_fpsimd_load() bug was introduced with the initial FPMR support
+in commit:
 
-Fixes: dc4e8c07e9e2 ("ACPI: APEI: explicit init of HEST and GHES in apci_init()")
-Cc: Shuai Xue <xueshuai@linux.alibaba.com>
-Signed-off-by: Huang Yiwei <quic_hyiwei@quicinc.com>
-Reviewed-by: Shuai Xue <xueshuai@linux.alibaba.com>
-Reviewed-by: Gavin Shan <gshan@redhat.com>
-Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Link: https://lore.kernel.org/r/20250507045757.2658795-1-quic_hyiwei@quicinc.com
+  203f2b95a882 ("arm64/fpsimd: Support FEAT_FPMR")
+
+The incorrect FPMR test code was introduced in commit:
+
+  7dbd26d0b22d ("kselftest/arm64: Add FPMR coverage to fp-ptrace")
+
+Subsequently, the task_fpsimd_load() bug was fixed in commit:
+
+  e5fa85fce08b ("arm64/fpsimd: Don't corrupt FPMR when streaming mode changes")
+
+... whereupon the fp-ptrace FPMR tests started failing reliably, e.g.
+
+| # # Mismatch in saved FPMR: 915058000 != 0
+| # not ok 25 SVE write, SVE 64->64, SME 64/0->64/1
+
+Fix this by changing the test to expect that FPMR is *NOT* changed when
+PSTATE.SM is changed via ptrace, matching the extant behaviour.
+
+I've chosen to update the test code rather than modifying ptrace to zero
+FPMR when PSTATE.SM changes. Not zeroing FPMR is simpler overall, and
+allows the NT_ARM_FPMR regset to be handled independently from other
+regsets, leaving less scope for error.
+
+Fixes: 7dbd26d0b22d ("kselftest/arm64: Add FPMR coverage to fp-ptrace")
+Signed-off-by: Mark Rutland <mark.rutland@arm.com>
+Cc: Catalin Marinas <catalin.marinas@arm.com>
+Cc: David Spickett <david.spickett@arm.com>
+Cc: Luis Machado <luis.machado@arm.com>
+Cc: Marc Zyngier <maz@kernel.org>
+Cc: Mark Brown <broonie@kernel.org>
+Cc: Will Deacon <will@kernel.org>
+Link: https://lore.kernel.org/r/20250508132644.1395904-22-mark.rutland@arm.com
 Signed-off-by: Will Deacon <will@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/apei/Kconfig   |  1 +
- drivers/acpi/apei/ghes.c    |  2 +-
- drivers/firmware/Kconfig    |  1 -
- drivers/firmware/arm_sdei.c | 11 ++++++++---
- include/linux/arm_sdei.h    |  4 ++--
- 5 files changed, 12 insertions(+), 7 deletions(-)
+ tools/testing/selftests/arm64/fp/fp-ptrace.c | 14 +-------------
+ 1 file changed, 1 insertion(+), 13 deletions(-)
 
-diff --git a/drivers/acpi/apei/Kconfig b/drivers/acpi/apei/Kconfig
-index 3cfe7e7475f2f..070c07d68dfb2 100644
---- a/drivers/acpi/apei/Kconfig
-+++ b/drivers/acpi/apei/Kconfig
-@@ -23,6 +23,7 @@ config ACPI_APEI_GHES
- 	select ACPI_HED
- 	select IRQ_WORK
- 	select GENERIC_ALLOCATOR
-+	select ARM_SDE_INTERFACE if ARM64
- 	help
- 	  Generic Hardware Error Source provides a way to report
- 	  platform hardware errors (such as that from chipset). It
-diff --git a/drivers/acpi/apei/ghes.c b/drivers/acpi/apei/ghes.c
-index 289e365f84b24..0f3c663c1b0a3 100644
---- a/drivers/acpi/apei/ghes.c
-+++ b/drivers/acpi/apei/ghes.c
-@@ -1715,7 +1715,7 @@ void __init acpi_ghes_init(void)
+diff --git a/tools/testing/selftests/arm64/fp/fp-ptrace.c b/tools/testing/selftests/arm64/fp/fp-ptrace.c
+index 4930e03a7b990..762048eb354ff 100644
+--- a/tools/testing/selftests/arm64/fp/fp-ptrace.c
++++ b/tools/testing/selftests/arm64/fp/fp-ptrace.c
+@@ -891,18 +891,11 @@ static void set_initial_values(struct test_config *config)
  {
- 	int rc;
+ 	int vq = __sve_vq_from_vl(vl_in(config));
+ 	int sme_vq = __sve_vq_from_vl(config->sme_vl_in);
+-	bool sm_change;
  
--	sdei_init();
-+	acpi_sdei_init();
+ 	svcr_in = config->svcr_in;
+ 	svcr_expected = config->svcr_expected;
+ 	svcr_out = 0;
  
- 	if (acpi_disabled)
- 		return;
-diff --git a/drivers/firmware/Kconfig b/drivers/firmware/Kconfig
-index aadc395ee1681..7df19d82aa689 100644
---- a/drivers/firmware/Kconfig
-+++ b/drivers/firmware/Kconfig
-@@ -31,7 +31,6 @@ config ARM_SCPI_PROTOCOL
- config ARM_SDE_INTERFACE
- 	bool "ARM Software Delegated Exception Interface (SDEI)"
- 	depends on ARM64
--	depends on ACPI_APEI_GHES
- 	help
- 	  The Software Delegated Exception Interface (SDEI) is an ARM
- 	  standard for registering callbacks from the platform firmware
-diff --git a/drivers/firmware/arm_sdei.c b/drivers/firmware/arm_sdei.c
-index 3e8051fe82965..71e2a9a89f6ad 100644
---- a/drivers/firmware/arm_sdei.c
-+++ b/drivers/firmware/arm_sdei.c
-@@ -1062,13 +1062,12 @@ static bool __init sdei_present_acpi(void)
- 	return true;
- }
- 
--void __init sdei_init(void)
-+void __init acpi_sdei_init(void)
- {
- 	struct platform_device *pdev;
- 	int ret;
- 
--	ret = platform_driver_register(&sdei_driver);
--	if (ret || !sdei_present_acpi())
-+	if (!sdei_present_acpi())
- 		return;
- 
- 	pdev = platform_device_register_simple(sdei_driver.driver.name,
-@@ -1081,6 +1080,12 @@ void __init sdei_init(void)
- 	}
- }
- 
-+static int __init sdei_init(void)
-+{
-+	return platform_driver_register(&sdei_driver);
-+}
-+arch_initcall(sdei_init);
-+
- int sdei_event_handler(struct pt_regs *regs,
- 		       struct sdei_registered_event *arg)
- {
-diff --git a/include/linux/arm_sdei.h b/include/linux/arm_sdei.h
-index 255701e1251b4..f652a5028b590 100644
---- a/include/linux/arm_sdei.h
-+++ b/include/linux/arm_sdei.h
-@@ -46,12 +46,12 @@ int sdei_unregister_ghes(struct ghes *ghes);
- /* For use by arch code when CPU hotplug notifiers are not appropriate. */
- int sdei_mask_local_cpu(void);
- int sdei_unmask_local_cpu(void);
--void __init sdei_init(void);
-+void __init acpi_sdei_init(void);
- void sdei_handler_abort(void);
- #else
- static inline int sdei_mask_local_cpu(void) { return 0; }
- static inline int sdei_unmask_local_cpu(void) { return 0; }
--static inline void sdei_init(void) { }
-+static inline void acpi_sdei_init(void) { }
- static inline void sdei_handler_abort(void) { }
- #endif /* CONFIG_ARM_SDE_INTERFACE */
- 
+-	if (sme_supported() &&
+-	    (svcr_in & SVCR_SM) != (svcr_expected & SVCR_SM))
+-		sm_change = true;
+-	else
+-		sm_change = false;
+-
+ 	fill_random(&v_in, sizeof(v_in));
+ 	memcpy(v_expected, v_in, sizeof(v_in));
+ 	memset(v_out, 0, sizeof(v_out));
+@@ -953,12 +946,7 @@ static void set_initial_values(struct test_config *config)
+ 	if (fpmr_supported()) {
+ 		fill_random(&fpmr_in, sizeof(fpmr_in));
+ 		fpmr_in &= FPMR_SAFE_BITS;
+-
+-		/* Entering or exiting streaming mode clears FPMR */
+-		if (sm_change)
+-			fpmr_expected = 0;
+-		else
+-			fpmr_expected = fpmr_in;
++		fpmr_expected = fpmr_in;
+ 	} else {
+ 		fpmr_in = 0;
+ 		fpmr_expected = 0;
 -- 
 2.39.5
 
