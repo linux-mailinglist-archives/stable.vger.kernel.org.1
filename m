@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-153674-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-154478-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 61EE8ADD5D7
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:27:16 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D2403ADDA09
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 19:12:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6582A2C75B6
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:17:47 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DF20C2C5CE4
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:55:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D86B2ECD1C;
-	Tue, 17 Jun 2025 16:12:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A1F42FA63C;
+	Tue, 17 Jun 2025 16:55:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cR0x+EcJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YxdHnAJJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A3E82EB5D8;
-	Tue, 17 Jun 2025 16:12:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D97CE2FA622;
+	Tue, 17 Jun 2025 16:55:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750176724; cv=none; b=UqhVCthXB6r2O6Msp643uQajYIjqUqY6IBjddhBceXIm0HQDGz6vDSimWFNvhclRMHKQsZGi7UeESwwx4Q2mxG0rKSK0TvQl5IRpSdsKjMDYb7z08mioKb/ip0apb6RqLjTUfLfkMqSDXPUpFzVppBDcqvt8ZG/4DWq0X+KBb6U=
+	t=1750179336; cv=none; b=VeYtgRbjXaieLpBw+4aWmfqwM5CI6OV2Q8gA+5UUlw2ItxT6UCOzQBuipoLXTKuhB+ld/OiAtk8Zlkc7yue3FG8y7osOgFb5PQg3MQ3ACEy7R5LNCRsykgi0bAtaE4T/NMzjkcFe+8Qdm51xbpLc5+ruRaxE5Ikj54Ord5nhAlc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750176724; c=relaxed/simple;
-	bh=RGZl9Ps0S4Cyat8faMd+POxTVYTVZvla1vrob+vukmM=;
+	s=arc-20240116; t=1750179336; c=relaxed/simple;
+	bh=Kj3jtTypeVWeX1Jn8XI0XCkFnwNb+UbDfl351qXKgVU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FRpJETdvD6ha6/Cdd4bVOcLrF9frHTEwi0Uz4luF8XBdNeIqXCWowmG36Po4ea0b+7L0QSC5YTFkcrur1v5IM09j6vLLtP5j9XkaQwqo1S5frIZ+oSJUf0SqdLgq/vHG77/lcGDFMNQyHledPIyH+s0o2X0JsWedBi4GM3/rIfY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cR0x+EcJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1CD58C4CEE3;
-	Tue, 17 Jun 2025 16:12:02 +0000 (UTC)
+	 MIME-Version; b=kDNiXBiJXESPS+zrb9wEYodDQKUP8i0jkfFWjaPXOonzQ3nHR8+qROat7hXzP1zrZMKyrBgRjF7mL3Zj0mEpdlYGOWJuVPBWUQFJchNGI45UKu109/YfURky92ytmnspaN4yHDpkXH1KGdkVUDAOwoo0yQMDPuAjcqknEmJ0fZc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YxdHnAJJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4022DC4CEE3;
+	Tue, 17 Jun 2025 16:55:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750176723;
-	bh=RGZl9Ps0S4Cyat8faMd+POxTVYTVZvla1vrob+vukmM=;
+	s=korg; t=1750179335;
+	bh=Kj3jtTypeVWeX1Jn8XI0XCkFnwNb+UbDfl351qXKgVU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cR0x+EcJghyI8o9WXA1WG7JN3SH3v2mepiSW3Rb29pPjxyQ92QOKr3SH2SbmCsJat
-	 ybD/ujYc34h9oqgfgknH/ajTwE+9Bq+2GN8y90SiuC/0hwJw2hZZYwaYe2g1GwKvVj
-	 qxQkyxeYsNAWh9ddtraDdynDbjLBvVefiWLsq2qY=
+	b=YxdHnAJJWcKjc9d/JB16v3VBdUrL08HKPSM9OFFpv0B58+zxr/Qsp/9UKE/kiUaB7
+	 qTiiXj0snkLhKzJrTsyTwocwehKdKujOvVebf8P/+2+VCkcITFqYPfG7vHsUmSYTnr
+	 4j9/hKk/3g1VlFpeJpMW9eCPjhm56EyalaI3rAB4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jonathan Greental <yonatan02greental@gmail.com>,
-	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Shahar Shitrit <shshitrit@nvidia.com>,
+	Tariq Toukan <tariqt@nvidia.com>,
+	Mark Bloch <mbloch@nvidia.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 307/356] powerpc/powernv/memtrace: Fix out of bounds issue in memtrace mmap
-Date: Tue, 17 Jun 2025 17:27:02 +0200
-Message-ID: <20250617152350.527731524@linuxfoundation.org>
+Subject: [PATCH 6.15 715/780] net/mlx5e: Fix number of lanes to UNKNOWN when using data_rate_oper
+Date: Tue, 17 Jun 2025 17:27:03 +0200
+Message-ID: <20250617152520.605784536@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152338.212798615@linuxfoundation.org>
-References: <20250617152338.212798615@linuxfoundation.org>
+In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
+References: <20250617152451.485330293@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,50 +64,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+From: Shahar Shitrit <shshitrit@nvidia.com>
 
-[ Upstream commit cd097df4596f3a1e9d75eb8520162de1eb8485b2 ]
+[ Upstream commit 875d7c160d60616ff06dedb70470ad199661efe7 ]
 
-memtrace mmap issue has an out of bounds issue. This patch fixes the by
-checking that the requested mapping region size should stay within the
-allocated region size.
+When the link is up, either eth_proto_oper or ext_eth_proto_oper
+typically reports the active link protocol, from which both speed
+and number of lanes can be retrieved. However, in certain cases,
+such as when a NIC is connected via a non-standard cable, the
+firmware may not report the protocol.
 
-Reported-by: Jonathan Greental <yonatan02greental@gmail.com>
-Fixes: 08a022ad3dfa ("powerpc/powernv/memtrace: Allow mmaping trace buffers")
-Signed-off-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
-Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
-Link: https://patch.msgid.link/20250610021227.361980-1-maddy@linux.ibm.com
+In such scenarios, the speed can still be obtained from the
+data_rate_oper field in PTYS register. Since data_rate_oper
+provides only speed information and lacks lane details, it is
+incorrect to derive the number of lanes from it.
+
+This patch corrects the behavior by setting the number of lanes to
+UNKNOWN instead of incorrectly using MAX_LANES when relying on
+data_rate_oper.
+
+Fixes: 7e959797f021 ("net/mlx5e: Enable lanes configuration when auto-negotiation is off")
+Signed-off-by: Shahar Shitrit <shshitrit@nvidia.com>
+Reviewed-by: Tariq Toukan <tariqt@nvidia.com>
+Signed-off-by: Mark Bloch <mbloch@nvidia.com>
+Link: https://patch.msgid.link/20250610151514.1094735-10-mbloch@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/platforms/powernv/memtrace.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/mellanox/mlx5/core/en_ethtool.c | 5 +----
+ 1 file changed, 1 insertion(+), 4 deletions(-)
 
-diff --git a/arch/powerpc/platforms/powernv/memtrace.c b/arch/powerpc/platforms/powernv/memtrace.c
-index 877720c645151..35471b679638a 100644
---- a/arch/powerpc/platforms/powernv/memtrace.c
-+++ b/arch/powerpc/platforms/powernv/memtrace.c
-@@ -48,11 +48,15 @@ static ssize_t memtrace_read(struct file *filp, char __user *ubuf,
- static int memtrace_mmap(struct file *filp, struct vm_area_struct *vma)
- {
- 	struct memtrace_entry *ent = filp->private_data;
-+	unsigned long ent_nrpages = ent->size >> PAGE_SHIFT;
-+	unsigned long vma_nrpages = vma_pages(vma);
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_ethtool.c b/drivers/net/ethernet/mellanox/mlx5/core/en_ethtool.c
+index fdf9e9bb99ace..6253ea4e99a44 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/en_ethtool.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/en_ethtool.c
+@@ -43,7 +43,6 @@
+ #include "en/fs_ethtool.h"
  
--	if (ent->size < vma->vm_end - vma->vm_start)
-+	/* The requested page offset should be within object's page count */
-+	if (vma->vm_pgoff >= ent_nrpages)
- 		return -EINVAL;
+ #define LANES_UNKNOWN		 0
+-#define MAX_LANES		 8
  
--	if (vma->vm_pgoff << PAGE_SHIFT >= ent->size)
-+	/* The requested mapping range should remain within the bounds */
-+	if (vma_nrpages > ent_nrpages - vma->vm_pgoff)
- 		return -EINVAL;
+ void mlx5e_ethtool_get_drvinfo(struct mlx5e_priv *priv,
+ 			       struct ethtool_drvinfo *drvinfo)
+@@ -1098,10 +1097,8 @@ static void get_link_properties(struct net_device *netdev,
+ 		speed = info->speed;
+ 		lanes = info->lanes;
+ 		duplex = DUPLEX_FULL;
+-	} else if (data_rate_oper) {
++	} else if (data_rate_oper)
+ 		speed = 100 * data_rate_oper;
+-		lanes = MAX_LANES;
+-	}
  
- 	vma->vm_page_prot = pgprot_noncached(vma->vm_page_prot);
+ out:
+ 	link_ksettings->base.duplex = duplex;
 -- 
 2.39.5
 
