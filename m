@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-154413-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153998-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E2578ADD9F3
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 19:11:17 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E018ADD79A
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:46:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E858219E43AA
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:53:40 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4BDD540690C
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:34:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4405020CCFB;
-	Tue, 17 Jun 2025 16:51:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29BD22EA172;
+	Tue, 17 Jun 2025 16:29:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uRdpGrHj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EXWDNo0p"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F27F32FA658;
-	Tue, 17 Jun 2025 16:51:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB0752EA155;
+	Tue, 17 Jun 2025 16:29:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750179115; cv=none; b=HIt8kguDdvFppq0gdUvmwHudhgt88vIld4UuyT+/a2GWUwe+/xk3HZCjoClRIINjSBJ+OfdQix3DOGjeQ4koV+NCeACXsQ5E/5tZpZhCWjSxZu+5ynTvGYXABqQ1uQMjI4uxdoX0S+qGPdBqkr2lnkpKjdDeclbdr5PDTmOL4mM=
+	t=1750177776; cv=none; b=Z9Zcvl0KLxeueM0geQTfxd4bfY/Nc0V/NrlAi+P1Fpwhe68tIKNnf660w2YEPn4k6u6NJKizblz9Ln9CdR/Rht0W2imFlMykFnjwa45EurOoB3Tmm6hMtLO9ViHxTARgPLX4Fr3RRwNUo3deaedi7Vu+QGyQ73dDDfynwnXkk6I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750179115; c=relaxed/simple;
-	bh=qD1OXUF4AfnDYgY33dG9ZIbNbOOOSl5ehRWo1qOjc4s=;
+	s=arc-20240116; t=1750177776; c=relaxed/simple;
+	bh=P8sq/tKoSqaeJzUrjcbwadIpDuMrADqFN+mLKZeBAZo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tF9lPnPQPYE5eAUbL+f5eocb2XKvp2GUnZPp8HLEJq6UrMrIBRhod9z+Sz1jqcOfW0m5WaedfluH8ZRrJ9vfsdVbEQ7JDDNOp4MmMU4VU6OfY/vifPeosvcCARUuHOIjvwQRjZwCnvOn7eiTSztlLjtzUhzVPN6jv88oTYYKBEI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uRdpGrHj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5DD53C4CEE3;
-	Tue, 17 Jun 2025 16:51:54 +0000 (UTC)
+	 MIME-Version; b=Xo1O6ftUKvZ51/gTLX3G7BnrMdu6Es2DtyqRJyIWGIVsrknrMAaS1Xhgu1niQuMZ2Ts+VQvf7pbk0sHVAkVj84vnLt31nof3hL8i3XrRuVPtyyTgAgp+LpAcIDKmRIWbK+L/nFIhpLbaizBbDe+F9eJ2jo4OH3HQR6Izm1Hsd3U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EXWDNo0p; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4AB69C4CEE3;
+	Tue, 17 Jun 2025 16:29:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750179114;
-	bh=qD1OXUF4AfnDYgY33dG9ZIbNbOOOSl5ehRWo1qOjc4s=;
+	s=korg; t=1750177776;
+	bh=P8sq/tKoSqaeJzUrjcbwadIpDuMrADqFN+mLKZeBAZo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uRdpGrHjqYLT1MKnEalPNW1tBDf9DRBubWq98FJkGC+73aeoVC7rprhbehjU67H0b
-	 lfuCoVoXlU78u5SvNc+Hk6kC2itCbk3VNES3M2Y1otXJXhSEOFRO8PltePGIFEyDlD
-	 Qxm5x5V0CpGn8THbx/9ADs8UcjXEKBzrlrjjMTZQ=
+	b=EXWDNo0psx9HL5j9Vft0ADl1wPmZiV7melBGRHFxgn6H7etbzru+cq37Mu3Z7/fcl
+	 iwQx5rsVJ+lIeqON/90MLS5SebX9BBs6QNa+81fZbj6yyAj2DqS33ppwOcdftqlzjP
+	 oFDsOMmbUl9GZbdRN/2A0jGgPULKNM6hUgYJ5HVY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Christian Brauner <brauner@kernel.org>,
+	"Orlando, Noah" <Noah.Orlando@deshaw.com>,
 	Al Viro <viro@zeniv.linux.org.uk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 653/780] fix propagation graph breakage by MOVE_MOUNT_SET_GROUP move_mount(2)
+Subject: [PATCH 6.12 395/512] do_change_type(): refuse to operate on unmounted/not ours mounts
 Date: Tue, 17 Jun 2025 17:26:01 +0200
-Message-ID: <20250617152518.068459750@linuxfoundation.org>
+Message-ID: <20250617152435.596799898@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
-References: <20250617152451.485330293@linuxfoundation.org>
+In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
+References: <20250617152419.512865572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,62 +63,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
 From: Al Viro <viro@zeniv.linux.org.uk>
 
-[ Upstream commit d8cc0362f918d020ca1340d7694f07062dc30f36 ]
+[ Upstream commit 12f147ddd6de7382dad54812e65f3f08d05809fc ]
 
-9ffb14ef61ba "move_mount: allow to add a mount into an existing group"
-breaks assertions on ->mnt_share/->mnt_slave.  For once, the data structures
-in question are actually documented.
-
-Documentation/filesystem/sharedsubtree.rst:
-        All vfsmounts in a peer group have the same ->mnt_master.  If it is
-	non-NULL, they form a contiguous (ordered) segment of slave list.
-
-do_set_group() puts a mount into the same place in propagation graph
-as the old one.  As the result, if old mount gets events from somewhere
-and is not a pure event sink, new one needs to be placed next to the
-old one in the slave list the old one's on.  If it is a pure event
-sink, we only need to make sure the new one doesn't end up in the
-middle of some peer group.
-
-"move_mount: allow to add a mount into an existing group" ends up putting
-the new one in the beginning of list; that's definitely not going to be
-in the middle of anything, so that's fine for case when old is not marked
-shared.  In case when old one _is_ marked shared (i.e. is not a pure event
-sink), that breaks the assumptions of propagation graph iterators.
-
-Put the new mount next to the old one on the list - that does the right thing
-in "old is marked shared" case and is just as correct as the current behaviour
-if old is not marked shared (kudos to Pavel for pointing that out - my original
-suggested fix changed behaviour in the "nor marked" case, which complicated
-things for no good reason).
+Ensure that propagation settings can only be changed for mounts located
+in the caller's mount namespace. This change aligns permission checking
+with the rest of mount(2).
 
 Reviewed-by: Christian Brauner <brauner@kernel.org>
-Fixes: 9ffb14ef61ba ("move_mount: allow to add a mount into an existing group")
+Fixes: 07b20889e305 ("beginning of the shared-subtree proper")
+Reported-by: "Orlando, Noah" <Noah.Orlando@deshaw.com>
 Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/namespace.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/namespace.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
 diff --git a/fs/namespace.c b/fs/namespace.c
-index cb5126b06dcb9..e2780f413a2e0 100644
+index 1022a5af691d6..843bc6191f30b 100644
 --- a/fs/namespace.c
 +++ b/fs/namespace.c
-@@ -3452,7 +3452,7 @@ static int do_set_group(struct path *from_path, struct path *to_path)
- 	if (IS_MNT_SLAVE(from)) {
- 		struct mount *m = from->mnt_master;
+@@ -2714,6 +2714,10 @@ static int do_change_type(struct path *path, int ms_flags)
+ 		return -EINVAL;
  
--		list_add(&to->mnt_slave, &m->mnt_slave_list);
-+		list_add(&to->mnt_slave, &from->mnt_slave);
- 		to->mnt_master = m;
- 	}
- 
+ 	namespace_lock();
++	if (!check_mnt(mnt)) {
++		err = -EINVAL;
++		goto out_unlock;
++	}
+ 	if (type == MS_SHARED) {
+ 		err = invent_group_ids(mnt, recurse);
+ 		if (err)
 -- 
 2.39.5
 
