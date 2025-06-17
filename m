@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-153268-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153272-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6930AADD3A5
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:00:23 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 236ECADD39F
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:00:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 81E2F188ABB9
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 15:53:52 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 711D03BE0EB
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 15:53:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7FE422ECE98;
-	Tue, 17 Jun 2025 15:50:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D5652ECEB4;
+	Tue, 17 Jun 2025 15:50:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ggqsNiTY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EgMZXKwx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A96F2EE5FD;
-	Tue, 17 Jun 2025 15:50:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECC5E2ECEA9;
+	Tue, 17 Jun 2025 15:50:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750175409; cv=none; b=Pu90ky5RZ0lfHYySFWx8Xhn0Wke5RsOURiswm18caxy0ZccsmJL6k3nMVa6rPaCDp1wF4mY+pI4jd31UQZHb7/Av/BB/TuxiOa2oNsP5Ti2ny8IPkIfY73Dz4uYzinAeETairsT+ZlRvFhqo7MQ+aer0lPDZXW2fmRhBLM/IXSA=
+	t=1750175426; cv=none; b=hQoemgdH+TRLwHRnvfvlAuULjnPIR2qRCj6r5AphEQfEd2AFDt7BAgr2PQGUZ6ixo5RV/PUlCn0gNMvG1WHkKE1cUgO4HMGUMK7M5SY8CWjrPNNo1soU46VposvlW3XhSZey6ENS1tJ14z19jWDSCkmXCadIJI2ORYv9B7zuYHg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750175409; c=relaxed/simple;
-	bh=HC0jVr5vXaXRa9wBu7t27O3/mGqys9V5XLPE2gpXuO8=;
+	s=arc-20240116; t=1750175426; c=relaxed/simple;
+	bh=Yg3RDksUnKPSIaYWd1RALRW3PTIz3jZPGCJToQHSUxU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jUKlMaj//ecpqBt9xHmxG8LQ27IhOmKcUKeJ24nzSf2CPwzF+abpps/QBIGg0Uk5EuxJ0z5Vy5jU64vGwRLO9PSb+ZkkOTFK8uagv+ymPeRRMIQAaaV+3ciwrZENiAOBzvoBqUA97MXnk9TqVlaqfVFT29shBUx3wrtKhDD+3+A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ggqsNiTY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C02EFC4CEE3;
-	Tue, 17 Jun 2025 15:50:08 +0000 (UTC)
+	 MIME-Version; b=pxEbMxFPiahwsY0/xGAJ2yU1rbiFEEG5KLpBuy5cqjhnfrtP/fj44IEHQc/AtxLd2ym9NG72Iqaja6RLZ8OHjSLHFv1de5nYMOsqZrhtmtsPJFFbPwTOCiV1eIVngMRKbK484MeU0bt8sSTDRGSXSbUdlz0oCkvJTDuOna+Vu7w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EgMZXKwx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B817C4CEE3;
+	Tue, 17 Jun 2025 15:50:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750175409;
-	bh=HC0jVr5vXaXRa9wBu7t27O3/mGqys9V5XLPE2gpXuO8=;
+	s=korg; t=1750175425;
+	bh=Yg3RDksUnKPSIaYWd1RALRW3PTIz3jZPGCJToQHSUxU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ggqsNiTY2tElx9XbkJapu2dN5x5hz6O3Mo1Q1Ii3HHK1/e/p+CKe98WSHM4UewigV
-	 XX6lDcMg4uSxyqmtEMGikB0dNlaZEmPrPAgiNIc9a3DA3+6+KpRAcxLu0kkQIJHNlz
-	 5mwP0oNNjYVJJxLGSQqe/8chaJ2eo/mWF6o7OzUU=
+	b=EgMZXKwxq4DGoRVLVystDoMJJYwv20efsYvfMdkqTlBENTe9bjbHY6UAzym41PKMh
+	 Bd2BzNKtQBpmbN8SIutpLnHdUXf+p2HkJ0ZTlO9hzO/IeD+dq3BuFQApuKsv7X3rfy
+	 ZxRiM8x2rKOXkCnNYiko1GSZGn5w9ktYpzOJn9lw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Julien Massot <julien.massot@collabora.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Alexey Minnekhanov <alexeymin@postmarketos.org>,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 174/356] arm64: dts: mt6359: Add missing compatible property to regulators node
-Date: Tue, 17 Jun 2025 17:24:49 +0200
-Message-ID: <20250617152345.218997368@linuxfoundation.org>
+Subject: [PATCH 6.6 175/356] arm64: dts: qcom: sdm660-lavender: Add missing USB phy supply
+Date: Tue, 17 Jun 2025 17:24:50 +0200
+Message-ID: <20250617152345.257393619@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250617152338.212798615@linuxfoundation.org>
 References: <20250617152338.212798615@linuxfoundation.org>
@@ -66,38 +67,36 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Julien Massot <julien.massot@collabora.com>
+From: Alexey Minnekhanov <alexeymin@postmarketos.org>
 
-[ Upstream commit 1fe38d2a19950fa6dbc384ee8967c057aef9faf4 ]
+[ Upstream commit dbf62a117a1b7f605a98dd1fd1fd6c85ec324ea0 ]
 
-The 'compatible' property is required by the
-'mfd/mediatek,mt6397.yaml' binding. Add it to fix the following
-dtb-check error:
-mediatek/mt8395-radxa-nio-12l.dtb: pmic: regulators:
-'compatible' is a required property
+Fixes the following dtbs check error:
 
-Fixes: 3b7d143be4b7 ("arm64: dts: mt6359: add PMIC MT6359 related nodes")
-Signed-off-by: Julien Massot <julien.massot@collabora.com>
-Link: https://lore.kernel.org/r/20250505-mt8395-dtb-errors-v1-3-9c4714dcdcdb@collabora.com
-Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+ phy@c012000: 'vdda-pll-supply' is a required property
+
+Fixes: e5d3e752b050e ("arm64: dts: qcom: sdm660-xiaomi-lavender: Add USB")
+Signed-off-by: Alexey Minnekhanov <alexeymin@postmarketos.org>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Link: https://lore.kernel.org/r/20250504115120.1432282-3-alexeymin@postmarketos.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/mediatek/mt6359.dtsi | 2 ++
- 1 file changed, 2 insertions(+)
+ arch/arm64/boot/dts/qcom/sdm660-xiaomi-lavender.dts | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/arm64/boot/dts/mediatek/mt6359.dtsi b/arch/arm64/boot/dts/mediatek/mt6359.dtsi
-index 8e1b8c85c6ede..57af3e7899841 100644
---- a/arch/arm64/boot/dts/mediatek/mt6359.dtsi
-+++ b/arch/arm64/boot/dts/mediatek/mt6359.dtsi
-@@ -18,6 +18,8 @@
- 		};
+diff --git a/arch/arm64/boot/dts/qcom/sdm660-xiaomi-lavender.dts b/arch/arm64/boot/dts/qcom/sdm660-xiaomi-lavender.dts
+index ec4245bbfffaf..8221da390e1aa 100644
+--- a/arch/arm64/boot/dts/qcom/sdm660-xiaomi-lavender.dts
++++ b/arch/arm64/boot/dts/qcom/sdm660-xiaomi-lavender.dts
+@@ -107,6 +107,7 @@
+ 	status = "okay";
  
- 		regulators {
-+			compatible = "mediatek,mt6359-regulator";
-+
- 			mt6359_vs1_buck_reg: buck_vs1 {
- 				regulator-name = "vs1";
- 				regulator-min-microvolt = <800000>;
+ 	vdd-supply = <&vreg_l1b_0p925>;
++	vdda-pll-supply = <&vreg_l10a_1p8>;
+ 	vdda-phy-dpdm-supply = <&vreg_l7b_3p125>;
+ };
+ 
 -- 
 2.39.5
 
