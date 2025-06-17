@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-153425-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153371-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A5FD3ADD4AF
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:13:08 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8102FADD403
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:05:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5CF11407ACA
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:02:54 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E419F17589C
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 15:59:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 219BA2DFF25;
-	Tue, 17 Jun 2025 15:58:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84C132F2C7F;
+	Tue, 17 Jun 2025 15:55:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KauITTA0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dW0yL7cI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0E6C2DFF08;
-	Tue, 17 Jun 2025 15:58:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41B002ECEBF;
+	Tue, 17 Jun 2025 15:55:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750175920; cv=none; b=Lgncpul+QoPsFvRajGo67iYzwGFPTc4WVxCqhsrUltkbnzwVRMIcUjZtt91ZmyjBdXQUwGTbj657N3525Wcy7tPq0JMqOkfJ0KwtXdv4DXlPWSva3JrbrvxVxSvvuxCYdd0eeo2s9eeD1IdhHzpr3IwpyUTxat4oVBAyqV7LF9s=
+	t=1750175737; cv=none; b=Vc58Hm0jZfvV+E8yCjKWQwrUONgpyNtwR0/cQoT+6G/jFIvBVPkb4RunyagElKNija2xcT750nYdF15WNcOSnHxnqHwNsnQYqPWySBFo9WXuYRzKX1uFREpCfYwjDm3QuuebgR3vCJk2Ngf+RrwD0pNykixDXNI0OAqULjI13AI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750175920; c=relaxed/simple;
-	bh=eWNmAgSUz7oANR4QaRrXG/qqaREh2vwY9qkPQ0RjsS8=;
+	s=arc-20240116; t=1750175737; c=relaxed/simple;
+	bh=o+USO4IWPRoXVyY0fyraN5W4TG2Uz0AVCcXWdPa/phc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=RaIEtfvEbWBggCT5KCzEwslkAfsE1rTqaMKzcCb5IH5U2lFMNOrzFMUIx4D/PYP7RJmFVHnu7pIxm3uAWcacLoulLsVcHwqXMlop79XB9Y0SIlo4+ZnOZpm6FA0OeiAkl3X1tiQ5QFX6a5o6KsN3qpqhYYDuI+/qM9MMRmX02NM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KauITTA0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4C2DC4CEE3;
-	Tue, 17 Jun 2025 15:58:39 +0000 (UTC)
+	 MIME-Version:Content-Type; b=bwHuh/a3K7+1+1fE3Gl+IvJGjWVF1O62Yp4a0r9n2xtrrYMHtx7PRDv1uP2j2xl+ihwUHJ7gAO67E5eg/jxXbPMYid438fZKSN1BLXuxn/XyHWlSTzRVa2FDXdRIk/4LmpX/f5JYlbwaHdtsBz5laBsgzqCqakQJx59GVIa66/I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dW0yL7cI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A44D3C4CEE3;
+	Tue, 17 Jun 2025 15:55:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750175920;
-	bh=eWNmAgSUz7oANR4QaRrXG/qqaREh2vwY9qkPQ0RjsS8=;
+	s=korg; t=1750175737;
+	bh=o+USO4IWPRoXVyY0fyraN5W4TG2Uz0AVCcXWdPa/phc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KauITTA0TldYRkb4w2hMjebtxDpxM87CjNwfSaklqS+ZF134ydDx1pifJ1qP8Ew0c
-	 FSE4ZXxB6SdoTDIc/DtF9xB48RXKCeVPJFRAVAiU9Uro72T2o3GUFXXWJ/gpJCumgu
-	 ugrHZqq2iAHM9rz4AKXjyrldEXvRm8klLbrlxCME=
+	b=dW0yL7cI2BHjsOiL4PKFO7sURsneHlYCz7YYbQlURKUGRxsTvtlePgETTden1cMHg
+	 qHzaYCS5vUt591TGCkW97Dptnkg64k2yyj2IwWJ+J9esRbCYRfBC/i/T6sLx1Qw4jg
+	 lrzSZVeb+mosQbGdSB6hioVbVwGzZgp4O7+m1ORs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -45,9 +45,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Jose Maria Casanova Crespo <jmcasanova@igalia.com>,
 	=?UTF-8?q?Ma=C3=ADra=20Canal?= <mcanal@igalia.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 117/780] drm/v3d: fix client obtained from axi_ids on V3D 4.1
-Date: Tue, 17 Jun 2025 17:17:05 +0200
-Message-ID: <20250617152456.266546205@linuxfoundation.org>
+Subject: [PATCH 6.15 118/780] drm/v3d: client ranges from axi_ids are different with V3D 7.1
+Date: Tue, 17 Jun 2025 17:17:06 +0200
+Message-ID: <20250617152456.306286506@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
 References: <20250617152451.485330293@linuxfoundation.org>
@@ -69,89 +69,63 @@ Content-Transfer-Encoding: 8bit
 
 From: Jose Maria Casanova Crespo <jmcasanova@igalia.com>
 
-[ Upstream commit d0e4c6537005dd106b101d4434a0c3dafd936d05 ]
+[ Upstream commit a22e0051f9eb2281b181218d97f77cebc299310d ]
 
-In the case of MMU errors caused by the TFU unit, the
-client that causes the MMU error is expected to be reported.
-But in the case of MMU TFU errors, a non existing client was
-being reported. This happened because the client calculation
-was taking into account more than the bits 0-7 from the
-axi_id that were representing the client.
+The client mask has been reduced from 8 bits on V3D 4.1 to 7 bits
+on V3D 7.1, so the ranges for each client are not compatible.
 
-[   27.845132] v3d fec00000.v3d: MMU error from client ? (13) at 0x3bb1000, pte invalid
+On V3D 7.1, the CSD client can also report MMU errors.
+Therefore, add its AXI ID to the IDs list.
 
-Masking the bits and using the correct axi_id ranges fixes the
-calculation to report the real guilty client on V3D 4.1 and 4.2.
-
-Make the MMU error print axi_id with hexadecimal as used in the
-ranges.
-
-Fixes: 38c2c7917adc ("drm/v3d: Fix and extend MMU error handling.")
+Fixes: 0ad5bc1ce463 ("drm/v3d: fix up register addresses for V3D 7.x")
 Signed-off-by: Jose Maria Casanova Crespo <jmcasanova@igalia.com>
 Reviewed-by: Maíra Canal <mcanal@igalia.com>
-Link: https://lore.kernel.org/r/20250425122522.18425-1-jmcasanova@igalia.com
+Link: https://lore.kernel.org/r/20250425122522.18425-2-jmcasanova@igalia.com
 Signed-off-by: Maíra Canal <mcanal@igalia.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/v3d/v3d_irq.c | 37 +++++++++++++++++++++++------------
- 1 file changed, 24 insertions(+), 13 deletions(-)
+ drivers/gpu/drm/v3d/v3d_irq.c | 23 ++++++++++++++++++++++-
+ 1 file changed, 22 insertions(+), 1 deletion(-)
 
 diff --git a/drivers/gpu/drm/v3d/v3d_irq.c b/drivers/gpu/drm/v3d/v3d_irq.c
-index 29f63f572d35b..d6ce1324905df 100644
+index d6ce1324905df..2cca5d3a26a22 100644
 --- a/drivers/gpu/drm/v3d/v3d_irq.c
 +++ b/drivers/gpu/drm/v3d/v3d_irq.c
-@@ -186,27 +186,38 @@ v3d_hub_irq(int irq, void *arg)
- 		u32 axi_id = V3D_READ(V3D_MMU_VIO_ID);
- 		u64 vio_addr = ((u64)V3D_READ(V3D_MMU_VIO_ADDR) <<
- 				(v3d->va_width - 32));
--		static const char *const v3d41_axi_ids[] = {
--			"L2T",
--			"PTB",
--			"PSE",
--			"TLB",
--			"CLE",
--			"TFU",
--			"MMU",
--			"GMP",
-+		static const struct {
-+			u32 begin;
-+			u32 end;
-+			const char *client;
-+		} v3d41_axi_ids[] = {
-+			{0x00, 0x20, "L2T"},
-+			{0x20, 0x21, "PTB"},
-+			{0x40, 0x41, "PSE"},
-+			{0x60, 0x80, "TLB"},
-+			{0x80, 0x88, "CLE"},
-+			{0xA0, 0xA1, "TFU"},
-+			{0xC0, 0xE0, "MMU"},
-+			{0xE0, 0xE1, "GMP"},
+@@ -199,12 +199,33 @@ v3d_hub_irq(int irq, void *arg)
+ 			{0xA0, 0xA1, "TFU"},
+ 			{0xC0, 0xE0, "MMU"},
+ 			{0xE0, 0xE1, "GMP"},
++		}, v3d71_axi_ids[] = {
++			{0x00, 0x30, "L2T"},
++			{0x30, 0x38, "CLE"},
++			{0x38, 0x39, "PTB"},
++			{0x39, 0x3A, "PSE"},
++			{0x3A, 0x3B, "CSD"},
++			{0x40, 0x60, "TLB"},
++			{0x60, 0x70, "MMU"},
++			{0x7C, 0x7E, "TFU"},
++			{0x7F, 0x80, "GMP"},
  		};
  		const char *client = "?";
  
  		V3D_WRITE(V3D_MMU_CTL, V3D_READ(V3D_MMU_CTL));
  
- 		if (v3d->ver >= V3D_GEN_41) {
--			axi_id = axi_id >> 5;
--			if (axi_id < ARRAY_SIZE(v3d41_axi_ids))
--				client = v3d41_axi_ids[axi_id];
+-		if (v3d->ver >= V3D_GEN_41) {
++		if (v3d->ver >= V3D_GEN_71) {
 +			size_t i;
 +
-+			axi_id = axi_id & 0xFF;
-+			for (i = 0; i < ARRAY_SIZE(v3d41_axi_ids); i++) {
-+				if (axi_id >= v3d41_axi_ids[i].begin &&
-+				    axi_id < v3d41_axi_ids[i].end) {
-+					client = v3d41_axi_ids[i].client;
++			axi_id = axi_id & 0x7F;
++			for (i = 0; i < ARRAY_SIZE(v3d71_axi_ids); i++) {
++				if (axi_id >= v3d71_axi_ids[i].begin &&
++				    axi_id < v3d71_axi_ids[i].end) {
++					client = v3d71_axi_ids[i].client;
 +					break;
 +				}
 +			}
- 		}
++		} else if (v3d->ver >= V3D_GEN_41) {
+ 			size_t i;
  
--		dev_err(v3d->drm.dev, "MMU error from client %s (%d) at 0x%llx%s%s%s\n",
-+		dev_err(v3d->drm.dev, "MMU error from client %s (0x%x) at 0x%llx%s%s%s\n",
- 			client, axi_id, (long long)vio_addr,
- 			((intsts & V3D_HUB_INT_MMU_WRV) ?
- 			 ", write violation" : ""),
+ 			axi_id = axi_id & 0xFF;
 -- 
 2.39.5
 
