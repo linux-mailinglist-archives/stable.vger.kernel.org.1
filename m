@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-152898-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-152909-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 55B20ADD160
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 17:30:07 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5CA8CADD16B
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 17:30:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D503017C347
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 15:29:53 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 432723BD064
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 15:30:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A4C52EB5D6;
-	Tue, 17 Jun 2025 15:29:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57FD02E9753;
+	Tue, 17 Jun 2025 15:30:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tl3RCtbG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N7KSbmHE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEB302E92AA;
-	Tue, 17 Jun 2025 15:29:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 142E311CBA;
+	Tue, 17 Jun 2025 15:30:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750174185; cv=none; b=eAsXUE94/Gsm0vR3tEOlOwxBqwYF+3h7FHyMOD4gBcl4vRlgzogcIjwFeddZ6pPQLBxiv+6zQiupzuy+dcrDUXNowD5nVanRS+pK34FtaWuDhP+sQfll+DAqHok/dpu6wtgekzv/xiqR9Z1V7PY9F8vROST/ncFKL8MEQ1I9n8o=
+	t=1750174230; cv=none; b=mS5DLLIMRfGSH+bfLbCw10sjpSJ3J5RfaztBzqeHXq7weNjPpwb7/TVOKjofrBeKICydXhhAtNClzeTL+2krav68GWLYFcdd1dwJc8wc7GDdx+TAaF0+GzGB7RngSpRrhNd+RpKXkE1dJevFcre+BNaYuiBGP60Tt2x0HY3OWoU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750174185; c=relaxed/simple;
-	bh=bmdBg43wsdCvpN0FGQtEg/FkVTW2PaYbWTuwDFKBGko=;
+	s=arc-20240116; t=1750174230; c=relaxed/simple;
+	bh=W//S+peJ/QOHQe1FzBBcKhFP6GRMTeFpdfQELwP8+88=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PVeTdB5GgcSs5Tbs2s2dvcVOr822kw8Xbd+DKve381z6/X4HdCT6eJv52hHSBCi3zq2vwMtwmg78ASDPDvrmsSrcOn0V8xI6O6Th9XBApZ5wlUZyFKUku2yRP9VQt1pqp9CcxVxhfajQb6tt6OYBodxdLJxe3k0ZwwoRRK82/T8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tl3RCtbG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0A90C4CEE3;
-	Tue, 17 Jun 2025 15:29:44 +0000 (UTC)
+	 MIME-Version:Content-Type; b=eYtnZ7frjmt823tdV5hYSnoD3XeDvI9ohxaTQnBiDscv4I6lsp43Ym0+tADYim+GNirRE8QvRps0USlul9oN585Kceg3qTHcrvsBKAmWTeuPxRVKajLw9PGnEiSuMXF1KjU8x2cEqJfYKq7oUdU2hr1mLpYCo0sAFl2wiV0rDDY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=N7KSbmHE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39141C4CEE3;
+	Tue, 17 Jun 2025 15:30:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750174185;
-	bh=bmdBg43wsdCvpN0FGQtEg/FkVTW2PaYbWTuwDFKBGko=;
+	s=korg; t=1750174229;
+	bh=W//S+peJ/QOHQe1FzBBcKhFP6GRMTeFpdfQELwP8+88=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tl3RCtbGEv26QduiZDFhE9rca1nhN+VMeA1EKCf+a+YOf4PRGdOZOGgtUjfKNLz9g
-	 JgNs21BlbkZ1MxBfGViD7X8G4OrKCqQ/FjG51apt8n1X23kgLl5yQPnNfADBslnF3G
-	 Zq4SB4j5FA37fr10/y6siieH+2B/BLjEtltTqzYE=
+	b=N7KSbmHEd4hLYIu11zD7i70sZUd60e+3Lz4BQe5SYIW/6zNfKVeDCeFS9QDauYGer
+	 UtT8LZiVUzRpX+ABzjl+UE2ogzvjM1OBJ/uwdBw+MdYtMekrrwy+zRuoVrKIQ14r50
+	 huUdC4uGdmJuu9fpH0fZn/xNbQ0KfShGN+OTUOKk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Manu Bretelle <chantr4@gmail.com>,
-	"Gautham R. Shenoy" <gautham.shenoy@amd.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
-Subject: [PATCH 6.6 004/356] acpi-cpufreq: Fix nominal_freq units to KHz in get_max_boost_ratio()
-Date: Tue, 17 Jun 2025 17:21:59 +0200
-Message-ID: <20250617152338.396363842@linuxfoundation.org>
+	Alexandre Mergnat <amergnat@baylibre.com>,
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>
+Subject: [PATCH 6.6 005/356] rtc: Make rtc_time64_to_tm() support dates before 1970
+Date: Tue, 17 Jun 2025 17:22:00 +0200
+Message-ID: <20250617152338.439159772@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250617152338.212798615@linuxfoundation.org>
 References: <20250617152338.212798615@linuxfoundation.org>
@@ -60,52 +60,90 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gautham R. Shenoy <gautham.shenoy@amd.com>
+From: Alexandre Mergnat <amergnat@baylibre.com>
 
-commit cb6a85f38f456b086c366e346ebb67ffa70c7243 upstream.
+commit 7df4cfef8b351fec3156160bedfc7d6d29de4cce upstream.
 
-commit 083466754596 ("cpufreq: ACPI: Fix max-frequency computation")
-modified get_max_boost_ratio() to return the nominal_freq advertised
-in the _CPC object. This was for the purposes of computing the maximum
-frequency. The frequencies advertised in _CPC objects are in
-MHz. However, cpufreq expects the frequency to be in KHz. Since the
-nominal_freq returned by get_max_boost_ratio() was not in KHz but
-instead in MHz,the cpuinfo_max_frequency that was computed using this
-nominal_freq was incorrect and an invalid value which resulted in
-cpufreq reporting the P0 frequency as the cpuinfo_max_freq.
+Conversion of dates before 1970 is still relevant today because these
+dates are reused on some hardwares to store dates bigger than the
+maximal date that is representable in the device's native format.
+This prominently and very soon affects the hardware covered by the
+rtc-mt6397 driver that can only natively store dates in the interval
+1900-01-01 up to 2027-12-31. So to store the date 2028-01-01 00:00:00
+to such a device, rtc_time64_to_tm() must do the right thing for
+time=-2208988800.
 
-Fix this by converting the nominal_freq to KHz before returning the
-same from get_max_boost_ratio().
-
-Reported-by: Manu Bretelle <chantr4@gmail.com>
-Closes: https://lore.kernel.org/lkml/aDaB63tDvbdcV0cg@HQ-GR2X1W2P57/
-Fixes: 083466754596 ("cpufreq: ACPI: Fix max-frequency computation")
-Signed-off-by: Gautham R. Shenoy <gautham.shenoy@amd.com>
-Cc: 6.14+ <stable@vger.kernel.org> # 6.14+
-Link: https://patch.msgid.link/20250529085143.709-1-gautham.shenoy@amd.com
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Signed-off-by: Alexandre Mergnat <amergnat@baylibre.com>
+Reviewed-by: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
+Link: https://lore.kernel.org/r/20250428-enable-rtc-v4-1-2b2f7e3f9349@baylibre.com
+Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+Signed-off-by: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/cpufreq/acpi-cpufreq.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/rtc/lib.c |   24 +++++++++++++++++++-----
+ 1 file changed, 19 insertions(+), 5 deletions(-)
 
---- a/drivers/cpufreq/acpi-cpufreq.c
-+++ b/drivers/cpufreq/acpi-cpufreq.c
-@@ -659,7 +659,7 @@ static u64 get_max_boost_ratio(unsigned
- 	nominal_perf = perf_caps.nominal_perf;
+--- a/drivers/rtc/lib.c
++++ b/drivers/rtc/lib.c
+@@ -46,24 +46,38 @@ EXPORT_SYMBOL(rtc_year_days);
+  * rtc_time64_to_tm - converts time64_t to rtc_time.
+  *
+  * @time:	The number of seconds since 01-01-1970 00:00:00.
+- *		(Must be positive.)
++ *		Works for values since at least 1900
+  * @tm:		Pointer to the struct rtc_time.
+  */
+ void rtc_time64_to_tm(time64_t time, struct rtc_time *tm)
+ {
+-	unsigned int secs;
+-	int days;
++	int days, secs;
  
- 	if (nominal_freq)
--		*nominal_freq = perf_caps.nominal_freq;
-+		*nominal_freq = perf_caps.nominal_freq * 1000;
+ 	u64 u64tmp;
+ 	u32 u32tmp, udays, century, day_of_century, year_of_century, year,
+ 		day_of_year, month, day;
+ 	bool is_Jan_or_Feb, is_leap_year;
  
- 	if (!highest_perf || !nominal_perf) {
- 		pr_debug("CPU%d: highest or nominal performance missing\n", cpu);
+-	/* time must be positive */
++	/*
++	 * Get days and seconds while preserving the sign to
++	 * handle negative time values (dates before 1970-01-01)
++	 */
+ 	days = div_s64_rem(time, 86400, &secs);
+ 
++	/*
++	 * We need 0 <= secs < 86400 which isn't given for negative
++	 * values of time. Fixup accordingly.
++	 */
++	if (secs < 0) {
++		days -= 1;
++		secs += 86400;
++	}
++
+ 	/* day of the week, 1970-01-01 was a Thursday */
+ 	tm->tm_wday = (days + 4) % 7;
++	/* Ensure tm_wday is always positive */
++	if (tm->tm_wday < 0)
++		tm->tm_wday += 7;
+ 
+ 	/*
+ 	 * The following algorithm is, basically, Proposition 6.3 of Neri
+@@ -93,7 +107,7 @@ void rtc_time64_to_tm(time64_t time, str
+ 	 * thus, is slightly different from [1].
+ 	 */
+ 
+-	udays		= ((u32) days) + 719468;
++	udays		= days + 719468;
+ 
+ 	u32tmp		= 4 * udays + 3;
+ 	century		= u32tmp / 146097;
 
 
 
