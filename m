@@ -1,107 +1,122 @@
-Return-Path: <stable+bounces-154594-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-154595-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 15B45ADDFB1
-	for <lists+stable@lfdr.de>; Wed, 18 Jun 2025 01:32:09 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A4FE3ADDFC0
+	for <lists+stable@lfdr.de>; Wed, 18 Jun 2025 01:35:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BA346175AAA
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 23:32:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4AA533BAC39
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 23:34:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3170A215077;
-	Tue, 17 Jun 2025 23:32:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E396125B1E0;
+	Tue, 17 Jun 2025 23:35:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fL9QAfqq"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="JTRiHMYY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5700136A
-	for <stable@vger.kernel.org>; Tue, 17 Jun 2025 23:32:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 909082F5326;
+	Tue, 17 Jun 2025 23:35:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750203125; cv=none; b=L9SOGCSSuAAifoCvt5nyzQaarx878W29jWK8cUjde4Egt8uUtQPFvCXF7bNlZAx/rLK2HacEJnsDbAlz29QknqiUfKHeOZ16raFH3zpe2rkcjB8grCQbOmULdzw1CcNp3IOAckqtl1ORXz00oQN3ks7LFxYlYyTS6FMytLlr4hA=
+	t=1750203312; cv=none; b=BlcNRm5MUd0ACaEYvS9rZgffugzcdHC/yP2sbNQBi2pJKgT4SakEFfxIZotn3YW0dTGmXHkCvY3/bFPcGWe6Ku/O8zTqEHKIau2WgVu5XBUamqPajNBFRSWLe7KlBuzy7Gl9coma/BA2rTHkL5JwpLrvhCjhC3cNYKvHzX9MUFs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750203125; c=relaxed/simple;
-	bh=tAxOC8hGXylSReQAjCj7wSlZDVQYhreRK9e5b7fn2YI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=e0KOnl40pWr7b6Hh3gWufqUO/5B0+gYqE4gjSVvPLUxCvpHlaTnUC9OBxAnSaTSwYPGjEr7nYzZL7pePtDCg6taUcq+tn+Hdew12ZT8xpHVP7hhOE+j+JAkbkcMfCVU2IjNBBDCcq0Z5sOoJQimRHy+SuFVAmv/BdqDvPi7Dmw4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fL9QAfqq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85C15C4CEE3;
-	Tue, 17 Jun 2025 23:32:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1750203124;
-	bh=tAxOC8hGXylSReQAjCj7wSlZDVQYhreRK9e5b7fn2YI=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=fL9QAfqqJgWBKFOeM75S8CQPGrCJo9t9vVpUjAc8TeNtY6BUm4AsYP3ayRuNEuDRh
-	 3HsekLHPJUZ5xCm4bgdyZKIBG0ZBDF6hpJDmawIIdyR8bxDYbTMBS4QS7SFw9Ghlrs
-	 dFSoiRYo06gwGDop9wm4tBc3KQnxo6rduLRJJaPVkmHQPTqwldkx+5v/XLsj4q3aBS
-	 yc6PAmZiSMSt2aHTXzmNJR3XajKPVEEMJ0BcWXu0onsrKer0SSKqWA7Ww6VzdZwvha
-	 l36NqH9UM8xdFxV2NnW6lPpXQcSBHRMgypSZRNbMUjra9I/iKf9curh8GP+ic673xr
-	 LqV9147qb10dQ==
-Date: Tue, 17 Jun 2025 16:32:00 -0700
-From: Nathan Chancellor <nathan@kernel.org>
-To: gregkh@linuxfoundation.org
-Cc: arnd@arndb.de, stable@vger.kernel.org
-Subject: Re: FAILED: patch "[PATCH] kbuild: hdrcheck: fix cross build with
- clang" failed to apply to 5.4-stable tree
-Message-ID: <20250617233200.GC3356351@ax162>
-References: <2025061706-stylishly-ravioli-ffa1@gregkh>
+	s=arc-20240116; t=1750203312; c=relaxed/simple;
+	bh=PUPjQNDrmsYKaFmvg9pcRbtb48JtmiMkyLI/rVjh8mc=;
+	h=Date:To:From:Subject:Message-Id; b=W+tlaB0d4pB4Y8zsr/gNyxJF47qHLrNhxAbiau2hrmMW0MdyHxU4t4g5ctKWAPVv6+S3sMOljY9xSlMjAMbxW+WUns9pao1QZv34bp9HmJuGyg59vrseWN1uTodAcUepAbOJBsc03gezghM+M45FAUpLdNN6819mG0bhPYnsrr4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=JTRiHMYY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51BA1C4CEE3;
+	Tue, 17 Jun 2025 23:35:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1750203312;
+	bh=PUPjQNDrmsYKaFmvg9pcRbtb48JtmiMkyLI/rVjh8mc=;
+	h=Date:To:From:Subject:From;
+	b=JTRiHMYY0+zSpFWKD+aD70lQWUx+qCccZceZrq2iUf7+AarIHlLl70udTBWnuUAhe
+	 oG95v14a6I9Hfc6lzH6pIls+uyCw5Up/YB7mnRXmfD1HCDAjTs4pmV8umcCIR6YmKe
+	 s00GMNr/iNiPi0DUmkmD41qfWYkOZYGD+v0ikjcs=
+Date: Tue, 17 Jun 2025 16:35:11 -0700
+To: mm-commits@vger.kernel.org,usama.anjum@collabora.com,stable@vger.kernel.org,david@redhat.com,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: + fs-proc-task_mmu-fix-page_is_pfnzero-detection-for-the-huge-zero-folio.patch added to mm-hotfixes-unstable branch
+Message-Id: <20250617233512.51BA1C4CEE3@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <2025061706-stylishly-ravioli-ffa1@gregkh>
 
-On Tue, Jun 17, 2025 at 05:10:06PM +0200, gregkh@linuxfoundation.org wrote:
-> From 02e9a22ceef0227175e391902d8760425fa072c6 Mon Sep 17 00:00:00 2001
-> From: Arnd Bergmann <arnd@arndb.de>
-> Date: Tue, 25 Feb 2025 11:00:31 +0100
-> Subject: [PATCH] kbuild: hdrcheck: fix cross build with clang
-> 
-> The headercheck tries to call clang with a mix of compiler arguments
-> that don't include the target architecture. When building e.g. x86
-> headers on arm64, this produces a warning like
-> 
->    clang: warning: unknown platform, assuming -mfloat-abi=soft
-> 
-> Add in the KBUILD_CPPFLAGS, which contain the target, in order to make it
-> build properly.
-> 
-> See also 1b71c2fb04e7 ("kbuild: userprogs: fix bitsize and target
-> detection on clang").
-> 
-> Reviewed-by: Nathan Chancellor <nathan@kernel.org>
-> Fixes: feb843a469fb ("kbuild: add $(CLANG_FLAGS) to KBUILD_CPPFLAGS")
-> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-> 
-> diff --git a/usr/include/Makefile b/usr/include/Makefile
-> index 6c6de1b1622b..e3d6b03527fe 100644
-> --- a/usr/include/Makefile
-> +++ b/usr/include/Makefile
-> @@ -10,7 +10,7 @@ UAPI_CFLAGS := -std=c90 -Wall -Werror=implicit-function-declaration
->  
->  # In theory, we do not care -m32 or -m64 for header compile tests.
->  # It is here just because CONFIG_CC_CAN_LINK is tested with -m32 or -m64.
-> -UAPI_CFLAGS += $(filter -m32 -m64 --target=%, $(KBUILD_CFLAGS))
-> +UAPI_CFLAGS += $(filter -m32 -m64 --target=%, $(KBUILD_CPPFLAGS) $(KBUILD_CFLAGS))
->  
->  # USERCFLAGS might contain sysroot location for CC.
->  UAPI_CFLAGS += $(USERCFLAGS)
-> 
 
-Commit 9fbed27a7a11 ("kbuild: add --target to correctly cross-compile
-UAPI headers with Clang") in 5.18 introduced '--target=' here; prior to
-that change, feb843a469fb would have no effect, so this change is
-unnecessary for 5.15, 5.10, and 5.4 (the current 5.10 and 5.15 backports
-are not harmful but they do not do anything as far as I can tell).
+The patch titled
+     Subject: fs/proc/task_mmu: fix PAGE_IS_PFNZERO detection for the huge zero folio
+has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
+     fs-proc-task_mmu-fix-page_is_pfnzero-detection-for-the-huge-zero-folio.patch
 
-Cheers,
-Nathan
+This patch will shortly appear at
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/fs-proc-task_mmu-fix-page_is_pfnzero-detection-for-the-huge-zero-folio.patch
+
+This patch will later appear in the mm-hotfixes-unstable branch at
+    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+
+Before you just go and hit "reply", please:
+   a) Consider who else should be cc'ed
+   b) Prefer to cc a suitable mailing list as well
+   c) Ideally: find the original patch on the mailing list and do a
+      reply-to-all to that, adding suitable additional cc's
+
+*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
+
+The -mm tree is included into linux-next via the mm-everything
+branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+and is updated there every 2-3 working days
+
+------------------------------------------------------
+From: David Hildenbrand <david@redhat.com>
+Subject: fs/proc/task_mmu: fix PAGE_IS_PFNZERO detection for the huge zero folio
+Date: Tue, 17 Jun 2025 16:35:32 +0200
+
+is_zero_pfn() does not work for the huge zero folio. Fix it by using
+is_huge_zero_pmd().
+
+This can cause the PAGEMAP_SCAN ioctl against /proc/pid/pagemap to omit
+pages.
+
+Found by code inspection.
+
+Link: https://lkml.kernel.org/r/20250617143532.2375383-1-david@redhat.com
+Fixes: 52526ca7fdb9 ("fs/proc/task_mmu: implement IOCTL to get and optionally clear info about PTEs")
+Signed-off-by: David Hildenbrand <david@redhat.com>
+Cc: Muhammad Usama Anjum <usama.anjum@collabora.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+---
+
+ fs/proc/task_mmu.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+--- a/fs/proc/task_mmu.c~fs-proc-task_mmu-fix-page_is_pfnzero-detection-for-the-huge-zero-folio
++++ a/fs/proc/task_mmu.c
+@@ -2182,7 +2182,7 @@ static unsigned long pagemap_thp_categor
+ 				categories |= PAGE_IS_FILE;
+ 		}
+ 
+-		if (is_zero_pfn(pmd_pfn(pmd)))
++		if (is_huge_zero_pmd(pmd))
+ 			categories |= PAGE_IS_PFNZERO;
+ 		if (pmd_soft_dirty(pmd))
+ 			categories |= PAGE_IS_SOFT_DIRTY;
+_
+
+Patches currently in -mm which might be from david@redhat.com are
+
+mm-gup-revert-mm-gup-fix-infinite-loop-within-__get_longterm_locked.patch
+fs-proc-task_mmu-fix-page_is_pfnzero-detection-for-the-huge-zero-folio.patch
+mm-gup-remove-vm_bug_ons.patch
+mm-gup-remove-vm_bug_ons-fix.patch
+mm-huge_memory-dont-ignore-queried-cachemode-in-vmf_insert_pfn_pud.patch
+mm-huge_memory-dont-mark-refcounted-folios-special-in-vmf_insert_folio_pmd.patch
+mm-huge_memory-dont-mark-refcounted-folios-special-in-vmf_insert_folio_pud.patch
+
 
