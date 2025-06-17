@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-153784-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-154195-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9C25CADD704
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:39:56 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 541FCADD8D5
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:59:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C704519E3101
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:24:23 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 657DC5A0B95
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:44:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A3A82EA167;
-	Tue, 17 Jun 2025 16:18:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0B1D285055;
+	Tue, 17 Jun 2025 16:40:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2lob0M9U"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tN1yfCyj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 365A220B807;
-	Tue, 17 Jun 2025 16:18:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9AFEA2EE29C;
+	Tue, 17 Jun 2025 16:40:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750177087; cv=none; b=fSM5VNhhV66Gt8/cNGAxt5AlypcI9AmZCGZGxKTd+MaM9XWdX7nm1a2kU6djgqUElYjQ1Seu0uT+1hQhxT7VXo8pAtr9k4lhu4IvzB+YA0v26LqNRa1cKCEnSUICY3t4krQJgdGEL7YkZl+LwWs5zODtstj01RlL87BuYcdp2aU=
+	t=1750178409; cv=none; b=V+jfMORRnHMtvmdeLgAxFhjENYPgh3XU77m73gK9LaLZQyrruE2CC42pFX5nO8gxJJ0C3wUqMFD6+TO48XNBULNYsSV9/9lHn+5OIYizqnRDpqiJOWnBsJirrI6xoQLo/j7ndWon5y5hzkvelI57xs9CNtIGn1aW/CE7Vk9yzlU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750177087; c=relaxed/simple;
-	bh=33tm+DYyXJJvtotchUNsw5+STpSUGpCRfaLqbmdWqsQ=;
+	s=arc-20240116; t=1750178409; c=relaxed/simple;
+	bh=fFllyGyEGgdcNRL87FJ5AV4el3eQjhoqYUP2nla+ZVs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=I3KtKEVEWMwP/iFn6xNsCwIFJXxLcu7MjN4MDa7p+wx1uE1TfIatJAtqHOQlsdAPlutIdFNGeoWPssOhcbqxMbjJG0qkphEh+G6F2+M8mAsgX5qgxJ/1tifgbWgEy3OWpiUsIsSlu2aK+XBz6OYUuKoTC0vhz/6uE9X6uDr9SnI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2lob0M9U; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99B54C4CEE3;
-	Tue, 17 Jun 2025 16:18:06 +0000 (UTC)
+	 MIME-Version; b=jOSOVPtEYGNbA5T8/HoIC89Xm3s8/APuYX0O4MLiOhWHcvsX+kYy80kf32rR+KLyEhZPb0iisn2HIaYT7qyHcqlRZ6o6vk9GQCEWSttrHFoFbLk8Tl7qp6XfGdLR/Ywt383EI9Du1cMn7BMdkVLqcrIE6VRIi4YsAFlSGrRRzy8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tN1yfCyj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A25AC4CEE3;
+	Tue, 17 Jun 2025 16:40:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750177087;
-	bh=33tm+DYyXJJvtotchUNsw5+STpSUGpCRfaLqbmdWqsQ=;
+	s=korg; t=1750178409;
+	bh=fFllyGyEGgdcNRL87FJ5AV4el3eQjhoqYUP2nla+ZVs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2lob0M9U/i55OpqvU+vJyhJLHfzTcmFBcGvLzTf/o2q1cxd27SvOUGX8VdJn+xzNd
-	 F8oTZlQvg+Vd9Pf8IFSUMpSS3JBj9rJUCOy665VDh/vd8XacPclBHzFYJK/r+f3JmF
-	 au1AsGMzRueM+Vcd0vzTIzUNIHnOccjbWOx/HvBA=
+	b=tN1yfCyjHQy1o3SJX3Y1emilPDHrpVYP9c7CG7/1fkf9GpGSvKEsFXmhf66OPRQZy
+	 YxzRjsG7giPeGmXmHB+CQux+1qRgVuYp5JYauA/779CDgFF2NPXuOVfUims3Tw239j
+	 kWevfneeSW0ZVMRBcq/m+LntAJWqQ6/iBm4FQzJA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	stable <stable@kernel.org>,
-	Wupeng Ma <mawupeng1@huawei.com>
-Subject: [PATCH 6.6 346/356] VMCI: fix race between vmci_host_setup_notify and vmci_ctx_unset_notify
+	Mathias Nyman <mathias.nyman@linux.intel.com>
+Subject: [PATCH 6.12 495/512] usb: Flush altsetting 0 endpoints before reinitializating them after reset.
 Date: Tue, 17 Jun 2025 17:27:41 +0200
-Message-ID: <20250617152352.065902957@linuxfoundation.org>
+Message-ID: <20250617152439.684524109@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152338.212798615@linuxfoundation.org>
-References: <20250617152338.212798615@linuxfoundation.org>
+In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
+References: <20250617152419.512865572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,100 +61,80 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wupeng Ma <mawupeng1@huawei.com>
+From: Mathias Nyman <mathias.nyman@linux.intel.com>
 
-commit 1bd6406fb5f36c2bb1e96e27d4c3e9f4d09edde4 upstream.
+commit 89bb3dc13ac29a563f4e4c555e422882f64742bd upstream.
 
-During our test, it is found that a warning can be trigger in try_grab_folio
-as follow:
+usb core avoids sending a Set-Interface altsetting 0 request after device
+reset, and instead relies on calling usb_disable_interface() and
+usb_enable_interface() to flush and reset host-side of those endpoints.
 
-  ------------[ cut here ]------------
-  WARNING: CPU: 0 PID: 1678 at mm/gup.c:147 try_grab_folio+0x106/0x130
-  Modules linked in:
-  CPU: 0 UID: 0 PID: 1678 Comm: syz.3.31 Not tainted 6.15.0-rc5 #163 PREEMPT(undef)
-  RIP: 0010:try_grab_folio+0x106/0x130
-  Call Trace:
-   <TASK>
-   follow_huge_pmd+0x240/0x8e0
-   follow_pmd_mask.constprop.0.isra.0+0x40b/0x5c0
-   follow_pud_mask.constprop.0.isra.0+0x14a/0x170
-   follow_page_mask+0x1c2/0x1f0
-   __get_user_pages+0x176/0x950
-   __gup_longterm_locked+0x15b/0x1060
-   ? gup_fast+0x120/0x1f0
-   gup_fast_fallback+0x17e/0x230
-   get_user_pages_fast+0x5f/0x80
-   vmci_host_unlocked_ioctl+0x21c/0xf80
-  RIP: 0033:0x54d2cd
-  ---[ end trace 0000000000000000 ]---
+xHCI hosts allocate and set up endpoint ring buffers and host_ep->hcpriv
+during usb_hcd_alloc_bandwidth() callback, which in this case is called
+before flushing the endpoint in usb_disable_interface().
 
-Digging into the source, context->notify_page may init by get_user_pages_fast
-and can be seen in vmci_ctx_unset_notify which will try to put_page. However
-get_user_pages_fast is not finished here and lead to following
-try_grab_folio warning. The race condition is shown as follow:
+Call usb_disable_interface() before usb_hcd_alloc_bandwidth() to ensure
+URBs are flushed before new ring buffers for the endpoints are allocated.
 
-cpu0			cpu1
-vmci_host_do_set_notify
-vmci_host_setup_notify
-get_user_pages_fast(uva, 1, FOLL_WRITE, &context->notify_page);
-lockless_pages_from_mm
-gup_pgd_range
-gup_huge_pmd  // update &context->notify_page
-			vmci_host_do_set_notify
-			vmci_ctx_unset_notify
-			notify_page = context->notify_page;
-			if (notify_page)
-			put_page(notify_page);	// page is freed
-__gup_longterm_locked
-__get_user_pages
-follow_trans_huge_pmd
-try_grab_folio // warn here
+Otherwise host driver will attempt to find and remove old stale URBs
+from a freshly allocated new ringbuffer.
 
-To slove this, use local variable page to make notify_page can be seen
-after finish get_user_pages_fast.
-
-Fixes: a1d88436d53a ("VMCI: Fix two UVA mapping bugs")
 Cc: stable <stable@kernel.org>
-Closes: https://lore.kernel.org/all/e91da589-ad57-3969-d979-879bbd10dddd@huawei.com/
-Signed-off-by: Wupeng Ma <mawupeng1@huawei.com>
-Link: https://lore.kernel.org/r/20250510033040.901582-1-mawupeng1@huawei.com
+Fixes: 4fe0387afa89 ("USB: don't send Set-Interface after reset")
+Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
+Link: https://lore.kernel.org/r/20250514132520.225345-1-mathias.nyman@linux.intel.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/misc/vmw_vmci/vmci_host.c |   11 +++++------
- 1 file changed, 5 insertions(+), 6 deletions(-)
+ drivers/usb/core/hub.c |   16 ++++++++++++++--
+ 1 file changed, 14 insertions(+), 2 deletions(-)
 
---- a/drivers/misc/vmw_vmci/vmci_host.c
-+++ b/drivers/misc/vmw_vmci/vmci_host.c
-@@ -227,6 +227,7 @@ static int drv_cp_harray_to_user(void __
- static int vmci_host_setup_notify(struct vmci_ctx *context,
- 				  unsigned long uva)
- {
-+	struct page *page;
- 	int retval;
+--- a/drivers/usb/core/hub.c
++++ b/drivers/usb/core/hub.c
+@@ -6135,6 +6135,7 @@ static int usb_reset_and_verify_device(s
+ 	struct usb_hub			*parent_hub;
+ 	struct usb_hcd			*hcd = bus_to_hcd(udev->bus);
+ 	struct usb_device_descriptor	descriptor;
++	struct usb_interface		*intf;
+ 	struct usb_host_bos		*bos;
+ 	int				i, j, ret = 0;
+ 	int				port1 = udev->portnum;
+@@ -6192,6 +6193,18 @@ static int usb_reset_and_verify_device(s
+ 	if (!udev->actconfig)
+ 		goto done;
  
- 	if (context->notify_page) {
-@@ -243,13 +244,11 @@ static int vmci_host_setup_notify(struct
- 	/*
- 	 * Lock physical page backing a given user VA.
- 	 */
--	retval = get_user_pages_fast(uva, 1, FOLL_WRITE, &context->notify_page);
--	if (retval != 1) {
--		context->notify_page = NULL;
-+	retval = get_user_pages_fast(uva, 1, FOLL_WRITE, &page);
-+	if (retval != 1)
- 		return VMCI_ERROR_GENERIC;
--	}
--	if (context->notify_page == NULL)
--		return VMCI_ERROR_UNAVAILABLE;
++	/*
++	 * Some devices can't handle setting default altsetting 0 with a
++	 * Set-Interface request. Disable host-side endpoints of those
++	 * interfaces here. Enable and reset them back after host has set
++	 * its internal endpoint structures during usb_hcd_alloc_bandwith()
++	 */
++	for (i = 0; i < udev->actconfig->desc.bNumInterfaces; i++) {
++		intf = udev->actconfig->interface[i];
++		if (intf->cur_altsetting->desc.bAlternateSetting == 0)
++			usb_disable_interface(udev, intf, true);
++	}
 +
-+	context->notify_page = page;
+ 	mutex_lock(hcd->bandwidth_mutex);
+ 	ret = usb_hcd_alloc_bandwidth(udev, udev->actconfig, NULL, NULL);
+ 	if (ret < 0) {
+@@ -6223,12 +6236,11 @@ static int usb_reset_and_verify_device(s
+ 	 */
+ 	for (i = 0; i < udev->actconfig->desc.bNumInterfaces; i++) {
+ 		struct usb_host_config *config = udev->actconfig;
+-		struct usb_interface *intf = config->interface[i];
+ 		struct usb_interface_descriptor *desc;
  
- 	/*
- 	 * Map the locked page and set up notify pointer.
++		intf = config->interface[i];
+ 		desc = &intf->cur_altsetting->desc;
+ 		if (desc->bAlternateSetting == 0) {
+-			usb_disable_interface(udev, intf, true);
+ 			usb_enable_interface(udev, intf, true);
+ 			ret = 0;
+ 		} else {
 
 
 
