@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-152871-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-152872-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 18417ADCFDB
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:30:58 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id AF936ADCFE1
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:31:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 65147189A675
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 14:24:45 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 083BA406354
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 14:24:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 641ED2EF641;
-	Tue, 17 Jun 2025 14:23:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F1BB2EF657;
+	Tue, 17 Jun 2025 14:23:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0i/jUb3z"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ft94lZVf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19D382EF644
-	for <stable@vger.kernel.org>; Tue, 17 Jun 2025 14:23:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 197392EF644
+	for <stable@vger.kernel.org>; Tue, 17 Jun 2025 14:23:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750170200; cv=none; b=BT7nH/zdlQYP7tx2cImjmS+BVMIqlW61pSIWOFds3DxoyDBsJkW4ckkYZJ86rGm+yR0vG0HjSmu63O+12JPK/5HgRVAO5mciUCjXE1lVWpNIlkE9iiTUOlDZuoR/oUHo5PcDY1GgapFeUHw6Jd0MAFgsf1R+fTS1qebNDQ/VQks=
+	t=1750170206; cv=none; b=ndnM6+gXodtKCiOFIs3d0hA0wFzCa2aUNRLuJWOfwvMUO/oH/cqJamKD64EKCeyRItmWSQMzDVeGVgkJBvaD+byNRyShZcfBayCXNmRQiZGgGT8pLQ933afX4lGonFBIOqtSuXPZDdeDB9ryf1kOgIbn7XZyz1N2b2JRjP/6Vhk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750170200; c=relaxed/simple;
-	bh=74SbUz6DtN8JbTO+RmaOYJWBjTOEXFXXNczn7/V9FVY=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=FJdHwpSQpD4T/kxzmkS1t7mV0yB62zSrx/foWa2S3SzYcCt0fKQUkuv6rAYVuHoQ4xcy/TV66jtFEHJlXBExmWvQ+gMQTAn/hOLJU02p+nmretTau91R6RCUtmt50Py/H7xRimdBHniYIbfZVO1OBtGfqnLCXaDSxH0P50wnNgI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0i/jUb3z; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34362C4CEE3;
-	Tue, 17 Jun 2025 14:23:19 +0000 (UTC)
+	s=arc-20240116; t=1750170206; c=relaxed/simple;
+	bh=an6gt13aTNUP7XlWctHNTmYM8BcW9YSA2FP6tq+xzHg=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=mZuh8cbsqS045NgDO1WM+MjEikyHPwIA7BrciOxWFXkCzcMxolE7vdUSFbgM+5zL44i8Kmp6bfbYi9sZvJi1KaGu0df+7Z2hUlw1lAy2Ored4JLZ+TeBMrLXIoiIiMVUpSk+e7CVDDM2xD5nKIyp2N8gwThIJT7lOzX0mgUUt8s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ft94lZVf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70987C4CEE3;
+	Tue, 17 Jun 2025 14:23:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750170199;
-	bh=74SbUz6DtN8JbTO+RmaOYJWBjTOEXFXXNczn7/V9FVY=;
+	s=korg; t=1750170205;
+	bh=an6gt13aTNUP7XlWctHNTmYM8BcW9YSA2FP6tq+xzHg=;
 	h=Subject:To:Cc:From:Date:From;
-	b=0i/jUb3zAH7m4LSiVZwGaW6IeysDBUM21OSjnio1HIclu8fDnvTQZoyEkQDR7HsxK
-	 sAhN4TY3TQwcWdVP6qTnm52CZk3fOO7PcfDkuDSlXPFBrEl+QPl3phaP5xB8XkiPU0
-	 5aIsCanAUZZ3wQt46nB5jcFsTl0kMRSfEKv45W04=
-Subject: FAILED: patch "[PATCH] usb: usbtmc: Fix read_stb function and get_stb ioctl" failed to apply to 5.4-stable tree
-To: dpenkler@gmail.com,gregkh@linuxfoundation.org
+	b=Ft94lZVfKkhRu+r3iT4HFvkW3LvhBGDDiejagsR2fdbx+feJtsvUXcX9BSjDF8qVb
+	 J5MhJEHfkkdQ+/2naZ6ywC+7pVoLlxUW0MA0lxrVc90vjMA8RPpZuQTlPuSm9LlO9g
+	 G8vSzZVLs5FNi7BhvoccHKo30BWY5xU5tpvY2p2U=
+Subject: FAILED: patch "[PATCH] VMCI: fix race between vmci_host_setup_notify and" failed to apply to 5.4-stable tree
+To: mawupeng1@huawei.com,gregkh@linuxfoundation.org,stable@kernel.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Tue, 17 Jun 2025 16:23:08 +0200
-Message-ID: <2025061708-chaperone-fantasy-02f0@gregkh>
+Date: Tue, 17 Jun 2025 16:23:22 +0200
+Message-ID: <2025061722-shaded-throwback-5dda@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -62,10 +62,10 @@ To reproduce the conflict and resubmit, you may use the following commands:
 
 git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
 git checkout FETCH_HEAD
-git cherry-pick -x acb3dac2805d3342ded7dbbd164add32bbfdf21c
+git cherry-pick -x 1bd6406fb5f36c2bb1e96e27d4c3e9f4d09edde4
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025061708-chaperone-fantasy-02f0@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025061722-shaded-throwback-5dda@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
 
 Possible dependencies:
 
@@ -77,69 +77,96 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From acb3dac2805d3342ded7dbbd164add32bbfdf21c Mon Sep 17 00:00:00 2001
-From: Dave Penkler <dpenkler@gmail.com>
-Date: Wed, 21 May 2025 14:16:55 +0200
-Subject: [PATCH] usb: usbtmc: Fix read_stb function and get_stb ioctl
+From 1bd6406fb5f36c2bb1e96e27d4c3e9f4d09edde4 Mon Sep 17 00:00:00 2001
+From: Wupeng Ma <mawupeng1@huawei.com>
+Date: Sat, 10 May 2025 11:30:40 +0800
+Subject: [PATCH] VMCI: fix race between vmci_host_setup_notify and
+ vmci_ctx_unset_notify
 
-The usbtmc488_ioctl_read_stb function relied on a positive return from
-usbtmc_get_stb to reset the srq condition in the driver. The
-USBTMC_IOCTL_GET_STB case tested for a positive return to return the stb
-to the user.
+During our test, it is found that a warning can be trigger in try_grab_folio
+as follow:
 
-Commit: <cac01bd178d6> ("usb: usbtmc: Fix erroneous get_stb ioctl
-error returns") changed the return value of usbtmc_get_stb to 0 on
-success instead of returning the value of usb_control_msg which is
-positive in the normal case. This change caused the function
-usbtmc488_ioctl_read_stb and the USBTMC_IOCTL_GET_STB ioctl to no
-longer function correctly.
+  ------------[ cut here ]------------
+  WARNING: CPU: 0 PID: 1678 at mm/gup.c:147 try_grab_folio+0x106/0x130
+  Modules linked in:
+  CPU: 0 UID: 0 PID: 1678 Comm: syz.3.31 Not tainted 6.15.0-rc5 #163 PREEMPT(undef)
+  RIP: 0010:try_grab_folio+0x106/0x130
+  Call Trace:
+   <TASK>
+   follow_huge_pmd+0x240/0x8e0
+   follow_pmd_mask.constprop.0.isra.0+0x40b/0x5c0
+   follow_pud_mask.constprop.0.isra.0+0x14a/0x170
+   follow_page_mask+0x1c2/0x1f0
+   __get_user_pages+0x176/0x950
+   __gup_longterm_locked+0x15b/0x1060
+   ? gup_fast+0x120/0x1f0
+   gup_fast_fallback+0x17e/0x230
+   get_user_pages_fast+0x5f/0x80
+   vmci_host_unlocked_ioctl+0x21c/0xf80
+  RIP: 0033:0x54d2cd
+  ---[ end trace 0000000000000000 ]---
 
-Change the test in usbtmc488_ioctl_read_stb to test for failure
-first and return the failure code immediately.
-Change the test for the USBTMC_IOCTL_GET_STB ioctl to test for 0
-instead of a positive value.
+Digging into the source, context->notify_page may init by get_user_pages_fast
+and can be seen in vmci_ctx_unset_notify which will try to put_page. However
+get_user_pages_fast is not finished here and lead to following
+try_grab_folio warning. The race condition is shown as follow:
 
-Fixes: cac01bd178d6 ("usb: usbtmc: Fix erroneous get_stb ioctl error returns")
-Cc: stable@vger.kernel.org
-Signed-off-by: Dave Penkler <dpenkler@gmail.com>
-Link: https://lore.kernel.org/r/20250521121656.18174-3-dpenkler@gmail.com
+cpu0			cpu1
+vmci_host_do_set_notify
+vmci_host_setup_notify
+get_user_pages_fast(uva, 1, FOLL_WRITE, &context->notify_page);
+lockless_pages_from_mm
+gup_pgd_range
+gup_huge_pmd  // update &context->notify_page
+			vmci_host_do_set_notify
+			vmci_ctx_unset_notify
+			notify_page = context->notify_page;
+			if (notify_page)
+			put_page(notify_page);	// page is freed
+__gup_longterm_locked
+__get_user_pages
+follow_trans_huge_pmd
+try_grab_folio // warn here
+
+To slove this, use local variable page to make notify_page can be seen
+after finish get_user_pages_fast.
+
+Fixes: a1d88436d53a ("VMCI: Fix two UVA mapping bugs")
+Cc: stable <stable@kernel.org>
+Closes: https://lore.kernel.org/all/e91da589-ad57-3969-d979-879bbd10dddd@huawei.com/
+Signed-off-by: Wupeng Ma <mawupeng1@huawei.com>
+Link: https://lore.kernel.org/r/20250510033040.901582-1-mawupeng1@huawei.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
-diff --git a/drivers/usb/class/usbtmc.c b/drivers/usb/class/usbtmc.c
-index 740d2d2b19fb..08511442a27f 100644
---- a/drivers/usb/class/usbtmc.c
-+++ b/drivers/usb/class/usbtmc.c
-@@ -563,14 +563,15 @@ static int usbtmc488_ioctl_read_stb(struct usbtmc_file_data *file_data,
+diff --git a/drivers/misc/vmw_vmci/vmci_host.c b/drivers/misc/vmw_vmci/vmci_host.c
+index abe79f6fd2a7..b64944367ac5 100644
+--- a/drivers/misc/vmw_vmci/vmci_host.c
++++ b/drivers/misc/vmw_vmci/vmci_host.c
+@@ -227,6 +227,7 @@ static int drv_cp_harray_to_user(void __user *user_buf_uva,
+ static int vmci_host_setup_notify(struct vmci_ctx *context,
+ 				  unsigned long uva)
+ {
++	struct page *page;
+ 	int retval;
  
- 	rv = usbtmc_get_stb(file_data, &stb);
- 
--	if (rv > 0) {
--		srq_asserted = atomic_xchg(&file_data->srq_asserted,
--					srq_asserted);
--		if (srq_asserted)
--			stb |= 0x40; /* Set RQS bit */
-+	if (rv < 0)
-+		return rv;
-+
-+	srq_asserted = atomic_xchg(&file_data->srq_asserted, srq_asserted);
-+	if (srq_asserted)
-+		stb |= 0x40; /* Set RQS bit */
-+
-+	rv = put_user(stb, (__u8 __user *)arg);
- 
--		rv = put_user(stb, (__u8 __user *)arg);
+ 	if (context->notify_page) {
+@@ -243,13 +244,11 @@ static int vmci_host_setup_notify(struct vmci_ctx *context,
+ 	/*
+ 	 * Lock physical page backing a given user VA.
+ 	 */
+-	retval = get_user_pages_fast(uva, 1, FOLL_WRITE, &context->notify_page);
+-	if (retval != 1) {
+-		context->notify_page = NULL;
++	retval = get_user_pages_fast(uva, 1, FOLL_WRITE, &page);
++	if (retval != 1)
+ 		return VMCI_ERROR_GENERIC;
 -	}
- 	return rv;
+-	if (context->notify_page == NULL)
+-		return VMCI_ERROR_UNAVAILABLE;
++
++	context->notify_page = page;
  
- }
-@@ -2199,7 +2200,7 @@ static long usbtmc_ioctl(struct file *file, unsigned int cmd, unsigned long arg)
- 
- 	case USBTMC_IOCTL_GET_STB:
- 		retval = usbtmc_get_stb(file_data, &tmp_byte);
--		if (retval > 0)
-+		if (!retval)
- 			retval = put_user(tmp_byte, (__u8 __user *)arg);
- 		break;
- 
+ 	/*
+ 	 * Map the locked page and set up notify pointer.
 
 
