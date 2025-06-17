@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-153743-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153746-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 727A5ADD62E
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:30:55 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 76F64ADD64F
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:32:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 873675A07EA
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:22:11 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6B72B19E2AEF
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:22:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7086E2E8DF5;
-	Tue, 17 Jun 2025 16:15:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46F7B2E8E01;
+	Tue, 17 Jun 2025 16:16:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1kZ/9PFO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aIE8KVwv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C01423771C;
-	Tue, 17 Jun 2025 16:15:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 002172E8DFB;
+	Tue, 17 Jun 2025 16:16:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750176953; cv=none; b=ocxbILaHK9zKTJCboZ85B8tqMlcY7k+LZrTNccr5KJK4Qq/VSTntk0gj+f1J7VFnoh29gm4brvU/KlteID15cc6uICK7qEyS0B8gZ/MU66/GwaOBCcMdJI0MOi+ZzgsWg3TEvjZRVJ9PkFjkoPuCHE7Gr1iqDIjX6D/3LdlxZqQ=
+	t=1750176964; cv=none; b=dCCJEkcOl4ONpttsNrELBoYhnS6TrJvGKG4DPXS/r0liAr8Rykhi5rwFFSGo4yuRYJNLQaRk84+y1JqHatbmAPrpBp4IAhVqjePuyB6pfimhHVI67vp06JPhx/7kzVFKjIILBCuGVUhBcO7eNzN9NYY/z9Z7rtwSyvQ6EYAdev8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750176953; c=relaxed/simple;
-	bh=F5AP8wTXUhI8i/FwbAzgdt/nYSZo5cVDiKqgMRbrbJg=;
+	s=arc-20240116; t=1750176964; c=relaxed/simple;
+	bh=XakU2y/JdlNsh+zpj70IcLZnkFNL9x9OnfIJaRodjTY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QmcJ+kq+oSCaVHLjpTmIx0bV6yT6QfAaxJjuG9jv4aKF+CqVPqx+fsNKQ2hbNlh99u9VWpWXLQbwdk85D+lINno55xzxI04m8cREYFdbyV4FBeKI+fNglVN4BLyojyCSIX58bHNEiJcveIT/DGfOKRN5UEuLA5yHr0V9Qbh0CnY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1kZ/9PFO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8FC7AC4CEE3;
-	Tue, 17 Jun 2025 16:15:52 +0000 (UTC)
+	 MIME-Version; b=jn4nk8hkmKISmajF0YmX1AnDs1ITpbHUpjL2HnHkN71XVqtCWeRsF2EKWrmRjOI8xLQ2a6bUtSpVVuW7NR52T8Clz+/6VVoO2j1grvftXpTid7RrWraDeio9ygA4DSVj3M9+v8ZKQKUFCkexpATxDuNlhT+xR6l6/mdZfh04uUo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aIE8KVwv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 085F4C4CEE3;
+	Tue, 17 Jun 2025 16:16:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750176953;
-	bh=F5AP8wTXUhI8i/FwbAzgdt/nYSZo5cVDiKqgMRbrbJg=;
+	s=korg; t=1750176963;
+	bh=XakU2y/JdlNsh+zpj70IcLZnkFNL9x9OnfIJaRodjTY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1kZ/9PFOpUua9RKScf1Zsljb7xZvWVvkMTb/sz7SIVR0FvQhjQpVBo5buO9IzFALW
-	 uNw/HUtvb7M6rvYtk4V1ukPffA/KJJxIikEGkDvPhc7Q1fkha9xHIrtlfpaQyQxXwD
-	 mGNNMep/QY463/O05pJK1P5F0Hj9DvkkVLIz7H4Y=
+	b=aIE8KVwvCxrR5vhX1OhHIXEAv4Rlh++rRdLMutQuLEUCPzXXOCPzMtcvgO6eNXBuc
+	 aWZBnWW+pOqWtqDM+vrSvBMbwz7cm4OE4721dHD1JlVDwpW8PXEa/g26uiHEMcnGZv
+	 LPbgb2alQGAF+muYxurhVQhQ5hi2LmrKgM7oV0lM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -46,9 +46,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Taniya Das <quic_tdas@quicinc.com>,
 	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 243/780] clk: qcom: camcc-sm6350: Add *_wait_val values for GDSCs
-Date: Tue, 17 Jun 2025 17:19:11 +0200
-Message-ID: <20250617152501.347405325@linuxfoundation.org>
+Subject: [PATCH 6.15 244/780] clk: qcom: dispcc-sm6350: Add *_wait_val values for GDSCs
+Date: Tue, 17 Jun 2025 17:19:12 +0200
+Message-ID: <20250617152501.391927114@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
 References: <20250617152451.485330293@linuxfoundation.org>
@@ -69,7 +69,7 @@ Content-Transfer-Encoding: 8bit
 
 From: Luca Weiss <luca.weiss@fairphone.com>
 
-[ Upstream commit e7b1c13280ad866f3b935f6c658713c41db61635 ]
+[ Upstream commit 673989d27123618afab56df1143a75454178b4ae ]
 
 Compared to the msm-4.19 driver the mainline GDSC driver always sets the
 bits for en_rest, en_few & clk_dis, and if those values are not set
@@ -80,79 +80,29 @@ clk_dis_wait_val if qcom,clk-dis-wait-val is given in devicetree.
 Correct this situation by explicitly setting those values. For all GDSCs
 the reset value of those bits are used.
 
-Fixes: 80f5451d9a7c ("clk: qcom: Add camera clock controller driver for SM6350")
+Fixes: 837519775f1d ("clk: qcom: Add display clock controller driver for SM6350")
 Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
 Reviewed-by: Taniya Das <quic_tdas@quicinc.com>
-Link: https://lore.kernel.org/r/20250425-sm6350-gdsc-val-v1-1-1f252d9c5e4e@fairphone.com
+Link: https://lore.kernel.org/r/20250425-sm6350-gdsc-val-v1-2-1f252d9c5e4e@fairphone.com
 Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/qcom/camcc-sm6350.c | 18 ++++++++++++++++++
- 1 file changed, 18 insertions(+)
+ drivers/clk/qcom/dispcc-sm6350.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/clk/qcom/camcc-sm6350.c b/drivers/clk/qcom/camcc-sm6350.c
-index 1871970fb046d..8aac97d29ce3f 100644
---- a/drivers/clk/qcom/camcc-sm6350.c
-+++ b/drivers/clk/qcom/camcc-sm6350.c
-@@ -1695,6 +1695,9 @@ static struct clk_branch camcc_sys_tmr_clk = {
+diff --git a/drivers/clk/qcom/dispcc-sm6350.c b/drivers/clk/qcom/dispcc-sm6350.c
+index e703ecf00e440..b0bd163a449cc 100644
+--- a/drivers/clk/qcom/dispcc-sm6350.c
++++ b/drivers/clk/qcom/dispcc-sm6350.c
+@@ -681,6 +681,9 @@ static struct clk_branch disp_cc_xo_clk = {
  
- static struct gdsc bps_gdsc = {
- 	.gdscr = 0x6004,
+ static struct gdsc mdss_gdsc = {
+ 	.gdscr = 0x1004,
 +	.en_rest_wait_val = 0x2,
 +	.en_few_wait_val = 0x2,
 +	.clk_dis_wait_val = 0xf,
  	.pd = {
- 		.name = "bps_gdsc",
- 	},
-@@ -1704,6 +1707,9 @@ static struct gdsc bps_gdsc = {
- 
- static struct gdsc ipe_0_gdsc = {
- 	.gdscr = 0x7004,
-+	.en_rest_wait_val = 0x2,
-+	.en_few_wait_val = 0x2,
-+	.clk_dis_wait_val = 0xf,
- 	.pd = {
- 		.name = "ipe_0_gdsc",
- 	},
-@@ -1713,6 +1719,9 @@ static struct gdsc ipe_0_gdsc = {
- 
- static struct gdsc ife_0_gdsc = {
- 	.gdscr = 0x9004,
-+	.en_rest_wait_val = 0x2,
-+	.en_few_wait_val = 0x2,
-+	.clk_dis_wait_val = 0xf,
- 	.pd = {
- 		.name = "ife_0_gdsc",
- 	},
-@@ -1721,6 +1730,9 @@ static struct gdsc ife_0_gdsc = {
- 
- static struct gdsc ife_1_gdsc = {
- 	.gdscr = 0xa004,
-+	.en_rest_wait_val = 0x2,
-+	.en_few_wait_val = 0x2,
-+	.clk_dis_wait_val = 0xf,
- 	.pd = {
- 		.name = "ife_1_gdsc",
- 	},
-@@ -1729,6 +1741,9 @@ static struct gdsc ife_1_gdsc = {
- 
- static struct gdsc ife_2_gdsc = {
- 	.gdscr = 0xb004,
-+	.en_rest_wait_val = 0x2,
-+	.en_few_wait_val = 0x2,
-+	.clk_dis_wait_val = 0xf,
- 	.pd = {
- 		.name = "ife_2_gdsc",
- 	},
-@@ -1737,6 +1752,9 @@ static struct gdsc ife_2_gdsc = {
- 
- static struct gdsc titan_top_gdsc = {
- 	.gdscr = 0x14004,
-+	.en_rest_wait_val = 0x2,
-+	.en_few_wait_val = 0x2,
-+	.clk_dis_wait_val = 0xf,
- 	.pd = {
- 		.name = "titan_top_gdsc",
+ 		.name = "mdss_gdsc",
  	},
 -- 
 2.39.5
