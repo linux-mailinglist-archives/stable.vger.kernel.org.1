@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-153527-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153530-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 152FCADD506
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:16:10 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 064D4ADD531
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:18:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EDA7517E215
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:07:18 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D87253BC249
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:06:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 37B812EA15F;
-	Tue, 17 Jun 2025 16:04:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 099972F2370;
+	Tue, 17 Jun 2025 16:04:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uG7nMpzn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XkAWXgjy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E79822DFF0B;
-	Tue, 17 Jun 2025 16:04:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B97262F2340;
+	Tue, 17 Jun 2025 16:04:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750176252; cv=none; b=ZSb8ukA1IgoZofrSKq9Np0YLdCI+4RLWaYZNXuZ0H/nYcxpRdZ7HQT1c2PY4ZJ6c/w6CMrC+rSzVaMDpFrvPbOk1AXKlhSfpDEPgh8GiAVekATUEuGMbR+Q7YclqhJH9PKBkpp3A1Dm3YkLC4cRZbpeKnUl4z5hJ6Cqw75ub8u4=
+	t=1750176261; cv=none; b=WSL3ctwfl6Q2vhK64GIK6wu7o4nlkCSk55wEEasaGSOTQOh6l6z/qVHs0uEyFawhzrhdisXw0knUE4ovQlf1DywaYOve2Oh2hNJZyP92o3fApbBF4bISXcglfj47JHhK/fP3EvmW4q/Gs4EMGqsuU8fFgHbkp4l0jd+GBqPyjXs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750176252; c=relaxed/simple;
-	bh=zgpHgqHRR7kNBRth4rwlsU6Jb7dbkrigYTNsM9K7/sE=;
+	s=arc-20240116; t=1750176261; c=relaxed/simple;
+	bh=ntGoDLaBKmgVnAu9SZr2lFwmkw6rixdU+zg3uwGysug=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KIJt0BmdJlfKDG5yzfK0A2cqOuFDJxS1j9F6JKJ3ta3XK/DB4sMAxnMDTPozR/vaXI5MeSFl/8tfq+jiHg07QsLn6IzRvj/6pl+tjyeKPQFL0M+8OgtzTUHA4odxRTbKQXqdE1kaVk9/gsi4tqEzhdfR3EpmWmQr0kYq3f6Qcj8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uG7nMpzn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53ECEC4CEE3;
-	Tue, 17 Jun 2025 16:04:11 +0000 (UTC)
+	 MIME-Version; b=kEh1GhTnIisacznjSd3kjw/hqxrH6EApph3cVLCjia1bOVe75flpcHZHKnMOC+5pZcdcXxHWJl7NuVMPHp4FgfCXMntb1+m87RiAwqGGg+n0xWW+HiuGmdZTrKQJ4db9pqCQKPb8x9hUAIX6/RmW67V0GUhAkz+VCWQDVPqGdPE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XkAWXgjy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2AC8BC4CEF0;
+	Tue, 17 Jun 2025 16:04:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750176251;
-	bh=zgpHgqHRR7kNBRth4rwlsU6Jb7dbkrigYTNsM9K7/sE=;
+	s=korg; t=1750176261;
+	bh=ntGoDLaBKmgVnAu9SZr2lFwmkw6rixdU+zg3uwGysug=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uG7nMpznEaIMaDews1ZCQhcQHBJAAdTaaif1i1ht7iqYOpAymITOk9QxdETPCxVx+
-	 GbpiVpPTRUlwMTZSWgFvJ2Z6b6hfepYSzuWMIz8lNnZTjD8+ZSJ8Lydk6rHJNc4J7D
-	 sOpswC161uiyQxkjTl2Qc/shBxF5oRYXZnlyhZSE=
+	b=XkAWXgjy5+bza9ehkTPc/vPPZH3l16fSPQqsOFhSbe9RljMgtTv/QVta97HDRMOri
+	 EZMAQgMJ3aPc5A9FUeFuHmuiwp01CrugS0bheUzX/efw0iWI80juCLe7K5KTpEMFiv
+	 2nJoTWLDXl9coGs0sh+9LOsgs4UamNoX00g/8K/E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jinjian Song <jinjian.song@fibocom.com>,
+	Ronak Doshi <ronak.doshi@broadcom.com>,
+	Guolin Yang <guolin.yang@broadcom.com>,
 	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 259/356] net: wwan: t7xx: Fix napi rx poll issue
-Date: Tue, 17 Jun 2025 17:26:14 +0200
-Message-ID: <20250617152348.629853286@linuxfoundation.org>
+Subject: [PATCH 6.6 260/356] vmxnet3: correctly report gso type for UDP tunnels
+Date: Tue, 17 Jun 2025 17:26:15 +0200
+Message-ID: <20250617152348.673709159@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250617152338.212798615@linuxfoundation.org>
 References: <20250617152338.212798615@linuxfoundation.org>
@@ -66,101 +67,80 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Jinjian Song <jinjian.song@fibocom.com>
+From: Ronak Doshi <ronak.doshi@broadcom.com>
 
-[ Upstream commit 905fe0845bb27e4eed2ca27ea06e6c4847f1b2b1 ]
+[ Upstream commit 982d30c30eaa2ec723df42e3bf526c014c1dbb88 ]
 
-When driver handles the napi rx polling requests, the netdev might
-have been released by the dellink logic triggered by the disconnect
-operation on user plane. However, in the logic of processing skb in
-polling, an invalid netdev is still being used, which causes a panic.
+Commit 3d010c8031e3 ("udp: do not accept non-tunnel GSO skbs landing
+in a tunnel") added checks in linux stack to not accept non-tunnel
+GRO packets landing in a tunnel. This exposed an issue in vmxnet3
+which was not correctly reporting GRO packets for tunnel packets.
 
-BUG: kernel NULL pointer dereference, address: 00000000000000f1
-Oops: 0000 [#1] PREEMPT SMP NOPTI
-RIP: 0010:dev_gro_receive+0x3a/0x620
-[...]
-Call Trace:
- <IRQ>
- ? __die_body+0x68/0xb0
- ? page_fault_oops+0x379/0x3e0
- ? exc_page_fault+0x4f/0xa0
- ? asm_exc_page_fault+0x22/0x30
- ? __pfx_t7xx_ccmni_recv_skb+0x10/0x10 [mtk_t7xx (HASH:1400 7)]
- ? dev_gro_receive+0x3a/0x620
- napi_gro_receive+0xad/0x170
- t7xx_ccmni_recv_skb+0x48/0x70 [mtk_t7xx (HASH:1400 7)]
- t7xx_dpmaif_napi_rx_poll+0x590/0x800 [mtk_t7xx (HASH:1400 7)]
- net_rx_action+0x103/0x470
- irq_exit_rcu+0x13a/0x310
- sysvec_apic_timer_interrupt+0x56/0x90
- </IRQ>
+This patch fixes this issue by setting correct GSO type for the
+tunnel packets.
 
-Fixes: 5545b7b9f294 ("net: wwan: t7xx: Add NAPI support")
-Signed-off-by: Jinjian Song <jinjian.song@fibocom.com>
-Link: https://patch.msgid.link/20250530031648.5592-1-jinjian.song@fibocom.com
+Currently, vmxnet3 does not support reporting inner fields for LRO
+tunnel packets. The issue is not seen for egress drivers that do not
+use skb inner fields. The workaround is to enable tnl-segmentation
+offload on the egress interfaces if the driver supports it. This
+problem pre-exists this patch fix and can be addressed as a separate
+future patch.
+
+Fixes: dacce2be3312 ("vmxnet3: add geneve and vxlan tunnel offload support")
+Signed-off-by: Ronak Doshi <ronak.doshi@broadcom.com>
+Acked-by: Guolin Yang <guolin.yang@broadcom.com>
+Link: https://patch.msgid.link/20250530152701.70354-1-ronak.doshi@broadcom.com
+[pabeni@redhat.com: dropped the changelog]
 Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wwan/t7xx/t7xx_netdev.c | 11 ++++++-----
- 1 file changed, 6 insertions(+), 5 deletions(-)
+ drivers/net/vmxnet3/vmxnet3_drv.c | 26 ++++++++++++++++++++++++++
+ 1 file changed, 26 insertions(+)
 
-diff --git a/drivers/net/wwan/t7xx/t7xx_netdev.c b/drivers/net/wwan/t7xx/t7xx_netdev.c
-index 3ef4a8a4f8fdb..d879424093b78 100644
---- a/drivers/net/wwan/t7xx/t7xx_netdev.c
-+++ b/drivers/net/wwan/t7xx/t7xx_netdev.c
-@@ -296,7 +296,7 @@ static int t7xx_ccmni_wwan_newlink(void *ctxt, struct net_device *dev, u32 if_id
- 	ccmni->ctlb = ctlb;
- 	ccmni->dev = dev;
- 	atomic_set(&ccmni->usage, 0);
--	ctlb->ccmni_inst[if_id] = ccmni;
-+	WRITE_ONCE(ctlb->ccmni_inst[if_id], ccmni);
- 
- 	ret = register_netdevice(dev);
- 	if (ret)
-@@ -318,6 +318,7 @@ static void t7xx_ccmni_wwan_dellink(void *ctxt, struct net_device *dev, struct l
- 	if (WARN_ON(ctlb->ccmni_inst[if_id] != ccmni))
- 		return;
- 
-+	WRITE_ONCE(ctlb->ccmni_inst[if_id], NULL);
- 	unregister_netdevice(dev);
+diff --git a/drivers/net/vmxnet3/vmxnet3_drv.c b/drivers/net/vmxnet3/vmxnet3_drv.c
+index beebe09eb88ff..afd78324f3aa3 100644
+--- a/drivers/net/vmxnet3/vmxnet3_drv.c
++++ b/drivers/net/vmxnet3/vmxnet3_drv.c
+@@ -1499,6 +1499,30 @@ vmxnet3_get_hdr_len(struct vmxnet3_adapter *adapter, struct sk_buff *skb,
+ 	return (hlen + (hdr.tcp->doff << 2));
  }
  
-@@ -413,7 +414,7 @@ static void t7xx_ccmni_recv_skb(struct t7xx_ccmni_ctrl *ccmni_ctlb, struct sk_bu
- 
- 	skb_cb = T7XX_SKB_CB(skb);
- 	netif_id = skb_cb->netif_idx;
--	ccmni = ccmni_ctlb->ccmni_inst[netif_id];
-+	ccmni = READ_ONCE(ccmni_ctlb->ccmni_inst[netif_id]);
- 	if (!ccmni) {
- 		dev_kfree_skb(skb);
- 		return;
-@@ -435,7 +436,7 @@ static void t7xx_ccmni_recv_skb(struct t7xx_ccmni_ctrl *ccmni_ctlb, struct sk_bu
- 
- static void t7xx_ccmni_queue_tx_irq_notify(struct t7xx_ccmni_ctrl *ctlb, int qno)
- {
--	struct t7xx_ccmni *ccmni = ctlb->ccmni_inst[0];
-+	struct t7xx_ccmni *ccmni = READ_ONCE(ctlb->ccmni_inst[0]);
- 	struct netdev_queue *net_queue;
- 
- 	if (netif_running(ccmni->dev) && atomic_read(&ccmni->usage) > 0) {
-@@ -447,7 +448,7 @@ static void t7xx_ccmni_queue_tx_irq_notify(struct t7xx_ccmni_ctrl *ctlb, int qno
- 
- static void t7xx_ccmni_queue_tx_full_notify(struct t7xx_ccmni_ctrl *ctlb, int qno)
- {
--	struct t7xx_ccmni *ccmni = ctlb->ccmni_inst[0];
-+	struct t7xx_ccmni *ccmni = READ_ONCE(ctlb->ccmni_inst[0]);
- 	struct netdev_queue *net_queue;
- 
- 	if (atomic_read(&ccmni->usage) > 0) {
-@@ -465,7 +466,7 @@ static void t7xx_ccmni_queue_state_notify(struct t7xx_pci_dev *t7xx_dev,
- 	if (ctlb->md_sta != MD_STATE_READY)
- 		return;
- 
--	if (!ctlb->ccmni_inst[0]) {
-+	if (!READ_ONCE(ctlb->ccmni_inst[0])) {
- 		dev_warn(&t7xx_dev->pdev->dev, "No netdev registered yet\n");
- 		return;
- 	}
++static void
++vmxnet3_lro_tunnel(struct sk_buff *skb, __be16 ip_proto)
++{
++	struct udphdr *uh = NULL;
++
++	if (ip_proto == htons(ETH_P_IP)) {
++		struct iphdr *iph = (struct iphdr *)skb->data;
++
++		if (iph->protocol == IPPROTO_UDP)
++			uh = (struct udphdr *)(iph + 1);
++	} else {
++		struct ipv6hdr *iph = (struct ipv6hdr *)skb->data;
++
++		if (iph->nexthdr == IPPROTO_UDP)
++			uh = (struct udphdr *)(iph + 1);
++	}
++	if (uh) {
++		if (uh->check)
++			skb_shinfo(skb)->gso_type |= SKB_GSO_UDP_TUNNEL_CSUM;
++		else
++			skb_shinfo(skb)->gso_type |= SKB_GSO_UDP_TUNNEL;
++	}
++}
++
+ static int
+ vmxnet3_rq_rx_complete(struct vmxnet3_rx_queue *rq,
+ 		       struct vmxnet3_adapter *adapter, int quota)
+@@ -1803,6 +1827,8 @@ vmxnet3_rq_rx_complete(struct vmxnet3_rx_queue *rq,
+ 			if (segCnt != 0 && mss != 0) {
+ 				skb_shinfo(skb)->gso_type = rcd->v4 ?
+ 					SKB_GSO_TCPV4 : SKB_GSO_TCPV6;
++				if (encap_lro)
++					vmxnet3_lro_tunnel(skb, skb->protocol);
+ 				skb_shinfo(skb)->gso_size = mss;
+ 				skb_shinfo(skb)->gso_segs = segCnt;
+ 			} else if ((segCnt != 0 || skb->len > mtu) && !encap_lro) {
 -- 
 2.39.5
 
