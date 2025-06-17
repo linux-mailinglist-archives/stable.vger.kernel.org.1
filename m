@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-153333-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-154360-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7B1B1ADD413
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:06:28 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 068C5ADDA21
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 19:13:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E1B711941021
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 15:57:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C9E804A728B
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:50:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0EC3A2ECE9D;
-	Tue, 17 Jun 2025 15:53:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A670122FE11;
+	Tue, 17 Jun 2025 16:49:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Vhb7MHjw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="scN4ybC5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B50852ECE9B;
-	Tue, 17 Jun 2025 15:53:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6057921FF5F;
+	Tue, 17 Jun 2025 16:49:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750175610; cv=none; b=pMEdHq063OvIcZ7pmudywTciR3sU6jbjv3ASuuV3zfOEsf92mh0/3olFUCe+28UgqE8/BqxGttPwiDeiIme9XxOvsPdiGBE0mr9G92nUwYXhDsjanop57wFQDJDX4o+/58ylvTddE475e+BlOQjKVB6MeVp8B7Ec98jpzEu4cdc=
+	t=1750178945; cv=none; b=BDilaMSh37mqzZ8G+tNzmu25vp60nx0p1FjZhUQpc8UGRUAjdb2wMJfF9zrHt9t9Tmc9zBTyA1FuqyEXJnvCdBXryJgnzD7JG2BPlIADhL4g6ZEkHu9dv4kD1t2W3T4jAOqnGnVQmDjK8IHfZh0+UEyFIqUf3UzxI/Caueq93fk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750175610; c=relaxed/simple;
-	bh=zW0MV7Lu8z4yRWMxhlpmDs824JXtsbI0kuwzYGMZPxk=;
+	s=arc-20240116; t=1750178945; c=relaxed/simple;
+	bh=/kWc70amw5cWEIxSDglFsdoosHbsUbsb/wyEDrhqU38=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=jR5HnBqqlje4NERZbINZuELA5MG0HyYEK6kIFHNxCzEjswMsC+3OkJoWUquMZ9dW2yckL73hVM0fs8CMEck1ZFT+K/vW9JutoWEOKmJwyoyyWKGiRHaXbciTq/x3QkkQ3cwgfQTBcRhU5oXdB1WLLiLZo7MQHdFWnB8x6++1ENQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Vhb7MHjw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C355DC4CEE3;
-	Tue, 17 Jun 2025 15:53:29 +0000 (UTC)
+	 MIME-Version; b=ScnsM7gm9SZMceF7XaLFF9rxmJ1L6DFgTqL23ir6LCsTiAnkLbPZ38IkGWfZxXFnS9iIRgsdKKDmI70i+lZ2DDr2qkdkmVn34jglWK07e0KxPSMNWvX9hSUxlvaK+zgXWC69CKoHTPEzQFMxjxDK4694f1wigJLT5ir5n85EpTQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=scN4ybC5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5167C4CEE3;
+	Tue, 17 Jun 2025 16:49:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750175610;
-	bh=zW0MV7Lu8z4yRWMxhlpmDs824JXtsbI0kuwzYGMZPxk=;
+	s=korg; t=1750178945;
+	bh=/kWc70amw5cWEIxSDglFsdoosHbsUbsb/wyEDrhqU38=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Vhb7MHjwn4SY82F++4LjvKH8Z2rkACf/zCWN/pbp2224WEA7tc3NdWpLYipH5xcaA
-	 mgr5mnDAUq5uC+QbSFXqzsWuj0w3OMwi1Rh+KcMnDG3iKpHv7/963OPaxLbOOyOkEL
-	 W5rpDTjbZfMKxSOAvULJB8nXWmzpJf92CrNFKdOY=
+	b=scN4ybC5QVX3J2bENQ08n3a6gxltrZznf6PgZpSJdpcDDaEhxiPAVjCWcYQAC1kVt
+	 UzhxOQPBzKGs026hB4HQZh6xi6js2y2coyihBSGGSHIqQ4eRLPZhnDROrLIVBhlD5W
+	 7f8hTLSLKau6ZEAPrSKEFB/7suKpdEc7Iu345830=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Su Hui <suhui@nfschina.com>,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Andrew Jeffery <andrew@codeconstruct.com.au>,
-	Arnd Bergmann <arnd@arndb.de>,
+	Caleb Sander Mateos <csander@purestorage.com>,
+	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 193/356] soc: aspeed: lpc: Fix impossible judgment condition
+Subject: [PATCH 6.15 600/780] block: flip iter directions in blk_rq_integrity_map_user()
 Date: Tue, 17 Jun 2025 17:25:08 +0200
-Message-ID: <20250617152345.975357280@linuxfoundation.org>
+Message-ID: <20250617152515.917851091@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152338.212798615@linuxfoundation.org>
-References: <20250617152338.212798615@linuxfoundation.org>
+In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
+References: <20250617152451.485330293@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,48 +60,50 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Su Hui <suhui@nfschina.com>
+From: Caleb Sander Mateos <csander@purestorage.com>
 
-[ Upstream commit d9f0a97e859bdcef51f9c187b1eb712eb13fd3ff ]
+[ Upstream commit 43a67dd812c5d3de163c0b6971046b4a4b633d3f ]
 
-smatch error：
-drivers/soc/aspeed/aspeed-lpc-snoop.c:169
-aspeed_lpc_snoop_config_irq() warn: platform_get_irq() does not return zero
+blk_rq_integrity_map_user() creates the ubuf iter with ITER_DEST for
+write-direction operations and ITER_SOURCE for read-direction ones.
+This is backwards; writes use the user buffer as a source for metadata
+and reads use it as a destination. Switch to the rq_data_dir() helper,
+which maps writes to ITER_SOURCE (WRITE) and reads to ITER_DEST(READ).
 
-platform_get_irq() return non-zero IRQ number or negative error code,
-change '!lpc_snoop->irq' to 'lpc_snoop->irq < 0' to fix this.
-
-Fixes: 9f4f9ae81d0a ("drivers/misc: add Aspeed LPC snoop driver")
-Signed-off-by: Su Hui <suhui@nfschina.com>
-Reviewed-by: Dan Carpenter <dan.carpenter@linaro.org>
-Link: https://lore.kernel.org/r/20231027020703.1231875-1-suhui@nfschina.com
-Signed-off-by: Andrew Jeffery <andrew@codeconstruct.com.au>
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Signed-off-by: Caleb Sander Mateos <csander@purestorage.com>
+Fixes: fe8f4ca7107e ("block: modify bio_integrity_map_user to accept iov_iter as argument")
+Link: https://lore.kernel.org/r/20250603184752.1185676-1-csander@purestorage.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/soc/aspeed/aspeed-lpc-snoop.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ block/blk-integrity.c | 7 +------
+ 1 file changed, 1 insertion(+), 6 deletions(-)
 
-diff --git a/drivers/soc/aspeed/aspeed-lpc-snoop.c b/drivers/soc/aspeed/aspeed-lpc-snoop.c
-index 773dbcbc03a6c..8cb3a0b4692cf 100644
---- a/drivers/soc/aspeed/aspeed-lpc-snoop.c
-+++ b/drivers/soc/aspeed/aspeed-lpc-snoop.c
-@@ -166,7 +166,7 @@ static int aspeed_lpc_snoop_config_irq(struct aspeed_lpc_snoop *lpc_snoop,
- 	int rc;
+diff --git a/block/blk-integrity.c b/block/blk-integrity.c
+index a1678f0a9f81f..e4e2567061f9d 100644
+--- a/block/blk-integrity.c
++++ b/block/blk-integrity.c
+@@ -117,13 +117,8 @@ int blk_rq_integrity_map_user(struct request *rq, void __user *ubuf,
+ {
+ 	int ret;
+ 	struct iov_iter iter;
+-	unsigned int direction;
  
- 	lpc_snoop->irq = platform_get_irq(pdev, 0);
--	if (!lpc_snoop->irq)
-+	if (lpc_snoop->irq < 0)
- 		return -ENODEV;
- 
- 	rc = devm_request_irq(dev, lpc_snoop->irq,
+-	if (op_is_write(req_op(rq)))
+-		direction = ITER_DEST;
+-	else
+-		direction = ITER_SOURCE;
+-	iov_iter_ubuf(&iter, direction, ubuf, bytes);
++	iov_iter_ubuf(&iter, rq_data_dir(rq), ubuf, bytes);
+ 	ret = bio_integrity_map_user(rq->bio, &iter);
+ 	if (ret)
+ 		return ret;
 -- 
 2.39.5
 
