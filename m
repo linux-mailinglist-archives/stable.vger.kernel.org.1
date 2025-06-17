@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-154175-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-154534-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3C637ADD842
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:53:46 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E4BD4ADD9B1
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 19:08:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C245D19E0205
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:44:28 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CCB982C648C
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:58:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A90C2E54D9;
-	Tue, 17 Jun 2025 16:39:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EAD002FA635;
+	Tue, 17 Jun 2025 16:58:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0L9RoCBe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qdXkzu2Z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CA8E2DFF1F;
-	Tue, 17 Jun 2025 16:39:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7A742FA62E;
+	Tue, 17 Jun 2025 16:58:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750178344; cv=none; b=QfcBCU5ME0VzF3yFAXWxPSr13FcMonf84dF9R6dtnN1UCaiuZd0BJh9ib4tg4TyX6lPN5wMqvreZJh/BUSyIydcFweDlsDZB3YBV27ODz/nQLHALp1lcx84gKtSz3WS+zBX+MT9L6JnfSqt+N2F8IAYAuSAcaac+UVI76JSxf+U=
+	t=1750179519; cv=none; b=bVqdQW/xnOnZo5TyXbbcVE4AyOZONxqQGg3c49d9kYs2HKSisK5GTO7vR2q5UVlWE5izO8WIem8MUWfCo0K2wNm/BcO6OWlz79R/y8fPnkKyXq+rCWKgwdppGqgWv4gL/AlWESWkNTNbU0OFlITcoO0Fpjwudew4u1K6X6cUvwY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750178344; c=relaxed/simple;
-	bh=GJoYqscII4zAO0rOkp2D/v+BxMLPpkcEwNm7mEylm1M=;
+	s=arc-20240116; t=1750179519; c=relaxed/simple;
+	bh=cCErqSqKF0vVVs/GVKqQRcwgiorY0qUHwzTjAUXTZcc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SZXj4f3+/7bX8GmIoM61IYWEbrxehfzRvvnRMCZhws5ZVraJqfjN4cXdSsROu1hrsfjuuICyaceWocdr6LV1Ix7LNljasYN2E8MpmXo9+zj7q6aCcVzNRMppi1zBE5R3kkczPYM36tRBQNbyEooiCaBZruAWjNynyVq514axLNc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0L9RoCBe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD468C4CEE3;
-	Tue, 17 Jun 2025 16:39:03 +0000 (UTC)
+	 MIME-Version; b=iKQMM9hgxLJ6/htStAGmquaSuY8Vvz+SuvHaxsTGVNNGMAIRIzUxEtsCWBgSVNe3L0YCZVIVfsi5L2l7qMV8VEcZXNBDZwNyybxg/tHWORUJu/SojFf97jAr/40f2C4iL0La2t7xPy3t4waMmgEOig5cRyWJkirxv3xZEef1Btk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qdXkzu2Z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11EE3C4CEE7;
+	Tue, 17 Jun 2025 16:58:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750178344;
-	bh=GJoYqscII4zAO0rOkp2D/v+BxMLPpkcEwNm7mEylm1M=;
+	s=korg; t=1750179519;
+	bh=cCErqSqKF0vVVs/GVKqQRcwgiorY0qUHwzTjAUXTZcc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0L9RoCBezzGLNN29o+q6wsbcKGh/M2svQxi8f6aWa21oJcR/CrJGtTqD3H6cd720A
-	 oKPUzrwPkdlB68Wlx9UmvM2bzxrmTpRppJ/m27Oaqru4Bv/mzj36/2KCHb1G3t9oOE
-	 uYkFUX0skupYsuIKfuQDXTk0eVKV7IUN/tkSmBbs=
+	b=qdXkzu2ZepNSKaKUB7RBZtbGUtad8ZF7G3SvhplnUEPXB0STeD96Ops4boh2YM/C5
+	 qnAw0786q2O2INSkVRTM2JaHFg4Vb/vJq92ms73Jwj8r4rkOMMGKxRivM8gY9ZT+PO
+	 u+1DqkpUO6oNbtB85XKGw+vCfWYIhVmqmqkfx4vI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -49,12 +49,12 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Peter Zijlstra <peterz@infradead.org>,
 	Joel Fernandes <joelagnelf@nvidia.com>,
 	Miguel Ojeda <ojeda@kernel.org>
-Subject: [PATCH 6.12 482/512] objtool/rust: relax slice condition to cover more `noreturn` Rust functions
+Subject: [PATCH 6.15 740/780] objtool/rust: relax slice condition to cover more `noreturn` Rust functions
 Date: Tue, 17 Jun 2025 17:27:28 +0200
-Message-ID: <20250617152439.131646178@linuxfoundation.org>
+Message-ID: <20250617152521.636145695@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
-References: <20250617152419.512865572@linuxfoundation.org>
+In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
+References: <20250617152451.485330293@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,7 +66,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
@@ -108,7 +108,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 --- a/tools/objtool/check.c
 +++ b/tools/objtool/check.c
-@@ -222,7 +222,8 @@ static bool is_rust_noreturn(const struc
+@@ -230,7 +230,8 @@ static bool is_rust_noreturn(const struc
  	       str_ends_with(func->name, "_7___rustc17rust_begin_unwind")				||
  	       strstr(func->name, "_4core9panicking13assert_failed")					||
  	       strstr(func->name, "_4core9panicking11panic_const24panic_const_")			||
