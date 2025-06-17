@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-153207-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153210-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B18DBADD353
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 17:56:03 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id CF7F8ADD328
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 17:54:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 31CB318998E2
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 15:51:02 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9309B3BEDA5
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 15:50:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77D952DFF10;
-	Tue, 17 Jun 2025 15:47:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1AED92DFF0D;
+	Tue, 17 Jun 2025 15:47:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aARsz+KJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vS+lULOf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 354232DFF14;
-	Tue, 17 Jun 2025 15:46:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CAD5B2DFF17;
+	Tue, 17 Jun 2025 15:47:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750175220; cv=none; b=GP3jp57dIkOQPYWYiv+racrlDa4EUcoFChjV5v5M1+ieJ0uV82hiDXGqQEG+UNieLry8jKE1ZVnrPlaf7uakaFQ+SKZPXmy8S2CzAYyNO9DEjCIbRU7H1nmyQCbA+fvfsc+T5gE37JQ5bQnmda+9gGRyY+47KddWqzo9fdE/0Hw=
+	t=1750175229; cv=none; b=tj1aXmJoKOsXOpXssndU1DV1ndnPtJCJG+2G+09H+YpxVEw6wAQdShKHT9Vs2PeXwEiqR+81oPPKsU+M+EKeFZl9uS0GEJKRdbNfV4HTHtyplfu5Jgv4Z/KFp+gj0gkSSRhVvvGaOam2vIwS6vnKdE9c7a9oJ7ISU40SvmZ13Z0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750175220; c=relaxed/simple;
-	bh=NaKwAF2bCRSrb6W2B8rTcHsbUQPdepgLhn8HYmw21C0=;
+	s=arc-20240116; t=1750175229; c=relaxed/simple;
+	bh=mZHemQ5g/goDFEM4StwYm3bh+ulpj3q58/5lCMKtyQs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pGfEZ5BrMY7uqPYx+D5U7IIrZ/Rw4IiZtjTO6myllXJnTR3UQsNuUn/ZFVZc2VpVicd/UqF1nHZ8L2eIpp3MtQvyNJBcJiZJEjDiQf0lCGzXkirer6R57+vQn3gH4auwqAjOcINft1tqj0WqeQm4iahpd2UlE5Sjk26kaCPZ424=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aARsz+KJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48FFBC4CEF0;
-	Tue, 17 Jun 2025 15:46:59 +0000 (UTC)
+	 MIME-Version; b=IXsgkGvdjoM7Pd9O50AIk37yok3Q5N9xa9JQpqWLU83GEKfc0n7vQAq3Bqf6HWP2cDh11j2gZWCYSsygQ4jqq3YrKM7SyaH2U+Ijl/xG9VAYG9i27uonzM2tH2aYK7+Y02ispoCcWRXNPAvmvV5EXRv+BZnmc2JjngkhLh7nIr4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vS+lULOf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 439E3C4CEE3;
+	Tue, 17 Jun 2025 15:47:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750175219;
-	bh=NaKwAF2bCRSrb6W2B8rTcHsbUQPdepgLhn8HYmw21C0=;
+	s=korg; t=1750175229;
+	bh=mZHemQ5g/goDFEM4StwYm3bh+ulpj3q58/5lCMKtyQs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aARsz+KJPdvCJ+vywwBfr3826N0DeeLqvSzOnRpXhXaaZ6YPVk63IAZiLUeieNc0+
-	 kCJcxZiE3du34gP4WJGopUX3qUBfg+FjNvEz+/fpdOgv3wmDTp2dFvHdFD+fI6cVMO
-	 OMRueAFGtFe9LsF4n8h0VsHHofeRnk4QPAYn5hAg=
+	b=vS+lULOfb1mKYpkvP5q5re5/nqrU8MXqPl5CYOTcsn1ejVyJI9kIk6XfqQ6Ebk/7o
+	 MduuEjnBzaHWrsYvY0sV18VO2etOXs6CwLgpyExoSuM1AohRK4W+aB+tHcMlh1Wu0e
+	 OQta7Dnw7zoj1D6bs4oseXXCIbYb8VsMgg1zmIIM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stone Zhang <quic_stonez@quicinc.com>,
+	P Praneesh <praneesh.p@oss.qualcomm.com>,
 	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 105/512] wifi: ath11k: fix node corruption in ar->arvifs list
-Date: Tue, 17 Jun 2025 17:21:11 +0200
-Message-ID: <20250617152423.849577902@linuxfoundation.org>
+Subject: [PATCH 6.12 106/512] wifi: ath12k: Fix memory leak during vdev_id mismatch
+Date: Tue, 17 Jun 2025 17:21:12 +0200
+Message-ID: <20250617152423.888189801@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
 References: <20250617152419.512865572@linuxfoundation.org>
@@ -66,80 +66,65 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Stone Zhang <quic_stonez@quicinc.com>
+From: P Praneesh <praneesh.p@oss.qualcomm.com>
 
-[ Upstream commit 31e98e277ae47f56632e4d663b1d4fd12ba33ea8 ]
+[ Upstream commit 75ec94db880b1e4b4f9182885d60db0db6e2ee56 ]
 
-In current WLAN recovery code flow, ath11k_core_halt() only
-reinitializes the "arvifs" list head. This will cause the
-list node immediately following the list head to become an
-invalid list node. Because the prev of that node still points
-to the list head "arvifs", but the next of the list head "arvifs"
-no longer points to that list node.
+Currently driver enables vdev_id check as part of the bank configuration
+in ath12k_dp_tx_get_vdev_bank_config(). This check ensures that the vdev_id
+configured in the bank register aligns with the vdev_id in the packet's
+address search table within the firmware. If there is a mismatch, the
+firmware forwards the packet with the HTT status
+HAL_WBM_REL_HTT_TX_COMP_STATUS_VDEVID_MISMATCH. Since driver does not
+handle this vdev_id mismatch HTT status, the corresponding buffers are not
+freed properly, causing a memory leak. Fix this issue by adding handling to
+free the buffers when a vdev_id mismatch HTT status is encountered.
 
-When a WLAN recovery occurs during the execution of a vif
-removal, and it happens before the spin_lock_bh(&ar->data_lock)
-in ath11k_mac_op_remove_interface(), list_del() will detect the
-previously mentioned situation, thereby triggering a kernel panic.
+Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.4.1-00199-QCAHKSWPL_SILICONZ-1
+Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0.c5-00481-QCAHMTSWPL_V1.0_V2.0_SILICONZ-
 
-The fix is to remove and reinitialize all vif list nodes from the
-list head "arvifs" during WLAN halt. The reinitialization is to make
-the list nodes valid, ensuring that the list_del() in
-ath11k_mac_op_remove_interface() can execute normally.
-
-Call trace:
-__list_del_entry_valid_or_report+0xb8/0xd0
-ath11k_mac_op_remove_interface+0xb0/0x27c [ath11k]
-drv_remove_interface+0x48/0x194 [mac80211]
-ieee80211_do_stop+0x6e0/0x844 [mac80211]
-ieee80211_stop+0x44/0x17c [mac80211]
-__dev_close_many+0xac/0x150
-__dev_change_flags+0x194/0x234
-dev_change_flags+0x24/0x6c
-devinet_ioctl+0x3a0/0x670
-inet_ioctl+0x200/0x248
-sock_do_ioctl+0x60/0x118
-sock_ioctl+0x274/0x35c
-__arm64_sys_ioctl+0xac/0xf0
-invoke_syscall+0x48/0x114
-...
-
-Tested-on: QCA6698AQ hw2.1 PCI WLAN.HSP.1.1-04591-QCAHSPSWPL_V1_V2_SILICONZ_IOE-1
-
-Fixes: d5c65159f289 ("ath11k: driver for Qualcomm IEEE 802.11ax devices")
-Signed-off-by: Stone Zhang <quic_stonez@quicinc.com>
-Link: https://patch.msgid.link/20250320053145.3445187-1-quic_stonez@quicinc.com
+Fixes: d889913205cf ("wifi: ath12k: driver for Qualcomm Wi-Fi 7 devices")
+Signed-off-by: P Praneesh <praneesh.p@oss.qualcomm.com>
+Link: https://patch.msgid.link/20250402174032.2651221-1-praneesh.p@oss.qualcomm.com
 Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath11k/core.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ drivers/net/wireless/ath/ath12k/dp_tx.c    | 1 +
+ drivers/net/wireless/ath/ath12k/hal_desc.h | 3 ++-
+ 2 files changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/ath/ath11k/core.c b/drivers/net/wireless/ath/ath11k/core.c
-index 7eba6ee054ffe..674c4763333f3 100644
---- a/drivers/net/wireless/ath/ath11k/core.c
-+++ b/drivers/net/wireless/ath/ath11k/core.c
-@@ -1915,6 +1915,7 @@ static int ath11k_core_reconfigure_on_crash(struct ath11k_base *ab)
- void ath11k_core_halt(struct ath11k *ar)
- {
- 	struct ath11k_base *ab = ar->ab;
-+	struct list_head *pos, *n;
+diff --git a/drivers/net/wireless/ath/ath12k/dp_tx.c b/drivers/net/wireless/ath/ath12k/dp_tx.c
+index 201ffdb8c44ae..734e3da4cbf19 100644
+--- a/drivers/net/wireless/ath/ath12k/dp_tx.c
++++ b/drivers/net/wireless/ath/ath12k/dp_tx.c
+@@ -566,6 +566,7 @@ ath12k_dp_tx_process_htt_tx_complete(struct ath12k_base *ab,
+ 	case HAL_WBM_REL_HTT_TX_COMP_STATUS_TTL:
+ 	case HAL_WBM_REL_HTT_TX_COMP_STATUS_REINJ:
+ 	case HAL_WBM_REL_HTT_TX_COMP_STATUS_INSPECT:
++	case HAL_WBM_REL_HTT_TX_COMP_STATUS_VDEVID_MISMATCH:
+ 		ath12k_dp_tx_free_txbuf(ab, msdu, mac_id, tx_ring);
+ 		break;
+ 	case HAL_WBM_REL_HTT_TX_COMP_STATUS_MEC_NOTIFY:
+diff --git a/drivers/net/wireless/ath/ath12k/hal_desc.h b/drivers/net/wireless/ath/ath12k/hal_desc.h
+index 4f745cfd7d8e7..c68998e9667c9 100644
+--- a/drivers/net/wireless/ath/ath12k/hal_desc.h
++++ b/drivers/net/wireless/ath/ath12k/hal_desc.h
+@@ -1,7 +1,7 @@
+ /* SPDX-License-Identifier: BSD-3-Clause-Clear */
+ /*
+  * Copyright (c) 2018-2021 The Linux Foundation. All rights reserved.
+- * Copyright (c) 2021-2022, 2024 Qualcomm Innovation Center, Inc. All rights reserved.
++ * Copyright (c) 2021-2022, 2024-2025 Qualcomm Innovation Center, Inc. All rights reserved.
+  */
+ #include "core.h"
  
- 	lockdep_assert_held(&ar->conf_mutex);
- 
-@@ -1929,7 +1930,12 @@ void ath11k_core_halt(struct ath11k *ar)
- 
- 	rcu_assign_pointer(ab->pdevs_active[ar->pdev_idx], NULL);
- 	synchronize_rcu();
--	INIT_LIST_HEAD(&ar->arvifs);
-+
-+	spin_lock_bh(&ar->data_lock);
-+	list_for_each_safe(pos, n, &ar->arvifs)
-+		list_del_init(pos);
-+	spin_unlock_bh(&ar->data_lock);
-+
- 	idr_init(&ar->txmgmt_idr);
- }
+@@ -1296,6 +1296,7 @@ enum hal_wbm_htt_tx_comp_status {
+ 	HAL_WBM_REL_HTT_TX_COMP_STATUS_REINJ,
+ 	HAL_WBM_REL_HTT_TX_COMP_STATUS_INSPECT,
+ 	HAL_WBM_REL_HTT_TX_COMP_STATUS_MEC_NOTIFY,
++	HAL_WBM_REL_HTT_TX_COMP_STATUS_VDEVID_MISMATCH,
+ 	HAL_WBM_REL_HTT_TX_COMP_STATUS_MAX,
+ };
  
 -- 
 2.39.5
