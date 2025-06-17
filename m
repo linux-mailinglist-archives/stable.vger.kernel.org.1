@@ -1,57 +1,60 @@
-Return-Path: <stable+bounces-153630-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-154261-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B7DD9ADD58A
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:22:12 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id ABA80ADD934
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 19:03:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 90CC53ACA6C
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:13:42 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 042244A0A93
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:47:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C88192F4301;
-	Tue, 17 Jun 2025 16:09:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC1BE2ECD30;
+	Tue, 17 Jun 2025 16:43:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C9mUMTTd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CYqiYhoS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8453B2F3658;
-	Tue, 17 Jun 2025 16:09:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5EF5235071;
+	Tue, 17 Jun 2025 16:43:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750176580; cv=none; b=klUzNlhg8ZfecirHG4qe1Va9Ttk5QDlKsI7D0f1eCZ38syTODItwrzHPlpOPhRyo1TQqyUXw/oTqauQcXu6orZklqY1vdSigHRrvTt1hf8XD/2sHV91w50uA3TnwW4u+vn5mCo9bzfa17yDu8WbLaGVqzs7LFYrt85jjL1U4S7o=
+	t=1750178620; cv=none; b=JUVs7omh708i8cHsVfxHy/8+Xhyw3LgKIH8W714EewyJvuQY1J5cYC+j0mLWTO2nR71fHvxFdNXt1sGbYsBjOAoXc+RMgGVb0tSwkDqRP+sbxWtWSt0kS22Sfytf+aAtHaJjC4Y8eZmdOyewW1VM591YrPSU1/gjAQW+877e9lA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750176580; c=relaxed/simple;
-	bh=pXR+neWZdl/KRCBVWWCec0MxQSardql5NNP4Bjbv/TU=;
+	s=arc-20240116; t=1750178620; c=relaxed/simple;
+	bh=XJZn8OYOIjj4NDiLM1+VQoHwGvl4eKBNgbj8U7wWKjk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KAt0ywOZDDQIYEj2O3lKDMCHhr3qK/VQHFYd0tkMLCH8lPUk8LyE5WyfTA8RPbWtmtd9+xbNHy0rmdduY+az0rufUbaFxt4uPRyTaGfdlNmoJwLV7mq+uA+naDBt9pUCNoSLL97/akLoKePmOoy4TyK0lEjYFOHViAH8LBuFzGI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C9mUMTTd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E71FAC4CEE3;
-	Tue, 17 Jun 2025 16:09:39 +0000 (UTC)
+	 MIME-Version; b=gvbZ2UJoMUAniyRJEaqQ5ip6ArW6np1MokhN9+UlQGJDJfwh7kZqyJZ2U10Nu2CaRZ25WscT0sWH24diGd7s9SGvsk/MG25+cZ9yXsH5HLwmhJ3g0fMx/VokHe6RZQFjJHIR+2MigbtUrPkeyYYdgAazCsRfcofGYe9vmqOgJpI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CYqiYhoS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16E29C4CEE3;
+	Tue, 17 Jun 2025 16:43:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750176580;
-	bh=pXR+neWZdl/KRCBVWWCec0MxQSardql5NNP4Bjbv/TU=;
+	s=korg; t=1750178620;
+	bh=XJZn8OYOIjj4NDiLM1+VQoHwGvl4eKBNgbj8U7wWKjk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=C9mUMTTdt9VvBPoQgrEW7igyOvJn+0Esqt/KBCPO0h5MByeWxcNVLMSNLAt2TLZMv
-	 IMdj3TaqrjBDo8nZqmmi8Ep0uaK8LJw4AHhnYRRFPWrKeDioHa2pFRXtjVAOE5cTss
-	 /Vsj6VXPjm/CeZmhBIvNXcdIxK071WyNxlq9dufE=
+	b=CYqiYhoStpqISfgzI5JSwLAO8unVxW8l7rAtafrHu0+97Vp2MKNOlMrDs5DhxMSw5
+	 KTnZJ13ZeBQ6DgL4CIX4G/e3V2CA0ZtBZ43oAIj9AVu/DyDV1KhEqqCO4OMKinkzXh
+	 zmWApPI9tAziZ4rQcoStmBrOYKiGBFRz6O3J/TQc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexey Minnekhanov <alexeymin@postmarketos.org>,
+	Chenyuan Yang <chenyuan0y@gmail.com>,
+	Johan Hovold <johan@kernel.org>,
+	Krzysztof Kozlowski <krzk@kernel.org>,
+	Johan Hovold <johan+linaro@kernel.org>,
 	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
-	Bjorn Andersson <andersson@kernel.org>,
+	Vinod Koul <vkoul@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 244/512] arm64: dts: qcom: sda660-ifc6560: Fix dt-validate warning
+Subject: [PATCH 6.15 502/780] phy: qcom-qmp-usb: Fix an NULL vs IS_ERR() bug
 Date: Tue, 17 Jun 2025 17:23:30 +0200
-Message-ID: <20250617152429.499747574@linuxfoundation.org>
+Message-ID: <20250617152511.942509084@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
-References: <20250617152419.512865572@linuxfoundation.org>
+In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
+References: <20250617152451.485330293@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,49 +66,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexey Minnekhanov <alexeymin@postmarketos.org>
+From: Chenyuan Yang <chenyuan0y@gmail.com>
 
-[ Upstream commit f5110806b41eaa0eb0ab1bf2787876a580c6246c ]
+[ Upstream commit d14402a38c2d868cacb1facaf9be908ca6558e59 ]
 
-If you remove clocks property, you should remove clock-names, too.
-Fixes warning with dtbs check:
+The qmp_usb_iomap() helper function currently returns the raw result of
+devm_ioremap() for non-exclusive mappings. Since devm_ioremap() may return
+a NULL pointer and the caller only checks error pointers with IS_ERR(),
+NULL could bypass the check and lead to an invalid dereference.
 
- 'clocks' is a dependency of 'clock-names'
+Fix the issue by checking if devm_ioremap() returns NULL. When it does,
+qmp_usb_iomap() now returns an error pointer via IOMEM_ERR_PTR(-ENOMEM),
+ensuring safe and consistent error handling.
 
-Fixes: 34279d6e3f32c ("arm64: dts: qcom: sdm660: Add initial Inforce IFC6560 board support")
-Signed-off-by: Alexey Minnekhanov <alexeymin@postmarketos.org>
+Signed-off-by: Chenyuan Yang <chenyuan0y@gmail.com>
+Fixes: a5d6b1ac56cb ("phy: qcom-qmp-usb: fix memleak on probe deferral")
+CC: Johan Hovold <johan@kernel.org>
+CC: Krzysztof Kozlowski <krzk@kernel.org>
+Reviewed-by: Johan Hovold <johan+linaro@kernel.org>
 Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Link: https://lore.kernel.org/r/20250504115120.1432282-4-alexeymin@postmarketos.org
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Link: https://lore.kernel.org/r/20250414125050.2118619-1-chenyuan0y@gmail.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/sda660-inforce-ifc6560.dts | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/phy/qualcomm/phy-qcom-qmp-usb.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/arch/arm64/boot/dts/qcom/sda660-inforce-ifc6560.dts b/arch/arm64/boot/dts/qcom/sda660-inforce-ifc6560.dts
-index 962c8aa400440..dc604be4afc63 100644
---- a/arch/arm64/boot/dts/qcom/sda660-inforce-ifc6560.dts
-+++ b/arch/arm64/boot/dts/qcom/sda660-inforce-ifc6560.dts
-@@ -167,6 +167,7 @@
- 	 * BAM DMA interconnects support is in place.
- 	 */
- 	/delete-property/ clocks;
-+	/delete-property/ clock-names;
- };
+diff --git a/drivers/phy/qualcomm/phy-qcom-qmp-usb.c b/drivers/phy/qualcomm/phy-qcom-qmp-usb.c
+index 7877215704575..ed646a7e705ba 100644
+--- a/drivers/phy/qualcomm/phy-qcom-qmp-usb.c
++++ b/drivers/phy/qualcomm/phy-qcom-qmp-usb.c
+@@ -2106,12 +2106,16 @@ static void __iomem *qmp_usb_iomap(struct device *dev, struct device_node *np,
+ 					int index, bool exclusive)
+ {
+ 	struct resource res;
++	void __iomem *mem;
  
- &blsp1_uart2 {
-@@ -179,6 +180,7 @@
- 	 * BAM DMA interconnects support is in place.
- 	 */
- 	/delete-property/ clocks;
-+	/delete-property/ clock-names;
- };
+ 	if (!exclusive) {
+ 		if (of_address_to_resource(np, index, &res))
+ 			return IOMEM_ERR_PTR(-EINVAL);
  
- &blsp2_uart1 {
+-		return devm_ioremap(dev, res.start, resource_size(&res));
++		mem = devm_ioremap(dev, res.start, resource_size(&res));
++		if (!mem)
++			return IOMEM_ERR_PTR(-ENOMEM);
++		return mem;
+ 	}
+ 
+ 	return devm_of_iomap(dev, np, index, NULL);
 -- 
 2.39.5
 
