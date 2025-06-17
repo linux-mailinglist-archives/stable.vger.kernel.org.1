@@ -1,64 +1,56 @@
-Return-Path: <stable+bounces-154179-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153465-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D6EF2ADD7F7
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:50:47 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D46DADD4C5
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:14:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0D2BA4A154C
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:44:19 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6AF304060AB
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:04:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 940122E8DEC;
-	Tue, 17 Jun 2025 16:39:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 073FA2ECE89;
+	Tue, 17 Jun 2025 16:00:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gADPIdTa"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WVlBADIa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EF8B2DFF1B;
-	Tue, 17 Jun 2025 16:39:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B750818E025;
+	Tue, 17 Jun 2025 16:00:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750178357; cv=none; b=Ide4cyiZ2+DSFR/n0ofMfGClUurRkLIYCGFygZ86ufTSO36e3MO7CrU/dbJqwfhIHYPqcT19HwSHdHAMjaXQBpEog/p3Qy04r/ZiJWpiXTX2Lg8gAt1szT+uBdsm5ujJwIJ46R9f1XZ/9KkoHqN109tnZfEV3OZz0J788uLFVX4=
+	t=1750176051; cv=none; b=hjfEN2AL+7YQKrDYZLusB+JRbAj8IuJ2wFw01xxqGzrxCanS4KbQnbp2TfaAXDWU9ytqFIe00g3MFWry6F5+HG7RdmQNdZzTHOm267M68XDPrbzcKRtpP1m88R9YeDoJK7dKW/g1YxAmd7ipNVLDvAV3+qXo2WgtrXAu4qKozmQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750178357; c=relaxed/simple;
-	bh=0SbCh4Pe+L2ffR4fuH4LSC2ohy/WkjDC8ViFt1jaGy4=;
+	s=arc-20240116; t=1750176051; c=relaxed/simple;
+	bh=9ndV3nnvFsYoKgqsPTQjtTrNW5PsYLrmfIs9PtNrKfo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LuYYlEfBvt2ErXqhK6xszDe7NfBh8YDwdCgGjVQkYkr6EuGcEPsxl6cHl34NjSUBWeX9J7IKdBW1eXhvwLL9uQimDGhNb5MSfhBb+dh4qr08jxNcSHpE09+rYS+ShsAS8gDCbSJ8sUtogGCtH048owaqiMMnTSxqmTpgBVlI0AU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gADPIdTa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 962E5C4CEE3;
-	Tue, 17 Jun 2025 16:39:16 +0000 (UTC)
+	 MIME-Version; b=e5zVzqSM5LlnIYi6CoZM7X3GaU0IhOrV/jxcPe3kiQTcYc9jaXlZ3YjOELGudN9caQmmvavf3bvYS0w4+sIuam7H3WGfE+H1FN38v7fP1JIJlOkllRWO0WL9CpEBoxNzYI472jYIfT4x22s3XHj+KfTOXYO5MkwPvAYD4maEZ64=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WVlBADIa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24452C4CEE3;
+	Tue, 17 Jun 2025 16:00:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750178357;
-	bh=0SbCh4Pe+L2ffR4fuH4LSC2ohy/WkjDC8ViFt1jaGy4=;
+	s=korg; t=1750176051;
+	bh=9ndV3nnvFsYoKgqsPTQjtTrNW5PsYLrmfIs9PtNrKfo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gADPIdTaSiB/+49ps6CxmXAgzjJw23p1SOY3hLlrfAhYEjvVWZgV/+GqurA1e6Mis
-	 ombvSsI3tsBAhhLcI8C0NoM9D/GSGg2Z8DUFS4CQ2PXJDkpJjG23xp6e3Ws/reTltv
-	 Jv6uF8DcukoogaL4uwl4iVWUXCB6VK5Rvc4CMS90=
+	b=WVlBADIa7ejAc7X7RlGqH3Nyj//9P3/1KanDX44o0krOYv9a7wZipLJQF9uQ/7NYI
+	 cbWziUOshUsl5YpYQWAgGnVehV6ll5I/knFQvikQ+onKKCXUBfKzk0svESFEi3uqMW
+	 HUSV5jJpewCRtcdbKg6Ci3TgRp916cV5VdRELhNo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arnaldo Carvalho de Melo <acme@redhat.com>,
-	James Clark <james.clark@linaro.org>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-	Ian Rogers <irogers@google.com>,
-	Ingo Molnar <mingo@redhat.com>,
-	Jiri Olsa <jolsa@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Namhyung Kim <namhyung@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
+	Florian Westphal <fw@strlen.de>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 448/780] perf tools: Fix arm64 source package build
-Date: Tue, 17 Jun 2025 17:22:36 +0200
-Message-ID: <20250617152509.699832398@linuxfoundation.org>
+Subject: [PATCH 6.12 191/512] netfilter: xtables: support arpt_mark and ipv6 optstrip for iptables-nft only builds
+Date: Tue, 17 Jun 2025 17:22:37 +0200
+Message-ID: <20250617152427.376667311@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
-References: <20250617152451.485330293@linuxfoundation.org>
+In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
+References: <20250617152419.512865572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,62 +62,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: James Clark <james.clark@linaro.org>
+From: Florian Westphal <fw@strlen.de>
 
-[ Upstream commit aea3496bbc7c20037ecc35411264de109d700fc7 ]
+[ Upstream commit c38eb2973c18d34a8081d173a6ad298461f4a37c ]
 
-Syscall tables are generated from rules in the kernel tree. Add the
-related files to the MANIFEST to fix the Perf source package build.
+Its now possible to build a kernel that has no support for the classic
+xtables get/setsockopt interfaces and builtin tables.
 
-Reported-by: Arnaldo Carvalho de Melo <acme@redhat.com>
-Fixes: bfb713ea53c746b0 ("perf tools: Fix arm64 build by generating unistd_64.h")
-Signed-off-by: James Clark <james.clark@linaro.org>
-Tested-by: Arnaldo Carvalho de Melo <acme@redhat.com>
-Cc: Adrian Hunter <adrian.hunter@intel.com>
-Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
-Cc: Ian Rogers <irogers@google.com>
-Cc: Ingo Molnar <mingo@redhat.com>
-Cc: Jiri Olsa <jolsa@kernel.org>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Namhyung Kim <namhyung@kernel.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Link: https://lore.kernel.org/r/20250513-james-perf-src-pkg-fix-v1-1-bcfd0486dbd6@linaro.org
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+In this case, we have CONFIG_IP6_NF_MANGLE=n and
+CONFIG_IP_NF_ARPTABLES=n.
+
+For optstript, the ipv6 code is so small that we can enable it if
+netfilter ipv6 support exists. For mark, check if either classic
+arptables or NFT_ARP_COMPAT is set.
+
+Fixes: a9525c7f6219 ("netfilter: xtables: allow xtables-nft only builds")
+Signed-off-by: Florian Westphal <fw@strlen.de>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/MANIFEST | 6 ++++++
- 1 file changed, 6 insertions(+)
+ net/netfilter/xt_TCPOPTSTRIP.c | 4 ++--
+ net/netfilter/xt_mark.c        | 2 +-
+ 2 files changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/tools/perf/MANIFEST b/tools/perf/MANIFEST
-index 364b55b00b484..34af57b8ec2a9 100644
---- a/tools/perf/MANIFEST
-+++ b/tools/perf/MANIFEST
-@@ -1,8 +1,10 @@
- COPYING
- LICENSES/preferred/GPL-2.0
- arch/arm64/tools/gen-sysreg.awk
-+arch/arm64/tools/syscall_64.tbl
- arch/arm64/tools/sysreg
- arch/*/include/uapi/asm/bpf_perf_event.h
-+include/uapi/asm-generic/Kbuild
- tools/perf
- tools/arch
- tools/scripts
-@@ -25,6 +27,10 @@ tools/lib/str_error_r.c
- tools/lib/vsprintf.c
- tools/lib/zalloc.c
- scripts/bpf_doc.py
-+scripts/Kbuild.include
-+scripts/Makefile.asm-headers
-+scripts/syscall.tbl
-+scripts/syscallhdr.sh
- tools/bpf/bpftool
- kernel/bpf/disasm.c
- kernel/bpf/disasm.h
+diff --git a/net/netfilter/xt_TCPOPTSTRIP.c b/net/netfilter/xt_TCPOPTSTRIP.c
+index 30e99464171b7..93f064306901c 100644
+--- a/net/netfilter/xt_TCPOPTSTRIP.c
++++ b/net/netfilter/xt_TCPOPTSTRIP.c
+@@ -91,7 +91,7 @@ tcpoptstrip_tg4(struct sk_buff *skb, const struct xt_action_param *par)
+ 	return tcpoptstrip_mangle_packet(skb, par, ip_hdrlen(skb));
+ }
+ 
+-#if IS_ENABLED(CONFIG_IP6_NF_MANGLE)
++#if IS_ENABLED(CONFIG_IP6_NF_IPTABLES)
+ static unsigned int
+ tcpoptstrip_tg6(struct sk_buff *skb, const struct xt_action_param *par)
+ {
+@@ -119,7 +119,7 @@ static struct xt_target tcpoptstrip_tg_reg[] __read_mostly = {
+ 		.targetsize = sizeof(struct xt_tcpoptstrip_target_info),
+ 		.me         = THIS_MODULE,
+ 	},
+-#if IS_ENABLED(CONFIG_IP6_NF_MANGLE)
++#if IS_ENABLED(CONFIG_IP6_NF_IPTABLES)
+ 	{
+ 		.name       = "TCPOPTSTRIP",
+ 		.family     = NFPROTO_IPV6,
+diff --git a/net/netfilter/xt_mark.c b/net/netfilter/xt_mark.c
+index 65b965ca40ea7..59b9d04400cac 100644
+--- a/net/netfilter/xt_mark.c
++++ b/net/netfilter/xt_mark.c
+@@ -48,7 +48,7 @@ static struct xt_target mark_tg_reg[] __read_mostly = {
+ 		.targetsize     = sizeof(struct xt_mark_tginfo2),
+ 		.me             = THIS_MODULE,
+ 	},
+-#if IS_ENABLED(CONFIG_IP_NF_ARPTABLES)
++#if IS_ENABLED(CONFIG_IP_NF_ARPTABLES) || IS_ENABLED(CONFIG_NFT_COMPAT_ARP)
+ 	{
+ 		.name           = "MARK",
+ 		.revision       = 2,
 -- 
 2.39.5
 
