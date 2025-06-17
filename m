@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-154126-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153680-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 50B8EADD86A
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:55:15 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E4D9ADD5B7
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:25:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1B50B4A4D4E
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:42:32 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B7F473BDA09
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:17:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88D872ECE80;
-	Tue, 17 Jun 2025 16:36:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 804F928ECE8;
+	Tue, 17 Jun 2025 16:12:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DFBbFA+j"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PkZLNfJx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44BFC2ECD33;
-	Tue, 17 Jun 2025 16:36:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A9282ECD3A;
+	Tue, 17 Jun 2025 16:12:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750178185; cv=none; b=H9u8GzhOrBdv0wlcEMBj3DDIW2rAUClBHt3kxpU+FtSBOJpL+B8kWKstBmacvnIKzF9MQBZeV2p3RPzLR3IzT0KqXcJf9gRM1Xmlwo+zyHrgqUpm420/ucgXsyI3XyiN1A6aKcj3WBHeNzdRjZBeIt1CCet6cX0eWUm0tAUqrV4=
+	t=1750176742; cv=none; b=gcVQ5GAdKcviVXxVvpzYHUl5eVGQBlO8vOOAck4DQoj90fysG3sZRDj1I/8JxQp+qNyIm3ycQtx7uMXfqNeGaWnYlDVKW0C0slBNbUKVuqxStrIozrh/iJiRE+KsBnNmEoTPnSMh59kD1tx2rkzGoLq1b/ept2BknwTNGck+7UA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750178185; c=relaxed/simple;
-	bh=adF2D8o5y1jWPRLIdtuxNSHWFd4gxAtdxg6Kk9bvBos=;
+	s=arc-20240116; t=1750176742; c=relaxed/simple;
+	bh=TEZSFwKVITokSB5N5FLX2Pc6oWtuE2aik61ZJRj2l/8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=alyfJ98w90sW5+XwPtlhqNbPxF7oQ0gxfmTNbyigOUQBJkkw+3vZW3/OHv/k0k+R7Lgg7ramUxkxZXSmXJMvjEUOeIx6tloer9tNK5DYIczv5KBGLDQlNrs00aFg2HlXErFOROF/uRgoMCmliwYc+OfvVL2C1YJIv/29AgtPITQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DFBbFA+j; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB145C4CEE3;
-	Tue, 17 Jun 2025 16:36:24 +0000 (UTC)
+	 MIME-Version; b=fbJMh6t48KtQrUO9BqJdMWlUdBNARKIQm4GL+gOTF6jSU9VO+gyYHw3LcBzPVra0tEZT57c6Z01TGsP0KOc4oEzWPp6ahKL2DKzUqQg3MRYIOMSdvasBryN0FQkAsNxzByyNQQ0zYxXfPXP+TeKWFIJcOBca7hDOsrT3i+3CPnk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PkZLNfJx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 390A2C4CEE7;
+	Tue, 17 Jun 2025 16:12:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750178185;
-	bh=adF2D8o5y1jWPRLIdtuxNSHWFd4gxAtdxg6Kk9bvBos=;
+	s=korg; t=1750176741;
+	bh=TEZSFwKVITokSB5N5FLX2Pc6oWtuE2aik61ZJRj2l/8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DFBbFA+j3QY1lvmXm3Yr7H5hYMrz0iVmhH8hB58MmUjm92Uk9+4TXYanprlkoUf9f
-	 Ge+gmEIKtEgu+CZc7LBSsk78tGXHxFU4JxAO9P1XMk0dK/yl2kNO3c/urr6hqgPgI/
-	 evGejzACA/iVKrxyQw4jk5P1xdst8z1u5MKp2DD0=
+	b=PkZLNfJxpf2BzjFscF+nL+mWeleboJBBpXAlL7brhLri3I+UPRgAEDmeIFOd2hITm
+	 f0AMSo3+tDxFRd+rby8renCQEfibbduB8bSMmjClbvteKwwQrCZpn6v+Pf7iDqugs8
+	 dDKhhOFELCO+M6GhZ7lHNlsqY6mX/Hyg4LAArZrw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Christian Hewitt <christianshewitt@gmail.com>,
+	Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 458/512] Bluetooth: eir: Fix possible crashes on eir_create_adv_data
+Subject: [PATCH 6.6 309/356] drm/meson: use unsigned long long / Hz for frequency types
 Date: Tue, 17 Jun 2025 17:27:04 +0200
-Message-ID: <20250617152438.128469350@linuxfoundation.org>
+Message-ID: <20250617152350.605658217@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
-References: <20250617152419.512865572@linuxfoundation.org>
+In-Reply-To: <20250617152338.212798615@linuxfoundation.org>
+References: <20250617152338.212798615@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,95 +63,652 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+From: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
 
-[ Upstream commit 47c03902269aff377f959dc3fd94a9733aa31d6e ]
+[ Upstream commit 1017560164b6bbcbc93579266926e6e96675262a ]
 
-eir_create_adv_data may attempt to add EIR_FLAGS and EIR_TX_POWER
-without checking if that would fit.
+Christian reports that 4K output using YUV420 encoding fails with the
+following error:
+  Fatal Error, invalid HDMI vclk freq 593406
 
-Link: https://github.com/bluez/bluez/issues/1117#issuecomment-2958244066
-Fixes: 01ce70b0a274 ("Bluetooth: eir: Move EIR/Adv Data functions to its own file")
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Modetest shows the following:
+  3840x2160 59.94 3840 4016 4104 4400 2160 2168 2178 2250 593407 flags: xxxx, xxxx,
+  drm calculated value -------------------------------------^
+
+This indicates that there's a (1kHz) mismatch between the clock
+calculated by the drm framework and the meson driver.
+
+Relevant function call stack:
+(drm framework)
+  -> meson_encoder_hdmi_atomic_enable()
+    -> meson_encoder_hdmi_set_vclk()
+      -> meson_vclk_setup()
+
+The video clock requested by the drm framework is 593407kHz. This is
+passed by meson_encoder_hdmi_atomic_enable() to
+meson_encoder_hdmi_set_vclk() and the following formula is applied:
+- the frequency is halved (which would be 296703.5kHz) and rounded down
+  to the next full integer, which is 296703kHz
+- TMDS clock is calculated (296703kHz * 10)
+- video encoder clock is calculated - this needs to match a table from
+  meson_vclk.c and so it doubles the previously halved value again
+  (resulting in 593406kHz)
+- meson_vclk_setup() can't find (either directly, or by deriving it from
+  594000kHz * 1000 / 1001 and rounding to the closest integer value -
+  which is 593407kHz as originally requested by the drm framework) a
+  matching clock in it's internal table and errors out with "invalid
+  HDMI vclk freq"
+
+Fix the division precision by switching the whole meson driver to use
+unsigned long long (64-bit) Hz values for clock frequencies instead of
+unsigned int (32-bit) kHz to fix the rouding error.
+
+Fixes: e5fab2ec9ca4 ("drm/meson: vclk: add support for YUV420 setup")
+Reported-by: Christian Hewitt <christianshewitt@gmail.com>
+Signed-off-by: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
+Link: https://lore.kernel.org/r/20250421201300.778955-3-martin.blumenstingl@googlemail.com
+Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
+Link: https://lore.kernel.org/r/20250421201300.778955-3-martin.blumenstingl@googlemail.com
+Stable-dep-of: d17e61ab63fb ("drm/meson: fix debug log statement when setting the HDMI clocks")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bluetooth/eir.c      | 7 ++++---
- net/bluetooth/eir.h      | 2 +-
- net/bluetooth/hci_sync.c | 5 +++--
- 3 files changed, 8 insertions(+), 6 deletions(-)
+ drivers/gpu/drm/meson/meson_drv.c          |   2 +-
+ drivers/gpu/drm/meson/meson_drv.h          |   2 +-
+ drivers/gpu/drm/meson/meson_encoder_hdmi.c |  29 +--
+ drivers/gpu/drm/meson/meson_vclk.c         | 195 +++++++++++----------
+ drivers/gpu/drm/meson/meson_vclk.h         |  13 +-
+ 5 files changed, 126 insertions(+), 115 deletions(-)
 
-diff --git a/net/bluetooth/eir.c b/net/bluetooth/eir.c
-index 3e1713673ecc9..3f72111ba651f 100644
---- a/net/bluetooth/eir.c
-+++ b/net/bluetooth/eir.c
-@@ -242,7 +242,7 @@ u8 eir_create_per_adv_data(struct hci_dev *hdev, u8 instance, u8 *ptr)
- 	return ad_len;
+diff --git a/drivers/gpu/drm/meson/meson_drv.c b/drivers/gpu/drm/meson/meson_drv.c
+index 095f634ff7c79..27441e5716300 100644
+--- a/drivers/gpu/drm/meson/meson_drv.c
++++ b/drivers/gpu/drm/meson/meson_drv.c
+@@ -168,7 +168,7 @@ static const struct meson_drm_soc_attr meson_drm_soc_attrs[] = {
+ 	/* S805X/S805Y HDMI PLL won't lock for HDMI PHY freq > 1,65GHz */
+ 	{
+ 		.limits = {
+-			.max_hdmi_phy_freq = 1650000,
++			.max_hdmi_phy_freq = 1650000000,
+ 		},
+ 		.attrs = (const struct soc_device_attribute []) {
+ 			{ .soc_id = "GXL (S805*)", },
+diff --git a/drivers/gpu/drm/meson/meson_drv.h b/drivers/gpu/drm/meson/meson_drv.h
+index 3f9345c14f31c..be4b0e4df6e13 100644
+--- a/drivers/gpu/drm/meson/meson_drv.h
++++ b/drivers/gpu/drm/meson/meson_drv.h
+@@ -37,7 +37,7 @@ struct meson_drm_match_data {
+ };
+ 
+ struct meson_drm_soc_limits {
+-	unsigned int max_hdmi_phy_freq;
++	unsigned long long max_hdmi_phy_freq;
+ };
+ 
+ struct meson_drm {
+diff --git a/drivers/gpu/drm/meson/meson_encoder_hdmi.c b/drivers/gpu/drm/meson/meson_encoder_hdmi.c
+index c4686568c9ca5..cd0e9e2d59ee7 100644
+--- a/drivers/gpu/drm/meson/meson_encoder_hdmi.c
++++ b/drivers/gpu/drm/meson/meson_encoder_hdmi.c
+@@ -70,12 +70,12 @@ static void meson_encoder_hdmi_set_vclk(struct meson_encoder_hdmi *encoder_hdmi,
+ {
+ 	struct meson_drm *priv = encoder_hdmi->priv;
+ 	int vic = drm_match_cea_mode(mode);
+-	unsigned int phy_freq;
+-	unsigned int vclk_freq;
+-	unsigned int venc_freq;
+-	unsigned int hdmi_freq;
++	unsigned long long phy_freq;
++	unsigned long long vclk_freq;
++	unsigned long long venc_freq;
++	unsigned long long hdmi_freq;
+ 
+-	vclk_freq = mode->clock;
++	vclk_freq = mode->clock * 1000;
+ 
+ 	/* For 420, pixel clock is half unlike venc clock */
+ 	if (encoder_hdmi->output_bus_fmt == MEDIA_BUS_FMT_UYYVYY8_0_5X24)
+@@ -107,7 +107,8 @@ static void meson_encoder_hdmi_set_vclk(struct meson_encoder_hdmi *encoder_hdmi,
+ 	if (mode->flags & DRM_MODE_FLAG_DBLCLK)
+ 		venc_freq /= 2;
+ 
+-	dev_dbg(priv->dev, "vclk:%d phy=%d venc=%d hdmi=%d enci=%d\n",
++	dev_dbg(priv->dev,
++		"vclk:%lluHz phy=%lluHz venc=%lluHz hdmi=%lluHz enci=%d\n",
+ 		phy_freq, vclk_freq, venc_freq, hdmi_freq,
+ 		priv->venc.hdmi_use_enci);
+ 
+@@ -122,10 +123,11 @@ static enum drm_mode_status meson_encoder_hdmi_mode_valid(struct drm_bridge *bri
+ 	struct meson_encoder_hdmi *encoder_hdmi = bridge_to_meson_encoder_hdmi(bridge);
+ 	struct meson_drm *priv = encoder_hdmi->priv;
+ 	bool is_hdmi2_sink = display_info->hdmi.scdc.supported;
+-	unsigned int phy_freq;
+-	unsigned int vclk_freq;
+-	unsigned int venc_freq;
+-	unsigned int hdmi_freq;
++	unsigned long long clock = mode->clock * 1000;
++	unsigned long long phy_freq;
++	unsigned long long vclk_freq;
++	unsigned long long venc_freq;
++	unsigned long long hdmi_freq;
+ 	int vic = drm_match_cea_mode(mode);
+ 	enum drm_mode_status status;
+ 
+@@ -144,12 +146,12 @@ static enum drm_mode_status meson_encoder_hdmi_mode_valid(struct drm_bridge *bri
+ 		if (status != MODE_OK)
+ 			return status;
+ 
+-		return meson_vclk_dmt_supported_freq(priv, mode->clock);
++		return meson_vclk_dmt_supported_freq(priv, clock);
+ 	/* Check against supported VIC modes */
+ 	} else if (!meson_venc_hdmi_supported_vic(vic))
+ 		return MODE_BAD;
+ 
+-	vclk_freq = mode->clock;
++	vclk_freq = clock;
+ 
+ 	/* For 420, pixel clock is half unlike venc clock */
+ 	if (drm_mode_is_420_only(display_info, mode) ||
+@@ -179,7 +181,8 @@ static enum drm_mode_status meson_encoder_hdmi_mode_valid(struct drm_bridge *bri
+ 	if (mode->flags & DRM_MODE_FLAG_DBLCLK)
+ 		venc_freq /= 2;
+ 
+-	dev_dbg(priv->dev, "%s: vclk:%d phy=%d venc=%d hdmi=%d\n",
++	dev_dbg(priv->dev,
++		"%s: vclk:%lluHz phy=%lluHz venc=%lluHz hdmi=%lluHz\n",
+ 		__func__, phy_freq, vclk_freq, venc_freq, hdmi_freq);
+ 
+ 	return meson_vclk_vic_supported_freq(priv, phy_freq, vclk_freq);
+diff --git a/drivers/gpu/drm/meson/meson_vclk.c b/drivers/gpu/drm/meson/meson_vclk.c
+index 2a82119eb58ed..3325580d885d0 100644
+--- a/drivers/gpu/drm/meson/meson_vclk.c
++++ b/drivers/gpu/drm/meson/meson_vclk.c
+@@ -110,7 +110,10 @@
+ #define HDMI_PLL_LOCK		BIT(31)
+ #define HDMI_PLL_LOCK_G12A	(3 << 30)
+ 
+-#define FREQ_1000_1001(_freq)	DIV_ROUND_CLOSEST(_freq * 1000, 1001)
++#define PIXEL_FREQ_1000_1001(_freq)	\
++	DIV_ROUND_CLOSEST_ULL((_freq) * 1000ULL, 1001ULL)
++#define PHY_FREQ_1000_1001(_freq)	\
++	(PIXEL_FREQ_1000_1001(DIV_ROUND_DOWN_ULL(_freq, 10ULL)) * 10)
+ 
+ /* VID PLL Dividers */
+ enum {
+@@ -360,11 +363,11 @@ enum {
+ };
+ 
+ struct meson_vclk_params {
+-	unsigned int pll_freq;
+-	unsigned int phy_freq;
+-	unsigned int vclk_freq;
+-	unsigned int venc_freq;
+-	unsigned int pixel_freq;
++	unsigned long long pll_freq;
++	unsigned long long phy_freq;
++	unsigned long long vclk_freq;
++	unsigned long long venc_freq;
++	unsigned long long pixel_freq;
+ 	unsigned int pll_od1;
+ 	unsigned int pll_od2;
+ 	unsigned int pll_od3;
+@@ -372,11 +375,11 @@ struct meson_vclk_params {
+ 	unsigned int vclk_div;
+ } params[] = {
+ 	[MESON_VCLK_HDMI_ENCI_54000] = {
+-		.pll_freq = 4320000,
+-		.phy_freq = 270000,
+-		.vclk_freq = 54000,
+-		.venc_freq = 54000,
+-		.pixel_freq = 54000,
++		.pll_freq = 4320000000,
++		.phy_freq = 270000000,
++		.vclk_freq = 54000000,
++		.venc_freq = 54000000,
++		.pixel_freq = 54000000,
+ 		.pll_od1 = 4,
+ 		.pll_od2 = 4,
+ 		.pll_od3 = 1,
+@@ -384,11 +387,11 @@ struct meson_vclk_params {
+ 		.vclk_div = 1,
+ 	},
+ 	[MESON_VCLK_HDMI_DDR_54000] = {
+-		.pll_freq = 4320000,
+-		.phy_freq = 270000,
+-		.vclk_freq = 54000,
+-		.venc_freq = 54000,
+-		.pixel_freq = 27000,
++		.pll_freq = 4320000000,
++		.phy_freq = 270000000,
++		.vclk_freq = 54000000,
++		.venc_freq = 54000000,
++		.pixel_freq = 27000000,
+ 		.pll_od1 = 4,
+ 		.pll_od2 = 4,
+ 		.pll_od3 = 1,
+@@ -396,11 +399,11 @@ struct meson_vclk_params {
+ 		.vclk_div = 1,
+ 	},
+ 	[MESON_VCLK_HDMI_DDR_148500] = {
+-		.pll_freq = 2970000,
+-		.phy_freq = 742500,
+-		.vclk_freq = 148500,
+-		.venc_freq = 148500,
+-		.pixel_freq = 74250,
++		.pll_freq = 2970000000,
++		.phy_freq = 742500000,
++		.vclk_freq = 148500000,
++		.venc_freq = 148500000,
++		.pixel_freq = 74250000,
+ 		.pll_od1 = 4,
+ 		.pll_od2 = 1,
+ 		.pll_od3 = 1,
+@@ -408,11 +411,11 @@ struct meson_vclk_params {
+ 		.vclk_div = 1,
+ 	},
+ 	[MESON_VCLK_HDMI_74250] = {
+-		.pll_freq = 2970000,
+-		.phy_freq = 742500,
+-		.vclk_freq = 74250,
+-		.venc_freq = 74250,
+-		.pixel_freq = 74250,
++		.pll_freq = 2970000000,
++		.phy_freq = 742500000,
++		.vclk_freq = 74250000,
++		.venc_freq = 74250000,
++		.pixel_freq = 74250000,
+ 		.pll_od1 = 2,
+ 		.pll_od2 = 2,
+ 		.pll_od3 = 2,
+@@ -420,11 +423,11 @@ struct meson_vclk_params {
+ 		.vclk_div = 1,
+ 	},
+ 	[MESON_VCLK_HDMI_148500] = {
+-		.pll_freq = 2970000,
+-		.phy_freq = 1485000,
+-		.vclk_freq = 148500,
+-		.venc_freq = 148500,
+-		.pixel_freq = 148500,
++		.pll_freq = 2970000000,
++		.phy_freq = 1485000000,
++		.vclk_freq = 148500000,
++		.venc_freq = 148500000,
++		.pixel_freq = 148500000,
+ 		.pll_od1 = 1,
+ 		.pll_od2 = 2,
+ 		.pll_od3 = 2,
+@@ -432,11 +435,11 @@ struct meson_vclk_params {
+ 		.vclk_div = 1,
+ 	},
+ 	[MESON_VCLK_HDMI_297000] = {
+-		.pll_freq = 5940000,
+-		.phy_freq = 2970000,
+-		.venc_freq = 297000,
+-		.vclk_freq = 297000,
+-		.pixel_freq = 297000,
++		.pll_freq = 5940000000,
++		.phy_freq = 2970000000,
++		.venc_freq = 297000000,
++		.vclk_freq = 297000000,
++		.pixel_freq = 297000000,
+ 		.pll_od1 = 2,
+ 		.pll_od2 = 1,
+ 		.pll_od3 = 1,
+@@ -444,11 +447,11 @@ struct meson_vclk_params {
+ 		.vclk_div = 2,
+ 	},
+ 	[MESON_VCLK_HDMI_594000] = {
+-		.pll_freq = 5940000,
+-		.phy_freq = 5940000,
+-		.venc_freq = 594000,
+-		.vclk_freq = 594000,
+-		.pixel_freq = 594000,
++		.pll_freq = 5940000000,
++		.phy_freq = 5940000000,
++		.venc_freq = 594000000,
++		.vclk_freq = 594000000,
++		.pixel_freq = 594000000,
+ 		.pll_od1 = 1,
+ 		.pll_od2 = 1,
+ 		.pll_od3 = 2,
+@@ -456,11 +459,11 @@ struct meson_vclk_params {
+ 		.vclk_div = 1,
+ 	},
+ 	[MESON_VCLK_HDMI_594000_YUV420] = {
+-		.pll_freq = 5940000,
+-		.phy_freq = 2970000,
+-		.venc_freq = 594000,
+-		.vclk_freq = 594000,
+-		.pixel_freq = 297000,
++		.pll_freq = 5940000000,
++		.phy_freq = 2970000000,
++		.venc_freq = 594000000,
++		.vclk_freq = 594000000,
++		.pixel_freq = 297000000,
+ 		.pll_od1 = 2,
+ 		.pll_od2 = 1,
+ 		.pll_od3 = 1,
+@@ -617,16 +620,16 @@ static void meson_hdmi_pll_set_params(struct meson_drm *priv, unsigned int m,
+ 				3 << 20, pll_od_to_reg(od3) << 20);
  }
  
--u8 eir_create_adv_data(struct hci_dev *hdev, u8 instance, u8 *ptr)
-+u8 eir_create_adv_data(struct hci_dev *hdev, u8 instance, u8 *ptr, u8 size)
+-#define XTAL_FREQ 24000
++#define XTAL_FREQ (24 * 1000 * 1000)
+ 
+ static unsigned int meson_hdmi_pll_get_m(struct meson_drm *priv,
+-					 unsigned int pll_freq)
++					 unsigned long long pll_freq)
  {
- 	struct adv_info *adv = NULL;
- 	u8 ad_len = 0, flags = 0;
-@@ -286,7 +286,7 @@ u8 eir_create_adv_data(struct hci_dev *hdev, u8 instance, u8 *ptr)
- 		/* If flags would still be empty, then there is no need to
- 		 * include the "Flags" AD field".
- 		 */
--		if (flags) {
-+		if (flags && (ad_len + eir_precalc_len(1) <= size)) {
- 			ptr[0] = 0x02;
- 			ptr[1] = EIR_FLAGS;
- 			ptr[2] = flags;
-@@ -316,7 +316,8 @@ u8 eir_create_adv_data(struct hci_dev *hdev, u8 instance, u8 *ptr)
+ 	/* The GXBB PLL has a /2 pre-multiplier */
+ 	if (meson_vpu_is_compatible(priv, VPU_COMPATIBLE_GXBB))
+-		pll_freq /= 2;
++		pll_freq = DIV_ROUND_DOWN_ULL(pll_freq, 2);
+ 
+-	return pll_freq / XTAL_FREQ;
++	return DIV_ROUND_DOWN_ULL(pll_freq, XTAL_FREQ);
+ }
+ 
+ #define HDMI_FRAC_MAX_GXBB	4096
+@@ -635,12 +638,13 @@ static unsigned int meson_hdmi_pll_get_m(struct meson_drm *priv,
+ 
+ static unsigned int meson_hdmi_pll_get_frac(struct meson_drm *priv,
+ 					    unsigned int m,
+-					    unsigned int pll_freq)
++					    unsigned long long pll_freq)
+ {
+-	unsigned int parent_freq = XTAL_FREQ;
++	unsigned long long parent_freq = XTAL_FREQ;
+ 	unsigned int frac_max = HDMI_FRAC_MAX_GXL;
+ 	unsigned int frac_m;
+ 	unsigned int frac;
++	u32 remainder;
+ 
+ 	/* The GXBB PLL has a /2 pre-multiplier and a larger FRAC width */
+ 	if (meson_vpu_is_compatible(priv, VPU_COMPATIBLE_GXBB)) {
+@@ -652,11 +656,11 @@ static unsigned int meson_hdmi_pll_get_frac(struct meson_drm *priv,
+ 		frac_max = HDMI_FRAC_MAX_G12A;
+ 
+ 	/* We can have a perfect match !*/
+-	if (pll_freq / m == parent_freq &&
+-	    pll_freq % m == 0)
++	if (div_u64_rem(pll_freq, m, &remainder) == parent_freq &&
++	    remainder == 0)
+ 		return 0;
+ 
+-	frac = div_u64((u64)pll_freq * (u64)frac_max, parent_freq);
++	frac = mul_u64_u64_div_u64(pll_freq, frac_max, parent_freq);
+ 	frac_m = m * frac_max;
+ 	if (frac_m > frac)
+ 		return frac_max;
+@@ -666,7 +670,7 @@ static unsigned int meson_hdmi_pll_get_frac(struct meson_drm *priv,
+ }
+ 
+ static bool meson_hdmi_pll_validate_params(struct meson_drm *priv,
+-					   unsigned int m,
++					   unsigned long long m,
+ 					   unsigned int frac)
+ {
+ 	if (meson_vpu_is_compatible(priv, VPU_COMPATIBLE_GXBB)) {
+@@ -694,7 +698,7 @@ static bool meson_hdmi_pll_validate_params(struct meson_drm *priv,
+ }
+ 
+ static bool meson_hdmi_pll_find_params(struct meson_drm *priv,
+-				       unsigned int freq,
++				       unsigned long long freq,
+ 				       unsigned int *m,
+ 				       unsigned int *frac,
+ 				       unsigned int *od)
+@@ -706,7 +710,7 @@ static bool meson_hdmi_pll_find_params(struct meson_drm *priv,
+ 			continue;
+ 		*frac = meson_hdmi_pll_get_frac(priv, *m, freq * *od);
+ 
+-		DRM_DEBUG_DRIVER("PLL params for %dkHz: m=%x frac=%x od=%d\n",
++		DRM_DEBUG_DRIVER("PLL params for %lluHz: m=%x frac=%x od=%d\n",
+ 				 freq, *m, *frac, *od);
+ 
+ 		if (meson_hdmi_pll_validate_params(priv, *m, *frac))
+@@ -718,7 +722,7 @@ static bool meson_hdmi_pll_find_params(struct meson_drm *priv,
+ 
+ /* pll_freq is the frequency after the OD dividers */
+ enum drm_mode_status
+-meson_vclk_dmt_supported_freq(struct meson_drm *priv, unsigned int freq)
++meson_vclk_dmt_supported_freq(struct meson_drm *priv, unsigned long long freq)
+ {
+ 	unsigned int od, m, frac;
+ 
+@@ -741,7 +745,7 @@ EXPORT_SYMBOL_GPL(meson_vclk_dmt_supported_freq);
+ 
+ /* pll_freq is the frequency after the OD dividers */
+ static void meson_hdmi_pll_generic_set(struct meson_drm *priv,
+-				       unsigned int pll_freq)
++				       unsigned long long pll_freq)
+ {
+ 	unsigned int od, m, frac, od1, od2, od3;
+ 
+@@ -756,7 +760,7 @@ static void meson_hdmi_pll_generic_set(struct meson_drm *priv,
+ 			od1 = od / od2;
  		}
  
- 		/* Provide Tx Power only if we can provide a valid value for it */
--		if (adv_tx_power != HCI_TX_POWER_INVALID) {
-+		if (adv_tx_power != HCI_TX_POWER_INVALID &&
-+		    (ad_len + eir_precalc_len(1) <= size)) {
- 			ptr[0] = 0x02;
- 			ptr[1] = EIR_TX_POWER;
- 			ptr[2] = (u8)adv_tx_power;
-diff --git a/net/bluetooth/eir.h b/net/bluetooth/eir.h
-index 5c89a05e8b290..9372db83f912f 100644
---- a/net/bluetooth/eir.h
-+++ b/net/bluetooth/eir.h
-@@ -9,7 +9,7 @@
+-		DRM_DEBUG_DRIVER("PLL params for %dkHz: m=%x frac=%x od=%d/%d/%d\n",
++		DRM_DEBUG_DRIVER("PLL params for %lluHz: m=%x frac=%x od=%d/%d/%d\n",
+ 				 pll_freq, m, frac, od1, od2, od3);
  
- void eir_create(struct hci_dev *hdev, u8 *data);
- 
--u8 eir_create_adv_data(struct hci_dev *hdev, u8 instance, u8 *ptr);
-+u8 eir_create_adv_data(struct hci_dev *hdev, u8 instance, u8 *ptr, u8 size);
- u8 eir_create_scan_rsp(struct hci_dev *hdev, u8 instance, u8 *ptr);
- u8 eir_create_per_adv_data(struct hci_dev *hdev, u8 instance, u8 *ptr);
- 
-diff --git a/net/bluetooth/hci_sync.c b/net/bluetooth/hci_sync.c
-index 3fb70b4ee8c8a..a00316d79dbf5 100644
---- a/net/bluetooth/hci_sync.c
-+++ b/net/bluetooth/hci_sync.c
-@@ -1846,7 +1846,8 @@ static int hci_set_ext_adv_data_sync(struct hci_dev *hdev, u8 instance)
- 			return 0;
+ 		meson_hdmi_pll_set_params(priv, m, frac, od1, od2, od3);
+@@ -764,17 +768,18 @@ static void meson_hdmi_pll_generic_set(struct meson_drm *priv,
+ 		return;
  	}
  
--	len = eir_create_adv_data(hdev, instance, pdu->data);
-+	len = eir_create_adv_data(hdev, instance, pdu->data,
-+				  HCI_MAX_EXT_AD_LENGTH);
+-	DRM_ERROR("Fatal, unable to find parameters for PLL freq %d\n",
++	DRM_ERROR("Fatal, unable to find parameters for PLL freq %lluHz\n",
+ 		  pll_freq);
+ }
  
- 	pdu->length = len;
- 	pdu->handle = adv ? adv->handle : instance;
-@@ -1877,7 +1878,7 @@ static int hci_set_adv_data_sync(struct hci_dev *hdev, u8 instance)
+ enum drm_mode_status
+-meson_vclk_vic_supported_freq(struct meson_drm *priv, unsigned int phy_freq,
+-			      unsigned int vclk_freq)
++meson_vclk_vic_supported_freq(struct meson_drm *priv,
++			      unsigned long long phy_freq,
++			      unsigned long long vclk_freq)
+ {
+ 	int i;
  
- 	memset(&cp, 0, sizeof(cp));
+-	DRM_DEBUG_DRIVER("phy_freq = %d vclk_freq = %d\n",
++	DRM_DEBUG_DRIVER("phy_freq = %lluHz vclk_freq = %lluHz\n",
+ 			 phy_freq, vclk_freq);
  
--	len = eir_create_adv_data(hdev, instance, cp.data);
-+	len = eir_create_adv_data(hdev, instance, cp.data, sizeof(cp.data));
+ 	/* Check against soc revision/package limits */
+@@ -785,19 +790,19 @@ meson_vclk_vic_supported_freq(struct meson_drm *priv, unsigned int phy_freq,
+ 	}
  
- 	/* There's nothing to do if the data hasn't changed */
- 	if (hdev->adv_data_len == len &&
+ 	for (i = 0 ; params[i].pixel_freq ; ++i) {
+-		DRM_DEBUG_DRIVER("i = %d pixel_freq = %d alt = %d\n",
++		DRM_DEBUG_DRIVER("i = %d pixel_freq = %lluHz alt = %lluHz\n",
+ 				 i, params[i].pixel_freq,
+-				 FREQ_1000_1001(params[i].pixel_freq));
+-		DRM_DEBUG_DRIVER("i = %d phy_freq = %d alt = %d\n",
++				 PIXEL_FREQ_1000_1001(params[i].pixel_freq));
++		DRM_DEBUG_DRIVER("i = %d phy_freq = %lluHz alt = %lluHz\n",
+ 				 i, params[i].phy_freq,
+-				 FREQ_1000_1001(params[i].phy_freq/10)*10);
++				 PHY_FREQ_1000_1001(params[i].phy_freq));
+ 		/* Match strict frequency */
+ 		if (phy_freq == params[i].phy_freq &&
+ 		    vclk_freq == params[i].vclk_freq)
+ 			return MODE_OK;
+ 		/* Match 1000/1001 variant */
+-		if (phy_freq == (FREQ_1000_1001(params[i].phy_freq/10)*10) &&
+-		    vclk_freq == FREQ_1000_1001(params[i].vclk_freq))
++		if (phy_freq == PHY_FREQ_1000_1001(params[i].phy_freq) &&
++		    vclk_freq == PIXEL_FREQ_1000_1001(params[i].vclk_freq))
+ 			return MODE_OK;
+ 	}
+ 
+@@ -805,8 +810,9 @@ meson_vclk_vic_supported_freq(struct meson_drm *priv, unsigned int phy_freq,
+ }
+ EXPORT_SYMBOL_GPL(meson_vclk_vic_supported_freq);
+ 
+-static void meson_vclk_set(struct meson_drm *priv, unsigned int pll_base_freq,
+-			   unsigned int od1, unsigned int od2, unsigned int od3,
++static void meson_vclk_set(struct meson_drm *priv,
++			   unsigned long long pll_base_freq, unsigned int od1,
++			   unsigned int od2, unsigned int od3,
+ 			   unsigned int vid_pll_div, unsigned int vclk_div,
+ 			   unsigned int hdmi_tx_div, unsigned int venc_div,
+ 			   bool hdmi_use_enci, bool vic_alternate_clock)
+@@ -826,15 +832,15 @@ static void meson_vclk_set(struct meson_drm *priv, unsigned int pll_base_freq,
+ 		meson_hdmi_pll_generic_set(priv, pll_base_freq);
+ 	} else if (meson_vpu_is_compatible(priv, VPU_COMPATIBLE_GXBB)) {
+ 		switch (pll_base_freq) {
+-		case 2970000:
++		case 2970000000:
+ 			m = 0x3d;
+ 			frac = vic_alternate_clock ? 0xd02 : 0xe00;
+ 			break;
+-		case 4320000:
++		case 4320000000:
+ 			m = vic_alternate_clock ? 0x59 : 0x5a;
+ 			frac = vic_alternate_clock ? 0xe8f : 0;
+ 			break;
+-		case 5940000:
++		case 5940000000:
+ 			m = 0x7b;
+ 			frac = vic_alternate_clock ? 0xa05 : 0xc00;
+ 			break;
+@@ -844,15 +850,15 @@ static void meson_vclk_set(struct meson_drm *priv, unsigned int pll_base_freq,
+ 	} else if (meson_vpu_is_compatible(priv, VPU_COMPATIBLE_GXM) ||
+ 		   meson_vpu_is_compatible(priv, VPU_COMPATIBLE_GXL)) {
+ 		switch (pll_base_freq) {
+-		case 2970000:
++		case 2970000000:
+ 			m = 0x7b;
+ 			frac = vic_alternate_clock ? 0x281 : 0x300;
+ 			break;
+-		case 4320000:
++		case 4320000000:
+ 			m = vic_alternate_clock ? 0xb3 : 0xb4;
+ 			frac = vic_alternate_clock ? 0x347 : 0;
+ 			break;
+-		case 5940000:
++		case 5940000000:
+ 			m = 0xf7;
+ 			frac = vic_alternate_clock ? 0x102 : 0x200;
+ 			break;
+@@ -861,15 +867,15 @@ static void meson_vclk_set(struct meson_drm *priv, unsigned int pll_base_freq,
+ 		meson_hdmi_pll_set_params(priv, m, frac, od1, od2, od3);
+ 	} else if (meson_vpu_is_compatible(priv, VPU_COMPATIBLE_G12A)) {
+ 		switch (pll_base_freq) {
+-		case 2970000:
++		case 2970000000:
+ 			m = 0x7b;
+ 			frac = vic_alternate_clock ? 0x140b4 : 0x18000;
+ 			break;
+-		case 4320000:
++		case 4320000000:
+ 			m = vic_alternate_clock ? 0xb3 : 0xb4;
+ 			frac = vic_alternate_clock ? 0x1a3ee : 0;
+ 			break;
+-		case 5940000:
++		case 5940000000:
+ 			m = 0xf7;
+ 			frac = vic_alternate_clock ? 0x8148 : 0x10000;
+ 			break;
+@@ -1025,14 +1031,14 @@ static void meson_vclk_set(struct meson_drm *priv, unsigned int pll_base_freq,
+ }
+ 
+ void meson_vclk_setup(struct meson_drm *priv, unsigned int target,
+-		      unsigned int phy_freq, unsigned int vclk_freq,
+-		      unsigned int venc_freq, unsigned int dac_freq,
++		      unsigned long long phy_freq, unsigned long long vclk_freq,
++		      unsigned long long venc_freq, unsigned long long dac_freq,
+ 		      bool hdmi_use_enci)
+ {
+ 	bool vic_alternate_clock = false;
+-	unsigned int freq;
+-	unsigned int hdmi_tx_div;
+-	unsigned int venc_div;
++	unsigned long long freq;
++	unsigned long long hdmi_tx_div;
++	unsigned long long venc_div;
+ 
+ 	if (target == MESON_VCLK_TARGET_CVBS) {
+ 		meson_venci_cvbs_clock_config(priv);
+@@ -1052,27 +1058,27 @@ void meson_vclk_setup(struct meson_drm *priv, unsigned int target,
+ 		return;
+ 	}
+ 
+-	hdmi_tx_div = vclk_freq / dac_freq;
++	hdmi_tx_div = DIV_ROUND_DOWN_ULL(vclk_freq, dac_freq);
+ 
+ 	if (hdmi_tx_div == 0) {
+-		pr_err("Fatal Error, invalid HDMI-TX freq %d\n",
++		pr_err("Fatal Error, invalid HDMI-TX freq %lluHz\n",
+ 		       dac_freq);
+ 		return;
+ 	}
+ 
+-	venc_div = vclk_freq / venc_freq;
++	venc_div = DIV_ROUND_DOWN_ULL(vclk_freq, venc_freq);
+ 
+ 	if (venc_div == 0) {
+-		pr_err("Fatal Error, invalid HDMI venc freq %d\n",
++		pr_err("Fatal Error, invalid HDMI venc freq %lluHz\n",
+ 		       venc_freq);
+ 		return;
+ 	}
+ 
+ 	for (freq = 0 ; params[freq].pixel_freq ; ++freq) {
+ 		if ((phy_freq == params[freq].phy_freq ||
+-		     phy_freq == FREQ_1000_1001(params[freq].phy_freq/10)*10) &&
++		     phy_freq == PHY_FREQ_1000_1001(params[freq].phy_freq)) &&
+ 		    (vclk_freq == params[freq].vclk_freq ||
+-		     vclk_freq == FREQ_1000_1001(params[freq].vclk_freq))) {
++		     vclk_freq == PIXEL_FREQ_1000_1001(params[freq].vclk_freq))) {
+ 			if (vclk_freq != params[freq].vclk_freq)
+ 				vic_alternate_clock = true;
+ 			else
+@@ -1098,7 +1104,8 @@ void meson_vclk_setup(struct meson_drm *priv, unsigned int target,
+ 	}
+ 
+ 	if (!params[freq].pixel_freq) {
+-		pr_err("Fatal Error, invalid HDMI vclk freq %d\n", vclk_freq);
++		pr_err("Fatal Error, invalid HDMI vclk freq %lluHz\n",
++		       vclk_freq);
+ 		return;
+ 	}
+ 
+diff --git a/drivers/gpu/drm/meson/meson_vclk.h b/drivers/gpu/drm/meson/meson_vclk.h
+index 60617aaf18dd1..7ac55744e5749 100644
+--- a/drivers/gpu/drm/meson/meson_vclk.h
++++ b/drivers/gpu/drm/meson/meson_vclk.h
+@@ -20,17 +20,18 @@ enum {
+ };
+ 
+ /* 27MHz is the CVBS Pixel Clock */
+-#define MESON_VCLK_CVBS			27000
++#define MESON_VCLK_CVBS			(27 * 1000 * 1000)
+ 
+ enum drm_mode_status
+-meson_vclk_dmt_supported_freq(struct meson_drm *priv, unsigned int freq);
++meson_vclk_dmt_supported_freq(struct meson_drm *priv, unsigned long long freq);
+ enum drm_mode_status
+-meson_vclk_vic_supported_freq(struct meson_drm *priv, unsigned int phy_freq,
+-			      unsigned int vclk_freq);
++meson_vclk_vic_supported_freq(struct meson_drm *priv,
++			      unsigned long long phy_freq,
++			      unsigned long long vclk_freq);
+ 
+ void meson_vclk_setup(struct meson_drm *priv, unsigned int target,
+-		      unsigned int phy_freq, unsigned int vclk_freq,
+-		      unsigned int venc_freq, unsigned int dac_freq,
++		      unsigned long long phy_freq, unsigned long long vclk_freq,
++		      unsigned long long venc_freq, unsigned long long dac_freq,
+ 		      bool hdmi_use_enci);
+ 
+ #endif /* __MESON_VCLK_H */
 -- 
 2.39.5
 
