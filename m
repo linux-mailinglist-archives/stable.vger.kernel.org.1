@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-153551-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-154253-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1DC86ADD50D
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:16:37 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id DD487ADD9DC
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 19:10:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A3D5B2C053C
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:08:19 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 640CE19E1484
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:47:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B2A8A236457;
-	Tue, 17 Jun 2025 16:05:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 291392EA73A;
+	Tue, 17 Jun 2025 16:43:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R5S0e3kU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1NpJNGNf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CED32F2346;
-	Tue, 17 Jun 2025 16:05:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5AD42EA17F;
+	Tue, 17 Jun 2025 16:43:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750176328; cv=none; b=Kzdw/2KjP/XPXiGxqaxoHmLvPNc9RmOnYgx1qmJa+UuD4YH5fGuvlCKv/GbIOWCc+679N+/acH7h1y6lTx9kN7/RMr59qd+CcHvAuijljqzqK8CjNZzrc6Jq/PrPPc3SWHjAOqA2CMFietqFPTw4wAGOQeCEYPFLb5Fht2U/WYg=
+	t=1750178594; cv=none; b=bTu9u5VX0byocgkBgwlJclZqVwylyxSaHh3t80UcalgbFcJ2w9vrNhwXc8oJyYmrL/U7cl2NAhuYvNcMtZBsyFLrgz4H6e2TJAhHZXUtb+lZcJfrZ8Pe9rTyEVhqROMFXHAQ0nohlUi7Mv9/6pfr4NfCOBCng10D3SV1CGU/pC0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750176328; c=relaxed/simple;
-	bh=7Y4oolwu2sn3oPJuRYVn1vZ/1qRf7IIp7CPDP7Yk6X8=;
+	s=arc-20240116; t=1750178594; c=relaxed/simple;
+	bh=SIaYDl5A5MvyJL5aGnvUNlGPnmoZPDN9vRlUUMg7128=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rKP3VdZ84FOn0HU2PfI/cl+QoPwxMhrrIfaIXg4tYxP1MA8ZHsf6SF8k/a0l99K06mt6NWMa4M/12dn0Qy1HF//6jSUrijIQMumvRturpCc9M7HrNTTyATBM2EDEM5NejWhsGhwS/hRLVNK5ZEWnn80qK83No84Y+GjlhU4qCtI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R5S0e3kU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90457C4CEE3;
-	Tue, 17 Jun 2025 16:05:27 +0000 (UTC)
+	 MIME-Version; b=elb1GGCcdJdNAL9NKiCiwEeHfJXMlK/f6pas+w+ZqavgMufuuxCjMnhfWbnzGbWOjFt8a/T3KzXd/V3anPMuoWtusrSLDtMGtB441tFHtwwjYtLwMr3AjwW1ZMzo5vhOD/zbLQZGcV8sznQhndIlC4ke3pYapOA//1E9e9s89pI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1NpJNGNf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45F0FC4CEE3;
+	Tue, 17 Jun 2025 16:43:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750176328;
-	bh=7Y4oolwu2sn3oPJuRYVn1vZ/1qRf7IIp7CPDP7Yk6X8=;
+	s=korg; t=1750178594;
+	bh=SIaYDl5A5MvyJL5aGnvUNlGPnmoZPDN9vRlUUMg7128=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=R5S0e3kUzIG1LvNHg6NFEecKExVmvcFHVelh3eXvovYtChqZ5v1jv8E2E10m8PlHA
-	 ussifLbM+Lo7VfoDo+2Ezexa30Evai3BGrk/SnKgjiH13j6ugegDmUZ17C+9cbXA2H
-	 /b9tyRyLYVoXk7NeKEj79MdwUI0mhuN57Oofu+C8=
+	b=1NpJNGNfqn+GZWQr4gbmqOTNQRAhBV3LK3uw7b710OPrk8rVcg9vlOK8lZW4ci+PP
+	 2UPmPOzgb3nm8OsPJJgFzf28Fm7ZNh0w96s3rMydn5PxrCCQayY967Lm1TCD16iH4/
+	 T9XLP7CqcunJv7QHrzqwUVXZRxOORGxnRQZjq5P0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
-	Bjorn Andersson <andersson@kernel.org>,
+	NeilBrown <neil@brown.name>,
+	Anna Schumaker <anna.schumaker@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 219/512] arm64: dts: qcom: sm8650: setup gpu thermal with higher temperatures
+Subject: [PATCH 6.15 477/780] nfs_localio: use cmpxchg() to install new nfs_file_localio
 Date: Tue, 17 Jun 2025 17:23:05 +0200
-Message-ID: <20250617152428.502415717@linuxfoundation.org>
+Message-ID: <20250617152510.914463800@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
-References: <20250617152419.512865572@linuxfoundation.org>
+In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
+References: <20250617152451.485330293@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,242 +62,122 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Neil Armstrong <neil.armstrong@linaro.org>
+From: NeilBrown <neil@brown.name>
 
-[ Upstream commit 2250f65b32565eb8b757e89248c75977f370f498 ]
+[ Upstream commit ed9be317330c7390df7db9e1d046698c02001bd2 ]
 
-On the SM8650, the dynamic clock and voltage scaling (DCVS) for the GPU
-is done from the HLOS, but the GPU can achieve a much higher temperature
-before failing according the reference downstream implementation.
+Rather than using nfs_uuid.lock to protect installing
+a new ro_file or rw_file, change to use cmpxchg().
+Removing the file already uses xchg() so this improves symmetry
+and also makes the code a little simpler.
 
-Set higher temperatures in the GPU trip points corresponding to
-the temperatures provided by Qualcomm in the dowstream source, much
-closer to the junction temperature and with a higher critical
-temperature trip in the case the HLOS DCVS cannot handle the
-temperature surge.
+Also remove the optimisation of not taking the lock, and not removing
+the nfs_file_localio from the linked list, when both ->ro_file and
+->rw_file are already NULL.  Given that ->nfs_uuid was not NULL, it is
+extremely unlikely that neither ->ro_file or ->rw_file is NULL so
+this optimisation can be of little value and it complicates
+understanding of the code - why can the list_del_init() be skipped?
 
-The tsens MAX_THRESHOLD is set to 120C on those platforms, so set
-the hot to 110C to leave a chance to HLOS to react and critical to
-115C to avoid the monitor thermal shutdown.
+Finally, move the assignment of NULL to ->nfs_uuid until after
+the last action on the nfs_file_localio (the list_del_init).  As soon as
+this is NULL a racing nfs_close_local_fh() can bypass all the locking
+and go on to free the nfs_file_localio, so we must be certain to be
+finished with it first.
 
-Fixes: 497624ed5506 ("arm64: dts: qcom: sm8650: Throttle the GPU when overheating")
-Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Link: https://lore.kernel.org/r/20250203-topic-sm8650-thermal-cpu-idle-v4-2-65e35f307301@linaro.org
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Fixes: 86e00412254a ("nfs: cache all open LOCALIO nfsd_file(s) in client")
+Signed-off-by: NeilBrown <neil@brown.name>
+Signed-off-by: Anna Schumaker <anna.schumaker@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/sm8650.dtsi | 64 ++++++++++++++--------------
- 1 file changed, 32 insertions(+), 32 deletions(-)
+ fs/nfs/localio.c           | 11 +++--------
+ fs/nfs_common/nfslocalio.c | 39 +++++++++++++++++---------------------
+ 2 files changed, 20 insertions(+), 30 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/qcom/sm8650.dtsi b/arch/arm64/boot/dts/qcom/sm8650.dtsi
-index fddf979de38d1..0c54a89bb3322 100644
---- a/arch/arm64/boot/dts/qcom/sm8650.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sm8650.dtsi
-@@ -6354,20 +6354,20 @@
+diff --git a/fs/nfs/localio.c b/fs/nfs/localio.c
+index 4ec952f9f47dd..595903c215235 100644
+--- a/fs/nfs/localio.c
++++ b/fs/nfs/localio.c
+@@ -280,14 +280,9 @@ nfs_local_open_fh(struct nfs_client *clp, const struct cred *cred,
+ 			return NULL;
+ 		rcu_read_lock();
+ 		/* try to swap in the pointer */
+-		spin_lock(&clp->cl_uuid.lock);
+-		nf = rcu_dereference_protected(*pnf, 1);
+-		if (!nf) {
+-			nf = new;
+-			new = NULL;
+-			rcu_assign_pointer(*pnf, nf);
+-		}
+-		spin_unlock(&clp->cl_uuid.lock);
++		nf = unrcu_pointer(cmpxchg(pnf, NULL, RCU_INITIALIZER(new)));
++		if (!nf)
++			swap(nf, new);
+ 	}
+ 	nf = nfs_local_file_get(nf);
+ 	rcu_read_unlock();
+diff --git a/fs/nfs_common/nfslocalio.c b/fs/nfs_common/nfslocalio.c
+index 6a0bdea6d6449..bdf251332b6b8 100644
+--- a/fs/nfs_common/nfslocalio.c
++++ b/fs/nfs_common/nfslocalio.c
+@@ -273,8 +273,8 @@ EXPORT_SYMBOL_GPL(nfs_open_local_fh);
  
- 			trips {
- 				gpu0_alert0: trip-point0 {
--					temperature = <85000>;
-+					temperature = <95000>;
- 					hysteresis = <1000>;
- 					type = "passive";
- 				};
+ void nfs_close_local_fh(struct nfs_file_localio *nfl)
+ {
+-	struct nfsd_file *ro_nf = NULL;
+-	struct nfsd_file *rw_nf = NULL;
++	struct nfsd_file *ro_nf;
++	struct nfsd_file *rw_nf;
+ 	nfs_uuid_t *nfs_uuid;
  
- 				trip-point1 {
--					temperature = <90000>;
-+					temperature = <110000>;
- 					hysteresis = <1000>;
- 					type = "hot";
- 				};
+ 	rcu_read_lock();
+@@ -285,28 +285,23 @@ void nfs_close_local_fh(struct nfs_file_localio *nfl)
+ 		return;
+ 	}
  
- 				trip-point2 {
--					temperature = <110000>;
--					hysteresis = <1000>;
-+					temperature = <115000>;
-+					hysteresis = <0>;
- 					type = "critical";
- 				};
- 			};
-@@ -6387,20 +6387,20 @@
+-	ro_nf = rcu_access_pointer(nfl->ro_file);
+-	rw_nf = rcu_access_pointer(nfl->rw_file);
+-	if (ro_nf || rw_nf) {
+-		spin_lock(&nfs_uuid->lock);
+-		if (ro_nf)
+-			ro_nf = rcu_dereference_protected(xchg(&nfl->ro_file, NULL), 1);
+-		if (rw_nf)
+-			rw_nf = rcu_dereference_protected(xchg(&nfl->rw_file, NULL), 1);
+-
+-		/* Remove nfl from nfs_uuid->files list */
+-		RCU_INIT_POINTER(nfl->nfs_uuid, NULL);
+-		list_del_init(&nfl->list);
+-		spin_unlock(&nfs_uuid->lock);
+-		rcu_read_unlock();
++	ro_nf = unrcu_pointer(xchg(&nfl->ro_file, NULL));
++	rw_nf = unrcu_pointer(xchg(&nfl->rw_file, NULL));
  
- 			trips {
- 				gpu1_alert0: trip-point0 {
--					temperature = <85000>;
-+					temperature = <95000>;
- 					hysteresis = <1000>;
- 					type = "passive";
- 				};
+-		if (ro_nf)
+-			nfs_to_nfsd_file_put_local(ro_nf);
+-		if (rw_nf)
+-			nfs_to_nfsd_file_put_local(rw_nf);
+-		return;
+-	}
++	spin_lock(&nfs_uuid->lock);
++	/* Remove nfl from nfs_uuid->files list */
++	list_del_init(&nfl->list);
++	spin_unlock(&nfs_uuid->lock);
+ 	rcu_read_unlock();
++	/* Now we can allow racing nfs_close_local_fh() to
++	 * skip the locking.
++	 */
++	RCU_INIT_POINTER(nfl->nfs_uuid, NULL);
++
++	if (ro_nf)
++		nfs_to_nfsd_file_put_local(ro_nf);
++	if (rw_nf)
++		nfs_to_nfsd_file_put_local(rw_nf);
+ }
+ EXPORT_SYMBOL_GPL(nfs_close_local_fh);
  
- 				trip-point1 {
--					temperature = <90000>;
-+					temperature = <110000>;
- 					hysteresis = <1000>;
- 					type = "hot";
- 				};
- 
- 				trip-point2 {
--					temperature = <110000>;
--					hysteresis = <1000>;
-+					temperature = <115000>;
-+					hysteresis = <0>;
- 					type = "critical";
- 				};
- 			};
-@@ -6420,20 +6420,20 @@
- 
- 			trips {
- 				gpu2_alert0: trip-point0 {
--					temperature = <85000>;
-+					temperature = <95000>;
- 					hysteresis = <1000>;
- 					type = "passive";
- 				};
- 
- 				trip-point1 {
--					temperature = <90000>;
-+					temperature = <110000>;
- 					hysteresis = <1000>;
- 					type = "hot";
- 				};
- 
- 				trip-point2 {
--					temperature = <110000>;
--					hysteresis = <1000>;
-+					temperature = <115000>;
-+					hysteresis = <0>;
- 					type = "critical";
- 				};
- 			};
-@@ -6453,20 +6453,20 @@
- 
- 			trips {
- 				gpu3_alert0: trip-point0 {
--					temperature = <85000>;
-+					temperature = <95000>;
- 					hysteresis = <1000>;
- 					type = "passive";
- 				};
- 
- 				trip-point1 {
--					temperature = <90000>;
-+					temperature = <110000>;
- 					hysteresis = <1000>;
- 					type = "hot";
- 				};
- 
- 				trip-point2 {
--					temperature = <110000>;
--					hysteresis = <1000>;
-+					temperature = <115000>;
-+					hysteresis = <0>;
- 					type = "critical";
- 				};
- 			};
-@@ -6486,20 +6486,20 @@
- 
- 			trips {
- 				gpu4_alert0: trip-point0 {
--					temperature = <85000>;
-+					temperature = <95000>;
- 					hysteresis = <1000>;
- 					type = "passive";
- 				};
- 
- 				trip-point1 {
--					temperature = <90000>;
-+					temperature = <110000>;
- 					hysteresis = <1000>;
- 					type = "hot";
- 				};
- 
- 				trip-point2 {
--					temperature = <110000>;
--					hysteresis = <1000>;
-+					temperature = <115000>;
-+					hysteresis = <0>;
- 					type = "critical";
- 				};
- 			};
-@@ -6519,20 +6519,20 @@
- 
- 			trips {
- 				gpu5_alert0: trip-point0 {
--					temperature = <85000>;
-+					temperature = <95000>;
- 					hysteresis = <1000>;
- 					type = "passive";
- 				};
- 
- 				trip-point1 {
--					temperature = <90000>;
-+					temperature = <110000>;
- 					hysteresis = <1000>;
- 					type = "hot";
- 				};
- 
- 				trip-point2 {
--					temperature = <110000>;
--					hysteresis = <1000>;
-+					temperature = <115000>;
-+					hysteresis = <0>;
- 					type = "critical";
- 				};
- 			};
-@@ -6552,20 +6552,20 @@
- 
- 			trips {
- 				gpu6_alert0: trip-point0 {
--					temperature = <85000>;
-+					temperature = <95000>;
- 					hysteresis = <1000>;
- 					type = "passive";
- 				};
- 
- 				trip-point1 {
--					temperature = <90000>;
-+					temperature = <110000>;
- 					hysteresis = <1000>;
- 					type = "hot";
- 				};
- 
- 				trip-point2 {
--					temperature = <110000>;
--					hysteresis = <1000>;
-+					temperature = <115000>;
-+					hysteresis = <0>;
- 					type = "critical";
- 				};
- 			};
-@@ -6585,20 +6585,20 @@
- 
- 			trips {
- 				gpu7_alert0: trip-point0 {
--					temperature = <85000>;
-+					temperature = <95000>;
- 					hysteresis = <1000>;
- 					type = "passive";
- 				};
- 
- 				trip-point1 {
--					temperature = <90000>;
-+					temperature = <110000>;
- 					hysteresis = <1000>;
- 					type = "hot";
- 				};
- 
- 				trip-point2 {
--					temperature = <110000>;
--					hysteresis = <1000>;
-+					temperature = <115000>;
-+					hysteresis = <0>;
- 					type = "critical";
- 				};
- 			};
 -- 
 2.39.5
 
