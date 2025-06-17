@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-153496-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-154202-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6C466ADD580
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:21:50 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1915BADDA04
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 19:12:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7E12C194227B
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:06:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 570374A1EB8
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:44:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E14272EF280;
-	Tue, 17 Jun 2025 16:02:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E7FB52EE609;
+	Tue, 17 Jun 2025 16:40:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UbCIXKW+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rFM5vONE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E91D2EE610;
-	Tue, 17 Jun 2025 16:02:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3EFA2EA720;
+	Tue, 17 Jun 2025 16:40:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750176150; cv=none; b=lOwkUrNeGgUDSjA+Wr5VPM2f/vKBTo2QEgXNibpIdDbADDu1wKUE3B3uHiQrU6rVz7cJB/2eJcNbHCbn9O8+7MJyfxZhxbxTVN7r1yrPDMGZlc9I2EEhE6b4w9p+D4fSr0jDY9UCl9ITj456zNzNJekTaqgrXCSGTKnjYl7ZY3c=
+	t=1750178432; cv=none; b=EKOp4UwvobiwRgHfUloEQbiGbsCcGcqCGckppf1s5SIbFXtu3xSfGgOmLGXAWpZs7P6H4se6o8NyO6yQafreVb1P6osmV67sClGrQYiHSXzqfqYuMPzeZp7IrRqGwYvT5/bLKWuTN78IyqavT9oPzyqAfCK395xZnzon5rUOyoc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750176150; c=relaxed/simple;
-	bh=66/M/yBSdDeAU43TPfTirOTcQldF47nMpWjtTUhAjss=;
+	s=arc-20240116; t=1750178432; c=relaxed/simple;
+	bh=Kq2gVdlf0I7vVKlVpWh8Q9SdvAHSfLKleSG37KAXlVw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Nr5u8qRdaOQaTgA5/lBDfGmXnK/ESV7UqCbuVh/L0Ekw7junG5FCiB430GWRSXuc/NXbhAvrfsrHK4/khollahE49YMD844t6VumzNpJbyhtX8j3e78JOVqIUqJ9siuYPDzpRTf0YYOo3Ug2KXDo4V41OUjLvbYXVr68gFT2QTU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UbCIXKW+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 108FAC4CEE3;
-	Tue, 17 Jun 2025 16:02:29 +0000 (UTC)
+	 MIME-Version; b=OCV3lEflxf0bw5Tmmv8lonAG/sXF/tSM7JnERRb6PWH40DXx3ZhvbrBAsxkOK2+B/OPzyTUWx0NiwU2IiNFNWgyCrdEuinW2MdM/0qlCvI66OXc6metTp/+34/SRu5HTkUnK6ol9bLIobwAM5W6/ti5txWTXRMImd3QIvUgnBxQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rFM5vONE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14965C4CEE3;
+	Tue, 17 Jun 2025 16:40:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750176150;
-	bh=66/M/yBSdDeAU43TPfTirOTcQldF47nMpWjtTUhAjss=;
+	s=korg; t=1750178432;
+	bh=Kq2gVdlf0I7vVKlVpWh8Q9SdvAHSfLKleSG37KAXlVw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UbCIXKW+R5jfnyRNVFzVjECcsXPjliLGjySexc8jfpEx+A4RH9iR5iOqrj4l2w2B2
-	 7Q01ya691BQnnI8ksso1E1ffiG8+Uzx0C2xIGYLd/0M+dKWnTwEiPJRlhsw8j7Ia0H
-	 T9tdu+dPqW7jRchzq000KrbvHQTq42++lFqIbtGQ=
+	b=rFM5vONEuO5ymhf22B4goMH1Rrn9fuZ3+yShqWhOCK97+4wCKdKga/7nlfGn0UYK0
+	 APiEZKgz/KljouGmzesbGRK1sb2k6K6wUO0Q2lNzpZ+e/0TI3XprrLk3dWVaaUgN6g
+	 EMD5r5+V6mmbnuyVjdr4HZ8Q6ApvWw4/RVIByFhQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stefano Garzarella <sgarzare@redhat.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Lee Jones <lee@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 201/512] vsock/virtio: fix `rx_bytes` accounting for stream sockets
+Subject: [PATCH 6.15 459/780] mfd: exynos-lpass: Fix another error handling path in exynos_lpass_probe()
 Date: Tue, 17 Jun 2025 17:22:47 +0200
-Message-ID: <20250617152427.777332071@linuxfoundation.org>
+Message-ID: <20250617152510.171495411@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
-References: <20250617152419.512865572@linuxfoundation.org>
+In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
+References: <20250617152451.485330293@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,165 +61,88 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stefano Garzarella <sgarzare@redhat.com>
+From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 
-[ Upstream commit 45ca7e9f0730ae36fc610e675b990e9cc9ca0714 ]
+[ Upstream commit f41cc37f4bc0e8cd424697bf6e26586cadcf4b9b ]
 
-In `struct virtio_vsock_sock`, we maintain two counters:
-- `rx_bytes`: used internally to track how many bytes have been read.
-  This supports mechanisms like .stream_has_data() and sock_rcvlowat().
-- `fwd_cnt`: used for the credit mechanism to inform available receive
-  buffer space to the remote peer.
+If devm_of_platform_populate() fails, some clean-up needs to be done, as
+already done in the remove function.
 
-These counters are updated via virtio_transport_inc_rx_pkt() and
-virtio_transport_dec_rx_pkt().
+Add a new devm_add_action_or_reset() to fix the leak in the probe and
+remove the need of a remove function.
 
-Since the beginning with commit 06a8fc78367d ("VSOCK: Introduce
-virtio_vsock_common.ko"), we call virtio_transport_dec_rx_pkt() in
-virtio_transport_stream_do_dequeue() only when we consume the entire
-packet, so partial reads, do not update `rx_bytes` and `fwd_cnt`.
-
-This is fine for `fwd_cnt`, because we still have space used for the
-entire packet, and we don't want to update the credit for the other
-peer until we free the space of the entire packet. However, this
-causes `rx_bytes` to be stale on partial reads.
-
-Previously, this didn’t cause issues because `rx_bytes` was used only by
-.stream_has_data(), and any unread portion of a packet implied data was
-still available. However, since commit 93b808876682
-("virtio/vsock: fix logic which reduces credit update messages"), we now
-rely on `rx_bytes` to determine if a credit update should be sent when
-the data in the RX queue drops below SO_RCVLOWAT value.
-
-This patch fixes the accounting by updating `rx_bytes` with the number
-of bytes actually read, even on partial reads, while leaving `fwd_cnt`
-untouched until the packet is fully consumed. Also introduce a new
-`buf_used` counter to check that the remote peer is honoring the given
-credit; this was previously done via `rx_bytes`.
-
-Fixes: 93b808876682 ("virtio/vsock: fix logic which reduces credit update messages")
-Signed-off-by: Stefano Garzarella <sgarzare@redhat.com>
-Link: https://patch.msgid.link/20250521121705.196379-1-sgarzare@redhat.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: c695abab2429 ("mfd: Add Samsung Exynos Low Power Audio Subsystem driver")
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Link: https://lore.kernel.org/r/69471e839efc0249a504492a8de3497fcdb6a009.1745247209.git.christophe.jaillet@wanadoo.fr
+Signed-off-by: Lee Jones <lee@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/virtio_vsock.h            |  1 +
- net/vmw_vsock/virtio_transport_common.c | 26 +++++++++++++++----------
- 2 files changed, 17 insertions(+), 10 deletions(-)
+ drivers/mfd/exynos-lpass.c | 25 +++++++++++++++----------
+ 1 file changed, 15 insertions(+), 10 deletions(-)
 
-diff --git a/include/linux/virtio_vsock.h b/include/linux/virtio_vsock.h
-index 0387d64e2c66c..36fb3edfa403d 100644
---- a/include/linux/virtio_vsock.h
-+++ b/include/linux/virtio_vsock.h
-@@ -140,6 +140,7 @@ struct virtio_vsock_sock {
- 	u32 last_fwd_cnt;
- 	u32 rx_bytes;
- 	u32 buf_alloc;
-+	u32 buf_used;
- 	struct sk_buff_head rx_queue;
- 	u32 msg_count;
+diff --git a/drivers/mfd/exynos-lpass.c b/drivers/mfd/exynos-lpass.c
+index a2785ceea8bfc..44797001a4322 100644
+--- a/drivers/mfd/exynos-lpass.c
++++ b/drivers/mfd/exynos-lpass.c
+@@ -104,11 +104,22 @@ static const struct regmap_config exynos_lpass_reg_conf = {
+ 	.fast_io	= true,
  };
-diff --git a/net/vmw_vsock/virtio_transport_common.c b/net/vmw_vsock/virtio_transport_common.c
-index 7f7de6d880965..2c9b1011cdcc8 100644
---- a/net/vmw_vsock/virtio_transport_common.c
-+++ b/net/vmw_vsock/virtio_transport_common.c
-@@ -441,18 +441,20 @@ static int virtio_transport_send_pkt_info(struct vsock_sock *vsk,
- static bool virtio_transport_inc_rx_pkt(struct virtio_vsock_sock *vvs,
- 					u32 len)
- {
--	if (vvs->rx_bytes + len > vvs->buf_alloc)
-+	if (vvs->buf_used + len > vvs->buf_alloc)
- 		return false;
  
- 	vvs->rx_bytes += len;
-+	vvs->buf_used += len;
- 	return true;
- }
- 
- static void virtio_transport_dec_rx_pkt(struct virtio_vsock_sock *vvs,
--					u32 len)
-+					u32 bytes_read, u32 bytes_dequeued)
- {
--	vvs->rx_bytes -= len;
--	vvs->fwd_cnt += len;
-+	vvs->rx_bytes -= bytes_read;
-+	vvs->buf_used -= bytes_dequeued;
-+	vvs->fwd_cnt += bytes_dequeued;
- }
- 
- void virtio_transport_inc_tx_pkt(struct virtio_vsock_sock *vvs, struct sk_buff *skb)
-@@ -581,11 +583,11 @@ virtio_transport_stream_do_dequeue(struct vsock_sock *vsk,
- 				   size_t len)
- {
- 	struct virtio_vsock_sock *vvs = vsk->trans;
--	size_t bytes, total = 0;
- 	struct sk_buff *skb;
- 	u32 fwd_cnt_delta;
- 	bool low_rx_bytes;
- 	int err = -EFAULT;
-+	size_t total = 0;
- 	u32 free_space;
- 
- 	spin_lock_bh(&vvs->rx_lock);
-@@ -597,6 +599,8 @@ virtio_transport_stream_do_dequeue(struct vsock_sock *vsk,
- 	}
- 
- 	while (total < len && !skb_queue_empty(&vvs->rx_queue)) {
-+		size_t bytes, dequeued = 0;
++static void exynos_lpass_disable_lpass(void *data)
++{
++	struct platform_device *pdev = data;
++	struct exynos_lpass *lpass = platform_get_drvdata(pdev);
 +
- 		skb = skb_peek(&vvs->rx_queue);
++	pm_runtime_disable(&pdev->dev);
++	if (!pm_runtime_status_suspended(&pdev->dev))
++		exynos_lpass_disable(lpass);
++}
++
+ static int exynos_lpass_probe(struct platform_device *pdev)
+ {
+ 	struct device *dev = &pdev->dev;
+ 	struct exynos_lpass *lpass;
+ 	void __iomem *base_top;
++	int ret;
  
- 		bytes = min_t(size_t, len - total,
-@@ -620,12 +624,12 @@ virtio_transport_stream_do_dequeue(struct vsock_sock *vsk,
- 		VIRTIO_VSOCK_SKB_CB(skb)->offset += bytes;
+ 	lpass = devm_kzalloc(dev, sizeof(*lpass), GFP_KERNEL);
+ 	if (!lpass)
+@@ -134,16 +145,11 @@ static int exynos_lpass_probe(struct platform_device *pdev)
+ 	pm_runtime_enable(dev);
+ 	exynos_lpass_enable(lpass);
  
- 		if (skb->len == VIRTIO_VSOCK_SKB_CB(skb)->offset) {
--			u32 pkt_len = le32_to_cpu(virtio_vsock_hdr(skb)->len);
+-	return devm_of_platform_populate(dev);
+-}
 -
--			virtio_transport_dec_rx_pkt(vvs, pkt_len);
-+			dequeued = le32_to_cpu(virtio_vsock_hdr(skb)->len);
- 			__skb_unlink(skb, &vvs->rx_queue);
- 			consume_skb(skb);
- 		}
-+
-+		virtio_transport_dec_rx_pkt(vvs, bytes, dequeued);
- 	}
+-static void exynos_lpass_remove(struct platform_device *pdev)
+-{
+-	struct exynos_lpass *lpass = platform_get_drvdata(pdev);
++	ret = devm_add_action_or_reset(dev, exynos_lpass_disable_lpass, pdev);
++	if (ret)
++		return ret;
  
- 	fwd_cnt_delta = vvs->fwd_cnt - vvs->last_fwd_cnt;
-@@ -781,7 +785,7 @@ static int virtio_transport_seqpacket_do_dequeue(struct vsock_sock *vsk,
- 				msg->msg_flags |= MSG_EOR;
- 		}
+-	pm_runtime_disable(&pdev->dev);
+-	if (!pm_runtime_status_suspended(&pdev->dev))
+-		exynos_lpass_disable(lpass);
++	return devm_of_platform_populate(dev);
+ }
  
--		virtio_transport_dec_rx_pkt(vvs, pkt_len);
-+		virtio_transport_dec_rx_pkt(vvs, pkt_len, pkt_len);
- 		kfree_skb(skb);
- 	}
+ static int __maybe_unused exynos_lpass_suspend(struct device *dev)
+@@ -183,7 +189,6 @@ static struct platform_driver exynos_lpass_driver = {
+ 		.of_match_table	= exynos_lpass_of_match,
+ 	},
+ 	.probe	= exynos_lpass_probe,
+-	.remove	= exynos_lpass_remove,
+ };
+ module_platform_driver(exynos_lpass_driver);
  
-@@ -1735,6 +1739,7 @@ int virtio_transport_read_skb(struct vsock_sock *vsk, skb_read_actor_t recv_acto
- 	struct sock *sk = sk_vsock(vsk);
- 	struct virtio_vsock_hdr *hdr;
- 	struct sk_buff *skb;
-+	u32 pkt_len;
- 	int off = 0;
- 	int err;
- 
-@@ -1752,7 +1757,8 @@ int virtio_transport_read_skb(struct vsock_sock *vsk, skb_read_actor_t recv_acto
- 	if (le32_to_cpu(hdr->flags) & VIRTIO_VSOCK_SEQ_EOM)
- 		vvs->msg_count--;
- 
--	virtio_transport_dec_rx_pkt(vvs, le32_to_cpu(hdr->len));
-+	pkt_len = le32_to_cpu(hdr->len);
-+	virtio_transport_dec_rx_pkt(vvs, pkt_len, pkt_len);
- 	spin_unlock_bh(&vvs->rx_lock);
- 
- 	virtio_transport_send_credit_update(vsk);
 -- 
 2.39.5
 
