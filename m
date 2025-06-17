@@ -1,58 +1,69 @@
-Return-Path: <stable+bounces-154315-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153795-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0F352ADD7DB
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:49:54 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 91647ADD693
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:35:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 888297ACE28
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:48:01 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AA248407CD3
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:24:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A45FC285070;
-	Tue, 17 Jun 2025 16:46:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25FD92ED16D;
+	Tue, 17 Jun 2025 16:18:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qYXMCXD9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FBH9XTWU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D97E285063;
-	Tue, 17 Jun 2025 16:46:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D28922ED161;
+	Tue, 17 Jun 2025 16:18:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750178795; cv=none; b=QBGDuMEFwS/J8kSrCT957Iq5Pc396iVZ17qSaEyNy8hwB2UeBW7bIrwkMqBU1go1gEogyukSPp1S4wrhaD3WL8wAC8ty5HHYRNLjL/IHCOTYPygQXgxdW1kM55/MooebmGHZr2kTyJ3v+BhTvjZh73MXMyE5XLo6lydVnw6d0yk=
+	t=1750177122; cv=none; b=FXgUWSzSBUPVsLwfA6Hqxg3QfSR7Mr0SyyV8mAtqLSrZzD9gQQEC4dS0WG7zx6UD6fl/F/vM6GJ4QqzjWRAnjuNYZSlLKqSBLWKEhsFDc0UgfgJOIAAH6Wf0g2JsBbBqtET8dqkxlBtaqt+OI4lqW56pb8Q7P4Su86BeCNnl0vw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750178795; c=relaxed/simple;
-	bh=EGx1Kz7PetJVhNNdX1b7R+ZRFQqYuD8fJQX9xlAjg2Q=;
+	s=arc-20240116; t=1750177122; c=relaxed/simple;
+	bh=Rg5rgER2JLwwrIIL2nN4yG5JEC/ew0XHQEb64zfzDFw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ZwAXBC/5EI+LIMNDvpdHPGYhXD1UGcokwG0/HvKY/S8JFe03Em5xwmizdiGq9AVW6RxTC5LN0RY7B2svAtJ/btUk3XxEwMhl8mzm/jYqeDUQYX3Aq+MP3l2ynqQ6vPmiSz99fxKseYEilcGSsMzJcPXVLBPOOkm5g7wdgj792D4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qYXMCXD9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1240C4CEE3;
-	Tue, 17 Jun 2025 16:46:34 +0000 (UTC)
+	 MIME-Version; b=cqVLW2HhdXeSUZsNeAdlhlKOba5fggeHXySFgtKT0ldjB/A8O27x6aBK4CjYoOtepLi7FXNrryl1Xt7+lTliJw9H/AAncKHhslPXNG1uiQ3u2lbWC4mzPYP+vCMNf790Mr2EFZtQVfc+clliEro0DiPaFqsed5Kj5Xg3nCzMGho=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FBH9XTWU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C17BC4CEE3;
+	Tue, 17 Jun 2025 16:18:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750178795;
-	bh=EGx1Kz7PetJVhNNdX1b7R+ZRFQqYuD8fJQX9xlAjg2Q=;
+	s=korg; t=1750177122;
+	bh=Rg5rgER2JLwwrIIL2nN4yG5JEC/ew0XHQEb64zfzDFw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qYXMCXD9kiK/kFqy8R78dxJ0tnF1F/BiWOVY9fb71OQqUoE+Oyh3c1XQzjOiR5duh
-	 p2jAHRHMxLSBm0HcuJD9Ua0XEHhCIw2UFipm5gIFw5fqmpWp3VSlLT51TulOWKEmNT
-	 t40XHUC3BLeVt3qvN6l4UFVSRB0oL/7aa1zD31fA=
+	b=FBH9XTWUVEGPgdMgNZU2N/IRuV16A4D+kIKcr96Gf/Cj0jcB1pGLmw+P6yHZUTh2I
+	 RLG51Sdt+U2RdgYe4B/meFc97RUUMsI32+W5N2ClGjFb8ebopJegovOdj7WnUMJXpP
+	 jtu2bmQ8SqCETFXR3s370w9y5n+6aZvkwJ/FaO9M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vinay Belgaumkar <vinay.belgaumkar@intel.com>,
-	Lucas De Marchi <lucas.demarchi@intel.com>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>,
-	=?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
+	Howard Chu <howardchu95@gmail.com>,
+	Anubhav Shelat <ashelat@redhat.com>,
+	Namhyung Kim <namhyung@kernel.org>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+	Dapeng Mi <dapeng1.mi@linux.intel.com>,
+	Ian Rogers <irogers@google.com>,
+	Ingo Molnar <mingo@redhat.com>,
+	James Clark <james.clark@linaro.org>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Kan Liang <kan.liang@linux.intel.com>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Michael Petlan <mpetlan@redhat.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Arnaldo Carvalho de Melo <acme@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 557/780] drm/xe: Add missing documentation of rpa_freq
+Subject: [PATCH 6.12 299/512] perf trace: Always print return value for syscalls returning a pid
 Date: Tue, 17 Jun 2025 17:24:25 +0200
-Message-ID: <20250617152514.181798732@linuxfoundation.org>
+Message-ID: <20250617152431.711885365@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
-References: <20250617152451.485330293@linuxfoundation.org>
+In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
+References: <20250617152419.512865572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,49 +73,71 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rodrigo Vivi <rodrigo.vivi@intel.com>
+From: Anubhav Shelat <ashelat@redhat.com>
 
-[ Upstream commit 40493d97b329f8185c0f04dc0ef2b9ffc58e7f3b ]
+[ Upstream commit c7a48ea9b919e2fa0e4a1d9938fdb03e9afe276c ]
 
-While at it, already adjust the rpe_freq frequency, to highlight
-that both are calculated by PCODE at runtime.
+The syscalls that were consistently observed were set_robust_list and
+rseq. This is because perf cannot find their child process.
 
-Fixes: c6aac2fa77a3 ("drm/xe: Introduce the RPa information")
-Cc: Vinay Belgaumkar <vinay.belgaumkar@intel.com>
-Cc: Lucas De Marchi <lucas.demarchi@intel.com>
-Reviewed-by: Lucas De Marchi <lucas.demarchi@intel.com>
-Reviewed-by: Vinay Belgaumkar <vinay.belgaumkar@intel.com>
-Link: https://lore.kernel.org/r/20250521165146.39616-4-rodrigo.vivi@intel.com
-Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
-(cherry picked from commit 39578fa40420fb11dbe4f42225a347e945d8fd0e)
-Signed-off-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
+This change ensures that the return value is always printed.
+
+Before:
+     0.256 ( 0.001 ms): set_robust_list(head: 0x7f09c77dba20, len: 24)                        =
+     0.259 ( 0.001 ms): rseq(rseq: 0x7f09c77dc0e0, rseq_len: 32, sig: 1392848979)             =
+After:
+     0.270 ( 0.002 ms): set_robust_list(head: 0x7f0bb14a6a20, len: 24)                        = 0
+     0.273 ( 0.002 ms): rseq(rseq: 0x7f0bb14a70e0, rseq_len: 32, sig: 1392848979)             = 0
+
+Committer notes:
+
+As discussed in the thread in the Link: tag below, these two don't
+return a pid, but for syscalls returning one, we need to print the
+result and if we manage to find the children in 'perf trace' data
+structures, then print its name as well.
+
+Fixes: 11c8e39f5133aed9 ("perf trace: Infrastructure to show COMM strings for syscalls returning PIDs")
+Reviewed-by: Howard Chu <howardchu95@gmail.com>
+Signed-off-by: Anubhav Shelat <ashelat@redhat.com>
+Acked-by: Namhyung Kim <namhyung@kernel.org>
+Cc: Adrian Hunter <adrian.hunter@intel.com>
+Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
+Cc: Dapeng Mi <dapeng1.mi@linux.intel.com>
+Cc: Ian Rogers <irogers@google.com>
+Cc: Ingo Molnar <mingo@redhat.com>
+Cc: James Clark <james.clark@linaro.org>
+Cc: Jiri Olsa <jolsa@kernel.org>
+Cc: Kan Liang <kan.liang@linux.intel.com>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Michael Petlan <mpetlan@redhat.com>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Link: https://lore.kernel.org/r/20250403160411.159238-2-ashelat@redhat.com
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/xe/xe_gt_freq.c | 3 +++
- 1 file changed, 3 insertions(+)
+ tools/perf/builtin-trace.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/xe/xe_gt_freq.c b/drivers/gpu/drm/xe/xe_gt_freq.c
-index 985efbc685286..552ac92496a40 100644
---- a/drivers/gpu/drm/xe/xe_gt_freq.c
-+++ b/drivers/gpu/drm/xe/xe_gt_freq.c
-@@ -36,7 +36,10 @@
-  * - act_freq: The actual resolved frequency decided by PCODE.
-  * - cur_freq: The current one requested by GuC PC to the PCODE.
-  * - rpn_freq: The Render Performance (RP) N level, which is the minimal one.
-+ * - rpa_freq: The Render Performance (RP) A level, which is the achiveable one.
-+ *   Calculated by PCODE at runtime based on multiple running conditions
-  * - rpe_freq: The Render Performance (RP) E level, which is the efficient one.
-+ *   Calculated by PCODE at runtime based on multiple running conditions
-  * - rp0_freq: The Render Performance (RP) 0 level, which is the maximum one.
-  *
-  * device/tile#/gt#/freq0/<item>_freq *read-write* files:
+diff --git a/tools/perf/builtin-trace.c b/tools/perf/builtin-trace.c
+index ee82e858ab200..ebe4fad0d4751 100644
+--- a/tools/perf/builtin-trace.c
++++ b/tools/perf/builtin-trace.c
+@@ -2873,8 +2873,8 @@ errno_print: {
+ 	else if (sc->fmt->errpid) {
+ 		struct thread *child = machine__find_thread(trace->host, ret, ret);
+ 
++		fprintf(trace->output, "%ld", ret);
+ 		if (child != NULL) {
+-			fprintf(trace->output, "%ld", ret);
+ 			if (thread__comm_set(child))
+ 				fprintf(trace->output, " (%s)", thread__comm_str(child));
+ 			thread__put(child);
 -- 
 2.39.5
 
