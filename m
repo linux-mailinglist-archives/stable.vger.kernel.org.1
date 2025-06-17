@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-153774-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-154538-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A2B4ADD67B
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:34:15 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 44880ADD9AE
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 19:08:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3A0C32C4BEC
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:23:55 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4548B19E104A
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:59:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4F8D2EA144;
-	Tue, 17 Jun 2025 16:17:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C98B2FA635;
+	Tue, 17 Jun 2025 16:58:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SmNQbb3K"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ajfU/v83"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F54B2EA147;
-	Tue, 17 Jun 2025 16:17:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4F3C2FA62E;
+	Tue, 17 Jun 2025 16:58:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750177055; cv=none; b=CqPVPSkhjOj+GZNZh/UOzNix+iqQstJWsiIoS3FvoxpPcLhJ3ixxPMtUUxEi9If5pgGdIqw0BKY4V1RHDc7REen+RkSdnygEsuoawUGnAZNyg6ojQq8ds6igkHcdiu5qmgYwg0OeD8UQOqoJsH7pmAEo63UUsh9DpsA2rJbSr2Y=
+	t=1750179532; cv=none; b=RhYVJY87B0OMf486qu5nsHXjJbYAM4lMZy2Jvv1YCOmWzB0TfR5fdzOEg5nXKPuH2bSBC22l5DmbGPvMUboB8FkRb8qsicBjgqC+3T2JPGORoZMymgvCsx6r5dmhBgW/wD2584xl0GbBciOhK0PMCTfBCaFdRLWNLvzJQNghZJA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750177055; c=relaxed/simple;
-	bh=DSJCaVJ65dURo79OC2EpU+Xl8dvqi8j+YZVlCnolhmc=;
+	s=arc-20240116; t=1750179532; c=relaxed/simple;
+	bh=BJc40qBk2rQrOJWXKxS6n4gRX8RxKiW1ciLYqErwHbc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=m9cGOy6jSzRGyPNCEI5Ppp+5V9xE/8Dp6UBNvqsBiNNvMDmGk2x3hFrJ4rNbkeh2uup3y2+v3utHYZTiXhGTl/y+7L6aX2/hF1jNaBPNHNJ+39pJjT4Ts6okKmw4dLecR62CgIT7c0KtfMMP6VEUALu1Qj8bxvISmUTWH11pdL8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SmNQbb3K; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74C9AC4CEE3;
-	Tue, 17 Jun 2025 16:17:34 +0000 (UTC)
+	 MIME-Version; b=AEFhFdF3fezKIUZcDcSB46hSsOfbxGLkO93Vs7GD/zryIgn7KQm2kTczARi7dH0Ss3tFn2OINwpihqPplJNEbzX3y3randgh/ypqRrJOW+Hx0W86Y/MYRGPjroKD886F5wTrPL2q6l6QzahgwGlw1aZpFLvzqU6QmLOen+9Dpjc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ajfU/v83; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C350C4CEE3;
+	Tue, 17 Jun 2025 16:58:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750177054;
-	bh=DSJCaVJ65dURo79OC2EpU+Xl8dvqi8j+YZVlCnolhmc=;
+	s=korg; t=1750179532;
+	bh=BJc40qBk2rQrOJWXKxS6n4gRX8RxKiW1ciLYqErwHbc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SmNQbb3Ke4mQONRytb8HptdJT9e/Ljycl2Mfo6ym1IAWf6soNKZC3EEvg2uMFffy+
-	 hQAFUmDa/ljmXrDmp5p96OjPEtTJwBmr4RzDAlObtu+blWFtt58fgUcO5arTY7neZU
-	 JAkKtBbfBRQSaJ3FtZFiCRS73Wamv/TO1sfJ8w8Q=
+	b=ajfU/v83dyyHNAYoq9YmtDVH8LkFmt/VqDfkcpdfd4uzyB3KPpIKB2X1sOdU3Qexv
+	 QFHGNzPEjsxvRbJAxTXCSEpTug35Yrib+CZmridykR1WLcj6QbveBPMmxNJ9kyvjux
+	 F0X6jVCHuSaL51FopHqBBeGlINvH6iEGM6xgCG2M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gerrard Tai <gerrard.tai@starlabs.sg>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Bart Van Assche <bvanassche@acm.org>,
+	Christoph Hellwig <hch@lst.de>,
+	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
+	Damien Le Moal <dlemoal@kernel.org>,
+	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 327/356] net_sched: prio: fix a race in prio_tune()
+Subject: [PATCH 6.15 734/780] block: dont use submit_bio_noacct_nocheck in blk_zone_wplug_bio_work
 Date: Tue, 17 Jun 2025 17:27:22 +0200
-Message-ID: <20250617152351.312150156@linuxfoundation.org>
+Message-ID: <20250617152521.394761805@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152338.212798615@linuxfoundation.org>
-References: <20250617152338.212798615@linuxfoundation.org>
+In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
+References: <20250617152451.485330293@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,60 +65,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Christoph Hellwig <hch@lst.de>
 
-[ Upstream commit d35acc1be3480505b5931f17e4ea9b7617fea4d3 ]
+[ Upstream commit cf625013d8741c01407bbb4a60c111b61b9fa69d ]
 
-Gerrard Tai reported a race condition in PRIO, whenever SFQ perturb timer
-fires at the wrong time.
+Bios queued up in the zone write plug have already gone through all all
+preparation in the submit_bio path, including the freeze protection.
 
-The race is as follows:
+Submitting them through submit_bio_noacct_nocheck duplicates the work
+and can can cause deadlocks when freezing a queue with pending bio
+write plugs.
 
-CPU 0                                 CPU 1
-[1]: lock root
-[2]: qdisc_tree_flush_backlog()
-[3]: unlock root
- |
- |                                    [5]: lock root
- |                                    [6]: rehash
- |                                    [7]: qdisc_tree_reduce_backlog()
- |
-[4]: qdisc_put()
+Go straight to ->submit_bio or blk_mq_submit_bio to bypass the
+superfluous extra freeze protection and checks.
 
-This can be abused to underflow a parent's qlen.
-
-Calling qdisc_purge_queue() instead of qdisc_tree_flush_backlog()
-should fix the race, because all packets will be purged from the qdisc
-before releasing the lock.
-
-Fixes: 7b8e0b6e6599 ("net: sched: prio: delay destroying child qdiscs on change")
-Reported-by: Gerrard Tai <gerrard.tai@starlabs.sg>
-Suggested-by: Gerrard Tai <gerrard.tai@starlabs.sg>
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Link: https://patch.msgid.link/20250611111515.1983366-2-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 9b1ce7f0c6f8 ("block: Implement zone append emulation")
+Reported-by: Bart Van Assche <bvanassche@acm.org>
+Signed-off-by: Christoph Hellwig <hch@lst.de>
+Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
+Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
+Tested-by: Damien Le Moal <dlemoal@kernel.org>
+Link: https://lore.kernel.org/r/20250611044416.2351850-1-hch@lst.de
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sched/sch_prio.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ block/blk-zoned.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/net/sched/sch_prio.c b/net/sched/sch_prio.c
-index fdc5ef52c3ee9..fdd9caa41e80f 100644
---- a/net/sched/sch_prio.c
-+++ b/net/sched/sch_prio.c
-@@ -211,7 +211,7 @@ static int prio_tune(struct Qdisc *sch, struct nlattr *opt,
- 	memcpy(q->prio2band, qopt->priomap, TC_PRIO_MAX+1);
+diff --git a/block/blk-zoned.c b/block/blk-zoned.c
+index 8f15d1aa6eb89..45c91016cef38 100644
+--- a/block/blk-zoned.c
++++ b/block/blk-zoned.c
+@@ -1306,7 +1306,6 @@ static void blk_zone_wplug_bio_work(struct work_struct *work)
+ 	spin_unlock_irqrestore(&zwplug->lock, flags);
  
- 	for (i = q->bands; i < oldbands; i++)
--		qdisc_tree_flush_backlog(q->queues[i]);
-+		qdisc_purge_queue(q->queues[i]);
+ 	bdev = bio->bi_bdev;
+-	submit_bio_noacct_nocheck(bio);
  
- 	for (i = oldbands; i < q->bands; i++) {
- 		q->queues[i] = queues[i];
+ 	/*
+ 	 * blk-mq devices will reuse the extra reference on the request queue
+@@ -1314,8 +1313,12 @@ static void blk_zone_wplug_bio_work(struct work_struct *work)
+ 	 * path for BIO-based devices will not do that. So drop this extra
+ 	 * reference here.
+ 	 */
+-	if (bdev_test_flag(bdev, BD_HAS_SUBMIT_BIO))
++	if (bdev_test_flag(bdev, BD_HAS_SUBMIT_BIO)) {
++		bdev->bd_disk->fops->submit_bio(bio);
+ 		blk_queue_exit(bdev->bd_disk->queue);
++	} else {
++		blk_mq_submit_bio(bio);
++	}
+ 
+ put_zwplug:
+ 	/* Drop the reference we took in disk_zone_wplug_schedule_bio_work(). */
 -- 
 2.39.5
 
