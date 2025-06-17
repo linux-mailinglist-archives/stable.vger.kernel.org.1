@@ -1,197 +1,144 @@
-Return-Path: <stable+bounces-154577-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-154578-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3865FADDD78
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 22:55:51 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6AD3AADDD83
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 22:59:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CA48F179365
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 20:55:51 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 42B593B956A
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 20:58:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E6C62EBB96;
-	Tue, 17 Jun 2025 20:55:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78FEE2E6D13;
+	Tue, 17 Jun 2025 20:59:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Ww+1Ce2t"
+	dkim=pass (2048-bit key) header.d=kernelci-org.20230601.gappssmtp.com header.i=@kernelci-org.20230601.gappssmtp.com header.b="qNexeBRB"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ej1-f48.google.com (mail-ej1-f48.google.com [209.85.218.48])
+Received: from mail-yb1-f174.google.com (mail-yb1-f174.google.com [209.85.219.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B545156F5E;
-	Tue, 17 Jun 2025 20:55:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6703C28C877
+	for <stable@vger.kernel.org>; Tue, 17 Jun 2025 20:59:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750193746; cv=none; b=hcEAib4MF/iUjZagVyz7Lrs710FL5JYBf/dD1mGMZHgccUyjBfyIqgwyT90SmTbHnQZvOlLC4ttNu/EfsjbD1X3Nam/wqLGrPQgQ3mtlnHxZpr48DKEvNirhJzc/rCmtEnl8JJehdod8nghZx9ZzT51FgoZ3ECl2O6TPeDQBj/A=
+	t=1750193951; cv=none; b=fmQ3C9ObD8e+r20Xy8yOEBlOTgzbONBK3g5aE2lxs/cHCTv2MDqYC7s3cYFrH5zLET1MFAmdEVMfaiYF4mf24Kzpi7nWG+TwKJvvkV6rwwXcJdAb39hgqcDuX+0aRVBsU/NRu4Gu8TFKYzSdNHi7TlJG0x/dI/rwak20dEMTg4w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750193746; c=relaxed/simple;
-	bh=OhHRBPMRV/UHcsVAGr5/2+3PfnQ5V8unIAEuX1cHqcg=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=gopALN376Xdb/nXktrpvNKqq00siFR0NKJ5Lkef+PveVCdofWNd4wSFNzfbyEqpQGfVQG/OaILmzP1VVSptspFcMzIHZtXYrSJJ2EpNNU92LeGljtO8CWWr06vCmEwct0+SpGFXSLhmyNZOxYBwsnlXuYT8//DvxoVQ+tkqKHsE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Ww+1Ce2t; arc=none smtp.client-ip=209.85.218.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f48.google.com with SMTP id a640c23a62f3a-addda47ebeaso1252754766b.1;
-        Tue, 17 Jun 2025 13:55:44 -0700 (PDT)
+	s=arc-20240116; t=1750193951; c=relaxed/simple;
+	bh=FjvbQDAu+oZzn8TW5EKJNuvj3CrTtpM9vnoGxAYgoOU=;
+	h=MIME-Version:from:Date:Message-ID:Subject:To:Cc:Content-Type; b=WKVazsWXnrWO2SRYDgQ6UEDDqb0nHAT/oIposidd7CGmzjU2qn6pXIiCwtJhwZiLk0n5xZ7eXBynb2PnrNUxSFxo8TGLuDRTSRiflWDJLoQBSZAvlIf3Wk3c78DqJh2OC1jpx8ksmEDI7tPvKQ639xr4Orh2Vracci3r0o+TMTk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernelci.org; spf=none smtp.mailfrom=kernelci.org; dkim=pass (2048-bit key) header.d=kernelci-org.20230601.gappssmtp.com header.i=@kernelci-org.20230601.gappssmtp.com header.b=qNexeBRB; arc=none smtp.client-ip=209.85.219.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernelci.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=kernelci.org
+Received: by mail-yb1-f174.google.com with SMTP id 3f1490d57ef6-e740a09eae0so5995411276.1
+        for <stable@vger.kernel.org>; Tue, 17 Jun 2025 13:59:07 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1750193743; x=1750798543; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=Z6GF9ie7geadzhcZucxpdHyxYKwylC1RiYeKOCBRN3k=;
-        b=Ww+1Ce2t8yrCU0OYsUEdU89ouvrHmPMyLUB7NsbdQpJYqJn2Lb2Bhe4htXVOJcnnM4
-         TrpfWT3KvoB5GLE113lLoE9l9P05JiccS8jfKSOKRMdn2mqSxiUD7FFJtygXJLXTthch
-         NjRtE6aJ2QHX1Db36b4HaH3CtcMDQHbS6ahxyPsb7lZPAlBsvlsdmNi++/7LPyBHpwd3
-         WQBBOb+yT6L/kpd/bUCSsgecFJiIlTXOO5JoYlYmcpp7m2hZydhls0UmGUAsTeo9qEXI
-         cab9xN3TjLQXG8csbrvZPS5xramKekXsDgj/B+eTaM2Yqqx8ymVzuZQQBwvuzgr/Tc4O
-         McQQ==
+        d=kernelci-org.20230601.gappssmtp.com; s=20230601; t=1750193946; x=1750798746; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:reply-to
+         :from:mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=vj0G2kNS4cHUit1jaFUJlZARvQl211K05ZaLMvscpuk=;
+        b=qNexeBRBr5OO+IDWSyPasBR3do78ty2zERrA+Vp2oiZdFA2VyEwpXSFaIXsyVC6RKM
+         DHjMvuJ+oUMl8oUsxnjgGElPUIhgb6s7K+Xm2ZnqwfMAAanRrwaATNgSQZByJ5nEqlRU
+         MSb300eUik41nCOdbn7noBLWE7HC7n9tu2gpdBTcyVtbOvcfDbpx5T1ik9oNpF6HFahW
+         j+6/VWqczJKNpcGe8QCI/vcf2SbO68Vyd0ObtENLlspp8dBP0SJ+JaBJ/zKb6yzNyyY6
+         +yqRUxoAkKxlNue1TQw+SeZ/orWdSCDy/AwVBi7HH7Ck1qyP85F0is+k4stJ2+LSliVs
+         7kOQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1750193743; x=1750798543;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=Z6GF9ie7geadzhcZucxpdHyxYKwylC1RiYeKOCBRN3k=;
-        b=q5d5m64tGqrNXYiE27Dx8Yna8YUMuf+rl8orQGRnpqBd8njJ2JxDEFOg+E5E7kYEMh
-         XCuTqbjzcC+Z1LtpDsMv0VohUs+jLidRX8lTWfmh0iUOxzeZ7c29hS+eOLXOUuyFNikq
-         kPny3D8VBb4DMXpzrnPcAHxiQBTtvsvU4iznfIV5/XLCcVAEgoBwK1lyLDA64h/j2xuX
-         QjXFEU9qJkPx1HpcdUN5fcyXxFowwmIopI9wUbpCbk2UBMFQNIds3LMXZd4gTJ3DVbIE
-         OtDQ75ld/eMQdeGpbO+olO66tatAtdbDmoeaPOpTLmH/8fKq2KlF36cjPVJC/fc27b59
-         cn3g==
-X-Forwarded-Encrypted: i=1; AJvYcCXDjZk/aq/pV967T3ur1M0nONlVNHWOlUaMOYnVgtpdZnPv9cnuzze4cAzXCXYtyxwj1KH7abCI0bQ=@vger.kernel.org, AJvYcCXmKQGR7te1+ddylMXiOSR3vzooATtmhzgkwrNTDTcFzFckU+isicreICTy5QA+aurzDAFoOPdg@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy7zNNgIT+6Ygv6c1Z2A0nqJlL2dIlXRPHocdtUQL5RdK1Se/IW
-	l36U6cbCFmxaPwHJKH+mo9ztuQO/cXMu8PTMsOeBitnSJGmCZlq6I1jt
-X-Gm-Gg: ASbGnctCZz0E6jhl8hk0nnYoc8W2OvWwYopOo/i18JFqvVcrfOZVr826NOoUZWmhVZn
-	xBAp5yhmiCT2JoDcBD2p2i31KAv+hBgfeUU5FBDNIRIq1Ky2R3ev9lcVHREuq87Q9k8R2di/EVd
-	mh1u31Rp5kC0hCOsUEfYqVhqG+A06GwpEowtYzL//TNuNJtCmyzikm0w5Nr0/M73DhycE8YOBxR
-	xBb4odGIQLMZjwjRw+YtJmvuzyjcpBHtMqfSQnrGPWt58H5OuOKZx4eZElkxYqyLhT8vLI31ejD
-	Mc/cxt/3IQC+Bi7Vle3gb7os5x+yiHyGN5n715W++C7TciZ+eJ0dZ/5kzA4tz28oR3LbuKtRMtg
-	mxMNErr9iy0T4bC3Ec4QX4AkX5fhxc+Ai1Fv1jCvkTwSHuajcH9GuZJHnsYvCALKEUlxczg==
-X-Google-Smtp-Source: AGHT+IEqziB0vNC7Zgnv3HeNmOwInCxtuCKj03BmBmL0eTRJFYYZ4/DveA17OHFaTmKWjcLqItPRNA==
-X-Received: by 2002:a17:906:730c:b0:ad8:9257:5727 with SMTP id a640c23a62f3a-adfad4f7406mr1417714866b.51.1750193742057;
-        Tue, 17 Jun 2025 13:55:42 -0700 (PDT)
-Received: from amir-ThinkPad-T480.arnhem.chello.nl (92-109-99-123.cable.dynamic.v4.ziggo.nl. [92.109.99.123])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-adec89299c2sm922695566b.119.2025.06.17.13.55.41
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 17 Jun 2025 13:55:41 -0700 (PDT)
-From: Amir Goldstein <amir73il@gmail.com>
-To: Sasha Levin <sashal@kernel.org>
-Cc: Leah Rumancik <leah.rumancik@gmail.com>,
-	"Darrick J . Wong" <djwong@kernel.org>,
-	Long Li <leo.lilong@huawei.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	linux-xfs@vger.kernel.org,
-	stable@vger.kernel.org,
-	Dave Chinner <dchinner@redhat.com>
-Subject: [PATCH 5.15] xfs: allow inode inactivation during a ro mount log recovery
-Date: Tue, 17 Jun 2025 22:55:33 +0200
-Message-ID: <20250617205533.145730-1-amir73il@gmail.com>
-X-Mailer: git-send-email 2.43.0
+        d=1e100.net; s=20230601; t=1750193946; x=1750798746;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:reply-to
+         :from:mime-version:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=vj0G2kNS4cHUit1jaFUJlZARvQl211K05ZaLMvscpuk=;
+        b=C6FrfamabkQXhgnplGFpmsP6EX8W7zAmxCe7W+1LOoL8T5u6+8RHkunWqfLse1hpwt
+         dNz2x8jq05pMJiZmwR5Y5Z2WNqOujNcySNXvZ6HJPWLLzL0dgL80+YW8oCJJD+e402fK
+         to16/EgEWTkr5PgrayifHVhEk34d7EqxkQDuFvVXsFkbATo1/8vz/DdnLYQS6X0AmoAd
+         HNbLJvRmsXaxRj8rDQvtIwyGGDJyfQH0gYpsB3k7ZZP0aOxcxVM0ISc32AJcZYudYN0p
+         57VURWuXKuLFR4E88fPKLaITurZGTKFAd/3ldfd7giySejwoSsTjlvBn3P2ygAUu8QXE
+         +45g==
+X-Forwarded-Encrypted: i=1; AJvYcCVr4GOT/kWjJtYdpcUq6HfTR7Yuzp3CvsquXXBnkQuTFzMp7h6RGPRiNK4KZhBE/qr5qnnqXfk=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz8eazy+hpRFF8amC6rN0yS1aJwAKwR3GzplaVSdS9KJqDOfbsR
+	yKxZEYbbJMT92+YS/nNwAuiDQopYgN7kW1xhAxehR1CJU8Kv7tqj9KMicko0OcwURnekOs9I25+
+	sA+xzZLoPjV6CGFa9MnoTIR1eYrvQD+saxW2oV04f9GtaMrVXkANc
+X-Gm-Gg: ASbGncupNkL9L5Kvuw9zWhrvC/0tXLzOgWZZ6m8Gb7528eTUG1M610AmDyxWnHV77C1
+	iSwLUz+POEn/k15Kfoy9Yfq0XN6wUarFzvn0abAQ6x0/bsZjqLHAmpQmr0qG05+AgS/lhRD2KUm
+	eDYBDuahs7EZIQx18iKdkkZWwCCfejN6cPLLGJ7+SXQg==
+X-Google-Smtp-Source: AGHT+IHwjmdGFRqpJF+Fk+o8ecsRhkQDsV6uX1joGi1mtLp4X6B0FU4Js1br9ZEFWp4tNXYEQcF0qdHoPMrdvNQAzVQ=
+X-Received: by 2002:a05:6902:2208:b0:e7d:58d7:7167 with SMTP id
+ 3f1490d57ef6-e822ac7920emr20840832276.25.1750193946328; Tue, 17 Jun 2025
+ 13:59:06 -0700 (PDT)
+Received: from 415818378487 named unknown by gmailapi.google.com with
+ HTTPREST; Tue, 17 Jun 2025 16:59:04 -0400
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+from: KernelCI bot <bot@kernelci.org>
+Reply-To: kernelci@lists.linux.dev
+Date: Tue, 17 Jun 2025 16:59:04 -0400
+X-Gm-Features: AX0GCFujCE4HWVZMVY3H_wLLOHjSZyU4dW01VfyjcbXX2nghhR5kB2-nnkm45Gw
+Message-ID: <CACo-S-2WfXc7zyAvEWk1efOFtf6V-8UTC38MmW5b=5Mjk2kG8g@mail.gmail.com>
+Subject: =?UTF-8?B?W1JFR1JFU1NJT05dIHN0YWJsZS1yYy9saW51eC02LjEyLnk6IChidWlsZCkg4oCYbHZ0cw==?=
+	=?UTF-8?B?X2RlYnVnZnNfZXhpdOKAmSBkZWZpbmVkIGJ1dCBub3QgdXNlZCBbLVdlcnJvcj11bnVzZWQtZnVuY3Rp?=
+	=?UTF-8?B?b25dLi4u?=
+To: kernelci-results@groups.io
+Cc: gus@collabora.com, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-From: "Darrick J. Wong" <djwong@kernel.org>
+Hello,
 
-[ Upstream commit 76e589013fec672c3587d6314f2d1f0aeddc26d9 ]
+New build issue found on stable-rc/linux-6.12.y:
 
-In the next patch, we're going to prohibit log recovery if the primary
-superblock contains an unrecognized rocompat feature bit even on
-readonly mounts.  This requires removing all the code in the log
-mounting process that temporarily disables the readonly state.
-
-Unfortunately, inode inactivation disables itself on readonly mounts.
-Clearing the iunlinked lists after log recovery needs inactivation to
-run to free the unreferenced inodes, which (AFAICT) is the only reason
-why log mounting plays games with the readonly state in the first place.
-
-Therefore, change the inactivation predicates to allow inactivation
-during log recovery of a readonly mount.
-
-Signed-off-by: Darrick J. Wong <djwong@kernel.org>
-Reviewed-by: Dave Chinner <dchinner@redhat.com>
-Stable-dep-of: 74ad4693b647 ("xfs: fix log recovery when unknown rocompat bits are set")
-Signed-off-by: Amir Goldstein <amir73il@gmail.com>
+---
+ =E2=80=98lvts_debugfs_exit=E2=80=99 defined but not used [-Werror=3Dunused=
+-function] in
+drivers/thermal/mediatek/lvts_thermal.o
+(drivers/thermal/mediatek/lvts_thermal.c)
+[logspec:kbuild,kbuild.compiler.error]
 ---
 
-Sasha,
+- dashboard: https://d.kernelci.org/i/maestro:fb8aae5340da55b6254442f085814=
+7bf5f0b39dc
+- giturl: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stab=
+le-rc.git
+- commit HEAD:  519e0647630e07972733e99a0dc82065a65736ea
 
-This 5.15 backport is needed to fix a regression introduced to
-test generic/417 in kernel v5.15.176.
-With this backport, kernel v5.15.185 passed the fstests quick run.
 
-As you may have noticed, 5.15.y (and 5.10.y) are not being actively
-maintained by xfs stable maintainer who moved their focus to 6.*.y
-LTS kernels.
+Log excerpt:
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D
+drivers/thermal/mediatek/lvts_thermal.c:262:13: error:
+=E2=80=98lvts_debugfs_exit=E2=80=99 defined but not used [-Werror=3Dunused-=
+function]
+  262 | static void lvts_debugfs_exit(struct lvts_domain *lvts_td) { }
+      |             ^~~~~~~~~~~~~~~~~
+  CC [M]  drivers/watchdog/softdog.o
+cc1: all warnings being treated as errors
 
-The $SUBJECT commit is a dependency of commit 74ad4693b647, as hinted by
-the wording: "In the next patch, we're going to... This requires...".
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D
 
-Indeed, Leah has backported commit 74ad4693b647 to 6.1.y along with its
-dependency, yet somehow, commit 74ad4693b647 found its way to v5.15.176,
-without the dependency and without the xfs stable review process.
 
-Judging by the line: Stable-dep-of: 652f03db897b ("xfs: remove unknown
-compat feature check in superblock write validation") that exists only
-in the 5.15.y tree, I deduce that your bot has auto selected this
-patch in the process of backporting the commit 652f03db897b, which was
-explicitly marked for stable v4.19+ [1].
+# Builds where the incident occurred:
 
-I don't know if there is a lesson to be learned from this incident.
-Applying xfs backports without running fstests regression is always
-going to be a gamble. I will leave it up to you to decide if anything
-in the process of applying xfs patches to <= v5.15.y needs to change.
+## cros://chromeos-6.6/arm64/chromiumos-mediatek.flavour.config+lab-setup+a=
+rm64-chromebook+CONFIG_MODULE_COMPRESS=3Dn+CONFIG_MODULE_COMPRESS_NONE=3Dy
+on (arm64):
+- compiler: gcc-12
+- dashboard: https://d.kernelci.org/build/maestro:685194ac5c2cf25042b9c1a8
 
-Thanks,
-Amir.
 
-[1] https://lore.kernel.org/linux-xfs/ZzFon-0VbKscbGMT@localhost.localdomain/
+#kernelci issue maestro:fb8aae5340da55b6254442f0858147bf5f0b39dc
 
- fs/xfs/xfs_inode.c | 15 +++++++++++----
- 1 file changed, 11 insertions(+), 4 deletions(-)
+Reported-by: kernelci.org bot <bot@kernelci.org>
 
-diff --git a/fs/xfs/xfs_inode.c b/fs/xfs/xfs_inode.c
-index 3b36d5569d15..98955cd0de40 100644
---- a/fs/xfs/xfs_inode.c
-+++ b/fs/xfs/xfs_inode.c
-@@ -32,6 +32,7 @@
- #include "xfs_symlink.h"
- #include "xfs_trans_priv.h"
- #include "xfs_log.h"
-+#include "xfs_log_priv.h"
- #include "xfs_bmap_btree.h"
- #include "xfs_reflink.h"
- #include "xfs_ag.h"
-@@ -1678,8 +1679,11 @@ xfs_inode_needs_inactive(
- 	if (VFS_I(ip)->i_mode == 0)
- 		return false;
- 
--	/* If this is a read-only mount, don't do this (would generate I/O) */
--	if (xfs_is_readonly(mp))
-+	/*
-+	 * If this is a read-only mount, don't do this (would generate I/O)
-+	 * unless we're in log recovery and cleaning the iunlinked list.
-+	 */
-+	if (xfs_is_readonly(mp) && !xlog_recovery_needed(mp->m_log))
- 		return false;
- 
- 	/* If the log isn't running, push inodes straight to reclaim. */
-@@ -1739,8 +1743,11 @@ xfs_inactive(
- 	mp = ip->i_mount;
- 	ASSERT(!xfs_iflags_test(ip, XFS_IRECOVERY));
- 
--	/* If this is a read-only mount, don't do this (would generate I/O) */
--	if (xfs_is_readonly(mp))
-+	/*
-+	 * If this is a read-only mount, don't do this (would generate I/O)
-+	 * unless we're in log recovery and cleaning the iunlinked list.
-+	 */
-+	if (xfs_is_readonly(mp) && !xlog_recovery_needed(mp->m_log))
- 		goto out;
- 
- 	/* Metadata inodes require explicit resource cleanup. */
--- 
-2.47.1
+--
+This is an experimental report format. Please send feedback in!
+Talk to us at kernelci@lists.linux.dev
 
+Made with love by the KernelCI team - https://kernelci.org
 
