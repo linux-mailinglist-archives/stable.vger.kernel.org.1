@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-153150-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153153-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9899AADD2B2
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 17:46:58 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id B55B5ADD2C7
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 17:48:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7660D17E329
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 15:45:22 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 44EB217F847
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 15:46:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 554B92EE619;
-	Tue, 17 Jun 2025 15:43:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B8743DAC13;
+	Tue, 17 Jun 2025 15:44:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="St4l1VVK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2ZRqIgjD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FF172EE613;
-	Tue, 17 Jun 2025 15:43:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAA8C2F5465;
+	Tue, 17 Jun 2025 15:44:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750175039; cv=none; b=usfGlmgOqK/p8sDSZff75J2I6chwHE97OgWyGb+HEtR5XtUX7vbtCJUrFPhA7RF8JSKwASn9jMUESUaFc2dWoIDndDvjpr39MFI8lVd9WgFG+VlNcaW6qlcGV2cxD09g1NJTbID56kQV4coFCoiA/g8droRUDqDbcgtHKBbkqPY=
+	t=1750175051; cv=none; b=AqNo9WZcK3O6wYGNeHd42hpa3D9dDnpRIjwAXLMhdsvcNTQUMuABPJQRDRpc+Ooz7DeZd7KZAk4JoG6YxI8TNhgySlWOSiiTdQE94BmXqH8Q8Pwiy89GZkFknOUrkkvAGFhdXraWGYZNkK0lG8OvCKsDYicikXRevZqseJEZbio=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750175039; c=relaxed/simple;
-	bh=Uw+SRu5NB4HwJtbkFsy6oDYTiOwAytkgtgK6jycvOQk=;
+	s=arc-20240116; t=1750175051; c=relaxed/simple;
+	bh=PSMRt4+u1Kplf6Gwva9U8bPHZaW7givif9hUxGxHrMs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GQMy40QCXiTNWi79ULaZOT02pxu2TwBixNDPhocPk0d2bLblGzSMb/DZqgI+qSbRpHPu6yr8NtEBTCww/0htXlqpy0M+ZG3XqlskCTcav3hfiLoKJ+y8yIuYS6yFWGArz3DivuushsNs408dziljEw5RJnPvh31r1zUf09yr7Lk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=St4l1VVK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90ED1C4CEE3;
-	Tue, 17 Jun 2025 15:43:58 +0000 (UTC)
+	 MIME-Version; b=by48pLs1wNrvO0I5+diFv5sGieu2IdVUIr/CsBNaFrPpKttIc+8FjgLlPupmL6ROx4BRy5GpFykwbI6wk6pKHekiUSRPaFiRjLnHZKqWXKmdc8NmCigVtSa5JFTnZs0Ay1Df4DiiB0NOyD+bOEH/bXT6luK3D5ooVc7HjOC2MDg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2ZRqIgjD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E16A5C4CEF0;
+	Tue, 17 Jun 2025 15:44:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750175038;
-	bh=Uw+SRu5NB4HwJtbkFsy6oDYTiOwAytkgtgK6jycvOQk=;
+	s=korg; t=1750175048;
+	bh=PSMRt4+u1Kplf6Gwva9U8bPHZaW7givif9hUxGxHrMs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=St4l1VVKGvvvlH8e45O0wlc0cz5mnAmQtwyjLKGxoBszh4JU7T95J+goGMLOeEuCE
-	 yuy3w1Y1YtI7v57eBa1110rgIEGpQfL4J8eU6XUfqV/if7FoytT+/DxpcNnDV5WU4Z
-	 aqeNfqpngM5xo9aEruThTnR0reh4lhUCNrP//fLU=
+	b=2ZRqIgjD8gevSiBguiEjRBRMEDtov3aOnEvixBSjDP0ej7xEFns/UNXeud7/znRHx
+	 ZsA+qkKYPpw8I+MwE5A68eDm4DZtc6XQAzV39TJKDAKl3E52GBsV8eY72TtRoFey6R
+	 /8TF1UGa5DaDIbLmqQ4y4NKoT89ol0WeOW5tGQlY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Neill Kapron <nkapron@google.com>,
-	Kees Cook <kees@kernel.org>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 086/512] selftests/seccomp: fix syscall_restart test for arm compat
-Date: Tue, 17 Jun 2025 17:20:52 +0200
-Message-ID: <20250617152423.056804383@linuxfoundation.org>
+Subject: [PATCH 6.12 087/512] drm/msm/dpu: enable SmartDMA on SM8150
+Date: Tue, 17 Jun 2025 17:20:53 +0200
+Message-ID: <20250617152423.099819773@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
 References: <20250617152419.512865572@linuxfoundation.org>
@@ -66,51 +66,99 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Neill Kapron <nkapron@google.com>
+From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 
-[ Upstream commit 797002deed03491215a352ace891749b39741b69 ]
+[ Upstream commit 6a2343de0b6f70a21bf503ac4688dc905cb068e1 ]
 
-The inconsistencies in the systcall ABI between arm and arm-compat can
-can cause a failure in the syscall_restart test due to the logic
-attempting to work around the differences. The 'machine' field for an
-ARM64 device running in compat mode can report 'armv8l' or 'armv8b'
-which matches with the string 'arm' when only examining the first three
-characters of the string.
+Reworking of the catalog dropped the SmartDMA feature bit on the SM8150
+platform. Renable SmartDMA support on this SoC.
 
-This change adds additional validation to the workaround logic to make
-sure we only take the arm path when running natively, not in arm-compat.
-
-Fixes: 256d0afb11d6 ("selftests/seccomp: build and pass on arm64")
-Signed-off-by: Neill Kapron <nkapron@google.com>
-Link: https://lore.kernel.org/r/20250427094103.3488304-2-nkapron@google.com
-Signed-off-by: Kees Cook <kees@kernel.org>
+Fixes: 460c410f02e4 ("drm/msm/dpu: duplicate sdm845 catalog entries")
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Patchwork: https://patchwork.freedesktop.org/patch/650418/
+Link: https://lore.kernel.org/r/20250425-dpu-rework-vig-masks-v2-1-c71900687d08@oss.qualcomm.com
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/seccomp/seccomp_bpf.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ .../drm/msm/disp/dpu1/catalog/dpu_5_0_sm8150.h   | 16 ++++++++--------
+ 1 file changed, 8 insertions(+), 8 deletions(-)
 
-diff --git a/tools/testing/selftests/seccomp/seccomp_bpf.c b/tools/testing/selftests/seccomp/seccomp_bpf.c
-index 8c3a73461475b..abc32e4352df3 100644
---- a/tools/testing/selftests/seccomp/seccomp_bpf.c
-+++ b/tools/testing/selftests/seccomp/seccomp_bpf.c
-@@ -3155,12 +3155,15 @@ TEST(syscall_restart)
- 	ret = get_syscall(_metadata, child_pid);
- #if defined(__arm__)
- 	/*
--	 * FIXME:
- 	 * - native ARM registers do NOT expose true syscall.
- 	 * - compat ARM registers on ARM64 DO expose true syscall.
-+	 * - values of utsbuf.machine include 'armv8l' or 'armb8b'
-+	 *   for ARM64 running in compat mode.
- 	 */
- 	ASSERT_EQ(0, uname(&utsbuf));
--	if (strncmp(utsbuf.machine, "arm", 3) == 0) {
-+	if ((strncmp(utsbuf.machine, "arm", 3) == 0) &&
-+	    (strncmp(utsbuf.machine, "armv8l", 6) != 0) &&
-+	    (strncmp(utsbuf.machine, "armv8b", 6) != 0)) {
- 		EXPECT_EQ(__NR_nanosleep, ret);
- 	} else
- #endif
+diff --git a/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_5_0_sm8150.h b/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_5_0_sm8150.h
+index 36cc9dbc00b5c..d8d5a91c00ec8 100644
+--- a/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_5_0_sm8150.h
++++ b/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_5_0_sm8150.h
+@@ -76,7 +76,7 @@ static const struct dpu_sspp_cfg sm8150_sspp[] = {
+ 	{
+ 		.name = "sspp_0", .id = SSPP_VIG0,
+ 		.base = 0x4000, .len = 0x1f0,
+-		.features = VIG_SDM845_MASK,
++		.features = VIG_SDM845_MASK_SDMA,
+ 		.sblk = &dpu_vig_sblk_qseed3_1_4,
+ 		.xin_id = 0,
+ 		.type = SSPP_TYPE_VIG,
+@@ -84,7 +84,7 @@ static const struct dpu_sspp_cfg sm8150_sspp[] = {
+ 	}, {
+ 		.name = "sspp_1", .id = SSPP_VIG1,
+ 		.base = 0x6000, .len = 0x1f0,
+-		.features = VIG_SDM845_MASK,
++		.features = VIG_SDM845_MASK_SDMA,
+ 		.sblk = &dpu_vig_sblk_qseed3_1_4,
+ 		.xin_id = 4,
+ 		.type = SSPP_TYPE_VIG,
+@@ -92,7 +92,7 @@ static const struct dpu_sspp_cfg sm8150_sspp[] = {
+ 	}, {
+ 		.name = "sspp_2", .id = SSPP_VIG2,
+ 		.base = 0x8000, .len = 0x1f0,
+-		.features = VIG_SDM845_MASK,
++		.features = VIG_SDM845_MASK_SDMA,
+ 		.sblk = &dpu_vig_sblk_qseed3_1_4,
+ 		.xin_id = 8,
+ 		.type = SSPP_TYPE_VIG,
+@@ -100,7 +100,7 @@ static const struct dpu_sspp_cfg sm8150_sspp[] = {
+ 	}, {
+ 		.name = "sspp_3", .id = SSPP_VIG3,
+ 		.base = 0xa000, .len = 0x1f0,
+-		.features = VIG_SDM845_MASK,
++		.features = VIG_SDM845_MASK_SDMA,
+ 		.sblk = &dpu_vig_sblk_qseed3_1_4,
+ 		.xin_id = 12,
+ 		.type = SSPP_TYPE_VIG,
+@@ -108,7 +108,7 @@ static const struct dpu_sspp_cfg sm8150_sspp[] = {
+ 	}, {
+ 		.name = "sspp_8", .id = SSPP_DMA0,
+ 		.base = 0x24000, .len = 0x1f0,
+-		.features = DMA_SDM845_MASK,
++		.features = DMA_SDM845_MASK_SDMA,
+ 		.sblk = &dpu_dma_sblk,
+ 		.xin_id = 1,
+ 		.type = SSPP_TYPE_DMA,
+@@ -116,7 +116,7 @@ static const struct dpu_sspp_cfg sm8150_sspp[] = {
+ 	}, {
+ 		.name = "sspp_9", .id = SSPP_DMA1,
+ 		.base = 0x26000, .len = 0x1f0,
+-		.features = DMA_SDM845_MASK,
++		.features = DMA_SDM845_MASK_SDMA,
+ 		.sblk = &dpu_dma_sblk,
+ 		.xin_id = 5,
+ 		.type = SSPP_TYPE_DMA,
+@@ -124,7 +124,7 @@ static const struct dpu_sspp_cfg sm8150_sspp[] = {
+ 	}, {
+ 		.name = "sspp_10", .id = SSPP_DMA2,
+ 		.base = 0x28000, .len = 0x1f0,
+-		.features = DMA_CURSOR_SDM845_MASK,
++		.features = DMA_CURSOR_SDM845_MASK_SDMA,
+ 		.sblk = &dpu_dma_sblk,
+ 		.xin_id = 9,
+ 		.type = SSPP_TYPE_DMA,
+@@ -132,7 +132,7 @@ static const struct dpu_sspp_cfg sm8150_sspp[] = {
+ 	}, {
+ 		.name = "sspp_11", .id = SSPP_DMA3,
+ 		.base = 0x2a000, .len = 0x1f0,
+-		.features = DMA_CURSOR_SDM845_MASK,
++		.features = DMA_CURSOR_SDM845_MASK_SDMA,
+ 		.sblk = &dpu_dma_sblk,
+ 		.xin_id = 13,
+ 		.type = SSPP_TYPE_DMA,
 -- 
 2.39.5
 
