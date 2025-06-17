@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-153345-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-152890-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B3B3CADD3DC
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:03:39 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 71504ADD152
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 17:28:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A2028166396
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 15:58:09 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C3F3F1895056
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 15:28:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41A7F2F2C6B;
-	Tue, 17 Jun 2025 15:54:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 491222EB5A8;
+	Tue, 17 Jun 2025 15:28:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K6+3MsLq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vmVyKtLM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0BB72F2C64;
-	Tue, 17 Jun 2025 15:54:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03A572EF655;
+	Tue, 17 Jun 2025 15:28:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750175649; cv=none; b=gAlVpyE8pVLnBr1pSBvKcBL/Xundwv3XwxCAVcKBJVb/JDHBFYGIyKGFrinSXrdspQeTmTN9zFyiHrSzN7Lexf+DAn+pmt7uKrjjZ4rALM1pslOQgU2avThUweF+kqX3o7HspokAGli4afWpdVuycbONjF9bxXX5knQuzvNvMzU=
+	t=1750174112; cv=none; b=l+LpdXGu/xD9Oczj4yDHTYCnkI+e6KDVZ34dLSdqdYggWONkw9jmVgLr1tOHdVAxRteFAME7dJFIsvS4FFQZxElI/A1J7WYoy7WzZCCoFcPTnENuT1me1mcFMMYWryq+Fa768//9op1w9Pf5ATicNaPW9FoeZDL4bWQ9H7v3M0M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750175649; c=relaxed/simple;
-	bh=t3ZWamaGPA7srMqFRXERs7kWP3c1/koVy6W4j9B4y3k=;
+	s=arc-20240116; t=1750174112; c=relaxed/simple;
+	bh=8RL81aAWBWTJLtYKL9QhgLuzOTXph2rIScZK3VA/xg0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uubXV8oZSjs12ELu5XCKMa2wGR+SuYSj0k6cMsstq1LNFC4VieTqcd8mmxyczb0W8WTTL2gGp0/TDExs4afNPmIjBLhbbfA5IpQhv8shPd90/0s0xTRIZioijMokGbfBjHyB73Lmml1hvJExmqUJlFJPB8Ve7YV3XrvKSKmjW2c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K6+3MsLq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62934C4CEE3;
-	Tue, 17 Jun 2025 15:54:08 +0000 (UTC)
+	 MIME-Version; b=HghpyMKTDaccQSHY0i5Z5npgcjIODo+AD6xz4HAiAusMwuRut9WJevI7gyeTfUbrH+Lxk0hsHD2KNjjxC2acclMUqNxkhyZEqExnclJnKbTUwO3h9i+eALPD84/xEgWt+Dwhvfv3XgcAb773WNc9GsgaUJ8oDER+bN3bDU5qrtU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vmVyKtLM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F5A8C4CEE3;
+	Tue, 17 Jun 2025 15:28:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750175648;
-	bh=t3ZWamaGPA7srMqFRXERs7kWP3c1/koVy6W4j9B4y3k=;
+	s=korg; t=1750174110;
+	bh=8RL81aAWBWTJLtYKL9QhgLuzOTXph2rIScZK3VA/xg0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=K6+3MsLqexNXRJXFEJeGDdQpF2t4InZo+y9JOa12PxwyERK3ehRxZWIkYMfYUfN3s
-	 DsdUI2N9MMvqkZYnzWhGv45IIZNH5lCdc096C9GkncTnVOxpkD2KPrnORcF3YarRXy
-	 MbRownHN03emMYF6XuTN8y+t0ukxM67Axf0TBAyI=
+	b=vmVyKtLMXbDMikny0NmnMI7sSuCjui00XiG72HNT3VhWunBhWTiP7uFruFWYa4JbQ
+	 t/0BmpUP2PH1aVdTkU/XlHfxDdoAyXejMYttzHG0P+he7Rzffgds19+Yi4bggzrk7z
+	 KzChoHICYit1lLjfPHuYNvRDih3HEvlzvkM9/ClA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Anton Protopopov <a.s.protopopov@gmail.com>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 150/512] bpf: Fix uninitialized values in BPF_{CORE,PROBE}_READ
-Date: Tue, 17 Jun 2025 17:21:56 +0200
-Message-ID: <20250617152425.683638630@linuxfoundation.org>
+	Imre Kaloz <kaloz@openwrt.org>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Gabor Juhos <j4g8y7@gmail.com>,
+	Linus Walleij <linus.walleij@linaro.org>
+Subject: [PATCH 6.6 002/356] pinctrl: armada-37xx: use correct OUTPUT_VAL register for GPIOs > 31
+Date: Tue, 17 Jun 2025 17:21:57 +0200
+Message-ID: <20250617152338.319188324@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
-References: <20250617152419.512865572@linuxfoundation.org>
+In-Reply-To: <20250617152338.212798615@linuxfoundation.org>
+References: <20250617152338.212798615@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,63 +63,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Anton Protopopov <a.s.protopopov@gmail.com>
+From: Gabor Juhos <j4g8y7@gmail.com>
 
-[ Upstream commit 41d4ce6df3f4945341ec509a840cc002a413b6cc ]
+commit 947c93eb29c2a581c0b0b6d5f21af3c2b7ff6d25 upstream.
 
-With the latest LLVM bpf selftests build will fail with
-the following error message:
+The controller has two consecutive OUTPUT_VAL registers and both
+holds output value for 32 GPIOs. Due to a missing adjustment, the
+current code always uses the first register while setting the
+output value whereas it should use the second one for GPIOs > 31.
 
-    progs/profiler.inc.h:710:31: error: default initialization of an object of type 'typeof ((parent_task)->real_cred->uid.val)' (aka 'const unsigned int') leaves the object uninitialized and is incompatible with C++ [-Werror,-Wdefault-const-init-unsafe]
-      710 |         proc_exec_data->parent_uid = BPF_CORE_READ(parent_task, real_cred, uid.val);
-          |                                      ^
-    tools/testing/selftests/bpf/tools/include/bpf/bpf_core_read.h:520:35: note: expanded from macro 'BPF_CORE_READ'
-      520 |         ___type((src), a, ##__VA_ARGS__) __r;                               \
-          |                                          ^
+Add the missing armada_37xx_update_reg() call to adjust the register
+according to the 'offset' parameter of the function to fix the issue.
 
-This happens because BPF_CORE_READ (and other macro) declare the
-variable __r using the ___type macro which can inherit const modifier
-from intermediate types.
-
-Fix this by using __typeof_unqual__, when supported. (And when it
-is not supported, the problem shouldn't appear, as older compilers
-haven't complained.)
-
-Fixes: 792001f4f7aa ("libbpf: Add user-space variants of BPF_CORE_READ() family of macros")
-Fixes: a4b09a9ef945 ("libbpf: Add non-CO-RE variants of BPF_CORE_READ() macro family")
-Signed-off-by: Anton Protopopov <a.s.protopopov@gmail.com>
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Link: https://lore.kernel.org/bpf/20250502193031.3522715-1-a.s.protopopov@gmail.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: 6702abb3bf23 ("pinctrl: armada-37xx: Fix direction_output() callback behavior")
+Signed-off-by: Imre Kaloz <kaloz@openwrt.org>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Signed-off-by: Gabor Juhos <j4g8y7@gmail.com>
+Link: https://lore.kernel.org/20250514-pinctrl-a37xx-fixes-v2-1-07e9ac1ab737@gmail.com
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/lib/bpf/bpf_core_read.h | 6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/pinctrl/mvebu/pinctrl-armada-37xx.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/tools/lib/bpf/bpf_core_read.h b/tools/lib/bpf/bpf_core_read.h
-index c0e13cdf96607..b997c68bd9453 100644
---- a/tools/lib/bpf/bpf_core_read.h
-+++ b/tools/lib/bpf/bpf_core_read.h
-@@ -388,7 +388,13 @@ extern void *bpf_rdonly_cast(const void *obj, __u32 btf_id) __ksym __weak;
- #define ___arrow10(a, b, c, d, e, f, g, h, i, j) a->b->c->d->e->f->g->h->i->j
- #define ___arrow(...) ___apply(___arrow, ___narg(__VA_ARGS__))(__VA_ARGS__)
+--- a/drivers/pinctrl/mvebu/pinctrl-armada-37xx.c
++++ b/drivers/pinctrl/mvebu/pinctrl-armada-37xx.c
+@@ -417,6 +417,7 @@ static int armada_37xx_gpio_direction_ou
+ 					     unsigned int offset, int value)
+ {
+ 	struct armada_37xx_pinctrl *info = gpiochip_get_data(chip);
++	unsigned int val_offset = offset;
+ 	unsigned int reg = OUTPUT_EN;
+ 	unsigned int mask, val, ret;
  
-+#if defined(__clang__) && (__clang_major__ >= 19)
-+#define ___type(...) __typeof_unqual__(___arrow(__VA_ARGS__))
-+#elif defined(__GNUC__) && (__GNUC__ >= 14)
-+#define ___type(...) __typeof_unqual__(___arrow(__VA_ARGS__))
-+#else
- #define ___type(...) typeof(___arrow(__VA_ARGS__))
-+#endif
+@@ -429,6 +430,8 @@ static int armada_37xx_gpio_direction_ou
+ 		return ret;
  
- #define ___read(read_fn, dst, src_type, src, accessor)			    \
- 	read_fn((void *)(dst), sizeof(*(dst)), &((src_type)(src))->accessor)
--- 
-2.39.5
-
+ 	reg = OUTPUT_VAL;
++	armada_37xx_update_reg(&reg, &val_offset);
++
+ 	val = value ? mask : 0;
+ 	regmap_update_bits(info->regmap, reg, mask, val);
+ 
 
 
 
