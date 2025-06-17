@@ -1,57 +1,54 @@
-Return-Path: <stable+bounces-154359-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153942-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2A3F0ADD9D1
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 19:09:55 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B932AADD78C
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:46:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 163954A2626
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:51:05 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C6D5A19E5225
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:31:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B59F4218EA8;
-	Tue, 17 Jun 2025 16:49:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2FC62F94BD;
+	Tue, 17 Jun 2025 16:26:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NwW3+OGV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g1vXTQ1a"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 714C618E025;
-	Tue, 17 Jun 2025 16:49:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80B8D2F94A0;
+	Tue, 17 Jun 2025 16:26:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750178942; cv=none; b=j8sFE6PcatBCekCNYYVQEkKblYxU40ym0Uzm9EL1lRfi+z+AdKMgSnbX++EPrGVzQNEU56FIwQpG5K7qq/G3JFhILOq7xZwB9LN2GcFSk6hN2H5g8lhdvt1IQOa7VkBWclejUtJhBFGzpd/8UjAl8uncE3tmYjkIGQ9tLRrAKQA=
+	t=1750177598; cv=none; b=eH350q/pIU+jwW0qCZaOqej5/E0S9a5spStC/Zdp88GBcdM12YCk+nKaXuCBQ+HR6SHX8J/xlLhS23DTRPC+LGomen23tsy9nLm1FZHP6kzSS4KY6wSHEqhcfgsJcWVJG5Z24hX1qvLjJVzwR/WWbVCbiywQl3z+U+LjwLD6Ng4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750178942; c=relaxed/simple;
-	bh=HrLpb2j7oaFd8ZVkP20vQKVh7AmTy4ClZ2GGrKX3xhk=;
+	s=arc-20240116; t=1750177598; c=relaxed/simple;
+	bh=lGlauVhIySHikfsmbrNZG5UEhDbPOD238gMMh0RhhKM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MRAI2uDEaIeIcoViyZIo+ecLO1KttySM1E2d86HYXIXLrjLNjkRkMmRzw5y0Mcun2yZMxbtKiPxcaahrJX9RLqlmwSh9J3TZ/vgfhhxwkmi8mTE6t3z79GxFR5mlwloJkFW40tsfkaWDK4C+F0JAOmyXXJx08YcvLxaJyZ/Hoh8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NwW3+OGV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81384C4CEE3;
-	Tue, 17 Jun 2025 16:49:01 +0000 (UTC)
+	 MIME-Version; b=Cm5xuKWrILssGWT1LmgcvtF41Nceose6vqOPVDieLRV5NIDW5ATm4OBhljAzkW5L/KYk59+QTtXexI/lysmSGVr36qX0vdr4MNrThrT4FuY1Ozt+jZRCsqekWGfeHEaJKwz7dLfGbIevUAlQ5C6O4+f6tcG8DZuNN8ICATiSYhA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g1vXTQ1a; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1195C4CEE3;
+	Tue, 17 Jun 2025 16:26:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750178942;
-	bh=HrLpb2j7oaFd8ZVkP20vQKVh7AmTy4ClZ2GGrKX3xhk=;
+	s=korg; t=1750177598;
+	bh=lGlauVhIySHikfsmbrNZG5UEhDbPOD238gMMh0RhhKM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NwW3+OGVkLcyYeOYK/8vWhxe2jxdLclFErDphF/EgcuyOX7O+yAf+u3gMGrI9azXd
-	 zVwGYkc04UWIj1V7DtBM5P733wHSTm5U0+1XpIReqmy9QO8yqp885Q0VJ8OXckGvHE
-	 SOtKu4ydpLs4MpfqtN3ASmjODVIIK3ii1EC9fywY=
+	b=g1vXTQ1aJRiHDrtOMBKZSP8y9C/DU2yVefRl2kVMIebCSI6diyI6lWjS5R86ahIz/
+	 P7fStBMqExlUOJS7285vba3GU15NaOP4pyFSPs4cfil2e2+AVwYl5gfPBl7v8Fb18x
+	 1/nHBqR7J98BpvvKZY2bXqk3pdqQjIrYBTepGtrA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Sasha Levin <sashal@kernel.org>,
-	Chris Bainbridge <chris.bainbridge@gmail.com>
-Subject: [PATCH 6.15 599/780] PM: sleep: Fix power.is_suspended cleanup for direct-complete devices
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 341/512] USB: gadget: udc: fix const issue in gadget_match_driver()
 Date: Tue, 17 Jun 2025 17:25:07 +0200
-Message-ID: <20250617152515.878545867@linuxfoundation.org>
+Message-ID: <20250617152433.419896956@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
-References: <20250617152451.485330293@linuxfoundation.org>
+In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
+References: <20250617152419.512865572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,62 +60,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
-[ Upstream commit d46c4c839c20a599a0eb8d73708ce401f9c7d06d ]
+[ Upstream commit 5f5cc794fac605afd3bef8065e33096aeacf6257 ]
 
-Commit 03f1444016b7 ("PM: sleep: Fix handling devices with direct_complete
-set on errors") caused power.is_suspended to be set for devices with
-power.direct_complete set, but it forgot to ensure the clearing of that
-flag for them in device_resume(), so power.is_suspended is still set for
-them during the next system suspend-resume cycle.
+gadget_match_driver() takes a const pointer, and then decides to cast it
+away into a non-const one, which is not a good thing to do overall.  Fix
+this up by properly setting the pointers to be const to preserve that
+attribute.
 
-If that cycle is aborted in dpm_suspend(), the subsequent invocation of
-dpm_resume() will trigger a device_resume() call for every device and
-because power.is_suspended is set for the devices in question, they will
-not be skipped by device_resume() as expected which causes scary error
-messages to be logged (as appropriate).
-
-To address this issue, move the clearing of power.is_suspended in
-device_resume() immediately after the power.is_suspended check so it
-will be always cleared for all devices processed by that function.
-
-Fixes: 03f1444016b7 ("PM: sleep: Fix handling devices with direct_complete set on errors")
-Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/4280
-Reported-and-tested-by: Chris Bainbridge <chris.bainbridge@gmail.com>
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
-Link: https://patch.msgid.link/4990586.GXAFRqVoOG@rjwysocki.net
+Fixes: d69d80484598 ("driver core: have match() callback in struct bus_type take a const *")
+Link: https://lore.kernel.org/r/2025052139-rash-unsaddle-7c5e@gregkh
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/base/power/main.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/usb/gadget/udc/core.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/base/power/main.c b/drivers/base/power/main.c
-index c8b0a9e29ed84..1926454c7a7e8 100644
---- a/drivers/base/power/main.c
-+++ b/drivers/base/power/main.c
-@@ -941,6 +941,8 @@ static void device_resume(struct device *dev, pm_message_t state, bool async)
- 	if (!dev->power.is_suspended)
- 		goto Complete;
+diff --git a/drivers/usb/gadget/udc/core.c b/drivers/usb/gadget/udc/core.c
+index 4b3d5075621aa..d709e24c1fd42 100644
+--- a/drivers/usb/gadget/udc/core.c
++++ b/drivers/usb/gadget/udc/core.c
+@@ -1570,7 +1570,7 @@ static int gadget_match_driver(struct device *dev, const struct device_driver *d
+ {
+ 	struct usb_gadget *gadget = dev_to_usb_gadget(dev);
+ 	struct usb_udc *udc = gadget->udc;
+-	struct usb_gadget_driver *driver = container_of(drv,
++	const struct usb_gadget_driver *driver = container_of(drv,
+ 			struct usb_gadget_driver, driver);
  
-+	dev->power.is_suspended = false;
-+
- 	if (dev->power.direct_complete) {
- 		/*
- 		 * Allow new children to be added under the device after this
-@@ -1003,7 +1005,6 @@ static void device_resume(struct device *dev, pm_message_t state, bool async)
- 
-  End:
- 	error = dpm_run_callback(callback, dev, state, info);
--	dev->power.is_suspended = false;
- 
- 	device_unlock(dev);
- 	dpm_watchdog_clear(&wd);
+ 	/* If the driver specifies a udc_name, it must match the UDC's name */
 -- 
 2.39.5
 
