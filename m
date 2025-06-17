@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-153809-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-154212-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3AAACADD656
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:32:25 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id ADBD5ADD930
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 19:03:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 69C8B2C7F28
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:25:30 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 15EEA19466CF
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:45:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD97D2EE26F;
-	Tue, 17 Jun 2025 16:19:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 555BF2EA758;
+	Tue, 17 Jun 2025 16:41:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ua0e5kcO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V+byQ53z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BEB122FF2B;
-	Tue, 17 Jun 2025 16:19:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 100402EA72C;
+	Tue, 17 Jun 2025 16:41:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750177165; cv=none; b=K3uZG/D8f/xEkSAc8FpuqPmJ0CW3+3RTyltd8Da06jasE5d/svWBfL+K8j4qvdPWfJxOjQJL2l4slTpXc+DCg8mYT9gvBvFD3/5tUK5yanNyCzf4xEWdVq6ozQyM1J/lidWYzTw2nIDnGaxGRqgo0lRhCMiM0IMi++VYlnxLYGc=
+	t=1750178465; cv=none; b=g4FcZtl/IL0Xnu5LywaE+7gJH05UFchwbut7MH/U3PNHeWSrK58XJa11f24mXaTcATcrij95zIQ8jk2a2zNbqN36z3krjCCrjVnU7TqbAyhgabKdVwVV8khbu0nHTYpMDqpn62Vwkix7k/fkgFDbSsK3RMci0zEqlw6nFn4tMaM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750177165; c=relaxed/simple;
-	bh=4YcUkfC/mZLuow8T0dKG0m9QCFDZhnufqGz/X0s0euw=;
+	s=arc-20240116; t=1750178465; c=relaxed/simple;
+	bh=awFXpan8vcccc+tshElBr8CYJlKZCndFVlK6S+oLVks=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=tvQY94lswoVq/fqKj/JpxJ0qTVuBi3xh8ivAgjoI7VVBu07L//F2b2zT46FVLvjVYQFXrYPopO7jkYQobLhq1IqMtoQbU7wFyWJ4HLYZK69jgwZAUysnLoV5fX8u+RzbzkgcGjOCpXKWb6vtL/Q40QKRvs3gDAAief72ShcSDHU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ua0e5kcO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB814C4CEE7;
-	Tue, 17 Jun 2025 16:19:24 +0000 (UTC)
+	 MIME-Version; b=YIqik9NBuNsZWJOVH81v4noV3ANcQ8u9ZzClFbg+nQdgGGAvIu+PDPCqUncrL9AvU7/7Q9OYABX8ZVH1ned1JHOchT0H29P/3BPBtZOtS95ybjxFo9eTo0HourYmZyGwHm2hLeK1G9cP4rsuDKQJmfZVDjFM2rxrDQn3NoYd2/A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V+byQ53z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78FE6C4CEE3;
+	Tue, 17 Jun 2025 16:41:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750177165;
-	bh=4YcUkfC/mZLuow8T0dKG0m9QCFDZhnufqGz/X0s0euw=;
+	s=korg; t=1750178464;
+	bh=awFXpan8vcccc+tshElBr8CYJlKZCndFVlK6S+oLVks=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ua0e5kcOoLnXKJv7PgRuO/Mq6So43clnXqdvVo0d68f/lrkS3l4TvgW+qtPt8WAg5
-	 WcBte7XWaPGxlMih9lhJ87HBVFsWVnLSD3VTAAUSschUqvvFy3pNMMSMX9JSJICH54
-	 b4C1Q/sSwqEtzjOW1cVhlFMPCayH0BW84v8upCDQ=
+	b=V+byQ53z8F6fM6TQKkB/9gb2RAz2Bu/yZY7SVvJul+v5whnahtctJnT3cHZLxvhLE
+	 aV0abP927cE3wWWzd81RLmxCD8nWTJfDoplh9kC3vM2UIk6Q7UhLkuuc0c5WJp6cf6
+	 tgBUOl76wYaerEuEUeXCN5ZD/o0FZ0NyEgaHVgwE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"=?UTF-8?q?N=C3=ADcolas=20F . =20R . =20A . =20Prado?=" <nfraprado@collabora.com>,
-	Mark Brown <broonie@kernel.org>
-Subject: [PATCH 6.6 354/356] regulator: dt-bindings: mt6357: Drop fixed compatible requirement
+	stable@kernel.org,
+	Stefano Stabellini <stefano.stabellini@amd.com>,
+	Juergen Gross <jgross@suse.com>
+Subject: [PATCH 6.12 503/512] xen/arm: call uaccess_ttbr0_enable for dm_op hypercall
 Date: Tue, 17 Jun 2025 17:27:49 +0200
-Message-ID: <20250617152352.390949877@linuxfoundation.org>
+Message-ID: <20250617152440.004782545@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152338.212798615@linuxfoundation.org>
-References: <20250617152338.212798615@linuxfoundation.org>
+In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
+References: <20250617152419.512865572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,128 +60,70 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nícolas F. R. A. Prado <nfraprado@collabora.com>
+From: Stefano Stabellini <stefano.stabellini@amd.com>
 
-commit 9cfdd7752ba5f8cc9b8191e8c9aeeec246241fa4 upstream.
+commit 7f9bbc1140ff8796230bc2634055763e271fd692 upstream.
 
-Some of the regulators on the MT6357 PMIC currently reference the
-fixed-regulator dt-binding, which enforces the presence of a
-regulator-fixed compatible. However since all regulators on the MT6357
-PMIC are handled by a single mt6357-regulator driver, probed through
-MFD, the compatibles don't serve any purpose. In fact they cause
-failures in the DT kselftest since they aren't probed by the fixed
-regulator driver as would be expected. Furthermore this is the only
-dt-binding in this family like this: mt6359-regulator and
-mt6358-regulator don't require those compatibles.
+dm_op hypercalls might come from userspace and pass memory addresses as
+parameters. The memory addresses typically correspond to buffers
+allocated in userspace to hold extra hypercall parameters.
 
-Commit d77e89b7b03f ("arm64: dts: mediatek: mt6357: Drop regulator-fixed
-compatibles") removed the compatibles from Devicetree, but missed
-updating the binding, which still requires them, introducing dt-binding
-errors. Remove the compatible requirement by referencing the plain
-regulator dt-binding instead to fix the dt-binding errors.
+On ARM, when CONFIG_ARM64_SW_TTBR0_PAN is enabled, they might not be
+accessible by Xen, as a result ioreq hypercalls might fail. See the
+existing comment in arch/arm64/xen/hypercall.S regarding privcmd_call
+for reference.
 
-Fixes: d77e89b7b03f ("arm64: dts: mediatek: mt6357: Drop regulator-fixed compatibles")
-Signed-off-by: Nícolas F. R. A. Prado <nfraprado@collabora.com>
-Link: https://patch.msgid.link/20250514-mt6357-regulator-fixed-compatibles-removal-bindings-v1-1-2421e9cc6cc7@collabora.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+For privcmd_call, Linux calls uaccess_ttbr0_enable before issuing the
+hypercall thanks to commit 9cf09d68b89a. We need to do the same for
+dm_op. This resolves the problem.
+
+Cc: stable@kernel.org
+Fixes: 9cf09d68b89a ("arm64: xen: Enable user access before a privcmd hvc call")
+Signed-off-by: Stefano Stabellini <stefano.stabellini@amd.com>
+Reviewed-by: Juergen Gross <jgross@suse.com>
+Message-ID: <alpine.DEB.2.22.394.2505121446370.8380@ubuntu-linux-20-04-desktop>
+Signed-off-by: Juergen Gross <jgross@suse.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- Documentation/devicetree/bindings/regulator/mediatek,mt6357-regulator.yaml |   12 ----------
- 1 file changed, 1 insertion(+), 11 deletions(-)
+ arch/arm64/xen/hypercall.S |   21 ++++++++++++++++++++-
+ 1 file changed, 20 insertions(+), 1 deletion(-)
 
---- a/Documentation/devicetree/bindings/regulator/mediatek,mt6357-regulator.yaml
-+++ b/Documentation/devicetree/bindings/regulator/mediatek,mt6357-regulator.yaml
-@@ -33,7 +33,7 @@ patternProperties:
+--- a/arch/arm64/xen/hypercall.S
++++ b/arch/arm64/xen/hypercall.S
+@@ -83,7 +83,26 @@ HYPERCALL3(vcpu_op);
+ HYPERCALL1(platform_op_raw);
+ HYPERCALL2(multicall);
+ HYPERCALL2(vm_assist);
+-HYPERCALL3(dm_op);
++
++SYM_FUNC_START(HYPERVISOR_dm_op)
++	mov x16, #__HYPERVISOR_dm_op;	\
++	/*
++	 * dm_op hypercalls are issued by the userspace. The kernel needs to
++	 * enable access to TTBR0_EL1 as the hypervisor would issue stage 1
++	 * translations to user memory via AT instructions. Since AT
++	 * instructions are not affected by the PAN bit (ARMv8.1), we only
++	 * need the explicit uaccess_enable/disable if the TTBR0 PAN emulation
++	 * is enabled (it implies that hardware UAO and PAN disabled).
++	 */
++	uaccess_ttbr0_enable x6, x7, x8
++	hvc XEN_IMM
++
++	/*
++	 * Disable userspace access from kernel once the hyp call completed.
++	 */
++	uaccess_ttbr0_disable x6, x7
++	ret
++SYM_FUNC_END(HYPERVISOR_dm_op);
  
-   "^ldo-v(camio18|aud28|aux18|io18|io28|rf12|rf18|cn18|cn28|fe28)$":
-     type: object
--    $ref: fixed-regulator.yaml#
-+    $ref: regulator.yaml#
-     unevaluatedProperties: false
-     description:
-       Properties for single fixed LDO regulator.
-@@ -112,7 +112,6 @@ examples:
-           regulator-enable-ramp-delay = <220>;
-         };
-         mt6357_vfe28_reg: ldo-vfe28 {
--          compatible = "regulator-fixed";
-           regulator-name = "vfe28";
-           regulator-min-microvolt = <2800000>;
-           regulator-max-microvolt = <2800000>;
-@@ -125,14 +124,12 @@ examples:
-           regulator-enable-ramp-delay = <110>;
-         };
-         mt6357_vrf18_reg: ldo-vrf18 {
--          compatible = "regulator-fixed";
-           regulator-name = "vrf18";
-           regulator-min-microvolt = <1800000>;
-           regulator-max-microvolt = <1800000>;
-           regulator-enable-ramp-delay = <110>;
-         };
-         mt6357_vrf12_reg: ldo-vrf12 {
--          compatible = "regulator-fixed";
-           regulator-name = "vrf12";
-           regulator-min-microvolt = <1200000>;
-           regulator-max-microvolt = <1200000>;
-@@ -157,14 +154,12 @@ examples:
-           regulator-enable-ramp-delay = <264>;
-         };
-         mt6357_vcn28_reg: ldo-vcn28 {
--          compatible = "regulator-fixed";
-           regulator-name = "vcn28";
-           regulator-min-microvolt = <2800000>;
-           regulator-max-microvolt = <2800000>;
-           regulator-enable-ramp-delay = <264>;
-         };
-         mt6357_vcn18_reg: ldo-vcn18 {
--          compatible = "regulator-fixed";
-           regulator-name = "vcn18";
-           regulator-min-microvolt = <1800000>;
-           regulator-max-microvolt = <1800000>;
-@@ -183,7 +178,6 @@ examples:
-           regulator-enable-ramp-delay = <264>;
-         };
-         mt6357_vcamio_reg: ldo-vcamio18 {
--          compatible = "regulator-fixed";
-           regulator-name = "vcamio";
-           regulator-min-microvolt = <1800000>;
-           regulator-max-microvolt = <1800000>;
-@@ -212,28 +206,24 @@ examples:
-           regulator-always-on;
-         };
-         mt6357_vaux18_reg: ldo-vaux18 {
--          compatible = "regulator-fixed";
-           regulator-name = "vaux18";
-           regulator-min-microvolt = <1800000>;
-           regulator-max-microvolt = <1800000>;
-           regulator-enable-ramp-delay = <264>;
-         };
-         mt6357_vaud28_reg: ldo-vaud28 {
--          compatible = "regulator-fixed";
-           regulator-name = "vaud28";
-           regulator-min-microvolt = <2800000>;
-           regulator-max-microvolt = <2800000>;
-           regulator-enable-ramp-delay = <264>;
-         };
-         mt6357_vio28_reg: ldo-vio28 {
--          compatible = "regulator-fixed";
-           regulator-name = "vio28";
-           regulator-min-microvolt = <2800000>;
-           regulator-max-microvolt = <2800000>;
-           regulator-enable-ramp-delay = <264>;
-         };
-         mt6357_vio18_reg: ldo-vio18 {
--          compatible = "regulator-fixed";
-           regulator-name = "vio18";
-           regulator-min-microvolt = <1800000>;
-           regulator-max-microvolt = <1800000>;
+ SYM_FUNC_START(privcmd_call)
+ 	mov x16, x0
 
 
 
