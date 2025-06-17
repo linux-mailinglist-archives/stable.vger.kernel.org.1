@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-153122-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153144-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 26CA3ADD271
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 17:42:38 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4512CADD292
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 17:44:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 87699189A7BF
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 15:42:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7EBD13BEA73
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 15:43:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 02DE22ECD3A;
-	Tue, 17 Jun 2025 15:42:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 03D772ECD20;
+	Tue, 17 Jun 2025 15:43:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UUV9X4mG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mCpxdhy8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B41772EBDCC;
-	Tue, 17 Jun 2025 15:42:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B459C2ECD0B;
+	Tue, 17 Jun 2025 15:43:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750174933; cv=none; b=Jpag4rXSl7fbb/dDaZkFmXBtOp44THSmypAQWdy7oxziB4hiaKUzwHJy48NfMhfpaosGEOZAN6k4ZBVB001Q731PJ1e8qHIeZ6tlgx6WgqY8bYHgURtBNFI/aOUXIqQPTrOwHRllUqqR4hjD2wk5l641PacZVSCiWQfx3dxX5lc=
+	t=1750175019; cv=none; b=IGXXXPEr/Ip6o+dF+t0R61emCLUCZDu/NAnXTI3ByG1zx3QgeUm7ETqMR9DhWgGsC/2K74NVKxV6hOQhjKdEBASMnTR5SXasmfsQOs+liaPP3dUPFAjmG/vJ9GM8QWzAKlrq1QYy7ozey9uTxlccyKCjglIJ8utMUVGBfQwiDMY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750174933; c=relaxed/simple;
-	bh=dgd0XN278FXIdbdnhEvgEuZLi/BMIPl9paobHYAIvbw=;
+	s=arc-20240116; t=1750175019; c=relaxed/simple;
+	bh=JfJuR8ICMTUKinerAoZClXC34u1PY08xDQE3vTvUMQQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jbLO1UjHmWeCEruiOpb4evo+kqxr+VqNtESssidh0vpZOU787JoIPHQhef2gwa6Yt88z0bio5izjbGwKWPMWqns/WgsqTwgX3XvInJaDx5np4KZlYiqvFDy6aHZe+17z+OhBxrkmOWJlwE1IvEXHx7cKR067WLdVqMD+Jy+RXmI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UUV9X4mG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AFFFDC4CEE7;
-	Tue, 17 Jun 2025 15:42:12 +0000 (UTC)
+	 MIME-Version; b=bN96ZzzeiAkZabHVWlpYPrH9Sqkzh1qxNZNlSJI+KY7PQGy1+jsij4r0vqJjSITDFjUk8snppTjwNkEu3aLKgmXqB1uy4GDJiqml0tHzxxbQP7U24gDNj42FzrZyi52KClylFDwsFHwFJs8t+6llIq/OU5fbO6vadh8HZp+bBWw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mCpxdhy8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24230C4CEE3;
+	Tue, 17 Jun 2025 15:43:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750174933;
-	bh=dgd0XN278FXIdbdnhEvgEuZLi/BMIPl9paobHYAIvbw=;
+	s=korg; t=1750175019;
+	bh=JfJuR8ICMTUKinerAoZClXC34u1PY08xDQE3vTvUMQQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UUV9X4mGiZwPYpv6MbAsAOUIH1qCvUFexJvhUmYJPVZ+Nuvev/GRdcUjZ9llMfxyC
-	 3+7SrTbb5ziQdbqnz+d9xoFmPqJrMUMw6kCnqMCSq0UxrmSOVUDTX6zNzf3cXujlPI
-	 jLFyt/nbjGnyqcMlAV8pIv5EE+ZgmhKDLaUyQuPY=
+	b=mCpxdhy81INADDs6pvKpsBsQQON716dFFp2MOLzEgb/QqFLBDhg5Q6fz/kZ3vg54Q
+	 GZUj13+PnPNx0toJYiKLJL6GTQMwA/F2OWhe3e4N3wI/lyII8gGhhHx7FTwKt/srrB
+	 Y2Qf+ey0soPvXxkcI/9aN0kH9uaifewYeYERolfc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -46,9 +46,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Robin Murphy <robin.murphy@arm.com>,
 	Will Deacon <will@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 074/512] perf: arm-ni: Unregister PMUs on probe failure
-Date: Tue, 17 Jun 2025 17:20:40 +0200
-Message-ID: <20250617152422.578675618@linuxfoundation.org>
+Subject: [PATCH 6.12 075/512] perf: arm-ni: Fix missing platform_set_drvdata()
+Date: Tue, 17 Jun 2025 17:20:41 +0200
+Message-ID: <20250617152422.616474682@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
 References: <20250617152419.512865572@linuxfoundation.org>
@@ -69,115 +69,33 @@ Content-Transfer-Encoding: 8bit
 
 From: Hongbo Yao <andy.xu@hj-micro.com>
 
-[ Upstream commit 7f57afde6a44d9e044885e1125034edd4fda02e8 ]
+[ Upstream commit fc5106088d6db75df61308ef6de314d1f7959646 ]
 
-When a resource allocation fails in one clock domain of an NI device,
-we need to properly roll back all previously registered perf PMUs in
-other clock domains of the same device.
-
-Otherwise, it can lead to kernel panics.
-
-Calling arm_ni_init+0x0/0xff8 [arm_ni] @ 2374
-arm-ni ARMHCB70:00: Failed to request PMU region 0x1f3c13000
-arm-ni ARMHCB70:00: probe with driver arm-ni failed with error -16
-list_add corruption: next->prev should be prev (fffffd01e9698a18),
-but was 0000000000000000. (next=ffff10001a0decc8).
-pstate: 6340009 (nZCv daif +PAN -UAO +TCO +DIT -SSBS BTYPE=--)
-pc : list_add_valid_or_report+0x7c/0xb8
-lr : list_add_valid_or_report+0x7c/0xb8
-Call trace:
- __list_add_valid_or_report+0x7c/0xb8
- perf_pmu_register+0x22c/0x3a0
- arm_ni_probe+0x554/0x70c [arm_ni]
- platform_probe+0x70/0xe8
- really_probe+0xc6/0x4d8
- driver_probe_device+0x48/0x170
- __driver_attach+0x8e/0x1c0
- bus_for_each_dev+0x64/0xf0
- driver_add+0x138/0x260
- bus_add_driver+0x68/0x138
- __platform_driver_register+0x2c/0x40
- arm_ni_init+0x14/0x2a [arm_ni]
- do_init_module+0x36/0x298
----[ end trace 0000000000000000 ]---
-Kernel panic - not syncing: Oops - BUG: Fatal exception
-SMP: stopping secondary CPUs
+Add missing platform_set_drvdata in arm_ni_probe(), otherwise
+calling platform_get_drvdata() in remove returns NULL.
 
 Fixes: 4d5a7680f2b4 ("perf: Add driver for Arm NI-700 interconnect PMU")
 Signed-off-by: Hongbo Yao <andy.xu@hj-micro.com>
 Reviewed-by: Robin Murphy <robin.murphy@arm.com>
-Link: https://lore.kernel.org/r/20250403070918.4153839-1-andy.xu@hj-micro.com
+Link: https://lore.kernel.org/r/20250401054248.3985814-1-andy.xu@hj-micro.com
 Signed-off-by: Will Deacon <will@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/perf/arm-ni.c | 39 +++++++++++++++++++++------------------
- 1 file changed, 21 insertions(+), 18 deletions(-)
+ drivers/perf/arm-ni.c | 1 +
+ 1 file changed, 1 insertion(+)
 
 diff --git a/drivers/perf/arm-ni.c b/drivers/perf/arm-ni.c
-index 90fcfe693439e..3f3d2e0f91fa7 100644
+index 3f3d2e0f91fa7..b87d3a9ba7d54 100644
 --- a/drivers/perf/arm-ni.c
 +++ b/drivers/perf/arm-ni.c
-@@ -576,6 +576,23 @@ static int arm_ni_init_cd(struct arm_ni *ni, struct arm_ni_node *node, u64 res_s
- 	return err;
- }
+@@ -661,6 +661,7 @@ static int arm_ni_probe(struct platform_device *pdev)
+ 	ni->num_cds = num_cds;
+ 	ni->part = part;
+ 	ni->id = atomic_fetch_inc(&id);
++	platform_set_drvdata(pdev, ni);
  
-+static void arm_ni_remove(struct platform_device *pdev)
-+{
-+	struct arm_ni *ni = platform_get_drvdata(pdev);
-+
-+	for (int i = 0; i < ni->num_cds; i++) {
-+		struct arm_ni_cd *cd = ni->cds + i;
-+
-+		if (!cd->pmu_base)
-+			continue;
-+
-+		writel_relaxed(0, cd->pmu_base + NI_PMCR);
-+		writel_relaxed(U32_MAX, cd->pmu_base + NI_PMINTENCLR);
-+		perf_pmu_unregister(&cd->pmu);
-+		cpuhp_state_remove_instance_nocalls(arm_ni_hp_state, &cd->cpuhp_node);
-+	}
-+}
-+
- static void arm_ni_probe_domain(void __iomem *base, struct arm_ni_node *node)
- {
- 	u32 reg = readl_relaxed(base + NI_NODE_TYPE);
-@@ -657,8 +674,11 @@ static int arm_ni_probe(struct platform_device *pdev)
- 				reg = readl_relaxed(pd.base + NI_CHILD_PTR(c));
- 				arm_ni_probe_domain(base + reg, &cd);
- 				ret = arm_ni_init_cd(ni, &cd, res->start);
--				if (ret)
-+				if (ret) {
-+					ni->cds[cd.id].pmu_base = NULL;
-+					arm_ni_remove(pdev);
- 					return ret;
-+				}
- 			}
- 		}
- 	}
-@@ -666,23 +686,6 @@ static int arm_ni_probe(struct platform_device *pdev)
- 	return 0;
- }
- 
--static void arm_ni_remove(struct platform_device *pdev)
--{
--	struct arm_ni *ni = platform_get_drvdata(pdev);
--
--	for (int i = 0; i < ni->num_cds; i++) {
--		struct arm_ni_cd *cd = ni->cds + i;
--
--		if (!cd->pmu_base)
--			continue;
--
--		writel_relaxed(0, cd->pmu_base + NI_PMCR);
--		writel_relaxed(U32_MAX, cd->pmu_base + NI_PMINTENCLR);
--		perf_pmu_unregister(&cd->pmu);
--		cpuhp_state_remove_instance_nocalls(arm_ni_hp_state, &cd->cpuhp_node);
--	}
--}
--
- #ifdef CONFIG_OF
- static const struct of_device_id arm_ni_of_match[] = {
- 	{ .compatible = "arm,ni-700" },
+ 	for (int v = 0; v < cfg.num_components; v++) {
+ 		reg = readl_relaxed(cfg.base + NI_CHILD_PTR(v));
 -- 
 2.39.5
 
