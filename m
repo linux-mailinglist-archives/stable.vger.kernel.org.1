@@ -1,58 +1,60 @@
-Return-Path: <stable+bounces-154482-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-154135-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C669ADDA0B
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 19:12:41 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id E5592ADD845
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:53:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EEF784063E2
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:55:37 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 292C719E64E9
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:43:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 39C932FA627;
-	Tue, 17 Jun 2025 16:55:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89FE22ED16E;
+	Tue, 17 Jun 2025 16:36:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UTV6Ibd5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jfqpa5Pc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC1B02FA623;
-	Tue, 17 Jun 2025 16:55:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4464D1A5B9D;
+	Tue, 17 Jun 2025 16:36:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750179349; cv=none; b=jU6jHNVK02Lo4nffENF+viPk5gWPSz/GlGLnTY1GVlYZUucraaA0p6CspiEKovmcEDraHGgP67se5xe0xJYA+lcN+XAcMtwg2owNn87jY6Wssk2N6Pn0bwFxzvGyHtHiFlZnLO5VoS/jwuejsl02abuTg474ZaeEquuzC7u8xL0=
+	t=1750178214; cv=none; b=HgxnrJRCEjJJfLA8mGc1PBSBsbrfKM0dqpGcyu1B+oB7Dm6Lmy1Yw0b32MS3ggn/eFvPShrdSmQd6OjDmS4Ko9AiyiZ8MsgPrYYSdtOW/t7p0Il4ymf5E0y7sZiVYIAbSoQaBZl7hJHhw+sa6T2Thyg/jsRKacn54UTiDk2DJZs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750179349; c=relaxed/simple;
-	bh=Pxyrp5g3XDVynipJdjHyYsPzsb4tEpn+YP5DXzLttVE=;
+	s=arc-20240116; t=1750178214; c=relaxed/simple;
+	bh=zaL3bUrjIEvXgW6itcjJslKw/wTuc612UIu6HCe3rSg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OWgsybvJOARqq1yvPi3oADoVdwJj41Rx7maAsbAcjDRcv/ecH4fZGrtORlpHWl36GHOx3hSfLx53M1BjKpOoUbAlesB7qikobfLjl4kq6Cb5V1NjRCg1bNgL+uNO3+kWqntx7m9vSIMz+KCU++6hGqiKn0F9yZy+Mdd4gHhD3zM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UTV6Ibd5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5AF89C4CEE3;
-	Tue, 17 Jun 2025 16:55:48 +0000 (UTC)
+	 MIME-Version; b=Z95QlUFlpBxol1gpNH5ME5wl9t2jNfcfY06yTSW4P5yE3idJ68696vx6+/4ELIYGEnl/WiClFhIpNqkAJcEcuipYD4T7/EiNY7CpIsQtzlVOO/fICwZLnXZzPkzRbkxrKQeZaZGm7zyw2gEDpRUQhzDM3dxaAiBIURjPqE+bhRA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jfqpa5Pc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89189C4CEE3;
+	Tue, 17 Jun 2025 16:36:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750179348;
-	bh=Pxyrp5g3XDVynipJdjHyYsPzsb4tEpn+YP5DXzLttVE=;
+	s=korg; t=1750178214;
+	bh=zaL3bUrjIEvXgW6itcjJslKw/wTuc612UIu6HCe3rSg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UTV6Ibd5InNKO2a/dWG9rY3X132IoeWTHLu4RVI6FfTql1qX+XDb5W00fXDR1558o
-	 WiyXu7T8j6FAtVErx8iiviD64yddjklDm9f1MwqZ6nMn4F0bW6JxSJ7KzA/PIngyjE
-	 EsHcJSVtj/PG4yIr2U6SNjBCf2QE6efyjhWg3nQg=
+	b=jfqpa5Pcfj2CfyGGd0iINAyJLWuw9x6Nn6sXeTcohgLmeZCAW2nEwxHSbVN3roDfK
+	 OWJxeZqZCYX4zuTLMyXmXdtHnB+dpcc1Z5uH75vlYSlccXUVQIGEts7sVLIofVkLSA
+	 tHcKBQy0YGuVgBo5ZmG1nyu3tEuUGOEJJjrWpxg0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gerrard Tai <gerrard.tai@starlabs.sg>,
-	Eric Dumazet <edumazet@google.com>,
-	Zhengchao Shao <shaozhengchao@huawei.com>,
+	Gavi Teitz <gavi@nvidia.com>,
+	Roi Dayan <roid@nvidia.com>,
+	Patrisious Haddad <phaddad@nvidia.com>,
+	Tariq Toukan <tariqt@nvidia.com>,
+	Mark Bloch <mbloch@nvidia.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 719/780] net_sched: tbf: fix a race in tbf_change()
-Date: Tue, 17 Jun 2025 17:27:07 +0200
-Message-ID: <20250617152520.775092812@linuxfoundation.org>
+Subject: [PATCH 6.12 462/512] net/mlx5: Fix return value when searching for existing flow group
+Date: Tue, 17 Jun 2025 17:27:08 +0200
+Message-ID: <20250617152438.288526188@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
-References: <20250617152451.485330293@linuxfoundation.org>
+In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
+References: <20250617152419.512865572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,61 +66,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Patrisious Haddad <phaddad@nvidia.com>
 
-[ Upstream commit 43eb466041216d25dedaef1c383ad7bd89929cbc ]
+[ Upstream commit 8ec40e3f1f72bf8f8accf18020d487caa99f46a4 ]
 
-Gerrard Tai reported a race condition in TBF, whenever SFQ perturb timer
-fires at the wrong time.
+When attempting to add a rule to an existing flow group, if a matching
+flow group exists but is not active, the error code returned should be
+EAGAIN, so that the rule can be added to the matching flow group once
+it is active, rather than ENOENT, which indicates that no matching
+flow group was found.
 
-The race is as follows:
-
-CPU 0                                 CPU 1
-[1]: lock root
-[2]: qdisc_tree_flush_backlog()
-[3]: unlock root
- |
- |                                    [5]: lock root
- |                                    [6]: rehash
- |                                    [7]: qdisc_tree_reduce_backlog()
- |
-[4]: qdisc_put()
-
-This can be abused to underflow a parent's qlen.
-
-Calling qdisc_purge_queue() instead of qdisc_tree_flush_backlog()
-should fix the race, because all packets will be purged from the qdisc
-before releasing the lock.
-
-Fixes: b05972f01e7d ("net: sched: tbf: don't call qdisc_put() while holding tree lock")
-Reported-by: Gerrard Tai <gerrard.tai@starlabs.sg>
-Suggested-by: Gerrard Tai <gerrard.tai@starlabs.sg>
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Cc: Zhengchao Shao <shaozhengchao@huawei.com>
-Link: https://patch.msgid.link/20250611111515.1983366-4-edumazet@google.com
+Fixes: bd71b08ec2ee ("net/mlx5: Support multiple updates of steering rules in parallel")
+Signed-off-by: Gavi Teitz <gavi@nvidia.com>
+Signed-off-by: Roi Dayan <roid@nvidia.com>
+Signed-off-by: Patrisious Haddad <phaddad@nvidia.com>
+Reviewed-by: Tariq Toukan <tariqt@nvidia.com>
+Signed-off-by: Mark Bloch <mbloch@nvidia.com>
+Link: https://patch.msgid.link/20250610151514.1094735-4-mbloch@nvidia.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sched/sch_tbf.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/mellanox/mlx5/core/fs_core.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/net/sched/sch_tbf.c b/net/sched/sch_tbf.c
-index dc26b22d53c73..4c977f049670a 100644
---- a/net/sched/sch_tbf.c
-+++ b/net/sched/sch_tbf.c
-@@ -452,7 +452,7 @@ static int tbf_change(struct Qdisc *sch, struct nlattr *opt,
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/fs_core.c b/drivers/net/ethernet/mellanox/mlx5/core/fs_core.c
+index 0ce999706d412..1bc88743d2dfa 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/fs_core.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/fs_core.c
+@@ -2200,6 +2200,7 @@ try_add_to_existing_fg(struct mlx5_flow_table *ft,
+ 	struct mlx5_flow_handle *rule;
+ 	struct match_list *iter;
+ 	bool take_write = false;
++	bool try_again = false;
+ 	struct fs_fte *fte;
+ 	u64  version = 0;
+ 	int err;
+@@ -2264,6 +2265,7 @@ try_add_to_existing_fg(struct mlx5_flow_table *ft,
+ 		nested_down_write_ref_node(&g->node, FS_LOCK_PARENT);
  
- 	sch_tree_lock(sch);
- 	if (child) {
--		qdisc_tree_flush_backlog(q->qdisc);
-+		qdisc_purge_queue(q->qdisc);
- 		old = q->qdisc;
- 		q->qdisc = child;
+ 		if (!g->node.active) {
++			try_again = true;
+ 			up_write_ref_node(&g->node, false);
+ 			continue;
+ 		}
+@@ -2285,7 +2287,8 @@ try_add_to_existing_fg(struct mlx5_flow_table *ft,
+ 			tree_put_node(&fte->node, false);
+ 		return rule;
  	}
+-	rule = ERR_PTR(-ENOENT);
++	err = try_again ? -EAGAIN : -ENOENT;
++	rule = ERR_PTR(err);
+ out:
+ 	kmem_cache_free(steering->ftes_cache, fte);
+ 	return rule;
 -- 
 2.39.5
 
