@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-153953-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153956-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 575FBADD719
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:41:12 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5990FADD782
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:45:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B454E4A20A1
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:32:23 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 21C65164D54
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:32:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B75482F3627;
-	Tue, 17 Jun 2025 16:27:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 858EA2DFF18;
+	Tue, 17 Jun 2025 16:27:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ppBTJFw4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XTV3bnI9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72B0D2EE60B;
-	Tue, 17 Jun 2025 16:27:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41A2E23A9B3;
+	Tue, 17 Jun 2025 16:27:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750177629; cv=none; b=HoX0i0k4KUZtHgZs25WqgVCNRZBOQ/huECtpNTnGsnZpvPOlhBOdZYtntreUgwV8LI1kWSMMVJhkXPSjL4NVC1fbIgUD63BslNXrVIdy9/9plSnqBkfR5keLXmTGdr5Br7YSLQpV9NpYHAElzzGmGDA0Fn2tbEGgnGqqiH5rrJk=
+	t=1750177639; cv=none; b=CVo7xFMdYnC9kr+paCDTTV9afCZCn8LO8NWIygqeV8iV+Fs/bSIGfDGmIfsfvXMg40EmoB6HKJhxKja8vnXBUA0cRQe1GE0fj4b+45viekSk2qtBh3wgNu6OTrz/e4PmiZhJ1a14eyz4Lu/FxHOFjJpGvChOgccA2ffXsVb9TyY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750177629; c=relaxed/simple;
-	bh=SXoZo2Ngs0fS6q+UX/70oAv5f78zWGcQTNDlz3zVTTw=;
+	s=arc-20240116; t=1750177639; c=relaxed/simple;
+	bh=9nP+Ozyg+4jwEV6eif+y+HPcY5rYdOzZmKvXSqkq4nQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FyXPVUw71Y1XHOxfXXJOCCJ0vEtZwDbYpUwI2LUIk7vPpjnSr6hcrnUUjShi8ktUa0nkGX9bGo70hEN8nvsCKYMpOw8piIbdixpOCZP5uvpf8KCplc6KOsLrfrEL/lPz/LWkDokWd9sV+T5T4oBMy+X/t2wzvdBMC2FMf6qPOz8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ppBTJFw4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7309C4CEE7;
-	Tue, 17 Jun 2025 16:27:08 +0000 (UTC)
+	 MIME-Version; b=qka+4XPNhQEebImjGIuPzxb/yoD81V7y+3vp2tpc0DMxdr7t/FCYyRY2g/e+LJSc65IXELosGnZiBcpi6nPzNRh6AWqSW9Sj5HoFtiId3Xcv7OESj9IbVVZkaC35jsEpp9r/fJ27e9nRagygHKqNsGkOWDqDBJ1bWDfwb4l6/vg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XTV3bnI9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7334CC4CEE3;
+	Tue, 17 Jun 2025 16:27:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750177629;
-	bh=SXoZo2Ngs0fS6q+UX/70oAv5f78zWGcQTNDlz3zVTTw=;
+	s=korg; t=1750177639;
+	bh=9nP+Ozyg+4jwEV6eif+y+HPcY5rYdOzZmKvXSqkq4nQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ppBTJFw4iL3jkO7vmzgcFxr9C5Ikiz28bcd2K50UVb1+MOphPbAkT1+nWFJKFoOjV
-	 l5bpQtZ/f5BMktgG237dxUyqL0Yc62MZ7jBY0c46yuLYq9meAXaTgg/9CvdcL1Nmzw
-	 WV81nbyE9e18udZP1VWFEf91xI2R8BdoKo5+bAJY=
+	b=XTV3bnI9pdWZwqm1M4JDONmP3hsxP1oHFlyNJmJIvZm09dDpnw7VRIh1nmJTB3pdu
+	 5zyaEaQ2ZlYpwID4NuqIfGxlPMHXLRxJiofD2lzlya6xJv14PoBJphPuWKIzT+VfsS
+	 6HLaFZyACg9AClPsoD/nidiD3bq1zBXmCrilercA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+aa5bb5f6860e08a60450@syzkaller.appspotmail.com,
-	Qi Han <hanqi@vivo.com>,
-	Chao Yu <chao@kernel.org>,
 	Zhiguo Niu <zhiguo.niu@unisoc.com>,
+	Chao Yu <chao@kernel.org>,
 	Jaegeuk Kim <jaegeuk@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 338/780] f2fs: fix to skip f2fs_balance_fs() if checkpoint is disabled
-Date: Tue, 17 Jun 2025 17:20:46 +0200
-Message-ID: <20250617152505.216746274@linuxfoundation.org>
+Subject: [PATCH 6.15 339/780] f2fs: use d_inode(dentry) cleanup dentry->d_inode
+Date: Tue, 17 Jun 2025 17:20:47 +0200
+Message-ID: <20250617152505.257042622@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
 References: <20250617152451.485330293@linuxfoundation.org>
@@ -69,110 +67,73 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Chao Yu <chao@kernel.org>
+From: Zhiguo Niu <zhiguo.niu@unisoc.com>
 
-[ Upstream commit c836d3b8d94e3dd381e7d4bb918875084f85715e ]
+[ Upstream commit a6c397a31f58a1d577c2c8d04b624e9baa31951c ]
 
-Syzbot reports a f2fs bug as below:
+no logic changes.
 
-INFO: task syz-executor328:5856 blocked for more than 144 seconds.
-      Not tainted 6.15.0-rc6-syzkaller-00208-g3c21441eeffc #0
-"echo 0 > /proc/sys/kernel/hung_task_timeout_secs" disables this message.
-task:syz-executor328 state:D stack:24392 pid:5856  tgid:5832  ppid:5826   task_flags:0x400040 flags:0x00004006
-Call Trace:
- <TASK>
- context_switch kernel/sched/core.c:5382 [inline]
- __schedule+0x168f/0x4c70 kernel/sched/core.c:6767
- __schedule_loop kernel/sched/core.c:6845 [inline]
- schedule+0x165/0x360 kernel/sched/core.c:6860
- io_schedule+0x81/0xe0 kernel/sched/core.c:7742
- f2fs_balance_fs+0x4b4/0x780 fs/f2fs/segment.c:444
- f2fs_map_blocks+0x3af1/0x43b0 fs/f2fs/data.c:1791
- f2fs_expand_inode_data+0x653/0xaf0 fs/f2fs/file.c:1872
- f2fs_fallocate+0x4f5/0x990 fs/f2fs/file.c:1975
- vfs_fallocate+0x6a0/0x830 fs/open.c:338
- ioctl_preallocate fs/ioctl.c:290 [inline]
- file_ioctl fs/ioctl.c:-1 [inline]
- do_vfs_ioctl+0x1b8f/0x1eb0 fs/ioctl.c:885
- __do_sys_ioctl fs/ioctl.c:904 [inline]
- __se_sys_ioctl+0x82/0x170 fs/ioctl.c:892
- do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
- do_syscall_64+0xf6/0x210 arch/x86/entry/syscall_64.c:94
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-
-The root cause is after commit 84b5bb8bf0f6 ("f2fs: modify
-f2fs_is_checkpoint_ready logic to allow more data to be written with the
-CP disable"), we will get chance to allow f2fs_is_checkpoint_ready() to
-return true once below conditions are all true:
-1. checkpoint is disabled
-2. there are not enough free segments
-3. there are enough free blocks
-
-Then it will cause f2fs_balance_fs() to trigger foreground GC.
-
-void f2fs_balance_fs(struct f2fs_sb_info *sbi, bool need)
-...
-	if (!f2fs_is_checkpoint_ready(sbi))
-		return;
-
-And the testcase mounts f2fs image w/ gc_merge,checkpoint=disable, so deadloop
-will happen through below race condition:
-
-- f2fs_do_shutdown		- vfs_fallocate				- gc_thread_func
-				 - file_start_write
-				  - __sb_start_write(SB_FREEZE_WRITE)
-				 - f2fs_fallocate
-				  - f2fs_expand_inode_data
-				   - f2fs_map_blocks
-				    - f2fs_balance_fs
-				     - prepare_to_wait
-				     - wake_up(gc_wait_queue_head)
-				     - io_schedule
- - bdev_freeze
-  - freeze_super
-   - sb->s_writers.frozen = SB_FREEZE_WRITE;
-   - sb_wait_write(sb, SB_FREEZE_WRITE);
-									 - if (sbi->sb->s_writers.frozen >= SB_FREEZE_WRITE) continue;
-									 : cause deadloop
-
-This patch fix to add check condition in f2fs_balance_fs(), so that if
-checkpoint is disabled, we will just skip trigger foreground GC to
-avoid such deadloop issue.
-
-Meanwhile let's remove f2fs_is_checkpoint_ready() check condition in
-f2fs_balance_fs(), since it's redundant, due to the main logic in the
-function is to check:
-a) whether checkpoint is disabled
-b) there is enough free segments
-
-f2fs_balance_fs() still has all logics after f2fs_is_checkpoint_ready()'s
-removal.
-
-Reported-by: syzbot+aa5bb5f6860e08a60450@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/linux-f2fs-devel/682d743a.a00a0220.29bc26.0289.GAE@google.com
-Fixes: 84b5bb8bf0f6 ("f2fs: modify f2fs_is_checkpoint_ready logic to allow more data to be written with the CP disable")
-Cc: Qi Han <hanqi@vivo.com>
-Signed-off-by: Chao Yu <chao@kernel.org>
-Reviewed-by: Zhiguo Niu <zhiguo.niu@unisoc.com>
+Signed-off-by: Zhiguo Niu <zhiguo.niu@unisoc.com>
+Reviewed-by: Chao Yu <chao@kernel.org>
 Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+Stable-dep-of: 9883494c45a1 ("f2fs: fix to correct check conditions in f2fs_cross_rename")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/f2fs/segment.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/f2fs/namei.c | 8 ++++----
+ fs/f2fs/super.c | 4 ++--
+ 2 files changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/fs/f2fs/segment.c b/fs/f2fs/segment.c
-index 2a71e70c9ac97..41ca73622c8d4 100644
---- a/fs/f2fs/segment.c
-+++ b/fs/f2fs/segment.c
-@@ -424,7 +424,7 @@ void f2fs_balance_fs(struct f2fs_sb_info *sbi, bool need)
- 	if (need && excess_cached_nats(sbi))
- 		f2fs_balance_fs_bg(sbi, false);
+diff --git a/fs/f2fs/namei.c b/fs/f2fs/namei.c
+index 8f8b9b843bdf4..faa5191cf4ca6 100644
+--- a/fs/f2fs/namei.c
++++ b/fs/f2fs/namei.c
+@@ -414,7 +414,7 @@ static int f2fs_link(struct dentry *old_dentry, struct inode *dir,
  
--	if (!f2fs_is_checkpoint_ready(sbi))
-+	if (unlikely(is_sbi_flag_set(sbi, SBI_CP_DISABLED)))
- 		return;
+ 	if (is_inode_flag_set(dir, FI_PROJ_INHERIT) &&
+ 			(!projid_eq(F2FS_I(dir)->i_projid,
+-			F2FS_I(old_dentry->d_inode)->i_projid)))
++			F2FS_I(inode)->i_projid)))
+ 		return -EXDEV;
+ 
+ 	err = f2fs_dquot_initialize(dir);
+@@ -914,7 +914,7 @@ static int f2fs_rename(struct mnt_idmap *idmap, struct inode *old_dir,
+ 
+ 	if (is_inode_flag_set(new_dir, FI_PROJ_INHERIT) &&
+ 			(!projid_eq(F2FS_I(new_dir)->i_projid,
+-			F2FS_I(old_dentry->d_inode)->i_projid)))
++			F2FS_I(old_inode)->i_projid)))
+ 		return -EXDEV;
  
  	/*
+@@ -1107,10 +1107,10 @@ static int f2fs_cross_rename(struct inode *old_dir, struct dentry *old_dentry,
+ 
+ 	if ((is_inode_flag_set(new_dir, FI_PROJ_INHERIT) &&
+ 			!projid_eq(F2FS_I(new_dir)->i_projid,
+-			F2FS_I(old_dentry->d_inode)->i_projid)) ||
++			F2FS_I(old_inode)->i_projid)) ||
+ 	    (is_inode_flag_set(new_dir, FI_PROJ_INHERIT) &&
+ 			!projid_eq(F2FS_I(old_dir)->i_projid,
+-			F2FS_I(new_dentry->d_inode)->i_projid)))
++			F2FS_I(new_inode)->i_projid)))
+ 		return -EXDEV;
+ 
+ 	err = f2fs_dquot_initialize(old_dir);
+diff --git a/fs/f2fs/super.c b/fs/f2fs/super.c
+index 7a3bc85df6a7a..386326f7a440e 100644
+--- a/fs/f2fs/super.c
++++ b/fs/f2fs/super.c
+@@ -1882,9 +1882,9 @@ static int f2fs_statfs(struct dentry *dentry, struct kstatfs *buf)
+ 	buf->f_fsid    = u64_to_fsid(id);
+ 
+ #ifdef CONFIG_QUOTA
+-	if (is_inode_flag_set(dentry->d_inode, FI_PROJ_INHERIT) &&
++	if (is_inode_flag_set(d_inode(dentry), FI_PROJ_INHERIT) &&
+ 			sb_has_quota_limits_enabled(sb, PRJQUOTA)) {
+-		f2fs_statfs_project(sb, F2FS_I(dentry->d_inode)->i_projid, buf);
++		f2fs_statfs_project(sb, F2FS_I(d_inode(dentry))->i_projid, buf);
+ 	}
+ #endif
+ 	return 0;
 -- 
 2.39.5
 
