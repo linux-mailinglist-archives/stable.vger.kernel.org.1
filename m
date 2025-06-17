@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-153366-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-154350-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B0B12ADD42C
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:07:22 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id DF797ADD9BF
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 19:09:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 026D94066AC
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 15:59:09 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0FF841948255
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:50:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EFCEC2F432A;
-	Tue, 17 Jun 2025 15:55:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 340092FA641;
+	Tue, 17 Jun 2025 16:48:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XvyehRSW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gmXnvMME"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E3F22F430D;
-	Tue, 17 Jun 2025 15:55:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD19D2FA631;
+	Tue, 17 Jun 2025 16:48:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750175718; cv=none; b=QjkYj6gKFaD/pVi3vHIcWZQ+0yl8uSvMKf90wjdsGSj6gXLzzl1RaxR+8901XXvsOOj5EoxZuKUaRDSQe9K1Tx+SYEIruQFKndYygqd1tqB5pGM8RMNuby62h+NV7HyyLOBp/Q41fjtmiW6xnKhYpCypfqy/xaEW7XRxeXl/ZOc=
+	t=1750178916; cv=none; b=Xz+EGrbtF1DlLvbDvba82X/YEH7ojpNlA0a4u+BnfCr5P+B+f38RHsWK56qJkOKUzxDk1V6MezrrclgpEmkk9ARW6Fd6BxWy/Qe/ZYIGuWhmkxvz1eUkCjLSXItcY3bxHBNo/rocQuN0PMzAdFi8JwJsrnxGtwa/K/3Uxs2f7F4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750175718; c=relaxed/simple;
-	bh=ke7Hh5J3uKUCRbLvLhgfnchaC6OP7RxJ11V36077Skg=;
+	s=arc-20240116; t=1750178916; c=relaxed/simple;
+	bh=aWbdFXKeNKL7Ix2Q608H4cm/pHXLwp28LTj6I4Y06Y4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LE3jvO1D/NH9dzw6Wf+fb9vEEyPnaE+fXQxIDjj65SGu82krFSyOzgMWNoNWy4FuhryW2k6ujFSplaGk6MsHlU423WlAOxR3/7bTyLWDYVx8LkMYlGyh1B9qzymQ7jBnXcpn5IsrGoGXNtWg3OuE/8iap4pjfnz2ngUff7Zlz68=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XvyehRSW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07852C4CEE7;
-	Tue, 17 Jun 2025 15:55:17 +0000 (UTC)
+	 MIME-Version; b=RQHArzSqsXXJtsVaHbpx2RYbLpnp+i7IoooAwrrLgYjFAo/NSO0VgFRM6xvTrB+QSYU9I8hocl6d4rFKJbnoJB8wo5TnQSfkLYV3HN979x04nRj1VsuHRwc0Q1D8Ed9Eni0yHWxvGPdshtb+8fTwFHq22dWEMPUBCgYGsPFCMMk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gmXnvMME; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4CC6BC4CEE3;
+	Tue, 17 Jun 2025 16:48:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750175718;
-	bh=ke7Hh5J3uKUCRbLvLhgfnchaC6OP7RxJ11V36077Skg=;
+	s=korg; t=1750178915;
+	bh=aWbdFXKeNKL7Ix2Q608H4cm/pHXLwp28LTj6I4Y06Y4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XvyehRSW4RtYEWVDef8/5Mtbc1+mnXljjfYZ0mMn0erFWaq8JfyYwgsDDM3tIDSg5
-	 bn0SZqyMNGSPpbF9KoJCnEuW9q2Yc3lJLCRXHPxs0rWGzNJKemaafJvzQnrEH2OElw
-	 bajCsKJDkb4D6JsWi7+eLI0hGY6rj4+JRoFWSN7g=
+	b=gmXnvMMEEIItGnG24x14I1nAxV67IFtSyABacFiPAujJyA8iQmB/xhgHjw+EzoZ59
+	 x1HKEPDh4mflDM1P8OWkBruoSTNOiVI8A+6dYXn2sYe2fi1CJWQxu77uGoFAGDO7Nk
+	 DYWiM6WTVFAfAkMlkPcS77pr1UPoqa27f/IDr4H4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andre Przywara <andre.przywara@arm.com>,
-	"Rob Herring (Arm)" <robh@kernel.org>,
-	Chen-Yu Tsai <wens@csie.org>,
+	Jacob Keller <jacob.e.keller@intel.com>,
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	Rafal Romanowski <rafal.romanowski@intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 185/356] dt-bindings: vendor-prefixes: Add Liontron name
+Subject: [PATCH 6.15 592/780] iavf: iavf_suspend(): take RTNL before netdev_lock()
 Date: Tue, 17 Jun 2025 17:25:00 +0200
-Message-ID: <20250617152345.662799215@linuxfoundation.org>
+Message-ID: <20250617152515.583581080@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152338.212798615@linuxfoundation.org>
-References: <20250617152338.212798615@linuxfoundation.org>
+In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
+References: <20250617152451.485330293@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,42 +64,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andre Przywara <andre.przywara@arm.com>
+From: Przemek Kitszel <przemyslaw.kitszel@intel.com>
 
-[ Upstream commit 9baa27a2e9fc746143ab686b6dbe2d515284a4c5 ]
+[ Upstream commit dba35a4bb4a3da5696f2a179b7d695dc3ea25fb8 ]
 
-Liontron is a company based in Shenzen, China, making industrial
-development boards and embedded computers, mostly using Rockchip and
-Allwinner SoCs.
+Fix an obvious violation of lock ordering.
+Jakub's [1] added netdev_lock() call that is wrong ordered wrt RTNL,
+but the Fixes tag points to crit_lock being wrongly placed (by lockdep
+standards).
 
-Add their name to the list of vendors.
+Actual reason we got it wrong is dated back to critical section managed by
+pure flag checks, which is with us since the very beginning.
 
-Signed-off-by: Andre Przywara <andre.przywara@arm.com>
-Acked-by: Rob Herring (Arm) <robh@kernel.org>
-Link: https://patch.msgid.link/20250505164729.18175-2-andre.przywara@arm.com
-Signed-off-by: Chen-Yu Tsai <wens@csie.org>
+[1] afc664987ab3 ("eth: iavf: extend the netdev_lock usage")
+
+Fixes: 5ac49f3c2702 ("iavf: use mutexes for locking of critical sections")
+Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
+Signed-off-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+Tested-by: Rafal Romanowski <rafal.romanowski@intel.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- Documentation/devicetree/bindings/vendor-prefixes.yaml | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/net/ethernet/intel/iavf/iavf_main.c | 13 +++++++++----
+ 1 file changed, 9 insertions(+), 4 deletions(-)
 
-diff --git a/Documentation/devicetree/bindings/vendor-prefixes.yaml b/Documentation/devicetree/bindings/vendor-prefixes.yaml
-index dc275ab60e534..7376a924e9aca 100644
---- a/Documentation/devicetree/bindings/vendor-prefixes.yaml
-+++ b/Documentation/devicetree/bindings/vendor-prefixes.yaml
-@@ -773,6 +773,8 @@ patternProperties:
-     description: Linux-specific binding
-   "^linx,.*":
-     description: Linx Technologies
-+  "^liontron,.*":
-+    description: Shenzhen Liontron Technology Co., Ltd
-   "^liteon,.*":
-     description: LITE-ON Technology Corp.
-   "^litex,.*":
+diff --git a/drivers/net/ethernet/intel/iavf/iavf_main.c b/drivers/net/ethernet/intel/iavf/iavf_main.c
+index 6d7ba4d67a193..a77c726435281 100644
+--- a/drivers/net/ethernet/intel/iavf/iavf_main.c
++++ b/drivers/net/ethernet/intel/iavf/iavf_main.c
+@@ -5596,22 +5596,27 @@ static int iavf_suspend(struct device *dev_d)
+ {
+ 	struct net_device *netdev = dev_get_drvdata(dev_d);
+ 	struct iavf_adapter *adapter = netdev_priv(netdev);
++	bool running;
+ 
+ 	netif_device_detach(netdev);
+ 
++	running = netif_running(netdev);
++	if (running)
++		rtnl_lock();
++
+ 	netdev_lock(netdev);
+ 	mutex_lock(&adapter->crit_lock);
+ 
+-	if (netif_running(netdev)) {
+-		rtnl_lock();
++	if (running)
+ 		iavf_down(adapter);
+-		rtnl_unlock();
+-	}
++
+ 	iavf_free_misc_irq(adapter);
+ 	iavf_reset_interrupt_capability(adapter);
+ 
+ 	mutex_unlock(&adapter->crit_lock);
+ 	netdev_unlock(netdev);
++	if (running)
++		rtnl_unlock();
+ 
+ 	return 0;
+ }
 -- 
 2.39.5
 
