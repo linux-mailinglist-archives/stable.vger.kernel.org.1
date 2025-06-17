@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-154407-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-154016-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 80002ADD96F
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 19:06:20 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D471BADD8C9
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:58:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D63FB2C222C
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:53:17 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8F99D19E6E6E
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:36:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96D16285058;
-	Tue, 17 Jun 2025 16:51:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8D4E2EA14E;
+	Tue, 17 Jun 2025 16:30:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DKGwXuzT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TLCAIauw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 529ED2FA622;
-	Tue, 17 Jun 2025 16:51:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A51111E98E3;
+	Tue, 17 Jun 2025 16:30:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750179096; cv=none; b=UmH+zSbRQKvOW8qpxGr9Yzomz1DCCdH94nK22idwk3t4aIv13arrjWaNsZw73LJDlRDwND0gCAiR98BLkgrjwVIAI7vEJVxOfGzAOjZkwVTayh1c8cn20TPbK72lDT2hDCmH18AdpfQDaVASGtDCzqBYi4IoK4MwKhI9tVxHqhs=
+	t=1750177835; cv=none; b=CNWZQy1TdqTPNlyScrDq8WtnPUQoNXtGRqBIgigRs6NzXArN89CMsXlRUN0havEKff87qMazwnxSHMWg6Tqz/RK+5Y7mIT2MMBI/GGT1sTpuaTlPa4yaEJO+tiz47a+flOs9LpzNt+jiNg4pr/gGbRU9cA9lUdmEp7EJP+48uXU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750179096; c=relaxed/simple;
-	bh=beexzcq9Y5Z2PZiWbNz1x0BbujIpLxzbVdBiCezc7ds=;
+	s=arc-20240116; t=1750177835; c=relaxed/simple;
+	bh=GMOw/QOm6tg6VFrmGzNpgoF6Da9UiwzZCMliGbmNiRc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QXY6O5ir7VA5FsDjTEw7HdJxN06uciofrXrbs4WsYSugvwVFJaDyHcqWtfEM25KPhGnBDXcMao3RcqJiVN3bwNvvUSMeolbghgOLze5X9B6z7C06LqTYbUGpkAk5LvN9HdC49XtFzsidyZUuoTr8EJ1zlb+6SxvH+KnsXQwuhVQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DKGwXuzT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6917C4CEE3;
-	Tue, 17 Jun 2025 16:51:35 +0000 (UTC)
+	 MIME-Version:Content-Type; b=LQzl44ch73Zzhv86RPgd9GqmEaDWm8lrX6zenrSdmyOqmm021o+vDKUUzMdTCph9xZeYog41QBkrPe3TkfHB8JPs9x5RdBDtjulwxa0qo5vDBeUqbmXrBfLKn/iMuIbQZfSc/bT+wPIY6v2J996ENpZyEg5j09qWdPkDiK7ZRW0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TLCAIauw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14415C4CEE3;
+	Tue, 17 Jun 2025 16:30:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750179096;
-	bh=beexzcq9Y5Z2PZiWbNz1x0BbujIpLxzbVdBiCezc7ds=;
+	s=korg; t=1750177835;
+	bh=GMOw/QOm6tg6VFrmGzNpgoF6Da9UiwzZCMliGbmNiRc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DKGwXuzT9YRpxyAT9Viu9Tuxt1uJUVSN6CeS7Ys6/VhM6Yu1PVQhNgiVxwiUYq81F
-	 jggGDK27vsr+OTabprEaDc8pmzDQzsWYIoB9wtKsqbUJlGsspSo8PoQtvKvGlCGCI2
-	 TZUoT98AYnWuK4JtaNHG3+eA0p2gz0TQEsbpMC5I=
+	b=TLCAIauwIzLrnPtzhCXgnBFfd+xTTlP/ICmr8ryczmdnTKh3Zt86XsCDZmcSKzJfE
+	 ytO/AvLiFZHBHaYuZOCii74mg9GgcnmXkuoKH9vhJdxe8ggmJrl2RksqryoB1h/fSj
+	 GKLjWnuD50qg6QUFaCubGFHjR2JbzxN5LhJuV5+4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yuuki NAGAO <wf.yn386@gmail.com>,
+	=?UTF-8?q?Amadeusz=20S=C5=82awi=C5=84ski?= <amadeuszx.slawinski@linux.intel.com>,
+	Cezary Rojewski <cezary.rojewski@intel.com>,
 	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 647/780] ASoC: ti: omap-hdmi: Re-add dai_link->platform to fix card init
-Date: Tue, 17 Jun 2025 17:25:55 +0200
-Message-ID: <20250617152517.829628204@linuxfoundation.org>
+Subject: [PATCH 6.12 390/512] ASoC: Intel: avs: Verify content returned by parse_int_array()
+Date: Tue, 17 Jun 2025 17:25:56 +0200
+Message-ID: <20250617152435.384707431@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
-References: <20250617152451.485330293@linuxfoundation.org>
+In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
+References: <20250617152419.512865572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,81 +61,54 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yuuki NAGAO <wf.yn386@gmail.com>
+From: Cezary Rojewski <cezary.rojewski@intel.com>
 
-[ Upstream commit bae071aa7bcd034054cec91666c80f812adeccd9 ]
+[ Upstream commit 93e246b6769bdacb09cfff4ea0f00fe5ab4f0d7a ]
 
-The removed dai_link->platform component cause a fail which
-is exposed at runtime. (ex: when a sound tool is used)
-This patch re-adds the dai_link->platform component to have
-a full card registered.
+The first element of the returned array stores its length. If it is 0,
+any manipulation beyond the element at index 0 ends with null-ptr-deref.
 
-Before this patch:
-$ aplay -l
-**** List of PLAYBACK Hardware Devices ****
-card 1: HDMI [HDMI], device 0: HDMI snd-soc-dummy-dai-0 []
-  Subdevices: 1/1
-  Subdevice #0: subdevice #0
-
-$ speaker-test -D plughw:1,0 -t sine
-speaker-test 1.2.8
-Playback device is plughw:1,0
-Stream parameters are 48000Hz, S16_LE, 1 channels
-Sine wave rate is 440.0000Hz
-Playback open error: -22,Invalid argument
-
-After this patch which restores the platform component:
-$ aplay -l
-**** List of PLAYBACK Hardware Devices ****
-card 0: HDMI [HDMI], device 0: HDMI snd-soc-dummy-dai-0 [HDMI snd-soc-dummy-dai-0]
-  Subdevices: 0/1
-  Subdevice #0: subdevice #0
-
--> Resolve the playback error.
-
-Fixes: 3b0db249cf8f ("ASoC: ti: remove unnecessary dai_link->platform")
-
-Signed-off-by: Yuuki NAGAO <wf.yn386@gmail.com>
-Link: https://patch.msgid.link/20250531141341.81164-1-wf.yn386@gmail.com
+Fixes: 5a565ba23abe ("ASoC: Intel: avs: Probing and firmware tracing over debugfs")
+Reviewed-by: Amadeusz Sławiński <amadeuszx.slawinski@linux.intel.com>
+Signed-off-by: Cezary Rojewski <cezary.rojewski@intel.com>
+Link: https://patch.msgid.link/20250530141025.2942936-8-cezary.rojewski@intel.com
 Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/ti/omap-hdmi.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ sound/soc/intel/avs/debugfs.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/sound/soc/ti/omap-hdmi.c b/sound/soc/ti/omap-hdmi.c
-index cf43ac19c4a6d..55e7cb96858fc 100644
---- a/sound/soc/ti/omap-hdmi.c
-+++ b/sound/soc/ti/omap-hdmi.c
-@@ -361,17 +361,20 @@ static int omap_hdmi_audio_probe(struct platform_device *pdev)
- 	if (!card->dai_link)
- 		return -ENOMEM;
+diff --git a/sound/soc/intel/avs/debugfs.c b/sound/soc/intel/avs/debugfs.c
+index 1767ded4d9830..c9978fb9c74e2 100644
+--- a/sound/soc/intel/avs/debugfs.c
++++ b/sound/soc/intel/avs/debugfs.c
+@@ -372,7 +372,10 @@ static ssize_t trace_control_write(struct file *file, const char __user *from, s
+ 		return ret;
  
--	compnent = devm_kzalloc(dev, sizeof(*compnent), GFP_KERNEL);
-+	compnent = devm_kzalloc(dev, 2 * sizeof(*compnent), GFP_KERNEL);
- 	if (!compnent)
- 		return -ENOMEM;
--	card->dai_link->cpus		= compnent;
-+	card->dai_link->cpus		= &compnent[0];
- 	card->dai_link->num_cpus	= 1;
- 	card->dai_link->codecs		= &snd_soc_dummy_dlc;
- 	card->dai_link->num_codecs	= 1;
-+	card->dai_link->platforms	= &compnent[1];
-+	card->dai_link->num_platforms	= 1;
+ 	num_elems = *array;
+-	resource_mask = array[1];
++	if (!num_elems) {
++		ret = -EINVAL;
++		goto free_array;
++	}
  
- 	card->dai_link->name = card->name;
- 	card->dai_link->stream_name = card->name;
- 	card->dai_link->cpus->dai_name = dev_name(ad->dssdev);
-+	card->dai_link->platforms->name = dev_name(ad->dssdev);
- 	card->num_links = 1;
- 	card->dev = dev;
- 
+ 	/*
+ 	 * Disable if just resource mask is provided - no log priority flags.
+@@ -380,6 +383,7 @@ static ssize_t trace_control_write(struct file *file, const char __user *from, s
+ 	 * Enable input format:   mask, prio1, .., prioN
+ 	 * Where 'N' equals number of bits set in the 'mask'.
+ 	 */
++	resource_mask = array[1];
+ 	if (num_elems == 1) {
+ 		ret = disable_logs(adev, resource_mask);
+ 	} else {
 -- 
 2.39.5
 
