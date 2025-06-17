@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-153564-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-154269-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 249A4ADD479
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:10:24 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 906E8ADD868
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:55:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 81B0C7A9AEE
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:08:10 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 97A8819E79B4
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:47:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3502C2EE5FD;
-	Tue, 17 Jun 2025 16:06:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BAB45285042;
+	Tue, 17 Jun 2025 16:44:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DJKKIJJk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Gfy32jXY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E22442ED15A;
-	Tue, 17 Jun 2025 16:06:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78BE4217F40;
+	Tue, 17 Jun 2025 16:44:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750176371; cv=none; b=LgF94AsQVPj+qS7bkEj0jt25PARiR6FQA3NSuLcasC73rp5mvc6pJXethKmfwxORBKbBuHVECXyOH/8ROoRKUfQPFn28ZYYOLMlTeuo+KyPSSSll3czfx23Ggu8hsER0+JZEXzmKsE+D6W4YOW+CKxrxWhHEfn2/Lr08UkgA2oo=
+	t=1750178646; cv=none; b=u0tTPgTM+nGppriQw0j/hf+gxWkh1/TB0JmLJmdHAao2AB1WV0/6DVzhw3QWMcCOnxTNXBx51xy7MlAT5yb4FQObQoAyiq1UfzkTghEkiRY/qrtp2tYg9f0tqOSIkudWlaCEr/9npkhAShFs7CpY2UvGNdCmJEXQROL2+elfm4w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750176371; c=relaxed/simple;
-	bh=0cHpEyuY2SzvBj6UxgEtwi+aTH1Qy+xmZFSOU6zlCps=;
+	s=arc-20240116; t=1750178646; c=relaxed/simple;
+	bh=tggA+N1IEt2j1JxTXF4q/11EPAqeNsB30Jn4AUlt5Rg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pyash1noLa31GjZXi5FfaT/L+Fk8Ja4wrhoPev2wNQtWZqN/aSvITCx4YcF+pEOpq/286Ju4fHMO+DxRG8H1IQuTQRndlMDkpgOAsHmNyv58kS1FKzUlK7uitFL66bY1YpBPOWVn8DIQN5jBoHSG99yC7Sw4+LwAVcmklmywXmk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DJKKIJJk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F1C9C4CEE3;
-	Tue, 17 Jun 2025 16:06:10 +0000 (UTC)
+	 MIME-Version; b=AZCjlD+OoZH5Lsvfxr+J3mDhOs2rkmSSh/KJhaPqf+dDyh4nr1t1i871528IdwORigFDg1JwWRH7b99RJWS/DQhGnB77KW4maAHW2oCmlidAQ2Sd8+L6WekhoSw7/g2d8Y1u+0vKRwOa5kMOChhSmFROdjDLvfuYrG6UcmmqbAI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Gfy32jXY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3E5BC4CEF0;
+	Tue, 17 Jun 2025 16:44:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750176370;
-	bh=0cHpEyuY2SzvBj6UxgEtwi+aTH1Qy+xmZFSOU6zlCps=;
+	s=korg; t=1750178646;
+	bh=tggA+N1IEt2j1JxTXF4q/11EPAqeNsB30Jn4AUlt5Rg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DJKKIJJknkSOsFGhAszIOtbHdkSmWr5Lq504r65P1ghTU00ZN0IQZbn6bTwlDZpYz
-	 c5loMI1944p/wZLrmHsc61Wp2JL/oXu2zCu6ax4fv08WYQd8ALyTS/IuN5cz8Mdllm
-	 TOpQ70w/r5nO+3DoZvs5l+WMvvFNgyj/3CokFR+k=
+	b=Gfy32jXYELUCqrQvymX7ECXMOLBbkdDWcP64022hApPXza6xamlbJSAP0+W50qPrI
+	 TTsqM607rW8yUmnrtfjqEbdaRHibTBODe6/yxztpK0IZWzL6axXqP68Ru3WY1LdoOn
+	 F+Qp7qjuyj7eDhW0gN4L5KXCFB4X9Hf0FdkbAKDc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
-	Dzmitry Sankouski <dsankouski@gmail.com>,
-	Bjorn Andersson <andersson@kernel.org>,
+	NeilBrown <neil@brown.name>,
+	Anna Schumaker <anna.schumaker@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 223/512] arm64: dts: qcom: sdm845-starqltechn: fix usb regulator mistake
+Subject: [PATCH 6.15 481/780] nfs_localio: protect race between nfs_uuid_put() and nfs_close_local_fh()
 Date: Tue, 17 Jun 2025 17:23:09 +0200
-Message-ID: <20250617152428.661203233@linuxfoundation.org>
+Message-ID: <20250617152511.076667085@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
-References: <20250617152419.512865572@linuxfoundation.org>
+In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
+References: <20250617152451.485330293@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,48 +62,194 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dzmitry Sankouski <dsankouski@gmail.com>
+From: NeilBrown <neil@brown.name>
 
-[ Upstream commit 242e4126ee007b95765c21a9d74651fdcf221f2b ]
+[ Upstream commit 21fb44034695185f1dcbcb37354c842cabfe83c1 ]
 
-Usb regulator was wrongly pointed to vreg_l1a_0p875.
-However, on starqltechn it's powered from vreg_l5a_0p8.
+nfs_uuid_put() and nfs_close_local_fh() can race if a "struct
+nfs_file_localio" is released at the same time that nfsd calls
+nfs_localio_invalidate_clients().
 
-Fixes: d711b22eee55 ("arm64: dts: qcom: starqltechn: add initial device tree for starqltechn")
-Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Signed-off-by: Dzmitry Sankouski <dsankouski@gmail.com>
-Link: https://lore.kernel.org/r/20250225-starqltechn_integration_upstream-v9-3-a5d80375cb66@gmail.com
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+It is important that neither of these functions completes after the
+other has started looking at a given nfs_file_localio and before it
+finishes.
+
+If nfs_uuid_put() exits while nfs_close_local_fh() is closing ro_file
+and rw_file it could return to __nfd_file_cache_purge() while some files
+are still referenced so the purge may not succeed.
+
+If nfs_close_local_fh() exits while nfsd_uuid_put() is still closing the
+files then the "struct nfs_file_localio" could be freed while
+nfsd_uuid_put() is still looking at it.  This side is currently handled
+by copying the pointers out of ro_file and rw_file before deleting from
+the list in nfsd_uuid.  We need to preserve this while ensuring that
+nfsd_uuid_put() does wait for nfs_close_local_fh().
+
+This patch use nfl->uuid and nfl->list to provide the required
+interlock.
+
+nfs_uuid_put() removes the nfs_file_localio from the list, then drops
+locks and puts the two files, then reclaims the spinlock and sets
+->nfs_uuid to NULL.
+
+nfs_close_local_fh() operates in the reverse order, setting ->nfs_uuid
+to NULL, then closing the files, then unlinking from the list.
+
+If nfs_uuid_put() finds that ->nfs_uuid is already NULL, it waits for
+the nfs_file_localio to be removed from the list.  If
+nfs_close_local_fh() find that it has already been unlinked it waits for
+->nfs_uuid to become NULL.  This ensure that one of the two tries to
+close the files, but they each waits for the other.
+
+As nfs_uuid_put() is making the list empty, change from a
+list_for_each_safe loop to a while that always takes the first entry.
+This makes the intent more clear.
+Also don't move the list to a temporary local list as this would defeat
+the guarantees required for the interlock.
+
+Fixes: 86e00412254a ("nfs: cache all open LOCALIO nfsd_file(s) in client")
+Signed-off-by: NeilBrown <neil@brown.name>
+Signed-off-by: Anna Schumaker <anna.schumaker@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/sdm845-samsung-starqltechn.dts | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ fs/nfs_common/nfslocalio.c | 81 ++++++++++++++++++++++++++------------
+ 1 file changed, 56 insertions(+), 25 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/qcom/sdm845-samsung-starqltechn.dts b/arch/arm64/boot/dts/qcom/sdm845-samsung-starqltechn.dts
-index 6fc30fd1262b8..f3f2b25883d81 100644
---- a/arch/arm64/boot/dts/qcom/sdm845-samsung-starqltechn.dts
-+++ b/arch/arm64/boot/dts/qcom/sdm845-samsung-starqltechn.dts
-@@ -135,8 +135,6 @@
- 		vdda_sp_sensor:
- 		vdda_ufs1_core:
- 		vdda_ufs2_core:
--		vdda_usb1_ss_core:
--		vdda_usb2_ss_core:
- 		vreg_l1a_0p875: ldo1 {
- 			regulator-min-microvolt = <880000>;
- 			regulator-max-microvolt = <880000>;
-@@ -157,6 +155,7 @@
- 			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
- 		};
+diff --git a/fs/nfs_common/nfslocalio.c b/fs/nfs_common/nfslocalio.c
+index 49c59f0c78c62..1dd5a8cca064d 100644
+--- a/fs/nfs_common/nfslocalio.c
++++ b/fs/nfs_common/nfslocalio.c
+@@ -151,8 +151,7 @@ EXPORT_SYMBOL_GPL(nfs_localio_enable_client);
+  */
+ static bool nfs_uuid_put(nfs_uuid_t *nfs_uuid)
+ {
+-	LIST_HEAD(local_files);
+-	struct nfs_file_localio *nfl, *tmp;
++	struct nfs_file_localio *nfl;
  
-+		vdda_usb1_ss_core:
- 		vdd_wcss_cx:
- 		vdd_wcss_mx:
- 		vdda_wcss_pll:
+ 	spin_lock(&nfs_uuid->lock);
+ 	if (unlikely(!rcu_access_pointer(nfs_uuid->net))) {
+@@ -166,37 +165,49 @@ static bool nfs_uuid_put(nfs_uuid_t *nfs_uuid)
+ 		nfs_uuid->dom = NULL;
+ 	}
+ 
+-	list_splice_init(&nfs_uuid->files, &local_files);
+-	spin_unlock(&nfs_uuid->lock);
+-
+ 	/* Walk list of files and ensure their last references dropped */
+-	list_for_each_entry_safe(nfl, tmp, &local_files, list) {
++
++	while ((nfl = list_first_entry_or_null(&nfs_uuid->files,
++					       struct nfs_file_localio,
++					       list)) != NULL) {
+ 		struct nfsd_file *ro_nf;
+ 		struct nfsd_file *rw_nf;
+ 
++		/* If nfs_uuid is already NULL, nfs_close_local_fh is
++		 * closing and we must wait, else we unlink and close.
++		 */
++		if (rcu_access_pointer(nfl->nfs_uuid) == NULL) {
++			/* nfs_close_local_fh() is doing the
++			 * close and we must wait. until it unlinks
++			 */
++			wait_var_event_spinlock(nfl,
++						list_first_entry_or_null(
++							&nfs_uuid->files,
++							struct nfs_file_localio,
++							list) != nfl,
++						&nfs_uuid->lock);
++			continue;
++		}
++
+ 		ro_nf = unrcu_pointer(xchg(&nfl->ro_file, NULL));
+ 		rw_nf = unrcu_pointer(xchg(&nfl->rw_file, NULL));
+ 
+-		spin_lock(&nfs_uuid->lock);
+ 		/* Remove nfl from nfs_uuid->files list */
+ 		list_del_init(&nfl->list);
+ 		spin_unlock(&nfs_uuid->lock);
+-		/* Now we can allow racing nfs_close_local_fh() to
+-		 * skip the locking.
+-		 */
+-		RCU_INIT_POINTER(nfl->nfs_uuid, NULL);
+-
+ 		if (ro_nf)
+ 			nfs_to_nfsd_file_put_local(ro_nf);
+ 		if (rw_nf)
+ 			nfs_to_nfsd_file_put_local(rw_nf);
+-
+ 		cond_resched();
++		spin_lock(&nfs_uuid->lock);
++		/* Now we can allow racing nfs_close_local_fh() to
++		 * skip the locking.
++		 */
++		RCU_INIT_POINTER(nfl->nfs_uuid, NULL);
++		wake_up_var_locked(&nfl->nfs_uuid, &nfs_uuid->lock);
+ 	}
+ 
+-	spin_lock(&nfs_uuid->lock);
+-	BUG_ON(!list_empty(&nfs_uuid->files));
+-
+ 	/* Remove client from nn->local_clients */
+ 	if (nfs_uuid->list_lock) {
+ 		spin_lock(nfs_uuid->list_lock);
+@@ -304,23 +315,43 @@ void nfs_close_local_fh(struct nfs_file_localio *nfl)
+ 		return;
+ 	}
+ 
+-	ro_nf = unrcu_pointer(xchg(&nfl->ro_file, NULL));
+-	rw_nf = unrcu_pointer(xchg(&nfl->rw_file, NULL));
+-
+ 	spin_lock(&nfs_uuid->lock);
+-	/* Remove nfl from nfs_uuid->files list */
+-	list_del_init(&nfl->list);
++	if (!rcu_access_pointer(nfl->nfs_uuid)) {
++		/* nfs_uuid_put has finished here */
++		spin_unlock(&nfs_uuid->lock);
++		rcu_read_unlock();
++		return;
++	}
++	if (list_empty(&nfs_uuid->files)) {
++		/* nfs_uuid_put() has started closing files, wait for it
++		 * to finished
++		 */
++		spin_unlock(&nfs_uuid->lock);
++		rcu_read_unlock();
++		wait_var_event(&nfl->nfs_uuid,
++			       rcu_access_pointer(nfl->nfs_uuid) == NULL);
++		return;
++	}
++	/* tell nfs_uuid_put() to wait for us */
++	RCU_INIT_POINTER(nfl->nfs_uuid, NULL);
+ 	spin_unlock(&nfs_uuid->lock);
+ 	rcu_read_unlock();
+-	/* Now we can allow racing nfs_close_local_fh() to
+-	 * skip the locking.
+-	 */
+-	RCU_INIT_POINTER(nfl->nfs_uuid, NULL);
+ 
++	ro_nf = unrcu_pointer(xchg(&nfl->ro_file, NULL));
++	rw_nf = unrcu_pointer(xchg(&nfl->rw_file, NULL));
+ 	if (ro_nf)
+ 		nfs_to_nfsd_file_put_local(ro_nf);
+ 	if (rw_nf)
+ 		nfs_to_nfsd_file_put_local(rw_nf);
++
++	/* Remove nfl from nfs_uuid->files list and signal nfs_uuid_put()
++	 * that we are done.  The moment we drop the spinlock the
++	 * nfs_uuid could be freed.
++	 */
++	spin_lock(&nfs_uuid->lock);
++	list_del_init(&nfl->list);
++	wake_up_var_locked(&nfl->nfs_uuid, &nfs_uuid->lock);
++	spin_unlock(&nfs_uuid->lock);
+ }
+ EXPORT_SYMBOL_GPL(nfs_close_local_fh);
+ 
 -- 
 2.39.5
 
