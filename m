@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-153077-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153080-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE384ADD234
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 17:40:14 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A750ADD235
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 17:40:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4B2331899FED
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 15:40:30 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B89F317D5E8
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 15:40:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE0E12ECD1B;
-	Tue, 17 Jun 2025 15:39:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C40022ECD30;
+	Tue, 17 Jun 2025 15:40:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Rlans3mj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ztN90uKS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DFFE2ECD22;
-	Tue, 17 Jun 2025 15:39:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F65D2ECD0B;
+	Tue, 17 Jun 2025 15:40:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750174793; cv=none; b=L+ACeVpiN88ZTHU3G86Mg99bjY8us5DY/RIUOEpPds5lnDS8tGrXbtXjkmduSsh5xyiEMsfEluTyvAiJIBHqHqfZ+LMFVtstVILEX6HjJgSj2ZiP+ZRQpO7MrVzI6Cochg5GkSRgbn5coiBIi+vTOfyecoWG3OMzZuK7UuSzBN4=
+	t=1750174801; cv=none; b=agdLYg6NLDqUu4PT8+QEJoyFQq0ubqDxPXI9339wVaLnA5s1R1H/zpijvta/sBX3BpqeQPMH7UdtYfjcOQiWsfnuRyPRhZnm7G3lhEnbR2tC3UoHWBD42UZMog/KaohDS0e1jbRE/91DEUDTTennxbk5HmSnpwVb6EC7GR7a3wU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750174793; c=relaxed/simple;
-	bh=Ux9HqUSh9Un1+22iEPBNLE2DZmNIFART2Rn8Nn8w0LM=;
+	s=arc-20240116; t=1750174801; c=relaxed/simple;
+	bh=wAmEkufnu1yeyn6AIKCCEwVof1Ild3phNg/EI1piaQk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=s14YJd9tPoj1il/17uqP/DS84Ldp2qUpqTcp/epmURD2tgkhZ7NSkXUvuEBHJ+W0kD2IIIM3tajY5qCkzupMo3782Z4/+KPnyABkUcmq7qG+mAFq6BmEM8b2VoGcrswYinOLAtc3LLZZYH2uPiIVHLca9wxUXqkRtqCHY6mmiCA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Rlans3mj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 953FEC4CEE3;
-	Tue, 17 Jun 2025 15:39:51 +0000 (UTC)
+	 MIME-Version; b=rUg+sCg3RmGWdbJkYxHV2mberj4JXPFO9RSvLeJ6TfJAH3M3p9AhWJrCJ+8J+uQYEvE0VKtI1KcaSS1665i0ohAUOzEEFUVF0LrGGxy/iOWRkTt+O0YwrR9/2/N+vrSCX2Pjo/rGiRgEoiztu7KJSiiChOHUvDfdo36i8HakZHo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ztN90uKS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1F6AC4CEE3;
+	Tue, 17 Jun 2025 15:40:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750174792;
-	bh=Ux9HqUSh9Un1+22iEPBNLE2DZmNIFART2Rn8Nn8w0LM=;
+	s=korg; t=1750174801;
+	bh=wAmEkufnu1yeyn6AIKCCEwVof1Ild3phNg/EI1piaQk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Rlans3mjg7C9DUnnT1SrBJHxXNm3tFsqFKnvkaU8z79mgx1dmHhQTPW+kxzMncJoe
-	 fuVrzASmHPjoTdKzssTdVzRaN1IIvtCVQ5/ji1MNr3uZrGrKfpq+3+VrLHPdTIf+3s
-	 E1Lqo99KMO5CofU43rrXY03Y8LL/6MeBh9dq7vIw=
+	b=ztN90uKS6PpGenCngCTDH0Et9Bdxwg5sJeo5+m/RNHzaCoKbJzLr8UEApO/Cmbm+W
+	 ubHTq+Skj/BXEd06acvlIEPnicOLbwrfiqXb2Ul3RPtaMqh6nxmtZYt/9LeB1nfy+u
+	 TcjoO/Thiz1WPHYkn3nJ1yU59pW6MeHFrNsod/aA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Jiri Slaby (SUSE)" <jirislaby@kernel.org>,
-	Stephen Rothwell <sfr@canb.auug.org.au>,
+	Eddie James <eajames@linux.ibm.com>,
+	Hari Bathini <hbathini@linux.ibm.com>,
 	Madhavan Srinivasan <maddy@linux.ibm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 021/780] powerpc: do not build ppc_save_regs.o always
-Date: Tue, 17 Jun 2025 17:15:29 +0200
-Message-ID: <20250617152452.375213378@linuxfoundation.org>
+Subject: [PATCH 6.15 022/780] powerpc/crash: Fix non-smp kexec preparation
+Date: Tue, 17 Jun 2025 17:15:30 +0200
+Message-ID: <20250617152452.415988512@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
 References: <20250617152451.485330293@linuxfoundation.org>
@@ -67,41 +67,40 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Jiri Slaby (SUSE) <jirislaby@kernel.org>
+From: Eddie James <eajames@linux.ibm.com>
 
-[ Upstream commit 497b7794aef03d525a5be05ae78dd7137c6861a5 ]
+[ Upstream commit 882b25af265de8e05c66f72b9a29f6047102958f ]
 
-The Fixes commit below tried to add CONFIG_PPC_BOOK3S to one of the
-conditions to enable the build of ppc_save_regs.o. But it failed to do
-so, in fact. The commit omitted to add a dollar sign.
+In non-smp configurations, crash_kexec_prepare is never called in
+the crash shutdown path. One result of this is that the crashing_cpu
+variable is never set, preventing crash_save_cpu from storing the
+NT_PRSTATUS elf note in the core dump.
 
-Therefore, ppc_save_regs.o is built always these days (as
-"(CONFIG_PPC_BOOK3S)" is never an empty string).
-
-Fix this by adding the missing dollar sign.
-
-Signed-off-by: Jiri Slaby (SUSE) <jirislaby@kernel.org>
-Fixes: fc2a5a6161a2 ("powerpc/64s: ppc_save_regs is now needed for all 64s builds")
-Acked-by: Stephen Rothwell <sfr@canb.auug.org.au>
+Fixes: c7255058b543 ("powerpc/crash: save cpu register data in crash_smp_send_stop()")
+Signed-off-by: Eddie James <eajames@linux.ibm.com>
+Reviewed-by: Hari Bathini <hbathini@linux.ibm.com>
 Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
-Link: https://patch.msgid.link/20250417105305.397128-1-jirislaby@kernel.org
+Link: https://patch.msgid.link/20250211162054.857762-1-eajames@linux.ibm.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/kernel/Makefile | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/powerpc/kexec/crash.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/arch/powerpc/kernel/Makefile b/arch/powerpc/kernel/Makefile
-index 6ac621155ec3c..0c26b2412d173 100644
---- a/arch/powerpc/kernel/Makefile
-+++ b/arch/powerpc/kernel/Makefile
-@@ -160,7 +160,7 @@ endif
+diff --git a/arch/powerpc/kexec/crash.c b/arch/powerpc/kexec/crash.c
+index 9ac3266e49652..a325c1c02f96d 100644
+--- a/arch/powerpc/kexec/crash.c
++++ b/arch/powerpc/kexec/crash.c
+@@ -359,7 +359,10 @@ void default_machine_crash_shutdown(struct pt_regs *regs)
+ 	if (TRAP(regs) == INTERRUPT_SYSTEM_RESET)
+ 		is_via_system_reset = 1;
  
- obj64-$(CONFIG_PPC_TRANSACTIONAL_MEM)	+= tm.o
+-	crash_smp_send_stop();
++	if (IS_ENABLED(CONFIG_SMP))
++		crash_smp_send_stop();
++	else
++		crash_kexec_prepare();
  
--ifneq ($(CONFIG_XMON)$(CONFIG_KEXEC_CORE)(CONFIG_PPC_BOOK3S),)
-+ifneq ($(CONFIG_XMON)$(CONFIG_KEXEC_CORE)$(CONFIG_PPC_BOOK3S),)
- obj-y				+= ppc_save_regs.o
- endif
+ 	crash_save_cpu(regs, crashing_cpu);
  
 -- 
 2.39.5
