@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-153007-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153009-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 21EA2ADD1E4
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 17:36:13 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id D3FFEADD1E5
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 17:36:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 796821897F72
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 15:36:28 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C163B3BDB27
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 15:35:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 962022E9730;
-	Tue, 17 Jun 2025 15:36:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC9762ECD1B;
+	Tue, 17 Jun 2025 15:36:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S66c3xl8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KMPwmAJO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5327518A6AE;
-	Tue, 17 Jun 2025 15:36:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A4A518A6AE;
+	Tue, 17 Jun 2025 15:36:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750174568; cv=none; b=i3Em8+9gNP2k7cTFmV+djc3F7GkjZ0ONAJihpVBwH5Kt7WBkLsE97ACZfqLGHbcycCpLiEmsQwuytQWLAwohUPd0DYOCnqwJ4oAX9fgrsw5nPV7urY+70z43Svoz8NueHKD73MyMUXnhcxEDTzpCSbaEnWBZFUl5JHtNL5evsPU=
+	t=1750174574; cv=none; b=W3MgkNhBXCXnyA60j/kx8UvxSBNKXD2ldPJqbOLTzsM+QwlqXgYYF1/koia+RXGiQzYk78RVsjuDITjJj5W5/UQykamkLM80QeE6HiMEz1AkINs5pweGG+0EN+uqICOQzSSDlFbl6gy05i8JtoSmV1PNNgPc1qw9PHEZRBAW2lU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750174568; c=relaxed/simple;
-	bh=1K40XHrn2E1on6rABlde5LK7Y90wZrh3fbqblymNcbU=;
+	s=arc-20240116; t=1750174574; c=relaxed/simple;
+	bh=6AQhV45gVCmHzaE6FhajLni/ZG1G0qMGyKL8T1MNHX4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=D/fGzGjl3vYKzBWzkXgNoNQuG4L74t17MkIV50y0WvO1wyUA1IBp3OEsNsnw+FsNz76MbiHeGxRAJgR+x+kOeqWic7xvwUFT102FHG2hkah46r9D8ohbjo9qX3c4Og+VN8Ygtpw4pMF6EaVMxfFnrubnoqWWAjMwmzO+AY9HgH0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S66c3xl8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA127C4CEF1;
-	Tue, 17 Jun 2025 15:36:07 +0000 (UTC)
+	 MIME-Version:Content-Type; b=qme3COCyQ7xfwiIdSrVyI+N3Ffj3nBJakjZ4sRwZIvswg6zwe6Qr5XefspMhN7bhyC/Flw+0aHmxDi6r7+xYqkV44Ep6+0XJPAevn5xIAD5DUO1adMjb2VK3gzxKhMvZT6aKf50m39SIS1x6YB3dcnWNXqaVMeI6RBx3uY1Qorg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KMPwmAJO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 022E0C4CEE3;
+	Tue, 17 Jun 2025 15:36:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750174568;
-	bh=1K40XHrn2E1on6rABlde5LK7Y90wZrh3fbqblymNcbU=;
+	s=korg; t=1750174574;
+	bh=6AQhV45gVCmHzaE6FhajLni/ZG1G0qMGyKL8T1MNHX4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=S66c3xl8sMdIkbLsQT199NxO7RoNyy65b14RamKBgZdgM+O6gjKIwQMdniEFtXvCW
-	 FH34iL962rpJPDCn7OQybGZM040TeG9eaagQ9xMp32s+W29iDDYgW5lQtlH3zKXyQk
-	 yENe4wPCm+C1hnr0HUgEDFIMV3fzEpUsza0DkKI0=
+	b=KMPwmAJOVSxq2LEgJwHVYeOEdTLU55254G7/r0Ta/MDT8m+XUNS8Xcy+WQP1HFTtJ
+	 v81rSQgSbhMrRrW8xiATHogQ39LASysLG6b1k7cGLjINgoW2plBKlyH+27KeFKNa8S
+	 KBc4X7WmBdzOkcSs8I+9Z9mY8k45nDO/pw0IUmW0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniil Tatianin <d-tatianin@yandex-team.ru>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Jemmy Wong <jemmywong512@gmail.com>,
+	Willy Tarreau <w@1wt.eu>,
+	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <linux@weissschuh.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 036/512] ACPICA: exserial: dont forget to handle FFixedHW opregions for reading
-Date: Tue, 17 Jun 2025 17:20:02 +0200
-Message-ID: <20250617152421.016403653@linuxfoundation.org>
+Subject: [PATCH 6.12 037/512] tools/nolibc/types.h: fix mismatched parenthesis in minor()
+Date: Tue, 17 Jun 2025 17:20:03 +0200
+Message-ID: <20250617152421.054801233@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
 References: <20250617152419.512865572@linuxfoundation.org>
@@ -60,48 +61,42 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniil Tatianin <d-tatianin@yandex-team.ru>
+From: Jemmy Wong <jemmywong512@gmail.com>
 
-[ Upstream commit 0f8af0356a45547683a216e4921006a3c6a6d922 ]
+[ Upstream commit 9c138ac9392228835b520fd4dbb07e636b34a867 ]
 
-The initial commit that introduced support for FFixedHW operation
-regions did add a special case in the AcpiExReadSerialBus If, but
-forgot to actually handle it inside the switch, so add the missing case
-to prevent reads from failing with AE_AML_INVALID_SPACE_ID.
+Fix an imbalance where opening parentheses exceed closing ones.
 
-Link: https://github.com/acpica/acpica/pull/998
-Fixes: ee64b827a9a ("ACPICA: Add support for FFH Opregion special context data")
-Signed-off-by: Daniil Tatianin <d-tatianin@yandex-team.ru>
-Link: https://patch.msgid.link/20250401184312.599962-1-d-tatianin@yandex-team.ru
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Fixes: eba6d00d38e7c ("tools/nolibc/types: move makedev to types.h and make it a macro")
+Signed-off-by: Jemmy Wong <jemmywong512@gmail.com>
+Acked-by: Willy Tarreau <w@1wt.eu>
+Link: https://lore.kernel.org/r/20250411073624.22153-1-jemmywong512@gmail.com
+Signed-off-by: Thomas Weißschuh <linux@weissschuh.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/acpica/exserial.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ tools/include/nolibc/types.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/acpi/acpica/exserial.c b/drivers/acpi/acpica/exserial.c
-index 5241f4c01c765..89a4ac447a2be 100644
---- a/drivers/acpi/acpica/exserial.c
-+++ b/drivers/acpi/acpica/exserial.c
-@@ -201,6 +201,12 @@ acpi_ex_read_serial_bus(union acpi_operand_object *obj_desc,
- 		function = ACPI_READ;
- 		break;
+diff --git a/tools/include/nolibc/types.h b/tools/include/nolibc/types.h
+index b26a5d0c417c7..32d0929c633bb 100644
+--- a/tools/include/nolibc/types.h
++++ b/tools/include/nolibc/types.h
+@@ -201,7 +201,7 @@ struct stat {
+ /* WARNING, it only deals with the 4096 first majors and 256 first minors */
+ #define makedev(major, minor) ((dev_t)((((major) & 0xfff) << 8) | ((minor) & 0xff)))
+ #define major(dev) ((unsigned int)(((dev) >> 8) & 0xfff))
+-#define minor(dev) ((unsigned int)(((dev) & 0xff))
++#define minor(dev) ((unsigned int)((dev) & 0xff))
  
-+	case ACPI_ADR_SPACE_FIXED_HARDWARE:
-+
-+		buffer_length = ACPI_FFH_INPUT_BUFFER_SIZE;
-+		function = ACPI_READ;
-+		break;
-+
- 	default:
- 		return_ACPI_STATUS(AE_AML_INVALID_SPACE_ID);
- 	}
+ #ifndef offsetof
+ #define offsetof(TYPE, FIELD) ((size_t) &((TYPE *)0)->FIELD)
 -- 
 2.39.5
 
