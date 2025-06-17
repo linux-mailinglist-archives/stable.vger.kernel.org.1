@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-154306-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153650-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6240CADDA30
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 19:14:39 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 29A50ADD603
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:29:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 37FB34004B5
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:48:38 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 095DA18866D4
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:16:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C81E23815F;
-	Tue, 17 Jun 2025 16:46:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F53C2EA148;
+	Tue, 17 Jun 2025 16:10:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0HrrbV7L"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aS+BnueX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 451A72356A4;
-	Tue, 17 Jun 2025 16:46:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 160A1188006;
+	Tue, 17 Jun 2025 16:10:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750178767; cv=none; b=JQuvN6UzKEfYZf/78uz4DEhiHK9oTMmpwuLYiTFyOuGtoGyAPMzvatQxWEbrHbZQhkH4jPeoY2GEVDG0jW6XMyjehHSfBgklJjie8G9cclh7VtxwZm+DYwzhjcrv7BmgZivcc7uFsAtu2gghlep3njVLDsRyj3QIyTB1fwjgo/Q=
+	t=1750176648; cv=none; b=HVwPefAMjMApM2ZSZPWeb/KY5BM09843xguxJIz9K4gzT2wn9h2vrK2erWtCwEX6ZVZxexhMfu1hfPMGOVZDi/cw071FL63QmKAYmabxIUwjsKcRqmK7jqQ4YDgS0IruQjmBoonL3gxoPjp0W8biEpoDlR7eMH9AO6iQ+G9TRbI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750178767; c=relaxed/simple;
-	bh=HRjJah2P6ZmD4Y2Qk/2IUkn6obCcICwfcCDFdyypGro=;
+	s=arc-20240116; t=1750176648; c=relaxed/simple;
+	bh=Am/OxTCchHVBo9OX/ggCIhDeO5TqtQsSrvOK2tgOfh8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ovS3lW9GtgzbqJqfrWbvak2qOBYd36gvR87087L6OTTy0ftkxthfhDSFMMO6oFct3ssKE3hQTMrEm0DP/ZrPNeM2bUySNEGdGi1hkoI6BaTAlE7sgNm9W2aWD7wUfnJrfs1ZafScukANcqZr7paIL5PHHoYqoQ8FAOWKX/bqqZ4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0HrrbV7L; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4B68C4CEE3;
-	Tue, 17 Jun 2025 16:46:06 +0000 (UTC)
+	 MIME-Version:Content-Type; b=RXQ0+iBei1/Cd9f61RtLXejOmTW2tqJi0vz4ARPISfBfbE8RTS/ya0BOzSQiRDZkESFWWYpEIfleNn0SopJS8Zh9uW9La9A2iFnHXbCbt/KuukI8SyHJ5wb1v/62ZRJRjvVDGxLtI2RIGeMXmntnx7LNHoz7ogTLn/KltDlHpBo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aS+BnueX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52E92C4CEE3;
+	Tue, 17 Jun 2025 16:10:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750178767;
-	bh=HRjJah2P6ZmD4Y2Qk/2IUkn6obCcICwfcCDFdyypGro=;
+	s=korg; t=1750176648;
+	bh=Am/OxTCchHVBo9OX/ggCIhDeO5TqtQsSrvOK2tgOfh8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0HrrbV7L3mW36rtjywvjLaPwSdiNpuvzyR0NBQR673hh7KaEoNcfkWGwltE40S5bt
-	 6MrI2EvI9N32SgbqRYo6lQ2xqdr0d+R+s9eWZQieuylfKCMGjw3EkF5kyAGLsUdAIV
-	 62MA5qao3jGJH9YFPPc1fY2oPAXIRLB2/7EdTvM0=
+	b=aS+BnueX1AIKpitLeH/B0QRceIHbqDi+c3spaOEZZXKgNHxFGaio0/mtINBaq8Fs1
+	 w+5rm1319I5FBJfbo6C0eX2hJxLVTR5xd3WUecQeyhecrb3QxYwwln3O8urDkFdBgg
+	 AaKAzGGF6Q+rfodQuNsBo5izKNPrEs/V4YLeZQFw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhe Qiao <qiaozhe@iscas.ac.cn>,
-	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	=?UTF-8?q?Barnab=C3=A1s=20Cz=C3=A9m=C3=A1n?= <barnabas.czeman@mainlining.org>,
+	Stephan Gerhold <stephan.gerhold@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 507/780] PCI/ACPI: Fix allocated memory release on error in pci_acpi_scan_root()
-Date: Tue, 17 Jun 2025 17:23:35 +0200
-Message-ID: <20250617152512.154160424@linuxfoundation.org>
+Subject: [PATCH 6.12 250/512] soc: qcom: smp2p: Fix fallback to qcom,ipc parse
+Date: Tue, 17 Jun 2025 17:23:36 +0200
+Message-ID: <20250617152429.732797588@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
-References: <20250617152451.485330293@linuxfoundation.org>
+In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
+References: <20250617152419.512865572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,78 +64,43 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhe Qiao <qiaozhe@iscas.ac.cn>
+From: Barnabás Czémán <barnabas.czeman@mainlining.org>
 
-[ Upstream commit 631b2af2f35737750af284be22e63da56bf20139 ]
+[ Upstream commit 421777a02bbd9cdabe0ae05a69ee06253150589d ]
 
-In the pci_acpi_scan_root() function, when creating a PCI bus fails,
-we need to free up the previously allocated memory, which can avoid
-invalid memory usage and save resources.
+mbox_request_channel() returning value was changed in case of error.
+It uses returning value of of_parse_phandle_with_args().
+It is returning with -ENOENT instead of -ENODEV when no mboxes property
+exists.
 
-Fixes: 789befdfa389 ("arm64: PCI: Migrate ACPI related functions to pci-acpi.c")
-Signed-off-by: Zhe Qiao <qiaozhe@iscas.ac.cn>
-[kwilczynski: commit log]
-Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
-Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Link: https://lore.kernel.org/r/20250430060603.381504-1-qiaozhe@iscas.ac.cn
+Fixes: 24fdd5074b20 ("mailbox: use error ret code of of_parse_phandle_with_args()")
+Signed-off-by: Barnabás Czémán <barnabas.czeman@mainlining.org>
+Reviewed-by: Stephan Gerhold <stephan.gerhold@linaro.org>
+Tested-by: Stephan Gerhold <stephan.gerhold@linaro.org> # msm8939
+Link: https://lore.kernel.org/r/20250421-fix-qcom-smd-v1-2-574d071d3f27@mainlining.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/pci-acpi.c | 23 +++++++++++++----------
- 1 file changed, 13 insertions(+), 10 deletions(-)
+ drivers/soc/qcom/smp2p.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/pci/pci-acpi.c b/drivers/pci/pci-acpi.c
-index af370628e5839..b78e0e4173244 100644
---- a/drivers/pci/pci-acpi.c
-+++ b/drivers/pci/pci-acpi.c
-@@ -1676,24 +1676,19 @@ struct pci_bus *pci_acpi_scan_root(struct acpi_pci_root *root)
- 		return NULL;
+diff --git a/drivers/soc/qcom/smp2p.c b/drivers/soc/qcom/smp2p.c
+index cefcbd61c6281..95d8a8f728db5 100644
+--- a/drivers/soc/qcom/smp2p.c
++++ b/drivers/soc/qcom/smp2p.c
+@@ -578,7 +578,7 @@ static int qcom_smp2p_probe(struct platform_device *pdev)
+ 	smp2p->mbox_client.knows_txdone = true;
+ 	smp2p->mbox_chan = mbox_request_channel(&smp2p->mbox_client, 0);
+ 	if (IS_ERR(smp2p->mbox_chan)) {
+-		if (PTR_ERR(smp2p->mbox_chan) != -ENODEV)
++		if (PTR_ERR(smp2p->mbox_chan) != -ENOENT)
+ 			return PTR_ERR(smp2p->mbox_chan);
  
- 	root_ops = kzalloc(sizeof(*root_ops), GFP_KERNEL);
--	if (!root_ops) {
--		kfree(ri);
--		return NULL;
--	}
-+	if (!root_ops)
-+		goto free_ri;
- 
- 	ri->cfg = pci_acpi_setup_ecam_mapping(root);
--	if (!ri->cfg) {
--		kfree(ri);
--		kfree(root_ops);
--		return NULL;
--	}
-+	if (!ri->cfg)
-+		goto free_root_ops;
- 
- 	root_ops->release_info = pci_acpi_generic_release_info;
- 	root_ops->prepare_resources = pci_acpi_root_prepare_resources;
- 	root_ops->pci_ops = (struct pci_ops *)&ri->cfg->ops->pci_ops;
- 	bus = acpi_pci_root_create(root, root_ops, &ri->common, ri->cfg);
- 	if (!bus)
--		return NULL;
-+		goto free_cfg;
- 
- 	/* If we must preserve the resource configuration, claim now */
- 	host = pci_find_host_bridge(bus);
-@@ -1710,6 +1705,14 @@ struct pci_bus *pci_acpi_scan_root(struct acpi_pci_root *root)
- 		pcie_bus_configure_settings(child);
- 
- 	return bus;
-+
-+free_cfg:
-+	pci_ecam_free(ri->cfg);
-+free_root_ops:
-+	kfree(root_ops);
-+free_ri:
-+	kfree(ri);
-+	return NULL;
- }
- 
- void pcibios_add_bus(struct pci_bus *bus)
+ 		smp2p->mbox_chan = NULL;
 -- 
 2.39.5
 
