@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-153992-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-154388-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 69106ADD794
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:46:33 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8745DADD8CA
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:58:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C07F92C1C09
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:34:51 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C7FC84A2DB8
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:51:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E07562E973E;
-	Tue, 17 Jun 2025 16:29:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C06D2FA62F;
+	Tue, 17 Jun 2025 16:50:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dqcZeuDn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vD7/QN0o"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CD642E92AD;
-	Tue, 17 Jun 2025 16:29:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2639F2FA62C;
+	Tue, 17 Jun 2025 16:50:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750177758; cv=none; b=ruK7ez7VGBphPySL5xNDIS5GMLmaygWD3HmXbPOWDNM2xtESxenA0rj2dv+3HEEdrrQdKeDhAgrsjC4M0l1L0f7wB/NKG0Zn1MHfJ5mC/fyzWbGbzxvi1KnSJIfHrcZ6C1P/HSRPJgF4nzpvxh4mFaaoiqXImVhVXMe4+BFdd54=
+	t=1750179034; cv=none; b=CrAJ2YulCRmB8ZpHxGcPti8Ls3MvohCL2kANIe/YWZy0Cro0yvnjgbxw/6iO+j2AvZE6pY2/6uK1B3uzEHcJC7VXxUL6+xS5dFJFRMrgHHxPxxR+uu4T52s0zvT3khZAscT6IjX5l9vXyIF8fslsjRYflTHfUlA/zHWu61gyHwg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750177758; c=relaxed/simple;
-	bh=7MlrkWcjD7/Kk0K+u1ONZqWrdkfJe7LxEBrwpjdTJsA=;
+	s=arc-20240116; t=1750179034; c=relaxed/simple;
+	bh=ktzfgHzkQ+7WPfj3rEjv5B6aBKNKfQbcyj4Alf/2q7A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pNcR6yMniTsOaZP+hBXDK8KUvoDi0ORFBXgYkbNx3Coymwxlfl+G/lLynQIRyUlffCkRGVVLuaimMJU+6NhOeO6yOCvejxQd7Gzb68/VB8VAC3OLPUZZcFLRHHYGSjm+5GN/sao+4HgWtgFz99CMcz6Xc4Jani3NbzYuR9fE05I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dqcZeuDn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B65EBC4CEE3;
-	Tue, 17 Jun 2025 16:29:16 +0000 (UTC)
+	 MIME-Version:Content-Type; b=WnzZ2/BK60lKf08bV6cO/ZNW5KmgGoNwsNUYkrP8fTt10lxdEgVdvvzxDxQs/Cr7FPHKM65dSFmURXc4+rFxsB1Y1/k6PQACzO4S1WjdP5aqvZztghYhqTnNbpMOUX2kDCUSSyC1MqYlKLhW+XW76eCPGckA0tM1Dkgl/CaGpJE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vD7/QN0o; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2CBFEC4CEE3;
+	Tue, 17 Jun 2025 16:50:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750177757;
-	bh=7MlrkWcjD7/Kk0K+u1ONZqWrdkfJe7LxEBrwpjdTJsA=;
+	s=korg; t=1750179033;
+	bh=ktzfgHzkQ+7WPfj3rEjv5B6aBKNKfQbcyj4Alf/2q7A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dqcZeuDnfKWzeynOvqIMlUFx8JRBJKENA7NpfvZej189v8H4ULzmx0+gyJOwjBnVj
-	 BDUTyuPH1GgBYEnOH4tjuuqTzg0xhBcO+uHO+JnjGXRGZQAxnAkQpAqeaNAgFoavC/
-	 vPbGndB+/yejihLM8Z0II4MBDpV6hVd62ml6tnIg=
+	b=vD7/QN0o5tCtzT1F1Bds/I4/dX1/IP0xoVZnWuMOg7N739Hwfkp3dQo6y1di6OsAg
+	 BlALYfnj9IRWAAjuMJdsh/4kEqM8IcoUGubomId5JmwIPEVzuGLstfV6q7Bt2dZF8Z
+	 MLFAxJa2yXFPqxes9ubfLVm0aSyisv9PbTueznT4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jinjian Song <jinjian.song@fibocom.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Lucas De Marchi <lucas.demarchi@intel.com>,
+	=?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 369/512] net: wwan: t7xx: Fix napi rx poll issue
+Subject: [PATCH 6.15 627/780] drm/xe/vsec: fix CONFIG_INTEL_VSEC dependency
 Date: Tue, 17 Jun 2025 17:25:35 +0200
-Message-ID: <20250617152434.537772388@linuxfoundation.org>
+Message-ID: <20250617152517.008315583@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
-References: <20250617152419.512865572@linuxfoundation.org>
+In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
+References: <20250617152451.485330293@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,107 +61,69 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jinjian Song <jinjian.song@fibocom.com>
+From: Arnd Bergmann <arnd@arndb.de>
 
-[ Upstream commit 905fe0845bb27e4eed2ca27ea06e6c4847f1b2b1 ]
+[ Upstream commit 2182f358fb138f81a586ffdddd510f2a4fc61702 ]
 
-When driver handles the napi rx polling requests, the netdev might
-have been released by the dellink logic triggered by the disconnect
-operation on user plane. However, in the logic of processing skb in
-polling, an invalid netdev is still being used, which causes a panic.
+The XE driver can be built with or without VSEC support, but fails to link as
+built-in if vsec is in a loadable module:
 
-BUG: kernel NULL pointer dereference, address: 00000000000000f1
-Oops: 0000 [#1] PREEMPT SMP NOPTI
-RIP: 0010:dev_gro_receive+0x3a/0x620
-[...]
-Call Trace:
- <IRQ>
- ? __die_body+0x68/0xb0
- ? page_fault_oops+0x379/0x3e0
- ? exc_page_fault+0x4f/0xa0
- ? asm_exc_page_fault+0x22/0x30
- ? __pfx_t7xx_ccmni_recv_skb+0x10/0x10 [mtk_t7xx (HASH:1400 7)]
- ? dev_gro_receive+0x3a/0x620
- napi_gro_receive+0xad/0x170
- t7xx_ccmni_recv_skb+0x48/0x70 [mtk_t7xx (HASH:1400 7)]
- t7xx_dpmaif_napi_rx_poll+0x590/0x800 [mtk_t7xx (HASH:1400 7)]
- net_rx_action+0x103/0x470
- irq_exit_rcu+0x13a/0x310
- sysvec_apic_timer_interrupt+0x56/0x90
- </IRQ>
+x86_64-linux-ld: vmlinux.o: in function `xe_vsec_init':
+(.text+0x1e83e16): undefined reference to `intel_vsec_register'
 
-Fixes: 5545b7b9f294 ("net: wwan: t7xx: Add NAPI support")
-Signed-off-by: Jinjian Song <jinjian.song@fibocom.com>
-Link: https://patch.msgid.link/20250530031648.5592-1-jinjian.song@fibocom.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+The normal fix for this is to add a 'depends on INTEL_VSEC || !INTEL_VSEC',
+forcing XE to be a loadable module as well, but that causes a circular
+dependency:
+
+        symbol DRM_XE depends on INTEL_VSEC
+        symbol INTEL_VSEC depends on X86_PLATFORM_DEVICES
+        symbol X86_PLATFORM_DEVICES is selected by DRM_XE
+
+The problem here is selecting a symbol from another subsystem, so change
+that as well and rephrase the 'select' into the corresponding dependency.
+Since X86_PLATFORM_DEVICES is 'default y', there is no change to
+defconfig builds here.
+
+Fixes: 0c45e76fcc62 ("drm/xe/vsec: Support BMG devices")
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Reviewed-by: Lucas De Marchi <lucas.demarchi@intel.com>
+Link: https://lore.kernel.org/r/20250529172355.2395634-2-lucas.demarchi@intel.com
+Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
+(cherry picked from commit e4931f8be347ec5f19df4d6d33aea37145378c42)
+Signed-off-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wwan/t7xx/t7xx_netdev.c | 11 ++++++-----
- 1 file changed, 6 insertions(+), 5 deletions(-)
+ drivers/gpu/drm/xe/Kconfig | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/wwan/t7xx/t7xx_netdev.c b/drivers/net/wwan/t7xx/t7xx_netdev.c
-index 91fa082e9cab8..fc0a7cb181df2 100644
---- a/drivers/net/wwan/t7xx/t7xx_netdev.c
-+++ b/drivers/net/wwan/t7xx/t7xx_netdev.c
-@@ -302,7 +302,7 @@ static int t7xx_ccmni_wwan_newlink(void *ctxt, struct net_device *dev, u32 if_id
- 	ccmni->ctlb = ctlb;
- 	ccmni->dev = dev;
- 	atomic_set(&ccmni->usage, 0);
--	ctlb->ccmni_inst[if_id] = ccmni;
-+	WRITE_ONCE(ctlb->ccmni_inst[if_id], ccmni);
- 
- 	ret = register_netdevice(dev);
- 	if (ret)
-@@ -324,6 +324,7 @@ static void t7xx_ccmni_wwan_dellink(void *ctxt, struct net_device *dev, struct l
- 	if (WARN_ON(ctlb->ccmni_inst[if_id] != ccmni))
- 		return;
- 
-+	WRITE_ONCE(ctlb->ccmni_inst[if_id], NULL);
- 	unregister_netdevice(dev);
- }
- 
-@@ -419,7 +420,7 @@ static void t7xx_ccmni_recv_skb(struct t7xx_ccmni_ctrl *ccmni_ctlb, struct sk_bu
- 
- 	skb_cb = T7XX_SKB_CB(skb);
- 	netif_id = skb_cb->netif_idx;
--	ccmni = ccmni_ctlb->ccmni_inst[netif_id];
-+	ccmni = READ_ONCE(ccmni_ctlb->ccmni_inst[netif_id]);
- 	if (!ccmni) {
- 		dev_kfree_skb(skb);
- 		return;
-@@ -441,7 +442,7 @@ static void t7xx_ccmni_recv_skb(struct t7xx_ccmni_ctrl *ccmni_ctlb, struct sk_bu
- 
- static void t7xx_ccmni_queue_tx_irq_notify(struct t7xx_ccmni_ctrl *ctlb, int qno)
- {
--	struct t7xx_ccmni *ccmni = ctlb->ccmni_inst[0];
-+	struct t7xx_ccmni *ccmni = READ_ONCE(ctlb->ccmni_inst[0]);
- 	struct netdev_queue *net_queue;
- 
- 	if (netif_running(ccmni->dev) && atomic_read(&ccmni->usage) > 0) {
-@@ -453,7 +454,7 @@ static void t7xx_ccmni_queue_tx_irq_notify(struct t7xx_ccmni_ctrl *ctlb, int qno
- 
- static void t7xx_ccmni_queue_tx_full_notify(struct t7xx_ccmni_ctrl *ctlb, int qno)
- {
--	struct t7xx_ccmni *ccmni = ctlb->ccmni_inst[0];
-+	struct t7xx_ccmni *ccmni = READ_ONCE(ctlb->ccmni_inst[0]);
- 	struct netdev_queue *net_queue;
- 
- 	if (atomic_read(&ccmni->usage) > 0) {
-@@ -471,7 +472,7 @@ static void t7xx_ccmni_queue_state_notify(struct t7xx_pci_dev *t7xx_dev,
- 	if (ctlb->md_sta != MD_STATE_READY)
- 		return;
- 
--	if (!ctlb->ccmni_inst[0]) {
-+	if (!READ_ONCE(ctlb->ccmni_inst[0])) {
- 		dev_warn(&t7xx_dev->pdev->dev, "No netdev registered yet\n");
- 		return;
- 	}
+diff --git a/drivers/gpu/drm/xe/Kconfig b/drivers/gpu/drm/xe/Kconfig
+index 5c2f459a2925a..9a46aafcb33ba 100644
+--- a/drivers/gpu/drm/xe/Kconfig
++++ b/drivers/gpu/drm/xe/Kconfig
+@@ -2,6 +2,8 @@
+ config DRM_XE
+ 	tristate "Intel Xe Graphics"
+ 	depends on DRM && PCI && MMU && (m || (y && KUNIT=y))
++	depends on INTEL_VSEC || !INTEL_VSEC
++	depends on X86_PLATFORM_DEVICES || !(X86 && ACPI)
+ 	select INTERVAL_TREE
+ 	# we need shmfs for the swappable backing store, and in particular
+ 	# the shmem_readpage() which depends upon tmpfs
+@@ -27,7 +29,6 @@ config DRM_XE
+ 	select BACKLIGHT_CLASS_DEVICE if ACPI
+ 	select INPUT if ACPI
+ 	select ACPI_VIDEO if X86 && ACPI
+-	select X86_PLATFORM_DEVICES if X86 && ACPI
+ 	select ACPI_WMI if X86 && ACPI
+ 	select SYNC_FILE
+ 	select IOSF_MBI
 -- 
 2.39.5
 
