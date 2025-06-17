@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-153643-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-154266-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7DAD0ADD609
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:29:38 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 132F6ADD7A6
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:47:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C15091946227
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:15:55 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C86637AC79A
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:46:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 818DC2E8DEE;
-	Tue, 17 Jun 2025 16:10:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B963238D49;
+	Tue, 17 Jun 2025 16:43:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mG30YIJU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VBx9WZUc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A8212E8DE8;
-	Tue, 17 Jun 2025 16:10:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBB79236A73;
+	Tue, 17 Jun 2025 16:43:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750176624; cv=none; b=ovNrZ1cteE2yDIw675Fpuy8IsVddMRND7H8moACFJIB/PkXamgmgILEKQ+EakfABKGt9o1gRPENL7uyffvF6yqxGTrEwvpocelXEb+GtZhPufgo72MWDtMglOMJNNDYZrJgGxCB/ONCy2XasMhiNJh3X57N0YoUMQ3ibVQw4OiA=
+	t=1750178637; cv=none; b=Jl+Ly+5mmPsyDE9hExYym7fyILv7uFZpT8biZ9jjxTlMt+V3AvjKFxtunj6+9h+PiJ20yChpvLajzTZzXXC+mEPoClEVf+CQP81y9rZ2zFQ8Hx9QNBwDB5pyJkYKgHJf7W9NtHHu+YS+C8EMvWFVWej+Cgpg8bj3SE5G1r8PonQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750176624; c=relaxed/simple;
-	bh=mckM8GQiBZXsezGG/Uedj1e4bwIi5ly3bsk2koN1URE=;
+	s=arc-20240116; t=1750178637; c=relaxed/simple;
+	bh=1xeNF0hrjLqpazJHVC5jqNxKqNwJ2impdaZ7VMXJc6s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=c5j5N4AOFOoEuUQDPk8bMh95vAwCX9HHxE2SFV7JM1RRtCB5crzJr7NVMvALV25p20nywIz4s5tQ6v1/5to9QllFh3Q2SvXojYW94fsBXdxjZWGTKq1AvtGXYmPJDhvX33H+Iio7wBqasHvsKMHymLcDiJZOJHK1pS3qMMw37jU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mG30YIJU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C276C4CEE3;
-	Tue, 17 Jun 2025 16:10:23 +0000 (UTC)
+	 MIME-Version; b=XtQtWtf/Snqex1Wukg9+Ukv9Voj+slBuMj/kOHPGBX2tVLmWP0Bw07doIElMoOTxlb+EOzxBIlVEYTqT9VKAuGqhHf5RemIm8fLpaPDIFUlVw0QwBEn6c3XrqHwNoI6QqTRRSwvnsftmarvK/L8E4cwWXzUbCCta7MY2F6FrQd8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VBx9WZUc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B84FC4CEE3;
+	Tue, 17 Jun 2025 16:43:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750176624;
-	bh=mckM8GQiBZXsezGG/Uedj1e4bwIi5ly3bsk2koN1URE=;
+	s=korg; t=1750178636;
+	bh=1xeNF0hrjLqpazJHVC5jqNxKqNwJ2impdaZ7VMXJc6s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mG30YIJUH4ApeCZRQmAHLA+7jcxZt3elLtKBL56+qHxQBaOoYWHBN1Q0Ryx0+L6BU
-	 yQ+goRf2SJHoJtdjJlpvSrCaYaq5FtlSMom0kAsZaPD0Vobl2mzU2OUoO1qabqHoHj
-	 JQNZH9SldNCUtXgnkId34NkHjW8896BlaricrcRA=
+	b=VBx9WZUcDfDFi+jdSyrUlmqgq7di137gmZsmKYqwEjrJ8DFGi0Dc9/k3j7OTTxp/2
+	 W4fZIIGGMnkGtymWQMvDsj/lzbHs4Fyxo2JL5nZxeQhT2/Dc1sAKStmJ7Kq6uBwmv0
+	 Kn9L52a2yjS9FrRfJ7TiiF6lmskYLvfzCjgXdmUs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aaron Kling <webgeek1234@gmail.com>,
-	Tomasz Maciej Nowak <tmn505@gmail.com>,
-	Thierry Reding <treding@nvidia.com>,
+	Henry Martin <bsdhenrymartin@gmail.com>,
+	Nathan Lynch <nathan.lynch@amd.com>,
+	Peter Ujfalusi <peter.ujfalusi@gmail.com>,
+	Vinod Koul <vkoul@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 248/512] arm64: tegra: Add uartd serial alias for Jetson TX1 module
+Subject: [PATCH 6.15 506/780] dmaengine: ti: Add NULL check in udma_probe()
 Date: Tue, 17 Jun 2025 17:23:34 +0200
-Message-ID: <20250617152429.655019194@linuxfoundation.org>
+Message-ID: <20250617152512.112722293@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
-References: <20250617152419.512865572@linuxfoundation.org>
+In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
+References: <20250617152451.485330293@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,41 +64,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Aaron Kling <webgeek1234@gmail.com>
+From: Henry Martin <bsdhenrymartin@gmail.com>
 
-[ Upstream commit dfb25484bd73c8590954ead6fd58a1587ba3bbc5 ]
+[ Upstream commit fd447415e74bccd7362f760d4ea727f8e1ebfe91 ]
 
-If a serial-tegra interface does not have an alias, the driver fails to
-probe with an error:
-serial-tegra 70006300.serial: failed to get alias id, errno -19
-This prevents the bluetooth device from being accessible.
+devm_kasprintf() returns NULL when memory allocation fails. Currently,
+udma_probe() does not check for this case, which results in a NULL
+pointer dereference.
 
-Fixes: 6eba6471bbb7 ("arm64: tegra: Wire up Bluetooth on Jetson TX1 module")
-Signed-off-by: Aaron Kling <webgeek1234@gmail.com>
-Reviewed-by: Tomasz Maciej Nowak <tmn505@gmail.com>
-Link: https://lore.kernel.org/r/20250420-tx1-bt-v1-1-153cba105a4e@gmail.com
-Signed-off-by: Thierry Reding <treding@nvidia.com>
+Add NULL check after devm_kasprintf() to prevent this issue.
+
+Fixes: 25dcb5dd7b7c ("dmaengine: ti: New driver for K3 UDMA")
+Signed-off-by: Henry Martin <bsdhenrymartin@gmail.com>
+Reviewed-by: Nathan Lynch <nathan.lynch@amd.com>
+Acked-by: Peter Ujfalusi <peter.ujfalusi@gmail.com>
+Link: https://lore.kernel.org/r/20250402023900.43440-1-bsdhenrymartin@gmail.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/nvidia/tegra210-p2180.dtsi | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/dma/ti/k3-udma.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/arch/arm64/boot/dts/nvidia/tegra210-p2180.dtsi b/arch/arm64/boot/dts/nvidia/tegra210-p2180.dtsi
-index 1c53ccc5e3cbf..9c1b2e7d3997f 100644
---- a/arch/arm64/boot/dts/nvidia/tegra210-p2180.dtsi
-+++ b/arch/arm64/boot/dts/nvidia/tegra210-p2180.dtsi
-@@ -11,6 +11,7 @@
- 		rtc0 = "/i2c@7000d000/pmic@3c";
- 		rtc1 = "/rtc@7000e000";
- 		serial0 = &uarta;
-+		serial3 = &uartd;
- 	};
- 
- 	chosen {
+diff --git a/drivers/dma/ti/k3-udma.c b/drivers/dma/ti/k3-udma.c
+index b6255c0601bb2..aa2dc762140f6 100644
+--- a/drivers/dma/ti/k3-udma.c
++++ b/drivers/dma/ti/k3-udma.c
+@@ -5624,7 +5624,8 @@ static int udma_probe(struct platform_device *pdev)
+ 		uc->config.dir = DMA_MEM_TO_MEM;
+ 		uc->name = devm_kasprintf(dev, GFP_KERNEL, "%s chan%d",
+ 					  dev_name(dev), i);
+-
++		if (!uc->name)
++			return -ENOMEM;
+ 		vchan_init(&uc->vc, &ud->ddev);
+ 		/* Use custom vchan completion handling */
+ 		tasklet_setup(&uc->vc.task, udma_vchan_complete);
 -- 
 2.39.5
 
