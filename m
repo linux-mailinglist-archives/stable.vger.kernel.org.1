@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-154210-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-154525-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A20CAADD80D
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:51:41 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4018DADDA4E
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 19:16:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 562CB4A0B78
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:45:15 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6E7554077D5
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:57:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F5EF2EA754;
-	Tue, 17 Jun 2025 16:40:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CCCA62FA624;
+	Tue, 17 Jun 2025 16:58:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oBQWBUl8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="azRfOKve"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16E2B285041;
-	Tue, 17 Jun 2025 16:40:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87D621E502;
+	Tue, 17 Jun 2025 16:58:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750178459; cv=none; b=NsEgu65ZhlD8MgbnS7PaFb0Sfavc7cFfGbfFK473Cc5EsEVDpBi714x6Qnojf44FpREgPKfSq3PwyPtw3dHFZH2bKHZIMusHbsxqfk0RLERuOfsCOuPEQ0xJaNL9sJ3qXcLBURAIFslQHGlfyB6YqaSpdTbxoIoJyrF8GLPJ/LU=
+	t=1750179489; cv=none; b=Y1ly4+fnU9SC5agf7GTeSqznA22f/To3RFZXIuJRKDNA5M+N54zI6sFXuw2twQ416kIYQ8ZDLt5tcL8OJGUiB7V3gMptCYHJ0Zg+YWlDK2/r5yI2P9HZ4dCL3rbWr7rLqomiXbNuXVu+Z+OxFrxgqo9HnI3KlFH50XxQ71KQq/s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750178459; c=relaxed/simple;
-	bh=lDAoUGUokhW5GzHoIzgjTrLawXqclDljGsqrBZ0Dl4Y=;
+	s=arc-20240116; t=1750179489; c=relaxed/simple;
+	bh=H5cvMm+D2239J64wcWTBDWMvZ0QJ4P+JB7FVKgfwWuc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fzgB/yQWMiJkzYtEaLH5FKwIIfArwGIwY8CxVrdKVRtnGlzC0uD5/tRl2qkWplXYgwYQMR5cZfdUlbKBUNfx+eS8AIZ61HSxJ0k4cicBFJgNCnfo4lA0dz6VJE6WQC1zBndaQAZU1WyIX5v6m5xXyGG6tDt0QpwFsRFzGIOmEEM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oBQWBUl8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7AFF1C4CEE7;
-	Tue, 17 Jun 2025 16:40:58 +0000 (UTC)
+	 MIME-Version; b=VEqeq+pPbZPGWEWmknKJY03E/R1r/PnZCKUxqzXhv+Hz+XKBzNwmDl+fQgcnlayHmRuwPoGWo2mJYo7GBIVjvYJ85m/ZxBXgjDvN2vI40Ckj2kmG++p/Sg4/Wd69XxnK3KDGBcGXoNHwYTBkCRzdV6JjoZJNsTnCA++FJ9oinxk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=azRfOKve; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8517C4CEE7;
+	Tue, 17 Jun 2025 16:58:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750178459;
-	bh=lDAoUGUokhW5GzHoIzgjTrLawXqclDljGsqrBZ0Dl4Y=;
+	s=korg; t=1750179489;
+	bh=H5cvMm+D2239J64wcWTBDWMvZ0QJ4P+JB7FVKgfwWuc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oBQWBUl83aJnZvX9dJW4GSdONC8aNVBRLN3ganR+WzfvkFVSMRmXXYmJ54GceglMx
-	 j57MACMaSTW7V6tZ8VWKpBZ3FUBAJk/qQsbO7KJJUv/64cJaxUNnCTWaGfnv+dmUfT
-	 RitRs/+xr493Rbg1DBo3g0do2FALaf+wIF8WCqiA=
+	b=azRfOKve4yNAtuKIVSvResjZcRxfAB/g0mlUc+VWr6PCWFt4VdJWbW10Z2acBa8Lv
+	 eVJ2vtqGlTlCxA36EFW15gs3VDmUdLQEkqvq+X67T7yT8QUQojP9TF1B7jf7gXimVO
+	 Qsgh7CRXquM03DbKjwUmjI0AAApotkMUefaG9/qE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dave Chinner <dchinner@redhat.com>,
-	Bill ODonnell <bodonnel@redhat.com>,
-	"Darrick J. Wong" <djwong@kernel.org>,
-	Carlos Maiolino <cem@kernel.org>
-Subject: [PATCH 6.12 502/512] xfs: dont assume perags are initialised when trimming AGs
-Date: Tue, 17 Jun 2025 17:27:48 +0200
-Message-ID: <20250617152439.963290794@linuxfoundation.org>
+	stable <stable@kernel.org>,
+	RD Babiera <rdbabiera@google.com>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+	Badhri Jagan Sridharan <badhri@google.com>
+Subject: [PATCH 6.15 761/780] usb: typec: tcpm: move tcpm_queue_vdm_unlocked to asynchronous work
+Date: Tue, 17 Jun 2025 17:27:49 +0200
+Message-ID: <20250617152522.497882472@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
-References: <20250617152419.512865572@linuxfoundation.org>
+In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
+References: <20250617152451.485330293@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,91 +63,238 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dave Chinner <dchinner@redhat.com>
+From: RD Babiera <rdbabiera@google.com>
 
-commit 23be716b1c4f3f3a6c00ee38d51a57ef7db9ef7d upstream.
+commit 324d45e53f1a36c88bc649dc39e0c8300a41be0a upstream.
 
-When running fstrim immediately after mounting a V4 filesystem,
-the fstrim fails to trim all the free space in the filesystem. It
-only trims the first extent in the by-size free space tree in each
-AG and then returns. If a second fstrim is then run, it runs
-correctly and the entire free space in the filesystem is iterated
-and discarded correctly.
+A state check was previously added to tcpm_queue_vdm_unlocked to
+prevent a deadlock where the DisplayPort Alt Mode driver would be
+executing work and attempting to grab the tcpm_lock while the TCPM
+was holding the lock and attempting to unregister the altmode, blocking
+on the altmode driver's cancel_work_sync call.
 
-The problem lies in the setup of the trim cursor - it assumes that
-pag->pagf_longest is valid without either reading the AGF first or
-checking if xfs_perag_initialised_agf(pag) is true or not.
+Because the state check isn't protected, there is a small window
+where the Alt Mode driver could determine that the TCPM is
+in a ready state and attempt to grab the lock while the
+TCPM grabs the lock and changes the TCPM state to one that
+causes the deadlock. The callstack is provided below:
 
-As a result, when a filesystem is mounted without reading the AGF
-(e.g. a clean mount on a v4 filesystem) and the first operation is a
-fstrim call, pag->pagf_longest is zero and so the free extent search
-starts at the wrong end of the by-size btree and exits after
-discarding the first record in the tree.
+[110121.667392][    C7] Call trace:
+[110121.667396][    C7]  __switch_to+0x174/0x338
+[110121.667406][    C7]  __schedule+0x608/0x9f0
+[110121.667414][    C7]  schedule+0x7c/0xe8
+[110121.667423][    C7]  kernfs_drain+0xb0/0x114
+[110121.667431][    C7]  __kernfs_remove+0x16c/0x20c
+[110121.667436][    C7]  kernfs_remove_by_name_ns+0x74/0xe8
+[110121.667442][    C7]  sysfs_remove_group+0x84/0xe8
+[110121.667450][    C7]  sysfs_remove_groups+0x34/0x58
+[110121.667458][    C7]  device_remove_groups+0x10/0x20
+[110121.667464][    C7]  device_release_driver_internal+0x164/0x2e4
+[110121.667475][    C7]  device_release_driver+0x18/0x28
+[110121.667484][    C7]  bus_remove_device+0xec/0x118
+[110121.667491][    C7]  device_del+0x1e8/0x4ac
+[110121.667498][    C7]  device_unregister+0x18/0x38
+[110121.667504][    C7]  typec_unregister_altmode+0x30/0x44
+[110121.667515][    C7]  tcpm_reset_port+0xac/0x370
+[110121.667523][    C7]  tcpm_snk_detach+0x84/0xb8
+[110121.667529][    C7]  run_state_machine+0x4c0/0x1b68
+[110121.667536][    C7]  tcpm_state_machine_work+0x94/0xe4
+[110121.667544][    C7]  kthread_worker_fn+0x10c/0x244
+[110121.667552][    C7]  kthread+0x104/0x1d4
+[110121.667557][    C7]  ret_from_fork+0x10/0x20
 
-Fix this by deferring the initialisation of tcur->count to after
-we have locked the AGF and guaranteed that the perag is properly
-initialised. We trigger this on tcur->count == 0 after locking the
-AGF, as this will only occur on the first call to
-xfs_trim_gather_extents() for each AG. If we need to iterate,
-tcur->count will be set to the length of the record we need to
-restart at, so we can use this to ensure we only sample a valid
-pag->pagf_longest value for the iteration.
+[110121.667689][    C7] Workqueue: events dp_altmode_work
+[110121.667697][    C7] Call trace:
+[110121.667701][    C7]  __switch_to+0x174/0x338
+[110121.667710][    C7]  __schedule+0x608/0x9f0
+[110121.667717][    C7]  schedule+0x7c/0xe8
+[110121.667725][    C7]  schedule_preempt_disabled+0x24/0x40
+[110121.667733][    C7]  __mutex_lock+0x408/0xdac
+[110121.667741][    C7]  __mutex_lock_slowpath+0x14/0x24
+[110121.667748][    C7]  mutex_lock+0x40/0xec
+[110121.667757][    C7]  tcpm_altmode_enter+0x78/0xb4
+[110121.667764][    C7]  typec_altmode_enter+0xdc/0x10c
+[110121.667769][    C7]  dp_altmode_work+0x68/0x164
+[110121.667775][    C7]  process_one_work+0x1e4/0x43c
+[110121.667783][    C7]  worker_thread+0x25c/0x430
+[110121.667789][    C7]  kthread+0x104/0x1d4
+[110121.667794][    C7]  ret_from_fork+0x10/0x20
 
-Signed-off-by: Dave Chinner <dchinner@redhat.com>
-Reviewed-by: Bill O'Donnell <bodonnel@redhat.com>
-Reviewed-by: Darrick J. Wong <djwong@kernel.org>
-Fixes: 89cfa899608f ("xfs: reduce AGF hold times during fstrim operations")
-Cc: <stable@vger.kernel.org> # v6.6
-Signed-off-by: Carlos Maiolino <cem@kernel.org>
+Change tcpm_queue_vdm_unlocked to queue for tcpm_queue_vdm_work,
+which can perform the state check while holding the TCPM lock
+while the Alt Mode lock is no longer held. This requires a new
+struct to hold the vdm data, altmode_vdm_event.
+
+Fixes: cdc9946ea637 ("usb: typec: tcpm: enforce ready state when queueing alt mode vdm")
+Cc: stable <stable@kernel.org>
+Signed-off-by: RD Babiera <rdbabiera@google.com>
+Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Reviewed-by: Badhri Jagan Sridharan <badhri@google.com>
+Link: https://lore.kernel.org/r/20250506232853.1968304-2-rdbabiera@google.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/xfs/xfs_discard.c |   17 ++++++++++++++++-
- 1 file changed, 16 insertions(+), 1 deletion(-)
+ drivers/usb/typec/tcpm/tcpm.c |   91 ++++++++++++++++++++++++++++++++----------
+ 1 file changed, 71 insertions(+), 20 deletions(-)
 
---- a/fs/xfs/xfs_discard.c
-+++ b/fs/xfs/xfs_discard.c
-@@ -146,6 +146,14 @@ xfs_discard_extents(
- 	return error;
+--- a/drivers/usb/typec/tcpm/tcpm.c
++++ b/drivers/usb/typec/tcpm/tcpm.c
+@@ -596,6 +596,15 @@ struct pd_rx_event {
+ 	enum tcpm_transmit_type rx_sop_type;
+ };
+ 
++struct altmode_vdm_event {
++	struct kthread_work work;
++	struct tcpm_port *port;
++	u32 header;
++	u32 *data;
++	int cnt;
++	enum tcpm_transmit_type tx_sop_type;
++};
++
+ static const char * const pd_rev[] = {
+ 	[PD_REV10]		= "rev1",
+ 	[PD_REV20]		= "rev2",
+@@ -1608,18 +1617,68 @@ static void tcpm_queue_vdm(struct tcpm_p
+ 	mod_vdm_delayed_work(port, 0);
  }
  
-+/*
-+ * Care must be taken setting up the trim cursor as the perags may not have been
-+ * initialised when the cursor is initialised. e.g. a clean mount which hasn't
-+ * read in AGFs and the first operation run on the mounted fs is a trim. This
-+ * can result in perag fields that aren't initialised until
-+ * xfs_trim_gather_extents() calls xfs_alloc_read_agf() to lock down the AG for
-+ * the free space search.
-+ */
- struct xfs_trim_cur {
- 	xfs_agblock_t	start;
- 	xfs_extlen_t	count;
-@@ -183,6 +191,14 @@ xfs_trim_gather_extents(
- 	if (error)
- 		goto out_trans_cancel;
- 
-+	/*
-+	 * First time through tcur->count will not have been initialised as
-+	 * pag->pagf_longest is not guaranteed to be valid before we read
-+	 * the AGF buffer above.
-+	 */
-+	if (!tcur->count)
-+		tcur->count = pag->pagf_longest;
-+
- 	if (tcur->by_bno) {
- 		/* sub-AG discard request always starts at tcur->start */
- 		cur = xfs_bnobt_init_cursor(mp, tp, agbp, pag);
-@@ -329,7 +345,6 @@ xfs_trim_perag_extents(
+-static void tcpm_queue_vdm_unlocked(struct tcpm_port *port, const u32 header,
+-				    const u32 *data, int cnt, enum tcpm_transmit_type tx_sop_type)
++static void tcpm_queue_vdm_work(struct kthread_work *work)
  {
- 	struct xfs_trim_cur	tcur = {
- 		.start		= start,
--		.count		= pag->pagf_longest,
- 		.end		= end,
- 		.minlen		= minlen,
- 	};
+-	if (port->state != SRC_READY && port->state != SNK_READY &&
+-	    port->state != SRC_VDM_IDENTITY_REQUEST)
+-		return;
++	struct altmode_vdm_event *event = container_of(work,
++						       struct altmode_vdm_event,
++						       work);
++	struct tcpm_port *port = event->port;
+ 
+ 	mutex_lock(&port->lock);
+-	tcpm_queue_vdm(port, header, data, cnt, tx_sop_type);
++	if (port->state != SRC_READY && port->state != SNK_READY &&
++	    port->state != SRC_VDM_IDENTITY_REQUEST) {
++		tcpm_log_force(port, "dropping altmode_vdm_event");
++		goto port_unlock;
++	}
++
++	tcpm_queue_vdm(port, event->header, event->data, event->cnt, event->tx_sop_type);
++
++port_unlock:
++	kfree(event->data);
++	kfree(event);
+ 	mutex_unlock(&port->lock);
+ }
+ 
++static int tcpm_queue_vdm_unlocked(struct tcpm_port *port, const u32 header,
++				   const u32 *data, int cnt, enum tcpm_transmit_type tx_sop_type)
++{
++	struct altmode_vdm_event *event;
++	u32 *data_cpy;
++	int ret = -ENOMEM;
++
++	event = kzalloc(sizeof(*event), GFP_KERNEL);
++	if (!event)
++		goto err_event;
++
++	data_cpy = kcalloc(cnt, sizeof(u32), GFP_KERNEL);
++	if (!data_cpy)
++		goto err_data;
++
++	kthread_init_work(&event->work, tcpm_queue_vdm_work);
++	event->port = port;
++	event->header = header;
++	memcpy(data_cpy, data, sizeof(u32) * cnt);
++	event->data = data_cpy;
++	event->cnt = cnt;
++	event->tx_sop_type = tx_sop_type;
++
++	ret = kthread_queue_work(port->wq, &event->work);
++	if (!ret) {
++		ret = -EBUSY;
++		goto err_queue;
++	}
++
++	return 0;
++
++err_queue:
++	kfree(data_cpy);
++err_data:
++	kfree(event);
++err_event:
++	tcpm_log_force(port, "failed to queue altmode vdm, err:%d", ret);
++	return ret;
++}
++
+ static void svdm_consume_identity(struct tcpm_port *port, const u32 *p, int cnt)
+ {
+ 	u32 vdo = p[VDO_INDEX_IDH];
+@@ -2830,8 +2889,7 @@ static int tcpm_altmode_enter(struct typ
+ 	header = VDO(altmode->svid, vdo ? 2 : 1, svdm_version, CMD_ENTER_MODE);
+ 	header |= VDO_OPOS(altmode->mode);
+ 
+-	tcpm_queue_vdm_unlocked(port, header, vdo, vdo ? 1 : 0, TCPC_TX_SOP);
+-	return 0;
++	return tcpm_queue_vdm_unlocked(port, header, vdo, vdo ? 1 : 0, TCPC_TX_SOP);
+ }
+ 
+ static int tcpm_altmode_exit(struct typec_altmode *altmode)
+@@ -2847,8 +2905,7 @@ static int tcpm_altmode_exit(struct type
+ 	header = VDO(altmode->svid, 1, svdm_version, CMD_EXIT_MODE);
+ 	header |= VDO_OPOS(altmode->mode);
+ 
+-	tcpm_queue_vdm_unlocked(port, header, NULL, 0, TCPC_TX_SOP);
+-	return 0;
++	return tcpm_queue_vdm_unlocked(port, header, NULL, 0, TCPC_TX_SOP);
+ }
+ 
+ static int tcpm_altmode_vdm(struct typec_altmode *altmode,
+@@ -2856,9 +2913,7 @@ static int tcpm_altmode_vdm(struct typec
+ {
+ 	struct tcpm_port *port = typec_altmode_get_drvdata(altmode);
+ 
+-	tcpm_queue_vdm_unlocked(port, header, data, count - 1, TCPC_TX_SOP);
+-
+-	return 0;
++	return tcpm_queue_vdm_unlocked(port, header, data, count - 1, TCPC_TX_SOP);
+ }
+ 
+ static const struct typec_altmode_ops tcpm_altmode_ops = {
+@@ -2882,8 +2937,7 @@ static int tcpm_cable_altmode_enter(stru
+ 	header = VDO(altmode->svid, vdo ? 2 : 1, svdm_version, CMD_ENTER_MODE);
+ 	header |= VDO_OPOS(altmode->mode);
+ 
+-	tcpm_queue_vdm_unlocked(port, header, vdo, vdo ? 1 : 0, TCPC_TX_SOP_PRIME);
+-	return 0;
++	return tcpm_queue_vdm_unlocked(port, header, vdo, vdo ? 1 : 0, TCPC_TX_SOP_PRIME);
+ }
+ 
+ static int tcpm_cable_altmode_exit(struct typec_altmode *altmode, enum typec_plug_index sop)
+@@ -2899,8 +2953,7 @@ static int tcpm_cable_altmode_exit(struc
+ 	header = VDO(altmode->svid, 1, svdm_version, CMD_EXIT_MODE);
+ 	header |= VDO_OPOS(altmode->mode);
+ 
+-	tcpm_queue_vdm_unlocked(port, header, NULL, 0, TCPC_TX_SOP_PRIME);
+-	return 0;
++	return tcpm_queue_vdm_unlocked(port, header, NULL, 0, TCPC_TX_SOP_PRIME);
+ }
+ 
+ static int tcpm_cable_altmode_vdm(struct typec_altmode *altmode, enum typec_plug_index sop,
+@@ -2908,9 +2961,7 @@ static int tcpm_cable_altmode_vdm(struct
+ {
+ 	struct tcpm_port *port = typec_altmode_get_drvdata(altmode);
+ 
+-	tcpm_queue_vdm_unlocked(port, header, data, count - 1, TCPC_TX_SOP_PRIME);
+-
+-	return 0;
++	return tcpm_queue_vdm_unlocked(port, header, data, count - 1, TCPC_TX_SOP_PRIME);
+ }
+ 
+ static const struct typec_cable_ops tcpm_cable_ops = {
 
 
 
