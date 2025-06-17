@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-153303-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153310-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4148FADD3DE
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:03:42 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2644DADD3A0
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:00:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1145218991ED
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 15:56:01 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 90FE717E73D
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 15:55:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 370FB2F2350;
-	Tue, 17 Jun 2025 15:51:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A29B2F236C;
+	Tue, 17 Jun 2025 15:52:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EZtXMEWa"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hOffdImP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6D202F234D;
-	Tue, 17 Jun 2025 15:51:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55F412F2367;
+	Tue, 17 Jun 2025 15:52:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750175515; cv=none; b=qBp822lfJkKHfm81yVl6nrdSOAuk5/0ttVhkE0OU8o780ExrLssikc18NF0BRHH0gdzyFx8VrfizyuG0jNR4UyZj6xauSJ+3O+1l5Wzq9p20vYGvMv5KkFdNnnp3yb1256RcKmUrCeQOIocyTW3Q2x9XJ3qy38PykSvZUuyfdR8=
+	t=1750175536; cv=none; b=rjP3/ZlOD5Ws6/cdD+wjgSBBsnrB3noz8WntY2M0kPzYmjASCwp2yPYoUbdXSaL19t0U5w8aZsZGgxJoWWX0BY92P6mdPNUMyogupf6FyOsYucnK7c0cPqOw6gm8fy706TAN3mwRjXx6a9K7U3LnVkled/yAa8rriiANsRsx4Is=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750175515; c=relaxed/simple;
-	bh=1ShX5+I8vPBaMrrshbGCwWZmBUdIqMDj2PVCjndIHvg=;
+	s=arc-20240116; t=1750175536; c=relaxed/simple;
+	bh=+cbyhIKaRlJ7JLmi4SuxY09Twb3imoVdauIcVoKgM4o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KsVYy2dYN8yffmhUwBJ3kLqaukEa1Ck3At6LzhxqBxAopCI1jcPXZ/Y/yMx1LjJW9YWrARQYWWNpLMqR9X3rq0narVskE5tOVJ9cd7w4dURRGZWJRsHGklN5GLK+CneKee0g7/Bavfh25WV/m1n1jQfzOaCibFz7QiXYP5Ta8zU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EZtXMEWa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 635DFC4CEE3;
-	Tue, 17 Jun 2025 15:51:54 +0000 (UTC)
+	 MIME-Version; b=QKJLyDLubOXclE6wDvx39NZIoxOlTcfjk7Wwvu7dDCwsXKWd1wmevtCOht9NtTt3jjArSjEqiWyEfAMQPDQxrD4sCUcYEhveSiP4lQeC4bFqypuPkWh0qP9+25US3SS6pMOK0SKDRbQ4pPBCRGbVMcIuqKNHN7xvqhXSK4dEmHE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hOffdImP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9FA1C4CEE3;
+	Tue, 17 Jun 2025 15:52:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750175514;
-	bh=1ShX5+I8vPBaMrrshbGCwWZmBUdIqMDj2PVCjndIHvg=;
+	s=korg; t=1750175536;
+	bh=+cbyhIKaRlJ7JLmi4SuxY09Twb3imoVdauIcVoKgM4o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EZtXMEWaLVkknQLy9P/cCC5ze5cgHV4iZc8rsYY3ezdF/kTmzz1dZPwE7MPqF0V7c
-	 C/WIG4FQiG+ZPTF0+I9jVjQLD33TMN3+oFpBvdJdZKLzRj3oedyNSAxXt2peWv95Y3
-	 o4J5t1OPyjAtV8/OrTCLKjR5xgXD9OwWyULgSrFU=
+	b=hOffdImPSyn6FRQEsdgArmJCEV9W7xRKk14OMACLcHfLGp9jSP0A7SuifMELe+J3T
+	 V81ONvrYDM04Gl8hvoQMFdSn5BF2re+MTg0zaP8iHOQZDBqZuCdB33w7imGLfndEih
+	 wlo3EcWFXVKJJPd88CCPJYciQs4N26YV0tAicsp8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ioana Ciornei <ioana.ciornei@nxp.com>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 184/356] bus: fsl-mc: fix double-free on mc_dev
-Date: Tue, 17 Jun 2025 17:24:59 +0200
-Message-ID: <20250617152345.623984938@linuxfoundation.org>
+Subject: [PATCH 6.6 186/356] ARM: dts: qcom: apq8064: add missing clocks to the timer node
+Date: Tue, 17 Jun 2025 17:25:01 +0200
+Message-ID: <20250617152345.702321777@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250617152338.212798615@linuxfoundation.org>
 References: <20250617152338.212798615@linuxfoundation.org>
@@ -66,50 +67,36 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Ioana Ciornei <ioana.ciornei@nxp.com>
+From: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
 
-[ Upstream commit d694bf8a9acdbd061596f3e7549bc8cb70750a60 ]
+[ Upstream commit 4b0eb149df58b6750cd8113e5ee5b3ac7cc51743 ]
 
-The blamed commit tried to simplify how the deallocations are done but,
-in the process, introduced a double-free on the mc_dev variable.
+In order to fix DT schema warning and describe hardware properly, add
+missing sleep clock to the timer node.
 
-In case the MC device is a DPRC, a new mc_bus is allocated and the
-mc_dev variable is just a reference to one of its fields. In this
-circumstance, on the error path only the mc_bus should be freed.
-
-This commit introduces back the following checkpatch warning which is a
-false-positive.
-
-WARNING: kfree(NULL) is safe and this check is probably not required
-+       if (mc_bus)
-+               kfree(mc_bus);
-
-Fixes: a042fbed0290 ("staging: fsl-mc: simplify couple of deallocations")
-Signed-off-by: Ioana Ciornei <ioana.ciornei@nxp.com>
-Link: https://lore.kernel.org/r/20250408105814.2837951-2-ioana.ciornei@nxp.com
-Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+Fixes: f335b8af4fd5 ("ARM: dts: qcom: Add initial APQ8064 SoC and IFC6410 board device trees")
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Link: https://lore.kernel.org/r/20250318-fix-nexus-4-v2-6-bcedd1406790@oss.qualcomm.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/bus/fsl-mc/fsl-mc-bus.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ arch/arm/boot/dts/qcom/qcom-apq8064.dtsi | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/bus/fsl-mc/fsl-mc-bus.c b/drivers/bus/fsl-mc/fsl-mc-bus.c
-index 2f6d5002e43d5..b405ee330af1f 100644
---- a/drivers/bus/fsl-mc/fsl-mc-bus.c
-+++ b/drivers/bus/fsl-mc/fsl-mc-bus.c
-@@ -905,8 +905,10 @@ int fsl_mc_device_add(struct fsl_mc_obj_desc *obj_desc,
+diff --git a/arch/arm/boot/dts/qcom/qcom-apq8064.dtsi b/arch/arm/boot/dts/qcom/qcom-apq8064.dtsi
+index 950adb63af701..06251aba80d88 100644
+--- a/arch/arm/boot/dts/qcom/qcom-apq8064.dtsi
++++ b/arch/arm/boot/dts/qcom/qcom-apq8064.dtsi
+@@ -343,6 +343,8 @@
+ 				     <1 3 0x301>;
+ 			reg = <0x0200a000 0x100>;
+ 			clock-frequency = <27000000>;
++			clocks = <&sleep_clk>;
++			clock-names = "sleep";
+ 			cpu-offset = <0x80000>;
+ 		};
  
- error_cleanup_dev:
- 	kfree(mc_dev->regions);
--	kfree(mc_bus);
--	kfree(mc_dev);
-+	if (mc_bus)
-+		kfree(mc_bus);
-+	else
-+		kfree(mc_dev);
- 
- 	return error;
- }
 -- 
 2.39.5
 
