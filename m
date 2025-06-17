@@ -1,55 +1,53 @@
-Return-Path: <stable+bounces-153715-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153718-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD883ADD5DD
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:27:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1B11BADD5EE
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:28:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1BB8F2C391A
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:21:08 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C8E7317AFE5
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:21:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 292CB2ECE9E;
-	Tue, 17 Jun 2025 16:14:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07B902ECEA5;
+	Tue, 17 Jun 2025 16:14:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vSaE2QAW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L6H9573H"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBADA2DFF0A;
-	Tue, 17 Jun 2025 16:14:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B85202EF297;
+	Tue, 17 Jun 2025 16:14:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750176855; cv=none; b=UjLtQOF22HF64+sO6Z0HkPjWI+B6lSffAQt3quiS3WXX8u8yrjIxPy/ZFueQr1cZkCZRXThcCx6SeBaBBbAcqiSkzx/5mkiam0ci/JpjLD+fMH8haSy4r69JhmB47eLhkTKDBw30pXIJqi7DfeBUW4gGrt+yEtj6GdbhvdUOFNM=
+	t=1750176865; cv=none; b=lt/6YMyO0vMo+xmF55CV6HnUVhCi9v8DT5NMRTVdyWYeih2CsfmBku6S0IWaFfiki3KbeUJtd4gwGuOBEIONK7Ad014e8cvHg1bHeVbKcTEa+4xgH1WqcQAaSLqrK6/8pj4qZnemHZpJcToyQKKCJJ1e6PH6sJ4czDeqyMBDS64=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750176855; c=relaxed/simple;
-	bh=t+YYKOOK8iikaXWTWNH/sTYP94MeJ1EOGb7Oad0X7WY=;
+	s=arc-20240116; t=1750176865; c=relaxed/simple;
+	bh=6++8/E2qwlXO18K7fYF09VqEkOBCuGzgeUyAvHLHLa8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oyZsO+57lhuUR2AXRmLyldu67e2QpgK53ChDKE6ujey8V4gCuUW3aAdzDwXFRNVE+g1rtWPGAuLnSfeVxIVN5DxHYpgEOYS3ny02kb5MhZoCi5/+TtBx1bXPBM/14itSUqzX49pMOjzJiOR5FROu8Dt5pxMXI6JIExaM2ZK6cWc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vSaE2QAW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B0B8C4CEE3;
-	Tue, 17 Jun 2025 16:14:15 +0000 (UTC)
+	 MIME-Version; b=isfJgPbNzSJAgljrm2//L18VcoiXTAhcOkNvpw3dmkJTtKhqb2I0F+SbjYObL36hrbEj2Tr86lQ53Iu0/jaYdEKmzfqDL6ziN92vMGz5vvvr6MUAuTjBJ4bbwoHFRmo/ht6Uc7LINJalrmTGD9vpy45K5J+5BpHsw2T7PagNx7Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L6H9573H; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20EB5C4CEE3;
+	Tue, 17 Jun 2025 16:14:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750176855;
-	bh=t+YYKOOK8iikaXWTWNH/sTYP94MeJ1EOGb7Oad0X7WY=;
+	s=korg; t=1750176865;
+	bh=6++8/E2qwlXO18K7fYF09VqEkOBCuGzgeUyAvHLHLa8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vSaE2QAWcIdEGUuGvADwaHmiFJBV1IA3h5wcdjoAPq8FbLagbTbcZw7B2kDlSxl94
-	 d2LOZe9BjeI9YuW6flvFYI3z599BzCghpZMxESkXoQ8bGynKTNcYB1BlyeahgvrtCs
-	 6yWePLJCblVTPRjnOXKX04pKXh/ew2zwu0dZAHUo=
+	b=L6H9573HfSRPUrRiE4c8a7OpVI0xk9niSlxa28C/NumRKbKJxJece9AEZtBUydESl
+	 w/Gd3aJZrficHqE4KemoOn9z7R1YG2uT5Lm+MnZCCaHGnyElU8KOKRikaiq6rM33RM
+	 1iR9k+g4aWzhdz0SguE2W8NXmuGaFDSLzyRP1TNA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"T.J. Mercier" <tjmercier@google.com>,
-	Martin KaFai Lau <martin.lau@kernel.org>,
-	Song Liu <song@kernel.org>,
-	Namhyung Kim <namhyung@kernel.org>,
+	Anton Protopopov <a.s.protopopov@gmail.com>,
+	Andrii Nakryiko <andrii@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 232/780] selftests/bpf: Fix kmem_cache iterator draining
-Date: Tue, 17 Jun 2025 17:19:00 +0200
-Message-ID: <20250617152500.898977156@linuxfoundation.org>
+Subject: [PATCH 6.15 233/780] libbpf: Use proper errno value in linker
+Date: Tue, 17 Jun 2025 17:19:01 +0200
+Message-ID: <20250617152500.943140867@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
 References: <20250617152451.485330293@linuxfoundation.org>
@@ -68,46 +66,47 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: T.J. Mercier <tjmercier@google.com>
+From: Anton Protopopov <a.s.protopopov@gmail.com>
 
-[ Upstream commit 38d976c32d85ef12dcd2b8a231196f7049548477 ]
+[ Upstream commit 358b1c0f56ebb6996fcec7dcdcf6bae5dcbc8b6c ]
 
-The closing parentheses around the read syscall is misplaced, causing
-single byte reads from the iterator instead of buf sized reads. While
-the end result is the same, many more read calls than necessary are
-performed.
+Return values of the linker_append_sec_data() and the
+linker_append_elf_relos() functions are propagated all the
+way up to users of libbpf API. In some error cases these
+functions return -1 which will be seen as -EPERM from user's
+point of view. Instead, return a more reasonable -EINVAL.
 
-$ tools/testing/selftests/bpf/vmtest.sh  "./test_progs -t kmem_cache_iter"
-145/1   kmem_cache_iter/check_task_struct:OK
-145/2   kmem_cache_iter/check_slabinfo:OK
-145/3   kmem_cache_iter/open_coded_iter:OK
-145     kmem_cache_iter:OK
-Summary: 1/3 PASSED, 0 SKIPPED, 0 FAILED
-
-Fixes: a496d0cdc84d ("selftests/bpf: Add a test for kmem_cache_iter")
-Signed-off-by: T.J. Mercier <tjmercier@google.com>
-Signed-off-by: Martin KaFai Lau <martin.lau@kernel.org>
-Acked-by: Song Liu <song@kernel.org>
-Acked-by: Namhyung Kim <namhyung@kernel.org>
-Link: https://patch.msgid.link/20250428180256.1482899-1-tjmercier@google.com
+Fixes: faf6ed321cf6 ("libbpf: Add BPF static linker APIs")
+Signed-off-by: Anton Protopopov <a.s.protopopov@gmail.com>
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Link: https://lore.kernel.org/bpf/20250430120820.2262053-1-a.s.protopopov@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/bpf/prog_tests/kmem_cache_iter.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ tools/lib/bpf/linker.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/tools/testing/selftests/bpf/prog_tests/kmem_cache_iter.c b/tools/testing/selftests/bpf/prog_tests/kmem_cache_iter.c
-index 8e13a3416a21d..1de14b111931a 100644
---- a/tools/testing/selftests/bpf/prog_tests/kmem_cache_iter.c
-+++ b/tools/testing/selftests/bpf/prog_tests/kmem_cache_iter.c
-@@ -104,7 +104,7 @@ void test_kmem_cache_iter(void)
- 		goto destroy;
+diff --git a/tools/lib/bpf/linker.c b/tools/lib/bpf/linker.c
+index 56f5068e2ebab..a469e5d4fee70 100644
+--- a/tools/lib/bpf/linker.c
++++ b/tools/lib/bpf/linker.c
+@@ -1376,7 +1376,7 @@ static int linker_append_sec_data(struct bpf_linker *linker, struct src_obj *obj
+ 		} else {
+ 			if (!secs_match(dst_sec, src_sec)) {
+ 				pr_warn("ELF sections %s are incompatible\n", src_sec->sec_name);
+-				return -1;
++				return -EINVAL;
+ 			}
  
- 	memset(buf, 0, sizeof(buf));
--	while (read(iter_fd, buf, sizeof(buf) > 0)) {
-+	while (read(iter_fd, buf, sizeof(buf)) > 0) {
- 		/* Read out all contents */
- 		printf("%s", buf);
- 	}
+ 			/* "license" and "version" sections are deduped */
+@@ -2223,7 +2223,7 @@ static int linker_append_elf_relos(struct bpf_linker *linker, struct src_obj *ob
+ 			}
+ 		} else if (!secs_match(dst_sec, src_sec)) {
+ 			pr_warn("sections %s are not compatible\n", src_sec->sec_name);
+-			return -1;
++			return -EINVAL;
+ 		}
+ 
+ 		/* shdr->sh_link points to SYMTAB */
 -- 
 2.39.5
 
