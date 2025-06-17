@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-153550-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153572-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9175CADD4FE
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:15:56 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 13633ADD550
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:19:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4F0C41942AF5
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:08:33 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 614812C2714
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:09:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59FD020A5EA;
-	Tue, 17 Jun 2025 16:05:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2BE8C2DFF14;
+	Tue, 17 Jun 2025 16:06:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o1GuNw5s"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fUH5Iguj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1560118E025;
-	Tue, 17 Jun 2025 16:05:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD2A92EF286;
+	Tue, 17 Jun 2025 16:06:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750176325; cv=none; b=e6PJ2I9mqEmXLHOxfq7pnNQ2pIJm0P64KwPZeqOVyixzXFbIlAPrrkGHSjxBGCUOxlnwMRDR0Nt1Sfn59c7AgecsZv2Ql60j/tq7rkb1/CXrERnfTjiDgNjzJZ5AlrtRu/8fbRVR0FLQaGG7RoMmfo0MWpdUddfkMn1HFg1Ci3M=
+	t=1750176396; cv=none; b=DcWMzrUBHcx4wMaojZ4wHy0+SNqa7Pkjj2jkbm3+KnpGLpzOptR7WKvl0M52hIa0lRayYgz9Lf2dPkblBBgbmD9h1sD35VoWsD4aDi0pHKnXZigfL4wq/Hh+P25Y76LaS5zRwH2DKtpg7iIhZR2FdwLgRP0CK5u3EYA/ynvXAQo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750176325; c=relaxed/simple;
-	bh=rk+3b9lWcAwdnOc8Z2Z+WSM/M3fxXp4R5FsUmjVo0XM=;
+	s=arc-20240116; t=1750176396; c=relaxed/simple;
+	bh=RFTevoG/1vW9OjYgMJ/CkHeAj/d8/vE8IfJ2ksNcPCk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Q79F58Z1m98LJTmeLOEPRTiibVLQAlwUwrgvcCG5gJxFD4MQ2SSNzHGgCp0/qfOjpP5MLjfKO4ClPr/J5hWZaP9FBr1Maks+eL9f9xIqj/cWPYw7EwEm/Jk/YApyHssef8PybDB5nbiP3DlaoZk2QJitovAvpy8ij9BhidLGUHg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o1GuNw5s; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F2ECC4CEE3;
-	Tue, 17 Jun 2025 16:05:24 +0000 (UTC)
+	 MIME-Version; b=cTSheTCNLbL+71uS8Bd2GotiMr/yHhvd+PEPd8/ikf+4EvpPnweTO/yl5SD4ibsEgN5qt7qSQQE2PoVzG48vpCfsXJoFAQEUSuymFDx/glaqQsy2nBibPaMgnRIlIDanXAHXtPShhx/DSeHFKPYGUxqHWhM8syqXsIrVKdBqVLo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fUH5Iguj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6BDDEC4CEE3;
+	Tue, 17 Jun 2025 16:06:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750176324;
-	bh=rk+3b9lWcAwdnOc8Z2Z+WSM/M3fxXp4R5FsUmjVo0XM=;
+	s=korg; t=1750176395;
+	bh=RFTevoG/1vW9OjYgMJ/CkHeAj/d8/vE8IfJ2ksNcPCk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=o1GuNw5s9JtGoJT//qCnVGMzf49F8eNpBUxxKxZ/l6SaDjpfQ0fyuLyTxuwh0PZMH
-	 8pRZmxQ3wt/Pu5APggNUwjauZ+OtsJd4sn7CmbebAhPUl08843lM9KkVhespnthq2o
-	 bS/4xdClcRjdyymgaSZ6D7lYjkriYvQqNqJXQ5OE=
+	b=fUH5Iguj/e+yUOC7r6wqJkt7cZXOE/61bVVSBikUrKp9paWZT2GwENcd2AkwRJXxd
+	 H46CyILQv0CbiU5wIT8azLJ514xHEWADtmtUT1c9lZQY76bmJFVTmGn9KGo1EtQY0O
+	 tFEOWza5jyl427uuXIK9+PdEjcZXRoJlL8t4riHw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniel Golle <daniel@makrotopia.org>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Christian Marangi <ansuelsmth@gmail.com>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Raj Kumar Bhagat <quic_rajkbhag@quicinc.com>,
+	Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>,
+	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 175/780] net: phy: mediatek: permit to compile test GE SOC PHY driver
-Date: Tue, 17 Jun 2025 17:18:03 +0200
-Message-ID: <20250617152458.607006437@linuxfoundation.org>
+Subject: [PATCH 6.15 176/780] wifi: ath12k: fix cleanup path after mhi init
+Date: Tue, 17 Jun 2025 17:18:04 +0200
+Message-ID: <20250617152458.645922423@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
 References: <20250617152451.485330293@linuxfoundation.org>
@@ -69,45 +67,46 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Christian Marangi <ansuelsmth@gmail.com>
+From: Raj Kumar Bhagat <quic_rajkbhag@quicinc.com>
 
-[ Upstream commit e5566162af8b9690e096d2e6089e4ed955a0d13d ]
+[ Upstream commit 6177c97fb6f05bf0473a2806e3bece7e77693209 ]
 
-When commit 462a3daad679 ("net: phy: mediatek: fix compile-test
-dependencies") fixed the dependency, it should have also introduced
-an or on COMPILE_TEST to permit this driver to be compile-tested even if
-NVMEM_MTK_EFUSE wasn't selected. The driver makes use of NVMEM API that
-are always compiled (return error) so the driver can actually be
-compiled even without that config.
+Currently, the 'err_pci_msi_free' label is misplaced, causing the cleanup
+sequence to be incorrect. Fix this by moving the 'err_pci_msi_free' label
+to the correct position after 'err_irq_affinity_cleanup'.
 
-Fix and simplify the dependency condition of this kernel config.
+Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.3.1-00209-QCAHKSWPL_SILICONZ-1
 
-Fixes: 462a3daad679 ("net: phy: mediatek: fix compile-test dependencies")
-Acked-by: Daniel Golle <daniel@makrotopia.org>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Signed-off-by: Christian Marangi <ansuelsmth@gmail.com>
-Acked-by: Arnd Bergmann <arnd@arndb.de>
-Link: https://patch.msgid.link/20250410100410.348-1-ansuelsmth@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: a3012f206d07 ("wifi: ath12k: set IRQ affinity to CPU0 in case of one MSI vector")
+Signed-off-by: Raj Kumar Bhagat <quic_rajkbhag@quicinc.com>
+Reviewed-by: Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>
+Link: https://patch.msgid.link/20250403-ath12k-cleanup-v1-1-ad8f67b0e9cf@quicinc.com
+Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/phy/mediatek/Kconfig | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/net/wireless/ath/ath12k/pci.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/phy/mediatek/Kconfig b/drivers/net/phy/mediatek/Kconfig
-index 2a8ac5aed0f89..6a4c2b328c418 100644
---- a/drivers/net/phy/mediatek/Kconfig
-+++ b/drivers/net/phy/mediatek/Kconfig
-@@ -15,8 +15,7 @@ config MEDIATEK_GE_PHY
+diff --git a/drivers/net/wireless/ath/ath12k/pci.c b/drivers/net/wireless/ath/ath12k/pci.c
+index b474696ac6d8c..99b2c7927ec81 100644
+--- a/drivers/net/wireless/ath/ath12k/pci.c
++++ b/drivers/net/wireless/ath/ath12k/pci.c
+@@ -1710,12 +1710,12 @@ static int ath12k_pci_probe(struct pci_dev *pdev,
+ err_mhi_unregister:
+ 	ath12k_mhi_unregister(ab_pci);
  
- config MEDIATEK_GE_SOC_PHY
- 	tristate "MediaTek SoC Ethernet PHYs"
--	depends on (ARM64 && ARCH_MEDIATEK) || COMPILE_TEST
--	depends on NVMEM_MTK_EFUSE
-+	depends on (ARM64 && ARCH_MEDIATEK && NVMEM_MTK_EFUSE) || COMPILE_TEST
- 	select MTK_NET_PHYLIB
- 	help
- 	  Supports MediaTek SoC built-in Gigabit Ethernet PHYs.
+-err_pci_msi_free:
+-	ath12k_pci_msi_free(ab_pci);
+-
+ err_irq_affinity_cleanup:
+ 	ath12k_pci_set_irq_affinity_hint(ab_pci, NULL);
+ 
++err_pci_msi_free:
++	ath12k_pci_msi_free(ab_pci);
++
+ err_pci_free_region:
+ 	ath12k_pci_free_region(ab_pci);
+ 
 -- 
 2.39.5
 
