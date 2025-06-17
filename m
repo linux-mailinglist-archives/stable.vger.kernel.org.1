@@ -1,61 +1,57 @@
-Return-Path: <stable+bounces-154408-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153474-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6B097ADDA1B
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 19:13:29 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 46305ADD500
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:15:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 96EEE4A76F7
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:52:54 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C0DE719E0164
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:05:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD710285067;
-	Tue, 17 Jun 2025 16:51:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F9AD2ECE80;
+	Tue, 17 Jun 2025 16:01:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RUwRuTvm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Lh6reKzM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A8B020CCFB;
-	Tue, 17 Jun 2025 16:51:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AFE12EA143;
+	Tue, 17 Jun 2025 16:01:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750179099; cv=none; b=FVDd9V2ph/NkQ5xNpEbH/jS/0PpMQ1wj4mTH3vzrRu96EwuMAjI4j1Ks6c7FJ9yC3HBBua7azYN2/ua/oytaSf5oGB3VCVab9vQpJV5yeBgG+m+dOoOQ3mwWfoSZ5wqXRHWWRkAfeFPN8gAfEDpJ7RoFjiZaiYQCsNix0X9+kl8=
+	t=1750176081; cv=none; b=UeV6Qb/XI3VxJtp/LuAMD3h0s395Du0qP5aT48qrlDtDNYTOAzetvGLbszg8Vk2G/djD1MdJS4ICB6Fg4EdAj0UfvbK62fHWQ0FhHJdovXWNeOG2cSp9pqK6EX5RRvpN+HqI74KOT49W6iM5gb0UwbzLQFMHqlvQ/wxfQnt4UNE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750179099; c=relaxed/simple;
-	bh=rM3TKE21e8DUcCLE5tBH5W3ynH4BUh2VDU1DDc75jv0=;
+	s=arc-20240116; t=1750176081; c=relaxed/simple;
+	bh=GagNELsX2mRGLdz8vUneM2e6Xv66mt3u6Tgncil0gaU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=t3eKJsEkEbQ0D1yXjfWj4gx0l2camx9VSgHWkFVCzy2hYgej/JhMs2Uh6jzBD2qIUXD2vjO//iI7+U3vjsr1IRmcqnBYihNeVzD3+FklYqFYg6xJsehnIq+UkBF/1v2ZGuX/JMmGO61OXQWz87GfPtST5psBG+Ng5I8XSEr9QZ4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RUwRuTvm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0DABC4CEE3;
-	Tue, 17 Jun 2025 16:51:38 +0000 (UTC)
+	 MIME-Version; b=oYrfHXb5BOICVNEHyMmkRDBuyiGX/eF/Id3PtTcQihDl0Y1cASP0V9FCFB0Y/d9QNDvyJo7Jx0KYapXinOYSNRtmH9YhBpiJVJ1mQefABRPwpVcAN4yNt3sHUKFfMk3/341ZqJeFu1J6uFIM6nBGYpGR3EqUOGD6r2Ym9CiRL4w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Lh6reKzM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A99CAC4CEE3;
+	Tue, 17 Jun 2025 16:01:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750179099;
-	bh=rM3TKE21e8DUcCLE5tBH5W3ynH4BUh2VDU1DDc75jv0=;
+	s=korg; t=1750176081;
+	bh=GagNELsX2mRGLdz8vUneM2e6Xv66mt3u6Tgncil0gaU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RUwRuTvmkGgtsv/1zRYdYsKeuQFAc8JjttIFtxZpmfuN88kicoyWLMjKptCeSXumh
-	 TEYIrOrLs5NkOUt1XHuOuJOw/pS0A0iQa2+8S3sttblbo8wUwy/pE7s3glZ/yIshAw
-	 6WZCu/fPShbPhove2qCdIyXI6SrwpLUw+S1ToIgU=
+	b=Lh6reKzMqbMnuCBOHDlwQATmN9GdbxOhIPlu/zwBBi4d13Kfcp4VN32VWOADVcZw7
+	 /oYO0I+feaNS5JLJ3xPk4j4CE/95ZjWHJ99/E4nGudc8h2Q2D530hRpda4jshaPI9L
+	 wEU6M3g8zrZJM0btfcNk82QbZmPbJqZamhmuT3n8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jens Axboe <axboe@kernel.dk>,
-	Anuj Gupta <anuj20.g@samsung.com>,
-	Nitesh Shetty <nj.shetty@samsung.com>,
-	Al Viro <viro@zeniv.linux.org.uk>,
-	Christian Brauner <brauner@kernel.org>,
-	Keith Busch <kbusch@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Yeoreum Yun <yeoreum.yun@arm.com>,
+	Leo Yan <leo.yan@arm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 648/780] iov_iter: use iov_offset for length calculation in iov_iter_aligned_bvec
+Subject: [PATCH 6.6 241/356] coresight: prevent deactivate active config while enabling the config
 Date: Tue, 17 Jun 2025 17:25:56 +0200
-Message-ID: <20250617152517.869920311@linuxfoundation.org>
+Message-ID: <20250617152347.909300902@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
-References: <20250617152451.485330293@linuxfoundation.org>
+In-Reply-To: <20250617152338.212798615@linuxfoundation.org>
+References: <20250617152338.212798615@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,90 +63,181 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nitesh Shetty <nj.shetty@samsung.com>
+From: Yeoreum Yun <yeoreum.yun@arm.com>
 
-[ Upstream commit 334d7c4fb60cf21e0abac134d92fe49e9b04377e ]
+[ Upstream commit 408c97c4a5e0b634dcd15bf8b8808b382e888164 ]
 
-If iov_offset is non-zero, then we need to consider iov_offset in length
-calculation, otherwise we might pass smaller IOs such as 512 bytes, in
-below scenario [1].
+While enable active config via cscfg_csdev_enable_active_config(),
+active config could be deactivated via configfs' sysfs interface.
+This could make UAF issue in below scenario:
 
-This issue is reproducible using lib-uring test/fixed-seg.c application
-with fixed buffer on a 512 LBA formatted device.
+CPU0                                          CPU1
+(sysfs enable)                                load module
+                                              cscfg_load_config_sets()
+                                              activate config. // sysfs
+                                              (sys_active_cnt == 1)
+...
+cscfg_csdev_enable_active_config()
+lock(csdev->cscfg_csdev_lock)
+// here load config activate by CPU1
+unlock(csdev->cscfg_csdev_lock)
 
-[1]
+                                              deactivate config // sysfs
+                                              (sys_activec_cnt == 0)
+                                              cscfg_unload_config_sets()
+                                              unload module
 
-At present we pass the alignment check, for 512 LBA formatted devices,
-len_mask = 511 when IO is smaller, i->count = 512 has an offset,
-i->io_offset = 3584 with bvec values, bvec->bv_offset = 256,
-bvec->bv_len = 3840.  In short, the first 256 bytes are in the current
-page, next 256 bytes are in the another page.  Ideally we expect to
-fail the IO.
+// access to config_desc which freed
+// while unloading module.
+cscfg_csdev_enable_config
 
-I can think of 2 userspace scenarios where we experience this.
+To address this, use cscfg_config_desc's active_cnt as a reference count
+ which will be holded when
+    - activate the config.
+    - enable the activated config.
+and put the module reference when config_active_cnt == 0.
 
-a: From userspace, we observe a different behaviour when device LBA
-   size is 512 vs 4096 bytes.  For 4096 LBA formatted device, I see the
-   same liburing test [2] failing, whereas 512 the test passes without
-   this.  This is reproducible everytime.
-
-   [2] https://github.com/axboe/liburing/
-
-b: Although I was not able to reproduce the below condition, but I
-   suspect below case should be possible from user space for devices
-   with 512 LBA formatted device.  Lets say from userspace while
-   allocating a virtually single chunk of memory, if we get 2 physical
-   chunk of memory, and IO happens to be at the boundary of first
-   physical chunk with length crossing first chunk, then we allow IOs
-   to proceed and hence we might map wrong physical address length and
-   proceed with IO rather than failing.
-
-: --- a/test/fixed-seg.c
-: +++ b/test/fixed-seg.c
-: @@ -64,7 +64,7 @@ static int test(struct io_uring *ring, int fd, int
-: vec_off)
-: 		return T_EXIT_FAIL;
-: 	}
-:
-: -       ret = read_it(ring, fd, 4096, vec_off);
-: +       ret = read_it(ring, fd, 4096, 7*512 + 256);
-: 	if (ret) {
-: 		fprintf(stderr, "4096 0 failed\n");
-: 		return T_EXIT_FAIL;
-
-Effectively this is a write crossing the page boundary.
-
-Link: https://lkml.kernel.org/r/20250428095849.11709-1-nj.shetty@samsung.com
-Fixes: 2263639f96f2 ("iov_iter: streamline iovec/bvec alignment iteration")
-Reviewed-by: Jens Axboe <axboe@kernel.dk>
-Reviewed-by: Anuj Gupta <anuj20.g@samsung.com>
-Signed-off-by: Nitesh Shetty <nj.shetty@samsung.com>
-Cc: Al Viro <viro@zeniv.linux.org.uk>
-Cc: Christian Brauner <brauner@kernel.org>
-Cc: Keith Busch <kbusch@kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Fixes: f8cce2ff3c04 ("coresight: syscfg: Add API to activate and enable configurations")
+Suggested-by: Suzuki K Poulose <suzuki.poulose@arm.com>
+Signed-off-by: Yeoreum Yun <yeoreum.yun@arm.com>
+Reviewed-by: Leo Yan <leo.yan@arm.com>
+Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
+Link: https://lore.kernel.org/r/20250514161951.3427590-4-yeoreum.yun@arm.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- lib/iov_iter.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ .../hwtracing/coresight/coresight-config.h    |  2 +-
+ .../hwtracing/coresight/coresight-syscfg.c    | 49 +++++++++++++------
+ 2 files changed, 35 insertions(+), 16 deletions(-)
 
-diff --git a/lib/iov_iter.c b/lib/iov_iter.c
-index bc9391e55d57e..9ce83ab71bacd 100644
---- a/lib/iov_iter.c
-+++ b/lib/iov_iter.c
-@@ -820,7 +820,7 @@ static bool iov_iter_aligned_bvec(const struct iov_iter *i, unsigned addr_mask,
- 	size_t size = i->count;
+diff --git a/drivers/hwtracing/coresight/coresight-config.h b/drivers/hwtracing/coresight/coresight-config.h
+index 6ba0139757418..84cdde6f0e4db 100644
+--- a/drivers/hwtracing/coresight/coresight-config.h
++++ b/drivers/hwtracing/coresight/coresight-config.h
+@@ -228,7 +228,7 @@ struct cscfg_feature_csdev {
+  * @feats_csdev:references to the device features to enable.
+  */
+ struct cscfg_config_csdev {
+-	const struct cscfg_config_desc *config_desc;
++	struct cscfg_config_desc *config_desc;
+ 	struct coresight_device *csdev;
+ 	bool enabled;
+ 	struct list_head node;
+diff --git a/drivers/hwtracing/coresight/coresight-syscfg.c b/drivers/hwtracing/coresight/coresight-syscfg.c
+index 11138a9762b01..30a561d874819 100644
+--- a/drivers/hwtracing/coresight/coresight-syscfg.c
++++ b/drivers/hwtracing/coresight/coresight-syscfg.c
+@@ -867,6 +867,25 @@ void cscfg_csdev_reset_feats(struct coresight_device *csdev)
+ }
+ EXPORT_SYMBOL_GPL(cscfg_csdev_reset_feats);
  
- 	do {
--		size_t len = bvec->bv_len;
-+		size_t len = bvec->bv_len - skip;
++static bool cscfg_config_desc_get(struct cscfg_config_desc *config_desc)
++{
++	if (!atomic_fetch_inc(&config_desc->active_cnt)) {
++		/* must ensure that config cannot be unloaded in use */
++		if (unlikely(cscfg_owner_get(config_desc->load_owner))) {
++			atomic_dec(&config_desc->active_cnt);
++			return false;
++		}
++	}
++
++	return true;
++}
++
++static void cscfg_config_desc_put(struct cscfg_config_desc *config_desc)
++{
++	if (!atomic_dec_return(&config_desc->active_cnt))
++		cscfg_owner_put(config_desc->load_owner);
++}
++
+ /*
+  * This activate configuration for either perf or sysfs. Perf can have multiple
+  * active configs, selected per event, sysfs is limited to one.
+@@ -890,22 +909,17 @@ static int _cscfg_activate_config(unsigned long cfg_hash)
+ 			if (config_desc->available == false)
+ 				return -EBUSY;
  
- 		if (len > size)
- 			len = size;
+-			/* must ensure that config cannot be unloaded in use */
+-			err = cscfg_owner_get(config_desc->load_owner);
+-			if (err)
++			if (!cscfg_config_desc_get(config_desc)) {
++				err = -EINVAL;
+ 				break;
++			}
++
+ 			/*
+ 			 * increment the global active count - control changes to
+ 			 * active configurations
+ 			 */
+ 			atomic_inc(&cscfg_mgr->sys_active_cnt);
+ 
+-			/*
+-			 * mark the descriptor as active so enable config on a
+-			 * device instance will use it
+-			 */
+-			atomic_inc(&config_desc->active_cnt);
+-
+ 			err = 0;
+ 			dev_dbg(cscfg_device(), "Activate config %s.\n", config_desc->name);
+ 			break;
+@@ -920,9 +934,8 @@ static void _cscfg_deactivate_config(unsigned long cfg_hash)
+ 
+ 	list_for_each_entry(config_desc, &cscfg_mgr->config_desc_list, item) {
+ 		if ((unsigned long)config_desc->event_ea->var == cfg_hash) {
+-			atomic_dec(&config_desc->active_cnt);
+ 			atomic_dec(&cscfg_mgr->sys_active_cnt);
+-			cscfg_owner_put(config_desc->load_owner);
++			cscfg_config_desc_put(config_desc);
+ 			dev_dbg(cscfg_device(), "Deactivate config %s.\n", config_desc->name);
+ 			break;
+ 		}
+@@ -1047,7 +1060,7 @@ int cscfg_csdev_enable_active_config(struct coresight_device *csdev,
+ 				     unsigned long cfg_hash, int preset)
+ {
+ 	struct cscfg_config_csdev *config_csdev_active = NULL, *config_csdev_item;
+-	const struct cscfg_config_desc *config_desc;
++	struct cscfg_config_desc *config_desc;
+ 	unsigned long flags;
+ 	int err = 0;
+ 
+@@ -1062,8 +1075,8 @@ int cscfg_csdev_enable_active_config(struct coresight_device *csdev,
+ 	spin_lock_irqsave(&csdev->cscfg_csdev_lock, flags);
+ 	list_for_each_entry(config_csdev_item, &csdev->config_csdev_list, node) {
+ 		config_desc = config_csdev_item->config_desc;
+-		if ((atomic_read(&config_desc->active_cnt)) &&
+-		    ((unsigned long)config_desc->event_ea->var == cfg_hash)) {
++		if (((unsigned long)config_desc->event_ea->var == cfg_hash) &&
++				cscfg_config_desc_get(config_desc)) {
+ 			config_csdev_active = config_csdev_item;
+ 			csdev->active_cscfg_ctxt = (void *)config_csdev_active;
+ 			break;
+@@ -1097,7 +1110,11 @@ int cscfg_csdev_enable_active_config(struct coresight_device *csdev,
+ 				err = -EBUSY;
+ 			spin_unlock_irqrestore(&csdev->cscfg_csdev_lock, flags);
+ 		}
++
++		if (err)
++			cscfg_config_desc_put(config_desc);
+ 	}
++
+ 	return err;
+ }
+ EXPORT_SYMBOL_GPL(cscfg_csdev_enable_active_config);
+@@ -1136,8 +1153,10 @@ void cscfg_csdev_disable_active_config(struct coresight_device *csdev)
+ 	spin_unlock_irqrestore(&csdev->cscfg_csdev_lock, flags);
+ 
+ 	/* true if there was an enabled active config */
+-	if (config_csdev)
++	if (config_csdev) {
+ 		cscfg_csdev_disable_config(config_csdev);
++		cscfg_config_desc_put(config_csdev->config_desc);
++	}
+ }
+ EXPORT_SYMBOL_GPL(cscfg_csdev_disable_active_config);
+ 
 -- 
 2.39.5
 
