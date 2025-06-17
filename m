@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-153301-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153309-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 64EA9ADD3C3
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:02:10 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id B8DE1ADD39C
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:00:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AAB2440145D
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 15:55:18 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2030517DCCD
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 15:55:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A5622EA166;
-	Tue, 17 Jun 2025 15:51:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6FBF12F236E;
+	Tue, 17 Jun 2025 15:52:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Aus9i0tX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M3kV91wu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB62F18E025;
-	Tue, 17 Jun 2025 15:51:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C68A2F2341;
+	Tue, 17 Jun 2025 15:52:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750175509; cv=none; b=I6egA5tAqytprRQJnfFBP4PiQFMhZjLI6XuM1Q5Fc/9BtPmDvP17q+azxqAd8cpsbP3tdA/sgjkdhitC5kOSUgB7exONmzzzJVEYcAcL2OZkOEqcjAAep5esomCwWFiKFZZWivbLzTmw0GCUDPHZ8ePhykaS9S5ar2/Mqd3B+FU=
+	t=1750175533; cv=none; b=gRN71HxbFdnbvcldmDUfMQ54iygzal9rIjs9oeT+QDszCprqsmSO7S75bgojWAdsqIxr6Vf72BrNJfwrKOFaNz6SnaHWlAFXMCZ0E9hPZuTUsOiSR++t9FqB7zK+8CUp+1CCLQCCwqPcZ9AovPuHAb3NBr3Lggq+aYhxpFgylZg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750175509; c=relaxed/simple;
-	bh=GzG7faJJyGYXkQcBSSqHEJMogeEq7KfDH2icuFxnk6Q=;
+	s=arc-20240116; t=1750175533; c=relaxed/simple;
+	bh=p+6YxpTf4zhQmU4Yr0UhCp5kpH42R/KPXfUnNzfdKpQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=F8eHKvDl2768I/2ZQCUo7CCZ4w0ePYKRR4/hBmLU7PC5LbikBQ5ESR9ac61WVMHllP3+5g061qNI6u+PB1QO2m5Knlap4X8llpOGMQ/wGBGPXOkl/NOs3B0/NJ0bUuLKfkZ5Ff4Hd1T3Er8SBVGr4hIB4hGpvprYAXgSO+OVSFY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Aus9i0tX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C860C4CEE3;
-	Tue, 17 Jun 2025 15:51:48 +0000 (UTC)
+	 MIME-Version; b=YfOJsBOueakMLSH4IR697iQ8jVbs/8jljlwXtCuOkfDB3C4JMUSOpYVEP/d/XDase+VBy8QOiA7un7q9d0F1vWbMPAmyszMVeiTGcAzZbtcKLjAa2mpkxwfTBJfgaWBvCCjDjRxMG/EIqr1DnhOOFVLcFnNOIy6ZNu6oMyGouq4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M3kV91wu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F9B2C4CEE7;
+	Tue, 17 Jun 2025 15:52:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750175508;
-	bh=GzG7faJJyGYXkQcBSSqHEJMogeEq7KfDH2icuFxnk6Q=;
+	s=korg; t=1750175533;
+	bh=p+6YxpTf4zhQmU4Yr0UhCp5kpH42R/KPXfUnNzfdKpQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Aus9i0tXc39wh5N4qq2nLtQOWNF2/iilz3WvDx6dUyhoeT0S4QpN/w12Kasywher8
-	 nv9U3tcjKNelpXtrLbEw0V4Sbs4FWoWv5qX3Zi/4xW6jKrfea3t3vE9pWibnT6ScJP
-	 elEnLmFdat7T0ozFkDWb5UEJ13Fr1viToMCLG0Yo=
+	b=M3kV91wufinLgnwBp5x50uJAXJJpDYLkILylL5kUzWEvocfCkdKxY/XU1WN8ReI42
+	 KI7poAY17uziacecg4aMMmNhL1aosVPgFuGYCUO4PvnXkbsOYvfgEETsPAIjlodWcO
+	 oi3WPO3JpfMxDdLGgJESFJ35OmRJGzXMto9KThBo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Maharaja Kennadyrajan <maharaja.kennadyrajan@oss.qualcomm.com>,
-	Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>,
-	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
+	Yihang Li <liyihang9@huawei.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 133/512] wifi: ath12k: fix node corruption in ar->arvifs list
-Date: Tue, 17 Jun 2025 17:21:39 +0200
-Message-ID: <20250617152424.984903055@linuxfoundation.org>
+Subject: [PATCH 6.12 135/512] scsi: hisi_sas: Call I_T_nexus after soft reset for SATA disk
+Date: Tue, 17 Jun 2025 17:21:41 +0200
+Message-ID: <20250617152425.068413830@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
 References: <20250617152419.512865572@linuxfoundation.org>
@@ -67,76 +66,76 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Maharaja Kennadyrajan <maharaja.kennadyrajan@oss.qualcomm.com>
+From: Yihang Li <liyihang9@huawei.com>
 
-[ Upstream commit 823435bd23108d6f8be89ea2d025c0e2e3769c51 ]
+[ Upstream commit e4d953ca557e02edd3aed7390043e1b8ad1c9723 ]
 
-In current WLAN recovery code flow, ath12k_core_halt() only reinitializes
-the "arvifs" list head. This will cause the list node immediately following
-the list head to become an invalid list node. Because the prev of that node
-still points to the list head "arvifs", but the next of the list head
-"arvifs" no longer points to that list node.
+In commit 21c7e972475e ("scsi: hisi_sas: Disable SATA disk phy for severe
+I_T nexus reset failure"), if the softreset fails upon certain
+conditions, the PHY connected to the disk is disabled directly. Manual
+recovery is required, which is inconvenient for users in actual use.
 
-When a WLAN recovery occurs during the execution of a vif removal, and it
-happens before the spin_lock_bh(&ar->data_lock) in
-ath12k_mac_vdev_delete(), list_del() will detect the previously mentioned
-situation, thereby triggering a kernel panic.
+In addition, SATA disks do not support simultaneous connection of multiple
+hosts. Therefore, when multiple controllers are connected to a SATA disk
+at the same time, the controller which is connected later failed to issue
+an ATA softreset to the SATA disk. As a result, the PHY associated with
+the disk is disabled and cannot be automatically recovered.
 
-The fix is to remove and reinitialize all vif list nodes from the list head
-"arvifs" during WLAN halt. The reinitialization is to make the list nodes
-valid, ensuring that the list_del() in ath12k_mac_vdev_delete() can execute
-normally.
+Now that, we will not focus on the execution result of softreset. No
+matter whether the execution is successful or not, we will directly carry
+out I_T_nexus_reset.
 
-Call trace:
-__list_del_entry_valid_or_report+0xd4/0x100 (P)
-ath12k_mac_remove_link_interface.isra.0+0xf8/0x2e4 [ath12k]
-ath12k_scan_vdev_clean_work+0x40/0x164 [ath12k]
-cfg80211_wiphy_work+0xfc/0x100
-process_one_work+0x164/0x2d0
-worker_thread+0x254/0x380
-kthread+0xfc/0x100
-ret_from_fork+0x10/0x20
-
-The change is mostly copied from the ath11k patch:
-https://lore.kernel.org/all/20250320053145.3445187-1-quic_stonez@quicinc.com/
-
-Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.4.1-00199-QCAHKSWPL_SILICONZ-1
-
-Fixes: d889913205cf ("wifi: ath12k: driver for Qualcomm Wi-Fi 7 devices")
-Signed-off-by: Maharaja Kennadyrajan <maharaja.kennadyrajan@oss.qualcomm.com>
-Reviewed-by: Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>
-Link: https://patch.msgid.link/20250416021724.2162519-1-maharaja.kennadyrajan@oss.qualcomm.com
-Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+Fixes: 21c7e972475e ("scsi: hisi_sas: Disable SATA disk phy for severe I_T nexus reset failure")
+Signed-off-by: Yihang Li <liyihang9@huawei.com>
+Link: https://lore.kernel.org/r/20250414080845.1220997-4-liyihang9@huawei.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath12k/core.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ drivers/scsi/hisi_sas/hisi_sas_main.c | 29 +++++----------------------
+ 1 file changed, 5 insertions(+), 24 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath12k/core.c b/drivers/net/wireless/ath/ath12k/core.c
-index 8bb8ee98188bf..c3c76e2680629 100644
---- a/drivers/net/wireless/ath/ath12k/core.c
-+++ b/drivers/net/wireless/ath/ath12k/core.c
-@@ -1004,6 +1004,7 @@ static void ath12k_rfkill_work(struct work_struct *work)
+diff --git a/drivers/scsi/hisi_sas/hisi_sas_main.c b/drivers/scsi/hisi_sas/hisi_sas_main.c
+index e98e6b2b9f570..d9500b7306905 100644
+--- a/drivers/scsi/hisi_sas/hisi_sas_main.c
++++ b/drivers/scsi/hisi_sas/hisi_sas_main.c
+@@ -1850,33 +1850,14 @@ static int hisi_sas_I_T_nexus_reset(struct domain_device *device)
+ 	}
+ 	hisi_sas_dereg_device(hisi_hba, device);
  
- void ath12k_core_halt(struct ath12k *ar)
- {
-+	struct list_head *pos, *n;
- 	struct ath12k_base *ab = ar->ab;
+-	rc = hisi_sas_debug_I_T_nexus_reset(device);
+-	if (rc == TMF_RESP_FUNC_COMPLETE && dev_is_sata(device)) {
+-		struct sas_phy *local_phy;
+-
++	if (dev_is_sata(device)) {
+ 		rc = hisi_sas_softreset_ata_disk(device);
+-		switch (rc) {
+-		case -ECOMM:
+-			rc = -ENODEV;
+-			break;
+-		case TMF_RESP_FUNC_FAILED:
+-		case -EMSGSIZE:
+-		case -EIO:
+-			local_phy = sas_get_local_phy(device);
+-			rc = sas_phy_enable(local_phy, 0);
+-			if (!rc) {
+-				local_phy->enabled = 0;
+-				dev_err(dev, "Disabled local phy of ATA disk %016llx due to softreset fail (%d)\n",
+-					SAS_ADDR(device->sas_addr), rc);
+-				rc = -ENODEV;
+-			}
+-			sas_put_local_phy(local_phy);
+-			break;
+-		default:
+-			break;
+-		}
++		if (rc == TMF_RESP_FUNC_FAILED)
++			dev_err(dev, "ata disk %016llx reset (%d)\n",
++				SAS_ADDR(device->sas_addr), rc);
+ 	}
  
- 	lockdep_assert_held(&ar->conf_mutex);
-@@ -1019,7 +1020,12 @@ void ath12k_core_halt(struct ath12k *ar)
- 
- 	rcu_assign_pointer(ab->pdevs_active[ar->pdev_idx], NULL);
- 	synchronize_rcu();
--	INIT_LIST_HEAD(&ar->arvifs);
-+
-+	spin_lock_bh(&ar->data_lock);
-+	list_for_each_safe(pos, n, &ar->arvifs)
-+		list_del_init(pos);
-+	spin_unlock_bh(&ar->data_lock);
-+
- 	idr_init(&ar->txmgmt_idr);
- }
++	rc = hisi_sas_debug_I_T_nexus_reset(device);
+ 	if ((rc == TMF_RESP_FUNC_COMPLETE) || (rc == -ENODEV))
+ 		hisi_sas_release_task(hisi_hba, device);
  
 -- 
 2.39.5
