@@ -1,237 +1,139 @@
-Return-Path: <stable+bounces-152837-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-152838-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 63525ADCB58
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 14:25:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6B0F3ADCBC4
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 14:45:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 05677161AAD
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 12:24:54 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1C527175D09
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 12:45:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9961A2E4270;
-	Tue, 17 Jun 2025 12:24:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C0D22DF3D8;
+	Tue, 17 Jun 2025 12:45:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PoqJMW9k"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BNSpwbPh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5167D2DBF7E;
-	Tue, 17 Jun 2025 12:23:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 346742DBF5F;
+	Tue, 17 Jun 2025 12:45:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750163040; cv=none; b=R3yZiP9zreEGYYd87sFRWVXRzFN0jrmhb278e+55Pj1zVecHgWQ7/VO+Um6m95Bx9UaVzpipIk5ViAoc3cJ9iVNWI6KQT9vCLqhlo8U5o5FA8jANWu+6gz3QhHP9gBhR6vm8c8iIppzTTWfOQ0Uv+xVPGFOUgoW78yfbrkWTboU=
+	t=1750164304; cv=none; b=r1pTI0hbo0NZm0446ZtUOJTxzTsxEgooho0wZ9OLRZlJqYKYAs/Ef4a46ajG6i/qanbnpjzlp8OXuBdpV9FkuYrK/EjEBwMvA0xBhiKLr/UkpLftEPjM20M/Af+NbwcZA3uFTa/4T5WNW37WVHV0t5N0aWsBOEJW/C+p0p7K5v4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750163040; c=relaxed/simple;
-	bh=C8g4YSlQBzpaVLue4Q2qPO1KGmVA6Fr0j6utFVKrhCc=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=ibLmd8NgHUvj0y/Xs+GxcORvYxuSCLb9Cv3T2b8+jMoer2bCJvQ7g8UJ8CFe9/msav/tx1xvqpDolZjT+vlnXUI31G7N4VmRHpiJJRt5Jk8UKxBhIJVXs2/XixWw7meVT+Uu2gHWSrCMuU+e+KJVAslaxH5OD2HfxMYYuXiylvg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PoqJMW9k; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1FC1BC4CEEE;
-	Tue, 17 Jun 2025 12:23:59 +0000 (UTC)
+	s=arc-20240116; t=1750164304; c=relaxed/simple;
+	bh=btFjE1s0qcxUFPoD5rLuwu/zQ5ZzD83LlZlyxmN4oG0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=bqgB6XsiGHPMCop3LUlbznYdBR5E8p95rAMPweav9tm0V+r8SLjVlJorBOZmpMxIhwedIHObSbZSzOr8eUhNyr6qofa3FwVbiKMDGIkHqq6HpmWIPaLMippMvpq92HnmSmt76zuEVKmyuGL2yD0yFgH1GrMnxluOfxIK7GBrzP0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BNSpwbPh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 911E7C4CEE3;
+	Tue, 17 Jun 2025 12:45:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1750163039;
-	bh=C8g4YSlQBzpaVLue4Q2qPO1KGmVA6Fr0j6utFVKrhCc=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PoqJMW9klRsCS8RwKdR15KbtimU/1YD5KxhUNYh1+PEvUJfvDjlCgx9nbGlgn+fFQ
-	 xID62htav2dxQioQqy+7h+qiAZKCiICHFHAiz0pgA8K73jyezJ9N9vJX95VOVKLQPZ
-	 /xi7AiUkFB8CLpllJ3Ba82pgJcam4KhTsLuZZztuQx+WeqGcw79IalfzoCJ6fVrFyz
-	 sS8+oU/WOWBgRCLAEhPI9H+orATC7hiECU/mgd0wBpkUBcoK43xXTGYCE6Q0yfiTov
-	 i+RuP2/kwai4mII21i/gMlmpfKHycFJ0tGi/M1jLVYpsFsLCRRIoNDr3MlMZ8XkenI
-	 UryAOHySDo+Cg==
-From: Sasha Levin <sashal@kernel.org>
-To: patches@lists.linux.dev,
-	stable@vger.kernel.org
-Cc: Sebastian Gottschall <s.gottschall@dd-wrt.com>,
-	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
-	Sasha Levin <sashal@kernel.org>,
-	linux-wireless@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.4 5/5] wil6210: fix support for sparrow chipsets
-Date: Tue, 17 Jun 2025 08:23:50 -0400
-Message-Id: <20250617122351.1970032-5-sashal@kernel.org>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250617122351.1970032-1-sashal@kernel.org>
-References: <20250617122351.1970032-1-sashal@kernel.org>
+	s=k20201202; t=1750164303;
+	bh=btFjE1s0qcxUFPoD5rLuwu/zQ5ZzD83LlZlyxmN4oG0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=BNSpwbPhri4YxN5J3FDj+6H0B4A13+TI+yZ1JEmru9MdBdEc7BZdoc5ZLcKarj3e0
+	 Rw3uPM+jlov1+2pGkcwnx3FQ/04rp3Bpfb1TIps9X/xDaF2U9hiOdND/K0U1iGKZ3p
+	 EgZHjNB7KDm/+AH8w36UHFS+A14cUhjzUThT0Hf2tEBpIVXWEsrlIVaJzwg8YgzBNo
+	 /lJoer/yPDddPuOLE1Gnbx7TB19f3pGRRkTcRnD6AK7Absy8hzdckZgxPzDj+Igy1D
+	 RugplDnA2VJzYn9zCNf3/YTTYISi40nsGptSaLvoFAYqzjmHgUxPGowjAz8IryjpVy
+	 AEM9pLbZ/Xpyg==
+Date: Tue, 17 Jun 2025 14:44:59 +0200
+From: Carlos Maiolino <cem@kernel.org>
+To: Christian Theune <ct@flyingcircus.io>
+Cc: stable@vger.kernel.org, 
+	"linux-xfs@vger.kernel.org" <linux-xfs@vger.kernel.org>, regressions@lists.linux.dev
+Subject: Re: temporary hung tasks on XFS since updating to 6.6.92
+Message-ID: <gsuqdu3l3tdw5pbhfnkigs2mplpzgdhu7d6zok33f4e66ct6yh@gebktvf36kwn>
+References: <umhydsim2pkxhtux5hizyahwd6hy36yct5znt6u6ewo4fojvgy@zn4gkroozwes>
+ <Z9Ih4yZoepxhmmH5Jrd1bCz35l6iPh5g2J61q2NR7loEdQb_aRquKdD1xLaE_5SPMlkBM8zLdVfdPvvKuNBrGQ==@protonmail.internalid>
+ <3E218629-EA2C-4FD1-B2DB-AA6E40D422EE@flyingcircus.io>
+ <g7wcgkxdlbshztwihayxma7xkxe23nic7zcreb3eyg3yeld5cu@yk7l2e4ibajk>
+ <M0QJfqa7-6M2vnPhyeyy36xCOmCEL83O7lj-ky1DXTqQXa677-oE8C_nAsBCBglBp_6k7vLeN4a2nJ6R3JuQxw==@protonmail.internalid>
+ <01751810-C689-4270-8797-FC0D632B6AB6@flyingcircus.io>
+ <hoszywa5az7z4yxubonbhs2p2ysnut3s7jjnkd7ckz4sgdyqw2@ifuor5qnl7yu>
+ <B380AC75-6B14-4EC9-A398-61A2D33033A7@flyingcircus.io>
+ <SUCM2QMQ3TSn-abqhAXLpdEfSqdyFNhrwY0lcyPJNfPdl-2TGGBPkiBEueiV75Jl2UfC30lfhLMCSq7ND7st6Q==@protonmail.internalid>
+ <0FAE679D-6EE7-4F71-9451-94D0825D1BF8@flyingcircus.io>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-X-stable-base: Linux 5.4.294
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <0FAE679D-6EE7-4F71-9451-94D0825D1BF8@flyingcircus.io>
 
-From: Sebastian Gottschall <s.gottschall@dd-wrt.com>
+On Tue, Jun 17, 2025 at 01:54:43PM +0200, Christian Theune wrote:
+> 
+> 
+> > On 17. Jun 2025, at 07:44, Christian Theune <ct@flyingcircus.io> wrote:
+> >
+> >
+> >
+> >> On 16. Jun 2025, at 14:15, Carlos Maiolino <cem@kernel.org> wrote:
+> >>
+> >> On Mon, Jun 16, 2025 at 12:09:21PM +0200, Christian Theune wrote:
+> >>
+> >>>
+> >>> # xfs_info /tmp/
+> >>> meta-data=/dev/vdb1              isize=512    agcount=8, agsize=229376 blks
+> >>>        =                       sectsz=512   attr=2, projid32bit=1
+> >>>        =                       crc=1        finobt=1, sparse=1, rmapbt=0
+> >>>        =                       reflink=0    bigtime=0 inobtcount=0 nrext64=0
+> >>>        =                       exchange=0
+> >>> data     =                       bsize=4096   blocks=1833979, imaxpct=25
+> >>>        =                       sunit=1024   swidth=1024 blks
+> >>> naming   =version 2              bsize=4096   ascii-ci=0, ftype=1, parent=0
+> >>> log      =internal log           bsize=4096   blocks=2560, version=2
+> >>>        =                       sectsz=512   sunit=8 blks, lazy-count=1
+> >>> realtime =none                   extsz=4096   blocks=0, rtextents=0
+> >>
+> >> This is worrisome. Your journal size is 10MiB, this can easily keep stalling IO
+> >> waiting for log space to be freed, depending on the nature of the machine this
+> >> can be easily triggered. I'm curious though how you made this FS, because 2560
+> >> is below the minimal log size that xfsprogs allows since (/me goes look
+> >> into git log) 2022, xfsprogs 5.15.
+> >>
+> >> FWIW, one of the reasons the minimum journal log size has been increased is the
+> >> latency/stalls that happens when waiting for free log space, which is exactly
+> >> the symptom you've been seeing.
+> >>
+> >> I'd suggest you to check the xfsprogs commit below if you want more details,
+> >> but if this is one of the filesystems where you see the stalls, this might very
+> >> well be the cause:
+> >
+> > Interesting catch! I’ll double check this against our fleet and the affected machines and will dive into the traffic patterns of the specific underlying devices.
+> >
+> > This filesystem is used for /tmp and is getting created fresh after a “cold boot” from our hypervisor. It could be that a number of VMs have only seen warm reboots for a couple of years but get kernel upgrades with warm reboots quite regularly. We’re in the process of changing the /tmp filesystem creation to happen fresh during initrd so that the VM internal xfsprogs will more closely match the guest kernel.
+> 
+> I’ve checked the log size. A number of machines with very long uptimes have this outdated 10 MiB size. Many machines with less uptime have larger sizes (multiple hundred megabytes). Checking our codebase we let xfsprogs do their thing and don’t fiddle with the defaults.
+> 
+> The log sizes of the affected machines weren’t all set to 10 MiB - even machines with larger sizes were affected.
 
-[ Upstream commit 593963660919a97a4546acfd706dac93625724f5 ]
+Bear in mind that this was the worst one you sent me, just because the other FS
+had a larger log, it doesn't mean it's enough or it won't face the same problems
+too, IIRC, the other configuration FS you sent, had a 64MiB log. xfsprogs has a
+default log size based on the FS size, so it won't take too much disk space for
+just the log, but the default may not be enough.
+This of course is speculation from my part giving the logs you provided, but
+might be worth to test your VMs with larger log sizes.
 
-the wil6210 driver irq handling code is unconditionally writing
-edma irq registers which are supposed to be only used on Talyn chipsets.
-This however leade to a chipset hang on the older sparrow chipset
-generation and firmware will not even boot.
-Fix that by simply checking for edma support before handling these
-registers.
-
-Tested on Netgear R9000
-
-Signed-off-by: Sebastian Gottschall <s.gottschall@dd-wrt.com>
-Link: https://patch.msgid.link/20250304012131.25970-2-s.gottschall@dd-wrt.com
-Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
-
-**YES**
-
-This commit should be backported to stable kernel trees. Here's the
-extensive explanation:
-
-## Analysis of the Commit
-
-### 1. **The Bug Being Fixed**
-The commit fixes a critical hardware compatibility issue where the
-wil6210 driver unconditionally writes to EDMA (Enhanced DMA) interrupt
-registers that only exist on Talyn chipsets. When running on older
-Sparrow chipsets (which don't have these registers), this causes:
-- Chipset hang
-- Firmware boot failure
-- Complete device malfunction
-
-### 2. **Code Changes Analysis**
-
-The commit adds conditional checks for `wil->use_enhanced_dma_hw` before
-accessing EDMA-specific registers:
-
-```c
-// In wil_mask_irq():
-- wil6210_mask_irq_tx_edma(wil);
-+       if (wil->use_enhanced_dma_hw)
-+               wil6210_mask_irq_tx_edma(wil);
-
-// In wil_unmask_irq():
-- wil_w(wil, RGF_DMA_EP_RX_ICR + offsetof(struct RGF_ICR, ICC),
-- WIL_ICR_ICC_VALUE);
-+       if (wil->use_enhanced_dma_hw) {
-+               wil_w(wil, RGF_DMA_EP_RX_ICR + offsetof(struct RGF_ICR,
-ICC),
-+                     WIL_ICR_ICC_VALUE);
-+       }
-
-// In wil6210_clear_irq():
-- wil_clear32(wil->csr + HOSTADDR(RGF_INT_GEN_RX_ICR) +
-- offsetof(struct RGF_ICR, ICR));
-+       if (wil->use_enhanced_dma_hw) {
-+               wil_clear32(wil->csr + HOSTADDR(RGF_INT_GEN_RX_ICR) +
-+                           offsetof(struct RGF_ICR, ICR));
-+       }
-```
-
-### 3. **Why This Qualifies for Stable Backport**
-
-This commit meets all the criteria for stable tree backporting:
-
-**a) Fixes a real bug affecting users:**
-- Users with Sparrow chipsets (like Netgear R9000) experience complete
-  device failure
-- The bug prevents the device from functioning at all (firmware won't
-  boot)
-- This is a regression that breaks existing hardware
-
-**b) Small and contained fix:**
-- The fix is minimal - just adding conditional checks
-- Changes are limited to interrupt handling functions
-- No architectural changes or new features added
-
-**c) Low risk of regression:**
-- The fix follows existing patterns in the code (other functions already
-  check `use_enhanced_dma_hw`)
-- Only affects behavior on non-EDMA hardware (Sparrow)
-- EDMA hardware behavior remains unchanged
-
-**d) Clear cause and effect:**
-- The problem is well-understood: accessing non-existent registers
-- The solution is straightforward: check hardware capability before
-  accessing EDMA registers
-- The fix has been tested on affected hardware (Netgear R9000)
-
-### 4. **Comparison with Similar Commits**
-
-Looking at the provided similar commits:
-- **Similar Commit #1** (Backported: YES) fixed a Talyn reset flow issue
-  - similar hardware-specific bug fix
-- This commit is even more critical as it fixes a complete device
-  failure rather than just a reset issue
-
-### 5. **Critical Nature of the Fix**
-
-This is not just a minor bug - it's a complete breakage of Sparrow
-hardware support. Without this fix:
-- Sparrow chipsets cannot function at all
-- Users with devices like Netgear R9000 have non-functional WiFi
-- This represents a regression in hardware support
-
-The fix is essential for maintaining hardware compatibility across
-different generations of the wil6210 chipset family.
-
- drivers/net/wireless/ath/wil6210/interrupt.c | 26 ++++++++++++--------
- 1 file changed, 16 insertions(+), 10 deletions(-)
-
-diff --git a/drivers/net/wireless/ath/wil6210/interrupt.c b/drivers/net/wireless/ath/wil6210/interrupt.c
-index b00a13d6d5307..35c5fda9f8105 100644
---- a/drivers/net/wireless/ath/wil6210/interrupt.c
-+++ b/drivers/net/wireless/ath/wil6210/interrupt.c
-@@ -190,9 +190,11 @@ void wil_mask_irq(struct wil6210_priv *wil)
- 	wil_dbg_irq(wil, "mask_irq\n");
- 
- 	wil6210_mask_irq_tx(wil);
--	wil6210_mask_irq_tx_edma(wil);
-+	if (wil->use_enhanced_dma_hw)
-+		wil6210_mask_irq_tx_edma(wil);
- 	wil6210_mask_irq_rx(wil);
--	wil6210_mask_irq_rx_edma(wil);
-+	if (wil->use_enhanced_dma_hw)
-+		wil6210_mask_irq_rx_edma(wil);
- 	wil6210_mask_irq_misc(wil, true);
- 	wil6210_mask_irq_pseudo(wil);
- }
-@@ -201,10 +203,12 @@ void wil_unmask_irq(struct wil6210_priv *wil)
- {
- 	wil_dbg_irq(wil, "unmask_irq\n");
- 
--	wil_w(wil, RGF_DMA_EP_RX_ICR + offsetof(struct RGF_ICR, ICC),
--	      WIL_ICR_ICC_VALUE);
--	wil_w(wil, RGF_DMA_EP_TX_ICR + offsetof(struct RGF_ICR, ICC),
--	      WIL_ICR_ICC_VALUE);
-+	if (wil->use_enhanced_dma_hw) {
-+		wil_w(wil, RGF_DMA_EP_RX_ICR + offsetof(struct RGF_ICR, ICC),
-+		      WIL_ICR_ICC_VALUE);
-+		wil_w(wil, RGF_DMA_EP_TX_ICR + offsetof(struct RGF_ICR, ICC),
-+		      WIL_ICR_ICC_VALUE);
-+	}
- 	wil_w(wil, RGF_DMA_EP_MISC_ICR + offsetof(struct RGF_ICR, ICC),
- 	      WIL_ICR_ICC_MISC_VALUE);
- 	wil_w(wil, RGF_INT_GEN_TX_ICR + offsetof(struct RGF_ICR, ICC),
-@@ -858,10 +862,12 @@ void wil6210_clear_irq(struct wil6210_priv *wil)
- 		    offsetof(struct RGF_ICR, ICR));
- 	wil_clear32(wil->csr + HOSTADDR(RGF_DMA_EP_TX_ICR) +
- 		    offsetof(struct RGF_ICR, ICR));
--	wil_clear32(wil->csr + HOSTADDR(RGF_INT_GEN_RX_ICR) +
--		    offsetof(struct RGF_ICR, ICR));
--	wil_clear32(wil->csr + HOSTADDR(RGF_INT_GEN_TX_ICR) +
--		    offsetof(struct RGF_ICR, ICR));
-+	if (wil->use_enhanced_dma_hw) {
-+		wil_clear32(wil->csr + HOSTADDR(RGF_INT_GEN_RX_ICR) +
-+			    offsetof(struct RGF_ICR, ICR));
-+		wil_clear32(wil->csr + HOSTADDR(RGF_INT_GEN_TX_ICR) +
-+			    offsetof(struct RGF_ICR, ICR));
-+	}
- 	wil_clear32(wil->csr + HOSTADDR(RGF_DMA_EP_MISC_ICR) +
- 		    offsetof(struct RGF_ICR, ICR));
- 	wmb(); /* make sure write completed */
--- 
-2.39.5
-
+> 
+> I’ll follow up - as promised - with further analysis whether IO starvation from the underlying storage may have occured.
+> 
+> Christian
+> 
+> --
+> Christian Theune · ct@flyingcircus.io · +49 345 219401 0
+> Flying Circus Internet Operations GmbH · https://flyingcircus.io
+> Leipziger Str. 70/71 · 06108 Halle (Saale) · Deutschland
+> HR Stendal HRB 21169 · Geschäftsführer: Christian Theune, Christian Zagrodnick
+> 
+> 
 
