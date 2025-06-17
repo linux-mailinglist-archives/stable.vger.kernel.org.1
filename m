@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-154197-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153839-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id C5A6AADD771
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:44:48 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A67A0ADD73F
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:42:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 86C327A9657
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:43:26 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 98B1D194472F
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:26:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A578B2EE5F7;
-	Tue, 17 Jun 2025 16:40:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 710302F94AC;
+	Tue, 17 Jun 2025 16:21:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dQs95GPe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MYGDO29z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60A062EE29E;
-	Tue, 17 Jun 2025 16:40:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BDC32F94A8;
+	Tue, 17 Jun 2025 16:21:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750178416; cv=none; b=kC27Yz/bPiX13HQ+WJ4n8Fb1rlt7Wy5vBMzH7NMiTexOp2JhLMy8lMFc9F6YcP1Vr+bghQ77SaeGus37F9Bsoop+9IFyFQIMdDce1qOt44r5XR7gTvZSU0hQb8fPJiRrFmGvNEak5RpbrC5/ay92itRVmV1jd9kvAcLf3ucnfKY=
+	t=1750177264; cv=none; b=OxQmjN021cnT9wdTkRHyhyaca5iXhAw3zkjpeoECW7z8TW8AsLXjOd3Tf3p6JoTTeQDgUjJomycRfKYQ6Y0yJxqooKLBeBQBaK79okz6t8zDmhqsCPe1FfeakDT3DTbqBz6dt+MazFDyV0JLPxi8iLyUo56UxSlwib4JL2ndD1Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750178416; c=relaxed/simple;
-	bh=nu5dz44qXDkO90KavZEsA2E5uxSu3s1pt9779iJRMYw=;
+	s=arc-20240116; t=1750177264; c=relaxed/simple;
+	bh=y4M6hRRqwPnEnNx1Cr3oF7wNAB/WUaD0Gj+5QZq87bg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Rw1fsxL2iMX0BpMUVWm3P7fnghVY8CIaY0AA2fLpncvwwDP+bNMI/isXVwB+R/IF3fM9htkER2vUFBxmRs+5lz3ZasUKF2O/t7lzhhmzrneGCH0qIbJA8y/QGOSspOExKJdGNxAnwz/iW3jdg8J783DCEo1pueg3jn6vrV7Zrpo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dQs95GPe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C425FC4CEE3;
-	Tue, 17 Jun 2025 16:40:15 +0000 (UTC)
+	 MIME-Version; b=EjnT2bQ2Z/Ru81XIdPF8AO69zBjvIXNjNKl6VbRgkb2FTA9qz8t922Xijl6GLOvhDgKj7KleF8g4E0LLS6M1Zbtq9fl/KySFa+ECKCisA9e2w/Fm9LyWJ7h/ntWh3f0cgN5N0qqQ+tet/ICcRiYEGDmWP4e7X58kjn0rVDnaZ04=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MYGDO29z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8B81C4CEE3;
+	Tue, 17 Jun 2025 16:21:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750178416;
-	bh=nu5dz44qXDkO90KavZEsA2E5uxSu3s1pt9779iJRMYw=;
+	s=korg; t=1750177264;
+	bh=y4M6hRRqwPnEnNx1Cr3oF7wNAB/WUaD0Gj+5QZq87bg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dQs95GPePNOXXX4zL6N79xqMSn21srmtfZsIsJoQYjOwU3oy7oB2wIijEsu0XOD45
-	 PxDE6509lKHow0PNOxS2qOcmzJEI2Z+7fBWvRmjqZX3PGKkz37/pwf6OYuWmIQns7s
-	 YZDOwvDQqR9pavsxuc5KU5NEtHvnRjZ4eoj53Fio=
+	b=MYGDO29z5QcCWzZYglFTpiaYz9NIeu5V3y1oGzw0mpQPDU9laD0gq76LcbtAxA+W2
+	 UP8nZ6J2a93ZnsYKPwHxyQMkRvUJgILBz/zHYgQZMPY/g5B3ZBKgSNrF7Azmp0LFG8
+	 hGKYSl7QJKcBQHxcUcDR73nvVQA9GZXwrRhQ9i9U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Amit Sunil Dhamne <amitsd@google.com>,
-	Badhri Jagan Sridharan <badhri@google.com>,
-	Kyle Tso <kyletso@google.com>,
 	stable <stable@kernel.org>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Subject: [PATCH 6.12 496/512] usb: typec: tcpm/tcpci_maxim: Fix bounds check in process_rx()
+	Pawel Laszczak <pawell@cadence.com>,
+	Peter Chen <peter.chen@kernel.org>
+Subject: [PATCH 6.6 347/356] usb: cdnsp: Fix issue with detecting command completion event
 Date: Tue, 17 Jun 2025 17:27:42 +0200
-Message-ID: <20250617152439.721960127@linuxfoundation.org>
+Message-ID: <20250617152352.105287810@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
-References: <20250617152419.512865572@linuxfoundation.org>
+In-Reply-To: <20250617152338.212798615@linuxfoundation.org>
+References: <20250617152338.212798615@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,49 +62,80 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Amit Sunil Dhamne <amitsd@google.com>
+From: Pawel Laszczak <pawell@cadence.com>
 
-commit 0736299d090f5c6a1032678705c4bc0a9511a3db upstream.
+commit f4ecdc352646f7d23f348e5c544dbe3212c94fc8 upstream.
 
-Register read of TCPC_RX_BYTE_CNT returns the total size consisting of:
+In some cases, there is a small-time gap in which CMD_RING_BUSY can be
+cleared by controller but adding command completion event to event ring
+will be delayed. As the result driver will return error code.
 
-  PD message (pending read) size + 1 Byte for Frame Type (SOP*)
+This behavior has been detected on usbtest driver (test 9) with
+configuration including ep1in/ep1out bulk and ep2in/ep2out isoc
+endpoint.
 
-This is validated against the max PD message (`struct pd_message`) size
-without accounting for the extra byte for the frame type. Note that the
-struct pd_message does not contain a field for the frame_type. This
-results in false negatives when the "PD message (pending read)" is equal
-to the max PD message size.
+Probably this gap occurred because controller was busy with adding some
+other events to event ring.
 
-Fixes: 6f413b559f86 ("usb: typec: tcpci_maxim: Chip level TCPC driver")
-Signed-off-by: Amit Sunil Dhamne <amitsd@google.com>
-Signed-off-by: Badhri Jagan Sridharan <badhri@google.com>
-Reviewed-by: Kyle Tso <kyletso@google.com>
+The CMD_RING_BUSY is cleared to '0' when the Command Descriptor has been
+executed and not when command completion event has been added to event
+ring.
+
+To fix this issue for this test the small delay is sufficient less than
+10us) but to make sure the problem doesn't happen again in the future
+the patch introduces 10 retries to check with delay about 20us before
+returning error code.
+
+Fixes: 3d82904559f4 ("usb: cdnsp: cdns3 Add main part of Cadence USBSSP DRD Driver")
 Cc: stable <stable@kernel.org>
-Link: https://lore.kernel.org/stable/20250502-b4-new-fix-pd-rx-count-v1-1-e5711ed09b3d%40google.com
-Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Link: https://lore.kernel.org/r/20250502-b4-new-fix-pd-rx-count-v1-1-e5711ed09b3d@google.com
+Signed-off-by: Pawel Laszczak <pawell@cadence.com>
+Acked-by: Peter Chen <peter.chen@kernel.org>
+Link: https://lore.kernel.org/r/PH7PR07MB9538AA45362ACCF1B94EE9B7DD96A@PH7PR07MB9538.namprd07.prod.outlook.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/typec/tcpm/tcpci_maxim_core.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/usb/cdns3/cdnsp-gadget.c |   18 +++++++++++++++++-
+ 1 file changed, 17 insertions(+), 1 deletion(-)
 
---- a/drivers/usb/typec/tcpm/tcpci_maxim_core.c
-+++ b/drivers/usb/typec/tcpm/tcpci_maxim_core.c
-@@ -166,7 +166,8 @@ static void process_rx(struct max_tcpci_
- 		return;
- 	}
+--- a/drivers/usb/cdns3/cdnsp-gadget.c
++++ b/drivers/usb/cdns3/cdnsp-gadget.c
+@@ -546,6 +546,7 @@ int cdnsp_wait_for_cmd_compl(struct cdns
+ 	dma_addr_t cmd_deq_dma;
+ 	union cdnsp_trb *event;
+ 	u32 cycle_state;
++	u32 retry = 10;
+ 	int ret, val;
+ 	u64 cmd_dma;
+ 	u32  flags;
+@@ -577,8 +578,23 @@ int cdnsp_wait_for_cmd_compl(struct cdns
+ 		flags = le32_to_cpu(event->event_cmd.flags);
  
--	if (count > sizeof(struct pd_message) || count + 1 > TCPC_RECEIVE_BUFFER_LEN) {
-+	if (count > sizeof(struct pd_message) + 1 ||
-+	    count + 1 > TCPC_RECEIVE_BUFFER_LEN) {
- 		dev_err(chip->dev, "Invalid TCPC_RX_BYTE_CNT %d\n", count);
- 		return;
- 	}
+ 		/* Check the owner of the TRB. */
+-		if ((flags & TRB_CYCLE) != cycle_state)
++		if ((flags & TRB_CYCLE) != cycle_state) {
++			/*
++			 * Give some extra time to get chance controller
++			 * to finish command before returning error code.
++			 * Checking CMD_RING_BUSY is not sufficient because
++			 * this bit is cleared to '0' when the Command
++			 * Descriptor has been executed by controller
++			 * and not when command completion event has
++			 * be added to event ring.
++			 */
++			if (retry--) {
++				udelay(20);
++				continue;
++			}
++
+ 			return -EINVAL;
++		}
+ 
+ 		cmd_dma = le64_to_cpu(event->event_cmd.cmd_trb);
+ 
 
 
 
