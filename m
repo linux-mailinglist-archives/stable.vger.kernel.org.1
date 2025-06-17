@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-153031-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153034-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id BD344ADD1FD
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 17:37:28 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id C2D46ADD229
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 17:39:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1FDE51897092
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 15:37:44 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 217B77AD308
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 15:36:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA6502E9753;
-	Tue, 17 Jun 2025 15:37:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB9522ECD1B;
+	Tue, 17 Jun 2025 15:37:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xsAeLOmu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="geHNiaKq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66E8F18A6AE;
-	Tue, 17 Jun 2025 15:37:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78BEC2E9730;
+	Tue, 17 Jun 2025 15:37:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750174643; cv=none; b=qjoItrgCPig0iJWg+LwsGflQwMPuYrdtmAH2cpaOy4h7+KvMJ0XZ1h/rcz8Wp9A7cb/t4KAQNZYJ72DifA5g601msqP/A4F6VHE6xo75J2TPebECmaycGWoaWHy9VNuLDxS7YoO3phdDK48NFHJJGVEp5YyfdSbgl26jp+KZINU=
+	t=1750174653; cv=none; b=LolqxuStF9JAF4VY1IqwWUnKBsLjGDDjWiR5Y7syyeyik0MuWyojyEZ5QSkEu7x018RXj1+YEoMQaW9WecRSATWKOlNMRsRG1AZRh4FLUh+6ZtV6dP9zaTXdn5N0EniTRplW6XuQ4L8+jjd44kTU3UeiOz7rkwuYgqAm7yJIS/c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750174643; c=relaxed/simple;
-	bh=R5oMeOfm1PnkyQ2xSQUY4k2Bx0L9ON1qUcHPBsD+lWY=;
+	s=arc-20240116; t=1750174653; c=relaxed/simple;
+	bh=LAD5+HNQXSpr2dYl8Kt6xR25lEG4b59VaQY3P51zu7w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HkIxVLvdxa/0cXckQ44Yf12tDxLZnn6HmXr7YGfN3X9n/vyrZQGHhLsp5HeW6kRT+xxkGK+enDKyetwplgaztcEUk40Zlr1uSW3iI5tXkyUn0TDwZfBlJjiYKEXOeAZr4bOzet2VwCdio/y0tIHthpRPrWEYw74PR488tL709tA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xsAeLOmu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8F51C4CEE3;
-	Tue, 17 Jun 2025 15:37:22 +0000 (UTC)
+	 MIME-Version; b=p9jaKlhK6VTX9QYVyAvbdLgeob6YcFC5ZPAFROQdonL3wmmt3BDxMlMe2fStqJ3wff5ei8GBZI6uUW6Hocsj1n5/Y7KQagKuTEOYD7Oi8kHACGwCDJKQrX1fcggH4U64g+ZLCFoOa0d376YiExiWrDTIrl+wDKtZrIXQbAm7Yks=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=geHNiaKq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F55FC4CEE3;
+	Tue, 17 Jun 2025 15:37:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750174643;
-	bh=R5oMeOfm1PnkyQ2xSQUY4k2Bx0L9ON1qUcHPBsD+lWY=;
+	s=korg; t=1750174653;
+	bh=LAD5+HNQXSpr2dYl8Kt6xR25lEG4b59VaQY3P51zu7w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xsAeLOmuA2AxLLMvn10/ixd/q+ICghU8Swv1tnaipO342cZLLiRQ6SS3cVshxWaPi
-	 xhylhMUAHL8jggvPHoRvKZkGdkDhLOwZ8sMSgZ+FVDtXVWbRwCSvkyNu9O6no0PrWC
-	 +a8++mHI9gtxqg3oZqhunlPQvcbIsms6x6J1BZnY=
+	b=geHNiaKqZZtniNY1xHwRHLM5meugz7SWAJR/0kTNeJ3CqqvYywL/3R+l0FcH3Q2HY
+	 WmH3zYFcxiyd1CPSuuPBYxbAJCf76H14eVrWQekV3oDHJli7Eyvdy99XYWzV2Hq5mR
+	 L4HDzEOVsMpmVCc8mdUx/u6aol6TxYkhuEEo5AVI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ovidiu Panait <ovidiu.panait.oss@gmail.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
+	Gabriele Monaco <gmonaco@redhat.com>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Valentin Schneider <vschneid@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 004/780] crypto: sun8i-ce-hash - fix error handling in sun8i_ce_hash_run()
-Date: Tue, 17 Jun 2025 17:15:12 +0200
-Message-ID: <20250617152451.676305472@linuxfoundation.org>
+Subject: [PATCH 6.15 005/780] sched: Fix trace_sched_switch(.prev_state)
+Date: Tue, 17 Jun 2025 17:15:13 +0200
+Message-ID: <20250617152451.716777039@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
 References: <20250617152451.485330293@linuxfoundation.org>
@@ -66,129 +67,51 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Ovidiu Panait <ovidiu.panait.oss@gmail.com>
+From: Peter Zijlstra <peterz@infradead.org>
 
-[ Upstream commit ea4dd134ef332bd9e3e734c1ba0a1521f436b678 ]
+[ Upstream commit 8feb053d53194382fcfb68231296fdc220497ea6 ]
 
-Rework error handling in sun8i_ce_hash_run() to unmap the dma buffers in
-case of failure. Currently, the dma unmap functions are not called if the
-function errors out at various points.
+Gabriele noted that in case of signal_pending_state(), the tracepoint
+sees a stale task-state.
 
-Fixes: 56f6d5aee88d1 ("crypto: sun8i-ce - support hash algorithms")
-Signed-off-by: Ovidiu Panait <ovidiu.panait.oss@gmail.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Fixes: fa2c3254d7cf ("sched/tracing: Don't re-read p->state when emitting sched_switch event")
+Reported-by: Gabriele Monaco <gmonaco@redhat.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Cc: Valentin Schneider <vschneid@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../crypto/allwinner/sun8i-ce/sun8i-ce-hash.c | 34 ++++++++++++-------
- 1 file changed, 21 insertions(+), 13 deletions(-)
+ kernel/sched/core.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/crypto/allwinner/sun8i-ce/sun8i-ce-hash.c b/drivers/crypto/allwinner/sun8i-ce/sun8i-ce-hash.c
-index 6072dd9f390b4..3f9d79ea01aaa 100644
---- a/drivers/crypto/allwinner/sun8i-ce/sun8i-ce-hash.c
-+++ b/drivers/crypto/allwinner/sun8i-ce/sun8i-ce-hash.c
-@@ -343,9 +343,8 @@ int sun8i_ce_hash_run(struct crypto_engine *engine, void *breq)
- 	u32 common;
- 	u64 byte_count;
- 	__le32 *bf;
--	void *buf = NULL;
-+	void *buf, *result;
- 	int j, i, todo;
--	void *result = NULL;
- 	u64 bs;
- 	int digestsize;
- 	dma_addr_t addr_res, addr_pad;
-@@ -365,14 +364,14 @@ int sun8i_ce_hash_run(struct crypto_engine *engine, void *breq)
- 	buf = kcalloc(2, bs, GFP_KERNEL | GFP_DMA);
- 	if (!buf) {
- 		err = -ENOMEM;
--		goto theend;
-+		goto err_out;
- 	}
- 	bf = (__le32 *)buf;
+diff --git a/kernel/sched/core.c b/kernel/sched/core.c
+index c81cf642dba05..36b34e6884587 100644
+--- a/kernel/sched/core.c
++++ b/kernel/sched/core.c
+@@ -6571,12 +6571,14 @@ pick_next_task(struct rq *rq, struct task_struct *prev, struct rq_flags *rf)
+  * Otherwise marks the task's __state as RUNNING
+  */
+ static bool try_to_block_task(struct rq *rq, struct task_struct *p,
+-			      unsigned long task_state)
++			      unsigned long *task_state_p)
+ {
++	unsigned long task_state = *task_state_p;
+ 	int flags = DEQUEUE_NOCLOCK;
  
- 	result = kzalloc(digestsize, GFP_KERNEL | GFP_DMA);
- 	if (!result) {
- 		err = -ENOMEM;
--		goto theend;
-+		goto err_free_buf;
+ 	if (signal_pending_state(task_state, p)) {
+ 		WRITE_ONCE(p->__state, TASK_RUNNING);
++		*task_state_p = TASK_RUNNING;
+ 		return false;
  	}
  
- 	flow = rctx->flow;
-@@ -398,7 +397,7 @@ int sun8i_ce_hash_run(struct crypto_engine *engine, void *breq)
- 	if (nr_sgs <= 0 || nr_sgs > MAX_SG) {
- 		dev_err(ce->dev, "Invalid sg number %d\n", nr_sgs);
- 		err = -EINVAL;
--		goto theend;
-+		goto err_free_result;
+@@ -6713,7 +6715,7 @@ static void __sched notrace __schedule(int sched_mode)
+ 			goto picked;
+ 		}
+ 	} else if (!preempt && prev_state) {
+-		try_to_block_task(rq, prev, prev_state);
++		try_to_block_task(rq, prev, &prev_state);
+ 		switch_count = &prev->nvcsw;
  	}
  
- 	len = areq->nbytes;
-@@ -411,7 +410,7 @@ int sun8i_ce_hash_run(struct crypto_engine *engine, void *breq)
- 	if (len > 0) {
- 		dev_err(ce->dev, "remaining len %d\n", len);
- 		err = -EINVAL;
--		goto theend;
-+		goto err_unmap_src;
- 	}
- 	addr_res = dma_map_single(ce->dev, result, digestsize, DMA_FROM_DEVICE);
- 	cet->t_dst[0].addr = desc_addr_val_le32(ce, addr_res);
-@@ -419,7 +418,7 @@ int sun8i_ce_hash_run(struct crypto_engine *engine, void *breq)
- 	if (dma_mapping_error(ce->dev, addr_res)) {
- 		dev_err(ce->dev, "DMA map dest\n");
- 		err = -EINVAL;
--		goto theend;
-+		goto err_unmap_src;
- 	}
- 
- 	byte_count = areq->nbytes;
-@@ -441,7 +440,7 @@ int sun8i_ce_hash_run(struct crypto_engine *engine, void *breq)
- 	}
- 	if (!j) {
- 		err = -EINVAL;
--		goto theend;
-+		goto err_unmap_result;
- 	}
- 
- 	addr_pad = dma_map_single(ce->dev, buf, j * 4, DMA_TO_DEVICE);
-@@ -450,7 +449,7 @@ int sun8i_ce_hash_run(struct crypto_engine *engine, void *breq)
- 	if (dma_mapping_error(ce->dev, addr_pad)) {
- 		dev_err(ce->dev, "DMA error on padding SG\n");
- 		err = -EINVAL;
--		goto theend;
-+		goto err_unmap_result;
- 	}
- 
- 	if (ce->variant->hash_t_dlen_in_bits)
-@@ -463,16 +462,25 @@ int sun8i_ce_hash_run(struct crypto_engine *engine, void *breq)
- 	err = sun8i_ce_run_task(ce, flow, crypto_ahash_alg_name(tfm));
- 
- 	dma_unmap_single(ce->dev, addr_pad, j * 4, DMA_TO_DEVICE);
--	dma_unmap_sg(ce->dev, areq->src, ns, DMA_TO_DEVICE);
-+
-+err_unmap_result:
- 	dma_unmap_single(ce->dev, addr_res, digestsize, DMA_FROM_DEVICE);
-+	if (!err)
-+		memcpy(areq->result, result, algt->alg.hash.base.halg.digestsize);
- 
-+err_unmap_src:
-+	dma_unmap_sg(ce->dev, areq->src, ns, DMA_TO_DEVICE);
- 
--	memcpy(areq->result, result, algt->alg.hash.base.halg.digestsize);
--theend:
--	kfree(buf);
-+err_free_result:
- 	kfree(result);
-+
-+err_free_buf:
-+	kfree(buf);
-+
-+err_out:
- 	local_bh_disable();
- 	crypto_finalize_hash_request(engine, breq, err);
- 	local_bh_enable();
-+
- 	return 0;
- }
 -- 
 2.39.5
 
