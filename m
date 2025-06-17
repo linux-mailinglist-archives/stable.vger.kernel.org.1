@@ -1,180 +1,169 @@
-Return-Path: <stable+bounces-154564-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-154565-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 56BACADDB41
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 20:22:47 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F3BAADDB49
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 20:25:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 388103AFD7C
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:22:23 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 012A14A1A31
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:25:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8FD64277C86;
-	Tue, 17 Jun 2025 18:22:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 389DF21A447;
+	Tue, 17 Jun 2025 18:25:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="JAbd4Gsi"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="tjnoZCOY"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pg1-f182.google.com (mail-pg1-f182.google.com [209.85.215.182])
+Received: from mail-lj1-f174.google.com (mail-lj1-f174.google.com [209.85.208.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0247F2EBBB8;
-	Tue, 17 Jun 2025 18:22:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F22C2EBB80
+	for <stable@vger.kernel.org>; Tue, 17 Jun 2025 18:25:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750184554; cv=none; b=CkLwMcFgyY71AzOXcFg1j73u0G2pjvvh6mrPKXhG4CTJFuc6LpdQzzJ+CrnPH0lum7tKJpw7IL14CPfP9obIu63/kwVLf/ppYCWNsaXSbgzTWvVoBO60GU4eepeIl0pETtn4ZmqbCE+LV3eWsSTCKjr5A9mDVaGK1VTel6IhX1Q=
+	t=1750184744; cv=none; b=PGqtgI7Rsb6ZAmgZ2YvF62aI7UU56B5Yn1rKEa4PPeos+tJT6VqFJo3m9wmh6VrmbDr7YjicHskCH4bPF5jkMXOMvzpy2GF7Jig2Ktk/YZrtcrv4W82vcap9w/5dYE0AloM+TE/8GWwu/8I/xgWe1JrVCF9nzZYQ+7m59be8uQI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750184554; c=relaxed/simple;
-	bh=rRATALdhRcn5DZSQIwnUYb/BCKnqu3gR4V6mBlBkB/w=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=nSnMXdvi/QctW6cvmTgwj0h0txJP4fYFP5RDNLt6g8BQ6JqHdk1a5CZCxP9C0MLRhhHIVXV/JU4HzF6ETaSvFzfI965dtwm0uTPHzzUS5APV17hBCxviaF7C5gtAsUtNo1RCSh8o9jlOdW+uU8DpKu9KP9IsxnZwjmAsY3KK6tQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=JAbd4Gsi; arc=none smtp.client-ip=209.85.215.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pg1-f182.google.com with SMTP id 41be03b00d2f7-b2c4e46a89fso4843651a12.2;
-        Tue, 17 Jun 2025 11:22:31 -0700 (PDT)
+	s=arc-20240116; t=1750184744; c=relaxed/simple;
+	bh=mm3yab2sZRR/+DADP2ehV8G/nxgMSR70bl1lJapIZkg=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=TOIbbZYWVAQFG1SmyfZ7Sv2ZBfRqrx2oE90fHhqqjiY7FEHTRcTNpfJT4Y4Vzr7H78XAmmKW3yL572az60S6b2sgzhzk7QIm3YFHd4+zNd3PhkHdrIhQ41qcVeuVoVY5aUzRpCf0j6uMERZRVM07rHAosdZ1jpOMCQzuJos/OZY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=tjnoZCOY; arc=none smtp.client-ip=209.85.208.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Received: by mail-lj1-f174.google.com with SMTP id 38308e7fff4ca-32b7123edb9so9255181fa.2
+        for <stable@vger.kernel.org>; Tue, 17 Jun 2025 11:25:41 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1750184551; x=1750789351; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=6+6yUoMuq5S3gjE0GRLY4LeWHot5xsTS/R1ypehyGnM=;
-        b=JAbd4GsiSBQ9JWgO17KJsjYqwEccruT0sr3YZt3De4JJXayv587TF6ebwzloy+mpd/
-         Fl2ZHzxtNc3Q2HKJ0ARKl8tNcR40PrkmC9PuA7FoP+CaIHELoR+hbeTdK/BLzes5vZhX
-         lgtzKfatwykOH8lszdPtlU7lM6gllgukCvMm6TJWds4eDB+AYFfSeQ4bR8Z/CrfeEmHh
-         lbQiJP2RiT8sKN1DhsiO7h1h8SqUXb+YP2pYJDnheyolTOOfGRqLUkL15FS1Rfzxv4rH
-         NyuF30gAekJ4F9XT4ppQYGnIX9ug0WBSxKCclKM83ClXLI7NXgkZKUOCd4Tg7+qROUOS
-         ohiQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1750184551; x=1750789351;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-message-state:from:to:cc:subject:date
+        d=google.com; s=20230601; t=1750184740; x=1750789540; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=6+6yUoMuq5S3gjE0GRLY4LeWHot5xsTS/R1ypehyGnM=;
-        b=ZZeKhIw3crjxGKQ+qmmc1tMwZcVDIpwPZyDs6iWSuOonCBptDvv505w57rSXA817XW
-         uvr3zoB99k/HPfZhKXblP9BLr0RVpMngdYY2zya1QwZdhVLTsH0m9Utb31+tXksx6NiH
-         Sb3bRbKhHmGMnco/j4F5ruCZrm7U0c3HTgWx3BERZhPUMKevMKX0YSoSxleFaFadSwt/
-         UFTPljeaja3GloZtC66A8gywNrx1gF1jsKoua88oznbxHyL3Sk9LYhonsc/d/4U35VGi
-         N7QcqE3VcOJCVFH1ZFm6mMZpBEYWO7o9g/84PSXGU1GwP3k0KpJtkwHxtlJXTvHTU8sR
-         2ykA==
-X-Forwarded-Encrypted: i=1; AJvYcCXp2BSfxcWUZ1ef6z1jit9K2H9by5cBUu3n5rSum2Pmlif25qEgIp9nc45U214ta3mp7sOj9Z4=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyHAp1bi/jJTIppOQqbeLB+8iD8AhX+novrkgx8djo3B111JPZY
-	a8BPgia98KON4IQ7ltgRH6Na2fqiwBqiYPhuIox7L0/M77ToyzAeEHc6peWxNN7y
-X-Gm-Gg: ASbGncvqhIvJqzcQCjMBSL67ufj4M6ae4UtRyjX7LhWJoDJTYNuT21G5RqWiVlLMqMb
-	L8Og9mTaf987T1rhZPnPolnRxfO+jbSTXFiiZLDMjsgeM3Ee7X/VWtxesoaWJcAo92WZfRtwMmq
-	hm3OEtwB78RzM1YnkiJGmseETQOFVIv50Fd22BjPaCiYwQ4pCwe3nFaqHv5aXx2zh1wjPrRhHHO
-	k6KYbgdxHLJkBctsAyUCZXdTnEmO7D9IHGOFp7fEzUPMZmW0H7Gn2Mfkcow8K1ByEceiUGSuiQl
-	YVzw4TR/H6JSi8HU/3dLYxYAhqChPZyupFV/GFai+UoKjJCaz6MrgpKL4WG+pUXjkWMpBNr1U0N
-	cMm5U5F1geXMLeA==
-X-Google-Smtp-Source: AGHT+IFgrqJZVVHc6CZw1rbCUX7xXW7mFmdlAjjsynjIlFhhsOoP42hQdJ3kJ8yMNpcaIKSWoIt3mA==
-X-Received: by 2002:a05:6a21:9010:b0:215:d9fc:382e with SMTP id adf61e73a8af0-21fbd4dd9fdmr21722887637.13.1750184551147;
-        Tue, 17 Jun 2025 11:22:31 -0700 (PDT)
-Received: from [10.67.48.245] ([192.19.223.252])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-b2fe168d7ecsm9247635a12.64.2025.06.17.11.22.29
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 17 Jun 2025 11:22:30 -0700 (PDT)
-Message-ID: <9292e561-09bf-4d70-bcb7-f90f9cfbae7b@gmail.com>
-Date: Tue, 17 Jun 2025 11:22:28 -0700
+        bh=RQ4qkDHPaV7BDdZpqRDsoJFCKFnruqaPeK/AbJzqYW0=;
+        b=tjnoZCOYS4tjBWPKhvq5SWXWMeztWysxHGpMAB+PJa8jCyDKVfvmHVQTsl09nTU+9i
+         YTyq/JFifxzBlVxTvQuc699RkLcpIL3v6VmjOXTuFUJ4BhPIy3IXc/w1aN9FnBkzpp89
+         /eeCIPQTqDrUHjPrl3372HnqKtEljoYGdBWgnmIF/P0VC3lAIo5YHSnZKiMaSYhbnD4N
+         +Eg6R6s1LFHArqgXPU1uecr/+pCeL83JS696cfNeLGSzqR+Hr4EFHjyLsxwTTFfW4Nz5
+         iZBtYi3tohpVm5T5SsZo/Gfl+k7yge9D7dxpWVlA/IYXH7taZdtXxmpTiMud1IY//ASk
+         njaQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1750184740; x=1750789540;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=RQ4qkDHPaV7BDdZpqRDsoJFCKFnruqaPeK/AbJzqYW0=;
+        b=YguTVtr9QtNoPVyYTa6/nB44fBKGUoM3VDntGZzxDJd3pewC92FXpnwhTdm+jV/CzY
+         lcOSrTrSCvJB6vZxUgKMdTUSsdBoWGomKAePKppjoD9GRDTUyQFJACx/Ds7UdxSz4p6c
+         FEJDRF4ReTTllt2/i1AdN3RFLw0kOfo86hSW0B9UByjDF0PxCQtmPW7p0Fk130z+Y+Ym
+         becwnW5Gql3wmCIMx8yGCocTtt+doTbzMS2oB9v67TfB5d5XtLBnOpGh25aDosP/zZmF
+         8rT8uyyUbO5rtSvXmZDhKtt114ej/KL+QSKsI5YWVYq1lh2qkEJX/BF/IFFD4xFPa67W
+         oqWw==
+X-Forwarded-Encrypted: i=1; AJvYcCW32nOkZtKhwvYOSQg3HnSHJia1/nh2utNx+mf5O3qoxCTewFAfT05JaD1mwEEOFlPbhcDQ1XU=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy5Vi3KWOQZrtEx565rfV3E47np24hM1qu23F3tsvLRj5BbS0yT
+	4qTa1k6E2CMGuxuGRO0dUuXLwC8GvyBJLgSny7FGiOlFcnMcVWHuaYhXm2yP/3t6SkJZsAJqmiu
+	NQzrrkefd2YVZvccZKNWPUYxAXi9uySfTGMXcm2VB9sdYqni7ZPR2CA==
+X-Gm-Gg: ASbGncu2e1H8lvdj159OuKiq6AX+doKDqdDJxKPOvdb65w+o28Zf8TVegcq9x5po715
+	xYEzYVBe1+cyWjT/VmMG9CjQ5owDlfqtvN2ftZ0hPNxDzm1fWQCCXDizkHhAcTnKX+LUKp+aE7w
+	5OHDGTBTjhgP0j7ZfpkSr/BXDyKX5Jnt4golaJOu4uSxU=
+X-Google-Smtp-Source: AGHT+IGrZsLW9DjNWb5jhWUSKce2LjoSTMDK2XGnOs97Tp7M1TXO9eH5XVrHznP63PG8KFJ6Tm2Hr3oMej0naxklo9I=
+X-Received: by 2002:a05:651c:1423:b0:32b:47be:e1a5 with SMTP id
+ 38308e7fff4ca-32b4a7030d3mr30371381fa.39.1750184739953; Tue, 17 Jun 2025
+ 11:25:39 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: Tulip 21142 panic on physical link disconnect
-To: Greg Chandler <chandleg@wizardsworks.org>
-Cc: stable@vger.kernel.org, netdev@vger.kernel.org
-References: <53bb866f5bb12cc1b6c33b3866007f2b@wizardsworks.org>
- <02e3f9b8-9e60-4574-88e2-906ccd727829@gmail.com>
- <385f2469f504dd293775d3c39affa979@wizardsworks.org>
- <fba6a52c-bedf-4d06-814f-eb78257e4cb3@gmail.com>
- <6a079cd0233b33c6faf6af6a1da9661f@wizardsworks.org>
-Content-Language: en-US
-From: Florian Fainelli <f.fainelli@gmail.com>
-Autocrypt: addr=f.fainelli@gmail.com; keydata=
- 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
- WlfRzlpjIPmdjgoicA==
-In-Reply-To: <6a079cd0233b33c6faf6af6a1da9661f@wizardsworks.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+References: <aElivdUXqd1OqgMY@karahi.gladserv.com> <2025061745-calamari-voyage-d27a@gregkh>
+ <aFGl-mb--GOMY8ZQ@karahi.gladserv.com>
+In-Reply-To: <aFGl-mb--GOMY8ZQ@karahi.gladserv.com>
+From: Willem de Bruijn <willemb@google.com>
+Date: Tue, 17 Jun 2025 14:25:02 -0400
+X-Gm-Features: AX0GCFsmrlWBjBQ22REUW9WD_pmKQ8rQnTSfDc9BIdn9LRRzQhwwh-qhv8-aS4g
+Message-ID: <CA+FuTSen5bEXdTJzrPELKkNZs6N=BPDNxFKYpx2JQmXmFrb09Q@mail.gmail.com>
+Subject: Re: 6.12.y longterm regression - IPv6 UDP packet fragmentation
+To: Brett Sheffield <brett@librecast.net>
+Cc: Greg KH <gregkh@linuxfoundation.org>, Brett Sheffield <bacs@librecast.net>, 
+	stable@vger.kernel.org, regressions@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-(please no top posting)
+On Tue, Jun 17, 2025 at 1:29=E2=80=AFPM Brett Sheffield <brett@librecast.ne=
+t> wrote:
+>
+> Hi Greg,
+>
+> On 2025-06-17 15:47, Greg KH wrote:
+> > On Wed, Jun 11, 2025 at 01:04:29PM +0200, Brett Sheffield wrote:
+> > > Longterm kernel 6.12.y backports commit:
+> > >
+> > > - a18dfa9925b9ef6107ea3aa5814ca3c704d34a8a "ipv6: save dontfrag in co=
+rk"
+> >
+> > It's also in older kernels:
+> >       5.10.238
+> >       5.15.185
+> >       6.1.141
+> >       6.6.93
+> >
+> > > but does not backport these related commits:
+> > >
+> > > - 54580ccdd8a9c6821fd6f72171d435480867e4c3 "ipv6: remove leftover ip6=
+ cookie initializer"
+> > > - 096208592b09c2f5fc0c1a174694efa41c04209d "ipv6: replace ipcm6_init =
+calls with ipcm6_init_sk"
+> > >
+> > > This causes a regression when sending IPv6 UDP packets by preventing
+> > > fragmentation and instead returning EMSGSIZE. I have attached a progr=
+am which
+> > > demonstrates the issue.
 
-On 6/17/25 11:19, Greg Chandler wrote:
-> 
-> Hmm...  I'm wondering if that means it's an alpha-only issue then, which 
-> would make this a much larger headache than it already is.
-> Also thank you for checking, I appreciate you taking the time.
-> 
-> I assume the those interfaces actually work right? (simple ping over 
-> that interface would be enough)  I posted in a subsequent message that 
-> mine do not appear to at all.
+Thanks for the analysis. I had received a report and was looking into
+it, but had not yet figured out this root cause.
 
-Oh yeah, they work just fine:
+> >
+> > Should we backport thse two to all of the other branches as well?
+>
+> I have confirmed the regression is present in all of those older kernels =
+(except
+> 5.15.185 as that didn't boot on my test hardware - will look at that late=
+r).
+>
+> The patch appears to have been autoselected for applying to the stable tr=
+ee:
+>
+> https://lore.kernel.org/all/?q=3Da18dfa9925b9ef6107ea3aa5814ca3c704d34a8a
+>
+> The patch follows on from a whole series of patches by Willem de Bruijn (=
+CC), the
+> rest of which were not applied.
+>
+> Unless there is a good reason for applying this patch in isolation, the q=
+uickest
+> fix is simply to revert that commit in stable and this fixes the regressi=
+on.
+>
+> Alternatives are:
+>
+> 1) apply a small fix for the regression (patch attached). This leaves a f=
+ootgun
+> if you later decide to backport more of the series.
+>
+> 2) to backport and test the whole series of patches. See merge commit
+> aefd232de5eb2e77e3fc58c56486c7fe7426a228
+>
+> 3) In the case of 6.12.33, the two patches I referenced apply cleanly and=
+ are enough
+> to fix the problem.  There are conflicts on the other branches.
+>
+> Unless there is a specific reason to have backported
+> a18dfa9925b9ef6107ea3aa5814ca3c704d34a8a to stable I'd suggest just rever=
+ting
+> it.
 
-udhcpc: broadcasting discover
-[   19.197697] net eth0: Setting full-duplex based on MII#1 link partner 
-capability of cde1
+FWIW, I did not originally intend for these changes to make it to stable.
 
-# ping -c 1 192.168.254.123
-PING 192.168.254.123 (192.168.254.123): 56 data bytes
-64 bytes from 192.168.254.123: seq=0 ttl=64 time=2.902 ms
-
---- 192.168.254.123 ping statistics ---
-1 packets transmitted, 1 packets received, 0% packet loss
-round-trip min/avg/max = 2.902/2.902/2.902 ms
-
-- - - - - - - - - - - - - - - - - - - - - - - - -
-[ ID] Interval           Transfer     Bitrate         Retr
-[  5]   0.00-10.03  sec  39.6 MBytes  33.1 Mbits/sec    0            sender
-[  5]   0.00-10.07  sec  39.8 MBytes  33.1 Mbits/sec 
-receiver
-
-
-> 
-> My next step is to build that driver as a module, and see if it changes 
-> anything (I'm doubting it will).
-> Then after that go dig up a different adapter, and see if it's the 
-> network stack or the driver.
-> 
-> I've been hard pressed over the last week to get a lot of diagnosing time.
-
-Let me know if I can run experiments, I can load any kernel version on 
-this Cobalt Qube2 meaning that bisections are possible.
-
-Good luck!
--- 
-Florian
+The simplest short term solution is to revert this patch out of the
+stable trees. But long term that may give more conflicts as later
+patches need to be backported? Not sure what is wiser in such cases.
 
