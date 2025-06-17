@@ -1,56 +1,60 @@
-Return-Path: <stable+bounces-154158-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153741-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id ADAEDADD82E
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:52:50 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id DE200ADD615
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:30:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EACA65A0608
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:43:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9B7CA3B1608
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:22:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BFCE02EE278;
-	Tue, 17 Jun 2025 16:38:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 003152E8DF7;
+	Tue, 17 Jun 2025 16:15:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IAvDrJFe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SveDZR/N"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75DBB2ED868;
-	Tue, 17 Jun 2025 16:38:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0FCC2E8DE7;
+	Tue, 17 Jun 2025 16:15:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750178288; cv=none; b=YzqtE52U2x/4QBT/CGVvmNALodbznLjz8V91b4F0LCQ8pqK8kwkN0Z0vwMBIip05bc1TlVcz4fCQy3BOHbeDfJftXCNTLNRPCGvxpcxHPGf3V3ufLfIxuC8+FQuwzRJMGq7FKwy8HwyzJWz8I1d5E9wGssEcdXyc/pndbV65K8E=
+	t=1750176946; cv=none; b=L9Ef1LrQmpD+5So66tdGXbI5zP+dbDrkiwPf/Q34jv4rHHZvzlKqgTR0fV6x0gJ2lBG5wulY/Leq81aGhFj9gXYEAC1dbWTr4CnG0MvxQHJ+Pgr68B1GC00ZyJcHsg+5xowz8K5fuyXbmArkqPMPu8IAYp68arA6WPHMf07uo20=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750178288; c=relaxed/simple;
-	bh=le1y5g9jK3UUkF2bwjUF3vcGbwiIL0kTNQCegdYzTvk=;
+	s=arc-20240116; t=1750176946; c=relaxed/simple;
+	bh=m9ctFWBQnOFxMqDqvu08ic+3K/LqvU3+3Ksjo9IOnE8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZxpL6yrnnpCGnRBS0LMxiJenKF6KUEmaX+NOBg7bzSjK4XMGHLyGXQamWPj0iIHqGODF0KXUGxvPq/TtE343ptGkPdiJo9LEQl9AiM4Caqi2mh5JE3SSGznkVZM6PmwRiqt7oOPNM1UYtSNqWuGRCetZF5Z7n/HVMws4QyCI6W4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IAvDrJFe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E106DC4CEE3;
-	Tue, 17 Jun 2025 16:38:07 +0000 (UTC)
+	 MIME-Version; b=WmL6VzP4v3twK4EP+fR3tf1qjWqv3Rz0LFJyYVD5aztcxiayJzVa7/TZqK8VNnJCkSqBMF35e2ZS/2Id/gwjcQSqHj/fSkiRoXyofQzI5FaScKh+0NFMx7Jminys/gvX6Ik4OoH6qGcFngV7xtjum/ouqUfSl3ncbrjqN0j671k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SveDZR/N; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20D5DC4CEE3;
+	Tue, 17 Jun 2025 16:15:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750178288;
-	bh=le1y5g9jK3UUkF2bwjUF3vcGbwiIL0kTNQCegdYzTvk=;
+	s=korg; t=1750176946;
+	bh=m9ctFWBQnOFxMqDqvu08ic+3K/LqvU3+3Ksjo9IOnE8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IAvDrJFeiyt1+y/m5Kd0rFjyQCXvD22a0WcA2uFbUsz9q1DSC/NNxnJRCvneO2phB
-	 uKdJPw6B1XsniptvqLajSE7p4VcCI2WuZx7ySTb3O62mfHs76ffyfmsYvYbPTXzjP3
-	 7ML5oxBZQfu3CeuEjOokKIIcejr2anaMAmIpmf0Q=
+	b=SveDZR/N5x8AaXcqJ7tGYdEI3FjY9fYrX16nbkOrirYwnJlthtBnppIpuMfVFZKB6
+	 mPb1a22nfgzQWRiuRWvjl4MFQbuMu63cRIApMBtUOdHvdSHR1HWj7lC+1lnwjEsrT+
+	 ZyOaN5tOL4zOym8Q4YD3t05Hz+vzbuMrgTSR9oRM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniel Wagner <wagi@kernel.org>,
-	Christoph Hellwig <hch@lst.de>,
+	Gavi Teitz <gavi@nvidia.com>,
+	Roi Dayan <roid@nvidia.com>,
+	Patrisious Haddad <phaddad@nvidia.com>,
+	Tariq Toukan <tariqt@nvidia.com>,
+	Mark Bloch <mbloch@nvidia.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 474/512] nvmet-fcloop: access fcpreq only when holding reqlock
+Subject: [PATCH 6.6 325/356] net/mlx5: Fix return value when searching for existing flow group
 Date: Tue, 17 Jun 2025 17:27:20 +0200
-Message-ID: <20250617152438.783086834@linuxfoundation.org>
+Message-ID: <20250617152351.229612755@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
-References: <20250617152419.512865572@linuxfoundation.org>
+In-Reply-To: <20250617152338.212798615@linuxfoundation.org>
+References: <20250617152338.212798615@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,97 +66,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel Wagner <wagi@kernel.org>
+From: Patrisious Haddad <phaddad@nvidia.com>
 
-[ Upstream commit 47a827cd7929d0550c3496d70b417fcb5649b27b ]
+[ Upstream commit 8ec40e3f1f72bf8f8accf18020d487caa99f46a4 ]
 
-The abort handling logic expects that the state and the fcpreq are only
-accessed when holding the reqlock lock.
+When attempting to add a rule to an existing flow group, if a matching
+flow group exists but is not active, the error code returned should be
+EAGAIN, so that the rule can be added to the matching flow group once
+it is active, rather than ENOENT, which indicates that no matching
+flow group was found.
 
-While at it, only handle the aborts in the abort handler.
-
-Signed-off-by: Daniel Wagner <wagi@kernel.org>
-Signed-off-by: Christoph Hellwig <hch@lst.de>
+Fixes: bd71b08ec2ee ("net/mlx5: Support multiple updates of steering rules in parallel")
+Signed-off-by: Gavi Teitz <gavi@nvidia.com>
+Signed-off-by: Roi Dayan <roid@nvidia.com>
+Signed-off-by: Patrisious Haddad <phaddad@nvidia.com>
+Reviewed-by: Tariq Toukan <tariqt@nvidia.com>
+Signed-off-by: Mark Bloch <mbloch@nvidia.com>
+Link: https://patch.msgid.link/20250610151514.1094735-4-mbloch@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nvme/target/fcloop.c | 31 ++++++++++++++++---------------
- 1 file changed, 16 insertions(+), 15 deletions(-)
+ drivers/net/ethernet/mellanox/mlx5/core/fs_core.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/nvme/target/fcloop.c b/drivers/nvme/target/fcloop.c
-index da195d61a9664..f1b5ffc00ce88 100644
---- a/drivers/nvme/target/fcloop.c
-+++ b/drivers/nvme/target/fcloop.c
-@@ -623,12 +623,13 @@ fcloop_fcp_recv_work(struct work_struct *work)
- {
- 	struct fcloop_fcpreq *tfcp_req =
- 		container_of(work, struct fcloop_fcpreq, fcp_rcv_work);
--	struct nvmefc_fcp_req *fcpreq = tfcp_req->fcpreq;
-+	struct nvmefc_fcp_req *fcpreq;
- 	unsigned long flags;
- 	int ret = 0;
- 	bool aborted = false;
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/fs_core.c b/drivers/net/ethernet/mellanox/mlx5/core/fs_core.c
+index d2dc375f5e49c..5f35a6fc03054 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/fs_core.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/fs_core.c
+@@ -1984,6 +1984,7 @@ try_add_to_existing_fg(struct mlx5_flow_table *ft,
+ 	struct mlx5_flow_handle *rule;
+ 	struct match_list *iter;
+ 	bool take_write = false;
++	bool try_again = false;
+ 	struct fs_fte *fte;
+ 	u64  version = 0;
+ 	int err;
+@@ -2043,6 +2044,7 @@ try_add_to_existing_fg(struct mlx5_flow_table *ft,
+ 		nested_down_write_ref_node(&g->node, FS_LOCK_PARENT);
  
- 	spin_lock_irqsave(&tfcp_req->reqlock, flags);
-+	fcpreq = tfcp_req->fcpreq;
- 	switch (tfcp_req->inistate) {
- 	case INI_IO_START:
- 		tfcp_req->inistate = INI_IO_ACTIVE;
-@@ -643,16 +644,19 @@ fcloop_fcp_recv_work(struct work_struct *work)
+ 		if (!g->node.active) {
++			try_again = true;
+ 			up_write_ref_node(&g->node, false);
+ 			continue;
+ 		}
+@@ -2064,7 +2066,8 @@ try_add_to_existing_fg(struct mlx5_flow_table *ft,
+ 			tree_put_node(&fte->node, false);
+ 		return rule;
  	}
- 	spin_unlock_irqrestore(&tfcp_req->reqlock, flags);
- 
--	if (unlikely(aborted))
--		ret = -ECANCELED;
--	else {
--		if (likely(!check_for_drop(tfcp_req)))
--			ret = nvmet_fc_rcv_fcp_req(tfcp_req->tport->targetport,
--				&tfcp_req->tgt_fcp_req,
--				fcpreq->cmdaddr, fcpreq->cmdlen);
--		else
--			pr_info("%s: dropped command ********\n", __func__);
-+	if (unlikely(aborted)) {
-+		/* the abort handler will call fcloop_call_host_done */
-+		return;
-+	}
-+
-+	if (unlikely(check_for_drop(tfcp_req))) {
-+		pr_info("%s: dropped command ********\n", __func__);
-+		return;
- 	}
-+
-+	ret = nvmet_fc_rcv_fcp_req(tfcp_req->tport->targetport,
-+				   &tfcp_req->tgt_fcp_req,
-+				   fcpreq->cmdaddr, fcpreq->cmdlen);
- 	if (ret)
- 		fcloop_call_host_done(fcpreq, tfcp_req, ret);
- }
-@@ -667,9 +671,10 @@ fcloop_fcp_abort_recv_work(struct work_struct *work)
- 	unsigned long flags;
- 
- 	spin_lock_irqsave(&tfcp_req->reqlock, flags);
--	fcpreq = tfcp_req->fcpreq;
- 	switch (tfcp_req->inistate) {
- 	case INI_IO_ABORTED:
-+		fcpreq = tfcp_req->fcpreq;
-+		tfcp_req->fcpreq = NULL;
- 		break;
- 	case INI_IO_COMPLETED:
- 		completed = true;
-@@ -691,10 +696,6 @@ fcloop_fcp_abort_recv_work(struct work_struct *work)
- 		nvmet_fc_rcv_fcp_abort(tfcp_req->tport->targetport,
- 					&tfcp_req->tgt_fcp_req);
- 
--	spin_lock_irqsave(&tfcp_req->reqlock, flags);
--	tfcp_req->fcpreq = NULL;
--	spin_unlock_irqrestore(&tfcp_req->reqlock, flags);
--
- 	fcloop_call_host_done(fcpreq, tfcp_req, -ECANCELED);
- 	/* call_host_done releases reference for abort downcall */
- }
+-	rule = ERR_PTR(-ENOENT);
++	err = try_again ? -EAGAIN : -ENOENT;
++	rule = ERR_PTR(err);
+ out:
+ 	kmem_cache_free(steering->ftes_cache, fte);
+ 	return rule;
 -- 
 2.39.5
 
