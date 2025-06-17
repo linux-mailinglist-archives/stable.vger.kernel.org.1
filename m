@@ -1,61 +1,58 @@
-Return-Path: <stable+bounces-154372-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153893-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 60788ADD8C4
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:58:49 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 04D30ADD6BC
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:36:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A2F604A7595
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:51:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A77A84070F6
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:28:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED8812367A0;
-	Tue, 17 Jun 2025 16:49:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99EF02E8DFE;
+	Tue, 17 Jun 2025 16:23:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dJIfW+FN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rckrtljH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABA5B1E1C22;
-	Tue, 17 Jun 2025 16:49:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56B5D221F14;
+	Tue, 17 Jun 2025 16:23:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750178984; cv=none; b=U7N5hs+aYFsPDvE55XXMK7ZHbwnET4oa11N/1isresI7D5W8m5os6MnbsKP/Pfx4YzPP2PVJEOWEEHheFtCyOORGQIrCkgU7notvYIS2tMmVg9d1GJ8zRzrpgXv+BLN3MZxQs/F/1ASAQF0F1HenQKqCFa+8yWYwZqVH2DeW5CM=
+	t=1750177438; cv=none; b=BExdj1M9HoLDahAlJ/hUUHyeTiP4G2LkjhPaxWNszYnxre5vv9CSLwXJRC6DlPFf/vMXxaGOTUgpYf/5I+lXoES6wUJ4Cfmi/mkSG+qBMNH7C2by7TRzU9/erdUFjio4rvJ1zULB3TPhVDwiqftKh6JQQA0+dHmVD7hZ4iLT2fw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750178984; c=relaxed/simple;
-	bh=2J8dHNACEOTcPyUgWW1eVlUPcFc3iTgp69LfdSnfHtY=;
+	s=arc-20240116; t=1750177438; c=relaxed/simple;
+	bh=AQTdHGlY25lJX1rWElR3fuMSyYNBVAvzg54lwdEuWyM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fSxRQc9tcFP4cQqEWRnyz2VEtNjjIRHoFVpf2h6q494V4ahipmM1g72eqkm293EhJFaUJxGp3Tlin9t3XKhTR0fEgKR6nSsjSTcJOaCA0Jh/94GheFnj7IwJAQ1qGnFRm3//pc33wZGWi1K775XB5JK+6QeSDugZFST78uj8/rU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dJIfW+FN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06C62C4CEE3;
-	Tue, 17 Jun 2025 16:49:43 +0000 (UTC)
+	 MIME-Version; b=CSgpVebU3xwhEXHW1QMBnuA0y9ezXFikanj8zwxhBdbjTi8vaf+fNTH1lEk547ZF+W0M5B5cFIam6mGSN/JFrXTIcpw+HubMJA/9hVwmlbnq4Nf/pAw3xzN1PbM/+iKoo2v5qe3MzXLQE1Soi/+7Va0NDqfeT1YI68rsy+4H9EA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rckrtljH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BAA04C4CEF0;
+	Tue, 17 Jun 2025 16:23:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750178984;
-	bh=2J8dHNACEOTcPyUgWW1eVlUPcFc3iTgp69LfdSnfHtY=;
+	s=korg; t=1750177438;
+	bh=AQTdHGlY25lJX1rWElR3fuMSyYNBVAvzg54lwdEuWyM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dJIfW+FN7NOgH6FVPGX+Thu8dzOVxjHQ50Wad0VxXDSCB8CqaQki040UiiNHQgb+z
-	 SQnan/0j77RqqcMEP/ZV3zPLQ5sY8XM9MUtvPZ+xkxjv3fE2r6f/1UskLlOaAJJF7V
-	 ysbb3X3wDLbNSWyqUiC0ryu4tzD3aKZwztC4nQO4=
+	b=rckrtljH/03HVuJFdE/LUT1rz+yfIx0+f28uIq8RO/nLO8S9FKRHMZIBYTX6qjD6B
+	 Ru4qawMaohctz/W+J5O5FSGWrYKhHTcAgeQcGEEai5UDft+ORidj8tjKLkJqevFRCq
+	 0MOylrIXP+kHXe0GO/GP3TjWu/jRSliJEFp/vxvU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dawid Osuchowski <dawid.osuchowski@linux.intel.com>,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-	Michal Kubiak <michal.kubiak@intel.com>,
-	Simon Horman <horms@kernel.org>,
-	Jesse Brandeburg <jbrandeburg@cloudflare.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Sasha Levin <sashal@kernel.org>,
-	Saritha Sanigani <sarithax.sanigani@intel.com>
-Subject: [PATCH 6.15 573/780] ice: fix rebuilding the Tx scheduler tree for large queue counts
+	Henry Martin <bsdhenrymartin@gmail.com>,
+	Nathan Lynch <nathan.lynch@amd.com>,
+	Peter Ujfalusi <peter.ujfalusi@gmail.com>,
+	Vinod Koul <vkoul@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 315/512] dmaengine: ti: Add NULL check in udma_probe()
 Date: Tue, 17 Jun 2025 17:24:41 +0200
-Message-ID: <20250617152514.815393871@linuxfoundation.org>
+Message-ID: <20250617152432.379124964@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
-References: <20250617152451.485330293@linuxfoundation.org>
+In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
+References: <20250617152419.512865572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,315 +64,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michal Kubiak <michal.kubiak@intel.com>
+From: Henry Martin <bsdhenrymartin@gmail.com>
 
-[ Upstream commit 73145e6d81070d34a21431c9e0d7aaf2f29ca048 ]
+[ Upstream commit fd447415e74bccd7362f760d4ea727f8e1ebfe91 ]
 
-The current implementation of the Tx scheduler allows the tree to be
-rebuilt as the user adds more Tx queues to the VSI. In such a case,
-additional child nodes are added to the tree to support the new number
-of queues.
-Unfortunately, this algorithm does not take into account that the limit
-of the VSI support node may be exceeded, so an additional node in the
-VSI layer may be required to handle all the requested queues.
+devm_kasprintf() returns NULL when memory allocation fails. Currently,
+udma_probe() does not check for this case, which results in a NULL
+pointer dereference.
 
-Such a scenario occurs when adding XDP Tx queues on machines with many
-CPUs. Although the driver still respects the queue limit returned by
-the FW, the Tx scheduler was unable to add those queues to its tree
-and returned one of the errors below.
+Add NULL check after devm_kasprintf() to prevent this issue.
 
-Such a scenario occurs when adding XDP Tx queues on machines with many
-CPUs (e.g. at least 321 CPUs, if there is already 128 Tx/Rx queue pairs).
-Although the driver still respects the queue limit returned by the FW,
-the Tx scheduler was unable to add those queues to its tree and returned
-the following errors:
-
-     Failed VSI LAN queue config for XDP, error: -5
-or:
-     Failed to set LAN Tx queue context, error: -22
-
-Fix this problem by extending the tree rebuild algorithm to check if the
-current VSI node can support the requested number of queues. If it
-cannot, create as many additional VSI support nodes as necessary to
-handle all the required Tx queues. Symmetrically, adjust the VSI node
-removal algorithm to remove all nodes associated with the given VSI.
-Also, make the search for the next free VSI node more restrictive. That is,
-add queue group nodes only to the VSI support nodes that have a matching
-VSI handle.
-Finally, fix the comment describing the tree update algorithm to better
-reflect the current scenario.
-
-Fixes: b0153fdd7e8a ("ice: update VSI config dynamically")
-Reviewed-by: Dawid Osuchowski <dawid.osuchowski@linux.intel.com>
-Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
-Signed-off-by: Michal Kubiak <michal.kubiak@intel.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Tested-by: Jesse Brandeburg <jbrandeburg@cloudflare.com>
-Tested-by: Saritha Sanigani <sarithax.sanigani@intel.com> (A Contingent Worker at Intel)
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Fixes: 25dcb5dd7b7c ("dmaengine: ti: New driver for K3 UDMA")
+Signed-off-by: Henry Martin <bsdhenrymartin@gmail.com>
+Reviewed-by: Nathan Lynch <nathan.lynch@amd.com>
+Acked-by: Peter Ujfalusi <peter.ujfalusi@gmail.com>
+Link: https://lore.kernel.org/r/20250402023900.43440-1-bsdhenrymartin@gmail.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/ice/ice_sched.c | 170 +++++++++++++++++----
- 1 file changed, 142 insertions(+), 28 deletions(-)
+ drivers/dma/ti/k3-udma.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/intel/ice/ice_sched.c b/drivers/net/ethernet/intel/ice/ice_sched.c
-index 6524875b34d39..d9d09296d1d48 100644
---- a/drivers/net/ethernet/intel/ice/ice_sched.c
-+++ b/drivers/net/ethernet/intel/ice/ice_sched.c
-@@ -84,6 +84,27 @@ ice_sched_find_node_by_teid(struct ice_sched_node *start_node, u32 teid)
- 	return NULL;
- }
- 
-+/**
-+ * ice_sched_find_next_vsi_node - find the next node for a given VSI
-+ * @vsi_node: VSI support node to start search with
-+ *
-+ * Return: Next VSI support node, or NULL.
-+ *
-+ * The function returns a pointer to the next node from the VSI layer
-+ * assigned to the given VSI, or NULL if there is no such a node.
-+ */
-+static struct ice_sched_node *
-+ice_sched_find_next_vsi_node(struct ice_sched_node *vsi_node)
-+{
-+	unsigned int vsi_handle = vsi_node->vsi_handle;
-+
-+	while ((vsi_node = vsi_node->sibling) != NULL)
-+		if (vsi_node->vsi_handle == vsi_handle)
-+			break;
-+
-+	return vsi_node;
-+}
-+
- /**
-  * ice_aqc_send_sched_elem_cmd - send scheduling elements cmd
-  * @hw: pointer to the HW struct
-@@ -1084,8 +1105,10 @@ ice_sched_add_nodes_to_layer(struct ice_port_info *pi,
- 		if (parent->num_children < max_child_nodes) {
- 			new_num_nodes = max_child_nodes - parent->num_children;
- 		} else {
--			/* This parent is full, try the next sibling */
--			parent = parent->sibling;
-+			/* This parent is full,
-+			 * try the next available sibling.
-+			 */
-+			parent = ice_sched_find_next_vsi_node(parent);
- 			/* Don't modify the first node TEID memory if the
- 			 * first node was added already in the above call.
- 			 * Instead send some temp memory for all other
-@@ -1528,12 +1551,23 @@ ice_sched_get_free_qparent(struct ice_port_info *pi, u16 vsi_handle, u8 tc,
- 	/* get the first queue group node from VSI sub-tree */
- 	qgrp_node = ice_sched_get_first_node(pi, vsi_node, qgrp_layer);
- 	while (qgrp_node) {
-+		struct ice_sched_node *next_vsi_node;
-+
- 		/* make sure the qgroup node is part of the VSI subtree */
- 		if (ice_sched_find_node_in_subtree(pi->hw, vsi_node, qgrp_node))
- 			if (qgrp_node->num_children < max_children &&
- 			    qgrp_node->owner == owner)
- 				break;
- 		qgrp_node = qgrp_node->sibling;
-+		if (qgrp_node)
-+			continue;
-+
-+		next_vsi_node = ice_sched_find_next_vsi_node(vsi_node);
-+		if (!next_vsi_node)
-+			break;
-+
-+		vsi_node = next_vsi_node;
-+		qgrp_node = ice_sched_get_first_node(pi, vsi_node, qgrp_layer);
- 	}
- 
- 	/* Select the best queue group */
-@@ -1779,7 +1813,11 @@ ice_sched_add_vsi_support_nodes(struct ice_port_info *pi, u16 vsi_handle,
- 		if (!parent)
- 			return -EIO;
- 
--		if (i == vsil)
-+		/* Do not modify the VSI handle for already existing VSI nodes,
-+		 * (if no new VSI node was added to the tree).
-+		 * Assign the VSI handle only to newly added VSI nodes.
-+		 */
-+		if (i == vsil && num_added)
- 			parent->vsi_handle = vsi_handle;
- 	}
- 
-@@ -1812,6 +1850,41 @@ ice_sched_add_vsi_to_topo(struct ice_port_info *pi, u16 vsi_handle, u8 tc)
- 					       num_nodes);
- }
- 
-+/**
-+ * ice_sched_recalc_vsi_support_nodes - recalculate VSI support nodes count
-+ * @hw: pointer to the HW struct
-+ * @vsi_node: pointer to the leftmost VSI node that needs to be extended
-+ * @new_numqs: new number of queues that has to be handled by the VSI
-+ * @new_num_nodes: pointer to nodes count table to modify the VSI layer entry
-+ *
-+ * This function recalculates the number of supported nodes that need to
-+ * be added after adding more Tx queues for a given VSI.
-+ * The number of new VSI support nodes that shall be added will be saved
-+ * to the @new_num_nodes table for the VSI layer.
-+ */
-+static void
-+ice_sched_recalc_vsi_support_nodes(struct ice_hw *hw,
-+				   struct ice_sched_node *vsi_node,
-+				   unsigned int new_numqs, u16 *new_num_nodes)
-+{
-+	u32 vsi_nodes_cnt = 1;
-+	u32 max_queue_cnt = 1;
-+	u32 qgl, vsil;
-+
-+	qgl = ice_sched_get_qgrp_layer(hw);
-+	vsil = ice_sched_get_vsi_layer(hw);
-+
-+	for (u32 i = vsil; i <= qgl; i++)
-+		max_queue_cnt *= hw->max_children[i];
-+
-+	while ((vsi_node = ice_sched_find_next_vsi_node(vsi_node)) != NULL)
-+		vsi_nodes_cnt++;
-+
-+	if (new_numqs > (max_queue_cnt * vsi_nodes_cnt))
-+		new_num_nodes[vsil] = DIV_ROUND_UP(new_numqs, max_queue_cnt) -
-+				      vsi_nodes_cnt;
-+}
-+
- /**
-  * ice_sched_update_vsi_child_nodes - update VSI child nodes
-  * @pi: port information structure
-@@ -1863,16 +1936,25 @@ ice_sched_update_vsi_child_nodes(struct ice_port_info *pi, u16 vsi_handle,
- 			return status;
- 	}
- 
-+	ice_sched_recalc_vsi_support_nodes(hw, vsi_node,
-+					   new_numqs, new_num_nodes);
- 	ice_sched_calc_vsi_child_nodes(hw, new_numqs - prev_numqs,
- 				       new_num_nodes);
- 
--	/* Keep the max number of queue configuration all the time. Update the
--	 * tree only if number of queues > previous number of queues. This may
-+	/* Never decrease the number of queues in the tree. Update the tree
-+	 * only if number of queues > previous number of queues. This may
- 	 * leave some extra nodes in the tree if number of queues < previous
- 	 * number but that wouldn't harm anything. Removing those extra nodes
- 	 * may complicate the code if those nodes are part of SRL or
- 	 * individually rate limited.
-+	 * Also, add the required VSI support nodes if the existing ones cannot
-+	 * handle the requested new number of queues.
- 	 */
-+	status = ice_sched_add_vsi_support_nodes(pi, vsi_handle, tc_node,
-+						 new_num_nodes);
-+	if (status)
-+		return status;
-+
- 	status = ice_sched_add_vsi_child_nodes(pi, vsi_handle, tc_node,
- 					       new_num_nodes, owner);
- 	if (status)
-@@ -2013,6 +2095,58 @@ static bool ice_sched_is_leaf_node_present(struct ice_sched_node *node)
- 	return (node->info.data.elem_type == ICE_AQC_ELEM_TYPE_LEAF);
- }
- 
-+/**
-+ * ice_sched_rm_vsi_subtree - remove all nodes assigned to a given VSI
-+ * @pi: port information structure
-+ * @vsi_node: pointer to the leftmost node of the VSI to be removed
-+ * @owner: LAN or RDMA
-+ * @tc: TC number
-+ *
-+ * Return: Zero in case of success, or -EBUSY if the VSI has leaf nodes in TC.
-+ *
-+ * This function removes all the VSI support nodes associated with a given VSI
-+ * and its LAN or RDMA children nodes from the scheduler tree.
-+ */
-+static int
-+ice_sched_rm_vsi_subtree(struct ice_port_info *pi,
-+			 struct ice_sched_node *vsi_node, u8 owner, u8 tc)
-+{
-+	u16 vsi_handle = vsi_node->vsi_handle;
-+	bool all_vsi_nodes_removed = true;
-+	int j = 0;
-+
-+	while (vsi_node) {
-+		struct ice_sched_node *next_vsi_node;
-+
-+		if (ice_sched_is_leaf_node_present(vsi_node)) {
-+			ice_debug(pi->hw, ICE_DBG_SCHED, "VSI has leaf nodes in TC %d\n", tc);
-+			return -EBUSY;
-+		}
-+		while (j < vsi_node->num_children) {
-+			if (vsi_node->children[j]->owner == owner)
-+				ice_free_sched_node(pi, vsi_node->children[j]);
-+			else
-+				j++;
-+		}
-+
-+		next_vsi_node = ice_sched_find_next_vsi_node(vsi_node);
-+
-+		/* remove the VSI if it has no children */
-+		if (!vsi_node->num_children)
-+			ice_free_sched_node(pi, vsi_node);
-+		else
-+			all_vsi_nodes_removed = false;
-+
-+		vsi_node = next_vsi_node;
-+	}
-+
-+	/* clean up aggregator related VSI info if any */
-+	if (all_vsi_nodes_removed)
-+		ice_sched_rm_agg_vsi_info(pi, vsi_handle);
-+
-+	return 0;
-+}
-+
- /**
-  * ice_sched_rm_vsi_cfg - remove the VSI and its children nodes
-  * @pi: port information structure
-@@ -2039,7 +2173,6 @@ ice_sched_rm_vsi_cfg(struct ice_port_info *pi, u16 vsi_handle, u8 owner)
- 
- 	ice_for_each_traffic_class(i) {
- 		struct ice_sched_node *vsi_node, *tc_node;
--		u8 j = 0;
- 
- 		tc_node = ice_sched_get_tc_node(pi, i);
- 		if (!tc_node)
-@@ -2049,31 +2182,12 @@ ice_sched_rm_vsi_cfg(struct ice_port_info *pi, u16 vsi_handle, u8 owner)
- 		if (!vsi_node)
- 			continue;
- 
--		if (ice_sched_is_leaf_node_present(vsi_node)) {
--			ice_debug(pi->hw, ICE_DBG_SCHED, "VSI has leaf nodes in TC %d\n", i);
--			status = -EBUSY;
-+		status = ice_sched_rm_vsi_subtree(pi, vsi_node, owner, i);
-+		if (status)
- 			goto exit_sched_rm_vsi_cfg;
--		}
--		while (j < vsi_node->num_children) {
--			if (vsi_node->children[j]->owner == owner) {
--				ice_free_sched_node(pi, vsi_node->children[j]);
- 
--				/* reset the counter again since the num
--				 * children will be updated after node removal
--				 */
--				j = 0;
--			} else {
--				j++;
--			}
--		}
--		/* remove the VSI if it has no children */
--		if (!vsi_node->num_children) {
--			ice_free_sched_node(pi, vsi_node);
--			vsi_ctx->sched.vsi_node[i] = NULL;
-+		vsi_ctx->sched.vsi_node[i] = NULL;
- 
--			/* clean up aggregator related VSI info if any */
--			ice_sched_rm_agg_vsi_info(pi, vsi_handle);
--		}
- 		if (owner == ICE_SCHED_NODE_OWNER_LAN)
- 			vsi_ctx->sched.max_lanq[i] = 0;
- 		else
+diff --git a/drivers/dma/ti/k3-udma.c b/drivers/dma/ti/k3-udma.c
+index 7d89385c3c450..38b54719587cf 100644
+--- a/drivers/dma/ti/k3-udma.c
++++ b/drivers/dma/ti/k3-udma.c
+@@ -5572,7 +5572,8 @@ static int udma_probe(struct platform_device *pdev)
+ 		uc->config.dir = DMA_MEM_TO_MEM;
+ 		uc->name = devm_kasprintf(dev, GFP_KERNEL, "%s chan%d",
+ 					  dev_name(dev), i);
+-
++		if (!uc->name)
++			return -ENOMEM;
+ 		vchan_init(&uc->vc, &ud->ddev);
+ 		/* Use custom vchan completion handling */
+ 		tasklet_setup(&uc->vc.task, udma_vchan_complete);
 -- 
 2.39.5
 
