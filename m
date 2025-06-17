@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-153590-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-154449-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F456ADD55D
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:20:08 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D4B1BADDA01
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 19:12:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9B6962C3A29
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:10:49 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 751A01946E86
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:55:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA7B72135A0;
-	Tue, 17 Jun 2025 16:07:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 70AF623771C;
+	Tue, 17 Jun 2025 16:53:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X/xFzVMJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="10VKi0cZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 753552F2352;
-	Tue, 17 Jun 2025 16:07:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EC992FA622;
+	Tue, 17 Jun 2025 16:53:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750176453; cv=none; b=DkcAbrAHR7zJEBETLxWTlnc/tmFTF6PZkDBa57Hss1xIAkMTpvTgD5iq5hlffx9W1/gQ6HG0J2uYY8FZstTlEcbKuQsSMpdWyqTJGA0QPQYuGCg3PBzhQ0PtJ/i45kr2ONZuCJGp2pwh6vYEhpbQeK4qGAzAbga0/2FlV66E+PU=
+	t=1750179222; cv=none; b=tO+pkui51zMWxZROtscbofbDodXm9WffgKGqxx78oz81bAYj3FfRKyTlxa/d1F0NY4TGj+cnex1rqCbLmgIigkItFqoINHND1UtKnDnaqjMzBdkEyq7q7VNapWVltWyE07V0DtxD9gWwkou6TjvzcQSw4AaUzEm/1QDVrNFJqkM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750176453; c=relaxed/simple;
-	bh=0wYzuGcVpMImKBJeBp3ZsMOQjFVK2dCf0IJOgRfl59c=;
+	s=arc-20240116; t=1750179222; c=relaxed/simple;
+	bh=xJ0BwSxFxdUsUIlNJQDdcHSxKk+TgsZ56eVGY9d/bRk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=c7fe8Os4VkFPksBiR3/fZHWeJwj8sxQluEO40q+O8OWsDkdX8ffzoEHJCCTKCdLGOX/5ZLQMTdf2eW5Q0AGk18rUXO+9jxkvu9PLESWA36GW16gFwI3nWsWYuetAYaFuEQS813ZJr3KERLeOxHnwfOtWLbfuZAzuc4ahAmay2mI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X/xFzVMJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D41B8C4CEE3;
-	Tue, 17 Jun 2025 16:07:32 +0000 (UTC)
+	 MIME-Version:Content-Type; b=FeonUVDEef7K3WCVLuATGod3AT3ua8nD1PBxHodyf9SPJ0dO8tIaQOO3PGR5mb4eKbFJkQ4X6ekcmycizimhfyE6VPWdES2B5ZLVLtdwSgfvd/XUjQsm3V+pzzi0r1okJ29sJ8V5P2ikpwmTplpHwX7DSsj1sX1eHE1RNKkVYiU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=10VKi0cZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9262CC4CEE3;
+	Tue, 17 Jun 2025 16:53:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750176453;
-	bh=0wYzuGcVpMImKBJeBp3ZsMOQjFVK2dCf0IJOgRfl59c=;
+	s=korg; t=1750179222;
+	bh=xJ0BwSxFxdUsUIlNJQDdcHSxKk+TgsZ56eVGY9d/bRk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=X/xFzVMJ91ZrQ4Z7tWY1Ht1voc1slbnEIq7+DyvBZ17gOCgxsR5Or3uLF4ml3M+hI
-	 X/v6OYRdeGxLuk8UajsnzyAmHXUz504ytmNlNqPx9BdweJvKZ1qoHtg+NMB9s5hjJp
-	 GCoIsxLuhM38AcufqIBiSXnfVBchxYctOW1BZ1mk=
+	b=10VKi0cZuqQ1Xb9QybAd/fzTwcR+QhlVUk34pHxLnucvJ++Y0/Yw6JWwZDIrCH1+H
+	 BX8CACiQidCQvwGkp4zJGU6RQdmOC8KK6WXN6rYVJDgarJqdh/5dKhV9p2DnfpyaE1
+	 UK+MN6ia1o0EqbjRuxKGHyikcuueL8w37QjS9nvE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Ulf Hansson <ulf.hansson@linaro.org>,
+	Marcus Wichelmann <marcus.wichelmann@hetzner-cloud.de>,
+	Eric Dumazet <edumazet@google.com>,
+	=?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 279/356] pmdomain: core: Fix error checking in genpd_dev_pm_attach_by_id()
+Subject: [PATCH 6.15 686/780] net_sched: sch_sfq: fix a potential crash on gso_skb handling
 Date: Tue, 17 Jun 2025 17:26:34 +0200
-Message-ID: <20250617152349.423427176@linuxfoundation.org>
+Message-ID: <20250617152519.428177953@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152338.212798615@linuxfoundation.org>
-References: <20250617152338.212798615@linuxfoundation.org>
+In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
+References: <20250617152451.485330293@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,47 +62,72 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit 0f5757667ec0aaf2456c3b76fcf0c6c3ea3591fe ]
+[ Upstream commit 82ffbe7776d0ac084031f114167712269bf3d832 ]
 
-The error checking for of_count_phandle_with_args() does not handle
-negative error codes correctly.  The problem is that "index" is a u32 so
-in the condition "if (index >= num_domains)" negative error codes stored
-in "num_domains" are type promoted to very high positive values and
-"index" is always going to be valid.
+SFQ has an assumption of always being able to queue at least one packet.
 
-Test for negative error codes first and then test if "index" is valid.
+However, after the blamed commit, sch->q.len can be inflated by packets
+in sch->gso_skb, and an enqueue() on an empty SFQ qdisc can be followed
+by an immediate drop.
 
-Fixes: 3ccf3f0cd197 ("PM / Domains: Enable genpd_dev_pm_attach_by_id|name() for single PM domain")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/aBxPQ8AI8N5v-7rL@stanley.mountain
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Fix sfq_drop() to properly clear q->tail in this situation.
+
+Tested:
+
+ip netns add lb
+ip link add dev to-lb type veth peer name in-lb netns lb
+ethtool -K to-lb tso off                 # force qdisc to requeue gso_skb
+ip netns exec lb ethtool -K in-lb gro on # enable NAPI
+ip link set dev to-lb up
+ip -netns lb link set dev in-lb up
+ip addr add dev to-lb 192.168.20.1/24
+ip -netns lb addr add dev in-lb 192.168.20.2/24
+tc qdisc replace dev to-lb root sfq limit 100
+
+ip netns exec lb netserver
+
+netperf -H 192.168.20.2 -l 100 &
+netperf -H 192.168.20.2 -l 100 &
+netperf -H 192.168.20.2 -l 100 &
+netperf -H 192.168.20.2 -l 100 &
+
+Fixes: a53851e2c321 ("net: sched: explicit locking in gso_cpu fallback")
+Reported-by: Marcus Wichelmann <marcus.wichelmann@hetzner-cloud.de>
+Closes: https://lore.kernel.org/netdev/9da42688-bfaa-4364-8797-e9271f3bdaef@hetzner-cloud.de/
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: Toke Høiland-Jørgensen <toke@redhat.com>
+Link: https://patch.msgid.link/20250606165127.3629486-1-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/base/power/domain.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/sched/sch_sfq.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/base/power/domain.c b/drivers/base/power/domain.c
-index d9d339b8b5710..d1dae47f3534b 100644
---- a/drivers/base/power/domain.c
-+++ b/drivers/base/power/domain.c
-@@ -2856,7 +2856,7 @@ struct device *genpd_dev_pm_attach_by_id(struct device *dev,
- 	/* Verify that the index is within a valid range. */
- 	num_domains = of_count_phandle_with_args(dev->of_node, "power-domains",
- 						 "#power-domain-cells");
--	if (index >= num_domains)
-+	if (num_domains < 0 || index >= num_domains)
- 		return NULL;
- 
- 	/* Allocate and register device on the genpd bus. */
+diff --git a/net/sched/sch_sfq.c b/net/sched/sch_sfq.c
+index b912ad99aa15d..77fa02f2bfcd5 100644
+--- a/net/sched/sch_sfq.c
++++ b/net/sched/sch_sfq.c
+@@ -310,7 +310,10 @@ static unsigned int sfq_drop(struct Qdisc *sch, struct sk_buff **to_free)
+ 		/* It is difficult to believe, but ALL THE SLOTS HAVE LENGTH 1. */
+ 		x = q->tail->next;
+ 		slot = &q->slots[x];
+-		q->tail->next = slot->next;
++		if (slot->next == x)
++			q->tail = NULL; /* no more active slots */
++		else
++			q->tail->next = slot->next;
+ 		q->ht[slot->hash] = SFQ_EMPTY_SLOT;
+ 		goto drop;
+ 	}
 -- 
 2.39.5
 
