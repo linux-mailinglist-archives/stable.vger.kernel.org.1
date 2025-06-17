@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-153474-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153477-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 46305ADD500
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:15:59 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AEB73ADD4B9
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:13:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C0DE719E0164
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:05:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 46D844082CD
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:05:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F9AD2ECE80;
-	Tue, 17 Jun 2025 16:01:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F19C2ED160;
+	Tue, 17 Jun 2025 16:01:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Lh6reKzM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JjO7a1DE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AFE12EA143;
-	Tue, 17 Jun 2025 16:01:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF5CB2ECE94;
+	Tue, 17 Jun 2025 16:01:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750176081; cv=none; b=UeV6Qb/XI3VxJtp/LuAMD3h0s395Du0qP5aT48qrlDtDNYTOAzetvGLbszg8Vk2G/djD1MdJS4ICB6Fg4EdAj0UfvbK62fHWQ0FhHJdovXWNeOG2cSp9pqK6EX5RRvpN+HqI74KOT49W6iM5gb0UwbzLQFMHqlvQ/wxfQnt4UNE=
+	t=1750176090; cv=none; b=T2+60OR02jdP6dusP/mqIHVQyQZJns23PQSkXqV7puYRtS1IqDFDQHWacNj71K7LjB/OzypAcg3jI6wDv6ySjeKvIG1/x9z2zaFees5dTHnKjePamo0JjW4DheFHg/pXIysQ9nCBVYPK67awOsvmIl697r8L0FNMpv6zcwsULsM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750176081; c=relaxed/simple;
-	bh=GagNELsX2mRGLdz8vUneM2e6Xv66mt3u6Tgncil0gaU=;
+	s=arc-20240116; t=1750176090; c=relaxed/simple;
+	bh=hE7C4zxyudq5a9659cZPVBU/HfOKuk4tas+cvubhx3A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oYrfHXb5BOICVNEHyMmkRDBuyiGX/eF/Id3PtTcQihDl0Y1cASP0V9FCFB0Y/d9QNDvyJo7Jx0KYapXinOYSNRtmH9YhBpiJVJ1mQefABRPwpVcAN4yNt3sHUKFfMk3/341ZqJeFu1J6uFIM6nBGYpGR3EqUOGD6r2Ym9CiRL4w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Lh6reKzM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A99CAC4CEE3;
-	Tue, 17 Jun 2025 16:01:20 +0000 (UTC)
+	 MIME-Version; b=X63o2ayzQmfMqu80WKY0GhiecgCpDWsKuw2+YElPMlgcExa+vaIoAIgjtsAQgMveCLCCGkQqhsO6e/sgIJn+GTllMjDld7xwoLd9kOInFB98WtdC46KUTHKtpnh2P7jAJOTQ9FEQ6bf2k1ukYefp8KR729q/G1hub7h+TIpKF/Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JjO7a1DE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 407BDC4CEE3;
+	Tue, 17 Jun 2025 16:01:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750176081;
-	bh=GagNELsX2mRGLdz8vUneM2e6Xv66mt3u6Tgncil0gaU=;
+	s=korg; t=1750176090;
+	bh=hE7C4zxyudq5a9659cZPVBU/HfOKuk4tas+cvubhx3A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Lh6reKzMqbMnuCBOHDlwQATmN9GdbxOhIPlu/zwBBi4d13Kfcp4VN32VWOADVcZw7
-	 /oYO0I+feaNS5JLJ3xPk4j4CE/95ZjWHJ99/E4nGudc8h2Q2D530hRpda4jshaPI9L
-	 wEU6M3g8zrZJM0btfcNk82QbZmPbJqZamhmuT3n8=
+	b=JjO7a1DEP3EjP7oT2SgzoBys/GGmRcTxDnBXRxEs2nwuSYxZmVfq5+8R9KveoF1zV
+	 iGagrAlnAsc+OksCCm2IlzS3RnMx3TDi6SBIjqKGUnNG2DkyKZEK0xGOy6QWAJ1cYs
+	 RAe1ZCZQfJ/eCgoOgWYnok1lbLi3zlju9q0+5T0A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Yeoreum Yun <yeoreum.yun@arm.com>,
-	Leo Yan <leo.yan@arm.com>,
+	Nicolas Pitre <npitre@baylibre.com>,
+	Jiri Slaby <jirislaby@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 241/356] coresight: prevent deactivate active config while enabling the config
-Date: Tue, 17 Jun 2025 17:25:56 +0200
-Message-ID: <20250617152347.909300902@linuxfoundation.org>
+Subject: [PATCH 6.6 242/356] vt: remove VT_RESIZE and VT_RESIZEX from vt_compat_ioctl()
+Date: Tue, 17 Jun 2025 17:25:57 +0200
+Message-ID: <20250617152347.950925701@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250617152338.212798615@linuxfoundation.org>
 References: <20250617152338.212798615@linuxfoundation.org>
@@ -67,177 +66,37 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Yeoreum Yun <yeoreum.yun@arm.com>
+From: Nicolas Pitre <npitre@baylibre.com>
 
-[ Upstream commit 408c97c4a5e0b634dcd15bf8b8808b382e888164 ]
+[ Upstream commit c4c7ead7b86c1e7f11c64915b7e5bb6d2e242691 ]
 
-While enable active config via cscfg_csdev_enable_active_config(),
-active config could be deactivated via configfs' sysfs interface.
-This could make UAF issue in below scenario:
+They are listed amon those cmd values that "treat 'arg' as an integer"
+which is wrong. They should instead fall into the default case. Probably
+nobody ever relied on that code since 2009 but still.
 
-CPU0                                          CPU1
-(sysfs enable)                                load module
-                                              cscfg_load_config_sets()
-                                              activate config. // sysfs
-                                              (sys_active_cnt == 1)
-...
-cscfg_csdev_enable_active_config()
-lock(csdev->cscfg_csdev_lock)
-// here load config activate by CPU1
-unlock(csdev->cscfg_csdev_lock)
-
-                                              deactivate config // sysfs
-                                              (sys_activec_cnt == 0)
-                                              cscfg_unload_config_sets()
-                                              unload module
-
-// access to config_desc which freed
-// while unloading module.
-cscfg_csdev_enable_config
-
-To address this, use cscfg_config_desc's active_cnt as a reference count
- which will be holded when
-    - activate the config.
-    - enable the activated config.
-and put the module reference when config_active_cnt == 0.
-
-Fixes: f8cce2ff3c04 ("coresight: syscfg: Add API to activate and enable configurations")
-Suggested-by: Suzuki K Poulose <suzuki.poulose@arm.com>
-Signed-off-by: Yeoreum Yun <yeoreum.yun@arm.com>
-Reviewed-by: Leo Yan <leo.yan@arm.com>
-Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
-Link: https://lore.kernel.org/r/20250514161951.3427590-4-yeoreum.yun@arm.com
+Fixes: e92166517e3c ("tty: handle VT specific compat ioctls in vt driver")
+Signed-off-by: Nicolas Pitre <npitre@baylibre.com>
+Reviewed-by: Jiri Slaby <jirislaby@kernel.org>
+Link: https://lore.kernel.org/r/pr214s15-36r8-6732-2pop-159nq85o48r7@syhkavp.arg
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../hwtracing/coresight/coresight-config.h    |  2 +-
- .../hwtracing/coresight/coresight-syscfg.c    | 49 +++++++++++++------
- 2 files changed, 35 insertions(+), 16 deletions(-)
+ drivers/tty/vt/vt_ioctl.c | 2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/drivers/hwtracing/coresight/coresight-config.h b/drivers/hwtracing/coresight/coresight-config.h
-index 6ba0139757418..84cdde6f0e4db 100644
---- a/drivers/hwtracing/coresight/coresight-config.h
-+++ b/drivers/hwtracing/coresight/coresight-config.h
-@@ -228,7 +228,7 @@ struct cscfg_feature_csdev {
-  * @feats_csdev:references to the device features to enable.
-  */
- struct cscfg_config_csdev {
--	const struct cscfg_config_desc *config_desc;
-+	struct cscfg_config_desc *config_desc;
- 	struct coresight_device *csdev;
- 	bool enabled;
- 	struct list_head node;
-diff --git a/drivers/hwtracing/coresight/coresight-syscfg.c b/drivers/hwtracing/coresight/coresight-syscfg.c
-index 11138a9762b01..30a561d874819 100644
---- a/drivers/hwtracing/coresight/coresight-syscfg.c
-+++ b/drivers/hwtracing/coresight/coresight-syscfg.c
-@@ -867,6 +867,25 @@ void cscfg_csdev_reset_feats(struct coresight_device *csdev)
- }
- EXPORT_SYMBOL_GPL(cscfg_csdev_reset_feats);
+diff --git a/drivers/tty/vt/vt_ioctl.c b/drivers/tty/vt/vt_ioctl.c
+index 8c685b5014044..5b21b60547da1 100644
+--- a/drivers/tty/vt/vt_ioctl.c
++++ b/drivers/tty/vt/vt_ioctl.c
+@@ -1105,8 +1105,6 @@ long vt_compat_ioctl(struct tty_struct *tty,
+ 	case VT_WAITACTIVE:
+ 	case VT_RELDISP:
+ 	case VT_DISALLOCATE:
+-	case VT_RESIZE:
+-	case VT_RESIZEX:
+ 		return vt_ioctl(tty, cmd, arg);
  
-+static bool cscfg_config_desc_get(struct cscfg_config_desc *config_desc)
-+{
-+	if (!atomic_fetch_inc(&config_desc->active_cnt)) {
-+		/* must ensure that config cannot be unloaded in use */
-+		if (unlikely(cscfg_owner_get(config_desc->load_owner))) {
-+			atomic_dec(&config_desc->active_cnt);
-+			return false;
-+		}
-+	}
-+
-+	return true;
-+}
-+
-+static void cscfg_config_desc_put(struct cscfg_config_desc *config_desc)
-+{
-+	if (!atomic_dec_return(&config_desc->active_cnt))
-+		cscfg_owner_put(config_desc->load_owner);
-+}
-+
- /*
-  * This activate configuration for either perf or sysfs. Perf can have multiple
-  * active configs, selected per event, sysfs is limited to one.
-@@ -890,22 +909,17 @@ static int _cscfg_activate_config(unsigned long cfg_hash)
- 			if (config_desc->available == false)
- 				return -EBUSY;
- 
--			/* must ensure that config cannot be unloaded in use */
--			err = cscfg_owner_get(config_desc->load_owner);
--			if (err)
-+			if (!cscfg_config_desc_get(config_desc)) {
-+				err = -EINVAL;
- 				break;
-+			}
-+
- 			/*
- 			 * increment the global active count - control changes to
- 			 * active configurations
- 			 */
- 			atomic_inc(&cscfg_mgr->sys_active_cnt);
- 
--			/*
--			 * mark the descriptor as active so enable config on a
--			 * device instance will use it
--			 */
--			atomic_inc(&config_desc->active_cnt);
--
- 			err = 0;
- 			dev_dbg(cscfg_device(), "Activate config %s.\n", config_desc->name);
- 			break;
-@@ -920,9 +934,8 @@ static void _cscfg_deactivate_config(unsigned long cfg_hash)
- 
- 	list_for_each_entry(config_desc, &cscfg_mgr->config_desc_list, item) {
- 		if ((unsigned long)config_desc->event_ea->var == cfg_hash) {
--			atomic_dec(&config_desc->active_cnt);
- 			atomic_dec(&cscfg_mgr->sys_active_cnt);
--			cscfg_owner_put(config_desc->load_owner);
-+			cscfg_config_desc_put(config_desc);
- 			dev_dbg(cscfg_device(), "Deactivate config %s.\n", config_desc->name);
- 			break;
- 		}
-@@ -1047,7 +1060,7 @@ int cscfg_csdev_enable_active_config(struct coresight_device *csdev,
- 				     unsigned long cfg_hash, int preset)
- {
- 	struct cscfg_config_csdev *config_csdev_active = NULL, *config_csdev_item;
--	const struct cscfg_config_desc *config_desc;
-+	struct cscfg_config_desc *config_desc;
- 	unsigned long flags;
- 	int err = 0;
- 
-@@ -1062,8 +1075,8 @@ int cscfg_csdev_enable_active_config(struct coresight_device *csdev,
- 	spin_lock_irqsave(&csdev->cscfg_csdev_lock, flags);
- 	list_for_each_entry(config_csdev_item, &csdev->config_csdev_list, node) {
- 		config_desc = config_csdev_item->config_desc;
--		if ((atomic_read(&config_desc->active_cnt)) &&
--		    ((unsigned long)config_desc->event_ea->var == cfg_hash)) {
-+		if (((unsigned long)config_desc->event_ea->var == cfg_hash) &&
-+				cscfg_config_desc_get(config_desc)) {
- 			config_csdev_active = config_csdev_item;
- 			csdev->active_cscfg_ctxt = (void *)config_csdev_active;
- 			break;
-@@ -1097,7 +1110,11 @@ int cscfg_csdev_enable_active_config(struct coresight_device *csdev,
- 				err = -EBUSY;
- 			spin_unlock_irqrestore(&csdev->cscfg_csdev_lock, flags);
- 		}
-+
-+		if (err)
-+			cscfg_config_desc_put(config_desc);
- 	}
-+
- 	return err;
- }
- EXPORT_SYMBOL_GPL(cscfg_csdev_enable_active_config);
-@@ -1136,8 +1153,10 @@ void cscfg_csdev_disable_active_config(struct coresight_device *csdev)
- 	spin_unlock_irqrestore(&csdev->cscfg_csdev_lock, flags);
- 
- 	/* true if there was an enabled active config */
--	if (config_csdev)
-+	if (config_csdev) {
- 		cscfg_csdev_disable_config(config_csdev);
-+		cscfg_config_desc_put(config_csdev->config_desc);
-+	}
- }
- EXPORT_SYMBOL_GPL(cscfg_csdev_disable_active_config);
- 
+ 	/*
 -- 
 2.39.5
 
