@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-153229-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153232-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9D07CADD365
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 17:57:30 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 78AEFADD332
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 17:54:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D307619415B3
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 15:51:54 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5437E2C02EC
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 15:51:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7104D2ED14F;
-	Tue, 17 Jun 2025 15:48:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2CDD82EF285;
+	Tue, 17 Jun 2025 15:48:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HoaWYSU3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Q1HtHMO8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C7B92EA173;
-	Tue, 17 Jun 2025 15:48:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD0532EA176;
+	Tue, 17 Jun 2025 15:48:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750175290; cv=none; b=pbkoDg1i7IwA+IECP8Tury9nTmh+k+2iT92lYx8FsUQTWmwGia7Sb5okevAw8uRVVU4RyHlB59cUil54VdMw9xYNSywv8XXWSJuVG0auT1fnzQ60GmEj8Jecks6RKXmxw3YRVJeMjuefyBP2uUQ6tTk8lyTLcQ6V8nIVK6/JLlw=
+	t=1750175300; cv=none; b=lTpnRMTOcPR4BDvHocjJvdVrC0wt8EVEa+FNy5BZDzhi7p7fw1EQZHkYcZPDxV84RgUiDnUvZEhVb3k/ClvHTsWXek+RhiicIAdRWsJtftSGXSLW9lt8p6QjeWjFxzx81Uct0crLOSrcf/w/hXyfG+2EO0pibSRdRPoo0ns3RYA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750175290; c=relaxed/simple;
-	bh=tm8y/fJBuYicXPwKwrlCulH3eVqGku2Jrz2lbRh5njU=;
+	s=arc-20240116; t=1750175300; c=relaxed/simple;
+	bh=dNO4GGfd7fqFGNZ2KJPI9Zbm7SCi2ykHPsEvWTtmcb0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KNtMVs0o2jyVwag/zBrR2Twb/mITJpXYhj0Bfw3q3bH/sf4vPMFxfkhwGWMSjyoItWYk9Um61vpyNsU8f+Az5RodCRyOJ2hOji0gTDiVWs4jPliy8tycDZNzUaOkpESRRhuIe8hcQBe6UzEn0SmpLLmJh9JkLchZU+yRR+fAMiE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HoaWYSU3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F431C4CEE3;
-	Tue, 17 Jun 2025 15:48:09 +0000 (UTC)
+	 MIME-Version; b=WR7cLxPkKzTSv72zsyzt8mWRNDccWfZTW25Um51CKzN/T8YNSs3/T5uZwu6MmyXySNS1Oon/uEDSIHGwK45x4R5D5qguecHrg8g5WR5gCpH/LfylJfoY2cp+r78ydYqKoj2Ky/2vtIIS/QuG86yR7G1P1nO4B+wjQM0gSMpsE/c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Q1HtHMO8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4DC6AC4CEE7;
+	Tue, 17 Jun 2025 15:48:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750175290;
-	bh=tm8y/fJBuYicXPwKwrlCulH3eVqGku2Jrz2lbRh5njU=;
+	s=korg; t=1750175299;
+	bh=dNO4GGfd7fqFGNZ2KJPI9Zbm7SCi2ykHPsEvWTtmcb0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HoaWYSU3kRwi/QzAzZuAxr1esx7qgLE4buF55bHXb1YMB9Cl7vIrv5a+vDOtPKFWx
-	 fJ4OhYGJm50d5Wp8Fl4dgFdIoAOrrh7utNdTjL8Hvwsa3Hcc0vHKlCSWRXEBvVEyFB
-	 H3T2Er0PvfjxCJBfyKj+9n9tVChgH+K13blkiz2A=
+	b=Q1HtHMO8eooBxzm+hhNJ6KztSrw/ZgvV9SrZMzFgh+AXQVWsetzptoz6lYU57gs8K
+	 PWO/WuExJJrsuOQMtFqfeYbs4/4p4Xp7vKsMKGpHZa9mG9QdAtnxKOJBp7mA34xGcY
+	 dB/MPaNvBE0IJ8kiX7lshM8YBVvDdnNZL/quXYr8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Luca Weiss <luca.weiss@fairphone.com>,
-	Stephan Gerhold <stephan.gerhold@linaro.org>,
+	Xilin Wu <wuxilin123@gmail.com>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
 	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 161/356] arm64: dts: qcom: sm8350: Reenable crypto & cryptobam
-Date: Tue, 17 Jun 2025 17:24:36 +0200
-Message-ID: <20250617152344.704074744@linuxfoundation.org>
+Subject: [PATCH 6.6 162/356] arm64: dts: qcom: sm8250: Fix CPU7 opp table
+Date: Tue, 17 Jun 2025 17:24:37 +0200
+Message-ID: <20250617152344.741479180@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250617152338.212798615@linuxfoundation.org>
 References: <20250617152338.212798615@linuxfoundation.org>
@@ -67,57 +67,39 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Luca Weiss <luca.weiss@fairphone.com>
+From: Xilin Wu <wuxilin123@gmail.com>
 
-[ Upstream commit 75eefd474469abf95aa9ef6da8161d69f86b98b4 ]
+[ Upstream commit 28f997b89967afdc0855d8aa7538b251fb44f654 ]
 
-When num-channels and qcom,num-ees is not provided in devicetree, the
-driver will try to read these values from the registers during probe but
-this fails if the interconnect is not on and then crashes the system.
+There is a typo in cpu7_opp9. Fix it to get rid of the following
+errors.
 
-So we can provide these properties in devicetree (queried after patching
-BAM driver to enable the necessary interconnect) so we can probe
-cryptobam without reading registers and then also use the QCE as
-expected.
+[    0.198043] cpu cpu7: Voltage update failed freq=1747200
+[    0.198052] cpu cpu7: failed to update OPP for freq=1747200
 
-Fixes: 4d29db204361 ("arm64: dts: qcom: sm8350: fix BAM DMA crash and reboot")
-Fixes: f1040a7fe8f0 ("arm64: dts: qcom: sm8350: Add Crypto Engine support")
-Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
-Signed-off-by: Stephan Gerhold <stephan.gerhold@linaro.org>
-Link: https://lore.kernel.org/r/20250212-bam-dma-fixes-v1-1-f560889e65d8@linaro.org
+Fixes: 8e0e8016cb79 ("arm64: dts: qcom: sm8250: Add CPU opp tables")
+Signed-off-by: Xilin Wu <wuxilin123@gmail.com>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Link: https://lore.kernel.org/r/20250308-fix-sm8250-cpufreq-v1-1-8a0226721399@gmail.com
 Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/sm8350.dtsi | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ arch/arm64/boot/dts/qcom/sm8250.dtsi | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm64/boot/dts/qcom/sm8350.dtsi b/arch/arm64/boot/dts/qcom/sm8350.dtsi
-index 5376c0a00fab6..215782b1970df 100644
---- a/arch/arm64/boot/dts/qcom/sm8350.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sm8350.dtsi
-@@ -1754,11 +1754,11 @@
- 			interrupts = <GIC_SPI 272 IRQ_TYPE_LEVEL_HIGH>;
- 			#dma-cells = <1>;
- 			qcom,ee = <0>;
-+			qcom,num-ees = <4>;
-+			num-channels = <16>;
- 			qcom,controlled-remotely;
- 			iommus = <&apps_smmu 0x594 0x0011>,
- 				 <&apps_smmu 0x596 0x0011>;
--			/* FIXME: Probing BAM DMA causes some abort and system hang */
--			status = "fail";
+diff --git a/arch/arm64/boot/dts/qcom/sm8250.dtsi b/arch/arm64/boot/dts/qcom/sm8250.dtsi
+index 21bbffc4e5a28..c9a7d1b75c658 100644
+--- a/arch/arm64/boot/dts/qcom/sm8250.dtsi
++++ b/arch/arm64/boot/dts/qcom/sm8250.dtsi
+@@ -601,7 +601,7 @@
  		};
  
- 		crypto: crypto@1dfa000 {
-@@ -1770,8 +1770,6 @@
- 				 <&apps_smmu 0x596 0x0011>;
- 			interconnects = <&aggre2_noc MASTER_CRYPTO 0 &mc_virt SLAVE_EBI1 0>;
- 			interconnect-names = "memory";
--			/* FIXME: dependency BAM DMA is disabled */
--			status = "disabled";
+ 		cpu7_opp9: opp-1747200000 {
+-			opp-hz = /bits/ 64 <1708800000>;
++			opp-hz = /bits/ 64 <1747200000>;
+ 			opp-peak-kBps = <5412000 42393600>;
  		};
  
- 		ipa: ipa@1e40000 {
 -- 
 2.39.5
 
