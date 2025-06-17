@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-154356-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153323-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 71403ADD7FF
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:51:09 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A54EADD3FA
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:05:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9E18E7ADFD4
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:49:32 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4ABB6189572F
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 15:56:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A08F2DFF3C;
-	Tue, 17 Jun 2025 16:48:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 95C022ED157;
+	Tue, 17 Jun 2025 15:52:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="prRIg0hz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l+xjr1Vz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46A831FBEA8;
-	Tue, 17 Jun 2025 16:48:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 524312ED14E;
+	Tue, 17 Jun 2025 15:52:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750178932; cv=none; b=FyxTvKHVmqIY7C68ygVY1aoXJZBZ+9QK0zxpPSoImcPHSz/ETDtOYa9d3XI9ze+cfPEbYFYUuLkmtfkwjxAqPWDD93CMea0mC2LIgFS2jmUMu2MJNJmryMAfU9OC0z3vWbfR4+U9vxX/xTq4Pl7oFScimCGHBVEsVOvZOjVkxzc=
+	t=1750175578; cv=none; b=qHBIlbx/wl4m5yBTLG+kH69c0LCm5RQnUE0IUlaLR4rzW9E+Jwp21wxI8qGXMNcc5PNeFvYCRvgB47PzO50iA4NWJxZs0hL1013Jh4+aJwSPdViUo3nUWrUBINe4jL9hMoFOTfYvYMc0QCS0AT0jk9fxUYBiIwudYqstQwZmBU0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750178932; c=relaxed/simple;
-	bh=5qPsKGinyHwuCvXkxgmNIbpDfmTylHcePJVmPjnlcCw=;
+	s=arc-20240116; t=1750175578; c=relaxed/simple;
+	bh=DTu4Lz1nZbGOBiCJ5SuBh2FXA/8dHxYlEJncagWWoDQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bGuWPwhozBvBupuTo3p+m7YkoGkETSbMuLfA+7X8vaHSsrMqWunvvZdxvPnEc1/PlaBSEkTJShqm5rhlwpkx20zbbmgwiGkNa1BtqwTqB93iinhDj6fJ77BifRHvEH2ZNrFMUzwUtpknbx9Pv1ryychXZs5Q/Cd10cAN55KsSOs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=prRIg0hz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4CB0C4CEE3;
-	Tue, 17 Jun 2025 16:48:51 +0000 (UTC)
+	 MIME-Version; b=RXi2BMAJf7M5/KPAcfED/7vp9U2CoU+zOEjITY2LcV18fhDKouTHU5OKudy2ibhZY4rU9r4xK7892va/j9PtVfTTpJU56/vpvwDlI/QzsMojFgOdb/ZMJptBcGZn/YcqEqAllKhBH35qixMzC1uJSS9JF2TNYGheS4dHt7bk/3Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l+xjr1Vz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5DACC4CEE3;
+	Tue, 17 Jun 2025 15:52:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750178932;
-	bh=5qPsKGinyHwuCvXkxgmNIbpDfmTylHcePJVmPjnlcCw=;
+	s=korg; t=1750175578;
+	bh=DTu4Lz1nZbGOBiCJ5SuBh2FXA/8dHxYlEJncagWWoDQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=prRIg0hzUQIFSqJMcM/VLbSzUQBbJiarSi7ci35jNDvHIswL8YLAxHVZUl2WHhJP9
-	 XsCPUxfpPywJRVSpxvi/fffeT1H93U+ndE7alXBp9Qa+QH3+aTjj19bta2cCvvcesU
-	 sOtF+uo1lvecwlNnvbFGu2AVUlWw1icN0rgENn1U=
+	b=l+xjr1Vzw6SWzMCU9i6fwNLmyXq9vp6uqXJ0V2aIxP9PR6ikl+kxSF6ifS7lYVk+q
+	 iXW1gJtm5rYHsu7jPW8pTTv7q9lQQczQxxcz6oLy5Yc9rkxYrRt8k+eNn6OftuCE+W
+	 fuFVCAQtzWDYCgT1quASxaOlBgYyfrorOaWhdEu4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-	Rafal Romanowski <rafal.romanowski@intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Thuan Nguyen <thuan.nguyen-hong@banvien.com.vn>,
+	Duy Nguyen <duy.nguyen.rh@renesas.com>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 596/780] iavf: sprinkle netdev_assert_locked() annotations
-Date: Tue, 17 Jun 2025 17:25:04 +0200
-Message-ID: <20250617152515.758397059@linuxfoundation.org>
+Subject: [PATCH 6.6 190/356] arm64: dts: renesas: white-hawk-ard-audio: Fix TPU0 groups
+Date: Tue, 17 Jun 2025 17:25:05 +0200
+Message-ID: <20250617152345.858113854@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
-References: <20250617152451.485330293@linuxfoundation.org>
+In-Reply-To: <20250617152338.212798615@linuxfoundation.org>
+References: <20250617152338.212798615@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,108 +64,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+From: Thuan Nguyen <thuan.nguyen-hong@banvien.com.vn>
 
-[ Upstream commit 05702b5c949bd46243181833d4726f4c5e95f5e3 ]
+[ Upstream commit 652eea251dd852f02cef6223f367220acb3d1867 ]
 
-Lockdep annotations help in general, but here it is extra good, as next
-commit will remove crit lock.
+White Hawk ARD audio uses a clock generated by the TPU, but commit
+3d144ef10a44 ("pinctrl: renesas: r8a779g0: Fix TPU suffixes") renamed
+pin group "tpu_to0_a" to "tpu_to0_b".  Update DTS accordingly otherwise
+the sound driver does not receive a clock signal.
 
-Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
-Signed-off-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
-Tested-by: Rafal Romanowski <rafal.romanowski@intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
-Stable-dep-of: 120f28a6f314 ("iavf: get rid of the crit lock")
+Fixes: 3d144ef10a448f89 ("pinctrl: renesas: r8a779g0: Fix TPU suffixes")
+Signed-off-by: Thuan Nguyen <thuan.nguyen-hong@banvien.com.vn>
+Signed-off-by: Duy Nguyen <duy.nguyen.rh@renesas.com>
+Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Acked-by: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
+Link: https://lore.kernel.org/TYCPR01MB8740608B675365215ADB0374B49CA@TYCPR01MB8740.jpnprd01.prod.outlook.com
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/iavf/iavf_ethtool.c |  6 ++++++
- drivers/net/ethernet/intel/iavf/iavf_main.c    | 10 ++++++++++
- 2 files changed, 16 insertions(+)
+ .../boot/dts/renesas/r8a779g0-white-hawk-ard-audio-da7212.dtso  | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/intel/iavf/iavf_ethtool.c b/drivers/net/ethernet/intel/iavf/iavf_ethtool.c
-index 288bb5b2e72ef..03d86fe80ad91 100644
---- a/drivers/net/ethernet/intel/iavf/iavf_ethtool.c
-+++ b/drivers/net/ethernet/intel/iavf/iavf_ethtool.c
-@@ -4,6 +4,8 @@
- #include <linux/bitfield.h>
- #include <linux/uaccess.h>
+diff --git a/arch/arm64/boot/dts/renesas/r8a779g0-white-hawk-ard-audio-da7212.dtso b/arch/arm64/boot/dts/renesas/r8a779g0-white-hawk-ard-audio-da7212.dtso
+index e6f53377ecd90..99f62574bc3c2 100644
+--- a/arch/arm64/boot/dts/renesas/r8a779g0-white-hawk-ard-audio-da7212.dtso
++++ b/arch/arm64/boot/dts/renesas/r8a779g0-white-hawk-ard-audio-da7212.dtso
+@@ -108,7 +108,7 @@
+ 	};
  
-+#include <net/netdev_lock.h>
-+
- /* ethtool support for iavf */
- #include "iavf.h"
- 
-@@ -1259,6 +1261,8 @@ static int iavf_add_fdir_ethtool(struct iavf_adapter *adapter, struct ethtool_rx
- 	int count = 50;
- 	int err;
- 
-+	netdev_assert_locked(adapter->netdev);
-+
- 	if (!(adapter->flags & IAVF_FLAG_FDIR_ENABLED))
- 		return -EOPNOTSUPP;
- 
-@@ -1440,6 +1444,8 @@ iavf_set_adv_rss_hash_opt(struct iavf_adapter *adapter,
- 	u64 hash_flds;
- 	u32 hdrs;
- 
-+	netdev_assert_locked(adapter->netdev);
-+
- 	if (!ADV_RSS_SUPPORT(adapter))
- 		return -EOPNOTSUPP;
- 
-diff --git a/drivers/net/ethernet/intel/iavf/iavf_main.c b/drivers/net/ethernet/intel/iavf/iavf_main.c
-index 4b6963ffaba5f..bf8c7baf2ab8a 100644
---- a/drivers/net/ethernet/intel/iavf/iavf_main.c
-+++ b/drivers/net/ethernet/intel/iavf/iavf_main.c
-@@ -1292,6 +1292,8 @@ static void iavf_configure(struct iavf_adapter *adapter)
-  **/
- static void iavf_up_complete(struct iavf_adapter *adapter)
- {
-+	netdev_assert_locked(adapter->netdev);
-+
- 	iavf_change_state(adapter, __IAVF_RUNNING);
- 	clear_bit(__IAVF_VSI_DOWN, adapter->vsi.state);
- 
-@@ -1417,6 +1419,8 @@ void iavf_down(struct iavf_adapter *adapter)
- {
- 	struct net_device *netdev = adapter->netdev;
- 
-+	netdev_assert_locked(netdev);
-+
- 	if (adapter->state <= __IAVF_DOWN_PENDING)
- 		return;
- 
-@@ -3078,6 +3082,8 @@ static void iavf_disable_vf(struct iavf_adapter *adapter)
- 	struct iavf_vlan_filter *fv, *fvtmp;
- 	struct iavf_cloud_filter *cf, *cftmp;
- 
-+	netdev_assert_locked(adapter->netdev);
-+
- 	adapter->flags |= IAVF_FLAG_PF_COMMS_FAILED;
- 
- 	/* We don't use netif_running() because it may be true prior to
-@@ -5194,6 +5200,8 @@ iavf_shaper_set(struct net_shaper_binding *binding,
- 	struct iavf_ring *tx_ring;
- 	int ret = 0;
- 
-+	netdev_assert_locked(adapter->netdev);
-+
- 	mutex_lock(&adapter->crit_lock);
- 	if (handle->id >= adapter->num_active_queues)
- 		goto unlock;
-@@ -5222,6 +5230,8 @@ static int iavf_shaper_del(struct net_shaper_binding *binding,
- 	struct iavf_adapter *adapter = netdev_priv(binding->netdev);
- 	struct iavf_ring *tx_ring;
- 
-+	netdev_assert_locked(adapter->netdev);
-+
- 	mutex_lock(&adapter->crit_lock);
- 	if (handle->id >= adapter->num_active_queues)
- 		goto unlock;
+ 	tpu0_pins: tpu0 {
+-		groups = "tpu_to0_a";
++		groups = "tpu_to0_b";
+ 		function = "tpu";
+ 	};
+ };
 -- 
 2.39.5
 
