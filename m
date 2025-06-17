@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-153852-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153854-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7272EADD67E
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:34:19 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3EBEBADD6BF
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:36:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EBEE32C54A6
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:27:10 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9FDE92C35D4
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:27:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 302CA2F237E;
-	Tue, 17 Jun 2025 16:21:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7608A2F2C41;
+	Tue, 17 Jun 2025 16:21:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w1uhU4ur"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Rtzf8Dyp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE02A2EF281;
-	Tue, 17 Jun 2025 16:21:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 319202EE61A;
+	Tue, 17 Jun 2025 16:21:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750177306; cv=none; b=Bpfsw4ImFeB5la3toFsP7VIwzStRUM7H6iw+yDkAcsQcPATscI2neZgYxZUbJvc2bmFHxeuYExWkXHY4IhOmLqkWIf0ZWFe3ETw4qhpOdnTeZi4kfhEwwb+pTmf4cBASaRxAeHW+VHnJ5yVQ+8nrpvQHjQvmrdUl75wp/BZdeqY=
+	t=1750177312; cv=none; b=pD8PHl2zD//2F+oXpRCYLxzESATLhoEbrSx3bYGsPLwCitfRRCEZsoXdcJGXrvmJqQKXmug+Bi+HJ3yJvdaIPhT9MVNtbl+YM0UlZtPNLg17/EskaSTjjT7s6Rq08huw9TXzJJZDuaBFzbYYmSBPjPkMR67HrX/3mMd+m+OvgcQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750177306; c=relaxed/simple;
-	bh=6IF5JfJhBrr5zgJSYos60XQLyphNjvQ5eMSy+hr7Nss=;
+	s=arc-20240116; t=1750177312; c=relaxed/simple;
+	bh=etrEsRUGKjPJuaQYO/Y8UzT3kEl/SJiljWIEiayn+Qw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=YAMPYobiXoxfvMpiO2aI6akaCOkXE7Lzlq5iF8GXem1v0r1YTNVMdQxvjbnoMAR4DPpDdZYZ1bxYUEit9jXpBk6wNcXpi+lV6XELJaZBruCKeFNCdOQZ+mTFW0x4P94dgQ5VmFDZ5FnLMmvQuEhA1H5kGMWsHyM9c7pndgxwG00=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w1uhU4ur; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 584DEC4CEE3;
-	Tue, 17 Jun 2025 16:21:45 +0000 (UTC)
+	 MIME-Version; b=GUBN4wkJEcLGCFhPA3xt2HGtcj64ZvKvCHTf2UylzbiwhKnVvvE46OcDP7Px9XKqIu4XDDKy0nRCRR53GYxKXPRPydirVzuTZ0ELlkCnJpWx7l9mL8xwDAYiUJtFkdbMBosq+2AIBGXJBnsATNXaQybvHHiYd92oQ2G6lQNkqoQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Rtzf8Dyp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0CB3C4CEE3;
+	Tue, 17 Jun 2025 16:21:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750177305;
-	bh=6IF5JfJhBrr5zgJSYos60XQLyphNjvQ5eMSy+hr7Nss=;
+	s=korg; t=1750177312;
+	bh=etrEsRUGKjPJuaQYO/Y8UzT3kEl/SJiljWIEiayn+Qw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=w1uhU4urUxX0UlAkKV5qcgXSlVpJrpgFNRHJZp3V2aPGuW5BsjdCQI7yfrcietVS1
-	 4ieYDJMCBDMza8YJIrCBEt2Ix445gTGy1/Jj68PtfbqWFz3fsWRLPTFME53UFjgwQ4
-	 i5E8DorSk03MeFw54qmU+kMx/8XnUdvwtpAWRR1I=
+	b=Rtzf8DypLZV+hKT7wih1mshDvcFKqf0k/IYERr71WCzGU2ktG7jJvvrXzhNnhkDip
+	 zG59+IvMqX3Zorw2faOmLl40ZPncHP+FE8wdPGb4jit4eoRZdBNUbCfjPZIV4yFbNA
+	 KiFSdJgtFtrDuDXPCS8GlG5MMb1MwBStxeLITc0U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chen Ridong <chenridong@huawei.com>,
-	=?UTF-8?q?Michal=20Koutn=C3=BD?= <mkoutny@suse.com>,
-	Tejun Heo <tj@kernel.org>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Felix Fietkau <nbd@nbd.name>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 287/780] kernfs: Relax constraint in draining guard
-Date: Tue, 17 Jun 2025 17:19:55 +0200
-Message-ID: <20250617152503.157635900@linuxfoundation.org>
+Subject: [PATCH 6.15 288/780] wifi: mt76: mt7925: Fix logical vs bitwise typo
+Date: Tue, 17 Jun 2025 17:19:56 +0200
+Message-ID: <20250617152503.202018811@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
 References: <20250617152451.485330293@linuxfoundation.org>
@@ -61,90 +60,40 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michal Koutný <mkoutny@suse.com>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-[ Upstream commit 071d8e4c2a3b0999a9b822e2eb8854784a350f8a ]
+[ Upstream commit 88224119863c39fa67581874e1ba218fa56113b4 ]
 
-The active reference lifecycle provides the break/unbreak mechanism but
-the active reference is not truly active after unbreak -- callers don't
-use it afterwards but it's important for proper pairing of kn->active
-counting. Assuming this mechanism is in place, the WARN check in
-kernfs_should_drain_open_files() is too sensitive -- it may transiently
-catch those (rightful) callers between
-kernfs_unbreak_active_protection() and kernfs_put_active() as found out by Chen
-Ridong:
+This was supposed to be & instead of &&.
 
-	kernfs_remove_by_name_ns	kernfs_get_active // active=1
-	__kernfs_remove					  // active=0x80000002
-	kernfs_drain			...
-	wait_event
-	//waiting (active == 0x80000001)
-					kernfs_break_active_protection
-					// active = 0x80000001
-	// continue
-					kernfs_unbreak_active_protection
-					// active = 0x80000002
-	...
-	kernfs_should_drain_open_files
-	// warning occurs
-					kernfs_put_active
-
-To avoid the false positives (mind panic_on_warn) remove the check altogether.
-(This is meant as quick fix, I think active reference break/unbreak may be
-simplified with larger rework.)
-
-Fixes: bdb2fd7fc56e1 ("kernfs: Skip kernfs_drain_open_files() more aggressively")
-Link: https://lore.kernel.org/r/kmmrseckjctb4gxcx2rdminrjnq2b4ipf7562nvfd432ld5v5m@2byj5eedkb2o/
-
-Cc: Chen Ridong <chenridong@huawei.com>
-Signed-off-by: Michal Koutný <mkoutny@suse.com>
-Acked-by: Tejun Heo <tj@kernel.org>
-Link: https://lore.kernel.org/r/20250505121201.879823-1-mkoutny@suse.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: f0317215b367 ("wifi: mt76: mt7925: add EHT control support based on the CLC data")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Link: https://patch.msgid.link/d323a443-4e81-4064-8563-b62274b53ef4@stanley.mountain
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/kernfs/dir.c  | 5 +++--
- fs/kernfs/file.c | 3 ++-
- 2 files changed, 5 insertions(+), 3 deletions(-)
+ drivers/net/wireless/mediatek/mt76/mt7925/init.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/kernfs/dir.c b/fs/kernfs/dir.c
-index fc70d72c3fe80..43487fa83eaea 100644
---- a/fs/kernfs/dir.c
-+++ b/fs/kernfs/dir.c
-@@ -1580,8 +1580,9 @@ void kernfs_break_active_protection(struct kernfs_node *kn)
-  * invoked before finishing the kernfs operation.  Note that while this
-  * function restores the active reference, it doesn't and can't actually
-  * restore the active protection - @kn may already or be in the process of
-- * being removed.  Once kernfs_break_active_protection() is invoked, that
-- * protection is irreversibly gone for the kernfs operation instance.
-+ * being drained and removed.  Once kernfs_break_active_protection() is
-+ * invoked, that protection is irreversibly gone for the kernfs operation
-+ * instance.
-  *
-  * While this function may be called at any point after
-  * kernfs_break_active_protection() is invoked, its most useful location
-diff --git a/fs/kernfs/file.c b/fs/kernfs/file.c
-index 66fe8fe41f060..a6c692cac6165 100644
---- a/fs/kernfs/file.c
-+++ b/fs/kernfs/file.c
-@@ -778,8 +778,9 @@ bool kernfs_should_drain_open_files(struct kernfs_node *kn)
- 	/*
- 	 * @kn being deactivated guarantees that @kn->attr.open can't change
- 	 * beneath us making the lockless test below safe.
-+	 * Callers post kernfs_unbreak_active_protection may be counted in
-+	 * kn->active by now, do not WARN_ON because of them.
- 	 */
--	WARN_ON_ONCE(atomic_read(&kn->active) != KN_DEACTIVATED_BIAS);
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/init.c b/drivers/net/wireless/mediatek/mt76/mt7925/init.c
+index 63cb08f4d87cc..79639be0d29ac 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7925/init.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7925/init.c
+@@ -89,7 +89,7 @@ void mt7925_regd_be_ctrl(struct mt792x_dev *dev, u8 *alpha2)
+ 		}
  
- 	rcu_read_lock();
- 	on = rcu_dereference(kn->attr.open);
+ 		/* Check the last one */
+-		if (rule->flag && BIT(0))
++		if (rule->flag & BIT(0))
+ 			break;
+ 
+ 		pos += sizeof(*rule);
 -- 
 2.39.5
 
