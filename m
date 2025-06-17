@@ -1,52 +1,53 @@
-Return-Path: <stable+bounces-152981-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-152983-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id A9150ADD1D8
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 17:35:43 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BFAAAADD1C0
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 17:34:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 832727A9528
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 15:33:07 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A5F023B03B0
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 15:34:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4FC02EBDC0;
-	Tue, 17 Jun 2025 15:34:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9A112EBDC0;
+	Tue, 17 Jun 2025 15:34:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RoiFXZQu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DwLo/5X6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71FC5293443;
-	Tue, 17 Jun 2025 15:34:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 751E01E8332;
+	Tue, 17 Jun 2025 15:34:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750174465; cv=none; b=Z7F6NWfaauIDfeAjSMWBynGNxFwTNfRMj3yEPo9pOcDbmkQL7s5XRowo3QzCoEabYVdScNPQpucykiru0Z7naxpRS50nYNkhlhMXHK7fzZuj9ShYBhfu5xR9k3BVBDbPWRyGcrUQBuyqHFuflVbJzZkpqj3PyNfvSWogldv3IRM=
+	t=1750174471; cv=none; b=eMb/yJ0BZrEWHbxB1G2sqy87zaDRROfzmHTqor4hq4h29oJiXh/TYWL+QQh1SUC9VKUobMzZJd2jtpQCBDos9uwM23Y4ZRRVYL30vjisao1ECjAjbwK7Hfzsn7NFgpZNeejxiK33ijvctr/+ofnZH6OtSfmRSBgCzkLukBhIljs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750174465; c=relaxed/simple;
-	bh=jQ00OOuTx9dyxC5UkcFyhV0VXL0aLL5dkbz9xGYnzXg=;
+	s=arc-20240116; t=1750174471; c=relaxed/simple;
+	bh=BpwGGftfzDuyQ2ojm9i7RifdTIBPPlmLYqmdgPgthyg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NBrnE1FkEG8nGhxAsMT/N1XEZ9z4sc7sISzCBKamu6BIydj5NIosSgvqxEYx8x4QyFf01j/SPQmmOSTExw3Gdpn+IOMdU5/0jUISvfzrGn8y7kOQ6Dew+mH+IkaByPktTxSMRElrHTtkdZfM9cQ4kUepmZ2PEGJ7nP4fz0sfbSk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RoiFXZQu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E847BC4CEE3;
-	Tue, 17 Jun 2025 15:34:24 +0000 (UTC)
+	 MIME-Version; b=B/gG9DRgMEW1RqOhr5eD4zCgEayH4AOnuQ9XTbcYW9AkMCxEo0PqLeuIsIybUGqFlQfO4Ub91RltY7gtQh1SoOWflGN6ZSgVbipQ1y3rdNushb/M7q/n0+Gk5dbSeGPXqhLvf47r+hCLv45/f6LVgTKHOHfemOXBbuI2CtEtVYI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DwLo/5X6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2140C4CEE3;
+	Tue, 17 Jun 2025 15:34:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750174465;
-	bh=jQ00OOuTx9dyxC5UkcFyhV0VXL0aLL5dkbz9xGYnzXg=;
+	s=korg; t=1750174471;
+	bh=BpwGGftfzDuyQ2ojm9i7RifdTIBPPlmLYqmdgPgthyg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RoiFXZQudoNi7i5lMDLaNhIhMZVwT5sOlM22nadmt7BOkeh+877oXU26NrgJR2hJ9
-	 +FDQHKNOEIDKO7k1eEyiE0HV8tPSF00oPp+4t7Cty44UzLBiAv7rBqWOGmpuBXXmYx
-	 rPB9WtPYaGZRcerUCjHgF7MlhPL613UwWxhDXoSI=
+	b=DwLo/5X6SGDTNHz33Uit0xGdRM936HKA6uoxntvSv2yloRyE1zjG0VU0Sz6Z8ciGR
+	 OIhaKFvOHO2YogyjzyXRZZi//1M2wBo3s8C15yxCVT9rYa88XBUGCYaz8AkeiUEhIx
+	 rOx9m99x6N9Vp4rJkN9GLPjWx4uKA3Fb2lCqa+zU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Herbert Xu <herbert@gondor.apana.org.au>,
+	Hongbo Li <lihongbo22@huawei.com>,
+	Gao Xiang <hsiangkao@linux.alibaba.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 023/512] crypto: marvell/cesa - Avoid empty transfer descriptor
-Date: Tue, 17 Jun 2025 17:19:49 +0200
-Message-ID: <20250617152420.470626914@linuxfoundation.org>
+Subject: [PATCH 6.12 024/512] erofs: fix file handle encoding for 64-bit NIDs
+Date: Tue, 17 Jun 2025 17:19:50 +0200
+Message-ID: <20250617152420.510603383@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
 References: <20250617152419.512865572@linuxfoundation.org>
@@ -65,34 +66,113 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Herbert Xu <herbert@gondor.apana.org.au>
+From: Hongbo Li <lihongbo22@huawei.com>
 
-[ Upstream commit 1bafd82d9a40cf09c6c40f1c09cc35b7050b1a9f ]
+[ Upstream commit 510de8363f2c3d8e67fa9dfb2366e821382036e0 ]
 
-The user may set req->src even if req->nbytes == 0.  If there
-is no data to hash from req->src, do not generate an empty TDMA
-descriptor.
+EROFS uses NID to indicate the on-disk inode offset, which can
+exceed 32 bits. However, the default encode_fh uses the ino32,
+thus it doesn't work if the image is larger than 128GiB.
 
-Fixes: db509a45339f ("crypto: marvell/cesa - add TDMA support")
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Let's introduce our own helpers to encode file handles.
+
+It's easy to reproduce:
+  1. prepare an erofs image with nid bigger than U32_MAX
+  2. mount -t erofs foo.img /mnt/erofs
+  3. set exportfs with configuration: /mnt/erofs *(rw,sync,
+     no_root_squash)
+  4. mount -t nfs $IP:/mnt/erofs /mnt/nfs
+  5. md5sum /mnt/nfs/foo # foo is the file which nid bigger
+     than U32_MAX.  # you will get ESTALE error.
+
+In the case of overlayfs, the underlying filesystem's file
+handle is encoded in ovl_fb.fid, which is similar to NFS's
+case. If the NID of file is larger than U32_MAX, the overlay
+will get -ESTALE error when calls exportfs_decode_fh.
+
+Fixes: 3e917cc305c6 ("erofs: make filesystem exportable")
+Signed-off-by: Hongbo Li <lihongbo22@huawei.com>
+Reviewed-by: Gao Xiang <hsiangkao@linux.alibaba.com>
+Link: https://lore.kernel.org/r/20250507094015.14007-1-lihongbo22@huawei.com
+Signed-off-by: Gao Xiang <hsiangkao@linux.alibaba.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/crypto/marvell/cesa/hash.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/erofs/super.c | 44 ++++++++++++++++++++++++++++++++++++--------
+ 1 file changed, 36 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/crypto/marvell/cesa/hash.c b/drivers/crypto/marvell/cesa/hash.c
-index f150861ceaf69..6815eddc90681 100644
---- a/drivers/crypto/marvell/cesa/hash.c
-+++ b/drivers/crypto/marvell/cesa/hash.c
-@@ -663,7 +663,7 @@ static int mv_cesa_ahash_dma_req_init(struct ahash_request *req)
- 	if (ret)
- 		goto err_free_tdma;
+diff --git a/fs/erofs/super.c b/fs/erofs/super.c
+index 3421448fef0e3..1143e1913f25b 100644
+--- a/fs/erofs/super.c
++++ b/fs/erofs/super.c
+@@ -537,24 +537,52 @@ static int erofs_fc_parse_param(struct fs_context *fc,
+ 	return 0;
+ }
  
--	if (iter.src.sg) {
-+	if (iter.base.len > iter.src.op_offset) {
- 		/*
- 		 * Add all the new data, inserting an operation block and
- 		 * launch command between each full SRAM block-worth of
+-static struct inode *erofs_nfs_get_inode(struct super_block *sb,
+-					 u64 ino, u32 generation)
++static int erofs_encode_fh(struct inode *inode, u32 *fh, int *max_len,
++			   struct inode *parent)
+ {
+-	return erofs_iget(sb, ino);
++	erofs_nid_t nid = EROFS_I(inode)->nid;
++	int len = parent ? 6 : 3;
++
++	if (*max_len < len) {
++		*max_len = len;
++		return FILEID_INVALID;
++	}
++
++	fh[0] = (u32)(nid >> 32);
++	fh[1] = (u32)(nid & 0xffffffff);
++	fh[2] = inode->i_generation;
++
++	if (parent) {
++		nid = EROFS_I(parent)->nid;
++
++		fh[3] = (u32)(nid >> 32);
++		fh[4] = (u32)(nid & 0xffffffff);
++		fh[5] = parent->i_generation;
++	}
++
++	*max_len = len;
++	return parent ? FILEID_INO64_GEN_PARENT : FILEID_INO64_GEN;
+ }
+ 
+ static struct dentry *erofs_fh_to_dentry(struct super_block *sb,
+ 		struct fid *fid, int fh_len, int fh_type)
+ {
+-	return generic_fh_to_dentry(sb, fid, fh_len, fh_type,
+-				    erofs_nfs_get_inode);
++	if ((fh_type != FILEID_INO64_GEN &&
++	     fh_type != FILEID_INO64_GEN_PARENT) || fh_len < 3)
++		return NULL;
++
++	return d_obtain_alias(erofs_iget(sb,
++		((u64)fid->raw[0] << 32) | fid->raw[1]));
+ }
+ 
+ static struct dentry *erofs_fh_to_parent(struct super_block *sb,
+ 		struct fid *fid, int fh_len, int fh_type)
+ {
+-	return generic_fh_to_parent(sb, fid, fh_len, fh_type,
+-				    erofs_nfs_get_inode);
++	if (fh_type != FILEID_INO64_GEN_PARENT || fh_len < 6)
++		return NULL;
++
++	return d_obtain_alias(erofs_iget(sb,
++		((u64)fid->raw[3] << 32) | fid->raw[4]));
+ }
+ 
+ static struct dentry *erofs_get_parent(struct dentry *child)
+@@ -570,7 +598,7 @@ static struct dentry *erofs_get_parent(struct dentry *child)
+ }
+ 
+ static const struct export_operations erofs_export_ops = {
+-	.encode_fh = generic_encode_ino32_fh,
++	.encode_fh = erofs_encode_fh,
+ 	.fh_to_dentry = erofs_fh_to_dentry,
+ 	.fh_to_parent = erofs_fh_to_parent,
+ 	.get_parent = erofs_get_parent,
 -- 
 2.39.5
 
