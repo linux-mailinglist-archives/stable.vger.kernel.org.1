@@ -1,57 +1,60 @@
-Return-Path: <stable+bounces-154121-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153379-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 47164ADD94E
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 19:04:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D2A7CADD4AB
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:12:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6476219E1770
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:42:48 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 63B251943B55
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:00:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55A5B2EA16A;
-	Tue, 17 Jun 2025 16:36:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ADF2E2F235F;
+	Tue, 17 Jun 2025 15:56:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u1ykcV0p"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oVsfJ0vd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10FD12EA161;
-	Tue, 17 Jun 2025 16:36:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68F652F2346;
+	Tue, 17 Jun 2025 15:56:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750178168; cv=none; b=dwPr1SIStsLGRXACk6NvmxJJ9YXi0zDsd7wKzsyzwyoBEdamOZYv3TPqollhOF3SY9JNjlP+LIxEA/W9oYHYCzqy72vEb5qcZrvsZQuPSDBtGY3Fqts9AM5eBzcB7N1Z1mSw7gn10AurJODsJUDnVJv3bAWa5rPbgaI2LfUFNLc=
+	t=1750175769; cv=none; b=YOmPAVi6sIccXIVhHWfDNSNliFVPpxJCoCU/lbKOE7Amc89lMZSVuGbS88BiYwaf0tBp9dqpXuTUzljmkQmmUt0oBY/JneKCWpaFwLWHakrN94Q8kpkyVVNR7bznvkahDfXqLqVS04qmK6RjtPnroiyPbtbbQA/kiIeYb4gCFxg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750178168; c=relaxed/simple;
-	bh=giHPThbUwfr7P6W4QJqRyqU9jL9k+D8HPm13HEXtYHs=;
+	s=arc-20240116; t=1750175769; c=relaxed/simple;
+	bh=uQC0nhT+lIGLS0tPFmhBezzDDq79ALYGbNvjdGsTazY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KXKt9YUDGiBps6ikH/d4He/xbE34WlYSBKrd/WHwDtlCZYgSfYIIyKYMtzLMcPm53nAnbTZyoDl5hRAcE3YwL/k3Nzk+cNqEFKGED4XNA1/zVafp98gah4/JOuT4GQSb87s0yHWoiDxlLOZtzH35T/azsitJ8+M5+1WPaFFWjcM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u1ykcV0p; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A685C4CEE3;
-	Tue, 17 Jun 2025 16:36:06 +0000 (UTC)
+	 MIME-Version; b=luNyeUFC4A16SfnDRJaDYf3KSpulcSxy1xL1J49ceM6FsYbZmLkjpRAAwZI2H9DYw/a31wTNng4MrjwRPSrtF5Q/BvYe9lIjKOpDUOJdQgGbBVfA9LVSOZe4rG2+6Vm3KhT20vFhtUvTagYFUQ4NZPEh6dmbOBztOqDYD/zr01E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oVsfJ0vd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2EB6C4CEE3;
+	Tue, 17 Jun 2025 15:56:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750178167;
-	bh=giHPThbUwfr7P6W4QJqRyqU9jL9k+D8HPm13HEXtYHs=;
+	s=korg; t=1750175769;
+	bh=uQC0nhT+lIGLS0tPFmhBezzDDq79ALYGbNvjdGsTazY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=u1ykcV0p9EgYQd6B/m4ajWG8Ob1IjbVz47t3n8Vx6r/+bsJ9mY9BxdQGomJk2+YjS
-	 4qXhL/9aZHfHhf1qWFj79JYpLuDgiyZJ37Ip9yLWAGpWpdqhF2h6GZXoizGkhaAqjw
-	 E5MMVzEK591Ro4JWXgmEDoRleiQZngRbjekKlnfI=
+	b=oVsfJ0vdS/BDOPhvLMeP7lLL5hHLf4QtQWREqlgZByrzplGLe0YIbb38bYus8dVU0
+	 8hGT7syDE2bJCSMCX5uVdePqdB00oIAAu+LIQZVf9PXL3fq/dN/tvOcvlLZ11ZWjhE
+	 kHZh6V9gugiy72GbuxV4mRR31aQWCL+IqfxcwYyU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thiago Jung Bauermann <thiago.bauermann@linaro.org>,
-	Ingo Saitz <ingo@hannover.ccc.de>,
-	Kees Cook <kees@kernel.org>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Tom Zanussi <zanussi@kernel.org>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 419/780] randstruct: gcc-plugin: Fix attribute addition
+Subject: [PATCH 6.12 161/512] tracing: Rename event_trigger_alloc() to trigger_data_alloc()
 Date: Tue, 17 Jun 2025 17:22:07 +0200
-Message-ID: <20250617152508.535318127@linuxfoundation.org>
+Message-ID: <20250617152426.137429780@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
-References: <20250617152451.485330293@linuxfoundation.org>
+In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
+References: <20250617152419.512865572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,136 +66,128 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kees Cook <kees@kernel.org>
+From: Steven Rostedt <rostedt@goodmis.org>
 
-[ Upstream commit f39f18f3c3531aa802b58a20d39d96e82eb96c14 ]
+[ Upstream commit f2947c4b7d0f235621c5daf78aecfbd6e22c05e5 ]
 
-Based on changes in the 2021 public version of the randstruct
-out-of-tree GCC plugin[1], more carefully update the attributes on
-resulting decls, to avoid tripping checks in GCC 15's
-comptypes_check_enum_int() when it has been configured with
-"--enable-checking=misc":
+The function event_trigger_alloc() creates an event_trigger_data
+descriptor and states that it needs to be freed via event_trigger_free().
+This is incorrect, it needs to be freed by trigger_data_free() as
+event_trigger_free() adds ref counting.
 
-arch/arm64/kernel/kexec_image.c:132:14: internal compiler error: in comptypes_check_enum_int, at c/c-typeck.cc:1519
-  132 | const struct kexec_file_ops kexec_image_ops = {
-      |              ^~~~~~~~~~~~~~
- internal_error(char const*, ...), at gcc/gcc/diagnostic-global-context.cc:517
- fancy_abort(char const*, int, char const*), at gcc/gcc/diagnostic.cc:1803
- comptypes_check_enum_int(tree_node*, tree_node*, bool*), at gcc/gcc/c/c-typeck.cc:1519
- ...
+Rename event_trigger_alloc() to trigger_data_alloc() and state that it
+needs to be freed via trigger_data_free(). This naming convention
+was introducing bugs.
 
-Link: https://archive.org/download/grsecurity/grsecurity-3.1-5.10.41-202105280954.patch.gz [1]
-Reported-by: Thiago Jung Bauermann <thiago.bauermann@linaro.org>
-Closes: https://github.com/KSPP/linux/issues/367
-Closes: https://lore.kernel.org/lkml/20250530000646.104457-1-thiago.bauermann@linaro.org/
-Reported-by: Ingo Saitz <ingo@hannover.ccc.de>
-Closes: https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=1104745
-Fixes: 313dd1b62921 ("gcc-plugins: Add the randstruct plugin")
-Tested-by: Thiago Jung Bauermann <thiago.bauermann@linaro.org>
-Link: https://lore.kernel.org/r/20250530221824.work.623-kees@kernel.org
-Signed-off-by: Kees Cook <kees@kernel.org>
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: Tom Zanussi <zanussi@kernel.org>
+Link: https://lore.kernel.org/20250507145455.776436410@goodmis.org
+Fixes: 86599dbe2c527 ("tracing: Add helper functions to simplify event_command.parse() callback handling")
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- scripts/gcc-plugins/gcc-common.h              | 32 +++++++++++++++++++
- scripts/gcc-plugins/randomize_layout_plugin.c | 22 ++++++-------
- 2 files changed, 43 insertions(+), 11 deletions(-)
+ kernel/trace/trace.h                |  8 +++-----
+ kernel/trace/trace_events_hist.c    |  2 +-
+ kernel/trace/trace_events_trigger.c | 16 ++++++++--------
+ 3 files changed, 12 insertions(+), 14 deletions(-)
 
-diff --git a/scripts/gcc-plugins/gcc-common.h b/scripts/gcc-plugins/gcc-common.h
-index 3222c1070444f..ef12c8f929eda 100644
---- a/scripts/gcc-plugins/gcc-common.h
-+++ b/scripts/gcc-plugins/gcc-common.h
-@@ -123,6 +123,38 @@ static inline tree build_const_char_string(int len, const char *str)
- 	return cstr;
+diff --git a/kernel/trace/trace.h b/kernel/trace/trace.h
+index 82da3ac140242..57e1af1d3e6d4 100644
+--- a/kernel/trace/trace.h
++++ b/kernel/trace/trace.h
+@@ -1731,6 +1731,9 @@ extern int event_enable_register_trigger(char *glob,
+ extern void event_enable_unregister_trigger(char *glob,
+ 					    struct event_trigger_data *test,
+ 					    struct trace_event_file *file);
++extern struct event_trigger_data *
++trigger_data_alloc(struct event_command *cmd_ops, char *cmd, char *param,
++		   void *private_data);
+ extern void trigger_data_free(struct event_trigger_data *data);
+ extern int event_trigger_init(struct event_trigger_data *data);
+ extern int trace_event_trigger_enable_disable(struct trace_event_file *file,
+@@ -1757,11 +1760,6 @@ extern bool event_trigger_check_remove(const char *glob);
+ extern bool event_trigger_empty_param(const char *param);
+ extern int event_trigger_separate_filter(char *param_and_filter, char **param,
+ 					 char **filter, bool param_required);
+-extern struct event_trigger_data *
+-event_trigger_alloc(struct event_command *cmd_ops,
+-		    char *cmd,
+-		    char *param,
+-		    void *private_data);
+ extern int event_trigger_parse_num(char *trigger,
+ 				   struct event_trigger_data *trigger_data);
+ extern int event_trigger_set_filter(struct event_command *cmd_ops,
+diff --git a/kernel/trace/trace_events_hist.c b/kernel/trace/trace_events_hist.c
+index c56375848e088..3379e14d38e9b 100644
+--- a/kernel/trace/trace_events_hist.c
++++ b/kernel/trace/trace_events_hist.c
+@@ -6798,7 +6798,7 @@ static int event_hist_trigger_parse(struct event_command *cmd_ops,
+ 		return PTR_ERR(hist_data);
+ 	}
+ 
+-	trigger_data = event_trigger_alloc(cmd_ops, cmd, param, hist_data);
++	trigger_data = trigger_data_alloc(cmd_ops, cmd, param, hist_data);
+ 	if (!trigger_data) {
+ 		ret = -ENOMEM;
+ 		goto out_free;
+diff --git a/kernel/trace/trace_events_trigger.c b/kernel/trace/trace_events_trigger.c
+index 27e21488d5741..e85d434f176a0 100644
+--- a/kernel/trace/trace_events_trigger.c
++++ b/kernel/trace/trace_events_trigger.c
+@@ -825,7 +825,7 @@ int event_trigger_separate_filter(char *param_and_filter, char **param,
  }
  
-+static inline void __add_type_attr(tree type, const char *attr, tree args)
-+{
-+	tree oldattr;
-+
-+	if (type == NULL_TREE)
-+		return;
-+	oldattr = lookup_attribute(attr, TYPE_ATTRIBUTES(type));
-+	if (oldattr != NULL_TREE) {
-+		gcc_assert(TREE_VALUE(oldattr) == args || TREE_VALUE(TREE_VALUE(oldattr)) == TREE_VALUE(args));
-+		return;
-+	}
-+
-+	TYPE_ATTRIBUTES(type) = copy_list(TYPE_ATTRIBUTES(type));
-+	TYPE_ATTRIBUTES(type) = tree_cons(get_identifier(attr), args, TYPE_ATTRIBUTES(type));
-+}
-+
-+static inline void add_type_attr(tree type, const char *attr, tree args)
-+{
-+	tree main_variant = TYPE_MAIN_VARIANT(type);
-+
-+	__add_type_attr(TYPE_CANONICAL(type), attr, args);
-+	__add_type_attr(TYPE_CANONICAL(main_variant), attr, args);
-+	__add_type_attr(main_variant, attr, args);
-+
-+	for (type = TYPE_NEXT_VARIANT(main_variant); type; type = TYPE_NEXT_VARIANT(type)) {
-+		if (!lookup_attribute(attr, TYPE_ATTRIBUTES(type)))
-+			TYPE_ATTRIBUTES(type) = TYPE_ATTRIBUTES(main_variant);
-+
-+		__add_type_attr(TYPE_CANONICAL(type), attr, args);
-+	}
-+}
-+
- #define PASS_INFO(NAME, REF, ID, POS)		\
- struct register_pass_info NAME##_pass_info = {	\
- 	.pass = make_##NAME##_pass(),		\
-diff --git a/scripts/gcc-plugins/randomize_layout_plugin.c b/scripts/gcc-plugins/randomize_layout_plugin.c
-index 971a1908a8cc4..ff65a4f87f240 100644
---- a/scripts/gcc-plugins/randomize_layout_plugin.c
-+++ b/scripts/gcc-plugins/randomize_layout_plugin.c
-@@ -73,6 +73,9 @@ static tree handle_randomize_layout_attr(tree *node, tree name, tree args, int f
+ /**
+- * event_trigger_alloc - allocate and init event_trigger_data for a trigger
++ * trigger_data_alloc - allocate and init event_trigger_data for a trigger
+  * @cmd_ops: The event_command operations for the trigger
+  * @cmd: The cmd string
+  * @param: The param string
+@@ -836,14 +836,14 @@ int event_trigger_separate_filter(char *param_and_filter, char **param,
+  * trigger_ops to assign to the event_trigger_data.  @private_data can
+  * also be passed in and associated with the event_trigger_data.
+  *
+- * Use event_trigger_free() to free an event_trigger_data object.
++ * Use trigger_data_free() to free an event_trigger_data object.
+  *
+  * Return: The trigger_data object success, NULL otherwise
+  */
+-struct event_trigger_data *event_trigger_alloc(struct event_command *cmd_ops,
+-					       char *cmd,
+-					       char *param,
+-					       void *private_data)
++struct event_trigger_data *trigger_data_alloc(struct event_command *cmd_ops,
++					      char *cmd,
++					      char *param,
++					      void *private_data)
+ {
+ 	struct event_trigger_data *trigger_data;
+ 	struct event_trigger_ops *trigger_ops;
+@@ -1010,7 +1010,7 @@ event_trigger_parse(struct event_command *cmd_ops,
+ 		return ret;
  
- 	if (TYPE_P(*node)) {
- 		type = *node;
-+	} else if (TREE_CODE(*node) == FIELD_DECL) {
-+		*no_add_attrs = false;
-+		return NULL_TREE;
- 	} else {
- 		gcc_assert(TREE_CODE(*node) == TYPE_DECL);
- 		type = TREE_TYPE(*node);
-@@ -348,15 +351,14 @@ static int relayout_struct(tree type)
- 		TREE_CHAIN(newtree[i]) = newtree[i+1];
- 	TREE_CHAIN(newtree[num_fields - 1]) = NULL_TREE;
+ 	ret = -ENOMEM;
+-	trigger_data = event_trigger_alloc(cmd_ops, cmd, param, file);
++	trigger_data = trigger_data_alloc(cmd_ops, cmd, param, file);
+ 	if (!trigger_data)
+ 		goto out;
  
-+	add_type_attr(type, "randomize_performed", NULL_TREE);
-+	add_type_attr(type, "designated_init", NULL_TREE);
-+	if (has_flexarray)
-+		add_type_attr(type, "has_flexarray", NULL_TREE);
-+
- 	main_variant = TYPE_MAIN_VARIANT(type);
--	for (variant = main_variant; variant; variant = TYPE_NEXT_VARIANT(variant)) {
-+	for (variant = main_variant; variant; variant = TYPE_NEXT_VARIANT(variant))
- 		TYPE_FIELDS(variant) = newtree[0];
--		TYPE_ATTRIBUTES(variant) = copy_list(TYPE_ATTRIBUTES(variant));
--		TYPE_ATTRIBUTES(variant) = tree_cons(get_identifier("randomize_performed"), NULL_TREE, TYPE_ATTRIBUTES(variant));
--		TYPE_ATTRIBUTES(variant) = tree_cons(get_identifier("designated_init"), NULL_TREE, TYPE_ATTRIBUTES(variant));
--		if (has_flexarray)
--			TYPE_ATTRIBUTES(type) = tree_cons(get_identifier("has_flexarray"), NULL_TREE, TYPE_ATTRIBUTES(type));
--	}
+@@ -1814,7 +1814,7 @@ int event_enable_trigger_parse(struct event_command *cmd_ops,
+ 	enable_data->enable = enable;
+ 	enable_data->file = event_enable_file;
  
- 	/*
- 	 * force a re-layout of the main variant
-@@ -424,10 +426,8 @@ static void randomize_type(tree type)
- 	if (lookup_attribute("randomize_layout", TYPE_ATTRIBUTES(TYPE_MAIN_VARIANT(type))) || is_pure_ops_struct(type))
- 		relayout_struct(type);
- 
--	for (variant = TYPE_MAIN_VARIANT(type); variant; variant = TYPE_NEXT_VARIANT(variant)) {
--		TYPE_ATTRIBUTES(type) = copy_list(TYPE_ATTRIBUTES(type));
--		TYPE_ATTRIBUTES(type) = tree_cons(get_identifier("randomize_considered"), NULL_TREE, TYPE_ATTRIBUTES(type));
--	}
-+	add_type_attr(type, "randomize_considered", NULL_TREE);
-+
- #ifdef __DEBUG_PLUGIN
- 	fprintf(stderr, "Marking randomize_considered on struct %s\n", ORIG_TYPE_NAME(type));
- #ifdef __DEBUG_VERBOSE
+-	trigger_data = event_trigger_alloc(cmd_ops, cmd, param, enable_data);
++	trigger_data = trigger_data_alloc(cmd_ops, cmd, param, enable_data);
+ 	if (!trigger_data) {
+ 		kfree(enable_data);
+ 		goto out;
 -- 
 2.39.5
 
