@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-153966-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153977-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 271DBADD74C
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:43:33 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 41500ADD7B2
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:48:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D1E9C4A476A
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:32:29 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BF09E19473E2
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:34:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1BBDF2DFF1B;
-	Tue, 17 Jun 2025 16:27:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1762C21FF5F;
+	Tue, 17 Jun 2025 16:28:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oQ6xtIG1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1l4StGfa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CAACB2F94B2;
-	Tue, 17 Jun 2025 16:27:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C71991FBEA8;
+	Tue, 17 Jun 2025 16:28:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750177671; cv=none; b=P0sv3lC9XrY8DakGj7Q+a06UJhYju8HIrr+1YMd7DMPCn9GoBWE3OZQL6SIV/hAUKNW1G/NOWMoQakpFqgaHccmX49kcSRLkptUTro3+9FIlaWRqiRhfFDASV4UABEKMnatcS2gy4DxEU1W9e/AQ0sxqYnLa7Ez5VwYk5GXd5f0=
+	t=1750177707; cv=none; b=FEp3qkZpopCqjFV5viNkseUMX0k+aVvowV3QBHQ8xS4BCD7R2YGuPa8vodokhZxg5FnIJI8wry+eu2o5AZHj1N4l7OYl2DNDJZTJojoKxBUEQy8QNbN6kBFwbsBMXBA0mP66pgoDeM3O51TsLLJQKIg8Cr1HL7ll2+2Cu+mllow=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750177671; c=relaxed/simple;
-	bh=dKEV5BToBJya2/Z+9kgozc0cggKe7d3Eth2MUtSXFKE=;
+	s=arc-20240116; t=1750177707; c=relaxed/simple;
+	bh=zCt400L9Y4ciene1f82nKC5UnSqtOe+XXZqv39OrMwc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=e2Qe3dZRQbRdeaQvELVsnweg6Ej1pzCspias5zZL3A3k2wi96vjKNKIP+fqVez6M7vkK0oZfAcF9peJwl6wCR5w1Z0ojenVQeLNJQl8TVg8laF8lwE27RJJt9GD0YJ2dfqaPqezIIyMeQqleqw4mQR6S2kgMLe+OT1q8a+1lhXk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oQ6xtIG1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B52FC4CEE3;
-	Tue, 17 Jun 2025 16:27:51 +0000 (UTC)
+	 MIME-Version; b=UiGfimwHA3IlSljZ03DbK9tETuoIQZB8AOK7g6EDG9XlZyJshribarjjQBty8jhJH35fwKEznoVwoybSVQCfBVUzhkTHVmu82Kn9R3SlTFWwZjNSHsjp9aBMYBImIZ17rTDYnhQHiTwbuZStCjwS2M1UzXkuNzw7KE6LU69CDOQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1l4StGfa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D671C4CEE3;
+	Tue, 17 Jun 2025 16:28:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750177671;
-	bh=dKEV5BToBJya2/Z+9kgozc0cggKe7d3Eth2MUtSXFKE=;
+	s=korg; t=1750177707;
+	bh=zCt400L9Y4ciene1f82nKC5UnSqtOe+XXZqv39OrMwc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oQ6xtIG1/oQE2ONdcRrYTgGNS39bdYt7y6sVyJf/pL5S83KERNVE3Upyudra8dgvL
-	 HlzJX8xzVTdkfS/NGOVOMGULa6SkPrXONhQlHwAZws+sqI9iAl7Cnlnv/IQg/UbZc7
-	 upcq2D7rq+jc0X7F39d4JLTQuqd19xJy1gInOvSA=
+	b=1l4StGfa3ovv5pHYHZiy83B2rCxIDmX0hQ6KJo+BCPkZ1zm8t3FNL9ZOALvh1j2SM
+	 e/QCXjmMifX/qmJhOws2xh3iVkoyCal4rpggWRNt01YCl6F2HkVDzedgQFu6hgczvc
+	 oBzXjVUhtBpdoQEustzLEm6tsuUOkSdp3/zlvzU4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -46,9 +46,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Andrew Lunn <andrew@lunn.ch>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 330/780] net: lan743x: rename lan743x_reset_phy to lan743x_hw_reset_phy
-Date: Tue, 17 Jun 2025 17:20:38 +0200
-Message-ID: <20250617152504.890971017@linuxfoundation.org>
+Subject: [PATCH 6.15 331/780] net: lan743x: Fix PHY reset handling during initialization and WOL
+Date: Tue, 17 Jun 2025 17:20:39 +0200
+Message-ID: <20250617152504.930767357@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
 References: <20250617152451.485330293@linuxfoundation.org>
@@ -69,43 +69,61 @@ Content-Transfer-Encoding: 8bit
 
 From: Thangaraj Samynathan <thangaraj.s@microchip.com>
 
-[ Upstream commit 68927eb52d0af04863584930db06075d2610e194 ]
+[ Upstream commit 82d1096ca8b5dbb3158d707e6fb3ad21c3403a49 ]
 
-rename the function to lan743x_hw_reset_phy to better describe it
-operation.
+Remove lan743x_phy_init from lan743x_hardware_init as it resets the PHY
+registers, causing WOL to fail on subsequent attempts. Add a call to
+lan743x_hw_reset_phy in the probe function to ensure the PHY is reset
+during device initialization.
 
 Fixes: 23f0703c125be ("lan743x: Add main source files for new lan743x driver")
 Signed-off-by: Thangaraj Samynathan <thangaraj.s@microchip.com>
 Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Link: https://patch.msgid.link/20250526053048.287095-2-thangaraj.s@microchip.com
+Link: https://patch.msgid.link/20250526053048.287095-3-thangaraj.s@microchip.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/microchip/lan743x_main.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/microchip/lan743x_main.c | 13 ++++---------
+ 1 file changed, 4 insertions(+), 9 deletions(-)
 
 diff --git a/drivers/net/ethernet/microchip/lan743x_main.c b/drivers/net/ethernet/microchip/lan743x_main.c
-index a70b88037a208..da5bd54208dd5 100644
+index da5bd54208dd5..7f36443832ada 100644
 --- a/drivers/net/ethernet/microchip/lan743x_main.c
 +++ b/drivers/net/ethernet/microchip/lan743x_main.c
-@@ -1330,7 +1330,7 @@ static int lan743x_mac_set_mtu(struct lan743x_adapter *adapter, int new_mtu)
+@@ -1346,11 +1346,6 @@ static int lan743x_hw_reset_phy(struct lan743x_adapter *adapter)
+ 				  50000, 1000000);
  }
  
- /* PHY */
--static int lan743x_phy_reset(struct lan743x_adapter *adapter)
-+static int lan743x_hw_reset_phy(struct lan743x_adapter *adapter)
- {
- 	u32 data;
- 
-@@ -1348,7 +1348,7 @@ static int lan743x_phy_reset(struct lan743x_adapter *adapter)
- 
- static int lan743x_phy_init(struct lan743x_adapter *adapter)
- {
--	return lan743x_phy_reset(adapter);
-+	return lan743x_hw_reset_phy(adapter);
- }
- 
+-static int lan743x_phy_init(struct lan743x_adapter *adapter)
+-{
+-	return lan743x_hw_reset_phy(adapter);
+-}
+-
  static void lan743x_phy_interface_select(struct lan743x_adapter *adapter)
+ {
+ 	u32 id_rev;
+@@ -3534,10 +3529,6 @@ static int lan743x_hardware_init(struct lan743x_adapter *adapter,
+ 	if (ret)
+ 		return ret;
+ 
+-	ret = lan743x_phy_init(adapter);
+-	if (ret)
+-		return ret;
+-
+ 	ret = lan743x_ptp_init(adapter);
+ 	if (ret)
+ 		return ret;
+@@ -3674,6 +3665,10 @@ static int lan743x_pcidev_probe(struct pci_dev *pdev,
+ 	if (ret)
+ 		goto cleanup_pci;
+ 
++	ret = lan743x_hw_reset_phy(adapter);
++	if (ret)
++		goto cleanup_pci;
++
+ 	ret = lan743x_hardware_init(adapter, pdev);
+ 	if (ret)
+ 		goto cleanup_pci;
 -- 
 2.39.5
 
