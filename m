@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-153970-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153444-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A7AD7ADD726
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:41:53 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1B4ECADD494
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:11:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EA8DB4A2511
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:32:59 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A178B407E16
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:03:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 810532DFF3C;
-	Tue, 17 Jun 2025 16:28:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 83C862F2C7C;
+	Tue, 17 Jun 2025 15:59:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jnAyWXS8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tEviTx3m"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CD092F94B2;
-	Tue, 17 Jun 2025 16:28:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3862C2DFF3D;
+	Tue, 17 Jun 2025 15:59:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750177685; cv=none; b=j6T2KxcwJ6rhCXxqmo4tiZnRdZ3lxysDXUweiPX/0z314vT16OE5IFJkObDWrgeCNXdfqJu/LQdBQ9A4vgQAtPjKiXmYbodCznqfPYkuZB/gLtI9ZwN14KTgsYjq1m+EFQKQNiXTEhC9ZHAk/eMf+Dxer5/Jaqi6jFFNJGxL4sg=
+	t=1750175983; cv=none; b=bNn/HA8nv4yk8VI3ib+gQtyPZp1F7IOiDeWSWGzt97lUjKXmEWMK8O37JrolDuVUJs2sPMj/GHadEtgiFbjZWrAVI5+bKqslHbLrrMHtmQ7hJvMbIIzqtsosQeyqU1N3OAqoVqpMXCH/+n6EnvBo4cbN/j/iGegld7nTA2YrQn8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750177685; c=relaxed/simple;
-	bh=YncuPt95ClMyFZho7PcRBUsCfn/0i3da1TIh8PYCHRA=;
+	s=arc-20240116; t=1750175983; c=relaxed/simple;
+	bh=/hbD7ry40RU7O3g3by5L2x3XWrUFmJ3z+pCR/BX6H98=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gNYpACsCAWIofM8aXKfAJApiRSmWOfHsEbxlGk+A733Jh1C0Nq8u3941MZQMGm6CCA+eCtC9ZsXmQPMNIQnYF1TdAOfM+KJsKrlGoBNazvMAWWnNUOmvlhQEGAyZsMl739V6nZh8FEKhE27QqAnki3y3MZsY5DATb/gDmN8Av74=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jnAyWXS8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A014BC4CEE3;
-	Tue, 17 Jun 2025 16:28:04 +0000 (UTC)
+	 MIME-Version; b=ZTCmRm1b5PLwh4glOPHtQXzTe/kv93ZL6vyBCdkyJeBjb7880S6a98XLHjkceNsf2HuOvTdnhUazVqprP39CubNzzTa4wSUYTa1IdXhbNfdmhmJ6ghL4WzSPK5ShSJDAL8r7QnMN68OExU9ZFQQ8o/tLOvT82TqyGqz/iTltcEM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tEviTx3m; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E153C4CEF1;
+	Tue, 17 Jun 2025 15:59:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750177685;
-	bh=YncuPt95ClMyFZho7PcRBUsCfn/0i3da1TIh8PYCHRA=;
+	s=korg; t=1750175983;
+	bh=/hbD7ry40RU7O3g3by5L2x3XWrUFmJ3z+pCR/BX6H98=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jnAyWXS8MaFuU9Py2SP5vSKR2AJv4jPJK44Qrqtzd2Ej7fwXLWV3kUIt++Br9UdLY
-	 d0TJYLTWAA/Bu4I5gneePZx0Ur7WfUo+0oj3NpdB5LOAhvuTRyrWF/c6Qwiv7Nj+QI
-	 /c827/b9k7bzrpAIHkCoXh3tp4QCbs3ruU+ZgmG8=
+	b=tEviTx3mnGw4dvw5OgbpVOV9qd0Huyh9DDg5IHphUh2pfeVeBJDQDnoUWr5S5zoSK
+	 UXcPJHp9KJpTy6+qjSjqp8SJMyMKZEb0AhKyjLGzTuaXV40g6sRo0Q9hnT/0qyR+s9
+	 2qmsopwEZCCXNbY6AqVHdfBXzJWZGnVtObY+HeFU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jonas Gorski <jonas.gorski@gmail.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Mika Westerberg <mika.westerberg@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 381/512] net: dsa: b53: do not touch DLL_IQQD on bcm53115
+Subject: [PATCH 6.6 232/356] thunderbolt: Fix a logic error in wake on connect
 Date: Tue, 17 Jun 2025 17:25:47 +0200
-Message-ID: <20250617152435.029143246@linuxfoundation.org>
+Message-ID: <20250617152347.533077158@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
-References: <20250617152419.512865572@linuxfoundation.org>
+In-Reply-To: <20250617152338.212798615@linuxfoundation.org>
+References: <20250617152338.212798615@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,71 +62,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jonas Gorski <jonas.gorski@gmail.com>
+From: Mario Limonciello <mario.limonciello@amd.com>
 
-[ Upstream commit bc1a65eb81a21e2aa3c3dca058ee8adf687b6ef5 ]
+[ Upstream commit 1a760d10ded372d113a0410c42be246315bbc2ff ]
 
-According to OpenMDK, bit 2 of the RGMII register has a different
-meaning for BCM53115 [1]:
+commit a5cfc9d65879c ("thunderbolt: Add wake on connect/disconnect
+on USB4 ports") introduced a sysfs file to control wake up policy
+for a given USB4 port that defaulted to disabled.
 
-"DLL_IQQD         1: In the IDDQ mode, power is down0: Normal function
-                  mode"
+However when testing commit 4bfeea6ec1c02 ("thunderbolt: Use wake
+on connect and disconnect over suspend") I found that it was working
+even without making changes to the power/wakeup file (which defaults
+to disabled). This is because of a logic error doing a bitwise or
+of the wake-on-connect flag with device_may_wakeup() which should
+have been a logical AND.
 
-Configuring RGMII delay works without setting this bit, so let's keep it
-at the default. For other chips, we always set it, so not clearing it
-is not an issue.
+Adjust the logic so that policy is only applied when wakeup is
+actually enabled.
 
-One would assume BCM53118 works the same, but OpenMDK is not quite sure
-what this bit actually means [2]:
-
-"BYPASS_IMP_2NS_DEL #1: In the IDDQ mode, power is down#0: Normal
-                    function mode1: Bypass dll65_2ns_del IP0: Use
-                    dll65_2ns_del IP"
-
-So lets keep setting it for now.
-
-[1] https://github.com/Broadcom-Network-Switching-Software/OpenMDK/blob/master/cdk/PKG/chip/bcm53115/bcm53115_a0_defs.h#L19871
-[2] https://github.com/Broadcom-Network-Switching-Software/OpenMDK/blob/master/cdk/PKG/chip/bcm53118/bcm53118_a0_defs.h#L14392
-
-Fixes: 967dd82ffc52 ("net: dsa: b53: Add support for Broadcom RoboSwitch")
-Signed-off-by: Jonas Gorski <jonas.gorski@gmail.com>
-Link: https://patch.msgid.link/20250602193953.1010487-6-jonas.gorski@gmail.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: a5cfc9d65879c ("thunderbolt: Add wake on connect/disconnect on USB4 ports")
+Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+Signed-off-by: Mika Westerberg <mika.westerberg@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/dsa/b53/b53_common.c | 8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+ drivers/thunderbolt/usb4.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/dsa/b53/b53_common.c b/drivers/net/dsa/b53/b53_common.c
-index a17a3083180b0..79039c0941c20 100644
---- a/drivers/net/dsa/b53/b53_common.c
-+++ b/drivers/net/dsa/b53/b53_common.c
-@@ -1356,8 +1356,7 @@ static void b53_adjust_531x5_rgmii(struct dsa_switch *ds, int port,
- 	 * tx_clk aligned timing (restoring to reset defaults)
- 	 */
- 	b53_read8(dev, B53_CTRL_PAGE, off, &rgmii_ctrl);
--	rgmii_ctrl &= ~(RGMII_CTRL_DLL_RXC | RGMII_CTRL_DLL_TXC |
--			RGMII_CTRL_TIMING_SEL);
-+	rgmii_ctrl &= ~(RGMII_CTRL_DLL_RXC | RGMII_CTRL_DLL_TXC);
+diff --git a/drivers/thunderbolt/usb4.c b/drivers/thunderbolt/usb4.c
+index 8db9bd32f4738..e445516290f91 100644
+--- a/drivers/thunderbolt/usb4.c
++++ b/drivers/thunderbolt/usb4.c
+@@ -442,10 +442,10 @@ int usb4_switch_set_wake(struct tb_switch *sw, unsigned int flags)
+ 			bool configured = val & PORT_CS_19_PC;
+ 			usb4 = port->usb4;
  
- 	/* PHY_INTERFACE_MODE_RGMII_TXID means TX internal delay, make
- 	 * sure that we enable the port TX clock internal delay to
-@@ -1377,7 +1376,10 @@ static void b53_adjust_531x5_rgmii(struct dsa_switch *ds, int port,
- 		rgmii_ctrl |= RGMII_CTRL_DLL_TXC;
- 	if (interface == PHY_INTERFACE_MODE_RGMII)
- 		rgmii_ctrl |= RGMII_CTRL_DLL_TXC | RGMII_CTRL_DLL_RXC;
--	rgmii_ctrl |= RGMII_CTRL_TIMING_SEL;
-+
-+	if (dev->chip_id != BCM53115_DEVICE_ID)
-+		rgmii_ctrl |= RGMII_CTRL_TIMING_SEL;
-+
- 	b53_write8(dev, B53_CTRL_PAGE, off, rgmii_ctrl);
- 
- 	dev_info(ds->dev, "Configured port %d for %s\n", port,
+-			if (((flags & TB_WAKE_ON_CONNECT) |
++			if (((flags & TB_WAKE_ON_CONNECT) &&
+ 			      device_may_wakeup(&usb4->dev)) && !configured)
+ 				val |= PORT_CS_19_WOC;
+-			if (((flags & TB_WAKE_ON_DISCONNECT) |
++			if (((flags & TB_WAKE_ON_DISCONNECT) &&
+ 			      device_may_wakeup(&usb4->dev)) && configured)
+ 				val |= PORT_CS_19_WOD;
+ 			if ((flags & TB_WAKE_ON_USB4) && configured)
 -- 
 2.39.5
 
