@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-153185-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153188-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8D5ECADD334
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 17:54:45 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D6B54ADD337
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 17:54:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DA85A1895ACE
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 15:50:05 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 687F71895F76
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 15:50:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E635E2EE609;
-	Tue, 17 Jun 2025 15:45:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A612B2ECE9C;
+	Tue, 17 Jun 2025 15:46:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZoLkIngf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1ED9+lOy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1BA72EE605;
-	Tue, 17 Jun 2025 15:45:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62D9C2ECE80;
+	Tue, 17 Jun 2025 15:46:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750175153; cv=none; b=tnR7WkkPYB02fLYkRY4CAUZhZJ4rj307B/13E1n0NuJbLBVIPVy7vURzKN0X5IcHRl0FUM/6S/8mJECvbQoImnxOJZe20YGK8x6RY4SrRFWFmy5QcrYvOZR8bDkhSnXnbnyyBnlZ31b6F/g68qzUSUDUb/+B8656uacnXb13eUw=
+	t=1750175163; cv=none; b=SY/fioZxz/0eGgubgxQsC7sCpmlxpOBlitNRSokDn3muCuXFPvC+1jvQSuDMs0vy+8sw0ENR5OSay1Gxf7lfFPSS/md1/zc45/WTMsXdZno7XMSpM+Fd1qTZNHJMp04u0H2W4l6fIc93zB/JwJ02lEwFqYAWpsxoQR/7JImHW80=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750175153; c=relaxed/simple;
-	bh=ILuM9r83mV7bhqxzose2yo/ezRtYgfBZV+KrNKqM0Ok=;
+	s=arc-20240116; t=1750175163; c=relaxed/simple;
+	bh=u8GGos/xzkwc7FWUM845t+NcERwOfboI9BKg3jN1dQU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sGkh4QQDbfY09JOSD6FhlneWi7gijNnk/JQuusML9NdzPhrCw7m7RGYxNLupfoErwpBwiaJCsJzHgoCzJWTRDsXsJTpaq7azxzpxP1B751lXZCxn2sQK7vKZwUbjAZ9MhvvQNezJSEMtSeo/xk/IG6EAuVHzLQPdsA/pppPNaNE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZoLkIngf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BFA2EC4CEE3;
-	Tue, 17 Jun 2025 15:45:52 +0000 (UTC)
+	 MIME-Version; b=eFuqfFjuIF/pMvrTFw2S/Az9pFj+xSEf9CD1E3xcNQFH/Yokyyy9gBay/vctpvIoqGzjtl/+ptiBHJvgQupTl73woLKKu+bfctacLefxqN2UDFP66ZvAwvkamtevGiYzwrzBkhdkWmPyHCsm5axbRKK3RqvCnvOrJHruKNKaH3U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1ED9+lOy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6A3FC4CEE3;
+	Tue, 17 Jun 2025 15:46:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750175153;
-	bh=ILuM9r83mV7bhqxzose2yo/ezRtYgfBZV+KrNKqM0Ok=;
+	s=korg; t=1750175163;
+	bh=u8GGos/xzkwc7FWUM845t+NcERwOfboI9BKg3jN1dQU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZoLkIngf0Kra/zVC5yj6KoQOnMeReXp+gZTeUqy/kHdYxuW+RlWCHX3+ARDYWov2e
-	 hoL0y5iaPcSN3WpdOzyBLamXAL/S03uXsthhZ2bs35O5dq8qA2rtU0D6lFKN+AdHfh
-	 V71MX56TXpIV3G/+uVqIvGlcL/lZQAHwUvFMhem4=
+	b=1ED9+lOyJ1VSdRvxnR2N9mlquoJARm0PQ95Wh7E2kVGnfaXrMDgAT3B8pWUgjlD1P
+	 q6lzkIfYvHaE8QhVEkTqE8yGNpgGMD5Y8m3uBWy0Gmh+Ndb9bJU0L3azL/XQvtnfm/
+	 HaqEH6qJwyN59zcWGIAXcznFPLWdx9r3z6ZXy2Fc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexander Lobakin <alobakin@pm.me>,
+	Thangaraj Samynathan <thangaraj.s@microchip.com>,
 	Andrew Lunn <andrew@lunn.ch>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Russell King <linux@armlinux.org.uk>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 148/356] net: phy: fix up const issues in to_mdio_device() and to_phy_device()
-Date: Tue, 17 Jun 2025 17:24:23 +0200
-Message-ID: <20250617152344.189639544@linuxfoundation.org>
+Subject: [PATCH 6.6 149/356] net: lan743x: rename lan743x_reset_phy to lan743x_hw_reset_phy
+Date: Tue, 17 Jun 2025 17:24:24 +0200
+Message-ID: <20250617152344.234263572@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250617152338.212798615@linuxfoundation.org>
 References: <20250617152338.212798615@linuxfoundation.org>
@@ -69,61 +67,45 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+From: Thangaraj Samynathan <thangaraj.s@microchip.com>
 
-[ Upstream commit e9cb929670a1e98b592b30f03f06e9e20110f318 ]
+[ Upstream commit 68927eb52d0af04863584930db06075d2610e194 ]
 
-Both to_mdio_device() and to_phy_device() "throw away" the const pointer
-attribute passed to them and return a non-const pointer, which generally
-is not a good thing overall.  Fix this up by using container_of_const()
-which was designed for this very problem.
+rename the function to lan743x_hw_reset_phy to better describe it
+operation.
 
-Cc: Alexander Lobakin <alobakin@pm.me>
-Cc: Andrew Lunn <andrew@lunn.ch>
-Cc: Heiner Kallweit <hkallweit1@gmail.com>
-Cc: Russell King <linux@armlinux.org.uk>
-Fixes: 7eab14de73a8 ("mdio, phy: fix -Wshadow warnings triggered by nested container_of()")
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Link: https://patch.msgid.link/2025052246-conduit-glory-8fc9@gregkh
+Fixes: 23f0703c125be ("lan743x: Add main source files for new lan743x driver")
+Signed-off-by: Thangaraj Samynathan <thangaraj.s@microchip.com>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Link: https://patch.msgid.link/20250526053048.287095-2-thangaraj.s@microchip.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/mdio.h | 5 +----
- include/linux/phy.h  | 5 +----
- 2 files changed, 2 insertions(+), 8 deletions(-)
+ drivers/net/ethernet/microchip/lan743x_main.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/include/linux/mdio.h b/include/linux/mdio.h
-index 8fa23bdcedbf9..0bca1a960853f 100644
---- a/include/linux/mdio.h
-+++ b/include/linux/mdio.h
-@@ -44,10 +44,7 @@ struct mdio_device {
- 	unsigned int reset_deassert_delay;
- };
+diff --git a/drivers/net/ethernet/microchip/lan743x_main.c b/drivers/net/ethernet/microchip/lan743x_main.c
+index f971d60484f06..781440d5756f3 100644
+--- a/drivers/net/ethernet/microchip/lan743x_main.c
++++ b/drivers/net/ethernet/microchip/lan743x_main.c
+@@ -1373,7 +1373,7 @@ static int lan743x_mac_set_mtu(struct lan743x_adapter *adapter, int new_mtu)
+ }
  
--static inline struct mdio_device *to_mdio_device(const struct device *dev)
--{
--	return container_of(dev, struct mdio_device, dev);
--}
-+#define to_mdio_device(__dev)	container_of_const(__dev, struct mdio_device, dev)
+ /* PHY */
+-static int lan743x_phy_reset(struct lan743x_adapter *adapter)
++static int lan743x_hw_reset_phy(struct lan743x_adapter *adapter)
+ {
+ 	u32 data;
  
- /* struct mdio_driver_common: Common to all MDIO drivers */
- struct mdio_driver_common {
-diff --git a/include/linux/phy.h b/include/linux/phy.h
-index 5aa30ee998104..a57e799b1de18 100644
---- a/include/linux/phy.h
-+++ b/include/linux/phy.h
-@@ -766,10 +766,7 @@ struct phy_device {
- /* Generic phy_device::dev_flags */
- #define PHY_F_NO_IRQ		0x80000000
+@@ -1407,7 +1407,7 @@ static void lan743x_phy_update_flowcontrol(struct lan743x_adapter *adapter,
  
--static inline struct phy_device *to_phy_device(const struct device *dev)
--{
--	return container_of(to_mdio_device(dev), struct phy_device, mdio);
--}
-+#define to_phy_device(__dev)	container_of_const(to_mdio_device(__dev), struct phy_device, mdio)
+ static int lan743x_phy_init(struct lan743x_adapter *adapter)
+ {
+-	return lan743x_phy_reset(adapter);
++	return lan743x_hw_reset_phy(adapter);
+ }
  
- /**
-  * struct phy_tdr_config - Configuration of a TDR raw test
+ static void lan743x_phy_link_status_change(struct net_device *netdev)
 -- 
 2.39.5
 
