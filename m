@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-153700-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-154487-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 700C0ADD631
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:31:01 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6650FADDA15
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 19:13:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EDC822C7C92
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:20:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A8EEA40816B
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:55:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DAA122F9485;
-	Tue, 17 Jun 2025 16:13:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE9892FA626;
+	Tue, 17 Jun 2025 16:56:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l4en860R"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2ZsjKydx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 950BC2EE288;
-	Tue, 17 Jun 2025 16:13:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99B3BCA4B;
+	Tue, 17 Jun 2025 16:56:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750176807; cv=none; b=ag8kZ0Q8q6QeTyi6oHrGyhQFjnXyxKOZ1y6P1vAn34DfBhNEEfnFtyXjvq4LXag5e1+xe/E54oHPYN65m8Mis1qAYdWb5Rkechk7vu9uC0yNX+ds4xy/6BbeX+f885FmC803LNNLrDr4FvLLZeEzxbywBzDZSVZPgnL5LJ3wgxA=
+	t=1750179364; cv=none; b=BUTeYSbliLEfvQhTaq/guiD+fdE0NYQkpdb8zYh9PUiYbBZM7+AzAr8hFjJWz7fUd35LOBPT/MCKmLej5WvilGAk0SalFknKyhttCVQV462/xk24FeXuKCnXfdRgQS2s8xbYcIPiAiClZua+PpdebU17i5HaImNFfyLdqsxebMU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750176807; c=relaxed/simple;
-	bh=8ScBYvS+RwuD8zalMeiBRC1W0gl32MHiAN6k4nCeInM=;
+	s=arc-20240116; t=1750179364; c=relaxed/simple;
+	bh=vHxVcS77mJkzqBEahowLZYyD649WxJFWu9D0D0Y59PU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=J2r5Nbt+ukM/fIM1PmDg0hOUeMbZd4FR+K7oeIYvj5IiUGVwpS9ZWleSvUbFYwpSQ/sC28B+oV5dkwbWTcUesrrmKwJyNK2ZRkQR09y6dTkWSB33GD1cNPjtPCtyTbgap9KgGzAm0P9AwPg6YM6okGpKjwFSPaFdxNxE23JwRpw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l4en860R; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BBD50C4CEF0;
-	Tue, 17 Jun 2025 16:13:26 +0000 (UTC)
+	 MIME-Version:Content-Type; b=qzM4dJKHEVzaVsc/vKHNDBjL7VUqPrJ8kr/HbYgJD/sGtGKN6jtmLtgcOMQ1PzZpk/oXYaZ+9CGnNgcXmSs5Lz+u+nvKxlOkYCiA/NiIztfnz/7lp8Csm+b/QRnM/liLY5J25XE0Ptp6sA2qzMjpFioNkO2pAAvWI0f0Zgouqgc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2ZsjKydx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1931FC4CEE3;
+	Tue, 17 Jun 2025 16:56:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750176807;
-	bh=8ScBYvS+RwuD8zalMeiBRC1W0gl32MHiAN6k4nCeInM=;
+	s=korg; t=1750179364;
+	bh=vHxVcS77mJkzqBEahowLZYyD649WxJFWu9D0D0Y59PU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=l4en860R3C6FQCD/E6r15rNKutJWG5wUVTJ/rxE0z+crkmnfr4judewY9/4T6j8xn
-	 +elq2QIECQN9n43n1tsYnNxyQHegdY48kyz+0zx5VZfcrzpHmPD5y0rQR9xbhKRlUA
-	 Uro5f9MrDdaeTH7Nc4VT5JJqnfdrBd/JYSPxrCq8=
+	b=2ZsjKydxHWlRsd7YiWSbZ+il5szjgi4rmLtnLnaMl2n0xIeHfRbkXGBARiUZdVj8A
+	 LsGVG1XU2ZqrHvOf8V8y0pyvNuBQM+dxPU4A+7kDJj0JCyITXQ32ScOmjktpqihp2R
+	 hFVLOZ8vX0S3NmVAs+QfHxwV4f1ENP3W13YdKJ3w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xu Lu <luxu.kernel@bytedance.com>,
-	Yunhui Cui <cuiyunhui@bytedance.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>,
+	Tvrtko Ursulin <tvrtko.ursulin@igalia.com>,
+	Matthew Brost <matthew.brost@intel.com>,
+	Lucas De Marchi <lucas.demarchi@intel.com>,
+	=?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 315/356] ACPI: CPPC: Fix NULL pointer dereference when nosmp is used
-Date: Tue, 17 Jun 2025 17:27:10 +0200
-Message-ID: <20250617152350.839993992@linuxfoundation.org>
+Subject: [PATCH 6.15 723/780] drm/xe/lrc: Use a temporary buffer for WA BB
+Date: Tue, 17 Jun 2025 17:27:11 +0200
+Message-ID: <20250617152520.934399537@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152338.212798615@linuxfoundation.org>
-References: <20250617152338.212798615@linuxfoundation.org>
+In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
+References: <20250617152451.485330293@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,52 +63,91 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yunhui Cui <cuiyunhui@bytedance.com>
+From: Lucas De Marchi <lucas.demarchi@intel.com>
 
-[ Upstream commit 15eece6c5b05e5f9db0711978c3e3b7f1a2cfe12 ]
+[ Upstream commit 9c7632faad434c98f1f2cc06f3647a5a5d05ddbf ]
 
-With nosmp in cmdline, other CPUs are not brought up, leaving
-their cpc_desc_ptr NULL. CPU0's iteration via for_each_possible_cpu()
-dereferences these NULL pointers, causing panic.
+In case the BO is in iomem, we can't simply take the vaddr and write to
+it. Instead, prepare a separate buffer that is later copied into io
+memory. Right now it's just a few words that could be using
+xe_map_write32(), but the intention is to grow the WA BB for other
+uses.
 
-Panic backtrace:
-
-[    0.401123] Unable to handle kernel NULL pointer dereference at virtual address 00000000000000b8
-...
-[    0.403255] [<ffffffff809a5818>] cppc_allow_fast_switch+0x6a/0xd4
-...
-Kernel panic - not syncing: Attempted to kill init!
-
-Fixes: 3cc30dd00a58 ("cpufreq: CPPC: Enable fast_switch")
-Reported-by: Xu Lu <luxu.kernel@bytedance.com>
-Signed-off-by: Yunhui Cui <cuiyunhui@bytedance.com>
-Link: https://patch.msgid.link/20250604023036.99553-1-cuiyunhui@bytedance.com
-[ rjw: New subject ]
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Fixes: 617d824c5323 ("drm/xe: Add WA BB to capture active context utilization")
+Cc: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
+Cc: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
+Reviewed-by: Matthew Brost <matthew.brost@intel.com>
+Reviewed-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
+Link: https://lore.kernel.org/r/20250604-wa-bb-fix-v1-1-0dfc5dafcef0@intel.com
+Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
+(cherry picked from commit ef48715b2d3df17c060e23b9aa636af3d95652f8)
+Signed-off-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/cppc_acpi.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/xe/xe_lrc.c | 24 ++++++++++++++++++++----
+ 1 file changed, 20 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/acpi/cppc_acpi.c b/drivers/acpi/cppc_acpi.c
-index ed02a2a9970aa..10d531427ba77 100644
---- a/drivers/acpi/cppc_acpi.c
-+++ b/drivers/acpi/cppc_acpi.c
-@@ -461,7 +461,7 @@ bool cppc_allow_fast_switch(void)
- 	struct cpc_desc *cpc_ptr;
- 	int cpu;
+diff --git a/drivers/gpu/drm/xe/xe_lrc.c b/drivers/gpu/drm/xe/xe_lrc.c
+index 03bfba696b378..16e20b5ad325f 100644
+--- a/drivers/gpu/drm/xe/xe_lrc.c
++++ b/drivers/gpu/drm/xe/xe_lrc.c
+@@ -941,11 +941,18 @@ static void xe_lrc_finish(struct xe_lrc *lrc)
+  * store it in the PPHSWP.
+  */
+ #define CONTEXT_ACTIVE 1ULL
+-static void xe_lrc_setup_utilization(struct xe_lrc *lrc)
++static int xe_lrc_setup_utilization(struct xe_lrc *lrc)
+ {
+-	u32 *cmd;
++	u32 *cmd, *buf = NULL;
  
--	for_each_possible_cpu(cpu) {
-+	for_each_present_cpu(cpu) {
- 		cpc_ptr = per_cpu(cpc_desc_ptr, cpu);
- 		desired_reg = &cpc_ptr->cpc_regs[DESIRED_PERF];
- 		if (!CPC_IN_SYSTEM_MEMORY(desired_reg) &&
+-	cmd = lrc->bb_per_ctx_bo->vmap.vaddr;
++	if (lrc->bb_per_ctx_bo->vmap.is_iomem) {
++		buf = kmalloc(lrc->bb_per_ctx_bo->size, GFP_KERNEL);
++		if (!buf)
++			return -ENOMEM;
++		cmd = buf;
++	} else {
++		cmd = lrc->bb_per_ctx_bo->vmap.vaddr;
++	}
+ 
+ 	*cmd++ = MI_STORE_REGISTER_MEM | MI_SRM_USE_GGTT | MI_SRM_ADD_CS_OFFSET;
+ 	*cmd++ = ENGINE_ID(0).addr;
+@@ -966,9 +973,16 @@ static void xe_lrc_setup_utilization(struct xe_lrc *lrc)
+ 
+ 	*cmd++ = MI_BATCH_BUFFER_END;
+ 
++	if (buf) {
++		xe_map_memcpy_to(gt_to_xe(lrc->gt), &lrc->bb_per_ctx_bo->vmap, 0,
++				 buf, (cmd - buf) * sizeof(*cmd));
++		kfree(buf);
++	}
++
+ 	xe_lrc_write_ctx_reg(lrc, CTX_BB_PER_CTX_PTR,
+ 			     xe_bo_ggtt_addr(lrc->bb_per_ctx_bo) | 1);
+ 
++	return 0;
+ }
+ 
+ #define PVC_CTX_ASID		(0x2e + 1)
+@@ -1123,7 +1137,9 @@ static int xe_lrc_init(struct xe_lrc *lrc, struct xe_hw_engine *hwe,
+ 	map = __xe_lrc_start_seqno_map(lrc);
+ 	xe_map_write32(lrc_to_xe(lrc), &map, lrc->fence_ctx.next_seqno - 1);
+ 
+-	xe_lrc_setup_utilization(lrc);
++	err = xe_lrc_setup_utilization(lrc);
++	if (err)
++		goto err_lrc_finish;
+ 
+ 	return 0;
+ 
 -- 
 2.39.5
 
