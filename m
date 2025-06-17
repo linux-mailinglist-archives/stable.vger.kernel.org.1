@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-153625-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-154505-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 65466ADD56D
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:20:44 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5AD94ADD9C7
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 19:09:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C4EB52C45A4
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:13:28 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8196B19E6B73
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:57:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 688402ED87B;
-	Tue, 17 Jun 2025 16:09:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 542CF2FA637;
+	Tue, 17 Jun 2025 16:57:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ryY1WIOI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NW2Mp3iv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 262022ED871;
-	Tue, 17 Jun 2025 16:09:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00E6C2FA622;
+	Tue, 17 Jun 2025 16:57:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750176564; cv=none; b=Ujr09SPDg2m4Gxqd9il2C7aSqUykg/LhpNfSAR/q7LMMg+YPNwb1fEaENiyaRtPfyjjm0LNBlYCU7LqtvT6D84OH0jGTcBAqV3MaTuz5KM2DrcyO6sOlkYJcT8TxmlH7/czrWIOk5H41E77WuhoDanT1U1rhhqiOj+ZZJg6h+wg=
+	t=1750179424; cv=none; b=l+ivULaA/MP/kQTbMIn4Pangb730O0Rk2wNQmu/xWaitXjnrJoMQoKNy3+LNN0MFXs9dernI8ehoDvY45yDlpbGEQOCrW7tIE7OXqpkXxAez8OLj+T7avXi/dP1FDCkvoWwviFOwOCISWkSCc6jf0G4luMGXE37C3iEG6ptHxi4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750176564; c=relaxed/simple;
-	bh=0KuRN1j1ox2LsaKK3mZak3HnDq8qcz2DSGz2rX2PRs0=;
+	s=arc-20240116; t=1750179424; c=relaxed/simple;
+	bh=60Fs/y0t45cJ5mI5vWDOaaoH/PtfcYAfKizcunr7nh4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FuLe4gckPkuYXpWezFwADVBjWbJGD0RAuVNeHtNU7BHXr6bezeY9cg+pzpTdKATKkuvzMRXiQ8tvrMTz4n6Qaw/5a1FV1Uc9TzVVtcRLByQ60lDDeL+5+E3YRCMncsmQ109rh3J5DZKVUBrujDahLbDHq5dDEs4VXL/bj0c9Xz8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ryY1WIOI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89B9DC4CEE7;
-	Tue, 17 Jun 2025 16:09:23 +0000 (UTC)
+	 MIME-Version; b=nthAZ7bE2w0iSB2RHsxEKoorsdRyvJnogV/7acbR2wuTL2sVoi7OItXQdPuQtDtSZywOoegFuqELUL2ewqqxoS3te9kDSdG2nyjCcGNQAfs/ypJc91d2Y6c+NlA/46HUyuexAWIFrA1osiz/Wl+bD8Wwa+z/VpMc1n4xBCj8KZY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NW2Mp3iv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05742C4CEE3;
+	Tue, 17 Jun 2025 16:57:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750176564;
-	bh=0KuRN1j1ox2LsaKK3mZak3HnDq8qcz2DSGz2rX2PRs0=;
+	s=korg; t=1750179423;
+	bh=60Fs/y0t45cJ5mI5vWDOaaoH/PtfcYAfKizcunr7nh4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ryY1WIOI5sHbkBgbKVurGmZ07Sd+CPqxsr5aTBQz3RVYuxeQytEoWfgMX4zPEqrvz
-	 d1Wf/D2nIAbiVaXzOJ2Yl4hTm3dvtM4VP2slt5WSR0hLh0VbMnZFlA4Cyy98G78ysm
-	 ozRi3/z21fkFUnSwPdYJWueZ7i4ltLqyfRk4y1b0=
+	b=NW2Mp3ivwkkrV8aWJmKbVStT/Dk7DS4sJ8d/WFQeUWZe5+pG+fA8n0eQllVhGRDgU
+	 7ktald+hTII3V4buuPUaePWGlJAiLV89vLhKbaCaV8ZiGF93AdY1UXXSuAyZgxxLWG
+	 V8AM834FXOX6Ky9axCWY6YGWz2/kMUdTc6zBDUK0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Dr. David Alan Gilbert" <linux@treblig.org>,
-	Simon Horman <horms@kernel.org>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Gustavo Luiz Duarte <gustavold@gmail.com>,
+	Breno Leitao <leitao@debian.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 293/356] Bluetooth: MGMT: Remove unused mgmt_pending_find_data
-Date: Tue, 17 Jun 2025 17:26:48 +0200
-Message-ID: <20250617152349.969674740@linuxfoundation.org>
+Subject: [PATCH 6.15 701/780] netconsole: fix appending sysdata when sysdata_fields == SYSDATA_RELEASE
+Date: Tue, 17 Jun 2025 17:26:49 +0200
+Message-ID: <20250617152520.039823651@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152338.212798615@linuxfoundation.org>
-References: <20250617152338.212798615@linuxfoundation.org>
+In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
+References: <20250617152451.485330293@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,72 +63,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dr. David Alan Gilbert <linux@treblig.org>
+From: Gustavo Luiz Duarte <gustavold@gmail.com>
 
-[ Upstream commit 276af34d82f13bda0b2a4d9786c90b8bbf1cd064 ]
+[ Upstream commit c85bf1975108d2e2431c11d1cb7e95aca587dfbe ]
 
-mgmt_pending_find_data() last use was removed in 2021 by
-commit 5a7501374664 ("Bluetooth: hci_sync: Convert MGMT_OP_GET_CLOCK_INFO")
+Before appending sysdata, prepare_extradata() checks if any feature is
+enabled in sysdata_fields (and exits early if none is enabled).
 
-Remove it.
+When SYSDATA_RELEASE was introduced, we missed adding it to the list of
+features being checked against sysdata_fields in prepare_extradata().
+The result was that, if only SYSDATA_RELEASE is enabled in
+sysdata_fields, we incorreclty exit early and fail to append the
+release.
 
-Signed-off-by: Dr. David Alan Gilbert <linux@treblig.org>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Stable-dep-of: 6fe26f694c82 ("Bluetooth: MGMT: Protect mgmt_pending list with its own lock")
+Instead of checking specific bits in sysdata_fields, check if
+sysdata_fields has ALL bit zeroed and exit early if true. This fixes
+case when only SYSDATA_RELEASE enabled and makes the code more general /
+less error prone in future feature implementation.
+
+Signed-off-by: Gustavo Luiz Duarte <gustavold@gmail.com>
+Reviewed-by: Breno Leitao <leitao@debian.org>
+Fixes: cfcc9239e78a ("netconsole: append release to sysdata")
+Link: https://patch.msgid.link/20250609-netconsole-fix-v1-1-17543611ae31@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bluetooth/mgmt_util.c | 17 -----------------
- net/bluetooth/mgmt_util.h |  4 ----
- 2 files changed, 21 deletions(-)
+ drivers/net/netconsole.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/net/bluetooth/mgmt_util.c b/net/bluetooth/mgmt_util.c
-index 17e32605d9b00..dba6a0d66500f 100644
---- a/net/bluetooth/mgmt_util.c
-+++ b/net/bluetooth/mgmt_util.c
-@@ -229,23 +229,6 @@ struct mgmt_pending_cmd *mgmt_pending_find(unsigned short channel, u16 opcode,
- 	return NULL;
- }
+diff --git a/drivers/net/netconsole.c b/drivers/net/netconsole.c
+index 4289ccd3e41bf..176935a8645ff 100644
+--- a/drivers/net/netconsole.c
++++ b/drivers/net/netconsole.c
+@@ -1252,7 +1252,6 @@ static int sysdata_append_release(struct netconsole_target *nt, int offset)
+  */
+ static int prepare_extradata(struct netconsole_target *nt)
+ {
+-	u32 fields = SYSDATA_CPU_NR | SYSDATA_TASKNAME;
+ 	int extradata_len;
  
--struct mgmt_pending_cmd *mgmt_pending_find_data(unsigned short channel,
--						u16 opcode,
--						struct hci_dev *hdev,
--						const void *data)
--{
--	struct mgmt_pending_cmd *cmd;
--
--	list_for_each_entry(cmd, &hdev->mgmt_pending, list) {
--		if (cmd->user_data != data)
--			continue;
--		if (cmd->opcode == opcode)
--			return cmd;
--	}
--
--	return NULL;
--}
--
- void mgmt_pending_foreach(u16 opcode, struct hci_dev *hdev,
- 			  void (*cb)(struct mgmt_pending_cmd *cmd, void *data),
- 			  void *data)
-diff --git a/net/bluetooth/mgmt_util.h b/net/bluetooth/mgmt_util.h
-index bdf978605d5a8..f2ba994ab1d84 100644
---- a/net/bluetooth/mgmt_util.h
-+++ b/net/bluetooth/mgmt_util.h
-@@ -54,10 +54,6 @@ int mgmt_cmd_complete(struct sock *sk, u16 index, u16 cmd, u8 status,
+ 	/* userdata was appended when configfs write helper was called
+@@ -1260,7 +1259,7 @@ static int prepare_extradata(struct netconsole_target *nt)
+ 	 */
+ 	extradata_len = nt->userdata_length;
  
- struct mgmt_pending_cmd *mgmt_pending_find(unsigned short channel, u16 opcode,
- 					   struct hci_dev *hdev);
--struct mgmt_pending_cmd *mgmt_pending_find_data(unsigned short channel,
--						u16 opcode,
--						struct hci_dev *hdev,
--						const void *data);
- void mgmt_pending_foreach(u16 opcode, struct hci_dev *hdev,
- 			  void (*cb)(struct mgmt_pending_cmd *cmd, void *data),
- 			  void *data);
+-	if (!(nt->sysdata_fields & fields))
++	if (!nt->sysdata_fields)
+ 		goto out;
+ 
+ 	if (nt->sysdata_fields & SYSDATA_CPU_NR)
 -- 
 2.39.5
 
