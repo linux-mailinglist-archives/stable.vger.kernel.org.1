@@ -1,64 +1,58 @@
-Return-Path: <stable+bounces-154231-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153540-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B19C4ADD85C
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:54:38 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6927AADD4F5
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:15:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A904F1BC0C75
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:46:47 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6956B17F6A9
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:07:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE5D71ADC97;
-	Tue, 17 Jun 2025 16:42:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94D3F2F237E;
+	Tue, 17 Jun 2025 16:04:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VDfrFipO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZWWNfmil"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A038C285079;
-	Tue, 17 Jun 2025 16:42:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51EB31E8332;
+	Tue, 17 Jun 2025 16:04:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750178525; cv=none; b=g0h15ROna3N22LhILNdZFSZ2ci5x3j2SmyEEcBvP6JZ+GemUeXCsktHunwnAjCsG593gaYO6Og7QSvOJY8XpLW9P8P6HrNVXTBqlola+Rq7HirDum/y+UIycfKc2Ll9HuXaN9Cnq4ItQXWTsK5H9uLQZt7eQuwebN5UXYZkaWfc=
+	t=1750176292; cv=none; b=NKYUsxpZANT+Lod7MEmsYoLCFb3g4DG31GxrzXtVXKR7xo8kUz95yNxv4Lr3/01PM5UildcR91cWSwEy5fRwwY+ZI/g+oS/cBNhpoOXg/lv9YoVQg6nxTkcvjsSYYzD4FyUvr4gOhWULT7Q5BwyukJ7aNS0psux2mAnKKcXDIjA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750178525; c=relaxed/simple;
-	bh=Q5BWIfSIBwlCYQshA5R6avMIZpVCHIv4VPcZydIg0YU=;
+	s=arc-20240116; t=1750176292; c=relaxed/simple;
+	bh=fcKLchJVI4r/1zHF+TTqiKKi6rKL90wDzJlOGS23hqc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PVkuebv3QJ+UZXkgg0nZgr73zKN9g+KzofHu3dFnm+yVEJrCtL2af9JGbsbd1pdyODoa93FdTeV52qmNfNzcLgXVsWpP9+DaavOvVpBiTgLk/zV0/t+fgilYWTTI6iVf3oXeNPar9EKLfD3sVnfeiSj6CUBf0y89C7IwsF1rKXQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VDfrFipO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB2D6C4CEE3;
-	Tue, 17 Jun 2025 16:42:04 +0000 (UTC)
+	 MIME-Version; b=sjz18kHxD/AUI/MOChzXEuZ/T3Tp6o/7fAwsk9UaI+JyoTCQOIvU/WrQ8kevUwnQPTl+P59mpXyh1JgmB+j6e00Ocg46tSbyr1W9pP2FMMwxd87Jz6VwIeW0GcWPXl7aC33oj2xxabSj55sxuDW1dSnMEfKcfbWoraN9Gb1Zg2Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZWWNfmil; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D961C4CEE7;
+	Tue, 17 Jun 2025 16:04:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750178525;
-	bh=Q5BWIfSIBwlCYQshA5R6avMIZpVCHIv4VPcZydIg0YU=;
+	s=korg; t=1750176291;
+	bh=fcKLchJVI4r/1zHF+TTqiKKi6rKL90wDzJlOGS23hqc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VDfrFipOJtFIvxjjxuKGUuypVQ7OcbGlE01geWaNi1SEWGovrAIVIYNKns/AzpE5w
-	 BatUiSCDsej5YcprBVlGMQER/n1vQjh905EQsGB20ojhWXVw2Z4dd/KJmuWF4IpOAR
-	 uyTlX1JFIXgYqoev42GlBpIYr82tLVj7KOBaYFh4=
+	b=ZWWNfmilvbKgKh5cfPN9DKPKVXJlj/zmua6GzphKOzsIhK/PNYvId7cQpfFfLz69U
+	 jsbUyGD9CspVChbiwPY6lmGrGlf4aWRnMusHLGQ4G3q+bMQDSdPsNfYBvP1kazgXIH
+	 WgYfUxyvzx2/L8OEUXWL6vtAapHvqUFEpPzDbAc8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ian Rogers <irogers@google.com>,
-	Dapeng Mi <dapeng1.mi@linux.intel.com>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-	Andi Kleen <ak@linux.intel.com>,
-	Ingo Molnar <mingo@redhat.com>,
-	Kan Liang <kan.liang@linux.intel.com>,
-	Namhyung Kim <namhyung@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Arnaldo Carvalho de Melo <acme@redhat.com>,
+	Faicker Mo <faicker.mo@zenlayer.com>,
+	Ilya Maximets <i.maximets@ovn.org>,
+	Aaron Conole <aconole@redhat.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 472/780] perf record: Fix incorrect --user-regs comments
+Subject: [PATCH 6.12 214/512] net: openvswitch: Fix the dead loop of MPLS parse
 Date: Tue, 17 Jun 2025 17:23:00 +0200
-Message-ID: <20250617152510.712169307@linuxfoundation.org>
+Message-ID: <20250617152428.308273060@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
-References: <20250617152451.485330293@linuxfoundation.org>
+In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
+References: <20250617152419.512865572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,48 +64,77 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dapeng Mi <dapeng1.mi@linux.intel.com>
+From: Faicker Mo <faicker.mo@zenlayer.com>
 
-[ Upstream commit a4a859eb6704a8aa46aa1cec5396c8d41383a26b ]
+[ Upstream commit 0bdc924bfb319fb10d1113cbf091fc26fb7b1f99 ]
 
-The comment of "--user-regs" option is not correct, fix it.
+The unexpected MPLS packet may not end with the bottom label stack.
+When there are many stacks, The label count value has wrapped around.
+A dead loop occurs, soft lockup/CPU stuck finally.
 
-"on interrupt," -> "in user space,"
+stack backtrace:
+UBSAN: array-index-out-of-bounds in /build/linux-0Pa0xK/linux-5.15.0/net/openvswitch/flow.c:662:26
+index -1 is out of range for type '__be32 [3]'
+CPU: 34 PID: 0 Comm: swapper/34 Kdump: loaded Tainted: G           OE   5.15.0-121-generic #131-Ubuntu
+Hardware name: Dell Inc. PowerEdge C6420/0JP9TF, BIOS 2.12.2 07/14/2021
+Call Trace:
+ <IRQ>
+ show_stack+0x52/0x5c
+ dump_stack_lvl+0x4a/0x63
+ dump_stack+0x10/0x16
+ ubsan_epilogue+0x9/0x36
+ __ubsan_handle_out_of_bounds.cold+0x44/0x49
+ key_extract_l3l4+0x82a/0x840 [openvswitch]
+ ? kfree_skbmem+0x52/0xa0
+ key_extract+0x9c/0x2b0 [openvswitch]
+ ovs_flow_key_extract+0x124/0x350 [openvswitch]
+ ovs_vport_receive+0x61/0xd0 [openvswitch]
+ ? kernel_init_free_pages.part.0+0x4a/0x70
+ ? get_page_from_freelist+0x353/0x540
+ netdev_port_receive+0xc4/0x180 [openvswitch]
+ ? netdev_port_receive+0x180/0x180 [openvswitch]
+ netdev_frame_hook+0x1f/0x40 [openvswitch]
+ __netif_receive_skb_core.constprop.0+0x23a/0xf00
+ __netif_receive_skb_list_core+0xfa/0x240
+ netif_receive_skb_list_internal+0x18e/0x2a0
+ napi_complete_done+0x7a/0x1c0
+ bnxt_poll+0x155/0x1c0 [bnxt_en]
+ __napi_poll+0x30/0x180
+ net_rx_action+0x126/0x280
+ ? bnxt_msix+0x67/0x80 [bnxt_en]
+ handle_softirqs+0xda/0x2d0
+ irq_exit_rcu+0x96/0xc0
+ common_interrupt+0x8e/0xa0
+ </IRQ>
 
-Fixes: 84c417422798c897 ("perf record: Support direct --user-regs arguments")
-Reviewed-by: Ian Rogers <irogers@google.com>
-Signed-off-by: Dapeng Mi <dapeng1.mi@linux.intel.com>
-Cc: Adrian Hunter <adrian.hunter@intel.com>
-Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
-Cc: Andi Kleen <ak@linux.intel.com>
-Cc: Ingo Molnar <mingo@redhat.com>
-Cc: Kan Liang <kan.liang@linux.intel.com>
-Cc: Namhyung Kim <namhyung@kernel.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Link: https://lore.kernel.org/r/20250403060810.196028-1-dapeng1.mi@linux.intel.com
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Fixes: fbdcdd78da7c ("Change in Openvswitch to support MPLS label depth of 3 in ingress direction")
+Signed-off-by: Faicker Mo <faicker.mo@zenlayer.com>
+Acked-by: Ilya Maximets <i.maximets@ovn.org>
+Reviewed-by: Aaron Conole <aconole@redhat.com>
+Link: https://patch.msgid.link/259D3404-575D-4A6D-B263-1DF59A67CF89@zenlayer.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/builtin-record.c | 2 +-
+ net/openvswitch/flow.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tools/perf/builtin-record.c b/tools/perf/builtin-record.c
-index ba20bf7c011d7..d56273a0e241c 100644
---- a/tools/perf/builtin-record.c
-+++ b/tools/perf/builtin-record.c
-@@ -3480,7 +3480,7 @@ static struct option __record_options[] = {
- 		    "sample selected machine registers on interrupt,"
- 		    " use '-I?' to list register names", parse_intr_regs),
- 	OPT_CALLBACK_OPTARG(0, "user-regs", &record.opts.sample_user_regs, NULL, "any register",
--		    "sample selected machine registers on interrupt,"
-+		    "sample selected machine registers in user space,"
- 		    " use '--user-regs=?' to list register names", parse_user_regs),
- 	OPT_BOOLEAN(0, "running-time", &record.opts.running_time,
- 		    "Record running/enabled time of read (:S) events"),
+diff --git a/net/openvswitch/flow.c b/net/openvswitch/flow.c
+index 8a848ce72e291..b80bd3a907739 100644
+--- a/net/openvswitch/flow.c
++++ b/net/openvswitch/flow.c
+@@ -788,7 +788,7 @@ static int key_extract_l3l4(struct sk_buff *skb, struct sw_flow_key *key)
+ 			memset(&key->ipv4, 0, sizeof(key->ipv4));
+ 		}
+ 	} else if (eth_p_mpls(key->eth.type)) {
+-		u8 label_count = 1;
++		size_t label_count = 1;
+ 
+ 		memset(&key->mpls, 0, sizeof(key->mpls));
+ 		skb_set_inner_network_header(skb, skb->mac_len);
 -- 
 2.39.5
 
