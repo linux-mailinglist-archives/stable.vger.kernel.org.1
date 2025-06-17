@@ -1,65 +1,56 @@
-Return-Path: <stable+bounces-154220-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153526-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E43A2ADD9C0
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 19:09:09 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2C727ADD428
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:07:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C08311942E5A
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:45:59 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 043C97A671C
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:05:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1BCB32FA659;
-	Tue, 17 Jun 2025 16:41:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB7F22F234A;
+	Tue, 17 Jun 2025 16:04:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eBpoEEuC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iAtCvsym"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8F2A2FA62D;
-	Tue, 17 Jun 2025 16:41:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A09E52EA153;
+	Tue, 17 Jun 2025 16:04:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750178491; cv=none; b=ectQWb+kB3cYYLCcqkrdEywoFmNncJR3W04HnpIscuyS7MzF2sVO56wqKAZVo4TS87OdTsBc4pBXsn7sp0zmVAQ/bxyPuyYcIqNv0g59z8ZwAXjjwrWdyPIhvVDgk53oCgmpfDcJuFWWwYgmhWKayKMI10wyll/jQPabuK1/a5Y=
+	t=1750176248; cv=none; b=CtGqJellROttrtntUbvDmvrscd/WiQ1PXnd4m4Y7ApNJGSnVZe6yN720IslDJ3hZVsItGS/nLUnOs5LbWCIi2/0ztg+iYSt5m1yQsadMefMzK8ktMxHkGjh3kFTwXOj0GbODTFB/LQi02HLM5e17r07bBCZ8IedAmWCzjv16lgg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750178491; c=relaxed/simple;
-	bh=kh+uQBwfUR3c2Mtcg1RMKRG5BG7RzcQIM50IF1AmC9Q=;
+	s=arc-20240116; t=1750176248; c=relaxed/simple;
+	bh=g+T0tsJq7HCFp8gdFGnAavLR5SVp1SWeJhi0Ct6VVE8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rKZF8KZi7Om7a2a89tPIke/6yK0+V5PkgL0gVVK3TuNSLe9NnqliYvq8ugrdSz3ALuwgMAPtlxm7xqGOfJVYG1wmPTnsQv2w1wDiaOxt+tJSkg6MxKxtpc4GGHETqH1A2KcrFpxfKdGaSmm7tRbd3RhzqX4vx0MA5BPMx1kArHc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eBpoEEuC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29019C4CEE3;
-	Tue, 17 Jun 2025 16:41:31 +0000 (UTC)
+	 MIME-Version; b=Tjx8KbZdD2j1IWBIpEDrZ15KBHN8vCcfI3nmZxK4faaI807FMF4OozBiWA5gX3OoAPafWwjYKAqnDUhjcYR4iy3qdWgw3m62UncX6CgzriO3VD4rfLN6+W9qzuwQvIyXqsVKsSV80V6/3EpSV3KbihFIqIzjPl0fiexPvCw+YRk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iAtCvsym; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1FC42C4CEE3;
+	Tue, 17 Jun 2025 16:04:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750178491;
-	bh=kh+uQBwfUR3c2Mtcg1RMKRG5BG7RzcQIM50IF1AmC9Q=;
+	s=korg; t=1750176248;
+	bh=g+T0tsJq7HCFp8gdFGnAavLR5SVp1SWeJhi0Ct6VVE8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eBpoEEuCUgXn0wKncBCtIDH5Ch7FQtyIlDp94hV93cDP7/iGVwzEyNMWPBlJxhwOq
-	 xqd0KCsKn3yXNrsBqkaxr86ui7WkafYFuAnjshYgHWdxRGTbBBBhmartsSJSYq7+xE
-	 TxocOOhSAPSPAvCKPcQf/AF1BFBkUHC/+A6JPNA0=
+	b=iAtCvsymhJzvw4LxxZDEns9vBged6IehcuqJqMfI0CDtyqot/ZtM1tM3DZ9WYg3Zb
+	 x1A1n1o1C00/68cQrbeN4WdtfwDKM0NB4229noJkNtO11vv5dC3EbJT2bvKX6SdK3l
+	 bXKm7sGeulmCiSdwf/f+X1/OYfP/K5LySh27yq8U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ian Rogers <irogers@google.com>,
-	Namhyung Kim <namhyung@kernel.org>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-	Ingo Molnar <mingo@redhat.com>,
-	James Clark <james.clark@linaro.org>,
-	Jiri Olsa <jolsa@kernel.org>,
-	Kan Liang <kan.liang@linux.intel.com>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Arnaldo Carvalho de Melo <acme@redhat.com>,
+	Horatiu Vultur <horatiu.vultur@microchip.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 467/780] perf pmu: Avoid segv for missing name/alias_name in wildcarding
-Date: Tue, 17 Jun 2025 17:22:55 +0200
-Message-ID: <20250617152510.506586276@linuxfoundation.org>
+Subject: [PATCH 6.12 210/512] net: phy: mscc: Fix memory leak when using one step timestamping
+Date: Tue, 17 Jun 2025 17:22:56 +0200
+Message-ID: <20250617152428.139890229@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
-References: <20250617152451.485330293@linuxfoundation.org>
+In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
+References: <20250617152419.512865572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,51 +62,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ian Rogers <irogers@google.com>
+From: Horatiu Vultur <horatiu.vultur@microchip.com>
 
-[ Upstream commit 2a2a7f5e7deffa363b438308812989ded126a48a ]
+[ Upstream commit 846992645b25ec4253167e3f931e4597eb84af56 ]
 
-The pmu name or alias_name fields may be NULL and should be skipped if
-so. This is done in all loops of perf_pmu___name_match except the
-final wildcard loop which was an oversight.
+Fix memory leak when running one-step timestamping. When running
+one-step sync timestamping, the HW is configured to insert the TX time
+into the frame, so there is no reason to keep the skb anymore. As in
+this case the HW will never generate an interrupt to say that the frame
+was timestamped, then the frame will never released.
+Fix this by freeing the frame in case of one-step timestamping.
 
-Fixes: 63e287131cf0c59b ("perf pmu: Rename name matching for no suffix or wildcard variants")
-Signed-off-by: Ian Rogers <irogers@google.com>
-Acked-by: Namhyung Kim <namhyung@kernel.org>
-Cc: Adrian Hunter <adrian.hunter@intel.com>
-Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
-Cc: Ingo Molnar <mingo@redhat.com>
-Cc: James Clark <james.clark@linaro.org>
-Cc: Jiri Olsa <jolsa@kernel.org>
-Cc: Kan Liang <kan.liang@linux.intel.com>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Link: https://lore.kernel.org/r/20250527215035.187992-1-irogers@google.com
-[ Fixup the Fixes: tag to the right commit ]
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Fixes: 7d272e63e0979d ("net: phy: mscc: timestamping and PHC support")
+Signed-off-by: Horatiu Vultur <horatiu.vultur@microchip.com>
+Link: https://patch.msgid.link/20250522115722.2827199-1-horatiu.vultur@microchip.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/util/pmu.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/net/phy/mscc/mscc_ptp.c | 16 +++++++++++-----
+ 1 file changed, 11 insertions(+), 5 deletions(-)
 
-diff --git a/tools/perf/util/pmu.c b/tools/perf/util/pmu.c
-index b7ebac5ab1d11..e2e3969e12d36 100644
---- a/tools/perf/util/pmu.c
-+++ b/tools/perf/util/pmu.c
-@@ -2052,6 +2052,9 @@ static bool perf_pmu___name_match(const struct perf_pmu *pmu, const char *to_mat
- 	for (size_t i = 0; i < ARRAY_SIZE(names); i++) {
- 		const char *name = names[i];
+diff --git a/drivers/net/phy/mscc/mscc_ptp.c b/drivers/net/phy/mscc/mscc_ptp.c
+index 738a8822fcf01..0173aa3b4ead1 100644
+--- a/drivers/net/phy/mscc/mscc_ptp.c
++++ b/drivers/net/phy/mscc/mscc_ptp.c
+@@ -1163,18 +1163,24 @@ static void vsc85xx_txtstamp(struct mii_timestamper *mii_ts,
+ 		container_of(mii_ts, struct vsc8531_private, mii_ts);
  
-+		if (!name)
-+			continue;
+ 	if (!vsc8531->ptp->configured)
+-		return;
++		goto out;
+ 
+-	if (vsc8531->ptp->tx_type == HWTSTAMP_TX_OFF) {
+-		kfree_skb(skb);
+-		return;
+-	}
++	if (vsc8531->ptp->tx_type == HWTSTAMP_TX_OFF)
++		goto out;
 +
- 		if (wildcard && perf_pmu__match_wildcard_uncore(name, to_match))
- 			return true;
- 		if (!wildcard && perf_pmu__match_ignoring_suffix_uncore(name, to_match))
++	if (vsc8531->ptp->tx_type == HWTSTAMP_TX_ONESTEP_SYNC)
++		if (ptp_msg_is_sync(skb, type))
++			goto out;
+ 
+ 	skb_shinfo(skb)->tx_flags |= SKBTX_IN_PROGRESS;
+ 
+ 	mutex_lock(&vsc8531->ts_lock);
+ 	__skb_queue_tail(&vsc8531->ptp->tx_queue, skb);
+ 	mutex_unlock(&vsc8531->ts_lock);
++	return;
++
++out:
++	kfree_skb(skb);
+ }
+ 
+ static bool vsc85xx_rxtstamp(struct mii_timestamper *mii_ts,
 -- 
 2.39.5
 
