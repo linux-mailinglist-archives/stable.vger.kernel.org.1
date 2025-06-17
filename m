@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-152988-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153000-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 02582ADD1C7
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 17:34:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BC168ADD1DA
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 17:35:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A876717CC6D
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 15:34:55 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 67E4C17CDAF
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 15:35:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 97FAD2E9730;
-	Tue, 17 Jun 2025 15:34:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55EB92EBDCC;
+	Tue, 17 Jun 2025 15:35:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FKnDbRw8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RO1pVdIB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51985221F1F;
-	Tue, 17 Jun 2025 15:34:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 126D0221F1F;
+	Tue, 17 Jun 2025 15:35:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750174493; cv=none; b=XM8OHx+WtuLqmCO7nSKbmB5wKenMorMb8t5sW3dm28Q+vHoTHi/3iSBZ9jTUQuTnSayhvoJ3ftUr3ZaE1mFee71zKgLwDosjQ8kA3zNsqptUEWVwsFOVkXcB1bG1VBHe+/OOh329oP2VeWJqAQhIRYD7gZ/nh3FQPgmcPAh6bY0=
+	t=1750174544; cv=none; b=htwNatUp/JccVFQlh+WClDiXqKrSb1/2zSDW2ep1mqe0F17yC3lWIG5GNL5ELNs7egWE2Z6LiiVBs06QwzHGOap8sO9UwOpVAmLpIPZxhBPxuLheyLMQjatOY24M7mWDUxgL6EyTROIzx0KmYokO/czW2h/c+eUgQElwK3ual+w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750174493; c=relaxed/simple;
-	bh=arGGswOsHxsUIlbbNMlsAWorcx11h7iHg9DIhmfaMgU=;
+	s=arc-20240116; t=1750174544; c=relaxed/simple;
+	bh=EM7YWcYYAddLPfhIcmf/DpH3/bL2tFZpBZ86SdxEgl8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=p1aKsNi4vhIQ/RWwDcs8ps7DBzVarXUfHNdDOnRnOzo6VULMf4K/XVje0OlZotHtQlk7uo7U2OwpyIv/ACWGGzL/IMD/yFGBcju8TrUUedRaJs0shov6GklRMI3MAJjxIRHb5/qAkT3HOEdZxQdaaexl0LRy5yf3B2kfPbZE6dI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FKnDbRw8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE243C4CEE3;
-	Tue, 17 Jun 2025 15:34:52 +0000 (UTC)
+	 MIME-Version; b=XgpZgOKabCCL9SQl/7R1ZcG3upaiWOsMSMS81vZ2+ARwoWJJcSse100BliryZzqAk1Lg9ISIw8SxCoWTgN5Ibbtf4kZVty/h15s318gogECIcsdUXvppz6I7foeT1IyZ9Z3rgssmsrNfUNxeUFqwNICAGJuXxT1siTzHIHT4yik=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RO1pVdIB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 227A4C4CEE7;
+	Tue, 17 Jun 2025 15:35:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750174493;
-	bh=arGGswOsHxsUIlbbNMlsAWorcx11h7iHg9DIhmfaMgU=;
+	s=korg; t=1750174541;
+	bh=EM7YWcYYAddLPfhIcmf/DpH3/bL2tFZpBZ86SdxEgl8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FKnDbRw809OoljflV1SoF1JKRUHg6iLnYLWaST5QTInviJD3OTXKjHzr9RZV3SCAT
-	 MAsi/O55SdsGb38AwWfstdeJ+ZVqGqkGwAUbJ6TKTnZrhfVsHCSO1s8wdos2j7erNR
-	 O49Ic4Wed5iESKwMytkgXDfEez25gWnt8LHgt+vw=
+	b=RO1pVdIBJR06XYi52J07C/YwYl3igT/VsCay+DtrVopEMjVOveFR0O/5zniLeBt9z
+	 qscN+ojFww+uVRvSYVlG1d4fBU4p4rRe/UAUXgpJ1hCLonk8lg3kfA3nBpw8mYvrZm
+	 m0XLWcN62vH6BQn+7P7XGyoxmdpm3Y/fHoprcAPU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alex Bee <knaerzche@gmail.com>,
-	Jonas Karlman <jonas@kwiboo.se>,
-	Nicolas Dufresne <nicolas.dufresne@collabora.com>,
-	Hans Verkuil <hverkuil@xs4all.nl>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Marc Zyngier <maz@kernel.org>,
+	Mark Brown <broonie@kernel.org>,
+	Will Deacon <will@kernel.org>,
+	Catalin Marinas <catalin.marinas@arm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 058/356] media: rkvdec: Fix frame size enumeration
-Date: Tue, 17 Jun 2025 17:22:53 +0200
-Message-ID: <20250617152340.569788603@linuxfoundation.org>
+Subject: [PATCH 6.6 059/356] arm64/fpsimd: Avoid RES0 bits in the SME trap handler
+Date: Tue, 17 Jun 2025 17:22:54 +0200
+Message-ID: <20250617152340.607123520@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250617152338.212798615@linuxfoundation.org>
 References: <20250617152338.212798615@linuxfoundation.org>
@@ -68,54 +69,76 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Jonas Karlman <jonas@kwiboo.se>
+From: Mark Rutland <mark.rutland@arm.com>
 
-[ Upstream commit f270005b99fa19fee9a6b4006e8dee37c10f1944 ]
+[ Upstream commit 95507570fb2f75544af69760cd5d8f48fc5c7f20 ]
 
-The VIDIOC_ENUM_FRAMESIZES ioctl should return all frame sizes (i.e.
-width and height in pixels) that the device supports for the given pixel
-format.
+The SME trap handler consumes RES0 bits from the ESR when determining
+the reason for the trap, and depends upon those bits reading as zero.
+This may break in future when those RES0 bits are allocated a meaning
+and stop reading as zero.
 
-It doesn't make a lot of sense to return the frame-sizes in a stepwise
-manner, which is used to enforce hardware alignments requirements for
-CAPTURE buffers, for coded formats.
+For SME traps taken with ESR_ELx.EC == 0b011101, the specific reason for
+the trap is indicated by ESR_ELx.ISS.SMTC ("SME Trap Code"). This field
+occupies bits [2:0] of ESR_ELx.ISS, and as of ARM DDI 0487 L.a, bits
+[24:3] of ESR_ELx.ISS are RES0. ESR_ELx.ISS itself occupies bits [24:0]
+of ESR_ELx.
 
-Instead, applications should receive an indication, about the maximum
-supported frame size for that hardware decoder, via a continuous
-frame-size enumeration.
+Extract the SMTC field specifically, matching the way we handle ESR_ELx
+fields elsewhere, and ensuring that the handler is future-proof.
 
-Fixes: cd33c830448b ("media: rkvdec: Add the rkvdec driver")
-Suggested-by: Alex Bee <knaerzche@gmail.com>
-Signed-off-by: Jonas Karlman <jonas@kwiboo.se>
-Reviewed-by: Nicolas Dufresne <nicolas.dufresne@collabora.com>
-Signed-off-by: Nicolas Dufresne <nicolas.dufresne@collabora.com>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+Fixes: 8bd7f91c03d8 ("arm64/sme: Implement traps and syscall handling for SME")
+Signed-off-by: Mark Rutland <mark.rutland@arm.com>
+Cc: Marc Zyngier <maz@kernel.org>
+Cc: Mark Brown <broonie@kernel.org>
+Cc: Will Deacon <will@kernel.org>
+Reviewed-by: Mark Brown <broonie@kernel.org>
+Link: https://lore.kernel.org/r/20250409164010.3480271-2-mark.rutland@arm.com
+Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/staging/media/rkvdec/rkvdec.c | 10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
+ arch/arm64/include/asm/esr.h | 14 ++++++++------
+ arch/arm64/kernel/fpsimd.c   |  2 +-
+ 2 files changed, 9 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/staging/media/rkvdec/rkvdec.c b/drivers/staging/media/rkvdec/rkvdec.c
-index ac398b5a97360..a1d941b0be00b 100644
---- a/drivers/staging/media/rkvdec/rkvdec.c
-+++ b/drivers/staging/media/rkvdec/rkvdec.c
-@@ -213,8 +213,14 @@ static int rkvdec_enum_framesizes(struct file *file, void *priv,
- 	if (!fmt)
- 		return -EINVAL;
- 
--	fsize->type = V4L2_FRMSIZE_TYPE_STEPWISE;
--	fsize->stepwise = fmt->frmsize;
-+	fsize->type = V4L2_FRMSIZE_TYPE_CONTINUOUS;
-+	fsize->stepwise.min_width = 1;
-+	fsize->stepwise.max_width = fmt->frmsize.max_width;
-+	fsize->stepwise.step_width = 1;
-+	fsize->stepwise.min_height = 1;
-+	fsize->stepwise.max_height = fmt->frmsize.max_height;
-+	fsize->stepwise.step_height = 1;
+diff --git a/arch/arm64/include/asm/esr.h b/arch/arm64/include/asm/esr.h
+index 1cdae1b4f03be..b04575ea3a355 100644
+--- a/arch/arm64/include/asm/esr.h
++++ b/arch/arm64/include/asm/esr.h
+@@ -366,12 +366,14 @@
+ /*
+  * ISS values for SME traps
+  */
+-
+-#define ESR_ELx_SME_ISS_SME_DISABLED	0
+-#define ESR_ELx_SME_ISS_ILL		1
+-#define ESR_ELx_SME_ISS_SM_DISABLED	2
+-#define ESR_ELx_SME_ISS_ZA_DISABLED	3
+-#define ESR_ELx_SME_ISS_ZT_DISABLED	4
++#define ESR_ELx_SME_ISS_SMTC_MASK		GENMASK(2, 0)
++#define ESR_ELx_SME_ISS_SMTC(esr)		((esr) & ESR_ELx_SME_ISS_SMTC_MASK)
 +
- 	return 0;
- }
++#define ESR_ELx_SME_ISS_SMTC_SME_DISABLED	0
++#define ESR_ELx_SME_ISS_SMTC_ILL		1
++#define ESR_ELx_SME_ISS_SMTC_SM_DISABLED	2
++#define ESR_ELx_SME_ISS_SMTC_ZA_DISABLED	3
++#define ESR_ELx_SME_ISS_SMTC_ZT_DISABLED	4
  
+ /* ISS field definitions for MOPS exceptions */
+ #define ESR_ELx_MOPS_ISS_MEM_INST	(UL(1) << 24)
+diff --git a/arch/arm64/kernel/fpsimd.c b/arch/arm64/kernel/fpsimd.c
+index bd4f6c6ee0f31..9f6ea38f5189f 100644
+--- a/arch/arm64/kernel/fpsimd.c
++++ b/arch/arm64/kernel/fpsimd.c
+@@ -1514,7 +1514,7 @@ void do_sme_acc(unsigned long esr, struct pt_regs *regs)
+ 	 * If this not a trap due to SME being disabled then something
+ 	 * is being used in the wrong mode, report as SIGILL.
+ 	 */
+-	if (ESR_ELx_ISS(esr) != ESR_ELx_SME_ISS_SME_DISABLED) {
++	if (ESR_ELx_SME_ISS_SMTC(esr) != ESR_ELx_SME_ISS_SMTC_SME_DISABLED) {
+ 		force_signal_inject(SIGILL, ILL_ILLOPC, regs->pc, 0);
+ 		return;
+ 	}
 -- 
 2.39.5
 
