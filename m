@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-153757-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-154335-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 964AEADD6CE
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:37:28 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 853B3ADD7E3
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:50:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 53C7919E2CCB
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:23:19 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1882F7AD78F
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:48:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60CEF285054;
-	Tue, 17 Jun 2025 16:16:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B53F5236A73;
+	Tue, 17 Jun 2025 16:47:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ajZbDm98"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fQKmwSLN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B9C6285048;
-	Tue, 17 Jun 2025 16:16:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72AEA2CCC5;
+	Tue, 17 Jun 2025 16:47:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750177001; cv=none; b=BLKT9TjOpnOXDA0uPqXPF0hWWd/koKGqICQfx3mfYHGdml02IR97ZZOtkYloGu3JLSoM3fZFqHyajsWQnw8HwX4AaChmFpC1rTYm1CtIGrCcVthxm+4SvDMKHn8pBREc5iyL3fXxTjiudTK69EDYleNi+0F8VfAP+j3xVS2R4Jc=
+	t=1750178867; cv=none; b=MOj0plUyyYGUuBOO+BZHwHh4yXxNzvwull8odip3AQ4MtOhxA1RE7hvOwVc8V+yOKHEJvE1+JNkK73tTKC7Al6Nd83tOxp+nznzcXYCbJ85jzDMXjZApgriMR2uLoueOxeT0JHolkaBO0RvALfNMHtak5QX5KFq8FSwjEyypngE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750177001; c=relaxed/simple;
-	bh=gF8RYdiQ7oiBxa1J5tX7gTKyU39ww4SBE1KtvaWYZwA=;
+	s=arc-20240116; t=1750178867; c=relaxed/simple;
+	bh=s6udxH4+DkYadES94nuy6f9p4OVPIsaiVQN9bIcOdW4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=F/CHy0WRW/MaIuCS+0Jl3iN9lh4VpNf3lYrusOlg3iOOIlyoFK2CQxDjeAWxMWPA8WJSFKsQ3hL4VthI/U/mfXvYGVov5b0tctlJjg3Z7Qpw76igH5kCzYi3RVTmLnJVARVWjh8VJp39xV3nFn1amcJsXenl+Mxru+ebCVJ1faM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ajZbDm98; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 958C2C4CEE3;
-	Tue, 17 Jun 2025 16:16:40 +0000 (UTC)
+	 MIME-Version; b=mhJm/kN4XRc1SMLte5dD+lJ7NrGQLejFUrwZ1GyOoH80qUB/7IJfhDL848PH1IiILjSnzXS690v5EBe+6iCVzdA6gk2K2KTPQBvLEjE57Rt9zhc+jNBWuXl+teIbBfZwafMa93fxqgVC2tAzgw+FyQEVFfXYPWmoNms8geY01cU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fQKmwSLN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5DCDC4CEE3;
+	Tue, 17 Jun 2025 16:47:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750177001;
-	bh=gF8RYdiQ7oiBxa1J5tX7gTKyU39ww4SBE1KtvaWYZwA=;
+	s=korg; t=1750178867;
+	bh=s6udxH4+DkYadES94nuy6f9p4OVPIsaiVQN9bIcOdW4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ajZbDm98W94NRCIInoH7wNfzu3HnaOGqfv+om7JUK8b+yrtJ7h2N3NZzHzeV3H8Id
-	 A5VSmFSa7tSQtLtB3ENs9vsU56c3M+I5I1CRL5fF+An2zvDZThx9oek12saj3vkN9E
-	 UtA7U7IzpVF59Gi6MJ75kR9+gFZ1+nWVpl0DJBBI=
+	b=fQKmwSLNn2nYUSJKy0igZUAjGidOKsnWILfZvgO8ywoXStsukfUpdknItMpBNhm/e
+	 cnJwpoTxLh9eo5s1rP+THSeK7mbnI2rxnwVK2z9xb13k1+t9wfAVmEFghuQUvt6mcf
+	 RTzSrlkgOWc4aVc71vdkFw3VNxjacMLs59AEAXiI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
-	Bjorn Andersson <andersson@kernel.org>,
+	Johan Hovold <johan@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 287/512] remoteproc: qcom_wcnss_iris: Add missing put_device() on error in probe
-Date: Tue, 17 Jun 2025 17:24:13 +0200
-Message-ID: <20250617152431.231484893@linuxfoundation.org>
+Subject: [PATCH 6.15 546/780] USB: serial: bus: fix const issue in usb_serial_device_match()
+Date: Tue, 17 Jun 2025 17:24:14 +0200
+Message-ID: <20250617152513.744328939@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
-References: <20250617152419.512865572@linuxfoundation.org>
+In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
+References: <20250617152451.485330293@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,45 +61,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
-[ Upstream commit 0cb4b1b97041d8a1f773425208ded253c1cb5869 ]
+[ Upstream commit 92cd405b648605db4da866f3b9818b271ae84ef0 ]
 
-The device_del() call matches with the device_add() but we also need
-to call put_device() to trigger the qcom_iris_release().
+usb_serial_device_match() takes a const pointer, and then decides to
+cast it away into a non-const one, which is not a good thing to do
+overall.  Fix this up by properly setting the pointers to be const to
+preserve that attribute.
 
-Fixes: 1fcef985c8bd ("remoteproc: qcom: wcnss: Fix race with iris probe")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Link: https://lore.kernel.org/r/4604f7e0-3217-4095-b28a-3ff8b5afad3a@stanley.mountain
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Fixes: d69d80484598 ("driver core: have match() callback in struct bus_type take a const *")
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Johan Hovold <johan@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/remoteproc/qcom_wcnss_iris.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/usb/serial/bus.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/remoteproc/qcom_wcnss_iris.c b/drivers/remoteproc/qcom_wcnss_iris.c
-index dd36fd077911a..1e197f7734742 100644
---- a/drivers/remoteproc/qcom_wcnss_iris.c
-+++ b/drivers/remoteproc/qcom_wcnss_iris.c
-@@ -197,6 +197,7 @@ struct qcom_iris *qcom_iris_probe(struct device *parent, bool *use_48mhz_xo)
- 
- err_device_del:
- 	device_del(&iris->dev);
-+	put_device(&iris->dev);
- 
- 	return ERR_PTR(ret);
- }
-@@ -204,4 +205,5 @@ struct qcom_iris *qcom_iris_probe(struct device *parent, bool *use_48mhz_xo)
- void qcom_iris_remove(struct qcom_iris *iris)
+diff --git a/drivers/usb/serial/bus.c b/drivers/usb/serial/bus.c
+index 2fea1b1db4a26..9e2a18c0b2183 100644
+--- a/drivers/usb/serial/bus.c
++++ b/drivers/usb/serial/bus.c
+@@ -17,7 +17,7 @@ static int usb_serial_device_match(struct device *dev,
+ 				   const struct device_driver *drv)
  {
- 	device_del(&iris->dev);
-+	put_device(&iris->dev);
- }
+ 	const struct usb_serial_port *port = to_usb_serial_port(dev);
+-	struct usb_serial_driver *driver = to_usb_serial_driver(drv);
++	const struct usb_serial_driver *driver = to_usb_serial_driver(drv);
+ 
+ 	/*
+ 	 * drivers are already assigned to ports in serial_probe so it's
 -- 
 2.39.5
 
