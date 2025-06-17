@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-153974-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153450-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3968BADD77F
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:45:12 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id A0C8EADD48C
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:11:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 16CA419459F7
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:34:11 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id ABC221628A6
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:04:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B02352F546A;
-	Tue, 17 Jun 2025 16:28:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0C262EB5C0;
+	Tue, 17 Jun 2025 16:00:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r2h+cm4C"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hvrSbQdG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DE1B2F430A;
-	Tue, 17 Jun 2025 16:28:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC7DE2DE20D;
+	Tue, 17 Jun 2025 16:00:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750177699; cv=none; b=fTouItv/zCphRSnFVtMiN/4IbTYd2ri2HV+R5+I5l9EHAmxBX5GyYInjneaHI8/yXyfqVn4s1PFR+qEK4r3jKTgkPwQiUcQVqxrc1Quu4xVOWf+nErOdeyyTd4lBmJYi+JY9XK/iY2bbexl5PcjzLXBe8vrpcIWqB2xdjlgaVjU=
+	t=1750176002; cv=none; b=T2GVAbQdn5KBXhhz3yRPoQV5v3wM52sWXBF/vKJzMVOa8f4q5KzCLQMKN7yPmBDw3qaQ7H/efYg7TGKdQ7VbV1GvMRNMlKhpM0RMuCfxig6sEqY/eR/AlhvDS3C4C8naZaAJ0ieKfBgRoGPxp968tYAwgK61AaUjQ2ZMZeZkVK0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750177699; c=relaxed/simple;
-	bh=nNUa67koNvlEFW+chlbZByfJovpOVvbxbOgFfgaL2Sg=;
+	s=arc-20240116; t=1750176002; c=relaxed/simple;
+	bh=vyKUQYeXYSezeuO0IuawjRVFTav7XZSAzHZJhkZsTyE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iuZrDpLH9MZnGEUkb7rUQbQ0LSXYa2ssGc95Q70eFxr5vNpiAuPhWURn9AJ2G3ucbccObSmtLrXSQHYuMvcungpfjTnaOJIIfhujcesEjkADhTyTu13ZjUeefftDCHcoIe3S7uRhd87dUyyhphUhHOLA9kIChBEoWwc+aEFsQwQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r2h+cm4C; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F533C4CEF1;
-	Tue, 17 Jun 2025 16:28:17 +0000 (UTC)
+	 MIME-Version; b=qKyFBn3kWVuvrLa+9HWkOZx0vBarsb/gI4myQW1zGa0A2RmenjnVhwr85TqlRkv15rG08XXmNvamY7MQvMXEg56GC1zGq4PHbxfqeJm90PWwX5hDWd+j6LV7b1+WBk89ZOQIfabFL4u0OwU6SBRfxqOLof2tGDHxOuBPUNlHvwM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hvrSbQdG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18044C4CEE7;
+	Tue, 17 Jun 2025 16:00:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750177697;
-	bh=nNUa67koNvlEFW+chlbZByfJovpOVvbxbOgFfgaL2Sg=;
+	s=korg; t=1750176002;
+	bh=vyKUQYeXYSezeuO0IuawjRVFTav7XZSAzHZJhkZsTyE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=r2h+cm4CLhwwDl6MUfAcYvizm6HVWp5weoOkJGkk5Ottp0OFSZsgjJKN0c5B4RZJr
-	 V0UI+Sysgo26g0btM4CWjRYgbgZ3yRxEWSzphE7yxUicOTYMERyBBigqGT8DLKuEwF
-	 bh4eyA0TbHihOsasvsEMgB1aUO5eAZPXR+fIg6fI=
+	b=hvrSbQdGVmb/P8PwMTv+25+iwxQl3GN26eVsf+DQsP0nOmac4ZAYoKyFASUy52bhZ
+	 jYnYcSooHHBTp8kSBTVzvCAOhKQayFHmO8ZF+nxwbRhSTIh6cDLsNBimVqoAvl+TSa
+	 7FNeYrqnEKxbs7yfBeyyi+pTuV0kMHVig5ttadEQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniele Palmas <dnlplm@gmail.com>,
-	Loic Poulain <loic.poulain@oss.qualcomm.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Sam Winchenbach <swinchenbach@arka.org>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 383/512] net: wwan: mhi_wwan_mbim: use correct mux_id for multiplexing
+Subject: [PATCH 6.6 234/356] iio: filter: admv8818: fix integer overflow
 Date: Tue, 17 Jun 2025 17:25:49 +0200
-Message-ID: <20250617152435.107280956@linuxfoundation.org>
+Message-ID: <20250617152347.614202449@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
-References: <20250617152419.512865572@linuxfoundation.org>
+In-Reply-To: <20250617152338.212798615@linuxfoundation.org>
+References: <20250617152338.212798615@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,71 +62,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniele Palmas <dnlplm@gmail.com>
+From: Sam Winchenbach <swinchenbach@arka.org>
 
-[ Upstream commit 501fe52aa908c96f2c9b8d54767938a1a5960354 ]
+[ Upstream commit fb6009a28d77edec4eb548b5875dae8c79b88467 ]
 
-Recent Qualcomm chipsets like SDX72/75 require MBIM sessionId mapping
-to muxId in the range (0x70-0x8F) for the PCIe tethered use.
+HZ_PER_MHZ is only unsigned long. This math overflows, leading to
+incorrect results.
 
-This has been partially addressed by the referenced commit, mapping
-the default data call to muxId = 112, but the multiplexed data calls
-scenario was not properly considered, mapping sessionId = 1 to muxId
-1, while it should have been 113.
-
-Fix this by moving the session_id assignment logic to mhi_mbim_newlink,
-in order to map sessionId = n to muxId = n + WDS_BIND_MUX_DATA_PORT_MUX_ID.
-
-Fixes: 65bc58c3dcad ("net: wwan: mhi: make default data link id configurable")
-Signed-off-by: Daniele Palmas <dnlplm@gmail.com>
-Reviewed-by: Loic Poulain <loic.poulain@oss.qualcomm.com>
-Link: https://patch.msgid.link/20250603091204.2802840-1-dnlplm@gmail.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: f34fe888ad05 ("iio:filter:admv8818: add support for ADMV8818")
+Signed-off-by: Sam Winchenbach <swinchenbach@arka.org>
+Link: https://patch.msgid.link/20250328174831.227202-4-sam.winchenbach@framepointer.org
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wwan/mhi_wwan_mbim.c | 9 +++------
- 1 file changed, 3 insertions(+), 6 deletions(-)
+ drivers/iio/filter/admv8818.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/wwan/mhi_wwan_mbim.c b/drivers/net/wwan/mhi_wwan_mbim.c
-index 8755c5e6a65b3..c814fbd756a1e 100644
---- a/drivers/net/wwan/mhi_wwan_mbim.c
-+++ b/drivers/net/wwan/mhi_wwan_mbim.c
-@@ -550,8 +550,8 @@ static int mhi_mbim_newlink(void *ctxt, struct net_device *ndev, u32 if_id,
- 	struct mhi_mbim_link *link = wwan_netdev_drvpriv(ndev);
- 	struct mhi_mbim_context *mbim = ctxt;
+diff --git a/drivers/iio/filter/admv8818.c b/drivers/iio/filter/admv8818.c
+index 3d8740caa1455..cd3aff9a2f7bf 100644
+--- a/drivers/iio/filter/admv8818.c
++++ b/drivers/iio/filter/admv8818.c
+@@ -154,7 +154,7 @@ static int __admv8818_hpf_select(struct admv8818_state *st, u64 freq)
+ 	}
  
--	link->session = if_id;
- 	link->mbim = mbim;
-+	link->session = mhi_mbim_get_link_mux_id(link->mbim->mdev->mhi_cntrl) + if_id;
- 	link->ndev = ndev;
- 	u64_stats_init(&link->rx_syncp);
- 	u64_stats_init(&link->tx_syncp);
-@@ -607,7 +607,7 @@ static int mhi_mbim_probe(struct mhi_device *mhi_dev, const struct mhi_device_id
- {
- 	struct mhi_controller *cntrl = mhi_dev->mhi_cntrl;
- 	struct mhi_mbim_context *mbim;
--	int err, link_id;
-+	int err;
- 
- 	mbim = devm_kzalloc(&mhi_dev->dev, sizeof(*mbim), GFP_KERNEL);
- 	if (!mbim)
-@@ -628,11 +628,8 @@ static int mhi_mbim_probe(struct mhi_device *mhi_dev, const struct mhi_device_id
- 	/* Number of transfer descriptors determines size of the queue */
- 	mbim->rx_queue_sz = mhi_get_free_desc_count(mhi_dev, DMA_FROM_DEVICE);
- 
--	/* Get the corresponding mux_id from mhi */
--	link_id = mhi_mbim_get_link_mux_id(cntrl);
--
- 	/* Register wwan link ops with MHI controller representing WWAN instance */
--	return wwan_register_ops(&cntrl->mhi_dev->dev, &mhi_mbim_wwan_ops, mbim, link_id);
-+	return wwan_register_ops(&cntrl->mhi_dev->dev, &mhi_mbim_wwan_ops, mbim, 0);
- }
- 
- static void mhi_mbim_remove(struct mhi_device *mhi_dev)
+ 	/* Close HPF frequency gap between 12 and 12.5 GHz */
+-	if (freq >= 12000 * HZ_PER_MHZ && freq <= 12500 * HZ_PER_MHZ) {
++	if (freq >= 12000ULL * HZ_PER_MHZ && freq < 12500ULL * HZ_PER_MHZ) {
+ 		hpf_band = 3;
+ 		hpf_step = 15;
+ 	}
 -- 
 2.39.5
 
