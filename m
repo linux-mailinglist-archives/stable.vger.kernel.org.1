@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-154384-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153402-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9FE81ADD932
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 19:03:51 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E231ADD44D
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:08:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 07F7D2C5D88
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:52:19 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AA354406DF8
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:00:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0E5B2E8E16;
-	Tue, 17 Jun 2025 16:50:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 424232E92CD;
+	Tue, 17 Jun 2025 15:57:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2Xle2Hin"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PpCaO4aI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C09E2E8E10;
-	Tue, 17 Jun 2025 16:50:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0EC72ED852;
+	Tue, 17 Jun 2025 15:57:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750179020; cv=none; b=d5+XzZ7Ba4SJkbEMd4nuXEcOSotNqnFbQEAjAxIUADLh9PrGnODCzhyqjWjSvYmlyBw0dK70FDd498VG6GjF71X7rYqH+FYxwRM704HhFYoy2KEvYB5SO67+Hg1zdIwa8VDjyOmBed4kZFU1jfscQb8p4PW5bkBp5kqdMBeIkyw=
+	t=1750175844; cv=none; b=JLnrmGtRwpX2SHuY/BCsdxHXORyRQYc/J8HMxhswIRnWMSKFAFnxmusNzbxl68npz09M6eVnOFjyBDPXmS4LqZZa9ejgL0PHYXDHom2bEayon9/CL2M5p5pfrA9MF+lORpy7u0BxxmTZJ1tDZUqtxj3zzpDYbpJqEZRqMrv9WPI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750179020; c=relaxed/simple;
-	bh=AcpKWJhbOK8ZdmgJqwhA6pLzc+EUqcdgG0XI52VpXQE=;
+	s=arc-20240116; t=1750175844; c=relaxed/simple;
+	bh=LFm8LxF6HuOk43rwxJBgH50ZsMmF3Iqoz3YwfCIQcU4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fSIj+E6HwCdCPvQhAFLiXZlq9f4EghwOlzXujA3goT/hicgJe1KgpRq1bqX0KAq6IuIpnJAGrnKW+6bysOMVTIfeNDh1tHO7fWCaJnju0e1DuG2FzncS/eDPyCX2nyKCCAbJcIQFFe5cSoTixVIvBihXdVmjV4Fn8Tufw1n9f9I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2Xle2Hin; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED3E8C4CEE3;
-	Tue, 17 Jun 2025 16:50:19 +0000 (UTC)
+	 MIME-Version; b=VSVzk2diYAjPgU2E+w6gumXAp4dA23sEmH6OBlPSjXR5FMTfYH4pc0+i/oSq0mJuDWZLUbbdjelGUUsd7q5pGxj9ZODehnrc1vxWJVlXnA5ySI5i+NMoWtEgy4buRvzPsP8XwpO8l9sVRDqqpmDRVMf2Kw6Id7fdDu47dV350Ow=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PpCaO4aI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2036CC4CEE3;
+	Tue, 17 Jun 2025 15:57:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750179020;
-	bh=AcpKWJhbOK8ZdmgJqwhA6pLzc+EUqcdgG0XI52VpXQE=;
+	s=korg; t=1750175843;
+	bh=LFm8LxF6HuOk43rwxJBgH50ZsMmF3Iqoz3YwfCIQcU4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2Xle2HineTmlLvjcOX0A5Wer4YpSjuRl3G8wADoTrUFml5xcK8o+5iazYx9K/yUED
-	 QLHfFmVlB5zGV+XEDXKQCT7xr7SilZfFry39JABx1dky5vjpwStqq6OF3f6jbPlin3
-	 ab0ixLTv5SsFVnZBEqj5hw0oWUaBHeNkdSc10t+4=
+	b=PpCaO4aItjgytfztLnmleJtHHRpPKMUP4TFTDZtI/J30StVrHmUDs7S0xJGHLKnxe
+	 7HRrp9oJxUr4s3g85kmIeGOdLYsgVFe2CUdoxlw/qeLWj0+mooRc8LCvw11tFh00/7
+	 hW6TmVFwDw+UYCcdz/cPLe/qUmCdrNTq0ZWolo68=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+9fc858ba0312b42b577e@syzkaller.appspotmail.com,
-	Eric Dumazet <edumazet@google.com>,
-	Stanislav Fomichev <sdf@fomichev.me>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Li Lingfeng <lilingfeng3@huawei.com>,
+	Anna Schumaker <anna.schumaker@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 624/780] net: prevent a NULL deref in rtnl_create_link()
-Date: Tue, 17 Jun 2025 17:25:32 +0200
-Message-ID: <20250617152516.885595263@linuxfoundation.org>
+Subject: [PATCH 6.6 218/356] nfs: clear SB_RDONLY before getting superblock
+Date: Tue, 17 Jun 2025 17:25:33 +0200
+Message-ID: <20250617152346.980255360@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
-References: <20250617152451.485330293@linuxfoundation.org>
+In-Reply-To: <20250617152338.212798615@linuxfoundation.org>
+References: <20250617152338.212798615@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,61 +62,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Li Lingfeng <lilingfeng3@huawei.com>
 
-[ Upstream commit feafc73f3e6ae73371777a037d41d2e31c929636 ]
+[ Upstream commit 8cd9b785943c57a136536250da80ba1eb6f8eb18 ]
 
-At the time rtnl_create_link() is running, dev->netdev_ops is NULL,
-we must not use netdev_lock_ops() or risk a NULL deref if
-CONFIG_NET_SHAPER is defined.
+As described in the link, commit 52cb7f8f1778 ("nfs: ignore SB_RDONLY when
+mounting nfs") removed the check for the ro flag when determining whether
+to share the superblock, which caused issues when mounting different
+subdirectories under the same export directory via NFSv3. However, this
+change did not affect NFSv4.
 
-Use netif_set_group() instead of dev_set_group().
+For NFSv3:
+1) A single superblock is created for the initial mount.
+2) When mounted read-only, this superblock carries the SB_RDONLY flag.
+3) Before commit 52cb7f8f1778 ("nfs: ignore SB_RDONLY when mounting nfs"):
+Subsequent rw mounts would not share the existing ro superblock due to
+flag mismatch, creating a new superblock without SB_RDONLY.
+After the commit:
+  The SB_RDONLY flag is ignored during superblock comparison, and this leads
+  to sharing the existing superblock even for rw mounts.
+  Ultimately results in write operations being rejected at the VFS layer.
 
- RIP: 0010:netdev_need_ops_lock include/net/netdev_lock.h:33 [inline]
- RIP: 0010:netdev_lock_ops include/net/netdev_lock.h:41 [inline]
- RIP: 0010:dev_set_group+0xc0/0x230 net/core/dev_api.c:82
-Call Trace:
- <TASK>
-  rtnl_create_link+0x748/0xd10 net/core/rtnetlink.c:3674
-  rtnl_newlink_create+0x25c/0xb00 net/core/rtnetlink.c:3813
-  __rtnl_newlink net/core/rtnetlink.c:3940 [inline]
-  rtnl_newlink+0x16d6/0x1c70 net/core/rtnetlink.c:4055
-  rtnetlink_rcv_msg+0x7cf/0xb70 net/core/rtnetlink.c:6944
-  netlink_rcv_skb+0x208/0x470 net/netlink/af_netlink.c:2534
-  netlink_unicast_kernel net/netlink/af_netlink.c:1313 [inline]
-  netlink_unicast+0x75b/0x8d0 net/netlink/af_netlink.c:1339
-  netlink_sendmsg+0x805/0xb30 net/netlink/af_netlink.c:1883
-  sock_sendmsg_nosec net/socket.c:712 [inline]
+For NFSv4:
+1) Multiple superblocks are created and the last one will be kept.
+2) The actually used superblock for ro mounts doesn't carry SB_RDONLY flag.
+Therefore, commit 52cb7f8f1778 doesn't affect NFSv4 mounts.
 
-Reported-by: syzbot+9fc858ba0312b42b577e@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/netdev/6840265f.a00a0220.d4325.0009.GAE@google.com/T/#u
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Fixes: 7e4d784f5810 ("net: hold netdev instance lock during rtnetlink operations")
-Acked-by: Stanislav Fomichev <sdf@fomichev.me>
-Link: https://patch.msgid.link/20250604105815.1516973-1-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Clear SB_RDONLY before getting superblock when NFS_MOUNT_UNSHARED is not
+set to fix it.
+
+Fixes: 52cb7f8f1778 ("nfs: ignore SB_RDONLY when mounting nfs")
+Closes: https://lore.kernel.org/all/12d7ea53-1202-4e21-a7ef-431c94758ce5@app.fastmail.com/T/
+Signed-off-by: Li Lingfeng <lilingfeng3@huawei.com>
+Signed-off-by: Anna Schumaker <anna.schumaker@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/core/rtnetlink.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/nfs/super.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/net/core/rtnetlink.c b/net/core/rtnetlink.c
-index c5a7f41982a57..fc6815ad78266 100644
---- a/net/core/rtnetlink.c
-+++ b/net/core/rtnetlink.c
-@@ -3681,7 +3681,7 @@ struct net_device *rtnl_create_link(struct net *net, const char *ifname,
- 	if (tb[IFLA_LINKMODE])
- 		dev->link_mode = nla_get_u8(tb[IFLA_LINKMODE]);
- 	if (tb[IFLA_GROUP])
--		dev_set_group(dev, nla_get_u32(tb[IFLA_GROUP]));
-+		netif_set_group(dev, nla_get_u32(tb[IFLA_GROUP]));
- 	if (tb[IFLA_GSO_MAX_SIZE])
- 		netif_set_gso_max_size(dev, nla_get_u32(tb[IFLA_GSO_MAX_SIZE]));
- 	if (tb[IFLA_GSO_MAX_SEGS])
+diff --git a/fs/nfs/super.c b/fs/nfs/super.c
+index e1bcad5906ae7..59bf4b2c0f86e 100644
+--- a/fs/nfs/super.c
++++ b/fs/nfs/super.c
+@@ -1277,8 +1277,17 @@ int nfs_get_tree_common(struct fs_context *fc)
+ 	if (IS_ERR(server))
+ 		return PTR_ERR(server);
+ 
++	/*
++	 * When NFS_MOUNT_UNSHARED is not set, NFS forces the sharing of a
++	 * superblock among each filesystem that mounts sub-directories
++	 * belonging to a single exported root path.
++	 * To prevent interference between different filesystems, the
++	 * SB_RDONLY flag should be removed from the superblock.
++	 */
+ 	if (server->flags & NFS_MOUNT_UNSHARED)
+ 		compare_super = NULL;
++	else
++		fc->sb_flags &= ~SB_RDONLY;
+ 
+ 	/* -o noac implies -o sync */
+ 	if (server->flags & NFS_MOUNT_NOAC)
 -- 
 2.39.5
 
