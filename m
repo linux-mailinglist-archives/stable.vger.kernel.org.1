@@ -1,150 +1,184 @@
-Return-Path: <stable+bounces-152860-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-152861-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D2B15ADCE4A
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 15:53:55 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A2FDCADCE74
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 15:58:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 52BB1175A04
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 13:53:52 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 489603A4EAE
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 13:53:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C8F952E266D;
-	Tue, 17 Jun 2025 13:53:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 37AE928D85F;
+	Tue, 17 Jun 2025 13:54:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Kle3kcRv"
+	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="WAvECyDL"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85DEC2E266A;
-	Tue, 17 Jun 2025 13:53:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71D391A5B94;
+	Tue, 17 Jun 2025 13:54:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750168412; cv=none; b=tiACJDEHJFjDzOm4Wn2ivakWGhJo5O40EPDmTrMtsgh4RV3kCl+9fA6HbGvpleXe33ZM/Ym2FqLGCGz9kz+X/LqNUNUjUfkvplx3G4uNr2bEnMUlakGtOKJXQw9ZZARCVCdz/KL7fN66RkLu+Wbx/lpWFImBYSjIqL3bf6ihLqY=
+	t=1750168458; cv=none; b=Z9jXF5oQLLDZfT5STHRYl4boSlcQbzO9q2Tyd9n008iV13TQyMcdn81Xzu+9LB+nTkUumA0yS2quH/qjUUEAprseCBNdmM505w+xFxT4qz/2ElxckJU3YcKHEX7NvBu+SoZXL0yw7oIyjQRYuiRkJyu6k2lmR1a79hDqUgaWKdg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750168412; c=relaxed/simple;
-	bh=EqOD9uTpVvS59l2vzpX0bTzZGw98e+dt3zU3uwmzXqY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=OfLTBfydO137I9VNj9uWtgEonwO5P54aovz4UEmAfZ7LirOb5cL/QifGj769lStaQ2AmEnk5U0e9uM8CGmC2fuO6d98dwRD3BIJWPLkxGw/+KrLNmSfOtlRoDNh4kJ4XYZc+Q3O85SrbIN7UIgtW4uleYdDzdWXO11DUCocUrHI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Kle3kcRv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B10FC4CEE7;
-	Tue, 17 Jun 2025 13:53:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750168412;
-	bh=EqOD9uTpVvS59l2vzpX0bTzZGw98e+dt3zU3uwmzXqY=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Kle3kcRvy/B3XAK1JMNyu1XlR8LHYj3ixIrO6XEyljd1AwXS4QtvEQo8Fvjh9tqh3
-	 QH5pLWz24EPGLESEQM1Ym/cDDbKM+MyrEZf5b+/uv+Hsn5pwL98OiKhw/FR7FLosnX
-	 y03XhECya2Xl1NomYzhEb7JRAKHPo31ufx1pU1cs=
-Date: Tue, 17 Jun 2025 15:53:28 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: "Chia-Yu Chang (Nokia)" <chia-yu.chang@nokia-bell-labs.com>
-Cc: Ilpo =?iso-8859-1?Q?J=E4rvinen?= <ij@kernel.org>,
-	Sasha Levin <sashal@kernel.org>, Eric Dumazet <edumazet@google.com>,
-	"stable@vger.kernel.org" <stable@vger.kernel.org>,
-	"stable-commits@vger.kernel.org" <stable-commits@vger.kernel.org>,
-	Neal Cardwell <ncardwell@google.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	David Ahern <dsahern@kernel.org>, Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	Willem de Bruijn <willemb@google.com>
-Subject: Re: Patch "tcp: reorganize tcp_in_ack_event() and
- tcp_count_delivered()" has been added to the 6.6-stable tree
-Message-ID: <2025061745-epidermal-clothing-beed@gregkh>
-References: <20250522224433.3219290-1-sashal@kernel.org>
- <CANn89i+jADLAqpg-gOyHFZiFEb0Pks46h=9d8-FiPa1_HEv3YA@mail.gmail.com>
- <aEspV8Ttk7uBM4Gx@lappy>
- <175e6075-a930-196d-37ce-7f2815141d07@kernel.org>
- <PAXPR07MB7984096843D96583972BF35BA376A@PAXPR07MB7984.eurprd07.prod.outlook.com>
+	s=arc-20240116; t=1750168458; c=relaxed/simple;
+	bh=B/wEmXo11hHDhNREcS4lqaU0yYVoIybs/I7Ns51Y4+M=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=H28AD5XiC7z1BSm5bZiefkezDhz3OUzixIqwVVjPhmsbiF7fnEzBhh2rFcwVIyHD4XICom+sU6Hn/aJwWxlizLhac5/21yQyXLYZPgZ3We2yjgd70PXeD7XjFrcHEZxgYF/uqqNc2sdrjqa9mlx188Ws4GDNAptNUMW+f80Kc1A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=WAvECyDL; arc=none smtp.client-ip=213.167.242.64
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
+Received: from [192.168.1.102] (93-61-96-190.ip145.fastwebnet.it [93.61.96.190])
+	by perceval.ideasonboard.com (Postfix) with ESMTPSA id F2D04496;
+	Tue, 17 Jun 2025 15:54:00 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
+	s=mail; t=1750168441;
+	bh=B/wEmXo11hHDhNREcS4lqaU0yYVoIybs/I7Ns51Y4+M=;
+	h=From:Subject:Date:To:Cc:From;
+	b=WAvECyDLej6YB7Nr4p0QgtBBRxa3K6a8PYUVHYK/w4XRp1nCFS/leQE1oLMfmx7C6
+	 2NO9fCZzZr7jwPg8zwxLcxIuURp3EqejLFM13KY4G9S8qJFSk3PrcOdqK8dxXVXKUt
+	 k4yyR3dZev9TEUzCY+wY29ho8BujKibPRu3wVnyQ=
+From: Jacopo Mondi <jacopo.mondi@ideasonboard.com>
+Subject: [PATCH v8 0/4] media: pisp-be: Split jobs creation and scheduling
+Date: Tue, 17 Jun 2025 15:53:58 +0200
+Message-Id: <20250617-pispbe-mainline-split-jobs-handling-v6-v8-0-e58ae199c17d@ideasonboard.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <PAXPR07MB7984096843D96583972BF35BA376A@PAXPR07MB7984.eurprd07.prod.outlook.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAHZzUWgC/5WQS27DMAxEr2JoHQaSHNNxVr1H0YU+dMIillzJN
+ VoEuXuZBNl10QLcDD9vMLyoSoWpqkNzUYVWrpyTiP2mUeHk0pGAo2hltd3podUwc509weQ4nTk
+ R1PnMC7xnX0H2o/SOsCKYLgaDZAy1TglsLjTy193o9U30ieuSy/fdd8Vb998WUhqwjajHIUajx
+ xeO5GpOPrsStyFP6ua09k96p1Hjn+m90HdocBg1Wuv7X+jXR7BCH5/yuOWRTnlXCWQ+8XJoAnX
+ BBRy8pSgH1x9xanC/cQEAAA==
+X-Change-ID: 20240930-pispbe-mainline-split-jobs-handling-v6-15dc16e11e3a
+To: Naushir Patuck <naush@raspberrypi.com>, 
+ Nick Hollinghurst <nick.hollinghurst@raspberrypi.com>, 
+ David Plowman <david.plowman@raspberrypi.com>, 
+ Dave Stevenson <dave.stevenson@raspberrypi.com>, 
+ Laurent Pinchart <laurent.pinchart@ideasonboard.com>, 
+ Raspberry Pi Kernel Maintenance <kernel-list@raspberrypi.com>, 
+ Mauro Carvalho Chehab <mchehab@kernel.org>, 
+ Florian Fainelli <florian.fainelli@broadcom.com>, 
+ Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>, 
+ Sakari Ailus <sakari.ailus@linux.intel.com>, 
+ Hans Verkuil <hverkuil@xs4all.nl>
+Cc: linux-media@vger.kernel.org, linux-rpi-kernel@lists.infradead.org, 
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
+ Jacopo Mondi <jacopo.mondi@ideasonboard.com>, stable@vger.kernel.org
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3441;
+ i=jacopo.mondi@ideasonboard.com; h=from:subject:message-id;
+ bh=B/wEmXo11hHDhNREcS4lqaU0yYVoIybs/I7Ns51Y4+M=;
+ b=owEBbQKS/ZANAwAKAXI0Bo8WoVY8AcsmYgBoUXOEd2UE0FPDI8aSMq8syacdaXOZA70wDaGAV
+ xPcb1e5pGiJAjMEAAEKAB0WIQS1xD1IgJogio9YOMByNAaPFqFWPAUCaFFzhAAKCRByNAaPFqFW
+ PGOPEACz4XPp+Za3n5vtxK5vkPtlAdFtUwLUul0BsIZH27YgM3HPfWmSdZP+IV4I1E3jjAQbN32
+ PjhHVIOwwCG9KhYi0PZ2STEeBWaWP7yEKHityfcT34cQ0+QWGUOpNB2H43OfGzPiuhScURQvmlB
+ ZV9u5wLo4zaNw38NGol/0wOfS9+X0f26GmPn55GRcEHDlXlYZuXsBynV0kuOAR4D/FUXyhCOiX3
+ 6sWogEtan7vlxobx4CBJhjNMcpaaSwt3BeGdW9lOiftRNh1gv0ZeTNhnV+2u28pke24EM60YQPc
+ ONYI0YI0n5cy+8SAtyXV3LR40eWiEitrif8KMGMVVQF9CcYx1wJApZvM0eVrnVPbXY1quE3LKa5
+ meI1xRralp1R+vBwieOmg2JoxTrpUpwTv2fWJsCC1eBI+ijDAKl/YWC8BidowXZySMEEyMzTx/A
+ HBzwSKiCos+RSHm6wJFNevD+YSQZLVr+/JZzaUJUnkInJZh7+DPipKdRx7aPOKeR3WbAYlKJCmp
+ nHxcuOa0rpgZpgoxe/1sAD58XxH54HlOH1/ncTkLuW2qcEVDHJ/rRkURnAW+GTnUwg7YIgPstPf
+ kq4LFduraVORkh/wvsHvGWsnX2hqCOBm9c1+OjqL2YSsBPOW3ipOAM9pEBOfakfnECTO3hGMhE2
+ A2BrsvE5ltBuMKw==
+X-Developer-Key: i=jacopo.mondi@ideasonboard.com; a=openpgp;
+ fpr=72392EDC88144A65C701EA9BA5826A2587AD026B
 
-On Sat, Jun 14, 2025 at 01:55:02PM +0000, Chia-Yu Chang (Nokia) wrote:
-> > -----Original Message-----
-> > From: Ilpo Järvinen <ij@kernel.org> 
-> > Sent: Thursday, June 12, 2025 11:17 PM
-> > To: Sasha Levin <sashal@kernel.org>; Chia-Yu Chang (Nokia) <chia-yu.chang@nokia-bell-labs.com>
-> > Cc: Eric Dumazet <edumazet@google.com>; stable@vger.kernel.org; stable-commits@vger.kernel.org; Neal Cardwell <ncardwell@google.com>; David S. Miller <davem@davemloft.net>; David Ahern <dsahern@kernel.org>; Jakub Kicinski <kuba@kernel.org>; Paolo Abeni <pabeni@redhat.com>; Simon Horman <horms@kernel.org>; Kuniyuki Iwashima <kuniyu@google.com>; Willem de Bruijn <willemb@google.com>
-> > Subject: Re: Patch "tcp: reorganize tcp_in_ack_event() and tcp_count_delivered()" has been added to the 6.6-stable tree
-> > 
-> > 
-> > CAUTION: This is an external email. Please be very careful when clicking links or opening attachments. See the URL nok.it/ext for additional information.
-> > 
-> > 
-> > 
-> > + Chia-Yu
-> > 
-> > 
-> > On Thu, 12 Jun 2025, Sasha Levin wrote:
-> > > On Thu, Jun 12, 2025 at 01:40:57AM -0700, Eric Dumazet wrote:
-> > > > On Thu, May 22, 2025 at 3:44 PM Sasha Levin <sashal@kernel.org> wrote:
-> > > > >
-> > > > > This is a note to let you know that I've just added the patch 
-> > > > > titled
-> > > > >
-> > > > >     tcp: reorganize tcp_in_ack_event() and tcp_count_delivered()
-> > > > >
-> > > > > to the 6.6-stable tree which can be found at:
-> > > > >     
-> > > > > https://eur03.safelinks.protection.outlook.com/?url=http%3A%2F%2Fw
-> > > > > ww.kernel.org%2Fgit%2F%3Fp%3Dlinux%2Fkernel%2Fgit%2Fstable%2Fstabl
-> > > > > e-queue.git%3Ba%3Dsummary&data=05%7C02%7Cchia-yu.chang%40nokia-bel
-> > > > > l-labs.com%7C449db2278c004aa84d7b08dda9f68c8c%7C5d4717519675428d91
-> > > > > 7b70f44f9630b0%7C0%7C0%7C638853598557368335%7CUnknown%7CTWFpbGZsb3
-> > > > > d8eyJFbXB0eU1hcGkiOnRydWUsIlYiOiIwLjAuMDAwMCIsIlAiOiJXaW4zMiIsIkFO
-> > > > > IjoiTWFpbCIsIldUIjoyfQ%3D%3D%7C0%7C%7C%7C&sdata=Z6AfId4r6Ys1V4sGov
-> > > > > 8bdOct72AAUdfVgFTo7NMOibU%3D&reserved=0
-> > > > >
-> > > > > The filename of the patch is:
-> > > > >      tcp-reorganize-tcp_in_ack_event-and-tcp_count_delive.patch
-> > > > > and it can be found in the queue-6.6 subdirectory.
-> > > > >
-> > > > > If you, or anyone else, feels it should not be added to the stable 
-> > > > > tree, please let <stable@vger.kernel.org> know about it.
-> > > > >
-> > > > >
-> > > >
-> > > > May I ask why this patch was backported to stable versions  ?
-> > 
-> > As you see Eric, you got no answer to a very direct question.
-> > 
-> > I've long since stopped caring unless a change really looks dangerous (this one didn't) what they take into stable, especially since they tend to ignore on-what-grounds questions.
-> > 
-> > > > This is causing a packetdrill test to fail.
-> > >
-> > > Is this an issue upstream as well? Should we just drop it from stable?
-> > 
-> > It's long since I've done anything with packetdrill so it will take some time for me to test. Maybe Chia-Yu can check this faster (but I assume it's also problem in mainline as this is reported by Eric).
-> > 
-> > --
-> >  i.
-> 
-> Hi Eric,
-> 
-> I've checked the failure case and could reproduce it using the latest packetdrill.
-> 
-> The root cause is because delaying the tcp_in_ack_event() call does have an impact on update_alpha(), which uses the values of the latest delivered and delivered_ce updated by tcp_clean_rtx_queue().
-> Therefore, tcp_plb_update_state() will use these values to update the state for TCP PLB.
-> While before this patch, update_alpha() is called before tcp_clean_rtx_queue(), and thus delivered and delivered_ce are not updated yet.
-> 
-> This is also in upstream as well.
+Currently the 'pispbe_schedule()' function does two things:
 
-Thanks for looking into this.  When the fix for this gets into Linus's
-tree, can someone make sure to properly tag it for stable backports
-(i.e. cc: stable@vger.kernel.org)?
+1) Tries to assemble a job by inspecting all the video node queues
+   to make sure all the required buffers are available
+2) Submit the job to the hardware
 
-thanks,
+The pispbe_schedule() function is called at:
 
-greg k-h
+- video device start_streaming() time
+- video device qbuf() time
+- irq handler
+
+As assembling a job requires inspecting all queues, it is a rather
+time consuming operation which is better not run in IRQ context.
+
+To avoid executing the time consuming job creation in interrupt
+context, split the job creation and job scheduling in two distinct
+operations. When a well-formed job is created, append it to the
+newly introduced 'pispbe->job_queue' where it will be dequeued from
+by the scheduling routine.
+
+At start_streaming() and qbuf() time immediately try to schedule a job
+if one has been created as the irq handler routine is only called when
+a job has completed, and we can't solely rely on it for scheduling new
+jobs.
+
+Signed-off-by: Jacopo Mondi <jacopo.mondi@ideasonboard.com>
+---
+Changes in v8:
+- Use automatic release of *job in pispbe_prepare_job()
+- Use temporary list to release jobs without holding the main driver
+  lock
+- Collect tags
+- Rebased on rpi-6.6.y: https://github.com/raspberrypi/linux/pull/6905
+- Link to v7: https://lore.kernel.org/r/20250606-pispbe-mainline-split-jobs-handling-v6-v7-0-46169f0622b7@ideasonboard.com
+
+Changes in v7:
+- Rebased on media-committers/next
+- Fix lockdep warning by using the proper spinlock_irq() primitive in
+  pispbe_prepare_job() which can race with the IRQ handler
+- Link to v6: https://lore.kernel.org/r/20240930-pispbe-mainline-split-jobs-handling-v6-v6-0-63d60f9dd10f@ideasonboard.com
+
+v5->v6:
+- Make the driver depend on PM
+  - Simplify the probe() routine by using pm_runtime_
+  - Remove suspend call from remove()
+
+v4->v5:
+- Use appropriate locking constructs:
+  - spin_lock_irq() for pispbe_prepare_job() called from non irq context
+  - spin_lock_irqsave() for pispbe_schedule() called from irq context
+  - Remove hw_lock from ready_queue accesses in stop_streaming and
+    start_streaming
+  - Fix trivial indentation mistake in 4/4
+
+v3->v4:
+- Expand commit message in 2/4 to explain why removing validation in schedule()
+  is safe
+- Drop ready_lock spinlock
+- Use non _irqsave version of safe_guard(spinlock
+- Support !CONFIG_PM in 4/4 by calling the enable/disable routines directly
+  and adjust pm_runtime usage as suggested by Laurent
+
+v2->v3:
+- Mark pispbe_runtime_resume() as __maybe_unused
+- Add fixes tags where appropriate
+
+v1->v2:
+- Add two patches to address Laurent's comments separately
+- use scoped_guard() when possible
+- Add patch to fix runtime_pm imbalance
+
+---
+Jacopo Mondi (4):
+      media: pisp_be: Drop reference to non-existing function
+      media: pisp_be: Remove config validation from schedule()
+      media: pisp_be: Split jobs creation and scheduling
+      media: pisp_be: Fix pm_runtime underrun in probe
+
+ drivers/media/platform/raspberrypi/pisp_be/Kconfig |   1 +
+ .../media/platform/raspberrypi/pisp_be/pisp_be.c   | 196 ++++++++++-----------
+ 2 files changed, 98 insertions(+), 99 deletions(-)
+---
+base-commit: ce5cac69b2edac3e3246fee03e8f4c2a1075238b
+change-id: 20240930-pispbe-mainline-split-jobs-handling-v6-15dc16e11e3a
+
+Best regards,
+-- 
+Jacopo Mondi <jacopo.mondi@ideasonboard.com>
+
 
