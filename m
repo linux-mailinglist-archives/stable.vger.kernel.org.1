@@ -1,55 +1,53 @@
-Return-Path: <stable+bounces-153939-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153941-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C7D43ADD80B
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:51:40 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id D9231ADD7DF
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:50:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 92BD019E51C8
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:31:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BEA773AD681
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:30:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C4352F94B9;
-	Tue, 17 Jun 2025 16:26:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 039592F94B0;
+	Tue, 17 Jun 2025 16:26:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NxYRQj7k"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dXlgTOP/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 279942F94A0;
-	Tue, 17 Jun 2025 16:26:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B20FC2F94A0;
+	Tue, 17 Jun 2025 16:26:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750177589; cv=none; b=O/1aigZ91rR1gWeLLmfK8QM92TSVqdHmDN8Syt1XMB3X4UDKXz4V1loJTU3xagd5BLxbhk3Ltn6vqumBqc7rWx1gLIwnlYXYttsWAilnt9E3yTWhsnMmbiRaQRbukWbbEF5PfNl+jiCGGOyGZKwxKV8Nr1GMyCgG7yA7fxufTZs=
+	t=1750177595; cv=none; b=uOIt1CUYpUVPplmDe1QfcJ/zhqVXerGCIaZZ+Gc2uYbbCRKf08BIuUtipZoBY146WY+5qX+6TOlCNOVMvbjaX44+4JWgt3G1uFcay/b/dr3WMWTFubC878MqMunqz5V6fy/FlKhdAwPcxtebIhIhbpTaD3Jusn7TCVAyX4APNrM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750177589; c=relaxed/simple;
-	bh=PYcoGI43X8aI4yQF0Se/Fs5N03EjC73DRNsfcdrdOAA=;
+	s=arc-20240116; t=1750177595; c=relaxed/simple;
+	bh=+c4Dqu0uoFG5u1By4JTnEsADlXNxQVx+43ABe5pfqVk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AGxWeDjaMRQyBgagCxsajgfbA+jR3XiZkXNw4tMGBvc15MLvdeWzKmDk8p0ptFgYluQZDdIpy2rKX8fmi0ksGAHxW7PpAPLgVZSZxbKdWoIMlmqd54EIs6IJXzpfJaIUHPtU+EJESyyRhGCV6u81xBEPDgJRUe7wUI0GzWIPLbk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NxYRQj7k; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 487E0C4CEE3;
-	Tue, 17 Jun 2025 16:26:28 +0000 (UTC)
+	 MIME-Version; b=r7uH4VBzqCIcrpUYLt+aQZFuVOpxEdNW0s8xGw0d5lc+XO+wR4C/ShDLPv29s82VCuhRTsdDdxsC93Xa9K53D2Hxjfdf6vxWjcMTI3NKyKdUnf6UoEcCR0SX/uaMrntKe7Cya1sSlcl6LwLxC+2g5p+iiP+xC1fhzXmXI0sMayk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dXlgTOP/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6AF3C4CEE3;
+	Tue, 17 Jun 2025 16:26:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750177588;
-	bh=PYcoGI43X8aI4yQF0Se/Fs5N03EjC73DRNsfcdrdOAA=;
+	s=korg; t=1750177595;
+	bh=+c4Dqu0uoFG5u1By4JTnEsADlXNxQVx+43ABe5pfqVk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NxYRQj7kJ0xEfji8xDHFaJxHjqmxvzOQBygTssyYfn6tDKkVTqiCV/fp/LxuYeMIv
-	 Z5zknP4EnqAoL1iam5RyH887zHvGYCmAISxZ4+1hQ2VEoT/b8ud4jJQW67u1QxxUfJ
-	 Xw31s2x05FAPZNh/dip0K0KXoinamAroJNRODAi8=
+	b=dXlgTOP/k4q2a7T/L0hxwWVjOEVIN0VXPtoVk7ypFh4f/l9RRh3GxN5qVf1dBH2/O
+	 OxBCjZ7QLCh94TJ5cFOJI03/3+S//J7ej6PWFaI76iPsgyVP9fMkBdDtRyRfLQZspz
+	 LZrCesbKSkC6r+kbqBYobC9ESIOZRc1AbjwZPpcc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xuewen Yan <xuewen.yan@unisoc.com>,
-	Di Shen <di.shen@unisoc.com>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Alexei Starovoitov <ast@kernel.org>,
+	Florian Westphal <fw@strlen.de>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 306/780] bpf: Revert "bpf: remove unnecessary rcu_read_{lock,unlock}() in multi-uprobe attach logic"
-Date: Tue, 17 Jun 2025 17:20:14 +0200
-Message-ID: <20250617152503.921960825@linuxfoundation.org>
+Subject: [PATCH 6.15 307/780] netfilter: xtables: support arpt_mark and ipv6 optstrip for iptables-nft only builds
+Date: Tue, 17 Jun 2025 17:20:15 +0200
+Message-ID: <20250617152503.963629133@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
 References: <20250617152451.485330293@linuxfoundation.org>
@@ -68,45 +66,64 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Di Shen <di.shen@unisoc.com>
+From: Florian Westphal <fw@strlen.de>
 
-[ Upstream commit 4e2e6841ff761cc15a54e8bebcf35d7325ec78a2 ]
+[ Upstream commit c38eb2973c18d34a8081d173a6ad298461f4a37c ]
 
-This reverts commit 4a8f635a6054.
+Its now possible to build a kernel that has no support for the classic
+xtables get/setsockopt interfaces and builtin tables.
 
-Althought get_pid_task() internally already calls rcu_read_lock() and
-rcu_read_unlock(), the find_vpid() was not.
+In this case, we have CONFIG_IP6_NF_MANGLE=n and
+CONFIG_IP_NF_ARPTABLES=n.
 
-The documentation for find_vpid() clearly states:
-"Must be called with the tasklist_lock or rcu_read_lock() held."
+For optstript, the ipv6 code is so small that we can enable it if
+netfilter ipv6 support exists. For mark, check if either classic
+arptables or NFT_ARP_COMPAT is set.
 
-Add proper rcu_read_lock/unlock() to protect the find_vpid().
-
-Fixes: 4a8f635a6054 ("bpf: remove unnecessary rcu_read_{lock,unlock}() in multi-uprobe attach logic")
-Reported-by: Xuewen Yan <xuewen.yan@unisoc.com>
-Signed-off-by: Di Shen <di.shen@unisoc.com>
-Acked-by: Andrii Nakryiko <andrii@kernel.org>
-Link: https://lore.kernel.org/r/20250520054943.5002-1-xuewen.yan@unisoc.com
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Fixes: a9525c7f6219 ("netfilter: xtables: allow xtables-nft only builds")
+Signed-off-by: Florian Westphal <fw@strlen.de>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/trace/bpf_trace.c | 2 ++
- 1 file changed, 2 insertions(+)
+ net/netfilter/xt_TCPOPTSTRIP.c | 4 ++--
+ net/netfilter/xt_mark.c        | 2 +-
+ 2 files changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/kernel/trace/bpf_trace.c b/kernel/trace/bpf_trace.c
-index e1bf9c06007fb..090cdab38f0cc 100644
---- a/kernel/trace/bpf_trace.c
-+++ b/kernel/trace/bpf_trace.c
-@@ -3423,7 +3423,9 @@ int bpf_uprobe_multi_link_attach(const union bpf_attr *attr, struct bpf_prog *pr
- 	}
+diff --git a/net/netfilter/xt_TCPOPTSTRIP.c b/net/netfilter/xt_TCPOPTSTRIP.c
+index 30e99464171b7..93f064306901c 100644
+--- a/net/netfilter/xt_TCPOPTSTRIP.c
++++ b/net/netfilter/xt_TCPOPTSTRIP.c
+@@ -91,7 +91,7 @@ tcpoptstrip_tg4(struct sk_buff *skb, const struct xt_action_param *par)
+ 	return tcpoptstrip_mangle_packet(skb, par, ip_hdrlen(skb));
+ }
  
- 	if (pid) {
-+		rcu_read_lock();
- 		task = get_pid_task(find_vpid(pid), PIDTYPE_TGID);
-+		rcu_read_unlock();
- 		if (!task) {
- 			err = -ESRCH;
- 			goto error_path_put;
+-#if IS_ENABLED(CONFIG_IP6_NF_MANGLE)
++#if IS_ENABLED(CONFIG_IP6_NF_IPTABLES)
+ static unsigned int
+ tcpoptstrip_tg6(struct sk_buff *skb, const struct xt_action_param *par)
+ {
+@@ -119,7 +119,7 @@ static struct xt_target tcpoptstrip_tg_reg[] __read_mostly = {
+ 		.targetsize = sizeof(struct xt_tcpoptstrip_target_info),
+ 		.me         = THIS_MODULE,
+ 	},
+-#if IS_ENABLED(CONFIG_IP6_NF_MANGLE)
++#if IS_ENABLED(CONFIG_IP6_NF_IPTABLES)
+ 	{
+ 		.name       = "TCPOPTSTRIP",
+ 		.family     = NFPROTO_IPV6,
+diff --git a/net/netfilter/xt_mark.c b/net/netfilter/xt_mark.c
+index 65b965ca40ea7..59b9d04400cac 100644
+--- a/net/netfilter/xt_mark.c
++++ b/net/netfilter/xt_mark.c
+@@ -48,7 +48,7 @@ static struct xt_target mark_tg_reg[] __read_mostly = {
+ 		.targetsize     = sizeof(struct xt_mark_tginfo2),
+ 		.me             = THIS_MODULE,
+ 	},
+-#if IS_ENABLED(CONFIG_IP_NF_ARPTABLES)
++#if IS_ENABLED(CONFIG_IP_NF_ARPTABLES) || IS_ENABLED(CONFIG_NFT_COMPAT_ARP)
+ 	{
+ 		.name           = "MARK",
+ 		.revision       = 2,
 -- 
 2.39.5
 
