@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-153928-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-154380-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id BE6DFADD778
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:45:04 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id E6EC2ADD81F
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:52:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D226019E4DD8
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:30:38 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A87E87A71B1
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:50:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 26F3D2ED84A;
-	Tue, 17 Jun 2025 16:25:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C6A12E8E02;
+	Tue, 17 Jun 2025 16:50:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u3dKjJOt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jgWqI+eV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE1BE2ECEA2;
-	Tue, 17 Jun 2025 16:25:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD63F2264DD;
+	Tue, 17 Jun 2025 16:50:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750177552; cv=none; b=VJDvaY9HmZ177lUTFdK1tBxIhL04LcEujTAdPfcbHl5fQVs+10hhHgPXp1DIAKAT6JJItYTumzAyAyLG11+OI+MSfFLz0DR5aad2vwo41x732w+efH/AerzYRjRQKG2WjYd8lhukc4QEPMWHOoqFk8s7Ugg3JH0iqNnOwV2uZb8=
+	t=1750179008; cv=none; b=RqvsnXtniZyqzCrOjtRhqCcIVcr9rHoA8sX81KOATQvhHY5K2rJc3u/r3f38vGNq0RnszA+2SOfACk2GlN+RAkmRtR+AThfee1RXlYH62qyjsRm0rOtX5gjQlj1I0uac/IMhfXjGyhqaXtAiqv94JvOPK6qeTCGKkqFjHB03RaA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750177552; c=relaxed/simple;
-	bh=1ZiHetbPeToCTZoLqVGRT4hUyNAHCsopo+Yv8fGrPtM=;
+	s=arc-20240116; t=1750179008; c=relaxed/simple;
+	bh=heYX4dZHq1fty3MM64zkVXGgfmJudrtpFjkKob0YR4c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=j5aB/r/UbvduLG0pnsU4tzs5O4L6AKT1sDnoCLjMjJSXf/kSKDwGOgskHtDhDXdQ1YPD4imZok9Et9oumltHqFqhRNmHaEo6a4LF5kMbZXtAxVYzSzxhl9zWdU6XABeviMUvRA/REsZbwDJz5iIeXNgoJgz/GpqM0899QvjSQMI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u3dKjJOt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3CE9EC4CEE3;
-	Tue, 17 Jun 2025 16:25:52 +0000 (UTC)
+	 MIME-Version:Content-Type; b=FBz9wuLfn8AqkadQxThGbSQZyWpCMVR+HctJqeN4P2x0GUe8JltKYrS8M5TrmgE95R50433OcRGeTmlUxSP/PuJYTi4sCYqCD5y4E4KvwgoqxC9QeMPj+sy6rB8pkTaZ2Te60I8LVDPUruhgyDoehDPJdwNmn4ds2qSwbHvppp4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jgWqI+eV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42118C4CEE3;
+	Tue, 17 Jun 2025 16:50:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750177552;
-	bh=1ZiHetbPeToCTZoLqVGRT4hUyNAHCsopo+Yv8fGrPtM=;
+	s=korg; t=1750179007;
+	bh=heYX4dZHq1fty3MM64zkVXGgfmJudrtpFjkKob0YR4c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=u3dKjJOtUXkl8iwsrP+ozVpRg3HQocpJyX+aLe40HA19pXKxMh++r4SZGVY0JWPip
-	 1rshBjMa4p/1go/tJlHeMqLhOYv7QqV2pZK7qMRuf7jVfidMVO/C4s1JzIhYUTI+oO
-	 ekA3vnFFsx9knYmGKpYYY0vD1d+NYxlKG8ljctBQ=
+	b=jgWqI+eVsR45sCt1YVgzJizPHbI8CStdp98Hw6qRVZqOdNbqDQ4fHRRXZxfRt7tuK
+	 +2Ekig4SO6o4cQCOCQVEVIzEtNbWUWgS7n4BvnFsDnQbR7M+rRUxhCjJN0qg6e/Hyo
+	 jsx/Ym/lRkzFmP5xTrCnPaZEV2kmkjc1lRk8s7Oc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Alexis=20Lothor=C3=A9?= <alexis.lothore@bootlin.com>,
-	Yanteng Si <si.yanteng@linux.dev>,
-	Maxime Chevallier <maxime.chevallier@bootlin.com>,
+	Mirco Barone <mirco.barone@polito.it>,
+	"Jason A. Donenfeld" <Jason@zx2c4.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 362/512] net: stmmac: make sure that ptp_rate is not 0 before configuring timestamping
+Subject: [PATCH 6.15 620/780] wireguard: device: enable threaded NAPI
 Date: Tue, 17 Jun 2025 17:25:28 +0200
-Message-ID: <20250617152434.247182993@linuxfoundation.org>
+Message-ID: <20250617152516.726685146@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
-References: <20250617152419.512865572@linuxfoundation.org>
+In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
+References: <20250617152451.485330293@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,86 +64,78 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexis Lothoré <alexis.lothore@bootlin.com>
+From: Mirco Barone <mirco.barone@polito.it>
 
-[ Upstream commit 030ce919e114a111e83b7976ecb3597cefd33f26 ]
+[ Upstream commit db9ae3b6b43c79b1ba87eea849fd65efa05b4b2e ]
 
-The stmmac platform drivers that do not open-code the clk_ptp_rate value
-after having retrieved the default one from the device-tree can end up
-with 0 in clk_ptp_rate (as clk_get_rate can return 0). It will
-eventually propagate up to PTP initialization when bringing up the
-interface, leading to a divide by 0:
+Enable threaded NAPI by default for WireGuard devices in response to low
+performance behavior that we observed when multiple tunnels (and thus
+multiple wg devices) are deployed on a single host.  This affects any
+kind of multi-tunnel deployment, regardless of whether the tunnels share
+the same endpoints or not (i.e., a VPN concentrator type of gateway
+would also be affected).
 
- Division by zero in kernel.
- CPU: 1 UID: 0 PID: 1 Comm: swapper/0 Not tainted 6.12.30-00001-g48313bd5768a #22
- Hardware name: STM32 (Device Tree Support)
- Call trace:
-  unwind_backtrace from show_stack+0x18/0x1c
-  show_stack from dump_stack_lvl+0x6c/0x8c
-  dump_stack_lvl from Ldiv0_64+0x8/0x18
-  Ldiv0_64 from stmmac_init_tstamp_counter+0x190/0x1a4
-  stmmac_init_tstamp_counter from stmmac_hw_setup+0xc1c/0x111c
-  stmmac_hw_setup from __stmmac_open+0x18c/0x434
-  __stmmac_open from stmmac_open+0x3c/0xbc
-  stmmac_open from __dev_open+0xf4/0x1ac
-  __dev_open from __dev_change_flags+0x1cc/0x224
-  __dev_change_flags from dev_change_flags+0x24/0x60
-  dev_change_flags from ip_auto_config+0x2e8/0x11a0
-  ip_auto_config from do_one_initcall+0x84/0x33c
-  do_one_initcall from kernel_init_freeable+0x1b8/0x214
-  kernel_init_freeable from kernel_init+0x24/0x140
-  kernel_init from ret_from_fork+0x14/0x28
- Exception stack(0xe0815fb0 to 0xe0815ff8)
+The problem is caused by the fact that, in case of a traffic surge that
+involves multiple tunnels at the same time, the polling of the NAPI
+instance of all these wg devices tends to converge onto the same core,
+causing underutilization of the CPU and bottlenecking performance.
 
-Prevent this division by 0 by adding an explicit check and error log
-about the actual issue. While at it, remove the same check from
-stmmac_ptp_register, which then becomes duplicate
+This happens because NAPI polling is hosted by default in softirq
+context, but the WireGuard driver only raises this softirq after the rx
+peer queue has been drained, which doesn't happen during high traffic.
+In this case, the softirq already active on a core is reused instead of
+raising a new one.
 
-Fixes: 19d857c9038e ("stmmac: Fix calculations for ptp counters when clock input = 50Mhz.")
-Signed-off-by: Alexis Lothoré <alexis.lothore@bootlin.com>
-Reviewed-by: Yanteng Si <si.yanteng@linux.dev>
-Reviewed-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
-Link: https://patch.msgid.link/20250529-stmmac_tstamp_div-v4-1-d73340a794d5@bootlin.com
+As a result, once two or more tunnel softirqs have been scheduled on
+the same core, they remain pinned there until the surge ends.
+
+In our experiments, this almost always leads to all tunnel NAPIs being
+handled on a single core shortly after a surge begins, limiting
+scalability to less than 3× the performance of a single tunnel, despite
+plenty of unused CPU cores being available.
+
+The proposed mitigation is to enable threaded NAPI for all WireGuard
+devices. This moves the NAPI polling context to a dedicated per-device
+kernel thread, allowing the scheduler to balance the load across all
+available cores.
+
+On our 32-core gateways, enabling threaded NAPI yields a ~4× performance
+improvement with 16 tunnels, increasing throughput from ~13 Gbps to
+~48 Gbps. Meanwhile, CPU usage on the receiver (which is the bottleneck)
+jumps from 20% to 100%.
+
+We have found no performance regressions in any scenario we tested.
+Single-tunnel throughput remains unchanged.
+
+More details are available in our Netdev paper.
+
+Link: https://netdevconf.info/0x18/docs/netdev-0x18-paper23-talk-paper.pdf
+Signed-off-by: Mirco Barone <mirco.barone@polito.it>
+Fixes: e7096c131e51 ("net: WireGuard secure network tunnel")
+Signed-off-by: Jason A. Donenfeld <Jason@zx2c4.com>
+Link: https://patch.msgid.link/20250605120616.2808744-1-Jason@zx2c4.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/stmicro/stmmac/stmmac_main.c | 5 +++++
- drivers/net/ethernet/stmicro/stmmac/stmmac_ptp.c  | 2 +-
- 2 files changed, 6 insertions(+), 1 deletion(-)
+ drivers/net/wireguard/device.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-index 918d7f2e8ba99..f68e3ece919cc 100644
---- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-@@ -835,6 +835,11 @@ int stmmac_init_tstamp_counter(struct stmmac_priv *priv, u32 systime_flags)
- 	if (!(priv->dma_cap.time_stamp || priv->dma_cap.atime_stamp))
- 		return -EOPNOTSUPP;
+diff --git a/drivers/net/wireguard/device.c b/drivers/net/wireguard/device.c
+index 3ffeeba5dccf4..4a529f1f9beab 100644
+--- a/drivers/net/wireguard/device.c
++++ b/drivers/net/wireguard/device.c
+@@ -366,6 +366,7 @@ static int wg_newlink(struct net_device *dev,
+ 	if (ret < 0)
+ 		goto err_free_handshake_queue;
  
-+	if (!priv->plat->clk_ptp_rate) {
-+		netdev_err(priv->dev, "Invalid PTP clock rate");
-+		return -EINVAL;
-+	}
-+
- 	stmmac_config_hw_tstamping(priv, priv->ptpaddr, systime_flags);
- 	priv->systime_flags = systime_flags;
- 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_ptp.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_ptp.c
-index a6b1de9a251dd..5c85040a1b937 100644
---- a/drivers/net/ethernet/stmicro/stmmac/stmmac_ptp.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_ptp.c
-@@ -303,7 +303,7 @@ void stmmac_ptp_register(struct stmmac_priv *priv)
- 
- 	/* Calculate the clock domain crossing (CDC) error if necessary */
- 	priv->plat->cdc_error_adj = 0;
--	if (priv->plat->has_gmac4 && priv->plat->clk_ptp_rate)
-+	if (priv->plat->has_gmac4)
- 		priv->plat->cdc_error_adj = (2 * NSEC_PER_SEC) / priv->plat->clk_ptp_rate;
- 
- 	stmmac_ptp_clock_ops.n_per_out = priv->dma_cap.pps_out_num;
++	dev_set_threaded(dev, true);
+ 	ret = register_netdevice(dev);
+ 	if (ret < 0)
+ 		goto err_uninit_ratelimiter;
 -- 
 2.39.5
 
