@@ -1,46 +1,46 @@
-Return-Path: <stable+bounces-154661-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-154662-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B466ADED20
-	for <lists+stable@lfdr.de>; Wed, 18 Jun 2025 14:58:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2470CADED32
+	for <lists+stable@lfdr.de>; Wed, 18 Jun 2025 15:00:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2CAB43BD120
-	for <lists+stable@lfdr.de>; Wed, 18 Jun 2025 12:57:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4FC0C3BB690
+	for <lists+stable@lfdr.de>; Wed, 18 Jun 2025 12:59:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 850E72E3B0F;
-	Wed, 18 Jun 2025 12:57:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F8F013633F;
+	Wed, 18 Jun 2025 13:00:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PkR5yBqF"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iNSS3Y02"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AAC12E2640;
-	Wed, 18 Jun 2025 12:57:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11F2A2E7639;
+	Wed, 18 Jun 2025 13:00:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750251453; cv=none; b=fgCQ6ZTZyR7q13DdySQkUWBz9PLjKoFO/eyFZEDktqzjnKhYxNCIopNS9jN0vV3jpkEVOdQJZHeFYCtyk3KuUwvKz8O9BS8zrGfv6p6gYClUCqIyM7bUglptb6dsVhJWDfnE2CGX3B82bdKV0NvBZh0NI0A7qBJ53/Os7X5+E1A=
+	t=1750251607; cv=none; b=QKfeGwNQt2S/24FDT+6LF4uRQaorRqqGAvAIaau9wiQGiPfAhnCx3Qorf6aEcc0LBLM6Rgus+L7LFXu7z8+ZTuF8b8syBS9J38xI+J3spqGOTesgENG8BbIIXmMXzV+GelfcEQJVyBFeABgrb4G681YlJVWW/AvwQNzHU1wWp9A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750251453; c=relaxed/simple;
-	bh=7HYY0spsrPniJmKfIQbUJENhpdxcqwe5JFROoHUtcuw=;
+	s=arc-20240116; t=1750251607; c=relaxed/simple;
+	bh=BFtGtfz8CaBRAJNMtWNqPNVb80xkQMh1TasnboFQ6sw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bQVJQbtuyOT5XQY9OM2k01KeTlBZZZU7V2QNqtKV+U77I/Ctq4ysONgLv5wA1h1LGJjh/aIh1LiD7nBNC13r/GCJ2IBKj5V2JH4QGJmeUbPaTarVkqRe40j+B8y44w/TxLe2JxAyThvavCGa8vXa5SgmAjfkCP9MJIBorSXRg9I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PkR5yBqF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E774C4CEE7;
-	Wed, 18 Jun 2025 12:57:28 +0000 (UTC)
+	 MIME-Version; b=oXEr640Y4jzwmIY2Rx3206R+XPZOGEFgXJ6EyK7JzkF272domLjD8nIMiBbFXcBjdrCQO8qZQNw14c9dWSm6Mem8IrUJhZW5IvvpJZri5vSSsPAOTrujzVxgssN+g/FNrAvzEijntP9K/qAXfHJauKx4o+5LMZrSQqxXxHXsYB8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iNSS3Y02; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38ADFC4CEE7;
+	Wed, 18 Jun 2025 13:00:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1750251452;
-	bh=7HYY0spsrPniJmKfIQbUJENhpdxcqwe5JFROoHUtcuw=;
+	s=k20201202; t=1750251606;
+	bh=BFtGtfz8CaBRAJNMtWNqPNVb80xkQMh1TasnboFQ6sw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PkR5yBqFxocYdjEuCYI5E7t47KgCxTzUJO2837W5Mp6UWUT3+PPK+u5eVqcESDt5E
-	 mx2ExA4cK9HyPIS+WSK2NM5vLzXI+LgQ4TyA37mL/YszNycBhmJY0qZg9I/nP1Bh9S
-	 kVdPwpgx2fucvn1E3fSb8gV1amXZislUi91yvWGxzmxyyOwouvZ/yAmxtTXCVgxoWn
-	 z8KGUL+AxhIfveJQBoXnPJ3yy5A6ujIrGQrvMeFHZQk4UI5TznMjw2Beb1PyFZHJD1
-	 z7Rf7RMfCTutFSaZAMeKqvc5+Bx61fukq+XqGlb5yJv5ljdo3Nb2jFJuMLgNHjatKN
-	 D8HaNm4qYztbg==
+	b=iNSS3Y026myeYYrid0cJSEw5YE3x8ciX0g0J+aKzhED2oPZVrf8OyWzkWhZbWcS1B
+	 sKu/3AreJCyahdt91jlGikvI363/OyNT2hh2NAWcQOA6gHiAN3OxFzbW0zTAhLKdIP
+	 cyIKd7Tyzl4cJK96CYVQ2eR7A2cvt+6jBSljppfTQrQxymQeezqlOHWSy5OcrSuvnf
+	 89kH+UhEKnP8lUcSssXCjs1C+Rucgo1WDGfuNlwGImVBoOAZ3rimInmiLhWoKxvSfs
+	 NBBEbD6Ie3N/4kMCJZr6R1QFwMxWmLkCK3dQhE69ZVHh6qlp+cccwpkCnxR5a8MoLq
+	 hx6mh2jLvBZtw==
 From: Miguel Ojeda <ojeda@kernel.org>
 To: gregkh@linuxfoundation.org
 Cc: akpm@linux-foundation.org,
@@ -61,11 +61,11 @@ Cc: akpm@linux-foundation.org,
 	stable@vger.kernel.org,
 	sudipm.mukherjee@gmail.com,
 	torvalds@linux-foundation.org
-Subject: Re: [PATCH 6.12 000/512] 6.12.34-rc1 review
-Date: Wed, 18 Jun 2025 14:57:10 +0200
-Message-ID: <20250618125710.1920658-1-ojeda@kernel.org>
-In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
-References: <20250617152419.512865572@linuxfoundation.org>
+Subject: Re: [PATCH 6.15 000/780] 6.15.3-rc1 review
+Date: Wed, 18 Jun 2025 14:59:52 +0200
+Message-ID: <20250618125952.1920952-1-ojeda@kernel.org>
+In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
+References: <20250617152451.485330293@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -74,29 +74,19 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-On Tue, 17 Jun 2025 17:19:26 +0200 Greg Kroah-Hartman <gregkh@linuxfoundation.org> wrote:
+On Tue, 17 Jun 2025 17:15:08 +0200 Greg Kroah-Hartman <gregkh@linuxfoundation.org> wrote:
 >
-> This is the start of the stable review cycle for the 6.12.34 release.
-> There are 512 patches in this series, all will be posted as a response
+> This is the start of the stable review cycle for the 6.15.3 release.
+> There are 780 patches in this series, all will be posted as a response
 > to this one.  If anyone has any issues with these being applied, please
 > let me know.
 >
-> Responses should be made by Thu, 19 Jun 2025 15:22:45 +0000.
+> Responses should be made by Thu, 19 Jun 2025 15:22:30 +0000.
 > Anything received after that time might be too late.
 
-For arm64, with Clang 18, I got:
+For arm64, with Clang 18, I found the same issue as for 6.12.y:
 
-     drivers/thermal/mediatek/lvts_thermal.c:262:13: error: unused function 'lvts_debugfs_exit' [-Werror,-Wunused-function]
-      262 | static void lvts_debugfs_exit(struct lvts_domain *lvts_td) { }
-          |             ^~~~~~~~~~~~~~~~~
-    1 error generated.
-
-I assume the reason is that `CONFIG_MTK_LVTS_THERMAL_DEBUGFS=n`.
-
-In mainline I don't see it. I think we need commit 3159c96ac2cb
-("thermal/drivers/mediatek/lvts: Remove unused lvts_debugfs_exit").
-
-It cherry-picks cleanly.
+    https://lore.kernel.org/stable/20250618125710.1920658-1-ojeda@kernel.org/
 
 Otherwise, boot-tested under QEMU for Rust x86_64 and riscv64;
 built-tested for loongarch64.
