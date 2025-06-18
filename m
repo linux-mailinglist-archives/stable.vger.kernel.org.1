@@ -1,214 +1,132 @@
-Return-Path: <stable+bounces-154657-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-154658-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A0DCADEC55
-	for <lists+stable@lfdr.de>; Wed, 18 Jun 2025 14:32:44 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A43FADECB3
+	for <lists+stable@lfdr.de>; Wed, 18 Jun 2025 14:39:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 072B43A96A2
-	for <lists+stable@lfdr.de>; Wed, 18 Jun 2025 12:27:56 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 52D4B16C0D0
+	for <lists+stable@lfdr.de>; Wed, 18 Jun 2025 12:34:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 733C929C33D;
-	Wed, 18 Jun 2025 12:26:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3006E2E3B0D;
+	Wed, 18 Jun 2025 12:30:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="nFCzlY2A"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="gt2kqujI"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lj1-f173.google.com (mail-lj1-f173.google.com [209.85.208.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 590DC285C87
-	for <stable@vger.kernel.org>; Wed, 18 Jun 2025 12:26:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2469C2E3AE5
+	for <stable@vger.kernel.org>; Wed, 18 Jun 2025 12:30:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750249592; cv=none; b=Mtjt5xtkbynL+9ltewVxfWITBKfJg6yuQfhyR8jlBwpH/Sy+GL9t4Y0H6myqFLRnLUmSn9p4PbKEIhyMvpCTDexntShOTSDBVquob51bb92xC1iwT3kBXuhAiB1AqrFKt1Frr6+CHxl0o+7NMJipIa5s/5YuKfxePZ0Bu4813OY=
+	t=1750249824; cv=none; b=FHsz04a7LI8wTpQK5iSJJdOyuJFF8qWLweUdvt7Z21QyAYEx1c2xWX77eVhPhimFPr041UOcI5igbuwMdsmKsn7tTLEJwIo+HtXTtUMzp3BOnLLiz9nYSU0mrxa6HUqnleMTNF7dRqa/ELkoYTR5Lbl+8Y32BZ2fPZp7EeVgFcc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750249592; c=relaxed/simple;
-	bh=mz0uiMmed9z9tOHShNrfShXtsw2Ac1cxhClTJyFThvU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ESOGr5yxi/7w4D2bAPPP6FsuKhLg3AwDdiaAFwvUwWe+Y3kUVFwy2JjEekJ1X4y4CClL9N6yg5ujDmVwq9g9Wt/g3gi2bD24D6j4yCj3E9Z4+KcX9KE+hUJCXx5IxWevMi+CPMy64UeRRaFnVtRAf/5gbQMyCYwagwBrRNokars=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=nFCzlY2A; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
-Received: from pps.filterd (m0279867.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 55I8jFDh002625
-	for <stable@vger.kernel.org>; Wed, 18 Jun 2025 12:26:29 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	/bhcW6+q7VLFC3B8HTp/6QcrhI6U7A912t6H6KHU0qA=; b=nFCzlY2Aj9CmiXJK
-	vovllZcVekEKXnnJzolwXB8/nfVjjn5EivDPbHazXJENQaUTD9orHGm86wNFTmyb
-	Hb7Y/fTUzSGn3CAB+S6cqvSeJMT98z8M/u7lspD4QAI9c6N+14TsPzahR7Xm7yhB
-	cg/MWPXpbluhIFLT8P8hZhxIyR/6qQsvEax3bB8XWQ6DGQO2Xe5v5JQvW824Sfz3
-	T1NXl9BpInowjvnDb+4IWVxl/iw6rDLBAU+cOW9ELQIPQw/70vucYtItrE27to48
-	d1RJ3VTV9eP0az/YtrEiNwhyAIx9iCCPPix87CBTOCwteOHOYie1BEHhKl3buoSU
-	b+C3NQ==
-Received: from mail-pl1-f199.google.com (mail-pl1-f199.google.com [209.85.214.199])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4791hd46cm-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
-	for <stable@vger.kernel.org>; Wed, 18 Jun 2025 12:26:29 +0000 (GMT)
-Received: by mail-pl1-f199.google.com with SMTP id d9443c01a7336-235f6b829cfso55244105ad.2
-        for <stable@vger.kernel.org>; Wed, 18 Jun 2025 05:26:29 -0700 (PDT)
+	s=arc-20240116; t=1750249824; c=relaxed/simple;
+	bh=kAygI4ev3hipA5TKiXNVmwIcsZ7+rgvgVA+GO6/6H6c=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=OemlX8PGXwz8m0McGlhd+Cv+dpeyx0L6XEYnfQ/FwfatGIdfuq+oQcMjGAaO7yCFyorlDPhQD62jZ0PEfPdO+eAvN+yByJLXV3vcjPUQ/aw12dGFzyUonY/YSwIfKsN+uq28e7EcjQBmQh69GUkwzNpxvQrNua/E8ZPfq78R1C0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=gt2kqujI; arc=none smtp.client-ip=209.85.208.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-lj1-f173.google.com with SMTP id 38308e7fff4ca-32b4876dfecso7186851fa.1
+        for <stable@vger.kernel.org>; Wed, 18 Jun 2025 05:30:21 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1750249820; x=1750854620; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=zQTB75G8uUgBMyAAX12JhH5txrAj1DcFBhtKKz24PTU=;
+        b=gt2kqujIOQRhobpZsC43ZPccJQpvV0MOA9tswi8gzE2uhkyFlrb1a0DEZZAWP+FUI2
+         aPmHzTRnnMOWwU/Xv1botlOWQlt1PQht2ehqsY98J6kokAcrPIaaQUQ4pN9spGWzUbSN
+         vQLWYOEzvmncavNohhTyNj/t5pc36yry8zFcGR9fzyj9YLf5wgfga62QaA0TRq/P1dF6
+         QKTB+FQI57UWmDXBubzhBxJT2tn7d8H67EFAPWI9I/5Bpv8K6Eg+GzNYJLY6VT5SPU7U
+         S/4P8fx6dMfJCwJiZl4WLJHF0nahP0mHiqfNlJnlb5rkiNw4XmVA4KSJwwhYPmGMBNbB
+         OGCA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1750249588; x=1750854388;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=/bhcW6+q7VLFC3B8HTp/6QcrhI6U7A912t6H6KHU0qA=;
-        b=tizeXSZg4ctKGjiIxVmPojEFxNh58VaHm+uH09an5o7m0H+yi2x4c137UZSHAH8zFD
-         ph1UGu8PbbJRiStKgzds9C1pCQEcAVzxfiGAnJMLSthM5x9A33qhDPf2dvZ6UFd8FMbP
-         qcfiIq+n9q6P6DggD76vUZeZRXaQuItc7v9FRsNusd0lV7PCQHYbm3Ui2HR2jA/MTC7E
-         s9zvgOXtS7EgxlWOPu+iPB8AW5zNSVQqgThvZsq79czIB0/AKMIeA1ngVfEoNpXATuMy
-         Oqka2ciyVD5e0F36bxRit1rB71vSXYPgH17K2b79FwlMosBYEncZ6622VBNLd93oAEE0
-         /uOQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUiQYVTjibXf1a4OxPAh9tDKSWEAbzced12OykjntIULSK6FHwKi49w3DoqEuEIiADuXeV0+OY=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzg6aO0LqkpxI/hZFMmOTuaF0kTBfdGvd7Al3Yuo1VLLIdUYQAH
-	rT6pceqkYpdDBR9GKJvbgIGyj2a9h+xsOKt+rhqZ2xMvWnOgzNhtfrGfzQLVKszHLsLpkmckRqg
-	HiqA3l3tp3mK2gbYtnYHXHgvo3EA2zw4nt6Lw4hxX0amYzV38a62n1rGl3Wo=
-X-Gm-Gg: ASbGnctAmVAXUFM2q8Mk1jkMHr8LeDh2/HMzd0tpVBvAJovbds7ZkNzQrGM1+DnB/jW
-	fsOb/wg/QWrbay4BfrhQ+VrYGDkfyGYHUQC6fXpMXqjd5kG9mdAW4vxWNzfoYExvEIFJVcPbH1m
-	DSe2br1pvmBIwn5FTmXv2fomZiNNgLHS/4N/wESxSE+ULquZp3LCa5jheC54Ci/BMjnbHL8nR5y
-	Luan+LKZ74nEdFr5p4yI//VVGt3rhSm069dlBSu01zyzJdZqWFZuUmkIZkDKY9sY5dt8hD5u1B2
-	mpI6sEgHyjaZciVcydcmqVL4hNYQfmFlBABparxHQUJnJNj4das=
-X-Received: by 2002:a17:902:8bc8:b0:234:a139:120d with SMTP id d9443c01a7336-2366b32e4ebmr156887695ad.7.1750249588186;
-        Wed, 18 Jun 2025 05:26:28 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEcRD1XEJ8bRVvhnDu/jtve9MMGk6I/mHhVF0u4XWlqu8a3OclQos52HAfFvf5CU6P4xFa7yQ==
-X-Received: by 2002:a17:902:8bc8:b0:234:a139:120d with SMTP id d9443c01a7336-2366b32e4ebmr156887415ad.7.1750249587820;
-        Wed, 18 Jun 2025 05:26:27 -0700 (PDT)
-Received: from [10.218.10.142] ([202.46.22.19])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2365dea7d98sm98727925ad.151.2025.06.18.05.26.24
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 18 Jun 2025 05:26:27 -0700 (PDT)
-Message-ID: <8cbc5220-c993-44a1-b361-418b36a3f336@oss.qualcomm.com>
-Date: Wed, 18 Jun 2025 17:56:23 +0530
+        d=1e100.net; s=20230601; t=1750249820; x=1750854620;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=zQTB75G8uUgBMyAAX12JhH5txrAj1DcFBhtKKz24PTU=;
+        b=V3XQhaAHqdxmuDUPBCBjabJH7HyrQ4kqoj9DFS5vXYGa9dToper8c+z5EWm/cz+lsM
+         adxlpnNRQKWVn+FOZWRxiH4CXlzViPLYWrMbElWLiE77iM5bHbd/bNpN7fyPBxRyVK/2
+         J6350fBdQA/K2nokeFRavH5oj4xL3CgF/4P+g9wn8z8xeSL8qFfqsQKNsHXc20kzFVjW
+         PhSSH38HW6HmdO+mx4rEChVorAATT/mS6JL66+p1CW1qJG3UnH3/C5Ww64znSTFM7Lmo
+         JyZqQV+WxcqgjlRbxrwpIy/JkBzj9IVM+nDIfk/AC8jZbuLaBVQyv15sB1BQyYtEn+3A
+         aStQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWMv+v8Yfmj4/n2iWZFtlPb2RcfDHM0ITDjTrpFS7URnX9P3Uq6qlSWFi5Mji5fBZ/fcE3OQto=@vger.kernel.org
+X-Gm-Message-State: AOJu0YystwcrutI61dteOQjOsxAn3LIRWfCJs35vCHWrFgOzblLXBGqM
+	mmCgeeBY/ym7hpx7w9bNGNmfFJ8JDuOuqt/40PmQmAaf/qMaH+cGDyz5Z1HVierPZOWg13bSROF
+	bwCOQq3tqqJSrpwoGAPmI262+wohEAuOBUnU9MAjF7g==
+X-Gm-Gg: ASbGnctPnOC26ZAUawxuhVlIPJvoCIk0n04pjgEx0CFI8UToCq+UNrQn58MzTL1A7hF
+	HLllKLiLzusVKpglhpkuWWILOakOgKkFdrxuzFYSorKHaGVvJltluS0kJc/ae9dwZQnXy3xrADV
+	/boIsBh+//dUrAihhwSlQswoMaNs/gDj8VpS1v3SCnwXM=
+X-Google-Smtp-Source: AGHT+IGIhRJFv1Ba6R4yp8rFo6dY6wGpRl5V6O/QGXm52fbnJBdughdFvLkQvf2FB3CR5WNkXCk+SFCfrmRt90k53JM=
+X-Received: by 2002:a05:6512:b14:b0:553:2912:cfdc with SMTP id
+ 2adb3069b0e04-553d38ca1c3mr855269e87.9.1750249820186; Wed, 18 Jun 2025
+ 05:30:20 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 2/2] usb: gadget: u_serial: Fix race condition in TTY
- wakeup
-To: Kuen-Han Tsai <khtsai@google.com>, gregkh@linuxfoundation.org,
-        hulianqin@vivo.com, krzysztof.kozlowski@linaro.org, mwalle@kernel.org,
-        jirislaby@kernel.org
-Cc: linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org,
-        stable@vger.kernel.org
-References: <20250617050844.1848232-1-khtsai@google.com>
- <20250617050844.1848232-2-khtsai@google.com>
-Content-Language: en-US
-From: Prashanth K <prashanth.k@oss.qualcomm.com>
-In-Reply-To: <20250617050844.1848232-2-khtsai@google.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNjE4MDEwNSBTYWx0ZWRfXyasnVKg+RdQ8
- Izr+wI6lPVUGUecEKEzOPkxJot+zEFSfb5a73ae1k2q6+0Hyp/160rhSX4dQ6V98XFxPZhw5HNW
- uFFFyC1UM/K/B1TpNOedRJkqZSruXbtX9LSxeRjOM77MpzkeHiAS8nA+piXwYFxn3kuxPQXMMMO
- m3ynJ3bsqd+q+ha6P/sFJ8JU1ij47nQ4VHcwy8zdNXGTFo+KcHa7XsRaATjip0WSivKmT2zewES
- NGbGVrPQnPm561V37HGUV1t7NzXkxNGIpLRHjQylH9+j+IRXETokLWY9MHtehK4RZoQJ83BHqwx
- WmWsK3sl4pykdhe5EsuBHCwebNeoQWutE9HJf5PAH5sy1OtQSfOKt0B+/5vz4Ps6Up4Up9Y5TVu
- JeN9UVx/lx+d1+kzwdm9FXmXFIY+4JX0Ws2vGKvrjIvPsT0OmX04OPRSAm16CBeHgSwAh4gu
-X-Authority-Analysis: v=2.4 cv=PtaTbxM3 c=1 sm=1 tr=0 ts=6852b075 cx=c_pps
- a=JL+w9abYAAE89/QcEU+0QA==:117 a=fChuTYTh2wq5r3m49p7fHw==:17
- a=IkcTkHD0fZMA:10 a=6IFa9wvqVegA:10 a=VwQbUJbxAAAA:8 a=1XWaLZrsAAAA:8
- a=EUspDBNiAAAA:8 a=MIvUBlGXxtpg5XUkedoA:9 a=QEXdDO2ut3YA:10
- a=324X-CrmTo6CU4MGRt3R:22
-X-Proofpoint-ORIG-GUID: AfzlpCV9crnItmO6lRn40tI-cysn2HVY
-X-Proofpoint-GUID: AfzlpCV9crnItmO6lRn40tI-cysn2HVY
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
- definitions=2025-06-18_05,2025-06-18_02,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- bulkscore=0 clxscore=1015 mlxlogscore=843 suspectscore=0 malwarescore=0
- lowpriorityscore=0 impostorscore=0 adultscore=0 spamscore=0
- priorityscore=1501 phishscore=0 mlxscore=0 classifier=spam authscore=0
- authtc=n/a authcc= route=outbound adjust=0 reason=mlx scancount=1
- engine=8.19.0-2505280000 definitions=main-2506180105
+References: <20250613181312.1269794-1-miquel.raynal@bootlin.com>
+In-Reply-To: <20250613181312.1269794-1-miquel.raynal@bootlin.com>
+From: Linus Walleij <linus.walleij@linaro.org>
+Date: Wed, 18 Jun 2025 14:30:09 +0200
+X-Gm-Features: AX0GCFvrCunV14RNvzKSZ2HTRXKME5qG74EO21bVrPNwSxtcFCcj-72MPW9Sr4Y
+Message-ID: <CACRpkdagchPQke6mu4Ma=OC169Fkm6swnPxA-oO=XxOoGQ+KiA@mail.gmail.com>
+Subject: Re: [PATCH] pinctrl: nuvoton: Fix boot on ma35dx platforms
+To: Miquel Raynal <miquel.raynal@bootlin.com>
+Cc: Jacky Huang <ychuang3@nuvoton.com>, Shan-Chun Hung <schung@nuvoton.com>, 
+	Andy Shevchenko <andy.shevchenko@gmail.com>, Steam Lin <stlin2@winbond.com>, 
+	Thomas Petazzoni <thomas.petazzoni@bootlin.com>, linux-arm-kernel@lists.infradead.org, 
+	linux-gpio@vger.kernel.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
+On Fri, Jun 13, 2025 at 8:13=E2=80=AFPM Miquel Raynal <miquel.raynal@bootli=
+n.com> wrote:
 
-
-On 6/17/2025 10:37 AM, Kuen-Han Tsai wrote:
-> A race condition occurs when gs_start_io() calls either gs_start_rx() or
-> gs_start_tx(), as those functions briefly drop the port_lock for
-> usb_ep_queue(). This allows gs_close() and gserial_disconnect() to clear
-> port.tty and port_usb, respectively.
-> 
-> Use the null-safe TTY Port helper function to wake up TTY.
-> 
-> Example
->   CPU1:			      CPU2:
->   gserial_connect() // lock
->   			      gs_close() // await lock
->   gs_start_rx()     // unlock
->   usb_ep_queue()
->   			      gs_close() // lock, reset port.tty and unlock
->   gs_start_rx()     // lock
->   tty_wakeup()      // NPE
-> 
-> Fixes: 35f95fd7f234 ("TTY: usb/u_serial, use tty from tty_port")
+> As part of a wider cleanup trying to get rid of OF specific APIs, an
+> incorrect (and partially unrelated) cleanup was introduced.
+>
+> The goal was to replace a device_for_each_chil_node() loop including an
+> additional condition inside by a macro doing both the loop and the
+> check on a single line.
+>
+> The snippet:
+>
+>         device_for_each_child_node(dev, child)
+>                 if (fwnode_property_present(child, "gpio-controller"))
+>                         continue;
+>
+> was replaced by:
+>
+>         for_each_gpiochip_node(dev, child)
+>
+> which expands into:
+>
+>         device_for_each_child_node(dev, child)
+>                 for_each_if(fwnode_property_present(child, "gpio-controll=
+er"))
+>
+> This change is actually doing the opposite of what was initially
+> expected, breaking the probe of this driver, breaking at the same time
+> the whole boot of Nuvoton platforms (no more console, the kernel WARN()).
+>
+> Revert these two changes to roll back to the correct behavior.
+>
+> Fixes: 693c9ecd8326 ("pinctrl: nuvoton: Reduce use of OF-specific APIs")
 > Cc: stable@vger.kernel.org
-> Signed-off-by: Kuen-Han Tsai <khtsai@google.com>
-> ---
+> Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
 
-Reviewed-by: Prashanth K <prashanth.k@oss.qualcomm.com>
+Patch applied for fixes.
 
-> v2:
-> - Move the example up to the changelog
-> 
-> Traces:
-> [   51.494375][  T278] ttyGS1: shutdown
-> [   51.494817][  T269] android_work: sent uevent USB_STATE=DISCONNECTED
-> [   52.115792][ T1508] usb: [dm_bind] generic ttyGS1: super speed IN/ep1in OUT/ep1out
-> [   52.516288][ T1026] android_work: sent uevent USB_STATE=CONNECTED
-> [   52.551667][ T1533] gserial_connect: start ttyGS1
-> [   52.565634][ T1533] [khtsai] enter gs_start_io, ttyGS1, port->port.tty=0000000046bd4060
-> [   52.565671][ T1533] [khtsai] gs_start_rx, unlock port ttyGS1
-> [   52.591552][ T1533] [khtsai] gs_start_rx, lock port ttyGS1
-> [   52.619901][ T1533] [khtsai] gs_start_rx, unlock port ttyGS1
-> [   52.638659][ T1325] [khtsai] gs_close, lock port ttyGS1
-> [   52.656842][ T1325] gs_close: ttyGS1 (0000000046bd4060,00000000be9750a5) ...
-> [   52.683005][ T1325] [khtsai] gs_close, clear ttyGS1
-> [   52.683007][ T1325] gs_close: ttyGS1 (0000000046bd4060,00000000be9750a5) done!
-> [   52.708643][ T1325] [khtsai] gs_close, unlock port ttyGS1
-> [   52.747592][ T1533] [khtsai] gs_start_rx, lock port ttyGS1
-> [   52.747616][ T1533] [khtsai] gs_start_io, ttyGS1, going to call tty_wakeup(), port->port.tty=0000000000000000
-> [   52.747629][ T1533] Unable to handle kernel NULL pointer dereference at virtual address 00000000000001f8
-> ---
->  drivers/usb/gadget/function/u_serial.c | 6 +++---
->  1 file changed, 3 insertions(+), 3 deletions(-)
-> 
-> diff --git a/drivers/usb/gadget/function/u_serial.c b/drivers/usb/gadget/function/u_serial.c
-> index c043bdc30d8a..540dc5ab96fc 100644
-> --- a/drivers/usb/gadget/function/u_serial.c
-> +++ b/drivers/usb/gadget/function/u_serial.c
-> @@ -295,8 +295,8 @@ __acquires(&port->port_lock)
->  			break;
->  	}
-> 
-> -	if (do_tty_wake && port->port.tty)
-> -		tty_wakeup(port->port.tty);
-> +	if (do_tty_wake)
-> +		tty_port_tty_wakeup(&port->port);
->  	return status;
->  }
-> 
-> @@ -574,7 +574,7 @@ static int gs_start_io(struct gs_port *port)
->  		gs_start_tx(port);
->  		/* Unblock any pending writes into our circular buffer, in case
->  		 * we didn't in gs_start_tx() */
-> -		tty_wakeup(port->port.tty);
-
-Just curious, since this is already under lock, checking for
-port->port.tty would have also helped, right? Anyways looks like
-tty_port_tty_wakeup is better.
-
-> +		tty_port_tty_wakeup(&port->port);
->  	} else {
->  		/* Free reqs only if we are still connected */
->  		if (port->port_usb) {
-> --
-> 2.50.0.rc2.692.g299adb8693-goog
-> 
+Yours,
+Linus Walleij
 
