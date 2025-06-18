@@ -1,72 +1,71 @@
-Return-Path: <stable+bounces-154602-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-154603-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB69EADE027
-	for <lists+stable@lfdr.de>; Wed, 18 Jun 2025 02:44:28 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B1C7ADE028
+	for <lists+stable@lfdr.de>; Wed, 18 Jun 2025 02:44:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1CA39189ADBB
-	for <lists+stable@lfdr.de>; Wed, 18 Jun 2025 00:44:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DD7A33A7B89
+	for <lists+stable@lfdr.de>; Wed, 18 Jun 2025 00:44:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30D4D7080D;
-	Wed, 18 Jun 2025 00:44:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09DC07080D;
+	Wed, 18 Jun 2025 00:44:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="IWf7m3HR"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Vjtw5xGv"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 252462F5301
-	for <stable@vger.kernel.org>; Wed, 18 Jun 2025 00:44:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.17
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DBF82F5301
+	for <stable@vger.kernel.org>; Wed, 18 Jun 2025 00:44:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750207464; cv=none; b=nHZHG5DXGoHzM9Td8FKQNGM35nzCAKIeRk50GFu25Ri3x+jtWAsy9dtnlAtHw02UzbBnAWTz9DXEf7k68mF4dSYaKH9UvKLU41rUpKqv9fxw38rwRYDFTeLs7/drKcGRGglw4jDazL09MkQzjOXNndSeRU4HLKeAsi8PRG8oHF8=
+	t=1750207478; cv=none; b=gFcwd5QwkzOVDqBQWrTbGXYoCBFkUWlNA5bmlQbbV0e7hhLjVNmRPHb9g+6GvZFL/Ns0s6t/W0KYjEZOXUGOL+qVh3b0fLoNlFuVKuSsUPZqOsVxf1ZDam6cXE7ehOMmmlyvo3lhwfInaOh4BPJdvLjmiykVZxRyHhiX+7/86NE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750207464; c=relaxed/simple;
-	bh=kaLQ9cYGvEoSZj+KudX7HLhoDAfDvcFMMmynAS/OHZc=;
+	s=arc-20240116; t=1750207478; c=relaxed/simple;
+	bh=+OCjzt7Hm1fDvLlvOat5Qko0krtCPREhW5E2/bU/04A=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=J3nf7D0ZBj3X9H1idCnKjvvhfbmvPIe1qpoocFtdq7/ap3zg7VaeSES3VzE+al3yjxzRQj+FzaWQW+fK8NCNhTjJE1MNCPCGA8SAKjWN1LQNBFlInS1cE9VsHXeItIm5g240B8uVDCkJFD0UTObg6a5wtkjM4m4mMgBCu5kUN48=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=IWf7m3HR; arc=none smtp.client-ip=192.198.163.17
+	 Content-Type:Content-Disposition:In-Reply-To; b=mxLtnZuaepOI+wlA/qB6JtJMpSBNPzJtpvdwNF/TB6ZJCqEFFSrGo480g+BIEvAf+p4C+CaqucWCzKxWvrEpVE61d0KJNjuS8205XGlJeRd6i8uC5dNTIzt5xEWuKRUcN3CgTj8OVqWTmADXXOiRfK9oyKFueGjsqF+kiaEK4vI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Vjtw5xGv; arc=none smtp.client-ip=198.175.65.21
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1750207462; x=1781743462;
+  t=1750207478; x=1781743478;
   h=date:from:to:cc:subject:message-id:references:
    mime-version:in-reply-to;
-  bh=kaLQ9cYGvEoSZj+KudX7HLhoDAfDvcFMMmynAS/OHZc=;
-  b=IWf7m3HRVM5236+bj/nMTGzkpRypPo7jyA5PBzHdrzIepAJZPCOZo0vP
-   yIodMb3e7cg/CBrc5t7HCqASt7q5yobU16pjGDtQ5XL6o0Ph3OgTY1XRN
-   2h9y5fdkRsqXqEP8glmIVjCj7Sr5GD8th60N9bLCjLLBhoAPIMS4QbLbH
-   F6FpJA/nMUUlOTezBAxugRbw/aqSAtYN6Z3SS05+8k9UXea1nTtoefcBb
-   /2kJ9bI16YpiUfim+9s14uPX6lj6by21JT2MfDxLz+FcQPvz21uT4wm0D
-   5wb3bYjFEAzcOYD0fQVu/vPVdcPoKgYxmk/KZ5zxC0/5u5Mz/SNH7up9k
-   w==;
-X-CSE-ConnectionGUID: TlTyrYYoQgWMVlWnQHPGsg==
-X-CSE-MsgGUID: SSiXqnYxSvKVzLFvo9jWLA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11467"; a="52323674"
+  bh=+OCjzt7Hm1fDvLlvOat5Qko0krtCPREhW5E2/bU/04A=;
+  b=Vjtw5xGv9PoC8jus1PBlbh3Ygi3VISM/VgoEBRmRaybhNwr+tZs4RUK1
+   TOIEruuLlWH88xxNSvuXm/1qhSeBL+IVCihNyv7ZqhgB+LrfwYOMgBgKQ
+   ftM3V9ixn36sYC0syzM9c1tZOcCMs0I7wPztTEn/ecQAJ1aZk8AswazID
+   6hy1WoVggASyHHCoK3crLc5R+3388e1mDSnYLo1dzdfM+U7Zh5DBGnRhX
+   9GbO0uWunskvzr54Yjf+5rz6wOFuIsr/bzU24f7S/jmO0vYTDpEgEFLLj
+   5NBQjHqF4TUJbRAX+2eLEBVww379KEJM1jwB2vqHRtfO8WJcc69nHQver
+   g==;
+X-CSE-ConnectionGUID: I/eSWWOaRjSJS/Cd9FagaQ==
+X-CSE-MsgGUID: 3+aUhJA/RQmHWu6salEg6g==
+X-IronPort-AV: E=McAfee;i="6800,10657,11467"; a="52271754"
 X-IronPort-AV: E=Sophos;i="6.16,244,1744095600"; 
-   d="scan'208";a="52323674"
-Received: from fmviesa008.fm.intel.com ([10.60.135.148])
-  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Jun 2025 17:44:22 -0700
-X-CSE-ConnectionGUID: x+PCkS/rS8qEhX7nm/DJkw==
-X-CSE-MsgGUID: qbmPdP0dTkSUJvacwoRAqA==
+   d="scan'208";a="52271754"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Jun 2025 17:44:37 -0700
+X-CSE-ConnectionGUID: 1y0Gre1SR1SeiCH2kerM1A==
+X-CSE-MsgGUID: xY432VmgQCWsJpLbpmt51Q==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.16,244,1744095600"; 
-   d="scan'208";a="149409388"
+   d="scan'208";a="153746177"
 Received: from guptapa-dev.ostc.intel.com (HELO desk) ([10.54.69.136])
-  by fmviesa008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Jun 2025 17:44:21 -0700
-Date: Tue, 17 Jun 2025 17:44:21 -0700
+  by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Jun 2025 17:44:37 -0700
+Date: Tue, 17 Jun 2025 17:44:36 -0700
 From: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	Salvatore Bonaccorso <carnil@debian.org>, Dave Hansen <dave.hansen@linux.intel.com>, 
-	Josh Poimboeuf <jpoimboe@kernel.org>, Alexandre Chartre <alexandre.chartre@oracle.com>
-Subject: [PATCH 5.10 v2 01/16] Documentation: x86/bugs/its: Add ITS
- documentation
-Message-ID: <20250617-its-5-10-v2-1-3e925a1512a1@linux.intel.com>
+	Salvatore Bonaccorso <carnil@debian.org>, Alexandre Chartre <alexandre.chartre@oracle.com>, 
+	Josh Poimboeuf <jpoimboe@kernel.org>
+Subject: [PATCH 5.10 v2 02/16] x86/bhi: Define SPEC_CTRL_BHI_DIS_S
+Message-ID: <20250617-its-5-10-v2-2-3e925a1512a1@linux.intel.com>
 X-Mailer: b4 0.15-dev-c81fc
 References: <20250617-its-5-10-v2-0-3e925a1512a1@linux.intel.com>
 Precedence: bulk
@@ -79,190 +78,73 @@ Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 In-Reply-To: <20250617-its-5-10-v2-0-3e925a1512a1@linux.intel.com>
 
-commit 1ac116ce6468670eeda39345a5585df308243dca upstream.
+From: Daniel Sneddon <daniel.sneddon@linux.intel.com>
 
-Add the admin-guide for Indirect Target Selection (ITS).
+commit 0f4a837615ff925ba62648d280a861adf1582df7 upstream.
 
-Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
-Reviewed-by: Josh Poimboeuf <jpoimboe@kernel.org>
+Newer processors supports a hardware control BHI_DIS_S to mitigate
+Branch History Injection (BHI). Setting BHI_DIS_S protects the kernel
+from userspace BHI attacks without having to manually overwrite the
+branch history.
+
+Define MSR_SPEC_CTRL bit BHI_DIS_S and its enumeration CPUID.BHI_CTRL.
+Mitigation is enabled later.
+
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 Reviewed-by: Alexandre Chartre <alexandre.chartre@oracle.com>
+Reviewed-by: Josh Poimboeuf <jpoimboe@kernel.org>
+Signed-off-by: Daniel Sneddon <daniel.sneddon@linux.intel.com>
 Signed-off-by: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
 ---
- Documentation/admin-guide/hw-vuln/index.rst        |   1 +
- .../hw-vuln/indirect-target-selection.rst          | 156 +++++++++++++++++++++
- 2 files changed, 157 insertions(+)
+ arch/x86/include/asm/cpufeatures.h | 2 +-
+ arch/x86/include/asm/msr-index.h   | 5 ++++-
+ arch/x86/kernel/cpu/scattered.c    | 1 +
+ 3 files changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/Documentation/admin-guide/hw-vuln/index.rst b/Documentation/admin-guide/hw-vuln/index.rst
-index e020d1637e1c..04a7f9fea3f2 100644
---- a/Documentation/admin-guide/hw-vuln/index.rst
-+++ b/Documentation/admin-guide/hw-vuln/index.rst
-@@ -19,3 +19,4 @@ are configurable at compile, boot or run time.
-    gather_data_sampling.rst
-    srso
-    reg-file-data-sampling
-+   indirect-target-selection
-diff --git a/Documentation/admin-guide/hw-vuln/indirect-target-selection.rst b/Documentation/admin-guide/hw-vuln/indirect-target-selection.rst
-new file mode 100644
-index 000000000000..4788e14ebce0
---- /dev/null
-+++ b/Documentation/admin-guide/hw-vuln/indirect-target-selection.rst
-@@ -0,0 +1,156 @@
-+.. SPDX-License-Identifier: GPL-2.0
-+
-+Indirect Target Selection (ITS)
-+===============================
-+
-+ITS is a vulnerability in some Intel CPUs that support Enhanced IBRS and were
-+released before Alder Lake. ITS may allow an attacker to control the prediction
-+of indirect branches and RETs located in the lower half of a cacheline.
-+
-+ITS is assigned CVE-2024-28956 with a CVSS score of 4.7 (Medium).
-+
-+Scope of Impact
-+---------------
-+- **eIBRS Guest/Host Isolation**: Indirect branches in KVM/kernel may still be
-+  predicted with unintended target corresponding to a branch in the guest.
-+
-+- **Intra-Mode BTI**: In-kernel training such as through cBPF or other native
-+  gadgets.
-+
-+- **Indirect Branch Prediction Barrier (IBPB)**: After an IBPB, indirect
-+  branches may still be predicted with targets corresponding to direct branches
-+  executed prior to the IBPB. This is fixed by the IPU 2025.1 microcode, which
-+  should be available via distro updates. Alternatively microcode can be
-+  obtained from Intel's github repository [#f1]_.
-+
-+Affected CPUs
-+-------------
-+Below is the list of ITS affected CPUs [#f2]_ [#f3]_:
-+
-+   ========================  ============  ====================  ===============
-+   Common name               Family_Model  eIBRS                 Intra-mode BTI
-+                                           Guest/Host Isolation
-+   ========================  ============  ====================  ===============
-+   SKYLAKE_X (step >= 6)     06_55H        Affected              Affected
-+   ICELAKE_X                 06_6AH        Not affected          Affected
-+   ICELAKE_D                 06_6CH        Not affected          Affected
-+   ICELAKE_L                 06_7EH        Not affected          Affected
-+   TIGERLAKE_L               06_8CH        Not affected          Affected
-+   TIGERLAKE                 06_8DH        Not affected          Affected
-+   KABYLAKE_L (step >= 12)   06_8EH        Affected              Affected
-+   KABYLAKE (step >= 13)     06_9EH        Affected              Affected
-+   COMETLAKE                 06_A5H        Affected              Affected
-+   COMETLAKE_L               06_A6H        Affected              Affected
-+   ROCKETLAKE                06_A7H        Not affected          Affected
-+   ========================  ============  ====================  ===============
-+
-+- All affected CPUs enumerate Enhanced IBRS feature.
-+- IBPB isolation is affected on all ITS affected CPUs, and need a microcode
-+  update for mitigation.
-+- None of the affected CPUs enumerate BHI_CTRL which was introduced in Golden
-+  Cove (Alder Lake and Sapphire Rapids). This can help guests to determine the
-+  host's affected status.
-+- Intel Atom CPUs are not affected by ITS.
-+
-+Mitigation
-+----------
-+As only the indirect branches and RETs that have their last byte of instruction
-+in the lower half of the cacheline are vulnerable to ITS, the basic idea behind
-+the mitigation is to not allow indirect branches in the lower half.
-+
-+This is achieved by relying on existing retpoline support in the kernel, and in
-+compilers. ITS-vulnerable retpoline sites are runtime patched to point to newly
-+added ITS-safe thunks. These safe thunks consists of indirect branch in the
-+second half of the cacheline. Not all retpoline sites are patched to thunks, if
-+a retpoline site is evaluated to be ITS-safe, it is replaced with an inline
-+indirect branch.
-+
-+Dynamic thunks
-+~~~~~~~~~~~~~~
-+From a dynamically allocated pool of safe-thunks, each vulnerable site is
-+replaced with a new thunk, such that they get a unique address. This could
-+improve the branch prediction accuracy. Also, it is a defense-in-depth measure
-+against aliasing.
-+
-+Note, for simplicity, indirect branches in eBPF programs are always replaced
-+with a jump to a static thunk in __x86_indirect_its_thunk_array. If required,
-+in future this can be changed to use dynamic thunks.
-+
-+All vulnerable RETs are replaced with a static thunk, they do not use dynamic
-+thunks. This is because RETs get their prediction from RSB mostly that does not
-+depend on source address. RETs that underflow RSB may benefit from dynamic
-+thunks. But, RETs significantly outnumber indirect branches, and any benefit
-+from a unique source address could be outweighed by the increased icache
-+footprint and iTLB pressure.
-+
-+Retpoline
-+~~~~~~~~~
-+Retpoline sequence also mitigates ITS-unsafe indirect branches. For this
-+reason, when retpoline is enabled, ITS mitigation only relocates the RETs to
-+safe thunks. Unless user requested the RSB-stuffing mitigation.
-+
-+Mitigation in guests
-+^^^^^^^^^^^^^^^^^^^^
-+All guests deploy ITS mitigation by default, irrespective of eIBRS enumeration
-+and Family/Model of the guest. This is because eIBRS feature could be hidden
-+from a guest. One exception to this is when a guest enumerates BHI_DIS_S, which
-+indicates that the guest is running on an unaffected host.
-+
-+To prevent guests from unnecessarily deploying the mitigation on unaffected
-+platforms, Intel has defined ITS_NO bit(62) in MSR IA32_ARCH_CAPABILITIES. When
-+a guest sees this bit set, it should not enumerate the ITS bug. Note, this bit
-+is not set by any hardware, but is **intended for VMMs to synthesize** it for
-+guests as per the host's affected status.
-+
-+Mitigation options
-+^^^^^^^^^^^^^^^^^^
-+The ITS mitigation can be controlled using the "indirect_target_selection"
-+kernel parameter. The available options are:
-+
-+   ======== ===================================================================
-+   on       (default)  Deploy the "Aligned branch/return thunks" mitigation.
-+	    If spectre_v2 mitigation enables retpoline, aligned-thunks are only
-+	    deployed for the affected RET instructions. Retpoline mitigates
-+	    indirect branches.
-+
-+   off      Disable ITS mitigation.
-+
-+   vmexit   Equivalent to "=on" if the CPU is affected by guest/host isolation
-+	    part of ITS. Otherwise, mitigation is not deployed. This option is
-+	    useful when host userspace is not in the threat model, and only
-+	    attacks from guest to host are considered.
-+
-+   force    Force the ITS bug and deploy the default mitigation.
-+   ======== ===================================================================
-+
-+Sysfs reporting
-+---------------
-+
-+The sysfs file showing ITS mitigation status is:
-+
-+  /sys/devices/system/cpu/vulnerabilities/indirect_target_selection
-+
-+Note, microcode mitigation status is not reported in this file.
-+
-+The possible values in this file are:
-+
-+.. list-table::
-+
-+   * - Not affected
-+     - The processor is not vulnerable.
-+   * - Vulnerable
-+     - System is vulnerable and no mitigation has been applied.
-+   * - Vulnerable, KVM: Not affected
-+     - System is vulnerable to intra-mode BTI, but not affected by eIBRS
-+       guest/host isolation.
-+   * - Mitigation: Aligned branch/return thunks
-+     - The mitigation is enabled, affected indirect branches and RETs are
-+       relocated to safe thunks.
-+
-+References
-+----------
-+.. [#f1] Microcode repository - https://github.com/intel/Intel-Linux-Processor-Microcode-Data-Files
-+
-+.. [#f2] Affected Processors list - https://www.intel.com/content/www/us/en/developer/topic-technology/software-security-guidance/processors-affected-consolidated-product-cpu-model.html
-+
-+.. [#f3] Affected Processors list (machine readable) - https://github.com/intel/Intel-affected-processor-list
+diff --git a/arch/x86/include/asm/cpufeatures.h b/arch/x86/include/asm/cpufeatures.h
+index f3365ec97376..52810a7f6b11 100644
+--- a/arch/x86/include/asm/cpufeatures.h
++++ b/arch/x86/include/asm/cpufeatures.h
+@@ -289,7 +289,7 @@
+ #define X86_FEATURE_FENCE_SWAPGS_KERNEL	(11*32+ 5) /* "" LFENCE in kernel entry SWAPGS path */
+ #define X86_FEATURE_SPLIT_LOCK_DETECT	(11*32+ 6) /* #AC for split lock */
+ #define X86_FEATURE_PER_THREAD_MBA	(11*32+ 7) /* "" Per-thread Memory Bandwidth Allocation */
+-/* FREE!				(11*32+ 8) */
++#define X86_FEATURE_BHI_CTRL		(11*32+ 8) /* "" BHI_DIS_S HW control available */
+ /* FREE!				(11*32+ 9) */
+ #define X86_FEATURE_ENTRY_IBPB		(11*32+10) /* "" Issue an IBPB on kernel entry */
+ #define X86_FEATURE_RRSBA_CTRL		(11*32+11) /* "" RET prediction control */
+diff --git a/arch/x86/include/asm/msr-index.h b/arch/x86/include/asm/msr-index.h
+index 7fd03f4ff9ed..d6a1ad1ee86e 100644
+--- a/arch/x86/include/asm/msr-index.h
++++ b/arch/x86/include/asm/msr-index.h
+@@ -55,10 +55,13 @@
+ #define SPEC_CTRL_SSBD			BIT(SPEC_CTRL_SSBD_SHIFT)	/* Speculative Store Bypass Disable */
+ #define SPEC_CTRL_RRSBA_DIS_S_SHIFT	6	   /* Disable RRSBA behavior */
+ #define SPEC_CTRL_RRSBA_DIS_S		BIT(SPEC_CTRL_RRSBA_DIS_S_SHIFT)
++#define SPEC_CTRL_BHI_DIS_S_SHIFT	10	   /* Disable Branch History Injection behavior */
++#define SPEC_CTRL_BHI_DIS_S		BIT(SPEC_CTRL_BHI_DIS_S_SHIFT)
+ 
+ /* A mask for bits which the kernel toggles when controlling mitigations */
+ #define SPEC_CTRL_MITIGATIONS_MASK	(SPEC_CTRL_IBRS | SPEC_CTRL_STIBP | SPEC_CTRL_SSBD \
+-							| SPEC_CTRL_RRSBA_DIS_S)
++							| SPEC_CTRL_RRSBA_DIS_S \
++							| SPEC_CTRL_BHI_DIS_S)
+ 
+ #define MSR_IA32_PRED_CMD		0x00000049 /* Prediction Command */
+ #define PRED_CMD_IBPB			BIT(0)	   /* Indirect Branch Prediction Barrier */
+diff --git a/arch/x86/kernel/cpu/scattered.c b/arch/x86/kernel/cpu/scattered.c
+index f1cd1b6fb99e..53a9a55dc086 100644
+--- a/arch/x86/kernel/cpu/scattered.c
++++ b/arch/x86/kernel/cpu/scattered.c
+@@ -27,6 +27,7 @@ static const struct cpuid_bit cpuid_bits[] = {
+ 	{ X86_FEATURE_APERFMPERF,       CPUID_ECX,  0, 0x00000006, 0 },
+ 	{ X86_FEATURE_EPB,		CPUID_ECX,  3, 0x00000006, 0 },
+ 	{ X86_FEATURE_RRSBA_CTRL,	CPUID_EDX,  2, 0x00000007, 2 },
++	{ X86_FEATURE_BHI_CTRL,		CPUID_EDX,  4, 0x00000007, 2 },
+ 	{ X86_FEATURE_CQM_LLC,		CPUID_EDX,  1, 0x0000000f, 0 },
+ 	{ X86_FEATURE_CQM_OCCUP_LLC,	CPUID_EDX,  0, 0x0000000f, 1 },
+ 	{ X86_FEATURE_CQM_MBM_TOTAL,	CPUID_EDX,  1, 0x0000000f, 1 },
 
 -- 
 2.43.0
