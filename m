@@ -1,197 +1,167 @@
-Return-Path: <stable+bounces-154600-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-154601-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F6EEADE00E
-	for <lists+stable@lfdr.de>; Wed, 18 Jun 2025 02:35:34 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1D2E4ADE026
+	for <lists+stable@lfdr.de>; Wed, 18 Jun 2025 02:44:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9974F7ACA18
-	for <lists+stable@lfdr.de>; Wed, 18 Jun 2025 00:33:55 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 54F03189AC41
+	for <lists+stable@lfdr.de>; Wed, 18 Jun 2025 00:44:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6307A72606;
-	Wed, 18 Jun 2025 00:35:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D20E7080D;
+	Wed, 18 Jun 2025 00:44:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=cisco.com header.i=@cisco.com header.b="G6FIr/Ee"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="e65XhD6M"
 X-Original-To: stable@vger.kernel.org
-Received: from rcdn-iport-2.cisco.com (rcdn-iport-2.cisco.com [173.37.86.73])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64BE32F5319;
-	Wed, 18 Jun 2025 00:35:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=173.37.86.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A85E2F5301
+	for <stable@vger.kernel.org>; Wed, 18 Jun 2025 00:44:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.17
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750206906; cv=none; b=EhmA/KcWu3JFJoOZML1RezCKP5fQy5X0YQM+M3YJNkHUYfUQx+1YOt8mKH24jsKdTub0Vq0gtDF6gEGUCsHpLhZmvEVq3Ok5c/HHelDkMwYwHNvW4dN5OAjsLodFxXu/VBf8/kKNLg6tRtA/7EvcgdZys/JrBK2HjYKboTIVpeE=
+	t=1750207448; cv=none; b=rFW3OHwtSw4rGdOG23SpCSZDfHEaTkk3KkVwxe1tKUYQe2dA41LVEo7WsHbXd/VOXMQvF+MJPLlDUkF0YWKucENETT8lgwVIpNbbReZ9K6NfjeJyPjVS1Z+A6vuZXoE7kA0X654mkYGwp/nmvXhJM3DqG9vr/gmy+2frbsAWG1s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750206906; c=relaxed/simple;
-	bh=zRFtJ/iao0Ech1UEoT6ezgdNxSGZ+XeOGviG4PJK89Y=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Sq4JdqLeEE0uNNJh5Dc2o6HfrlbXGyGUfbntDtC99x7OCn0itT/wwm5FWQjAThf3UFFJBHb5VGovZ84NSea373SL2G7GqfkxzaryXdCItvy6ekthHLZraHQ584YPRzBlMgF5mWatSDdkelG7ob/YTTHPdlkXnEv9Zn7Th2BsfqY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cisco.com; spf=pass smtp.mailfrom=cisco.com; dkim=pass (2048-bit key) header.d=cisco.com header.i=@cisco.com header.b=G6FIr/Ee; arc=none smtp.client-ip=173.37.86.73
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cisco.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cisco.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=cisco.com; i=@cisco.com; l=2355; q=dns/txt;
-  s=iport01; t=1750206904; x=1751416504;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=7IsgDvvFymTOagzNvm3oHVT7O9uj4gRf7QPNS7LwD1M=;
-  b=G6FIr/EexSA/YRqnvKmwSuYrNfALU+XgjS2fCwGVyAMxZQpzGZFfxdQv
-   0WA9e7Sjulk+ShmI5s78YL1FZk9McVuwgm6mk/jDPTWgGhXcGe0uJHJXj
-   SQm0z/HFeCybWsYEM958YEJ6ShlKtKGOYv9xmxwUizkQ8JvnPAw3JsWmj
-   lb/ig6oOvbZ1V2tsEPKK91XYfdWso/JnapdZc+PoFekbYShVCsxDtafSr
-   mqvDD899h1HXxpF/Et9D0ilzJ/AfIovZRfm2LhD9uB/ZlrGi1a4pGBVur
-   SUD8yrFhbzmBAGzKPMAT7Y59rNkxbab20EN7mZh9NC1WZDLMEcw8+CJsK
-   w==;
-X-CSE-ConnectionGUID: JL9E1Ik4SrigdTvsTONciQ==
-X-CSE-MsgGUID: yZGL27lCQNiRnXQ81z6JJw==
-X-IPAS-Result: =?us-ascii?q?A0ANAACDCFJo/5AQJK1aGwEBAQEBAQEBBQEBARIBAQEDA?=
- =?us-ascii?q?wEBAYF/BgEBAQsBgkqBUkMZMIxwhzSCIZ4ZgSUDVw8BAQEPUQQBAYUHAotmA?=
- =?us-ascii?q?iY0CQ4BAgQBAQEBAwIDAQEBAQEBAQEBAQELAQEFAQEBAgEHBYEOE4YIhlsCA?=
- =?us-ascii?q?QMnCwFGEFFWGYMCgm8DrwqBeTOBAd43gW6BSQGNTXCEdycVBoFJRIEVgnlvg?=
- =?us-ascii?q?VKDPoV3BIMmFJQ+dowUSIEeA1ksAVUTDQoLBwWBYwM1DAsuFW4yHYINhRmCE?=
- =?us-ascii?q?osFhEcrT4UhhQUkcQ8GgQtAAwsYDUgRLDcUGwY+bgeYMINygQ97NXgWASmlV?=
- =?us-ascii?q?6ELhCWhUxozqmGZBKk4gWg8gVkzGggbFYMiUhkPji0Wu1UmMjwCBwsBAQMJk?=
- =?us-ascii?q?gUBAQ?=
-IronPort-Data: A9a23:SG+URqs8/MKNP00qnW6JXC/f2ufnVL5fMUV32f8akzHdYApBsoF/q
- tZmKWuPPfzeNmSneo9waYTgpElSucOBxtNhTgRrryk3F35AgMeUXt7xwmUckM+xwmwvaGo9s
- q3yv/GZdJhcokf0/0nrav676yAlj8lkf5KkYMbcICd9WAR4fykojBNnioYRj5Vh6TSDK1vlV
- eja/YuGZjdJ5xYuajhJs/za90s01BjPkGpwUmIWNKgjUGD2zxH5PLpHTYmtIn3xRJVjH+LSb
- 47r0LGj82rFyAwmA9Wjn6yTWhVirmn6ZFXmZtJ+AsBOszAazsAA+v9T2Mk0NS+7vw60c+VZk
- 72hg3AfpTABZcUgkMxFO/VR/roX0aduoNcrKlDn2SCfItGvn3bEm51T4E8K0YIw2MImLDhv9
- qAjMjECYiydnN6R5rm6c7w57igjBJGD0II3s3Vky3TdSP0hW52GG/qM7t5D1zB2jcdLdRrcT
- 5NGMnw0MlKZPVsWZgt/5JEWxI9EglH8eidEqVacpoI84nPYy0p6172F3N/9IYzSFJwExhbCz
- o7A13XLLTVAa9i08ByEyHScv7+Wj33Zep1HQdVU8dYv2jV/3Fc7BBQQE1Cyu+G0jFKzQfpbK
- kod4C1oqrI9nGSpQ9v3dxm5pmOU+B8WXpxbFOhSwASE0LbV5UCBC3QJVCVMbvQhrsY9QTFs3
- ViM9/vrADFpvbKVSFqH+7uUpC/0Mi8QRUcYaDEJVxAt+dTvoIgvyBnIS75LFK+zk82wGjzqx
- T2OhDYxiq9VjsMR0ai/u1fdjFqEopnPUx5w/Q7MX0q74Q5jIo2ofYql7R7c9/koBJ2FR1OFs
- VAalMWEquMDF5eAkGqKWuplIV2yz/+BNDuZhRtkGIMssmzyvXWiZotXpjp5IS+FL/o5RNMgW
- 2eL0Ss52XOZFCbCgXNfC25pN/kX8A==
-IronPort-HdrOrdr: A9a23:spjtBKgt6XaFrDZBzhWjg31ucHBQXvUji2hC6mlwRA09TyVXra
- yTdZMgpHvJYVkqNk3I9errBEDEewK+yXcX2/h1AV7BZmjbUQKTRekI0WKh+UyDJ8SUzIFgPM
- lbHpRWOZnZEUV6gcHm4AOxDtoshOWc/LvAv5a4854Ud2FXg2UK1XYBNu5deXcGIjV7OQ==
-X-Talos-CUID: 9a23:nxX8FW4iY/VNpQ6eGtss1mpFN5kEcSHm1nbfL3OmElpObraUcArF
-X-Talos-MUID: =?us-ascii?q?9a23=3AFRgpQw0pcMtXadsvtHyQPqJ8qjUj8paBLBpSlb4?=
- =?us-ascii?q?/nci+MxxJa26P0haVXdpy?=
-X-IronPort-Anti-Spam-Filtered: true
-X-IronPort-AV: E=Sophos;i="6.16,244,1744070400"; 
-   d="scan'208";a="380919082"
-Received: from alln-l-core-07.cisco.com ([173.36.16.144])
-  by rcdn-iport-2.cisco.com with ESMTP/TLS/TLS_AES_256_GCM_SHA384; 18 Jun 2025 00:35:03 +0000
-Received: from fedora.lan?044cisco.com (unknown [10.188.123.35])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: kartilak@cisco.com)
-	by alln-l-core-07.cisco.com (Postfix) with ESMTPSA id BAEAA18000340;
-	Wed, 18 Jun 2025 00:35:01 +0000 (GMT)
-From: Karan Tilak Kumar <kartilak@cisco.com>
-To: sebaddel@cisco.com
-Cc: arulponn@cisco.com,
-	djhawar@cisco.com,
-	gcboffa@cisco.com,
-	mkai2@cisco.com,
-	satishkh@cisco.com,
-	aeasi@cisco.com,
-	jejb@linux.ibm.com,
-	martin.petersen@oracle.com,
-	linux-scsi@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	jmeneghi@redhat.com,
-	revers@redhat.com,
-	dan.carpenter@linaro.org,
-	Karan Tilak Kumar <kartilak@cisco.com>,
-	stable@vger.kernel.org
-Subject: [PATCH v6 2/4] scsi: fnic: Turn off FDMI ACTIVE flags on link down
-Date: Tue, 17 Jun 2025 17:34:29 -0700
-Message-ID: <20250618003431.6314-2-kartilak@cisco.com>
-X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250618003431.6314-1-kartilak@cisco.com>
-References: <20250618003431.6314-1-kartilak@cisco.com>
+	s=arc-20240116; t=1750207448; c=relaxed/simple;
+	bh=/jtRmlcukY4RTwRJ2WWvwSSeYJJaosyXw5wV4iXDH2E=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=uGi7nxOEEuBsAdJTRPhHRKKBF6OAioxeYRajtj35rfceVug1TB/+FFVTAhnrd25KKMVnEhrtBky/PZQgIF5W8fE5JzTwxoXj2ImFhBasShKkHL6KTVTO5VM1AmmttyzZ7/sfqSi+jh+NlckhHk057+VvqFmk6738Wc9uy5OIui8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=e65XhD6M; arc=none smtp.client-ip=192.198.163.17
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1750207447; x=1781743447;
+  h=date:from:to:cc:subject:message-id:mime-version;
+  bh=/jtRmlcukY4RTwRJ2WWvwSSeYJJaosyXw5wV4iXDH2E=;
+  b=e65XhD6MuI7X6/BAYe3hpY5rG8Aaso5EEKP9rajaIu5fv8vddZH3uN5G
+   IaOC192G1e0+b5RRCK8Yh/V8X3iphxsJvGND3SJ2taZZqdkbbggsOA1/h
+   hHqLlUn8t58feJSRjvzA1J+JY3gf92ar6oGwev/glcffDDMCBdxADbZu2
+   jwWOsuH7yLackoM4O4qMARTLJ5XYH/+YlqrftQOYH/Pojs1+WQweXfakj
+   UOLndTdCDMCN8JG9hYdAS1EWSQZILr9QBdaA61hsqizss93/LF2v5EcB7
+   hUnWKVrt4CQkYOky0N4HeEsfas7+2LE4aReLaQ6xxYwhRBwu3IqvCaU5I
+   A==;
+X-CSE-ConnectionGUID: TE9pmOsnT2KBdHyQyra4sA==
+X-CSE-MsgGUID: 0h7d/9PaQvCoUlA6r+MC+A==
+X-IronPort-AV: E=McAfee;i="6800,10657,11467"; a="52323612"
+X-IronPort-AV: E=Sophos;i="6.16,244,1744095600"; 
+   d="scan'208";a="52323612"
+Received: from fmviesa008.fm.intel.com ([10.60.135.148])
+  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Jun 2025 17:44:06 -0700
+X-CSE-ConnectionGUID: 3V9lD9bbR9aSRkjoKM+1vQ==
+X-CSE-MsgGUID: 2CO/zttwSYqv+kpt8k9fvg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.16,244,1744095600"; 
+   d="scan'208";a="149409300"
+Received: from guptapa-dev.ostc.intel.com (HELO desk) ([10.54.69.136])
+  by fmviesa008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Jun 2025 17:44:05 -0700
+Date: Tue, 17 Jun 2025 17:44:05 -0700
+From: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
+To: stable@vger.kernel.org
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	Salvatore Bonaccorso <carnil@debian.org>, Josh Poimboeuf <jpoimboe@kernel.org>, 
+	Alexandre Chartre <alexandre.chartre@oracle.com>, Daniel Sneddon <daniel.sneddon@linux.intel.com>, 
+	Thomas Gleixner <tglx@linutronix.de>, Peter Zijlstra <peterz@infradead.org>, 
+	Ingo Molnar <mingo@kernel.org>, "Masami Hiramatsu (Google)" <mhiramat@kernel.org>, 
+	Thadeu Lima de Souza Cascardo <cascardo@igalia.com>, "Borislav Petkov (AMD)" <bp@alien8.de>, 
+	Guenter Roeck <linux@roeck-us.net>, Eric Biggers <ebiggers@google.com>, 
+	Dave Hansen <dave.hansen@intel.com>, "Steven Rostedt (Google)" <rostedt@goodmis.org>, 
+	holger@applied-asynchrony.com
+Subject: [PATCH 5.10 v2 00/16] ITS mitigation for 5.10
+Message-ID: <20250617-its-5-10-v2-0-3e925a1512a1@linux.intel.com>
+X-B4-Tracking: v=1; b=H4sIAIEHUmgC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyjHQUlJIzE
+ vPSU3UzU4B8JSMDI1MDM0Nz3cySYl1TXUMDXRPjFMNUQ0vTJGMTUyWg8oKi1LTMCrBR0UoBjiH
+ OHiBRUz1DA6XY2loAmkyKKGkAAAA=
+X-Change-ID: 20250617-its-5-10-43d1e195b345
+X-Mailer: b4 0.15-dev-c81fc
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Authenticated-User: kartilak@cisco.com
-X-Outbound-SMTP-Client: 10.188.123.35, [10.188.123.35]
-X-Outbound-Node: alln-l-core-07.cisco.com
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-When the link goes down and comes up, FDMI requests are not sent out
-anymore.
-Fix bug by turning off FNIC_FDMI_ACTIVE when the link goes down.
+v2:
+- Fixed the sign-offs.
 
-Fixes: 09c1e6ab4ab2 ("scsi: fnic: Add and integrate support for FDMI")
-Reviewed-by: Sesidhar Baddela <sebaddel@cisco.com>
-Reviewed-by: Arulprabhu Ponnusamy <arulponn@cisco.com>
-Reviewed-by: Gian Carlo Boffa <gcboffa@cisco.com>
-Reviewed-by: Arun Easi <aeasi@cisco.com>
-Tested-by: Karan Tilak Kumar <kartilak@cisco.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Karan Tilak Kumar <kartilak@cisco.com>
+v1: https://lore.kernel.org/stable/20250610-its-5-10-v1-0-64f0ae98c98d@linux.intel.com/
+
+This is the backport for Indirect Target Selection(ITS) mitigation for
+5.10. This is only boot tested, so sending it as an RFC for now. I hope
+some bot picks this up for some at-scale testing. Meanwhile I am doing
+basic tests around ITS mitigation.
+
+In addition to commits in 5.15 ITS backport, below commits are required
+to make the ITS mitigation work on 5.10. These are the prime target of
+scrutiny:
+
+x86/alternatives: Teach text_poke_bp() to patch Jcc.d32 instructions
+x86/alternatives: Introduce int3_emulate_jcc()
+x86/bhi: Define SPEC_CTRL_BHI_DIS_S
+
 ---
-Changes between v5 and v6:
-    - Incorporate review comments from John:
-	- Rebase patches on 6.17/scsi-queue
+Borislav Petkov (AMD) (1):
+      x86/alternative: Optimize returns patching
 
-Changes between v4 and v5:
-    - Incorporate review comments from John:
-	- Refactor patches
-	- Increment driver version number
+Daniel Sneddon (1):
+      x86/bhi: Define SPEC_CTRL_BHI_DIS_S
 
-Changes between v3 and v4:
-    - Incorporate review comments from Dan:
-	- Remove comments from Cc tag
+Eric Biggers (1):
+      x86/its: Fix build errors when CONFIG_MODULES=n
 
-Changes between v2 and v3:
-    - Incorporate review comments from Dan:
-	- Add Cc to stable
+Josh Poimboeuf (1):
+      x86/alternatives: Remove faulty optimization
 
-Changes between v1 and v2:
-    - Incorporate review comments from Dan:
-	- Add Fixes tag
+Pawan Gupta (7):
+      Documentation: x86/bugs/its: Add ITS documentation
+      x86/its: Enumerate Indirect Target Selection (ITS) bug
+      x86/its: Add support for ITS-safe indirect thunk
+      x86/its: Add support for ITS-safe return thunk
+      x86/its: Fix undefined reference to cpu_wants_rethunk_at()
+      x86/its: Enable Indirect Target Selection mitigation
+      x86/its: Add "vmexit" option to skip mitigation on some CPUs
+
+Peter Zijlstra (4):
+      x86/alternatives: Introduce int3_emulate_jcc()
+      x86/alternatives: Teach text_poke_bp() to patch Jcc.d32 instructions
+      x86/its: Use dynamic thunks for indirect branches
+      x86/its: FineIBT-paranoid vs ITS
+
+Thomas Gleixner (1):
+      x86/modules: Set VM_FLUSH_RESET_PERMS in module_alloc()
+
+ Documentation/ABI/testing/sysfs-devices-system-cpu |   1 +
+ Documentation/admin-guide/hw-vuln/index.rst        |   1 +
+ .../hw-vuln/indirect-target-selection.rst          | 156 +++++++++++
+ Documentation/admin-guide/kernel-parameters.txt    |  15 +
+ arch/x86/Kconfig                                   |  11 +
+ arch/x86/include/asm/alternative.h                 |  26 ++
+ arch/x86/include/asm/cpufeatures.h                 |   6 +-
+ arch/x86/include/asm/msr-index.h                   |  13 +-
+ arch/x86/include/asm/nospec-branch.h               |  11 +
+ arch/x86/include/asm/text-patching.h               |  31 +++
+ arch/x86/kernel/alternative.c                      | 308 ++++++++++++++++++++-
+ arch/x86/kernel/cpu/bugs.c                         | 139 +++++++++-
+ arch/x86/kernel/cpu/common.c                       |  63 ++++-
+ arch/x86/kernel/cpu/scattered.c                    |   1 +
+ arch/x86/kernel/ftrace.c                           |   4 +-
+ arch/x86/kernel/kprobes/core.c                     |  39 +--
+ arch/x86/kernel/module.c                           |  14 +-
+ arch/x86/kernel/static_call.c                      |   2 +-
+ arch/x86/kernel/vmlinux.lds.S                      |   8 +
+ arch/x86/kvm/x86.c                                 |   4 +-
+ arch/x86/lib/retpoline.S                           |  39 +++
+ arch/x86/net/bpf_jit_comp.c                        |   8 +-
+ drivers/base/cpu.c                                 |   8 +
+ include/linux/cpu.h                                |   2 +
+ include/linux/module.h                             |   5 +
+ 25 files changed, 842 insertions(+), 73 deletions(-)
 ---
- drivers/scsi/fnic/fdls_disc.c | 9 ++++++---
- drivers/scsi/fnic/fnic.h      | 2 +-
- 2 files changed, 7 insertions(+), 4 deletions(-)
-
-diff --git a/drivers/scsi/fnic/fdls_disc.c b/drivers/scsi/fnic/fdls_disc.c
-index 36b498ad55b4..fa9cf0b37d72 100644
---- a/drivers/scsi/fnic/fdls_disc.c
-+++ b/drivers/scsi/fnic/fdls_disc.c
-@@ -5029,9 +5029,12 @@ void fnic_fdls_link_down(struct fnic_iport_s *iport)
- 		fdls_delete_tport(iport, tport);
- 	}
- 
--	if ((fnic_fdmi_support == 1) && (iport->fabric.fdmi_pending > 0)) {
--		timer_delete_sync(&iport->fabric.fdmi_timer);
--		iport->fabric.fdmi_pending = 0;
-+	if (fnic_fdmi_support == 1) {
-+		if (iport->fabric.fdmi_pending > 0) {
-+			timer_delete_sync(&iport->fabric.fdmi_timer);
-+			iport->fabric.fdmi_pending = 0;
-+		}
-+		iport->flags &= ~FNIC_FDMI_ACTIVE;
- 	}
- 
- 	FNIC_FCS_DBG(KERN_INFO, fnic->host, fnic->fnic_num,
-diff --git a/drivers/scsi/fnic/fnic.h b/drivers/scsi/fnic/fnic.h
-index 86e293ce530d..c2fdc6553e62 100644
---- a/drivers/scsi/fnic/fnic.h
-+++ b/drivers/scsi/fnic/fnic.h
-@@ -30,7 +30,7 @@
- 
- #define DRV_NAME		"fnic"
- #define DRV_DESCRIPTION		"Cisco FCoE HBA Driver"
--#define DRV_VERSION		"1.8.0.1"
-+#define DRV_VERSION		"1.8.0.2"
- #define PFX			DRV_NAME ": "
- #define DFX                     DRV_NAME "%d: "
- 
--- 
-2.47.1
+base-commit: 01e7e36b8606e5d4fddf795938010f7bfa3aa277
+change-id: 20250617-its-5-10-43d1e195b345
 
 
