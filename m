@@ -1,100 +1,288 @@
-Return-Path: <stable+bounces-154673-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-154675-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B74D1ADEDB4
-	for <lists+stable@lfdr.de>; Wed, 18 Jun 2025 15:22:00 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 01C6DADEDD0
+	for <lists+stable@lfdr.de>; Wed, 18 Jun 2025 15:29:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2F81F188C529
-	for <lists+stable@lfdr.de>; Wed, 18 Jun 2025 13:22:16 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0AC0E7A0FC7
+	for <lists+stable@lfdr.de>; Wed, 18 Jun 2025 13:27:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3AB6274FC2;
-	Wed, 18 Jun 2025 13:21:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 255722E8E00;
+	Wed, 18 Jun 2025 13:28:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="mrO1Xm61"
+	dkim=pass (2048-bit key) header.d=invisiblethingslab.com header.i=@invisiblethingslab.com header.b="WIAuXkm9";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="Sd9kZIkw"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
+Received: from fout-a1-smtp.messagingengine.com (fout-a1-smtp.messagingengine.com [103.168.172.144])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 123F62E8DF7
-	for <stable@vger.kernel.org>; Wed, 18 Jun 2025 13:21:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.17
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 075162E8DFF;
+	Wed, 18 Jun 2025 13:28:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.144
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750252910; cv=none; b=at/qMtAPfThLxeVOnyVPiuOEXe3khIbD4RSdqt5XXpoLG7ktoAS6UhUZrD8PrdKXjkrd/L+tXLLFqSsxT5xq9na/5dbMp1BVXp7eHyXZGfSHco9+jNb9U+H/HB7xWH8wJsIWt6mruKJLaF970R/Y/5w2Bi4fb8/weHHjpA/Wu5o=
+	t=1750253337; cv=none; b=Uwny/7i7zJdGJdSjBleQiChl/vl/f9r6IvKwW6ml8YbI+OAwnQCWXKLTWsaKuIoaRoLYW29PcMKFWS6vBokBPTyVFxBkGuZysA98nLMmhjRD3bbfc2jAYDrZH2tR4HFzZvm/dyW+7UyWVv18TCHXO7K47by008TRlQrW5bXBw6I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750252910; c=relaxed/simple;
-	bh=RwNO66zeuarIR50f5lkI8wvvb1onf0eDqTgIb2LGNww=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=M6RKttr2Z9P7HWA6K07e+z4cMnvO2a6x+AP2BSFyARWj/kO+zBqIy4dMo2649nvKigOvhNx+W8yCTMI06CsQpJcad6zYI7mfeftexc7QAKYCJ/NfRF7RuicrzKPv125TaYY8H8UXc3TJEE29Baa/QZhJjSIUMl2JDZli/rQKEw0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=mrO1Xm61; arc=none smtp.client-ip=192.198.163.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1750252909; x=1781788909;
-  h=date:from:to:cc:subject:message-id:mime-version:
-   in-reply-to;
-  bh=RwNO66zeuarIR50f5lkI8wvvb1onf0eDqTgIb2LGNww=;
-  b=mrO1Xm61F9el+C3mh1ZM7CofOhhZk36HAIDHuEF1NDc0OhEYgq+k+cie
-   4hyHWhiyyb49Ifh8fpAi5DtTRWugRzIQxkkznIZ3x4Xm8x8A6V+JTu7gJ
-   EQXUkjjt9Hlr6N4P62Maxnfnvcp0leCma5iofvMTN0NvRzGO+7Yu6LLTR
-   mpKlRy1JCsxdvKae4/sXLWPnUEGrgPCuMPNXxFQcA8FqB4IA5Tq6yb6uc
-   czkUaOC0w97DJyYxvOM7W6/IRcvWkRfIsY7TYjIuJXFOS1SQzcAL/QuV6
-   BGu+vqqhD+US+j613c9bnv2ufW8uxanhFu6EDWWUZICJtjjrLLDGwpLEy
-   w==;
-X-CSE-ConnectionGUID: 7McQsXJNRsKWC2u7of6NUQ==
-X-CSE-MsgGUID: FUbMfKIMSFydszfelisifA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11468"; a="52389536"
-X-IronPort-AV: E=Sophos;i="6.16,246,1744095600"; 
-   d="scan'208";a="52389536"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
-  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Jun 2025 06:21:48 -0700
-X-CSE-ConnectionGUID: ZOQbAmVZTNaSi/JbF39AjA==
-X-CSE-MsgGUID: 2DR7lx1wShWiBkDqXpMqrQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,246,1744095600"; 
-   d="scan'208";a="149361029"
-Received: from lkp-server01.sh.intel.com (HELO e8142ee1dce2) ([10.239.97.150])
-  by orviesa006.jf.intel.com with ESMTP; 18 Jun 2025 06:21:47 -0700
-Received: from kbuild by e8142ee1dce2 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1uRsjY-000JoQ-2X;
-	Wed, 18 Jun 2025 13:21:44 +0000
-Date: Wed, 18 Jun 2025 21:21:27 +0800
-From: kernel test robot <lkp@intel.com>
-To: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
-Cc: stable@vger.kernel.org, oe-kbuild-all@lists.linux.dev
-Subject: Re: [PATCH 2/2] drm/i915/snps_hdmi_pll: Use clamp() instead of
- max(min())
-Message-ID: <aFK9V7_jQE9aExj9@d8702eadd420>
+	s=arc-20240116; t=1750253337; c=relaxed/simple;
+	bh=4pvL2pRMcn6SX0QoJ4lt3Ga1uPDK5VKhU4BGa8uBuGU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=q+i5mV/7HVXkfxXYpJpudpG72hRI9IVBhP9xXLyykNUd51EXQ+ESJHu7V+DMn7VuCaLlIZbzHLkr4q6oec5sCwtNxVub1P0luciF7CuCULPdppKpzwY2Eb5oA+Nd+QUu1vm7CO4Y4qRznfKE8o6UJ5mpnYMqw+mlJaQab/wtnFs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=invisiblethingslab.com; spf=pass smtp.mailfrom=invisiblethingslab.com; dkim=pass (2048-bit key) header.d=invisiblethingslab.com header.i=@invisiblethingslab.com header.b=WIAuXkm9; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=Sd9kZIkw; arc=none smtp.client-ip=103.168.172.144
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=invisiblethingslab.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=invisiblethingslab.com
+Received: from phl-compute-05.internal (phl-compute-05.phl.internal [10.202.2.45])
+	by mailfout.phl.internal (Postfix) with ESMTP id 3C3EE13803E5;
+	Wed, 18 Jun 2025 09:28:55 -0400 (EDT)
+Received: from phl-mailfrontend-01 ([10.202.2.162])
+  by phl-compute-05.internal (MEProxy); Wed, 18 Jun 2025 09:28:55 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	invisiblethingslab.com; h=cc:cc:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm1; t=1750253335;
+	 x=1750339735; bh=vz/7ulDQUN+PP0dM9GXUeJUIxa3j77kggycAnGY4Aws=; b=
+	WIAuXkm9l14HnRsq+a1xjXC9OQMw0cStyCOO0VyO1kntZf+QvA1RXHQEE+5D336a
+	+FH+YijbW8zZS4F7C21Au630CUB27tUWo6QmQw3SCr+JZkxqDfYnwUfTNTTjU7q/
+	xIBAdGnSip0Rk3i45TIkQQHJtcXhpvFC1fUriosNzfqBUCsJSOze5nWFNaaH0bG1
+	iynaonWX6LxjIw6b7rqiYbop6VSdrXc+8xjE+ihWLE6I1i/4QBP+lOMJ+qhyL3KP
+	N4/jMjnRSkRDk3+Fs0CcW5yfE3tFCsbeVi3/daCSVd3pCiDv1mk4FzHjDhBDnJnw
+	MqFsPf/TGHsKjbzMC/nvRQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-type:content-type:date:date
+	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=
+	1750253335; x=1750339735; bh=vz/7ulDQUN+PP0dM9GXUeJUIxa3j77kggyc
+	AnGY4Aws=; b=Sd9kZIkwjLSpU63LKWOqonj0DhUPRtv3KFnyftCDFFHhMhRnB5C
+	YSpZKF/nvENe/HtM43I9NLi+UBlL8n7vidU1rxwSqyMNFUaqHKGDLlnP2RWxDTFV
+	VXUXxOzsNXTkpzIrniCXy8LIbPGL1LHLoVKwn7dB91bN1dCAac7iiRrEvqemVZdv
+	eREyXRdZS68rstll5G3p037yKeR6UfDVzddhhJnzL1pci2jbO4PcvAHcTE67SPZJ
+	tUORupVgtDItOelNRBA/8QAE/mgrCxjFbQXvVWE7gS5IL3HvgXGDwG2YJIyi4Yj7
+	j346176r/cBIF7229PSGdtskqQpK7TO7lQQ==
+X-ME-Sender: <xms:Fr9SaDXJus_9wzUBchy22L94tQaXiufEdKVnROeqHWYQeShz8rfzhA>
+    <xme:Fr9SaLllH_4qsIi8S7lkt7IzPA12B7PwPZ9NER9vhxA7C43-hUIf7z4WwbLb0HVFs
+    YV_GojJXvSTeg>
+X-ME-Received: <xmr:Fr9SaPbdrpTw5w0TpLJytfxSIOg8_i3mFK54MVTuFqKyrsBept5evnej6pthMxauXbyJo1JCd-lNSFhmDj_k_GDtE2hEvlN1nu4>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtddvgddvjeeiucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggvpdfu
+    rfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnh
+    htshculddquddttddmnecujfgurhepfffhvfevuffkfhggtggujgesghdtreertddtjeen
+    ucfhrhhomhepofgrrhgvkhcuofgrrhgtiiihkhhofihskhhiqdfikphrvggtkhhiuceomh
+    grrhhmrghrvghksehinhhvihhsihgslhgvthhhihhnghhslhgrsgdrtghomheqnecuggft
+    rfgrthhtvghrnhepgfduleetfeevhfefheeiteeliefhjefhleduveetteekveettddvge
+    euteefjedunecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhho
+    mhepmhgrrhhmrghrvghksehinhhvihhsihgslhgvthhhihhnghhslhgrsgdrtghomhdpnh
+    gspghrtghpthhtohepledpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtohepphhmvghn
+    iigvlhesmhholhhgvghnrdhmphhgrdguvgdprhgtphhtthhopehvihhtrghlhidrlhhifh
+    hshhhithhssehinhhtvghlrdgtohhmpdhrtghpthhtoheprghnthhhohhnhidrlhdrnhhg
+    uhihvghnsehinhhtvghlrdgtohhmpdhrtghpthhtohepphhriigvmhihshhlrgifrdhkih
+    htshiivghlsehinhhtvghlrdgtohhmpdhrtghpthhtohepnhgvthguvghvsehvghgvrhdr
+    khgvrhhnvghlrdhorhhgpdhrtghpthhtohepihhnthgvlhdqfihirhgvugdqlhgrnheslh
+    hishhtshdrohhsuhhoshhlrdhorhhgpdhrtghpthhtoheprhgvghhrvghsshhiohhnshes
+    lhhishhtshdrlhhinhhugidruggvvhdprhgtphhtthhopehsthgrsghlvgesvhhgvghrrd
+    hkvghrnhgvlhdrohhrghdprhgtphhtthhopehsrghshhgrlheskhgvrhhnvghlrdhorhhg
+X-ME-Proxy: <xmx:Fr9SaOXxiqGZJ6PRaIa1vVEGuUGYlV8waY0PKFMz6vUCtVlRJMMQZA>
+    <xmx:Fr9SaNmA3G7BgKOD7Z-LCPHmL8e5C1fA3zSKLINjbABD4bobzBU2OQ>
+    <xmx:Fr9SaLdumMaeA8tTEHRt0xFh8RLLLD6U7Ae96pcY-B2EBn2cB_M3hw>
+    <xmx:Fr9SaHEfsbeM9YCETFAke0FdKOpdgWawjzDq4svvZe4ZsdNf6LSutg>
+    <xmx:F79SaEJ90y1IT8yN5gw3royZ04hOBwZRf1UdlaDLIYQjXoAz976a7W8A>
+Feedback-ID: i1568416f:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
+ 18 Jun 2025 09:28:53 -0400 (EDT)
+Date: Wed, 18 Jun 2025 15:28:51 +0200
+From: Marek =?utf-8?Q?Marczykowski-G=C3=B3recki?= <marmarek@invisiblethingslab.com>
+To: Paul Menzel <pmenzel@molgen.mpg.de>
+Cc: Vitaly Lifshits <vitaly.lifshits@intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	netdev@vger.kernel.org, intel-wired-lan@lists.osuosl.org,
+	regressions@lists.linux.dev, stable@vger.kernel.org,
+	Sasha Levin <sashal@kernel.org>
+Subject: Re: [Intel-wired-lan] [REGRESSION] e1000e heavy packet loss on
+ Meteor Lake - 6.14.2
+Message-ID: <aFK_ExmGqmi-oQby@mail-itl>
+References: <b5d72f51-3cd0-aeca-60af-41a20ad59cd5@intel.com>
+ <Z_-l2q9ZhszFxiqA@mail-itl>
+ <d37a7c9e-7b3f-afc2-b010-e9785f39a785@intel.com>
+ <aAZF0JUKCF0UvfF6@mail-itl>
+ <aAZH7fpaGf7hvX6T@mail-itl>
+ <e0034a96-e285-98c8-b526-fb167747aedc@intel.com>
+ <aB0zLQawNrImVqPE@mail-itl>
+ <c918d4f5-ee53-4f64-b152-cea0f6d99c4f@molgen.mpg.de>
+ <aB0-JLSDT03fosST@mail-itl>
+ <aB1JnJG_CH5vxAsw@mail-itl>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="iUL4KGRviabJX8Lu"
 Content-Disposition: inline
-In-Reply-To: <20250618130951.1596587-3-ankit.k.nautiyal@intel.com>
-
-Hi,
-
-Thanks for your patch.
-
-FYI: kernel test robot notices the stable kernel rule is not satisfied.
-
-The check is based on https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html#option-1
-
-Rule: add the tag "Cc: stable@vger.kernel.org" in the sign-off area to have the patch automatically included in the stable tree.
-Subject: [PATCH 2/2] drm/i915/snps_hdmi_pll: Use clamp() instead of max(min())
-Link: https://lore.kernel.org/stable/20250618130951.1596587-3-ankit.k.nautiyal%40intel.com
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+In-Reply-To: <aB1JnJG_CH5vxAsw@mail-itl>
 
 
+--iUL4KGRviabJX8Lu
+Content-Type: text/plain; protected-headers=v1; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+Date: Wed, 18 Jun 2025 15:28:51 +0200
+From: Marek =?utf-8?Q?Marczykowski-G=C3=B3recki?= <marmarek@invisiblethingslab.com>
+To: Paul Menzel <pmenzel@molgen.mpg.de>
+Cc: Vitaly Lifshits <vitaly.lifshits@intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	netdev@vger.kernel.org, intel-wired-lan@lists.osuosl.org,
+	regressions@lists.linux.dev, stable@vger.kernel.org,
+	Sasha Levin <sashal@kernel.org>
+Subject: Re: [Intel-wired-lan] [REGRESSION] e1000e heavy packet loss on
+ Meteor Lake - 6.14.2
 
+On Fri, May 09, 2025 at 02:17:32AM +0200, Marek Marczykowski-G=C3=B3recki w=
+rote:
+> On Fri, May 09, 2025 at 01:28:36AM +0200, Marek Marczykowski-G=C3=B3recki=
+ wrote:
+> > On Fri, May 09, 2025 at 01:13:28AM +0200, Paul Menzel wrote:
+> > > Dear Marek, dear Vitaly,
+> > >=20
+> > >=20
+> > > Am 09.05.25 um 00:41 schrieb Marek Marczykowski-G=C3=B3recki:
+> > > > On Thu, May 08, 2025 at 09:26:18AM +0300, Lifshits, Vitaly
+> > > > > On 4/21/2025 4:28 PM, Marek Marczykowski-G=C3=B3recki wrote:
+> > > > > > On Mon, Apr 21, 2025 at 03:19:12PM +0200, Marek Marczykowski-G=
+=C3=B3recki wrote:
+> > > > > > > On Mon, Apr 21, 2025 at 03:44:02PM +0300, Lifshits, Vitaly wr=
+ote:
+> > > > > > > >=20
+> > > > > > > >=20
+> > > > > > > > On 4/16/2025 3:43 PM, Marek Marczykowski-G=C3=B3recki wrote:
+> > > > > > > > > On Wed, Apr 16, 2025 at 03:09:39PM +0300, Lifshits, Vital=
+y wrote:
+> > > > > > > > > > Can you please also share the output of ethtool -i? I w=
+ould like to know the
+> > > > > > > > > > NVM version that you have on your device.
+> > > > > > > > >=20
+> > > > > > > > > driver: e1000e
+> > > > > > > > > version: 6.14.1+
+> > > > > > > > > firmware-version: 1.1-4
+> > > > > > > > > expansion-rom-version:
+> > > > > > > > > bus-info: 0000:00:1f.6
+> > > > > > > > > supports-statistics: yes
+> > > > > > > > > supports-test: yes
+> > > > > > > > > supports-eeprom-access: yes
+> > > > > > > > > supports-register-dump: yes
+> > > > > > > > > supports-priv-flags: yes
+> > > > > > > > >=20
+> > > > > > > >=20
+> > > > > > > > Your firmware version is not the latest, can you check with=
+ the board
+> > > > > > > > manufacturer if there is a BIOS update to your system?
+> > > > > > >=20
+> > > > > > > I can check, but still, it's a regression in the Linux driver=
+ - old
+> > > > > > > kernel did work perfectly well on this hw. Maybe new driver t=
+ries to use
+> > > > > > > some feature that is missing (or broken) in the old firmware?
+> > > > > >=20
+> > > > > > A little bit of context: I'm maintaining the kernel package for=
+ a Qubes
+> > > > > > OS distribution. While I can try to update firmware on my test =
+system, I
+> > > > > > have no influence on what hardware users will use this kernel, =
+and
+> > > > > > which firmware version they will use (and whether all the vendo=
+rs
+> > > > > > provide newer firmware at all). I cannot ship a kernel that is =
+known
+> > > > > > to break network on some devices.
+> > > > > >=20
+> > > > > > > > Also, you mentioned that on another system this issue doesn=
+'t reproduce, do
+> > > > > > > > they have the same firmware version?
+> > > > > > >=20
+> > > > > > > The other one has also 1.1-4 firmware. And I re-checked, e100=
+0e from
+> > > > > > > 6.14.2 works fine there.
+> > >=20
+> > > > > Thank you for your detailed feedback and for providing the reques=
+ted
+> > > > > information.
+> > > > >=20
+> > > > > We have conducted extensive testing of this patch across multiple=
+ systems
+> > > > > and have not observed any packet loss issues. Upon comparing the =
+mentioned
+> > > > > setups, we noted that while the LAN controller is similar, the CP=
+U differs.
+> > > > > We believe that the issue may be related to transitions in the CP=
+U's low
+> > > > > power states.
+> > > > >=20
+> > > > > Consequently, we kindly request that you disable the CPU low powe=
+r state
+> > > > > transitions in the S0 system state and verify if the issue persis=
+ts. You can
+> > > > > disable this in the kernel parameters on the command line with id=
+le=3Dpoll.
+> > > > > Please note that this command is intended for debugging purposes =
+only, as it
+> > > > > may result in higher power consumption.
+> > > >=20
+> > > > I tried with idle=3Dpoll, and it didn't help, I still see a lot of =
+packet
+> > > > losses. But I can also confirm that idle=3Dpoll makes the system use
+> > > > significantly more power (previously at 25-30W, with this option st=
+ays
+> > > > at about 42W).
+> > > >=20
+> > > > Is there any other info I can provide, enable some debug features or
+> > > > something?
+> > > >=20
+> > > > I see the problem is with receiving packets - in my simple ping tes=
+t,
+> > > > the ping target sees all the echo requests (and respond to them), b=
+ut
+> > > > the responses aren't reaching ping back (and are not visible on tcp=
+dump
+> > > > on the problematic system either).
+> > >=20
+> > > As the cause is still unclear, can the commit please be reverted in t=
+he
+> > > master branch due adhere to Linux=E2=80=99 no-regression policy, so t=
+hat it can be
+> > > reverted from the stable series?
+> > >=20
+> > > Marek, did you also test 6.15 release candidates?
+> >=20
+> > The last test I did was on 6.15-rc3. I can re-test on -rc5.
+>=20
+> Same with 6.15-rc5.
+
+And the same issue still applies to 6.16-rc2. FWIW Qubes OS kernel has
+this buggy patch revered and nobody complained (contrary to the version
+with the patch included). Should I submit the revert patch?
+
+--=20
+Best Regards,
+Marek Marczykowski-G=C3=B3recki
+Invisible Things Lab
+
+--iUL4KGRviabJX8Lu
+Content-Type: application/pgp-signature; name=signature.asc
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCAAdFiEEhrpukzGPukRmQqkK24/THMrX1ywFAmhSvxMACgkQ24/THMrX
+1yyXAQf+K53U8Y6jWL6iyqumhg77CPbzn0qaQrxtA2sKrbY+GBzdBG3ptbzs1bY0
+T5YlBl9fiGCHMqAO1H/BgQnbHY7oRk2jMgR10m52fMWE0pnsHPcHxVi2ChLvrpfx
+UdYSbRHZpEDwVZNfQkAI0ppKGF/It+BtIjD9xWeLqOiezEr6GmT2Z1uvBywbwq4m
+AbK3ZFzvSHIEUyVQZMXopcGwsAzJWL19/zPJOLLXDIMhUy9mKvpNR7/MjivwuuT4
+Y0oy6tAuqGLJv3m0oIIByL7lAc/2oq0TizFTqOGnvGMJYALdXiA2QpKNZSc2MT8t
+NUXAGDW3WOntp2X+TvgJW4+pfqn8Rw==
+=MhTN
+-----END PGP SIGNATURE-----
+
+--iUL4KGRviabJX8Lu--
 
