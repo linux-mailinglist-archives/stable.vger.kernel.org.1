@@ -1,120 +1,136 @@
-Return-Path: <stable+bounces-154654-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-154655-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C82A9ADEAFC
-	for <lists+stable@lfdr.de>; Wed, 18 Jun 2025 13:58:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 35CD6ADEB00
+	for <lists+stable@lfdr.de>; Wed, 18 Jun 2025 13:58:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E78183A1ADF
-	for <lists+stable@lfdr.de>; Wed, 18 Jun 2025 11:57:32 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7FBBF3A97F5
+	for <lists+stable@lfdr.de>; Wed, 18 Jun 2025 11:57:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A581298274;
-	Wed, 18 Jun 2025 11:57:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C81FB2BD5A8;
+	Wed, 18 Jun 2025 11:58:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="c2inLkLS"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jHsJBYN2"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lj1-f174.google.com (mail-lj1-f174.google.com [209.85.208.174])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22CAB285056
-	for <stable@vger.kernel.org>; Wed, 18 Jun 2025 11:57:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 749122820C5;
+	Wed, 18 Jun 2025 11:58:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750247871; cv=none; b=hRwRqqflE2VQ5B6a8vOG6JTY7+/eCm0IAfR4eM9P7TjpahlF9IpDfXZAPLbFOrxwOdEf2fPQlVaEz6u0nknf7ROt1mSlmYpxLC4CWzu3Ck0MW7nO7hryv5EYpIPiplrtpAcjSRPXMzw9IL5jz/zPQJCmEp1ZIBge7vefNmPomEk=
+	t=1750247887; cv=none; b=bNTbYJ264zqv5NJMbZcGj2ghbokhLn/rdT5Xh9sNG6MioVJ3tv8I2v+pXxAvsTxSSe7wet8UBJejhz9+NcVVCfuv4i0FZhAcA62G0h4ioprdS20vTXdR1aWJ/ach1IKa56ndkh1U/Yj5fn49tP/w5YVTCAUrkPxNZav0etmY3co=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750247871; c=relaxed/simple;
-	bh=vXnEOwfbKTy01z7cobE4+Hk1SMKWVRbeCD9p5sV/Oz0=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=WQCsUJQ0FpZJzp5fIDgW+2bZjoPKQivfh+kftrCrs8b8V41QfOORPDTryAUp726of6wyHPoPXtBw1DfmScOLaDc2zoYIMdjBr4dH1ijmGGf3E+x5QJ8dDPW1ry9RMFtPsqEOh035CYXN21vz+QUTtk1gcUGZkMEcKAZ5UKHSW3E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=c2inLkLS; arc=none smtp.client-ip=209.85.208.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-lj1-f174.google.com with SMTP id 38308e7fff4ca-32a9e5b6395so56885441fa.0
-        for <stable@vger.kernel.org>; Wed, 18 Jun 2025 04:57:49 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1750247868; x=1750852668; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=vXnEOwfbKTy01z7cobE4+Hk1SMKWVRbeCD9p5sV/Oz0=;
-        b=c2inLkLS7uGMLLdc1vIjANQFCN+KjvLGE0lzx15n5a/kdBh6e6fgOgAs6X82G8szrE
-         ERff8kCPgF9bM67uZrv+RLnANOldReYE5+mQfj7YShoMIKwvkpu462a0TiGOIuF6f8e3
-         fp06/R+ytLUpdJ5qmOI46Urdi08IHS6zpFSpVwOHO/D1pjmICqT8EdbIEXRc2Jz4zoue
-         yDnLfAEMLWp/I6K57JSdJzcIeQO4R1YAPNRyKcumwkhGSEukZzB3Ysa4TY4AzEz+p/3t
-         pHIxftSoZb95mqOo8xfgwhl28AYTftoblB7l9+8oorIetLY9mkKuKz2HNGf0mBQLaYM+
-         Pz3Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1750247868; x=1750852668;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=vXnEOwfbKTy01z7cobE4+Hk1SMKWVRbeCD9p5sV/Oz0=;
-        b=l/yRPmbk33Jz75GiAVNsEGON2OsiHfh+B4LaFAr1hm3yHK3e3hi1m+ys8mbqkkC/US
-         CuWbPH7FoWzn0Ti4TBHshSzyt/bWIF7Dh+52sFyBAYDsmmh6GbRKoqsvmLwomAkY2e39
-         DS+c5u/L7gcBNZ/X/7rVqsKJ2o4F169THQIkCKaYgapBb+u2KzyCQ2meekdiT+0QguQe
-         WOqvLZkB04/MQyX7533KtqK2KdMaD3+ZUDS66sRgtRpReZSkyjKvt2RcGaegquvEls88
-         Ts4BPu4Ce4L5v8sPqx5er4n+FqCQp9io1eepSguSDMowHUKC0TKW5Gk2f/ixwLAqZJXs
-         pIHg==
-X-Forwarded-Encrypted: i=1; AJvYcCW+2yrtf0ag2UK0nn1oN764EJxRfGPhREqHNunyezYA7FUCeI8zUmKtFNTT7UODJtHrvfJpvY4=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxKyI9B8W+x1c5+hw76+MXRv1b2nNuOdb9n2m9fQGEVXzCMnJAk
-	7P6cLhWnbI8XPmjFZZB2lWOjPpJTN4PHdEeoP6T/GSdnUS0l4fvZM7ToLhZxbFNEpYBIm8ekYf2
-	q7gID0n25pC2eqGk3QRGdMMMghwBcDO+uT50m8bo28Q==
-X-Gm-Gg: ASbGncsvOvTwxEuv1oztp7M8D2tKkva8PRir8M225YEdXz/SoDeFI+LYL0MJPuuF+D8
-	axomTSTPywIpv0vBIUAsCCE15QftJPcgMp1/T3rbkoWG3TX2b0ZOUKnvoH70L4aas4RVkOZi5I6
-	i9ywnxRq1mzU1CjQTvg0KneB8JxFxOGu88f3PF92CN1dA=
-X-Google-Smtp-Source: AGHT+IH7vnMyWvDeuT22AfjJ72jh8AlElSg/X6zhBdg5qjqst8eEHaOrlL3lefZJep/KKAH4d2AwxAgcyFjM7bagkmM=
-X-Received: by 2002:a05:651c:b20:b0:32a:847c:a1c0 with SMTP id
- 38308e7fff4ca-32b4a0c5893mr49570841fa.6.1750247868176; Wed, 18 Jun 2025
- 04:57:48 -0700 (PDT)
+	s=arc-20240116; t=1750247887; c=relaxed/simple;
+	bh=6zxqJ03sGm1UOu0tkuzgnOGXarWDitWIqwPWPQ4+ceo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=kOP7pK91pNjJ0ZfNpF0p9NV2SgidzyBKPIdVeg3Y44RCwb0ImTd8Ovx2fXGjJ5PE8zlSpH/VM9uh35onja/UeIkCIKUmNU1pumB3pbMLyTcpjfk3aIyeJFVOKtxql+ut9FeICMKjwQyd2z8dS3yWw1eIZgVOPEEbSRKX/ixn00U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jHsJBYN2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5DE1EC4CEE7;
+	Wed, 18 Jun 2025 11:58:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1750247887;
+	bh=6zxqJ03sGm1UOu0tkuzgnOGXarWDitWIqwPWPQ4+ceo=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=jHsJBYN2Z0UnGW0uAjnq5o8lP1xY9C6l3o3qn/v/s1bb1z4WARPnm4W+jJbfxngE0
+	 Ty/uTk6VtpAWuvf67m76zDXKN5qVgNZ7gZnB4xP3nxC2O2KkzH7AJKTUF9v2LkcBqY
+	 J8AGEmZDXyzAfhrHk+hR+sFhGsMqiaOkqeS8CqFMrD0+tinBWtKWeIeCiVxoQAwpNl
+	 XedmJT1/4F77Fgl+EekHzZi6K19D8/4wDpyc9/3sBIWejZCL/wxAuZyJ/nIB6Shi5K
+	 xXnYQ9kCGmFPYv2SOWUWKhLYT1vUx6ngIjB4QajdVPNPgEeDGT7EmCKoX5HMbNovFu
+	 WnBsTK6UdFEbg==
+Date: Wed, 18 Jun 2025 12:58:00 +0100
+From: Mark Brown <broonie@kernel.org>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
+	jonathanh@nvidia.com, f.fainelli@gmail.com,
+	sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+	conor@kernel.org, hargar@microsoft.com,
+	Thomas =?iso-8859-1?Q?Wei=DFschuh?= <linux@weissschuh.net>,
+	Willy Tarreau <w@1wt.eu>
+Subject: Re: [PATCH 6.15 000/780] 6.15.3-rc1 review
+Message-ID: <cc048abb-fbc0-4a79-b78a-90bfa3f8446d@sirena.org.uk>
+References: <20250617152451.485330293@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250612091448.41546-1-brgl@bgdev.pl>
-In-Reply-To: <20250612091448.41546-1-brgl@bgdev.pl>
-From: Linus Walleij <linus.walleij@linaro.org>
-Date: Wed, 18 Jun 2025 13:57:36 +0200
-X-Gm-Features: AX0GCFtRDJgqMbmd8SADniLZIBDm0lbd_j7zrP-SEcNHH7wJbISn24C8wb9wJDI
-Message-ID: <CACRpkdb9OkfBS49zjo38L_0zouz2SJmfJK3EaH+YZMPqXacODw@mail.gmail.com>
-Subject: Re: [PATCH v2] pinctrl: qcom: msm: mark certain pins as invalid for interrupts
-To: Bartosz Golaszewski <brgl@bgdev.pl>
-Cc: Bjorn Andersson <andersson@kernel.org>, linux-arm-msm@vger.kernel.org, 
-	linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="RMlmF4XGeDLp3q1s"
+Content-Disposition: inline
+In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
+X-Cookie: This bag is recyclable.
+
+
+--RMlmF4XGeDLp3q1s
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, Jun 12, 2025 at 11:14=E2=80=AFAM Bartosz Golaszewski <brgl@bgdev.pl=
-> wrote:
+On Tue, Jun 17, 2025 at 05:15:08PM +0200, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.15.3 release.
+> There are 780 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 
-> From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
->
-> On some platforms, the UFS-reset pin has no interrupt logic in TLMM but
-> is nevertheless registered as a GPIO in the kernel. This enables the
-> user-space to trigger a BUG() in the pinctrl-msm driver by running, for
-> example: `gpiomon -c 0 113` on RB2.
->
-> The exact culprit is requesting pins whose intr_detection_width setting
-> is not 1 or 2 for interrupts. This hits a BUG() in
-> msm_gpio_irq_set_type(). Potentially crashing the kernel due to an
-> invalid request from user-space is not optimal, so let's go through the
-> pins and mark those that would fail the check as invalid for the irq chip
-> as we should not even register them as available irqs.
->
-> This function can be extended if we determine that there are more
-> corner-cases like this.
->
-> Fixes: f365be092572 ("pinctrl: Add Qualcomm TLMM driver")
-> Cc: stable@vger.kernel.org
-> Reviewed-by: Bjorn Andersson <andersson@kernel.org>
-> Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+This breaks the build of the arm64 selftests due to a change in nolibc,
+it appears that "tools/nolibc: properly align dirent buffer" is missing
+some dependency:
 
-Patch applied for fixes!
+aarch64-linux-gnu-gcc -fno-asynchronous-unwind-tables -fno-ident -s -Os -no=
+stdlib \
+	-include ../../../../include/nolibc/nolibc.h -I../..\
+	-static -ffreestanding -Wall za-fork.c /build/stage/build-work/kselftest/a=
+rm64/fp/za-fork-asm.o -o /build/stage/build-work/kselftest/arm64/fp/za-fork
+In file included from ./../../../../include/nolibc/nolibc.h:107,
+                 from <command-line>:
+=2E/../../../../include/nolibc/dirent.h: In function =E2=80=98readdir_r=E2=
+=80=99:
+=2E/../../../../include/nolibc/dirent.h:62:64: error: expected =E2=80=98=3D=
+=E2=80=99, =E2=80=98,=E2=80=99, =E2=80=98;=E2=80=99, =E2=80=98asm=E2=80=99 =
+or =E2=80=98__attribute__=E2=80=99 before =E2=80=98__nolibc_aligned_as=E2=
+=80=99
+   62 |         char buf[sizeof(struct linux_dirent64) + NAME_MAX + 1] __no=
+libc_aligned_as(struct linux_dirent64);
+      |                                                                ^~~~=
+~~~~~~~~~~~~~~~
+=2E/../../../../include/nolibc/dirent.h:62:64: error: implicit declaration =
+of function =E2=80=98__nolibc_aligned_as=E2=80=99 [-Wimplicit-function-decl=
+aration]
+=2E/../../../../include/nolibc/dirent.h:62:84: error: expected expression b=
+efore =E2=80=98struct=E2=80=99
+   62 |         char buf[sizeof(struct linux_dirent64) + NAME_MAX + 1] __no=
+libc_aligned_as(struct linux_dirent64);
+      |                                                                    =
+                ^~~~~~
+=2E/../../../../include/nolibc/dirent.h:63:47: error: =E2=80=98buf=E2=80=99=
+ undeclared (first use in this function)
+   63 |         struct linux_dirent64 *ldir =3D (void *)buf;
+      |                                               ^~~
+=2E/../../../../include/nolibc/dirent.h:63:47: note: each undeclared identi=
+fier is reported only once for each function it appears in
 
-Yours,
-Linus Walleij
+--RMlmF4XGeDLp3q1s
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmhSqccACgkQJNaLcl1U
+h9AdtQf7BYcKrhzH6wbxKoT5RMQq05tiI2iUaA3k99PUHTrwhg8f+RaCj4PrEkTb
+xlqJPEc3Dr3UNmcZAdLDjBzM8rYjiEKPPc23kMJ6IjnuIgmlHtGbygKHfm9mZTDF
+VdehE6YThJlA3I5PVpTldS1rDKzgFidSND/J442MCtnteUVpvLy85hPj+5piQhFs
+jdzKpsuWG+LDLH6ZtwPvrxCKsKFmwcqlBjtrdR9VLocCxAOkiKdLtmKpHqInoOEf
+KT49DBiERBD0+nes9UpUw+Fq58Mt00qdYnAxoqBeEopWUxB2jC21XprMdVPm54Lx
+6O6HK3+hHACcnPQhE7ckAmtrPmnSzg==
+=xR7l
+-----END PGP SIGNATURE-----
+
+--RMlmF4XGeDLp3q1s--
 
