@@ -1,102 +1,100 @@
-Return-Path: <stable+bounces-154670-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-154673-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 912A8ADED9D
-	for <lists+stable@lfdr.de>; Wed, 18 Jun 2025 15:19:24 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id B74D1ADEDB4
+	for <lists+stable@lfdr.de>; Wed, 18 Jun 2025 15:22:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5FCC83A45E6
-	for <lists+stable@lfdr.de>; Wed, 18 Jun 2025 13:19:00 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2F81F188C529
+	for <lists+stable@lfdr.de>; Wed, 18 Jun 2025 13:22:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50F562E06C8;
-	Wed, 18 Jun 2025 13:19:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3AB6274FC2;
+	Wed, 18 Jun 2025 13:21:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jEZmVs+F"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="mrO1Xm61"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0045D1EDA26;
-	Wed, 18 Jun 2025 13:19:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 123F62E8DF7
+	for <stable@vger.kernel.org>; Wed, 18 Jun 2025 13:21:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.17
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750252760; cv=none; b=gSisdOyOmwlVwiUU8Ae8KpLW8JNaGi0rtDtKIJpYxY4XW5zli462rDCxqJkhLJyKoOlfNYgAr6sU0a0oCt7Qadi0Gi7vxhKy6k+gp5m30h4XEAMk5QvwWTZGyFlFjBKLNy1fho9IKCaOf8ouBaRdMNZUwh7x8dGpw+5M6Jq31Uo=
+	t=1750252910; cv=none; b=at/qMtAPfThLxeVOnyVPiuOEXe3khIbD4RSdqt5XXpoLG7ktoAS6UhUZrD8PrdKXjkrd/L+tXLLFqSsxT5xq9na/5dbMp1BVXp7eHyXZGfSHco9+jNb9U+H/HB7xWH8wJsIWt6mruKJLaF970R/Y/5w2Bi4fb8/weHHjpA/Wu5o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750252760; c=relaxed/simple;
-	bh=yazIh7NKfaZXE4pU90+4eALmFMirOeimrbYE23sXx+A=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Ure7NzVdXMG/FwCVJyZeQifHTfXG3lLctF30FSl0bZI0qszf/qoi2fpFiljL6vQ8QZVrvINspELEFvZLIirHSlHkyrUNXzxPwzpOQtgyxeOhywkpazBrL+NLXseHIBO3lsHUCyQoUlfb+Y2pBTO83+rE6XDNO6Ysj/lAAefy30A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jEZmVs+F; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B761C4CEE7;
-	Wed, 18 Jun 2025 13:19:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750252759;
-	bh=yazIh7NKfaZXE4pU90+4eALmFMirOeimrbYE23sXx+A=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=jEZmVs+FdSqcpXlWWnIGHErQ0wEcRACsKMEnd3vOjr0/P9S7o7NIYUrkM1l1BRoen
-	 HOrzZLfN4a/75e98Axi628ZwCTHiWGFhOBlmH6VeDGHX9mWpqy6he1qyiVuK8zEKFi
-	 0cwlrQoufnhr5N9qCbAnXYBZNq7UE4hbD9gfpaDw=
-Date: Wed, 18 Jun 2025 15:19:11 +0200
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Mark Brown <broonie@kernel.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev,
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
-	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
-	jonathanh@nvidia.com, f.fainelli@gmail.com,
-	sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
-	conor@kernel.org, hargar@microsoft.com,
-	Thomas =?iso-8859-1?Q?Wei=DFschuh?= <linux@weissschuh.net>,
-	Willy Tarreau <w@1wt.eu>
-Subject: Re: [PATCH 6.15 000/780] 6.15.3-rc1 review
-Message-ID: <2025061858-reproduce-revolving-cae0@gregkh>
-References: <20250617152451.485330293@linuxfoundation.org>
- <cc048abb-fbc0-4a79-b78a-90bfa3f8446d@sirena.org.uk>
+	s=arc-20240116; t=1750252910; c=relaxed/simple;
+	bh=RwNO66zeuarIR50f5lkI8wvvb1onf0eDqTgIb2LGNww=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=M6RKttr2Z9P7HWA6K07e+z4cMnvO2a6x+AP2BSFyARWj/kO+zBqIy4dMo2649nvKigOvhNx+W8yCTMI06CsQpJcad6zYI7mfeftexc7QAKYCJ/NfRF7RuicrzKPv125TaYY8H8UXc3TJEE29Baa/QZhJjSIUMl2JDZli/rQKEw0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=mrO1Xm61; arc=none smtp.client-ip=192.198.163.17
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1750252909; x=1781788909;
+  h=date:from:to:cc:subject:message-id:mime-version:
+   in-reply-to;
+  bh=RwNO66zeuarIR50f5lkI8wvvb1onf0eDqTgIb2LGNww=;
+  b=mrO1Xm61F9el+C3mh1ZM7CofOhhZk36HAIDHuEF1NDc0OhEYgq+k+cie
+   4hyHWhiyyb49Ifh8fpAi5DtTRWugRzIQxkkznIZ3x4Xm8x8A6V+JTu7gJ
+   EQXUkjjt9Hlr6N4P62Maxnfnvcp0leCma5iofvMTN0NvRzGO+7Yu6LLTR
+   mpKlRy1JCsxdvKae4/sXLWPnUEGrgPCuMPNXxFQcA8FqB4IA5Tq6yb6uc
+   czkUaOC0w97DJyYxvOM7W6/IRcvWkRfIsY7TYjIuJXFOS1SQzcAL/QuV6
+   BGu+vqqhD+US+j613c9bnv2ufW8uxanhFu6EDWWUZICJtjjrLLDGwpLEy
+   w==;
+X-CSE-ConnectionGUID: 7McQsXJNRsKWC2u7of6NUQ==
+X-CSE-MsgGUID: FUbMfKIMSFydszfelisifA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11468"; a="52389536"
+X-IronPort-AV: E=Sophos;i="6.16,246,1744095600"; 
+   d="scan'208";a="52389536"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Jun 2025 06:21:48 -0700
+X-CSE-ConnectionGUID: ZOQbAmVZTNaSi/JbF39AjA==
+X-CSE-MsgGUID: 2DR7lx1wShWiBkDqXpMqrQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.16,246,1744095600"; 
+   d="scan'208";a="149361029"
+Received: from lkp-server01.sh.intel.com (HELO e8142ee1dce2) ([10.239.97.150])
+  by orviesa006.jf.intel.com with ESMTP; 18 Jun 2025 06:21:47 -0700
+Received: from kbuild by e8142ee1dce2 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1uRsjY-000JoQ-2X;
+	Wed, 18 Jun 2025 13:21:44 +0000
+Date: Wed, 18 Jun 2025 21:21:27 +0800
+From: kernel test robot <lkp@intel.com>
+To: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
+Cc: stable@vger.kernel.org, oe-kbuild-all@lists.linux.dev
+Subject: Re: [PATCH 2/2] drm/i915/snps_hdmi_pll: Use clamp() instead of
+ max(min())
+Message-ID: <aFK9V7_jQE9aExj9@d8702eadd420>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <cc048abb-fbc0-4a79-b78a-90bfa3f8446d@sirena.org.uk>
+In-Reply-To: <20250618130951.1596587-3-ankit.k.nautiyal@intel.com>
 
-On Wed, Jun 18, 2025 at 12:58:00PM +0100, Mark Brown wrote:
-> On Tue, Jun 17, 2025 at 05:15:08PM +0200, Greg Kroah-Hartman wrote:
-> > This is the start of the stable review cycle for the 6.15.3 release.
-> > There are 780 patches in this series, all will be posted as a response
-> > to this one.  If anyone has any issues with these being applied, please
-> > let me know.
-> 
-> This breaks the build of the arm64 selftests due to a change in nolibc,
-> it appears that "tools/nolibc: properly align dirent buffer" is missing
-> some dependency:
-> 
-> aarch64-linux-gnu-gcc -fno-asynchronous-unwind-tables -fno-ident -s -Os -nostdlib \
-> 	-include ../../../../include/nolibc/nolibc.h -I../..\
-> 	-static -ffreestanding -Wall za-fork.c /build/stage/build-work/kselftest/arm64/fp/za-fork-asm.o -o /build/stage/build-work/kselftest/arm64/fp/za-fork
-> In file included from ./../../../../include/nolibc/nolibc.h:107,
->                  from <command-line>:
-> ./../../../../include/nolibc/dirent.h: In function ‘readdir_r’:
-> ./../../../../include/nolibc/dirent.h:62:64: error: expected ‘=’, ‘,’, ‘;’, ‘asm’ or ‘__attribute__’ before ‘__nolibc_aligned_as’
->    62 |         char buf[sizeof(struct linux_dirent64) + NAME_MAX + 1] __nolibc_aligned_as(struct linux_dirent64);
->       |                                                                ^~~~~~~~~~~~~~~~~~~
-> ./../../../../include/nolibc/dirent.h:62:64: error: implicit declaration of function ‘__nolibc_aligned_as’ [-Wimplicit-function-declaration]
-> ./../../../../include/nolibc/dirent.h:62:84: error: expected expression before ‘struct’
->    62 |         char buf[sizeof(struct linux_dirent64) + NAME_MAX + 1] __nolibc_aligned_as(struct linux_dirent64);
->       |                                                                                    ^~~~~~
-> ./../../../../include/nolibc/dirent.h:63:47: error: ‘buf’ undeclared (first use in this function)
->    63 |         struct linux_dirent64 *ldir = (void *)buf;
->       |                                               ^~~
-> ./../../../../include/nolibc/dirent.h:63:47: note: each undeclared identifier is reported only once for each function it appears in
+Hi,
 
-Thanks for the report, I'll go drop all nolibc patches from the queues
-for now.
+Thanks for your patch.
 
-greg k-h
+FYI: kernel test robot notices the stable kernel rule is not satisfied.
+
+The check is based on https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html#option-1
+
+Rule: add the tag "Cc: stable@vger.kernel.org" in the sign-off area to have the patch automatically included in the stable tree.
+Subject: [PATCH 2/2] drm/i915/snps_hdmi_pll: Use clamp() instead of max(min())
+Link: https://lore.kernel.org/stable/20250618130951.1596587-3-ankit.k.nautiyal%40intel.com
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
+
+
 
 
