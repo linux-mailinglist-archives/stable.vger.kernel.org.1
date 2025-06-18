@@ -1,200 +1,173 @@
-Return-Path: <stable+bounces-154681-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-154682-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A379ADF002
-	for <lists+stable@lfdr.de>; Wed, 18 Jun 2025 16:45:20 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 93FF0ADF0A0
+	for <lists+stable@lfdr.de>; Wed, 18 Jun 2025 17:03:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F39FC16EE35
-	for <lists+stable@lfdr.de>; Wed, 18 Jun 2025 14:45:18 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2824C3BB806
+	for <lists+stable@lfdr.de>; Wed, 18 Jun 2025 14:59:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E909199947;
-	Wed, 18 Jun 2025 14:45:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2FED12EE60A;
+	Wed, 18 Jun 2025 14:59:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ztOfbE7B"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gsS3jV6H"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lf1-f47.google.com (mail-lf1-f47.google.com [209.85.167.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81F14195FE8
-	for <stable@vger.kernel.org>; Wed, 18 Jun 2025 14:45:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DECF02EE5FA;
+	Wed, 18 Jun 2025 14:59:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750257912; cv=none; b=TrkobldN2a+49q7+ME2BIVocgL/Ntoq7+7t6rtSYJ65e6uw3ujv35US7Jlo+GOJEuSiQYToWaal+m2h7xTDCf+C6Nrzp0oyJOjzC21bpOS9qwVacQW9rf3lBXqadQgUmXlRMrxYT+k1B+vFdMZkI9ppCs0n0WB2sSdE5EZ1dlQ8=
+	t=1750258766; cv=none; b=Y8CKtCyQ0eKps+m8INz2twlHVr5L/TLPqyHuWgz13jr3JuBtEM/AjCmLAaN3gB9vDby9ujzTazGdP93Z+DrzA1P/YvderletT0BFvrhVb2I2Kjg4oSz1dUmyTu1iNG56bMknYOwhKqDoywmtXXWsaFMgseUqirnlYMIPALRQ3Vo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750257912; c=relaxed/simple;
-	bh=wFDJGOoYvxypvMpqpT4ZM8yTHl6scWUOtsqCWIeHNU8=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=B9fo5xX9+ZMypRFWumlR+mjLYLhI4FjUXHESDYmKiNcZIDmqVCrZoySJ+qASc4+uIYKctVIsV2dtFRPsxapFC4sOtur8D/GYSjWOQq+lDHYeyDYiWd68nx+c4FT+LowmDe9CWhWCGC9E2JyvQ8l8wEsjVwS44hh9jkrCmmDPR+A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=ztOfbE7B; arc=none smtp.client-ip=209.85.167.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Received: by mail-lf1-f47.google.com with SMTP id 2adb3069b0e04-553a5f2d321so8704e87.0
-        for <stable@vger.kernel.org>; Wed, 18 Jun 2025 07:45:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1750257908; x=1750862708; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=hgwogF8uqMbr2+utkBcdB+9XUE0/TMWHXyL3HiSuo4U=;
-        b=ztOfbE7BV6PqP1SZRntwrn1NAZ0bs4p/keOwkqgUHfydN0ecy5SdJhw4Kd2oelNamV
-         Ltf2ccSogNMs5dtKsPuDH1cCyvLSSA8oX00hBKHkHCCta5M2kzmBUk61rA4MbkJa+BCs
-         zZAml6AJkmUaB2yK1mN6FVodMhqvmJ4StM0A3ai/4lGYvB86Xim9aUpFGmnChtEflv5D
-         UqtaFM1XWpdQ9w/KOQ5dxd0xy6ADdFekIhPTkrimoJJLtosjahVhj6B0+Bgx7rA9FnWf
-         Bkg5XNPpIv4oP2f96wUlUOjY5VNaHabZXDXqGN3v+Dz0zhTHZGniVDFIkzPAhkL2lmmZ
-         SXQg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1750257908; x=1750862708;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=hgwogF8uqMbr2+utkBcdB+9XUE0/TMWHXyL3HiSuo4U=;
-        b=jRsBwz5UtZxaZMYx4CY3GAN4HHY08sOIuhYAot38Oyi+Iaiam3x4L0BbruwWsy89M2
-         ru0FqH2NHvuNtx9VhuSk+UG7sB75JCOdASAziaVinb/jwhWRDgPXFHkHDmJ8Swrc8ZAy
-         kWyGsOyiBYAplb5qxePxsPoNjrnAHqx+yE+tTvGTNIFL6GaqrKB0ABvcAtYTmrZ6LhkF
-         Sx+Mo4rgAPJ+SmECyjfinKrxeBe0V1TC9tRvCiNVsM3NIvOfdT8bO9U3LPMGzAleYDXG
-         T0PYGuuaNnT27jElpdqTetyupNLx36cqA1A/S+uvQhiFmTwSflJBACAIC47Cq3c8X71G
-         G58Q==
-X-Forwarded-Encrypted: i=1; AJvYcCUBhH686zncWRcmo5Lr7/pvWJAtjj6XNLknGQOTAUG+fyetGEBrH/g+DpbS81KIgk27MVEQQT8=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz2y8o3SRpCUb9+JWn/lcxd7FOJqTxbsxUG6Yir18qGdtKSdQT6
-	M9OjjcMNn4kMp/HcyzliC4sI5wtRPCKXdyO+8+wJ3WXLT7JZqYnriIlA3DLhg9MZskeQ5RSIXHy
-	+Uflly2H1zq3np/lnuAgAQCOaVdouc08IEOKTUO/j
-X-Gm-Gg: ASbGncvAx78TD29Tx7Zlf5dLEEdiVXBqAsW3xz94qQvFJUM6w9WUQB7rNRiDPlNC7wt
-	KWVHgKO0K5lpq94iYj/4nKgBwluZ/scFdHBzh95Ej4qXdk/fOxIOnVDLECmuFqs9fFVUCrsAFON
-	6Jky9r54/ljLWdP7kbKCtD4x2+fNkptPOr3wi8U/FQy43I
-X-Google-Smtp-Source: AGHT+IGsHULveGxM+Zja84HplaohcRZH+z1Ahxw+rjNmRssuHdQl/61J38I3+e2DEDA8rD3yf0Aeas3nTywrwhBEfyI=
-X-Received: by 2002:ac2:5deb:0:b0:553:50d2:5c20 with SMTP id
- 2adb3069b0e04-553b80b051cmr996457e87.6.1750257907321; Wed, 18 Jun 2025
- 07:45:07 -0700 (PDT)
+	s=arc-20240116; t=1750258766; c=relaxed/simple;
+	bh=cs1Db0BDfz/bQuqwYQJOMaP+w8CnoTTGki8npIoLIOE=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=gVL/Yb38flR1v8DZ2f2DBzvXpMgKMe+KtiLjmXdUoDnmX9S9genR8de8nHve25rLiQWT0rkKAn+N7xdfiqNB1rq3LpUaCW643g5EYokQvRq9055nT9uEj2Ao654h/z7ANvVaztVSwYKJJoWD+XAWpOFOG9lHIJU6iG2IFwRmGsI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gsS3jV6H; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 614B5C4CEE7;
+	Wed, 18 Jun 2025 14:59:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1750258765;
+	bh=cs1Db0BDfz/bQuqwYQJOMaP+w8CnoTTGki8npIoLIOE=;
+	h=From:To:Cc:Subject:Date:From;
+	b=gsS3jV6HFZ+H3A4EMbzUIxkGB7epfFYHqz4qyqxW7SygDAM5HJ6OHUDvITGR19z6O
+	 8QWT5wX43EijcvniFfIa4syGusXgkZc2MTQZpdBXYBGZjWms71eDk0QXL1yJBZbwjF
+	 DUQGKra8bnh1u6Qmvpb88740gu+tgmUyFgCvnOzptQzvkH8KDVpRqxzad2Xij4SaWZ
+	 vjiB7K5nD8ctXjAl+d1v1Y4hq8Jso7YjN0NP8w9So2ojV78KmkXF380vRYrRBFhPC7
+	 uxWDVbpfg/p81oiawEDZUVh4p6420sZ1CiZtprzMRkdiYNuc2LR444AqPGVUHFpBCi
+	 qM2L5e78i9z/A==
+From: Mario Limonciello <superm1@kernel.org>
+To: mario.limonciello@amd.com,
+	andreas.noever@gmail.com,
+	michael.jamet@intel.com,
+	westeri@kernel.org,
+	YehezkelShB@gmail.com
+Cc: stable@vger.kernel.org,
+	Alexander Kovacs <Alexander.Kovacs@amd.com>,
+	mika.westerberg@linux.intel.com,
+	linux-usb@vger.kernel.org
+Subject: [PATCH] thunderbolt: Fix wake on connect at runtime
+Date: Wed, 18 Jun 2025 09:59:10 -0500
+Message-ID: <20250618145911.3266251-1-superm1@kernel.org>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250617050844.1848232-1-khtsai@google.com> <20250617050844.1848232-2-khtsai@google.com>
- <8cbc5220-c993-44a1-b361-418b36a3f336@oss.qualcomm.com>
-In-Reply-To: <8cbc5220-c993-44a1-b361-418b36a3f336@oss.qualcomm.com>
-From: Kuen-Han Tsai <khtsai@google.com>
-Date: Wed, 18 Jun 2025 22:44:40 +0800
-X-Gm-Features: AX0GCFsDnAuqG_eBCE0NH5iSAwM0mK_YNKjBQDLgH6k-Y0wAmBs5AA-kujp4xNk
-Message-ID: <CAKzKK0p0fx4bsqVVPWjJQxG0sEHee0b0OPE7dqCb7cbW7+XkgA@mail.gmail.com>
-Subject: Re: [PATCH v2 2/2] usb: gadget: u_serial: Fix race condition in TTY wakeup
-To: Prashanth K <prashanth.k@oss.qualcomm.com>
-Cc: gregkh@linuxfoundation.org, hulianqin@vivo.com, 
-	krzysztof.kozlowski@linaro.org, mwalle@kernel.org, jirislaby@kernel.org, 
-	linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Wed, Jun 18, 2025 at 8:26=E2=80=AFPM Prashanth K
-<prashanth.k@oss.qualcomm.com> wrote:
->
->
->
-> On 6/17/2025 10:37 AM, Kuen-Han Tsai wrote:
-> > A race condition occurs when gs_start_io() calls either gs_start_rx() o=
-r
-> > gs_start_tx(), as those functions briefly drop the port_lock for
-> > usb_ep_queue(). This allows gs_close() and gserial_disconnect() to clea=
-r
-> > port.tty and port_usb, respectively.
-> >
-> > Use the null-safe TTY Port helper function to wake up TTY.
-> >
-> > Example
-> >   CPU1:                             CPU2:
-> >   gserial_connect() // lock
-> >                             gs_close() // await lock
-> >   gs_start_rx()     // unlock
-> >   usb_ep_queue()
-> >                             gs_close() // lock, reset port.tty and unlo=
-ck
-> >   gs_start_rx()     // lock
-> >   tty_wakeup()      // NPE
-> >
-> > Fixes: 35f95fd7f234 ("TTY: usb/u_serial, use tty from tty_port")
-> > Cc: stable@vger.kernel.org
-> > Signed-off-by: Kuen-Han Tsai <khtsai@google.com>
-> > ---
->
-> Reviewed-by: Prashanth K <prashanth.k@oss.qualcomm.com>
->
-> > v2:
-> > - Move the example up to the changelog
-> >
-> > Traces:
-> > [   51.494375][  T278] ttyGS1: shutdown
-> > [   51.494817][  T269] android_work: sent uevent USB_STATE=3DDISCONNECT=
-ED
-> > [   52.115792][ T1508] usb: [dm_bind] generic ttyGS1: super speed IN/ep=
-1in OUT/ep1out
-> > [   52.516288][ T1026] android_work: sent uevent USB_STATE=3DCONNECTED
-> > [   52.551667][ T1533] gserial_connect: start ttyGS1
-> > [   52.565634][ T1533] [khtsai] enter gs_start_io, ttyGS1, port->port.t=
-ty=3D0000000046bd4060
-> > [   52.565671][ T1533] [khtsai] gs_start_rx, unlock port ttyGS1
-> > [   52.591552][ T1533] [khtsai] gs_start_rx, lock port ttyGS1
-> > [   52.619901][ T1533] [khtsai] gs_start_rx, unlock port ttyGS1
-> > [   52.638659][ T1325] [khtsai] gs_close, lock port ttyGS1
-> > [   52.656842][ T1325] gs_close: ttyGS1 (0000000046bd4060,00000000be975=
-0a5) ...
-> > [   52.683005][ T1325] [khtsai] gs_close, clear ttyGS1
-> > [   52.683007][ T1325] gs_close: ttyGS1 (0000000046bd4060,00000000be975=
-0a5) done!
-> > [   52.708643][ T1325] [khtsai] gs_close, unlock port ttyGS1
-> > [   52.747592][ T1533] [khtsai] gs_start_rx, lock port ttyGS1
-> > [   52.747616][ T1533] [khtsai] gs_start_io, ttyGS1, going to call tty_=
-wakeup(), port->port.tty=3D0000000000000000
-> > [   52.747629][ T1533] Unable to handle kernel NULL pointer dereference=
- at virtual address 00000000000001f8
-> > ---
-> >  drivers/usb/gadget/function/u_serial.c | 6 +++---
-> >  1 file changed, 3 insertions(+), 3 deletions(-)
-> >
-> > diff --git a/drivers/usb/gadget/function/u_serial.c b/drivers/usb/gadge=
-t/function/u_serial.c
-> > index c043bdc30d8a..540dc5ab96fc 100644
-> > --- a/drivers/usb/gadget/function/u_serial.c
-> > +++ b/drivers/usb/gadget/function/u_serial.c
-> > @@ -295,8 +295,8 @@ __acquires(&port->port_lock)
-> >                       break;
-> >       }
-> >
-> > -     if (do_tty_wake && port->port.tty)
-> > -             tty_wakeup(port->port.tty);
-> > +     if (do_tty_wake)
-> > +             tty_port_tty_wakeup(&port->port);
-> >       return status;
-> >  }
-> >
-> > @@ -574,7 +574,7 @@ static int gs_start_io(struct gs_port *port)
-> >               gs_start_tx(port);
-> >               /* Unblock any pending writes into our circular buffer, i=
-n case
-> >                * we didn't in gs_start_tx() */
-> > -             tty_wakeup(port->port.tty);
->
-> Just curious, since this is already under lock, checking for
-> port->port.tty would have also helped, right? Anyways looks like
-> tty_port_tty_wakeup is better.
+From: Mario Limonciello <mario.limonciello@amd.com>
 
-You're right, adding a null check for port->port.tty also solves the
-problem. I actually submitted that exact solution last year, but it
-was rejected.
+commit 1a760d10ded37 ("thunderbolt: Fix a logic error in wake on connect")
+fixated on the USB4 port sysfs wakeup file not working properly to control
+policy, but it had an unintended side effect that the sysfs file controls
+policy both at runtime and at suspend time. The sysfs file is supposed to
+only control behavior while system is suspended.
 
-Link: https://lore.kernel.org/linux-usb/20240116141801.396398-1-khtsai@goog=
-le.com/
+Pass whether programming a port for runtime into usb4_switch_set_wake()
+and if runtime then ignore the value in the sysfs file.
 
->
-> > +             tty_port_tty_wakeup(&port->port);
-> >       } else {
-> >               /* Free reqs only if we are still connected */
-> >               if (port->port_usb) {
-> > --
-> > 2.50.0.rc2.692.g299adb8693-goog
-> >
+Cc: stable@vger.kernel.org
+Reported-by: Alexander Kovacs <Alexander.Kovacs@amd.com>
+Tested-by: Alexander Kovacs <Alexander.Kovacs@amd.com>
+Fixes: 1a760d10ded37 ("thunderbolt: Fix a logic error in wake on connect")
+Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+---
+ drivers/thunderbolt/switch.c | 8 ++++----
+ drivers/thunderbolt/tb.h     | 2 +-
+ drivers/thunderbolt/usb4.c   | 9 ++++-----
+ 3 files changed, 9 insertions(+), 10 deletions(-)
+
+diff --git a/drivers/thunderbolt/switch.c b/drivers/thunderbolt/switch.c
+index 28febb95f8fa1..e9809fb57c354 100644
+--- a/drivers/thunderbolt/switch.c
++++ b/drivers/thunderbolt/switch.c
+@@ -3437,7 +3437,7 @@ void tb_sw_set_unplugged(struct tb_switch *sw)
+ 	}
+ }
+ 
+-static int tb_switch_set_wake(struct tb_switch *sw, unsigned int flags)
++static int tb_switch_set_wake(struct tb_switch *sw, unsigned int flags, bool runtime)
+ {
+ 	if (flags)
+ 		tb_sw_dbg(sw, "enabling wakeup: %#x\n", flags);
+@@ -3445,7 +3445,7 @@ static int tb_switch_set_wake(struct tb_switch *sw, unsigned int flags)
+ 		tb_sw_dbg(sw, "disabling wakeup\n");
+ 
+ 	if (tb_switch_is_usb4(sw))
+-		return usb4_switch_set_wake(sw, flags);
++		return usb4_switch_set_wake(sw, flags, runtime);
+ 	return tb_lc_set_wake(sw, flags);
+ }
+ 
+@@ -3521,7 +3521,7 @@ int tb_switch_resume(struct tb_switch *sw, bool runtime)
+ 		tb_switch_check_wakes(sw);
+ 
+ 	/* Disable wakes */
+-	tb_switch_set_wake(sw, 0);
++	tb_switch_set_wake(sw, 0, true);
+ 
+ 	err = tb_switch_tmu_init(sw);
+ 	if (err)
+@@ -3603,7 +3603,7 @@ void tb_switch_suspend(struct tb_switch *sw, bool runtime)
+ 		flags |= TB_WAKE_ON_USB4 | TB_WAKE_ON_USB3 | TB_WAKE_ON_PCIE;
+ 	}
+ 
+-	tb_switch_set_wake(sw, flags);
++	tb_switch_set_wake(sw, flags, runtime);
+ 
+ 	if (tb_switch_is_usb4(sw))
+ 		usb4_switch_set_sleep(sw);
+diff --git a/drivers/thunderbolt/tb.h b/drivers/thunderbolt/tb.h
+index 87afd5a7c504b..f503bad864130 100644
+--- a/drivers/thunderbolt/tb.h
++++ b/drivers/thunderbolt/tb.h
+@@ -1317,7 +1317,7 @@ int usb4_switch_read_uid(struct tb_switch *sw, u64 *uid);
+ int usb4_switch_drom_read(struct tb_switch *sw, unsigned int address, void *buf,
+ 			  size_t size);
+ bool usb4_switch_lane_bonding_possible(struct tb_switch *sw);
+-int usb4_switch_set_wake(struct tb_switch *sw, unsigned int flags);
++int usb4_switch_set_wake(struct tb_switch *sw, unsigned int flags, bool runtime);
+ int usb4_switch_set_sleep(struct tb_switch *sw);
+ int usb4_switch_nvm_sector_size(struct tb_switch *sw);
+ int usb4_switch_nvm_read(struct tb_switch *sw, unsigned int address, void *buf,
+diff --git a/drivers/thunderbolt/usb4.c b/drivers/thunderbolt/usb4.c
+index fce3c0f2354a7..e7d8cf0c1da1b 100644
+--- a/drivers/thunderbolt/usb4.c
++++ b/drivers/thunderbolt/usb4.c
+@@ -406,7 +406,7 @@ bool usb4_switch_lane_bonding_possible(struct tb_switch *sw)
+  *
+  * Enables/disables router to wake up from sleep.
+  */
+-int usb4_switch_set_wake(struct tb_switch *sw, unsigned int flags)
++int usb4_switch_set_wake(struct tb_switch *sw, unsigned int flags, bool runtime)
+ {
+ 	struct usb4_port *usb4;
+ 	struct tb_port *port;
+@@ -438,13 +438,12 @@ int usb4_switch_set_wake(struct tb_switch *sw, unsigned int flags)
+ 			val |= PORT_CS_19_WOU4;
+ 		} else {
+ 			bool configured = val & PORT_CS_19_PC;
++			bool wakeup = runtime || device_may_wakeup(&usb4->dev);
+ 			usb4 = port->usb4;
+ 
+-			if (((flags & TB_WAKE_ON_CONNECT) &&
+-			      device_may_wakeup(&usb4->dev)) && !configured)
++			if ((flags & TB_WAKE_ON_CONNECT) && wakeup && !configured)
+ 				val |= PORT_CS_19_WOC;
+-			if (((flags & TB_WAKE_ON_DISCONNECT) &&
+-			      device_may_wakeup(&usb4->dev)) && configured)
++			if ((flags & TB_WAKE_ON_DISCONNECT) && wakeup && configured)
+ 				val |= PORT_CS_19_WOD;
+ 			if ((flags & TB_WAKE_ON_USB4) && configured)
+ 				val |= PORT_CS_19_WOU4;
+-- 
+2.43.0
+
 
