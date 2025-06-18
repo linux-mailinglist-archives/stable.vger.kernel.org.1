@@ -1,111 +1,200 @@
-Return-Path: <stable+bounces-154680-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-154681-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C9DC2ADEEFB
-	for <lists+stable@lfdr.de>; Wed, 18 Jun 2025 16:15:26 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9A379ADF002
+	for <lists+stable@lfdr.de>; Wed, 18 Jun 2025 16:45:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 050E41BC270F
-	for <lists+stable@lfdr.de>; Wed, 18 Jun 2025 14:15:33 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F39FC16EE35
+	for <lists+stable@lfdr.de>; Wed, 18 Jun 2025 14:45:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 299472EAD1A;
-	Wed, 18 Jun 2025 14:15:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E909199947;
+	Wed, 18 Jun 2025 14:45:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=weissschuh.net header.i=@weissschuh.net header.b="R6eKWMt0"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ztOfbE7B"
 X-Original-To: stable@vger.kernel.org
-Received: from todd.t-8ch.de (todd.t-8ch.de [159.69.126.157])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f47.google.com (mail-lf1-f47.google.com [209.85.167.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 495962EAB93;
-	Wed, 18 Jun 2025 14:15:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.69.126.157
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81F14195FE8
+	for <stable@vger.kernel.org>; Wed, 18 Jun 2025 14:45:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750256113; cv=none; b=aQeuiRJxR4nZU+A1Clg58rX0SQv1wDY1ieN2Hs3p1o+vfsWvztlIhBkqtLFH6+6+XI6Nq1/wLfIO5u+a3behQ8BQfuNmPTm/J8Ejzq52u8+RhBJ9EVISLYbPW6+pdLkjZPtoDMT0zvxrgttZ3lErnpRg5wqqn19OgunnuB8pbj8=
+	t=1750257912; cv=none; b=TrkobldN2a+49q7+ME2BIVocgL/Ntoq7+7t6rtSYJ65e6uw3ujv35US7Jlo+GOJEuSiQYToWaal+m2h7xTDCf+C6Nrzp0oyJOjzC21bpOS9qwVacQW9rf3lBXqadQgUmXlRMrxYT+k1B+vFdMZkI9ppCs0n0WB2sSdE5EZ1dlQ8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750256113; c=relaxed/simple;
-	bh=EKTviWYqLv1yK2WFaMCAtqpkvPv1cokIZ4A5bpwZ5C8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=M9opGkORw1NsNdA+wzJ4GA+Fj8viKnInOlXpoMr6bbTpuEVPCUoE1Ix5NGaO/H/SL71sHYAS6txqk83RXEgVqQGw1s2K1xbIzgl+M2wioqGPhroEno5kxNDPfVuf6c6zb3fLTdXXQ8CW1ikkQaJbvwU2GvF/XamIxXd4/D/W/AA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=weissschuh.net; spf=pass smtp.mailfrom=weissschuh.net; dkim=pass (1024-bit key) header.d=weissschuh.net header.i=@weissschuh.net header.b=R6eKWMt0; arc=none smtp.client-ip=159.69.126.157
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=weissschuh.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=weissschuh.net
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=weissschuh.net;
-	s=mail; t=1750256110;
-	bh=EKTviWYqLv1yK2WFaMCAtqpkvPv1cokIZ4A5bpwZ5C8=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=R6eKWMt09qQIp/guJ1Mv/MBoou/bNRlTC0Lve0JDxB6N5E0UwBMbi+Pe5dh+f2M/L
-	 jWaYyw/CYzgBkoIR6RbxWHvYRcxulhlOxqEKWGoJisPuCKy1ihDx3Irgiu8I6ahhEo
-	 qSNV6LJ/pHB4/jTC+lW5200F4EXJgZKZb+sk6pnA=
-Date: Wed, 18 Jun 2025 16:15:09 +0200
-From: Thomas =?utf-8?Q?Wei=C3=9Fschuh?= <linux@weissschuh.net>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Mark Brown <broonie@kernel.org>, stable@vger.kernel.org, 
-	patches@lists.linux.dev, linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org, 
-	lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com, f.fainelli@gmail.com, 
-	sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org, 
-	hargar@microsoft.com, Willy Tarreau <w@1wt.eu>
-Subject: Re: [PATCH 6.15 000/780] 6.15.3-rc1 review
-Message-ID: <1081af30-1273-4a9a-a864-f59f1cb54fd1@t-8ch.de>
-References: <20250617152451.485330293@linuxfoundation.org>
- <cc048abb-fbc0-4a79-b78a-90bfa3f8446d@sirena.org.uk>
- <2025061858-reproduce-revolving-cae0@gregkh>
+	s=arc-20240116; t=1750257912; c=relaxed/simple;
+	bh=wFDJGOoYvxypvMpqpT4ZM8yTHl6scWUOtsqCWIeHNU8=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=B9fo5xX9+ZMypRFWumlR+mjLYLhI4FjUXHESDYmKiNcZIDmqVCrZoySJ+qASc4+uIYKctVIsV2dtFRPsxapFC4sOtur8D/GYSjWOQq+lDHYeyDYiWd68nx+c4FT+LowmDe9CWhWCGC9E2JyvQ8l8wEsjVwS44hh9jkrCmmDPR+A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=ztOfbE7B; arc=none smtp.client-ip=209.85.167.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Received: by mail-lf1-f47.google.com with SMTP id 2adb3069b0e04-553a5f2d321so8704e87.0
+        for <stable@vger.kernel.org>; Wed, 18 Jun 2025 07:45:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1750257908; x=1750862708; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=hgwogF8uqMbr2+utkBcdB+9XUE0/TMWHXyL3HiSuo4U=;
+        b=ztOfbE7BV6PqP1SZRntwrn1NAZ0bs4p/keOwkqgUHfydN0ecy5SdJhw4Kd2oelNamV
+         Ltf2ccSogNMs5dtKsPuDH1cCyvLSSA8oX00hBKHkHCCta5M2kzmBUk61rA4MbkJa+BCs
+         zZAml6AJkmUaB2yK1mN6FVodMhqvmJ4StM0A3ai/4lGYvB86Xim9aUpFGmnChtEflv5D
+         UqtaFM1XWpdQ9w/KOQ5dxd0xy6ADdFekIhPTkrimoJJLtosjahVhj6B0+Bgx7rA9FnWf
+         Bkg5XNPpIv4oP2f96wUlUOjY5VNaHabZXDXqGN3v+Dz0zhTHZGniVDFIkzPAhkL2lmmZ
+         SXQg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1750257908; x=1750862708;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=hgwogF8uqMbr2+utkBcdB+9XUE0/TMWHXyL3HiSuo4U=;
+        b=jRsBwz5UtZxaZMYx4CY3GAN4HHY08sOIuhYAot38Oyi+Iaiam3x4L0BbruwWsy89M2
+         ru0FqH2NHvuNtx9VhuSk+UG7sB75JCOdASAziaVinb/jwhWRDgPXFHkHDmJ8Swrc8ZAy
+         kWyGsOyiBYAplb5qxePxsPoNjrnAHqx+yE+tTvGTNIFL6GaqrKB0ABvcAtYTmrZ6LhkF
+         Sx+Mo4rgAPJ+SmECyjfinKrxeBe0V1TC9tRvCiNVsM3NIvOfdT8bO9U3LPMGzAleYDXG
+         T0PYGuuaNnT27jElpdqTetyupNLx36cqA1A/S+uvQhiFmTwSflJBACAIC47Cq3c8X71G
+         G58Q==
+X-Forwarded-Encrypted: i=1; AJvYcCUBhH686zncWRcmo5Lr7/pvWJAtjj6XNLknGQOTAUG+fyetGEBrH/g+DpbS81KIgk27MVEQQT8=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz2y8o3SRpCUb9+JWn/lcxd7FOJqTxbsxUG6Yir18qGdtKSdQT6
+	M9OjjcMNn4kMp/HcyzliC4sI5wtRPCKXdyO+8+wJ3WXLT7JZqYnriIlA3DLhg9MZskeQ5RSIXHy
+	+Uflly2H1zq3np/lnuAgAQCOaVdouc08IEOKTUO/j
+X-Gm-Gg: ASbGncvAx78TD29Tx7Zlf5dLEEdiVXBqAsW3xz94qQvFJUM6w9WUQB7rNRiDPlNC7wt
+	KWVHgKO0K5lpq94iYj/4nKgBwluZ/scFdHBzh95Ej4qXdk/fOxIOnVDLECmuFqs9fFVUCrsAFON
+	6Jky9r54/ljLWdP7kbKCtD4x2+fNkptPOr3wi8U/FQy43I
+X-Google-Smtp-Source: AGHT+IGsHULveGxM+Zja84HplaohcRZH+z1Ahxw+rjNmRssuHdQl/61J38I3+e2DEDA8rD3yf0Aeas3nTywrwhBEfyI=
+X-Received: by 2002:ac2:5deb:0:b0:553:50d2:5c20 with SMTP id
+ 2adb3069b0e04-553b80b051cmr996457e87.6.1750257907321; Wed, 18 Jun 2025
+ 07:45:07 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <2025061858-reproduce-revolving-cae0@gregkh>
+References: <20250617050844.1848232-1-khtsai@google.com> <20250617050844.1848232-2-khtsai@google.com>
+ <8cbc5220-c993-44a1-b361-418b36a3f336@oss.qualcomm.com>
+In-Reply-To: <8cbc5220-c993-44a1-b361-418b36a3f336@oss.qualcomm.com>
+From: Kuen-Han Tsai <khtsai@google.com>
+Date: Wed, 18 Jun 2025 22:44:40 +0800
+X-Gm-Features: AX0GCFsDnAuqG_eBCE0NH5iSAwM0mK_YNKjBQDLgH6k-Y0wAmBs5AA-kujp4xNk
+Message-ID: <CAKzKK0p0fx4bsqVVPWjJQxG0sEHee0b0OPE7dqCb7cbW7+XkgA@mail.gmail.com>
+Subject: Re: [PATCH v2 2/2] usb: gadget: u_serial: Fix race condition in TTY wakeup
+To: Prashanth K <prashanth.k@oss.qualcomm.com>
+Cc: gregkh@linuxfoundation.org, hulianqin@vivo.com, 
+	krzysztof.kozlowski@linaro.org, mwalle@kernel.org, jirislaby@kernel.org, 
+	linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 2025-06-18 15:19:11+0200, Greg Kroah-Hartman wrote:
-> On Wed, Jun 18, 2025 at 12:58:00PM +0100, Mark Brown wrote:
-> > On Tue, Jun 17, 2025 at 05:15:08PM +0200, Greg Kroah-Hartman wrote:
-> > > This is the start of the stable review cycle for the 6.15.3 release.
-> > > There are 780 patches in this series, all will be posted as a response
-> > > to this one.  If anyone has any issues with these being applied, please
-> > > let me know.
-> > 
-> > This breaks the build of the arm64 selftests due to a change in nolibc,
-> > it appears that "tools/nolibc: properly align dirent buffer" is missing
-> > some dependency:
-> > 
-> > aarch64-linux-gnu-gcc -fno-asynchronous-unwind-tables -fno-ident -s -Os -nostdlib \
-> > 	-include ../../../../include/nolibc/nolibc.h -I../..\
-> > 	-static -ffreestanding -Wall za-fork.c /build/stage/build-work/kselftest/arm64/fp/za-fork-asm.o -o /build/stage/build-work/kselftest/arm64/fp/za-fork
-> > In file included from ./../../../../include/nolibc/nolibc.h:107,
-> >                  from <command-line>:
-> > ./../../../../include/nolibc/dirent.h: In function ‘readdir_r’:
-> > ./../../../../include/nolibc/dirent.h:62:64: error: expected ‘=’, ‘,’, ‘;’, ‘asm’ or ‘__attribute__’ before ‘__nolibc_aligned_as’
-> >    62 |         char buf[sizeof(struct linux_dirent64) + NAME_MAX + 1] __nolibc_aligned_as(struct linux_dirent64);
-> >       |                                                                ^~~~~~~~~~~~~~~~~~~
-> > ./../../../../include/nolibc/dirent.h:62:64: error: implicit declaration of function ‘__nolibc_aligned_as’ [-Wimplicit-function-declaration]
-> > ./../../../../include/nolibc/dirent.h:62:84: error: expected expression before ‘struct’
-> >    62 |         char buf[sizeof(struct linux_dirent64) + NAME_MAX + 1] __nolibc_aligned_as(struct linux_dirent64);
-> >       |                                                                                    ^~~~~~
-> > ./../../../../include/nolibc/dirent.h:63:47: error: ‘buf’ undeclared (first use in this function)
-> >    63 |         struct linux_dirent64 *ldir = (void *)buf;
-> >       |                                               ^~~
-> > ./../../../../include/nolibc/dirent.h:63:47: note: each undeclared identifier is reported only once for each function it appears in
-> 
-> Thanks for the report, I'll go drop all nolibc patches from the queues
-> for now.
+On Wed, Jun 18, 2025 at 8:26=E2=80=AFPM Prashanth K
+<prashanth.k@oss.qualcomm.com> wrote:
+>
+>
+>
+> On 6/17/2025 10:37 AM, Kuen-Han Tsai wrote:
+> > A race condition occurs when gs_start_io() calls either gs_start_rx() o=
+r
+> > gs_start_tx(), as those functions briefly drop the port_lock for
+> > usb_ep_queue(). This allows gs_close() and gserial_disconnect() to clea=
+r
+> > port.tty and port_usb, respectively.
+> >
+> > Use the null-safe TTY Port helper function to wake up TTY.
+> >
+> > Example
+> >   CPU1:                             CPU2:
+> >   gserial_connect() // lock
+> >                             gs_close() // await lock
+> >   gs_start_rx()     // unlock
+> >   usb_ep_queue()
+> >                             gs_close() // lock, reset port.tty and unlo=
+ck
+> >   gs_start_rx()     // lock
+> >   tty_wakeup()      // NPE
+> >
+> > Fixes: 35f95fd7f234 ("TTY: usb/u_serial, use tty from tty_port")
+> > Cc: stable@vger.kernel.org
+> > Signed-off-by: Kuen-Han Tsai <khtsai@google.com>
+> > ---
+>
+> Reviewed-by: Prashanth K <prashanth.k@oss.qualcomm.com>
+>
+> > v2:
+> > - Move the example up to the changelog
+> >
+> > Traces:
+> > [   51.494375][  T278] ttyGS1: shutdown
+> > [   51.494817][  T269] android_work: sent uevent USB_STATE=3DDISCONNECT=
+ED
+> > [   52.115792][ T1508] usb: [dm_bind] generic ttyGS1: super speed IN/ep=
+1in OUT/ep1out
+> > [   52.516288][ T1026] android_work: sent uevent USB_STATE=3DCONNECTED
+> > [   52.551667][ T1533] gserial_connect: start ttyGS1
+> > [   52.565634][ T1533] [khtsai] enter gs_start_io, ttyGS1, port->port.t=
+ty=3D0000000046bd4060
+> > [   52.565671][ T1533] [khtsai] gs_start_rx, unlock port ttyGS1
+> > [   52.591552][ T1533] [khtsai] gs_start_rx, lock port ttyGS1
+> > [   52.619901][ T1533] [khtsai] gs_start_rx, unlock port ttyGS1
+> > [   52.638659][ T1325] [khtsai] gs_close, lock port ttyGS1
+> > [   52.656842][ T1325] gs_close: ttyGS1 (0000000046bd4060,00000000be975=
+0a5) ...
+> > [   52.683005][ T1325] [khtsai] gs_close, clear ttyGS1
+> > [   52.683007][ T1325] gs_close: ttyGS1 (0000000046bd4060,00000000be975=
+0a5) done!
+> > [   52.708643][ T1325] [khtsai] gs_close, unlock port ttyGS1
+> > [   52.747592][ T1533] [khtsai] gs_start_rx, lock port ttyGS1
+> > [   52.747616][ T1533] [khtsai] gs_start_io, ttyGS1, going to call tty_=
+wakeup(), port->port.tty=3D0000000000000000
+> > [   52.747629][ T1533] Unable to handle kernel NULL pointer dereference=
+ at virtual address 00000000000001f8
+> > ---
+> >  drivers/usb/gadget/function/u_serial.c | 6 +++---
+> >  1 file changed, 3 insertions(+), 3 deletions(-)
+> >
+> > diff --git a/drivers/usb/gadget/function/u_serial.c b/drivers/usb/gadge=
+t/function/u_serial.c
+> > index c043bdc30d8a..540dc5ab96fc 100644
+> > --- a/drivers/usb/gadget/function/u_serial.c
+> > +++ b/drivers/usb/gadget/function/u_serial.c
+> > @@ -295,8 +295,8 @@ __acquires(&port->port_lock)
+> >                       break;
+> >       }
+> >
+> > -     if (do_tty_wake && port->port.tty)
+> > -             tty_wakeup(port->port.tty);
+> > +     if (do_tty_wake)
+> > +             tty_port_tty_wakeup(&port->port);
+> >       return status;
+> >  }
+> >
+> > @@ -574,7 +574,7 @@ static int gs_start_io(struct gs_port *port)
+> >               gs_start_tx(port);
+> >               /* Unblock any pending writes into our circular buffer, i=
+n case
+> >                * we didn't in gs_start_tx() */
+> > -             tty_wakeup(port->port.tty);
+>
+> Just curious, since this is already under lock, checking for
+> port->port.tty would have also helped, right? Anyways looks like
+> tty_port_tty_wakeup is better.
 
-Thanks.
+You're right, adding a null check for port->port.tty also solves the
+problem. I actually submitted that exact solution last year, but it
+was rejected.
 
-Shouldn't the bots apply prerequisite patches from the series automatically?
-This patch comes from [0] and the prerequisite is in there.
+Link: https://lore.kernel.org/linux-usb/20240116141801.396398-1-khtsai@goog=
+le.com/
 
-Also all nolibc patches which should go to stable are tagged as such.
-Can you configure the bots not to pick up any nolibc patches automatically?
-
-[0] https://lore.kernel.org/lkml/20250419-nolibc-ubsan-v2-0-060b8a016917@weissschuh.net/
-
-
-Thomas
+>
+> > +             tty_port_tty_wakeup(&port->port);
+> >       } else {
+> >               /* Free reqs only if we are still connected */
+> >               if (port->port_usb) {
+> > --
+> > 2.50.0.rc2.692.g299adb8693-goog
+> >
 
