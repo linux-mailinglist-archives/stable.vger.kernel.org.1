@@ -1,223 +1,357 @@
-Return-Path: <stable+bounces-154689-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-154690-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F4042ADF363
-	for <lists+stable@lfdr.de>; Wed, 18 Jun 2025 19:05:05 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5F835ADF398
+	for <lists+stable@lfdr.de>; Wed, 18 Jun 2025 19:18:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B2CEC3A5153
-	for <lists+stable@lfdr.de>; Wed, 18 Jun 2025 17:04:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 77798400067
+	for <lists+stable@lfdr.de>; Wed, 18 Jun 2025 17:17:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B5612EF9B0;
-	Wed, 18 Jun 2025 17:04:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C8BC2F0042;
+	Wed, 18 Jun 2025 17:17:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Q3YHtCZb"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="BBMXDw77"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qk1-f178.google.com (mail-qk1-f178.google.com [209.85.222.178])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48B1427F007
-	for <stable@vger.kernel.org>; Wed, 18 Jun 2025 17:04:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 482602ED174
+	for <stable@vger.kernel.org>; Wed, 18 Jun 2025 17:17:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750266297; cv=none; b=CuwxMd7/8+gCMhuGjQkTjNUHE2eXiDSWZSCGNNfdQDALib0AFNztSQiLTsKut/PTJeLOvBavm6xB1pAXQAXr9XBHjQrjhepz9MU4+Uit45YGgISoFZwlT6tOXrdVqtAf4izNWLUJoDxqXxvM53eWt4U3OQV2P69A0K1SZNh6z7k=
+	t=1750267064; cv=none; b=dTE4S7j3yliCnNoLt7/tiZUhAz5KxJF9hqai8GbvTpbjQ8nBNY70RTBih5jl5RyMbSAG9WHfSzWjipUNrTCVwaDp4oKlCppmRQ0/HceA6ha1tFp1OSutG29E8fVmuxlFqtRD19MEZeOGBjnAZPnm9OEJggJj13osmvYZE88WFOc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750266297; c=relaxed/simple;
-	bh=GTy2PvCYPFvLUsCSngTuNqGVyYNKX0N0F1THUwKHJIk=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=qAGUemgnobwYuQ65keSICyK2tcym84I9HKrRsziGQpeAu8euZZScWSAjnK2dvH86yLne06O0MtasJbMH/MZdg/U0BNOYet6d14FCe7Rbr7bvhF9ZYGkfcezY6O8BQN46oV/gSbG8/Z96UVEQYmpNHgr1ECioPlYbrnFnSYODsmE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Q3YHtCZb; arc=none smtp.client-ip=209.85.222.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Received: by mail-qk1-f178.google.com with SMTP id af79cd13be357-7d3f192a64eso7810185a.2
-        for <stable@vger.kernel.org>; Wed, 18 Jun 2025 10:04:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1750266294; x=1750871094; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=nIj7/912U1hLS69DmdTyCJ8d+fvfWdHshome4WGvT9U=;
-        b=Q3YHtCZb8x0K6q5VSlokIgW7WTidGSFFNXZkRSQF1Sp66I5hlo2nrAR7/SI8fVYdqR
-         V/epRnYQ3kRuN3pz+8wLHrk8V7l08L+yQ786Y9wwNvdUaJX7hEG984UGqtT4R3aNhOLP
-         QeKIcDO5lDTkL36MbTYKv7w3ySll7z6bbLs1zZMlC49lI6sKdveKdxp35AOd4JHjbMKn
-         oQQQvbjRS3BdQUuFPS/eXLrDDeZIRwRm5v1JXveJwyIUxwWVhY8DFwDbncqUtzyGm/E4
-         c2zDY0S1uG0qgt7APJWZBj0RrIezG/aA9o+p89ixvpfQA0QbgSbtMuifRtsBQHxiXMhF
-         eplQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1750266294; x=1750871094;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=nIj7/912U1hLS69DmdTyCJ8d+fvfWdHshome4WGvT9U=;
-        b=TeHXyb9c1rB5Rk2O/+rPnp1hMrNmMVK2wODXzRK+gh0Xa0gxbrtqWcy3qyxB6tJQTH
-         skviLSFgwuQILH09H3vonKPuSgUdXXsXe89Yj0aKom3GrR29ENJQKy342Cu+3nIZn4OU
-         6+AbUARmAqfS1D5awMB3JOrBf1fdoqoyXT6Q6olfIWPxAFPLk3IjLlG+v+f6B8Dnm9zi
-         mLu4GgSOy3H4Z+25hOxDkp7ug5Z2xg3M4kpGfUIFpgnQSSCnAirCcFTjMwenqOZUOSiZ
-         636XZkuuVPNaO+JWoJUAMMUFBRbrGG9vBTe43IKiIgkJfHnDsw+9QJMymZShlV05f4/O
-         oQWg==
-X-Forwarded-Encrypted: i=1; AJvYcCUXu0jtuL3SoCwUtV75lwjLNJnJrRt/w2hD/oBvJb2e4i3pNwxfe52IAPOBePftif06Q5Gl4H8=@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywmhe60JPoBVn5+ILbjy/bMF5zCBefqPzH/GDRLFTQseG1BnYZA
-	tnmNYJhBKRgrwdAEopg9/MhzD02tWzKvX/a8v2xpf+gzvcqRfL8F4PiREmRLWXQ7vksmwSR+gLk
-	fmudTtZRKuWlifGOP0Go0dgsjsvO9X8ZkJoP+0RlH
-X-Gm-Gg: ASbGnct+FTo7SgLoFDYxCQjtfHOn/DB/2KrcQpbo/Iw7wpbGcwg3vHvSIXQMiQ6kEPm
-	5bf687c6Qxrnqg+uS0xPWb17fhSiS6rOowdQDG9KALwpV9PG8oSx15NT8V8y50BBrB3zLurv1AS
-	e88rzejgNJNv08WQWf782oJEhi3q1AlQfaAxmcDR/VGb2yxWDin2Qw1BbuY6w7EREul6mcXf3ep
-	o1CIb1pW+3i+44=
-X-Google-Smtp-Source: AGHT+IH6EVcpTkTw8JUim83xuUFB8wy9O7eSl84h9hvZtn+Su5XHCUSFtap/mY1OURayGAsXwHK+Jtpft8ah/aDmp1Y=
-X-Received: by 2002:a05:620a:2628:b0:7d3:8f51:a5a5 with SMTP id
- af79cd13be357-7d3c6cfe4efmr3043653185a.51.1750266293724; Wed, 18 Jun 2025
- 10:04:53 -0700 (PDT)
+	s=arc-20240116; t=1750267064; c=relaxed/simple;
+	bh=gXXR7kgyY4SeGtwSs7b49R9w5BjiKKUl9+1pd35MjNg=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=nf5Q1Te57Q+Eeheb5H9VgM7GN+8lriIxxmQTZy73Qm7fs7y8BFyxqJtvPmBWiGg/5pZDEVk1vYYZhbPuVaxhk1prahBQ6Xe1L0IKkuSNtfXymDM9s2CuYYPKkl4jOBNwPLDlciWTrI0z4SuwdTrr397RnV1qKPXerzLz7uvlYWY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=BBMXDw77; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1750267061;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=u5cEFN65OmhFNR8F0AIk7bNFWAftwcBimGy3RuhXWUU=;
+	b=BBMXDw775A3ZfgfCd9igF0/wSAQzY7GbH+2SFmVS9uIxY90YqWlq+genNTL1mbiquTT3eC
+	3jXUtf8BkWeRFRZk75c6D57YVzHjqz73kcdguhaaeulZNJWqAaT9iZjj/DaDa03vmwCEfQ
+	ajMecvp6dLlWCtyLI/QAkttHLtyyUlA=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-365-P8WVlcaWPmutzaoBNlKk4Q-1; Wed,
+ 18 Jun 2025 13:17:37 -0400
+X-MC-Unique: P8WVlcaWPmutzaoBNlKk4Q-1
+X-Mimecast-MFC-AGG-ID: P8WVlcaWPmutzaoBNlKk4Q_1750267055
+Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 9479E180136B;
+	Wed, 18 Jun 2025 17:17:35 +0000 (UTC)
+Received: from [10.22.64.21] (unknown [10.22.64.21])
+	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id A3DFB180045B;
+	Wed, 18 Jun 2025 17:17:32 +0000 (UTC)
+Message-ID: <62bfa26a-822b-462d-ba8d-e0d85610e278@redhat.com>
+Date: Wed, 18 Jun 2025 13:17:31 -0400
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250522190912.457583-1-royluo@google.com> <20250522190912.457583-2-royluo@google.com>
- <20250523230633.u46zpptaoob5jcdk@synopsys.com> <b982ff0e-1ae8-429d-aa11-c3e81a9c14e5@linux.intel.com>
- <20250529011745.xkssevnj2u44dxqm@synopsys.com> <459184db-6fc6-453b-933d-299f827bdc55@linux.intel.com>
- <20250605001838.yw633sgpn2fr65kc@synopsys.com>
-In-Reply-To: <20250605001838.yw633sgpn2fr65kc@synopsys.com>
-From: Roy Luo <royluo@google.com>
-Date: Wed, 18 Jun 2025 10:04:17 -0700
-X-Gm-Features: Ac12FXwY_QrogUvvcPl-lKVgH0ASDSjF3Wdv-xGgP0Lciad5aKdoQcEiS3RwWkI
-Message-ID: <CA+zupgwLkq_KSN9aawNtYpHzPQpAtQ0A9EJ9iaQQ7vHUPmJohA@mail.gmail.com>
-Subject: Re: [PATCH v1 1/2] usb: xhci: Skip xhci_reset in xhci_resume if xhci
- is being removed
-To: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
-Cc: Mathias Nyman <mathias.nyman@linux.intel.com>, 
-	"mathias.nyman@intel.com" <mathias.nyman@intel.com>, 
-	"quic_ugoswami@quicinc.com" <quic_ugoswami@quicinc.com>, 
-	"gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>, 
-	"michal.pecio@gmail.com" <michal.pecio@gmail.com>, 
-	"linux-usb@vger.kernel.org" <linux-usb@vger.kernel.org>, 
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, 
-	"stable@vger.kernel.org" <stable@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v6 1/4] scsi: fnic: Fix crash in fnic_wq_cmpl_handler when
+ FDMI times out
+To: martin.petersen@oracle.com
+Cc: arulponn@cisco.com, djhawar@cisco.com, gcboffa@cisco.com,
+ mkai2@cisco.com, satishkh@cisco.com, aeasi@cisco.com, jejb@linux.ibm.com,
+ linux-scsi@vger.kernel.org, linux-kernel@vger.kernel.org, revers@redhat.com,
+ dan.carpenter@linaro.org, stable@vger.kernel.org, sebaddel@cisco.com,
+ Karan Tilak Kumar <kartilak@cisco.com>
+References: <20250618003431.6314-1-kartilak@cisco.com>
+Content-Language: en-US
+From: John Meneghini <jmeneghi@redhat.com>
+Organization: RHEL Core Storge Team
+In-Reply-To: <20250618003431.6314-1-kartilak@cisco.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
 
-On Wed, Jun 4, 2025 at 5:18=E2=80=AFPM Thinh Nguyen <Thinh.Nguyen@synopsys.=
-com> wrote:
->
-> On Wed, Jun 04, 2025, Mathias Nyman wrote:
-> > On 29.5.2025 4.17, Thinh Nguyen wrote:
-> > > On Mon, May 26, 2025, Mathias Nyman wrote:
-> > > > On 24.5.2025 2.06, Thinh Nguyen wrote:
-> > > > > Hi Mathias, Roy,
-> > > > >
-> > > > > On Thu, May 22, 2025, Roy Luo wrote:
-> > > > > > xhci_reset() currently returns -ENODEV if XHCI_STATE_REMOVING i=
-s
-> > > > > > set, without completing the xhci handshake, unless the reset co=
-mpletes
-> > > > > > exceptionally quickly. This behavior causes a regression on Syn=
-opsys
-> > > > > > DWC3 USB controllers with dual-role capabilities.
-> > > > > >
-> > > > > > Specifically, when a DWC3 controller exits host mode and remove=
-s xhci
-> > > > > > while a reset is still in progress, and then attempts to config=
-ure its
-> > > > > > hardware for device mode, the ongoing, incomplete reset leads t=
-o
-> > > > > > critical register access issues. All register reads return zero=
-, not
-> > > > > > just within the xHCI register space (which might be expected du=
-ring a
-> > > > > > reset), but across the entire DWC3 IP block.
-> > > > > >
-> > > > > > This patch addresses the issue by preventing xhci_reset() from =
-being
-> > > > > > called in xhci_resume() and bailing out early in the reinit flo=
-w when
-> > > > > > XHCI_STATE_REMOVING is set.
-> > > > > >
-> > > > > > Cc: stable@vger.kernel.org
-> > > > > > Fixes: 6ccb83d6c497 ("usb: xhci: Implement xhci_handshake_check=
-_state() helper")
-> > > > > > Suggested-by: Mathias Nyman <mathias.nyman@intel.com>
-> > > > > > Signed-off-by: Roy Luo <royluo@google.com>
-> > > > > > ---
-> > > > > >    drivers/usb/host/xhci.c | 5 ++++-
-> > > > > >    1 file changed, 4 insertions(+), 1 deletion(-)
-> > > > > >
-> > > > > > diff --git a/drivers/usb/host/xhci.c b/drivers/usb/host/xhci.c
-> > > > > > index 90eb491267b5..244b12eafd95 100644
-> > > > > > --- a/drivers/usb/host/xhci.c
-> > > > > > +++ b/drivers/usb/host/xhci.c
-> > > > > > @@ -1084,7 +1084,10 @@ int xhci_resume(struct xhci_hcd *xhci, b=
-ool power_lost, bool is_auto_resume)
-> > > > > >               xhci_dbg(xhci, "Stop HCD\n");
-> > > > > >               xhci_halt(xhci);
-> > > > > >               xhci_zero_64b_regs(xhci);
-> > > > > > -             retval =3D xhci_reset(xhci, XHCI_RESET_LONG_USEC)=
-;
-> > > > > > +             if (xhci->xhc_state & XHCI_STATE_REMOVING)
-> > > > > > +                     retval =3D -ENODEV;
-> > > > > > +             else
-> > > > > > +                     retval =3D xhci_reset(xhci, XHCI_RESET_LO=
-NG_USEC);
-> > > > >
-> > > > > How can this prevent the xhc_state from changing while in reset? =
-There's
-> > > > > no locking in xhci-plat.
-> > > >
-> > > > Patch 2/2, which is the revert of 6ccb83d6c497 prevents xhci_reset(=
-) from
-> > > > aborting due to xhc_state flags change.
-> > > >
-> > > > This patch makes sure xHC is not reset twice if xhci is resuming du=
-e to
-> > > > remove being called. (XHCI_STATE_REMOVING is set).
-> > >
-> > > Wouldn't it still be possible for xhci to be removed in the middle of
-> > > reset on resume? The watchdog may still timeout afterward if there's =
-an
-> > > issue with reset right?
-> > >
-> >
-> > Probably yes, but that problem is the same if we only revert 6ccb83d6c4=
-97.
-> >
-> > > > Why intentionally bring back the Qcom watchdog issue by only revert=
-ing
-> > > > 6ccb83d6c497 ?. Can't we solve both in one go?
-> > >
-> > > I feel that the fix is doesn't cover all the scenarios, that's why I
-> > > suggest the revert for now and wait until the fix is properly tested
-> > > before applying it to stable?
-> >
-> > Ok, we have different views on this.
-> >
-> > I think we should avoid causing as much known regression as possible ev=
-en
-> > if the patch  might not cover all scenarios.
-> >
-> > By reverting 6ccb83d6c497 we fix a SNPS DWC3 regression, but at the sam=
-e
-> > time bring back the Qcom issue, so cause another regression.
-> >
-> > We can avoid the main part or the Qcom regression by adding this patch =
-as
-> > issue is with (long) xhci reset during resume if xhci is being removed,=
- and
-> > driver always resumes xhci during ->remove callback.
-> >
-> > If we discover the patch is not perfect then we fix it
-> >
->
-> Ok. Fair enough.
->
-> BR,
-> Thinh
+Great Job.  Thanks Karan.
 
-Thanks Thinh and Mathias for the review.
-Please let me know if any further changes are needed before these
-patches can be accepted.
-I just want to make sure they're still on your radar.
+Reviewed-by: John Meneghini <jmeneghi@redhat.com>
 
-Thanks,
-Roy
+Martin, if possible, please include these in 6.16/scsi-fixes.  These are critical bug fixes which are holding up the release of RHEL-9.7.
+
+/John
+
+On 6/17/25 8:34 PM, Karan Tilak Kumar wrote:
+> When both the RHBA and RPA FDMI requests time out, fnic reuses a frame
+> to send ABTS for each of them. On send completion, this causes an
+> attempt to free the same frame twice that leads to a crash.
+> 
+> Fix crash by allocating separate frames for RHBA and RPA,
+> and modify ABTS logic accordingly.
+> 
+> Tested by checking MDS for FDMI information.
+> Tested by using instrumented driver to:
+> Drop PLOGI response
+> Drop RHBA response
+> Drop RPA response
+> Drop RHBA and RPA response
+> Drop PLOGI response + ABTS response
+> Drop RHBA response + ABTS response
+> Drop RPA response + ABTS response
+> Drop RHBA and RPA response + ABTS response for both of them
+> 
+> Fixes: 09c1e6ab4ab2 ("scsi: fnic: Add and integrate support for FDMI")
+> Reviewed-by: Sesidhar Baddela <sebaddel@cisco.com>
+> Reviewed-by: Arulprabhu Ponnusamy <arulponn@cisco.com>
+> Reviewed-by: Gian Carlo Boffa <gcboffa@cisco.com>
+> Tested-by: Arun Easi <aeasi@cisco.com>
+> Co-developed-by: Arun Easi <aeasi@cisco.com>
+> Signed-off-by: Arun Easi <aeasi@cisco.com>
+> Tested-by: Karan Tilak Kumar <kartilak@cisco.com>
+> Cc: <stable@vger.kernel.org>
+> Signed-off-by: Karan Tilak Kumar <kartilak@cisco.com>
+> ---
+> Changes between v5 and v6:
+>      - Incorporate review comments from John:
+> 	- Rebase patches on 6.17/scsi-queue
+> 
+> Changes between v4 and v5:
+>      - Incorporate review comments from John:
+> 	- Refactor patches
+> 
+> Changes between v3 and v4:
+>      - Incorporate review comments from Dan:
+> 	- Remove comments from Cc tag
+> 
+> Changes between v2 and v3:
+>      - Incorporate review comments from Dan:
+> 	- Add Cc to stable
+> 
+> Changes between v1 and v2:
+>      - Incorporate review comments from Dan:
+>          - Add Fixes tag
+> ---
+>   drivers/scsi/fnic/fdls_disc.c | 113 +++++++++++++++++++++++++---------
+>   drivers/scsi/fnic/fnic.h      |   2 +-
+>   drivers/scsi/fnic/fnic_fdls.h |   1 +
+>   3 files changed, 87 insertions(+), 29 deletions(-)
+> 
+> diff --git a/drivers/scsi/fnic/fdls_disc.c b/drivers/scsi/fnic/fdls_disc.c
+> index f8ab69c51dab..36b498ad55b4 100644
+> --- a/drivers/scsi/fnic/fdls_disc.c
+> +++ b/drivers/scsi/fnic/fdls_disc.c
+> @@ -763,47 +763,69 @@ static void fdls_send_fabric_abts(struct fnic_iport_s *iport)
+>   	iport->fabric.timer_pending = 1;
+>   }
+>   
+> -static void fdls_send_fdmi_abts(struct fnic_iport_s *iport)
+> +static uint8_t *fdls_alloc_init_fdmi_abts_frame(struct fnic_iport_s *iport,
+> +		uint16_t oxid)
+>   {
+> -	uint8_t *frame;
+> +	struct fc_frame_header *pfdmi_abts;
+>   	uint8_t d_id[3];
+> +	uint8_t *frame;
+>   	struct fnic *fnic = iport->fnic;
+> -	struct fc_frame_header *pfabric_abts;
+> -	unsigned long fdmi_tov;
+> -	uint16_t oxid;
+> -	uint16_t frame_size = FNIC_ETH_FCOE_HDRS_OFFSET +
+> -			sizeof(struct fc_frame_header);
+>   
+>   	frame = fdls_alloc_frame(iport);
+>   	if (frame == NULL) {
+>   		FNIC_FCS_DBG(KERN_ERR, fnic->host, fnic->fnic_num,
+>   				"Failed to allocate frame to send FDMI ABTS");
+> -		return;
+> +		return NULL;
+>   	}
+>   
+> -	pfabric_abts = (struct fc_frame_header *) (frame + FNIC_ETH_FCOE_HDRS_OFFSET);
+> +	pfdmi_abts = (struct fc_frame_header *) (frame + FNIC_ETH_FCOE_HDRS_OFFSET);
+>   	fdls_init_fabric_abts_frame(frame, iport);
+>   
+>   	hton24(d_id, FC_FID_MGMT_SERV);
+> -	FNIC_STD_SET_D_ID(*pfabric_abts, d_id);
+> +	FNIC_STD_SET_D_ID(*pfdmi_abts, d_id);
+> +	FNIC_STD_SET_OX_ID(*pfdmi_abts, oxid);
+> +
+> +	return frame;
+> +}
+> +
+> +static void fdls_send_fdmi_abts(struct fnic_iport_s *iport)
+> +{
+> +	uint8_t *frame;
+> +	unsigned long fdmi_tov;
+> +	uint16_t frame_size = FNIC_ETH_FCOE_HDRS_OFFSET +
+> +			sizeof(struct fc_frame_header);
+>   
+>   	if (iport->fabric.fdmi_pending & FDLS_FDMI_PLOGI_PENDING) {
+> -		oxid = iport->active_oxid_fdmi_plogi;
+> -		FNIC_STD_SET_OX_ID(*pfabric_abts, oxid);
+> +		frame = fdls_alloc_init_fdmi_abts_frame(iport,
+> +						iport->active_oxid_fdmi_plogi);
+> +		if (frame == NULL)
+> +			return;
+> +
+>   		fnic_send_fcoe_frame(iport, frame, frame_size);
+>   	} else {
+>   		if (iport->fabric.fdmi_pending & FDLS_FDMI_REG_HBA_PENDING) {
+> -			oxid = iport->active_oxid_fdmi_rhba;
+> -			FNIC_STD_SET_OX_ID(*pfabric_abts, oxid);
+> +			frame = fdls_alloc_init_fdmi_abts_frame(iport,
+> +						iport->active_oxid_fdmi_rhba);
+> +			if (frame == NULL)
+> +				return;
+> +
+>   			fnic_send_fcoe_frame(iport, frame, frame_size);
+>   		}
+>   		if (iport->fabric.fdmi_pending & FDLS_FDMI_RPA_PENDING) {
+> -			oxid = iport->active_oxid_fdmi_rpa;
+> -			FNIC_STD_SET_OX_ID(*pfabric_abts, oxid);
+> +			frame = fdls_alloc_init_fdmi_abts_frame(iport,
+> +						iport->active_oxid_fdmi_rpa);
+> +			if (frame == NULL) {
+> +				if (iport->fabric.fdmi_pending & FDLS_FDMI_REG_HBA_PENDING)
+> +					goto arm_timer;
+> +				else
+> +					return;
+> +			}
+> +
+>   			fnic_send_fcoe_frame(iport, frame, frame_size);
+>   		}
+>   	}
+>   
+> +arm_timer:
+>   	fdmi_tov = jiffies + msecs_to_jiffies(2 * iport->e_d_tov);
+>   	mod_timer(&iport->fabric.fdmi_timer, round_jiffies(fdmi_tov));
+>   	iport->fabric.fdmi_pending |= FDLS_FDMI_ABORT_PENDING;
+> @@ -2245,6 +2267,21 @@ void fdls_fabric_timer_callback(struct timer_list *t)
+>   	spin_unlock_irqrestore(&fnic->fnic_lock, flags);
+>   }
+>   
+> +void fdls_fdmi_retry_plogi(struct fnic_iport_s *iport)
+> +{
+> +	struct fnic *fnic = iport->fnic;
+> +
+> +	iport->fabric.fdmi_pending = 0;
+> +	/* If max retries not exhausted, start over from fdmi plogi */
+> +	if (iport->fabric.fdmi_retry < FDLS_FDMI_MAX_RETRY) {
+> +		iport->fabric.fdmi_retry++;
+> +		FNIC_FCS_DBG(KERN_INFO, fnic->host, fnic->fnic_num,
+> +					 "Retry FDMI PLOGI. FDMI retry: %d",
+> +					 iport->fabric.fdmi_retry);
+> +		fdls_send_fdmi_plogi(iport);
+> +	}
+> +}
+> +
+>   void fdls_fdmi_timer_callback(struct timer_list *t)
+>   {
+>   	struct fnic_fdls_fabric_s *fabric = timer_container_of(fabric, t,
+> @@ -2291,14 +2328,7 @@ void fdls_fdmi_timer_callback(struct timer_list *t)
+>   	FNIC_FCS_DBG(KERN_INFO, fnic->host, fnic->fnic_num,
+>   		"fdmi timer callback : 0x%x\n", iport->fabric.fdmi_pending);
+>   
+> -	iport->fabric.fdmi_pending = 0;
+> -	/* If max retries not exhaused, start over from fdmi plogi */
+> -	if (iport->fabric.fdmi_retry < FDLS_FDMI_MAX_RETRY) {
+> -		iport->fabric.fdmi_retry++;
+> -		FNIC_FCS_DBG(KERN_INFO, fnic->host, fnic->fnic_num,
+> -					 "retry fdmi timer %d", iport->fabric.fdmi_retry);
+> -		fdls_send_fdmi_plogi(iport);
+> -	}
+> +	fdls_fdmi_retry_plogi(iport);
+>   	FNIC_FCS_DBG(KERN_INFO, fnic->host, fnic->fnic_num,
+>   		"fdmi timer callback : 0x%x\n", iport->fabric.fdmi_pending);
+>   	spin_unlock_irqrestore(&fnic->fnic_lock, flags);
+> @@ -3716,11 +3746,32 @@ static void fdls_process_fdmi_abts_rsp(struct fnic_iport_s *iport,
+>   	switch (FNIC_FRAME_TYPE(oxid)) {
+>   	case FNIC_FRAME_TYPE_FDMI_PLOGI:
+>   		fdls_free_oxid(iport, oxid, &iport->active_oxid_fdmi_plogi);
+> +
+> +		iport->fabric.fdmi_pending &= ~FDLS_FDMI_PLOGI_PENDING;
+> +		iport->fabric.fdmi_pending &= ~FDLS_FDMI_ABORT_PENDING;
+>   		break;
+>   	case FNIC_FRAME_TYPE_FDMI_RHBA:
+> +		iport->fabric.fdmi_pending &= ~FDLS_FDMI_REG_HBA_PENDING;
+> +
+> +		/* If RPA is still pending, don't turn off ABORT PENDING.
+> +		 * We count on the timer to detect the ABTS timeout and take
+> +		 * corrective action.
+> +		 */
+> +		if (!(iport->fabric.fdmi_pending & FDLS_FDMI_RPA_PENDING))
+> +			iport->fabric.fdmi_pending &= ~FDLS_FDMI_ABORT_PENDING;
+> +
+>   		fdls_free_oxid(iport, oxid, &iport->active_oxid_fdmi_rhba);
+>   		break;
+>   	case FNIC_FRAME_TYPE_FDMI_RPA:
+> +		iport->fabric.fdmi_pending &= ~FDLS_FDMI_RPA_PENDING;
+> +
+> +		/* If RHBA is still pending, don't turn off ABORT PENDING.
+> +		 * We count on the timer to detect the ABTS timeout and take
+> +		 * corrective action.
+> +		 */
+> +		if (!(iport->fabric.fdmi_pending & FDLS_FDMI_REG_HBA_PENDING))
+> +			iport->fabric.fdmi_pending &= ~FDLS_FDMI_ABORT_PENDING;
+> +
+>   		fdls_free_oxid(iport, oxid, &iport->active_oxid_fdmi_rpa);
+>   		break;
+>   	default:
+> @@ -3730,10 +3781,16 @@ static void fdls_process_fdmi_abts_rsp(struct fnic_iport_s *iport,
+>   		break;
+>   	}
+>   
+> -	timer_delete_sync(&iport->fabric.fdmi_timer);
+> -	iport->fabric.fdmi_pending &= ~FDLS_FDMI_ABORT_PENDING;
+> -
+> -	fdls_send_fdmi_plogi(iport);
+> +	/*
+> +	 * Only if ABORT PENDING is off, delete the timer, and if no other
+> +	 * operations are pending, retry FDMI.
+> +	 * Otherwise, let the timer pop and take the appropriate action.
+> +	 */
+> +	if (!(iport->fabric.fdmi_pending & FDLS_FDMI_ABORT_PENDING)) {
+> +		timer_delete_sync(&iport->fabric.fdmi_timer);
+> +		if (!iport->fabric.fdmi_pending)
+> +			fdls_fdmi_retry_plogi(iport);
+> +	}
+>   }
+>   
+>   static void
+> diff --git a/drivers/scsi/fnic/fnic.h b/drivers/scsi/fnic/fnic.h
+> index 6c5f6046b1f5..86e293ce530d 100644
+> --- a/drivers/scsi/fnic/fnic.h
+> +++ b/drivers/scsi/fnic/fnic.h
+> @@ -30,7 +30,7 @@
+>   
+>   #define DRV_NAME		"fnic"
+>   #define DRV_DESCRIPTION		"Cisco FCoE HBA Driver"
+> -#define DRV_VERSION		"1.8.0.0"
+> +#define DRV_VERSION		"1.8.0.1"
+>   #define PFX			DRV_NAME ": "
+>   #define DFX                     DRV_NAME "%d: "
+>   
+> diff --git a/drivers/scsi/fnic/fnic_fdls.h b/drivers/scsi/fnic/fnic_fdls.h
+> index 8e610b65ad57..531d0b37e450 100644
+> --- a/drivers/scsi/fnic/fnic_fdls.h
+> +++ b/drivers/scsi/fnic/fnic_fdls.h
+> @@ -394,6 +394,7 @@ void fdls_send_tport_abts(struct fnic_iport_s *iport,
+>   bool fdls_delete_tport(struct fnic_iport_s *iport,
+>   		       struct fnic_tport_s *tport);
+>   void fdls_fdmi_timer_callback(struct timer_list *t);
+> +void fdls_fdmi_retry_plogi(struct fnic_iport_s *iport);
+>   
+>   /* fnic_fcs.c */
+>   void fnic_fdls_init(struct fnic *fnic, int usefip);
+
 
