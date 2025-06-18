@@ -1,121 +1,92 @@
-Return-Path: <stable+bounces-154644-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-154645-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C34BAADE60F
-	for <lists+stable@lfdr.de>; Wed, 18 Jun 2025 10:49:19 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 98818ADE646
+	for <lists+stable@lfdr.de>; Wed, 18 Jun 2025 11:08:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CECC0189799D
-	for <lists+stable@lfdr.de>; Wed, 18 Jun 2025 08:48:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6DCB33B1B39
+	for <lists+stable@lfdr.de>; Wed, 18 Jun 2025 09:08:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 278DF1D86FF;
-	Wed, 18 Jun 2025 08:48:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22B3028032F;
+	Wed, 18 Jun 2025 09:08:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="Owen+bOr"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EUpiXCe5"
 X-Original-To: stable@vger.kernel.org
-Received: from relay3-d.mail.gandi.net (relay3-d.mail.gandi.net [217.70.183.195])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F7081E25F8
-	for <stable@vger.kernel.org>; Wed, 18 Jun 2025 08:48:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.195
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5DEE27FD63;
+	Wed, 18 Jun 2025 09:08:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750236494; cv=none; b=ps+TSaKb0rq7KSCT9f0Q69XuoBPQHk3+UyrCB8EHeyBNefoDtpUAvyBfpgYjPv+ISU+oLBhI8c16wFn/JayO99fSOqajsoKCViVyndU5hOnfyS7a8QDLBDCSZONINTBQCjUUQwY54tN6zNYb7Myb6k7DE2pOLVaqhnY2I9xPGaA=
+	t=1750237701; cv=none; b=teLmlSIGzhMB1aVNpszXsPp7d03TPATM/DEFRZtk1Cmp/eaQ1yqxO0fsIH5HtzWyWS+3j3lDi8Kim4ZQ6bdJXI0SvP/6NZ9roOmhJ7Hzn5ESbXvojfCyK/4F0hG1CmN6zx12hT5WCu/+08K/D1UIDpiMpIkHjvLV1S6JHFeWFBg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750236494; c=relaxed/simple;
-	bh=/21KfSGf5kewRZOgx7Pvs00Jp0aZ0SxfWor4+YYwWiE=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eSz+6evCUsl7wi7RIXxmOrqwetclV6bI99whHFKOQzhd1yzkghdPOI6rJNVrzMlv+Prv4HTrOeeuUpOYvqg3Q92aKqlB2+CnsHc+Yc85lEVeu9RaMXBAM5+IYfVBYz2EnysRNKqjjLpWBe8CDU6AISertpM7kIYhX/rqcf0d0ys=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=Owen+bOr; arc=none smtp.client-ip=217.70.183.195
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
-Received: by mail.gandi.net (Postfix) with ESMTPSA id DD8362044C;
-	Wed, 18 Jun 2025 08:48:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1750236484;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=A6FU6SDX17aNoN9IEiJOQ14OoPG5LsdEowjWPMC4qis=;
-	b=Owen+bOr8Ao+naIB9j/EiRrAlULlUhOgUFl6I52R9m0Zv34rM+IqEqiXgpvgwcI768LHaz
-	HjBl8GyUeU7FWf0QOI0mcrtQlqlXUIc/ZO4NBcWP/KdKUd/uXhKoGmUsdH47ZwSrZLMtmy
-	Ry5W60QztuSAytymv6Hp96Xm+OOBEjKHiKtJSnn/zSpNGP8j9Q2jdgtBHC5nsWUjTABuqI
-	IIyRatTUmUrnU9b3kP5ILFEuLdhF9Geg8lXs3ha7CW2qZMzFYuIZYblVXfE37iX5+6cYL+
-	G8wOMXtnBdbecO2aGa2HB0H26gZ3j+vCZJ/JuyxxQu7EqSLZ0HqjIH66bwHwaw==
-From: Miquel Raynal <miquel.raynal@bootlin.com>
-To: Richard Weinberger <richard@nod.at>,
-	Vignesh Raghavendra <vigneshr@ti.com>,
-	Tudor Ambarus <tudor.ambarus@linaro.org>,
-	Pratyush Yadav <pratyush@kernel.org>,
-	Michael Walle <michael@walle.cc>,
-	<linux-mtd@lists.infradead.org>
-Cc: Steam Lin <stlin2@winbond.com>,
-	Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
-	Andreas Dannenberg <dannenberg@ti.com>,
-	stable@vger.kernel.org
-Subject: [PATCH v2 1/3] mtd: spinand: winbond: Fix W35N number of planes/LUN
-Date: Wed, 18 Jun 2025 10:47:58 +0200
-Message-ID: <20250618084800.1644246-2-miquel.raynal@bootlin.com>
-X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250618084800.1644246-1-miquel.raynal@bootlin.com>
-References: <20250618084800.1644246-1-miquel.raynal@bootlin.com>
+	s=arc-20240116; t=1750237701; c=relaxed/simple;
+	bh=urZT13M+jj+4z8uxKfr0o7/K5bLZmln4etr2g0xxka8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=jlSWBs0g6ZjlL87XD0d5h8taQxeb7ZVAAI60NAOj6L1cll3fwWm2xjhzUA38E3CJT+PpwATeLmKfr+8M7o0SuS/NvIDN5J/8r0Rry1OJeItnu7y0ac+ROzW/kTzoC+BJ0GFS1GOwAI76q1cnZSsANgJ6MgRxAm7zuqihOq+6d2A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EUpiXCe5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6877EC4CEE7;
+	Wed, 18 Jun 2025 09:08:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1750237701;
+	bh=urZT13M+jj+4z8uxKfr0o7/K5bLZmln4etr2g0xxka8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=EUpiXCe5Hanbh3XKNh/H7CpmsppllUoPEvTwWT9hJb7GdBovbNXiaE7a7Ehk0rCSF
+	 nQ3/X3KQWx/+xaREYLxPAsQM6UjZSpt6Jp1Gfp5ee430Jxkmz7G9xYwVqmm39eM05R
+	 sCYHiPsPwZ+8V6MvNXnJq996dY9T4IV4GU32rUhmKJUX4pbUl3BnJVwfyks8H7DeHa
+	 eEcG0AAEyBptT9vwX44B/H0Tlrtcjxgcamp5PTO+IyuzpXTy8iZPOhl4a8w2LVpIyX
+	 JoKydcuERwKBfd6FNsEQkrJN7AuDlzSINpuiJ7RT4mA1Hiw2orZksdueZMAxpZ/F3/
+	 NsTTgZwLjuSWA==
+Received: from johan by xi.lan with local (Exim 4.97.1)
+	(envelope-from <johan@kernel.org>)
+	id 1uRomJ-000000003Bb-21ax;
+	Wed, 18 Jun 2025 11:08:20 +0200
+Date: Wed, 18 Jun 2025 11:08:19 +0200
+From: Johan Hovold <johan@kernel.org>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+	Sasha Levin <sashal@kernel.org>
+Subject: Re: [PATCH 6.15 546/780] USB: serial: bus: fix const issue in
+ usb_serial_device_match()
+Message-ID: <aFKCA_MJfeKKY9lk@hovoldconsulting.com>
+References: <20250617152451.485330293@linuxfoundation.org>
+ <20250617152513.744328939@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-GND-State: clean
-X-GND-Score: -100
-X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtddvgddvvdduucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuifetpfffkfdpucggtfgfnhhsuhgsshgtrhhisggvnecuuegrihhlohhuthemuceftddunecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpefhvfevufffkffojghfggfgsedtkeertdertddtnecuhfhrohhmpefoihhquhgvlhcutfgrhihnrghluceomhhiqhhuvghlrdhrrgihnhgrlhessghoohhtlhhinhdrtghomheqnecuggftrfgrthhtvghrnhepueffgeevteevkeegkeehleetteffhffffefgleeuleevjedtgeelgeeutdekgeelnecukfhppeeltddrkeelrdduieefrdduvdejnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepledtrdekledrudeifedruddvjedphhgvlhhopehffidrrddpmhgrihhlfhhrohhmpehmihhquhgvlhdrrhgrhihnrghlsegsohhothhlihhnrdgtohhmpdhnsggprhgtphhtthhopeduuddprhgtphhtthhopehrihgthhgrrhgusehnohgurdgrthdprhgtphhtthhopehvihhgnhgvshhhrhesthhirdgtohhmpdhrtghpthhtohepthhuughorhdrrghmsggrrhhusheslhhinhgrrhhordhorhhgpdhrtghpthhtohepphhrrghthihushhhsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehmihgthhgrvghlseifrghllhgvrdgttgdprhgtphhtthhopehlihhnuhigqdhmthgusehlihhsthhsrdhinhhfrhgru
- ggvrggurdhorhhgpdhrtghpthhtohepshhtlhhinhdvseifihhnsghonhgurdgtohhmpdhrtghpthhtohepthhhohhmrghsrdhpvghtrgiiiihonhhisegsohhothhlihhnrdgtohhm
-X-GND-Sasl: miquel.raynal@bootlin.com
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250617152513.744328939@linuxfoundation.org>
 
-There's been a mistake when extracting the geometry of the W35N02 and
-W35N04 chips from the datasheet. There is a single plane, however there
-are respectively 2 and 4 LUNs. They are actually referred in the
-datasheet as dies (equivalent of target), but as there is no die select
-operation and the chips only feature a single configuration register for
-the entire chip (instead of one per die), we can reasonably assume we
-are talking about LUNs and not dies.
+On Tue, Jun 17, 2025 at 05:24:14PM +0200, Greg Kroah-Hartman wrote:
+> 6.15-stable review patch.  If anyone has any objections, please let me know.
+> 
+> ------------------
+> 
+> From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> 
+> [ Upstream commit 92cd405b648605db4da866f3b9818b271ae84ef0 ]
+> 
+> usb_serial_device_match() takes a const pointer, and then decides to
+> cast it away into a non-const one, which is not a good thing to do
+> overall.  Fix this up by properly setting the pointers to be const to
+> preserve that attribute.
+> 
+> Fixes: d69d80484598 ("driver core: have match() callback in struct bus_type take a const *")
+> Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> Signed-off-by: Johan Hovold <johan@kernel.org>
+> Signed-off-by: Sasha Levin <sashal@kernel.org>
 
-Reported-by: Andreas Dannenberg <dannenberg@ti.com>
-Suggested-by: Vignesh Raghavendra <vigneshr@ti.com>
-Fixes: 25e08bf66660 ("mtd: spinand: winbond: Add support for W35N02JW and W35N04JW chips")
-Cc: stable@vger.kernel.org
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
----
- drivers/mtd/nand/spi/winbond.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+I believe I already asked for this one to be dropped since it does not
+really fix anything and therefore does not meet the criteria for stable
+backport. The stable tag was as usual left out on purpose.
 
-diff --git a/drivers/mtd/nand/spi/winbond.c b/drivers/mtd/nand/spi/winbond.c
-index 19f8dd4a6370..2808bbd7a16e 100644
---- a/drivers/mtd/nand/spi/winbond.c
-+++ b/drivers/mtd/nand/spi/winbond.c
-@@ -289,7 +289,7 @@ static const struct spinand_info winbond_spinand_table[] = {
- 		     SPINAND_ECCINFO(&w35n01jw_ooblayout, NULL)),
- 	SPINAND_INFO("W35N02JW", /* 1.8V */
- 		     SPINAND_ID(SPINAND_READID_METHOD_OPCODE_DUMMY, 0xdf, 0x22),
--		     NAND_MEMORG(1, 4096, 128, 64, 512, 10, 2, 1, 1),
-+		     NAND_MEMORG(1, 4096, 128, 64, 512, 10, 1, 2, 1),
- 		     NAND_ECCREQ(1, 512),
- 		     SPINAND_INFO_OP_VARIANTS(&read_cache_octal_variants,
- 					      &write_cache_octal_variants,
-@@ -298,7 +298,7 @@ static const struct spinand_info winbond_spinand_table[] = {
- 		     SPINAND_ECCINFO(&w35n01jw_ooblayout, NULL)),
- 	SPINAND_INFO("W35N04JW", /* 1.8V */
- 		     SPINAND_ID(SPINAND_READID_METHOD_OPCODE_DUMMY, 0xdf, 0x23),
--		     NAND_MEMORG(1, 4096, 128, 64, 512, 10, 4, 1, 1),
-+		     NAND_MEMORG(1, 4096, 128, 64, 512, 10, 1, 4, 1),
- 		     NAND_ECCREQ(1, 512),
- 		     SPINAND_INFO_OP_VARIANTS(&read_cache_octal_variants,
- 					      &write_cache_octal_variants,
--- 
-2.48.1
-
+Johan
 
