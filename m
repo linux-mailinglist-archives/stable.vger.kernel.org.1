@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-154759-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-154760-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D3DF0AE0115
-	for <lists+stable@lfdr.de>; Thu, 19 Jun 2025 11:05:26 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D2979AE012D
+	for <lists+stable@lfdr.de>; Thu, 19 Jun 2025 11:07:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 417917AE3CE
-	for <lists+stable@lfdr.de>; Thu, 19 Jun 2025 09:04:04 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 91B9B5A5D3D
+	for <lists+stable@lfdr.de>; Thu, 19 Jun 2025 09:05:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E75A3279331;
-	Thu, 19 Jun 2025 09:02:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA78127932B;
+	Thu, 19 Jun 2025 09:02:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KVfg5jYq"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="e5xZ7piJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A67C9278767
-	for <stable@vger.kernel.org>; Thu, 19 Jun 2025 09:02:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6068278767
+	for <stable@vger.kernel.org>; Thu, 19 Jun 2025 09:02:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750323765; cv=none; b=XKJYlgLD6qd6UWptg88hL0ufZ5Sn5Qxd1M3yzsY3w2axhyO4VlJkgNHEkjUBxQOPShQeKfsVljUTAktEs6aJt1aKZX5Sd6fzz94SZhtApFDgnGudQs0pQKFBRXySRPsws1WX1XwfQh7fLyIa8sHcKtlflp/C8Fm0kCllyMcx3hM=
+	t=1750323766; cv=none; b=Yk6j6uxdQW1jCX+h4B+DCOIfSaHt7h0JGCYYfXTdI4MA+WeB/i1EGJ4WXxFszw+l6oMpR6UYCXxbfy51jEFMLNAnWe8bCIMaoN2A4WVcidOAWX/WRoCktY/mKes50sQOcdR2XFNMR0bEbhlZzNcgpm3Jg0ciRpBEZa9PYltW6cA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750323765; c=relaxed/simple;
-	bh=QPV7eyz6w4i7r5vwUbwCkHrr60xHJcMeQMKtAEtL77c=;
+	s=arc-20240116; t=1750323766; c=relaxed/simple;
+	bh=60ukE/VPwbTlfFoOAbbkApBo3CsOu4Uw/fUlLucOGH4=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=TvjhSyTqj/beogzVjhBkE45OcczyMGHQLchfMrRtE+vq4eQZP354H/xziWf6exI96fUGNxdgg6N0bItnUl+IjNC+0809rIEYfiJ8Y+GDiG4RAA4Fs+QAJt+OEk/fQUjG9FdYjh1/VkAyQvLK10Y1uY4E8IgSK1vazBbLE7sEI4M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KVfg5jYq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA7C3C4CEEA;
-	Thu, 19 Jun 2025 09:02:43 +0000 (UTC)
+	 MIME-Version:Content-Type; b=YvbEKLK/Uj4sAoP9j0Z58/wJXhuwaNAHeowY5T7F5sisDPeewasY80rCWkFd8aEb93qfNrkDp+nV1B6kF+DUmI5zAiDSgLZBwJcbOKzwGu3bNRLCvUUoAm1w2d3mdwUXNGZ5gM6onqvkqp3CmXkqhhMRlnoQWQ+Y7C0FATo9gv4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=e5xZ7piJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2297C4CEED;
+	Thu, 19 Jun 2025 09:02:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1750323764;
-	bh=QPV7eyz6w4i7r5vwUbwCkHrr60xHJcMeQMKtAEtL77c=;
+	s=k20201202; t=1750323766;
+	bh=60ukE/VPwbTlfFoOAbbkApBo3CsOu4Uw/fUlLucOGH4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KVfg5jYqtYQWbE3ADhj5UX99LBe5qRgjClDRgdX5avtMsHEYd0E/d6f/zs3e/fbSB
-	 7YwX5D4xLCD7EdxKcsrtsRQN4RkvF9BtvU0EOjRCtpiUNpIBcU/5GxsnJt20H9jnIK
-	 wOJKV9grCFSn+KFgO+RdJeWDR1uYccbQayYK919kbvwt7tdD+WkkCtU1oAU2VOloY/
-	 xcIby7PIlfYKFOC+uDjA7HwapTGhs2rlEIMB7KN1azqlt9Rnz/wxJ+4QsePvRjfKKy
-	 //+ueKqj7waLHtV0kn0pDbSPMP76jVyxh75fjHUp1fGIhf93kRwaFiDAWI6//vML0b
-	 +uK//UwYRu2nA==
+	b=e5xZ7piJkhBD2uMnr8zlPl+WqpNNjRP2lIl+08zOuZb+0RflS72jz1aSWcWmYFnyp
+	 LKeR4PkcGl1bnOGS+WlXuf3kvdcYGUbWdmsnwGXzZpp8FG1dMOrlYbfK/Owr74Jb8b
+	 JcYEMQBkQOrWyhnzmXmsxkptktIJPGXEmnOKOHmYy27IBj7SGdsziNWs01rRgmx6pH
+	 T28GaHLa7+bH/2gnd59HNU51Q6LZdK+KJA9eEY5teGLCcOUN7yK0yoB9XkjH7/HtfB
+	 PUIFTv9GETJDR2rkwy5z9xlDKSN5qysfsZNuTGoeXhIuL5MTfxuXdpB7YQFRAc0b2o
+	 RqDMvrSFvYq6Q==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Oleg Nesterov <oleg@redhat.com>,
+Cc: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: Re: FAILED: patch "[PATCH] posix-cpu-timers: fix race between handle_posix_cpu_timers()" failed to apply to 5.4-stable tree
-Date: Thu, 19 Jun 2025 05:02:42 -0400
-Message-Id: <20250618112251-e884ef1d31b4675d@stable.kernel.org>
+Subject: Re: [PATCH 5.10 v2 16/16] x86/its: FineIBT-paranoid vs ITS
+Date: Thu, 19 Jun 2025 05:02:44 -0400
+Message-Id: <20250618193715-2cfe996557b3e2ab@stable.kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To:  <20250617172613.GA19542@redhat.com>
+In-Reply-To:  <20250617-its-5-10-v2-16-3e925a1512a1@linux.intel.com>
 References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -67,60 +67,28 @@ Hi,
 ✅ All tests passed successfully. No issues detected.
 No action required from the submitter.
 
-The upstream commit SHA1 provided is correct: f90fff1e152dedf52b932240ebbd670d83330eca
+The upstream commit SHA1 provided is correct: e52c1dc7455d32c8a55f9949d300e5e87d011fa6
+
+WARNING: Author mismatch between patch and upstream commit:
+Backport author: Pawan Gupta<pawan.kumar.gupta@linux.intel.com>
+Commit author: Peter Zijlstra<peterz@infradead.org>
 
 Status in newer kernel trees:
-6.15.y | Present (different SHA1: d65f6c68f7b1)
-6.12.y | Present (different SHA1: 18a3e65f32ed)
-6.6.y | Present (different SHA1: 8db5813e9ad7)
-6.1.y | Present (different SHA1: 61fa08967f27)
-5.15.y | Present (different SHA1: f6e90a3258e0)
-5.10.y | Present (different SHA1: 1c179c7c3b82)
+6.15.y | Present (exact SHA1)
+6.12.y | Present (different SHA1: 7e78061be78b)
+6.6.y | Present (different SHA1: 772934d9062a)
+6.1.y | Present (different SHA1: 69afd82670d8)
+5.15.y | Present (different SHA1: cfcb2a5affbe)
 
 Note: The patch differs from the upstream commit:
 ---
-1:  f90fff1e152de ! 1:  933e5cbcf266c posix-cpu-timers: fix race between handle_posix_cpu_timers() and posix_cpu_timer_del()
-    @@ Metadata
-     Author: Oleg Nesterov <oleg@redhat.com>
-     
-      ## Commit message ##
-    -    posix-cpu-timers: fix race between handle_posix_cpu_timers() and posix_cpu_timer_del()
-    +    FAILED: patch "[PATCH] posix-cpu-timers: fix race between handle_posix_cpu_timers()" failed to apply to 5.4-stable tree
-    +
-    +    On 06/17, gregkh@linuxfoundation.org wrote:
-    +    >
-    +    > The patch below does not apply to the 5.4-stable tree.
-    +
-    +    Please see the attached patch for 5.4.y
-    +
-    +    Oleg.
-    +
-    +    From a3dbb5447bc9a8f9c04ffa5381b0a0bd77b1bdd5 Mon Sep 17 00:00:00 2001
-    +    From: Oleg Nesterov <oleg@redhat.com>
-    +    Date: Tue, 17 Jun 2025 19:15:50 +0200
-    +    Subject: [PATCH 5.4.y] posix-cpu-timers: fix race between
-    +     handle_posix_cpu_timers() and posix_cpu_timer_del()
-    +    MIME-Version: 1.0
-    +    Content-Type: text/plain; charset=UTF-8
-    +    Content-Transfer-Encoding: 8bit
-    +
-    +    commit f90fff1e152dedf52b932240ebbd670d83330eca upstream.
-     
-         If an exiting non-autoreaping task has already passed exit_notify() and
-         calls handle_posix_cpu_timers() from IRQ, it can be reaped by its parent
-    @@ kernel/time/posix-cpu-timers.c: void run_posix_cpu_timers(void)
-     +		return;
-     +
-      	/*
-    - 	 * If the actual expiry is deferred to task work context and the
-    - 	 * work is already scheduled there is no point to do anything here.
-    + 	 * The fast path checks that there are no expired thread or thread
-    + 	 * group timers.  If that's so, just return.
+1:  e52c1dc7455d3 < -:  ------------- x86/its: FineIBT-paranoid vs ITS
+-:  ------------- > 1:  b7b76a94faf76 x86/its: FineIBT-paranoid vs ITS
 ---
 
 Results of testing on various branches:
 
 | Branch                    | Patch Apply | Build Test |
 |---------------------------|-------------|------------|
-| stable/linux-5.4.y        |  Success    |  Success   |
+| stable/linux-5.15.y       |  Success    |  Success   |
 
