@@ -1,137 +1,107 @@
-Return-Path: <stable+bounces-154789-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-154790-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA73EAE0326
-	for <lists+stable@lfdr.de>; Thu, 19 Jun 2025 13:13:17 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 17419AE0365
+	for <lists+stable@lfdr.de>; Thu, 19 Jun 2025 13:22:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 688955A0BC1
-	for <lists+stable@lfdr.de>; Thu, 19 Jun 2025 11:12:52 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9B8F6188C919
+	for <lists+stable@lfdr.de>; Thu, 19 Jun 2025 11:22:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C29A226CFF;
-	Thu, 19 Jun 2025 11:13:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C88602264DD;
+	Thu, 19 Jun 2025 11:22:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="EQx2NCjI"
 X-Original-To: stable@vger.kernel.org
-Received: from mx01.omp.ru (mx01.omp.ru [90.154.21.10])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
+Received: from mail-pj1-f44.google.com (mail-pj1-f44.google.com [209.85.216.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F6DE221F30;
-	Thu, 19 Jun 2025 11:12:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.154.21.10
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DACA22756A
+	for <stable@vger.kernel.org>; Thu, 19 Jun 2025 11:22:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750331585; cv=none; b=PX/AclYrZF3kWxxktQ7NRERXrlX8Z99G4dXi4YMi6MLFMEEz8F96VCh1BPosKADVWOyo/vxJTn1R8GG4wgU/xaRGMn4nXVsEn17fBL6bOpxhEj+1ALLDm5+xe6pvAAUzSc11DocAKAjXGYcPTZ9Sz/Sho2n+SpS7h0dgqGVz6Vo=
+	t=1750332133; cv=none; b=mkjP9eDzdIbdKLTRNg2zVTcvOM1gNJB6RRxZw0Zp9ZH7wv1BUF5pxtO2q8bTHjfTDfCxpI5KaeWNy+FttfLEY133JknJJWmKrno3zXrJq2JrbYpJ80oigBRu3zU+oSu381bHZpYpYjyGgxRGm2SIW1WB+9F4hEzulkvJD/TPwys=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750331585; c=relaxed/simple;
-	bh=25dSeC1C95FRQ+c3GHZW4DawUiBAT/q3D5t53M8lRXA=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=GVOmOXJ70nPzrRno1PbvlrhZQ9UthjxgP82rImtuuqyFrYvi0zHCNSWxVeqadbxV5nnVz5FqjHycmwnc0mtwu76CmSCo9I6YWWotaDLSJ9sxB9drNPxLjauSTk8LWVwoND/5xRYyH9uHH1+ChKR7QCKX3mGM5RLSqEt7vMipAlg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=omp.ru; spf=pass smtp.mailfrom=omp.ru; arc=none smtp.client-ip=90.154.21.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=omp.ru
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=omp.ru
-Received: from inp1wst086.omp.ru (85.26.170.34) by msexch01.omp.ru
- (10.188.4.12) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id 15.2.1258.12; Thu, 19 Jun
- 2025 14:12:48 +0300
-From: Dmitriy Privalov <d.privalov@omp.ru>
-To: <stable@vger.kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-CC: Dmitriy Privalov <d.privalov@omp.ru>, Sanjay R Mehta
-	<sanju.mehta@amd.com>, Mark Brown <broonie@kernel.org>, Shreeya Patel
-	<shreeya.patel@collabora.com>, Lucas Tanure <tanureal@opensource.cirrus.com>,
-	<linux-spi@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-	<lvc-project@linuxtesting.org>, kernel test robot <lkp@intel.com>, Josh
- Poimboeuf <jpoimboe@kernel.org>, Ingo Molnar <mingo@kernel.org>, Raju Rangoju
-	<Raju.Rangoju@amd.com>, Linus Torvalds <torvalds@linux-foundation.org>
-Subject: [PATCH 6.1 1/1] objtool, spi: amd: Fix out-of-bounds stack access in amd_set_spi_freq()
-Date: Thu, 19 Jun 2025 14:12:19 +0300
-Message-ID: <20250619111219.748491-1-d.privalov@omp.ru>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1750332133; c=relaxed/simple;
+	bh=zQ7QbBYQ4p+hc4GNqjEFFcNoSUmjNFjdg9ntczHf9Ms=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=QsL/rX/7WmJou41kKXsercF0694ldZmCoPHlzCfprscwWqAAfNyTJ/0v+m2ovGg4T/kGQIXyRsth3MXK5nItsTLWD2e/fygSSh3m3/7cvlo8p45yZ8h2RtqTmcCttdjciNbQ8WEm/zxcN4QQlROxu/1w3V7n5InJMLBGCYt2RbU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=EQx2NCjI; arc=none smtp.client-ip=209.85.216.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pj1-f44.google.com with SMTP id 98e67ed59e1d1-313fab41fd5so82261a91.1
+        for <stable@vger.kernel.org>; Thu, 19 Jun 2025 04:22:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1750332130; x=1750936930; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=4Hga0NcVwO82H5ckjdgFZA+lU3OjJWovCb7l6w//SLU=;
+        b=EQx2NCjICOWy/uRuLS3AXg9gjQ+qwL+djES7NQJNDw4zAkiiGxIZRgA3RNkG6yc651
+         PEIgDsZxKjRgaFc7dKiJyKP3nYAZNmrwNUhY815hGhIyj+ziOEIPfNJTWdCiX4X0Tnu7
+         1vKOvh4IGDndEwDxNZCuQTVD8IABxL2EBucXTbD9Iq7sCPyHx//Z3U9LoApIFud/8eY0
+         980ZWdi2xo+5cuvmz7M1IIBx0HObUs0NXNpp+EkktATt9FbkqFQPx9qgeGEZ+ULpq8jg
+         fbo0tbh/4JQbNyZQy4IRFt/0YoKOtqqcaNzjaip3eAmgJlZubAqPaoE6pPb8vRsNaaDq
+         aTdA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1750332130; x=1750936930;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=4Hga0NcVwO82H5ckjdgFZA+lU3OjJWovCb7l6w//SLU=;
+        b=nCFOZEbik7DCJvhZVsZmjBSiC2s28bQkUDlEzeKlDM0jWO+yGw+y12lx2HR6wstHD5
+         Gv95V0wMJ013wKDO01di+CYXqmplmuXWYVWCZdTsHCPAEbl+mMjWPv84q+iX/Q5zRUxg
+         CXg/wOVf+pAIUnrjnqn2QfvFQkhVr/kwENGPAWE7385TkQ669r7I/pzaP+BHnehfl7Py
+         RSi/UgNDYsgaqxHpTJxbAaTYbdadOVOlByxNcYETidd1V8nwOTCNt8CjXmCKValr/Zfk
+         SJ0ySCOTnAcXrysq4x1RwT3dk2rm7uvSr/1yhNhmQOewEX7d+O/9zjuMKAGcWrxxBJuO
+         4hVw==
+X-Gm-Message-State: AOJu0Yz4PYMzoTdjEEbNdRJ8csAWWzj6YtfjBWFySPKi72B8WY7EjyGt
+	V6WoDLlfpKX3NDBsJNNdOhnCzZwHjxsxMC+S1orw0z/3SVZhNNBxNnLqqQxoChOcrMubNRj1vOk
+	NH6p9DSwwFEfW4sqgx1a963s7NqfjVl4=
+X-Gm-Gg: ASbGnctzYOGqmmrMPoJRhP0K+e05I9V52JnN9YYWymBTyrFuifL1TI1HdgN7tko8Tv9
+	wuHfIpjQzw1kYI9k7jbAbz7RA2hmUvT5RNRZKyJG4boVkpz3ZwYEkbtG2E0oR6vAD5qzYuD8teW
+	aULJxe88v+9gJDvImKEMMHnneY+Ohjo9JQdxkQWvBP4ic=
+X-Google-Smtp-Source: AGHT+IFwChdqFFcQJXX8ZjOB3WV5uzY9cm41kVgEkcI9w2fM7AHxdNmu3LQ4ICtjsz7HQq1U+d9s9Am49Lch1PsOOZo=
+X-Received: by 2002:a17:90b:3bcd:b0:311:c1da:3858 with SMTP id
+ 98e67ed59e1d1-3158b6e4b68mr1646772a91.0.1750332130487; Thu, 19 Jun 2025
+ 04:22:10 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: msexch01.omp.ru (10.188.4.12) To msexch01.omp.ru
- (10.188.4.12)
-X-KSE-ServerInfo: msexch01.omp.ru, 9
-X-KSE-AntiSpam-Interceptor-Info: scan successful
-X-KSE-AntiSpam-Version: 6.1.1, Database issued on: 06/19/2025 10:57:42
-X-KSE-AntiSpam-Status: KAS_STATUS_NOT_DETECTED
-X-KSE-AntiSpam-Method: none
-X-KSE-AntiSpam-Rate: 59
-X-KSE-AntiSpam-Info: Lua profiles 194191 [Jun 19 2025]
-X-KSE-AntiSpam-Info: Version: 6.1.1.11
-X-KSE-AntiSpam-Info: Envelope from: d.privalov@omp.ru
-X-KSE-AntiSpam-Info: LuaCore: 62 0.3.62
- e2af3448995f5f8a7fe71abf21bb23519d0f38c3
-X-KSE-AntiSpam-Info: {rep_avail}
-X-KSE-AntiSpam-Info: {Tracking_uf_ne_domains}
-X-KSE-AntiSpam-Info: {Tracking_from_domain_doesnt_match_to}
-X-KSE-AntiSpam-Info: {relay has no DNS name}
-X-KSE-AntiSpam-Info: {SMTP from is not routable}
-X-KSE-AntiSpam-Info: {Found in DNSBL: 85.26.170.34 in (user)
- b.barracudacentral.org}
-X-KSE-AntiSpam-Info:
-	omp.ru:7.1.1;d41d8cd98f00b204e9800998ecf8427e.com:7.1.1;85.26.170.34:7.1.2;lore.kernel.org:7.1.1;127.0.0.199:7.1.2;inp1wst086.omp.ru:7.1.1
-X-KSE-AntiSpam-Info: FromAlignment: s
-X-KSE-AntiSpam-Info: ApMailHostAddress: 85.26.170.34
-X-KSE-AntiSpam-Info: {DNS response errors}
-X-KSE-AntiSpam-Info: Rate: 59
-X-KSE-AntiSpam-Info: Status: not_detected
-X-KSE-AntiSpam-Info: Method: none
-X-KSE-AntiSpam-Info: Auth:dmarc=temperror header.from=omp.ru;spf=temperror
- smtp.mailfrom=omp.ru;dkim=none
-X-KSE-Antiphishing-Info: Clean
-X-KSE-Antiphishing-ScanningType: Heuristic
-X-KSE-Antiphishing-Method: None
-X-KSE-Antiphishing-Bases: 06/19/2025 10:59:00
-X-KSE-Antivirus-Interceptor-Info: scan successful
-X-KSE-Antivirus-Info: Clean, bases: 6/19/2025 5:52:00 AM
-X-KSE-Attachment-Filter-Triggered-Rules: Clean
-X-KSE-Attachment-Filter-Triggered-Filters: Clean
-X-KSE-BulkMessagesFiltering-Scan-Result: InTheLimit
+References: <CAA76j91szQKmyNgjvtRVeKOMUvmTH9qdDFoY-QRJWSOTnKap5Q@mail.gmail.com>
+In-Reply-To: <CAA76j91szQKmyNgjvtRVeKOMUvmTH9qdDFoY-QRJWSOTnKap5Q@mail.gmail.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Thu, 19 Jun 2025 13:21:58 +0200
+X-Gm-Features: Ac12FXxQF7cFqBr569CpKfp1s5EgaJ6uo8cyY1T5rL-PYsl1axYxkjoFyrr52oc
+Message-ID: <CANiq72mRB7cbEpKdWm_k2EPf5zdHL8K=JT2Y+4XGwywN5AX9-Q@mail.gmail.com>
+Subject: Re: [PATCH v2 6.12.y] Kunit to check the longest symbol length
+To: =?UTF-8?Q?Sergio_Gonz=C3=A1lez_Collado?= <sergio.collado@gmail.com>
+Cc: stable@vger.kernel.org, Greg KH <gregkh@linuxfoundation.org>, 
+	Sasha Levin <sashal@kernel.org>, Miguel Ojeda <ojeda@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-If speed_hz < AMD_SPI_MIN_HZ, amd_set_spi_freq() iterates over the
-entire amd_spi_freq array without breaking out early, causing 'i' to go
-beyond the array bounds.
+On Thu, Jun 19, 2025 at 12:00=E2=80=AFPM Sergio Gonz=C3=A1lez Collado
+<sergio.collado@gmail.com> wrote:
+>
+>     54338750578f ("x86/tools: Drop duplicate unlikely() definition in
+> insn_decoder_test.c")
 
-Fix that by stopping the loop when it gets to the last entry, so the low
-speed_hz value gets clamped up to AMD_SPI_MIN_HZ.
+This hash appears to be incorrect, or at least I don't have it locally.
 
-Fixes the following warning with an UBSAN kernel:
+Should it be
 
-  drivers/spi/spi-amd.o: error: objtool: amd_set_spi_freq() falls through to next function amd_spi_set_opcode()
+    f710202b2a45addea3dcdcd862770ecbaf6597ef
 
-Fixes: 3fe26121dc3a ("spi: amd: Configure device speed")
-Reported-by: kernel test robot <lkp@intel.com>
-Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Acked-by: Mark Brown <broonie@kernel.org>
-Cc: Raju Rangoju <Raju.Rangoju@amd.com>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Link: https://lore.kernel.org/r/78fef0f2434f35be9095bcc9ffa23dd8cab667b9.1742852847.git.jpoimboe@kernel.org
-Closes: https://lore.kernel.org/r/202503161828.RUk9EhWx-lkp@intel.com/
-Signed-off-by: Dmitriy Privalov <d.privalov@omp.ru>
----
- drivers/spi/spi-amd.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+instead? Could you please double-check?
 
-diff --git a/drivers/spi/spi-amd.c b/drivers/spi/spi-amd.c
-index bfc3ab5f39ea..b53301e563bc 100644
---- a/drivers/spi/spi-amd.c
-+++ b/drivers/spi/spi-amd.c
-@@ -243,7 +243,7 @@ static int amd_set_spi_freq(struct amd_spi *amd_spi, u32 speed_hz)
- 	if (speed_hz < AMD_SPI_MIN_HZ)
- 		return -EINVAL;
- 
--	for (i = 0; i < ARRAY_SIZE(amd_spi_freq); i++)
-+	for (i = 0; i < ARRAY_SIZE(amd_spi_freq)-1; i++)
- 		if (speed_hz >= amd_spi_freq[i].speed_hz)
- 			break;
- 
--- 
-2.34.1
+Thanks!
 
+Cheers,
+Miguel
 
