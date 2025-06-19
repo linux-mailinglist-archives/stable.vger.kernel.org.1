@@ -1,141 +1,85 @@
-Return-Path: <stable+bounces-154786-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-154787-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B94DBAE029E
-	for <lists+stable@lfdr.de>; Thu, 19 Jun 2025 12:27:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C216EAE02C5
+	for <lists+stable@lfdr.de>; Thu, 19 Jun 2025 12:35:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 39C6B1BC327B
-	for <lists+stable@lfdr.de>; Thu, 19 Jun 2025 10:27:31 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BEEF3189E011
+	for <lists+stable@lfdr.de>; Thu, 19 Jun 2025 10:35:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 417E9222594;
-	Thu, 19 Jun 2025 10:27:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5D812248A5;
+	Thu, 19 Jun 2025 10:35:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="kOhlaa8x"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eb6tu/4s"
 X-Original-To: stable@vger.kernel.org
-Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.154.123])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6ADB9222584;
-	Thu, 19 Jun 2025 10:27:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=68.232.154.123
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E340224234;
+	Thu, 19 Jun 2025 10:35:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750328830; cv=none; b=lVOnqIVwcRBz/ZNkzRQLHpbvNCx1/xNaHk4uX/be4SiNELmrhkvWbmWgw+SgiG1SqSwjcLSjijjqY31oNtDQrZNfQjUEKNQV+USsIAkVYanVML2MGXx9wpeC2WWuWnUthT/1Wkhg96bwA1kNPf/BoRUXIbb12w0vK5pQYDrcE+8=
+	t=1750329335; cv=none; b=fzT1fTnmNpNOALCliR24yfV8gRDmhBrNDJbGue4fdi9/Oy1r13Ni5a/bdiUyeaWfp6xKdkKXZDQIKn3oE7yG6aTOTfTnLZhHDBC815frp/wyeXfikcQs5exRXcTD+lTJH50sYnd0AkpYhaIogR5NRyLBUPkWuip8FGQuBzoU05w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750328830; c=relaxed/simple;
-	bh=5/aop65CR+vlEsCatlTw7RGHDa9DEji1ocp8kIn0uxc=;
-	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=FjzkRgAHnCmX/wfyDepDUmURU4MHbGQdK0fjTaz+u08m92+YPpjbIWb1RVxhnpzalDsJtuBfIpt2BXEGCRvicbtCTfFfJkbd8BiEKkOxO6Xwhw+Tg9Kde+FQEy9riR+GlhObCuP2nNKAc53JRUouLcGQ2P8Iq2fsWnK/diwKOVI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=kOhlaa8x; arc=none smtp.client-ip=68.232.154.123
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
-  t=1750328828; x=1781864828;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=5/aop65CR+vlEsCatlTw7RGHDa9DEji1ocp8kIn0uxc=;
-  b=kOhlaa8xZnLYlv33woJMMruRdPQ9uwWaQiwjYy7ev4L9vYK5VDtdb66O
-   RfZikdNchHC3Z6q7aRVM/+Ya5HMTDATLnpBaJXBwQkgg9/P+NeNsaBIMA
-   v9sAoF1VRHjZBe6gFAYmICyQVuQidbRSP8erkYIVCULh5Ya4AjQhlViHa
-   wTibpFKCJuD1yelyXmLvl6Im/s5Sax7ZaHkCHuqfoq5/W26BgkyRK4xKt
-   Xv3AC8xWYSQ+lzPMlOcF0U4iISgMbGjAH69ggOynpc7EFI0P1LjXIj+bt
-   lO1VBHru5RJzy25dsTYTFjImFx4A6UfYcufRveSOpaMdWvfFkaJNlAdor
-   g==;
-X-CSE-ConnectionGUID: M0gjpEXFSBW2SwzkaqjX3Q==
-X-CSE-MsgGUID: MLPHmx72S5WWXxMy6v5fAQ==
-X-IronPort-AV: E=Sophos;i="6.16,248,1744095600"; 
-   d="asc'?scan'208";a="210468383"
-X-Amp-Result: UNKNOWN
-X-Amp-Original-Verdict: FILE UNKNOWN
-Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
-  by esa6.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 19 Jun 2025 03:27:07 -0700
-Received: from chn-vm-ex01.mchp-main.com (10.10.85.143) by
- chn-vm-ex03.mchp-main.com (10.10.85.151) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.44; Thu, 19 Jun 2025 03:26:26 -0700
-Received: from wendy (10.10.85.11) by chn-vm-ex01.mchp-main.com (10.10.85.143)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.44 via Frontend
- Transport; Thu, 19 Jun 2025 03:26:24 -0700
-Date: Thu, 19 Jun 2025 11:25:16 +0100
-From: Conor Dooley <conor.dooley@microchip.com>
-To: Klara Modin <klarasmodin@gmail.com>
-CC: <paul.walmsley@sifive.com>, <palmer@dabbelt.com>, <aou@eecs.berkeley.edu>,
-	<alex@ghiti.fr>, <valentina.fernandezalanis@microchip.com>,
-	<linux-riscv@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
-	<stable@vger.kernel.org>
-Subject: Re: [PATCH] riscv: export boot_cpu_hartid
-Message-ID: <20250619-rummage-cache-93f48564b7fb@wendy>
-References: <20250617125847.23829-1-klarasmodin@gmail.com>
+	s=arc-20240116; t=1750329335; c=relaxed/simple;
+	bh=/ovHqXT6Fuayc9VrPcOHFmgWIiw9d4rNMOeKWBJe2sQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=YREnClHfTWZ98YHbiJxrWUPgB/ZcUE9NJG8SZ3G2eWBh5MDDsEFDY6HFK8oaa0ULsna2TGE/tNlB2FoTd5sN9OyNXs4dwimiri8Dpmb1CGkS7mOlkfBAeL+M0KNuQNHug9wy0F1GVJsfShrE3onbYf+FjPYGYP972BHQ008TZHk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eb6tu/4s; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A93D4C4CEED;
+	Thu, 19 Jun 2025 10:35:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1750329335;
+	bh=/ovHqXT6Fuayc9VrPcOHFmgWIiw9d4rNMOeKWBJe2sQ=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=eb6tu/4snZMbu+FSby+w2x7UTIGWGyj0wQPJAokfSP0MsD7cyHSTNYqhNpBNdx6hV
+	 ONv05hsBPHjr/EgSOFWqoK9iKp9hJ+f3KKv/G1KaPHm80lzy26m1bhkfHd3s9i6j/X
+	 hVlzNOytczBBG7gh69CK8ym3OwvLCBDB+JWlZ+00=
+Date: Thu, 19 Jun 2025 12:35:32 +0200
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Minas Harutyunyan <Minas.Harutyunyan@synopsys.com>
+Cc: "linux-usb@vger.kernel.org" <linux-usb@vger.kernel.org>,
+	John Youn <John.Youn@synopsys.com>,
+	"stable@vger.kernel.org" <stable@vger.kernel.org>
+Subject: Re: [PATCH v 4] usb: dwc2: gadget: Fix enter to hibernation for
+ UTMI+ PHY
+Message-ID: <2025061922-tripping-obsolete-abfd@gregkh>
+References: <35036b774510b46191500985ca6db57390d4a246.1748856956.git.Minas.Harutyunyan@synopsys.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="K+4uvyVlEFQHzawD"
-Content-Disposition: inline
-In-Reply-To: <20250617125847.23829-1-klarasmodin@gmail.com>
-
---K+4uvyVlEFQHzawD
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <35036b774510b46191500985ca6db57390d4a246.1748856956.git.Minas.Harutyunyan@synopsys.com>
 
-On Tue, Jun 17, 2025 at 02:58:47PM +0200, Klara Modin wrote:
-> The mailbox controller driver for the Microchip Inter-processor
-> Communication can be built as a module. It uses cpuid_to_hartid_map and
-> commit 4783ce32b080 ("riscv: export __cpuid_to_hartid_map") enables that
-> to work for SMP. However, cpuid_to_hartid_map uses boot_cpu_hartid on
-> non-SMP kernels and this driver can be useful in such configurations[1].
->=20
-> Export boot_cpu_hartid so the driver can be built as a module on non-SMP
-> kernels as well.
->=20
-> Link: https://lore.kernel.org/lkml/20250617-confess-reimburse-876101e099c=
-b@spud/ [1]
+On Tue, Jun 03, 2025 at 07:16:32AM +0000, Minas Harutyunyan wrote:
+> For UTMI+ PHY, according to programming guide, first should be set
+> PMUACTV bit then STOPPCLK bit. Otherwise, when the device issues
+> Remote Wakeup, then host notices disconnect instead.
+> For ULPI PHY, above mentioned bits must be set in reversed order:
+> STOPPCLK then PMUACTV.
+> 
+> Fixes: 4483ef3c1685 ("usb: dwc2: Add hibernation updates for ULPI PHY")
 > Cc: stable@vger.kernel.org
-> Fixes: e4b1d67e7141 ("mailbox: add Microchip IPC support")
-
-I'm not sure that this fixes tag is really right, but I have no better
-suggestions
-Acked-by: Conor Dooley <conor.dooley@microchip.com>
-
-> Signed-off-by: Klara Modin <klarasmodin@gmail.com>
+> Reported-by: Tomasz Mon <tomasz.mon@nordicsemi.no>
+> Signed-off-by: Minas Harutyunyan <Minas.Harutyunyan@synopsys.com>
 > ---
->  arch/riscv/kernel/setup.c | 1 +
->  1 file changed, 1 insertion(+)
->=20
-> diff --git a/arch/riscv/kernel/setup.c b/arch/riscv/kernel/setup.c
-> index f7c9a1caa83e..14888e5ea19a 100644
-> --- a/arch/riscv/kernel/setup.c
-> +++ b/arch/riscv/kernel/setup.c
-> @@ -50,6 +50,7 @@ atomic_t hart_lottery __section(".sdata")
->  #endif
->  ;
->  unsigned long boot_cpu_hartid;
-> +EXPORT_SYMBOL_GPL(boot_cpu_hartid);
-> =20
->  /*
->   * Place kernel memory regions on the resource tree so that
-> --=20
-> 2.49.0
->=20
+>  Changes in v4:
+>  - Rebased on top of Linux 6.15-rc6
+>  Changes in v3:
+>  - Rebased on top of 6.15-rc4
+>  Changes in v2:
+>  - Added Cc: stable@vger.kernel.org
+> 
+>  drivers/usb/dwc2/gadget.c | 37 +++++++++++++++++++++++++------------
+>  1 file changed, 25 insertions(+), 12 deletions(-)
 
---K+4uvyVlEFQHzawD
-Content-Type: application/pgp-signature; name="signature.asc"
+Fails to apply on top of 6.16-rc2 :(
 
------BEGIN PGP SIGNATURE-----
-
-iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCaFPliwAKCRB4tDGHoIJi
-0lPyAP9gMiXsh08benYHPcPqTgNhjeE8a5n+yyRd3aZZYh0GYAEAhTEaO5q5d/2f
-cvx/ry5nKYC8JqWHaY7wNNuGitftMgY=
-=dTnR
------END PGP SIGNATURE-----
-
---K+4uvyVlEFQHzawD--
 
