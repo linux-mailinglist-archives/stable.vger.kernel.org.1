@@ -1,90 +1,182 @@
-Return-Path: <stable+bounces-154835-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-154837-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0F661AE0F21
-	for <lists+stable@lfdr.de>; Thu, 19 Jun 2025 23:54:02 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8831EAE0FCD
+	for <lists+stable@lfdr.de>; Fri, 20 Jun 2025 00:56:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8D8734A36FB
-	for <lists+stable@lfdr.de>; Thu, 19 Jun 2025 21:54:02 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2B5AE17DFC1
+	for <lists+stable@lfdr.de>; Thu, 19 Jun 2025 22:56:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 321C92459F9;
-	Thu, 19 Jun 2025 21:53:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F46428C5A1;
+	Thu, 19 Jun 2025 22:56:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Nde8eq+r"
 X-Original-To: stable@vger.kernel.org
-Received: from angie.orcam.me.uk (angie.orcam.me.uk [78.133.224.34])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE54322154B;
-	Thu, 19 Jun 2025 21:53:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.133.224.34
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 095BD25E478;
+	Thu, 19 Jun 2025 22:56:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750370037; cv=none; b=Ds2p7DOmORBB/zN9Pph1mrrR4LgL8CZftkKjnRxrB6nw1sej6PVL+UkJ97Fv3AjWLtmDeFJ3qIdpiPiqCpiEu+z+Fbw3LTTJnHG3IJrYreFHVxtbit+sNPr2/s44ciWE5Ip8m3owDw0TxRd+fgp1AvCUOaaiQtgkalOv9295L78=
+	t=1750373798; cv=none; b=uJp4OnEyHBCORJXOOLkQBzckpd9NNJ4mXWmfb5OjQCMv5QuT3M8dYyai11SEPGz/kBZfeAFmLx9segYplRtjd8pcE9fNYUWt/MzmxCS2GYYjwNKct/OqKzquBkhGVTuwng0hWDJD2W8LIZWIvsCwAwBBk81dioQEZGp4/U2HSJQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750370037; c=relaxed/simple;
-	bh=wBXVrcgEC2fkjBWN2RM0IOuo0AC5FTziHXKGjW72xZg=;
-	h=Date:From:To:cc:Subject:In-Reply-To:Message-ID:References:
-	 MIME-Version:Content-Type; b=oheZr17XvVo2I4ULNtxkAuEHeONwCei9KZv+fiuNvJ9L6EIsU68IkvTNYNpqCeBxjMw0J6hlTwOOKH/dTBfUEiLD3iMA1aySG8vVnmjlNg9LqRD9V57zDJlus9Y3ScuIaj6I6gL/g1pt1VQn39wYPneHhfT4sCMDMNiVqh5VBNI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=orcam.me.uk; spf=none smtp.mailfrom=orcam.me.uk; arc=none smtp.client-ip=78.133.224.34
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=orcam.me.uk
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=orcam.me.uk
-Received: by angie.orcam.me.uk (Postfix, from userid 500)
-	id 9159D92009C; Thu, 19 Jun 2025 23:53:51 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
-	by angie.orcam.me.uk (Postfix) with ESMTP id 8A2BB92009B;
-	Thu, 19 Jun 2025 22:53:51 +0100 (BST)
-Date: Thu, 19 Jun 2025 22:53:51 +0100 (BST)
-From: "Maciej W. Rozycki" <macro@orcam.me.uk>
-To: Florian Fainelli <f.fainelli@gmail.com>
-cc: Greg Chandler <chandleg@wizardsworks.org>, stable@vger.kernel.org, 
-    netdev@vger.kernel.org
-Subject: Re: Tulip 21142 panic on physical link disconnect
-In-Reply-To: <52564e1f-ab05-4347-bd64-b38a69180499@gmail.com>
-Message-ID: <alpine.DEB.2.21.2506192238280.37405@angie.orcam.me.uk>
-References: <53bb866f5bb12cc1b6c33b3866007f2b@wizardsworks.org> <02e3f9b8-9e60-4574-88e2-906ccd727829@gmail.com> <385f2469f504dd293775d3c39affa979@wizardsworks.org> <fba6a52c-bedf-4d06-814f-eb78257e4cb3@gmail.com> <6a079cd0233b33c6faf6af6a1da9661f@wizardsworks.org>
- <9292e561-09bf-4d70-bcb7-f90f9cfbae7b@gmail.com> <a3d8ee993b73b826b537f374d78084ad@wizardsworks.org> <12ccf3e4c24e8db2545f6ccaba8ce273@wizardsworks.org> <8c06f8969e726912b46ef941d36571ad@wizardsworks.org> <alpine.DEB.2.21.2506192007440.37405@angie.orcam.me.uk>
- <52564e1f-ab05-4347-bd64-b38a69180499@gmail.com>
-User-Agent: Alpine 2.21 (DEB 202 2017-01-01)
+	s=arc-20240116; t=1750373798; c=relaxed/simple;
+	bh=UzPt9sdsQLdNib/j6Er/NNyzs7bxjPti+YIh2O07cks=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=GFwvqkTWqPnHOThvLh1FlWjYVPMy9msSHwLg5H8CEwMyO+6n/WKb3DvD3l65R7V2mSCzPjhOkP8fD65OyfRxezzUTvZLUKacjFiFfMyqv50S8F3BM0v/AQT3vq5QDDhOzcQkpUeN6++p7RwYddvgY1IqREwa4JNyg5obD+eo1tU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Nde8eq+r; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F4A6C4CEEA;
+	Thu, 19 Jun 2025 22:56:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1750373797;
+	bh=UzPt9sdsQLdNib/j6Er/NNyzs7bxjPti+YIh2O07cks=;
+	h=From:To:Cc:Subject:Date:From;
+	b=Nde8eq+rYOu10Ukd5BPNu7CCiAmyo4obYligYd/Fbb0UtvZq95d7nMTUyzg4AIMAw
+	 uwSdVINM2fIP71NI+WQrf39YT169lLcV7shEmmYRGv52IvcBDUmyinKboGjTmPWjHP
+	 /8asLaV/AZr5L5cQof+/99rb4xl8/qO92UtEgliDM6bLZqiyrfhl52tA1Z7sqFeW/H
+	 uM1tExk6QNeKLJAFoWhZFAYyQnetB2OHHrBQ3pj+hgAr7nkl+Wy6lZv9SUYIWGo5+O
+	 BbcCXjKtVSHcRBsg+pMUKWU+72KRjg34ZPS3nh7ZbvT59FoY50Buh91HT5sz3j2C1i
+	 b7yt6r6mG4szg==
+From: Eric Biggers <ebiggers@kernel.org>
+To: linux-crypto@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org,
+	Ard Biesheuvel <ardb@kernel.org>,
+	"Jason A . Donenfeld " <Jason@zx2c4.com>,
+	=?UTF-8?q?Ren=C3=A9=20van=20Dorst?= <opensource@vdorst.com>,
+	linux-mips@vger.kernel.org,
+	llvm@lists.linux.dev,
+	stable@vger.kernel.org,
+	Eric Biggers <ebiggers@kernel.org>,
+	kernel test robot <lkp@intel.com>
+Subject: [PATCH] lib/crypto: mips/chacha: Fix clang build and remove unneeded byteswap
+Date: Thu, 19 Jun 2025 15:55:35 -0700
+Message-ID: <20250619225535.679301-1-ebiggers@kernel.org>
+X-Mailer: git-send-email 2.50.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 8bit
 
-On Thu, 19 Jun 2025, Florian Fainelli wrote:
+The MIPS32r2 ChaCha code has never been buildable with the clang
+assembler.  First, clang doesn't support the 'rotl' pseudo-instruction:
 
-> >   Maybe it'll ring someone's bell and they'll chime in or otherwise I'll
-> > bisect it... sometime.  Or feel free to start yourself with 5.18, as it's
-> > not terribly old, only a bit and certainly not so as 2.6 is.
-> 
-> I am still not sure why I could not see that warning on by Cobalt Qube2 trying
-> to reproduce Greg's original issue, that is with an IP assigned on the
-> interface yanking the cable did not trigger a timer warning. It could be that
-> machine is orders of magnitude slower and has a different CONFIG_HZ value that
-> just made it less likely to be seen?
+    error: unknown instruction, did you mean: rol, rotr?
 
- Can it have a different PHY attached?  There's this code:
+Second, clang requires that both operands of the 'wsbh' instruction be
+explicitly given:
 
-	if (tp->chip_id == PNIC2)
-		tp->link_change = pnic2_lnk_change;
-	else if (tp->flags & HAS_NWAY)
-		tp->link_change = t21142_lnk_change;
-	else if (tp->flags & HAS_PNICNWAY)
-		tp->link_change = pnic_lnk_change;
+    error: too few operands for instruction
 
-in `tulip_init_one' and `pnic_lnk_change' won't ever trigger this, but the 
-other two can; apparently the corresponding comment in `tulip_interrupt':
-                        
-/*                        
- * NB: t21142_lnk_change() does a del_timer_sync(), so be careful if this
- * call is ever done under the spinlock
- */
+To fix this, align the code with the real instruction set by (1) using
+the real instruction 'rotr' instead of the nonstandard pseudo-
+instruction 'rotl', and (2) explicitly giving both operands to 'wsbh'.
 
-hasn't been updated when `pnic2_lnk_change' was added.  Also ISTM no link 
-change handler is a valid option too, in which case `del_timer_sync' won't 
-be called either.  This is from a cursory glance only, so please take with 
-a pinch of salt.
+To make removing the use of 'rotl' a bit easier, also remove the
+unnecessary special-casing for big endian CPUs at
+.Lchacha_mips_xor_bytes.  The tail handling is actually
+endian-independent since it processes one byte at a time.  On big endian
+CPUs the old code byte-swapped SAVED_X, then iterated through it in
+reverse order.  But the byteswap and reverse iteration canceled out.
 
-  Maciej
+Tested with chacha20poly1305-selftest in QEMU using "-M malta" with both
+little endian and big endian mips32r2 kernels.
+
+Fixes: 49aa7c00eddf ("crypto: mips/chacha - import 32r2 ChaCha code from Zinc")
+Cc: stable@vger.kernel.org
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202505080409.EujEBwA0-lkp@intel.com/
+Signed-off-by: Eric Biggers <ebiggers@kernel.org>
+---
+
+This applies on top of other pending lib/crypto patches and can be
+retrieved from git at:
+
+    git fetch https://git.kernel.org/pub/scm/linux/kernel/git/ebiggers/linux.git mips-chacha-fix
+
+ lib/crypto/mips/chacha-core.S | 20 +++++++-------------
+ 1 file changed, 7 insertions(+), 13 deletions(-)
+
+diff --git a/lib/crypto/mips/chacha-core.S b/lib/crypto/mips/chacha-core.S
+index 5755f69cfe007..706aeb850fb0d 100644
+--- a/lib/crypto/mips/chacha-core.S
++++ b/lib/crypto/mips/chacha-core.S
+@@ -53,21 +53,17 @@
+ #define IS_UNALIGNED	$s7
+ 
+ #if __BYTE_ORDER__ == __ORDER_BIG_ENDIAN__
+ #define MSB 0
+ #define LSB 3
+-#define ROTx rotl
+-#define ROTR(n) rotr n, 24
+ #define	CPU_TO_LE32(n) \
+-	wsbh	n; \
++	wsbh	n, n; \
+ 	rotr	n, 16;
+ #else
+ #define MSB 3
+ #define LSB 0
+-#define ROTx rotr
+ #define CPU_TO_LE32(n)
+-#define ROTR(n)
+ #endif
+ 
+ #define FOR_EACH_WORD(x) \
+ 	x( 0); \
+ 	x( 1); \
+@@ -190,14 +186,14 @@ CONCAT3(.Lchacha_mips_xor_aligned_, PLUS_ONE(x), _b: ;) \
+ 	addu	X(D), X(N); \
+ 	xor	X(V), X(A); \
+ 	xor	X(W), X(B); \
+ 	xor	X(Y), X(C); \
+ 	xor	X(Z), X(D); \
+-	rotl	X(V), S;    \
+-	rotl	X(W), S;    \
+-	rotl	X(Y), S;    \
+-	rotl	X(Z), S;
++	rotr	X(V), 32 - S; \
++	rotr	X(W), 32 - S; \
++	rotr	X(Y), 32 - S; \
++	rotr	X(Z), 32 - S;
+ 
+ .text
+ .set	reorder
+ .set	noat
+ .globl	chacha_crypt_arch
+@@ -370,25 +366,23 @@ chacha_crypt_arch:
+ 	addu	IN, $at
+ 	addu	OUT, $at
+ 	/* First byte */
+ 	lbu	T1, 0(IN)
+ 	addiu	$at, BYTES, 1
+-	CPU_TO_LE32(SAVED_X)
+-	ROTR(SAVED_X)
+ 	xor	T1, SAVED_X
+ 	sb	T1, 0(OUT)
+ 	beqz	$at, .Lchacha_mips_xor_done
+ 	/* Second byte */
+ 	lbu	T1, 1(IN)
+ 	addiu	$at, BYTES, 2
+-	ROTx	SAVED_X, 8
++	rotr	SAVED_X, 8
+ 	xor	T1, SAVED_X
+ 	sb	T1, 1(OUT)
+ 	beqz	$at, .Lchacha_mips_xor_done
+ 	/* Third byte */
+ 	lbu	T1, 2(IN)
+-	ROTx	SAVED_X, 8
++	rotr	SAVED_X, 8
+ 	xor	T1, SAVED_X
+ 	sb	T1, 2(OUT)
+ 	b	.Lchacha_mips_xor_done
+ 
+ .Lchacha_mips_no_full_block_unaligned:
+-- 
+2.50.0
+
 
