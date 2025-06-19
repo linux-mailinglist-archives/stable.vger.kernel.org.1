@@ -1,113 +1,90 @@
-Return-Path: <stable+bounces-154834-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-154835-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4A87DAE0F1B
-	for <lists+stable@lfdr.de>; Thu, 19 Jun 2025 23:50:16 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0F661AE0F21
+	for <lists+stable@lfdr.de>; Thu, 19 Jun 2025 23:54:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E47E53AF73A
-	for <lists+stable@lfdr.de>; Thu, 19 Jun 2025 21:49:51 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8D8734A36FB
+	for <lists+stable@lfdr.de>; Thu, 19 Jun 2025 21:54:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 699DB21C9EB;
-	Thu, 19 Jun 2025 21:50:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="G6QgQkvl"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 321C92459F9;
+	Thu, 19 Jun 2025 21:53:57 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 245A230E85D
-	for <stable@vger.kernel.org>; Thu, 19 Jun 2025 21:50:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from angie.orcam.me.uk (angie.orcam.me.uk [78.133.224.34])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE54322154B;
+	Thu, 19 Jun 2025 21:53:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.133.224.34
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750369812; cv=none; b=ji2Gy89evbjDt2a++sxKIP83680qcHyC+B2pgPmaaEFhTev93pji2tuu8IdLiWOt4WBswJwU2t2ytoR6rw/IhE55ZHhiA9vw/RRarmksyDYyGHj3OUiABFut9tsTGsmKfuiFTL5b0iuHv4tOej7BL4l3dP66s+54r9wU7Ee32pU=
+	t=1750370037; cv=none; b=Ds2p7DOmORBB/zN9Pph1mrrR4LgL8CZftkKjnRxrB6nw1sej6PVL+UkJ97Fv3AjWLtmDeFJ3qIdpiPiqCpiEu+z+Fbw3LTTJnHG3IJrYreFHVxtbit+sNPr2/s44ciWE5Ip8m3owDw0TxRd+fgp1AvCUOaaiQtgkalOv9295L78=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750369812; c=relaxed/simple;
-	bh=YsgWAgK51Ou8rpQ+xYoQhLvKzW2q0UBdHnkSqBJQuOM=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=SuWoZUR0783LmcPdWVanf0QxR8w2dVRWtmlpv2vPO/cBVRVvV0emrM0aNAkuKyOkIEQADRkvKD+CPFrB3VjMkJIDQa/QEfqs35t8YWlVYbkSJFKqXuRcKZclplYtH89+UqbXNdGykl1QKzBPPyyjzgpl3z8i7ZTzWTW11OHZj4Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=G6QgQkvl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 175E9C4CEEA;
-	Thu, 19 Jun 2025 21:50:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1750369810;
-	bh=YsgWAgK51Ou8rpQ+xYoQhLvKzW2q0UBdHnkSqBJQuOM=;
-	h=From:To:Cc:Subject:Date:From;
-	b=G6QgQkvlo4e7kGb5zi1ABxctSuYlbEjSvZ+7qMgpQJvogmzv02Tt6C0LZGzbHipS9
-	 Fwd8OKDpwFlJqGv2GebZVIIiAjTz8CxkGlDrCzvMgPVXxooKkjBPw8ll0W4v823AiX
-	 IbwuelJRsb+WLNnJxUshLu94jSW6nMesHJyCNk6FQ3OgvSxfaQnROhoPjeAs/kK1Z1
-	 igZXdDjbQIAHDRUE0Ijoqt87P6bI7N9YEPbzvE+9FJmCqYascJm95LSdW3qlBoE1Og
-	 FsasDhohTLvDyDYA8YtBncCLSgyr2hg/gniL/3bV7YYFHOkKj8LfaSlJ1UCAfj7ZC5
-	 Q78t6gHEGLw8Q==
-From: Mario Limonciello <superm1@kernel.org>
-To: stable@vger.kernel.org
-Cc: "David (Ming Qiang) Wu" <David.Wu3@amd.com>,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Ruijing Dong <ruijing.dong@amd.com>
-Subject: [PATCH 6.12.y] drm/amdgpu: read back register after written for VCN v4.0.5
-Date: Thu, 19 Jun 2025 16:50:07 -0500
-Message-ID: <20250619215007.2453681-1-superm1@kernel.org>
-X-Mailer: git-send-email 2.43.0
+	s=arc-20240116; t=1750370037; c=relaxed/simple;
+	bh=wBXVrcgEC2fkjBWN2RM0IOuo0AC5FTziHXKGjW72xZg=;
+	h=Date:From:To:cc:Subject:In-Reply-To:Message-ID:References:
+	 MIME-Version:Content-Type; b=oheZr17XvVo2I4ULNtxkAuEHeONwCei9KZv+fiuNvJ9L6EIsU68IkvTNYNpqCeBxjMw0J6hlTwOOKH/dTBfUEiLD3iMA1aySG8vVnmjlNg9LqRD9V57zDJlus9Y3ScuIaj6I6gL/g1pt1VQn39wYPneHhfT4sCMDMNiVqh5VBNI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=orcam.me.uk; spf=none smtp.mailfrom=orcam.me.uk; arc=none smtp.client-ip=78.133.224.34
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=orcam.me.uk
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=orcam.me.uk
+Received: by angie.orcam.me.uk (Postfix, from userid 500)
+	id 9159D92009C; Thu, 19 Jun 2025 23:53:51 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+	by angie.orcam.me.uk (Postfix) with ESMTP id 8A2BB92009B;
+	Thu, 19 Jun 2025 22:53:51 +0100 (BST)
+Date: Thu, 19 Jun 2025 22:53:51 +0100 (BST)
+From: "Maciej W. Rozycki" <macro@orcam.me.uk>
+To: Florian Fainelli <f.fainelli@gmail.com>
+cc: Greg Chandler <chandleg@wizardsworks.org>, stable@vger.kernel.org, 
+    netdev@vger.kernel.org
+Subject: Re: Tulip 21142 panic on physical link disconnect
+In-Reply-To: <52564e1f-ab05-4347-bd64-b38a69180499@gmail.com>
+Message-ID: <alpine.DEB.2.21.2506192238280.37405@angie.orcam.me.uk>
+References: <53bb866f5bb12cc1b6c33b3866007f2b@wizardsworks.org> <02e3f9b8-9e60-4574-88e2-906ccd727829@gmail.com> <385f2469f504dd293775d3c39affa979@wizardsworks.org> <fba6a52c-bedf-4d06-814f-eb78257e4cb3@gmail.com> <6a079cd0233b33c6faf6af6a1da9661f@wizardsworks.org>
+ <9292e561-09bf-4d70-bcb7-f90f9cfbae7b@gmail.com> <a3d8ee993b73b826b537f374d78084ad@wizardsworks.org> <12ccf3e4c24e8db2545f6ccaba8ce273@wizardsworks.org> <8c06f8969e726912b46ef941d36571ad@wizardsworks.org> <alpine.DEB.2.21.2506192007440.37405@angie.orcam.me.uk>
+ <52564e1f-ab05-4347-bd64-b38a69180499@gmail.com>
+User-Agent: Alpine 2.21 (DEB 202 2017-01-01)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII
 
-From: "David (Ming Qiang) Wu" <David.Wu3@amd.com>
+On Thu, 19 Jun 2025, Florian Fainelli wrote:
 
-On VCN v4.0.5 there is a race condition where the WPTR is not
-updated after starting from idle when doorbell is used. Adding
-register read-back after written at function end is to ensure
-all register writes are done before they can be used.
+> >   Maybe it'll ring someone's bell and they'll chime in or otherwise I'll
+> > bisect it... sometime.  Or feel free to start yourself with 5.18, as it's
+> > not terribly old, only a bit and certainly not so as 2.6 is.
+> 
+> I am still not sure why I could not see that warning on by Cobalt Qube2 trying
+> to reproduce Greg's original issue, that is with an IP assigned on the
+> interface yanking the cable did not trigger a timer warning. It could be that
+> machine is orders of magnitude slower and has a different CONFIG_HZ value that
+> just made it less likely to be seen?
 
-Closes: https://gitlab.freedesktop.org/mesa/mesa/-/issues/12528
-Signed-off-by: David (Ming Qiang) Wu <David.Wu3@amd.com>
-Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
-Tested-by: Mario Limonciello <mario.limonciello@amd.com>
-Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
-Reviewed-by: Ruijing Dong <ruijing.dong@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Cc: stable@vger.kernel.org
-(cherry picked from commit ee7360fc27d6045510f8fe459b5649b2af27811a)
-Hand modified for contextual changes where there is a for loop
-in 6.12 that was dropped later on.
-Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
----
- drivers/gpu/drm/amd/amdgpu/vcn_v4_0_5.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ Can it have a different PHY attached?  There's this code:
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/vcn_v4_0_5.c b/drivers/gpu/drm/amd/amdgpu/vcn_v4_0_5.c
-index e0b02bf1c563..3d114ea7049f 100644
---- a/drivers/gpu/drm/amd/amdgpu/vcn_v4_0_5.c
-+++ b/drivers/gpu/drm/amd/amdgpu/vcn_v4_0_5.c
-@@ -985,6 +985,10 @@ static int vcn_v4_0_5_start_dpg_mode(struct amdgpu_device *adev, int inst_idx, b
- 			ring->doorbell_index << VCN_RB1_DB_CTRL__OFFSET__SHIFT |
- 			VCN_RB1_DB_CTRL__EN_MASK);
- 
-+	/* Keeping one read-back to ensure all register writes are done, otherwise
-+	 * it may introduce race conditions */
-+	RREG32_SOC15(VCN, inst_idx, regVCN_RB1_DB_CTRL);
-+
- 	return 0;
- }
- 
-@@ -1167,6 +1171,10 @@ static int vcn_v4_0_5_start(struct amdgpu_device *adev)
- 		tmp |= VCN_RB_ENABLE__RB1_EN_MASK;
- 		WREG32_SOC15(VCN, i, regVCN_RB_ENABLE, tmp);
- 		fw_shared->sq.queue_mode &= ~(FW_QUEUE_RING_RESET | FW_QUEUE_DPG_HOLD_OFF);
-+
-+		/* Keeping one read-back to ensure all register writes are done, otherwise
-+		 * it may introduce race conditions */
-+		RREG32_SOC15(VCN, i, regVCN_RB_ENABLE);
- 	}
- 
- 	return 0;
--- 
-2.43.0
+	if (tp->chip_id == PNIC2)
+		tp->link_change = pnic2_lnk_change;
+	else if (tp->flags & HAS_NWAY)
+		tp->link_change = t21142_lnk_change;
+	else if (tp->flags & HAS_PNICNWAY)
+		tp->link_change = pnic_lnk_change;
 
+in `tulip_init_one' and `pnic_lnk_change' won't ever trigger this, but the 
+other two can; apparently the corresponding comment in `tulip_interrupt':
+                        
+/*                        
+ * NB: t21142_lnk_change() does a del_timer_sync(), so be careful if this
+ * call is ever done under the spinlock
+ */
+
+hasn't been updated when `pnic2_lnk_change' was added.  Also ISTM no link 
+change handler is a valid option too, in which case `del_timer_sync' won't 
+be called either.  This is from a cursory glance only, so please take with 
+a pinch of salt.
+
+  Maciej
 
