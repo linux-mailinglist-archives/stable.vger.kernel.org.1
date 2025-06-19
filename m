@@ -1,72 +1,67 @@
-Return-Path: <stable+bounces-154743-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-154745-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F1DA1ADFE70
-	for <lists+stable@lfdr.de>; Thu, 19 Jun 2025 09:13:50 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6EFCDADFF24
+	for <lists+stable@lfdr.de>; Thu, 19 Jun 2025 09:51:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 981DB167F0B
-	for <lists+stable@lfdr.de>; Thu, 19 Jun 2025 07:13:51 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 356FD3AC1B5
+	for <lists+stable@lfdr.de>; Thu, 19 Jun 2025 07:51:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0FC724A043;
-	Thu, 19 Jun 2025 07:13:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3DC0225CC73;
+	Thu, 19 Jun 2025 07:51:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="hjAAM/U0"
+	dkim=pass (1024-bit key) header.d=uniontech.com header.i=@uniontech.com header.b="KhZ5txEb"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
+Received: from smtpbgsg2.qq.com (smtpbgsg2.qq.com [54.254.200.128])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26FE924889F;
-	Thu, 19 Jun 2025 07:13:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F71D248F5E;
+	Thu, 19 Jun 2025 07:51:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.254.200.128
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750317225; cv=none; b=Pd8vfpS4B/OLaiUoli1cNat04MTGqv1NlcmUnC34ScnN+1mRG4lH+vCXhdDtBPavj9IKbxPsna78xrU8sjvf3cic3thHkRB+SVwA1UnF3TU23+474VO4QZewrgTj9PQljYT0h6Sshz9j+qqXQATqWKhabzUx9itUq/F40Li8DZ8=
+	t=1750319478; cv=none; b=VwCHDt5g3UEj8GhaI9m9WG0OlDQ6G33bL2kPZjo/w2Ot4H6HKXmbl26TzotSleuG9rcu+YWj888soPEPIYC+L0GZX6pn/R3XlLjiUpVzj4HYakXDY9hRpc+lZ7wDhr12LZKG6gN+k6KXWUlw/inVnfFOcl0VmrlHbSWY3MC5t3o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750317225; c=relaxed/simple;
-	bh=4xA0RoGRvB2kw00QVEj11UUfC0eS3ezt7ZAVTF3rcY8=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=SosEgI60CFHF/YH7/4YChzMRnJrYOV5BVgLyAJ4UCpO+WDZlNt9i+5nxAd1QZ1TmCRM89OXdm4egB/SCDexSCnCwoLoBJ3V76b7JB/A+fgqgTN60gSrkcb+ylkPN8WPWPndXfR4eVymrPf+BhiWHQIWcOVYxpUvheKigCR6YmIs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=hjAAM/U0; arc=none smtp.client-ip=192.198.163.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1750317224; x=1781853224;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=4xA0RoGRvB2kw00QVEj11UUfC0eS3ezt7ZAVTF3rcY8=;
-  b=hjAAM/U0eWwEJPzH7lzZiweRqWTxQNwiww4kM6UYjaoYXkkWSg+oU+Nt
-   FUFUxwfb4fhWAW+1N5BoGEC0EeCJco1mh3OyQLEfnxLPCrjzdm6iNB90M
-   LH/VUr7zuWJyiIBVs18Q9B1Kek6R3Wj/XgnpultnF6IqYTMiwU5HMW1zf
-   7/sJae0yhM3LO1bNE5dEaXuZL8As46C8/9zvJTvavTuwUH/az4vnrsKFP
-   GYgLlKeifG3lXkT0G+GLfnLOpKIjYzkrE+KOek1t9n7O/TqcmfN68fTaZ
-   WE2lQ8BdiWRqMRPrYWALKT8OAHOguKcgH37HdJUuaVhJ6vZ9YYmaHatIM
-   g==;
-X-CSE-ConnectionGUID: qk3I7cokRxCxtoisy6mZRg==
-X-CSE-MsgGUID: 5GlpS0+DSPure8HiQ0BtHQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11468"; a="51793791"
-X-IronPort-AV: E=Sophos;i="6.16,247,1744095600"; 
-   d="scan'208";a="51793791"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
-  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Jun 2025 00:13:44 -0700
-X-CSE-ConnectionGUID: 9HG0g9j6SrKNmYm3Fo3D5A==
-X-CSE-MsgGUID: ZHxfMLB+QoKPcsVd/Gf7aw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,247,1744095600"; 
-   d="scan'208";a="155123323"
-Received: from rzhang1-mobl7.sh.intel.com ([10.238.6.124])
-  by orviesa004.jf.intel.com with ESMTP; 19 Jun 2025 00:13:41 -0700
-From: Zhang Rui <rui.zhang@intel.com>
-To: rafael.j.wysocki@intel.com
-Cc: linux-kernel@vger.kernel.org,
-	linux-pm@vger.kernel.org,
-	stable@vger.kernel.org,
-	srinivas.pandruvada@linux.intel.com
-Subject: [PATCH V2] powercap: intel_rapl: Do not change CLAMPING bit if ENABLE bit cannot be changed
-Date: Thu, 19 Jun 2025 15:13:40 +0800
-Message-ID: <20250619071340.384782-1-rui.zhang@intel.com>
-X-Mailer: git-send-email 2.43.0
+	s=arc-20240116; t=1750319478; c=relaxed/simple;
+	bh=bHviAsuIfo6IGBrp4AOVqEtcYY9AbeOAmKOPuRF1lX8=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=NUP56yryHr+yFe8G9DCcojuumT8aJMTaYFW0mBgeJ0P6Fzp4mGhppBF4I3L6GaMjz/CV52RlUdrgzeZ3Bwi6VcJpIbVHXyKvjUfTWE+KkoN7wOVvX2OVZwEFLG88RQNIGWetv6EPXsDGjTNtpy9/akZZjAuU0+4Z2xxlEn5OqkA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniontech.com; spf=pass smtp.mailfrom=uniontech.com; dkim=pass (1024-bit key) header.d=uniontech.com header.i=@uniontech.com header.b=KhZ5txEb; arc=none smtp.client-ip=54.254.200.128
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniontech.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=uniontech.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=uniontech.com;
+	s=onoh2408; t=1750319434;
+	bh=KLFd8Hwc+BrcRkjztF5W0V4sgqqXjZ/dOj8l+EYvXyg=;
+	h=From:To:Subject:Date:Message-ID:MIME-Version;
+	b=KhZ5txEbfemuKc9MIOVayZDf2OJzjO5+7gVLmzLg70Y8ayT5xAjfwdLinsN8hA/It
+	 x3k08jauRitDjhpasq1Eiibw6EW+55NpTfjIngnMQqKXX0zVOvIwEJZ7xwypZHcJ6v
+	 mt/EeaYiPTVooNmeGXGcvQtfo7YRzVvrTYM1ErAE=
+X-QQ-mid: zesmtpip4t1750319413t17bb649b
+X-QQ-Originating-IP: 9KKOypkCNDr4Fi7xRB09P3ZgHq9XVHrO7PfHQnwmCcw=
+Received: from avenger-e500 ( [localhost])
+	by bizesmtp.qq.com (ESMTP) with 
+	id ; Thu, 19 Jun 2025 15:50:11 +0800 (CST)
+X-QQ-SSF: 0000000000000000000000000000000
+X-QQ-GoodBg: 1
+X-BIZMAIL-ID: 13789221876025690801
+EX-QQ-RecipientCnt: 11
+From: WangYuli <wangyuli@uniontech.com>
+To: gregkh@linuxfoundation.org,
+	sashal@kernel.org,
+	stable@vger.kernel.org
+Cc: ikepanhc@gmail.com,
+	hansg@kernel.org,
+	ilpo.jarvinen@linux.intel.com,
+	platform-driver-x86@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Renato Caldas <renato@calgera.com>,
+	Hans de Goede <hdegoede@redhat.com>,
+	WangYuli <wangyuli@uniontech.com>
+Subject: [PATCH 6.1/6.6] platform/x86: ideapad-laptop: add missing Ideapad Pro 5 fn keys
+Date: Thu, 19 Jun 2025 15:47:04 +0800
+Message-ID: <F7FB9E816BFCD1DE+20250619074704.56965-1-wangyuli@uniontech.com>
+X-Mailer: git-send-email 2.50.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -74,68 +69,62 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-QQ-SENDSIZE: 520
+Feedback-ID: zesmtpip:uniontech.com:qybglogicsvrgz:qybglogicsvrgz8a-1
+X-QQ-XMAILINFO: NzouuX5M12cOBvMscSOvIUovI2Hyf0KLYYKwn87zSATWV6tI+yqUYgkQ
+	5hXFSrfGm3wrZ9hZGkdrjrsD6fo7Jwfbx3MBW9E//tKfJwdcyEs06fBuiHiIQ3btiAZpvV7
+	pp6r4ASfJuDI5AxZVEO11BTd34wLN1NpKLCWFauR+SC6ryrVDSIqScQeG3iXcksEbbL8riH
+	KLiOnm/U54lNlaDCFVwXkyUyTugXr6Sge9nTdj6/cstPN71k1lWzjnwTgOgo56lKHAHy4BF
+	k3i3JCfOZHuN16dp8XCuxquhqAfp+sNSpoL82O4h74sFWl8Jm8kIMVAohzgua8XZ27l/086
+	N25vrvTUy8Ax6WL0ssHdWsj4o6/rSadUyQPJkfQIlpSWnWNuf5Ycw+k2oaZj1woSxF47rVC
+	0iK/38Od5/cwHpSE8aE//iDCw98qVli2zfto3vBI/UsHVTdwINK+RAvBueMMDEofLBjtONy
+	pCDlo+h9S2nTATVjyAsk903cHG3LF/7mtQ4skTUZF2bhCSI5GmChdE81vDCo8cWjg+ERbAe
+	kO6eMMSDuJc0lWdaPh5U+bGelsxoF0CuuAHjCcSPYNTu5h7YWZmDWQ8eGc0YIYI0ixYxYvJ
+	Se3uhLOkde/FhicTqmZUrQV0ukeV0KFRvrGPpddid/Hxz91nkgiJ9KwLqWIx1JqFgyD6hVX
+	Qkk9PuE0BhI60oOG7r/msy+EQlUnRwgPQ3nqJZX0oKWfKaifZQ/pKfF93H4NdxGjwG70C79
+	TO9Hw6f7zEOPBYCrDWVA3jd+XcoWoaxoL3YZduEx2Bn0ZjgajqRkEwy3RCWfudXOorPA87b
+	FzLgH2MuWn5tABUSY3YnyhUUMQ+PvO9xR5qSXzSkCWuYK9XOA7byZ20oParnD/Wl8TPS1EK
+	WBH6Ks3QjTTUC/IZnMky5FwhCb1wK5pH7Dbiw1ixu91F++EINqG6uBLmedPOxxjHi0iXq6Z
+	t6zDxYCgJHUO2Eb/jh6A8n3zmcU6QObeCri6G/AqWljnXXdm4LIM2BxsHwwR6p82YO5IkG6
+	QFZmNyDP57qYI7sl19k5qX4t5mPoE=
+X-QQ-XMRINFO: Nq+8W0+stu50PRdwbJxPCL0=
+X-QQ-RECHKSPAM: 0
 
-PL1 cannot be disabled on some platforms. The ENABLE bit is still set
-after software clears it. This behavior leads to a scenario where, upon
-user request to disable the Power Limit through the powercap sysfs, the
-ENABLE bit remains set while the CLAMPING bit is inadvertently cleared.
+From: Renato Caldas <renato@calgera.com>
 
-According to the Intel Software Developer's Manual, the CLAMPING bit,
-"When set, allows the processor to go below the OS requested P states in
-order to maintain the power below specified Platform Power Limit value."
+[ Upstream commit 36e66be874a7ea9d28fb9757629899a8449b8748 ]
 
-Thus this means the system may operate at higher power levels than
-intended on such platforms.
+The scancodes for the Mic Mute and Airplane keys on the Ideapad Pro 5
+(14AHP9 at least, probably the other variants too) are different and
+were not being picked up by the driver. This adds them to the keymap.
 
-Enhance the code to check ENABLE bit after writing to it, and stop
-further processing if ENABLE bit cannot be changed.
+Apart from what is already supported, the remaining fn keys are
+unfortunately producing windows-specific key-combos.
 
-Cc: stable@vger.kernel.org
-Reported-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
-Fixes: 2d281d8196e3 ("PowerCap: Introduce Intel RAPL power capping driver")
-Signed-off-by: Zhang Rui <rui.zhang@intel.com>
+Signed-off-by: Renato Caldas <renato@calgera.com>
+Link: https://lore.kernel.org/r/20241102183116.30142-1-renato@calgera.com
+Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Signed-off-by: WangYuli <wangyuli@uniontech.com>
 ---
-Changes since V1:
-- Add Fixes tag
-- CC stable kernel
----
- drivers/powercap/intel_rapl_common.c | 17 ++++++++++++++++-
- 1 file changed, 16 insertions(+), 1 deletion(-)
+ drivers/platform/x86/ideapad-laptop.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/powercap/intel_rapl_common.c b/drivers/powercap/intel_rapl_common.c
-index e3be40adc0d7..602f540cbe15 100644
---- a/drivers/powercap/intel_rapl_common.c
-+++ b/drivers/powercap/intel_rapl_common.c
-@@ -341,12 +341,27 @@ static int set_domain_enable(struct powercap_zone *power_zone, bool mode)
- {
- 	struct rapl_domain *rd = power_zone_to_rapl_domain(power_zone);
- 	struct rapl_defaults *defaults = get_defaults(rd->rp);
-+	u64 val;
- 	int ret;
+diff --git a/drivers/platform/x86/ideapad-laptop.c b/drivers/platform/x86/ideapad-laptop.c
+index 88eefccb6ed2..50013af0537c 100644
+--- a/drivers/platform/x86/ideapad-laptop.c
++++ b/drivers/platform/x86/ideapad-laptop.c
+@@ -1101,6 +1101,9 @@ static const struct key_entry ideapad_keymap[] = {
+ 	{ KE_KEY,	0x27 | IDEAPAD_WMI_KEY, { KEY_HELP } },
+ 	/* Refresh Rate Toggle */
+ 	{ KE_KEY,	0x0a | IDEAPAD_WMI_KEY, { KEY_DISPLAYTOGGLE } },
++	/* Specific to some newer models */
++	{ KE_KEY,	0x3e | IDEAPAD_WMI_KEY, { KEY_MICMUTE } },
++	{ KE_KEY,	0x3f | IDEAPAD_WMI_KEY, { KEY_RFKILL } },
  
- 	cpus_read_lock();
- 	ret = rapl_write_pl_data(rd, POWER_LIMIT1, PL_ENABLE, mode);
--	if (!ret && defaults->set_floor_freq)
-+	if (ret)
-+		goto end;
-+
-+	ret = rapl_read_pl_data(rd, POWER_LIMIT1, PL_ENABLE, false, &val);
-+	if (ret)
-+		goto end;
-+
-+	if (mode != val) {
-+		pr_debug("%s cannot be %s\n", power_zone->name, mode ? "enabled" : "disabled");
-+		goto end;
-+	}
-+
-+	if (defaults->set_floor_freq)
- 		defaults->set_floor_freq(rd, mode);
-+
-+end:
- 	cpus_read_unlock();
- 
- 	return ret;
+ 	{ KE_END },
+ };
 -- 
-2.43.0
+2.50.0
 
 
