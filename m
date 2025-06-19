@@ -1,59 +1,50 @@
-Return-Path: <stable+bounces-154816-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-154817-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B7414AE0A51
-	for <lists+stable@lfdr.de>; Thu, 19 Jun 2025 17:25:13 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 52B1EAE0AB2
+	for <lists+stable@lfdr.de>; Thu, 19 Jun 2025 17:40:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5DC6D3B917A
-	for <lists+stable@lfdr.de>; Thu, 19 Jun 2025 15:24:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D594A3B2264
+	for <lists+stable@lfdr.de>; Thu, 19 Jun 2025 15:39:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C3E1221FD8;
-	Thu, 19 Jun 2025 15:25:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0660238171;
+	Thu, 19 Jun 2025 15:39:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WJC2Vtci"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KNBWHuVL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 265001917CD;
-	Thu, 19 Jun 2025 15:25:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8192237194;
+	Thu, 19 Jun 2025 15:39:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750346708; cv=none; b=UeRoU4rseEvJLHqFGrwH6py9pXk0dbLuu3G1TtxA+vfrUsWDAb5z5V26cQ4jv6YJX8nltOBmOujwkHMmWpunQ6Jgt9Ap0cxWi5xzs8YQmR6qp5F8uiop8pfC6TZVYzkG7407QICyjQOnNZcjIfpTTbgXu8hmK5AkUyB03fHHnck=
+	t=1750347588; cv=none; b=LaJk7haUVTUNkYIFPD6n42Mmmy8I4UXZAHnitvyy8OHKws+sB0ASDTFNIdDuuOQsf9EZF7BPpnioQ/M3WoKRA2Hb8CZKSvTDKwf2wBIjoejSNyjMXpnsXNvJA0/xtNo99EB2Zy4/u4dvOo2jv7U/YiwxkZj7c5Z4YjOkSyjNwU0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750346708; c=relaxed/simple;
-	bh=QuMCe32n2jXZF4TjVOnNTrne2sMCYVjrFrv05fJ6uWo=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=LidFYBVAIb6m4d5MkgNtsm2oDUvU7jxOKI6heOjeMna+hICUoOZ4RdrI1n56IZTq/cV/kuk1SrsCC4JfFLJtN+IEyCwyFZvN1oLLH6C/froXkliwUk+QUdKNqQnZwnxjt242s+/0YhAdplguN3zdipANdCEaeGgINWOG2Zg0ko8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WJC2Vtci; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B06D6C4CEEA;
-	Thu, 19 Jun 2025 15:25:06 +0000 (UTC)
+	s=arc-20240116; t=1750347588; c=relaxed/simple;
+	bh=8v8M7P3HvOvi5p/hmJXZ4r+vUSQyvqwJvQlUisWZfiY=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=e8Bs3tY2/H/dl5Ba/k7MaDXmKexQKLNj/u298Q3Qz7CyQWKj8G0+WvKFKMVJsaLobOfOXbK+BwHQ5blecIVP1hPCV1SbKpwyLhK+ISdxMPnMB6JDxsnV2+Hq09tzQ6nmZDhF2M1VbFDx6Xs3V1JVx/Cxi0+8zhAiJbAJs79crOo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KNBWHuVL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20BA7C4CEEF;
+	Thu, 19 Jun 2025 15:39:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1750346707;
-	bh=QuMCe32n2jXZF4TjVOnNTrne2sMCYVjrFrv05fJ6uWo=;
-	h=From:To:Cc:Subject:Date:From;
-	b=WJC2VtcinPqfIVB8eEXkNXgozwIKAWIE7I36+f81lB5hPhDR16/c7aQ7SBW862f2B
-	 coe7n3JLgEMeOfQW1wzNXUcd3NtrXevBI+u6XSaAKGtAmuigjqrVQ2KCQJP1cSqb8q
-	 iqVCkwFujfNghpvxZ6eoW4t0735Eqs70znQYvm2vnzNsnhXcT/+43xv8Df8SZgg99k
-	 gLxqW11EVcbz6PkFSWvSnLORXUYWxGBmBBfwft8IkHTOz75vv5C3WZiDXcwH624a7A
-	 TLr81B09MTcsMRIWTde/gVErl8e3PlTq2TVCwkvCqkIS8JsUE+3OKMHScmdNYD3x9V
-	 AOf8icLj738ew==
-From: Mario Limonciello <superm1@kernel.org>
-To: mario.limonciello@amd.com,
-	andreas.noever@gmail.com,
-	michael.jamet@intel.com,
-	westeri@kernel.org,
-	YehezkelShB@gmail.com
-Cc: stable@vger.kernel.org,
-	Alexander Kovacs <Alexander.Kovacs@amd.com>,
-	mika.westerberg@linux.intel.com,
-	linux-usb@vger.kernel.org
-Subject: [PATCH v2] thunderbolt: Fix wake on connect at runtime
-Date: Thu, 19 Jun 2025 10:24:58 -0500
-Message-ID: <20250619152501.697723-1-superm1@kernel.org>
-X-Mailer: git-send-email 2.43.0
+	s=k20201202; t=1750347588;
+	bh=8v8M7P3HvOvi5p/hmJXZ4r+vUSQyvqwJvQlUisWZfiY=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=KNBWHuVLlBfdvsolhNU8mX9WzGv+TlF8dDZwWl9iHZ5B7XS5rz5HbB5GPfSXEQlti
+	 s3ANincd0dA1IEjylaCgN/nsT5I/jXhMKE8XCuVqpWJBFI562384/o4DLy28Q6FOcl
+	 fgumGdRwKbSYxrBx42skFCCNic0DNLDJdaZF5iesaQnGJVj+enyGcO41SScoCk5Ylj
+	 A9NxaAIjjdxABfU/51EII/X2L7R1QszM2AbymWgmJ4/ComkYgRh9ohGJdac5aPUN2U
+	 CbVlwm/+iC6jLPv6kj8CoiWEGJdHsFOmZO8ffJrAoGIwWUKUMroRY9tC+/LlNchXf1
+	 B+2x47PdHikCg==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 70DEE38111DD;
+	Thu, 19 Jun 2025 15:40:17 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -61,120 +52,43 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH] NFC: nci: uart: Set tty->disc_data only in success path
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <175034761624.906129.8870783652676829504.git-patchwork-notify@kernel.org>
+Date: Thu, 19 Jun 2025 15:40:16 +0000
+References: <20250618073649.25049-2-krzysztof.kozlowski@linaro.org>
+In-Reply-To: <20250618073649.25049-2-krzysztof.kozlowski@linaro.org>
+To: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Cc: krzk@kernel.org, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, cuissard@marvell.com,
+ sameo@linux.intel.com, netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ gregkh@linuxfoundation.org, torvalds@linuxfoundation.org,
+ stable@vger.kernel.org
 
-From: Mario Limonciello <mario.limonciello@amd.com>
+Hello:
 
-commit 1a760d10ded37 ("thunderbolt: Fix a logic error in wake on connect")
-fixated on the USB4 port sysfs wakeup file not working properly to control
-policy, but it had an unintended side effect that the sysfs file controls
-policy both at runtime and at suspend time. The sysfs file is supposed to
-only control behavior while system is suspended.
+This patch was applied to netdev/net.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
 
-Pass whether programming a port for runtime into usb4_switch_set_wake()
-and if runtime then ignore the value in the sysfs file.
+On Wed, 18 Jun 2025 09:36:50 +0200 you wrote:
+> Setting tty->disc_data before opening the NCI device means we need to
+> clean it up on error paths.  This also opens some short window if device
+> starts sending data, even before NCIUARTSETDRIVER IOCTL succeeded
+> (broken hardware?).  Close the window by exposing tty->disc_data only on
+> the success path, when opening of the NCI device and try_module_get()
+> succeeds.
+> 
+> [...]
 
-Cc: stable@vger.kernel.org
-Reported-by: Alexander Kovacs <Alexander.Kovacs@amd.com>
-Tested-by: Alexander Kovacs <Alexander.Kovacs@amd.com>
-Fixes: 1a760d10ded37 ("thunderbolt: Fix a logic error in wake on connect")
-Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
----
-v2:
- * Fix kdoc issue reported by lkp robot
----
- drivers/thunderbolt/switch.c |  8 ++++----
- drivers/thunderbolt/tb.h     |  2 +-
- drivers/thunderbolt/usb4.c   | 10 +++++-----
- 3 files changed, 10 insertions(+), 10 deletions(-)
+Here is the summary with links:
+  - NFC: nci: uart: Set tty->disc_data only in success path
+    https://git.kernel.org/netdev/net/c/fc27ab48904c
 
-diff --git a/drivers/thunderbolt/switch.c b/drivers/thunderbolt/switch.c
-index 28febb95f8fa1..e9809fb57c354 100644
---- a/drivers/thunderbolt/switch.c
-+++ b/drivers/thunderbolt/switch.c
-@@ -3437,7 +3437,7 @@ void tb_sw_set_unplugged(struct tb_switch *sw)
- 	}
- }
- 
--static int tb_switch_set_wake(struct tb_switch *sw, unsigned int flags)
-+static int tb_switch_set_wake(struct tb_switch *sw, unsigned int flags, bool runtime)
- {
- 	if (flags)
- 		tb_sw_dbg(sw, "enabling wakeup: %#x\n", flags);
-@@ -3445,7 +3445,7 @@ static int tb_switch_set_wake(struct tb_switch *sw, unsigned int flags)
- 		tb_sw_dbg(sw, "disabling wakeup\n");
- 
- 	if (tb_switch_is_usb4(sw))
--		return usb4_switch_set_wake(sw, flags);
-+		return usb4_switch_set_wake(sw, flags, runtime);
- 	return tb_lc_set_wake(sw, flags);
- }
- 
-@@ -3521,7 +3521,7 @@ int tb_switch_resume(struct tb_switch *sw, bool runtime)
- 		tb_switch_check_wakes(sw);
- 
- 	/* Disable wakes */
--	tb_switch_set_wake(sw, 0);
-+	tb_switch_set_wake(sw, 0, true);
- 
- 	err = tb_switch_tmu_init(sw);
- 	if (err)
-@@ -3603,7 +3603,7 @@ void tb_switch_suspend(struct tb_switch *sw, bool runtime)
- 		flags |= TB_WAKE_ON_USB4 | TB_WAKE_ON_USB3 | TB_WAKE_ON_PCIE;
- 	}
- 
--	tb_switch_set_wake(sw, flags);
-+	tb_switch_set_wake(sw, flags, runtime);
- 
- 	if (tb_switch_is_usb4(sw))
- 		usb4_switch_set_sleep(sw);
-diff --git a/drivers/thunderbolt/tb.h b/drivers/thunderbolt/tb.h
-index 87afd5a7c504b..f503bad864130 100644
---- a/drivers/thunderbolt/tb.h
-+++ b/drivers/thunderbolt/tb.h
-@@ -1317,7 +1317,7 @@ int usb4_switch_read_uid(struct tb_switch *sw, u64 *uid);
- int usb4_switch_drom_read(struct tb_switch *sw, unsigned int address, void *buf,
- 			  size_t size);
- bool usb4_switch_lane_bonding_possible(struct tb_switch *sw);
--int usb4_switch_set_wake(struct tb_switch *sw, unsigned int flags);
-+int usb4_switch_set_wake(struct tb_switch *sw, unsigned int flags, bool runtime);
- int usb4_switch_set_sleep(struct tb_switch *sw);
- int usb4_switch_nvm_sector_size(struct tb_switch *sw);
- int usb4_switch_nvm_read(struct tb_switch *sw, unsigned int address, void *buf,
-diff --git a/drivers/thunderbolt/usb4.c b/drivers/thunderbolt/usb4.c
-index fce3c0f2354a7..d46d9434933c4 100644
---- a/drivers/thunderbolt/usb4.c
-+++ b/drivers/thunderbolt/usb4.c
-@@ -403,10 +403,11 @@ bool usb4_switch_lane_bonding_possible(struct tb_switch *sw)
-  * usb4_switch_set_wake() - Enabled/disable wake
-  * @sw: USB4 router
-  * @flags: Wakeup flags (%0 to disable)
-+ * @runtime: Wake is being programmed during system runtime
-  *
-  * Enables/disables router to wake up from sleep.
-  */
--int usb4_switch_set_wake(struct tb_switch *sw, unsigned int flags)
-+int usb4_switch_set_wake(struct tb_switch *sw, unsigned int flags, bool runtime)
- {
- 	struct usb4_port *usb4;
- 	struct tb_port *port;
-@@ -438,13 +439,12 @@ int usb4_switch_set_wake(struct tb_switch *sw, unsigned int flags)
- 			val |= PORT_CS_19_WOU4;
- 		} else {
- 			bool configured = val & PORT_CS_19_PC;
-+			bool wakeup = runtime || device_may_wakeup(&usb4->dev);
- 			usb4 = port->usb4;
- 
--			if (((flags & TB_WAKE_ON_CONNECT) &&
--			      device_may_wakeup(&usb4->dev)) && !configured)
-+			if ((flags & TB_WAKE_ON_CONNECT) && wakeup && !configured)
- 				val |= PORT_CS_19_WOC;
--			if (((flags & TB_WAKE_ON_DISCONNECT) &&
--			      device_may_wakeup(&usb4->dev)) && configured)
-+			if ((flags & TB_WAKE_ON_DISCONNECT) && wakeup && configured)
- 				val |= PORT_CS_19_WOD;
- 			if ((flags & TB_WAKE_ON_USB4) && configured)
- 				val |= PORT_CS_19_WOU4;
+You are awesome, thank you!
 -- 
-2.43.0
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
 
 
