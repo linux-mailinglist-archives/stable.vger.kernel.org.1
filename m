@@ -1,166 +1,113 @@
-Return-Path: <stable+bounces-154801-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-154802-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA162AE05D7
-	for <lists+stable@lfdr.de>; Thu, 19 Jun 2025 14:31:27 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 226C8AE060E
+	for <lists+stable@lfdr.de>; Thu, 19 Jun 2025 14:37:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E4A153A1E5A
-	for <lists+stable@lfdr.de>; Thu, 19 Jun 2025 12:28:02 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CA621174B3C
+	for <lists+stable@lfdr.de>; Thu, 19 Jun 2025 12:37:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F8FE222578;
-	Thu, 19 Jun 2025 12:27:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55E4223A9A0;
+	Thu, 19 Jun 2025 12:37:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="aisiQ/LX"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uw8uZTPk"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ed1-f50.google.com (mail-ed1-f50.google.com [209.85.208.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96A37230BEC;
-	Thu, 19 Jun 2025 12:27:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 119EB22F75B;
+	Thu, 19 Jun 2025 12:37:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750336042; cv=none; b=T2FEzPbGJKKKoXOFj/oJqTEW0NDnGTsME/UbThdoVqq6tcknvQoOVz3E1ModqecG79jkZB2pgxF8EIYy3RRlqSzJaY6OjRwpD9yGRELNuUA6DCC9odOH+P0IkJovpbuSnwcf+8BNoiZxjpR35Wh+znd28kcp+hs0nNFpSTPhvOU=
+	t=1750336625; cv=none; b=sCUfcOUBjLv6LCYeISo80OK5Cn11puFU56+tx3HszgXKctYEAVf9K+6DogWdlVWA5yX3oWGnA2IjsZg/z7KHXi62Bb4kQ+4FaMCf3H+XhynzF+ZiWjfvlDW8yuTHErSuLG+TL/EQM3nXQNwbD6TDNNmZgdHg9PEqzzDXfeSJHh0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750336042; c=relaxed/simple;
-	bh=AK9gsNzBgo92LrWsapH+EkbciDumjfBEf5VT8yAuwkY=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=R7LBHiRn+a8QTQ7jbq90QBWw9pIAIFQYftFzJxa23vawtPPtDCzevNF2mi6/gSkCxJ/Qxeidh2hjoxs+yf5zG8x1JMDJGHUUck/aktlZD7CssyecwBEWGXRNEX03OQL56qBaV6v9/gCFKpWQEUi8beM3wbVu+ZyELOdJtTXStGU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=aisiQ/LX; arc=none smtp.client-ip=209.85.208.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ed1-f50.google.com with SMTP id 4fb4d7f45d1cf-607cc1a2bd8so1076950a12.2;
-        Thu, 19 Jun 2025 05:27:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1750336039; x=1750940839; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=jXzG851x8092VcL5aMEVC4/pjvof2rTy3Q0YvYZaPso=;
-        b=aisiQ/LXMhlN5588JBPXZpWlyxRuc5zBvFvJz2/MIaqPt45S1exVaSZ4V0YEh5gGCR
-         i3zejZFKj3NCXNf7ua6EUEOPBbAoBG1wXCxwfWRM7BYu02TuU/vNfazpsb/ML940vC7y
-         4v3dAhKAnt+IHyoAfpnfjxXI9keYA2jtg8dYuvZ2KYUuBLv0XX2RSn3rqkLuaWLh//hM
-         IYY5Jtj/sk6kvqW+e3DxlAL4peXN2Zuaxgh+kIZPpbt30VLj+X5b1ZVI+rntIo73kpQR
-         hc8MydDWmZdMXlmwMuvUze4GlvmN1O+jfgDO1QnKJr37IfwbH9oTVCBfAwgmVVpPSBoy
-         8prw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1750336039; x=1750940839;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=jXzG851x8092VcL5aMEVC4/pjvof2rTy3Q0YvYZaPso=;
-        b=uX6frBA8587DLQJj3CYWBRe+ibnHUBbiQApsfO91SC5z3uiE0saSp0AfBdet8RWfXc
-         sakiXTmiGGh3lrkxnEta1fVqVlaY9nq9jjV2uvtGYY8v+SIB2DPt5WNanIuBBvG9sGik
-         WmN9QHfQ3bey7Fq0mj2NxsVU2vMm1XOF0Xc0gZIk2HQboQd47qa510lG8uNpA+hcXR2w
-         y+yWCsRyUNIGV73aQaEmcvsV3s/b75lHHl/QAqWZmY27WdC9gWmQ4W9De9CYVSJtkowE
-         EMwxnw4LvOZ3LjPgwQVMBv9nlZe5HW5l2ltYVMexgpWVVWGOImK92y/i5tvkOIrR0yGT
-         c6MA==
-X-Forwarded-Encrypted: i=1; AJvYcCWmr9aB2wyn4f/x4zA7vJ7gcPcdLYM7hF4oZK8e9nDOVte3QIETUMhrE6gRKc396m9vErHyduGUgdc=@vger.kernel.org, AJvYcCWqx0e4dbwhotxGz/ZkKdBGkbZThcgSwJ9lTNvEUUcoctiZrrjnoLBRz89BG9lI7xrTkM7troyJ@vger.kernel.org
-X-Gm-Message-State: AOJu0YyGq4VC1VhS6b3ezBS33+YQaQt9QsqIayOJWBRhFnNVQXVi8Twb
-	Aj2SENJerL1Fk4tlnA9g1VAWKb6MbULPxz7Ci+sKTgj4utRWT7EPISdRDI76t3vSts7Nepa7Wfn
-	reSl+kyYKBZmyK2/9CkQdyZuU1V759UZiA5h2U9MD/E0g
-X-Gm-Gg: ASbGncvcFJlbV0HyrTaEzdTP3gi/TqrfsrI1FO3Xp+0d0kQ+lmsz0ZlGfxyah1FfQwD
-	Hdovsew8ezjxiNUGnr3iTUyeJDUfccv9VLuHM7ctXdIG1bh6zsblTYs4Q9A6pUsYLOAHuM5ruKj
-	MyAAwptw05uYxtGA35WfWRFHRz9oGnLeD+73hTLYVqPw==
-X-Google-Smtp-Source: AGHT+IF1b2UgLmsiSS+z0RkWthS/dlSCcC9Pw7NBV8z1PEI8pTgd9oeFmyaIYLeABU4E561/h36S3mz0r6mmIAJgDPc=
-X-Received: by 2002:a05:6402:d0e:b0:602:36ce:d0e7 with SMTP id
- 4fb4d7f45d1cf-608d08658cemr18614741a12.14.1750336038738; Thu, 19 Jun 2025
- 05:27:18 -0700 (PDT)
+	s=arc-20240116; t=1750336625; c=relaxed/simple;
+	bh=5RsgnPconllRbfnixRhtoqpNREXw2H2Ipf16oI9O5rk=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=uJiRRji28LzhPtaPqLpQWDolTJ6k2fyW66pTz2nR0GV8Q42JC2if/B7zKJxdDcOPIuBt9N0oMY1QOCIQgWe+qNmoxxlHlSUGstLIRUva3lZSf8i+/Irw4JnfhMyCKUe9JfSGZx8ZF9BMI2LmS0Y3tReawqE9J+0u6TkeTAtRtVU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uw8uZTPk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D063EC4CEEA;
+	Thu, 19 Jun 2025 12:37:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1750336624;
+	bh=5RsgnPconllRbfnixRhtoqpNREXw2H2Ipf16oI9O5rk=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=uw8uZTPkzLcmoPvmUWRcnY7YFleRsMVDgyQsrOutK4c5a4rWBzvWibdqrc+zOLEGO
+	 qk5vyYlgnJaIbY5H5eZYhCov9MtaKtbOzIAySgMU6NnhNzf6hscTgLHN2cCQnWItal
+	 x+XPBVCpaXWPSOVzIC4VKRp4AJVOE4wBaI2gclPcZXCoHZk6pUCyrQ9xUZuKBq3tnw
+	 CambOoBAwEODCJ+VCOLDeuYfpmS/qNXDveKKjqK8AzJPcAHUkAsstlTILlVITSTc6L
+	 Mu6j6LMnRGe9Og6M35XpEQrnaM0N/N/EeEYTJ5khAaCgR686QjTjEZVfiCY4Ut2PMs
+	 zhrnNG+z7AsfQ==
+Received: from sofa.misterjones.org ([185.219.108.64] helo=valley-girl.lan)
+	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.95)
+	(envelope-from <maz@kernel.org>)
+	id 1uSEVq-008Ff6-Lj;
+	Thu, 19 Jun 2025 13:37:02 +0100
+From: Marc Zyngier <maz@kernel.org>
+To: linux-arm-kernel@lists.infradead.org,
+	Mark Rutland <mark.rutland@arm.com>
+Cc: broonie@kernel.org,
+	catalin.marinas@arm.com,
+	kvmarm@lists.linux.dev,
+	oliver.upton@linux.dev,
+	stable@vger.kernel.org,
+	tabba@google.com,
+	will@kernel.org
+Subject: Re: [PATCH 0/7] KVM: arm64: trap fixes and cleanup
+Date: Thu, 19 Jun 2025 13:36:58 +0100
+Message-Id: <175033660259.3069733.12635205080587210406.b4-ty@kernel.org>
+X-Mailer: git-send-email 2.39.2
+In-Reply-To: <20250617133718.4014181-1-mark.rutland@arm.com>
+References: <20250617133718.4014181-1-mark.rutland@arm.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250511083413.3326421-1-chenhuacai@loongson.cn>
- <20250511083413.3326421-3-chenhuacai@loongson.cn> <2muq3nx6oyo3vf6qvil3oesq6luf67sjd6nxbigyxto7oxtteq@stji5xaidyye>
-In-Reply-To: <2muq3nx6oyo3vf6qvil3oesq6luf67sjd6nxbigyxto7oxtteq@stji5xaidyye>
-From: Huacai Chen <chenhuacai@gmail.com>
-Date: Thu, 19 Jun 2025 20:27:07 +0800
-X-Gm-Features: AX0GCFtm0OAT-_i2fgZVeCmxYArFiX6-z6zBJWbX7IL5eNJ0-Wt9Gua99ll4w08
-Message-ID: <CAAhV-H7VmYrs=kjFn=zaqwWfLvoGE9kVU1E9+r=OokxYddSd8A@mail.gmail.com>
-Subject: Re: [PATCH V3 2/2] PCI: Prevent LS7A Bus Master clearing on kexec
-To: Manivannan Sadhasivam <mani@kernel.org>
-Cc: Huacai Chen <chenhuacai@loongson.cn>, Bjorn Helgaas <bhelgaas@google.com>, 
-	Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>, =?UTF-8?Q?Krzysztof_Wilczy=C5=84ski?= <kw@linux.com>, 
-	Rob Herring <robh@kernel.org>, linux-pci@vger.kernel.org, 
-	Jianmin Lv <lvjianmin@loongson.cn>, Xuefeng Li <lixuefeng@loongson.cn>, 
-	Jiaxun Yang <jiaxun.yang@flygoat.com>, stable@vger.kernel.org, 
-	Ming Wang <wangming01@loongson.cn>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-SA-Exim-Connect-IP: 185.219.108.64
+X-SA-Exim-Rcpt-To: linux-arm-kernel@lists.infradead.org, mark.rutland@arm.com, broonie@kernel.org, catalin.marinas@arm.com, kvmarm@lists.linux.dev, oliver.upton@linux.dev, stable@vger.kernel.org, tabba@google.com, will@kernel.org
+X-SA-Exim-Mail-From: maz@kernel.org
+X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 
-Hi, Manivannan,
+On Tue, 17 Jun 2025 14:37:11 +0100, Mark Rutland wrote:
+> This series fixes some issues with the way KVM manages traps in VHE
+> mode, with some cleanups/simplifications atop.
+> 
+> Patch 1 fixes a theoretical issue with debug register manipulation,
+> which has been around forever. This was found by inspection while
+> working on other fixes.
+> 
+> [...]
 
-Sorry for the late reply.
+Applied to fixes, thanks!
 
-On Fri, Jun 13, 2025 at 3:15=E2=80=AFPM Manivannan Sadhasivam <mani@kernel.=
-org> wrote:
->
-> On Sun, May 11, 2025 at 04:34:13PM +0800, Huacai Chen wrote:
-> > This is similar to commit 62b6dee1b44a ("PCI/portdrv: Prevent LS7A Bus
-> > Master clearing on shutdown"), which prevents LS7A Bus Master clearing
-> > on kexec.
-> >
->
-> So 62b6dee1b44a never worked as intented because the PCI core still clear=
-ed bus
-> master bit?
-Commit 62b6dee1b44a only solved the poweroff/reboot problem, because
-in those cases kexec_in_progress is false and pci_clear_master() is
-skipped.
+[1/7] KVM: arm64: VHE: Synchronize restore of host debug registers
+      commit: cade3d57e456e69f67aa9894bf89dc8678796bb7
+[2/7] KVM: arm64: VHE: Synchronize CPTR trap deactivation
+      commit: 257d0aa8e2502754bc758faceceb6ff59318af60
+[3/7] KVM: arm64: Reorganise CPTR trap manipulation
+      commit: e62dd507844fa47f0fdc29f3be5a90a83f297820
+[4/7] KVM: arm64: Remove ad-hoc CPTR manipulation from fpsimd_sve_sync()
+      commit: 59e6e101a6fa542a365dd5858affd18ba3e84cb8
+[5/7] KVM: arm64: Remove ad-hoc CPTR manipulation from kvm_hyp_handle_fpsimd()
+      commit: 186b58bacd74d9b7892869f7c7d20cf865a3c237
+[6/7] KVM: arm64: Remove cpacr_clear_set()
+      commit: 3a300a33e4063fb44c7887bec3aecd2fd6966df8
+[7/7] KVM: arm64: VHE: Centralize ISBs when returning to host
+      commit: 04c5355b2a94ff3191ce63ab035fb7f04d036869
 
+Cheers,
 
->
-> > The key point of this is to work around the LS7A defect that clearing
-> > PCI_COMMAND_MASTER prevents MMIO requests from going downstream, and
-> > we may need to do that even after .shutdown(), e.g., to print console
-> > messages. And in this case we rely on .shutdown() for the downstream
-> > devices to disable interrupts and DMA.
-> >
-> > Only skip Bus Master clearing on bridges because endpoint devices still
-> > need it.
-> >
-> > Cc: <stable@vger.kernel.org>
-> > Signed-off-by: Ming Wang <wangming01@loongson.cn>
-> > Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
-> > ---
-> >  drivers/pci/pci-driver.c | 2 +-
-> >  1 file changed, 1 insertion(+), 1 deletion(-)
-> >
-> > diff --git a/drivers/pci/pci-driver.c b/drivers/pci/pci-driver.c
-> > index 602838416e6a..8a1e32367a06 100644
-> > --- a/drivers/pci/pci-driver.c
-> > +++ b/drivers/pci/pci-driver.c
-> > @@ -517,7 +517,7 @@ static void pci_device_shutdown(struct device *dev)
-> >        * If it is not a kexec reboot, firmware will hit the PCI
-> >        * devices with big hammer and stop their DMA any way.
-> >        */
-> > -     if (kexec_in_progress && (pci_dev->current_state <=3D PCI_D3hot))
-> > +     if (kexec_in_progress && !pci_is_bridge(pci_dev) && (pci_dev->cur=
-rent_state <=3D PCI_D3hot))
->
-> I'm not a Kexec expert, but wouldn't not clearing the bus mastering for a=
-ll PCI
-> bridges safe? You are making a generic change for a defect in your hardwa=
-re, so
-> it might not apply to all other hardwares.
-I think most DMA comes from endpoint devices rather than bridges so
-kexec is probably safe. When I solve the problem in commit
-62b6dee1b44a I want to make a special case for Loongson but Bjorn
-suggests doing a generic change, so I also do a generic change for
-kexec.
+	M.
+-- 
+Without deviation from the norm, progress is not possible.
 
 
-Huacai
-
->
-> - Mani
->
-> --
-> =E0=AE=AE=E0=AE=A3=E0=AE=BF=E0=AE=B5=E0=AE=A3=E0=AF=8D=E0=AE=A3=E0=AE=A9=
-=E0=AF=8D =E0=AE=9A=E0=AE=A4=E0=AE=BE=E0=AE=9A=E0=AE=BF=E0=AE=B5=E0=AE=AE=
-=E0=AF=8D
 
