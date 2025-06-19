@@ -1,66 +1,72 @@
-Return-Path: <stable+bounces-154742-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-154743-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E09A9ADFE44
-	for <lists+stable@lfdr.de>; Thu, 19 Jun 2025 09:02:11 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F1DA1ADFE70
+	for <lists+stable@lfdr.de>; Thu, 19 Jun 2025 09:13:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 92BF616E92F
-	for <lists+stable@lfdr.de>; Thu, 19 Jun 2025 06:56:55 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 981DB167F0B
+	for <lists+stable@lfdr.de>; Thu, 19 Jun 2025 07:13:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE1C625FA05;
-	Thu, 19 Jun 2025 06:54:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0FC724A043;
+	Thu, 19 Jun 2025 07:13:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=uniontech.com header.i=@uniontech.com header.b="ohcmyJYq"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="hjAAM/U0"
 X-Original-To: stable@vger.kernel.org
-Received: from smtpbg150.qq.com (smtpbg150.qq.com [18.132.163.193])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7828F25C810;
-	Thu, 19 Jun 2025 06:54:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=18.132.163.193
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26FE924889F;
+	Thu, 19 Jun 2025 07:13:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750316087; cv=none; b=BNGpEflwoEUIiuTANp+WubcZSeqzQcm/z6K6PlBQSK8O1lCc2d/Pj10O4VvbVEwO1xow6GC1icnFPgmbCQ+nDUekeDg08nn6R0CUdkWJZgzaBUVUbyhPj1waaFI8oLLMTgr7YfFfeZaY5k+iVoQzWGmiw26dfCKcZ4qQjyX/lB0=
+	t=1750317225; cv=none; b=Pd8vfpS4B/OLaiUoli1cNat04MTGqv1NlcmUnC34ScnN+1mRG4lH+vCXhdDtBPavj9IKbxPsna78xrU8sjvf3cic3thHkRB+SVwA1UnF3TU23+474VO4QZewrgTj9PQljYT0h6Sshz9j+qqXQATqWKhabzUx9itUq/F40Li8DZ8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750316087; c=relaxed/simple;
-	bh=DKIWEFD7IuiHQJbuY8wGd57bhJyvqmxIfitMGqJ6ZdY=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=PCY80gSriuQlbJXBn3sr0DdHRky15NnK8jN8mPQs/KD/YRreJD7dy3YycFd9wGKZQYk8aRcQ92vLtgI06IU8PJkR+k/ojUF5B2UAbaK436pvE8fTPd8109thHHNG/IsYZmQPz706sPUgPvb0ctDEGJfWhVTzhTQ/E4pBRv3fgvs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniontech.com; spf=pass smtp.mailfrom=uniontech.com; dkim=pass (1024-bit key) header.d=uniontech.com header.i=@uniontech.com header.b=ohcmyJYq; arc=none smtp.client-ip=18.132.163.193
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniontech.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=uniontech.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=uniontech.com;
-	s=onoh2408; t=1750315985;
-	bh=wCgFcf8S1qz6TsKVSV0g1x9/rKEOEW9D85QGwXQvK74=;
-	h=From:To:Subject:Date:Message-ID:MIME-Version;
-	b=ohcmyJYq6nNEquCCKhkprx2Ku2LULev9JfWxpj4W+tS7VN109dWRqKQ6g0vSI0Ah+
-	 vPRQvm282gTOpC9S9dh9fn1IsviucXJZ8DeSNZmX3mfdoZ7492kM0+/d7oijh/RmM8
-	 YVVjbe/1JY07+FCvSHIVITEeZULA0rjzh+/ymYn0=
-X-QQ-mid: zesmtpip4t1750315979t3e7fd250
-X-QQ-Originating-IP: HY7OJzCHKvNXxA3FIXoKz/JEr+i4hyX3SN3hoQqaFSs=
-Received: from avenger-e500 ( [localhost])
-	by bizesmtp.qq.com (ESMTP) with 
-	id ; Thu, 19 Jun 2025 14:52:58 +0800 (CST)
-X-QQ-SSF: 0000000000000000000000000000000
-X-QQ-GoodBg: 1
-X-BIZMAIL-ID: 11116470041164547082
-EX-QQ-RecipientCnt: 10
-From: WangYuli <wangyuli@uniontech.com>
-To: gregkh@linuxfoundation.org,
-	sashal@kernel.org,
-	stable@vger.kernel.org
-Cc: dmitry.torokhov@gmail.com,
-	javier.carrasco.cruz@gmail.com,
-	u.kleine-koenig@baylibre.com,
-	wens@csie.org,
-	wangyuli@uniontech.com,
-	linux-input@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH 5.4~6.12] Input: sparcspkr - avoid unannotated fall-through
-Date: Thu, 19 Jun 2025 14:52:41 +0800
-Message-ID: <5C0E9B30D2B39A0D+20250619065241.37834-1-wangyuli@uniontech.com>
-X-Mailer: git-send-email 2.50.0
+	s=arc-20240116; t=1750317225; c=relaxed/simple;
+	bh=4xA0RoGRvB2kw00QVEj11UUfC0eS3ezt7ZAVTF3rcY8=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=SosEgI60CFHF/YH7/4YChzMRnJrYOV5BVgLyAJ4UCpO+WDZlNt9i+5nxAd1QZ1TmCRM89OXdm4egB/SCDexSCnCwoLoBJ3V76b7JB/A+fgqgTN60gSrkcb+ylkPN8WPWPndXfR4eVymrPf+BhiWHQIWcOVYxpUvheKigCR6YmIs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=hjAAM/U0; arc=none smtp.client-ip=192.198.163.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1750317224; x=1781853224;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=4xA0RoGRvB2kw00QVEj11UUfC0eS3ezt7ZAVTF3rcY8=;
+  b=hjAAM/U0eWwEJPzH7lzZiweRqWTxQNwiww4kM6UYjaoYXkkWSg+oU+Nt
+   FUFUxwfb4fhWAW+1N5BoGEC0EeCJco1mh3OyQLEfnxLPCrjzdm6iNB90M
+   LH/VUr7zuWJyiIBVs18Q9B1Kek6R3Wj/XgnpultnF6IqYTMiwU5HMW1zf
+   7/sJae0yhM3LO1bNE5dEaXuZL8As46C8/9zvJTvavTuwUH/az4vnrsKFP
+   GYgLlKeifG3lXkT0G+GLfnLOpKIjYzkrE+KOek1t9n7O/TqcmfN68fTaZ
+   WE2lQ8BdiWRqMRPrYWALKT8OAHOguKcgH37HdJUuaVhJ6vZ9YYmaHatIM
+   g==;
+X-CSE-ConnectionGUID: qk3I7cokRxCxtoisy6mZRg==
+X-CSE-MsgGUID: 5GlpS0+DSPure8HiQ0BtHQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11468"; a="51793791"
+X-IronPort-AV: E=Sophos;i="6.16,247,1744095600"; 
+   d="scan'208";a="51793791"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Jun 2025 00:13:44 -0700
+X-CSE-ConnectionGUID: 9HG0g9j6SrKNmYm3Fo3D5A==
+X-CSE-MsgGUID: ZHxfMLB+QoKPcsVd/Gf7aw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.16,247,1744095600"; 
+   d="scan'208";a="155123323"
+Received: from rzhang1-mobl7.sh.intel.com ([10.238.6.124])
+  by orviesa004.jf.intel.com with ESMTP; 19 Jun 2025 00:13:41 -0700
+From: Zhang Rui <rui.zhang@intel.com>
+To: rafael.j.wysocki@intel.com
+Cc: linux-kernel@vger.kernel.org,
+	linux-pm@vger.kernel.org,
+	stable@vger.kernel.org,
+	srinivas.pandruvada@linux.intel.com
+Subject: [PATCH V2] powercap: intel_rapl: Do not change CLAMPING bit if ENABLE bit cannot be changed
+Date: Thu, 19 Jun 2025 15:13:40 +0800
+Message-ID: <20250619071340.384782-1-rui.zhang@intel.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -68,94 +74,68 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-QQ-SENDSIZE: 520
-Feedback-ID: zesmtpip:uniontech.com:qybglogicsvrgz:qybglogicsvrgz8a-1
-X-QQ-XMAILINFO: MRY6qckr/MVJEExJqnp1BH/QKQK1atcuSH4z4HyTlpzMJrsp7E/BS5My
-	osjEk+ik/E+EJiXyG39h8jI5q5PZuq3ybxBqLnTr31gADAFdhAeZGgcQkOteg4FzGrqkjV6
-	8tYOk8/3qjzBuIhZbh36YNPyqhjIn21ka4egylx4GOwJk1NredqdchNB78u0yicRw78dFyA
-	LAotO4U/Wq0xiMOhFEHpHMMD9SHpQkACwI4KaAm3z8Db22eOUbT21mIBvhX0sHXUQs+ywKz
-	GRtL6g0t4Or1lVv9acEkGIF8G5RoCe1yFtepCw4VRBPfGcKqk0kgd/5c/cmraTn+ryA2Q+q
-	laXOobUEnobvpRkYBI2l/m6+iNNn0Bwm9pF395DBIhjdw4FiiqgykESVzeqbP4pmZd53HrA
-	1T9kMvaM0MTYIRRW7XuM9xy6tn6PYbNhUJRRNtzeHkKsWHsEy3+ONacDymlCe4N8eTCCUHR
-	KQk+GCvx+cWXwwo1EaqLoMOCrA0XVg9CB4ANRF3PwvRfuwlsxTniA+5i9ZiwKmGNi4ZUj9y
-	7KDXmA69gmIMmPg1tpEUtRBLFpxrRVhMB+nn4aBDawztNHpMLxIly8Wa/1CsCLrtyEIdfHD
-	JtitWzwVsodGDGGb4oYPNXo7rjXg/xPIrkyTwBnBi2KH3nnE4VK1GuSRfcislbaAMjkHxzc
-	uUvWMlQoJtAo9xp+QBZ5wPrVK0755fp6zDnCAHNokRQrDI24kPjdIYinHmPgB/Ndtpjxc/I
-	7ZrAbmwj40ttBME+VOXvY1O8i2dlMty2d5ezwViyfdaQwdK0PnSxigVWBpwQbkZgMva6AFS
-	fbfzQdE/o6vBrC79t7hW2rRxbOBqgvsoGnpd5UcAv04A0JJSygEXgge/JQFY5TzX+XnRnf9
-	neZC9xMpLWKn8m/H/eIuObVgBrtdLSwIqWtVjT2WnSCwLoKijCbO9qb5nXf1UCYCUmAPfwW
-	yb9hzWOfVt4qpWLN+4RY+IYoW1/yTu8qKK/cWPQZQKf6kMdxgcD0cipU7LdwfUuuh4VX7KV
-	5V7/2Syw==
-X-QQ-XMRINFO: MPJ6Tf5t3I/ycC2BItcBVIA=
-X-QQ-RECHKSPAM: 0
 
-[ Upstream commit 8b1d858cbd4e1800e9336404ba7892b5a721230d ]
+PL1 cannot be disabled on some platforms. The ENABLE bit is still set
+after software clears it. This behavior leads to a scenario where, upon
+user request to disable the Power Limit through the powercap sysfs, the
+ENABLE bit remains set while the CLAMPING bit is inadvertently cleared.
 
-Fix follow warnings with clang-21i (and reformat for clarity):
-  drivers/input/misc/sparcspkr.c:78:3: warning: unannotated fall-through between switch labels [-Wimplicit-fallthrough]
-     78 |                 case SND_TONE: break;
-        |                 ^
-  drivers/input/misc/sparcspkr.c:78:3: note: insert 'break;' to avoid fall-through
-     78 |                 case SND_TONE: break;
-        |                 ^
-        |                 break;
-  drivers/input/misc/sparcspkr.c:113:3: warning: unannotated fall-through between switch labels [-Wimplicit-fallthrough]
-    113 |                 case SND_TONE: break;
-        |                 ^
-  drivers/input/misc/sparcspkr.c:113:3: note: insert 'break;' to avoid fall-through
-    113 |                 case SND_TONE: break;
-        |                 ^
-        |                 break;
-  2 warnings generated.
+According to the Intel Software Developer's Manual, the CLAMPING bit,
+"When set, allows the processor to go below the OS requested P states in
+order to maintain the power below specified Platform Power Limit value."
 
-Signed-off-by: WangYuli <wangyuli@uniontech.com>
-Link: https://lore.kernel.org/r/6730E40353C76908+20250415052439.155051-1-wangyuli@uniontech.com
-Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Thus this means the system may operate at higher power levels than
+intended on such platforms.
+
+Enhance the code to check ENABLE bit after writing to it, and stop
+further processing if ENABLE bit cannot be changed.
+
+Cc: stable@vger.kernel.org
+Reported-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
+Fixes: 2d281d8196e3 ("PowerCap: Introduce Intel RAPL power capping driver")
+Signed-off-by: Zhang Rui <rui.zhang@intel.com>
 ---
- drivers/input/misc/sparcspkr.c | 22 ++++++++++++++++------
- 1 file changed, 16 insertions(+), 6 deletions(-)
+Changes since V1:
+- Add Fixes tag
+- CC stable kernel
+---
+ drivers/powercap/intel_rapl_common.c | 17 ++++++++++++++++-
+ 1 file changed, 16 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/input/misc/sparcspkr.c b/drivers/input/misc/sparcspkr.c
-index 20020cbc0752..a94699f2bbc6 100644
---- a/drivers/input/misc/sparcspkr.c
-+++ b/drivers/input/misc/sparcspkr.c
-@@ -75,9 +75,14 @@ static int bbc_spkr_event(struct input_dev *dev, unsigned int type, unsigned int
- 		return -1;
+diff --git a/drivers/powercap/intel_rapl_common.c b/drivers/powercap/intel_rapl_common.c
+index e3be40adc0d7..602f540cbe15 100644
+--- a/drivers/powercap/intel_rapl_common.c
++++ b/drivers/powercap/intel_rapl_common.c
+@@ -341,12 +341,27 @@ static int set_domain_enable(struct powercap_zone *power_zone, bool mode)
+ {
+ 	struct rapl_domain *rd = power_zone_to_rapl_domain(power_zone);
+ 	struct rapl_defaults *defaults = get_defaults(rd->rp);
++	u64 val;
+ 	int ret;
  
- 	switch (code) {
--		case SND_BELL: if (value) value = 1000;
--		case SND_TONE: break;
--		default: return -1;
-+	case SND_BELL:
-+		if (value)
-+			value = 1000;
-+		break;
-+	case SND_TONE:
-+		break;
-+	default:
-+		return -1;
- 	}
+ 	cpus_read_lock();
+ 	ret = rapl_write_pl_data(rd, POWER_LIMIT1, PL_ENABLE, mode);
+-	if (!ret && defaults->set_floor_freq)
++	if (ret)
++		goto end;
++
++	ret = rapl_read_pl_data(rd, POWER_LIMIT1, PL_ENABLE, false, &val);
++	if (ret)
++		goto end;
++
++	if (mode != val) {
++		pr_debug("%s cannot be %s\n", power_zone->name, mode ? "enabled" : "disabled");
++		goto end;
++	}
++
++	if (defaults->set_floor_freq)
+ 		defaults->set_floor_freq(rd, mode);
++
++end:
+ 	cpus_read_unlock();
  
- 	if (value > 20 && value < 32767)
-@@ -113,9 +118,14 @@ static int grover_spkr_event(struct input_dev *dev, unsigned int type, unsigned
- 		return -1;
- 
- 	switch (code) {
--		case SND_BELL: if (value) value = 1000;
--		case SND_TONE: break;
--		default: return -1;
-+	case SND_BELL:
-+		if (value)
-+			value = 1000;
-+		break;
-+	case SND_TONE:
-+		break;
-+	default:
-+		return -1;
- 	}
- 
- 	if (value > 20 && value < 32767)
+ 	return ret;
 -- 
-2.50.0
+2.43.0
 
 
