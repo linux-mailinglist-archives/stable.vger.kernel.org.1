@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-154791-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-154792-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3D40EAE0367
-	for <lists+stable@lfdr.de>; Thu, 19 Jun 2025 13:24:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8083FAE0379
+	for <lists+stable@lfdr.de>; Thu, 19 Jun 2025 13:27:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D4FD83B1C7D
-	for <lists+stable@lfdr.de>; Thu, 19 Jun 2025 11:23:55 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 31CAA5A0B49
+	for <lists+stable@lfdr.de>; Thu, 19 Jun 2025 11:27:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08A87227BA1;
-	Thu, 19 Jun 2025 11:24:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F007822756A;
+	Thu, 19 Jun 2025 11:27:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="dEo3q58B"
 X-Original-To: stable@vger.kernel.org
-Received: from mx01.omp.ru (mx01.omp.ru [90.154.21.10])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E7BF22539D;
-	Thu, 19 Jun 2025 11:24:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.154.21.10
+Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.4])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3406422539D
+	for <stable@vger.kernel.org>; Thu, 19 Jun 2025 11:27:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750332253; cv=none; b=J2YGLsLZyTokBRWpRGdsqsCrXZJPTPt40+5L0eYbrwdrstT8laldMnh8CC77s+zRTSg57r0NzXuVzcxvfqNd3jSLCHTEftZb1QUc2cosCOQwQa1lIPWbSclZ5R6YQzk6b92huHt5M2++cazeo1rpk/+D1ioDG51A1Jv9jepWfvU=
+	t=1750332448; cv=none; b=bs/C0JzefYArIKUL7qW9RmXJwbQTtewTiHLxenlnqhp9sPzJs3WZLRexjczdhkpwCIKIQ3CR5j2GmykD2llbHfT9TO+04Q98mChBOgy8NJUU1mpTEdgjovAAP/JLWeHZmu8pa277RbUkSaBVm0KCupU+Y5h/TWwPh0hxgHiEG20=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750332253; c=relaxed/simple;
-	bh=xRKgh0EVMeDW99WcMswamZPT62KVgQfkBUwIc3MIA/A=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=OWd4ndcEZUm2VHVuVdphMvenmI9iRFLu5Q8KpDSqXWzYUKRU2gkAGgoliRiEMRRRKgPgdTySoeF+DscNb4NGEql0Ph+5zYNCOlXWIPdqLRecCWpG9veL5GS/wx3Lq+SjAELVcpOOQQunxZDN9K2/MGUrL4kdpX5Qa5mhWlk4iFE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=omp.ru; spf=pass smtp.mailfrom=omp.ru; arc=none smtp.client-ip=90.154.21.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=omp.ru
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=omp.ru
-Received: from inp1wst086.omp.ru (81.22.207.138) by msexch01.omp.ru
- (10.188.4.12) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id 15.2.1258.12; Thu, 19 Jun
- 2025 14:24:00 +0300
-From: Dmitriy Privalov <d.privalov@omp.ru>
-To: <stable@vger.kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-CC: Dmitriy Privalov <d.privalov@omp.ru>, Sanjay R Mehta
-	<sanju.mehta@amd.com>, Mark Brown <broonie@kernel.org>, Shreeya Patel
-	<shreeya.patel@collabora.com>, Lucas Tanure <tanureal@opensource.cirrus.com>,
-	<linux-spi@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-	<lvc-project@linuxtesting.org>, kernel test robot <lkp@intel.com>, Josh
- Poimboeuf <jpoimboe@kernel.org>, Ingo Molnar <mingo@kernel.org>, Raju Rangoju
-	<Raju.Rangoju@amd.com>, Linus Torvalds <torvalds@linux-foundation.org>
-Subject: [PATCH 6.1 1/1] objtool, spi: amd: Fix out-of-bounds stack access in amd_set_spi_freq()
-Date: Thu, 19 Jun 2025 14:23:30 +0300
-Message-ID: <20250619112330.749714-1-d.privalov@omp.ru>
+	s=arc-20240116; t=1750332448; c=relaxed/simple;
+	bh=GTEgAFblZ1I1Rx/PA6kcyVtspNNY8STQFOb+NjVi1nA=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=AKzGxbFtu9GSC+q/XP8qL7LNm5cOdvx9paRRDT8yuroGF6+zxL/sDuUuzQ+fdhIWdAbKv4lumABUVQb/6Douu89t65f6su21IJz6LclYn3rMf16lhQyGaq8KG5EoBQzIAjYNMcYXcWUgigsm3p+9pgm8U1RbcwtS38v+oPtAVdU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=dEo3q58B; arc=none smtp.client-ip=220.197.31.4
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=WD
+	hgu/zjInVYs5iXtRtiJKoU32H8cbXGc1Rl7gw9t4Y=; b=dEo3q58BPn+hygs1HS
+	TptEy/ny5TtfNI/txQ5JXh1qelrJIJWQjU+craK6ASZeIKbNe5hspHUl3601tfVy
+	JzIkA5iIzqj435n0Q16QacMNi6df67tsscGDdtrH5/ylCv2pfCX3Su/XqDkFTZnk
+	NnAMoLKaNFCZ4NBWQPD//taFs=
+Received: from pek-blan-cn-l1.corp.ad.wrs.com (unknown [])
+	by gzsmtp4 (Coremail) with SMTP id PygvCgAXH3XN81NoslEPAQ--.20433S4;
+	Thu, 19 Jun 2025 19:26:26 +0800 (CST)
+From: jetlan9@163.com
+To: gregkh@linuxfoundation.org,
+	stable@vger.kernel.org
+Cc: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+	Baochen Qiang <quic_bqiang@quicinc.com>,
+	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
+	Wenshan Lan <jetlan9@163.com>
+Subject: [PATCH 6.12.y] wifi: ath12k: Clear affinity hint before calling ath12k_pci_free_irq() in error path
+Date: Thu, 19 Jun 2025 19:25:41 +0800
+Message-Id: <20250619112541.1641-1-jetlan9@163.com>
 X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20250619111219.748491-1-d.privalov@omp.ru>
-References: <20250619111219.748491-1-d.privalov@omp.ru>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -55,88 +55,59 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: msexch01.omp.ru (10.188.4.12) To msexch01.omp.ru
- (10.188.4.12)
-X-KSE-ServerInfo: msexch01.omp.ru, 9
-X-KSE-AntiSpam-Interceptor-Info: scan successful
-X-KSE-AntiSpam-Version: 6.1.1, Database issued on: 06/19/2025 11:05:44
-X-KSE-AntiSpam-Status: KAS_STATUS_NOT_DETECTED
-X-KSE-AntiSpam-Method: none
-X-KSE-AntiSpam-Rate: 19
-X-KSE-AntiSpam-Info: Lua profiles 194191 [Jun 19 2025]
-X-KSE-AntiSpam-Info: Version: 6.1.1.11
-X-KSE-AntiSpam-Info: Envelope from: d.privalov@omp.ru
-X-KSE-AntiSpam-Info: LuaCore: 62 0.3.62
- e2af3448995f5f8a7fe71abf21bb23519d0f38c3
-X-KSE-AntiSpam-Info: {rep_avail}
-X-KSE-AntiSpam-Info: {Tracking_uf_ne_domains}
-X-KSE-AntiSpam-Info: {Tracking_from_domain_doesnt_match_to}
-X-KSE-AntiSpam-Info: {SMTP from is not routable}
-X-KSE-AntiSpam-Info: {Found in DNSBL: 81.22.207.138 in (user)
- b.barracudacentral.org}
-X-KSE-AntiSpam-Info:
-	d41d8cd98f00b204e9800998ecf8427e.com:7.1.1;inp1wst086.omp.ru:7.1.1;omp.ru:7.1.1;127.0.0.199:7.1.2;81.22.207.138:7.1.2;lore.kernel.org:7.1.1
-X-KSE-AntiSpam-Info: FromAlignment: s
-X-KSE-AntiSpam-Info: ApMailHostAddress: 81.22.207.138
-X-KSE-AntiSpam-Info: {DNS response errors}
-X-KSE-AntiSpam-Info: Rate: 19
-X-KSE-AntiSpam-Info: Status: not_detected
-X-KSE-AntiSpam-Info: Method: none
-X-KSE-AntiSpam-Info: Auth:dmarc=temperror header.from=omp.ru;spf=temperror
- smtp.mailfrom=omp.ru;dkim=none
-X-KSE-Antiphishing-Info: Clean
-X-KSE-Antiphishing-ScanningType: Heuristic
-X-KSE-Antiphishing-Method: None
-X-KSE-Antiphishing-Bases: 06/19/2025 11:07:00
-X-KSE-Antivirus-Interceptor-Info: scan successful
-X-KSE-Antivirus-Info: Clean, bases: 6/19/2025 5:52:00 AM
-X-KSE-Attachment-Filter-Triggered-Rules: Clean
-X-KSE-Attachment-Filter-Triggered-Filters: Clean
-X-KSE-BulkMessagesFiltering-Scan-Result: InTheLimit
+X-CM-TRANSID:PygvCgAXH3XN81NoslEPAQ--.20433S4
+X-Coremail-Antispam: 1Uf129KBjvJXoW7ZryxZF45JFyrKFy5GFWrAFb_yoW8Zry3pr
+	W0gw17CFyfGa18Ww4rGa1xXryfWanrXry7Gr47Kwn3uFW5ZF97tFn0qF17Jr1UGFWrAFya
+	9FsrGr18Xas0qaDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0pujgn5UUUUU=
+X-CM-SenderInfo: xmhwztjqz6il2tof0z/1tbiWx1xyGhT6-bwVwAAs+
 
-From: Josh Poimboeuf <jpoimboe@kernel.org>
+From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
 
-commit 76e51db43fe4aaaebcc5ddda67b0807f7c9bdecc upstream.
+[ Upstream commit b43b1e2c52db77c872bd60d30cdcc72c47df70c7 ]
 
-If speed_hz < AMD_SPI_MIN_HZ, amd_set_spi_freq() iterates over the
-entire amd_spi_freq array without breaking out early, causing 'i' to go
-beyond the array bounds.
+If a shared IRQ is used by the driver due to platform limitation, then the
+IRQ affinity hint is set right after the allocation of IRQ vectors in
+ath12k_pci_msi_alloc(). This does no harm unless one of the functions
+requesting the IRQ fails and attempt to free the IRQ.
 
-Fix that by stopping the loop when it gets to the last entry, so the low
-speed_hz value gets clamped up to AMD_SPI_MIN_HZ.
+This may end up with a warning from the IRQ core that is expecting the
+affinity hint to be cleared before freeing the IRQ:
 
-Fixes the following warning with an UBSAN kernel:
+kernel/irq/manage.c:
 
-  drivers/spi/spi-amd.o: error: objtool: amd_set_spi_freq() falls through to next function amd_spi_set_opcode()
+	/* make sure affinity_hint is cleaned up */
+	if (WARN_ON_ONCE(desc->affinity_hint))
+		desc->affinity_hint = NULL;
 
-Fixes: 3fe26121dc3a ("spi: amd: Configure device speed")
-Reported-by: kernel test robot <lkp@intel.com>
-Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Acked-by: Mark Brown <broonie@kernel.org>
-Cc: Raju Rangoju <Raju.Rangoju@amd.com>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Link: https://lore.kernel.org/r/78fef0f2434f35be9095bcc9ffa23dd8cab667b9.1742852847.git.jpoimboe@kernel.org
-Closes: https://lore.kernel.org/r/202503161828.RUk9EhWx-lkp@intel.com/
-Signed-off-by: Dmitriy Privalov <d.privalov@omp.ru>
+So to fix this issue, clear the IRQ affinity hint before calling
+ath12k_pci_free_irq() in the error path. The affinity will be cleared once
+again further down the error path due to code organization, but that does
+no harm.
+
+Fixes: a3012f206d07 ("wifi: ath12k: set IRQ affinity to CPU0 in case of one MSI vector")
+Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Reviewed-by: Baochen Qiang <quic_bqiang@quicinc.com>
+Link: https://patch.msgid.link/20250225053447.16824-3-manivannan.sadhasivam@linaro.org
+Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+Signed-off-by: Wenshan Lan <jetlan9@163.com>
 ---
- drivers/spi/spi-amd.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/wireless/ath/ath12k/pci.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/spi/spi-amd.c b/drivers/spi/spi-amd.c
-index bfc3ab5f39ea..b53301e563bc 100644
---- a/drivers/spi/spi-amd.c
-+++ b/drivers/spi/spi-amd.c
-@@ -243,7 +243,7 @@ static int amd_set_spi_freq(struct amd_spi *amd_spi, u32 speed_hz)
- 	if (speed_hz < AMD_SPI_MIN_HZ)
- 		return -EINVAL;
+diff --git a/drivers/net/wireless/ath/ath12k/pci.c b/drivers/net/wireless/ath/ath12k/pci.c
+index 45d537066345..9c35fbe52872 100644
+--- a/drivers/net/wireless/ath/ath12k/pci.c
++++ b/drivers/net/wireless/ath/ath12k/pci.c
+@@ -1503,6 +1503,8 @@ static int ath12k_pci_probe(struct pci_dev *pdev,
+ 	return 0;
  
--	for (i = 0; i < ARRAY_SIZE(amd_spi_freq); i++)
-+	for (i = 0; i < ARRAY_SIZE(amd_spi_freq)-1; i++)
- 		if (speed_hz >= amd_spi_freq[i].speed_hz)
- 			break;
+ err_free_irq:
++	/* __free_irq() expects the caller to have cleared the affinity hint */
++	ath12k_pci_set_irq_affinity_hint(ab_pci, NULL);
+ 	ath12k_pci_free_irq(ab);
  
+ err_ce_free:
 -- 
 2.34.1
 
