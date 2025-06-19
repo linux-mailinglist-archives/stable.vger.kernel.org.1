@@ -1,174 +1,127 @@
-Return-Path: <stable+bounces-154737-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-154738-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1F7DCADFCF4
-	for <lists+stable@lfdr.de>; Thu, 19 Jun 2025 07:30:30 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A7D8FADFD40
+	for <lists+stable@lfdr.de>; Thu, 19 Jun 2025 07:50:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7AEF07AC9B4
-	for <lists+stable@lfdr.de>; Thu, 19 Jun 2025 05:29:07 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5AED73A389C
+	for <lists+stable@lfdr.de>; Thu, 19 Jun 2025 05:50:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 234252417FA;
-	Thu, 19 Jun 2025 05:30:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B8A2242D69;
+	Thu, 19 Jun 2025 05:50:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b="WDuvhliQ"
+	dkim=pass (1024-bit key) header.d=weissschuh.net header.i=@weissschuh.net header.b="B59Ex9gw"
 X-Original-To: stable@vger.kernel.org
-Received: from fanzine2.igalia.com (fanzine2.igalia.com [213.97.179.56])
+Received: from todd.t-8ch.de (todd.t-8ch.de [159.69.126.157])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2E4423AB95
-	for <stable@vger.kernel.org>; Thu, 19 Jun 2025 05:30:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.97.179.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57E73134BD;
+	Thu, 19 Jun 2025 05:50:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.69.126.157
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750311021; cv=none; b=IRPQruN9Ke6XbHlTyZ+A5aNoN0a0+yNIcIP4sHxbOvsZpS8MQFDDSDpJ0blAwlFTuo4Iv12QIZZ0HhPoprfHJqqM2V/vLQ/oxl4Pp7YowpQRyup1Ocw7SH1GrFXOBycAfFDZqOVan0MiF0RlK9JFWfaXk0Mso6k8g0V51JRl8fk=
+	t=1750312250; cv=none; b=jigcqC4Tu/ZydfhtU0FxifDQQiageqXlr7HEgcekTEfMinnVKMofyDapl2xg+ws+imV6jaeMkNMHWcqowNDMyhgeDYptflibiDILN2vEUepr+OwYaPXLpa7YndLxlPJl5nQdJTdACykQf1+qmuswkWebU8015ID3E+rxtaG/0WY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750311021; c=relaxed/simple;
-	bh=Rmpjk2cW+hMk+F7lE/b9frFZSvHrJw1azMfi9qoUZQw=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PePTB96SEbpTyVlzSAvwn3t1UsYPVPpEvsNjcprICJVQzzYq8tblAO2CNiSiA8MZBm+7Xd8yuFnlrn9wvB5QasBnN308azD1m9ss9pZFS405o5q8NiAs0O/00JYcYZthmrycnfgTbrRZvwNzBxMjLj4xb72oEZShniCMEF8DUlA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com; spf=pass smtp.mailfrom=igalia.com; dkim=pass (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b=WDuvhliQ; arc=none smtp.client-ip=213.97.179.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=igalia.com
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
-	s=20170329; h=Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:
-	Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-	List-Post:List-Owner:List-Archive;
-	bh=Qbn8jqVHF+1nJ4qNne3u9V1mCAHT72RAWIR8dOyyqg8=; b=WDuvhliQWAXzB9/uhSnp8hsn9Y
-	f3gedSQZ5mxs2s1dXmh25/jp+jsrelVabksWpujOmN+l5+lxhXH3SMO7rWdi+jCLrCoke0p619Nen
-	RoIGD88/PIazwfIpKoRE01FT+NUG3rAZnKRquxlU60n70CuUcFKuk2F6Mro7chuQuEyC3qYjsh8AR
-	sawx5ppRg2CVbUGZouKJSZtpR6LZ7FHVJ/ot6F2FB/cLdxv/8kJyC6qqOdE/GyY3HZQW1jQfp/GmO
-	7466Nv3lFfSDCs3cWbmtLvCahgHQH3XeUhshOXxkVtV5UioB1J+NVTd4yqsZXAXrjbpb1BKbnJqvH
-	yVIlpKRQ==;
-Received: from 114-44-248-185.dynamic-ip.hinet.net ([114.44.248.185] helo=gavin-HP-Z840-Workstation..)
-	by fanzine2.igalia.com with esmtpsa 
-	(Cipher TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256) (Exim)
-	id 1uS7qi-005OIk-Hb; Thu, 19 Jun 2025 07:30:09 +0200
-From: Gavin Guo <gavinguo@igalia.com>
-To: Andrew Morton <akpm@linux-foundation.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: David Hildenbrand <david@redhat.com>,
-	Hugh Dickins <hughd@google.com>,
-	Zi Yan <ziy@nvidia.com>,
-	Gavin Shan <gshan@redhat.com>,
-	Florent Revest <revest@google.com>,
-	Matthew Wilcox <willy@infradead.org>,
-	Miaohe Lin <linmiaohe@huawei.com>,
-	stable@vger.kernel.org
-Subject: [PATCH 6.1.y] mm/huge_memory: fix dereferencing invalid pmd migration entry
-Date: Thu, 19 Jun 2025 13:30:01 +0800
-Message-ID: <20250619053001.3295791-1-gavinguo@igalia.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <2025051203-thrift-spool-ebc8@gregkh>
-References: <2025051203-thrift-spool-ebc8@gregkh>
+	s=arc-20240116; t=1750312250; c=relaxed/simple;
+	bh=KXm6uCC5yRgIomOYTQC5Qq/VKBar4sWaDZWjrk7jhtc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=usiiTcLlLYRpvce4O+Zmym1DgegNWBQ3CV3WTURGzpCbpshTvVzG8wY1VSw2cQsXMCW9SOz00J9x+6JFCzzRWqLwIJdRmg4DWvBxcMEY5t0d/WSsTfZUZGp6DBjgeuC384VzUncMHzPqx28sYrHYFilmtJSXagSWTUKlam24o6Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=weissschuh.net; spf=pass smtp.mailfrom=weissschuh.net; dkim=pass (1024-bit key) header.d=weissschuh.net header.i=@weissschuh.net header.b=B59Ex9gw; arc=none smtp.client-ip=159.69.126.157
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=weissschuh.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=weissschuh.net
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=weissschuh.net;
+	s=mail; t=1750312245;
+	bh=KXm6uCC5yRgIomOYTQC5Qq/VKBar4sWaDZWjrk7jhtc=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=B59Ex9gwa1HHxtit1YjeiXIkCmyjPaTczWB7G2MaExt71yiLGmvdDmHUT6lTkX1iC
+	 toYl5NqVA4dseFvIDZkpxscxGX57I2EHfP8wP+hG4nIDT3LO9kyxC20Nn2qQVCAdHs
+	 QHx3hNH3kNBm1lDg/Ht5RS2fD9SXz3OlPjLS/eR8=
+Date: Thu, 19 Jun 2025 07:50:43 +0200
+From: Thomas =?utf-8?Q?Wei=C3=9Fschuh?= <linux@weissschuh.net>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Mark Brown <broonie@kernel.org>, stable@vger.kernel.org, 
+	patches@lists.linux.dev, linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org, 
+	lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com, f.fainelli@gmail.com, 
+	sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org, 
+	hargar@microsoft.com, Willy Tarreau <w@1wt.eu>
+Subject: Re: [PATCH 6.15 000/780] 6.15.3-rc1 review
+Message-ID: <a757c5d9-06f4-4ed0-9de9-08edbd16134a@t-8ch.de>
+References: <20250617152451.485330293@linuxfoundation.org>
+ <cc048abb-fbc0-4a79-b78a-90bfa3f8446d@sirena.org.uk>
+ <2025061858-reproduce-revolving-cae0@gregkh>
+ <1081af30-1273-4a9a-a864-f59f1cb54fd1@t-8ch.de>
+ <2025061949-epilepsy-punk-fb4e@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <2025061949-epilepsy-punk-fb4e@gregkh>
 
-[ Upstream commit be6e843fc51a584672dfd9c4a6a24c8cb81d5fb7 ]
+On 2025-06-19 06:19:52+0200, Greg Kroah-Hartman wrote:
+> On Wed, Jun 18, 2025 at 04:15:09PM +0200, Thomas Weißschuh wrote:
+> > On 2025-06-18 15:19:11+0200, Greg Kroah-Hartman wrote:
+> > > On Wed, Jun 18, 2025 at 12:58:00PM +0100, Mark Brown wrote:
+> > > > On Tue, Jun 17, 2025 at 05:15:08PM +0200, Greg Kroah-Hartman wrote:
+> > > > > This is the start of the stable review cycle for the 6.15.3 release.
+> > > > > There are 780 patches in this series, all will be posted as a response
+> > > > > to this one.  If anyone has any issues with these being applied, please
+> > > > > let me know.
+> > > > 
+> > > > This breaks the build of the arm64 selftests due to a change in nolibc,
+> > > > it appears that "tools/nolibc: properly align dirent buffer" is missing
+> > > > some dependency:
+> > > > 
+> > > > aarch64-linux-gnu-gcc -fno-asynchronous-unwind-tables -fno-ident -s -Os -nostdlib \
+> > > > 	-include ../../../../include/nolibc/nolibc.h -I../..\
+> > > > 	-static -ffreestanding -Wall za-fork.c /build/stage/build-work/kselftest/arm64/fp/za-fork-asm.o -o /build/stage/build-work/kselftest/arm64/fp/za-fork
+> > > > In file included from ./../../../../include/nolibc/nolibc.h:107,
+> > > >                  from <command-line>:
+> > > > ./../../../../include/nolibc/dirent.h: In function ‘readdir_r’:
+> > > > ./../../../../include/nolibc/dirent.h:62:64: error: expected ‘=’, ‘,’, ‘;’, ‘asm’ or ‘__attribute__’ before ‘__nolibc_aligned_as’
+> > > >    62 |         char buf[sizeof(struct linux_dirent64) + NAME_MAX + 1] __nolibc_aligned_as(struct linux_dirent64);
+> > > >       |                                                                ^~~~~~~~~~~~~~~~~~~
+> > > > ./../../../../include/nolibc/dirent.h:62:64: error: implicit declaration of function ‘__nolibc_aligned_as’ [-Wimplicit-function-declaration]
+> > > > ./../../../../include/nolibc/dirent.h:62:84: error: expected expression before ‘struct’
+> > > >    62 |         char buf[sizeof(struct linux_dirent64) + NAME_MAX + 1] __nolibc_aligned_as(struct linux_dirent64);
+> > > >       |                                                                                    ^~~~~~
+> > > > ./../../../../include/nolibc/dirent.h:63:47: error: ‘buf’ undeclared (first use in this function)
+> > > >    63 |         struct linux_dirent64 *ldir = (void *)buf;
+> > > >       |                                               ^~~
+> > > > ./../../../../include/nolibc/dirent.h:63:47: note: each undeclared identifier is reported only once for each function it appears in
+> > > 
+> > > Thanks for the report, I'll go drop all nolibc patches from the queues
+> > > for now.
+> > 
+> > Thanks.
+> > 
+> > Shouldn't the bots apply prerequisite patches from the series automatically?
+> 
+> Hopefully yes, obviously it doesn't always work :)
 
-When migrating a THP, concurrent access to the PMD migration entry during
-a deferred split scan can lead to an invalid address access, as
-illustrated below.  To prevent this invalid access, it is necessary to
-check the PMD migration entry and return early.  In this context, there is
-no need to use pmd_to_swp_entry and pfn_swap_entry_to_page to verify the
-equality of the target folio.  Since the PMD migration entry is locked, it
-cannot be served as the target.
+Is there something we can do to help the tools?
 
-Mailing list discussion and explanation from Hugh Dickins: "An anon_vma
-lookup points to a location which may contain the folio of interest, but
-might instead contain another folio: and weeding out those other folios is
-precisely what the "folio != pmd_folio((*pmd)" check (and the "risk of
-replacing the wrong folio" comment a few lines above it) is for."
+> > This patch comes from [0] and the prerequisite is in there.
+> > 
+> > Also all nolibc patches which should go to stable are tagged as such.
+> > Can you configure the bots not to pick up any nolibc patches automatically?
+> 
+> Yes we can!  I will add the needed regex to the file:
+> 	https://git.kernel.org/pub/scm/linux/kernel/git/stable/stable-queue.git/tree/ignore_list
+> should it be:
+> 	tools/include/nolibc/*
+> 	tools/testing/selftests/nolibc/*
+> ?
 
-BUG: unable to handle page fault for address: ffffea60001db008
-CPU: 0 UID: 0 PID: 2199114 Comm: tee Not tainted 6.14.0+ #4 NONE
-Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
-RIP: 0010:split_huge_pmd_locked+0x3b5/0x2b60
-Call Trace:
-<TASK>
-try_to_migrate_one+0x28c/0x3730
-rmap_walk_anon+0x4f6/0x770
-unmap_folio+0x196/0x1f0
-split_huge_page_to_list_to_order+0x9f6/0x1560
-deferred_split_scan+0xac5/0x12a0
-shrinker_debugfs_scan_write+0x376/0x470
-full_proxy_write+0x15c/0x220
-vfs_write+0x2fc/0xcb0
-ksys_write+0x146/0x250
-do_syscall_64+0x6a/0x120
-entry_SYSCALL_64_after_hwframe+0x76/0x7e
+Looks good, thanks.
 
-The bug is found by syzkaller on an internal kernel, then confirmed on
-upstream.
 
-Link: https://lkml.kernel.org/r/20250421113536.3682201-1-gavinguo@igalia.com
-Link: https://lore.kernel.org/all/20250414072737.1698513-1-gavinguo@igalia.com/
-Link: https://lore.kernel.org/all/20250418085802.2973519-1-gavinguo@igalia.com/
-Fixes: 84c3fc4e9c56 ("mm: thp: check pmd migration entry in common path")
-Signed-off-by: Gavin Guo <gavinguo@igalia.com>
-Acked-by: David Hildenbrand <david@redhat.com>
-Acked-by: Hugh Dickins <hughd@google.com>
-Acked-by: Zi Yan <ziy@nvidia.com>
-Reviewed-by: Gavin Shan <gshan@redhat.com>
-Cc: Florent Revest <revest@google.com>
-Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
-Cc: Miaohe Lin <linmiaohe@huawei.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-[gavin: backport the migration checking logic to __split_huge_pmd]
-Signed-off-by: Gavin Guo <gavinguo@igalia.com>
----
- mm/huge_memory.c | 11 ++++++-----
- 1 file changed, 6 insertions(+), 5 deletions(-)
-
-diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-index f53bc54dacb3..2c118713f771 100644
---- a/mm/huge_memory.c
-+++ b/mm/huge_memory.c
-@@ -2282,12 +2282,14 @@ void __split_huge_pmd(struct vm_area_struct *vma, pmd_t *pmd,
- {
- 	spinlock_t *ptl;
- 	struct mmu_notifier_range range;
-+	bool pmd_migration;
- 
- 	mmu_notifier_range_init(&range, MMU_NOTIFY_CLEAR, 0, vma, vma->vm_mm,
- 				address & HPAGE_PMD_MASK,
- 				(address & HPAGE_PMD_MASK) + HPAGE_PMD_SIZE);
- 	mmu_notifier_invalidate_range_start(&range);
- 	ptl = pmd_lock(vma->vm_mm, pmd);
-+	pmd_migration = is_pmd_migration_entry(*pmd);
- 
- 	/*
- 	 * If caller asks to setup a migration entry, we need a folio to check
-@@ -2296,13 +2298,12 @@ void __split_huge_pmd(struct vm_area_struct *vma, pmd_t *pmd,
- 	VM_BUG_ON(freeze && !folio);
- 	VM_WARN_ON_ONCE(folio && !folio_test_locked(folio));
- 
--	if (pmd_trans_huge(*pmd) || pmd_devmap(*pmd) ||
--	    is_pmd_migration_entry(*pmd)) {
-+	if (pmd_trans_huge(*pmd) || pmd_devmap(*pmd) || pmd_migration) {
- 		/*
--		 * It's safe to call pmd_page when folio is set because it's
--		 * guaranteed that pmd is present.
-+		 * Do not apply pmd_folio() to a migration entry; and folio lock
-+		 * guarantees that it must be of the wrong folio anyway.
- 		 */
--		if (folio && folio != page_folio(pmd_page(*pmd)))
-+		if (folio && (pmd_migration || folio != page_folio(pmd_page(*pmd))))
- 			goto out;
- 		__split_huge_pmd_locked(vma, pmd, range.start, freeze);
- 	}
-
-base-commit: 58485ff1a74f6c5be9e7c6aafb7293e4337348e7
--- 
-2.43.0
-
+Thomas
 
