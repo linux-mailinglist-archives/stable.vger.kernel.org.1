@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-154779-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-154781-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 79F54AE0139
-	for <lists+stable@lfdr.de>; Thu, 19 Jun 2025 11:08:18 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 065E0AE0160
+	for <lists+stable@lfdr.de>; Thu, 19 Jun 2025 11:11:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B4D337AF593
-	for <lists+stable@lfdr.de>; Thu, 19 Jun 2025 09:06:55 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5FC0F5A4C9E
+	for <lists+stable@lfdr.de>; Thu, 19 Jun 2025 09:07:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 950D927A92F;
-	Thu, 19 Jun 2025 09:04:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EBEDB27AC44;
+	Thu, 19 Jun 2025 09:04:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LqVsC9bn"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="u55IbEnx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 549B021CC47
-	for <stable@vger.kernel.org>; Thu, 19 Jun 2025 09:04:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A676E21ABA5
+	for <stable@vger.kernel.org>; Thu, 19 Jun 2025 09:04:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750323872; cv=none; b=MzdDct6QvRsgXZdvUTeDHBUefKkDO1iWo8Z0F6TAmmWZ9hETUcLVjq5mAAs/v5v9lvyQNyNZohuI1pNoVNYgON3uWD81/6qyw0aVAhcRe2vbyhlHYtkCcZQrenigEDqLiZ2E1StU9J2qkRKjxZeTBOI/R5JeqdY2yf9PlRKnCsc=
+	t=1750323879; cv=none; b=uiIInc5+XWhglsv5XKMFNM0iLGlNho3yYISmiz45HuS3C2ngqwK4myQN2eKo6KAvy29aiXeCblVJErou+kcXLj7SuqdgtygVXqicFvbMm0xG1nhXs/+gbBGvcGeZTkddv07WPBw8pUqJn3uK24WkdJhyxr4A7oYzqYkAyz1sRN4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750323872; c=relaxed/simple;
-	bh=q9QfFbDFbrLovJt9rukCgv1DTVKymEnm5D7N0maM0lA=;
+	s=arc-20240116; t=1750323879; c=relaxed/simple;
+	bh=6fM43ZIp8MSP8IEBhmAedyDNUT3qyinzVJyrFv2x3UE=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=jtb9PZ9TDVFPpnZ4xYi9rzJ3mDhWGbP/LIjeDwH7QvVgeMti0E23pbpclYtLWmukEtig0eWTweK5XXKfFVta+xd70s5ihWezfI//6Orih/xZV1h57+r2jBVwXsh4pI1x6A/I0CMzW7OiyUSdpCrhILSMDD6N4GhE3Rwbs+HSa+U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LqVsC9bn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B405BC4CEEA;
-	Thu, 19 Jun 2025 09:04:31 +0000 (UTC)
+	 MIME-Version:Content-Type; b=VH1152sXD9B38rBnLi75qQYV3aYDX0V2inAStOhjQlfB2XeNBB/WKtYfLWpJ5ivDF+WsQgbq01ZHdZ5pograMw+FL8pID3NrdHtcgOkJuKQupT0f+m+6tgDHI502mKoCU6fEdkHAqveTBsV3tS8TqRGR1PIZG/2J14u3XTf5Jow=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=u55IbEnx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ACCF0C4CEEA;
+	Thu, 19 Jun 2025 09:04:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1750323872;
-	bh=q9QfFbDFbrLovJt9rukCgv1DTVKymEnm5D7N0maM0lA=;
+	s=k20201202; t=1750323874;
+	bh=6fM43ZIp8MSP8IEBhmAedyDNUT3qyinzVJyrFv2x3UE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LqVsC9bnOoHvlRPBU8aosMWbEMrQZpiAba+R4E9+n7yZXTaUZpEGP8R1OJSkfGnsv
-	 H7UOowMp4b675DmuMTwVs53k1Nb686hAHytMCVtu2kH1U4a/X/bMCN8ugiwMFjnjlx
-	 4LSxmrLMWzaxTTBLhY8sP5rnQQ+Oi4INaxYWHHCGRfyzopMOCkCGY0bUVKF7yy8K5J
-	 Xf90eaWzOUYT2/ZXd4cYz46HFvyVvDIEwLVxbqAIjuNBx/X9QcFH2Ph0JejVs7MdN2
-	 FJ5+wRCnc2z0N9ijNrbJMTdy33jFRHsdpIjk0FJoO/nqczyyc/Xb+9Tkpt2wv0g1Zu
-	 vW8SOoPSGmxJQ==
+	b=u55IbEnxuuvzt4fupx87hUPC9frVHaVi2ruqSwTvpAORhvCpyA8aJwB3nAtNabZNh
+	 /Hoxhzl57E/+P0GPUrGsWHRv23SyMS8RGGHan3a8hppIlU22odzF4XLJTnidSb6Jb7
+	 tT2VZMhDmo3cGFsx99d7dJuKVFQ8LfCZ/p0W8fAO1gPJTPUeblgZfDkIsFYS8ni92A
+	 RRDGJNbfVGRWURE/Y7Db2y4CyeTn/a6fg9jskORJlBf9+aZJvzNpybp6NYXvp0TBeq
+	 Ln7UuPx3Ihb78Szaf6OTP8hoDs/ls3DTQOtNzDCvqDP+U4nSIlrUNnyVC49jeVKZ+1
+	 eStTpLiu6PDjg==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
 Cc: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 5.10 v2 03/16] x86/its: Enumerate Indirect Target Selection (ITS) bug
-Date: Thu, 19 Jun 2025 05:04:30 -0400
-Message-Id: <20250618170549-44f28237a946cc4c@stable.kernel.org>
+Subject: Re: [PATCH 5.10 v2 11/16] x86/its: Enable Indirect Target Selection mitigation
+Date: Thu, 19 Jun 2025 05:04:32 -0400
+Message-Id: <20250618182547-be61423b7dacd3b5@stable.kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To:  <20250617-its-5-10-v2-3-3e925a1512a1@linux.intel.com>
+In-Reply-To:  <20250617-its-5-10-v2-11-3e925a1512a1@linux.intel.com>
 References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -67,29 +67,30 @@ Hi,
 ✅ All tests passed successfully. No issues detected.
 No action required from the submitter.
 
-The upstream commit SHA1 provided is correct: 159013a7ca18c271ff64192deb62a689b622d860
+The upstream commit SHA1 provided is correct: f4818881c47fd91fcb6d62373c57c7844e3de1c0
 
 Status in newer kernel trees:
 6.15.y | Present (exact SHA1)
-6.12.y | Present (different SHA1: a6f2a436e9d6)
-6.6.y | Present (different SHA1: 195579752c23)
-6.1.y | Present (different SHA1: 0eda20c29e12)
-5.15.y | Present (different SHA1: 34be1a3100b0)
+6.12.y | Present (different SHA1: 68d59e9ba384)
+6.6.y | Present (different SHA1: f7ef7f6ccf2b)
+6.1.y | Present (different SHA1: b1701fee52d1)
+5.15.y | Present (different SHA1: e30bcefa93a6)
 
 Note: The patch differs from the upstream commit:
 ---
-1:  159013a7ca18c ! 1:  137854d52a7a4 x86/its: Enumerate Indirect Target Selection (ITS) bug
+1:  f4818881c47fd ! 1:  d14c05df3083a x86/its: Enable Indirect Target Selection mitigation
     @@ Metadata
       ## Commit message ##
-         x86/its: Enumerate Indirect Target Selection (ITS) bug
+         x86/its: Enable Indirect Target Selection mitigation
      
-    +    commit 159013a7ca18c271ff64192deb62a689b622d860 upstream.
+    +    commit f4818881c47fd91fcb6d62373c57c7844e3de1c0 upstream.
     +
-         ITS bug in some pre-Alderlake Intel CPUs may allow indirect branches in the
-         first half of a cache line get predicted to a target of a branch located in
-         the second half of the cache line.
-     
-         Set X86_BUG_ITS on affected CPUs. Mitigation to follow in later commits.
+         Indirect Target Selection (ITS) is a bug in some pre-ADL Intel CPUs with
+         eIBRS. It affects prediction of indirect branch and RETs in the
+         lower half of cacheline. Due to ITS such branches may get wrongly predicted
+    @@ Commit message
+         spectre-v2 lfence;jmp mitigation. Moreover, it is less practical to deploy
+         lfence;jmp mitigation on ITS affected parts anyways.
      
     -    Signed-off-by: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
          Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
@@ -97,136 +98,173 @@ Note: The patch differs from the upstream commit:
          Reviewed-by: Alexandre Chartre <alexandre.chartre@oracle.com>
     +    Signed-off-by: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
      
-      ## arch/x86/include/asm/cpufeatures.h ##
+      ## Documentation/ABI/testing/sysfs-devices-system-cpu ##
+     @@ Documentation/ABI/testing/sysfs-devices-system-cpu: Description:	information about CPUs heterogeneity.
+    @@ Documentation/admin-guide/kernel-parameters.txt
+      			Format: <full_path>
+      			Run specified binary instead of /sbin/init as init
      @@
-    - #define X86_BUG_BHI			X86_BUG(1*32 + 3) /* "bhi" CPU is affected by Branch History Injection */
-    - #define X86_BUG_IBPB_NO_RET	   	X86_BUG(1*32 + 4) /* "ibpb_no_ret" IBPB omits return target predictions */
-    - #define X86_BUG_SPECTRE_V2_USER		X86_BUG(1*32 + 5) /* "spectre_v2_user" CPU is affected by Spectre variant 2 attack between user processes */
-    -+#define X86_BUG_ITS			X86_BUG(1*32 + 6) /* "its" CPU is affected by Indirect Target Selection */
-    + #define X86_BUG_RFDS			X86_BUG(1*32 + 2) /* CPU is vulnerable to Register File Data Sampling */
-    + #define X86_BUG_BHI			X86_BUG(1*32 + 3) /* CPU is affected by Branch History Injection */
-    + #define X86_BUG_IBPB_NO_RET		X86_BUG(1*32 + 4) /* "ibpb_no_ret" IBPB omits return target predictions */
-    ++#define X86_BUG_ITS			X86_BUG(1*32 + 5) /* CPU is affected by Indirect Target Selection */
-      #endif /* _ASM_X86_CPUFEATURES_H */
+    + 				improves system performance, but it may also
+      				expose users to several CPU vulnerabilities.
+    - 				Equivalent to: if nokaslr then kpti=0 [ARM64]
+    - 					       gather_data_sampling=off [X86]
+    + 				Equivalent to: gather_data_sampling=off [X86]
+     +					       indirect_target_selection=off [X86]
+    + 					       kpti=0 [ARM64]
+      					       kvm.nx_huge_pages=off [X86]
+      					       l1tf=off [X86]
+    - 					       mds=off [X86]
      
-      ## arch/x86/include/asm/msr-index.h ##
-    @@ arch/x86/kernel/cpu/common.c: static const __initconst struct x86_cpu_id cpu_vul
-     +#define ITS		BIT(8)
+      ## arch/x86/kernel/cpu/bugs.c ##
+    -@@ arch/x86/kernel/cpu/bugs.c: static void __init srbds_select_mitigation(void);
+    - static void __init l1d_flush_select_mitigation(void);
+    - static void __init srso_select_mitigation(void);
+    +@@ arch/x86/kernel/cpu/bugs.c: static void __init mmio_select_mitigation(void);
+    + static void __init srbds_select_mitigation(void);
+      static void __init gds_select_mitigation(void);
+    + static void __init srso_select_mitigation(void);
+     +static void __init its_select_mitigation(void);
       
-      static const struct x86_cpu_id cpu_vuln_blacklist[] __initconst = {
-    - 	VULNBL_INTEL_STEPS(INTEL_IVYBRIDGE,	     X86_STEP_MAX,	SRBDS),
-    + 	VULNBL_INTEL_STEPPINGS(IVYBRIDGE,	X86_STEPPING_ANY,		SRBDS),
-     @@ arch/x86/kernel/cpu/common.c: static const struct x86_cpu_id cpu_vuln_blacklist[] __initconst = {
-    - 	VULNBL_INTEL_STEPS(INTEL_BROADWELL_G,	     X86_STEP_MAX,	SRBDS),
-    - 	VULNBL_INTEL_STEPS(INTEL_BROADWELL_X,	     X86_STEP_MAX,	MMIO),
-    - 	VULNBL_INTEL_STEPS(INTEL_BROADWELL,	     X86_STEP_MAX,	SRBDS),
-    --	VULNBL_INTEL_STEPS(INTEL_SKYLAKE_X,	     X86_STEP_MAX,	MMIO | RETBLEED | GDS),
-    -+	VULNBL_INTEL_STEPS(INTEL_SKYLAKE_X,		      0x5,	MMIO | RETBLEED | GDS),
-    -+	VULNBL_INTEL_STEPS(INTEL_SKYLAKE_X,	     X86_STEP_MAX,	MMIO | RETBLEED | GDS | ITS),
-    - 	VULNBL_INTEL_STEPS(INTEL_SKYLAKE_L,	     X86_STEP_MAX,	MMIO | RETBLEED | GDS | SRBDS),
-    - 	VULNBL_INTEL_STEPS(INTEL_SKYLAKE,	     X86_STEP_MAX,	MMIO | RETBLEED | GDS | SRBDS),
-    --	VULNBL_INTEL_STEPS(INTEL_KABYLAKE_L,	     X86_STEP_MAX,	MMIO | RETBLEED | GDS | SRBDS),
-    --	VULNBL_INTEL_STEPS(INTEL_KABYLAKE,	     X86_STEP_MAX,	MMIO | RETBLEED | GDS | SRBDS),
-    -+	VULNBL_INTEL_STEPS(INTEL_KABYLAKE_L,		      0xb,	MMIO | RETBLEED | GDS | SRBDS),
-    -+	VULNBL_INTEL_STEPS(INTEL_KABYLAKE_L,	     X86_STEP_MAX,	MMIO | RETBLEED | GDS | SRBDS | ITS),
-    -+	VULNBL_INTEL_STEPS(INTEL_KABYLAKE,		      0xc,	MMIO | RETBLEED | GDS | SRBDS),
-    -+	VULNBL_INTEL_STEPS(INTEL_KABYLAKE,	     X86_STEP_MAX,	MMIO | RETBLEED | GDS | SRBDS | ITS),
-    - 	VULNBL_INTEL_STEPS(INTEL_CANNONLAKE_L,	     X86_STEP_MAX,	RETBLEED),
-    --	VULNBL_INTEL_STEPS(INTEL_ICELAKE_L,	     X86_STEP_MAX,	MMIO | MMIO_SBDS | RETBLEED | GDS),
-    --	VULNBL_INTEL_STEPS(INTEL_ICELAKE_D,	     X86_STEP_MAX,	MMIO | GDS),
-    --	VULNBL_INTEL_STEPS(INTEL_ICELAKE_X,	     X86_STEP_MAX,	MMIO | GDS),
-    --	VULNBL_INTEL_STEPS(INTEL_COMETLAKE,	     X86_STEP_MAX,	MMIO | MMIO_SBDS | RETBLEED | GDS),
-    --	VULNBL_INTEL_STEPS(INTEL_COMETLAKE_L,		      0x0,	MMIO | RETBLEED),
-    --	VULNBL_INTEL_STEPS(INTEL_COMETLAKE_L,	     X86_STEP_MAX,	MMIO | MMIO_SBDS | RETBLEED | GDS),
-    --	VULNBL_INTEL_STEPS(INTEL_TIGERLAKE_L,	     X86_STEP_MAX,	GDS),
-    --	VULNBL_INTEL_STEPS(INTEL_TIGERLAKE,	     X86_STEP_MAX,	GDS),
-    -+	VULNBL_INTEL_STEPS(INTEL_ICELAKE_L,	     X86_STEP_MAX,	MMIO | MMIO_SBDS | RETBLEED | GDS | ITS),
-    -+	VULNBL_INTEL_STEPS(INTEL_ICELAKE_D,	     X86_STEP_MAX,	MMIO | GDS | ITS),
-    -+	VULNBL_INTEL_STEPS(INTEL_ICELAKE_X,	     X86_STEP_MAX,	MMIO | GDS | ITS),
-    -+	VULNBL_INTEL_STEPS(INTEL_COMETLAKE,	     X86_STEP_MAX,	MMIO | MMIO_SBDS | RETBLEED | GDS | ITS),
-    -+	VULNBL_INTEL_STEPS(INTEL_COMETLAKE_L,		      0x0,	MMIO | RETBLEED | ITS),
-    -+	VULNBL_INTEL_STEPS(INTEL_COMETLAKE_L,	     X86_STEP_MAX,	MMIO | MMIO_SBDS | RETBLEED | GDS | ITS),
-    -+	VULNBL_INTEL_STEPS(INTEL_TIGERLAKE_L,	     X86_STEP_MAX,	GDS | ITS),
-    -+	VULNBL_INTEL_STEPS(INTEL_TIGERLAKE,	     X86_STEP_MAX,	GDS | ITS),
-    - 	VULNBL_INTEL_STEPS(INTEL_LAKEFIELD,	     X86_STEP_MAX,	MMIO | MMIO_SBDS | RETBLEED),
-    --	VULNBL_INTEL_STEPS(INTEL_ROCKETLAKE,	     X86_STEP_MAX,	MMIO | RETBLEED | GDS),
-    -+	VULNBL_INTEL_STEPS(INTEL_ROCKETLAKE,	     X86_STEP_MAX,	MMIO | RETBLEED | GDS | ITS),
-    - 	VULNBL_INTEL_TYPE(INTEL_ALDERLAKE,		     ATOM,	RFDS),
-    - 	VULNBL_INTEL_STEPS(INTEL_ALDERLAKE_L,	     X86_STEP_MAX,	RFDS),
-    - 	VULNBL_INTEL_TYPE(INTEL_RAPTORLAKE,		     ATOM,	RFDS),
-    -@@ arch/x86/kernel/cpu/common.c: static bool __init vulnerable_to_rfds(u64 x86_arch_cap_msr)
-    + 	VULNBL_INTEL_STEPPINGS(BROADWELL_G,	X86_STEPPING_ANY,		SRBDS),
-    + 	VULNBL_INTEL_STEPPINGS(BROADWELL_X,	X86_STEPPING_ANY,		MMIO),
-    + 	VULNBL_INTEL_STEPPINGS(BROADWELL,	X86_STEPPING_ANY,		SRBDS),
-    +-	VULNBL_INTEL_STEPPINGS(SKYLAKE_X,	X86_STEPPING_ANY,		MMIO | RETBLEED | GDS),
-    ++	VULNBL_INTEL_STEPPINGS(SKYLAKE_X,	X86_STEPPINGS(0x0, 0x5),	MMIO | RETBLEED | GDS),
-    ++	VULNBL_INTEL_STEPPINGS(SKYLAKE_X,	X86_STEPPING_ANY,		MMIO | RETBLEED | GDS | ITS),
-    + 	VULNBL_INTEL_STEPPINGS(SKYLAKE_L,	X86_STEPPING_ANY,		MMIO | RETBLEED | GDS | SRBDS),
-    + 	VULNBL_INTEL_STEPPINGS(SKYLAKE,		X86_STEPPING_ANY,		MMIO | RETBLEED | GDS | SRBDS),
-    +-	VULNBL_INTEL_STEPPINGS(KABYLAKE_L,	X86_STEPPING_ANY,		MMIO | RETBLEED | GDS | SRBDS),
-    +-	VULNBL_INTEL_STEPPINGS(KABYLAKE,	X86_STEPPING_ANY,		MMIO | RETBLEED | GDS | SRBDS),
-    ++	VULNBL_INTEL_STEPPINGS(KABYLAKE_L,	X86_STEPPINGS(0x0, 0xb),	MMIO | RETBLEED | GDS | SRBDS),
-    ++	VULNBL_INTEL_STEPPINGS(KABYLAKE_L,	X86_STEPPING_ANY,		MMIO | RETBLEED | GDS | SRBDS | ITS),
-    ++	VULNBL_INTEL_STEPPINGS(KABYLAKE,	X86_STEPPINGS(0x0, 0xc),	MMIO | RETBLEED | GDS | SRBDS),
-    ++	VULNBL_INTEL_STEPPINGS(KABYLAKE,	X86_STEPPING_ANY,		MMIO | RETBLEED | GDS | SRBDS | ITS),
-    + 	VULNBL_INTEL_STEPPINGS(CANNONLAKE_L,	X86_STEPPING_ANY,		RETBLEED),
-    +-	VULNBL_INTEL_STEPPINGS(ICELAKE_L,	X86_STEPPING_ANY,		MMIO | MMIO_SBDS | RETBLEED | GDS),
-    +-	VULNBL_INTEL_STEPPINGS(ICELAKE_D,	X86_STEPPING_ANY,		MMIO | GDS),
-    +-	VULNBL_INTEL_STEPPINGS(ICELAKE_X,	X86_STEPPING_ANY,		MMIO | GDS),
-    +-	VULNBL_INTEL_STEPPINGS(COMETLAKE,	X86_STEPPING_ANY,		MMIO | MMIO_SBDS | RETBLEED | GDS),
-    +-	VULNBL_INTEL_STEPPINGS(COMETLAKE_L,	X86_STEPPINGS(0x0, 0x0),	MMIO | RETBLEED),
-    +-	VULNBL_INTEL_STEPPINGS(COMETLAKE_L,	X86_STEPPING_ANY,		MMIO | MMIO_SBDS | RETBLEED | GDS),
-    +-	VULNBL_INTEL_STEPPINGS(TIGERLAKE_L,	X86_STEPPING_ANY,		GDS),
-    +-	VULNBL_INTEL_STEPPINGS(TIGERLAKE,	X86_STEPPING_ANY,		GDS),
-    ++	VULNBL_INTEL_STEPPINGS(ICELAKE_L,	X86_STEPPING_ANY,		MMIO | MMIO_SBDS | RETBLEED | GDS | ITS),
-    ++	VULNBL_INTEL_STEPPINGS(ICELAKE_D,	X86_STEPPING_ANY,		MMIO | GDS | ITS),
-    ++	VULNBL_INTEL_STEPPINGS(ICELAKE_X,	X86_STEPPING_ANY,		MMIO | GDS | ITS),
-    ++	VULNBL_INTEL_STEPPINGS(COMETLAKE,	X86_STEPPING_ANY,		MMIO | MMIO_SBDS | RETBLEED | GDS | ITS),
-    ++	VULNBL_INTEL_STEPPINGS(COMETLAKE_L,	X86_STEPPINGS(0x0, 0x0),	MMIO | RETBLEED | ITS),
-    ++	VULNBL_INTEL_STEPPINGS(COMETLAKE_L,	X86_STEPPING_ANY,		MMIO | MMIO_SBDS | RETBLEED | GDS | ITS),
-    ++	VULNBL_INTEL_STEPPINGS(TIGERLAKE_L,	X86_STEPPING_ANY,		GDS | ITS),
-    ++	VULNBL_INTEL_STEPPINGS(TIGERLAKE,	X86_STEPPING_ANY,		GDS | ITS),
-    + 	VULNBL_INTEL_STEPPINGS(LAKEFIELD,	X86_STEPPING_ANY,		MMIO | MMIO_SBDS | RETBLEED),
-    +-	VULNBL_INTEL_STEPPINGS(ROCKETLAKE,	X86_STEPPING_ANY,		MMIO | RETBLEED | GDS),
-    ++	VULNBL_INTEL_STEPPINGS(ROCKETLAKE,	X86_STEPPING_ANY,		MMIO | RETBLEED | GDS | ITS),
-    + 	VULNBL_INTEL_STEPPINGS(ALDERLAKE,	X86_STEPPING_ANY,		RFDS),
-    + 	VULNBL_INTEL_STEPPINGS(ALDERLAKE_L,	X86_STEPPING_ANY,		RFDS),
-    + 	VULNBL_INTEL_STEPPINGS(RAPTORLAKE,	X86_STEPPING_ANY,		RFDS),
-    +@@ arch/x86/kernel/cpu/common.c: static bool __init vulnerable_to_rfds(u64 ia32_cap)
-      	return cpu_matches(cpu_vuln_blacklist, RFDS);
+      /* The base value of the SPEC_CTRL MSR without task-specific bits set */
+      u64 x86_spec_ctrl_base;
+     @@ arch/x86/kernel/cpu/bugs.c: static DEFINE_MUTEX(spec_ctrl_mutex);
+      
+    - void (*x86_return_thunk)(void) __ro_after_init = __x86_return_thunk;
+    + void (*x86_return_thunk)(void) __ro_after_init = &__x86_return_thunk;
+      
+     +static void __init set_return_thunk(void *thunk)
+     +{
+    @@ arch/x86/kernel/cpu/bugs.c: void __init cpu_select_mitigations(void)
+      
+      /*
+     @@ arch/x86/kernel/cpu/bugs.c: static void __init retbleed_select_mitigation(void)
+    - 		setup_force_cpu_cap(X86_FEATURE_RETHUNK);
+      		setup_force_cpu_cap(X86_FEATURE_UNRET);
+      
+    --		x86_return_thunk = retbleed_return_thunk;
+    -+		set_return_thunk(retbleed_return_thunk);
+    + 		if (IS_ENABLED(CONFIG_RETHUNK))
+    +-			x86_return_thunk = retbleed_return_thunk;
+    ++			set_return_thunk(retbleed_return_thunk);
+      
+      		if (boot_cpu_data.x86_vendor != X86_VENDOR_AMD &&
+      		    boot_cpu_data.x86_vendor != X86_VENDOR_HYGON)
+    -@@ arch/x86/kernel/cpu/bugs.c: static void __init retbleed_select_mitigation(void)
+    - 		setup_force_cpu_cap(X86_FEATURE_RETHUNK);
+    - 		setup_force_cpu_cap(X86_FEATURE_CALL_DEPTH);
+    - 
+    --		x86_return_thunk = call_depth_return_thunk;
+    -+		set_return_thunk(call_depth_return_thunk);
+    - 		break;
+    - 
+    - 	default:
+     @@ arch/x86/kernel/cpu/bugs.c: static void __init retbleed_select_mitigation(void)
+      	pr_info("%s\n", retbleed_strings[retbleed_mitigation]);
       }
-      
-    @@ arch/x86/kernel/cpu/common.c: static bool __init vulnerable_to_rfds(u64 x86_arch
+    @@ arch/x86/kernel/cpu/bugs.c: static void __init retbleed_select_mitigation(void)
+     +enum its_mitigation {
+     +	ITS_MITIGATION_OFF,
+     +	ITS_MITIGATION_ALIGNED_THUNKS,
+    -+	ITS_MITIGATION_RETPOLINE_STUFF,
+     +};
      +
-      static void __init cpu_set_bug_bits(struct cpuinfo_x86 *c)
-      {
-    - 	u64 x86_arch_cap_msr = x86_read_arch_cap_msr();
-    + 	u64 ia32_cap = x86_read_arch_cap_msr();
-     @@ arch/x86/kernel/cpu/common.c: static void __init cpu_set_bug_bits(struct cpuinfo_x86 *c)
-      	if (cpu_has(c, X86_FEATURE_AMD_IBPB) && !cpu_has(c, X86_FEATURE_AMD_IBPB_RET))
-      		setup_force_cpu_bug(X86_BUG_IBPB_NO_RET);
-      
-    -+	if (vulnerable_to_its(x86_arch_cap_msr))
-    ++	if (vulnerable_to_its(ia32_cap))
-     +		setup_force_cpu_bug(X86_BUG_ITS);
+     +static const char * const its_strings[] = {
+     +	[ITS_MITIGATION_OFF]			= "Vulnerable",
+     +	[ITS_MITIGATION_ALIGNED_THUNKS]		= "Mitigation: Aligned branch/return thunks",
+    -+	[ITS_MITIGATION_RETPOLINE_STUFF]	= "Mitigation: Retpolines, Stuffing RSB",
+     +};
      +
-      	if (cpu_matches(cpu_vuln_whitelist, NO_MELTDOWN))
-    @@ arch/x86/kernel/cpu/common.c: static void __init cpu_set_bug_bits(struct cpuinfo
-      
+     +static enum its_mitigation its_mitigation __ro_after_init = ITS_MITIGATION_ALIGNED_THUNKS;
+    @@ arch/x86/kernel/cpu/bugs.c: static void __init retbleed_select_mitigation(void)
+     +		return;
+     +	}
+     +
+    -+	/* Retpoline+CDT mitigates ITS, bail out */
+    -+	if (boot_cpu_has(X86_FEATURE_RETPOLINE) &&
+    -+	    boot_cpu_has(X86_FEATURE_CALL_DEPTH)) {
+    -+		its_mitigation = ITS_MITIGATION_RETPOLINE_STUFF;
+    -+		goto out;
+    -+	}
+    -+
+     +	/* Exit early to avoid irrelevant warnings */
+     +	if (cmd == ITS_CMD_OFF) {
+     +		its_mitigation = ITS_MITIGATION_OFF;
+    @@ arch/x86/kernel/cpu/bugs.c: static void __init retbleed_select_mitigation(void)
+     +		its_mitigation = ITS_MITIGATION_OFF;
+     +		goto out;
+     +	}
+    -+	if (!IS_ENABLED(CONFIG_MITIGATION_RETPOLINE) ||
+    -+	    !IS_ENABLED(CONFIG_MITIGATION_RETHUNK)) {
+    ++	if (!IS_ENABLED(CONFIG_RETPOLINE) || !IS_ENABLED(CONFIG_RETHUNK)) {
+     +		pr_err("WARNING: ITS mitigation depends on retpoline and rethunk support\n");
+     +		its_mitigation = ITS_MITIGATION_OFF;
+     +		goto out;
+    @@ arch/x86/kernel/cpu/bugs.c: static void __init srso_select_mitigation(void)
+     -				x86_return_thunk = srso_return_thunk;
+     +				set_return_thunk(srso_return_thunk);
+      			}
+    - 			if (has_microcode)
+    - 				srso_mitigation = SRSO_MITIGATION_SAFE_RET;
+    + 			srso_mitigation = SRSO_MITIGATION_SAFE_RET;
+    + 		} else {
+     @@ arch/x86/kernel/cpu/bugs.c: static ssize_t rfds_show_state(char *buf)
+      	return sysfs_emit(buf, "%s\n", rfds_strings[rfds_mitigation]);
+      }
+    @@ arch/x86/kernel/cpu/bugs.c: ssize_t cpu_show_reg_file_data_sampling(struct devic
+     +	return cpu_show_common(dev, attr, buf, X86_BUG_ITS);
+     +}
+      #endif
+    - 
+    - void __warn_thunk(void)
      
-      ## arch/x86/kvm/x86.c ##
-    -@@ arch/x86/kvm/x86.c: EXPORT_SYMBOL_GPL(kvm_emulate_rdpmc);
-    +@@ arch/x86/kvm/x86.c: static unsigned int num_msr_based_features;
-      	 ARCH_CAP_PSCHANGE_MC_NO | ARCH_CAP_TSX_CTRL_MSR | ARCH_CAP_TAA_NO | \
-      	 ARCH_CAP_SBDR_SSDP_NO | ARCH_CAP_FBSDP_NO | ARCH_CAP_PSDP_NO | \
-      	 ARCH_CAP_FB_CLEAR | ARCH_CAP_RRSBA | ARCH_CAP_PBRSB_NO | ARCH_CAP_GDS_NO | \
-    --	 ARCH_CAP_RFDS_NO | ARCH_CAP_RFDS_CLEAR | ARCH_CAP_BHI_NO)
-    -+	 ARCH_CAP_RFDS_NO | ARCH_CAP_RFDS_CLEAR | ARCH_CAP_BHI_NO | ARCH_CAP_ITS_NO)
-    +-	 ARCH_CAP_RFDS_NO | ARCH_CAP_RFDS_CLEAR)
-    ++	 ARCH_CAP_RFDS_NO | ARCH_CAP_RFDS_CLEAR | ARCH_CAP_ITS_NO)
+      ## drivers/base/cpu.c ##
+    -@@ drivers/base/cpu.c: CPU_SHOW_VULN_FALLBACK(spec_rstack_overflow);
+    - CPU_SHOW_VULN_FALLBACK(gds);
+    - CPU_SHOW_VULN_FALLBACK(reg_file_data_sampling);
+    - CPU_SHOW_VULN_FALLBACK(ghostwrite);
+    -+CPU_SHOW_VULN_FALLBACK(indirect_target_selection);
+    +@@ drivers/base/cpu.c: ssize_t __weak cpu_show_reg_file_data_sampling(struct device *dev,
+    + 	return sysfs_emit(buf, "Not affected\n");
+    + }
       
-      static u64 kvm_get_arch_capabilities(void)
-      {
+    ++ssize_t __weak cpu_show_indirect_target_selection(struct device *dev,
+    ++						  struct device_attribute *attr, char *buf)
+    ++{
+    ++	return sysfs_emit(buf, "Not affected\n");
+    ++}
+    ++
+      static DEVICE_ATTR(meltdown, 0444, cpu_show_meltdown, NULL);
+      static DEVICE_ATTR(spectre_v1, 0444, cpu_show_spectre_v1, NULL);
+    -@@ drivers/base/cpu.c: static DEVICE_ATTR(spec_rstack_overflow, 0444, cpu_show_spec_rstack_overflow, NU
+    + static DEVICE_ATTR(spectre_v2, 0444, cpu_show_spectre_v2, NULL);
+    +@@ drivers/base/cpu.c: static DEVICE_ATTR(retbleed, 0444, cpu_show_retbleed, NULL);
+      static DEVICE_ATTR(gather_data_sampling, 0444, cpu_show_gds, NULL);
+    + static DEVICE_ATTR(spec_rstack_overflow, 0444, cpu_show_spec_rstack_overflow, NULL);
+      static DEVICE_ATTR(reg_file_data_sampling, 0444, cpu_show_reg_file_data_sampling, NULL);
+    - static DEVICE_ATTR(ghostwrite, 0444, cpu_show_ghostwrite, NULL);
+     +static DEVICE_ATTR(indirect_target_selection, 0444, cpu_show_indirect_target_selection, NULL);
+      
+      static struct attribute *cpu_root_vulnerabilities_attrs[] = {
+      	&dev_attr_meltdown.attr,
+     @@ drivers/base/cpu.c: static struct attribute *cpu_root_vulnerabilities_attrs[] = {
+      	&dev_attr_gather_data_sampling.attr,
+    + 	&dev_attr_spec_rstack_overflow.attr,
+      	&dev_attr_reg_file_data_sampling.attr,
+    - 	&dev_attr_ghostwrite.attr,
+     +	&dev_attr_indirect_target_selection.attr,
+      	NULL
+      };
+    @@ drivers/base/cpu.c: static struct attribute *cpu_root_vulnerabilities_attrs[] =
+     
+      ## include/linux/cpu.h ##
+     @@ include/linux/cpu.h: extern ssize_t cpu_show_gds(struct device *dev,
+    + 			    struct device_attribute *attr, char *buf);
+      extern ssize_t cpu_show_reg_file_data_sampling(struct device *dev,
+      					       struct device_attribute *attr, char *buf);
+    - extern ssize_t cpu_show_ghostwrite(struct device *dev, struct device_attribute *attr, char *buf);
+     +extern ssize_t cpu_show_indirect_target_selection(struct device *dev,
+     +						  struct device_attribute *attr, char *buf);
+      
 ---
 
 Results of testing on various branches:
