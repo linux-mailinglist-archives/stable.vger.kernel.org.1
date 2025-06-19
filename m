@@ -1,167 +1,99 @@
-Return-Path: <stable+bounces-154750-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-154751-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2BE4CAE004E
-	for <lists+stable@lfdr.de>; Thu, 19 Jun 2025 10:47:19 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 61DF3AE0054
+	for <lists+stable@lfdr.de>; Thu, 19 Jun 2025 10:48:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B8A93188DDAC
-	for <lists+stable@lfdr.de>; Thu, 19 Jun 2025 08:47:34 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C404D176481
+	for <lists+stable@lfdr.de>; Thu, 19 Jun 2025 08:48:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3498264F87;
-	Thu, 19 Jun 2025 08:47:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C4F1239E96;
+	Thu, 19 Jun 2025 08:47:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="M/SqDvUk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H4uSQQb5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E9B7239E96;
-	Thu, 19 Jun 2025 08:47:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A9EA20A5EC
+	for <stable@vger.kernel.org>; Thu, 19 Jun 2025 08:47:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750322832; cv=none; b=mu+s5nT/SClb1fsFi/oYIVBNKADuq1f9Q77hVjBeAwgnDz2G6rkysGe54a04jR8omNMNugzfSqfAuLew7EFAvNbFOJe/6Ur3faOiVMu7f6+/PZblSLgB2piaZ2FW4yuEwqxez8J50HZzf3SABB+e3dXddBm+wohr2YT4/HMZYdQ=
+	t=1750322874; cv=none; b=dG4vl1/x9z4YwWnIgoufBrRJQWrNJWszTcsKrPMUInGEX10oaIf0SyQFzWnJ8zk3UPL2dycuqKNdV/hk42m+Tft2YFv0bi2jZsHawSTEop1FX/9fk18aES60DVk/430wnv69ixoC4j8772WUaWiD7pl5tv3KgNxa6mXcdlLrQxo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750322832; c=relaxed/simple;
-	bh=lDXCVX4q7vcUWq+/M1DFLYUd7+DFlOjabwmk14VPhaI=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=k5jopq3VY+dsX90JxeTG32KHYl6DArKC7Oy6ApGwLRZpXB2K4egLybBE8RnKCixGRPJBTkAuZxDV1+F/AvH5BtlTRNLecbHiyCiYfJ+i1D0UNe3UZlTzmwdGsOksQgmLHm8AgEV/wpflYJXpXzZg0Rt0MEZbZ/dedqlPLuO2rAg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=M/SqDvUk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22312C4CEED;
-	Thu, 19 Jun 2025 08:47:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1750322832;
-	bh=lDXCVX4q7vcUWq+/M1DFLYUd7+DFlOjabwmk14VPhaI=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=M/SqDvUk6tS0R3i+tyH6t7SsbtFXIjkhdMA0NHXSPWa4fNN8+fNC2Q5nJveauJNM2
-	 D1+pyOPGpKaM09qQwtekkxZH/T3pL+y2CNGBTl5NZOZgBFwvXNWUW7ToZDTX34b3di
-	 komBWfXsx3IeIj5SNgxOtsoY66avelbGP7/BL+Im0qFL1jU/CQMXx4wITDZERFv/kD
-	 vF26IecNKPjGoegR+TyvEJxW9nh33zeVPfS8hK5JC75tN8APbKpWbkKsafbpP4rzo/
-	 RAuaNSq+15qZmLgsttae9I4v3vveic8HMEGNW91ftIOYGikiC0aDkqrnINCpnsKTIL
-	 KH1Y9z0/PC+yA==
-Received: by mail-ed1-f51.google.com with SMTP id 4fb4d7f45d1cf-6070293103cso916270a12.0;
-        Thu, 19 Jun 2025 01:47:12 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCUBL1O80BdH4v/CBwXa4GLykXq89AbN0jsoZsoUAhaa8vJRZNAulC78aotaykP15JchsrFz8kPhI/D8bYeg@vger.kernel.org, AJvYcCUDVyvg2I6Ym0o4SSJq85KMW+fvnq6uKDIE1nKbOwaac+npQ2i3ndM+y7rNsay2HSf+vJY=@vger.kernel.org, AJvYcCWCy6pVZyMuWlGmaK9EaLP+yTp1YhQgg7ZshNh3v/EhT9cSFEGs3S6HPQ685Abiefr9MLynA+k3@vger.kernel.org
-X-Gm-Message-State: AOJu0YzRI7zwlSoDCtvHXBaLZmSJP9BOPonbUygUpfvYsPY6T+VwWazC
-	t6beCmJDEcqXEOi/rSbmTae2g0volWajR4DLjpXvyvVMrw8huYY/cnRahyoowg24OgMn5Ftx0dF
-	rx4HB7OYQq/3srnJer+Z6McqfynUzVcQ=
-X-Google-Smtp-Source: AGHT+IFeJC3NPskVJUNoI2sRnfcHU0f/t2j7OGS2vtL/y78AJ7isycEhTkscDum+baBAp1XR5gdccY+jQHFyT7q8ihE=
-X-Received: by 2002:a05:6402:40c3:b0:602:ef0a:cef8 with SMTP id
- 4fb4d7f45d1cf-608d09c0ademr17260179a12.18.1750322830625; Thu, 19 Jun 2025
- 01:47:10 -0700 (PDT)
+	s=arc-20240116; t=1750322874; c=relaxed/simple;
+	bh=F4kewX6KrjRl8k8mghEhlKeYa6pL1Q44VFmqUwTHy+s=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=cXclItx9Ssp+R3AGIeld3/bAmRuWLiLwD4CisWIhVCzPGJihap3g7otfUx25gjfXAysTxn68F4GF25FrIshb2Ubz9T0Aigj3wOp+ggrxCgUKBF/c3oFnqh5LQt91tyShbyI0tWO2hHCkEB2WRcNEeSbuBmo/SiG+ZfJI9bGnUDU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H4uSQQb5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55869C4CEEA;
+	Thu, 19 Jun 2025 08:47:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1750322873;
+	bh=F4kewX6KrjRl8k8mghEhlKeYa6pL1Q44VFmqUwTHy+s=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=H4uSQQb5JbWSV+gCT7ifqH7Cc+hEcmgmu+6t0MRRBiFA6n1Bf21ORB+tEzG5Ee5ou
+	 Xt66yHzgQYAxSWnOBEU/WNYQbILVsjRrTNSbMjGmYOjXK1rJqYRMe9r2eqPz/czdxB
+	 r5xOliN4WgRSSVbpdilSE77uroOHi1fdx+Tmlgy0=
+Date: Thu, 19 Jun 2025 10:47:50 +0200
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Philip =?iso-8859-1?Q?M=FCller?= <philm@manjaro.org>
+Cc: Laura Nao <laura.nao@collabora.com>, stable@vger.kernel.org,
+	Uday M Bhat <uday.m.bhat@intel.com>
+Subject: Re: 5.10 kernel series fails to build on newer toolchain: FAILED
+ unresolved symbol filp_close
+Message-ID: <2025061926-imminent-fade-30d1@gregkh>
+References: <34d5cd2e-1a9e-4898-8528-9e8c2e32b2a4@manjaro.org>
+ <20250320112806.332385-1-laura.nao@collabora.com>
+ <0e228177-991c-4637-9f06-267f5d4c0382@manjaro.org>
+ <2025040121-strongbox-sculptor-15a1@gregkh>
+ <722c3acd-6735-4882-a4b1-ed5c75fd4339@manjaro.org>
+ <2025060532-cadmium-shaking-833e@gregkh>
+ <1faa145a-65eb-4650-a5a1-6e9f9989b73f@manjaro.org>
+ <2025061742-underhand-defeat-eb33@gregkh>
+ <4c1dcc23-fcbb-4777-8e76-a1da74ac9790@manjaro.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250611014651.3042734-1-maobibo@loongson.cn> <20250611014651.3042734-5-maobibo@loongson.cn>
-In-Reply-To: <20250611014651.3042734-5-maobibo@loongson.cn>
-From: Huacai Chen <chenhuacai@kernel.org>
-Date: Thu, 19 Jun 2025 16:46:59 +0800
-X-Gmail-Original-Message-ID: <CAAhV-H7ehdkKwzsFNAaX+r5eXLknvskyXLPDKei2A55LoSiJMA@mail.gmail.com>
-X-Gm-Features: AX0GCFvQfrZhtZzoYo5oGwCwbWDmxUGOenAQOTjMOkCZzk0DHfrc0j8ZTO4Qivc
-Message-ID: <CAAhV-H7ehdkKwzsFNAaX+r5eXLknvskyXLPDKei2A55LoSiJMA@mail.gmail.com>
-Subject: Re: [PATCH v3 4/9] LoongArch: KVM: INTC: Check validation of num_cpu
- from user space
-To: Bibo Mao <maobibo@loongson.cn>
-Cc: Tianrui Zhao <zhaotianrui@loongson.cn>, Xianglai Li <lixianglai@loongson.cn>, kvm@vger.kernel.org, 
-	loongarch@lists.linux.dev, linux-kernel@vger.kernel.org, 
-	stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <4c1dcc23-fcbb-4777-8e76-a1da74ac9790@manjaro.org>
 
-Hi, Bibo,
+On Thu, Jun 19, 2025 at 10:34:52AM +0200, Philip Müller wrote:
+> On 6/17/25 16:05, Greg KH wrote:
+> > Also for the newer kernels, this was only backported to 6.6.y, so
+> > anything older than that should need this, right?
+> 
+> Well, yes. The patches I applied on my end are attached.
+> 
+> -- 
+> Best, Philip
 
-On Wed, Jun 11, 2025 at 9:47=E2=80=AFAM Bibo Mao <maobibo@loongson.cn> wrot=
-e:
->
-> The maximum supported cpu number is EIOINTC_ROUTE_MAX_VCPUS about
-> irqchip eiointc, here add validation about cpu number to avoid array
-> pointer overflow.
->
-> Cc: stable@vger.kernel.org
-> Fixes: 1ad7efa552fd ("LoongArch: KVM: Add EIOINTC user mode read and writ=
-e functions")
-> Signed-off-by: Bibo Mao <maobibo@loongson.cn>
-> ---
->  arch/loongarch/kvm/intc/eiointc.c | 18 +++++++++++++-----
->  1 file changed, 13 insertions(+), 5 deletions(-)
->
-> diff --git a/arch/loongarch/kvm/intc/eiointc.c b/arch/loongarch/kvm/intc/=
-eiointc.c
-> index b48511f903b5..ed80bf290755 100644
-> --- a/arch/loongarch/kvm/intc/eiointc.c
-> +++ b/arch/loongarch/kvm/intc/eiointc.c
-> @@ -798,7 +798,7 @@ static int kvm_eiointc_ctrl_access(struct kvm_device =
-*dev,
->         int ret =3D 0;
->         unsigned long flags;
->         unsigned long type =3D (unsigned long)attr->attr;
-> -       u32 i, start_irq;
-> +       u32 i, start_irq, val;
->         void __user *data;
->         struct loongarch_eiointc *s =3D dev->kvm->arch.eiointc;
->
-> @@ -806,7 +806,12 @@ static int kvm_eiointc_ctrl_access(struct kvm_device=
- *dev,
->         spin_lock_irqsave(&s->lock, flags);
->         switch (type) {
->         case KVM_DEV_LOONGARCH_EXTIOI_CTRL_INIT_NUM_CPU:
-> -               if (copy_from_user(&s->num_cpu, data, 4))
-> +               if (copy_from_user(&val, data, 4) =3D=3D 0) {
-> +                       if (val < EIOINTC_ROUTE_MAX_VCPUS)
-> +                               s->num_cpu =3D val;
-> +                       else
-> +                               ret =3D -EINVAL;
-Maybe it is better to set s->num_cpu to EIOINTC_ROUTE_MAX_VCPUS (or
-other value) rather than keep it uninitialized. Because in other
-places we need to check s->num_cpu and an uninitialized value may
-cause undefined behavior.
+> Commit b3bee1e7c3f2b1b77182302c7b2131c804175870 x86/boot: Compile boot code with -std=gnu11 too
+> fixed a build failure when compiling with GCC 15. The same change is required for linux-5.4.292.
 
+Something went wrong with the whitespace here :(
 
-Huacai
-> +               } else
->                         ret =3D -EFAULT;
->                 break;
->         case KVM_DEV_LOONGARCH_EXTIOI_CTRL_INIT_FEATURE:
-> @@ -835,7 +840,7 @@ static int kvm_eiointc_regs_access(struct kvm_device =
-*dev,
->                                         struct kvm_device_attr *attr,
->                                         bool is_write)
->  {
-> -       int addr, cpuid, offset, ret =3D 0;
-> +       int addr, cpu, offset, ret =3D 0;
->         unsigned long flags;
->         void *p =3D NULL;
->         void __user *data;
-> @@ -843,7 +848,7 @@ static int kvm_eiointc_regs_access(struct kvm_device =
-*dev,
->
->         s =3D dev->kvm->arch.eiointc;
->         addr =3D attr->attr;
-> -       cpuid =3D addr >> 16;
-> +       cpu =3D addr >> 16;
->         addr &=3D 0xffff;
->         data =3D (void __user *)attr->addr;
->         switch (addr) {
-> @@ -868,8 +873,11 @@ static int kvm_eiointc_regs_access(struct kvm_device=
- *dev,
->                 p =3D &s->isr.reg_u32[offset];
->                 break;
->         case EIOINTC_COREISR_START ... EIOINTC_COREISR_END:
-> +               if (cpu >=3D s->num_cpu)
-> +                       return -EINVAL;
-> +
->                 offset =3D (addr - EIOINTC_COREISR_START) / 4;
-> -               p =3D &s->coreisr.reg_u32[cpuid][offset];
-> +               p =3D &s->coreisr.reg_u32[cpu][offset];
->                 break;
->         case EIOINTC_COREMAP_START ... EIOINTC_COREMAP_END:
->                 offset =3D (addr - EIOINTC_COREMAP_START) / 4;
-> --
-> 2.39.3
->
+> 
+> Signed-off-by: Chris Clayton <chris2553@googlemail.com>
+> Modified-by: Philip Mueller <philm@manjaro.org>
+
+You lost the original authorship and signed-off-by lines :(
+
+> Link: https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=b3bee1e7c3f2b1b77182302c7b2131c804175870
+
+This isn't needed either.
+
+Can you try again?
+
+thanks,
+
+greg k-h
 
