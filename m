@@ -1,99 +1,140 @@
-Return-Path: <stable+bounces-154751-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-154768-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 61DF3AE0054
-	for <lists+stable@lfdr.de>; Thu, 19 Jun 2025 10:48:05 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 02F96AE0157
+	for <lists+stable@lfdr.de>; Thu, 19 Jun 2025 11:10:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C404D176481
-	for <lists+stable@lfdr.de>; Thu, 19 Jun 2025 08:48:03 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A057A3A2C3C
+	for <lists+stable@lfdr.de>; Thu, 19 Jun 2025 09:07:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C4F1239E96;
-	Thu, 19 Jun 2025 08:47:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E95A278767;
+	Thu, 19 Jun 2025 09:03:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H4uSQQb5"
+	dkim=pass (2048-bit key) header.d=sandisk.com header.i=@sandisk.com header.b="wGQ3pnI0"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from esa2.hgst.iphmx.com (esa2.hgst.iphmx.com [68.232.143.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A9EA20A5EC
-	for <stable@vger.kernel.org>; Thu, 19 Jun 2025 08:47:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D1DE254AF4;
+	Thu, 19 Jun 2025 09:03:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=68.232.143.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750322874; cv=none; b=dG4vl1/x9z4YwWnIgoufBrRJQWrNJWszTcsKrPMUInGEX10oaIf0SyQFzWnJ8zk3UPL2dycuqKNdV/hk42m+Tft2YFv0bi2jZsHawSTEop1FX/9fk18aES60DVk/430wnv69ixoC4j8772WUaWiD7pl5tv3KgNxa6mXcdlLrQxo=
+	t=1750323833; cv=none; b=XPPI+B60E5tb0ZhHZT0peLnRDw1smQPO+FvrVo9LogNI31UyVIuVS6dZGOT3N1effglgvKZgHOsnGDvz1j7A4SOwhjz5BYrv6krQfEjT/rcUSaun/MQReDi3V7hPXh56X91HR1wQOM8HYV8cevJRqEdonnynmTiOTNj4IMLlJnk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750322874; c=relaxed/simple;
-	bh=F4kewX6KrjRl8k8mghEhlKeYa6pL1Q44VFmqUwTHy+s=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=cXclItx9Ssp+R3AGIeld3/bAmRuWLiLwD4CisWIhVCzPGJihap3g7otfUx25gjfXAysTxn68F4GF25FrIshb2Ubz9T0Aigj3wOp+ggrxCgUKBF/c3oFnqh5LQt91tyShbyI0tWO2hHCkEB2WRcNEeSbuBmo/SiG+ZfJI9bGnUDU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H4uSQQb5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55869C4CEEA;
-	Thu, 19 Jun 2025 08:47:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750322873;
-	bh=F4kewX6KrjRl8k8mghEhlKeYa6pL1Q44VFmqUwTHy+s=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=H4uSQQb5JbWSV+gCT7ifqH7Cc+hEcmgmu+6t0MRRBiFA6n1Bf21ORB+tEzG5Ee5ou
-	 Xt66yHzgQYAxSWnOBEU/WNYQbILVsjRrTNSbMjGmYOjXK1rJqYRMe9r2eqPz/czdxB
-	 r5xOliN4WgRSSVbpdilSE77uroOHi1fdx+Tmlgy0=
-Date: Thu, 19 Jun 2025 10:47:50 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Philip =?iso-8859-1?Q?M=FCller?= <philm@manjaro.org>
-Cc: Laura Nao <laura.nao@collabora.com>, stable@vger.kernel.org,
-	Uday M Bhat <uday.m.bhat@intel.com>
-Subject: Re: 5.10 kernel series fails to build on newer toolchain: FAILED
- unresolved symbol filp_close
-Message-ID: <2025061926-imminent-fade-30d1@gregkh>
-References: <34d5cd2e-1a9e-4898-8528-9e8c2e32b2a4@manjaro.org>
- <20250320112806.332385-1-laura.nao@collabora.com>
- <0e228177-991c-4637-9f06-267f5d4c0382@manjaro.org>
- <2025040121-strongbox-sculptor-15a1@gregkh>
- <722c3acd-6735-4882-a4b1-ed5c75fd4339@manjaro.org>
- <2025060532-cadmium-shaking-833e@gregkh>
- <1faa145a-65eb-4650-a5a1-6e9f9989b73f@manjaro.org>
- <2025061742-underhand-defeat-eb33@gregkh>
- <4c1dcc23-fcbb-4777-8e76-a1da74ac9790@manjaro.org>
+	s=arc-20240116; t=1750323833; c=relaxed/simple;
+	bh=ljv1KsUnyeQzVxscAIRHlXidTQPVrFUTcatrlOFG8BI=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=hwaAyotin7/Ata0vBQsF7kzJrNthrqblTXRnMYft2XsOu5HHZyykLz8XhvXinZE7M1gQdmF/jvhj0YD4AKGIhrRAVQuo1DsqevSqytqeVXmT3fMEqsXXBddaI1fv1UzbFW8xaSFokVnGwytlDPI4GwEdf6VOQaGtYV02yxdtQL0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=sandisk.com; spf=pass smtp.mailfrom=sandisk.com; dkim=pass (2048-bit key) header.d=sandisk.com header.i=@sandisk.com header.b=wGQ3pnI0; arc=none smtp.client-ip=68.232.143.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=sandisk.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sandisk.com
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
+  d=sandisk.com; i=@sandisk.com; q=dns/txt;
+  s=dkim.sandisk.com; t=1750323831; x=1781859831;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=ljv1KsUnyeQzVxscAIRHlXidTQPVrFUTcatrlOFG8BI=;
+  b=wGQ3pnI0VaksbsQbI0Sp4Dh2PCMtgZjoKbpqbVduHvKnWcRqmx7zEvZ1
+   QX9M6MiSm79b4uMGiGiEaj2GPtpTd23Ikt9GTuDdiWcYswu9BZVZq2Vta
+   T1IgTourudmd3z5ZSlKa8l3+DT4WTH9H2Cnq20jglICHAseLW1tTQ+yk7
+   egb45vlPUfHnWvLA8+Q0pNZXeer+hVpydLXuv2bZM9TTePLz+krymhjuB
+   IsZ5Lu74FPpepcc63On2rYVmqLIHUT2KKJgOQQ8Ky2mvQxYUUkCwHcRjX
+   WC/2eJJaau/Ia6JX7lczR0uU5P0HEKoPvIoZYXbCgqOIFLYh7NWwGOfJz
+   g==;
+X-CSE-ConnectionGUID: 2hbdttp2RX2k6Yrd4hci5g==
+X-CSE-MsgGUID: 9AEAlIdhSqyxtJvx8Zz94Q==
+X-IronPort-AV: E=Sophos;i="6.16,248,1744041600"; 
+   d="scan'208";a="90895133"
+Received: from h199-255-45-14.hgst.com (HELO uls-op-cesaep01.wdc.com) ([199.255.45.14])
+  by ob1.hgst.iphmx.com with ESMTP; 19 Jun 2025 17:03:44 +0800
+IronPort-SDR: 6853c3fa_k6lIxIwuvjWF4AQ5u+Bj8g1WOCbNtUL2uZeNqythOToqsYc
+ rLdgxmjrULV23DhH8akp9nSYjlxiVpDepYQ8Nmg==
+Received: from uls-op-cesaip02.wdc.com ([10.248.3.37])
+  by uls-op-cesaep01.wdc.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 19 Jun 2025 01:02:02 -0700
+WDCIronportException: Internal
+Received: from avri-office.ad.shared (HELO avri-office.sdcorp.global.sandisk.com) ([10.45.31.142])
+  by uls-op-cesaip02.wdc.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 19 Jun 2025 02:03:42 -0700
+From: Avri Altman <avri.altman@sandisk.com>
+To: Ulf Hansson <ulf.hansson@linaro.org>,
+	linux-mmc@vger.kernel.org
+Cc: Sarthak Garg <quic_sartgarg@quicinc.com>,
+	Abraham Bachrach <abe@skydio.com>,
+	Prathamesh Shete <pshete@nvidia.com>,
+	Bibek Basu <bbasu@nvidia.com>,
+	Sagiv Aharonoff <saharonoff@nvidia.com>,
+	Avri Altman <avri.altman@sandisk.com>,
+	stable@vger.kernel.org
+Subject: [PATCH 1/2] mmc: core sd: Simplify current limit logic for 200mA default
+Date: Thu, 19 Jun 2025 11:56:19 +0300
+Message-Id: <20250619085620.144181-2-avri.altman@sandisk.com>
+X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20250619085620.144181-1-avri.altman@sandisk.com>
+References: <20250619085620.144181-1-avri.altman@sandisk.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <4c1dcc23-fcbb-4777-8e76-a1da74ac9790@manjaro.org>
 
-On Thu, Jun 19, 2025 at 10:34:52AM +0200, Philip Müller wrote:
-> On 6/17/25 16:05, Greg KH wrote:
-> > Also for the newer kernels, this was only backported to 6.6.y, so
-> > anything older than that should need this, right?
-> 
-> Well, yes. The patches I applied on my end are attached.
-> 
-> -- 
-> Best, Philip
+The SD current limit logic is updated to avoid explicitly setting the
+current limit when the maximum power is 200mA (0.72W) or less, as this
+is already the default value. The code now only issues a current limit
+switch if a higher limit is required, and the unused
+SD_SET_CURRENT_NO_CHANGE constant is removed. This reduces unnecessary
+commands and simplifies the logic.
 
-> Commit b3bee1e7c3f2b1b77182302c7b2131c804175870 x86/boot: Compile boot code with -std=gnu11 too
-> fixed a build failure when compiling with GCC 15. The same change is required for linux-5.4.292.
+Fixes: 0aa6770000ba ("mmc: sdhci: only set 200mA support for 1.8v if 200mA is available")
+Signed-off-by: Avri Altman <avri.altman@sandisk.com>
+Cc: stable@vger.kernel.org
+---
+ drivers/mmc/core/sd.c    | 7 ++-----
+ include/linux/mmc/card.h | 1 -
+ 2 files changed, 2 insertions(+), 6 deletions(-)
 
-Something went wrong with the whitespace here :(
+diff --git a/drivers/mmc/core/sd.c b/drivers/mmc/core/sd.c
+index ec02067f03c5..cf92c5b2059a 100644
+--- a/drivers/mmc/core/sd.c
++++ b/drivers/mmc/core/sd.c
+@@ -554,7 +554,7 @@ static u32 sd_get_host_max_current(struct mmc_host *host)
+ 
+ static int sd_set_current_limit(struct mmc_card *card, u8 *status)
+ {
+-	int current_limit = SD_SET_CURRENT_NO_CHANGE;
++	int current_limit = SD_SET_CURRENT_LIMIT_200;
+ 	int err;
+ 	u32 max_current;
+ 
+@@ -598,11 +598,8 @@ static int sd_set_current_limit(struct mmc_card *card, u8 *status)
+ 	else if (max_current >= 400 &&
+ 		 card->sw_caps.sd3_curr_limit & SD_MAX_CURRENT_400)
+ 		current_limit = SD_SET_CURRENT_LIMIT_400;
+-	else if (max_current >= 200 &&
+-		 card->sw_caps.sd3_curr_limit & SD_MAX_CURRENT_200)
+-		current_limit = SD_SET_CURRENT_LIMIT_200;
+ 
+-	if (current_limit != SD_SET_CURRENT_NO_CHANGE) {
++	if (current_limit != SD_SET_CURRENT_LIMIT_200) {
+ 		err = mmc_sd_switch(card, SD_SWITCH_SET, 3,
+ 				current_limit, status);
+ 		if (err)
+diff --git a/include/linux/mmc/card.h b/include/linux/mmc/card.h
+index ddcdf23d731c..e9e964c20e53 100644
+--- a/include/linux/mmc/card.h
++++ b/include/linux/mmc/card.h
+@@ -182,7 +182,6 @@ struct sd_switch_caps {
+ #define SD_SET_CURRENT_LIMIT_400	1
+ #define SD_SET_CURRENT_LIMIT_600	2
+ #define SD_SET_CURRENT_LIMIT_800	3
+-#define SD_SET_CURRENT_NO_CHANGE	(-1)
+ 
+ #define SD_MAX_CURRENT_200	(1 << SD_SET_CURRENT_LIMIT_200)
+ #define SD_MAX_CURRENT_400	(1 << SD_SET_CURRENT_LIMIT_400)
+-- 
+2.25.1
 
-> 
-> Signed-off-by: Chris Clayton <chris2553@googlemail.com>
-> Modified-by: Philip Mueller <philm@manjaro.org>
-
-You lost the original authorship and signed-off-by lines :(
-
-> Link: https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=b3bee1e7c3f2b1b77182302c7b2131c804175870
-
-This isn't needed either.
-
-Can you try again?
-
-thanks,
-
-greg k-h
 
