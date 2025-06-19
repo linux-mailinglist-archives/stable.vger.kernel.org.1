@@ -1,122 +1,162 @@
-Return-Path: <stable+bounces-154783-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-154784-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E16DAE0230
-	for <lists+stable@lfdr.de>; Thu, 19 Jun 2025 12:00:25 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D5FCAE023E
+	for <lists+stable@lfdr.de>; Thu, 19 Jun 2025 12:02:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DDC33189CF41
-	for <lists+stable@lfdr.de>; Thu, 19 Jun 2025 10:00:40 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id F2EE87B01DF
+	for <lists+stable@lfdr.de>; Thu, 19 Jun 2025 10:00:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A482E221720;
-	Thu, 19 Jun 2025 10:00:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48CFF221D93;
+	Thu, 19 Jun 2025 10:02:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="b1xnOLw7"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CjfjdPwW"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lj1-f179.google.com (mail-lj1-f179.google.com [209.85.208.179])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B824521D58F
-	for <stable@vger.kernel.org>; Thu, 19 Jun 2025 10:00:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED86421FF46;
+	Thu, 19 Jun 2025 10:02:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750327220; cv=none; b=PqRc3Ylpo3rjuwAzOmtNmisTCpCC8yCPeAcTgzZK4xov225aaoogfR4kkW5qryYQ05rcC56FSIgdsKkGVChe2hNA6WqORoYgb0YJoHUTnLwlVRBmZveWOljQR165Rva/dq09u39F1t3WctJPDD7XmPgLzuyBX6UJsjp+SLfbDak=
+	t=1750327321; cv=none; b=eZ8zu01lpIL2K32resoSPDVvGwPR84SxP4uUEjd3VSqNsXUs8h9efE1LlD1sxNQ22IFbWJWkmRUksF5Djst6E1N9p3P5rtK1dbgxFP5z99008ltThlM56n7lbVhMZutyguozZJzAuoPZ19sHjNTLpDNAkgInUDrJjA+KDTQm8ZI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750327220; c=relaxed/simple;
-	bh=MBupwdHTfTziQ9of16o5m0czaGGVQK/gtIdY/OjTRmU=;
-	h=MIME-Version:From:Date:Message-ID:Subject:To:Content-Type; b=Fd9AAS60UgU5oVpc9LUl4jydYOr6QVeHYGd3Ct6TLAkVY27i5RyQJYMvvzHSp1cLxZxaO4pP0W4Den20qqaptAUHcl6ntBpRtIrVNi1mkygHW8/i9P8iOoPvpWw2GjSHfrMYEK+OtOziZm23zZAqYJwk/nQkUISa3U1NlKTKczI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=b1xnOLw7; arc=none smtp.client-ip=209.85.208.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lj1-f179.google.com with SMTP id 38308e7fff4ca-32b561a861fso4695801fa.0
-        for <stable@vger.kernel.org>; Thu, 19 Jun 2025 03:00:18 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1750327217; x=1750932017; darn=vger.kernel.org;
-        h=to:subject:message-id:date:from:mime-version:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=tm4foTyim2ipg707kPzzDB1WnJZtpYbYpFHYr7aNbQ0=;
-        b=b1xnOLw7ad4C0Y7FoHKohjFyynQ3u2zALciLRElkNg3lvIJDb/ny6krn8VJOzYDJN4
-         NJ4S6asyEq6g1J7oBE/V6QPzl0R16Eh96XM2oOC0q0iLXUPxsPxDX/+yG3vtCOuIXBgU
-         Cb6nC8qTFfI2m/b37TvqmsL+TSO1trbX1FzSG40/6UJLmVVc71HPj68sfHeTupnVTtQ+
-         kzw/a60iVRaqlopjNaham+ZGk7jxt8RYmVxiLsrDwSkXUZFSLzUbgJfMAjc1l6AvjrnZ
-         +rZq5AhS45aFvaMWDjZFc75728uQCIXPjpR1InO9lWXl+erOPAyp54jHf8YenNK/GcYz
-         BZRw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1750327217; x=1750932017;
-        h=to:subject:message-id:date:from:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=tm4foTyim2ipg707kPzzDB1WnJZtpYbYpFHYr7aNbQ0=;
-        b=PUfZLNRPAloVqdt9XoZFd8zP9DKrM9wp0O/kttfKEAEDB3k7NXsOTqDwEephkY/7T7
-         H8GNxgWNh+nTW1KiTlx/vcv40LwhVe1IE9AUXslMLqLBYD7HCF383K6v6G/gYzivtzGL
-         4j/n4napIxXguFgJ5rURDmNNbxpnAEmYKV2jR6/IGTc7+oIOCONLwAdZdrC3kufSE1GU
-         Aviw7+/+S5W1j6Naxkiw3dVQbDr6cfwkN+8ohDLQ8shfvA9zVtCn856G5XYuVNtUNFEe
-         uFU22D8nso/C1FK0cakTujf5ayZ3MBleHtmdnBn29YeNrfTz2dNkSWHXB8QHjbGVKKhV
-         I5FQ==
-X-Gm-Message-State: AOJu0Yxb0Jb/Vo/C6gfjBJPame349KnAeCXyOiks8pCR3racJbnEWVXX
-	PhwsRePqDltbiPo6sAds2IJqSyaAcWJerVrhahWp1sFUT7MvMX4Y3RTTuCcF35rYZeHePmE/eAb
-	DBNFnzyl3NFcaL10XYVroVKtfp7EefFiBivow
-X-Gm-Gg: ASbGncv+w9NGOvEcmvYmR8sB8YVYnsrViFWgFMGxswcfwtfszT+kyUF9K0st/NyJ1cH
-	96U7+mtEieqwnCFyAFE20SvQcFvDTtcUOWVOcakW+AJqJhy+DGemiyBKGjmhmuFqt1YoTOnZ7f/
-	qfD8R3Jt2a+IVaq9i0xUU91al8eld71WNZ0QGXWCZ69XzNE2jutLWQyA==
-X-Google-Smtp-Source: AGHT+IHau4OpGzXGOWE1BKEWgonfN9pS+MANbWLW0F3mMdf4XYmwC2iKZJaxbeBL5nn1ZM7TEtMt5EHRpEQjH65MgRI=
-X-Received: by 2002:a05:651c:b0b:b0:30c:50fd:9afe with SMTP id
- 38308e7fff4ca-32b4a412cdamr71097911fa.9.1750327216210; Thu, 19 Jun 2025
- 03:00:16 -0700 (PDT)
+	s=arc-20240116; t=1750327321; c=relaxed/simple;
+	bh=ST7t5hzEmHpR1U7XOZYCbUQ0PiUyXNCZEROguPp1Y5I=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=R3KUX7/KClhRbxgw3hFvpCurS3oKeST1YGSN38wascw/7qtp9Vdb5zrXvYolCvK6dlnTxZ585P4OE2zZJEYq0+mU6i26QI7GvBd8nl1l8M14p5WmDvzzXPQ0E9Efk1wgBMDt9zVcIphvLrKB7zjeKCNXNg+zZw+xcsZxs5GAkO0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CjfjdPwW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED462C4CEEA;
+	Thu, 19 Jun 2025 10:01:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1750327320;
+	bh=ST7t5hzEmHpR1U7XOZYCbUQ0PiUyXNCZEROguPp1Y5I=;
+	h=From:Date:Subject:To:Cc:From;
+	b=CjfjdPwWXxGaNBeJ+CX9Mue6JIDQMzvchdJgrnAxR7QPmL6c4joD61endYe3543Ik
+	 gpA5VvwnIdHpqG/QkiDs62n49i2HzE9fq3/HHeMcD36tihJO8/72n+4nYMked5AMU2
+	 GSXUGVOOhqtrPB2O44zz6PrX11Mbzl6jOeSBSITkGQERXO/woAp5uskR9iLExkuUmQ
+	 grAER8HkUrz0P1AyGF3uZYiI2PntiCvU/n3XMo+DPfiUDOoLjeDtH+l4VXWZPA/YFf
+	 cUTvTkoNANYCqn+Z93LUcrE4rvjCYKPT9XI8Ayu6jEuw3JNRYAw1jOKZp60uQ+MamN
+	 vOCOb/v713Brg==
+From: Jeff Layton <jlayton@kernel.org>
+Date: Thu, 19 Jun 2025 06:01:55 -0400
+Subject: [PATCH] sunrpc: handle SVC_GARBAGE during svc auth processing as
+ auth error
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-From: =?UTF-8?Q?Sergio_Gonz=C3=A1lez_Collado?= <sergio.collado@gmail.com>
-Date: Thu, 19 Jun 2025 11:59:40 +0200
-X-Gm-Features: AX0GCFs0CkMtMJDoPokmlgzCVq8-51Vo7KUdgtS7PWdZc7Ftr1KinMtfIYondHw
-Message-ID: <CAA76j91szQKmyNgjvtRVeKOMUvmTH9qdDFoY-QRJWSOTnKap5Q@mail.gmail.com>
-Subject: [PATCH v2 6.12.y] Kunit to check the longest symbol length
-To: stable@vger.kernel.org, Greg KH <gregkh@linuxfoundation.org>, 
-	Sasha Levin <sashal@kernel.org>, Miguel Ojeda <ojeda@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20250619-rpc-6-16-v1-1-9fd5e01637d3@kernel.org>
+X-B4-Tracking: v=1; b=H4sIABLgU2gC/3WMQQ6CMBBFr0Jm7Rim1hZYeQ/jAsoAjQbI1DQaw
+ t0t7Ex0+X7+ewsEFs8BqmwB4eiDn8YEdMjADfXYM/o2MahcnXNDFmV2aJAMOmdrdeLSlYYg3Wf
+ hzr/21PWWePDhOcl7L0fa1h+RSEiYk2bdFG1NbC93lpEfx0l62CpR/TNVMkutLZumK0jpL3Nd1
+ w91wdWO2wAAAA==
+X-Change-ID: 20250617-rpc-6-16-cc7a23e9c961
+To: Chuck Lever <chuck.lever@oracle.com>, NeilBrown <neil@brown.name>, 
+ Olga Kornievskaia <okorniev@redhat.com>, Dai Ngo <Dai.Ngo@oracle.com>, 
+ Tom Talpey <tom@talpey.com>, "David S. Miller" <davem@davemloft.net>, 
+ Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
+ Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>
+Cc: tianshuo han <hantianshuo233@gmail.com>, 
+ Linus Torvalds <torvalds@linuxfoundation.org>, security@kernel.org, 
+ yuxuanzhe@outlook.com, Jiri Slaby <jirislaby@kernel.org>, 
+ Trond Myklebust <trondmy@kernel.org>, Anna Schumaker <anna@kernel.org>, 
+ linux-nfs@vger.kernel.org, netdev@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
+ Jeff Layton <jlayton@kernel.org>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2580; i=jlayton@kernel.org;
+ h=from:subject:message-id; bh=ST7t5hzEmHpR1U7XOZYCbUQ0PiUyXNCZEROguPp1Y5I=;
+ b=owEBbQKS/ZANAwAKAQAOaEEZVoIVAcsmYgBoU+AWlnSJkXb6un5sNyYXhumRHc2/lPyes8pY0
+ UiTMCUN1+eJAjMEAAEKAB0WIQRLwNeyRHGyoYTq9dMADmhBGVaCFQUCaFPgFgAKCRAADmhBGVaC
+ FW/WD/wJNfu2nSoAIJzPaPpZzuPwhmrgUqYxxqvRPbq98C3XExKSG140sg2rK8O0nTAbD5Ba1bb
+ S/zrVIvZGMzkGyKRyVd9pbCVGisn0yeZfUbdFHHJAUJ4poxzhpu7s5PHz/qbnelRgUIqKUxWuhb
+ sHtY2/0mXYB3c+tGPQGQtkVnRP/zMTK4jlQPHpTeu9zCQ+iYrTNCI4TfeSwUMCXrLav0Z8lf0OZ
+ kFg9XpcASsaASZXMmxzS2n1weEEjqe9kklz9RumM3RLKTbnl1Lfc0fg3KnCYk/0Poucmr/ibcMq
+ ScwilME5he3bc13qohoNLfjkke4VIHqywJnmMj2pBag6E+U5CZORCa1wJwpyvVpSE7663XlWxje
+ 0DceA/A8j3G9p2TWkGbNghx6m39vLJdZ839S27SbO0BURRVwRmI+ayp0+e87F/tuaiPqIQ+0Acd
+ dU3X3o8txF7wnb/N0Vj9kRnJeK4ofH086YeIK6NaeLumlYffeu9ihsNeUON3TgXH35RDfJuXpoi
+ MvFFQ5q/EY+V4it5d2nHUpOsmsX0xNmWMsaA2wLDBf3REyYQW/NnwQeTrRTMq5qrwSs7pBY82jJ
+ MezH6QMhjI1aOQqf2LxpgB5ptaItfHMvo1dE+H/AYvnMWEK2lxe005ZR7Iqf9N8IG84z7gvNjgf
+ UbWdD2zC9s0q1ew==
+X-Developer-Key: i=jlayton@kernel.org; a=openpgp;
+ fpr=4BC0D7B24471B2A184EAF5D3000E684119568215
 
-Hello,
+tianshuo han reported a remotely-triggerable crash if the client sends a
+kernel RPC server a specially crafted packet. If decoding the RPC reply
+fails in such a way that SVC_GARBAGE is returned without setting the
+rq_accept_statp pointer, then that pointer can be dereferenced and a
+value stored there.
 
-Please consider applying the following commits for 6.12.y:
+If it's the first time the thread has processed an RPC, then that
+pointer will be set to NULL and the kernel will crash. In other cases,
+it could create a memory scribble.
 
-    c104c16073b7 ("Kunit to check the longest symbol length")
-    54338750578f ("x86/tools: Drop duplicate unlikely() definition in
-insn_decoder_test.c")
+The server sunrpc code treats a SVC_GARBAGE return from svc_authenticate
+or pg_authenticate as if it should send a GARBAGE_ARGS reply. RFC 5531
+says that if authentication fails that the RPC should be rejected
+instead with a status of AUTH_ERR.
 
-They should apply cleanly.
+Handle a SVC_GARBAGE return as an AUTH_ERROR, with a reason of
+AUTH_BADCRED instead of returning GARBAGE_ARGS in that case. This
+sidesteps the whole problem of touching the rpc_accept_statp pointer in
+this situation and avoids the crash.
 
-Those two commits implement a kunit test to verify that a symbol with
-KSYM_NAME_LEN of 512 can be read.
+Cc: stable@vger.kernel.org
+Fixes: 29cd2927fb91 ("SUNRPC: Fix encoding of accepted but unsuccessful RPC replies")
+Reported-by: tianshuo han <hantianshuo233@gmail.com>
+Reviewed-by: Chuck Lever <chuck.lever@oracle.com>
+Signed-off-by: Jeff Layton <jlayton@kernel.org>
+---
+This should be more correct. Unfortunately, I don't know of any
+testcases for low-level RPC error handling. That seems like something
+that would be nice to do with pynfs or similar though.
+---
+ net/sunrpc/svc.c | 11 ++---------
+ 1 file changed, 2 insertions(+), 9 deletions(-)
 
-The first commit implements the test. This commit also includes
-a fix for the test x86/insn_decoder_test. In the case a symbol exceeds the
-symbol length limit, an error will happen:
+diff --git a/net/sunrpc/svc.c b/net/sunrpc/svc.c
+index 939b6239df8ab6229ce34836d77d3a6b983fbbb7..99050ab1435148ac5d52b697ab1a771b9e948143 100644
+--- a/net/sunrpc/svc.c
++++ b/net/sunrpc/svc.c
+@@ -1375,7 +1375,8 @@ svc_process_common(struct svc_rqst *rqstp)
+ 	case SVC_OK:
+ 		break;
+ 	case SVC_GARBAGE:
+-		goto err_garbage_args;
++		rqstp->rq_auth_stat = rpc_autherr_badcred;
++		goto err_bad_auth;
+ 	case SVC_SYSERR:
+ 		goto err_system_err;
+ 	case SVC_DENIED:
+@@ -1516,14 +1517,6 @@ svc_process_common(struct svc_rqst *rqstp)
+ 	*rqstp->rq_accept_statp = rpc_proc_unavail;
+ 	goto sendit;
+ 
+-err_garbage_args:
+-	svc_printk(rqstp, "failed to decode RPC header\n");
+-
+-	if (serv->sv_stats)
+-		serv->sv_stats->rpcbadfmt++;
+-	*rqstp->rq_accept_statp = rpc_garbage_args;
+-	goto sendit;
+-
+ err_system_err:
+ 	if (serv->sv_stats)
+ 		serv->sv_stats->rpcbadfmt++;
 
-    arch/x86/tools/insn_decoder_test: error: malformed line 1152000:
-    tBb_+0xf2>
+---
+base-commit: 9afe652958c3ee88f24df1e4a97f298afce89407
+change-id: 20250617-rpc-6-16-cc7a23e9c961
 
-..which overflowed by 10 characters reading this line:
+Best regards,
+-- 
+Jeff Layton <jlayton@kernel.org>
 
-    ffffffff81458193:   74 3d                   je
-ffffffff814581d2
-<_RNvXse_NtNtNtCshGpAVYOtgW1_4core4iter8adapters7flattenINtB5_13FlattenCompatINtNtB7_3map3MapNtNtNtBb_3str4iter5CharsNtB1v_17CharEscapeDefaultENtNtBb_4char13EscapeDefaultENtNtBb_3fmt5Debug3fmtBb_+0xf2>
-
-The fix was proposed in [1] and initially mentioned at [2].
-
-The second commit fixes a warning when building with clang because
-there was a definition of unlikely from compiler.h in tools/include/linux,
-which conflicted with the one in the instruction decoder selftest.
-
-[1] https://lore.kernel.org/lkml/Y9ES4UKl%2F+DtvAVS@gmail.com/
-[2] https://lore.kernel.org/lkml/320c4dba-9919-404b-8a26-a8af16be1845@app.fastmail.com/
-
-I will send something similar to 6.6.y and 6.1.y
-
-Thanks!
- Best regards,
-   Sergio
 
