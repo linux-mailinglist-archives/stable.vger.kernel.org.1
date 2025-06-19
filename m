@@ -1,230 +1,200 @@
-Return-Path: <stable+bounces-154826-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-154827-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id CFF3FAE0E2C
-	for <lists+stable@lfdr.de>; Thu, 19 Jun 2025 21:46:45 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E09CAE0E2E
+	for <lists+stable@lfdr.de>; Thu, 19 Jun 2025 21:47:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D0B771BC56A5
-	for <lists+stable@lfdr.de>; Thu, 19 Jun 2025 19:47:00 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6721E7A2CCF
+	for <lists+stable@lfdr.de>; Thu, 19 Jun 2025 19:46:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 881EA1E8342;
-	Thu, 19 Jun 2025 19:46:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 177081D5AB7;
+	Thu, 19 Jun 2025 19:47:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="cm6A5MCj"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="LxpOAPpf"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f175.google.com (mail-pl1-f175.google.com [209.85.214.175])
+Received: from mail-yw1-f179.google.com (mail-yw1-f179.google.com [209.85.128.179])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D006830E84F;
-	Thu, 19 Jun 2025 19:46:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2435230E854
+	for <stable@vger.kernel.org>; Thu, 19 Jun 2025 19:47:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750362399; cv=none; b=a6OabKymN5orfPBoV3vPTE+lBIiaZAwBsiO8sWB2K4Gll/UkvuP/4c6J+BZ3KV8cf7LYsqM6u9CPbeZtB2wW+Ga03CYx0WE6iDxaEUqbkS+F1cVJjCNW0E6An9D0XE9bPcgYbBZihuh9mJOJYjOJfIy+vObbB5Vt0+E1hRocOs0=
+	t=1750362435; cv=none; b=hEGXNadUrxmFq7jqwimhsHGJSQsNUcfVuXY1MXw3oCIAf73duOdsIHz9MaMyPRuSvKQ6vpQBDA672JT2R1UbC4moSUb+4kbIuTQPAwhdAjAaxXqvjlmkuw/MQipAPEerep6dCY9YsAZwMIvHTFo5OmsRP5u21s/0yA+CvYM+1mc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750362399; c=relaxed/simple;
-	bh=MASH+kTZsKvi5+VHnn3W5k6X1hgb4oFZp0idBrnCUis=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=vF8rrAevOeAa/6daCbH6qThU36Io6PRoHXRiPZDaMNc5Qv+FrbmcnZDDMy8gfnYioJfcOT8nrkkCoM3tRw1vNv27PQgtJyUPoZ2M1MNWGKD+5BBtt7uxkOKt2Ryi8Lw4+aDMLrCaOY+gybxwh3hypv1tuAaCQMJojK7KFDRZCoU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=cm6A5MCj; arc=none smtp.client-ip=209.85.214.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f175.google.com with SMTP id d9443c01a7336-234b440afa7so12009855ad.0;
-        Thu, 19 Jun 2025 12:46:37 -0700 (PDT)
+	s=arc-20240116; t=1750362435; c=relaxed/simple;
+	bh=guA0skWOkwp8OyhQ1xFSJwpOdd3Kx+HxHdcZFkgpAWg=;
+	h=Date:From:To:cc:Subject:In-Reply-To:Message-ID:References:
+	 MIME-Version:Content-Type; b=CAqRx2VI10iCrmCm0UfiE6+z//2YXRYKE49h2yz9smwWuW+1LBrCnZ5K4VS1M23omVjxHgQPxoD1WPfXjRG68kz6opMk3Cu89DUZOknjEZpdITl4+ViuonFem2PJkPbpMD3oaoASQiRppWQQxce9540ghlxSAVEBzCqAGOoUn8w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=LxpOAPpf; arc=none smtp.client-ip=209.85.128.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Received: by mail-yw1-f179.google.com with SMTP id 00721157ae682-712be7e034cso7551797b3.0
+        for <stable@vger.kernel.org>; Thu, 19 Jun 2025 12:47:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1750362397; x=1750967197; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=iC29fuO8mbswXSn6G5clAGlBNuIVVD5fTppqMkm/Nrg=;
-        b=cm6A5MCjv29uR5VyKBNJ9FCj4SegJgqok0e4/07T/RkRoJxjNvxxmyo2AWnJXkZtiV
-         n48ytGIXm+fBSrXy/36uTWbRV/LnMN5P3hiqPkM35z5ansPFa3Hdx2kqE7NUWJp0t2S3
-         BZI43rW5Fa+HyRHHy7rsz4x/QYZ0Zkyivjegm7XHWwHNy/FCEyMLxqVOMuMppwDFni6K
-         0UHbDkY3OijCsnONML5TwWl/QCQcTQPebC+N8cf2wlCl529t1bVKLE3J/qV/mjFT7IlM
-         RynZpC6C/FJFQ6wLIdR26KHoQyygkWLl4jo+P/P3z/OCMJgQqL0Nt9Kon7YDz7b0vjZB
-         ToNw==
+        d=google.com; s=20230601; t=1750362433; x=1750967233; darn=vger.kernel.org;
+        h=mime-version:references:message-id:in-reply-to:subject:cc:to:from
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=5Vo05OOxTssGbcaMbipvLSwURoZXdUfKlhR1F0Yfd+g=;
+        b=LxpOAPpfvCUQkaPK/S9mqZNWWmrZ//7XQlg3zSCvYoEd+vm81wpnywMoLpCVry2mY5
+         4O9z4UxhkQm6jgdvdzB8BCeU9vrgRQuyVEzGruN5gyoFRF491Eb0IZ26s7vw2mHbbDNQ
+         NPiwjSTSaG9/Rrv4J8ORYiwwLOb/UQUM4iL1LUp3kDKbM7Y5RrdRVb427C0YV8iIge1e
+         dg+6sXOwtoRoFlL0S/Rrv/gNzlYmFPoXk/dh9iCn18jtKdMMunrzOCgKtvwc9L0x+Cg8
+         wjDDroA2peXaxBXAcjPFJrYcQ89R+xyMqAApmZuvZo9lqzWqEc2/+tDP97bYLtr+8pn3
+         f+cA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1750362397; x=1750967197;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=iC29fuO8mbswXSn6G5clAGlBNuIVVD5fTppqMkm/Nrg=;
-        b=cPIBdvKiMbJv+0UuDXdqbZyam4ZacsIn6N/ktx0dHR1CULbjv4myJH31gOwudskIpZ
-         JTzueWev+GAUA0gi+c/KO5dredI85Ip3DbjdtfuPWZplPdreaJ4VPPPsY7yFRZkY35yw
-         4b2AkI1mPUHH6FlTwiGqadWg46EyMmBuvm0qnkkYlAOYvTV/Mn8sFn6h7wGKnmKSpjuI
-         DMKpFCdVniZ4/fqL9jtWOvsr4DX43XWOUlNOQMWZ5iXvHJjQtBhlFJRFo87a9ruUifmF
-         leUyIyilhTDMtH7Y1os5LiChkzvuXIP0osuI2ot2L8RFSJbzLpjmwqa6ALj6YcIYWV02
-         FjBg==
-X-Forwarded-Encrypted: i=1; AJvYcCXjTuUoR2cdAknmu2/3m1NWyzcqj/kV0cApd7MrADyQGCVBMssy/vYCNAwO0n/Cxz+y/41rMc8=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzrnedCVZ71BeVpk+N6Yzbpb5QG3czGz8z19v0s+NodxWmMuK7f
-	VSgSeP7mCiRrNts6s/SNdq1OTThFbPuh3lhvvT9BQ54TPumIf7d7wFpg
-X-Gm-Gg: ASbGncsWQ/3oQRIw0aim7NW7PNQbJnm+CeGR8i+CBvCGEkJV46kOEQwQ4DDQ2cEKq9H
-	bAcf4dEmmcb9vUfrmZxvqJD/ZQevQIGjMIXNiFxOO3hbr9Mj2WLbe6cDa8VlHN7Pk3M0Jhs1iS8
-	/7VvstigEA0WbZt3+2i//y5b7IKM1eflqpLugVi17i7B3a3ER0Ext+0tI7dHr3YHz+cueQBhKdr
-	tGYbcmJg+N6DumJXxK0j/GMQCL2Ql5pEsZ0quCv4Epwm9vo0ZTzNnXcCj89vqhj+NjLn1qNO3+s
-	1l6YQ3Gei4EQkT9WW3uL4W4OlkPqETr0sH5dnn0g43X65ODo3DVOjeei+ms1rR9H46fLxpBoS1B
-	Ny9XXqtAauWQrsj/EHrMtHPEq
-X-Google-Smtp-Source: AGHT+IEzKjqVNqmf4xOc4yV1g/AX4iLbEtAvpXqbmJy/eBU++oEkbmywSG0qcYIRGMspOnXI2U9TZw==
-X-Received: by 2002:a17:903:2311:b0:235:866:9fac with SMTP id d9443c01a7336-237d96b63bfmr1993805ad.2.1750362396889;
-        Thu, 19 Jun 2025 12:46:36 -0700 (PDT)
-Received: from [10.67.48.245] ([192.19.223.252])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-237d86f8261sm1307595ad.221.2025.06.19.12.46.35
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 19 Jun 2025 12:46:36 -0700 (PDT)
-Message-ID: <52564e1f-ab05-4347-bd64-b38a69180499@gmail.com>
-Date: Thu, 19 Jun 2025 12:46:35 -0700
+        d=1e100.net; s=20230601; t=1750362433; x=1750967233;
+        h=mime-version:references:message-id:in-reply-to:subject:cc:to:from
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=5Vo05OOxTssGbcaMbipvLSwURoZXdUfKlhR1F0Yfd+g=;
+        b=ve4BtmkSYZKzljBdyPIRXzjHGIkDYgdAbWwzisROIGrzz9GZ1zL1bFMYYpAs3VxN5l
+         sGOWnWp1tBv8sH9f06lMLpUvbd52GDn8WCzed5UETWJv6fGlnqNajfCpv8d2OAVfy3JJ
+         q560yoX+9il5HvI1twMc8m5pSye/RUK94n630ZIH99OlqLFiFDN2CWctoUaRYs9BfRI1
+         GSQn0d0Yizw1QhdOTxZGf8+RXJoNdqD7FRL0co3Hxmin7/e5t7TSTyFlsJ+V9onlobmO
+         79pPeHqZxjx+5vklhyfPk49c6TY7JoIrk60WU5WvybE4D1AAmyX4FN4M4IlJ6t6fuUPr
+         n7HQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUXlB2oksDk7aLsWWEUKwSfl69N5y/t/P3OOmyqHenlw/J5rsQ/8r4opOrg4Cx3QaMybovEbVc=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyeUDTBsry82L/D6L247Vi/IH3afNwX2+yfMn+hBVqwoyUVQ0qL
+	Ivq8klBmGiSay5y9+GsMw9pPoUIxWhVFxrcc2zfBMrjIRWju6LvehP4hOAFKabXrhQ==
+X-Gm-Gg: ASbGnctvZzKDvqqD0WqRlEFObITFmysB1bmowX5miPcNiEXUARMMtVIh6TVYTF6jxw9
+	SrwdYZw9ZqPPGqjyIWAo2Q5rvW20YVxhAFvqLfSx72/wcOFbnS8rp/e7OXppnzM8PwYeOf5lQnv
+	OvZDQfckkmr2zFGL1q4tE/i37518ZBOGb3PaRHrlnkrDIdOTg47GfGA7t8QwBeYibAnkc5NRiKy
+	qHcifSNAxdMpQFRchHJxBqi+GqeUS5nKekek9zXL1PQ5iieYugeLng5+P1EjMYHrChlT/bpMnxo
+	hbm2h+vSvf+krVokXUgImdmv0xzxlC2Q6YpVyhsem5IYmZbqblQHton4g4vqeyc4yq+0040KsXj
+	PWhemA4Og+JJLKnrPhibNaLMQhIaIwVdKB2c5CdUmyPw1z7A=
+X-Google-Smtp-Source: AGHT+IGTOmoVnbjALr+a4PXAld9jBZ3+VUJ1Fq2G3C22XhP26cW4MfFtjpUv0mhPvS0kkLJjDZTilg==
+X-Received: by 2002:a05:690c:a082:10b0:710:f738:7125 with SMTP id 00721157ae682-712c64f923bmr5178107b3.19.1750362432920;
+        Thu, 19 Jun 2025 12:47:12 -0700 (PDT)
+Received: from darker.attlocal.net (172-10-233-147.lightspeed.sntcca.sbcglobal.net. [172.10.233.147])
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-712c49b9a9csm1217567b3.23.2025.06.19.12.47.10
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 19 Jun 2025 12:47:11 -0700 (PDT)
+Date: Thu, 19 Jun 2025 12:47:09 -0700 (PDT)
+From: Hugh Dickins <hughd@google.com>
+To: Gavin Guo <gavinguo@igalia.com>
+cc: Andrew Morton <akpm@linux-foundation.org>, 
+    Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+    David Hildenbrand <david@redhat.com>, Hugh Dickins <hughd@google.com>, 
+    Zi Yan <ziy@nvidia.com>, Gavin Shan <gshan@redhat.com>, 
+    Florent Revest <revest@google.com>, Matthew Wilcox <willy@infradead.org>, 
+    Miaohe Lin <linmiaohe@huawei.com>, stable@vger.kernel.org
+Subject: Re: [PATCH 6.1.y] mm/huge_memory: fix dereferencing invalid pmd
+ migration entry
+In-Reply-To: <20250619053001.3295791-1-gavinguo@igalia.com>
+Message-ID: <bc275cfe-dd4f-ca7c-63bf-d26c93c09117@google.com>
+References: <2025051203-thrift-spool-ebc8@gregkh> <20250619053001.3295791-1-gavinguo@igalia.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: Tulip 21142 panic on physical link disconnect
-To: "Maciej W. Rozycki" <macro@orcam.me.uk>,
- Greg Chandler <chandleg@wizardsworks.org>
-Cc: stable@vger.kernel.org, netdev@vger.kernel.org
-References: <53bb866f5bb12cc1b6c33b3866007f2b@wizardsworks.org>
- <02e3f9b8-9e60-4574-88e2-906ccd727829@gmail.com>
- <385f2469f504dd293775d3c39affa979@wizardsworks.org>
- <fba6a52c-bedf-4d06-814f-eb78257e4cb3@gmail.com>
- <6a079cd0233b33c6faf6af6a1da9661f@wizardsworks.org>
- <9292e561-09bf-4d70-bcb7-f90f9cfbae7b@gmail.com>
- <a3d8ee993b73b826b537f374d78084ad@wizardsworks.org>
- <12ccf3e4c24e8db2545f6ccaba8ce273@wizardsworks.org>
- <8c06f8969e726912b46ef941d36571ad@wizardsworks.org>
- <alpine.DEB.2.21.2506192007440.37405@angie.orcam.me.uk>
-Content-Language: en-US
-From: Florian Fainelli <f.fainelli@gmail.com>
-Autocrypt: addr=f.fainelli@gmail.com; keydata=
- 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
- WlfRzlpjIPmdjgoicA==
-In-Reply-To: <alpine.DEB.2.21.2506192007440.37405@angie.orcam.me.uk>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=US-ASCII
 
-Hi Maciej,
+On Thu, 19 Jun 2025, Gavin Guo wrote:
 
-On 6/19/25 12:36, Maciej W. Rozycki wrote:
-> On Thu, 19 Jun 2025, Greg Chandler wrote:
+> [ Upstream commit be6e843fc51a584672dfd9c4a6a24c8cb81d5fb7 ]
 > 
->> So what I know for sure is this:
->> The tulip driver on alpha (generic and DP264) oops/panic on physical
->> disconnect, but only when an IP address is bound.
->> It does not panic when no address is bound to the interface.
->> It does not matter if the driver is compiled in, or if it is compiled as a
->> module.
->> It does not matter if all of the options are set for tulip or if none of them
->> are:
->>      New bus configuration
->>      Use PCI shared mem for NIC registers
->>      Use RX polling (NAPI)
->>      Use Interrupt Mitigation
->> The physical link does not auto-negotiate, and mii-tool does not seem to be
->> able to force it with -F or -A like you would expect it to.
->> The kernel does not drop the "Link is Up/Link is Down" messages when the PHY
->> "links"
->> The switch and interface both show LEDs as if linked at 10-Half-Duplex, and
->> the lights turn off when the link is broken.
->> Subsequently they do relink at 10-Half again if plugged back in.
->> I did also attempt to test the kernel level stack for nfsroot, just to see if
->> it worked prior to init launching everything else, and it did not.
->> I used the same IP configuration for that test as all of the tests in these
->> emails.
->> All of the oops/panics seem to happen at:
->>      kernel/time/timer.c:1657 __timer_delete_sync+0x10c/0x150
+> When migrating a THP, concurrent access to the PMD migration entry during
+> a deferred split scan can lead to an invalid address access, as
+> illustrated below.  To prevent this invalid access, it is necessary to
+> check the PMD migration entry and return early.  In this context, there is
+> no need to use pmd_to_swp_entry and pfn_swap_entry_to_page to verify the
+> equality of the target folio.  Since the PMD migration entry is locked, it
+> cannot be served as the target.
 > 
->   FYI something's changed a while ago in how `del_timer_sync' is handled
-> and I can see a similar warning nowadays with another network driver with
-> the MIPS platform.
+> Mailing list discussion and explanation from Hugh Dickins: "An anon_vma
+> lookup points to a location which may contain the folio of interest, but
+> might instead contain another folio: and weeding out those other folios is
+> precisely what the "folio != pmd_folio((*pmd)" check (and the "risk of
+> replacing the wrong folio" comment a few lines above it) is for."
 > 
->   Since I'm the maintainer of said driver I mean to bisect it and figure
-> out what's going here, but haven't found time so far owing to other
-> commitments (and the driver otherwise works just fine regardless, so it's
-> minor annoyance).  If you beat me to it, then I'll gladly accept it, but
-> otherwise I'm just letting you know you're not alone with this issue and
-> that it's not specific to the DEC Tulip driver on your system.
- > >   For the record:
-> 
-> ------------[ cut here ]------------
-> WARNING: CPU: 0 PID: 0 at kernel/time/timer.c:1563 __timer_delete_sync+0x110/0x118
-> Modules linked in:
-> CPU: 0 PID: 0 Comm: swapper Tainted: G        W          6.4.0-rc3-00030-gae62c49c0cef #21
-> Stack : 807a0000 80095a8c 00000000 00000004 806a0000 00000009 80c09dac 807d0000
->          807a0000 807056ec 80769fac 807a13f3 807d30c4 1000ec00 80c09d58 80787a18
->          00000000 00000000 807056ec 00000000 00000001 80c09c94 00000077 34633236
->          20202020 00000000 807d7311 20202020 807056ec 1000ec00 00000000 00000000
->          806fcb60 806fcb38 807a0000 00000001 00000000 fffffffe 00000000 807d0000
->          ...
+> BUG: unable to handle page fault for address: ffffea60001db008
+> CPU: 0 UID: 0 PID: 2199114 Comm: tee Not tainted 6.14.0+ #4 NONE
+> Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
+> RIP: 0010:split_huge_pmd_locked+0x3b5/0x2b60
 > Call Trace:
-> [<80048ecc>] show_stack+0x2c/0xf8
-> [<80645c88>] dump_stack_lvl+0x34/0x4c
-> [<80641d00>] __warn+0xb4/0xe8
-> [<80641d84>] warn_slowpath_fmt+0x50/0x88
-> [<800b177c>] __timer_delete_sync+0x110/0x118
-> [<8040f4b0>] fza_interrupt+0x904/0x1004
-> [<80098d7c>] __handle_irq_event_percpu+0x84/0x188
-> [<80098f1c>] handle_irq_event+0x38/0xbc
-> [<8009d4e4>] handle_level_irq+0xc8/0x208
-> [<80098110>] generic_handle_irq+0x44/0x5c
-> [<8064f450>] do_IRQ+0x1c/0x28
-> [<80041cf0>] dec_irq_dispatch+0x10/0x20
-> [<80043754>] handle_int+0x14c/0x158
-> [<8008bf64>] do_idle+0x5c/0x15c
-> [<8008c368>] cpu_startup_entry+0x20/0x28
-> [<8064657c>] kernel_init+0x0/0x114
+> <TASK>
+> try_to_migrate_one+0x28c/0x3730
+> rmap_walk_anon+0x4f6/0x770
+> unmap_folio+0x196/0x1f0
+> split_huge_page_to_list_to_order+0x9f6/0x1560
+> deferred_split_scan+0xac5/0x12a0
+> shrinker_debugfs_scan_write+0x376/0x470
+> full_proxy_write+0x15c/0x220
+> vfs_write+0x2fc/0xcb0
+> ksys_write+0x146/0x250
+> do_syscall_64+0x6a/0x120
+> entry_SYSCALL_64_after_hwframe+0x76/0x7e
 > 
-> ---[ end trace 0000000000000000 ]---
+> The bug is found by syzkaller on an internal kernel, then confirmed on
+> upstream.
 > 
-> -- the arrival of this particular device state change interrupt means the
-> timer set up just in case the device gets stuck can be deleted, so I'm not
-> sure why calling `del_timer_sync' to discard the timer has become a no-no
-> now; this code is 20+ years old now, though I sat on it for a while and
-> then it took some time and effort to get it upstream too.  The issue has
-> started sometime between 5.18 (clean boot) and 6.4 (quoted above).
-> 
->   Maybe it'll ring someone's bell and they'll chime in or otherwise I'll
-> bisect it... sometime.  Or feel free to start yourself with 5.18, as it's
-> not terribly old, only a bit and certainly not so as 2.6 is.
+> Link: https://lkml.kernel.org/r/20250421113536.3682201-1-gavinguo@igalia.com
+> Link: https://lore.kernel.org/all/20250414072737.1698513-1-gavinguo@igalia.com/
+> Link: https://lore.kernel.org/all/20250418085802.2973519-1-gavinguo@igalia.com/
+> Fixes: 84c3fc4e9c56 ("mm: thp: check pmd migration entry in common path")
+> Signed-off-by: Gavin Guo <gavinguo@igalia.com>
+> Acked-by: David Hildenbrand <david@redhat.com>
+> Acked-by: Hugh Dickins <hughd@google.com>
+> Acked-by: Zi Yan <ziy@nvidia.com>
+> Reviewed-by: Gavin Shan <gshan@redhat.com>
+> Cc: Florent Revest <revest@google.com>
+> Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
+> Cc: Miaohe Lin <linmiaohe@huawei.com>
+> Cc: <stable@vger.kernel.org>
+> Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+> [gavin: backport the migration checking logic to __split_huge_pmd]
+> Signed-off-by: Gavin Guo <gavinguo@igalia.com>
 
-I am still not sure why I could not see that warning on by Cobalt Qube2 
-trying to reproduce Greg's original issue, that is with an IP assigned 
-on the interface yanking the cable did not trigger a timer warning. It 
-could be that machine is orders of magnitude slower and has a different 
-CONFIG_HZ value that just made it less likely to be seen?
--- 
-Florian
+Thanks, yes, this new 6.1 version
+Acked-by: Hugh Dickins <hughd@google.com>
+
+> ---
+>  mm/huge_memory.c | 11 ++++++-----
+>  1 file changed, 6 insertions(+), 5 deletions(-)
+> 
+> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+> index f53bc54dacb3..2c118713f771 100644
+> --- a/mm/huge_memory.c
+> +++ b/mm/huge_memory.c
+> @@ -2282,12 +2282,14 @@ void __split_huge_pmd(struct vm_area_struct *vma, pmd_t *pmd,
+>  {
+>  	spinlock_t *ptl;
+>  	struct mmu_notifier_range range;
+> +	bool pmd_migration;
+>  
+>  	mmu_notifier_range_init(&range, MMU_NOTIFY_CLEAR, 0, vma, vma->vm_mm,
+>  				address & HPAGE_PMD_MASK,
+>  				(address & HPAGE_PMD_MASK) + HPAGE_PMD_SIZE);
+>  	mmu_notifier_invalidate_range_start(&range);
+>  	ptl = pmd_lock(vma->vm_mm, pmd);
+> +	pmd_migration = is_pmd_migration_entry(*pmd);
+>  
+>  	/*
+>  	 * If caller asks to setup a migration entry, we need a folio to check
+> @@ -2296,13 +2298,12 @@ void __split_huge_pmd(struct vm_area_struct *vma, pmd_t *pmd,
+>  	VM_BUG_ON(freeze && !folio);
+>  	VM_WARN_ON_ONCE(folio && !folio_test_locked(folio));
+>  
+> -	if (pmd_trans_huge(*pmd) || pmd_devmap(*pmd) ||
+> -	    is_pmd_migration_entry(*pmd)) {
+> +	if (pmd_trans_huge(*pmd) || pmd_devmap(*pmd) || pmd_migration) {
+>  		/*
+> -		 * It's safe to call pmd_page when folio is set because it's
+> -		 * guaranteed that pmd is present.
+> +		 * Do not apply pmd_folio() to a migration entry; and folio lock
+> +		 * guarantees that it must be of the wrong folio anyway.
+>  		 */
+> -		if (folio && folio != page_folio(pmd_page(*pmd)))
+> +		if (folio && (pmd_migration || folio != page_folio(pmd_page(*pmd))))
+>  			goto out;
+>  		__split_huge_pmd_locked(vma, pmd, range.start, freeze);
+>  	}
+> 
+> base-commit: 58485ff1a74f6c5be9e7c6aafb7293e4337348e7
+> -- 
+> 2.43.0
 
