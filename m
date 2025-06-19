@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-154762-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-154763-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C1184AE013E
-	for <lists+stable@lfdr.de>; Thu, 19 Jun 2025 11:08:51 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2EA14AE015D
+	for <lists+stable@lfdr.de>; Thu, 19 Jun 2025 11:11:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 757293B22E2
-	for <lists+stable@lfdr.de>; Thu, 19 Jun 2025 09:06:05 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id ABA0019E40AC
+	for <lists+stable@lfdr.de>; Thu, 19 Jun 2025 09:06:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D18D2820CD;
-	Thu, 19 Jun 2025 09:03:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E5CF28312C;
+	Thu, 19 Jun 2025 09:03:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="s24m5j8S"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tayEyLCc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F18A1281363
-	for <stable@vger.kernel.org>; Thu, 19 Jun 2025 09:03:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF329283126
+	for <stable@vger.kernel.org>; Thu, 19 Jun 2025 09:03:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750323792; cv=none; b=BDqP/rU+wIzTSsu22SzILm3iHVy92GdWhxDFYJCjqaKZc7AfeZoorWvgMPBT5RKFH+ah381X/+jERWSuGiARsmU4JVZPjDWCBdwCx2/h1+7JEQpSDyNkkYvOB7hinEUp687A4ZhRNUx8KKzMZtrj/wMbdzm8qpX7/ZGvFTRy0/0=
+	t=1750323794; cv=none; b=KJR+O3ZlCc3/UiBJtY6TxqLfgdn3WWNXNo+C0wDqOAMttEvwdmVHcOtZEdOCTQJt8J0Y3XKheltnaGagDmpxwlgZzbqWG89LfaBQavXt6Ef1dNuFbk2h3JayEgvXuLgvhgfGppQIRRJ8zQ/03L+y0TU+8KkQIQ1R+CPhpVtvX+s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750323792; c=relaxed/simple;
-	bh=JG3hiHiZgLVyT/V+xdkV90nibIJRRamZqu6NMhtSy7g=;
+	s=arc-20240116; t=1750323794; c=relaxed/simple;
+	bh=0h9gQcEG0UyuBxlI+g27zuLyFeXOprtyo8Ixko6WUsM=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=sNqVBfhOoK8BeMhes/+PY1fUoFtxEdFn7E+s/Ib7ZXKmum/mBGvdSMzZhdBGUEyLt3usA4Y5rMxf5Ebm7izjPzsnRnjeMi1Zf5Y57yjnfzcrKpVy7d7zUoz1sl5vDLQ/NhAyRyTEx5FU9//qlX757GZq51Y1+KbxRxOf0CUWNNk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=s24m5j8S; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66486C4CEEA;
-	Thu, 19 Jun 2025 09:03:11 +0000 (UTC)
+	 MIME-Version:Content-Type; b=F34l9wwMEW+rlVtOkkm0D/bwwTktN9dW07zbIFRUICHV927QaXr7okq92lT0g4huumlvSbMnv/OQPaF5gowsI/ekdMju5liXa3wUrzHUpULzXh4TZ9KeMKSRfJr8xpSCnYknGEf4fniVoxSSAwiDQARTmd5hXsJ8M6ZF7K4KQYw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tayEyLCc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 514EAC4CEF0;
+	Thu, 19 Jun 2025 09:03:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1750323791;
-	bh=JG3hiHiZgLVyT/V+xdkV90nibIJRRamZqu6NMhtSy7g=;
+	s=k20201202; t=1750323793;
+	bh=0h9gQcEG0UyuBxlI+g27zuLyFeXOprtyo8Ixko6WUsM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=s24m5j8SpdxuG1ck5c9Rrla5a4c1n8m2wQrt1pQ6gQyvFN9H/atVnWXDZjbRA8Uta
-	 xFe37mXLXi6QMTVavxi4D+gmIfK5f3RPS1qbo1KUIU1Vu3r85kYyr1dgIIbGKAXACN
-	 HxoHBFCGpxKGvbY7Ofor8egXhwqUBAILfTOsKQmcvbpGSdAfkrhI4/THc1jlB6bqYn
-	 1Z7g4//55qcPoFE+dBJ3J04N0VRsGWXP0lVFcTjOb6PXIUca0IrB4c8BdRaNhUaPEG
-	 e3MmyDwN4GH/DZbb1zeLPIKLihqr4XKSTLZpOHMLDqDHJWPBFMWHQ7bC/vzqWkaNHQ
-	 dc730jpudHMUg==
+	b=tayEyLCca/BlR8RF4SrUOxtTr9bDCUH87+2Nh9NHgNl//hl2/AfwbVt+LXqpjp0rc
+	 zYM8DOHjHSGHgpvJzD5lck6RCuKc8mQRYid2JRk/lzNPTGhkMf9kZgvkxKl4nGVb3B
+	 v5GekrAaToslZaVEE0PZsuuRmlU1uU4ybHnaNHzIvd1bVKVsE1EQze4jZWBvFmuAx9
+	 QTajwsXab1g1qcP+DVnEvPIdVVs8YEaTt8bNfpOXGQxtfpXpzI+x65R3gwfxF5E9OV
+	 2nx92TdX6hnfu7g/iE34KrT9OD6Ztg1cURl6XD7uSnfZUAX2BbdPsXrlLy6nRf+ynU
+	 n7kcce0k6Odig==
 From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 5.10 v2 08/16] x86/alternatives: Remove faulty optimization
-Date: Thu, 19 Jun 2025 05:03:10 -0400
-Message-Id: <20250618174718-f9be86a973410496@stable.kernel.org>
+To: stable@vger.kernel.org,
+	pawan.kumar.gupta@linux.intel.com
+Cc: Sasha Levin <sashal@kernel.org>
+Subject: Re: [PATCH 5.10 v2 10/16] x86/its: Fix undefined reference to cpu_wants_rethunk_at()
+Date: Thu, 19 Jun 2025 05:03:12 -0400
+Message-Id: <20250618181407-e453f543cb25ed9b@stable.kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To:  <20250617-its-5-10-v2-8-3e925a1512a1@linux.intel.com>
+In-Reply-To:  <20250617-its-5-10-v2-10-3e925a1512a1@linux.intel.com>
 References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -64,43 +64,14 @@ Content-Transfer-Encoding: 8bit
 
 Hi,
 
-✅ All tests passed successfully. No issues detected.
-No action required from the submitter.
+Summary of potential issues:
+ℹ️ This is part 10/16 of a series
+⚠️ Could not find matching upstream commit
 
-The upstream commit SHA1 provided is correct: 4ba89dd6ddeca2a733bdaed7c9a5cbe4e19d9124
+No upstream commit was identified. Using temporary commit for testing.
 
-WARNING: Author mismatch between patch and upstream commit:
-Backport author: Pawan Gupta<pawan.kumar.gupta@linux.intel.com>
-Commit author: Josh Poimboeuf<jpoimboe@kernel.org>
-
-Status in newer kernel trees:
-6.15.y | Present (exact SHA1)
-6.12.y | Present (exact SHA1)
-6.6.y | Present (exact SHA1)
-6.1.y | Present (different SHA1: 73c71762fe98)
-5.15.y | Present (different SHA1: 498afe80ce3e)
-
-Note: The patch differs from the upstream commit:
----
-1:  4ba89dd6ddeca ! 1:  8a0e833b52e48 x86/alternatives: Remove faulty optimization
-    @@ Metadata
-      ## Commit message ##
-         x86/alternatives: Remove faulty optimization
-     
-    +    commit 4ba89dd6ddeca2a733bdaed7c9a5cbe4e19d9124 upstream.
-    +
-         The following commit
-     
-           095b8303f383 ("x86/alternative: Make custom return thunk unconditional")
-    @@ Commit message
-         Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-         Acked-by: Borislav Petkov (AMD) <bp@alien8.de>
-         Link: https://lore.kernel.org/r/16d19d2249d4485d8380fb215ffaae81e6b8119e.1693889988.git.jpoimboe@kernel.org
-    +    Signed-off-by: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
-     
-      ## arch/x86/kernel/alternative.c ##
-     @@ arch/x86/kernel/alternative.c: void __init_or_module noinline apply_returns(s32 *start, s32 *end)
----
+NOTE: These results are for this patch alone. Full series testing will be
+performed when all parts are received.
 
 Results of testing on various branches:
 
