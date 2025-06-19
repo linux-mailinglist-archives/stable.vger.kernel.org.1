@@ -1,174 +1,184 @@
-Return-Path: <stable+bounces-154832-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-154833-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 491FFAE0EFD
-	for <lists+stable@lfdr.de>; Thu, 19 Jun 2025 23:22:13 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id DEA3FAE0F0F
+	for <lists+stable@lfdr.de>; Thu, 19 Jun 2025 23:38:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E2394174739
-	for <lists+stable@lfdr.de>; Thu, 19 Jun 2025 21:22:13 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6FB0117F9B8
+	for <lists+stable@lfdr.de>; Thu, 19 Jun 2025 21:38:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1DD2125B2E8;
-	Thu, 19 Jun 2025 21:22:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 818B225EF82;
+	Thu, 19 Jun 2025 21:38:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QB7oRRku"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YwkzE02N"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5C2623183B;
-	Thu, 19 Jun 2025 21:22:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 382A830E852;
+	Thu, 19 Jun 2025 21:38:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750368125; cv=none; b=oVJUAULnBOWuBLRoyNwf5wihv5EbZyt40q3JcXQmEXOv2ijZhcn3ZeZ8R47qTvr/cZqBHg6RmPVnbDPIOsfu57+St6DDH0qyBKwiBxfBLIBiFK3LymiUVMwElIjGVTR7T/UwX4ROdSyZZDYgUOFv9bp66hFZWTVJ5em7ecYRoW8=
+	t=1750369127; cv=none; b=Aw1o4qdw4Pd6aJHYXbJsf3qs/nmu9/rouaKzmZY+ecSl8ielMJMptxkGUb8Zx/jTbZqpMnesash6CvbJfgv7D07NYCDT+8WjHJRoHlWUhnpVlYya+3zGP2zGDeVRgVMF+phX4D6ctsE4P90UBTwBPjrQVIl74lU0FKXbpjv4LXA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750368125; c=relaxed/simple;
-	bh=pRuGfH2o8r29IBa31hoMcUPybgxpzd9xd7p/eTD4ucE=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=ajfDyKAHuaRzUKQc6AcoaiEvCieKEPULNL/tcPGH7NzyzPKxJrwn8QN7F4jnocAEd7pOQ3wLf55bIst3bw/IMhWzWMVHC21UOOUQlCv9R47ItpneOzWBwYZSSu/uv0s0WNqmYNBSSG88s7X1SyjliLhVdmOZ6qodL5bMFGV9XMw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QB7oRRku; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 6067EC4CEEA;
-	Thu, 19 Jun 2025 21:22:05 +0000 (UTC)
+	s=arc-20240116; t=1750369127; c=relaxed/simple;
+	bh=YNyiPSE7HZZ87s/g6MlC+lW8J3v+Jf82ttdx8O3KidQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Qel8n5Lx/xrCdXvVFdnNj7+VlHg80kFtpJuiJUx7JywpXhlSJQbAUramhqpCO8bzcJ4ekO5ANHZW73BOoWmFDKkgoFf94gAZrJ7MDEOkGXiWDkIaWqfT+Jk/03ZwzYuSbkTHWi5TYy9krZeC28+H+s2lzvtZe4XN6VQNt1CBCk0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YwkzE02N; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2979C4CEEA;
+	Thu, 19 Jun 2025 21:38:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1750368125;
-	bh=pRuGfH2o8r29IBa31hoMcUPybgxpzd9xd7p/eTD4ucE=;
-	h=From:Date:Subject:To:Cc:Reply-To:From;
-	b=QB7oRRkujF64rco7v1qJSFRQ2UuX/i+bueaLWm8EloYX302qLwPpi60nZiCv2LpFh
-	 b0DqWyUc3mEuw3RZ5fP0k0ZLuNKfRmR2LYyaXB8EPeBv+WVMwOFjx1XhLtP1o4bFPP
-	 3FOfOmk1krrwGqGFisNi5MS7IcHV2SKrsZi3KhXugevEAnx3eXu/tKqswkB3gXv+FW
-	 xWBRJVLKsq2YlDhKlDNPXktdimQm4ainjzAAQCooQvyiX9YpCm6mqHgUetK5UD+D2H
-	 EVFoVU5Jq3bwimQqxyCSK3QW0bFN3hi1SSClf6B+5loLFs5KHPbYZNDgC/Ulh/SSkm
-	 9VArDebKn7jQg==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 5626BC7115A;
-	Thu, 19 Jun 2025 21:22:05 +0000 (UTC)
-From: Dominique Martinet via B4 Relay <devnull+asmadeus.codewreck.org@kernel.org>
-Date: Fri, 20 Jun 2025 06:22:03 +0900
-Subject: [PATCH v2] net/9p: Fix buffer overflow in USB transport layer
+	s=k20201202; t=1750369125;
+	bh=YNyiPSE7HZZ87s/g6MlC+lW8J3v+Jf82ttdx8O3KidQ=;
+	h=From:To:Cc:Subject:Date:From;
+	b=YwkzE02Ne6Rlysam6Jyz+qemzG5r+V1TuUx4ounYzbzeyqx46cjJgNm1DUej0Xwrt
+	 /zVmG8tOJDFAvViQDBjgq2y8CivnOOo9R9y8IftYukwL9fhJfhX0b6YRtMPc3J8PHF
+	 qBx3LhsG3rrgnsT0jZdPE579j928l628WvRZJvrTMn4E8Ejkhpwtu5+/l45BwDGRZJ
+	 peX2qtqHxgPAUICAg3EvS9zZlxGhBxw0bJkdrKt1rg2bVHgAsoAAHxYnsSAU3peY1v
+	 +tER/KHTJErr69sUw30b6EYD506YY9KNS8bQVrfk1iLmFdmh5+VsaZmaCR7pcvIgyG
+	 MDgBSgxPjQJTQ==
+From: Mario Limonciello <superm1@kernel.org>
+To: mario.limonciello@amd.com,
+	andreas.noever@gmail.com,
+	michael.jamet@intel.com,
+	westeri@kernel.org,
+	YehezkelShB@gmail.com
+Cc: stable@vger.kernel.org,
+	Alexander Kovacs <Alexander.Kovacs@amd.com>,
+	mika.westerberg@linux.intel.com,
+	linux-usb@vger.kernel.org
+Subject: [PATCH v3] thunderbolt: Fix wake on connect at runtime
+Date: Thu, 19 Jun 2025 16:38:30 -0500
+Message-ID: <20250619213840.2388646-1-superm1@kernel.org>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250620-9p-usb_overflow-v2-1-026c6109c7a1@codewreck.org>
-X-B4-Tracking: v=1; b=H4sIAHp/VGgC/y2NWw6CMBQFt0LutyV90Cb45T4MMQVu4RqgpFXUk
- O7dSvyck5yZHSIGwgjnYoeAG0XySwZ5KqAb7TIgoz4zSC41N5KzemXP2N78hsFN/sWkbl2nsW7
- RKcivNaCj92G8NplHig8fPkdgE7/17xJGKKlVXRpVqYoJ1tuF4p1y9DLMlqay8zM0KaUvVTFZO
- 6UAAAA=
-X-Change-ID: 20250620-9p-usb_overflow-25bfc5e9bef3
-To: Eric Van Hensbergen <ericvh@kernel.org>, 
- Latchesar Ionkov <lucho@ionkov.net>, 
- Christian Schoenebeck <linux_oss@crudebyte.com>, 
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
- Michael Grzeschik <m.grzeschik@pengutronix.de>
-Cc: stable@vger.kernel.org, Yuhao Jiang <danisjiang@gmail.com>, 
- security@kernel.org, v9fs@lists.linux.dev, linux-kernel@vger.kernel.org, 
- Dominique Martinet <asmadeus@codewreck.org>
-X-Mailer: b4 0.15-dev-7be4f
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2874;
- i=asmadeus@codewreck.org; h=from:subject:message-id;
- bh=sd75KIQYdSHcNYSxHvOsd/ZrBkByS+On5VAz8Wg9id0=;
- b=owEBbQKS/ZANAwAKAatOm+xqmOZwAcsmYgBoVH98nfmseHzKhOwth426LG3xCNHGuKrMrPYIS
- 6knofnzWnuJAjMEAAEKAB0WIQT8g9txgG5a3TOhiE6rTpvsapjmcAUCaFR/fAAKCRCrTpvsapjm
- cKyeD/oCJfejbpmPwkb/cnIW8YPsRFbmsDmvntEQHaill6n6KcyQB3v3oKHUGopejHFtiUl8TYQ
- NToXHtB3AKIWS7xpi4nHpHT+0QBUKW8TADf4peHz6SC9Mtnz3tUGLcrDMEFEjOBz9z+dQMfzEXT
- cLulWcIkJfGJQzNr0WON4ekRHI/EH0KSETffLJ5uedpG15CJPSypltjzs2RYIBtHyYiR6rcfSx6
- /snUGfZrEbSz/XfTLB3LOdxrFPEk6Ue/lJ7i2A4ANJGxL9SNKoF7iOnzPBjqhvgENnn/XgWi1Td
- +eq24+g3eeygU8qsaYnmtRHZYGa9Tm6ea8a1yG7wBS234sgRNMOfKTjH5nbLmvTDM9uQrbYdb+W
- vMeOdDJfeTh9ebLmRxdHGBkdZvliQKm/l0uU6G/wJ8DRmprt+sun73E7h90Zd53/u39mH3kj/3i
- i1l2jIGgVbBCjbxa9Nhdo0cfQcv1EdYRviS7m5azPRYRwKrRxaVXEc0sx9ef3X/iYNpZiewb6J9
- hxTVpZIe+YgQ1CTyAUlMWpv79xb/B8Ondu6yAX83B1+bfoZlJCRoThx2jtyR10yNjvRg11gY4Bj
- EDmfB3Zd6juPxcftwIgFSKK8fE1WgtERblihLOmKiO7xz+qjINPl/nurkKs7eF+xY7Zju1y4GX0
- Vq4Nxjjs6kH9Neg==
-X-Developer-Key: i=asmadeus@codewreck.org; a=openpgp;
- fpr=B894379F662089525B3FB1B9333F1F391BBBB00A
-X-Endpoint-Received: by B4 Relay for asmadeus@codewreck.org/default with
- auth_id=435
-X-Original-From: Dominique Martinet <asmadeus@codewreck.org>
-Reply-To: asmadeus@codewreck.org
+Content-Transfer-Encoding: 8bit
 
-From: Dominique Martinet <asmadeus@codewreck.org>
+From: Mario Limonciello <mario.limonciello@amd.com>
 
-A buffer overflow vulnerability exists in the USB 9pfs transport layer
-where inconsistent size validation between packet header parsing and
-actual data copying allows a malicious USB host to overflow heap buffers.
+commit 1a760d10ded37 ("thunderbolt: Fix a logic error in wake on connect")
+fixated on the USB4 port sysfs wakeup file not working properly to control
+policy, but it had an unintended side effect that the sysfs file controls
+policy both at runtime and at suspend time. The sysfs file is supposed to
+only control behavior while system is suspended.
 
-The issue occurs because:
-- usb9pfs_rx_header() validates only the declared size in packet header
-- usb9pfs_rx_complete() uses req->actual (actual received bytes) for
-memcpy
+Pass whether programming a port for runtime into usb4_switch_set_wake()
+and if runtime then ignore the value in the sysfs file.
 
-This allows an attacker to craft packets with small declared size
-(bypassing validation) but large actual payload (triggering overflow
-in memcpy).
-
-Add validation in usb9pfs_rx_complete() to ensure req->actual does not
-exceed the buffer capacity before copying data.
-
-Reported-by: Yuhao Jiang <danisjiang@gmail.com>
-Closes: https://lkml.kernel.org/r/20250616132539.63434-1-danisjiang@gmail.com
-Fixes: a3be076dc174 ("net/9p/usbg: Add new usb gadget function transport")
 Cc: stable@vger.kernel.org
-Signed-off-by: Dominique Martinet <asmadeus@codewreck.org>
+Reported-by: Alexander Kovacs <Alexander.Kovacs@amd.com>
+Tested-by: Alexander Kovacs <Alexander.Kovacs@amd.com>
+Fixes: 1a760d10ded37 ("thunderbolt: Fix a logic error in wake on connect")
+Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
 ---
-Not actually tested, I'll try to find time to figure out how to run with
-qemu for real this time...
-
-Changes in v2:
-- run through p9_client_cb() on error
-- Link to v1: https://lore.kernel.org/r/20250616132539.63434-1-danisjiang@gmail.com
+v3:
+ * fix a suspend failure
+v2:
+ * Fix kdoc issue reported by lkp robot
 ---
- net/9p/trans_usbg.c | 16 +++++++++++++---
- 1 file changed, 13 insertions(+), 3 deletions(-)
+ drivers/thunderbolt/switch.c |  8 ++++----
+ drivers/thunderbolt/tb.h     |  2 +-
+ drivers/thunderbolt/usb4.c   | 12 +++++-------
+ 3 files changed, 10 insertions(+), 12 deletions(-)
 
-diff --git a/net/9p/trans_usbg.c b/net/9p/trans_usbg.c
-index 6b694f117aef296a66419fed5252305e7a1d0936..43078e0d4ca3f4063660f659d28452c81bef10b4 100644
---- a/net/9p/trans_usbg.c
-+++ b/net/9p/trans_usbg.c
-@@ -231,6 +231,8 @@ static void usb9pfs_rx_complete(struct usb_ep *ep, struct usb_request *req)
- 	struct f_usb9pfs *usb9pfs = ep->driver_data;
- 	struct usb_composite_dev *cdev = usb9pfs->function.config->cdev;
- 	struct p9_req_t *p9_rx_req;
-+	unsigned int req_size = req->actual;
-+	int status = REQ_STATUS_RCVD;
+diff --git a/drivers/thunderbolt/switch.c b/drivers/thunderbolt/switch.c
+index 28febb95f8fa1..e9809fb57c354 100644
+--- a/drivers/thunderbolt/switch.c
++++ b/drivers/thunderbolt/switch.c
+@@ -3437,7 +3437,7 @@ void tb_sw_set_unplugged(struct tb_switch *sw)
+ 	}
+ }
  
- 	if (req->status) {
- 		dev_err(&cdev->gadget->dev, "%s usb9pfs complete --> %d, %d/%d\n",
-@@ -242,11 +244,19 @@ static void usb9pfs_rx_complete(struct usb_ep *ep, struct usb_request *req)
- 	if (!p9_rx_req)
- 		return;
+-static int tb_switch_set_wake(struct tb_switch *sw, unsigned int flags)
++static int tb_switch_set_wake(struct tb_switch *sw, unsigned int flags, bool runtime)
+ {
+ 	if (flags)
+ 		tb_sw_dbg(sw, "enabling wakeup: %#x\n", flags);
+@@ -3445,7 +3445,7 @@ static int tb_switch_set_wake(struct tb_switch *sw, unsigned int flags)
+ 		tb_sw_dbg(sw, "disabling wakeup\n");
  
--	memcpy(p9_rx_req->rc.sdata, req->buf, req->actual);
-+	if (req_size > p9_rx_req->rc.capacity) {
-+		dev_err(&cdev->gadget->dev,
-+			"%s received data size %u exceeds buffer capacity %zu\n",
-+			ep->name, req_size, p9_rx_req->rc.capacity);
-+		req_size = 0;
-+		status = REQ_STATUS_ERROR;
-+	}
+ 	if (tb_switch_is_usb4(sw))
+-		return usb4_switch_set_wake(sw, flags);
++		return usb4_switch_set_wake(sw, flags, runtime);
+ 	return tb_lc_set_wake(sw, flags);
+ }
  
--	p9_rx_req->rc.size = req->actual;
-+	memcpy(p9_rx_req->rc.sdata, req->buf, req_size);
+@@ -3521,7 +3521,7 @@ int tb_switch_resume(struct tb_switch *sw, bool runtime)
+ 		tb_switch_check_wakes(sw);
  
--	p9_client_cb(usb9pfs->client, p9_rx_req, REQ_STATUS_RCVD);
-+	p9_rx_req->rc.size = req_sizel;
-+
-+	p9_client_cb(usb9pfs->client, p9_rx_req, status);
- 	p9_req_put(usb9pfs->client, p9_rx_req);
+ 	/* Disable wakes */
+-	tb_switch_set_wake(sw, 0);
++	tb_switch_set_wake(sw, 0, true);
  
- 	complete(&usb9pfs->received);
-
----
-base-commit: 74b4cc9b8780bfe8a3992c9ac0033bf22ac01f19
-change-id: 20250620-9p-usb_overflow-25bfc5e9bef3
-
-Best regards,
+ 	err = tb_switch_tmu_init(sw);
+ 	if (err)
+@@ -3603,7 +3603,7 @@ void tb_switch_suspend(struct tb_switch *sw, bool runtime)
+ 		flags |= TB_WAKE_ON_USB4 | TB_WAKE_ON_USB3 | TB_WAKE_ON_PCIE;
+ 	}
+ 
+-	tb_switch_set_wake(sw, flags);
++	tb_switch_set_wake(sw, flags, runtime);
+ 
+ 	if (tb_switch_is_usb4(sw))
+ 		usb4_switch_set_sleep(sw);
+diff --git a/drivers/thunderbolt/tb.h b/drivers/thunderbolt/tb.h
+index 87afd5a7c504b..f503bad864130 100644
+--- a/drivers/thunderbolt/tb.h
++++ b/drivers/thunderbolt/tb.h
+@@ -1317,7 +1317,7 @@ int usb4_switch_read_uid(struct tb_switch *sw, u64 *uid);
+ int usb4_switch_drom_read(struct tb_switch *sw, unsigned int address, void *buf,
+ 			  size_t size);
+ bool usb4_switch_lane_bonding_possible(struct tb_switch *sw);
+-int usb4_switch_set_wake(struct tb_switch *sw, unsigned int flags);
++int usb4_switch_set_wake(struct tb_switch *sw, unsigned int flags, bool runtime);
+ int usb4_switch_set_sleep(struct tb_switch *sw);
+ int usb4_switch_nvm_sector_size(struct tb_switch *sw);
+ int usb4_switch_nvm_read(struct tb_switch *sw, unsigned int address, void *buf,
+diff --git a/drivers/thunderbolt/usb4.c b/drivers/thunderbolt/usb4.c
+index fce3c0f2354a7..fdae76c8f728e 100644
+--- a/drivers/thunderbolt/usb4.c
++++ b/drivers/thunderbolt/usb4.c
+@@ -403,12 +403,12 @@ bool usb4_switch_lane_bonding_possible(struct tb_switch *sw)
+  * usb4_switch_set_wake() - Enabled/disable wake
+  * @sw: USB4 router
+  * @flags: Wakeup flags (%0 to disable)
++ * @runtime: Wake is being programmed during system runtime
+  *
+  * Enables/disables router to wake up from sleep.
+  */
+-int usb4_switch_set_wake(struct tb_switch *sw, unsigned int flags)
++int usb4_switch_set_wake(struct tb_switch *sw, unsigned int flags, bool runtime)
+ {
+-	struct usb4_port *usb4;
+ 	struct tb_port *port;
+ 	u64 route = tb_route(sw);
+ 	u32 val;
+@@ -438,13 +438,11 @@ int usb4_switch_set_wake(struct tb_switch *sw, unsigned int flags)
+ 			val |= PORT_CS_19_WOU4;
+ 		} else {
+ 			bool configured = val & PORT_CS_19_PC;
+-			usb4 = port->usb4;
++			bool wakeup = runtime || device_may_wakeup(&port->usb4->dev);
+ 
+-			if (((flags & TB_WAKE_ON_CONNECT) &&
+-			      device_may_wakeup(&usb4->dev)) && !configured)
++			if ((flags & TB_WAKE_ON_CONNECT) && wakeup && !configured)
+ 				val |= PORT_CS_19_WOC;
+-			if (((flags & TB_WAKE_ON_DISCONNECT) &&
+-			      device_may_wakeup(&usb4->dev)) && configured)
++			if ((flags & TB_WAKE_ON_DISCONNECT) && wakeup && configured)
+ 				val |= PORT_CS_19_WOD;
+ 			if ((flags & TB_WAKE_ON_USB4) && configured)
+ 				val |= PORT_CS_19_WOU4;
 -- 
-Dominique Martinet <asmadeus@codewreck.org>
-
+2.43.0
 
 
