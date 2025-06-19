@@ -1,111 +1,162 @@
-Return-Path: <stable+bounces-154780-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-154782-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1100FAE015F
-	for <lists+stable@lfdr.de>; Thu, 19 Jun 2025 11:11:06 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D5C7EAE01D3
+	for <lists+stable@lfdr.de>; Thu, 19 Jun 2025 11:38:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3DF7D5A4BF4
-	for <lists+stable@lfdr.de>; Thu, 19 Jun 2025 09:07:53 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C45711BC1E3B
+	for <lists+stable@lfdr.de>; Thu, 19 Jun 2025 09:38:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73263261398;
-	Thu, 19 Jun 2025 09:04:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2CEB61D9A54;
+	Thu, 19 Jun 2025 09:38:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Mm5Dacpa"
+	dkim=pass (1024-bit key) header.d=uniontech.com header.i=@uniontech.com header.b="Q41vX2XG"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from smtpbgeu2.qq.com (smtpbgeu2.qq.com [18.194.254.142])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3234221CC47
-	for <stable@vger.kernel.org>; Thu, 19 Jun 2025 09:04:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69CAA1E3DE8;
+	Thu, 19 Jun 2025 09:38:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=18.194.254.142
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750323876; cv=none; b=Ogi8OxeFcnPQVIl/GmV1UW7dUqOphZ91Ya2RzN59xvK/Z5y/B7bbe330GJjST0rl5IbKIk11SeHmTH8noEo0t+3iCdMhNtYgX8p7KpBlvjORUAyS6j09Gcfq/nn2brnwsyJmbS7XhHkmo62AHZUayfL9/+N3NXxyokWhfzQNBgU=
+	t=1750325910; cv=none; b=hlmlA/IGEu99EWaqz/q5HDin4+rIo6lvDH9LSvB9sI7OXWL141Q4F/YSISLA80EeN+nZhLhWWmW7den1khgtft2K2zU1A71T3wSzvoMxXfrRUZsge6JWEFP5CltB4u6D+kfm1f44+56+ziBsznqsdRMLCRoe3Yv3ROJ2+2cgaBE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750323876; c=relaxed/simple;
-	bh=dkit2ZYXbgVweklUWLai/ONQJjmdQOABgOry78WVfmQ=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ju41KNW3WSt+GMkthPwDnZbY1lXRIKch/aMaMfkCoEK3crV5WliS1jtwBkp8vJI4lO7NAOvbifzUCxLGqpWK2HyCpX4zxmWfo83DhQPOd6pc47wE97tyW9S/y1TSlT8LSugkgp2dzqdZ9w4ajSOEg8jhSgCGPfwFt+g40JdMPtg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Mm5Dacpa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B5AEC4CEED;
-	Thu, 19 Jun 2025 09:04:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1750323876;
-	bh=dkit2ZYXbgVweklUWLai/ONQJjmdQOABgOry78WVfmQ=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Mm5DacpaFh2I7jPz2H1IEZpnElCJMTH8iJo7eayoo5QJRbwEdCsE98U9kFDk3PTk8
-	 rGKy+4AgHQtcJTae8s2dSHugD4Sm1ThxlE22RzQewC6sjm36Y5N27DdQ7P6PJw0qPk
-	 pq4oAf1OizyBg9QlacWg2vCZ3ocSMLn3HmtKG/1E9w/Sq1R8uPnXUPvxlr0pXusxYL
-	 e0mJldBdTypnx6ABDy6Hj3wC+tjxsm7p4IzdwM+xUupM8lHQJpMw+h3MGtfRNATYe1
-	 T3pJ5oLpX2FiWdS7q3/L7z+U9adxmN5sj0bB7+iYJrJzVbTuvmo5UvP2ERpkDxR8+i
-	 EEtIMIPQxMHDw==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 5.10 v2 04/16] x86/alternatives: Introduce int3_emulate_jcc()
-Date: Thu, 19 Jun 2025 05:04:34 -0400
-Message-Id: <20250618171326-7e04c16dfa905279@stable.kernel.org>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To:  <20250617-its-5-10-v2-4-3e925a1512a1@linux.intel.com>
-References: 
+	s=arc-20240116; t=1750325910; c=relaxed/simple;
+	bh=zrMqYXcpt3+8hKWKWL9H+r6ZpkeEiXxfMbk+2N1urQk=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=B5tT289lxua3NgIAlDBS60iQSoXC5AgBg0zhFXflI/fXpKjVEumfGg751e2hpgUu99TspMHB9bNVnWdZJKwAw+/oMxY/3HXhURzHzRaUrRb+ukRJVcpflNEL1lLSS2qJ1BCeNLDy9zwK7rb80jySOHJDtcMWbEujokrabOiGunA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniontech.com; spf=pass smtp.mailfrom=uniontech.com; dkim=pass (1024-bit key) header.d=uniontech.com header.i=@uniontech.com header.b=Q41vX2XG; arc=none smtp.client-ip=18.194.254.142
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniontech.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=uniontech.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=uniontech.com;
+	s=onoh2408; t=1750325856;
+	bh=oAEDq5dDKcnnS2/NFb3lJLZSim6PZMNBCCc44x/tKTk=;
+	h=From:To:Subject:Date:Message-ID:MIME-Version;
+	b=Q41vX2XG1nUzOByycrqcBvAMn/vPcQAvh4uFnptMR1XtJKRcvdYKHRL0Zu7GvnTGi
+	 t1Dk8EAPmsZNeortwavqiRZpopaeF9TSRFu/FjmjlLP5Gy+nqL2ARMYed4IlY7pz9i
+	 u/vH6h2FGU68JWeqp5PGoXbUDCINfHMkRRreAXXs=
+X-QQ-mid: zesmtpip3t1750325846ta1212646
+X-QQ-Originating-IP: cPfN9IJ3VtsMCBPFjOYSeIoL7AU/sGrgpJdMxuk/5Fg=
+Received: from avenger-e500 ( [localhost])
+	by bizesmtp.qq.com (ESMTP) with 
+	id ; Thu, 19 Jun 2025 17:37:24 +0800 (CST)
+X-QQ-SSF: 0000000000000000000000000000000
+X-QQ-GoodBg: 1
+X-BIZMAIL-ID: 6388095992895865980
+EX-QQ-RecipientCnt: 12
+From: WangYuli <wangyuli@uniontech.com>
+To: gregkh@linuxfoundation.org,
+	sashal@kernel.org,
+	stable@vger.kernel.org
+Cc: tangchengchang@huawei.com,
+	huangjunxian6@hisilicon.com,
+	jgg@ziepe.ca,
+	leon@kernel.org,
+	linux-rdma@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Chen Linxuan <chenlinxuan@uniontech.com>,
+	Winston Wen <wentao@uniontech.com>,
+	WangYuli <wangyuli@uniontech.com>
+Subject: [PATCH 6.12/6.15] RDMA/hns: initialize db in update_srq_db()
+Date: Thu, 19 Jun 2025 17:37:19 +0800
+Message-ID: <3FDAD147897E51E6+20250619093719.90186-1-wangyuli@uniontech.com>
+X-Mailer: git-send-email 2.50.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+X-QQ-SENDSIZE: 520
+Feedback-ID: zesmtpip:uniontech.com:qybglogicsvrgz:qybglogicsvrgz8a-1
+X-QQ-XMAILINFO: MAMW4dxoxFythkLOmcE2IVooIkFLNl2vqZWLXB/0YFDTYFWT2T4TkzGd
+	loMUW0PDHaWTvSuWPyLssjMULuQl+3Oufspl0q3n7du8kFru0FPrA83A/D5cMuCBuTz6ex5
+	OnlBF3lLtJ8B/B/gnlESEobiq+J/cd2durlac0OPt5AxIZW1+QSGxDFmzetEgogQ3PgldI4
+	jubRl8FOnNVt95k8MahauTmNjJ98grAp+UCvh0nvjGVrwdw+qx4ZI3hJAm4rcplRpo5cmPd
+	zsF7HCFWgnWadMAjstXej7qt0CelCDtIbyE7ROo0QsyjYokcgoq/Ezq6SQujGaCdMPWF7gA
+	T1409n+UhIEinTp8zIVbSJ5mf0PJmMEWbDRsQte+TkemLLhefFzydwEApwV0KI3Ba6dgd64
+	jyuRg5qyO43Bn/uP+YmdFqjy4lFKomwPdqGM5xomEZy1nnUsq8qV2Uxy9K6m+Nl8oM5uSfq
+	P0YSTpO7QUxlun/6JTqlz4TrLNF9VCCdyN9ZevjHqrpSBssJCR6J2c9mUYDYb8CMdxU4ytS
+	6OG4I4/KXzyD94n21cd0TqkPxOzdgiQVenXN3RWJ38qEvrjeocP2IMewYfyY5Gw9zRHo+Bk
+	Q5GwNozIWKxjQgZrqmoClUrJZfEm8Wnmd1ruhdcBL/jmrPJRfXAeibbZHKCdm8yIN+0UI6G
+	JFaiCPLMrlrHGkg6iAgAvfzfZ32FFYYmV6UOtANPJOT02BoQsEBGSVVgBS00eQRjcO0Q1pd
+	sgye5Lh1YhLjKYUVxX2Hdek7Unag5cky3zKFIPIv4BgjNByvXlXz/7JuydrluJaBh3IEJwQ
+	28noT7PAAS3+4U6zT+0uPKeDxYPmVJTVuW5jFGt1HCiFf1o+5fNe2xKWHFVshpaQMrrxLtS
+	Hdx4BrResuMnubSmB6djdGyxMV7Uz9313agc52KiV75a+5HLiONN7NmlaGGyqD5Ui0fNyV0
+	Jp7R1qa59YMCkz5iBNN7OB4VYhQ9F+xnb8yHxgoqlEjvqX7EYmIABHvnlfA6wtWw4DuWHUU
+	QTlz4pDo9hIa656+5vHg6vGCsAyRAIqRmnYhjwcAEpmyxMXhTNwOBgBMVgTIo=
+X-QQ-XMRINFO: NI4Ajvh11aEj8Xl/2s1/T8w=
+X-QQ-RECHKSPAM: 0
 
-[ Sasha's backport helper bot ]
+From: Chen Linxuan <chenlinxuan@uniontech.com>
 
-Hi,
+[ Upstream commit ffe1cee21f8b533ae27c3a31bfa56b8c1b27fa6e ]
 
-✅ All tests passed successfully. No issues detected.
-No action required from the submitter.
+On x86_64 with gcc version 13.3.0, I compile
+drivers/infiniband/hw/hns/hns_roce_hw_v2.c with:
 
-The upstream commit SHA1 provided is correct: db7adcfd1cec4e95155e37bc066fddab302c6340
+  make defconfig
+  ./scripts/kconfig/merge_config.sh .config <(
+    echo CONFIG_COMPILE_TEST=y
+    echo CONFIG_HNS3=m
+    echo CONFIG_INFINIBAND=m
+    echo CONFIG_INFINIBAND_HNS_HIP08=m
+  )
+  make KCFLAGS="-fno-inline-small-functions -fno-inline-functions-called-once" \
+    drivers/infiniband/hw/hns/hns_roce_hw_v2.o
 
-WARNING: Author mismatch between patch and upstream commit:
-Backport author: Pawan Gupta<pawan.kumar.gupta@linux.intel.com>
-Commit author: Peter Zijlstra<peterz@infradead.org>
+Then I get a compile error:
 
-Status in newer kernel trees:
-6.15.y | Present (exact SHA1)
-6.12.y | Present (exact SHA1)
-6.6.y | Present (exact SHA1)
-6.1.y | Present (different SHA1: 75c066485bcb)
-5.15.y | Present (different SHA1: f4ba357b0739)
+    CALL    scripts/checksyscalls.sh
+    DESCEND objtool
+    INSTALL libsubcmd_headers
+    CC [M]  drivers/infiniband/hw/hns/hns_roce_hw_v2.o
+  In file included from drivers/infiniband/hw/hns/hns_roce_hw_v2.c:47:
+  drivers/infiniband/hw/hns/hns_roce_hw_v2.c: In function 'update_srq_db':
+  drivers/infiniband/hw/hns/hns_roce_common.h:74:17: error: 'db' is used uninitialized [-Werror=uninitialized]
+     74 |                 *((__le32 *)_ptr + (field_h) / 32) &=                          \
+        |                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  drivers/infiniband/hw/hns/hns_roce_common.h:90:17: note: in expansion of macro '_hr_reg_clear'
+     90 |                 _hr_reg_clear(ptr, field_type, field_h, field_l);              \
+        |                 ^~~~~~~~~~~~~
+  drivers/infiniband/hw/hns/hns_roce_common.h:95:39: note: in expansion of macro '_hr_reg_write'
+     95 | #define hr_reg_write(ptr, field, val) _hr_reg_write(ptr, field, val)
+        |                                       ^~~~~~~~~~~~~
+  drivers/infiniband/hw/hns/hns_roce_hw_v2.c:948:9: note: in expansion of macro 'hr_reg_write'
+    948 |         hr_reg_write(&db, DB_TAG, srq->srqn);
+        |         ^~~~~~~~~~~~
+  drivers/infiniband/hw/hns/hns_roce_hw_v2.c:946:31: note: 'db' declared here
+    946 |         struct hns_roce_v2_db db;
+        |                               ^~
+  cc1: all warnings being treated as errors
 
-Note: The patch differs from the upstream commit:
+Signed-off-by: Chen Linxuan <chenlinxuan@uniontech.com>
+Co-developed-by: Winston Wen <wentao@uniontech.com>
+Signed-off-by: Winston Wen <wentao@uniontech.com>
+Link: https://patch.msgid.link/FF922C77946229B6+20250411105459.90782-5-chenlinxuan@uniontech.com
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Signed-off-by: WangYuli <wangyuli@uniontech.com>
 ---
-1:  db7adcfd1cec4 ! 1:  fd965993ed457 x86/alternatives: Introduce int3_emulate_jcc()
-    @@ Metadata
-      ## Commit message ##
-         x86/alternatives: Introduce int3_emulate_jcc()
-     
-    +    commit db7adcfd1cec4e95155e37bc066fddab302c6340 upstream.
-    +
-         Move the kprobe Jcc emulation into int3_emulate_jcc() so it can be
-         used by more code -- specifically static_call() will need this.
-     
-    @@ Commit message
-         Signed-off-by: Ingo Molnar <mingo@kernel.org>
-         Reviewed-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-         Link: https://lore.kernel.org/r/20230123210607.057678245@infradead.org
-    +    Signed-off-by: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
-    +    Signed-off-by: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
-     
-      ## arch/x86/include/asm/text-patching.h ##
-     @@ arch/x86/include/asm/text-patching.h: void int3_emulate_ret(struct pt_regs *regs)
----
+ drivers/infiniband/hw/hns/hns_roce_hw_v2.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Results of testing on various branches:
+diff --git a/drivers/infiniband/hw/hns/hns_roce_hw_v2.c b/drivers/infiniband/hw/hns/hns_roce_hw_v2.c
+index 160e8927d364..afd2ea6da3ee 100644
+--- a/drivers/infiniband/hw/hns/hns_roce_hw_v2.c
++++ b/drivers/infiniband/hw/hns/hns_roce_hw_v2.c
+@@ -943,7 +943,7 @@ static void fill_wqe_idx(struct hns_roce_srq *srq, unsigned int wqe_idx)
+ static void update_srq_db(struct hns_roce_srq *srq)
+ {
+ 	struct hns_roce_dev *hr_dev = to_hr_dev(srq->ibsrq.device);
+-	struct hns_roce_v2_db db;
++	struct hns_roce_v2_db db = {};
+ 
+ 	hr_reg_write(&db, DB_TAG, srq->srqn);
+ 	hr_reg_write(&db, DB_CMD, HNS_ROCE_V2_SRQ_DB);
+-- 
+2.50.0
 
-| Branch                    | Patch Apply | Build Test |
-|---------------------------|-------------|------------|
-| stable/linux-5.15.y       |  Success    |  Success   |
 
