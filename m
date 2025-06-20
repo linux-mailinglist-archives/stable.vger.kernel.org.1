@@ -1,53 +1,55 @@
-Return-Path: <stable+bounces-155171-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-155172-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F04BAE1F9F
-	for <lists+stable@lfdr.de>; Fri, 20 Jun 2025 17:59:33 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D49BAE1FBB
+	for <lists+stable@lfdr.de>; Fri, 20 Jun 2025 18:03:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A71F53A7003
-	for <lists+stable@lfdr.de>; Fri, 20 Jun 2025 15:56:33 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 26C53188A15E
+	for <lists+stable@lfdr.de>; Fri, 20 Jun 2025 16:04:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 195C62DE1F0;
-	Fri, 20 Jun 2025 15:56:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA5C72DF3D1;
+	Fri, 20 Jun 2025 16:03:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d4YiHGwm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="B4zdrCfG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CAC9C266568
-	for <stable@vger.kernel.org>; Fri, 20 Jun 2025 15:56:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7238D27E06D;
+	Fri, 20 Jun 2025 16:03:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750435000; cv=none; b=hWFzvr/79Fw4LJ18INOOtSC4PoMAK/K0M+2jXMi6GCwqlJWoBp5QvUKQukufr/KwqHQcdDrG+Ocjx6qTFyH8f97kVJiC1H6qSX9sYLSWwwVkbfHt3PGChanX/Zo1rnpgwSuxeLlMyO7CZi4AMn5/Y+ZZieIwsdJamDFwSN1BcLc=
+	t=1750435418; cv=none; b=fGMht01APo/Cl+GrgMxd2P0kJv7Ii2DqOxnKBf2A8u9iXH6uGaGOcTMDoiy3wH0uKWn5FuZfW7fbKIXxwgGIi7XhjuRVpttE1nr+sdoge1CumHmAEP4CbZcFL7Ps+Vt4rwHgtai3JMpmTYXgm8hgi/64paVCSfpzPqP9Ow+ncRY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750435000; c=relaxed/simple;
-	bh=JLIbgog59+Bv50aT29vJWh/SP7kLQ9wCkIO6oo9pn8A=;
+	s=arc-20240116; t=1750435418; c=relaxed/simple;
+	bh=Iequzwi+86n8dGQZFXVLDHKK6EnZSLS9t8ckcL1gxys=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Xl088oevUITdlfvpQE6n8mEVfdX37CgLAhqT4/11hJ/iIbphjGFfdNniokzjjXfnWDehTSZIEg4vB9+2Q3rZkxoCOMBf9mVaTvqlssglt7Ey8kxxx1+j/idg65s606zmW940k5yT4qzbEBSlWGU817hIIaWDoA+XDPG7lWxt2JQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d4YiHGwm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA7B8C4CEE3;
-	Fri, 20 Jun 2025 15:56:39 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=oIGlQqetToPoSCTZ9XCVEcPR+V2fupftsi1nW+rG24D7HPBkT3qAU0/lB+6FIsArCZvk3YXlL6kNJzPhy4Tr1ZpXW3qeqkV3jvuxAVAykXE3rQ0PS3SKjc18uxuid7tO1kBOUTPDNuICkxOfMN2QSKRKjuTAfZ6Mlf4waV3uR2U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=B4zdrCfG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 921DEC4CEEF;
+	Fri, 20 Jun 2025 16:03:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750435000;
-	bh=JLIbgog59+Bv50aT29vJWh/SP7kLQ9wCkIO6oo9pn8A=;
+	s=korg; t=1750435416;
+	bh=Iequzwi+86n8dGQZFXVLDHKK6EnZSLS9t8ckcL1gxys=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=d4YiHGwmuXEZbHKLt/BxUhyrWF3LrTA0y1VVVzlHq1eTotPlWh4wP6aZLwri+Fx3n
-	 +0HdC98JXeGzE4+pfL+5m8ewkA6E3Y0pM0SBPH7sl0flFg/DS0VdD8JMYFbWjOxQrg
-	 C3ch1lpcT/fvX9ACIomJ96PRZwL3BVwJEMJ8YMLE=
-Date: Fri, 20 Jun 2025 17:56:29 +0200
+	b=B4zdrCfGKoiybDB/pZLmCg19Acjg8LDr8mbquX9IbSLht6b38zcqMYhdvRGBuqVwW
+	 xGBcE8uv1mF7isxO7y9/OQhzodL+NfhcW5q3NPBhFPexiVja60bQQdqWok0PCCcJUn
+	 q4nVEZqn/wfxqyJG/MqZIw7WTI3MVTDGs/w1zbJ0=
+Date: Fri, 20 Jun 2025 18:03:34 +0200
 From: Greg KH <gregkh@linuxfoundation.org>
-To: Ben Hutchings <ben@decadent.org.uk>
-Cc: stable <stable@vger.kernel.org>,
-	"Chang S. Bae" <chang.seok.bae@intel.com>,
-	Ingo Molnar <mingo@kernel.org>, Larry Wei <larryw3i@yeah.net>,
-	1103397@bugs.debian.org
-Subject: Re: [stable 6.12+] x86/pkeys: Simplify PKRU update in signal frame
-Message-ID: <2025062022-upchuck-headless-0475@gregkh>
-References: <103664a92055a889a08cfc7bbe30084c6cb96eda.camel@decadent.org.uk>
+To: WangYuli <wangyuli@uniontech.com>
+Cc: sashal@kernel.org, stable@vger.kernel.org, johannes@sipsolutions.net,
+	linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
+	Edward Adam Davis <eadavis@qq.com>,
+	syzbot+aaf0488c83d1d5f4f029@syzkaller.appspotmail.com,
+	Johannes Berg <johannes.berg@intel.com>
+Subject: Re: [PATCH 6.1/6.6] wifi: cfg80211: init wiphy_work before
+ allocating rfkill fails
+Message-ID: <2025062021-omen-charger-a00b@gregkh>
+References: <A203ED8C00632F28+20250620031949.227937-1-wangyuli@uniontech.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -56,19 +58,16 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <103664a92055a889a08cfc7bbe30084c6cb96eda.camel@decadent.org.uk>
+In-Reply-To: <A203ED8C00632F28+20250620031949.227937-1-wangyuli@uniontech.com>
 
-On Sun, Jun 15, 2025 at 09:25:57PM +0200, Ben Hutchings wrote:
-> Hi stable maintainers,
+On Fri, Jun 20, 2025 at 11:19:49AM +0800, WangYuli wrote:
+> From: Edward Adam Davis <eadavis@qq.com>
 > 
-> Please apply commit d1e420772cd1 ("x86/pkeys: Simplify PKRU update in
-> signal frame") to the stable branches for 6.12 and later.
-> 
-> This fixes a regression introduced in 6.13 by commit ae6012d72fa6
-> ("x86/pkeys: Ensure updated PKRU value is XRSTOR'd"), which was also
-> backported in 6.12.5.
+> [ Upstream commit fc88dee89d7b63eeb17699393eb659aadf9d9b7c ]
 
-Now queued up, thanks.
+What about 6.12.y?  Why forget that kernel?
+
+confused,
 
 greg k-h
 
