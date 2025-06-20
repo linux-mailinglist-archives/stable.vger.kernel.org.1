@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-154979-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-154981-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8562EAE1599
-	for <lists+stable@lfdr.de>; Fri, 20 Jun 2025 10:14:04 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EB748AE159A
+	for <lists+stable@lfdr.de>; Fri, 20 Jun 2025 10:14:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AC29C188A9D8
-	for <lists+stable@lfdr.de>; Fri, 20 Jun 2025 08:14:10 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CCD1C7A6F87
+	for <lists+stable@lfdr.de>; Fri, 20 Jun 2025 08:12:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4FBDB2356A3;
-	Fri, 20 Jun 2025 08:12:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A053923497B;
+	Fri, 20 Jun 2025 08:12:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ivbM0F5l"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sbkS7SP5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F69623497B
-	for <stable@vger.kernel.org>; Fri, 20 Jun 2025 08:12:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E9A423498F
+	for <stable@vger.kernel.org>; Fri, 20 Jun 2025 08:12:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750407145; cv=none; b=JijF4TEocOrQNUh6mrevubjgmNzf9E/etNVhL5FFXX1G3cOHnCmRJYRiJmA4SAI6t8da/Z8lcmt3TXwr6cq0ZrdMFtwpwUHKZaKfGzkubuyKUhtGHo9YMhko3eZbrQjcDJ7ktVM9Wzt8Ol8QSp9+OYrU7j2W4jahQddUBcvfud4=
+	t=1750407162; cv=none; b=SMAF/EUg94dBtQpsSJOxTz1v8RD2ctp/KWssAqA8yzrSUVpM1IVMt/iLoDzQ7bChsroQlbSS5gkEp1nzcKs0xhEDuL7ZYlysqTNT5lnWdRwPR065K+AaKhsvL+FVP31fJUahIDhNamWFudIgeqj6YtuzWqllN4polpiFIrOX4sU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750407145; c=relaxed/simple;
-	bh=rAk7kxCBqpi2CQ4AAffmiZpbm46QmS/4QAZJ42oBvz8=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=qhKgnFIPSdyoLzJ+mAsPni4/JxUvGhCJKvTZ6KPs8YaFZUiQqEHWZJv1Kunz9LJ4ptAkSI97endeTdivrUeKfYACOCwWz2Yje68Q9EUDYHGevDgKLDhu5LxdEGzEcAxDAN/1nM2pn2M5rJsKLlI7GIHnvyl33Puwk9WK5fxgz28=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ivbM0F5l; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76A6CC4CEE3;
-	Fri, 20 Jun 2025 08:12:24 +0000 (UTC)
+	s=arc-20240116; t=1750407162; c=relaxed/simple;
+	bh=CQgckVbHpK4nypnAkJ0ZIbhd5g59j3Sv/mLoSpJA/I8=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=YrFZJJgvr+UhT5AT//Tvp+OZ8AD2UxN1a0xRU316yJsCYvmcshvOcKvRvcxSA37C/fR61tI/l/X820dFwNySBkstBRLH8SKftM7R1+9G3I0idGpyXbKGS1P/+dQSDfh9q6DZI9BKTYNT+/Q/C7zEkW3ORfCqIiW893bv+bw9I2c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sbkS7SP5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 853B9C4CEE3;
+	Fri, 20 Jun 2025 08:12:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750407144;
-	bh=rAk7kxCBqpi2CQ4AAffmiZpbm46QmS/4QAZJ42oBvz8=;
+	s=korg; t=1750407161;
+	bh=CQgckVbHpK4nypnAkJ0ZIbhd5g59j3Sv/mLoSpJA/I8=;
 	h=Subject:To:Cc:From:Date:From;
-	b=ivbM0F5l9a12RSuhff5lQSXSmpPDQ4xb1o72W9XRrp2ZttdWpK2m9Q5Q/QoINdG0W
-	 KgPoE4KSsa+z1xKUnXqgFdUN+tPBGP9SAWtknF5S7oRqUBcfOkFORNadFh/R7sBEaa
-	 B9xSbgVdG4hq07484L+Ges6DQ6vNiInAATIIFKE0=
-Subject: FAILED: patch "[PATCH] ASoC: codecs: wcd9335: Fix missing free of regulator supplies" failed to apply to 5.4-stable tree
-To: krzysztof.kozlowski@linaro.org,broonie@kernel.org
+	b=sbkS7SP556GYqyYhtEn8xAKUAZxLMFAYLv2NUNEgMuCobAzC1P2KjPShEFbjOK+5F
+	 dEMRLN/pv2hg26V5bv7vWkPd3gYQBKVbiVV7DtWJldbaUg7JxISq7F30n6NbCEq7gd
+	 fYjM7WETHIzYSQtFcDFD+9PIAnS8NtJBWYbSsW6g=
+Subject: FAILED: patch "[PATCH] bus: mhi: ep: Update read pointer only after buffer is" failed to apply to 6.1-stable tree
+To: quic_sumk@quicinc.com,jeff.hugo@oss.qualcomm.com,krishna.chundru@oss.qualcomm.com,manivannan.sadhasivam@linaro.org,quic_yabdulra@quicinc.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Fri, 20 Jun 2025 10:12:09 +0200
-Message-ID: <2025062009-giblet-startling-04da@gregkh>
+Date: Fri, 20 Jun 2025 10:12:38 +0200
+Message-ID: <2025062038-browbeat-unusable-6825@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.4-stable tree.
+The patch below does not apply to the 6.1-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
 git checkout FETCH_HEAD
-git cherry-pick -x 9079db287fc3e38e040b0edeb0a25770bb679c8e
+git cherry-pick -x 6f18d174b73d0ceeaa341f46c0986436b3aefc9a
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025062009-giblet-startling-04da@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025062038-browbeat-unusable-6825@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
 
 Possible dependencies:
 
@@ -77,82 +77,65 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 9079db287fc3e38e040b0edeb0a25770bb679c8e Mon Sep 17 00:00:00 2001
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Date: Mon, 26 May 2025 11:47:01 +0200
-Subject: [PATCH] ASoC: codecs: wcd9335: Fix missing free of regulator supplies
+From 6f18d174b73d0ceeaa341f46c0986436b3aefc9a Mon Sep 17 00:00:00 2001
+From: Sumit Kumar <quic_sumk@quicinc.com>
+Date: Wed, 9 Apr 2025 16:17:43 +0530
+Subject: [PATCH] bus: mhi: ep: Update read pointer only after buffer is
+ written
 
-Driver gets and enables all regulator supplies in probe path
-(wcd9335_parse_dt() and wcd9335_power_on_reset()), but does not cleanup
-in final error paths and in unbind (missing remove() callback).  This
-leads to leaked memory and unbalanced regulator enable count during
-probe errors or unbind.
+Inside mhi_ep_ring_add_element, the read pointer (rd_offset) is updated
+before the buffer is written, potentially causing race conditions where
+the host sees an updated read pointer before the buffer is actually
+written. Updating rd_offset prematurely can lead to the host accessing
+an uninitialized or incomplete element, resulting in data corruption.
 
-Fix this by converting entire code into devm_regulator_bulk_get_enable()
-which also greatly simplifies the code.
+Invoke the buffer write before updating rd_offset to ensure the element
+is fully written before signaling its availability.
 
-Fixes: 20aedafdf492 ("ASoC: wcd9335: add support to wcd9335 codec")
-Cc: stable@vger.kernel.org
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Link: https://patch.msgid.link/20250526-b4-b4-asoc-wcd9395-vdd-px-fixes-v1-1-0b8a2993b7d3@linaro.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: bbdcba57a1a2 ("bus: mhi: ep: Add support for ring management")
+cc: stable@vger.kernel.org
+Co-developed-by: Youssef Samir <quic_yabdulra@quicinc.com>
+Signed-off-by: Youssef Samir <quic_yabdulra@quicinc.com>
+Signed-off-by: Sumit Kumar <quic_sumk@quicinc.com>
+Reviewed-by: Jeff Hugo <jeff.hugo@oss.qualcomm.com>
+Reviewed-by: Krishna Chaitanya Chundru <krishna.chundru@oss.qualcomm.com>
+Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Link: https://patch.msgid.link/20250409-rp_fix-v1-1-8cf1fa22ed28@quicinc.com
+Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
 
-diff --git a/sound/soc/codecs/wcd9335.c b/sound/soc/codecs/wcd9335.c
-index 8ee4360aff92..5e19e813748d 100644
---- a/sound/soc/codecs/wcd9335.c
-+++ b/sound/soc/codecs/wcd9335.c
-@@ -332,7 +332,6 @@ struct wcd9335_codec {
+diff --git a/drivers/bus/mhi/ep/ring.c b/drivers/bus/mhi/ep/ring.c
+index aeb53b2c34a8..26357ee68dee 100644
+--- a/drivers/bus/mhi/ep/ring.c
++++ b/drivers/bus/mhi/ep/ring.c
+@@ -131,19 +131,23 @@ int mhi_ep_ring_add_element(struct mhi_ep_ring *ring, struct mhi_ring_element *e
+ 	}
  
- 	int intr1;
- 	struct gpio_desc *reset_gpio;
--	struct regulator_bulk_data supplies[WCD9335_MAX_SUPPLY];
+ 	old_offset = ring->rd_offset;
+-	mhi_ep_ring_inc_index(ring);
  
- 	unsigned int rx_port_value[WCD9335_RX_MAX];
- 	unsigned int tx_port_value[WCD9335_TX_MAX];
-@@ -355,6 +354,10 @@ struct wcd9335_irq {
- 	char *name;
- };
- 
-+static const char * const wcd9335_supplies[] = {
-+	"vdd-buck", "vdd-buck-sido", "vdd-tx", "vdd-rx", "vdd-io",
-+};
+ 	dev_dbg(dev, "Adding an element to ring at offset (%zu)\n", ring->rd_offset);
++	buf_info.host_addr = ring->rbase + (old_offset * sizeof(*el));
++	buf_info.dev_addr = el;
++	buf_info.size = sizeof(*el);
 +
- static const struct wcd9335_slim_ch wcd9335_tx_chs[WCD9335_TX_MAX] = {
- 	WCD9335_SLIM_TX_CH(0),
- 	WCD9335_SLIM_TX_CH(1),
-@@ -4989,30 +4992,16 @@ static int wcd9335_parse_dt(struct wcd9335_codec *wcd)
- 	if (IS_ERR(wcd->native_clk))
- 		return dev_err_probe(dev, PTR_ERR(wcd->native_clk), "slimbus clock not found\n");
++	ret = mhi_cntrl->write_sync(mhi_cntrl, &buf_info);
++	if (ret)
++		return ret;
++
++	mhi_ep_ring_inc_index(ring);
  
--	wcd->supplies[0].supply = "vdd-buck";
--	wcd->supplies[1].supply = "vdd-buck-sido";
--	wcd->supplies[2].supply = "vdd-tx";
--	wcd->supplies[3].supply = "vdd-rx";
--	wcd->supplies[4].supply = "vdd-io";
+ 	/* Update rp in ring context */
+ 	rp = cpu_to_le64(ring->rd_offset * sizeof(*el) + ring->rbase);
+ 	memcpy_toio((void __iomem *) &ring->ring_ctx->generic.rp, &rp, sizeof(u64));
+ 
+-	buf_info.host_addr = ring->rbase + (old_offset * sizeof(*el));
+-	buf_info.dev_addr = el;
+-	buf_info.size = sizeof(*el);
 -
--	ret = regulator_bulk_get(dev, WCD9335_MAX_SUPPLY, wcd->supplies);
-+	ret = devm_regulator_bulk_get_enable(dev, ARRAY_SIZE(wcd9335_supplies),
-+					     wcd9335_supplies);
- 	if (ret)
--		return dev_err_probe(dev, ret, "Failed to get supplies\n");
-+		return dev_err_probe(dev, ret, "Failed to get and enable supplies\n");
- 
- 	return 0;
+-	return mhi_cntrl->write_sync(mhi_cntrl, &buf_info);
++	return ret;
  }
  
- static int wcd9335_power_on_reset(struct wcd9335_codec *wcd)
- {
--	struct device *dev = wcd->dev;
--	int ret;
--
--	ret = regulator_bulk_enable(WCD9335_MAX_SUPPLY, wcd->supplies);
--	if (ret) {
--		dev_err(dev, "Failed to get supplies: err = %d\n", ret);
--		return ret;
--	}
--
- 	/*
- 	 * For WCD9335, it takes about 600us for the Vout_A and
- 	 * Vout_D to be ready after BUCK_SIDO is powered up.
+ void mhi_ep_ring_init(struct mhi_ep_ring *ring, enum mhi_ep_ring_type type, u32 id)
 
 
