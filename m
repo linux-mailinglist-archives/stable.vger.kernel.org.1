@@ -1,199 +1,192 @@
-Return-Path: <stable+bounces-155130-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-155131-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 33A95AE1CA6
-	for <lists+stable@lfdr.de>; Fri, 20 Jun 2025 15:51:57 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 29CA5AE1DBA
+	for <lists+stable@lfdr.de>; Fri, 20 Jun 2025 16:44:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 98D3A188F445
-	for <lists+stable@lfdr.de>; Fri, 20 Jun 2025 13:52:12 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B37754A0E33
+	for <lists+stable@lfdr.de>; Fri, 20 Jun 2025 14:44:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4702628DEE2;
-	Fri, 20 Jun 2025 13:51:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1185F292936;
+	Fri, 20 Jun 2025 14:44:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NSx+zimo"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ej1-f49.google.com (mail-ej1-f49.google.com [209.85.218.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50CA030E850;
-	Fri, 20 Jun 2025 13:51:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDF2729290F;
+	Fri, 20 Jun 2025 14:44:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750427511; cv=none; b=XWovzK0VTdajfAikk1f5sofqcHpok2mSvtlTDO0d8ykgsynmYaGu2SzVgRx0pEEQQkgdfvP7+vHEY7UH5Md4uuh3Gg1l+Lil8p6bLM9xpypWSoNR0wy0uhuwFotUOH/Wtv9EvzEy+cB5+KgAigq2O6MfoE4XGdLIKVk+sYVhx5k=
+	t=1750430650; cv=none; b=mFWxPIix5eo7CKUL0C/nv4uL7EuDIzppkviSG02Lk7pe0jeufwFaqhwrALoKISPIobWa6Qfv+mtxuWYrMW87ckTeV+TC1yVlP9qjAR2Apgl7P8yg10ShOY6kE4SaCvkpfNdfM+AET0gBkMdxd/5DQLMFjJxoHJ5NbNRnYtR+sBg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750427511; c=relaxed/simple;
-	bh=P3RnPoFVhC5E6iVrRqpm8DhCQwyHFdoAwr5HJvx4Tz0=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=ul0hL47iWcwh6JdbZGEeJQQH4kq+8xdOyqyVxoMs+bpa4CixZOSaZt70BziO50/Sy9gUEdPQLBlOIoPNgpFnIO2bPkadHrdj1VZOOAd2zaH0jAA3KYpXy4kr3iPhDHl+QY0/5vr3vwMPVDnYB8i+UqSAZ+hlg4mZ+RVsxYX1q98=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.218.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f49.google.com with SMTP id a640c23a62f3a-adb2e9fd208so376013266b.3;
-        Fri, 20 Jun 2025 06:51:49 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1750427508; x=1751032308;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=D63RK48PWQVuxSrd45/3OwZj0o6vwR+6fGj7coNjh7E=;
-        b=mozYafhp3zrAYJQI7gg24Q/vSgSmX5dmhVSsdtcyUb7cKgQs+ti+Pr9kJNRUMwfeOu
-         PpM6ihcWEgb10MfoIPXKnAnao5/56XPUfVl0WlwrJbHl8VunkuH17sCHP96TVaYrBwyc
-         dgvxCEHvaU3p9EOw+34U/2EF25BJHuKFEN/dWeH6v2v9BVoXB7riXDbtet05TwlTdC3J
-         GLdgiH6u++SZr2qia0hMV61GVtdVafMefo/I8cj1T4smzPdbfocbsOV3iCVEJ2MvXhu8
-         CbitruHamHjw164+hnjh6SzZI9L7T+shTTfg9GhLsV5YQ6JVniXCajA/HTeugPz0Kvb6
-         BjyQ==
-X-Forwarded-Encrypted: i=1; AJvYcCU/9DV9mB3C87oadee/vdvHe2rCKvelh2AxR/9DVlZv9NQhwS9LiYQFvsW0Xmdh840F+JKlbebfGiv8nJY=@vger.kernel.org, AJvYcCWR0pQZzB/xT4jOHMWGoZbtaM5cXzky+vs1I5/EBvXSldJx5KmPVvUnSnQHhm0pcNBd3ZXI7/E+@vger.kernel.org
-X-Gm-Message-State: AOJu0YyPFcOwVIv1l9GbKYJhTJDkFXSEyRl3dg3txCfAnDIpEfOXulVw
-	1QS64xL5aDySscPdGGTCApeaEY0G1rS6UmddgwsbtC09M25frTmoj7or
-X-Gm-Gg: ASbGncty/7U30Mk/65mX5kIn/Dq6uB2pZpNlgI4v9BTdX/2/d5oGDpevivNvLLIa37N
-	uC9tMZNc+I0iQpKvMah4HpaALI99zKDvW2c+FbuWN8CIeleYZ4Cczyxiowi3VB3Ug9wdZD7oCsN
-	bMh2DLrvLH3eP4Qi4szaWekKdEUH4wcWbZUlUIDdJY2Wqx1j2DfIKiO3FXnI6BNLLf2fCf7SQI/
-	95768j6V9ZxPG5GalYT6rE/XFa0NlLpi4dmBmBSDvwrq5ZL6O+R9T2NCIj62j+JfZSDA0zv+WUJ
-	9H2dRW4PwP43wgopGFozOw3ZgoZliw0YJgbmc7ZnvDGN+lx7gXzG
-X-Google-Smtp-Source: AGHT+IH/SFtmln+YJHoGXX1MmoNT4rRheV4oGNwPg3DsX23NPbZmw1xFYo2/+iW7Q3Sv6yR/qDwd0Q==
-X-Received: by 2002:a17:907:3e95:b0:ad5:34cf:d23f with SMTP id a640c23a62f3a-ae0579246eamr257828566b.21.1750427507415;
-        Fri, 20 Jun 2025 06:51:47 -0700 (PDT)
-Received: from localhost ([2a03:2880:30ff:5::])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ae0541b6e36sm164010466b.120.2025.06.20.06.51.46
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 20 Jun 2025 06:51:46 -0700 (PDT)
-From: Breno Leitao <leitao@debian.org>
-Date: Fri, 20 Jun 2025 06:51:23 -0700
-Subject: [PATCH stable] Revert "x86/bugs: Make spectre user default depend
- on MITIGATION_SPECTRE_V2" on v6.6 and older
+	s=arc-20240116; t=1750430650; c=relaxed/simple;
+	bh=nEo1ZRZvkkP/cM6rUNrU1aJJ77SioFkxCfmnwoP1kdM=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=hF6JzN9dmdIDL5MKnml5QRrzJQQEMMTGVhR5FCvXA0rMwYXl0eS8S9OTVHRbaZ+4rdtHNjbhSzYv5pGaZ4zDjPWXC7HRcX5r41wmVmVJaPJJVM7K2+r3NtPQiku8v12/TIaO2Trpm+Zifuk8Txo7zKJDOae8P1vF1VVS/wcY+YQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NSx+zimo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47281C4CEE3;
+	Fri, 20 Jun 2025 14:44:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1750430650;
+	bh=nEo1ZRZvkkP/cM6rUNrU1aJJ77SioFkxCfmnwoP1kdM=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=NSx+zimoZCyFNyZu6KW/IjxfIKgaSadsrDdpcD5qVsKEqej2xGbaLKF229jT6iYi/
+	 N/jy0QF87sSa7SXwI4C2PNVSSGy4Rl/OqF7+PnjhLlv3mLIgnf9cCbu63KHXXki/Mf
+	 kAFCTNlbulB+UA7LLuyU9rkmMm3CVOUsquOQ4Dz3Ywtz/8Pn2Wjb1wnH+w2XQTpYDK
+	 Do/EI80QF9fFiHjEHQaSHvbyF6tDnh1/qbn6zMjAq0/7fDX2j1X7q/cwo0NPop51lh
+	 zZR3aQ5PSBoewuVUhyTttorHKQqXwkqsQ9FF1qyZdfNeGGVnySIDIiQKi6Fi5aKMzx
+	 TTgnnNIxge8KA==
+Received: by mail-ed1-f52.google.com with SMTP id 4fb4d7f45d1cf-6077d0b9bbeso3170255a12.3;
+        Fri, 20 Jun 2025 07:44:10 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCWKN+pZgc7Vb74lxvUz2MrEVwgujfNClezidHXS00rDkzeYSEbDhedTlMLL94wmfCVq0eI=@vger.kernel.org, AJvYcCWznR/MJPATZIc1aqPBMRx/5IcLBXBQxiqZpQibieFWq2W8XEU9ebD0hebUJtULWs3PhCTaFgqByyQh1cg1@vger.kernel.org, AJvYcCXqIn15Xlqu0c0UdVRyavSiV05phQy0w+DliQ9JlK5rdUiNvtyaulBouH/oyTwtaYNG0W0nsLND@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy1+eMjUPew9AGjv0kGlc1hW7gduo2lu1P99hTdUxJJ82SMDzgs
+	yzndMRLbxRmXHro9LoiusVmdFF6aZGDbuwE+JgNaetnFfaUK92yQFEiCT1Ktz6lEZ3P2NkoqvQp
+	Rx+ANJjK6v4ahTloPrFYiEL4oXJqu94o=
+X-Google-Smtp-Source: AGHT+IHHbZjicZ3sFbJ4BxVo2WPXbTi7fbOErNmBPLm9Uddaz/xQuR0VLEpYetIBm7OsIaMZnqsSlAyT7lePeGLz64k=
+X-Received: by 2002:a05:6402:42c8:b0:604:bf4e:852d with SMTP id
+ 4fb4d7f45d1cf-60a1cd2fac7mr2686937a12.12.1750430648800; Fri, 20 Jun 2025
+ 07:44:08 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250620-stable_revert_66-v1-1-841800dd2c68@debian.org>
-X-B4-Tracking: v=1; b=H4sIAFtnVWgC/22NQQrCMBBFrzLMuoEkNMHmKlJK2kx1QKpO0iCU3
- l2w4srtf4/3N8wkTBkDbChUOfN9wQCmAZyucbmQ4oQB0GrrtLda5RLHGw1ClaQM3ivd2TG25P1
- IEzaAD6GZX5/kGQ8b+2MXeq6cuXzh7yDA/7wyJ92lZPzsXBuqwX7f3we95wmyAAAA
-X-Change-ID: 20250620-stable_revert_66-092ba4e66bec
-To: Jonathan Corbet <corbet@lwn.net>, Thomas Gleixner <tglx@linutronix.de>, 
- Borislav Petkov <bp@alien8.de>, Peter Zijlstra <peterz@infradead.org>, 
- Josh Poimboeuf <jpoimboe@kernel.org>, 
- Pawan Gupta <pawan.kumar.gupta@linux.intel.com>, 
- Ingo Molnar <mingo@redhat.com>, Dave Hansen <dave.hansen@linux.intel.com>, 
- x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>, stable@vger.kernel.org
-Cc: linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, 
- kernel-team@meta.com, David.Kaplan@amd.com, mingo@kernel.org, 
- brad.spengler@opensrcsec.com, Brad Spengler <brad.spengler@opensrcsec.com>, 
- Salvatore Bonaccorso <carnil@debian.org>, Breno Leitao <leitao@debian.org>
-X-Mailer: b4 0.15-dev-dd21f
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3564; i=leitao@debian.org;
- h=from:subject:message-id; bh=P3RnPoFVhC5E6iVrRqpm8DhCQwyHFdoAwr5HJvx4Tz0=;
- b=owEBbQKS/ZANAwAIATWjk5/8eHdtAcsmYgBoVWdxDw0PsMZmI+SEZnerwoeHV019dLLjO7mYg
- LGjqq43hX6JAjMEAAEIAB0WIQSshTmm6PRnAspKQ5s1o5Of/Hh3bQUCaFVncQAKCRA1o5Of/Hh3
- bf7mEACWZA6ILEvHea6yG8LbpKya1PBDOQ3CctzopUGattlAo4XnJfTeRgjCfp1+nmWeGgZPN46
- JR7m9Duwl/+ovyBPjOrocxoRlJ+DfUwbAQV6ILwVBto2qjIZcoM8R/YToVPUaQuPzxoG4FYdQbi
- URK35IrVQHDLpxW1Q/37YzM8JxQZhgt8zgPQ5T7lgQ2WNKJmJbqWPJQpEJoAmgaJtlB5DshxxrX
- CaMuDXLAzL26WDbrgpbi/5MM3/eb+mGzj+EHCMKkiAIMx7A5cbFBhpm/mI/L044q6abck/G3UtS
- TiT5dijgXRbfE8wEGj5KILm6REPAibBNvA3JDuChP4HdWx3pPc5F1NPrYT7+eRuM9Zg8hAjS6DV
- mTJvx8lsgd2BZfUQbSeCvAESb2llx6ACWod6auywn9xeT924e836bu9ytDzHDHxBnCdZMtNUfH0
- ar1L9Jw/+q3pKuEYbJ/4jB2czdpPAdX5kvTpwfbTMiDRxXxeeGfrz5nW+OFxGt0rcUl8RjT7VSy
- Wj03An8uBp46NYLPqeTStrg7guwybJ4ottj0tUc1DKx31xvS/K+i1WQxSgCqL6xbpRPNzDQJtiV
- plL5BoP7FZp4hiB9GQmjlpdR7uU3LQXl3a7BJQ61DspYvpeaFlnK2rhCr3R0dMiqZC8eX8uAF9x
- aM/8fJp/3gW/Hwg==
-X-Developer-Key: i=leitao@debian.org; a=openpgp;
- fpr=AC8539A6E8F46702CA4A439B35A3939FFC78776D
+References: <20250611014651.3042734-1-maobibo@loongson.cn> <20250611014651.3042734-5-maobibo@loongson.cn>
+ <CAAhV-H7ehdkKwzsFNAaX+r5eXLknvskyXLPDKei2A55LoSiJMA@mail.gmail.com> <5f1b9068-2d3d-2f89-4f72-85b021537f58@loongson.cn>
+In-Reply-To: <5f1b9068-2d3d-2f89-4f72-85b021537f58@loongson.cn>
+From: Huacai Chen <chenhuacai@kernel.org>
+Date: Fri, 20 Jun 2025 22:43:57 +0800
+X-Gmail-Original-Message-ID: <CAAhV-H4PKb=BKRQpaqAN7QDu+2PWTinipCAfu13YkaQ0UExuig@mail.gmail.com>
+X-Gm-Features: Ac12FXw2U2SLyEPOk2oakF_Oj26FqKRq_batQU44_B8SUUMV9IcbFMjQDv_X0M4
+Message-ID: <CAAhV-H4PKb=BKRQpaqAN7QDu+2PWTinipCAfu13YkaQ0UExuig@mail.gmail.com>
+Subject: Re: [PATCH v3 4/9] LoongArch: KVM: INTC: Check validation of num_cpu
+ from user space
+To: Bibo Mao <maobibo@loongson.cn>
+Cc: Tianrui Zhao <zhaotianrui@loongson.cn>, Xianglai Li <lixianglai@loongson.cn>, kvm@vger.kernel.org, 
+	loongarch@lists.linux.dev, linux-kernel@vger.kernel.org, 
+	stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-This reverts commit 7adb96687ce8819de5c7bb172c4eeb6e45736e06.
+On Fri, Jun 20, 2025 at 9:43=E2=80=AFAM Bibo Mao <maobibo@loongson.cn> wrot=
+e:
+>
+>
+>
+> On 2025/6/19 =E4=B8=8B=E5=8D=884:46, Huacai Chen wrote:
+> > Hi, Bibo,
+> >
+> > On Wed, Jun 11, 2025 at 9:47=E2=80=AFAM Bibo Mao <maobibo@loongson.cn> =
+wrote:
+> >>
+> >> The maximum supported cpu number is EIOINTC_ROUTE_MAX_VCPUS about
+> >> irqchip eiointc, here add validation about cpu number to avoid array
+> >> pointer overflow.
+> >>
+> >> Cc: stable@vger.kernel.org
+> >> Fixes: 1ad7efa552fd ("LoongArch: KVM: Add EIOINTC user mode read and w=
+rite functions")
+> >> Signed-off-by: Bibo Mao <maobibo@loongson.cn>
+> >> ---
+> >>   arch/loongarch/kvm/intc/eiointc.c | 18 +++++++++++++-----
+> >>   1 file changed, 13 insertions(+), 5 deletions(-)
+> >>
+> >> diff --git a/arch/loongarch/kvm/intc/eiointc.c b/arch/loongarch/kvm/in=
+tc/eiointc.c
+> >> index b48511f903b5..ed80bf290755 100644
+> >> --- a/arch/loongarch/kvm/intc/eiointc.c
+> >> +++ b/arch/loongarch/kvm/intc/eiointc.c
+> >> @@ -798,7 +798,7 @@ static int kvm_eiointc_ctrl_access(struct kvm_devi=
+ce *dev,
+> >>          int ret =3D 0;
+> >>          unsigned long flags;
+> >>          unsigned long type =3D (unsigned long)attr->attr;
+> >> -       u32 i, start_irq;
+> >> +       u32 i, start_irq, val;
+> >>          void __user *data;
+> >>          struct loongarch_eiointc *s =3D dev->kvm->arch.eiointc;
+> >>
+> >> @@ -806,7 +806,12 @@ static int kvm_eiointc_ctrl_access(struct kvm_dev=
+ice *dev,
+> >>          spin_lock_irqsave(&s->lock, flags);
+> >>          switch (type) {
+> >>          case KVM_DEV_LOONGARCH_EXTIOI_CTRL_INIT_NUM_CPU:
+> >> -               if (copy_from_user(&s->num_cpu, data, 4))
+> >> +               if (copy_from_user(&val, data, 4) =3D=3D 0) {
+> >> +                       if (val < EIOINTC_ROUTE_MAX_VCPUS)
+> >> +                               s->num_cpu =3D val;
+> >> +                       else
+> >> +                               ret =3D -EINVAL;
+> > Maybe it is better to set s->num_cpu to EIOINTC_ROUTE_MAX_VCPUS (or
+> > other value) rather than keep it uninitialized. Because in other
+> > places we need to check s->num_cpu and an uninitialized value may
+> > cause undefined behavior.
+> There is error return value -EINVAL, VMM should stop running and exit
+> immediately if there is error return value with the ioctl command.
+>
+> num_cpu is not uninitialized and it is zero by default. If VMM does not
+> care about the return value, VMM will fail to get coreisr information in
+> future.
+If you are sure you can keep it as is. Then please resend patch
+1,2,3,4,5,9 as a series because they are all bug fixes that should be
+merged as soon as possible. And in my own opinion, "INTC" can be
+dropped in the title.
 
-commit 7adb96687ce8 ("x86/bugs: Make spectre user default depend on
-MITIGATION_SPECTRE_V2") depends on commit 72c70f480a70 ("x86/bugs: Add
-a separate config for Spectre V2"), which introduced
-MITIGATION_SPECTRE_V2.
 
-commit 72c70f480a70 ("x86/bugs: Add a separate config for Spectre V2")
-never landed in stable tree, thus, stable tree doesn't have
-MITIGATION_SPECTRE_V2, that said, commit 7adb96687ce8 ("x86/bugs: Make
-spectre user default depend on MITIGATION_SPECTRE_V2") has no value if
-the dependecy was not applied.
+Huacai
 
-Revert commit 7adb96687ce8 ("x86/bugs: Make spectre user default
-depend on MITIGATION_SPECTRE_V2")  in stable kernel which landed in in
-5.4.294, 5.10.238, 5.15.185, 6.1.141 and 6.6.93 stable versions.
-
-Cc: David.Kaplan@amd.com
-Cc: peterz@infradead.org
-Cc: pawan.kumar.gupta@linux.intel.com
-Cc: mingo@kernel.org
-Cc: brad.spengler@opensrcsec.com
-Cc: stable@vger.kernel.org # 6.6 6.1 5.15 5.10 5.4
-Reported-by: Brad Spengler <brad.spengler@opensrcsec.com>
-Reported-by: Salvatore Bonaccorso <carnil@debian.org>
-Signed-off-by: Breno Leitao <leitao@debian.org>
----
-PS: This patch is only for stable (6.6 and older).
----
- Documentation/admin-guide/kernel-parameters.txt |  2 --
- arch/x86/kernel/cpu/bugs.c                      | 10 +++-------
- 2 files changed, 3 insertions(+), 9 deletions(-)
-
-diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentation/admin-guide/kernel-parameters.txt
-index 315a817e33804..f95734ceb82b8 100644
---- a/Documentation/admin-guide/kernel-parameters.txt
-+++ b/Documentation/admin-guide/kernel-parameters.txt
-@@ -5978,8 +5978,6 @@
- 
- 			Selecting 'on' will also enable the mitigation
- 			against user space to user space task attacks.
--			Selecting specific mitigation does not force enable
--			user mitigations.
- 
- 			Selecting 'off' will disable both the kernel and
- 			the user space protections.
-diff --git a/arch/x86/kernel/cpu/bugs.c b/arch/x86/kernel/cpu/bugs.c
-index e9c4bcb38f458..07b45bbf6348d 100644
---- a/arch/x86/kernel/cpu/bugs.c
-+++ b/arch/x86/kernel/cpu/bugs.c
-@@ -1442,13 +1442,9 @@ static __ro_after_init enum spectre_v2_mitigation_cmd spectre_v2_cmd;
- static enum spectre_v2_user_cmd __init
- spectre_v2_parse_user_cmdline(void)
- {
--	enum spectre_v2_user_cmd mode;
- 	char arg[20];
- 	int ret, i;
- 
--	mode = IS_ENABLED(CONFIG_MITIGATION_SPECTRE_V2) ?
--		SPECTRE_V2_USER_CMD_AUTO : SPECTRE_V2_USER_CMD_NONE;
--
- 	switch (spectre_v2_cmd) {
- 	case SPECTRE_V2_CMD_NONE:
- 		return SPECTRE_V2_USER_CMD_NONE;
-@@ -1461,7 +1457,7 @@ spectre_v2_parse_user_cmdline(void)
- 	ret = cmdline_find_option(boot_command_line, "spectre_v2_user",
- 				  arg, sizeof(arg));
- 	if (ret < 0)
--		return mode;
-+		return SPECTRE_V2_USER_CMD_AUTO;
- 
- 	for (i = 0; i < ARRAY_SIZE(v2_user_options); i++) {
- 		if (match_option(arg, ret, v2_user_options[i].option)) {
-@@ -1471,8 +1467,8 @@ spectre_v2_parse_user_cmdline(void)
- 		}
- 	}
- 
--	pr_err("Unknown user space protection option (%s). Switching to default\n", arg);
--	return mode;
-+	pr_err("Unknown user space protection option (%s). Switching to AUTO select\n", arg);
-+	return SPECTRE_V2_USER_CMD_AUTO;
- }
- 
- static inline bool spectre_v2_in_ibrs_mode(enum spectre_v2_mitigation mode)
-
----
-base-commit: 6282921b6825fef6a1243e1c80063421d41e2576
-change-id: 20250620-stable_revert_66-092ba4e66bec
-prerequisite-change-id: 20250620-stable_revert-1809dd16f554:v1
-
-Best regards,
---  
-Breno Leitao <leitao@debian.org>
-
+>
+> Regards
+> Bibo Mao
+> >
+> >
+> > Huacai
+> >> +               } else
+> >>                          ret =3D -EFAULT;
+> >>                  break;
+> >>          case KVM_DEV_LOONGARCH_EXTIOI_CTRL_INIT_FEATURE:
+> >> @@ -835,7 +840,7 @@ static int kvm_eiointc_regs_access(struct kvm_devi=
+ce *dev,
+> >>                                          struct kvm_device_attr *attr,
+> >>                                          bool is_write)
+> >>   {
+> >> -       int addr, cpuid, offset, ret =3D 0;
+> >> +       int addr, cpu, offset, ret =3D 0;
+> >>          unsigned long flags;
+> >>          void *p =3D NULL;
+> >>          void __user *data;
+> >> @@ -843,7 +848,7 @@ static int kvm_eiointc_regs_access(struct kvm_devi=
+ce *dev,
+> >>
+> >>          s =3D dev->kvm->arch.eiointc;
+> >>          addr =3D attr->attr;
+> >> -       cpuid =3D addr >> 16;
+> >> +       cpu =3D addr >> 16;
+> >>          addr &=3D 0xffff;
+> >>          data =3D (void __user *)attr->addr;
+> >>          switch (addr) {
+> >> @@ -868,8 +873,11 @@ static int kvm_eiointc_regs_access(struct kvm_dev=
+ice *dev,
+> >>                  p =3D &s->isr.reg_u32[offset];
+> >>                  break;
+> >>          case EIOINTC_COREISR_START ... EIOINTC_COREISR_END:
+> >> +               if (cpu >=3D s->num_cpu)
+> >> +                       return -EINVAL;
+> >> +
+> >>                  offset =3D (addr - EIOINTC_COREISR_START) / 4;
+> >> -               p =3D &s->coreisr.reg_u32[cpuid][offset];
+> >> +               p =3D &s->coreisr.reg_u32[cpu][offset];
+> >>                  break;
+> >>          case EIOINTC_COREMAP_START ... EIOINTC_COREMAP_END:
+> >>                  offset =3D (addr - EIOINTC_COREMAP_START) / 4;
+> >> --
+> >> 2.39.3
+> >>
+>
 
