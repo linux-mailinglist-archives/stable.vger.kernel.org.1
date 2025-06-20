@@ -1,125 +1,189 @@
-Return-Path: <stable+bounces-154861-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-154862-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5CE75AE11AE
-	for <lists+stable@lfdr.de>; Fri, 20 Jun 2025 05:19:54 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id BA027AE11B5
+	for <lists+stable@lfdr.de>; Fri, 20 Jun 2025 05:21:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A47E13A6186
-	for <lists+stable@lfdr.de>; Fri, 20 Jun 2025 03:19:27 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4FD8E4A35A4
+	for <lists+stable@lfdr.de>; Fri, 20 Jun 2025 03:21:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A42831DEFF5;
-	Fri, 20 Jun 2025 03:19:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E62741B4132;
+	Fri, 20 Jun 2025 03:21:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="k/wObMAj"
+	dkim=pass (1024-bit key) header.d=uniontech.com header.i=@uniontech.com header.b="CGw+zoWO"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
+Received: from smtpbg154.qq.com (smtpbg154.qq.com [15.184.224.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFFD71DE891;
-	Fri, 20 Jun 2025 03:19:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.177.32
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 142FB433B1;
+	Fri, 20 Jun 2025 03:20:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=15.184.224.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750389580; cv=none; b=joWAfJ3bwov8NmRbPIJJv89FlFqUwRmAZCVtGNo50A0gfpkV77eGOraAWGwP8A9K7GZf7bUpSFfa61yUqLYhF9cZ0PT0CTlfPgy3xYGL6zBtjbnFn+dcWX3VRICi6hau7wySPAg1UhKu11uVPl/T0+xtn+ICTLUSnVFoSN014Lk=
+	t=1750389661; cv=none; b=QFthMVmxLe0zfEACAlm5Vn8eSxPlW3bidoftp6gE/6gzDtAP8MvfTxpMs2PJtrmKBzO8XoLUb9bj15kUIo3c1yLQ0aBBfeAbb4s4pJKoYzsdF/obVNNisfsFuTibgg2iGzAzHkPtM/7NSu8qeLeQlJHdZeaukFpVjhBAFNs5FFY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750389580; c=relaxed/simple;
-	bh=lghr8TA52TXj4Scrmt4LWlzpRWyRKiM9kSpz/Zih4Rw=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=QzTAIrgbem6MD94h1vhSjMllcb5VKCf0xz9+NeQEB7zeeJjEBpZcZPWoaHCMP7OrzWCjuWeJak2TF582zyF8T8gsiBL+mXqWSyohyV6RaIkaqTlL3q5jbXgB3J5yq2jHmIVnmUQjOnCuG0bxNrc1tvwNa1P2GdK/sXbmwhpIC78=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=k/wObMAj; arc=none smtp.client-ip=205.220.177.32
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oracle.com
-Received: from pps.filterd (m0333520.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 55K2uG0D012766;
-	Fri, 20 Jun 2025 03:19:34 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=
-	corp-2025-04-25; bh=X6D3vUT2LpoG95sdE9gTR2AlRRZ81Cszkf/mEC77MJg=; b=
-	k/wObMAjfQ4LQud+h87TrdYzAwBc+5wLD8lPzhHZAAvFrt7Y8DAZCjYbfd2lMdqP
-	7kgdKfTdlGuqG/WNdyn+uir3moa9eV+EWjkWnB+eRQ3kYSj6XHx2HStCmOU5v7jl
-	ZMcUTDo/xfGBxv+LMjMVoRiQIvr+wktdtDCare/rMi7Y2tmWa+m8wlSG72YZWW5f
-	Y4SFXmPf/JkcOZLLVwSjSHt8+hUzRtRLzLtHoDkrAtzh3j5FC8HNSFAoMLXAUh6z
-	YvEuNRFZUSimmLHERDvpdzJmn3Ukhp6eOWaUHUUoPj//lL8Oe/9jv4aDwRPPAWes
-	K8gUMOeS7UyEqQ/hTxBoug==
-Received: from phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta01.appoci.oracle.com [138.1.114.2])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 47914etvkx-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 20 Jun 2025 03:19:34 +0000 (GMT)
-Received: from pps.filterd (phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
-	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 55K1jXhR037574;
-	Fri, 20 Jun 2025 03:19:33 GMT
-Received: from pps.reinject (localhost [127.0.0.1])
-	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 478yhc7d62-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 20 Jun 2025 03:19:33 +0000
-Received: from phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 55K3JU2E013310;
-	Fri, 20 Jun 2025 03:19:32 GMT
-Received: from ca-mkp2.ca.oracle.com.com (mpeterse-ol9.allregionaliads.osdevelopmeniad.oraclevcn.com [100.100.251.135])
-	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTP id 478yhc7d52-2;
-	Fri, 20 Jun 2025 03:19:32 +0000
-From: "Martin K. Petersen" <martin.petersen@oracle.com>
-To: sebaddel@cisco.com, Karan Tilak Kumar <kartilak@cisco.com>
-Cc: "Martin K . Petersen" <martin.petersen@oracle.com>, arulponn@cisco.com,
-        djhawar@cisco.com, gcboffa@cisco.com, mkai2@cisco.com,
-        satishkh@cisco.com, aeasi@cisco.com, jejb@linux.ibm.com,
-        linux-scsi@vger.kernel.org, linux-kernel@vger.kernel.org,
-        jmeneghi@redhat.com, revers@redhat.com, dan.carpenter@linaro.org,
-        stable@vger.kernel.org
-Subject: Re: [PATCH v6 1/4] scsi: fnic: Fix crash in fnic_wq_cmpl_handler when FDMI times out
-Date: Thu, 19 Jun 2025 23:19:10 -0400
-Message-ID: <175038952905.1692313.12305897434919215152.b4-ty@oracle.com>
-X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250618003431.6314-1-kartilak@cisco.com>
-References: <20250618003431.6314-1-kartilak@cisco.com>
+	s=arc-20240116; t=1750389661; c=relaxed/simple;
+	bh=hv8/QDw7pTZTw/Fw7H+r0p4y2KXq8fQUxP/gm1PJpEE=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=MUXeF9O47JuRcJExaK0qI2Hj0hoBfSfT/abUqQJeYVO+1zFGxb1CUXSnk7NiMO73/HSizDU1Khi4wib2TAOqXol7CoT+eU7HUgHfw9nNU+2v6mXNAjsBmZHrjNTJ0CgOHx0kN3+f8XzH0dA7P5sf+L6zrQD9lk6KAojL6Nrps/Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniontech.com; spf=pass smtp.mailfrom=uniontech.com; dkim=pass (1024-bit key) header.d=uniontech.com header.i=@uniontech.com header.b=CGw+zoWO; arc=none smtp.client-ip=15.184.224.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniontech.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=uniontech.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=uniontech.com;
+	s=onoh2408; t=1750389601;
+	bh=QneHD96w8Ndl9vl9DqoNfTMZSsKRbHbYDBKvCqX8VZs=;
+	h=From:To:Subject:Date:Message-ID:MIME-Version;
+	b=CGw+zoWOrZSODPeJ8c26ciyuz4PVJ/RTo2UYyFbVMEgwp9TPtTIb2DX25LDmK6d+N
+	 iIOieLgM35lyyDq1cFyJ/QAh0V7Clr8/lOMdMfFGM9C359q6h9xnj9exBTAo1mc6xY
+	 NWRbRnksSF6uKTSJTYOTO+6l2LQYV2G4wkTU85XA=
+X-QQ-mid: zesmtpip2t1750389596t81357189
+X-QQ-Originating-IP: /ewM7Z9sq8LHm7YLngXRO+7G1aFgwPHWLDjF85ihRlA=
+Received: from avenger-e500 ( [localhost])
+	by bizesmtp.qq.com (ESMTP) with 
+	id ; Fri, 20 Jun 2025 11:19:54 +0800 (CST)
+X-QQ-SSF: 0000000000000000000000000000000
+X-QQ-GoodBg: 1
+X-BIZMAIL-ID: 16747492576848269704
+EX-QQ-RecipientCnt: 10
+From: WangYuli <wangyuli@uniontech.com>
+To: gregkh@linuxfoundation.org,
+	sashal@kernel.org,
+	stable@vger.kernel.org
+Cc: johannes@sipsolutions.net,
+	linux-wireless@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Edward Adam Davis <eadavis@qq.com>,
+	syzbot+aaf0488c83d1d5f4f029@syzkaller.appspotmail.com,
+	Johannes Berg <johannes.berg@intel.com>,
+	WangYuli <wangyuli@uniontech.com>
+Subject: [PATCH 6.1/6.6] wifi: cfg80211: init wiphy_work before allocating rfkill fails
+Date: Fri, 20 Jun 2025 11:19:49 +0800
+Message-ID: <A203ED8C00632F28+20250620031949.227937-1-wangyuli@uniontech.com>
+X-Mailer: git-send-email 2.50.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
- definitions=2025-06-20_01,2025-06-18_03,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 bulkscore=0 suspectscore=0 adultscore=0
- mlxlogscore=999 spamscore=0 mlxscore=0 phishscore=0 malwarescore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2505160000
- definitions=main-2506200024
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNjIwMDAyNCBTYWx0ZWRfX0M5xlVV6LYP3 hFEuBawDe0Y25cjcG5f9qUkKOfTdYHF4+PObKJE0k9aSPxF4Vt0DySWeag53Jx/ogoS7mVor+w7 qtxTt96+0zqaXJZLZwrb8rHU2ZchsXTTeLR+xOXogXmL35o0g03RckO06XUmA5P/dn+YxEWCv26
- YIHlGzz5+c7ra8FCo/vtUIZdoaN8aWlzH/XegGsKTQUX/S4xmjsYug0q38fMqOOUwVmvLLHZiTi jHP55iRfDN/twqzMUFgJu7ELg6lqBIz4pGrv/Wd4dZKswrCKdlJ2P1V0d9ow2PNDYfSYGRCPDoa mfU9FQpOiPz2+5pnyhJsc43ErQD0mTl3vCCoe+zvdyTqsY7KRrCsuHI3Vo5acdt/3Xv5GBvzh2S
- FZjndkJk7SjsBFvKt2sgXHVdIqsvh7ZMP0KJGHU5+xuSarMIgiQSP2utHhXqB2JEcnMlcDCp
-X-Authority-Analysis: v=2.4 cv=U4CSDfru c=1 sm=1 tr=0 ts=6854d346 cx=c_pps a=XiAAW1AwiKB2Y8Wsi+sD2Q==:117 a=XiAAW1AwiKB2Y8Wsi+sD2Q==:17 a=IkcTkHD0fZMA:10 a=6IFa9wvqVegA:10 a=VwQbUJbxAAAA:8 a=FcHpEmpoaH0EPt0JFngA:9 a=QEXdDO2ut3YA:10 a=ZXulRonScM0A:10
- a=zZCYzV9kfG8A:10
-X-Proofpoint-GUID: KO4GcaCySiejxfdA9YwxXlHijg4EGblI
-X-Proofpoint-ORIG-GUID: KO4GcaCySiejxfdA9YwxXlHijg4EGblI
+X-QQ-SENDSIZE: 520
+Feedback-ID: zesmtpip:uniontech.com:qybglogicsvrgz:qybglogicsvrgz8a-1
+X-QQ-XMAILINFO: Naz1YHCzw2jI/9JS+yjrnGlH+vTYLorxDLI1EtxBUHqa9y13fyy0Kw2h
+	S05UoyG58TpRFfnsElz5fYUaxsNuYBGNretqajpbIoL/46Wz3+2GIjJOsByzFKzkGD3fC+Q
+	Lf+12ElBpgU/TnMVr0SgYLHGO43nsJZCkPoyEpqkgicG/Azq+JfZSYckepxWU4Fhj3wgtiw
+	6t5O7lvVExljmE5gabiMNWGfao6fUViEChXBea4MHjLK5U6HiJVS4FxarfL8VpUutWV2rh6
+	q2CEP6Eo8D6QGF8h3kx4Yj7MG2+Ebox+3Acpx9iU8w6+QSldCI233GXo4EyymUCGY2WzD9n
+	Dr1ds4XgKZrjEgXYRlEkmdgdOoZHQBZaN4mspiwD/g4L7a7TRwoWsdGZKduUa3k0JPfv9c4
+	2iKPgdOJPDFNuQgYWRySayzTIMf/AEQCJR2AMVeqWz7Jp2PWW2Youzj0OnS9mlU8EVqdFzF
+	rf3nE8sIC0jnTaCxkgl2hwvYRMfRCXsTcm5iZcB4ssf7pOWyqTjzuVittCT7oqD8gfeRVmM
+	+94KcRIakjPMGq+qnDqF9uD4ketYfk0IOwyUwoSl7191hpYOEgL6iaScEAe5l+EAY6KsqCx
+	+nXic8EWagCtjex80IE3SACa7QKqymcwVxpfpxsWKIprjA/pjvB5T1dEayymZKCdXvZB1LG
+	gzcn60FRpYBwsM5jo17j3zSFG0S18DPE0fBLuDZxY8FhqIY/nQKVkPIYOHZJiLMrAox0wxX
+	eiuLAwIS4fDSZQZQPG4ZADUZA1JGfSf73EHroxht23Z99+0d862ugfY3J/QsHkFYPg2ovzo
+	nsvX1sFXc3d9jCRp9onmMu5SImZ/trn6gQmorD4Gb3KfAnFnyz0P3FX3MYGwNZYG7QRIuZL
+	5BoCq6dIF37wgXcTB82y2vIi92KjkeZEuD8Y8RDvs+3bKcx1qwcL11GEtJ00aYF6tjWjGLh
+	ie1gjZMKa+owNIj2tXz4LCaGDdOyHswGAOGiVW0UOcyxIcXZvcg3a/3gMvCU6Wh1jP1elmI
+	krlUfxcA==
+X-QQ-XMRINFO: OD9hHCdaPRBwq3WW+NvGbIU=
+X-QQ-RECHKSPAM: 0
 
-On Tue, 17 Jun 2025 17:34:28 -0700, Karan Tilak Kumar wrote:
+From: Edward Adam Davis <eadavis@qq.com>
 
-> When both the RHBA and RPA FDMI requests time out, fnic reuses a frame
-> to send ABTS for each of them. On send completion, this causes an
-> attempt to free the same frame twice that leads to a crash.
-> 
-> Fix crash by allocating separate frames for RHBA and RPA,
-> and modify ABTS logic accordingly.
-> 
-> [...]
+[ Upstream commit fc88dee89d7b63eeb17699393eb659aadf9d9b7c ]
 
-Applied to 6.16/scsi-fixes, thanks!
+syzbort reported a uninitialize wiphy_work_lock in cfg80211_dev_free. [1]
 
-[1/4] scsi: fnic: Fix crash in fnic_wq_cmpl_handler when FDMI times out
-      https://git.kernel.org/mkp/scsi/c/a35b29bdedb4
-[2/4] scsi: fnic: Turn off FDMI ACTIVE flags on link down
-      https://git.kernel.org/mkp/scsi/c/74f46a0524f8
-[3/4] scsi: fnic: Add and improve logs in FDMI and FDMI ABTS paths
-      https://git.kernel.org/mkp/scsi/c/9b9b8594654a
-[4/4] scsi: fnic: Set appropriate logging level for log message
-      https://git.kernel.org/mkp/scsi/c/18b5cb6f1fdd
+After rfkill allocation fails, the wiphy release process will be performed,
+which will cause cfg80211_dev_free to access the uninitialized wiphy_work
+related data.
 
+Move the initialization of wiphy_work to before rfkill initialization to
+avoid this issue.
+
+[1]
+INFO: trying to register non-static key.
+The code is fine but needs lockdep annotation, or maybe
+you didn't initialize this object before use?
+turning off the locking correctness validator.
+CPU: 0 UID: 0 PID: 5935 Comm: syz-executor550 Not tainted 6.14.0-rc6-syzkaller-00103-g4003c9e78778 #0
+Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2~bpo12+1 04/01/2014
+Call Trace:
+ <TASK>
+ __dump_stack lib/dump_stack.c:94 [inline]
+ dump_stack_lvl+0x116/0x1f0 lib/dump_stack.c:120
+ assign_lock_key kernel/locking/lockdep.c:983 [inline]
+ register_lock_class+0xc39/0x1240 kernel/locking/lockdep.c:1297
+ __lock_acquire+0x135/0x3c40 kernel/locking/lockdep.c:5103
+ lock_acquire.part.0+0x11b/0x380 kernel/locking/lockdep.c:5851
+ __raw_spin_lock_irqsave include/linux/spinlock_api_smp.h:110 [inline]
+ _raw_spin_lock_irqsave+0x3a/0x60 kernel/locking/spinlock.c:162
+ cfg80211_dev_free+0x30/0x3d0 net/wireless/core.c:1196
+ device_release+0xa1/0x240 drivers/base/core.c:2568
+ kobject_cleanup lib/kobject.c:689 [inline]
+ kobject_release lib/kobject.c:720 [inline]
+ kref_put include/linux/kref.h:65 [inline]
+ kobject_put+0x1e4/0x5a0 lib/kobject.c:737
+ put_device+0x1f/0x30 drivers/base/core.c:3774
+ wiphy_free net/wireless/core.c:1224 [inline]
+ wiphy_new_nm+0x1c1f/0x2160 net/wireless/core.c:562
+ ieee80211_alloc_hw_nm+0x1b7a/0x2260 net/mac80211/main.c:835
+ mac80211_hwsim_new_radio+0x1d6/0x54e0 drivers/net/wireless/virtual/mac80211_hwsim.c:5185
+ hwsim_new_radio_nl+0xb42/0x12b0 drivers/net/wireless/virtual/mac80211_hwsim.c:6242
+ genl_family_rcv_msg_doit+0x202/0x2f0 net/netlink/genetlink.c:1115
+ genl_family_rcv_msg net/netlink/genetlink.c:1195 [inline]
+ genl_rcv_msg+0x565/0x800 net/netlink/genetlink.c:1210
+ netlink_rcv_skb+0x16b/0x440 net/netlink/af_netlink.c:2533
+ genl_rcv+0x28/0x40 net/netlink/genetlink.c:1219
+ netlink_unicast_kernel net/netlink/af_netlink.c:1312 [inline]
+ netlink_unicast+0x53c/0x7f0 net/netlink/af_netlink.c:1338
+ netlink_sendmsg+0x8b8/0xd70 net/netlink/af_netlink.c:1882
+ sock_sendmsg_nosec net/socket.c:718 [inline]
+ __sock_sendmsg net/socket.c:733 [inline]
+ ____sys_sendmsg+0xaaf/0xc90 net/socket.c:2573
+ ___sys_sendmsg+0x135/0x1e0 net/socket.c:2627
+ __sys_sendmsg+0x16e/0x220 net/socket.c:2659
+ do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+ do_syscall_64+0xcd/0x250 arch/x86/entry/common.c:83
+
+Fixes: 72d520476a2f ("wifi: cfg80211: cancel wiphy_work before freeing wiphy")
+Reported-by: syzbot+aaf0488c83d1d5f4f029@syzkaller.appspotmail.com
+Close: https://syzkaller.appspot.com/bug?extid=aaf0488c83d1d5f4f029
+Tested-by: syzbot+aaf0488c83d1d5f4f029@syzkaller.appspotmail.com
+Signed-off-by: Edward Adam Davis <eadavis@qq.com>
+Link: https://patch.msgid.link/tencent_258DD9121DDDB9DD9A1939CFAA0D8625B107@qq.com
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: WangYuli <wangyuli@uniontech.com>
+---
+ net/wireless/core.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/net/wireless/core.c b/net/wireless/core.c
+index 1ce8fff2a28a..586e50678ed8 100644
+--- a/net/wireless/core.c
++++ b/net/wireless/core.c
+@@ -553,6 +553,9 @@ struct wiphy *wiphy_new_nm(const struct cfg80211_ops *ops, int sizeof_priv,
+ 	INIT_WORK(&rdev->mgmt_registrations_update_wk,
+ 		  cfg80211_mgmt_registrations_update_wk);
+ 	spin_lock_init(&rdev->mgmt_registrations_lock);
++	INIT_WORK(&rdev->wiphy_work, cfg80211_wiphy_work);
++	INIT_LIST_HEAD(&rdev->wiphy_work_list);
++	spin_lock_init(&rdev->wiphy_work_lock);
+ 
+ #ifdef CONFIG_CFG80211_DEFAULT_PS
+ 	rdev->wiphy.flags |= WIPHY_FLAG_PS_ON_BY_DEFAULT;
+@@ -570,9 +573,6 @@ struct wiphy *wiphy_new_nm(const struct cfg80211_ops *ops, int sizeof_priv,
+ 		return NULL;
+ 	}
+ 
+-	INIT_WORK(&rdev->wiphy_work, cfg80211_wiphy_work);
+-	INIT_LIST_HEAD(&rdev->wiphy_work_list);
+-	spin_lock_init(&rdev->wiphy_work_lock);
+ 	INIT_WORK(&rdev->rfkill_block, cfg80211_rfkill_block_work);
+ 	INIT_WORK(&rdev->conn_work, cfg80211_conn_work);
+ 	INIT_WORK(&rdev->event_work, cfg80211_event_work);
 -- 
-Martin K. Petersen	Oracle Linux Engineering
+2.50.0
+
 
