@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-154952-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-154953-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 17E81AE1514
-	for <lists+stable@lfdr.de>; Fri, 20 Jun 2025 09:39:04 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A29D0AE1515
+	for <lists+stable@lfdr.de>; Fri, 20 Jun 2025 09:40:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 573597A88DB
-	for <lists+stable@lfdr.de>; Fri, 20 Jun 2025 07:37:41 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 38EAE4A41FE
+	for <lists+stable@lfdr.de>; Fri, 20 Jun 2025 07:40:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0837222154B;
-	Fri, 20 Jun 2025 07:38:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4009F227B87;
+	Fri, 20 Jun 2025 07:40:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o8YbMM4P"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x300dzza"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA14817583
-	for <stable@vger.kernel.org>; Fri, 20 Jun 2025 07:38:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F39D322655E
+	for <stable@vger.kernel.org>; Fri, 20 Jun 2025 07:40:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750405137; cv=none; b=sv7GZzTeu+exoAqTV+Pp5qEsQ21sBvXwy1TdDFKrwx8hVIwVyo0nmAoDHATfS3zJ72LlO+HK2Voq9MMT40+XIbJT+TR3pHK9hvhjyXo8JHwW1zbNIs0szhMDxbyBw0KPBnb7VJHyHJBBXS3aEOjZsjuRM59xb2caoQN3+q5ExX0=
+	t=1750405212; cv=none; b=k2PqCBvweD8aSgwG1JTnfYBlsXNcu8xNUtfth9fXcNPDhJVztEg5NU7ZtzqwgpRkx1QqZl77qVCOC+amzRUPDYjv1qGVAdX/XKfFSVojhK1q1ZN7LcUrb0beNlZqX8pEb6JFZKsXu398haaVAK4anx2kHwAvhPkZ4KXE7xrs4Pc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750405137; c=relaxed/simple;
-	bh=Q1YEzoGBXFZPJpEvusyG035EHjb+YtAZ/stipUFYfnk=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=gNpmycqOVIDe/K7mj7UZMv2s5jzU/ieYz3XXW22X8XoA+WvQzWLSVshcNLsu7sVP1cY5EbIWXwRmJ3/SogZhuBvL2d4W9/bzmrkAaBSbODwSXlUoSioTe9b5NYuf3+NRgGHANllb8+V/QeZrloqQR9E7w6bcWDcKKdOX0xjQ2Og=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o8YbMM4P; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3FF6AC4CEE3;
-	Fri, 20 Jun 2025 07:38:57 +0000 (UTC)
+	s=arc-20240116; t=1750405212; c=relaxed/simple;
+	bh=hkdadEw+WXvDHikyIYoVPWTbqkblIhgJ4QU51BS1cR4=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=X+C7AUFyICjKUyD9b2SI4KvvLHSdSwM+6Ag5YzT4luw9Sox4uL4+1qnU2q16fZ4XPIc9UC/KfYs+1KSK4Eqmi/JIiLz0VN2rlziMiWHQnyKXaTTztAzrlLJbAU3N93CiDiZq8qmHmMH5ymYIxzZXOleIiwWp/r9rSY7kgjqSUHk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x300dzza; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7AF4CC4CEE3;
+	Fri, 20 Jun 2025 07:40:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750405137;
-	bh=Q1YEzoGBXFZPJpEvusyG035EHjb+YtAZ/stipUFYfnk=;
+	s=korg; t=1750405211;
+	bh=hkdadEw+WXvDHikyIYoVPWTbqkblIhgJ4QU51BS1cR4=;
 	h=Subject:To:Cc:From:Date:From;
-	b=o8YbMM4PADAVmPF7oIVtMzV5gdTNrivr4f0bHEeAMw8kA7qWdryroS7TkDQt44qA2
-	 lS9bxPl8kbEw1HdbzHAMEObV2VCSIAY2mLUvgfX2x1Z0eqZ0H0Lq0l7eW1qO38CWeZ
-	 Izi17/hNxmyJSrHJlQbPKwnqHGTH7klmH5JZB9FY=
-Subject: FAILED: patch "[PATCH] media: omap3isp: use sgtable-based scatterlist wrappers" failed to apply to 5.4-stable tree
-To: m.szyprowski@samsung.com,hverkuil@xs4all.nl,laurent.pinchart@ideasonboard.com
+	b=x300dzzaecyrJ+a/gCx/jiUHCAVQYVzzCZotAOX3hXJnJ5qpVn2V8QuCj1QvxQOKt
+	 QSMGO33sQpX3SgIfo62SdgdIpJn7XxJqHqZRmQFSxNKu0V/CBOIePnZUlOntlApVyQ
+	 rfsXNSyE7tpWQjd4OM8g0oEMDqljdaCjgP53xKyg=
+Subject: FAILED: patch "[PATCH] media: vivid: Change the siize of the composing" failed to apply to 5.4-stable tree
+To: arefev@swemel.ru,hverkuil@xs4all.nl
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Fri, 20 Jun 2025 09:38:44 +0200
-Message-ID: <2025062044-outlast-galley-2623@gregkh>
+Date: Fri, 20 Jun 2025 09:40:09 +0200
+Message-ID: <2025062008-parabola-bacteria-dd6b@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -62,10 +62,10 @@ To reproduce the conflict and resubmit, you may use the following commands:
 
 git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
 git checkout FETCH_HEAD
-git cherry-pick -x 3de572fe2189a4a0bd80295e1f478401e739498e
+git cherry-pick -x f83ac8d30c43fd902af7c84c480f216157b60ef0
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025062044-outlast-galley-2623@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025062008-parabola-bacteria-dd6b@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
 
 Possible dependencies:
 
@@ -77,72 +77,62 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 3de572fe2189a4a0bd80295e1f478401e739498e Mon Sep 17 00:00:00 2001
-From: Marek Szyprowski <m.szyprowski@samsung.com>
-Date: Wed, 7 May 2025 18:09:13 +0200
-Subject: [PATCH] media: omap3isp: use sgtable-based scatterlist wrappers
+From f83ac8d30c43fd902af7c84c480f216157b60ef0 Mon Sep 17 00:00:00 2001
+From: Denis Arefev <arefev@swemel.ru>
+Date: Tue, 15 Apr 2025 11:27:21 +0300
+Subject: [PATCH] media: vivid: Change the siize of the composing
 
-Use common wrappers operating directly on the struct sg_table objects to
-fix incorrect use of scatterlists sync calls. dma_sync_sg_for_*()
-functions have to be called with the number of elements originally passed
-to dma_map_sg_*() function, not the one returned in sgtable's nents.
+syzkaller found a bug:
 
-Fixes: d33186d0be18 ("[media] omap3isp: ccdc: Use the DMA API for LSC")
-Fixes: 0e24e90f2ca7 ("[media] omap3isp: stat: Use the DMA API")
-CC: stable@vger.kernel.org
-Signed-off-by: Marek Szyprowski <m.szyprowski@samsung.com>
-Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+BUG: KASAN: vmalloc-out-of-bounds in tpg_fill_plane_pattern drivers/media/common/v4l2-tpg/v4l2-tpg-core.c:2608 [inline]
+BUG: KASAN: vmalloc-out-of-bounds in tpg_fill_plane_buffer+0x1a9c/0x5af0 drivers/media/common/v4l2-tpg/v4l2-tpg-core.c:2705
+Write of size 1440 at addr ffffc9000d0ffda0 by task vivid-000-vid-c/5304
+
+CPU: 0 UID: 0 PID: 5304 Comm: vivid-000-vid-c Not tainted 6.14.0-rc2-syzkaller-00039-g09fbf3d50205 #0
+Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2~bpo12+1 04/01/2014
+
+Call Trace:
+ <TASK>
+ __dump_stack lib/dump_stack.c:94 [inline]
+ dump_stack_lvl+0x241/0x360 lib/dump_stack.c:120
+ print_address_description mm/kasan/report.c:378 [inline]
+ print_report+0x169/0x550 mm/kasan/report.c:489
+ kasan_report+0x143/0x180 mm/kasan/report.c:602
+ kasan_check_range+0x282/0x290 mm/kasan/generic.c:189
+ __asan_memcpy+0x40/0x70 mm/kasan/shadow.c:106
+ tpg_fill_plane_pattern drivers/media/common/v4l2-tpg/v4l2-tpg-core.c:2608 [inline]
+ tpg_fill_plane_buffer+0x1a9c/0x5af0 drivers/media/common/v4l2-tpg/v4l2-tpg-core.c:2705
+ vivid_fillbuff drivers/media/test-drivers/vivid/vivid-kthread-cap.c:470 [inline]
+ vivid_thread_vid_cap_tick+0xf8e/0x60d0 drivers/media/test-drivers/vivid/vivid-kthread-cap.c:629
+ vivid_thread_vid_cap+0x8aa/0xf30 drivers/media/test-drivers/vivid/vivid-kthread-cap.c:767
+ kthread+0x7a9/0x920 kernel/kthread.c:464
+ ret_from_fork+0x4b/0x80 arch/x86/kernel/process.c:148
+ ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:244
+ </TASK>
+
+The composition size cannot be larger than the size of fmt_cap_rect.
+So execute v4l2_rect_map_inside() even if has_compose_cap == 0.
+
+Fixes: 94a7ad928346 ("media: vivid: fix compose size exceed boundary")
+Cc: stable@vger.kernel.org
+Reported-by: syzbot+365005005522b70a36f2@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?id=8ed8e8cc30cbe0d86c9a25bd1d6a5775129b8ea3
+Signed-off-by: Denis Arefev <arefev@swemel.ru>
 Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
 
-diff --git a/drivers/media/platform/ti/omap3isp/ispccdc.c b/drivers/media/platform/ti/omap3isp/ispccdc.c
-index dd375c4e180d..7d0c723dcd11 100644
---- a/drivers/media/platform/ti/omap3isp/ispccdc.c
-+++ b/drivers/media/platform/ti/omap3isp/ispccdc.c
-@@ -446,8 +446,8 @@ static int ccdc_lsc_config(struct isp_ccdc_device *ccdc,
- 		if (ret < 0)
- 			goto done;
- 
--		dma_sync_sg_for_cpu(isp->dev, req->table.sgt.sgl,
--				    req->table.sgt.nents, DMA_TO_DEVICE);
-+		dma_sync_sgtable_for_cpu(isp->dev, &req->table.sgt,
-+					 DMA_TO_DEVICE);
- 
- 		if (copy_from_user(req->table.addr, config->lsc,
- 				   req->config.size)) {
-@@ -455,8 +455,8 @@ static int ccdc_lsc_config(struct isp_ccdc_device *ccdc,
- 			goto done;
- 		}
- 
--		dma_sync_sg_for_device(isp->dev, req->table.sgt.sgl,
--				       req->table.sgt.nents, DMA_TO_DEVICE);
-+		dma_sync_sgtable_for_device(isp->dev, &req->table.sgt,
-+					    DMA_TO_DEVICE);
- 	}
- 
- 	spin_lock_irqsave(&ccdc->lsc.req_lock, flags);
-diff --git a/drivers/media/platform/ti/omap3isp/ispstat.c b/drivers/media/platform/ti/omap3isp/ispstat.c
-index 359a846205b0..d3da68408ecb 100644
---- a/drivers/media/platform/ti/omap3isp/ispstat.c
-+++ b/drivers/media/platform/ti/omap3isp/ispstat.c
-@@ -161,8 +161,7 @@ static void isp_stat_buf_sync_for_device(struct ispstat *stat,
- 	if (ISP_STAT_USES_DMAENGINE(stat))
- 		return;
- 
--	dma_sync_sg_for_device(stat->isp->dev, buf->sgt.sgl,
--			       buf->sgt.nents, DMA_FROM_DEVICE);
-+	dma_sync_sgtable_for_device(stat->isp->dev, &buf->sgt, DMA_FROM_DEVICE);
- }
- 
- static void isp_stat_buf_sync_for_cpu(struct ispstat *stat,
-@@ -171,8 +170,7 @@ static void isp_stat_buf_sync_for_cpu(struct ispstat *stat,
- 	if (ISP_STAT_USES_DMAENGINE(stat))
- 		return;
- 
--	dma_sync_sg_for_cpu(stat->isp->dev, buf->sgt.sgl,
--			    buf->sgt.nents, DMA_FROM_DEVICE);
-+	dma_sync_sgtable_for_cpu(stat->isp->dev, &buf->sgt, DMA_FROM_DEVICE);
- }
- 
- static void isp_stat_buf_clear(struct ispstat *stat)
+diff --git a/drivers/media/test-drivers/vivid/vivid-vid-cap.c b/drivers/media/test-drivers/vivid/vivid-vid-cap.c
+index df726961222b..84e9155b5815 100644
+--- a/drivers/media/test-drivers/vivid/vivid-vid-cap.c
++++ b/drivers/media/test-drivers/vivid/vivid-vid-cap.c
+@@ -948,8 +948,8 @@ int vivid_vid_cap_s_selection(struct file *file, void *fh, struct v4l2_selection
+ 			if (dev->has_compose_cap) {
+ 				v4l2_rect_set_min_size(compose, &min_rect);
+ 				v4l2_rect_set_max_size(compose, &max_rect);
+-				v4l2_rect_map_inside(compose, &fmt);
+ 			}
++			v4l2_rect_map_inside(compose, &fmt);
+ 			dev->fmt_cap_rect = fmt;
+ 			tpg_s_buf_height(&dev->tpg, fmt.height);
+ 		} else if (dev->has_compose_cap) {
 
 
