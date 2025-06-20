@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-154946-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-154947-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC35FAE150D
-	for <lists+stable@lfdr.de>; Fri, 20 Jun 2025 09:35:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 22CE0AE150E
+	for <lists+stable@lfdr.de>; Fri, 20 Jun 2025 09:35:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6D8A74A489F
-	for <lists+stable@lfdr.de>; Fri, 20 Jun 2025 07:35:43 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B7B514A48D1
+	for <lists+stable@lfdr.de>; Fri, 20 Jun 2025 07:35:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92B17227E82;
-	Fri, 20 Jun 2025 07:35:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9BB5227E90;
+	Fri, 20 Jun 2025 07:35:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BWouJ8ls"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vHX6ngnD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52D7422655E
-	for <stable@vger.kernel.org>; Fri, 20 Jun 2025 07:35:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A123227B87
+	for <stable@vger.kernel.org>; Fri, 20 Jun 2025 07:35:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750404932; cv=none; b=T35CpTo2NOOyvnsgs9EtTaTqH6Tp9ONJGxq/Yg4DfcjBeQiFJG5x2PM45MjSAKWKQ8HruKTXscfJn2891DDpYqOylQx3wetE0oz1Q+zFq/InJu1ldk6MW2p+m7PiIMIQ2iWQWYkycMkFhbFBrIeqgGyRIKJVCVYGK0EfOAaaPkU=
+	t=1750404936; cv=none; b=eOg9/HVpUBUCk+6QMtI7R+nPFXZnWfo9FPLLNUMefrLMuvWDQjgvy1XCHlF4INh6JksUd0pqutx6c+FtYa1HcGtz19IXwpuXGk//W0i/vcbz2Fdxgc8nSyJ4q+LX4nLJdN8hxalRFXAz4LYTe983Rb3raNJ0BGJ8R/dRdWbOIYk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750404932; c=relaxed/simple;
-	bh=4rdxxylJN8vQZegjt8oMEmAbAdUEsrtIRtr+Q1vGwSc=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=oKnq0c8oBMBZZocxJypG8VxDmK2hoO8cZPY7BP0OQUiIKUQAreF69YBzLWFjmSD1CdU5vqY4aGdAmCfv1A4RV2mRdvKYneIpRaH9NPjy8BVikbqmQtl8b0XiymZ5ccYgA4m6KKGFpvS4oZMQ9IVLy22UBYDeEAYqfUlv1MMQTg0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BWouJ8ls; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5AFDC4CEE3;
-	Fri, 20 Jun 2025 07:35:31 +0000 (UTC)
+	s=arc-20240116; t=1750404936; c=relaxed/simple;
+	bh=V9bbzWkfE9OcfVvToCIrSTepAE/FheNhhw1OZQXYCLE=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=pXtO0XpIxTQx2bLTrjDHI1/QCm7RCMNrKDPQTPc+H/PgQ7gVu718nGQpOKzYLohqDOhyByqifHp+Jwl/7loMaPZnsxvGkasHcUTZNHep41hqaHNDHIZgFIc9gdRQLlCQb3uibV7X0FRYH4poOSZXN8dmfX5DOsT52ZeWpFXU29s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vHX6ngnD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC8EBC4CEE3;
+	Fri, 20 Jun 2025 07:35:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750404932;
-	bh=4rdxxylJN8vQZegjt8oMEmAbAdUEsrtIRtr+Q1vGwSc=;
+	s=korg; t=1750404936;
+	bh=V9bbzWkfE9OcfVvToCIrSTepAE/FheNhhw1OZQXYCLE=;
 	h=Subject:To:Cc:From:Date:From;
-	b=BWouJ8lsLNdWt5uM5cSrVbBmdpq7XUblUKBe2UCs6hJcyFV2DGdyKeCA3o0075FKI
-	 rS8Qp1k09FbnDFBqO9ed7mHbMk5kkTwLfRNSVmfY+WuqgJDDBwDOq3R15P7lqWybHm
-	 4uM8NX9ndTWpuy1LcOVno93uTenLiERoWJs8WpNI=
-Subject: FAILED: patch "[PATCH] jfs: validate AG parameters in dbMount() to prevent crashes" failed to apply to 5.10-stable tree
+	b=vHX6ngnDnZZ7FSp8sSk293rZpt1xmafQqJV2oZv7M5Q5AMMdpeIZSNMuflUGTmnbX
+	 jn+05osPfz7Hpz3En0w+FDJkzdkd6KNgFV5dviRBqudERPlVrawkRnoT8lh53Oj1PU
+	 P0TkDn4ZODCcbISs4JgJ+OuQfRZicK6A9kq+6WsM=
+Subject: FAILED: patch "[PATCH] jfs: validate AG parameters in dbMount() to prevent crashes" failed to apply to 5.4-stable tree
 To: kovalev@altlinux.org,dave.kleikamp@oracle.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Fri, 20 Jun 2025 09:35:19 +0200
-Message-ID: <2025062019-wrinkly-unblended-0fce@gregkh>
+Date: Fri, 20 Jun 2025 09:35:20 +0200
+Message-ID: <2025062020-trace-goggles-c401@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.10-stable tree.
+The patch below does not apply to the 5.4-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
 git checkout FETCH_HEAD
 git cherry-pick -x 37bfb464ddca87f203071b5bd562cd91ddc0b40a
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025062019-wrinkly-unblended-0fce@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025062020-trace-goggles-c401@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
 
 Possible dependencies:
 
