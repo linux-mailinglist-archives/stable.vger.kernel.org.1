@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-155078-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-155079-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C72DDAE18A6
-	for <lists+stable@lfdr.de>; Fri, 20 Jun 2025 12:17:04 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 87C8FAE18B0
+	for <lists+stable@lfdr.de>; Fri, 20 Jun 2025 12:19:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 52E253A9760
-	for <lists+stable@lfdr.de>; Fri, 20 Jun 2025 10:16:40 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AD80A7A6FCF
+	for <lists+stable@lfdr.de>; Fri, 20 Jun 2025 10:18:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1229E1D54F7;
-	Fri, 20 Jun 2025 10:17:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 749D42857D5;
+	Fri, 20 Jun 2025 10:19:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=geanix.com header.i=@geanix.com header.b="o7J4FySK"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=geanix.com header.i=@geanix.com header.b="Z5lglw4m"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-0301.mail-europe.com (mail-0301.mail-europe.com [188.165.51.139])
+Received: from mail-106112.protonmail.ch (mail-106112.protonmail.ch [79.135.106.112])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A9181CD3F
-	for <stable@vger.kernel.org>; Fri, 20 Jun 2025 10:16:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=188.165.51.139
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BE95283CB5
+	for <stable@vger.kernel.org>; Fri, 20 Jun 2025 10:19:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=79.135.106.112
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750414620; cv=none; b=uSC/4SlsPslL5eX1lYZFQbVjaoD1HkPiOlF0XiuHa3AVbmbOQipkgF9E0CWGj7/dvpnxfVS+Y0fJE7XFM/6Np0cgVbu7q342v57vreIuLAtmI4GwKgB+TdIQ4d1b6DOz49FgLeIE5t0yzM9HpRODjUDKVJ0Ji9cP4Tu9//hKkVA=
+	t=1750414766; cv=none; b=XSFoQ8LlKQwec3P24AgVL3wTxcF2bXiOr2N04ARcERa5Rx3slN298aWEc72+Njx01U1w6fo3fP9DNTpTUG0XSd6oz2GWJLLblccKa0xUapWKtMRBXpiwgumXJMRJBx9gM3f7T6LZWUIXZBizWCW5C+aKGBB8j1zhB8OHgxeBP4g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750414620; c=relaxed/simple;
-	bh=T7bD1JgjwYNp1Kg+NNO+HInhmOfqQWvCFdUcFs1hTOo=;
+	s=arc-20240116; t=1750414766; c=relaxed/simple;
+	bh=ubOwBTKJdg9Aa63i1epJd6uQoktyNpJaobxgYpnaWoY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CcmLULWVmTEaAEtB7xkwbHvWqApnvrUhLBpODppHK/6yJdpEJhWdptVY91viRgw35eDTGk+CBdvOuzv+V0pkxtaDUOn0uTTO130ZsL77c8lRsTV+LYjGU4jTl+fQYZmvZoTw8MWw6vOJI3dNZFiHnXfw+Sj9MJQbGCQDbvKwTu8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=geanix.com; spf=pass smtp.mailfrom=geanix.com; dkim=pass (2048-bit key) header.d=geanix.com header.i=@geanix.com header.b=o7J4FySK; arc=none smtp.client-ip=188.165.51.139
+	 MIME-Version; b=LbZBqRvgTuzJRDPjjQ2H6X5z9IunHRAEpXnVrl/4TPo8uq3daJPwvTk338CivYDys6p6Ya+ZTKafx4dpWIfdKkrgWfxIy//inrY2G0ZgZQaoXUKclgRYmaeRYPTs0nsv7a/+JZAFoLO/O0f4oWv9FWTCM3vvjTk/Vd4pQ0PKMAI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=geanix.com; spf=pass smtp.mailfrom=geanix.com; dkim=pass (2048-bit key) header.d=geanix.com header.i=@geanix.com header.b=Z5lglw4m; arc=none smtp.client-ip=79.135.106.112
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=geanix.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=geanix.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=geanix.com;
-	s=protonmail; t=1750414607; x=1750673807;
-	bh=Dy0RlznXEylx5THZaLhqQBAEp3WRV3n3e9p1cnR2DuE=;
+	s=protonmail; t=1750414761; x=1750673961;
+	bh=E2RzGGnLrRmWTIINDK1nhrzJ/uJ9A/gtHfwx8PmQsNc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:From:To:
 	 Cc:Date:Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector:
 	 List-Unsubscribe:List-Unsubscribe-Post;
-	b=o7J4FySK27nsHtu5JWBQdjsK3H2Q+iiSFbCAEyYeGRcmuGYcJn/6lHo6TbR+X+j4o
-	 kc9l9N4iyDvem7UHRIp6JAHjTL85QAOxhMzCyAQ9uwR5DdeLZ7SrgYsRLJRZhHV50W
-	 twrBG+By2/KmhxTUF2iDG0NzIFg9UAbd6QCdx/wmK9BfCYIi4AHuKh2ZojcUek3N53
-	 DjOp/B9+JuZuixgGGzIOnxOEJUGG2zWDcYZWDCRSexNmZlMEIqRy4JV6b8J4wMgWij
-	 qgv7glGC2pKVCbqhVj2P8igKbb6TuhCBFUqYm1Udfb/tHe/Juf7OzLES4O2mK8ewtp
-	 5a5RUGGmS7pnQ==
-X-Pm-Submission-Id: 4bNtgL6zY7z1DDWk
+	b=Z5lglw4mVmJ0j111y3coVt43PwN309ab8v1KUfp39Kd2ikPuBaoYKydJ6r60tisYN
+	 mtxX9in0Z/b1f2ijvNiS/P5CUXPKSTlvUIT54jYtZtr1hP2RqGp5ggtDjhCCsZNqNf
+	 iQtKlVWPZRC+O8PQrQBHqgpy0E11nkswA/gq2yZYb1wukV8SE86BlFcceebKu+MkDZ
+	 J27bQz6C5aPJtxIOLl1genfpBm1GOD4z7ocOwnA57vq9XEGXfQsIC+IFCUFQnNmGXF
+	 0zctwO8AxLxZLBCEvQDoGNAMBTfqSlhw26b53T6DmRjd/J5QEZN7t+9j9LBxjh0sFS
+	 GnsqF4p+ftnEQ==
+X-Pm-Submission-Id: 4bNtkD2l0PzB4l
 From: Sean Nyekjaer <sean@geanix.com>
 To: stable@vger.kernel.org
 Cc: Sean Nyekjaer <sean@geanix.com>,
 	Marcelo Schmitt <marcelo.schmitt1@gmail.com>,
 	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 6.12.y] iio: accel: fxls8962af: Fix temperature calculation
-Date: Fri, 20 Jun 2025 12:16:34 +0200
-Message-ID: <20250620101638.4137650-1-sean@geanix.com>
+Subject: [PATCH 6.1.y] iio: accel: fxls8962af: Fix temperature calculation
+Date: Fri, 20 Jun 2025 12:19:03 +0200
+Message-ID: <20250620101904.10740-1-sean@geanix.com>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <2025062051-boxer-reheat-0fff@gregkh>
-References: <2025062051-boxer-reheat-0fff@gregkh>
+In-Reply-To: <2025062052-quadrant-bagging-7786@gregkh>
+References: <2025062052-quadrant-bagging-7786@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -78,18 +78,18 @@ Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
  1 file changed, 12 insertions(+), 2 deletions(-)
 
 diff --git a/drivers/iio/accel/fxls8962af-core.c b/drivers/iio/accel/fxls8962af-core.c
-index acadabec4df7..a0f0fef51334 100644
+index 8bc516a57e35..d9f5ec3b6eec 100644
 --- a/drivers/iio/accel/fxls8962af-core.c
 +++ b/drivers/iio/accel/fxls8962af-core.c
-@@ -22,6 +22,7 @@
- #include <linux/property.h>
+@@ -20,6 +20,7 @@
+ #include <linux/pm_runtime.h>
  #include <linux/regulator/consumer.h>
  #include <linux/regmap.h>
 +#include <linux/units.h>
  
  #include <linux/iio/buffer.h>
  #include <linux/iio/events.h>
-@@ -436,8 +437,16 @@ static int fxls8962af_read_raw(struct iio_dev *indio_dev,
+@@ -435,8 +436,16 @@ static int fxls8962af_read_raw(struct iio_dev *indio_dev,
  		*val = FXLS8962AF_TEMP_CENTER_VAL;
  		return IIO_VAL_INT;
  	case IIO_CHAN_INFO_SCALE:
@@ -108,7 +108,7 @@ index acadabec4df7..a0f0fef51334 100644
  	case IIO_CHAN_INFO_SAMP_FREQ:
  		return fxls8962af_read_samp_freq(data, val, val2);
  	default:
-@@ -736,6 +745,7 @@ static const struct iio_event_spec fxls8962af_event[] = {
+@@ -735,6 +744,7 @@ static const struct iio_event_spec fxls8962af_event[] = {
  	.type = IIO_TEMP, \
  	.address = FXLS8962AF_TEMP_OUT, \
  	.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) | \
