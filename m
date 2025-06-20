@@ -1,182 +1,83 @@
-Return-Path: <stable+bounces-155003-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-155004-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 21D80AE1627
-	for <lists+stable@lfdr.de>; Fri, 20 Jun 2025 10:34:31 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C6ED0AE162E
+	for <lists+stable@lfdr.de>; Fri, 20 Jun 2025 10:35:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4B26819E693D
-	for <lists+stable@lfdr.de>; Fri, 20 Jun 2025 08:33:45 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 073D75A6692
+	for <lists+stable@lfdr.de>; Fri, 20 Jun 2025 08:33:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B05F22F767;
-	Fri, 20 Jun 2025 08:33:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H+C97S/K"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1890F218E97;
+	Fri, 20 Jun 2025 08:33:53 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFCE021ABA8
-	for <stable@vger.kernel.org>; Fri, 20 Jun 2025 08:33:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from 1wt.eu (ded1.1wt.eu [163.172.96.212])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9C1430E85B;
+	Fri, 20 Jun 2025 08:33:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=163.172.96.212
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750408402; cv=none; b=jNhtr74v/hwP5xO6lh11/Jo4UkyP9nLyyR6w0eF+SnK3a40N2A6VjtVHrPfgLgE5/pi34D96rTpPGgFRDCSJPb56PvO3tanVLkYqvsjGcdvSnVeHEr/DEnnoxvNGJL41rMUFoenIUq7mvqT/1FQGFy0+mxC7KkUgo1g7XruGv3g=
+	t=1750408432; cv=none; b=UJXzfOaC0Ok/FmfWJTabN6N3gPEjrPxdle848QpaAzRMsZSXl5zenXRm303CiPZHeIvpLxwbaP3EDptDus9YIQ1VxhCuqdsAtQN4Tz4tnPNSfn8y5/pmg93769TmZXqGXQ7CBhHZNcQU4wqEZHyUJ4qB6d32TrkcUdRDj5n3IjM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750408402; c=relaxed/simple;
-	bh=WHa2OtLF5ZroLmNZgiB6iuG1zguydHv07nSRTyOnab0=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=Ph9J1HWB/ylDIPcpQrtrSnocDjRp1t5l5TsO2bWQiNb+/aAQr5mw3nhFaIUDucEdUSroVBHdlMQYk5KX+BXrdvNuHFHfsq5AssQncFr4vOuNu8EuGHDT9kG0CZKGkYWt9h/elhO8qbdAbYR5TcOO8HiwogPDnUuooWeZwevK3ok=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H+C97S/K; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 380A2C4AF0B;
-	Fri, 20 Jun 2025 08:33:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750408402;
-	bh=WHa2OtLF5ZroLmNZgiB6iuG1zguydHv07nSRTyOnab0=;
-	h=Subject:To:Cc:From:Date:From;
-	b=H+C97S/KfI0a0jcuzLjmDWGs58ZnIbk9PmgMJh2h5QztJuKynHj4pbzXYVzZW/MWq
-	 55DvQQcIIs56k8arSlve4kE5ebw3+wiOHStPZbcWr1ygnrDKz1XMRu90StesQKE1Kk
-	 YhrL0IMNeamWRFobAIwPiy9xcDWtEzuFrHx0WxHM=
-Subject: FAILED: patch "[PATCH] fbdev: Fix do_register_framebuffer to prevent null-ptr-deref" failed to apply to 5.4-stable tree
-To: m.masimov@mt-integration.ru,deller@gmx.de
-Cc: <stable@vger.kernel.org>
-From: <gregkh@linuxfoundation.org>
-Date: Fri, 20 Jun 2025 10:33:04 +0200
-Message-ID: <2025062004-unwed-cure-9269@gregkh>
+	s=arc-20240116; t=1750408432; c=relaxed/simple;
+	bh=2Ki+wwxCYsJ7rcLAzKRHBKRLvOF/if+BYd1HOF7l/Hk=;
+	h=From:To:Cc:Subject:Date:Message-Id; b=EqGWT0ZG1q3Vsyts/trIfR7PiXDqIQP0HKrG9nm78ALZsDsodiAcZOm5sBBprJf8CXBgnwT1HhYb/F/vGHq3Pju8kYHMwJIsm5/KQAeNTrBl9W+NsQwtBlP3SquPh4KshQ7MQC10qHQhWF6oG7hk4MyKeVpYl45FuVM/yNM+F6k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=1wt.eu; spf=pass smtp.mailfrom=1wt.eu; arc=none smtp.client-ip=163.172.96.212
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=1wt.eu
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=1wt.eu
+Received: (from willy@localhost)
+	by pcw.home.local (8.15.2/8.15.2/Submit) id 55K8XVMM024432;
+	Fri, 20 Jun 2025 10:33:31 +0200
+From: Willy Tarreau <w@1wt.eu>
+To: =?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>
+Cc: linux-kernel@vger.kernel.org, Willy Tarreau <w@1wt.eu>,
+        stable@vger.kernel.org
+Subject: [PATCH] tools/nolibc: fix spelling of FD_SETBITMASK in FD_* macros
+Date: Fri, 20 Jun 2025 10:33:25 +0200
+Message-Id: <20250620083325.24390-1-w@1wt.eu>
+X-Mailer: git-send-email 2.17.5
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
-Content-Transfer-Encoding: 8bit
 
+While nolibc-test does test syscalls, it doesn't test as much the rest
+of the macros, and a wrong spelling of FD_SETBITMASK in commit
+feaf75658783a broke programs using either FD_SET() or FD_CLR() without
+being noticed. Let's fix these macros.
 
-The patch below does not apply to the 5.4-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
+Fixes: feaf75658783a ("nolibc: fix fd_set type")
+Cc: stable@vger.kernel.org # v6.2+
+Signed-off-by: Willy Tarreau <w@1wt.eu>
+---
+ tools/include/nolibc/types.h | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-To reproduce the conflict and resubmit, you may use the following commands:
-
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
-git checkout FETCH_HEAD
-git cherry-pick -x 17186f1f90d34fa701e4f14e6818305151637b9e
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025062004-unwed-cure-9269@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
-
-Possible dependencies:
-
-
-
-thanks,
-
-greg k-h
-
------------------- original commit in Linus's tree ------------------
-
-From 17186f1f90d34fa701e4f14e6818305151637b9e Mon Sep 17 00:00:00 2001
-From: Murad Masimov <m.masimov@mt-integration.ru>
-Date: Mon, 28 Apr 2025 18:34:06 +0300
-Subject: [PATCH] fbdev: Fix do_register_framebuffer to prevent null-ptr-deref
- in fb_videomode_to_var
-
-If fb_add_videomode() in do_register_framebuffer() fails to allocate
-memory for fb_videomode, it will later lead to a null-ptr dereference in
-fb_videomode_to_var(), as the fb_info is registered while not having the
-mode in modelist that is expected to be there, i.e. the one that is
-described in fb_info->var.
-
-================================================================
-general protection fault, probably for non-canonical address 0xdffffc0000000001: 0000 [#1] PREEMPT SMP KASAN NOPTI
-KASAN: null-ptr-deref in range [0x0000000000000008-0x000000000000000f]
-CPU: 1 PID: 30371 Comm: syz-executor.1 Not tainted 5.10.226-syzkaller #0
-Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.12.0-1 04/01/2014
-RIP: 0010:fb_videomode_to_var+0x24/0x610 drivers/video/fbdev/core/modedb.c:901
-Call Trace:
- display_to_var+0x3a/0x7c0 drivers/video/fbdev/core/fbcon.c:929
- fbcon_resize+0x3e2/0x8f0 drivers/video/fbdev/core/fbcon.c:2071
- resize_screen drivers/tty/vt/vt.c:1176 [inline]
- vc_do_resize+0x53a/0x1170 drivers/tty/vt/vt.c:1263
- fbcon_modechanged+0x3ac/0x6e0 drivers/video/fbdev/core/fbcon.c:2720
- fbcon_update_vcs+0x43/0x60 drivers/video/fbdev/core/fbcon.c:2776
- do_fb_ioctl+0x6d2/0x740 drivers/video/fbdev/core/fbmem.c:1128
- fb_ioctl+0xe7/0x150 drivers/video/fbdev/core/fbmem.c:1203
- vfs_ioctl fs/ioctl.c:48 [inline]
- __do_sys_ioctl fs/ioctl.c:753 [inline]
- __se_sys_ioctl fs/ioctl.c:739 [inline]
- __x64_sys_ioctl+0x19a/0x210 fs/ioctl.c:739
- do_syscall_64+0x33/0x40 arch/x86/entry/common.c:46
- entry_SYSCALL_64_after_hwframe+0x67/0xd1
-================================================================
-
-Even though fbcon_init() checks beforehand if fb_match_mode() in
-var_to_display() fails, it can not prevent the panic because fbcon_init()
-does not return error code. Considering this and the comment in the code
-about fb_match_mode() returning NULL - "This should not happen" - it is
-better to prevent registering the fb_info if its mode was not set
-successfully. Also move fb_add_videomode() closer to the beginning of
-do_register_framebuffer() to avoid having to do the cleanup on fail.
-
-Found by Linux Verification Center (linuxtesting.org) with Syzkaller.
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Cc: stable@vger.kernel.org
-Signed-off-by: Murad Masimov <m.masimov@mt-integration.ru>
-Signed-off-by: Helge Deller <deller@gmx.de>
-
-diff --git a/drivers/video/fbdev/core/fbmem.c b/drivers/video/fbdev/core/fbmem.c
-index 3c568cff2913..e1557d80768f 100644
---- a/drivers/video/fbdev/core/fbmem.c
-+++ b/drivers/video/fbdev/core/fbmem.c
-@@ -388,7 +388,7 @@ static int fb_check_foreignness(struct fb_info *fi)
+diff --git a/tools/include/nolibc/types.h b/tools/include/nolibc/types.h
+index 30904be544ed0..16c6e9ec9451f 100644
+--- a/tools/include/nolibc/types.h
++++ b/tools/include/nolibc/types.h
+@@ -128,7 +128,7 @@ typedef struct {
+ 		int __fd = (fd);					\
+ 		if (__fd >= 0)						\
+ 			__set->fds[__fd / FD_SETIDXMASK] &=		\
+-				~(1U << (__fd & FX_SETBITMASK));	\
++				~(1U << (__fd & FD_SETBITMASK));	\
+ 	} while (0)
  
- static int do_register_framebuffer(struct fb_info *fb_info)
- {
--	int i;
-+	int i, err = 0;
- 	struct fb_videomode mode;
+ #define FD_SET(fd, set) do {						\
+@@ -145,7 +145,7 @@ typedef struct {
+ 		int __r = 0;						\
+ 		if (__fd >= 0)						\
+ 			__r = !!(__set->fds[__fd / FD_SETIDXMASK] &	\
+-1U << (__fd & FD_SET_BITMASK));						\
++1U << (__fd & FD_SETBITMASK));						\
+ 		__r;							\
+ 	})
  
- 	if (fb_check_foreignness(fb_info))
-@@ -397,10 +397,18 @@ static int do_register_framebuffer(struct fb_info *fb_info)
- 	if (num_registered_fb == FB_MAX)
- 		return -ENXIO;
- 
--	num_registered_fb++;
- 	for (i = 0 ; i < FB_MAX; i++)
- 		if (!registered_fb[i])
- 			break;
-+
-+	if (!fb_info->modelist.prev || !fb_info->modelist.next)
-+		INIT_LIST_HEAD(&fb_info->modelist);
-+
-+	fb_var_to_videomode(&mode, &fb_info->var);
-+	err = fb_add_videomode(&mode, &fb_info->modelist);
-+	if (err < 0)
-+		return err;
-+
- 	fb_info->node = i;
- 	refcount_set(&fb_info->count, 1);
- 	mutex_init(&fb_info->lock);
-@@ -426,16 +434,12 @@ static int do_register_framebuffer(struct fb_info *fb_info)
- 	if (bitmap_empty(fb_info->pixmap.blit_y, FB_MAX_BLIT_HEIGHT))
- 		bitmap_fill(fb_info->pixmap.blit_y, FB_MAX_BLIT_HEIGHT);
- 
--	if (!fb_info->modelist.prev || !fb_info->modelist.next)
--		INIT_LIST_HEAD(&fb_info->modelist);
--
- 	if (fb_info->skip_vt_switch)
- 		pm_vt_switch_required(fb_info->device, false);
- 	else
- 		pm_vt_switch_required(fb_info->device, true);
- 
--	fb_var_to_videomode(&mode, &fb_info->var);
--	fb_add_videomode(&mode, &fb_info->modelist);
-+	num_registered_fb++;
- 	registered_fb[i] = fb_info;
- 
- #ifdef CONFIG_GUMSTIX_AM200EPD
+-- 
+2.17.5
 
 
