@@ -1,124 +1,142 @@
-Return-Path: <stable+bounces-154870-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-154871-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 309F9AE129B
-	for <lists+stable@lfdr.de>; Fri, 20 Jun 2025 06:48:07 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D0A8AAE12AF
+	for <lists+stable@lfdr.de>; Fri, 20 Jun 2025 06:56:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 40EAE7AEFC6
-	for <lists+stable@lfdr.de>; Fri, 20 Jun 2025 04:46:22 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 622EE1BC2FF4
+	for <lists+stable@lfdr.de>; Fri, 20 Jun 2025 04:56:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 977CC30E82B;
-	Fri, 20 Jun 2025 04:46:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C96E5336D;
+	Fri, 20 Jun 2025 04:56:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=weissschuh.net header.i=@weissschuh.net header.b="I7PB1tUW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fcfZ9dg1"
 X-Original-To: stable@vger.kernel.org
-Received: from todd.t-8ch.de (todd.t-8ch.de [159.69.126.157])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8154C21CA0C;
-	Fri, 20 Jun 2025 04:46:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.69.126.157
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1D381F0996;
+	Fri, 20 Jun 2025 04:56:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750394790; cv=none; b=i2pqF+FPx5i/5zgDQw3NxTEPlZryXwL7flpVvsW+xQgMxcBNqqoIAk3pGKSCH7CqgT4483KIEYKDmt4h64OfTlHaHyu4TcOIdpeO9zvF1OYtToYdi+RjMmQJVhph3SMGxYXUkQnRwoN9s8RmhWXeWDUzsaS4rOjbH9iTneSWi/4=
+	t=1750395388; cv=none; b=WqYpEi3ONDw/74GKPpOHLaLulnJEO02VR4rY0+ICLUQfwzBYRnyLCcDa9G+xCxKsV3RenPckLfKsxRNhtmBsZsZtz5wyNFf/CeeryRlNkSw4Q1bOXumiXZOgrK9OCHBet/1XFnu4mkWmLr27I9ZL9amcgz1n01/5WpDP6KXgxbY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750394790; c=relaxed/simple;
-	bh=MDnI1MxSf0siO1p6VIer4KU5FQHklFuaPYfzm5R7XkM=;
+	s=arc-20240116; t=1750395388; c=relaxed/simple;
+	bh=45n5wMn3ILNwxkmHzBPfoOF18K2bjR0KD6crYqs+TJ4=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=rTM3R9Bibx6J5iuEDvVGMBf19Fb+39YkIM9T1mstx2pRyaO6cEGxNRW7ztSOALc6NuwqMF3EEHFqB6N13H9s5JJ6s5i+msDFLo+dovaJYcVjK48ixE0eqFthKtF2WpeVcHsVygWOtCzFoEaALAGqIGimkyvzDtHWdnUYNTs9AOo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=weissschuh.net; spf=pass smtp.mailfrom=weissschuh.net; dkim=pass (1024-bit key) header.d=weissschuh.net header.i=@weissschuh.net header.b=I7PB1tUW; arc=none smtp.client-ip=159.69.126.157
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=weissschuh.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=weissschuh.net
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=weissschuh.net;
-	s=mail; t=1750394786;
-	bh=MDnI1MxSf0siO1p6VIer4KU5FQHklFuaPYfzm5R7XkM=;
+	 Content-Type:Content-Disposition:In-Reply-To; b=sEEDasZFTZqVQ0ZNRA4EGGIv/7UuZp87gGl3e4AfsNcR/bUTLnGPzAgRu1FFIn7QjM3i/MotXg2Nh2LbiIgCwx50EpDFgDhaIILLkicUEWCQMFp6043PRlr54IHh8Vv4lCt9TbWpBHkvH1u+2CaeUeSnPmYfIIMt7L6RBpK4R40=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fcfZ9dg1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A747C4CEED;
+	Fri, 20 Jun 2025 04:56:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1750395387;
+	bh=45n5wMn3ILNwxkmHzBPfoOF18K2bjR0KD6crYqs+TJ4=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=I7PB1tUWHMatzMLCykp3Fuujrf/KYGglViPQmY9odcjamWrj3smCJzTwnRPO72fUP
-	 PRyCPZXD3bg6bhMh0hknSd47oehCuXUjRUblnMVnm815zuTK4cBj7sDP2pn5BeEAQN
-	 NDwmLIj3EHsYJ506/e719/T4jfEBd4Q7elaLqlJM=
-Date: Fri, 20 Jun 2025 06:46:24 +0200
-From: Thomas =?utf-8?Q?Wei=C3=9Fschuh?= <linux@weissschuh.net>
-To: stable@vger.kernel.org
-Cc: stable-commits@vger.kernel.org, thomas.weissschuh@linutronix.de, 
-	Willy Tarreau <w@1wt.eu>, Nathan Chancellor <nathan@kernel.org>, 
-	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>, Bill Wendling <morbo@google.com>, 
-	Justin Stitt <justinstitt@google.com>
-Subject: Re: Patch "tools/nolibc: use intmax definitions from compiler" has
- been added to the 6.15-stable tree
-Message-ID: <a7045756-cd82-4241-a5b0-d8f6fad87b1c@t-8ch.de>
-References: <20250620022618.2600341-1-sashal@kernel.org>
+	b=fcfZ9dg12mRE2aQzD7q3o9Tx6WYj0bbmkDoig9sJgsQ/O6GshmAqdYDXUgkXvuLAE
+	 FVikDMoa1h1iPGu0IMrAWKdUyYHiLz/6ZyKrXa5mPo8yZY6p3teqS4HQ5fYuAcFSor
+	 AOy8qMVRoYuP+cXMV3Ru3fVTh89+/ts/2QOaGHgY=
+Date: Fri, 20 Jun 2025 06:56:24 +0200
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: asmadeus@codewreck.org
+Cc: Eric Van Hensbergen <ericvh@kernel.org>,
+	Latchesar Ionkov <lucho@ionkov.net>,
+	Christian Schoenebeck <linux_oss@crudebyte.com>,
+	Michael Grzeschik <m.grzeschik@pengutronix.de>,
+	stable@vger.kernel.org, Yuhao Jiang <danisjiang@gmail.com>,
+	security@kernel.org, v9fs@lists.linux.dev,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2] net/9p: Fix buffer overflow in USB transport layer
+Message-ID: <2025062007-ravishing-overcrowd-7342@gregkh>
+References: <20250620-9p-usb_overflow-v2-1-026c6109c7a1@codewreck.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250620022618.2600341-1-sashal@kernel.org>
+In-Reply-To: <20250620-9p-usb_overflow-v2-1-026c6109c7a1@codewreck.org>
 
-Hi stable team,
-
-On 2025-06-19 22:26:18-0400, Sasha Levin wrote:
-> This is a note to let you know that I've just added the patch titled
+On Fri, Jun 20, 2025 at 06:22:03AM +0900, Dominique Martinet via B4 Relay wrote:
+> From: Dominique Martinet <asmadeus@codewreck.org>
 > 
->     tools/nolibc: use intmax definitions from compiler
+> A buffer overflow vulnerability exists in the USB 9pfs transport layer
+> where inconsistent size validation between packet header parsing and
+> actual data copying allows a malicious USB host to overflow heap buffers.
 > 
-> to the 6.15-stable tree which can be found at:
->     http://www.kernel.org/git/?p=linux/kernel/git/stable/stable-queue.git;a=summary
+> The issue occurs because:
+> - usb9pfs_rx_header() validates only the declared size in packet header
+> - usb9pfs_rx_complete() uses req->actual (actual received bytes) for
+> memcpy
 > 
-> The filename of the patch is:
->      tools-nolibc-use-intmax-definitions-from-compiler.patch
-> and it can be found in the queue-6.15 subdirectory.
+> This allows an attacker to craft packets with small declared size
+> (bypassing validation) but large actual payload (triggering overflow
+> in memcpy).
 > 
-> If you, or anyone else, feels it should not be added to the stable tree,
-> please let <stable@vger.kernel.org> know about it.
-
-As discussed in [0] and its ancestors, please only backport nolibc
-patches are were explicitly tagged for stable@.
-
-[0] https://lore.kernel.org/lkml/2025061907-finance-dodgy-b0ae@gregkh/
-
-Thanks,
-Thomas
-
-> commit fb60b190f25c7958f85fdae9b7024548139de281
-> Author: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
-> Date:   Fri Apr 11 11:00:39 2025 +0200
+> Add validation in usb9pfs_rx_complete() to ensure req->actual does not
+> exceed the buffer capacity before copying data.
 > 
->     tools/nolibc: use intmax definitions from compiler
->     
->     [ Upstream commit e5407c0820ea5fa7117b85ed32b724af73156d63 ]
->     
->     The printf format checking in the compiler uses the intmax types from
->     the compiler, not libc. This can lead to compiler errors.
->     
->     Instead use the types already provided by the compiler.
->     
->     Example issue with clang 19 for arm64:
->     
->     nolibc-test.c:30:2: error: format specifies type 'uintmax_t' (aka 'unsigned long') but the argument has type 'uintmax_t' (aka 'unsigned long long') [-Werror,-Wformat]
->     
->     Signed-off-by: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
->     Acked-by: Willy Tarreau <w@1wt.eu>
->     Signed-off-by: Sasha Levin <sashal@kernel.org>
+> Reported-by: Yuhao Jiang <danisjiang@gmail.com>
+> Closes: https://lkml.kernel.org/r/20250616132539.63434-1-danisjiang@gmail.com
+> Fixes: a3be076dc174 ("net/9p/usbg: Add new usb gadget function transport")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Dominique Martinet <asmadeus@codewreck.org>
+> ---
+> Not actually tested, I'll try to find time to figure out how to run with
+> qemu for real this time...
 > 
-> diff --git a/tools/include/nolibc/stdint.h b/tools/include/nolibc/stdint.h
-> index cd79ddd6170e0..b052ad6303c38 100644
-> --- a/tools/include/nolibc/stdint.h
-> +++ b/tools/include/nolibc/stdint.h
-> @@ -39,8 +39,8 @@ typedef   size_t      uint_fast32_t;
->  typedef  int64_t       int_fast64_t;
->  typedef uint64_t      uint_fast64_t;
+> Changes in v2:
+> - run through p9_client_cb() on error
+> - Link to v1: https://lore.kernel.org/r/20250616132539.63434-1-danisjiang@gmail.com
+> ---
+>  net/9p/trans_usbg.c | 16 +++++++++++++---
+>  1 file changed, 13 insertions(+), 3 deletions(-)
+> 
+> diff --git a/net/9p/trans_usbg.c b/net/9p/trans_usbg.c
+> index 6b694f117aef296a66419fed5252305e7a1d0936..43078e0d4ca3f4063660f659d28452c81bef10b4 100644
+> --- a/net/9p/trans_usbg.c
+> +++ b/net/9p/trans_usbg.c
+> @@ -231,6 +231,8 @@ static void usb9pfs_rx_complete(struct usb_ep *ep, struct usb_request *req)
+>  	struct f_usb9pfs *usb9pfs = ep->driver_data;
+>  	struct usb_composite_dev *cdev = usb9pfs->function.config->cdev;
+>  	struct p9_req_t *p9_rx_req;
+> +	unsigned int req_size = req->actual;
+> +	int status = REQ_STATUS_RCVD;
 >  
-> -typedef  int64_t           intmax_t;
-> -typedef uint64_t          uintmax_t;
-> +typedef __INTMAX_TYPE__    intmax_t;
-> +typedef __UINTMAX_TYPE__  uintmax_t;
+>  	if (req->status) {
+>  		dev_err(&cdev->gadget->dev, "%s usb9pfs complete --> %d, %d/%d\n",
+> @@ -242,11 +244,19 @@ static void usb9pfs_rx_complete(struct usb_ep *ep, struct usb_request *req)
+>  	if (!p9_rx_req)
+>  		return;
 >  
->  /* limits of integral types */
+> -	memcpy(p9_rx_req->rc.sdata, req->buf, req->actual);
+> +	if (req_size > p9_rx_req->rc.capacity) {
+> +		dev_err(&cdev->gadget->dev,
+> +			"%s received data size %u exceeds buffer capacity %zu\n",
+> +			ep->name, req_size, p9_rx_req->rc.capacity);
+
+Do you want a broken device to be able to flood the kernel log?  You
+might want to change this to dev_dbg() instead.
+
+
+
+> +		req_size = 0;
+> +		status = REQ_STATUS_ERROR;
+> +	}
 >  
+> -	p9_rx_req->rc.size = req->actual;
+> +	memcpy(p9_rx_req->rc.sdata, req->buf, req_size);
+>  
+> -	p9_client_cb(usb9pfs->client, p9_rx_req, REQ_STATUS_RCVD);
+> +	p9_rx_req->rc.size = req_sizel;
+
+Did this code build properly?
+
+thanks,
+
+greg k-h
 
