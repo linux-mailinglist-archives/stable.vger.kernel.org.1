@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-155027-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-155028-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 92EBEAE16F9
-	for <lists+stable@lfdr.de>; Fri, 20 Jun 2025 11:06:34 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id C7D60AE16FF
+	for <lists+stable@lfdr.de>; Fri, 20 Jun 2025 11:06:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EFACD5A1508
-	for <lists+stable@lfdr.de>; Fri, 20 Jun 2025 09:06:09 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6C7824A5F06
+	for <lists+stable@lfdr.de>; Fri, 20 Jun 2025 09:06:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A48C27FB35;
-	Fri, 20 Jun 2025 09:06:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9302F27FD55;
+	Fri, 20 Jun 2025 09:06:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z7OXTvYT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XSPpQD2g"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A38527FB30
-	for <stable@vger.kernel.org>; Fri, 20 Jun 2025 09:06:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53DD527FD49
+	for <stable@vger.kernel.org>; Fri, 20 Jun 2025 09:06:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750410386; cv=none; b=m0Bd+sT2lzswbaMzW7VrFbagNHicCG25gO0mU0Pl4Nk0NNzKTyLM29Yw4xqV3dVQhVed4jz/PlH02sA7Y+kZK3yVp8dv6rSJj78LwQk2CZ9aKhJM9GvKz/GhHpyXI+dum/euvCG/4deQmRqMXHObRj/GNSjceASJhZQEu/h5wmI=
+	t=1750410402; cv=none; b=OW24IG8JG9zNl2FYcxENdceoUQkbgG7jw2bl7jy0sCGy4ueNNNffH6gsFCKXBBjRc4NH/8oGe+WjnKCeVj4FEuDBdhFzCOMfBdf26A+7lWYpxLc0TZk9cww83YVZPRCONA089009BwnbnF2LWhEHqWOfz++9DEopQTaGa7tt3jI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750410386; c=relaxed/simple;
-	bh=YEJOmvxahThDxYPssRgkR7vjy9p/G6dq+7P4QlNC4vs=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=CDJc0djtlUlc+WUivPBhkZ2xgcWhXEnWDygHSDpQkuAehxOo+THJV61KGwwbOovjuXk6h69AEHAcRXIgjfGm2K+EQ+TD+UoQfYGn7c3cNDz2h8hCDBXw1HWVzxBGHtAqFyiIn1isZHDVUMIvTMm139QktW76+0tcSq6y+/WgfDE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z7OXTvYT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82522C4CEED;
-	Fri, 20 Jun 2025 09:06:25 +0000 (UTC)
+	s=arc-20240116; t=1750410402; c=relaxed/simple;
+	bh=8nOsR9Wznn6K5E990jx0iKGyYTWovMD64ypt8UeWEr4=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=tkO9PoXAMSP+dd1mLXS6qOjN3/y3T7srype/9NJZ3QQ9xamw1CeTMLSfayjRjOiy/9Hy5ybcBHje3BAxyi0NH/n4xp0JrSwO0u0U9OAvUNzVjH0ihJrh+U1ifxiG91WXRGgKH6x84oGvII353pH65pj7CTFRYA+7MppGj/GINIU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XSPpQD2g; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B83EC4CEE3;
+	Fri, 20 Jun 2025 09:06:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750410385;
-	bh=YEJOmvxahThDxYPssRgkR7vjy9p/G6dq+7P4QlNC4vs=;
+	s=korg; t=1750410402;
+	bh=8nOsR9Wznn6K5E990jx0iKGyYTWovMD64ypt8UeWEr4=;
 	h=Subject:To:Cc:From:Date:From;
-	b=z7OXTvYTsgIeXY3PWoVZSJd0G00eJ3qqzj+xEd/O1PSn15Q+odSkcsvjX4hTu57Pf
-	 itC+V+hbTtC2DGs8O11oHEwlx9UCY167pqmtcIxH1JrCsvgMogHkspIBVlBlqi3IFT
-	 FyBRDY07hiezglbuJvzmnyDtk5sKGnJuaZGSzoes=
-Subject: FAILED: patch "[PATCH] KVM: SVM: Clear current_vmcb during vCPU free for all" failed to apply to 5.10-stable tree
-To: yosry.ahmed@linux.dev,jmattson@google.com,seanjc@google.com
+	b=XSPpQD2gugcK1MuXNb0uRWOq1bx1FOuVR05/iEwDMnof9bHCzHu/B/mZu2exBRp5k
+	 6vKquYr+3lAh5l7ELOC6oLPIISieb58ofYN91D5CwD5ZvYj7qFJwA9s4+4ogcNtA3S
+	 sbKc7WanRIX5BA6lPw98fZTzizfRMxfOD9s030AU=
+Subject: FAILED: patch "[PATCH] KVM: VMX: Flush shadow VMCS on emergency reboot" failed to apply to 6.1-stable tree
+To: chao.gao@intel.com,kai.huang@intel.com,seanjc@google.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Fri, 20 Jun 2025 11:06:12 +0200
-Message-ID: <2025062012-hardly-earthlike-2158@gregkh>
+Date: Fri, 20 Jun 2025 11:06:34 +0200
+Message-ID: <2025062034-chastise-wrecking-9a12@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.10-stable tree.
+The patch below does not apply to the 6.1-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
 git checkout FETCH_HEAD
-git cherry-pick -x 1bee4838eb3a2c689f23c7170ea66ae87ea7d93a
+git cherry-pick -x a0ee1d5faff135e28810f29e0f06328c66f89852
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025062012-hardly-earthlike-2158@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025062034-chastise-wrecking-9a12@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
 
 Possible dependencies:
 
@@ -77,37 +77,47 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 1bee4838eb3a2c689f23c7170ea66ae87ea7d93a Mon Sep 17 00:00:00 2001
-From: Yosry Ahmed <yosry.ahmed@linux.dev>
-Date: Tue, 29 Apr 2025 08:32:15 -0700
-Subject: [PATCH] KVM: SVM: Clear current_vmcb during vCPU free for all
- *possible* CPUs
+From a0ee1d5faff135e28810f29e0f06328c66f89852 Mon Sep 17 00:00:00 2001
+From: Chao Gao <chao.gao@intel.com>
+Date: Mon, 24 Mar 2025 22:08:48 +0800
+Subject: [PATCH] KVM: VMX: Flush shadow VMCS on emergency reboot
 
-When freeing a vCPU and thus its VMCB, clear current_vmcb for all possible
-CPUs, not just online CPUs, as it's theoretically possible a CPU could go
-offline and come back online in conjunction with KVM reusing the page for
-a new VMCB.
+Ensure the shadow VMCS cache is evicted during an emergency reboot to
+prevent potential memory corruption if the cache is evicted after reboot.
 
-Link: https://lore.kernel.org/all/20250320013759.3965869-1-yosry.ahmed@linux.dev
-Fixes: fd65d3142f73 ("kvm: svm: Ensure an IBPB on all affected CPUs when freeing a vmcb")
+This issue was identified through code inspection, as __loaded_vmcs_clear()
+flushes both the normal VMCS and the shadow VMCS.
+
+Avoid checking the "launched" state during an emergency reboot, unlike the
+behavior in __loaded_vmcs_clear(). This is important because reboot NMIs
+can interfere with operations like copy_shadow_to_vmcs12(), where shadow
+VMCSes are loaded directly using VMPTRLD. In such cases, if NMIs occur
+right after the VMCS load, the shadow VMCSes will be active but the
+"launched" state may not be set.
+
+Fixes: 16f5b9034b69 ("KVM: nVMX: Copy processor-specific shadow-vmcs to VMCS12")
 Cc: stable@vger.kernel.org
-Cc: Jim Mattson <jmattson@google.com>
-Signed-off-by: Yosry Ahmed <yosry.ahmed@linux.dev>
-[sean: split to separate patch, write changelog]
+Signed-off-by: Chao Gao <chao.gao@intel.com>
+Reviewed-by: Kai Huang <kai.huang@intel.com>
+Link: https://lore.kernel.org/r/20250324140849.2099723-1-chao.gao@intel.com
 Signed-off-by: Sean Christopherson <seanjc@google.com>
 
-diff --git a/arch/x86/kvm/svm/svm.c b/arch/x86/kvm/svm/svm.c
-index 8eb482ca3359..e6802e33c54d 100644
---- a/arch/x86/kvm/svm/svm.c
-+++ b/arch/x86/kvm/svm/svm.c
-@@ -1496,7 +1496,7 @@ static void svm_clear_current_vmcb(struct vmcb *vmcb)
- {
- 	int i;
+diff --git a/arch/x86/kvm/vmx/vmx.c b/arch/x86/kvm/vmx/vmx.c
+index ef2d7208dd20..848c4963bdb8 100644
+--- a/arch/x86/kvm/vmx/vmx.c
++++ b/arch/x86/kvm/vmx/vmx.c
+@@ -770,8 +770,11 @@ void vmx_emergency_disable_virtualization_cpu(void)
+ 		return;
  
--	for_each_online_cpu(i)
-+	for_each_possible_cpu(i)
- 		cmpxchg(per_cpu_ptr(&svm_data.current_vmcb, i), vmcb, NULL);
+ 	list_for_each_entry(v, &per_cpu(loaded_vmcss_on_cpu, cpu),
+-			    loaded_vmcss_on_cpu_link)
++			    loaded_vmcss_on_cpu_link) {
+ 		vmcs_clear(v->vmcs);
++		if (v->shadow_vmcs)
++			vmcs_clear(v->shadow_vmcs);
++	}
+ 
+ 	kvm_cpu_vmxoff();
  }
- 
 
 
