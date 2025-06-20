@@ -1,71 +1,71 @@
-Return-Path: <stable+bounces-155150-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-155152-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 64D96AE1E40
-	for <lists+stable@lfdr.de>; Fri, 20 Jun 2025 17:13:41 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9014FAE1E44
+	for <lists+stable@lfdr.de>; Fri, 20 Jun 2025 17:14:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C7DE85A289F
-	for <lists+stable@lfdr.de>; Fri, 20 Jun 2025 15:13:06 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2B5F717B0B8
+	for <lists+stable@lfdr.de>; Fri, 20 Jun 2025 15:14:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 876832BEC5F;
-	Fri, 20 Jun 2025 15:13:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B4D529C349;
+	Fri, 20 Jun 2025 15:14:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xyHsBUo2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g5Tg+hsI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47CC829C32F
-	for <stable@vger.kernel.org>; Fri, 20 Jun 2025 15:13:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC3FC28937B
+	for <stable@vger.kernel.org>; Fri, 20 Jun 2025 15:14:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750432406; cv=none; b=n+UvuS1cwXjztsooD5vxwZlVHDyN6gvqHNVGuemxwouPJTUznZ3TyXFQsO1nosdIiJCjb8VKDWACmTFMpl1ZILWhkJvE+XaGkS4/Acx1FOiaQPzG/hpYeyfK0JCEcSNmQAFcERWL2ywgvLntYKIsvKMHFaAM5IjcK9uViOjZ6/s=
+	t=1750432475; cv=none; b=rAwBX/lty9xom+ZVJXmyX4bfBIT/5w/APewj2Ia6pnYNr5AKXXNinbx3RYCYpteJNAfr+/Vh1uAI1BYoeweJUxVSpdmF0s1gzTbe7q0G5nksWan8kul3Hki7V4rPkxFTIBxtfFtWxhmtOUCdvbhXrk32vD/N0Q3e9GfSiS/EUiA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750432406; c=relaxed/simple;
-	bh=qTdZdgqclAIuRxpTGn47zXxeEhmADAGpVQvoXxg68vY=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=QVD+zLtvvn8cW9zj0kZM3N1eCAJKBzW8MsCEwVac7LknrWGh8FKNzlmIZ5hJp6F+CM3mwb78hRrVD/lbIExGTRx14TCAafoPKgCfZA3apxRgrPjlFi94dVuMZGy0k7FzvFOli65Rz0n0VcJRXMMkzJmciN8svPI1bj6F310hcFk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xyHsBUo2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B88FCC4CEE3;
-	Fri, 20 Jun 2025 15:13:25 +0000 (UTC)
+	s=arc-20240116; t=1750432475; c=relaxed/simple;
+	bh=4xf8O3FO8VSbvkjB1kJadgxnzhi2hb18FXhWSC6cNT4=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=KqVlIWB2Yu+4EEWmZm0d7zQfg3j0Ixyu0v0ZwtXZ3dajeVgY5LPZ5fQNwhEuQaz4KmhZan+ii7UVYQq8kPG7+c97xffVh+39CDLKJSxaNSfjFhM4gMXG221iU89w6uvBI106KNomEQ/PhOXCIkIcpb1dGy2n1E7U97oNbfQRxyo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g5Tg+hsI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65FD3C4CEE3;
+	Fri, 20 Jun 2025 15:14:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750432406;
-	bh=qTdZdgqclAIuRxpTGn47zXxeEhmADAGpVQvoXxg68vY=;
+	s=korg; t=1750432475;
+	bh=4xf8O3FO8VSbvkjB1kJadgxnzhi2hb18FXhWSC6cNT4=;
 	h=Subject:To:Cc:From:Date:From;
-	b=xyHsBUo2enW2FNl0VEfums5SjizBGjnfR+C4ffc3O2EYb6tPw5LX0Q/4YoDtAj9++
-	 zIuAkKt9j0BKfWHr8V2XhLVNC9lCKcCHT9Tj8Kde0nef51F1F+3s/IlECICMsMTEuO
-	 b/9qUwKpwb34ifDmqCoX64eCIMU5H6mBAjWhV/G8=
-Subject: FAILED: patch "[PATCH] x86/its: explicitly manage permissions for ITS pages" failed to apply to 5.15-stable tree
-To: peterz@infradead.org,nik.borisov@suse.com,rppt@kernel.org
+	b=g5Tg+hsIr5djRPFIgIPhQ2JE2T76E/BNH3Pu8gVAvriHdoIcojN8ypb51oZ66GNw2
+	 s6NCujKowpYk2dO2UTO1vTiyeFRPk/tBMRIwC+vMsKxAHA3See1ZO/xA52eUBt3Bw9
+	 Lch6+NQF3yoaW1ZVom2+exSv8z7TbThD6xnvThEU=
+Subject: FAILED: patch "[PATCH] platform/x86: ideapad-laptop: use usleep_range() for EC" failed to apply to 6.6-stable tree
+To: i@rong.moe,Emmet_Z@outlook.com,felixonmars@archlinux.org,i@hack3r.moe,ilpo.jarvinen@linux.intel.com,jeffbai@aosc.io,minhld139@gmail.com,zhangjianfei3@gmail.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Fri, 20 Jun 2025 17:13:14 +0200
-Message-ID: <2025062014-unvaried-ranch-2d7c@gregkh>
+Date: Fri, 20 Jun 2025 17:14:33 +0200
+Message-ID: <2025062033-fedora-humbly-2cc5@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.15-stable tree.
+The patch below does not apply to the 6.6-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
 git checkout FETCH_HEAD
-git cherry-pick -x a82b26451de126a5ae130361081986bc459afe9b
+git cherry-pick -x 5808c34216954cd832bd4b8bc52dfa287049122b
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025062014-unvaried-ranch-2d7c@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025062033-fedora-humbly-2cc5@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
 
 Possible dependencies:
 
@@ -77,152 +77,122 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From a82b26451de126a5ae130361081986bc459afe9b Mon Sep 17 00:00:00 2001
-From: "Peter Zijlstra (Intel)" <peterz@infradead.org>
-Date: Tue, 3 Jun 2025 14:14:44 +0300
-Subject: [PATCH] x86/its: explicitly manage permissions for ITS pages
+From 5808c34216954cd832bd4b8bc52dfa287049122b Mon Sep 17 00:00:00 2001
+From: Rong Zhang <i@rong.moe>
+Date: Mon, 26 May 2025 04:18:07 +0800
+Subject: [PATCH] platform/x86: ideapad-laptop: use usleep_range() for EC
+ polling
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-execmem_alloc() sets permissions differently depending on the kernel
-configuration, CPU support for PSE and whether a page is allocated
-before or after mark_rodata_ro().
+It was reported that ideapad-laptop sometimes causes some recent (since
+2024) Lenovo ThinkBook models shut down when:
+ - suspending/resuming
+ - closing/opening the lid
+ - (dis)connecting a charger
+ - reading/writing some sysfs properties, e.g., fan_mode, touchpad
+ - pressing down some Fn keys, e.g., Brightness Up/Down (Fn+F5/F6)
+ - (seldom) loading the kmod
 
-Add tracking for pages allocated for ITS when patching the core kernel
-and make sure the permissions for ITS pages are explicitly managed for
-both kernel and module allocations.
+The issue has existed since the launch day of such models, and there
+have been some out-of-tree workarounds (see Link:) for the issue. One
+disables some functionalities, while another one simply shortens
+IDEAPAD_EC_TIMEOUT. The disabled functionalities have read_ec_data() in
+their call chains, which calls schedule() between each poll.
 
-Fixes: 872df34d7c51 ("x86/its: Use dynamic thunks for indirect branches")
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Co-developed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Reviewed-by: Nikolay Borisov <nik.borisov@suse.com>
+It turns out that these models suffer from the indeterminacy of
+schedule() because of their low tolerance for being polled too
+frequently. Sometimes schedule() returns too soon due to the lack of
+ready tasks, causing the margin between two polls to be too short.
+In this case, the command is somehow aborted, and too many subsequent
+polls (they poll for "nothing!") may eventually break the state machine
+in the EC, resulting in a hard shutdown. This explains why shortening
+IDEAPAD_EC_TIMEOUT works around the issue - it reduces the total number
+of polls sent to the EC.
+
+Even when it doesn't lead to a shutdown, frequent polls may also disturb
+the ongoing operation and notably delay (+ 10-20ms) the availability of
+EC response. This phenomenon is unlikely to be exclusive to the models
+mentioned above, so dropping the schedule() manner should also slightly
+improve the responsiveness of various models.
+
+Fix these issues by migrating to usleep_range(150, 300). The interval is
+chosen to add some margin to the minimal 50us and considering EC
+responses are usually available after 150-2500us based on my test. It
+should be enough to fix these issues on all models subject to the EC bug
+without introducing latency on other models.
+
+Tested on ThinkBook 14 G7+ ASP and solved both issues. No regression was
+introduced in the test on a model without the EC bug (ThinkBook X IMH,
+thanks Eric).
+
+Link: https://github.com/ty2/ideapad-laptop-tb2024g6plus/commit/6c5db18c9e8109873c2c90a7d2d7f552148f7ad4
+Link: https://github.com/ferstar/ideapad-laptop-tb/commit/42d1e68e5009529d31bd23f978f636f79c023e80
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=218771
+Fixes: 6a09f21dd1e2 ("ideapad: add ACPI helpers")
 Cc: stable@vger.kernel.org
-Link: https://lkml.kernel.org/r/20250603111446.2609381-5-rppt@kernel.org
+Tested-by: Felix Yan <felixonmars@archlinux.org>
+Tested-by: Eric Long <i@hack3r.moe>
+Tested-by: Jianfei Zhang <zhangjianfei3@gmail.com>
+Tested-by: Mingcong Bai <jeffbai@aosc.io>
+Tested-by: Minh Le <minhld139@gmail.com>
+Tested-by: Sicheng Zhu <Emmet_Z@outlook.com>
+Signed-off-by: Rong Zhang <i@rong.moe>
+Link: https://lore.kernel.org/r/20250525201833.37939-1-i@rong.moe
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 
-diff --git a/arch/x86/kernel/alternative.c b/arch/x86/kernel/alternative.c
-index b50fe6ce4655..6455f7f751b3 100644
---- a/arch/x86/kernel/alternative.c
-+++ b/arch/x86/kernel/alternative.c
-@@ -116,6 +116,24 @@ static struct module *its_mod;
- #endif
- static void *its_page;
- static unsigned int its_offset;
-+struct its_array its_pages;
-+
-+static void *__its_alloc(struct its_array *pages)
-+{
-+	void *page __free(execmem) = execmem_alloc(EXECMEM_MODULE_TEXT, PAGE_SIZE);
-+	if (!page)
-+		return NULL;
-+
-+	void *tmp = krealloc(pages->pages, (pages->num+1) * sizeof(void *),
-+			     GFP_KERNEL);
-+	if (!tmp)
-+		return NULL;
-+
-+	pages->pages = tmp;
-+	pages->pages[pages->num++] = page;
-+
-+	return no_free_ptr(page);
-+}
+diff --git a/drivers/platform/x86/ideapad-laptop.c b/drivers/platform/x86/ideapad-laptop.c
+index ede483573fe0..b5e4da6a6779 100644
+--- a/drivers/platform/x86/ideapad-laptop.c
++++ b/drivers/platform/x86/ideapad-laptop.c
+@@ -15,6 +15,7 @@
+ #include <linux/bug.h>
+ #include <linux/cleanup.h>
+ #include <linux/debugfs.h>
++#include <linux/delay.h>
+ #include <linux/device.h>
+ #include <linux/dmi.h>
+ #include <linux/i8042.h>
+@@ -267,6 +268,20 @@ static void ideapad_shared_exit(struct ideapad_private *priv)
+  */
+ #define IDEAPAD_EC_TIMEOUT 200 /* in ms */
  
- /* Initialize a thunk with the "jmp *reg; int3" instructions. */
- static void *its_init_thunk(void *thunk, int reg)
-@@ -151,6 +169,21 @@ static void *its_init_thunk(void *thunk, int reg)
- 	return thunk + offset;
- }
- 
-+static void its_pages_protect(struct its_array *pages)
-+{
-+	for (int i = 0; i < pages->num; i++) {
-+		void *page = pages->pages[i];
-+		execmem_restore_rox(page, PAGE_SIZE);
-+	}
-+}
++/*
++ * Some models (e.g., ThinkBook since 2024) have a low tolerance for being
++ * polled too frequently. Doing so may break the state machine in the EC,
++ * resulting in a hard shutdown.
++ *
++ * It is also observed that frequent polls may disturb the ongoing operation
++ * and notably delay the availability of EC response.
++ *
++ * These values are used as the delay before the first poll and the interval
++ * between subsequent polls to solve the above issues.
++ */
++#define IDEAPAD_EC_POLL_MIN_US 150
++#define IDEAPAD_EC_POLL_MAX_US 300
 +
-+static void its_fini_core(void)
-+{
-+	if (IS_ENABLED(CONFIG_STRICT_KERNEL_RWX))
-+		its_pages_protect(&its_pages);
-+	kfree(its_pages.pages);
-+}
-+
- #ifdef CONFIG_MODULES
- void its_init_mod(struct module *mod)
+ static int eval_int(acpi_handle handle, const char *name, unsigned long *res)
  {
-@@ -173,10 +206,8 @@ void its_fini_mod(struct module *mod)
- 	its_page = NULL;
- 	mutex_unlock(&text_mutex);
+ 	unsigned long long result;
+@@ -383,7 +398,7 @@ static int read_ec_data(acpi_handle handle, unsigned long cmd, unsigned long *da
+ 	end_jiffies = jiffies + msecs_to_jiffies(IDEAPAD_EC_TIMEOUT) + 1;
  
--	for (int i = 0; i < mod->arch.its_pages.num; i++) {
--		void *page = mod->arch.its_pages.pages[i];
--		execmem_restore_rox(page, PAGE_SIZE);
--	}
-+	if (IS_ENABLED(CONFIG_STRICT_MODULE_RWX))
-+		its_pages_protect(&mod->arch.its_pages);
- }
+ 	while (time_before(jiffies, end_jiffies)) {
+-		schedule();
++		usleep_range(IDEAPAD_EC_POLL_MIN_US, IDEAPAD_EC_POLL_MAX_US);
  
- void its_free_mod(struct module *mod)
-@@ -194,28 +225,23 @@ void its_free_mod(struct module *mod)
+ 		err = eval_vpcr(handle, 1, &val);
+ 		if (err)
+@@ -414,7 +429,7 @@ static int write_ec_cmd(acpi_handle handle, unsigned long cmd, unsigned long dat
+ 	end_jiffies = jiffies + msecs_to_jiffies(IDEAPAD_EC_TIMEOUT) + 1;
  
- static void *its_alloc(void)
- {
--	void *page __free(execmem) = execmem_alloc(EXECMEM_MODULE_TEXT, PAGE_SIZE);
-+	struct its_array *pages = &its_pages;
-+	void *page;
+ 	while (time_before(jiffies, end_jiffies)) {
+-		schedule();
++		usleep_range(IDEAPAD_EC_POLL_MIN_US, IDEAPAD_EC_POLL_MAX_US);
  
-+#ifdef CONFIG_MODULE
-+	if (its_mod)
-+		pages = &its_mod->arch.its_pages;
-+#endif
-+
-+	page = __its_alloc(pages);
- 	if (!page)
- 		return NULL;
- 
--#ifdef CONFIG_MODULES
--	if (its_mod) {
--		struct its_array *pages = &its_mod->arch.its_pages;
--		void *tmp = krealloc(pages->pages,
--				     (pages->num+1) * sizeof(void *),
--				     GFP_KERNEL);
--		if (!tmp)
--			return NULL;
-+	execmem_make_temp_rw(page, PAGE_SIZE);
-+	if (pages == &its_pages)
-+		set_memory_x((unsigned long)page, 1);
- 
--		pages->pages = tmp;
--		pages->pages[pages->num++] = page;
--
--		execmem_make_temp_rw(page, PAGE_SIZE);
--	}
--#endif /* CONFIG_MODULES */
--
--	return no_free_ptr(page);
-+	return page;
- }
- 
- static void *its_allocate_thunk(int reg)
-@@ -269,7 +295,9 @@ u8 *its_static_thunk(int reg)
- 	return thunk;
- }
- 
--#endif
-+#else
-+static inline void its_fini_core(void) {}
-+#endif /* CONFIG_MITIGATION_ITS */
- 
- /*
-  * Nomenclature for variable names to simplify and clarify this code and ease
-@@ -2339,6 +2367,8 @@ void __init alternative_instructions(void)
- 	apply_retpolines(__retpoline_sites, __retpoline_sites_end);
- 	apply_returns(__return_sites, __return_sites_end);
- 
-+	its_fini_core();
-+
- 	/*
- 	 * Adjust all CALL instructions to point to func()-10, including
- 	 * those in .altinstr_replacement.
+ 		err = eval_vpcr(handle, 1, &val);
+ 		if (err)
 
 
