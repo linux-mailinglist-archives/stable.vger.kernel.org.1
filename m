@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-155018-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-155019-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B5B8CAE16E3
-	for <lists+stable@lfdr.de>; Fri, 20 Jun 2025 11:01:00 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D6ADAE16EB
+	for <lists+stable@lfdr.de>; Fri, 20 Jun 2025 11:02:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E63443BE204
-	for <lists+stable@lfdr.de>; Fri, 20 Jun 2025 09:00:35 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 31A124A5B01
+	for <lists+stable@lfdr.de>; Fri, 20 Jun 2025 09:02:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DEF4D27D791;
-	Fri, 20 Jun 2025 09:00:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B83E927E063;
+	Fri, 20 Jun 2025 09:02:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R7R2OLKf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="geMCOXdR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E02627814A
-	for <stable@vger.kernel.org>; Fri, 20 Jun 2025 09:00:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 790F027E04A
+	for <stable@vger.kernel.org>; Fri, 20 Jun 2025 09:02:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750410057; cv=none; b=GoHAck/p4Zj+Gj1u/aceNQa4CyU2uxMZsG8/JBlujGrJSj+sBW1MtWgpsvyL1MyMyid7V/77FSn2c+Eklp0WvHRnZz4Zku4W9mrbPsaIvXtZbWF/8ZzTFPEF53oRORzY+wSYzagv0U0L+w8nMo8I6xHhrc8Z3D8eJXKMtEL1E/U=
+	t=1750410128; cv=none; b=IZTpkBbxIyPgNFWGi6tMoMSDCwfrz3o3oJBHocBchKWLfndZa822q4NtT2+I0nq/usnn49ZUnjUMct4URiTrEzhH3V6YNXWQhhxjPQoj0H5RXm5DFslyxivvwtau/EVNxG2ZHkIGR+EZ8EM/e/sp3D0WCdZ/K07l5ZcxJ9PxFrQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750410057; c=relaxed/simple;
-	bh=7fUcM5dHhL9h9eFhQ3OUCrJdVl8CqgugEMsE1W1CQ7E=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=XcAerVzBpXRUSijjzdVTE4mzEPMfiTv/kiZ/sUXmbnC+nr8pFCnhbmqM30yh+mlOq6QhYDit7f/rC7GRtajgmTgwLOsQDjDyoWKH+6lTBeJRpiIYYAmm+S6aDt5kuchd3apsNXoDwZ05h6eEL1UXO4zcDMnDr8/NkldvQXRklXk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R7R2OLKf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0CAD4C4CEED;
-	Fri, 20 Jun 2025 09:00:56 +0000 (UTC)
+	s=arc-20240116; t=1750410128; c=relaxed/simple;
+	bh=jLv4fIPUdTe2ervrKIBOy6yAdHaW9DjDyTnIABj42d4=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=URY/qkKrQStlcZVsJLVlVAwZvP+J/V6VoCjoUgaU/qoMhbnfWBHySxKKw9eRXjuVX1yC5AcA/A0JcwYtgB1HmueHItEp/kG2+lvahfOOTVdcWbnwh7DvRWT1IhneQNwJXf0J3Aeuns5nYi4Yc3kzLd3hqo35VMcbmEkv8zY0SBQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=geMCOXdR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7861C4CEE3;
+	Fri, 20 Jun 2025 09:02:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750410057;
-	bh=7fUcM5dHhL9h9eFhQ3OUCrJdVl8CqgugEMsE1W1CQ7E=;
+	s=korg; t=1750410128;
+	bh=jLv4fIPUdTe2ervrKIBOy6yAdHaW9DjDyTnIABj42d4=;
 	h=Subject:To:Cc:From:Date:From;
-	b=R7R2OLKfUbNJXmOR+q/neshNgDJbZfLWXSjZWNfzECtkzjZupGoCC7W+c43LvQLKG
-	 ZFLzp7U7yYlKpLkHmzwTGoxjGWun/JtheDzoi7mo8BQi+GGdzqp34Kh+rsUbCie2VH
-	 BloCZnPXMvqafAvHwN19kTHDlWmnbN9OTMbVi7ZE=
-Subject: FAILED: patch "[PATCH] f2fs: fix to do sanity check on ino and xnid" failed to apply to 5.4-stable tree
-To: chao@kernel.org,jaegeuk@kernel.org
+	b=geMCOXdRBBsd3KkHcyk2xLhKArR7Dfi0oF7ntEu+pSCg3OYLxcHUzIPN/Vl6eDCJW
+	 a4uPusBeDFCD8/lWQM9jnJpDZUdZByZrrL/wN0DNV00aih/QiPAPSZB96K0dVW6MVD
+	 meQ36UNWtJ5z5A16rmZLgUa4TYHYCrAnSA3LkNRI=
+Subject: FAILED: patch "[PATCH] Input: gpio-keys - fix possible concurrent access in" failed to apply to 5.15-stable tree
+To: gatien.chevallier@foss.st.com,dmitry.torokhov@gmail.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Fri, 20 Jun 2025 10:58:47 +0200
-Message-ID: <2025062047-modular-police-cff2@gregkh>
+Date: Fri, 20 Jun 2025 11:00:03 +0200
+Message-ID: <2025062003-wizard-hamstring-172d@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.4-stable tree.
+The patch below does not apply to the 5.15-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
 git checkout FETCH_HEAD
-git cherry-pick -x 061cf3a84bde038708eb0f1d065b31b7c2456533
+git cherry-pick -x 8f38219fa139623c29db2cb0f17d0a197a86e344
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025062047-modular-police-cff2@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025062003-wizard-hamstring-172d@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
 
 Possible dependencies:
 
@@ -77,99 +77,36 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 061cf3a84bde038708eb0f1d065b31b7c2456533 Mon Sep 17 00:00:00 2001
-From: Chao Yu <chao@kernel.org>
-Date: Mon, 24 Mar 2025 13:33:39 +0800
-Subject: [PATCH] f2fs: fix to do sanity check on ino and xnid
+From 8f38219fa139623c29db2cb0f17d0a197a86e344 Mon Sep 17 00:00:00 2001
+From: Gatien Chevallier <gatien.chevallier@foss.st.com>
+Date: Fri, 30 May 2025 16:09:23 -0700
+Subject: [PATCH] Input: gpio-keys - fix possible concurrent access in
+ gpio_keys_irq_timer()
 
-syzbot reported a f2fs bug as below:
+gpio_keys_irq_isr() and gpio_keys_irq_timer() access the same resources.
+There could be a concurrent access if a GPIO interrupt occurs in parallel
+of a HR timer interrupt.
 
-INFO: task syz-executor140:5308 blocked for more than 143 seconds.
-      Not tainted 6.14.0-rc7-syzkaller-00069-g81e4f8d68c66 #0
-"echo 0 > /proc/sys/kernel/hung_task_timeout_secs" disables this message.
-task:syz-executor140 state:D stack:24016 pid:5308  tgid:5308  ppid:5306   task_flags:0x400140 flags:0x00000006
-Call Trace:
- <TASK>
- context_switch kernel/sched/core.c:5378 [inline]
- __schedule+0x190e/0x4c90 kernel/sched/core.c:6765
- __schedule_loop kernel/sched/core.c:6842 [inline]
- schedule+0x14b/0x320 kernel/sched/core.c:6857
- io_schedule+0x8d/0x110 kernel/sched/core.c:7690
- folio_wait_bit_common+0x839/0xee0 mm/filemap.c:1317
- __folio_lock mm/filemap.c:1664 [inline]
- folio_lock include/linux/pagemap.h:1163 [inline]
- __filemap_get_folio+0x147/0xb40 mm/filemap.c:1917
- pagecache_get_page+0x2c/0x130 mm/folio-compat.c:87
- find_get_page_flags include/linux/pagemap.h:842 [inline]
- f2fs_grab_cache_page+0x2b/0x320 fs/f2fs/f2fs.h:2776
- __get_node_page+0x131/0x11b0 fs/f2fs/node.c:1463
- read_xattr_block+0xfb/0x190 fs/f2fs/xattr.c:306
- lookup_all_xattrs fs/f2fs/xattr.c:355 [inline]
- f2fs_getxattr+0x676/0xf70 fs/f2fs/xattr.c:533
- __f2fs_get_acl+0x52/0x870 fs/f2fs/acl.c:179
- f2fs_acl_create fs/f2fs/acl.c:375 [inline]
- f2fs_init_acl+0xd7/0x9b0 fs/f2fs/acl.c:418
- f2fs_init_inode_metadata+0xa0f/0x1050 fs/f2fs/dir.c:539
- f2fs_add_inline_entry+0x448/0x860 fs/f2fs/inline.c:666
- f2fs_add_dentry+0xba/0x1e0 fs/f2fs/dir.c:765
- f2fs_do_add_link+0x28c/0x3a0 fs/f2fs/dir.c:808
- f2fs_add_link fs/f2fs/f2fs.h:3616 [inline]
- f2fs_mknod+0x2e8/0x5b0 fs/f2fs/namei.c:766
- vfs_mknod+0x36d/0x3b0 fs/namei.c:4191
- unix_bind_bsd net/unix/af_unix.c:1286 [inline]
- unix_bind+0x563/0xe30 net/unix/af_unix.c:1379
- __sys_bind_socket net/socket.c:1817 [inline]
- __sys_bind+0x1e4/0x290 net/socket.c:1848
- __do_sys_bind net/socket.c:1853 [inline]
- __se_sys_bind net/socket.c:1851 [inline]
- __x64_sys_bind+0x7a/0x90 net/socket.c:1851
- do_syscall_x64 arch/x86/entry/common.c:52 [inline]
- do_syscall_64+0xf3/0x230 arch/x86/entry/common.c:83
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
+Guard back those resources with a spinlock.
 
-Let's dump and check metadata of corrupted inode, it shows its xattr_nid
-is the same to its i_ino.
-
-dump.f2fs -i 3 chaseyu.img.raw
-i_xattr_nid                             [0x       3 : 3]
-
-So that, during mknod in the corrupted directory, it tries to get and
-lock inode page twice, result in deadlock.
-
-- f2fs_mknod
- - f2fs_add_inline_entry
-  - f2fs_get_inode_page --- lock dir's inode page
-   - f2fs_init_acl
-    - f2fs_acl_create(dir,..)
-     - __f2fs_get_acl
-      - f2fs_getxattr
-       - lookup_all_xattrs
-        - __get_node_page --- try to lock dir's inode page
-
-In order to fix this, let's add sanity check on ino and xnid.
-
+Fixes: 019002f20cb5 ("Input: gpio-keys - use hrtimer for release timer")
+Signed-off-by: Gatien Chevallier <gatien.chevallier@foss.st.com>
+Link: https://lore.kernel.org/r/20250528-gpio_keys_preempt_rt-v2-2-3fc55a9c3619@foss.st.com
 Cc: stable@vger.kernel.org
-Reported-by: syzbot+cc448dcdc7ae0b4e4ffa@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/linux-f2fs-devel/67e06150.050a0220.21942d.0005.GAE@google.com
-Signed-off-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
 
-diff --git a/fs/f2fs/inode.c b/fs/f2fs/inode.c
-index fa5097da7c88..f5991e8751b9 100644
---- a/fs/f2fs/inode.c
-+++ b/fs/f2fs/inode.c
-@@ -288,6 +288,12 @@ static bool sanity_check_inode(struct inode *inode, struct page *node_page)
- 		return false;
- 	}
+diff --git a/drivers/input/keyboard/gpio_keys.c b/drivers/input/keyboard/gpio_keys.c
+index d884538107c9..f9db86da0818 100644
+--- a/drivers/input/keyboard/gpio_keys.c
++++ b/drivers/input/keyboard/gpio_keys.c
+@@ -449,6 +449,8 @@ static enum hrtimer_restart gpio_keys_irq_timer(struct hrtimer *t)
+ 						      release_timer);
+ 	struct input_dev *input = bdata->input;
  
-+	if (ino_of_node(node_page) == fi->i_xattr_nid) {
-+		f2fs_warn(sbi, "%s: corrupted inode i_ino=%lx, xnid=%x, run fsck to fix.",
-+			  __func__, inode->i_ino, fi->i_xattr_nid);
-+		return false;
-+	}
++	guard(spinlock_irqsave)(&bdata->lock);
 +
- 	if (f2fs_has_extra_attr(inode)) {
- 		if (!f2fs_sb_has_extra_attr(sbi)) {
- 			f2fs_warn(sbi, "%s: inode (ino=%lx) is with extra_attr, but extra_attr feature is off",
+ 	if (bdata->key_pressed) {
+ 		input_report_key(input, *bdata->code, 0);
+ 		input_sync(input);
 
 
