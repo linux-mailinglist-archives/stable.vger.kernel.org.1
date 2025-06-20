@@ -1,103 +1,136 @@
-Return-Path: <stable+bounces-155114-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-155115-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D330FAE198B
-	for <lists+stable@lfdr.de>; Fri, 20 Jun 2025 13:05:05 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D76AAE1988
+	for <lists+stable@lfdr.de>; Fri, 20 Jun 2025 13:04:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0EECB3B2BDF
-	for <lists+stable@lfdr.de>; Fri, 20 Jun 2025 11:03:35 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 224CD163F97
+	for <lists+stable@lfdr.de>; Fri, 20 Jun 2025 11:04:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D95D289E1C;
-	Fri, 20 Jun 2025 11:03:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EDEDF285411;
+	Fri, 20 Jun 2025 11:04:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b="ZlyTbrFp"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="j5TQWyll"
 X-Original-To: stable@vger.kernel.org
-Received: from mx.denx.de (mx.denx.de [89.58.32.78])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F4F728A703
-	for <stable@vger.kernel.org>; Fri, 20 Jun 2025 11:03:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=89.58.32.78
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92BE423AB9C;
+	Fri, 20 Jun 2025 11:04:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750417403; cv=none; b=puA7Ee4UfnEjr+sdT8w75pwY3aZVqCV40QoqN04TLYy+/RmzgN2QrFhKWByPBXueCxL5fy4di4SsQ6nwPTPaU36aG5amy93wWeWjMr+fI1v3UyGMmejKDV2UoeIBh81NtryLvhXRTGXNdjNXRt8jyCqgnKf4jao4+AmgseKVurY=
+	t=1750417481; cv=none; b=Z3ufF75efTm3tSiRYAFLATGsUfnkMK3qspDStqRw2e7YTnYyqQiehp+hBKmkaxdqj5Tzm6wa71zzeyIpQyF/+f8T19BLp9xXJS7WkULTv7/DAxiYpxB+1mkQXBwWUAG3Xr+TAdxxR2UG20048RXFf59L6blL9I4tyYsicJDlbRk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750417403; c=relaxed/simple;
-	bh=ow9pmBGoOWDd2bUZiXrTq/Ixw5bb6fPeBsL557mCQ+E=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=FLJ4WSltWHP1W5uF/o3wSNYAGDwzlDl1ks9vHw4Dopt8owQW5NqlGlQhqRyR6VvBwC9PVw59FC8G4PuL4tpt5qn+ZJ/L3gFudM/WHvXotRwbFrdjJMeOgrb3L9CP2tNQTXNQw7fI2wpbPtRz97bM/vgW1ynbQW/162WIavKX7Oo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de; spf=pass smtp.mailfrom=denx.de; dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b=ZlyTbrFp; arc=none smtp.client-ip=89.58.32.78
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=denx.de
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 41B12104884A8;
-	Fri, 20 Jun 2025 13:03:16 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de; s=mx-20241105;
-	t=1750417398; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 in-reply-to:references; bh=H83VpY+EaGjGzuA1F89Ga9UMsJ8CojiDiLGi6caqOcE=;
-	b=ZlyTbrFpJRrGIz2kyL0yPAZ4hZq/ok5wtMU192PehHzlp+L07729xYQkssjsL3lDUGIWNG
-	MNdte9I2gsKM9HKj2mVTYUD70QKYwHZ744gRG9l+5AWEzXCb79b51qKL8qgTtjdHzNRUHJ
-	5OCseZ1VGgGNqppf6i4i7CuaSur5jSK+JKjKn2UV4YjPtHKAdqk4W1z0DI/h97MLYL/OZ7
-	Lu8LEbon3KiBywXfzsqxXmP9NbH5DjO2SKpWJ0Zfslx0AF+0QsWkhMiXV4H+rCKQOfFipr
-	GmclK6YpcGZi0gbXndidxcyqeJucnL/Zj4g035inpLQ9pEebT1ar/rXsF05n6w==
-Date: Fri, 20 Jun 2025 13:03:14 +0200
-From: Pavel Machek <pavel@denx.de>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 6.12 417/512] serial: sh-sci: Move runtime PM enable to
- sci_probe_single()
-Message-ID: <aFU/8ioRP6x1LqTk@duo.ucw.cz>
-References: <20250617152419.512865572@linuxfoundation.org>
- <20250617152436.474113766@linuxfoundation.org>
+	s=arc-20240116; t=1750417481; c=relaxed/simple;
+	bh=2Kr0s01O6FHXBu+oXsyg7E2mw35WNhmqc1EtpaC2LQ8=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=HyLy6hQRmhnJn5zHSkqSOqIupMHmWQMd2ZoglumDFJ/o01A/Oz7hN1kKvF0GSaVfTZMeTjegue1ICOqoE5WoFWbOGnETryFaWxvCxrWPgmHHPkflVKW4Y2Doa5qbi91VZnELbQKS3Op/F3Mfz4ULR6R4hxNA8N2XsJpN6eCO78E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=j5TQWyll; arc=none smtp.client-ip=192.198.163.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1750417480; x=1781953480;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=2Kr0s01O6FHXBu+oXsyg7E2mw35WNhmqc1EtpaC2LQ8=;
+  b=j5TQWyllNtf2zpAPJ52k+Wi7B5IqR4Xi4oIkYJlsF9Eg1gkrgbN2VX1r
+   +KDqyHo96wI+agKBk0BqB16zE+6EdDm9Re1AjGTF/NoI5KH0Bb8hfaSnc
+   ApLzt1z08I1w5T4bJpmoLEzRpnifV6u4MkVqJHa/AWWIw1DP4NqCtiy8s
+   iAtKJMorF8LY/Dbr4g+P9stj7KPE6J5egs+4+L+kEnf9jRrqdfrN00SiF
+   ++6iW9tJ91qwdivJYS9MSHmdePzdgNsLIehd6eW4TE+5CFAUhptFAgiYW
+   9ocDXEonDJir/as89DtUzp2vfRjxIysETB7TZLywGiH5Vgh03xgbJfe2l
+   Q==;
+X-CSE-ConnectionGUID: 9zdaxZ1iRiKLkwDbyLWe9w==
+X-CSE-MsgGUID: ByyY1OE9RxyqhsrZt+HWTA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11469"; a="52759863"
+X-IronPort-AV: E=Sophos;i="6.16,251,1744095600"; 
+   d="scan'208";a="52759863"
+Received: from orviesa010.jf.intel.com ([10.64.159.150])
+  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Jun 2025 04:04:39 -0700
+X-CSE-ConnectionGUID: +OzpplOmQPO09MAPskEdGw==
+X-CSE-MsgGUID: ivzRA5eyTdqyiXW1hk7Ktg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.16,251,1744095600"; 
+   d="scan'208";a="150307555"
+Received: from kanliang-dev.jf.intel.com ([10.165.154.102])
+  by orviesa010.jf.intel.com with ESMTP; 20 Jun 2025 04:04:38 -0700
+From: kan.liang@linux.intel.com
+To: peterz@infradead.org,
+	mingo@redhat.com,
+	acme@kernel.org,
+	namhyung@kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-perf-users@vger.kernel.org
+Cc: Kan Liang <kan.liang@linux.intel.com>,
+	Vince Weaver <vincent.weaver@maine.edu>,
+	stable@vger.kernel.org
+Subject: [PATCH] perf/x86/intel: Fix unchecked PEBS_ENABLE MSR access error
+Date: Fri, 20 Jun 2025 04:04:06 -0700
+Message-Id: <20250620110406.3782402-1-kan.liang@linux.intel.com>
+X-Mailer: git-send-email 2.38.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="IIaTlm/Ug1U37WZl"
-Content-Disposition: inline
-In-Reply-To: <20250617152436.474113766@linuxfoundation.org>
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Transfer-Encoding: 8bit
 
+From: Kan Liang <kan.liang@linux.intel.com>
 
---IIaTlm/Ug1U37WZl
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+perf_fuzzzer reported an unchecked MSR access error.
 
-Hi!
+[12646.001692] unchecked MSR access error: WRMSR to 0x3f1
+(tried to write 0x0001000000000001) at
+rIP: 0xffffffffa98932af (native_write_msr+0xf/0x20)
+[12646.001698] Call Trace:
+[12646.001700]  <TASK>
+[12646.001700]  intel_pmu_pebs_enable_all+0x2c/0x40
+[12646.001703]  intel_pmu_enable_all+0xe/0x20
+[12646.001705]  ctx_resched+0x227/0x280
+[12646.001708]  event_function+0x8f/0xd0
 
-> From: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
->=20
-> [ Upstream commit 239f11209e5f282e16f5241b99256e25dd0614b6 ]
->=20
-> Relocate the runtime PM enable operation to sci_probe_single(). This chan=
-ge
-> prepares the codebase for upcoming fixes.
+Thank Vince very much for providing a small reproducible test case.
+https://lore.kernel.org/lkml/d12d4300-9926-5e58-6515-a53cb5c7bee0@maine.edu/
 
-Preparation. We don't need it in -stable.
+The error is because perf mistakenly creates a precise Topdown perf
+metrics event, INTEL_TD_METRIC_RETIRING, which uses the idx 48
+internally.
+The Topdown perf metrics events never be a precise event (PEBS). Any
+illegal creation should be filtered out by the intel_pmu_hw_config.
+However, the is_available_metric_event() failed to detect the Topdown
+perf metrics event. The filter is not applied.
 
-BR,
-							Pavel
---=20
-DENX Software Engineering GmbH,        Managing Director: Erika Unter
-HRB 165235 Munich, Office: Kirchenstr.5, D-82194 Groebenzell, Germany
+To detect an event, the pure event encoding should be used, rather than
+the whole event->attr.config. Only check the pure event encoding in
+is_available_metric_event.
 
---IIaTlm/Ug1U37WZl
-Content-Type: application/pgp-signature; name="signature.asc"
+Fixes: 1ab5f235c176 ("perf/x86/intel: Filter unsupported Topdown metrics event")
+Reported-by: Vince Weaver <vincent.weaver@maine.edu>
+Closes: https://lore.kernel.org/lkml/14d3167e-4dad-f68e-822f-21cd86eab873@maine.edu/
+Signed-off-by: Kan Liang <kan.liang@linux.intel.com>
+Cc: stable@vger.kernel.org
+---
+ arch/x86/events/intel/core.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
------BEGIN PGP SIGNATURE-----
+diff --git a/arch/x86/events/intel/core.c b/arch/x86/events/intel/core.c
+index 8f2e36ad89db..bf5ca4cb232b 100644
+--- a/arch/x86/events/intel/core.c
++++ b/arch/x86/events/intel/core.c
+@@ -4082,7 +4082,7 @@ static int core_pmu_hw_config(struct perf_event *event)
+ static bool is_available_metric_event(struct perf_event *event)
+ {
+ 	return is_metric_event(event) &&
+-		event->attr.config <= INTEL_TD_METRIC_AVAILABLE_MAX;
++	       (event->attr.config & INTEL_ARCH_EVENT_MASK) <= INTEL_TD_METRIC_AVAILABLE_MAX;
+ }
+ 
+ static inline bool is_mem_loads_event(struct perf_event *event)
+-- 
+2.38.1
 
-iF0EABECAB0WIQRPfPO7r0eAhk010v0w5/Bqldv68gUCaFU/8gAKCRAw5/Bqldv6
-8s2rAJ9x2zF36xxZGy3bmbATSUfjyiQsswCbBDKyzvZGXOvg7cWivAvIUXjxEhg=
-=EPG+
------END PGP SIGNATURE-----
-
---IIaTlm/Ug1U37WZl--
 
