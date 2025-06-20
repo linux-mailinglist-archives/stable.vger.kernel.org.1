@@ -1,117 +1,184 @@
-Return-Path: <stable+bounces-155124-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-155125-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 76A74AE19F1
-	for <lists+stable@lfdr.de>; Fri, 20 Jun 2025 13:24:10 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E308AE1A02
+	for <lists+stable@lfdr.de>; Fri, 20 Jun 2025 13:30:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 036FD3A5238
-	for <lists+stable@lfdr.de>; Fri, 20 Jun 2025 11:23:46 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id F257D1BC2B56
+	for <lists+stable@lfdr.de>; Fri, 20 Jun 2025 11:30:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C7E7283FDA;
-	Fri, 20 Jun 2025 11:24:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3EA1728A1F8;
+	Fri, 20 Jun 2025 11:30:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="luPXHCkz"
 X-Original-To: stable@vger.kernel.org
-Received: from relay6-d.mail.gandi.net (relay6-d.mail.gandi.net [217.70.183.198])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A330D78F4A;
-	Fri, 20 Jun 2025 11:24:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.198
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECA7327E7D9;
+	Fri, 20 Jun 2025 11:30:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750418645; cv=none; b=Gt1v6rgTgrMc8BPGaKIdg7G4fUE+VL93EyTLj6/+/FfsLQQ6FXYmawnMtiknpjvNlsaEI0kdbeGTyDWsMxqZRhuvzGmfV4G8SCE5aGqHuvACwFs3wmQVLkF1ZjZcZIig4qfyj/4W34fb93G93ryKjjIEpkelycDZjlIHTM+Xawo=
+	t=1750419005; cv=none; b=Cmfr7iwqed0PL3uxoYX/6Q+3hvhpFuJixZOUPSmdo+2ra0K3BuTaBszVPvFdCaKWtvTUt2+a8X0ZrZonkUUL/9knlgpbYmBW9MRgtxfDuFT7eCTcRv1PoVPJg/vl4J3iEur3fH9GHBupeENWf6H5juW+Dr/nXtaftOmFAvb9VRs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750418645; c=relaxed/simple;
-	bh=vPvzD8auiKqrrd5DjYZNOQJwyQxrMebWgV0Mo4yBAs8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=F46H0tYYaOeijMOTcR18RBKEojx20aoeWGajDfeThKWu1Lww9UIkI8+eMCRbDpXN2HVXY+8suXCBnn2gPAI9eZXTbFwj1RoGJa4JDz5YieEe1jKEf5UeuWuOjQwQTtjMse0Vm0cDBfWTSthmWAtBe3tcLBR6LP4I+lQJpG9q6KY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ghiti.fr; spf=pass smtp.mailfrom=ghiti.fr; arc=none smtp.client-ip=217.70.183.198
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ghiti.fr
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ghiti.fr
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 1307941C7B;
-	Fri, 20 Jun 2025 11:23:57 +0000 (UTC)
-Message-ID: <f90f6843-4ffd-48a3-9813-0d1c52f8e48e@ghiti.fr>
-Date: Fri, 20 Jun 2025 13:23:57 +0200
+	s=arc-20240116; t=1750419005; c=relaxed/simple;
+	bh=u448jzyYDYymD2jHYZMheiM/0ZHuiGizT/yHf2Wx23k=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=rmvPyQarrWBpsbM7r3XiZpnGKZxHYEhpsUE32ffKVJ8NxnCMcl9inR7vM6XcijAcvvWlZvKJD52A5WeocvJ5To0B2uBbJPxc8DRxRh1YODoCTUGXyPQigsPBIXrBuAlsFO3kAYRbBtrsk95PxnFGE4YFnoAZmmXgw/jSEEyAppw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=luPXHCkz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 139A2C4CEE3;
+	Fri, 20 Jun 2025 11:30:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1750419004;
+	bh=u448jzyYDYymD2jHYZMheiM/0ZHuiGizT/yHf2Wx23k=;
+	h=From:Date:Subject:To:Cc:From;
+	b=luPXHCkzNsBfM44ygLmgfv6czfsRoHMO9uhA3vJZMbkSHwcJiGUVCEGjn1tHZiKwt
+	 tXAkjh023T0bRTdN14Vw+bST0+oC2vsKd+wm0ykSAYJotgjIoHPyVmPn1th/FFI/rg
+	 qagksfm9gSv4W5Jz8hxZZtPZn5TjATDG+b4xEwX4djOtzmqdWE1hpbV0CCn55qrPmG
+	 lm0rOwwrigYPTnyW3gyNwZ8sue+lx4ot+2Ydd9+84R8DU96ROdvEPvMqbQFyxmY7po
+	 9bIJV9eZc7PBdD1VcvaJkCjfFM1gogRV19ioay4+dCnNWon8y0awpH1vqIdhK+9+oU
+	 X4MnMLFCBBhyg==
+From: Mark Brown <broonie@kernel.org>
+Date: Fri, 20 Jun 2025 12:28:48 +0100
+Subject: [PATCH] arm64: Filter out SME hwcaps when FEAT_SME isn't
+ implemented
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] Revert "riscv: misaligned: fix sleeping function called
- during misaligned access handling"
-To: Nam Cao <namcao@linutronix.de>, Paul Walmsley <paul.walmsley@sifive.com>,
- Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>,
- =?UTF-8?B?Q2zDqW1lbnQgTMOpZ2Vy?= <cleger@rivosinc.com>,
- Nylon Chen <nylon.chen@sifive.com>, linux-riscv@lists.infradead.org,
- linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20250620-arm64-sme-filter-hwcaps-v1-1-02b9d3c2d8ef@kernel.org>
+X-B4-Tracking: v=1; b=H4sIAO9FVWgC/x3MTQqDQAxA4atI1g1odMbiVUoXo2Y0UH9Iigri3
+ R1cfov3TjBWYYMmO0F5E5NlTiheGXRjmAdG6ZOBcnK5L94YdPIV2sQY5fdnxXHvwmrY1r6kiqL
+ z5CDVq3KU4zl/vtd1A6yPPuNpAAAA
+X-Change-ID: 20250618-arm64-sme-filter-hwcaps-b763242f5625
+To: Catalin Marinas <catalin.marinas@arm.com>, 
+ Will Deacon <will@kernel.org>
+Cc: Mark Rutland <mark.rutland@arm.com>, 
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
+ Yury Khrustalev <yury.khrustalev@arm.com>, Mark Brown <broonie@kernel.org>, 
+ stable@vger.kernel.org
+X-Mailer: b4 0.15-dev-08c49
+X-Developer-Signature: v=1; a=openpgp-sha256; l=7065; i=broonie@kernel.org;
+ h=from:subject:message-id; bh=u448jzyYDYymD2jHYZMheiM/0ZHuiGizT/yHf2Wx23k=;
+ b=owEBbQGS/pANAwAKASTWi3JdVIfQAcsmYgBoVUY6N40qMRjDa/t+oU0dUn6BKFuIevcr482sk
+ WxunWEZHtGJATMEAAEKAB0WIQSt5miqZ1cYtZ/in+ok1otyXVSH0AUCaFVGOgAKCRAk1otyXVSH
+ 0OmUB/9i40oT/lKh218FYkmI8A6uxpN1pSx3oWx/NdRgqlPo4QORaHxqo6khYUeKYykRW2dIvgr
+ Cn5CWq+LnAkJYCoBF0QziqNLqp4yMg3ugtSwB7xkqUy+X1xR4JPyEK+wC6BpI5QiRiHhbQpxEJ8
+ gZITuuf0xfITjy2Wu9UAOGKcdRTuT41ie3TUup0qmkFXl0S5JTRDaxe2Nsk+ALgXfchi0yqPdye
+ 2vFCw56cGbowsCP+yV249rt9/R3tJ6dKet6VJpKKgesw/7Dy2dq0HfDX04VVGdwQPbMb0oRPlfY
+ 2uaZG14wAXExgtGwlnaLk0S99kT1tVT9gRx99LbIvXOCzHH2
+X-Developer-Key: i=broonie@kernel.org; a=openpgp;
+ fpr=3F2568AAC26998F9E813A1C5C3F436CA30F5D8EB
+
+We have a number of hwcaps for various SME subfeatures enumerated via
+ID_AA64SMFR0_EL1. Currently we advertise these without cross checking
+against the main SME feature, advertised in ID_AA64PFR1_EL1.SME which
+means that if the two are out of sync userspace can see a confusing
+situation where SME subfeatures are advertised without the base SME
+hwcap. This can be readily triggered by using the arm64.nosme override
+which only masks out ID_AA64PFR1_EL1.SME, and there have also been
+reports of VMMs which do the same thing.
+
+Fix this as we did previously for SVE in 064737920bdb ("arm64: Filter
+out SVE hwcaps when FEAT_SVE isn't implemented") by filtering out the
+SME subfeature hwcaps when FEAT_SME is not present.
+
+Fixes: 5e64b862c482 ("arm64/sme: Basic enumeration support")
+Reported-by: Yury Khrustalev <yury.khrustalev@arm.com>
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Cc: stable@vger.kernel.org
-References: <20250620110939.1642735-1-namcao@linutronix.de>
-Content-Language: en-US
-From: Alexandre Ghiti <alex@ghiti.fr>
-In-Reply-To: <20250620110939.1642735-1-namcao@linutronix.de>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-GND-State: clean
-X-GND-Score: -100
-X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtddvgdekvdejucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuifetpfffkfdpucggtfgfnhhsuhgsshgtrhhisggvnecuuegrihhlohhuthemuceftddunecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpefkffggfgfuvfevfhfhjggtgfesthekredttddvjeenucfhrhhomheptehlvgigrghnughrvgcuifhhihhtihcuoegrlhgvgiesghhhihhtihdrfhhrqeenucggtffrrghtthgvrhhnpeejieeuudejieekveeutdeguefhkeduledugeevhefffeejudeggedufffgleeugfenucffohhmrghinhepkhgvrhhnvghlrdhorhhgnecukfhppedvtddtudemkeeiudemfeefkedvmegvfheltdemkegsgeegmegrvdelsgemvghffhehmeeirgejfhenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpedvtddtudemkeeiudemfeefkedvmegvfheltdemkegsgeegmegrvdelsgemvghffhehmeeirgejfhdphhgvlhhopeglkffrggeimedvtddtudemkeeiudemfeefkedvmegvfheltdemkegsgeegmegrvdelsgemvghffhehmeeirgejfhgnpdhmrghilhhfrhhomheprghlvgigsehghhhithhirdhfrhdpnhgspghrtghpthhtohepledprhgtphhtthhopehnrghmtggroheslhhinhhuthhrohhnihigrdguvgdprhgtphhtthhopehprghulhdrfigrlhhmshhlvgihsehsihhfihhvvgdrtghomhdprhgtphhtthhopehpr
- ghlmhgvrhesuggrsggsvghlthdrtghomhdprhgtphhtthhopegrohhusegvvggtshdrsggvrhhkvghlvgihrdgvughupdhrtghpthhtoheptghlvghgvghrsehrihhvohhsihhntgdrtghomhdprhgtphhtthhopehnhihlohhnrdgthhgvnhesshhifhhivhgvrdgtohhmpdhrtghpthhtoheplhhinhhugidqrhhishgtvheslhhishhtshdrihhnfhhrrgguvggrugdrohhrghdprhgtphhtthhopehlihhnuhigqdhkvghrnhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhrgh
-X-GND-Sasl: alex@ghiti.fr
+---
+ arch/arm64/kernel/cpufeature.c | 57 ++++++++++++++++++++++++------------------
+ 1 file changed, 32 insertions(+), 25 deletions(-)
 
-On 6/20/25 13:09, Nam Cao wrote:
-> This reverts commit 61a74ad25462 ("riscv: misaligned: fix sleeping function
-> called during misaligned access handling"). The commit addresses a sleeping
-> in atomic context problem, but it is not the correct fix as explained by
-> Clément:
->
-> "Using nofault would lead to failure to read from user memory that is paged
-> out for instance. This is not really acceptable, we should handle user
-> misaligned access even at an address that would generate a page fault."
->
-> This bug has been properly fixed by commit 453805f0a28f ("riscv:
-> misaligned: enable IRQs while handling misaligned accesses").
->
-> Revert this improper fix.
->
-> Link: https://lore.kernel.org/linux-riscv/b779beed-e44e-4a5e-9551-4647682b0d21@rivosinc.com/
-> Signed-off-by: Nam Cao <namcao@linutronix.de>
-> Cc: stable@vger.kernel.org
-> ---
->   arch/riscv/kernel/traps_misaligned.c | 4 ++--
->   1 file changed, 2 insertions(+), 2 deletions(-)
->
-> diff --git a/arch/riscv/kernel/traps_misaligned.c b/arch/riscv/kernel/traps_misaligned.c
-> index dd8e4af6583f4..93043924fe6c6 100644
-> --- a/arch/riscv/kernel/traps_misaligned.c
-> +++ b/arch/riscv/kernel/traps_misaligned.c
-> @@ -454,7 +454,7 @@ static int handle_scalar_misaligned_load(struct pt_regs *regs)
->   
->   	val.data_u64 = 0;
->   	if (user_mode(regs)) {
-> -		if (copy_from_user_nofault(&val, (u8 __user *)addr, len))
-> +		if (copy_from_user(&val, (u8 __user *)addr, len))
->   			return -1;
->   	} else {
->   		memcpy(&val, (u8 *)addr, len);
-> @@ -555,7 +555,7 @@ static int handle_scalar_misaligned_store(struct pt_regs *regs)
->   		return -EOPNOTSUPP;
->   
->   	if (user_mode(regs)) {
-> -		if (copy_to_user_nofault((u8 __user *)addr, &val, len))
-> +		if (copy_to_user((u8 __user *)addr, &val, len))
->   			return -1;
->   	} else {
->   		memcpy((u8 *)addr, &val, len);
+diff --git a/arch/arm64/kernel/cpufeature.c b/arch/arm64/kernel/cpufeature.c
+index b34044e20128..e151585c6cca 100644
+--- a/arch/arm64/kernel/cpufeature.c
++++ b/arch/arm64/kernel/cpufeature.c
+@@ -3135,6 +3135,13 @@ static bool has_sve_feature(const struct arm64_cpu_capabilities *cap, int scope)
+ }
+ #endif
+ 
++#ifdef CONFIG_ARM64_SME
++static bool has_sme_feature(const struct arm64_cpu_capabilities *cap, int scope)
++{
++	return system_supports_sme() && has_user_cpuid_feature(cap, scope);
++}
++#endif
++
+ static const struct arm64_cpu_capabilities arm64_elf_hwcaps[] = {
+ 	HWCAP_CAP(ID_AA64ISAR0_EL1, AES, PMULL, CAP_HWCAP, KERNEL_HWCAP_PMULL),
+ 	HWCAP_CAP(ID_AA64ISAR0_EL1, AES, AES, CAP_HWCAP, KERNEL_HWCAP_AES),
+@@ -3223,31 +3230,31 @@ static const struct arm64_cpu_capabilities arm64_elf_hwcaps[] = {
+ 	HWCAP_CAP(ID_AA64ISAR2_EL1, BC, IMP, CAP_HWCAP, KERNEL_HWCAP_HBC),
+ #ifdef CONFIG_ARM64_SME
+ 	HWCAP_CAP(ID_AA64PFR1_EL1, SME, IMP, CAP_HWCAP, KERNEL_HWCAP_SME),
+-	HWCAP_CAP(ID_AA64SMFR0_EL1, FA64, IMP, CAP_HWCAP, KERNEL_HWCAP_SME_FA64),
+-	HWCAP_CAP(ID_AA64SMFR0_EL1, LUTv2, IMP, CAP_HWCAP, KERNEL_HWCAP_SME_LUTV2),
+-	HWCAP_CAP(ID_AA64SMFR0_EL1, SMEver, SME2p2, CAP_HWCAP, KERNEL_HWCAP_SME2P2),
+-	HWCAP_CAP(ID_AA64SMFR0_EL1, SMEver, SME2p1, CAP_HWCAP, KERNEL_HWCAP_SME2P1),
+-	HWCAP_CAP(ID_AA64SMFR0_EL1, SMEver, SME2, CAP_HWCAP, KERNEL_HWCAP_SME2),
+-	HWCAP_CAP(ID_AA64SMFR0_EL1, I16I64, IMP, CAP_HWCAP, KERNEL_HWCAP_SME_I16I64),
+-	HWCAP_CAP(ID_AA64SMFR0_EL1, F64F64, IMP, CAP_HWCAP, KERNEL_HWCAP_SME_F64F64),
+-	HWCAP_CAP(ID_AA64SMFR0_EL1, I16I32, IMP, CAP_HWCAP, KERNEL_HWCAP_SME_I16I32),
+-	HWCAP_CAP(ID_AA64SMFR0_EL1, B16B16, IMP, CAP_HWCAP, KERNEL_HWCAP_SME_B16B16),
+-	HWCAP_CAP(ID_AA64SMFR0_EL1, F16F16, IMP, CAP_HWCAP, KERNEL_HWCAP_SME_F16F16),
+-	HWCAP_CAP(ID_AA64SMFR0_EL1, F8F16, IMP, CAP_HWCAP, KERNEL_HWCAP_SME_F8F16),
+-	HWCAP_CAP(ID_AA64SMFR0_EL1, F8F32, IMP, CAP_HWCAP, KERNEL_HWCAP_SME_F8F32),
+-	HWCAP_CAP(ID_AA64SMFR0_EL1, I8I32, IMP, CAP_HWCAP, KERNEL_HWCAP_SME_I8I32),
+-	HWCAP_CAP(ID_AA64SMFR0_EL1, F16F32, IMP, CAP_HWCAP, KERNEL_HWCAP_SME_F16F32),
+-	HWCAP_CAP(ID_AA64SMFR0_EL1, B16F32, IMP, CAP_HWCAP, KERNEL_HWCAP_SME_B16F32),
+-	HWCAP_CAP(ID_AA64SMFR0_EL1, BI32I32, IMP, CAP_HWCAP, KERNEL_HWCAP_SME_BI32I32),
+-	HWCAP_CAP(ID_AA64SMFR0_EL1, F32F32, IMP, CAP_HWCAP, KERNEL_HWCAP_SME_F32F32),
+-	HWCAP_CAP(ID_AA64SMFR0_EL1, SF8FMA, IMP, CAP_HWCAP, KERNEL_HWCAP_SME_SF8FMA),
+-	HWCAP_CAP(ID_AA64SMFR0_EL1, SF8DP4, IMP, CAP_HWCAP, KERNEL_HWCAP_SME_SF8DP4),
+-	HWCAP_CAP(ID_AA64SMFR0_EL1, SF8DP2, IMP, CAP_HWCAP, KERNEL_HWCAP_SME_SF8DP2),
+-	HWCAP_CAP(ID_AA64SMFR0_EL1, SBitPerm, IMP, CAP_HWCAP, KERNEL_HWCAP_SME_SBITPERM),
+-	HWCAP_CAP(ID_AA64SMFR0_EL1, AES, IMP, CAP_HWCAP, KERNEL_HWCAP_SME_AES),
+-	HWCAP_CAP(ID_AA64SMFR0_EL1, SFEXPA, IMP, CAP_HWCAP, KERNEL_HWCAP_SME_SFEXPA),
+-	HWCAP_CAP(ID_AA64SMFR0_EL1, STMOP, IMP, CAP_HWCAP, KERNEL_HWCAP_SME_STMOP),
+-	HWCAP_CAP(ID_AA64SMFR0_EL1, SMOP4, IMP, CAP_HWCAP, KERNEL_HWCAP_SME_SMOP4),
++	HWCAP_CAP_MATCH_ID(has_sme_feature, ID_AA64SMFR0_EL1, FA64, IMP, CAP_HWCAP, KERNEL_HWCAP_SME_FA64),
++	HWCAP_CAP_MATCH_ID(has_sme_feature, ID_AA64SMFR0_EL1, LUTv2, IMP, CAP_HWCAP, KERNEL_HWCAP_SME_LUTV2),
++	HWCAP_CAP_MATCH_ID(has_sme_feature, ID_AA64SMFR0_EL1, SMEver, SME2p2, CAP_HWCAP, KERNEL_HWCAP_SME2P2),
++	HWCAP_CAP_MATCH_ID(has_sme_feature, ID_AA64SMFR0_EL1, SMEver, SME2p1, CAP_HWCAP, KERNEL_HWCAP_SME2P1),
++	HWCAP_CAP_MATCH_ID(has_sme_feature, ID_AA64SMFR0_EL1, SMEver, SME2, CAP_HWCAP, KERNEL_HWCAP_SME2),
++	HWCAP_CAP_MATCH_ID(has_sme_feature, ID_AA64SMFR0_EL1, I16I64, IMP, CAP_HWCAP, KERNEL_HWCAP_SME_I16I64),
++	HWCAP_CAP_MATCH_ID(has_sme_feature, ID_AA64SMFR0_EL1, F64F64, IMP, CAP_HWCAP, KERNEL_HWCAP_SME_F64F64),
++	HWCAP_CAP_MATCH_ID(has_sme_feature, ID_AA64SMFR0_EL1, I16I32, IMP, CAP_HWCAP, KERNEL_HWCAP_SME_I16I32),
++	HWCAP_CAP_MATCH_ID(has_sme_feature, ID_AA64SMFR0_EL1, B16B16, IMP, CAP_HWCAP, KERNEL_HWCAP_SME_B16B16),
++	HWCAP_CAP_MATCH_ID(has_sme_feature, ID_AA64SMFR0_EL1, F16F16, IMP, CAP_HWCAP, KERNEL_HWCAP_SME_F16F16),
++	HWCAP_CAP_MATCH_ID(has_sme_feature, ID_AA64SMFR0_EL1, F8F16, IMP, CAP_HWCAP, KERNEL_HWCAP_SME_F8F16),
++	HWCAP_CAP_MATCH_ID(has_sme_feature, ID_AA64SMFR0_EL1, F8F32, IMP, CAP_HWCAP, KERNEL_HWCAP_SME_F8F32),
++	HWCAP_CAP_MATCH_ID(has_sme_feature, ID_AA64SMFR0_EL1, I8I32, IMP, CAP_HWCAP, KERNEL_HWCAP_SME_I8I32),
++	HWCAP_CAP_MATCH_ID(has_sme_feature, ID_AA64SMFR0_EL1, F16F32, IMP, CAP_HWCAP, KERNEL_HWCAP_SME_F16F32),
++	HWCAP_CAP_MATCH_ID(has_sme_feature, ID_AA64SMFR0_EL1, B16F32, IMP, CAP_HWCAP, KERNEL_HWCAP_SME_B16F32),
++	HWCAP_CAP_MATCH_ID(has_sme_feature, ID_AA64SMFR0_EL1, BI32I32, IMP, CAP_HWCAP, KERNEL_HWCAP_SME_BI32I32),
++	HWCAP_CAP_MATCH_ID(has_sme_feature, ID_AA64SMFR0_EL1, F32F32, IMP, CAP_HWCAP, KERNEL_HWCAP_SME_F32F32),
++	HWCAP_CAP_MATCH_ID(has_sme_feature, ID_AA64SMFR0_EL1, SF8FMA, IMP, CAP_HWCAP, KERNEL_HWCAP_SME_SF8FMA),
++	HWCAP_CAP_MATCH_ID(has_sme_feature, ID_AA64SMFR0_EL1, SF8DP4, IMP, CAP_HWCAP, KERNEL_HWCAP_SME_SF8DP4),
++	HWCAP_CAP_MATCH_ID(has_sme_feature, ID_AA64SMFR0_EL1, SF8DP2, IMP, CAP_HWCAP, KERNEL_HWCAP_SME_SF8DP2),
++	HWCAP_CAP_MATCH_ID(has_sme_feature, ID_AA64SMFR0_EL1, SBitPerm, IMP, CAP_HWCAP, KERNEL_HWCAP_SME_SBITPERM),
++	HWCAP_CAP_MATCH_ID(has_sme_feature, ID_AA64SMFR0_EL1, AES, IMP, CAP_HWCAP, KERNEL_HWCAP_SME_AES),
++	HWCAP_CAP_MATCH_ID(has_sme_feature, ID_AA64SMFR0_EL1, SFEXPA, IMP, CAP_HWCAP, KERNEL_HWCAP_SME_SFEXPA),
++	HWCAP_CAP_MATCH_ID(has_sme_feature, ID_AA64SMFR0_EL1, STMOP, IMP, CAP_HWCAP, KERNEL_HWCAP_SME_STMOP),
++	HWCAP_CAP_MATCH_ID(has_sme_feature, ID_AA64SMFR0_EL1, SMOP4, IMP, CAP_HWCAP, KERNEL_HWCAP_SME_SMOP4),
+ #endif /* CONFIG_ARM64_SME */
+ 	HWCAP_CAP(ID_AA64FPFR0_EL1, F8CVT, IMP, CAP_HWCAP, KERNEL_HWCAP_F8CVT),
+ 	HWCAP_CAP(ID_AA64FPFR0_EL1, F8FMA, IMP, CAP_HWCAP, KERNEL_HWCAP_F8FMA),
 
+---
+base-commit: e04c78d86a9699d136910cfc0bdcf01087e3267e
+change-id: 20250618-arm64-sme-filter-hwcaps-b763242f5625
 
-Of course this is a wrong fix:
-
-Reviewed-by: Alexandre Ghiti <alexghiti@rivosinc.com>
-
-Thanks for catching this,
-
-Alex
+Best regards,
+--  
+Mark Brown <broonie@kernel.org>
 
 
