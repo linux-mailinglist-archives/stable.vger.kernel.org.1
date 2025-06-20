@@ -1,71 +1,71 @@
-Return-Path: <stable+bounces-155156-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-155157-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A9BB8AE1E4A
-	for <lists+stable@lfdr.de>; Fri, 20 Jun 2025 17:14:58 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2109EAE1E4B
+	for <lists+stable@lfdr.de>; Fri, 20 Jun 2025 17:15:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 10724189F31C
-	for <lists+stable@lfdr.de>; Fri, 20 Jun 2025 15:15:08 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BBCC6189B3C0
+	for <lists+stable@lfdr.de>; Fri, 20 Jun 2025 15:16:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A75FC2BF3FB;
-	Fri, 20 Jun 2025 15:14:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BECBC19A297;
+	Fri, 20 Jun 2025 15:15:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uIMPwM0s"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yKmmErMM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 683A42BF3EC
-	for <stable@vger.kernel.org>; Fri, 20 Jun 2025 15:14:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DDF683A14
+	for <stable@vger.kernel.org>; Fri, 20 Jun 2025 15:15:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750432488; cv=none; b=LBSc/G0YaH/S1JpIOuMmHTP5kqVoERhoHrWKLc48JX2hSHxpdRKe3UriFwuuYDx5wFtEdKT9HALVD3dKRo18eXqHuNpwU3vzkOHy2IPHj5wWGVLMsvHvXmJcrzKbFLYpfF6HRRvLDuS3N24q0Zl9yleZC1t9J88jo3T3pqPtTSk=
+	t=1750432545; cv=none; b=Mb6+MP8gCcHTDcBEd5PlKRUIX5w2LBxP4mfEU5WscIJ+haXtdUQ9nMMpEEESAN5mlD39VXv0k9eRFleLA8HfRf5taDygQFNXUezWZTBzh/UZb9yB2uwJ/tPF8Hc9790LjSxJKkAZNzrgLa/ZHyl07aLu8lz2lgbq7k6i/q/Rjto=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750432488; c=relaxed/simple;
-	bh=F42AxqTwBlIEW9ENtZw2lVEhtAhBoHdMmiOBL/8BFsA=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=OS9yrR/DGrVhTL8krp1ULpzaR1shDnjeAr40mutxDtSURR3Wxw8/dy03iUOpHmZbRl/aTf5uM/wOPS+a/1JWf6Y13EmtWXe9RiIitHCBb+ZqDOqRWRCzKLwQnN0N+xYretBHR7k7MkYn33fCjbT8HVKXowVsT7+Q5jbJrTBhJ6M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uIMPwM0s; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1190C4CEE3;
-	Fri, 20 Jun 2025 15:14:47 +0000 (UTC)
+	s=arc-20240116; t=1750432545; c=relaxed/simple;
+	bh=oq9bx3chEomdBEK7FdqypWjuRmjJPbuRh2ew3WP9g98=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=XsmyhtXdfKYtwdxFRZusMEFebrRJnFKj1SPE8oFd3Uleok3ZqduVe6M9vB6jdFCGWjNZ38TllZzdRCJQ1luV7n2OJBQ9bGh+6fvydHyMNztYWNHnjF4Cl/oNiv5mY4kP2TcBgsydLJce/Rl/OVN7rDf3dePAKoLM+dQoo6wzS9s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yKmmErMM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ABA23C4CEE3;
+	Fri, 20 Jun 2025 15:15:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750432488;
-	bh=F42AxqTwBlIEW9ENtZw2lVEhtAhBoHdMmiOBL/8BFsA=;
+	s=korg; t=1750432545;
+	bh=oq9bx3chEomdBEK7FdqypWjuRmjJPbuRh2ew3WP9g98=;
 	h=Subject:To:Cc:From:Date:From;
-	b=uIMPwM0sbSHUoeaBXwuVg47NVjqF+qEnLpQNmIg/G09P7P8cOzXpecLvzV2lvhltN
-	 4n37tSpF6Vi2G90hgQOBTvQcFhQeivGlnEjT4BVlHd+WcxZXD4DxMuiNYI9dyAb94c
-	 LJqFmeHGGJYEZyfIZ45A1aiA9uVyN5JZ2M9lqass=
-Subject: FAILED: patch "[PATCH] platform/x86: ideapad-laptop: use usleep_range() for EC" failed to apply to 5.4-stable tree
-To: i@rong.moe,Emmet_Z@outlook.com,felixonmars@archlinux.org,i@hack3r.moe,ilpo.jarvinen@linux.intel.com,jeffbai@aosc.io,minhld139@gmail.com,zhangjianfei3@gmail.com
+	b=yKmmErMMwdfCMCO1OLvXML7stj8ADkNTN/T2CZvnUpVm9btmBCL6HfrUoEsgMzQmU
+	 LXuAZxLdTldNY4eo/aOXFxKcZBt1i/eMfCF0Tlv4I3r1zAh+6NSQldybZDdDwqAdkT
+	 O657PTUSv1XaRh/03BKbC0FloMxhokw44eiJgyRI=
+Subject: FAILED: patch "[PATCH] sched_ext: Make scx_group_set_weight() always update" failed to apply to 6.15-stable tree
+To: tj@kernel.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Fri, 20 Jun 2025 17:14:37 +0200
-Message-ID: <2025062037-vocation-stylus-d86b@gregkh>
+Date: Fri, 20 Jun 2025 17:15:42 +0200
+Message-ID: <2025062042-handcraft-chitchat-8110@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.4-stable tree.
+The patch below does not apply to the 6.15-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.15.y
 git checkout FETCH_HEAD
-git cherry-pick -x 5808c34216954cd832bd4b8bc52dfa287049122b
+git cherry-pick -x c50784e99f0e7199cdb12dbddf02229b102744ef
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025062037-vocation-stylus-d86b@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025062042-handcraft-chitchat-8110@gregkh' --subject-prefix 'PATCH 6.15.y' HEAD^..
 
 Possible dependencies:
 
@@ -77,122 +77,41 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 5808c34216954cd832bd4b8bc52dfa287049122b Mon Sep 17 00:00:00 2001
-From: Rong Zhang <i@rong.moe>
-Date: Mon, 26 May 2025 04:18:07 +0800
-Subject: [PATCH] platform/x86: ideapad-laptop: use usleep_range() for EC
- polling
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+From c50784e99f0e7199cdb12dbddf02229b102744ef Mon Sep 17 00:00:00 2001
+From: Tejun Heo <tj@kernel.org>
+Date: Fri, 13 Jun 2025 13:23:07 -1000
+Subject: [PATCH] sched_ext: Make scx_group_set_weight() always update
+ tg->scx.weight
 
-It was reported that ideapad-laptop sometimes causes some recent (since
-2024) Lenovo ThinkBook models shut down when:
- - suspending/resuming
- - closing/opening the lid
- - (dis)connecting a charger
- - reading/writing some sysfs properties, e.g., fan_mode, touchpad
- - pressing down some Fn keys, e.g., Brightness Up/Down (Fn+F5/F6)
- - (seldom) loading the kmod
+Otherwise, tg->scx.weight can go out of sync while scx_cgroup is not enabled
+and ops.cgroup_init() may be called with a stale weight value.
 
-The issue has existed since the launch day of such models, and there
-have been some out-of-tree workarounds (see Link:) for the issue. One
-disables some functionalities, while another one simply shortens
-IDEAPAD_EC_TIMEOUT. The disabled functionalities have read_ec_data() in
-their call chains, which calls schedule() between each poll.
+Signed-off-by: Tejun Heo <tj@kernel.org>
+Fixes: 819513666966 ("sched_ext: Add cgroup support")
+Cc: stable@vger.kernel.org # v6.12+
 
-It turns out that these models suffer from the indeterminacy of
-schedule() because of their low tolerance for being polled too
-frequently. Sometimes schedule() returns too soon due to the lack of
-ready tasks, causing the margin between two polls to be too short.
-In this case, the command is somehow aborted, and too many subsequent
-polls (they poll for "nothing!") may eventually break the state machine
-in the EC, resulting in a hard shutdown. This explains why shortening
-IDEAPAD_EC_TIMEOUT works around the issue - it reduces the total number
-of polls sent to the EC.
-
-Even when it doesn't lead to a shutdown, frequent polls may also disturb
-the ongoing operation and notably delay (+ 10-20ms) the availability of
-EC response. This phenomenon is unlikely to be exclusive to the models
-mentioned above, so dropping the schedule() manner should also slightly
-improve the responsiveness of various models.
-
-Fix these issues by migrating to usleep_range(150, 300). The interval is
-chosen to add some margin to the minimal 50us and considering EC
-responses are usually available after 150-2500us based on my test. It
-should be enough to fix these issues on all models subject to the EC bug
-without introducing latency on other models.
-
-Tested on ThinkBook 14 G7+ ASP and solved both issues. No regression was
-introduced in the test on a model without the EC bug (ThinkBook X IMH,
-thanks Eric).
-
-Link: https://github.com/ty2/ideapad-laptop-tb2024g6plus/commit/6c5db18c9e8109873c2c90a7d2d7f552148f7ad4
-Link: https://github.com/ferstar/ideapad-laptop-tb/commit/42d1e68e5009529d31bd23f978f636f79c023e80
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=218771
-Fixes: 6a09f21dd1e2 ("ideapad: add ACPI helpers")
-Cc: stable@vger.kernel.org
-Tested-by: Felix Yan <felixonmars@archlinux.org>
-Tested-by: Eric Long <i@hack3r.moe>
-Tested-by: Jianfei Zhang <zhangjianfei3@gmail.com>
-Tested-by: Mingcong Bai <jeffbai@aosc.io>
-Tested-by: Minh Le <minhld139@gmail.com>
-Tested-by: Sicheng Zhu <Emmet_Z@outlook.com>
-Signed-off-by: Rong Zhang <i@rong.moe>
-Link: https://lore.kernel.org/r/20250525201833.37939-1-i@rong.moe
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-
-diff --git a/drivers/platform/x86/ideapad-laptop.c b/drivers/platform/x86/ideapad-laptop.c
-index ede483573fe0..b5e4da6a6779 100644
---- a/drivers/platform/x86/ideapad-laptop.c
-+++ b/drivers/platform/x86/ideapad-laptop.c
-@@ -15,6 +15,7 @@
- #include <linux/bug.h>
- #include <linux/cleanup.h>
- #include <linux/debugfs.h>
-+#include <linux/delay.h>
- #include <linux/device.h>
- #include <linux/dmi.h>
- #include <linux/i8042.h>
-@@ -267,6 +268,20 @@ static void ideapad_shared_exit(struct ideapad_private *priv)
-  */
- #define IDEAPAD_EC_TIMEOUT 200 /* in ms */
+diff --git a/kernel/sched/ext.c b/kernel/sched/ext.c
+index 2c41c78be61e..33a0d8c6ff95 100644
+--- a/kernel/sched/ext.c
++++ b/kernel/sched/ext.c
+@@ -4241,12 +4241,12 @@ void scx_group_set_weight(struct task_group *tg, unsigned long weight)
  
-+/*
-+ * Some models (e.g., ThinkBook since 2024) have a low tolerance for being
-+ * polled too frequently. Doing so may break the state machine in the EC,
-+ * resulting in a hard shutdown.
-+ *
-+ * It is also observed that frequent polls may disturb the ongoing operation
-+ * and notably delay the availability of EC response.
-+ *
-+ * These values are used as the delay before the first poll and the interval
-+ * between subsequent polls to solve the above issues.
-+ */
-+#define IDEAPAD_EC_POLL_MIN_US 150
-+#define IDEAPAD_EC_POLL_MAX_US 300
+ 	percpu_down_read(&scx_cgroup_rwsem);
+ 
+-	if (scx_cgroup_enabled && tg->scx_weight != weight) {
+-		if (SCX_HAS_OP(sch, cgroup_set_weight))
+-			SCX_CALL_OP(sch, SCX_KF_UNLOCKED, cgroup_set_weight, NULL,
+-				    tg_cgrp(tg), weight);
+-		tg->scx_weight = weight;
+-	}
++	if (scx_cgroup_enabled && SCX_HAS_OP(sch, cgroup_set_weight) &&
++	    tg->scx_weight != weight)
++		SCX_CALL_OP(sch, SCX_KF_UNLOCKED, cgroup_set_weight, NULL,
++			    tg_cgrp(tg), weight);
 +
- static int eval_int(acpi_handle handle, const char *name, unsigned long *res)
- {
- 	unsigned long long result;
-@@ -383,7 +398,7 @@ static int read_ec_data(acpi_handle handle, unsigned long cmd, unsigned long *da
- 	end_jiffies = jiffies + msecs_to_jiffies(IDEAPAD_EC_TIMEOUT) + 1;
++	tg->scx_weight = weight;
  
- 	while (time_before(jiffies, end_jiffies)) {
--		schedule();
-+		usleep_range(IDEAPAD_EC_POLL_MIN_US, IDEAPAD_EC_POLL_MAX_US);
- 
- 		err = eval_vpcr(handle, 1, &val);
- 		if (err)
-@@ -414,7 +429,7 @@ static int write_ec_cmd(acpi_handle handle, unsigned long cmd, unsigned long dat
- 	end_jiffies = jiffies + msecs_to_jiffies(IDEAPAD_EC_TIMEOUT) + 1;
- 
- 	while (time_before(jiffies, end_jiffies)) {
--		schedule();
-+		usleep_range(IDEAPAD_EC_POLL_MIN_US, IDEAPAD_EC_POLL_MAX_US);
- 
- 		err = eval_vpcr(handle, 1, &val);
- 		if (err)
+ 	percpu_up_read(&scx_cgroup_rwsem);
+ }
 
 
