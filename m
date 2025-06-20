@@ -1,150 +1,210 @@
-Return-Path: <stable+bounces-155098-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-155091-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2CA13AE1913
-	for <lists+stable@lfdr.de>; Fri, 20 Jun 2025 12:37:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3BF41AE1906
+	for <lists+stable@lfdr.de>; Fri, 20 Jun 2025 12:36:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4D6314A63B9
-	for <lists+stable@lfdr.de>; Fri, 20 Jun 2025 10:36:48 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C9F7E178C4C
+	for <lists+stable@lfdr.de>; Fri, 20 Jun 2025 10:36:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A9032561BB;
-	Fri, 20 Jun 2025 10:36:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C7E4B2836BD;
+	Fri, 20 Jun 2025 10:36:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="MOOaSA7N"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KhO73iuV"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pf1-f171.google.com (mail-pf1-f171.google.com [209.85.210.171])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9472926FA64;
-	Fri, 20 Jun 2025 10:36:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86991101EE
+	for <stable@vger.kernel.org>; Fri, 20 Jun 2025 10:36:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750415797; cv=none; b=OxP3n46ad21ysnQxtWjOPTm6NbiqyLx6F72XteZ9lGyaElqwfK11B2lavyxTaeII47nCMCrF/Xv0B6/jIfKAaeOKgyZQmiYuVBd/kskyVWNboqVKlzvSqY3PEBC+3QCQUfhqMjSgkvYMlqNJAD0s0qaNXVwspSh+mEAioXZpuCQ=
+	t=1750415771; cv=none; b=WHX2X9HH13a/pmungseF6HaHE/tPT+9QpLDZ+mewNaC16D8rOuqXO8xl+bvVqxipCtX14LYVPdDCWINURnBr88D38jDblYHvqVF0sSZstpgyqe6k+awUJzXYU/rqLzPeaz/GaTh6HWz7o2zpfgErJIssqWX2/Bh2I84OmazCjyc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750415797; c=relaxed/simple;
-	bh=61tzGfGbgQLnSFeKKZHQCEC5cxZqFDsy8PIqZYAdbrw=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=qsOaJgn453TQaiVrUEtZvbTEZ3oozsi5nIt7h4zjrrLDhaOeGvkGsEF/+5x+eiZY7jFm0Xuy2mlpoe1soiK/5F78+D4E6vDL4kAXke0e5v0FY+/S8uMz4eEMp9DIEx4yvmOoS4wb6VKN6JuyntyDSUYCf7jmVqMZs+V/V65gf/Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=MOOaSA7N; arc=none smtp.client-ip=209.85.210.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pf1-f171.google.com with SMTP id d2e1a72fcca58-747abb3cd0bso1119016b3a.1;
-        Fri, 20 Jun 2025 03:36:35 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1750415795; x=1751020595; darn=vger.kernel.org;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=5PrIwQHjw/p9hrLI0cyhFU0inaUVzxNVCt/CIe/61mQ=;
-        b=MOOaSA7NtXDJUSeU7MO+DI/QUwIxohUfWlRkSFZ8BSRSO1LyIe3WsXbtT/rufyOp9D
-         epnfrQhqzSTMsDYd0Ajvt1lyPsW40tW3HLHozIbH/JittwXiqVmi4hz2DzexiHMgRC83
-         GADyWHPH+hJX+7clFZOlzWI0fSy23PXsshdpsNooqK5d7vbPTgobB8mbttXPNH5iWBdE
-         yFjpDoBZe8eqOayDi9p+hJxX5HbvfUMwsF8XiV8iCGzSZ/f223Btydz+O3ukHBWYO6U9
-         1MfB5rG8aJ9cDDmFyJLmrMgchw3CcJZwbj0suJgz2NSN2a0IO0dtSwkt5d1X2E8Yj2FR
-         ggKQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1750415795; x=1751020595;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=5PrIwQHjw/p9hrLI0cyhFU0inaUVzxNVCt/CIe/61mQ=;
-        b=R+3NFLH7J1NcyRJdsfUASsHlZT8AiPcJVw8qpe3r1jGKcyWlTYTUYwdA9wvc+BEt4G
-         rV/z+ERpsmzo8eQQe9xpI83xGWTq9EgcjJoaZM6rEYtX79k920ls8tqJgxaTZEPtLeOZ
-         ZqG4grJImHOzezBR9jQb2zGjs0ynu68qPO2q4cXU4GchW5PuC3tCcgVxgwvVmjgedZGn
-         Bp7sBbqBPikbYiMQ2fIZfde8IdafXbGvP+HNt6XuXTPK5RVP6No0mR6wgPQdMMHNqW3N
-         Bh2Cn013ytpwAORXwWJeUeWTFgF8T4eZ+ZobrTubxsjIfogWn+33XQI7xnz2TG7kKZUT
-         xSwA==
-X-Forwarded-Encrypted: i=1; AJvYcCU1589WkqxBx7F4CI7vHOVybeHh+1krFio9fNLPrt/F4KO2ZWWPRP2qlPdDfDhZbsKdVUEj9Lr7@vger.kernel.org, AJvYcCUQcBobS6hG3oeiQzy/AkX0HO78J9JHzVtf+sCthLAm/oKSHRHgqTwpj1dyACbwBMD9GgSgrDZ3kWsOD2+9@vger.kernel.org, AJvYcCWRH8i1/u+vNP0ULF5BD5rbGkKdFZmO9Zji4pge6Ukcw6jxsbe0L9Gz6bW84m/Vpsg7x45W6RIWkBd1@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy/6B38GarOpuSXYsTQUIYF6wEC7ZsY8Z69cF/938pyqseyjrsK
-	YZTJpTP763UD5PsQBO/YGhXYc3/iKcPWXBSWSeBFj5oIxk9b3MzLGE1s
-X-Gm-Gg: ASbGncsqj443zy4Zo1hBewSv59HsXUqLAWsKb2YREzIjTJ8HuLg4CLmKHPFpdG046hG
-	/4l/1BoeI+ZetTyWtfeYRIyt3njZrAjyZvHJ/q7afs1oG19n/f8D90K1fwmajIxSPOELR6gX0xJ
-	Nl72RJuuiBERwyl5k8a+sOn1XDWyCGztkdbmxQ4uYHA4rv+5CnlDYoCU4tjqWMf1t1RnhwkT3+v
-	jsp2NwUXyo1GIdC7VzCpnUCDCn+HR6pX6K4y5cH/j+5vFjaY++7noSxb9BaDuLZshO5nrMmxGZX
-	xLSPjbc3MdNBMj/Z1oKXI2w4J5w7FYGk86DpREXGwUb8PA2g5XvCRU/XlfZC61ausRL6b7Jjtcy
-	3RIVySxpumm8=
-X-Google-Smtp-Source: AGHT+IFc4Q10D8OQtMZi2Dtm3qf1ST8pz1u/NxWiETOVzSYrkkbcHnd7yIU8yT784naKdOMQMa/5mQ==
-X-Received: by 2002:a05:6a20:1593:b0:21f:54e0:b0a3 with SMTP id adf61e73a8af0-22029176202mr3058959637.2.1750415794665;
-        Fri, 20 Jun 2025 03:36:34 -0700 (PDT)
-Received: from [127.0.1.1] (061092221177.ctinets.com. [61.92.221.177])
-        by smtp.googlemail.com with ESMTPSA id d2e1a72fcca58-7490a674eb6sm1779230b3a.144.2025.06.20.03.36.32
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 20 Jun 2025 03:36:34 -0700 (PDT)
-From: Nick Chan <towinchenmi@gmail.com>
-Date: Fri, 20 Jun 2025 18:35:36 +0800
-Subject: [PATCH v2] arm64: dts: apple: t8012-j132: Include touchbar
- framebuffer node
+	s=arc-20240116; t=1750415771; c=relaxed/simple;
+	bh=FhAZzo3ERE8Ozv7HRC85ueNRYNoqJ7kunn02IYuF2zM=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=ms8TJ0UUknsVMGF3IbWw/rePikD642N1m1eT9Ek2UBZTBaKndYSDV2P2tYlptoK5wn/pjldGf9jiNUMOsyxiglhRgAghrZQLr0HyiJiNgVuecYRLsWRk0nwDDfW/JXp6SQ+uk1sCO+U897V1+Jz/KqE1SZ0Esj71jKxhbuVWYuo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KhO73iuV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7084C4CEE3;
+	Fri, 20 Jun 2025 10:36:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1750415771;
+	bh=FhAZzo3ERE8Ozv7HRC85ueNRYNoqJ7kunn02IYuF2zM=;
+	h=Subject:To:Cc:From:Date:From;
+	b=KhO73iuVzcg9mBzFxAIIti/2n5aHhsCjJ/AYbqrQmFQFPUeqvBVTxmywebOkiQSQr
+	 MohD/5k2vjdpxvvxoBNiETolylFY85Qstpp6OXcc2jSGqc2zicS/wmxDHdnvzfunRr
+	 DtgA9leZN3aMwtvSUmpxNVBebQ1E+zeNnWHL8oMo=
+Subject: FAILED: patch "[PATCH] mm: fix uprobe pte be overwritten when expanding vma" failed to apply to 6.12-stable tree
+To: pulehui@huawei.com,akpm@linux-foundation.org,david@redhat.com,jannh@google.com,liam.howlett@oracle.com,lorenzo.stoakes@oracle.com,mhiramat@kernel.org,oleg@redhat.com,peterz@infradead.org,stable@vger.kernel.org,vbabka@suse.cz
+Cc: <stable@vger.kernel.org>
+From: <gregkh@linuxfoundation.org>
+Date: Fri, 20 Jun 2025 12:36:08 +0200
+Message-ID: <2025062008-scarcity-jaundice-0b6e@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250620-j132-fb-v2-1-65f100182085@gmail.com>
-X-B4-Tracking: v=1; b=H4sIAHc5VWgC/2XMSwrCMBSF4a2UOzaSB02sI/chHeTZXrFNSSQoJ
- Xs3durwPxy+HbJP6DNcux2SL5gxri34qQM763XyBF1r4JT3VHJKHkxwEgxxyvXyopxQ1EF7b8k
- HfB/SfWw9Y37F9Dngwn7rv1EYYcRYOQhldKBmuE2LxufZxgXGWusXVoRMD54AAAA=
-X-Change-ID: 20250620-j132-fb-d7d5687d370d
-To: Sven Peter <sven@kernel.org>, Janne Grunau <j@jannau.net>, 
- Alyssa Rosenzweig <alyssa@rosenzweig.io>, Neal Gompa <neal@gompa.dev>, 
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>
-Cc: asahi@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
- stable@vger.kernel.org, Nick Chan <towinchenmi@gmail.com>
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=986; i=towinchenmi@gmail.com;
- h=from:subject:message-id; bh=61tzGfGbgQLnSFeKKZHQCEC5cxZqFDsy8PIqZYAdbrw=;
- b=owEBbQKS/ZANAwAKAQHKCLemxQgkAcsmYgBoVTmpH7C123HN9er4olInMFkdcbOHWIYV8pnYG
- B04Py1NkqGJAjMEAAEKAB0WIQRLUnh4XJes95w8aIMBygi3psUIJAUCaFU5qQAKCRABygi3psUI
- JEsjD/48isIZsVW9mZVR2PW1U4M3BDzHiqAL09krcSNQRq8Wcq53au1xxRfYAmRdGhkH0W3wwTG
- TUx9cjx62SnX4s3VXjucX222dQv5r5eU+sAQQj9ieFpkV9ssSUJGFTySHsoLwOk/2zFXkA59x1g
- TeQP+zVBjd/W7PXMH/mgav7rUs9UarxEhVj7LjagusBrW+q8s4d2Du1X8xwLFFZkX6o8nbat6JR
- Mh/VKvCxQdn49CFCzS6fN/Hj6C/IY9+luO9s85wGZdFQiGrprxHXpjiZ4V3XkJ5kpK/GE4jgLid
- 16SjSvlUYXyUENw7UoFU7MUTUZ6fP5aayAkRqHqEIyhQUeHAVP9ihEU/U9RUviiPfE34ug+AVrU
- 5KxK+1ZR5E5m5SlfLt6qGiF9fXCS3W8gIN3+LT6mlWcECfky17dqyUMHuWCABXKv6musUoKULgn
- gAeFjgNG5KdWdv1UMnm4BNtxW6RkOo/fTruFE/wwHyqEuZ7Y+qf/2ax13g15oyeXp/61+Z1BLi6
- DaD++Se1zd7eYOe101biQdLG0RbPyx30VBMz3PC93RlR67JuxKfrTcYYOYw4cumpJJQ2DTmXlV5
- 3o3bHjRMgAcDoTR+q/PrQmVyPi+5rPnaK7Hbc4/uN4FNxtXaWKh1A+zQqJgxe1j8DBSHt/Qeg8o
- ukrsyXeu8tnx8jg==
-X-Developer-Key: i=towinchenmi@gmail.com; a=openpgp;
- fpr=4B5278785C97ACF79C3C688301CA08B7A6C50824
+Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Transfer-Encoding: 8bit
 
-Apple T2 MacBookPro15,2 (j132) has a touchbar so include the framebuffer
-node.
 
-Cc: stable@vger.kernel.org
-Fixes: 4efbcb623e9bc ("arm64: dts: apple: Add T2 devices")
-Signed-off-by: Nick Chan <towinchenmi@gmail.com>
----
-Changes in v2:
-- CC stable list in Sign-off area. No content change.
----
- arch/arm64/boot/dts/apple/t8012-j132.dts | 1 +
- 1 file changed, 1 insertion(+)
+The patch below does not apply to the 6.12-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
 
-diff --git a/arch/arm64/boot/dts/apple/t8012-j132.dts b/arch/arm64/boot/dts/apple/t8012-j132.dts
-index 778a69be18dd81ab49076fb39ca4bc82f551e40f..7dcac51703ff60e0a6ef0929572a70adb65b580f 100644
---- a/arch/arm64/boot/dts/apple/t8012-j132.dts
-+++ b/arch/arm64/boot/dts/apple/t8012-j132.dts
-@@ -7,6 +7,7 @@
- /dts-v1/;
+To reproduce the conflict and resubmit, you may use the following commands:
+
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.12.y
+git checkout FETCH_HEAD
+git cherry-pick -x 2b12d06c37fd3a394376f42f026a7478d826ed63
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025062008-scarcity-jaundice-0b6e@gregkh' --subject-prefix 'PATCH 6.12.y' HEAD^..
+
+Possible dependencies:
+
+
+
+thanks,
+
+greg k-h
+
+------------------ original commit in Linus's tree ------------------
+
+From 2b12d06c37fd3a394376f42f026a7478d826ed63 Mon Sep 17 00:00:00 2001
+From: Pu Lehui <pulehui@huawei.com>
+Date: Thu, 29 May 2025 15:56:47 +0000
+Subject: [PATCH] mm: fix uprobe pte be overwritten when expanding vma
+
+Patch series "Fix uprobe pte be overwritten when expanding vma".
+
+
+This patch (of 4):
+
+We encountered a BUG alert triggered by Syzkaller as follows:
+   BUG: Bad rss-counter state mm:00000000b4a60fca type:MM_ANONPAGES val:1
+
+And we can reproduce it with the following steps:
+1. register uprobe on file at zero offset
+2. mmap the file at zero offset:
+   addr1 = mmap(NULL, 2 * 4096, PROT_NONE, MAP_PRIVATE, fd, 0);
+3. mremap part of vma1 to new vma2:
+   addr2 = mremap(addr1, 4096, 2 * 4096, MREMAP_MAYMOVE);
+4. mremap back to orig addr1:
+   mremap(addr2, 4096, 4096, MREMAP_MAYMOVE | MREMAP_FIXED, addr1);
+
+In step 3, the vma1 range [addr1, addr1 + 4096] will be remap to new vma2
+with range [addr2, addr2 + 8192], and remap uprobe anon page from the vma1
+to vma2, then unmap the vma1 range [addr1, addr1 + 4096].
+
+In step 4, the vma2 range [addr2, addr2 + 4096] will be remap back to the
+addr range [addr1, addr1 + 4096].  Since the addr range [addr1 + 4096,
+addr1 + 8192] still maps the file, it will take vma_merge_new_range to
+expand the range, and then do uprobe_mmap in vma_complete.  Since the
+merged vma pgoff is also zero offset, it will install uprobe anon page to
+the merged vma.  However, the upcomming move_page_tables step, which use
+set_pte_at to remap the vma2 uprobe pte to the merged vma, will overwrite
+the newly uprobe pte in the merged vma, and lead that pte to be orphan.
+
+Since the uprobe pte will be remapped to the merged vma, we can remove the
+unnecessary uprobe_mmap upon merged vma.
+
+This problem was first found in linux-6.6.y and also exists in the
+community syzkaller:
+https://lore.kernel.org/all/000000000000ada39605a5e71711@google.com/T/
+
+Link: https://lkml.kernel.org/r/20250529155650.4017699-1-pulehui@huaweicloud.com
+Link: https://lkml.kernel.org/r/20250529155650.4017699-2-pulehui@huaweicloud.com
+Fixes: 2b1444983508 ("uprobes, mm, x86: Add the ability to install and remove uprobes breakpoints")
+Signed-off-by: Pu Lehui <pulehui@huawei.com>
+Suggested-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Acked-by: David Hildenbrand <david@redhat.com>
+Cc: Jann Horn <jannh@google.com>
+Cc: Liam Howlett <liam.howlett@oracle.com>
+Cc: "Masami Hiramatsu (Google)" <mhiramat@kernel.org>
+Cc: Oleg Nesterov <oleg@redhat.com>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Vlastimil Babka <vbabka@suse.cz>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+
+diff --git a/mm/vma.c b/mm/vma.c
+index 1c6595f282e5..b2d7c03d8aa4 100644
+--- a/mm/vma.c
++++ b/mm/vma.c
+@@ -169,6 +169,9 @@ static void init_multi_vma_prep(struct vma_prepare *vp,
+ 	vp->file = vma->vm_file;
+ 	if (vp->file)
+ 		vp->mapping = vma->vm_file->f_mapping;
++
++	if (vmg && vmg->skip_vma_uprobe)
++		vp->skip_vma_uprobe = true;
+ }
  
- #include "t8012-jxxx.dtsi"
-+#include "t8012-touchbar.dtsi"
+ /*
+@@ -358,10 +361,13 @@ static void vma_complete(struct vma_prepare *vp, struct vma_iterator *vmi,
  
- / {
- 	model = "Apple T2 MacBookPro15,2 (j132)";
-
----
-base-commit: e04c78d86a9699d136910cfc0bdcf01087e3267e
-change-id: 20250620-j132-fb-d7d5687d370d
-
-Best regards,
--- 
-Nick Chan <towinchenmi@gmail.com>
+ 	if (vp->file) {
+ 		i_mmap_unlock_write(vp->mapping);
+-		uprobe_mmap(vp->vma);
+ 
+-		if (vp->adj_next)
+-			uprobe_mmap(vp->adj_next);
++		if (!vp->skip_vma_uprobe) {
++			uprobe_mmap(vp->vma);
++
++			if (vp->adj_next)
++				uprobe_mmap(vp->adj_next);
++		}
+ 	}
+ 
+ 	if (vp->remove) {
+@@ -1823,6 +1829,14 @@ struct vm_area_struct *copy_vma(struct vm_area_struct **vmap,
+ 		faulted_in_anon_vma = false;
+ 	}
+ 
++	/*
++	 * If the VMA we are copying might contain a uprobe PTE, ensure
++	 * that we do not establish one upon merge. Otherwise, when mremap()
++	 * moves page tables, it will orphan the newly created PTE.
++	 */
++	if (vma->vm_file)
++		vmg.skip_vma_uprobe = true;
++
+ 	new_vma = find_vma_prev(mm, addr, &vmg.prev);
+ 	if (new_vma && new_vma->vm_start < addr + len)
+ 		return NULL;	/* should never get here */
+diff --git a/mm/vma.h b/mm/vma.h
+index 9a8af9be29a8..0db066e7a45d 100644
+--- a/mm/vma.h
++++ b/mm/vma.h
+@@ -19,6 +19,8 @@ struct vma_prepare {
+ 	struct vm_area_struct *insert;
+ 	struct vm_area_struct *remove;
+ 	struct vm_area_struct *remove2;
++
++	bool skip_vma_uprobe :1;
+ };
+ 
+ struct unlink_vma_file_batch {
+@@ -120,6 +122,11 @@ struct vma_merge_struct {
+ 	 */
+ 	bool give_up_on_oom :1;
+ 
++	/*
++	 * If set, skip uprobe_mmap upon merged vma.
++	 */
++	bool skip_vma_uprobe :1;
++
+ 	/* Internal flags set during merge process: */
+ 
+ 	/*
 
 
