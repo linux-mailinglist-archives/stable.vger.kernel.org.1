@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-154999-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-155000-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 98E55AE160F
-	for <lists+stable@lfdr.de>; Fri, 20 Jun 2025 10:32:01 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1046EAE1620
+	for <lists+stable@lfdr.de>; Fri, 20 Jun 2025 10:34:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 722F6173685
-	for <lists+stable@lfdr.de>; Fri, 20 Jun 2025 08:31:45 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id ADC7E17AB3D
+	for <lists+stable@lfdr.de>; Fri, 20 Jun 2025 08:33:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D70D244678;
-	Fri, 20 Jun 2025 08:30:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B1F714D2A0;
+	Fri, 20 Jun 2025 08:33:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H+pwUwX/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1cmTGfR9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57898244660
-	for <stable@vger.kernel.org>; Fri, 20 Jun 2025 08:30:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B25330E857
+	for <stable@vger.kernel.org>; Fri, 20 Jun 2025 08:33:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750408217; cv=none; b=Kfzc1jI94bELhJfOfzdgAjY3CRgBGm07iQ/Uuu7GxixoR0D6n5j/pcYzki71bKrOf46cYSBKCiFRcIQ6U4ODzBQ1BG3eYP9eFu48tgxFO9kVFebSt3SQ4ac84rMtRKmUp4g52i4QSJdPaZDwZAHl++fJZVEgrTUcySZmrTAgFNw=
+	t=1750408385; cv=none; b=d9xVg6jZuZoTP8JReRyuLz9KoXEbJ7cF/bErZrOmHfdoVtYPnZOR0E8JqNz3OD1+mW+QcyhdLtnbwKNsjHmeM86uQvbFZMbgLjDLc36Ud3lll4EZ3A7/RGVYUeqL2sxsyr2sviN2fC/Te5o8AiIXp2KpjiFmpFi1WI1iqCCaFd8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750408217; c=relaxed/simple;
-	bh=ICd0kwe+oF6H6IP9swaTblQMtUwWQaWIHu/dJpeuVBg=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=ID6E4zdmH9Xz/4ngu27SeUlB5/DLYqCG7iLMfVBu9C6IYWRlB8kmfMGdF4mqrb9KKgVDxJOknAwTo6QGWJlM1g7CWZHOTsPH++PJret3i4Xdlh13YWoH1vdLTiy4wG+fm5UT1S15vGps/OJpfxaIDVaEB0Im2on6FxQ9NNWURqg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H+pwUwX/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8214AC4CEF3;
-	Fri, 20 Jun 2025 08:30:16 +0000 (UTC)
+	s=arc-20240116; t=1750408385; c=relaxed/simple;
+	bh=1sroAftr4s0hEuBiI5XbewAqhfEv/h3cUlk/2vVecGA=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=pVsk/WQq0H6uAuH+F0e35fMfMwOq3/tx6vfyGQ396+MCIK2RTYdZrEaLwD+wgyw1tQ3yV99kxDZUtVPVO3EERetNg5XarfpFC7LlWLdZHOyRkh2ZvHkfpFJDaj6kZ4H0ueX/fhwCPOnNxxZhAr1bKX2lDSDIMs8oaJ5UMDwX340=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1cmTGfR9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7062AC4CEE3;
+	Fri, 20 Jun 2025 08:33:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750408216;
-	bh=ICd0kwe+oF6H6IP9swaTblQMtUwWQaWIHu/dJpeuVBg=;
+	s=korg; t=1750408384;
+	bh=1sroAftr4s0hEuBiI5XbewAqhfEv/h3cUlk/2vVecGA=;
 	h=Subject:To:Cc:From:Date:From;
-	b=H+pwUwX/+eTIfR6W+OcWNVLD6qbP0F1SdO2oaaTY1bqCpE8vLLbFbJsx45QwcWTcQ
-	 7qVKtLJbjQ+EjIRC6Y5fXnU+JiOTiE8tZfXcl+dhigZcczD3d6jB6mvGb2jrTVfKnE
-	 qbnzfHekNEBbWfgGihhhnD8z4mvMpKe2iNcOMOWw=
-Subject: FAILED: patch "[PATCH] f2fs: don't over-report free space or inodes in statvfs" failed to apply to 5.4-stable tree
-To: chao@kernel.org
+	b=1cmTGfR9CiYuOWoRESZm8n3ysW7Ye4XF56nNb8jG7DqdqJ8e73Jza7og61ClQWYms
+	 YTaWdKMY5tI16cejFTsqEGyUjLNxVbab9CwwDJLPi0h0cxfpvVMXF87/SIhcba40GO
+	 9oMSD9nlprc3dtD10rGpznTyFyRS2oKEjF/dN9WE=
+Subject: FAILED: patch "[PATCH] fbdev: Fix do_register_framebuffer to prevent null-ptr-deref" failed to apply to 6.1-stable tree
+To: m.masimov@mt-integration.ru,deller@gmx.de
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Fri, 20 Jun 2025 10:29:53 +0200
-Message-ID: <2025062053-frenzy-grill-65e2@gregkh>
+Date: Fri, 20 Jun 2025 10:33:01 +0200
+Message-ID: <2025062001-system-wrongly-4caf@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.4-stable tree.
+The patch below does not apply to the 6.1-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
 git checkout FETCH_HEAD
-git cherry-pick -x a9201960623287927bf5776de3f70fb2fbde7e02
+git cherry-pick -x 17186f1f90d34fa701e4f14e6818305151637b9e
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025062053-frenzy-grill-65e2@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025062001-system-wrongly-4caf@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
 
 Possible dependencies:
 
@@ -77,93 +77,106 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From a9201960623287927bf5776de3f70fb2fbde7e02 Mon Sep 17 00:00:00 2001
-From: Chao Yu <chao@kernel.org>
-Date: Tue, 13 May 2025 19:25:38 +0800
-Subject: [PATCH] f2fs: don't over-report free space or inodes in statvfs
+From 17186f1f90d34fa701e4f14e6818305151637b9e Mon Sep 17 00:00:00 2001
+From: Murad Masimov <m.masimov@mt-integration.ru>
+Date: Mon, 28 Apr 2025 18:34:06 +0300
+Subject: [PATCH] fbdev: Fix do_register_framebuffer to prevent null-ptr-deref
+ in fb_videomode_to_var
 
-This fixes an analogus bug that was fixed in modern filesystems:
-a) xfs in commit 4b8d867ca6e2 ("xfs: don't over-report free space or
-inodes in statvfs")
-b) ext4 in commit f87d3af74193 ("ext4: don't over-report free space
-or inodes in statvfs")
-where statfs can report misleading / incorrect information where
-project quota is enabled, and the free space is less than the
-remaining quota.
+If fb_add_videomode() in do_register_framebuffer() fails to allocate
+memory for fb_videomode, it will later lead to a null-ptr dereference in
+fb_videomode_to_var(), as the fb_info is registered while not having the
+mode in modelist that is expected to be there, i.e. the one that is
+described in fb_info->var.
 
-This commit will resolve a test failure in generic/762 which tests
-for this bug.
+================================================================
+general protection fault, probably for non-canonical address 0xdffffc0000000001: 0000 [#1] PREEMPT SMP KASAN NOPTI
+KASAN: null-ptr-deref in range [0x0000000000000008-0x000000000000000f]
+CPU: 1 PID: 30371 Comm: syz-executor.1 Not tainted 5.10.226-syzkaller #0
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.12.0-1 04/01/2014
+RIP: 0010:fb_videomode_to_var+0x24/0x610 drivers/video/fbdev/core/modedb.c:901
+Call Trace:
+ display_to_var+0x3a/0x7c0 drivers/video/fbdev/core/fbcon.c:929
+ fbcon_resize+0x3e2/0x8f0 drivers/video/fbdev/core/fbcon.c:2071
+ resize_screen drivers/tty/vt/vt.c:1176 [inline]
+ vc_do_resize+0x53a/0x1170 drivers/tty/vt/vt.c:1263
+ fbcon_modechanged+0x3ac/0x6e0 drivers/video/fbdev/core/fbcon.c:2720
+ fbcon_update_vcs+0x43/0x60 drivers/video/fbdev/core/fbcon.c:2776
+ do_fb_ioctl+0x6d2/0x740 drivers/video/fbdev/core/fbmem.c:1128
+ fb_ioctl+0xe7/0x150 drivers/video/fbdev/core/fbmem.c:1203
+ vfs_ioctl fs/ioctl.c:48 [inline]
+ __do_sys_ioctl fs/ioctl.c:753 [inline]
+ __se_sys_ioctl fs/ioctl.c:739 [inline]
+ __x64_sys_ioctl+0x19a/0x210 fs/ioctl.c:739
+ do_syscall_64+0x33/0x40 arch/x86/entry/common.c:46
+ entry_SYSCALL_64_after_hwframe+0x67/0xd1
+================================================================
 
-generic/762       - output mismatch (see /share/git/fstests/results//generic/762.out.bad)
-    --- tests/generic/762.out   2025-04-15 10:21:53.371067071 +0800
-    +++ /share/git/fstests/results//generic/762.out.bad 2025-05-13 16:13:37.000000000 +0800
-    @@ -6,8 +6,10 @@
-     root blocks2 is in range
-     dir blocks2 is in range
-     root bavail2 is in range
-    -dir bavail2 is in range
-    +dir bavail2 has value of 1539066
-    +dir bavail2 is NOT in range 304734.87 .. 310891.13
-     root blocks3 is in range
-    ...
-    (Run 'diff -u /share/git/fstests/tests/generic/762.out /share/git/fstests/results//generic/762.out.bad'  to see the entire diff)
+Even though fbcon_init() checks beforehand if fb_match_mode() in
+var_to_display() fails, it can not prevent the panic because fbcon_init()
+does not return error code. Considering this and the comment in the code
+about fb_match_mode() returning NULL - "This should not happen" - it is
+better to prevent registering the fb_info if its mode was not set
+successfully. Also move fb_add_videomode() closer to the beginning of
+do_register_framebuffer() to avoid having to do the cleanup on fail.
 
-HINT: You _MAY_ be missing kernel fix:
-      XXXXXXXXXXXXXX xfs: don't over-report free space or inodes in statvfs
+Found by Linux Verification Center (linuxtesting.org) with Syzkaller.
 
-Cc: stable@kernel.org
-Fixes: ddc34e328d06 ("f2fs: introduce f2fs_statfs_project")
-Signed-off-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Cc: stable@vger.kernel.org
+Signed-off-by: Murad Masimov <m.masimov@mt-integration.ru>
+Signed-off-by: Helge Deller <deller@gmx.de>
 
-diff --git a/fs/f2fs/super.c b/fs/f2fs/super.c
-index b65d24a39d03..6744b8c65bc8 100644
---- a/fs/f2fs/super.c
-+++ b/fs/f2fs/super.c
-@@ -1808,26 +1808,32 @@ static int f2fs_statfs_project(struct super_block *sb,
+diff --git a/drivers/video/fbdev/core/fbmem.c b/drivers/video/fbdev/core/fbmem.c
+index 3c568cff2913..e1557d80768f 100644
+--- a/drivers/video/fbdev/core/fbmem.c
++++ b/drivers/video/fbdev/core/fbmem.c
+@@ -388,7 +388,7 @@ static int fb_check_foreignness(struct fb_info *fi)
  
- 	limit = min_not_zero(dquot->dq_dqb.dqb_bsoftlimit,
- 					dquot->dq_dqb.dqb_bhardlimit);
--	if (limit)
--		limit >>= sb->s_blocksize_bits;
-+	limit >>= sb->s_blocksize_bits;
+ static int do_register_framebuffer(struct fb_info *fb_info)
+ {
+-	int i;
++	int i, err = 0;
+ 	struct fb_videomode mode;
+ 
+ 	if (fb_check_foreignness(fb_info))
+@@ -397,10 +397,18 @@ static int do_register_framebuffer(struct fb_info *fb_info)
+ 	if (num_registered_fb == FB_MAX)
+ 		return -ENXIO;
+ 
+-	num_registered_fb++;
+ 	for (i = 0 ; i < FB_MAX; i++)
+ 		if (!registered_fb[i])
+ 			break;
 +
-+	if (limit) {
-+		uint64_t remaining = 0;
- 
--	if (limit && buf->f_blocks > limit) {
- 		curblock = (dquot->dq_dqb.dqb_curspace +
- 			    dquot->dq_dqb.dqb_rsvspace) >> sb->s_blocksize_bits;
--		buf->f_blocks = limit;
--		buf->f_bfree = buf->f_bavail =
--			(buf->f_blocks > curblock) ?
--			 (buf->f_blocks - curblock) : 0;
-+		if (limit > curblock)
-+			remaining = limit - curblock;
++	if (!fb_info->modelist.prev || !fb_info->modelist.next)
++		INIT_LIST_HEAD(&fb_info->modelist);
 +
-+		buf->f_blocks = min(buf->f_blocks, limit);
-+		buf->f_bfree = min(buf->f_bfree, remaining);
-+		buf->f_bavail = min(buf->f_bavail, remaining);
- 	}
- 
- 	limit = min_not_zero(dquot->dq_dqb.dqb_isoftlimit,
- 					dquot->dq_dqb.dqb_ihardlimit);
- 
--	if (limit && buf->f_files > limit) {
--		buf->f_files = limit;
--		buf->f_ffree =
--			(buf->f_files > dquot->dq_dqb.dqb_curinodes) ?
--			 (buf->f_files - dquot->dq_dqb.dqb_curinodes) : 0;
-+	if (limit) {
-+		uint64_t remaining = 0;
++	fb_var_to_videomode(&mode, &fb_info->var);
++	err = fb_add_videomode(&mode, &fb_info->modelist);
++	if (err < 0)
++		return err;
 +
-+		if (limit > dquot->dq_dqb.dqb_curinodes)
-+			remaining = limit - dquot->dq_dqb.dqb_curinodes;
-+
-+		buf->f_files = min(buf->f_files, limit);
-+		buf->f_ffree = min(buf->f_ffree, remaining);
- 	}
+ 	fb_info->node = i;
+ 	refcount_set(&fb_info->count, 1);
+ 	mutex_init(&fb_info->lock);
+@@ -426,16 +434,12 @@ static int do_register_framebuffer(struct fb_info *fb_info)
+ 	if (bitmap_empty(fb_info->pixmap.blit_y, FB_MAX_BLIT_HEIGHT))
+ 		bitmap_fill(fb_info->pixmap.blit_y, FB_MAX_BLIT_HEIGHT);
  
- 	spin_unlock(&dquot->dq_dqb_lock);
+-	if (!fb_info->modelist.prev || !fb_info->modelist.next)
+-		INIT_LIST_HEAD(&fb_info->modelist);
+-
+ 	if (fb_info->skip_vt_switch)
+ 		pm_vt_switch_required(fb_info->device, false);
+ 	else
+ 		pm_vt_switch_required(fb_info->device, true);
+ 
+-	fb_var_to_videomode(&mode, &fb_info->var);
+-	fb_add_videomode(&mode, &fb_info->modelist);
++	num_registered_fb++;
+ 	registered_fb[i] = fb_info;
+ 
+ #ifdef CONFIG_GUMSTIX_AM200EPD
 
 
