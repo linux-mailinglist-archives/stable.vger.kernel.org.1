@@ -1,150 +1,131 @@
-Return-Path: <stable+bounces-155178-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-155179-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2CA11AE22AC
-	for <lists+stable@lfdr.de>; Fri, 20 Jun 2025 21:08:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1E098AE22C6
+	for <lists+stable@lfdr.de>; Fri, 20 Jun 2025 21:21:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C55474A6B3A
-	for <lists+stable@lfdr.de>; Fri, 20 Jun 2025 19:08:54 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B4ED64A5B29
+	for <lists+stable@lfdr.de>; Fri, 20 Jun 2025 19:21:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3661C2E9EB4;
-	Fri, 20 Jun 2025 19:08:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0C56223DC6;
+	Fri, 20 Jun 2025 19:20:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=uniontech.com header.i=@uniontech.com header.b="YjwkFDOm"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FkPCnNC6"
 X-Original-To: stable@vger.kernel.org
-Received: from smtpbguseast1.qq.com (smtpbguseast1.qq.com [54.204.34.129])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E26C81CBEB9;
-	Fri, 20 Jun 2025 19:08:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.204.34.129
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB4FB2222D8;
+	Fri, 20 Jun 2025 19:20:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750446528; cv=none; b=WZqqZyCg1fw/5RjCjUC4xlIi8Wb+Z20n5gbKGHksySvsDCfAhnBkj0Nv8Tr4UEPqtooXdl4iMpqRM2BdY8J4MMTd9Jn4+O/O49qoPzgXZF8hkZOL0q/PrTzxJsQ+le4r8k5cXF/OEYs5+6mTlIBReAxmj5qnMuI+lewSwBUfPsQ=
+	t=1750447246; cv=none; b=KyjBfmdMFg61m0TJhXi7O+0aavj8SyimYA7fOjW7wkQsDy+zXKSPp8neyyGGUu0KSDpcSioq5a71EOY2s+/Nxk8VXTnPwgPZwNyz6pipbIaZDCApyxe9ru+C9eJ8sJKU4umvA5Pm+ewJRB9xSP2pBmne6HG6ElefHaW1pRBbCSk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750446528; c=relaxed/simple;
-	bh=9azbfIzZ7/EKsBWKcE/cnLRSJbQoY+gshqreNhgUYaA=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Y9b4ux4TW2hpftoB3+7pkXwxW0JvXYSzLHWe0gNUasFq3BIhCruWTDPVEJjiSJe9gkxF+Y4AlLE3ob7mQiAmVIym0LcU5yqIDHahJujrnWo0mthAByPuJ4CParttpPXvftlRUVfY+/dB0e53FotKPm/ituyTGAS3F0wJs+x5cEs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniontech.com; spf=pass smtp.mailfrom=uniontech.com; dkim=pass (1024-bit key) header.d=uniontech.com header.i=@uniontech.com header.b=YjwkFDOm; arc=none smtp.client-ip=54.204.34.129
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniontech.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=uniontech.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=uniontech.com;
-	s=onoh2408; t=1750446473;
-	bh=LRZJ7p9GBR+eglIFOpIjE8zfeTHorXM0dp0qxQVI7mM=;
-	h=From:To:Subject:Date:Message-ID:MIME-Version;
-	b=YjwkFDOmNbWgUt3wSTYVKm8e43BHLVndpqDW9dONda+2GFtUeBSpe7vXis2J13UL/
-	 jWa3NRCthoIKuX3ynG1EWpk4rsYxzhcnjg1kjoPi7NDqhablho89cJ6mvayszOHf+d
-	 FgcZTi7KGu1vTdj7AcnYLr/pjoIrdbitFa9UPjQI=
-X-QQ-mid: zesmtpip2t1750446470t24027d68
-X-QQ-Originating-IP: a+whxtcwC4OXseSRCHfi95NVw4yEwf/C+BSGBP353NI=
-Received: from avengerlaptop.localnet ( [localhost])
-	by bizesmtp.qq.com (ESMTP) with 
-	id ; Sat, 21 Jun 2025 03:07:48 +0800 (CST)
-X-QQ-SSF: 0000000000000000000000000000000
-X-QQ-GoodBg: 1
-X-BIZMAIL-ID: 16696090710593307805
-EX-QQ-RecipientCnt: 9
-From: WangYuli <wangyuli@uniontech.com>
-To: Greg KH <gregkh@linuxfoundation.org>
-Cc: sashal@kernel.org, stable@vger.kernel.org, johannes@sipsolutions.net,
- linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
- Edward Adam Davis <eadavis@qq.com>,
- syzbot+aaf0488c83d1d5f4f029@syzkaller.appspotmail.com,
- Johannes Berg <johannes.berg@intel.com>
-Subject:
- Re: [PATCH 6.1/6.6] wifi: cfg80211: init wiphy_work before allocating rfkill
- fails
-Date: Sat, 21 Jun 2025 03:07:48 +0800
-Message-ID: <61F8C4764645EB4E+1926393.tdWV9SEqCh@avengerlaptop>
-Disposition-Notification-To: WangYuli <wangyuli@uniontech.com>
-In-Reply-To: <2025062021-omen-charger-a00b@gregkh>
-References:
- <A203ED8C00632F28+20250620031949.227937-1-wangyuli@uniontech.com>
- <2025062021-omen-charger-a00b@gregkh>
+	s=arc-20240116; t=1750447246; c=relaxed/simple;
+	bh=ilXnAqYMDwX2xluyBBX5nFo0usHqV7SIWUSbptLAfII=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=FCrJNL3Qd3VHtVSCa/ETlXJl1pk7jvIi4gIq38/G2eCFc6QCkcsrcnWMH6OWi4coKGK/N+uXvkAgdJWOhgcZ+/JkklNibs8zjgSEch1wLiAIOZ1Rq4W0PHZgUvZrpPmvEv6Ik0jngVAaFN6EqQr8BkP6JrC7N7pPmMk2tcznQAk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=FkPCnNC6; arc=none smtp.client-ip=209.85.128.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-45310223677so17720325e9.0;
+        Fri, 20 Jun 2025 12:20:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1750447243; x=1751052043; darn=vger.kernel.org;
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+         :sender:from:to:cc:subject:date:message-id:reply-to;
+        bh=4UADvpkf2IiBFZKK6AAi88bvFyLNL2fvrTWtjFa2BEw=;
+        b=FkPCnNC6odppzbUrn2KgITRqgzkam2txuPQzfWoRl9/cJASwZUURguUg380ZbjpNvi
+         me0eV4B9Ri1gOzacd0pgbVmasOA0V64lCJ761+eMZIv2iqDiCble4KsJktsg31Ba4w1g
+         eXj5R9RQy+Y/kDl18HMCAxSl0qi+2AvnBvocbKIhUPwishhKqfUt++hu4XB5Fvmc5oGW
+         WxGdh1bCh3xkygtekA8u/uJYMU+LQnqmGyYAdKBCedP/5CMWq5INKWShSV9pw2TBpAwO
+         FxYjF5m3rfLndwORxEGsgO3mpM89HZkPw0k2pJ9+59weGapMj5gwepgp0/xSjguUT8Z6
+         1XMg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1750447243; x=1751052043;
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+         :sender:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=4UADvpkf2IiBFZKK6AAi88bvFyLNL2fvrTWtjFa2BEw=;
+        b=rFVa4tGRvmAMvqYm/H3uzO5J+kkIr+Xz6DU4guD2o3uFc26Fab28/fmyGf+eQODe7y
+         AJyr1GAq73FGBaA5mRGh5vkyhmVApZAnIsWq68Yx7BVPpOsw+0ICz5rl9p2jqqf3t7Zs
+         GPMTXa8rAMegTZI37Z39YOKIpxhXEH8C4GvAnbPGU2Xps3/wONMbfqedanGCmROniSfg
+         o+r7gICSQN4NHFKlma2gIWAlcb/0l2rsO1Ea8fb0uDNrU36AX2BmYwYW0UZLcsNSkMdT
+         8BHbFgGFO63QTCeo4ZLBZX2rLtGAjBrvUcU8niOyG44UZrpLJJhee8m2j/DgP9ZfSj3Q
+         0weg==
+X-Forwarded-Encrypted: i=1; AJvYcCWZddpk8+esOMc1HRxju44hpknhLox+1XqL+wVV6e8sf4HoDUYvmbSzAabVtboHG8apBYxOweY=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzm+CN4DSy6jGqA0p9J36X2CT92qYs3y0jIPmotAMEw+cKP60Qn
+	3i9MwVPXUjCpJE5pvU4untRdcsQTEF71cbKSHvljj09bO7ym7ETRbAyU
+X-Gm-Gg: ASbGncsU/qyTvePQ0LeOGAFbUkNMjiFuYVaqo/tAh7BUWAeDsx6iSBzSN3yk8HebkYc
+	tGH1ZoZptLew9sD0dPV3gbm3FK/yuq4/6ilvLAfIcgF5MwAeSCTZTdQxtRXMmUHPKruSSzNFrnP
+	wf5rMzgIuJ7i/B/7/V5uTtfzVzQhob93SAM51eECEKfIL14Hxpi8q7pnPZeNYgMBuMtyfEDuwir
+	9ZxP+BiHu4wijWTn/zF2mGzzWbdlgYScF8RmcOxOsLEVLIhqAK26atACUnbkKeJbo2wS7To6rDl
+	sB77kv3ovoPzWPZ8K4CNYyQD7vysgDoEto+kautV4i3EPXpVypfm7bAyFXajGLqQdQZYBgi4Ssp
+	fXJDGGzhIdwRNkXFj6wU=
+X-Google-Smtp-Source: AGHT+IG8aOoZC8S1rb/ev7lP9inHcJLu9ktL7RT5BqPIoEbcvhdGm52Wha1xhaCLBRuUuM1GSAo0nQ==
+X-Received: by 2002:a05:600c:3b2a:b0:43c:fdbe:4398 with SMTP id 5b1f17b1804b1-453659b68afmr35278195e9.6.1750447242856;
+        Fri, 20 Jun 2025 12:20:42 -0700 (PDT)
+Received: from eldamar.lan (c-82-192-244-13.customer.ggaweb.ch. [82.192.244.13])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4535e98b4bbsm66613005e9.15.2025.06.20.12.20.42
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 20 Jun 2025 12:20:42 -0700 (PDT)
+Sender: Salvatore Bonaccorso <salvatore.bonaccorso@gmail.com>
+Received: by eldamar.lan (Postfix, from userid 1000)
+	id 8766BBE2DE0; Fri, 20 Jun 2025 21:20:41 +0200 (CEST)
+Date: Fri, 20 Jun 2025 21:20:41 +0200
+From: Salvatore Bonaccorso <carnil@debian.org>
+To: regressions@lists.linux.dev, Jeremy Lincicome <w0jrl1@gmail.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>, linux-mmc@vger.kernel.org
+Cc: linux-mmc@vger.kernel.org, 1107979@bugs.debian.org,
+	stable@vger.kernel.org
+Subject: [regression v6.12.30..v6.12.32] mmc1: mmc_select_hs400 failed, error
+ -110 / boot regression on Lenovo IdeaPad 1 15ADA7
+Message-ID: <aFW0ia8Jj4PQtFkS@eldamar.lan>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="nextPart2229138.irdbgypaU6";
- micalg="pgp-sha512"; protocol="application/pgp-signature"
-X-QQ-SENDSIZE: 520
-Feedback-ID: zesmtpip:uniontech.com:qybglogicsvrgz:qybglogicsvrgz8a-1
-X-QQ-XMAILINFO: MxVgLWGBAB+0/Tm8qpJMamYvtlL+rnaQqDbttLuVghbKKOP65oUBAMaB
-	che0o2BXXSXE9FBpAO5pxurTiZUSL4jWy2BjwZFCBOeaXm67ZqorRIkBZ8GI/naMge+kpF7
-	jr7T2WNoXVmHK+QuI78ygjYaoJlH7gSzyBveqOXRTj/OKDp5EvH91UqqZyoOC9I8+6VHYnI
-	38HIh+FKw+LdPv5JEa96b9Q/OiILgGo3Z6OKu8rA6hEALKCjQMJIj18wxLnBdcnNONJ5WDR
-	D+df7HOZCUrqmOZDTlF/S2LVQhclRoTzE3SgdABitQ2EEr+wusm+Y1RDI1AEohdedtaxBjU
-	ahkTAtKLJ6aD1RAYpAVnnQOJuHypj9p2kYcWA5h2uBsRj3Y/HKCVA2yhsgRFWVO74nXXAVu
-	3kJxkEy3iYWhIgBhEeFME8JjB29EHfX5+sk7AUJk3XctS1u0KDTo5SA8Pi6xrwWV60A1u32
-	YQSzB/36OGi0YZ7fatb+N6cXZvLHHI2gwjQpLeXwnERm0Fimi6FnOIAFvAzzbsnmsJSPw5+
-	T9LH3frfLUE5Z9oFAABrYkx8wvK1TjSUVdlAg7MKZBhCkgXTymfBwGozXVb7wfnW8sA12gf
-	1+V0WvJCOtDZiBCxHeFD9gF6I9cOLRNcsBA5RslAi3WUHKbEquOxSWgGyRA4p+rHi52VkNi
-	5PwLx2UHmHfjRP97lqJp0FeK4DIyQpXGO1njYLZwS8WrcTgHJULCjcvfFI4QfM1YEVXEqdF
-	peOr84vEYlGn4Q6NoFaDFTfZD7YeFXzk429teEffsGl7kecP+5rwC8k6JPJIJ+opHJ2Fpi2
-	FPxh4uHxgGyGmZ/LSgXtQalDvcMtY8+chGihDpW/IaxEaKr8/OmhdwukdzF5BQFnlvuXNqD
-	1tR4OiGyyeIviqZoIS146qJbkPlDJoIpH8G4E+snipm1Ph6yXhd4UZuh3CuAwFZuFls+P5G
-	B/uZzDlONdjNRZc35TDQrYqTwrfdIbd4gWGG9KvYdRSyCVRVlwvlSGll/txyivEsl9IQc2V
-	yvjOvYq9U3UX2oy0Cy
-X-QQ-XMRINFO: MSVp+SPm3vtS1Vd6Y4Mggwc=
-X-QQ-RECHKSPAM: 0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
---nextPart2229138.irdbgypaU6
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset="utf-8"; protected-headers="v1"
-From: WangYuli <wangyuli@uniontech.com>
-To: Greg KH <gregkh@linuxfoundation.org>
-Date: Sat, 21 Jun 2025 03:07:48 +0800
-Message-ID: <1926393.tdWV9SEqCh@avengerlaptop>
-Disposition-Notification-To: WangYuli <wangyuli@uniontech.com>
-In-Reply-To: <2025062021-omen-charger-a00b@gregkh>
-MIME-Version: 1.0
+Hi
 
-Hi greg k-h,
+In Debian we got a regression report booting on a Lenovo IdeaPad 1
+15ADA7 dropping finally into the initramfs shell after updating from
+6.12.30 to 6.12.32 with messages before dropping into the intiramfs
+shell:
 
-On 2025=E5=B9=B46=E6=9C=8821=E6=97=A5=E6=98=9F=E6=9C=9F=E5=85=AD =E4=B8=AD=
-=E5=9B=BD=E6=A0=87=E5=87=86=E6=97=B6=E9=97=B4 00:03:34=EF=BC=8CGreg KH wrot=
-e=EF=BC=9A
-> On Fri, Jun 20, 2025 at 11:19:49AM +0800, WangYuli wrote:
-> > From: Edward Adam Davis <eadavis@qq.com>
-> >=20
-> > [ Upstream commit fc88dee89d7b63eeb17699393eb659aadf9d9b7c ]
->=20
-> What about 6.12.y?  Why forget that kernel?
->=20
-> confused,
->=20
-> greg k-h
+mmc1: mmc_select_hs400 failed, error -110
+mmc1: error -110 whilst initialising MMC card
 
-My apologies.
+The original report is at https://bugs.debian.org/1107979 and the
+reporter tested as well kernel up to 6.15.3 which still fails to boot.
 
-I inadvertently overlooked linux-6.12.y and  it does need this patch.
+Another similar report landed with after the same version update as
+https://bugs.debian.org/1107979 .
 
-Thank you for the reminder; I'll be sure to check more carefully before=20
-sending anything out next time!
+I only see three commits touching drivers/mmc between
+6.12.30..6.12.32:
 
-Sorry,
-=2D-
-WangYuli
---nextPart2229138.irdbgypaU6
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: This is a digitally signed message part.
-Content-Transfer-Encoding: 7Bit
+28306c58daf8 ("mmc: sdhci: Disable SD card clock before changing parameters")
+38828e0dc771 ("mmc: dw_mmc: add exynos7870 DW MMC support")
+67bb2175095e ("mmc: host: Wait for Vdd to settle on card power off")
 
------BEGIN PGP SIGNATURE-----
+I have found a potential similar issue reported in ArchLinux at
+https://bbs.archlinux.org/viewtopic.php?id=306024
 
-iHUEABYKAB0WIQRrUYzNh64o+SCoO6/F2h8wRvQL7gUCaFWxhAAKCRDF2h8wRvQL
-7tgZAP46SbHflW0DrcdgpJpdanXvnCdVErJN4RBhctcXCEomLAD/YyvUkVA/L/Fg
-azhfyeR5ZfdfGVfmP+aNASfsurAJKQ4=
-=Wmdz
------END PGP SIGNATURE-----
+I have asked if we can get more information out of the boot, but maybe
+this regression report already rings  bell for you?
 
---nextPart2229138.irdbgypaU6--
+#regzbot introduced v6.12.30..v6.12.32
+#regzbot link: https://bugs.debian.org/1107979
+#regzbot link: https://bbs.archlinux.org/viewtopic.php?id=306024
 
-
-
+Regards,
+Salvatore
 
