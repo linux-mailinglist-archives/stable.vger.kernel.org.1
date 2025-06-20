@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-155119-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-155120-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0531FAE199B
-	for <lists+stable@lfdr.de>; Fri, 20 Jun 2025 13:08:53 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9577AAE199E
+	for <lists+stable@lfdr.de>; Fri, 20 Jun 2025 13:09:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 94F92167D94
-	for <lists+stable@lfdr.de>; Fri, 20 Jun 2025 11:08:53 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 280B43BA485
+	for <lists+stable@lfdr.de>; Fri, 20 Jun 2025 11:09:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44953288CBF;
-	Fri, 20 Jun 2025 11:08:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9097E289353;
+	Fri, 20 Jun 2025 11:09:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b="VkBRMdY8"
+	dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b="TZLP0afF"
 X-Original-To: stable@vger.kernel.org
 Received: from mx.denx.de (mx.denx.de [89.58.32.78])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CFD7285411
-	for <stable@vger.kernel.org>; Fri, 20 Jun 2025 11:08:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C543D289E05
+	for <stable@vger.kernel.org>; Fri, 20 Jun 2025 11:09:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=89.58.32.78
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750417728; cv=none; b=dw4/85LxgLe3MBb3OC0uAfoy9RjrfmunxWCF5Mk2BbWbOaCWGysSr2N5q3zpL+WkvXDZrcapJJA8DDBzoaSrkCgT62oSJ+hf4qdxCujQqjhj2xRPUoEm2fJw+z+17fz2C1FVQ0qCvl2lII4oAacfCG/6pp41lz+k4cc8b6zDKk0=
+	t=1750417778; cv=none; b=UGs1GT07QXhYN7zXsZqhFoirudrvmGnr8rNrpF6QzZ5B/L4QsjwQn9+71tiaHLjR4erAg6A/4ZlHZNrAifwmVRlC3iWkStsHqdXr86GCLb9Ijd8pHtNL4N9eObHVnVuGxgH9elj5JQ1xQswfqcvuGWgJJZmEvucQn/kRYXNlLtg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750417728; c=relaxed/simple;
-	bh=nHbX0n4K0mYSePrR/jKUHqMkuFUmtSOQLp4emdCTR3E=;
+	s=arc-20240116; t=1750417778; c=relaxed/simple;
+	bh=qnIZWlFeNl91SYdGSHTzG2x6vcWOr5uWGqArczQCsMc=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=YuCCfcteQO/FuZCFh9wFldeSruLh/TQQDoiOMHPTt7CZa/9pyTSAWcJVy76IGIaANOPHKspxjiaudbLmj8BeR4FT2/fASGQFeCmqvbfyL5RntKtjDIVKK8ccfB1T3+GQY2scbUqE4iG1MR3EYyE5e1FyyXrgzBaiW93sDAdtX6c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de; spf=pass smtp.mailfrom=denx.de; dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b=VkBRMdY8; arc=none smtp.client-ip=89.58.32.78
+	 Content-Type:Content-Disposition:In-Reply-To; b=FBmRW/b24weTTdBDVeXU7ug01AnLCC+wL4ZGoHuM8nRR6aDNRM09+nqMngeeozY9VwxKUrun+J773VcSEGDss19DXMhzcAuyhRA443HrO0inkLeR24Wi7UotK3lCDNEPtzCwK9hmD2UlAmXQ+90hpy8EtzkvBom6xNHH86sGF0c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de; spf=pass smtp.mailfrom=denx.de; dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b=TZLP0afF; arc=none smtp.client-ip=89.58.32.78
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=denx.de
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 32080104884A8;
-	Fri, 20 Jun 2025 13:08:42 +0200 (CEST)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 44875102422BF;
+	Fri, 20 Jun 2025 13:09:33 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de; s=mx-20241105;
-	t=1750417723; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 in-reply-to:references; bh=GzPGI7mjTpgC1aVy38Gz2sNnfuLlF5wX2KbVKUy3oR4=;
-	b=VkBRMdY8wq/IQT1qeaqKWJh0/MbeLSruCsmUBvB6+YI8MAu1n3IDePmOSND5VwUlcuSuUK
-	w3Xgxlbp8NwwyiSl85njiyaZlMdsKAyrrTP4141RjxRFhnuiJ+mhz40bDeCospQY1+pYp6
-	QxyO0qsLLojOTWVOUgLuIcr035KF0oIZg5RPOR8dHQl/u+X74UBf2FVLjOSmvXe01VQIhF
-	iBGWwYR/0Kr6NZI4TFCkr9CYk+B7ltT0TL23aZl+HUbL8sm8cchoN2NVCir4Fd0RJ6pSUH
-	3Tn+U4kJo8inJsplHNFbajS7rkvsPb1ALcu2bO7d034b2yNqWtb8+rkKbNOZvw==
-Date: Fri, 20 Jun 2025 13:08:39 +0200
+	t=1750417774; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 in-reply-to:references; bh=aV5zFYcOOarUpWjUWs6mZ5xkCaDGI3TErSipbcP1j5A=;
+	b=TZLP0afFGxUI566iearhLk1bnWC+tVE/kIUb3Id6S8669cwPwONHMIgk5reQUlSy6wTUM/
+	+XwU9D2rwGm6OVyRdCHvq0nassjJ5gDSp2lp49b7H912ucM67JNOM2GE5kqbO3GKpq1dfK
+	gntS4TTLhY/17A1gAMXnOH3/+/w8RKNxuyoTEEeYREyOxeSb8cKg680CXQKdgej77VuTeN
+	7bWFv6owKFYI2ytvNv87Vq6CletRTOWp3c8oUlGZjMu/BvL1P7u5QUEiDfbEY2kmPrZC8a
+	xOhEtUQo4bv6vhsnb0WQUxjpO3RK1d0qXwEQCyYwRDA7tlqvT6Pd/PTPWTzPMg==
+Date: Fri, 20 Jun 2025 13:09:31 +0200
 From: Pavel Machek <pavel@denx.de>
 To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Cc: stable@vger.kernel.org, patches@lists.linux.dev,
-	Aaron Kling <webgeek1234@gmail.com>,
-	Thierry Reding <treding@nvidia.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 6.12 247/512] arm64: tegra: Drop remaining serial
- clock-names and reset-names
-Message-ID: <aFVBN82+452mpSXx@duo.ucw.cz>
+	Quentin Schulz <quentin.schulz@cherry.de>,
+	Lukasz Czechowski <lukasz.czechowski@thaumatec.com>,
+	Heiko Stuebner <heiko@sntech.de>, Sasha Levin <sashal@kernel.org>
+Subject: Re: [PATCH 6.12 261/512] arm64: dts: rockchip: disable unrouted USB
+ controllers and PHY on RK3399 Puma with Haikou
+Message-ID: <aFVBa4ID/6uxE47h@duo.ucw.cz>
 References: <20250617152419.512865572@linuxfoundation.org>
- <20250617152429.616508304@linuxfoundation.org>
+ <20250617152430.161978386@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -60,189 +60,71 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="vrOaklxRidfSzQp0"
+	protocol="application/pgp-signature"; boundary="PekQYsNvx2Kod8zr"
 Content-Disposition: inline
-In-Reply-To: <20250617152429.616508304@linuxfoundation.org>
+In-Reply-To: <20250617152430.161978386@linuxfoundation.org>
 X-Last-TLS-Session-Version: TLSv1.3
 
 
---vrOaklxRidfSzQp0
+--PekQYsNvx2Kod8zr
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
 Hi!
 
-> From: Aaron Kling <webgeek1234@gmail.com>
->=20
-> [ Upstream commit 4cd763297c2203c6ba587d7d4a9105f96597b998 ]
->=20
-> The referenced commit only removed some of the names, missing all that
-> weren't in use at the time. The commit removes the rest.
->=20
-> Fixes: 71de0a054d0e ("arm64: tegra: Drop serial clock-names and
-> reset-names")
+> No intended functional change.
 
-Nice cleanup, but we don't really need it in stable.
+So.. no reason to be in -stable, I guess.
 
 BR,
 								Pavel
-=09
 
-> Signed-off-by: Aaron Kling <webgeek1234@gmail.com>
-> Link: https://lore.kernel.org/r/20250428-tegra-serial-fixes-v1-1-4f47c5d8=
-5bf6@gmail.com
-> Signed-off-by: Thierry Reding <treding@nvidia.com>
+> Fixes: 2c66fc34e945 ("arm64: dts: rockchip: add RK3399-Q7 (Puma) SoM")
+> Signed-off-by: Quentin Schulz <quentin.schulz@cherry.de>
+> Signed-off-by: Lukasz Czechowski <lukasz.czechowski@thaumatec.com>
+> Link: https://lore.kernel.org/r/20250425-onboard_usb_dev-v2-5-4a76a474a01=
+0@thaumatec.com
+> Signed-off-by: Heiko Stuebner <heiko@sntech.de>
 > Signed-off-by: Sasha Levin <sashal@kernel.org>
 > ---
->  arch/arm64/boot/dts/nvidia/tegra186.dtsi | 12 ------------
->  arch/arm64/boot/dts/nvidia/tegra194.dtsi | 12 ------------
->  2 files changed, 24 deletions(-)
+>  arch/arm64/boot/dts/rockchip/rk3399-puma-haikou.dts | 8 --------
+>  1 file changed, 8 deletions(-)
 >=20
-> diff --git a/arch/arm64/boot/dts/nvidia/tegra186.dtsi b/arch/arm64/boot/d=
-ts/nvidia/tegra186.dtsi
-> index 2b3bb5d0af17b..f0b7949df92c0 100644
-> --- a/arch/arm64/boot/dts/nvidia/tegra186.dtsi
-> +++ b/arch/arm64/boot/dts/nvidia/tegra186.dtsi
-> @@ -621,9 +621,7 @@
->  		reg-shift =3D <2>;
->  		interrupts =3D <GIC_SPI 113 IRQ_TYPE_LEVEL_HIGH>;
->  		clocks =3D <&bpmp TEGRA186_CLK_UARTB>;
-> -		clock-names =3D "serial";
->  		resets =3D <&bpmp TEGRA186_RESET_UARTB>;
-> -		reset-names =3D "serial";
->  		status =3D "disabled";
->  	};
+> diff --git a/arch/arm64/boot/dts/rockchip/rk3399-puma-haikou.dts b/arch/a=
+rm64/boot/dts/rockchip/rk3399-puma-haikou.dts
+> index f6f15946579eb..57466fbfd3f9a 100644
+> --- a/arch/arm64/boot/dts/rockchip/rk3399-puma-haikou.dts
+> +++ b/arch/arm64/boot/dts/rockchip/rk3399-puma-haikou.dts
+> @@ -284,14 +284,6 @@
+>  	status =3D "okay";
+>  };
 > =20
-> @@ -633,9 +631,7 @@
->  		reg-shift =3D <2>;
->  		interrupts =3D <GIC_SPI 115 IRQ_TYPE_LEVEL_HIGH>;
->  		clocks =3D <&bpmp TEGRA186_CLK_UARTD>;
-> -		clock-names =3D "serial";
->  		resets =3D <&bpmp TEGRA186_RESET_UARTD>;
-> -		reset-names =3D "serial";
->  		status =3D "disabled";
->  	};
-> =20
-> @@ -645,9 +641,7 @@
->  		reg-shift =3D <2>;
->  		interrupts =3D <GIC_SPI 116 IRQ_TYPE_LEVEL_HIGH>;
->  		clocks =3D <&bpmp TEGRA186_CLK_UARTE>;
-> -		clock-names =3D "serial";
->  		resets =3D <&bpmp TEGRA186_RESET_UARTE>;
-> -		reset-names =3D "serial";
->  		status =3D "disabled";
->  	};
-> =20
-> @@ -657,9 +651,7 @@
->  		reg-shift =3D <2>;
->  		interrupts =3D <GIC_SPI 117 IRQ_TYPE_LEVEL_HIGH>;
->  		clocks =3D <&bpmp TEGRA186_CLK_UARTF>;
-> -		clock-names =3D "serial";
->  		resets =3D <&bpmp TEGRA186_RESET_UARTF>;
-> -		reset-names =3D "serial";
->  		status =3D "disabled";
->  	};
-> =20
-> @@ -1236,9 +1228,7 @@
->  		reg-shift =3D <2>;
->  		interrupts =3D <GIC_SPI 114 IRQ_TYPE_LEVEL_HIGH>;
->  		clocks =3D <&bpmp TEGRA186_CLK_UARTC>;
-> -		clock-names =3D "serial";
->  		resets =3D <&bpmp TEGRA186_RESET_UARTC>;
-> -		reset-names =3D "serial";
->  		status =3D "disabled";
->  	};
-> =20
-> @@ -1248,9 +1238,7 @@
->  		reg-shift =3D <2>;
->  		interrupts =3D <GIC_SPI 118 IRQ_TYPE_LEVEL_HIGH>;
->  		clocks =3D <&bpmp TEGRA186_CLK_UARTG>;
-> -		clock-names =3D "serial";
->  		resets =3D <&bpmp TEGRA186_RESET_UARTG>;
-> -		reset-names =3D "serial";
->  		status =3D "disabled";
->  	};
-> =20
-> diff --git a/arch/arm64/boot/dts/nvidia/tegra194.dtsi b/arch/arm64/boot/d=
-ts/nvidia/tegra194.dtsi
-> index 33f92b77cd9d9..c369507747851 100644
-> --- a/arch/arm64/boot/dts/nvidia/tegra194.dtsi
-> +++ b/arch/arm64/boot/dts/nvidia/tegra194.dtsi
-> @@ -766,9 +766,7 @@
->  			reg-shift =3D <2>;
->  			interrupts =3D <GIC_SPI 115 IRQ_TYPE_LEVEL_HIGH>;
->  			clocks =3D <&bpmp TEGRA194_CLK_UARTD>;
-> -			clock-names =3D "serial";
->  			resets =3D <&bpmp TEGRA194_RESET_UARTD>;
-> -			reset-names =3D "serial";
->  			status =3D "disabled";
->  		};
-> =20
-> @@ -778,9 +776,7 @@
->  			reg-shift =3D <2>;
->  			interrupts =3D <GIC_SPI 116 IRQ_TYPE_LEVEL_HIGH>;
->  			clocks =3D <&bpmp TEGRA194_CLK_UARTE>;
-> -			clock-names =3D "serial";
->  			resets =3D <&bpmp TEGRA194_RESET_UARTE>;
-> -			reset-names =3D "serial";
->  			status =3D "disabled";
->  		};
-> =20
-> @@ -790,9 +786,7 @@
->  			reg-shift =3D <2>;
->  			interrupts =3D <GIC_SPI 117 IRQ_TYPE_LEVEL_HIGH>;
->  			clocks =3D <&bpmp TEGRA194_CLK_UARTF>;
-> -			clock-names =3D "serial";
->  			resets =3D <&bpmp TEGRA194_RESET_UARTF>;
-> -			reset-names =3D "serial";
->  			status =3D "disabled";
->  		};
-> =20
-> @@ -817,9 +811,7 @@
->  			reg-shift =3D <2>;
->  			interrupts =3D <GIC_SPI 207 IRQ_TYPE_LEVEL_HIGH>;
->  			clocks =3D <&bpmp TEGRA194_CLK_UARTH>;
-> -			clock-names =3D "serial";
->  			resets =3D <&bpmp TEGRA194_RESET_UARTH>;
-> -			reset-names =3D "serial";
->  			status =3D "disabled";
->  		};
-> =20
-> @@ -1616,9 +1608,7 @@
->  			reg-shift =3D <2>;
->  			interrupts =3D <GIC_SPI 114 IRQ_TYPE_LEVEL_HIGH>;
->  			clocks =3D <&bpmp TEGRA194_CLK_UARTC>;
-> -			clock-names =3D "serial";
->  			resets =3D <&bpmp TEGRA194_RESET_UARTC>;
-> -			reset-names =3D "serial";
->  			status =3D "disabled";
->  		};
-> =20
-> @@ -1628,9 +1618,7 @@
->  			reg-shift =3D <2>;
->  			interrupts =3D <GIC_SPI 118 IRQ_TYPE_LEVEL_HIGH>;
->  			clocks =3D <&bpmp TEGRA194_CLK_UARTG>;
-> -			clock-names =3D "serial";
->  			resets =3D <&bpmp TEGRA194_RESET_UARTG>;
-> -			reset-names =3D "serial";
->  			status =3D "disabled";
->  		};
-> =20
+> -&usb_host0_ehci {
+> -	status =3D "okay";
+> -};
+> -
+> -&usb_host0_ohci {
+> -	status =3D "okay";
+> -};
+> -
+>  &vopb {
+>  	status =3D "okay";
+>  };
 
 --=20
 DENX Software Engineering GmbH,        Managing Director: Erika Unter
 HRB 165235 Munich, Office: Kirchenstr.5, D-82194 Groebenzell, Germany
 
---vrOaklxRidfSzQp0
+--PekQYsNvx2Kod8zr
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iF0EABECAB0WIQRPfPO7r0eAhk010v0w5/Bqldv68gUCaFVBNwAKCRAw5/Bqldv6
-8uhwAJ4gb4UmFR43ytydG5IBqc4S3baVPwCdE/blJ6y+5OjUPl1cO2GvDTjsfE8=
-=Kwg1
+iF0EABECAB0WIQRPfPO7r0eAhk010v0w5/Bqldv68gUCaFVBawAKCRAw5/Bqldv6
+8u7yAJ9+ZzsBn5ND1wQ/caziXF4D1iQ3QgCdGEIrDQevsJ3R2XQqmq6m1X3K30Q=
+=u/hT
 -----END PGP SIGNATURE-----
 
---vrOaklxRidfSzQp0--
+--PekQYsNvx2Kod8zr--
 
