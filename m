@@ -1,136 +1,160 @@
-Return-Path: <stable+bounces-155115-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-155116-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8D76AAE1988
-	for <lists+stable@lfdr.de>; Fri, 20 Jun 2025 13:04:48 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 77F92AE198E
+	for <lists+stable@lfdr.de>; Fri, 20 Jun 2025 13:05:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 224CD163F97
-	for <lists+stable@lfdr.de>; Fri, 20 Jun 2025 11:04:49 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C57B27B01DD
+	for <lists+stable@lfdr.de>; Fri, 20 Jun 2025 11:04:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EDEDF285411;
-	Fri, 20 Jun 2025 11:04:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C03BC283FEE;
+	Fri, 20 Jun 2025 11:05:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="j5TQWyll"
+	dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b="f+7BcWSW"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
+Received: from mx.denx.de (mx.denx.de [89.58.32.78])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92BE423AB9C;
-	Fri, 20 Jun 2025 11:04:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D29B123AB9C
+	for <stable@vger.kernel.org>; Fri, 20 Jun 2025 11:05:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=89.58.32.78
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750417481; cv=none; b=Z3ufF75efTm3tSiRYAFLATGsUfnkMK3qspDStqRw2e7YTnYyqQiehp+hBKmkaxdqj5Tzm6wa71zzeyIpQyF/+f8T19BLp9xXJS7WkULTv7/DAxiYpxB+1mkQXBwWUAG3Xr+TAdxxR2UG20048RXFf59L6blL9I4tyYsicJDlbRk=
+	t=1750417548; cv=none; b=BLaBPo+rxxoLjaA45mGsG3rslBwINqKE4VwZpryvKsxM9cEIEkfaBuBwkw/arJf9it/9VOUvHEnIcMT/COG1Y+bSCcGrAWWezpOcjrHvvBMZ6eXzQ3iR9EicD333KZPm0j8u+gCszwWeW54HtL8p81p+djrI1rFL1kCvXK6MEbc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750417481; c=relaxed/simple;
-	bh=2Kr0s01O6FHXBu+oXsyg7E2mw35WNhmqc1EtpaC2LQ8=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=HyLy6hQRmhnJn5zHSkqSOqIupMHmWQMd2ZoglumDFJ/o01A/Oz7hN1kKvF0GSaVfTZMeTjegue1ICOqoE5WoFWbOGnETryFaWxvCxrWPgmHHPkflVKW4Y2Doa5qbi91VZnELbQKS3Op/F3Mfz4ULR6R4hxNA8N2XsJpN6eCO78E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=j5TQWyll; arc=none smtp.client-ip=192.198.163.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1750417480; x=1781953480;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=2Kr0s01O6FHXBu+oXsyg7E2mw35WNhmqc1EtpaC2LQ8=;
-  b=j5TQWyllNtf2zpAPJ52k+Wi7B5IqR4Xi4oIkYJlsF9Eg1gkrgbN2VX1r
-   +KDqyHo96wI+agKBk0BqB16zE+6EdDm9Re1AjGTF/NoI5KH0Bb8hfaSnc
-   ApLzt1z08I1w5T4bJpmoLEzRpnifV6u4MkVqJHa/AWWIw1DP4NqCtiy8s
-   iAtKJMorF8LY/Dbr4g+P9stj7KPE6J5egs+4+L+kEnf9jRrqdfrN00SiF
-   ++6iW9tJ91qwdivJYS9MSHmdePzdgNsLIehd6eW4TE+5CFAUhptFAgiYW
-   9ocDXEonDJir/as89DtUzp2vfRjxIysETB7TZLywGiH5Vgh03xgbJfe2l
-   Q==;
-X-CSE-ConnectionGUID: 9zdaxZ1iRiKLkwDbyLWe9w==
-X-CSE-MsgGUID: ByyY1OE9RxyqhsrZt+HWTA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11469"; a="52759863"
-X-IronPort-AV: E=Sophos;i="6.16,251,1744095600"; 
-   d="scan'208";a="52759863"
-Received: from orviesa010.jf.intel.com ([10.64.159.150])
-  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Jun 2025 04:04:39 -0700
-X-CSE-ConnectionGUID: +OzpplOmQPO09MAPskEdGw==
-X-CSE-MsgGUID: ivzRA5eyTdqyiXW1hk7Ktg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,251,1744095600"; 
-   d="scan'208";a="150307555"
-Received: from kanliang-dev.jf.intel.com ([10.165.154.102])
-  by orviesa010.jf.intel.com with ESMTP; 20 Jun 2025 04:04:38 -0700
-From: kan.liang@linux.intel.com
-To: peterz@infradead.org,
-	mingo@redhat.com,
-	acme@kernel.org,
-	namhyung@kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-perf-users@vger.kernel.org
-Cc: Kan Liang <kan.liang@linux.intel.com>,
-	Vince Weaver <vincent.weaver@maine.edu>,
-	stable@vger.kernel.org
-Subject: [PATCH] perf/x86/intel: Fix unchecked PEBS_ENABLE MSR access error
-Date: Fri, 20 Jun 2025 04:04:06 -0700
-Message-Id: <20250620110406.3782402-1-kan.liang@linux.intel.com>
-X-Mailer: git-send-email 2.38.1
+	s=arc-20240116; t=1750417548; c=relaxed/simple;
+	bh=Mm+aGftGtVbYlbnzaCbpvAV8wIXRRq63TDkKr+pwLlc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=KxXox91TWGCFTUIh5+yuiE8CIEdD3AuZX/ejuheCiq7u9G+P98LrGyrtrempI4tQsXk8/Ayouca5N+UCGL0/oUxrqFzz8icAMFnxOr4ffRqbZZSM0OCL6wOiAvOfYNjpaS1GY0XJBZ4Z0YpHE1vfgso59s4IhgfBwJbTTjmFXbU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de; spf=pass smtp.mailfrom=denx.de; dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b=f+7BcWSW; arc=none smtp.client-ip=89.58.32.78
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=denx.de
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 6475B10240F5B;
+	Fri, 20 Jun 2025 13:05:41 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de; s=mx-20241105;
+	t=1750417544; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 in-reply-to:references; bh=9zXnXoyx5LOCQ6Nn5eqmzicqfUZY3JHRxfQtassglRk=;
+	b=f+7BcWSWgL/a+lFPu45sxkLM65hSwQfOY32RcnMUX08IvIofgDLC35CfoAqbe4Mrj12IAV
+	5lWXecIAo2RayV55b7kL1LVAJChx253/N3sPoRwPJCmalGAoxXCG2VU5UTsRktUypC4E8V
+	NCdAzAGdgsBVeH/p5czCrH3MmsgcHlcOIPfqjriQvgHVn/Uflz0vfVTuyW2lZMyfpb3f1o
+	Rh3LnJu0J16LZjwFsHgbLEUTWvmKHtd7phoPkgAomEObFjy2VucPjRSTeODKvt3zZA2NIq
+	g0YLdpbTGuxP+frNktIXWQj9Ielr2BqYeKLVkiAsi1EUs/S9afo2OFqAb+ksJA==
+Date: Fri, 20 Jun 2025 13:05:39 +0200
+From: Pavel Machek <pavel@denx.de>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+	Cosmin Ratiu <cratiu@nvidia.com>,
+	Leon Romanovsky <leonro@nvidia.com>,
+	Nikolay Aleksandrov <razor@blackwall.org>,
+	Steffen Klassert <steffen.klassert@secunet.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: Re: [PATCH 6.12 126/512] xfrm: Use xdo.dev instead of xdo.real_dev
+Message-ID: <aFVAg+aQz/zCWCkS@duo.ucw.cz>
+References: <20250617152419.512865572@linuxfoundation.org>
+ <20250617152424.696299116@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="cV9iaqfk9T1nAZn5"
+Content-Disposition: inline
+In-Reply-To: <20250617152424.696299116@linuxfoundation.org>
+X-Last-TLS-Session-Version: TLSv1.3
 
-From: Kan Liang <kan.liang@linux.intel.com>
 
-perf_fuzzzer reported an unchecked MSR access error.
+--cV9iaqfk9T1nAZn5
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-[12646.001692] unchecked MSR access error: WRMSR to 0x3f1
-(tried to write 0x0001000000000001) at
-rIP: 0xffffffffa98932af (native_write_msr+0xf/0x20)
-[12646.001698] Call Trace:
-[12646.001700]  <TASK>
-[12646.001700]  intel_pmu_pebs_enable_all+0x2c/0x40
-[12646.001703]  intel_pmu_enable_all+0xe/0x20
-[12646.001705]  ctx_resched+0x227/0x280
-[12646.001708]  event_function+0x8f/0xd0
 
-Thank Vince very much for providing a small reproducible test case.
-https://lore.kernel.org/lkml/d12d4300-9926-5e58-6515-a53cb5c7bee0@maine.edu/
+> From: Cosmin Ratiu <cratiu@nvidia.com>
+>=20
+> [ Upstream commit 25ac138f58e7d5c8bffa31e8891418d2819180c4 ]
+>=20
+> The policy offload struct was reused from the state offload and
+> real_dev was copied from dev, but it was never set to anything else.
+> Simplify the code by always using xdo.dev for policies.
 
-The error is because perf mistakenly creates a precise Topdown perf
-metrics event, INTEL_TD_METRIC_RETIRING, which uses the idx 48
-internally.
-The Topdown perf metrics events never be a precise event (PEBS). Any
-illegal creation should be filtered out by the intel_pmu_hw_config.
-However, the is_available_metric_event() failed to detect the Topdown
-perf metrics event. The filter is not applied.
+Cleanup, not a bugfix.
 
-To detect an event, the pure event encoding should be used, rather than
-the whole event->attr.config. Only check the pure event encoding in
-is_available_metric_event.
+BR,
+								Pavel
+							=09
+> +++ b/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec.c
+> @@ -1135,7 +1135,7 @@ mlx5e_ipsec_build_accel_pol_attrs(struct mlx5e_ipse=
+c_pol_entry *pol_entry,
+>  static int mlx5e_xfrm_add_policy(struct xfrm_policy *x,
+>  				 struct netlink_ext_ack *extack)
+>  {
+> -	struct net_device *netdev =3D x->xdo.real_dev;
+> +	struct net_device *netdev =3D x->xdo.dev;
+>  	struct mlx5e_ipsec_pol_entry *pol_entry;
+>  	struct mlx5e_priv *priv;
+>  	int err;
+> diff --git a/net/xfrm/xfrm_device.c b/net/xfrm/xfrm_device.c
+> index b33c4591e09a4..32ad8f3fc81e8 100644
+> --- a/net/xfrm/xfrm_device.c
+> +++ b/net/xfrm/xfrm_device.c
+> @@ -373,7 +373,6 @@ int xfrm_dev_policy_add(struct net *net, struct xfrm_=
+policy *xp,
+> =20
+>  	xdo->dev =3D dev;
+>  	netdev_tracker_alloc(dev, &xdo->dev_tracker, GFP_ATOMIC);
+> -	xdo->real_dev =3D dev;
+>  	xdo->type =3D XFRM_DEV_OFFLOAD_PACKET;
+>  	switch (dir) {
+>  	case XFRM_POLICY_IN:
+> @@ -395,7 +394,6 @@ int xfrm_dev_policy_add(struct net *net, struct xfrm_=
+policy *xp,
+>  	err =3D dev->xfrmdev_ops->xdo_dev_policy_add(xp, extack);
+>  	if (err) {
+>  		xdo->dev =3D NULL;
+> -		xdo->real_dev =3D NULL;
+>  		xdo->type =3D XFRM_DEV_OFFLOAD_UNSPECIFIED;
+>  		xdo->dir =3D 0;
+>  		netdev_put(dev, &xdo->dev_tracker);
+> diff --git a/net/xfrm/xfrm_state.c b/net/xfrm/xfrm_state.c
+> index abd725386cb60..7a298058fc16c 100644
+> --- a/net/xfrm/xfrm_state.c
+> +++ b/net/xfrm/xfrm_state.c
+> @@ -1487,7 +1487,6 @@ xfrm_state_find(const xfrm_address_t *daddr, const =
+xfrm_address_t *saddr,
+>  			xso->type =3D XFRM_DEV_OFFLOAD_PACKET;
+>  			xso->dir =3D xdo->dir;
+>  			xso->dev =3D xdo->dev;
+> -			xso->real_dev =3D xdo->real_dev;
+>  			xso->flags =3D XFRM_DEV_OFFLOAD_FLAG_ACQ;
+>  			netdev_hold(xso->dev, &xso->dev_tracker, GFP_ATOMIC);
+>  			error =3D xso->dev->xfrmdev_ops->xdo_dev_state_add(x, NULL);
+> @@ -1495,7 +1494,6 @@ xfrm_state_find(const xfrm_address_t *daddr, const =
+xfrm_address_t *saddr,
+>  				xso->dir =3D 0;
+>  				netdev_put(xso->dev, &xso->dev_tracker);
+>  				xso->dev =3D NULL;
+> -				xso->real_dev =3D NULL;
+>  				xso->type =3D XFRM_DEV_OFFLOAD_UNSPECIFIED;
+>  				x->km.state =3D XFRM_STATE_DEAD;
+>  				to_put =3D x;
 
-Fixes: 1ab5f235c176 ("perf/x86/intel: Filter unsupported Topdown metrics event")
-Reported-by: Vince Weaver <vincent.weaver@maine.edu>
-Closes: https://lore.kernel.org/lkml/14d3167e-4dad-f68e-822f-21cd86eab873@maine.edu/
-Signed-off-by: Kan Liang <kan.liang@linux.intel.com>
-Cc: stable@vger.kernel.org
----
- arch/x86/events/intel/core.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+--=20
+DENX Software Engineering GmbH,        Managing Director: Erika Unter
+HRB 165235 Munich, Office: Kirchenstr.5, D-82194 Groebenzell, Germany
 
-diff --git a/arch/x86/events/intel/core.c b/arch/x86/events/intel/core.c
-index 8f2e36ad89db..bf5ca4cb232b 100644
---- a/arch/x86/events/intel/core.c
-+++ b/arch/x86/events/intel/core.c
-@@ -4082,7 +4082,7 @@ static int core_pmu_hw_config(struct perf_event *event)
- static bool is_available_metric_event(struct perf_event *event)
- {
- 	return is_metric_event(event) &&
--		event->attr.config <= INTEL_TD_METRIC_AVAILABLE_MAX;
-+	       (event->attr.config & INTEL_ARCH_EVENT_MASK) <= INTEL_TD_METRIC_AVAILABLE_MAX;
- }
- 
- static inline bool is_mem_loads_event(struct perf_event *event)
--- 
-2.38.1
+--cV9iaqfk9T1nAZn5
+Content-Type: application/pgp-signature; name="signature.asc"
 
+-----BEGIN PGP SIGNATURE-----
+
+iF0EABECAB0WIQRPfPO7r0eAhk010v0w5/Bqldv68gUCaFVAgwAKCRAw5/Bqldv6
+8jsuAJ407jxTBMPLIASjsaxL3EQBRXyrjwCeJIf2K2EkEydmG+5dqDn4Lh4HIWM=
+=Jktg
+-----END PGP SIGNATURE-----
+
+--cV9iaqfk9T1nAZn5--
 
