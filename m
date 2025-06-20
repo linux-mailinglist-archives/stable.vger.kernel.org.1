@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-155061-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-155062-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 153B4AE176B
-	for <lists+stable@lfdr.de>; Fri, 20 Jun 2025 11:23:03 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 700F5AE176C
+	for <lists+stable@lfdr.de>; Fri, 20 Jun 2025 11:23:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A03511BC0F8D
-	for <lists+stable@lfdr.de>; Fri, 20 Jun 2025 09:23:18 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D28D71BC0F31
+	for <lists+stable@lfdr.de>; Fri, 20 Jun 2025 09:23:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5873B280CD9;
-	Fri, 20 Jun 2025 09:23:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F34D28135B;
+	Fri, 20 Jun 2025 09:23:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pA2emvSa"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TOCq04qS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1890728134F
-	for <stable@vger.kernel.org>; Fri, 20 Jun 2025 09:23:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FA0A281351
+	for <stable@vger.kernel.org>; Fri, 20 Jun 2025 09:23:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750411381; cv=none; b=dpZ94n9QGx8dm/rPPUvqqwiY/pMGRwc0I79d4dX3zzch++wx48tqcheP4wt/anUXgL2117XBnICefaHvSUoCJq4d1Uqy0M9vmEln75oDam+/A2LB/UMku4TMkt8N6iGnK8IMNlN/AmubpGWI5L9bEQQW7pnWA4RiqHF9bowxdb8=
+	t=1750411386; cv=none; b=rWurFKNotgELR6Ne1Rbpd3pUV9hlzdKMiD5sbrt+SSxFb3lyaH/CBHDU821nn67zqkJ8dY4HIY/ZdhpTa5U3YxOuVCr89zFdemTItJMcV1JlVwXll9WUI1nXw1L4WN8EDZ3DpQilf1/pXa0OWEvC8BLI3ljm1RVWiTzEVbe9UMI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750411381; c=relaxed/simple;
-	bh=IcKGz9FxWZnikIXZDWo75Faqb+WlSMxWOQkrIVIVuH0=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=NsET6nPMgJdI/pt1ZRPRoz1X3cBRORNAMgqpszdStdtTu2FTfSnkSJcwA3r7bHK5OXSYPbmzpoxnCiCUi2lnQh97ithIpF91fIOjZvCi5RAo1OZdl3gCJPqBL4+EXbTu5yZ2ZbdZOk/MUZSqxweEH4D7P3bnUEE9V0v7Kn15C7E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pA2emvSa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D6EBC4CEEF;
-	Fri, 20 Jun 2025 09:23:00 +0000 (UTC)
+	s=arc-20240116; t=1750411386; c=relaxed/simple;
+	bh=9IxK4VJjG7JD8l4Zi7eP/+GIwd843IpjDi1AJVKPRE0=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=JSK/7Xbf+YQT1VurEOiKe9dlqQPO5R44lZgbWitIVAZM4LWZhaeoinnEJe5IDr2LpzNTiNw4KDYrqV3hA9iTH+3PNFoWoNf3nB6GZcidT8MQITgRqVSzrfsfbfvLAuQ34p2/m2xSjfCwimUD4jgzqO0o6QCJkp2SfbF0QyrRlN0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TOCq04qS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91FCBC4CEED;
+	Fri, 20 Jun 2025 09:23:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750411381;
-	bh=IcKGz9FxWZnikIXZDWo75Faqb+WlSMxWOQkrIVIVuH0=;
+	s=korg; t=1750411386;
+	bh=9IxK4VJjG7JD8l4Zi7eP/+GIwd843IpjDi1AJVKPRE0=;
 	h=Subject:To:Cc:From:Date:From;
-	b=pA2emvSauN96xSYyXwko4fPDbL+KyjN7WfbW6PpOaDYrRVFjWi+ClZU1730b0ZOO5
-	 oO7HEtn5mzfHFIwmN8uFm97UlRPhpst6vqnjHkodPJdKuZMEJHLbQdurveMllpxScg
-	 OUwOl0JzByS3UpEsw7aFJ6fYykncsIdPPPK8BDOg=
-Subject: FAILED: patch "[PATCH] mtd: rawnand: qcom: Fix last codeword read in" failed to apply to 6.6-stable tree
-To: quic_mdalam@quicinc.com,manivannan.sadhasivam@linaro.org,miquel.raynal@bootlin.com,quic_laksd@quicinc.com
+	b=TOCq04qStMksgZGM2BGL4htFGVaKfPE7jR7EKmkx6olx9jxAIUQs1/bHfKXgFit3P
+	 uM3Cyenks/HXK4dTPE17/xI1Ujnu3BABtj4w8rGXKQrRvPqqkfDk+pUKrm5q+nIX/u
+	 Bk6dEFFQJpW/riCRZjjmPL+X5OBRLjfuwe3AKWvI=
+Subject: FAILED: patch "[PATCH] mm/khugepaged: fix race with folio split/free using temporary" failed to apply to 6.12-stable tree
+To: shivankg@amd.com,akpm@linux-foundation.org,baolin.wang@linux.alibaba.com,bharata@amd.com,david@redhat.com,dev.jain@arm.com,fengwei.yin@intel.com,liam.howlett@oracle.com,lorenzo.stoakes@oracle.com,npache@redhat.com,ryan.roberts@arm.com,stable@vger.kernel.org,ziy@nvidia.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Fri, 20 Jun 2025 11:22:00 +0200
-Message-ID: <2025062000-manhunt-treachery-4c42@gregkh>
+Date: Fri, 20 Jun 2025 11:23:00 +0200
+Message-ID: <2025062000-pond-bobcat-914a@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.6-stable tree.
+The patch below does not apply to the 6.12-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.12.y
 git checkout FETCH_HEAD
-git cherry-pick -x 47bddabbf69da50999ec68be92b58356c687e1d6
+git cherry-pick -x 595cf683519ab5a277d258a2251ee8cc7b838d6d
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025062000-manhunt-treachery-4c42@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025062000-pond-bobcat-914a@gregkh' --subject-prefix 'PATCH 6.12.y' HEAD^..
 
 Possible dependencies:
 
@@ -77,67 +77,102 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 47bddabbf69da50999ec68be92b58356c687e1d6 Mon Sep 17 00:00:00 2001
-From: Md Sadre Alam <quic_mdalam@quicinc.com>
-Date: Thu, 10 Apr 2025 15:30:18 +0530
-Subject: [PATCH] mtd: rawnand: qcom: Fix last codeword read in
- qcom_param_page_type_exec()
+From 595cf683519ab5a277d258a2251ee8cc7b838d6d Mon Sep 17 00:00:00 2001
+From: Shivank Garg <shivankg@amd.com>
+Date: Mon, 26 May 2025 18:28:18 +0000
+Subject: [PATCH] mm/khugepaged: fix race with folio split/free using temporary
+ reference
 
-For QPIC V2 onwards there is a separate register to read
-last code word "QPIC_NAND_READ_LOCATION_LAST_CW_n".
+hpage_collapse_scan_file() calls is_refcount_suitable(), which in turn
+calls folio_mapcount().  folio_mapcount() checks folio_test_large() before
+proceeding to folio_large_mapcount(), but there is a race window where the
+folio may get split/freed between these checks, triggering:
 
-qcom_param_page_type_exec() is used to read only one code word
-If it configures the number of code words to 1 in QPIC_NAND_DEV0_CFG0
-register then QPIC controller thinks its reading the last code word,
-since we are having separate register to read the last code word,
-we have to configure "QPIC_NAND_READ_LOCATION_LAST_CW_n" register
-to fetch data from QPIC buffer to system memory.
+  VM_WARN_ON_FOLIO(!folio_test_large(folio), folio)
 
-Without this change page read was failing with timeout error
+Take a temporary reference to the folio in hpage_collapse_scan_file().
+This stabilizes the folio during refcount check and prevents incorrect
+large folio detection due to concurrent split/free.  Use helper
+folio_expected_ref_count() + 1 to compare with folio_ref_count() instead
+of using is_refcount_suitable().
 
-/ # hexdump -C /dev/mtd1
-[  129.206113] qcom-nandc 1cc8000.nand-controller: failure to read page/oob
-hexdump: /dev/mtd1: Connection timed out
+Link: https://lkml.kernel.org/r/20250526182818.37978-1-shivankg@amd.com
+Fixes: 05c5323b2a34 ("mm: track mapcount of large folios in single value")
+Signed-off-by: Shivank Garg <shivankg@amd.com>
+Reported-by: syzbot+2b99589e33edbe9475ca@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/all/6828470d.a70a0220.38f255.000c.GAE@google.com
+Suggested-by: David Hildenbrand <david@redhat.com>
+Acked-by: David Hildenbrand <david@redhat.com>
+Acked-by: Dev Jain <dev.jain@arm.com>
+Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+Cc: Bharata B Rao <bharata@amd.com>
+Cc: Fengwei Yin <fengwei.yin@intel.com>
+Cc: Liam Howlett <liam.howlett@oracle.com>
+Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: Mariano Pache <npache@redhat.com>
+Cc: Ryan Roberts <ryan.roberts@arm.com>
+Cc: Zi Yan <ziy@nvidia.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 
-This issue only seen on SDX targets since SDX target used QPICv2. But
-same working on IPQ targets since IPQ used QPICv1.
-
-Cc: stable@vger.kernel.org
-Fixes: 89550beb098e ("mtd: rawnand: qcom: Implement exec_op()")
-Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Tested-by: Lakshmi Sowjanya D <quic_laksd@quicinc.com>
-Signed-off-by: Md Sadre Alam <quic_mdalam@quicinc.com>
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
-
-diff --git a/drivers/mtd/nand/raw/qcom_nandc.c b/drivers/mtd/nand/raw/qcom_nandc.c
-index ef2dd158ca34..a73bb154353f 100644
---- a/drivers/mtd/nand/raw/qcom_nandc.c
-+++ b/drivers/mtd/nand/raw/qcom_nandc.c
-@@ -1863,7 +1863,12 @@ static int qcom_param_page_type_exec(struct nand_chip *chip,  const struct nand_
- 	const struct nand_op_instr *instr = NULL;
- 	unsigned int op_id = 0;
- 	unsigned int len = 0;
--	int ret;
-+	int ret, reg_base;
+diff --git a/mm/khugepaged.c b/mm/khugepaged.c
+index cdf5a581368b..7731a162a1a7 100644
+--- a/mm/khugepaged.c
++++ b/mm/khugepaged.c
+@@ -2293,6 +2293,17 @@ static int hpage_collapse_scan_file(struct mm_struct *mm, unsigned long addr,
+ 			continue;
+ 		}
+ 
++		if (!folio_try_get(folio)) {
++			xas_reset(&xas);
++			continue;
++		}
 +
-+	reg_base = NAND_READ_LOCATION_0;
++		if (unlikely(folio != xas_reload(&xas))) {
++			folio_put(folio);
++			xas_reset(&xas);
++			continue;
++		}
 +
-+	if (nandc->props->qpic_version2)
-+		reg_base = NAND_READ_LOCATION_LAST_CW_0;
+ 		if (folio_order(folio) == HPAGE_PMD_ORDER &&
+ 		    folio->index == start) {
+ 			/* Maybe PMD-mapped */
+@@ -2303,23 +2314,27 @@ static int hpage_collapse_scan_file(struct mm_struct *mm, unsigned long addr,
+ 			 * it's safe to skip LRU and refcount checks before
+ 			 * returning.
+ 			 */
++			folio_put(folio);
+ 			break;
+ 		}
  
- 	ret = qcom_parse_instructions(chip, subop, &q_op);
- 	if (ret)
-@@ -1915,7 +1920,10 @@ static int qcom_param_page_type_exec(struct nand_chip *chip,  const struct nand_
- 	op_id = q_op.data_instr_idx;
- 	len = nand_subop_get_data_len(subop, op_id);
+ 		node = folio_nid(folio);
+ 		if (hpage_collapse_scan_abort(node, cc)) {
+ 			result = SCAN_SCAN_ABORT;
++			folio_put(folio);
+ 			break;
+ 		}
+ 		cc->node_load[node]++;
  
--	nandc_set_read_loc(chip, 0, 0, 0, len, 1);
-+	if (nandc->props->qpic_version2)
-+		nandc_set_read_loc_last(chip, reg_base, 0, len, 1);
-+	else
-+		nandc_set_read_loc_first(chip, reg_base, 0, len, 1);
+ 		if (!folio_test_lru(folio)) {
+ 			result = SCAN_PAGE_LRU;
++			folio_put(folio);
+ 			break;
+ 		}
  
- 	if (!nandc->props->qpic_version2) {
- 		qcom_write_reg_dma(nandc, &nandc->regs->vld, NAND_DEV_CMD_VLD, 1, 0);
+-		if (!is_refcount_suitable(folio)) {
++		if (folio_expected_ref_count(folio) + 1 != folio_ref_count(folio)) {
+ 			result = SCAN_PAGE_COUNT;
++			folio_put(folio);
+ 			break;
+ 		}
+ 
+@@ -2331,6 +2346,7 @@ static int hpage_collapse_scan_file(struct mm_struct *mm, unsigned long addr,
+ 		 */
+ 
+ 		present += folio_nr_pages(folio);
++		folio_put(folio);
+ 
+ 		if (need_resched()) {
+ 			xas_pause(&xas);
 
 
