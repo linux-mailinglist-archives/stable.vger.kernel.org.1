@@ -1,101 +1,80 @@
-Return-Path: <stable+bounces-155159-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-155160-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 805DEAE1ED1
-	for <lists+stable@lfdr.de>; Fri, 20 Jun 2025 17:38:33 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A7C41AE1F1A
+	for <lists+stable@lfdr.de>; Fri, 20 Jun 2025 17:45:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 047EF5A4AF8
-	for <lists+stable@lfdr.de>; Fri, 20 Jun 2025 15:32:43 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 69960188B235
+	for <lists+stable@lfdr.de>; Fri, 20 Jun 2025 15:42:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 149AD2E54B6;
-	Fri, 20 Jun 2025 15:31:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 577FD2D8791;
+	Fri, 20 Jun 2025 15:41:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=icloud.com header.i=@icloud.com header.b="WtSw4Kn3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vaHvBMDE"
 X-Original-To: stable@vger.kernel.org
-Received: from outbound.pv.icloud.com (p-west1-cluster3-host7-snip4-7.eps.apple.com [57.103.66.50])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96AF22D3A84
-	for <stable@vger.kernel.org>; Fri, 20 Jun 2025 15:31:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=57.103.66.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 056D82D5427
+	for <stable@vger.kernel.org>; Fri, 20 Jun 2025 15:41:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750433498; cv=none; b=WlXPn9tUaoOMKMzYhSPmXy4dCf+kTe4A1iUWJRiP3nd8e8cvXQkJjXFixQx5M/6pRnru9HeNy5KL3LSHixs976b8gFE/fVQrghygWg1vInKAgdxBsz6739AyyDBdnk15bADk9ignhIIUW3ueDZgtPtJlWcqQU4hVZpGv137PJX4=
+	t=1750434109; cv=none; b=D6RBaOW6wyjHEwTf/HB/Er3PIBRz73v8p0WOAj+krCCejWD3SFl+NrkuCsxLnIGB6rQ8aZ0XYitGukHErrg1w6WC40pjCvWOJhWIBm9If+Hc2W7XWS7y5LfsE6yw6PQh7FohiyrW9zsobrJVP32En7y/ISSyKXejYdq+6WF+hJg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750433498; c=relaxed/simple;
-	bh=+s+BrX06amdtEHvaG2tDNQez8uevGHMEwIFbYuc66eU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=YBIahFQBShVAFGp24VHvHLfOc8nitr+jZ99CZcCY9a5If4gHQnlD+ZxqyTEXEn4zpupJYs9LHc+GHnDVsp/Wc6Vkwl2mPa/x6wNPFqVigCBPx3VBbWgf5inTdMQ2w2fvzJI1wkjcDIaiDLbQqYxpUBKxPHvq989hNWbW6XidheY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=icloud.com; spf=pass smtp.mailfrom=icloud.com; dkim=pass (2048-bit key) header.d=icloud.com header.i=@icloud.com header.b=WtSw4Kn3; arc=none smtp.client-ip=57.103.66.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=icloud.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=icloud.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=icloud.com;
-	s=1a1hai; bh=+s+BrX06amdtEHvaG2tDNQez8uevGHMEwIFbYuc66eU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type:x-icloud-hme;
-	b=WtSw4Kn3MCcJZnT/iYgKfk4xReQ/7feus5ALCaVOfc2MmoaQgSzbsLPtkfPFnAhgM
-	 Easel1GyMnBaSulpzC+Zpg7LSChoeK1mg0OxCzU7CaeEmILW3VU655Gy7O1+lp+dbL
-	 5PB03/OmVbvrteEMxBuHiiE5Up9C4z3ysdB+XwkoxMm2M4vo3mNqnkVW7ZuCuyfX7F
-	 EGdRU+2EdUuyeO0wZLiYy+LVZaQImaf8mXVH0unbSPHZmhr2i2WB9ZHkkJzBf4ByVr
-	 7ibRXvESlmN/+5TrPlBFnlBDqvUN4UF+4yPdgwZVNxs2PNprWcNm7r/q0H1Zz2uAXg
-	 eaWv0dDP+xpuw==
-Received: from outbound.pv.icloud.com (unknown [127.0.0.2])
-	by outbound.pv.icloud.com (Postfix) with ESMTPS id 1C5C818030BD;
-	Fri, 20 Jun 2025 15:31:32 +0000 (UTC)
-Received: from [192.168.1.26] (pv-asmtp-me-k8s.p00.prod.me.com [17.56.9.36])
-	by outbound.pv.icloud.com (Postfix) with ESMTPSA id 4674D1801BC2;
-	Fri, 20 Jun 2025 15:28:33 +0000 (UTC)
-Message-ID: <59d1ae11-c132-43cd-ba88-c16e86d862f5@icloud.com>
-Date: Fri, 20 Jun 2025 23:28:29 +0800
+	s=arc-20240116; t=1750434109; c=relaxed/simple;
+	bh=ZErKt9CrGjJ7o/P2DO49567cDCdPgDsw03ihINUsxXQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=jrwLZVb2Y8QLSrB96W4Jbuu7oUKXlipMUm26fAK0Mng5YAWxFT5xZ5anmq7CRPpshyn+Gd+K5k6otHcBYQx0n18lYHWDqglzrBa44dWHccDpT7L/MPYkEqJd7/JtFI0WLH74/+RNMwvZPTRCaSGMK1C7GtfChZbbuwAgMSa5R7o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vaHvBMDE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1CF19C4CEEF;
+	Fri, 20 Jun 2025 15:41:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1750434108;
+	bh=ZErKt9CrGjJ7o/P2DO49567cDCdPgDsw03ihINUsxXQ=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=vaHvBMDEk1vl8xjqC3cdg2Fl2hwo3a3ggK8ndZedMilFUcmtdObe34A6UW50th/iE
+	 sENQ/0QT8K58shFH98/8uRTOrSBUGoYzLBE3Sd1GkNlgHc//RgJXrA2Rm/UgCXZ6Vs
+	 5RVfEpM6X2nx4FxdRx/u7DCkslOJqJUWfm08b9as=
+Date: Fri, 20 Jun 2025 17:41:45 +0200
+From: "gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>
+To: Sebastian Priebe <sebastian.priebe@konplan.com>
+Cc: "stable@vger.kernel.org" <stable@vger.kernel.org>
+Subject: Re: BLOCK_LEGACY_AUTOLOAD not default y in Linux 5.15.179+
+Message-ID: <2025062007-fall-brim-a7ba@gregkh>
+References: <ZR0P278MB097497EF6CFD85E72819447E9F70A@ZR0P278MB0974.CHEP278.PROD.OUTLOOK.COM>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 6.12 471/512] fs/filesystems: Fix potential unsigned
- integer underflow in fs_name()
-To: Pavel Machek <pavel@denx.de>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev,
- Zijun Hu <quic_zijuhu@quicinc.com>, Christian Brauner <brauner@kernel.org>,
- Sasha Levin <sashal@kernel.org>
-References: <20250617152419.512865572@linuxfoundation.org>
- <20250617152438.664510685@linuxfoundation.org> <aFVCH8CeAEDY2oEj@duo.ucw.cz>
-Content-Language: en-US
-From: Zijun Hu <zijun_hu@icloud.com>
-In-Reply-To: <aFVCH8CeAEDY2oEj@duo.ucw.cz>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNjIwMDExMCBTYWx0ZWRfXzexrwsWQ4jLj
- YKYXTILNV+ipNqC0CeWtsTmfychRfhG0EHMHY0x5A8e8+9mGNd/8FDh/2Dy9vTnL10jO1urVmOg
- 14j1k2mxQcfoM67R51yGf5MifSsh/HDqQ5VGtV7MsQr06ioZKl+zoz0ZXqMwfzD7Sy82KNVsC7S
- bFqY8aAHzgW7XPPHUa/WFbmIgoYTIr2938BNqtSy2thEVAsl5ju1AZYegb9ZuHo5bncqo18SaZ+
- o3W5bRCKqPQ4uYD4mXi+nxnBpHQHr2lX9G91TttI874RnoNTI2SVBnm7k/NGMp1q8W0NEO5+w=
-X-Proofpoint-ORIG-GUID: zMcZiIdCRpLL6m9XmGnF43hvvYSI-BQx
-X-Proofpoint-GUID: zMcZiIdCRpLL6m9XmGnF43hvvYSI-BQx
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
- definitions=2025-06-20_06,2025-06-20_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0
- adultscore=0 spamscore=0 bulkscore=0 mlxscore=0 phishscore=0 malwarescore=0
- clxscore=1011 mlxlogscore=999 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.22.0-2506060001 definitions=main-2506200110
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ZR0P278MB097497EF6CFD85E72819447E9F70A@ZR0P278MB0974.CHEP278.PROD.OUTLOOK.COM>
 
-On 2025/6/20 19:12, Pavel Machek wrote:
-> How could it underflow? for (..., index) already means we break the
-> loop. I don't see underflow possibility.
+On Mon, Jun 16, 2025 at 07:28:25AM +0000, Sebastian Priebe wrote:
+> Hello,
+> 
+> we're facing a regression after updating to 5.15.179+.
+> I've found that fbdee71bb5d8d054e1bdb5af4c540f2cb86fe296 (block: deprecate autoloading based on dev_t) was merged that disabled autoloading of modules.
+> 
+> This broke mounting loopback devices on our side.
+> 
+> Why wasn't 451f0b6f4c44d7b649ae609157b114b71f6d7875 (block: default BLOCK_LEGACY_AUTOLOAD to y) merged, too?
+> 
+> This commit was merged for 6.1.y, 6.6.y and 6.12y, but not for 5.15.y.
+> 
+> Please consider merging this for 5.15.y soon.
 
-let us assume list @file_systems has 1000 entries, and think about what
-will happen for below scenario.
+I'll queue this up now, but note, unless you are starting with a new
+fresh .config file, the default value change will probably not be
+noticed by 'make oldconfig' so you would probably have still hit this
+issue.
 
-for invocation fs_name(0, ...) but the first try_module_get() fails.
+thanks,
 
-
-@index underflow will cause extra and unnecessary 999 cycles.
-
-
-
+greg k-h
 
