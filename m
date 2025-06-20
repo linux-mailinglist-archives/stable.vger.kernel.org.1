@@ -1,85 +1,85 @@
-Return-Path: <stable+bounces-155183-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-155184-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 26D18AE2409
-	for <lists+stable@lfdr.de>; Fri, 20 Jun 2025 23:31:39 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 16C58AE240B
+	for <lists+stable@lfdr.de>; Fri, 20 Jun 2025 23:33:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B01DE16E9B1
-	for <lists+stable@lfdr.de>; Fri, 20 Jun 2025 21:31:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8A9F25A6480
+	for <lists+stable@lfdr.de>; Fri, 20 Jun 2025 21:33:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D23B9230BDB;
-	Fri, 20 Jun 2025 21:31:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B637225390;
+	Fri, 20 Jun 2025 21:33:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="olY+gsrK"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="emn+j6lx"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
+Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8F95223DDE
-	for <stable@vger.kernel.org>; Fri, 20 Jun 2025 21:31:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52F9D30E859
+	for <stable@vger.kernel.org>; Fri, 20 Jun 2025 21:33:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750455094; cv=none; b=ZZx9XN14ZiFEt9t4ESUInNpIlchxjOdf5FUEzLPcG7AZntPRAjYRXho0D/g3owJ9RvLlwi/aLalqpUC5fWi8/L0l9gaxtKtnIBqLJRKrsjX5yyijbP0SAJKGY9BzCQr4fjERYtoXNDQ+kLbVjDTJcVMBUpJzY2uQIwBUepGu5lQ=
+	t=1750455222; cv=none; b=geXv2ikhgPSL6fZ31L6B3aNmFRZEUH2AFOgfCh8rlfGqZMj27hAVhGwAVN5DyUFVqoOqGJDODj4sa0GRzJe8zIBLrjNFA3euTwoUmitlO/PTWXmxojArdIUcHNyW5VDYqCd2wbEtraQDLW1zQiAiNWFM25FOBZyH85WgH4q9H5w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750455094; c=relaxed/simple;
-	bh=XwnDkIFWGdvmDeM2l7AXZUNfMCVbiDT+cUsDdjzYjKw=;
+	s=arc-20240116; t=1750455222; c=relaxed/simple;
+	bh=DBJ3PmBQMQQFEYZK/AYVlopYcgFr1nxXeI4wnLdZDu0=;
 	h=From:To:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AR9AP8T9oO8zqfqFquNWw6V+VD46UJs+zYFxLAaqHmCapNoxGSk89scGkRybz8RnUNdAxShL60n5L77oGL4BWJQ4rdWXy2EvkrCEw3VGm8ns0clu4UMjsuMJguGJu7LLxvzr1SyPCONmesUwTSIqyBG5MLeOf80frhkGI73VVUU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=olY+gsrK; arc=none smtp.client-ip=209.85.128.49
+	 MIME-Version; b=t847nIy2cWSFbf0WVGVkK/Xqt85l7qrVJqe3iiGXiYkUjme9tnYFW5pYTHNFrMhS4I730IxaIFZcQV9yNgFCtSTxV9uo2CdfmUaJ1tMjYu4D1dVXSL31oNomMjf9EUsZixcii5WD6acyd143WN1nvhfUwRP6sGzCoul8fZnGw/c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=emn+j6lx; arc=none smtp.client-ip=209.85.128.51
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-453663b7bf1so25165e9.0
-        for <stable@vger.kernel.org>; Fri, 20 Jun 2025 14:31:32 -0700 (PDT)
+Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-453200cd31cso7365e9.1
+        for <stable@vger.kernel.org>; Fri, 20 Jun 2025 14:33:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1750455091; x=1751059891; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1750455218; x=1751060018; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=FiPvxWzkSaSj0bHthyjbzJ49ZS0D0kZP53rp6c1zMxs=;
-        b=olY+gsrKTB4HkFYuPaybXAOf0tq8MzJw4mqDXO3TBFgk2fPYwVJpJyKdlkImPB+WY2
-         Oq8eEowBE11LElQaU9In3X6SWG6vpQbJROhfWYQk9hI9NcbJndzaEDHudT+0Oyi5affv
-         id7DPaD6/xmgkDedrjLGGVcuW4qyoVduBxlvdJWOC4m08qdBaXLq+JWOMWXMpxK7mZEl
-         Pwi3PsyHJJJ/6sfYB5VhmZ0GPGh1Mrc6l1HSmVgC8gNfC/xU2YmiOubeRZKoPl8SWfaI
-         F/5lhJY+j0YcBsahZgOxm/Nt3amsgqTASpOXM+PbF6nUFPExe3BEtIPKh7FdoTo1hjLI
-         gNjA==
+        bh=Ghn6D06TNzCC825VD43BfhgjGR1h5O1ti3uiGRUIr/E=;
+        b=emn+j6lx3m5RV4IT1KZd2d7Rd88s8LrXnuWo2LXqgkAIc/5jZ6tHG1snVvMiYnfXhp
+         TZL/a8F6SwK5SETfFoiDmrR7smAUCS2S+DJq/kHiU9oeno/V9mxChLoKtQlSCOIfdOO2
+         kVlNejOCFoyBWd4r2c0N8xoHpU4GiBXaYaPH4cQyUVlWqegVXgbCQOK7JmobGFGqESuj
+         d3Y6a4VoSB62vSTaUz+Kc9zqbWPjddraw4FDdsOiU0EqYEB9Jf7TLxwQaRng/Q1wtWuR
+         +dr+YU6vjb493O/AqhoSxgFBGHOjIH0TC8+cHJvSrJwvXS4DcyCTv4mB8aOj+DcBageo
+         NVHw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1750455091; x=1751059891;
+        d=1e100.net; s=20230601; t=1750455218; x=1751060018;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=FiPvxWzkSaSj0bHthyjbzJ49ZS0D0kZP53rp6c1zMxs=;
-        b=TJe0vfn+UrkmGARMpkVLPxwxBRTEMR7nZxZTcyPniNFCarG1Lfq9hMaGQ0Mi17oxQW
-         n/W+o3Gxfr41tn81PiIBKRGra2iSSQM0X31sEZxI6QIN3Jc7lOiPL1D2ezfh9kolBZ32
-         Zs9cv1HqAmufX8aRK8lKqSMdIKn+iluCLhYoW3HvlLJbaeVilEA7z/cEv8lK/U2raLub
-         Gi7Xg16nUz64yHB/BuSDu9ehfl2H3MiQCv1/RWL9WhpjSRlus926yuVCnwafPlOkJnms
-         59Od0sHY8nPCmAlGSGl1ac+VEIgcKISJns+5vz1avU9JxoTSl8la6s6n8k3MwVm/qhrR
-         TGtg==
-X-Gm-Message-State: AOJu0YzCHGjYCHyQemb3L+2NHEFcIBN23IQXlKbG0q7HwpIxAmo7vd6D
-	WBaFMKiZ0UtlTDuUxTAiM3VZ9VQmqZGuWbMoZdRWySSIoYE+UZ3z5MNpKdCc+x+wVU577uYxbK5
-	b8WbfKiWD
-X-Gm-Gg: ASbGncvgnxFrX4Bv/rNsjaByd1uFpxjFzDhpQTuN1LxpRdgjIufg5KYHSc3UZg1UI34
-	43dujcwJ3iW+XUfj3VJjZJirUmYiF6UIbXHudRoEfFN76iNSjZM0qY2auqbuhHDieRSsFQ1lwbU
-	/hDSFJrhsYXyiLbfAzdq/4+B4WMXhlIA+jT7Qgo3S/uQ9qtARIostx0OHThhpXb+bcoLtgbv1o4
-	ZnEzqW3hZZJBshZNuBNIdVrzA1FBidalmhufrMMyKHW4f4FO1pGmMUEZ2QqsmpzU+ejQ08Elfec
-	7iLFLvL8+thiksc6V3mQCb+u6s0u2Z2Zg/oKI63RcWuGGy1nKA==
-X-Google-Smtp-Source: AGHT+IFgI/HYyyUherV/3YAfPPVEWIH2TpBU/nYXNiwBzAI0bvMKqVBiKmZ65icE7WKysZwEaAcTIA==
-X-Received: by 2002:a05:600c:44d4:b0:453:672b:5b64 with SMTP id 5b1f17b1804b1-4536ac1f1famr232305e9.2.1750455090612;
-        Fri, 20 Jun 2025 14:31:30 -0700 (PDT)
+        bh=Ghn6D06TNzCC825VD43BfhgjGR1h5O1ti3uiGRUIr/E=;
+        b=WMxIn6u4CWvKIuozVLfGR92GHeJ3UHJh0r/ZF01lRq3kRRoxbYjBzF7Ty/sYH0Lt7i
+         zOPew2laNVsGMW2T3OvvAOzhqxEg8tVqWkAQtgjKXgJE4ulXU9uowpH8ck02GFhmrNqK
+         scScuMCJAvi0USmtILqf4DxFwrckFiXaz3qW0eugwxNoYG6drzxg2gDY0mINp7PVlEtk
+         CIavt3mURXSK55rcAW3R9+xP5ZrgCpctzn5gYNBL+rtFtMeyQ5UGA/AONs92jiJ++P56
+         sdvYMBGgOEufD/6fJsnDj71oqRXSVdGfo+sXumtGLWdHQwZepknkEAivsNmoK9JvhEaA
+         efrA==
+X-Gm-Message-State: AOJu0YwxYn9BiiZ3rf4qm2qvuC71JZn0cmBT0FAmw9aeegeJeHNGAElP
+	I8Z+RrL8ZpLNj9+tyk067ZnqQPlCGwMMWOWVf7FzFvV1Th3T2etm4rE2x4hHe6QtdswYzu5303S
+	btoIwk484
+X-Gm-Gg: ASbGncuC5of1MnTpyCes8RKVXFahe0XtCiHoSXzngrw/RphVjc+FFDgWn61LCLWgawV
+	i9dQm416zgMw+DLyY4kaTzJOp8ho3mg1uIgoHsYlBqgyomYKJbU5lZ+IAxN9NGxjldTQTE6XYjt
+	k9mtnDfn1Vwed/bcdkXCqwf5wF2xAXkoJDq+1ZaaR6gQkuv+wHR9Cew+HdxuNDh77wn1kEwWJTF
+	Hsc9JT8zIs0esX0aubWb2fRd5adpZSz5C3WRVd+mM3TX6pV/zEZVIX+mXu+x3zkUfKg/h4c+leC
+	2idh0JNscErsFMgxCOniuKWtQkEwlEHliNZr6O9H9I/Mdy57j/xpIR5nSUbI
+X-Google-Smtp-Source: AGHT+IFopWvtrQAycWoy1OoInACeLz5QNrzGyAWZQ22PSx21MM0wzMaKY5gnTDqVUFbJMDTpEejXUg==
+X-Received: by 2002:a05:600c:8593:b0:453:6962:1a72 with SMTP id 5b1f17b1804b1-4536b5514b2mr28935e9.5.1750455218201;
+        Fri, 20 Jun 2025 14:33:38 -0700 (PDT)
 Received: from localhost ([2a00:79e0:9d:4:83c5:7af8:c033:2ca6])
-        by smtp.gmail.com with UTF8SMTPSA id 5b1f17b1804b1-4536466596asm37590755e9.0.2025.06.20.14.31.30
+        by smtp.gmail.com with UTF8SMTPSA id ffacd0b85a97d-3a6d11906d6sm2975319f8f.85.2025.06.20.14.33.37
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 20 Jun 2025 14:31:30 -0700 (PDT)
+        Fri, 20 Jun 2025 14:33:37 -0700 (PDT)
 From: Jann Horn <jannh@google.com>
 To: stable@vger.kernel.org
-Subject: [PATCH 6.6.y] mm/hugetlb: unshare page tables during VMA split, not before
-Date: Fri, 20 Jun 2025 23:31:27 +0200
-Message-ID: <20250620213127.157399-1-jannh@google.com>
+Subject: [PATCH 6.1.y 1/3] mm/hugetlb: unshare page tables during VMA split, not before
+Date: Fri, 20 Jun 2025 23:33:31 +0200
+Message-ID: <20250620213334.158850-1-jannh@google.com>
 X-Mailer: git-send-email 2.50.0.rc2.701.gf1e915cc24-goog
-In-Reply-To: <2025062040-detection-sufferer-7865@gregkh>
-References: <2025062040-detection-sufferer-7865@gregkh>
+In-Reply-To: <2025062041-uplifted-cahoots-6c42@gregkh>
+References: <2025062041-uplifted-cahoots-6c42@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -129,19 +129,20 @@ Cc: Vlastimil Babka <vbabka@suse.cz>
 Cc: <stable@vger.kernel.org>	[b30c14cd6102: hugetlb: unshare some PMDs when splitting VMAs]
 Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-[stable backport: code got moved from mmap.c to vma.c]
+[stable backport: code got moved around, VMA splitting is in
+__vma_adjust]
 Signed-off-by: Jann Horn <jannh@google.com>
 ---
  include/linux/hugetlb.h |  3 +++
  mm/hugetlb.c            | 60 ++++++++++++++++++++++++++++++-----------
- mm/mmap.c               |  6 +++++
- 3 files changed, 53 insertions(+), 16 deletions(-)
+ mm/mmap.c               |  8 ++++++
+ 3 files changed, 55 insertions(+), 16 deletions(-)
 
 diff --git a/include/linux/hugetlb.h b/include/linux/hugetlb.h
-index fc2023d07f69..8b051b8c4034 100644
+index cc555072940f..26f2947c399d 100644
 --- a/include/linux/hugetlb.h
 +++ b/include/linux/hugetlb.h
-@@ -281,6 +281,7 @@ long hugetlb_change_protection(struct vm_area_struct *vma,
+@@ -239,6 +239,7 @@ unsigned long hugetlb_change_protection(struct vm_area_struct *vma,
  
  bool is_hugetlb_entry_migration(pte_t pte);
  void hugetlb_unshare_all_pmds(struct vm_area_struct *vma);
@@ -149,7 +150,7 @@ index fc2023d07f69..8b051b8c4034 100644
  
  #else /* !CONFIG_HUGETLB_PAGE */
  
-@@ -491,6 +492,8 @@ static inline vm_fault_t hugetlb_fault(struct mm_struct *mm,
+@@ -472,6 +473,8 @@ static inline vm_fault_t hugetlb_fault(struct mm_struct *mm,
  
  static inline void hugetlb_unshare_all_pmds(struct vm_area_struct *vma) { }
  
@@ -159,10 +160,10 @@ index fc2023d07f69..8b051b8c4034 100644
  /*
   * hugepages at page global directory. If arch support
 diff --git a/mm/hugetlb.c b/mm/hugetlb.c
-index 7c196b754071..255bc6a1d6b0 100644
+index 14b9494c58ed..fc5d3d665266 100644
 --- a/mm/hugetlb.c
 +++ b/mm/hugetlb.c
-@@ -96,7 +96,7 @@ static void hugetlb_vma_lock_free(struct vm_area_struct *vma);
+@@ -95,7 +95,7 @@ static void hugetlb_vma_lock_free(struct vm_area_struct *vma);
  static void hugetlb_vma_lock_alloc(struct vm_area_struct *vma);
  static void __hugetlb_vma_unlock_write_free(struct vm_area_struct *vma);
  static void hugetlb_unshare_pmds(struct vm_area_struct *vma,
@@ -171,7 +172,7 @@ index 7c196b754071..255bc6a1d6b0 100644
  static struct resv_map *vma_resv_map(struct vm_area_struct *vma);
  
  static inline bool subpool_is_free(struct hugepage_subpool *spool)
-@@ -4903,26 +4903,40 @@ static int hugetlb_vm_op_split(struct vm_area_struct *vma, unsigned long addr)
+@@ -4900,26 +4900,40 @@ static int hugetlb_vm_op_split(struct vm_area_struct *vma, unsigned long addr)
  {
  	if (addr & ~(huge_page_mask(hstate_vma(vma))))
  		return -EINVAL;
@@ -188,7 +189,7 @@ index 7c196b754071..255bc6a1d6b0 100644
 +	 * MM, VMA and rmap all write-locked to prevent concurrent page table
 +	 * walks (except hardware and gup_fast()).
  	 */
-+	vma_assert_write_locked(vma);
++	mmap_assert_write_locked(vma->vm_mm);
 +	i_mmap_assert_write_locked(vma->vm_file->f_mapping);
 +
  	if (addr & ~PUD_MASK) {
@@ -221,7 +222,7 @@ index 7c196b754071..255bc6a1d6b0 100644
  }
  
  static unsigned long hugetlb_vm_op_pagesize(struct vm_area_struct *vma)
-@@ -7298,9 +7312,16 @@ void move_hugetlb_state(struct folio *old_folio, struct folio *new_folio, int re
+@@ -7495,9 +7509,16 @@ void move_hugetlb_state(struct page *oldpage, struct page *newpage, int reason)
  	}
  }
  
@@ -239,8 +240,8 @@ index 7c196b754071..255bc6a1d6b0 100644
  {
  	struct hstate *h = hstate_vma(vma);
  	unsigned long sz = huge_page_size(h);
-@@ -7324,8 +7345,12 @@ static void hugetlb_unshare_pmds(struct vm_area_struct *vma,
- 	mmu_notifier_range_init(&range, MMU_NOTIFY_CLEAR, 0, mm,
+@@ -7521,8 +7542,12 @@ static void hugetlb_unshare_pmds(struct vm_area_struct *vma,
+ 	mmu_notifier_range_init(&range, MMU_NOTIFY_CLEAR, 0, vma, mm,
  				start, end);
  	mmu_notifier_invalidate_range_start(&range);
 -	hugetlb_vma_lock_write(vma);
@@ -252,9 +253,9 @@ index 7c196b754071..255bc6a1d6b0 100644
 +		i_mmap_assert_write_locked(vma->vm_file->f_mapping);
 +	}
  	for (address = start; address < end; address += PUD_SIZE) {
- 		ptep = hugetlb_walk(vma, address, sz);
+ 		ptep = huge_pte_offset(mm, address, sz);
  		if (!ptep)
-@@ -7335,8 +7360,10 @@ static void hugetlb_unshare_pmds(struct vm_area_struct *vma,
+@@ -7532,8 +7557,10 @@ static void hugetlb_unshare_pmds(struct vm_area_struct *vma,
  		spin_unlock(ptl);
  	}
  	flush_hugetlb_tlb_range(vma, start, end);
@@ -265,9 +266,9 @@ index 7c196b754071..255bc6a1d6b0 100644
 +		hugetlb_vma_unlock_write(vma);
 +	}
  	/*
- 	 * No need to call mmu_notifier_arch_invalidate_secondary_tlbs(), see
+ 	 * No need to call mmu_notifier_invalidate_range(), see
  	 * Documentation/mm/mmu_notifier.rst.
-@@ -7351,7 +7378,8 @@ static void hugetlb_unshare_pmds(struct vm_area_struct *vma,
+@@ -7548,7 +7575,8 @@ static void hugetlb_unshare_pmds(struct vm_area_struct *vma,
  void hugetlb_unshare_all_pmds(struct vm_area_struct *vma)
  {
  	hugetlb_unshare_pmds(vma, ALIGN(vma->vm_start, PUD_SIZE),
@@ -278,23 +279,25 @@ index 7c196b754071..255bc6a1d6b0 100644
  
  #ifdef CONFIG_CMA
 diff --git a/mm/mmap.c b/mm/mmap.c
-index 03a24cb3951d..a9c70001e456 100644
+index ebc3583fa612..0f303dc8425a 100644
 --- a/mm/mmap.c
 +++ b/mm/mmap.c
-@@ -2402,7 +2402,13 @@ int __split_vma(struct vma_iterator *vmi, struct vm_area_struct *vma,
- 	init_vma_prep(&vp, vma);
- 	vp.insert = new;
- 	vma_prepare(&vp);
+@@ -727,7 +727,15 @@ int __vma_adjust(struct vm_area_struct *vma, unsigned long start,
+ 		return -ENOMEM;
+ 	}
+ 
 +	/*
 +	 * Get rid of huge pages and shared page tables straddling the split
 +	 * boundary.
 +	 */
- 	vma_adjust_trans_huge(vma, vma->vm_start, addr, 0);
-+	if (is_vm_hugetlb_page(vma))
-+		hugetlb_split(vma, addr);
- 
- 	if (new_below) {
- 		vma->vm_start = addr;
+ 	vma_adjust_trans_huge(orig_vma, start, end, adjust_next);
++	if (is_vm_hugetlb_page(orig_vma)) {
++		hugetlb_split(orig_vma, start);
++		hugetlb_split(orig_vma, end);
++	}
+ 	if (file) {
+ 		mapping = file->f_mapping;
+ 		root = &mapping->i_mmap;
 -- 
 2.50.0.rc2.701.gf1e915cc24-goog
 
