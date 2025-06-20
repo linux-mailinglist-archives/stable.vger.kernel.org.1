@@ -1,126 +1,147 @@
-Return-Path: <stable+bounces-155121-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-155122-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0D589AE19A2
-	for <lists+stable@lfdr.de>; Fri, 20 Jun 2025 13:10:12 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8B0A8AE19BA
+	for <lists+stable@lfdr.de>; Fri, 20 Jun 2025 13:12:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 678877ABCE7
-	for <lists+stable@lfdr.de>; Fri, 20 Jun 2025 11:08:42 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3485617F0CA
+	for <lists+stable@lfdr.de>; Fri, 20 Jun 2025 11:12:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2EC6289E3F;
-	Fri, 20 Jun 2025 11:09:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3541B289E21;
+	Fri, 20 Jun 2025 11:12:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="oGePHy8n";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="gItVlmop"
+	dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b="RC53chOb"
 X-Original-To: stable@vger.kernel.org
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+Received: from mx.denx.de (mx.denx.de [89.58.32.78])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B17D0289370;
-	Fri, 20 Jun 2025 11:09:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CB00289E1C
+	for <stable@vger.kernel.org>; Fri, 20 Jun 2025 11:12:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=89.58.32.78
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750417796; cv=none; b=Ksef0RDxpm9W5ru+anGkiAC1PWAilI18Ngx+zeWbrr1RYuaLCl7PyIo7SAbvO7za/LRUgtYfJ8teeHVIN9V3VuApD4/8nhjSqwlWgPXd9EGVhUInXGfSQlMLgAUwrHE77iiJ+e/oUoG6daK3dHayi/HFdobvHY/3ptLvVjBhyE8=
+	t=1750417960; cv=none; b=LPRM7g5yj+Ljvl1VKD09nGq/X1vM1jqd5en+6HkJKjyhM5tWVvmnorAZwg8GdoIp/bpRDA0aMyNB0jjNr5IGRL9dJtQkw0VFDWWrUqSMXLD/8ILyhTSca3yfXzohsLv4xTGZR2Npg07r/72ry40IZx0zawK88nJCJ9KbTdwhkJI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750417796; c=relaxed/simple;
-	bh=IBZkMlagCA+R/KhShpO9+UpMtZRbm3VwQ3iZSH+Pgqc=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=Ta1QWAewPeNr9GzaG2vrEq2H4GxH37dZh5zgU7iduKSu27luTYg6kYxzRAUKilZRHUQyUUSvCj1D9xhXqXP2EoK9q/jHx3aHWM49Hm3JjN9mxooKZJpdrx/FDW42onmAffVEZ/wvtHMfobYj9KeeKq4BfM5ytEr3ciZRYGcettI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=oGePHy8n; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=gItVlmop; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-From: Nam Cao <namcao@linutronix.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1750417791;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=PWqArSOAfTC1L3Ga/GRvc43T5ZdN4RWui3vJm5T69f0=;
-	b=oGePHy8ntSocBb8MmX7vxwMR9AqGRAPw0yxsBBrcSfEeaK1J4g5eQEg9+8zn5QV19p9F8C
-	rdJhUnL5TuKHtOxM40vvqSPPbyagDXffZmP0GSTQx67YmcZnIfjvc+e1KpBrJpFLw2wli+
-	RbCV1BHNjfw+sxnUEdRsHk6gXGklaJi618XzRu7HGUadmZoOz4ZhqskAeinurLKFH61F9B
-	mu/okgLunmYf7hJEclF8rUZzxq6Lwlc/72jc8YUsS7J8JxYPiOqLPn/jSjQ0jnGUpI5Pfo
-	qCUg51IxvxsWrB/p682AUP/BT0odvO3FucyXsKFZD/piun7nnbslBgJhxVtFFg==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1750417791;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=PWqArSOAfTC1L3Ga/GRvc43T5ZdN4RWui3vJm5T69f0=;
-	b=gItVlmoprKsgxq+suCSmg/zOUer9qJQuKwHSqxDJwzd5/0p34r50fGnn5RHBtznem2B6fK
-	pQY35dFXapMQoiCg==
-To: Paul Walmsley <paul.walmsley@sifive.com>,
-	Palmer Dabbelt <palmer@dabbelt.com>,
-	Albert Ou <aou@eecs.berkeley.edu>,
-	Alexandre Ghiti <alex@ghiti.fr>,
-	=?UTF-8?q?Cl=C3=A9ment=20L=C3=A9ger?= <cleger@rivosinc.com>,
-	Nylon Chen <nylon.chen@sifive.com>,
-	linux-riscv@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Cc: Nam Cao <namcao@linutronix.de>,
-	stable@vger.kernel.org
-Subject: [PATCH] Revert "riscv: misaligned: fix sleeping function called during misaligned access handling"
-Date: Fri, 20 Jun 2025 13:09:39 +0200
-Message-Id: <20250620110939.1642735-1-namcao@linutronix.de>
+	s=arc-20240116; t=1750417960; c=relaxed/simple;
+	bh=SyiNu3Ob3L60e73AaxuCkOg2fa6bO5VsriKl0+zBk7w=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=COwd00yqkjXwzsJem+uNktJp9ZUmJPuXHccXCcwWndTHex4R7VcDShTWpQzheELftYAwW8Cor0Gm5AtMbWZr5JdicywO2N2gFzidq7FhNfH/987XYBreEHzilHeG5tromb3EHftgLyHIvVVzZLnpC96fMiBOSR1V1NiW2NPz11Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de; spf=pass smtp.mailfrom=denx.de; dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b=RC53chOb; arc=none smtp.client-ip=89.58.32.78
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=denx.de
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 16CAA104884A8;
+	Fri, 20 Jun 2025 13:12:33 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de; s=mx-20241105;
+	t=1750417956; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 in-reply-to:references; bh=dIN4rVjoLDyX/x9WQKi4XWTSKbdre1w+oADZZlm0n3Y=;
+	b=RC53chObsZcZb2o5E1IVRMMBjhKlfDW0cz4hF+JYu9qdqOIEPq73lXPRULalFE1nl2VWNM
+	4Jw1CkW8MqPV5RwEy4VZKpfsc+xineXs5HpyTwD6OnkB/fH81axMinr6/VzhKnYOpS3cBT
+	lkvU0yIT7IhC1UeyrbNnyB/xI9XwHLZItc5NXZ/MaJl5UxOeFOAK9rcy0l+OCsY3xTeuMT
+	l0eE7aAlPsfJG9aTdKqqUW2KP7TI0GRjfiKsHu9+kWj9W/PtCbUcdH6GsNNIVyNzzNZLyz
+	Fo4ouWtOomiu6Uqtt2luBC7qoJLCuHc+PvkKLJ9yx9RztCnf7Aq0413N7p2bQw==
+Date: Fri, 20 Jun 2025 13:12:31 +0200
+From: Pavel Machek <pavel@denx.de>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+	Zijun Hu <quic_zijuhu@quicinc.com>,
+	Christian Brauner <brauner@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: Re: [PATCH 6.12 471/512] fs/filesystems: Fix potential unsigned
+ integer underflow in fs_name()
+Message-ID: <aFVCH8CeAEDY2oEj@duo.ucw.cz>
+References: <20250617152419.512865572@linuxfoundation.org>
+ <20250617152438.664510685@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="T8rYKFgKcQuMsP8R"
+Content-Disposition: inline
+In-Reply-To: <20250617152438.664510685@linuxfoundation.org>
+X-Last-TLS-Session-Version: TLSv1.3
+
+
+--T8rYKFgKcQuMsP8R
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-This reverts commit 61a74ad25462 ("riscv: misaligned: fix sleeping function
-called during misaligned access handling"). The commit addresses a sleeping
-in atomic context problem, but it is not the correct fix as explained by
-Cl=C3=A9ment:
+Hi!
 
-"Using nofault would lead to failure to read from user memory that is paged
-out for instance. This is not really acceptable, we should handle user
-misaligned access even at an address that would generate a page fault."
+> From: Zijun Hu <quic_zijuhu@quicinc.com>
+>=20
+> [ Upstream commit 1363c134ade81e425873b410566e957fecebb261 ]
+>=20
+> fs_name() has @index as unsigned int, so there is underflow risk for
+> operation '@index--'.
+>=20
+> Fix by breaking the for loop when '@index =3D=3D 0' which is also more pr=
+oper
+> than '@index <=3D 0' for unsigned integer comparison.
 
-This bug has been properly fixed by commit 453805f0a28f ("riscv:
-misaligned: enable IRQs while handling misaligned accesses").
+How could it underflow? for (..., index) already means we break the
+loop. I don't see underflow possibility.
 
-Revert this improper fix.
+BR,
+									Pavel
 
-Link: https://lore.kernel.org/linux-riscv/b779beed-e44e-4a5e-9551-4647682b0=
-d21@rivosinc.com/
-Signed-off-by: Nam Cao <namcao@linutronix.de>
-Cc: stable@vger.kernel.org
----
- arch/riscv/kernel/traps_misaligned.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+> Signed-off-by: Zijun Hu <quic_zijuhu@quicinc.com>
+> Link: https://lore.kernel.org/20250410-fix_fs-v1-1-7c14ccc8ebaa@quicinc.c=
+om
+> Signed-off-by: Christian Brauner <brauner@kernel.org>
+> Signed-off-by: Sasha Levin <sashal@kernel.org>
+> ---
+>  fs/filesystems.c | 14 +++++++++-----
+>  1 file changed, 9 insertions(+), 5 deletions(-)
+>=20
+> diff --git a/fs/filesystems.c b/fs/filesystems.c
+> index 58b9067b2391c..95e5256821a53 100644
+> --- a/fs/filesystems.c
+> +++ b/fs/filesystems.c
+> @@ -156,15 +156,19 @@ static int fs_index(const char __user * __name)
+>  static int fs_name(unsigned int index, char __user * buf)
+>  {
+>  	struct file_system_type * tmp;
+> -	int len, res;
+> +	int len, res =3D -EINVAL;
+> =20
+>  	read_lock(&file_systems_lock);
+> -	for (tmp =3D file_systems; tmp; tmp =3D tmp->next, index--)
+> -		if (index <=3D 0 && try_module_get(tmp->owner))
+> +	for (tmp =3D file_systems; tmp; tmp =3D tmp->next, index--) {
+> +		if (index =3D=3D 0) {
+> +			if (try_module_get(tmp->owner))
+> +				res =3D 0;
+>  			break;
+> +		}
+> +	}
+>  	read_unlock(&file_systems_lock);
+> -	if (!tmp)
+> -		return -EINVAL;
+> +	if (res)
+> +		return res;
+> =20
+>  	/* OK, we got the reference, so we can safely block */
+>  	len =3D strlen(tmp->name) + 1;
 
-diff --git a/arch/riscv/kernel/traps_misaligned.c b/arch/riscv/kernel/traps=
-_misaligned.c
-index dd8e4af6583f4..93043924fe6c6 100644
---- a/arch/riscv/kernel/traps_misaligned.c
-+++ b/arch/riscv/kernel/traps_misaligned.c
-@@ -454,7 +454,7 @@ static int handle_scalar_misaligned_load(struct pt_regs=
- *regs)
-=20
- 	val.data_u64 =3D 0;
- 	if (user_mode(regs)) {
--		if (copy_from_user_nofault(&val, (u8 __user *)addr, len))
-+		if (copy_from_user(&val, (u8 __user *)addr, len))
- 			return -1;
- 	} else {
- 		memcpy(&val, (u8 *)addr, len);
-@@ -555,7 +555,7 @@ static int handle_scalar_misaligned_store(struct pt_reg=
-s *regs)
- 		return -EOPNOTSUPP;
-=20
- 	if (user_mode(regs)) {
--		if (copy_to_user_nofault((u8 __user *)addr, &val, len))
-+		if (copy_to_user((u8 __user *)addr, &val, len))
- 			return -1;
- 	} else {
- 		memcpy((u8 *)addr, &val, len);
 --=20
-2.39.5
+DENX Software Engineering GmbH,        Managing Director: Erika Unter
+HRB 165235 Munich, Office: Kirchenstr.5, D-82194 Groebenzell, Germany
 
+--T8rYKFgKcQuMsP8R
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iF0EABECAB0WIQRPfPO7r0eAhk010v0w5/Bqldv68gUCaFVCHwAKCRAw5/Bqldv6
+8n7lAKC7FRBlstoy31b/pVdxKNB/E8GvOQCfS0vCPsnSewe9fB25XvyjTWMcyqI=
+=YoLX
+-----END PGP SIGNATURE-----
+
+--T8rYKFgKcQuMsP8R--
 
