@@ -1,123 +1,98 @@
-Return-Path: <stable+bounces-154842-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-154843-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 42601AE107C
-	for <lists+stable@lfdr.de>; Fri, 20 Jun 2025 02:52:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 11963AE1085
+	for <lists+stable@lfdr.de>; Fri, 20 Jun 2025 02:57:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CF7F31896D21
-	for <lists+stable@lfdr.de>; Fri, 20 Jun 2025 00:53:03 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9E8F2189A3EF
+	for <lists+stable@lfdr.de>; Fri, 20 Jun 2025 00:57:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1CD5E10A1F;
-	Fri, 20 Jun 2025 00:52:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="WNa2n9XE"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E861914AA9;
+	Fri, 20 Jun 2025 00:57:10 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3FDE4C79;
-	Fri, 20 Jun 2025 00:52:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from angie.orcam.me.uk (angie.orcam.me.uk [78.133.224.34])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E66F923CE;
+	Fri, 20 Jun 2025 00:57:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.133.224.34
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750380762; cv=none; b=smQikOwq3UBEnhbL3pyZFeSEvwNckPagsltpKwogyNxO7f3byAJm8iwco2weGjt/ku3pNRvlNaY9B0kguVSV2JvavI8BFCrr1JGDGzlOusTyp4XN/Nu/koF1Eech6V+jEJZ1x7SuWi892BpuG8N+1vCKcl0fhoBojl6g2L3Nuxs=
+	t=1750381030; cv=none; b=atXGAPfBHFqYE36dqYvTlaBw7/FCdlf5Dg5Cif4N48ydle5rO38cKfxQVMKbgDG261Dg4r8iPb5YisJJmwPJuxESU1iUjKTUGLo6GtCRgczhdYCj/tCG7/lbxG7hL79WKjML+XUcuCNpQbJk3h2qi3qRIqMo8MguJR+MDhagLOU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750380762; c=relaxed/simple;
-	bh=oeXTHW5s1DfLw9fG/pnWky8fl0iX2hToNEWrDJh8dnI=;
-	h=Date:To:From:Subject:Message-Id; b=dzAjzzBHehCibm2wZn2M0In7JZ+DUHCcRKZkbnvaqfR4ujvCQcfjHM427jfm/7Up27JuTJpiGXKX/3MmQkXRsj784fQN/wU3YOv/UdedcDmDM7gDrIADTr20pN/sziP/jfADB6kBtfEBwzpIe6Utmw1Y398zfUaYXhtklw9RqiA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=WNa2n9XE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D910C4CEEA;
-	Fri, 20 Jun 2025 00:52:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1750380762;
-	bh=oeXTHW5s1DfLw9fG/pnWky8fl0iX2hToNEWrDJh8dnI=;
-	h=Date:To:From:Subject:From;
-	b=WNa2n9XExVI2nZ4qbAfXPgFze5950pzWp88kDq4m7xPzyvvwiDK64K7tQNw/eCbu7
-	 mxsYDeoHV2QJr2aDqYOatLS5+jv69ECezSo+1KfzjYdJDOlLbVsnJUK/VKQ6CNRj3E
-	 FHBg2uAypWe4Ub0TefXBZqXVy/GBFejG/pgb4jJk=
-Date: Thu, 19 Jun 2025 17:52:41 -0700
-To: mm-commits@vger.kernel.org,viro@zeniv.linux.org.uk,stable@vger.kernel.org,kbingham@kernel.org,jlayton@kernel.org,jan.kiszka@siemens.com,jack@suse.cz,florian.fainelli@broadcom.com,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: + scripts-gdb-fix-dentry_name-lookup.patch added to mm-hotfixes-unstable branch
-Message-Id: <20250620005242.3D910C4CEEA@smtp.kernel.org>
+	s=arc-20240116; t=1750381030; c=relaxed/simple;
+	bh=0GdIMsc/rycX23sODQ5b6m5mighTJfoLkV8/L6IEDN0=;
+	h=Date:From:To:cc:Subject:In-Reply-To:Message-ID:References:
+	 MIME-Version:Content-Type; b=P1tUVazNp2B8L6ePpl/S7LKcP9SqC368fm2bIMevqX+Br0X66uzXbQLzd23V4JQgn+AJ3iOJ1S0+Igc+l1h2vHZn0YjgmvjLSLnpVXkoBB9GUR7sR+pJ+ybxDfLsott+mEfniCX2apz7UoPtaqa5dDHNbGvCz+eGrwcCY/NtE5I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=orcam.me.uk; spf=none smtp.mailfrom=orcam.me.uk; arc=none smtp.client-ip=78.133.224.34
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=orcam.me.uk
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=orcam.me.uk
+Received: by angie.orcam.me.uk (Postfix, from userid 500)
+	id 92FA792009C; Fri, 20 Jun 2025 02:57:05 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+	by angie.orcam.me.uk (Postfix) with ESMTP id 8586A92009B;
+	Fri, 20 Jun 2025 01:57:05 +0100 (BST)
+Date: Fri, 20 Jun 2025 01:57:05 +0100 (BST)
+From: "Maciej W. Rozycki" <macro@orcam.me.uk>
+To: Greg Chandler <chandleg@wizardsworks.org>
+cc: Florian Fainelli <f.fainelli@gmail.com>, stable@vger.kernel.org, 
+    netdev@vger.kernel.org
+Subject: Re: Tulip 21142 panic on physical link disconnect
+In-Reply-To: <5a21c21844beadb68ead00cb401ca1c0@wizardsworks.org>
+Message-ID: <alpine.DEB.2.21.2506200144030.37405@angie.orcam.me.uk>
+References: <53bb866f5bb12cc1b6c33b3866007f2b@wizardsworks.org> <02e3f9b8-9e60-4574-88e2-906ccd727829@gmail.com> <385f2469f504dd293775d3c39affa979@wizardsworks.org> <fba6a52c-bedf-4d06-814f-eb78257e4cb3@gmail.com> <6a079cd0233b33c6faf6af6a1da9661f@wizardsworks.org>
+ <9292e561-09bf-4d70-bcb7-f90f9cfbae7b@gmail.com> <a3d8ee993b73b826b537f374d78084ad@wizardsworks.org> <12ccf3e4c24e8db2545f6ccaba8ce273@wizardsworks.org> <8c06f8969e726912b46ef941d36571ad@wizardsworks.org> <alpine.DEB.2.21.2506192007440.37405@angie.orcam.me.uk>
+ <52564e1f-ab05-4347-bd64-b38a69180499@gmail.com> <alpine.DEB.2.21.2506192238280.37405@angie.orcam.me.uk> <5a21c21844beadb68ead00cb401ca1c0@wizardsworks.org>
+User-Agent: Alpine 2.21 (DEB 202 2017-01-01)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
 
+On Thu, 19 Jun 2025, Greg Chandler wrote:
 
-The patch titled
-     Subject: scripts/gdb: fix dentry_name() lookup
-has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
-     scripts-gdb-fix-dentry_name-lookup.patch
+> > > I am still not sure why I could not see that warning on by Cobalt Qube2
+> > > trying
+> > > to reproduce Greg's original issue, that is with an IP assigned on the
+> > > interface yanking the cable did not trigger a timer warning. It could be
+> > > that
+> > > machine is orders of magnitude slower and has a different CONFIG_HZ value
+> > > that
+> > > just made it less likely to be seen?
+> > 
+> >  Can it have a different PHY attached?  There's this code:
+> > 
+> > 	if (tp->chip_id == PNIC2)
+> > 		tp->link_change = pnic2_lnk_change;
+> > 	else if (tp->flags & HAS_NWAY)
+> > 		tp->link_change = t21142_lnk_change;
+> > 	else if (tp->flags & HAS_PNICNWAY)
+> > 		tp->link_change = pnic_lnk_change;
+> 
+> I'm not sure which of us that was directed at, but for my onboard tulips:
 
-This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/scripts-gdb-fix-dentry_name-lookup.patch
+ It was for Florian, as obviously your system does trigger the issue.
 
-This patch will later appear in the mm-hotfixes-unstable branch at
-    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+> I found a link to the datasheet (If needed), but have had mixed luck with
+> alldatasheets:
+> https://www.alldatasheet.com/datasheet-pdf/pdf/75840/MICRO-LINEAR/ML6698CH.html
 
-Before you just go and hit "reply", please:
-   a) Consider who else should be cc'ed
-   b) Prefer to cc a suitable mailing list as well
-   c) Ideally: find the original patch on the mailing list and do a
-      reply-to-all to that, adding suitable additional cc's
+ There's no need to chase hw documentation as the issue isn't directly 
+related to it.
 
-*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
+ As I noted in the earlier e-mail it seems a regression in the handling of 
+`del_timer_sync', perhaps deliberate, introduced sometime between 5.18 and 
+6.4.  I suggest that you try 5.18 (or 5.17 as it was 5.18.0-rc2 actually 
+here that worked correctly) and see if it still triggers the problem and 
+if it does not then bisect it (perhaps limiting the upper bound to 6.4 if 
+it does trigger it for you, to save an iteration or a couple).  Once you 
+know the offender you'll likely know the solution.  Or you can come back 
+with results and ask for one if unsure.
 
-The -mm tree is included into linux-next via the mm-everything
-branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-and is updated there every 2-3 working days
+ HTH,
 
-------------------------------------------------------
-From: Florian Fainelli <florian.fainelli@broadcom.com>
-Subject: scripts/gdb: fix dentry_name() lookup
-Date: Thu, 19 Jun 2025 15:51:05 -0700
-
-The "d_iname" member was replaced with "d_shortname.string" in the commit
-referenced in the Fixes tag.  This prevented the GDB script "lx-mount"
-command to properly function:
-
-(gdb) lx-mounts
-      mount          super_block     devname pathname fstype options
-0xff11000002d21180 0xff11000002d24800 rootfs / rootfs rw 0 0
-0xff11000002e18a80 0xff11000003713000 /dev/root / ext4 rw,relatime 0 0
-Python Exception <class 'gdb.error'>: There is no member named d_iname.
-Error occurred in Python: There is no member named d_iname.
-
-Link: https://lkml.kernel.org/r/20250619225105.320729-1-florian.fainelli@broadcom.com
-Fixes: 58cf9c383c5c ("dcache: back inline names with a struct-wrapped array of unsigned long")
-Signed-off-by: Florian Fainelli <florian.fainelli@broadcom.com>
-Cc: Al Viro <viro@zeniv.linux.org.uk>
-Cc: Jan Kara <jack@suse.cz>
-Cc: Jan Kiszka <jan.kiszka@siemens.com>
-Cc: Jeff Layton <jlayton@kernel.org>
-Cc: Kieran Bingham <kbingham@kernel.org>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
----
-
- scripts/gdb/linux/vfs.py |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
---- a/scripts/gdb/linux/vfs.py~scripts-gdb-fix-dentry_name-lookup
-+++ a/scripts/gdb/linux/vfs.py
-@@ -22,7 +22,7 @@ def dentry_name(d):
-     if parent == d or parent == 0:
-         return ""
-     p = dentry_name(d['d_parent']) + "/"
--    return p + d['d_iname'].string()
-+    return p + d['d_shortname']['string'].string()
- 
- class DentryName(gdb.Function):
-     """Return string of the full path of a dentry.
-_
-
-Patches currently in -mm which might be from florian.fainelli@broadcom.com are
-
-scripts-gdb-fix-dentry_name-lookup.patch
-
+  Maciej
 
