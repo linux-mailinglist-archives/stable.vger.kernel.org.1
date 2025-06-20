@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-155021-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-155022-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B0454AE16EE
-	for <lists+stable@lfdr.de>; Fri, 20 Jun 2025 11:02:46 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id DF8ECAE16ED
+	for <lists+stable@lfdr.de>; Fri, 20 Jun 2025 11:02:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2307A3AA632
-	for <lists+stable@lfdr.de>; Fri, 20 Jun 2025 09:01:53 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7E2BF1883DC5
+	for <lists+stable@lfdr.de>; Fri, 20 Jun 2025 09:02:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3BCC27E065;
-	Fri, 20 Jun 2025 09:02:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D8F927E063;
+	Fri, 20 Jun 2025 09:02:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="03U8BX0f"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RllWVL6u"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83F5227E067
-	for <stable@vger.kernel.org>; Fri, 20 Jun 2025 09:02:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB87727CB2A
+	for <stable@vger.kernel.org>; Fri, 20 Jun 2025 09:02:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750410134; cv=none; b=nqwx6Aq/fQAB6bOSxvXS5c3IHIw6lY5aYOiJZI7Wur3SHwtU04Na6VkDDoGouRVy41gTDYWp7tvfAuRWpBWSSpAVA7LecO0klZqRHs4I3Z5RZF7rwfwj0lOsgRfiODrum5lrp1tvYFJxOWQm91M20TdbpGwW9B0iS6ShWBEowMk=
+	t=1750410138; cv=none; b=rMoAgH8Nll0/DF5ATHKkLEmV2WNfpnSTOg9O+SVtzcC52jTeMFBBdA5LYvW3cckcMfnRaQ6RiXmguuYsOZjURG2pEvE5xDajqNu6Ur0rQuJUvDUGTV1cU9wspNMyyExLabsxDgxqhwBABBQpMDbinQtVfhNfWZoB+tMTI1MFZ2w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750410134; c=relaxed/simple;
-	bh=K+vNmxGD/Rb3u0IAXbEiGr1dJl4Hfgm0mwNNPkduNEw=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=btZI3IY5dUjNDpX+03TSg82W1VLtPpz8ccJmw3I6LzSibXNC1W9OzGfSUvpUvK+k0gNfHOfYiDpOeVVTENEUg2y/Qr3UdI6MdsFthBddZHv47w7LtUYl+QxSDuL8QuIZwpM2qS/F6TV5u4jlNUbRaBQqz3e7VPOOkecx5NJMgJU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=03U8BX0f; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0EF06C4CEE3;
-	Fri, 20 Jun 2025 09:02:13 +0000 (UTC)
+	s=arc-20240116; t=1750410138; c=relaxed/simple;
+	bh=07UFR25tJv51THf2iNM8NctTTJHJW11O4UQD9YIhknE=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=WUjmOZpShM5F463WrdKVoIF6VQNpEvGBH2/nLT1k25Aaa7A25l3dq6pbx6QEjXzOiXVwQXt8Knr9wulJgmZFv6Yi3TocOsZz7MarV+CIrYEvzP/epIG0kWG2tGLlNfYfSrGV1zL1dcuLB0fKYPNZ35IET3OXtmHDJGTgTzfssC8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RllWVL6u; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0FDC1C4CEE3;
+	Fri, 20 Jun 2025 09:02:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750410134;
-	bh=K+vNmxGD/Rb3u0IAXbEiGr1dJl4Hfgm0mwNNPkduNEw=;
+	s=korg; t=1750410137;
+	bh=07UFR25tJv51THf2iNM8NctTTJHJW11O4UQD9YIhknE=;
 	h=Subject:To:Cc:From:Date:From;
-	b=03U8BX0fjItqAlJ7Vn2p4y+9WG5+wBcrawNoojE8/pNlYp9gHScCwGep1YPvoplo3
-	 mQWGubh7J8THcXgxER1jjdiTGr/8tz/ZBlL0k+Suc+RMZT3rEhj4O9FUuVtwhGyi8i
-	 mLMySoleMJBbP21FKakadfVFvnNMiDgGqLUOJzMc=
-Subject: FAILED: patch "[PATCH] RDMA/iwcm: Fix use-after-free of work objects after cm_id" failed to apply to 5.10-stable tree
-To: shinichiro.kawasaki@wdc.com,leon@kernel.org,yanjun.zhu@linux.dev
+	b=RllWVL6u5NxVW6zpWKFg8nFB3o5p1X1ywovzCm1tDwdhmdyn2nRS9cCqn13P/OQ0m
+	 Vnzav8X0nQ7pwS20tzf7z2ZojkaufCQCcYvrfon1L+q/S3QZdTtovE0xQ1Ehjx6sGt
+	 J3vlXowiqcykBZhAZYKLVq91tl8h6mWj0ntDh63o=
+Subject: FAILED: patch "[PATCH] ext4: ensure i_size is smaller than maxbytes" failed to apply to 5.4-stable tree
+To: yi.zhang@huawei.com,jack@suse.cz,libaokun1@huawei.com,tytso@mit.edu
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Fri, 20 Jun 2025 11:01:06 +0200
-Message-ID: <2025062006-jeeringly-portside-e5b6@gregkh>
+Date: Fri, 20 Jun 2025 11:02:12 +0200
+Message-ID: <2025062011-unaired-system-c935@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.10-stable tree.
+The patch below does not apply to the 5.4-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
 git checkout FETCH_HEAD
-git cherry-pick -x 6883b680e703c6b2efddb4e7a8d891ce1803d06b
+git cherry-pick -x 1a77a028a392fab66dd637cdfac3f888450d00af
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025062006-jeeringly-portside-e5b6@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025062011-unaired-system-c935@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
 
 Possible dependencies:
 
@@ -77,191 +77,34 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 6883b680e703c6b2efddb4e7a8d891ce1803d06b Mon Sep 17 00:00:00 2001
-From: Shin'ichiro Kawasaki <shinichiro.kawasaki@wdc.com>
-Date: Sat, 10 May 2025 19:10:36 +0900
-Subject: [PATCH] RDMA/iwcm: Fix use-after-free of work objects after cm_id
- destruction
+From 1a77a028a392fab66dd637cdfac3f888450d00af Mon Sep 17 00:00:00 2001
+From: Zhang Yi <yi.zhang@huawei.com>
+Date: Tue, 6 May 2025 09:20:09 +0800
+Subject: [PATCH] ext4: ensure i_size is smaller than maxbytes
 
-The commit 59c68ac31e15 ("iw_cm: free cm_id resources on the last
-deref") simplified cm_id resource management by freeing cm_id once all
-references to the cm_id were removed. The references are removed either
-upon completion of iw_cm event handlers or when the application destroys
-the cm_id. This commit introduced the use-after-free condition where
-cm_id_private object could still be in use by event handler works during
-the destruction of cm_id. The commit aee2424246f9 ("RDMA/iwcm: Fix a
-use-after-free related to destroying CM IDs") addressed this use-after-
-free by flushing all pending works at the cm_id destruction.
+The inode i_size cannot be larger than maxbytes, check it while loading
+inode from the disk.
 
-However, still another use-after-free possibility remained. It happens
-with the work objects allocated for each cm_id_priv within
-alloc_work_entries() during cm_id creation, and subsequently freed in
-dealloc_work_entries() once all references to the cm_id are removed.
-If the cm_id's last reference is decremented in the event handler work,
-the work object for the work itself gets removed, and causes the use-
-after-free BUG below:
+Signed-off-by: Zhang Yi <yi.zhang@huawei.com>
+Reviewed-by: Jan Kara <jack@suse.cz>
+Reviewed-by: Baokun Li <libaokun1@huawei.com>
+Link: https://patch.msgid.link/20250506012009.3896990-4-yi.zhang@huaweicloud.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Cc: stable@kernel.org
 
-  BUG: KASAN: slab-use-after-free in __pwq_activate_work+0x1ff/0x250
-  Read of size 8 at addr ffff88811f9cf800 by task kworker/u16:1/147091
-
-  CPU: 2 UID: 0 PID: 147091 Comm: kworker/u16:1 Not tainted 6.15.0-rc2+ #27 PREEMPT(voluntary)
-  Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.3-3.fc41 04/01/2014
-  Workqueue:  0x0 (iw_cm_wq)
-  Call Trace:
-   <TASK>
-   dump_stack_lvl+0x6a/0x90
-   print_report+0x174/0x554
-   ? __virt_addr_valid+0x208/0x430
-   ? __pwq_activate_work+0x1ff/0x250
-   kasan_report+0xae/0x170
-   ? __pwq_activate_work+0x1ff/0x250
-   __pwq_activate_work+0x1ff/0x250
-   pwq_dec_nr_in_flight+0x8c5/0xfb0
-   process_one_work+0xc11/0x1460
-   ? __pfx_process_one_work+0x10/0x10
-   ? assign_work+0x16c/0x240
-   worker_thread+0x5ef/0xfd0
-   ? __pfx_worker_thread+0x10/0x10
-   kthread+0x3b0/0x770
-   ? __pfx_kthread+0x10/0x10
-   ? rcu_is_watching+0x11/0xb0
-   ? _raw_spin_unlock_irq+0x24/0x50
-   ? rcu_is_watching+0x11/0xb0
-   ? __pfx_kthread+0x10/0x10
-   ret_from_fork+0x30/0x70
-   ? __pfx_kthread+0x10/0x10
-   ret_from_fork_asm+0x1a/0x30
-   </TASK>
-
-  Allocated by task 147416:
-   kasan_save_stack+0x2c/0x50
-   kasan_save_track+0x10/0x30
-   __kasan_kmalloc+0xa6/0xb0
-   alloc_work_entries+0xa9/0x260 [iw_cm]
-   iw_cm_connect+0x23/0x4a0 [iw_cm]
-   rdma_connect_locked+0xbfd/0x1920 [rdma_cm]
-   nvme_rdma_cm_handler+0x8e5/0x1b60 [nvme_rdma]
-   cma_cm_event_handler+0xae/0x320 [rdma_cm]
-   cma_work_handler+0x106/0x1b0 [rdma_cm]
-   process_one_work+0x84f/0x1460
-   worker_thread+0x5ef/0xfd0
-   kthread+0x3b0/0x770
-   ret_from_fork+0x30/0x70
-   ret_from_fork_asm+0x1a/0x30
-
-  Freed by task 147091:
-   kasan_save_stack+0x2c/0x50
-   kasan_save_track+0x10/0x30
-   kasan_save_free_info+0x37/0x60
-   __kasan_slab_free+0x4b/0x70
-   kfree+0x13a/0x4b0
-   dealloc_work_entries+0x125/0x1f0 [iw_cm]
-   iwcm_deref_id+0x6f/0xa0 [iw_cm]
-   cm_work_handler+0x136/0x1ba0 [iw_cm]
-   process_one_work+0x84f/0x1460
-   worker_thread+0x5ef/0xfd0
-   kthread+0x3b0/0x770
-   ret_from_fork+0x30/0x70
-   ret_from_fork_asm+0x1a/0x30
-
-  Last potentially related work creation:
-   kasan_save_stack+0x2c/0x50
-   kasan_record_aux_stack+0xa3/0xb0
-   __queue_work+0x2ff/0x1390
-   queue_work_on+0x67/0xc0
-   cm_event_handler+0x46a/0x820 [iw_cm]
-   siw_cm_upcall+0x330/0x650 [siw]
-   siw_cm_work_handler+0x6b9/0x2b20 [siw]
-   process_one_work+0x84f/0x1460
-   worker_thread+0x5ef/0xfd0
-   kthread+0x3b0/0x770
-   ret_from_fork+0x30/0x70
-   ret_from_fork_asm+0x1a/0x30
-
-This BUG is reproducible by repeating the blktests test case nvme/061
-for the rdma transport and the siw driver.
-
-To avoid the use-after-free of cm_id_private work objects, ensure that
-the last reference to the cm_id is decremented not in the event handler
-works, but in the cm_id destruction context. For that purpose, move
-iwcm_deref_id() call from destroy_cm_id() to the callers of
-destroy_cm_id(). In iw_destroy_cm_id(), call iwcm_deref_id() after
-flushing the pending works.
-
-During the fix work, I noticed that iw_destroy_cm_id() is called from
-cm_work_handler() and process_event() context. However, the comment of
-iw_destroy_cm_id() notes that the function "cannot be called by the
-event thread". Drop the false comment.
-
-Closes: https://lore.kernel.org/linux-rdma/r5676e754sv35aq7cdsqrlnvyhiq5zktteaurl7vmfih35efko@z6lay7uypy3c/
-Fixes: 59c68ac31e15 ("iw_cm: free cm_id resources on the last deref")
-Cc: stable@vger.kernel.org
-Signed-off-by: Shin'ichiro Kawasaki <shinichiro.kawasaki@wdc.com>
-Link: https://patch.msgid.link/20250510101036.1756439-1-shinichiro.kawasaki@wdc.com
-Reviewed-by: Zhu Yanjun <yanjun.zhu@linux.dev>
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
-
-diff --git a/drivers/infiniband/core/iwcm.c b/drivers/infiniband/core/iwcm.c
-index f4486cbd8f45..62410578dec3 100644
---- a/drivers/infiniband/core/iwcm.c
-+++ b/drivers/infiniband/core/iwcm.c
-@@ -368,12 +368,9 @@ EXPORT_SYMBOL(iw_cm_disconnect);
- /*
-  * CM_ID <-- DESTROYING
-  *
-- * Clean up all resources associated with the connection and release
-- * the initial reference taken by iw_create_cm_id.
-- *
-- * Returns true if and only if the last cm_id_priv reference has been dropped.
-+ * Clean up all resources associated with the connection.
-  */
--static bool destroy_cm_id(struct iw_cm_id *cm_id)
-+static void destroy_cm_id(struct iw_cm_id *cm_id)
- {
- 	struct iwcm_id_private *cm_id_priv;
- 	struct ib_qp *qp;
-@@ -442,20 +439,22 @@ static bool destroy_cm_id(struct iw_cm_id *cm_id)
- 		iwpm_remove_mapinfo(&cm_id->local_addr, &cm_id->m_local_addr);
- 		iwpm_remove_mapping(&cm_id->local_addr, RDMA_NL_IWCM);
- 	}
--
--	return iwcm_deref_id(cm_id_priv);
- }
- 
- /*
-- * This function is only called by the application thread and cannot
-- * be called by the event thread. The function will wait for all
-- * references to be released on the cm_id and then kfree the cm_id
-- * object.
-+ * Destroy cm_id. If the cm_id still has other references, wait for all
-+ * references to be released on the cm_id and then release the initial
-+ * reference taken by iw_create_cm_id.
-  */
- void iw_destroy_cm_id(struct iw_cm_id *cm_id)
- {
--	if (!destroy_cm_id(cm_id))
-+	struct iwcm_id_private *cm_id_priv;
-+
-+	cm_id_priv = container_of(cm_id, struct iwcm_id_private, id);
-+	destroy_cm_id(cm_id);
-+	if (refcount_read(&cm_id_priv->refcount) > 1)
- 		flush_workqueue(iwcm_wq);
-+	iwcm_deref_id(cm_id_priv);
- }
- EXPORT_SYMBOL(iw_destroy_cm_id);
- 
-@@ -1035,8 +1034,10 @@ static void cm_work_handler(struct work_struct *_work)
- 
- 		if (!test_bit(IWCM_F_DROP_EVENTS, &cm_id_priv->flags)) {
- 			ret = process_event(cm_id_priv, &levent);
--			if (ret)
--				WARN_ON_ONCE(destroy_cm_id(&cm_id_priv->id));
-+			if (ret) {
-+				destroy_cm_id(&cm_id_priv->id);
-+				WARN_ON_ONCE(iwcm_deref_id(cm_id_priv));
-+			}
- 		} else
- 			pr_debug("dropping event %d\n", levent.event);
- 		if (iwcm_deref_id(cm_id_priv))
+diff --git a/fs/ext4/inode.c b/fs/ext4/inode.c
+index 01038b4ecee0..ca1f7a0dd8f8 100644
+--- a/fs/ext4/inode.c
++++ b/fs/ext4/inode.c
+@@ -4966,7 +4966,8 @@ struct inode *__ext4_iget(struct super_block *sb, unsigned long ino,
+ 		ei->i_file_acl |=
+ 			((__u64)le16_to_cpu(raw_inode->i_file_acl_high)) << 32;
+ 	inode->i_size = ext4_isize(sb, raw_inode);
+-	if ((size = i_size_read(inode)) < 0) {
++	size = i_size_read(inode);
++	if (size < 0 || size > ext4_get_maxbytes(inode)) {
+ 		ext4_error_inode(inode, function, line, 0,
+ 				 "iget: bad i_size value: %lld", size);
+ 		ret = -EFSCORRUPTED;
 
 
