@@ -1,72 +1,84 @@
-Return-Path: <stable+bounces-154930-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-154931-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9D8B5AE1446
-	for <lists+stable@lfdr.de>; Fri, 20 Jun 2025 08:54:10 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 12416AE1475
+	for <lists+stable@lfdr.de>; Fri, 20 Jun 2025 09:02:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 304F84A0402
-	for <lists+stable@lfdr.de>; Fri, 20 Jun 2025 06:54:11 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9B49D189AB1E
+	for <lists+stable@lfdr.de>; Fri, 20 Jun 2025 07:02:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DDAA02248BF;
-	Fri, 20 Jun 2025 06:54:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE8C5224B06;
+	Fri, 20 Jun 2025 07:01:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="krS1Fkw4"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HpggF/VY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E1442040BF
-	for <stable@vger.kernel.org>; Fri, 20 Jun 2025 06:54:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 857422045B5;
+	Fri, 20 Jun 2025 07:01:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750402442; cv=none; b=P3ktkiju+GO500C4TnO1Pb9PYbrkbNJQiuTKHtS/718BPe0/L/EG2mG9E6Ggq8D7gVbXkJPJLF7ovV67hw0UndvADiR63dlGAnyVLDk0hMxR6PA2SWmHQ+lcrR5Yx5oFYTHUHdUwFOZ6twB+B9l6YLtMkReQNTcEtDLwRAyr9t4=
+	t=1750402917; cv=none; b=hJSShJCwlFwfukJl5Hph8hdOwfQfPLaSyUMJRT4NCJMmgi5ezZOzQVYqWVTDtasxHVNS1luys9Ih7WOMKjx2Fb3UbhiAi/yffSNkuQaGG6MSxE5gGt6eeojJQiwcX/x9yKQHWj5Ix9PMXDh8Da9LZD+sYqLY1Lf6f+tXo1PTPRQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750402442; c=relaxed/simple;
-	bh=8ar2PMI3rSaobENJ+1eFSNHgyn5vRhn0arFwaDwcFfA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Yh+Xmv4IVM+bC6xY6Zd6+fsbZrCWQfwIccc54RSlrqI4CNjLN/akX3HH9pOTnYQUQTJ1/kPl5XqYZOZx3rOcgLzw2uEyiA0BDNOSi5nrnl4NwOBWFn7tjRtfb9aicHCIOyNfypt/80AKm8vEgMWsmaIaXddXX8WZDcqQDnOBzLM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=krS1Fkw4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88462C4CEE3;
-	Fri, 20 Jun 2025 06:54:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750402442;
-	bh=8ar2PMI3rSaobENJ+1eFSNHgyn5vRhn0arFwaDwcFfA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=krS1Fkw4sXVLE2XHQ+aTeL49F8KIRl+Pw++UYcnx2tpXNgwiM4ywYJCh18M2WoBFv
-	 U8tXkRoFKGKjwc76Q/mpdnV1R+KPsn/EEMebRvHT7WyL2zyX52f1z4D39t56k2TGmA
-	 N8C5L31W8ya9Q+b6R9unWj6ryzRlasCvLCu0R+mc=
-Date: Fri, 20 Jun 2025 08:53:59 +0200
-From: "gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>
-To: Sebastian Priebe <sebastian.priebe@konplan.com>
-Cc: "stable@vger.kernel.org" <stable@vger.kernel.org>
-Subject: Re: AW: BLOCK_LEGACY_AUTOLOAD not default y in Linux 5.15.179+
-Message-ID: <2025062047-matchless-jalapeno-41fc@gregkh>
-References: <ZR0P278MB097497EF6CFD85E72819447E9F70A@ZR0P278MB0974.CHEP278.PROD.OUTLOOK.COM>
- <ZR0P278MB097420DCEF0AC969D89C37979F7CA@ZR0P278MB0974.CHEP278.PROD.OUTLOOK.COM>
+	s=arc-20240116; t=1750402917; c=relaxed/simple;
+	bh=qeRxRMC63vK7esxYHm7vImv1jfMfKj7T6FnswfwrHaQ=;
+	h=Date:From:To:cc:Subject:In-Reply-To:Message-ID:References:
+	 MIME-Version:Content-Type; b=WvFyF4QLpVX1/0IV1M/+M8PHxFTHLMcxZMLZLoDB+bCUk+2qV6OLUs/dVOlW6FphzoONPJ6sv8m5DYYD43z74jPvcyQRkOT3TJbDdBz9G3DKx1kKizC7lMfQmJOdq8UV2LVOO2nLU2WE8DPpVLCoNoxzv4wi+WKbx7mvsi0ubas=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HpggF/VY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E371C4CEE3;
+	Fri, 20 Jun 2025 07:01:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1750402917;
+	bh=qeRxRMC63vK7esxYHm7vImv1jfMfKj7T6FnswfwrHaQ=;
+	h=Date:From:To:cc:Subject:In-Reply-To:References:From;
+	b=HpggF/VY8C+Dsf7DY5i0UzBpXqEzPASrqq7wNsszOz5b7TghTljZxk3Y4L2biSi6g
+	 g/8KN28Pvu4Spku6UyvF0yjYTB1bbTzXw4sLIRK7U7/aZH8BqrgdFgCBo6WQyXm8uw
+	 txWIZ+iaIJE5C8ls0tmSS6k6UvYirUye9xN/S+RfRhRCWpvRNEM45eBZ5SfL6m6rES
+	 qQVSxrXCSNVCzK8VByBgmUNErzvsUDZ6LB2lbTODPO+917cqSewp8WkmMKKXq8SVp3
+	 LLNKIoPdHLu1QaBAvN+/Dp6ws8zeVP/uZzy9/Z9W015GnR+fm/bubrm2vjh1jPbMux
+	 PvsAT9Y8Oc+JA==
+Date: Fri, 20 Jun 2025 09:01:53 +0200 (CEST)
+From: Jiri Kosina <jikos@kernel.org>
+To: Qasim Ijaz <qasdev00@gmail.com>
+cc: bentiss@kernel.org, gargaditya08@live.com, linux-input@vger.kernel.org, 
+    linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH] HID: appletb-kbd: fix "appletb_backlight" backlight
+ device reference counting
+In-Reply-To: <20250615225941.18320-1-qasdev00@gmail.com>
+Message-ID: <241po3rp-45q2-0pps-n724-9q87o86r4s69@xreary.bet>
+References: <20250615225941.18320-1-qasdev00@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ZR0P278MB097420DCEF0AC969D89C37979F7CA@ZR0P278MB0974.CHEP278.PROD.OUTLOOK.COM>
+Content-Type: text/plain; charset=US-ASCII
 
-On Fri, Jun 20, 2025 at 06:47:58AM +0000, Sebastian Priebe wrote:
-> Hello,
+On Sun, 15 Jun 2025, Qasim Ijaz wrote:
+
+> During appletb_kbd_probe, probe attempts to get the backlight device
+> by name. When this happens backlight_device_get_by_name looks for a
+> device in the backlight class which has name "appletb_backlight" and
+> upon finding a match it increments the reference count for the device
+> and returns it to the caller. However this reference is never released 
+> leading to a reference leak.
 > 
-> Could somebody please have a look to this request?
+> Fix this by decrementing the backlight device reference count on removal
+> via put_device and on probe failure.
+> 
+> Fixes: 93a0fc489481 ("HID: hid-appletb-kbd: add support for automatic brightness control while using the touchbar")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Qasim Ijaz <qasdev00@gmail.com>
 
-It's only been 4 days, please give us a chance to catch up on things.
-There hasn't even been a new 5.15.y release since you made this request.
+Applied, thanks.
 
-Also, please do not top-post.
+-- 
+Jiri Kosina
+SUSE Labs
 
-thanks,
-
-greg k-h
 
