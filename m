@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-154839-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-154840-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A122EAE105D
-	for <lists+stable@lfdr.de>; Fri, 20 Jun 2025 02:26:00 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D0C02AE1070
+	for <lists+stable@lfdr.de>; Fri, 20 Jun 2025 02:40:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2F7C819E193E
-	for <lists+stable@lfdr.de>; Fri, 20 Jun 2025 00:26:16 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6B54D172EF2
+	for <lists+stable@lfdr.de>; Fri, 20 Jun 2025 00:40:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 11EE7186A;
-	Fri, 20 Jun 2025 00:25:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D75F79C0;
+	Fri, 20 Jun 2025 00:40:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="OSHd7sgC"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="rqhlu+g7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE464EC4;
-	Fri, 20 Jun 2025 00:25:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1803530E834;
+	Fri, 20 Jun 2025 00:40:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750379154; cv=none; b=ptxtPs7KFNJ+RIeIY2rUJEsZuRz9OqINNY/b7H9aF3D66n44XVgT1Bepyk1QQ2Pl05aGDFAhX6YHLJR2m3qFE8L1CYSVXQmcE5xXDWwN9V4W81gj/mhaXQUMla5a8bDqVh4hAR23TsgVJxd5Gn0KVdMRJqL74cUz/sg8mUbEo38=
+	t=1750380037; cv=none; b=DDaUqz2soTN53yKpVKAkNX9mIeb7G8/NjDaGuS6jgZh8580ckfdD8F9iRMfYYRh6CXgCRGUZVl9ryLm8fFa6IgMugwpnkI18q0S/bacOVafepQTLFK78cX+Ha0sYScGd6xMJjfFr0+VoZeLVRi1ffwaCb00rqOTi5uP/wUSdMhM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750379154; c=relaxed/simple;
-	bh=8Cbir+MG5T+MiScP4RwETCFou3JHDUzEXbBX752Hfxk=;
-	h=Date:To:From:Subject:Message-Id; b=hMcRenNL7148p/DTKdajRIgsL1gz2D7LZDohVJSVOCnWCr9rLvJ0PBOPbbldJ6+NV8I8HxTvSS2kMQJUx+5yTNK7gJxuJLCzhgjo2I7Zlz6VfkLag0A4remYyouajVnR061Dlm4PXrrEYJCGZR0IFiAlg4ogQAoDVzuSzdkWVt8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=OSHd7sgC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33504C4CEEA;
-	Fri, 20 Jun 2025 00:25:54 +0000 (UTC)
+	s=arc-20240116; t=1750380037; c=relaxed/simple;
+	bh=YkW1WRI+yetzlmflbi918JgHN7/NwtBr5C2kJ1L+nDs=;
+	h=Date:To:From:Subject:Message-Id; b=FAV1kDoPullMQ8OrNrjEPbmqP8lFxdF6rTAK6qsyc3aUQlTrTOACZQ7gfmrdoIAbfrkn3yhaxzZgcgTS7SthTdXr2a90R5JTResU3e0K9zGPPe8xXgmcfYYBtZ2MRKRa4oYeo53zfosQJkvdvPuPLH6NL3gDmp6kRxGiUP0EeK8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=rqhlu+g7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6DDEEC4CEEA;
+	Fri, 20 Jun 2025 00:40:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1750379154;
-	bh=8Cbir+MG5T+MiScP4RwETCFou3JHDUzEXbBX752Hfxk=;
+	s=korg; t=1750380036;
+	bh=YkW1WRI+yetzlmflbi918JgHN7/NwtBr5C2kJ1L+nDs=;
 	h=Date:To:From:Subject:From;
-	b=OSHd7sgCJ18Tx5XmVfWIGqrWC0WPqD1EGa7icEkt5KNPgQANXEt3rc7xvpgDkh+8J
-	 wHGjzqbD84zqixxBcpRHM+3AWN2AmUOLDT2o2wV0A9l4bvGBlt8kVfgj6nEEzA3FR6
-	 u5v49O02yatSrvMX4QqWGDaUQIUTMA6Xfnmj1NwY=
-Date: Thu, 19 Jun 2025 17:25:53 -0700
-To: mm-commits@vger.kernel.org,yi.zhang@huawei.com,yangerkun@huawei.com,tglx@linutronix.de,stable@vger.kernel.org,ming.lei@redhat.com,john.g.garry@oracle.com,axboe@kernel.dk,yukuai3@huawei.com,akpm@linux-foundation.org
+	b=rqhlu+g78Mzy0k8fRZuLhTp2BtXzGovflvKRDXaSLia0b51bD+eGliBBRvII1ythI
+	 sfX6ahTE0yhizIX8ZPGQkLnpCSAkIMCP/Yb3Qg4uqLCf5mvb5gCUM4hSpXH1Y3Hcjq
+	 c0D4jSvbIIdtyrM4SWwLV5Q1e7CE7N5cYyjPZjjc=
+Date: Thu, 19 Jun 2025 17:40:35 -0700
+To: mm-commits@vger.kernel.org,willy@infradead.org,stable@vger.kernel.org,shikemeng@huaweicloud.com,nphamcs@gmail.com,hughd@google.com,chrisl@kernel.org,bhe@redhat.com,baolin.wang@linux.alibaba.com,baohua@kernel.org,kasong@tencent.com,akpm@linux-foundation.org
 From: Andrew Morton <akpm@linux-foundation.org>
-Subject: + lib-group_cpus-fix-null-pointer-dereference-from-group_cpus_evenly.patch added to mm-hotfixes-unstable branch
-Message-Id: <20250620002554.33504C4CEEA@smtp.kernel.org>
+Subject: + mm-shmem-swap-improve-cached-mthp-handling-and-fix-potential-hung.patch added to mm-new branch
+Message-Id: <20250620004036.6DDEEC4CEEA@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -50,15 +50,21 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 
 
 The patch titled
-     Subject: lib/group_cpus: fix NULL pointer dereference from group_cpus_evenly()
-has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
-     lib-group_cpus-fix-null-pointer-dereference-from-group_cpus_evenly.patch
+     Subject: mm/shmem, swap: improve cached mTHP handling and fix potential hung
+has been added to the -mm mm-new branch.  Its filename is
+     mm-shmem-swap-improve-cached-mthp-handling-and-fix-potential-hung.patch
 
 This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/lib-group_cpus-fix-null-pointer-dereference-from-group_cpus_evenly.patch
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-shmem-swap-improve-cached-mthp-handling-and-fix-potential-hung.patch
 
-This patch will later appear in the mm-hotfixes-unstable branch at
+This patch will later appear in the mm-new branch at
     git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+
+Note, mm-new is a provisional staging ground for work-in-progress
+patches, and acceptance into mm-new is a notification for others take
+notice and to finish up reviews.  Please do not hesitate to respond to
+review feedback and post updated versions to replace or incrementally
+fixup patches in mm-new.
 
 Before you just go and hit "reply", please:
    a) Consider who else should be cc'ed
@@ -73,75 +79,199 @@ branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 and is updated there every 2-3 working days
 
 ------------------------------------------------------
-From: Yu Kuai <yukuai3@huawei.com>
-Subject: lib/group_cpus: fix NULL pointer dereference from group_cpus_evenly()
-Date: Thu, 19 Jun 2025 21:26:55 +0800
+From: Kairui Song <kasong@tencent.com>
+Subject: mm/shmem, swap: improve cached mTHP handling and fix potential hung
+Date: Fri, 20 Jun 2025 01:55:35 +0800
 
-While testing null_blk with configfs, echo 0 > poll_queues will trigger
-following panic:
+Patch series "mm/shmem, swap: bugfix and improvement of mTHP swap in", v2.
 
-BUG: kernel NULL pointer dereference, address: 0000000000000010
-Oops: Oops: 0000 [#1] SMP NOPTI
-CPU: 27 UID: 0 PID: 920 Comm: bash Not tainted 6.15.0-02023-gadbdb95c8696-dirty #1238 PREEMPT(undef)
-Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.1-2.fc37 04/01/2014
-RIP: 0010:__bitmap_or+0x48/0x70
-Call Trace:
- <TASK>
- __group_cpus_evenly+0x822/0x8c0
- group_cpus_evenly+0x2d9/0x490
- blk_mq_map_queues+0x1e/0x110
- null_map_queues+0xc9/0x170 [null_blk]
- blk_mq_update_queue_map+0xdb/0x160
- blk_mq_update_nr_hw_queues+0x22b/0x560
- nullb_update_nr_hw_queues+0x71/0xf0 [null_blk]
- nullb_device_poll_queues_store+0xa4/0x130 [null_blk]
- configfs_write_iter+0x109/0x1d0
- vfs_write+0x26e/0x6f0
- ksys_write+0x79/0x180
- __x64_sys_write+0x1d/0x30
- x64_sys_call+0x45c4/0x45f0
- do_syscall_64+0xa5/0x240
- entry_SYSCALL_64_after_hwframe+0x76/0x7e
+The current mTHP swapin path have several problems. It may potentially
+hang, may cause redundant faults due to false positive swap cache lookup,
+and it will involve at least 4 Xarray tree walks (get order, get order
+again, confirm swap, insert folio). And for !CONFIG_TRANSPARENT_HUGEPAGE
+builds, it will performs some mTHP related checks.
 
-Root cause is that numgrps is set to 0, and ZERO_SIZE_PTR is returned
-from kcalloc(), then __group_cpus_evenly() will deference the
-ZERO_SIZE_PTR.
+This series fixes all of the mentioned issues, and the code should be more
+robust and prepared for the swap table series. Now tree walks is reduced
+to twice (get order & confirm, insert folio) and added more sanity checks
+and comments. !CONFIG_TRANSPARENT_HUGEPAGE build overhead is also
+minimized, and comes with a sanity check now.
 
-Fix the problem by checking numgrps first in group_cpus_evenly(), and
-return NULL directly if numgrps is zero.
+The performance is slightly better after this series, sequential swap in of
+24G data from ZRAM, using transparent_hugepage_tmpfs=always (36 samples each):
 
-Link: https://lkml.kernel.org/r/20250619132655.3318883-1-yukuai1@huaweicloud.com
-Fixes: 6a6dcae8f486 ("blk-mq: Build default queue map via group_cpus_evenly()")
-Signed-off-by: Yu Kuai <yukuai3@huawei.com>
-Reviewed-by: Ming Lei <ming.lei@redhat.com>
-Reviewed-by: Jens Axboe <axboe@kernel.dk>
-Cc: ErKun Yang <yangerkun@huawei.com>
-Cc: John Garry <john.g.garry@oracle.com>
-Cc: Thomas Gleinxer <tglx@linutronix.de>
-Cc: "zhangyi (F)" <yi.zhang@huawei.com>
+Before:        avg: 11.23s, stddev: 0.06
+After patch 1: avg: 10.92s, stddev: 0.05
+After patch 2: avg: 10.93s, stddev: 0.15
+After patch 3: avg: 10.07s, stddev: 0.09
+After patch 4: avg: 10.09s, stddev: 0.08
+
+Each patch improves the performance by a little, which is about ~10%
+faster in total.
+
+Build kernel test showed very slightly improvement, testing with make -j24
+with defconfig in a 256M memcg also using ZRAM as swap, and
+transparent_hugepage_tmpfs=always (6 samples each):
+
+Before:        system time avg: 3945.25s
+After patch 1: system time avg: 3903.21s
+After patch 2: system time avg: 3914.76s
+After patch 3: system time avg: 3907.41s
+After patch 4: system time avg: 3876.24s
+
+Slightly better than noise level given the number of samples.
+
+
+This patch (of 4):
+
+The current swap-in code assumes that, when a swap entry in shmem mapping
+is order 0, its cached folios (if present) must be order 0 too, which
+turns out not always correct.
+
+The problem is shmem_split_large_entry is called before verifying the
+folio will eventually be swapped in, one possible race is:
+
+    CPU1                          CPU2
+shmem_swapin_folio
+/* swap in of order > 0 swap entry S1 */
+  folio = swap_cache_get_folio
+  /* folio = NULL */
+  order = xa_get_order
+  /* order > 0 */
+  folio = shmem_swap_alloc_folio
+  /* mTHP alloc failure, folio = NULL */
+  <... Interrupted ...>
+                                 shmem_swapin_folio
+                                 /* S1 is swapped in */
+                                 shmem_writeout
+                                 /* S1 is swapped out, folio cached */
+  shmem_split_large_entry(..., S1)
+  /* S1 is split, but the folio covering it has order > 0 now */
+
+Now any following swapin of S1 will hang: `xa_get_order` returns 0, and
+folio lookup will return a folio with order > 0.  The
+`xa_get_order(&mapping->i_pages, index) != folio_order(folio)` will always
+return false causing swap-in to return -EEXIST.
+
+And this looks fragile.  So fix this up by allowing seeing a larger folio
+in swap cache, and check the whole shmem mapping range covered by the
+swapin have the right swap value upon inserting the folio.  And drop the
+redundant tree walks before the insertion.
+
+This will actually improve performance, as it avoids two redundant Xarray
+tree walks in the hot path, and the only side effect is that in the
+failure path, shmem may redundantly reallocate a few folios causing
+temporary slight memory pressure.
+
+And worth noting, it may seems the order and value check before inserting
+might help reducing the lock contention, which is not true.  The swap
+cache layer ensures raced swapin will either see a swap cache folio or
+failed to do a swapin (we have SWAP_HAS_CACHE bit even if swap cache is
+bypassed), so holding the folio lock and checking the folio flag is
+already good enough for avoiding the lock contention.  The chance that a
+folio passes the swap entry value check but the shmem mapping slot has
+changed should be very low.
+
+Link: https://lkml.kernel.org/r/20250619175538.15799-1-ryncsn@gmail.com
+Link: https://lkml.kernel.org/r/20250619175538.15799-2-ryncsn@gmail.com
+Fixes: 809bc86517cc ("mm: shmem: support large folio swap out")
+Signed-off-by: Kairui Song <kasong@tencent.com>
+Reviewed-by: Kemeng Shi <shikemeng@huaweicloud.com>
+Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
+Cc: Baoquan He <bhe@redhat.com>
+Cc: Barry Song <baohua@kernel.org>
+Cc: Chris Li <chrisl@kernel.org>
+Cc: Hugh Dickins <hughd@google.com>
+Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
+Cc: Nhat Pham <nphamcs@gmail.com>
 Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
 
- lib/group_cpus.c |    3 +++
- 1 file changed, 3 insertions(+)
+ mm/shmem.c |   30 +++++++++++++++++++++---------
+ 1 file changed, 21 insertions(+), 9 deletions(-)
 
---- a/lib/group_cpus.c~lib-group_cpus-fix-null-pointer-dereference-from-group_cpus_evenly
-+++ a/lib/group_cpus.c
-@@ -352,6 +352,9 @@ struct cpumask *group_cpus_evenly(unsign
- 	int ret = -ENOMEM;
- 	struct cpumask *masks = NULL;
+--- a/mm/shmem.c~mm-shmem-swap-improve-cached-mthp-handling-and-fix-potential-hung
++++ a/mm/shmem.c
+@@ -884,7 +884,9 @@ static int shmem_add_to_page_cache(struc
+ 				   pgoff_t index, void *expected, gfp_t gfp)
+ {
+ 	XA_STATE_ORDER(xas, &mapping->i_pages, index, folio_order(folio));
+-	long nr = folio_nr_pages(folio);
++	unsigned long nr = folio_nr_pages(folio);
++	swp_entry_t iter, swap;
++	void *entry;
  
-+	if (numgrps == 0)
-+		return NULL;
-+
- 	if (!zalloc_cpumask_var(&nmsk, GFP_KERNEL))
- 		return NULL;
+ 	VM_BUG_ON_FOLIO(index != round_down(index, nr), folio);
+ 	VM_BUG_ON_FOLIO(!folio_test_locked(folio), folio);
+@@ -896,14 +898,24 @@ static int shmem_add_to_page_cache(struc
  
+ 	gfp &= GFP_RECLAIM_MASK;
+ 	folio_throttle_swaprate(folio, gfp);
++	swap = iter = radix_to_swp_entry(expected);
+ 
+ 	do {
+ 		xas_lock_irq(&xas);
+-		if (expected != xas_find_conflict(&xas)) {
+-			xas_set_err(&xas, -EEXIST);
+-			goto unlock;
++		xas_for_each_conflict(&xas, entry) {
++			/*
++			 * The range must either be empty, or filled with
++			 * expected swap entries. Shmem swap entries are never
++			 * partially freed without split of both entry and
++			 * folio, so there shouldn't be any holes.
++			 */
++			if (!expected || entry != swp_to_radix_entry(iter)) {
++				xas_set_err(&xas, -EEXIST);
++				goto unlock;
++			}
++			iter.val += 1 << xas_get_order(&xas);
+ 		}
+-		if (expected && xas_find_conflict(&xas)) {
++		if (expected && iter.val - nr != swap.val) {
+ 			xas_set_err(&xas, -EEXIST);
+ 			goto unlock;
+ 		}
+@@ -2323,7 +2335,7 @@ static int shmem_swapin_folio(struct ino
+ 			error = -ENOMEM;
+ 			goto failed;
+ 		}
+-	} else if (order != folio_order(folio)) {
++	} else if (order > folio_order(folio)) {
+ 		/*
+ 		 * Swap readahead may swap in order 0 folios into swapcache
+ 		 * asynchronously, while the shmem mapping can still stores
+@@ -2348,15 +2360,15 @@ static int shmem_swapin_folio(struct ino
+ 
+ 			swap = swp_entry(swp_type(swap), swp_offset(swap) + offset);
+ 		}
++	} else if (order < folio_order(folio)) {
++		swap.val = round_down(swp_type(swap), folio_order(folio));
+ 	}
+ 
+ alloced:
+ 	/* We have to do this with folio locked to prevent races */
+ 	folio_lock(folio);
+ 	if ((!skip_swapcache && !folio_test_swapcache(folio)) ||
+-	    folio->swap.val != swap.val ||
+-	    !shmem_confirm_swap(mapping, index, swap) ||
+-	    xa_get_order(&mapping->i_pages, index) != folio_order(folio)) {
++	    folio->swap.val != swap.val) {
+ 		error = -EEXIST;
+ 		goto unlock;
+ 	}
 _
 
-Patches currently in -mm which might be from yukuai3@huawei.com are
+Patches currently in -mm which might be from kasong@tencent.com are
 
-lib-group_cpus-fix-null-pointer-dereference-from-group_cpus_evenly.patch
+mm-shmem-swap-fix-softlockup-with-mthp-swapin.patch
+mm-shmem-swap-fix-softlockup-with-mthp-swapin-v3.patch
+mm-userfaultfd-fix-race-of-userfaultfd_move-and-swap-cache.patch
+mm-list_lru-refactor-the-locking-code.patch
+mm-shmem-swap-improve-cached-mthp-handling-and-fix-potential-hung.patch
+mm-shmem-swap-avoid-redundant-xarray-lookup-during-swapin.patch
+mm-shmem-swap-improve-mthp-swapin-process.patch
+mm-shmem-swap-avoid-false-positive-swap-cache-lookup.patch
 
 
