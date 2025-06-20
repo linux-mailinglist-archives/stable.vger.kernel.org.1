@@ -1,72 +1,70 @@
-Return-Path: <stable+bounces-155163-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-155164-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id ACC8CAE1F65
-	for <lists+stable@lfdr.de>; Fri, 20 Jun 2025 17:50:54 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 09A1EAE1F75
+	for <lists+stable@lfdr.de>; Fri, 20 Jun 2025 17:53:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 643FE1BC226D
-	for <lists+stable@lfdr.de>; Fri, 20 Jun 2025 15:49:02 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 456DB5A6778
+	for <lists+stable@lfdr.de>; Fri, 20 Jun 2025 15:48:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E7E82DCC13;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71B862DCC0B;
 	Fri, 20 Jun 2025 15:46:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Ak0N1LwV"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="CG3NTeXI"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qk1-f202.google.com (mail-qk1-f202.google.com [209.85.222.202])
+Received: from mail-qt1-f202.google.com (mail-qt1-f202.google.com [209.85.160.202])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35D342DCC0B
-	for <stable@vger.kernel.org>; Fri, 20 Jun 2025 15:46:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90C552DF3D1
+	for <stable@vger.kernel.org>; Fri, 20 Jun 2025 15:46:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750434400; cv=none; b=ogGFEHDrpI3yOwERSkx3xPWXd5EJrlcgpl10FByLg7JrdkP06ea40VrYwa3dLdta6Yea3ouXQXfW3IqRRVgH1QhcUSkXcNo80TxO/QmG1dseRZSYccymGRrJBre/ib2+HewdfWZZD1l8Ce7gPmiXd4DYlCfUYJ3YjnlmgNJdSkQ=
+	t=1750434401; cv=none; b=OKYDtPF7IJkdRegZ6n7L2xqxMZTgmLh81d8B6o0KJh5FmVl+ebjpAGrsgNZTwiP31Tmm91mgsXNd6jonkXV5Fn5pa27yGxgi/VVtZ/XLf2cBXseHFijMEaKn7GHErWMmvJfL4OuqqyCAbgvL2rvkHk7M/F5Md/txp7lgJMk7Ytk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750434400; c=relaxed/simple;
-	bh=JErxWvIW14nD2UNEYSDAXeSz9/XWCsZBQRmrL4BRBzA=;
+	s=arc-20240116; t=1750434401; c=relaxed/simple;
+	bh=C/IQ/m1qpO7T1Ze8i7NeL46Wli0AZMtQxfH19BQZtM0=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=FcEfj3zB7peMrCIY9DdKteQcuu3pSueS0cJ3OkCWUigOzL6WrFvGnSXy4UFkcnhXbErqpmCqdaquxEsaMeL/gISzjlOZhV0Ql5hO7Y91qXWbYp2x2p31YBTrA899owbTWHPZxvr8RO+QYolyaQYjOVAUEQLHvJSQ57jqBU+dmL4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Ak0N1LwV; arc=none smtp.client-ip=209.85.222.202
+	 To:Cc:Content-Type; b=lJrKkX3vcPNwSoc/cvbey1o0IB1kZFUJPGoBRcRzn2jZyLYyY3tl6cVWVX6Onx0NdjGlaXYvPuGOIEtuBDaGlK7fwCLHJ+RY1M3GuKaqnJKYStbWoVZxgoMijtAXRF95LEWQgToYXECEpQxHMuuN42QKcQSvSt2WyM+Zq4raTLc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=CG3NTeXI; arc=none smtp.client-ip=209.85.160.202
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com
-Received: by mail-qk1-f202.google.com with SMTP id af79cd13be357-7c7c30d8986so575783485a.2
-        for <stable@vger.kernel.org>; Fri, 20 Jun 2025 08:46:37 -0700 (PDT)
+Received: by mail-qt1-f202.google.com with SMTP id d75a77b69052e-4a58cd9b142so35805531cf.0
+        for <stable@vger.kernel.org>; Fri, 20 Jun 2025 08:46:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1750434397; x=1751039197; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=tDutLDuVAjFZdbDYcrNS/xQ9KT91dlDWNQchC0hT9xc=;
-        b=Ak0N1LwVulETdsQ7j7inrfT4BU2U3z8lvTdGWUzEQOvxSruaW5k5qexiBLpNzysnRc
-         YBvjTAinqobc0c7EGC7TA56fzJLPmlFggTwMV9osueGR6qmSF7g3wV60V2tiJGfaSiXc
-         7Jd+AywCvezTcwNr0ABBPZr89tx8u84DD93k8aw88fNxUJjH5QVByhuSLwBnU8qB+nNh
-         qFy/FoHUrUm1KB2+Posc6awp+stCPtIIQvAbGOlV1VHOETUW8TKlPAAPYx36TGBQ0K8g
-         A1YnNAmTkmc3ghkE9oYXoj60IFshps1L+tOAa/BU84MFKcznux9LEdZ8NEDfXjnZCNcx
-         BlLA==
+        d=google.com; s=20230601; t=1750434398; x=1751039198; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=judRg4QpdlCpkn08LtcNqonSln844QiiG4xQ820FNvY=;
+        b=CG3NTeXIC32uajWCI9expEPZO03vlKvzkqFAXjBRSDrdyehaWbLE07S84np+lsD7w8
+         cCT63PVRuLCLVzhoDNntYCJwjTUVq6a72l+0RV2QJvDv0kt2ne6sbh76RPEbAmIWeAzT
+         H1SlHokXeCNCKdJiOvBtBKVmhVTu+Dvzi/1qL2Tku8ePRWvhBBBrdih46Y8PLbxvxz7A
+         9W+SIR8OnSkHKhE3mkPjJ0Q/o1TQcsTJiN2qWDhQFxoV38dggGvtw66n2mu3s91qb5oD
+         35QUPS/j50QT9CpURl6RI0ADG2kb35OKHkb+lUtDLp0YbqZhRUvWP+wgVkJuodSk+o2K
+         zttg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1750434397; x=1751039197;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=tDutLDuVAjFZdbDYcrNS/xQ9KT91dlDWNQchC0hT9xc=;
-        b=mlI3kW6p5bSDh9fOZFf4zOGvWEAhbP2czwLuXs/pdAMlUYhUuYrOJiVRPXlVglg6so
-         tAKg9UGcpm+DH7S147fJPTAKSZ2Y58KiUj98228G4YA1FN7/c7XLqcKFeLC4tFe598/B
-         os/El1Q0UL5FNtZ2flf2I9LNmRG0TVMyH5UIiZdg1cBvM/YLyRisEZhrF9Txa9fmFr9G
-         ftbFplrZcT8wijULHp5NFhJ7bLgRChlnlJ0IvW6JeWP1rivX50H5Jsq9Tvfk3gFLjzo/
-         P4qAbV/u2D0199ZV65U5AgZLuaqZta8hQc4MWQj4Kv2GlXysIjJd5pDam/xjd+xDbP08
-         zpPg==
-X-Gm-Message-State: AOJu0YxJ6aI/rMRkTwgUdB8l0xUKj1WX4biYLIRedFVjVwzTKgOz+wcg
-	VW3y0vb9AXb0RumEd0jJoQu1bvfwuYgZ+3e3muNefE4dEflGuejMPbzLHFP9f28I7VyF3M4BkID
-	rL8fe++avYYgxK8k03kvmNdGdHb4aKXJLRxNyce/MzGekSy8L9Jn0OBa9jclk2GglIM0xb3iU7E
-	HLwYbMYmhvrYvpJef5MaSQw0hgetU3kiZl0JnATmf0rLN6iWE=
-X-Google-Smtp-Source: AGHT+IH1a6AHoNlJei4bd86Y0A6xVYn0sHVH8/akdxeQmdG+lCUtGjbSDkFbvmizEAr5n4M23VV3gG7ltvbWjA==
-X-Received: from qknqz8.prod.google.com ([2002:a05:620a:8c08:b0:7d3:f198:f718])
+        d=1e100.net; s=20230601; t=1750434398; x=1751039198;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=judRg4QpdlCpkn08LtcNqonSln844QiiG4xQ820FNvY=;
+        b=kbeV8TE4yxmHDa1Vbyyh42y7YDL9CFHYUvyoccpBsgPhY6Y5E2TUWO4MrZnECQz05U
+         jGoC6PHb5b1Lvy7t8cxlioKRop984ofcfg4PhQnVXzjAiP/m1M4ENHM3BaukzWYJcLPj
+         pScdyJ1qjQ1R8qINo4PKOhmUapsvD4aXHSnKbwHuuhEqZhivBo+2mk7zzT8tLmdoJrar
+         YPxzA8EM0TnVTx622m6ofJTm5q1yXcl1MJWsGTI0KVeUhgQ8pku/h3OrY2nmouFH+2Ys
+         71Ga6eJUw2o9q+/DEfZRuNwAi1XOXqGJKxpzhvMZ44UO3YH/ieb8pWyVHwMiMEqGOU3u
+         SECQ==
+X-Gm-Message-State: AOJu0YySJ2F+ohZiK7bgQ/BbCgZ4OxVtnavqzPOdKn1Q77IHY9btCwqj
+	25hE8kDw5F0rtJbH8w/wg/34UMCkwy3euOE82UEbDlMlHjYQV+vr8HVhTGlogmV5EpPlKWF/j6n
+	nEQkYPofD+JwgVBS3PZ0uoSfZI7Z1xxgh03CWyNOwq1D9k0vZdPRS24Jeif4tAXX+N1ABdlEJVJ
+	jfCLjMFlBz6/TgAv/mUyaNDMXf80yUX4J4gVEBuN+N/Ey5e0s=
+X-Google-Smtp-Source: AGHT+IFbdHy0FlGwQiGyYx6V2VCEMxJr9/XGCXn954iFejFaYEIl6IIS4Xd8SAyMFii2bGLIXCLc21FC0kzxFA==
+X-Received: from qtbcj19.prod.google.com ([2002:a05:622a:2593:b0:4a6:fa3f:f95d])
  (user=edumazet job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:620a:63c3:b0:7d3:e87b:dfc0 with SMTP id af79cd13be357-7d3f995f8femr511921685a.53.1750434396908;
- Fri, 20 Jun 2025 08:46:36 -0700 (PDT)
-Date: Fri, 20 Jun 2025 15:46:18 +0000
+ 2002:a05:622a:8e:b0:4a5:a7a8:fd83 with SMTP id d75a77b69052e-4a77a246f5fmr51561931cf.44.1750434398445;
+ Fri, 20 Jun 2025 08:46:38 -0700 (PDT)
+Date: Fri, 20 Jun 2025 15:46:19 +0000
 In-Reply-To: <20250620154623.331294-1-edumazet@google.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -76,175 +74,122 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <2025062025-unengaged-regroup-c3c7@gregkh> <20250620154623.331294-1-edumazet@google.com>
 X-Mailer: git-send-email 2.50.0.rc2.701.gf1e915cc24-goog
-Message-ID: <20250620154623.331294-2-edumazet@google.com>
-Subject: [PATCH 5.15.y 2/7] net_sched: sch_sfq: handle bigger packets
+Message-ID: <20250620154623.331294-3-edumazet@google.com>
+Subject: [PATCH 5.15.y 3/7] net_sched: sch_sfq: don't allow 1 packet limit
 From: Eric Dumazet <edumazet@google.com>
 To: stable@vger.kernel.org
-Cc: Eric Dumazet <edumazet@google.com>, 
-	"=?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?=" <toke@redhat.com>, Jakub Kicinski <kuba@kernel.org>
+Cc: Octavian Purdila <tavip@google.com>, syzbot <syzkaller@googlegroups.com>, 
+	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-commit e4650d7ae4252f67e997a632adfae0dd74d3a99a upstream.
+From: Octavian Purdila <tavip@google.com>
 
-SFQ has an assumption on dealing with packets smaller than 64KB.
+commit 10685681bafce6febb39770f3387621bf5d67d0b upstream.
 
-Even before BIG TCP, TCA_STAB can provide arbitrary big values
-in qdisc_pkt_len(skb)
+The current implementation does not work correctly with a limit of
+1. iproute2 actually checks for this and this patch adds the check in
+kernel as well.
 
-It is time to switch (struct sfq_slot)->allot to a 32bit field.
+This fixes the following syzkaller reported crash:
 
-sizeof(struct sfq_slot) is now 64 bytes, giving better cache locality.
+UBSAN: array-index-out-of-bounds in net/sched/sch_sfq.c:210:6
+index 65535 is out of range for type 'struct sfq_head[128]'
+CPU: 0 PID: 2569 Comm: syz-executor101 Not tainted 5.10.0-smp-DEV #1
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 09/13/2024
+Call Trace:
+  __dump_stack lib/dump_stack.c:79 [inline]
+  dump_stack+0x125/0x19f lib/dump_stack.c:120
+  ubsan_epilogue lib/ubsan.c:148 [inline]
+  __ubsan_handle_out_of_bounds+0xed/0x120 lib/ubsan.c:347
+  sfq_link net/sched/sch_sfq.c:210 [inline]
+  sfq_dec+0x528/0x600 net/sched/sch_sfq.c:238
+  sfq_dequeue+0x39b/0x9d0 net/sched/sch_sfq.c:500
+  sfq_reset+0x13/0x50 net/sched/sch_sfq.c:525
+  qdisc_reset+0xfe/0x510 net/sched/sch_generic.c:1026
+  tbf_reset+0x3d/0x100 net/sched/sch_tbf.c:319
+  qdisc_reset+0xfe/0x510 net/sched/sch_generic.c:1026
+  dev_reset_queue+0x8c/0x140 net/sched/sch_generic.c:1296
+  netdev_for_each_tx_queue include/linux/netdevice.h:2350 [inline]
+  dev_deactivate_many+0x6dc/0xc20 net/sched/sch_generic.c:1362
+  __dev_close_many+0x214/0x350 net/core/dev.c:1468
+  dev_close_many+0x207/0x510 net/core/dev.c:1506
+  unregister_netdevice_many+0x40f/0x16b0 net/core/dev.c:10738
+  unregister_netdevice_queue+0x2be/0x310 net/core/dev.c:10695
+  unregister_netdevice include/linux/netdevice.h:2893 [inline]
+  __tun_detach+0x6b6/0x1600 drivers/net/tun.c:689
+  tun_detach drivers/net/tun.c:705 [inline]
+  tun_chr_close+0x104/0x1b0 drivers/net/tun.c:3640
+  __fput+0x203/0x840 fs/file_table.c:280
+  task_work_run+0x129/0x1b0 kernel/task_work.c:185
+  exit_task_work include/linux/task_work.h:33 [inline]
+  do_exit+0x5ce/0x2200 kernel/exit.c:931
+  do_group_exit+0x144/0x310 kernel/exit.c:1046
+  __do_sys_exit_group kernel/exit.c:1057 [inline]
+  __se_sys_exit_group kernel/exit.c:1055 [inline]
+  __x64_sys_exit_group+0x3b/0x40 kernel/exit.c:1055
+ do_syscall_64+0x6c/0xd0
+ entry_SYSCALL_64_after_hwframe+0x61/0xcb
+RIP: 0033:0x7fe5e7b52479
+Code: Unable to access opcode bytes at RIP 0x7fe5e7b5244f.
+RSP: 002b:00007ffd3c800398 EFLAGS: 00000246 ORIG_RAX: 00000000000000e7
+RAX: ffffffffffffffda RBX: 0000000000000000 RCX: 00007fe5e7b52479
+RDX: 000000000000003c RSI: 00000000000000e7 RDI: 0000000000000000
+RBP: 00007fe5e7bcd2d0 R08: ffffffffffffffb8 R09: 0000000000000014
+R10: 0000000000000000 R11: 0000000000000246 R12: 00007fe5e7bcd2d0
+R13: 0000000000000000 R14: 00007fe5e7bcdd20 R15: 00007fe5e7b24270
 
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Toke H=C3=B8iland-J=C3=B8rgensen <toke@redhat.com>
-Link: https://patch.msgid.link/20241008111603.653140-1-edumazet@google.com
+The crash can be also be reproduced with the following (with a tc
+recompiled to allow for sfq limits of 1):
+
+tc qdisc add dev dummy0 handle 1: root tbf rate 1Kbit burst 100b lat 1s
+../iproute2-6.9.0/tc/tc qdisc add dev dummy0 handle 2: parent 1:10 sfq limit 1
+ifconfig dummy0 up
+ping -I dummy0 -f -c2 -W0.1 8.8.8.8
+sleep 1
+
+Scenario that triggers the crash:
+
+* the first packet is sent and queued in TBF and SFQ; qdisc qlen is 1
+
+* TBF dequeues: it peeks from SFQ which moves the packet to the
+  gso_skb list and keeps qdisc qlen set to 1. TBF is out of tokens so
+  it schedules itself for later.
+
+* the second packet is sent and TBF tries to queues it to SFQ. qdisc
+  qlen is now 2 and because the SFQ limit is 1 the packet is dropped
+  by SFQ. At this point qlen is 1, and all of the SFQ slots are empty,
+  however q->tail is not NULL.
+
+At this point, assuming no more packets are queued, when sch_dequeue
+runs again it will decrement the qlen for the current empty slot
+causing an underflow and the subsequent out of bounds access.
+
+Reported-by: syzbot <syzkaller@googlegroups.com>
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Signed-off-by: Octavian Purdila <tavip@google.com>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Link: https://patch.msgid.link/20241204030520.2084663-2-tavip@google.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 ---
- net/sched/sch_sfq.c | 39 +++++++++++++--------------------------
- 1 file changed, 13 insertions(+), 26 deletions(-)
+ net/sched/sch_sfq.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
 diff --git a/net/sched/sch_sfq.c b/net/sched/sch_sfq.c
-index d6299eb12a8164bcaa0594d3ac2829531bfac588..714bdc2c5a682a9767ce5e8a404=
-aa7b4889604a6 100644
+index 714bdc2c5a682a9767ce5e8a404aa7b4889604a6..505209a932ab73a91a0b15f990d4c9d7a206a05a 100644
 --- a/net/sched/sch_sfq.c
 +++ b/net/sched/sch_sfq.c
-@@ -77,12 +77,6 @@
- #define SFQ_EMPTY_SLOT		0xffff
- #define SFQ_DEFAULT_HASH_DIVISOR 1024
-=20
--/* We use 16 bits to store allot, and want to handle packets up to 64K
-- * Scale allot by 8 (1<<3) so that no overflow occurs.
-- */
--#define SFQ_ALLOT_SHIFT		3
--#define SFQ_ALLOT_SIZE(X)	DIV_ROUND_UP(X, 1 << SFQ_ALLOT_SHIFT)
--
- /* This type should contain at least SFQ_MAX_DEPTH + 1 + SFQ_MAX_FLOWS val=
-ues */
- typedef u16 sfq_index;
-=20
-@@ -104,7 +98,7 @@ struct sfq_slot {
- 	sfq_index	next; /* next slot in sfq RR chain */
- 	struct sfq_head dep; /* anchor in dep[] chains */
- 	unsigned short	hash; /* hash value (index in ht[]) */
--	short		allot; /* credit for this slot */
-+	int		allot; /* credit for this slot */
-=20
- 	unsigned int    backlog;
- 	struct red_vars vars;
-@@ -120,7 +114,6 @@ struct sfq_sched_data {
- 	siphash_key_t 	perturbation;
- 	u8		cur_depth;	/* depth of longest slot */
- 	u8		flags;
--	unsigned short  scaled_quantum; /* SFQ_ALLOT_SIZE(quantum) */
- 	struct tcf_proto __rcu *filter_list;
- 	struct tcf_block *block;
- 	sfq_index	*ht;		/* Hash table ('divisor' slots) */
-@@ -456,7 +449,7 @@ sfq_enqueue(struct sk_buff *skb, struct Qdisc *sch, str=
-uct sk_buff **to_free)
- 		 */
- 		q->tail =3D slot;
- 		/* We could use a bigger initial quantum for new flows */
--		slot->allot =3D q->scaled_quantum;
-+		slot->allot =3D q->quantum;
- 	}
- 	if (++sch->q.qlen <=3D q->limit)
- 		return NET_XMIT_SUCCESS;
-@@ -493,7 +486,7 @@ sfq_dequeue(struct Qdisc *sch)
- 	slot =3D &q->slots[a];
- 	if (slot->allot <=3D 0) {
- 		q->tail =3D slot;
--		slot->allot +=3D q->scaled_quantum;
-+		slot->allot +=3D q->quantum;
- 		goto next_slot;
- 	}
- 	skb =3D slot_dequeue_head(slot);
-@@ -512,7 +505,7 @@ sfq_dequeue(struct Qdisc *sch)
- 		}
- 		q->tail->next =3D next_a;
- 	} else {
--		slot->allot -=3D SFQ_ALLOT_SIZE(qdisc_pkt_len(skb));
-+		slot->allot -=3D qdisc_pkt_len(skb);
- 	}
- 	return skb;
- }
-@@ -595,7 +588,7 @@ static void sfq_rehash(struct Qdisc *sch)
- 				q->tail->next =3D x;
- 			}
- 			q->tail =3D slot;
--			slot->allot =3D q->scaled_quantum;
-+			slot->allot =3D q->quantum;
- 		}
- 	}
- 	sch->q.qlen -=3D dropped;
-@@ -625,7 +618,8 @@ static void sfq_perturbation(struct timer_list *t)
- 		mod_timer(&q->perturb_timer, jiffies + period);
- }
-=20
--static int sfq_change(struct Qdisc *sch, struct nlattr *opt)
-+static int sfq_change(struct Qdisc *sch, struct nlattr *opt,
-+		      struct netlink_ext_ack *extack)
- {
- 	struct sfq_sched_data *q =3D qdisc_priv(sch);
- 	struct tc_sfq_qopt *ctl =3D nla_data(opt);
-@@ -643,14 +637,10 @@ static int sfq_change(struct Qdisc *sch, struct nlatt=
-r *opt)
- 	    (!is_power_of_2(ctl->divisor) || ctl->divisor > 65536))
- 		return -EINVAL;
-=20
--	/* slot->allot is a short, make sure quantum is not too big. */
--	if (ctl->quantum) {
--		unsigned int scaled =3D SFQ_ALLOT_SIZE(ctl->quantum);
--
--		if (scaled <=3D 0 || scaled > SHRT_MAX)
--			return -EINVAL;
-+	if ((int)ctl->quantum < 0) {
-+		NL_SET_ERR_MSG_MOD(extack, "invalid quantum");
-+		return -EINVAL;
- 	}
--
- 	if (ctl_v1 && !red_check_params(ctl_v1->qth_min, ctl_v1->qth_max,
- 					ctl_v1->Wlog, ctl_v1->Scell_log, NULL))
- 		return -EINVAL;
-@@ -660,10 +650,8 @@ static int sfq_change(struct Qdisc *sch, struct nlattr=
- *opt)
+@@ -649,6 +649,10 @@ static int sfq_change(struct Qdisc *sch, struct nlattr *opt,
+ 		if (!p)
  			return -ENOMEM;
  	}
++	if (ctl->limit == 1) {
++		NL_SET_ERR_MSG_MOD(extack, "invalid limit");
++		return -EINVAL;
++	}
  	sch_tree_lock(sch);
--	if (ctl->quantum) {
-+	if (ctl->quantum)
- 		q->quantum =3D ctl->quantum;
--		q->scaled_quantum =3D SFQ_ALLOT_SIZE(q->quantum);
--	}
- 	WRITE_ONCE(q->perturb_period, ctl->perturb_period * HZ);
- 	if (ctl->flows)
- 		q->maxflows =3D min_t(u32, ctl->flows, SFQ_MAX_FLOWS);
-@@ -759,12 +747,11 @@ static int sfq_init(struct Qdisc *sch, struct nlattr =
-*opt,
- 	q->divisor =3D SFQ_DEFAULT_HASH_DIVISOR;
- 	q->maxflows =3D SFQ_DEFAULT_FLOWS;
- 	q->quantum =3D psched_mtu(qdisc_dev(sch));
--	q->scaled_quantum =3D SFQ_ALLOT_SIZE(q->quantum);
- 	q->perturb_period =3D 0;
- 	get_random_bytes(&q->perturbation, sizeof(q->perturbation));
-=20
- 	if (opt) {
--		int err =3D sfq_change(sch, opt);
-+		int err =3D sfq_change(sch, opt, extack);
- 		if (err)
- 			return err;
- 	}
-@@ -875,7 +862,7 @@ static int sfq_dump_class_stats(struct Qdisc *sch, unsi=
-gned long cl,
- 	if (idx !=3D SFQ_EMPTY_SLOT) {
- 		const struct sfq_slot *slot =3D &q->slots[idx];
-=20
--		xstats.allot =3D slot->allot << SFQ_ALLOT_SHIFT;
-+		xstats.allot =3D slot->allot;
- 		qs.qlen =3D slot->qlen;
- 		qs.backlog =3D slot->backlog;
- 	}
---=20
+ 	if (ctl->quantum)
+ 		q->quantum = ctl->quantum;
+-- 
 2.50.0.rc2.701.gf1e915cc24-goog
 
 
