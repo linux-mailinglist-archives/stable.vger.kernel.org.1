@@ -1,138 +1,98 @@
-Return-Path: <stable+bounces-154926-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-154927-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 05470AE135E
-	for <lists+stable@lfdr.de>; Fri, 20 Jun 2025 07:49:23 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8697AAE1370
+	for <lists+stable@lfdr.de>; Fri, 20 Jun 2025 07:55:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5226F6A0935
-	for <lists+stable@lfdr.de>; Fri, 20 Jun 2025 05:48:18 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2A1F24A0964
+	for <lists+stable@lfdr.de>; Fri, 20 Jun 2025 05:55:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0DBD221C171;
-	Fri, 20 Jun 2025 05:48:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F17E121D5B0;
+	Fri, 20 Jun 2025 05:55:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YlHInhmt"
+	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="d3awMKW9"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2FC921770B
-	for <stable@vger.kernel.org>; Fri, 20 Jun 2025 05:48:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43ED01AE877;
+	Fri, 20 Jun 2025 05:55:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750398496; cv=none; b=GAK23YbpuLvSX597PNoGgyz7JZqYZtDwNVnWQhVHl5Vjtu3FoSrkqrU0jHxW7blOmZvSoLgRJ0MJsHBae4sRjjJ4e8noDe1bhMwGDwwAnSOH7IGyT0p23ZzTtPMaTwgBr4lbKHfAhVi21QPZiRvV6br+PlsPE0/kAIa6KzBOBIg=
+	t=1750398944; cv=none; b=sSr0U3Mbc7tu7gy0SeN7Y6XTWG8DJRhxaJe8txstwWEAacIucHzQUkbbN957x2SAQyVza2j62ZDhW3PMm/KgCNd4VOsLFAHCM9FOYHECLL9JaEfj+Z0NqBh7OGv7gzE9FGVpD2zn6bVh3T1GUAwErQCUqPNwaHUb3mADaySGgDw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750398496; c=relaxed/simple;
-	bh=8DVwTjI8Jl89Yw4SgMayiHPEFD4+lwn2vai48bLbEqM=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=UTz7E5eCIEPzqGsESecGh8RO8UQ88ElpNbL3BKwu+GgH7hlT1T/ZYmKyWdohFu4/1m1VFY6dVefRNv2eMBTk4Dg60Y1pxWnhPwAaynljavciIzgQcROgO1YfCTqRmiT5OntUYibww9IrCNjDU6jpe6FzHlTsE79myEU3NWSxSgg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YlHInhmt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0543EC4CEE3;
-	Fri, 20 Jun 2025 05:48:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750398496;
-	bh=8DVwTjI8Jl89Yw4SgMayiHPEFD4+lwn2vai48bLbEqM=;
-	h=Subject:To:Cc:From:Date:From;
-	b=YlHInhmtpa8QdaZF7LFPYddYqNAHJV7bXvZiDfmkSe08ctl4cB57u1RdjqRKWsjfX
-	 +NoD3yoC8z4XlFnTMb/CP+evhmd3HiBU3ZxVyftaTs2iIlVj2KHmH0zqBnRW427NbN
-	 LNe0wyQyqOr2tq9UxEU7y146/WDWRUa9r481HOBU=
-Subject: FAILED: patch "[PATCH] crypto: qat - add shutdown handler to qat_dh895xcc" failed to apply to 6.6-stable tree
-To: giovanni.cabiddu@intel.com,ahsan.atta@intel.com,andriy.shevchenko@linux.intel.com,herbert@gondor.apana.org.au,stable@vger.kernel.org
-Cc: <stable@vger.kernel.org>
-From: <gregkh@linuxfoundation.org>
-Date: Fri, 20 Jun 2025 07:47:05 +0200
-Message-ID: <2025062004-setting-ruined-8212@gregkh>
+	s=arc-20240116; t=1750398944; c=relaxed/simple;
+	bh=kxTTCsywDmf0XQKD9uUdRxnhzEQBXDlWIHzka79usK4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=CRG+nTwOWuG1UiHHOA9tCOSd0cV2L6qelXgVps5W+iwHKMWE8J9lwuIjFsoj88lMvcLr5koM/HnXs0M+UXeKnZL6C5ZWRAm7YLkn4ZQUxdGtyq32CREfW52FHqZHjiBX1HTm9En6P/qU8y8cJ5+ZTrFdmowjFZCVhZaDfi24QEY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=d3awMKW9; arc=none smtp.client-ip=65.109.113.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 01C0940E0169;
+	Fri, 20 Jun 2025 05:55:33 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
+Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
+	header.d=alien8.de
+Received: from mail.alien8.de ([127.0.0.1])
+	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id k6Skc_eFbVCK; Fri, 20 Jun 2025 05:55:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
+	t=1750398929; bh=39uCIp5p9LapkY7vctw0FozBqgDAL63pgc0fQJ/Yuh0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=d3awMKW9bVyXOP9wFWaWlw3Gs41ZXPEKopOIPOEoqRN1r7VkrUQzLuMTm7XaArhAz
+	 KrOqSRgOi368fpdDumTq7hSSEXzhCpxp1LNJI9hIoZRRVbEeuFn9bsge+eFLUnx+V+
+	 Xj55PSiRN5lh7YNFRGET1CGvzKiyQFLL3XPxiqdV8VwVaP+29ZIOU6RbpyB49R0elm
+	 Mze3LPBMgHKFEtyjI36AER/7iVE+SGxhGbWaXo3QombX3QG1UaHEUeN3grM9BaFuFS
+	 kuLEsE05CXlyWLfkJyYNDmUgJjg+uSuv437gy+FM1bgaMJz/em+OyT49+lzF67Itd4
+	 /kT5pteqfNSx0R9MFP7GT8LLa/+NHcuMI82A0jjlK9Ty2h/PKcA2MU2w6xecuxH1EI
+	 pgD/90odDLh0pYxomAbOmTW9MfDDR5vjKdSZphYHvjhGI0XO0Fa9VOTbn52+KIfDm2
+	 vpb49lKQqyy8Qu2DI4TBirD0TjlBHTPWRmf3wBugI0UChve3H0jvV0ewcu/oLfYJgQ
+	 0wYEVUQH9nI6gGidqfRFQwERqh9oZMs7n7jefeXFRTliHP5UKJ3RE4QxT5seGvioQI
+	 OlntJzfVnvkv78Cz9OM2GYjdylzypCfQ6DXpCAx5NeUfJ1MKRLUaM4MnpU57RhvL8C
+	 cDmYN4X/WgdGUvDcNJgQchhU=
+Received: from zn.tnic (p57969c58.dip0.t-ipconnect.de [87.150.156.88])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
+	(No client certificate requested)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 5AB0340E00DA;
+	Fri, 20 Jun 2025 05:55:22 +0000 (UTC)
+Date: Fri, 20 Jun 2025 07:55:11 +0200
+From: Borislav Petkov <bp@alien8.de>
+To: "Zhuo, Qiuxu" <qiuxu.zhuo@intel.com>
+Cc: "stable@vger.kernel.org" <stable@vger.kernel.org>,
+	"stable-commits@vger.kernel.org" <stable-commits@vger.kernel.org>,
+	"Luck, Tony" <tony.luck@intel.com>,
+	James Morse <james.morse@arm.com>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>,
+	Robert Richter <rric@kernel.org>
+Subject: Re: Patch "EDAC/igen6: Skip absent memory controllers" has been
+ added to the 6.15-stable tree
+Message-ID: <20250620055511.GAaFT3vwJHM3HIlwkS@fat_crate.local>
+References: <20250620022630.2600530-1-sashal@kernel.org>
+ <CY8PR11MB7134D06F062C1706175E0C13897CA@CY8PR11MB7134.namprd11.prod.outlook.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <CY8PR11MB7134D06F062C1706175E0C13897CA@CY8PR11MB7134.namprd11.prod.outlook.com>
 
+On Fri, Jun 20, 2025 at 05:30:26AM +0000, Zhuo, Qiuxu wrote:
+> So, please either do not backport this patch or backport it together with the patch 
+> [1], which has been queued in the RAS edac-drivers branch.
 
-The patch below does not apply to the 6.6-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
+This one will go to Linus this week.
 
-To reproduce the conflict and resubmit, you may use the following commands:
+-- 
+Regards/Gruss,
+    Boris.
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
-git checkout FETCH_HEAD
-git cherry-pick -x 2c4e8b228733bfbcaf49408fdf94d220f6eb78fc
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025062004-setting-ruined-8212@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
-
-Possible dependencies:
-
-
-
-thanks,
-
-greg k-h
-
------------------- original commit in Linus's tree ------------------
-
-From 2c4e8b228733bfbcaf49408fdf94d220f6eb78fc Mon Sep 17 00:00:00 2001
-From: Giovanni Cabiddu <giovanni.cabiddu@intel.com>
-Date: Wed, 26 Mar 2025 15:59:49 +0000
-Subject: [PATCH] crypto: qat - add shutdown handler to qat_dh895xcc
-
-During a warm reset via kexec, the system bypasses the driver removal
-sequence, meaning that the remove() callback is not invoked.
-If a QAT device is not shutdown properly, the device driver will fail to
-load in a newly rebooted kernel.
-
-This might result in output like the following after the kexec reboot:
-
-    QAT: AE0 is inactive!!
-    QAT: failed to get device out of reset
-    dh895xcc 0000:3f:00.0: qat_hal_clr_reset error
-    dh895xcc 0000:3f:00.0: Failed to init the AEs
-    dh895xcc 0000:3f:00.0: Failed to initialise Acceleration Engine
-    dh895xcc 0000:3f:00.0: Resetting device qat_dev0
-    dh895xcc 0000:3f:00.0: probe with driver dh895xcc failed with error -14
-
-Implement the shutdown() handler that hooks into the reboot notifier
-list. This brings down the QAT device and ensures it is shut down
-properly.
-
-Cc: <stable@vger.kernel.org>
-Fixes: 7afa232e76ce ("crypto: qat - Intel(R) QAT DH895xcc accelerator")
-Reviewed-by: Ahsan Atta <ahsan.atta@intel.com>
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Signed-off-by: Giovanni Cabiddu <giovanni.cabiddu@intel.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
-
-diff --git a/drivers/crypto/intel/qat/qat_dh895xcc/adf_drv.c b/drivers/crypto/intel/qat/qat_dh895xcc/adf_drv.c
-index 730147404ceb..b59e0cc49e52 100644
---- a/drivers/crypto/intel/qat/qat_dh895xcc/adf_drv.c
-+++ b/drivers/crypto/intel/qat/qat_dh895xcc/adf_drv.c
-@@ -209,6 +209,13 @@ static void adf_remove(struct pci_dev *pdev)
- 	kfree(accel_dev);
- }
- 
-+static void adf_shutdown(struct pci_dev *pdev)
-+{
-+	struct adf_accel_dev *accel_dev = adf_devmgr_pci_to_accel_dev(pdev);
-+
-+	adf_dev_down(accel_dev);
-+}
-+
- static const struct pci_device_id adf_pci_tbl[] = {
- 	{ PCI_VDEVICE(INTEL, PCI_DEVICE_ID_INTEL_QAT_DH895XCC) },
- 	{ }
-@@ -220,6 +227,7 @@ static struct pci_driver adf_driver = {
- 	.name = ADF_DH895XCC_DEVICE_NAME,
- 	.probe = adf_probe,
- 	.remove = adf_remove,
-+	.shutdown = adf_shutdown,
- 	.sriov_configure = adf_sriov_configure,
- 	.err_handler = &adf_err_handler,
- };
-
+https://people.kernel.org/tglx/notes-about-netiquette
 
