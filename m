@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-154865-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-154866-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E9509AE11EB
-	for <lists+stable@lfdr.de>; Fri, 20 Jun 2025 05:49:14 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id F1CA0AE11EC
+	for <lists+stable@lfdr.de>; Fri, 20 Jun 2025 05:49:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D86BF19E1A62
-	for <lists+stable@lfdr.de>; Fri, 20 Jun 2025 03:49:26 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C238A5A2919
+	for <lists+stable@lfdr.de>; Fri, 20 Jun 2025 03:48:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B6511DFE26;
-	Fri, 20 Jun 2025 03:49:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4EB451DED4C;
+	Fri, 20 Jun 2025 03:49:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="QDkQ7He/"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="eShzxgZu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E89FA322E;
-	Fri, 20 Jun 2025 03:49:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09394322E;
+	Fri, 20 Jun 2025 03:49:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750391347; cv=none; b=UXJKla7AfrmvAQfZoaWkkFxcNDQ8K4Fx06hrF/5ZzpMjQsCP157Y0SP7Bfk/m1ibFTeWPfAwmDi5iddfQkZM1jIs9f44mEBStSr5oGPU1TNQeCyTfKMntMibhfaXjzn+Tez3HMlePaEi5o06Wk2M6JOOEqm3G5qQT1GctglXhmY=
+	t=1750391353; cv=none; b=gcyBQyVoGZcy8HG0E10zZvrMAXGEkHNwsIOjteSb7s8X6sLgt0c8Cl2e13AywWxrfvSykmYT/WYEI1EzWMbF9QGpJTmOpCb6KqYR7fsv0Ps4SBXXL3FrY/xwHICZJHkWeT+BY2Y3wxdk78jsEGhiqc77/IVbk9m81hPMgTEkIHU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750391347; c=relaxed/simple;
-	bh=mIc7E7RLgrrxcXXCm1mMF0F4uwx6dVm3iQ/xSIc4SeM=;
-	h=Date:To:From:Subject:Message-Id; b=c3LY+E0Uu7zK1VKIGpKYTpvqD4K4h4qRONk5h2/LQ8OnKy0sOX7m6hrdELFfQmIakjklCxb8dJ0x9emHkx6eQAwF40spT2X6yc63wsq0FVi8zv0CZs0HrMB/zMUkzk6UFaoHreH5gzGkRi3tSau+S8FIQgnr2X6pcYFs5kpuzTE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=QDkQ7He/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61BEBC4CEE3;
-	Fri, 20 Jun 2025 03:49:06 +0000 (UTC)
+	s=arc-20240116; t=1750391353; c=relaxed/simple;
+	bh=reIwi/1t48AtCx/6ffZfxfQdi0W+chWYuWIhk+7xuCI=;
+	h=Date:To:From:Subject:Message-Id; b=KRNRalxXe8XUq6fxK2aZZtXdkG0YRer3oxF0n/nFlaj6v7OT7DMMUDPcwnoLB2Vn7GyNkXEjwMUvArLwCDtZc+JWwOnXIGez3v4ILDB3X31iQUycl9J7IHLEb2BH/paWGeCegLrYvcmBOpFhOwyG2nAgrhQFOrVUrgJ+EDXkkl4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=eShzxgZu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF01DC4CEED;
+	Fri, 20 Jun 2025 03:49:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1750391346;
-	bh=mIc7E7RLgrrxcXXCm1mMF0F4uwx6dVm3iQ/xSIc4SeM=;
+	s=korg; t=1750391352;
+	bh=reIwi/1t48AtCx/6ffZfxfQdi0W+chWYuWIhk+7xuCI=;
 	h=Date:To:From:Subject:From;
-	b=QDkQ7He/mluop06m0YZg2b0EIMfobMJ6fNaGg3rbShX7JBiFWOHgdzZW33cVQj3mI
-	 X3Lilnkceu0e+fS3HLIt6UzLa9wjZUJkkdDZyhzZ24/P/zEl4cT1xuIwTM14XX7UAa
-	 QGouYQgXzHywYTaj2pTJwmmmCLHs6S8zTEJ/VK2E=
-Date: Thu, 19 Jun 2025 20:49:05 -0700
-To: mm-commits@vger.kernel.org,surenb@google.com,stable@vger.kernel.org,peterx@redhat.com,lokeshgidra@google.com,david@redhat.com,chrisl@kernel.org,baohua@kernel.org,aarcange@redhat.com,kasong@tencent.com,akpm@linux-foundation.org
+	b=eShzxgZujx/oWOGyzOCLMfxtOkPJwObmF7DPyaKje/4JFYuNR7mHkCc334IifPpmV
+	 oeZ6M8RZSfbcU80bTiXBSHvvk+9EgQFDsHtQCD/S9m3AvXU7Znf/SqiclHiOhzpXgd
+	 hS3kd71eCkrZeBnRVZe7uKmNsmVC3RH29H1g3lv8=
+Date: Thu, 19 Jun 2025 20:49:12 -0700
+To: mm-commits@vger.kernel.org,stable@vger.kernel.org,robertpang@google.com,kent.overstreet@linux.dev,jserv@ccns.ncku.edu.tw,colyli@kernel.org,visitorckw@gmail.com,akpm@linux-foundation.org
 From: Andrew Morton <akpm@linux-foundation.org>
-Subject: [merged mm-hotfixes-stable] mm-userfaultfd-fix-race-of-userfaultfd_move-and-swap-cache.patch removed from -mm tree
-Message-Id: <20250620034906.61BEBC4CEE3@smtp.kernel.org>
+Subject: [merged mm-hotfixes-stable] revert-bcache-update-min_heap_callbacks-to-use-default-builtin-swap.patch removed from -mm tree
+Message-Id: <20250620034912.CF01DC4CEED@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -50,213 +50,208 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 
 
 The quilt patch titled
-     Subject: mm: userfaultfd: fix race of userfaultfd_move and swap cache
+     Subject: Revert "bcache: update min_heap_callbacks to use default builtin swap"
 has been removed from the -mm tree.  Its filename was
-     mm-userfaultfd-fix-race-of-userfaultfd_move-and-swap-cache.patch
+     revert-bcache-update-min_heap_callbacks-to-use-default-builtin-swap.patch
 
 This patch was dropped because it was merged into the mm-hotfixes-stable branch
 of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
 ------------------------------------------------------
-From: Kairui Song <kasong@tencent.com>
-Subject: mm: userfaultfd: fix race of userfaultfd_move and swap cache
-Date: Wed, 4 Jun 2025 23:10:38 +0800
+From: Kuan-Wei Chiu <visitorckw@gmail.com>
+Subject: Revert "bcache: update min_heap_callbacks to use default builtin swap"
+Date: Sun, 15 Jun 2025 04:23:51 +0800
 
-This commit fixes two kinds of races, they may have different results:
+Patch series "bcache: Revert min_heap migration due to performance
+regression".
 
-Barry reported a BUG_ON in commit c50f8e6053b0, we may see the same
-BUG_ON if the filemap lookup returned NULL and folio is added to swap
-cache after that.
+This patch series reverts the migration of bcache from its original heap
+implementation to the generic min_heap library.  While the original change
+aimed to simplify the code and improve maintainability, it introduced a
+severe performance regression in real-world scenarios.
 
-If another kind of race is triggered (folio changed after lookup) we
-may see RSS counter is corrupted:
+As reported by Robert, systems using bcache now suffer from periodic
+latency spikes, with P100 (max) latency increasing from 600 ms to 2.4
+seconds every 5 minutes.  This degrades bcache's value as a low-latency
+caching layer, and leads to frequent timeouts and application stalls in
+production environments.
 
-[  406.893936] BUG: Bad rss-counter state mm:ffff0000c5a9ddc0
-type:MM_ANONPAGES val:-1
-[  406.894071] BUG: Bad rss-counter state mm:ffff0000c5a9ddc0
-type:MM_SHMEMPAGES val:1
+The primary cause of this regression is the behavior of the generic
+min_heap implementation's bottom-up sift_down, which performs up to 2 *
+log2(n) comparisons when many elements are equal.  The original top-down
+variant used by bcache only required O(1) comparisons in such cases.  The
+issue was further exacerbated by commit 92a8b224b833 ("lib/min_heap:
+introduce non-inline versions of min heap API functions"), which
+introduced non-inlined versions of the min_heap API, adding function call
+overhead to a performance-critical hot path.
 
-Because the folio is being accounted to the wrong VMA.
 
-I'm not sure if there will be any data corruption though, seems no. 
-The issues above are critical already.
+This patch (of 3):
 
+This reverts commit 3d8a9a1c35227c3f1b0bd132c9f0a80dbda07b65.
 
-On seeing a swap entry PTE, userfaultfd_move does a lockless swap cache
-lookup, and tries to move the found folio to the faulting vma.  Currently,
-it relies on checking the PTE value to ensure that the moved folio still
-belongs to the src swap entry and that no new folio has been added to the
-swap cache, which turns out to be unreliable.
+Although removing the custom swap function simplified the code, this
+change is part of a broader migration to the generic min_heap API that
+introduced significant performance regressions in bcache.
 
-While working and reviewing the swap table series with Barry, following
-existing races are observed and reproduced [1]:
+As reported by Robert, bcache now suffers from latency spikes, with P100
+(max) latency increasing from 600 ms to 2.4 seconds every 5 minutes. 
+These regressions degrade bcache's effectiveness as a low-latency cache
+layer and lead to frequent timeouts and application stalls in production
+environments.
 
-In the example below, move_pages_pte is moving src_pte to dst_pte, where
-src_pte is a swap entry PTE holding swap entry S1, and S1 is not in the
-swap cache:
+This revert is part of a series of changes to restore previous performance
+by undoing the min_heap transition.
 
-CPU1                               CPU2
-userfaultfd_move
-  move_pages_pte()
-    entry = pte_to_swp_entry(orig_src_pte);
-    // Here it got entry = S1
-    ... < interrupted> ...
-                                   <swapin src_pte, alloc and use folio A>
-                                   // folio A is a new allocated folio
-                                   // and get installed into src_pte
-                                   <frees swap entry S1>
-                                   // src_pte now points to folio A, S1
-                                   // has swap count == 0, it can be freed
-                                   // by folio_swap_swap or swap
-                                   // allocator's reclaim.
-                                   <try to swap out another folio B>
-                                   // folio B is a folio in another VMA.
-                                   <put folio B to swap cache using S1 >
-                                   // S1 is freed, folio B can use it
-                                   // for swap out with no problem.
-                                   ...
-    folio = filemap_get_folio(S1)
-    // Got folio B here !!!
-    ... < interrupted again> ...
-                                   <swapin folio B and free S1>
-                                   // Now S1 is free to be used again.
-                                   <swapout src_pte & folio A using S1>
-                                   // Now src_pte is a swap entry PTE
-                                   // holding S1 again.
-    folio_trylock(folio)
-    move_swap_pte
-      double_pt_lock
-      is_pte_pages_stable
-      // Check passed because src_pte == S1
-      folio_move_anon_rmap(...)
-      // Moved invalid folio B here !!!
-
-The race window is very short and requires multiple collisions of multiple
-rare events, so it's very unlikely to happen, but with a deliberately
-constructed reproducer and increased time window, it can be reproduced
-easily.
-
-This can be fixed by checking if the folio returned by filemap is the
-valid swap cache folio after acquiring the folio lock.
-
-Another similar race is possible: filemap_get_folio may return NULL, but
-folio (A) could be swapped in and then swapped out again using the same
-swap entry after the lookup.  In such a case, folio (A) may remain in the
-swap cache, so it must be moved too:
-
-CPU1                               CPU2
-userfaultfd_move
-  move_pages_pte()
-    entry = pte_to_swp_entry(orig_src_pte);
-    // Here it got entry = S1, and S1 is not in swap cache
-    folio = filemap_get_folio(S1)
-    // Got NULL
-    ... < interrupted again> ...
-                                   <swapin folio A and free S1>
-                                   <swapout folio A re-using S1>
-    move_swap_pte
-      double_pt_lock
-      is_pte_pages_stable
-      // Check passed because src_pte == S1
-      folio_move_anon_rmap(...)
-      // folio A is ignored !!!
-
-Fix this by checking the swap cache again after acquiring the src_pte
-lock.  And to avoid the filemap overhead, we check swap_map directly [2].
-
-The SWP_SYNCHRONOUS_IO path does make the problem more complex, but so far
-we don't need to worry about that, since folios can only be exposed to the
-swap cache in the swap out path, and this is covered in this patch by
-checking the swap cache again after acquiring the src_pte lock.
-
-Testing with a simple C program that allocates and moves several GB of
-memory did not show any observable performance change.
-
-Link: https://lkml.kernel.org/r/20250604151038.21968-1-ryncsn@gmail.com
-Fixes: adef440691ba ("userfaultfd: UFFDIO_MOVE uABI")
-Signed-off-by: Kairui Song <kasong@tencent.com>
-Closes: https://lore.kernel.org/linux-mm/CAMgjq7B1K=6OOrK2OUZ0-tqCzi+EJt+2_K97TPGoSt=9+JwP7Q@mail.gmail.com/ [1]
-Link: https://lore.kernel.org/all/CAGsJ_4yJhJBo16XhiC-nUzSheyX-V3-nFE+tAi=8Y560K8eT=A@mail.gmail.com/ [2]
-Reviewed-by: Lokesh Gidra <lokeshgidra@google.com>
-Acked-by: Peter Xu <peterx@redhat.com>
-Reviewed-by: Suren Baghdasaryan <surenb@google.com>
-Reviewed-by: Barry Song <baohua@kernel.org>
-Reviewed-by: Chris Li <chrisl@kernel.org>
-Cc: Andrea Arcangeli <aarcange@redhat.com>
-Cc: David Hildenbrand <david@redhat.com>
-Cc: Kairui Song <kasong@tencent.com>
+Link: https://lkml.kernel.org/r/20250614202353.1632957-1-visitorckw@gmail.com
+Link: https://lore.kernel.org/lkml/CAJhEC05+0S69z+3+FB2Cd0hD+pCRyWTKLEOsc8BOmH73p1m+KQ@mail.gmail.com
+Link: https://lkml.kernel.org/r/20250614202353.1632957-2-visitorckw@gmail.com
+Fixes: 866898efbb25 ("bcache: remove heap-related macros and switch to generic min_heap")
+Fixes: 92a8b224b833 ("lib/min_heap: introduce non-inline versions of min heap API functions")
+Signed-off-by: Kuan-Wei Chiu <visitorckw@gmail.com>
+Reported-by: Robert Pang <robertpang@google.com>
+Closes: https://lore.kernel.org/linux-bcache/CAJhEC06F_AtrPgw2-7CvCqZgeStgCtitbD-ryuPpXQA-JG5XXw@mail.gmail.com
+Acked-by: Coly Li <colyli@kernel.org>
+Cc: Ching-Chun (Jim) Huang <jserv@ccns.ncku.edu.tw>
+Cc: Kent Overstreet <kent.overstreet@linux.dev>
 Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
 
- mm/userfaultfd.c |   33 +++++++++++++++++++++++++++++++--
- 1 file changed, 31 insertions(+), 2 deletions(-)
+ drivers/md/bcache/alloc.c    |   11 +++++++++--
+ drivers/md/bcache/bset.c     |   14 +++++++++++---
+ drivers/md/bcache/extents.c  |   10 +++++++++-
+ drivers/md/bcache/movinggc.c |   10 +++++++++-
+ 4 files changed, 38 insertions(+), 7 deletions(-)
 
---- a/mm/userfaultfd.c~mm-userfaultfd-fix-race-of-userfaultfd_move-and-swap-cache
-+++ a/mm/userfaultfd.c
-@@ -1084,8 +1084,18 @@ static int move_swap_pte(struct mm_struc
- 			 pte_t orig_dst_pte, pte_t orig_src_pte,
- 			 pmd_t *dst_pmd, pmd_t dst_pmdval,
- 			 spinlock_t *dst_ptl, spinlock_t *src_ptl,
--			 struct folio *src_folio)
-+			 struct folio *src_folio,
-+			 struct swap_info_struct *si, swp_entry_t entry)
- {
-+	/*
-+	 * Check if the folio still belongs to the target swap entry after
-+	 * acquiring the lock. Folio can be freed in the swap cache while
-+	 * not locked.
-+	 */
-+	if (src_folio && unlikely(!folio_test_swapcache(src_folio) ||
-+				  entry.val != src_folio->swap.val))
-+		return -EAGAIN;
+--- a/drivers/md/bcache/alloc.c~revert-bcache-update-min_heap_callbacks-to-use-default-builtin-swap
++++ a/drivers/md/bcache/alloc.c
+@@ -189,16 +189,23 @@ static inline bool new_bucket_min_cmp(co
+ 	return new_bucket_prio(ca, *lhs) < new_bucket_prio(ca, *rhs);
+ }
+ 
++static inline void new_bucket_swap(void *l, void *r, void __always_unused *args)
++{
++	struct bucket **lhs = l, **rhs = r;
 +
- 	double_pt_lock(dst_ptl, src_ptl);
++	swap(*lhs, *rhs);
++}
++
+ static void invalidate_buckets_lru(struct cache *ca)
+ {
+ 	struct bucket *b;
+ 	const struct min_heap_callbacks bucket_max_cmp_callback = {
+ 		.less = new_bucket_max_cmp,
+-		.swp = NULL,
++		.swp = new_bucket_swap,
+ 	};
+ 	const struct min_heap_callbacks bucket_min_cmp_callback = {
+ 		.less = new_bucket_min_cmp,
+-		.swp = NULL,
++		.swp = new_bucket_swap,
+ 	};
  
- 	if (!is_pte_pages_stable(dst_pte, src_pte, orig_dst_pte, orig_src_pte,
-@@ -1102,6 +1112,25 @@ static int move_swap_pte(struct mm_struc
- 	if (src_folio) {
- 		folio_move_anon_rmap(src_folio, dst_vma);
- 		src_folio->index = linear_page_index(dst_vma, dst_addr);
-+	} else {
-+		/*
-+		 * Check if the swap entry is cached after acquiring the src_pte
-+		 * lock. Otherwise, we might miss a newly loaded swap cache folio.
-+		 *
-+		 * Check swap_map directly to minimize overhead, READ_ONCE is sufficient.
-+		 * We are trying to catch newly added swap cache, the only possible case is
-+		 * when a folio is swapped in and out again staying in swap cache, using the
-+		 * same entry before the PTE check above. The PTL is acquired and released
-+		 * twice, each time after updating the swap_map's flag. So holding
-+		 * the PTL here ensures we see the updated value. False positive is possible,
-+		 * e.g. SWP_SYNCHRONOUS_IO swapin may set the flag without touching the
-+		 * cache, or during the tiny synchronization window between swap cache and
-+		 * swap_map, but it will be gone very quickly, worst result is retry jitters.
-+		 */
-+		if (READ_ONCE(si->swap_map[swp_offset(entry)]) & SWAP_HAS_CACHE) {
-+			double_pt_unlock(dst_ptl, src_ptl);
-+			return -EAGAIN;
-+		}
- 	}
+ 	ca->heap.nr = 0;
+--- a/drivers/md/bcache/bset.c~revert-bcache-update-min_heap_callbacks-to-use-default-builtin-swap
++++ a/drivers/md/bcache/bset.c
+@@ -1093,6 +1093,14 @@ static inline bool new_btree_iter_cmp(co
+ 	return bkey_cmp(_l->k, _r->k) <= 0;
+ }
  
- 	orig_src_pte = ptep_get_and_clear(mm, src_addr, src_pte);
-@@ -1412,7 +1441,7 @@ retry:
- 		}
- 		err = move_swap_pte(mm, dst_vma, dst_addr, src_addr, dst_pte, src_pte,
- 				orig_dst_pte, orig_src_pte, dst_pmd, dst_pmdval,
--				dst_ptl, src_ptl, src_folio);
-+				dst_ptl, src_ptl, src_folio, si, entry);
- 	}
++static inline void new_btree_iter_swap(void *iter1, void *iter2, void __always_unused *args)
++{
++	struct btree_iter_set *_iter1 = iter1;
++	struct btree_iter_set *_iter2 = iter2;
++
++	swap(*_iter1, *_iter2);
++}
++
+ static inline bool btree_iter_end(struct btree_iter *iter)
+ {
+ 	return !iter->heap.nr;
+@@ -1103,7 +1111,7 @@ void bch_btree_iter_push(struct btree_it
+ {
+ 	const struct min_heap_callbacks callbacks = {
+ 		.less = new_btree_iter_cmp,
+-		.swp = NULL,
++		.swp = new_btree_iter_swap,
+ 	};
  
- out:
+ 	if (k != end)
+@@ -1149,7 +1157,7 @@ static inline struct bkey *__bch_btree_i
+ 	struct bkey *ret = NULL;
+ 	const struct min_heap_callbacks callbacks = {
+ 		.less = cmp,
+-		.swp = NULL,
++		.swp = new_btree_iter_swap,
+ 	};
+ 
+ 	if (!btree_iter_end(iter)) {
+@@ -1223,7 +1231,7 @@ static void btree_mergesort(struct btree
+ 		: bch_ptr_invalid;
+ 	const struct min_heap_callbacks callbacks = {
+ 		.less = b->ops->sort_cmp,
+-		.swp = NULL,
++		.swp = new_btree_iter_swap,
+ 	};
+ 
+ 	/* Heapify the iterator, using our comparison function */
+--- a/drivers/md/bcache/extents.c~revert-bcache-update-min_heap_callbacks-to-use-default-builtin-swap
++++ a/drivers/md/bcache/extents.c
+@@ -266,12 +266,20 @@ static bool new_bch_extent_sort_cmp(cons
+ 	return !(c ? c > 0 : _l->k < _r->k);
+ }
+ 
++static inline void new_btree_iter_swap(void *iter1, void *iter2, void __always_unused *args)
++{
++	struct btree_iter_set *_iter1 = iter1;
++	struct btree_iter_set *_iter2 = iter2;
++
++	swap(*_iter1, *_iter2);
++}
++
+ static struct bkey *bch_extent_sort_fixup(struct btree_iter *iter,
+ 					  struct bkey *tmp)
+ {
+ 	const struct min_heap_callbacks callbacks = {
+ 		.less = new_bch_extent_sort_cmp,
+-		.swp = NULL,
++		.swp = new_btree_iter_swap,
+ 	};
+ 	while (iter->heap.nr > 1) {
+ 		struct btree_iter_set *top = iter->heap.data, *i = top + 1;
+--- a/drivers/md/bcache/movinggc.c~revert-bcache-update-min_heap_callbacks-to-use-default-builtin-swap
++++ a/drivers/md/bcache/movinggc.c
+@@ -190,6 +190,14 @@ static bool new_bucket_cmp(const void *l
+ 	return GC_SECTORS_USED(*_l) >= GC_SECTORS_USED(*_r);
+ }
+ 
++static void new_bucket_swap(void *l, void *r, void __always_unused *args)
++{
++	struct bucket **_l = l;
++	struct bucket **_r = r;
++
++	swap(*_l, *_r);
++}
++
+ static unsigned int bucket_heap_top(struct cache *ca)
+ {
+ 	struct bucket *b;
+@@ -204,7 +212,7 @@ void bch_moving_gc(struct cache_set *c)
+ 	unsigned long sectors_to_move, reserve_sectors;
+ 	const struct min_heap_callbacks callbacks = {
+ 		.less = new_bucket_cmp,
+-		.swp = NULL,
++		.swp = new_bucket_swap,
+ 	};
+ 
+ 	if (!c->copy_gc_enabled)
 _
 
-Patches currently in -mm which might be from kasong@tencent.com are
+Patches currently in -mm which might be from visitorckw@gmail.com are
 
-mm-list_lru-refactor-the-locking-code.patch
-mm-shmem-swap-improve-cached-mthp-handling-and-fix-potential-hung.patch
-mm-shmem-swap-avoid-redundant-xarray-lookup-during-swapin.patch
-mm-shmem-swap-improve-mthp-swapin-process.patch
-mm-shmem-swap-avoid-false-positive-swap-cache-lookup.patch
+lib-math-gcd-use-static-key-to-select-implementation-at-runtime.patch
+riscv-optimize-gcd-code-size-when-config_riscv_isa_zbb-is-disabled.patch
+riscv-optimize-gcd-performance-on-risc-v-without-zbb-extension.patch
 
 
