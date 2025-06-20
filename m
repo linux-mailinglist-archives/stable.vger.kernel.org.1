@@ -1,196 +1,158 @@
-Return-Path: <stable+bounces-154973-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-154975-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 886FDAE1567
-	for <lists+stable@lfdr.de>; Fri, 20 Jun 2025 10:05:07 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C458AE1593
+	for <lists+stable@lfdr.de>; Fri, 20 Jun 2025 10:13:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C0258169DDA
-	for <lists+stable@lfdr.de>; Fri, 20 Jun 2025 08:05:07 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4F2343B88D4
+	for <lists+stable@lfdr.de>; Fri, 20 Jun 2025 08:13:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C45223236F;
-	Fri, 20 Jun 2025 08:04:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 758F323505C;
+	Fri, 20 Jun 2025 08:12:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e5NdS6+w"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ej1-f66.google.com (mail-ej1-f66.google.com [209.85.218.66])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36774231839;
-	Fri, 20 Jun 2025 08:04:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.66
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29B3423505A
+	for <stable@vger.kernel.org>; Fri, 20 Jun 2025 08:12:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750406690; cv=none; b=W4nUAjlR9lO/0zaQRIpUA+3WbiYQSG1tBD9BtuoExRD2SpT0o5aRb6IQaRDLdo+ERelYRplch4URFlzWTn+aQYjfbpkY7HPGnhecdblvL9O7VQukuXt47cehgIAUuuQfoQG5fzUPG7AS/kmb0M/gOuG4Agh5tzGMpClc9p+hgpQ=
+	t=1750407133; cv=none; b=SoA87/pdeEO+vYm3I2du4Ox2AYThwZI81Kg4aMfGtEug7BYLHnyqGPAs+SJq72FngYqFNRqpMZ64OMYGgR1dD6niLAcYoEqgdsxSQN6PiCQxRcTmfp4DJ1rcWiUfmuExeOp8UR1qQ6cDqnhM5dESRzt+4ZPe+STlcEUz7u/YhTg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750406690; c=relaxed/simple;
-	bh=6mR4fOP6MNO3YRuX9MZpyW1vo/oZGxSsIDAcFTU9vX4=;
-	h=Message-ID:Date:MIME-Version:Cc:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=GNY3xutrsB13NG7eoVImSCAwkV3srqaobTh/0xXLMgU/Dd+xhnVTfYYhWg1XwIQ0yzaCmIAUxIWXsH8/0OM8a0cFc6+2SCiWAMTa7AgJJ4rGgFS6eQuK8506DlhurVrWgk+VYXDIJ+LwtDhzp9v+U/v92t+mPckTS2WUOuUYuXo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ovn.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.218.66
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ovn.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f66.google.com with SMTP id a640c23a62f3a-ae04ce9153aso199961066b.0;
-        Fri, 20 Jun 2025 01:04:47 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1750406686; x=1751011486;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:to:subject:cc:user-agent:mime-version
-         :date:message-id:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=aLhZ95wJzeGFC6l3NMx0nFISsvWc6wJkbwkQc8bhIos=;
-        b=wkUeFqQRzR0MvpnIyW8MwWR3g71lZbEVvoWXs9IMxleAb1KSVl5xHZ+9QVK2uLkrlS
-         JrzBBKM82uAv/VYkZjrEJL7jciTjqgXtvzLWtvdbaK/XOu4zy3Ui59t2Q+ZZsDTXJd9H
-         7BDIlejHIyBzTTl1hoP/b795eYGgsWm4wPVuhth4epvKCRNg4ruv+5/bc1UFdnOZ+g1Y
-         HnDYb5P9BPQ/dQ0rvhGqoLuLy4v3B1/aYXe8hgUjAFgXcE4ErM1dWH4nA9nLo1kfOUJc
-         2xKVPnANMJnkiv3K7OQeEDBoce+buoz1inSMB5OLvxKI4YWe8g6v03albGzbwH1sBFKE
-         tBCw==
-X-Forwarded-Encrypted: i=1; AJvYcCWbvJuNDTjt8V7xzGHbQ+kQ6Q6SMV9nchUMuvpVtgXNBpydo+VIxUDIcI2Bfx/UAr8rCLPKssL3KV8phlDL9A==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwBZbRtBdUvzaIO2mHrOWwE15QjXrPKLv93f3Nn9vnYzsFegQjc
-	y2s0BGI2gfczOu2PZkp2X4Oxl7i2VDIKYr0hIOc8j6ypcaIz6YsEoIACMr1anXz6
-X-Gm-Gg: ASbGncumkQwyzEqGDSAg9Br89/wB5tuSN/6WSEMIn8MU/EPnSPhctXg0Ez+qg6EbUCB
-	/DSVG3sEpUjvfxJjVJxNejHlKf456rzirw23HKffipmQVXvMC7pTW2aJkPS4rBh5A4TuAftrfon
-	lqjdsheoUOGHsnn52/RWq5+XleoYXQteapR4dsNDbfZfMF4rYZVBIzP1FSQlB7S6hfX3+y6k1L9
-	Cw8i35EBCM5MWyWJo8b8vbHbckndnGn9eXcyc1DX/GpZiBtkwDFk/zBSXtKz1BRIQ/uTe1ktDKA
-	6gk0eKskxhV49nIu/e8hgOV6pGCUB+QQ7svmF4VyuiwNpVn57fQ8kUBMRu7NWH6OEtUh3pdk4TL
-	t1O72fpnhqp7nfOxJ1yXj2wY=
-X-Google-Smtp-Source: AGHT+IHcIZ/tq396XhbbLxmJks7XraSLn1tBDXLoV7FPjaYpSng5Fvb9lTME+X8ZHkqs+UCSNHJF9w==
-X-Received: by 2002:a17:906:fd85:b0:ae0:33aa:986d with SMTP id a640c23a62f3a-ae05adfcf58mr137113566b.6.1750406686121;
-        Fri, 20 Jun 2025 01:04:46 -0700 (PDT)
-Received: from [192.168.88.252] (78-80-106-150.customers.tmcz.cz. [78.80.106.150])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ae0541b6b54sm121059066b.116.2025.06.20.01.04.45
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 20 Jun 2025 01:04:45 -0700 (PDT)
-Message-ID: <6d21ab64-88f9-4380-9e28-63700bddbe30@ovn.org>
-Date: Fri, 20 Jun 2025 10:04:44 +0200
+	s=arc-20240116; t=1750407133; c=relaxed/simple;
+	bh=A2HTu10trbxMAQ5kQG4RwFHXJw1VfixyMi89X8Tzp5s=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=QvRK3ck8zH34BxliRMH0XNPS8LlikEpl9UCUZVA9pRbW+hHwqR9gWfs3jglrOfKMhW/42Qx2jL/0gy0aelUDY1B+qtc8YdAyhqQ4/t0EdN4sYqpe14sVkxCX8RyS164hHWalmt/rO6TsL7g/rr52gu6KL2n2sf0kLS5zr3JSf2o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e5NdS6+w; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4BD6EC4CEE3;
+	Fri, 20 Jun 2025 08:12:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1750407132;
+	bh=A2HTu10trbxMAQ5kQG4RwFHXJw1VfixyMi89X8Tzp5s=;
+	h=Subject:To:Cc:From:Date:From;
+	b=e5NdS6+wy5oy5t2taImcVmEBzL68em2IYj79yCCFGXQEc0tAIDKYlOz0kJopZ6hgu
+	 C9CiTATnKq1ZnROmiBPiTx6lFJksuHPW0Mj8H2f/QS8XwlPAxY4oa8OimWOmQBh556
+	 8QrL0DVy8O9sxQhARdcq38FzKPx0bZ8loV7DQjYs=
+Subject: FAILED: patch "[PATCH] ASoC: codecs: wcd9335: Fix missing free of regulator supplies" failed to apply to 6.12-stable tree
+To: krzysztof.kozlowski@linaro.org,broonie@kernel.org
+Cc: <stable@vger.kernel.org>
+From: <gregkh@linuxfoundation.org>
+Date: Fri, 20 Jun 2025 10:12:07 +0200
+Message-ID: <2025062007-dial-defacing-0031@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Cc: i.maximets@ovn.org, Aaron Conole <aconole@redhat.com>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Simon Horman <horms@kernel.org>, Greg KH <greg@kroah.com>,
- Sasha Levin <sashal@kernel.org>
-Subject: Re: Patch "openvswitch: Stricter validation for the userspace action"
- has been added to the 6.15-stable tree
-To: stable@vger.kernel.org, stable-commits@vger.kernel.org,
- echaudro@redhat.com
-References: <20250620023232.2605858-1-sashal@kernel.org>
-Content-Language: en-US
-From: Ilya Maximets <i.maximets@ovn.org>
-Autocrypt: addr=i.maximets@ovn.org; keydata=
- xsFNBF77bOMBEADVZQ4iajIECGfH3hpQMQjhIQlyKX4hIB3OccKl5XvB/JqVPJWuZQRuqNQG
- /B70MP6km95KnWLZ4H1/5YOJK2l7VN7nO+tyF+I+srcKq8Ai6S3vyiP9zPCrZkYvhqChNOCF
- pNqdWBEmTvLZeVPmfdrjmzCLXVLi5De9HpIZQFg/Ztgj1AZENNQjYjtDdObMHuJQNJ6ubPIW
- cvOOn4WBr8NsP4a2OuHSTdVyAJwcDhu+WrS/Bj3KlQXIdPv3Zm5x9u/56NmCn1tSkLrEgi0i
- /nJNeH5QhPdYGtNzPixKgPmCKz54/LDxU61AmBvyRve+U80ukS+5vWk8zvnCGvL0ms7kx5sA
- tETpbKEV3d7CB3sQEym8B8gl0Ux9KzGp5lbhxxO995KWzZWWokVUcevGBKsAx4a/C0wTVOpP
- FbQsq6xEpTKBZwlCpxyJi3/PbZQJ95T8Uw6tlJkPmNx8CasiqNy2872gD1nN/WOP8m+cIQNu
- o6NOiz6VzNcowhEihE8Nkw9V+zfCxC8SzSBuYCiVX6FpgKzY/Tx+v2uO4f/8FoZj2trzXdLk
- BaIiyqnE0mtmTQE8jRa29qdh+s5DNArYAchJdeKuLQYnxy+9U1SMMzJoNUX5uRy6/3KrMoC/
- 7zhn44x77gSoe7XVM6mr/mK+ViVB7v9JfqlZuiHDkJnS3yxKPwARAQABzSJJbHlhIE1heGlt
- ZXRzIDxpLm1heGltZXRzQG92bi5vcmc+wsGUBBMBCAA+AhsDBQsJCAcCBhUKCQgLAgQWAgMB
- Ah4BAheAFiEEh+ma1RKWrHCY821auffsd8gpv5YFAmfB9JAFCQyI7q0ACgkQuffsd8gpv5YQ
- og/8DXt1UOznvjdXRHVydbU6Ws+1iUrxlwnFH4WckoFgH4jAabt25yTa1Z4YX8Vz0mbRhTPX
- M/j1uORyObLem3of4YCd4ymh7nSu++KdKnNsZVHxMcoiic9ILPIaWYa8kTvyIDT2AEVfn9M+
- vskM0yDbKa6TAHgr/0jCxbS+mvN0ZzDuR/LHTgy3e58097SWJohj0h3Dpu+XfuNiZCLCZ1/G
- AbBCPMw+r7baH/0evkX33RCBZwvh6tKu+rCatVGk72qRYNLCwF0YcGuNBsJiN9Aa/7ipkrA7
- Xp7YvY3Y1OrKnQfdjp3mSXmknqPtwqnWzXvdfkWkZKShu0xSk+AjdFWCV3NOzQaH3CJ67NXm
- aPjJCIykoTOoQ7eEP6+m3WcgpRVkn9bGK9ng03MLSymTPmdINhC5pjOqBP7hLqYi89GN0MIT
- Ly2zD4m/8T8wPV9yo7GRk4kkwD0yN05PV2IzJECdOXSSStsf5JWObTwzhKyXJxQE+Kb67Wwa
- LYJgltFjpByF5GEO4Xe7iYTjwEoSSOfaR0kokUVM9pxIkZlzG1mwiytPadBt+VcmPQWcO5pi
- WxUI7biRYt4aLriuKeRpk94ai9+52KAk7Lz3KUWoyRwdZINqkI/aDZL6meWmcrOJWCUMW73e
- 4cMqK5XFnGqolhK4RQu+8IHkSXtmWui7LUeEvO/OwU0EXvts4wEQANCXyDOic0j2QKeyj/ga
- OD1oKl44JQfOgcyLVDZGYyEnyl6b/tV1mNb57y/YQYr33fwMS1hMj9eqY6tlMTNz+ciGZZWV
- YkPNHA+aFuPTzCLrapLiz829M5LctB2448bsgxFq0TPrr5KYx6AkuWzOVq/X5wYEM6djbWLc
- VWgJ3o0QBOI4/uB89xTf7mgcIcbwEf6yb/86Cs+jaHcUtJcLsVuzW5RVMVf9F+Sf/b98Lzrr
- 2/mIB7clOXZJSgtV79Alxym4H0cEZabwiXnigjjsLsp4ojhGgakgCwftLkhAnQT3oBLH/6ix
- 87ahawG3qlyIB8ZZKHsvTxbWte6c6xE5dmmLIDN44SajAdmjt1i7SbAwFIFjuFJGpsnfdQv1
- OiIVzJ44kdRJG8kQWPPua/k+AtwJt/gjCxv5p8sKVXTNtIP/sd3EMs2xwbF8McebLE9JCDQ1
- RXVHceAmPWVCq3WrFuX9dSlgf3RWTqNiWZC0a8Hn6fNDp26TzLbdo9mnxbU4I/3BbcAJZI9p
- 9ELaE9rw3LU8esKqRIfaZqPtrdm1C+e5gZa2gkmEzG+WEsS0MKtJyOFnuglGl1ZBxR1uFvbU
- VXhewCNoviXxkkPk/DanIgYB1nUtkPC+BHkJJYCyf9Kfl33s/bai34aaxkGXqpKv+CInARg3
- fCikcHzYYWKaXS6HABEBAAHCwXwEGAEIACYCGwwWIQSH6ZrVEpascJjzbVq59+x3yCm/lgUC
- Z8H0qQUJDIjuxgAKCRC59+x3yCm/loAdD/wJCOhPp9711J18B9c4f+eNAk5vrC9Cj3RyOusH
- Hebb9HtSFm155Zz3xiizw70MSyOVikjbTocFAJo5VhkyuN0QJIP678SWzriwym+EG0B5P97h
- FSLBlRsTi4KD8f1Ll3OT03lD3o/5Qt37zFgD4mCD6OxAShPxhI3gkVHBuA0GxF01MadJEjMu
- jWgZoj75rCLG9sC6L4r28GEGqUFlTKjseYehLw0s3iR53LxS7HfJVHcFBX3rUcKFJBhuO6Ha
- /GggRvTbn3PXxR5UIgiBMjUlqxzYH4fe7pYR7z1m4nQcaFWW+JhY/BYHJyMGLfnqTn1FsIwP
- dbhEjYbFnJE9Vzvf+RJcRQVyLDn/TfWbETf0bLGHeF2GUPvNXYEu7oKddvnUvJK5U/BuwQXy
- TRFbae4Ie96QMcPBL9ZLX8M2K4XUydZBeHw+9lP1J6NJrQiX7MzexpkKNy4ukDzPrRE/ruui
- yWOKeCw9bCZX4a/uFw77TZMEq3upjeq21oi6NMTwvvWWMYuEKNi0340yZRrBdcDhbXkl9x/o
- skB2IbnvSB8iikbPng1ihCTXpA2yxioUQ96Akb+WEGopPWzlxTTK+T03G2ljOtspjZXKuywV
- Wu/eHyqHMyTu8UVcMRR44ki8wam0LMs+fH4dRxw5ck69AkV+JsYQVfI7tdOu7+r465LUfg==
-In-Reply-To: <20250620023232.2605858-1-sashal@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Transfer-Encoding: 8bit
 
-On 6/20/25 4:32 AM, Sasha Levin wrote:
-> This is a note to let you know that I've just added the patch titled
-> 
->     openvswitch: Stricter validation for the userspace action
-> 
-> to the 6.15-stable tree which can be found at:
->     http://www.kernel.org/git/?p=linux/kernel/git/stable/stable-queue.git;a=summary
-> 
-> The filename of the patch is:
->      openvswitch-stricter-validation-for-the-userspace-ac.patch
-> and it can be found in the queue-6.15 subdirectory.
-> 
-> If you, or anyone else, feels it should not be added to the stable tree,
-> please let <stable@vger.kernel.org> know about it.
 
-FWIW, backporting of this change was previously discussed here:
-  https://lore.kernel.org/netdev/2025060520-slacking-swimmer-1b31@gregkh/
+The patch below does not apply to the 6.12-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
 
-With the conclusion to drop it as it's not a bug fix and hence there is
-no reason to backport it.
+To reproduce the conflict and resubmit, you may use the following commands:
 
-Best regards, Ilya Maximets.
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.12.y
+git checkout FETCH_HEAD
+git cherry-pick -x 9079db287fc3e38e040b0edeb0a25770bb679c8e
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025062007-dial-defacing-0031@gregkh' --subject-prefix 'PATCH 6.12.y' HEAD^..
 
-> 
-> 
-> 
-> commit 77c2ef6608f0cb47cbcc0d3e0a4371e35f70e125
-> Author: Eelco Chaudron <echaudro@redhat.com>
-> Date:   Mon May 12 10:08:24 2025 +0200
-> 
->     openvswitch: Stricter validation for the userspace action
->     
->     [ Upstream commit 88906f55954131ed2d3974e044b7fb48129b86ae ]
->     
->     This change enhances the robustness of validate_userspace() by ensuring
->     that all Netlink attributes are fully contained within the parent
->     attribute. The previous use of nla_parse_nested_deprecated() could
->     silently skip trailing or malformed attributes, as it stops parsing at
->     the first invalid entry.
->     
->     By switching to nla_parse_deprecated_strict(), we make sure only fully
->     validated attributes are copied for later use.
->     
->     Signed-off-by: Eelco Chaudron <echaudro@redhat.com>
->     Reviewed-by: Simon Horman <horms@kernel.org>
->     Acked-by: Ilya Maximets <i.maximets@ovn.org>
->     Link: https://patch.msgid.link/67eb414e2d250e8408bb8afeb982deca2ff2b10b.1747037304.git.echaudro@redhat.com
->     Signed-off-by: Jakub Kicinski <kuba@kernel.org>
->     Signed-off-by: Sasha Levin <sashal@kernel.org>
-> 
-> diff --git a/net/openvswitch/flow_netlink.c b/net/openvswitch/flow_netlink.c
-> index 518be23e48ea9..ad64bb9ab5e25 100644
-> --- a/net/openvswitch/flow_netlink.c
-> +++ b/net/openvswitch/flow_netlink.c
-> @@ -3049,7 +3049,8 @@ static int validate_userspace(const struct nlattr *attr)
->  	struct nlattr *a[OVS_USERSPACE_ATTR_MAX + 1];
->  	int error;
->  
-> -	error = nla_parse_nested_deprecated(a, OVS_USERSPACE_ATTR_MAX, attr,
-> +	error = nla_parse_deprecated_strict(a, OVS_USERSPACE_ATTR_MAX,
-> +					    nla_data(attr), nla_len(attr),
->  					    userspace_policy, NULL);
->  	if (error)
->  		return error;
+Possible dependencies:
+
+
+
+thanks,
+
+greg k-h
+
+------------------ original commit in Linus's tree ------------------
+
+From 9079db287fc3e38e040b0edeb0a25770bb679c8e Mon Sep 17 00:00:00 2001
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Date: Mon, 26 May 2025 11:47:01 +0200
+Subject: [PATCH] ASoC: codecs: wcd9335: Fix missing free of regulator supplies
+
+Driver gets and enables all regulator supplies in probe path
+(wcd9335_parse_dt() and wcd9335_power_on_reset()), but does not cleanup
+in final error paths and in unbind (missing remove() callback).  This
+leads to leaked memory and unbalanced regulator enable count during
+probe errors or unbind.
+
+Fix this by converting entire code into devm_regulator_bulk_get_enable()
+which also greatly simplifies the code.
+
+Fixes: 20aedafdf492 ("ASoC: wcd9335: add support to wcd9335 codec")
+Cc: stable@vger.kernel.org
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Link: https://patch.msgid.link/20250526-b4-b4-asoc-wcd9395-vdd-px-fixes-v1-1-0b8a2993b7d3@linaro.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
+
+diff --git a/sound/soc/codecs/wcd9335.c b/sound/soc/codecs/wcd9335.c
+index 8ee4360aff92..5e19e813748d 100644
+--- a/sound/soc/codecs/wcd9335.c
++++ b/sound/soc/codecs/wcd9335.c
+@@ -332,7 +332,6 @@ struct wcd9335_codec {
+ 
+ 	int intr1;
+ 	struct gpio_desc *reset_gpio;
+-	struct regulator_bulk_data supplies[WCD9335_MAX_SUPPLY];
+ 
+ 	unsigned int rx_port_value[WCD9335_RX_MAX];
+ 	unsigned int tx_port_value[WCD9335_TX_MAX];
+@@ -355,6 +354,10 @@ struct wcd9335_irq {
+ 	char *name;
+ };
+ 
++static const char * const wcd9335_supplies[] = {
++	"vdd-buck", "vdd-buck-sido", "vdd-tx", "vdd-rx", "vdd-io",
++};
++
+ static const struct wcd9335_slim_ch wcd9335_tx_chs[WCD9335_TX_MAX] = {
+ 	WCD9335_SLIM_TX_CH(0),
+ 	WCD9335_SLIM_TX_CH(1),
+@@ -4989,30 +4992,16 @@ static int wcd9335_parse_dt(struct wcd9335_codec *wcd)
+ 	if (IS_ERR(wcd->native_clk))
+ 		return dev_err_probe(dev, PTR_ERR(wcd->native_clk), "slimbus clock not found\n");
+ 
+-	wcd->supplies[0].supply = "vdd-buck";
+-	wcd->supplies[1].supply = "vdd-buck-sido";
+-	wcd->supplies[2].supply = "vdd-tx";
+-	wcd->supplies[3].supply = "vdd-rx";
+-	wcd->supplies[4].supply = "vdd-io";
+-
+-	ret = regulator_bulk_get(dev, WCD9335_MAX_SUPPLY, wcd->supplies);
++	ret = devm_regulator_bulk_get_enable(dev, ARRAY_SIZE(wcd9335_supplies),
++					     wcd9335_supplies);
+ 	if (ret)
+-		return dev_err_probe(dev, ret, "Failed to get supplies\n");
++		return dev_err_probe(dev, ret, "Failed to get and enable supplies\n");
+ 
+ 	return 0;
+ }
+ 
+ static int wcd9335_power_on_reset(struct wcd9335_codec *wcd)
+ {
+-	struct device *dev = wcd->dev;
+-	int ret;
+-
+-	ret = regulator_bulk_enable(WCD9335_MAX_SUPPLY, wcd->supplies);
+-	if (ret) {
+-		dev_err(dev, "Failed to get supplies: err = %d\n", ret);
+-		return ret;
+-	}
+-
+ 	/*
+ 	 * For WCD9335, it takes about 600us for the Vout_A and
+ 	 * Vout_D to be ready after BUCK_SIDO is powered up.
 
 
