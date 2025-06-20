@@ -1,144 +1,133 @@
-Return-Path: <stable+bounces-155109-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-155110-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5CA16AE194A
-	for <lists+stable@lfdr.de>; Fri, 20 Jun 2025 12:56:11 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 51EC5AE1968
+	for <lists+stable@lfdr.de>; Fri, 20 Jun 2025 12:59:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D91CC5A5342
-	for <lists+stable@lfdr.de>; Fri, 20 Jun 2025 10:55:46 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EA67216E924
+	for <lists+stable@lfdr.de>; Fri, 20 Jun 2025 10:59:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DBC01277CA9;
-	Fri, 20 Jun 2025 10:56:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96537253F16;
+	Fri, 20 Jun 2025 10:59:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yWkPF11D"
+	dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b="OEJJ0qVQ"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx.denx.de (mx.denx.de [89.58.32.78])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C30A255250
-	for <stable@vger.kernel.org>; Fri, 20 Jun 2025 10:56:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83F59229B27
+	for <stable@vger.kernel.org>; Fri, 20 Jun 2025 10:59:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=89.58.32.78
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750416966; cv=none; b=pAQAHnrsewAxTlE41qF9XANrsZ/fjwS9cMmPG98kMA098j7IOGNC4Uhv6IrSHAncWUWCU4t/hu+5f+Ok63uw2AVVFTB38DVSvh9vogssDz3THgOKC3LX3yBaBstmUtfk7W5nSkBT7qNHFtoIEMwe9mVGV2/xIDxid1xCdTRXsno=
+	t=1750417195; cv=none; b=HKFneXz4Uw3/uqqQhoGySagNNPwFU5y+smUo5FxWGB3TpAJOZo+xaCc9hOfZUViuJ6CCwm9NWwmQsn0aZrQCRRqHBwxO6i/iGUVvWBuP2YYlekYXYyZixJNXguP0A4g2II/mAch2JZEOjCUAgfM0rwfjLdnsNjD/BmKxaGkQ2Pg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750416966; c=relaxed/simple;
-	bh=EsF6dhdV0hcPdZX5hyLDetI/d07wXKNWUdVotxLh8tg=;
+	s=arc-20240116; t=1750417195; c=relaxed/simple;
+	bh=2gU8EEIZAAfhcYfT47CkRmnQBiQNPE9kIIxIsVPU7KA=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=fdvEsgq1+kbqRVX+oJcYZhUpVVR+c/kivO2TV1upqRT3CGykY5pFx0R+BSCboDSCMteOcC6SoCYScQkP45Oy1/cK5IvE8sDpxs+yn8vk8qwuWvoyP+xsFHFwJREzjUF6nXrDoY96MVsuaizdhHf4/jqKerWpvw9vXamjvyyxbh0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yWkPF11D; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD8E5C4CEED;
-	Fri, 20 Jun 2025 10:56:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750416966;
-	bh=EsF6dhdV0hcPdZX5hyLDetI/d07wXKNWUdVotxLh8tg=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=yWkPF11DbHLhgrZK/dgSMv6ak/kRNuUJoXGJ7h5sHGOU61TC6PH0NXQwkpqMdxD/2
-	 NwGZR3hje6/GMfk4MI5kbYr+IB+FM1xwpuxtHxCZVyL13AQ7C14sMQ5LwT7CtULlBA
-	 zkYB3Rt7vQipqZ3F/QXHG9u8wSp3UyALHSK/ojDI=
-Date: Fri, 20 Jun 2025 12:56:03 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Shivank Garg <shivankg@amd.com>
-Cc: stable@vger.kernel.org, David Hildenbrand <david@redhat.com>,
-	Matthew Wilcox <willy@infradead.org>,
-	Alistair Popple <apopple@nvidia.com>,
-	Dave Kleikamp <shaggy@kernel.org>,
-	Donet Tom <donettom@linux.ibm.com>, Jane Chu <jane.chu@oracle.com>,
-	Kefeng Wang <wangkefeng.wang@huawei.com>, Zi Yan <ziy@nvidia.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: Re: [PATCH 6.15.y 1/2] mm: add folio_expected_ref_count() for
- reference count calculation
-Message-ID: <2025062048-front-wake-5de8@gregkh>
-References: <2025062039-policy-handheld-01c6@gregkh>
- <20250620102817.1185620-1-shivankg@amd.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=ElZ2BqVQkGerY80bwbjw37Vp9EFFz426b3glgyiX+MlVt8FpBch/O4kMONMQxjPWFj23sPtQmVAf0C93Np/CtvSN35NBZSkx8z4QFq7zfVwy6qApGqy2TSDWYqJ1z77TtzB5u4GCwb9wDDqPt3MDzUR1rSIFxxEk5af/VymdScY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de; spf=pass smtp.mailfrom=denx.de; dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b=OEJJ0qVQ; arc=none smtp.client-ip=89.58.32.78
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=denx.de
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 4C03A102422BF;
+	Fri, 20 Jun 2025 12:59:37 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de; s=mx-20241105;
+	t=1750417184; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 in-reply-to:references; bh=pr4bD3VXbD9cW5OWPqjhnCrJAsKqKnK1lCmo/80hWvk=;
+	b=OEJJ0qVQ4PPyxEA0psitN85eA/6iRmJYjw0z6eMNpPvT6ekxM6kwFmYEnprTXGKTIETyyI
+	MwZUDtSmB+Klo15gb0iJjAb49IFVdN52IZfID3QcucLDyQMagzqDO8qS1EchwsJYHHfBnH
+	uK2K+uMnjYlpO2dY4c0wBdEGStVr/k/m9sR9nvig+Gsjq+5TJfycBvKpxX8f8IpE+pUNom
+	//6hunKbO4Fvx3IH8Cybkk0Y6X1gVrqf1aK53F79dOMupkWEnNs8OKjY2mIn84nmXJMAOk
+	AEQBFtfoFQvG6garl98SHFLRkNY71abaq7sTwAU/DnJMgAAE2pXzqPhyFm5wWw==
+Date: Fri, 20 Jun 2025 12:59:35 +0200
+From: Pavel Machek <pavel@denx.de>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+	Andrew Cooper <andrew.cooper3@citrix.com>,
+	Ingo Molnar <mingo@kernel.org>, Dave Hansen <dave.hansen@intel.com>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Rik van Riel <riel@surriel.com>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	Andy Lutomirski <luto@kernel.org>, Brian Gerst <brgerst@gmail.com>,
+	Juergen Gross <jgross@suse.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: Re: [PATCH 6.12 002/512] x86/idle: Remove MFENCEs for
+ X86_BUG_CLFLUSH_MONITOR in mwait_idle_with_hints() and
+ prefer_mwait_c1_over_halt()
+Message-ID: <aFU/F9MI1DN7f3ld@duo.ucw.cz>
+References: <20250617152419.512865572@linuxfoundation.org>
+ <20250617152419.622968266@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="DhRUw4ilHaOeuHla"
+Content-Disposition: inline
+In-Reply-To: <20250617152419.622968266@linuxfoundation.org>
+X-Last-TLS-Session-Version: TLSv1.3
+
+
+--DhRUw4ilHaOeuHla
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250620102817.1185620-1-shivankg@amd.com>
+Content-Transfer-Encoding: quoted-printable
 
-On Fri, Jun 20, 2025 at 10:28:16AM +0000, Shivank Garg wrote:
-> Patch series " JFS: Implement migrate_folio for jfs_metapage_aops" v5.
-> 
-> This patchset addresses a warning that occurs during memory compaction due
-> to JFS's missing migrate_folio operation.  The warning was introduced by
-> commit 7ee3647243e5 ("migrate: Remove call to ->writepage") which added
-> explicit warnings when filesystem don't implement migrate_folio.
-> 
-> The syzbot reported following [1]:
->   jfs_metapage_aops does not implement migrate_folio
->   WARNING: CPU: 1 PID: 5861 at mm/migrate.c:955 fallback_migrate_folio mm/migrate.c:953 [inline]
->   WARNING: CPU: 1 PID: 5861 at mm/migrate.c:955 move_to_new_folio+0x70e/0x840 mm/migrate.c:1007
->   Modules linked in:
->   CPU: 1 UID: 0 PID: 5861 Comm: syz-executor280 Not tainted 6.15.0-rc1-next-20250411-syzkaller #0 PREEMPT(full)
->   Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 02/12/2025
->   RIP: 0010:fallback_migrate_folio mm/migrate.c:953 [inline]
->   RIP: 0010:move_to_new_folio+0x70e/0x840 mm/migrate.c:1007
-> 
-> To fix this issue, this series implement metapage_migrate_folio() for JFS
-> which handles both single and multiple metapages per page configurations.
-> 
-> While most filesystems leverage existing migration implementations like
-> filemap_migrate_folio(), buffer_migrate_folio_norefs() or
-> buffer_migrate_folio() (which internally used folio_expected_refs()),
-> JFS's metapage architecture requires special handling of its private data
-> during migration.  To support this, this series introduce the
-> folio_expected_ref_count(), which calculates external references to a
-> folio from page/swap cache, private data, and page table mappings.
-> 
-> This standardized implementation replaces the previous ad-hoc
-> folio_expected_refs() function and enables JFS to accurately determine
-> whether a folio has unexpected references before attempting migration.
-> 
-> Implement folio_expected_ref_count() to calculate expected folio reference
-> counts from:
-> - Page/swap cache (1 per page)
-> - Private data (1)
-> - Page table mappings (1 per map)
-> 
-> While originally needed for page migration operations, this improved
-> implementation standardizes reference counting by consolidating all
-> refcount contributors into a single, reusable function that can benefit
-> any subsystem needing to detect unexpected references to folios.
-> 
-> The folio_expected_ref_count() returns the sum of these external
-> references without including any reference the caller itself might hold.
-> Callers comparing against the actual folio_ref_count() must account for
-> their own references separately.
-> 
-> Link: https://syzkaller.appspot.com/bug?extid=8bb6fd945af4e0ad9299 [1]
-> Link: https://lkml.kernel.org/r/20250430100150.279751-1-shivankg@amd.com
-> Link: https://lkml.kernel.org/r/20250430100150.279751-2-shivankg@amd.com
-> Signed-off-by: David Hildenbrand <david@redhat.com>
-> Signed-off-by: Shivank Garg <shivankg@amd.com>
-> Suggested-by: Matthew Wilcox <willy@infradead.org>
-> Co-developed-by: David Hildenbrand <david@redhat.com>
-> Cc: Alistair Popple <apopple@nvidia.com>
-> Cc: Dave Kleikamp <shaggy@kernel.org>
-> Cc: Donet Tom <donettom@linux.ibm.com>
-> Cc: Jane Chu <jane.chu@oracle.com>
-> Cc: Kefeng Wang <wangkefeng.wang@huawei.com>
-> Cc: Zi Yan <ziy@nvidia.com>
-> Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-> ---
->  include/linux/mm.h | 55 ++++++++++++++++++++++++++++++++++++++++++++++
->  mm/migrate.c       | 22 ++++---------------
->  2 files changed, 59 insertions(+), 18 deletions(-)
-> 
+Hi!
 
+> The following commit, 12 years ago:
+>=20
+>   7e98b7192046 ("x86, idle: Use static_cpu_has() for CLFLUSH workaround, =
+add barriers")
+>=20
+> added barriers around the CLFLUSH in mwait_idle_with_hints(), justified w=
+ith:
+>=20
+>   ... and add memory barriers around it since the documentation is explic=
+it
+>   that CLFLUSH is only ordered with respect to MFENCE.
+>=20
+> This also triggered, 11 years ago, the same adjustment in:
+>=20
+>   f8e617f45829 ("sched/idle/x86: Optimize unnecessary mwait_idle() resche=
+d IPIs")
+>=20
+> during development, although it failed to get the static_cpu_has_bug() tr=
+eatment.
+>=20
+> X86_BUG_CLFLUSH_MONITOR (a.k.a the AAI65 errata) is specific to Intel CPU=
+s,
+> and the SDM currently states:
+>=20
+>   Executions of the CLFLUSH instruction are ordered with respect to each
+>   other and with respect to writes, locked read-modify-write instructions,
+>   and fence instructions[1].
 
-<formletter>
+This not match stable kernel rules. We lived with limited performance
+for 12 years, we should continue.
 
-This is not the correct way to submit patches for inclusion in the
-stable kernel tree.  Please read:
-    https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html
-for how to do this properly.
+BR,
+								Pavel
+--=20
+DENX Software Engineering GmbH,        Managing Director: Erika Unter
+HRB 165235 Munich, Office: Kirchenstr.5, D-82194 Groebenzell, Germany
 
-</formletter>
+--DhRUw4ilHaOeuHla
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iF0EABECAB0WIQRPfPO7r0eAhk010v0w5/Bqldv68gUCaFU/FwAKCRAw5/Bqldv6
+8kRtAKCHnlklkVYkK3bi3lCuvQHihhU6gACeNWv1a5HAkQmq3NQZrexospv6Zjw=
+=a7Cx
+-----END PGP SIGNATURE-----
+
+--DhRUw4ilHaOeuHla--
 
