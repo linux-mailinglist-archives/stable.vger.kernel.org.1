@@ -1,72 +1,70 @@
-Return-Path: <stable+bounces-155167-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-155168-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1567CAE1F76
-	for <lists+stable@lfdr.de>; Fri, 20 Jun 2025 17:53:22 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6BE2DAE1F66
+	for <lists+stable@lfdr.de>; Fri, 20 Jun 2025 17:51:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BA18D3B8809
-	for <lists+stable@lfdr.de>; Fri, 20 Jun 2025 15:48:26 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 08F9818801FB
+	for <lists+stable@lfdr.de>; Fri, 20 Jun 2025 15:49:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8CAA62DCBFC;
-	Fri, 20 Jun 2025 15:46:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 159BB2DE1FE;
+	Fri, 20 Jun 2025 15:46:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="qmrkZD/d"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="A3bBaTUX"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-yw1-f202.google.com (mail-yw1-f202.google.com [209.85.128.202])
+Received: from mail-qt1-f202.google.com (mail-qt1-f202.google.com [209.85.160.202])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDB572DFF25
-	for <stable@vger.kernel.org>; Fri, 20 Jun 2025 15:46:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53D742DFA35
+	for <stable@vger.kernel.org>; Fri, 20 Jun 2025 15:46:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750434405; cv=none; b=NiHumI6OXR157Kd8l5gpT397YUP00T6evappRSv5y1z4At/Oz74oazALAspU1h2VMHD9TUE+DLqL/90sjhEJIjGHsn/ZDm4n2lFHWEVeduu1oZpQqA59s+Sa99soEpTwWegqYeTco9ra6W/v7gUttC+M48e4lKWW5hiVlSbwJIk=
+	t=1750434406; cv=none; b=ujLDFi76ycVsnWjkJ9r33HHSrlUuEorXPXF1m4sMUbnsiOab9krWo18Dv4/JHdaghvJX1l5fs5AWdCzJ6AgLW/3uif/dpelylgkTGABmTqiujsjbnIwwo6XRwyJ5Y1jbWNIaw3dBZDSBubKeiewH6k0av1A1tfed04TRXvoNQII=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750434405; c=relaxed/simple;
-	bh=WTFy9EXTASlwiWfm13iLN4rL4GR6xnmnB9GmhymDnRk=;
+	s=arc-20240116; t=1750434406; c=relaxed/simple;
+	bh=K1YuYj9sBibNv/j8b7QS4KdQXhHWTbs2OkutMttoVEk=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=SF7LQsFzTPqzdimwrt5CvApBqi8KGRCtrhwTByXTHa+GdbwC8S+Q0rdjx1aKTaswsazmzuxZUduurSBQgd7BzBQHMZarGdzBb0Z0KoQQaTGhXXFysjsCRm6dVQriyGKNUai7CrFvrWxFnKOBmOIyG29PeG3egQEjTUHd8OejXNg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=qmrkZD/d; arc=none smtp.client-ip=209.85.128.202
+	 To:Cc:Content-Type; b=A0dyuytT3O14qm58fsQfyPRXJqWj5419951x08Phx+q9YQP81dePmpIuNDXU6xPrFc5kMNk1dkrjcTqOteTB29tjH3NkekKDicbgf+Rsv+NtSqgKLccPuuIp+mxrBSGGMFLjMeYkwueMB3rZjtMttYLCmpquJBSq+aKX98/cf3w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=A3bBaTUX; arc=none smtp.client-ip=209.85.160.202
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com
-Received: by mail-yw1-f202.google.com with SMTP id 00721157ae682-710e75f9229so26806697b3.2
-        for <stable@vger.kernel.org>; Fri, 20 Jun 2025 08:46:43 -0700 (PDT)
+Received: by mail-qt1-f202.google.com with SMTP id d75a77b69052e-4a587c85a60so41308041cf.2
+        for <stable@vger.kernel.org>; Fri, 20 Jun 2025 08:46:45 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1750434403; x=1751039203; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=eLU2SnNnwnTgKHWqN2DQe9/JoGiu8EAX/HqrA+Vk0lc=;
-        b=qmrkZD/dLTSZPScDzt3bGOZUK0iV4upcLNKLWwVJOYqyKQLvDikwyjp0DgsKqaBj3y
-         yidqk5YpVI8zBw6eoxaNFHcjKLA3Jdd1I59nn+Ln1FvKCkRG6y5hunKl3Asp1yP9XxPw
-         whGCyA39iSCDYRzuap55J4vtlI6uwq1L+4TFykLN1DVb3kYibGqo0xkDcfEwrmjLg3GH
-         KrbzB1Cempuw5ue0d5+D1VqwfhXv6MjKN7kOORFQhL0AflEMVK1bGrjCrq5dY8tn9tx0
-         jyDG6FdHLUuv8MmgaaWh9jzewUtHR7ju+wAMiTE3WdREorooNsyMHvwnVOxhK0RG5Ss4
-         Yozg==
+        d=google.com; s=20230601; t=1750434404; x=1751039204; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=0reMMWX+5SwPOhU8v99sOMU9TtPt4fwahRCAHnqHelQ=;
+        b=A3bBaTUXYjZXRuKn4RYRs+PEoTmuYI09xWK45TrhMzoBKE4uOTiJT4J0yMRdYpPgO/
+         MCuP+OwyN/RKlbivWzMvW+YdlypJekzBvCnDyBWOlE6xAFZz6cVo0VevUJF8FLdkmu1D
+         pc796BUQLYJxpZ9GZw477uXZRhbF6IuzJY5jonwO1d3wczMHJ0WiR+UGVOdVNgIXTEVj
+         N1LWc7yom1J7TVY0x1TV4rrL1hrVuTnTI9rTgcTZA/0MPKB7FipXtQk2F7XzC/vHmUuj
+         vGwu47602feQfyoTIV/tKLWWRfrkTWPCbrxS/MG+U12jhok2A+D9ltcsBHhVCrUj+01r
+         vwSw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1750434403; x=1751039203;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=eLU2SnNnwnTgKHWqN2DQe9/JoGiu8EAX/HqrA+Vk0lc=;
-        b=E6lPUldoDWa7YR0G0vTq/+xhF6j/MoDl9jnuV3rPBQajBXT/wzh6CYmDV4GMJDGOjv
-         uXC4LB/bNIHTTeCrCrdRqFANDhkcUx8ZdiMzFPWnpbcPoZ5CAFngjwvwz+YZ5Iuf9mbY
-         aWrX5vB8BUddpTHdavkSg3wC2SERDKvamUFHwFlmvfkK2KtgYDX1fCTK/otymRMOvdnH
-         m+AvVE0oodPzKKd6WvawcMWDqRiZRcuO9Gm5SMKBj0MlBE3ND6Sh+/iX497ACxcXbASq
-         WJj6tmeFElFw3IB9CYLFW6jJVCOGrcuyfqBPIpZckNt1XOpfy2tBkYVDlSBP63RmYW0/
-         BrCA==
-X-Gm-Message-State: AOJu0Yzpw2cBZCMxBNca/IGYev+fWUR4/RuQNsOKm34D7ceLvAN+Jr4J
-	E+uhMikH6Qfh80ARGKY9ttGCsucI50ghjsMWYqko3xebBLa+Z8DJsE/k0Vrep+bU6ccRlU+dR0o
-	yh+zkJZN5HIP5xOqQ4WgzkiCjUrCeC9ScpE6VIB2ihy4llsLGIxbGFpV9MOY1SIpN1dz0rk0Wa8
-	IpP3Tm0TmrEShAZ0PNa/1pbZHVusZvLR7UacOXIEn42s1Eq5g=
-X-Google-Smtp-Source: AGHT+IFZRsLCW5J3Ad9HtT1PE7K8mHIgrSFBkZ9MEYroL8rdEucV+dVy0AAwixfRsIi3yN68KbmV/GG4bAFf0A==
-X-Received: from ybbdt19.prod.google.com ([2002:a05:6902:2513:b0:e81:b442:c1b0])
+        d=1e100.net; s=20230601; t=1750434404; x=1751039204;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=0reMMWX+5SwPOhU8v99sOMU9TtPt4fwahRCAHnqHelQ=;
+        b=gAyz01QPhwj5hz4GN8yfQIfWGNi6AN4WQLzOYgE23choi3wqyCg/q6p4LSGhqIYHfx
+         DOWosJCn1Xyn5SfG4JOYzVViWw4F95RNfP+x8rTRvMMLQbppa90Q6oK/SOhBq1ndjMGE
+         DsZmFfSsc2IC5USK2XPVahvdTBTcS3Kq8aUtBL1yWlyQMtva3wTAcDBybERr8XRPCqAX
+         +UygUAwTsQRCLZV5R5IMG7LPYrNH0yC2rjM7IxCju3pCcQrsGXpZBMli0wJQiyj/VKIC
+         6YAED9ZZ6NKxxpqs56asV10qolxMHTJsCCDnzkFBcdY7nBaNgJgEJfjM/5SWV2Ed5ktS
+         Es/A==
+X-Gm-Message-State: AOJu0YyjqowNPzwD7lrymZWWO3blenHuZMS9VbBn5FQ37y748PGrOKXZ
+	hOzaB2cF3KDdLCNhW3TuzPklku+7M71DMvvGHfP/C6TW8yNdvXZS2lQ3QAPQitWg3sxa1KuAZ2N
+	JGEWRoi4QCYz5R+cWJA9pduNNTNkF3rPONPZ2bK5Z+zre7vqIEXS+SGa1XtUXIOtTR0HvC4topQ
+	FWjAiZMW5OvhxT0ujL2wZoh89B+ffogFb+moiVi1wmoCCQMAA=
+X-Google-Smtp-Source: AGHT+IETlLUowZUjQZuLY9pXBowRMUmvCdKZEaOmjzgoOXxifurGXtBFF1Mwr+CZ6wm+w5hIyuFXXBmH4Y3Ahg==
+X-Received: from qtbfg6.prod.google.com ([2002:a05:622a:5806:b0:4a4:34c8:f8bf])
  (user=edumazet job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6902:168b:b0:e7d:c87a:6264 with SMTP id 3f1490d57ef6-e842bc6d6b7mr4704188276.6.1750434402745;
- Fri, 20 Jun 2025 08:46:42 -0700 (PDT)
-Date: Fri, 20 Jun 2025 15:46:22 +0000
+ 2002:a05:622a:a40f:b0:4a7:d86:d32a with SMTP id d75a77b69052e-4a7807bcb9amr20098081cf.21.1750434404340;
+ Fri, 20 Jun 2025 08:46:44 -0700 (PDT)
+Date: Fri, 20 Jun 2025 15:46:23 +0000
 In-Reply-To: <20250620154623.331294-1-edumazet@google.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -76,77 +74,81 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <2025062025-unengaged-regroup-c3c7@gregkh> <20250620154623.331294-1-edumazet@google.com>
 X-Mailer: git-send-email 2.50.0.rc2.701.gf1e915cc24-goog
-Message-ID: <20250620154623.331294-6-edumazet@google.com>
-Subject: [PATCH 5.15.y 6/7] net_sched: sch_sfq: fix a potential crash on
- gso_skb handling
+Message-ID: <20250620154623.331294-7-edumazet@google.com>
+Subject: [PATCH 5.15.y 7/7] net_sched: sch_sfq: reject invalid perturb period
 From: Eric Dumazet <edumazet@google.com>
 To: stable@vger.kernel.org
-Cc: Eric Dumazet <edumazet@google.com>, 
-	Marcus Wichelmann <marcus.wichelmann@hetzner-cloud.de>, 
-	"=?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?=" <toke@redhat.com>, Jakub Kicinski <kuba@kernel.org>
+Cc: Eric Dumazet <edumazet@google.com>, Gerrard Tai <gerrard.tai@starlabs.sg>, 
+	Jakub Kicinski <kuba@kernel.org>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-commit 82ffbe7776d0ac084031f114167712269bf3d832 upstream.
+commit 7ca52541c05c832d32b112274f81a985101f9ba8 upstream.
 
-SFQ has an assumption of always being able to queue at least one packet.
+Gerrard Tai reported that SFQ perturb_period has no range check yet,
+and this can be used to trigger a race condition fixed in a separate patch.
 
-However, after the blamed commit, sch->q.len can be inflated by packets
-in sch->gso_skb, and an enqueue() on an empty SFQ qdisc can be followed
-by an immediate drop.
-
-Fix sfq_drop() to properly clear q->tail in this situation.
+We want to make sure ctl->perturb_period * HZ will not overflow
+and is positive.
 
 Tested:
 
-ip netns add lb
-ip link add dev to-lb type veth peer name in-lb netns lb
-ethtool -K to-lb tso off                 # force qdisc to requeue gso_skb
-ip netns exec lb ethtool -K in-lb gro on # enable NAPI
-ip link set dev to-lb up
-ip -netns lb link set dev in-lb up
-ip addr add dev to-lb 192.168.20.1/24
-ip -netns lb addr add dev in-lb 192.168.20.2/24
-tc qdisc replace dev to-lb root sfq limit 100
+tc qd add dev lo root sfq perturb -10   # negative value : error
+Error: sch_sfq: invalid perturb period.
 
-ip netns exec lb netserver
+tc qd add dev lo root sfq perturb 1000000000 # too big : error
+Error: sch_sfq: invalid perturb period.
 
-netperf -H 192.168.20.2 -l 100 &
-netperf -H 192.168.20.2 -l 100 &
-netperf -H 192.168.20.2 -l 100 &
-netperf -H 192.168.20.2 -l 100 &
+tc qd add dev lo root sfq perturb 2000000 # acceptable value
+tc -s -d qd sh dev lo
+qdisc sfq 8005: root refcnt 2 limit 127p quantum 64Kb depth 127 flows 128 divisor 1024 perturb 2000000sec
+ Sent 0 bytes 0 pkt (dropped 0, overlimits 0 requeues 0)
+ backlog 0b 0p requeues 0
 
-Fixes: a53851e2c321 ("net: sched: explicit locking in gso_cpu fallback")
-Reported-by: Marcus Wichelmann <marcus.wichelmann@hetzner-cloud.de>
-Closes: https://lore.kernel.org/netdev/9da42688-bfaa-4364-8797-e9271f3bdaef=
-@hetzner-cloud.de/
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Reported-by: Gerrard Tai <gerrard.tai@starlabs.sg>
 Signed-off-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Toke H=C3=B8iland-J=C3=B8rgensen <toke@redhat.com>
-Link: https://patch.msgid.link/20250606165127.3629486-1-edumazet@google.com
+Cc: stable@vger.kernel.org
+Link: https://patch.msgid.link/20250611083501.1810459-1-edumazet@google.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 ---
- net/sched/sch_sfq.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ net/sched/sch_sfq.c | 10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
 
 diff --git a/net/sched/sch_sfq.c b/net/sched/sch_sfq.c
-index 04c3aa446ad3d69c014b06e66795b8dfbc369333..29e17809d1a70258ca268d45028=
-9c63a272fbee4 100644
+index 29e17809d1a70258ca268d450289c63a272fbee4..cd089c3b226a7a6fbd63479d2f16b6150f53c82b 100644
 --- a/net/sched/sch_sfq.c
 +++ b/net/sched/sch_sfq.c
-@@ -310,7 +310,10 @@ static unsigned int sfq_drop(struct Qdisc *sch, struct=
- sk_buff **to_free)
- 		/* It is difficult to believe, but ALL THE SLOTS HAVE LENGTH 1. */
- 		x =3D q->tail->next;
- 		slot =3D &q->slots[x];
--		q->tail->next =3D slot->next;
-+		if (slot->next =3D=3D x)
-+			q->tail =3D NULL; /* no more active slots */
-+		else
-+			q->tail->next =3D slot->next;
- 		q->ht[slot->hash] =3D SFQ_EMPTY_SLOT;
- 		goto drop;
+@@ -653,6 +653,14 @@ static int sfq_change(struct Qdisc *sch, struct nlattr *opt,
+ 		NL_SET_ERR_MSG_MOD(extack, "invalid quantum");
+ 		return -EINVAL;
  	}
---=20
++
++	if (ctl->perturb_period < 0 ||
++	    ctl->perturb_period > INT_MAX / HZ) {
++		NL_SET_ERR_MSG_MOD(extack, "invalid perturb period");
++		return -EINVAL;
++	}
++	perturb_period = ctl->perturb_period * HZ;
++
+ 	if (ctl_v1 && !red_check_params(ctl_v1->qth_min, ctl_v1->qth_max,
+ 					ctl_v1->Wlog, ctl_v1->Scell_log, NULL))
+ 		return -EINVAL;
+@@ -669,14 +677,12 @@ static int sfq_change(struct Qdisc *sch, struct nlattr *opt,
+ 	headdrop = q->headdrop;
+ 	maxdepth = q->maxdepth;
+ 	maxflows = q->maxflows;
+-	perturb_period = q->perturb_period;
+ 	quantum = q->quantum;
+ 	flags = q->flags;
+ 
+ 	/* update and validate configuration */
+ 	if (ctl->quantum)
+ 		quantum = ctl->quantum;
+-	perturb_period = ctl->perturb_period * HZ;
+ 	if (ctl->flows)
+ 		maxflows = min_t(u32, ctl->flows, SFQ_MAX_FLOWS);
+ 	if (ctl->divisor) {
+-- 
 2.50.0.rc2.701.gf1e915cc24-goog
 
 
