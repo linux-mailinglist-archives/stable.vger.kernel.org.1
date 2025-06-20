@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-154841-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-154842-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id B8A10AE1079
-	for <lists+stable@lfdr.de>; Fri, 20 Jun 2025 02:46:59 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 42601AE107C
+	for <lists+stable@lfdr.de>; Fri, 20 Jun 2025 02:52:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0A5AD7AB5AE
-	for <lists+stable@lfdr.de>; Fri, 20 Jun 2025 00:45:37 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CF7F31896D21
+	for <lists+stable@lfdr.de>; Fri, 20 Jun 2025 00:53:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C23413D6F;
-	Fri, 20 Jun 2025 00:46:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1CD5E10A1F;
+	Fri, 20 Jun 2025 00:52:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="UHKNu57P"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="WNa2n9XE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77EFE4C79;
-	Fri, 20 Jun 2025 00:46:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3FDE4C79;
+	Fri, 20 Jun 2025 00:52:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750380411; cv=none; b=XyEjn85WLgcd80x6q4nMl180RaG1EScmW4xLq2ph/rBlCw+VC0HEOsIhgRSlvUamfekvEftN1nhgi3S/KtnUwuyZoF9ox3yeEO2twV1arHgeKvRzU/OQxEwPQ6MVGxolMn99O5yu5JTVIruB4V0nQM3ef9Z4Mr9MNlGc5QPyUyU=
+	t=1750380762; cv=none; b=smQikOwq3UBEnhbL3pyZFeSEvwNckPagsltpKwogyNxO7f3byAJm8iwco2weGjt/ku3pNRvlNaY9B0kguVSV2JvavI8BFCrr1JGDGzlOusTyp4XN/Nu/koF1Eech6V+jEJZ1x7SuWi892BpuG8N+1vCKcl0fhoBojl6g2L3Nuxs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750380411; c=relaxed/simple;
-	bh=uA5jOxe0KkX6Ovyb4Dypn6lnImsadKIwpGcNNs722kQ=;
-	h=Date:To:From:Subject:Message-Id; b=YQIC8jG8XsymVjjTaUvtIBCyiQbdBTEW95WO0DrJur3N5BBUgSMhHC1vI0LJ4nJDQl9ppKCk29VJD6Ub0nNUFNlpbqrHPRhsDr07TJzHaRNuDmOSxTp6YEZTBWI/wMDCDo7sJ7SW0Q5hvsT6KHmUjGQMw+wBKVICBHI/+XLKf/w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=UHKNu57P; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9382C4CEEA;
-	Fri, 20 Jun 2025 00:46:50 +0000 (UTC)
+	s=arc-20240116; t=1750380762; c=relaxed/simple;
+	bh=oeXTHW5s1DfLw9fG/pnWky8fl0iX2hToNEWrDJh8dnI=;
+	h=Date:To:From:Subject:Message-Id; b=dzAjzzBHehCibm2wZn2M0In7JZ+DUHCcRKZkbnvaqfR4ujvCQcfjHM427jfm/7Up27JuTJpiGXKX/3MmQkXRsj784fQN/wU3YOv/UdedcDmDM7gDrIADTr20pN/sziP/jfADB6kBtfEBwzpIe6Utmw1Y398zfUaYXhtklw9RqiA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=WNa2n9XE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D910C4CEEA;
+	Fri, 20 Jun 2025 00:52:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1750380411;
-	bh=uA5jOxe0KkX6Ovyb4Dypn6lnImsadKIwpGcNNs722kQ=;
+	s=korg; t=1750380762;
+	bh=oeXTHW5s1DfLw9fG/pnWky8fl0iX2hToNEWrDJh8dnI=;
 	h=Date:To:From:Subject:From;
-	b=UHKNu57P7aUUuXG3BVR0J06IwFRRcwX6h0cAa4M9uKPi84GPU6iq5DW9qnOtYIsmu
-	 BYF+oPXAuCzO7umbeyLcfYs9gJb8boCUBcyOrBMP6KdUszw2jZ4ORcmU9YuUG5yvKy
-	 ics06vHZWOQNLPvK+UIgRIwnwTS5K8AJcrLiZebc=
-Date: Thu, 19 Jun 2025 17:46:50 -0700
-To: mm-commits@vger.kernel.org,stable@vger.kernel.org,shuah@kernel.org,sj@kernel.org,akpm@linux-foundation.org
+	b=WNa2n9XExVI2nZ4qbAfXPgFze5950pzWp88kDq4m7xPzyvvwiDK64K7tQNw/eCbu7
+	 mxsYDeoHV2QJr2aDqYOatLS5+jv69ECezSo+1KfzjYdJDOlLbVsnJUK/VKQ6CNRj3E
+	 FHBg2uAypWe4Ub0TefXBZqXVy/GBFejG/pgb4jJk=
+Date: Thu, 19 Jun 2025 17:52:41 -0700
+To: mm-commits@vger.kernel.org,viro@zeniv.linux.org.uk,stable@vger.kernel.org,kbingham@kernel.org,jlayton@kernel.org,jan.kiszka@siemens.com,jack@suse.cz,florian.fainelli@broadcom.com,akpm@linux-foundation.org
 From: Andrew Morton <akpm@linux-foundation.org>
-Subject: + mm-damon-sysfs-schemes-free-old-damon_sysfs_scheme_filter-memcg_path-on-write.patch added to mm-hotfixes-unstable branch
-Message-Id: <20250620004650.E9382C4CEEA@smtp.kernel.org>
+Subject: + scripts-gdb-fix-dentry_name-lookup.patch added to mm-hotfixes-unstable branch
+Message-Id: <20250620005242.3D910C4CEEA@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -50,12 +50,12 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 
 
 The patch titled
-     Subject: mm/damon/sysfs-schemes: free old damon_sysfs_scheme_filter->memcg_path on write
+     Subject: scripts/gdb: fix dentry_name() lookup
 has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
-     mm-damon-sysfs-schemes-free-old-damon_sysfs_scheme_filter-memcg_path-on-write.patch
+     scripts-gdb-fix-dentry_name-lookup.patch
 
 This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-damon-sysfs-schemes-free-old-damon_sysfs_scheme_filter-memcg_path-on-write.patch
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/scripts-gdb-fix-dentry_name-lookup.patch
 
 This patch will later appear in the mm-hotfixes-unstable branch at
     git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
@@ -73,50 +73,51 @@ branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 and is updated there every 2-3 working days
 
 ------------------------------------------------------
-From: SeongJae Park <sj@kernel.org>
-Subject: mm/damon/sysfs-schemes: free old damon_sysfs_scheme_filter->memcg_path on write
-Date: Thu, 19 Jun 2025 11:36:07 -0700
+From: Florian Fainelli <florian.fainelli@broadcom.com>
+Subject: scripts/gdb: fix dentry_name() lookup
+Date: Thu, 19 Jun 2025 15:51:05 -0700
 
-memcg_path_store() assigns a newly allocated memory buffer to
-filter->memcg_path, without deallocating the previously allocated and
-assigned memory buffer.  As a result, users can leak kernel memory by
-continuously writing a data to memcg_path DAMOS sysfs file.  Fix the leak
-by deallocating the previously set memory buffer.
+The "d_iname" member was replaced with "d_shortname.string" in the commit
+referenced in the Fixes tag.  This prevented the GDB script "lx-mount"
+command to properly function:
 
-Link: https://lkml.kernel.org/r/20250619183608.6647-2-sj@kernel.org
-Fixes: 7ee161f18b5d ("mm/damon/sysfs-schemes: implement filter directory")
-Signed-off-by: SeongJae Park <sj@kernel.org>
-Cc: Shuah Khan <shuah@kernel.org>
-Cc: <stable@vger.kernel.org>		[6.3.x]
+(gdb) lx-mounts
+      mount          super_block     devname pathname fstype options
+0xff11000002d21180 0xff11000002d24800 rootfs / rootfs rw 0 0
+0xff11000002e18a80 0xff11000003713000 /dev/root / ext4 rw,relatime 0 0
+Python Exception <class 'gdb.error'>: There is no member named d_iname.
+Error occurred in Python: There is no member named d_iname.
+
+Link: https://lkml.kernel.org/r/20250619225105.320729-1-florian.fainelli@broadcom.com
+Fixes: 58cf9c383c5c ("dcache: back inline names with a struct-wrapped array of unsigned long")
+Signed-off-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Cc: Al Viro <viro@zeniv.linux.org.uk>
+Cc: Jan Kara <jack@suse.cz>
+Cc: Jan Kiszka <jan.kiszka@siemens.com>
+Cc: Jeff Layton <jlayton@kernel.org>
+Cc: Kieran Bingham <kbingham@kernel.org>
+Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
 
- mm/damon/sysfs-schemes.c |    1 +
- 1 file changed, 1 insertion(+)
+ scripts/gdb/linux/vfs.py |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/mm/damon/sysfs-schemes.c~mm-damon-sysfs-schemes-free-old-damon_sysfs_scheme_filter-memcg_path-on-write
-+++ a/mm/damon/sysfs-schemes.c
-@@ -472,6 +472,7 @@ static ssize_t memcg_path_store(struct k
- 		return -ENOMEM;
+--- a/scripts/gdb/linux/vfs.py~scripts-gdb-fix-dentry_name-lookup
++++ a/scripts/gdb/linux/vfs.py
+@@ -22,7 +22,7 @@ def dentry_name(d):
+     if parent == d or parent == 0:
+         return ""
+     p = dentry_name(d['d_parent']) + "/"
+-    return p + d['d_iname'].string()
++    return p + d['d_shortname']['string'].string()
  
- 	strscpy(path, buf, count + 1);
-+	kfree(filter->memcg_path);
- 	filter->memcg_path = path;
- 	return count;
- }
+ class DentryName(gdb.Function):
+     """Return string of the full path of a dentry.
 _
 
-Patches currently in -mm which might be from sj@kernel.org are
+Patches currently in -mm which might be from florian.fainelli@broadcom.com are
 
-mm-damon-sysfs-schemes-free-old-damon_sysfs_scheme_filter-memcg_path-on-write.patch
-mm-damon-introduce-damon_stat-module.patch
-mm-damon-introduce-damon_stat-module-fix.patch
-mm-damon-stat-calculate-and-expose-estimated-memory-bandwidth.patch
-mm-damon-stat-calculate-and-expose-idle-time-percentiles.patch
-docs-admin-guide-mm-damon-add-damon_stat-usage-document.patch
-mm-damon-paddr-use-alloc_migartion_target-with-no-migration-fallback-nodemask.patch
-revert-mm-rename-alloc_demote_folio-to-alloc_migrate_folio.patch
-revert-mm-make-alloc_demote_folio-externally-invokable-for-migration.patch
-selftets-damon-add-a-test-for-memcg_path-leak.patch
+scripts-gdb-fix-dentry_name-lookup.patch
 
 
