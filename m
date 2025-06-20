@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-154868-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-154869-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA2C2AE11EE
-	for <lists+stable@lfdr.de>; Fri, 20 Jun 2025 05:49:21 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id D9269AE11EF
+	for <lists+stable@lfdr.de>; Fri, 20 Jun 2025 05:49:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AC7A64A214D
-	for <lists+stable@lfdr.de>; Fri, 20 Jun 2025 03:49:21 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 20EF55A2A44
+	for <lists+stable@lfdr.de>; Fri, 20 Jun 2025 03:49:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ABC121E1C1A;
-	Fri, 20 Jun 2025 03:49:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0D311E0E0B;
+	Fri, 20 Jun 2025 03:49:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="w+vuSqta"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="VkgWFSqz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 695B31C863B;
-	Fri, 20 Jun 2025 03:49:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D2F7322E;
+	Fri, 20 Jun 2025 03:49:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750391355; cv=none; b=kdgM/U5K80akIsv+fk1RSyh45SX1771L8VsKYZrSecIPUVBLFJb3NQnDfjzM3amAcfbXxoDFH8C5NNSxqEv5hC/DYZ9Dc9/vkHzTRzgl3RPU0fbjznkSmMFBjbM3m74o0Bjx/vDEG//BzpBjIYxn1/LXyb0JYc5SoXlQfXQ+4sg=
+	t=1750391360; cv=none; b=oALPawz4S7v7cOmLrxFPezo/XZGp5cMHyLeSVu9G2J5SQgK6TJuW2skRNjxCM0zL4tXjCGB5F3YPHRHsLBt7YENQ8aW/xg1hh94nR+zgzZfUIUWQok/P3BgLZAKb2Xtr4FrMDqHiqjqZTTKfJf9SMVPXL464CI+CfVjqzv9dfdQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750391355; c=relaxed/simple;
-	bh=ie0glEOrnx8CjsKPO2WPPJKrNLZt2ghKrkhAhlu40rA=;
-	h=Date:To:From:Subject:Message-Id; b=TscaphFB2XTqfKAucbUlfGfsv+X8eUBukfuDpDhzIK/cQ8/CmZM7MLup3qHx7o3Dfv3X22hkX1Nk//jH/16AK1KRoUEeZ0oPO6FeB6nSpanj/PhonaUnj3txJFhPrcUtosDYfH5R5vH8pHz3j6CZWEy3sKvTPpAnnuGoCROpDFM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=w+vuSqta; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3EAB4C4CEED;
-	Fri, 20 Jun 2025 03:49:15 +0000 (UTC)
+	s=arc-20240116; t=1750391360; c=relaxed/simple;
+	bh=cQwiK5YRxUn49pAudKT7SfdsPcLaNfgsMufCkQZUnak=;
+	h=Date:To:From:Subject:Message-Id; b=GDgtP2ljqDCPZC99aSAInCdSqt/hss9qXxc8Ye8nBi3oU2mKbPfW6rU+opJJuN7aH6SOZvsMDDrcBq8IJGuq4H7SAhZwo38Fv5VEokH1N8W1n1biLe9vPDiseQ1OWM2vPo3OGfzExmIXmvr6kIE1UdZw1kUHBXEDXcn5FKlNMrI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=VkgWFSqz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2332FC4CEE3;
+	Fri, 20 Jun 2025 03:49:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1750391355;
-	bh=ie0glEOrnx8CjsKPO2WPPJKrNLZt2ghKrkhAhlu40rA=;
+	s=korg; t=1750391360;
+	bh=cQwiK5YRxUn49pAudKT7SfdsPcLaNfgsMufCkQZUnak=;
 	h=Date:To:From:Subject:From;
-	b=w+vuSqta6g7zs37wU0OfjkdaX5QjX3M+1O+xEc1a+JhylWK2NjnFwkJTlZiP4RGi6
-	 ztTF67KupHDS1zdnR/e+aVRCWUSv8GeLVsnawUyQe32OTh3waGcvE26UnPsyISBL5q
-	 PDRLmcaZccM00X8GX+GC620JaG6rti15X0b5yNUU=
-Date: Thu, 19 Jun 2025 20:49:14 -0700
-To: mm-commits@vger.kernel.org,stable@vger.kernel.org,robertpang@google.com,kent.overstreet@linux.dev,jserv@ccns.ncku.edu.tw,colyli@kernel.org,visitorckw@gmail.com,akpm@linux-foundation.org
+	b=VkgWFSqz+Be0U1G8kHipYgRUEkC8ow9diJo3l8N6nLKgzmdrlCHIqTJ0pHcTCLXxS
+	 UPI/lGYNAwPZDRxY9rQqewEX/8+2OWDwUcXye5r+ap2hzq0ubt7BDkdib07WitgCu+
+	 iaAhzmjmVBZUAqnmKw8p4J6nt4lTxR9DSYH76vmM=
+Date: Thu, 19 Jun 2025 20:49:19 -0700
+To: mm-commits@vger.kernel.org,zhaoyang.huang@unisoc.com,zhangpeng.00@bytedance.com,willy@infradead.org,surenb@google.com,Steve.Kang@unisoc.com,stable@vger.kernel.org,sidhartha.kumar@oracle.com,lorenzo.stoakes@oracle.com,hailong.liu@oppo.com,Liam.Howlett@oracle.com,akpm@linux-foundation.org
 From: Andrew Morton <akpm@linux-foundation.org>
-Subject: [merged mm-hotfixes-stable] bcache-remove-unnecessary-select-min_heap.patch removed from -mm tree
-Message-Id: <20250620034915.3EAB4C4CEED@smtp.kernel.org>
+Subject: [merged mm-hotfixes-stable] maple_tree-fix-ma_state_prealloc-flag-in-mas_preallocate.patch removed from -mm tree
+Message-Id: <20250620034920.2332FC4CEE3@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -50,68 +50,81 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 
 
 The quilt patch titled
-     Subject: bcache: remove unnecessary select MIN_HEAP
+     Subject: maple_tree: fix MA_STATE_PREALLOC flag in mas_preallocate()
 has been removed from the -mm tree.  Its filename was
-     bcache-remove-unnecessary-select-min_heap.patch
+     maple_tree-fix-ma_state_prealloc-flag-in-mas_preallocate.patch
 
 This patch was dropped because it was merged into the mm-hotfixes-stable branch
 of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
 ------------------------------------------------------
-From: Kuan-Wei Chiu <visitorckw@gmail.com>
-Subject: bcache: remove unnecessary select MIN_HEAP
-Date: Sun, 15 Jun 2025 04:23:53 +0800
+From: "Liam R. Howlett" <Liam.Howlett@oracle.com>
+Subject: maple_tree: fix MA_STATE_PREALLOC flag in mas_preallocate()
+Date: Mon, 16 Jun 2025 14:45:20 -0400
 
-After reverting the transition to the generic min heap library, bcache no
-longer depends on MIN_HEAP.  The select entry can be removed to reduce
-code size and shrink the kernel's attack surface.
+Temporarily clear the preallocation flag when explicitly requesting
+allocations.  Pre-existing allocations are already counted against the
+request through mas_node_count_gfp(), but the allocations will not happen
+if the MA_STATE_PREALLOC flag is set.  This flag is meant to avoid
+re-allocating in bulk allocation mode, and to detect issues with
+preallocation calculations.
 
-This change effectively reverts the bcache-related part of commit
-92a8b224b833 ("lib/min_heap: introduce non-inline versions of min heap API
-functions").
+The MA_STATE_PREALLOC flag should also always be set on zero allocations
+so that detection of underflow allocations will print a WARN_ON() during
+consumption.
 
-This is part of a series of changes to address a performance regression
-caused by the use of the generic min_heap implementation.
+User visible effect of this flaw is a WARN_ON() followed by a null pointer
+dereference when subsequent requests for larger number of nodes is
+ignored, such as the vma merge retry in mmap_region() caused by drivers
+altering the vma flags (which happens in v6.6, at least)
 
-As reported by Robert, bcache now suffers from latency spikes, with P100
-(max) latency increasing from 600 ms to 2.4 seconds every 5 minutes. 
-These regressions degrade bcache's effectiveness as a low-latency cache
-layer and lead to frequent timeouts and application stalls in production
-environments.
-
-Link: https://lore.kernel.org/lkml/CAJhEC05+0S69z+3+FB2Cd0hD+pCRyWTKLEOsc8BOmH73p1m+KQ@mail.gmail.com
-Link: https://lkml.kernel.org/r/20250614202353.1632957-4-visitorckw@gmail.com
-Fixes: 866898efbb25 ("bcache: remove heap-related macros and switch to generic min_heap")
-Fixes: 92a8b224b833 ("lib/min_heap: introduce non-inline versions of min heap API functions")
-Signed-off-by: Kuan-Wei Chiu <visitorckw@gmail.com>
-Reported-by: Robert Pang <robertpang@google.com>
-Closes: https://lore.kernel.org/linux-bcache/CAJhEC06F_AtrPgw2-7CvCqZgeStgCtitbD-ryuPpXQA-JG5XXw@mail.gmail.com
-Acked-by: Coly Li <colyli@kernel.org>
-Cc: Ching-Chun (Jim) Huang <jserv@ccns.ncku.edu.tw>
-Cc: Kent Overstreet <kent.overstreet@linux.dev>
+Link: https://lkml.kernel.org/r/20250616184521.3382795-3-Liam.Howlett@oracle.com
+Fixes: 54a611b60590 ("Maple Tree: add new data structure")
+Signed-off-by: Liam R. Howlett <Liam.Howlett@oracle.com>
+Reported-by: Zhaoyang Huang <zhaoyang.huang@unisoc.com>
+Reported-by: Hailong Liu <hailong.liu@oppo.com>
+Link: https://lore.kernel.org/all/1652f7eb-a51b-4fee-8058-c73af63bacd1@oppo.com/
+Link: https://lore.kernel.org/all/20250428184058.1416274-1-Liam.Howlett@oracle.com/
+Link: https://lore.kernel.org/all/20250429014754.1479118-1-Liam.Howlett@oracle.com/
+Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: Suren Baghdasaryan <surenb@google.com>
+Cc: Hailong Liu <hailong.liu@oppo.com>
+Cc: zhangpeng.00@bytedance.com <zhangpeng.00@bytedance.com>
+Cc: Steve Kang <Steve.Kang@unisoc.com>
+Cc: Matthew Wilcox <willy@infradead.org>
+Cc: Sidhartha Kumar <sidhartha.kumar@oracle.com>
 Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
 
- drivers/md/bcache/Kconfig |    1 -
- 1 file changed, 1 deletion(-)
+ lib/maple_tree.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/drivers/md/bcache/Kconfig~bcache-remove-unnecessary-select-min_heap
-+++ a/drivers/md/bcache/Kconfig
-@@ -5,7 +5,6 @@ config BCACHE
- 	select BLOCK_HOLDER_DEPRECATED if SYSFS
- 	select CRC64
- 	select CLOSURES
--	select MIN_HEAP
- 	help
- 	Allows a block device to be used as cache for other devices; uses
- 	a btree for indexing and the layout is optimized for SSDs.
+--- a/lib/maple_tree.c~maple_tree-fix-ma_state_prealloc-flag-in-mas_preallocate
++++ a/lib/maple_tree.c
+@@ -5527,8 +5527,9 @@ int mas_preallocate(struct ma_state *mas
+ 	mas->store_type = mas_wr_store_type(&wr_mas);
+ 	request = mas_prealloc_calc(&wr_mas, entry);
+ 	if (!request)
+-		return ret;
++		goto set_flag;
+ 
++	mas->mas_flags &= ~MA_STATE_PREALLOC;
+ 	mas_node_count_gfp(mas, request, gfp);
+ 	if (mas_is_err(mas)) {
+ 		mas_set_alloc_req(mas, 0);
+@@ -5538,6 +5539,7 @@ int mas_preallocate(struct ma_state *mas
+ 		return ret;
+ 	}
+ 
++set_flag:
+ 	mas->mas_flags |= MA_STATE_PREALLOC;
+ 	return ret;
+ }
 _
 
-Patches currently in -mm which might be from visitorckw@gmail.com are
+Patches currently in -mm which might be from Liam.Howlett@oracle.com are
 
-lib-math-gcd-use-static-key-to-select-implementation-at-runtime.patch
-riscv-optimize-gcd-code-size-when-config_riscv_isa_zbb-is-disabled.patch
-riscv-optimize-gcd-performance-on-risc-v-without-zbb-extension.patch
+tools-testing-radix-tree-test-maple-tree-chaining-mas_preallocate-calls.patch
 
 
