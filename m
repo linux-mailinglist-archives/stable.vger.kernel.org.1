@@ -1,175 +1,195 @@
-Return-Path: <stable+bounces-155015-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-155013-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F1A1AE16E4
-	for <lists+stable@lfdr.de>; Fri, 20 Jun 2025 11:01:30 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id D8FE7AE16D7
+	for <lists+stable@lfdr.de>; Fri, 20 Jun 2025 10:58:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 707CC188852C
-	for <lists+stable@lfdr.de>; Fri, 20 Jun 2025 09:01:07 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 525553BD4EA
+	for <lists+stable@lfdr.de>; Fri, 20 Jun 2025 08:58:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 963CB27CCEB;
-	Fri, 20 Jun 2025 09:00:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bckJ9pKG"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5518B27CCDA;
+	Fri, 20 Jun 2025 08:58:29 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from smtpbgbr2.qq.com (smtpbgbr2.qq.com [54.207.22.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4729327814A
-	for <stable@vger.kernel.org>; Fri, 20 Jun 2025 09:00:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC47427BF6E;
+	Fri, 20 Jun 2025 08:58:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.207.22.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750410047; cv=none; b=FIpRsgOUCIMupK5SBvJjeVP9iePW5R4Ur1FhThcjSqPEG9HVpF8aCwvFbdOuJcvQMo740JeMoa7Dh4x+eE9q1dhXFDztHq0ATEzJuFrdJvvdKkhosNPWXoD8pOP5ZdggGXgYu/1vbyY5Kglh/qiVxIk+bnWQqSRzW3s8CpePbZY=
+	t=1750409909; cv=none; b=XcHkm44B9mHHNPWUHLYlf/Ie/mumEDFFBagX+I9A8WnNKKpE/ipB7zlBRpCw7gC7CDmqOtaWRedmmMCrie3fiklmlO8fqcz29CheJ3IuOavv00XWYNlgPSnoMH/c4WEc9TrbY7C6pkfyBDkicU4JgclqC/S12dKSubVmv6wj2Sw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750410047; c=relaxed/simple;
-	bh=RVLENyWVCYOKrSwq909sSNiRhEwctaJvoaVsKzQSAKA=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=arc9LshE/k1I3B2yt6qFKswOq+afWG6l3b8+kj4HiniktcVnDo/47Z8WH84MJI+v89cCfAcB32lNGq/gPdxwIbvDXA3+CWQbllA2+sDH/crJnE63tIIMVIhGbHI8VDdegFrFSpntp25StBRIDuV8JQ6Z71UamES0KLUOzdqpjfo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bckJ9pKG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ACA69C4CEE3;
-	Fri, 20 Jun 2025 09:00:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750410047;
-	bh=RVLENyWVCYOKrSwq909sSNiRhEwctaJvoaVsKzQSAKA=;
-	h=Subject:To:Cc:From:Date:From;
-	b=bckJ9pKGf2ob9++5L4UkskepVNb3MQm1v70o9VbIXNucEPtuVZPpNHx6QJgF9lsQY
-	 w9oSaxx6Cb9uO5TQMOddfDPavnFW9r5h3NbwOVqFscRX2II2zanfgLPNGxbpheGYtU
-	 +wrIQiCmlT9SOs9p4IOW3oadORTmyeEVCtqzR9Hg=
-Subject: FAILED: patch "[PATCH] f2fs: fix to do sanity check on ino and xnid" failed to apply to 6.1-stable tree
-To: chao@kernel.org,jaegeuk@kernel.org
-Cc: <stable@vger.kernel.org>
-From: <gregkh@linuxfoundation.org>
-Date: Fri, 20 Jun 2025 10:57:12 +0200
-Message-ID: <2025062012-stride-reliance-60ad@gregkh>
+	s=arc-20240116; t=1750409909; c=relaxed/simple;
+	bh=YkpY1fhHra+OZEOgNIChEpJB4uSONgPIuulv97XaE58=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=EUL5f5tfHaG1r0xdm6M8piaP5chPy5WoB8UhyJmR9xi+yVZDG47foObG8Ik6H5CGNCchyBR2m9bbuRb+Fle9zLTBQJVv2/6EtNN946XkZOD1DRoMij8uBEEIlZwdoDRJLKdgulsk6jTWmHS4x3dZdmqE3wIo9v5YuyNXSjR6iuo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com; spf=pass smtp.mailfrom=trustnetic.com; arc=none smtp.client-ip=54.207.22.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=trustnetic.com
+X-QQ-mid: esmtpgz12t1750409859t95de859e
+X-QQ-Originating-IP: muBgwb3SUiBx7chg8HIxQPcHaCoUWyUCI3W0VE8bda4=
+Received: from lap-jiawenwu.trustnetic.com ( [60.176.0.129])
+	by bizesmtp.qq.com (ESMTP) with 
+	id ; Fri, 20 Jun 2025 16:57:38 +0800 (CST)
+X-QQ-SSF: 0000000000000000000000000000000
+X-QQ-GoodBg: 0
+X-BIZMAIL-ID: 18233739580673718109
+EX-QQ-RecipientCnt: 11
+From: Jiawen Wu <jiawenwu@trustnetic.com>
+To: netdev@vger.kernel.org,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	horms@kernel.org
+Cc: mengyuanlou@net-swift.com,
+	duanqiangwen@net-swift.com,
+	Jiawen Wu <jiawenwu@trustnetic.com>,
+	stable@vger.kernel.org
+Subject: [PATCH net 1/2] net: txgbe: request MISC IRQ in ndo_open
+Date: Fri, 20 Jun 2025 16:57:19 +0800
+Message-Id: <20250620085720.33924-2-jiawenwu@trustnetic.com>
+X-Mailer: git-send-email 2.21.0.windows.1
+In-Reply-To: <20250620085720.33924-1-jiawenwu@trustnetic.com>
+References: <20250620085720.33924-1-jiawenwu@trustnetic.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
+X-QQ-SENDSIZE: 520
+Feedback-ID: esmtpgz:trustnetic.com:qybglogicsvrgz:qybglogicsvrgz6b-0
+X-QQ-XMAILINFO: N1GwrkiB7FDZtHPjnqX6QlWYrQZ0wZEGNa6X92UbGuo5iPyYD9NElGuG
+	16dRR7HyF1lvCLE6LmkNuXkt4RAH26V1/VlsYsjO97oX7dI1/Lb+YxnBxev07MV4XD07ppW
+	iFyRY4YqvgchNqg2rjqLsXK4YAGoQKSab5HwkPmU86YrZtN65/RmYYOT/F8p6bUVAulxuzN
+	rXkp5wvBfXld4Yo/ROJiA1QkxOw4Qhlwm/ZypVaxZs0ogBshZH8VXKWvFniU00Kc47pevMB
+	PMBQIqwvNyLfTxjiML1Z051p1oHTrpwhJwIv0EmXNXCdl2Lt0NekxdEqCcG601BJY7WKTO6
+	nDt1ljr2LpwFfDETsdZLhA9pos5nFX4OKlHjvT6Dcn2B80MZsm8vRZshlqV7lGfGRV4IXZo
+	pYyazsYTJHwIiIdwd4fN4zgqJnu4woZilOWxXXJQ7qFOBNO8Y3dxV01trGhxck1cPjfpryU
+	IgErQnP72iXfYCyJQBbS/xW/W/uIAqu97JCUHfIpYvMDU5UgKUf78wFlXK+ElO5j4eIp1yP
+	/n44vqdKCcdfh15jaS3WJefIaVA62o2aYJGtNppCDOqMivnOwQ5IqPvftpVIiK99x31GVjZ
+	/k4Sp+siFtT90+/9G2YlNNROp2OGEfV+vAYkbfEXTOGsmgAOEtHhQUAiyEqQ3cyOodsEOrS
+	zmQV+RZBFhEAMDjUnc7VJjnbmdmsu3PSdbHjtYBoDkLQPFxhVnR+g8kq82j5991FmPDBbBF
+	9X/co6xJs0XSpqSVeKWppos+8ZWzTd8Qbc9NI4fWMqxNQT1kDu6AV9Igo45DqJREC+ck8/H
+	gh6bUvHusfZdNS6Dk8UX2yovytUxUf8mI0c/a5U0qBjacY+gwKGxZlN3SpfAnO1Cc1iGsuK
+	jVR9PqCG4ALKFKmKqkm2rjNKxQqF3k7g2IC3IruvZizwNlGl5xw9AnNsQLqJaWpum0e3YrP
+	pZKLPtyX7xHbsIu9xKryedCjbbOa90uIoA7667MpdYS21em5J3250cbWCSvDNQuF13W0xQ3
+	34W9MD++Hc7uh4wMqY981l9pb5/2SOIidWv73D7Tz/KJq4idL0ooNBQ5Gz9inuh1pc1blJc
+	A==
+X-QQ-XMRINFO: NI4Ajvh11aEj8Xl/2s1/T8w=
+X-QQ-RECHKSPAM: 0
 
+Move the creating of irq_domain for MISC IRQ from .probe to .ndo_open,
+and free it in .ndo_stop, to maintain consistency with the queue IRQs.
+This it for subsequent adjustments to the IRQ vectors.
 
-The patch below does not apply to the 6.1-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
-
-To reproduce the conflict and resubmit, you may use the following commands:
-
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
-git checkout FETCH_HEAD
-git cherry-pick -x 061cf3a84bde038708eb0f1d065b31b7c2456533
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025062012-stride-reliance-60ad@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
-
-Possible dependencies:
-
-
-
-thanks,
-
-greg k-h
-
------------------- original commit in Linus's tree ------------------
-
-From 061cf3a84bde038708eb0f1d065b31b7c2456533 Mon Sep 17 00:00:00 2001
-From: Chao Yu <chao@kernel.org>
-Date: Mon, 24 Mar 2025 13:33:39 +0800
-Subject: [PATCH] f2fs: fix to do sanity check on ino and xnid
-
-syzbot reported a f2fs bug as below:
-
-INFO: task syz-executor140:5308 blocked for more than 143 seconds.
-      Not tainted 6.14.0-rc7-syzkaller-00069-g81e4f8d68c66 #0
-"echo 0 > /proc/sys/kernel/hung_task_timeout_secs" disables this message.
-task:syz-executor140 state:D stack:24016 pid:5308  tgid:5308  ppid:5306   task_flags:0x400140 flags:0x00000006
-Call Trace:
- <TASK>
- context_switch kernel/sched/core.c:5378 [inline]
- __schedule+0x190e/0x4c90 kernel/sched/core.c:6765
- __schedule_loop kernel/sched/core.c:6842 [inline]
- schedule+0x14b/0x320 kernel/sched/core.c:6857
- io_schedule+0x8d/0x110 kernel/sched/core.c:7690
- folio_wait_bit_common+0x839/0xee0 mm/filemap.c:1317
- __folio_lock mm/filemap.c:1664 [inline]
- folio_lock include/linux/pagemap.h:1163 [inline]
- __filemap_get_folio+0x147/0xb40 mm/filemap.c:1917
- pagecache_get_page+0x2c/0x130 mm/folio-compat.c:87
- find_get_page_flags include/linux/pagemap.h:842 [inline]
- f2fs_grab_cache_page+0x2b/0x320 fs/f2fs/f2fs.h:2776
- __get_node_page+0x131/0x11b0 fs/f2fs/node.c:1463
- read_xattr_block+0xfb/0x190 fs/f2fs/xattr.c:306
- lookup_all_xattrs fs/f2fs/xattr.c:355 [inline]
- f2fs_getxattr+0x676/0xf70 fs/f2fs/xattr.c:533
- __f2fs_get_acl+0x52/0x870 fs/f2fs/acl.c:179
- f2fs_acl_create fs/f2fs/acl.c:375 [inline]
- f2fs_init_acl+0xd7/0x9b0 fs/f2fs/acl.c:418
- f2fs_init_inode_metadata+0xa0f/0x1050 fs/f2fs/dir.c:539
- f2fs_add_inline_entry+0x448/0x860 fs/f2fs/inline.c:666
- f2fs_add_dentry+0xba/0x1e0 fs/f2fs/dir.c:765
- f2fs_do_add_link+0x28c/0x3a0 fs/f2fs/dir.c:808
- f2fs_add_link fs/f2fs/f2fs.h:3616 [inline]
- f2fs_mknod+0x2e8/0x5b0 fs/f2fs/namei.c:766
- vfs_mknod+0x36d/0x3b0 fs/namei.c:4191
- unix_bind_bsd net/unix/af_unix.c:1286 [inline]
- unix_bind+0x563/0xe30 net/unix/af_unix.c:1379
- __sys_bind_socket net/socket.c:1817 [inline]
- __sys_bind+0x1e4/0x290 net/socket.c:1848
- __do_sys_bind net/socket.c:1853 [inline]
- __se_sys_bind net/socket.c:1851 [inline]
- __x64_sys_bind+0x7a/0x90 net/socket.c:1851
- do_syscall_x64 arch/x86/entry/common.c:52 [inline]
- do_syscall_64+0xf3/0x230 arch/x86/entry/common.c:83
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-
-Let's dump and check metadata of corrupted inode, it shows its xattr_nid
-is the same to its i_ino.
-
-dump.f2fs -i 3 chaseyu.img.raw
-i_xattr_nid                             [0x       3 : 3]
-
-So that, during mknod in the corrupted directory, it tries to get and
-lock inode page twice, result in deadlock.
-
-- f2fs_mknod
- - f2fs_add_inline_entry
-  - f2fs_get_inode_page --- lock dir's inode page
-   - f2fs_init_acl
-    - f2fs_acl_create(dir,..)
-     - __f2fs_get_acl
-      - f2fs_getxattr
-       - lookup_all_xattrs
-        - __get_node_page --- try to lock dir's inode page
-
-In order to fix this, let's add sanity check on ino and xnid.
-
+Fixes: aefd013624a1 ("net: txgbe: use irq_domain for interrupt controller")
 Cc: stable@vger.kernel.org
-Reported-by: syzbot+cc448dcdc7ae0b4e4ffa@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/linux-f2fs-devel/67e06150.050a0220.21942d.0005.GAE@google.com
-Signed-off-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+Signed-off-by: Jiawen Wu <jiawenwu@trustnetic.com>
+---
+ .../net/ethernet/wangxun/txgbe/txgbe_main.c   | 21 ++++++++-----------
+ 1 file changed, 9 insertions(+), 12 deletions(-)
 
-diff --git a/fs/f2fs/inode.c b/fs/f2fs/inode.c
-index fa5097da7c88..f5991e8751b9 100644
---- a/fs/f2fs/inode.c
-+++ b/fs/f2fs/inode.c
-@@ -288,6 +288,12 @@ static bool sanity_check_inode(struct inode *inode, struct page *node_page)
- 		return false;
- 	}
+diff --git a/drivers/net/ethernet/wangxun/txgbe/txgbe_main.c b/drivers/net/ethernet/wangxun/txgbe/txgbe_main.c
+index f3d2778b8e35..b4a864c97db3 100644
+--- a/drivers/net/ethernet/wangxun/txgbe/txgbe_main.c
++++ b/drivers/net/ethernet/wangxun/txgbe/txgbe_main.c
+@@ -458,10 +458,14 @@ static int txgbe_open(struct net_device *netdev)
  
-+	if (ino_of_node(node_page) == fi->i_xattr_nid) {
-+		f2fs_warn(sbi, "%s: corrupted inode i_ino=%lx, xnid=%x, run fsck to fix.",
-+			  __func__, inode->i_ino, fi->i_xattr_nid);
-+		return false;
-+	}
+ 	wx_configure(wx);
+ 
+-	err = txgbe_request_queue_irqs(wx);
++	err = txgbe_setup_misc_irq(wx->priv);
+ 	if (err)
+ 		goto err_free_resources;
+ 
++	err = txgbe_request_queue_irqs(wx);
++	if (err)
++		goto err_free_misc_irq;
 +
- 	if (f2fs_has_extra_attr(inode)) {
- 		if (!f2fs_sb_has_extra_attr(sbi)) {
- 			f2fs_warn(sbi, "%s: inode (ino=%lx) is with extra_attr, but extra_attr feature is off",
+ 	/* Notify the stack of the actual queue counts. */
+ 	err = netif_set_real_num_tx_queues(netdev, wx->num_tx_queues);
+ 	if (err)
+@@ -479,6 +483,8 @@ static int txgbe_open(struct net_device *netdev)
+ 
+ err_free_irq:
+ 	wx_free_irq(wx);
++err_free_misc_irq:
++	txgbe_free_misc_irq(wx->priv);
+ err_free_resources:
+ 	wx_free_resources(wx);
+ err_reset:
+@@ -519,6 +525,7 @@ static int txgbe_close(struct net_device *netdev)
+ 	wx_ptp_stop(wx);
+ 	txgbe_down(wx);
+ 	wx_free_irq(wx);
++	txgbe_free_misc_irq(wx->priv);
+ 	wx_free_resources(wx);
+ 	txgbe_fdir_filter_exit(wx);
+ 	wx_control_hw(wx, false);
+@@ -564,7 +571,6 @@ static void txgbe_shutdown(struct pci_dev *pdev)
+ int txgbe_setup_tc(struct net_device *dev, u8 tc)
+ {
+ 	struct wx *wx = netdev_priv(dev);
+-	struct txgbe *txgbe = wx->priv;
+ 
+ 	/* Hardware has to reinitialize queues and interrupts to
+ 	 * match packet buffer alignment. Unfortunately, the
+@@ -575,7 +581,6 @@ int txgbe_setup_tc(struct net_device *dev, u8 tc)
+ 	else
+ 		txgbe_reset(wx);
+ 
+-	txgbe_free_misc_irq(txgbe);
+ 	wx_clear_interrupt_scheme(wx);
+ 
+ 	if (tc)
+@@ -584,7 +589,6 @@ int txgbe_setup_tc(struct net_device *dev, u8 tc)
+ 		netdev_reset_tc(dev);
+ 
+ 	wx_init_interrupt_scheme(wx);
+-	txgbe_setup_misc_irq(txgbe);
+ 
+ 	if (netif_running(dev))
+ 		txgbe_open(dev);
+@@ -882,13 +886,9 @@ static int txgbe_probe(struct pci_dev *pdev,
+ 
+ 	txgbe_init_fdir(txgbe);
+ 
+-	err = txgbe_setup_misc_irq(txgbe);
+-	if (err)
+-		goto err_release_hw;
+-
+ 	err = txgbe_init_phy(txgbe);
+ 	if (err)
+-		goto err_free_misc_irq;
++		goto err_release_hw;
+ 
+ 	err = register_netdev(netdev);
+ 	if (err)
+@@ -916,8 +916,6 @@ static int txgbe_probe(struct pci_dev *pdev,
+ 
+ err_remove_phy:
+ 	txgbe_remove_phy(txgbe);
+-err_free_misc_irq:
+-	txgbe_free_misc_irq(txgbe);
+ err_release_hw:
+ 	wx_clear_interrupt_scheme(wx);
+ 	wx_control_hw(wx, false);
+@@ -957,7 +955,6 @@ static void txgbe_remove(struct pci_dev *pdev)
+ 	unregister_netdev(netdev);
+ 
+ 	txgbe_remove_phy(txgbe);
+-	txgbe_free_misc_irq(txgbe);
+ 	wx_free_isb_resources(wx);
+ 
+ 	pci_release_selected_regions(pdev,
+-- 
+2.48.1
 
 
