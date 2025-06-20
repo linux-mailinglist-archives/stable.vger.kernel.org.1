@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-154921-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-154922-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B1931AE133E
-	for <lists+stable@lfdr.de>; Fri, 20 Jun 2025 07:44:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id ADC63AE1348
+	for <lists+stable@lfdr.de>; Fri, 20 Jun 2025 07:47:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 458F1189982B
-	for <lists+stable@lfdr.de>; Fri, 20 Jun 2025 05:44:38 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 40F6119E14F4
+	for <lists+stable@lfdr.de>; Fri, 20 Jun 2025 05:47:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2742C1DED53;
-	Fri, 20 Jun 2025 05:44:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6193212FB8;
+	Fri, 20 Jun 2025 05:47:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cx/W6899"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VKq8IRCV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBFD01EFF92
-	for <stable@vger.kernel.org>; Fri, 20 Jun 2025 05:44:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66F9E380
+	for <stable@vger.kernel.org>; Fri, 20 Jun 2025 05:47:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750398256; cv=none; b=lPQzKRi2ovcBUCUmg42maQRo15LorsXKTf62airEEQ7uh8uAzOCPx2PBqlpP0/0lUxjlD5LJx+WRgaLPGG5DqKakHDnnvCtMx+nLTmcEkO97zdr86PlvJrc2NFHqIUdrEuYPtLylDP4TPEjDe1qRYaDOrOu6LExR9gO86meDV0w=
+	t=1750398433; cv=none; b=BmxiqAlkT/ldTs7CryC7IfDkplWw6XWpY+6yn+25/UkfD8houyckesZSADrBS7crJfJMijXBD6TwSLNNDleOkRHmxD28zOwB1QMWThVhWAzYBPNH2AhDNURt6E/HMs3mthEOZ86Qnu8M2eRGlOX/oAezWH8jnp2tSNPVN7B9bNw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750398256; c=relaxed/simple;
-	bh=GF3J5HOjTVNTRR9uqLM2n/xo/eKyfoCDcu1SYr0dHG0=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=GsT+hCAZZ1QbZzYEI62F/CD+HLvU4K5pRcGFDAmaIeABkEONDK2k/TkOb7jlYd0HvaGfvWFLKjJI+HfGp/DAUjZQeGHmhbOxhEYhjSAzbjLVnckWYC4SKJjqLQdxAEXRUpArp2zl182mAGPlvaC783A3+FU0AQO1B+BN0ykSi6Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cx/W6899; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47323C4CEE3;
-	Fri, 20 Jun 2025 05:44:16 +0000 (UTC)
+	s=arc-20240116; t=1750398433; c=relaxed/simple;
+	bh=IJgJC3cr+IN75FxmXev5nhy3Q483/4UYXdEHX2CphJY=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=p1E1scJisKcUWLN6G9mmOT2MjEAf36DxK2U3wpyw+pK3sx+Esm774WFjlVxW+ZlwvaFNhDDKoYEfSDUVELybMBDkPdYpQyIvuPGpP9uqEyCg4+0iPOGaY0JHMlvs2fhQddjDZjOqeX0NDwqbQRdig7roMzMfOdq5fvk+WMsA2nU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VKq8IRCV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB232C4CEE3;
+	Fri, 20 Jun 2025 05:47:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750398256;
-	bh=GF3J5HOjTVNTRR9uqLM2n/xo/eKyfoCDcu1SYr0dHG0=;
+	s=korg; t=1750398433;
+	bh=IJgJC3cr+IN75FxmXev5nhy3Q483/4UYXdEHX2CphJY=;
 	h=Subject:To:Cc:From:Date:From;
-	b=cx/W6899FdppQgtwGCGuO8BlTUSOQLAzgXJqXVh5+jcv6f+JC2P1H7EsVacwVBlK9
-	 zEM8F/h4XgUudXl35Xc/cfZOvCQ0X3jPPuDnUJV+/V5Ezd27dov3LSn4QsM1e9IV3w
-	 gcZ4TRt3E2vbbh7b3TSdAATFyklyDUNAQ38160sU=
-Subject: FAILED: patch "[PATCH] btrfs: fix qgroup reservation leak on failure to allocate" failed to apply to 5.10-stable tree
-To: fdmanana@suse.com,boris@bur.io,dsterba@suse.com,wqu@suse.com
+	b=VKq8IRCVzbOuFiPi0OZaZLUvRd6EOGr0ySJS62MBeXcXlK+O6Pk/CUvf7kT0HBl+c
+	 M7zMB1ZTtPzaJFZA0zoDwJ9jsDdToJIye/E81sHX5m5yJFSdZO3YQnvquBX8rttRot
+	 s8mHhjT5Af9dx4Y4MS64wcGRLOZnF5iBaaeudtYw=
+Subject: FAILED: patch "[PATCH] ASoC: meson: meson-card-utils: use of_property_present() for" failed to apply to 5.4-stable tree
+To: martin.blumenstingl@googlemail.com,broonie@kernel.org,christianshewitt@gmail.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Fri, 20 Jun 2025 07:43:55 +0200
-Message-ID: <2025062055-rejoice-overcook-b18f@gregkh>
+Date: Fri, 20 Jun 2025 07:45:24 +0200
+Message-ID: <2025062024-swimming-dawdler-bce4@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.10-stable tree.
+The patch below does not apply to the 5.4-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
 git checkout FETCH_HEAD
-git cherry-pick -x 1f2889f5594a2bc4c6a52634c4a51b93e785def5
+git cherry-pick -x 171eb6f71e9e3ba6a7410a1d93f3ac213f39dae2
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025062055-rejoice-overcook-b18f@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025062024-swimming-dawdler-bce4@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
 
 Possible dependencies:
 
@@ -77,59 +77,43 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 1f2889f5594a2bc4c6a52634c4a51b93e785def5 Mon Sep 17 00:00:00 2001
-From: Filipe Manana <fdmanana@suse.com>
-Date: Wed, 7 May 2025 13:05:36 +0100
-Subject: [PATCH] btrfs: fix qgroup reservation leak on failure to allocate
- ordered extent
+From 171eb6f71e9e3ba6a7410a1d93f3ac213f39dae2 Mon Sep 17 00:00:00 2001
+From: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+Date: Sat, 19 Apr 2025 23:34:48 +0200
+Subject: [PATCH] ASoC: meson: meson-card-utils: use of_property_present() for
+ DT parsing
 
-If we fail to allocate an ordered extent for a COW write we end up leaking
-a qgroup data reservation since we called btrfs_qgroup_release_data() but
-we didn't call btrfs_qgroup_free_refroot() (which would happen when
-running the respective data delayed ref created by ordered extent
-completion or when finishing the ordered extent in case an error happened).
+Commit c141ecc3cecd ("of: Warn when of_property_read_bool() is used on
+non-boolean properties") added a warning when trying to parse a property
+with a value (boolean properties are defined as: absent = false, present
+without any value = true). This causes a warning from meson-card-utils.
 
-So make sure we call btrfs_qgroup_free_refroot() if we fail to allocate an
-ordered extent for a COW write.
+meson-card-utils needs to know about the existence of the
+"audio-routing" and/or "audio-widgets" properties in order to properly
+parse them. Switch to of_property_present() in order to silence the
+following warning messages during boot:
+  OF: /sound: Read of boolean property 'audio-routing' with a value.
+  OF: /sound: Read of boolean property 'audio-widgets' with a value.
 
-Fixes: 7dbeaad0af7d ("btrfs: change timing for qgroup reserved space for ordered extents to fix reserved space leak")
-CC: stable@vger.kernel.org # 6.1+
-Reviewed-by: Boris Burkov <boris@bur.io>
-Reviewed-by: Qu Wenruo <wqu@suse.com>
-Signed-off-by: Filipe Manana <fdmanana@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
+Fixes: 7864a79f37b5 ("ASoC: meson: add axg sound card support")
+Tested-by: Christian Hewitt <christianshewitt@gmail.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+Link: https://patch.msgid.link/20250419213448.59647-1-martin.blumenstingl@googlemail.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 
-diff --git a/fs/btrfs/ordered-data.c b/fs/btrfs/ordered-data.c
-index ae49f87b27e8..e44d3dd17caf 100644
---- a/fs/btrfs/ordered-data.c
-+++ b/fs/btrfs/ordered-data.c
-@@ -153,9 +153,10 @@ static struct btrfs_ordered_extent *alloc_ordered_extent(
- 	struct btrfs_ordered_extent *entry;
- 	int ret;
- 	u64 qgroup_rsv = 0;
-+	const bool is_nocow = (flags &
-+	       ((1U << BTRFS_ORDERED_NOCOW) | (1U << BTRFS_ORDERED_PREALLOC)));
+diff --git a/sound/soc/meson/meson-card-utils.c b/sound/soc/meson/meson-card-utils.c
+index cfc7f6e41ab5..68531183fb60 100644
+--- a/sound/soc/meson/meson-card-utils.c
++++ b/sound/soc/meson/meson-card-utils.c
+@@ -231,7 +231,7 @@ static int meson_card_parse_of_optional(struct snd_soc_card *card,
+ 						    const char *p))
+ {
+ 	/* If property is not provided, don't fail ... */
+-	if (!of_property_read_bool(card->dev->of_node, propname))
++	if (!of_property_present(card->dev->of_node, propname))
+ 		return 0;
  
--	if (flags &
--	    ((1U << BTRFS_ORDERED_NOCOW) | (1U << BTRFS_ORDERED_PREALLOC))) {
-+	if (is_nocow) {
- 		/* For nocow write, we can release the qgroup rsv right now */
- 		ret = btrfs_qgroup_free_data(inode, NULL, file_offset, num_bytes, &qgroup_rsv);
- 		if (ret < 0)
-@@ -170,8 +171,13 @@ static struct btrfs_ordered_extent *alloc_ordered_extent(
- 			return ERR_PTR(ret);
- 	}
- 	entry = kmem_cache_zalloc(btrfs_ordered_extent_cache, GFP_NOFS);
--	if (!entry)
-+	if (!entry) {
-+		if (!is_nocow)
-+			btrfs_qgroup_free_refroot(inode->root->fs_info,
-+						  btrfs_root_id(inode->root),
-+						  qgroup_rsv, BTRFS_QGROUP_RSV_DATA);
- 		return ERR_PTR(-ENOMEM);
-+	}
- 
- 	entry->file_offset = file_offset;
- 	entry->num_bytes = num_bytes;
+ 	/* ... but do fail if it is provided and the parsing fails */
 
 
