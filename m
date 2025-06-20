@@ -1,177 +1,159 @@
-Return-Path: <stable+bounces-154846-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-154848-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B964AE10CB
-	for <lists+stable@lfdr.de>; Fri, 20 Jun 2025 03:43:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D7E6AE10D1
+	for <lists+stable@lfdr.de>; Fri, 20 Jun 2025 03:50:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B47783BC786
-	for <lists+stable@lfdr.de>; Fri, 20 Jun 2025 01:43:14 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B96A23BF536
+	for <lists+stable@lfdr.de>; Fri, 20 Jun 2025 01:50:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5871783A14;
-	Fri, 20 Jun 2025 01:43:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0BF38CA52;
+	Fri, 20 Jun 2025 01:50:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=outlook.com header.i=@outlook.com header.b="boKDiNSE"
 X-Original-To: stable@vger.kernel.org
-Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05C427D098;
-	Fri, 20 Jun 2025 01:43:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.242.206.163
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750383813; cv=none; b=Q9rjj18R7D8KEr95XJneHWm/JS7yuPoIlPEURDlX6K3D33nYFPfFDm2FqaLLFVQx8hR8sCGk+ta8wXJpbmfYEXSZ2AnFESrHZBzIoG6QHh0Ox8wU3YpFZt0GfVxC73xGdoj8bEQl3wyW60+RGAqlJCshnpBcJ0Zm+g+x5vkVdx8=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750383813; c=relaxed/simple;
-	bh=zOswJx4rDMm0i1hayjKroOfpk7Su2D1HHPjfiTqZxQY=;
-	h=Subject:To:Cc:References:From:Message-ID:Date:MIME-Version:
-	 In-Reply-To:Content-Type; b=TUtuuwif7V9DbMTS07pHLNzU+2hYViP56s5FI34DmEgayTbiZp8zsZCvE5bfT5iXYeZKOSy9TY9s4VxYbHezwCLG0HNjF14XdgwC7nowZk5myAt8hRPuUxjeEB1oscLpM/ahabT+QRDAkQ1cK1EAQ1KJ2OVVClJsiXtRPP1EEWY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn; spf=pass smtp.mailfrom=loongson.cn; arc=none smtp.client-ip=114.242.206.163
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=loongson.cn
-Received: from loongson.cn (unknown [10.20.42.62])
-	by gateway (Coremail) with SMTP id _____8AxHHK_vFRoqiEaAQ--.59488S3;
-	Fri, 20 Jun 2025 09:43:27 +0800 (CST)
-Received: from [10.20.42.62] (unknown [10.20.42.62])
-	by front1 (Coremail) with SMTP id qMiowMCxPse9vFRoic0hAQ--.40170S3;
-	Fri, 20 Jun 2025 09:43:27 +0800 (CST)
-Subject: Re: [PATCH v3 4/9] LoongArch: KVM: INTC: Check validation of num_cpu
- from user space
-To: Huacai Chen <chenhuacai@kernel.org>
-Cc: Tianrui Zhao <zhaotianrui@loongson.cn>,
- Xianglai Li <lixianglai@loongson.cn>, kvm@vger.kernel.org,
- loongarch@lists.linux.dev, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org
-References: <20250611014651.3042734-1-maobibo@loongson.cn>
- <20250611014651.3042734-5-maobibo@loongson.cn>
- <CAAhV-H7ehdkKwzsFNAaX+r5eXLknvskyXLPDKei2A55LoSiJMA@mail.gmail.com>
-From: Bibo Mao <maobibo@loongson.cn>
-Message-ID: <5f1b9068-2d3d-2f89-4f72-85b021537f58@loongson.cn>
-Date: Fri, 20 Jun 2025 09:42:00 +0800
-User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
- Thunderbird/68.7.0
+Received: from OS0P286CU010.outbound.protection.outlook.com (mail-japanwestazolkn19011034.outbound.protection.outlook.com [52.103.66.34])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16294A59
+	for <stable@vger.kernel.org>; Fri, 20 Jun 2025 01:50:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.103.66.34
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1750384234; cv=fail; b=cEnfikg6xMHvBiyyTxX9Zek3wl/Pa+BUBwZExCDeMiDupLnCLnXztt4u7nijRGni6YuNEUiqdviZHwXLiFaHTvrBgik7wlGehwlH73UcsMl0R89vMR0PC2QOnT1gOnzP1AOoiFAemsLYlEZfwetYAOEY3/K6wYvTjorQR3mJX+U=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1750384234; c=relaxed/simple;
+	bh=K9MUYYxL+KO+7kxTS+kjM3GWEQosaIX7H2/UW/gRxpw=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=idVNonO4+Q4GOzIrVMhPOazv+m45DaJjAt8vlkbdrOMe/lIAlFAK5ZP0tc/jrbmBwt1pJpKotOIIWol3qunNaXRqIJ+tJx1n4ylNPSWJAnpA7uUF0LcPdKCYoRohM1/NQzUp71/IfuSlwfGrrrOwehk+vX18YXSNZKBrCXNQoAo=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=outlook.com; spf=pass smtp.mailfrom=outlook.com; dkim=pass (2048-bit key) header.d=outlook.com header.i=@outlook.com header.b=boKDiNSE; arc=fail smtp.client-ip=52.103.66.34
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=outlook.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=outlook.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=v57dDDKSEva7374fiE3y/EpSWU/HYU6MlbE/BdOX8TRJbKDBdu887mJ1jGI31GAmYd1UaUDbTJjT4Jt3S3p81YHryGzbWEtZOs71cU9gqIUHPnmMH7SOIbEkwWGZIy+CcfWhsQjjPJpqyt0Z5uHE+ecx3nSRqH5OUf0M1c5bcDng5H7L1DEjf8YoGbCIow2fDD2bs9zKKF3jxvUUqsMDhk3//B/OjxEvopV5SH5pFtCrA/pK1v8LiPEdHsUtx5fmz5Nl/rFHKuxrhGhW7xW/j3+/RcC/AyPwANyUaQsVt7mLDGvdQwh4na0Y0Vy9Yu2fxIWVUAWJkP7ZEaNjJPeoVA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=K9MUYYxL+KO+7kxTS+kjM3GWEQosaIX7H2/UW/gRxpw=;
+ b=uYPvgde0j4SbCrNeYsp4BPWJp8TRA2TJrgsbBLgukV6M9bxIFnOZ0XAn7SC/0tCmeMXAOQGx3/NrDwIJoQ4jrsP06iAGw3Q9GW3E1mc/XbcIVrRAmDdWRZ1h5pQacrgFOKPJc0RCY6RgBzV5hAi+sy4Gs0fkKm6UrDMY8eYYa6sHAADoetcmEJSalpTtU3EI8h5R/C7xaqiL6t7NIddQQ4dcqQGd1DU9xUEHZWkRSmQWdyU88OhAPLR3V205lL1fitXzbHKDnx2+ryDERApfeTmjwEMS1Y/QUVS1NTlC0Q1uoM1iuH9Opu2Ji9ya1eMxh1tiDyS0SOlBGYciyXpzXg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
+ dkim=none; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=outlook.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=K9MUYYxL+KO+7kxTS+kjM3GWEQosaIX7H2/UW/gRxpw=;
+ b=boKDiNSEB/KQdDsJQgbCKXci1oJzPCIQXP4BXOWe/MLLFfb/QkkR5rKpjPmSMsAxamNM15r/WP2V0Ge/tiber115DsYrRqCo1jQQv/tQdfSTZfUltSs4DEz3P5Sisf3omDWFYdEgPbU5o9QahMc5rHwnb7YP//zemq9vJfag+wuZERr4KPHFeC1UmTM2qnY7lMhd3rlZcY2YTXOm8r1sYqErrZiKsSpJmSncC2nUHaVNHigCNZRut2gRa03Z4S44JzDFOFOdwf9QfU0nz0F+l50Y7/BK3LlvSuN3tf7lLFVVRmEf7RmiLk4qcAAlrJ/DRdQkYaTLmszUeLz7GpjL7w==
+Received: from OSBPR01MB1670.jpnprd01.prod.outlook.com (2603:1096:603:2::18)
+ by TYRPR01MB13770.jpnprd01.prod.outlook.com (2603:1096:405:216::10) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8857.25; Fri, 20 Jun
+ 2025 01:50:29 +0000
+Received: from OSBPR01MB1670.jpnprd01.prod.outlook.com
+ ([fe80::c00:ec4e:ee7e:9b7f]) by OSBPR01MB1670.jpnprd01.prod.outlook.com
+ ([fe80::c00:ec4e:ee7e:9b7f%7]) with mapi id 15.20.8857.016; Fri, 20 Jun 2025
+ 01:50:29 +0000
+From: Shiji Yang <yangshiji66@outlook.com>
+To: gregkh@linuxfoundation.org
+Cc: jirislaby@kernel.org,
+	maddy@linux.ibm.com,
+	patches@lists.linux.dev,
+	sashal@kernel.org,
+	sfr@canb.auug.org.au,
+	stable@vger.kernel.org,
+	Shiji Yang <yangshiji66@outlook.com>
+Subject: Re: [PATCH 6.6 025/356] powerpc: do not build ppc_save_regs.o always
+Date: Fri, 20 Jun 2025 09:50:06 +0800
+Message-ID:
+ <OSBPR01MB167040F844BD2B7FC20686BEBC7CA@OSBPR01MB1670.jpnprd01.prod.outlook.com>
+X-Mailer: git-send-email 2.50.0
+In-Reply-To: <20250617152339.250901739@linuxfoundation.org>
+References: <20250617152339.250901739@linuxfoundation.org>
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: SG3P274CA0010.SGPP274.PROD.OUTLOOK.COM (2603:1096:4:be::22)
+ To OSBPR01MB1670.jpnprd01.prod.outlook.com (2603:1096:603:2::18)
+X-Microsoft-Original-Message-ID:
+ <20250620015006.20879-1-yangshiji66@outlook.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-In-Reply-To: <CAAhV-H7ehdkKwzsFNAaX+r5eXLknvskyXLPDKei2A55LoSiJMA@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:qMiowMCxPse9vFRoic0hAQ--.40170S3
-X-CM-SenderInfo: xpdruxter6z05rqj20fqof0/
-X-Coremail-Antispam: 1Uk129KBj93XoWxur4fCw47GryrCrWUAFW3CFX_yoW5ur4Upr
-	W8Aa98KFWFqryxWw1vqw1DGFyrKrn7WrySyry7KFya9rZ0qwn5CFyvkrZ0kFyak34rAF1I
-	vF4ay3W3uw1DtacCm3ZEXasCq-sJn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7ZEXa
-	sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
-	0xBIdaVrnRJUUUvYb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
-	IYs7xG6rWj6s0DM7CIcVAFz4kK6r1Y6r17M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
-	e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Gr0_Xr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
-	0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVWxJr0_GcWl84ACjcxK6I8E87Iv6xkF7I0E14v2
-	6F4UJVW0owAS0I0E0xvYzxvE52x082IY62kv0487Mc804VCY07AIYIkI8VC2zVCFFI0UMc
-	02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWUGVWUXwAv7VC2z280aVAF
-	wI0_Jr0_Gr1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcVAKI48JMxk0xIA0c2IEe2xFo4
-	CEbIxvr21l42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG
-	67AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r126r1DMI
-	IYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E
-	14v26r1j6r4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWUJV
-	W8JwCI42IY6I8E87Iv6xkF7I0E14v26r1j6r4UYxBIdaVFxhVjvjDU0xZFpf9x07jUsqXU
-	UUUU=
+X-MS-Exchange-MessageSentRepresentingType: 1
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: OSBPR01MB1670:EE_|TYRPR01MB13770:EE_
+X-MS-Office365-Filtering-Correlation-Id: 15c804a1-cc39-4984-28df-08ddaf9cd56a
+X-Microsoft-Antispam:
+	BCL:0;ARA:14566002|5072599009|7092599006|461199028|19110799006|15080799009|8060799009|440099028|39105399003|40105399003|3412199025|10035399007|12091999003|11031999003|1710799026;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?Rav3AVE6EUYINawVEbQBmRr2o1pYfPX71pvzbyY+4ptCsm9ixih04bjI2+J/?=
+ =?us-ascii?Q?ll286M4b9TjD748FNAWasrAiu6WSessikgmxi32/YiRqU9f1SXFLNieJdrw6?=
+ =?us-ascii?Q?9gMqoSnCpK1G71AMCRhUBZ6pxxqF82TwXSl4r/jmlcPSiVjV7OVAR4DJdxim?=
+ =?us-ascii?Q?lmTrOwTEDHDhT8s+bdI6UTaGAHVa++oYnT1d/QUY8TvarSV1BrhOOajsmLjX?=
+ =?us-ascii?Q?MiBrJGFKNVkeRQOou7GuuRb4rqVIQSZdJ+Qb5bMOPOZNgFA7uqrsB0AfgLnB?=
+ =?us-ascii?Q?yzdlBoa5AXNs1qS5xs8QmyOFJtagqRM0+AlVoyab6R3AXcde4TG8GOGhjWk6?=
+ =?us-ascii?Q?6wHyUCd4GtFggWzz/0SvBY4GkmwJ9bOdC9Lw3Vw8y6ejnBuhxafN4KUlVGtr?=
+ =?us-ascii?Q?UlwWnQnD+5wLvbbCGsCcNLFBxThnzCacuWXhNWEfN+FR98i2ZHCOZzpgjJ+0?=
+ =?us-ascii?Q?a8nEqmibv12PvnvLkKRJr3gY+cT6DLAK7/uCKkImC7ju7zROwBrkdfbvW+2V?=
+ =?us-ascii?Q?/BmOHFd3RaUxfHimkPtqzculEDBL9i8fhqFKnVni4m5sNOZ4xg3FDrgQndKk?=
+ =?us-ascii?Q?TAHz/U8FIfbM9xDrQ7bpAMbpzM/hIEocxAj8BgCNFH2wBRGA9T/Uadg7A1Zf?=
+ =?us-ascii?Q?N+xan23Ke4ij8g+Hut3s/QPHvpK07onkehdYILggim/fPbkHxGSiW3wR6pUi?=
+ =?us-ascii?Q?93lHlUUv2OqfuMeOvqp6WDFmn7s2BTGvhyEGmmkscZeOr7p2W33vimaOLrZb?=
+ =?us-ascii?Q?Bx8AlFzHk6ZaUonen3YzUaQl+yx1XWibhN3MdfUZCUMZGbCL3XVyLcbO0ulb?=
+ =?us-ascii?Q?/VAcS655yCt2+tByVXxHKCTb3DkHy3li1qIVTG6WUA/l/XPt3yp2A9MMVhQj?=
+ =?us-ascii?Q?49aPEF6a3bYYTGBJScfMvxeDSl7bCbBn2KnnJVQR7o61o+Kd9bLcszyqZWeG?=
+ =?us-ascii?Q?UjJcJ6srBZbaL9RmFbftH6Jt8Wr4leCIRdJ4Ba/OwvVC0RdjF/GrxHyYJICZ?=
+ =?us-ascii?Q?cumIbEIx7VfEMl/JmGUpBjZTAgDmSvNfex3FTb8E5Qg7ebJAqea0DKy9Krm5?=
+ =?us-ascii?Q?FQJrNmJLnF6kz4eWD7wumbDtkRwBR9vm5cd1J9SYGMUHhp79p1fibd4xLNHt?=
+ =?us-ascii?Q?DqXajtpIgCPDW2Ux7iL1zoQZOkKCGsZUPLljyd9M77RB70qcpwsXT9M4C9sj?=
+ =?us-ascii?Q?smMVbOEn4wS1OpxCEhJk+bWPDdPIzk2v5KkjDr3kGIb4pcAOrav1hLebLVLS?=
+ =?us-ascii?Q?MSgUuBJFmK8JYJPeiVnFtkdcNg9TZm6ur2aX1wgQHfe8t9sx2spo/vbAqcko?=
+ =?us-ascii?Q?H49PsWxPmwWLXN3TWJKseMhd7wGnPv1/VQdqLvrxzHsx7rdsDt/QphjMGZjB?=
+ =?us-ascii?Q?sqOu8snoT756wXeVxjpc/JXvXAjZ?=
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?EWC8W9xj32nGi64/dhetWU9m7aER7eATq02GXf7fiMnFxUz4CxqBoK6HaHz0?=
+ =?us-ascii?Q?JfyxvzXjyL1W8323eW+tlEhC3ndhyEII/DOb8mUwYLvGsllLRZh8QGFKZfNj?=
+ =?us-ascii?Q?zb9U/+cFW/iW2juwOJbxftcx93uF7yqKAXXOJ5m9AVZQfK0dv5bvgM6OvlD/?=
+ =?us-ascii?Q?uRjU3rsZwpRFGqs4AA4K29Xjn37snMYMG5OIZl2ORxY4/uDejj95K6OWVjZ1?=
+ =?us-ascii?Q?Wrlb+dULgAbQYGQ02BPkR/3B3gVL108bhHfZm1LJZKe/HGqjnL8QRy5YHeqn?=
+ =?us-ascii?Q?FnP+AOD5qsXPT+WVJOZw2I6pw5ZzmdHTI/ppno3b6DV+71O0wpVTI4SenSc8?=
+ =?us-ascii?Q?u8yZ/MtVGBsUulR95xJnYhU7IL53yqCY5x75O+3Xq46QthT+mZX8b/HZ8CuL?=
+ =?us-ascii?Q?W7Ob7Y0kbWi5v1bSLL+dVOO2iP6cLon/0jfXZSlzyCGiNN2BojTfjQwIpEup?=
+ =?us-ascii?Q?AV5kBPerhTzeDWSXWO4DQJmIhTL9uxMgJsmSQ+pILDwVSvvivPYqP74Puh0L?=
+ =?us-ascii?Q?KA+ysfXvPxSrEYFkUMXgb5oWUZSUjcxLMLhS2CPRDAFOnyCSSKpy9FT1NOSd?=
+ =?us-ascii?Q?S8Db+H3qdWf47HnByexHAs7A3q/3cJ3YiS/wqJl1b2OXO41Fr0Bgc9YEDG98?=
+ =?us-ascii?Q?5yJPBrPZvYsitIliWpbW5diQFG10SEjuWGXZJUSWfj4YnIv0wwaysukr+icj?=
+ =?us-ascii?Q?BZFT1SlR5+8n2l4mrmTNJplhdR3TgEwotmZatQ8NpyR87pMw5TEPRZPa6MiU?=
+ =?us-ascii?Q?Vqw1Bj/rytMi5SolWA3eFPIEH98ebtctIXjtA36oDMns5eyb2Qlk7lIu5mD1?=
+ =?us-ascii?Q?KGWgxDseh15j8vHoEL4ka2BaQy0kSG3YZQ3kOO5yXTSYuvxAXFkzKjeNPaTY?=
+ =?us-ascii?Q?dVVxrlDANrhZRG48OyNZfdommdyy03ucyUG3DKkl3DVni4/1JYh1hV++DzBX?=
+ =?us-ascii?Q?yvTdjJtZVj2hpB075ndGT8pqdUVmkERSgHTlVXwhPLjQ1OV5uTq5YvzBU2j8?=
+ =?us-ascii?Q?+c2yJFP7A1uA/Q3qiNTs1r13zitFJw2rKm+4VojFwK0ZY7BHVjLc0u/Sb331?=
+ =?us-ascii?Q?K78ubyY1QMfe8cU4NBPJgvX6Rr4SGBWGwBjdoyx6GzLwkIbmO4cJTuILV/YW?=
+ =?us-ascii?Q?YgrzYX+M080yu2QWXRQyqpL1ZPXAaI+qzUNAruLCHPmtQCqcm3uP5UbIyYzU?=
+ =?us-ascii?Q?TOx7o6vU/BT9l+ESvP/zEQUl/uAt0CQ20VrIHIFQGipTvkfQzeiBMhzu+6Nx?=
+ =?us-ascii?Q?smaiPUztjVvGa+m3rxDj?=
+X-OriginatorOrg: outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 15c804a1-cc39-4984-28df-08ddaf9cd56a
+X-MS-Exchange-CrossTenant-AuthSource: OSBPR01MB1670.jpnprd01.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Jun 2025 01:50:29.0511
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
+X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg:
+	00000000-0000-0000-0000-000000000000
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: TYRPR01MB13770
 
+Hi! This patch seems to have broken the build on powerpc. I guess
+we also need to backport:
+93bd4a80efeb ("powerpc/kernel: Fix ppc_save_regs inclusion in build")
 
+Perhaps other stable versions need this patch, too.
 
-On 2025/6/19 下午4:46, Huacai Chen wrote:
-> Hi, Bibo,
-> 
-> On Wed, Jun 11, 2025 at 9:47 AM Bibo Mao <maobibo@loongson.cn> wrote:
->>
->> The maximum supported cpu number is EIOINTC_ROUTE_MAX_VCPUS about
->> irqchip eiointc, here add validation about cpu number to avoid array
->> pointer overflow.
->>
->> Cc: stable@vger.kernel.org
->> Fixes: 1ad7efa552fd ("LoongArch: KVM: Add EIOINTC user mode read and write functions")
->> Signed-off-by: Bibo Mao <maobibo@loongson.cn>
->> ---
->>   arch/loongarch/kvm/intc/eiointc.c | 18 +++++++++++++-----
->>   1 file changed, 13 insertions(+), 5 deletions(-)
->>
->> diff --git a/arch/loongarch/kvm/intc/eiointc.c b/arch/loongarch/kvm/intc/eiointc.c
->> index b48511f903b5..ed80bf290755 100644
->> --- a/arch/loongarch/kvm/intc/eiointc.c
->> +++ b/arch/loongarch/kvm/intc/eiointc.c
->> @@ -798,7 +798,7 @@ static int kvm_eiointc_ctrl_access(struct kvm_device *dev,
->>          int ret = 0;
->>          unsigned long flags;
->>          unsigned long type = (unsigned long)attr->attr;
->> -       u32 i, start_irq;
->> +       u32 i, start_irq, val;
->>          void __user *data;
->>          struct loongarch_eiointc *s = dev->kvm->arch.eiointc;
->>
->> @@ -806,7 +806,12 @@ static int kvm_eiointc_ctrl_access(struct kvm_device *dev,
->>          spin_lock_irqsave(&s->lock, flags);
->>          switch (type) {
->>          case KVM_DEV_LOONGARCH_EXTIOI_CTRL_INIT_NUM_CPU:
->> -               if (copy_from_user(&s->num_cpu, data, 4))
->> +               if (copy_from_user(&val, data, 4) == 0) {
->> +                       if (val < EIOINTC_ROUTE_MAX_VCPUS)
->> +                               s->num_cpu = val;
->> +                       else
->> +                               ret = -EINVAL;
-> Maybe it is better to set s->num_cpu to EIOINTC_ROUTE_MAX_VCPUS (or
-> other value) rather than keep it uninitialized. Because in other
-> places we need to check s->num_cpu and an uninitialized value may
-> cause undefined behavior.
-There is error return value -EINVAL, VMM should stop running and exit 
-immediately if there is error return value with the ioctl command.
-
-num_cpu is not uninitialized and it is zero by default. If VMM does not 
-care about the return value, VMM will fail to get coreisr information in 
-future.
-
-Regards
-Bibo Mao
-> 
-> 
-> Huacai
->> +               } else
->>                          ret = -EFAULT;
->>                  break;
->>          case KVM_DEV_LOONGARCH_EXTIOI_CTRL_INIT_FEATURE:
->> @@ -835,7 +840,7 @@ static int kvm_eiointc_regs_access(struct kvm_device *dev,
->>                                          struct kvm_device_attr *attr,
->>                                          bool is_write)
->>   {
->> -       int addr, cpuid, offset, ret = 0;
->> +       int addr, cpu, offset, ret = 0;
->>          unsigned long flags;
->>          void *p = NULL;
->>          void __user *data;
->> @@ -843,7 +848,7 @@ static int kvm_eiointc_regs_access(struct kvm_device *dev,
->>
->>          s = dev->kvm->arch.eiointc;
->>          addr = attr->attr;
->> -       cpuid = addr >> 16;
->> +       cpu = addr >> 16;
->>          addr &= 0xffff;
->>          data = (void __user *)attr->addr;
->>          switch (addr) {
->> @@ -868,8 +873,11 @@ static int kvm_eiointc_regs_access(struct kvm_device *dev,
->>                  p = &s->isr.reg_u32[offset];
->>                  break;
->>          case EIOINTC_COREISR_START ... EIOINTC_COREISR_END:
->> +               if (cpu >= s->num_cpu)
->> +                       return -EINVAL;
->> +
->>                  offset = (addr - EIOINTC_COREISR_START) / 4;
->> -               p = &s->coreisr.reg_u32[cpuid][offset];
->> +               p = &s->coreisr.reg_u32[cpu][offset];
->>                  break;
->>          case EIOINTC_COREMAP_START ... EIOINTC_COREMAP_END:
->>                  offset = (addr - EIOINTC_COREMAP_START) / 4;
->> --
->> 2.39.3
->>
-
+Ref: https://github.com/openwrt/openwrt/actions/runs/15760870446/job/44427245071?pr=19183
 
