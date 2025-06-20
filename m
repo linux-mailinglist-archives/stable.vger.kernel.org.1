@@ -1,82 +1,82 @@
-Return-Path: <stable+bounces-155185-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-155186-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E5ACAE240C
-	for <lists+stable@lfdr.de>; Fri, 20 Jun 2025 23:33:49 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C0329AE240D
+	for <lists+stable@lfdr.de>; Fri, 20 Jun 2025 23:33:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D1B695A6552
-	for <lists+stable@lfdr.de>; Fri, 20 Jun 2025 21:33:24 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3C1DC5A688A
+	for <lists+stable@lfdr.de>; Fri, 20 Jun 2025 21:33:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5FD34237165;
-	Fri, 20 Jun 2025 21:33:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 053A2225390;
+	Fri, 20 Jun 2025 21:33:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="CkOrfXCL"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="LzlVSSYP"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
+Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4496930E859
-	for <stable@vger.kernel.org>; Fri, 20 Jun 2025 21:33:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0857E233721
+	for <stable@vger.kernel.org>; Fri, 20 Jun 2025 21:33:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750455227; cv=none; b=AbGst/sRS1n5CTIzzJw9XZaa4Uwze3iwk7VGglxc9RE1P+1lBH/9JG7Ung8z+aYhmQFcnh9z6UL1FbUuxbtbwEIcxUQGd1Ei1OXT28FUUutGj1jZvcl0xaown2hmVFm3+XPzVTa5wfD1yGWilnaWyEkyZxaDP2C1aqbGNwACIDs=
+	t=1750455228; cv=none; b=ZzOSfwXjC/Ay9rKw5TzbjP8T41usoaLrSVi4D+MsyDRs51g7iI5ny9xoRZjiHHzEci/0ZTF7LVe6oQdBCX2Nd5lofYmvj2+qnTVI0bvzw0E7IDjTq1WFrrssmbV8nUhvOuV/Q0/AcLzB9Ko/O45d/UBqAlIfEc3+nfMwwsKjX5c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750455227; c=relaxed/simple;
-	bh=/qRFaJfWR4DkNzncZuEcshEvTvH4tOIBqjaYwz/SmIs=;
+	s=arc-20240116; t=1750455228; c=relaxed/simple;
+	bh=H8ksrERdq29vnu5Lm0AtjjetHkB9Qc5iYE9tWmZqYF4=;
 	h=From:To:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=B7ZSdip+6mmdmhnqsJK/dzSLDY4c3bfL+0o8GV1VqtFSSmapRyNB1x0FZe73eej9EAj1EzvUJyYkGcMHj+Wj3cMLWYYKxDewdKPYFsrdl7l50cjC9z+wz5hOW7LpkchtNbZal+c7Rmjb4QIkXkC8vA2GUopm0K70IVEiYDWueQE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=CkOrfXCL; arc=none smtp.client-ip=209.85.128.52
+	 MIME-Version; b=K6DY3m8iEWFsCxFCV/M6arZLjczyZ9h38f4PUeHym7oqw2uox+N/wC4vzY+9gUyKGv/CY5/VP11JiEKEcDxPv+bVgPFGh2/8Oz27Wqhtu13Jm690joBIQMar7M1lJmdepFzmkSS1IdgM7T9hjSAuOJDSxiAAl66bye6Eyd8FQYM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=LzlVSSYP; arc=none smtp.client-ip=209.85.128.53
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-453663b7bf1so25255e9.0
-        for <stable@vger.kernel.org>; Fri, 20 Jun 2025 14:33:45 -0700 (PDT)
+Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-453200cd31cso7455e9.1
+        for <stable@vger.kernel.org>; Fri, 20 Jun 2025 14:33:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1750455224; x=1751060024; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1750455225; x=1751060025; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=D+pA2NqU7VM6kESXqTyY31jcJVRaGsZJqSbDNnqd9+8=;
-        b=CkOrfXCLnKhYFGvWBRKmZ2dV5ChK9df5wBQ01CWpflfyaEVmBsvqlgXQa1dmcgSQah
-         OJdRX81txSIcAq5uGxOAUdG/kfB++MyPzwdquKGNInGo2F1TbNsL61C+WusQ/7CM8fkN
-         J4Ol6EmO09+NBz5VVF5nYb1WolG1GfR7Hhfe9YublM3+TK6yK7VpkDgufINrfoCbqkcA
-         FDZs/dMh/RxNCmjynQFMIxSots6xmTXjQGUSsFabGbInAAGmdkPFE7nmgsKYmNRBnrG9
-         xrqJ3vmGs6g0xNQZ6q84SN2HYYdiBHbU2+XDxlwDe8Rj0RYR3hTxcAUrpyBU0dBIXzsB
-         rg5w==
+        bh=GNf6Ny2iXlC8EyAb4cTZNY06NgYPwt8FKnro78CSTdM=;
+        b=LzlVSSYPib86Z6e0xGjXqW0OPzJPTRTHGlFWvE8fpHoDCMYsSEnqud1Vd1VEiiy3YD
+         jTSl3MhYLrK2Sk9DYL6bdq0LF0jdW3UkirSCTfzPbK1SQi1DJ8uEbpzptT4iJECitmOV
+         1n0DwMsfZ/7hW1MQXizaVQAhcuigqJtERDyJRgRAP21mAdcf33U51XLq7STX7KGjsIXE
+         3MIMfwEO8ATBIaDIIXw0OvpwNzcvMKmGH4D+50KeQYZ0FISYgJyGlWmf5y5XCrLHLvtn
+         VcIIQJU/M2zRYLNKNpdK6M9k/X80e0fADnnRNvM30OFWY2E+Bj7G9DSpQY9NkmLWUIwd
+         A77g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1750455224; x=1751060024;
+        d=1e100.net; s=20230601; t=1750455225; x=1751060025;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=D+pA2NqU7VM6kESXqTyY31jcJVRaGsZJqSbDNnqd9+8=;
-        b=tPEsPeDTAPU1RKBn8jOsYvhdRmtAbLhO2yEreV94Q3ZsXuSyy2MdtOGIi9GbjKx0w2
-         M+BF0sS53q9fL1m0D33NsktNmGOisPx/5sgx95x4L/2yaoAtBPECa+883mp8aQltH5fq
-         yt7KjmZ5ufrp6fpO3XZnHQ01CeUs+ou/4iY21dSC1iPxJ+3V9TvqMg4PEqmn1pWyQUc2
-         D74ZAAHpvM0sH3HGU0ayXf5ZGouzoYHsh5EFul0vruenx13Y67Li6D/c1KUhDINSZt5e
-         fS49Z/PLYVkqd62Q97SLWw5nRw4DGv/C9gjxXWY5NWpBAk2PuCg/W8T4hxqtlskiq7E0
-         qVMQ==
-X-Gm-Message-State: AOJu0Yzq52gzmnGcTyjOWbV9rKbgJ9inDFOqjKLM8ayoHO8O3ao5aFbC
-	uycyBCq+b/Qd2nzT1oeH6/2eDDy2zTu5MfjoPkxRFfzuQUPDt4AYddF+3QVlMRvtxl13Sck/dMv
-	kcXdrTVs/
-X-Gm-Gg: ASbGncuj0eMnNJywnmSbVhyCvJ/IwlL8YSNAV+4m1jlzGhPNitWcAgT1Twhx6rk9vBy
-	c5qzJDcI+3d5/IapyVd9E4stiDjg7Sor/hh4yOm2VdBJIYEKxCpEjqlYzVbJNopHfSjf4wHLHCm
-	7gtUjrr4jzjS3hRtghGc9x0vqxJuF4NKvy77vidKqGuWBt448Ks0R+qjVJycsqK+ZAo7tjn9XPo
-	0z5W1Nzk7ppS0CjUxDcrW6xD6mRB7PhnOfg3LCSeqNHsffVd9bO0ecfbTOii5Cr5+s2LEiZQH5l
-	8GpZK47brbVbghbs2L6pepRdSUo+Ip41/aNQPqHGQh7SLVgYihs=
-X-Google-Smtp-Source: AGHT+IEFvaml3XvyEXhVhLTgNZ7I12mTjn1ki+Ba+jUyQ/fNpSku+VTJc+o9OP7lYHeo9GWx837t5A==
-X-Received: by 2002:a05:600c:3549:b0:450:cb25:ead with SMTP id 5b1f17b1804b1-4536b551499mr70075e9.7.1750455223388;
-        Fri, 20 Jun 2025 14:33:43 -0700 (PDT)
+        bh=GNf6Ny2iXlC8EyAb4cTZNY06NgYPwt8FKnro78CSTdM=;
+        b=R8nPBwi1WkQHn3l0QA+jjALhPIUUYBINt8Db76p5mv2QNl7ojxnHUp7hvNRluGBOcT
+         KTC9wIrrZZfv3N5QzNJeBmyw9Sk7d97DoaXrb+H2oX5IgaNrtR2aCP6+gwsffc/v2/fx
+         NkcfTlIOPaRVMVWXnWjUNRspF6FR/Ok6KtRqmt1xpbX877TEGa0P7qm2qkImOK0KD6qa
+         CQ77kuH8twMva/c1bK25bNmLWoiCgtXgyuRMrsK7kepN1jhmwEqB6nuX7DgL3iNWYek9
+         bbBsS07bamgBkuYVO/9/GdNeKZTtURpO2xt3c32UcNA4zggQ04Cj2hWosPh6cZAe8PuH
+         cVjA==
+X-Gm-Message-State: AOJu0YzJmI1Nx37eP73yRuCZtkX61iEVoEl8AKpPU2IeJEOskji9t3xv
+	mr7V2voiWFPVqvcBN+IxnxFaGzp33+55uaLIOpW0FtQJoumx1Dy9+nd3s5Om4ReNpVdaPxUyD9q
+	i0dGIvBKx
+X-Gm-Gg: ASbGncuWPgPtjm9sLKZBoUGo4GjodDFPbNjg9OQOpdm2IfTa18QKc2ZtDbqn+yyVUTL
+	WBLPGqNbMN268UmcPd7oX5qMAbmrj8FyXArOPnvpSKIC/0hMN/jEMTkLco1PGJnFr14/zQ4j/HE
+	UKbPhMwdMGnQbfye4Aov6zPXmcrJJ/KAOHb552QmNFwExdHG3q0JG38F3vP2PWIgBQV4P0qnVEG
+	K7zUK9L/kIacwc73djcXeo8kj4kaQWR2Ld92Wk/tYZTEEcSOrDl3wvYQGPbuPM51ydCafjTmMB+
+	S6bHlACm/jRiOnGGTUvhw7Zqjt/0MCv12x4DSJWcsuQKVCY/UA==
+X-Google-Smtp-Source: AGHT+IGxK8IgwE+LPzqHRZ5UNASy4zM7ROGiz57m1kZCv5jOtxQUtpTcrhxfDFPbPOESrgmaUDzC3w==
+X-Received: by 2002:a05:600c:1c0f:b0:439:8f59:2c56 with SMTP id 5b1f17b1804b1-4536abfa310mr345435e9.2.1750455225045;
+        Fri, 20 Jun 2025 14:33:45 -0700 (PDT)
 Received: from localhost ([2a00:79e0:9d:4:83c5:7af8:c033:2ca6])
-        by smtp.gmail.com with UTF8SMTPSA id 5b1f17b1804b1-453647071f4sm36203575e9.34.2025.06.20.14.33.42
+        by smtp.gmail.com with UTF8SMTPSA id 5b1f17b1804b1-453646fd589sm35912195e9.26.2025.06.20.14.33.44
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 20 Jun 2025 14:33:42 -0700 (PDT)
+        Fri, 20 Jun 2025 14:33:44 -0700 (PDT)
 From: Jann Horn <jannh@google.com>
 To: stable@vger.kernel.org
-Subject: [PATCH 6.1.y 2/3] mm: hugetlb: independent PMD page table shared count
-Date: Fri, 20 Jun 2025 23:33:32 +0200
-Message-ID: <20250620213334.158850-2-jannh@google.com>
+Subject: [PATCH 6.1.y 3/3] mm/hugetlb: fix huge_pmd_unshare() vs GUP-fast race
+Date: Fri, 20 Jun 2025 23:33:33 +0200
+Message-ID: <20250620213334.158850-3-jannh@google.com>
 X-Mailer: git-send-email 2.50.0.rc2.701.gf1e915cc24-goog
 In-Reply-To: <20250620213334.158850-1-jannh@google.com>
 References: <2025062041-uplifted-cahoots-6c42@gregkh>
@@ -89,168 +89,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Liu Shixin <liushixin2@huawei.com>
+huge_pmd_unshare() drops a reference on a page table that may have
+previously been shared across processes, potentially turning it into a
+normal page table used in another process in which unrelated VMAs can
+afterwards be installed.
 
-[ Upstream commit 59d9094df3d79443937add8700b2ef1a866b1081 ]
+If this happens in the middle of a concurrent gup_fast(), gup_fast() could
+end up walking the page tables of another process.  While I don't see any
+way in which that immediately leads to kernel memory corruption, it is
+really weird and unexpected.
 
-The folio refcount may be increased unexpectly through try_get_folio() by
-caller such as split_huge_pages.  In huge_pmd_unshare(), we use refcount
-to check whether a pmd page table is shared.  The check is incorrect if
-the refcount is increased by the above caller, and this can cause the page
-table leaked:
+Fix it with an explicit broadcast IPI through tlb_remove_table_sync_one(),
+just like we do in khugepaged when removing page tables for a THP
+collapse.
 
- BUG: Bad page state in process sh  pfn:109324
- page: refcount:0 mapcount:0 mapping:0000000000000000 index:0x66 pfn:0x109324
- flags: 0x17ffff800000000(node=0|zone=2|lastcpupid=0xfffff)
- page_type: f2(table)
- raw: 017ffff800000000 0000000000000000 0000000000000000 0000000000000000
- raw: 0000000000000066 0000000000000000 00000000f2000000 0000000000000000
- page dumped because: nonzero mapcount
- ...
- CPU: 31 UID: 0 PID: 7515 Comm: sh Kdump: loaded Tainted: G    B              6.13.0-rc2master+ #7
- Tainted: [B]=BAD_PAGE
- Hardware name: QEMU KVM Virtual Machine, BIOS 0.0.0 02/06/2015
- Call trace:
-  show_stack+0x20/0x38 (C)
-  dump_stack_lvl+0x80/0xf8
-  dump_stack+0x18/0x28
-  bad_page+0x8c/0x130
-  free_page_is_bad_report+0xa4/0xb0
-  free_unref_page+0x3cc/0x620
-  __folio_put+0xf4/0x158
-  split_huge_pages_all+0x1e0/0x3e8
-  split_huge_pages_write+0x25c/0x2d8
-  full_proxy_write+0x64/0xd8
-  vfs_write+0xcc/0x280
-  ksys_write+0x70/0x110
-  __arm64_sys_write+0x24/0x38
-  invoke_syscall+0x50/0x120
-  el0_svc_common.constprop.0+0xc8/0xf0
-  do_el0_svc+0x24/0x38
-  el0_svc+0x34/0x128
-  el0t_64_sync_handler+0xc8/0xd0
-  el0t_64_sync+0x190/0x198
-
-The issue may be triggered by damon, offline_page, page_idle, etc, which
-will increase the refcount of page table.
-
-1. The page table itself will be discarded after reporting the
-   "nonzero mapcount".
-
-2. The HugeTLB page mapped by the page table miss freeing since we
-   treat the page table as shared and a shared page table will not be
-   unmapped.
-
-Fix it by introducing independent PMD page table shared count.  As
-described by comment, pt_index/pt_mm/pt_frag_refcount are used for s390
-gmap, x86 pgds and powerpc, pt_share_count is used for x86/arm64/riscv
-pmds, so we can reuse the field as pt_share_count.
-
-Link: https://lkml.kernel.org/r/20241216071147.3984217-1-liushixin2@huawei.com
+Link: https://lkml.kernel.org/r/20250528-hugetlb-fixes-splitrace-v2-2-1329349bad1a@google.com
+Link: https://lkml.kernel.org/r/20250527-hugetlb-fixes-splitrace-v1-2-f4136f5ec58a@google.com
 Fixes: 39dde65c9940 ("[PATCH] shared page table for hugetlb page")
-Signed-off-by: Liu Shixin <liushixin2@huawei.com>
-Cc: Kefeng Wang <wangkefeng.wang@huawei.com>
-Cc: Ken Chen <kenneth.w.chen@intel.com>
+Signed-off-by: Jann Horn <jannh@google.com>
+Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: Liam Howlett <liam.howlett@oracle.com>
 Cc: Muchun Song <muchun.song@linux.dev>
-Cc: Nanyong Sun <sunnanyong@huawei.com>
-Cc: Jane Chu <jane.chu@oracle.com>
+Cc: Oscar Salvador <osalvador@suse.de>
+Cc: Vlastimil Babka <vbabka@suse.cz>
 Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
-[backport note: struct ptdesc did not exist yet, stuff it equivalently
-into struct page instead]
+[backport]
 Signed-off-by: Jann Horn <jannh@google.com>
 ---
- include/linux/mm.h       |  3 +++
- include/linux/mm_types.h |  3 +++
- mm/hugetlb.c             | 16 +++++++---------
- 3 files changed, 13 insertions(+), 9 deletions(-)
+ mm/hugetlb.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/include/linux/mm.h b/include/linux/mm.h
-index 03357c196e0b..b36dffbfbe69 100644
---- a/include/linux/mm.h
-+++ b/include/linux/mm.h
-@@ -2537,6 +2537,9 @@ static inline bool pgtable_pmd_page_ctor(struct page *page)
- 	if (!pmd_ptlock_init(page))
- 		return false;
- 	__SetPageTable(page);
-+#ifdef CONFIG_ARCH_WANT_HUGE_PMD_SHARE
-+	atomic_set(&page->pt_share_count, 0);
-+#endif
- 	inc_lruvec_page_state(page, NR_PAGETABLE);
- 	return true;
- }
-diff --git a/include/linux/mm_types.h b/include/linux/mm_types.h
-index a9c1d611029d..9b64610eddcc 100644
---- a/include/linux/mm_types.h
-+++ b/include/linux/mm_types.h
-@@ -160,6 +160,9 @@ struct page {
- 			union {
- 				struct mm_struct *pt_mm; /* x86 pgds only */
- 				atomic_t pt_frag_refcount; /* powerpc */
-+#ifdef CONFIG_ARCH_WANT_HUGE_PMD_SHARE
-+				atomic_t pt_share_count;
-+#endif
- 			};
- #if ALLOC_SPLIT_PTLOCKS
- 			spinlock_t *ptl;
 diff --git a/mm/hugetlb.c b/mm/hugetlb.c
-index fc5d3d665266..a3907edf2909 100644
+index a3907edf2909..2dee7dcb3b18 100644
 --- a/mm/hugetlb.c
 +++ b/mm/hugetlb.c
-@@ -7114,7 +7114,7 @@ pte_t *huge_pmd_share(struct mm_struct *mm, struct vm_area_struct *vma,
- 			spte = huge_pte_offset(svma->vm_mm, saddr,
- 					       vma_mmu_pagesize(svma));
- 			if (spte) {
--				get_page(virt_to_page(spte));
-+				atomic_inc(&virt_to_page(spte)->pt_share_count);
- 				break;
- 			}
- 		}
-@@ -7129,7 +7129,7 @@ pte_t *huge_pmd_share(struct mm_struct *mm, struct vm_area_struct *vma,
- 				(pmd_t *)((unsigned long)spte & PAGE_MASK));
- 		mm_inc_nr_pmds(mm);
- 	} else {
--		put_page(virt_to_page(spte));
-+		atomic_dec(&virt_to_page(spte)->pt_share_count);
- 	}
- 	spin_unlock(ptl);
- out:
-@@ -7141,10 +7141,6 @@ pte_t *huge_pmd_share(struct mm_struct *mm, struct vm_area_struct *vma,
- /*
-  * unmap huge page backed by shared pte.
-  *
-- * Hugetlb pte page is ref counted at the time of mapping.  If pte is shared
-- * indicated by page_count > 1, unmap is achieved by clearing pud and
-- * decrementing the ref count. If count == 1, the pte page is not shared.
-- *
-  * Called with page table lock held.
-  *
-  * returns: 1 successfully unmapped a shared pte page
-@@ -7153,18 +7149,20 @@ pte_t *huge_pmd_share(struct mm_struct *mm, struct vm_area_struct *vma,
- int huge_pmd_unshare(struct mm_struct *mm, struct vm_area_struct *vma,
- 					unsigned long addr, pte_t *ptep)
- {
-+	unsigned long sz = huge_page_size(hstate_vma(vma));
- 	pgd_t *pgd = pgd_offset(mm, addr);
- 	p4d_t *p4d = p4d_offset(pgd, addr);
- 	pud_t *pud = pud_offset(p4d, addr);
- 
- 	i_mmap_assert_write_locked(vma->vm_file->f_mapping);
- 	hugetlb_vma_assert_locked(vma);
--	BUG_ON(page_count(virt_to_page(ptep)) == 0);
--	if (page_count(virt_to_page(ptep)) == 1)
-+	if (sz != PMD_SIZE)
-+		return 0;
-+	if (!atomic_read(&virt_to_page(ptep)->pt_share_count))
+@@ -7162,6 +7162,13 @@ int huge_pmd_unshare(struct mm_struct *mm, struct vm_area_struct *vma,
  		return 0;
  
  	pud_clear(pud);
--	put_page(virt_to_page(ptep));
-+	atomic_dec(&virt_to_page(ptep)->pt_share_count);
++	/*
++	 * Once our caller drops the rmap lock, some other process might be
++	 * using this page table as a normal, non-hugetlb page table.
++	 * Wait for pending gup_fast() in other threads to finish before letting
++	 * that happen.
++	 */
++	tlb_remove_table_sync_one();
+ 	atomic_dec(&virt_to_page(ptep)->pt_share_count);
  	mm_dec_nr_pmds(mm);
  	return 1;
- }
 -- 
 2.50.0.rc2.701.gf1e915cc24-goog
 
