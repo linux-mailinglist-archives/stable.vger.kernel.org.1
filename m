@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-155147-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-155148-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3EFFAAE1E3A
-	for <lists+stable@lfdr.de>; Fri, 20 Jun 2025 17:13:30 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9EE0EAE1E3C
+	for <lists+stable@lfdr.de>; Fri, 20 Jun 2025 17:13:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 39AD14C0C88
-	for <lists+stable@lfdr.de>; Fri, 20 Jun 2025 15:13:27 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4E09C5A2C05
+	for <lists+stable@lfdr.de>; Fri, 20 Jun 2025 15:13:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F059729C355;
-	Fri, 20 Jun 2025 15:13:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AFACC2BF3D8;
+	Fri, 20 Jun 2025 15:13:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gPjwKRV4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yb5L/0t0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADB0D29617F
-	for <stable@vger.kernel.org>; Fri, 20 Jun 2025 15:13:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E6BC2BF3CF
+	for <stable@vger.kernel.org>; Fri, 20 Jun 2025 15:13:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750432397; cv=none; b=mWTrVTMPr2qhI73CZsOn+sxom8/6h46eD5nSi8co2937CEBJgNLppXSdP6H04Yn6FsHAyHyp1RJAzuQROiVfP37usZsmAqYBugmOHKq5H6Skf4J0zOt0OPN4wEo4RrO4eynrnwy6WaKpOUj438PIe2SJBlgMBP0AkkpJU+I2NTc=
+	t=1750432400; cv=none; b=igzf51JXxNWAXSfKq9hBmoO9KXJ176HUu9YzvGaj7n5OCASvvl2Fy0jHEZ5VmMnEg/8yvMETCB1/jAMpybX7Sa5gFsQrvOeQVvpxfx32G6TM9Uimjfj97fpNKVpbmmRit5e9DtSCNypL6/OJyaMKLrxIqqx6QDmSQGOoGyUJaNQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750432397; c=relaxed/simple;
-	bh=qoP6t35TRlYqxNBb0Z2s+pxUBdckPu5XhUmD4F3EZEk=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=mlye8DBvs+7QWwq5xhh5pog3/SDSA+qJdfna4te/HxJcxwDcgF9sx1Yo0OWofOQCPnjfs4bQFiZh2vRnw5kVq5MZsNgwo7R+eAsqpj7wc6t5Ac02Rp2G0KlTQEX9jkHodAYCtxIRk/GAC2Y0704K6TT2SPXPb2xAUUlhc6GtS44=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gPjwKRV4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AAF25C4CEE3;
-	Fri, 20 Jun 2025 15:13:16 +0000 (UTC)
+	s=arc-20240116; t=1750432400; c=relaxed/simple;
+	bh=lMzWEFk0Zb13tG2LQZcm6eIVKkmdQc0m9Zz6yXB5Vvs=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=eO4fP09i57Awx6wASVmTE5KOXZeFYjcNHpmnEzaXUpbK0cIBp9SnwYaaqo1qFBXRD7/k2MoMoC+TFwtdAkqwWrXniwNqbXJV5oEDrABlKs6GDbW9WyDHUqk+sl5BJo4G/DIC2GkjFTebUiCkUMw8gAm00E6OoqMZH5NKg/4JZFM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yb5L/0t0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C691CC4CEE3;
+	Fri, 20 Jun 2025 15:13:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750432397;
-	bh=qoP6t35TRlYqxNBb0Z2s+pxUBdckPu5XhUmD4F3EZEk=;
+	s=korg; t=1750432400;
+	bh=lMzWEFk0Zb13tG2LQZcm6eIVKkmdQc0m9Zz6yXB5Vvs=;
 	h=Subject:To:Cc:From:Date:From;
-	b=gPjwKRV4Dqb8h3tBZEFSmnlKbdLGjJGBIdGydp2djy1Bu/K7EQBOIEw2vgNVvmnkv
-	 uw8yGQlKtuaIyEKoj1rCmcFUDiccMZo2QuXdtkDeNZOmra81lG0e/woeZKYURcl0zQ
-	 3MTkz2chKlt0PFCm1chumEZ7vON9ZcEboh3gXnT0=
-Subject: FAILED: patch "[PATCH] x86/its: move its_pages array to struct mod_arch_specific" failed to apply to 5.15-stable tree
-To: rppt@kernel.org,peterz@infradead.org
+	b=yb5L/0t0mSSiZPACZzWqD6KajKT0UN7vhTBhNezmvkgeqTkZL0RA0fE4vClPnEfd1
+	 u0ZsqWyUIt0dNjqPbE9+AkEh/Bq+aleTVdsZ2TyGDCai2N9MtgEkV2e3NRub3oOUNm
+	 UsAnTMO4X0NSjLUAWZ+Xs4WO2ewqNZjBRpmFzHxI=
+Subject: FAILED: patch "[PATCH] x86/its: explicitly manage permissions for ITS pages" failed to apply to 6.6-stable tree
+To: peterz@infradead.org,nik.borisov@suse.com,rppt@kernel.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Fri, 20 Jun 2025 17:13:01 +0200
-Message-ID: <2025062001-charity-anytime-66e2@gregkh>
+Date: Fri, 20 Jun 2025 17:13:13 +0200
+Message-ID: <2025062013-chlorine-rubbing-22b0@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.15-stable tree.
+The patch below does not apply to the 6.6-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
 git checkout FETCH_HEAD
-git cherry-pick -x 0b0cae7119a0ec9449d7261b5e672a5fed765068
+git cherry-pick -x a82b26451de126a5ae130361081986bc459afe9b
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025062001-charity-anytime-66e2@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025062013-chlorine-rubbing-22b0@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
 
 Possible dependencies:
 
@@ -77,116 +77,152 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 0b0cae7119a0ec9449d7261b5e672a5fed765068 Mon Sep 17 00:00:00 2001
-From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
-Date: Tue, 3 Jun 2025 14:14:43 +0300
-Subject: [PATCH] x86/its: move its_pages array to struct mod_arch_specific
+From a82b26451de126a5ae130361081986bc459afe9b Mon Sep 17 00:00:00 2001
+From: "Peter Zijlstra (Intel)" <peterz@infradead.org>
+Date: Tue, 3 Jun 2025 14:14:44 +0300
+Subject: [PATCH] x86/its: explicitly manage permissions for ITS pages
 
-The of pages with ITS thunks allocated for modules are tracked by an
-array in 'struct module'.
+execmem_alloc() sets permissions differently depending on the kernel
+configuration, CPU support for PSE and whether a page is allocated
+before or after mark_rodata_ro().
 
-Since this is very architecture specific data structure, move it to
-'struct mod_arch_specific'.
-
-No functional changes.
+Add tracking for pages allocated for ITS when patching the core kernel
+and make sure the permissions for ITS pages are explicitly managed for
+both kernel and module allocations.
 
 Fixes: 872df34d7c51 ("x86/its: Use dynamic thunks for indirect branches")
-Suggested-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Co-developed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Reviewed-by: Nikolay Borisov <nik.borisov@suse.com>
 Cc: stable@vger.kernel.org
-Link: https://lkml.kernel.org/r/20250603111446.2609381-4-rppt@kernel.org
+Link: https://lkml.kernel.org/r/20250603111446.2609381-5-rppt@kernel.org
 
-diff --git a/arch/x86/include/asm/module.h b/arch/x86/include/asm/module.h
-index e988bac0a4a1..3c2de4ce3b10 100644
---- a/arch/x86/include/asm/module.h
-+++ b/arch/x86/include/asm/module.h
-@@ -5,12 +5,20 @@
- #include <asm-generic/module.h>
- #include <asm/orc_types.h>
- 
-+struct its_array {
-+#ifdef CONFIG_MITIGATION_ITS
-+	void **pages;
-+	int num;
-+#endif
-+};
-+
- struct mod_arch_specific {
- #ifdef CONFIG_UNWINDER_ORC
- 	unsigned int num_orcs;
- 	int *orc_unwind_ip;
- 	struct orc_entry *orc_unwind;
- #endif
-+	struct its_array its_pages;
- };
- 
- #endif /* _ASM_X86_MODULE_H */
 diff --git a/arch/x86/kernel/alternative.c b/arch/x86/kernel/alternative.c
-index ecfe7b497cad..b50fe6ce4655 100644
+index b50fe6ce4655..6455f7f751b3 100644
 --- a/arch/x86/kernel/alternative.c
 +++ b/arch/x86/kernel/alternative.c
-@@ -173,8 +173,8 @@ void its_fini_mod(struct module *mod)
+@@ -116,6 +116,24 @@ static struct module *its_mod;
+ #endif
+ static void *its_page;
+ static unsigned int its_offset;
++struct its_array its_pages;
++
++static void *__its_alloc(struct its_array *pages)
++{
++	void *page __free(execmem) = execmem_alloc(EXECMEM_MODULE_TEXT, PAGE_SIZE);
++	if (!page)
++		return NULL;
++
++	void *tmp = krealloc(pages->pages, (pages->num+1) * sizeof(void *),
++			     GFP_KERNEL);
++	if (!tmp)
++		return NULL;
++
++	pages->pages = tmp;
++	pages->pages[pages->num++] = page;
++
++	return no_free_ptr(page);
++}
+ 
+ /* Initialize a thunk with the "jmp *reg; int3" instructions. */
+ static void *its_init_thunk(void *thunk, int reg)
+@@ -151,6 +169,21 @@ static void *its_init_thunk(void *thunk, int reg)
+ 	return thunk + offset;
+ }
+ 
++static void its_pages_protect(struct its_array *pages)
++{
++	for (int i = 0; i < pages->num; i++) {
++		void *page = pages->pages[i];
++		execmem_restore_rox(page, PAGE_SIZE);
++	}
++}
++
++static void its_fini_core(void)
++{
++	if (IS_ENABLED(CONFIG_STRICT_KERNEL_RWX))
++		its_pages_protect(&its_pages);
++	kfree(its_pages.pages);
++}
++
+ #ifdef CONFIG_MODULES
+ void its_init_mod(struct module *mod)
+ {
+@@ -173,10 +206,8 @@ void its_fini_mod(struct module *mod)
  	its_page = NULL;
  	mutex_unlock(&text_mutex);
  
--	for (int i = 0; i < mod->its_num_pages; i++) {
--		void *page = mod->its_page_array[i];
-+	for (int i = 0; i < mod->arch.its_pages.num; i++) {
-+		void *page = mod->arch.its_pages.pages[i];
- 		execmem_restore_rox(page, PAGE_SIZE);
- 	}
+-	for (int i = 0; i < mod->arch.its_pages.num; i++) {
+-		void *page = mod->arch.its_pages.pages[i];
+-		execmem_restore_rox(page, PAGE_SIZE);
+-	}
++	if (IS_ENABLED(CONFIG_STRICT_MODULE_RWX))
++		its_pages_protect(&mod->arch.its_pages);
  }
-@@ -184,11 +184,11 @@ void its_free_mod(struct module *mod)
- 	if (!cpu_feature_enabled(X86_FEATURE_INDIRECT_THUNK_ITS))
- 		return;
  
--	for (int i = 0; i < mod->its_num_pages; i++) {
--		void *page = mod->its_page_array[i];
-+	for (int i = 0; i < mod->arch.its_pages.num; i++) {
-+		void *page = mod->arch.its_pages.pages[i];
- 		execmem_free(page);
- 	}
--	kfree(mod->its_page_array);
-+	kfree(mod->arch.its_pages.pages);
- }
- #endif /* CONFIG_MODULES */
+ void its_free_mod(struct module *mod)
+@@ -194,28 +225,23 @@ void its_free_mod(struct module *mod)
  
-@@ -201,14 +201,15 @@ static void *its_alloc(void)
+ static void *its_alloc(void)
+ {
+-	void *page __free(execmem) = execmem_alloc(EXECMEM_MODULE_TEXT, PAGE_SIZE);
++	struct its_array *pages = &its_pages;
++	void *page;
  
- #ifdef CONFIG_MODULES
- 	if (its_mod) {
--		void *tmp = krealloc(its_mod->its_page_array,
--				     (its_mod->its_num_pages+1) * sizeof(void *),
-+		struct its_array *pages = &its_mod->arch.its_pages;
-+		void *tmp = krealloc(pages->pages,
-+				     (pages->num+1) * sizeof(void *),
- 				     GFP_KERNEL);
- 		if (!tmp)
- 			return NULL;
++#ifdef CONFIG_MODULE
++	if (its_mod)
++		pages = &its_mod->arch.its_pages;
++#endif
++
++	page = __its_alloc(pages);
+ 	if (!page)
+ 		return NULL;
  
--		its_mod->its_page_array = tmp;
--		its_mod->its_page_array[its_mod->its_num_pages++] = page;
-+		pages->pages = tmp;
-+		pages->pages[pages->num++] = page;
+-#ifdef CONFIG_MODULES
+-	if (its_mod) {
+-		struct its_array *pages = &its_mod->arch.its_pages;
+-		void *tmp = krealloc(pages->pages,
+-				     (pages->num+1) * sizeof(void *),
+-				     GFP_KERNEL);
+-		if (!tmp)
+-			return NULL;
++	execmem_make_temp_rw(page, PAGE_SIZE);
++	if (pages == &its_pages)
++		set_memory_x((unsigned long)page, 1);
  
- 		execmem_make_temp_rw(page, PAGE_SIZE);
- 	}
-diff --git a/include/linux/module.h b/include/linux/module.h
-index 92e1420fccdf..5faa1fb1f4b4 100644
---- a/include/linux/module.h
-+++ b/include/linux/module.h
-@@ -586,11 +586,6 @@ struct module {
- 	atomic_t refcnt;
- #endif
- 
--#ifdef CONFIG_MITIGATION_ITS
--	int its_num_pages;
--	void **its_page_array;
--#endif
+-		pages->pages = tmp;
+-		pages->pages[pages->num++] = page;
 -
- #ifdef CONFIG_CONSTRUCTORS
- 	/* Constructor functions. */
- 	ctor_fn_t *ctors;
+-		execmem_make_temp_rw(page, PAGE_SIZE);
+-	}
+-#endif /* CONFIG_MODULES */
+-
+-	return no_free_ptr(page);
++	return page;
+ }
+ 
+ static void *its_allocate_thunk(int reg)
+@@ -269,7 +295,9 @@ u8 *its_static_thunk(int reg)
+ 	return thunk;
+ }
+ 
+-#endif
++#else
++static inline void its_fini_core(void) {}
++#endif /* CONFIG_MITIGATION_ITS */
+ 
+ /*
+  * Nomenclature for variable names to simplify and clarify this code and ease
+@@ -2339,6 +2367,8 @@ void __init alternative_instructions(void)
+ 	apply_retpolines(__retpoline_sites, __retpoline_sites_end);
+ 	apply_returns(__return_sites, __return_sites_end);
+ 
++	its_fini_core();
++
+ 	/*
+ 	 * Adjust all CALL instructions to point to func()-10, including
+ 	 * those in .altinstr_replacement.
 
 
