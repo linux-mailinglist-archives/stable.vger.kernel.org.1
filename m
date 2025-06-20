@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-154987-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-154990-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0504BAE15E6
-	for <lists+stable@lfdr.de>; Fri, 20 Jun 2025 10:27:35 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E4F6AE15FD
+	for <lists+stable@lfdr.de>; Fri, 20 Jun 2025 10:30:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A353E4A4E81
-	for <lists+stable@lfdr.de>; Fri, 20 Jun 2025 08:27:35 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8EB064A5108
+	for <lists+stable@lfdr.de>; Fri, 20 Jun 2025 08:30:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91D9F2367A8;
-	Fri, 20 Jun 2025 08:27:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 853C32367C1;
+	Fri, 20 Jun 2025 08:28:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OAO0Ceuf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tE2Tkeap"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 528A72367B6
-	for <stable@vger.kernel.org>; Fri, 20 Jun 2025 08:27:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 445D621FF31
+	for <stable@vger.kernel.org>; Fri, 20 Jun 2025 08:28:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750408050; cv=none; b=oz/sjgTUb36CjsT1TiHPvDs3+dT3iavIiH/L7Zi+q7D51KBepnZL6n/ZJ3Zpi7UcMbE7ZcE90c5mxDDUl4nWTODrpuwTr2UwilYfGqLVkb9wAmMO3Im/t5DY+JXxbXD2POWlDeOgA6ODxP2bzyp+jml67K02OJgtucu4yZMm8oI=
+	t=1750408098; cv=none; b=dCznV2XJyjAT65ORtqTBVklRzHpxzWDfK4Gpsg3XBmaL5JStWKDPpNK9V3bZDAeIM8BBXisq1vy2Wi/k2Pny11RBlleXbNUWWbZ+2SllCpwZWo691kB37YXMzXhSvQexU/JaCuTrzWjdgvnbzcqjcQ4iNhtX4SYDWeTGdzO1BpA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750408050; c=relaxed/simple;
-	bh=6f9ynvhlE3tEDKvL7J3D7Mm9hTupo2xYgWxpaEF58mA=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=KezYSYou7MMuHA21UEk6Po09TSvIE133b+z2LPqr77hx2083/lD+xhGGwMxAHH0kZryPW40XauCISAtWRbiuEH1lqqAY465eD8vGMl8X9DPp1+FC/gE73cnx1qIr0wD5gijDGX7pxnQdKX21GinLosEpd924mhJvajATmGifxbw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OAO0Ceuf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6359C4CEE3;
-	Fri, 20 Jun 2025 08:27:29 +0000 (UTC)
+	s=arc-20240116; t=1750408098; c=relaxed/simple;
+	bh=UjAiHeJDPTQ/zoZTNKBQHWSFzu/8g6m6V+tPFrjDgvs=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=s3O7LP38GL/XAkGNpAihFkHIVf/Rgaka/IgxvqMxHZ4FMtqiszyKaaO/tMcw0F051DMugNLFSzaGS+T1S7tqD7KkU3GB1cpuYMwPLJI5jfUEdXgh6Yfvk8kgvfRO8Y3o+KAO57S0aMmjXyy1kHzQSmTuLM2LAuRiVgBkVP1QKTE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tE2Tkeap; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76B0BC4CEE3;
+	Fri, 20 Jun 2025 08:28:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750408050;
-	bh=6f9ynvhlE3tEDKvL7J3D7Mm9hTupo2xYgWxpaEF58mA=;
+	s=korg; t=1750408097;
+	bh=UjAiHeJDPTQ/zoZTNKBQHWSFzu/8g6m6V+tPFrjDgvs=;
 	h=Subject:To:Cc:From:Date:From;
-	b=OAO0CeufLo/Yw0zgwY8sbHTA4B+earlBIfMS8OXq1HXuElc0ZoUgzd/lNEvmk+B2X
-	 pLCDi0Qap0CwrxT+mF7ONhPkEPAvxjRn2wAT5rHrYBrpRN6X0K3SrufS2i1QYmzuyn
-	 y0Q4cM0fYMaaH1RqIenSwybUpUX45OGNzHyu9jgs=
-Subject: FAILED: patch "[PATCH] ext4: fix incorrect punch max_end" failed to apply to 5.4-stable tree
-To: yi.zhang@huawei.com,jack@suse.cz,libaokun1@huawei.com,tytso@mit.edu
+	b=tE2TkeapfZNQ9ymn1FP25O1fU/PcaUJ83P3W3C893dpIK+BtLo4vq7fNelKm3n25P
+	 tYeWiZs4vEx12obiMjKpyhCikze1leH4ixakBStKgTeetiDWm4V29L6K6Vhe91DsqQ
+	 9C3RE9jRJJRWkSJtnAXcsmAPRPksJ/bvZ+AOioDM=
+Subject: FAILED: patch "[PATCH] Input: gpio-keys - fix a sleep while atomic with PREEMPT_RT" failed to apply to 6.6-stable tree
+To: fabrice.gasnier@foss.st.com,bigeasy@linutronix.de,dmitry.torokhov@gmail.com,gatien.chevallier@foss.st.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Fri, 20 Jun 2025 10:27:11 +0200
-Message-ID: <2025062011-amigo-cable-8646@gregkh>
+Date: Fri, 20 Jun 2025 10:28:06 +0200
+Message-ID: <2025062006-onshore-stool-de98@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.4-stable tree.
+The patch below does not apply to the 6.6-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
 git checkout FETCH_HEAD
-git cherry-pick -x 29ec9bed2395061350249ae356fb300dd82a78e7
+git cherry-pick -x f4a8f561d08e39f7833d4a278ebfb12a41eef15f
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025062011-amigo-cable-8646@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025062006-onshore-stool-de98@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
 
 Possible dependencies:
 
@@ -77,60 +77,65 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 29ec9bed2395061350249ae356fb300dd82a78e7 Mon Sep 17 00:00:00 2001
-From: Zhang Yi <yi.zhang@huawei.com>
-Date: Tue, 6 May 2025 09:20:07 +0800
-Subject: [PATCH] ext4: fix incorrect punch max_end
+From f4a8f561d08e39f7833d4a278ebfb12a41eef15f Mon Sep 17 00:00:00 2001
+From: Fabrice Gasnier <fabrice.gasnier@foss.st.com>
+Date: Fri, 30 May 2025 15:36:43 -0700
+Subject: [PATCH] Input: gpio-keys - fix a sleep while atomic with PREEMPT_RT
 
-For the extents based inodes, the maxbytes should be sb->s_maxbytes
-instead of sbi->s_bitmap_maxbytes. Additionally, for the calculation of
-max_end, the -sb->s_blocksize operation is necessary only for
-indirect-block based inodes. Correct the maxbytes and max_end value to
-correct the behavior of punch hole.
+When enabling PREEMPT_RT, the gpio_keys_irq_timer() callback runs in
+hard irq context, but the input_event() takes a spin_lock, which isn't
+allowed there as it is converted to a rt_spin_lock().
 
-Fixes: 2da376228a24 ("ext4: limit length to bitmap_maxbytes - blocksize in punch_hole")
-Signed-off-by: Zhang Yi <yi.zhang@huawei.com>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Reviewed-by: Baokun Li <libaokun1@huawei.com>
-Link: https://patch.msgid.link/20250506012009.3896990-2-yi.zhang@huaweicloud.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Cc: stable@kernel.org
+[ 4054.289999] BUG: sleeping function called from invalid context at kernel/locking/spinlock_rt.c:48
+[ 4054.290028] in_atomic(): 1, irqs_disabled(): 1, non_block: 0, pid: 0, name: swapper/0
+...
+[ 4054.290195]  __might_resched+0x13c/0x1f4
+[ 4054.290209]  rt_spin_lock+0x54/0x11c
+[ 4054.290219]  input_event+0x48/0x80
+[ 4054.290230]  gpio_keys_irq_timer+0x4c/0x78
+[ 4054.290243]  __hrtimer_run_queues+0x1a4/0x438
+[ 4054.290257]  hrtimer_interrupt+0xe4/0x240
+[ 4054.290269]  arch_timer_handler_phys+0x2c/0x44
+[ 4054.290283]  handle_percpu_devid_irq+0x8c/0x14c
+[ 4054.290297]  handle_irq_desc+0x40/0x58
+[ 4054.290307]  generic_handle_domain_irq+0x1c/0x28
+[ 4054.290316]  gic_handle_irq+0x44/0xcc
 
-diff --git a/fs/ext4/inode.c b/fs/ext4/inode.c
-index 99f30b9cfe17..01038b4ecee0 100644
---- a/fs/ext4/inode.c
-+++ b/fs/ext4/inode.c
-@@ -4051,7 +4051,7 @@ int ext4_punch_hole(struct file *file, loff_t offset, loff_t length)
- 	struct inode *inode = file_inode(file);
- 	struct super_block *sb = inode->i_sb;
- 	ext4_lblk_t start_lblk, end_lblk;
--	loff_t max_end = EXT4_SB(sb)->s_bitmap_maxbytes - sb->s_blocksize;
-+	loff_t max_end = sb->s_maxbytes;
- 	loff_t end = offset + length;
- 	handle_t *handle;
- 	unsigned int credits;
-@@ -4060,14 +4060,20 @@ int ext4_punch_hole(struct file *file, loff_t offset, loff_t length)
- 	trace_ext4_punch_hole(inode, offset, length, 0);
- 	WARN_ON_ONCE(!inode_is_locked(inode));
+Considering the gpio_keys_irq_isr() can run in any context, e.g. it can
+be threaded, it seems there's no point in requesting the timer isr to
+run in hard irq context.
+
+Relax the hrtimer not to use the hard context.
+
+Fixes: 019002f20cb5 ("Input: gpio-keys - use hrtimer for release timer")
+Suggested-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Signed-off-by: Fabrice Gasnier <fabrice.gasnier@foss.st.com>
+Signed-off-by: Gatien Chevallier <gatien.chevallier@foss.st.com>
+Link: https://lore.kernel.org/r/20250528-gpio_keys_preempt_rt-v2-1-3fc55a9c3619@foss.st.com
+Cc: stable@vger.kernel.org
+Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+
+diff --git a/drivers/input/keyboard/gpio_keys.c b/drivers/input/keyboard/gpio_keys.c
+index 5c39a217b94c..d884538107c9 100644
+--- a/drivers/input/keyboard/gpio_keys.c
++++ b/drivers/input/keyboard/gpio_keys.c
+@@ -486,7 +486,7 @@ static irqreturn_t gpio_keys_irq_isr(int irq, void *dev_id)
+ 	if (bdata->release_delay)
+ 		hrtimer_start(&bdata->release_timer,
+ 			      ms_to_ktime(bdata->release_delay),
+-			      HRTIMER_MODE_REL_HARD);
++			      HRTIMER_MODE_REL);
+ out:
+ 	return IRQ_HANDLED;
+ }
+@@ -628,7 +628,7 @@ static int gpio_keys_setup_key(struct platform_device *pdev,
  
-+	/*
-+	 * For indirect-block based inodes, make sure that the hole within
-+	 * one block before last range.
-+	 */
-+	if (!ext4_test_inode_flag(inode, EXT4_INODE_EXTENTS))
-+		max_end = EXT4_SB(sb)->s_bitmap_maxbytes - sb->s_blocksize;
-+
- 	/* No need to punch hole beyond i_size */
- 	if (offset >= inode->i_size || offset >= max_end)
- 		return 0;
+ 		bdata->release_delay = button->debounce_interval;
+ 		hrtimer_setup(&bdata->release_timer, gpio_keys_irq_timer,
+-			      CLOCK_REALTIME, HRTIMER_MODE_REL_HARD);
++			      CLOCK_REALTIME, HRTIMER_MODE_REL);
  
- 	/*
- 	 * If the hole extends beyond i_size, set the hole to end after
--	 * the page that contains i_size, and also make sure that the hole
--	 * within one block before last range.
-+	 * the page that contains i_size.
- 	 */
- 	if (end > inode->i_size)
- 		end = round_up(inode->i_size, PAGE_SIZE);
+ 		isr = gpio_keys_irq_isr;
+ 		irqflags = 0;
 
 
