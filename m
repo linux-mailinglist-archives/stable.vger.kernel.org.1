@@ -1,193 +1,162 @@
-Return-Path: <stable+bounces-155198-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-155199-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 460FEAE26A2
-	for <lists+stable@lfdr.de>; Sat, 21 Jun 2025 02:36:59 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id EF3BEAE2741
+	for <lists+stable@lfdr.de>; Sat, 21 Jun 2025 05:45:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BC92B1BC5622
-	for <lists+stable@lfdr.de>; Sat, 21 Jun 2025 00:37:14 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6675817F487
+	for <lists+stable@lfdr.de>; Sat, 21 Jun 2025 03:45:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5994146B8;
-	Sat, 21 Jun 2025 00:36:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 97A1B149C4A;
+	Sat, 21 Jun 2025 03:45:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BFZ9rPcG"
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=163.com header.i=@163.com header.b="VlYIwLxM"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0997118D;
-	Sat, 21 Jun 2025 00:36:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.4])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B9EA14A62B
+	for <stable@vger.kernel.org>; Sat, 21 Jun 2025 03:45:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750466213; cv=none; b=tZgWuWGeXlJr6gaHY/43E7ctRSB57OsRXST1yvDSQQz99drHe3nvw3T/H9+J+m3a2sZvL9fj6uEXvP3MeEIE1AuIND+e7gllA1JMQkQ55OSXOR1rW3cIb+7+FEc1b7mbuKOYTJdYu+HFoxWNv//qlHialS6sDUTu4EWKNaikAcU=
+	t=1750477522; cv=none; b=BrTeubQXZ+A4V17nAnFQLvGoABT7VqF05ipB6c1aDzpDYH4AAiDf9V9TNe306QBMWDj8v2awp0HpkGQPav4/bDiUaUgk4hqGwzAhZhQT8VOnR4tnESJQ+GqFcm+r1517rCZBWqnAgK+Pe/pRFzBHlhNSWFJqVFcW+792Hu3LaTY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750466213; c=relaxed/simple;
-	bh=cpoeRYl68AdZV72kJE/G36W5Kkk3qHbamShIfbeav40=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=JiDLh360TpYFRNQS0o4keNWSBXhsl8TdjLJEEwlNAckoGFy7cEPmZtod7v5VMgiEj0sfGSaCoAQkTDd+bg1fwu0L2VrCtN1MV/u9rDe8h0wni2/QnAxem6qI4/sh9vgi8/YqOeYeIqRzijcOTg8w2cWm50pq0y254UaZAAEwuRk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BFZ9rPcG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98983C4CEE3;
-	Sat, 21 Jun 2025 00:36:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1750466211;
-	bh=cpoeRYl68AdZV72kJE/G36W5Kkk3qHbamShIfbeav40=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=BFZ9rPcGeXTNAuPRrFtIG8AnVUCQ7hpoSOpX+cTf48z6OP56M+/4KtlBBBZe4n6hc
-	 4Ige1VCefhniVOxYDl5X8t8UlVHQf/0aNQDXX7EXvFNdHfyjatc64zZIBeAqfXBXnB
-	 xMABUTxPIwNd80UjjzEtFVDKTstU5o8KC0Ybbo10PcDO3IKeurVhdz01i+x4tLKP8L
-	 awz8bM0pv9ic9GsUMIHGzxCe0UqFoo1Da0AuH9nuk6NnSS7nYNPvTrbZ1ChfO6OljH
-	 qwxcYlqODuWncKMYq2TXG1YJpC/uwf/I+dYwnN0slIFRxsYT+iJJJ/n1xWk4Y808c1
-	 disqASKiLeDNw==
-Date: Sat, 21 Jun 2025 08:36:43 +0800
-From: "Peter Chen (CIX)" <peter.chen@kernel.org>
-To: Pawel Laszczak <pawell@cadence.com>
-Cc: "gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>,
-	"linux-usb@vger.kernel.org" <linux-usb@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"stable@vger.kernel.org" <stable@vger.kernel.org>
-Subject: Re: [PATCH v3] usb: cdnsp: Fix issue with CV Bad Descriptor test
-Message-ID: <20250621003643.GA41153@nchen-desktop>
-References: <20250620074306.2278838-1-pawell@cadence.com>
- <PH7PR07MB95382CCD50549DABAEFD6156DD7CA@PH7PR07MB9538.namprd07.prod.outlook.com>
+	s=arc-20240116; t=1750477522; c=relaxed/simple;
+	bh=KHE1RGxlZbqayc+nMuGnHq60wVeDkPth6JLt40uNj04=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:Content-Type:
+	 MIME-Version:Message-ID; b=CB3Bl+7MU+5EsFEQWeSUB5e3rQgmHw4AV1s369dL+G1rZ1aFMgLJA68+Z+OyJX944jKFs8aap9RGp+/U34EI+k/zmR7FssHefOH85NhTJQzzHBlZtvV5NCjWcjb/HoFqhT4m7bKNimmqDGg8YruZDwBaHVHB3GofaghiUqqMeGM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=fail (1024-bit key) header.d=163.com header.i=@163.com header.b=VlYIwLxM reason="signature verification failed"; arc=none smtp.client-ip=117.135.210.4
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=Date:From:To:Subject:Content-Type:MIME-Version:
+	Message-ID; bh=a2xMF5by6Spy4BwD2zx1MleqDUq3ZYIIC0lbMQgrJJE=; b=V
+	lYIwLxMm5Rh/SQXl+DudM94Yug0ptQ8bwXDLXB+MR/9OYw64rXuEEKFgcGp+4d8z
+	6uTQwe4cHkUYvqOWw/1SDpl/XhJEKaiDHg92F/qK1KxILDCuzpFWYopo3bhSfTNy
+	MeC/dZZ5xWK1TRoBrmcWQokJxlrnr/C1kmq8lUt8o4=
+Received: from 00107082$163.com ( [111.35.191.131] ) by
+ ajax-webmail-wmsvr-40-139 (Coremail) ; Sat, 21 Jun 2025 11:43:03 +0800
+ (CST)
+Date: Sat, 21 Jun 2025 11:43:03 +0800 (CST)
+From: "David Wang" <00107082@163.com>
+To: "Harry Yoo" <harry.yoo@oracle.com>
+Cc: akpm@linux-foundation.org, surenb@google.com, kent.overstreet@linux.dev,
+	oliver.sang@intel.com, cachen@purestorage.com, linux-mm@kvack.org,
+	oe-lkp@lists.linux.dev, stable@vger.kernel.org
+Subject: Re:[PATCH v2] lib/alloc_tag: do not acquire non-existent lock in
+ alloc_tag_top_users()
+X-Priority: 3
+X-Mailer: Coremail Webmail Server Version XT5.0.14 build 20240801(9da12a7b)
+ Copyright (c) 2002-2025 www.mailtech.cn 163com
+In-Reply-To: <20250620195305.1115151-1-harry.yoo@oracle.com>
+References: <20250620195305.1115151-1-harry.yoo@oracle.com>
+X-NTES-SC: AL_Qu2eAvicuEsj5SCYbekXn0oTju85XMCzuv8j3YJeN500iSXmxj4KeXBpN3v6wcOkLiqSvxexUSlfwel8UrNbcKPbiAR5z8kW2rWFuMGfiBYH
+Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset=GBK
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <PH7PR07MB95382CCD50549DABAEFD6156DD7CA@PH7PR07MB9538.namprd07.prod.outlook.com>
+Message-ID: <7935cfb1.1432.19790952566.Coremail.00107082@163.com>
+X-Coremail-Locale: zh_CN
+X-CM-TRANSID:iygvCgD3_zlIKlZo4HEhAA--.53835W
+X-CM-SenderInfo: qqqrilqqysqiywtou0bp/xtbB0hxzqmhWHhUi-wACs9
+X-Coremail-Antispam: 1U5529EdanIXcx71UUUUU7vcSsGvfC2KfnxnUU==
 
-On 25-06-20 08:23:12, Pawel Laszczak wrote:
-> The SSP2 controller has extra endpoint state preserve bit (ESP) which
-> setting causes that endpoint state will be preserved during
-> Halt Endpoint command. It is used only for EP0.
-> Without this bit the Command Verifier "TD 9.10 Bad Descriptor Test"
-> failed.
-> Setting this bit doesn't have any impact for SSP controller.
-> 
-> Fixes: 3d82904559f4 ("usb: cdnsp: cdns3 Add main part of Cadence USBSSP DRD Driver")
-> cc: stable@vger.kernel.org
-> Signed-off-by: Pawel Laszczak <pawell@cadence.com>
-> ---
-> Changelog:
-> v3:
-> - removed else {}
-> 
-> v2:
-> - removed some typos
-> - added pep variable initialization
-> - updated TRB_ESP description
-> 
->  drivers/usb/cdns3/cdnsp-debug.h  |  5 +++--
->  drivers/usb/cdns3/cdnsp-ep0.c    | 18 +++++++++++++++---
->  drivers/usb/cdns3/cdnsp-gadget.h |  6 ++++++
->  drivers/usb/cdns3/cdnsp-ring.c   |  3 ++-
->  4 files changed, 26 insertions(+), 6 deletions(-)
-> 
-> diff --git a/drivers/usb/cdns3/cdnsp-debug.h b/drivers/usb/cdns3/cdnsp-debug.h
-> index cd138acdcce1..86860686d836 100644
-> --- a/drivers/usb/cdns3/cdnsp-debug.h
-> +++ b/drivers/usb/cdns3/cdnsp-debug.h
-> @@ -327,12 +327,13 @@ static inline const char *cdnsp_decode_trb(char *str, size_t size, u32 field0,
->  	case TRB_RESET_EP:
->  	case TRB_HALT_ENDPOINT:
->  		ret = scnprintf(str, size,
-> -				"%s: ep%d%s(%d) ctx %08x%08x slot %ld flags %c",
-> +				"%s: ep%d%s(%d) ctx %08x%08x slot %ld flags %c %c",
->  				cdnsp_trb_type_string(type),
->  				ep_num, ep_id % 2 ? "out" : "in",
->  				TRB_TO_EP_INDEX(field3), field1, field0,
->  				TRB_TO_SLOT_ID(field3),
-> -				field3 & TRB_CYCLE ? 'C' : 'c');
-> +				field3 & TRB_CYCLE ? 'C' : 'c',
-> +				field3 & TRB_ESP ? 'P' : 'p');
->  		break;
->  	case TRB_STOP_RING:
->  		ret = scnprintf(str, size,
-> diff --git a/drivers/usb/cdns3/cdnsp-ep0.c b/drivers/usb/cdns3/cdnsp-ep0.c
-> index f317d3c84781..5cd9b898ce97 100644
-> --- a/drivers/usb/cdns3/cdnsp-ep0.c
-> +++ b/drivers/usb/cdns3/cdnsp-ep0.c
-> @@ -414,6 +414,7 @@ static int cdnsp_ep0_std_request(struct cdnsp_device *pdev,
->  void cdnsp_setup_analyze(struct cdnsp_device *pdev)
->  {
->  	struct usb_ctrlrequest *ctrl = &pdev->setup;
-> +	struct cdnsp_ep *pep;
->  	int ret = -EINVAL;
->  	u16 len;
->  
-> @@ -427,10 +428,21 @@ void cdnsp_setup_analyze(struct cdnsp_device *pdev)
->  		goto out;
->  	}
->  
-> +	pep = &pdev->eps[0];
-> +
->  	/* Restore the ep0 to Stopped/Running state. */
-> -	if (pdev->eps[0].ep_state & EP_HALTED) {
-> -		trace_cdnsp_ep0_halted("Restore to normal state");
-> -		cdnsp_halt_endpoint(pdev, &pdev->eps[0], 0);
-> +	if (pep->ep_state & EP_HALTED) {
-> +		if (GET_EP_CTX_STATE(pep->out_ctx) == EP_STATE_HALTED)
-> +			cdnsp_halt_endpoint(pdev, pep, 0);
-> +
-> +		/*
-> +		 * Halt Endpoint Command for SSP2 for ep0 preserve current
-> +		 * endpoint state and driver has to synchronize the
-> +		 * software endpoint state with endpoint output context
-> +		 * state.
-> +		 */
-> +		pep->ep_state &= ~EP_HALTED;
-> +		pep->ep_state |= EP_STOPPED;
-
-You do not reset endpoint by calling clear_halt, could we change ep_state
-directly?
-
-Peter
->  	}
->  
->  	/*
-> diff --git a/drivers/usb/cdns3/cdnsp-gadget.h b/drivers/usb/cdns3/cdnsp-gadget.h
-> index 2afa3e558f85..a91cca509db0 100644
-> --- a/drivers/usb/cdns3/cdnsp-gadget.h
-> +++ b/drivers/usb/cdns3/cdnsp-gadget.h
-> @@ -987,6 +987,12 @@ enum cdnsp_setup_dev {
->  #define STREAM_ID_FOR_TRB(p)		((((p)) << 16) & GENMASK(31, 16))
->  #define SCT_FOR_TRB(p)			(((p) << 1) & 0x7)
->  
-> +/*
-> + * Halt Endpoint Command TRB field.
-> + * The ESP bit only exists in the SSP2 controller.
-> + */
-> +#define TRB_ESP				BIT(9)
-> +
->  /* Link TRB specific fields. */
->  #define TRB_TC				BIT(1)
->  
-> diff --git a/drivers/usb/cdns3/cdnsp-ring.c b/drivers/usb/cdns3/cdnsp-ring.c
-> index fd06cb85c4ea..d397d28efc6e 100644
-> --- a/drivers/usb/cdns3/cdnsp-ring.c
-> +++ b/drivers/usb/cdns3/cdnsp-ring.c
-> @@ -2483,7 +2483,8 @@ void cdnsp_queue_halt_endpoint(struct cdnsp_device *pdev, unsigned int ep_index)
->  {
->  	cdnsp_queue_command(pdev, 0, 0, 0, TRB_TYPE(TRB_HALT_ENDPOINT) |
->  			    SLOT_ID_FOR_TRB(pdev->slot_id) |
-> -			    EP_ID_FOR_TRB(ep_index));
-> +			    EP_ID_FOR_TRB(ep_index) |
-> +			    (!ep_index ? TRB_ESP : 0));
->  }
->  
->  void cdnsp_force_header_wakeup(struct cdnsp_device *pdev, int intf_num)
-> -- 
-> 2.43.0
-> 
-
--- 
-
-Best regards,
-Peter
+CkF0IDIwMjUtMDYtMjEgMDM6NTM6MDUsICJIYXJyeSBZb28iIDxoYXJyeS55b29Ab3JhY2xlLmNv
+bT4gd3JvdGU6Cj5hbGxvY190YWdfdG9wX3VzZXJzKCkgYXR0ZW1wdHMgdG8gbG9jayBhbGxvY190
+YWdfY3R0eXBlLT5tb2RfbG9jawo+ZXZlbiB3aGVuIHRoZSBhbGxvY190YWdfY3R0eXBlIGlzIG5v
+dCBhbGxvY2F0ZWQgYmVjYXVzZToKPgo+ICAxKSBhbGxvYyB0YWdnaW5nIGlzIGRpc2FibGVkIGJl
+Y2F1c2UgbWVtIHByb2ZpbGluZyBpcyBkaXNhYmxlZAo+ICAgICAoIWFsbG9jX3RhZ19jdHR5cGUp
+Cj4gIDIpIGFsbG9jIHRhZ2dpbmcgaXMgZW5hYmxlZCwgYnV0IG5vdCB5ZXQgaW5pdGlhbGl6ZWQg
+KCFhbGxvY190YWdfY3R0eXBlKQo+ICAzKSBhbGxvYyB0YWdnaW5nIGlzIGVuYWJsZWQsIGJ1dCBm
+YWlsZWQgaW5pdGlhbGl6YXRpb24KPiAgICAgKCFhbGxvY190YWdfY3R0eXBlIG9yIElTX0VSUihh
+bGxvY190YWdfY3R0eXBlKSkKPgo+SW4gYWxsIGNhc2VzLCBhbGxvY190YWdfY3R0eXBlIGlzIG5v
+dCBhbGxvY2F0ZWQsIGFuZCB0aGVyZWZvcmUKPmFsbG9jX3RhZ190b3BfdXNlcnMoKSBzaG91bGQg
+bm90IGF0dGVtcHQgdG8gYWNxdWlyZSB0aGUgc2VtYXBob3JlLgo+Cj5UaGlzIGxlYWRzIHRvIGEg
+Y3Jhc2ggb24gbWVtb3J5IGFsbG9jYXRpb24gZmFpbHVyZSBieSBhdHRlbXB0aW5nIHRvCj5hY3F1
+aXJlIGEgbm9uLWV4aXN0ZW50IHNlbWFwaG9yZToKPgo+ICBPb3BzOiBnZW5lcmFsIHByb3RlY3Rp
+b24gZmF1bHQsIHByb2JhYmx5IGZvciBub24tY2Fub25pY2FsIGFkZHJlc3MgMHhkZmZmZmMwMDAw
+MDAwMDFiOiAwMDAwIFsjM10gU01QIEtBU0FOIE5PUFRJCj4gIEtBU0FOOiBudWxsLXB0ci1kZXJl
+ZiBpbiByYW5nZSBbMHgwMDAwMDAwMDAwMDAwMGQ4LTB4MDAwMDAwMDAwMDAwMDBkZl0KPiAgQ1BV
+OiAyIFVJRDogMCBQSUQ6IDEgQ29tbTogc3lzdGVtZCBUYWludGVkOiBHICAgICAgRCAgICAgICAg
+ICAgICA2LjE2LjAtcmMyICMxIFZPTFVOVEFSWQo+ICBUYWludGVkOiBbRF09RElFCj4gIEhhcmR3
+YXJlIG5hbWU6IFFFTVUgU3RhbmRhcmQgUEMgKGk0NDBGWCArIFBJSVgsIDE5OTYpLCBCSU9TIDEu
+MTYuMi1kZWJpYW4tMS4xNi4yLTEgMDQvMDEvMjAxNAo+ICBSSVA6IDAwMTA6ZG93bl9yZWFkX3Ry
+eWxvY2srMHhhYS8weDNiMAo+ICBDb2RlOiBkMCA3YyAwOCA4NCBkMiAwZiA4NSBhMCAwMiAwMCAw
+MCA4YiAwZCBkZiAzMSBkZCAwNCA4NSBjOSA3NSAyOSA0OCBiOCAwMCAwMCAwMCAwMCAwMCBmYyBm
+ZiBkZiA0OCA4ZCA2YiA2OCA0OCA4OSBlYSA0OCBjMSBlYSAwMyA8ODA+IDNjIDAyIDAwIDBmIDg1
+IDg4IDAyIDAwIDAwIDQ4IDNiIDViIDY4IDBmIDg1IDUzIDAxIDAwIDAwIDY1IGZmCj4gIFJTUDog
+MDAwMDpmZmZmODg4MTAwMmNlOWI4IEVGTEFHUzogMDAwMTAwMTYKPiAgUkFYOiBkZmZmZmMwMDAw
+MDAwMDAwIFJCWDogMDAwMDAwMDAwMDAwMDA3MCBSQ1g6IDAwMDAwMDAwMDAwMDAwMDAKPiAgUkRY
+OiAwMDAwMDAwMDAwMDAwMDFiIFJTSTogMDAwMDAwMDAwMDAwMDAwYSBSREk6IDAwMDAwMDAwMDAw
+MDAwNzAKPiAgUkJQOiAwMDAwMDAwMDAwMDAwMGQ4IFIwODogMDAwMDAwMDAwMDAwMDAwMSBSMDk6
+IGZmZmZlZDEwN2RkZTQ5ZDEKPiAgUjEwOiBmZmZmODg4M2VlZjI0ZThiIFIxMTogZmZmZjg4ODEw
+MDJjZWMyMCBSMTI6IDFmZmZmMTEwMjAwNTlkMzcKPiAgUjEzOiAwMDAwMDAwMDAwM2ZmZjdiIFIx
+NDogZmZmZjg4ODEwMDJjZWMyMCBSMTU6IGRmZmZmYzAwMDAwMDAwMDAKPiAgRlM6ICAwMDAwN2Y5
+NjNmMjFkOTQwKDAwMDApIEdTOmZmZmY4ODg0NThjYTYwMDAoMDAwMCkga25sR1M6MDAwMDAwMDAw
+MDAwMDAwMAo+ICBDUzogIDAwMTAgRFM6IDAwMDAgRVM6IDAwMDAgQ1IwOiAwMDAwMDAwMDgwMDUw
+MDMzCj4gIENSMjogMDAwMDdmOTYzZjVlZGY3MSBDUjM6IDAwMDAwMDAxMDY3MmMwMDAgQ1I0OiAw
+MDAwMDAwMDAwMzUwZWYwCj4gIENhbGwgVHJhY2U6Cj4gICA8VEFTSz4KPiAgIGNvZGV0YWdfdHJ5
+bG9ja19tb2R1bGVfbGlzdCsweGQvMHgyMAo+ICAgYWxsb2NfdGFnX3RvcF91c2VycysweDM2OS8w
+eDRiMAo+ICAgX19zaG93X21lbSsweDFjZC8weDZlMAo+ICAgd2Fybl9hbGxvYysweDJiMS8weDM5
+MAo+ICAgX19hbGxvY19mcm96ZW5fcGFnZXNfbm9wcm9mKzB4MTJiOS8weDIxYTAKPiAgIGFsbG9j
+X3BhZ2VzX21wb2wrMHgxMzUvMHgzZTAKPiAgIGFsbG9jX3NsYWJfcGFnZSsweDgyLzB4ZTAKPiAg
+IG5ld19zbGFiKzB4MjEyLzB4MjQwCj4gICBfX19zbGFiX2FsbG9jKzB4ODJhLzB4ZTAwCj4gICA8
+L1RBU0s+Cj4KPkFzIERhdmlkIFdhbmcgcG9pbnRzIG91dCwgdGhpcyBpc3N1ZSBiZWNhbWUgZWFz
+aWVyIHRvIHRyaWdnZXIgYWZ0ZXIgY29tbWl0Cj43ODAxMzhiMTIzODEgKCJhbGxvY190YWc6IGNo
+ZWNrIG1lbV9wcm9maWxpbmdfc3VwcG9ydCBpbiBhbGxvY190YWdfaW5pdCIpLgo+Cj5CZWZvcmUg
+dGhlIGNvbW1pdCwgdGhlIGlzc3VlIG9jY3VycmVkIG9ubHkgd2hlbiBpdCBmYWlsZWQgdG8gYWxs
+b2NhdGUKPmFuZCBpbml0aWFsaXplIGFsbG9jX3RhZ19jdHR5cGUgb3IgaWYgYSBtZW1vcnkgYWxs
+b2NhdGlvbiBmYWlscyBiZWZvcmUKPmFsbG9jX3RhZ19pbml0KCkgaXMgY2FsbGVkLiBBZnRlciB0
+aGUgY29tbWl0LCBpdCBjYW4gYmUgZWFzaWx5IHRyaWdnZXJlZAo+d2hlbiBtZW1vcnkgcHJvZmls
+aW5nIGlzIGNvbXBpbGVkIGJ1dCBkaXNhYmxlZCBhdCBib290Lgo+Cj5UbyBwcm9wZXJseSBkZXRl
+cm1pbmUgd2hldGhlciBhbGxvY190YWdfaW5pdCgpIGhhcyBiZWVuIGNhbGxlZCBhbmQKPml0cyBk
+YXRhIHN0cnVjdHVyZXMgaW5pdGlhbGl6ZWQsIHZlcmlmeSB0aGF0IGFsbG9jX3RhZ19jdHR5cGUg
+aXMgYSB2YWxpZAo+cG9pbnRlciBiZWZvcmUgYWNxdWlyaW5nIHRoZSBzZW1hcGhvcmUuIElmIHRo
+ZSB2YXJpYWJsZSBpcyBOVUxMIG9yIGFuIGVycm9yCj52YWx1ZSwgaXQgaGFzIG5vdCBiZWVuIHBy
+b3Blcmx5IGluaXRpYWxpemVkLiBJbiBzdWNoIGEgY2FzZSwganVzdCBza2lwCj5hbmQgZG8gbm90
+IGF0dGVtcHQgYWNxdWlyZSB0aGUgc2VtYXBob3JlLgo+Cj5SZXBvcnRlZC1ieToga2VybmVsIHRl
+c3Qgcm9ib3QgPG9saXZlci5zYW5nQGludGVsLmNvbT4KPkNsb3NlczogaHR0cHM6Ly9sb3JlLmtl
+cm5lbC5vcmcvb2UtbGtwLzIwMjUwNjE4MTM1MS5iYmE4NjdkZC1sa3BAaW50ZWwuY29tCj5GaXhl
+czogNzgwMTM4YjEyMzgxICgiYWxsb2NfdGFnOiBjaGVjayBtZW1fcHJvZmlsaW5nX3N1cHBvcnQg
+aW4gYWxsb2NfdGFnX2luaXQiKQo+Rml4ZXM6IDE0MzhkMzQ5ZDE2YiAoImxpYjogYWRkIG1lbW9y
+eSBhbGxvY2F0aW9ucyByZXBvcnQgaW4gc2hvd19tZW0oKSIpCj5DYzogc3RhYmxlQHZnZXIua2Vy
+bmVsLm9yZwo+U2lnbmVkLW9mZi1ieTogSGFycnkgWW9vIDxoYXJyeS55b29Ab3JhY2xlLmNvbT4K
+Ckp1c3Qgbm90aWNlIGFub3RoZXIgdGhyZWFkIGNhbiBiZSBjbG9zZWQgYXMgd2VsbDoKaHR0cHM6
+Ly9sb3JlLmtlcm5lbC5vcmcvYWxsLzIwMjUwNjEzMTcxMS41YjQxOTMxYy1sa3BAaW50ZWwuY29t
+LwpUaGlzIGNvaW5jaWRlIHdpdGggc2NlbmFyaW8gIzEsIHdoZXJlIE9PTSBoYXBwZW5lZCB3aXRo
+CkNPTkZJR19NRU1fQUxMT0NfUFJPRklMSU5HPXkKIyBDT05GSUdfTUVNX0FMTE9DX1BST0ZJTElO
+R19FTkFCTEVEX0JZX0RFRkFVTFQgaXMgbm90IHNldAojIENPTkZJR19NRU1fQUxMT0NfUFJPRklM
+SU5HX0RFQlVHIGlzIG5vdCBzZXQKCj4tLS0KPgo+djEgLT4gdjI6Cj4KPi0gdjEgZml4ZWQgdGhl
+IGJ1ZyBvbmx5IHdoZW4gTUVNX0FMTE9DX1BST0ZJTElOR19FTkFCTEVEX0JZX0RFRkFVTFQ9bi4K
+PiAgCj4gIHYyIG5vdyBmaXhlcyB0aGUgYnVnIGV2ZW4gd2hlbiBNRU1fQUxMT0NfUFJPRklMSU5H
+X0VOQUJMRURfQllfREVGQVVMVD15Lgo+ICBJIGRpZG4ndCBleHBlY3QgYWxsb2NfdGFnX2N0dHlw
+ZSB0byBiZSBOVUxMIHdoZW4KPiAgbWVtX3Byb2ZpbGluZ19zdXBwb3J0IGlzIHRydWUsIGJ1dCBh
+cyBEYXZpZCBwb2ludHMgb3V0IChUaGFua3MgRGF2aWQhKQo+ICBpZiBhIG1lbW9yeSBhbGxvY2F0
+aW9uIGZhaWxzIGJlZm9yZSBhbGxvY190YWdfaW5pdCgpLCBpdCBjYW4gYmUgTlVMTC4KPgo+ICBT
+byBpbnN0ZWFkIG9mIGluZGlyZWN0bHkgY2hlY2tpbmcgbWVtX3Byb2ZpbGluZ19zdXBwb3J0LCBq
+dXN0IGRpcmVjdGx5Cj4gIGNoZWNrIGlmIGFsbG9jX3RhZ19jdHR5cGUgaXMgYWxsb2NhdGVkLgo+
+Cj4tIENsb3NlczogaHR0cHM6Ly9sb3JlLmtlcm5lbC5vcmcvb2UtbGtwLzIwMjUwNTA3MTU1NS5l
+NzU3ZjFlMC1sa3BAaW50ZWwuY29tCj4gIHRhZyB3YXMgcmVtb3ZlZCBiZWNhdXNlIGl0IHdhcyBu
+b3QgYSBjcmFzaCBhbmQgbm90IHJlbGV2YW50IHRvIHRoaXMKPiAgcGF0Y2guCj4KPi0gQWRkZWQg
+Q2M6IHN0YWJsZSBiZWNhdXNlLCBpZiBhbiBhbGxvY2F0aW9uIGZhaWxzIGJlZm9yZQo+ICBhbGxv
+Y190YWdfaW5pdCgpLCBpdCBjYW4gYmUgdHJpZ2dlcmVkIGV2ZW4gcHJpb3ItNzgwMTM4YjEyMzgx
+Lgo+ICBJIHZlcmlmaWVkIHRoYXQgdGhlIGJ1ZyBjYW4gYmUgdHJpZ2dlcmVkIGluIHY2LjEyIGFu
+ZCBmaXhlZCBieSB0aGlzCj4gIHBhdGNoLgo+Cj4gIEl0IHNob3VsZCBiZSBxdWl0ZSBkaWZmaWN1
+bHQgdG8gdHJpZ2dlciBpbiBwcmFjdGljZSwgdGhvdWdoLgo+ICBNYXliZSBJJ20gYSBiaXQgcGFy
+YW5vaWQ/Cj4KPiBsaWIvYWxsb2NfdGFnLmMgfCA0ICsrKy0KPiAxIGZpbGUgY2hhbmdlZCwgMyBp
+bnNlcnRpb25zKCspLCAxIGRlbGV0aW9uKC0pCj4KPmRpZmYgLS1naXQgYS9saWIvYWxsb2NfdGFn
+LmMgYi9saWIvYWxsb2NfdGFnLmMKPmluZGV4IDY2YTQ2MjgxODVmNy4uZDhlYzRjMDNiN2QyIDEw
+MDY0NAo+LS0tIGEvbGliL2FsbG9jX3RhZy5jCj4rKysgYi9saWIvYWxsb2NfdGFnLmMKPkBAIC0x
+MjQsNyArMTI0LDkgQEAgc2l6ZV90IGFsbG9jX3RhZ190b3BfdXNlcnMoc3RydWN0IGNvZGV0YWdf
+Ynl0ZXMgKnRhZ3MsIHNpemVfdCBjb3VudCwgYm9vbCBjYW5fc2wKPiAJc3RydWN0IGNvZGV0YWdf
+Ynl0ZXMgbjsKPiAJdW5zaWduZWQgaW50IGksIG5yID0gMDsKPiAKPi0JaWYgKGNhbl9zbGVlcCkK
+PisJaWYgKElTX0VSUl9PUl9OVUxMKGFsbG9jX3RhZ19jdHR5cGUpKQo+KwkJcmV0dXJuIDA7Cj4r
+CWVsc2UgaWYgKGNhbl9zbGVlcCkKPiAJCWNvZGV0YWdfbG9ja19tb2R1bGVfbGlzdChhbGxvY190
+YWdfY3R0eXBlLCB0cnVlKTsKPiAJZWxzZSBpZiAoIWNvZGV0YWdfdHJ5bG9ja19tb2R1bGVfbGlz
+dChhbGxvY190YWdfY3R0eXBlKSkKPiAJCXJldHVybiAwOwo+LS0gCj4yLjQzLjAK
 
