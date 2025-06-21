@@ -1,167 +1,113 @@
-Return-Path: <stable+bounces-155234-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-155235-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B1AD8AE2B45
-	for <lists+stable@lfdr.de>; Sat, 21 Jun 2025 20:49:03 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id E705FAE2CD7
+	for <lists+stable@lfdr.de>; Sun, 22 Jun 2025 00:09:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 468AF175960
-	for <lists+stable@lfdr.de>; Sat, 21 Jun 2025 18:49:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8B9931897854
+	for <lists+stable@lfdr.de>; Sat, 21 Jun 2025 22:10:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D01F22173A;
-	Sat, 21 Jun 2025 18:48:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1610A27280D;
+	Sat, 21 Jun 2025 22:09:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="z7rKNo3C"
+	dkim=permerror (0-bit key) header.d=hardfalcon.net header.i=@hardfalcon.net header.b="NEbXPDm8"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from 0.smtp.remotehost.it (0.smtp.remotehost.it [213.190.28.75])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07B38149C4A;
-	Sat, 21 Jun 2025 18:48:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BAE218BC3D;
+	Sat, 21 Jun 2025 22:09:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.190.28.75
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750531739; cv=none; b=Fh9MhE2ZughoQ+x5uFkEoIQEOwP/pR+SWuz/M1Lm423a1zthrkmCYVhv2rAFDEW4M6lPLqA8vdH9bZTfIw1lCJutlFHROVmNt/dpyG+95ersyaLhAg6KLtBsuqf1ukx5d66C1XcpxlLdqZf30pVciSQziWSlpOnDWL78AJ5zUYU=
+	t=1750543794; cv=none; b=H/vEc68f3jMIzop2XsJzE51w/t80Xlm46psEeShfJIt9Vm4/JfcESSpeCSiLQd9ML3M5PwPTzrKbJvUVeAMD4UMCm0sV61PueZaC9D8YNYQ/X2AetHghvNgBc8PxQ22lEu14Hi3W7dqf9yB84dA3QstR9CZBsA/GNFDdxBtUxn4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750531739; c=relaxed/simple;
-	bh=pKvxx3mN11OuZ4qb6QXI0CIUfgBt6xFSKmmlZNvKa98=;
-	h=Date:To:From:Subject:Message-Id; b=W7ZPXfF0J8HXHUIAcqxbvHELZP68QjxTbqQJSUvlIo+j0LuL50lPsBZ7jvNlxjRT8iZXo0/vNdS9shk0kf3WmgK+zYqEHtXk3mzGeptw83GzFdy3oM2ZInmjKRAh/3mtsVaboowuqgoCg7tU5w/SfvdaZgSFsyyF+/ZC03KOrjM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=z7rKNo3C; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80DCCC4CEE7;
-	Sat, 21 Jun 2025 18:48:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1750531738;
-	bh=pKvxx3mN11OuZ4qb6QXI0CIUfgBt6xFSKmmlZNvKa98=;
-	h=Date:To:From:Subject:From;
-	b=z7rKNo3CRxBdT88l/X3xwVVPgnnHjVAsJi7LqsxQU69tZSAcSXacsNcM4FXd6hFgZ
-	 7Oe6e3I1iJQ+mNIGzjo8Nup6uICsQ/myQY68L1P9/eZrqUj//sqdbteJcFFrdL4K4O
-	 s4hBlA1YUO59RF4Y4GCbImxe7NAsWAi1/zas12lQ=
-Date: Sat, 21 Jun 2025 11:48:57 -0700
-To: mm-commits@vger.kernel.org,stable@vger.kernel.org,piaojun@huawei.com,mfasheh@suse.com,junxiao.bi@oracle.com,joseph.qi@huawei.com,jlbec@evilplan.org,jiangyiwen@huawei.com,gechangwei@live.cn,djahchankoike@gmail.com,penguin-kernel@I-love.SAKURA.ne.jp,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: + ocfs2-kill-osb-system_file_mutex-lock.patch added to mm-nonmm-unstable branch
-Message-Id: <20250621184858.80DCCC4CEE7@smtp.kernel.org>
+	s=arc-20240116; t=1750543794; c=relaxed/simple;
+	bh=JL8JXZZ5aKXQBRPPO1WgrrfbaqmlVeLMlBsDRVaSVGI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=O1mo25WdKk4L4EQdNcVotDerXEfdOOhVpnMHRB+dW+TDQ14sikBzbVFCrmXZMc3gJ9GzWO/PNaBbJ89RWpphh63c4iwj23s2VXcXhW10nvtSM6KcBDFyK4HCMVUmhXdAJ30RF6JDFcaR7+tQWfQewKJ6B6U/FH8fjO5n0Z58oJM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=hardfalcon.net; spf=pass smtp.mailfrom=hardfalcon.net; dkim=permerror (0-bit key) header.d=hardfalcon.net header.i=@hardfalcon.net header.b=NEbXPDm8; arc=none smtp.client-ip=213.190.28.75
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=hardfalcon.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=hardfalcon.net
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=hardfalcon.net;
+	s=dkim_2024-02-03; t=1750543783;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=PegGxcLfwuSo+lJV1jU/nlXdfzTdLtnNvs0VCn+jX/k=;
+	b=NEbXPDm8IfnQmfhplyKdPApG32U2hX/+pNHcUmyr7K0xMSJrQm0Mhad6Qm2cqt8SPXu/+B
+	0iAvTtrpNkyhgcAw==
+Message-ID: <79673bf1-1ee7-4c42-8134-ca6ead0a36ac@hardfalcon.net>
+Date: Sun, 22 Jun 2025 00:09:42 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Subject: Re: [PATCH 6.15 000/780] 6.15.3-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Ronald Warsow <rwarsow@gmx.de>, stable@vger.kernel.org,
+ patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+ f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, srw@sladewatkins.net,
+ conor@kernel.org, hargar@microsoft.com, broonie@kernel.org,
+ "Mike Rapoport (Microsoft)" <rppt@kernel.org>,
+ "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+ Sasha Levin <sashal@kernel.org>
+References: <20250617152451.485330293@linuxfoundation.org>
+ <f2b87714-0ef6-4210-9b30-86b4c79d1ed8@gmx.de>
+ <2025061848-clinic-revered-e216@gregkh>
+ <c8e4e868-aafb-4df1-8d07-62126bfe2982@hardfalcon.net>
+ <097ef8cc-5304-4a7d-abc0-fd011d1235d5@hardfalcon.net>
+ <2025061930-jumbo-bobsled-521a@gregkh>
+Content-Language: en-US, de-DE, en-US-large
+From: Pascal Ernster <git@hardfalcon.net>
+In-Reply-To: <2025061930-jumbo-bobsled-521a@gregkh>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+
+[2025-06-19 06:17] Greg Kroah-Hartman:
+> On Wed, Jun 18, 2025 at 10:31:43PM +0200, Pascal Ernster wrote:
+>> Hello again,
+>>
+>>
+>> I've sent this email a few minutes ago but mixed up one of the In-Reply-To
+>> message IDs, so I'm resending it now with (hopefully) the correct
+>> In-Reply-To message IDs.
+>>
+>>
+>> I've bisected this and found that the issue is caused by commit
+>> f46262bbc05af38565c560fd960b86a0e195fd4b:
+>>
+>> 'Revert "mm/execmem: Unify early execmem_cache behaviour"'
+>>
+>> https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git/commit/?id=f46262bbc05af38565c560fd960b86a0e195fd4b
+>>
+>> https://lore.kernel.org/stable/20250617152521.879529420@linuxfoundation.org/
+>>
+>> https://git.kernel.org/pub/scm/linux/kernel/git/stable/stable-queue.git/tree/queue-6.15/revert-mm-execmem-unify-early-execmem_cache-behaviour.patch?id=344d39fc8d8b7515b45a3bf568c115da12517b22
+> 
+> Thank you for digging into this.  Looks like I took the last patch in a
+> patch series and not the previous ones, which caused this problem.  I've
+> dropped this one now and will add it back next week after I also add all
+> the other ones in the series.
 
 
-The patch titled
-     Subject: ocfs2: kill osb->system_file_mutex lock
-has been added to the -mm mm-nonmm-unstable branch.  Its filename is
-     ocfs2-kill-osb-system_file_mutex-lock.patch
+You're welcome! :)
 
-This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/ocfs2-kill-osb-system_file_mutex-lock.patch
+Btw, the same patch has turned up again in the stable queue für 6.15.4:
 
-This patch will later appear in the mm-nonmm-unstable branch at
-    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+https://git.kernel.org/pub/scm/linux/kernel/git/stable/stable-queue.git/log/queue-6.15/revert-mm-execmem-unify-early-execmem_cache-behaviour.patch
 
-Before you just go and hit "reply", please:
-   a) Consider who else should be cc'ed
-   b) Prefer to cc a suitable mailing list as well
-   c) Ideally: find the original patch on the mailing list and do a
-      reply-to-all to that, adding suitable additional cc's
+Is this intentional or a mistake?
 
-*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
 
-The -mm tree is included into linux-next via the mm-everything
-branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-and is updated there every 2-3 working days
-
-------------------------------------------------------
-From: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
-Subject: ocfs2: kill osb->system_file_mutex lock
-Date: Sun, 22 Jun 2025 00:56:46 +0900
-
-Since calling _ocfs2_get_system_file_inode() twice with the same arguments
-returns the same address, there is no need to serialize
-_ocfs2_get_system_file_inode() using osb->system_file_mutex lock.
-
-Kill osb->system_file_mutex lock in order to avoid AB-BA deadlock. 
-cmpxchg() will be sufficient for avoiding the inode refcount leak problem
-which commit 43b10a20372d ("ocfs2: avoid system inode ref confusion by
-adding mutex lock") tried to address.
-
-Link: https://lkml.kernel.org/r/934355dd-a0b1-4e53-93ac-0a7ae7458051@I-love.SAKURA.ne.jp
-Reported-by: Diogo Jahchan Koike <djahchankoike@gmail.com>
-Closes: https://lkml.kernel.org/r/000000000000ff2d7a0620381afe@google.com
-Fixes: 43b10a20372d ("ocfs2: avoid system inode ref confusion by adding mutex lock")
-Signed-off-by: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
-Cc: jiangyiwen <jiangyiwen@huawei.com>
-Cc: Joseph Qi <joseph.qi@huawei.com>
-Cc: Joel Becker <jlbec@evilplan.org>
-Cc: Mark Fasheh <mfasheh@suse.com>
-Cc: Junxiao Bi <junxiao.bi@oracle.com>
-Cc: Changwei Ge <gechangwei@live.cn>
-Cc: Jun Piao <piaojun@huawei.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
----
-
- fs/ocfs2/ocfs2.h   |    2 --
- fs/ocfs2/super.c   |    2 --
- fs/ocfs2/sysfile.c |    9 +++------
- 3 files changed, 3 insertions(+), 10 deletions(-)
-
---- a/fs/ocfs2/ocfs2.h~ocfs2-kill-osb-system_file_mutex-lock
-+++ a/fs/ocfs2/ocfs2.h
-@@ -494,8 +494,6 @@ struct ocfs2_super
- 	struct rb_root	osb_rf_lock_tree;
- 	struct ocfs2_refcount_tree *osb_ref_tree_lru;
- 
--	struct mutex system_file_mutex;
--
- 	/*
- 	 * OCFS2 needs to schedule several different types of work which
- 	 * require cluster locking, disk I/O, recovery waits, etc. Since these
---- a/fs/ocfs2/super.c~ocfs2-kill-osb-system_file_mutex-lock
-+++ a/fs/ocfs2/super.c
-@@ -1997,8 +1997,6 @@ static int ocfs2_initialize_super(struct
- 	spin_lock_init(&osb->osb_xattr_lock);
- 	ocfs2_init_steal_slots(osb);
- 
--	mutex_init(&osb->system_file_mutex);
--
- 	atomic_set(&osb->alloc_stats.moves, 0);
- 	atomic_set(&osb->alloc_stats.local_data, 0);
- 	atomic_set(&osb->alloc_stats.bitmap_data, 0);
---- a/fs/ocfs2/sysfile.c~ocfs2-kill-osb-system_file_mutex-lock
-+++ a/fs/ocfs2/sysfile.c
-@@ -98,11 +98,9 @@ struct inode *ocfs2_get_system_file_inod
- 	} else
- 		arr = get_local_system_inode(osb, type, slot);
- 
--	mutex_lock(&osb->system_file_mutex);
- 	if (arr && ((inode = *arr) != NULL)) {
- 		/* get a ref in addition to the array ref */
- 		inode = igrab(inode);
--		mutex_unlock(&osb->system_file_mutex);
- 		BUG_ON(!inode);
- 
- 		return inode;
-@@ -112,11 +110,10 @@ struct inode *ocfs2_get_system_file_inod
- 	inode = _ocfs2_get_system_file_inode(osb, type, slot);
- 
- 	/* add one more if putting into array for first time */
--	if (arr && inode) {
--		*arr = igrab(inode);
--		BUG_ON(!*arr);
-+	if (inode && arr && !*arr && !cmpxchg(&(*arr), NULL, inode)) {
-+		inode = igrab(inode);
-+		BUG_ON(!inode);
- 	}
--	mutex_unlock(&osb->system_file_mutex);
- 	return inode;
- }
- 
-_
-
-Patches currently in -mm which might be from penguin-kernel@I-love.SAKURA.ne.jp are
-
-ocfs2-kill-osb-system_file_mutex-lock.patch
-
+Regards
+Pascal
 
