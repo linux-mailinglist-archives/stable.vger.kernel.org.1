@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-155230-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-155229-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2036EAE2887
-	for <lists+stable@lfdr.de>; Sat, 21 Jun 2025 12:15:27 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A56AAE2888
+	for <lists+stable@lfdr.de>; Sat, 21 Jun 2025 12:15:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 837313BF4F8
-	for <lists+stable@lfdr.de>; Sat, 21 Jun 2025 10:15:02 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 89AF47A87DC
+	for <lists+stable@lfdr.de>; Sat, 21 Jun 2025 10:14:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ACC011F2B88;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ACC591F4163;
 	Sat, 21 Jun 2025 10:15:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="c68+PB/N"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dHMzkjtg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CB6F1F0E29
-	for <stable@vger.kernel.org>; Sat, 21 Jun 2025 10:15:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CB0C1E5B73
+	for <stable@vger.kernel.org>; Sat, 21 Jun 2025 10:15:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750500921; cv=none; b=Yd/kSrK5cR1hvIVaAu0sJ+D47J5QIlHTDA/gt79TeRyXR5j0rlvS03G+FzoQXsUy/Kv3iB2PUvv16v5Nh2U1esP2S2oJOtbQKewPMlbpLMmLhLpQn52nKbPmRs1gNmMGWCUm/4bg6+xvfkSM+1B5GxBP+ijaVsG5dtnJwypdMWQ=
+	t=1750500921; cv=none; b=ljVnHY851DIrz2Ox8M+9DVw+3+Bq6xi9e0MSbFH27iSf9Ba83Lk8+Qs2MNMjW6TWVOTZVYp2o6+ikX4W6No7xCGlwpqMMDnyBbyOeEqYwf/Lyj07HRAeqjQj4qzkdH53oqGDGI1hReroFkDfTUx9B3edEJb9432kIhca0O9ftRs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1750500921; c=relaxed/simple;
-	bh=xuAlHzaOu2CRR56MAOOofOfuvRF6M/i0y5XMIt3Y10A=;
+	bh=XTPtTdM7V6Q9heb+B/f4J8k3851UkBdB06T2mc6YG/0=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=tSt32R5Ip7hE1BoKdNPvdgBFqYsbrJgPO6BW2NSyKEE5+oYg2GiDJ0LhDNCgdXUoFE+cI11keJrmhMFwXuSARLz7fxHWSI17BsMvJdcp5nYRowhGr+jZa0dfoGE4ZQQJqWrDSwJnsbfzkKu5btIFdMfxgjyCCgDixZznM3TdO+8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=c68+PB/N; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9926CC4CEE7;
-	Sat, 21 Jun 2025 10:15:17 +0000 (UTC)
+	 MIME-Version:Content-Type; b=DQ2JjlmQShU8hC+LxonFgi1ThlfCyPg0RZ2IAScUiZBM6oZs+NRe4Ez/rpNz+iqXWMzNm+sKxbdC/lRaQwYA0HvYvnw4/NTaEA3/UxmPxheeDurs+UOvNUCkcYQAWHuEvf0peqLalHaCIAySj8uwIXLnaOLemqd76uQo9jq7Wok=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dHMzkjtg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90478C4CEEF;
+	Sat, 21 Jun 2025 10:15:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1750500918;
-	bh=xuAlHzaOu2CRR56MAOOofOfuvRF6M/i0y5XMIt3Y10A=;
+	s=k20201202; t=1750500920;
+	bh=XTPtTdM7V6Q9heb+B/f4J8k3851UkBdB06T2mc6YG/0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=c68+PB/N/UkvmuNYDFY5s0KMtvdN0UJvBREqvEAcTvIdlXWygnvlE4/FwO5ONsrpw
-	 W3vHvGdBw9+1Rwp2kvX2qtKvLosGP7W3GTszLgbyvTR+aon+lBcwVEubDXzZXekpGl
-	 uLWZRRXL+zku4OcxYCNmY0L8Cin5nVA3wHdOrvet1i3Kew1VPf1x0fkYRYM8A0586f
-	 OW563wY3guX7qNGPxK6jRN30nrayGb6OfEnZ5TaSjTz5aLH5gTGIKvT99/A3cRTQqR
-	 DXhxn6AU1u0Ejj+81xNlowc4CkE95gy7u21bGvav4Yis8fSNl6kPDkb2v7U7KVBj0x
-	 Rdh7iqCyQ7V7g==
+	b=dHMzkjtgXNl8ORuKVjG0iSqD7eCnQYbq1QzbDU1viHy0rqQ9CQMKa7oknExdwnIy+
+	 Q8CS6P3cc1iOkM6LXWcxJoFgLGsrH/HntKEQ8s7nrkGmAj94Mpp1YYKKo9wGr77bkJ
+	 7Kw115G2OJ78etujkhnqm4HUagBOwaSVfAg72Jqy0p9lfyinXCMwGa3IDOf7ZtlayP
+	 kP/Twtge8frr6Pbp2/l/8hYIcRLikGtSXW9gU9YBAkOkZJOzGlBODk98h+ILoP12be
+	 LWyQVpe6qy44oQEQMDSO3q/HAAedrgOmIhllHKH57rdXvj4Bh5vtK+7QvfJIVzAqiN
+	 uYBFfOaUQN8PQ==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
 Cc: Gavin Guo <gavinguo@igalia.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 5.4.y] mm/huge_memory: fix dereferencing invalid pmd migration entry
-Date: Sat, 21 Jun 2025 06:15:16 -0400
-Message-Id: <20250621054648-7390730af94fad42@stable.kernel.org>
+Subject: Re: [PATCH 5.15.y] mm/huge_memory: fix dereferencing invalid pmd migration entry
+Date: Sat, 21 Jun 2025 06:15:18 -0400
+Message-Id: <20250621050528-9708e6054f15647d@stable.kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To:  <20250621053831.3647699-1-gavinguo@igalia.com>
+In-Reply-To:  <20250621054106.3649809-1-gavinguo@igalia.com>
 References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -74,18 +74,16 @@ Status in newer kernel trees:
 6.12.y | Present (different SHA1: 6166c3cf4054)
 6.6.y | Not found
 6.1.y | Not found
-5.15.y | Not found
-5.10.y | Not found
 
 Note: The patch differs from the upstream commit:
 ---
 1:  be6e843fc51a5 < -:  ------------- mm/huge_memory: fix dereferencing invalid pmd migration entry
--:  ------------- > 1:  0cef68ff0d759 mm/huge_memory: fix dereferencing invalid pmd migration entry
+-:  ------------- > 1:  9b81485fcaa21 mm/huge_memory: fix dereferencing invalid pmd migration entry
 ---
 
 Results of testing on various branches:
 
 | Branch                    | Patch Apply | Build Test |
 |---------------------------|-------------|------------|
-| stable/linux-5.4.y        |  Success    |  Success   |
+| stable/linux-5.15.y       |  Success    |  Success   |
 
