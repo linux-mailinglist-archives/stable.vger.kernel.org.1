@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-155222-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-155223-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 894D3AE2821
-	for <lists+stable@lfdr.de>; Sat, 21 Jun 2025 10:52:18 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id EB783AE2827
+	for <lists+stable@lfdr.de>; Sat, 21 Jun 2025 10:52:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1667817CEBD
-	for <lists+stable@lfdr.de>; Sat, 21 Jun 2025 08:52:19 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 241D33B5D12
+	for <lists+stable@lfdr.de>; Sat, 21 Jun 2025 08:51:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B0D6E1E5718;
-	Sat, 21 Jun 2025 08:52:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 406C71DF974;
+	Sat, 21 Jun 2025 08:52:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="m1PwuX/M"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PEGREGXS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 717D61DE2A0
-	for <stable@vger.kernel.org>; Sat, 21 Jun 2025 08:52:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3A051940A2
+	for <stable@vger.kernel.org>; Sat, 21 Jun 2025 08:52:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750495935; cv=none; b=ZVDzOD6l8Qk4nPkpFlnqbzGWMLaM6F8xJ0hJxh0nS8CQaBWFCLkT9Js/ZaBLz55ABoTQwAwIcpQfGs5/LQpst65HXmEPa28NLvMBT5Bt5hrD2QX/+cL+wAusHpOy4BCUf9S/1UoJARZhGEq8EYQFbWHCwjNnUC880lvRRcTl/Ms=
+	t=1750495937; cv=none; b=UtjvRCFSFCcD/uTAbXdli52pabGtUk6OQ8X9wZz4jeqKpF/2qkLRzd0iTN5HiZuO2tXXYhZYbytHMu1OWFq1jPoI+IECnei3UL1CS1EjFvavu1s+aT39E7poa5IFpS9d81NOu19n+ZreUHG3wzSn31xzUa7b1FR22RuDwt8q1GY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750495935; c=relaxed/simple;
-	bh=0HDvXsquJe35RxC/4exG6QdLKMdNUeFZF5pNc1hetFI=;
+	s=arc-20240116; t=1750495937; c=relaxed/simple;
+	bh=5BG0irfcakxtadyCFek/uEjWcCpoT0a+6MoC/HqSp9g=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=M8TUaMMneJM7BD1nzT5FE5b/drff6Rg9wQ/7IZQvg3xY486OS+y21yBX1NN5wcnY9imP8oJHtWRktlT06v3vRhXuf4velfBLOxFVvh7GyfGLGO2ODX6qTyOS2RB6Md/sm1mZZlXsB0voBQEaHQ49dszHd3EtNLUoJpBkrMu3Omw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=m1PwuX/M; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72267C4CEE7;
-	Sat, 21 Jun 2025 08:52:14 +0000 (UTC)
+	 MIME-Version:Content-Type; b=mmPHmEiTqLvc4GCWDeUglNIinaT+wB9eH2JAsKaMI6CPwmEPMgz9vHsxmzdS283JIfT+jYQJA559qcJ4jWpyySOFAFE0hBlHthJZF+8s7bmvd9jtSTT5y2a0RTKjcHJOeH0D8P8NCCdeYMkf+1TAUvXkDna80svCrrBLmO+r9e0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PEGREGXS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B6B8C4CEE7;
+	Sat, 21 Jun 2025 08:52:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1750495934;
-	bh=0HDvXsquJe35RxC/4exG6QdLKMdNUeFZF5pNc1hetFI=;
+	s=k20201202; t=1750495936;
+	bh=5BG0irfcakxtadyCFek/uEjWcCpoT0a+6MoC/HqSp9g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=m1PwuX/MgyErKJN9gfil5/IPlRVa+n/DtUCwWpjuc+OY5pzHQthG2zOQvtxgcayXD
-	 q3GNhVEvf2s34S7lUf8p3+MJPohMbqQZnrG3KM1lMvM8/BaakSMLzQxdAVQ66Q2k4/
-	 Ho8ey1FWpPTtM6dKrAzZJPMIPolZR930+/S572sJfUw9Z0guaTPRFl+E93Lu2yS/S4
-	 FGfipzOQ2Ul/dI2dzGh4hYWIJu4XvRk89hbyOpH8O0QtvQoBdNa/my4icBMK6UJLTq
-	 NaxyJxWzNPgmfMTC1VoMetxnIVVAVonCCooTFpqPyEKTMiBt/SAxSgRBfzEM3THeoP
-	 X2npF79U6EmdQ==
+	b=PEGREGXSzhu0m9fg9LuMXqCwB4q4QfZ/IbfkvxgUt+OKFx8AWvotFEgEZjSrc/N7s
+	 Vov1kC5NoVZ3pjH4V7C244Uvbk48SmvcoNXxxcx93Pl+Rs6X6hMX6f7UXrjToq4aA7
+	 uCCKZnY+PUICvQ0YfwxGBelv+OMyy+SWspYT70o6LS6TJILi1N98MtAT4XP6mev6PF
+	 N6MuvTbjMK4SyLoaB59ef3IBXIQYGOYO3TPjsDX5gU7A5kJyHIOo2kdcymiqWIicK0
+	 RM0e4BT+8x9AsFlLpJFDOylZmDvqIYT3GRJP5M2b34ceKGqEi7UGE+vvm9OCl9MR4N
+	 3//9qGDWfoOcQ==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org,
-	leitao@debian.org
+	sean@geanix.com
 Cc: Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH stable] Revert "x86/bugs: Make spectre user default depend on MITIGATION_SPECTRE_V2" on v6.6 and older
-Date: Sat, 21 Jun 2025 04:52:13 -0400
-Message-Id: <20250621011727-37e866318e6f1904@stable.kernel.org>
+Subject: Re: [PATCH 5.15.y] iio: accel: fxls8962af: Fix temperature calculation
+Date: Sat, 21 Jun 2025 04:52:15 -0400
+Message-Id: <20250621031849-bad50516bc0d32e2@stable.kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To:  <20250620-stable_revert_66-v1-1-841800dd2c68@debian.org>
+In-Reply-To:  <20250620102136.222541-1-sean@geanix.com>
 References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -65,13 +65,53 @@ Content-Transfer-Encoding: 8bit
 Hi,
 
 Summary of potential issues:
-⚠️ Could not find matching upstream commit
+⚠️ Found matching upstream commit but patch is missing proper reference to it
 
-No upstream commit was identified. Using temporary commit for testing.
+Found matching upstream commit: 16038474e3a0263572f36326ef85057aaf341814
+
+Status in newer kernel trees:
+6.15.y | Present (different SHA1: b0df531da1ef)
+6.12.y | Not found
+6.6.y | Not found
+6.1.y | Not found
+
+Note: The patch differs from the upstream commit:
+---
+1:  16038474e3a02 ! 1:  8e583bd0770f6 iio: accel: fxls8962af: Fix temperature calculation
+    @@ Commit message
+         Signed-off-by: Sean Nyekjaer <sean@geanix.com>
+         Link: https://patch.msgid.link/20250505-fxls-v4-1-a38652e21738@geanix.com
+         Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+    +    (cherry picked from commit 16038474e3a0263572f36326ef85057aaf341814)
+     
+      ## drivers/iio/accel/fxls8962af-core.c ##
+     @@
+    + #include <linux/pm_runtime.h>
+      #include <linux/regulator/consumer.h>
+      #include <linux/regmap.h>
+    - #include <linux/types.h>
+     +#include <linux/units.h>
+      
+      #include <linux/iio/buffer.h>
+    - #include <linux/iio/events.h>
+    + #include <linux/iio/iio.h>
+     @@ drivers/iio/accel/fxls8962af-core.c: static int fxls8962af_read_raw(struct iio_dev *indio_dev,
+      		*val = FXLS8962AF_TEMP_CENTER_VAL;
+      		return IIO_VAL_INT;
+    @@ drivers/iio/accel/fxls8962af-core.c: static int fxls8962af_read_raw(struct iio_d
+      	case IIO_CHAN_INFO_SAMP_FREQ:
+      		return fxls8962af_read_samp_freq(data, val, val2);
+      	default:
+    -@@ drivers/iio/accel/fxls8962af-core.c: static const struct iio_event_spec fxls8962af_event[] = {
+    +@@ drivers/iio/accel/fxls8962af-core.c: static int fxls8962af_set_watermark(struct iio_dev *indio_dev, unsigned val)
+      	.type = IIO_TEMP, \
+      	.address = FXLS8962AF_TEMP_OUT, \
+      	.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) | \
+---
 
 Results of testing on various branches:
 
 | Branch                    | Patch Apply | Build Test |
 |---------------------------|-------------|------------|
-| stable/linux-6.6.y        |  Success    |  Success   |
+| stable/linux-5.15.y       |  Success    |  Success   |
 
