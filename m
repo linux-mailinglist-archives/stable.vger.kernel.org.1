@@ -1,116 +1,326 @@
-Return-Path: <stable+bounces-155266-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-155267-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 755E1AE3273
-	for <lists+stable@lfdr.de>; Sun, 22 Jun 2025 23:37:40 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 55FC3AE3281
+	for <lists+stable@lfdr.de>; Sun, 22 Jun 2025 23:48:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9694A3B0992
-	for <lists+stable@lfdr.de>; Sun, 22 Jun 2025 21:37:15 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E658E7A261D
+	for <lists+stable@lfdr.de>; Sun, 22 Jun 2025 21:47:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB67D1F2BAD;
-	Sun, 22 Jun 2025 21:37:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 70EB91E5206;
+	Sun, 22 Jun 2025 21:48:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b="xdbX21Mh"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="ykjnqDX/"
 X-Original-To: stable@vger.kernel.org
-Received: from submarine.notk.org (submarine.notk.org [62.210.214.84])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3FE411A0B08;
-	Sun, 22 Jun 2025 21:37:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.210.214.84
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E52542AAF;
+	Sun, 22 Jun 2025 21:48:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750628254; cv=none; b=Og+gS8pzCcCdP19vHybb3mkEyupDAZjTx3rr1ohCweoS1xk6I1xIU/FZS+qnnix5MYc8PzjwOgYRS3XytU5eFPjxZBUo1ZCdKURuY6noh1MGP92mlG1atQX0mu+U93lgcztMscANcZCFlOS5omuV7jLwn/aqXEM7cyi02QsNSuY=
+	t=1750628925; cv=none; b=HV5XUbPBOJ0QxxzzxuqywoPHJCHv9fT7ePpJp+FJyiZSFUOe3cFsdzzgt57RMqzuYEgbuOgvUdJLaCYEvkavAmdOZbqpIMRzW2vv3ANVrcLFddL4C3giJ7ekl699ZHNm6wO/fEKLwZNLBsx79AOoGxAlhqC4IW4yJHRhRXAFpfY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750628254; c=relaxed/simple;
-	bh=PiyYx0D7DHp1i6I7LGyVpcGHij0gzpGiuLrfKazlgOs=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=kQtFLDyDmNHchrY7r3CZUzwFjOfNJh/4mwyTY6ahJggADXWI/7fkJUliw+hG8/95ClPBAIYjpDCOeFx/FmDrdECNxKRflORQHqADgYn95NXdN146lR/4C3nnM1a3tZ1bR9W+iLq8y2ykV5IHvdUtb5hZYxT7nnFQvOS/DVXV++s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org; spf=pass smtp.mailfrom=codewreck.org; dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b=xdbX21Mh; arc=none smtp.client-ip=62.210.214.84
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=codewreck.org
-Received: from gaia.codewreck.org (localhost [127.0.0.1])
-	by submarine.notk.org (Postfix) with ESMTPS id 98E7F14C2D3;
-	Sun, 22 Jun 2025 23:37:27 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=codewreck.org;
-	s=2; t=1750628250;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=gXfWwuvWIHMt3iwfHv8lluOXP7T6x/8Jx+lA4Z3eTtA=;
-	b=xdbX21MhbwhJpEGOoJ4ypwZ/5icCaQ/l63bipBrGLcSYHhZ3/ed3/C+zH1hTuj1K7/uoMQ
-	DIWQoYsWkZ+7I06eVHGzOSnoXaCTUHSgFx/OFRu8sKYSdof86IJATFUBbWhbF1T3yKt/6L
-	CVvYji5kYfdsYI+ciQ5qiLgd+ODviNW/joEjsYg3khD9jNT5PAficgcLx3cOOQPDuHQH5o
-	5b6Q8lHzqzQ+rdRPN3UgfNiutQl8bLzldjCqUsnr4ctwp2MAzkY41XW4Ua0UVAOuK8R7hu
-	biSGvEwK9CsRIyk3gfDSvqATq/hiG/5n4lIkO+/rJZNdQvXhfV8hC/ksD0Q7YA==
-Received: from localhost (gaia.codewreck.org [local])
-	by gaia.codewreck.org (OpenSMTPD) with ESMTPA id f9ee9073;
-	Sun, 22 Jun 2025 21:37:25 +0000 (UTC)
-Date: Mon, 23 Jun 2025 06:37:10 +0900
-From: asmadeus@codewreck.org
-To: Christian Schoenebeck <linux_oss@crudebyte.com>
-Cc: Kees Cook <kees@kernel.org>,
-	Dominique Martinet via B4 Relay <devnull+asmadeus.codewreck.org@kernel.org>,
-	Eric Van Hensbergen <ericvh@kernel.org>,
-	Latchesar Ionkov <lucho@ionkov.net>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Michael Grzeschik <m.grzeschik@pengutronix.de>,
-	stable@vger.kernel.org, Yuhao Jiang <danisjiang@gmail.com>,
-	security@kernel.org, v9fs@lists.linux.dev,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3] net/9p: Fix buffer overflow in USB transport layer
-Message-ID: <aFh3hqGbzC-K3ylo@codewreck.org>
-References: <20250622-9p-usb_overflow-v3-1-ab172691b946@codewreck.org>
- <659844BA-48EF-47E1-8D66-D4CA98359BBF@kernel.org>
- <aFhqAergj6LowmyE@codewreck.org>
- <2332540.nosMkMiWtC@silver>
+	s=arc-20240116; t=1750628925; c=relaxed/simple;
+	bh=flck0XCkxNF8NjfYUwIumgJbuoWPKoCB4JIQDX8XV3I=;
+	h=Date:To:From:Subject:Message-Id; b=TfKvlM5H6hjlDijxvYlRFU1xqOaLjkSUMnowagD6d+y+lhp68FJjCSyZzMhji+y2f9pOWp4XryCbYO1HyAI5jqPn6LA7OIedVB2qKHm13XgrdFBHBIgz/EfuzUcMPz6O2Nr8weZKtjSTitxtVgLKoGzIvaBTSVDDt7tOFkbkDyM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=ykjnqDX/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5CA9DC4CEEA;
+	Sun, 22 Jun 2025 21:48:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1750628924;
+	bh=flck0XCkxNF8NjfYUwIumgJbuoWPKoCB4JIQDX8XV3I=;
+	h=Date:To:From:Subject:From;
+	b=ykjnqDX/H6q+dlptT8saZzE+RlvlN+71JAOcOdTYUVEns8gfSBbT9y5FGZVlMTf15
+	 gexKlN1j7310tMt7LCl7IN6rpPcpgeyz/KEWkfmexzDBsXpLek9djLZMXJp2nZ1WGC
+	 qVFfBTU2pKyJBusNTAYI7JidBYqG2jYkWuibj4bw=
+Date: Sun, 22 Jun 2025 14:48:43 -0700
+To: mm-commits@vger.kernel.org,stable@vger.kernel.org,peterx@redhat.com,muchun.song@linux.dev,gavinguo@igalia.com,david@redhat.com,osalvador@suse.de,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: + mmhugetlb-change-mechanism-to-detect-a-cow-on-private-mapping.patch added to mm-new branch
+Message-Id: <20250622214844.5CA9DC4CEEA@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <2332540.nosMkMiWtC@silver>
-
-Christian Schoenebeck wrote on Sun, Jun 22, 2025 at 11:20:21PM +0200:
-> On Sunday, June 22, 2025 10:39:29 PM CEST asmadeus@codewreck.org wrote:
-> [...]
-> > (... And this made me realize commit 60ece0833b6c ("net/9p: allocate
-> > appropriate reduced message buffers") likely broke everything for
-> > 9p/rdma 3 years ago, as rdma is swapping buffers around...
-> > I guess it doesn't have (m)any users...)
-> 
-> That patch contains an RDMA exception:
-
-Oh, thanks for pointing that out!
 
 
-BTW I just tried __counted_by and it's not obvious because it's not
-allocated with the fcall (fcall structs themselves are allocated in the
-req, and each fcall gets a data buffer)
+The patch titled
+     Subject: mm,hugetlb: change mechanism to detect a COW on private mapping
+has been added to the -mm mm-new branch.  Its filename is
+     mmhugetlb-change-mechanism-to-detect-a-cow-on-private-mapping.patch
 
-For everything other than RDMA it shouldn't be too difficult to bubble
-the allocation up (fcall+data as a flexible array as a pointer in req),
-but then with large "round" msizes we'd get into the next power of two
-buckets so I think it's probably better to keep as is.
-(.. that and I wouldn't look forward to rework the buffer swapping logic
-with RDMA, even if it should be straightforward enough with a couple of
-container_of()s...)
+This patch will shortly appear at
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mmhugetlb-change-mechanism-to-detect-a-cow-on-private-mapping.patch
 
-Perhaps when/if counted_by learns to apply to pointers:
+This patch will later appear in the mm-new branch at
+    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+
+Note, mm-new is a provisional staging ground for work-in-progress
+patches, and acceptance into mm-new is a notification for others take
+notice and to finish up reviews.  Please do not hesitate to respond to
+review feedback and post updated versions to replace or incrementally
+fixup patches in mm-new.
+
+Before you just go and hit "reply", please:
+   a) Consider who else should be cc'ed
+   b) Prefer to cc a suitable mailing list as well
+   c) Ideally: find the original patch on the mailing list and do a
+      reply-to-all to that, adding suitable additional cc's
+
+*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
+
+The -mm tree is included into linux-next via the mm-everything
+branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+and is updated there every 2-3 working days
+
+------------------------------------------------------
+From: Oscar Salvador <osalvador@suse.de>
+Subject: mm,hugetlb: change mechanism to detect a COW on private mapping
+Date: Fri, 20 Jun 2025 14:30:10 +0200
+
+Patch series "Misc rework on hugetlb faulting path", v2.
+
+This patchset aims to give some love to the hugetlb faulting path, doing
+so by removing obsolete comments that are no longer true, sorting out the
+folio lock, and changing the mechanism we use to determine whether we are
+COWing a private mapping already.
+
+The most important patch of the series is #1, as it fixes a deadlock that
+was described in [1], where two processes were holding the same lock for
+the folio in the pagecache, and then deadlocked in the mutex.
+
+Looking up and locking the folio in the pagecache was done to check
+whether that folio was the same folio we had mapped in our pagetables,
+meaning that if it was different we knew that we already mapped that folio
+privately, so any further CoW would be made on a private mapping, which
+lead us to the question: __Was the reservation for that address
+consumed?__ That is all we care about, because if it was indeed consumed
+and we are the owner and we cannot allocate more folios, we need to unmap
+the folio from the processes pagetables and make it exclusive for us.
+
+We figured we do not need to look up the folio at all, and it is just
+enough to check whether the folio we have mapped is anonymous, which means
+we mapped it privately, so the reservation was indeed consumed.
+
+Patch #2 sorts out folio locking in the faulting path, reducing the scope
+of it ,only taking it when we are dealing with an anonymous folio and
+document it.  More details in the patch.
+
+Patches #3-5 are cleanups.
+
+
+
+hugetlb_wp() checks whether the process is trying to COW on a private
+mapping in order to know whether the reservation for that address was
+already consumed or not.  If it was consumed and we are the ownner of the
+mapping, the folio will have to be unmapped from the other processes.
+
+Currently, that check is done by looking up the folio in the pagecache and
+comparing it to the folio which is mapped in our pagetables.  If it
+differs, it means we already mapped it privately before, consuming a
+reservation on the way.  All we are interested in is whether the mapped
+folio is anonymous, so we can simplify and check for that instead.
+
+Also, we transition from a trylock to a folio_lock, since the former was
+only needed when hugetlb_fault() had to lock both folios, in order to
+avoid deadlock.
+
+Link: https://lkml.kernel.org/r/20250620123014.29748-1-osalvador@suse.de
+Link: https://lkml.kernel.org/r/20250620123014.29748-2-osalvador@suse.de
+Link: https://lore.kernel.org/lkml/20250513093448.592150-1-gavinguo@igalia.com/ [1]
+Fixes: 40549ba8f8e0 ("hugetlb: use new vma_lock for pmd sharing synchronization")
+Reported-by: Gavin Guo <gavinguo@igalia.com>
+Closes: https://lore.kernel.org/lkml/20250513093448.592150-1-gavinguo@igalia.com/
+Signed-off-by: Oscar Salvador <osalvador@suse.de>
+Suggested-by: Peter Xu <peterx@redhat.com>
+Acked-by: David Hildenbrand <david@redhat.com>
+Cc: Muchun Song <muchun.song@linux.dev>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
-.../include/net/9p/9p.h:558:13: error: ‘counted_by’ attribute is not allowed for a non-array field
-  558 |         u8 *sdata __counted_by(capacity);
-      |             ^~~~~
-make[3]: *** [.../scripts/Makefile.build:287: trans_xen.o] Error 1
-In file included from client.c:22:
----
 
-Thanks,
--- 
-Dominique Martinet | Asmadeus
+ mm/hugetlb.c |   70 +++++++++++--------------------------------------
+ 1 file changed, 17 insertions(+), 53 deletions(-)
+
+--- a/mm/hugetlb.c~mmhugetlb-change-mechanism-to-detect-a-cow-on-private-mapping
++++ a/mm/hugetlb.c
+@@ -6130,8 +6130,7 @@ static void unmap_ref_private(struct mm_
+  * cannot race with other handlers or page migration.
+  * Keep the pte_same checks anyway to make transition from the mutex easier.
+  */
+-static vm_fault_t hugetlb_wp(struct folio *pagecache_folio,
+-		       struct vm_fault *vmf)
++static vm_fault_t hugetlb_wp(struct vm_fault *vmf)
+ {
+ 	struct vm_area_struct *vma = vmf->vma;
+ 	struct mm_struct *mm = vma->vm_mm;
+@@ -6193,16 +6192,17 @@ retry_avoidcopy:
+ 		       PageAnonExclusive(&old_folio->page), &old_folio->page);
+ 
+ 	/*
+-	 * If the process that created a MAP_PRIVATE mapping is about to
+-	 * perform a COW due to a shared page count, attempt to satisfy
+-	 * the allocation without using the existing reserves. The pagecache
+-	 * page is used to determine if the reserve at this address was
+-	 * consumed or not. If reserves were used, a partial faulted mapping
+-	 * at the time of fork() could consume its reserves on COW instead
+-	 * of the full address range.
++	 * If the process that created a MAP_PRIVATE mapping is about to perform
++	 * a COW due to a shared page count, attempt to satisfy the allocation
++	 * without using the existing reserves.
++	 * In order to determine where this is a COW on a MAP_PRIVATE mapping it
++	 * is enough to check whether the old_folio is anonymous. This means that
++	 * the reserve for this address was consumed. If reserves were used, a
++	 * partial faulted mapping at the fime of fork() could consume its reserves
++	 * on COW instead of the full address range.
+ 	 */
+ 	if (is_vma_resv_set(vma, HPAGE_RESV_OWNER) &&
+-			old_folio != pagecache_folio)
++	    folio_test_anon(old_folio))
+ 		cow_from_owner = true;
+ 
+ 	folio_get(old_folio);
+@@ -6581,7 +6581,7 @@ static vm_fault_t hugetlb_no_page(struct
+ 	hugetlb_count_add(pages_per_huge_page(h), mm);
+ 	if ((vmf->flags & FAULT_FLAG_WRITE) && !(vma->vm_flags & VM_SHARED)) {
+ 		/* Optimization, do the COW without a second fault */
+-		ret = hugetlb_wp(folio, vmf);
++		ret = hugetlb_wp(vmf);
+ 	}
+ 
+ 	spin_unlock(vmf->ptl);
+@@ -6648,11 +6648,9 @@ vm_fault_t hugetlb_fault(struct mm_struc
+ {
+ 	vm_fault_t ret;
+ 	u32 hash;
+-	struct folio *folio = NULL;
+-	struct folio *pagecache_folio = NULL;
++	struct folio *folio;
+ 	struct hstate *h = hstate_vma(vma);
+ 	struct address_space *mapping;
+-	int need_wait_lock = 0;
+ 	struct vm_fault vmf = {
+ 		.vma = vma,
+ 		.address = address & huge_page_mask(h),
+@@ -6747,8 +6745,7 @@ vm_fault_t hugetlb_fault(struct mm_struc
+ 	 * If we are going to COW/unshare the mapping later, we examine the
+ 	 * pending reservations for this page now. This will ensure that any
+ 	 * allocations necessary to record that reservation occur outside the
+-	 * spinlock. Also lookup the pagecache page now as it is used to
+-	 * determine if a reservation has been consumed.
++	 * spinlock.
+ 	 */
+ 	if ((flags & (FAULT_FLAG_WRITE|FAULT_FLAG_UNSHARE)) &&
+ 	    !(vma->vm_flags & VM_MAYSHARE) && !huge_pte_write(vmf.orig_pte)) {
+@@ -6758,11 +6755,6 @@ vm_fault_t hugetlb_fault(struct mm_struc
+ 		}
+ 		/* Just decrements count, does not deallocate */
+ 		vma_end_reservation(h, vma, vmf.address);
+-
+-		pagecache_folio = filemap_lock_hugetlb_folio(h, mapping,
+-							     vmf.pgoff);
+-		if (IS_ERR(pagecache_folio))
+-			pagecache_folio = NULL;
+ 	}
+ 
+ 	vmf.ptl = huge_pte_lock(h, mm, vmf.pte);
+@@ -6776,10 +6768,6 @@ vm_fault_t hugetlb_fault(struct mm_struc
+ 	    (flags & FAULT_FLAG_WRITE) && !huge_pte_write(vmf.orig_pte)) {
+ 		if (!userfaultfd_wp_async(vma)) {
+ 			spin_unlock(vmf.ptl);
+-			if (pagecache_folio) {
+-				folio_unlock(pagecache_folio);
+-				folio_put(pagecache_folio);
+-			}
+ 			hugetlb_vma_unlock_read(vma);
+ 			mutex_unlock(&hugetlb_fault_mutex_table[hash]);
+ 			return handle_userfault(&vmf, VM_UFFD_WP);
+@@ -6791,23 +6779,14 @@ vm_fault_t hugetlb_fault(struct mm_struc
+ 		/* Fallthrough to CoW */
+ 	}
+ 
+-	/*
+-	 * hugetlb_wp() requires page locks of pte_page(vmf.orig_pte) and
+-	 * pagecache_folio, so here we need take the former one
+-	 * when folio != pagecache_folio or !pagecache_folio.
+-	 */
++	/* hugetlb_wp() requires page locks of pte_page(vmf.orig_pte) */
+ 	folio = page_folio(pte_page(vmf.orig_pte));
+-	if (folio != pagecache_folio)
+-		if (!folio_trylock(folio)) {
+-			need_wait_lock = 1;
+-			goto out_ptl;
+-		}
+-
++	folio_lock(folio);
+ 	folio_get(folio);
+ 
+ 	if (flags & (FAULT_FLAG_WRITE|FAULT_FLAG_UNSHARE)) {
+ 		if (!huge_pte_write(vmf.orig_pte)) {
+-			ret = hugetlb_wp(pagecache_folio, &vmf);
++			ret = hugetlb_wp(&vmf);
+ 			goto out_put_page;
+ 		} else if (likely(flags & FAULT_FLAG_WRITE)) {
+ 			vmf.orig_pte = huge_pte_mkdirty(vmf.orig_pte);
+@@ -6818,16 +6797,10 @@ vm_fault_t hugetlb_fault(struct mm_struc
+ 						flags & FAULT_FLAG_WRITE))
+ 		update_mmu_cache(vma, vmf.address, vmf.pte);
+ out_put_page:
+-	if (folio != pagecache_folio)
+-		folio_unlock(folio);
++	folio_unlock(folio);
+ 	folio_put(folio);
+ out_ptl:
+ 	spin_unlock(vmf.ptl);
+-
+-	if (pagecache_folio) {
+-		folio_unlock(pagecache_folio);
+-		folio_put(pagecache_folio);
+-	}
+ out_mutex:
+ 	hugetlb_vma_unlock_read(vma);
+ 
+@@ -6839,15 +6812,6 @@ out_mutex:
+ 		vma_end_read(vma);
+ 
+ 	mutex_unlock(&hugetlb_fault_mutex_table[hash]);
+-	/*
+-	 * Generally it's safe to hold refcount during waiting page lock. But
+-	 * here we just wait to defer the next page fault to avoid busy loop and
+-	 * the page is not used after unlocked before returning from the current
+-	 * page fault. So we are safe from accessing freed page, even if we wait
+-	 * here without taking refcount.
+-	 */
+-	if (need_wait_lock)
+-		folio_wait_locked(folio);
+ 	return ret;
+ }
+ 
+_
+
+Patches currently in -mm which might be from osalvador@suse.de are
+
+mmslub-do-not-special-case-n_normal-nodes-for-slab_nodes.patch
+mmmemory_hotplug-remove-status_change_nid_normal-and-update-documentation.patch
+mmmemory_hotplug-implement-numa-node-notifier.patch
+mmslub-use-node-notifier-instead-of-memory-notifier.patch
+mmmemory-tiers-use-node-notifier-instead-of-memory-notifier.patch
+driverscxl-use-node-notifier-instead-of-memory-notifier.patch
+drivershmat-use-node-notifier-instead-of-memory-notifier.patch
+kernelcpuset-use-node-notifier-instead-of-memory-notifier.patch
+mmmempolicy-use-node-notifier-instead-of-memory-notifier.patch
+mmpage_ext-derive-the-node-from-the-pfn.patch
+mmmemory_hotplug-drop-status_change_nid-parameter-from-memory_notify.patch
+mmhugetlb-change-mechanism-to-detect-a-cow-on-private-mapping.patch
+mmhugetlb-sort-out-folio-locking-in-the-faulting-path.patch
+mmhugetlb-rename-anon_rmap-to-new_anon_folio-and-make-it-boolean.patch
+mmhugetlb-rename-anon_rmap-to-new_anon_folio-and-make-it-boolean-fix.patch
+mmhugetlb-drop-obsolete-comment-about-non-present-pte-and-second-faults.patch
+mmhugetlb-drop-unlikelys-from-hugetlb_fault.patch
+
 
