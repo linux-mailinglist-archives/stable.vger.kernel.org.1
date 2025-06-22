@@ -1,99 +1,137 @@
-Return-Path: <stable+bounces-155246-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-155247-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id ECDD3AE2EF2
-	for <lists+stable@lfdr.de>; Sun, 22 Jun 2025 11:08:46 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 300A9AE2EF6
+	for <lists+stable@lfdr.de>; Sun, 22 Jun 2025 11:10:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E226A7A2EF8
-	for <lists+stable@lfdr.de>; Sun, 22 Jun 2025 09:07:23 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 76EE83B3D47
+	for <lists+stable@lfdr.de>; Sun, 22 Jun 2025 09:10:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74D2C1AAA1A;
-	Sun, 22 Jun 2025 09:08:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2522A1ADC7E;
+	Sun, 22 Jun 2025 09:10:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yEAkt/Ao"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bdrUVuQ0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3238E1A8F60
-	for <stable@vger.kernel.org>; Sun, 22 Jun 2025 09:08:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5388347DD;
+	Sun, 22 Jun 2025 09:10:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750583319; cv=none; b=ln+/sVkk1CAsVoJ5csb2Gzq58sW1oZn5TAmr9+/+a404lGPQjuo8zrbE1XS/HOeXzqXg8vd8oUtFG+NU5bxUVTPFrYWo9veqQi1aMAo2sBo6p6/J1DfbEHIt+t6qOUVFbycPa7n7HrG5uSvc2x+OtpeUNHyAX/0Qt5RnaTEyZKU=
+	t=1750583451; cv=none; b=uiHnUwRWHs0wdrJo64mzsdL+m+Qj7yHb2DIQdb3aDi4LIVl5HELzBmIY+7TmE7Bup0dtZkPxCb1AvQRsVpJdw5Ra+aImXkamsET19cgeD8AqBOHGmVJn0pCtry/l15kiuRqaPxPTXe+axtm6YPNvdmoIvAf3XnLTcT+AWPGZqDc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750583319; c=relaxed/simple;
-	bh=149m2/W1pZQwb9wZMsd5gXC2L05cqby5KB9yTTnuIJw=;
+	s=arc-20240116; t=1750583451; c=relaxed/simple;
+	bh=zVuqY37en/DKxiVJYxlp6D3HbV0uNfcMQBfBnwgXRPc=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ZZIPpqbp2WOUejAjafrsmL+NIErNyi682POJLVEUAeTURpd71hx807ZyNWu4Sy8uFCOr5J2pCuStiZkIg7plRsqR28/EFYF+ShPdUgMWUKX6kzppQ4dSsve5HlYSkjBx87I/zqfS5xHqEMeYC8u25FmEbC0tHbskfejJcnmLhW8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yEAkt/Ao; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B52F7C4CEE3;
-	Sun, 22 Jun 2025 09:08:38 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=ntYpcqMfXPQU9bxJ2JKi1S0Wou4dlZluo3LalS220UXqa0R9RhY4D4plO5HNJojkh9Rw/DZpToXGtV1MUkNCoj191wL2Ev+wTGQIDodJdJ2DURSP5rq+OnogKzzeO7NiLSXMPyHoOkDw1xzxa1naHyj4cvpW0+yzDLrwZbdn7lg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bdrUVuQ0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53EB1C4CEE3;
+	Sun, 22 Jun 2025 09:10:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750583319;
-	bh=149m2/W1pZQwb9wZMsd5gXC2L05cqby5KB9yTTnuIJw=;
+	s=korg; t=1750583451;
+	bh=zVuqY37en/DKxiVJYxlp6D3HbV0uNfcMQBfBnwgXRPc=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=yEAkt/Aoh32htdYPwioZt3DKq39LrGelydg+pURmGAwnBvLs0DzXvuawbQNk3aoBy
-	 NFgHCecXipRtxM964aCGI7wjwyCSmNjIP6lTk+epmwH2jacAYN/ASDRfJy7XjbM5+B
-	 jgfAlq+NytllZTvF7ypBmKSnz6Vvnr21+Hx0LurE=
-Date: Sun, 22 Jun 2025 11:08:36 +0200
+	b=bdrUVuQ0WU0qMhIbKMWuW9/d24ydilDNRV5S1KgGD9JFRWt2uomXBFSy7se9/8M0G
+	 ffnWRE1fDhbJ85wIhGxQR1Ksi6yBlXK4uBm5CfmwcWiab78PV/LWSpjWDYO1/96F4O
+	 pxUuNSxCpFkPfAF8qC+y8JNuzSsVfNb5Uwtqd5XQ=
+Date: Sun, 22 Jun 2025 11:10:49 +0200
 From: Greg KH <gregkh@linuxfoundation.org>
-To: Sergio =?iso-8859-1?Q?Gonz=E1lez?= Collado <sergio.collado@gmail.com>
-Cc: stable@vger.kernel.org, Sasha Levin <sashal@kernel.org>,
-	Miguel Ojeda <ojeda@kernel.org>
-Subject: Re: Backport of `Kunit to check the longest symbol length` to 6.12
-Message-ID: <2025062226-unnamable-shamrock-1005@gregkh>
-References: <CAA76j91PrdB4c=W9p7p7YwXyH9tWPfDcUfRBX3SrVj9mdMd8Jg@mail.gmail.com>
+To: Willem de Bruijn <willemb@google.com>
+Cc: Brett Sheffield <brett@librecast.net>,
+	Brett Sheffield <bacs@librecast.net>, stable@vger.kernel.org,
+	regressions@lists.linux.dev
+Subject: Re: 6.12.y longterm regression - IPv6 UDP packet fragmentation
+Message-ID: <2025062212-erasable-riches-d3eb@gregkh>
+References: <aElivdUXqd1OqgMY@karahi.gladserv.com>
+ <2025061745-calamari-voyage-d27a@gregkh>
+ <aFGl-mb--GOMY8ZQ@karahi.gladserv.com>
+ <CA+FuTSen5bEXdTJzrPELKkNZs6N=BPDNxFKYpx2JQmXmFrb09Q@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAA76j91PrdB4c=W9p7p7YwXyH9tWPfDcUfRBX3SrVj9mdMd8Jg@mail.gmail.com>
+In-Reply-To: <CA+FuTSen5bEXdTJzrPELKkNZs6N=BPDNxFKYpx2JQmXmFrb09Q@mail.gmail.com>
 
-On Thu, Jun 19, 2025 at 02:00:29PM +0200, Sergio González Collado wrote:
-> Hello,
+On Tue, Jun 17, 2025 at 02:25:02PM -0400, Willem de Bruijn wrote:
+> On Tue, Jun 17, 2025 at 1:29â€¯PM Brett Sheffield <brett@librecast.net> wrote:
+> >
+> > Hi Greg,
+> >
+> > On 2025-06-17 15:47, Greg KH wrote:
+> > > On Wed, Jun 11, 2025 at 01:04:29PM +0200, Brett Sheffield wrote:
+> > > > Longterm kernel 6.12.y backports commit:
+> > > >
+> > > > - a18dfa9925b9ef6107ea3aa5814ca3c704d34a8a "ipv6: save dontfrag in cork"
+> > >
+> > > It's also in older kernels:
+> > >       5.10.238
+> > >       5.15.185
+> > >       6.1.141
+> > >       6.6.93
+> > >
+> > > > but does not backport these related commits:
+> > > >
+> > > > - 54580ccdd8a9c6821fd6f72171d435480867e4c3 "ipv6: remove leftover ip6 cookie initializer"
+> > > > - 096208592b09c2f5fc0c1a174694efa41c04209d "ipv6: replace ipcm6_init calls with ipcm6_init_sk"
+> > > >
+> > > > This causes a regression when sending IPv6 UDP packets by preventing
+> > > > fragmentation and instead returning EMSGSIZE. I have attached a program which
+> > > > demonstrates the issue.
 > 
-> Please consider applying the following commits for 6.12.y:
+> Thanks for the analysis. I had received a report and was looking into
+> it, but had not yet figured out this root cause.
 > 
->     c104c16073b7 ("Kunit to check the longest symbol length")
->     f710202b2a45 ("x86/tools: Drop duplicate unlikely() definition in
-> insn_decoder_test.c")
+> > >
+> > > Should we backport thse two to all of the other branches as well?
+> >
+> > I have confirmed the regression is present in all of those older kernels (except
+> > 5.15.185 as that didn't boot on my test hardware - will look at that later).
+> >
+> > The patch appears to have been autoselected for applying to the stable tree:
+> >
+> > https://lore.kernel.org/all/?q=a18dfa9925b9ef6107ea3aa5814ca3c704d34a8a
+> >
+> > The patch follows on from a whole series of patches by Willem de Bruijn (CC), the
+> > rest of which were not applied.
+> >
+> > Unless there is a good reason for applying this patch in isolation, the quickest
+> > fix is simply to revert that commit in stable and this fixes the regression.
+> >
+> > Alternatives are:
+> >
+> > 1) apply a small fix for the regression (patch attached). This leaves a footgun
+> > if you later decide to backport more of the series.
+> >
+> > 2) to backport and test the whole series of patches. See merge commit
+> > aefd232de5eb2e77e3fc58c56486c7fe7426a228
+> >
+> > 3) In the case of 6.12.33, the two patches I referenced apply cleanly and are enough
+> > to fix the problem.  There are conflicts on the other branches.
+> >
+> > Unless there is a specific reason to have backported
+> > a18dfa9925b9ef6107ea3aa5814ca3c704d34a8a to stable I'd suggest just reverting
+> > it.
 > 
-> They should apply cleanly.
+> FWIW, I did not originally intend for these changes to make it to stable.
 > 
-> Those two commits implement a kunit test to verify that a symbol with
-> KSYM_NAME_LEN of 512 can be read.
-> 
-> The first commit implements the test. This commit also includes a fix
-> for the test x86/insn_decoder_test. In the case a symbol exceeds the
-> symbol length limit, an error will happen:
-> 
->     arch/x86/tools/insn_decoder_test: error: malformed line 1152000:
->     tBb_+0xf2>
-> 
-> ..which overflowed by 10 characters reading this line:
-> 
->     ffffffff81458193:   74 3d                   je
-> ffffffff814581d2
-> <_RNvXse_NtNtNtCshGpAVYOtgW1_4core4iter8adapters7flattenINtB5_13FlattenCompatINtNtB7_3map3MapNtNtNtBb_3str4iter5CharsNtB1v_17CharEscapeDefaultENtNtBb_4char13EscapeDefaultENtNtBb_3fmt5Debug3fmtBb_+0xf2>
-> 
-> The fix was proposed in [1] and initially mentioned at [2].
-> 
-> The second commit fixes a warning when building with clang because
-> there was a definition of unlikely from compiler.h in tools/include/linux,
-> which conflicted with the one in the instruction decoder selftest.
-> 
-> [1] https://lore.kernel.org/lkml/Y9ES4UKl%2F+DtvAVS@gmail.com/
-> [2] https://lore.kernel.org/lkml/320c4dba-9919-404b-8a26-a8af16be1845@app.fastmail.com/
+> The simplest short term solution is to revert this patch out of the
+> stable trees. But long term that may give more conflicts as later
+> patches need to be backported? Not sure what is wiser in such cases.
 
-Both now queued up, thanks.
+For now, I've applied the above 2 to the 6.12.y tree.  They do not apply
+any older.  If I should drop the change from the older stable trees,
+please let me know.
+
+thanks,
 
 greg k-h
 
