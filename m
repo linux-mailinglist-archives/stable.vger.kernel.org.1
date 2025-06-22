@@ -1,103 +1,115 @@
-Return-Path: <stable+bounces-155237-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-155238-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C0047AE2DE0
-	for <lists+stable@lfdr.de>; Sun, 22 Jun 2025 03:46:37 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 02BB7AE2EB5
+	for <lists+stable@lfdr.de>; Sun, 22 Jun 2025 09:26:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 14A0F3B70A7
-	for <lists+stable@lfdr.de>; Sun, 22 Jun 2025 01:46:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 47B973B47E6
+	for <lists+stable@lfdr.de>; Sun, 22 Jun 2025 07:25:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED9FD7DA6C;
-	Sun, 22 Jun 2025 01:46:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE07618858C;
+	Sun, 22 Jun 2025 07:26:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=pwned.life header.i=@pwned.life header.b="hXjwLuwD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fKQyJgfl"
 X-Original-To: stable@vger.kernel.org
-Received: from mx.nixnet.email (mx.nixnet.email [5.161.67.119])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABB943D6D;
-	Sun, 22 Jun 2025 01:46:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=5.161.67.119
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C997610C;
+	Sun, 22 Jun 2025 07:26:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750556791; cv=none; b=Y0ODZQ9oexBSriCIw0KRUC7HziBSXC3pnvBmHa1ZpLryD1wzhoD294wLMgi4CNBUYAbxx/g+nGeTJ30RqOszCJtqiSEo/G+COaZkjs7h7yTiF9dkKDAfAiDeiQHe4G8nHPco8q4o4nfy35UfGOkpTrHzt/jUgBkw1ioeciNPCS0=
+	t=1750577160; cv=none; b=uPUGJVK4oyhWRjjrHxLHi42fnJPHgLmZFUxD8i0WfSx3NJfbESrQ67PfuZnh5VgwMVvVfj8fEXdKWSUVEWHWq1B8/3osB87c5idXQx5VlWAIBTiabjtF2GPjsRvZNp+VrO9Zx/fu4vsOxcorIbDucDCMBz6TvnCblfQjrtfCT60=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750556791; c=relaxed/simple;
-	bh=AN5131Mm1n+8HdUbVxXvNVP6U76CHnRvB/+o4zWGGpQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=aKt5u63BGNJqtJAasBPK5ih46n/ROUbGAWE8AXwbTUn0MoWm3GwxMfPbGJFXFvdZkXxTUlnfA4Fgm7vkFXij/kDvznW7DDKZuzpEYnfokIihAyOhOH/QGLdHnRv6t7XaUPikjWowzptIYAKH5HiKhwSpihxxW7X857M+BKHwiLA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=pwned.life; spf=pass smtp.mailfrom=pwned.life; dkim=pass (1024-bit key) header.d=pwned.life header.i=@pwned.life header.b=hXjwLuwD; arc=none smtp.client-ip=5.161.67.119
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=pwned.life
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pwned.life
-Received: from [127.0.0.1] (localhost [127.0.0.1])
-	by mx.nixnet.email (Postfix) with ESMTPSA id EE1E97D3B8;
-	Sun, 22 Jun 2025 03:46:16 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pwned.life; s=202002021149;
-	t=1750556778;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=W6g0s3Gqz2pdEiwPOReNRUEKqqIiMTjDOmJeywOhnms=;
-	b=hXjwLuwDs3jQr59YjbLNBbxIDz8Ud+SLpc2OGctFsm55AkJYcHJelgkrytdgpvuUIgoNq+
-	c1+r5I/Lp19vymAHnTVPYd8sO1QjVS5pKXaY4lqCPqtZz2QJ7f7U0t2lx26VnGnrDZc7TX
-	U0WWJ1f56JiKjmsAp4bkJzXyYAmJ4hE=
-From: Achill Gilgenast <fossdd@pwned.life>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Andrew Morton <akpm@linux-foundation.org>
-Cc: linux-kselftest@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Achill Gilgenast <fossdd@pwned.life>,
-	stable@vger.kernel.org
-Subject: [RESEND PATCH v2] kallsyms: fix build without execinfo
-Date: Sun, 22 Jun 2025 03:45:49 +0200
-Message-ID: <20250622014608.448718-1-fossdd@pwned.life>
-X-Mailer: git-send-email 2.50.0
+	s=arc-20240116; t=1750577160; c=relaxed/simple;
+	bh=zcbbA1/2SXkp1qglZxsnSRGCPPObpRRtEYyL6aHsCbw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Ql92NzzaKS6/a8SO1gb3JiozWzIWHIAy90wMyx1cPUBhm/fvnok+EW1T6D0e8lAbofcgcmqn5DWlSHaRX/WvNW6rBYRybKzKGSeWufRENwger3W4AjXXakJo3sgQ5b2/pXrmtSA/XXuiyAi/UjcuFcmucr7Ur7lz1SGHbLmlS6o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fKQyJgfl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B6A4C4CEE3;
+	Sun, 22 Jun 2025 07:25:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1750577160;
+	bh=zcbbA1/2SXkp1qglZxsnSRGCPPObpRRtEYyL6aHsCbw=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=fKQyJgflm0H4KcVcdtusHpxYIN4HrHOfjR2NTNCSo5kBU7pxZ7bHs9WgURI4PqmAD
+	 eRcuJmdXuCJ+dAEvAhfUSc9pKv2RPYTPTNTlzTZDlimJ0itnp0k9JWpPZ6AC3Abh1z
+	 vC+E8vQzVQLw28i/T90TiOkldyFSBYObHB1/A8cs=
+Date: Sun, 22 Jun 2025 09:24:32 +0200
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Pascal Ernster <git@hardfalcon.net>
+Cc: Ronald Warsow <rwarsow@gmx.de>, stable@vger.kernel.org,
+	patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+	torvalds@linux-foundation.org, akpm@linux-foundation.org,
+	linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+	lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+	f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
+	srw@sladewatkins.net, conor@kernel.org, hargar@microsoft.com,
+	broonie@kernel.org, "Mike Rapoport (Microsoft)" <rppt@kernel.org>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: Re: [PATCH 6.15 000/780] 6.15.3-rc1 review
+Message-ID: <2025062220-appeasing-underling-664c@gregkh>
+References: <20250617152451.485330293@linuxfoundation.org>
+ <f2b87714-0ef6-4210-9b30-86b4c79d1ed8@gmx.de>
+ <2025061848-clinic-revered-e216@gregkh>
+ <c8e4e868-aafb-4df1-8d07-62126bfe2982@hardfalcon.net>
+ <097ef8cc-5304-4a7d-abc0-fd011d1235d5@hardfalcon.net>
+ <2025061930-jumbo-bobsled-521a@gregkh>
+ <79673bf1-1ee7-4c42-8134-ca6ead0a36ac@hardfalcon.net>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <79673bf1-1ee7-4c42-8134-ca6ead0a36ac@hardfalcon.net>
 
-Some libc's like musl libc don't provide execinfo.h since it's not part
-of POSIX. In order to fix compilation on musl, only include execinfo.h
-if available (HAVE_BACKTRACE_SUPPORT)
+On Sun, Jun 22, 2025 at 12:09:42AM +0200, Pascal Ernster wrote:
+> [2025-06-19 06:17] Greg Kroah-Hartman:
+> > On Wed, Jun 18, 2025 at 10:31:43PM +0200, Pascal Ernster wrote:
+> > > Hello again,
+> > > 
+> > > 
+> > > I've sent this email a few minutes ago but mixed up one of the In-Reply-To
+> > > message IDs, so I'm resending it now with (hopefully) the correct
+> > > In-Reply-To message IDs.
+> > > 
+> > > 
+> > > I've bisected this and found that the issue is caused by commit
+> > > f46262bbc05af38565c560fd960b86a0e195fd4b:
+> > > 
+> > > 'Revert "mm/execmem: Unify early execmem_cache behaviour"'
+> > > 
+> > > https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git/commit/?id=f46262bbc05af38565c560fd960b86a0e195fd4b
+> > > 
+> > > https://lore.kernel.org/stable/20250617152521.879529420@linuxfoundation.org/
+> > > 
+> > > https://git.kernel.org/pub/scm/linux/kernel/git/stable/stable-queue.git/tree/queue-6.15/revert-mm-execmem-unify-early-execmem_cache-behaviour.patch?id=344d39fc8d8b7515b45a3bf568c115da12517b22
+> > 
+> > Thank you for digging into this.  Looks like I took the last patch in a
+> > patch series and not the previous ones, which caused this problem.  I've
+> > dropped this one now and will add it back next week after I also add all
+> > the other ones in the series.
+> 
+> 
+> You're welcome! :)
+> 
+> Btw, the same patch has turned up again in the stable queue für 6.15.4:
+> 
+> https://git.kernel.org/pub/scm/linux/kernel/git/stable/stable-queue.git/log/queue-6.15/revert-mm-execmem-unify-early-execmem_cache-behaviour.patch
+> 
+> Is this intentional or a mistake?
 
-This was discovered with c104c16073b7 ("Kunit to check the longest symbol length")
-which starts to include linux/kallsyms.h with Alpine Linux' configs.
+Intentional, I took the whole series this time, right?
 
-Signed-off-by: Achill Gilgenast <fossdd@pwned.life>
-Cc: stable@vger.kernel.org
----
- tools/include/linux/kallsyms.h | 4 ++++
- 1 file changed, 4 insertions(+)
+thanks,
 
-diff --git a/tools/include/linux/kallsyms.h b/tools/include/linux/kallsyms.h
-index 5a37ccbec54f..f61a01dd7eb7 100644
---- a/tools/include/linux/kallsyms.h
-+++ b/tools/include/linux/kallsyms.h
-@@ -18,6 +18,7 @@ static inline const char *kallsyms_lookup(unsigned long addr,
- 	return NULL;
- }
- 
-+#ifdef HAVE_BACKTRACE_SUPPORT
- #include <execinfo.h>
- #include <stdlib.h>
- static inline void print_ip_sym(const char *loglvl, unsigned long ip)
-@@ -30,5 +31,8 @@ static inline void print_ip_sym(const char *loglvl, unsigned long ip)
- 
- 	free(name);
- }
-+#else
-+static inline void print_ip_sym(const char *loglvl, unsigned long ip) {}
-+#endif
- 
- #endif
--- 
-2.50.0
-
+greg k-h
 
