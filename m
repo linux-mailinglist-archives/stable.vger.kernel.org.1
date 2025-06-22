@@ -1,153 +1,116 @@
-Return-Path: <stable+bounces-155265-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-155266-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 72070AE325A
-	for <lists+stable@lfdr.de>; Sun, 22 Jun 2025 23:31:27 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 755E1AE3273
+	for <lists+stable@lfdr.de>; Sun, 22 Jun 2025 23:37:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 834DB3B06D5
-	for <lists+stable@lfdr.de>; Sun, 22 Jun 2025 21:31:02 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9694A3B0992
+	for <lists+stable@lfdr.de>; Sun, 22 Jun 2025 21:37:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E930F1917D6;
-	Sun, 22 Jun 2025 21:31:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB67D1F2BAD;
+	Sun, 22 Jun 2025 21:37:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="er0j6+JA"
+	dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b="xdbX21Mh"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pj1-f67.google.com (mail-pj1-f67.google.com [209.85.216.67])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D900C2E0;
-	Sun, 22 Jun 2025 21:31:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.67
+Received: from submarine.notk.org (submarine.notk.org [62.210.214.84])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3FE411A0B08;
+	Sun, 22 Jun 2025 21:37:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.210.214.84
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750627881; cv=none; b=C/cflnjEbSN1hlbpMJ2HhKR3NBgRwGDNnpzk+fXZ7mcfmN7U3n+7qWM+tluDIkIsL7DvCBre0MNfyvQmPkgSjXvqFPS/cQRWWpRU9DFUM+xp2BJhbyOts/s51dLA7e5lI6uUsftwuTpPTpoXgW7xXc4LmjWUnWxr8rGpkVZmbX8=
+	t=1750628254; cv=none; b=Og+gS8pzCcCdP19vHybb3mkEyupDAZjTx3rr1ohCweoS1xk6I1xIU/FZS+qnnix5MYc8PzjwOgYRS3XytU5eFPjxZBUo1ZCdKURuY6noh1MGP92mlG1atQX0mu+U93lgcztMscANcZCFlOS5omuV7jLwn/aqXEM7cyi02QsNSuY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750627881; c=relaxed/simple;
-	bh=IdW5b/ilQ2wpV5HyTgBGLknyissGVZ99awUBdPrUHEw=;
-	h=MIME-Version:From:Date:Message-ID:Subject:To:Cc:Content-Type; b=DlhASIEOE2teDj7sLbN2GWpid104F2jFpZA1xN0PY4LsxmKmNN4lvv11kbcc4jLgykvNWJ8yY9AL8gtLzIoXd88Ux2ddBatW1Du/XJNZiYcKO9TjGF9AzZmt3iEx3cSQdeEIxL5mPPaRFXMMjdJbj6wzU/4aEOh6QCnBmO03/FI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=er0j6+JA; arc=none smtp.client-ip=209.85.216.67
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pj1-f67.google.com with SMTP id 98e67ed59e1d1-3139027b825so2625484a91.0;
-        Sun, 22 Jun 2025 14:31:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1750627879; x=1751232679; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:mime-version:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=IdW5b/ilQ2wpV5HyTgBGLknyissGVZ99awUBdPrUHEw=;
-        b=er0j6+JANzClYFfbe2EuFJcWVBFjeDvQMCZsaX63d8os6GbNgv1BjYPQs3AGjLP0wP
-         5ktP8jE9RZShC2apqXwQAZ0StnbiulKNBEBxlm/+ySeorRhOCbvxg73FC7YryhUu1XHb
-         J4o7Uwd1jGU8uOGWTiW4+dnE9CbA6sEHH4pyLBXJOl0gRwJMCC4sh1Q5/3GhzmcIqeBC
-         zzJ+NeXrNJ2oNW907IlHkb33aJiG0URYmRMgmAGLUt45odC6pZvHLjI2BVUjPrNIkUFg
-         rNMIc+3sHpOO41NK97Ana2wUhR+qNUjBf5rOEL1eHm+jDv8eSBJKU7YOQ9rKjPDCbOc1
-         BcUw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1750627879; x=1751232679;
-        h=cc:to:subject:message-id:date:from:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=IdW5b/ilQ2wpV5HyTgBGLknyissGVZ99awUBdPrUHEw=;
-        b=mwh7zo55SJc2BGqtOMOIsT7SIWmXk351KGrmpVJf7vTUuLyvWk6Czw13+bBWCpcB0n
-         NacHBgrl9/xwfADIUKcdxZNpYBVvKxUD3+vKyJp4VXCADPBpnt/t8wsi/fccRVnMcOzC
-         tQEsmGLWGL8cggLdT/D14C9/GA2rBWc+fsvhe5szpyu3fCFDvnKQB4owlFV91kurkbiy
-         bC06WL4IyJXTT5HvdhbKKA/LA1pNvrn3+RdFfBKXeDUYPe4QDL6LMqXlOy8Y/5HZWCyH
-         fz0QW0XLb28Jr8eoQnqYSLWMqX4HqCtFLb41K37RHKsX+5mCIexeXn1sOcXxoq3qtD4X
-         8gUg==
-X-Forwarded-Encrypted: i=1; AJvYcCWvpbCbDzpFca0kLK6efTgVEKFnzAh6cp1k1CS8MPe6uZtIiwa1ksAIN86ipQon6eAy26KE848GFbv7L0ul/Q==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxeqbXMxqviPm5WHJq9a8q4hJYYTukEKsQGl136ZpFSPGeKVXS2
-	uEPsuvTpnDkECN5SOe+vdmrhQKEnpLeoY8RG4cSzzA2yYMzDyYfG9gZc5PN/2KPap5KxKCyMaPm
-	wsQKi3akvWgKWLH+fkSq2urndYb9BdD4=
-X-Gm-Gg: ASbGncs93y8BuP3t8CxJsMGgAjdtoXE9a9PSMOgojaAA10SEZSBtKfEYOy651i5m2BD
-	keqcHn3/txd1SVoCO2+n+c7ThWV0PZldlT7cYWMFAujyRgIABw01jz4RtQNoVJiQWUqeSavqARE
-	PJlPcVf7e3J6GljJoTeBbNan6B494vQorkCQEqEL2gSmK0
-X-Google-Smtp-Source: AGHT+IFZWKTvXxbH3G7bLqTtzvIEx7H67Au/OCzCNxls/aVYC/EQxcLNtVDi0fCMPkkqWWhWpADdtxZfBDjg7529qc0=
-X-Received: by 2002:a17:90b:3d0b:b0:311:b413:f5e1 with SMTP id
- 98e67ed59e1d1-3159d8ffc0amr14898875a91.32.1750627879479; Sun, 22 Jun 2025
- 14:31:19 -0700 (PDT)
+	s=arc-20240116; t=1750628254; c=relaxed/simple;
+	bh=PiyYx0D7DHp1i6I7LGyVpcGHij0gzpGiuLrfKazlgOs=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=kQtFLDyDmNHchrY7r3CZUzwFjOfNJh/4mwyTY6ahJggADXWI/7fkJUliw+hG8/95ClPBAIYjpDCOeFx/FmDrdECNxKRflORQHqADgYn95NXdN146lR/4C3nnM1a3tZ1bR9W+iLq8y2ykV5IHvdUtb5hZYxT7nnFQvOS/DVXV++s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org; spf=pass smtp.mailfrom=codewreck.org; dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b=xdbX21Mh; arc=none smtp.client-ip=62.210.214.84
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=codewreck.org
+Received: from gaia.codewreck.org (localhost [127.0.0.1])
+	by submarine.notk.org (Postfix) with ESMTPS id 98E7F14C2D3;
+	Sun, 22 Jun 2025 23:37:27 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=codewreck.org;
+	s=2; t=1750628250;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=gXfWwuvWIHMt3iwfHv8lluOXP7T6x/8Jx+lA4Z3eTtA=;
+	b=xdbX21MhbwhJpEGOoJ4ypwZ/5icCaQ/l63bipBrGLcSYHhZ3/ed3/C+zH1hTuj1K7/uoMQ
+	DIWQoYsWkZ+7I06eVHGzOSnoXaCTUHSgFx/OFRu8sKYSdof86IJATFUBbWhbF1T3yKt/6L
+	CVvYji5kYfdsYI+ciQ5qiLgd+ODviNW/joEjsYg3khD9jNT5PAficgcLx3cOOQPDuHQH5o
+	5b6Q8lHzqzQ+rdRPN3UgfNiutQl8bLzldjCqUsnr4ctwp2MAzkY41XW4Ua0UVAOuK8R7hu
+	biSGvEwK9CsRIyk3gfDSvqATq/hiG/5n4lIkO+/rJZNdQvXhfV8hC/ksD0Q7YA==
+Received: from localhost (gaia.codewreck.org [local])
+	by gaia.codewreck.org (OpenSMTPD) with ESMTPA id f9ee9073;
+	Sun, 22 Jun 2025 21:37:25 +0000 (UTC)
+Date: Mon, 23 Jun 2025 06:37:10 +0900
+From: asmadeus@codewreck.org
+To: Christian Schoenebeck <linux_oss@crudebyte.com>
+Cc: Kees Cook <kees@kernel.org>,
+	Dominique Martinet via B4 Relay <devnull+asmadeus.codewreck.org@kernel.org>,
+	Eric Van Hensbergen <ericvh@kernel.org>,
+	Latchesar Ionkov <lucho@ionkov.net>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Michael Grzeschik <m.grzeschik@pengutronix.de>,
+	stable@vger.kernel.org, Yuhao Jiang <danisjiang@gmail.com>,
+	security@kernel.org, v9fs@lists.linux.dev,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3] net/9p: Fix buffer overflow in USB transport layer
+Message-ID: <aFh3hqGbzC-K3ylo@codewreck.org>
+References: <20250622-9p-usb_overflow-v3-1-ab172691b946@codewreck.org>
+ <659844BA-48EF-47E1-8D66-D4CA98359BBF@kernel.org>
+ <aFhqAergj6LowmyE@codewreck.org>
+ <2332540.nosMkMiWtC@silver>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-From: Bandhan Pramanik <bandhanpramanik06.foss@gmail.com>
-Date: Mon, 23 Jun 2025 03:01:08 +0530
-X-Gm-Features: AX0GCFv-PIdhMtiuqEmBSJhBAx3V8LVajpf5wYth2A1G7mmD97Qg2BPG5kV2AXg
-Message-ID: <CAEmM+Qh=8tm55Ypa2w3ZtOFFrGXTpKqxue59mVAo_5TVy0RJ6g@mail.gmail.com>
-Subject: [ath10k][QCA9377] Firmware crashes on Dell Inspiron 5567 (IRQ #16,
- all modern distro kernels)
-To: ath10k@lists.infradead.org, linux-wireless@vger.kernel.org
-Cc: stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <2332540.nosMkMiWtC@silver>
 
-Hello,
+Christian Schoenebeck wrote on Sun, Jun 22, 2025 at 11:20:21PM +0200:
+> On Sunday, June 22, 2025 10:39:29 PM CEST asmadeus@codewreck.org wrote:
+> [...]
+> > (... And this made me realize commit 60ece0833b6c ("net/9p: allocate
+> > appropriate reduced message buffers") likely broke everything for
+> > 9p/rdma 3 years ago, as rdma is swapping buffers around...
+> > I guess it doesn't have (m)any users...)
+> 
+> That patch contains an RDMA exception:
 
-This is to inform all that constant firmware crashes have been seen in
-the "Qualcomm Atheros QCA9377 802.11ac Wireless Network Adapter",
-which was shipped with the Dell Inspiron 5567 laptops. This affects
-every kernel release, including the stable and the longterm ones.
+Oh, thanks for pointing that out!
 
-All the logs have been taken after livebooting an Arch Linux ISO.
 
-Every distro has been tried, and it has been confirmed that some error
-of this kind is shown in every distro.
+BTW I just tried __counted_by and it's not obvious because it's not
+allocated with the fcall (fcall structs themselves are allocated in the
+req, and each fcall gets a data buffer)
 
-## Steps to reproduce the issue
+For everything other than RDMA it shouldn't be too difficult to bubble
+the allocation up (fcall+data as a flexible array as a pointer in req),
+but then with large "round" msizes we'd get into the next power of two
+buckets so I think it's probably better to keep as is.
+(.. that and I wouldn't look forward to rework the buffer swapping logic
+with RDMA, even if it should be straightforward enough with a couple of
+container_of()s...)
 
-1. Boot/liveboot any Linux ISO through this card (and possibly, this laptop).
-2. Wi-Fi network interface appears.
-3. Connect the Wi-Fi router to the computer.
-4. A few moments/minutes after that, the touchpad stops working, and
-the network interface cannot even access the Internet anymore (BUT,
-the network interface might disappear, might not disappear).
-
-## Affected distros and the necessary workarounds
-
-This has been the pattern on every distro and their corresponding
-kernels (LMDE, Linux Mint, Pop!_OS, Zorin, Kubuntu, KDE Neon,
-elementaryOS, Fedora, and even Arch). The fix which made these distros
-usable is to add two things:
-
-- Adding "options ath10k_core skip_otp=y" to a new conf file in /etc/modprobe.d.
-- Adding "pci=noaer" in GRUB kernel parameters so that the logs are
-not flooded with Multiple Correctable Errors.
-
-To defend my case (that it occurs in the other models of Inspiron 5567
-too), I have recently contacted someone running Linux Mint on the same
-model. The answer was the same: the touchpad and the Wi-Fi stop
-simultaneously.
-
-## Some of the limitations
-
-The kernel was tainted, but the other things have been properly noted
-in case they might provide some useful details. As stated,
-investigating why IRQ #16 is disabled will probably give us the
-answer.
-
-## Logs provided
-
-All the logs in a combined manner can be found here:
-https://gist.github.com/BandhanPramanik/ddb0cb23eca03ca2ea43a1d832a16180
-
-- Full dmesg: https://gist.github.com/BandhanPramanik/ddb0cb23eca03ca2ea43a1d832a16180#file-dmesg-log
-- Hostnamectl: https://gist.github.com/BandhanPramanik/ddb0cb23eca03ca2ea43a1d832a16180#file-hostnamectl-log
-- lspci: https://gist.github.com/BandhanPramanik/ddb0cb23eca03ca2ea43a1d832a16180#file-lspci-log
-- Modinfo of the driver:
-https://gist.github.com/BandhanPramanik/ddb0cb23eca03ca2ea43a1d832a16180#file-modinfo-log
-- Ping command:
-https://gist.github.com/BandhanPramanik/ddb0cb23eca03ca2ea43a1d832a16180#file-ping-log
-- /proc/interrupts:
-https://gist.github.com/BandhanPramanik/ddb0cb23eca03ca2ea43a1d832a16180#file-proc_interrupts-log
-- IP addr command (Heavily Redacted):
-https://gist.github.com/BandhanPramanik/ddb0cb23eca03ca2ea43a1d832a16180#file-ip_addr-log
-
-Lastly, this issue on the GitHub repository of Pop!_OS 'might' be
-relevant: https://github.com/pop-os/pop/issues/1470
-
-It would be highly appreciated if the matter were looked into.
+Perhaps when/if counted_by learns to apply to pointers:
+---
+.../include/net/9p/9p.h:558:13: error: ‘counted_by’ attribute is not allowed for a non-array field
+  558 |         u8 *sdata __counted_by(capacity);
+      |             ^~~~~
+make[3]: *** [.../scripts/Makefile.build:287: trans_xen.o] Error 1
+In file included from client.c:22:
+---
 
 Thanks,
-
-Bandhan Pramanik
+-- 
+Dominique Martinet | Asmadeus
 
