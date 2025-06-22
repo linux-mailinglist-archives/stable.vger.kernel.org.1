@@ -1,89 +1,107 @@
-Return-Path: <stable+bounces-155248-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-155249-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C21DAE2F3C
-	for <lists+stable@lfdr.de>; Sun, 22 Jun 2025 11:48:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 75645AE2F70
+	for <lists+stable@lfdr.de>; Sun, 22 Jun 2025 13:04:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 259CA16D803
-	for <lists+stable@lfdr.de>; Sun, 22 Jun 2025 09:48:05 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0A1FD170D6B
+	for <lists+stable@lfdr.de>; Sun, 22 Jun 2025 11:04:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C2C586349;
-	Sun, 22 Jun 2025 09:47:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 16A9E1C5D7A;
+	Sun, 22 Jun 2025 11:04:04 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from bregans-1.gladserv.net (bregans-1.gladserv.net [185.128.211.58])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 730CB79F2;
-	Sun, 22 Jun 2025 09:47:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.128.211.58
+Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB4FC1D07BA;
+	Sun, 22 Jun 2025 11:03:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.242.206.163
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750585679; cv=none; b=SGiPq6X+fcxdndQsZWljIU6xtzoXS+KTVt9CBoAqGYZROXHgixWd1PEFVxbK4vmu00VavfI69DcYaZLT8ZO0GfOKynHq1GsL7bK6qVbOKgSBZjEYLr1DEwAMaRs7guR1Oc8ncNB0gy/W3NuJ/9sZdYc+xS1emn9iJLW5Ntp16os=
+	t=1750590243; cv=none; b=FRYVl/JGfv7yu4aMC6WkYk1iBSnLXqFkF744dMwdWC4fRbVuci0bLjKE/HwmuoE1WPPG1ZegimEwp2xM1LIBlnijoI8MTNR1vnpek70pLIL8d/XaDjwBilgr8axAxEwaeSEYSGNFwOsb8LkviC9vAPfXsvI2dNvBA9n8hCcbrD8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750585679; c=relaxed/simple;
-	bh=3r2stGeFxdRTV62Vx1SerU6WP4+HO3pIxtvqxjafR0Q=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=dH0xn+BLhUHgokOpp8yCUdUE2NQ/yaAE4pLcOAu31MKu/0Cz84GFlBEXQcOT9mwNy7f355g2i4GtVVt9WEaSeJOSIkZRgzgoIa4mQ0WWx9TYttVZXEDnMeu6p++lQ1YuWQb+R7iz/XyuouE7Sc9m+rdIc11atFpa+lMrfm/BGOM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=librecast.net; spf=pass smtp.mailfrom=gladserv.com; arc=none smtp.client-ip=185.128.211.58
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=librecast.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gladserv.com
-Received: from [2a0c:e303:0:7000:1adb:f2ff:fe4f:84eb] (port=45862 helo=localhost)
-	by bregans-1.gladserv.net with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(envelope-from <brett@gladserv.com>)
-	id 1uTH9E-007CGr-0o;
-	Sun, 22 Jun 2025 09:38:00 +0000
-Date: Sun, 22 Jun 2025 11:37:53 +0200
-From: Brett Sheffield <brett@librecast.net>
-To: Greg KH <gregkh@linuxfoundation.org>
-Cc: Willem de Bruijn <willemb@google.com>, stable@vger.kernel.org,
-	regressions@lists.linux.dev
-Subject: Re: 6.12.y longterm regression - IPv6 UDP packet fragmentation
-Message-ID: <aFfO8a7vS1jeBonh@karahi.gladserv.com>
-References: <aElivdUXqd1OqgMY@karahi.gladserv.com>
- <2025061745-calamari-voyage-d27a@gregkh>
- <aFGl-mb--GOMY8ZQ@karahi.gladserv.com>
- <CA+FuTSen5bEXdTJzrPELKkNZs6N=BPDNxFKYpx2JQmXmFrb09Q@mail.gmail.com>
- <2025062212-erasable-riches-d3eb@gregkh>
+	s=arc-20240116; t=1750590243; c=relaxed/simple;
+	bh=Qc+kl+BZULne/++22l7jmMT41bJToxl4RbYBXn5+pWY=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=NNcZV07z+z+pwua9vKGF84HaduDoJpiOWhd0+5elPEQsSynKCvZdSTkuhwYibX041IB1P+Mbr7BBOE/9XHX2j7hgVCbdponNLGYKCkBGgDEu+Cq1+LYhzWhL16zYWgLY4UiEjpdmfCgIlRFc8Tzk/GfvulkoGrHb+i8TZeBlG/c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn; spf=pass smtp.mailfrom=loongson.cn; arc=none smtp.client-ip=114.242.206.163
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=loongson.cn
+Received: from loongson.cn (unknown [223.64.68.149])
+	by gateway (Coremail) with SMTP id _____8AxDGut4ldo7R0bAQ--.61247S3;
+	Sun, 22 Jun 2025 19:02:05 +0800 (CST)
+Received: from localhost.localdomain (unknown [223.64.68.149])
+	by front1 (Coremail) with SMTP id qMiowMAxjhum4ldoBa0lAQ--.33504S2;
+	Sun, 22 Jun 2025 19:02:03 +0800 (CST)
+From: Huacai Chen <chenhuacai@loongson.cn>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Sasha Levin <sashal@kernel.org>,
+	Huacai Chen <chenhuacai@kernel.org>
+Cc: Xuerui Wang <kernel@xen0n.name>,
+	stable@vger.kernel.org,
+	ziyao@disroot.org,
+	linux-kernel@vger.kernel.org,
+	loongarch@lists.linux.dev,
+	Huacai Chen <chenhuacai@loongson.cn>
+Subject: [PATCH for 6.1/6.6] platform/loongarch: laptop: Fix build error due to backport
+Date: Sun, 22 Jun 2025 19:01:48 +0800
+Message-ID: <20250622110148.3108758-1-chenhuacai@loongson.cn>
+X-Mailer: git-send-email 2.47.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <2025062212-erasable-riches-d3eb@gregkh>
-Organisation: Gladserv Limited.  Registered in Scotland with company number SC318051. Registered Office 272 Bath Street, Glasgow, G2 4JR, Scotland. VAT Registration Number 902 6097 39.
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:qMiowMAxjhum4ldoBa0lAQ--.33504S2
+X-CM-SenderInfo: hfkh0x5xdftxo6or00hjvr0hdfq/
+X-Coremail-Antispam: 1Uk129KBj93XoW7Cr4DtFyrZF1UWFyfWFWDKFX_yoW8JFWkp3
+	9rC34UArWUGrs2qa1Dt348ur45Za43A3y2vay7A34q9asxX34j9r1Utas8GF12qay8Ar1Y
+	qF95G3W5uF45uwbCm3ZEXasCq-sJn29KB7ZKAUJUUUU5529EdanIXcx71UUUUU7KY7ZEXa
+	sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
+	0xBIdaVrnRJUUUkFb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
+	IYs7xG6rWj6s0DM7CIcVAFz4kK6r1Y6r17M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
+	e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_JFI_Gr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
+	0_Jr0_Gr1l84ACjcxK6I8E87Iv67AKxVW8Jr0_Cr1UM28EF7xvwVC2z280aVCY1x0267AK
+	xVW8Jr0_Cr1UM2AIxVAIcxkEcVAq07x20xvEncxIr21l57IF6xkI12xvs2x26I8E6xACxx
+	1l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r1Y6r17McIj6I8E87Iv
+	67AKxVWUJVW8JwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IYc2Ij64vIr41l42xK82IYc2
+	Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s02
+	6x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r1q6r43MIIYrxkI7VAKI48JMIIF0x
+	vE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14v26r1j6r4UMIIF0xvE
+	42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv6x
+	kF7I0E14v26r1j6r4UYxBIdaVFxhVjvjDU0xZFpf9x07j1WlkUUUUU=
 
-On 2025-06-22 11:10, Greg KH wrote:
-> On Tue, Jun 17, 2025 at 02:25:02PM -0400, Willem de Bruijn wrote:
-> > FWIW, I did not originally intend for these changes to make it to stable.
-> > 
-> > The simplest short term solution is to revert this patch out of the
-> > stable trees. But long term that may give more conflicts as later
-> > patches need to be backported? Not sure what is wiser in such cases.
-> 
-> For now, I've applied the above 2 to the 6.12.y tree.  They do not apply
-> any older.  If I should drop the change from the older stable trees,
-> please let me know.
+In 6.1/6.6 there is no BACKLIGHT_POWER_ON definition so a build error
+occurs due to recently backport:
 
-Thanks Greg.
+  CC      drivers/platform/loongarch/loongson-laptop.o
+drivers/platform/loongarch/loongson-laptop.c: In function 'laptop_backlight_register':
+drivers/platform/loongarch/loongson-laptop.c:428:23: error: 'BACKLIGHT_POWER_ON' undeclared (first use in this function)
+  428 |         props.power = BACKLIGHT_POWER_ON;
+      |                       ^~~~~~~~~~~~~~~~~~
 
-For the older stable trees I agree with Willem that reverting the patch is the
-simplest fix.
+Use FB_BLANK_UNBLANK instead which has the same meaning.
 
-As it stands UDP is broken in the older stable trees, so if this can make it
-into the next stable release that would be a good thing.
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+---
+ drivers/platform/loongarch/loongson-laptop.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Cheers,
-
-
-Brett
+diff --git a/drivers/platform/loongarch/loongson-laptop.c b/drivers/platform/loongarch/loongson-laptop.c
+index 61b18ac206c9..5fcfa3a7970b 100644
+--- a/drivers/platform/loongarch/loongson-laptop.c
++++ b/drivers/platform/loongarch/loongson-laptop.c
+@@ -425,7 +425,7 @@ static int laptop_backlight_register(void)
+ 
+ 	props.max_brightness = status;
+ 	props.brightness = ec_get_brightness();
+-	props.power = BACKLIGHT_POWER_ON;
++	props.power = FB_BLANK_UNBLANK;
+ 	props.type = BACKLIGHT_PLATFORM;
+ 
+ 	backlight_device_register("loongson_laptop",
 -- 
-Brett Sheffield (he/him)
-Librecast - Decentralising the Internet with Multicast
-https://librecast.net/
-https://blog.brettsheffield.com/
+2.47.1
+
 
