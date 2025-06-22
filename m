@@ -1,100 +1,104 @@
-Return-Path: <stable+bounces-155262-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-155263-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E24DAE31E0
-	for <lists+stable@lfdr.de>; Sun, 22 Jun 2025 22:02:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 088CBAE31F8
+	for <lists+stable@lfdr.de>; Sun, 22 Jun 2025 22:34:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0D311188FF8E
-	for <lists+stable@lfdr.de>; Sun, 22 Jun 2025 20:02:45 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4E5C01887273
+	for <lists+stable@lfdr.de>; Sun, 22 Jun 2025 20:34:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7BF6D1E5716;
-	Sun, 22 Jun 2025 20:02:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C00F1E0DEA;
+	Sun, 22 Jun 2025 20:33:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fEcWQQzE"
+	dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b="NPTorpW/"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 325482EB1D;
-	Sun, 22 Jun 2025 20:02:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from submarine.notk.org (submarine.notk.org [62.210.214.84])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73D3AAD2C;
+	Sun, 22 Jun 2025 20:33:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.210.214.84
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750622544; cv=none; b=QqYJnlqA4BXJ0YLXcvAkwbRRCUcKH6kN/BsgWURXgygnKrr0xD/B4VmJAnf2965hO2J252EGA3qyIfTkLN3l2mHEV7KbO9Y0aZFHkRJeJNFKHKiROUrG3v1xyJ3YPt3jeXyQkQB8ZeF0TSc87Pp2Zr3O51egKra/FidkOrws5g8=
+	t=1750624431; cv=none; b=kpn0ROq0zKg752SwX3MVTLADoWHsq0nFA9YXCngxD/OYJVAoBNTlEcSvMrmWRsVAQbOGHDYidUipsTSLQ3+VcURT0RwGnJnNs9eTXvzVNVNE+vfXkknc2bTWBNMWuD0N1QaJsai+QgrNKG6DwpZC77aa6obHzjWLyF+stsBWghk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750622544; c=relaxed/simple;
-	bh=mlsPtZtDvvLfFHPW6PA8GuAhqv8ci6PlXF+mqDo4ajA=;
-	h=Date:From:To:CC:Subject:In-Reply-To:References:Message-ID:
-	 MIME-Version:Content-Type; b=nrUHFLdT3Pra5LmYZ9ss5aWv+Bm3h9HWcKo1tMRW2ZfklxpUl5vIAEGfs1wbGsVofXAHrbmwVNMchpm3myhcJBOrVM2XqeGfdyQ16aG732BJkAtRM3DARnySjcaNbFSH+Q3beTMvRV2K/JtN5U+zNda/ljgZrMvBOjQ1jPKu9Sc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fEcWQQzE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 759DFC4CEE3;
-	Sun, 22 Jun 2025 20:02:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1750622544;
-	bh=mlsPtZtDvvLfFHPW6PA8GuAhqv8ci6PlXF+mqDo4ajA=;
-	h=Date:From:To:CC:Subject:In-Reply-To:References:From;
-	b=fEcWQQzEH0T3nFzMMZMZuclqQanDyrukImCInMj/vYXmaSg/DOMnl5m5fXOzsSLfL
-	 lwLpAoXcjVxs9o01x34GWUIKg0YLnKexJUW6foIHpcbUMXlDVJsztTra/BnbZO0ibV
-	 jvYOI4QgNPoEGQJNWu9poUmLZASJKi/GZrKb1ljdspBNvjB5vv5sDDj7GOooWNcyED
-	 QR4iplEWhE7kWflUpKAgUj5UKVCEYr5+4NwCCozR3mmsDLh6ZB0DxQpo0Q/Jse2XpY
-	 kIRJxNmrWWgXg1Wo5ZFrJ3aVhro8FJsbmUG3MnLSAxTm1HkFPRRMbS74u4U2aLBAdd
-	 hbCchhLNzIY0Q==
-Date: Sun, 22 Jun 2025 13:02:20 -0700
-From: Kees Cook <kees@kernel.org>
-To: asmadeus@codewreck.org,
- Dominique Martinet via B4 Relay <devnull+asmadeus.codewreck.org@kernel.org>,
- Eric Van Hensbergen <ericvh@kernel.org>, Latchesar Ionkov <lucho@ionkov.net>,
- Christian Schoenebeck <linux_oss@crudebyte.com>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Michael Grzeschik <m.grzeschik@pengutronix.de>
-CC: stable@vger.kernel.org, Yuhao Jiang <danisjiang@gmail.com>,
- security@kernel.org, v9fs@lists.linux.dev, linux-kernel@vger.kernel.org,
- Dominique Martinet <asmadeus@codewreck.org>
-Subject: Re: [PATCH v3] net/9p: Fix buffer overflow in USB transport layer
-User-Agent: K-9 Mail for Android
-In-Reply-To: <20250622-9p-usb_overflow-v3-1-ab172691b946@codewreck.org>
-References: <20250622-9p-usb_overflow-v3-1-ab172691b946@codewreck.org>
-Message-ID: <659844BA-48EF-47E1-8D66-D4CA98359BBF@kernel.org>
+	s=arc-20240116; t=1750624431; c=relaxed/simple;
+	bh=9qt3VEXjww2Y9h5OxVP6h/ujNfIbEToBjPUBwys0V/Q=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Buba9oNsSLUBInPCwOyWVbdxWr24YkQJvB8Qhcn+wEFiKhP8QOJ3E5lNxGmvgJIILxN5D+msytXK66gdD/Z2nv4j7BZEmLKvqgAQBt121L9mmoq5ryz6aICK99lnZDuo7KmYbMo+sWLxa/pZk3BnAdr/YelvleUisZ171uvTkps=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org; spf=pass smtp.mailfrom=codewreck.org; dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b=NPTorpW/; arc=none smtp.client-ip=62.210.214.84
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=codewreck.org
+Received: from gaia.codewreck.org (localhost [127.0.0.1])
+	by submarine.notk.org (Postfix) with ESMTPS id 4771F14C2D3;
+	Sun, 22 Jun 2025 22:33:38 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=codewreck.org;
+	s=2; t=1750624421;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=7DSenrNn0CjeH9c6zMLb3QHWm1cFVCBKUwae6Q8W2io=;
+	b=NPTorpW/lzclVnSb68yVyhn4kVW8XqeeISVm8ANNTsHFAzcn7dygCvR+j/CeXXuHVh5mp6
+	55uZrJyjustbhXTXG0b3xSMro/Aubr/tcjaVW0mZn7q29HwR2fZQCIOS+FmSbevDnbTRa0
+	pbRNPe7rvGMTtOkYjTKoAh70yy2yzTO0mwQ0Yam6qzeWAVC2MSqJXDWylYI66vcBdClciL
+	CPsA6WHrwLKb5tn4Fw3IMd3OdaRxC/jr3LiPFi37gr4ht5OdYtMHzXWnFLPJR7BtFXzQbw
+	prss4uI3jXmVanj3jP5/wRoaDI5dG9xH4F+lWNccWjpMovHUhLdg8PhjuFprpQ==
+Received: from localhost (gaia.codewreck.org [local])
+	by gaia.codewreck.org (OpenSMTPD) with ESMTPA id 8e85e19f;
+	Sun, 22 Jun 2025 20:33:36 +0000 (UTC)
+Date: Mon, 23 Jun 2025 05:33:21 +0900
+From: Dominique Martinet <asmadeus@codewreck.org>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Eric Van Hensbergen <ericvh@kernel.org>,
+	Latchesar Ionkov <lucho@ionkov.net>,
+	Christian Schoenebeck <linux_oss@crudebyte.com>,
+	Michael Grzeschik <m.grzeschik@pengutronix.de>,
+	stable@vger.kernel.org, Yuhao Jiang <danisjiang@gmail.com>,
+	security@kernel.org, v9fs@lists.linux.dev,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2] net/9p: Fix buffer overflow in USB transport layer
+Message-ID: <aFhokd2CQwn_XBzJ@codewreck.org>
+References: <20250620-9p-usb_overflow-v2-1-026c6109c7a1@codewreck.org>
+ <2025062007-ravishing-overcrowd-7342@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <2025062007-ravishing-overcrowd-7342@gregkh>
 
+Greg Kroah-Hartman wrote on Fri, Jun 20, 2025 at 06:56:24AM +0200:
+> > -	memcpy(p9_rx_req->rc.sdata, req->buf, req->actual);
+> > +	if (req_size > p9_rx_req->rc.capacity) {
+> > +		dev_err(&cdev->gadget->dev,
+> > +			"%s received data size %u exceeds buffer capacity %zu\n",
+> > +			ep->name, req_size, p9_rx_req->rc.capacity);
+> 
+> Do you want a broken device to be able to flood the kernel log?  You
+> might want to change this to dev_dbg() instead.
 
+I realize I hadn't replied to this one -- I (still) consider 9p mounts
+to be somewhat privileged/trusted, so I'm fine flooding kernel logs with
+a broken device.
+If the trust model changes (I've been askedto make 9p mountable by
+non-root users... perhaps after we've caught up with syzcallers
+reports but not holding my breath) then we can revisit this, but 9p IO
+errors are rather badly behaved afaik (connection possibly never
+recovers) so I'd rather the first error stands out.
 
-On June 22, 2025 6:39:56 AM PDT, Dominique Martinet via B4 Relay <devnull+=
-asmadeus=2Ecodewreck=2Eorg@kernel=2Eorg> wrote:
-> [=2E=2E=2E]
->Add validation in usb9pfs_rx_complete() to ensure req->actual does not
->exceed the buffer capacity before copying data=2E
-> [=2E=2E=2E]
->+	if (req_size > p9_rx_req->rc=2Ecapacity) {
->+		dev_err(&cdev->gadget->dev,
->+			"%s received data size %u exceeds buffer capacity %zu\n",
->+			ep->name, req_size, p9_rx_req->rc=2Ecapacity);
->+		req_size =3D 0;
->+		status =3D REQ_STATUS_ERROR;
->+	}
->=20
->-	p9_rx_req->rc=2Esize =3D req->actual;
->+	memcpy(p9_rx_req->rc=2Esdata, req->buf, req_size);
+> > -	p9_rx_req->rc.size = req->actual;
+> > +	memcpy(p9_rx_req->rc.sdata, req->buf, req_size);
+> >  
+> > -	p9_client_cb(usb9pfs->client, p9_rx_req, REQ_STATUS_RCVD);
+> > +	p9_rx_req->rc.size = req_sizel;
+> 
+> Did this code build properly?
 
-Is rc=2Esdata always rc=2Ecapacity sized? If so, this world be a good firs=
-t adopter of the __counted_by annotation for pointer struct members, availa=
-ble in Clang trunk and soon in GCC:
-https://gcc=2Egnu=2Eorg/pipermail/gcc-patches/2025-May/683696=2Ehtml
+Thanks/sorry for this one as well :/
 
--Kees
-
-=20
-
---=20
-Kees Cook
+-- 
+Dominique
 
