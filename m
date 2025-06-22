@@ -1,326 +1,254 @@
-Return-Path: <stable+bounces-155267-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-155269-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 55FC3AE3281
-	for <lists+stable@lfdr.de>; Sun, 22 Jun 2025 23:48:52 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E68AAE32C6
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 00:24:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E658E7A261D
-	for <lists+stable@lfdr.de>; Sun, 22 Jun 2025 21:47:28 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 05A83188FD75
+	for <lists+stable@lfdr.de>; Sun, 22 Jun 2025 22:24:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 70EB91E5206;
-	Sun, 22 Jun 2025 21:48:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 63B8021A433;
+	Sun, 22 Jun 2025 22:24:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="ykjnqDX/"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="pXnwWnuS"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f177.google.com (mail-qt1-f177.google.com [209.85.160.177])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E52542AAF;
-	Sun, 22 Jun 2025 21:48:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D3421862A
+	for <stable@vger.kernel.org>; Sun, 22 Jun 2025 22:24:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750628925; cv=none; b=HV5XUbPBOJ0QxxzzxuqywoPHJCHv9fT7ePpJp+FJyiZSFUOe3cFsdzzgt57RMqzuYEgbuOgvUdJLaCYEvkavAmdOZbqpIMRzW2vv3ANVrcLFddL4C3giJ7ekl699ZHNm6wO/fEKLwZNLBsx79AOoGxAlhqC4IW4yJHRhRXAFpfY=
+	t=1750631063; cv=none; b=tvCkcP1H+aURGZ2y9Su1Xen1WIi0MwC2+x2OKl4Za+mh91Ac++Xlxo86ecVfeNlYlL7PGaprg/BUYO/2kD1gmzoLQWQkJr1ttZ+j9uxGCF275SUp2Ikor6GKkYOQGVNRYtb8BWiDuzXxCLhuokhYXX6AjwHne6bmGrFp6nmva84=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750628925; c=relaxed/simple;
-	bh=flck0XCkxNF8NjfYUwIumgJbuoWPKoCB4JIQDX8XV3I=;
-	h=Date:To:From:Subject:Message-Id; b=TfKvlM5H6hjlDijxvYlRFU1xqOaLjkSUMnowagD6d+y+lhp68FJjCSyZzMhji+y2f9pOWp4XryCbYO1HyAI5jqPn6LA7OIedVB2qKHm13XgrdFBHBIgz/EfuzUcMPz6O2Nr8weZKtjSTitxtVgLKoGzIvaBTSVDDt7tOFkbkDyM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=ykjnqDX/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5CA9DC4CEEA;
-	Sun, 22 Jun 2025 21:48:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1750628924;
-	bh=flck0XCkxNF8NjfYUwIumgJbuoWPKoCB4JIQDX8XV3I=;
-	h=Date:To:From:Subject:From;
-	b=ykjnqDX/H6q+dlptT8saZzE+RlvlN+71JAOcOdTYUVEns8gfSBbT9y5FGZVlMTf15
-	 gexKlN1j7310tMt7LCl7IN6rpPcpgeyz/KEWkfmexzDBsXpLek9djLZMXJp2nZ1WGC
-	 qVFfBTU2pKyJBusNTAYI7JidBYqG2jYkWuibj4bw=
-Date: Sun, 22 Jun 2025 14:48:43 -0700
-To: mm-commits@vger.kernel.org,stable@vger.kernel.org,peterx@redhat.com,muchun.song@linux.dev,gavinguo@igalia.com,david@redhat.com,osalvador@suse.de,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: + mmhugetlb-change-mechanism-to-detect-a-cow-on-private-mapping.patch added to mm-new branch
-Message-Id: <20250622214844.5CA9DC4CEEA@smtp.kernel.org>
+	s=arc-20240116; t=1750631063; c=relaxed/simple;
+	bh=mr0vzL6f4v2foHwwXLma3LkzpJdNCBXCnJoa983E1Hg=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=ngbqqBd+1sA8wz1yQh+ot9PXZuErrAvzAG1XgK6lc4KIlMeaBPGHmvkFLYKFbpveJOUXohbtp4oRaUFbCeJfaXEa1XGHVwzbKIem1jEtsUF+TgoPPyf9j2JUjIufzMiKeREdAXIbVRWu158jylPQlDoR4XWVbmtx96NS/q+chyY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=pXnwWnuS; arc=none smtp.client-ip=209.85.160.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Received: by mail-qt1-f177.google.com with SMTP id d75a77b69052e-4a58197794eso238831cf.1
+        for <stable@vger.kernel.org>; Sun, 22 Jun 2025 15:24:21 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1750631060; x=1751235860; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=z2GI2494rUC/2TZW0ywCzgu9F19ggR5YUviGIVZ+qfY=;
+        b=pXnwWnuS/BZnsgWgNahJddA1o0fSH2VvmG3zPXsm08fVnITT0z3PXPUwVRlgANULmQ
+         pUjIo7YXZZkHECgNCa4T2cl3W4kUq4Idimk91KFSzNBwCuejxzLOekDY27Mk46H7altt
+         W2Zeay+0HVYw8eDKbJgh6nNh/xg/Gb2Vus/IhM9ql3cqRfwVFNNwPob+yHCy5A8TYwY4
+         5IDTU3RKdnly5uSSq1QyEp30asDId9IT6GTsB1RN2lJ3wrXjjqXcXf/7i3USKBOcuTUj
+         51q54rQRfnHS1fzn/j1gMJBq1cl4aYc+FFuH/VlN/mZ8uGMjUbYpFWBCeEvl0HaDkzTN
+         pYaA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1750631060; x=1751235860;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=z2GI2494rUC/2TZW0ywCzgu9F19ggR5YUviGIVZ+qfY=;
+        b=f4X8GtLmPO5ss+vja2sUpMweTI2IZg9tjYoTFmK9hOrm2bVuDkImguf0Dudic1+G11
+         NfyCF36ifOgH/KrYn/xFH2fBqpOT6hLGH4sXvziFiyLsnAg4Q+dSDAp5FYYYsuIK+6i4
+         rEpyMKkZAd1BZEBPUzMS+RjS5yiqcawv5zQp5Iha8JlkT8Onqgzzjg7IjkzBIUUqwnCj
+         WMu/Q5g5GjNXlc0V2l985z1jLnW++WzShfASvv941mGnPqVV6J30aZGK2WMdlqUM5p7G
+         2Mb4eGufT9fAgZq5F9mY/3KPvLhF0zWczR4pJfPb+VlbIGL9gUPfekuKmCYP+InjDDPm
+         tA5g==
+X-Forwarded-Encrypted: i=1; AJvYcCU5ZxTXtGng+9XmjxaBNxOv/VSoG89EcPfA3YtI5yPJ2pr4dz+qFkjm+dWfW9zR17lhFsvIxF4=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyuWUjI3NX7I7CqPt7VE9olm5Xv+KYr5jQteofmHJ++MrbTPHHF
+	as8fgIv8HS/+B1/R1FxmTXTbpe8EpWkLCEVg3p3SFiyxa0F4/DVTak4m9+B0ohmqyx52mCCthC2
+	j2HIlJzJtwNtpNcjFyrdfFwCUx8AYU0X9qxwJCCM0
+X-Gm-Gg: ASbGncsxKZLMG5dHB25hxFMiwMOGx9srP/V+KqoFrRnJ3XrFRfddHXXWkM5NI4grl2c
+	6j/aEPpNQpfXx3oP1UvysoOoJ4zfSRsK0AbBJc7nmkzm6nrydx/zmUCdFaOXrcb+jMXl+MDva3V
+	CxbVr2pg5NwofaL236oDdnUjMLYKF+52XGM9fE5UjLpw==
+X-Google-Smtp-Source: AGHT+IFXpfw+xB4qC+6F0GtwYxkvSjZPT2sqzoTBpbCRyfAg/E0SGXmExBTMb8qlx3auQmultRnj8mhUyA+FgakccdY=
+X-Received: by 2002:a05:622a:11ca:b0:48a:42fa:78fa with SMTP id
+ d75a77b69052e-4a7852dba43mr5237071cf.2.1750631059676; Sun, 22 Jun 2025
+ 15:24:19 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+References: <20250620195305.1115151-1-harry.yoo@oracle.com> <7935cfb1.1432.19790952566.Coremail.00107082@163.com>
+In-Reply-To: <7935cfb1.1432.19790952566.Coremail.00107082@163.com>
+From: Suren Baghdasaryan <surenb@google.com>
+Date: Sun, 22 Jun 2025 15:24:08 -0700
+X-Gm-Features: Ac12FXxuGqxZZyKQhgH0eqA4IJBrgYI4hYeartJ-8Oj8skCpD3dIFoo0_U2Xlwc
+Message-ID: <CAJuCfpG3=0MCac2jTVM9LiJWDwWdLE3vrcJp52x4ZX5XdSEv1A@mail.gmail.com>
+Subject: Re: [PATCH v2] lib/alloc_tag: do not acquire non-existent lock in alloc_tag_top_users()
+To: David Wang <00107082@163.com>
+Cc: Harry Yoo <harry.yoo@oracle.com>, akpm@linux-foundation.org, 
+	kent.overstreet@linux.dev, oliver.sang@intel.com, cachen@purestorage.com, 
+	linux-mm@kvack.org, oe-lkp@lists.linux.dev, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
+On Fri, Jun 20, 2025 at 8:43=E2=80=AFPM David Wang <00107082@163.com> wrote=
+:
+>
+>
+> At 2025-06-21 03:53:05, "Harry Yoo" <harry.yoo@oracle.com> wrote:
+> >alloc_tag_top_users() attempts to lock alloc_tag_cttype->mod_lock
+> >even when the alloc_tag_cttype is not allocated because:
+> >
+> >  1) alloc tagging is disabled because mem profiling is disabled
+> >     (!alloc_tag_cttype)
+> >  2) alloc tagging is enabled, but not yet initialized (!alloc_tag_cttyp=
+e)
+> >  3) alloc tagging is enabled, but failed initialization
+> >     (!alloc_tag_cttype or IS_ERR(alloc_tag_cttype))
+> >
+> >In all cases, alloc_tag_cttype is not allocated, and therefore
+> >alloc_tag_top_users() should not attempt to acquire the semaphore.
+> >
+> >This leads to a crash on memory allocation failure by attempting to
+> >acquire a non-existent semaphore:
+> >
+> >  Oops: general protection fault, probably for non-canonical address 0xd=
+ffffc000000001b: 0000 [#3] SMP KASAN NOPTI
+> >  KASAN: null-ptr-deref in range [0x00000000000000d8-0x00000000000000df]
+> >  CPU: 2 UID: 0 PID: 1 Comm: systemd Tainted: G      D             6.16.=
+0-rc2 #1 VOLUNTARY
+> >  Tainted: [D]=3DDIE
+> >  Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.2-deb=
+ian-1.16.2-1 04/01/2014
+> >  RIP: 0010:down_read_trylock+0xaa/0x3b0
+> >  Code: d0 7c 08 84 d2 0f 85 a0 02 00 00 8b 0d df 31 dd 04 85 c9 75 29 4=
+8 b8 00 00 00 00 00 fc ff df 48 8d 6b 68 48 89 ea 48 c1 ea 03 <80> 3c 02 00=
+ 0f 85 88 02 00 00 48 3b 5b 68 0f 85 53 01 00 00 65 ff
+> >  RSP: 0000:ffff8881002ce9b8 EFLAGS: 00010016
+> >  RAX: dffffc0000000000 RBX: 0000000000000070 RCX: 0000000000000000
+> >  RDX: 000000000000001b RSI: 000000000000000a RDI: 0000000000000070
+> >  RBP: 00000000000000d8 R08: 0000000000000001 R09: ffffed107dde49d1
+> >  R10: ffff8883eef24e8b R11: ffff8881002cec20 R12: 1ffff11020059d37
+> >  R13: 00000000003fff7b R14: ffff8881002cec20 R15: dffffc0000000000
+> >  FS:  00007f963f21d940(0000) GS:ffff888458ca6000(0000) knlGS:0000000000=
+000000
+> >  CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+> >  CR2: 00007f963f5edf71 CR3: 000000010672c000 CR4: 0000000000350ef0
+> >  Call Trace:
+> >   <TASK>
+> >   codetag_trylock_module_list+0xd/0x20
+> >   alloc_tag_top_users+0x369/0x4b0
+> >   __show_mem+0x1cd/0x6e0
+> >   warn_alloc+0x2b1/0x390
+> >   __alloc_frozen_pages_noprof+0x12b9/0x21a0
+> >   alloc_pages_mpol+0x135/0x3e0
+> >   alloc_slab_page+0x82/0xe0
+> >   new_slab+0x212/0x240
+> >   ___slab_alloc+0x82a/0xe00
+> >   </TASK>
+> >
+> >As David Wang points out, this issue became easier to trigger after comm=
+it
+> >780138b12381 ("alloc_tag: check mem_profiling_support in alloc_tag_init"=
+).
+> >
+> >Before the commit, the issue occurred only when it failed to allocate
+> >and initialize alloc_tag_cttype or if a memory allocation fails before
+> >alloc_tag_init() is called. After the commit, it can be easily triggered
+> >when memory profiling is compiled but disabled at boot.
 
-The patch titled
-     Subject: mm,hugetlb: change mechanism to detect a COW on private mapping
-has been added to the -mm mm-new branch.  Its filename is
-     mmhugetlb-change-mechanism-to-detect-a-cow-on-private-mapping.patch
+Thanks for the fix and sorry about the delay with reviewing it.
 
-This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mmhugetlb-change-mechanism-to-detect-a-cow-on-private-mapping.patch
+> >
+> >To properly determine whether alloc_tag_init() has been called and
+> >its data structures initialized, verify that alloc_tag_cttype is a valid
+> >pointer before acquiring the semaphore. If the variable is NULL or an er=
+ror
+> >value, it has not been properly initialized. In such a case, just skip
+> >and do not attempt acquire the semaphore.
 
-This patch will later appear in the mm-new branch at
-    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+nit: s/attempt acquire/attempt to acquire
 
-Note, mm-new is a provisional staging ground for work-in-progress
-patches, and acceptance into mm-new is a notification for others take
-notice and to finish up reviews.  Please do not hesitate to respond to
-review feedback and post updated versions to replace or incrementally
-fixup patches in mm-new.
+> >
+> >Reported-by: kernel test robot <oliver.sang@intel.com>
+> >Closes: https://lore.kernel.org/oe-lkp/202506181351.bba867dd-lkp@intel.c=
+om
+> >Fixes: 780138b12381 ("alloc_tag: check mem_profiling_support in alloc_ta=
+g_init")
+> >Fixes: 1438d349d16b ("lib: add memory allocations report in show_mem()")
+> >Cc: stable@vger.kernel.org
+> >Signed-off-by: Harry Yoo <harry.yoo@oracle.com>
+>
+> Just notice another thread can be closed as well:
+> https://lore.kernel.org/all/202506131711.5b41931c-lkp@intel.com/
+> This coincide with scenario #1, where OOM happened with
+> CONFIG_MEM_ALLOC_PROFILING=3Dy
+> # CONFIG_MEM_ALLOC_PROFILING_ENABLED_BY_DEFAULT is not set
+> # CONFIG_MEM_ALLOC_PROFILING_DEBUG is not set
+>
+> >---
+> >
+> >v1 -> v2:
+> >
+> >- v1 fixed the bug only when MEM_ALLOC_PROFILING_ENABLED_BY_DEFAULT=3Dn.
+> >
+> >  v2 now fixes the bug even when MEM_ALLOC_PROFILING_ENABLED_BY_DEFAULT=
+=3Dy.
+> >  I didn't expect alloc_tag_cttype to be NULL when
+> >  mem_profiling_support is true, but as David points out (Thanks David!)
+> >  if a memory allocation fails before alloc_tag_init(), it can be NULL.
+> >
+> >  So instead of indirectly checking mem_profiling_support, just directly
+> >  check if alloc_tag_cttype is allocated.
+> >
+> >- Closes: https://lore.kernel.org/oe-lkp/202505071555.e757f1e0-lkp@intel=
+.com
+> >  tag was removed because it was not a crash and not relevant to this
+> >  patch.
+> >
+> >- Added Cc: stable because, if an allocation fails before
+> >  alloc_tag_init(), it can be triggered even prior-780138b12381.
+> >  I verified that the bug can be triggered in v6.12 and fixed by this
+> >  patch.
+> >
+> >  It should be quite difficult to trigger in practice, though.
+> >  Maybe I'm a bit paranoid?
+> >
+> > lib/alloc_tag.c | 4 +++-
+> > 1 file changed, 3 insertions(+), 1 deletion(-)
+> >
+> >diff --git a/lib/alloc_tag.c b/lib/alloc_tag.c
+> >index 66a4628185f7..d8ec4c03b7d2 100644
+> >--- a/lib/alloc_tag.c
+> >+++ b/lib/alloc_tag.c
+> >@@ -124,7 +124,9 @@ size_t alloc_tag_top_users(struct codetag_bytes *tag=
+s, size_t count, bool can_sl
+> >       struct codetag_bytes n;
+> >       unsigned int i, nr =3D 0;
+> >
+> >-      if (can_sleep)
+> >+      if (IS_ERR_OR_NULL(alloc_tag_cttype))
+> >+              return 0;
 
-Before you just go and hit "reply", please:
-   a) Consider who else should be cc'ed
-   b) Prefer to cc a suitable mailing list as well
-   c) Ideally: find the original patch on the mailing list and do a
-      reply-to-all to that, adding suitable additional cc's
+So, AFAIKT alloc_tag_cttype will be NULL when memory profiling is
+disabled and it will be ENOMEM if codetag_register_type() fails. I
+think it would be good to add a pr_warn() in the alloc_tag_init() when
+codetag_register_type() fails so that the user can determine the
+reason why show_mem() report is missing allocation tag information.
 
-*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
+> >+      else if (can_sleep)
 
-The -mm tree is included into linux-next via the mm-everything
-branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-and is updated there every 2-3 working days
+nit: the above extra "else" is not really needed. The following should
+work just fine, is more readable and produces less churn:
 
-------------------------------------------------------
-From: Oscar Salvador <osalvador@suse.de>
-Subject: mm,hugetlb: change mechanism to detect a COW on private mapping
-Date: Fri, 20 Jun 2025 14:30:10 +0200
++      if (IS_ERR_OR_NULL(alloc_tag_cttype))
++              return 0;
++
+      if (can_sleep)
+               codetag_lock_module_list(alloc_tag_cttype, true);
+       else if (!codetag_trylock_module_list(alloc_tag_cttype))
+               return 0;
 
-Patch series "Misc rework on hugetlb faulting path", v2.
-
-This patchset aims to give some love to the hugetlb faulting path, doing
-so by removing obsolete comments that are no longer true, sorting out the
-folio lock, and changing the mechanism we use to determine whether we are
-COWing a private mapping already.
-
-The most important patch of the series is #1, as it fixes a deadlock that
-was described in [1], where two processes were holding the same lock for
-the folio in the pagecache, and then deadlocked in the mutex.
-
-Looking up and locking the folio in the pagecache was done to check
-whether that folio was the same folio we had mapped in our pagetables,
-meaning that if it was different we knew that we already mapped that folio
-privately, so any further CoW would be made on a private mapping, which
-lead us to the question: __Was the reservation for that address
-consumed?__ That is all we care about, because if it was indeed consumed
-and we are the owner and we cannot allocate more folios, we need to unmap
-the folio from the processes pagetables and make it exclusive for us.
-
-We figured we do not need to look up the folio at all, and it is just
-enough to check whether the folio we have mapped is anonymous, which means
-we mapped it privately, so the reservation was indeed consumed.
-
-Patch #2 sorts out folio locking in the faulting path, reducing the scope
-of it ,only taking it when we are dealing with an anonymous folio and
-document it.  More details in the patch.
-
-Patches #3-5 are cleanups.
-
-
-
-hugetlb_wp() checks whether the process is trying to COW on a private
-mapping in order to know whether the reservation for that address was
-already consumed or not.  If it was consumed and we are the ownner of the
-mapping, the folio will have to be unmapped from the other processes.
-
-Currently, that check is done by looking up the folio in the pagecache and
-comparing it to the folio which is mapped in our pagetables.  If it
-differs, it means we already mapped it privately before, consuming a
-reservation on the way.  All we are interested in is whether the mapped
-folio is anonymous, so we can simplify and check for that instead.
-
-Also, we transition from a trylock to a folio_lock, since the former was
-only needed when hugetlb_fault() had to lock both folios, in order to
-avoid deadlock.
-
-Link: https://lkml.kernel.org/r/20250620123014.29748-1-osalvador@suse.de
-Link: https://lkml.kernel.org/r/20250620123014.29748-2-osalvador@suse.de
-Link: https://lore.kernel.org/lkml/20250513093448.592150-1-gavinguo@igalia.com/ [1]
-Fixes: 40549ba8f8e0 ("hugetlb: use new vma_lock for pmd sharing synchronization")
-Reported-by: Gavin Guo <gavinguo@igalia.com>
-Closes: https://lore.kernel.org/lkml/20250513093448.592150-1-gavinguo@igalia.com/
-Signed-off-by: Oscar Salvador <osalvador@suse.de>
-Suggested-by: Peter Xu <peterx@redhat.com>
-Acked-by: David Hildenbrand <david@redhat.com>
-Cc: Muchun Song <muchun.song@linux.dev>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
----
-
- mm/hugetlb.c |   70 +++++++++++--------------------------------------
- 1 file changed, 17 insertions(+), 53 deletions(-)
-
---- a/mm/hugetlb.c~mmhugetlb-change-mechanism-to-detect-a-cow-on-private-mapping
-+++ a/mm/hugetlb.c
-@@ -6130,8 +6130,7 @@ static void unmap_ref_private(struct mm_
-  * cannot race with other handlers or page migration.
-  * Keep the pte_same checks anyway to make transition from the mutex easier.
-  */
--static vm_fault_t hugetlb_wp(struct folio *pagecache_folio,
--		       struct vm_fault *vmf)
-+static vm_fault_t hugetlb_wp(struct vm_fault *vmf)
- {
- 	struct vm_area_struct *vma = vmf->vma;
- 	struct mm_struct *mm = vma->vm_mm;
-@@ -6193,16 +6192,17 @@ retry_avoidcopy:
- 		       PageAnonExclusive(&old_folio->page), &old_folio->page);
- 
- 	/*
--	 * If the process that created a MAP_PRIVATE mapping is about to
--	 * perform a COW due to a shared page count, attempt to satisfy
--	 * the allocation without using the existing reserves. The pagecache
--	 * page is used to determine if the reserve at this address was
--	 * consumed or not. If reserves were used, a partial faulted mapping
--	 * at the time of fork() could consume its reserves on COW instead
--	 * of the full address range.
-+	 * If the process that created a MAP_PRIVATE mapping is about to perform
-+	 * a COW due to a shared page count, attempt to satisfy the allocation
-+	 * without using the existing reserves.
-+	 * In order to determine where this is a COW on a MAP_PRIVATE mapping it
-+	 * is enough to check whether the old_folio is anonymous. This means that
-+	 * the reserve for this address was consumed. If reserves were used, a
-+	 * partial faulted mapping at the fime of fork() could consume its reserves
-+	 * on COW instead of the full address range.
- 	 */
- 	if (is_vma_resv_set(vma, HPAGE_RESV_OWNER) &&
--			old_folio != pagecache_folio)
-+	    folio_test_anon(old_folio))
- 		cow_from_owner = true;
- 
- 	folio_get(old_folio);
-@@ -6581,7 +6581,7 @@ static vm_fault_t hugetlb_no_page(struct
- 	hugetlb_count_add(pages_per_huge_page(h), mm);
- 	if ((vmf->flags & FAULT_FLAG_WRITE) && !(vma->vm_flags & VM_SHARED)) {
- 		/* Optimization, do the COW without a second fault */
--		ret = hugetlb_wp(folio, vmf);
-+		ret = hugetlb_wp(vmf);
- 	}
- 
- 	spin_unlock(vmf->ptl);
-@@ -6648,11 +6648,9 @@ vm_fault_t hugetlb_fault(struct mm_struc
- {
- 	vm_fault_t ret;
- 	u32 hash;
--	struct folio *folio = NULL;
--	struct folio *pagecache_folio = NULL;
-+	struct folio *folio;
- 	struct hstate *h = hstate_vma(vma);
- 	struct address_space *mapping;
--	int need_wait_lock = 0;
- 	struct vm_fault vmf = {
- 		.vma = vma,
- 		.address = address & huge_page_mask(h),
-@@ -6747,8 +6745,7 @@ vm_fault_t hugetlb_fault(struct mm_struc
- 	 * If we are going to COW/unshare the mapping later, we examine the
- 	 * pending reservations for this page now. This will ensure that any
- 	 * allocations necessary to record that reservation occur outside the
--	 * spinlock. Also lookup the pagecache page now as it is used to
--	 * determine if a reservation has been consumed.
-+	 * spinlock.
- 	 */
- 	if ((flags & (FAULT_FLAG_WRITE|FAULT_FLAG_UNSHARE)) &&
- 	    !(vma->vm_flags & VM_MAYSHARE) && !huge_pte_write(vmf.orig_pte)) {
-@@ -6758,11 +6755,6 @@ vm_fault_t hugetlb_fault(struct mm_struc
- 		}
- 		/* Just decrements count, does not deallocate */
- 		vma_end_reservation(h, vma, vmf.address);
--
--		pagecache_folio = filemap_lock_hugetlb_folio(h, mapping,
--							     vmf.pgoff);
--		if (IS_ERR(pagecache_folio))
--			pagecache_folio = NULL;
- 	}
- 
- 	vmf.ptl = huge_pte_lock(h, mm, vmf.pte);
-@@ -6776,10 +6768,6 @@ vm_fault_t hugetlb_fault(struct mm_struc
- 	    (flags & FAULT_FLAG_WRITE) && !huge_pte_write(vmf.orig_pte)) {
- 		if (!userfaultfd_wp_async(vma)) {
- 			spin_unlock(vmf.ptl);
--			if (pagecache_folio) {
--				folio_unlock(pagecache_folio);
--				folio_put(pagecache_folio);
--			}
- 			hugetlb_vma_unlock_read(vma);
- 			mutex_unlock(&hugetlb_fault_mutex_table[hash]);
- 			return handle_userfault(&vmf, VM_UFFD_WP);
-@@ -6791,23 +6779,14 @@ vm_fault_t hugetlb_fault(struct mm_struc
- 		/* Fallthrough to CoW */
- 	}
- 
--	/*
--	 * hugetlb_wp() requires page locks of pte_page(vmf.orig_pte) and
--	 * pagecache_folio, so here we need take the former one
--	 * when folio != pagecache_folio or !pagecache_folio.
--	 */
-+	/* hugetlb_wp() requires page locks of pte_page(vmf.orig_pte) */
- 	folio = page_folio(pte_page(vmf.orig_pte));
--	if (folio != pagecache_folio)
--		if (!folio_trylock(folio)) {
--			need_wait_lock = 1;
--			goto out_ptl;
--		}
--
-+	folio_lock(folio);
- 	folio_get(folio);
- 
- 	if (flags & (FAULT_FLAG_WRITE|FAULT_FLAG_UNSHARE)) {
- 		if (!huge_pte_write(vmf.orig_pte)) {
--			ret = hugetlb_wp(pagecache_folio, &vmf);
-+			ret = hugetlb_wp(&vmf);
- 			goto out_put_page;
- 		} else if (likely(flags & FAULT_FLAG_WRITE)) {
- 			vmf.orig_pte = huge_pte_mkdirty(vmf.orig_pte);
-@@ -6818,16 +6797,10 @@ vm_fault_t hugetlb_fault(struct mm_struc
- 						flags & FAULT_FLAG_WRITE))
- 		update_mmu_cache(vma, vmf.address, vmf.pte);
- out_put_page:
--	if (folio != pagecache_folio)
--		folio_unlock(folio);
-+	folio_unlock(folio);
- 	folio_put(folio);
- out_ptl:
- 	spin_unlock(vmf.ptl);
--
--	if (pagecache_folio) {
--		folio_unlock(pagecache_folio);
--		folio_put(pagecache_folio);
--	}
- out_mutex:
- 	hugetlb_vma_unlock_read(vma);
- 
-@@ -6839,15 +6812,6 @@ out_mutex:
- 		vma_end_read(vma);
- 
- 	mutex_unlock(&hugetlb_fault_mutex_table[hash]);
--	/*
--	 * Generally it's safe to hold refcount during waiting page lock. But
--	 * here we just wait to defer the next page fault to avoid busy loop and
--	 * the page is not used after unlocked before returning from the current
--	 * page fault. So we are safe from accessing freed page, even if we wait
--	 * here without taking refcount.
--	 */
--	if (need_wait_lock)
--		folio_wait_locked(folio);
- 	return ret;
- }
- 
-_
-
-Patches currently in -mm which might be from osalvador@suse.de are
-
-mmslub-do-not-special-case-n_normal-nodes-for-slab_nodes.patch
-mmmemory_hotplug-remove-status_change_nid_normal-and-update-documentation.patch
-mmmemory_hotplug-implement-numa-node-notifier.patch
-mmslub-use-node-notifier-instead-of-memory-notifier.patch
-mmmemory-tiers-use-node-notifier-instead-of-memory-notifier.patch
-driverscxl-use-node-notifier-instead-of-memory-notifier.patch
-drivershmat-use-node-notifier-instead-of-memory-notifier.patch
-kernelcpuset-use-node-notifier-instead-of-memory-notifier.patch
-mmmempolicy-use-node-notifier-instead-of-memory-notifier.patch
-mmpage_ext-derive-the-node-from-the-pfn.patch
-mmmemory_hotplug-drop-status_change_nid-parameter-from-memory_notify.patch
-mmhugetlb-change-mechanism-to-detect-a-cow-on-private-mapping.patch
-mmhugetlb-sort-out-folio-locking-in-the-faulting-path.patch
-mmhugetlb-rename-anon_rmap-to-new_anon_folio-and-make-it-boolean.patch
-mmhugetlb-rename-anon_rmap-to-new_anon_folio-and-make-it-boolean-fix.patch
-mmhugetlb-drop-obsolete-comment-about-non-present-pte-and-second-faults.patch
-mmhugetlb-drop-unlikelys-from-hugetlb_fault.patch
-
+> >               codetag_lock_module_list(alloc_tag_cttype, true);
+> >       else if (!codetag_trylock_module_list(alloc_tag_cttype))
+> >               return 0;
+> >--
+> >2.43.0
 
