@@ -1,56 +1,61 @@
-Return-Path: <stable+bounces-157833-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157754-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A0F57AE55D0
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:15:32 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id B38F9AE557D
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:11:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B7A85166535
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:14:17 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3DDFF4C3F8F
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:11:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BDE10228CB5;
-	Mon, 23 Jun 2025 22:13:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35343223DFF;
+	Mon, 23 Jun 2025 22:10:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ce7e/Zan"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d8FRhi7t"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 798571F7580;
-	Mon, 23 Jun 2025 22:13:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E72D3222599;
+	Mon, 23 Jun 2025 22:10:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750716830; cv=none; b=BQmxkm3fCW61X+3VPw1jd3Tv1gW4oNIEBTCradD0PIT8x1X4kSKO9b6c8qgSptv0tLAInsPdZFtIrZM83YfBIM4TskHWSUt0OtT/3MZf3OwZ+GvG2V7JOckP6tytoDRt3kBqO4iL9YYBzPIXFrJFRK1ZC4AQ1m8hFERGaktNZwY=
+	t=1750716640; cv=none; b=dT0QZqqAs6VgHFmT581qAYrFuSSayhJAP3Y/RdvPQsWEbK4qicJJvySdE8tPDGt89sMpHWh1JLykMynOW+Wn6tGJ8NfteVFmCGGX0kyfke/ogBDJHfA63/2xoXrzMfkMtd+xs8smeQ5b4zZQQlboK7F8SyzXeFnIhtzPRZEO7I4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750716830; c=relaxed/simple;
-	bh=LJCJTacA7TYWapd1/uk6+iLDP9HNq95QTDMTKn0HfyU=;
+	s=arc-20240116; t=1750716640; c=relaxed/simple;
+	bh=BU7lsCfvhD+CU1qh0OGVLVG4UsSpZ1nYqxKdML7QMeg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=H2fS0DUrbmO/j22I+F2KuORbSaDuRFf4O25CEhMHVaPk/PLif+YJZzM7E9RBFEN589643IUp3l8feRkA+P3tRv6RTvIgfk+vM4FGRMOfzcCcUZv71gSZcnGLHhP0S2IU67UQQ4d79a+Ktin95c6uG9UCTNe0hIyubJxWFl0IJIY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ce7e/Zan; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 114E3C4CEEA;
-	Mon, 23 Jun 2025 22:13:49 +0000 (UTC)
+	 MIME-Version; b=LCuTCDMc/v0A+wi6KkhfO4zLoRbqfwmgdAzTCMeWJcVGLykJU10eP/hrCgvr3THGBPItEQsC4RGs7viep743mvGkI3P+svy1pr8MN0nQXhDPs619z2CRIx7nGwW95O5tPPMYDysShL4uabGOaz/yhdL/OryR46EQFc3M6FiRlmc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d8FRhi7t; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D9C3C4CEEA;
+	Mon, 23 Jun 2025 22:10:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750716830;
-	bh=LJCJTacA7TYWapd1/uk6+iLDP9HNq95QTDMTKn0HfyU=;
+	s=korg; t=1750716639;
+	bh=BU7lsCfvhD+CU1qh0OGVLVG4UsSpZ1nYqxKdML7QMeg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ce7e/ZantNpNGbrYH1aQ9imQcJWDNxl8SeIY15T8yEaPt9ib60UO1ZIQRbsdKwJvQ
-	 cQC41lo5rCUjmv16rwLSx9lDCgtidgF59+VC7tFa1E4RGw8HMPjJobCMWupUGdRPN7
-	 OgywPusk9d4lMmBqhFnpT+ufU2fuH11AT3bZHZ3w=
+	b=d8FRhi7tyued0Zu4JI/lZr1/MFzVRupT7BAI2ifsX37PJj9v1h1EtfrGqCPPDAQFb
+	 KarNBqtHtK3VCxatjCaOCmroui8vo0O2GUoUTsxMT44SCI8DwnQ6Z/zJayvj3q3afx
+	 KN11uJtAZF1FYdnkz4S9iak92FLCtM5gVD18wH74=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mathieu Poirier <mathieu.poirier@linaro.org>,
-	Xiaolei Wang <xiaolei.wang@windriver.com>,
-	Peng Fan <peng.fan@nxp.com>
-Subject: [PATCH 6.1 363/508] remoteproc: core: Cleanup acquired resources when rproc_handle_resources() fails in rproc_attach()
+	Mateusz Pacuszka <mateuszx.pacuszka@intel.com>,
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
+	Larysa Zaremba <larysa.zaremba@intel.com>,
+	Simon Horman <horms@kernel.org>,
+	Rafal Romanowski <rafal.romanowski@intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 271/414] ice: fix check for existing switch rule
 Date: Mon, 23 Jun 2025 15:06:48 +0200
-Message-ID: <20250623130654.292796011@linuxfoundation.org>
+Message-ID: <20250623130648.806414517@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
-References: <20250623130645.255320792@linuxfoundation.org>
+In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
+References: <20250623130642.015559452@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,88 +67,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xiaolei Wang <xiaolei.wang@windriver.com>
+From: Mateusz Pacuszka <mateuszx.pacuszka@intel.com>
 
-commit 7692c9fbedd9087dc9050903f58095915458d9b1 upstream.
+[ Upstream commit a808691df39b52cd9db861b118e88e18b63e2299 ]
 
-When rproc->state = RPROC_DETACHED and rproc_attach() is used
-to attach to the remote processor, if rproc_handle_resources()
-returns a failure, the resources allocated by imx_rproc_prepare()
-should be released, otherwise the following memory leak will occur.
+In case the rule already exists and another VSI wants to subscribe to it
+new VSI list is being created and both VSIs are moved to it.
+Currently, the check for already existing VSI with the same rule is done
+based on fdw_id.hw_vsi_id, which applies only to LOOKUP_RX flag.
+Change it to vsi_handle. This is software VSI ID, but it can be applied
+here, because vsi_map itself is also based on it.
 
-Since almost the same thing is done in imx_rproc_prepare() and
-rproc_resource_cleanup(), Function rproc_resource_cleanup() is able
-to deal with empty lists so it is better to fix the "goto" statements
-in rproc_attach(). replace the "unprepare_device" goto statement with
-"clean_up_resources" and get rid of the "unprepare_device" label.
+Additionally change return status in case the VSI already exists in the
+VSI map to "Already exists". Such case should be handled by the caller.
 
-unreferenced object 0xffff0000861c5d00 (size 128):
-comm "kworker/u12:3", pid 59, jiffies 4294893509 (age 149.220s)
-hex dump (first 32 bytes):
-00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
-00 00 02 88 00 00 00 00 00 00 10 00 00 00 00 00 ............
-backtrace:
- [<00000000f949fe18>] slab_post_alloc_hook+0x98/0x37c
- [<00000000adbfb3e7>] __kmem_cache_alloc_node+0x138/0x2e0
- [<00000000521c0345>] kmalloc_trace+0x40/0x158
- [<000000004e330a49>] rproc_mem_entry_init+0x60/0xf8
- [<000000002815755e>] imx_rproc_prepare+0xe0/0x180
- [<0000000003f61b4e>] rproc_boot+0x2ec/0x528
- [<00000000e7e994ac>] rproc_add+0x124/0x17c
- [<0000000048594076>] imx_rproc_probe+0x4ec/0x5d4
- [<00000000efc298a1>] platform_probe+0x68/0xd8
- [<00000000110be6fe>] really_probe+0x110/0x27c
- [<00000000e245c0ae>] __driver_probe_device+0x78/0x12c
- [<00000000f61f6f5e>] driver_probe_device+0x3c/0x118
- [<00000000a7874938>] __device_attach_driver+0xb8/0xf8
- [<0000000065319e69>] bus_for_each_drv+0x84/0xe4
- [<00000000db3eb243>] __device_attach+0xfc/0x18c
- [<0000000072e4e1a4>] device_initial_probe+0x14/0x20
-
-Fixes: 10a3d4079eae ("remoteproc: imx_rproc: move memory parsing to rproc_ops")
-Suggested-by: Mathieu Poirier <mathieu.poirier@linaro.org>
-Signed-off-by: Xiaolei Wang <xiaolei.wang@windriver.com>
-Reviewed-by: Peng Fan <peng.fan@nxp.com>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20250430092043.1819308-2-xiaolei.wang@windriver.com
-Signed-off-by: Mathieu Poirier <mathieu.poirier@linaro.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Mateusz Pacuszka <mateuszx.pacuszka@intel.com>
+Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+Reviewed-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
+Signed-off-by: Larysa Zaremba <larysa.zaremba@intel.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Tested-by: Rafal Romanowski <rafal.romanowski@intel.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/remoteproc/remoteproc_core.c |    5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ drivers/net/ethernet/intel/ice/ice_switch.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/remoteproc/remoteproc_core.c
-+++ b/drivers/remoteproc/remoteproc_core.c
-@@ -1615,7 +1615,7 @@ static int rproc_attach(struct rproc *rp
- 	ret = rproc_set_rsc_table(rproc);
- 	if (ret) {
- 		dev_err(dev, "can't load resource table: %d\n", ret);
--		goto unprepare_device;
-+		goto clean_up_resources;
- 	}
+diff --git a/drivers/net/ethernet/intel/ice/ice_switch.c b/drivers/net/ethernet/intel/ice/ice_switch.c
+index 0e740342e2947..c5430363e7081 100644
+--- a/drivers/net/ethernet/intel/ice/ice_switch.c
++++ b/drivers/net/ethernet/intel/ice/ice_switch.c
+@@ -3146,7 +3146,7 @@ ice_add_update_vsi_list(struct ice_hw *hw,
+ 		u16 vsi_handle_arr[2];
  
- 	/* reset max_notifyid */
-@@ -1632,7 +1632,7 @@ static int rproc_attach(struct rproc *rp
- 	ret = rproc_handle_resources(rproc, rproc_loading_handlers);
- 	if (ret) {
- 		dev_err(dev, "Failed to process resources: %d\n", ret);
--		goto unprepare_device;
-+		goto clean_up_resources;
- 	}
+ 		/* A rule already exists with the new VSI being added */
+-		if (cur_fltr->fwd_id.hw_vsi_id == new_fltr->fwd_id.hw_vsi_id)
++		if (cur_fltr->vsi_handle == new_fltr->vsi_handle)
+ 			return -EEXIST;
  
- 	/* Allocate carveout resources associated to rproc */
-@@ -1651,7 +1651,6 @@ static int rproc_attach(struct rproc *rp
+ 		vsi_handle_arr[0] = cur_fltr->vsi_handle;
+@@ -5977,7 +5977,7 @@ ice_adv_add_update_vsi_list(struct ice_hw *hw,
  
- clean_up_resources:
- 	rproc_resource_cleanup(rproc);
--unprepare_device:
- 	/* release HW resources if needed */
- 	rproc_unprepare_device(rproc);
- disable_iommu:
+ 		/* A rule already exists with the new VSI being added */
+ 		if (test_bit(vsi_handle, m_entry->vsi_list_info->vsi_map))
+-			return 0;
++			return -EEXIST;
+ 
+ 		/* Update the previously created VSI list set with
+ 		 * the new VSI ID passed in
+-- 
+2.39.5
+
 
 
 
