@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-157742-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157747-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 90CDFAE5576
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:11:42 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A4D51AE5562
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:10:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0DCD34A1D0D
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:10:13 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 488057A9901
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:09:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD30B223DD0;
-	Mon, 23 Jun 2025 22:10:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D2B9225761;
+	Mon, 23 Jun 2025 22:10:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="miO+VIZ+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TarGmooM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8ABE21F7580;
-	Mon, 23 Jun 2025 22:10:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBB30223DEE;
+	Mon, 23 Jun 2025 22:10:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750716610; cv=none; b=Y/3+yVY6FsYP6iaN6uxx0vOKbfAGpiNyCBv4wr0OodPrMhGIJybBy7a4aXsXl4fBAdAQW6BK2Ei21AretEmrR1mTF9bfMf5GGHT+prk5Gfqm+gkZWq/w+vreY1mXGB296rM0m5R7aSQpaTEfWwWInb2jzttcQRJhrhsYIptP68M=
+	t=1750716622; cv=none; b=U3rVpy/ec4L95xnUv2H1qKBTANgK/+05cFWZt0IAhC8oQlL5NNfbD2/WL8VVrtv2D9RCu1v90Cj3PHMpyt/JiL+CkQbk4DyEoc2Gjg+Yr97aa6WtNmdxa1VEVVQMs2kbcM5F568DYMD8D3zZMP7Sh5uhBKmSNVkcTrNmlsy1sYY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750716610; c=relaxed/simple;
-	bh=5QdEhsLg2bDb1fgdpr6zt7T0KZuWUmlMlabAvxemU1A=;
+	s=arc-20240116; t=1750716622; c=relaxed/simple;
+	bh=al0t6YL8E1BewrliYbWwoQ6bq68Zzhk4XlISVORaclM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=I7OkdXtIDz1Yn+DBn9DCHY7aTQ8oiM4yyn7BOqCO2DNk16nLGEPbhVK+VS1Qi00OGTiNJltu0xBWYMHRH9DT8LgGYvgeCIaXSIFnOh7D+jDXL9OojGyijNCqW6uD4AfIQkkYtPtbxWHBB5/5vocCnZRsNR/OKxAyki39LRJgQa0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=miO+VIZ+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24924C4CEEA;
-	Mon, 23 Jun 2025 22:10:09 +0000 (UTC)
+	 MIME-Version; b=GMVGVKKEKVJLZ86xiWDpe5UOFWx/+CV89KXRMYevjVKFlZCIBzDOQhxEF9OkOY8Wn30MGNNzmQ/5P70H/tCX4jUkE0ZkZSk78T2GdNmaotMxkwUSe/rvMwKbtuQALoBSuw5LMWsxiWiT6sWCWPvvqLoid+YWBxzztCqE6GRK+Jk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TarGmooM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62F79C4CEED;
+	Mon, 23 Jun 2025 22:10:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750716610;
-	bh=5QdEhsLg2bDb1fgdpr6zt7T0KZuWUmlMlabAvxemU1A=;
+	s=korg; t=1750716622;
+	bh=al0t6YL8E1BewrliYbWwoQ6bq68Zzhk4XlISVORaclM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=miO+VIZ+ohiyj8OXyJVuThnSgsn8v5tUrjEHJpqiz/eEd1e16+0Zxn5x6bzRuS2oQ
-	 RbuaCKuoEHWnTXXEayVdwHUUoeQCMsWMFYk8IK3xcCvI1VfE9tfftuW0Yz8RQsU7jj
-	 HRMrHoOpmM+XRC4SVRbIXEcmdT7O9IwG+kMrwm6I=
+	b=TarGmooMiXejz55woo/kD350ub6CPGlcQdi4wek0fBxRuRYzAS50vtecS0/H0lMst
+	 98AVJ3TooIg0qFqq+a9ntPHbyWHYYi50f+qso31EWploEcj4IYm1Mh0Bx3Sw7gaZ+l
+	 uUMGpm5dVmRWoFD85PWQbkyyLZ1n20Exm/eze3Hk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+	Ma Ke <make24@iscas.ac.cn>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
 	Hans Verkuil <hverkuil@xs4all.nl>
-Subject: [PATCH 6.1 315/508] media: omap3isp: use sgtable-based scatterlist wrappers
-Date: Mon, 23 Jun 2025 15:06:00 +0200
-Message-ID: <20250623130653.072481864@linuxfoundation.org>
+Subject: [PATCH 6.1 316/508] media: v4l2-dev: fix error handling in __video_register_device()
+Date: Mon, 23 Jun 2025 15:06:01 +0200
+Message-ID: <20250623130653.098248716@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
 In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
 References: <20250623130645.255320792@linuxfoundation.org>
@@ -66,73 +66,67 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Marek Szyprowski <m.szyprowski@samsung.com>
+From: Ma Ke <make24@iscas.ac.cn>
 
-commit 3de572fe2189a4a0bd80295e1f478401e739498e upstream.
+commit 2a934fdb01db6458288fc9386d3d8ceba6dd551a upstream.
 
-Use common wrappers operating directly on the struct sg_table objects to
-fix incorrect use of scatterlists sync calls. dma_sync_sg_for_*()
-functions have to be called with the number of elements originally passed
-to dma_map_sg_*() function, not the one returned in sgtable's nents.
+Once device_register() failed, we should call put_device() to
+decrement reference count for cleanup. Or it could cause memory leak.
+And move callback function v4l2_device_release() and v4l2_device_get()
+before put_device().
 
-Fixes: d33186d0be18 ("[media] omap3isp: ccdc: Use the DMA API for LSC")
-Fixes: 0e24e90f2ca7 ("[media] omap3isp: stat: Use the DMA API")
-CC: stable@vger.kernel.org
-Signed-off-by: Marek Szyprowski <m.szyprowski@samsung.com>
-Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+As comment of device_register() says, 'NOTE: _Never_ directly free
+@dev after calling this function, even if it returned an error! Always
+use put_device() to give up the reference initialized in this function
+instead.'
+
+Found by code review.
+
+Cc: stable@vger.kernel.org
+Fixes: dc93a70cc7f9 ("V4L/DVB (9973): v4l2-dev: use the release callback from device instead of cdev")
+Signed-off-by: Ma Ke <make24@iscas.ac.cn>
+Reviewed-by: Sakari Ailus <sakari.ailus@linux.intel.com>
 Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/platform/ti/omap3isp/ispccdc.c |    8 ++++----
- drivers/media/platform/ti/omap3isp/ispstat.c |    6 ++----
- 2 files changed, 6 insertions(+), 8 deletions(-)
+ drivers/media/v4l2-core/v4l2-dev.c |   14 +++++++-------
+ 1 file changed, 7 insertions(+), 7 deletions(-)
 
---- a/drivers/media/platform/ti/omap3isp/ispccdc.c
-+++ b/drivers/media/platform/ti/omap3isp/ispccdc.c
-@@ -446,8 +446,8 @@ static int ccdc_lsc_config(struct isp_cc
- 		if (ret < 0)
- 			goto done;
- 
--		dma_sync_sg_for_cpu(isp->dev, req->table.sgt.sgl,
--				    req->table.sgt.nents, DMA_TO_DEVICE);
-+		dma_sync_sgtable_for_cpu(isp->dev, &req->table.sgt,
-+					 DMA_TO_DEVICE);
- 
- 		if (copy_from_user(req->table.addr, config->lsc,
- 				   req->config.size)) {
-@@ -455,8 +455,8 @@ static int ccdc_lsc_config(struct isp_cc
- 			goto done;
- 		}
- 
--		dma_sync_sg_for_device(isp->dev, req->table.sgt.sgl,
--				       req->table.sgt.nents, DMA_TO_DEVICE);
-+		dma_sync_sgtable_for_device(isp->dev, &req->table.sgt,
-+					    DMA_TO_DEVICE);
+--- a/drivers/media/v4l2-core/v4l2-dev.c
++++ b/drivers/media/v4l2-core/v4l2-dev.c
+@@ -1032,25 +1032,25 @@ int __video_register_device(struct video
+ 	vdev->dev.class = &video_class;
+ 	vdev->dev.devt = MKDEV(VIDEO_MAJOR, vdev->minor);
+ 	vdev->dev.parent = vdev->dev_parent;
++	vdev->dev.release = v4l2_device_release;
+ 	dev_set_name(&vdev->dev, "%s%d", name_base, vdev->num);
++
++	/* Increase v4l2_device refcount */
++	v4l2_device_get(vdev->v4l2_dev);
++
+ 	mutex_lock(&videodev_lock);
+ 	ret = device_register(&vdev->dev);
+ 	if (ret < 0) {
+ 		mutex_unlock(&videodev_lock);
+ 		pr_err("%s: device_register failed\n", __func__);
+-		goto cleanup;
++		put_device(&vdev->dev);
++		return ret;
  	}
+-	/* Register the release callback that will be called when the last
+-	   reference to the device goes away. */
+-	vdev->dev.release = v4l2_device_release;
  
- 	spin_lock_irqsave(&ccdc->lsc.req_lock, flags);
---- a/drivers/media/platform/ti/omap3isp/ispstat.c
-+++ b/drivers/media/platform/ti/omap3isp/ispstat.c
-@@ -161,8 +161,7 @@ static void isp_stat_buf_sync_for_device
- 	if (ISP_STAT_USES_DMAENGINE(stat))
- 		return;
+ 	if (nr != -1 && nr != vdev->num && warn_if_nr_in_use)
+ 		pr_warn("%s: requested %s%d, got %s\n", __func__,
+ 			name_base, nr, video_device_node_name(vdev));
  
--	dma_sync_sg_for_device(stat->isp->dev, buf->sgt.sgl,
--			       buf->sgt.nents, DMA_FROM_DEVICE);
-+	dma_sync_sgtable_for_device(stat->isp->dev, &buf->sgt, DMA_FROM_DEVICE);
- }
+-	/* Increase v4l2_device refcount */
+-	v4l2_device_get(vdev->v4l2_dev);
+-
+ 	/* Part 5: Register the entity. */
+ 	ret = video_register_media_controller(vdev);
  
- static void isp_stat_buf_sync_for_cpu(struct ispstat *stat,
-@@ -171,8 +170,7 @@ static void isp_stat_buf_sync_for_cpu(st
- 	if (ISP_STAT_USES_DMAENGINE(stat))
- 		return;
- 
--	dma_sync_sg_for_cpu(stat->isp->dev, buf->sgt.sgl,
--			    buf->sgt.nents, DMA_FROM_DEVICE);
-+	dma_sync_sgtable_for_cpu(stat->isp->dev, &buf->sgt, DMA_FROM_DEVICE);
- }
- 
- static void isp_stat_buf_clear(struct ispstat *stat)
 
 
 
