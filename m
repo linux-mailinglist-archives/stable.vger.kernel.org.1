@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-157732-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157820-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E422BAE555C
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:10:20 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9D98EAE55E1
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:16:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E605A4C3E63
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:09:52 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 95DFE4A365B
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:13:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77186225413;
-	Mon, 23 Jun 2025 22:09:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1AB21F7580;
+	Mon, 23 Jun 2025 22:13:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KWwyae4O"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z988FZnH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 340EB224B01;
-	Mon, 23 Jun 2025 22:09:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFC4421B8F6;
+	Mon, 23 Jun 2025 22:13:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750716586; cv=none; b=TBrftf4vd1kiYsJqk/eLpJoQz1NChmpqXOZoFCPRiyJGQko4TBEasyxQnivW2ow3V6u/G7qMvfNsVWCOsdmyQQ4/cFh8FM6DGsN13wJLih83aC6nr0u8u3EQNEBvWX+yalyv5N3OBJzdpF3jwiNaqA7eF5gUoXr3V6AIsYAfm8o=
+	t=1750716798; cv=none; b=uNmlhrtfBN6C7R+SoDT5yUkQW1fat/euO7IodqAP488NiZNmzGJ2CmDZLlAoN+mUPD6H9YCbVI19iX7FBAp7QaC4en3fDi6lXaDODYSnd4JVVX1c8M04QXmXJR094Uhr1pm2H1Z1ZO5LGITjZCer9mzU/GEskNgutWXLjck22k0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750716586; c=relaxed/simple;
-	bh=XosXS+vjKFULEFDG99zYZ/1/kEhBzRgv9Rj+LERrmoQ=;
+	s=arc-20240116; t=1750716798; c=relaxed/simple;
+	bh=cSx7xi5w3rHpkfUHO1192dPTQ2yrjwL7JIiPLhXaEL4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Hn8VM2EoEWK0649XrYaRybK1XHSlObXFw34lZr9IgSdvyfSkP8rCWt3JilN/66Gt37JmhmMKc3RyjbD4YepeHY8DQ8i2WdoLBkYGPKN+VJi6a2tEEHNkqDrSglAPI9KSJntrZudP3AfNWjXQN6ZCSPIguc/B3MgcoEskLR5Av7w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KWwyae4O; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ACD99C4CEEA;
-	Mon, 23 Jun 2025 22:09:45 +0000 (UTC)
+	 MIME-Version; b=spBKQYSq+vZCbhEJ8oLDh1lsQCcvqNh7kFZ8WLrQ+w3ESwP+xzFQ5X9eo8StqN9S04z+dUn784jLDRKsUro16XMdKDibnZyW5vAIJycIPcypMjYrmCer6zn7M9lkUhBBdWY096YTfE43s6L7YtMdc0omBLjBrnRHAWCcxxx2itQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z988FZnH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A451C4CEEA;
+	Mon, 23 Jun 2025 22:13:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750716586;
-	bh=XosXS+vjKFULEFDG99zYZ/1/kEhBzRgv9Rj+LERrmoQ=;
+	s=korg; t=1750716798;
+	bh=cSx7xi5w3rHpkfUHO1192dPTQ2yrjwL7JIiPLhXaEL4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KWwyae4OxTtEazqIZCnhl5l1LhxRAAO7gEszPDFxJ8Dp4lrwrATVyW+jHeMwKtfJ3
-	 tJZyTdD8O8tnUR7dqXzzxRE4zSC8W9IALY2QXO7Ngqz8VD4gS3jYSgPZHbQ2I0nknq
-	 IqSMpi1lEK3/SVqKrbe2YShi4P4c+HAf/7bty7dA=
+	b=z988FZnHjorNe3ojuRDy9lY/QkC+cTQKM6bZHampAO3DRw+T6CYu1cFvmV3qmz49F
+	 VsZ0xNryxtdX3a7tUT0oXAFTO/ho8RyR3h8PKA8Q0688knb1feeiWzZ43xP73AiJpM
+	 p6UBxPcnPm/BQRop9SO/+lrbSq/zKo2DS9PMeJTI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zijun Hu <quic_zijuhu@quicinc.com>,
-	Kuniyuki Iwashima <kuniyu@amazon.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 267/414] sock: Correct error checking condition for (assign|release)_proto_idx()
-Date: Mon, 23 Jun 2025 15:06:44 +0200
-Message-ID: <20250623130648.706435353@linuxfoundation.org>
+	Gabriel Shahrouzi <gshahrouzi@gmail.com>,
+	Marcelo Schmitt <marcelo.schmitt1@gmail.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 6.1 360/508] staging: iio: ad5933: Correct settling cycles encoding per datasheet
+Date: Mon, 23 Jun 2025 15:06:45 +0200
+Message-ID: <20250623130654.220583563@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
-References: <20250623130642.015559452@linuxfoundation.org>
+In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
+References: <20250623130645.255320792@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,53 +62,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zijun Hu <quic_zijuhu@quicinc.com>
+From: Gabriel Shahrouzi <gshahrouzi@gmail.com>
 
-[ Upstream commit faeefc173be40512341b102cf1568aa0b6571acd ]
+commit 60638e2a2d4bc03798f00d5ab65ce9b83cb8b03b upstream.
 
-(assign|release)_proto_idx() wrongly check find_first_zero_bit() failure
-by condition '(prot->inuse_idx == PROTO_INUSE_NR - 1)' obviously.
+The AD5933 datasheet (Table 13) lists the maximum cycles to be 0x7FC
+(2044).
 
-Fix by correcting the condition to '(prot->inuse_idx == PROTO_INUSE_NR)'
+Clamp the user input to the maximum effective value of 0x7FC cycles.
 
-Signed-off-by: Zijun Hu <quic_zijuhu@quicinc.com>
-Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Link: https://patch.msgid.link/20250410-fix_net-v2-1-d69e7c5739a4@quicinc.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: f94aa354d676 ("iio: impedance-analyzer: New driver for AD5933/4 Impedance Converter, Network Analyzer")
+Cc: stable@vger.kernel.org
+Signed-off-by: Gabriel Shahrouzi <gshahrouzi@gmail.com>
+Reviewed-by: Marcelo Schmitt <marcelo.schmitt1@gmail.com>
+Link: https://patch.msgid.link/20250420013009.847851-1-gshahrouzi@gmail.com
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/core/sock.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/staging/iio/impedance-analyzer/ad5933.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/core/sock.c b/net/core/sock.c
-index 3c5386c76d6fe..9c63da2829f6e 100644
---- a/net/core/sock.c
-+++ b/net/core/sock.c
-@@ -3930,7 +3930,7 @@ static int assign_proto_idx(struct proto *prot)
- {
- 	prot->inuse_idx = find_first_zero_bit(proto_inuse_idx, PROTO_INUSE_NR);
+--- a/drivers/staging/iio/impedance-analyzer/ad5933.c
++++ b/drivers/staging/iio/impedance-analyzer/ad5933.c
+@@ -412,7 +412,7 @@ static ssize_t ad5933_store(struct devic
+ 		ret = ad5933_cmd(st, 0);
+ 		break;
+ 	case AD5933_OUT_SETTLING_CYCLES:
+-		val = clamp(val, (u16)0, (u16)0x7FF);
++		val = clamp(val, (u16)0, (u16)0x7FC);
+ 		st->settling_cycles = val;
  
--	if (unlikely(prot->inuse_idx == PROTO_INUSE_NR - 1)) {
-+	if (unlikely(prot->inuse_idx == PROTO_INUSE_NR)) {
- 		pr_err("PROTO_INUSE_NR exhausted\n");
- 		return -ENOSPC;
- 	}
-@@ -3941,7 +3941,7 @@ static int assign_proto_idx(struct proto *prot)
- 
- static void release_proto_idx(struct proto *prot)
- {
--	if (prot->inuse_idx != PROTO_INUSE_NR - 1)
-+	if (prot->inuse_idx != PROTO_INUSE_NR)
- 		clear_bit(prot->inuse_idx, proto_inuse_idx);
- }
- #else
--- 
-2.39.5
-
+ 		/* 2x, 4x handling, see datasheet */
 
 
 
