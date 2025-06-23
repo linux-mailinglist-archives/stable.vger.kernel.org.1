@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-157549-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156327-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B0803AE5487
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:02:21 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 40763AE4F1B
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:12:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 41DF34C12FE
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:02:22 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1E13E1B60650
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:12:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 12A6F1A4F12;
-	Mon, 23 Jun 2025 22:02:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA7C3221FDD;
+	Mon, 23 Jun 2025 21:12:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ca933SLy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zuI4qaRs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBAB14C74;
-	Mon, 23 Jun 2025 22:02:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 787611ACEDA;
+	Mon, 23 Jun 2025 21:12:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750716139; cv=none; b=AnRbDmtCTwmijHXJSzzdL6qJyLH0jvj9JyunQo0WJo+uVLo0MSdgLpZxR2gOPdNA5wRON+aixjBzbuyk6f/VU1YbLPoS6qeUKXFsUMOApMfhg/fPZa170z0IB+CJlTuSRleBqtKkgFe4jVju2BnObKUfAveE53BEDnnB30KHIgE=
+	t=1750713143; cv=none; b=SAiVQUsmt5rZxz/Sw5G1H0qK9EsFq8RFKBn37YZl+tCS/8jX600owMcFKqpgCXZbuG8l6P+j/QQaSX2+kAYxAFtAG55zOh6+FFhnM/+VGs8aTi/fMgqVmquodC5h4ltNQPBH63kIo/msocd80vqI3dq50Pk5VFuvw1OPVcKqkp4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750716139; c=relaxed/simple;
-	bh=1uz4gfJBC/lelKQL1QBAZjeeZdbcBoUFn3hJZ6XTApM=;
+	s=arc-20240116; t=1750713143; c=relaxed/simple;
+	bh=DrjwLZcnicdte8Ps+ED/tV4AbMT52oGvE7dLof2yZxc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DDV451x7960vOkSy3f54yUOtOmyUBC8sbtAr5xlVP5u6JvEMAPY8Z+o6px3G7mWfJtdF/aX+m9Ipu6JclpqBGkNz+t/F2NBEhgNzw6WfG2jZwxaMHNLkEb9HjL8AvhDsKPfjKXXF9WE2ltbjxkVlXF5GAQvD+SE5/bB1+nNyItI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ca933SLy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4DC1AC4CEEA;
-	Mon, 23 Jun 2025 22:02:19 +0000 (UTC)
+	 MIME-Version; b=nI6iibTQNb4Wz5ZyiahTvFtaiGY1PNhPwnMhSX53RLfO8tVJJYEE2zVx3x6zp50WrY1/yglAsGjw/mqFHsuhB5HgqBRxKtUBE7bPBDD8geZ/Dqtno7fWZoX1RDxvMuQ7cxjRaeZaDqDE040ce6TmVtMeJAhQ65Zts8TsJNzmrMY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zuI4qaRs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD965C4CEEA;
+	Mon, 23 Jun 2025 21:12:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750716139;
-	bh=1uz4gfJBC/lelKQL1QBAZjeeZdbcBoUFn3hJZ6XTApM=;
+	s=korg; t=1750713143;
+	bh=DrjwLZcnicdte8Ps+ED/tV4AbMT52oGvE7dLof2yZxc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ca933SLybrKWkl9/u8t/HY/luEJCCBkHiLsdUqmFsPXCq3MIEQyl9NtSB/UZ22Tuz
-	 pzXZl+nzNQp4+OxmxLFmgMcn5LPPzBrvK+N3/B/0Ox3W1HszlXWTtNm5fgWxBtR22H
-	 MVY4Xz6I+NUA+uZmnVLGitwpIIKBAeyLvXM2Fwac=
+	b=zuI4qaRsoLV/ALYtvdlLdWf4Q3wBf7cY124hBDCXAalfSV5MKz9LKQ5orJTuIzRYT
+	 tuH5WnmOekC5gDnOolxqOG3P2/LXNHK5BbbdV/9cvysSdJNcACgHnWhjnO7s76PGA3
+	 ZVZ0v/sCgce0CmF2QEki89PEX9nbqVEWjkp3WDbA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hou Tao <houtao1@huawei.com>,
-	Will Deacon <will@kernel.org>,
-	Pu Lehui <pulehui@huawei.com>
-Subject: [PATCH 5.10 323/355] arm64: move AARCH64_BREAK_FAULT into insn-def.h
-Date: Mon, 23 Jun 2025 15:08:44 +0200
-Message-ID: <20250623130636.471359981@linuxfoundation.org>
+	stable@kernel.org,
+	Dexuan Cui <decui@microsoft.com>,
+	Long Li <longli@microsoft.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>
+Subject: [PATCH 5.4 190/222] scsi: storvsc: Increase the timeouts to storvsc_timeout
+Date: Mon, 23 Jun 2025 15:08:45 +0200
+Message-ID: <20250623130617.946393537@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130626.716971725@linuxfoundation.org>
-References: <20250623130626.716971725@linuxfoundation.org>
+In-Reply-To: <20250623130611.896514667@linuxfoundation.org>
+References: <20250623130611.896514667@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,76 +63,81 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hou Tao <houtao1@huawei.com>
+From: Dexuan Cui <decui@microsoft.com>
 
-[ Upstream commit 97e58e395e9c074fd096dad13c54e9f4112cf71d ]
+commit b2f966568faaad326de97481096d0f3dc0971c43 upstream.
 
-If CONFIG_ARM64_LSE_ATOMICS is off, encoders for LSE-related instructions
-can return AARCH64_BREAK_FAULT directly in insn.h. In order to access
-AARCH64_BREAK_FAULT in insn.h, we can not include debug-monitors.h in
-insn.h, because debug-monitors.h has already depends on insn.h, so just
-move AARCH64_BREAK_FAULT into insn-def.h.
+Currently storvsc_timeout is only used in storvsc_sdev_configure(), and
+5s and 10s are used elsewhere. It turns out that rarely the 5s is not
+enough on Azure, so let's use storvsc_timeout everywhere.
 
-It will be used by the following patch to eliminate unnecessary LSE-related
-encoders when CONFIG_ARM64_LSE_ATOMICS is off.
+In case a timeout happens and storvsc_channel_init() returns an error,
+close the VMBus channel so that any host-to-guest messages in the
+channel's ringbuffer, which might come late, can be safely ignored.
 
-Signed-off-by: Hou Tao <houtao1@huawei.com>
-Link: https://lore.kernel.org/r/20220217072232.1186625-2-houtao1@huawei.com
-Signed-off-by: Will Deacon <will@kernel.org>
-[not exist insn-def.h file, move to insn.h]
-Signed-off-by: Pu Lehui <pulehui@huawei.com>
+Add a "const" to storvsc_timeout.
+
+Cc: stable@kernel.org
+Signed-off-by: Dexuan Cui <decui@microsoft.com>
+Link: https://lore.kernel.org/r/1749243459-10419-1-git-send-email-decui@microsoft.com
+Reviewed-by: Long Li <longli@microsoft.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/include/asm/debug-monitors.h |   12 ------------
- arch/arm64/include/asm/insn.h           |   12 ++++++++++++
- 2 files changed, 12 insertions(+), 12 deletions(-)
+ drivers/scsi/storvsc_drv.c |   10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
 
---- a/arch/arm64/include/asm/debug-monitors.h
-+++ b/arch/arm64/include/asm/debug-monitors.h
-@@ -34,18 +34,6 @@
-  */
- #define BREAK_INSTR_SIZE		AARCH64_INSN_SIZE
- 
--/*
-- * BRK instruction encoding
-- * The #imm16 value should be placed at bits[20:5] within BRK ins
-- */
--#define AARCH64_BREAK_MON	0xd4200000
--
--/*
-- * BRK instruction for provoking a fault on purpose
-- * Unlike kgdb, #imm16 value with unallocated handler is used for faulting.
-- */
--#define AARCH64_BREAK_FAULT	(AARCH64_BREAK_MON | (FAULT_BRK_IMM << 5))
--
- #define AARCH64_BREAK_KGDB_DYN_DBG	\
- 	(AARCH64_BREAK_MON | (KGDB_DYN_DBG_BRK_IMM << 5))
- 
---- a/arch/arm64/include/asm/insn.h
-+++ b/arch/arm64/include/asm/insn.h
-@@ -13,6 +13,18 @@
- /* A64 instructions are always 32 bits. */
- #define	AARCH64_INSN_SIZE		4
- 
-+/*
-+ * BRK instruction encoding
-+ * The #imm16 value should be placed at bits[20:5] within BRK ins
-+ */
-+#define AARCH64_BREAK_MON      0xd4200000
-+
-+/*
-+ * BRK instruction for provoking a fault on purpose
-+ * Unlike kgdb, #imm16 value with unallocated handler is used for faulting.
-+ */
-+#define AARCH64_BREAK_FAULT    (AARCH64_BREAK_MON | (FAULT_BRK_IMM << 5))
-+
- #ifndef __ASSEMBLY__
+--- a/drivers/scsi/storvsc_drv.c
++++ b/drivers/scsi/storvsc_drv.c
+@@ -393,7 +393,7 @@ MODULE_PARM_DESC(ring_avail_percent_lowa
  /*
-  * ARM Architecture Reference Manual for ARMv8 Profile-A, Issue A.a
+  * Timeout in seconds for all devices managed by this driver.
+  */
+-static int storvsc_timeout = 180;
++static const int storvsc_timeout = 180;
+ 
+ #if IS_ENABLED(CONFIG_SCSI_FC_ATTRS)
+ static struct scsi_transport_template *fc_transport_template;
+@@ -707,7 +707,7 @@ static void  handle_multichannel_storage
+ 		return;
+ 	}
+ 
+-	t = wait_for_completion_timeout(&request->wait_event, 10*HZ);
++	t = wait_for_completion_timeout(&request->wait_event, storvsc_timeout * HZ);
+ 	if (t == 0) {
+ 		dev_err(dev, "Failed to create sub-channel: timed out\n");
+ 		return;
+@@ -768,7 +768,7 @@ static int storvsc_execute_vstor_op(stru
+ 	if (ret != 0)
+ 		return ret;
+ 
+-	t = wait_for_completion_timeout(&request->wait_event, 5*HZ);
++	t = wait_for_completion_timeout(&request->wait_event, storvsc_timeout * HZ);
+ 	if (t == 0)
+ 		return -ETIMEDOUT;
+ 
+@@ -1200,6 +1200,8 @@ static int storvsc_connect_to_vsp(struct
+ 		return ret;
+ 
+ 	ret = storvsc_channel_init(device, is_fc);
++	if (ret)
++		vmbus_close(device->channel);
+ 
+ 	return ret;
+ }
+@@ -1503,7 +1505,7 @@ static int storvsc_host_reset_handler(st
+ 	if (ret != 0)
+ 		return FAILED;
+ 
+-	t = wait_for_completion_timeout(&request->wait_event, 5*HZ);
++	t = wait_for_completion_timeout(&request->wait_event, storvsc_timeout * HZ);
+ 	if (t == 0)
+ 		return TIMEOUT_ERROR;
+ 
 
 
 
