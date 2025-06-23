@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-156835-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157412-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A0FD3AE5156
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:33:25 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 20D80AE53D5
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:56:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7EAD1441B1C
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:33:00 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A72D97A554C
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:55:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6B62222599;
-	Mon, 23 Jun 2025 21:33:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA57D222576;
+	Mon, 23 Jun 2025 21:56:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yEGev9V6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RGEqyYtL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7253C1C5D46;
-	Mon, 23 Jun 2025 21:33:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 780E43FB1B;
+	Mon, 23 Jun 2025 21:56:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750714382; cv=none; b=KVTVbSSE78ELTfOgO8x4SABf0LPtNPhl5dDRs64gvI/UtwGiE/P1ITXY4CANw9dRVrruXereuRTEc4f/gyjZQWUVmdRtpvYe/M5VmRY9HS6khp5F/rgdGFHFwEFVKFB9d9oyHt1yiOXrNXV+w1j8P+cwb2PdSb+VHw5H59piLTs=
+	t=1750715802; cv=none; b=VkvxRdF4B1M1vRjORyk2q3tP3eEndyDbMVqYgpHrdQtXlgIHxakUp6SC/G8ZROzdHXcKhsXsM9C+B3KRlLvecbi2zKaKqW046OOJvGorm26xayfQtOA0tXEbZ1EXsyLv4XdzsvCgSzHmy6lfZlqNOBlk5ZSqQRv9mlGrBeri99I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750714382; c=relaxed/simple;
-	bh=4ZVryBueCgyqIErQP+8hTO29/IA7aO9OHUFyB6WGwmE=;
+	s=arc-20240116; t=1750715802; c=relaxed/simple;
+	bh=tpyeOkEuoCAIGF9uGTdJK7wsSe1akNM+SceL4/HcwD0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=I2aeSlpjwc8iuU05hxGE7+vcOsWXWuzLLfVC3c8+vIKWx07mqQJbSbmZl9tZ8judC59DjzuQZQgl4oB7DHdU97u2IePOgaSdMyO2+eNvQRdZkzHwU0FrGULFMqp6/y1G44nAMw66ylQjeAeCrVU2/v6p6ZpudnSqpU0ZtSUpUno=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yEGev9V6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09646C4CEEA;
-	Mon, 23 Jun 2025 21:33:01 +0000 (UTC)
+	 MIME-Version; b=pGKq+kkKqdk4XaV+t/OQbo7w1Rd2KNFdQUWEjdTwRc5aGODjAMJ2YIAh7uanRYpKlqMcGT6EVPCP5/BaniX7NusdtquYJZv7ZXBMdxCA6sQOWY3eDbo/mFVLGeQekNDYpSo57vBTdECAKQr36WYFe+SfaeeGA8R3KYyYUnbdEy8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RGEqyYtL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 101C1C4CEEA;
+	Mon, 23 Jun 2025 21:56:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750714382;
-	bh=4ZVryBueCgyqIErQP+8hTO29/IA7aO9OHUFyB6WGwmE=;
+	s=korg; t=1750715802;
+	bh=tpyeOkEuoCAIGF9uGTdJK7wsSe1akNM+SceL4/HcwD0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yEGev9V6GMUNzQHEME6I5m1TQPy0U6Xcifc0E4eKY/TlS4bHVFYqQgoN8+LSVLIGn
-	 W50j+r60pTr7fwEsiwUf9QNiDW5en/VbQp3Jc5zLUJAsbkpnbUJJS9/2jBWnQ11jiV
-	 Q8P64bZHrxK78zfVnVbK/ehZhSDHtUr+mPnlyapU=
+	b=RGEqyYtLp2eFTMPtqoJDfiWbR2ufrescNZXYjZCf6YB7cNJOrF1qJJ+6llyTu1MD+
+	 MWN4Z1VIyu9pL/1W+hVuUjpvKK4bMDG6y/MWBsUQVal9tpZGaayZaphTzzyx+1RHWR
+	 Rq8cFO70GSzIsgm8ETCJS0ho5yDD8enNe/8Xl+i0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vlad Dogaru <vdogaru@nvidia.com>,
-	Yevgeny Kliteynik <kliteyn@nvidia.com>,
-	Mark Bloch <mbloch@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Akhil R <akhilrajeev@nvidia.com>,
+	Thierry Reding <treding@nvidia.com>,
+	Andi Shyti <andi.shyti@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 387/592] net/mlx5: HWS, Fix IP version decision
+Subject: [PATCH 6.12 208/414] i2c: tegra: check msg length in SMBUS block read
 Date: Mon, 23 Jun 2025 15:05:45 +0200
-Message-ID: <20250623130709.646898390@linuxfoundation.org>
+Message-ID: <20250623130647.206078201@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
-References: <20250623130700.210182694@linuxfoundation.org>
+In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
+References: <20250623130642.015559452@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,136 +63,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vlad Dogaru <vdogaru@nvidia.com>
+From: Akhil R <akhilrajeev@nvidia.com>
 
-[ Upstream commit 5f2f8d8b6800e4fc760c2eccec9b2bd2cacf80cf ]
+[ Upstream commit a6e04f05ce0b070ab39d5775580e65c7d943da0b ]
 
-Unify the check for IP version when creating a definer. A given matcher
-is deemed to match on IPv6 if any of the higher order (>31) bits of
-source or destination address mask are set.
+For SMBUS block read, do not continue to read if the message length
+passed from the device is '0' or greater than the maximum allowed bytes.
 
-A single packet cannot mix IP versions between source and destination
-addresses, so it makes no sense that they would be decided on
-independently.
-
-Signed-off-by: Vlad Dogaru <vdogaru@nvidia.com>
-Reviewed-by: Yevgeny Kliteynik <kliteyn@nvidia.com>
-Signed-off-by: Mark Bloch <mbloch@nvidia.com>
-Link: https://patch.msgid.link/20250422092540.182091-2-mbloch@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Akhil R <akhilrajeev@nvidia.com>
+Acked-by: Thierry Reding <treding@nvidia.com>
+Link: https://lore.kernel.org/r/20250424053320.19211-1-akhilrajeev@nvidia.com
+Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../mellanox/mlx5/core/steering/hws/definer.c | 38 ++++++++-----------
- 1 file changed, 16 insertions(+), 22 deletions(-)
+ drivers/i2c/busses/i2c-tegra.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/steering/hws/definer.c b/drivers/net/ethernet/mellanox/mlx5/core/steering/hws/definer.c
-index 293459458cc5f..7dc6d8cd744e1 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/steering/hws/definer.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/steering/hws/definer.c
-@@ -509,9 +509,9 @@ static int
- hws_definer_conv_outer(struct mlx5hws_definer_conv_data *cd,
- 		       u32 *match_param)
- {
--	bool is_s_ipv6, is_d_ipv6, smac_set, dmac_set;
- 	struct mlx5hws_definer_fc *fc = cd->fc;
- 	struct mlx5hws_definer_fc *curr_fc;
-+	bool is_ipv6, smac_set, dmac_set;
- 	u32 *s_ipv6, *d_ipv6;
- 
- 	if (HWS_IS_FLD_SET_SZ(match_param, outer_headers.l4_type, 0x2) ||
-@@ -573,10 +573,10 @@ hws_definer_conv_outer(struct mlx5hws_definer_conv_data *cd,
- 			      outer_headers.dst_ipv4_dst_ipv6.ipv6_layout);
- 
- 	/* Assume IPv6 is used if ipv6 bits are set */
--	is_s_ipv6 = s_ipv6[0] || s_ipv6[1] || s_ipv6[2];
--	is_d_ipv6 = d_ipv6[0] || d_ipv6[1] || d_ipv6[2];
-+	is_ipv6 = s_ipv6[0] || s_ipv6[1] || s_ipv6[2] ||
-+		  d_ipv6[0] || d_ipv6[1] || d_ipv6[2];
- 
--	if (is_s_ipv6) {
-+	if (is_ipv6) {
- 		/* Handle IPv6 source address */
- 		HWS_SET_HDR(fc, match_param, IPV6_SRC_127_96_O,
- 			    outer_headers.src_ipv4_src_ipv6.ipv6_simple_layout.ipv6_127_96,
-@@ -590,13 +590,6 @@ hws_definer_conv_outer(struct mlx5hws_definer_conv_data *cd,
- 		HWS_SET_HDR(fc, match_param, IPV6_SRC_31_0_O,
- 			    outer_headers.src_ipv4_src_ipv6.ipv6_simple_layout.ipv6_31_0,
- 			    ipv6_src_outer.ipv6_address_31_0);
--	} else {
--		/* Handle IPv4 source address */
--		HWS_SET_HDR(fc, match_param, IPV4_SRC_O,
--			    outer_headers.src_ipv4_src_ipv6.ipv6_simple_layout.ipv6_31_0,
--			    ipv4_src_dest_outer.source_address);
--	}
--	if (is_d_ipv6) {
- 		/* Handle IPv6 destination address */
- 		HWS_SET_HDR(fc, match_param, IPV6_DST_127_96_O,
- 			    outer_headers.dst_ipv4_dst_ipv6.ipv6_simple_layout.ipv6_127_96,
-@@ -611,6 +604,10 @@ hws_definer_conv_outer(struct mlx5hws_definer_conv_data *cd,
- 			    outer_headers.dst_ipv4_dst_ipv6.ipv6_simple_layout.ipv6_31_0,
- 			    ipv6_dst_outer.ipv6_address_31_0);
- 	} else {
-+		/* Handle IPv4 source address */
-+		HWS_SET_HDR(fc, match_param, IPV4_SRC_O,
-+			    outer_headers.src_ipv4_src_ipv6.ipv6_simple_layout.ipv6_31_0,
-+			    ipv4_src_dest_outer.source_address);
- 		/* Handle IPv4 destination address */
- 		HWS_SET_HDR(fc, match_param, IPV4_DST_O,
- 			    outer_headers.dst_ipv4_dst_ipv6.ipv6_simple_layout.ipv6_31_0,
-@@ -668,9 +665,9 @@ static int
- hws_definer_conv_inner(struct mlx5hws_definer_conv_data *cd,
- 		       u32 *match_param)
- {
--	bool is_s_ipv6, is_d_ipv6, smac_set, dmac_set;
- 	struct mlx5hws_definer_fc *fc = cd->fc;
- 	struct mlx5hws_definer_fc *curr_fc;
-+	bool is_ipv6, smac_set, dmac_set;
- 	u32 *s_ipv6, *d_ipv6;
- 
- 	if (HWS_IS_FLD_SET_SZ(match_param, inner_headers.l4_type, 0x2) ||
-@@ -731,10 +728,10 @@ hws_definer_conv_inner(struct mlx5hws_definer_conv_data *cd,
- 			      inner_headers.dst_ipv4_dst_ipv6.ipv6_layout);
- 
- 	/* Assume IPv6 is used if ipv6 bits are set */
--	is_s_ipv6 = s_ipv6[0] || s_ipv6[1] || s_ipv6[2];
--	is_d_ipv6 = d_ipv6[0] || d_ipv6[1] || d_ipv6[2];
-+	is_ipv6 = s_ipv6[0] || s_ipv6[1] || s_ipv6[2] ||
-+		  d_ipv6[0] || d_ipv6[1] || d_ipv6[2];
- 
--	if (is_s_ipv6) {
-+	if (is_ipv6) {
- 		/* Handle IPv6 source address */
- 		HWS_SET_HDR(fc, match_param, IPV6_SRC_127_96_I,
- 			    inner_headers.src_ipv4_src_ipv6.ipv6_simple_layout.ipv6_127_96,
-@@ -748,13 +745,6 @@ hws_definer_conv_inner(struct mlx5hws_definer_conv_data *cd,
- 		HWS_SET_HDR(fc, match_param, IPV6_SRC_31_0_I,
- 			    inner_headers.src_ipv4_src_ipv6.ipv6_simple_layout.ipv6_31_0,
- 			    ipv6_src_inner.ipv6_address_31_0);
--	} else {
--		/* Handle IPv4 source address */
--		HWS_SET_HDR(fc, match_param, IPV4_SRC_I,
--			    inner_headers.src_ipv4_src_ipv6.ipv6_simple_layout.ipv6_31_0,
--			    ipv4_src_dest_inner.source_address);
--	}
--	if (is_d_ipv6) {
- 		/* Handle IPv6 destination address */
- 		HWS_SET_HDR(fc, match_param, IPV6_DST_127_96_I,
- 			    inner_headers.dst_ipv4_dst_ipv6.ipv6_simple_layout.ipv6_127_96,
-@@ -769,6 +759,10 @@ hws_definer_conv_inner(struct mlx5hws_definer_conv_data *cd,
- 			    inner_headers.dst_ipv4_dst_ipv6.ipv6_simple_layout.ipv6_31_0,
- 			    ipv6_dst_inner.ipv6_address_31_0);
- 	} else {
-+		/* Handle IPv4 source address */
-+		HWS_SET_HDR(fc, match_param, IPV4_SRC_I,
-+			    inner_headers.src_ipv4_src_ipv6.ipv6_simple_layout.ipv6_31_0,
-+			    ipv4_src_dest_inner.source_address);
- 		/* Handle IPv4 destination address */
- 		HWS_SET_HDR(fc, match_param, IPV4_DST_I,
- 			    inner_headers.dst_ipv4_dst_ipv6.ipv6_simple_layout.ipv6_31_0,
+diff --git a/drivers/i2c/busses/i2c-tegra.c b/drivers/i2c/busses/i2c-tegra.c
+index 1df5b42041427..89ce8a62b37c6 100644
+--- a/drivers/i2c/busses/i2c-tegra.c
++++ b/drivers/i2c/busses/i2c-tegra.c
+@@ -1395,6 +1395,11 @@ static int tegra_i2c_xfer(struct i2c_adapter *adap, struct i2c_msg msgs[],
+ 			ret = tegra_i2c_xfer_msg(i2c_dev, &msgs[i], MSG_END_CONTINUE);
+ 			if (ret)
+ 				break;
++
++			/* Validate message length before proceeding */
++			if (msgs[i].buf[0] == 0 || msgs[i].buf[0] > I2C_SMBUS_BLOCK_MAX)
++				break;
++
+ 			/* Set the msg length from first byte */
+ 			msgs[i].len += msgs[i].buf[0];
+ 			dev_dbg(i2c_dev->dev, "reading %d bytes\n", msgs[i].len);
 -- 
 2.39.5
 
