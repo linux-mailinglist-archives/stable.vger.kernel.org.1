@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-158194-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-158095-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E783AAE5760
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:29:00 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 607DCAE56ED
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:24:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2BDDD4C6126
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:28:38 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7E23F1BC66D4
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:24:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B050A224AED;
-	Mon, 23 Jun 2025 22:28:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 97B16224B1F;
+	Mon, 23 Jun 2025 22:24:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="if3EO31E"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2wHCEOHk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BD31B676;
-	Mon, 23 Jun 2025 22:28:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54CAE2192EC;
+	Mon, 23 Jun 2025 22:24:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750717715; cv=none; b=fvM5AXZExsRpfjZJ20idtpovQYNxX6SIPt+6VRJknNNn2vuk/uCDao/tvEIF26WA7gnEeDXBwGiGRD/VPD105MMIdnM3KojkrrOEuS6Jii6iGmckeK0kUlQThahFzeQOqmdaEvsRDCk/tEtjeelPHDIwzFhOYMrnMTrH1opIhdM=
+	t=1750717470; cv=none; b=jCsJlrII/1u+y9LCcfOj0MlEwGZU+PggJs6C/4EBu9HCaOtKrV41I1+yTHl2yqhQ3+EQ2XpFRc/hijsNWNj1uaDNemTu3qBgtznfaC9mNhu7onY9/t2DvPdne+7tF4x+6//UcOKCq/TTDmJKYusw5s0QBY8EDWCr9lExUmlxFrg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750717715; c=relaxed/simple;
-	bh=U2bO/1eg9zr5/OFIF1lJwF4cZ9aTl6esonxQ2Mwef+M=;
+	s=arc-20240116; t=1750717470; c=relaxed/simple;
+	bh=cvQdKebyNOhMWuUJ1nnp9Sg4yijzMsdDuvZLipCC2KU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YiSboHZYC8ehR8z9Am7DOxnvmmiYwbOuB+BQfGpY6/AsDuZZ4Dvmsc3pHKTCWVhb6H3g9CQ8toy97guu2qDL7YI9pGgaVlfzna8V0ptF7ynLm8XIzz3ZzfwkyWsbyyzS+WX1QxZzBOAIM4wbMytKNEpMlEkqhRibhrzD34a2zFs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=if3EO31E; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F138AC4CEEA;
-	Mon, 23 Jun 2025 22:28:34 +0000 (UTC)
+	 MIME-Version; b=DOlfE0e9wmV06pUoZCFzk6fFugAic8IQBXTZCARDk14g2ifEaCMAlff9vTAF4LvYduSA3Mxc+W8xRsIBBQkY/5HesfXyX9FTdjTDJC1eU7sFpq0RYzCCN1k8k6z9W6bPdbMqb1doeAhKwLwCQSh6mrQBNAwezY8p8/Wbk98gYCw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2wHCEOHk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D75E3C4CEEA;
+	Mon, 23 Jun 2025 22:24:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750717715;
-	bh=U2bO/1eg9zr5/OFIF1lJwF4cZ9aTl6esonxQ2Mwef+M=;
+	s=korg; t=1750717470;
+	bh=cvQdKebyNOhMWuUJ1nnp9Sg4yijzMsdDuvZLipCC2KU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=if3EO31EAoukblGZObr+ERaoeTZ2BVvZoaOjMqKX8hYNdLQN7Fsen7xd5mzvcuxGU
-	 J3ZXhiWjcidaGZO9OAEekq1q1Da3x0sd9kLOEWYxCvbtrhbNZ0hSauxJf2HgAj2fVn
-	 mFjLr3At6S1iGaBhGTIK4e8rOuASzF6scVOieaoc=
+	b=2wHCEOHk7mN3q15xIzCNO4HrD2vyXhYcC6nfay63zkRF+/20t6YBGdv6cN4MrkWoB
+	 Z4ODKh8ghADZZESE83WKwJWFukbW3rcpwqva2Ow+LQUPFz4LrmfcYz0dVwBD6rnHna
+	 /9hh6EV5GawBGpBJBjUZINOZtffQST42JSwmZlSY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Wheeler <netdev@lists.ewheeler.net>,
-	Neal Cardwell <ncardwell@google.com>,
-	Yuchung Cheng <ycheng@google.com>,
+	syzbot+8b64dec3affaed7b3af5@syzkaller.appspotmail.com,
 	Eric Dumazet <edumazet@google.com>,
-	"David S. Miller" <davem@davemloft.net>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 484/508] tcp: fix tcp_packet_delayed() for tcp_is_non_sack_preventing_reopen() behavior
-Date: Mon, 23 Jun 2025 15:08:49 +0200
-Message-ID: <20250623130656.967740954@linuxfoundation.org>
+Subject: [PATCH 6.12 393/414] net: atm: add lec_mutex
+Date: Mon, 23 Jun 2025 15:08:50 +0200
+Message-ID: <20250623130651.765823157@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
-References: <20250623130645.255320792@linuxfoundation.org>
+In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
+References: <20250623130642.015559452@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,109 +63,163 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Neal Cardwell <ncardwell@google.com>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit d0fa59897e049e84432600e86df82aab3dce7aa5 ]
+[ Upstream commit d13a3824bfd2b4774b671a75cf766a16637a0e67 ]
 
-After the following commit from 2024:
+syzbot found its way in net/atm/lec.c, and found an error path
+in lecd_attach() could leave a dangling pointer in dev_lec[].
 
-commit e37ab7373696 ("tcp: fix to allow timestamp undo if no retransmits were sent")
+Add a mutex to protect dev_lecp[] uses from lecd_attach(),
+lec_vcc_attach() and lec_mcast_attach().
 
-...there was buggy behavior where TCP connections without SACK support
-could easily see erroneous undo events at the end of fast recovery or
-RTO recovery episodes. The erroneous undo events could cause those
-connections to suffer repeated loss recovery episodes and high
-retransmit rates.
+Following patch will use this mutex for /proc/net/atm/lec.
 
-The problem was an interaction between the non-SACK behavior on these
-connections and the undo logic. The problem is that, for non-SACK
-connections at the end of a loss recovery episode, if snd_una ==
-high_seq, then tcp_is_non_sack_preventing_reopen() holds steady in
-CA_Recovery or CA_Loss, but clears tp->retrans_stamp to 0. Then upon
-the next ACK the "tcp: fix to allow timestamp undo if no retransmits
-were sent" logic saw the tp->retrans_stamp at 0 and erroneously
-concluded that no data was retransmitted, and erroneously performed an
-undo of the cwnd reduction, restoring cwnd immediately to the value it
-had before loss recovery.  This caused an immediate burst of traffic
-and build-up of queues and likely another immediate loss recovery
-episode.
+BUG: KASAN: slab-use-after-free in lecd_attach net/atm/lec.c:751 [inline]
+BUG: KASAN: slab-use-after-free in lane_ioctl+0x2224/0x23e0 net/atm/lec.c:1008
+Read of size 8 at addr ffff88807c7b8e68 by task syz.1.17/6142
 
-This commit fixes tcp_packet_delayed() to ignore zero retrans_stamp
-values for non-SACK connections when snd_una is at or above high_seq,
-because tcp_is_non_sack_preventing_reopen() clears retrans_stamp in
-this case, so it's not a valid signal that we can undo.
+CPU: 1 UID: 0 PID: 6142 Comm: syz.1.17 Not tainted 6.16.0-rc1-syzkaller-00239-g08215f5486ec #0 PREEMPT(full)
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 05/07/2025
+Call Trace:
+ <TASK>
+  __dump_stack lib/dump_stack.c:94 [inline]
+  dump_stack_lvl+0x116/0x1f0 lib/dump_stack.c:120
+  print_address_description mm/kasan/report.c:408 [inline]
+  print_report+0xcd/0x680 mm/kasan/report.c:521
+  kasan_report+0xe0/0x110 mm/kasan/report.c:634
+  lecd_attach net/atm/lec.c:751 [inline]
+  lane_ioctl+0x2224/0x23e0 net/atm/lec.c:1008
+  do_vcc_ioctl+0x12c/0x930 net/atm/ioctl.c:159
+  sock_do_ioctl+0x118/0x280 net/socket.c:1190
+  sock_ioctl+0x227/0x6b0 net/socket.c:1311
+  vfs_ioctl fs/ioctl.c:51 [inline]
+  __do_sys_ioctl fs/ioctl.c:907 [inline]
+  __se_sys_ioctl fs/ioctl.c:893 [inline]
+  __x64_sys_ioctl+0x18e/0x210 fs/ioctl.c:893
+  do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+  do_syscall_64+0xcd/0x4c0 arch/x86/entry/syscall_64.c:94
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+ </TASK>
 
-Note that the commit named in the Fixes footer restored long-present
-behavior from roughly 2005-2019, so apparently this bug was present
-for a while during that era, and this was simply not caught.
+Allocated by task 6132:
+  kasan_save_stack+0x33/0x60 mm/kasan/common.c:47
+  kasan_save_track+0x14/0x30 mm/kasan/common.c:68
+  poison_kmalloc_redzone mm/kasan/common.c:377 [inline]
+  __kasan_kmalloc+0xaa/0xb0 mm/kasan/common.c:394
+  kasan_kmalloc include/linux/kasan.h:260 [inline]
+  __do_kmalloc_node mm/slub.c:4328 [inline]
+  __kvmalloc_node_noprof+0x27b/0x620 mm/slub.c:5015
+  alloc_netdev_mqs+0xd2/0x1570 net/core/dev.c:11711
+  lecd_attach net/atm/lec.c:737 [inline]
+  lane_ioctl+0x17db/0x23e0 net/atm/lec.c:1008
+  do_vcc_ioctl+0x12c/0x930 net/atm/ioctl.c:159
+  sock_do_ioctl+0x118/0x280 net/socket.c:1190
+  sock_ioctl+0x227/0x6b0 net/socket.c:1311
+  vfs_ioctl fs/ioctl.c:51 [inline]
+  __do_sys_ioctl fs/ioctl.c:907 [inline]
+  __se_sys_ioctl fs/ioctl.c:893 [inline]
+  __x64_sys_ioctl+0x18e/0x210 fs/ioctl.c:893
+  do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+  do_syscall_64+0xcd/0x4c0 arch/x86/entry/syscall_64.c:94
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
 
-Fixes: e37ab7373696 ("tcp: fix to allow timestamp undo if no retransmits were sent")
-Reported-by: Eric Wheeler <netdev@lists.ewheeler.net>
-Closes: https://lore.kernel.org/netdev/64ea9333-e7f9-0df-b0f2-8d566143acab@ewheeler.net/
-Signed-off-by: Neal Cardwell <ncardwell@google.com>
-Co-developed-by: Yuchung Cheng <ycheng@google.com>
-Signed-off-by: Yuchung Cheng <ycheng@google.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Freed by task 6132:
+  kasan_save_stack+0x33/0x60 mm/kasan/common.c:47
+  kasan_save_track+0x14/0x30 mm/kasan/common.c:68
+  kasan_save_free_info+0x3b/0x60 mm/kasan/generic.c:576
+  poison_slab_object mm/kasan/common.c:247 [inline]
+  __kasan_slab_free+0x51/0x70 mm/kasan/common.c:264
+  kasan_slab_free include/linux/kasan.h:233 [inline]
+  slab_free_hook mm/slub.c:2381 [inline]
+  slab_free mm/slub.c:4643 [inline]
+  kfree+0x2b4/0x4d0 mm/slub.c:4842
+  free_netdev+0x6c5/0x910 net/core/dev.c:11892
+  lecd_attach net/atm/lec.c:744 [inline]
+  lane_ioctl+0x1ce8/0x23e0 net/atm/lec.c:1008
+  do_vcc_ioctl+0x12c/0x930 net/atm/ioctl.c:159
+  sock_do_ioctl+0x118/0x280 net/socket.c:1190
+  sock_ioctl+0x227/0x6b0 net/socket.c:1311
+  vfs_ioctl fs/ioctl.c:51 [inline]
+  __do_sys_ioctl fs/ioctl.c:907 [inline]
+  __se_sys_ioctl fs/ioctl.c:893 [inline]
+  __x64_sys_ioctl+0x18e/0x210 fs/ioctl.c:893
+
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Reported-by: syzbot+8b64dec3affaed7b3af5@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/netdev/6852c6f6.050a0220.216029.0018.GAE@google.com/T/#u
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Link: https://patch.msgid.link/20250618140844.1686882-2-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/tcp_input.c | 37 +++++++++++++++++++++++++------------
- 1 file changed, 25 insertions(+), 12 deletions(-)
+ net/atm/lec.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/net/ipv4/tcp_input.c b/net/ipv4/tcp_input.c
-index 2888aaae0d76f..222b829f33f42 100644
---- a/net/ipv4/tcp_input.c
-+++ b/net/ipv4/tcp_input.c
-@@ -2441,20 +2441,33 @@ static inline bool tcp_packet_delayed(const struct tcp_sock *tp)
+diff --git a/net/atm/lec.c b/net/atm/lec.c
+index a948dd47c3f34..09c042e1e4696 100644
+--- a/net/atm/lec.c
++++ b/net/atm/lec.c
+@@ -124,6 +124,7 @@ static unsigned char bus_mac[ETH_ALEN] = { 0xff, 0xff, 0xff, 0xff, 0xff, 0xff };
+ 
+ /* Device structures */
+ static struct net_device *dev_lec[MAX_LEC_ITF];
++static DEFINE_MUTEX(lec_mutex);
+ 
+ #if IS_ENABLED(CONFIG_BRIDGE)
+ static void lec_handle_bridge(struct sk_buff *skb, struct net_device *dev)
+@@ -685,6 +686,7 @@ static int lec_vcc_attach(struct atm_vcc *vcc, void __user *arg)
+ 	int bytes_left;
+ 	struct atmlec_ioc ioc_data;
+ 
++	lockdep_assert_held(&lec_mutex);
+ 	/* Lecd must be up in this case */
+ 	bytes_left = copy_from_user(&ioc_data, arg, sizeof(struct atmlec_ioc));
+ 	if (bytes_left != 0)
+@@ -710,6 +712,7 @@ static int lec_vcc_attach(struct atm_vcc *vcc, void __user *arg)
+ 
+ static int lec_mcast_attach(struct atm_vcc *vcc, int arg)
  {
- 	const struct sock *sk = (const struct sock *)tp;
++	lockdep_assert_held(&lec_mutex);
+ 	if (arg < 0 || arg >= MAX_LEC_ITF)
+ 		return -EINVAL;
+ 	arg = array_index_nospec(arg, MAX_LEC_ITF);
+@@ -725,6 +728,7 @@ static int lecd_attach(struct atm_vcc *vcc, int arg)
+ 	int i;
+ 	struct lec_priv *priv;
  
--	if (tp->retrans_stamp &&
--	    tcp_tsopt_ecr_before(tp, tp->retrans_stamp))
--		return true;  /* got echoed TS before first retransmission */
--
--	/* Check if nothing was retransmitted (retrans_stamp==0), which may
--	 * happen in fast recovery due to TSQ. But we ignore zero retrans_stamp
--	 * in TCP_SYN_SENT, since when we set FLAG_SYN_ACKED we also clear
--	 * retrans_stamp even if we had retransmitted the SYN.
-+	/* Received an echoed timestamp before the first retransmission? */
-+	if (tp->retrans_stamp)
-+		return tcp_tsopt_ecr_before(tp, tp->retrans_stamp);
-+
-+	/* We set tp->retrans_stamp upon the first retransmission of a loss
-+	 * recovery episode, so normally if tp->retrans_stamp is 0 then no
-+	 * retransmission has happened yet (likely due to TSQ, which can cause
-+	 * fast retransmits to be delayed). So if snd_una advanced while
-+	 * (tp->retrans_stamp is 0 then apparently a packet was merely delayed,
-+	 * not lost. But there are exceptions where we retransmit but then
-+	 * clear tp->retrans_stamp, so we check for those exceptions.
- 	 */
--	if (!tp->retrans_stamp &&	   /* no record of a retransmit/SYN? */
--	    sk->sk_state != TCP_SYN_SENT)  /* not the FLAG_SYN_ACKED case? */
--		return true;  /* nothing was retransmitted */
++	lockdep_assert_held(&lec_mutex);
+ 	if (arg < 0)
+ 		arg = 0;
+ 	if (arg >= MAX_LEC_ITF)
+@@ -742,6 +746,7 @@ static int lecd_attach(struct atm_vcc *vcc, int arg)
+ 		snprintf(dev_lec[i]->name, IFNAMSIZ, "lec%d", i);
+ 		if (register_netdev(dev_lec[i])) {
+ 			free_netdev(dev_lec[i]);
++			dev_lec[i] = NULL;
+ 			return -EINVAL;
+ 		}
  
--	return false;
-+	/* (1) For non-SACK connections, tcp_is_non_sack_preventing_reopen()
-+	 * clears tp->retrans_stamp when snd_una == high_seq.
-+	 */
-+	if (!tcp_is_sack(tp) && !before(tp->snd_una, tp->high_seq))
-+		return false;
-+
-+	/* (2) In TCP_SYN_SENT tcp_clean_rtx_queue() clears tp->retrans_stamp
-+	 * when setting FLAG_SYN_ACKED is set, even if the SYN was
-+	 * retransmitted.
-+	 */
-+	if (sk->sk_state == TCP_SYN_SENT)
-+		return false;
-+
-+	return true;	/* tp->retrans_stamp is zero; no retransmit yet */
+@@ -1003,6 +1008,7 @@ static int lane_ioctl(struct socket *sock, unsigned int cmd, unsigned long arg)
+ 		return -ENOIOCTLCMD;
+ 	}
+ 
++	mutex_lock(&lec_mutex);
+ 	switch (cmd) {
+ 	case ATMLEC_CTRL:
+ 		err = lecd_attach(vcc, (int)arg);
+@@ -1017,6 +1023,7 @@ static int lane_ioctl(struct socket *sock, unsigned int cmd, unsigned long arg)
+ 		break;
+ 	}
+ 
++	mutex_unlock(&lec_mutex);
+ 	return err;
  }
  
- /* Undo procedures. */
 -- 
 2.39.5
 
