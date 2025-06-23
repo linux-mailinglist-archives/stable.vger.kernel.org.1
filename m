@@ -1,57 +1,54 @@
-Return-Path: <stable+bounces-156566-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157587-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7BF70AE5016
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:22:25 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 329D2AE54B6
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:04:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BEB744A02F0
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:22:24 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 496DB1882EC2
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:04:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15B3F22256B;
-	Mon, 23 Jun 2025 21:22:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 97B8021FF2B;
+	Mon, 23 Jun 2025 22:03:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sDResPVc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GbP/BNQE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4FAB1E5B71;
-	Mon, 23 Jun 2025 21:22:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 551BB3FB1B;
+	Mon, 23 Jun 2025 22:03:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750713726; cv=none; b=piMFA/pDAAVRNHKw+nFSGk4T6lrWEYh5PlRrDg026im767Bb/O/00Ur43+7u3AJPWTFcMRa56KnK9nIkPwjK6v6aUTNuudcudxFLJHebYoxuN/daENfY8wYDVMfaiVyhr1pA6hBdZIC8bvuCGPFwN/zREVQwxRzhhnd+Phv3SBY=
+	t=1750716233; cv=none; b=E8E5qL6ckp2vM7qjn9K/zaupwTVBFtJRZhV+gQ5rmb+EYVG8Htn+70LrNwalnWpVgGDLDFA0YOGfVfbd8nKOHP4/YCBF2moPAitPsQRcsiW+HUboYLZDyKK5YvCzqvjgmqjCl5SqcISXTirpbgksfAPKhXXxfkB1i35/jOpHJvY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750713726; c=relaxed/simple;
-	bh=wN8L8tc+daTOMVwxcL0jZZNVA/Tpf3pRbrHL8Ny3J7k=;
+	s=arc-20240116; t=1750716233; c=relaxed/simple;
+	bh=2e+e/huyhHwhP8C5bknvZ8EUrczBp9LFppbddcY4ybc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CjKjIkiC3ylP/VCaSFQyCIT/KvsiUD2VrtihoGPO3Snl4MViT/CP42VjUBY/nkttsGud1/azFFlTVvl0gqluy57whTcHFqzlD8JShRCOgNNuaVUfMBva/SQdqMSmy5X5rYJH2Eha4WnmiBcupUpRKr+NZ+5Lr+MKXqvDVYXsHQo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sDResPVc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59EC4C4CEEA;
-	Mon, 23 Jun 2025 21:22:06 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Ofp0k4IfC9I9h/iV7IO7HsG5FgAz2pJvqsve2Nfw0YJZfnMwoVVdQ/8FJn1RayeBcq6LWjkIMn/4CvAj5DLZC6cbeMRIFdOwph1mgP84e41b3nPDztjxsm1o87MLgGpAonw0hNy1Vzn/jj+Rij2VBEtpV5psCgklGj2XZeckHwM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GbP/BNQE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1D42C4CEEA;
+	Mon, 23 Jun 2025 22:03:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750713726;
-	bh=wN8L8tc+daTOMVwxcL0jZZNVA/Tpf3pRbrHL8Ny3J7k=;
+	s=korg; t=1750716233;
+	bh=2e+e/huyhHwhP8C5bknvZ8EUrczBp9LFppbddcY4ybc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sDResPVc8yJAK+zksHx3z9k1u+Qu0qcE3nLaOk/IicGfxfU+tBCKpbhk4yyURtMxr
-	 kfqIyEV8QHgC2A8CtUWMXQ1QQvhpI5WyvBaNLll1I3ppf/ME33b/sFn135TVlYsN43
-	 jO6PZsfZY3tWu+2qStFnWtHlhfLhjbx0tbwL+2F4=
+	b=GbP/BNQE3JPYdssntLnZPbTXOtP8O9qmH0lkK709de9ZlSzNXasEirdlrWrG3G3YB
+	 wCDARXX/5in5A0fmbpA/exR8UgjaxT2Xs+PJt8dxYqmahGJnQ6s7nWGbbLI/ohIhRi
+	 KVtzPta/ysc34UHUuYe0fo2hKWeiSH0EMXWE1754=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Antipov <dmantipov@yandex.ru>,
-	Christian Lamparter <chunkeey@gmail.com>,
-	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 202/222] wifi: carl9170: do not ping device which has failed to load firmware
+	Eliav Farber <farbere@amazon.com>
+Subject: [PATCH 5.10 336/355] net/ipv4: fix type mismatch in inet_ehash_locks_alloc() causing build failure
 Date: Mon, 23 Jun 2025 15:08:57 +0200
-Message-ID: <20250623130618.348486975@linuxfoundation.org>
+Message-ID: <20250623130636.843013233@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130611.896514667@linuxfoundation.org>
-References: <20250623130611.896514667@linuxfoundation.org>
+In-Reply-To: <20250623130626.716971725@linuxfoundation.org>
+References: <20250623130626.716971725@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,70 +58,86 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Antipov <dmantipov@yandex.ru>
+From: Eliav Farber <farbere@amazon.com>
 
-[ Upstream commit 15d25307692312cec4b57052da73387f91a2e870 ]
+Fix compilation warning:
 
-Syzkaller reports [1, 2] crashes caused by an attempts to ping
-the device which has failed to load firmware. Since such a device
-doesn't pass 'ieee80211_register_hw()', an internal workqueue
-managed by 'ieee80211_queue_work()' is not yet created and an
-attempt to queue work on it causes null-ptr-deref.
+In file included from ./include/linux/kernel.h:15,
+                 from ./include/linux/list.h:9,
+                 from ./include/linux/module.h:12,
+                 from net/ipv4/inet_hashtables.c:12:
+net/ipv4/inet_hashtables.c: In function ‘inet_ehash_locks_alloc’:
+./include/linux/minmax.h:20:35: warning: comparison of distinct pointer types lacks a cast
+   20 |         (!!(sizeof((typeof(x) *)1 == (typeof(y) *)1)))
+      |                                   ^~
+./include/linux/minmax.h:26:18: note: in expansion of macro ‘__typecheck’
+   26 |                 (__typecheck(x, y) && __no_side_effects(x, y))
+      |                  ^~~~~~~~~~~
+./include/linux/minmax.h:36:31: note: in expansion of macro ‘__safe_cmp’
+   36 |         __builtin_choose_expr(__safe_cmp(x, y), \
+      |                               ^~~~~~~~~~
+./include/linux/minmax.h:52:25: note: in expansion of macro ‘__careful_cmp’
+   52 | #define max(x, y)       __careful_cmp(x, y, >)
+      |                         ^~~~~~~~~~~~~
+net/ipv4/inet_hashtables.c:946:19: note: in expansion of macro ‘max’
+  946 |         nblocks = max(nblocks, num_online_nodes() * PAGE_SIZE / locksz);
+      |                   ^~~
+  CC      block/badblocks.o
 
-[1] https://syzkaller.appspot.com/bug?extid=9a4aec827829942045ff
-[2] https://syzkaller.appspot.com/bug?extid=0d8afba53e8fb2633217
+When warnings are treated as errors, this causes the build to fail.
 
-Fixes: e4a668c59080 ("carl9170: fix spurious restart due to high latency")
-Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
-Acked-by: Christian Lamparter <chunkeey@gmail.com>
-Link: https://patch.msgid.link/20250616181205.38883-1-dmantipov@yandex.ru
-Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+The issue is a type mismatch between the operands passed to the max()
+macro. Here, nblocks is an unsigned int, while the expression
+num_online_nodes() * PAGE_SIZE / locksz is promoted to unsigned long.
+
+This happens because:
+ - num_online_nodes() returns int
+ - PAGE_SIZE is typically defined as an unsigned long (depending on the
+   architecture)
+ - locksz is unsigned int
+
+The resulting arithmetic expression is promoted to unsigned long.
+
+Thus, the max() macro compares values of different types: unsigned int
+vs unsigned long.
+
+This issue was introduced in commit f8ece40786c9 ("tcp: bring back NUMA
+dispersion in inet_ehash_locks_alloc()") during the update from kernel
+v5.10.237 to v5.10.238.
+
+It does not exist in newer kernel branches (e.g., v5.15.185 and all 6.x
+branches), because they include commit d03eba99f5bf ("minmax: allow
+min()/max()/clamp() if the arguments have the same signedness.")
+
+Fix the issue by using max_t(unsigned int, ...) to explicitly cast both
+operands to the same type, avoiding the type mismatch and ensuring
+correctness.
+
+Fixes: f8ece40786c9 ("tcp: bring back NUMA dispersion in inet_ehash_locks_alloc()")
+Signed-off-by: Eliav Farber <farbere@amazon.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/ath/carl9170/usb.c | 19 +++++++++++++------
- 1 file changed, 13 insertions(+), 6 deletions(-)
+ net/ipv4/inet_hashtables.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/ath/carl9170/usb.c b/drivers/net/wireless/ath/carl9170/usb.c
-index 98fdfa84b0a9a..d5d23b297fd94 100644
---- a/drivers/net/wireless/ath/carl9170/usb.c
-+++ b/drivers/net/wireless/ath/carl9170/usb.c
-@@ -438,14 +438,21 @@ static void carl9170_usb_rx_complete(struct urb *urb)
+--- a/net/ipv4/inet_hashtables.c
++++ b/net/ipv4/inet_hashtables.c
+@@ -943,7 +943,7 @@ int inet_ehash_locks_alloc(struct inet_h
+ 	nblocks = max(2U * L1_CACHE_BYTES / locksz, 1U) * num_possible_cpus();
  
- 		if (atomic_read(&ar->rx_anch_urbs) == 0) {
- 			/*
--			 * The system is too slow to cope with
--			 * the enormous workload. We have simply
--			 * run out of active rx urbs and this
--			 * unfortunately leads to an unpredictable
--			 * device.
-+			 * At this point, either the system is too slow to
-+			 * cope with the enormous workload (so we have simply
-+			 * run out of active rx urbs and this unfortunately
-+			 * leads to an unpredictable device), or the device
-+			 * is not fully functional after an unsuccessful
-+			 * firmware loading attempts (so it doesn't pass
-+			 * ieee80211_register_hw() and there is no internal
-+			 * workqueue at all).
- 			 */
+ 	/* At least one page per NUMA node. */
+-	nblocks = max(nblocks, num_online_nodes() * PAGE_SIZE / locksz);
++	nblocks = max_t(unsigned int, nblocks, num_online_nodes() * PAGE_SIZE / locksz);
  
--			ieee80211_queue_work(ar->hw, &ar->ping_work);
-+			if (ar->registered)
-+				ieee80211_queue_work(ar->hw, &ar->ping_work);
-+			else
-+				pr_warn_once("device %s is not registered\n",
-+					     dev_name(&ar->udev->dev));
- 		}
- 	} else {
- 		/*
--- 
-2.39.5
-
+ 	nblocks = roundup_pow_of_two(nblocks);
+ 
 
 
 
