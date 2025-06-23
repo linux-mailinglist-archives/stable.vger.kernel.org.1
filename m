@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-157265-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156522-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2ACA4AE5335
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:51:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 98106AE4FE4
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:20:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 835211B6689F
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:51:12 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7136D1B619B3
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:20:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DAF87221DA8;
-	Mon, 23 Jun 2025 21:50:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7CD5E1E521E;
+	Mon, 23 Jun 2025 21:20:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wz6dWVfC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k7gfiSEB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9417219049B;
-	Mon, 23 Jun 2025 21:50:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 396E22C9D;
+	Mon, 23 Jun 2025 21:20:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750715445; cv=none; b=K0R3AG83+GAREuyM2yv9N0wjAGrynY8pe/OkMTuqOCtT97kBXaHi1TROEGnYtF/uhpRvRFrdUgX6PK1mUDZVdnaLX8zpgGTBVOAKCaX3/rpUZSq2kqR12bwyqMvoL26Wc3KqBdddQ2KvrJcZMS7sV9GO2U2OzgBSFqRLTTZKzOU=
+	t=1750713619; cv=none; b=nVGkHMfqx9GxSTCtyBRCCP0Oav+NWbo3dnkAVFJsE7amP2aqAQ35fioweTzauosqzLnGTc9n+nuTix8LutSBn0vUdq6b6Cs9SUA+nSeF3VedoKy4YcpKF5rKC5D7/WNQN9I4LXsDP/CfaD0yqgbjmJaXydN/yAR4qhQt2FuCgv4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750715445; c=relaxed/simple;
-	bh=mpp6IV3hN7e3Bws/5TIOW1UAwFwKDW6Cu6SAM9tseXo=;
+	s=arc-20240116; t=1750713619; c=relaxed/simple;
+	bh=RnVEhhhQ3nKoBcwRndQPBL+WH4EogCXtBIcw8F52FoI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Enov3Y4it7kvg0icew2M1EujiMmwr0SAsUF1DIlYetE9wybldJKlNKG0M9czMWdqYLCwafp8pMTW8ONIkQB4n854CDPQcv8r5VqFFsViHTX0TpPHh2A4r6c7l7W3PLSYNlrYgTN/tZIv0GZnodE5yHdnAVPYhZyuDABJwGIv03U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wz6dWVfC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A7CBC4CEEA;
-	Mon, 23 Jun 2025 21:50:45 +0000 (UTC)
+	 MIME-Version; b=f3/dshH66FGWHizaH2WinomAMznF5JvA+Y/w8zPlB7Pa0SXmhUebkFYc1hxbnbPoa/O/RAZ23JHE89CXTyRFltjdO4ABPUomIaD5ndM1xrIdYrjJuQk63SWp8sWOP0rCcW3WQ86DMzOgjdttHtarvBemLHNo/IDZXWryopoo/AI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k7gfiSEB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C50F3C4CEEA;
+	Mon, 23 Jun 2025 21:20:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750715445;
-	bh=mpp6IV3hN7e3Bws/5TIOW1UAwFwKDW6Cu6SAM9tseXo=;
+	s=korg; t=1750713619;
+	bh=RnVEhhhQ3nKoBcwRndQPBL+WH4EogCXtBIcw8F52FoI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wz6dWVfC7/TXkKcpnwCNWIgOE8YA5WpcSePzPaKj2PFh+xisnR5IgmYlo6vATuRsm
-	 QAf3KfxexP0/PKCFKA4odgDSs2J+A92H8AYUXMESx8CDiWYC8ylaMM5JaXNUmNjApk
-	 t3UKkSvjd3NRzRd1x1WE1uYv61tOOrredAgvlDY8=
+	b=k7gfiSEBwkqL5xBr4oF8kpwqqi1yG61Qf/BUqVaJhz0TMwPPIhdZdq1ilydidWioT
+	 ueaMEQNpEfpT7jckdGacRIstceMBhYNUAIp1LuIiGBwLnQhZa5Z4vgKPDqOjc2cyls
+	 0j9iPJ952HJypBsuta25Mx3tAFzEQ7s5CO18EmGQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-	Mark Brown <broonie@kernel.org>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 235/508] regulator: max20086: Fix refcount leak in max20086_parse_regulators_dt()
-Date: Mon, 23 Jun 2025 15:04:40 +0200
-Message-ID: <20250623130651.040263628@linuxfoundation.org>
+Subject: [PATCH 5.15 137/411] serial: sh-sci: Move runtime PM enable to sci_probe_single()
+Date: Mon, 23 Jun 2025 15:04:41 +0200
+Message-ID: <20250623130637.035039683@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
-References: <20250623130645.255320792@linuxfoundation.org>
+In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
+References: <20250623130632.993849527@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,62 +62,95 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
 
-[ Upstream commit 06118ae36855b7d3d22688298e74a766ccf0cb7a ]
+commit 239f11209e5f282e16f5241b99256e25dd0614b6 upstream.
 
-There is a missing call to of_node_put() if devm_kcalloc() fails.
-Fix this by changing the code to use cleanup.h magic to drop the
-refcount.
+Relocate the runtime PM enable operation to sci_probe_single(). This change
+prepares the codebase for upcoming fixes.
 
-Fixes: 6b0cd72757c6 ("regulator: max20086: fix invalid memory access")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Link: https://patch.msgid.link/aDVRLqgJWMxYU03G@stanley.mountain
-Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Signed-off-by: Mark Brown <broonie@kernel.org>
+While at it, replace the existing logic with a direct call to
+devm_pm_runtime_enable() and remove sci_cleanup_single(). The
+devm_pm_runtime_enable() function automatically handles disabling runtime
+PM during driver removal.
+
+Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+Link: https://lore.kernel.org/r/20250116182249.3828577-3-claudiu.beznea.uj@bp.renesas.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/regulator/max20086-regulator.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/tty/serial/sh-sci.c | 24 ++++++------------------
+ 1 file changed, 6 insertions(+), 18 deletions(-)
 
-diff --git a/drivers/regulator/max20086-regulator.c b/drivers/regulator/max20086-regulator.c
-index 332fb58f90952..a24dfffce25c7 100644
---- a/drivers/regulator/max20086-regulator.c
-+++ b/drivers/regulator/max20086-regulator.c
-@@ -5,6 +5,7 @@
- // Copyright (C) 2022 Laurent Pinchart <laurent.pinchart@idesonboard.com>
- // Copyright (C) 2018 Avnet, Inc.
+diff --git a/drivers/tty/serial/sh-sci.c b/drivers/tty/serial/sh-sci.c
+index a276efa103192..a24fcd702f6cd 100644
+--- a/drivers/tty/serial/sh-sci.c
++++ b/drivers/tty/serial/sh-sci.c
+@@ -2993,10 +2993,6 @@ static int sci_init_single(struct platform_device *dev,
+ 		ret = sci_init_clocks(sci_port, &dev->dev);
+ 		if (ret < 0)
+ 			return ret;
+-
+-		port->dev = &dev->dev;
+-
+-		pm_runtime_enable(&dev->dev);
+ 	}
  
-+#include <linux/cleanup.h>
- #include <linux/err.h>
- #include <linux/gpio.h>
- #include <linux/gpio/consumer.h>
-@@ -134,11 +135,11 @@ static int max20086_regulators_register(struct max20086 *chip)
- static int max20086_parse_regulators_dt(struct max20086 *chip, bool *boot_on)
- {
- 	struct of_regulator_match *matches;
--	struct device_node *node;
- 	unsigned int i;
- 	int ret;
+ 	port->type		= p->type;
+@@ -3026,11 +3022,6 @@ static int sci_init_single(struct platform_device *dev,
+ 	return 0;
+ }
  
--	node = of_get_child_by_name(chip->dev->of_node, "regulators");
-+	struct device_node *node __free(device_node) =
-+		of_get_child_by_name(chip->dev->of_node, "regulators");
- 	if (!node) {
- 		dev_err(chip->dev, "regulators node not found\n");
- 		return -ENODEV;
-@@ -154,7 +155,6 @@ static int max20086_parse_regulators_dt(struct max20086 *chip, bool *boot_on)
+-static void sci_cleanup_single(struct sci_port *port)
+-{
+-	pm_runtime_disable(port->port.dev);
+-}
+-
+ #if defined(CONFIG_SERIAL_SH_SCI_CONSOLE) || \
+     defined(CONFIG_SERIAL_SH_SCI_EARLYCON)
+ static void serial_console_putchar(struct uart_port *port, int ch)
+@@ -3188,8 +3179,6 @@ static int sci_remove(struct platform_device *dev)
+ 	sci_ports_in_use &= ~BIT(port->port.line);
+ 	uart_remove_one_port(&sci_uart_driver, &port->port);
  
- 	ret = of_regulator_match(chip->dev, node, matches,
- 				 chip->info->num_outputs);
--	of_node_put(node);
- 	if (ret < 0) {
- 		dev_err(chip->dev, "Failed to match regulators\n");
- 		return -EINVAL;
+-	sci_cleanup_single(port);
+-
+ 	if (port->port.fifosize > 1)
+ 		device_remove_file(&dev->dev, &dev_attr_rx_fifo_trigger);
+ 	if (type == PORT_SCIFA || type == PORT_SCIFB || type == PORT_HSCIF)
+@@ -3324,6 +3313,11 @@ static int sci_probe_single(struct platform_device *dev,
+ 	if (ret)
+ 		return ret;
+ 
++	sciport->port.dev = &dev->dev;
++	ret = devm_pm_runtime_enable(&dev->dev);
++	if (ret)
++		return ret;
++
+ 	sciport->gpios = mctrl_gpio_init(&sciport->port, 0);
+ 	if (IS_ERR(sciport->gpios))
+ 		return PTR_ERR(sciport->gpios);
+@@ -3337,13 +3331,7 @@ static int sci_probe_single(struct platform_device *dev,
+ 		sciport->port.flags |= UPF_HARD_FLOW;
+ 	}
+ 
+-	ret = uart_add_one_port(&sci_uart_driver, &sciport->port);
+-	if (ret) {
+-		sci_cleanup_single(sciport);
+-		return ret;
+-	}
+-
+-	return 0;
++	return uart_add_one_port(&sci_uart_driver, &sciport->port);
+ }
+ 
+ static int sci_probe(struct platform_device *dev)
 -- 
 2.39.5
 
