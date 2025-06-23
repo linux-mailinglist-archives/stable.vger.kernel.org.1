@@ -1,55 +1,53 @@
-Return-Path: <stable+bounces-155857-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-155862-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5F95BAE440D
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:39:18 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 03A9CAE443C
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:41:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 66170178962
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:33:14 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CC779442619
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:32:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9F9D2561A7;
-	Mon, 23 Jun 2025 13:31:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C49F02522A8;
+	Mon, 23 Jun 2025 13:32:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Mo+wYi0R"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QyGH+F9t"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 884E2255F3C;
-	Mon, 23 Jun 2025 13:31:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8113C24679C;
+	Mon, 23 Jun 2025 13:32:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750685516; cv=none; b=Aq3Ppgvbfw2h+O6aO9Mx2cPUVn3ECG/r05vl3rjqbS3yFlvk2Uc8ig/I00EnDO/Gshfy41l7mpwCYnstwlQwlevTqrT+5rb0rGA71qXc9ixCJrcf4MtUUluJ3ulnsAAivQBuJgXrk+zgNEcQ+sKfoUtZa2q1Ep1WZ1WlZ5GzpYg=
+	t=1750685529; cv=none; b=EB0Yi3oLKCqHCztCKQAn8QD1C2dfNHvXXiwnhFWDBMTlRdUAyAtYaFxVfKv5aGs0NLiEN3MJk1uf7fLFYBc/QIVNVICzrjABhE29q1vGE7wSAAY2s+28Ql++7yd5yDXxA5GlO9cT+JWL0Job0KA6uOZ4K9NYxyBhF3ZTKAus3dY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750685516; c=relaxed/simple;
-	bh=kDxbiKQfVDjwxJzN2yJ0dyk7lT/7rV4rZWVnO2qQ1zU=;
+	s=arc-20240116; t=1750685529; c=relaxed/simple;
+	bh=Si1vfWjdN07q6CLffeB4tGzm0hr6AV0vKz1y7sMImMg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RiMNEN5Br+2UVPD0TJO1S4Cso0VmFsiSrF+YOMY8yaYn5A4WiTUoGfF4aI+lGkwbU/Mc4zmzYPyPynDkghGqmTbHgxthmH8PEGYKrUaVZy8VLXVwBJWi8u4olXs6QmcRaXzVXoxonbl8hoxMMrccvzlibjtYsdtpSKQTdHIhYBM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Mo+wYi0R; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1CB2AC4CEF0;
-	Mon, 23 Jun 2025 13:31:55 +0000 (UTC)
+	 MIME-Version; b=Wx9ToXfCxRZAeidzgZtzdox7l775ZnezcSmD2YJ4VvT7A+g3MOZTjjKz3HcJ2AWiE31NUIeObqAyX8jxTlqrsdUyvtV7koLVbKhJirM84Brv4g4QhtYHMdkJsSSpVbQ5w3OmCIF55occzqUsiVQdWHGay2yUZoui0VJirFbLuLw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QyGH+F9t; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3238C4CEEA;
+	Mon, 23 Jun 2025 13:32:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750685516;
-	bh=kDxbiKQfVDjwxJzN2yJ0dyk7lT/7rV4rZWVnO2qQ1zU=;
+	s=korg; t=1750685529;
+	bh=Si1vfWjdN07q6CLffeB4tGzm0hr6AV0vKz1y7sMImMg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Mo+wYi0Rm1JiVMfeU1iM8NT4XWQuopAsDbeh71uXwKzJ2DVBjbehqw8q9TW/yi14W
-	 hEXiNIF4Oi7b/oYlEY1lh8eIKkVdcZdSPTdwYpl3R1hwNct1HJ1Lc3CZxC00IIA2mA
-	 KOYlPZk0eIxtR5u0A6FmwFgtzmYOmfiRMMU+WxYs=
+	b=QyGH+F9tGnbZgk5ufE/NEwbp77eD29gLmsxOWemp1p1xb72Gdy2s2Z+D+9N8tkLxk
+	 KInBVwmbAO1CvFC/nN16PpHeb+d6+HJI2DX01Yib9tVA6ACkEceS32SPwKW3V+Sfuu
+	 67rzhR3LDC8W3Hnvh9NS7oultUE2mmZXdmlymRK0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot <syzkaller@googlegroups.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Kuniyuki Iwashima <kuniyu@amazon.com>,
-	Paul Moore <paul@paul-moore.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 5.4 100/222] calipso: unlock rcu before returning -EAFNOSUPPORT
-Date: Mon, 23 Jun 2025 15:07:15 +0200
-Message-ID: <20250623130615.125592282@linuxfoundation.org>
+	Oliver Neukum <oneukum@suse.com>,
+	Andrew Lunn <andrew@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>
+Subject: [PATCH 5.4 101/222] net: usb: aqc111: debug info before sanitation
+Date: Mon, 23 Jun 2025 15:07:16 +0200
+Message-ID: <20250623130615.153861043@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
 In-Reply-To: <20250623130611.896514667@linuxfoundation.org>
 References: <20250623130611.896514667@linuxfoundation.org>
@@ -68,42 +66,52 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Oliver Neukum <oneukum@suse.com>
 
-commit 3cae906e1a6184cdc9e4d260e4dbdf9a118d94ad upstream.
+commit d3faab9b5a6a0477d69c38bd11c43aa5e936f929 upstream.
 
-syzbot reported that a recent patch forgot to unlock rcu
-in the error path.
+If we sanitize error returns, the debug statements need
+to come before that so that we don't lose information.
 
-Adopt the convention that netlbl_conn_setattr() is already using.
-
-Fixes: 6e9f2df1c550 ("calipso: Don't call calipso functions for AF_INET sk.")
-Reported-by: syzbot <syzkaller@googlegroups.com>
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Cc: Kuniyuki Iwashima <kuniyu@amazon.com>
-Acked-by: Paul Moore <paul@paul-moore.com>
-Link: https://patch.msgid.link/20250604133826.1667664-1-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Oliver Neukum <oneukum@suse.com>
+Fixes: 405b0d610745 ("net: usb: aqc111: fix error handling of usbnet read calls")
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/netlabel/netlabel_kapi.c |    6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/net/usb/aqc111.c |    8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
---- a/net/netlabel/netlabel_kapi.c
-+++ b/net/netlabel/netlabel_kapi.c
-@@ -1140,8 +1140,10 @@ int netlbl_conn_setattr(struct sock *sk,
- 		break;
- #if IS_ENABLED(CONFIG_IPV6)
- 	case AF_INET6:
--		if (sk->sk_family != AF_INET6)
--			return -EAFNOSUPPORT;
-+		if (sk->sk_family != AF_INET6) {
-+			ret_val = -EAFNOSUPPORT;
-+			goto conn_setattr_return;
-+		}
+--- a/drivers/net/usb/aqc111.c
++++ b/drivers/net/usb/aqc111.c
+@@ -31,11 +31,11 @@ static int aqc111_read_cmd_nopm(struct u
+ 				   USB_RECIP_DEVICE, value, index, data, size);
  
- 		addr6 = (struct sockaddr_in6 *)addr;
- 		entry = netlbl_domhsh_getentry_af6(secattr->domain,
+ 	if (unlikely(ret < size)) {
+-		ret = ret < 0 ? ret : -ENODATA;
+-
+ 		netdev_warn(dev->net,
+ 			    "Failed to read(0x%x) reg index 0x%04x: %d\n",
+ 			    cmd, index, ret);
++
++		ret = ret < 0 ? ret : -ENODATA;
+ 	}
+ 
+ 	return ret;
+@@ -50,11 +50,11 @@ static int aqc111_read_cmd(struct usbnet
+ 			      USB_RECIP_DEVICE, value, index, data, size);
+ 
+ 	if (unlikely(ret < size)) {
+-		ret = ret < 0 ? ret : -ENODATA;
+-
+ 		netdev_warn(dev->net,
+ 			    "Failed to read(0x%x) reg index 0x%04x: %d\n",
+ 			    cmd, index, ret);
++
++		ret = ret < 0 ? ret : -ENODATA;
+ 	}
+ 
+ 	return ret;
 
 
 
