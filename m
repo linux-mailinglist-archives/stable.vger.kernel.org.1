@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-155634-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-155638-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6171CAE433C
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:30:24 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CA11CAE4316
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:28:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F06701792BF
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:23:20 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 92E7E3BB50F
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:23:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68AF3253B52;
-	Mon, 23 Jun 2025 13:22:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84C78254869;
+	Mon, 23 Jun 2025 13:22:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2eRLa9oU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DoJbX/8t"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25746253949;
-	Mon, 23 Jun 2025 13:22:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43F01253F1A;
+	Mon, 23 Jun 2025 13:22:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750684940; cv=none; b=fRASDxclIJwGeF03mmFoH7MjaP63QFSz5FaFLyXcHoOqNSUTAhFkzde12oC8PnrB/V24iX2J0ICsFYw0uEmKloujdsALfusLeiEw5JbA8b/Wbk+J3EUHF4oXyUGKEqZ+cn0huxqfbVjl3mtplsg5uVQem6e1KrgnXx1rl1kekcA=
+	t=1750684950; cv=none; b=Uk7/lwHsqxHZK6OVWNF2X4GptqA6InF2TP9oZHwGNSah1yaaz6lOyJytO/x1DLwoD9ueDn7qvno6nBCnJE4tTSCUWq28CARNwyLKEltHMD+r0aULmDPM4rGPsPD0ixiYcM+sgeu4Xos/0xKLlbpcmaWISFGTiV6dgam9XpqmbZQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750684940; c=relaxed/simple;
-	bh=J7zAU2DcJMIS4a19q/+KrLCtfi/Bfy+YNe5DAmQKFVs=;
+	s=arc-20240116; t=1750684950; c=relaxed/simple;
+	bh=2ha+NeskSZuHC9ALlkFqH3/f9W7sVRWQDSeLDd4AEcg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CScc1a4cOgBk2fgKEZnhBsXXAspSFlkHCK9VndsEuhOhQbx+M4HE74frWI/dm4H9+gk7HkcZANNaj/d+E4T/LoKzviucSMHx6i6hxfPwdc2u2GL7siN2lSJ49vYEyvVfbwjvcwSOFvONAMk1yRXxJ9hFN9hXPB7B48O8pN/iumk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2eRLa9oU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB4D5C4CEEA;
-	Mon, 23 Jun 2025 13:22:19 +0000 (UTC)
+	 MIME-Version:Content-Type; b=SZlpqdwa1ycg9yW8WGzwkP50fw8s0T+TW1ebs6rr6Bcczi38x7sjs2hqUoTLmk2YykxoiwGlmjkMqlmiJlBlXZCMoAWSiC/kfl4FyzTpk+rA0p5n3gmOs5oIZQmHy5jO7Qao225M+4+Ieir2lcIza50ZTRgGYtgDP57jnDYi7Ls=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DoJbX/8t; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9CC9C4CEEA;
+	Mon, 23 Jun 2025 13:22:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750684940;
-	bh=J7zAU2DcJMIS4a19q/+KrLCtfi/Bfy+YNe5DAmQKFVs=;
+	s=korg; t=1750684950;
+	bh=2ha+NeskSZuHC9ALlkFqH3/f9W7sVRWQDSeLDd4AEcg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2eRLa9oUyKCWpULAvXlOIHYm4+D4phdsDPK0x3U9tZ+X5dc4nZdOM3AxmT+1mA7kj
-	 oReLbV2DyOU0vl9WFz/Mq/VsZWu7I6zXixq2SHmgXT+Vm/U7viEl94jNUl3/GS6tFS
-	 cCOKXLb/CQz0fP5tnPh1ZYKJ2a5X9jpdwc78jPJc=
+	b=DoJbX/8tPL+F7dReneJ5Mb1xFvHmhlgd3f4MXUh3WDN4t1ERlDznYSUWdEtrLyC+q
+	 qgj2xQPvU3a83FC3i1jHivWLa+0Bb4uQ/DLeiNtYRYw/24Bc+aIkwhiVUyMxjeGsjs
+	 cU7an8yw7iXWvMP9gC1p6r2iJ5wak9X/79uoB93U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Quentin Schulz <quentin.schulz@cherry.de>,
-	Lukasz Czechowski <lukasz.czechowski@thaumatec.com>,
-	Heiko Stuebner <heiko@sntech.de>,
+	Su Hui <suhui@nfschina.com>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Andrew Jeffery <andrew@codeconstruct.com.au>,
+	Arnd Bergmann <arnd@arndb.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 049/222] arm64: dts: rockchip: disable unrouted USB controllers and PHY on RK3399 Puma with Haikou
-Date: Mon, 23 Jun 2025 15:06:24 +0200
-Message-ID: <20250623130613.463241471@linuxfoundation.org>
+Subject: [PATCH 5.4 050/222] soc: aspeed: lpc: Fix impossible judgment condition
+Date: Mon, 23 Jun 2025 15:06:25 +0200
+Message-ID: <20250623130613.576521800@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
 In-Reply-To: <20250623130611.896514667@linuxfoundation.org>
 References: <20250623130611.896514667@linuxfoundation.org>
@@ -61,70 +62,48 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Quentin Schulz <quentin.schulz@cherry.de>
+From: Su Hui <suhui@nfschina.com>
 
-[ Upstream commit febd8c6ab52c683b447fe22fc740918c86feae43 ]
+[ Upstream commit d9f0a97e859bdcef51f9c187b1eb712eb13fd3ff ]
 
-The u2phy0_host port is the part of the USB PHY0 (namely the
-HOST0_DP/DM lanes) which routes directly to the USB2.0 HOST
-controller[1]. The other lanes of the PHY are routed to the USB3.0 OTG
-controller (dwc3), which we do use.
+smatch error：
+drivers/soc/aspeed/aspeed-lpc-snoop.c:169
+aspeed_lpc_snoop_config_irq() warn: platform_get_irq() does not return zero
 
-The HOST0_DP/DM lanes aren't routed on RK3399 Puma so let's simply
-disable the USB2.0 controllers.
+platform_get_irq() return non-zero IRQ number or negative error code,
+change '!lpc_snoop->irq' to 'lpc_snoop->irq < 0' to fix this.
 
-USB3 OTG has been known to be unstable on RK3399 Puma Haikou for a
-while, one of the recurring issues being that only USB2 is detected and
-not USB3 in host mode. Reading the justification above and seeing that
-we are keeping u2phy0_host in the Haikou carrierboard DTS probably may
-have bothered you since it should be changed to u2phy0_otg. The issue is
-that if it's switched to that, USB OTG on Haikou is entirely broken. I
-have checked the routing in the Gerber file, the lanes are going to the
-expected ball pins (that is, NOT HOST0_DP/DM).
-u2phy0_host is for sure the wrong part of the PHY to use, but it's the
-only one that works at the moment for that board so keep it until we
-figure out what exactly is broken.
-
-No intended functional change.
-
-[1] https://rockchip.fr/Rockchip%20RK3399%20TRM%20V1.3%20Part2.pdf
-    Chapter 2 USB2.0 PHY
-
-Fixes: 2c66fc34e945 ("arm64: dts: rockchip: add RK3399-Q7 (Puma) SoM")
-Signed-off-by: Quentin Schulz <quentin.schulz@cherry.de>
-Signed-off-by: Lukasz Czechowski <lukasz.czechowski@thaumatec.com>
-Link: https://lore.kernel.org/r/20250425-onboard_usb_dev-v2-5-4a76a474a010@thaumatec.com
-Signed-off-by: Heiko Stuebner <heiko@sntech.de>
+Fixes: 9f4f9ae81d0a ("drivers/misc: add Aspeed LPC snoop driver")
+Signed-off-by: Su Hui <suhui@nfschina.com>
+Reviewed-by: Dan Carpenter <dan.carpenter@linaro.org>
+Link: https://lore.kernel.org/r/20231027020703.1231875-1-suhui@nfschina.com
+Signed-off-by: Andrew Jeffery <andrew@codeconstruct.com.au>
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/rockchip/rk3399-puma-haikou.dts | 8 --------
- 1 file changed, 8 deletions(-)
+ drivers/soc/aspeed/aspeed-lpc-snoop.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm64/boot/dts/rockchip/rk3399-puma-haikou.dts b/arch/arm64/boot/dts/rockchip/rk3399-puma-haikou.dts
-index d29937e4a606b..ea3fbd8da2cf6 100644
---- a/arch/arm64/boot/dts/rockchip/rk3399-puma-haikou.dts
-+++ b/arch/arm64/boot/dts/rockchip/rk3399-puma-haikou.dts
-@@ -246,14 +246,6 @@
- 	status = "okay";
- };
+diff --git a/drivers/soc/aspeed/aspeed-lpc-snoop.c b/drivers/soc/aspeed/aspeed-lpc-snoop.c
+index 538d7aab8db5c..8a2a22c40ef53 100644
+--- a/drivers/soc/aspeed/aspeed-lpc-snoop.c
++++ b/drivers/soc/aspeed/aspeed-lpc-snoop.c
+@@ -168,7 +168,7 @@ static int aspeed_lpc_snoop_config_irq(struct aspeed_lpc_snoop *lpc_snoop,
+ 	int rc;
  
--&usb_host0_ehci {
--	status = "okay";
--};
--
--&usb_host0_ohci {
--	status = "okay";
--};
--
- &vopb {
- 	status = "okay";
- };
+ 	lpc_snoop->irq = platform_get_irq(pdev, 0);
+-	if (!lpc_snoop->irq)
++	if (lpc_snoop->irq < 0)
+ 		return -ENODEV;
+ 
+ 	rc = devm_request_irq(dev, lpc_snoop->irq,
 -- 
 2.39.5
 
