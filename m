@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-157997-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157671-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 50FA9AE5671
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:20:49 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 712CFAE550A
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:07:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9E2867B29AE
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:19:24 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 44B781BC33E7
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:07:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8FF9227BB5;
-	Mon, 23 Jun 2025 22:20:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F434221DAE;
+	Mon, 23 Jun 2025 22:07:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RhfN6mjr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gdgK4IQA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6C9A227574;
-	Mon, 23 Jun 2025 22:20:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AA2F3597E;
+	Mon, 23 Jun 2025 22:07:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750717231; cv=none; b=fkYaWGFnTbi7jKi6PDWJXAElcMaQc56V2IR6TkiRd7+h57CnMo1uBhADBpT50TinuCYGBKgPhKIhsTMVJHrZULyYIRBqCxDGxLk32n/XAyVTGLyXJrlyEINsU/iSPU7k+PKOpTFpnUVK3UDmzzITeLQjJVLkfKSbikDxsX0MngA=
+	t=1750716439; cv=none; b=jNf2rq3CobPQFeDsi9hGqy7loWlp91hlbAW8RQVGut+zc6DHVN2WmUII2UQhCCn4lLBi7KZqs6uNWKaJgNzbzb/jQZfyf5TLjQ5hiaNU2BTVDSXU1Z6VwpaMz/5eiit6K9MTt8FH44Mh7Nz2at71VB1n9QhkNEv8Z5ewfz1SRro=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750717231; c=relaxed/simple;
-	bh=Phq8EuJp1d0m7Zngdb0O74joz8Tjd2u/mTOuJwVbuEM=;
+	s=arc-20240116; t=1750716439; c=relaxed/simple;
+	bh=ozXbhn2t5NXrt6WjHnRozpUk0zaCuunYSMezK5C834c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XKvHuAD3uuGbfuXNn5/i4i7cC+t20DE98Bup/xXGVEvsIXa7aLkbqXo82M+8G52MfsoycTE52wPKwEIk0smpYenmVEphLA05FSiKLAH4Z1QZMMUsD/pAl/CNNaPYmaE8S35RYssz0ybgd3VQ7HV7aFpW6Bs8W0I8VhBPLD4+T5E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RhfN6mjr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3FBF4C4CEEA;
-	Mon, 23 Jun 2025 22:20:31 +0000 (UTC)
+	 MIME-Version; b=depx6XE6KLCV5O0nScrn66JamO8cADslp8EFhzawjMDASoX+z9ctyQvJLVapbj7h3FeH6wFZhchfbfGl1tSLzfEGkdl5Qo7ttTbumj/vWUwyUkybi4/rImJJj6v4jn5cFB0PfSNsPaBgCsLO8dfsHaOQusgd4rfdFCVwGGYd/nk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gdgK4IQA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF033C4CEEA;
+	Mon, 23 Jun 2025 22:07:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750717231;
-	bh=Phq8EuJp1d0m7Zngdb0O74joz8Tjd2u/mTOuJwVbuEM=;
+	s=korg; t=1750716439;
+	bh=ozXbhn2t5NXrt6WjHnRozpUk0zaCuunYSMezK5C834c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RhfN6mjrJnE/eVy6N4Z6s+bfq6cOvwSR838m+N96mxoBHsMS5s7H6+GBNXw1fqWBQ
-	 TDLDC57IOSUgHpimjiewRYk4LeEjKKGcLHfsNTun1RHxGOHuyO5MvwFO4nOTVuWxl1
-	 JukdfwtqJ9joBF15EMzHcCkNf0yW24FjA5WqOfuE=
+	b=gdgK4IQAF2sMTNL/UzqfP9xyxVsl63soBjRVUDW1LbPLWLY00yREdOeX8WlqDbWAC
+	 oWOij6xuGnEjdapffUgKEGw/nRgncLY5YP+Ps7QGr2bi3bEK1UhDKr1RJ8K4N8dGgw
+	 oRQ8OI8bpIl0BVffv6cziAfbez50z9zVD3Pnb2IQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paul Chaignon <paul.chaignon@gmail.com>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.12 343/414] bpf: Fix L4 csum update on IPv6 in CHECKSUM_COMPLETE
-Date: Mon, 23 Jun 2025 15:08:00 +0200
-Message-ID: <20250623130650.553774903@linuxfoundation.org>
+	Justin Sanders <jsanders.devel@gmail.com>,
+	Valentin Kleibel <valentin@vrvis.at>,
+	Jens Axboe <axboe@kernel.dk>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.15 523/592] aoe: clean device rq_list in aoedev_downdev()
+Date: Mon, 23 Jun 2025 15:08:01 +0200
+Message-ID: <20250623130712.875624836@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
-References: <20250623130642.015559452@linuxfoundation.org>
+In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
+References: <20250623130700.210182694@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,134 +63,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paul Chaignon <paul.chaignon@gmail.com>
+From: Justin Sanders <jsanders.devel@gmail.com>
 
-commit ead7f9b8de65632ef8060b84b0c55049a33cfea1 upstream.
+[ Upstream commit 7f90d45e57cb2ef1f0adcaf925ddffdfc5e680ca ]
 
-In Cilium, we use bpf_csum_diff + bpf_l4_csum_replace to, among other
-things, update the L4 checksum after reverse SNATing IPv6 packets. That
-use case is however not currently supported and leads to invalid
-skb->csum values in some cases. This patch adds support for IPv6 address
-changes in bpf_l4_csum_update via a new flag.
+An aoe device's rq_list contains accepted block requests that are
+waiting to be transmitted to the aoe target. This queue was added as
+part of the conversion to blk_mq. However, the queue was not cleaned out
+when an aoe device is downed which caused blk_mq_freeze_queue() to sleep
+indefinitely waiting for those requests to complete, causing a hang. This
+fix cleans out the queue before calling blk_mq_freeze_queue().
 
-When calling bpf_l4_csum_replace in Cilium, it ends up calling
-inet_proto_csum_replace_by_diff:
-
-    1:  void inet_proto_csum_replace_by_diff(__sum16 *sum, struct sk_buff *skb,
-    2:                                       __wsum diff, bool pseudohdr)
-    3:  {
-    4:      if (skb->ip_summed != CHECKSUM_PARTIAL) {
-    5:          csum_replace_by_diff(sum, diff);
-    6:          if (skb->ip_summed == CHECKSUM_COMPLETE && pseudohdr)
-    7:              skb->csum = ~csum_sub(diff, skb->csum);
-    8:      } else if (pseudohdr) {
-    9:          *sum = ~csum_fold(csum_add(diff, csum_unfold(*sum)));
-    10:     }
-    11: }
-
-The bug happens when we're in the CHECKSUM_COMPLETE state. We've just
-updated one of the IPv6 addresses. The helper now updates the L4 header
-checksum on line 5. Next, it updates skb->csum on line 7. It shouldn't.
-
-For an IPv6 packet, the updates of the IPv6 address and of the L4
-checksum will cancel each other. The checksums are set such that
-computing a checksum over the packet including its checksum will result
-in a sum of 0. So the same is true here when we update the L4 checksum
-on line 5. We'll update it as to cancel the previous IPv6 address
-update. Hence skb->csum should remain untouched in this case.
-
-The same bug doesn't affect IPv4 packets because, in that case, three
-fields are updated: the IPv4 address, the IP checksum, and the L4
-checksum. The change to the IPv4 address and one of the checksums still
-cancel each other in skb->csum, but we're left with one checksum update
-and should therefore update skb->csum accordingly. That's exactly what
-inet_proto_csum_replace_by_diff does.
-
-This special case for IPv6 L4 checksums is also described atop
-inet_proto_csum_replace16, the function we should be using in this case.
-
-This patch introduces a new bpf_l4_csum_replace flag, BPF_F_IPV6,
-to indicate that we're updating the L4 checksum of an IPv6 packet. When
-the flag is set, inet_proto_csum_replace_by_diff will skip the
-skb->csum update.
-
-Fixes: 7d672345ed295 ("bpf: add generic bpf_csum_diff helper")
-Signed-off-by: Paul Chaignon <paul.chaignon@gmail.com>
-Acked-by: Daniel Borkmann <daniel@iogearbox.net>
-Link: https://patch.msgid.link/96a6bc3a443e6f0b21ff7b7834000e17fb549e05.1748509484.git.paul.chaignon@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Paul Chaignon <paul.chaignon@gmail.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=212665
+Fixes: 3582dd291788 ("aoe: convert aoeblk to blk-mq")
+Signed-off-by: Justin Sanders <jsanders.devel@gmail.com>
+Link: https://lore.kernel.org/r/20250610170600.869-1-jsanders.devel@gmail.com
+Tested-By: Valentin Kleibel <valentin@vrvis.at>
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/uapi/linux/bpf.h       |    2 ++
- net/core/filter.c              |    5 +++--
- tools/include/uapi/linux/bpf.h |    2 ++
- 3 files changed, 7 insertions(+), 2 deletions(-)
+ drivers/block/aoe/aoedev.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
---- a/include/uapi/linux/bpf.h
-+++ b/include/uapi/linux/bpf.h
-@@ -2035,6 +2035,7 @@ union bpf_attr {
-  * 		for updates resulting in a null checksum the value is set to
-  * 		**CSUM_MANGLED_0** instead. Flag **BPF_F_PSEUDO_HDR** indicates
-  * 		the checksum is to be computed against a pseudo-header.
-+ * 		Flag **BPF_F_IPV6** should be set for IPv6 packets.
-  *
-  * 		This helper works in combination with **bpf_csum_diff**\ (),
-  * 		which does not update the checksum in-place, but offers more
-@@ -6049,6 +6050,7 @@ enum {
- 	BPF_F_PSEUDO_HDR		= (1ULL << 4),
- 	BPF_F_MARK_MANGLED_0		= (1ULL << 5),
- 	BPF_F_MARK_ENFORCE		= (1ULL << 6),
-+	BPF_F_IPV6			= (1ULL << 7),
- };
+diff --git a/drivers/block/aoe/aoedev.c b/drivers/block/aoe/aoedev.c
+index 141b2a0e03f2c..8c18034cb3d69 100644
+--- a/drivers/block/aoe/aoedev.c
++++ b/drivers/block/aoe/aoedev.c
+@@ -198,6 +198,7 @@ aoedev_downdev(struct aoedev *d)
+ {
+ 	struct aoetgt *t, **tt, **te;
+ 	struct list_head *head, *pos, *nx;
++	struct request *rq, *rqnext;
+ 	int i;
  
- /* BPF_FUNC_skb_set_tunnel_key and BPF_FUNC_skb_get_tunnel_key flags. */
---- a/net/core/filter.c
-+++ b/net/core/filter.c
-@@ -1980,10 +1980,11 @@ BPF_CALL_5(bpf_l4_csum_replace, struct s
- 	bool is_pseudo = flags & BPF_F_PSEUDO_HDR;
- 	bool is_mmzero = flags & BPF_F_MARK_MANGLED_0;
- 	bool do_mforce = flags & BPF_F_MARK_ENFORCE;
-+	bool is_ipv6   = flags & BPF_F_IPV6;
- 	__sum16 *ptr;
+ 	d->flags &= ~DEVFL_UP;
+@@ -223,6 +224,13 @@ aoedev_downdev(struct aoedev *d)
+ 	/* clean out the in-process request (if any) */
+ 	aoe_failip(d);
  
- 	if (unlikely(flags & ~(BPF_F_MARK_MANGLED_0 | BPF_F_MARK_ENFORCE |
--			       BPF_F_PSEUDO_HDR | BPF_F_HDR_FIELD_MASK)))
-+			       BPF_F_PSEUDO_HDR | BPF_F_HDR_FIELD_MASK | BPF_F_IPV6)))
- 		return -EINVAL;
- 	if (unlikely(offset > 0xffff || offset & 1))
- 		return -EFAULT;
-@@ -1999,7 +2000,7 @@ BPF_CALL_5(bpf_l4_csum_replace, struct s
- 		if (unlikely(from != 0))
- 			return -EINVAL;
- 
--		inet_proto_csum_replace_by_diff(ptr, skb, to, is_pseudo, false);
-+		inet_proto_csum_replace_by_diff(ptr, skb, to, is_pseudo, is_ipv6);
- 		break;
- 	case 2:
- 		inet_proto_csum_replace2(ptr, skb, from, to, is_pseudo);
---- a/tools/include/uapi/linux/bpf.h
-+++ b/tools/include/uapi/linux/bpf.h
-@@ -2035,6 +2035,7 @@ union bpf_attr {
-  * 		for updates resulting in a null checksum the value is set to
-  * 		**CSUM_MANGLED_0** instead. Flag **BPF_F_PSEUDO_HDR** indicates
-  * 		the checksum is to be computed against a pseudo-header.
-+ * 		Flag **BPF_F_IPV6** should be set for IPv6 packets.
-  *
-  * 		This helper works in combination with **bpf_csum_diff**\ (),
-  * 		which does not update the checksum in-place, but offers more
-@@ -6049,6 +6050,7 @@ enum {
- 	BPF_F_PSEUDO_HDR		= (1ULL << 4),
- 	BPF_F_MARK_MANGLED_0		= (1ULL << 5),
- 	BPF_F_MARK_ENFORCE		= (1ULL << 6),
-+	BPF_F_IPV6			= (1ULL << 7),
- };
- 
- /* BPF_FUNC_skb_set_tunnel_key and BPF_FUNC_skb_get_tunnel_key flags. */
++	/* clean out any queued block requests */
++	list_for_each_entry_safe(rq, rqnext, &d->rq_list, queuelist) {
++		list_del_init(&rq->queuelist);
++		blk_mq_start_request(rq);
++		blk_mq_end_request(rq, BLK_STS_IOERR);
++	}
++
+ 	/* fast fail all pending I/O */
+ 	if (d->blkq) {
+ 		/* UP is cleared, freeze+quiesce to insure all are errored */
+-- 
+2.39.5
+
 
 
 
