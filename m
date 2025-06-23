@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-157862-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-158003-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 433AEAE55FC
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:16:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B56A1AE5695
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:21:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 704454C48FF
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:15:32 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2F9394E0BAC
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:20:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9D7022839A;
-	Mon, 23 Jun 2025 22:15:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A43872264BF;
+	Mon, 23 Jun 2025 22:20:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NKYmAocJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KIASPz7N"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87E84223DEF;
-	Mon, 23 Jun 2025 22:15:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59F0E225A23;
+	Mon, 23 Jun 2025 22:20:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750716901; cv=none; b=XCCRMfMast0kEcu2xIKRMvDIiftV9PQ/ahUErd5BJbrOAhHxuhMyHyzkm2TwaA+M6z6nn6xpK6FbOR12BYzpII9lX0gvtLE8NnqBVZ+CkPT6jsJRPjEOmqsxs9QcMK/3l33IHqZihCtWPrtlGvCr+qGKNhsAw/CQAmcjxAQ+B6k=
+	t=1750717246; cv=none; b=I8xoRgmJBqHufK0bCI0fzYLbtyLZ8K4qFRz/2DetYpXCh02vB11fqQfv9OTbOoYkjyFwny4DONrod4P7uIjZatWv49xjFMfhUDhYv5KEGPKGUZnlTWfg0fl8GoWGZ2HXLuDHjrDq/8VJL4XfZ77Gr3lhEQdP4mWld9JYe/HFlpM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750716901; c=relaxed/simple;
-	bh=YaUBrQACstyGvg3M+Ml4++sGlsi1MLx/KOHDYNEGyew=;
+	s=arc-20240116; t=1750717246; c=relaxed/simple;
+	bh=JAnjt0zNfFXgOy/GfAJ2IiOVrdI9bG/YmbdC2R/garI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hZTLAo35LxFuTNyJa9b37WW7eSGfjyyhW47vVKviOhkmBbiY2KxEelOXKasrOqMGGsFkTLX7sE4QnXsJBcjf2o+PGKPM2rLQUi5tukTMUfriLnEu/ME33Nh5aUV3vBMyE8B3TImm7E5RNw4YUJK4cD0Hro0eK0d6MIqtQGDB/p8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NKYmAocJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E4E7C4CEEA;
-	Mon, 23 Jun 2025 22:15:00 +0000 (UTC)
+	 MIME-Version; b=WnkGg6SEZRy6/rmFn4Cmvgun9L6kozb/KvRPScUZu9cHgO5ewyU0kVVu+lsbauKvAhosjRmbjZVTZkDjutNwYl8KapULgPxZLIhurUbL4rnOp4gfJlwZyurIrgz2fRezsStew7S4tdMXOUPdker+Dln/7kdZttESnEZ1lM57bzA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KIASPz7N; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6778C4CEEA;
+	Mon, 23 Jun 2025 22:20:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750716901;
-	bh=YaUBrQACstyGvg3M+Ml4++sGlsi1MLx/KOHDYNEGyew=;
+	s=korg; t=1750717246;
+	bh=JAnjt0zNfFXgOy/GfAJ2IiOVrdI9bG/YmbdC2R/garI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NKYmAocJX1em74FYvWeKEBJK8MvRU7XiU9xYmX2gCxNh13poHmXqxoFyrx8mMAFVW
-	 FxjemFm7Z8f2ORd86+Zyo78YIf6Opc0x+5N4eGf6vUAqAGSvJV6G8vwMkr1APjLRGG
-	 gcbPcKZqrH3ZysCctkaJs8DlyFxk40JzujNRygaE=
+	b=KIASPz7NuHlfj1QriID3tptFROGrukfbCOBSDoErJr9RiVU+9aEfpEUxfaxufvoNP
+	 6C5Ehhty/9InNsbyvOU8HFwb7Z9b+xr8S+Bid2xWJ8aI+eC1xZIIWw2IB2iaDF+Q/r
+	 i5o+200imcHGUTicF85mLpkYViPjLy6j43I597Ok=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Penglei Jiang <superman.xpt@gmail.com>,
-	Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 6.12 296/414] io_uring: fix task leak issue in io_wq_create()
+	Rengarajan S <rengarajan.s@microchip.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 388/508] net: lan743x: Modify the EEPROM and OTP size for PCI1xxxx devices
 Date: Mon, 23 Jun 2025 15:07:13 +0200
-Message-ID: <20250623130649.409641954@linuxfoundation.org>
+Message-ID: <20250623130654.830785764@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
-References: <20250623130642.015559452@linuxfoundation.org>
+In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
+References: <20250623130645.255320792@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,40 +62,94 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Penglei Jiang <superman.xpt@gmail.com>
+From: Rengarajan S <rengarajan.s@microchip.com>
 
-commit 89465d923bda180299e69ee2800aab84ad0ba689 upstream.
+[ Upstream commit 3b9935586a9b54d2da27901b830d3cf46ad66a1e ]
 
-Add missing put_task_struct() in the error path
+Maximum OTP and EEPROM size for hearthstone PCI1xxxx devices are 8 Kb
+and 64 Kb respectively. Adjust max size definitions and return correct
+EEPROM length based on device. Also prevent out-of-bound read/write.
 
-Cc: stable@vger.kernel.org
-Fixes: 0f8baa3c9802 ("io-wq: fully initialize wqe before calling cpuhp_state_add_instance_nocalls()")
-Signed-off-by: Penglei Jiang <superman.xpt@gmail.com>
-Link: https://lore.kernel.org/r/20250615163906.2367-1-superman.xpt@gmail.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Rengarajan S <rengarajan.s@microchip.com>
+Link: https://patch.msgid.link/20250523173326.18509-1-rengarajan.s@microchip.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- io_uring/io-wq.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ .../net/ethernet/microchip/lan743x_ethtool.c   | 18 ++++++++++++++++--
+ 1 file changed, 16 insertions(+), 2 deletions(-)
 
---- a/io_uring/io-wq.c
-+++ b/io_uring/io-wq.c
-@@ -1204,8 +1204,10 @@ struct io_wq *io_wq_create(unsigned boun
- 	atomic_set(&wq->worker_refs, 1);
- 	init_completion(&wq->worker_done);
- 	ret = cpuhp_state_add_instance_nocalls(io_wq_online, &wq->cpuhp_node);
--	if (ret)
-+	if (ret) {
-+		put_task_struct(wq->task);
- 		goto err;
-+	}
+diff --git a/drivers/net/ethernet/microchip/lan743x_ethtool.c b/drivers/net/ethernet/microchip/lan743x_ethtool.c
+index e47a579410fbb..bd00ee2ca69fd 100644
+--- a/drivers/net/ethernet/microchip/lan743x_ethtool.c
++++ b/drivers/net/ethernet/microchip/lan743x_ethtool.c
+@@ -18,6 +18,8 @@
+ #define EEPROM_MAC_OFFSET		    (0x01)
+ #define MAX_EEPROM_SIZE			    (512)
+ #define MAX_OTP_SIZE			    (1024)
++#define MAX_HS_OTP_SIZE			    (8 * 1024)
++#define MAX_HS_EEPROM_SIZE		    (64 * 1024)
+ #define OTP_INDICATOR_1			    (0xF3)
+ #define OTP_INDICATOR_2			    (0xF7)
  
- 	return wq;
- err:
+@@ -272,6 +274,9 @@ static int lan743x_hs_otp_read(struct lan743x_adapter *adapter, u32 offset,
+ 	int ret;
+ 	int i;
+ 
++	if (offset + length > MAX_HS_OTP_SIZE)
++		return -EINVAL;
++
+ 	ret = lan743x_hs_syslock_acquire(adapter, LOCK_TIMEOUT_MAX_CNT);
+ 	if (ret < 0)
+ 		return ret;
+@@ -320,6 +325,9 @@ static int lan743x_hs_otp_write(struct lan743x_adapter *adapter, u32 offset,
+ 	int ret;
+ 	int i;
+ 
++	if (offset + length > MAX_HS_OTP_SIZE)
++		return -EINVAL;
++
+ 	ret = lan743x_hs_syslock_acquire(adapter, LOCK_TIMEOUT_MAX_CNT);
+ 	if (ret < 0)
+ 		return ret;
+@@ -497,6 +505,9 @@ static int lan743x_hs_eeprom_read(struct lan743x_adapter *adapter,
+ 	u32 val;
+ 	int i;
+ 
++	if (offset + length > MAX_HS_EEPROM_SIZE)
++		return -EINVAL;
++
+ 	retval = lan743x_hs_syslock_acquire(adapter, LOCK_TIMEOUT_MAX_CNT);
+ 	if (retval < 0)
+ 		return retval;
+@@ -539,6 +550,9 @@ static int lan743x_hs_eeprom_write(struct lan743x_adapter *adapter,
+ 	u32 val;
+ 	int i;
+ 
++	if (offset + length > MAX_HS_EEPROM_SIZE)
++		return -EINVAL;
++
+ 	retval = lan743x_hs_syslock_acquire(adapter, LOCK_TIMEOUT_MAX_CNT);
+ 	if (retval < 0)
+ 		return retval;
+@@ -604,9 +618,9 @@ static int lan743x_ethtool_get_eeprom_len(struct net_device *netdev)
+ 	struct lan743x_adapter *adapter = netdev_priv(netdev);
+ 
+ 	if (adapter->flags & LAN743X_ADAPTER_FLAG_OTP)
+-		return MAX_OTP_SIZE;
++		return adapter->is_pci11x1x ? MAX_HS_OTP_SIZE : MAX_OTP_SIZE;
+ 
+-	return MAX_EEPROM_SIZE;
++	return adapter->is_pci11x1x ? MAX_HS_EEPROM_SIZE : MAX_EEPROM_SIZE;
+ }
+ 
+ static int lan743x_ethtool_get_eeprom(struct net_device *netdev,
+-- 
+2.39.5
+
 
 
 
