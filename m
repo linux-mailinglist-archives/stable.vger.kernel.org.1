@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-158084-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157675-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 13804AE56E5
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:24:28 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C9DC8AE550E
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:07:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B2CE94E1A0B
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:24:05 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EF1BE1BC350F
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:07:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5F14222599;
-	Mon, 23 Jun 2025 22:24:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 63A1C222576;
+	Mon, 23 Jun 2025 22:07:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dF/UK9po"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NAtqEvtQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 731D62192EC;
-	Mon, 23 Jun 2025 22:24:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FE2E221DAE;
+	Mon, 23 Jun 2025 22:07:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750717443; cv=none; b=DkYfBzyZ/tvFW0N2to1+UcmyhlLMapjATVI/YZh22y/Xi1glwCmS8+AuFzmvG7UJshjKpwQzC4Yy3hs2t+tAKylvwwbm1EDrpjMb0y6gxnAnrCVFXSbAhNT3OuHiACLPwyXMJSmeelf7b1ISRPlGmVbBZVT1x6xQEcNuzUKRjLI=
+	t=1750716449; cv=none; b=ez2tat7E9dlfDT5+H1ZQmQkTK9V5zY0Rq1OCBwMXpgrtXUGn+kMrVroQLBql/gEOqaHVU+Q/ORnk+EF2pglfNimHvzIRvFRJBS7xA51YPIJ7+vh4FVpnbKAilHKIWjC3Y3Y6AwzF/ehCvDh0rmX+Avk1R0L1dgmF0dp6y3g0qH4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750717443; c=relaxed/simple;
-	bh=EE0OltR5gzMSUy/N21p/y+idEdYnqjBgT3x0Vg6H04I=;
+	s=arc-20240116; t=1750716449; c=relaxed/simple;
+	bh=bxQlS+Mmr6ZcP93dG9k2UAM/8hF26b97k6MHP9F0Csc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=d97C2ciFn917L3tQd9VcBHYtShhgGnu6qM0HXYHlzq8/rApdG8SRdlAAQbP6hx8WAS//ZkxXCg18xJdVprpjhNTNxGhJdupcta16id+a6EtOzQhktb8lutrnGW15JV9kPf/zviD5GMzr7tCxvrMkCfNAh9LXi55vcOBBYrZMd2M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dF/UK9po; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B0ADC4CEED;
-	Mon, 23 Jun 2025 22:24:02 +0000 (UTC)
+	 MIME-Version; b=C2MbLpt1exscUhgkAGJmwIRkYF/c+W/IkT0oE6MKQbQLpq1MniGJwL3h92Tufytkh/uI2QxyG0rMomp4WmfHoHF+LsGm3ocLsLTVWVCrtAQnMDS6MP0y+8AIfKCvZ3ESnS0ldVstvSgUdOyOqb/4C/Uu1dDqED3BqAooovnneYc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NAtqEvtQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9FD69C4CEEA;
+	Mon, 23 Jun 2025 22:07:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750717443;
-	bh=EE0OltR5gzMSUy/N21p/y+idEdYnqjBgT3x0Vg6H04I=;
+	s=korg; t=1750716448;
+	bh=bxQlS+Mmr6ZcP93dG9k2UAM/8hF26b97k6MHP9F0Csc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dF/UK9poT616RkD0h3aWZMNyzhIfL/HjFwx+5ND+LUpwkFrFDB5s6LMeVKXC4mvXe
-	 myKm1hfQggJAExAp65w1k1+mDsiaUt44QiZIG3LjYB1Og/RqIwQXPZcdD2F5v+/wVt
-	 BeBTPpmbBm3y6VqMbnPTabFShWiZp9kmS8zaKNdQ=
+	b=NAtqEvtQZuCRKk+nfB5Kd/FbWNlDfCS3EvTOlZirGgeokw2IWcr/dwkIOljMwDCoe
+	 /BlNwChzeUHO340Wa0fLIguy9zj4BZ2pC7tj8pIfaUZwEoFOV0TaHCighLMdmTyFqq
+	 C/c3zg5ndGYN1yvZ57SV3z2oAqL3cTSWJ82gyVW8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>,
+	Alexey Kodanev <aleksei.kodanev@bell-sw.com>,
+	Jacob Keller <jacob.e.keller@intel.com>,
+	Rengarajan S <rengarajan.s@microchip.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 388/414] drm/xe: Wire up device shutdown handler
+Subject: [PATCH 6.6 264/290] net: lan743x: fix potential out-of-bounds write in lan743x_ptp_io_event_clock_get()
 Date: Mon, 23 Jun 2025 15:08:45 +0200
-Message-ID: <20250623130651.645124773@linuxfoundation.org>
+Message-ID: <20250623130634.850468899@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
-References: <20250623130642.015559452@linuxfoundation.org>
+In-Reply-To: <20250623130626.910356556@linuxfoundation.org>
+References: <20250623130626.910356556@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,229 +64,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
+From: Alexey Kodanev <aleksei.kodanev@bell-sw.com>
 
-[ Upstream commit 501d799a47e2b83b4e41d5306c2266ea5c100a08 ]
+[ Upstream commit e353b0854d3a1a31cb061df8d022fbfea53a0f24 ]
 
-The system is turning off, and we should probably put the device
-in a safe power state. We don't need to evict VRAM or suspend running
-jobs to a safe state, as the device is rebooted anyway.
+Before calling lan743x_ptp_io_event_clock_get(), the 'channel' value
+is checked against the maximum value of PCI11X1X_PTP_IO_MAX_CHANNELS(8).
+This seems correct and aligns with the PTP interrupt status register
+(PTP_INT_STS) specifications.
 
-This does not imply the system is necessarily reset, as we can
-kexec into a new kernel. Without shutting down, things like
-USB Type-C may mysteriously start failing.
+However, lan743x_ptp_io_event_clock_get() writes to ptp->extts[] with
+only LAN743X_PTP_N_EXTTS(4) elements, using channel as an index:
 
-References: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3500
-Signed-off-by: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
-[mlankhorst: Add !xe_driver_flr_disabled assert]
-Reviewed-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240905150052.174895-4-maarten.lankhorst@linux.intel.com
-Stable-dep-of: 16c1241b0875 ("drm/xe/bmg: Update Wa_16023588340")
+    lan743x_ptp_io_event_clock_get(..., u8 channel,...)
+    {
+        ...
+        /* Update Local timestamp */
+        extts = &ptp->extts[channel];
+        extts->ts.tv_sec = sec;
+        ...
+    }
+
+To avoid an out-of-bounds write and utilize all the supported GPIO
+inputs, set LAN743X_PTP_N_EXTTS to 8.
+
+Detected using the static analysis tool - Svace.
+Fixes: 60942c397af6 ("net: lan743x: Add support for PTP-IO Event Input External Timestamp (extts)")
+Signed-off-by: Alexey Kodanev <aleksei.kodanev@bell-sw.com>
+Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
+Acked-by: Rengarajan S <rengarajan.s@microchip.com>
+Link: https://patch.msgid.link/20250616113743.36284-1-aleksei.kodanev@bell-sw.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/xe/display/xe_display.c | 43 +++++++++++++++++++++++++
- drivers/gpu/drm/xe/display/xe_display.h |  4 +++
- drivers/gpu/drm/xe/xe_device.c          | 40 +++++++++++++++++++----
- drivers/gpu/drm/xe/xe_gt.c              |  7 ++++
- drivers/gpu/drm/xe/xe_gt.h              |  1 +
- 5 files changed, 89 insertions(+), 6 deletions(-)
+ drivers/net/ethernet/microchip/lan743x_ptp.h | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/xe/display/xe_display.c b/drivers/gpu/drm/xe/display/xe_display.c
-index c6e0c8d77a70f..a1928cedc7ddf 100644
---- a/drivers/gpu/drm/xe/display/xe_display.c
-+++ b/drivers/gpu/drm/xe/display/xe_display.c
-@@ -352,6 +352,36 @@ void xe_display_pm_suspend(struct xe_device *xe)
- 	__xe_display_pm_suspend(xe, false);
- }
- 
-+void xe_display_pm_shutdown(struct xe_device *xe)
-+{
-+	struct intel_display *display = &xe->display;
-+
-+	if (!xe->info.probe_display)
-+		return;
-+
-+	intel_power_domains_disable(xe);
-+	intel_fbdev_set_suspend(&xe->drm, FBINFO_STATE_SUSPENDED, true);
-+	if (has_display(xe)) {
-+		drm_kms_helper_poll_disable(&xe->drm);
-+		intel_display_driver_disable_user_access(xe);
-+		intel_display_driver_suspend(xe);
-+	}
-+
-+	xe_display_flush_cleanup_work(xe);
-+	intel_dp_mst_suspend(xe);
-+	intel_hpd_cancel_work(xe);
-+
-+	if (has_display(xe))
-+		intel_display_driver_suspend_access(xe);
-+
-+	intel_encoder_suspend_all(display);
-+	intel_encoder_shutdown_all(display);
-+
-+	intel_opregion_suspend(display, PCI_D3cold);
-+
-+	intel_dmc_suspend(xe);
-+}
-+
- void xe_display_pm_runtime_suspend(struct xe_device *xe)
- {
- 	if (!xe->info.probe_display)
-@@ -376,6 +406,19 @@ void xe_display_pm_suspend_late(struct xe_device *xe)
- 	intel_display_power_suspend_late(xe);
- }
- 
-+void xe_display_pm_shutdown_late(struct xe_device *xe)
-+{
-+	if (!xe->info.probe_display)
-+		return;
-+
-+	/*
-+	 * The only requirement is to reboot with display DC states disabled,
-+	 * for now leaving all display power wells in the INIT power domain
-+	 * enabled.
-+	 */
-+	intel_power_domains_driver_remove(xe);
-+}
-+
- void xe_display_pm_resume_early(struct xe_device *xe)
- {
- 	if (!xe->info.probe_display)
-diff --git a/drivers/gpu/drm/xe/display/xe_display.h b/drivers/gpu/drm/xe/display/xe_display.h
-index bed55fd26f304..17afa537aee50 100644
---- a/drivers/gpu/drm/xe/display/xe_display.h
-+++ b/drivers/gpu/drm/xe/display/xe_display.h
-@@ -35,7 +35,9 @@ void xe_display_irq_reset(struct xe_device *xe);
- void xe_display_irq_postinstall(struct xe_device *xe, struct xe_gt *gt);
- 
- void xe_display_pm_suspend(struct xe_device *xe);
-+void xe_display_pm_shutdown(struct xe_device *xe);
- void xe_display_pm_suspend_late(struct xe_device *xe);
-+void xe_display_pm_shutdown_late(struct xe_device *xe);
- void xe_display_pm_resume_early(struct xe_device *xe);
- void xe_display_pm_resume(struct xe_device *xe);
- void xe_display_pm_runtime_suspend(struct xe_device *xe);
-@@ -66,7 +68,9 @@ static inline void xe_display_irq_reset(struct xe_device *xe) {}
- static inline void xe_display_irq_postinstall(struct xe_device *xe, struct xe_gt *gt) {}
- 
- static inline void xe_display_pm_suspend(struct xe_device *xe) {}
-+static inline void xe_display_pm_shutdown(struct xe_device *xe) {}
- static inline void xe_display_pm_suspend_late(struct xe_device *xe) {}
-+static inline void xe_display_pm_shutdown_late(struct xe_device *xe) {}
- static inline void xe_display_pm_resume_early(struct xe_device *xe) {}
- static inline void xe_display_pm_resume(struct xe_device *xe) {}
- static inline void xe_display_pm_runtime_suspend(struct xe_device *xe) {}
-diff --git a/drivers/gpu/drm/xe/xe_device.c b/drivers/gpu/drm/xe/xe_device.c
-index 23e02372a49db..0c3db53b93d8a 100644
---- a/drivers/gpu/drm/xe/xe_device.c
-+++ b/drivers/gpu/drm/xe/xe_device.c
-@@ -374,6 +374,11 @@ struct xe_device *xe_device_create(struct pci_dev *pdev,
- 	return ERR_PTR(err);
- }
- 
-+static bool xe_driver_flr_disabled(struct xe_device *xe)
-+{
-+	return xe_mmio_read32(xe_root_mmio_gt(xe), GU_CNTL_PROTECTED) & DRIVERINT_FLR_DIS;
-+}
-+
- /*
-  * The driver-initiated FLR is the highest level of reset that we can trigger
-  * from within the driver. It is different from the PCI FLR in that it doesn't
-@@ -387,17 +392,12 @@ struct xe_device *xe_device_create(struct pci_dev *pdev,
-  * if/when a new instance of i915 is bound to the device it will do a full
-  * re-init anyway.
+diff --git a/drivers/net/ethernet/microchip/lan743x_ptp.h b/drivers/net/ethernet/microchip/lan743x_ptp.h
+index 0d29914cd4606..225e8232474d7 100644
+--- a/drivers/net/ethernet/microchip/lan743x_ptp.h
++++ b/drivers/net/ethernet/microchip/lan743x_ptp.h
+@@ -18,9 +18,9 @@
   */
--static void xe_driver_flr(struct xe_device *xe)
-+static void __xe_driver_flr(struct xe_device *xe)
- {
- 	const unsigned int flr_timeout = 3 * MICRO; /* specs recommend a 3s wait */
- 	struct xe_gt *gt = xe_root_mmio_gt(xe);
- 	int ret;
+ #define LAN743X_PTP_N_EVENT_CHAN	2
+ #define LAN743X_PTP_N_PEROUT		LAN743X_PTP_N_EVENT_CHAN
+-#define LAN743X_PTP_N_EXTTS		4
+-#define LAN743X_PTP_N_PPS		0
+ #define PCI11X1X_PTP_IO_MAX_CHANNELS	8
++#define LAN743X_PTP_N_EXTTS		PCI11X1X_PTP_IO_MAX_CHANNELS
++#define LAN743X_PTP_N_PPS		0
+ #define PTP_CMD_CTL_TIMEOUT_CNT		50
  
--	if (xe_mmio_read32(gt, GU_CNTL_PROTECTED) & DRIVERINT_FLR_DIS) {
--		drm_info_once(&xe->drm, "BIOS Disabled Driver-FLR\n");
--		return;
--	}
--
- 	drm_dbg(&xe->drm, "Triggering Driver-FLR\n");
- 
- 	/*
-@@ -438,6 +438,16 @@ static void xe_driver_flr(struct xe_device *xe)
- 	xe_mmio_write32(gt, GU_DEBUG, DRIVERFLR_STATUS);
- }
- 
-+static void xe_driver_flr(struct xe_device *xe)
-+{
-+	if (xe_driver_flr_disabled(xe)) {
-+		drm_info_once(&xe->drm, "BIOS Disabled Driver-FLR\n");
-+		return;
-+	}
-+
-+	__xe_driver_flr(xe);
-+}
-+
- static void xe_driver_flr_fini(void *arg)
- {
- 	struct xe_device *xe = arg;
-@@ -797,6 +807,24 @@ void xe_device_remove(struct xe_device *xe)
- 
- void xe_device_shutdown(struct xe_device *xe)
- {
-+	struct xe_gt *gt;
-+	u8 id;
-+
-+	drm_dbg(&xe->drm, "Shutting down device\n");
-+
-+	if (xe_driver_flr_disabled(xe)) {
-+		xe_display_pm_shutdown(xe);
-+
-+		xe_irq_suspend(xe);
-+
-+		for_each_gt(gt, xe, id)
-+			xe_gt_shutdown(gt);
-+
-+		xe_display_pm_shutdown_late(xe);
-+	} else {
-+		/* BOOM! */
-+		__xe_driver_flr(xe);
-+	}
- }
- 
- /**
-diff --git a/drivers/gpu/drm/xe/xe_gt.c b/drivers/gpu/drm/xe/xe_gt.c
-index 3a7628fb5ad32..258a6d6715679 100644
---- a/drivers/gpu/drm/xe/xe_gt.c
-+++ b/drivers/gpu/drm/xe/xe_gt.c
-@@ -865,6 +865,13 @@ int xe_gt_suspend(struct xe_gt *gt)
- 	return err;
- }
- 
-+void xe_gt_shutdown(struct xe_gt *gt)
-+{
-+	xe_force_wake_get(gt_to_fw(gt), XE_FORCEWAKE_ALL);
-+	do_gt_reset(gt);
-+	xe_force_wake_put(gt_to_fw(gt), XE_FORCEWAKE_ALL);
-+}
-+
- /**
-  * xe_gt_sanitize_freq() - Restore saved frequencies if necessary.
-  * @gt: the GT object
-diff --git a/drivers/gpu/drm/xe/xe_gt.h b/drivers/gpu/drm/xe/xe_gt.h
-index ee138e9768a23..881f1cbc2c491 100644
---- a/drivers/gpu/drm/xe/xe_gt.h
-+++ b/drivers/gpu/drm/xe/xe_gt.h
-@@ -48,6 +48,7 @@ void xe_gt_record_user_engines(struct xe_gt *gt);
- 
- void xe_gt_suspend_prepare(struct xe_gt *gt);
- int xe_gt_suspend(struct xe_gt *gt);
-+void xe_gt_shutdown(struct xe_gt *gt);
- int xe_gt_resume(struct xe_gt *gt);
- void xe_gt_reset_async(struct xe_gt *gt);
- void xe_gt_sanitize(struct xe_gt *gt);
+ struct lan743x_adapter;
 -- 
 2.39.5
 
