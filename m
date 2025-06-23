@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-157926-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157907-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CBE1DAE567C
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:21:05 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id D3BDFAE5628
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:18:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4FC4C3B77F2
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:17:32 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CB01F4C6CD4
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:17:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 398E0226865;
-	Mon, 23 Jun 2025 22:17:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A767F21FF2B;
+	Mon, 23 Jun 2025 22:16:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qLMOi6eP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lugxxowI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8753223DF0;
-	Mon, 23 Jun 2025 22:17:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6466D222576;
+	Mon, 23 Jun 2025 22:16:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750717058; cv=none; b=JDph0LLhk68sPSzVfWdvAXfA+H2jh6mlcrApZ8ui7mSrK/tHwsCduOhrsUKh0+VMAVu1uW4LHFMwaRNDaDgDBpmYy44fHyEMFx05AFu9CO4oIoRFHPZJdKt7CpHE67GnXbs8wh2LYiamM+lrogpzTLBzAm48fehFUk+orZIPaXg=
+	t=1750717011; cv=none; b=BHvd2TFl97OsmV05ACT8ntynOqhpiL0EzUgRPkjJbBGEr8LxYxP5YRg6M+LOlAZwqvTJGWt/r1cQXXThqYvUS+k+k9yNi+uPuaZYjYipHR72ACMgcqND42yEwGnqSWtv2PbtzU9zi6+5BLEIRA/SKn6qKkrs5d9Z/2BEv4NE1bY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750717058; c=relaxed/simple;
-	bh=fINyNN2euDq4yOzXAE8Q/tO767/YiKQpTepBK67A2Wc=;
+	s=arc-20240116; t=1750717011; c=relaxed/simple;
+	bh=1Cm/6bzGx5im1e78jdvgMVfGmcdRGzr949NI3vdUTGs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LAq8r1VYMlinyidikwB+ewRxkTpPQGIh77r5c+fKdKvkZL+HdRdimyczWMJ7dbVsut5VL8vhAtFPIsGmYUvoqQw7q0AdJBhAfcxbkzgwLBrJWuX7AFm6br9TELSZN7e+OQBkbTEQorCmGWBACxpg0xh9p21srbJYg4A8ViTBzfs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qLMOi6eP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81301C4CEEA;
-	Mon, 23 Jun 2025 22:17:37 +0000 (UTC)
+	 MIME-Version:Content-Type; b=mmdhm7MSynmHBrklQrj5yv1W9jwzZDUVB1HC/oIt0itQMD8LE2VG+Sn/VDvsHPtwgTmc61gVpqBrnN5LQBppAj7dC+akN3f0mI+qkeu26+4hPHbjqLy28YkpErtfF5XA4B44mHiN/2JbsSyT16eX79WwIOMGvUxDQHUznAhbvh0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lugxxowI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2D2BC4CEED;
+	Mon, 23 Jun 2025 22:16:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750717057;
-	bh=fINyNN2euDq4yOzXAE8Q/tO767/YiKQpTepBK67A2Wc=;
+	s=korg; t=1750717011;
+	bh=1Cm/6bzGx5im1e78jdvgMVfGmcdRGzr949NI3vdUTGs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qLMOi6ePzGVvNKAuxIhMvEGtSM0vSWk6Xqe3gdO333hbvsWEg+qRWkr8cQw3Gz8oy
-	 m8E3P+flYUsC8fUgmvr7AKvCx7a6W6+UH/I3vE10PfoPFEzwSl87wJB3sj+QG/SGhv
-	 1mF9iSl4oTSVxxkKrek5EcxB64T3wGDZG1O2+QWM=
+	b=lugxxowIwczqHC+g1z6eq18/rRPt2JOS7i0sUUXA/J2pJRsYeX924Fm5NBlQYEj5G
+	 Guec8UbFasJH0hvMALDyvrYOY0auJVPSUI8iwM9jxlkuRCU6jKrV6L4Tv1iGTYZcjl
+	 jVwyxjJ1ChYOnOfh9ig/7h0Z933QzNprW0f58fi0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	James Morse <james.morse@arm.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Pu Lehui <pulehui@huawei.com>
-Subject: [PATCH 5.15 391/411] arm64: proton-pack: Expose whether the platform is mitigated by firmware
+	Atish Patra <atishp@rivosinc.com>,
+	Anup Patel <apatel@ventanamicro.com>,
+	Anup Patel <anup@brainfault.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.15 577/592] RISC-V: KVM: Dont treat SBI HFENCE calls as NOPs
 Date: Mon, 23 Jun 2025 15:08:55 +0200
-Message-ID: <20250623130643.519462687@linuxfoundation.org>
+Message-ID: <20250623130714.162236624@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
-References: <20250623130632.993849527@linuxfoundation.org>
+In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
+References: <20250623130700.210182694@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,65 +61,51 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: James Morse <james.morse@arm.com>
+From: Anup Patel <apatel@ventanamicro.com>
 
-[ Upstream commit e7956c92f396a44eeeb6eaf7a5b5e1ad24db6748 ]
+[ Upstream commit 2e7be162996640bbe3b6da694cc064c511b8a5d9 ]
 
-is_spectre_bhb_fw_affected() allows the caller to determine if the CPU
-is known to need a firmware mitigation. CPUs are either on the list
-of CPUs we know about, or firmware has been queried and reported that
-the platform is affected - and mitigated by firmware.
+The SBI specification clearly states that SBI HFENCE calls should
+return SBI_ERR_NOT_SUPPORTED when one of the target hart doesn’t
+support hypervisor extension (aka nested virtualization in-case
+of KVM RISC-V).
 
-This helper is not useful to determine if the platform is mitigated
-by firmware. A CPU could be on the know list, but the firmware may
-not be implemented. Its affected but not mitigated.
-
-spectre_bhb_enable_mitigation() handles this distinction by checking
-the firmware state before enabling the mitigation.
-
-Add a helper to expose this state. This will be used by the BPF JIT
-to determine if calling firmware for a mitigation is necessary and
-supported.
-
-Signed-off-by: James Morse <james.morse@arm.com>
-Reviewed-by: Catalin Marinas <catalin.marinas@arm.com>
-Signed-off-by: Pu Lehui <pulehui@huawei.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: c7fa3c48de86 ("RISC-V: KVM: Treat SBI HFENCE calls as NOPs")
+Reviewed-by: Atish Patra <atishp@rivosinc.com>
+Signed-off-by: Anup Patel <apatel@ventanamicro.com>
+Link: https://lore.kernel.org/r/20250605061458.196003-3-apatel@ventanamicro.com
+Signed-off-by: Anup Patel <anup@brainfault.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/include/asm/spectre.h |    1 +
- arch/arm64/kernel/proton-pack.c  |    5 +++++
- 2 files changed, 6 insertions(+)
+ arch/riscv/kvm/vcpu_sbi_replace.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/arch/arm64/include/asm/spectre.h
-+++ b/arch/arm64/include/asm/spectre.h
-@@ -97,6 +97,7 @@ enum mitigation_state arm64_get_meltdown
- 
- enum mitigation_state arm64_get_spectre_bhb_state(void);
- bool is_spectre_bhb_affected(const struct arm64_cpu_capabilities *entry, int scope);
-+bool is_spectre_bhb_fw_mitigated(void);
- void spectre_bhb_enable_mitigation(const struct arm64_cpu_capabilities *__unused);
- bool try_emulate_el1_ssbs(struct pt_regs *regs, u32 instr);
- #endif	/* __ASSEMBLY__ */
---- a/arch/arm64/kernel/proton-pack.c
-+++ b/arch/arm64/kernel/proton-pack.c
-@@ -1088,6 +1088,11 @@ void spectre_bhb_enable_mitigation(const
- 	update_mitigation_state(&spectre_bhb_state, state);
- }
- 
-+bool is_spectre_bhb_fw_mitigated(void)
-+{
-+	return test_bit(BHB_FW, &system_bhb_mitigations);
-+}
-+
- /* Patched to NOP when enabled */
- void noinstr spectre_bhb_patch_loop_mitigation_enable(struct alt_instr *alt,
- 						     __le32 *origptr,
+diff --git a/arch/riscv/kvm/vcpu_sbi_replace.c b/arch/riscv/kvm/vcpu_sbi_replace.c
+index 9752d2ffff683..b17fad091babd 100644
+--- a/arch/riscv/kvm/vcpu_sbi_replace.c
++++ b/arch/riscv/kvm/vcpu_sbi_replace.c
+@@ -127,9 +127,9 @@ static int kvm_sbi_ext_rfence_handler(struct kvm_vcpu *vcpu, struct kvm_run *run
+ 	case SBI_EXT_RFENCE_REMOTE_HFENCE_VVMA_ASID:
+ 		/*
+ 		 * Until nested virtualization is implemented, the
+-		 * SBI HFENCE calls should be treated as NOPs
++		 * SBI HFENCE calls should return not supported
++		 * hence fallthrough.
+ 		 */
+-		break;
+ 	default:
+ 		retdata->err_val = SBI_ERR_NOT_SUPPORTED;
+ 	}
+-- 
+2.39.5
+
 
 
 
