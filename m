@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-157356-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157255-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E9D67AE5393
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:54:31 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 075DDAE5324
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:50:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7EAE44A7FAB
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:54:32 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 81E994A4EBF
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:50:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62F96222576;
-	Mon, 23 Jun 2025 21:54:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6FC21221DA8;
+	Mon, 23 Jun 2025 21:50:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G3fSNuvQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WIDZQPzL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2029019049B;
-	Mon, 23 Jun 2025 21:54:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D9D1219A7A;
+	Mon, 23 Jun 2025 21:50:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750715668; cv=none; b=HWb0EtidSI4b0ANrVAldCZNfDy4cuMzBK9megtAjh57IApYOLOKFq3IW26001ItNm4zFPSOmzdKqTbZS60qVYQa3gUaaFa0/zPy1qIPpzGSstcfte56A5fvVVqlYLMwJSfE6VXEvYXRiz0Se/2KGc01EpyGxyNAgED2aCFN1AP4=
+	t=1750715421; cv=none; b=g+v50fQZSEgsXUvLYt225RRGWZbQfZsUjqQvIilFabr/g7y4706/xknrkzzaYbNpEoYcCSUD0WPphNlgW9/LCdNJKM6uU8arrzQlN6YnZJvffAsU254qoH+BvjOR0SnLzGdPtw/5l1aut+LGkYeIgmM+qfSXM2iqNtg6ll9GSeA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750715668; c=relaxed/simple;
-	bh=knTVJ0UtNA2vQSdMo1Dy+DCKkKwYWb2TZur5F0JSJuI=;
+	s=arc-20240116; t=1750715421; c=relaxed/simple;
+	bh=wn4blYwhyeuvKPW/hEmA213nBq9KzUFmJE5hOjdJ7J0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gPR8uHVaoDVP2oAuc3TxxuCHioljW8s7rF6luJrd3c6GCdzjSUN1nJ8YkRzC26qvaco00vaDSQtM5144WfFwU/JCLqrtl3t9Pom44TiqUJ1NOohE4r6qEUtmwcgEaVdirhUBo14fGVGfDCItlhNrBZoGCNx4TBg/VhqbtGblS4k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G3fSNuvQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ADE33C4CEEA;
-	Mon, 23 Jun 2025 21:54:27 +0000 (UTC)
+	 MIME-Version; b=C7gtPU/zBA54wnrxcELr+d2uYOzv61+6wS/W81OBkEPssuvKxvierFUmNemHdLAiLNsD5mEiR2cw6/JxR9+WxEeCX8T1F+IfBM8ZRb+jO/6uIvCnkYMelZjuak3pnAcr1BEv7tmjNvdS0f0TSsQpPjE404z9H8UK1P38a554vDA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WIDZQPzL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA744C4CEF1;
+	Mon, 23 Jun 2025 21:50:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750715668;
-	bh=knTVJ0UtNA2vQSdMo1Dy+DCKkKwYWb2TZur5F0JSJuI=;
+	s=korg; t=1750715421;
+	bh=wn4blYwhyeuvKPW/hEmA213nBq9KzUFmJE5hOjdJ7J0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=G3fSNuvQtgSc0+u1xWZ4pUZaQogeiXlaM78d4Ndn2qM+T93XYH1DyLrL9iFkqCus7
-	 9LOCwzugpbU1m2NdIr/pfrBr+dMibifRRBWU1GzeNSMPrECtRhvqOjJmgwq3wM6IUo
-	 AMeFJnMrEnlmtiB2vuWNSgvQqQIiohSOWrS1dRsI=
+	b=WIDZQPzLr6bgcctf04XIOYYC5UNTfQw3yDYwKNqF/GCcUdPDP+x8g9mciYlweDiSJ
+	 rPeQHaN/i4ydYEebCC6l3aazPYlMvLkLal1El5lMrIgtPZ/j8eB5W4SSxNe22TnZTM
+	 33ndqjldL3yay/IFE5wostjMTTC1BvE4/gYdbxlQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peter Marheine <pmarheine@chromium.org>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 271/411] ACPI: battery: negate current when discharging
+	Fedor Pchelkin <pchelkin@ispras.ru>,
+	Zhihao Cheng <chengzhihao1@huawei.com>,
+	Richard Weinberger <richard@nod.at>
+Subject: [PATCH 6.15 457/592] jffs2: check jffs2_prealloc_raw_node_refs() result in few other places
 Date: Mon, 23 Jun 2025 15:06:55 +0200
-Message-ID: <20250623130640.476657146@linuxfoundation.org>
+Message-ID: <20250623130711.301302022@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
-References: <20250623130632.993849527@linuxfoundation.org>
+In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
+References: <20250623130700.210182694@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,68 +62,85 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peter Marheine <pmarheine@chromium.org>
+From: Fedor Pchelkin <pchelkin@ispras.ru>
 
-[ Upstream commit 234f71555019d308c6bc6f98c78c5551cb8cd56a ]
+commit 2b6d96503255a3ed676cd70f8368870c6d6a25c6 upstream.
 
-The ACPI specification requires that battery rate is always positive,
-but the kernel ABI for POWER_SUPPLY_PROP_CURRENT_NOW
-(Documentation/ABI/testing/sysfs-class-power) specifies that it should
-be negative when a battery is discharging. When reporting CURRENT_NOW,
-massage the value to match the documented ABI.
+Fuzzing hit another invalid pointer dereference due to the lack of
+checking whether jffs2_prealloc_raw_node_refs() completed successfully.
+Subsequent logic implies that the node refs have been allocated.
 
-This only changes the sign of `current_now` and not `power_now` because
-documentation doesn't describe any particular meaning for `power_now` so
-leaving `power_now` unchanged is less likely to confuse userspace
-unnecessarily, whereas becoming consistent with the documented ABI is
-worth potentially confusing clients that read `current_now`.
+Handle that. The code is ready for propagating the error upwards.
 
-Signed-off-by: Peter Marheine <pmarheine@chromium.org>
-Link: https://patch.msgid.link/20250508024146.1436129-1-pmarheine@chromium.org
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+KASAN: null-ptr-deref in range [0x0000000000000008-0x000000000000000f]
+CPU: 1 PID: 5835 Comm: syz-executor145 Not tainted 5.10.234-syzkaller #0
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.12.0-1 04/01/2014
+RIP: 0010:jffs2_link_node_ref+0xac/0x690 fs/jffs2/nodelist.c:600
+Call Trace:
+ jffs2_mark_erased_block fs/jffs2/erase.c:460 [inline]
+ jffs2_erase_pending_blocks+0x688/0x1860 fs/jffs2/erase.c:118
+ jffs2_garbage_collect_pass+0x638/0x1a00 fs/jffs2/gc.c:253
+ jffs2_reserve_space+0x3f4/0xad0 fs/jffs2/nodemgmt.c:167
+ jffs2_write_inode_range+0x246/0xb50 fs/jffs2/write.c:362
+ jffs2_write_end+0x712/0x1110 fs/jffs2/file.c:302
+ generic_perform_write+0x2c2/0x500 mm/filemap.c:3347
+ __generic_file_write_iter+0x252/0x610 mm/filemap.c:3465
+ generic_file_write_iter+0xdb/0x230 mm/filemap.c:3497
+ call_write_iter include/linux/fs.h:2039 [inline]
+ do_iter_readv_writev+0x46d/0x750 fs/read_write.c:740
+ do_iter_write+0x18c/0x710 fs/read_write.c:866
+ vfs_writev+0x1db/0x6a0 fs/read_write.c:939
+ do_pwritev fs/read_write.c:1036 [inline]
+ __do_sys_pwritev fs/read_write.c:1083 [inline]
+ __se_sys_pwritev fs/read_write.c:1078 [inline]
+ __x64_sys_pwritev+0x235/0x310 fs/read_write.c:1078
+ do_syscall_64+0x30/0x40 arch/x86/entry/common.c:46
+ entry_SYSCALL_64_after_hwframe+0x67/0xd1
+
+Found by Linux Verification Center (linuxtesting.org) with Syzkaller.
+
+Fixes: 2f785402f39b ("[JFFS2] Reduce visibility of raw_node_ref to upper layers of JFFS2 code.")
+Fixes: f560928baa60 ("[JFFS2] Allocate node_ref for wasted space when skipping to page boundary")
+Cc: stable@vger.kernel.org
+Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
+Reviewed-by: Zhihao Cheng <chengzhihao1@huawei.com>
+Signed-off-by: Richard Weinberger <richard@nod.at>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/acpi/battery.c | 19 ++++++++++++++++---
- 1 file changed, 16 insertions(+), 3 deletions(-)
+ fs/jffs2/erase.c |    4 +++-
+ fs/jffs2/scan.c  |    4 +++-
+ 2 files changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/acpi/battery.c b/drivers/acpi/battery.c
-index 8bb0f4d06adc0..b0a5d077db905 100644
---- a/drivers/acpi/battery.c
-+++ b/drivers/acpi/battery.c
-@@ -250,10 +250,23 @@ static int acpi_battery_get_property(struct power_supply *psy,
- 		break;
- 	case POWER_SUPPLY_PROP_CURRENT_NOW:
- 	case POWER_SUPPLY_PROP_POWER_NOW:
--		if (battery->rate_now == ACPI_BATTERY_VALUE_UNKNOWN)
-+		if (battery->rate_now == ACPI_BATTERY_VALUE_UNKNOWN) {
- 			ret = -ENODEV;
--		else
--			val->intval = battery->rate_now * 1000;
-+			break;
-+		}
-+
-+		val->intval = battery->rate_now * 1000;
-+		/*
-+		 * When discharging, the current should be reported as a
-+		 * negative number as per the power supply class interface
-+		 * definition.
-+		 */
-+		if (psp == POWER_SUPPLY_PROP_CURRENT_NOW &&
-+		    (battery->state & ACPI_BATTERY_STATE_DISCHARGING) &&
-+		    acpi_battery_handle_discharging(battery)
-+				== POWER_SUPPLY_STATUS_DISCHARGING)
-+			val->intval = -val->intval;
-+
- 		break;
- 	case POWER_SUPPLY_PROP_CHARGE_FULL_DESIGN:
- 	case POWER_SUPPLY_PROP_ENERGY_FULL_DESIGN:
--- 
-2.39.5
-
+--- a/fs/jffs2/erase.c
++++ b/fs/jffs2/erase.c
+@@ -425,7 +425,9 @@ static void jffs2_mark_erased_block(stru
+ 			.totlen =	cpu_to_je32(c->cleanmarker_size)
+ 		};
+ 
+-		jffs2_prealloc_raw_node_refs(c, jeb, 1);
++		ret = jffs2_prealloc_raw_node_refs(c, jeb, 1);
++		if (ret)
++			goto filebad;
+ 
+ 		marker.hdr_crc = cpu_to_je32(crc32(0, &marker, sizeof(struct jffs2_unknown_node)-4));
+ 
+--- a/fs/jffs2/scan.c
++++ b/fs/jffs2/scan.c
+@@ -256,7 +256,9 @@ int jffs2_scan_medium(struct jffs2_sb_in
+ 
+ 		jffs2_dbg(1, "%s(): Skipping %d bytes in nextblock to ensure page alignment\n",
+ 			  __func__, skip);
+-		jffs2_prealloc_raw_node_refs(c, c->nextblock, 1);
++		ret = jffs2_prealloc_raw_node_refs(c, c->nextblock, 1);
++		if (ret)
++			goto out;
+ 		jffs2_scan_dirty_space(c, c->nextblock, skip);
+ 	}
+ #endif
 
 
 
