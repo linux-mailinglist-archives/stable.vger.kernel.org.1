@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-157028-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156548-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2EBC9AE5229
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:41:03 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D8769AE4FFB
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:21:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B079A7A954C
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:39:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CE89F3A6436
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:21:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A54D9222576;
-	Mon, 23 Jun 2025 21:40:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E7DE1E521E;
+	Mon, 23 Jun 2025 21:21:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fI+V90Zv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ES+17UbT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 606EE19D084;
-	Mon, 23 Jun 2025 21:40:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0493D7482;
+	Mon, 23 Jun 2025 21:21:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750714858; cv=none; b=UVYNT3hAaC2po1VzdVrhAv0v0Fnf/gb5Cz/kFzrdEgWxPAKknZz+NswVIcDByQY3m22baQQiPEV+YWCaBvn52XUhktKFPTUmGR1F0DQ+v/IPQJjA/zZ0r6v7dYWW84TRIhS5XXfadEQVUSD3bM5nnZmI/hNz37ZtNyowAoOC8Rk=
+	t=1750713683; cv=none; b=UnmwMK/aGiP7eK4jkKQcmsqbrZVyy9DmzX9Z5nTifh3Nvf2kxf+nWI3WXdDKrOIfGzJS5S+QokdI3JG+/b/Jz/RBdv7O4yDalwCkBh1arJj1scrlEVC9hNfg/kEuDeqzU3Ks8DYcsxStE5IzDvjciqFG3KG5wg4Gz0JBo5JEt0I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750714858; c=relaxed/simple;
-	bh=Dq24zDfWLohZ6hgIspsgeDMoMs+glEKu3dq1e/7JGbs=;
+	s=arc-20240116; t=1750713683; c=relaxed/simple;
+	bh=tHzp4xf/oWaiFpo1MxFGUdFhIwKmsLr+yefY1iM2gNQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=toe/wgWvuIVzm4lO9MX3I7fmytOId5kngZ123WEpExE35qYOIb3cTi63eSgjk1AQ0Lvwx5DqF0ytrRjMW71xJXAOqirJ5lDPsLKNrwbLvAwnvlwFme9Wxrn2jdFmAfQZ+sxcowpnY2bV9IN0EalQrfgaLXHstEglyGBW1AuWhwQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fI+V90Zv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EAEA2C4CEEA;
-	Mon, 23 Jun 2025 21:40:57 +0000 (UTC)
+	 MIME-Version; b=uI+M/nbwnFR8+vt/wCGrsScdzz91RWmympks/j6OTw6zMLZVgHuzsMHz+WT4p6+jDOSNn/7M7nKgip9aH32PyeKGIL1RMGqr7jcaE6VfuYpMnynVGiuFIs4E8fHdmcuRP1e1wyt4FS5d/C+JbvqJKIdaeDRIpTxMPds9F0ZyS2o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ES+17UbT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43C04C4CEEA;
+	Mon, 23 Jun 2025 21:21:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750714858;
-	bh=Dq24zDfWLohZ6hgIspsgeDMoMs+glEKu3dq1e/7JGbs=;
+	s=korg; t=1750713682;
+	bh=tHzp4xf/oWaiFpo1MxFGUdFhIwKmsLr+yefY1iM2gNQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fI+V90Zv84wEawc9geSS10xq7poccAgMfwfMxY0AdNKpMKJx2HeIE1OWkJBBqJREz
-	 1NIjtHxEdlQWf3TxdIRxf6Ze+vSnqsEk7W1s9o+tb6rI6nYk94gZ0IgTuu5eLnAUJj
-	 ZaDRvrdRfQS1LhZiZDo/HwmTcuRyNJfyMAO5Yf24=
+	b=ES+17UbTVMswxuONoOOnff6AwzzCS5bYnoTg9hEGexAtKH0pIWtoMiE/fAJk7M5BZ
+	 WIqZiEoaNz/ncRKhjkIcbDmgQmuUERW5V8WgM/Apjus+PvoMbEJzOKj0mMevuVTesi
+	 s4g7rzTUeJRNjvPM5Kw+WwCpzj/IT/qPJY1+ZGww=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	Andrei Borzenkov <arvidjaar@gmail.com>,
-	Javier Martinez Canillas <javierm@redhat.com>,
-	Hans de Goede <hdegoede@redhat.com>,
-	linux-fbdev@vger.kernel.org,
-	dri-devel@lists.freedesktop.org
-Subject: [PATCH 6.12 161/414] dummycon: Trigger redraw when switching consoles with deferred takeover
-Date: Mon, 23 Jun 2025 15:04:58 +0200
-Message-ID: <20250623130646.061636841@linuxfoundation.org>
+	Muhammad Usama Anjum <usama.anjum@collabora.com>,
+	Baochen Qiang <quic_bqiang@quicinc.com>,
+	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.15 341/592] wifi: ath11k: Fix QMI memory reuse logic
+Date: Mon, 23 Jun 2025 15:04:59 +0200
+Message-ID: <20250623130708.562716337@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
-References: <20250623130642.015559452@linuxfoundation.org>
+In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
+References: <20250623130700.210182694@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,95 +63,75 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Zimmermann <tzimmermann@suse.de>
+From: Muhammad Usama Anjum <usama.anjum@collabora.com>
 
-commit 03bcbbb3995ba5df43af9aba45334e35f2dfe27b upstream.
+[ Upstream commit cd2e7bae92bd7e65063ab8d04721d2b711ba4cbe ]
 
-Signal vt subsystem to redraw console when switching to dummycon
-with deferred takeover enabled. Makes the console switch to fbcon
-and displays the available output.
+Firmware requests 2 segments at first. The first segment is of 6799360
+whose allocation fails due to dma remapping not available. The success
+is returned to firmware. Then firmware asks for 22 smaller segments
+instead of 2 big ones. Those get allocated successfully. At suspend/
+hibernation time, these segments aren't freed as they will be reused
+by firmware after resuming.
 
-With deferred takeover enabled, dummycon acts as the placeholder
-until the first output to the console happens. At that point, fbcon
-takes over. If the output happens while dummycon is not active, it
-cannot inform fbcon. This is the case if the vt subsystem runs in
-graphics mode.
+After resuming, the firmware asks for the 2 segments again with the
+first segment of 6799360 size. Since chunk->vaddr is not NULL, the
+type and size are compared with the previous type and size to know if
+it can be reused or not. Unfortunately, it is detected that it cannot
+be reused and this first smaller segment is freed. Then we continue to
+allocate 6799360 size memory which fails and ath11k_qmi_free_target_mem_chunk()
+is called which frees the second smaller segment as well. Later success
+is returned to firmware which asks for 22 smaller segments again. But
+as we had freed 2 segments already, we'll allocate the first 2 new
+smaller segments again and reuse the remaining 20. Hence 20 small
+segments are being reused instead of 22.
 
-A typical graphical boot starts plymouth, a display manager and a
-compositor; all while leaving out dummycon. Switching to a text-mode
-console leaves the console with dummycon even if a getty terminal
-has been started.
+Add skip logic when vaddr is set, but size/type don't match. Use the
+same skip and success logic as used when dma_alloc_coherent() fails.
+By skipping, the possibility of resume failure due to kernel failing to
+allocate memory for QMI can be avoided.
 
-Returning true from dummycon's con_switch helper signals the vt
-subsystem to redraw the screen. If there's output available dummycon's
-con_putc{s} helpers trigger deferred takeover of fbcon, which sets a
-display mode and displays the output. If no output is available,
-dummycon remains active.
+	kernel: ath11k_pci 0000:03:00.0: failed to allocate dma memory for qmi (524288 B type 1)
+	ath11k_pci 0000:03:00.0: failed to allocate qmi target memory: -22
 
-v2:
-- make the comment slightly more verbose (Javier)
+Tested-on: WCN6855 WLAN.HSP.1.1-03926.13-QCAHSPSWPL_V2_SILICONZ_CE-2.52297.6
 
-Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
-Reported-by: Andrei Borzenkov <arvidjaar@gmail.com>
-Closes: https://bugzilla.suse.com/show_bug.cgi?id=1242191
-Tested-by: Andrei Borzenkov <arvidjaar@gmail.com>
-Acked-by: Javier Martinez Canillas <javierm@redhat.com>
-Fixes: 83d83bebf401 ("console/fbcon: Add support for deferred console takeover")
-Cc: Hans de Goede <hdegoede@redhat.com>
-Cc: linux-fbdev@vger.kernel.org
-Cc: dri-devel@lists.freedesktop.org
-Cc: <stable@vger.kernel.org> # v4.19+
-Link: https://lore.kernel.org/r/20250520071418.8462-1-tzimmermann@suse.de
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
+Reviewed-by: Baochen Qiang <quic_bqiang@quicinc.com>
+Link: https://patch.msgid.link/20250428080242.466901-1-usama.anjum@collabora.com
+Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/video/console/dummycon.c |   18 +++++++++++++-----
- 1 file changed, 13 insertions(+), 5 deletions(-)
+ drivers/net/wireless/ath/ath11k/qmi.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
---- a/drivers/video/console/dummycon.c
-+++ b/drivers/video/console/dummycon.c
-@@ -85,6 +85,15 @@ static bool dummycon_blank(struct vc_dat
- 	/* Redraw, so that we get putc(s) for output done while blanked */
- 	return true;
- }
+diff --git a/drivers/net/wireless/ath/ath11k/qmi.c b/drivers/net/wireless/ath/ath11k/qmi.c
+index 4f8b08ed1bbc6..83a48a77c53ee 100644
+--- a/drivers/net/wireless/ath/ath11k/qmi.c
++++ b/drivers/net/wireless/ath/ath11k/qmi.c
+@@ -1993,6 +1993,15 @@ static int ath11k_qmi_alloc_target_mem_chunk(struct ath11k_base *ab)
+ 			    chunk->prev_size == chunk->size)
+ 				continue;
+ 
++			if (ab->qmi.mem_seg_count <= ATH11K_QMI_FW_MEM_REQ_SEGMENT_CNT) {
++				ath11k_dbg(ab, ATH11K_DBG_QMI,
++					   "size/type mismatch (current %d %u) (prev %d %u), try later with small size\n",
++					    chunk->size, chunk->type,
++					    chunk->prev_size, chunk->prev_type);
++				ab->qmi.target_mem_delayed = true;
++				return 0;
++			}
 +
-+static bool dummycon_switch(struct vc_data *vc)
-+{
-+	/*
-+	 * Redraw, so that we get putc(s) for output done while switched
-+	 * away. Informs deferred consoles to take over the display.
-+	 */
-+	return true;
-+}
- #else
- static void dummycon_putc(struct vc_data *vc, u16 c, unsigned int y,
- 			  unsigned int x) { }
-@@ -95,6 +104,10 @@ static bool dummycon_blank(struct vc_dat
- {
- 	return false;
- }
-+static bool dummycon_switch(struct vc_data *vc)
-+{
-+	return false;
-+}
- #endif
- 
- static const char *dummycon_startup(void)
-@@ -123,11 +136,6 @@ static bool dummycon_scroll(struct vc_da
- {
- 	return false;
- }
--
--static bool dummycon_switch(struct vc_data *vc)
--{
--	return false;
--}
- 
- /*
-  *  The console `switch' structure for the dummy console
+ 			/* cannot reuse the existing chunk */
+ 			dma_free_coherent(ab->dev, chunk->prev_size,
+ 					  chunk->vaddr, chunk->paddr);
+-- 
+2.39.5
+
 
 
 
