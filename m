@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-155712-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-155982-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 56E86AE434B
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:30:51 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 89E25AE4508
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:47:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 942531886FAA
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:25:54 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5F7A34455B6
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:38:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CFF50248869;
-	Mon, 23 Jun 2025 13:25:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 059DF255E2F;
+	Mon, 23 Jun 2025 13:37:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bD5RweAr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WQD9gikq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C440239E63;
-	Mon, 23 Jun 2025 13:25:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7DE725524C;
+	Mon, 23 Jun 2025 13:37:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750685136; cv=none; b=b4fWmRVZm/hdzzU71EuL/85A0YLkFj+pNfcuFYL7qjQZUZm869VFEG8oj5rVsX1RGHszrmZPLs5Wsn2PCPcrxwnKXC4deIomGbBzoK555m9xm7njINZWKJKZWHZSHM8DjyyVD3m0V2SqMR1GERjP/VqEImb1Hfjgwknd6pmGg08=
+	t=1750685841; cv=none; b=SgDa8Llq5kvxAM1HK+mObG4W6P+YgzorrQi9xpC+d/bGqBwMsA1g2gI1a4g0MyNA1nrDdSZ4/ufqKxHnA32EFibiw01aT38s0CRdP+HpySh0UPQ49V35Wo96J38uqCr8w0+kLKfXgww9o0eKIszagtF6mLIu0BJkqYfy4dB3m4E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750685136; c=relaxed/simple;
-	bh=eFE8Anr/pr3H1FSDwGMYDEo6+A09bDUpSmJYZ9C72pA=;
+	s=arc-20240116; t=1750685841; c=relaxed/simple;
+	bh=Nqum986AksRmpxbMDQe6hIHgBF7cRd61f9RVJEiNoRk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qXfkYhbaPX7tTWQdzfvgg0fVvLfOwO3rNblyDsnXO4Q6WSp3RS2Jx0QNIhei7DR4HAQEmZcUCxiNGP2/D0ZkTFKcNlEnUdlzJenn/KjJ25EgGMFwJlfxYtOcxmz5o7ZrPwRrkiN5z0jrMVcybsKZckCZGaLNr7S48KJGpzwj3Rc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bD5RweAr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1FEB6C4CEEA;
-	Mon, 23 Jun 2025 13:25:35 +0000 (UTC)
+	 MIME-Version:Content-Type; b=DRBv+JrBoOV0m24yErPixaDjfQ7M1+5fP3ZvduvtJDosPYRCqDsEkHErDEgAW+EC99xeLnhg3fGLFgRxez/p5tMkt2/T/AwqURO4CObIDimGQb3YjDcu9dYklMZ2ESXeCjazCNkNAzYfWUGZrzUSm2S2R0zJsQeVkHU1GQubF7g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WQD9gikq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44A8DC4CEEA;
+	Mon, 23 Jun 2025 13:37:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750685136;
-	bh=eFE8Anr/pr3H1FSDwGMYDEo6+A09bDUpSmJYZ9C72pA=;
+	s=korg; t=1750685841;
+	bh=Nqum986AksRmpxbMDQe6hIHgBF7cRd61f9RVJEiNoRk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bD5RweArE6v+0443kMFSokVY4266P0M3rMYyFz+31E6BSTjP5tQN2QtJFGid5z4MQ
-	 l8ivsNPqmCOAhN1/UmSkdm4vdjYB28F1HFd5uPkj+v7VngCfWQwtr289Vkxw0QNPbp
-	 hXIDCjUo2ffHLrbtiYhErpMdia1BEmFVXeViug14=
+	b=WQD9gikqzjzbqmj/hswC4mSGZNiQDxYh1wGpmk3L60pPpMwQC8x1tet5KzQebkkE5
+	 FfemEJYMct8SmwLJCGWGVbsOUu1RJcKGcZdK2kZ1p6PJ4VXnUHw/vB8aJCUZ/34Lw8
+	 NnUuxJVdc1UEIhlY+AxZtnrP9bnLHSGbDDJVcC1E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Neill Kapron <nkapron@google.com>,
-	Kees Cook <kees@kernel.org>,
+	Su Hui <suhui@nfschina.com>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Andrew Jeffery <andrew@codeconstruct.com.au>,
+	Arnd Bergmann <arnd@arndb.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 029/355] selftests/seccomp: fix syscall_restart test for arm compat
+Subject: [PATCH 5.15 086/411] soc: aspeed: lpc: Fix impossible judgment condition
 Date: Mon, 23 Jun 2025 15:03:50 +0200
-Message-ID: <20250623130627.686681694@linuxfoundation.org>
+Message-ID: <20250623130635.589070740@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130626.716971725@linuxfoundation.org>
-References: <20250623130626.716971725@linuxfoundation.org>
+In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
+References: <20250623130632.993849527@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,57 +62,48 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Neill Kapron <nkapron@google.com>
+From: Su Hui <suhui@nfschina.com>
 
-[ Upstream commit 797002deed03491215a352ace891749b39741b69 ]
+[ Upstream commit d9f0a97e859bdcef51f9c187b1eb712eb13fd3ff ]
 
-The inconsistencies in the systcall ABI between arm and arm-compat can
-can cause a failure in the syscall_restart test due to the logic
-attempting to work around the differences. The 'machine' field for an
-ARM64 device running in compat mode can report 'armv8l' or 'armv8b'
-which matches with the string 'arm' when only examining the first three
-characters of the string.
+smatch error：
+drivers/soc/aspeed/aspeed-lpc-snoop.c:169
+aspeed_lpc_snoop_config_irq() warn: platform_get_irq() does not return zero
 
-This change adds additional validation to the workaround logic to make
-sure we only take the arm path when running natively, not in arm-compat.
+platform_get_irq() return non-zero IRQ number or negative error code,
+change '!lpc_snoop->irq' to 'lpc_snoop->irq < 0' to fix this.
 
-Fixes: 256d0afb11d6 ("selftests/seccomp: build and pass on arm64")
-Signed-off-by: Neill Kapron <nkapron@google.com>
-Link: https://lore.kernel.org/r/20250427094103.3488304-2-nkapron@google.com
-Signed-off-by: Kees Cook <kees@kernel.org>
+Fixes: 9f4f9ae81d0a ("drivers/misc: add Aspeed LPC snoop driver")
+Signed-off-by: Su Hui <suhui@nfschina.com>
+Reviewed-by: Dan Carpenter <dan.carpenter@linaro.org>
+Link: https://lore.kernel.org/r/20231027020703.1231875-1-suhui@nfschina.com
+Signed-off-by: Andrew Jeffery <andrew@codeconstruct.com.au>
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/seccomp/seccomp_bpf.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ drivers/soc/aspeed/aspeed-lpc-snoop.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tools/testing/selftests/seccomp/seccomp_bpf.c b/tools/testing/selftests/seccomp/seccomp_bpf.c
-index 413a7b9f3c4d3..7f62635226fd3 100644
---- a/tools/testing/selftests/seccomp/seccomp_bpf.c
-+++ b/tools/testing/selftests/seccomp/seccomp_bpf.c
-@@ -3081,12 +3081,15 @@ TEST(syscall_restart)
- 	ret = get_syscall(_metadata, child_pid);
- #if defined(__arm__)
- 	/*
--	 * FIXME:
- 	 * - native ARM registers do NOT expose true syscall.
- 	 * - compat ARM registers on ARM64 DO expose true syscall.
-+	 * - values of utsbuf.machine include 'armv8l' or 'armb8b'
-+	 *   for ARM64 running in compat mode.
- 	 */
- 	ASSERT_EQ(0, uname(&utsbuf));
--	if (strncmp(utsbuf.machine, "arm", 3) == 0) {
-+	if ((strncmp(utsbuf.machine, "arm", 3) == 0) &&
-+	    (strncmp(utsbuf.machine, "armv8l", 6) != 0) &&
-+	    (strncmp(utsbuf.machine, "armv8b", 6) != 0)) {
- 		EXPECT_EQ(__NR_nanosleep, ret);
- 	} else
- #endif
+diff --git a/drivers/soc/aspeed/aspeed-lpc-snoop.c b/drivers/soc/aspeed/aspeed-lpc-snoop.c
+index eceeaf8dfbeba..d9bdc2e084086 100644
+--- a/drivers/soc/aspeed/aspeed-lpc-snoop.c
++++ b/drivers/soc/aspeed/aspeed-lpc-snoop.c
+@@ -167,7 +167,7 @@ static int aspeed_lpc_snoop_config_irq(struct aspeed_lpc_snoop *lpc_snoop,
+ 	int rc;
+ 
+ 	lpc_snoop->irq = platform_get_irq(pdev, 0);
+-	if (!lpc_snoop->irq)
++	if (lpc_snoop->irq < 0)
+ 		return -ENODEV;
+ 
+ 	rc = devm_request_irq(dev, lpc_snoop->irq,
 -- 
 2.39.5
 
