@@ -1,55 +1,53 @@
-Return-Path: <stable+bounces-156657-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156664-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5BA0AAE5095
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:26:55 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id D1B4FAE5094
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:26:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E5E2F1B62B0B
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:26:57 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 25EB84A1466
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:26:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 468F9221299;
-	Mon, 23 Jun 2025 21:25:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6671D2236FA;
+	Mon, 23 Jun 2025 21:26:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IzNt7QB4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BrwbNdAF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 046BE227E8F;
-	Mon, 23 Jun 2025 21:25:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 243B41EDA0F;
+	Mon, 23 Jun 2025 21:26:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750713950; cv=none; b=TS6gmxfKnj72ZgkkTIdWMW9Gw0hsIZsot0flBDAWrKvWZSF0jjM0WmSjea2e78mkkTC0RWd9QrBUplp1V10zj+2APtWyAZUmPEOT9PUqLXsJMggQJL9BSCAbE2pOnU9y8/2Hsq2LL0fvgQyv8hVg0qefGXSjotiWysL8lwILKRI=
+	t=1750713967; cv=none; b=NUim0lEICBvdGhLTpNPuStKTe4vSoITwqW+HIkKIuwAv5cjuCslX4VGttIVKovD24mvoEK2rVOw/ripyKopWA22S7tfe9oIn7zEhxgg9fO6s9sEjGdgOEIxeb5Ma15l7PxDl3J44G8Gg8vlTs6Zog1j1AZjTSlKjOQmHI5Au2vw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750713950; c=relaxed/simple;
-	bh=hXaMSKxYkWG6jH8uKdGeJ0EpzdPF3Wec2ADQiaAyIeU=;
+	s=arc-20240116; t=1750713967; c=relaxed/simple;
+	bh=fUI+JvsBevozwK5FPiWLuZu29IFjyRaWqxOvt7ebNEw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OPuktHcvnz15xG6nT4iV7QQzNtULgEWIyfTGkSa1sblq9qgjGmurwUmte17jpdri3i/Op50yVb9RKV5AbknbiXRmhvfL+GVvULcZjS9eGm1zSb3ASH+1w8TuHjzNpp4ahHVHh4srmkAouBJ8CRumqUIqjKvjnxgBA6w4+EANppg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IzNt7QB4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90803C4CEF0;
-	Mon, 23 Jun 2025 21:25:49 +0000 (UTC)
+	 MIME-Version; b=R1AYkCea5Io0mHmH7E4zTb9xQzh+oQzyIeHFLCZuZSSqctzeruoTJeQvvTVBb+Sena1kSlwIp1d2zTFd733wyZN0IG41rMjbt8g8P6KXs4kr5AXMo6+0TAsmNEmoRuTRxLpGQfHbzMv9Dp2cVqOqM6fjBcf5A/9JDNNFI8BgYxg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BrwbNdAF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1CA0C4CEED;
+	Mon, 23 Jun 2025 21:26:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750713949;
-	bh=hXaMSKxYkWG6jH8uKdGeJ0EpzdPF3Wec2ADQiaAyIeU=;
+	s=korg; t=1750713967;
+	bh=fUI+JvsBevozwK5FPiWLuZu29IFjyRaWqxOvt7ebNEw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IzNt7QB45/3MnhF6sb9JY2RqtpXUe3SeZ1p3CQ+okCphY99Od565fRJtjofbU+u+D
-	 aqaQBMeg8c9PvW7ZBeawOVNkaZJ84YoigpkUg8N1a0jamjRzr7YemQxH3p2UjXM06U
-	 aUSu7sHetsxZx9mS5bE8JP81qzuQOo25r4oQmymg=
+	b=BrwbNdAF3lOVr1UxokiTXx+MDzPZJOGh4icuPsRo82YoZlAfIN24e+xinnti854R5
+	 SQl3TWFtRCMxwMlfpNySifPUi5d+Q4A6d7Pl2aor21+HltiHdk0mdwSASlRoz6bOZC
+	 8s64AYSm0+MOqt1nyDekTvAo0NWMr4xinLc1WL5Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Henry Martin <bsdhenrymartin@gmail.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
-	"Daniel Thompson (RISCstar)" <danielt@kernel.org>,
-	Lee Jones <lee@kernel.org>,
+	Mikhail Arkhipov <m.arhipov@rosa.ru>,
+	Miquel Raynal <miquel.raynal@bootlin.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 136/508] backlight: pm8941: Add NULL check in wled_configure()
-Date: Mon, 23 Jun 2025 15:03:01 +0200
-Message-ID: <20250623130648.635562953@linuxfoundation.org>
+Subject: [PATCH 6.1 137/508] mtd: nand: ecc-mxic: Fix use of uninitialized variable ret
+Date: Mon, 23 Jun 2025 15:03:02 +0200
+Message-ID: <20250623130648.659081708@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
 In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
 References: <20250623130645.255320792@linuxfoundation.org>
@@ -68,45 +66,45 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Henry Martin <bsdhenrymartin@gmail.com>
+From: Mikhail Arkhipov <m.arhipov@rosa.ru>
 
-[ Upstream commit e12d3e1624a02706cdd3628bbf5668827214fa33 ]
+[ Upstream commit d95846350aac72303036a70c4cdc69ae314aa26d ]
 
-devm_kasprintf() returns NULL when memory allocation fails. Currently,
-wled_configure() does not check for this case, which results in a NULL
-pointer dereference.
+If ctx->steps is zero, the loop processing ECC steps is skipped,
+and the variable ret remains uninitialized. It is later checked
+and returned, which leads to undefined behavior and may cause
+unpredictable results in user space or kernel crashes.
 
-Add NULL check after devm_kasprintf() to prevent this issue.
+This scenario can be triggered in edge cases such as misconfigured
+geometry, ECC engine misuse, or if ctx->steps is not validated
+after initialization.
 
-Fixes: f86b77583d88 ("backlight: pm8941: Convert to using %pOFn instead of device_node.name")
-Signed-off-by: Henry Martin <bsdhenrymartin@gmail.com>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Reviewed-by: "Daniel Thompson (RISCstar)" <danielt@kernel.org>
-Link: https://lore.kernel.org/r/20250401091647.22784-1-bsdhenrymartin@gmail.com
-Signed-off-by: Lee Jones <lee@kernel.org>
+Initialize ret to zero before the loop to ensure correct and safe
+behavior regardless of the ctx->steps value.
+
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
+
+Fixes: 48e6633a9fa2 ("mtd: nand: mxic-ecc: Add Macronix external ECC engine support")
+Signed-off-by: Mikhail Arkhipov <m.arhipov@rosa.ru>
+Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/video/backlight/qcom-wled.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/mtd/nand/ecc-mxic.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/video/backlight/qcom-wled.c b/drivers/video/backlight/qcom-wled.c
-index 527210e857959..434c6c499fdef 100644
---- a/drivers/video/backlight/qcom-wled.c
-+++ b/drivers/video/backlight/qcom-wled.c
-@@ -1406,9 +1406,11 @@ static int wled_configure(struct wled *wled)
- 	wled->ctrl_addr = be32_to_cpu(*prop_addr);
+diff --git a/drivers/mtd/nand/ecc-mxic.c b/drivers/mtd/nand/ecc-mxic.c
+index 6b487ffe2f2dc..e8bbe009c04e8 100644
+--- a/drivers/mtd/nand/ecc-mxic.c
++++ b/drivers/mtd/nand/ecc-mxic.c
+@@ -614,7 +614,7 @@ static int mxic_ecc_finish_io_req_external(struct nand_device *nand,
+ {
+ 	struct mxic_ecc_engine *mxic = nand_to_mxic(nand);
+ 	struct mxic_ecc_ctx *ctx = nand_to_ecc_ctx(nand);
+-	int nents, step, ret;
++	int nents, step, ret = 0;
  
- 	rc = of_property_read_string(dev->of_node, "label", &wled->name);
--	if (rc)
-+	if (rc) {
- 		wled->name = devm_kasprintf(dev, GFP_KERNEL, "%pOFn", dev->of_node);
--
-+		if (!wled->name)
-+			return -ENOMEM;
-+	}
- 	switch (wled->version) {
- 	case 3:
- 		u32_opts = wled3_opts;
+ 	if (req->mode == MTD_OPS_RAW)
+ 		return 0;
 -- 
 2.39.5
 
