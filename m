@@ -1,60 +1,55 @@
-Return-Path: <stable+bounces-157632-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157252-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4E547AE54E6
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:06:10 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E330CAE533B
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:51:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B03BF4A0762
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:05:24 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 85DFE7A71F7
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:48:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 93AE52248B5;
-	Mon, 23 Jun 2025 22:05:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0EF7B220686;
+	Mon, 23 Jun 2025 21:50:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NkfP98LS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HhbAOaO2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 518881E87B;
-	Mon, 23 Jun 2025 22:05:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C18AB1EEA3C;
+	Mon, 23 Jun 2025 21:50:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750716343; cv=none; b=U7OFkdBRB41bTCnTKaAyTKQeZL2XknZnifx3AB3A4JVJswjWF/lDEUWLQ4ucI1Q6trGi9pZNMlFEvRic8pnAZVLp2IGVs4r+fmKkM5YmncumG/LH0wI/sBJipw0L2hUrlX4vPvtFSZo9357acZMgIOaXL5vKGQXj1JMhiHCn62c=
+	t=1750715413; cv=none; b=NCGBkw1b7vOhnEPGQCKWCni7PM0HV5gzrsR+6Dl1lnwfq1WwX+mSg+0DQVlefIUIvLyX4UsGFJO9DiRoE2m5y7wQt7LRD8sLOlP/z+0bSwxP4aV+d+4Ixkueon/qtU8s3wKjMyYSnPmE3KoIfufzbjL3iCnR/6loM985HL1dzh0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750716343; c=relaxed/simple;
-	bh=wpTtqIV0sZ3MfbqbiHqFJTzz3xxE/7Iz9R2GI5ja448=;
+	s=arc-20240116; t=1750715413; c=relaxed/simple;
+	bh=ksCGz9QU9kp0h1Mx6Tkp7unx907jtpq2QfQiDvlFiX4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=g/eAuY7alPwrw/5B8mpqv00mtQlFQ/HbQ3YII5uiDYGQF5TkAUhgjTNofqQihZWx+gAvGZlexgtCeCHV/qph11t4VpsSVXz+jzdVr+aKto1v4esFK8JIZOy9rzt6NXkYsqB/yckaW/dUMILqM0Y/DaaZDb1kOS06BTpJjoh/UEE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NkfP98LS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A20FFC4CEEA;
-	Mon, 23 Jun 2025 22:05:42 +0000 (UTC)
+	 MIME-Version; b=mf22svO9VR6JOFv3MKi64cqXB6lwf2Ls3X1deNmS4zv9om+baINQeOjzhOW4yvqmp/cahrkBFmNG01L5JwdPjlNKPZFLd3N1JBHL3KSTzvSHj3kzslQPubTCWLvVC4fswWsGHewELn+mxg2vP52/Nw2nag/Hn68QPFfM22gH9MA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HhbAOaO2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58D96C4CEEA;
+	Mon, 23 Jun 2025 21:50:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750716343;
-	bh=wpTtqIV0sZ3MfbqbiHqFJTzz3xxE/7Iz9R2GI5ja448=;
+	s=korg; t=1750715413;
+	bh=ksCGz9QU9kp0h1Mx6Tkp7unx907jtpq2QfQiDvlFiX4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NkfP98LSZ8AzOu0t5hvQeIbfpfMUObGm5A6kZV8oi39cLevOHam529DffZMlRaIwl
-	 k3h8taAjwV4as/HMUHXtHTwP5Ehb66wrL7nXeOA+Fq6SOyqEhjL99pum7uHChgyRK8
-	 3NGTo47bHAN9+Lnp4jVDD1uiCoR4zl9LREMYA6Kk=
+	b=HhbAOaO2oHxRYApu2uBj0/6v1rxBXa08ZrH3w1oZwoQmKM/28cNi3rOiM/1tqKjrN
+	 VQscWg5ndJdKxYaHsZphF7MPiQWIlHsyULRrm9MX9EFb/J9jZeZitO+kl5qQl9Cy2G
+	 VTKAmYVZvDdYC4jeVcTwrmiQGpF1T806e1b9hgd0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Scott Benesh <scott.benesh@microchip.com>,
-	Scott Teel <scott.teel@microchip.com>,
-	Mike McGowen <mike.mcgowen@microchip.com>,
-	David Strahan <david.strahan@microchip.com>,
-	Don Brace <don.brace@microchip.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 245/414] scsi: smartpqi: Add new PCI IDs
+	Arnd Bergmann <arnd@arndb.de>,
+	Helge Deller <deller@gmx.de>
+Subject: [PATCH 5.15 238/411] parisc: fix building with gcc-15
 Date: Mon, 23 Jun 2025 15:06:22 +0200
-Message-ID: <20250623130648.175528118@linuxfoundation.org>
+Message-ID: <20250623130639.647484091@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
-References: <20250623130642.015559452@linuxfoundation.org>
+In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
+References: <20250623130632.993849527@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,228 +61,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Strahan <david.strahan@microchip.com>
+From: Arnd Bergmann <arnd@arndb.de>
 
-[ Upstream commit 01b8bdddcfab035cf70fd9981cb20593564cd15d ]
+commit 7cbb015e2d3d6f180256cde0c908eab21268e7b9 upstream.
 
-Add in support for more PCI devices.
+The decompressor is built with the default C dialect, which is now gnu23
+on gcc-15, and this clashes with the kernel's bool type definition:
 
-All PCI ID entries in Hex.
+In file included from include/uapi/linux/posix_types.h:5,
+                 from arch/parisc/boot/compressed/misc.c:7:
+include/linux/stddef.h:11:9: error: cannot use keyword 'false' as enumeration constant
+   11 |         false   = 0,
 
-Add PCI IDs for Ramaxel controllers:
-                                                  VID  / DID  / SVID / SDID
-                                                  ----   ----   ----   ----
-                      Ramaxel SmartHBA RX8238-16i 9005   028f   1018   8238
-                      Ramaxel SSSRAID card        9005   028f   1f3f   0610
+Add the -std=gnu11 argument here, as we do for all other architectures.
 
-Add PCI ID for Alibaba controller:
-                                                  VID  / DID  / SVID / SDID
-                                                  ----   ----   ----   ----
-                      HBA AS1340                  9005   028f   1ded   3301
-
-Add PCI IDs for Inspur controller:
-                                                  VID  / DID  / SVID / SDID
-                                                  ----   ----   ----   ----
-                      RT0800M6E2i                 9005   028f   1bd4   00a3
-
-Add PCI IDs for Delta controllers:
-                                                  VID  / DID  / SVID / SDID
-                                                  ----   ----   ----   ----
-ThinkSystem 4450-8i SAS/SATA/NVMe PCIe Gen4       9005   028f   1d49   0222
-24Gb HBA
-ThinkSystem 4450-16i SAS/SATA/NVMe PCIe Gen4      9005   028f   1d49   0223
-24Gb HBA
-ThinkSystem 4450-8e SAS/SATA PCIe Gen4            9005   028f   1d49   0224
-24Gb HBA
-ThinkSystem RAID 4450-16e PCIe Gen4 24Gb          9005   028f   1d49   0225
-Adapter HBA
-ThinkSystem RAID 5450-16i PCIe Gen4 24Gb Adapter  9005   028f   1d49   0521
-ThinkSystem RAID 9450-8i 4GB Flash PCIe Gen4      9005   028f   1d49   0624
-24Gb Adapter
-ThinkSystem RAID 9450-16i 4GB Flash PCIe Gen4     9005   028f   1d49   0625
-24Gb Adapter
-ThinkSystem RAID 9450-16i 4GB Flash PCIe Gen4     9005   028f   1d49   0626
-24Gb Adapter
-ThinkSystem RAID 9450-32i 8GB Flash PCIe Gen4     9005   028f   1d49   0627
-24Gb Adapter
-ThinkSystem RAID 9450-16e 4GB Flash PCIe Gen4     9005   028f   1d49   0628
-24Gb Adapter
-
-Add PCI ID for Cloudnine Controller:
-                                                  VID  / DID  / SVID / SDID
-                                                  ----   ----   ----   ----
-                      SmartHBA P6600-24i          9005   028f   1f51   100b
-
-Add PCI IDs for Hurraydata Controllers:
-                                                  VID  / DID  / SVID / SDID
-                                                  ----   ----   ----   ----
-                      HRDT TrustHBA H4100-8i      9005   028f   207d   4044
-                      HRDT TrustHBA H4100-8e      9005   028f   207d   4054
-                      HRDT TrustHBA H4100-16i     9005   028f   207d   4084
-                      HRDT TrustHBA H4100-16e     9005   028f   207d   4094
-                      HRDT TrustRAID D3152s-8i    9005   028f   207d   4140
-                      HRDT TrustRAID D3154s-8i    9005   028f   207d   4240
-
-Reviewed-by: Scott Benesh <scott.benesh@microchip.com>
-Reviewed-by: Scott Teel <scott.teel@microchip.com>
-Reviewed-by: Mike McGowen <mike.mcgowen@microchip.com>
-Signed-off-by: David Strahan <david.strahan@microchip.com>
-Signed-off-by: Don Brace <don.brace@microchip.com>
-Link: https://lore.kernel.org/r/20250423183229.538572-3-don.brace@microchip.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Signed-off-by: Helge Deller <deller@gmx.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/scsi/smartpqi/smartpqi_init.c | 84 +++++++++++++++++++++++++++
- 1 file changed, 84 insertions(+)
+ arch/parisc/boot/compressed/Makefile |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/scsi/smartpqi/smartpqi_init.c b/drivers/scsi/smartpqi/smartpqi_init.c
-index 8cc9f924a8ae6..c5a21e369e167 100644
---- a/drivers/scsi/smartpqi/smartpqi_init.c
-+++ b/drivers/scsi/smartpqi/smartpqi_init.c
-@@ -9708,6 +9708,10 @@ static const struct pci_device_id pqi_pci_id_table[] = {
- 		PCI_DEVICE_SUB(PCI_VENDOR_ID_ADAPTEC2, 0x028f,
- 			       0x1bd4, 0x0089)
- 	},
-+	{
-+		PCI_DEVICE_SUB(PCI_VENDOR_ID_ADAPTEC2, 0x028f,
-+				0x1bd4, 0x00a3)
-+	},
- 	{
- 		PCI_DEVICE_SUB(PCI_VENDOR_ID_ADAPTEC2, 0x028f,
- 			       0x1ff9, 0x00a1)
-@@ -10044,6 +10048,30 @@ static const struct pci_device_id pqi_pci_id_table[] = {
- 		PCI_DEVICE_SUB(PCI_VENDOR_ID_ADAPTEC2, 0x028f,
- 			       PCI_VENDOR_ID_ADAPTEC2, 0x14f0)
- 	},
-+	{
-+		PCI_DEVICE_SUB(PCI_VENDOR_ID_ADAPTEC2, 0x028f,
-+			       0x207d, 0x4044)
-+	},
-+	{
-+		PCI_DEVICE_SUB(PCI_VENDOR_ID_ADAPTEC2, 0x028f,
-+			       0x207d, 0x4054)
-+	},
-+	{
-+		PCI_DEVICE_SUB(PCI_VENDOR_ID_ADAPTEC2, 0x028f,
-+			       0x207d, 0x4084)
-+	},
-+	{
-+		PCI_DEVICE_SUB(PCI_VENDOR_ID_ADAPTEC2, 0x028f,
-+			       0x207d, 0x4094)
-+	},
-+	{
-+		PCI_DEVICE_SUB(PCI_VENDOR_ID_ADAPTEC2, 0x028f,
-+			       0x207d, 0x4140)
-+	},
-+	{
-+		PCI_DEVICE_SUB(PCI_VENDOR_ID_ADAPTEC2, 0x028f,
-+			       0x207d, 0x4240)
-+	},
- 	{
- 		PCI_DEVICE_SUB(PCI_VENDOR_ID_ADAPTEC2, 0x028f,
- 			       PCI_VENDOR_ID_ADVANTECH, 0x8312)
-@@ -10260,6 +10288,14 @@ static const struct pci_device_id pqi_pci_id_table[] = {
- 		PCI_DEVICE_SUB(PCI_VENDOR_ID_ADAPTEC2, 0x028f,
- 			       0x1cc4, 0x0201)
- 	},
-+	{
-+		PCI_DEVICE_SUB(PCI_VENDOR_ID_ADAPTEC2, 0x028f,
-+			       0x1018, 0x8238)
-+	},
-+	{
-+		PCI_DEVICE_SUB(PCI_VENDOR_ID_ADAPTEC2, 0x028f,
-+			       0x1f3f, 0x0610)
-+	},
- 	{
- 		PCI_DEVICE_SUB(PCI_VENDOR_ID_ADAPTEC2, 0x028f,
- 			       PCI_VENDOR_ID_LENOVO, 0x0220)
-@@ -10268,10 +10304,30 @@ static const struct pci_device_id pqi_pci_id_table[] = {
- 		PCI_DEVICE_SUB(PCI_VENDOR_ID_ADAPTEC2, 0x028f,
- 			       PCI_VENDOR_ID_LENOVO, 0x0221)
- 	},
-+	{
-+		PCI_DEVICE_SUB(PCI_VENDOR_ID_ADAPTEC2, 0x028f,
-+			       PCI_VENDOR_ID_LENOVO, 0x0222)
-+	},
-+	{
-+		PCI_DEVICE_SUB(PCI_VENDOR_ID_ADAPTEC2, 0x028f,
-+			       PCI_VENDOR_ID_LENOVO, 0x0223)
-+	},
-+	{
-+		PCI_DEVICE_SUB(PCI_VENDOR_ID_ADAPTEC2, 0x028f,
-+			       PCI_VENDOR_ID_LENOVO, 0x0224)
-+	},
-+	{
-+		PCI_DEVICE_SUB(PCI_VENDOR_ID_ADAPTEC2, 0x028f,
-+			       PCI_VENDOR_ID_LENOVO, 0x0225)
-+	},
- 	{
- 		PCI_DEVICE_SUB(PCI_VENDOR_ID_ADAPTEC2, 0x028f,
- 			       PCI_VENDOR_ID_LENOVO, 0x0520)
- 	},
-+	{
-+		PCI_DEVICE_SUB(PCI_VENDOR_ID_ADAPTEC2, 0x028f,
-+			       PCI_VENDOR_ID_LENOVO, 0x0521)
-+	},
- 	{
- 		PCI_DEVICE_SUB(PCI_VENDOR_ID_ADAPTEC2, 0x028f,
- 			       PCI_VENDOR_ID_LENOVO, 0x0522)
-@@ -10292,6 +10348,26 @@ static const struct pci_device_id pqi_pci_id_table[] = {
- 		PCI_DEVICE_SUB(PCI_VENDOR_ID_ADAPTEC2, 0x028f,
- 			       PCI_VENDOR_ID_LENOVO, 0x0623)
- 	},
-+	{
-+		PCI_DEVICE_SUB(PCI_VENDOR_ID_ADAPTEC2, 0x028f,
-+			       PCI_VENDOR_ID_LENOVO, 0x0624)
-+	},
-+	{
-+		PCI_DEVICE_SUB(PCI_VENDOR_ID_ADAPTEC2, 0x028f,
-+			       PCI_VENDOR_ID_LENOVO, 0x0625)
-+	},
-+	{
-+		PCI_DEVICE_SUB(PCI_VENDOR_ID_ADAPTEC2, 0x028f,
-+			       PCI_VENDOR_ID_LENOVO, 0x0626)
-+	},
-+	{
-+		PCI_DEVICE_SUB(PCI_VENDOR_ID_ADAPTEC2, 0x028f,
-+			       PCI_VENDOR_ID_LENOVO, 0x0627)
-+	},
-+	{
-+		PCI_DEVICE_SUB(PCI_VENDOR_ID_ADAPTEC2, 0x028f,
-+			       PCI_VENDOR_ID_LENOVO, 0x0628)
-+	},
- 	{
- 		PCI_DEVICE_SUB(PCI_VENDOR_ID_ADAPTEC2, 0x028f,
- 				0x1014, 0x0718)
-@@ -10320,6 +10396,10 @@ static const struct pci_device_id pqi_pci_id_table[] = {
- 		PCI_DEVICE_SUB(PCI_VENDOR_ID_ADAPTEC2, 0x028f,
- 			       0x1137, 0x0300)
- 	},
-+	{
-+		PCI_DEVICE_SUB(PCI_VENDOR_ID_ADAPTEC2, 0x028f,
-+				0x1ded, 0x3301)
-+	},
- 	{
- 		PCI_DEVICE_SUB(PCI_VENDOR_ID_ADAPTEC2, 0x028f,
- 			       0x1ff9, 0x0045)
-@@ -10468,6 +10548,10 @@ static const struct pci_device_id pqi_pci_id_table[] = {
- 		PCI_DEVICE_SUB(PCI_VENDOR_ID_ADAPTEC2, 0x028f,
- 				0x1f51, 0x100a)
- 	},
-+	{
-+		PCI_DEVICE_SUB(PCI_VENDOR_ID_ADAPTEC2, 0x028f,
-+				0x1f51, 0x100b)
-+	},
- 	{
- 		PCI_DEVICE_SUB(PCI_VENDOR_ID_ADAPTEC2, 0x028f,
- 			       0x1f51, 0x100e)
--- 
-2.39.5
-
+--- a/arch/parisc/boot/compressed/Makefile
++++ b/arch/parisc/boot/compressed/Makefile
+@@ -22,6 +22,7 @@ KBUILD_CFLAGS += -fno-PIE -mno-space-reg
+ ifndef CONFIG_64BIT
+ KBUILD_CFLAGS += -mfast-indirect-calls
+ endif
++KBUILD_CFLAGS += -std=gnu11
+ 
+ OBJECTS += $(obj)/head.o $(obj)/real2.o $(obj)/firmware.o $(obj)/misc.o $(obj)/piggy.o
+ 
 
 
 
