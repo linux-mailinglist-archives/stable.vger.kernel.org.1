@@ -1,194 +1,177 @@
-Return-Path: <stable+bounces-158202-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-158203-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 59B0EAE57AD
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 01:10:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id ACB73AE57C2
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 01:15:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F28E71891496
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:10:44 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2D906189C3A4
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:15:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94226227B8E;
-	Mon, 23 Jun 2025 23:10:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D1A022D4F6;
+	Mon, 23 Jun 2025 23:14:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FxCnmcfm"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gJ/ZlRUG"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F7961A2630;
-	Mon, 23 Jun 2025 23:10:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB8DC3FB1B;
+	Mon, 23 Jun 2025 23:14:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750720222; cv=none; b=h53KAQvgPR7fANqscu3QTNCy5Mp1YR54J8M5pC0Vn1SpBkafw+6Fh4BRhpdWP98A35gx1xOvMIMR84AOhgtPW/yhRdf8GADYtfNPDCM4yrOpeMI0vnRo54R4ZOg7VbjuxL+QXg9eb5VuDqYCOt4MRzEQT53eeCnR5hFbsfooxC8=
+	t=1750720465; cv=none; b=H0rQKY3xH2VlghxxYuD4dziINcPJD92zuA+VbeaVvnzvi757i27+AgVeFQ7qNDDI6lRRBAxjj9MzSith04nKLadecIoIUwBe5ebZ3TwlpZFmpnYWYj+dDo53/MhIu6tjT5pnpH6tBzVRMPDgLxxyMZI0lApADHyuobKP0g5ir7Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750720222; c=relaxed/simple;
-	bh=rOUm22/yW0LwLkb1Ps66HKzlHHAdGQ7NT1emVa9hi0A=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=vGrFnHq3JxmQ1poMD1FoH8taB8eQMq4WzR5VEwS+nRoe1U6edcAt4QqcyYW7rMrWMynshft9rFumCQPxmV+mLl8uGk6800WOeAvS7nRVptfFdDuQXpM8F4pS4mk61j8fGSMQ9Y0Ouboq7fsfcorxsc9eOVs9+L3lpZVPB5+8nd0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=FxCnmcfm; arc=none smtp.client-ip=209.85.128.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-45365b1a897so24109265e9.0;
-        Mon, 23 Jun 2025 16:10:18 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1750720217; x=1751325017; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=FpdMl98PvcpLIduTbEa6wyxA0JY/GEfTE8S4djNR00U=;
-        b=FxCnmcfmXcapbSSCIZckEOygUbiQC/EiDIVNDTR/hC3LUmiwGfffbSCNxzQtT+ETGk
-         JueA1xBAlz+zza4YhlYzSRslTVKHw3SQtM3u6/Pm6U1W5IOKjSq+ObdLKqxBwZX3UluM
-         mo81e/3PAKCl8nYCgo4lhITqBDYIW6O1HzgVwQGAEqF238xsI/knFGIsDiVnzkC1du6q
-         MPjIOBIbNed6dNhChXB6BFsi2BOkm61ZYxx2YogFbeqEiLp6X+YJGUZXm8Jkhox23ya+
-         IP8VtfrW6LC5eA9aoCpRHlUzIosB7lUbvLFAuwC0ZbIoeODJ6a0cmdwLoy8qaHW+Wkc2
-         EBOw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1750720217; x=1751325017;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=FpdMl98PvcpLIduTbEa6wyxA0JY/GEfTE8S4djNR00U=;
-        b=AlFuiutKC6+sJnCU59Y1kmKM+O+KUhv46EEzX/tzWHCJXPmPUAqGdVhnZ+8xpBR2eJ
-         8D2lFlMP4EBZLGrqQikhGFPHXQ9pHeN0wrFKCeaHJh/uN5Yc6wgdMC24laW1AIbyDqxO
-         +kllssXj7PG8j+0XBpXNNNun8LVNPIiUOVo+7Vlp1SftvNVZaLS7GZ4FS/0jd13MPNm9
-         6clHZFHNG4CTYKfkr1EAuV0lT2zkaELds4OAU/6Z5HY7YJ+v7nok3X87QzM1bMheazzP
-         t22CgV9j9eUMGMlG613ejB3O2G814JX067yh2UoVRYrm4wOldFA4CT0tld+6kNAHekws
-         QtYA==
-X-Forwarded-Encrypted: i=1; AJvYcCURmsbnlZyb8HBSgCf8dASZF2rOk/5UMRs3WuTxipVqFLccTn/oBddq68DChXe8CHdJCvZJN0OeBMc9QRVZ@vger.kernel.org, AJvYcCWJgUVEPs8WoM/tHXEk0G/c45PzWbPoCTbcc/5lvk0ZDvRJ3mkSYrUdIdTJ7Vi+TctAKRIwTXNA@vger.kernel.org, AJvYcCWUJfCdFjQduEUwPuajJ67Nh2TBq/DcnzdUBY7b+zs/S3K9mXAT0FT+jte4LQ1z2sK22LkxT1bv/T8V+w==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yyyz/0L/ZRDLxJMZXe6RdRlRJNzr5NfG6/Ru02j0JSTF34qXPvK
-	AjRpIq8UQQb6ANCQzI5PxmxMz3j0w8+YvKwAdjw8xGOg32scrd24sH8i
-X-Gm-Gg: ASbGncuXz9bw+izsWdOBZ2CYlzN8BT4bThPFsu9Cl1GrsUXc+pBe0kDYo9EQcKalHTC
-	Dn8sgYjfWaHqSUpj0mNLmP72HgbAq/St2FF2/kQOp3IZxWuBVC+cE9ePFW9Et/RI2hwEKGq+3aF
-	R5ol0e9rg0kyzUKRjc+QOKqeXJZyVFyYey4nLtvjb4h78N8d+BnY64cwSYR58I5GluRlRCpQEuU
-	Jlp2vTzQQF6xOds81+FclIrC4TGdS5HRWtWo+bzTd6XbYSje5QHdz2Ps+b1/esIsBNRbwnG85M4
-	JzTaoY71WxDf7lxmF4eSw/LdzA8OtMjXNvDFT1g2k7HaNdi5RgEbCvI544tYIw==
-X-Google-Smtp-Source: AGHT+IEIf0JHWOFkd9LKf4iZwcHptNpPGNlxOjGNMKqDLMm2eM89GGlPceIk1rv5Hi8N3bv8MqrGhQ==
-X-Received: by 2002:a05:600c:35cc:b0:43d:82c:2b11 with SMTP id 5b1f17b1804b1-453656c29c4mr131155285e9.23.1750720216595;
-        Mon, 23 Jun 2025 16:10:16 -0700 (PDT)
-Received: from qasdev.Home ([2a02:c7c:f4f0:900:fa4e:392a:1d40:1ef4])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3a6e805d21fsm332093f8f.23.2025.06.23.16.10.15
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 23 Jun 2025 16:10:16 -0700 (PDT)
-From: Qasim Ijaz <qasdev00@gmail.com>
-To: jikos@kernel.org,
-	bentiss@kernel.org
-Cc: gargaditya08@live.com,
-	linux-input@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: [PATCH] HID: appletb-kbd: fix slab use-after-free bug in appletb_kbd_probe
-Date: Tue, 24 Jun 2025 00:08:12 +0100
-Message-Id: <20250623230812.31927-1-qasdev00@gmail.com>
-X-Mailer: git-send-email 2.39.5
+	s=arc-20240116; t=1750720465; c=relaxed/simple;
+	bh=aerVDBcnJpT8gkHAfn/6JruOABlCLVQZP9CRB2TQtCg=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
+	 References:In-Reply-To; b=kJ0tIYSCwpk5WoeomHHBwjBp9aSV92VVHpiUBnBMrNhnW0Vs0sD8lZSX3LHiZ27XlakECyUyEWkT+jlo4H2J9djypUnff51R3NQVaQoRJEEHl/4va3RbdC1XtkpbHEtft6bc44VV9Y/ebT43NG2bKwfuqCMtR+wSEJG+R0ggYlY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gJ/ZlRUG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E914C4CEED;
+	Mon, 23 Jun 2025 23:14:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1750720465;
+	bh=aerVDBcnJpT8gkHAfn/6JruOABlCLVQZP9CRB2TQtCg=;
+	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
+	b=gJ/ZlRUGbNtgbDM5ssmVGBHRFXUlo7dR4vV75Izj0sWvhQZxswBAVbDlZZA/b1Aki
+	 qZDJBJVXeq33ZtO7pQxXktYbMWjd4OlAC8gYCjKHhugjUgr2uJiAQgRWZPIktIE8tF
+	 qz+IXKwOSXwYt59Pa0xknhe+YXzCxhjd4H6J+jJpSPbmMBKgUpo4PReBoLZnW+RcOD
+	 CIvqUw+cDASfUDBDqKFkz1nGWFKgNUtLM6EayacmzzycFFFi9m9orNaXOsGmaXCQ5u
+	 BG1T3RWdfZc8AjvwiWyMzI60lzKDHGKjqUlLakB3xfqAgJlsj5690zDO4Los9yIGfc
+	 j5kUXi0rrA/Pg==
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Tue, 24 Jun 2025 01:14:22 +0200
+Message-Id: <DAUALX71J38F.2E1VBF0YH27KQ@kernel.org>
+Cc: <patches@lists.linux.dev>, "Alice Ryhl" <aliceryhl@google.com>, "Danilo
+ Krummrich" <dakr@kernel.org>, "Sasha Levin" <sashal@kernel.org>
+Subject: Re: [PATCH 6.15 515/592] rust: devres: fix race in Devres::drop()
+From: "Benno Lossin" <lossin@kernel.org>
+To: "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>,
+ <stable@vger.kernel.org>
+X-Mailer: aerc 0.20.1
+References: <20250623130700.210182694@linuxfoundation.org>
+ <20250623130712.686988131@linuxfoundation.org>
+In-Reply-To: <20250623130712.686988131@linuxfoundation.org>
 
-In probe appletb_kbd_probe() a "struct appletb_kbd *kbd" is allocated
-via devm_kzalloc() to store touch bar keyboard related data.
-Later on if backlight_device_get_by_name() finds a backlight device
-with name "appletb_backlight" a timer (kbd->inactivity_timer) is setup
-with appletb_inactivity_timer() and the timer is armed to run after
-appletb_tb_dim_timeout (60) seconds.
+On Mon Jun 23, 2025 at 3:07 PM CEST, Greg Kroah-Hartman wrote:
+> 6.15-stable review patch.  If anyone has any objections, please let me kn=
+ow.
+>
+> ------------------
+>
+> From: Danilo Krummrich <dakr@kernel.org>
+>
+> [ Upstream commit f744201c6159fc7323c40936fd079525f7063598 ]
+>
+> In Devres::drop() we first remove the devres action and then drop the
+> wrapped device resource.
+>
+> The design goal is to give the owner of a Devres object control over when
+> the device resource is dropped, but limit the overall scope to the
+> corresponding device being bound to a driver.
+>
+> However, there's a race that was introduced with commit 8ff656643d30
+> ("rust: devres: remove action in `Devres::drop`"), but also has been
+> (partially) present from the initial version on.
+>
+> In Devres::drop(), the devres action is removed successfully and
+> subsequently the destructor of the wrapped device resource runs.
+> However, there is no guarantee that the destructor of the wrapped device
+> resource completes before the driver core is done unbinding the
+> corresponding device.
+>
+> If in Devres::drop(), the devres action can't be removed, it means that
+> the devres callback has been executed already, or is still running
+> concurrently. In case of the latter, either Devres::drop() wins revoking
+> the Revocable or the devres callback wins revoking the Revocable. If
+> Devres::drop() wins, we (again) have no guarantee that the destructor of
+> the wrapped device resource completes before the driver core is done
+> unbinding the corresponding device.
+>
+> CPU0					CPU1
+> ------------------------------------------------------------------------
+> Devres::drop() {			Devres::devres_callback() {
+>    self.data.revoke() {			   this.data.revoke() {
+>       is_available.swap() =3D=3D true
+> 					      is_available.swap =3D=3D false
+> 					   }
+> 					}
+>
+> 					// [...]
+> 					// device fully unbound
+>       drop_in_place() {
+>          // release device resource
+>       }
+>    }
+> }
+>
+> Depending on the specific device resource, this can potentially lead to
+> user-after-free bugs.
+>
+> In order to fix this, implement the following logic.
+>
+> In the devres callback, we're always good when we get to revoke the
+> device resource ourselves, i.e. Revocable::revoke() returns true.
+>
+> If Revocable::revoke() returns false, it means that Devres::drop(),
+> concurrently, already drops the device resource and we have to wait for
+> Devres::drop() to signal that it finished dropping the device resource.
+>
+> Note that if we hit the case where we need to wait for the completion of
+> Devres::drop() in the devres callback, it means that we're actually
+> racing with a concurrent Devres::drop() call, which already started
+> revoking the device resource for us. This is rather unlikely and means
+> that the concurrent Devres::drop() already started doing our work and we
+> just need to wait for it to complete it for us. Hence, there should not
+> be any additional overhead from that.
+>
+> (Actually, for now it's even better if Devres::drop() does the work for
+> us, since it can bypass the synchronize_rcu() call implied by
+> Revocable::revoke(), but this goes away anyways once I get to implement
+> the split devres callback approach, which allows us to first flip the
+> atomics of all registered Devres objects of a certain device, execute a
+> single synchronize_rcu() and then drop all revocable objects.)
+>
+> In Devres::drop() we try to revoke the device resource. If that is *not*
+> successful, it means that the devres callback already did and we're good.
+>
+> Otherwise, we try to remove the devres action, which, if successful,
+> means that we're good, since the device resource has just been revoked
+> by us *before* we removed the devres action successfully.
+>
+> If the devres action could not be removed, it means that the devres
+> callback must be running concurrently, hence we signal that the device
+> resource has been revoked by us, using the completion.
+>
+> This makes it safe to drop a Devres object from any task and at any point
+> of time, which is one of the design goals.
+>
+> Fixes: 76c01ded724b ("rust: add devres abstraction")
+> Reported-by: Alice Ryhl <aliceryhl@google.com>
+> Closes: https://lore.kernel.org/lkml/aD64YNuqbPPZHAa5@google.com/
+> Reviewed-by: Benno Lossin <lossin@kernel.org>
+> Link: https://lore.kernel.org/r/20250612121817.1621-4-dakr@kernel.org
+> Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+> Signed-off-by: Sasha Levin <sashal@kernel.org>
+> ---
+>  rust/kernel/devres.rs | 37 +++++++++++++++++++++++++++++--------
+>  1 file changed, 29 insertions(+), 8 deletions(-)
 
-A use-after-free is triggered when failure occurs after the timer is 
-armed. This ultimately means probe failure occurs and as a result the 
-"struct appletb_kbd *kbd" which is device managed memory is freed. 
-After 60 seconds the timer will have expired and __run_timers will 
-attempt to access the timer (kbd->inactivity_timer) however the kdb 
-structure has been freed causing a use-after free.
+This is missing the prerequisite patch #1 from
 
-[   71.636938] ==================================================================
-[   71.637915] BUG: KASAN: slab-use-after-free in __run_timers+0x7ad/0x890
-[   71.637915] Write of size 8 at addr ffff8881178c5958 by task swapper/1/0
-[   71.637915] 
-[   71.637915] CPU: 1 UID: 0 PID: 0 Comm: swapper/1 Not tainted 6.16.0-rc2-00318-g739a6c93cc75-dirty #12 PREEMPT(voluntary) 
-[   71.637915] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.2-debian-1.16.2-1 04/01/2014
-[   71.637915] Call Trace:
-[   71.637915]  <IRQ>
-[   71.637915]  dump_stack_lvl+0x53/0x70
-[   71.637915]  print_report+0xce/0x670
-[   71.637915]  ? __run_timers+0x7ad/0x890
-[   71.637915]  kasan_report+0xce/0x100
-[   71.637915]  ? __run_timers+0x7ad/0x890
-[   71.637915]  __run_timers+0x7ad/0x890
-[   71.637915]  ? __pfx___run_timers+0x10/0x10
-[   71.637915]  ? update_process_times+0xfc/0x190
-[   71.637915]  ? __pfx_update_process_times+0x10/0x10
-[   71.637915]  ? _raw_spin_lock_irq+0x80/0xe0
-[   71.637915]  ? _raw_spin_lock_irq+0x80/0xe0
-[   71.637915]  ? __pfx__raw_spin_lock_irq+0x10/0x10
-[   71.637915]  run_timer_softirq+0x141/0x240
-[   71.637915]  ? __pfx_run_timer_softirq+0x10/0x10
-[   71.637915]  ? __pfx___hrtimer_run_queues+0x10/0x10
-[   71.637915]  ? kvm_clock_get_cycles+0x18/0x30
-[   71.637915]  ? ktime_get+0x60/0x140
-[   71.637915]  handle_softirqs+0x1b8/0x5c0
-[   71.637915]  ? __pfx_handle_softirqs+0x10/0x10
-[   71.637915]  irq_exit_rcu+0xaf/0xe0
-[   71.637915]  sysvec_apic_timer_interrupt+0x6c/0x80
-[   71.637915]  </IRQ>
-[   71.637915] 
-[   71.637915] Allocated by task 39:
-[   71.637915]  kasan_save_stack+0x33/0x60
-[   71.637915]  kasan_save_track+0x14/0x30
-[   71.637915]  __kasan_kmalloc+0x8f/0xa0
-[   71.637915]  __kmalloc_node_track_caller_noprof+0x195/0x420
-[   71.637915]  devm_kmalloc+0x74/0x1e0
-[   71.637915]  appletb_kbd_probe+0x37/0x3c0
-[   71.637915]  hid_device_probe+0x2d1/0x680
-[   71.637915]  really_probe+0x1c3/0x690
-[   71.637915]  __driver_probe_device+0x247/0x300
-[   71.637915]  driver_probe_device+0x49/0x210
-[...]
-[   71.637915] 
-[   71.637915] Freed by task 39:
-[   71.637915]  kasan_save_stack+0x33/0x60
-[   71.637915]  kasan_save_track+0x14/0x30
-[   71.637915]  kasan_save_free_info+0x3b/0x60
-[   71.637915]  __kasan_slab_free+0x37/0x50
-[   71.637915]  kfree+0xcf/0x360
-[   71.637915]  devres_release_group+0x1f8/0x3c0
-[   71.637915]  hid_device_probe+0x315/0x680
-[   71.637915]  really_probe+0x1c3/0x690
-[   71.637915]  __driver_probe_device+0x247/0x300
-[   71.637915]  driver_probe_device+0x49/0x210
-[...]
+    https://lore.kernel.org/all/20250612121817.1621-1-dakr@kernel.org
 
-The root cause of the issue is that the timer is not disarmed 
-on failure paths leading to it remaining active and accessing 
-freed memory. To fix this call timer_delete_sync() to deactivate 
-the timer.
-
-Fixes: 93a0fc489481 ("HID: hid-appletb-kbd: add support for automatic brightness control while using the touchbar")
-Cc: stable@vger.kernel.org
-Signed-off-by: Qasim Ijaz <qasdev00@gmail.com>
 ---
- drivers/hid/hid-appletb-kbd.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/hid/hid-appletb-kbd.c b/drivers/hid/hid-appletb-kbd.c
-index e06567886e50..a70b1c519105 100644
---- a/drivers/hid/hid-appletb-kbd.c
-+++ b/drivers/hid/hid-appletb-kbd.c
-@@ -438,8 +438,10 @@ static int appletb_kbd_probe(struct hid_device *hdev, const struct hid_device_id
- 	return 0;
- 
- close_hw:
--	if (kbd->backlight_dev)
-+	if (kbd->backlight_dev) {
- 		put_device(&kbd->backlight_dev->dev);
-+		timer_delete_sync(&kbd->inactivity_timer);
-+	}
- 	hid_hw_close(hdev);
- stop_hw:
- 	hid_hw_stop(hdev);
--- 
-2.39.5
+Cheers,
+Benno
 
 
