@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-157132-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156632-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id E8015AE52A9
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:46:24 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id D1AFAAE5062
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:24:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B6D7F7AC4D5
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:44:45 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EED423BFFC7
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:24:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9BD21224AED;
-	Mon, 23 Jun 2025 21:45:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D7EE31EEA3C;
+	Mon, 23 Jun 2025 21:24:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gdFDiUMy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RFqt/bwq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56095223714;
-	Mon, 23 Jun 2025 21:45:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95E121E51FA;
+	Mon, 23 Jun 2025 21:24:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750715113; cv=none; b=bylU5lDZk9dBhrQOTEBBbqpCnYLkMEX9LDUVV3uA2ePinoPfFmUX2M8EVfAgzOcZPOVrgMIuPX+DyEiWNMqoebSQwHPwqZz2mKfFDER4q2pwFOiNXnb+ASVHzyghvkAXAxmpTvYvY+IlHvhGLUQ0s5HWPchjPp58ct51+1uvfXQ=
+	t=1750713886; cv=none; b=TQtz6PsoybRkTIOxIGXsVaW1O+lKwMjA7xkRQfrFWtR6LkEV0fD4TZvBByKgpTiOS1p21SuyT6RqhgOM+Zo6aJeQ+ihBN61+j5l+/Zsgg/nDSG7i2BQyqoVFXOv8J3OD49gLaB3HQu4ZzhXpzEQf8wORTLI8TX9KoUsCeUfre7k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750715113; c=relaxed/simple;
-	bh=j1HbhabhAOZI5f2D18C3pvfpsatjfGVd2+AWUzBTiss=;
+	s=arc-20240116; t=1750713886; c=relaxed/simple;
+	bh=S6oyi/kV7syRO9Js7uzzeuIfXNKNB+9KfUGTh456Icc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=evuC/zJObxS37uUJuGlkoqNijJhVwFr4S7f/ZYz09/bdazp+9ERyX3G6FRmJbvu4+Qrul8FBrE9kZzwtqGAsWA7ihw7Vkax3LNf9WMmT+9UVuMmU8KvPSRoq3JfmMny0WxW6LLSWp2LG4Sa81ijVqCi0255LwQyuFGgXBiPtXB0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gdFDiUMy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C3BDC4CEEA;
-	Mon, 23 Jun 2025 21:45:12 +0000 (UTC)
+	 MIME-Version; b=UhuoQ6NoE5QcmxZbOYexbOhRiudtyMg3cevOScuUJy+bw2ThioeFrPcv7XbeRyoTwpMkEgV+7mWK88GK76NIM8ttWyhpIh1spOeuq7Hc3LAds82Goh+LXdRQTBoC3lmeWtBdAfdVY9JOqQ4fQ2rveWJVff5y5jmLWyPcJTInF2A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RFqt/bwq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2EE4DC4CEEA;
+	Mon, 23 Jun 2025 21:24:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750715112;
-	bh=j1HbhabhAOZI5f2D18C3pvfpsatjfGVd2+AWUzBTiss=;
+	s=korg; t=1750713886;
+	bh=S6oyi/kV7syRO9Js7uzzeuIfXNKNB+9KfUGTh456Icc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gdFDiUMy3R97pIRVbc8BDNsHr2A+87JvjhNGY13wRnRnCiTQAwNMk4/kje97Stf3K
-	 EkqbBB5oDXBcfyMylD9ADK8OkZQkXZTvgzZCAOxnIW7LAtpHcUX8PzeSQX3BQynZm3
-	 40OmmWNXZ+qHluaNTjOlgxIlMXsdQM/sMi1UB0l8=
+	b=RFqt/bwqHLGO1qg8JyaPWCOtC1qbHoI0rMyVNrQ0+lspRxuM5JUYUbKyqGIzH4QAf
+	 aOb2Wkbf7w09pXnsxDjxll/0ofAvwuQCNfaiHlHKg8SBCrxbHvwHQ0Me4e+Hrbogul
+	 1zBhUzNj1qAd/T2M9ZArUq+OVTO1RsAoTnHbbJxM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhang Yi <yi.zhang@huawei.com>,
-	Jan Kara <jack@suse.cz>,
-	Baokun Li <libaokun1@huawei.com>,
-	Theodore Tso <tytso@mit.edu>,
-	stable@kernel.org
-Subject: [PATCH 5.15 229/411] ext4: factor out ext4_get_maxbytes()
+	syzbot+526bd95c0ec629993bf3@syzkaller.appspotmail.com,
+	Edward Adam Davis <eadavis@qq.com>,
+	Hans Verkuil <hverkuil@xs4all.nl>
+Subject: [PATCH 5.10 172/355] media: cxusb: no longer judge rbuf when the write fails
 Date: Mon, 23 Jun 2025 15:06:13 +0200
-Message-ID: <20250623130639.425877388@linuxfoundation.org>
+Message-ID: <20250623130631.880838860@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
-References: <20250623130632.993849527@linuxfoundation.org>
+In-Reply-To: <20250623130626.716971725@linuxfoundation.org>
+References: <20250623130626.716971725@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,79 +62,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhang Yi <yi.zhang@huawei.com>
+From: Edward Adam Davis <eadavis@qq.com>
 
-commit dbe27f06fa38b9bfc598f8864ae1c5d5831d9992 upstream.
+commit 73fb3b92da84637e3817580fa205d48065924e15 upstream.
 
-There are several locations that get the correct maxbytes value based on
-the inode's block type. It would be beneficial to extract a common
-helper function to make the code more clear.
+syzbot reported a uninit-value in cxusb_i2c_xfer. [1]
 
-Signed-off-by: Zhang Yi <yi.zhang@huawei.com>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Reviewed-by: Baokun Li <libaokun1@huawei.com>
-Link: https://patch.msgid.link/20250506012009.3896990-3-yi.zhang@huaweicloud.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Cc: stable@kernel.org
+Only when the write operation of usb_bulk_msg() in dvb_usb_generic_rw()
+succeeds and rlen is greater than 0, the read operation of usb_bulk_msg()
+will be executed to read rlen bytes of data from the dvb device into the
+rbuf.
+
+In this case, although rlen is 1, the write operation failed which resulted
+in the dvb read operation not being executed, and ultimately variable i was
+not initialized.
+
+[1]
+BUG: KMSAN: uninit-value in cxusb_gpio_tuner drivers/media/usb/dvb-usb/cxusb.c:124 [inline]
+BUG: KMSAN: uninit-value in cxusb_i2c_xfer+0x153a/0x1a60 drivers/media/usb/dvb-usb/cxusb.c:196
+ cxusb_gpio_tuner drivers/media/usb/dvb-usb/cxusb.c:124 [inline]
+ cxusb_i2c_xfer+0x153a/0x1a60 drivers/media/usb/dvb-usb/cxusb.c:196
+ __i2c_transfer+0xe25/0x3150 drivers/i2c/i2c-core-base.c:-1
+ i2c_transfer+0x317/0x4a0 drivers/i2c/i2c-core-base.c:2315
+ i2c_transfer_buffer_flags+0x125/0x1e0 drivers/i2c/i2c-core-base.c:2343
+ i2c_master_send include/linux/i2c.h:109 [inline]
+ i2cdev_write+0x210/0x280 drivers/i2c/i2c-dev.c:183
+ do_loop_readv_writev fs/read_write.c:848 [inline]
+ vfs_writev+0x963/0x14e0 fs/read_write.c:1057
+ do_writev+0x247/0x5c0 fs/read_write.c:1101
+ __do_sys_writev fs/read_write.c:1169 [inline]
+ __se_sys_writev fs/read_write.c:1166 [inline]
+ __x64_sys_writev+0x98/0xe0 fs/read_write.c:1166
+ x64_sys_call+0x2229/0x3c80 arch/x86/include/generated/asm/syscalls_64.h:21
+ do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+ do_syscall_64+0xcd/0x1e0 arch/x86/entry/syscall_64.c:94
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+
+Reported-by: syzbot+526bd95c0ec629993bf3@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=526bd95c0ec629993bf3
+Tested-by: syzbot+526bd95c0ec629993bf3@syzkaller.appspotmail.com
+Fixes: 22c6d93a7310 ("[PATCH] dvb: usb: support Medion hybrid USB2.0 DVB-T/analogue box")
+Cc: stable@vger.kernel.org
+Signed-off-by: Edward Adam Davis <eadavis@qq.com>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ext4/ext4.h    |    7 +++++++
- fs/ext4/extents.c |    7 +------
- fs/ext4/file.c    |    7 +------
- 3 files changed, 9 insertions(+), 12 deletions(-)
+ drivers/media/usb/dvb-usb/cxusb.c |    3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
---- a/fs/ext4/ext4.h
-+++ b/fs/ext4/ext4.h
-@@ -3377,6 +3377,13 @@ static inline unsigned int ext4_flex_bg_
- 	return 1 << sbi->s_log_groups_per_flex;
- }
+--- a/drivers/media/usb/dvb-usb/cxusb.c
++++ b/drivers/media/usb/dvb-usb/cxusb.c
+@@ -119,9 +119,8 @@ static void cxusb_gpio_tuner(struct dvb_
  
-+static inline loff_t ext4_get_maxbytes(struct inode *inode)
-+{
-+	if (ext4_test_inode_flag(inode, EXT4_INODE_EXTENTS))
-+		return inode->i_sb->s_maxbytes;
-+	return EXT4_SB(inode->i_sb)->s_bitmap_maxbytes;
-+}
-+
- #define ext4_std_error(sb, errno)				\
- do {								\
- 	if ((errno))						\
---- a/fs/ext4/extents.c
-+++ b/fs/ext4/extents.c
-@@ -4977,12 +4977,7 @@ static const struct iomap_ops ext4_iomap
+ 	o[0] = GPIO_TUNER;
+ 	o[1] = onoff;
+-	cxusb_ctrl_msg(d, CMD_GPIO_WRITE, o, 2, &i, 1);
  
- static int ext4_fiemap_check_ranges(struct inode *inode, u64 start, u64 *len)
- {
--	u64 maxbytes;
--
--	if (ext4_test_inode_flag(inode, EXT4_INODE_EXTENTS))
--		maxbytes = inode->i_sb->s_maxbytes;
--	else
--		maxbytes = EXT4_SB(inode->i_sb)->s_bitmap_maxbytes;
-+	u64 maxbytes = ext4_get_maxbytes(inode);
+-	if (i != 0x01)
++	if (!cxusb_ctrl_msg(d, CMD_GPIO_WRITE, o, 2, &i, 1) && i != 0x01)
+ 		dev_info(&d->udev->dev, "gpio_write failed.\n");
  
- 	if (*len == 0)
- 		return -EINVAL;
---- a/fs/ext4/file.c
-+++ b/fs/ext4/file.c
-@@ -863,12 +863,7 @@ static int ext4_file_open(struct inode *
- loff_t ext4_llseek(struct file *file, loff_t offset, int whence)
- {
- 	struct inode *inode = file->f_mapping->host;
--	loff_t maxbytes;
--
--	if (!(ext4_test_inode_flag(inode, EXT4_INODE_EXTENTS)))
--		maxbytes = EXT4_SB(inode->i_sb)->s_bitmap_maxbytes;
--	else
--		maxbytes = inode->i_sb->s_maxbytes;
-+	loff_t maxbytes = ext4_get_maxbytes(inode);
- 
- 	switch (whence) {
- 	default:
+ 	st->gpio_write_state[GPIO_TUNER] = onoff;
 
 
 
