@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-155973-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-155981-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BB50EAE448B
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:43:50 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6FC13AE4498
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:44:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 721A04A1E9A
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:38:16 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 423EC17EED7
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:38:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5029425393A;
-	Mon, 23 Jun 2025 13:36:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55A482550DD;
+	Mon, 23 Jun 2025 13:37:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XN48kxpJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aUTZDtfp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E24A347DD;
-	Mon, 23 Jun 2025 13:36:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12E97254AFF;
+	Mon, 23 Jun 2025 13:37:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750685818; cv=none; b=P5TmcPf/KSqnANyzUNah1ySgFnrfD51L8a35w2ac7+7LsA67l7/PrrC9i28Mn4eSpi4lnLAPqTinO1YILyJ/hp0WxHP3XAS3qoCG6E51ZtGVKgCwQXYMEhvYtSlHmoTnTxPToQgkay9pL7xSiFf/igMzKLr1egryrk/G/5pCApI=
+	t=1750685839; cv=none; b=a210d37UqEjVaaBihSGNVdQ1eKZpWq/4yyI01XZefptTr1n9p/E+6HNymuG2QBesf8qrMhpUZo723hyrhpN8OLQp4wtpL7HAO5hLD8w0Et5RAmTkVMaDKlw7AwTjTm7icUNjBAANhzesFaaTGaEBcrzyVGMWbqAK9i890MIH6wI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750685818; c=relaxed/simple;
-	bh=Vm0L+E8HU+99ldCD6zUsjPEx91ykVAJ8WHum1T84nCc=;
+	s=arc-20240116; t=1750685839; c=relaxed/simple;
+	bh=SDZPsabRaW9jIlauavQQoQAPW19GGcmWyzSxo0Dj4Mo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=srL0qEqxf06h8N4uoLAmbj3IKjZckhUAg7256Rt4RLdKgR8I0oeoCPMt6tVJ3j5JsxO1lYzhFvl1Inhoa62soO4QpQFNaOuMcJxklPH6gphHqE9oWl1dI6O892iPOAO1SnCc5xqwLaIU7kIQ6cjQpD4xb0LP+a0SEgW2Bj5lHSs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XN48kxpJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96CB0C4CEEA;
-	Mon, 23 Jun 2025 13:36:57 +0000 (UTC)
+	 MIME-Version; b=KxOFTDucGhGwjYfc37+0tCUhOyLbYitI4hnyfh8tqf0+kBRtRI/CDXIUERmtDJFUXgkKavViLYUQI/oA/XSoZpE2u/BUNK8ALt9L25Lidete1y9YcHPpbhNNu694nL3cB/Ax07QxbGabVLoxqt3wbMSHVkEEcWV1A6LEJ9OR8aQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aUTZDtfp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C739C4CEEA;
+	Mon, 23 Jun 2025 13:37:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750685817;
-	bh=Vm0L+E8HU+99ldCD6zUsjPEx91ykVAJ8WHum1T84nCc=;
+	s=korg; t=1750685839;
+	bh=SDZPsabRaW9jIlauavQQoQAPW19GGcmWyzSxo0Dj4Mo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XN48kxpJpdewwnC4r7nULMP/ywE0LUDYzXOrr0Bbv9aY9LGZKG9JOWSLF9zdI1Gtq
-	 xVRXRSh6/1i77dLyTWoUTmRFf9FbWtROogeBbOANY6vmTngAJRZxnylmuaUFdxuBHu
-	 KxH+2UUrsWHaLhKZnXF83nEpiC2weH8FD7qP+EqA=
+	b=aUTZDtfpYivgsxr8aHX2NpRWQfDkJ0qTy3fRNa+FtUSu+6losL1bXnNVJvwAPpgHb
+	 xDb1ZkeZOWlD0QSFUtdnGQWkT1vK9/SxNE5nBnDoX5e7X9vgBj/Hzh6ER9TMgCKpwG
+	 Qxuuy6v1NEkgiYJWqlFRakvwmiJ60wo0kNsgcCUs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Douglas Anderson <dianders@chromium.org>,
-	Damon Ding <damon.ding@rock-chips.com>,
+	Jessica Zhang <quic_jesszhan@quicinc.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
 	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 143/222] drm/bridge: analogix_dp: Add irq flag IRQF_NO_AUTOEN instead of calling disable_irq()
-Date: Mon, 23 Jun 2025 15:07:58 +0200
-Message-ID: <20250623130616.389516178@linuxfoundation.org>
+Subject: [PATCH 5.4 144/222] drm/msm/hdmi: add runtime PM calls to DDC transfer function
+Date: Mon, 23 Jun 2025 15:07:59 +0200
+Message-ID: <20250623130616.418088108@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
 In-Reply-To: <20250623130611.896514667@linuxfoundation.org>
 References: <20250623130611.896514667@linuxfoundation.org>
@@ -67,51 +67,68 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Damon Ding <damon.ding@rock-chips.com>
+From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 
-[ Upstream commit efab13e7d13a641a22c7508cde6e1a5285161944 ]
+[ Upstream commit 531b4e2c206e5f7dead04d9da84dfa693ac57481 ]
 
-The IRQF_NO_AUTOEN can be used for the drivers that don't want
-interrupts to be enabled automatically via devm_request_threaded_irq().
-Using this flag can provide be more robust compared to the way of
-calling disable_irq() after devm_request_threaded_irq() without the
-IRQF_NO_AUTOEN flag.
+We must be sure that the HDMI controller is powered on, while performing
+the DDC transfer. Add corresponding runtime PM calls to
+msm_hdmi_i2c_xfer().
 
-Suggested-by: Douglas Anderson <dianders@chromium.org>
-Reviewed-by: Douglas Anderson <dianders@chromium.org>
-Signed-off-by: Damon Ding <damon.ding@rock-chips.com>
-Link: https://lore.kernel.org/r/20250310104114.2608063-2-damon.ding@rock-chips.com
+Reviewed-by: Jessica Zhang <quic_jesszhan@quicinc.com>
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Patchwork: https://patchwork.freedesktop.org/patch/651727/
+Link: https://lore.kernel.org/r/20250505-fd-hdmi-hpd-v5-8-48541f76318c@oss.qualcomm.com
 Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/bridge/analogix/analogix_dp_core.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ drivers/gpu/drm/msm/hdmi/hdmi_i2c.c | 14 ++++++++++++--
+ 1 file changed, 12 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/bridge/analogix/analogix_dp_core.c b/drivers/gpu/drm/bridge/analogix/analogix_dp_core.c
-index df606a5675663..234c0bd38e851 100644
---- a/drivers/gpu/drm/bridge/analogix/analogix_dp_core.c
-+++ b/drivers/gpu/drm/bridge/analogix/analogix_dp_core.c
-@@ -1735,10 +1735,10 @@ analogix_dp_probe(struct device *dev, struct analogix_dp_plat_data *plat_data)
- 		 * that we can get the current state of the GPIO.
- 		 */
- 		dp->irq = gpiod_to_irq(dp->hpd_gpiod);
--		irq_flags = IRQF_TRIGGER_RISING | IRQF_TRIGGER_FALLING;
-+		irq_flags = IRQF_TRIGGER_RISING | IRQF_TRIGGER_FALLING | IRQF_NO_AUTOEN;
- 	} else {
- 		dp->irq = platform_get_irq(pdev, 0);
--		irq_flags = 0;
-+		irq_flags = IRQF_NO_AUTOEN;
+diff --git a/drivers/gpu/drm/msm/hdmi/hdmi_i2c.c b/drivers/gpu/drm/msm/hdmi/hdmi_i2c.c
+index de182c0048434..9c78c6c528bea 100644
+--- a/drivers/gpu/drm/msm/hdmi/hdmi_i2c.c
++++ b/drivers/gpu/drm/msm/hdmi/hdmi_i2c.c
+@@ -107,11 +107,15 @@ static int msm_hdmi_i2c_xfer(struct i2c_adapter *i2c,
+ 	if (num == 0)
+ 		return num;
+ 
++	ret = pm_runtime_resume_and_get(&hdmi->pdev->dev);
++	if (ret)
++		return ret;
++
+ 	init_ddc(hdmi_i2c);
+ 
+ 	ret = ddc_clear_irq(hdmi_i2c);
+ 	if (ret)
+-		return ret;
++		goto fail;
+ 
+ 	for (i = 0; i < num; i++) {
+ 		struct i2c_msg *p = &msgs[i];
+@@ -169,7 +173,7 @@ static int msm_hdmi_i2c_xfer(struct i2c_adapter *i2c,
+ 				hdmi_read(hdmi, REG_HDMI_DDC_SW_STATUS),
+ 				hdmi_read(hdmi, REG_HDMI_DDC_HW_STATUS),
+ 				hdmi_read(hdmi, REG_HDMI_DDC_INT_CTRL));
+-		return ret;
++		goto fail;
  	}
  
- 	if (dp->irq == -ENXIO) {
-@@ -1755,7 +1755,6 @@ analogix_dp_probe(struct device *dev, struct analogix_dp_plat_data *plat_data)
- 		dev_err(&pdev->dev, "failed to request irq\n");
- 		goto err_disable_clk;
+ 	ddc_status = hdmi_read(hdmi, REG_HDMI_DDC_SW_STATUS);
+@@ -202,7 +206,13 @@ static int msm_hdmi_i2c_xfer(struct i2c_adapter *i2c,
+ 		}
  	}
--	disable_irq(dp->irq);
  
- 	return dp;
++	pm_runtime_put(&hdmi->pdev->dev);
++
+ 	return i;
++
++fail:
++	pm_runtime_put(&hdmi->pdev->dev);
++	return ret;
+ }
  
+ static u32 msm_hdmi_i2c_func(struct i2c_adapter *adapter)
 -- 
 2.39.5
 
