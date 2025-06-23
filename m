@@ -1,57 +1,61 @@
-Return-Path: <stable+bounces-157110-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157405-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id F2871AE527C
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:44:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 85534AE53CB
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:56:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0E0C37A365F
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:43:00 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 226767A3C78
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:55:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D350422256B;
-	Mon, 23 Jun 2025 21:44:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B91742222C2;
+	Mon, 23 Jun 2025 21:56:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fB03Un5k"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DxFL+5w9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F10D1DDC04;
-	Mon, 23 Jun 2025 21:44:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 778B91AD3FA;
+	Mon, 23 Jun 2025 21:56:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750715059; cv=none; b=s+1JwOBkuYwKs7uKWfMGDygyv+Lt10w/p8sJ7Xs2NUNUE7YCq1hryJtaLVfQ2P0hL3tzmElGlu87g9NsA4hj6oUZmtPQNONFkAGYo6TyJFwfM/ypio+BrgwBZo44OD0bx68b/ZTvoncSfYnbmu2BpzWhtVNRIzY63OhPKMRh4Lc=
+	t=1750715785; cv=none; b=DdZj4tbsNDhryat6ISEc5CL/ftI2bkK0ciKm8T5ud37BXyKxIxpZO68J8F9MfFU+LxkkMrKgicJrs4cQiZrvvt9ESIpQSvg07i/Lmibb70DmDCn0nd7RmeIK2+rD7eC0ojPImZuLh5Zoshnj9DEd0QwPJqyzBGWvt+IzCpOG5Ic=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750715059; c=relaxed/simple;
-	bh=Gs9Vfmzvce1MQQS1poJq+DMqPOHTrir2rzMLcHLQt3w=;
+	s=arc-20240116; t=1750715785; c=relaxed/simple;
+	bh=5pITozTKxpdPB4qITJM6kfdh2YjB+BHTj1eV79J0sxQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Vky5OQM+V/OR5/mhjXKBwfNY7c/2xkp+KgMXSg0M8PimMCgnWRJF7qj+JzpJf2Xx3HWtf98ci2Lx+4tnJIbSoUxH6xB3k2Gt13JGg1WQzRqeIadhB3ABBtNDPENxQcYbha5bHgVaUoMe19pEjGDExq7Y01Ur6GnpY7efBHzr/U0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fB03Un5k; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3535C4CEED;
-	Mon, 23 Jun 2025 21:44:17 +0000 (UTC)
+	 MIME-Version:Content-Type; b=C+MY2cHDjow+1CBQYytwJbHbjpKY4TJwa4H4ACgWTrIj5w4gYO/2jrThakGW+VnA/ny72EyrJJ1ckd4EIrIdLWfeHW1YrfEgZGtyTpL6qaNwT7LIpVTpirnT/uUqdZzV6V6vOQPH/wt3QkO2+iS/+CxQFPTV3W/UMUp3uX1/5BQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DxFL+5w9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E385C4CEEA;
+	Mon, 23 Jun 2025 21:56:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750715058;
-	bh=Gs9Vfmzvce1MQQS1poJq+DMqPOHTrir2rzMLcHLQt3w=;
+	s=korg; t=1750715785;
+	bh=5pITozTKxpdPB4qITJM6kfdh2YjB+BHTj1eV79J0sxQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fB03Un5kEQ6gT7rBVFuBzLvHX/o2EfX17yLXdIdYkVeq2Qm3XAcPkBMTI80f8ydeL
-	 OXbECkpCusxasaP/jiVA2uHB8t+oONbQtEIEnAdKYhL8jEFep+zqbWfYdetalRjKZw
-	 sJ1Bl1HbgxH3fXyif3W43AKbUklMJxfJijZZznPY=
+	b=DxFL+5w9K3xhXKfacwAByVEIfXTE2oIaF7U7chMUJfutLcIOPMlYFz/wHgUwOREdk
+	 dXhavQlbVqbEPNc71PKNYGk3VKOyhq0KpEFy2mL4UQD/MwybjE13ZYjxJtt15L65OF
+	 +MSoMxtE5XxaHlDYtp3uDWG2EPd9ry6YvoGHs8j4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michael Walle <mwalle@kernel.org>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 177/290] net: ethernet: ti: am65-cpsw: handle -EPROBE_DEFER
+	Felix Yan <felixonmars@archlinux.org>,
+	Eric Long <i@hack3r.moe>,
+	Jianfei Zhang <zhangjianfei3@gmail.com>,
+	Mingcong Bai <jeffbai@aosc.io>,
+	Minh Le <minhld139@gmail.com>,
+	Sicheng Zhu <Emmet_Z@outlook.com>,
+	Rong Zhang <i@rong.moe>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
+Subject: [PATCH 6.15 480/592] platform/x86: ideapad-laptop: use usleep_range() for EC polling
 Date: Mon, 23 Jun 2025 15:07:18 +0200
-Message-ID: <20250623130632.204197430@linuxfoundation.org>
+Message-ID: <20250623130711.851920314@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130626.910356556@linuxfoundation.org>
-References: <20250623130626.910356556@linuxfoundation.org>
+In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
+References: <20250623130700.210182694@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,88 +65,127 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Walle <mwalle@kernel.org>
+From: Rong Zhang <i@rong.moe>
 
-[ Upstream commit 09737cb80b8686ffca4ed1805fee745d5c85604d ]
+commit 5808c34216954cd832bd4b8bc52dfa287049122b upstream.
 
-of_get_mac_address() might fetch the MAC address from NVMEM and that
-driver might not have been loaded. In that case, -EPROBE_DEFER is
-returned. Right now, this will trigger an immediate fallback to
-am65_cpsw_am654_get_efuse_macid() possibly resulting in a random MAC
-address although the MAC address is stored in the referenced NVMEM.
+It was reported that ideapad-laptop sometimes causes some recent (since
+2024) Lenovo ThinkBook models shut down when:
+ - suspending/resuming
+ - closing/opening the lid
+ - (dis)connecting a charger
+ - reading/writing some sysfs properties, e.g., fan_mode, touchpad
+ - pressing down some Fn keys, e.g., Brightness Up/Down (Fn+F5/F6)
+ - (seldom) loading the kmod
 
-Fix it by handling the -EPROBE_DEFER return code correctly. This also
-means that the creation of the MDIO device has to be moved to a later
-stage as -EPROBE_DEFER must not be returned after child devices are
-created.
+The issue has existed since the launch day of such models, and there
+have been some out-of-tree workarounds (see Link:) for the issue. One
+disables some functionalities, while another one simply shortens
+IDEAPAD_EC_TIMEOUT. The disabled functionalities have read_ec_data() in
+their call chains, which calls schedule() between each poll.
 
-Signed-off-by: Michael Walle <mwalle@kernel.org>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Link: https://patch.msgid.link/20250414084336.4017237-3-mwalle@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+It turns out that these models suffer from the indeterminacy of
+schedule() because of their low tolerance for being polled too
+frequently. Sometimes schedule() returns too soon due to the lack of
+ready tasks, causing the margin between two polls to be too short.
+In this case, the command is somehow aborted, and too many subsequent
+polls (they poll for "nothing!") may eventually break the state machine
+in the EC, resulting in a hard shutdown. This explains why shortening
+IDEAPAD_EC_TIMEOUT works around the issue - it reduces the total number
+of polls sent to the EC.
+
+Even when it doesn't lead to a shutdown, frequent polls may also disturb
+the ongoing operation and notably delay (+ 10-20ms) the availability of
+EC response. This phenomenon is unlikely to be exclusive to the models
+mentioned above, so dropping the schedule() manner should also slightly
+improve the responsiveness of various models.
+
+Fix these issues by migrating to usleep_range(150, 300). The interval is
+chosen to add some margin to the minimal 50us and considering EC
+responses are usually available after 150-2500us based on my test. It
+should be enough to fix these issues on all models subject to the EC bug
+without introducing latency on other models.
+
+Tested on ThinkBook 14 G7+ ASP and solved both issues. No regression was
+introduced in the test on a model without the EC bug (ThinkBook X IMH,
+thanks Eric).
+
+Link: https://github.com/ty2/ideapad-laptop-tb2024g6plus/commit/6c5db18c9e8109873c2c90a7d2d7f552148f7ad4
+Link: https://github.com/ferstar/ideapad-laptop-tb/commit/42d1e68e5009529d31bd23f978f636f79c023e80
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=218771
+Fixes: 6a09f21dd1e2 ("ideapad: add ACPI helpers")
+Cc: stable@vger.kernel.org
+Tested-by: Felix Yan <felixonmars@archlinux.org>
+Tested-by: Eric Long <i@hack3r.moe>
+Tested-by: Jianfei Zhang <zhangjianfei3@gmail.com>
+Tested-by: Mingcong Bai <jeffbai@aosc.io>
+Tested-by: Minh Le <minhld139@gmail.com>
+Tested-by: Sicheng Zhu <Emmet_Z@outlook.com>
+Signed-off-by: Rong Zhang <i@rong.moe>
+Link: https://lore.kernel.org/r/20250525201833.37939-1-i@rong.moe
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/ti/am65-cpsw-nuss.c | 24 +++++++++++++-----------
- 1 file changed, 13 insertions(+), 11 deletions(-)
+ drivers/platform/x86/ideapad-laptop.c |   19 +++++++++++++++++--
+ 1 file changed, 17 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/ti/am65-cpsw-nuss.c b/drivers/net/ethernet/ti/am65-cpsw-nuss.c
-index c379a958380ce..28cc23736a69b 100644
---- a/drivers/net/ethernet/ti/am65-cpsw-nuss.c
-+++ b/drivers/net/ethernet/ti/am65-cpsw-nuss.c
-@@ -2089,7 +2089,9 @@ static int am65_cpsw_nuss_init_slave_ports(struct am65_cpsw_common *common)
- 			goto of_node_put;
+--- a/drivers/platform/x86/ideapad-laptop.c
++++ b/drivers/platform/x86/ideapad-laptop.c
+@@ -15,6 +15,7 @@
+ #include <linux/bug.h>
+ #include <linux/cleanup.h>
+ #include <linux/debugfs.h>
++#include <linux/delay.h>
+ #include <linux/device.h>
+ #include <linux/dmi.h>
+ #include <linux/i8042.h>
+@@ -267,6 +268,20 @@ static void ideapad_shared_exit(struct i
+  */
+ #define IDEAPAD_EC_TIMEOUT 200 /* in ms */
  
- 		ret = of_get_mac_address(port_np, port->slave.mac_addr);
--		if (ret) {
-+		if (ret == -EPROBE_DEFER) {
-+			goto of_node_put;
-+		} else if (ret) {
- 			am65_cpsw_am654_get_efuse_macid(port_np,
- 							port->port_id,
- 							port->slave.mac_addr);
-@@ -2949,6 +2951,16 @@ static int am65_cpsw_nuss_probe(struct platform_device *pdev)
- 		return ret;
- 	}
++/*
++ * Some models (e.g., ThinkBook since 2024) have a low tolerance for being
++ * polled too frequently. Doing so may break the state machine in the EC,
++ * resulting in a hard shutdown.
++ *
++ * It is also observed that frequent polls may disturb the ongoing operation
++ * and notably delay the availability of EC response.
++ *
++ * These values are used as the delay before the first poll and the interval
++ * between subsequent polls to solve the above issues.
++ */
++#define IDEAPAD_EC_POLL_MIN_US 150
++#define IDEAPAD_EC_POLL_MAX_US 300
++
+ static int eval_int(acpi_handle handle, const char *name, unsigned long *res)
+ {
+ 	unsigned long long result;
+@@ -383,7 +398,7 @@ static int read_ec_data(acpi_handle hand
+ 	end_jiffies = jiffies + msecs_to_jiffies(IDEAPAD_EC_TIMEOUT) + 1;
  
-+	am65_cpsw_nuss_get_ver(common);
-+
-+	ret = am65_cpsw_nuss_init_host_p(common);
-+	if (ret)
-+		goto err_pm_clear;
-+
-+	ret = am65_cpsw_nuss_init_slave_ports(common);
-+	if (ret)
-+		goto err_pm_clear;
-+
- 	node = of_get_child_by_name(dev->of_node, "mdio");
- 	if (!node) {
- 		dev_warn(dev, "MDIO node not found\n");
-@@ -2965,16 +2977,6 @@ static int am65_cpsw_nuss_probe(struct platform_device *pdev)
- 	}
- 	of_node_put(node);
+ 	while (time_before(jiffies, end_jiffies)) {
+-		schedule();
++		usleep_range(IDEAPAD_EC_POLL_MIN_US, IDEAPAD_EC_POLL_MAX_US);
  
--	am65_cpsw_nuss_get_ver(common);
--
--	ret = am65_cpsw_nuss_init_host_p(common);
--	if (ret)
--		goto err_of_clear;
--
--	ret = am65_cpsw_nuss_init_slave_ports(common);
--	if (ret)
--		goto err_of_clear;
--
- 	/* init common data */
- 	ale_params.dev = dev;
- 	ale_params.ale_ageout = AM65_CPSW_ALE_AGEOUT_DEFAULT;
--- 
-2.39.5
-
+ 		err = eval_vpcr(handle, 1, &val);
+ 		if (err)
+@@ -414,7 +429,7 @@ static int write_ec_cmd(acpi_handle hand
+ 	end_jiffies = jiffies + msecs_to_jiffies(IDEAPAD_EC_TIMEOUT) + 1;
+ 
+ 	while (time_before(jiffies, end_jiffies)) {
+-		schedule();
++		usleep_range(IDEAPAD_EC_POLL_MIN_US, IDEAPAD_EC_POLL_MAX_US);
+ 
+ 		err = eval_vpcr(handle, 1, &val);
+ 		if (err)
 
 
 
