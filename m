@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-156096-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156104-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 152CBAE4552
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:51:20 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6DBECAE455C
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:52:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5BBCE4426C4
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:42:03 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 658503B850F
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:42:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 194DA2522A8;
-	Mon, 23 Jun 2025 13:42:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5095624E019;
+	Mon, 23 Jun 2025 13:42:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aTMJinUt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mhnp45PN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA75724A06D;
-	Mon, 23 Jun 2025 13:42:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CB134C6E;
+	Mon, 23 Jun 2025 13:42:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750686139; cv=none; b=BE+vNQAnMsow/E6AAHVOrDSOzdcmdX6JSgn01DqBqBngedSH9JDAaeL9Ybo0Ejdt/fb2cJV5GetKsV2HhXmUcN8zv+2NU9rVzrQlt6SsByou7Gz+D9qaBzKz4ahVaHYK8ACq5/Mr7bW1y48PcFOxkJyNbjlajs0mDXx4Wu1Tgrc=
+	t=1750686160; cv=none; b=dkatbEHrtMdv6XYtx0Y6LJyYE1UcT8BXOTx/A9TUostypcNrxzvhRR/HNRd4BkhQiXd/js9XBBOmkqEcjlQ8J+aXoeDmf7esVbeO9vfQuxyUFuwhaUV0Cjl4jqu/sY27R6Ig91X/00vdInYogOSc5Pz1Gm3ha/lf994WgcO44TI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750686139; c=relaxed/simple;
-	bh=AvubVWhCH4vpvhwCSf8bZIZTaFWJgvplZV+nAdWTLek=;
+	s=arc-20240116; t=1750686160; c=relaxed/simple;
+	bh=mNZLI9ulMMzZqd9dLwzWvOMYcD23vwtCCe/luIIOmCw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Pzq0RuyNMVp+41pUK1bkeAtkn1E7C+02mzTcf3g6S/vGEPeKAI1xQVEUDuECROaZjA98YROhxC0Y+ruNZCzXjGSN5hVrBw+H9xLmkYq/o/79sagKeNYRjoySTf93us3evta9Fywa63oTWKM5N7F2gN1VlGESHe6pF8tJiWPugTQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aTMJinUt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5EB82C4CEEA;
-	Mon, 23 Jun 2025 13:42:19 +0000 (UTC)
+	 MIME-Version; b=ekyImQ7ADhz0umYX2kuJ4R+oNHSRMRL91cIOGqdnLi6SMXDvnmtcg0/hKzm883UE7obRQL8spWHbD4dw/WkqJa6sv+qU/TLLtxPi/NzIT1SHN7HjPMDa8xUBiQfAvKO4t4PdHInNrpfzCZECKgZa/IVNg+TXvwjYwKZliHhK4Nc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mhnp45PN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96C98C4CEEA;
+	Mon, 23 Jun 2025 13:42:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750686139;
-	bh=AvubVWhCH4vpvhwCSf8bZIZTaFWJgvplZV+nAdWTLek=;
+	s=korg; t=1750686159;
+	bh=mNZLI9ulMMzZqd9dLwzWvOMYcD23vwtCCe/luIIOmCw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aTMJinUtAFXJKkwtx2MN1FKPHB6h1r6YrqNfEuqi/+j0Yss4YqcS+Y1PZjC0Aprk4
-	 rDPN68NDfEEoXv0FKeBY/R1etIKcxmnZIx56qQoH3KJKRIGGixOWtc44lV1ekwgwYl
-	 LG9CQOW1nkAIBCDevYqeRDjNUzHY8yS2WN0z9Mkc=
+	b=mhnp45PNZG0/u2Ja/UXr3hYV/nxNaaKekTu1UDWh9akxqzR6DY1Wyl4gTavHXCDMF
+	 2EpEYZlM+isZynvxOr/e6mlWWLOHe1lOPQ9J46um1w1Gl7F7sZ1EcWAIDd8eKmo1HG
+	 XbCMCf5Yq28RCtvDrILlxFfbIcPlN12H0KrhmMOM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jonas Gorski <jonas.gorski@gmail.com>,
-	=?UTF-8?q?=C3=81lvaro=20Fern=C3=A1ndez=20Rojas?= <noltari@gmail.com>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 100/355] spi: bcm63xx-spi: fix shared reset
-Date: Mon, 23 Jun 2025 15:05:01 +0200
-Message-ID: <20250623130629.792769681@linuxfoundation.org>
+	Ming Qian <ming.qian@oss.nxp.com>,
+	Nicolas Dufresne <nicolas.dufresne@collabora.com>,
+	Frank Li <Frank.Li@nxp.com>,
+	Hans Verkuil <hverkuil@xs4all.nl>
+Subject: [PATCH 6.6 044/290] media: imx-jpeg: Reset slot data pointers when freed
+Date: Mon, 23 Jun 2025 15:05:05 +0200
+Message-ID: <20250623130628.334216962@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130626.716971725@linuxfoundation.org>
-References: <20250623130626.716971725@linuxfoundation.org>
+In-Reply-To: <20250623130626.910356556@linuxfoundation.org>
+References: <20250623130626.910356556@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,47 +61,58 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Álvaro Fernández Rojas <noltari@gmail.com>
+From: Ming Qian <ming.qian@oss.nxp.com>
 
-[ Upstream commit 5ad20e3d8cfe3b2e42bbddc7e0ebaa74479bb589 ]
+commit faa8051b128f4b34277ea8a026d02d83826f8122 upstream.
 
-Some bmips SoCs (bcm6362, bcm63268) share the same SPI reset for both SPI
-and HSSPI controllers, so reset shouldn't be exclusive.
+Ensure that the slot data pointers are reset to NULL and handles are
+set to 0 after freeing the coherent memory. This makes he function
+mxc_jpeg_alloc_slot_data() and mxc_jpeg_free_slot_data() safe to be
+called multiple times.
 
-Fixes: 38807adeaf1e ("spi: bcm63xx-spi: add reset support")
-Reported-by: Jonas Gorski <jonas.gorski@gmail.com>
-Signed-off-by: Álvaro Fernández Rojas <noltari@gmail.com>
-Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
-Link: https://patch.msgid.link/20250529130915.2519590-2-noltari@gmail.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 2db16c6ed72c ("media: imx-jpeg: Add V4L2 driver for i.MX8 JPEG Encoder/Decoder")
+Cc: stable@vger.kernel.org
+Signed-off-by: Ming Qian <ming.qian@oss.nxp.com>
+Reviewed-by: Nicolas Dufresne <nicolas.dufresne@collabora.com>
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
+Signed-off-by: Nicolas Dufresne <nicolas.dufresne@collabora.com>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/spi/spi-bcm63xx.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/media/platform/nxp/imx-jpeg/mxc-jpeg.c |    6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/drivers/spi/spi-bcm63xx.c b/drivers/spi/spi-bcm63xx.c
-index b31b5f4e959e5..da559b86f6b17 100644
---- a/drivers/spi/spi-bcm63xx.c
-+++ b/drivers/spi/spi-bcm63xx.c
-@@ -533,7 +533,7 @@ static int bcm63xx_spi_probe(struct platform_device *pdev)
- 		return PTR_ERR(clk);
- 	}
+--- a/drivers/media/platform/nxp/imx-jpeg/mxc-jpeg.c
++++ b/drivers/media/platform/nxp/imx-jpeg/mxc-jpeg.c
+@@ -758,16 +758,22 @@ static void mxc_jpeg_free_slot_data(stru
+ 	dma_free_coherent(jpeg->dev, sizeof(struct mxc_jpeg_desc),
+ 			  jpeg->slot_data.desc,
+ 			  jpeg->slot_data.desc_handle);
++	jpeg->slot_data.desc = NULL;
++	jpeg->slot_data.desc_handle = 0;
  
--	reset = devm_reset_control_get_optional_exclusive(dev, NULL);
-+	reset = devm_reset_control_get_optional_shared(dev, NULL);
- 	if (IS_ERR(reset))
- 		return PTR_ERR(reset);
+ 	/* free descriptor for encoder configuration phase / decoder DHT */
+ 	dma_free_coherent(jpeg->dev, sizeof(struct mxc_jpeg_desc),
+ 			  jpeg->slot_data.cfg_desc,
+ 			  jpeg->slot_data.cfg_desc_handle);
++	jpeg->slot_data.cfg_desc_handle = 0;
++	jpeg->slot_data.cfg_desc = NULL;
  
--- 
-2.39.5
-
+ 	/* free configuration stream */
+ 	dma_free_coherent(jpeg->dev, MXC_JPEG_MAX_CFG_STREAM,
+ 			  jpeg->slot_data.cfg_stream_vaddr,
+ 			  jpeg->slot_data.cfg_stream_handle);
++	jpeg->slot_data.cfg_stream_vaddr = NULL;
++	jpeg->slot_data.cfg_stream_handle = 0;
+ 
+ 	jpeg->slot_data.used = false;
+ }
 
 
 
