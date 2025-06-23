@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-158075-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157967-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E94B1AE56D4
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:23:43 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id CB398AE56B1
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:22:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C8A891C231E0
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:23:59 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6E5CC4A462E
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:18:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A7D1222370A;
-	Mon, 23 Jun 2025 22:23:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1E85218EBF;
+	Mon, 23 Jun 2025 22:19:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Vq4Fk0MB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AYXk4Ilj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6555E2222B2;
-	Mon, 23 Jun 2025 22:23:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 605F516D9BF;
+	Mon, 23 Jun 2025 22:19:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750717421; cv=none; b=l/k3yr5m2iy58B2bIQ00J24QYw5w5fUZNPlybZBcSpxZzDl2ey2R1vHoT2EanWSGI2vj8GjK/b6ZtvShGlI8B48KXr5hls3IX/UlFaVLJhtfKPu8qhzHpeFECNGm2+Rn1dVYgcdgz8Mxk4z5N7CxqtBjba4WHAyh1BIm57EIcmQ=
+	t=1750717158; cv=none; b=MATL8SLZVzT3UAH/M1b3P1fWJ+pNdmxrxoCU0T7GdbKPPF/oj1M2IRoke2TwUXzD4BCmtMgbvBytkUOybowtlmAi48ZBTdAD0foWl+TnTvUEEuNS8bFbIo09waKZ5jniAKCc2O8R/uvbaR235zVEsbEgbP7HqOdtzoNyaTGwmiA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750717421; c=relaxed/simple;
-	bh=5+/Y+JNMO5zY17osI0o1iodz5yP8UqCKJOGBQxRREyw=;
+	s=arc-20240116; t=1750717158; c=relaxed/simple;
+	bh=NWjkBsarqYqN3Wv2GNpKIEQbZUWzB2+abYrCjVW8tSs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VnCw9N+PZyEwKcMw4yh/RlJxedBJ66flP8zsAnAn40Y59h9LkrMw0/5fQc0w/m8rVsINO/zyecmp4WRAddixz2wXK2wqEq2AS9CVfZvbDjlXEKuDZ2HubGpLnqaPARz7RQ9Mg5v8+WAJ7mZPp8JcgiFtP00+XQtuzAPVvublbTE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Vq4Fk0MB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F26F1C4CEEA;
-	Mon, 23 Jun 2025 22:23:40 +0000 (UTC)
+	 MIME-Version; b=Rq5se56KJ7y7VZjasvwLlkbhktke3GPY+2rjuO2Lb54E29wCJB9nuwEkppyQRF+hxc51lD4bYz793l+WvJJJShoUTd0DJSuSdcWMxtbBbi+5Ka3YcjbEx+JOrROtWLcXNqnhwU7g6uynkxS9VMhRrrsFa+O3+WPt5GIFl3z9/Gw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AYXk4Ilj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE6A6C4CEEA;
+	Mon, 23 Jun 2025 22:19:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750717421;
-	bh=5+/Y+JNMO5zY17osI0o1iodz5yP8UqCKJOGBQxRREyw=;
+	s=korg; t=1750717158;
+	bh=NWjkBsarqYqN3Wv2GNpKIEQbZUWzB2+abYrCjVW8tSs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Vq4Fk0MBBTNn4Lfd2sNIG6BZoqcOb6+Z47cISo4HaNADNPkU92QY/NNaf1IOZwZLd
-	 Lqa8uaygKPUhHE8l66SJmZuqtFIAQj9AnS5wdWjnuCw47olH42SVgP/WVJBBnXDiuw
-	 OQYC42LjvTF++fto3Iq8rGD97u1qR2e/Gy868vpE=
+	b=AYXk4IljQt6eiOUFCcpkBflpSdFgDyM8ULr62OD/LzYshpfGrJR7RXSw1i0shUrzs
+	 0GX5IT1m+pQaEtgBLCl4+r2JCzFEzkryuCpd6Uc9S4TJ5WrpphNGjzKWlvlLwTIgUW
+	 l0V7PlIiDLsXEaOwuoob/9t8WtmQ9ilS3K9euaO0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Zijun Hu <quic_zijuhu@quicinc.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 423/508] software node: Correct a OOB check in software_node_get_reference_args()
+	wangdicheng <wangdicheng@kylinos.cn>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 6.12 331/414] ALSA: usb-audio: Rename ALSA kcontrol PCM and PCM1 for the KTMicro sound card
 Date: Mon, 23 Jun 2025 15:07:48 +0200
-Message-ID: <20250623130655.598602175@linuxfoundation.org>
+Message-ID: <20250623130650.263599339@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
-References: <20250623130645.255320792@linuxfoundation.org>
+In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
+References: <20250623130642.015559452@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,46 +61,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zijun Hu <quic_zijuhu@quicinc.com>
+From: wangdicheng <wangdicheng@kylinos.cn>
 
-[ Upstream commit 31e4e12e0e9609850cefd4b2e1adf782f56337d6 ]
+commit 93adf20ff4d6e865e0b974110d3cf2f07c057177 upstream.
 
-software_node_get_reference_args() wants to get @index-th element, so
-the property value requires at least '(index + 1) * sizeof(*ref)' bytes
-but that can not be guaranteed by current OOB check, and may cause OOB
-for malformed property.
+PCM1 not in Pulseaudio's control list; standardize control to
+"Speaker" and "Headphone".
 
-Fix by using as OOB check '((index + 1) * sizeof(*ref) > prop->length)'.
-
-Reviewed-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Signed-off-by: Zijun Hu <quic_zijuhu@quicinc.com>
-Link: https://lore.kernel.org/r/20250414-fix_swnode-v2-1-9c9e6ae11eab@quicinc.com
+Signed-off-by: wangdicheng <wangdicheng@kylinos.cn>
+Cc: <stable@vger.kernel.org>
+Link: https://patch.msgid.link/20250613063636.239683-1-wangdich9700@163.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/base/swnode.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ sound/usb/mixer_maps.c |   12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
-diff --git a/drivers/base/swnode.c b/drivers/base/swnode.c
-index 44153caa893ad..fdea6b93eb30e 100644
---- a/drivers/base/swnode.c
-+++ b/drivers/base/swnode.c
-@@ -518,7 +518,7 @@ software_node_get_reference_args(const struct fwnode_handle *fwnode,
- 	if (prop->is_inline)
- 		return -EINVAL;
+--- a/sound/usb/mixer_maps.c
++++ b/sound/usb/mixer_maps.c
+@@ -383,6 +383,13 @@ static const struct usbmix_name_map ms_u
+ 	{ 0 }   /* terminator */
+ };
  
--	if (index * sizeof(*ref) >= prop->length)
-+	if ((index + 1) * sizeof(*ref) > prop->length)
- 		return -ENOENT;
++/* KTMicro USB */
++static struct usbmix_name_map s31b2_0022_map[] = {
++	{ 23, "Speaker Playback" },
++	{ 18, "Headphone Playback" },
++	{ 0 }
++};
++
+ /* ASUS ROG Zenith II with Realtek ALC1220-VB */
+ static const struct usbmix_name_map asus_zenith_ii_map[] = {
+ 	{ 19, NULL, 12 }, /* FU, Input Gain Pad - broken response, disabled */
+@@ -692,6 +699,11 @@ static const struct usbmix_ctl_map usbmi
+ 		.id = USB_ID(0x045e, 0x083c),
+ 		.map = ms_usb_link_map,
+ 	},
++	{
++		/* KTMicro USB */
++		.id = USB_ID(0X31b2, 0x0022),
++		.map = s31b2_0022_map,
++	},
+ 	{ 0 } /* terminator */
+ };
  
- 	ref_array = prop->pointer;
--- 
-2.39.5
-
 
 
 
