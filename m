@@ -1,145 +1,121 @@
-Return-Path: <stable+bounces-155345-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-155347-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B22E3AE3DCE
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:21:13 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id C4FF1AE3E30
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:43:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5096016FAA0
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 11:21:14 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 608A4173F24
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 11:43:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA507231C8D;
-	Mon, 23 Jun 2025 11:21:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F23E323C390;
+	Mon, 23 Jun 2025 11:43:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="HCPZAx4V"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MYSaWGqi"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB94F1B808
-	for <stable@vger.kernel.org>; Mon, 23 Jun 2025 11:21:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B176723182D
+	for <stable@vger.kernel.org>; Mon, 23 Jun 2025 11:43:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750677669; cv=none; b=WW4qVvbQWm3G+WwsUZBZVIb7P37rnvx4lAFO4zqPw5lel/cqIEpL19DiTEha1IByRLUdyTZEC5dCfC0/sX2uKoHIh749QYjiPMDz8L2OXYA4s9RZk4+rTmuJKxWq9QF9bZC7XPBuOZDLCCI8OJCPjtuL2DK8c/skH+AgHa9bS8k=
+	t=1750678994; cv=none; b=LkMop30sOE1WHNNKCNoZMVMs8iucqk2swyy+jCc7hR6rbtKD6xIwSgasHMTIiqSokax1ko0wLnx1xy9AcPCODm+UcfGDAYcCv54bPVCgyTlIXmpkrvdsafBGGheN6b0MDKOBzWDfFGAKNDUhQD1VpKi8L7bRgW9VA86FEoc89v4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750677669; c=relaxed/simple;
-	bh=OHbtlh0WqaM5Iv8xkeWgEHRhNOm8JqO/Lcgzy/0RRj4=;
-	h=From:To:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NI167FzYKlVYWDmyEYwIVUs+yVkautgdKIbMiNJtVIAgHZB4u7lgtdDmEKuOLEZXeaPaFvhNiMm/rdDXDl5QRb7Yll6gyvmNegp44Z0ACGKgEbZ0j0t0InE8iQ6xa124cPmdTZzf8OqxUPdsF/hRpTT4Ya+cpLrp0iVWZhp2OR8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=HCPZAx4V; arc=none smtp.client-ip=148.163.156.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
-Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 55N657Hm018896
-	for <stable@vger.kernel.org>; Mon, 23 Jun 2025 11:21:07 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=
-	content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=pp1; bh=gloMeWpkaV8ZIUcDm
-	9QedOcj3Lp4XzFCuxejNbfS8DI=; b=HCPZAx4VFv21kvftvtHVIdkhTQd6Clxhe
-	0h4QDkXoRTBReTxaR7Gdf8NIMycvYL/TCsyLctcc3PKmmMozQi81aBYvXEmzFNGA
-	95ayzPSaIBi3UNdytxzVJgHQGN8+5irpe/YJfMOEQYDzJbQCvMB5rBz46vtLxEpH
-	mcJXTAQ6SIqKVomhRSlkYXizL4Yu8GzITiS5P38iJMmLG1kdGHmP+QrUN6g2ygqf
-	4v49BnxFtmg/+Dk1U9rsy2oQvthJGfK48VlK8SEDNuX5WJ9c85bsgVIVunaNAzgm
-	aPYjgM8e90Xhkw+LTzasJEMvIgDZxxST4AiXjrQSAkfU6LXoYccLw==
-Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 47dme1187k-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
-	for <stable@vger.kernel.org>; Mon, 23 Jun 2025 11:21:06 +0000 (GMT)
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 55N9HjS7003989
-	for <stable@vger.kernel.org>; Mon, 23 Jun 2025 11:21:05 GMT
-Received: from smtprelay04.wdc07v.mail.ibm.com ([172.16.1.71])
-	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 47e99kdu8m-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
-	for <stable@vger.kernel.org>; Mon, 23 Jun 2025 11:21:05 +0000
-Received: from smtpav02.wdc07v.mail.ibm.com (smtpav02.wdc07v.mail.ibm.com [10.39.53.229])
-	by smtprelay04.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 55NBL5Ek46399944
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK)
-	for <stable@vger.kernel.org>; Mon, 23 Jun 2025 11:21:05 GMT
-Received: from smtpav02.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 242105805C
-	for <stable@vger.kernel.org>; Mon, 23 Jun 2025 11:21:05 +0000 (GMT)
-Received: from smtpav02.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 9892858058
-	for <stable@vger.kernel.org>; Mon, 23 Jun 2025 11:21:04 +0000 (GMT)
-Received: from tuxmaker.lnxne.boe (unknown [9.152.85.9])
-	by smtpav02.wdc07v.mail.ibm.com (Postfix) with ESMTP
-	for <stable@vger.kernel.org>; Mon, 23 Jun 2025 11:21:04 +0000 (GMT)
-From: Niklas Schnelle <schnelle@linux.ibm.com>
-To: stable@vger.kernel.org
-Subject: [PATCH 5.4.y] s390/pci: Fix __pcilg_mio_inuser() inline assembly
-Date: Mon, 23 Jun 2025 13:21:03 +0200
-Message-ID: <20250623112103.3663238-1-schnelle@linux.ibm.com>
-X-Mailer: git-send-email 2.48.1
-In-Reply-To: <2025062023-wobbling-aloof-8d23@gregkh>
-References: <2025062023-wobbling-aloof-8d23@gregkh>
+	s=arc-20240116; t=1750678994; c=relaxed/simple;
+	bh=K94cpsogGu1p3Q4BCPjXzzQggwikf6HlQaHOqUyS/cY=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=EfhLSwB/EXOPKS63vHRvOZkyYCpw9OFYD51sejPkJsPXSuQvxI37F2byC+Adjrj0AkG04YNhSTqQWpVVwt/ZJlj2kV2Y2bWb7rKng5ON6kedpDOG3iQvgBUGzZlU/HbXJiw087aGTRQU2nZA815aR8L8GotFVrXn6NaKzc2xvt0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MYSaWGqi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1556C4CEEA;
+	Mon, 23 Jun 2025 11:43:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1750678994;
+	bh=K94cpsogGu1p3Q4BCPjXzzQggwikf6HlQaHOqUyS/cY=;
+	h=Subject:To:Cc:From:Date:From;
+	b=MYSaWGqiCq8z8V7HRXZFdydl4CIb0kftlSmYlRMpe7hkFuqJ087Xr58ys3tNx9VoO
+	 U6HBfnLza8d7PqJv5e935qoSTTOpowmC6SgWnmDSX1/UYqRGD79lwuUVSD7UkYkHIk
+	 mIbhIrYQyFHW7HPoEKNVqRttai1GV5AP7dabcfVc=
+Subject: FAILED: patch "[PATCH] arm64: Restrict pagetable teardown to avoid false warning" failed to apply to 5.10-stable tree
+To: dev.jain@arm.com,anshuman.khandual@arm.com,catalin.marinas@arm.com,david@redhat.com,ryan.roberts@arm.com,will@kernel.org
+Cc: <stable@vger.kernel.org>
+From: <gregkh@linuxfoundation.org>
+Date: Mon, 23 Jun 2025 13:43:03 +0200
+Message-ID: <2025062303-spoon-unfrosted-5eee@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Authority-Analysis: v=2.4 cv=Tc6WtQQh c=1 sm=1 tr=0 ts=685938a2 cx=c_pps a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17 a=6IFa9wvqVegA:10 a=VnNF1IyMAAAA:8 a=VwQbUJbxAAAA:8 a=TStIGci8u6cbjIpgzpwA:9
-X-Proofpoint-GUID: wb3m8fnD_OuX-CyHFXR0WxnHe8qrpSNp
-X-Proofpoint-ORIG-GUID: wb3m8fnD_OuX-CyHFXR0WxnHe8qrpSNp
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNjIzMDA2NyBTYWx0ZWRfX9o4UJJFN/nJ7 IRncoFemRCWWIg99uSsi8GtzptqrupbiiGlBeOpYekTxPZkwn/g5fR56e3kVd52saAk4GQMTPhq inY/8KeiZ/gRlyIFx1vMzKWJ2kFAjZEVzdBe/CqPX1Ewpx/MOX28kA8McefoNowz4IrWYt4lC53
- ETjA4W2wcvmthlb3SoszbX0w+OCAhUBVBY7QlQwR/I/bKersXrvl/LNuKvKtKroUpM3eNpbdTXQ ziSzAbOEido3BedSTlm/o/7QCJ/Zn4va08cD9bXBTCijXaK2l21hKBuq/QKh5wQ4/tgDLmYpZIJ 1RcO03EYS6+jvILepTLKItHHl+n9mOKSsbnmQ01YqneqoBKrZEHWjAca3UmAFjfwsw58bT+koYc
- d1Djt96E5Rg0AL8FXkF5mtMVki34raP5C5gNl0lAfLb5BAzmXV8YO2AkWDbRb79N85OpQG4v
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
- definitions=2025-06-23_03,2025-06-23_02,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
- priorityscore=1501 mlxscore=0 mlxlogscore=417 phishscore=0 spamscore=0
- malwarescore=0 suspectscore=0 impostorscore=0 clxscore=1015 adultscore=0
- bulkscore=0 classifier=spam authscore=0 authtc=n/a authcc= route=outbound
- adjust=0 reason=mlx scancount=1 engine=8.19.0-2505280000
- definitions=main-2506230067
 
-From: Heiko Carstens <hca@linux.ibm.com>
 
-Use "a" constraint for the shift operand of the __pcilg_mio_inuser() inline
-assembly. The used "d" constraint allows the compiler to use any general
-purpose register for the shift operand, including register zero.
+The patch below does not apply to the 5.10-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
 
-If register zero is used this my result in incorrect code generation:
+To reproduce the conflict and resubmit, you may use the following commands:
 
- 8f6:   a7 0a ff f8             ahi     %r0,-8
- 8fa:   eb 32 00 00 00 0c       srlg    %r3,%r2,0  <----
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
+git checkout FETCH_HEAD
+git cherry-pick -x 650768c512faba8070bf4cfbb28c95eb5cd203f3
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025062303-spoon-unfrosted-5eee@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
 
-If register zero is selected to contain the shift value, the srlg
-instruction ignores the contents of the register and always shifts zero
-bits. Therefore use the "a" constraint which does not permit to select
-register zero.
+Possible dependencies:
 
-Fixes: f058599e22d5 ("s390/pci: Fix s390_mmio_read/write with MIO")
+
+
+thanks,
+
+greg k-h
+
+------------------ original commit in Linus's tree ------------------
+
+From 650768c512faba8070bf4cfbb28c95eb5cd203f3 Mon Sep 17 00:00:00 2001
+From: Dev Jain <dev.jain@arm.com>
+Date: Tue, 27 May 2025 13:56:33 +0530
+Subject: [PATCH] arm64: Restrict pagetable teardown to avoid false warning
+
+Commit 9c006972c3fe ("arm64: mmu: drop pXd_present() checks from
+pXd_free_pYd_table()") removes the pxd_present() checks because the
+caller checks pxd_present(). But, in case of vmap_try_huge_pud(), the
+caller only checks pud_present(); pud_free_pmd_page() recurses on each
+pmd through pmd_free_pte_page(), wherein the pmd may be none. Thus it is
+possible to hit a warning in the latter, since pmd_none => !pmd_table().
+Thus, add a pmd_present() check in pud_free_pmd_page().
+
+This problem was found by code inspection.
+
+Fixes: 9c006972c3fe ("arm64: mmu: drop pXd_present() checks from pXd_free_pYd_table()")
 Cc: stable@vger.kernel.org
-Reported-by: Niklas Schnelle <schnelle@linux.ibm.com>
-Reviewed-by: Niklas Schnelle <schnelle@linux.ibm.com>
-Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
-(cherry picked from commit c4abe6234246c75cdc43326415d9cff88b7cf06c)
-Signed-off-by: Niklas Schnelle <schnelle@linux.ibm.com>
----
- arch/s390/pci/pci_mmio.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Reported-by: Ryan Roberts <ryan.roberts@arm.com>
+Acked-by: David Hildenbrand <david@redhat.com>
+Signed-off-by: Dev Jain <dev.jain@arm.com>
+Reviewed-by: Catalin Marinas <catalin.marinas@arm.com>
+Reviewed-by: Anshuman Khandual <anshuman.khandual@arm.com>
+Reviewed-by: Ryan Roberts <ryan.roberts@arm.com>
+Link: https://lore.kernel.org/r/20250527082633.61073-1-dev.jain@arm.com
+Signed-off-by: Will Deacon <will@kernel.org>
 
-diff --git a/arch/s390/pci/pci_mmio.c b/arch/s390/pci/pci_mmio.c
-index 675e6cb50584..e28c84a53f92 100644
---- a/arch/s390/pci/pci_mmio.c
-+++ b/arch/s390/pci/pci_mmio.c
-@@ -227,7 +227,7 @@ static inline int __pcilg_mio_inuser(
- 		:
- 		[cc] "+d" (cc), [val] "=d" (val), [len] "+d" (len),
- 		[dst] "+a" (dst), [cnt] "+d" (cnt), [tmp] "=d" (tmp),
--		[shift] "+d" (shift)
-+		[shift] "+a" (shift)
- 		:
- 		[ioaddr] "a" (addr)
- 		: "cc", "memory");
--- 
-2.48.1
+diff --git a/arch/arm64/mm/mmu.c b/arch/arm64/mm/mmu.c
+index 8fcf59ba39db..00ab1d648db6 100644
+--- a/arch/arm64/mm/mmu.c
++++ b/arch/arm64/mm/mmu.c
+@@ -1305,7 +1305,8 @@ int pud_free_pmd_page(pud_t *pudp, unsigned long addr)
+ 	next = addr;
+ 	end = addr + PUD_SIZE;
+ 	do {
+-		pmd_free_pte_page(pmdp, next);
++		if (pmd_present(pmdp_get(pmdp)))
++			pmd_free_pte_page(pmdp, next);
+ 	} while (pmdp++, next += PMD_SIZE, next != end);
+ 
+ 	pud_clear(pudp);
 
 
