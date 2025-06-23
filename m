@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-156258-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156520-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7503EAE4ED3
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:09:32 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B741AE4FDD
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:20:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 48266189FE50
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:09:48 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9743917F70C
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:20:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F8E621FF2B;
-	Mon, 23 Jun 2025 21:09:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A2B218E377;
+	Mon, 23 Jun 2025 21:20:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pGJ4Ii6T"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ndWtwsuU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BE5170838;
-	Mon, 23 Jun 2025 21:09:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57B0E2C9D;
+	Mon, 23 Jun 2025 21:20:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750712970; cv=none; b=iVSUTu8EmxUarvqQ6oU3hP7EXedmkLSx1gBB6M9rwOJvz515e07Gx5v6PLcmSW8yITLd/6QTT1zEUaaa323cau3QVNWF3KZJLoT3CYD+xpCQtso+t+ye2WqlxRPriw4QwVjYBBXSQxLf9DV7fTThgyV6a/0eH+wrLp9ajCeiCGM=
+	t=1750713614; cv=none; b=sL+4zY3CKRiQwu+4vG2+NL5Hm567omv1Ey6EbvRxjhNY+aSzmqc/2yH9X4LNzoIRlWX2bY1dhGaMgRpeB5s2PJ+zC4PxMwQXPc71YUxYJXk+BesZ21v6lamXQOmNIK3F4baMlwCdspE03R6jMLDvfRCKG//L/d1np97MAE+vmIY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750712970; c=relaxed/simple;
-	bh=E5AXWAWLerNpqnzexy9TYICWvrtRksoJd0MLE1QpXK8=;
+	s=arc-20240116; t=1750713614; c=relaxed/simple;
+	bh=KnaFQf4nE/8Zkg4qb/s6+/2LEfugjPor9AKIKJuy9Pg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Cofveo/aE+uS0EmVFJw2pAK0u+esvuvQtdisclT8gTXpXZ3NUrIBq51z2n+WVRcL45xppk/++7DAYzd7Fadbiu7xHLiaNzzARuHB4KmulFqE6CKnzIUUXOwLkrbJNPO+OXZAVHrwwcjSa3WD1ntuDbkh7xHlUJ2e7OR6x4yW/Gg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pGJ4Ii6T; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6A8DC4CEEA;
-	Mon, 23 Jun 2025 21:09:29 +0000 (UTC)
+	 MIME-Version; b=Tq59EbBrCsdvl79psd6AsU2VKn7B7pKrWHwx/p9feflDa7UphLe7it1gwQR10h5oLzJL3W0F/fH/VSTpLt5TaoT9AE8AAmO1OHFC5ZZj+5Ob3KImJNgowlKFsFUJfX9h11j1idTaNrcZ8cWnZnLXxAErASgW9GOf22LzXpWQsxk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ndWtwsuU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E487DC4CEEA;
+	Mon, 23 Jun 2025 21:20:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750712970;
-	bh=E5AXWAWLerNpqnzexy9TYICWvrtRksoJd0MLE1QpXK8=;
+	s=korg; t=1750713614;
+	bh=KnaFQf4nE/8Zkg4qb/s6+/2LEfugjPor9AKIKJuy9Pg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pGJ4Ii6TFEirfawCon5tLWWgiG/DQre5/fSJ1O8HQS6PVzASM2p+fiHnlp2Xrll37
-	 V7+2jg3bguTnjPOdOGy3y3E0itVAayTB0UWmxyl/jx2kJy8YvQPwIdVd0wudkqr6GU
-	 ZqzPu8lR5gs67WitVCZAC6LMsiNE3EyIpWow0sNk=
+	b=ndWtwsuUZAOXUri8HoAPc2a3sozTB3SN2lOTCMn+3cvIQGAaahFJkQdgsihLbftsp
+	 Dyc2PJrxZKuRyFreNOlCOsI8ryE8Hu/W7TIrFXbtG2Qlz+jDbDdAAZUS5pvZWbSoML
+	 b+HKbBWnylDuYr+M/xiSCRZ4Ur65H2ih7AYgjCEA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wentao Liang <vulab@iscas.ac.cn>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH 6.12 021/414] net/mlx5_core: Add error handling inmlx5_query_nic_vport_qkey_viol_cntr()
+	Julien Massot <julien.massot@collabora.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 113/508] arm64: dts: mt6359: Add missing compatible property to regulators node
 Date: Mon, 23 Jun 2025 15:02:38 +0200
-Message-ID: <20250623130642.556024941@linuxfoundation.org>
+Message-ID: <20250623130648.076746636@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
-References: <20250623130642.015559452@linuxfoundation.org>
+In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
+References: <20250623130645.255320792@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,61 +62,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wentao Liang <vulab@iscas.ac.cn>
+From: Julien Massot <julien.massot@collabora.com>
 
-commit f0b50730bdd8f2734e548de541e845c0d40dceb6 upstream.
+[ Upstream commit 1fe38d2a19950fa6dbc384ee8967c057aef9faf4 ]
 
-The function mlx5_query_nic_vport_qkey_viol_cntr() calls the function
-mlx5_query_nic_vport_context() but does not check its return value. This
-could lead to undefined behavior if the query fails. A proper
-implementation can be found in mlx5_nic_vport_query_local_lb().
+The 'compatible' property is required by the
+'mfd/mediatek,mt6397.yaml' binding. Add it to fix the following
+dtb-check error:
+mediatek/mt8395-radxa-nio-12l.dtb: pmic: regulators:
+'compatible' is a required property
 
-Add error handling for mlx5_query_nic_vport_context(). If it fails, free
-the out buffer via kvfree() and return error code.
-
-Fixes: 9efa75254593 ("net/mlx5_core: Introduce access functions to query vport RoCE fields")
-Cc: stable@vger.kernel.org # v4.5
-Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
-Reviewed-by: Tariq Toukan <tariqt@nvidia.com>
-Link: https://patch.msgid.link/20250521133620.912-1-vulab@iscas.ac.cn
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 3b7d143be4b7 ("arm64: dts: mt6359: add PMIC MT6359 related nodes")
+Signed-off-by: Julien Massot <julien.massot@collabora.com>
+Link: https://lore.kernel.org/r/20250505-mt8395-dtb-errors-v1-3-9c4714dcdcdb@collabora.com
+Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/vport.c |    9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ arch/arm64/boot/dts/mediatek/mt6359.dtsi | 2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/net/ethernet/mellanox/mlx5/core/vport.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/vport.c
-@@ -519,19 +519,22 @@ int mlx5_query_nic_vport_qkey_viol_cntr(
- {
- 	u32 *out;
- 	int outlen = MLX5_ST_SZ_BYTES(query_nic_vport_context_out);
-+	int err;
+diff --git a/arch/arm64/boot/dts/mediatek/mt6359.dtsi b/arch/arm64/boot/dts/mediatek/mt6359.dtsi
+index df3e822232d34..ef6ab90b99f93 100644
+--- a/arch/arm64/boot/dts/mediatek/mt6359.dtsi
++++ b/arch/arm64/boot/dts/mediatek/mt6359.dtsi
+@@ -13,6 +13,8 @@
+ 		};
  
- 	out = kvzalloc(outlen, GFP_KERNEL);
- 	if (!out)
- 		return -ENOMEM;
- 
--	mlx5_query_nic_vport_context(mdev, 0, out);
-+	err = mlx5_query_nic_vport_context(mdev, 0, out);
-+	if (err)
-+		goto out;
- 
- 	*qkey_viol_cntr = MLX5_GET(query_nic_vport_context_out, out,
- 				   nic_vport_context.qkey_violation_counter);
--
-+out:
- 	kvfree(out);
- 
--	return 0;
-+	return err;
- }
- EXPORT_SYMBOL_GPL(mlx5_query_nic_vport_qkey_viol_cntr);
- 
+ 		regulators {
++			compatible = "mediatek,mt6359-regulator";
++
+ 			mt6359_vs1_buck_reg: buck_vs1 {
+ 				regulator-name = "vs1";
+ 				regulator-min-microvolt = <800000>;
+-- 
+2.39.5
+
 
 
 
