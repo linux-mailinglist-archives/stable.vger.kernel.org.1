@@ -1,58 +1,61 @@
-Return-Path: <stable+bounces-157070-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156883-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE6F2AE5254
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:42:42 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 56743AE5185
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:35:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 01CDB443581
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:42:18 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E3BE47A84EC
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:33:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 215562222C2;
-	Mon, 23 Jun 2025 21:42:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66E4D1EE7C6;
+	Mon, 23 Jun 2025 21:35:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="B4lp+sHc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fHeKjBic"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D39B24315A;
-	Mon, 23 Jun 2025 21:42:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2358A1F3B96;
+	Mon, 23 Jun 2025 21:34:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750714960; cv=none; b=RBiNUtM6i5kzkQlQy8XoRjy/d5FsRyCrgeCLS6N8KhdeGvAxbzuv+jZAhURI3F474hJ/A0EySikjA2YUQOcpIdXyY4pZ3PYtX7wBJH6AxT0ScLr5rnGoqOF7WKHqY+H/ytrXGm4nY4tgM+dGROoWzkZs1XOfIMVbMGu7keAKtKk=
+	t=1750714500; cv=none; b=JMfaMaH7TxBXhwVEKlDTBYTvbLMjDf0t/XMp8OJ39P7gJV+36Yma7OBAVhh9BTEAz+Kpxmjpo3hAqpnmYJHO9bUkiJ8m+dfL6rOwjGloKkGysEXDGPkjiF4qOqgyufmvmCKkRU8ctcUZQs3KH9mvVSwUP+3+qbpg5ET/kEnq4+I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750714960; c=relaxed/simple;
-	bh=/Dhau27tl77F7Q+uv5bk76B5TIHch651QWympCOzs+Q=;
+	s=arc-20240116; t=1750714500; c=relaxed/simple;
+	bh=iRNeCOvvBWUTdlqU7QPmbCNypsxsrt2UYghwkCQ2aNA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PsTBCd9nCPh6DGcN6MzQlU/t2qWixMVmCOMRkp5xbYSYGqHYNyvwrxEo02VpYls0v0SgVZmzs5Gz6uecYOCXK9VGg+kvFPWQ1bMSskrPjJvjYXBQ4OUGhziOqIDROnSUMhb2V9Xi8B119+FYiSiCukcJzaU1L0uS6ij+jxzAv7U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=B4lp+sHc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6BE54C4CEEA;
-	Mon, 23 Jun 2025 21:42:40 +0000 (UTC)
+	 MIME-Version; b=B0AtT57FY5hWQVlZaTfwR5ZQCTWKopwQ2FSoNKIq2YeUleB4X4l7vKEmkIJdHw9MRJbVYdY4Er9MM1GUJI9EcCi4W4ZDjv8hoLzAwIo9/28FonrZ/NmV7qXvPG6esM1BPtPXwhGSOE1l/YF/sXGW3r9R0cXeDADinYMqJwDZqEU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fHeKjBic; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6ABE3C4CEEA;
+	Mon, 23 Jun 2025 21:34:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750714960;
-	bh=/Dhau27tl77F7Q+uv5bk76B5TIHch651QWympCOzs+Q=;
+	s=korg; t=1750714499;
+	bh=iRNeCOvvBWUTdlqU7QPmbCNypsxsrt2UYghwkCQ2aNA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=B4lp+sHcPMBqI6EWieBdT/CaoTz1qYdg3oOOmxjrKwEbm7rQqKxIoeuef7gaLA3lb
-	 EydmcIjpW+ssGv6MDvbNqU8KzEsMEb5U3e5SK1dEmLuRPyCaHAUif+wUhDoLQjHpH8
-	 T8HirI1b9BtNtaBJFP/FhTtR/Cmbp5ULic4LIfHs=
+	b=fHeKjBicwkWYu7ZS2xMuqkxfyHdoIO3ySewy8etawRU/x2k5gMoUJyHIqLycoiMl5
+	 9B+FmxU/ALa45Tuf5ZtffDMEXmiEb6uegphO1Sr/NG8WeU4L1bxUAd4gRHBLkCC1gt
+	 lAZ36dbhB2qIZbcKz97fOhajYnZpTL8mPpraCPIw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	lei lu <llfamsec@gmail.com>,
-	"Darrick J. Wong" <djwong@kernel.org>,
-	Chandan Babu R <chandanbabu@kernel.org>,
-	Leah Rumancik <leah.rumancik@gmail.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 206/508] xfs: dont walk off the end of a directory data block
-Date: Mon, 23 Jun 2025 15:04:11 +0200
-Message-ID: <20250623130650.335115390@linuxfoundation.org>
+	Luo Gengkun <luogengkun@huaweicloud.com>,
+	"Nysal Jan K.A." <nysal@linux.ibm.com>,
+	Doug Anderson <dianders@chromium.org>,
+	Joel Granados <joel.granados@kernel.org>,
+	Song Liu <song@kernel.org>,
+	Thomas Gleinxer <tglx@linutronix.de>,
+	Venkat Rao Bagalkote <venkat88@linux.ibm.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.12 115/414] watchdog: fix watchdog may detect false positive of softlockup
+Date: Mon, 23 Jun 2025 15:04:12 +0200
+Message-ID: <20250623130644.958450645@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
-References: <20250623130645.255320792@linuxfoundation.org>
+In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
+References: <20250623130642.015559452@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,136 +67,210 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: lei lu <llfamsec@gmail.com>
+From: Luo Gengkun <luogengkun@huaweicloud.com>
 
-[ Upstream commit 0c7fcdb6d06cdf8b19b57c17605215b06afa864a ]
+commit 7123dbbef88cfd9f09e8a7899b0911834600cfa3 upstream.
 
-This adds sanity checks for xfs_dir2_data_unused and xfs_dir2_data_entry
-to make sure don't stray beyond valid memory region. Before patching, the
-loop simply checks that the start offset of the dup and dep is within the
-range. So in a crafted image, if last entry is xfs_dir2_data_unused, we
-can change dup->length to dup->length-1 and leave 1 byte of space. In the
-next traversal, this space will be considered as dup or dep. We may
-encounter an out of bound read when accessing the fixed members.
+When updating `watchdog_thresh`, there is a race condition between writing
+the new `watchdog_thresh` value and stopping the old watchdog timer.  If
+the old timer triggers during this window, it may falsely detect a
+softlockup due to the old interval and the new `watchdog_thresh` value
+being used.  The problem can be described as follow:
 
-In the patch, we make sure that the remaining bytes large enough to hold
-an unused entry before accessing xfs_dir2_data_unused and
-xfs_dir2_data_unused is XFS_DIR2_DATA_ALIGN byte aligned. We also make
-sure that the remaining bytes large enough to hold a dirent with a
-single-byte name before accessing xfs_dir2_data_entry.
+ # We asuume previous watchdog_thresh is 60, so the watchdog timer is
+ # coming every 24s.
+echo 10 > /proc/sys/kernel/watchdog_thresh (User space)
+|
++------>+ update watchdog_thresh (We are in kernel now)
+	|
+	|	  # using old interval and new `watchdog_thresh`
+	+------>+ watchdog hrtimer (irq context: detect softlockup)
+		|
+		|
+	+-------+
+	|
+	|
+	+ softlockup_stop_all
 
-Signed-off-by: lei lu <llfamsec@gmail.com>
-Reviewed-by: Darrick J. Wong <djwong@kernel.org>
-Signed-off-by: Chandan Babu R <chandanbabu@kernel.org>
-Signed-off-by: Leah Rumancik <leah.rumancik@gmail.com>
-Acked-by: "Darrick J. Wong" <djwong@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+To fix this problem, introduce a shadow variable for `watchdog_thresh`.
+The update to the actual `watchdog_thresh` is delayed until after the old
+timer is stopped, preventing false positives.
+
+The following testcase may help to understand this problem.
+
+---------------------------------------------
+echo RT_RUNTIME_SHARE > /sys/kernel/debug/sched/features
+echo -1 > /proc/sys/kernel/sched_rt_runtime_us
+echo 0 > /sys/kernel/debug/sched/fair_server/cpu3/runtime
+echo 60 > /proc/sys/kernel/watchdog_thresh
+taskset -c 3 chrt -r 99 /bin/bash -c "while true;do true; done" &
+echo 10 > /proc/sys/kernel/watchdog_thresh &
+---------------------------------------------
+
+The test case above first removes the throttling restrictions for
+real-time tasks.  It then sets watchdog_thresh to 60 and executes a
+real-time task ,a simple while(1) loop, on cpu3.  Consequently, the final
+command gets blocked because the presence of this real-time thread
+prevents kworker:3 from being selected by the scheduler.  This eventually
+triggers a softlockup detection on cpu3 due to watchdog_timer_fn operating
+with inconsistent variable - using both the old interval and the updated
+watchdog_thresh simultaneously.
+
+[nysal@linux.ibm.com: fix the SOFTLOCKUP_DETECTOR=n case]
+  Link: https://lkml.kernel.org/r/20250502111120.282690-1-nysal@linux.ibm.com
+Link: https://lkml.kernel.org/r/20250421035021.3507649-1-luogengkun@huaweicloud.com
+Signed-off-by: Luo Gengkun <luogengkun@huaweicloud.com>
+Signed-off-by: Nysal Jan K.A. <nysal@linux.ibm.com>
+Cc: Doug Anderson <dianders@chromium.org>
+Cc: Joel Granados <joel.granados@kernel.org>
+Cc: Song Liu <song@kernel.org>
+Cc: Thomas Gleinxer <tglx@linutronix.de>
+Cc: "Nysal Jan K.A." <nysal@linux.ibm.com>
+Cc: Venkat Rao Bagalkote <venkat88@linux.ibm.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/xfs/libxfs/xfs_dir2_data.c | 31 ++++++++++++++++++++++++++-----
- fs/xfs/libxfs/xfs_dir2_priv.h |  7 +++++++
- 2 files changed, 33 insertions(+), 5 deletions(-)
+ kernel/watchdog.c |   41 +++++++++++++++++++++++++++--------------
+ 1 file changed, 27 insertions(+), 14 deletions(-)
 
-diff --git a/fs/xfs/libxfs/xfs_dir2_data.c b/fs/xfs/libxfs/xfs_dir2_data.c
-index dbcf58979a598..e1d5da6d8d4a6 100644
---- a/fs/xfs/libxfs/xfs_dir2_data.c
-+++ b/fs/xfs/libxfs/xfs_dir2_data.c
-@@ -177,6 +177,14 @@ __xfs_dir3_data_check(
- 	while (offset < end) {
- 		struct xfs_dir2_data_unused	*dup = bp->b_addr + offset;
- 		struct xfs_dir2_data_entry	*dep = bp->b_addr + offset;
-+		unsigned int	reclen;
-+
-+		/*
-+		 * Are the remaining bytes large enough to hold an
-+		 * unused entry?
-+		 */
-+		if (offset > end - xfs_dir2_data_unusedsize(1))
-+			return __this_address;
+--- a/kernel/watchdog.c
++++ b/kernel/watchdog.c
+@@ -47,6 +47,7 @@ int __read_mostly watchdog_user_enabled
+ static int __read_mostly watchdog_hardlockup_user_enabled = WATCHDOG_HARDLOCKUP_DEFAULT;
+ static int __read_mostly watchdog_softlockup_user_enabled = 1;
+ int __read_mostly watchdog_thresh = 10;
++static int __read_mostly watchdog_thresh_next;
+ static int __read_mostly watchdog_hardlockup_available;
  
- 		/*
- 		 * If it's unused, look for the space in the bestfree table.
-@@ -186,9 +194,13 @@ __xfs_dir3_data_check(
- 		if (be16_to_cpu(dup->freetag) == XFS_DIR2_DATA_FREE_TAG) {
- 			xfs_failaddr_t	fa;
+ struct cpumask watchdog_cpumask __read_mostly;
+@@ -863,12 +864,20 @@ int lockup_detector_offline_cpu(unsigned
+ 	return 0;
+ }
  
-+			reclen = xfs_dir2_data_unusedsize(
-+					be16_to_cpu(dup->length));
- 			if (lastfree != 0)
- 				return __this_address;
--			if (offset + be16_to_cpu(dup->length) > end)
-+			if (be16_to_cpu(dup->length) != reclen)
-+				return __this_address;
-+			if (offset + reclen > end)
- 				return __this_address;
- 			if (be16_to_cpu(*xfs_dir2_data_unused_tag_p(dup)) !=
- 			    offset)
-@@ -206,10 +218,18 @@ __xfs_dir3_data_check(
- 				    be16_to_cpu(bf[2].length))
- 					return __this_address;
- 			}
--			offset += be16_to_cpu(dup->length);
-+			offset += reclen;
- 			lastfree = 1;
- 			continue;
- 		}
-+
-+		/*
-+		 * This is not an unused entry. Are the remaining bytes
-+		 * large enough for a dirent with a single-byte name?
-+		 */
-+		if (offset > end - xfs_dir2_data_entsize(mp, 1))
-+			return __this_address;
-+
- 		/*
- 		 * It's a real entry.  Validate the fields.
- 		 * If this is a block directory then make sure it's
-@@ -218,9 +238,10 @@ __xfs_dir3_data_check(
- 		 */
- 		if (dep->namelen == 0)
- 			return __this_address;
--		if (!xfs_verify_dir_ino(mp, be64_to_cpu(dep->inumber)))
-+		reclen = xfs_dir2_data_entsize(mp, dep->namelen);
-+		if (offset + reclen > end)
- 			return __this_address;
--		if (offset + xfs_dir2_data_entsize(mp, dep->namelen) > end)
-+		if (!xfs_verify_dir_ino(mp, be64_to_cpu(dep->inumber)))
- 			return __this_address;
- 		if (be16_to_cpu(*xfs_dir2_data_entry_tag_p(mp, dep)) != offset)
- 			return __this_address;
-@@ -244,7 +265,7 @@ __xfs_dir3_data_check(
- 			if (i >= be32_to_cpu(btp->count))
- 				return __this_address;
- 		}
--		offset += xfs_dir2_data_entsize(mp, dep->namelen);
-+		offset += reclen;
+-static void __lockup_detector_reconfigure(void)
++static void __lockup_detector_reconfigure(bool thresh_changed)
+ {
+ 	cpus_read_lock();
+ 	watchdog_hardlockup_stop();
+ 
+ 	softlockup_stop_all();
++	/*
++	 * To prevent watchdog_timer_fn from using the old interval and
++	 * the new watchdog_thresh at the same time, which could lead to
++	 * false softlockup reports, it is necessary to update the
++	 * watchdog_thresh after the softlockup is completed.
++	 */
++	if (thresh_changed)
++		watchdog_thresh = READ_ONCE(watchdog_thresh_next);
+ 	set_sample_period();
+ 	lockup_detector_update_enable();
+ 	if (watchdog_enabled && watchdog_thresh)
+@@ -881,7 +890,7 @@ static void __lockup_detector_reconfigur
+ void lockup_detector_reconfigure(void)
+ {
+ 	mutex_lock(&watchdog_mutex);
+-	__lockup_detector_reconfigure();
++	__lockup_detector_reconfigure(false);
+ 	mutex_unlock(&watchdog_mutex);
+ }
+ 
+@@ -901,27 +910,29 @@ static __init void lockup_detector_setup
+ 		return;
+ 
+ 	mutex_lock(&watchdog_mutex);
+-	__lockup_detector_reconfigure();
++	__lockup_detector_reconfigure(false);
+ 	softlockup_initialized = true;
+ 	mutex_unlock(&watchdog_mutex);
+ }
+ 
+ #else /* CONFIG_SOFTLOCKUP_DETECTOR */
+-static void __lockup_detector_reconfigure(void)
++static void __lockup_detector_reconfigure(bool thresh_changed)
+ {
+ 	cpus_read_lock();
+ 	watchdog_hardlockup_stop();
++	if (thresh_changed)
++		watchdog_thresh = READ_ONCE(watchdog_thresh_next);
+ 	lockup_detector_update_enable();
+ 	watchdog_hardlockup_start();
+ 	cpus_read_unlock();
+ }
+ void lockup_detector_reconfigure(void)
+ {
+-	__lockup_detector_reconfigure();
++	__lockup_detector_reconfigure(false);
+ }
+ static inline void lockup_detector_setup(void)
+ {
+-	__lockup_detector_reconfigure();
++	__lockup_detector_reconfigure(false);
+ }
+ #endif /* !CONFIG_SOFTLOCKUP_DETECTOR */
+ 
+@@ -939,11 +950,11 @@ void lockup_detector_soft_poweroff(void)
+ #ifdef CONFIG_SYSCTL
+ 
+ /* Propagate any changes to the watchdog infrastructure */
+-static void proc_watchdog_update(void)
++static void proc_watchdog_update(bool thresh_changed)
+ {
+ 	/* Remove impossible cpus to keep sysctl output clean. */
+ 	cpumask_and(&watchdog_cpumask, &watchdog_cpumask, cpu_possible_mask);
+-	__lockup_detector_reconfigure();
++	__lockup_detector_reconfigure(thresh_changed);
+ }
+ 
+ /*
+@@ -976,7 +987,7 @@ static int proc_watchdog_common(int whic
+ 		old = READ_ONCE(*param);
+ 		err = proc_dointvec_minmax(table, write, buffer, lenp, ppos);
+ 		if (!err && old != READ_ONCE(*param))
+-			proc_watchdog_update();
++			proc_watchdog_update(false);
  	}
- 	/*
- 	 * Need to have seen all the entries and all the bestfree slots.
-diff --git a/fs/xfs/libxfs/xfs_dir2_priv.h b/fs/xfs/libxfs/xfs_dir2_priv.h
-index 7404a9ff1a929..9046d08554e9e 100644
---- a/fs/xfs/libxfs/xfs_dir2_priv.h
-+++ b/fs/xfs/libxfs/xfs_dir2_priv.h
-@@ -187,6 +187,13 @@ void xfs_dir2_sf_put_ftype(struct xfs_mount *mp,
- extern int xfs_readdir(struct xfs_trans *tp, struct xfs_inode *dp,
- 		       struct dir_context *ctx, size_t bufsize);
+ 	mutex_unlock(&watchdog_mutex);
+ 	return err;
+@@ -1027,11 +1038,13 @@ static int proc_watchdog_thresh(const st
  
-+static inline unsigned int
-+xfs_dir2_data_unusedsize(
-+	unsigned int	len)
-+{
-+	return round_up(len, XFS_DIR2_DATA_ALIGN);
-+}
+ 	mutex_lock(&watchdog_mutex);
+ 
+-	old = READ_ONCE(watchdog_thresh);
++	watchdog_thresh_next = READ_ONCE(watchdog_thresh);
 +
- static inline unsigned int
- xfs_dir2_data_entsize(
- 	struct xfs_mount	*mp,
--- 
-2.39.5
-
++	old = watchdog_thresh_next;
+ 	err = proc_dointvec_minmax(table, write, buffer, lenp, ppos);
+ 
+-	if (!err && write && old != READ_ONCE(watchdog_thresh))
+-		proc_watchdog_update();
++	if (!err && write && old != READ_ONCE(watchdog_thresh_next))
++		proc_watchdog_update(true);
+ 
+ 	mutex_unlock(&watchdog_mutex);
+ 	return err;
+@@ -1052,7 +1065,7 @@ static int proc_watchdog_cpumask(const s
+ 
+ 	err = proc_do_large_bitmap(table, write, buffer, lenp, ppos);
+ 	if (!err && write)
+-		proc_watchdog_update();
++		proc_watchdog_update(false);
+ 
+ 	mutex_unlock(&watchdog_mutex);
+ 	return err;
+@@ -1072,7 +1085,7 @@ static struct ctl_table watchdog_sysctls
+ 	},
+ 	{
+ 		.procname	= "watchdog_thresh",
+-		.data		= &watchdog_thresh,
++		.data		= &watchdog_thresh_next,
+ 		.maxlen		= sizeof(int),
+ 		.mode		= 0644,
+ 		.proc_handler	= proc_watchdog_thresh,
 
 
 
