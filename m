@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-156244-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156252-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 06B8EAE4EC5
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:09:05 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 90452AE4ECD
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:09:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1CFE73BE578
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:08:33 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 276061782A1
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:09:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30DD521638A;
-	Mon, 23 Jun 2025 21:08:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D22221638A;
+	Mon, 23 Jun 2025 21:09:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xBkOQ0r/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GyrKrMRD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E429370838;
-	Mon, 23 Jun 2025 21:08:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF38270838;
+	Mon, 23 Jun 2025 21:09:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750712936; cv=none; b=YA/QyF59VLrw7W9OfN3/Yi4EHLAy10N5lTPtOTxa+k+bGtJX9eqqQNHbsamMt6z9Osh4wSbR6rynyKexyFyggLcqCiLkx2lK/WG00DpZtRXLAAqorIQoN98K4wRu0jYJZQupL+rx/YWyJamzXyybX727O8PKdA9o4qJz9suQDLg=
+	t=1750712955; cv=none; b=kLgI8MHXujv6VNUVaHwWcAV10kNtZyN1CClFit8yofrA6xeCRrf1s7XaFwAmOuZvmEH0lCiwQEbAjRiQUbh7w7ZwH7ao+/CVUjT0uit474BjxTuzQCRxxnFr/8hiz1OjcimYM+tdurwHSOLPyT8LE6FYhIC0HeStfFPGdLKugpc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750712936; c=relaxed/simple;
-	bh=0+I22fZl1Uveo26MaDpfhtV7/iWP6sfoN7/yJD9xrbg=;
+	s=arc-20240116; t=1750712955; c=relaxed/simple;
+	bh=31/XzM6SPUrSjFThxSVIYqSeAFGufEdRAiZPafCNiHk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JQiZelRUbYp5f663ynGNMKa6UlNiN0wZdQU71Ko2HbEEB//mDhaHjknzAokHKE/fGJuw6CjUTFBlHMWtFibrbpp8pIgciFai843Sy/6wFKrqJpN5wctmsy2B5W5zoPYmnG1XopqGEQ9Azew+p58/a91QedlKqhzlZS0nD6fjyrc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xBkOQ0r/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E98EC4CEEA;
-	Mon, 23 Jun 2025 21:08:55 +0000 (UTC)
+	 MIME-Version; b=mfj3jpdGv2RJPjFxC/bclaV4UofwNVLitiU3Ma+8tGcwFBFV99aFjKKYvp3XjAOO/1ZeC+zeRB+8wwaUKyJuAhkmXX1WLicFKZ/S8VZUd7Zo9FTB62tROh/EWIxwnawHNEstu4p4R5XO8QX8NARZ5zM2IOqwFXnOfJzxyRy+PPk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GyrKrMRD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56981C4CEEA;
+	Mon, 23 Jun 2025 21:09:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750712935;
-	bh=0+I22fZl1Uveo26MaDpfhtV7/iWP6sfoN7/yJD9xrbg=;
+	s=korg; t=1750712955;
+	bh=31/XzM6SPUrSjFThxSVIYqSeAFGufEdRAiZPafCNiHk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xBkOQ0r/01tXX70lO+Vpr4C3AtHPxK6mYkTqYKf3M3rKvxl3t/4eYuEkgy6bWpgNt
-	 r4Or/n2Sm5lq9LAL/LsZ+dhf23Byzb9YhlN/CEDQByGOjk2zdXVjt5c20uav2pEDLQ
-	 YTA8nX0iwDByp8zRUWfNcqFLn81mo19JLwP4bhKI=
+	b=GyrKrMRDOxW4C/p13cxujQ0+gBMyTjQvdolUtp2igG1cC2I4TLiAcealrwknjF2f3
+	 kqtv2eBoefmEKIpwaP6UM4q25/YJ1V0YwceG9mALvMvS6N+GZFk2gLfRzzfOKj+GQL
+	 yfo26FLIcxvb2OwFJv4sv5655qtgrfgpuh3pqIi8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wentao Liang <vulab@iscas.ac.cn>,
-	Hans Verkuil <hverkuil@xs4all.nl>,
+	Simon Schuster <schuster.simon@siemens-energy.com>,
+	Andreas Oetken <andreas.oetken@siemens-energy.com>,
+	Dinh Nguyen <dinguyen@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 156/222] media: platform: exynos4-is: Add hardware sync wait to fimc_is_hw_change_mode()
-Date: Mon, 23 Jun 2025 15:08:11 +0200
-Message-ID: <20250623130616.775216020@linuxfoundation.org>
+Subject: [PATCH 5.4 157/222] nios2: force update_mmu_cache on spurious tlb-permission--related pagefaults
+Date: Mon, 23 Jun 2025 15:08:12 +0200
+Message-ID: <20250623130616.805674177@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
 In-Reply-To: <20250623130611.896514667@linuxfoundation.org>
 References: <20250623130611.896514667@linuxfoundation.org>
@@ -66,36 +67,82 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Wentao Liang <vulab@iscas.ac.cn>
+From: Simon Schuster <schuster.simon@siemens-energy.com>
 
-[ Upstream commit bd9f6ce7d512fa21249415c16af801a4ed5d97b6 ]
+[ Upstream commit 2d8a3179ea035f9341b6a73e5ba4029fc67e983d ]
 
-In fimc_is_hw_change_mode(), the function changes camera modes without
-waiting for hardware completion, risking corrupted data or system hangs
-if subsequent operations proceed before the hardware is ready.
+NIOS2 uses a software-managed TLB for virtual address translation. To
+flush a cache line, the original mapping is replaced by one to physical
+address 0x0 with no permissions (rwx mapped to 0) set. This can lead to
+TLB-permission--related traps when such a nominally flushed entry is
+encountered as a mapping for an otherwise valid virtual address within a
+process (e.g. due to an MMU-PID-namespace rollover that previously
+flushed the complete TLB including entries of existing, running
+processes).
 
-Add fimc_is_hw_wait_intmsr0_intmsd0() after mode configuration, ensuring
-hardware state synchronization and stable interrupt handling.
+The default ptep_set_access_flags implementation from mm/pgtable-generic.c
+only forces a TLB-update when the page-table entry has changed within the
+page table:
 
-Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+	/*
+	 * [...] We return whether the PTE actually changed, which in turn
+	 * instructs the caller to do things like update__mmu_cache. [...]
+	 */
+	int ptep_set_access_flags(struct vm_area_struct *vma,
+				  unsigned long address, pte_t *ptep,
+				  pte_t entry, int dirty)
+	{
+		int changed = !pte_same(*ptep, entry);
+		if (changed) {
+			set_pte_at(vma->vm_mm, address, ptep, entry);
+			flush_tlb_fix_spurious_fault(vma, address);
+		}
+		return changed;
+	}
+
+However, no cross-referencing with the TLB-state occurs, so the
+flushing-induced pseudo entries that are responsible for the pagefault
+in the first place are never pre-empted from TLB on this code path.
+
+This commit fixes this behaviour by always requesting a TLB-update in
+this part of the pagefault handling, fixing spurious page-faults on the
+way. The handling is a straightforward port of the logic from the MIPS
+architecture via an arch-specific ptep_set_access_flags function ported
+from arch/mips/include/asm/pgtable.h.
+
+Signed-off-by: Simon Schuster <schuster.simon@siemens-energy.com>
+Signed-off-by: Andreas Oetken <andreas.oetken@siemens-energy.com>
+Signed-off-by: Dinh Nguyen <dinguyen@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/platform/exynos4-is/fimc-is-regs.c | 1 +
- 1 file changed, 1 insertion(+)
+ arch/nios2/include/asm/pgtable.h | 16 ++++++++++++++++
+ 1 file changed, 16 insertions(+)
 
-diff --git a/drivers/media/platform/exynos4-is/fimc-is-regs.c b/drivers/media/platform/exynos4-is/fimc-is-regs.c
-index 366e6393817d2..5f9c44e825a5f 100644
---- a/drivers/media/platform/exynos4-is/fimc-is-regs.c
-+++ b/drivers/media/platform/exynos4-is/fimc-is-regs.c
-@@ -164,6 +164,7 @@ int fimc_is_hw_change_mode(struct fimc_is *is)
- 	if (WARN_ON(is->config_index >= ARRAY_SIZE(cmd)))
- 		return -EINVAL;
+diff --git a/arch/nios2/include/asm/pgtable.h b/arch/nios2/include/asm/pgtable.h
+index 99985d8b71664..506bbc7730879 100644
+--- a/arch/nios2/include/asm/pgtable.h
++++ b/arch/nios2/include/asm/pgtable.h
+@@ -297,4 +297,20 @@ extern void __init mmu_init(void);
+ extern void update_mmu_cache(struct vm_area_struct *vma,
+ 			     unsigned long address, pte_t *pte);
  
-+	fimc_is_hw_wait_intmsr0_intmsd0(is);
- 	mcuctl_write(cmd[is->config_index], is, MCUCTL_REG_ISSR(0));
- 	mcuctl_write(is->sensor_index, is, MCUCTL_REG_ISSR(1));
- 	mcuctl_write(is->setfile.sub_index, is, MCUCTL_REG_ISSR(2));
++static inline int pte_same(pte_t pte_a, pte_t pte_b);
++
++#define __HAVE_ARCH_PTEP_SET_ACCESS_FLAGS
++static inline int ptep_set_access_flags(struct vm_area_struct *vma,
++					unsigned long address, pte_t *ptep,
++					pte_t entry, int dirty)
++{
++	if (!pte_same(*ptep, entry))
++		set_ptes(vma->vm_mm, address, ptep, entry, 1);
++	/*
++	 * update_mmu_cache will unconditionally execute, handling both
++	 * the case that the PTE changed and the spurious fault case.
++	 */
++	return true;
++}
++
+ #endif /* _ASM_NIOS2_PGTABLE_H */
 -- 
 2.39.5
 
