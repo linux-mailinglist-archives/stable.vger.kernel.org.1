@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-157021-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156988-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 58AD7AE521F
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:40:43 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 53CEAAE520B
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:39:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 70E42443099
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:40:18 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DC6EC1B6448B
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:39:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 800D1221FDC;
-	Mon, 23 Jun 2025 21:40:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CFB5F223316;
+	Mon, 23 Jun 2025 21:39:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tsTHudgx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TOJBOibD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3ED0B19D084;
-	Mon, 23 Jun 2025 21:40:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D226221FC7;
+	Mon, 23 Jun 2025 21:39:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750714841; cv=none; b=cK8SHTVOALFLWE+O68hmSL0S91082vyklTDKGHB89D+Hs4qtwzQZkrQ18dRosVvevSu6ua0dl7pCWEz4OclbY5u2NZjXvIJvsV1hPpdjWleogWDOb0aSMI68GlAYf71Y6U/8IjcFGK2JraVlSupRcT0cTxfrSzN7d1DRvsnRX2w=
+	t=1750714762; cv=none; b=UZzz5Ikj1xbrY6MJbOkhxF6eXLxx6PUJTwBVckBtROutIgUgQ++M36Gxa+B3KU91Sm/uqFLs5GJllWoG+LzFVDZ7PzXpj4ZWOsjxqXQYdeMvFUKJnv17wtsEGlxhL47k/o7eIiYYaZ1090F2p7GS07TsnhB8GQbcPdoS4p+el9s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750714841; c=relaxed/simple;
-	bh=9YVS21FZiDD8nBAKTlO6ItKCINhxl0+TsZJ/3GYU354=;
+	s=arc-20240116; t=1750714762; c=relaxed/simple;
+	bh=wLdaf6nnx9oMRiEycURasWkYqH96PtNUqmc31/UnLBw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hXmHRj8Rv75+731O7kQPSjD120X/fsccTWHycKYqxNLM4UcJTlQMb1V7guNc3xJiik6++9oJwpy0Ke6bKcWYhwSuME4WqjHYzMSt+V74imWWjIJUqW5Hj+vCYqs57b71JQnWd7Bm75IKW+37t/3K35L/b4WXiUyXfSBNXNFn+vs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tsTHudgx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CBE7CC4CEEA;
-	Mon, 23 Jun 2025 21:40:40 +0000 (UTC)
+	 MIME-Version; b=cU6eN4gDCxNjf14Ypf8DJaevpfkQJk3bIMeQxExxd9C2hTgVjJoWokGHvjlQRd8g43QLr/mcA8y4TJk5EEqUh14IyPAYATr/mVHaLYxOybwdqedgRUdUaJNwqek0Ih0BoDmToSzp19/EL9alCKcy/69oWeEzOWfl/OWL2P3Ohpw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TOJBOibD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6C62C4CEEA;
+	Mon, 23 Jun 2025 21:39:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750714841;
-	bh=9YVS21FZiDD8nBAKTlO6ItKCINhxl0+TsZJ/3GYU354=;
+	s=korg; t=1750714760;
+	bh=wLdaf6nnx9oMRiEycURasWkYqH96PtNUqmc31/UnLBw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tsTHudgxujr1q5Fs+aKtIj25PILRurhaZatO8flZe1wtNkLcZUM+enngm+tkNi+10
-	 SGHBdlNWO5RnBaTZc2XtbUuSpHWitRBJC1GE1HYFki8nAgU3bFffq6H8i7VSI/4ZHw
-	 8BgvUM7mmGROTh7B3bdAzevUCfzY1FL9JKVgjW/s=
+	b=TOJBOibDMb+9OaOAl0Bt66EkkVVPXprscqsD4ZJbEVaxnj8j+d9YDihhhLIOv2Cdp
+	 +eKgpUmW5lNcjbAhvTVTgo18ql3gvrmAiNysAUgxLOe744DhlNvpPjotlAfub925Wq
+	 MZWyswFOQS99mc9b/hxL3v2N01hvZoUIdsbNq3Qs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Heiko Stuebner <heiko@sntech.de>,
+	Nas Chung <nas.chung@chipsnmedia.com>,
+	Sebastian Fricke <sebastian.fricke@collabora.com>,
+	Hans Verkuil <hverkuil@xs4all.nl>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 166/290] clk: rockchip: rk3036: mark ddrphy as critical
-Date: Mon, 23 Jun 2025 15:07:07 +0200
-Message-ID: <20250623130631.888697849@linuxfoundation.org>
+Subject: [PATCH 5.10 227/355] media: uapi: v4l: Fix V4L2_TYPE_IS_OUTPUT condition
+Date: Mon, 23 Jun 2025 15:07:08 +0200
+Message-ID: <20250623130633.568983675@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130626.910356556@linuxfoundation.org>
-References: <20250623130626.910356556@linuxfoundation.org>
+In-Reply-To: <20250623130626.716971725@linuxfoundation.org>
+References: <20250623130626.716971725@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,39 +63,37 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Heiko Stuebner <heiko@sntech.de>
+From: Nas Chung <nas.chung@chipsnmedia.com>
 
-[ Upstream commit 596a977b34a722c00245801a5774aa79cec4e81d ]
+[ Upstream commit f81f69a0e3da141bdd73a16b8676f4e542533d87 ]
 
-The ddrphy is supplied by the dpll, but due to the limited number of PLLs
-on the rk3036, the dpll also is used for other periperhals, like the GPU.
+V4L2_TYPE_IS_OUTPUT() returns true for V4L2_BUF_TYPE_VIDEO_OVERLAY
+which definitely belongs to CAPTURE.
 
-So it happened, when the Lima driver turned off the gpu clock, this in
-turn also disabled the dpll and thus the ram.
-
-Signed-off-by: Heiko Stuebner <heiko@sntech.de>
-Link: https://lore.kernel.org/r/20250503202532.992033-4-heiko@sntech.de
+Signed-off-by: Nas Chung <nas.chung@chipsnmedia.com>
+Signed-off-by: Sebastian Fricke <sebastian.fricke@collabora.com>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/rockchip/clk-rk3036.c | 1 +
- 1 file changed, 1 insertion(+)
+ include/uapi/linux/videodev2.h | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/drivers/clk/rockchip/clk-rk3036.c b/drivers/clk/rockchip/clk-rk3036.c
-index d644bc155ec6e..f5f27535087a3 100644
---- a/drivers/clk/rockchip/clk-rk3036.c
-+++ b/drivers/clk/rockchip/clk-rk3036.c
-@@ -431,6 +431,7 @@ static const char *const rk3036_critical_clocks[] __initconst = {
- 	"hclk_peri",
- 	"pclk_peri",
- 	"pclk_ddrupctl",
-+	"ddrphy",
- };
- 
- static void __init rk3036_clk_init(struct device_node *np)
+diff --git a/include/uapi/linux/videodev2.h b/include/uapi/linux/videodev2.h
+index 1bbd81f031fe0..a0671e510bc4a 100644
+--- a/include/uapi/linux/videodev2.h
++++ b/include/uapi/linux/videodev2.h
+@@ -164,7 +164,6 @@ enum v4l2_buf_type {
+ #define V4L2_TYPE_IS_OUTPUT(type)				\
+ 	((type) == V4L2_BUF_TYPE_VIDEO_OUTPUT			\
+ 	 || (type) == V4L2_BUF_TYPE_VIDEO_OUTPUT_MPLANE		\
+-	 || (type) == V4L2_BUF_TYPE_VIDEO_OVERLAY		\
+ 	 || (type) == V4L2_BUF_TYPE_VIDEO_OUTPUT_OVERLAY	\
+ 	 || (type) == V4L2_BUF_TYPE_VBI_OUTPUT			\
+ 	 || (type) == V4L2_BUF_TYPE_SLICED_VBI_OUTPUT		\
 -- 
 2.39.5
 
