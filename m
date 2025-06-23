@@ -1,57 +1,60 @@
-Return-Path: <stable+bounces-157529-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156296-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 74E12AE547C
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:01:59 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 68555AE4EF8
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:11:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 33CF8188F7E8
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:01:51 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 470AF1B602CC
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:11:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D24321A4F12;
-	Mon, 23 Jun 2025 22:01:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3844121FF2B;
+	Mon, 23 Jun 2025 21:11:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M840zE9g"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HbcqU3en"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90FC44409;
-	Mon, 23 Jun 2025 22:01:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E88FA70838;
+	Mon, 23 Jun 2025 21:11:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750716090; cv=none; b=bkygkOW/IgtLfpLh9avdw9RMmYmWBMLID5rdhbVFelURQh/aWLW7F3J+uG1vqOuABVvDsHlO7r+Z8F7l+8nZlQygBQtB6cI3t8vKoyF739DYLUggyDDFc3rFRoGf8VMQBHyQE5SOcNyQUg/1VEsGBza8tYnQEhtKddoL6EKLDnM=
+	t=1750713067; cv=none; b=HZLJrMNb4iSAkD8S0ez1Cxc3MkFiWJ3qu5ZgzZlt8ICkH1aE0AZhWEfogO+jF19Jl3INjRiYnmmCW9HAFon0PLYRD0adLkkLjTFQIWTQf9I2hA/+ysA3KSs3HmmuK9Edh/I31cPFR1LLvhxU7+Zgh3gBKC3BGx6X5ux/36eScys=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750716090; c=relaxed/simple;
-	bh=6FfMaLHvTPnIPR3dsmKJzg5qnyRNXATgaEt2b+FtDHM=;
+	s=arc-20240116; t=1750713067; c=relaxed/simple;
+	bh=ysnfIRYWTRJ/f198VDn/eIf6JjWN9AFPm4w1WEdMhtw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=q1nAkbxgCmVcm+Z9nuZ11363QQ6gv7r6SJkYcrg+XSkzzYvhccDi50+UDTZ/6j9AWIxcTxzLnqE1LfUB7cixeEonqv+FU2VwaRqathDSMS3doKJMr27awoRxOfHjSnMffaLfh1b6cUaJi3b75EDIua397y9kgp7ogDvoH9CY51g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M840zE9g; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29238C4CEEA;
-	Mon, 23 Jun 2025 22:01:30 +0000 (UTC)
+	 MIME-Version; b=QTGBImp/HppmSwvLuSGVWynWIXI5f7iUXF2ByF4UliBSSCznnLV+OzNguPkmAj6KMGHbLMwDa06NZ4QGK11QMr8sTmb7CPEA4OVzhSV4lbDlFxQySzRJ+kpTfL9Wxo0pIlub7L/VSUfAd/VzefoGbnHvKzei1w8B/CNvOdmXLQI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HbcqU3en; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8028FC4CEEA;
+	Mon, 23 Jun 2025 21:11:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750716090;
-	bh=6FfMaLHvTPnIPR3dsmKJzg5qnyRNXATgaEt2b+FtDHM=;
+	s=korg; t=1750713066;
+	bh=ysnfIRYWTRJ/f198VDn/eIf6JjWN9AFPm4w1WEdMhtw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=M840zE9gBXruHS16sq9NknsjsDODjohDYKzVsmDElr7bEJVKU5cYEJyq0iTtQnQzC
-	 vPTxqJs1NKOdrUFr/d8w2Z7OOVDGeIMahD5c6lqWciI+t7DWTZ7xA6EkrA6nApWvIm
-	 5IzMY8UqKU3v6EEcGB3hFgUWt8HXhsQnzqEWPf4M=
+	b=HbcqU3ennCIp/Vt16w9FWubVQbUFJmgjB3ClNfl9w80ekcpVDtO0K45GAGejNpIrm
+	 RkOELQA7CRocWzPQFB9pHUrO3QTPPH7aEtKw3wuyc7KswMmLIlI7YVPZ0SHJfyLGHS
+	 jk121QC5K5iMSJf213MdfSrnV5XbmgyJPywauPYw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Roger Quadros <rogerq@kernel.org>,
-	Kevin Hilman <khilman@baylibre.com>,
-	"Nobuhiro Iwamatsu (CIP)" <nobuhiro1.iwamatsu@toshiba.co.jp>
-Subject: [PATCH 5.10 320/355] ARM: dts: am335x-bone-common: Increase MDIO reset deassert delay to 50ms
+	David.Kaplan@amd.com,
+	peterz@infradead.org,
+	pawan.kumar.gupta@linux.intel.com,
+	mingo@kernel.org,
+	brad.spengler@opensrcsec.com,
+	Salvatore Bonaccorso <carnil@debian.org>,
+	Breno Leitao <leitao@debian.org>
+Subject: [PATCH 5.4 186/222] Revert "x86/bugs: Make spectre user default depend on MITIGATION_SPECTRE_V2" on v6.6 and older
 Date: Mon, 23 Jun 2025 15:08:41 +0200
-Message-ID: <20250623130636.385337147@linuxfoundation.org>
+Message-ID: <20250623130617.764643710@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130626.716971725@linuxfoundation.org>
-References: <20250623130626.716971725@linuxfoundation.org>
+In-Reply-To: <20250623130611.896514667@linuxfoundation.org>
+References: <20250623130611.896514667@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,52 +64,94 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Geert Uytterhoeven <geert+renesas@glider.be>
+From: Breno Leitao <leitao@debian.org>
 
-commit 929d8490f8790164f5f63671c1c58d6c50411cb2 upstream.
+This reverts commit a8c22ec36cdd99c1002d7152f859798fef7c4d58 which is
+commit 98fdaeb296f51ef08e727a7cc72e5b5c864c4f4d upstream.
 
-Commit b9bf5612610aa7e3 ("ARM: dts: am335x-bone-common: Increase MDIO
-reset deassert time") already increased the MDIO reset deassert delay
-from 6.5 to 13 ms, but this may still cause Ethernet PHY probe failures:
+commit 7adb96687ce8 ("x86/bugs: Make spectre user default depend on
+MITIGATION_SPECTRE_V2") depends on commit 72c70f480a70 ("x86/bugs: Add
+a separate config for Spectre V2"), which introduced
+MITIGATION_SPECTRE_V2.
 
-    SMSC LAN8710/LAN8720 4a101000.mdio:00: probe with driver SMSC LAN8710/LAN8720 failed with error -5
+commit 72c70f480a70 ("x86/bugs: Add a separate config for Spectre V2")
+never landed in stable tree, thus, stable tree doesn't have
+MITIGATION_SPECTRE_V2, that said, commit 7adb96687ce8 ("x86/bugs: Make
+spectre user default depend on MITIGATION_SPECTRE_V2") has no value if
+the dependecy was not applied.
 
-On BeagleBone Black Rev. C3, ETH_RESETn is controlled by an open-drain
-AND gate.  It is pulled high by a 10K resistor, and has a 4.7µF
-capacitor to ground, giving an RC time constant of 47ms.  As it takes
-0.7RC to charge the capacitor above the threshold voltage of a CMOS
-input (VDD/2), the delay should be at least 33ms.  Considering the
-typical tolerance of 20% on capacitors, 40ms would be safer.  Add an
-additional safety margin and settle for 50ms.
+Revert commit 7adb96687ce8 ("x86/bugs: Make spectre user default
+depend on MITIGATION_SPECTRE_V2")  in stable kernel which landed in in
+5.4.294, 5.10.238, 5.15.185, 6.1.141 and 6.6.93 stable versions.
 
-Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Reviewed-by: Roger Quadros <rogerq@kernel.org>
-Link: https://lore.kernel.org/r/9002a58daa1b2983f39815b748ee9d2f8dcc4829.1730366936.git.geert+renesas@glider.be
-Signed-off-by: Kevin Hilman <khilman@baylibre.com>
-Signed-off-by: Nobuhiro Iwamatsu (CIP) <nobuhiro1.iwamatsu@toshiba.co.jp>
+Cc: David.Kaplan@amd.com
+Cc: peterz@infradead.org
+Cc: pawan.kumar.gupta@linux.intel.com
+Cc: mingo@kernel.org
+Cc: brad.spengler@opensrcsec.com
+Cc: stable@vger.kernel.org # 6.6 6.1 5.15 5.10 5.4
+Reported-by: Brad Spengler <brad.spengler@opensrcsec.com>
+Reported-by: Salvatore Bonaccorso <carnil@debian.org>
+Signed-off-by: Breno Leitao <leitao@debian.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm/boot/dts/am335x-bone-common.dtsi |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ Documentation/admin-guide/kernel-parameters.txt |    2 --
+ arch/x86/kernel/cpu/bugs.c                      |   10 +++-------
+ 2 files changed, 3 insertions(+), 9 deletions(-)
 
---- a/arch/arm/boot/dts/am335x-bone-common.dtsi
-+++ b/arch/arm/boot/dts/am335x-bone-common.dtsi
-@@ -381,7 +381,7 @@
- 		/* Support GPIO reset on revision C3 boards */
- 		reset-gpios = <&gpio1 8 GPIO_ACTIVE_LOW>;
- 		reset-assert-us = <300>;
--		reset-deassert-us = <13000>;
-+		reset-deassert-us = <50000>;
- 	};
- };
+--- a/Documentation/admin-guide/kernel-parameters.txt
++++ b/Documentation/admin-guide/kernel-parameters.txt
+@@ -4600,8 +4600,6 @@
  
+ 			Selecting 'on' will also enable the mitigation
+ 			against user space to user space task attacks.
+-			Selecting specific mitigation does not force enable
+-			user mitigations.
+ 
+ 			Selecting 'off' will disable both the kernel and
+ 			the user space protections.
+--- a/arch/x86/kernel/cpu/bugs.c
++++ b/arch/x86/kernel/cpu/bugs.c
+@@ -1050,13 +1050,9 @@ static __ro_after_init enum spectre_v2_m
+ static enum spectre_v2_user_cmd __init
+ spectre_v2_parse_user_cmdline(void)
+ {
+-	enum spectre_v2_user_cmd mode;
+ 	char arg[20];
+ 	int ret, i;
+ 
+-	mode = IS_ENABLED(CONFIG_MITIGATION_SPECTRE_V2) ?
+-		SPECTRE_V2_USER_CMD_AUTO : SPECTRE_V2_USER_CMD_NONE;
+-
+ 	switch (spectre_v2_cmd) {
+ 	case SPECTRE_V2_CMD_NONE:
+ 		return SPECTRE_V2_USER_CMD_NONE;
+@@ -1069,7 +1065,7 @@ spectre_v2_parse_user_cmdline(void)
+ 	ret = cmdline_find_option(boot_command_line, "spectre_v2_user",
+ 				  arg, sizeof(arg));
+ 	if (ret < 0)
+-		return mode;
++		return SPECTRE_V2_USER_CMD_AUTO;
+ 
+ 	for (i = 0; i < ARRAY_SIZE(v2_user_options); i++) {
+ 		if (match_option(arg, ret, v2_user_options[i].option)) {
+@@ -1079,8 +1075,8 @@ spectre_v2_parse_user_cmdline(void)
+ 		}
+ 	}
+ 
+-	pr_err("Unknown user space protection option (%s). Switching to default\n", arg);
+-	return mode;
++	pr_err("Unknown user space protection option (%s). Switching to AUTO select\n", arg);
++	return SPECTRE_V2_USER_CMD_AUTO;
+ }
+ 
+ static inline bool spectre_v2_in_eibrs_mode(enum spectre_v2_mitigation mode)
 
 
 
