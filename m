@@ -1,54 +1,62 @@
-Return-Path: <stable+bounces-157171-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157280-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 570A6AE52BE
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:47:18 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 33969AE5341
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:51:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 73F8B4A6B74
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:47:17 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DD9F81B669E2
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:51:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 18A4F223DE5;
-	Mon, 23 Jun 2025 21:46:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E6551FECBA;
+	Mon, 23 Jun 2025 21:51:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xRAjdAdd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CJdZlOaL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9C9C219A7A;
-	Mon, 23 Jun 2025 21:46:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BFC1136348;
+	Mon, 23 Jun 2025 21:51:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750715210; cv=none; b=r5AYBZlczSJI7V3DWtW2LKDbigtYfSO77N9QS1eb2W8B+UorZXdRKYbLgUVLVP7L7lR9AhVIx1pHIn2D2YngFlBP6iDJSEbYnVIefEkU2wt7RqswW4DjZK6FiwzjK0f7JJYpW+66DkyhdumPnJrbz+D2kNnBpo2XAC4FkvVJg2A=
+	t=1750715482; cv=none; b=dCBlol5s/7eXguyH31u5ZgYJc5LQyP9Uf46PJmLT4lQXJSUfCkkCzPC3r8jR8XMPCn/AXVHRfqT06X9vw8opwwT0B/JV5nAF7TUIRBqqDCLabKsChGxFEJ2Bjkvy0PboYLosARF45PGP4GYnS7NgQ6iZtnXdwKy3dV2zHnxc5V0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750715210; c=relaxed/simple;
-	bh=omYwGHGT28UP6nhq3cH47ZYkNenkgjjBgqklWBz8tb8=;
+	s=arc-20240116; t=1750715482; c=relaxed/simple;
+	bh=mZ1rC8E0LuCPKhNiKDAO4l8VYYwOWcqSkzRda54YhkA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UnGemTURRfcK2VqLsbLo2AY9XS0F/9nJAFHeUoWLn5yPHGYLgmyvMkJsQm4YyzpRmpRf495TBuxYQwN4DtWft7VCk4lxep5GCr7rYt7xG39JYUF80LCnRfYtj8XmS/Ep29JqL+tZY071MLfUOt0awy8vOrdUdLSEbNqcPlptZWs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xRAjdAdd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 627DCC4CEEA;
-	Mon, 23 Jun 2025 21:46:50 +0000 (UTC)
+	 MIME-Version; b=ftprqwvtVWxeCVjBM/e4t3IZ5910VILycNTePvyzzSwzfRAcM5RHLEmIB/2elCHgdCuDZ/60WKiSfAm4drbO/5Blb52MmAHuspjuSSG/BGgf4mNLw70puyhLzljdNGtNbymmP8rgJ8FLRpo5AesJ83cy/iNHt5DytU3XUl86uhY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CJdZlOaL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA232C4CEEA;
+	Mon, 23 Jun 2025 21:51:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750715210;
-	bh=omYwGHGT28UP6nhq3cH47ZYkNenkgjjBgqklWBz8tb8=;
+	s=korg; t=1750715482;
+	bh=mZ1rC8E0LuCPKhNiKDAO4l8VYYwOWcqSkzRda54YhkA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xRAjdAdd36Xu5H5jsxh/H55lwUgNOeAQpeuEhmDkfUgjnLtT2NtglGMm5vwTkMA+8
-	 Vxgb+cyCjkBTAcHViDJcfQqrZxxt7HwMUYNz8Qh5ZuXL9eqbOtpfvOEp6FC8qksaEK
-	 dAIVm4GGdNWw9AkIt56/YAjq/FzzBfujfZJ6mytk=
+	b=CJdZlOaLNa5GH0QdfgulqnjHvsb9eo+3GNXywXe6LiPOXcQEeesON5EzrYG98IEp/
+	 7+RWdUx+XYIWIdc40yuS3Is/LIP29twEwRA53bqYsrf8MOAnEb4CTZd4MZeB25Hith
+	 cYAegAoL65NEcvduiy0gdNVZI2GD4qZCw2//sR7M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 6.15 465/592] nvme: always punt polled uring_cmd end_io work to task_work
-Date: Mon, 23 Jun 2025 15:07:03 +0200
-Message-ID: <20250623130711.489438767@linuxfoundation.org>
+	Harry Wentland <harry.wentland@amd.com>,
+	Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>,
+	Tom Chung <chiahsuan.chung@amd.com>,
+	Roman Li <roman.li@amd.com>,
+	Alex Hung <alex.hung@amd.com>,
+	Aurabindo Pillai <aurabindo.pillai@amd.com>,
+	Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 280/411] drm/amd/display: Add NULL pointer checks in dm_force_atomic_commit()
+Date: Mon, 23 Jun 2025 15:07:04 +0200
+Message-ID: <20250623130640.698642911@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
-References: <20250623130700.210182694@linuxfoundation.org>
+In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
+References: <20250623130632.993849527@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,64 +68,87 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jens Axboe <axboe@kernel.dk>
+From: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
 
-commit 9ce6c9875f3e995be5fd720b65835291f8a609b1 upstream.
+[ Upstream commit 3f397cd203f247879c2f1a061e90d4c8d23655de ]
 
-Currently NVMe uring_cmd completions will complete locally, if they are
-polled. This is done because those completions are always invoked from
-task context. And while that is true, there's no guarantee that it's
-invoked under the right ring context, or even task. If someone does
-NVMe passthrough via multiple threads and with a limited number of
-poll queues, then ringA may find completions from ringB. For that case,
-completing the request may not be sound.
+This commit updates the dm_force_atomic_commit function to replace the
+usage of PTR_ERR_OR_ZERO with IS_ERR for checking error states after
+retrieving the Connector (drm_atomic_get_connector_state), CRTC
+(drm_atomic_get_crtc_state), and Plane (drm_atomic_get_plane_state)
+states.
 
-Always just punt the passthrough completions via task_work, which will
-redirect the completion, if needed.
+The function utilized PTR_ERR_OR_ZERO for error checking. However, this
+approach is inappropriate in this context because the respective
+functions do not return NULL; they return pointers that encode errors.
 
-Cc: stable@vger.kernel.org
-Fixes: 585079b6e425 ("nvme: wire up async polling for io passthrough commands")
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+This change ensures that error pointers are properly checked using
+IS_ERR before attempting to dereference.
+
+Cc: Harry Wentland <harry.wentland@amd.com>
+Cc: Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>
+Cc: Tom Chung <chiahsuan.chung@amd.com>
+Cc: Roman Li <roman.li@amd.com>
+Cc: Alex Hung <alex.hung@amd.com>
+Cc: Aurabindo Pillai <aurabindo.pillai@amd.com>
+Signed-off-by: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
+Reviewed-by: Aurabindo Pillai <aurabindo.pillai@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nvme/host/ioctl.c |   21 +++++++--------------
- 1 file changed, 7 insertions(+), 14 deletions(-)
+ .../gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c  | 18 ++++++++++++------
+ 1 file changed, 12 insertions(+), 6 deletions(-)
 
---- a/drivers/nvme/host/ioctl.c
-+++ b/drivers/nvme/host/ioctl.c
-@@ -429,21 +429,14 @@ static enum rq_end_io_ret nvme_uring_cmd
- 	pdu->result = le64_to_cpu(nvme_req(req)->result.u64);
- 
- 	/*
--	 * For iopoll, complete it directly. Note that using the uring_cmd
--	 * helper for this is safe only because we check blk_rq_is_poll().
--	 * As that returns false if we're NOT on a polled queue, then it's
--	 * safe to use the polled completion helper.
--	 *
--	 * Otherwise, move the completion to task work.
-+	 * IOPOLL could potentially complete this request directly, but
-+	 * if multiple rings are polling on the same queue, then it's possible
-+	 * for one ring to find completions for another ring. Punting the
-+	 * completion via task_work will always direct it to the right
-+	 * location, rather than potentially complete requests for ringA
-+	 * under iopoll invocations from ringB.
+diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+index e9f592bdac27f..24bb7063670ae 100644
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+@@ -10044,16 +10044,20 @@ static int dm_force_atomic_commit(struct drm_connector *connector)
  	 */
--	if (blk_rq_is_poll(req)) {
--		if (pdu->bio)
--			blk_rq_unmap_user(pdu->bio);
--		io_uring_cmd_iopoll_done(ioucmd, pdu->result, pdu->status);
--	} else {
--		io_uring_cmd_do_in_task_lazy(ioucmd, nvme_uring_task_cb);
--	}
--
-+	io_uring_cmd_do_in_task_lazy(ioucmd, nvme_uring_task_cb);
- 	return RQ_END_IO_FREE;
- }
+ 	conn_state = drm_atomic_get_connector_state(state, connector);
  
+-	ret = PTR_ERR_OR_ZERO(conn_state);
+-	if (ret)
++	/* Check for error in getting connector state */
++	if (IS_ERR(conn_state)) {
++		ret = PTR_ERR(conn_state);
+ 		goto out;
++	}
+ 
+ 	/* Attach crtc to drm_atomic_state*/
+ 	crtc_state = drm_atomic_get_crtc_state(state, &disconnected_acrtc->base);
+ 
+-	ret = PTR_ERR_OR_ZERO(crtc_state);
+-	if (ret)
++	/* Check for error in getting crtc state */
++	if (IS_ERR(crtc_state)) {
++		ret = PTR_ERR(crtc_state);
+ 		goto out;
++	}
+ 
+ 	/* force a restore */
+ 	crtc_state->mode_changed = true;
+@@ -10061,9 +10065,11 @@ static int dm_force_atomic_commit(struct drm_connector *connector)
+ 	/* Attach plane to drm_atomic_state */
+ 	plane_state = drm_atomic_get_plane_state(state, plane);
+ 
+-	ret = PTR_ERR_OR_ZERO(plane_state);
+-	if (ret)
++	/* Check for error in getting plane state */
++	if (IS_ERR(plane_state)) {
++		ret = PTR_ERR(plane_state);
+ 		goto out;
++	}
+ 
+ 	/* Call commit internally with the state we just constructed */
+ 	ret = drm_atomic_commit(state);
+-- 
+2.39.5
+
 
 
 
