@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-156410-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157150-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 42F70AE4F80
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:16:36 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8564AAE52C4
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:47:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4ED937ACE5E
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:14:27 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B04B63AD776
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:46:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B21BE1F3FF8;
-	Mon, 23 Jun 2025 21:15:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2FF8D219A7A;
+	Mon, 23 Jun 2025 21:45:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bpvsEmNg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HGezQe8X"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6ED0C7482;
-	Mon, 23 Jun 2025 21:15:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFDFB21B9E5;
+	Mon, 23 Jun 2025 21:45:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750713346; cv=none; b=fkwuA3sm+fGRy2ZFtzOFruLqrKViihTqGCWzeQEIW9F4Q2DNPlAGZP1an6LssrwgIBhSf/9+joTIONNXVvTUMzSrxGwYgxkXaP3tamBv5vAugnBxH1GktPNG7ww4crEB4MreIebsAQauE6/pj4MVgG+S/m07hzP53Qe35JDSa9A=
+	t=1750715157; cv=none; b=L7pWlA9cl3RlL4Ip0UrIrCQLDhYmEiCYRa8NIlzNEgyFXsd5IKfpP5aFUIRAjLYRAxOyT9BapKuSG5BeBg+UHXHV5ULk3rT/kJXi6o+z9OfS0TPJ4h3S/nd8G1xdJ43SSuYLFBaxMRYNdjY9Y27co/Oh4brWIOLYWH9vyt6I+Po=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750713346; c=relaxed/simple;
-	bh=rD0Md6IcQAsXHK0faMrq0eo5wS6t0sXPsEaWJRJVcn4=;
+	s=arc-20240116; t=1750715157; c=relaxed/simple;
+	bh=jWA+JWoWPw0tPKoYSbdrPmvMe/GDE00V7yVYSbDO9T0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uI3AwPI1JUfWyiIMPaeUR0m+w5u+EXEwQ+HZSx5aFZAVd7UuxHOU+0FZxB+gcb/37vrQu3ZUu6IbP7QiACSD5aHakXsZhv32kWwl7lXkQdOuOWmGe7d9fNg+fW1xWb2qsF01F5y3fa+Nni853iSei/meeNbmXmtf5O7fcNR3eBM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bpvsEmNg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F116FC4CEEA;
-	Mon, 23 Jun 2025 21:15:45 +0000 (UTC)
+	 MIME-Version:Content-Type; b=dARtTCHpdvrNFpnO5+n9mCVCWlDbq+LeMvjHbNKrScr+uEYBnoYIQxym6DMigCegfrLYKwhrpocZJDX3b7V0nanb8qB0AYv2bMeEQnGxY3RZY3sfcjO9o6UKbGLSDeHPcjjo4oORxRNMANkF7+KYTmluLyXgj2tIiSV4ZP5m1bE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HGezQe8X; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 771D0C4CEEA;
+	Mon, 23 Jun 2025 21:45:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750713346;
-	bh=rD0Md6IcQAsXHK0faMrq0eo5wS6t0sXPsEaWJRJVcn4=;
+	s=korg; t=1750715156;
+	bh=jWA+JWoWPw0tPKoYSbdrPmvMe/GDE00V7yVYSbDO9T0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bpvsEmNg+//eFgm5asYAAvMrtR6Dw9M6jID/oD6DkVARHIFnje603jhajQEsmlVt0
-	 cg0jrJirFP5Qov9qsfqqak9+lAqgtnmda3ClaJ1FraapQwGAzJIhQjL0YZmfIUAUl0
-	 PvA19RRfNjDPhr1n4pyxFSR0OqbPRYw72LBf/0to=
+	b=HGezQe8XnHyEdgjaRzHie5VOwIkjLgJaQc6+cSrglL1IbdEyLqTBEpKF5GSnf+6RA
+	 dLNhESbci0gaTMQs11l2i+pqVGrWG3PnGYqTPNc3fcIP7QqFv4pAMdZ0lF7QkrM4jC
+	 +Ptd//7wBIpHyLAJ+8gmlKficA+AsPhlUrdJTcwM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Davidlohr Bueso <dave@stgolabs.net>,
-	Luis Chamberlain <mcgrof@kernel.org>,
-	kdevops@lists.linux.dev,
-	Jan Kara <jack@suse.cz>,
-	Zhang Yi <yi.zhang@huawei.com>,
-	Theodore Tso <tytso@mit.edu>,
-	stable@kernel.org
-Subject: [PATCH 6.6 061/290] ext4: fix calculation of credits for extent tree modification
-Date: Mon, 23 Jun 2025 15:05:22 +0200
-Message-ID: <20250623130628.841715120@linuxfoundation.org>
+	Masahiro Yamada <masahiroy@kernel.org>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Stephen Rothwell <sfr@canb.auug.org.au>,
+	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <linux@weissschuh.net>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 186/414] Make cc-option work correctly for the -Wno-xyzzy pattern
+Date: Mon, 23 Jun 2025 15:05:23 +0200
+Message-ID: <20250623130646.670500482@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130626.910356556@linuxfoundation.org>
-References: <20250623130626.910356556@linuxfoundation.org>
+In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
+References: <20250623130642.015559452@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,72 +64,73 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jan Kara <jack@suse.cz>
+From: Linus Torvalds <torvalds@linux-foundation.org>
 
-commit 32a93f5bc9b9812fc710f43a4d8a6830f91e4988 upstream.
+[ Upstream commit 550ccb178de2f379f5e1a1833dd6f4bdafef4b68 ]
 
-Luis and David are reporting that after running generic/750 test for 90+
-hours on 2k ext4 filesystem, they are able to trigger a warning in
-jbd2_journal_dirty_metadata() complaining that there are not enough
-credits in the running transaction started in ext4_do_writepages().
+This is the follow-up to commit a79be02bba5c ("Fix mis-uses of
+'cc-option' for warning disablement") where I mentioned that the best
+fix would be to just make 'cc-option' a bit smarter, and work for all
+compiler options, including the '-Wno-xyzzy' pattern that it used to
+accept unknown options for.
 
-Indeed the code in ext4_do_writepages() is racy and the extent tree can
-change between the time we compute credits necessary for extent tree
-computation and the time we actually modify the extent tree. Thus it may
-happen that the number of credits actually needed is higher. Modify
-ext4_ext_index_trans_blocks() to count with the worst case of maximum
-tree depth. This can reduce the possible number of writers that can
-operate in the system in parallel (because the credit estimates now won't
-fit in one transaction) but for reasonably sized journals this shouldn't
-really be an issue. So just go with a safe and simple fix.
+It turns out that fixing cc-option is pretty straightforward: just
+rewrite any '-Wno-xyzzy' option pattern to use '-Wxyzzy' instead for
+testing.
 
-Link: https://lore.kernel.org/all/20250415013641.f2ppw6wov4kn4wq2@offworld
-Reported-by: Davidlohr Bueso <dave@stgolabs.net>
-Reported-by: Luis Chamberlain <mcgrof@kernel.org>
-Tested-by: kdevops@lists.linux.dev
-Signed-off-by: Jan Kara <jack@suse.cz>
-Reviewed-by: Zhang Yi <yi.zhang@huawei.com>
-Link: https://patch.msgid.link/20250429175535.23125-2-jack@suse.cz
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Cc: stable@kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+That makes the whole artificial distinction between 'cc-option' and
+'cc-disable-warning' go away, and we can happily forget about the odd
+build rule that you have to treat compiler options that disable warnings
+specially.
+
+The 'cc-disable-warning' helper remains as a backwards compatibility
+syntax for now, but is implemented in terms of the new and improved
+cc-option.
+
+Acked-by: Masahiro Yamada <masahiroy@kernel.org>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Arnd Bergmann <arnd@arndb.de>
+Cc: Stephen Rothwell <sfr@canb.auug.org.au>
+Cc: Thomas Weißschuh <linux@weissschuh.net>
+Cc: Nathan Chancellor <nathan@kernel.org>
+Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ext4/extents.c |   11 ++++++-----
- 1 file changed, 6 insertions(+), 5 deletions(-)
+ scripts/Makefile.compiler | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/fs/ext4/extents.c
-+++ b/fs/ext4/extents.c
-@@ -2374,18 +2374,19 @@ int ext4_ext_calc_credits_for_single_ext
- int ext4_ext_index_trans_blocks(struct inode *inode, int extents)
- {
- 	int index;
--	int depth;
+diff --git a/scripts/Makefile.compiler b/scripts/Makefile.compiler
+index c6cd729b65cbf..05685b3df9e5e 100644
+--- a/scripts/Makefile.compiler
++++ b/scripts/Makefile.compiler
+@@ -43,7 +43,7 @@ as-instr = $(call try-run,\
+ # __cc-option
+ # Usage: MY_CFLAGS += $(call __cc-option,$(CC),$(MY_CFLAGS),-march=winchip-c6,-march=i586)
+ __cc-option = $(call try-run,\
+-	$(1) -Werror $(2) $(3) -c -x c /dev/null -o "$$TMP",$(3),$(4))
++	$(1) -Werror $(2) $(3:-Wno-%=-W%) -c -x c /dev/null -o "$$TMP",$(3),$(4))
  
- 	/* If we are converting the inline data, only one is needed here. */
- 	if (ext4_has_inline_data(inode))
- 		return 1;
+ # cc-option
+ # Usage: cflags-y += $(call cc-option,-march=winchip-c6,-march=i586)
+@@ -57,7 +57,7 @@ cc-option-yn = $(if $(call cc-option,$1),y,n)
  
--	depth = ext_depth(inode);
--
-+	/*
-+	 * Extent tree can change between the time we estimate credits and
-+	 * the time we actually modify the tree. Assume the worst case.
-+	 */
- 	if (extents <= 1)
--		index = depth * 2;
-+		index = EXT4_MAX_EXTENT_DEPTH * 2;
- 	else
--		index = depth * 3;
-+		index = EXT4_MAX_EXTENT_DEPTH * 3;
+ # cc-disable-warning
+ # Usage: cflags-y += $(call cc-disable-warning,unused-but-set-variable)
+-cc-disable-warning = $(if $(call cc-option,-W$(strip $1)),-Wno-$(strip $1))
++cc-disable-warning = $(call cc-option,-Wno-$(strip $1))
  
- 	return index;
- }
+ # gcc-min-version
+ # Usage: cflags-$(call gcc-min-version, 70100) += -foo
+-- 
+2.39.5
+
 
 
 
