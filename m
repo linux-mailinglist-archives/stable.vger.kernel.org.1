@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-155732-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-155632-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 939AAAE4384
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:33:29 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 309B2AE4334
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:30:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7E6F03A288C
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:26:30 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B256A1791F1
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:23:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2F9224E4C3;
-	Mon, 23 Jun 2025 13:26:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E01B2571A0;
+	Mon, 23 Jun 2025 13:22:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MO9kizh7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J7Zg0S+M"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8134B248191;
-	Mon, 23 Jun 2025 13:26:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB88E253950;
+	Mon, 23 Jun 2025 13:22:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750685193; cv=none; b=myGH1ZN523PyoxWVkUPqmHbIAKgyP0Idooikg5TNaMt1z6wQ9TeFvnl/rZZU82R2vexyfYHCGJoH098Ie7t6jGha2k2Rdh9tk/faYXQi+xgCJQP8Z9NWmuQSsJsmzeb7nBXjazHke2YgCoKFOS0nwlPILPLl56a+zDsZ11cPjPo=
+	t=1750684935; cv=none; b=NpbWXMr4AXcf5Lqn+EwuYZfKvuYDGo5i2PfYjBuzqRIVtei61dksaxDGHNhyWCeAGEptIlFC1BsROKnzGoeRS1imuZb+6+fjwLXdcPIa7ZQSdMRClHwnNvZ3oOKbn5O6mw2SFEZV58c7H+E7XcklF9QJgI51HweC80UX9P994WU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750685193; c=relaxed/simple;
-	bh=VPiYl4LlpNNfO6sBILxslKfFKwYofJtged8FE0Myy/E=;
+	s=arc-20240116; t=1750684935; c=relaxed/simple;
+	bh=dAfG191cg9+vj1GlasOaxYMZvKEwjPnsNumUbngBbt4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=IHWKST7XokP2LqEtQsDnxSTGQmuTQq5cMpGXRkS60kIBjYJDbEZ6YC1AIyaNVoj6ayIfvsa2iLP0o4Buu7PB7k2wwT4nRM8jrXwE1iLyc7vUGxeLi1dFlYLRGazprrfsb6lm1eDvB1jNwS79r1OpiD0ihhst6CXKbEMXLecJF/Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MO9kizh7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 168D7C4CEEA;
-	Mon, 23 Jun 2025 13:26:32 +0000 (UTC)
+	 MIME-Version; b=UdH3OyphHH1ifQ4uL0U7blp+a5/7n+sjlPP3Ha3YALMW3daTTA8ptsBi+wzSIbKHoxPAjKZ4vWxEHZGHRocl7VEQW97aPY+JSaDftl0irBAVQ5FWjMG2MVRBlRr3StkhSnFTMyw1/4NAc9zjcu1+OCB9Hn1y5KgaVkzd7+4UXDk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J7Zg0S+M; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F406C4CEEA;
+	Mon, 23 Jun 2025 13:22:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750685193;
-	bh=VPiYl4LlpNNfO6sBILxslKfFKwYofJtged8FE0Myy/E=;
+	s=korg; t=1750684934;
+	bh=dAfG191cg9+vj1GlasOaxYMZvKEwjPnsNumUbngBbt4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MO9kizh7lDFi//nWYirKH+5Xne5cq4Bplo6vUAgA5JJ7SLpBhcPWhDK+5wApWaHtP
-	 kGp/LGvT/sYpMYwr4QbJlen5D0SO6saHIhwTXPx5WHQapRLUw4LiRwi73lbIq5tJ2m
-	 l3uzjneXdNSxSo0iD8+OX7yoFFcPf61xcrdmeflk=
+	b=J7Zg0S+MNdDPPHyedLf8A0OP+Ll2gJ928eB1lh1G3glpOKI+mfgpRZhofXGBjHnVd
+	 1Lxcl7A3deH57DNtITR9oRjPsxxIVUN+BWFy3oBP8mj56B3EGZL/CBxNtaKoClb0Qq
+	 sVeqUFzlWUFfPDX9AjY253CotOfx/+oLRkq649yE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexandre Mergnat <amergnat@baylibre.com>,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>
-Subject: [PATCH 5.15 005/411] rtc: Make rtc_time64_to_tm() support dates before 1970
-Date: Mon, 23 Jun 2025 15:02:29 +0200
-Message-ID: <20250623130633.154795253@linuxfoundation.org>
+	Karol Wachowski <karol.wachowski@intel.com>,
+	Lizhi Hou <lizhi.hou@amd.com>,
+	Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>
+Subject: [PATCH 6.15 192/592] accel/ivpu: Trigger device recovery on engine reset/resume failure
+Date: Mon, 23 Jun 2025 15:02:30 +0200
+Message-ID: <20250623130704.853443840@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
-References: <20250623130632.993849527@linuxfoundation.org>
+In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
+References: <20250623130700.210182694@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,90 +60,92 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexandre Mergnat <amergnat@baylibre.com>
+From: Karol Wachowski <karol.wachowski@intel.com>
 
-commit 7df4cfef8b351fec3156160bedfc7d6d29de4cce upstream.
+commit a47e36dc5d90dc664cac87304c17d50f1595d634 upstream.
 
-Conversion of dates before 1970 is still relevant today because these
-dates are reused on some hardwares to store dates bigger than the
-maximal date that is representable in the device's native format.
-This prominently and very soon affects the hardware covered by the
-rtc-mt6397 driver that can only natively store dates in the interval
-1900-01-01 up to 2027-12-31. So to store the date 2028-01-01 00:00:00
-to such a device, rtc_time64_to_tm() must do the right thing for
-time=-2208988800.
+Trigger full device recovery when the driver fails to restore device state
+via engine reset and resume operations. This is necessary because, even if
+submissions from a faulty context are blocked, the NPU may still process
+previously submitted faulty jobs if the engine reset fails to abort them.
+Such jobs can continue to generate faults and occupy device resources.
+When engine reset is ineffective, the only way to recover is to perform
+a full device recovery.
 
-Signed-off-by: Alexandre Mergnat <amergnat@baylibre.com>
-Reviewed-by: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
-Link: https://lore.kernel.org/r/20250428-enable-rtc-v4-1-2b2f7e3f9349@baylibre.com
-Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
-Signed-off-by: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
+Fixes: dad945c27a42 ("accel/ivpu: Add handling of VPU_JSM_STATUS_MVNCI_CONTEXT_VIOLATION_HW")
+Cc: stable@vger.kernel.org # v6.15+
+Signed-off-by: Karol Wachowski <karol.wachowski@intel.com>
+Reviewed-by: Lizhi Hou <lizhi.hou@amd.com>
+Signed-off-by: Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>
+Link: https://lore.kernel.org/r/20250528154253.500556-1-jacek.lawrynowicz@linux.intel.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/rtc/lib.c |   24 +++++++++++++++++++-----
- 1 file changed, 19 insertions(+), 5 deletions(-)
+ drivers/accel/ivpu/ivpu_job.c     |    6 ++++--
+ drivers/accel/ivpu/ivpu_jsm_msg.c |    9 +++++++--
+ 2 files changed, 11 insertions(+), 4 deletions(-)
 
---- a/drivers/rtc/lib.c
-+++ b/drivers/rtc/lib.c
-@@ -46,24 +46,38 @@ EXPORT_SYMBOL(rtc_year_days);
-  * rtc_time64_to_tm - converts time64_t to rtc_time.
-  *
-  * @time:	The number of seconds since 01-01-1970 00:00:00.
-- *		(Must be positive.)
-+ *		Works for values since at least 1900
-  * @tm:		Pointer to the struct rtc_time.
-  */
- void rtc_time64_to_tm(time64_t time, struct rtc_time *tm)
- {
--	unsigned int secs;
--	int days;
-+	int days, secs;
+--- a/drivers/accel/ivpu/ivpu_job.c
++++ b/drivers/accel/ivpu/ivpu_job.c
+@@ -986,7 +986,8 @@ void ivpu_context_abort_work_fn(struct w
+ 		return;
  
- 	u64 u64tmp;
- 	u32 u32tmp, udays, century, day_of_century, year_of_century, year,
- 		day_of_year, month, day;
- 	bool is_Jan_or_Feb, is_leap_year;
+ 	if (vdev->fw->sched_mode == VPU_SCHEDULING_MODE_HW)
+-		ivpu_jsm_reset_engine(vdev, 0);
++		if (ivpu_jsm_reset_engine(vdev, 0))
++			return;
  
--	/* time must be positive */
-+	/*
-+	 * Get days and seconds while preserving the sign to
-+	 * handle negative time values (dates before 1970-01-01)
-+	 */
- 	days = div_s64_rem(time, 86400, &secs);
+ 	mutex_lock(&vdev->context_list_lock);
+ 	xa_for_each(&vdev->context_xa, ctx_id, file_priv) {
+@@ -1009,7 +1010,8 @@ void ivpu_context_abort_work_fn(struct w
+ 	if (vdev->fw->sched_mode != VPU_SCHEDULING_MODE_HW)
+ 		goto runtime_put;
  
-+	/*
-+	 * We need 0 <= secs < 86400 which isn't given for negative
-+	 * values of time. Fixup accordingly.
-+	 */
-+	if (secs < 0) {
-+		days -= 1;
-+		secs += 86400;
-+	}
-+
- 	/* day of the week, 1970-01-01 was a Thursday */
- 	tm->tm_wday = (days + 4) % 7;
-+	/* Ensure tm_wday is always positive */
-+	if (tm->tm_wday < 0)
-+		tm->tm_wday += 7;
- 
+-	ivpu_jsm_hws_resume_engine(vdev, 0);
++	if (ivpu_jsm_hws_resume_engine(vdev, 0))
++		return;
  	/*
- 	 * The following algorithm is, basically, Proposition 6.3 of Neri
-@@ -93,7 +107,7 @@ void rtc_time64_to_tm(time64_t time, str
- 	 * thus, is slightly different from [1].
- 	 */
+ 	 * In hardware scheduling mode NPU already has stopped processing jobs
+ 	 * and won't send us any further notifications, thus we have to free job related resources
+--- a/drivers/accel/ivpu/ivpu_jsm_msg.c
++++ b/drivers/accel/ivpu/ivpu_jsm_msg.c
+@@ -7,6 +7,7 @@
+ #include "ivpu_hw.h"
+ #include "ivpu_ipc.h"
+ #include "ivpu_jsm_msg.h"
++#include "ivpu_pm.h"
+ #include "vpu_jsm_api.h"
  
--	udays		= ((u32) days) + 719468;
-+	udays		= days + 719468;
+ const char *ivpu_jsm_msg_type_to_str(enum vpu_ipc_msg_type type)
+@@ -163,8 +164,10 @@ int ivpu_jsm_reset_engine(struct ivpu_de
  
- 	u32tmp		= 4 * udays + 3;
- 	century		= u32tmp / 146097;
+ 	ret = ivpu_ipc_send_receive(vdev, &req, VPU_JSM_MSG_ENGINE_RESET_DONE, &resp,
+ 				    VPU_IPC_CHAN_ASYNC_CMD, vdev->timeout.jsm);
+-	if (ret)
++	if (ret) {
+ 		ivpu_err_ratelimited(vdev, "Failed to reset engine %d: %d\n", engine, ret);
++		ivpu_pm_trigger_recovery(vdev, "Engine reset failed");
++	}
+ 
+ 	return ret;
+ }
+@@ -354,8 +357,10 @@ int ivpu_jsm_hws_resume_engine(struct iv
+ 
+ 	ret = ivpu_ipc_send_receive(vdev, &req, VPU_JSM_MSG_HWS_RESUME_ENGINE_DONE, &resp,
+ 				    VPU_IPC_CHAN_ASYNC_CMD, vdev->timeout.jsm);
+-	if (ret)
++	if (ret) {
+ 		ivpu_err_ratelimited(vdev, "Failed to resume engine %d: %d\n", engine, ret);
++		ivpu_pm_trigger_recovery(vdev, "Engine resume failed");
++	}
+ 
+ 	return ret;
+ }
 
 
 
