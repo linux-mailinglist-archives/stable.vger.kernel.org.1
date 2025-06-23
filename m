@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-157807-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-158135-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B39E2AE55D9
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:15:52 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9A0D5AE5718
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:26:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C35864A2F44
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:13:06 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3C46D4E299B
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:26:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45165226CF1;
-	Mon, 23 Jun 2025 22:12:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B7753223DE5;
+	Mon, 23 Jun 2025 22:26:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R4tbWMgi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y7MDzJFG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F37A7223316;
-	Mon, 23 Jun 2025 22:12:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74574221543;
+	Mon, 23 Jun 2025 22:26:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750716767; cv=none; b=GKyVPuVN72Bl5gkGjd7gBoOj4NVfjvSYNrm5K/UgIS3VsQHq4sbnfCzwI+X2vYr7Qo8aoQkSJ/61LmsC27W7s7fW9BzHpUAkNj7SrKnHMYyaxE96ZAmsd/Gk2wbNdJ7tVYtEoscpsKBH6f6rwE+dEZ+1TOjar2RRODlf5n0FZtA=
+	t=1750717570; cv=none; b=eRe5YDVpZg+tUHTs9WxQMlL1d7U/vksYxMhiXftXkWB5TIrqCOJHLqfry4p/T4h4NXx+IQ5ZerRBf7CqBEx+PKV7DnMzIhLoek/0MNmoRH0N8rdSpXyWO3NAs/ECeO3+YYHzTxF4CMbzVSgC2Ye5DfY0kcmjpO7LCvepxI/D3EE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750716767; c=relaxed/simple;
-	bh=rGWfF1O+Nz1PoiNKW803GmMJ4NTMWIRAkoeh3ssmYxk=;
+	s=arc-20240116; t=1750717570; c=relaxed/simple;
+	bh=t48LviNPo9C1Ha1s3xGEoqRDdyEO8acQFhwRx5KIX1g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Nq9D8+XtJYMIuZ3J0siI5AdTgr1kX5jlpY1BQJjbP44evthOXcZuqRx7w/7GL8tSSLdTICOeuWYkDpkdCjgSNxkt2p1L2F6kL2jK3wCOIru0eVyQ+Mjf8NDXLLcBB24bbUTRd7IJCjcg0q53rXvjZje+Va+y+wUDqcEi4/Y73NI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R4tbWMgi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 894E0C4CEED;
-	Mon, 23 Jun 2025 22:12:46 +0000 (UTC)
+	 MIME-Version:Content-Type; b=JeMID8PBLoC+5BijDpZYgQQ3CMX37rQ1P4df1WyQdXybUpZPMQ6lX2EL6wLL5gYBwINJhwThI0DhZOgrew4+qhi2ym8wNuQRFwhInzVNU94tATbunoFK4zXOTzz58Dyi1PNidFuIiWoPBDmfrMtHfqPX9xsQM7nzVqEef2jl4RY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y7MDzJFG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0CD8AC4CEEA;
+	Mon, 23 Jun 2025 22:26:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750716766;
-	bh=rGWfF1O+Nz1PoiNKW803GmMJ4NTMWIRAkoeh3ssmYxk=;
+	s=korg; t=1750717570;
+	bh=t48LviNPo9C1Ha1s3xGEoqRDdyEO8acQFhwRx5KIX1g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=R4tbWMgi0nyG+IZajK6rZ5i/xu4IrdOCneH0eMF34nur0qdAsr+Xg55c+MCC9GtNC
-	 6B85xEyAA5ut5/jnP1ChuE81ufsBD9v2VbAveLDQHRkuamsO+EOhhu6Ybo7T2B0IZy
-	 cmw3QdY79OkQAGjw4HMGgByUKOd6JqSiBQKTx1Bo=
+	b=y7MDzJFGQyIMSxrVKw5CAu/ZMmYYrwAafOj+eIKk+AWVgeJQlSy5psxuMjhpPx9Gp
+	 fBgiHqUoDM5t8NXvdwfvQFw4U2RyoFY/wjqMsMVwzuMugQgRKDPiBXjxRP927jnBzW
+	 lZu0RcX7iKHEQy2qoiIIz/ixHjfZd8+OxJCpLHFo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Luis Chamberlain <mcgrof@kernel.org>,
-	Christoph Hellwig <hch@lst.de>,
-	Chaitanya Kulkarni <kch@nvidia.com>,
-	Jens Axboe <axboe@kernel.dk>,
-	Sebastian Priebe <sebastian.priebe@konplan.com>
-Subject: [PATCH 5.15 356/411] block: default BLOCK_LEGACY_AUTOLOAD to y
+	=?UTF-8?q?Christian=20G=C3=B6ttsche?= <cgzones@googlemail.com>,
+	Stephen Smalley <stephen.smalley.work@gmail.com>,
+	Paul Moore <paul@paul-moore.com>
+Subject: [PATCH 6.1 455/508] selinux: fix selinux_xfrm_alloc_user() to set correct ctx_len
 Date: Mon, 23 Jun 2025 15:08:20 +0200
-Message-ID: <20250623130642.606622106@linuxfoundation.org>
+Message-ID: <20250623130656.331811168@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
-References: <20250623130632.993849527@linuxfoundation.org>
+In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
+References: <20250623130645.255320792@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,66 +60,46 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christoph Hellwig <hch@lst.de>
+From: Stephen Smalley <stephen.smalley.work@gmail.com>
 
-commit 451f0b6f4c44d7b649ae609157b114b71f6d7875 upstream.
+commit 86c8db86af43f52f682e53a0f2f0828683be1e52 upstream.
 
-As Luis reported, losetup currently doesn't properly create the loop
-device without this if the device node already exists because old
-scripts created it manually.  So default to y for now and remove the
-aggressive removal schedule.
+We should count the terminating NUL byte as part of the ctx_len.
+Otherwise, UBSAN logs a warning:
+  UBSAN: array-index-out-of-bounds in security/selinux/xfrm.c:99:14
+  index 60 is out of range for type 'char [*]'
 
-Reported-by: Luis Chamberlain <mcgrof@kernel.org>
-Signed-off-by: Christoph Hellwig <hch@lst.de>
-Reviewed-by: Chaitanya Kulkarni <kch@nvidia.com>
-Link: https://lore.kernel.org/r/20220225181440.1351591-1-hch@lst.de
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Cc: Sebastian Priebe <sebastian.priebe@konplan.com>
-Link: https://lore.kernel.org/r/ZR0P278MB097497EF6CFD85E72819447E9F70A@ZR0P278MB0974.CHEP278.PROD.OUTLOOK.COM
+The allocation itself is correct so there is no actual out of bounds
+indexing, just a warning.
+
+Cc: stable@vger.kernel.org
+Suggested-by: Christian Göttsche <cgzones@googlemail.com>
+Link: https://lore.kernel.org/selinux/CAEjxPJ6tA5+LxsGfOJokzdPeRomBHjKLBVR6zbrg+_w3ZZbM3A@mail.gmail.com/
+Signed-off-by: Stephen Smalley <stephen.smalley.work@gmail.com>
+Signed-off-by: Paul Moore <paul@paul-moore.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- block/Kconfig |    8 +++-----
- block/bdev.c  |    2 +-
- 2 files changed, 4 insertions(+), 6 deletions(-)
+ security/selinux/xfrm.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/block/Kconfig
-+++ b/block/Kconfig
-@@ -28,15 +28,13 @@ if BLOCK
+--- a/security/selinux/xfrm.c
++++ b/security/selinux/xfrm.c
+@@ -95,7 +95,7 @@ static int selinux_xfrm_alloc_user(struc
  
- config BLOCK_LEGACY_AUTOLOAD
- 	bool "Legacy autoloading support"
-+	default y
- 	help
- 	  Enable loading modules and creating block device instances based on
- 	  accesses through their device special file.  This is a historic Linux
- 	  feature and makes no sense in a udev world where device files are
--	  created on demand.
--
--	  Say N here unless booting or other functionality broke without it, in
--	  which case you should also send a report to your distribution and
--	  linux-block@vger.kernel.org.
-+	  created on demand, but scripts that manually create device nodes and
-+	  then call losetup might rely on this behavior.
- 
- config BLK_RQ_ALLOC_TIME
- 	bool
---- a/block/bdev.c
-+++ b/block/bdev.c
-@@ -741,7 +741,7 @@ struct block_device *blkdev_get_no_open(
- 		inode = ilookup(blockdev_superblock, dev);
- 		if (inode)
- 			pr_warn_ratelimited(
--"block device autoloading is deprecated. It will be removed in Linux 5.19\n");
-+"block device autoloading is deprecated and will be removed.\n");
- 	}
- 	if (!inode)
- 		return NULL;
+ 	ctx->ctx_doi = XFRM_SC_DOI_LSM;
+ 	ctx->ctx_alg = XFRM_SC_ALG_SELINUX;
+-	ctx->ctx_len = str_len;
++	ctx->ctx_len = str_len + 1;
+ 	memcpy(ctx->ctx_str, &uctx[1], str_len);
+ 	ctx->ctx_str[str_len] = '\0';
+ 	rc = security_context_to_sid(&selinux_state, ctx->ctx_str, str_len,
 
 
 
