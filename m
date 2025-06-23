@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-157237-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157613-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2FA25AE5311
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:49:56 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 78399AE54CE
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:05:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5F8A54A50D3
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:49:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B7FED4A0550
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:04:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E467A1AD3FA;
-	Mon, 23 Jun 2025 21:49:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E9EE1E22E6;
+	Mon, 23 Jun 2025 22:04:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eJjKA+4s"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nbRfPAa0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2BB819049B;
-	Mon, 23 Jun 2025 21:49:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CD0619049B;
+	Mon, 23 Jun 2025 22:04:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750715376; cv=none; b=L9gR5+vEFTxI/NXb0KiqMeQilbtnu4EEt+x/OEyXb1rvaHqnaNK3Hs0LUn743P6CmOStwRPFkBv+XfCV6NWzFn9+FpHF57RGYXE+BJsYHTdnODEtLMKkabb8aN0NxVuR3FxHB6gIKxHzizsDuKQaNfbts6DC64e/uyWg7ZyKRSs=
+	t=1750716297; cv=none; b=Fjpg948UyweEgyhJLRtYi/+rAXqSVpDNl3+V7Q7u/1at44oQAr1D/3DAKiMwjSPAjMIBKZeye4FxAKM83zT70ch9Blita9Daz1llZT0ZoSnAqQe6MZLMoHywmve4hp8+BqxtvvFQ6zZ/TDWWDXnbk8z2QfOPmLC4fEWbhqzs7eM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750715376; c=relaxed/simple;
-	bh=SNxeY0zZV+xuqFmn+RUUDNa4Go7YcxSAQH7yOlBmGmw=;
+	s=arc-20240116; t=1750716297; c=relaxed/simple;
+	bh=2PVV+jyeqPSxqEBNhXozarcpaz4Kuin24TJ6u7vRToo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kT30SnfvHFlGuDaC896tdStIOn+HznGmpQU4NJz+euZsOYTnzALrxtw1BRtYK7wNOJsTkDbAvTcktzQny7UGZMct55UTO2lcv1eo1ppn2xxF5YnuCigwDZir/+Df36DUUSSzYJXRkBOwaXK39FADsZjVgI6ouFkL41WGrMkr8y8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eJjKA+4s; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32882C4CEEA;
-	Mon, 23 Jun 2025 21:49:36 +0000 (UTC)
+	 MIME-Version:Content-Type; b=KVzJJHPNJjL9bP4kfWCnONxAgv7z7JB6jXKcJLvITUmT4PN76h7OgcwFZGQ9c46+c/2M0L5hmgQZufQuCFMYigjRLrtUzdRMR4ssbS2WSmRtuAEplxpSdaBbdoM8C3jqseTO0RsuNNkBuuobzJR/FCA25w5wzVK5LgmhiawZKW8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nbRfPAa0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70C50C4CEEA;
+	Mon, 23 Jun 2025 22:04:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750715376;
-	bh=SNxeY0zZV+xuqFmn+RUUDNa4Go7YcxSAQH7yOlBmGmw=;
+	s=korg; t=1750716296;
+	bh=2PVV+jyeqPSxqEBNhXozarcpaz4Kuin24TJ6u7vRToo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eJjKA+4stWEnaPtAM0G7E9fguFb+3uhOz6VrooGOnYuccq29G6P+VPDvUEqdw+dOF
-	 RUOnJ9bIOYVGIbLOa30N4x33Pmitfj3oJy82vVPKHUtmRG614nfI5ly/K60xpoEamV
-	 BMG2tOD6SO7cHo57fElD6sxpFnKC26NaNNTw862o=
+	b=nbRfPAa0rNU3mU8YAZfaU7pwtcpynYdaDH5Ptan7XW9r3eAFElay5b0QuB3hqbEDn
+	 I2VaQN0m1+hrqqDtQKiAGwuS8VsDnBTvouSVKq09LyiJn6xHnS8iPEqOn6Z+o2f/u5
+	 FhjiwLHtwpY2Ja7wE7rauiSXAi7FZBP+NGcKONRQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniel Wagner <wagi@kernel.org>,
-	Justin Tee <justin.tee@broadcom.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	kernel test robot <lkp@intel.com>,
+	Timur Tabi <ttabi@nvidia.com>,
+	Jacob Keller <jacob.e.keller@intel.com>,
+	Danilo Krummrich <dakr@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 271/355] scsi: lpfc: Use memcpy() for BIOS version
+Subject: [PATCH 6.15 514/592] drm/nouveau/bl: increase buffer size to avoid truncate warning
 Date: Mon, 23 Jun 2025 15:07:52 +0200
-Message-ID: <20250623130634.922385646@linuxfoundation.org>
+Message-ID: <20250623130712.662159995@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130626.716971725@linuxfoundation.org>
-References: <20250623130626.716971725@linuxfoundation.org>
+In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
+References: <20250623130700.210182694@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,51 +62,83 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel Wagner <wagi@kernel.org>
+From: Jacob Keller <jacob.e.keller@intel.com>
 
-[ Upstream commit ae82eaf4aeea060bb736c3e20c0568b67c701d7d ]
+[ Upstream commit 61b2b3737499f1fb361a54a16828db24a8345e85 ]
 
-The strlcat() with FORTIFY support is triggering a panic because it
-thinks the target buffer will overflow although the correct target
-buffer size is passed in.
+The nouveau_get_backlight_name() function generates a unique name for the
+backlight interface, appending an id from 1 to 99 for all backlight devices
+after the first.
 
-Anyway, instead of memset() with 0 followed by a strlcat(), just use
-memcpy() and ensure that the resulting buffer is NULL terminated.
+GCC 15 (and likely other compilers) produce the following
+-Wformat-truncation warning:
 
-BIOSVersion is only used for the lpfc_printf_log() which expects a
-properly terminated string.
+nouveau_backlight.c: In function ‘nouveau_backlight_init’:
+nouveau_backlight.c:56:69: error: ‘%d’ directive output may be truncated writing between 1 and 10 bytes into a region of size 3 [-Werror=format-truncation=]
+   56 |                 snprintf(backlight_name, BL_NAME_SIZE, "nv_backlight%d", nb);
+      |                                                                     ^~
+In function ‘nouveau_get_backlight_name’,
+    inlined from ‘nouveau_backlight_init’ at nouveau_backlight.c:351:7:
+nouveau_backlight.c:56:56: note: directive argument in the range [1, 2147483647]
+   56 |                 snprintf(backlight_name, BL_NAME_SIZE, "nv_backlight%d", nb);
+      |                                                        ^~~~~~~~~~~~~~~~
+nouveau_backlight.c:56:17: note: ‘snprintf’ output between 14 and 23 bytes into a destination of size 15
+   56 |                 snprintf(backlight_name, BL_NAME_SIZE, "nv_backlight%d", nb);
+      |                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Signed-off-by: Daniel Wagner <wagi@kernel.org>
-Link: https://lore.kernel.org/r/20250409-fix-lpfc-bios-str-v1-1-05dac9e51e13@kernel.org
-Reviewed-by: Justin Tee <justin.tee@broadcom.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+The warning started appearing after commit ab244be47a8f ("drm/nouveau:
+Fix a potential theorical leak in nouveau_get_backlight_name()") This fix
+for the ida usage removed the explicit value check for ids larger than 99.
+The compiler is unable to intuit that the ida_alloc_max() limits the
+returned value range between 0 and 99.
+
+Because the compiler can no longer infer that the number ranges from 0 to
+99, it thinks that it could use as many as 11 digits (10 + the potential -
+sign for negative numbers).
+
+The warning has gone unfixed for some time, with at least one kernel test
+robot report. The code breaks W=1 builds, which is especially frustrating
+with the introduction of CONFIG_WERROR.
+
+The string is stored temporarily on the stack and then copied into the
+device name. Its not a big deal to use 11 more bytes of stack rounding out
+to an even 24 bytes. Increase BL_NAME_SIZE to 24 to avoid the truncation
+warning. This fixes the W=1 builds that include this driver.
+
+Compile tested only.
+
+Fixes: ab244be47a8f ("drm/nouveau: Fix a potential theorical leak in nouveau_get_backlight_name()")
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202312050324.0kv4PnfZ-lkp@intel.com/
+Suggested-by: Timur Tabi <ttabi@nvidia.com>
+Signed-off-by: Jacob Keller <jacob.e.keller@intel.com>
+Link: https://lore.kernel.org/r/20250610-jk-nouveua-drm-bl-snprintf-fix-v2-1-7fdd4b84b48e@intel.com
+Signed-off-by: Danilo Krummrich <dakr@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/lpfc/lpfc_sli.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/nouveau/nouveau_backlight.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/scsi/lpfc/lpfc_sli.c b/drivers/scsi/lpfc/lpfc_sli.c
-index 84f90f4d5abd8..ff39c596f0007 100644
---- a/drivers/scsi/lpfc/lpfc_sli.c
-+++ b/drivers/scsi/lpfc/lpfc_sli.c
-@@ -5530,9 +5530,9 @@ lpfc_sli4_get_ctl_attr(struct lpfc_hba *phba)
- 	phba->sli4_hba.lnk_info.lnk_no =
- 		bf_get(lpfc_cntl_attr_lnk_numb, cntl_attr);
+diff --git a/drivers/gpu/drm/nouveau/nouveau_backlight.c b/drivers/gpu/drm/nouveau/nouveau_backlight.c
+index d47442125fa18..9aae26eb7d8fb 100644
+--- a/drivers/gpu/drm/nouveau/nouveau_backlight.c
++++ b/drivers/gpu/drm/nouveau/nouveau_backlight.c
+@@ -42,7 +42,7 @@
+ #include "nouveau_acpi.h"
  
--	memset(phba->BIOSVersion, 0, sizeof(phba->BIOSVersion));
--	strlcat(phba->BIOSVersion, (char *)cntl_attr->bios_ver_str,
-+	memcpy(phba->BIOSVersion, cntl_attr->bios_ver_str,
- 		sizeof(phba->BIOSVersion));
-+	phba->BIOSVersion[sizeof(phba->BIOSVersion) - 1] = '\0';
+ static struct ida bl_ida;
+-#define BL_NAME_SIZE 15 // 12 for name + 2 for digits + 1 for '\0'
++#define BL_NAME_SIZE 24 // 12 for name + 11 for digits + 1 for '\0'
  
- 	lpfc_printf_log(phba, KERN_INFO, LOG_SLI,
- 			"3086 lnk_type:%d, lnk_numb:%d, bios_ver:%s\n",
+ static bool
+ nouveau_get_backlight_name(char backlight_name[BL_NAME_SIZE],
 -- 
 2.39.5
 
