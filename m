@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-156362-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156370-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7A970AE4F52
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:14:45 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6727EAE4F47
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:14:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 75C627ACD35
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:12:34 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8D6481B60B67
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:14:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 397DD221DAC;
-	Mon, 23 Jun 2025 21:13:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BAE3421ADB5;
+	Mon, 23 Jun 2025 21:14:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PHoUIZ2K"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ptOpLcNd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8D2E202983;
-	Mon, 23 Jun 2025 21:13:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78F211DF98B;
+	Mon, 23 Jun 2025 21:14:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750713229; cv=none; b=UEC+601AS5slMDurm/81m9spJprACZirqHZTIhhtJb6M1VxYwDm4p5Vk/6a+xEINFGX7FCQkBtf+KMMQP+Mb14j/nkQJrLKL//+LvzdGor8/yEzdjUQw38uYJd7exS3jHFmBt22+owgK+Z+z7uqzBVLT7HHxc+KcpA7VmcXgep8=
+	t=1750713248; cv=none; b=tH3zWAPelGQDKRFyH9+L/6k+dVwY4XxDfG94L+gYZRueyIpCHMJRmabJWRthHUf+lYu8Hou8Ix9rW5b15Rb0eju6T74QD5Se6RpkejZUtEqG1Dc5VfxZDnCOTvQpMxTAI12YLnnSCsuS3t6A2y/QWKRfWDvgCNAUo0u6lvLndI0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750713229; c=relaxed/simple;
-	bh=6Yep8TWqonM1mZ4XERMCmf6wSqMKox9w4Dvu33Q2Msk=;
+	s=arc-20240116; t=1750713248; c=relaxed/simple;
+	bh=Lu8axZud9lzZ8uBPyGIfqtrROcCDAujI86qdnp+jCI0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=m2G84cUDM0Rom+eaVnVbvztL9Z0e2hI5WWs5wmHIBnwzW0VTmh8rIk5u5AIibtcVejirItfTGOsGbclRQSRZNIst+BhtJdu61XomCoUkImf9rNCnFNG/3dZxvVtFIG+xx1/CRDIwxDwjnioipltrvrENNqJfSilVz7FHaQIhS2Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PHoUIZ2K; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80239C4CEEA;
-	Mon, 23 Jun 2025 21:13:48 +0000 (UTC)
+	 MIME-Version; b=a+HlBKr/i+2rErx2G+9cw70F0obwr1BN9b5E2NW9stKNsyAJcZq2kvBhQEohJC2PWQab7z1BYxeyhgzXc3z+OUfe7gXK9vKKJk0vBhH+fkLPwRW+JPvUbImGaOAxcRTD6QOUN91pUssDz0PO8r6x1bUPPhizgh8PRNAMct4Md2k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ptOpLcNd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08ECFC4CEEA;
+	Mon, 23 Jun 2025 21:14:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750713228;
-	bh=6Yep8TWqonM1mZ4XERMCmf6wSqMKox9w4Dvu33Q2Msk=;
+	s=korg; t=1750713248;
+	bh=Lu8axZud9lzZ8uBPyGIfqtrROcCDAujI86qdnp+jCI0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PHoUIZ2KUCU2r3KhEgiJZJ5Gpw7rcnqEgfsyjX8p1joEKW2bBAliZRlFh+tNyyvad
-	 QREtT0JeZEdnrLZpWJBHnMC1ogRaSVV4KMy152QnmKt1/93hFGFEDhFZPXvBk7apCc
-	 t8illerfZzoH9nbwhxgFUdf9EPQg7XV5XG7otDUc=
+	b=ptOpLcNdTKtZdv8X+VzXvgk/b6Q80m6Cj80zuMIyAN5+FgG5bYE5PjTfMd7u0CTB8
+	 pkJckX2LE6Qr8WHHyIoA4zIj+4UQHOX6IkUb3t06xlzjzlAUs5tjDn3vuCVOBdiU9y
+	 FOrg7WiYwyPXY2ttcEz+5nUSgI1+/wTtL5BuZNoc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexey Kodanev <aleksei.kodanev@bell-sw.com>,
-	Ping-Ke Shih <pkshih@realtek.com>,
+	Rolf Eike Beer <eb@emlix.com>,
+	Lu Baolu <baolu.lu@linux.intel.com>,
+	Joerg Roedel <jroedel@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 085/508] wifi: rtw88: fix the para buffer size to avoid reading out of bounds
-Date: Mon, 23 Jun 2025 15:02:10 +0200
-Message-ID: <20250623130647.334496794@linuxfoundation.org>
+Subject: [PATCH 6.1 086/508] iommu: remove duplicate selection of DMAR_TABLE
+Date: Mon, 23 Jun 2025 15:02:11 +0200
+Message-ID: <20250623130647.359980625@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
 In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
 References: <20250623130645.255320792@linuxfoundation.org>
@@ -66,45 +67,34 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Alexey Kodanev <aleksei.kodanev@bell-sw.com>
+From: Rolf Eike Beer <eb@emlix.com>
 
-[ Upstream commit 4c2c372de2e108319236203cce6de44d70ae15cd ]
+[ Upstream commit 9548feff840a05d61783e6316d08ed37e115f3b1 ]
 
-Set the size to 6 instead of 2, since 'para' array is passed to
-'rtw_fw_bt_wifi_control(rtwdev, para[0], &para[1])', which reads
-5 bytes:
+This is already done in intel/Kconfig.
 
-void rtw_fw_bt_wifi_control(struct rtw_dev *rtwdev, u8 op_code, u8 *data)
-{
-    ...
-    SET_BT_WIFI_CONTROL_DATA1(h2c_pkt, *data);
-    SET_BT_WIFI_CONTROL_DATA2(h2c_pkt, *(data + 1));
-    ...
-    SET_BT_WIFI_CONTROL_DATA5(h2c_pkt, *(data + 4));
-
-Detected using the static analysis tool - Svace.
-Fixes: 4136214f7c46 ("rtw88: add BT co-existence support")
-Signed-off-by: Alexey Kodanev <aleksei.kodanev@bell-sw.com>
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
-Link: https://patch.msgid.link/20250513121304.124141-1-aleksei.kodanev@bell-sw.com
+Fixes: 70bad345e622 ("iommu: Fix compilation without CONFIG_IOMMU_INTEL")
+Signed-off-by: Rolf Eike Beer <eb@emlix.com>
+Reviewed-by: Lu Baolu <baolu.lu@linux.intel.com>
+Link: https://lore.kernel.org/r/2232605.Mh6RI2rZIc@devpool92.emlix.com
+Signed-off-by: Joerg Roedel <jroedel@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/realtek/rtw88/coex.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/iommu/Kconfig | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/drivers/net/wireless/realtek/rtw88/coex.c b/drivers/net/wireless/realtek/rtw88/coex.c
-index 8627ab0ce3bdf..1a9336c595c12 100644
---- a/drivers/net/wireless/realtek/rtw88/coex.c
-+++ b/drivers/net/wireless/realtek/rtw88/coex.c
-@@ -309,7 +309,7 @@ static void rtw_coex_tdma_timer_base(struct rtw_dev *rtwdev, u8 type)
- {
- 	struct rtw_coex *coex = &rtwdev->coex;
- 	struct rtw_coex_stat *coex_stat = &coex->stat;
--	u8 para[2] = {0};
-+	u8 para[6] = {};
- 	u8 times;
- 	u16 tbtt_interval = coex_stat->wl_beacon_interval;
- 
+diff --git a/drivers/iommu/Kconfig b/drivers/iommu/Kconfig
+index dc19e7fb07cfe..fad36f0a4d14b 100644
+--- a/drivers/iommu/Kconfig
++++ b/drivers/iommu/Kconfig
+@@ -192,7 +192,6 @@ source "drivers/iommu/intel/Kconfig"
+ config IRQ_REMAP
+ 	bool "Support for Interrupt Remapping"
+ 	depends on X86_64 && X86_IO_APIC && PCI_MSI && ACPI
+-	select DMAR_TABLE if INTEL_IOMMU
+ 	help
+ 	  Supports Interrupt remapping for IO-APIC and MSI devices.
+ 	  To use x2apic mode in the CPU's which support x2APIC enhancements or
 -- 
 2.39.5
 
