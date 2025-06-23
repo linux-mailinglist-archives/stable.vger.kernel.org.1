@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-155965-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-155973-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 15609AE4473
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:43:12 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BB50EAE448B
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:43:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5070A189CE7D
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:38:19 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 721A04A1E9A
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:38:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3C95251792;
-	Mon, 23 Jun 2025 13:36:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5029425393A;
+	Mon, 23 Jun 2025 13:36:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KdudZ6yb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XN48kxpJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62B214C7F;
-	Mon, 23 Jun 2025 13:36:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E24A347DD;
+	Mon, 23 Jun 2025 13:36:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750685797; cv=none; b=Cp2fx3bHaTceofZ3knowSBt1X5w8ZqYfE5h5yPoHKwkRnN0/JNfnSk+j9mNuIQeUqCGU+kTDtgxviB/7Cg9StTMfJuiIiS5dUCaXNRsWUVj3QLLOIkML2uslu83VAQjrod2Tb8CBd5s6YbThaKtKtmkZJVPazasf2gcn8CTpcYM=
+	t=1750685818; cv=none; b=P5TmcPf/KSqnANyzUNah1ySgFnrfD51L8a35w2ac7+7LsA67l7/PrrC9i28Mn4eSpi4lnLAPqTinO1YILyJ/hp0WxHP3XAS3qoCG6E51ZtGVKgCwQXYMEhvYtSlHmoTnTxPToQgkay9pL7xSiFf/igMzKLr1egryrk/G/5pCApI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750685797; c=relaxed/simple;
-	bh=IG77Np/juMMfzLulKo9wPb3iBukb6aII+LROJHs8k04=;
+	s=arc-20240116; t=1750685818; c=relaxed/simple;
+	bh=Vm0L+E8HU+99ldCD6zUsjPEx91ykVAJ8WHum1T84nCc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UwQ5FIe+GYLq+Euo2KP+srb0tTQXWOxw0+oeeLKtF2URYAh6xQmTJc5BkZkQQlKda7xCgtyaE/PMCB1DZ9093RCpo2PCbEHgsooxJLpHOqXdk13CBtBiffQV1QkJatU590usKPm6aONdKQ7mrxJoQYQ2f1+G7vmywFUW0GI5OYA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KdudZ6yb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EBDAEC4CEF0;
-	Mon, 23 Jun 2025 13:36:36 +0000 (UTC)
+	 MIME-Version; b=srL0qEqxf06h8N4uoLAmbj3IKjZckhUAg7256Rt4RLdKgR8I0oeoCPMt6tVJ3j5JsxO1lYzhFvl1Inhoa62soO4QpQFNaOuMcJxklPH6gphHqE9oWl1dI6O892iPOAO1SnCc5xqwLaIU7kIQ6cjQpD4xb0LP+a0SEgW2Bj5lHSs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XN48kxpJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96CB0C4CEEA;
+	Mon, 23 Jun 2025 13:36:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750685797;
-	bh=IG77Np/juMMfzLulKo9wPb3iBukb6aII+LROJHs8k04=;
+	s=korg; t=1750685817;
+	bh=Vm0L+E8HU+99ldCD6zUsjPEx91ykVAJ8WHum1T84nCc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KdudZ6ybVwNwn2ecCNkgfdS38AkFg6YVzmrO6mw9TRYpMvrtAvgmpN/7J4oXY5TUA
-	 DW/xedWSqtCxgyS3VQunZ4YN1hoDsMTA0cpKjYxehfu3jeHuLBUzcX3Jketm6LgglB
-	 LZ2rMecsSvXtHkikc2IB8Jdwq2BZS22ChCT9TetY=
+	b=XN48kxpJpdewwnC4r7nULMP/ywE0LUDYzXOrr0Bbv9aY9LGZKG9JOWSLF9zdI1Gtq
+	 xVRXRSh6/1i77dLyTWoUTmRFf9FbWtROogeBbOANY6vmTngAJRZxnylmuaUFdxuBHu
+	 KxH+2UUrsWHaLhKZnXF83nEpiC2weH8FD7qP+EqA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Long Li <leo.lilong@huawei.com>,
-	Chuck Lever <chuck.lever@oracle.com>,
+	Douglas Anderson <dianders@chromium.org>,
+	Damon Ding <damon.ding@rock-chips.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 142/222] sunrpc: update nextcheck time when adding new cache entries
-Date: Mon, 23 Jun 2025 15:07:57 +0200
-Message-ID: <20250623130616.359295256@linuxfoundation.org>
+Subject: [PATCH 5.4 143/222] drm/bridge: analogix_dp: Add irq flag IRQF_NO_AUTOEN instead of calling disable_irq()
+Date: Mon, 23 Jun 2025 15:07:58 +0200
+Message-ID: <20250623130616.389516178@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
 In-Reply-To: <20250623130611.896514667@linuxfoundation.org>
 References: <20250623130611.896514667@linuxfoundation.org>
@@ -66,49 +67,50 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Long Li <leo.lilong@huawei.com>
+From: Damon Ding <damon.ding@rock-chips.com>
 
-[ Upstream commit 5ca00634c8bbb2979c73465588f486b9632f5ed5 ]
+[ Upstream commit efab13e7d13a641a22c7508cde6e1a5285161944 ]
 
-The cache_detail structure uses a "nextcheck" field to control hash table
-scanning intervals. When a table scan begins, nextcheck is set to current
-time plus 1800 seconds. During scanning, if cache_detail is not empty and
-a cache entry's expiry time is earlier than the current nextcheck, the
-nextcheck is updated to that expiry time.
+The IRQF_NO_AUTOEN can be used for the drivers that don't want
+interrupts to be enabled automatically via devm_request_threaded_irq().
+Using this flag can provide be more robust compared to the way of
+calling disable_irq() after devm_request_threaded_irq() without the
+IRQF_NO_AUTOEN flag.
 
-This mechanism ensures that:
-1) Empty cache_details are scanned every 1800 seconds to avoid unnecessary
-   scans
-2) Non-empty cache_details are scanned based on the earliest expiry time
-   found
-
-However, when adding a new cache entry to an empty cache_detail, the
-nextcheck time was not being updated, remaining at 1800 seconds. This
-could delay cache cleanup for up to 1800 seconds, potentially blocking
-threads(such as nfsd) that are waiting for cache cleanup.
-
-Fix this by updating the nextcheck time whenever a new cache entry is
-added.
-
-Signed-off-by: Long Li <leo.lilong@huawei.com>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Suggested-by: Douglas Anderson <dianders@chromium.org>
+Reviewed-by: Douglas Anderson <dianders@chromium.org>
+Signed-off-by: Damon Ding <damon.ding@rock-chips.com>
+Link: https://lore.kernel.org/r/20250310104114.2608063-2-damon.ding@rock-chips.com
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sunrpc/cache.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/gpu/drm/bridge/analogix/analogix_dp_core.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/net/sunrpc/cache.c b/net/sunrpc/cache.c
-index 2215314dc4c5d..47623d49fa3a6 100644
---- a/net/sunrpc/cache.c
-+++ b/net/sunrpc/cache.c
-@@ -114,6 +114,8 @@ static struct cache_head *sunrpc_cache_add_entry(struct cache_detail *detail,
+diff --git a/drivers/gpu/drm/bridge/analogix/analogix_dp_core.c b/drivers/gpu/drm/bridge/analogix/analogix_dp_core.c
+index df606a5675663..234c0bd38e851 100644
+--- a/drivers/gpu/drm/bridge/analogix/analogix_dp_core.c
++++ b/drivers/gpu/drm/bridge/analogix/analogix_dp_core.c
+@@ -1735,10 +1735,10 @@ analogix_dp_probe(struct device *dev, struct analogix_dp_plat_data *plat_data)
+ 		 * that we can get the current state of the GPIO.
+ 		 */
+ 		dp->irq = gpiod_to_irq(dp->hpd_gpiod);
+-		irq_flags = IRQF_TRIGGER_RISING | IRQF_TRIGGER_FALLING;
++		irq_flags = IRQF_TRIGGER_RISING | IRQF_TRIGGER_FALLING | IRQF_NO_AUTOEN;
+ 	} else {
+ 		dp->irq = platform_get_irq(pdev, 0);
+-		irq_flags = 0;
++		irq_flags = IRQF_NO_AUTOEN;
+ 	}
  
- 	hlist_add_head_rcu(&new->cache_list, head);
- 	detail->entries++;
-+	if (detail->nextcheck > new->expiry_time)
-+		detail->nextcheck = new->expiry_time + 1;
- 	cache_get(new);
- 	spin_unlock(&detail->hash_lock);
+ 	if (dp->irq == -ENXIO) {
+@@ -1755,7 +1755,6 @@ analogix_dp_probe(struct device *dev, struct analogix_dp_plat_data *plat_data)
+ 		dev_err(&pdev->dev, "failed to request irq\n");
+ 		goto err_disable_clk;
+ 	}
+-	disable_irq(dp->irq);
+ 
+ 	return dp;
  
 -- 
 2.39.5
