@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-157128-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156839-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id C1D8CAE52A3
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:46:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CF6BCAE515B
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:33:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6F8FA7AE2D1
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:44:31 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 62B3E7AD7BC
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:32:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC9771FECBA;
-	Mon, 23 Jun 2025 21:45:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7FA37223714;
+	Mon, 23 Jun 2025 21:33:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J4C66KwL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pyOW6Hiu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A61A229B13;
-	Mon, 23 Jun 2025 21:45:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DAB61F5820;
+	Mon, 23 Jun 2025 21:33:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750715103; cv=none; b=PPTP6K6Vh+DCyfpG2WS9fa+NYXKMVxFU8AE6HaEg5jwz60h5dJ7FoRCGXHpwizus6f5Ml102slv3YL90R9uoKrJQ6qL1AAgXvV45ogM5Rt+2cfG1KbZV5YbNsRD5OR4aXUS6pzLbWsR58G/VBsPCkWIxoyRHQOB/uDbKQQbCVlA=
+	t=1750714392; cv=none; b=G9HNlp16CY2LUv7Kvk6GthJBmw6J37HYNCo2BII155v9vwCMm53vphIGLdjrbE3Jx5E9XBZJhTFDNY6aQ9hgoE3wN7cew/brLUdohfU0b4mRIy5Byhn3Z7bp4dqWrNGxgSpENCeEMr6Nitwi2/Q216ZHq8wl5NZFEw+eFWNNqe4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750715103; c=relaxed/simple;
-	bh=M2The7Cf/qXkO6kcWxAflhhRAivz0/zG4C/gc8IRe7U=;
+	s=arc-20240116; t=1750714392; c=relaxed/simple;
+	bh=wNuQs3lZfWKjHhD/lEfGSYIKV2w6br707vfXKws+rDQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=mfiufYYPcOP0UJTWGJCGCrFE759PbtbDz4jQ6fRTdU35kWUGsLk0GLyCQcg6u4z/iiikQXPyxLjYgT5JQddjmFe5rV4Y+LrLxga5FLvE8EajdG5pnI2m5Ochr/0XGpN9oVhvbh8banvhnHyVofhmdjul7nHx2GKDyXJx3zXcVSA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J4C66KwL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 868DEC4CEF4;
-	Mon, 23 Jun 2025 21:45:02 +0000 (UTC)
+	 MIME-Version; b=lTjt9LtZJ6ViRIelnTxMHSPwqwJ+GWM+sKtGVwckaK7Lg08a8kCXSHIUOPtXTl3JJsEzY3Kn2vNKDbBJvedKtwC1tJsf733YB8lcdU9KbAAfJcoShCTYsOVS+XNQe7vRTvN2immz27AeuEVDDdAkBWSSHPYUuuZNfHDzfsL64Bk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pyOW6Hiu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA0BDC4CEEA;
+	Mon, 23 Jun 2025 21:33:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750715103;
-	bh=M2The7Cf/qXkO6kcWxAflhhRAivz0/zG4C/gc8IRe7U=;
+	s=korg; t=1750714392;
+	bh=wNuQs3lZfWKjHhD/lEfGSYIKV2w6br707vfXKws+rDQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=J4C66KwLqYhcKWZXEL/Uf8hp3q7QrAoYufILm212QyvzvTRiGBRNxrCehYhSKttn7
-	 UPHRAI1naczGDSkrwxU7KyKOS1X4+xK5d124OD203qLfEIwXmyJ01TS7yH30oM6MTE
-	 +1kyZdzNRm+ZsMXL8UsuMIqqArdhbo99jV5YJZm4=
+	b=pyOW6HiuCVT7aVGMNlwYI9bV9id+yf790SO1L/N/xPRRqTH3EIcD3pooAguweI2uo
+	 Xc/iJ7Gi5IoBLdhJqQnYorzZTbGh91WDa+ps1uuC24wdxI7FfQb4sRQEvJ743jpNmr
+	 KWilBhiwmKwE7CDQ1A8ayEXCy0Hl/CcDJU6D+GSg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Rengarajan S <rengarajan.s@microchip.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 437/592] platform/x86/amd: pmf: Prevent amd_pmf_tee_deinit() from running twice
+Subject: [PATCH 6.6 134/290] net: lan743x: Modify the EEPROM and OTP size for PCI1xxxx devices
 Date: Mon, 23 Jun 2025 15:06:35 +0200
-Message-ID: <20250623130710.828652229@linuxfoundation.org>
+Message-ID: <20250623130630.943845166@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
-References: <20250623130700.210182694@linuxfoundation.org>
+In-Reply-To: <20250623130626.910356556@linuxfoundation.org>
+References: <20250623130626.910356556@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,75 +60,93 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mario Limonciello <mario.limonciello@amd.com>
+From: Rengarajan S <rengarajan.s@microchip.com>
 
-[ Upstream commit 93103d56650d7a38ed37ba4041578310f82776ae ]
+[ Upstream commit 3b9935586a9b54d2da27901b830d3cf46ad66a1e ]
 
-If any of the tee init fails, pass up the errors and clear the tee_ctx
-pointer. This will prevent cleaning up multiple times.
+Maximum OTP and EEPROM size for hearthstone PCI1xxxx devices are 8 Kb
+and 64 Kb respectively. Adjust max size definitions and return correct
+EEPROM length based on device. Also prevent out-of-bound read/write.
 
-Fixes: ac052d8c08f9d ("platform/x86/amd/pmf: Add PMF TEE interface")
-Suggested-by: Dan Carpenter <dan.carpenter@linaro.org>
-Link: https://lore.kernel.org/r/20250512211154.2510397-3-superm1@kernel.org
-Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
-Link: https://lore.kernel.org/r/20250522003457.1516679-3-superm1@kernel.org
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Rengarajan S <rengarajan.s@microchip.com>
+Link: https://patch.msgid.link/20250523173326.18509-1-rengarajan.s@microchip.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/x86/amd/pmf/tee-if.c | 11 ++++++++---
- 1 file changed, 8 insertions(+), 3 deletions(-)
+ .../net/ethernet/microchip/lan743x_ethtool.c   | 18 ++++++++++++++++--
+ 1 file changed, 16 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/platform/x86/amd/pmf/tee-if.c b/drivers/platform/x86/amd/pmf/tee-if.c
-index 027e992b71472..76efce48a45ce 100644
---- a/drivers/platform/x86/amd/pmf/tee-if.c
-+++ b/drivers/platform/x86/amd/pmf/tee-if.c
-@@ -420,12 +420,12 @@ static int amd_pmf_ta_open_session(struct tee_context *ctx, u32 *id, const uuid_
- 	rc = tee_client_open_session(ctx, &sess_arg, NULL);
- 	if (rc < 0 || sess_arg.ret != 0) {
- 		pr_err("Failed to open TEE session err:%#x, rc:%d\n", sess_arg.ret, rc);
--		return rc;
-+		return rc ?: -EINVAL;
- 	}
+diff --git a/drivers/net/ethernet/microchip/lan743x_ethtool.c b/drivers/net/ethernet/microchip/lan743x_ethtool.c
+index 72b3092d35f71..39a58c3578a02 100644
+--- a/drivers/net/ethernet/microchip/lan743x_ethtool.c
++++ b/drivers/net/ethernet/microchip/lan743x_ethtool.c
+@@ -18,6 +18,8 @@
+ #define EEPROM_MAC_OFFSET		    (0x01)
+ #define MAX_EEPROM_SIZE			    (512)
+ #define MAX_OTP_SIZE			    (1024)
++#define MAX_HS_OTP_SIZE			    (8 * 1024)
++#define MAX_HS_EEPROM_SIZE		    (64 * 1024)
+ #define OTP_INDICATOR_1			    (0xF3)
+ #define OTP_INDICATOR_2			    (0xF7)
  
- 	*id = sess_arg.session;
+@@ -272,6 +274,9 @@ static int lan743x_hs_otp_read(struct lan743x_adapter *adapter, u32 offset,
+ 	int ret;
+ 	int i;
  
--	return rc;
-+	return 0;
++	if (offset + length > MAX_HS_OTP_SIZE)
++		return -EINVAL;
++
+ 	ret = lan743x_hs_syslock_acquire(adapter, LOCK_TIMEOUT_MAX_CNT);
+ 	if (ret < 0)
+ 		return ret;
+@@ -320,6 +325,9 @@ static int lan743x_hs_otp_write(struct lan743x_adapter *adapter, u32 offset,
+ 	int ret;
+ 	int i;
+ 
++	if (offset + length > MAX_HS_OTP_SIZE)
++		return -EINVAL;
++
+ 	ret = lan743x_hs_syslock_acquire(adapter, LOCK_TIMEOUT_MAX_CNT);
+ 	if (ret < 0)
+ 		return ret;
+@@ -497,6 +505,9 @@ static int lan743x_hs_eeprom_read(struct lan743x_adapter *adapter,
+ 	u32 val;
+ 	int i;
+ 
++	if (offset + length > MAX_HS_EEPROM_SIZE)
++		return -EINVAL;
++
+ 	retval = lan743x_hs_syslock_acquire(adapter, LOCK_TIMEOUT_MAX_CNT);
+ 	if (retval < 0)
+ 		return retval;
+@@ -539,6 +550,9 @@ static int lan743x_hs_eeprom_write(struct lan743x_adapter *adapter,
+ 	u32 val;
+ 	int i;
+ 
++	if (offset + length > MAX_HS_EEPROM_SIZE)
++		return -EINVAL;
++
+ 	retval = lan743x_hs_syslock_acquire(adapter, LOCK_TIMEOUT_MAX_CNT);
+ 	if (retval < 0)
+ 		return retval;
+@@ -604,9 +618,9 @@ static int lan743x_ethtool_get_eeprom_len(struct net_device *netdev)
+ 	struct lan743x_adapter *adapter = netdev_priv(netdev);
+ 
+ 	if (adapter->flags & LAN743X_ADAPTER_FLAG_OTP)
+-		return MAX_OTP_SIZE;
++		return adapter->is_pci11x1x ? MAX_HS_OTP_SIZE : MAX_OTP_SIZE;
+ 
+-	return MAX_EEPROM_SIZE;
++	return adapter->is_pci11x1x ? MAX_HS_EEPROM_SIZE : MAX_EEPROM_SIZE;
  }
  
- static int amd_pmf_register_input_device(struct amd_pmf_dev *dev)
-@@ -460,7 +460,9 @@ static int amd_pmf_tee_init(struct amd_pmf_dev *dev, const uuid_t *uuid)
- 	dev->tee_ctx = tee_client_open_context(NULL, amd_pmf_amdtee_ta_match, NULL, NULL);
- 	if (IS_ERR(dev->tee_ctx)) {
- 		dev_err(dev->dev, "Failed to open TEE context\n");
--		return PTR_ERR(dev->tee_ctx);
-+		ret = PTR_ERR(dev->tee_ctx);
-+		dev->tee_ctx = NULL;
-+		return ret;
- 	}
- 
- 	ret = amd_pmf_ta_open_session(dev->tee_ctx, &dev->session_id, uuid);
-@@ -500,9 +502,12 @@ static int amd_pmf_tee_init(struct amd_pmf_dev *dev, const uuid_t *uuid)
- 
- static void amd_pmf_tee_deinit(struct amd_pmf_dev *dev)
- {
-+	if (!dev->tee_ctx)
-+		return;
- 	tee_shm_free(dev->fw_shm_pool);
- 	tee_client_close_session(dev->tee_ctx, dev->session_id);
- 	tee_client_close_context(dev->tee_ctx);
-+	dev->tee_ctx = NULL;
- }
- 
- int amd_pmf_init_smart_pc(struct amd_pmf_dev *dev)
+ static int lan743x_ethtool_get_eeprom(struct net_device *netdev,
 -- 
 2.39.5
 
