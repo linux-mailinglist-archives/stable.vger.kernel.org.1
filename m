@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-157749-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157762-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 37EFCAE5568
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:11:03 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6F662AE557C
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:11:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C8FE67A9D37
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:09:39 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5FDB21BC4B67
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:11:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6FB8229B15;
-	Mon, 23 Jun 2025 22:10:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE331226D1D;
+	Mon, 23 Jun 2025 22:10:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eIJxTpTE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NV7FKQg1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A37EA21FF2B;
-	Mon, 23 Jun 2025 22:10:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B457226D04;
+	Mon, 23 Jun 2025 22:10:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750716627; cv=none; b=OT4/ErU8TzD1Y90g7h/L5e8HWEvRdcw0hzzEBJ4KLsX1tAaGq7JlLUvWu/RYRIJcBQgCQUhf101LKb6vbooI+aekOciiVwYEZLHa3zUbiI6cnF2ZJhgmG6D6CZMGEW2mrZOvsqyqJfgnd8tcYcuKClwPzgCBRYMgVnBR1owbrd8=
+	t=1750716659; cv=none; b=BvzQe6czU3ScfOdybf3TQy9Lpmr/M39/r3TiTY5lHlQuADrIAFAx4FM1zILZv94Z9aX9ZZmyeXo84Usbx8wxuVgHiOO/d4Fzn9u/G7rBeAZ1/EJiOP3iNWNMwwQ+nUc/jYXWo/Db/ppINo9WEahrEMfccFeVnDWHfF2Wawck5VM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750716627; c=relaxed/simple;
-	bh=ZGCT5OcLD2qtWxy++QUJTfxgXxvfz/6VUwKi9fRLWis=;
+	s=arc-20240116; t=1750716659; c=relaxed/simple;
+	bh=Plmg6t/y47uz2+GCa9WbG9DolsKtK+dLddLiPLmQXiE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ANWW9Wl5fES1JuE6jUjRf0rPekRhRa7W+OGK0sb87okXdFwdkLgdRq0PuHt2fYLCF6aW/HoyTTaLJuUWh3377g+nyFjPVqGBTO4kKFZltq5rtxqc4Akd+Q1r3Cd7tsiBFEm6EWtxchRpiPvqwMzK+7wqkPC5tFWwoIQCzKZEey4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eIJxTpTE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36EAAC4CEEA;
-	Mon, 23 Jun 2025 22:10:27 +0000 (UTC)
+	 MIME-Version; b=at3ipUdA83ihYLc1fGJ3mxtLcWOY74SH/m/+r7JwhGkYu8sOuBy2Du6JIt2HF9PF6VnZz8NLwva/MTem6UtoZPB8tnD7bXpnOhyDRSuc+wDCv17tND9WV7SH2QvBR2sGtWpyDmSXsR0GvnJayjVQgVZya2ZzdxyDkUGC6W59DTI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NV7FKQg1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11484C4CEEA;
+	Mon, 23 Jun 2025 22:10:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750716627;
-	bh=ZGCT5OcLD2qtWxy++QUJTfxgXxvfz/6VUwKi9fRLWis=;
+	s=korg; t=1750716659;
+	bh=Plmg6t/y47uz2+GCa9WbG9DolsKtK+dLddLiPLmQXiE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eIJxTpTEiiBGAVtvjGOIbK3BGCwQg1rh/vEAo6bIqRhEXz2C7mTTRbeEuDb9sQkjJ
-	 lYpgga2FD9O+XyvyYO+8PLX6RfzcMiU+qRrnKKUEr07jskHRznfc/OA+Cxuv4Bo7ig
-	 P9LPHia8FUFYQwCbC9osygusmCtCozsShsQ0Joqs=
+	b=NV7FKQg1Ekj9ZbUNWvY6bSIF/XbiUeztqFqQvxiYX3NoyCFqmrXt3a9SjJ4FhseI9
+	 xuTjXripnZgdVN7FQGOC0kiHcMeWpfgyMkXdBSkIxkprGEbK2a04ZcS28co5rwiNYh
+	 AhiKPx70pUXm+yryljHUFcJbcQqP4b9e7tGg2+uU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Wei <dw@davidwei.uk>,
-	Pavan Chebbi <pavan.chebbi@broadcom.com>,
-	Michael Chan <michael.chan@broadcom.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 534/592] bnxt_en: Update MRU and RSS table of RSS contexts on queue reset
+	Fedor Pchelkin <pchelkin@ispras.ru>,
+	Zhihao Cheng <chengzhihao1@huawei.com>,
+	Richard Weinberger <richard@nod.at>
+Subject: [PATCH 5.15 348/411] jffs2: check jffs2_prealloc_raw_node_refs() result in few other places
 Date: Mon, 23 Jun 2025 15:08:12 +0200
-Message-ID: <20250623130713.138033308@linuxfoundation.org>
+Message-ID: <20250623130642.406659797@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
-References: <20250623130700.210182694@linuxfoundation.org>
+In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
+References: <20250623130632.993849527@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,142 +62,85 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pavan Chebbi <pavan.chebbi@broadcom.com>
+From: Fedor Pchelkin <pchelkin@ispras.ru>
 
-[ Upstream commit 5dacc94c6fe61cde6f700e95cf35af9944b022c4 ]
+commit 2b6d96503255a3ed676cd70f8368870c6d6a25c6 upstream.
 
-The commit under the Fixes tag below which updates the VNICs' RSS
-and MRU during .ndo_queue_start(), needs to be extended to cover any
-non-default RSS contexts which have their own VNICs.  Without this
-step, packets that are destined to a non-default RSS context may be
-dropped after .ndo_queue_start().
+Fuzzing hit another invalid pointer dereference due to the lack of
+checking whether jffs2_prealloc_raw_node_refs() completed successfully.
+Subsequent logic implies that the node refs have been allocated.
 
-We further optimize this scheme by updating the VNIC only if the
-RX ring being restarted is in the RSS table of the VNIC.  Updating
-the VNIC (in particular setting the MRU to 0) will momentarily stop
-all traffic to all rings in the RSS table.  Any VNIC that has the
-RX ring excluded from the RSS table can skip this step and avoid the
-traffic disruption.
+Handle that. The code is ready for propagating the error upwards.
 
-Note that this scheme is just an improvement.  A VNIC with multiple
-rings in the RSS table will still see traffic disruptions to all rings
-in the RSS table when one of the rings is being restarted.  We are
-working on a FW scheme that will improve upon this further.
+KASAN: null-ptr-deref in range [0x0000000000000008-0x000000000000000f]
+CPU: 1 PID: 5835 Comm: syz-executor145 Not tainted 5.10.234-syzkaller #0
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.12.0-1 04/01/2014
+RIP: 0010:jffs2_link_node_ref+0xac/0x690 fs/jffs2/nodelist.c:600
+Call Trace:
+ jffs2_mark_erased_block fs/jffs2/erase.c:460 [inline]
+ jffs2_erase_pending_blocks+0x688/0x1860 fs/jffs2/erase.c:118
+ jffs2_garbage_collect_pass+0x638/0x1a00 fs/jffs2/gc.c:253
+ jffs2_reserve_space+0x3f4/0xad0 fs/jffs2/nodemgmt.c:167
+ jffs2_write_inode_range+0x246/0xb50 fs/jffs2/write.c:362
+ jffs2_write_end+0x712/0x1110 fs/jffs2/file.c:302
+ generic_perform_write+0x2c2/0x500 mm/filemap.c:3347
+ __generic_file_write_iter+0x252/0x610 mm/filemap.c:3465
+ generic_file_write_iter+0xdb/0x230 mm/filemap.c:3497
+ call_write_iter include/linux/fs.h:2039 [inline]
+ do_iter_readv_writev+0x46d/0x750 fs/read_write.c:740
+ do_iter_write+0x18c/0x710 fs/read_write.c:866
+ vfs_writev+0x1db/0x6a0 fs/read_write.c:939
+ do_pwritev fs/read_write.c:1036 [inline]
+ __do_sys_pwritev fs/read_write.c:1083 [inline]
+ __se_sys_pwritev fs/read_write.c:1078 [inline]
+ __x64_sys_pwritev+0x235/0x310 fs/read_write.c:1078
+ do_syscall_64+0x30/0x40 arch/x86/entry/common.c:46
+ entry_SYSCALL_64_after_hwframe+0x67/0xd1
 
-Fixes: 5ac066b7b062 ("bnxt_en: Fix queue start to update vnic RSS table")
-Reported-by: David Wei <dw@davidwei.uk>
-Signed-off-by: Pavan Chebbi <pavan.chebbi@broadcom.com>
-Signed-off-by: Michael Chan <michael.chan@broadcom.com>
-Link: https://patch.msgid.link/20250613231841.377988-4-michael.chan@broadcom.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Found by Linux Verification Center (linuxtesting.org) with Syzkaller.
+
+Fixes: 2f785402f39b ("[JFFS2] Reduce visibility of raw_node_ref to upper layers of JFFS2 code.")
+Fixes: f560928baa60 ("[JFFS2] Allocate node_ref for wasted space when skipping to page boundary")
+Cc: stable@vger.kernel.org
+Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
+Reviewed-by: Zhihao Cheng <chengzhihao1@huawei.com>
+Signed-off-by: Richard Weinberger <richard@nod.at>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/broadcom/bnxt/bnxt.c | 56 +++++++++++++++++++++--
- 1 file changed, 51 insertions(+), 5 deletions(-)
+ fs/jffs2/erase.c |    4 +++-
+ fs/jffs2/scan.c  |    4 +++-
+ 2 files changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt.c b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-index 3d975e50f9438..c365a9e64f728 100644
---- a/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-+++ b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-@@ -10738,11 +10738,39 @@ void bnxt_del_one_rss_ctx(struct bnxt *bp, struct bnxt_rss_ctx *rss_ctx,
- 	bp->num_rss_ctx--;
- }
+--- a/fs/jffs2/erase.c
++++ b/fs/jffs2/erase.c
+@@ -427,7 +427,9 @@ static void jffs2_mark_erased_block(stru
+ 			.totlen =	cpu_to_je32(c->cleanmarker_size)
+ 		};
  
-+static bool bnxt_vnic_has_rx_ring(struct bnxt *bp, struct bnxt_vnic_info *vnic,
-+				  int rxr_id)
-+{
-+	u16 tbl_size = bnxt_get_rxfh_indir_size(bp->dev);
-+	int i, vnic_rx;
-+
-+	/* Ntuple VNIC always has all the rx rings. Any change of ring id
-+	 * must be updated because a future filter may use it.
-+	 */
-+	if (vnic->flags & BNXT_VNIC_NTUPLE_FLAG)
-+		return true;
-+
-+	for (i = 0; i < tbl_size; i++) {
-+		if (vnic->flags & BNXT_VNIC_RSSCTX_FLAG)
-+			vnic_rx = ethtool_rxfh_context_indir(vnic->rss_ctx)[i];
-+		else
-+			vnic_rx = bp->rss_indir_tbl[i];
-+
-+		if (rxr_id == vnic_rx)
-+			return true;
-+	}
-+
-+	return false;
-+}
-+
- static int bnxt_set_vnic_mru_p5(struct bnxt *bp, struct bnxt_vnic_info *vnic,
--				u16 mru)
-+				u16 mru, int rxr_id)
- {
- 	int rc;
+-		jffs2_prealloc_raw_node_refs(c, jeb, 1);
++		ret = jffs2_prealloc_raw_node_refs(c, jeb, 1);
++		if (ret)
++			goto filebad;
  
-+	if (!bnxt_vnic_has_rx_ring(bp, vnic, rxr_id))
-+		return 0;
-+
- 	if (mru) {
- 		rc = bnxt_hwrm_vnic_set_rss_p5(bp, vnic, true);
- 		if (rc) {
-@@ -10758,6 +10786,24 @@ static int bnxt_set_vnic_mru_p5(struct bnxt *bp, struct bnxt_vnic_info *vnic,
- 	return 0;
- }
+ 		marker.hdr_crc = cpu_to_je32(crc32(0, &marker, sizeof(struct jffs2_unknown_node)-4));
  
-+static int bnxt_set_rss_ctx_vnic_mru(struct bnxt *bp, u16 mru, int rxr_id)
-+{
-+	struct ethtool_rxfh_context *ctx;
-+	unsigned long context;
-+	int rc;
-+
-+	xa_for_each(&bp->dev->ethtool->rss_ctx, context, ctx) {
-+		struct bnxt_rss_ctx *rss_ctx = ethtool_rxfh_context_priv(ctx);
-+		struct bnxt_vnic_info *vnic = &rss_ctx->vnic;
-+
-+		rc = bnxt_set_vnic_mru_p5(bp, vnic, mru, rxr_id);
-+		if (rc)
-+			return rc;
-+	}
-+
-+	return 0;
-+}
-+
- static void bnxt_hwrm_realloc_rss_ctx_vnic(struct bnxt *bp)
- {
- 	bool set_tpa = !!(bp->flags & BNXT_FLAG_TPA);
-@@ -15958,12 +16004,11 @@ static int bnxt_queue_start(struct net_device *dev, void *qmem, int idx)
- 	for (i = 0; i < bp->nr_vnics; i++) {
- 		vnic = &bp->vnic_info[i];
+--- a/fs/jffs2/scan.c
++++ b/fs/jffs2/scan.c
+@@ -256,7 +256,9 @@ int jffs2_scan_medium(struct jffs2_sb_in
  
--		rc = bnxt_set_vnic_mru_p5(bp, vnic, mru);
-+		rc = bnxt_set_vnic_mru_p5(bp, vnic, mru, idx);
- 		if (rc)
- 			return rc;
+ 		jffs2_dbg(1, "%s(): Skipping %d bytes in nextblock to ensure page alignment\n",
+ 			  __func__, skip);
+-		jffs2_prealloc_raw_node_refs(c, c->nextblock, 1);
++		ret = jffs2_prealloc_raw_node_refs(c, c->nextblock, 1);
++		if (ret)
++			goto out;
+ 		jffs2_scan_dirty_space(c, c->nextblock, skip);
  	}
--
--	return 0;
-+	return bnxt_set_rss_ctx_vnic_mru(bp, mru, idx);
- 
- err_reset:
- 	netdev_err(bp->dev, "Unexpected HWRM error during queue start rc: %d\n",
-@@ -15986,8 +16031,9 @@ static int bnxt_queue_stop(struct net_device *dev, void *qmem, int idx)
- 	for (i = 0; i < bp->nr_vnics; i++) {
- 		vnic = &bp->vnic_info[i];
- 
--		bnxt_set_vnic_mru_p5(bp, vnic, 0);
-+		bnxt_set_vnic_mru_p5(bp, vnic, 0, idx);
- 	}
-+	bnxt_set_rss_ctx_vnic_mru(bp, 0, idx);
- 	/* Make sure NAPI sees that the VNIC is disabled */
- 	synchronize_net();
- 	rxr = &bp->rx_ring[idx];
--- 
-2.39.5
-
+ #endif
 
 
 
