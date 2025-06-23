@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-157305-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156374-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 337C7AE5365
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:52:51 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id AF9E0AE4F4C
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:14:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D7471443BBD
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:52:08 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 479DA189CBBF
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:14:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 93A83223DED;
-	Mon, 23 Jun 2025 21:52:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C32221ADB5;
+	Mon, 23 Jun 2025 21:14:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dmKVm8VR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2grbFcl2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FFBE19049B;
-	Mon, 23 Jun 2025 21:52:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AED01DF98B;
+	Mon, 23 Jun 2025 21:14:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750715543; cv=none; b=j8Wh6Vf9O2geMSqODoCgh1IK1BLxqoCFX7VGSNZojyFh7OJwygdOhIRUrZT9vPbtAaSrJZxZGUX1EkVd2Sdx3PNzNSynlBW6qM/AtFYiWKg9W09kSWCI2uYQzGTOHxjtJXJOIsd2RG1xm5lnpd+oFzjM+Pl1ZkBmmh2PpoUYMik=
+	t=1750713258; cv=none; b=Ute8BVpHoaIgsjDfduO3glv4dz+okNiBhOBEwSdy8ILNVKuLCql48aNpAMASGYkhp6rqvv7jh9Zt7P2RQOfQe8HYhQwcFrU2EbtaGshjk+YIxLvXCJrdPvjONSCm9979thkRIfE7VioTE+h3NKhivmppw9/rNzNFlNwTa0V/LzY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750715543; c=relaxed/simple;
-	bh=Dr7U/Z2dHu8mmwahspd31+pk5Kh2lJ/Gwc1IbCNrmlc=;
+	s=arc-20240116; t=1750713258; c=relaxed/simple;
+	bh=74u9hILTxoYG+SSl/1Q31ZzJ7aKkLcjfmUUGcei6HmM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=iClk+8/txbK/mxZOavd1xzQ56CYt6U6+YGxIUM3pfFPmGZ/HTGhpbhlLHHTPlmOQE9bPXgPJSeiGJWNp3AxlCGVRuvLQPGge/CEmNHzc6bzI/6Fhx7BRixh7/pgUQSLaKeLBP7BtRjUGYhWLe9t0GVwn4eBVWdnaEKZ1oGeG0QE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dmKVm8VR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB5BEC4CEEA;
-	Mon, 23 Jun 2025 21:52:22 +0000 (UTC)
+	 MIME-Version; b=EUXdc6rjKZwKBHu7xA2WSSOkFeYLLy2L9xbFfH3Zi8ZbpU3HYFRx3ctTx5zuk3+G330KqzCjY9yMcq2pAIlSwElKqY9VafXHlHU+U56U+DT4r0OGN3v0loeFxgnmeD1sk16eANGeyJgPRxmN87Z75FRGdyYyrFbaNehOBWR4CBc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2grbFcl2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5631C4CEEA;
+	Mon, 23 Jun 2025 21:14:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750715543;
-	bh=Dr7U/Z2dHu8mmwahspd31+pk5Kh2lJ/Gwc1IbCNrmlc=;
+	s=korg; t=1750713258;
+	bh=74u9hILTxoYG+SSl/1Q31ZzJ7aKkLcjfmUUGcei6HmM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dmKVm8VRo0DSmYoqqq5N7hgMaABe6K3VunSGcmK/n3gK6oeyENDUIfhV2Uswd9C6p
-	 yyYbxcozMOhElUl6kV4cqzr00SNA6paxKvJ/h30fczadNBzT9T3TzaY0oGHrBMXvZD
-	 grJhrWA68LM9dN6n7PApg39PRpjfetxW8q+t7GuU=
+	b=2grbFcl2QwVokuyFfQxjuP/ItNZciD4Fy3HATQ6DMBGo9d5PyDdaGcuiQR0mivlQL
+	 5uQWWG9cT7NMD+BHBajK3lOJtAzn1oBfMfwsJja7gIOaWowkb55aCwgjWyUgSlV8Am
+	 x0TxfK1Gk8GwtlXQJ5prkx2JhuI2o5iltzQbicZw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	Timur Tabi <ttabi@nvidia.com>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Danilo Krummrich <dakr@kernel.org>,
+	Imre Kaloz <kaloz@openwrt.org>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Gabor Juhos <j4g8y7@gmail.com>,
+	Linus Walleij <linus.walleij@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 302/355] drm/nouveau/bl: increase buffer size to avoid truncate warning
-Date: Mon, 23 Jun 2025 15:08:23 +0200
-Message-ID: <20250623130635.857693849@linuxfoundation.org>
+Subject: [PATCH 5.4 169/222] pinctrl: armada-37xx: propagate error from armada_37xx_pmx_gpio_set_direction()
+Date: Mon, 23 Jun 2025 15:08:24 +0200
+Message-ID: <20250623130617.156062815@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130626.716971725@linuxfoundation.org>
-References: <20250623130626.716971725@linuxfoundation.org>
+In-Reply-To: <20250623130611.896514667@linuxfoundation.org>
+References: <20250623130611.896514667@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,83 +62,55 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jacob Keller <jacob.e.keller@intel.com>
+From: Gabor Juhos <j4g8y7@gmail.com>
 
-[ Upstream commit 61b2b3737499f1fb361a54a16828db24a8345e85 ]
+[ Upstream commit bfa0ff804ffa8b1246ade8be08de98c9eb19d16f ]
 
-The nouveau_get_backlight_name() function generates a unique name for the
-backlight interface, appending an id from 1 to 99 for all backlight devices
-after the first.
+The armada_37xx_gpio_direction_{in,out}put() functions can fail, so
+propagate their error values back to the stack instead of silently
+ignoring those.
 
-GCC 15 (and likely other compilers) produce the following
--Wformat-truncation warning:
-
-nouveau_backlight.c: In function ‘nouveau_backlight_init’:
-nouveau_backlight.c:56:69: error: ‘%d’ directive output may be truncated writing between 1 and 10 bytes into a region of size 3 [-Werror=format-truncation=]
-   56 |                 snprintf(backlight_name, BL_NAME_SIZE, "nv_backlight%d", nb);
-      |                                                                     ^~
-In function ‘nouveau_get_backlight_name’,
-    inlined from ‘nouveau_backlight_init’ at nouveau_backlight.c:351:7:
-nouveau_backlight.c:56:56: note: directive argument in the range [1, 2147483647]
-   56 |                 snprintf(backlight_name, BL_NAME_SIZE, "nv_backlight%d", nb);
-      |                                                        ^~~~~~~~~~~~~~~~
-nouveau_backlight.c:56:17: note: ‘snprintf’ output between 14 and 23 bytes into a destination of size 15
-   56 |                 snprintf(backlight_name, BL_NAME_SIZE, "nv_backlight%d", nb);
-      |                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-The warning started appearing after commit ab244be47a8f ("drm/nouveau:
-Fix a potential theorical leak in nouveau_get_backlight_name()") This fix
-for the ida usage removed the explicit value check for ids larger than 99.
-The compiler is unable to intuit that the ida_alloc_max() limits the
-returned value range between 0 and 99.
-
-Because the compiler can no longer infer that the number ranges from 0 to
-99, it thinks that it could use as many as 11 digits (10 + the potential -
-sign for negative numbers).
-
-The warning has gone unfixed for some time, with at least one kernel test
-robot report. The code breaks W=1 builds, which is especially frustrating
-with the introduction of CONFIG_WERROR.
-
-The string is stored temporarily on the stack and then copied into the
-device name. Its not a big deal to use 11 more bytes of stack rounding out
-to an even 24 bytes. Increase BL_NAME_SIZE to 24 to avoid the truncation
-warning. This fixes the W=1 builds that include this driver.
-
-Compile tested only.
-
-Fixes: ab244be47a8f ("drm/nouveau: Fix a potential theorical leak in nouveau_get_backlight_name()")
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202312050324.0kv4PnfZ-lkp@intel.com/
-Suggested-by: Timur Tabi <ttabi@nvidia.com>
-Signed-off-by: Jacob Keller <jacob.e.keller@intel.com>
-Link: https://lore.kernel.org/r/20250610-jk-nouveua-drm-bl-snprintf-fix-v2-1-7fdd4b84b48e@intel.com
-Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+Signed-off-by: Imre Kaloz <kaloz@openwrt.org>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Signed-off-by: Gabor Juhos <j4g8y7@gmail.com>
+Link: https://lore.kernel.org/20250514-pinctrl-a37xx-fixes-v2-5-07e9ac1ab737@gmail.com
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/nouveau/nouveau_backlight.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/pinctrl/mvebu/pinctrl-armada-37xx.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/gpu/drm/nouveau/nouveau_backlight.c b/drivers/gpu/drm/nouveau/nouveau_backlight.c
-index f2f3280c3a50e..171cc170c458d 100644
---- a/drivers/gpu/drm/nouveau/nouveau_backlight.c
-+++ b/drivers/gpu/drm/nouveau/nouveau_backlight.c
-@@ -40,7 +40,7 @@
- #include "nouveau_connector.h"
+diff --git a/drivers/pinctrl/mvebu/pinctrl-armada-37xx.c b/drivers/pinctrl/mvebu/pinctrl-armada-37xx.c
+index d3d156b25e96d..4df9dbad0e977 100644
+--- a/drivers/pinctrl/mvebu/pinctrl-armada-37xx.c
++++ b/drivers/pinctrl/mvebu/pinctrl-armada-37xx.c
+@@ -464,16 +464,17 @@ static int armada_37xx_pmx_gpio_set_direction(struct pinctrl_dev *pctldev,
+ {
+ 	struct armada_37xx_pinctrl *info = pinctrl_dev_get_drvdata(pctldev);
+ 	struct gpio_chip *chip = range->gc;
++	int ret;
  
- static struct ida bl_ida;
--#define BL_NAME_SIZE 15 // 12 for name + 2 for digits + 1 for '\0'
-+#define BL_NAME_SIZE 24 // 12 for name + 11 for digits + 1 for '\0'
+ 	dev_dbg(info->dev, "gpio_direction for pin %u as %s-%d to %s\n",
+ 		offset, range->name, offset, input ? "input" : "output");
  
- struct nouveau_backlight {
- 	struct backlight_device *dev;
+ 	if (input)
+-		armada_37xx_gpio_direction_input(chip, offset);
++		ret = armada_37xx_gpio_direction_input(chip, offset);
+ 	else
+-		armada_37xx_gpio_direction_output(chip, offset, 0);
++		ret = armada_37xx_gpio_direction_output(chip, offset, 0);
+ 
+-	return 0;
++	return ret;
+ }
+ 
+ static int armada_37xx_gpio_request_enable(struct pinctrl_dev *pctldev,
 -- 
 2.39.5
 
