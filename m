@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-156036-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-155502-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E157AE44C5
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:45:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 94A0EAE426D
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:19:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 16FA317D060
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:40:04 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5EDA01783BB
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:16:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B7C41253949;
-	Mon, 23 Jun 2025 13:39:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2DC5B24DFF3;
+	Mon, 23 Jun 2025 13:16:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EbPSAauL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GCQvH1yk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72992253938;
-	Mon, 23 Jun 2025 13:39:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD03424E019;
+	Mon, 23 Jun 2025 13:16:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750685979; cv=none; b=MteiW/qJ0TiUKX2za5LTSt0Mw9cfpmH5gAch/GMyk93sqyNA3M/CZNKSbnj9SW9Kf0gW82DaUOTnMWVIegtseMw6cgegWi95cAvR+u5jbDqLp5/yWgBu2jsJesmisooYV7neUOhRLh3+YQwBtCdup95NZcx25ywGSfJf5zBsvzA=
+	t=1750684599; cv=none; b=PX6/e0Q/WNdRB1u3CvJuzdBKwdMW19m034L1QvcFXKCgbtgCVyy8tCMZh9ElwbGaaNGWtCE1O5irYOXn4NLDOzB7fQnyFExlScz24/8ZNJY7EoSH4YJdqd6RsPA3D3T/wVPypSxpyZVsM4kf4LU2a2JID0Ztu1ksa/hhSteRDjU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750685979; c=relaxed/simple;
-	bh=q8c4mXyK39IawK3/jAn9yrYAByHYieASkSMpEuw4wmE=;
+	s=arc-20240116; t=1750684599; c=relaxed/simple;
+	bh=iTTkp4o6wdRFJm9ExDeDnhgdufGp2/0ZBBvrRZhpCuE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rNY5UTZuykVYByeROEPodz8vTBtgmXIyYekNlcJ0jA4LvoGtHXiLW5kSiKt5Lq2F9GWFoCh1xfT3TMGF2iqvcGr2Xo9YJt+X33Ks+uutCneki4juw3lh3DxlS5dYIqfzlBRs9c/zdvdsyplRzDmWAmtzpybjMb0C1M+BNMSQSXs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EbPSAauL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 943E5C4CEEA;
-	Mon, 23 Jun 2025 13:39:38 +0000 (UTC)
+	 MIME-Version; b=b8x0Jwq55u79kr6vGw6DELFvSm/tl3PnpmG5oAKLgEOHRdG75GQ3lk6jMR62FWyLaLFkezOF0zYzrLBoliktlVRHaNWfUhy1LceBfbUl5N2jqNVzPIF7E2k9itsV8SEGQYmFRRClZFq+MylIeJG6de4ZU7pjQTuj6f+tCFzzUOE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GCQvH1yk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70A07C4CEEA;
+	Mon, 23 Jun 2025 13:16:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750685978;
-	bh=q8c4mXyK39IawK3/jAn9yrYAByHYieASkSMpEuw4wmE=;
+	s=korg; t=1750684598;
+	bh=iTTkp4o6wdRFJm9ExDeDnhgdufGp2/0ZBBvrRZhpCuE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EbPSAauLZOg6WriMsL0aG03kiZay3ONUCYJbxVX+9zG/LZxp+lK/UozyY0yJNZVrB
-	 JuKhlC8rmMDktVmweaCYG1UXWUyjQRVah7ktoX6rTLB9pNdELrn7BML+zn8VU3xYgS
-	 wq4DHu8UikxvwVM8KsBLVVKukYZhBiE9juKggF6U=
+	b=GCQvH1ykFf/58Fbqo4MZVzcYr9PiQzY5WyEPvnibhFYDcic6myOHt22D09K5VWe7G
+	 wIv2XOLappRXaEcewl1oM9+Yz7cUAJ6JOZTOqKFtA6+lJXZN60F6XYZPJ4nP4vW5uY
+	 gJ4C0N0bPVg5HB+JIpDJyTeXIcoKnvOotm1Lms1U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 041/508] drm/bridge: lt9611uxc: Fix an error handling path in lt9611uxc_probe()
-Date: Mon, 23 Jun 2025 15:01:26 +0200
-Message-ID: <20250623130646.256330370@linuxfoundation.org>
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.15 129/592] net: ftgmac100: select FIXED_PHY
+Date: Mon, 23 Jun 2025 15:01:27 +0200
+Message-ID: <20250623130703.340440423@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
-References: <20250623130645.255320792@linuxfoundation.org>
+In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
+References: <20250623130700.210182694@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,49 +61,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+From: Heiner Kallweit <hkallweit1@gmail.com>
 
-[ Upstream commit b848cd418aebdb313364b4843f41fae82281a823 ]
+commit ae409629e022fbebbc6d31a1bfeccdbbeee20fd6 upstream.
 
-If lt9611uxc_audio_init() fails, some resources still need to be released
-before returning the error code.
+Depending on e.g. DT configuration this driver uses a fixed link.
+So we shouldn't rely on the user to enable FIXED_PHY, select it in
+Kconfig instead. We may end up with a non-functional driver otherwise.
 
-Use the existing error handling path.
-
-Fixes: 0cbbd5b1a012 ("drm: bridge: add support for lontium LT9611UXC bridge")
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Link: https://lore.kernel.org/r/f167608e392c6b4d7d7f6e45e3c21878feb60cbd.1744958833.git.christophe.jaillet@wanadoo.fr
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 38561ded50d0 ("net: ftgmac100: support fixed link")
+Cc: stable@vger.kernel.org
+Signed-off-by: Heiner Kallweit <hkallweit1@gmail.com>
+Link: https://patch.msgid.link/476bb33b-5584-40f0-826a-7294980f2895@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/bridge/lontium-lt9611uxc.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/faraday/Kconfig |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/gpu/drm/bridge/lontium-lt9611uxc.c b/drivers/gpu/drm/bridge/lontium-lt9611uxc.c
-index cb75da940b890..e9162125382f5 100644
---- a/drivers/gpu/drm/bridge/lontium-lt9611uxc.c
-+++ b/drivers/gpu/drm/bridge/lontium-lt9611uxc.c
-@@ -961,7 +961,11 @@ static int lt9611uxc_probe(struct i2c_client *client,
- 		}
- 	}
- 
--	return lt9611uxc_audio_init(dev, lt9611uxc);
-+	ret = lt9611uxc_audio_init(dev, lt9611uxc);
-+	if (ret)
-+		goto err_remove_bridge;
-+
-+	return 0;
- 
- err_remove_bridge:
- 	free_irq(client->irq, lt9611uxc);
--- 
-2.39.5
-
+--- a/drivers/net/ethernet/faraday/Kconfig
++++ b/drivers/net/ethernet/faraday/Kconfig
+@@ -31,6 +31,7 @@ config FTGMAC100
+ 	depends on ARM || COMPILE_TEST
+ 	depends on !64BIT || BROKEN
+ 	select PHYLIB
++	select FIXED_PHY
+ 	select MDIO_ASPEED if MACH_ASPEED_G6
+ 	select CRC32
+ 	help
 
 
 
