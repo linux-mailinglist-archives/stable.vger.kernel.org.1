@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-157535-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157597-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 68318AE5481
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:02:05 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8483EAE54C0
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:04:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 948C21BC13AC
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:02:03 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3C698170E94
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:04:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E17381D86DC;
-	Mon, 23 Jun 2025 22:01:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F147421FF2B;
+	Mon, 23 Jun 2025 22:04:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Moeh76n+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DNeHqJ0r"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C01B4409;
-	Mon, 23 Jun 2025 22:01:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE64C3FB1B;
+	Mon, 23 Jun 2025 22:04:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750716105; cv=none; b=RG2bdT0KwuImHUA3+aIK6xiS6NKjj7kydckd+y+d/SY78bBOf67mnkJF7aR+MNRAnPdkmmeHLNkwXs8aFnWfslDlAkYqbvdcX/HquMWtcF8L8NypI09T6bmJlLxNgDh39uyMnmpWQcNlvTkjpP9Z5NLUp7VrzN+KslPUfudQYpY=
+	t=1750716257; cv=none; b=DbEVGaidmMfob+Uw3/CfCKXA5h/WdRqPl6mYSsgT7WYEa0ZZOc2Ncr6KSDLxrNzA9nZoBnNWwYgY+oMmeCCiuKg/6D2c1Ci3jl+QyovDVHj/1sOA275GUweO8lFH9FPASjhs69ouKbpeTey/Wjv5YOS/WCejFr5GppEd2WrnYfY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750716105; c=relaxed/simple;
-	bh=dQuF50X8fPcqKn9+kJ0GW0QM2vB3QIslsyld30FW1O8=;
+	s=arc-20240116; t=1750716257; c=relaxed/simple;
+	bh=iuIrzvnz7Br3LqzET1GC+1R/5+STImZdRH48NGYHcD0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=sMsz5XloVOhK8tp0r/d8PeDbtKcXPhmsf5l1ZSsRvxvEfsZpCjiHOge/zAAMqnjZC0yEuNddqdBLxJeOg/zVlsH1M7+9C00YRl96gch/wIknxTx/rUYu62iDpqAdNMRiTBd93uDhgguV712uL8ro5q/mCl0A3KuBbcgrFvbwFRI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Moeh76n+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32B59C4CEEA;
-	Mon, 23 Jun 2025 22:01:45 +0000 (UTC)
+	 MIME-Version; b=Spk/Q2mjbygKvukaA0w3Mo86SIqZYhk6Cjnf3gcEAHGnwQ9STlXLXD+/1KiMpFKu3ZmjodpY1IEoIG9a5RMxZlf6mQl/SB1JTris7I9wNAnoczLYbWz8nDOToW1qVO0MiyNeQGVoft7CqovD3a4fC3k+clu/9mLtIYTe38qtWCg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DNeHqJ0r; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 461E7C4CEEA;
+	Mon, 23 Jun 2025 22:04:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750716105;
-	bh=dQuF50X8fPcqKn9+kJ0GW0QM2vB3QIslsyld30FW1O8=;
+	s=korg; t=1750716257;
+	bh=iuIrzvnz7Br3LqzET1GC+1R/5+STImZdRH48NGYHcD0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Moeh76n+FAE/Mzsu0j5PhjUgh+keTn7gUzwrQW2Tu5Onr99JwBTKq/6nxSDG7Evdo
-	 xFvdWj/Q2dIM8EhRo8o/jvjCUrfWWEISy6lCyTU81mUO8I/eE3akoCM/DZlE73RuGu
-	 kjYxLt49FSvAb8+sy0fjmLRqxKU0dnnspb2VqBec=
+	b=DNeHqJ0rdQScqfCt/QDMtB9CAUqn9axFDqMX1L7Ln4BQe1m7xkuq2+1SPUHhrxPdG
+	 RIV30mXPIes1N8yuOxOuc4G+x5b87cTHE1c0gcbREQxH0K//RsV/KhpFU7xoD2GQJi
+	 lsPaPWeKQVI6sq2nTxYyBwQ6E10WWOm5WOqTweTw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Matthew Brost <matthew.brost@intel.com>,
-	Himal Prasad Ghimiray <himal.prasad.ghimiray@intel.com>,
-	Maarten Lankhorst <dev@lankhorst.se>,
-	=?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>
-Subject: [PATCH 6.15 502/592] drm/xe/svm: Fix regression disallowing 64K SVM migration
-Date: Mon, 23 Jun 2025 15:07:40 +0200
-Message-ID: <20250623130712.374242998@linuxfoundation.org>
+	Jason Xing <kernelxing@tencent.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 317/411] net: atlantic: generate software timestamp just before the doorbell
+Date: Mon, 23 Jun 2025 15:07:41 +0200
+Message-ID: <20250623130641.617612702@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
-References: <20250623130700.210182694@linuxfoundation.org>
+In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
+References: <20250623130632.993849527@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,46 +60,56 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maarten Lankhorst <dev@lankhorst.se>
+From: Jason Xing <kernelxing@tencent.com>
 
-commit d6fb4f01736a1d18cc981eb04fa2907a7121fc27 upstream.
+[ Upstream commit 285ad7477559b6b5ceed10ba7ecfed9d17c0e7c6 ]
 
-When changing the condition from >= SZ_64K, it was changed to <= SZ_64K.
-This disallows migration of 64K, which is the exact minimum allowed.
+Make sure the call of skb_tx_timestamp is as close as possible to the
+doorbell.
 
-Closes: https://gitlab.freedesktop.org/drm/xe/kernel/-/issues/5057
-Fixes: 794f5493f518 ("drm/xe: Strict migration policy for atomic SVM faults")
-Cc: stable@vger.kernel.org
-Cc: Matthew Brost <matthew.brost@intel.com>
-Cc: Himal Prasad Ghimiray <himal.prasad.ghimiray@intel.com>
-Reviewed-by: Himal Prasad Ghimiray <himal.prasad.ghimiray@intel.com>
-Signed-off-by: Maarten Lankhorst <dev@lankhorst.se>
-Link: https://lore.kernel.org/r/20250521090102.2965100-1-dev@lankhorst.se
-(cherry picked from commit 531bef26d189b28bf0d694878c0e064b30990b6c)
-Signed-off-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Jason Xing <kernelxing@tencent.com>
+Link: https://patch.msgid.link/20250510134812.48199-2-kerneljasonxing@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/xe/xe_svm.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/aquantia/atlantic/aq_main.c | 1 -
+ drivers/net/ethernet/aquantia/atlantic/aq_nic.c  | 2 ++
+ 2 files changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/xe/xe_svm.c
-+++ b/drivers/gpu/drm/xe/xe_svm.c
-@@ -750,7 +750,7 @@ static bool xe_svm_range_needs_migrate_t
- 		return false;
+diff --git a/drivers/net/ethernet/aquantia/atlantic/aq_main.c b/drivers/net/ethernet/aquantia/atlantic/aq_main.c
+index 45ed097bfe49a..026e628664a9d 100644
+--- a/drivers/net/ethernet/aquantia/atlantic/aq_main.c
++++ b/drivers/net/ethernet/aquantia/atlantic/aq_main.c
+@@ -117,7 +117,6 @@ static netdev_tx_t aq_ndev_start_xmit(struct sk_buff *skb, struct net_device *nd
  	}
+ #endif
  
--	if (range_size <= SZ_64K && !supports_4K_migration(vm->xe)) {
-+	if (range_size < SZ_64K && !supports_4K_migration(vm->xe)) {
- 		drm_dbg(&vm->xe->drm, "Platform doesn't support SZ_4K range migration\n");
- 		return false;
- 	}
+-	skb_tx_timestamp(skb);
+ 	return aq_nic_xmit(aq_nic, skb);
+ }
+ 
+diff --git a/drivers/net/ethernet/aquantia/atlantic/aq_nic.c b/drivers/net/ethernet/aquantia/atlantic/aq_nic.c
+index 25349a2ae5cfe..2afa61e9bf8c6 100644
+--- a/drivers/net/ethernet/aquantia/atlantic/aq_nic.c
++++ b/drivers/net/ethernet/aquantia/atlantic/aq_nic.c
+@@ -751,6 +751,8 @@ int aq_nic_xmit(struct aq_nic_s *self, struct sk_buff *skb)
+ 
+ 	frags = aq_nic_map_skb(self, skb, ring);
+ 
++	skb_tx_timestamp(skb);
++
+ 	if (likely(frags)) {
+ 		err = self->aq_hw_ops->hw_ring_tx_xmit(self->aq_hw,
+ 						       ring, frags);
+-- 
+2.39.5
+
 
 
 
