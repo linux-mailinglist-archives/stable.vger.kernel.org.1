@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-157546-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157305-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5CA1CAE5488
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:02:22 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 337C7AE5365
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:52:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 74F96189FF16
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:02:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D7471443BBD
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:52:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC31519DF4A;
-	Mon, 23 Jun 2025 22:02:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 93A83223DED;
+	Mon, 23 Jun 2025 21:52:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fEpVJwKi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dmKVm8VR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A63A4C74;
-	Mon, 23 Jun 2025 22:02:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FFBE19049B;
+	Mon, 23 Jun 2025 21:52:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750716132; cv=none; b=YAkWdqhFQYPuhUzdX0F1tmgwPROLlapWVO/kArKJGqIrTQyakzb+YTHQ95MSDdS0cl/cE+DjaK8FDbcM1XHBa5ovmBEQcE92q+GDmeJOoQmaHWw8wWgailrc11up5Hp6e7IyDLIp2KqeHFTcgtsfakunXHnh0G/2t0YfEZc2Ko8=
+	t=1750715543; cv=none; b=j8Wh6Vf9O2geMSqODoCgh1IK1BLxqoCFX7VGSNZojyFh7OJwygdOhIRUrZT9vPbtAaSrJZxZGUX1EkVd2Sdx3PNzNSynlBW6qM/AtFYiWKg9W09kSWCI2uYQzGTOHxjtJXJOIsd2RG1xm5lnpd+oFzjM+Pl1ZkBmmh2PpoUYMik=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750716132; c=relaxed/simple;
-	bh=rKASpjpWT1ZOG6NMp74XgnhBq1oFNy9jo8sq5ZpX0ik=;
+	s=arc-20240116; t=1750715543; c=relaxed/simple;
+	bh=Dr7U/Z2dHu8mmwahspd31+pk5Kh2lJ/Gwc1IbCNrmlc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PMn0fbxPsCi8aTrM5SRy2fquKHjm+LVUW6LoOH35gPF+LRSwQ8c1EuWcgqFfTmybb/cxVZlkU1LMEs+SWaoPspflmOWWxrM+mm16+kDoYfuC+m0qhj0OxQOa3BRS6VkH+WiEP+YCQ4cEfVjk2zuDaCPJVRx3szHgf+aKsyUbQ58=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fEpVJwKi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0122BC4CEEA;
-	Mon, 23 Jun 2025 22:02:11 +0000 (UTC)
+	 MIME-Version:Content-Type; b=iClk+8/txbK/mxZOavd1xzQ56CYt6U6+YGxIUM3pfFPmGZ/HTGhpbhlLHHTPlmOQE9bPXgPJSeiGJWNp3AxlCGVRuvLQPGge/CEmNHzc6bzI/6Fhx7BRixh7/pgUQSLaKeLBP7BtRjUGYhWLe9t0GVwn4eBVWdnaEKZ1oGeG0QE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dmKVm8VR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB5BEC4CEEA;
+	Mon, 23 Jun 2025 21:52:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750716132;
-	bh=rKASpjpWT1ZOG6NMp74XgnhBq1oFNy9jo8sq5ZpX0ik=;
+	s=korg; t=1750715543;
+	bh=Dr7U/Z2dHu8mmwahspd31+pk5Kh2lJ/Gwc1IbCNrmlc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fEpVJwKijjCMwRoRenZezIQKa2ciUzkifoS9lKzcpaEkoo3bGmM2/YXAKftRMB7yk
-	 3idNyyYYvCNZw/DuYsVBe6tR67Hb0+nRCTB6/3EfETXmo5Y/AAGtG/FGLcawNCFUGf
-	 /51vuKHVfnWKshlFuLx49fUvEsRXt7eLqpo4wzQM=
+	b=dmKVm8VRo0DSmYoqqq5N7hgMaABe6K3VunSGcmK/n3gK6oeyENDUIfhV2Uswd9C6p
+	 yyYbxcozMOhElUl6kV4cqzr00SNA6paxKvJ/h30fczadNBzT9T3TzaY0oGHrBMXvZD
+	 grJhrWA68LM9dN6n7PApg39PRpjfetxW8q+t7GuU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	tianshuo han <hantianshuo233@gmail.com>,
-	Chuck Lever <chuck.lever@oracle.com>,
-	Jeff Layton <jlayton@kernel.org>
-Subject: [PATCH 6.6 242/290] sunrpc: handle SVC_GARBAGE during svc auth processing as auth error
+	kernel test robot <lkp@intel.com>,
+	Timur Tabi <ttabi@nvidia.com>,
+	Jacob Keller <jacob.e.keller@intel.com>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 302/355] drm/nouveau/bl: increase buffer size to avoid truncate warning
 Date: Mon, 23 Jun 2025 15:08:23 +0200
-Message-ID: <20250623130634.209034136@linuxfoundation.org>
+Message-ID: <20250623130635.857693849@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130626.910356556@linuxfoundation.org>
-References: <20250623130626.910356556@linuxfoundation.org>
+In-Reply-To: <20250623130626.716971725@linuxfoundation.org>
+References: <20250623130626.716971725@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,74 +62,86 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jeff Layton <jlayton@kernel.org>
+From: Jacob Keller <jacob.e.keller@intel.com>
 
-commit 94d10a4dba0bc482f2b01e39f06d5513d0f75742 upstream.
+[ Upstream commit 61b2b3737499f1fb361a54a16828db24a8345e85 ]
 
-tianshuo han reported a remotely-triggerable crash if the client sends a
-kernel RPC server a specially crafted packet. If decoding the RPC reply
-fails in such a way that SVC_GARBAGE is returned without setting the
-rq_accept_statp pointer, then that pointer can be dereferenced and a
-value stored there.
+The nouveau_get_backlight_name() function generates a unique name for the
+backlight interface, appending an id from 1 to 99 for all backlight devices
+after the first.
 
-If it's the first time the thread has processed an RPC, then that
-pointer will be set to NULL and the kernel will crash. In other cases,
-it could create a memory scribble.
+GCC 15 (and likely other compilers) produce the following
+-Wformat-truncation warning:
 
-The server sunrpc code treats a SVC_GARBAGE return from svc_authenticate
-or pg_authenticate as if it should send a GARBAGE_ARGS reply. RFC 5531
-says that if authentication fails that the RPC should be rejected
-instead with a status of AUTH_ERR.
+nouveau_backlight.c: In function ‘nouveau_backlight_init’:
+nouveau_backlight.c:56:69: error: ‘%d’ directive output may be truncated writing between 1 and 10 bytes into a region of size 3 [-Werror=format-truncation=]
+   56 |                 snprintf(backlight_name, BL_NAME_SIZE, "nv_backlight%d", nb);
+      |                                                                     ^~
+In function ‘nouveau_get_backlight_name’,
+    inlined from ‘nouveau_backlight_init’ at nouveau_backlight.c:351:7:
+nouveau_backlight.c:56:56: note: directive argument in the range [1, 2147483647]
+   56 |                 snprintf(backlight_name, BL_NAME_SIZE, "nv_backlight%d", nb);
+      |                                                        ^~~~~~~~~~~~~~~~
+nouveau_backlight.c:56:17: note: ‘snprintf’ output between 14 and 23 bytes into a destination of size 15
+   56 |                 snprintf(backlight_name, BL_NAME_SIZE, "nv_backlight%d", nb);
+      |                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Handle a SVC_GARBAGE return as an AUTH_ERROR, with a reason of
-AUTH_BADCRED instead of returning GARBAGE_ARGS in that case. This
-sidesteps the whole problem of touching the rpc_accept_statp pointer in
-this situation and avoids the crash.
+The warning started appearing after commit ab244be47a8f ("drm/nouveau:
+Fix a potential theorical leak in nouveau_get_backlight_name()") This fix
+for the ida usage removed the explicit value check for ids larger than 99.
+The compiler is unable to intuit that the ida_alloc_max() limits the
+returned value range between 0 and 99.
 
-Cc: stable@kernel.org
-Fixes: 29cd2927fb91 ("SUNRPC: Fix encoding of accepted but unsuccessful RPC replies")
-Reported-by: tianshuo han <hantianshuo233@gmail.com>
-Reviewed-by: Chuck Lever <chuck.lever@oracle.com>
-Signed-off-by: Jeff Layton <jlayton@kernel.org>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Because the compiler can no longer infer that the number ranges from 0 to
+99, it thinks that it could use as many as 11 digits (10 + the potential -
+sign for negative numbers).
+
+The warning has gone unfixed for some time, with at least one kernel test
+robot report. The code breaks W=1 builds, which is especially frustrating
+with the introduction of CONFIG_WERROR.
+
+The string is stored temporarily on the stack and then copied into the
+device name. Its not a big deal to use 11 more bytes of stack rounding out
+to an even 24 bytes. Increase BL_NAME_SIZE to 24 to avoid the truncation
+warning. This fixes the W=1 builds that include this driver.
+
+Compile tested only.
+
+Fixes: ab244be47a8f ("drm/nouveau: Fix a potential theorical leak in nouveau_get_backlight_name()")
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202312050324.0kv4PnfZ-lkp@intel.com/
+Suggested-by: Timur Tabi <ttabi@nvidia.com>
+Signed-off-by: Jacob Keller <jacob.e.keller@intel.com>
+Link: https://lore.kernel.org/r/20250610-jk-nouveua-drm-bl-snprintf-fix-v2-1-7fdd4b84b48e@intel.com
+Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sunrpc/svc.c |   11 ++---------
- 1 file changed, 2 insertions(+), 9 deletions(-)
+ drivers/gpu/drm/nouveau/nouveau_backlight.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/net/sunrpc/svc.c
-+++ b/net/sunrpc/svc.c
-@@ -1344,7 +1344,8 @@ svc_process_common(struct svc_rqst *rqst
- 	case SVC_OK:
- 		break;
- 	case SVC_GARBAGE:
--		goto err_garbage_args;
-+		rqstp->rq_auth_stat = rpc_autherr_badcred;
-+		goto err_bad_auth;
- 	case SVC_SYSERR:
- 		goto err_system_err;
- 	case SVC_DENIED:
-@@ -1485,14 +1486,6 @@ err_bad_proc:
- 	*rqstp->rq_accept_statp = rpc_proc_unavail;
- 	goto sendit;
+diff --git a/drivers/gpu/drm/nouveau/nouveau_backlight.c b/drivers/gpu/drm/nouveau/nouveau_backlight.c
+index f2f3280c3a50e..171cc170c458d 100644
+--- a/drivers/gpu/drm/nouveau/nouveau_backlight.c
++++ b/drivers/gpu/drm/nouveau/nouveau_backlight.c
+@@ -40,7 +40,7 @@
+ #include "nouveau_connector.h"
  
--err_garbage_args:
--	svc_printk(rqstp, "failed to decode RPC header\n");
--
--	if (serv->sv_stats)
--		serv->sv_stats->rpcbadfmt++;
--	*rqstp->rq_accept_statp = rpc_garbage_args;
--	goto sendit;
--
- err_system_err:
- 	if (serv->sv_stats)
- 		serv->sv_stats->rpcbadfmt++;
+ static struct ida bl_ida;
+-#define BL_NAME_SIZE 15 // 12 for name + 2 for digits + 1 for '\0'
++#define BL_NAME_SIZE 24 // 12 for name + 11 for digits + 1 for '\0'
+ 
+ struct nouveau_backlight {
+ 	struct backlight_device *dev;
+-- 
+2.39.5
+
 
 
 
