@@ -1,57 +1,61 @@
-Return-Path: <stable+bounces-155460-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-155370-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 50581AE4227
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:16:40 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4DE95AE41AF
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:10:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9F85C188E5C4
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:15:03 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EAA2A7A2CC5
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:09:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9798C24DCF8;
-	Mon, 23 Jun 2025 13:14:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EEEE0253949;
+	Mon, 23 Jun 2025 13:09:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FE7qaOmE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P5HulqZu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55B2824BC07;
-	Mon, 23 Jun 2025 13:14:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4BD62512EE;
+	Mon, 23 Jun 2025 13:09:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750684484; cv=none; b=uwkYcSkBpcFVu4S6f5UpJ9ZE+bde91dvM4d97Gvw9lVp2Ckrq5bw5HfvZisaB2yBLefkWeJWdOuXCs7jM3dhkB9MoE2rQBorhzdBcMYPl3pY8Z99wf3qFNvnoLDUcJbTizzzUYC4+ySLIsXnrkEIyLEIrGi+HL+1aqG3xtjMnf4=
+	t=1750684186; cv=none; b=hRgmeWWxTvu0KgPFkiOjRwATBhuCG3eQqlroolJgXMQjzVgMdUTLYRTGobSKIrZd6sxhyv/RdrPTi6ODEXxLOYKfzCHHf1nznIpSDiGN7PlfXqpADT4/bl2VQBgc2dTnP4samWZBBnFLstn2fV+o9HHU/mUEswZN9XWxgDWYX14=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750684484; c=relaxed/simple;
-	bh=ZKoKDfc12niSpfoZu5yICu6cXkI7FLYfNprjYGbiKD0=;
+	s=arc-20240116; t=1750684186; c=relaxed/simple;
+	bh=xKGizfuFgolosNWRv24GARdLNV+LVClnNi8r3gOsdko=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Js+/21VjKi7LkR3nfklpYG471dzP+9/yAzBwNgwWLUQ5yPBpPr3/1BrTAnm2pyoBe8oaOmh7rRZFsFEK0vR/vO0pivlrv7FGNVUTKeB7B9NFIDeZfIl67m6mBEW4X9KG+uCG/lXXdHgSlikSx5KJn5aeTxNkF9Hx+Hz0v3nASr0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FE7qaOmE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD29BC4CEEA;
-	Mon, 23 Jun 2025 13:14:43 +0000 (UTC)
+	 MIME-Version; b=oz5hiSI2MOpIrCCNXhVDxl7Jmb/kboXgaiw2RkPE1G7GcW+xqnC3EoMIqmkWHK2iLNhXa06fT6n9bKIxCwgES3rQzO2+QtWe++dgfkvnpymtHgSVsPof5Dff8Lve03vbSZN0t7aUMBVZBzqZ8s4BK4H8++3VANr0rWRjBFsTF7E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P5HulqZu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C9D5C4CEF0;
+	Mon, 23 Jun 2025 13:09:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750684484;
-	bh=ZKoKDfc12niSpfoZu5yICu6cXkI7FLYfNprjYGbiKD0=;
+	s=korg; t=1750684186;
+	bh=xKGizfuFgolosNWRv24GARdLNV+LVClnNi8r3gOsdko=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FE7qaOmE0vlb3aHzCFuu+FcyB4DjH1waGbvhMP+rmNN3ZOu44H5i9NXxLYLbdrVeG
-	 RtZS1iDK4G3CDTgD/6KQZmjAUnzvL7kePo1x4CA2FLDq7uPNR1aUKz9m4qZCoK/fOq
-	 qsjRHhB02Cdbts40fiPRZRnXgP+WT6Mj9x7rNx/A=
+	b=P5HulqZu1A7MIWRT3MqwlDc1seAOLpy9lxsXKzPbYVbamk/kAyXG5oWYErLiNrmBq
+	 Ux6PeDXgsuk7K2SMX8nHv1z+YX58oMn6JF27CVyY4N5YJk/DwQWZeQpkgLLisa6hTb
+	 vmygxa1prRbc4PbsTmaVTfcMcDlkPfYCFEq4QxuU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ming Qian <ming.qian@oss.nxp.com>,
-	Nicolas Dufresne <nicolas.dufresne@collabora.com>,
-	Frank Li <Frank.Li@nxp.com>,
-	Hans Verkuil <hverkuil@xs4all.nl>
-Subject: [PATCH 6.15 087/592] media: imx-jpeg: Reset slot data pointers when freed
-Date: Mon, 23 Jun 2025 15:00:45 +0200
-Message-ID: <20250623130702.347557938@linuxfoundation.org>
+	Peter Xu <peterx@redhat.com>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Lorenzo Stoakes <lstoakes@gmail.com>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	"Mike Rapoport (IBM)" <rppt@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	linux-mm@kvack.org,
+	Jakub Acs <acsjakub@amazon.com>
+Subject: [PATCH 6.1 001/508] mm/uffd: fix vma operation where start addr cuts part of vma
+Date: Mon, 23 Jun 2025 15:00:46 +0200
+Message-ID: <20250623130645.295748263@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
-References: <20250623130700.210182694@linuxfoundation.org>
+In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
+References: <20250623130645.255320792@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,56 +67,101 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ming Qian <ming.qian@oss.nxp.com>
+From: Peter Xu <peterx@redhat.com>
 
-commit faa8051b128f4b34277ea8a026d02d83826f8122 upstream.
+commit 270aa010620697fb27b8f892cc4e194bc2b7d134 upstream.
 
-Ensure that the slot data pointers are reset to NULL and handles are
-set to 0 after freeing the coherent memory. This makes he function
-mxc_jpeg_alloc_slot_data() and mxc_jpeg_free_slot_data() safe to be
-called multiple times.
+Patch series "mm/uffd: Fix vma merge/split", v2.
 
-Fixes: 2db16c6ed72c ("media: imx-jpeg: Add V4L2 driver for i.MX8 JPEG Encoder/Decoder")
-Cc: stable@vger.kernel.org
-Signed-off-by: Ming Qian <ming.qian@oss.nxp.com>
-Reviewed-by: Nicolas Dufresne <nicolas.dufresne@collabora.com>
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
-Signed-off-by: Nicolas Dufresne <nicolas.dufresne@collabora.com>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+This series contains two patches that fix vma merge/split for userfaultfd
+on two separate issues.
+
+Patch 1 fixes a regression since 6.1+ due to something we overlooked when
+converting to maple tree apis.  The plan is we use patch 1 to replace the
+commit "2f628010799e (mm: userfaultfd: avoid passing an invalid range to
+vma_merge())" in mm-hostfixes-unstable tree if possible, so as to bring
+uffd vma operations back aligned with the rest code again.
+
+Patch 2 fixes a long standing issue that vma can be left unmerged even if
+we can for either uffd register or unregister.
+
+Many thanks to Lorenzo on either noticing this issue from the assert
+movement patch, looking at this problem, and also provided a reproducer on
+the unmerged vma issue [1].
+
+[1] https://gist.github.com/lorenzo-stoakes/a11a10f5f479e7a977fc456331266e0e
+
+
+This patch (of 2):
+
+It seems vma merging with uffd paths is broken with either
+register/unregister, where right now we can feed wrong parameters to
+vma_merge() and it's found by recent patch which moved asserts upwards in
+vma_merge() by Lorenzo Stoakes:
+
+https://lore.kernel.org/all/ZFunF7DmMdK05MoF@FVFF77S0Q05N.cambridge.arm.com/
+
+It's possible that "start" is contained within vma but not clamped to its
+start.  We need to convert this into either "cannot merge" case or "can
+merge" case 4 which permits subdivision of prev by assigning vma to prev.
+As we loop, each subsequent VMA will be clamped to the start.
+
+This patch will eliminate the report and make sure vma_merge() calls will
+become legal again.
+
+One thing to mention is that the "Fixes: 29417d292bd0" below is there only
+to help explain where the warning can start to trigger, the real commit to
+fix should be 69dbe6daf104.  Commit 29417d292bd0 helps us to identify the
+issue, but unfortunately we may want to keep it in Fixes too just to ease
+kernel backporters for easier tracking.
+
+Link: https://lkml.kernel.org/r/20230517190916.3429499-1-peterx@redhat.com
+Link: https://lkml.kernel.org/r/20230517190916.3429499-2-peterx@redhat.com
+Fixes: 69dbe6daf104 ("userfaultfd: use maple tree iterator to iterate VMAs")
+Signed-off-by: Peter Xu <peterx@redhat.com>
+Reported-by: Mark Rutland <mark.rutland@arm.com>
+Reviewed-by: Lorenzo Stoakes <lstoakes@gmail.com>
+Reviewed-by: Liam R. Howlett <Liam.Howlett@oracle.com>
+Closes: https://lore.kernel.org/all/ZFunF7DmMdK05MoF@FVFF77S0Q05N.cambridge.arm.com/
+Cc: Lorenzo Stoakes <lstoakes@gmail.com>
+Cc: Mike Rapoport (IBM) <rppt@kernel.org>
+Cc: Liam R. Howlett <Liam.Howlett@oracle.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+[acsjakub: contextual change - keep call to mas_next()]
+Cc: <linux-mm@kvack.org>
+Signed-off-by: Jakub Acs <acsjakub@amazon.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/platform/nxp/imx-jpeg/mxc-jpeg.c |    6 ++++++
+ fs/userfaultfd.c |    6 ++++++
  1 file changed, 6 insertions(+)
 
---- a/drivers/media/platform/nxp/imx-jpeg/mxc-jpeg.c
-+++ b/drivers/media/platform/nxp/imx-jpeg/mxc-jpeg.c
-@@ -758,16 +758,22 @@ static void mxc_jpeg_free_slot_data(stru
- 	dma_free_coherent(jpeg->dev, sizeof(struct mxc_jpeg_desc),
- 			  jpeg->slot_data.desc,
- 			  jpeg->slot_data.desc_handle);
-+	jpeg->slot_data.desc = NULL;
-+	jpeg->slot_data.desc_handle = 0;
+--- a/fs/userfaultfd.c
++++ b/fs/userfaultfd.c
+@@ -1426,6 +1426,9 @@ static int userfaultfd_register(struct u
+ 	if (prev != vma)
+ 		mas_next(&mas, ULONG_MAX);
  
- 	/* free descriptor for encoder configuration phase / decoder DHT */
- 	dma_free_coherent(jpeg->dev, sizeof(struct mxc_jpeg_desc),
- 			  jpeg->slot_data.cfg_desc,
- 			  jpeg->slot_data.cfg_desc_handle);
-+	jpeg->slot_data.cfg_desc_handle = 0;
-+	jpeg->slot_data.cfg_desc = NULL;
++	if (vma->vm_start < start)
++		prev = vma;
++
+ 	ret = 0;
+ 	do {
+ 		cond_resched();
+@@ -1603,6 +1606,9 @@ static int userfaultfd_unregister(struct
+ 	if (prev != vma)
+ 		mas_next(&mas, ULONG_MAX);
  
- 	/* free configuration stream */
- 	dma_free_coherent(jpeg->dev, MXC_JPEG_MAX_CFG_STREAM,
- 			  jpeg->slot_data.cfg_stream_vaddr,
- 			  jpeg->slot_data.cfg_stream_handle);
-+	jpeg->slot_data.cfg_stream_vaddr = NULL;
-+	jpeg->slot_data.cfg_stream_handle = 0;
- 
- 	jpeg->slot_data.used = false;
- }
++	if (vma->vm_start < start)
++		prev = vma;
++
+ 	ret = 0;
+ 	do {
+ 		cond_resched();
 
 
 
