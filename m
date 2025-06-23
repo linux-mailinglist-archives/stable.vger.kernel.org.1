@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-155532-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-155845-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E20ACAE427D
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:20:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 461CFAE43ED
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:38:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 54912189A84F
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:18:48 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 32CBB1897CA5
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:32:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 18B4024E4C3;
-	Mon, 23 Jun 2025 13:17:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1810224C060;
+	Mon, 23 Jun 2025 13:31:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cLTDwe4z"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P007TQcT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C886613A265;
-	Mon, 23 Jun 2025 13:17:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C54DC253351;
+	Mon, 23 Jun 2025 13:31:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750684676; cv=none; b=oYQ59+lwSSo6j1WMnVl/8DsC11/52r0h+G2iDf0hlXjRMcJzv9FpywJ26KT3Ueql2VfwfhgpGIoW2vR7bS4JOq4W30amTPxlLpB1DNb3IR5VFlEZFlvOWAjauZTxWwVWW3YCYSkkyJjpC1GAPMdoFVsOTzy+7CA6ZEb9zqwNS3U=
+	t=1750685485; cv=none; b=ZR4jOz7nh2CM1Iwv5Sc92HZZv+3Yty9S0mffNkuhgwnuAQuBbnumIHTjrlvvX20XdQb2lyGISi2d+JU5VJCV3gIOwcftGnzPsOjzpPSA9ECwWmodDaFHcaxMbOc+sZO5zZ9KJ11q/Ul3VgZGgvgWpVX7B0IKcpMqGFLzqtbls68=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750684676; c=relaxed/simple;
-	bh=ECGGxNi2miJMC5rHsLqfvYZex54d/I8dpOX+cXKLsYI=;
+	s=arc-20240116; t=1750685485; c=relaxed/simple;
+	bh=2vNYascTlrp662ncwH2Q+lKUW2Jnn6wexM1Ol4NCxT4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pDm3Go4UCyVztn3u8oEI543RQrF158Lhzzr+EmFdhx+VQHY4476qye1lpFa8JWnPjBzeFs2d5IId+U/KFVnmAyFOYRCCTHPW7p/lzwgoDetQI/3ebZw1ZNyeE4VoNH8htA1jGMfMYodd5tvRBk55EwCrrMnxGGggdy7+QosZwsM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cLTDwe4z; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C53CC4CEEA;
-	Mon, 23 Jun 2025 13:17:56 +0000 (UTC)
+	 MIME-Version; b=urHxf0+vTld0wGELY9RH0CZzICQ7cMFiPw95l9kqGA9doqnkri9sevPR3hwHBPK1I7CGRGps8kUtYHK9NHngpe6FjtI1/cV0V6VuQvhJCRpL2bjmZKSkyYFdhlM9KRwDj5pHeeIGXptQB61H0x4HKCTuEOhEoMi+cBqm8dD6Gng=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P007TQcT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55417C4CEEA;
+	Mon, 23 Jun 2025 13:31:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750684676;
-	bh=ECGGxNi2miJMC5rHsLqfvYZex54d/I8dpOX+cXKLsYI=;
+	s=korg; t=1750685485;
+	bh=2vNYascTlrp662ncwH2Q+lKUW2Jnn6wexM1Ol4NCxT4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cLTDwe4zS5bz7ZyaAe8mjUaoP9J48eTn/resHudINerQ/hQT3GZv3ckZK/PwmaI5X
-	 HBFsuzib81FCdCFDOecGPhrBcUg1iJ8d5nxhPijCkelT5Tsh3MCcAJSYn9A8Zfhgq9
-	 TP3TlYgpmCM9NEJYd7blYNA5sLR/NU2T36JTeCA8=
+	b=P007TQcTzpF2wPfvirTgDBREuYxANALpocVdtqZDBE+0k138ZlhC7kitIMsarropx
+	 A5akFnG1dHshy8V0b/RSUX9q/2qm+ih05cwkPk6BX+qame+N4YfSBddJ8z7pmDbjxI
+	 BR8G+XauR8w4JJeEAsS+7HVC9zszgb57FkDqpP2A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gatien Chevallier <gatien.chevallier@foss.st.com>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Subject: [PATCH 6.15 121/592] Input: gpio-keys - fix possible concurrent access in gpio_keys_irq_timer()
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 034/508] spi: sh-msiof: Fix maximum DMA transfer size
 Date: Mon, 23 Jun 2025 15:01:19 +0200
-Message-ID: <20250623130703.148849458@linuxfoundation.org>
+Message-ID: <20250623130646.086432097@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
-References: <20250623130700.210182694@linuxfoundation.org>
+In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
+References: <20250623130645.255320792@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,41 +62,76 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gatien Chevallier <gatien.chevallier@foss.st.com>
+From: Geert Uytterhoeven <geert+renesas@glider.be>
 
-commit 8f38219fa139623c29db2cb0f17d0a197a86e344 upstream.
+[ Upstream commit 0941d5166629cb766000530945e54b4e49680c68 ]
 
-gpio_keys_irq_isr() and gpio_keys_irq_timer() access the same resources.
-There could be a concurrent access if a GPIO interrupt occurs in parallel
-of a HR timer interrupt.
+The maximum amount of data to transfer in a single DMA request is
+calculated from the FIFO sizes (which is technically not 100% correct,
+but a simplification, as it is limited by the maximum word count values
+in the Transmit and Control Data Registers).  However, in case there is
+both data to transmit and to receive, the transmit limit is overwritten
+by the receive limit.
 
-Guard back those resources with a spinlock.
+Fix this by using the minimum applicable FIFO size instead.  Move the
+calculation outside the loop, so it is not repeated for each individual
+DMA transfer.
 
-Fixes: 019002f20cb5 ("Input: gpio-keys - use hrtimer for release timer")
-Signed-off-by: Gatien Chevallier <gatien.chevallier@foss.st.com>
-Link: https://lore.kernel.org/r/20250528-gpio_keys_preempt_rt-v2-2-3fc55a9c3619@foss.st.com
-Cc: stable@vger.kernel.org
-Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+As currently tx_fifo_size is always equal to rx_fifo_size, this bug had
+no real impact.
+
+Fixes: fe78d0b7691c0274 ("spi: sh-msiof: Fix FIFO size to 64 word from 256 word")
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Link: https://patch.msgid.link/d9961767a97758b2614f2ee8afe1bd56dc900a60.1747401908.git.geert+renesas@glider.be
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/input/keyboard/gpio_keys.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/spi/spi-sh-msiof.c | 13 +++++++------
+ 1 file changed, 7 insertions(+), 6 deletions(-)
 
---- a/drivers/input/keyboard/gpio_keys.c
-+++ b/drivers/input/keyboard/gpio_keys.c
-@@ -449,6 +449,8 @@ static enum hrtimer_restart gpio_keys_ir
- 						      release_timer);
- 	struct input_dev *input = bdata->input;
+diff --git a/drivers/spi/spi-sh-msiof.c b/drivers/spi/spi-sh-msiof.c
+index ec3a4939ee984..374697b2d6061 100644
+--- a/drivers/spi/spi-sh-msiof.c
++++ b/drivers/spi/spi-sh-msiof.c
+@@ -919,6 +919,7 @@ static int sh_msiof_transfer_one(struct spi_controller *ctlr,
+ 	void *rx_buf = t->rx_buf;
+ 	unsigned int len = t->len;
+ 	unsigned int bits = t->bits_per_word;
++	unsigned int max_wdlen = 256;
+ 	unsigned int bytes_per_word;
+ 	unsigned int words;
+ 	int n;
+@@ -932,17 +933,17 @@ static int sh_msiof_transfer_one(struct spi_controller *ctlr,
+ 	if (!spi_controller_is_slave(p->ctlr))
+ 		sh_msiof_spi_set_clk_regs(p, t);
  
-+	guard(spinlock_irqsave)(&bdata->lock);
++	if (tx_buf)
++		max_wdlen = min(max_wdlen, p->tx_fifo_size);
++	if (rx_buf)
++		max_wdlen = min(max_wdlen, p->rx_fifo_size);
 +
- 	if (bdata->key_pressed) {
- 		input_report_key(input, *bdata->code, 0);
- 		input_sync(input);
+ 	while (ctlr->dma_tx && len > 15) {
+ 		/*
+ 		 *  DMA supports 32-bit words only, hence pack 8-bit and 16-bit
+ 		 *  words, with byte resp. word swapping.
+ 		 */
+-		unsigned int l = 0;
+-
+-		if (tx_buf)
+-			l = min(round_down(len, 4), p->tx_fifo_size * 4);
+-		if (rx_buf)
+-			l = min(round_down(len, 4), p->rx_fifo_size * 4);
++		unsigned int l = min(round_down(len, 4), max_wdlen * 4);
+ 
+ 		if (bits <= 8) {
+ 			copy32 = copy_bswap32;
+-- 
+2.39.5
+
 
 
 
