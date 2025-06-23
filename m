@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-156369-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156377-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC6EFAE4F43
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:14:07 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id DE1C2AE4F60
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:15:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 699CE17E493
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:14:08 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E18877AC66C
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:13:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46D4D202983;
-	Mon, 23 Jun 2025 21:14:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3FA31E8324;
+	Mon, 23 Jun 2025 21:14:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z/T2CXc7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MrB1mQRL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 052B11DF98B;
-	Mon, 23 Jun 2025 21:14:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7250C1DF98B;
+	Mon, 23 Jun 2025 21:14:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750713246; cv=none; b=Zpch5xc0P2obD71xLg3SrBcOp4lPpEYX+TqyPcYSS/1nhDfM+i/Zyuxene0odJkjojXgba9vMjL3anK9Mo0ORYSTytRdkdF7v9RzwxreSnKf1ZY6pa3lY9RoxdWUmr+NWAJHkGBr3gEpUuE6+b9zKACAaacQZP6SE4W/Yx14NT8=
+	t=1750713265; cv=none; b=HUoIa+qJSy/8CKbi9yA6XlQxSfECw/tO2mBZr1HAw10pE0dMiOPC3D+QeYxPgjjYKI0GmNAPTCA7Rf9FQecubs9b7Z21Ss8r4J1YZYA/+tvpKE6eSWLCJVCfffksM88crkS2Rgpr7g/F9MI89QlOs0sd25wjlHSlMIgy3BUWog4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750713246; c=relaxed/simple;
-	bh=EGAoIC4cxviFCTBlzjOJIUGMbYJGcH7fCfTln7x3crw=;
+	s=arc-20240116; t=1750713265; c=relaxed/simple;
+	bh=RNlWxsLPaWjFUznLhNEXP5XXfuCOVe7dnPMf3HIDZpw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RYOxF6XoN82zZf+b9p+IKPuo0ZYsfWGDX+EOIvP0qjw5y58bn7lp0PbA9uMXLNxOz+G+3myxoNCOoqU35waf3589LTOov3KvqfKIHIhuXA71+vi9/LH11uSpUJ8kLOoCyOoBlNGk7teE4MHC9dLnmSttNNcjiO0kMKtX5hjM0oo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z/T2CXc7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9155AC4CEEA;
-	Mon, 23 Jun 2025 21:14:05 +0000 (UTC)
+	 MIME-Version; b=hjaEqjbHt7sfb8FpVG/KtloXsf2vwkr3RjZ+WbWpctdIYw0CfOlvYMNG/9/U19B7AVsKTSBPa3ry34pJjYMDdLR3lO8pQRwQflKH3nYKwTIN3K7cIovPsCezGB/ULM3mW6TlIplIBbQgcQW639xYQJStPlVQJc8cH4YLSx+D2Lo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MrB1mQRL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A808C4CEEA;
+	Mon, 23 Jun 2025 21:14:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750713245;
-	bh=EGAoIC4cxviFCTBlzjOJIUGMbYJGcH7fCfTln7x3crw=;
+	s=korg; t=1750713265;
+	bh=RNlWxsLPaWjFUznLhNEXP5XXfuCOVe7dnPMf3HIDZpw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=z/T2CXc74yScZvyPcCo55OsApHd7bGjJ44172hvMuYz2JpeYK0D6xlvCDFheHx/1c
-	 BBJhmb7W/w05m52N3WrrQUaJoR2RVwX6IifhcPNdZYcFkCXdTqcMn+X4S8l8js7Nnu
-	 Mxq2yR4asWLYB93TiZBEw7EvGwp6K2Y4GuecAoO0=
+	b=MrB1mQRLclGx9u11YqLn/78g8GJOZH6H6rzzgaZjz/AvCCRJLrbXgLrQp/yBmI5m9
+	 XFhjMmjpnX+5Dgr3q2D+pX1C0CuFaoaL6YZdU4USe94ZX3uUMtQov60NjjiWRlTLTk
+	 BYKYndncI5dJCRrmqr5lsVtrrzDt0pZbefCUUju0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Scott Mayhew <smayhew@redhat.com>,
-	Jeff Layton <jlayton@kernel.org>,
-	Benjamin Coddington <bcodding@redhat.com>,
+	Max Kellermann <max.kellermann@ionos.com>,
+	Dave Wysochanski <dwysocha@redhat.com>,
 	Anna Schumaker <anna.schumaker@oracle.com>
-Subject: [PATCH 6.12 034/414] NFSv4: Dont check for OPEN feature support in v4.1
-Date: Mon, 23 Jun 2025 15:02:51 +0200
-Message-ID: <20250623130642.880185018@linuxfoundation.org>
+Subject: [PATCH 6.12 035/414] fs/nfs/read: fix double-unlock bug in nfs_return_empty_folio()
+Date: Mon, 23 Jun 2025 15:02:52 +0200
+Message-ID: <20250623130642.905524437@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
 In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
 References: <20250623130642.015559452@linuxfoundation.org>
@@ -67,38 +66,71 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Scott Mayhew <smayhew@redhat.com>
+From: Max Kellermann <max.kellermann@ionos.com>
 
-commit 4d4832ed13ff505fe0371544b4773e79be2bb964 upstream.
+commit 4c10fa44bc5f700e2ea21de2fbae520ba21f19d9 upstream.
 
-fattr4_open_arguments is a v4.2 recommended attribute, so we shouldn't
-be sending it to v4.1 servers.
+Sometimes, when a file was read while it was being truncated by
+another NFS client, the kernel could deadlock because folio_unlock()
+was called twice, and the second call would XOR back the `PG_locked`
+flag.
 
-Fixes: cb78f9b7d0c0 ("nfs: fix the fetch of FATTR4_OPEN_ARGUMENTS")
-Signed-off-by: Scott Mayhew <smayhew@redhat.com>
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
-Reviewed-by: Benjamin Coddington <bcodding@redhat.com>
-Cc: stable@vger.kernel.org # 6.11+
+Most of the time (depending on the timing of the truncation), nobody
+notices the problem because folio_unlock() gets called three times,
+which flips `PG_locked` back off:
+
+ 1. vfs_read, nfs_read_folio, ... nfs_read_add_folio,
+    nfs_return_empty_folio
+ 2. vfs_read, nfs_read_folio, ... netfs_read_collection,
+    netfs_unlock_abandoned_read_pages
+ 3. vfs_read, ... nfs_do_read_folio, nfs_read_add_folio,
+    nfs_return_empty_folio
+
+The problem is that nfs_read_add_folio() is not supposed to unlock the
+folio if fscache is enabled, and a nfs_netfs_folio_unlock() check is
+missing in nfs_return_empty_folio().
+
+Rarely this leads to a warning in netfs_read_collection():
+
+ ------------[ cut here ]------------
+ R=0000031c: folio 10 is not locked
+ WARNING: CPU: 0 PID: 29 at fs/netfs/read_collect.c:133 netfs_read_collection+0x7c0/0xf00
+ [...]
+ Workqueue: events_unbound netfs_read_collection_worker
+ RIP: 0010:netfs_read_collection+0x7c0/0xf00
+ [...]
+ Call Trace:
+  <TASK>
+  netfs_read_collection_worker+0x67/0x80
+  process_one_work+0x12e/0x2c0
+  worker_thread+0x295/0x3a0
+
+Most of the time, however, processes just get stuck forever in
+folio_wait_bit_common(), waiting for `PG_locked` to disappear, which
+never happens because nobody is really holding the folio lock.
+
+Fixes: 000dbe0bec05 ("NFS: Convert buffered read paths to use netfs when fscache is enabled")
+Cc: stable@vger.kernel.org
+Signed-off-by: Max Kellermann <max.kellermann@ionos.com>
+Reviewed-by: Dave Wysochanski <dwysocha@redhat.com>
 Signed-off-by: Anna Schumaker <anna.schumaker@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nfs/nfs4proc.c |    5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ fs/nfs/read.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/fs/nfs/nfs4proc.c
-+++ b/fs/nfs/nfs4proc.c
-@@ -3957,8 +3957,9 @@ static int _nfs4_server_capabilities(str
- 		     FATTR4_WORD0_CASE_INSENSITIVE |
- 		     FATTR4_WORD0_CASE_PRESERVING;
- 	if (minorversion)
--		bitmask[2] = FATTR4_WORD2_SUPPATTR_EXCLCREAT |
--			     FATTR4_WORD2_OPEN_ARGUMENTS;
-+		bitmask[2] = FATTR4_WORD2_SUPPATTR_EXCLCREAT;
-+	if (minorversion > 1)
-+		bitmask[2] |= FATTR4_WORD2_OPEN_ARGUMENTS;
+--- a/fs/nfs/read.c
++++ b/fs/nfs/read.c
+@@ -56,7 +56,8 @@ static int nfs_return_empty_folio(struct
+ {
+ 	folio_zero_segment(folio, 0, folio_size(folio));
+ 	folio_mark_uptodate(folio);
+-	folio_unlock(folio);
++	if (nfs_netfs_folio_unlock(folio))
++		folio_unlock(folio);
+ 	return 0;
+ }
  
- 	status = nfs4_call_sync(server->client, server, &msg, &args.seq_args, &res.seq_res, 0);
- 	if (status == 0) {
 
 
 
