@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-157466-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156470-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E55BEAE5414
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:58:59 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4284FAE4FEC
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:20:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E3B1C4C01D5
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:58:56 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7D32B7A404F
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:17:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE7BB2236E5;
-	Mon, 23 Jun 2025 21:58:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64B891EDA0F;
+	Mon, 23 Jun 2025 21:18:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0rzGW70A"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MG8ina7l"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B13D21FF2B;
-	Mon, 23 Jun 2025 21:58:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22D4A7482;
+	Mon, 23 Jun 2025 21:18:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750715934; cv=none; b=MB+dy4v9hQU2uMQ9m0MLRDWTRlJ1RKgW7fqp5gysoBA3KAmvQuyV3iM/6dZAAgmUcSKUeEKxIR13w+RoLg/emfEYWYZmi8+dMotx7+jPBvtRbnGVb82cIMV2wseDWVR4g3Y3Nky1wrP1ThO9L3owJlQq51yHT3FsZseS4Fr9GY4=
+	t=1750713490; cv=none; b=aBRmI8vimzXNuwV/6KnXMBh0kF0JGHka+J33xmTNWN9DFeP1CpNCoFq2Zl6V9JOIsFLX2Evl1XvSUZe8FrZ2+VmncFXpnLBN7saejG6HvVCMxexuDzPtvMOgENCDnA8SQWuHVh0lCX8RLsyeazD4p0Hc5UHJg72UmHmZ6GtQ5pQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750715934; c=relaxed/simple;
-	bh=6d9nqRmmeLYcB2IeuOhhPghpWSZVOWGHtoSZmL+xDBY=;
+	s=arc-20240116; t=1750713490; c=relaxed/simple;
+	bh=jKyv5qHciQDY2PLbTvmjNndQ5i7psH4RFqLA2T+SXAg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=d8GVyeTOHDqimYRfm/BhtGnvhGvjM0JsEDtTsPOezLUXqpgXh/x1Eja0sKzBCe1WMC36QL6W4t+J1sTJ21Dcu1YxIGejhVaG1eaqCQpZ0nq4RbxNMpjdoroe152TUNOEL1Q31Kt8W+GmXON8LY8vLJfrQdvLcRwjYEB6PKSE/rA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0rzGW70A; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12525C4CEEA;
-	Mon, 23 Jun 2025 21:58:53 +0000 (UTC)
+	 MIME-Version; b=BdG0GXDpinMZhPj9s4CprtT1kFMubRREKho39utg3v8/77XXRDati+PNui1V4HoDUwBLskGbDvw8bG2JBVkuCQ6NbDWI/W87k3Bggf+Bqi/QxDOH3h4SqTvoXgTjXCv6JRe23N4MYUXkH7+e2kO+5LXYVpX/F7bEeAisFzp2mPA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MG8ina7l; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0D2AC4CEEA;
+	Mon, 23 Jun 2025 21:18:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750715934;
-	bh=6d9nqRmmeLYcB2IeuOhhPghpWSZVOWGHtoSZmL+xDBY=;
+	s=korg; t=1750713490;
+	bh=jKyv5qHciQDY2PLbTvmjNndQ5i7psH4RFqLA2T+SXAg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0rzGW70Ad/3e1GZyd1sRLBWwPof0EL8i94uq/EHBddtZRrSJz8hJ+tWtc/YjSb9Ec
-	 TOa0DbIKAb4kuje39RAW8yEMqPoKknOl7cbf9hNkHXmNmQaJvSovazAdEho+F+0YB6
-	 sILIjQdrkeapqmLWBdrbqvl5l8H17+cJqCksqsPo=
+	b=MG8ina7lcaqKePgAC1wCLrSURq+Gr/9q7Xn1onI+/r6Jv+CwedaC/sqdG/DXCvoV1
+	 dLP+Ywa+d6s7DvhZcnSljW8qmtKSGajX2sckGpnwhMrymzpA9EFweTRfRhUAAkzj0i
+	 mTxpxb8pCGRwhDHqZgf1gvcV0Lra0B+N1TkJFuOA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 217/414] tcp: always seek for minimal rtt in tcp_rcv_rtt_update()
+	Jun Li <jun.li@nxp.com>,
+	Xu Yang <xu.yang_2@nxp.com>,
+	Vinod Koul <vkoul@kernel.org>
+Subject: [PATCH 6.6 093/290] phy: fsl-imx8mq-usb: fix phy_tx_vboost_level_from_property()
 Date: Mon, 23 Jun 2025 15:05:54 +0200
-Message-ID: <20250623130647.441060691@linuxfoundation.org>
+Message-ID: <20250623130629.769770391@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
-References: <20250623130642.015559452@linuxfoundation.org>
+In-Reply-To: <20250623130626.910356556@linuxfoundation.org>
+References: <20250623130626.910356556@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,76 +62,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Xu Yang <xu.yang_2@nxp.com>
 
-[ Upstream commit b879dcb1aeeca278eacaac0b1e2425b1c7599f9f ]
+commit b15ee09ddb987a122e74fb0fdf1bd6e864959fd3 upstream.
 
-tcp_rcv_rtt_update() goal is to maintain an estimation of the RTT
-in tp->rcv_rtt_est.rtt_us, used by tcp_rcv_space_adjust()
+The description of TX_VBOOST_LVL is wrong in register PHY_CTRL3
+bit[31:29].
 
-When TCP TS are enabled, tcp_rcv_rtt_update() is using
-EWMA to smooth the samples.
+The updated description as below:
+  011: Corresponds to a launch amplitude of 0.844 V.
+  100: Corresponds to a launch amplitude of 1.008 V.
+  101: Corresponds to a launch amplitude of 1.156 V.
 
-Change this to immediately latch the incoming value if it
-is lower than tp->rcv_rtt_est.rtt_us, so that tcp_rcv_space_adjust()
-does not overshoot tp->rcvq_space.space and sk->sk_rcvbuf.
+This will fix the parsing function
+phy_tx_vboost_level_from_property() to return correct value.
 
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Link: https://patch.msgid.link/20250513193919.1089692-8-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 63c85ad0cd81 ("phy: fsl-imx8mp-usb: add support for phy tuning")
+Cc: stable@vger.kernel.org
+Reviewed-by: Jun Li <jun.li@nxp.com>
+Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
+Link: https://lore.kernel.org/r/20250430094502.2723983-3-xu.yang_2@nxp.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv4/tcp_input.c | 22 ++++++++--------------
- 1 file changed, 8 insertions(+), 14 deletions(-)
+ drivers/phy/freescale/phy-fsl-imx8mq-usb.c |   10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/net/ipv4/tcp_input.c b/net/ipv4/tcp_input.c
-index d29219e067b7f..cf4fef18a9cad 100644
---- a/net/ipv4/tcp_input.c
-+++ b/net/ipv4/tcp_input.c
-@@ -665,10 +665,12 @@ EXPORT_SYMBOL(tcp_initialize_rcv_mss);
-  */
- static void tcp_rcv_rtt_update(struct tcp_sock *tp, u32 sample, int win_dep)
+--- a/drivers/phy/freescale/phy-fsl-imx8mq-usb.c
++++ b/drivers/phy/freescale/phy-fsl-imx8mq-usb.c
+@@ -95,12 +95,12 @@ static u32 phy_tx_preemp_amp_tune_from_p
+ static u32 phy_tx_vboost_level_from_property(u32 microvolt)
  {
--	u32 new_sample = tp->rcv_rtt_est.rtt_us;
--	long m = sample;
-+	u32 new_sample, old_sample = tp->rcv_rtt_est.rtt_us;
-+	long m = sample << 3;
- 
--	if (new_sample != 0) {
-+	if (old_sample == 0 || m < old_sample) {
-+		new_sample = m;
-+	} else {
- 		/* If we sample in larger samples in the non-timestamp
- 		 * case, we could grossly overestimate the RTT especially
- 		 * with chatty applications or bulk transfer apps which
-@@ -679,17 +681,9 @@ static void tcp_rcv_rtt_update(struct tcp_sock *tp, u32 sample, int win_dep)
- 		 * else with timestamps disabled convergence takes too
- 		 * long.
- 		 */
--		if (!win_dep) {
--			m -= (new_sample >> 3);
--			new_sample += m;
--		} else {
--			m <<= 3;
--			if (m < new_sample)
--				new_sample = m;
--		}
--	} else {
--		/* No previous measure. */
--		new_sample = m << 3;
-+		if (win_dep)
-+			return;
-+		new_sample = old_sample - (old_sample >> 3) + sample;
+ 	switch (microvolt) {
+-	case 0 ... 960:
+-		return 0;
+-	case 961 ... 1160:
+-		return 2;
+-	default:
++	case 1156:
++		return 5;
++	case 844:
+ 		return 3;
++	default:
++		return 4;
  	}
+ }
  
- 	tp->rcv_rtt_est.rtt_us = new_sample;
--- 
-2.39.5
-
 
 
 
