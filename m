@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-156386-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156393-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D901DAE4F55
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:14:49 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1071AAE4F5D
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:15:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7637F17E707
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:14:50 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4D8A91B60AB4
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:15:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E2531F3FF8;
-	Mon, 23 Jun 2025 21:14:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C3C5221DAE;
+	Mon, 23 Jun 2025 21:15:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PtiahedY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o/1Sd52P"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF1461DF98B;
-	Mon, 23 Jun 2025 21:14:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F39771F582A;
+	Mon, 23 Jun 2025 21:15:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750713287; cv=none; b=H7Hj/7YnseahQ3d06YmkBMmm5KEm37+0NrWJmT7ebQ+jjzyx9y4mtS+VdiefbLKyaGxWMuwU+TIv3Ub/BmvER2/V2oZDeKceBUdXtXFp4OGK4InkI1EQT6Ef0QAEUIigFqbk42FcJkp7LnPPin3xQTiirteOw/RpHmU4XoVSeyE=
+	t=1750713305; cv=none; b=WwIQbB9fWiis6zrpN8Hqcw1kZy1qqOTwTjAO0seE08yRks1QD8W5ThFXJILBwtqYleI+mppn8A6HBJUYaKELcNUGbnK7ivfI3OfmGDTCLZxj1Mis0I+sk9QF9sce27a6peQznpJoLAxmBuZZudfMXeX/N4hUCEpSNRzUh4ys7Rg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750713287; c=relaxed/simple;
-	bh=i6Mi3VGG2110GuPRZtd1AUGedilNtko8Y+rM69Mqrtg=;
+	s=arc-20240116; t=1750713305; c=relaxed/simple;
+	bh=TXfOg6V4Nusi8oRr9YjPcN8AV3lAW40IYlQUfeeEQvU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CzJGn35wzY0bS/kfAuEeOUnnPgq5iD/3IQdhx3kDBsGa2Lb/92eTs62wVyNL8lJYR7WpSestYXWhncUcyu3SaBa/9NZCZL2BAL672QnLNpWPUr/vANHusH3pfcTT8q1FNEi5mJl2/hMitEvhbZr+izaKjJ1ioEZXDW/bGtVmBIs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PtiahedY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67BECC4CEEA;
-	Mon, 23 Jun 2025 21:14:47 +0000 (UTC)
+	 MIME-Version:Content-Type; b=hRuni3AIaiflGG3ST5ceK5ZtBZVW/7rXrQ/aMHCdMi+eiZw8OlCCl3rXht2PLyzCAoj7oOjne9FTwsrPO0yhvNJtpRsZU85I1DSbjjegHBImRBtlrijJsggvEX2d3/nksjEXZpqOmn5a7rNF6dl9VuxxT80/Mlmp0MTrqnzu7wY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o/1Sd52P; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D9E6C4CEEA;
+	Mon, 23 Jun 2025 21:15:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750713287;
-	bh=i6Mi3VGG2110GuPRZtd1AUGedilNtko8Y+rM69Mqrtg=;
+	s=korg; t=1750713304;
+	bh=TXfOg6V4Nusi8oRr9YjPcN8AV3lAW40IYlQUfeeEQvU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PtiahedYfxpfJy1diwQzclpvCoaAIBKu5vtBYHwpCfUXoshsCW5Xpun0OFhcJxaoM
-	 5reHABFgwB3trG2gZSui2DXn++S7IRlZA9gid3LhIrw+SHe25GVcQZE5sThC6pnwmX
-	 IkUuWn7b5Z+mKSnY7cKGsgim9chJujbK/nAa53ho=
+	b=o/1Sd52PS/CBB73Di+xWFXSL4VuKrTjLWKrjptoqDdMzdprj3drNw6Z+kfgReBcFK
+	 HMheNfs092YV1roi2X1L1okPKYaTX4vqPAN81lv7hArMcpDuZyIOKRTv4JD9/MJHxf
+	 6URB5H41c8vlsPWWI6NmSww94n8HrfDl6v/RALjU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Longfang Liu <liulongfang@huawei.com>,
-	Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>,
-	Alex Williamson <alex.williamson@redhat.com>,
+	Robert Morris <rtm@csail.mit.edu>,
+	=?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>,
+	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 088/508] hisi_acc_vfio_pci: add eq and aeq interruption restore
-Date: Mon, 23 Jun 2025 15:02:13 +0200
-Message-ID: <20250623130647.414427829@linuxfoundation.org>
+Subject: [PATCH 6.1 089/508] wifi: ath9k_htc: Abort software beacon handling if disabled
+Date: Mon, 23 Jun 2025 15:02:14 +0200
+Message-ID: <20250623130647.440808967@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
 In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
 References: <20250623130645.255320792@linuxfoundation.org>
@@ -61,69 +61,50 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Longfang Liu <liulongfang@huawei.com>
+From: Toke Høiland-Jørgensen <toke@toke.dk>
 
-[ Upstream commit 3495cec0787721ba7a9d5c19d0bbb66d182de584 ]
+[ Upstream commit ac4e317a95a1092b5da5b9918b7118759342641c ]
 
-In order to ensure that the task packets of the accelerator
-device are not lost during the migration process, it is necessary
-to send an EQ and AEQ command to the device after the live migration
-is completed and to update the completion position of the task queue.
+A malicious USB device can send a WMI_SWBA_EVENTID event from an
+ath9k_htc-managed device before beaconing has been enabled. This causes
+a device-by-zero error in the driver, leading to either a crash or an
+out of bounds read.
 
-Let the device recheck the completed tasks data and if there are
-uncollected packets, device resend a task completion interrupt
-to the software.
+Prevent this by aborting the handling in ath9k_htc_swba() if beacons are
+not enabled.
 
-Fixes: b0eed085903e ("hisi_acc_vfio_pci: Add support for VFIO live migration")
-Signed-off-by: Longfang Liu <liulongfang@huawei.com>
-Reviewed-by: Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>
-Link: https://lore.kernel.org/r/20250510081155.55840-3-liulongfang@huawei.com
-Signed-off-by: Alex Williamson <alex.williamson@redhat.com>
+Reported-by: Robert Morris <rtm@csail.mit.edu>
+Closes: https://lore.kernel.org/r/88967.1743099372@localhost
+Fixes: 832f6a18fc2a ("ath9k_htc: Add beacon slots")
+Signed-off-by: Toke Høiland-Jørgensen <toke@toke.dk>
+Link: https://patch.msgid.link/20250402112217.58533-1-toke@toke.dk
+Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/vfio/pci/hisilicon/hisi_acc_vfio_pci.c | 16 ++++++++++++++++
- 1 file changed, 16 insertions(+)
+ drivers/net/wireless/ath/ath9k/htc_drv_beacon.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/vfio/pci/hisilicon/hisi_acc_vfio_pci.c b/drivers/vfio/pci/hisilicon/hisi_acc_vfio_pci.c
-index b5efb37712d5e..de3e1a148ddab 100644
---- a/drivers/vfio/pci/hisilicon/hisi_acc_vfio_pci.c
-+++ b/drivers/vfio/pci/hisilicon/hisi_acc_vfio_pci.c
-@@ -469,6 +469,19 @@ static int vf_qm_get_match_data(struct hisi_acc_vf_core_device *hisi_acc_vdev,
- 	return 0;
- }
+diff --git a/drivers/net/wireless/ath/ath9k/htc_drv_beacon.c b/drivers/net/wireless/ath/ath9k/htc_drv_beacon.c
+index 533471e694007..18c7654bc539d 100644
+--- a/drivers/net/wireless/ath/ath9k/htc_drv_beacon.c
++++ b/drivers/net/wireless/ath/ath9k/htc_drv_beacon.c
+@@ -290,6 +290,9 @@ void ath9k_htc_swba(struct ath9k_htc_priv *priv,
+ 	struct ath_common *common = ath9k_hw_common(priv->ah);
+ 	int slot;
  
-+static void vf_qm_xeqc_save(struct hisi_qm *qm,
-+			    struct hisi_acc_vf_migration_file *migf)
-+{
-+	struct acc_vf_data *vf_data = &migf->vf_data;
-+	u16 eq_head, aeq_head;
++	if (!priv->cur_beacon_conf.enable_beacon)
++		return;
 +
-+	eq_head = vf_data->qm_eqc_dw[0] & 0xFFFF;
-+	qm_db(qm, 0, QM_DOORBELL_CMD_EQ, eq_head, 0);
-+
-+	aeq_head = vf_data->qm_aeqc_dw[0] & 0xFFFF;
-+	qm_db(qm, 0, QM_DOORBELL_CMD_AEQ, aeq_head, 0);
-+}
-+
- static int vf_qm_load_data(struct hisi_acc_vf_core_device *hisi_acc_vdev,
- 			   struct hisi_acc_vf_migration_file *migf)
- {
-@@ -569,6 +582,9 @@ static int vf_qm_state_save(struct hisi_acc_vf_core_device *hisi_acc_vdev,
- 	}
- 
- 	migf->total_length = sizeof(struct acc_vf_data);
-+	/* Save eqc and aeqc interrupt information */
-+	vf_qm_xeqc_save(vf_qm, migf);
-+
- 	return 0;
- }
- 
+ 	if (swba->beacon_pending != 0) {
+ 		priv->beacon.bmisscnt++;
+ 		if (priv->beacon.bmisscnt > BSTUCK_THRESHOLD) {
 -- 
 2.39.5
 
