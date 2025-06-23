@@ -1,62 +1,55 @@
-Return-Path: <stable+bounces-156225-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156854-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D98ABAE4EB2
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:08:28 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BC253AE516C
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:33:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7D73717D465
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:08:17 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 73301172912
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:33:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3969B221FBF;
-	Mon, 23 Jun 2025 21:08:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D8E61DDC04;
+	Mon, 23 Jun 2025 21:33:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y473fBmE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Mq1jgUcT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB9431ACEDA;
-	Mon, 23 Jun 2025 21:08:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF1221F5820;
+	Mon, 23 Jun 2025 21:33:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750712889; cv=none; b=J0esm5EvsluOgB/9anAoHwvAj8jx0VLAa1O+LGSt70ViEJMxw+xKCNv9KDVD7KMCKE421a3QpzrwLTNksi9zPHdN+o9Cas+FPr/ClwWjDoQRpuVmBdogGAPNfvyzZmvWeATAKGAAJiwMzXbO9sPwJHhJnZjs/jFRIaQjNFnN0d0=
+	t=1750714429; cv=none; b=c7pH6ZkAr7qC2hACx1TeNMdcj8uHVDFHaM5bLLPbQPzqb7+yiTikHvharXdo2IGRv+8MMjNwYAYH0tivzYuFmv+P4ugM+h3RHrl4cT2OpOaInnb98Ed5jQFDJpfhuddM1rgbc+D4wG+GyjBuqT76By+WD7LjW45vKEGu+x7FoKU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750712889; c=relaxed/simple;
-	bh=0R/rGtOUOLw60ntKXIcdHRg9qQT2/q58xHcjVyikjrU=;
+	s=arc-20240116; t=1750714429; c=relaxed/simple;
+	bh=R+HlP0MT9CreJHyM7e2vMC5lO7yg3XPToAdvedw+Kqg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oJBNoPQeCwShFMkCo/6cwJ7RTgHo7RD1eJSmu29FXI2AOq0lgOsMKKjSj36olOQBfcUfD5lm5zwJzMbkLNavYrBBjDiAhjBhwX0Kz3DYFfwKVPKhMGuF+7Hdb8e247I9vVspsvom2LzUP6YQfa+tO352/yuXW8NM8R5XTDs5uzI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y473fBmE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E752C4CEED;
-	Mon, 23 Jun 2025 21:08:08 +0000 (UTC)
+	 MIME-Version; b=c+9CfH4J0S5l7xpBWxkz6mLYWtAvtsTngTZ3KV2G1Pl0lz1Fkrl3lQcL8usru2eLidLeIuIPZi2MHsSE/pjiZqXecoWwI5XyAk8l1mMEyxpq6q75yd8FFnfxYn6rHH8XC+SHpyaJXcMaQ/aZl724OzvqnzV/8U3WOS5rWyFJrWM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Mq1jgUcT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A793C4CEEA;
+	Mon, 23 Jun 2025 21:33:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750712888;
-	bh=0R/rGtOUOLw60ntKXIcdHRg9qQT2/q58xHcjVyikjrU=;
+	s=korg; t=1750714428;
+	bh=R+HlP0MT9CreJHyM7e2vMC5lO7yg3XPToAdvedw+Kqg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=y473fBmEpeszXUI3nEwltrHsmbFQsDzfLpJx4XAvqdksjh2oURNNLGarIFKJox7wL
-	 LAbT8SJwSS/AFzTG11V5tByfTLdaUJnAe3m30SQy6zpL/hxThk3m7DFNnyTsgOU0mX
-	 saoiuC02l+Zw+OUm0m4h1IZUv0BHJg3W9jfZ+N1A=
+	b=Mq1jgUcTXLhNJgZkKaeXy1jHDVLY5nuyLm2ucTcfTxg6u4mG5GvcCaoQbZhiw2u1i
+	 LgAeOMHbs4NPKWarZS+S3AS6mVt+5QgMKgr+Bl8mkAqZQ8vfUe4kPya12QsgjiGBMP
+	 NNQaAw041XpzZlLiDN4nHeT+vv2w0vvwedDByDp8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-	Ian Rogers <irogers@google.com>,
-	Jiri Olsa <jolsa@kernel.org>,
-	Kan Liang <kan.liang@linux.intel.com>,
-	Namhyung Kim <namhyung@kernel.org>,
-	Tony Jones <tonyj@suse.de>,
-	Arnaldo Carvalho de Melo <acme@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 094/411] perf scripts python: exported-sql-viewer.py: Fix pattern matching with Python 3
-Date: Mon, 23 Jun 2025 15:03:58 +0200
-Message-ID: <20250623130635.832167216@linuxfoundation.org>
+	Gui-Dong Han <hanguidong02@gmail.com>,
+	Guenter Roeck <linux@roeck-us.net>
+Subject: [PATCH 6.12 102/414] hwmon: (ftsteutates) Fix TOCTOU race in fts_read()
+Date: Mon, 23 Jun 2025 15:03:59 +0200
+Message-ID: <20250623130644.653781862@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
-References: <20250623130632.993849527@linuxfoundation.org>
+In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
+References: <20250623130642.015559452@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,57 +61,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Adrian Hunter <adrian.hunter@intel.com>
+From: Gui-Dong Han <hanguidong02@gmail.com>
 
-[ Upstream commit 17e548405a81665fd14cee960db7d093d1396400 ]
+commit 14c9ede9ca4cd078ad76a6ab9617b81074eb58bf upstream.
 
-The script allows the user to enter patterns to find symbols.
+In the fts_read() function, when handling hwmon_pwm_auto_channels_temp,
+the code accesses the shared variable data->fan_source[channel] twice
+without holding any locks. It is first checked against
+FTS_FAN_SOURCE_INVALID, and if the check passes, it is read again
+when used as an argument to the BIT() macro.
 
-The pattern matching characters are converted for use in SQL.
+This creates a Time-of-Check to Time-of-Use (TOCTOU) race condition.
+Another thread executing fts_update_device() can modify the value of
+data->fan_source[channel] between the check and its use. If the value
+is changed to FTS_FAN_SOURCE_INVALID (0xff) during this window, the
+BIT() macro will be called with a large shift value (BIT(255)).
+A bit shift by a value greater than or equal to the type width is
+undefined behavior and can lead to a crash or incorrect values being
+returned to userspace.
 
-For PostgreSQL the conversion involves using the Python maketrans()
-method which is slightly different in Python 3 compared with Python 2.
+Fix this by reading data->fan_source[channel] into a local variable
+once, eliminating the race condition. Additionally, add a bounds check
+to ensure the value is less than BITS_PER_LONG before passing it to
+the BIT() macro, making the code more robust against undefined behavior.
 
-Fix to work in Python 3.
+This possible bug was found by an experimental static analysis tool
+developed by our team.
 
-Fixes: beda0e725e5f06ac ("perf script python: Add Python3 support to exported-sql-viewer.py")
-Signed-off-by: Adrian Hunter <adrian.hunter@intel.com>
-Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
-Cc: Ian Rogers <irogers@google.com>
-Cc: Jiri Olsa <jolsa@kernel.org>
-Cc: Kan Liang <kan.liang@linux.intel.com>
-Cc: Namhyung Kim <namhyung@kernel.org>
-Cc: Tony Jones <tonyj@suse.de>
-Link: https://lore.kernel.org/r/20250512093932.79854-4-adrian.hunter@intel.com
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 1c5759d8ce05 ("hwmon: (ftsteutates) Replace fanX_source with pwmX_auto_channels_temp")
+Cc: stable@vger.kernel.org
+Signed-off-by: Gui-Dong Han <hanguidong02@gmail.com>
+Link: https://lore.kernel.org/r/20250606071640.501262-1-hanguidong02@gmail.com
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/perf/scripts/python/exported-sql-viewer.py | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/hwmon/ftsteutates.c |    9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
-diff --git a/tools/perf/scripts/python/exported-sql-viewer.py b/tools/perf/scripts/python/exported-sql-viewer.py
-index 13f2d8a816109..99742013676b3 100755
---- a/tools/perf/scripts/python/exported-sql-viewer.py
-+++ b/tools/perf/scripts/python/exported-sql-viewer.py
-@@ -680,7 +680,10 @@ class CallGraphModelBase(TreeModel):
- 				s = value.replace("%", "\%")
- 				s = s.replace("_", "\_")
- 				# Translate * and ? into SQL LIKE pattern characters % and _
--				trans = string.maketrans("*?", "%_")
-+				if sys.version_info[0] == 3:
-+					trans = str.maketrans("*?", "%_")
-+				else:
-+					trans = string.maketrans("*?", "%_")
- 				match = " LIKE '" + str(s).translate(trans) + "'"
- 			else:
- 				match = " GLOB '" + str(value) + "'"
--- 
-2.39.5
-
+--- a/drivers/hwmon/ftsteutates.c
++++ b/drivers/hwmon/ftsteutates.c
+@@ -423,13 +423,16 @@ static int fts_read(struct device *dev,
+ 		break;
+ 	case hwmon_pwm:
+ 		switch (attr) {
+-		case hwmon_pwm_auto_channels_temp:
+-			if (data->fan_source[channel] == FTS_FAN_SOURCE_INVALID)
++		case hwmon_pwm_auto_channels_temp: {
++			u8 fan_source = data->fan_source[channel];
++
++			if (fan_source == FTS_FAN_SOURCE_INVALID || fan_source >= BITS_PER_LONG)
+ 				*val = 0;
+ 			else
+-				*val = BIT(data->fan_source[channel]);
++				*val = BIT(fan_source);
+ 
+ 			return 0;
++		}
+ 		default:
+ 			break;
+ 		}
 
 
 
