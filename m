@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-157463-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157554-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3AB7CAE5410
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:58:49 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3EDC8AE5497
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:03:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2215A1BC03E2
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:59:05 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8F5F03BD209
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:02:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75CC8222576;
-	Mon, 23 Jun 2025 21:58:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 39796225A31;
+	Mon, 23 Jun 2025 22:02:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JX7/pFqC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HpHctpU0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33C3670838;
-	Mon, 23 Jun 2025 21:58:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8297225417;
+	Mon, 23 Jun 2025 22:02:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750715927; cv=none; b=EyoD3FBs93bUs0bIcGk+y7BM6pzKSCqSmvEzZbFQI4gXaUqJ1W/oFM+IQNPDYpfL0z46nQmqHDRkAEKo25xQ1GnBMHC7hJt33ytBEBgM3AeRkdNWOIneF9p9ziJIxRgQRCY0O2vUtQo4WaQlaab8dbLHvmS3qKYJY8w8k33HdRk=
+	t=1750716152; cv=none; b=geBu7XmE44ZuX73pIJ3m5aBU39KNUB+5mQ3iuoQjdm/65OlxljEWS8X6ohhGyPftHDRNZO8b8r425mYLPHoloCffLrDbFDZmqvaMAM4MFBP5jPOs1d19KFjYpqQTqEL3VKRRwQNdxIiLfF7CccDuOvMvHDyh8T4zobgvs58uyYQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750715927; c=relaxed/simple;
-	bh=1j8vpMI12MOzzC1/xVRpgE0I9uYyZXzb++CuOFqX0bA=;
+	s=arc-20240116; t=1750716152; c=relaxed/simple;
+	bh=ixgFxqJ5CXuXhecmxHZPr0RhNG2T+cf269rIz6BBwZY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lzXRRARWI7/gm6vLjkf55PnGYx2jbfD5vxCkPW3naFtxbY+1IELzDGA+qARrmLFU2xpr29y3SEX9qsKOPFTyhsBXx1vw13jjntk5l5tyDaluaOzTA0uM59MnE3nGGNg11cj5QDAyeHBorhELI9AY/1VOva/YEYntEwBbBJx6oC8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JX7/pFqC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5B27C4CEEA;
-	Mon, 23 Jun 2025 21:58:46 +0000 (UTC)
+	 MIME-Version; b=cfqnwGCcZPnx7x6sSAjla/evkd1daCgoEFrHi6HwwPUCPDoULLcjBEwPAhp1r5razffa5uF/1ancfeE9QxrLDykqeRla+zpymngv8A9y38H0vnf388d67UjJXXqka9DRbpzIL8CTPW41QzmnOkotj4q4QbqKjqEFvAQsTAahYCc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HpHctpU0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7FDF2C4CEED;
+	Mon, 23 Jun 2025 22:02:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750715927;
-	bh=1j8vpMI12MOzzC1/xVRpgE0I9uYyZXzb++CuOFqX0bA=;
+	s=korg; t=1750716151;
+	bh=ixgFxqJ5CXuXhecmxHZPr0RhNG2T+cf269rIz6BBwZY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JX7/pFqCvGmpwQiz39rC2FJju8yQqtSls7bu+cc2ZnyHw64TW6Yr9ucE/QWx7GG6h
-	 iuOdokHja9bmxBWZCuCtfkoe+XOczncVRT9/nhh6FWU651H+MtrBuG69HyOUBydQxL
-	 91h/ZbGtsjvcLBOehpASkVnIIG7r34fVoHGPVvcc=
+	b=HpHctpU0uo4vF9sMleRZzHYnSJfTnLlp5jK8grpPd99FMljQLEramZL1i2g6ZzvCy
+	 zyX97cQSLDbxBBcCkVbgdJzigMLidTkXgUy0HYQIwsa6dtLdSLB+iC2Kc/XPytqw72
+	 q1C01UcHV3XSvCn5x4ECvlX6yzhhz323rIg9/5YM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Antipov <dmantipov@yandex.ru>,
-	Christian Lamparter <chunkeey@gmail.com>,
-	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Guenter Roeck <linux@roeck-us.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 310/355] wifi: carl9170: do not ping device which has failed to load firmware
+Subject: [PATCH 6.6 250/290] hwmon: (occ) fix unaligned accesses
 Date: Mon, 23 Jun 2025 15:08:31 +0200
-Message-ID: <20250623130636.105971648@linuxfoundation.org>
+Message-ID: <20250623130634.445788838@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130626.716971725@linuxfoundation.org>
-References: <20250623130626.716971725@linuxfoundation.org>
+In-Reply-To: <20250623130626.910356556@linuxfoundation.org>
+References: <20250623130626.910356556@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,65 +62,111 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Antipov <dmantipov@yandex.ru>
+From: Arnd Bergmann <arnd@arndb.de>
 
-[ Upstream commit 15d25307692312cec4b57052da73387f91a2e870 ]
+[ Upstream commit 2c021b45c154958566aad0cae9f74ab26a2d5732 ]
 
-Syzkaller reports [1, 2] crashes caused by an attempts to ping
-the device which has failed to load firmware. Since such a device
-doesn't pass 'ieee80211_register_hw()', an internal workqueue
-managed by 'ieee80211_queue_work()' is not yet created and an
-attempt to queue work on it causes null-ptr-deref.
+Passing a pointer to an unaligned integer as a function argument is
+undefined behavior:
 
-[1] https://syzkaller.appspot.com/bug?extid=9a4aec827829942045ff
-[2] https://syzkaller.appspot.com/bug?extid=0d8afba53e8fb2633217
+drivers/hwmon/occ/common.c:492:27: warning: taking address of packed member 'accumulator' of class or structure 'power_sensor_2' may result in an unaligned pointer value [-Waddress-of-packed-member]
+  492 |   val = occ_get_powr_avg(&power->accumulator,
+      |                           ^~~~~~~~~~~~~~~~~~
+drivers/hwmon/occ/common.c:493:13: warning: taking address of packed member 'update_tag' of class or structure 'power_sensor_2' may result in an unaligned pointer value [-Waddress-of-packed-member]
+  493 |            &power->update_tag);
+      |             ^~~~~~~~~~~~~~~~~
 
-Fixes: e4a668c59080 ("carl9170: fix spurious restart due to high latency")
-Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
-Acked-by: Christian Lamparter <chunkeey@gmail.com>
-Link: https://patch.msgid.link/20250616181205.38883-1-dmantipov@yandex.ru
-Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+Move the get_unaligned() calls out of the function and pass these
+through argument registers instead.
+
+Fixes: c10e753d43eb ("hwmon (occ): Add sensor types and versions")
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Link: https://lore.kernel.org/r/20250610092553.2641094-1-arnd@kernel.org
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/carl9170/usb.c | 19 +++++++++++++------
- 1 file changed, 13 insertions(+), 6 deletions(-)
+ drivers/hwmon/occ/common.c | 28 +++++++++++++---------------
+ 1 file changed, 13 insertions(+), 15 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/carl9170/usb.c b/drivers/net/wireless/ath/carl9170/usb.c
-index a5265997b5767..debac4699687e 100644
---- a/drivers/net/wireless/ath/carl9170/usb.c
-+++ b/drivers/net/wireless/ath/carl9170/usb.c
-@@ -438,14 +438,21 @@ static void carl9170_usb_rx_complete(struct urb *urb)
+diff --git a/drivers/hwmon/occ/common.c b/drivers/hwmon/occ/common.c
+index 256cda99fdc95..483f79b394298 100644
+--- a/drivers/hwmon/occ/common.c
++++ b/drivers/hwmon/occ/common.c
+@@ -459,12 +459,10 @@ static ssize_t occ_show_power_1(struct device *dev,
+ 	return sysfs_emit(buf, "%llu\n", val);
+ }
  
- 		if (atomic_read(&ar->rx_anch_urbs) == 0) {
- 			/*
--			 * The system is too slow to cope with
--			 * the enormous workload. We have simply
--			 * run out of active rx urbs and this
--			 * unfortunately leads to an unpredictable
--			 * device.
-+			 * At this point, either the system is too slow to
-+			 * cope with the enormous workload (so we have simply
-+			 * run out of active rx urbs and this unfortunately
-+			 * leads to an unpredictable device), or the device
-+			 * is not fully functional after an unsuccessful
-+			 * firmware loading attempts (so it doesn't pass
-+			 * ieee80211_register_hw() and there is no internal
-+			 * workqueue at all).
- 			 */
+-static u64 occ_get_powr_avg(u64 *accum, u32 *samples)
++static u64 occ_get_powr_avg(u64 accum, u32 samples)
+ {
+-	u64 divisor = get_unaligned_be32(samples);
+-
+-	return (divisor == 0) ? 0 :
+-		div64_u64(get_unaligned_be64(accum) * 1000000ULL, divisor);
++	return (samples == 0) ? 0 :
++		mul_u64_u32_div(accum, 1000000UL, samples);
+ }
  
--			ieee80211_queue_work(ar->hw, &ar->ping_work);
-+			if (ar->registered)
-+				ieee80211_queue_work(ar->hw, &ar->ping_work);
-+			else
-+				pr_warn_once("device %s is not registered\n",
-+					     dev_name(&ar->udev->dev));
- 		}
- 	} else {
- 		/*
+ static ssize_t occ_show_power_2(struct device *dev,
+@@ -489,8 +487,8 @@ static ssize_t occ_show_power_2(struct device *dev,
+ 				  get_unaligned_be32(&power->sensor_id),
+ 				  power->function_id, power->apss_channel);
+ 	case 1:
+-		val = occ_get_powr_avg(&power->accumulator,
+-				       &power->update_tag);
++		val = occ_get_powr_avg(get_unaligned_be64(&power->accumulator),
++				       get_unaligned_be32(&power->update_tag));
+ 		break;
+ 	case 2:
+ 		val = (u64)get_unaligned_be32(&power->update_tag) *
+@@ -527,8 +525,8 @@ static ssize_t occ_show_power_a0(struct device *dev,
+ 		return sysfs_emit(buf, "%u_system\n",
+ 				  get_unaligned_be32(&power->sensor_id));
+ 	case 1:
+-		val = occ_get_powr_avg(&power->system.accumulator,
+-				       &power->system.update_tag);
++		val = occ_get_powr_avg(get_unaligned_be64(&power->system.accumulator),
++				       get_unaligned_be32(&power->system.update_tag));
+ 		break;
+ 	case 2:
+ 		val = (u64)get_unaligned_be32(&power->system.update_tag) *
+@@ -541,8 +539,8 @@ static ssize_t occ_show_power_a0(struct device *dev,
+ 		return sysfs_emit(buf, "%u_proc\n",
+ 				  get_unaligned_be32(&power->sensor_id));
+ 	case 5:
+-		val = occ_get_powr_avg(&power->proc.accumulator,
+-				       &power->proc.update_tag);
++		val = occ_get_powr_avg(get_unaligned_be64(&power->proc.accumulator),
++				       get_unaligned_be32(&power->proc.update_tag));
+ 		break;
+ 	case 6:
+ 		val = (u64)get_unaligned_be32(&power->proc.update_tag) *
+@@ -555,8 +553,8 @@ static ssize_t occ_show_power_a0(struct device *dev,
+ 		return sysfs_emit(buf, "%u_vdd\n",
+ 				  get_unaligned_be32(&power->sensor_id));
+ 	case 9:
+-		val = occ_get_powr_avg(&power->vdd.accumulator,
+-				       &power->vdd.update_tag);
++		val = occ_get_powr_avg(get_unaligned_be64(&power->vdd.accumulator),
++				       get_unaligned_be32(&power->vdd.update_tag));
+ 		break;
+ 	case 10:
+ 		val = (u64)get_unaligned_be32(&power->vdd.update_tag) *
+@@ -569,8 +567,8 @@ static ssize_t occ_show_power_a0(struct device *dev,
+ 		return sysfs_emit(buf, "%u_vdn\n",
+ 				  get_unaligned_be32(&power->sensor_id));
+ 	case 13:
+-		val = occ_get_powr_avg(&power->vdn.accumulator,
+-				       &power->vdn.update_tag);
++		val = occ_get_powr_avg(get_unaligned_be64(&power->vdn.accumulator),
++				       get_unaligned_be32(&power->vdn.update_tag));
+ 		break;
+ 	case 14:
+ 		val = (u64)get_unaligned_be32(&power->vdn.update_tag) *
 -- 
 2.39.5
 
