@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-157729-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-158010-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0DBA4AE5547
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:09:50 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4D1E5AE56D6
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:23:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A48851BC1E04
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:09:56 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A754A3B6C3E
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:20:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A7CA2940B;
-	Mon, 23 Jun 2025 22:09:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8BBA9224B07;
+	Mon, 23 Jun 2025 22:21:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bh1uRob9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eRbcmQxO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC7431F7580;
-	Mon, 23 Jun 2025 22:09:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48B7B15ADB4;
+	Mon, 23 Jun 2025 22:21:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750716578; cv=none; b=AcwIlRETXQOhwqzqn9eSgLmaY5VGKXRnGK/oQOfmmVQDL7m+NZ0xFm1erXovzgUpHaurmq0xubdv3OYO2WmapUrdS15daxHoTnrjv9AdvPQuENH5CMziqj9bV6rKYvpE0+5Qb2w4l7w0clZVr5RiGJhWBqNS0zy4K/FYRxHRm74=
+	t=1750717265; cv=none; b=OSaq+qo/kM/UmLguBKfiexUSZ9eOhGo54LZl2/k/KZmanloCZyOccCf2p9xWtVz3l86b0rbg/5+WQI2YQV6eUQiEUdcEc0g0F+rC1mjrBNzySUBWteZMz+1iaRJF4FCOTSY9MfSwDEqQheYWZWimRsYz4vMvrnvWsMcMid15Upk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750716578; c=relaxed/simple;
-	bh=zbFxCV3Qsk+w9JYjmpVXGgHb2pnRI1h49xrE6Wj7bZk=;
+	s=arc-20240116; t=1750717265; c=relaxed/simple;
+	bh=Z5W6CuHPVPV05Qi5cBvVC30PTJPD8Dqb/5HRn3eUB0s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=KPC44gELY01gu1rvYVjkvJ+rykAIqXzhnwtsn3M1/6hGzDwEEoT6kx/7b8Xdz3Uxz0ODrAOL5BNXxAsl9E2CBliE19Pfesz4auJv3YmvzduDCCOAj2ih2+SG3m1h6QrhqBEHhmSNgiEs7jhnZtK88wwOLdUDBys9V7mduUAQDPw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bh1uRob9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5366BC4CEEA;
-	Mon, 23 Jun 2025 22:09:38 +0000 (UTC)
+	 MIME-Version; b=WC9HJBoLRdU3lEA2h6TbyVaGOC6S7xXX7gtCTclNfQ2L9mF3f9DStIALjR6jUtzhLTnlkrKoIfwKwo46frboV11Tx8BjIvSL1eoYiz3yXNYk4dEtf4vT1xBnQSysIUhsHTH8J1xcq/aTmPI150AceOOmjhnkp2yjDrpIjNWX7h8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eRbcmQxO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4550C4CEEA;
+	Mon, 23 Jun 2025 22:21:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750716578;
-	bh=zbFxCV3Qsk+w9JYjmpVXGgHb2pnRI1h49xrE6Wj7bZk=;
+	s=korg; t=1750717265;
+	bh=Z5W6CuHPVPV05Qi5cBvVC30PTJPD8Dqb/5HRn3eUB0s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bh1uRob9a03Rgs+g/xk8xDKDs8NtivQO8GzY/dZmD7HJ4HLPKgpbjVKvq4gJJN1y2
-	 m0dyxPaeXmJMhn/gf6EAEa+uXpbmU3jhQtBLEmZiqzEEwqIODECB9LV5DrFxOy8sWg
-	 mXwGZVNCj/rBi6wANlmH92rqNIstucoDNuSgKPI4=
+	b=eRbcmQxOy8AmOyaH6D4A4/dmK/KY/u9CwpSbuS/DHX5svG58jpF3V9m8ngMATjA9B
+	 UJSEYGhAErAKVf/qZfdYMd0n2Ysrs4lYI4gjOJwUm8riqj3wF5fNFpxhLGiTaHZJDp
+	 sYgzLOM3OskNfeN7oy3pXfhN0eE8cyjTrmcwJBH0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stuart Hayes <stuart.w.hayes@gmail.com>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 342/411] platform/x86: dell_rbu: Fix list usage
+	Nathan Chancellor <nathan@kernel.org>,
+	Ingo Molnar <mingo@kernel.org>,
+	Shuah Khan <skhan@linuxfoundation.org>
+Subject: [PATCH 6.12 349/414] x86/tools: Drop duplicate unlikely() definition in insn_decoder_test.c
 Date: Mon, 23 Jun 2025 15:08:06 +0200
-Message-ID: <20250623130642.258843396@linuxfoundation.org>
+Message-ID: <20250623130650.700321132@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
-References: <20250623130632.993849527@linuxfoundation.org>
+In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
+References: <20250623130642.015559452@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,59 +60,47 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stuart Hayes <stuart.w.hayes@gmail.com>
+From: Nathan Chancellor <nathan@kernel.org>
 
-[ Upstream commit 61ce04601e0d8265ec6d2ffa6df5a7e1bce64854 ]
+commit f710202b2a45addea3dcdcd862770ecbaf6597ef upstream.
 
-Pass the correct list head to list_for_each_entry*() when looping through
-the packet list.
+After commit c104c16073b7 ("Kunit to check the longest symbol length"),
+there is a warning when building with clang because there is now a
+definition of unlikely from compiler.h in tools/include/linux, which
+conflicts with the one in the instruction decoder selftest:
 
-Without this patch, reading the packet data via sysfs will show the data
-incorrectly (because it starts at the wrong packet), and clearing the
-packet list will result in a NULL pointer dereference.
+  arch/x86/tools/insn_decoder_test.c:15:9: warning: 'unlikely' macro redefined [-Wmacro-redefined]
 
-Fixes: d19f359fbdc6 ("platform/x86: dell_rbu: don't open code list_for_each_entry*()")
-Signed-off-by: Stuart Hayes <stuart.w.hayes@gmail.com>
-Link: https://lore.kernel.org/r/20250609184659.7210-3-stuart.w.hayes@gmail.com
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Remove the second unlikely() definition, as it is no longer necessary,
+clearing up the warning.
+
+Fixes: c104c16073b7 ("Kunit to check the longest symbol length")
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Acked-by: Shuah Khan <skhan@linuxfoundation.org>
+Link: https://lore.kernel.org/r/20250318-x86-decoder-test-fix-unlikely-redef-v1-1-74c84a7bf05b@kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/platform/x86/dell/dell_rbu.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/x86/tools/insn_decoder_test.c |    2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/drivers/platform/x86/dell/dell_rbu.c b/drivers/platform/x86/dell/dell_rbu.c
-index e9f4b30dcafab..25a01c728c072 100644
---- a/drivers/platform/x86/dell/dell_rbu.c
-+++ b/drivers/platform/x86/dell/dell_rbu.c
-@@ -292,7 +292,7 @@ static int packet_read_list(char *data, size_t * pread_length)
- 	remaining_bytes = *pread_length;
- 	bytes_read = rbu_data.packet_read_count;
+--- a/arch/x86/tools/insn_decoder_test.c
++++ b/arch/x86/tools/insn_decoder_test.c
+@@ -12,8 +12,6 @@
+ #include <stdarg.h>
+ #include <linux/kallsyms.h>
  
--	list_for_each_entry(newpacket, (&packet_data_head.list)->next, list) {
-+	list_for_each_entry(newpacket, &packet_data_head.list, list) {
- 		bytes_copied = do_packet_read(pdest, newpacket,
- 			remaining_bytes, bytes_read, &temp_count);
- 		remaining_bytes -= bytes_copied;
-@@ -315,7 +315,7 @@ static void packet_empty_list(void)
- {
- 	struct packet_data *newpacket, *tmp;
- 
--	list_for_each_entry_safe(newpacket, tmp, (&packet_data_head.list)->next, list) {
-+	list_for_each_entry_safe(newpacket, tmp, &packet_data_head.list, list) {
- 		list_del(&newpacket->list);
- 
- 		/*
--- 
-2.39.5
-
+-#define unlikely(cond) (cond)
+-
+ #include <asm/insn.h>
+ #include <inat.c>
+ #include <insn.c>
 
 
 
