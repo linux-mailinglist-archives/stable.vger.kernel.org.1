@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-157918-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157701-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id EDF8AAE5631
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:18:21 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 389AAAE5538
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:09:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0E5E81BC7AB3
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:17:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7AF944A0676
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:08:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79BDA223708;
-	Mon, 23 Jun 2025 22:17:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E78E7224B07;
+	Mon, 23 Jun 2025 22:08:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LhpKnOOJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xWpPsFPC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3664AB676;
-	Mon, 23 Jun 2025 22:17:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A55E221FF2B;
+	Mon, 23 Jun 2025 22:08:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750717038; cv=none; b=HYs6zLjugeieskXqvwAeTFSyPAwTeWg5LvOOX4AaIbyEB9C6TyJDwHwJ5OIq03I+xnNg62FEIFwGDVx6unOxsjX4Nt2YdebuZw+SSUYZElkzS93P3iiy1VQ7txr+9jT8bHXtkSY8YYVprdjOA7hq5CZjIKUqL3XX/Fj6EC7PoBQ=
+	t=1750716512; cv=none; b=QYhgaS42cMrEtlWEvcxe0urfZXITSCwprYp0rVxnyxAkLqzsIsecswzbo6h1vKdfNHviSWnhyu3STq+Ak+o693dGMIBWTS8jjJnMqZSjMCif4sKZ8AJBgYNsWiWXTMC94Ux8qEFCv319mBzV7R5IbypQTYRcuEco+0L7CZeKZa4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750717038; c=relaxed/simple;
-	bh=jDDdRzBvwWeRSkXim6fb56MOACnn0HlR0NvQ9+Za8z4=;
+	s=arc-20240116; t=1750716512; c=relaxed/simple;
+	bh=PrmLdQV6lOq74qzJQxa8Pp2sIoKHLWgPPl1DTB5Aj/A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FZyM41TP0GejJHANXgc2VTFdDWVxwGrEnkn9NykO9vGvVBEYC/TxDESzQayeupfGh2C0V4kW0Rm73MqPFfSXHD9T5AYCCLLdwoUagAZD0cyXMylZsWpMRW+48ur2RDIigpZyRp3EIbMHjY/CA4geysL7kmEeK7pZNIBOdAzvqWk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LhpKnOOJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2B9EC4CEEA;
-	Mon, 23 Jun 2025 22:17:17 +0000 (UTC)
+	 MIME-Version; b=ZyphrygFwB+z8otFqRUKh4oa+i6tgeHYxyEW3D3/hv3qDQYS/xs3Qv7MUyvst7OM9Ux9bs2IXZbASbHNGOK+JJg70Pk3d8Q2xuNd0C2vJVcAsBF0YAmfrct4dutatg8bEd4CPzkoWvfw/ExnehU/zgv4DIZ3FaQ7NIrmxyrmVSc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xWpPsFPC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3DDB7C4CEEA;
+	Mon, 23 Jun 2025 22:08:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750717038;
-	bh=jDDdRzBvwWeRSkXim6fb56MOACnn0HlR0NvQ9+Za8z4=;
+	s=korg; t=1750716512;
+	bh=PrmLdQV6lOq74qzJQxa8Pp2sIoKHLWgPPl1DTB5Aj/A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LhpKnOOJX04/djL9WWRDoJI7sVmVS3o03RrfZtRmvaDXH3qp0qDCdOt7DVilnXUsS
-	 0lEJ/jzjVdkzulhh5GodyZZFwUdn4ZUAH2ZFhmQHqk8fp3ETf08nJ8RJR+ZA3GALoq
-	 RmL10yW7YtTEhpJecxnwVqeDR/t+1UAtC9ixFWJ4=
+	b=xWpPsFPCMdb8nzWNnsZy6Cvtqdp6vTBNX6NBtu6uG+TOxUJOlqnAmda1SEJLBJfG8
+	 EG+ftlukxw5SfPKzFgnoSslBh7qzsuzrfBBQ9rdXJ9TISB5EPdmBfXDKRv8bZ384TT
+	 Vo7XLXpogDzQUHNkVj7iTHtniK4sWCBEamJIEvFE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mikulas Patocka <mpatocka@redhat.com>
-Subject: [PATCH 6.1 356/508] dm-mirror: fix a tiny race condition
+	Mike Looijmans <mike.looijmans@topic.nl>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 264/414] pinctrl: mcp23s08: Reset all pins to input at probe
 Date: Mon, 23 Jun 2025 15:06:41 +0200
-Message-ID: <20250623130654.121339873@linuxfoundation.org>
+Message-ID: <20250623130648.635257158@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
-References: <20250623130645.255320792@linuxfoundation.org>
+In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
+References: <20250623130642.015559452@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,58 +62,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mikulas Patocka <mpatocka@redhat.com>
+From: Mike Looijmans <mike.looijmans@topic.nl>
 
-commit 829451beaed6165eb11d7a9fb4e28eb17f489980 upstream.
+[ Upstream commit 3ede3f8b4b4b399b0ca41e44959f80d5cf84fc98 ]
 
-There's a tiny race condition in dm-mirror. The functions queue_bio and
-write_callback grab a spinlock, add a bio to the list, drop the spinlock
-and wake up the mirrord thread that processes bios in the list.
+At startup, the driver just assumes that all registers have their
+default values. But after a soft reset, the chip will just be in the
+state it was, and some pins may have been configured as outputs. Any
+modification of the output register will cause these pins to be driven
+low, which leads to unexpected/unwanted effects. To prevent this from
+happening, set the chip's IO configuration register to a known safe
+mode (all inputs) before toggling any other bits.
 
-It may be possible that the mirrord thread processes the bio just after
-spin_unlock_irqrestore is called, before wakeup_mirrord. This spurious
-wake-up is normally harmless, however if the device mapper device is
-unloaded just after the bio was processed, it may be possible that
-wakeup_mirrord(ms) uses invalid "ms" pointer.
-
-Fix this bug by moving wakeup_mirrord inside the spinlock.
-
-Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Mike Looijmans <mike.looijmans@topic.nl>
+Link: https://lore.kernel.org/20250314151803.28903-1-mike.looijmans@topic.nl
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/md/dm-raid1.c |    5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ drivers/pinctrl/pinctrl-mcp23s08.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
---- a/drivers/md/dm-raid1.c
-+++ b/drivers/md/dm-raid1.c
-@@ -128,10 +128,9 @@ static void queue_bio(struct mirror_set
- 	spin_lock_irqsave(&ms->lock, flags);
- 	should_wake = !(bl->head);
- 	bio_list_add(bl, bio);
--	spin_unlock_irqrestore(&ms->lock, flags);
--
- 	if (should_wake)
- 		wakeup_mirrord(ms);
-+	spin_unlock_irqrestore(&ms->lock, flags);
- }
+diff --git a/drivers/pinctrl/pinctrl-mcp23s08.c b/drivers/pinctrl/pinctrl-mcp23s08.c
+index 70d7485ada364..60fcd53830a7d 100644
+--- a/drivers/pinctrl/pinctrl-mcp23s08.c
++++ b/drivers/pinctrl/pinctrl-mcp23s08.c
+@@ -636,6 +636,14 @@ int mcp23s08_probe_one(struct mcp23s08 *mcp, struct device *dev,
  
- static void dispatch_bios(void *context, struct bio_list *bio_list)
-@@ -635,9 +634,9 @@ static void write_callback(unsigned long
- 	if (!ms->failures.head)
- 		should_wake = 1;
- 	bio_list_add(&ms->failures, bio);
--	spin_unlock_irqrestore(&ms->lock, flags);
- 	if (should_wake)
- 		wakeup_mirrord(ms);
-+	spin_unlock_irqrestore(&ms->lock, flags);
- }
+ 	mcp->reset_gpio = devm_gpiod_get_optional(dev, "reset", GPIOD_OUT_LOW);
  
- static void do_write(struct mirror_set *ms, struct bio *bio)
++	/*
++	 * Reset the chip - we don't really know what state it's in, so reset
++	 * all pins to input first to prevent surprises.
++	 */
++	ret = mcp_write(mcp, MCP_IODIR, mcp->chip.ngpio == 16 ? 0xFFFF : 0xFF);
++	if (ret < 0)
++		return ret;
++
+ 	/* verify MCP_IOCON.SEQOP = 0, so sequential reads work,
+ 	 * and MCP_IOCON.HAEN = 1, so we work with all chips.
+ 	 */
+-- 
+2.39.5
+
 
 
 
