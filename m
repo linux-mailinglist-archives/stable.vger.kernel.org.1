@@ -1,52 +1,54 @@
-Return-Path: <stable+bounces-155873-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-155879-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4300EAE4407
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:39:06 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9A66BAE4435
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:41:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 08AE01BC0D89
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:33:53 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6E8F9442F7C
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:33:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76EEE25392C;
-	Mon, 23 Jun 2025 13:32:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2D2716419;
+	Mon, 23 Jun 2025 13:32:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZEHds/+G"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vgtASepT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 343072F24;
-	Mon, 23 Jun 2025 13:32:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 904DA4C6E;
+	Mon, 23 Jun 2025 13:32:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750685557; cv=none; b=O7EKZ/7pWqQRxYSpIKzI5VS5VVj2eoIaos0S/+gu7x8Q4SBwPHNibXRWZ+XewVoFHfG43XFn3ZnqGrkL0XxBOOGENi+dyczc/CGA6UIquSTV/ipaLMknnvvIYuFOhbEihx5rmDJFO4JSOq8UR78OOv2DU8ss2owy7xwwBqtZx1I=
+	t=1750685572; cv=none; b=QDetm/qXqc4WVks5T6BSXWY4TFMJ+rZBSB2dpBoKl4Pb9oBCDamQvx3eUkD18yVa8H9gIBypNetWxxp8SQDottjAQYmKAR9rIbEMrqnFlDfYTSsRyGIMee3N1i0W0gWCVTNSR4iDH8tNjC6UWilghSgMRsaXEnHDw6aNoVt2r6I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750685557; c=relaxed/simple;
-	bh=rY1e9aHxi4i2UofoAmVIrVI2hUP/ep+6hAcXjhxwVxg=;
+	s=arc-20240116; t=1750685572; c=relaxed/simple;
+	bh=Mkp5wPm7EzxElcSbF0nKLHWYt5gnoLknO+bW6/UROs8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cW4bY0nE93R59ACNZ5OOKxaCi+4UHIehEWkiUtuwc6PP6u98mD0Pg6zFWk2CotmvrQ472CCwP/1OU6NuqqUgyygXu7F/yV0EBT0JaKzfj6/YD6faFSY3YihUwCS5yP/kLXki+E3E8fYCDbxs37zFa2j3Lmoz+atXYBVHFTlGoh0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZEHds/+G; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BDEEAC4CEEA;
-	Mon, 23 Jun 2025 13:32:36 +0000 (UTC)
+	 MIME-Version; b=EI+wlGb2Ut/lqlTgEeVQlABdBF6ElfHXBf4rZwhqcaPWOdkP+kIIujAMX1eWiQbvR8nMah0/dcfuZu9syms9fvC1igx0fNzWxEgTuX7bvxWBFDmvEZoFmBA6aGgGhBBT16h380Nr+83Pmc+gffEdUMRWk8MRR15jRa7gDxWJPyQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vgtASepT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1ADB4C4CEEA;
+	Mon, 23 Jun 2025 13:32:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750685557;
-	bh=rY1e9aHxi4i2UofoAmVIrVI2hUP/ep+6hAcXjhxwVxg=;
+	s=korg; t=1750685572;
+	bh=Mkp5wPm7EzxElcSbF0nKLHWYt5gnoLknO+bW6/UROs8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZEHds/+GAZ0ZmjqNf72R4Wzd4IknqJVqTnDj/gEAkSmdHN1dMSJuDL8vLhdWWOECr
-	 ITAJd8AmCfIr6RuRYHaHeYWSPFzhbal3+OsxmC0tdwA9tPaPIq1+BmmpYzQwfoG9mR
-	 ShfJAYJs+T+DhuOdNEUhhFjLQkwk05nDp0F3CD7A=
+	b=vgtASepTJf1BujwudRbBizr2pt/vdCDVwMQc4LanRY2TRnXAcorKv9QOCQ6ENbici
+	 Z2YBE+JdcTnZM1pO6ptEPQqK8iC8yiHBfn0Y28YD40i8RRE9Q/b+ORZD2QNi633NLT
+	 cN2AUzvU0gG+IZvisQPDzA1dOwhxCaW0H8/jz5fg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andreas Gruenbacher <agruenba@redhat.com>,
-	Alexander Aring <aahringo@redhat.com>
-Subject: [PATCH 5.4 103/222] gfs2: move msleep to sleepable context
-Date: Mon, 23 Jun 2025 15:07:18 +0200
-Message-ID: <20250623130615.212582811@linuxfoundation.org>
+	stable@kernel.org,
+	Robert Morris <rtm@mit.edu>,
+	Christian Lamparter <chunkeey@gmail.com>,
+	Johannes Berg <johannes.berg@intel.com>
+Subject: [PATCH 5.4 104/222] wifi: p54: prevent buffer-overflow in p54_rx_eeprom_readback()
+Date: Mon, 23 Jun 2025 15:07:19 +0200
+Message-ID: <20250623130615.242003017@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
 In-Reply-To: <20250623130611.896514667@linuxfoundation.org>
 References: <20250623130611.896514667@linuxfoundation.org>
@@ -65,43 +67,115 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Alexander Aring <aahringo@redhat.com>
+From: Christian Lamparter <chunkeey@gmail.com>
 
-commit ac5ee087d31ed93b6e45d2968a66828c6f621d8c upstream.
+commit da1b9a55ff116cb040528ef664c70a4eec03ae99 upstream.
 
-This patch moves the msleep_interruptible() out of the non-sleepable
-context by moving the ls->ls_recover_spin spinlock around so
-msleep_interruptible() will be called in a sleepable context.
+Robert Morris reported:
 
-Cc: stable@vger.kernel.org
-Fixes: 4a7727725dc7 ("GFS2: Fix recovery issues for spectators")
-Suggested-by: Andreas Gruenbacher <agruenba@redhat.com>
-Signed-off-by: Alexander Aring <aahringo@redhat.com>
-Signed-off-by: Andreas Gruenbacher <agruenba@redhat.com>
+|If a malicious USB device pretends to be an Intersil p54 wifi
+|interface and generates an eeprom_readback message with a large
+|eeprom->v1.len, p54_rx_eeprom_readback() will copy data from the
+|message beyond the end of priv->eeprom.
+|
+|static void p54_rx_eeprom_readback(struct p54_common *priv,
+|                                   struct sk_buff *skb)
+|{
+|        struct p54_hdr *hdr = (struct p54_hdr *) skb->data;
+|        struct p54_eeprom_lm86 *eeprom = (struct p54_eeprom_lm86 *) hdr->data;
+|
+|        if (priv->fw_var >= 0x509) {
+|                memcpy(priv->eeprom, eeprom->v2.data,
+|                       le16_to_cpu(eeprom->v2.len));
+|        } else {
+|                memcpy(priv->eeprom, eeprom->v1.data,
+|                       le16_to_cpu(eeprom->v1.len));
+|        }
+| [...]
+
+The eeprom->v{1,2}.len is set by the driver in p54_download_eeprom().
+The device is supposed to provide the same length back to the driver.
+But yes, it's possible (like shown in the report) to alter the value
+to something that causes a crash/panic due to overrun.
+
+This patch addresses the issue by adding the size to the common device
+context, so p54_rx_eeprom_readback no longer relies on possibly tampered
+values... That said, it also checks if the "firmware" altered the value
+and no longer copies them.
+
+The one, small saving grace is: Before the driver tries to read the eeprom,
+it needs to upload >a< firmware. the vendor firmware has a proprietary
+license and as a reason, it is not present on most distributions by
+default.
+
+Cc: <stable@kernel.org>
+Reported-by: Robert Morris <rtm@mit.edu>
+Closes: https://lore.kernel.org/linux-wireless/28782.1747258414@localhost/
+Fixes: 7cb770729ba8 ("p54: move eeprom code into common library")
+Signed-off-by: Christian Lamparter <chunkeey@gmail.com>
+Link: https://patch.msgid.link/20250516184107.47794-1-chunkeey@gmail.com
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/gfs2/lock_dlm.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/net/wireless/intersil/p54/fwio.c |    2 ++
+ drivers/net/wireless/intersil/p54/p54.h  |    1 +
+ drivers/net/wireless/intersil/p54/txrx.c |   13 +++++++++----
+ 3 files changed, 12 insertions(+), 4 deletions(-)
 
---- a/fs/gfs2/lock_dlm.c
-+++ b/fs/gfs2/lock_dlm.c
-@@ -905,14 +905,15 @@ locks_done:
- 		if (sdp->sd_args.ar_spectator) {
- 			fs_info(sdp, "Recovery is required. Waiting for a "
- 				"non-spectator to mount.\n");
-+			spin_unlock(&ls->ls_recover_spin);
- 			msleep_interruptible(1000);
- 		} else {
- 			fs_info(sdp, "control_mount wait1 block %u start %u "
- 				"mount %u lvb %u flags %lx\n", block_gen,
- 				start_gen, mount_gen, lvb_gen,
- 				ls->ls_recover_flags);
-+			spin_unlock(&ls->ls_recover_spin);
- 		}
--		spin_unlock(&ls->ls_recover_spin);
- 		goto restart;
+--- a/drivers/net/wireless/intersil/p54/fwio.c
++++ b/drivers/net/wireless/intersil/p54/fwio.c
+@@ -233,6 +233,7 @@ int p54_download_eeprom(struct p54_commo
+ 
+ 	mutex_lock(&priv->eeprom_mutex);
+ 	priv->eeprom = buf;
++	priv->eeprom_slice_size = len;
+ 	eeprom_hdr = skb_put(skb, eeprom_hdr_size + len);
+ 
+ 	if (priv->fw_var < 0x509) {
+@@ -255,6 +256,7 @@ int p54_download_eeprom(struct p54_commo
+ 		ret = -EBUSY;
+ 	}
+ 	priv->eeprom = NULL;
++	priv->eeprom_slice_size = 0;
+ 	mutex_unlock(&priv->eeprom_mutex);
+ 	return ret;
+ }
+--- a/drivers/net/wireless/intersil/p54/p54.h
++++ b/drivers/net/wireless/intersil/p54/p54.h
+@@ -258,6 +258,7 @@ struct p54_common {
+ 
+ 	/* eeprom handling */
+ 	void *eeprom;
++	size_t eeprom_slice_size;
+ 	struct completion eeprom_comp;
+ 	struct mutex eeprom_mutex;
+ };
+--- a/drivers/net/wireless/intersil/p54/txrx.c
++++ b/drivers/net/wireless/intersil/p54/txrx.c
+@@ -500,14 +500,19 @@ static void p54_rx_eeprom_readback(struc
+ 		return ;
+ 
+ 	if (priv->fw_var >= 0x509) {
+-		memcpy(priv->eeprom, eeprom->v2.data,
+-		       le16_to_cpu(eeprom->v2.len));
++		if (le16_to_cpu(eeprom->v2.len) != priv->eeprom_slice_size)
++			return;
++
++		memcpy(priv->eeprom, eeprom->v2.data, priv->eeprom_slice_size);
+ 	} else {
+-		memcpy(priv->eeprom, eeprom->v1.data,
+-		       le16_to_cpu(eeprom->v1.len));
++		if (le16_to_cpu(eeprom->v1.len) != priv->eeprom_slice_size)
++			return;
++
++		memcpy(priv->eeprom, eeprom->v1.data, priv->eeprom_slice_size);
  	}
  
+ 	priv->eeprom = NULL;
++	priv->eeprom_slice_size = 0;
+ 	tmp = p54_find_and_unlink_skb(priv, hdr->req_id);
+ 	dev_kfree_skb_any(tmp);
+ 	complete(&priv->eeprom_comp);
 
 
 
