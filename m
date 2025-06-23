@@ -1,58 +1,54 @@
-Return-Path: <stable+bounces-156272-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156973-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B09A3AE4EE1
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:10:09 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 657BCAE51EC
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:38:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8448C1B60013
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:10:25 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 448361B64494
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:39:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BED9222069F;
-	Mon, 23 Jun 2025 21:10:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2910221FC7;
+	Mon, 23 Jun 2025 21:38:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CDkedgJF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="crVEA4Fm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BE6270838;
-	Mon, 23 Jun 2025 21:10:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EBE821D3DD;
+	Mon, 23 Jun 2025 21:38:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750713007; cv=none; b=VmUFMieYH2kTrqPOi6vid5QoE3ebrWFf7FYoG7pDPV+5WtNeTxYp5bTSTTCwanOrg3JLbCXauNrQ2M+7VuBjdEB1hRE/0cxkLj1Kt3DeXn20iYkanEbQdqAkgt6kk+IcHwtXOa6YVwx//PkhEl5P72tYFgt7NEi4tt7pmIAYvpk=
+	t=1750714723; cv=none; b=JvKHHwG/NBCZXRM6VKhmkB1D9zUvqsGKr/4g3JQ2ch6SXSIvqZkLxoER07+HGVy7UJ1AwNHZ6dxkvIIEXGp9wCHOYS7FkZ6DIrcG/EC0Mej4ufDH6Lwb47IhV+jiEhO+YesDbz/YktHxjdH1kjrtbg9ybKqTqAvKRJijORx6cIk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750713007; c=relaxed/simple;
-	bh=NFyB5FXFlGCMpQE7RPyhwc+IVyK/wRCvzfac9Mmzp/M=;
+	s=arc-20240116; t=1750714723; c=relaxed/simple;
+	bh=VeFn3t+SmkhrtHvnFi8EyDdQIgSP9soRyvQkbVhzCME=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=B4ItD4TvJEwtj7XWRytSk5/f3lAEhgVjfpSSPCRF0QryzTSMNzR83WtAuEKxfhzE5tjdJMqNl1i4ZOVvFuSitmWRxd/cNEW6qtyDlfgJXgxaAW+Vu4oEI862OYCaS5pzu3B5+Y/c1XIRQxcZP4qnm0wC0LisJocUhz4VjKS7P4k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CDkedgJF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18EF3C4CEEA;
-	Mon, 23 Jun 2025 21:10:06 +0000 (UTC)
+	 MIME-Version; b=b6Tlg0dLkNOUNRCsV2ZBjNyik5WlcsjWIfiLmaz8vTJn6DL5iV9oasWXnknHRAT5rdur591aWOmM2YDhxPgKxyK/gO3t5yZAbW0UWSZI/TVZ43o7oSjBsWcgbmoCRpK0pqYj1lAm7WVXG3AbmJhF3JiB6rRkgiRPItnL5qRw3AA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=crVEA4Fm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 256B2C4CEEA;
+	Mon, 23 Jun 2025 21:38:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750713007;
-	bh=NFyB5FXFlGCMpQE7RPyhwc+IVyK/wRCvzfac9Mmzp/M=;
+	s=korg; t=1750714723;
+	bh=VeFn3t+SmkhrtHvnFi8EyDdQIgSP9soRyvQkbVhzCME=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CDkedgJF/Mi8fImpssQYgh5vlNzNARfyVaDVeliJdWl/empf4NF4CXdUgOU5MfyrQ
-	 PQaeECP0iSKcUgyo8TN4iJCUFY9sKj6Cjp7SIp2AlVN7ExGyi2qxXSsCQJBKQr9cP9
-	 oGVghq55A4OZURRO+sfiaDElcMHEv9PW9mgmSGGw=
+	b=crVEA4FmLnDcP9O1wJpZNKrorbXTV08qRxna5lYtyiccFmcStHzIPi/WxloJGQJFZ
+	 YvDdLTd26nYZpQTEZw7BlqXGzmQoTRsUoahl1yV7r4CP8zxXNE7G2Z4OAojhOIRsBQ
+	 JDkznn+8vxjWwI+irCoFeP39ebAN/f/zm2ET+u+I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Niklas=20S=C3=B6derlund?= <niklas.soderlund+renesas@ragnatech.se>,
-	Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>,
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-	Hans Verkuil <hverkuil@xs4all.nl>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 305/592] media: rcar-vin: Fix stride setting for RAW8 formats
+	Mikulas Patocka <mpatocka@redhat.com>
+Subject: [PATCH 6.12 126/414] dm-verity: fix a memory leak if some arguments are specified multiple times
 Date: Mon, 23 Jun 2025 15:04:23 +0200
-Message-ID: <20250623130707.656451312@linuxfoundation.org>
+Message-ID: <20250623130645.212639121@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
-References: <20250623130700.210182694@linuxfoundation.org>
+In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
+References: <20250623130642.015559452@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,66 +58,116 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Niklas Söderlund <niklas.soderlund+renesas@ragnatech.se>
+From: Mikulas Patocka <mpatocka@redhat.com>
 
-[ Upstream commit e7376745ad5c8548e31d9ea58adfb5a847e017a4 ]
+commit 66be40a14e496689e1f0add50118408e22c96169 upstream.
 
-Earlier versions of the datasheet where unclear about the stride setting
-for RAW8 capture formats. Later datasheets clarifies that the stride
-only process in this mode for non-image data. For image data the full
-stride shall be used. Compare section "RAW: 8 Bits and Embedded 8-Bit
-Non-Image Data, User Defined 8-bit Data" vs "RAW: 8 Bits".
+If some of the arguments "check_at_most_once", "ignore_zero_blocks",
+"use_fec_from_device", "root_hash_sig_key_desc" were specified more than
+once on the target line, a memory leak would happen.
 
-Remove the special case from pixel formats that carry image data and
-treat it as any other image format.
+This commit fixes the memory leak. It also fixes error handling in
+verity_verify_sig_parse_opt_args.
 
-Signed-off-by: Niklas Söderlund <niklas.soderlund+renesas@ragnatech.se>
-Reviewed-by: Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>
-Link: https://lore.kernel.org/r/20250402183302.140055-1-niklas.soderlund+renesas@ragnatech.se
-Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- .../media/platform/renesas/rcar-vin/rcar-dma.c   | 16 ----------------
- 1 file changed, 16 deletions(-)
+ drivers/md/dm-verity-fec.c        |    4 ++++
+ drivers/md/dm-verity-target.c     |    8 +++++++-
+ drivers/md/dm-verity-verify-sig.c |   17 +++++++++++++----
+ 3 files changed, 24 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/media/platform/renesas/rcar-vin/rcar-dma.c b/drivers/media/platform/renesas/rcar-vin/rcar-dma.c
-index e303c13e1351f..3af67c1b303d6 100644
---- a/drivers/media/platform/renesas/rcar-vin/rcar-dma.c
-+++ b/drivers/media/platform/renesas/rcar-vin/rcar-dma.c
-@@ -679,22 +679,6 @@ void rvin_crop_scale_comp(struct rvin_dev *vin)
+--- a/drivers/md/dm-verity-fec.c
++++ b/drivers/md/dm-verity-fec.c
+@@ -604,6 +604,10 @@ int verity_fec_parse_opt_args(struct dm_
+ 	(*argc)--;
  
- 	fmt = rvin_format_from_pixel(vin, vin->format.pixelformat);
- 	stride = vin->format.bytesperline / fmt->bpp;
--
--	/* For RAW8 format bpp is 1, but the hardware process RAW8
--	 * format in 2 pixel unit hence configure VNIS_REG as stride / 2.
--	 */
--	switch (vin->format.pixelformat) {
--	case V4L2_PIX_FMT_SBGGR8:
--	case V4L2_PIX_FMT_SGBRG8:
--	case V4L2_PIX_FMT_SGRBG8:
--	case V4L2_PIX_FMT_SRGGB8:
--	case V4L2_PIX_FMT_GREY:
--		stride /= 2;
--		break;
--	default:
--		break;
--	}
--
- 	rvin_write(vin, stride, VNIS_REG);
+ 	if (!strcasecmp(arg_name, DM_VERITY_OPT_FEC_DEV)) {
++		if (v->fec->dev) {
++			ti->error = "FEC device already specified";
++			return -EINVAL;
++		}
+ 		r = dm_get_device(ti, arg_value, BLK_OPEN_READ, &v->fec->dev);
+ 		if (r) {
+ 			ti->error = "FEC device lookup failed";
+--- a/drivers/md/dm-verity-target.c
++++ b/drivers/md/dm-verity-target.c
+@@ -1080,6 +1080,9 @@ static int verity_alloc_most_once(struct
+ {
+ 	struct dm_target *ti = v->ti;
+ 
++	if (v->validated_blocks)
++		return 0;
++
+ 	/* the bitset can only handle INT_MAX blocks */
+ 	if (v->data_blocks > INT_MAX) {
+ 		ti->error = "device too large to use check_at_most_once";
+@@ -1103,6 +1106,9 @@ static int verity_alloc_zero_digest(stru
+ 	struct dm_verity_io *io;
+ 	u8 *zero_data;
+ 
++	if (v->zero_digest)
++		return 0;
++
+ 	v->zero_digest = kmalloc(v->digest_size, GFP_KERNEL);
+ 
+ 	if (!v->zero_digest)
+@@ -1537,7 +1543,7 @@ static int verity_ctr(struct dm_target *
+ 			goto bad;
+ 	}
+ 
+-	/* Root hash signature is  a optional parameter*/
++	/* Root hash signature is an optional parameter */
+ 	r = verity_verify_root_hash(root_hash_digest_to_validate,
+ 				    strlen(root_hash_digest_to_validate),
+ 				    verify_args.sig,
+--- a/drivers/md/dm-verity-verify-sig.c
++++ b/drivers/md/dm-verity-verify-sig.c
+@@ -71,9 +71,14 @@ int verity_verify_sig_parse_opt_args(str
+ 				     const char *arg_name)
+ {
+ 	struct dm_target *ti = v->ti;
+-	int ret = 0;
++	int ret;
+ 	const char *sig_key = NULL;
+ 
++	if (v->signature_key_desc) {
++		ti->error = DM_VERITY_VERIFY_ERR("root_hash_sig_key_desc already specified");
++		return -EINVAL;
++	}
++
+ 	if (!*argc) {
+ 		ti->error = DM_VERITY_VERIFY_ERR("Signature key not specified");
+ 		return -EINVAL;
+@@ -83,14 +88,18 @@ int verity_verify_sig_parse_opt_args(str
+ 	(*argc)--;
+ 
+ 	ret = verity_verify_get_sig_from_key(sig_key, sig_opts);
+-	if (ret < 0)
++	if (ret < 0) {
+ 		ti->error = DM_VERITY_VERIFY_ERR("Invalid key specified");
++		return ret;
++	}
+ 
+ 	v->signature_key_desc = kstrdup(sig_key, GFP_KERNEL);
+-	if (!v->signature_key_desc)
++	if (!v->signature_key_desc) {
++		ti->error = DM_VERITY_VERIFY_ERR("Could not allocate memory for signature key");
+ 		return -ENOMEM;
++	}
+ 
+-	return ret;
++	return 0;
  }
  
--- 
-2.39.5
-
+ /*
 
 
 
