@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-156802-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157378-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id CB570AE5133
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:31:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 37928AE53A4
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:55:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6867F4A3116
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:31:44 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C2E0A4A8387
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:55:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A9421E1A05;
-	Mon, 23 Jun 2025 21:31:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ADAB0223DC1;
+	Mon, 23 Jun 2025 21:55:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WnwAp7lU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WXgHSF/m"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B72C9C2E0;
-	Mon, 23 Jun 2025 21:31:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A800221FBE;
+	Mon, 23 Jun 2025 21:55:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750714301; cv=none; b=sLqFJSmEOdt9/ZNar/d2PcIIA387+oMCaaVQhEpafetZFmc+hrsYmUQtb1CxTh08yCknXFjqsQVEgYKrlDwiS56W9OUczHH1aK+q5SAC7pEBEwfBB74U4Ac1OQIarA1Mf2ql9ZifQkeVw6ptlUhESJ7qkDJt/dwSb08LHE0FGVU=
+	t=1750715722; cv=none; b=sOZwVVl5fWW3UyxeiRor05f+/epSyZADg5y5SGUjm9+NPiBTq5/enZekAs5PzoyVosrYgPxXPT+FDotimWEpRr01fonBsJdLM6ZtqxEuR1Al1ryemjeIeHx3/p+lTV5XD0kV15m/N9Q3py1xr1scQdhgag8SS9jIh09SjHIVVH0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750714301; c=relaxed/simple;
-	bh=lZPpmI71g/UchR0G1Q4bqrJB/VA4gKLCwze9QvJ4Qs8=;
+	s=arc-20240116; t=1750715722; c=relaxed/simple;
+	bh=YoHDvgCRhkQlnHSiWaGLtxunlJseBfa6/rP1qQ8uoAs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GD7yJQGpxZQDHP6l58XM2Iayz6KATPN910MWzzHiLrBIISODfbS+Cltjq9Wmt4fNvF/16lfbtVv//0kY2CM415gjGGnFHvJ6ZtnQ0nMFtmdSm49KwKSOY6P8FeJFnZXhOV9Pu4MiFhM1qXKSW+buiESQxG98kZBWNikpOaxFYa4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WnwAp7lU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4DC18C4CEEA;
-	Mon, 23 Jun 2025 21:31:41 +0000 (UTC)
+	 MIME-Version; b=hGGDg0k5IN73giv7ulgezuAPw9LTemVdhiKZciaOg0xEt6bUMKjCM83C/vWG+JeX5NtJDdvQ8/c6YnFEGEocadT/zsj9T9sp/tm4o5ltT0n8vtEfI0PSRy1Scs38hpN9x20xsOexmoZLb6lGOStA/bBWixVfVUPLaWsZ6Blnv0Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WXgHSF/m; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F113C4CEF1;
+	Mon, 23 Jun 2025 21:55:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750714301;
-	bh=lZPpmI71g/UchR0G1Q4bqrJB/VA4gKLCwze9QvJ4Qs8=;
+	s=korg; t=1750715721;
+	bh=YoHDvgCRhkQlnHSiWaGLtxunlJseBfa6/rP1qQ8uoAs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WnwAp7lUMb7kg08sEagedyKXTa9Xn1H1verDbrNwPATTxzOPx2G1y4vARCztHhteO
-	 xF24WsN/OnKSFi1UTkILkjVJJmt98LjkSxSzsc+4hRZP7Vw5+PluPKfKDSYTPrWAsC
-	 330UZiAU/GnFhxALKXJwz5MlB6ZKHbUqYgtGKpbA=
+	b=WXgHSF/mIeja7lSIVrp2ZLVQU8hOJ3b5weJiy0upcptDbZb2/DxqOZLENYDy9ArMy
+	 fidxom59V/s4X11IjXwZ2N6LZLAffwKGFgRZxSex4Mx+UVCxSHnmzmPHnYiIhc3Ypk
+	 +WzmTk5QP36mGVLXkZPJ5V3f/+TxaKCHHrkaKtFY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sean Christopherson <seanjc@google.com>,
-	Joerg Roedel <jroedel@suse.de>,
+	Leon Yen <leon.yen@mediatek.com>,
+	Ming Yen Hsieh <mingyen.hsieh@mediatek.com>,
+	Felix Fietkau <nbd@nbd.name>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 382/592] iommu/amd: Ensure GA log notifier callbacks finish running before module unload
+Subject: [PATCH 6.12 203/414] wifi: mt76: mt7925: introduce thermal protection
 Date: Mon, 23 Jun 2025 15:05:40 +0200
-Message-ID: <20250623130709.528376775@linuxfoundation.org>
+Message-ID: <20250623130647.083137209@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
-References: <20250623130700.210182694@linuxfoundation.org>
+In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
+References: <20250623130642.015559452@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,44 +63,95 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Christopherson <seanjc@google.com>
+From: Leon Yen <leon.yen@mediatek.com>
 
-[ Upstream commit 94c721ea03c7078163f41dbaa101ac721ddac329 ]
+[ Upstream commit 1d81e893b422a6f0ae70f8648867c2e73edfb413 ]
 
-Synchronize RCU when unregistering KVM's GA log notifier to ensure all
-in-flight interrupt handlers complete before KVM-the module is unloaded.
+Add thermal protection to prevent the chip from possible overheating
+due to prolonged high traffic and adverse operating conditions.
 
-Signed-off-by: Sean Christopherson <seanjc@google.com>
-Link: https://lore.kernel.org/r/20250315031048.2374109-1-seanjc@google.com
-Signed-off-by: Joerg Roedel <jroedel@suse.de>
+Signed-off-by: Leon Yen <leon.yen@mediatek.com>
+Signed-off-by: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
+Link: https://patch.msgid.link/20250509082117.453819-1-mingyen.hsieh@mediatek.com
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iommu/amd/iommu.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ .../net/wireless/mediatek/mt76/mt7925/init.c  |  6 ++++++
+ .../net/wireless/mediatek/mt76/mt7925/mcu.c   | 20 ++++++++++++++++++-
+ .../net/wireless/mediatek/mt76/mt7925/mcu.h   |  1 +
+ 3 files changed, 26 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/iommu/amd/iommu.c b/drivers/iommu/amd/iommu.c
-index a05e0eb1729bf..31f8d208dedb7 100644
---- a/drivers/iommu/amd/iommu.c
-+++ b/drivers/iommu/amd/iommu.c
-@@ -1005,6 +1005,14 @@ int amd_iommu_register_ga_log_notifier(int (*notifier)(u32))
- {
- 	iommu_ga_log_notifier = notifier;
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/init.c b/drivers/net/wireless/mediatek/mt76/mt7925/init.c
+index 039949b344b98..14553dcc61c57 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7925/init.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7925/init.c
+@@ -204,6 +204,12 @@ static void mt7925_init_work(struct work_struct *work)
+ 		return;
+ 	}
  
-+	/*
-+	 * Ensure all in-flight IRQ handlers run to completion before returning
-+	 * to the caller, e.g. to ensure module code isn't unloaded while it's
-+	 * being executed in the IRQ handler.
-+	 */
-+	if (!notifier)
-+		synchronize_rcu();
++	ret = mt7925_mcu_set_thermal_protect(dev);
++	if (ret) {
++		dev_err(dev->mt76.dev, "thermal protection enable failed\n");
++		return;
++	}
 +
- 	return 0;
+ 	/* we support chip reset now */
+ 	dev->hw_init_done = true;
+ 
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
+index a19c108ad4b5c..57a1db394dda4 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
+@@ -961,6 +961,23 @@ int mt7925_mcu_set_deep_sleep(struct mt792x_dev *dev, bool enable)
  }
- EXPORT_SYMBOL(amd_iommu_register_ga_log_notifier);
+ EXPORT_SYMBOL_GPL(mt7925_mcu_set_deep_sleep);
+ 
++int mt7925_mcu_set_thermal_protect(struct mt792x_dev *dev)
++{
++	char cmd[64];
++	int ret = 0;
++
++	snprintf(cmd, sizeof(cmd), "ThermalProtGband %d %d %d %d %d %d %d %d %d %d",
++		 0, 100, 90, 80, 30, 1, 1, 115, 105, 5);
++	ret = mt7925_mcu_chip_config(dev, cmd);
++
++	snprintf(cmd, sizeof(cmd), "ThermalProtAband %d %d %d %d %d %d %d %d %d %d",
++		 1, 100, 90, 80, 30, 1, 1, 115, 105, 5);
++	ret |= mt7925_mcu_chip_config(dev, cmd);
++
++	return ret;
++}
++EXPORT_SYMBOL_GPL(mt7925_mcu_set_thermal_protect);
++
+ int mt7925_run_firmware(struct mt792x_dev *dev)
+ {
+ 	int err;
+@@ -3288,7 +3305,8 @@ int mt7925_mcu_fill_message(struct mt76_dev *mdev, struct sk_buff *skb,
+ 		else
+ 			uni_txd->option = MCU_CMD_UNI_EXT_ACK;
+ 
+-		if (cmd == MCU_UNI_CMD(HIF_CTRL))
++		if (cmd == MCU_UNI_CMD(HIF_CTRL) ||
++		    cmd == MCU_UNI_CMD(CHIP_CONFIG))
+ 			uni_txd->option &= ~MCU_CMD_ACK;
+ 
+ 		goto exit;
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/mcu.h b/drivers/net/wireless/mediatek/mt76/mt7925/mcu.h
+index 887427e0760ae..780c5921679aa 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7925/mcu.h
++++ b/drivers/net/wireless/mediatek/mt76/mt7925/mcu.h
+@@ -635,6 +635,7 @@ int mt7925_mcu_add_bss_info(struct mt792x_phy *phy,
+ int mt7925_mcu_set_timing(struct mt792x_phy *phy,
+ 			  struct ieee80211_bss_conf *link_conf);
+ int mt7925_mcu_set_deep_sleep(struct mt792x_dev *dev, bool enable);
++int mt7925_mcu_set_thermal_protect(struct mt792x_dev *dev);
+ int mt7925_mcu_set_channel_domain(struct mt76_phy *phy);
+ int mt7925_mcu_set_radio_en(struct mt792x_phy *phy, bool enable);
+ int mt7925_mcu_set_chctx(struct mt76_phy *phy, struct mt76_vif *mvif,
 -- 
 2.39.5
 
