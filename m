@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-157018-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157142-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED1F4AE521D
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:40:35 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 09203AE52B2
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:46:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 832DF4A5221
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:40:36 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BB7797AF936
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:45:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3804A221FDC;
-	Mon, 23 Jun 2025 21:40:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB869226D00;
+	Mon, 23 Jun 2025 21:45:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PUSRtOWw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bdczISqJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7E9019D084;
-	Mon, 23 Jun 2025 21:40:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AB20226D04;
+	Mon, 23 Jun 2025 21:45:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750714834; cv=none; b=ZfwEcfPOfEdpW3Z/JwA4pE+pcacOoa0LBoFmr2uAESt7EtXYco11bl8BGr57LrJLhkf3OIYXcfZplZJzFwTztvAliSMNhrKfTxrlySSdBYjbVvzJ1cs9QoEY1qZ4lk/8m9IzxRWnRoLFgDi4iySJP80NqIrqfPb7ncHgGYClhWA=
+	t=1750715137; cv=none; b=lZKh82ra5f3/ketmuDrM2WgiCUiKEqdgwGLdSB4wcApT+VN137zcmYXmduZHF6qYXXC0vyjnKMECsCYH0qnmPHrAVaUSY+ddU7qMKn9y+3RB0TZv8v4rJieXMJMiwS+Dw+2Czga/36M+2LBcHrBKZspG8InGgTBlfi8vJddo8KY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750714834; c=relaxed/simple;
-	bh=MQcY3de9OhbTzJ/aIhAxEs2ezpaQZEQj9qy6IAIabUE=;
+	s=arc-20240116; t=1750715137; c=relaxed/simple;
+	bh=TwVGq4VmN303vjBbCEWbFq9yUqQa3zBzhggAqgB71/g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rTgdOMD3kFU/HvHaa7Uy3pt0CGrPjHg/CVhr+lO3Rc1lsNwlnYjJyLI4epR8M4y5apzJ0oRjiDtJvUHjQ6dYQ17QExs+axTRreuRr6QTzFhgCj/Z9LlrowFfFvPhliZ+HBH4k4muV/lJp+wcSWjQ+SfXi5ya4YTx3N5PadyUtpY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PUSRtOWw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77D8BC4CEF0;
-	Mon, 23 Jun 2025 21:40:33 +0000 (UTC)
+	 MIME-Version; b=WlTJAvQR3L2QEwrhVL0/xarpmQmA239UR7mO4eoxmsZ9+HYRz1rG+3CGh0AcaKzBYPqlmRCafJOvwVJFHlBe0BUYvBswLcFArd7flq2v5ZzGBtuPcPCvZExsLQsiXU87sGn0b8qKSN64xbcM/ZfN2Rjwj4f4JvvQrzUvZE9PtMs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bdczISqJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00A45C4CEEA;
+	Mon, 23 Jun 2025 21:45:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750714833;
-	bh=MQcY3de9OhbTzJ/aIhAxEs2ezpaQZEQj9qy6IAIabUE=;
+	s=korg; t=1750715137;
+	bh=TwVGq4VmN303vjBbCEWbFq9yUqQa3zBzhggAqgB71/g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PUSRtOWwNMbRYb791kB6wEfX4moiQjZR8STfw2iK3fQ19ecuMqAETqdPYbQ3ZIp+w
-	 km6guEbIJNJQ+QLXOwFbBxu3Tym9IE9uWTvh3SQoN7rBGjYOf1m8UQdYr9FT/0kz9t
-	 2YdML3TLGgIiB0Up0jd2OHNRqYzPKsTxHtcD9AV0=
+	b=bdczISqJNkvF9UjSLhtqUBoQI2l9ax/Y7+7v+bM189hx1QsSnOEgd9yumA6TNC/GS
+	 NJWbQJPOOZcFX+4VjEyDpLroAxtksUqeJ6iEB42rLHt3gAWQuf9Vad8yOsUseLXVJ1
+	 sO9d4iInfIwH2BOEc2xJGCP2A/Nectv9ervQMtmQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 441/592] powerpc/vdso: Fix build of VDSO32 with pcrel
+	Xianglai Li <lixianglai@loongson.cn>,
+	Huacai Chen <chenhuacai@loongson.cn>,
+	Bjorn Helgaas <bhelgaas@google.com>
+Subject: [PATCH 5.15 255/411] PCI: Add ACS quirk for Loongson PCIe
 Date: Mon, 23 Jun 2025 15:06:39 +0200
-Message-ID: <20250623130710.922864372@linuxfoundation.org>
+Message-ID: <20250623130640.064675181@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
-References: <20250623130700.210182694@linuxfoundation.org>
+In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
+References: <20250623130632.993849527@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,76 +62,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
+From: Huacai Chen <chenhuacai@loongson.cn>
 
-[ Upstream commit b93755f408325170edb2156c6a894ed1cae5f4f6 ]
+commit 1f3303aa92e15fa273779acac2d0023609de30f1 upstream.
 
-Building vdso32 on power10 with pcrel leads to following errors:
+Loongson PCIe Root Ports don't advertise an ACS capability, but they do not
+allow peer-to-peer transactions between Root Ports. Add an ACS quirk so
+each Root Port can be in a separate IOMMU group.
 
-	  VDSO32A arch/powerpc/kernel/vdso/gettimeofday-32.o
-	arch/powerpc/kernel/vdso/gettimeofday.S: Assembler messages:
-	arch/powerpc/kernel/vdso/gettimeofday.S:40: Error: syntax error; found `@', expected `,'
-	arch/powerpc/kernel/vdso/gettimeofday.S:71:  Info: macro invoked from here
-	arch/powerpc/kernel/vdso/gettimeofday.S:40: Error: junk at end of line: `@notoc'
-	arch/powerpc/kernel/vdso/gettimeofday.S:71:  Info: macro invoked from here
-	 ...
-	make[2]: *** [arch/powerpc/kernel/vdso/Makefile:85: arch/powerpc/kernel/vdso/gettimeofday-32.o] Error 1
-	make[1]: *** [arch/powerpc/Makefile:388: vdso_prepare] Error 2
-
-Once the above is fixed, the following happens:
-
-	  VDSO32C arch/powerpc/kernel/vdso/vgettimeofday-32.o
-	cc1: error: '-mpcrel' requires '-mcmodel=medium'
-	make[2]: *** [arch/powerpc/kernel/vdso/Makefile:89: arch/powerpc/kernel/vdso/vgettimeofday-32.o] Error 1
-	make[1]: *** [arch/powerpc/Makefile:388: vdso_prepare] Error 2
-	make: *** [Makefile:251: __sub-make] Error 2
-
-Make sure pcrel version of CFUNC() macro is used only for powerpc64
-builds and remove -mpcrel for powerpc32 builds.
-
-Fixes: 7e3a68be42e1 ("powerpc/64: vmlinux support building with PCREL addresing")
-Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
-Link: https://patch.msgid.link/1fa3453f07d42a50a70114da9905bf7b73304fca.1747073669.git.christophe.leroy@csgroup.eu
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Xianglai Li <lixianglai@loongson.cn>
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Cc: stable@vger.kernel.org
+Link: https://patch.msgid.link/20250403040756.720409-1-chenhuacai@loongson.cn
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/powerpc/include/asm/ppc_asm.h | 2 +-
- arch/powerpc/kernel/vdso/Makefile  | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ drivers/pci/quirks.c |   23 +++++++++++++++++++++++
+ 1 file changed, 23 insertions(+)
 
-diff --git a/arch/powerpc/include/asm/ppc_asm.h b/arch/powerpc/include/asm/ppc_asm.h
-index 02897f4b0dbf8..b891910fce8a6 100644
---- a/arch/powerpc/include/asm/ppc_asm.h
-+++ b/arch/powerpc/include/asm/ppc_asm.h
-@@ -183,7 +183,7 @@
- /*
-  * Used to name C functions called from asm
-  */
--#ifdef CONFIG_PPC_KERNEL_PCREL
-+#if defined(__powerpc64__) && defined(CONFIG_PPC_KERNEL_PCREL)
- #define CFUNC(name) name@notoc
- #else
- #define CFUNC(name) name
-diff --git a/arch/powerpc/kernel/vdso/Makefile b/arch/powerpc/kernel/vdso/Makefile
-index e8824f9333261..8834dfe9d7279 100644
---- a/arch/powerpc/kernel/vdso/Makefile
-+++ b/arch/powerpc/kernel/vdso/Makefile
-@@ -53,7 +53,7 @@ ldflags-$(CONFIG_LD_ORPHAN_WARN) += -Wl,--orphan-handling=$(CONFIG_LD_ORPHAN_WAR
- ldflags-y += $(filter-out $(CC_AUTO_VAR_INIT_ZERO_ENABLER) $(CC_FLAGS_FTRACE) -Wa$(comma)%, $(KBUILD_CPPFLAGS) $(KBUILD_CFLAGS))
+--- a/drivers/pci/quirks.c
++++ b/drivers/pci/quirks.c
+@@ -4854,6 +4854,18 @@ static int pci_quirk_brcm_acs(struct pci
+ 		PCI_ACS_SV | PCI_ACS_RR | PCI_ACS_CR | PCI_ACS_UF);
+ }
  
- CC32FLAGS := -m32
--CC32FLAGSREMOVE := -mcmodel=medium -mabi=elfv1 -mabi=elfv2 -mcall-aixdesc
-+CC32FLAGSREMOVE := -mcmodel=medium -mabi=elfv1 -mabi=elfv2 -mcall-aixdesc -mpcrel
- ifdef CONFIG_CC_IS_CLANG
- # This flag is supported by clang for 64-bit but not 32-bit so it will cause
- # an unused command line flag warning for this file.
--- 
-2.39.5
-
++static int pci_quirk_loongson_acs(struct pci_dev *dev, u16 acs_flags)
++{
++	/*
++	 * Loongson PCIe Root Ports don't advertise an ACS capability, but
++	 * they do not allow peer-to-peer transactions between Root Ports.
++	 * Allow each Root Port to be in a separate IOMMU group by masking
++	 * SV/RR/CR/UF bits.
++	 */
++	return pci_acs_ctrl_enabled(acs_flags,
++		PCI_ACS_SV | PCI_ACS_RR | PCI_ACS_CR | PCI_ACS_UF);
++}
++
+ /*
+  * Wangxun 40G/25G/10G/1G NICs have no ACS capability, but on
+  * multi-function devices, the hardware isolates the functions by
+@@ -4987,6 +4999,17 @@ static const struct pci_dev_acs_enabled
+ 	{ PCI_VENDOR_ID_BROADCOM, 0x1762, pci_quirk_mf_endpoint_acs },
+ 	{ PCI_VENDOR_ID_BROADCOM, 0x1763, pci_quirk_mf_endpoint_acs },
+ 	{ PCI_VENDOR_ID_BROADCOM, 0xD714, pci_quirk_brcm_acs },
++	/* Loongson PCIe Root Ports */
++	{ PCI_VENDOR_ID_LOONGSON, 0x3C09, pci_quirk_loongson_acs },
++	{ PCI_VENDOR_ID_LOONGSON, 0x3C19, pci_quirk_loongson_acs },
++	{ PCI_VENDOR_ID_LOONGSON, 0x3C29, pci_quirk_loongson_acs },
++	{ PCI_VENDOR_ID_LOONGSON, 0x7A09, pci_quirk_loongson_acs },
++	{ PCI_VENDOR_ID_LOONGSON, 0x7A19, pci_quirk_loongson_acs },
++	{ PCI_VENDOR_ID_LOONGSON, 0x7A29, pci_quirk_loongson_acs },
++	{ PCI_VENDOR_ID_LOONGSON, 0x7A39, pci_quirk_loongson_acs },
++	{ PCI_VENDOR_ID_LOONGSON, 0x7A49, pci_quirk_loongson_acs },
++	{ PCI_VENDOR_ID_LOONGSON, 0x7A59, pci_quirk_loongson_acs },
++	{ PCI_VENDOR_ID_LOONGSON, 0x7A69, pci_quirk_loongson_acs },
+ 	/* Amazon Annapurna Labs */
+ 	{ PCI_VENDOR_ID_AMAZON_ANNAPURNA_LABS, 0x0031, pci_quirk_al_acs },
+ 	/* Zhaoxin multi-function devices */
 
 
 
