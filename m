@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-157175-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156763-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E5D07AE52DC
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:48:02 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0BDABAE5105
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:30:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 420103B8A53
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:46:57 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 967324A293A
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:30:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DEDBC2236E5;
-	Mon, 23 Jun 2025 21:47:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3B03223DCD;
+	Mon, 23 Jun 2025 21:30:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GZ5fhfEf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VaIDTHNJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9906D223316;
-	Mon, 23 Jun 2025 21:47:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61926224F6;
+	Mon, 23 Jun 2025 21:30:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750715220; cv=none; b=LoS86tZOk7foLCXcKEajLqhTVPV51VwGkVfoPf5wxGzVnU7+qqaDybMMKUrSk1f7/5hXNo9HqdihH6CSQrxT4gB/ljT8n0IS9ZJ0Ua9eLzcU4HfG/ePU8r5bFjS5TLcAEWh/JF3+cS517Nsjd6znRwvzWRVdYJ9zluLOdL2B6fc=
+	t=1750714206; cv=none; b=gtCefR8I3z9IQ89bRlPXA+SDW2aSxIvAM98KGBDxiIeet0g0etabAEAJ7akzTq2Ys/8FqUhDWn9xKa5kFa+BY/uiiKDBcjiKsVIj9hYe4buYJpgmwOennh0hDyYBWEwqxY7XL0WRkzNB1nGMecixJWdH4oMbXOYXs80o3TeVPDU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750715220; c=relaxed/simple;
-	bh=+XGYlp2sUxJJYwSho3yuWEkWdiPy+/AI9Hj93wARIYM=;
+	s=arc-20240116; t=1750714206; c=relaxed/simple;
+	bh=+2G/3u60qxZqxbCp3EaKWq0gOeg4SR/lbcNpA7UShHA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bSmdsKYfwGerUV9aGN0jrcbh94jfavNs0eDCZbmaoKdzdjlQE6DzCXR+71CIU+msENIgDhELK7GEHz/NaB9JWn7AszO5m5btyYwdJNBUzvToJcbKLXOk0nEy86p0C6vyB5acGctgLC9YLHS6+LWnZk6E8LWvgqHFln4niP9/HCk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GZ5fhfEf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2EBABC4CEEA;
-	Mon, 23 Jun 2025 21:47:00 +0000 (UTC)
+	 MIME-Version; b=YjIFMqRYb20uYfCXmcZ9KwMheUaBgPaebfum1HgdqTUwb9P3JoFpvPi/wjj8zD/DoBC+HCzK7gn7n+96ld8IpDAzCpnUExluFqBTkDGuAgUHo8oSvZdyrh51jFnEid8SOgW+xtCsGmj8klgjzttyov3t4bAMwGlXDA5YuwxzoTw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VaIDTHNJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE3BFC4CEEA;
+	Mon, 23 Jun 2025 21:30:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750715220;
-	bh=+XGYlp2sUxJJYwSho3yuWEkWdiPy+/AI9Hj93wARIYM=;
+	s=korg; t=1750714206;
+	bh=+2G/3u60qxZqxbCp3EaKWq0gOeg4SR/lbcNpA7UShHA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GZ5fhfEftJ2XLv5SH9rLQao88FeCJKfvisqNXlpiAobxOcVJFVtXiKQ0EH4fhfTzm
-	 m7UP6eEAM2EWbvxROwFAKYlQP/WXXFYXbt0bTY8+xsEPHrtA+Z98FsjrNkceUFREB9
-	 3o6gvXZaUx4cJ3TiHElOA6xJid0eJM6p7OWRQ/0g=
+	b=VaIDTHNJVUJPePWsl4vQCxsa4DtJpv+bLjGFZxFYcv1+Tk/7Y8/w+H+ojCEymgaCO
+	 uOxNYb/BhZivWIJJVuPLEVYR1LpFpMJ9RW/zIkHrdS6/T+MLIWWn7CUufkdXF2d0eE
+	 n20p90XIY8KpRy8iDPTd1fPBFHa74G3OqbpuBmqM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Lechner <dlechner@baylibre.com>,
-	Angelo Dureghello <adureghello@baylibre.com>,
-	Stable@vger.kernel.org,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 5.15 260/411] iio: adc: ad7606_spi: fix reg write value mask
+	Petr Malat <oss@malat.biz>,
+	Xin Long <lucien.xin@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 143/290] sctp: Do not wake readers in __sctp_write_space()
 Date: Mon, 23 Jun 2025 15:06:44 +0200
-Message-ID: <20250623130640.196524118@linuxfoundation.org>
+Message-ID: <20250623130631.201437575@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
-References: <20250623130632.993849527@linuxfoundation.org>
+In-Reply-To: <20250623130626.910356556@linuxfoundation.org>
+References: <20250623130626.910356556@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,40 +63,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Lechner <dlechner@baylibre.com>
+From: Petr Malat <oss@malat.biz>
 
-commit 89944d88f8795c6c89b9514cb365998145511cd4 upstream.
+[ Upstream commit af295892a7abbf05a3c2ba7abc4d81bb448623d6 ]
 
-Fix incorrect value mask for register write. Register values are 8-bit,
-not 9. If this function was called with a value > 0xFF and an even addr,
-it would cause writing to the next register.
+Function __sctp_write_space() doesn't set poll key, which leads to
+ep_poll_callback() waking up all waiters, not only these waiting
+for the socket being writable. Set the key properly using
+wake_up_interruptible_poll(), which is preferred over the sync
+variant, as writers are not woken up before at least half of the
+queue is available. Also, TCP does the same.
 
-Fixes: f2a22e1e172f ("iio: adc: ad7606: Add support for software mode for ad7616")
-Signed-off-by: David Lechner <dlechner@baylibre.com>
-Reviewed-by: Angelo Dureghello <adureghello@baylibre.com>
-Link: https://patch.msgid.link/20250428-iio-adc-ad7606_spi-fix-write-value-mask-v1-1-a2d5e85a809f@baylibre.com
-Cc: <Stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Petr Malat <oss@malat.biz>
+Acked-by: Xin Long <lucien.xin@gmail.com>
+Link: https://patch.msgid.link/20250516081727.1361451-1-oss@malat.biz
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iio/adc/ad7606_spi.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/sctp/socket.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/iio/adc/ad7606_spi.c
-+++ b/drivers/iio/adc/ad7606_spi.c
-@@ -151,7 +151,7 @@ static int ad7606_spi_reg_write(struct a
- 	struct spi_device *spi = to_spi_device(st->dev);
+diff --git a/net/sctp/socket.c b/net/sctp/socket.c
+index b84c5e0a76f52..adc04e88f349f 100644
+--- a/net/sctp/socket.c
++++ b/net/sctp/socket.c
+@@ -9094,7 +9094,8 @@ static void __sctp_write_space(struct sctp_association *asoc)
+ 		wq = rcu_dereference(sk->sk_wq);
+ 		if (wq) {
+ 			if (waitqueue_active(&wq->wait))
+-				wake_up_interruptible(&wq->wait);
++				wake_up_interruptible_poll(&wq->wait, EPOLLOUT |
++						EPOLLWRNORM | EPOLLWRBAND);
  
- 	st->d16[0] = cpu_to_be16((st->bops->rd_wr_cmd(addr, 1) << 8) |
--				  (val & 0x1FF));
-+				  (val & 0xFF));
- 
- 	return spi_write(spi, &st->d16[0], sizeof(st->d16[0]));
- }
+ 			/* Note that we try to include the Async I/O support
+ 			 * here by modeling from the current TCP/UDP code.
+-- 
+2.39.5
+
 
 
 
