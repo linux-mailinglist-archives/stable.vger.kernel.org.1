@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-156287-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157147-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8F9C7AE4EF0
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:10:46 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EFD32AE52C1
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:47:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 63CF11B601BA
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:11:02 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A2EAF3ACA21
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:46:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BCCE622069F;
-	Mon, 23 Jun 2025 21:10:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DBBD6227BB5;
+	Mon, 23 Jun 2025 21:45:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X3lgaOnh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SBt1LAJn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A76970838;
-	Mon, 23 Jun 2025 21:10:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D0CF223DE5;
+	Mon, 23 Jun 2025 21:45:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750713044; cv=none; b=ukNpy+HsvxPICnnHrJU+08Sku04i2IQTGi6KuO2GBLkrpEQ54n67jVQDhi/DHTj6qhvcC6dvYkqam6lyGCmESnQSH4KsR0wqdaxbARue241NMwCHD8p6rDmnPCPwb6fuugyVsp34qKCtHzy+pD/Mxr62CKPDhYgoZtrQDo+OCH8=
+	t=1750715149; cv=none; b=svjSztVisGHQhq3o8W6fLb7buUF8xM+2ctIlKJF8Sgxgti6ht0hdhfmMEhWbXlUdm8lMR8xfpihwHAcDXdL7UpokcmDEykt6tAqvG/Imr2Pd648Jxzv5DPGwH1+WoDBEzUMAkR/GzGTipcqCDXsNVosuGfMBapqpAns++4EfgyU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750713044; c=relaxed/simple;
-	bh=4wSwkZOmX/7Uhsx0ILooL2ozLEZllBMBOM8T9VGk9gs=;
+	s=arc-20240116; t=1750715149; c=relaxed/simple;
+	bh=6ws1oohkuaUoUAzjkpaw1eryJxpgGeWQ1kAMD9fOyFA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Lv8vDWWy8LoKr7bYS+qi93CkAwp1K1Gv+2AWE82+ZiNoGFFnRQJQicpSunFTIBtu4yISVFQtphThWNiIjPDBMfnBx2Q5fbAaYOk0zsQWd4lLElXO9SzSdgjaGO+Y5fWCf7YtNiE7iZV48Vh6sVOPVSc3BUGbyEwUy4ZgtVVNF8c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X3lgaOnh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1300CC4CEEA;
-	Mon, 23 Jun 2025 21:10:43 +0000 (UTC)
+	 MIME-Version:Content-Type; b=icrXzrSVsugYVB790FeLXjfD4NlqQDC6fgodpPF+nqac0vjR0V37yDJ/K9j2L63GhAMxUnrFNOsjeL4Q2y8JJjrB6FM7RxvI63PtgKtIdt6qaPUIxu4bKEDMuvECsbAwIkGmiYAeb80kvRkOr7b3WgX2NGHt2u/s+8OXgKG5PMQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SBt1LAJn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26A87C4CEEA;
+	Mon, 23 Jun 2025 21:45:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750713044;
-	bh=4wSwkZOmX/7Uhsx0ILooL2ozLEZllBMBOM8T9VGk9gs=;
+	s=korg; t=1750715149;
+	bh=6ws1oohkuaUoUAzjkpaw1eryJxpgGeWQ1kAMD9fOyFA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=X3lgaOnhiVoGzZ/cpUvIJ7AoKaZklZ9gMlceDc3Meh9IhZa/Sb/xlHqFjD/w6cT43
-	 vGxSWvcm2QGDvP0DEzIapZR87YFShCrGjVDpwdSZZjA2MCGHwUZ1GW6QjLgNlsOM/R
-	 +pG1BDdR50wewGQbyLmql3bc/MmvqnjI5/XJ0sWI=
+	b=SBt1LAJnYtHVKJJP1mRo6alY4NvaVCrWCqCGnQSDfFlgIK/UAB+oGeUdUWepDtvZ/
+	 M92wGQYnDrfR30sYPfek+O7I0D2mq5kcee+lN8u29j/ASU6IVbMPxS3AKx5SJ1BKQT
+	 v6mKeTJj+RaoIYJwnXX07wkeR2qc61rZtHEUo0j8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Henk Vergonet <henk.vergonet@gmail.com>,
-	Lorenzo Bianconi <lorenzo@kernel.org>,
-	Felix Fietkau <nbd@nbd.name>,
+	Marcus Wichelmann <marcus.wichelmann@hetzner-cloud.de>,
+	Eric Dumazet <edumazet@google.com>,
+	=?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 325/592] wifi: mt76: mt76x2: Add support for LiteOn WN4516R,WN4519R
+Subject: [PATCH 6.1 238/508] net_sched: sch_sfq: fix a potential crash on gso_skb handling
 Date: Mon, 23 Jun 2025 15:04:43 +0200
-Message-ID: <20250623130708.181263154@linuxfoundation.org>
+Message-ID: <20250623130651.111785109@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
-References: <20250623130700.210182694@linuxfoundation.org>
+In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
+References: <20250623130645.255320792@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,90 +62,72 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Henk Vergonet <henk.vergonet@gmail.com>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit 3c0e4f606d8693795a2c965d6f4987b1bfc31097 ]
+[ Upstream commit 82ffbe7776d0ac084031f114167712269bf3d832 ]
 
-Adds support for:
- - LiteOn WN4516R
- - LiteOn WN4519R
- Both use:
- - A nonstandard USB connector
- - Mediatek chipset MT7600U
- - ASIC revision: 76320044
+SFQ has an assumption of always being able to queue at least one packet.
 
-Disabled VHT support on ASIC revision 76320044:
+However, after the blamed commit, sch->q.len can be inflated by packets
+in sch->gso_skb, and an enqueue() on an empty SFQ qdisc can be followed
+by an immediate drop.
 
- This fixes the 5G connectibity issue on LiteOn WN4519R module
- see https://github.com/openwrt/mt76/issues/971
+Fix sfq_drop() to properly clear q->tail in this situation.
 
- And may also fix the 5G issues on the XBox One Wireless Adapter
- see https://github.com/openwrt/mt76/issues/200
+Tested:
 
- I have looked at the FCC info related to the MT7632U chip as mentioned in here:
- https://github.com/openwrt/mt76/issues/459
- These confirm the chipset does not support 'ac' mode and hence VHT should be turned of.
+ip netns add lb
+ip link add dev to-lb type veth peer name in-lb netns lb
+ethtool -K to-lb tso off                 # force qdisc to requeue gso_skb
+ip netns exec lb ethtool -K in-lb gro on # enable NAPI
+ip link set dev to-lb up
+ip -netns lb link set dev in-lb up
+ip addr add dev to-lb 192.168.20.1/24
+ip -netns lb addr add dev in-lb 192.168.20.2/24
+tc qdisc replace dev to-lb root sfq limit 100
 
-Signed-off-by: Henk Vergonet <henk.vergonet@gmail.com>
-Acked-by: Lorenzo Bianconi <lorenzo@kernel.org>
-Link: https://patch.msgid.link/20250418143914.31384-1-henk.vergonet@gmail.com
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
+ip netns exec lb netserver
+
+netperf -H 192.168.20.2 -l 100 &
+netperf -H 192.168.20.2 -l 100 &
+netperf -H 192.168.20.2 -l 100 &
+netperf -H 192.168.20.2 -l 100 &
+
+Fixes: a53851e2c321 ("net: sched: explicit locking in gso_cpu fallback")
+Reported-by: Marcus Wichelmann <marcus.wichelmann@hetzner-cloud.de>
+Closes: https://lore.kernel.org/netdev/9da42688-bfaa-4364-8797-e9271f3bdaef@hetzner-cloud.de/
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: Toke Høiland-Jørgensen <toke@redhat.com>
+Link: https://patch.msgid.link/20250606165127.3629486-1-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/mediatek/mt76/mt76x2/usb.c     |  2 ++
- .../net/wireless/mediatek/mt76/mt76x2/usb_init.c    | 13 ++++++++++++-
- 2 files changed, 14 insertions(+), 1 deletion(-)
+ net/sched/sch_sfq.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76x2/usb.c b/drivers/net/wireless/mediatek/mt76/mt76x2/usb.c
-index 84ef80ab4afbf..96cecc576a986 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76x2/usb.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt76x2/usb.c
-@@ -17,6 +17,8 @@ static const struct usb_device_id mt76x2u_device_table[] = {
- 	{ USB_DEVICE(0x057c, 0x8503) },	/* Avm FRITZ!WLAN AC860 */
- 	{ USB_DEVICE(0x7392, 0xb711) },	/* Edimax EW 7722 UAC */
- 	{ USB_DEVICE(0x0e8d, 0x7632) },	/* HC-M7662BU1 */
-+	{ USB_DEVICE(0x0471, 0x2126) }, /* LiteOn WN4516R module, nonstandard USB connector */
-+	{ USB_DEVICE(0x0471, 0x7600) }, /* LiteOn WN4519R module, nonstandard USB connector */
- 	{ USB_DEVICE(0x2c4e, 0x0103) },	/* Mercury UD13 */
- 	{ USB_DEVICE(0x0846, 0x9014) },	/* Netgear WNDA3100v3 */
- 	{ USB_DEVICE(0x0846, 0x9053) },	/* Netgear A6210 */
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76x2/usb_init.c b/drivers/net/wireless/mediatek/mt76/mt76x2/usb_init.c
-index 33a14365ec9b9..3b55628115115 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76x2/usb_init.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt76x2/usb_init.c
-@@ -191,6 +191,7 @@ int mt76x2u_register_device(struct mt76x02_dev *dev)
- {
- 	struct ieee80211_hw *hw = mt76_hw(dev);
- 	struct mt76_usb *usb = &dev->mt76.usb;
-+	bool vht;
- 	int err;
- 
- 	INIT_DELAYED_WORK(&dev->cal_work, mt76x2u_phy_calibrate);
-@@ -217,7 +218,17 @@ int mt76x2u_register_device(struct mt76x02_dev *dev)
- 
- 	/* check hw sg support in order to enable AMSDU */
- 	hw->max_tx_fragments = dev->mt76.usb.sg_en ? MT_TX_SG_MAX_SIZE : 1;
--	err = mt76_register_device(&dev->mt76, true, mt76x02_rates,
-+	switch (dev->mt76.rev) {
-+	case 0x76320044:
-+		/* these ASIC revisions do not support VHT */
-+		vht = false;
-+		break;
-+	default:
-+		vht = true;
-+		break;
-+	}
-+
-+	err = mt76_register_device(&dev->mt76, vht, mt76x02_rates,
- 				   ARRAY_SIZE(mt76x02_rates));
- 	if (err)
- 		goto fail;
+diff --git a/net/sched/sch_sfq.c b/net/sched/sch_sfq.c
+index 002941d35b643..d564675a8be4d 100644
+--- a/net/sched/sch_sfq.c
++++ b/net/sched/sch_sfq.c
+@@ -310,7 +310,10 @@ static unsigned int sfq_drop(struct Qdisc *sch, struct sk_buff **to_free)
+ 		/* It is difficult to believe, but ALL THE SLOTS HAVE LENGTH 1. */
+ 		x = q->tail->next;
+ 		slot = &q->slots[x];
+-		q->tail->next = slot->next;
++		if (slot->next == x)
++			q->tail = NULL; /* no more active slots */
++		else
++			q->tail->next = slot->next;
+ 		q->ht[slot->hash] = SFQ_EMPTY_SLOT;
+ 		goto drop;
+ 	}
 -- 
 2.39.5
 
