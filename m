@@ -1,145 +1,148 @@
-Return-Path: <stable+bounces-155337-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-155338-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 35B52AE3BC7
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 12:09:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 14A8FAE3C1F
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 12:21:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C0901170E0D
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 10:09:26 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0E62116A3BE
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 10:21:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9511222D4F1;
-	Mon, 23 Jun 2025 10:09:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15DA323ABAD;
+	Mon, 23 Jun 2025 10:21:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="Hvo2IciA"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="R0MrDDOl"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4500217730
-	for <stable@vger.kernel.org>; Mon, 23 Jun 2025 10:09:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A863239E93
+	for <stable@vger.kernel.org>; Mon, 23 Jun 2025 10:21:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750673361; cv=none; b=EZwsS37pUUODme0dMnsU0r8gCHM6nU6+JyI8KND9hVIlp3HsBj+NjbGhnEIsgbt/ILGcZJwFnodex1NNeGG2JGtfwtU3VCmOnhAfUJfeHcjXt3UwXkhqRWCKx+CVtHVfRrLtn/IztERy5V/3MjKy88JaT0MeIZNWTJHyUvU5Gj8=
+	t=1750674087; cv=none; b=VoXuUahGW2PZVnNOyshacSd0S6J09fmiecIuv33GhaLKimOfmuVdQnHsgCde1jJFicie7VtXvjG1Uxo8RHkPD+gWMrl3h96FMQXy7tR3+Gdo6Lu1EauuamqDvk7Pf+GfHYSTCCAhR+ZmV/t3tcR8eKuUTI5hp7HSAUtqu+vg6Nk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750673361; c=relaxed/simple;
-	bh=nYUktp4BqYKEtSwIBUKjOVACQh1DEtJtRIFfiOyeG9A=;
-	h=From:To:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=S4GNUjcawBALI4Wos9xweDTPsdB/Ag52clW5P3BF/X0ckCnaEhuvX2zsHAOIotsx5F7Ul/Tca0+0Zro0wZR2vEyIWzg9tbl1OfCy9RzcuNh2Pepcgzzrwlc162t4d8deoPSZC6mgmvVjflPrKGPn+xRGmqgVHZs1cviv7GqVT7g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=Hvo2IciA; arc=none smtp.client-ip=148.163.156.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
-Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 55N8PfPi027991
-	for <stable@vger.kernel.org>; Mon, 23 Jun 2025 10:09:18 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=
-	content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=pp1; bh=8MIyqxfO4hrSnhTM4
-	NMzM8luCnZH4dhl9/ik0lBcq1M=; b=Hvo2IciAumvHa59LXTsu0qAyC8lvCRbx3
-	ElJOj+MYUF/suoE/mxlrM8NAIJFbyHMDesRe1nJoKbUTDOB+idxRtPUavhQ8r+8r
-	53MPL4v4XLZjuNtyqmn3DizK13f8yJg3gIixYCPQuvrbxA4+59MWc0wisoFny/Wq
-	QDFSFWPFIfjnj7By3TKzx/HeqkoLx5RpPvknMZ0ArAqdmB2O5PHc5ChJWrfs1/4c
-	dWBUGd1wXTOaZNKDQe+AAEeukryUlThxyJc5E1pBNyXy47/If/NQ/vtb6+nXi3WG
-	G4QBCmLxOE5B3bNHoZLiTROdhouvCnLPaRfAjro7Lmt7A+qQS1SHg==
-Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 47dm8j0sx7-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
-	for <stable@vger.kernel.org>; Mon, 23 Jun 2025 10:09:17 +0000 (GMT)
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 55N8O3sV031277
-	for <stable@vger.kernel.org>; Mon, 23 Jun 2025 10:09:16 GMT
-Received: from smtprelay04.dal12v.mail.ibm.com ([172.16.1.6])
-	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 47e7eynu84-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
-	for <stable@vger.kernel.org>; Mon, 23 Jun 2025 10:09:16 +0000
-Received: from smtpav03.wdc07v.mail.ibm.com (smtpav03.wdc07v.mail.ibm.com [10.39.53.230])
-	by smtprelay04.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 55NA9FwK26542778
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK)
-	for <stable@vger.kernel.org>; Mon, 23 Jun 2025 10:09:15 GMT
-Received: from smtpav03.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 77D885805C
-	for <stable@vger.kernel.org>; Mon, 23 Jun 2025 10:09:15 +0000 (GMT)
-Received: from smtpav03.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id EBE935805A
-	for <stable@vger.kernel.org>; Mon, 23 Jun 2025 10:09:14 +0000 (GMT)
-Received: from tuxmaker.lnxne.boe (unknown [9.152.85.9])
-	by smtpav03.wdc07v.mail.ibm.com (Postfix) with ESMTP
-	for <stable@vger.kernel.org>; Mon, 23 Jun 2025 10:09:14 +0000 (GMT)
-From: Niklas Schnelle <schnelle@linux.ibm.com>
-To: stable@vger.kernel.org
-Subject: [PATCH 6.12.y] s390/pci: Fix __pcilg_mio_inuser() inline assembly
-Date: Mon, 23 Jun 2025 12:09:14 +0200
-Message-ID: <20250623100914.2680078-1-schnelle@linux.ibm.com>
-X-Mailer: git-send-email 2.48.1
-In-Reply-To: <2025062020-aware-estranged-e8a8@gregkh>
-References: <2025062020-aware-estranged-e8a8@gregkh>
+	s=arc-20240116; t=1750674087; c=relaxed/simple;
+	bh=CadnOnqUrP01j9sf1g6sUWHOFqKProxbSycYgQcVmxM=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=YMNLODUsyJYUGfDoQXV8A2L0C2AZgV7b1zl0XT3F4rfh2sPmr1vWFkpgfyjgzQM5Hs2SVKDKQ6OsaoBeo07oH1TTioVT1s1fSdAQjCqTQ9d6FKCRDs4lxikjYl8E2Z0VrGIOS+iRgap6iRFWCWvZpNVuEHGOIVHyCsOJQ6UZeHE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=R0MrDDOl; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1750674085;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=0lgw/bD4SindaQDwTXpeWQKLQPGV/k/mx1XMIx/reNQ=;
+	b=R0MrDDOlssSp//wjxy2Ur9/L7dVOhlPKqXTDrPsorsOgcB89m/HYMgi9qwqmNs9/Iz7E9P
+	lCSwOO8fadMKn12fIU8DwyqJCdOVe/eWJzLFMwfFvr4AKXmQd4btT3komc31mlzIEgfsV1
+	a2B6FMDCkEodv5dXk1x5fqpJJqqMOOc=
+Received: from mail-yw1-f197.google.com (mail-yw1-f197.google.com
+ [209.85.128.197]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-372-AnAUNzg0O8i5T5n7bkHswQ-1; Mon, 23 Jun 2025 06:21:21 -0400
+X-MC-Unique: AnAUNzg0O8i5T5n7bkHswQ-1
+X-Mimecast-MFC-AGG-ID: AnAUNzg0O8i5T5n7bkHswQ_1750674081
+Received: by mail-yw1-f197.google.com with SMTP id 00721157ae682-7118199f959so60180247b3.1
+        for <stable@vger.kernel.org>; Mon, 23 Jun 2025 03:21:21 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1750674081; x=1751278881;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=0lgw/bD4SindaQDwTXpeWQKLQPGV/k/mx1XMIx/reNQ=;
+        b=TYB/9v0eb26zVAyvvzTsGDw3ZJv3CQIr+GTtkGZBumUjAV2yna+ZzY750z6JktU+QQ
+         oGoh7Zus0dX4wAikkd3U+hOZhhe4dO9W8btXrMbzNF2OxCYB06w8AWuBJjc0VCLCFmNy
+         0bQKvoLZbTMCP4iApBm8rgV9jRhaKnRLgW4MW4gY1gJxjzmW5TyggK/WIoIPH0ho0jXS
+         eopownunCyJXPuUTnY6bZrmO0wnlZcMzV5+xTMJzWnvZJ5iRTHjyQFjI1ccDUhhi0Rzb
+         e0P46w7WmKXI2zNkRR8a8X/C27q/14GtxlVPludb4kaqojlkipDUW/pIdPNLW8wEp4Kk
+         u8lA==
+X-Gm-Message-State: AOJu0Yx8nZE7GeeBZdxjgQp8Gjnyuj+LyT88c6KkuVXKn9jh5c21pvM/
+	cbCzqoaiAvojfqE64hXltfy+vTQNAP/w0BEy/GLihOuIjXn/KjH22oNxcis54eQUaiOZMcLS7gU
+	CQrOgNF9lHXhHnXYKKpsWXsBWzC9L6IPn1bvXdWvTw9EfL4r+8XijzfGZVxQoIn9zX0m+zRNynG
+	R6DI6t4St7gF1I6Axzwg72Wkb37JQcpwVz
+X-Gm-Gg: ASbGnctGMzml9v0vtyVVg7Ap4YcAdKNfyYoAbu2S/ZlPChS/kNUeFV4HfRyrFoRxzKK
+	dgITSMBTVb90qhstAlQIKWyJwbnan4BFTT97mitNoX48zzJueJ54DbyC7hOv1yEgD2FaCg6QQdp
+	lcu3c=
+X-Received: by 2002:a05:690c:6f93:b0:711:7128:114f with SMTP id 00721157ae682-712c63c5613mr173777297b3.12.1750674081367;
+        Mon, 23 Jun 2025 03:21:21 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFFiDnn92RagGTfufzHsxHhTXMUufsWyR4eKoIQO45W2ta/mlkrX/GRWBBKswWX0hUbhvXY3gbxHPfx0i3Xsoc=
+X-Received: by 2002:a05:690c:6f93:b0:711:7128:114f with SMTP id
+ 00721157ae682-712c63c5613mr173777017b3.12.1750674081105; Mon, 23 Jun 2025
+ 03:21:21 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNjIzMDA1NyBTYWx0ZWRfX64PbH+lcGOOV QpX8La35XWZaouJdJXVjLTXBj7i0l6PqkAArln7npDMoa2C/WFyZiWN3KEvJl6RNZyXiif8jxK4 WU9i/7BPYHCKspNtfysLfAdM2+V6hULSc69xioH6vj+mu+iCLTAFr7OILY9w7B61y3uuMOFfStJ
- aAb3rwQyExKdN4b+os8FBXBjVkX8PzFjOhvQkxyFv9EmXfCT2zjTWsducctm245pOe99qKlSYTM bxI7xpgUDhUj//HLCQlln/yx+SbADua1J/7s4SQKUkp5bOaCnNI2y0A2/5doPiyeeJN8uFaJB43 c3trbXGtXjX09ATR5em+642yI3RJ5F6XAe4f3lVRLtJIbq16ZSJcUVIsDETdynhZwccqWYu1XjH
- RVJI9fKjhyzthHD+AF7/zpAOQxqPWZ0gpbhkktBhEVz8czTVKAiJdG9Au+zCKltqIXJ88wYX
-X-Proofpoint-GUID: lILC2ywHbU8BYw1s3P8wD2jldqzakK5a
-X-Proofpoint-ORIG-GUID: lILC2ywHbU8BYw1s3P8wD2jldqzakK5a
-X-Authority-Analysis: v=2.4 cv=combk04i c=1 sm=1 tr=0 ts=685927cd cx=c_pps a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17 a=6IFa9wvqVegA:10 a=VnNF1IyMAAAA:8 a=VwQbUJbxAAAA:8 a=TStIGci8u6cbjIpgzpwA:9
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
- definitions=2025-06-23_03,2025-06-23_02,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
- malwarescore=0 spamscore=0 adultscore=0 mlxlogscore=475 clxscore=1011
- impostorscore=0 suspectscore=0 mlxscore=0 phishscore=0 lowpriorityscore=0
- bulkscore=0 classifier=spam authscore=0 authtc=n/a authcc= route=outbound
- adjust=0 reason=mlx scancount=1 engine=8.19.0-2505280000
- definitions=main-2506230057
+References: <20250618114409.179601-1-d.privalov@omp.ru>
+In-Reply-To: <20250618114409.179601-1-d.privalov@omp.ru>
+From: Miklos Szeredi <mszeredi@redhat.com>
+Date: Mon, 23 Jun 2025 12:21:09 +0200
+X-Gm-Features: AX0GCFvydjAk0H9SdIviYpopwIHMR0R5bzlGmZzRGrpaLGnO5vBQo-A0rDztVy8
+Message-ID: <CAOssrKddunTkNzY1ydgg-rpi1aTuq-ghgJcVuQOXnK1GH5HCtg@mail.gmail.com>
+Subject: Re: [PATCH 5.10/5.15 1/1] fuse: don't increment nlink in link()
+To: "d.privalov" <d.privalov@omp.ru>
+Cc: stable@vger.kernel.org, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	Marcel Holtmann <marcel@holtmann.org>, Johan Hedberg <johan.hedberg@gmail.com>, 
+	"David S. Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, linux-bluetooth@vger.kernel.org, 
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	lvc-project@linuxtesting.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-From: Heiko Carstens <hca@linux.ibm.com>
+On Wed, Jun 18, 2025 at 2:00=E2=80=AFPM d.privalov <d.privalov@omp.ru> wrot=
+e:
+>
+> From: Miklos Szeredi <mszeredi@redhat.com>
+>
+> commit 97f044f690bac2b094bfb7fb2d177ef946c85880 upstream.
+>
+> The fuse_iget() call in create_new_entry() already updated the inode with
+> all the new attributes and incremented the attribute version.
+>
+> Incrementing the nlink will result in the wrong count.  This wasn't notic=
+ed
+> because the attributes were invalidated right after this.
+>
+> Updating ctime is still needed for the writeback case when the ctime is n=
+ot
+> refreshed.
+>
+> Signed-off-by: Miklos Szeredi <mszeredi@redhat.com>
+> Signed-off-by: Dmitriy Privalov <d.privalov@omp.ru>
+> ---
+>  fs/fuse/dir.c | 29 ++++++++++-------------------
+>  1 file changed, 10 insertions(+), 19 deletions(-)
+>
+> diff --git a/fs/fuse/dir.c b/fs/fuse/dir.c
+> index 4488a53a192d..7055fdc1b8ce 100644
+> --- a/fs/fuse/dir.c
+> +++ b/fs/fuse/dir.c
+> @@ -807,7 +807,7 @@ void fuse_flush_time_update(struct inode *inode)
+>         mapping_set_error(inode->i_mapping, err);
+>  }
+>
+> -void fuse_update_ctime(struct inode *inode)
+> +static void fuse_update_ctime_in_cache(struct inode *inode)
+>  {
 
-Use "a" constraint for the shift operand of the __pcilg_mio_inuser() inline
-assembly. The used "d" constraint allows the compiler to use any general
-purpose register for the shift operand, including register zero.
+Backport is wrong.  In the original patch we have
 
-If register zero is used this my result in incorrect code generation:
+-       fuse_invalidate_attr(inode);
 
- 8f6:   a7 0a ff f8             ahi     %r0,-8
- 8fa:   eb 32 00 00 00 0c       srlg    %r3,%r2,0  <----
+And that line comes from 371e8fd02969 ("fuse: move
+fuse_invalidate_attr() into fuse_update_ctime()") in v5.16.
 
-If register zero is selected to contain the shift value, the srlg
-instruction ignores the contents of the register and always shifts zero
-bits. Therefore use the "a" constraint which does not permit to select
-register zero.
+The fix is to not introduce fuse_update_ctime_in_cache(), because
+fuse_update_ctime() is already doing that.
 
-Fixes: f058599e22d5 ("s390/pci: Fix s390_mmio_read/write with MIO")
-Cc: stable@vger.kernel.org
-Reported-by: Niklas Schnelle <schnelle@linux.ibm.com>
-Reviewed-by: Niklas Schnelle <schnelle@linux.ibm.com>
-Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
-(cherry picked from commit c4abe6234246c75cdc43326415d9cff88b7cf06c)
-Signed-off-by: Niklas Schnelle <schnelle@linux.ibm.com>
----
- arch/s390/pci/pci_mmio.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/arch/s390/pci/pci_mmio.c b/arch/s390/pci/pci_mmio.c
-index 4779c3cb6cfa..0fa34c501296 100644
---- a/arch/s390/pci/pci_mmio.c
-+++ b/arch/s390/pci/pci_mmio.c
-@@ -228,7 +228,7 @@ static inline int __pcilg_mio_inuser(
- 		[ioaddr_len] "+&d" (ioaddr_len.pair),
- 		[cc] "+d" (cc), [val] "=d" (val),
- 		[dst] "+a" (dst), [cnt] "+d" (cnt), [tmp] "=d" (tmp),
--		[shift] "+d" (shift)
-+		[shift] "+a" (shift)
- 		:: "cc", "memory");
- 
- 	/* did we write everything to the user space buffer? */
--- 
-2.48.1
+Thanks,
+Miklos
 
 
