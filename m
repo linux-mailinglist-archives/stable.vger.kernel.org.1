@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-157639-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157049-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E447AAE54EE
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:06:19 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 98D3DAE523F
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:41:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 315014A0866
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:05:37 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B10D5441F22
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:41:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 640941E22E6;
-	Mon, 23 Jun 2025 22:06:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB1C52222CA;
+	Mon, 23 Jun 2025 21:41:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ilftOjXW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L66KOqKY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C0311E87B;
-	Mon, 23 Jun 2025 22:06:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79F894315A;
+	Mon, 23 Jun 2025 21:41:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750716360; cv=none; b=O+xufbdC11h3ENieklUBJGDPLxTX99gaBIWIaCjMv9LfL1iR6Iq3e0fMYWWHpqSN5J5kM3QDpC6G59oE0miTUaUHff8cnRx6G9LhKftAqlxrx6vkGbxPiU9/2yTYhH+IEBzlP6kXexEL0LCkU+JeJtYBbX32L1kdxAVz9Ubsfxc=
+	t=1750714909; cv=none; b=kLz8XRBwOci9m7GXg4OJUfZBu28fBfRHJUKBxZK0bL4YZHs1p+WraNhMw8Dc+PHTAx4vrgIReIlCrHlpbx38JMpleiq5vEbgwRZ5CdtKFcCGuTF0GDfIEigGjO8rawsoVPEI0wNt3RbFwwei3FPo75Va7bRoriEYETJczJA+sKk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750716360; c=relaxed/simple;
-	bh=q0c0vgEM0/I8rBTgE8M0XDVuOSJYDfu6TFmK0D0iKVk=;
+	s=arc-20240116; t=1750714909; c=relaxed/simple;
+	bh=qGdEpWbb3xxldjIdGMAZ7KiDddAnwRrv/yem41a3U4s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PszWOpNpjBkt/0xvZAestL7jfEVXbj4xC3bg5PCYNTHf3cUUUzkA97SxkCJ+NI/mjTOVEaa940bMxDj9cRNc6Uptx73HrJ+cUOlYMxCa1SxBGlBdJOGWEoqEz8cs9V8WZYGvlD48v46c0rtbwEx87DkU5Kws6N1s0pKflrqijRY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ilftOjXW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9801C4CEEA;
-	Mon, 23 Jun 2025 22:05:59 +0000 (UTC)
+	 MIME-Version; b=WvQ/cSggG+ux3gDXAzBJbDFqgxtsQkjTp5VL4mVka9s3aA2pTJ3k0HKlV+wUekff/78GBLozfefEQpv1lMn1RzRdc4R5FaiXdddpuwP1ahqXtb6pPKkinEJcdy3xbh4LcHuzBPF/9YTgHfYOLdbrf8QNVWpbmk6MVh9iVekbd0g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L66KOqKY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0953AC4CEED;
+	Mon, 23 Jun 2025 21:41:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750716360;
-	bh=q0c0vgEM0/I8rBTgE8M0XDVuOSJYDfu6TFmK0D0iKVk=;
+	s=korg; t=1750714909;
+	bh=qGdEpWbb3xxldjIdGMAZ7KiDddAnwRrv/yem41a3U4s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ilftOjXWEp7/gi0sA7n9tNkdcxVArWGaRP/f6hMMnj8u/l2nX+AXrNUwX8eKefO8Z
-	 L95tWRtgGFLEchlFs7EsZTZH3RDgLoq2ptScOPsKXnag04x07SBjbszLC1Y1snJvP+
-	 pSrhI0UFEIcC3NdRf8YoZwayJDM30te1hxq7iueE=
+	b=L66KOqKYlWwTQP/nFLTS3xbubW+nLzoO7VisEUV427CVanWeYauSdL7zpCIiG3pj3
+	 dH9le8ajsM07RC0T8p2UKBOpLZpG5bFek+G89OV1ACDRzVwuDPOTp7IQR4BQMBcCTX
+	 UIgzXik4fBsageceV1wu+Abf/J5D+8s05A/NdQuc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sean Christopherson <seanjc@google.com>,
-	Joerg Roedel <jroedel@suse.de>,
+	syzbot+a7d4444e7b6e743572f7@syzkaller.appspotmail.com,
+	Kees Cook <kees@kernel.org>,
+	Helge Deller <deller@gmx.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 246/414] iommu/amd: Ensure GA log notifier callbacks finish running before module unload
+Subject: [PATCH 6.15 425/592] fbcon: Make sure modelist not set on unregistered console
 Date: Mon, 23 Jun 2025 15:06:23 +0200
-Message-ID: <20250623130648.199096607@linuxfoundation.org>
+Message-ID: <20250623130710.546305905@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
-References: <20250623130642.015559452@linuxfoundation.org>
+In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
+References: <20250623130700.210182694@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,44 +63,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Christopherson <seanjc@google.com>
+From: Kees Cook <kees@kernel.org>
 
-[ Upstream commit 94c721ea03c7078163f41dbaa101ac721ddac329 ]
+[ Upstream commit cedc1b63394a866bf8663a3e40f4546f1d28c8d8 ]
 
-Synchronize RCU when unregistering KVM's GA log notifier to ensure all
-in-flight interrupt handlers complete before KVM-the module is unloaded.
+It looks like attempting to write to the "store_modes" sysfs node will
+run afoul of unregistered consoles:
 
-Signed-off-by: Sean Christopherson <seanjc@google.com>
-Link: https://lore.kernel.org/r/20250315031048.2374109-1-seanjc@google.com
-Signed-off-by: Joerg Roedel <jroedel@suse.de>
+UBSAN: array-index-out-of-bounds in drivers/video/fbdev/core/fbcon.c:122:28
+index -1 is out of range for type 'fb_info *[32]'
+...
+ fbcon_info_from_console+0x192/0x1a0 drivers/video/fbdev/core/fbcon.c:122
+ fbcon_new_modelist+0xbf/0x2d0 drivers/video/fbdev/core/fbcon.c:3048
+ fb_new_modelist+0x328/0x440 drivers/video/fbdev/core/fbmem.c:673
+ store_modes+0x1c9/0x3e0 drivers/video/fbdev/core/fbsysfs.c:113
+ dev_attr_store+0x55/0x80 drivers/base/core.c:2439
+
+static struct fb_info *fbcon_registered_fb[FB_MAX];
+...
+static signed char con2fb_map[MAX_NR_CONSOLES];
+...
+static struct fb_info *fbcon_info_from_console(int console)
+...
+        return fbcon_registered_fb[con2fb_map[console]];
+
+If con2fb_map contains a -1 things go wrong here. Instead, return NULL,
+as callers of fbcon_info_from_console() are trying to compare against
+existing "info" pointers, so error handling should kick in correctly.
+
+Reported-by: syzbot+a7d4444e7b6e743572f7@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/all/679d0a8f.050a0220.163cdc.000c.GAE@google.com/
+Signed-off-by: Kees Cook <kees@kernel.org>
+Signed-off-by: Helge Deller <deller@gmx.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iommu/amd/iommu.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ drivers/video/fbdev/core/fbcon.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/iommu/amd/iommu.c b/drivers/iommu/amd/iommu.c
-index 4428a9557f295..23e78a034da8f 100644
---- a/drivers/iommu/amd/iommu.c
-+++ b/drivers/iommu/amd/iommu.c
-@@ -861,6 +861,14 @@ int amd_iommu_register_ga_log_notifier(int (*notifier)(u32))
- {
- 	iommu_ga_log_notifier = notifier;
+diff --git a/drivers/video/fbdev/core/fbcon.c b/drivers/video/fbdev/core/fbcon.c
+index ac3c99ed92d1a..2df48037688d1 100644
+--- a/drivers/video/fbdev/core/fbcon.c
++++ b/drivers/video/fbdev/core/fbcon.c
+@@ -117,9 +117,14 @@ static signed char con2fb_map_boot[MAX_NR_CONSOLES];
  
-+	/*
-+	 * Ensure all in-flight IRQ handlers run to completion before returning
-+	 * to the caller, e.g. to ensure module code isn't unloaded while it's
-+	 * being executed in the IRQ handler.
-+	 */
-+	if (!notifier)
-+		synchronize_rcu();
+ static struct fb_info *fbcon_info_from_console(int console)
+ {
++	signed char fb;
+ 	WARN_CONSOLE_UNLOCKED();
+ 
+-	return fbcon_registered_fb[con2fb_map[console]];
++	fb = con2fb_map[console];
++	if (fb < 0 || fb >= ARRAY_SIZE(fbcon_registered_fb))
++		return NULL;
 +
- 	return 0;
++	return fbcon_registered_fb[fb];
  }
- EXPORT_SYMBOL(amd_iommu_register_ga_log_notifier);
+ 
+ static int logo_lines;
 -- 
 2.39.5
 
