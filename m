@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-156116-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-155788-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 98F42AE4513
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:48:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AA5A4AE4363
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:31:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 252FE7A0893
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:42:14 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 664BB7A44C7
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:28:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0BD7A230BC2;
-	Mon, 23 Jun 2025 13:43:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 356D62512EE;
+	Mon, 23 Jun 2025 13:28:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O1VJY843"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RHP3IR6s"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE33A242D90;
-	Mon, 23 Jun 2025 13:43:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8381250BEC;
+	Mon, 23 Jun 2025 13:28:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750686187; cv=none; b=ZiWyPBOVKNrDNZKcBc5rGILOUP0PSTs0BOc++SEO7qYbYo1p4z/WXXHQx1eiL572wEWrDslHjvHmXhtdREqUr0bqzglDzxJyY+SG0AFbt6aDuq26ORLWTA4rudTIotE149DDl6JorfSA1UoCfcOrokg9emJzjn8uJkSv1Q0mYVw=
+	t=1750685334; cv=none; b=ZowkpZO17dfmpsrBZG3qj0S17OrZo8iwRub4GOHQ9ZiDaWR0c/Eya1j3kHPCxK48h3Q1YYzQ8yW39NBj1h6bxSyAKCpwChfRX9ISXQ55MPYbf6lS7nh4kI7zGhIFxp3QuZxfzSwkIegxpcRKhvHiwNu6w++qzrlONhfvEgUAmLg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750686187; c=relaxed/simple;
-	bh=gMTwCTDxx08bdoiguvPqD/MaRp700Re6sZg6mMtyCzw=;
+	s=arc-20240116; t=1750685334; c=relaxed/simple;
+	bh=1uFZ9p0FNSvAOxAYlURTk7HQ/TF0x5O5fdiT1GvxWS4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BTXNwLrMI9o7FPWDtUECb36QawfwuU0fQZRFBc5PavLVVWKDSeJWI1wMjgPVo+jF6NtskDCzlUgghHSzb9Ykmomz+JnZC1xvEaMhSgcZofxB0c5L9mAoEx4dj3TUg9eT0xTw1kqV0424sKwVtbu6Rf3Mv33yRbN4eVq2mQShwtw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O1VJY843; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 545A0C4CEEA;
-	Mon, 23 Jun 2025 13:43:07 +0000 (UTC)
+	 MIME-Version; b=q/XiBNCAXKOx5X5Ya8j8t7jTJnTZGiYwHcxRSk+SDKdq2xfP4vnXE3uzE7zOXYiD2Eecy4jFZTDUwst55eDUdDA7gAb7Jt+nstuHL/YKledcGvxltEYN3psL7jIcYsAn7VWKZ2ITvb9yonVFF8C+OTmeGmt08JHT/E+dXvzwNU4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RHP3IR6s; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7CB86C4CEEA;
+	Mon, 23 Jun 2025 13:28:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750686187;
-	bh=gMTwCTDxx08bdoiguvPqD/MaRp700Re6sZg6mMtyCzw=;
+	s=korg; t=1750685333;
+	bh=1uFZ9p0FNSvAOxAYlURTk7HQ/TF0x5O5fdiT1GvxWS4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=O1VJY843aWUH0ErWvCFZ/hY9C37C4PDXNE7PrYW9miDVEQ6c1QamnWHMFr0/MQ922
-	 FCrmE8K3y93EdXw473JE+O/yQvkCjn/YKq0C1rkwIrccgTMXUENBmNVQfEG2C2gpqP
-	 c/XqhPWhnTEpA3JpZXnPD3dV7Mk/5B6NgYXFLzN0=
+	b=RHP3IR6sA1hbPakG3OHWns9CsusZakwH2tYJmZOb5e8WWmU17c+hdYOThjXD6o4B8
+	 Yz9akTFWozBZJoP2kde7kCT5XAtIvfxCauMElDynfKzExQw6kgqtv+Htc8ic3GWFbi
+	 2uGlZxp9ev6H3+TkM9Xbtcy/LWA0jzVXZ95LykJg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bitterblue Smith <rtl8821cerfe2@gmail.com>,
-	Ping-Ke Shih <pkshih@realtek.com>
-Subject: [PATCH 6.12 026/414] wifi: rtw88: usb: Upload the firmware in bigger chunks
+	David Lechner <dlechner@baylibre.com>,
+	Stable@vger.kernel.org,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 6.15 205/592] iio: adc: ad7606: fix raw read for 18-bit chips
 Date: Mon, 23 Jun 2025 15:02:43 +0200
-Message-ID: <20250623130642.680883511@linuxfoundation.org>
+Message-ID: <20250623130705.164726490@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
-References: <20250623130642.015559452@linuxfoundation.org>
+In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
+References: <20250623130700.210182694@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,224 +62,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+From: David Lechner <dlechner@baylibre.com>
 
-commit 80fe0bc1659c0ccc79d082e426fa376be5df9c04 upstream.
+commit 3f5fd1717ae9497215f22aa748fc2c09df88b0e3 upstream.
 
-RTL8811AU stops responding during the firmware download on some systems:
+Fix 18-bit raw read for 18-bit chips by applying a mask to the value
+we receive from the SPI controller.
 
-[  809.256440] rtw_8821au 5-2.1:1.0: Firmware version 42.4.0, H2C version 0
-[  812.759142] rtw_8821au 5-2.1:1.0 wlp48s0f4u2u1: renamed from wlan0
-[  837.315388] rtw_8821au 1-4:1.0: write register 0x1ef4 failed with -110
-[  867.524259] rtw_8821au 1-4:1.0: write register 0x1ef8 failed with -110
-[  868.930976] rtw_8821au 5-2.1:1.0 wlp48s0f4u2u1: entered promiscuous mode
-[  897.730952] rtw_8821au 1-4:1.0: write register 0x1efc failed with -110
+SPI controllers either return 1, 2 or 4 bytes per word depending on the
+bits_per_word. For 16-bit chips, there was no problem since they raw
+data fit exactly in the 2 bytes received from the SPI controller. But
+now that we have 18-bit chips and we are using bits_per_word = 18, we
+cannot assume that the extra bits in the 32-bit word are always zero.
+In fact, with the AXI SPI Engine controller, these bits are not always
+zero which caused the raw values to read 10s of 1000s of volts instead
+of the correct value. Therefore, we need to mask the value we receive
+from the SPI controller to ensure that only the 18 bits of real data
+are used.
 
-Maybe it takes too long when writing the firmware 4 bytes at a time.
-
-Write 196 bytes at a time for RTL8821AU, RTL8811AU, and RTL8812AU,
-and 254 bytes at a time for RTL8723DU. These are the sizes used in
-their official drivers. Tested with all these chips.
-
-Cc: stable@vger.kernel.org
-Link: https://github.com/lwfinger/rtw88/issues/344
-Signed-off-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
-Acked-by: Ping-Ke Shih <pkshih@realtek.com>
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
-Link: https://patch.msgid.link/43f1daad-3ec0-4a3b-a50c-9cd9eb2c2f52@gmail.com
+Fixes: f3838e934dff ("iio: adc: ad7606: add support for AD7606C-{16,18} parts")
+Signed-off-by: David Lechner <dlechner@baylibre.com>
+Link: https://patch.msgid.link/20250502-iio-adc-ad7606-fix-raw-read-for-18-bit-chips-v1-1-06caa92d8f11@baylibre.com
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/realtek/rtw88/hci.h  |    8 ++++
- drivers/net/wireless/realtek/rtw88/mac.c  |   11 +++---
- drivers/net/wireless/realtek/rtw88/mac.h  |    2 +
- drivers/net/wireless/realtek/rtw88/pci.c  |    2 +
- drivers/net/wireless/realtek/rtw88/sdio.c |    2 +
- drivers/net/wireless/realtek/rtw88/usb.c  |   55 ++++++++++++++++++++++++++++++
- 6 files changed, 76 insertions(+), 4 deletions(-)
+ drivers/iio/adc/ad7606.c | 21 ++++++++++-----------
+ 1 file changed, 10 insertions(+), 11 deletions(-)
 
---- a/drivers/net/wireless/realtek/rtw88/hci.h
-+++ b/drivers/net/wireless/realtek/rtw88/hci.h
-@@ -19,6 +19,8 @@ struct rtw_hci_ops {
- 	void (*link_ps)(struct rtw_dev *rtwdev, bool enter);
- 	void (*interface_cfg)(struct rtw_dev *rtwdev);
- 	void (*dynamic_rx_agg)(struct rtw_dev *rtwdev, bool enable);
-+	void (*write_firmware_page)(struct rtw_dev *rtwdev, u32 page,
-+				    const u8 *data, u32 size);
+diff --git a/drivers/iio/adc/ad7606.c b/drivers/iio/adc/ad7606.c
+index 703556eb7257..8ed65a35b486 100644
+--- a/drivers/iio/adc/ad7606.c
++++ b/drivers/iio/adc/ad7606.c
+@@ -727,17 +727,16 @@ static int ad7606_scan_direct(struct iio_dev *indio_dev, unsigned int ch,
+ 		goto error_ret;
  
- 	int (*write_data_rsvd_page)(struct rtw_dev *rtwdev, u8 *buf, u32 size);
- 	int (*write_data_h2c)(struct rtw_dev *rtwdev, u8 *buf, u32 size);
-@@ -79,6 +81,12 @@ static inline void rtw_hci_dynamic_rx_ag
- 		rtwdev->hci.ops->dynamic_rx_agg(rtwdev, enable);
- }
- 
-+static inline void rtw_hci_write_firmware_page(struct rtw_dev *rtwdev, u32 page,
-+					       const u8 *data, u32 size)
-+{
-+	rtwdev->hci.ops->write_firmware_page(rtwdev, page, data, size);
-+}
+ 	chan = &indio_dev->channels[ch + 1];
+-	if (chan->scan_type.sign == 'u') {
+-		if (realbits > 16)
+-			*val = st->data.buf32[ch];
+-		else
+-			*val = st->data.buf16[ch];
+-	} else {
+-		if (realbits > 16)
+-			*val = sign_extend32(st->data.buf32[ch], realbits - 1);
+-		else
+-			*val = sign_extend32(st->data.buf16[ch], realbits - 1);
+-	}
 +
- static inline int
- rtw_hci_write_data_rsvd_page(struct rtw_dev *rtwdev, u8 *buf, u32 size)
- {
---- a/drivers/net/wireless/realtek/rtw88/mac.c
-+++ b/drivers/net/wireless/realtek/rtw88/mac.c
-@@ -854,8 +854,8 @@ fwdl_ready:
- 	}
- }
- 
--static void
--write_firmware_page(struct rtw_dev *rtwdev, u32 page, const u8 *data, u32 size)
-+void rtw_write_firmware_page(struct rtw_dev *rtwdev, u32 page,
-+			     const u8 *data, u32 size)
- {
- 	u32 val32;
- 	u32 block_nr;
-@@ -885,6 +885,7 @@ write_firmware_page(struct rtw_dev *rtwd
- 		rtw_write32(rtwdev, write_addr, le32_to_cpu(remain_data));
- 	}
- }
-+EXPORT_SYMBOL(rtw_write_firmware_page);
- 
- static int
- download_firmware_legacy(struct rtw_dev *rtwdev, const u8 *data, u32 size)
-@@ -902,11 +903,13 @@ download_firmware_legacy(struct rtw_dev
- 	rtw_write8_set(rtwdev, REG_MCUFW_CTRL, BIT_FWDL_CHK_RPT);
- 
- 	for (page = 0; page < total_page; page++) {
--		write_firmware_page(rtwdev, page, data, DLFW_PAGE_SIZE_LEGACY);
-+		rtw_hci_write_firmware_page(rtwdev, page, data,
-+					    DLFW_PAGE_SIZE_LEGACY);
- 		data += DLFW_PAGE_SIZE_LEGACY;
- 	}
- 	if (last_page_size)
--		write_firmware_page(rtwdev, page, data, last_page_size);
-+		rtw_hci_write_firmware_page(rtwdev, page, data,
-+					    last_page_size);
- 
- 	if (!check_hw_ready(rtwdev, REG_MCUFW_CTRL, BIT_FWDL_CHK_RPT, 1)) {
- 		rtw_err(rtwdev, "failed to check download firmware report\n");
---- a/drivers/net/wireless/realtek/rtw88/mac.h
-+++ b/drivers/net/wireless/realtek/rtw88/mac.h
-@@ -32,6 +32,8 @@ void rtw_set_channel_mac(struct rtw_dev
- 			 u8 primary_ch_idx);
- int rtw_mac_power_on(struct rtw_dev *rtwdev);
- void rtw_mac_power_off(struct rtw_dev *rtwdev);
-+void rtw_write_firmware_page(struct rtw_dev *rtwdev, u32 page,
-+			     const u8 *data, u32 size);
- int rtw_download_firmware(struct rtw_dev *rtwdev, struct rtw_fw_state *fw);
- int rtw_mac_init(struct rtw_dev *rtwdev);
- void rtw_mac_flush_queues(struct rtw_dev *rtwdev, u32 queues, bool drop);
---- a/drivers/net/wireless/realtek/rtw88/pci.c
-+++ b/drivers/net/wireless/realtek/rtw88/pci.c
-@@ -12,6 +12,7 @@
- #include "fw.h"
- #include "ps.h"
- #include "debug.h"
-+#include "mac.h"
- 
- static bool rtw_disable_msi;
- static bool rtw_pci_disable_aspm;
-@@ -1602,6 +1603,7 @@ static struct rtw_hci_ops rtw_pci_ops =
- 	.link_ps = rtw_pci_link_ps,
- 	.interface_cfg = rtw_pci_interface_cfg,
- 	.dynamic_rx_agg = NULL,
-+	.write_firmware_page = rtw_write_firmware_page,
- 
- 	.read8 = rtw_pci_read8,
- 	.read16 = rtw_pci_read16,
---- a/drivers/net/wireless/realtek/rtw88/sdio.c
-+++ b/drivers/net/wireless/realtek/rtw88/sdio.c
-@@ -10,6 +10,7 @@
- #include <linux/mmc/host.h>
- #include <linux/mmc/sdio_func.h>
- #include "main.h"
-+#include "mac.h"
- #include "debug.h"
- #include "fw.h"
- #include "ps.h"
-@@ -1155,6 +1156,7 @@ static struct rtw_hci_ops rtw_sdio_ops =
- 	.link_ps = rtw_sdio_link_ps,
- 	.interface_cfg = rtw_sdio_interface_cfg,
- 	.dynamic_rx_agg = NULL,
-+	.write_firmware_page = rtw_write_firmware_page,
- 
- 	.read8 = rtw_sdio_read8,
- 	.read16 = rtw_sdio_read16,
---- a/drivers/net/wireless/realtek/rtw88/usb.c
-+++ b/drivers/net/wireless/realtek/rtw88/usb.c
-@@ -164,6 +164,60 @@ static void rtw_usb_write32(struct rtw_d
- 	rtw_usb_write(rtwdev, addr, val, 4);
- }
- 
-+static void rtw_usb_write_firmware_page(struct rtw_dev *rtwdev, u32 page,
-+					const u8 *data, u32 size)
-+{
-+	struct rtw_usb *rtwusb = rtw_get_usb_priv(rtwdev);
-+	struct usb_device *udev = rtwusb->udev;
-+	u32 addr = FW_START_ADDR_LEGACY;
-+	u8 *data_dup, *buf;
-+	u32 n, block_size;
-+	int ret;
++	if (realbits > 16)
++		*val = st->data.buf32[ch];
++	else
++		*val = st->data.buf16[ch];
 +
-+	switch (rtwdev->chip->id) {
-+	case RTW_CHIP_TYPE_8723D:
-+		block_size = 254;
-+		break;
-+	default:
-+		block_size = 196;
-+		break;
-+	}
++	*val &= GENMASK(realbits - 1, 0);
 +
-+	data_dup = kmemdup(data, size, GFP_KERNEL);
-+	if (!data_dup)
-+		return;
-+
-+	buf = data_dup;
-+
-+	rtw_write32_mask(rtwdev, REG_MCUFW_CTRL, BIT_ROM_PGE, page);
-+
-+	while (size > 0) {
-+		if (size >= block_size)
-+			n = block_size;
-+		else if (size >= 8)
-+			n = 8;
-+		else
-+			n = 1;
-+
-+		ret = usb_control_msg(udev, usb_sndctrlpipe(udev, 0),
-+				      RTW_USB_CMD_REQ, RTW_USB_CMD_WRITE,
-+				      addr, 0, buf, n, 500);
-+		if (ret != n) {
-+			if (ret != -ENODEV)
-+				rtw_err(rtwdev,
-+					"write 0x%x len %d failed: %d\n",
-+					addr, n, ret);
-+			break;
-+		}
-+
-+		addr += n;
-+		buf += n;
-+		size -= n;
-+	}
-+
-+	kfree(data_dup);
-+}
-+
- static int dma_mapping_to_ep(enum rtw_dma_mapping dma_mapping)
- {
- 	switch (dma_mapping) {
-@@ -815,6 +869,7 @@ static struct rtw_hci_ops rtw_usb_ops =
- 	.link_ps = rtw_usb_link_ps,
- 	.interface_cfg = rtw_usb_interface_cfg,
- 	.dynamic_rx_agg = rtw_usb_dynamic_rx_agg,
-+	.write_firmware_page = rtw_usb_write_firmware_page,
++	if (chan->scan_type.sign == 's')
++		*val = sign_extend32(*val, realbits - 1);
  
- 	.write8  = rtw_usb_write8,
- 	.write16 = rtw_usb_write16,
+ error_ret:
+ 	if (!st->gpio_convst) {
+-- 
+2.50.0
+
 
 
 
