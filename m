@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-155490-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-155939-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8727BAE425B
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:18:46 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 42D3EAE4461
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:42:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D9C05175693
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:16:07 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4BA6E176EC2
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:37:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC7B813B58B;
-	Mon, 23 Jun 2025 13:16:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD8E12550D0;
+	Mon, 23 Jun 2025 13:35:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SJRZrUhQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m04k4mEj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 784BC13A265;
-	Mon, 23 Jun 2025 13:16:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A16A24FBFF;
+	Mon, 23 Jun 2025 13:35:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750684565; cv=none; b=ivMj1r4IQOMowx60X33jrMq4A5f75LujaOXKyeuMwXZD7rsDcuEYP4+NcdY7Ug8VHs2PskAK7zV3SIRkEdOjZlQh406+jHUYfy61M26ef7TQM7UlaMMeh9vnZGOtUIEuTbaoz4lXgX/YeNdWcUcVIZFKBoG1lzUhnI+otPMRkXI=
+	t=1750685726; cv=none; b=C69h/h8f5gJ3pZLLwW6HWB3cG6SMXaUvulPUzKuLt7vlMtj6+N9lG4dh2/EZivUjjrVyzMc2uhgWV4mLJH8yqOpXr1N9xEoZetr1Ol/UCdzGk6OFpq8BDIiums5ww+1e8o11DkgmtU3S+UHrblt1XgdgKQMpXXGgP10OXmDe+qw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750684565; c=relaxed/simple;
-	bh=AncsbYRbGyJ7akgncBGJCXWjgdVGCMwcv6L8QIVQPu8=;
+	s=arc-20240116; t=1750685726; c=relaxed/simple;
+	bh=VRc/3doPS0iazIW9RsX0AsVE/oZyZyLBRCb9PmwUGNU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AKBEvHgYkIh2FRgU0XJsuMMV3wVaCN9iXTdv++bcfuBhE24f42WcM/QiDwavFBwd0Ih1kFzBb4G+tmq86xEscEG3+hffbUNCZW5HkLgumhslG87zEZzgFn0nzIPlJMsB+tdujw10+GNFXO2nJoEkrmbl2Ctsycf+taiHZBryskU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SJRZrUhQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F18DC4CEEA;
-	Mon, 23 Jun 2025 13:16:04 +0000 (UTC)
+	 MIME-Version; b=ilQidkfKmKWTURyMdmQzN/mIuUqq/n2wuPYZBpMOZ0eDyHcu195SRGEbxBijsRP1INo0AJjqFU6G1CVk3MBaQAG+/KC3y0kMGrZMfn40k9YihwX5BEq7URLqRp8OcBM0SwhcuCzq2u9ltBGgKSrxch6CnsDIpRWGObxjM+9tmnI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m04k4mEj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26C7CC4CEEA;
+	Mon, 23 Jun 2025 13:35:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750684565;
-	bh=AncsbYRbGyJ7akgncBGJCXWjgdVGCMwcv6L8QIVQPu8=;
+	s=korg; t=1750685726;
+	bh=VRc/3doPS0iazIW9RsX0AsVE/oZyZyLBRCb9PmwUGNU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SJRZrUhQ2P7SNqKcFOmVuEJ6unQ2hE+2GdO7FaO/RLIaLSQ3s2/cQyCsrAcop34dL
-	 1NSqu60wAGJ7WlTDI9wFIkn0gxzgMjHmSHY0nR95LVqYP/jeupZHwectLQ2EcZ6SD2
-	 sxN0vcobrf8eDJ3yQySIjZD+OTyeFY+1lxkw0oy0=
+	b=m04k4mEj+6cPKdqMBvtyGtIEhZj7m0XPjMyn0JbHaDlDs8/pzRImlcdkqDRYM+cuC
+	 8PFR0Ien+/RQk93PZ0LsZ1Fav6y1BM2KDN2s0uHKLrFRi6eJSVFdv6BQ1Sw2vjGXLl
+	 y6XlLpnafDeZ30+CQ7+S0Q1tw6l/KO/DYZ+sd2xI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Liebes Wang <wanghaichi0403@gmail.com>,
-	Zhang Yi <yi.zhang@huawei.com>,
-	Jan Kara <jack@suse.cz>,
-	Baokun Li <libaokun1@huawei.com>,
-	Theodore Tso <tytso@mit.edu>,
-	stable@kernel.org
-Subject: [PATCH 6.15 114/592] ext4: fix out of bounds punch offset
+	Vishwaroop A <va@nvidia.com>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 027/508] spi: tegra210-quad: Fix X1_X2_X4 encoding and support x4 transfers
 Date: Mon, 23 Jun 2025 15:01:12 +0200
-Message-ID: <20250623130702.985041165@linuxfoundation.org>
+Message-ID: <20250623130645.917218000@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
-References: <20250623130700.210182694@linuxfoundation.org>
+In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
+References: <20250623130645.255320792@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,97 +62,90 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhang Yi <yi.zhang@huawei.com>
+From: Vishwaroop A <va@nvidia.com>
 
-commit b5e58bcd79625423487fa3ecba8e8411b5396327 upstream.
+[ Upstream commit dcb06c638a1174008a985849fa30fc0da7d08904 ]
 
-Punching a hole with a start offset that exceeds max_end is not
-permitted and will result in a negative length in the
-truncate_inode_partial_folio() function while truncating the page cache,
-potentially leading to undesirable consequences.
+This patch corrects the QSPI_COMMAND_X1_X2_X4 and QSPI_ADDRESS_X1_X2_X4
+macros to properly encode the bus width for x1, x2, and x4 transfers.
+Although these macros were previously incorrect, they were not being
+used in the driver, so no functionality was affected.
 
-A simple reproducer:
+The patch updates tegra_qspi_cmd_config() and tegra_qspi_addr_config()
+function calls to use the actual bus width from the transfer, instead of
+hardcoding it to 0 (which implied x1 mode). This change enables proper
+support for x1, x2, and x4 data transfers by correctly configuring the
+interface width for commands and addresses.
 
-  truncate -s 9895604649994 /mnt/foo
-  xfs_io -c "pwrite 8796093022208 4096" /mnt/foo
-  xfs_io -c "fpunch 8796093022213 25769803777" /mnt/foo
+These modifications improve the QSPI driver's flexibility and prepare it
+for future use cases that may require different bus widths for commands
+and addresses.
 
-  kernel BUG at include/linux/highmem.h:275!
-  Oops: invalid opcode: 0000 [#1] SMP PTI
-  CPU: 3 UID: 0 PID: 710 Comm: xfs_io Not tainted 6.15.0-rc3
-  Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.3-2.fc40 04/01/2014
-  RIP: 0010:zero_user_segments.constprop.0+0xd7/0x110
-  RSP: 0018:ffffc90001cf3b38 EFLAGS: 00010287
-  RAX: 0000000000000005 RBX: ffffea0001485e40 RCX: 0000000000001000
-  RDX: 000000000040b000 RSI: 0000000000000005 RDI: 000000000040b000
-  RBP: 000000000040affb R08: ffff888000000000 R09: ffffea0000000000
-  R10: 0000000000000003 R11: 00000000fffc7fc5 R12: 0000000000000005
-  R13: 000000000040affb R14: ffffea0001485e40 R15: ffff888031cd3000
-  FS:  00007f4f63d0b780(0000) GS:ffff8880d337d000(0000)
-  knlGS:0000000000000000
-  CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-  CR2: 000000001ae0b038 CR3: 00000000536aa000 CR4: 00000000000006f0
-  DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-  DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-  Call Trace:
-   <TASK>
-   truncate_inode_partial_folio+0x3dd/0x620
-   truncate_inode_pages_range+0x226/0x720
-   ? bdev_getblk+0x52/0x3e0
-   ? ext4_get_group_desc+0x78/0x150
-   ? crc32c_arch+0xfd/0x180
-   ? __ext4_get_inode_loc+0x18c/0x840
-   ? ext4_inode_csum+0x117/0x160
-   ? jbd2_journal_dirty_metadata+0x61/0x390
-   ? __ext4_handle_dirty_metadata+0xa0/0x2b0
-   ? kmem_cache_free+0x90/0x5a0
-   ? jbd2_journal_stop+0x1d5/0x550
-   ? __ext4_journal_stop+0x49/0x100
-   truncate_pagecache_range+0x50/0x80
-   ext4_truncate_page_cache_block_range+0x57/0x3a0
-   ext4_punch_hole+0x1fe/0x670
-   ext4_fallocate+0x792/0x17d0
-   ? __count_memcg_events+0x175/0x2a0
-   vfs_fallocate+0x121/0x560
-   ksys_fallocate+0x51/0xc0
-   __x64_sys_fallocate+0x24/0x40
-   x64_sys_call+0x18d2/0x4170
-   do_syscall_64+0xa7/0x220
-   entry_SYSCALL_64_after_hwframe+0x76/0x7e
-
-Fix this by filtering out cases where the punching start offset exceeds
-max_end.
-
-Fixes: 982bf37da09d ("ext4: refactor ext4_punch_hole()")
-Reported-by: Liebes Wang <wanghaichi0403@gmail.com>
-Closes: https://lore.kernel.org/linux-ext4/ac3a58f6-e686-488b-a9ee-fc041024e43d@huawei.com/
-Tested-by: Liebes Wang <wanghaichi0403@gmail.com>
-Signed-off-by: Zhang Yi <yi.zhang@huawei.com>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Reviewed-by: Baokun Li <libaokun1@huawei.com>
-Link: https://patch.msgid.link/20250506012009.3896990-1-yi.zhang@huaweicloud.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Cc: stable@kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 1b8342cc4a38 ("spi: tegra210-quad: combined sequence mode")
+Signed-off-by: Vishwaroop A <va@nvidia.com>
+Link: https://patch.msgid.link/20250416110606.2737315-2-va@nvidia.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ext4/inode.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/spi/spi-tegra210-quad.c | 12 ++++--------
+ 1 file changed, 4 insertions(+), 8 deletions(-)
 
---- a/fs/ext4/inode.c
-+++ b/fs/ext4/inode.c
-@@ -4016,7 +4016,7 @@ int ext4_punch_hole(struct file *file, l
- 	WARN_ON_ONCE(!inode_is_locked(inode));
+diff --git a/drivers/spi/spi-tegra210-quad.c b/drivers/spi/spi-tegra210-quad.c
+index 442d42130ec87..b84dc830c4333 100644
+--- a/drivers/spi/spi-tegra210-quad.c
++++ b/drivers/spi/spi-tegra210-quad.c
+@@ -135,7 +135,7 @@
+ #define QSPI_COMMAND_VALUE_SET(X)		(((x) & 0xFF) << 0)
  
- 	/* No need to punch hole beyond i_size */
--	if (offset >= inode->i_size)
-+	if (offset >= inode->i_size || offset >= max_end)
- 		return 0;
+ #define QSPI_CMB_SEQ_CMD_CFG			0x1a0
+-#define QSPI_COMMAND_X1_X2_X4(x)		(((x) & 0x3) << 13)
++#define QSPI_COMMAND_X1_X2_X4(x)		((((x) >> 1) & 0x3) << 13)
+ #define QSPI_COMMAND_X1_X2_X4_MASK		(0x03 << 13)
+ #define QSPI_COMMAND_SDR_DDR			BIT(12)
+ #define QSPI_COMMAND_SIZE_SET(x)		(((x) & 0xFF) << 0)
+@@ -147,7 +147,7 @@
+ #define QSPI_ADDRESS_VALUE_SET(X)		(((x) & 0xFFFF) << 0)
  
- 	/*
+ #define QSPI_CMB_SEQ_ADDR_CFG			0x1ac
+-#define QSPI_ADDRESS_X1_X2_X4(x)		(((x) & 0x3) << 13)
++#define QSPI_ADDRESS_X1_X2_X4(x)		((((x) >> 1) & 0x3) << 13)
+ #define QSPI_ADDRESS_X1_X2_X4_MASK		(0x03 << 13)
+ #define QSPI_ADDRESS_SDR_DDR			BIT(12)
+ #define QSPI_ADDRESS_SIZE_SET(x)		(((x) & 0xFF) << 0)
+@@ -1035,10 +1035,6 @@ static u32 tegra_qspi_addr_config(bool is_ddr, u8 bus_width, u8 len)
+ {
+ 	u32 addr_config = 0;
+ 
+-	/* Extract Address configuration and value */
+-	is_ddr = 0; //Only SDR mode supported
+-	bus_width = 0; //X1 mode
+-
+ 	if (is_ddr)
+ 		addr_config |= QSPI_ADDRESS_SDR_DDR;
+ 	else
+@@ -1072,13 +1068,13 @@ static int tegra_qspi_combined_seq_xfer(struct tegra_qspi *tqspi,
+ 		switch (transfer_phase) {
+ 		case CMD_TRANSFER:
+ 			/* X1 SDR mode */
+-			cmd_config = tegra_qspi_cmd_config(false, 0,
++			cmd_config = tegra_qspi_cmd_config(false, xfer->tx_nbits,
+ 							   xfer->len);
+ 			cmd_value = *((const u8 *)(xfer->tx_buf));
+ 			break;
+ 		case ADDR_TRANSFER:
+ 			/* X1 SDR mode */
+-			addr_config = tegra_qspi_addr_config(false, 0,
++			addr_config = tegra_qspi_addr_config(false, xfer->tx_nbits,
+ 							     xfer->len);
+ 			address_value = *((const u32 *)(xfer->tx_buf));
+ 			break;
+-- 
+2.39.5
+
 
 
 
