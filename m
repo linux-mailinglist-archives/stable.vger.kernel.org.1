@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-157229-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157453-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 76E4EAE530F
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:49:54 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 56558AE540A
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:58:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4C4E5188EF3D
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:49:46 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DF50B3A8C43
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:57:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6266223DEF;
-	Mon, 23 Jun 2025 21:49:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DEB492036FA;
+	Mon, 23 Jun 2025 21:58:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tkY3/JYu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EAN16PCm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 739B319049B;
-	Mon, 23 Jun 2025 21:49:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CC491B87D9;
+	Mon, 23 Jun 2025 21:58:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750715356; cv=none; b=biAQmYn6QuvTqVeWphT6JLssK2juxMnT4W5+INQsunie5QW16vSZnilOKlovOVOb8PWaiMI7BHKpus5HP5aACwrOKnytofkhrkWdRF/cx48FAT47gSirmuF/dpISxUkhjwpvav8vbeYEqmR8cctrwiRHjR5eQUaOFmsg5y5UOMI=
+	t=1750715902; cv=none; b=WMrbp9VuTjM3f2WkxbV4telLod8xIvMj47UE6Z6tNriljX1onkEtMAIX50/Dd/gI+795bhSsaj3ITgoB+wM3CmLX/zyqX850JC6zvyPsV4/3Lsq2akW4i9LDDaB+UyXrGy/VWKNPnWADS+kuThYEqkL/whTjMtJkyqHVBY/x61E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750715356; c=relaxed/simple;
-	bh=NVH0hNQyImhhgVeS7Bi7nLP7bG+VazgxHa8c72NGSY4=;
+	s=arc-20240116; t=1750715902; c=relaxed/simple;
+	bh=e8PzW024Y6EEUdTjfI5iUg/cQeeVTvaPG3JbuHMfOOo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HtLD3yLhaYYvPp5QIUACtx3t3K3gBenopDWSG6WvsWF7227/ytUx/fUDUj+4txETU3xlu90ve24ARLSz1AQogjW4x7219ewMc8f5vdsEYgqzbHmMYYl+r1S2nYvSICbpM4P9K+bRn2051fOLP2CxBV7B/T+gyB0H0u6keyeoyDc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tkY3/JYu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C02DC4CEED;
-	Mon, 23 Jun 2025 21:49:15 +0000 (UTC)
+	 MIME-Version; b=scWZ8MqHMwKtj2HcOzVOKw+/QPUboKe00iVH0FaCJE5Ql1uG0WldTCjJELfqV8e+mrmcukQgkG/mLBi1a0f6a4/y96MfheEnMQRwbTSrBCUQhd0Bope7H7op1VdsBNKYrsQTSrTZ8SPEfE3rbN2tAyxBdS+YBBRgWrEY6j9rn9A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EAN16PCm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37A11C4CEEA;
+	Mon, 23 Jun 2025 21:58:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750715356;
-	bh=NVH0hNQyImhhgVeS7Bi7nLP7bG+VazgxHa8c72NGSY4=;
+	s=korg; t=1750715902;
+	bh=e8PzW024Y6EEUdTjfI5iUg/cQeeVTvaPG3JbuHMfOOo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tkY3/JYufSU7yFQHOuL15iSzjQCDTY9HZzi0yFXKUHID4E3woreZ1bmfw0m3grPcz
-	 CJZ01TSD9YrZvZtyWwZpVGXzzPQ3CxmcPbV8vMmSzWY1hWsqh5bqQtqcOAhIxARoAp
-	 xdTBWOluw6AJYKZx/awElQVs8n65Djq6ZkJwI58E=
+	b=EAN16PCm0lGqRsfpaz6AB3RnoxPVvEMj+8lML/ELdpVYLZ9C0TYjLWreyCEPkWv+q
+	 +5TD60tismJd57YaxkHulDBXV6saYXJn15nW7k+mTaMB+aH2q8d1Ia3QNaO0LzT/Ix
+	 Ts0QkNRffgNQQFotnubad9NZGtT0wsT9e7nVpfLM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+a7d4444e7b6e743572f7@syzkaller.appspotmail.com,
-	Kees Cook <kees@kernel.org>,
-	Helge Deller <deller@gmx.de>,
+	Mike Tipton <quic_mdtipton@quicinc.com>,
+	Peng Fan <peng.fan@nxp.com>,
+	Cristian Marussi <cristian.marussi@arm.com>,
+	Sudeep Holla <sudeep.holla@arm.com>,
+	Viresh Kumar <viresh.kumar@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 194/290] fbcon: Make sure modelist not set on unregistered console
+Subject: [PATCH 5.15 311/411] cpufreq: scmi: Skip SCMI devices that arent used by the CPUs
 Date: Mon, 23 Jun 2025 15:07:35 +0200
-Message-ID: <20250623130632.691117044@linuxfoundation.org>
+Message-ID: <20250623130641.470159723@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130626.910356556@linuxfoundation.org>
-References: <20250623130626.910356556@linuxfoundation.org>
+In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
+References: <20250623130632.993849527@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,67 +65,91 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kees Cook <kees@kernel.org>
+From: Mike Tipton <quic_mdtipton@quicinc.com>
 
-[ Upstream commit cedc1b63394a866bf8663a3e40f4546f1d28c8d8 ]
+[ Upstream commit 6c9bb86922728c7a4cceb99f131e00dd87514f20 ]
 
-It looks like attempting to write to the "store_modes" sysfs node will
-run afoul of unregistered consoles:
+Currently, all SCMI devices with performance domains attempt to register
+a cpufreq driver, even if their performance domains aren't used to
+control the CPUs. The cpufreq framework only supports registering a
+single driver, so only the first device will succeed. And if that device
+isn't used for the CPUs, then cpufreq will scale the wrong domains.
 
-UBSAN: array-index-out-of-bounds in drivers/video/fbdev/core/fbcon.c:122:28
-index -1 is out of range for type 'fb_info *[32]'
-...
- fbcon_info_from_console+0x192/0x1a0 drivers/video/fbdev/core/fbcon.c:122
- fbcon_new_modelist+0xbf/0x2d0 drivers/video/fbdev/core/fbcon.c:3048
- fb_new_modelist+0x328/0x440 drivers/video/fbdev/core/fbmem.c:673
- store_modes+0x1c9/0x3e0 drivers/video/fbdev/core/fbsysfs.c:113
- dev_attr_store+0x55/0x80 drivers/base/core.c:2439
+To avoid this, return early from scmi_cpufreq_probe() if the probing
+SCMI device isn't referenced by the CPU device phandles.
 
-static struct fb_info *fbcon_registered_fb[FB_MAX];
-...
-static signed char con2fb_map[MAX_NR_CONSOLES];
-...
-static struct fb_info *fbcon_info_from_console(int console)
-...
-        return fbcon_registered_fb[con2fb_map[console]];
+This keeps the existing assumption that all CPUs are controlled by a
+single SCMI device.
 
-If con2fb_map contains a -1 things go wrong here. Instead, return NULL,
-as callers of fbcon_info_from_console() are trying to compare against
-existing "info" pointers, so error handling should kick in correctly.
-
-Reported-by: syzbot+a7d4444e7b6e743572f7@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/all/679d0a8f.050a0220.163cdc.000c.GAE@google.com/
-Signed-off-by: Kees Cook <kees@kernel.org>
-Signed-off-by: Helge Deller <deller@gmx.de>
+Signed-off-by: Mike Tipton <quic_mdtipton@quicinc.com>
+Reviewed-by: Peng Fan <peng.fan@nxp.com>
+Reviewed-by: Cristian Marussi <cristian.marussi@arm.com>
+Reviewed-by: Sudeep Holla <sudeep.holla@arm.com>
+Tested-by: Cristian Marussi <cristian.marussi@arm.com>
+Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/video/fbdev/core/fbcon.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ drivers/cpufreq/scmi-cpufreq.c | 36 +++++++++++++++++++++++++++++++++-
+ 1 file changed, 35 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/video/fbdev/core/fbcon.c b/drivers/video/fbdev/core/fbcon.c
-index 7a6f9a3cb3ba3..75996ef9992e4 100644
---- a/drivers/video/fbdev/core/fbcon.c
-+++ b/drivers/video/fbdev/core/fbcon.c
-@@ -115,9 +115,14 @@ static signed char con2fb_map_boot[MAX_NR_CONSOLES];
+diff --git a/drivers/cpufreq/scmi-cpufreq.c b/drivers/cpufreq/scmi-cpufreq.c
+index 8c9c2f710790f..1f12109526fa6 100644
+--- a/drivers/cpufreq/scmi-cpufreq.c
++++ b/drivers/cpufreq/scmi-cpufreq.c
+@@ -288,6 +288,40 @@ static struct cpufreq_driver scmi_cpufreq_driver = {
+ 	.register_em	= scmi_cpufreq_register_em,
+ };
  
- static struct fb_info *fbcon_info_from_console(int console)
- {
-+	signed char fb;
- 	WARN_CONSOLE_UNLOCKED();
- 
--	return fbcon_registered_fb[con2fb_map[console]];
-+	fb = con2fb_map[console];
-+	if (fb < 0 || fb >= ARRAY_SIZE(fbcon_registered_fb))
-+		return NULL;
++static bool scmi_dev_used_by_cpus(struct device *scmi_dev)
++{
++	struct device_node *scmi_np = dev_of_node(scmi_dev);
++	struct device_node *cpu_np, *np;
++	struct device *cpu_dev;
++	int cpu, idx;
 +
-+	return fbcon_registered_fb[fb];
- }
++	if (!scmi_np)
++		return false;
++
++	for_each_possible_cpu(cpu) {
++		cpu_dev = get_cpu_device(cpu);
++		if (!cpu_dev)
++			continue;
++
++		cpu_np = dev_of_node(cpu_dev);
++
++		np = of_parse_phandle(cpu_np, "clocks", 0);
++		of_node_put(np);
++
++		if (np == scmi_np)
++			return true;
++
++		idx = of_property_match_string(cpu_np, "power-domain-names", "perf");
++		np = of_parse_phandle(cpu_np, "power-domains", idx);
++		of_node_put(np);
++
++		if (np == scmi_np)
++			return true;
++	}
++
++	return false;
++}
++
+ static int scmi_cpufreq_probe(struct scmi_device *sdev)
+ {
+ 	int ret;
+@@ -296,7 +330,7 @@ static int scmi_cpufreq_probe(struct scmi_device *sdev)
  
- static int logo_lines;
+ 	handle = sdev->handle;
+ 
+-	if (!handle)
++	if (!handle || !scmi_dev_used_by_cpus(dev))
+ 		return -ENODEV;
+ 
+ 	perf_ops = handle->devm_protocol_get(sdev, SCMI_PROTOCOL_PERF, &ph);
 -- 
 2.39.5
 
