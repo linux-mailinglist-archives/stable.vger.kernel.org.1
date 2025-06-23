@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-155739-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-155744-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9E287AE43A9
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:34:50 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id AFA27AE43AB
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:34:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 25B20165299
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:27:06 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C756F17DDFA
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:27:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC57825291B;
-	Mon, 23 Jun 2025 13:26:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D85C513A265;
+	Mon, 23 Jun 2025 13:27:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jnAOpM66"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f4/oY3A9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69FD9230BC2;
-	Mon, 23 Jun 2025 13:26:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9646224EF8C;
+	Mon, 23 Jun 2025 13:27:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750685211; cv=none; b=KC5Sgaj12b7DKg6JFmWy8TOZBrL1FD9Xx+mzGLylsgysFyZ0lZM5ZQwmt3EpePrIPd6QLlEQ7sBOLhNiDAnskXyMNMAbi1UkX0wQs5HCii6smdNiO+eOyLyNzN4yYQShNug6qHbsgJf2xapjMXzaJSzA/KcTWGuLSOaqj0YfWzk=
+	t=1750685224; cv=none; b=CI/fCWqqJuEhkMzw1uLFG1ClnNCQngIso2YokzRvAmuQhrAHz8Boyh/V5pi6W3v/20QJAoL/FF8s6OCQRKiMIkxRKajnicBezVP8pGrloS8uw632qE06/6MkVikU65Es3gMCJ+zUumLPJXOYe2wKenL9Fe4caQPk1e8oprKdMhI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750685211; c=relaxed/simple;
-	bh=EANPa+4f8gBHOeEmZf/cgjGRHkwQOHXuhqCxlYk7KJ8=;
+	s=arc-20240116; t=1750685224; c=relaxed/simple;
+	bh=btC39s/Ti4qBPIXclIWI8st6iWLJXyyUIiK7lufI1mg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fuYOXGWnsLGnbFYK24J7KqIWjAAwgido38XeP/FiUJCgNqkWVZsjazyG4/wxATtX8bsLp0ZB51yRdQHs+l/KNclRpmakj5s7uHFuT3utY61lZ2aDTrdSGFYL65acyCTcSjcAk46xbztOukbnnkOqhb90yOa1+OnrrySVc0+g/ug=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jnAOpM66; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1193C4CEEA;
-	Mon, 23 Jun 2025 13:26:50 +0000 (UTC)
+	 MIME-Version; b=UAaLnip2eBc7/A7N2T6Fm0LmCUm4BMkUf9StGnf5345xroF6Vgaq/leaG4Cbios7m7NSpPKPwma8rTVCt5vT+eZKLjjUGfI+LlX5WtUcxygmQddMDTq8Fm9ZMKjSSDGE7nMbYmz9tFpSqO8/hqGaRoOyvOdCfZ+ckrgvR7xJH/E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f4/oY3A9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB7C4C4CEEA;
+	Mon, 23 Jun 2025 13:27:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750685211;
-	bh=EANPa+4f8gBHOeEmZf/cgjGRHkwQOHXuhqCxlYk7KJ8=;
+	s=korg; t=1750685224;
+	bh=btC39s/Ti4qBPIXclIWI8st6iWLJXyyUIiK7lufI1mg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jnAOpM66KNYwynNwqFmTavpcmcvxKPhUeUjNnZ276/htFn/onVDFCP1bnxrM1HhSh
-	 N14+07ABomq6cPPcW/tOoSmNip2BV71mJUGsqVtvZD9Fb36sIL2ZUfAO2qc2WzifWR
-	 BBVo2uciDe003q8rcsdL+1F4wBQBVevEfTACZJBU=
+	b=f4/oY3A9K1qL/Uobi63PTYGRGri5t//1BgBZgNlXlSAWVPw4p9t8X53eDMgPU2Ikl
+	 ii9J2pIG7Iy2qxF63HUB4K/hrLDp5rxHHyFaSLLRp+V2X12FqHrFWuJ8svvpokasxZ
+	 aAEvySQLTYY9hu/uJ8mJk0O1mPIMasN7v7beFFBo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+8b376a77b2f364097fbe@syzkaller.appspotmail.com,
-	Chao Yu <chao@kernel.org>,
-	Jaegeuk Kim <jaegeuk@kernel.org>,
+	Hari Kalavakunta <kalavakunta.hari.prasad@gmail.com>,
+	Paul Fertser <fercerpav@gmail.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 035/355] f2fs: fix to do sanity check on sbi->total_valid_block_count
-Date: Mon, 23 Jun 2025 15:03:56 +0200
-Message-ID: <20250623130627.867551519@linuxfoundation.org>
+Subject: [PATCH 5.10 036/355] net: ncsi: Fix GCPS 64-bit member variables
+Date: Mon, 23 Jun 2025 15:03:57 +0200
+Message-ID: <20250623130627.906277954@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
 In-Reply-To: <20250623130626.716971725@linuxfoundation.org>
 References: <20250623130626.716971725@linuxfoundation.org>
@@ -67,74 +67,159 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Chao Yu <chao@kernel.org>
+From: Hari Kalavakunta <kalavakunta.hari.prasad@gmail.com>
 
-[ Upstream commit 05872a167c2cab80ef186ef23cc34a6776a1a30c ]
+[ Upstream commit e8a1bd8344054ce27bebf59f48e3f6bc10bc419b ]
 
-syzbot reported a f2fs bug as below:
+Correct Get Controller Packet Statistics (GCPS) 64-bit wide member
+variables, as per DSP0222 v1.0.0 and forward specs. The Driver currently
+collects these stats, but they are yet to be exposed to the user.
+Therefore, no user impact.
 
-------------[ cut here ]------------
-kernel BUG at fs/f2fs/f2fs.h:2521!
-RIP: 0010:dec_valid_block_count+0x3b2/0x3c0 fs/f2fs/f2fs.h:2521
-Call Trace:
- f2fs_truncate_data_blocks_range+0xc8c/0x11a0 fs/f2fs/file.c:695
- truncate_dnode+0x417/0x740 fs/f2fs/node.c:973
- truncate_nodes+0x3ec/0xf50 fs/f2fs/node.c:1014
- f2fs_truncate_inode_blocks+0x8e3/0x1370 fs/f2fs/node.c:1197
- f2fs_do_truncate_blocks+0x840/0x12b0 fs/f2fs/file.c:810
- f2fs_truncate_blocks+0x10d/0x300 fs/f2fs/file.c:838
- f2fs_truncate+0x417/0x720 fs/f2fs/file.c:888
- f2fs_setattr+0xc4f/0x12f0 fs/f2fs/file.c:1112
- notify_change+0xbca/0xe90 fs/attr.c:552
- do_truncate+0x222/0x310 fs/open.c:65
- handle_truncate fs/namei.c:3466 [inline]
- do_open fs/namei.c:3849 [inline]
- path_openat+0x2e4f/0x35d0 fs/namei.c:4004
- do_filp_open+0x284/0x4e0 fs/namei.c:4031
- do_sys_openat2+0x12b/0x1d0 fs/open.c:1429
- do_sys_open fs/open.c:1444 [inline]
- __do_sys_creat fs/open.c:1522 [inline]
- __se_sys_creat fs/open.c:1516 [inline]
- __x64_sys_creat+0x124/0x170 fs/open.c:1516
- do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
- do_syscall_64+0xf3/0x230 arch/x86/entry/syscall_64.c:94
+Statistics fixes:
+Total Bytes Received (byte range 28..35)
+Total Bytes Transmitted (byte range 36..43)
+Total Unicast Packets Received (byte range 44..51)
+Total Multicast Packets Received (byte range 52..59)
+Total Broadcast Packets Received (byte range 60..67)
+Total Unicast Packets Transmitted (byte range 68..75)
+Total Multicast Packets Transmitted (byte range 76..83)
+Total Broadcast Packets Transmitted (byte range 84..91)
+Valid Bytes Received (byte range 204..11)
 
-The reason is: in fuzzed image, sbi->total_valid_block_count is
-inconsistent w/ mapped blocks indexed by inode, so, we should
-not trigger panic for such case, instead, let's print log and
-set fsck flag.
-
-Fixes: 39a53e0ce0df ("f2fs: add superblock and major in-memory structure")
-Reported-by: syzbot+8b376a77b2f364097fbe@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/linux-f2fs-devel/67f3c0b2.050a0220.396535.0547.GAE@google.com
-Signed-off-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+Signed-off-by: Hari Kalavakunta <kalavakunta.hari.prasad@gmail.com>
+Reviewed-by: Paul Fertser <fercerpav@gmail.com>
+Link: https://patch.msgid.link/20250410012309.1343-1-kalavakunta.hari.prasad@gmail.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/f2fs/f2fs.h | 10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
+ net/ncsi/internal.h | 21 ++++++++++-----------
+ net/ncsi/ncsi-pkt.h | 23 +++++++++++------------
+ net/ncsi/ncsi-rsp.c | 21 ++++++++++-----------
+ 3 files changed, 31 insertions(+), 34 deletions(-)
 
-diff --git a/fs/f2fs/f2fs.h b/fs/f2fs/f2fs.h
-index 10231d5bba159..4e42ca56da86a 100644
---- a/fs/f2fs/f2fs.h
-+++ b/fs/f2fs/f2fs.h
-@@ -2076,8 +2076,14 @@ static inline void dec_valid_block_count(struct f2fs_sb_info *sbi,
- 	blkcnt_t sectors = count << F2FS_LOG_SECTORS_PER_BLOCK;
+diff --git a/net/ncsi/internal.h b/net/ncsi/internal.h
+index dea60e25e8607..c61d2e2e93adc 100644
+--- a/net/ncsi/internal.h
++++ b/net/ncsi/internal.h
+@@ -140,16 +140,15 @@ struct ncsi_channel_vlan_filter {
+ };
  
- 	spin_lock(&sbi->stat_lock);
--	f2fs_bug_on(sbi, sbi->total_valid_block_count < (block_t) count);
--	sbi->total_valid_block_count -= (block_t)count;
-+	if (unlikely(sbi->total_valid_block_count < count)) {
-+		f2fs_warn(sbi, "Inconsistent total_valid_block_count:%u, ino:%lu, count:%u",
-+			  sbi->total_valid_block_count, inode->i_ino, count);
-+		sbi->total_valid_block_count = 0;
-+		set_sbi_flag(sbi, SBI_NEED_FSCK);
-+	} else {
-+		sbi->total_valid_block_count -= count;
-+	}
- 	if (sbi->reserved_blocks &&
- 		sbi->current_reserved_blocks < sbi->reserved_blocks)
- 		sbi->current_reserved_blocks = min(sbi->reserved_blocks,
+ struct ncsi_channel_stats {
+-	u32 hnc_cnt_hi;		/* Counter cleared            */
+-	u32 hnc_cnt_lo;		/* Counter cleared            */
+-	u32 hnc_rx_bytes;	/* Rx bytes                   */
+-	u32 hnc_tx_bytes;	/* Tx bytes                   */
+-	u32 hnc_rx_uc_pkts;	/* Rx UC packets              */
+-	u32 hnc_rx_mc_pkts;     /* Rx MC packets              */
+-	u32 hnc_rx_bc_pkts;	/* Rx BC packets              */
+-	u32 hnc_tx_uc_pkts;	/* Tx UC packets              */
+-	u32 hnc_tx_mc_pkts;	/* Tx MC packets              */
+-	u32 hnc_tx_bc_pkts;	/* Tx BC packets              */
++	u64 hnc_cnt;		/* Counter cleared            */
++	u64 hnc_rx_bytes;	/* Rx bytes                   */
++	u64 hnc_tx_bytes;	/* Tx bytes                   */
++	u64 hnc_rx_uc_pkts;	/* Rx UC packets              */
++	u64 hnc_rx_mc_pkts;     /* Rx MC packets              */
++	u64 hnc_rx_bc_pkts;	/* Rx BC packets              */
++	u64 hnc_tx_uc_pkts;	/* Tx UC packets              */
++	u64 hnc_tx_mc_pkts;	/* Tx MC packets              */
++	u64 hnc_tx_bc_pkts;	/* Tx BC packets              */
+ 	u32 hnc_fcs_err;	/* FCS errors                 */
+ 	u32 hnc_align_err;	/* Alignment errors           */
+ 	u32 hnc_false_carrier;	/* False carrier detection    */
+@@ -178,7 +177,7 @@ struct ncsi_channel_stats {
+ 	u32 hnc_tx_1023_frames;	/* Tx 512-1023 bytes frames   */
+ 	u32 hnc_tx_1522_frames;	/* Tx 1024-1522 bytes frames  */
+ 	u32 hnc_tx_9022_frames;	/* Tx 1523-9022 bytes frames  */
+-	u32 hnc_rx_valid_bytes;	/* Rx valid bytes             */
++	u64 hnc_rx_valid_bytes;	/* Rx valid bytes             */
+ 	u32 hnc_rx_runt_pkts;	/* Rx error runt packets      */
+ 	u32 hnc_rx_jabber_pkts;	/* Rx error jabber packets    */
+ 	u32 ncsi_rx_cmds;	/* Rx NCSI commands           */
+diff --git a/net/ncsi/ncsi-pkt.h b/net/ncsi/ncsi-pkt.h
+index 3fbea7e74fb1c..2729581360ec9 100644
+--- a/net/ncsi/ncsi-pkt.h
++++ b/net/ncsi/ncsi-pkt.h
+@@ -246,16 +246,15 @@ struct ncsi_rsp_gp_pkt {
+ /* Get Controller Packet Statistics */
+ struct ncsi_rsp_gcps_pkt {
+ 	struct ncsi_rsp_pkt_hdr rsp;            /* Response header            */
+-	__be32                  cnt_hi;         /* Counter cleared            */
+-	__be32                  cnt_lo;         /* Counter cleared            */
+-	__be32                  rx_bytes;       /* Rx bytes                   */
+-	__be32                  tx_bytes;       /* Tx bytes                   */
+-	__be32                  rx_uc_pkts;     /* Rx UC packets              */
+-	__be32                  rx_mc_pkts;     /* Rx MC packets              */
+-	__be32                  rx_bc_pkts;     /* Rx BC packets              */
+-	__be32                  tx_uc_pkts;     /* Tx UC packets              */
+-	__be32                  tx_mc_pkts;     /* Tx MC packets              */
+-	__be32                  tx_bc_pkts;     /* Tx BC packets              */
++	__be64                  cnt;            /* Counter cleared            */
++	__be64                  rx_bytes;       /* Rx bytes                   */
++	__be64                  tx_bytes;       /* Tx bytes                   */
++	__be64                  rx_uc_pkts;     /* Rx UC packets              */
++	__be64                  rx_mc_pkts;     /* Rx MC packets              */
++	__be64                  rx_bc_pkts;     /* Rx BC packets              */
++	__be64                  tx_uc_pkts;     /* Tx UC packets              */
++	__be64                  tx_mc_pkts;     /* Tx MC packets              */
++	__be64                  tx_bc_pkts;     /* Tx BC packets              */
+ 	__be32                  fcs_err;        /* FCS errors                 */
+ 	__be32                  align_err;      /* Alignment errors           */
+ 	__be32                  false_carrier;  /* False carrier detection    */
+@@ -284,11 +283,11 @@ struct ncsi_rsp_gcps_pkt {
+ 	__be32                  tx_1023_frames; /* Tx 512-1023 bytes frames   */
+ 	__be32                  tx_1522_frames; /* Tx 1024-1522 bytes frames  */
+ 	__be32                  tx_9022_frames; /* Tx 1523-9022 bytes frames  */
+-	__be32                  rx_valid_bytes; /* Rx valid bytes             */
++	__be64                  rx_valid_bytes; /* Rx valid bytes             */
+ 	__be32                  rx_runt_pkts;   /* Rx error runt packets      */
+ 	__be32                  rx_jabber_pkts; /* Rx error jabber packets    */
+ 	__be32                  checksum;       /* Checksum                   */
+-};
++}  __packed __aligned(4);
+ 
+ /* Get NCSI Statistics */
+ struct ncsi_rsp_gns_pkt {
+diff --git a/net/ncsi/ncsi-rsp.c b/net/ncsi/ncsi-rsp.c
+index 960e2cfc1fd2a..88fb86cf7b208 100644
+--- a/net/ncsi/ncsi-rsp.c
++++ b/net/ncsi/ncsi-rsp.c
+@@ -933,16 +933,15 @@ static int ncsi_rsp_handler_gcps(struct ncsi_request *nr)
+ 
+ 	/* Update HNC's statistics */
+ 	ncs = &nc->stats;
+-	ncs->hnc_cnt_hi         = ntohl(rsp->cnt_hi);
+-	ncs->hnc_cnt_lo         = ntohl(rsp->cnt_lo);
+-	ncs->hnc_rx_bytes       = ntohl(rsp->rx_bytes);
+-	ncs->hnc_tx_bytes       = ntohl(rsp->tx_bytes);
+-	ncs->hnc_rx_uc_pkts     = ntohl(rsp->rx_uc_pkts);
+-	ncs->hnc_rx_mc_pkts     = ntohl(rsp->rx_mc_pkts);
+-	ncs->hnc_rx_bc_pkts     = ntohl(rsp->rx_bc_pkts);
+-	ncs->hnc_tx_uc_pkts     = ntohl(rsp->tx_uc_pkts);
+-	ncs->hnc_tx_mc_pkts     = ntohl(rsp->tx_mc_pkts);
+-	ncs->hnc_tx_bc_pkts     = ntohl(rsp->tx_bc_pkts);
++	ncs->hnc_cnt            = be64_to_cpu(rsp->cnt);
++	ncs->hnc_rx_bytes       = be64_to_cpu(rsp->rx_bytes);
++	ncs->hnc_tx_bytes       = be64_to_cpu(rsp->tx_bytes);
++	ncs->hnc_rx_uc_pkts     = be64_to_cpu(rsp->rx_uc_pkts);
++	ncs->hnc_rx_mc_pkts     = be64_to_cpu(rsp->rx_mc_pkts);
++	ncs->hnc_rx_bc_pkts     = be64_to_cpu(rsp->rx_bc_pkts);
++	ncs->hnc_tx_uc_pkts     = be64_to_cpu(rsp->tx_uc_pkts);
++	ncs->hnc_tx_mc_pkts     = be64_to_cpu(rsp->tx_mc_pkts);
++	ncs->hnc_tx_bc_pkts     = be64_to_cpu(rsp->tx_bc_pkts);
+ 	ncs->hnc_fcs_err        = ntohl(rsp->fcs_err);
+ 	ncs->hnc_align_err      = ntohl(rsp->align_err);
+ 	ncs->hnc_false_carrier  = ntohl(rsp->false_carrier);
+@@ -971,7 +970,7 @@ static int ncsi_rsp_handler_gcps(struct ncsi_request *nr)
+ 	ncs->hnc_tx_1023_frames = ntohl(rsp->tx_1023_frames);
+ 	ncs->hnc_tx_1522_frames = ntohl(rsp->tx_1522_frames);
+ 	ncs->hnc_tx_9022_frames = ntohl(rsp->tx_9022_frames);
+-	ncs->hnc_rx_valid_bytes = ntohl(rsp->rx_valid_bytes);
++	ncs->hnc_rx_valid_bytes = be64_to_cpu(rsp->rx_valid_bytes);
+ 	ncs->hnc_rx_runt_pkts   = ntohl(rsp->rx_runt_pkts);
+ 	ncs->hnc_rx_jabber_pkts = ntohl(rsp->rx_jabber_pkts);
+ 
 -- 
 2.39.5
 
