@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-157960-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157798-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A103BAE565E
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:20:18 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id DDD7EAE55C4
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:14:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9680C4C0D1C
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:19:10 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 941894457E3
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:12:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 63B9B16D9BF;
-	Mon, 23 Jun 2025 22:19:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA1F8227B88;
+	Mon, 23 Jun 2025 22:12:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NqZqS5Wk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m4LZWcuC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2236219E7F9;
-	Mon, 23 Jun 2025 22:19:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A22C226888;
+	Mon, 23 Jun 2025 22:12:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750717141; cv=none; b=Vtu5FXi47QOiXy46FZMoXutma+8MVPO6yHIRuZGtPqfXhsrI8oThOCMTJh1Kiu8W1paFjIcVayURK1IiG25lMnkmGFQkjvSFN1lY1/2lMJYWgfZmkrPiz82H8Spj+EGieVM+xV1Ckkn7tSxKe8TsrSluSiR49Md1kyVGmV+Qexc=
+	t=1750716747; cv=none; b=mDHp3Tr+6kzy7nN69DaBU9B0g7g1BHwgP86DjLj7mHYWpiK/fvHnTtBAu+Sw8H+LUXl+vutiqmWIhuvMgSjoI3K0ljyEFLN6GJ0oMCkMV37+Xn8TGTDptaV4m8RglhBYNdM8/JCZ321/pvye/mUzbiAgrYjlnNTu1XpOutouJ7o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750717141; c=relaxed/simple;
-	bh=7c4x0Wd+2uP4bwFRv73uJFJ4b6w39t9hAUf9TGNeG44=;
+	s=arc-20240116; t=1750716747; c=relaxed/simple;
+	bh=ar7KltM6C/PH5/oxY7pkvLSprtr0wOYbJg8H9Jl+OwU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WgncJXLwvx2a4gCJ9DKyqTJHb7szeDeXfWYnGmjMAni+QPBSyTiDZg8kxR5agKcDm2OKYxOd8H+o5bhT3bFme0KYsO43X+8yCTOIKmPH4aaeKy/+bMpL1b9nrcbkIIk2XVNkagT8My+O/fC9h1aYBJ37yrn9Y50tsT/7GxEFV78=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NqZqS5Wk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ACE3FC4CEEA;
-	Mon, 23 Jun 2025 22:19:00 +0000 (UTC)
+	 MIME-Version; b=NdfQxocoyWrBPTuzQQHpI4jPNx1CZNRWwc47bNE8DHEiQkj4n9GLNXnMyHuwtTvsTnhGxuM3j6R2MUeIOSS/+T7dbcbZAZZsPdWkQY3JCi8FVCkMX7mgj09Ep/JQVGmq0hjRkNx5FVIJp7pJSUr0+iYdUxkWl2YKQapZQGazwFI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m4LZWcuC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21081C4CEEA;
+	Mon, 23 Jun 2025 22:12:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750717141;
-	bh=7c4x0Wd+2uP4bwFRv73uJFJ4b6w39t9hAUf9TGNeG44=;
+	s=korg; t=1750716747;
+	bh=ar7KltM6C/PH5/oxY7pkvLSprtr0wOYbJg8H9Jl+OwU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NqZqS5WkPwrrgj9gBa0uvh+1yYz5R65XVLGUxVjLCf8v+8Tv2vRfNQc1aAQ9t4Fqq
-	 Jb94TU8uJuod0Fw+bfY6ZHrW7IQmUopJenQg23oLINGgBKHAa/wtuk2rqDXGnnS/3T
-	 aRNLzgrv5+6d6cjEFVyWZQhz2TQDUlQU3mNhgRNo=
+	b=m4LZWcuCLW833nUaMxdye56B8QmSRJNPQ9hnHt8J+KpGt1JINAu99mGdz0NYw2aVN
+	 6bxAbhTVsgGaX5CveITo++veSHmBQSXQLSgzJPrCEm0UJ7ivxnCOqk0oOsoHi9xzJG
+	 JPo85z2nEm2VOMmTFJHqq9SwxTD5sPLVZnZDto1s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marcelo Schmitt <marcelo.schmitt1@gmail.com>,
-	Sean Nyekjaer <sean@geanix.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 6.1 371/508] iio: accel: fxls8962af: Fix temperature scan element sign
+	Balamurugan S <quic_bselvara@quicinc.com>,
+	Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>,
+	Raj Kumar Bhagat <quic_rajkbhag@quicinc.com>,
+	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 279/414] wifi: ath12k: fix incorrect CE addresses
 Date: Mon, 23 Jun 2025 15:06:56 +0200
-Message-ID: <20250623130654.469139821@linuxfoundation.org>
+Message-ID: <20250623130648.995332334@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
-References: <20250623130645.255320792@linuxfoundation.org>
+In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
+References: <20250623130642.015559452@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,40 +64,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Nyekjaer <sean@geanix.com>
+From: Balamurugan S <quic_bselvara@quicinc.com>
 
-commit 9c78317b42e7c32523c91099859bc4721e9f75dd upstream.
+[ Upstream commit 60031d9c3589c7983fd1deb4a4c0bebf0929890e ]
 
-Mark the temperature element signed, data read from the TEMP_OUT register
-is in two's complement format.
-This will avoid the temperature being mishandled and miss displayed.
+In the current ath12k implementation, the CE addresses
+CE_HOST_IE_ADDRESS and CE_HOST_IE_2_ADDRESS are incorrect. These
+values were inherited from ath11k, but ath12k does not currently use
+them.
 
-Fixes: a3e0b51884ee ("iio: accel: add support for FXLS8962AF/FXLS8964AF accelerometers")
-Suggested-by: Marcelo Schmitt <marcelo.schmitt1@gmail.com>
-Cc: stable@vger.kernel.org
-Reviewed-by: Marcelo Schmitt <marcelo.schmitt1@gmail.com>
-Signed-off-by: Sean Nyekjaer <sean@geanix.com>
-Link: https://patch.msgid.link/20250505-fxls-v4-2-a38652e21738@geanix.com
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+However, the Ath12k AHB support relies on these addresses. Therefore,
+correct the CE addresses for ath12k.
+
+Tested-on: IPQ5332 hw1.0 AHB WLAN.WBE.1.3.1-00130-QCAHKSWPL_SILICONZ-1
+Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.1.1-00210-QCAHKSWPL_SILICONZ-1
+
+Signed-off-by: Balamurugan S <quic_bselvara@quicinc.com>
+Reviewed-by: Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>
+Signed-off-by: Raj Kumar Bhagat <quic_rajkbhag@quicinc.com>
+Link: https://patch.msgid.link/20250321-ath12k-ahb-v12-2-bb389ed76ae5@quicinc.com
+Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iio/accel/fxls8962af-core.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/wireless/ath/ath12k/ce.h | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
---- a/drivers/iio/accel/fxls8962af-core.c
-+++ b/drivers/iio/accel/fxls8962af-core.c
-@@ -738,6 +738,7 @@ static const struct iio_event_spec fxls8
- 			      BIT(IIO_CHAN_INFO_OFFSET),\
- 	.scan_index = -1, \
- 	.scan_type = { \
-+		.sign = 's', \
- 		.realbits = 8, \
- 		.storagebits = 8, \
- 	}, \
+diff --git a/drivers/net/wireless/ath/ath12k/ce.h b/drivers/net/wireless/ath/ath12k/ce.h
+index 857bc5f9e946a..f9547a3945e44 100644
+--- a/drivers/net/wireless/ath/ath12k/ce.h
++++ b/drivers/net/wireless/ath/ath12k/ce.h
+@@ -1,7 +1,7 @@
+ /* SPDX-License-Identifier: BSD-3-Clause-Clear */
+ /*
+  * Copyright (c) 2018-2021 The Linux Foundation. All rights reserved.
+- * Copyright (c) 2021-2022, 2024 Qualcomm Innovation Center, Inc. All rights reserved.
++ * Copyright (c) 2021-2022, 2024-2025 Qualcomm Innovation Center, Inc. All rights reserved.
+  */
+ 
+ #ifndef ATH12K_CE_H
+@@ -39,8 +39,8 @@
+ #define PIPEDIR_INOUT_H2H	4 /* bidirectional, host to host */
+ 
+ /* CE address/mask */
+-#define CE_HOST_IE_ADDRESS	0x00A1803C
+-#define CE_HOST_IE_2_ADDRESS	0x00A18040
++#define CE_HOST_IE_ADDRESS	0x75804C
++#define CE_HOST_IE_2_ADDRESS	0x758050
+ #define CE_HOST_IE_3_ADDRESS	CE_HOST_IE_ADDRESS
+ 
+ #define CE_HOST_IE_3_SHIFT	0xC
+-- 
+2.39.5
+
 
 
 
