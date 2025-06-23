@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-156925-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156932-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5AAB4AE51B4
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:36:47 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 347A3AE51BF
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:37:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E68F34A44A6
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:36:47 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0E94E7AED7C
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:35:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D09CF221FCC;
-	Mon, 23 Jun 2025 21:36:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 312B4221FCC;
+	Mon, 23 Jun 2025 21:37:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fNLPT2wq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vXKV25Tu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EC056136;
-	Mon, 23 Jun 2025 21:36:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3B586136;
+	Mon, 23 Jun 2025 21:37:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750714605; cv=none; b=MqqeH1ZJ2jeIlf6hQtbFRGU7Zv0NvIVMxMDcnI7+Sqr/c/dOdZ0yCQHicWlZP+sLhiG1SRUewR9hqQUlz+r5FA4sb91HCLxLL3xbqkIkXm7XoOwfjEUqUbQnY6pfV5OjpWj/j1KHhu3Yw5NNMYEJiZzdlBildfx8VY9YWXKNqfM=
+	t=1750714623; cv=none; b=HFDuxZdQu0Ta064s23RTN+Vpvg3XS3FmkLrH6lRXRiqoUbgfHJEiOjo+XVqIDQ5CtJ8W4jH2uvlnFdASS1X0D8Gs31WqG9GY5hGBtX5Q2SVUDffv55fH33VK9GA2OFg43Dhxj/JrTcDG1y+5CNGW8EKoEcTAe2PyVzevGKuhDAI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750714605; c=relaxed/simple;
-	bh=LOoHTUiK932LYqWpEKB26G2j1oRbfOavPruhoBIqlAU=;
+	s=arc-20240116; t=1750714623; c=relaxed/simple;
+	bh=tzvK3DPGMA0KZ0lRfMIKinN32HbaNfTfL7BwbbL+mvw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RcdyrGyCBCHbtg34TWpsAyPYnO2ohbXJe1KrZ8oDeNh0lcsPw6u4jWaxr+nTwMWrF6ykuTfhuToshgcj7PDJHVCeP2iuhT6sjr6wRMnyzunKoheFUxJG0qgeOeIPgc/4tO1PWC21q1zYleOxaA3Bfn9eVsVSFcTGJ270SsBKXeI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fNLPT2wq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 260C6C4CEEA;
-	Mon, 23 Jun 2025 21:36:45 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Hmah2TEtI4M5FmBpvVfyMF/VmRyMFVtXcZ1RHbjyTrDep1II/qd7hxwRWYsCDaYkEQxfVRxc2EHnUN5jxPJfSc7VcgCRe3h6nNodEtXIQfaQAPvsPZ6TAMrdcBImgnL3Lhkg2ChOo2pd3tg67pAOwjPbvZcTCYRZdS5iC6Ohol0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vXKV25Tu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C394C4CEEA;
+	Mon, 23 Jun 2025 21:37:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750714605;
-	bh=LOoHTUiK932LYqWpEKB26G2j1oRbfOavPruhoBIqlAU=;
+	s=korg; t=1750714622;
+	bh=tzvK3DPGMA0KZ0lRfMIKinN32HbaNfTfL7BwbbL+mvw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fNLPT2wq5oAaS3KRMcPVHL4211q/aI+AJiiyRexrxSN/p/iquXqsgbs5EPO6oGP2S
-	 FXVQ/yb0sf0p6omjHna3+h2ts6czzgZQvJbYCKJOq+ae4/AUKyBd+21R/yACAH8zVe
-	 wRdm8bBH/fvI2dkxkNMZ3wLfGUzMha13LEzTQ1Cw=
+	b=vXKV25TuBP7nfDK7dUgWUBnrnosiE1SCIddPID+NQn5EXki//zDfZTI3mH+07RzQN
+	 FpKf3FC6/ZHAYVjZkAsU0tgBvuPsleO0Lnm0V9hoPYSq9vKSHTZGMv/Ht1ztnUJKCa
+	 IxOe/VcHnlgiQG8a8a9mgaguMEbAG902Aus2/UDs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Florian Westphal <fw@strlen.de>,
-	Stefano Brivio <sbrivio@redhat.com>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Mirco Barone <mirco.barone@polito.it>,
+	"Jason A. Donenfeld" <Jason@zx2c4.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 184/508] netfilter: nf_set_pipapo_avx2: fix initial map fill
-Date: Mon, 23 Jun 2025 15:03:49 +0200
-Message-ID: <20250623130649.801337058@linuxfoundation.org>
+Subject: [PATCH 6.1 185/508] wireguard: device: enable threaded NAPI
+Date: Mon, 23 Jun 2025 15:03:50 +0200
+Message-ID: <20250623130649.824641571@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
 In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
 References: <20250623130645.255320792@linuxfoundation.org>
@@ -61,72 +61,81 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Florian Westphal <fw@strlen.de>
+From: Mirco Barone <mirco.barone@polito.it>
 
-[ Upstream commit ea77c397bff8b6d59f6d83dae1425b08f465e8b5 ]
+[ Upstream commit db9ae3b6b43c79b1ba87eea849fd65efa05b4b2e ]
 
-If the first field doesn't cover the entire start map, then we must zero
-out the remainder, else we leak those bits into the next match round map.
+Enable threaded NAPI by default for WireGuard devices in response to low
+performance behavior that we observed when multiple tunnels (and thus
+multiple wg devices) are deployed on a single host.  This affects any
+kind of multi-tunnel deployment, regardless of whether the tunnels share
+the same endpoints or not (i.e., a VPN concentrator type of gateway
+would also be affected).
 
-The early fix was incomplete and did only fix up the generic C
-implementation.
+The problem is caused by the fact that, in case of a traffic surge that
+involves multiple tunnels at the same time, the polling of the NAPI
+instance of all these wg devices tends to converge onto the same core,
+causing underutilization of the CPU and bottlenecking performance.
 
-A followup patch adds a test case to nft_concat_range.sh.
+This happens because NAPI polling is hosted by default in softirq
+context, but the WireGuard driver only raises this softirq after the rx
+peer queue has been drained, which doesn't happen during high traffic.
+In this case, the softirq already active on a core is reused instead of
+raising a new one.
 
-Fixes: 791a615b7ad2 ("netfilter: nf_set_pipapo: fix initial map fill")
-Signed-off-by: Florian Westphal <fw@strlen.de>
-Reviewed-by: Stefano Brivio <sbrivio@redhat.com>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+As a result, once two or more tunnel softirqs have been scheduled on
+the same core, they remain pinned there until the surge ends.
+
+In our experiments, this almost always leads to all tunnel NAPIs being
+handled on a single core shortly after a surge begins, limiting
+scalability to less than 3× the performance of a single tunnel, despite
+plenty of unused CPU cores being available.
+
+The proposed mitigation is to enable threaded NAPI for all WireGuard
+devices. This moves the NAPI polling context to a dedicated per-device
+kernel thread, allowing the scheduler to balance the load across all
+available cores.
+
+On our 32-core gateways, enabling threaded NAPI yields a ~4× performance
+improvement with 16 tunnels, increasing throughput from ~13 Gbps to
+~48 Gbps. Meanwhile, CPU usage on the receiver (which is the bottleneck)
+jumps from 20% to 100%.
+
+We have found no performance regressions in any scenario we tested.
+Single-tunnel throughput remains unchanged.
+
+More details are available in our Netdev paper.
+
+Link: https://netdevconf.info/0x18/docs/netdev-0x18-paper23-talk-paper.pdf
+Signed-off-by: Mirco Barone <mirco.barone@polito.it>
+Fixes: e7096c131e51 ("net: WireGuard secure network tunnel")
+Signed-off-by: Jason A. Donenfeld <Jason@zx2c4.com>
+Link: https://patch.msgid.link/20250605120616.2808744-1-Jason@zx2c4.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nft_set_pipapo_avx2.c | 21 ++++++++++++++++++++-
- 1 file changed, 20 insertions(+), 1 deletion(-)
+ drivers/net/wireguard/device.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/net/netfilter/nft_set_pipapo_avx2.c b/net/netfilter/nft_set_pipapo_avx2.c
-index c15db28c5ebc4..be7c16c79f711 100644
---- a/net/netfilter/nft_set_pipapo_avx2.c
-+++ b/net/netfilter/nft_set_pipapo_avx2.c
-@@ -1113,6 +1113,25 @@ bool nft_pipapo_avx2_estimate(const struct nft_set_desc *desc, u32 features,
- 	return true;
- }
+diff --git a/drivers/net/wireguard/device.c b/drivers/net/wireguard/device.c
+index 895a621c9e267..531332e169df8 100644
+--- a/drivers/net/wireguard/device.c
++++ b/drivers/net/wireguard/device.c
+@@ -368,6 +368,7 @@ static int wg_newlink(struct net *src_net, struct net_device *dev,
+ 	if (ret < 0)
+ 		goto err_free_handshake_queue;
  
-+/**
-+ * pipapo_resmap_init_avx2() - Initialise result map before first use
-+ * @m:		Matching data, including mapping table
-+ * @res_map:	Result map
-+ *
-+ * Like pipapo_resmap_init() but do not set start map bits covered by the first field.
-+ */
-+static inline void pipapo_resmap_init_avx2(const struct nft_pipapo_match *m, unsigned long *res_map)
-+{
-+	const struct nft_pipapo_field *f = m->f;
-+	int i;
-+
-+	/* Starting map doesn't need to be set to all-ones for this implementation,
-+	 * but we do need to zero the remaining bits, if any.
-+	 */
-+	for (i = f->bsize; i < m->bsize_max; i++)
-+		res_map[i] = 0ul;
-+}
-+
- /**
-  * nft_pipapo_avx2_lookup() - Lookup function for AVX2 implementation
-  * @net:	Network namespace
-@@ -1171,7 +1190,7 @@ bool nft_pipapo_avx2_lookup(const struct net *net, const struct nft_set *set,
- 	res  = scratch->map + (map_index ? m->bsize_max : 0);
- 	fill = scratch->map + (map_index ? 0 : m->bsize_max);
- 
--	/* Starting map doesn't need to be set for this implementation */
-+	pipapo_resmap_init_avx2(m, res);
- 
- 	nft_pipapo_avx2_prepare();
- 
++	dev_set_threaded(dev, true);
+ 	ret = register_netdevice(dev);
+ 	if (ret < 0)
+ 		goto err_uninit_ratelimiter;
 -- 
 2.39.5
 
