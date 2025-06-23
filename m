@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-156590-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157297-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EC8BFAE5032
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:23:07 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A3D3FAE535A
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:52:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 16C9C3B748B
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:22:43 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D07D81B66D8E
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:52:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 375A11E5B71;
-	Mon, 23 Jun 2025 21:23:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0744C223DD0;
+	Mon, 23 Jun 2025 21:52:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="doGSkFkG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xhvFnIRb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E90332628C;
-	Mon, 23 Jun 2025 21:23:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA06D220686;
+	Mon, 23 Jun 2025 21:52:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750713786; cv=none; b=jet0cSGYA5FRo81FiCzqF1Z/1FVYGWaIphgkTQkvBZOIpFVHcT8XPtnF29UszxYybJeCSbSAGKL5h52HWn+r3t5k9if1W7T2GsMgjyN6PVJNhkMjYxJ60jvwWyugG8CSBCaAW66seUR2rme9qhpkC4Ab+Qs8YyovgRK2L+kEXDI=
+	t=1750715523; cv=none; b=TXazF+UY5bpvLdEJf+4280fXhQbROSINVTDNxRABlAUjOkAyln0lryJ/w82cpE0djPfJZNzz6i6ao+0zLaz3OIAfxKU6gQ35mjg61vwrGLaXaYCefIq/q/ADQXH3hHUJtMn/L2oHxphUqBJ3drXFFQ+713wlIk92QlPZabjlq6g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750713786; c=relaxed/simple;
-	bh=3+LyTIazs+IAXHqa62FDDfOvyJiohsGNjPGnc7vwTEY=;
+	s=arc-20240116; t=1750715523; c=relaxed/simple;
+	bh=FLJWTn27H8+xrnF2u7IOvHmD4yD8JHF702Z5yXILj/s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=r96hsdCJ39xZea3IeK7JW1bOCw57S/CJRzORMiAr2iJbAvXskZR5s3iYrOisbstAjf2uOUxNTavUCQKyOldZ72EkaJX9q32YRkZ9d6xhj964LX468HdTqyKCIV+WapcSWiTmbRyDUEaojyZeephgkm/zDBp2GBfopgl3cYy3jfo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=doGSkFkG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82B64C4CEEA;
-	Mon, 23 Jun 2025 21:23:05 +0000 (UTC)
+	 MIME-Version; b=otuTkr9aYyNjHuGAFE6EVpOUw3ItXVztJkL305caQ2YlwZLjTCTtpZlPjsZ/SE/vC22DwHhVyaRkk0Fuvr0IpwqDjR/LjPGaGcU9WTpcnrHb6/spMo1C+hOLTLdfL++dpIi9s69GOfn8trRQHS3vaDttEaigFbCxnMIV7hKqQNw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xhvFnIRb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5067EC4CEEA;
+	Mon, 23 Jun 2025 21:52:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750713785;
-	bh=3+LyTIazs+IAXHqa62FDDfOvyJiohsGNjPGnc7vwTEY=;
+	s=korg; t=1750715523;
+	bh=FLJWTn27H8+xrnF2u7IOvHmD4yD8JHF702Z5yXILj/s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=doGSkFkGPmCJnkyxj+T/m76ws87gT5I0A5+kIhTkvM4lrriYTbBX21jeAUEEQQwLH
-	 CCLKP/NK9RJtAD5yRVRLpKVeqfW8QHa9QdnKVU/nDNqvykGiIy6e7AMiSpvLVVWkAl
-	 M0ooufFTDjSsvNZ/bw3C1ZAQ2KZJ4dRfhX64yHU8=
+	b=xhvFnIRbRBGNTpKRyUosbiQ4Mabk0ypFFZAhKUVZTZThKVuhFVNFb8dt27Lrp9ZQ/
+	 S4zRWx8mN4ygCFO+suhEKZ4rAbA+bzZXNJpMWzxiiS8q3fJCvupIS9fBhxzFDiNcWa
+	 6pA/UaHd4FSPSq5SMUmepT8zdawAgdKyV26nOef4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Beno=C3=AEt=20Sevens?= <bsevens@google.com>,
-	Oleg Nesterov <oleg@redhat.com>,
-	Linus Torvalds <torvalds@linux-foundation.org>
-Subject: [PATCH 5.15 167/411] posix-cpu-timers: fix race between handle_posix_cpu_timers() and posix_cpu_timer_del()
+	Suleiman Souhlal <suleiman@google.com>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Jiri Olsa <jolsa@kernel.org>
+Subject: [PATCH 6.1 266/508] tools/resolve_btfids: Fix build when cross compiling kernel with clang.
 Date: Mon, 23 Jun 2025 15:05:11 +0200
-Message-ID: <20250623130637.897534446@linuxfoundation.org>
+Message-ID: <20250623130651.789073638@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
-References: <20250623130632.993849527@linuxfoundation.org>
+In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
+References: <20250623130645.255320792@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,60 +60,46 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Oleg Nesterov <oleg@redhat.com>
+From: Suleiman Souhlal <suleiman@google.com>
 
-commit f90fff1e152dedf52b932240ebbd670d83330eca upstream.
+commit a298bbab903e3fb4cbe16d36d6195e68fad1b776 upstream.
 
-If an exiting non-autoreaping task has already passed exit_notify() and
-calls handle_posix_cpu_timers() from IRQ, it can be reaped by its parent
-or debugger right after unlock_task_sighand().
+When cross compiling the kernel with clang, we need to override
+CLANG_CROSS_FLAGS when preparing the step libraries.
 
-If a concurrent posix_cpu_timer_del() runs at that moment, it won't be
-able to detect timer->it.cpu.firing != 0: cpu_timer_task_rcu() and/or
-lock_task_sighand() will fail.
+Prior to commit d1d096312176 ("tools: fix annoying "mkdir -p ..." logs
+when building tools in parallel"), MAKEFLAGS would have been set to a
+value that wouldn't set a value for CLANG_CROSS_FLAGS, hiding the
+fact that we weren't properly overriding it.
 
-Add the tsk->exit_state check into run_posix_cpu_timers() to fix this.
-
-This fix is not needed if CONFIG_POSIX_CPU_TIMERS_TASK_WORK=y, because
-exit_task_work() is called before exit_notify(). But the check still
-makes sense, task_work_add(&tsk->posix_cputimers_work.work) will fail
-anyway in this case.
-
+Fixes: 56a2df7615fa ("tools/resolve_btfids: Compile resolve_btfids as host program")
+Signed-off-by: Suleiman Souhlal <suleiman@google.com>
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Acked-by: Jiri Olsa <jolsa@kernel.org>
 Cc: stable@vger.kernel.org
-Reported-by: Benoît Sevens <bsevens@google.com>
-Fixes: 0bdd2ed4138e ("sched: run_posix_cpu_timers: Don't check ->exit_state, use lock_task_sighand()")
-Signed-off-by: Oleg Nesterov <oleg@redhat.com>
-Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
+Link: https://lore.kernel.org/bpf/20250606074538.1608546-1-suleiman@google.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/time/posix-cpu-timers.c |    9 +++++++++
- 1 file changed, 9 insertions(+)
+ tools/bpf/resolve_btfids/Makefile |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/kernel/time/posix-cpu-timers.c
-+++ b/kernel/time/posix-cpu-timers.c
-@@ -1432,6 +1432,15 @@ void run_posix_cpu_timers(void)
- 	lockdep_assert_irqs_disabled();
+--- a/tools/bpf/resolve_btfids/Makefile
++++ b/tools/bpf/resolve_btfids/Makefile
+@@ -19,7 +19,7 @@ endif
  
- 	/*
-+	 * Ensure that release_task(tsk) can't happen while
-+	 * handle_posix_cpu_timers() is running. Otherwise, a concurrent
-+	 * posix_cpu_timer_del() may fail to lock_task_sighand(tsk) and
-+	 * miss timer->it.cpu.firing != 0.
-+	 */
-+	if (tsk->exit_state)
-+		return;
-+
-+	/*
- 	 * If the actual expiry is deferred to task work context and the
- 	 * work is already scheduled there is no point to do anything here.
- 	 */
+ # Overrides for the prepare step libraries.
+ HOST_OVERRIDES := AR="$(HOSTAR)" CC="$(HOSTCC)" LD="$(HOSTLD)" ARCH="$(HOSTARCH)" \
+-		  CROSS_COMPILE="" EXTRA_CFLAGS="$(HOSTCFLAGS)"
++		  CROSS_COMPILE="" CLANG_CROSS_FLAGS="" EXTRA_CFLAGS="$(HOSTCFLAGS)"
+ 
+ RM      ?= rm
+ HOSTCC  ?= gcc
 
 
 
