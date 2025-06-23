@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-156280-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156642-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3EA0DAE4EE9
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:10:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 26D9BAE5071
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:25:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C3E967AB95E
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:09:07 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0510F7A237B
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:23:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 796F5220F50;
-	Mon, 23 Jun 2025 21:10:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 466DD1EF397;
+	Mon, 23 Jun 2025 21:25:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hT3e+ZTj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RJPKa9Gk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3835670838;
-	Mon, 23 Jun 2025 21:10:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0484C1E51FA;
+	Mon, 23 Jun 2025 21:25:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750713027; cv=none; b=s3OAsY7qKJFSP8Y2xvS/A/FR4sgMgrkT/LWQ/SiWM4oFMsHJtvCX8pItSIlKh0oh7F/nLk/s1WivXLOwEcMgWfMSHTFSEtccHGPnN2qv+hbXFSM9Cc5Ng5NYsGvKeg1tEexFsJzthZIfdgE+2oW7VAO5NRcy/+Y/WSXSMT3wW7w=
+	t=1750713911; cv=none; b=R+cSibawPbb+eVXOvabFmQLNKtKW7oNFkr9rol94ov4cp7uOfyJaK5+vULNwz2SBeOI18phzW8zJFZ5n/JTvFxInMxvbi/MRkepiwFPT2rLSQtgNzAjobeIzmEjsqXJnAWoCbLtjj2sRLBB2ZLDBfDxo4NkLSt5NKrNS9YckagM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750713027; c=relaxed/simple;
-	bh=P363qgG7nFwhCZE6+PGeKzSkF5isArCC43Hm7vzBH8g=;
+	s=arc-20240116; t=1750713911; c=relaxed/simple;
+	bh=XKCeQiR/hwbcDB54xdEwjPF9kjJKTZbog/ZkUb0ZuL0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Apdundrk7OsKthxVKZ1870Zl4U+fZBw2H7PlMwrS2fy1pbGU20RlAT24lCWlF4uWzoQxx4Ldb1X4PCt/xTHXy2/bxSEiiF5+E7CPMJrcm2remgsfgLnpzFwxo6PiLECfd/6+vB3KRZEigpB8JLJ9e0XnMgtdJfud/pk5FWfxBYM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hT3e+ZTj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C62C2C4CEEA;
-	Mon, 23 Jun 2025 21:10:26 +0000 (UTC)
+	 MIME-Version; b=T4NaeE23PIAoOjfZCKPM1gJzoUGygvwq3rWyRB8OL4o6RHZ03/RdTpwObzZXFczHJKicb16Y+hKFFYEix/JZqfuD6qSvYXU8m7jEuuvDjpz4Y9Tybi7M3iNFeNkJumuMBaolci10UXHuS9gCcl4cY6HLQurSR7OusZ74yjTv05Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RJPKa9Gk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8FB9EC4CEF0;
+	Mon, 23 Jun 2025 21:25:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750713027;
-	bh=P363qgG7nFwhCZE6+PGeKzSkF5isArCC43Hm7vzBH8g=;
+	s=korg; t=1750713910;
+	bh=XKCeQiR/hwbcDB54xdEwjPF9kjJKTZbog/ZkUb0ZuL0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hT3e+ZTj/JvELPp+AiXcdbTVAl+DH4Wh4WPYGCjV+NPtxIFk9mdqKGrnaogBDZ3Sc
-	 9qOS4TAVFwGZx4dMrZlm1sKX5pNgZZhkCO6StQqDanqqOwTKnK3BD9M6MqRmVJ9Bv+
-	 LlXt4lnOkhkvGKvThf9utILLchDmvcOcUm1ZOoWc=
+	b=RJPKa9GkJGwlyxLvx6eL3opYItbkM3Big8+FdaeMDIaHHsAb+sKAXjxZNB1J+6zcH
+	 kJJU/GaERfCtca+Q9zGpcqseD75sZkaO4AVP1l2TCfufhICsamvgQra/Gf1fA6MFWl
+	 PWU7L9KjgV1gjCZiRzz+CPqhxWFpE609fT6xl9AI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ross Stutterheim <ross.stutterheim@garmin.com>,
-	Mike Rapoport <rppt@kernel.org>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>
-Subject: [PATCH 6.6 050/290] ARM: 9447/1: arm/memremap: fix arch_memremap_can_ram_remap()
+	Jason Xing <kernelxing@tencent.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.15 353/592] net: atlantic: generate software timestamp just before the doorbell
 Date: Mon, 23 Jun 2025 15:05:11 +0200
-Message-ID: <20250623130628.509139343@linuxfoundation.org>
+Message-ID: <20250623130708.839548374@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130626.910356556@linuxfoundation.org>
-References: <20250623130626.910356556@linuxfoundation.org>
+In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
+References: <20250623130700.210182694@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,53 +62,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ross Stutterheim <ross.stutterheim@garmin.com>
+From: Jason Xing <kernelxing@tencent.com>
 
-commit 96e0b355883006554a0bee3697da475971d6bba8 upstream.
+[ Upstream commit 285ad7477559b6b5ceed10ba7ecfed9d17c0e7c6 ]
 
-arm/memremap: fix arch_memremap_can_ram_remap()
+Make sure the call of skb_tx_timestamp is as close as possible to the
+doorbell.
 
-commit 260364d112bc ("arm[64]/memremap: don't abuse pfn_valid() to ensure
-presence of linear map") added the definition of
-arch_memremap_can_ram_remap() for arm[64] specific filtering of what pages
-can be used from the linear mapping. memblock_is_map_memory() was called
-with the pfn of the address given to arch_memremap_can_ram_remap();
-however, memblock_is_map_memory() expects to be given an address for arm,
-not a pfn.
-
-This results in calls to memremap() returning a newly mapped area when
-it should return an address in the existing linear mapping.
-
-Fix this by removing the address to pfn translation and pass the
-address directly.
-
-Fixes: 260364d112bc ("arm[64]/memremap: don't abuse pfn_valid() to ensure presence of linear map")
-Signed-off-by: Ross Stutterheim <ross.stutterheim@garmin.com>
-Cc: Mike Rapoport <rppt@kernel.org>
-Cc: stable@vger.kernel.org
-Reviewed-by: Catalin Marinas <catalin.marinas@arm.com>
-Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
-Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Jason Xing <kernelxing@tencent.com>
+Link: https://patch.msgid.link/20250510134812.48199-2-kerneljasonxing@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/mm/ioremap.c |    4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ drivers/net/ethernet/aquantia/atlantic/aq_main.c | 1 -
+ drivers/net/ethernet/aquantia/atlantic/aq_nic.c  | 2 ++
+ 2 files changed, 2 insertions(+), 1 deletion(-)
 
---- a/arch/arm/mm/ioremap.c
-+++ b/arch/arm/mm/ioremap.c
-@@ -515,7 +515,5 @@ void __init early_ioremap_init(void)
- bool arch_memremap_can_ram_remap(resource_size_t offset, size_t size,
- 				 unsigned long flags)
- {
--	unsigned long pfn = PHYS_PFN(offset);
--
--	return memblock_is_map_memory(pfn);
-+	return memblock_is_map_memory(offset);
+diff --git a/drivers/net/ethernet/aquantia/atlantic/aq_main.c b/drivers/net/ethernet/aquantia/atlantic/aq_main.c
+index c1d1673c5749d..b565189e59139 100644
+--- a/drivers/net/ethernet/aquantia/atlantic/aq_main.c
++++ b/drivers/net/ethernet/aquantia/atlantic/aq_main.c
+@@ -123,7 +123,6 @@ static netdev_tx_t aq_ndev_start_xmit(struct sk_buff *skb, struct net_device *nd
+ 	}
+ #endif
+ 
+-	skb_tx_timestamp(skb);
+ 	return aq_nic_xmit(aq_nic, skb);
  }
+ 
+diff --git a/drivers/net/ethernet/aquantia/atlantic/aq_nic.c b/drivers/net/ethernet/aquantia/atlantic/aq_nic.c
+index bf3aa46887a1c..e71cd10e4e1f1 100644
+--- a/drivers/net/ethernet/aquantia/atlantic/aq_nic.c
++++ b/drivers/net/ethernet/aquantia/atlantic/aq_nic.c
+@@ -898,6 +898,8 @@ int aq_nic_xmit(struct aq_nic_s *self, struct sk_buff *skb)
+ 
+ 	frags = aq_nic_map_skb(self, skb, ring);
+ 
++	skb_tx_timestamp(skb);
++
+ 	if (likely(frags)) {
+ 		err = self->aq_hw_ops->hw_ring_tx_xmit(self->aq_hw,
+ 						       ring, frags);
+-- 
+2.39.5
+
 
 
 
