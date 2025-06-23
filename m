@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-157397-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156941-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF4DCAE53C9
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:56:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A4EEAE51C9
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:37:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 03E8A4460DB
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:55:45 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 329C6442735
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:37:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3FF1822258C;
-	Mon, 23 Jun 2025 21:56:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A9EB22256B;
+	Mon, 23 Jun 2025 21:37:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r6vaq/E3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cPF+1SkK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F10BC2222C2;
-	Mon, 23 Jun 2025 21:56:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18DB64409;
+	Mon, 23 Jun 2025 21:37:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750715766; cv=none; b=l9Rtc9+lc2iLgxfIA7mfrz76XAruhClxlmGEMNwdq7qcuz0mHk+tZYNTTHpqldCvFm61+4j1/vBox+YZ9IyXvaC8GRXyT8jJrR/OnmlHKyzYfIlOKmduZzCyU+wcN0KLTxk2dMwmmFe7/9bcK05LLeRwgPP3+u3HHMvtO8p2US8=
+	t=1750714645; cv=none; b=P80BOoZP2Rga9kz4YmFHfYokVx88knInSPB7mAGWQ4GFFFXNBTXsJgp9xziMOtHI8vfhAvOPD4uQFkMUXRnj0u2qXnXf2bghjWDMBD99QrRP7gVq+bYKtCKBQRlraYgx8t/Nc3ehlIBz7Eu0OjszPYYicWRlwFRyvyyjZ8SZ4+g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750715766; c=relaxed/simple;
-	bh=/MiIW3GAaxtvI+Gh74cBLukQQo+Xs2weFXTLxWmBBuQ=;
+	s=arc-20240116; t=1750714645; c=relaxed/simple;
+	bh=ZENANfJwadpoVTPkAZFzRq1wHruCOebfQNJZbE+ByCg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fpHiufn4ajXqC2EgYSrBF1CKiFq7KGsOZ0Y8GFCDN6K2uCwDTV7KALRG4O/dJWvvcOYrW0295orCGia8u/tuXlgk5nMIEEPoBp55TO+Ul0NNaDfSL2ujzVO1iwJM1I5Ril90gYww76omMbTKedQ5pAVnZV3mMpneRybo2qXRa/A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r6vaq/E3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87C63C4CEEA;
-	Mon, 23 Jun 2025 21:56:05 +0000 (UTC)
+	 MIME-Version; b=V1Z37K1UZAEhvEAaSbgHlGJFC902wXU4KdhQW5ZPTv3C6l3ePITns/W7Pg2LG3wiDfjh+tkns04WiJsdGFrYsaRrAKvzxXcW1hYzhItEjoWbW6NZtE1k22n4dXh5Q6oyfsvbMm/l7i9iyV5V0whMVtoSo8bse1TqWqQfR/0X7LE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cPF+1SkK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6028C4CEEA;
+	Mon, 23 Jun 2025 21:37:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750715765;
-	bh=/MiIW3GAaxtvI+Gh74cBLukQQo+Xs2weFXTLxWmBBuQ=;
+	s=korg; t=1750714645;
+	bh=ZENANfJwadpoVTPkAZFzRq1wHruCOebfQNJZbE+ByCg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=r6vaq/E3BcdcwrWtc/LcS45qDWNeT541KbMfQWGDNC4JXydpqjCyCSTuxCpw14sxp
-	 YvHWEyB59T0ZzU5EOmwQefqyCf7KLZZZqiTIidNRVYDjc7qevQdcDJdxXbmiusClYv
-	 3bzS0Lt8tuRbm+loGGx16CcvRwlMhIwWuZsfOxpk=
+	b=cPF+1SkKOqMr22ujwBpFv0G0ekVVOolGcko5oQZDYJ7VVTp/lpiKucHg7e4xrCMdZ
+	 vpakJgjJlz7cCsKX4qTja0o6PlBDOl2ud9sSMQoHZ/+BT0DGjhCGijZM1ESId8sCA8
+	 YG2k0erNd90nAyhJEJX4EmVW6C/nnCn92tX6SYM8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tarang Raval <tarang.raval@siliconsignals.io>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Hans Verkuil <hverkuil@xs4all.nl>,
+	Patrick Daly <quic_pdaly@quicinc.com>,
+	Charan Teja Kalla <quic_charante@quicinc.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 277/411] media: i2c: imx334: Enable runtime PM before sub-device registration
+Subject: [PATCH 5.10 220/355] PM: runtime: fix denying of auto suspend in pm_suspend_timer_fn()
 Date: Mon, 23 Jun 2025 15:07:01 +0200
-Message-ID: <20250623130640.625255679@linuxfoundation.org>
+Message-ID: <20250623130633.356948337@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
-References: <20250623130632.993849527@linuxfoundation.org>
+In-Reply-To: <20250623130626.716971725@linuxfoundation.org>
+References: <20250623130626.716971725@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,57 +63,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tarang Raval <tarang.raval@siliconsignals.io>
+From: Charan Teja Kalla <quic_charante@quicinc.com>
 
-[ Upstream commit 01dfdf6a80c57151af0589af0db7adbbdd1361c7 ]
+[ Upstream commit 40d3b40dce375d6f1c1dbf08d79eed3aed6c691d ]
 
-Runtime PM is fully initialized before calling
-v4l2_async_register_subdev_sensor(). Moving the runtime PM initialization
-earlier prevents potential access to an uninitialized or powered-down
-device.
+pm_runtime_put_autosuspend() schedules a hrtimer to expire
+at "dev->power.timer_expires". If the hrtimer's callback,
+pm_suspend_timer_fn(), observes that the current time equals
+"dev->power.timer_expires", it unexpectedly bails out instead of
+proceeding with runtime suspend.
 
-Signed-off-by: Tarang Raval <tarang.raval@siliconsignals.io>
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+pm_suspend_timer_fn():
+
+ if (expires > 0 && expires < ktime_get_mono_fast_ns()) {
+ 	dev->power.timer_expires = 0;
+ 	rpm_suspend(..)
+ }
+
+Additionally, as ->timer_expires is not cleared, all the future auto
+suspend requests will not schedule hrtimer to perform auto suspend.
+
+rpm_suspend():
+
+ if ((rpmflags & RPM_AUTO) &&...) {
+ 	if (!(dev->power.timer_expires && ...) { <-- this will fail.
+ 		hrtimer_start_range_ns(&dev->power.suspend_timer,...);
+ 	}
+ }
+
+Fix this by as well checking if current time reaches the set expiration.
+
+Co-developed-by: Patrick Daly <quic_pdaly@quicinc.com>
+Signed-off-by: Patrick Daly <quic_pdaly@quicinc.com>
+Signed-off-by: Charan Teja Kalla <quic_charante@quicinc.com>
+Link: https://patch.msgid.link/20250515064125.1211561-1-quic_charante@quicinc.com
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/i2c/imx334.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ drivers/base/power/runtime.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/media/i2c/imx334.c b/drivers/media/i2c/imx334.c
-index 062125501788a..57b7416bbfab3 100644
---- a/drivers/media/i2c/imx334.c
-+++ b/drivers/media/i2c/imx334.c
-@@ -1058,6 +1058,9 @@ static int imx334_probe(struct i2c_client *client)
- 		goto error_handler_free;
- 	}
- 
-+	pm_runtime_set_active(imx334->dev);
-+	pm_runtime_enable(imx334->dev);
-+
- 	ret = v4l2_async_register_subdev_sensor(&imx334->sd);
- 	if (ret < 0) {
- 		dev_err(imx334->dev,
-@@ -1065,13 +1068,13 @@ static int imx334_probe(struct i2c_client *client)
- 		goto error_media_entity;
- 	}
- 
--	pm_runtime_set_active(imx334->dev);
--	pm_runtime_enable(imx334->dev);
- 	pm_runtime_idle(imx334->dev);
- 
- 	return 0;
- 
- error_media_entity:
-+	pm_runtime_disable(imx334->dev);
-+	pm_runtime_set_suspended(imx334->dev);
- 	media_entity_cleanup(&imx334->sd.entity);
- error_handler_free:
- 	v4l2_ctrl_handler_free(imx334->sd.ctrl_handler);
+diff --git a/drivers/base/power/runtime.c b/drivers/base/power/runtime.c
+index 4950864d3ea50..58d376b1cd680 100644
+--- a/drivers/base/power/runtime.c
++++ b/drivers/base/power/runtime.c
+@@ -998,7 +998,7 @@ static enum hrtimer_restart  pm_suspend_timer_fn(struct hrtimer *timer)
+ 	 * If 'expires' is after the current time, we've been called
+ 	 * too early.
+ 	 */
+-	if (expires > 0 && expires < ktime_get_mono_fast_ns()) {
++	if (expires > 0 && expires <= ktime_get_mono_fast_ns()) {
+ 		dev->power.timer_expires = 0;
+ 		rpm_suspend(dev, dev->power.timer_autosuspends ?
+ 		    (RPM_ASYNC | RPM_AUTO) : RPM_ASYNC);
 -- 
 2.39.5
 
