@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-157376-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157138-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA5C0AE53BA
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:56:07 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 126D8AE52A6
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:46:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 13FC6189A603
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:55:40 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E4A2D1B658BF
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:46:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76DDD222581;
-	Mon, 23 Jun 2025 21:55:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5081D2253B0;
+	Mon, 23 Jun 2025 21:45:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F8LcfRoZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JuELbz4/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34103221FBE;
-	Mon, 23 Jun 2025 21:55:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B87822258C;
+	Mon, 23 Jun 2025 21:45:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750715717; cv=none; b=RG1BZLu5VeUPFUmZ6PywwwGXT4C5qXoLrl1HDFZbV2XI2FVoS4712gOcJNAdzun5xcXhW1rPcvLYCtzM++tfvNQLld337gjvXQHAVFhkyVXN4p7CL0BPCU3dUtJ5ExvtovnxZQjxXM8nACmDrBNw8xCxy6G6S+U8Nsf2eTYP3hY=
+	t=1750715128; cv=none; b=n5L6/vmQpJTbo6XYxQsK5TV+NgRp1uzRrdcCmPYy1BU8JPFcg8NRt+oOpofhTE80uLifNzo8CRXXZqPGaI7PWjm0MHuk8+2Odtoq01nLdpUYPF086MNz1qzlDB6Z9SLUfwe3XnWDvK1+obtXNgNX4U20kEVl06Q2iheNRbQcg68=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750715717; c=relaxed/simple;
-	bh=3osOHv8ptPzm36t49Uvvj7NNIOLaaWjblirFt2SBMlk=;
+	s=arc-20240116; t=1750715128; c=relaxed/simple;
+	bh=mcQV4cV2FRTGqCi74/NETMg1LAuef2iLe4I5DTHoj40=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PewC3XxYNRtSb3Pkyaz4KqWYWp3X3OsFq9Z0OLKKTtsb042VEWCv+gIwX0/hksS/Dm+JGYhgW4N6e0o8X2qXi5joPI5vHuQ3J5TKdT9XqBrFSjtghAc5t81iF3O+uc3asojaK0yNpfr92urUz+aUkHoDv59jv78iS8uxXWpBYhs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F8LcfRoZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0BAAC4CEEA;
-	Mon, 23 Jun 2025 21:55:16 +0000 (UTC)
+	 MIME-Version; b=ao5cb14aQkdQLIY/vBOd1Vr/KGnKCb1N6WeoW+3H8iiJGA3d0BYxIcLvOjqTfPr5ObF1iwNDzGiqNgsTiXpgdZ8W1ymbNZKfsQHIsLCdjE+mwEqgtv90ssycnAWT9Vf69soF717nrNnsoc1je7A0OIEOpWa/gV9vSiB00S8xRlk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JuELbz4/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F968C4CEEA;
+	Mon, 23 Jun 2025 21:45:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750715717;
-	bh=3osOHv8ptPzm36t49Uvvj7NNIOLaaWjblirFt2SBMlk=;
+	s=korg; t=1750715127;
+	bh=mcQV4cV2FRTGqCi74/NETMg1LAuef2iLe4I5DTHoj40=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=F8LcfRoZ81iAL2Z3KwlRzzY6DLInVdPo+jHnx9Gp01KM2nry3n8mgqy8UrvG2Lq2d
-	 ce4hPyAV96mhfl6jyUupYZjQVy0M6GGfoNgo5Di6CtkhPpHatU8CjZClR7wUSmb3+M
-	 /RQ+KRjmRgX8XvgosKz/1e+nV3HUERcPcGU5r9EE=
+	b=JuELbz4/9Mi0/fU3iyvMYkHvPUSufuzOQZUaXucrNoxYBb/gUbU70Qb+WfzG6IOn/
+	 kuHGuRq31GfPTozHMCpIBDOtJ8aV5vBz9fI3Li43StAUAsvq5F0/bnWQQjciMeT6+x
+	 EueB6+LDd25C18ctJqttNmcMnGFc4XNoSSKMxrAo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Douglas Anderson <dianders@chromium.org>,
-	Damon Ding <damon.ding@rock-chips.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 274/411] drm/bridge: analogix_dp: Add irq flag IRQF_NO_AUTOEN instead of calling disable_irq()
+	Shyam Prasad N <sprasad@microsoft.com>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.15 460/592] cifs: do not disable interface polling on failure
 Date: Mon, 23 Jun 2025 15:06:58 +0200
-Message-ID: <20250623130640.551990577@linuxfoundation.org>
+Message-ID: <20250623130711.369242685@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
-References: <20250623130632.993849527@linuxfoundation.org>
+In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
+References: <20250623130700.210182694@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,58 +61,74 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Damon Ding <damon.ding@rock-chips.com>
+From: Shyam Prasad N <sprasad@microsoft.com>
 
-[ Upstream commit efab13e7d13a641a22c7508cde6e1a5285161944 ]
+commit 42ca547b13a20e7cbb04fbdf8d5f089ac4bb35b7 upstream.
 
-The IRQF_NO_AUTOEN can be used for the drivers that don't want
-interrupts to be enabled automatically via devm_request_threaded_irq().
-Using this flag can provide be more robust compared to the way of
-calling disable_irq() after devm_request_threaded_irq() without the
-IRQF_NO_AUTOEN flag.
+When a server has multichannel enabled, we keep polling the server
+for interfaces periodically. However, when this query fails, we
+disable the polling. This can be problematic as it takes away the
+chance for the server to start advertizing again.
 
-Suggested-by: Douglas Anderson <dianders@chromium.org>
-Reviewed-by: Douglas Anderson <dianders@chromium.org>
-Signed-off-by: Damon Ding <damon.ding@rock-chips.com>
-Link: https://lore.kernel.org/r/20250310104114.2608063-2-damon.ding@rock-chips.com
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This change reschedules the delayed work, even if the current call
+failed. That way, multichannel sessions can recover.
+
+Signed-off-by: Shyam Prasad N <sprasad@microsoft.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/bridge/analogix/analogix_dp_core.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ fs/smb/client/connect.c |    6 +-----
+ fs/smb/client/smb2pdu.c |    9 +++++----
+ 2 files changed, 6 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/gpu/drm/bridge/analogix/analogix_dp_core.c b/drivers/gpu/drm/bridge/analogix/analogix_dp_core.c
-index f0305f833b6c0..8c35bc016dbcc 100644
---- a/drivers/gpu/drm/bridge/analogix/analogix_dp_core.c
-+++ b/drivers/gpu/drm/bridge/analogix/analogix_dp_core.c
-@@ -1771,10 +1771,10 @@ analogix_dp_probe(struct device *dev, struct analogix_dp_plat_data *plat_data)
- 		 * that we can get the current state of the GPIO.
- 		 */
- 		dp->irq = gpiod_to_irq(dp->hpd_gpiod);
--		irq_flags = IRQF_TRIGGER_RISING | IRQF_TRIGGER_FALLING;
-+		irq_flags = IRQF_TRIGGER_RISING | IRQF_TRIGGER_FALLING | IRQF_NO_AUTOEN;
- 	} else {
- 		dp->irq = platform_get_irq(pdev, 0);
--		irq_flags = 0;
-+		irq_flags = IRQF_NO_AUTOEN;
- 	}
+--- a/fs/smb/client/connect.c
++++ b/fs/smb/client/connect.c
+@@ -116,13 +116,9 @@ static void smb2_query_server_interfaces
+ 	rc = server->ops->query_server_interfaces(xid, tcon, false);
+ 	free_xid(xid);
  
- 	if (dp->irq == -ENXIO) {
-@@ -1791,7 +1791,6 @@ analogix_dp_probe(struct device *dev, struct analogix_dp_plat_data *plat_data)
- 		dev_err(&pdev->dev, "failed to request irq\n");
- 		goto err_disable_clk;
- 	}
--	disable_irq(dp->irq);
+-	if (rc) {
+-		if (rc == -EOPNOTSUPP)
+-			return;
+-
++	if (rc)
+ 		cifs_dbg(FYI, "%s: failed to query server interfaces: %d\n",
+ 				__func__, rc);
+-	}
  
- 	return dp;
+ 	queue_delayed_work(cifsiod_wq, &tcon->query_interfaces,
+ 			   (SMB_INTERFACE_POLL_INTERVAL * HZ));
+--- a/fs/smb/client/smb2pdu.c
++++ b/fs/smb/client/smb2pdu.c
+@@ -423,6 +423,10 @@ skip_sess_setup:
+ 		free_xid(xid);
+ 		ses->flags &= ~CIFS_SES_FLAGS_PENDING_QUERY_INTERFACES;
  
--- 
-2.39.5
-
++		/* regardless of rc value, setup polling */
++		queue_delayed_work(cifsiod_wq, &tcon->query_interfaces,
++				   (SMB_INTERFACE_POLL_INTERVAL * HZ));
++
+ 		mutex_unlock(&ses->session_mutex);
+ 
+ 		if (rc == -EOPNOTSUPP && ses->chan_count > 1) {
+@@ -443,11 +447,8 @@ skip_sess_setup:
+ 		if (ses->chan_max > ses->chan_count &&
+ 		    ses->iface_count &&
+ 		    !SERVER_IS_CHAN(server)) {
+-			if (ses->chan_count == 1) {
++			if (ses->chan_count == 1)
+ 				cifs_server_dbg(VFS, "supports multichannel now\n");
+-				queue_delayed_work(cifsiod_wq, &tcon->query_interfaces,
+-						 (SMB_INTERFACE_POLL_INTERVAL * HZ));
+-			}
+ 
+ 			cifs_try_adding_channels(ses);
+ 		}
 
 
 
