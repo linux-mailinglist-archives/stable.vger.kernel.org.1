@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-156809-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156420-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 32683AE513A
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:32:02 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 51C31AE4F76
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:16:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4A9663BF9D2
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:31:37 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3185D1B60F96
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:16:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2FEF77080C;
-	Mon, 23 Jun 2025 21:31:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0038D1FE46D;
+	Mon, 23 Jun 2025 21:16:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tVvQRX8B"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PRGxz5eK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF910C2E0;
-	Mon, 23 Jun 2025 21:31:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACE927482;
+	Mon, 23 Jun 2025 21:16:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750714319; cv=none; b=Ee2uLZFWVnbq+WkCpxQz6WDcK1OTlydgiM39RVo+LfSNl19cj12j9ENkXJ3YPr3maFAOpak6YqE6MZikCun0/+INh+5X55UjmkNubi9XI3FPyvM5tW0g9aLc7vG4GLLBAl3pKPfCbAkTzfVDUjqc25n1yHvQHwc1xg3Uh+1bgWQ=
+	t=1750713370; cv=none; b=sqwPddlzA3w0NPVU3AfQXAuchdabI2dX+axMY7pM+JUXVBRS5MoI1LezvhXLxaDuLCUZxsxY1hGS49wcP4O8+bs1soukcYCRIsIkSZUEJ6HsGKfwv4hmarqkPSvCqzKu/2QdqWq69T7tysNYXDoOG8ZUcjXctmdHRj1rYRD0HcY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750714319; c=relaxed/simple;
-	bh=13SSKrJr0/9GxJu0hnA0x8qWxF/x5uvejsM5bWmLGQg=;
+	s=arc-20240116; t=1750713370; c=relaxed/simple;
+	bh=UaIUNznorEkse28JALflmvsFp2JJFkHHrfgWpVpeIds=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jst7qPSEoLq35jHzKf9WD6AjjPotfbPfJluChZjJncVXaBwbE9fvPqfx4mPwMZfc1+Jizcb/s4KbS6AJcyQU88ELp4cDzg5Z3V3F51uR/mlHmdAnyg/yo9GEbfCIw6+r5faOP7YBOURPlMy4nnzah0wj/LeaN2afXmnkzKFPJ5U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tVvQRX8B; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77CC4C4CEEA;
-	Mon, 23 Jun 2025 21:31:58 +0000 (UTC)
+	 MIME-Version:Content-Type; b=bl1hVAAJ+WRBMAf9OS2S4HFIrxNesfinUDvYBuVLJrUWKRu/MV4qyDl+cUfWcw4mj44z7KSBxhrtQlWliZtNk/LuKVK5DHYtQ7CY8ytEAkPHlhIRQG859nLRhMDQwwZIUnOsRl4trUACF0dAs98jlfN6zRvJaHur74SRbhnkTS4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PRGxz5eK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 425A2C4CEEA;
+	Mon, 23 Jun 2025 21:16:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750714318;
-	bh=13SSKrJr0/9GxJu0hnA0x8qWxF/x5uvejsM5bWmLGQg=;
+	s=korg; t=1750713370;
+	bh=UaIUNznorEkse28JALflmvsFp2JJFkHHrfgWpVpeIds=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tVvQRX8BtFFltb8zku1e4V52nF4CRxUXkAAN6FmvqxT/X/lJ1QtT4FGkpk9U/YY3Z
-	 tFX8Jx262TTrJi9u7KJ/utW770g3pnKnJtNf6via0zX/F/jnWZucneM+YQ8AAhbQfW
-	 ggKKvZShVfJRqYQiJSVRiLOnEvutycsLQzDeXk58=
+	b=PRGxz5eK2MxMkU/rtrVb7g4VF6LLTPJRZoSqty3aNFQQKaP7YNhMfdqL5/lexd7Ce
+	 QMBy6f13EA66semjfqrD8tRPVFH2t7iq4g3i1ZasE7onpxzhwgnEsu7AaBMasINcGi
+	 HVLYKTGcJFooC4jOW3Dld0ejaesHMZkNFmnexcNc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
-	Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
-	Johannes Berg <johannes.berg@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 383/592] wifi: iwlwifi: pcie: make sure to lock rxq->read
+	=?UTF-8?q?Beno=C3=AEt=20Sevens?= <bsevens@google.com>,
+	Oleg Nesterov <oleg@redhat.com>,
+	Linus Torvalds <torvalds@linux-foundation.org>
+Subject: [PATCH 5.10 140/355] posix-cpu-timers: fix race between handle_posix_cpu_timers() and posix_cpu_timer_del()
 Date: Mon, 23 Jun 2025 15:05:41 +0200
-Message-ID: <20250623130709.552320909@linuxfoundation.org>
+Message-ID: <20250623130630.928893871@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
-References: <20250623130700.210182694@linuxfoundation.org>
+In-Reply-To: <20250623130626.716971725@linuxfoundation.org>
+References: <20250623130626.716971725@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,65 +60,60 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+From: Oleg Nesterov <oleg@redhat.com>
 
-[ Upstream commit 1cc2c48c4af81bed5ddbe9f2c9d6e20fa163acf9 ]
+commit f90fff1e152dedf52b932240ebbd670d83330eca upstream.
 
-rxq->read is accessed without the rxq->lock in a few places,
-Make sure to have the lock there.
+If an exiting non-autoreaping task has already passed exit_notify() and
+calls handle_posix_cpu_timers() from IRQ, it can be reaped by its parent
+or debugger right after unlock_task_sighand().
 
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Reviewed-by: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
-Tested-by: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
-Link: https://patch.msgid.link/20250424153620.73725f207aaa.I1a3e4b6c5fd370e029fdacfcdc9ee335788afa98@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+If a concurrent posix_cpu_timer_del() runs at that moment, it won't be
+able to detect timer->it.cpu.firing != 0: cpu_timer_task_rcu() and/or
+lock_task_sighand() will fail.
+
+Add the tsk->exit_state check into run_posix_cpu_timers() to fix this.
+
+This fix is not needed if CONFIG_POSIX_CPU_TIMERS_TASK_WORK=y, because
+exit_task_work() is called before exit_notify(). But the check still
+makes sense, task_work_add(&tsk->posix_cputimers_work.work) will fail
+anyway in this case.
+
+Cc: stable@vger.kernel.org
+Reported-by: Benoît Sevens <bsevens@google.com>
+Fixes: 0bdd2ed4138e ("sched: run_posix_cpu_timers: Don't check ->exit_state, use lock_task_sighand()")
+Signed-off-by: Oleg Nesterov <oleg@redhat.com>
+Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/intel/iwlwifi/pcie/trans.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ kernel/time/posix-cpu-timers.c |    9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/trans.c b/drivers/net/wireless/intel/iwlwifi/pcie/trans.c
-index 102a6123bba0e..4cc7a2e5746d2 100644
---- a/drivers/net/wireless/intel/iwlwifi/pcie/trans.c
-+++ b/drivers/net/wireless/intel/iwlwifi/pcie/trans.c
-@@ -2942,6 +2942,8 @@ static ssize_t iwl_dbgfs_rx_queue_read(struct file *file,
- 	for (i = 0; i < trans->num_rx_queues && pos < bufsz; i++) {
- 		struct iwl_rxq *rxq = &trans_pcie->rxq[i];
+--- a/kernel/time/posix-cpu-timers.c
++++ b/kernel/time/posix-cpu-timers.c
+@@ -1374,6 +1374,15 @@ void run_posix_cpu_timers(void)
+ 	lockdep_assert_irqs_disabled();
  
-+		spin_lock_bh(&rxq->lock);
+ 	/*
++	 * Ensure that release_task(tsk) can't happen while
++	 * handle_posix_cpu_timers() is running. Otherwise, a concurrent
++	 * posix_cpu_timer_del() may fail to lock_task_sighand(tsk) and
++	 * miss timer->it.cpu.firing != 0.
++	 */
++	if (tsk->exit_state)
++		return;
 +
- 		pos += scnprintf(buf + pos, bufsz - pos, "queue#: %2d\n",
- 				 i);
- 		pos += scnprintf(buf + pos, bufsz - pos, "\tread: %u\n",
-@@ -2962,6 +2964,7 @@ static ssize_t iwl_dbgfs_rx_queue_read(struct file *file,
- 			pos += scnprintf(buf + pos, bufsz - pos,
- 					 "\tclosed_rb_num: Not Allocated\n");
- 		}
-+		spin_unlock_bh(&rxq->lock);
- 	}
- 	ret = simple_read_from_buffer(user_buf, count, ppos, buf, pos);
- 	kfree(buf);
-@@ -3662,8 +3665,11 @@ iwl_trans_pcie_dump_data(struct iwl_trans *trans, u32 dump_mask,
- 		/* Dump RBs is supported only for pre-9000 devices (1 queue) */
- 		struct iwl_rxq *rxq = &trans_pcie->rxq[0];
- 		/* RBs */
-+		spin_lock_bh(&rxq->lock);
- 		num_rbs = iwl_get_closed_rb_stts(trans, rxq);
- 		num_rbs = (num_rbs - rxq->read) & RX_QUEUE_MASK;
-+		spin_unlock_bh(&rxq->lock);
-+
- 		len += num_rbs * (sizeof(*data) +
- 				  sizeof(struct iwl_fw_error_dump_rb) +
- 				  (PAGE_SIZE << trans_pcie->rx_page_order));
--- 
-2.39.5
-
++	/*
+ 	 * If the actual expiry is deferred to task work context and the
+ 	 * work is already scheduled there is no point to do anything here.
+ 	 */
 
 
 
