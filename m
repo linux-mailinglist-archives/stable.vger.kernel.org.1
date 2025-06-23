@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-157924-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-158030-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 83E3AAE563E
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:18:51 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9A4F7AE56FA
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:24:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2E8A44C7D85
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:17:55 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A73EF3AB8BD
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:21:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53D0222577C;
-	Mon, 23 Jun 2025 22:17:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3B2515ADB4;
+	Mon, 23 Jun 2025 22:21:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FUAD1Hlh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0XwcVSuz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 128281F6667;
-	Mon, 23 Jun 2025 22:17:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1618199FBA;
+	Mon, 23 Jun 2025 22:21:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750717053; cv=none; b=TAPV0ouzPznzebItKSI7gCHfsk4xtOFXAywAhGNcuSe9in+xS5MfzY9r7i0J5waXfxVP4KV3PV0tYOS32dWCCV+haneVFWKRo2wm45nxP6JtuWRBubLzPOgsIMDmaBz9ZYe8uCE7WUjcC9Z/NAWadWA7ibjwCJBavPwlqB5984M=
+	t=1750717311; cv=none; b=DcmbV6vhe9KzHE3ULsRzl0dMDLNGn8ynAL1h3bxwWS0udlquRU9uswj6+lxPK1mBRXErgm/CjwXOz59qsCOc4qvocsR4YL77lnmpbPh2HnSGOpKcSS9TuI74ztQA11skgNjDI51HPRcHjBGWdm6WPL/TcGTmrbrsWK4TFoEMKhc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750717053; c=relaxed/simple;
-	bh=P04UQJJZ9Q563hdWqSYY2YMVhOg6sK+HRM7/dxPkpgg=;
+	s=arc-20240116; t=1750717311; c=relaxed/simple;
+	bh=rf3abDnl2S3GrRxU8QgfFAcDLyD0gBBPGeR9dDxG6Hs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Y35U/wSp5jRAOVq/QUurVW3SCE9XisKhxvBitRxzOnwON14h12cWQncPi5cJyW8kMfOYwNHscz8/UzWuIZvdLom2sPgG2q9ek5XayVGHEjzLuqOa/zQ205XDqOr5EqelSpaRv0vjU4b8/+0upbd3Jn4+3/SVELKT4BAhg5aK2iw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FUAD1Hlh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9BFB0C4CEEA;
-	Mon, 23 Jun 2025 22:17:32 +0000 (UTC)
+	 MIME-Version; b=aE3chiHPGWMqVf/IZeKyiST/a82dG1YaZBv1b9HjwLeB1puu/lM2ZTI7kRqzYH1PCbNpADYdF2r7JBCpjEo7B7u39oMd3h+2WTopr4s7rAdpFQiFEEY+bTfCucH1209KTUK/7UQRgAZ+Z13/JnGR+pQCKjj3HD+9f2b8Mwj3xCY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0XwcVSuz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 495A8C4CEEA;
+	Mon, 23 Jun 2025 22:21:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750717052;
-	bh=P04UQJJZ9Q563hdWqSYY2YMVhOg6sK+HRM7/dxPkpgg=;
+	s=korg; t=1750717311;
+	bh=rf3abDnl2S3GrRxU8QgfFAcDLyD0gBBPGeR9dDxG6Hs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FUAD1HlhO5qp2FSrh5VJKtC1zkSaVhUlRU2QfKNsaANBp21R8A+dzT/AHJPFTqD/I
-	 0zbB68TUOi+sztpWamrLqPtKkXeGUMInrAp2Gqsp0cCxUyuPrhByGd9d5xjpSAu1g0
-	 /NOt3z9o9ujHZamTB44f3oIt01fFPZn8FVnSI/oI=
+	b=0XwcVSuzRuJBLWZb3uVmRxwhcuxxjqaf6edumw/IfO8h3PvkW44poiUSkgP5etWM/
+	 bxRFiXyvsCRZK07Wm2Kz/6lbqY6s30cB7z2yEjhuPrGyFjDQpg90txpTGS2sZyfCM/
+	 XD77ZCm62imXn90nq6YNzz/9CzXG1+dv3hPA5QYY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Dexuan Cui <decui@microsoft.com>,
-	Long Li <longli@microsoft.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>
-Subject: [PATCH 6.12 310/414] scsi: storvsc: Increase the timeouts to storvsc_timeout
+	Eric Dumazet <edumazet@google.com>,
+	Wei Wang <weiwan@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 402/508] tcp: fix initial tp->rcvq_space.space value for passive TS enabled flows
 Date: Mon, 23 Jun 2025 15:07:27 +0200
-Message-ID: <20250623130649.751377714@linuxfoundation.org>
+Message-ID: <20250623130655.134595843@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
-References: <20250623130642.015559452@linuxfoundation.org>
+In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
+References: <20250623130645.255320792@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,81 +63,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dexuan Cui <decui@microsoft.com>
+From: Eric Dumazet <edumazet@google.com>
 
-commit b2f966568faaad326de97481096d0f3dc0971c43 upstream.
+[ Upstream commit cd171461b90a2d2cf230943df60d580174633718 ]
 
-Currently storvsc_timeout is only used in storvsc_sdev_configure(), and
-5s and 10s are used elsewhere. It turns out that rarely the 5s is not
-enough on Azure, so let's use storvsc_timeout everywhere.
+tcp_rcv_state_process() must tweak tp->advmss for TS enabled flows
+before the call to tcp_init_transfer() / tcp_init_buffer_space().
 
-In case a timeout happens and storvsc_channel_init() returns an error,
-close the VMBus channel so that any host-to-guest messages in the
-channel's ringbuffer, which might come late, can be safely ignored.
+Otherwise tp->rcvq_space.space is off by 120 bytes
+(TCP_INIT_CWND * TCPOLEN_TSTAMP_ALIGNED).
 
-Add a "const" to storvsc_timeout.
-
-Cc: stable@kernel.org
-Signed-off-by: Dexuan Cui <decui@microsoft.com>
-Link: https://lore.kernel.org/r/1749243459-10419-1-git-send-email-decui@microsoft.com
-Reviewed-by: Long Li <longli@microsoft.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: Wei Wang <weiwan@google.com>
+Link: https://patch.msgid.link/20250513193919.1089692-7-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/storvsc_drv.c |   10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
+ net/ipv4/tcp_input.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
---- a/drivers/scsi/storvsc_drv.c
-+++ b/drivers/scsi/storvsc_drv.c
-@@ -362,7 +362,7 @@ MODULE_PARM_DESC(ring_avail_percent_lowa
- /*
-  * Timeout in seconds for all devices managed by this driver.
-  */
--static int storvsc_timeout = 180;
-+static const int storvsc_timeout = 180;
+diff --git a/net/ipv4/tcp_input.c b/net/ipv4/tcp_input.c
+index 1044e9bce2d88..2888aaae0d76f 100644
+--- a/net/ipv4/tcp_input.c
++++ b/net/ipv4/tcp_input.c
+@@ -6633,6 +6633,9 @@ int tcp_rcv_state_process(struct sock *sk, struct sk_buff *skb)
+ 		if (!tp->srtt_us)
+ 			tcp_synack_rtt_meas(sk, req);
  
- #if IS_ENABLED(CONFIG_SCSI_FC_ATTRS)
- static struct scsi_transport_template *fc_transport_template;
-@@ -768,7 +768,7 @@ static void  handle_multichannel_storage
- 		return;
- 	}
++		if (tp->rx_opt.tstamp_ok)
++			tp->advmss -= TCPOLEN_TSTAMP_ALIGNED;
++
+ 		if (req) {
+ 			tcp_rcv_synrecv_state_fastopen(sk);
+ 		} else {
+@@ -6657,9 +6660,6 @@ int tcp_rcv_state_process(struct sock *sk, struct sk_buff *skb)
+ 		tp->snd_wnd = ntohs(th->window) << tp->rx_opt.snd_wscale;
+ 		tcp_init_wl(tp, TCP_SKB_CB(skb)->seq);
  
--	t = wait_for_completion_timeout(&request->wait_event, 10*HZ);
-+	t = wait_for_completion_timeout(&request->wait_event, storvsc_timeout * HZ);
- 	if (t == 0) {
- 		dev_err(dev, "Failed to create sub-channel: timed out\n");
- 		return;
-@@ -833,7 +833,7 @@ static int storvsc_execute_vstor_op(stru
- 	if (ret != 0)
- 		return ret;
+-		if (tp->rx_opt.tstamp_ok)
+-			tp->advmss -= TCPOLEN_TSTAMP_ALIGNED;
+-
+ 		if (!inet_csk(sk)->icsk_ca_ops->cong_control)
+ 			tcp_update_pacing_rate(sk);
  
--	t = wait_for_completion_timeout(&request->wait_event, 5*HZ);
-+	t = wait_for_completion_timeout(&request->wait_event, storvsc_timeout * HZ);
- 	if (t == 0)
- 		return -ETIMEDOUT;
- 
-@@ -1351,6 +1351,8 @@ static int storvsc_connect_to_vsp(struct
- 		return ret;
- 
- 	ret = storvsc_channel_init(device, is_fc);
-+	if (ret)
-+		vmbus_close(device->channel);
- 
- 	return ret;
- }
-@@ -1668,7 +1670,7 @@ static int storvsc_host_reset_handler(st
- 	if (ret != 0)
- 		return FAILED;
- 
--	t = wait_for_completion_timeout(&request->wait_event, 5*HZ);
-+	t = wait_for_completion_timeout(&request->wait_event, storvsc_timeout * HZ);
- 	if (t == 0)
- 		return TIMEOUT_ERROR;
- 
+-- 
+2.39.5
+
 
 
 
