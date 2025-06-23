@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-157148-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156746-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 10889AE52AE
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:46:45 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 040BCAE50EF
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:29:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D74021B65A78
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:47:00 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 21DB6440CF6
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:29:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B7B4227B8E;
-	Mon, 23 Jun 2025 21:45:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F5402206BB;
+	Mon, 23 Jun 2025 21:29:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wikFzdgP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UmlQISLz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09DE7221FBE;
-	Mon, 23 Jun 2025 21:45:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E044C1E5B71;
+	Mon, 23 Jun 2025 21:29:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750715152; cv=none; b=bZJeRj2e9DiWIF4eO+CwzHzuJYFyS3e/WKi2gV0wMEwlrmqul/fsB/lNhMskZJ4DwI1JI5L+fNtTJBSpStvxqsdoQsKnSnDLcJI4bzaYVzTW41OuZt56PyCeeqx/ZM5Bh74I0rms7/bhh8UHB/XbhPrhQXY0avTse0SAS/GRXfI=
+	t=1750714165; cv=none; b=Tnoipi8oRb/jpL91asjtXFh74mQxpgCebnlGA1LDVFXjfusSozcpoGCrzEyQI3ymE4TPtwzA3yajYMSfNJXzRoHquakugTfZTcMXaGCqS//wiCOvksMRNl5L2RmRavrma5OTvKj2qCE2Q4XlrXS+4tYLZF8Bs+01lMsu2AovaJ4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750715152; c=relaxed/simple;
-	bh=VU5EBAqcrpRBVGS/iNd+rTUhbOxJSJiZn8nlVFy5tGg=;
+	s=arc-20240116; t=1750714165; c=relaxed/simple;
+	bh=LtCeVzFILe97aJZ9WouchTg2C/4otRrWoBcvhUaAnOs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EeWJYAKHN9gzKHo/nnVxmkouefvRQif2luc1zk06ABwBDbmRKhcanuuXKkyX9nv/VRe+heMt4PUY8aa2Wyjc7oSLOsMHFjbXt6gnZE8vfBg1JCtBWSQ9aNWwskK7AdcQ8sCR0WSfysIpN2TCFoqVRnx6fGG13FAbJgWXjfGA+qg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wikFzdgP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95D8BC4CEEA;
-	Mon, 23 Jun 2025 21:45:51 +0000 (UTC)
+	 MIME-Version; b=DHVE46Ikk68s7UN+Oyw3WZfaJLNO1t4Of0/9UeOnhSzCSRApvtbD2ASlMbve6B96zEEUbHUu8OvxnAm0Ux56xTcj8D1ep/mMLeZi0V4TC8j8SUrzRyeSFA8KD4iC7wHKx9FMQxrq/jq8eR/kRb+7oeTa8IQTiE/vH027j0rzo4A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UmlQISLz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7965BC4CEEA;
+	Mon, 23 Jun 2025 21:29:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750715151;
-	bh=VU5EBAqcrpRBVGS/iNd+rTUhbOxJSJiZn8nlVFy5tGg=;
+	s=korg; t=1750714164;
+	bh=LtCeVzFILe97aJZ9WouchTg2C/4otRrWoBcvhUaAnOs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wikFzdgPUgPcN49P7UDtts7Z2Jmr/YbYcW6oCAcc2J3YrR6RYXu026BNW436JLdnk
-	 zWVfK3tPOHP3azl5G5RuQLnx7zeGreBlFmI6JRZWhWJMZD5p99O+8qciz2eb5eHTdb
-	 ui59oRZvrfnmKYXfrMvtWHYVueay0NOVqefGtN4o=
+	b=UmlQISLz+/EWmU83DVwtKXAjDjdHLYJ/+QCw32kFhiGO863uh2yFb+rR4XcXgRCwr
+	 dxQLcNCzmFVboWXyfacr3XZ3XBwfOLz78DpM42KUx0d+rJQfNGrRjqVm3HKbx6l4aA
+	 hsWMK187Xbdqmd/Zwnnudbc/XzOS92HTZ2XOUjHo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Da Xue <da@libre.computer>,
-	Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
-	Jerome Brunet <jbrunet@baylibre.com>
-Subject: [PATCH 5.15 239/411] clk: meson-g12a: add missing fclk_div2 to spicc
+	Luke Wang <ziniu.wang_1@nxp.com>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 122/290] mmc: sdhci-esdhc-imx: Save tuning value when card stays powered in suspend
 Date: Mon, 23 Jun 2025 15:06:23 +0200
-Message-ID: <20250623130639.672031691@linuxfoundation.org>
+Message-ID: <20250623130630.603626108@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
-References: <20250623130632.993849527@linuxfoundation.org>
+In-Reply-To: <20250623130626.910356556@linuxfoundation.org>
+References: <20250623130626.910356556@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,42 +63,195 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Da Xue <da@libre.computer>
+From: Luke Wang <ziniu.wang_1@nxp.com>
 
-commit daf004f87c3520c414992893e2eadd5db5f86a5a upstream.
+[ Upstream commit c63d25cdc59ae2891b39ba2da950910291d9bcbf ]
 
-SPICC is missing fclk_div2, which means fclk_div5 and fclk_div7 indexes
-are wrong on this clock. This causes the spicc module to output sclk at
-2.5x the expected rate when clock index 3 is picked.
+For SoCs like i.MX6UL(L/Z) and i.MX7D, USDHC powers off completely during
+system power management (PM), causing the internal tuning status to be
+lost. To address this, save the tuning value when system suspend and
+restore it for any command issued after system resume when re-tuning is
+held.
 
-Adding the missing fclk_div2 resolves this.
+A typical case involves SDIO WiFi devices with the MMC_PM_KEEP_POWER and
+MMC_PM_WAKE_SDIO_IRQ flag, which retain power during system PM. To
+conserve power, WiFi switches to 1-bit mode and restores 4-bit mode upon
+resume. As per the specification, tuning commands are not supported in
+1-bit mode. When sending CMD52 to restore 4-bit mode, re-tuning must be
+held. However, CMD52 still requires a correct sample point to avoid CRC
+errors, necessitating preservation of the previous tuning value.
 
-[jbrunet: amended commit description]
-Fixes: a18c8e0b7697 ("clk: meson: g12a: add support for the SPICC SCLK Source clocks")
-Cc: stable@vger.kernel.org # 6.1
-Signed-off-by: Da Xue <da@libre.computer>
-Reviewed-by: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
-Link: https://lore.kernel.org/r/20250512142617.2175291-1-da@libre.computer
-Signed-off-by: Jerome Brunet <jbrunet@baylibre.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Luke Wang <ziniu.wang_1@nxp.com>
+Acked-by: Adrian Hunter <adrian.hunter@intel.com>
+Link: https://lore.kernel.org/r/20250328112517.2624806-1-ziniu.wang_1@nxp.com
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/meson/g12a.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/mmc/host/sdhci-esdhc-imx.c | 88 +++++++++++++++++++++++++++++-
+ 1 file changed, 86 insertions(+), 2 deletions(-)
 
---- a/drivers/clk/meson/g12a.c
-+++ b/drivers/clk/meson/g12a.c
-@@ -3969,6 +3969,7 @@ static const struct clk_parent_data spic
- 	{ .hw = &g12a_clk81.hw },
- 	{ .hw = &g12a_fclk_div4.hw },
- 	{ .hw = &g12a_fclk_div3.hw },
-+	{ .hw = &g12a_fclk_div2.hw },
- 	{ .hw = &g12a_fclk_div5.hw },
- 	{ .hw = &g12a_fclk_div7.hw },
+diff --git a/drivers/mmc/host/sdhci-esdhc-imx.c b/drivers/mmc/host/sdhci-esdhc-imx.c
+index e4e9b84f210b2..28ece6839aead 100644
+--- a/drivers/mmc/host/sdhci-esdhc-imx.c
++++ b/drivers/mmc/host/sdhci-esdhc-imx.c
+@@ -80,6 +80,8 @@
+ #define  ESDHC_TUNE_CTRL_STEP		1
+ #define  ESDHC_TUNE_CTRL_MIN		0
+ #define  ESDHC_TUNE_CTRL_MAX		((1 << 7) - 1)
++#define  ESDHC_TUNE_CTRL_STATUS_TAP_SEL_PRE_MASK	GENMASK(30, 24)
++#define  ESDHC_TUNE_CTRL_STATUS_DLY_CELL_SET_PRE_MASK	GENMASK(14, 8)
+ 
+ /* strobe dll register */
+ #define ESDHC_STROBE_DLL_CTRL		0x70
+@@ -231,6 +233,7 @@ struct esdhc_platform_data {
+ 	unsigned int tuning_step;       /* The delay cell steps in tuning procedure */
+ 	unsigned int tuning_start_tap;	/* The start delay cell point in tuning procedure */
+ 	unsigned int strobe_dll_delay_target;	/* The delay cell for strobe pad (read clock) */
++	unsigned int saved_tuning_delay_cell;	/* save the value of tuning delay cell */
  };
+ 
+ struct esdhc_soc_data {
+@@ -1052,7 +1055,7 @@ static void esdhc_reset_tuning(struct sdhci_host *host)
+ {
+ 	struct sdhci_pltfm_host *pltfm_host = sdhci_priv(host);
+ 	struct pltfm_imx_data *imx_data = sdhci_pltfm_priv(pltfm_host);
+-	u32 ctrl;
++	u32 ctrl, tuning_ctrl;
+ 	int ret;
+ 
+ 	/* Reset the tuning circuit */
+@@ -1066,6 +1069,16 @@ static void esdhc_reset_tuning(struct sdhci_host *host)
+ 			writel(0, host->ioaddr + ESDHC_TUNE_CTRL_STATUS);
+ 		} else if (imx_data->socdata->flags & ESDHC_FLAG_STD_TUNING) {
+ 			writel(ctrl, host->ioaddr + ESDHC_MIX_CTRL);
++			/*
++			 * enable the std tuning just in case it cleared in
++			 * sdhc_esdhc_tuning_restore.
++			 */
++			tuning_ctrl = readl(host->ioaddr + ESDHC_TUNING_CTRL);
++			if (!(tuning_ctrl & ESDHC_STD_TUNING_EN)) {
++				tuning_ctrl |= ESDHC_STD_TUNING_EN;
++				writel(tuning_ctrl, host->ioaddr + ESDHC_TUNING_CTRL);
++			}
++
+ 			ctrl = readl(host->ioaddr + SDHCI_AUTO_CMD_STATUS);
+ 			ctrl &= ~ESDHC_MIX_CTRL_SMPCLK_SEL;
+ 			ctrl &= ~ESDHC_MIX_CTRL_EXE_TUNE;
+@@ -1144,7 +1157,8 @@ static void esdhc_prepare_tuning(struct sdhci_host *host, u32 val)
+ 	reg |= ESDHC_MIX_CTRL_EXE_TUNE | ESDHC_MIX_CTRL_SMPCLK_SEL |
+ 			ESDHC_MIX_CTRL_FBCLK_SEL;
+ 	writel(reg, host->ioaddr + ESDHC_MIX_CTRL);
+-	writel(val << 8, host->ioaddr + ESDHC_TUNE_CTRL_STATUS);
++	writel(FIELD_PREP(ESDHC_TUNE_CTRL_STATUS_DLY_CELL_SET_PRE_MASK, val),
++	       host->ioaddr + ESDHC_TUNE_CTRL_STATUS);
+ 	dev_dbg(mmc_dev(host->mmc),
+ 		"tuning with delay 0x%x ESDHC_TUNE_CTRL_STATUS 0x%x\n",
+ 			val, readl(host->ioaddr + ESDHC_TUNE_CTRL_STATUS));
+@@ -1532,6 +1546,57 @@ static void sdhci_esdhc_imx_hwinit(struct sdhci_host *host)
+ 	}
+ }
+ 
++static void sdhc_esdhc_tuning_save(struct sdhci_host *host)
++{
++	struct sdhci_pltfm_host *pltfm_host = sdhci_priv(host);
++	struct pltfm_imx_data *imx_data = sdhci_pltfm_priv(pltfm_host);
++	u32 reg;
++
++	/*
++	 * SD/eMMC do not need this tuning save because it will re-init
++	 * after system resume back.
++	 * Here save the tuning delay value for SDIO device since it may
++	 * keep power during system PM. And for usdhc, only SDR50 and
++	 * SDR104 mode for SDIO device need to do tuning, and need to
++	 * save/restore.
++	 */
++	if (host->timing == MMC_TIMING_UHS_SDR50 ||
++	    host->timing == MMC_TIMING_UHS_SDR104) {
++		reg = readl(host->ioaddr + ESDHC_TUNE_CTRL_STATUS);
++		reg = FIELD_GET(ESDHC_TUNE_CTRL_STATUS_TAP_SEL_PRE_MASK, reg);
++		imx_data->boarddata.saved_tuning_delay_cell = reg;
++	}
++}
++
++static void sdhc_esdhc_tuning_restore(struct sdhci_host *host)
++{
++	struct sdhci_pltfm_host *pltfm_host = sdhci_priv(host);
++	struct pltfm_imx_data *imx_data = sdhci_pltfm_priv(pltfm_host);
++	u32 reg;
++
++	if (host->timing == MMC_TIMING_UHS_SDR50 ||
++	    host->timing == MMC_TIMING_UHS_SDR104) {
++		/*
++		 * restore the tuning delay value actually is a
++		 * manual tuning method, so clear the standard
++		 * tuning enable bit here. Will set back this
++		 * ESDHC_STD_TUNING_EN in esdhc_reset_tuning()
++		 * when trigger re-tuning.
++		 */
++		reg = readl(host->ioaddr + ESDHC_TUNING_CTRL);
++		reg &= ~ESDHC_STD_TUNING_EN;
++		writel(reg, host->ioaddr + ESDHC_TUNING_CTRL);
++
++		reg = readl(host->ioaddr + ESDHC_MIX_CTRL);
++		reg |= ESDHC_MIX_CTRL_SMPCLK_SEL | ESDHC_MIX_CTRL_FBCLK_SEL;
++		writel(reg, host->ioaddr + ESDHC_MIX_CTRL);
++
++		writel(FIELD_PREP(ESDHC_TUNE_CTRL_STATUS_DLY_CELL_SET_PRE_MASK,
++				  imx_data->boarddata.saved_tuning_delay_cell),
++		       host->ioaddr + ESDHC_TUNE_CTRL_STATUS);
++	}
++}
++
+ static void esdhc_cqe_enable(struct mmc_host *mmc)
+ {
+ 	struct sdhci_host *host = mmc_priv(mmc);
+@@ -1856,6 +1921,15 @@ static int sdhci_esdhc_suspend(struct device *dev)
+ 	if (host->tuning_mode != SDHCI_TUNING_MODE_3)
+ 		mmc_retune_needed(host->mmc);
+ 
++	/*
++	 * For the device need to keep power during system PM, need
++	 * to save the tuning delay value just in case the usdhc
++	 * lost power during system PM.
++	 */
++	if (mmc_card_keep_power(host->mmc) && mmc_card_wake_sdio_irq(host->mmc) &&
++	    esdhc_is_usdhc(imx_data))
++		sdhc_esdhc_tuning_save(host);
++
+ 	ret = sdhci_suspend_host(host);
+ 	if (ret)
+ 		return ret;
+@@ -1872,6 +1946,8 @@ static int sdhci_esdhc_suspend(struct device *dev)
+ static int sdhci_esdhc_resume(struct device *dev)
+ {
+ 	struct sdhci_host *host = dev_get_drvdata(dev);
++	struct sdhci_pltfm_host *pltfm_host = sdhci_priv(host);
++	struct pltfm_imx_data *imx_data = sdhci_pltfm_priv(pltfm_host);
+ 	int ret;
+ 
+ 	ret = pinctrl_pm_select_default_state(dev);
+@@ -1885,6 +1961,14 @@ static int sdhci_esdhc_resume(struct device *dev)
+ 	if (ret)
+ 		return ret;
+ 
++	/*
++	 * restore the saved tuning delay value for the device which keep
++	 * power during system PM.
++	 */
++	if (mmc_card_keep_power(host->mmc) && mmc_card_wake_sdio_irq(host->mmc) &&
++	    esdhc_is_usdhc(imx_data))
++		sdhc_esdhc_tuning_restore(host);
++
+ 	if (host->mmc->caps2 & MMC_CAP2_CQE)
+ 		ret = cqhci_resume(host->mmc);
+ 
+-- 
+2.39.5
+
 
 
 
