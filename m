@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-156432-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157302-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D9BCEAE4F91
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:17:26 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id ED986AE536D
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:53:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B8A481B6118D
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:17:42 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C4F027AF181
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:51:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2111B2236E9;
-	Mon, 23 Jun 2025 21:16:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E9A4223DEF;
+	Mon, 23 Jun 2025 21:52:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZAFXVtH1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="n63QtS1U"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0B761FE46D;
-	Mon, 23 Jun 2025 21:16:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0147223DED;
+	Mon, 23 Jun 2025 21:52:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750713399; cv=none; b=SMXK9Ez5uoc/XpJ2N+5JfQb5hwsCQk0SrDLr4dMWt8y+NhjywHy+8XrLcuaQrA3ZHIVheIIXdEeEfCVmHJoCUOkyRhY11T5Fdo0NQ3Tuq1pfgKHKKFaOKuBWISN9KGMS1FH8wJWiJD+QNHEBe+HKULD3vFAXtfKg3PARFTn0WEs=
+	t=1750715536; cv=none; b=NrhFpcQgZmms1CWfy/UgLFfj0VXiM+YUK8bGp8O+FvmxrgYJdNQsKNL0kbTonxKy6Xi4T+Lk6uGz5OkcVl+m3AuBUHo220HKDJ9y73KD5nhR4k4r0+sKaZI3mrzQl2eE43DejzB3bac0QxoEg1H6fddZx0LNkYOr9eS0/wgZMF4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750713399; c=relaxed/simple;
-	bh=aS0X4SJaG4DLGiC2IfCHk7GURUlU2tApPlsc0teruW0=;
+	s=arc-20240116; t=1750715536; c=relaxed/simple;
+	bh=bUtVv/oMRkDLUCeb2hY9zHJpjk134RcY1B3VJT4dswo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=D6UeX370xY2zCRuDlrhW/+L7+1kNydk6Qq/7IyRBWckvoIhH9LO8a0jUy3K8MCHc0rVb/afda+EcEzXgAYal5x+5qQ/Yk8G1qAXnDHkgnzRHsgzK3Zf8UQ6XbN/xGTnhhYH7Nc/oS3mtw1pT2LXvxSMQTQ7hAELjbGbb0WBpNUA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZAFXVtH1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68D6DC4CEEA;
-	Mon, 23 Jun 2025 21:16:39 +0000 (UTC)
+	 MIME-Version; b=LSEzwj+Th5ZLBIJXiM4UZJoY2HS2mHeb8UtnHB1muEgUP38lZqUyvlKwLTnH5ShjiII5CYUMFv2wK2XGzLnqT80IxCgZERcXgi1H767vgzW3WwdToPUSwu0XOi0e5Q3pjlaC70wYzpmWhBRZJxkVPI/d95JtetUcNa211ssYjfA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=n63QtS1U; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86B46C4CEEA;
+	Mon, 23 Jun 2025 21:52:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750713399;
-	bh=aS0X4SJaG4DLGiC2IfCHk7GURUlU2tApPlsc0teruW0=;
+	s=korg; t=1750715535;
+	bh=bUtVv/oMRkDLUCeb2hY9zHJpjk134RcY1B3VJT4dswo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZAFXVtH16ZJDcFv2qzGzWMm+R9LIZvjEsGMRG0vpnTPyc5KJmGiTpUwVav9WMYzAc
-	 eCRt4WgXro4LbsSj2FFQBmjYekMtBn2PLm1eLlecZVwbO6orNyXw6L64U/tKYTuBgR
-	 MQgbkH2gk/A5N38LVg5vZJ1NUTbF8IT7Vr5rNdSc=
+	b=n63QtS1UxUsR99xPjJOgKW4PnE4a4UvCcRzeWDzB4VqxPw6eqQqjLiaGl+3qrX5nd
+	 1Xnm3F+ou6yloC+382/oi8xlYVqSF89ydFpPesXN9SPIr5TP1ivuDYTtnweJoVxvMw
+	 yRNBo2idAARKyHbM1UqN9UIanIrTvh68VfVkCs8A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chao Gao <chao.gao@intel.com>,
-	Kai Huang <kai.huang@intel.com>,
-	Sean Christopherson <seanjc@google.com>
-Subject: [PATCH 6.6 088/290] KVM: VMX: Flush shadow VMCS on emergency reboot
+	Kang Yang <kang.yang@oss.qualcomm.com>,
+	Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>,
+	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 212/414] wifi: ath12k: fix macro definition HAL_RX_MSDU_PKT_LENGTH_GET
 Date: Mon, 23 Jun 2025 15:05:49 +0200
-Message-ID: <20250623130629.626637301@linuxfoundation.org>
+Message-ID: <20250623130647.308714983@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130626.910356556@linuxfoundation.org>
-References: <20250623130626.910356556@linuxfoundation.org>
+In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
+References: <20250623130642.015559452@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,53 +63,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chao Gao <chao.gao@intel.com>
+From: Kang Yang <kang.yang@oss.qualcomm.com>
 
-commit a0ee1d5faff135e28810f29e0f06328c66f89852 upstream.
+[ Upstream commit a69bbf89d751ba2d6da21d773c4e29c91c5e53c4 ]
 
-Ensure the shadow VMCS cache is evicted during an emergency reboot to
-prevent potential memory corruption if the cache is evicted after reboot.
+Currently, HAL_RX_MSDU_PKT_LENGTH_GET uses u32_get_bits to obtain the
+MSDU length from the MSDU description.
 
-This issue was identified through code inspection, as __loaded_vmcs_clear()
-flushes both the normal VMCS and the shadow VMCS.
+This is not right. Because all halphy descriptions are little endian.
 
-Avoid checking the "launched" state during an emergency reboot, unlike the
-behavior in __loaded_vmcs_clear(). This is important because reboot NMIs
-can interfere with operations like copy_shadow_to_vmcs12(), where shadow
-VMCSes are loaded directly using VMPTRLD. In such cases, if NMIs occur
-right after the VMCS load, the shadow VMCSes will be active but the
-"launched" state may not be set.
+So use le32_get_bits for HAL_RX_MSDU_PKT_LENGTH_GET.
 
-Fixes: 16f5b9034b69 ("KVM: nVMX: Copy processor-specific shadow-vmcs to VMCS12")
-Cc: stable@vger.kernel.org
-Signed-off-by: Chao Gao <chao.gao@intel.com>
-Reviewed-by: Kai Huang <kai.huang@intel.com>
-Link: https://lore.kernel.org/r/20250324140849.2099723-1-chao.gao@intel.com
-Signed-off-by: Sean Christopherson <seanjc@google.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0.c5-00481-QCAHMTSWPL_V1.0_V2.0_SILICONZ-3
+Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.3.1-00173-QCAHKSWPL_SILICONZ-1
+
+Signed-off-by: Kang Yang <kang.yang@oss.qualcomm.com>
+Reviewed-by: Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>
+Link: https://patch.msgid.link/20250421023444.1778-9-kang.yang@oss.qualcomm.com
+Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kvm/vmx/vmx.c |    5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/net/wireless/ath/ath12k/hal_desc.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/x86/kvm/vmx/vmx.c
-+++ b/arch/x86/kvm/vmx/vmx.c
-@@ -787,8 +787,11 @@ static void vmx_emergency_disable(void)
- 		return;
+diff --git a/drivers/net/wireless/ath/ath12k/hal_desc.h b/drivers/net/wireless/ath/ath12k/hal_desc.h
+index c68998e9667c9..8cbe28950d0c0 100644
+--- a/drivers/net/wireless/ath/ath12k/hal_desc.h
++++ b/drivers/net/wireless/ath/ath12k/hal_desc.h
+@@ -705,7 +705,7 @@ enum hal_rx_msdu_desc_reo_dest_ind {
+ #define RX_MSDU_DESC_INFO0_DECAP_FORMAT		GENMASK(30, 29)
  
- 	list_for_each_entry(v, &per_cpu(loaded_vmcss_on_cpu, cpu),
--			    loaded_vmcss_on_cpu_link)
-+			    loaded_vmcss_on_cpu_link) {
- 		vmcs_clear(v->vmcs);
-+		if (v->shadow_vmcs)
-+			vmcs_clear(v->shadow_vmcs);
-+	}
+ #define HAL_RX_MSDU_PKT_LENGTH_GET(val)		\
+-	(u32_get_bits((val), RX_MSDU_DESC_INFO0_MSDU_LENGTH))
++	(le32_get_bits((val), RX_MSDU_DESC_INFO0_MSDU_LENGTH))
  
- 	kvm_cpu_vmxoff();
- }
+ struct rx_msdu_desc {
+ 	__le32 info0;
+-- 
+2.39.5
+
 
 
 
