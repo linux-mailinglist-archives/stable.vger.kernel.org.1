@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-157422-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157552-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 50EB7AE53EF
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:57:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 12EB3AE5491
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:02:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8BD1E3B7D96
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:56:47 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0E7694441A6
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:02:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57632223DEE;
-	Mon, 23 Jun 2025 21:57:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 593861E22E6;
+	Mon, 23 Jun 2025 22:02:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ka9OfhaL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a9DbdRn2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13BC43FB1B;
-	Mon, 23 Jun 2025 21:57:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 168623FB1B;
+	Mon, 23 Jun 2025 22:02:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750715827; cv=none; b=Up64l5B/bSj0FQaxT1hCAyzJYUZtimVgmArKxEa8vFwMahOul+QrnzUs5/NUIeMmWCwXELV7JuP3Zdbn4i5x5kLbcQjKQHT1Mc/CKrjUpxUEacEQ1/DtLaMMLF/Iwzlwtw1ynSK9aq2k9QtIM9LGeOk3cRXbOxRhP/1g0b9Jyx4=
+	t=1750716147; cv=none; b=neMXVq/xBf24MdW8ICo1rsgvofKsElE1ATmTeKIY2Jw2mBm/xr3tRleVG91o5uMaVS7hWq9uU76rJBsBzXHZdJ1kFBV9l5nFEMRv9JrjdyQA52Jabnjhz6SO+1/SVXhY3VCYn4u0QGqR2tofp/Pcc10/FWK5UPBnU22/BZ8mMLA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750715827; c=relaxed/simple;
-	bh=am+gENgPEoAH2gHsqG1n7jGrb6VDEFw6W4u4Gb5ZAWg=;
+	s=arc-20240116; t=1750716147; c=relaxed/simple;
+	bh=D6PRV+QxArvZo+UkfE8WRXn1tsZ4PJk5aQe3lVwVJx4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=R6ZV6MtR6imlD/Cg5BgT3t3GEdw3IIFDmkxlDXXyWbYwI3euWRGXuojqRHmNbp6D7FJXMiZ4PyF42gdn6xRnaRA+1HgpD9p7M+PhuD/GqcjcLUb1bVgUbXVIpZO0rxwRSve5Y8BvLizVORcjTTZ0+8yrGjEvbKK6cPMnWvCTsw8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ka9OfhaL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0618C4CEEA;
-	Mon, 23 Jun 2025 21:57:06 +0000 (UTC)
+	 MIME-Version; b=thia1gd0EK3H17uKVRML6118/h7GXqD4gZ1R1oKsWZbfg/4RDWlU4ye7rvAlTn7wVLn7R3LsLCODRe/xyKFj5nT3sIigSUGMaHtqfUTasjT4at7GbuRgrWJ/6bGvp5YkNSkOKEHBZG2nWHo704IqOyjW2XlsLdESplt9v8+D9sw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a9DbdRn2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97312C4CEEA;
+	Mon, 23 Jun 2025 22:02:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750715827;
-	bh=am+gENgPEoAH2gHsqG1n7jGrb6VDEFw6W4u4Gb5ZAWg=;
+	s=korg; t=1750716146;
+	bh=D6PRV+QxArvZo+UkfE8WRXn1tsZ4PJk5aQe3lVwVJx4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ka9OfhaLczQn2e/xw/07zN7k9TrKwfj4yF2RxK/FkA158eR+YAU8Imi5T/aVp6S7o
-	 Ghbf/MP0MSzpA8yxvW052YWu57Dpf6xu0AMq73lEuI6RdK8B5bhSTXIUyrEe5u4IRR
-	 dSx7oAnL98MsQYkzqpQi1dDZUWu2hyuVWd/torAE=
+	b=a9DbdRn27oqSvxW0YbUUvNnfvsUTRAoVIBJoVeC7QXWJsFlsAdvSMPfNnsvKSgBvq
+	 WgD+PGEJ26Ptp9y/1L5tr7swLyeDWA4MwWR0378RK6DNxoVxSzHfCRAVlDFcX9pCNq
+	 QTA+GdD5RAJ2wWpCdwnVlrxPkp1pVea/+Ng1ivRE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"James A. MacInnes" <james.a.macinnes@gmail.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	Eddie James <eajames@linux.ibm.com>,
+	Joel Stanley <joel@jms.id.au>,
+	Guenter Roeck <linux@roeck-us.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 244/290] drm/msm/disp: Correct porch timing for SDM845
+Subject: [PATCH 5.10 304/355] hwmon: (occ) Add soft minimum power cap attribute
 Date: Mon, 23 Jun 2025 15:08:25 +0200
-Message-ID: <20250623130634.266574600@linuxfoundation.org>
+Message-ID: <20250623130635.918691563@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130626.910356556@linuxfoundation.org>
-References: <20250623130626.910356556@linuxfoundation.org>
+In-Reply-To: <20250623130626.716971725@linuxfoundation.org>
+References: <20250623130626.716971725@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,59 +63,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: James A. MacInnes <james.a.macinnes@gmail.com>
+From: Eddie James <eajames@linux.ibm.com>
 
-[ Upstream commit 146e87f3e11de0dfa091ff87e34b4bc6eec761a4 ]
+[ Upstream commit 84dc9e8a7eec2cdff00728baedf0fb35fc7c11e8 ]
 
-Type-C DisplayPort inoperable due to incorrect porch settings.
-- Re-used wide_bus_en as flag to prevent porch shifting
+Export the power caps data for the soft minimum power cap through hwmon.
 
-Fixes: c943b4948b58 ("drm/msm/dp: add displayPort driver support")
-Signed-off-by: James A. MacInnes <james.a.macinnes@gmail.com>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Patchwork: https://patchwork.freedesktop.org/patch/636945/
-Link: https://lore.kernel.org/r/20250212-sdm845_dp-v2-2-4954e51458f4@gmail.com
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Signed-off-by: Eddie James <eajames@linux.ibm.com>
+Reviewed-by: Joel Stanley <joel@jms.id.au>
+Link: https://lore.kernel.org/r/20220215151022.7498-5-eajames@linux.ibm.com
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Stable-dep-of: 744c2fe950e9 ("hwmon: (occ) Rework attribute registration for stack usage")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../gpu/drm/msm/disp/dpu1/dpu_encoder_phys_vid.c   | 14 +++++++++-----
- 1 file changed, 9 insertions(+), 5 deletions(-)
+ drivers/hwmon/occ/common.c | 19 ++++++++++++++++---
+ 1 file changed, 16 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder_phys_vid.c b/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder_phys_vid.c
-index 20c8b9af7a219..2cda9bbf68f96 100644
---- a/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder_phys_vid.c
-+++ b/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder_phys_vid.c
-@@ -93,17 +93,21 @@ static void drm_mode_to_intf_timing_params(
- 		timing->vsync_polarity = 0;
+diff --git a/drivers/hwmon/occ/common.c b/drivers/hwmon/occ/common.c
+index 580e63d7daa00..ce4a16b475fd1 100644
+--- a/drivers/hwmon/occ/common.c
++++ b/drivers/hwmon/occ/common.c
+@@ -685,6 +685,9 @@ static ssize_t occ_show_caps_3(struct device *dev,
+ 	case 7:
+ 		val = caps->user_source;
+ 		break;
++	case 8:
++		val = get_unaligned_be16(&caps->soft_min) * 1000000ULL;
++		break;
+ 	default:
+ 		return -EINVAL;
  	}
- 
--	/* for DP/EDP, Shift timings to align it to bottom right */
--	if (phys_enc->hw_intf->cap->type == INTF_DP) {
-+	timing->wide_bus_en = dpu_encoder_is_widebus_enabled(phys_enc->parent);
-+	timing->compression_en = dpu_encoder_is_dsc_enabled(phys_enc->parent);
+@@ -845,12 +848,13 @@ static int occ_setup_sensor_attrs(struct occ *occ)
+ 	case 1:
+ 		num_attrs += (sensors->caps.num_sensors * 7);
+ 		break;
+-	case 3:
+-		show_caps = occ_show_caps_3;
+-		fallthrough;
+ 	case 2:
+ 		num_attrs += (sensors->caps.num_sensors * 8);
+ 		break;
++	case 3:
++		show_caps = occ_show_caps_3;
++		num_attrs += (sensors->caps.num_sensors * 9);
++		break;
+ 	default:
+ 		sensors->caps.num_sensors = 0;
+ 	}
+@@ -1057,6 +1061,15 @@ static int occ_setup_sensor_attrs(struct occ *occ)
+ 			attr->sensor = OCC_INIT_ATTR(attr->name, 0444,
+ 						     show_caps, NULL, 7, 0);
+ 			attr++;
 +
-+	/*
-+	 *  For DP/EDP, Shift timings to align it to bottom right.
-+	 *  wide_bus_en is set for everything excluding SDM845 &
-+	 *  porch changes cause DisplayPort failure and HDMI tearing.
-+	 */
-+	if (phys_enc->hw_intf->cap->type == INTF_DP && timing->wide_bus_en) {
- 		timing->h_back_porch += timing->h_front_porch;
- 		timing->h_front_porch = 0;
- 		timing->v_back_porch += timing->v_front_porch;
- 		timing->v_front_porch = 0;
++			if (sensors->caps.version > 2) {
++				snprintf(attr->name, sizeof(attr->name),
++					 "power%d_cap_min_soft", s);
++				attr->sensor = OCC_INIT_ATTR(attr->name, 0444,
++							     show_caps, NULL,
++							     8, 0);
++				attr++;
++			}
+ 		}
  	}
  
--	timing->wide_bus_en = dpu_encoder_is_widebus_enabled(phys_enc->parent);
--	timing->compression_en = dpu_encoder_is_dsc_enabled(phys_enc->parent);
--
- 	/*
- 	 * for DP, divide the horizonal parameters by 2 when
- 	 * widebus is enabled
 -- 
 2.39.5
 
