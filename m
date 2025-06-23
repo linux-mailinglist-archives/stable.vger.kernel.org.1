@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-156888-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156752-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 59916AE5197
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:35:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DE79AAE50FC
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:29:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0B1601B62B1B
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:35:30 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 01503189CEA2
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:29:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60967221734;
-	Mon, 23 Jun 2025 21:35:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C39D4221723;
+	Mon, 23 Jun 2025 21:29:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dEU2vgKY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="du8+wmrD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1AF0E1EE7C6;
-	Mon, 23 Jun 2025 21:35:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 814921E5B71;
+	Mon, 23 Jun 2025 21:29:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750714512; cv=none; b=tUQqOkgskN5OWBnGYwrtGtesmHJnbKkM4SMHk/N0duqWS0+be0AvlUWZvpMtcR8z/xd+driP331vF8/PR8bxyFn4nfJbGDRQuFfAIYp1dalBWGvoUKBofAD0z1O5Tn1mCp8Rhv38DnOwA2TONJPiB0X5RrhQP3ykLYIdPOagS3k=
+	t=1750714179; cv=none; b=HN3dqZRfeA67ZO+m1sqNUeIR4nXkCSxBpMh+9OjR7ebBNt5SRwwtU3nBRfdlNmmKJdROQvdYaooZF2xNUeDCPfnZmsikIYQjysZnNQjCB0pY7b+40E3rJiy7nDlo/KCqzDiAdtylAbpDbUX5hoAJE6FeIGgNs3YccGyxyzX1/Vw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750714512; c=relaxed/simple;
-	bh=LC67OP72wzebpQ0+IgzWeHCKzhmVbm2CbPAnxW0b1x0=;
+	s=arc-20240116; t=1750714179; c=relaxed/simple;
+	bh=HZf1ZKLOQfhlEz7zWOiagM5Z13SKsM85LKqfVADPGu0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qdvbp1A7z19He+3CIIke9hyGjb319I/o0fxDpRgmBQPBb9Je9snRdfv6iQQA181L/LiKSnzNFqN2VZ8LB9U65BCELWe1BhHrBMkW0dESXwl7asWfgj5zPunNX8Wws85Ylq72cEI0Kcsqexy9mmOfelEKkSQxUC3oII/lsT2vagI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dEU2vgKY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5B28C4CEEA;
-	Mon, 23 Jun 2025 21:35:11 +0000 (UTC)
+	 MIME-Version; b=B/zz3bjAqQmhvxFr+SXbZIb6igwyOEmGJxhx9I1nquuPv4NsIc1SEA2omZxuIDn1/PpH0UIzx/wmwryZZfUPzy2rRhu+mZoDzuU+dRDdWYH1NQQgFM9Sfyk9eLnQw/5X/pbEi8cyn+osgSfhj6gXpIvswgmallgvdolXvs32DCo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=du8+wmrD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B83AC4CEF0;
+	Mon, 23 Jun 2025 21:29:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750714512;
-	bh=LC67OP72wzebpQ0+IgzWeHCKzhmVbm2CbPAnxW0b1x0=;
+	s=korg; t=1750714179;
+	bh=HZf1ZKLOQfhlEz7zWOiagM5Z13SKsM85LKqfVADPGu0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dEU2vgKYFIuLvnXSqHyvLnlvtMIdLVwWtkq1AyDpWoPnPWUQpTXNqNth5iay8bfJW
-	 J87lY06ggR4y288yn4KUv5sRpGi46WTHpFdgAzBmDYsmt8hkqcsroL1sGCDfuss3hh
-	 bluBtyfnZb4snEjlq10YsGE+KXwBE1kqSVGtZiBU=
+	b=du8+wmrD07WAslWF6j3omRuqN8X+pouaXtSSBY87h9hdekXh955hrQLeBRzVrUVRl
+	 snztNlTnJDLKpmSbB2QKNAF0/EYTsqJ8pxfC9IKOLKNiTlUiX2RqCldUZarRX1FdLP
+	 uZRvslabNxxU2q0zZABGf2oa67E5zrmVx2+g4LWc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christoph Hellwig <hch@lst.de>,
-	"Darrick J. Wong" <djwong@kernel.org>,
-	Chandan Babu R <chandanbabu@kernel.org>,
-	Leah Rumancik <leah.rumancik@gmail.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 199/508] xfs: fix the contact address for the sysfs ABI documentation
+	Murad Masimov <m.masimov@mt-integration.ru>,
+	Helge Deller <deller@gmx.de>
+Subject: [PATCH 6.12 107/414] fbdev: Fix do_register_framebuffer to prevent null-ptr-deref in fb_videomode_to_var
 Date: Mon, 23 Jun 2025 15:04:04 +0200
-Message-ID: <20250623130650.166431332@linuxfoundation.org>
+Message-ID: <20250623130644.770908522@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
-References: <20250623130645.255320792@linuxfoundation.org>
+In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
+References: <20250623130642.015559452@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,69 +61,111 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christoph Hellwig <hch@lst.de>
+From: Murad Masimov <m.masimov@mt-integration.ru>
 
-[ Upstream commit 9ff4490e2ab364ec433f15668ef3f5edfb53feca ]
+commit 17186f1f90d34fa701e4f14e6818305151637b9e upstream.
 
-oss.sgi.com is long dead, refer to the current linux-xfs list instead.
+If fb_add_videomode() in do_register_framebuffer() fails to allocate
+memory for fb_videomode, it will later lead to a null-ptr dereference in
+fb_videomode_to_var(), as the fb_info is registered while not having the
+mode in modelist that is expected to be there, i.e. the one that is
+described in fb_info->var.
 
-Signed-off-by: Christoph Hellwig <hch@lst.de>
-Reviewed-by: Darrick J. Wong <djwong@kernel.org>
-Signed-off-by: Chandan Babu R <chandanbabu@kernel.org>
-Signed-off-by: Leah Rumancik <leah.rumancik@gmail.com>
-Acked-by: "Darrick J. Wong" <djwong@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+================================================================
+general protection fault, probably for non-canonical address 0xdffffc0000000001: 0000 [#1] PREEMPT SMP KASAN NOPTI
+KASAN: null-ptr-deref in range [0x0000000000000008-0x000000000000000f]
+CPU: 1 PID: 30371 Comm: syz-executor.1 Not tainted 5.10.226-syzkaller #0
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.12.0-1 04/01/2014
+RIP: 0010:fb_videomode_to_var+0x24/0x610 drivers/video/fbdev/core/modedb.c:901
+Call Trace:
+ display_to_var+0x3a/0x7c0 drivers/video/fbdev/core/fbcon.c:929
+ fbcon_resize+0x3e2/0x8f0 drivers/video/fbdev/core/fbcon.c:2071
+ resize_screen drivers/tty/vt/vt.c:1176 [inline]
+ vc_do_resize+0x53a/0x1170 drivers/tty/vt/vt.c:1263
+ fbcon_modechanged+0x3ac/0x6e0 drivers/video/fbdev/core/fbcon.c:2720
+ fbcon_update_vcs+0x43/0x60 drivers/video/fbdev/core/fbcon.c:2776
+ do_fb_ioctl+0x6d2/0x740 drivers/video/fbdev/core/fbmem.c:1128
+ fb_ioctl+0xe7/0x150 drivers/video/fbdev/core/fbmem.c:1203
+ vfs_ioctl fs/ioctl.c:48 [inline]
+ __do_sys_ioctl fs/ioctl.c:753 [inline]
+ __se_sys_ioctl fs/ioctl.c:739 [inline]
+ __x64_sys_ioctl+0x19a/0x210 fs/ioctl.c:739
+ do_syscall_64+0x33/0x40 arch/x86/entry/common.c:46
+ entry_SYSCALL_64_after_hwframe+0x67/0xd1
+================================================================
+
+Even though fbcon_init() checks beforehand if fb_match_mode() in
+var_to_display() fails, it can not prevent the panic because fbcon_init()
+does not return error code. Considering this and the comment in the code
+about fb_match_mode() returning NULL - "This should not happen" - it is
+better to prevent registering the fb_info if its mode was not set
+successfully. Also move fb_add_videomode() closer to the beginning of
+do_register_framebuffer() to avoid having to do the cleanup on fail.
+
+Found by Linux Verification Center (linuxtesting.org) with Syzkaller.
+
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Cc: stable@vger.kernel.org
+Signed-off-by: Murad Masimov <m.masimov@mt-integration.ru>
+Signed-off-by: Helge Deller <deller@gmx.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- Documentation/ABI/testing/sysfs-fs-xfs | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/video/fbdev/core/fbmem.c |   18 +++++++++++-------
+ 1 file changed, 11 insertions(+), 7 deletions(-)
 
-diff --git a/Documentation/ABI/testing/sysfs-fs-xfs b/Documentation/ABI/testing/sysfs-fs-xfs
-index f704925f6fe93..82d8e2f79834b 100644
---- a/Documentation/ABI/testing/sysfs-fs-xfs
-+++ b/Documentation/ABI/testing/sysfs-fs-xfs
-@@ -1,7 +1,7 @@
- What:		/sys/fs/xfs/<disk>/log/log_head_lsn
- Date:		July 2014
- KernelVersion:	3.17
--Contact:	xfs@oss.sgi.com
-+Contact:	linux-xfs@vger.kernel.org
- Description:
- 		The log sequence number (LSN) of the current head of the
- 		log. The LSN is exported in "cycle:basic block" format.
-@@ -10,7 +10,7 @@ Users:		xfstests
- What:		/sys/fs/xfs/<disk>/log/log_tail_lsn
- Date:		July 2014
- KernelVersion:	3.17
--Contact:	xfs@oss.sgi.com
-+Contact:	linux-xfs@vger.kernel.org
- Description:
- 		The log sequence number (LSN) of the current tail of the
- 		log. The LSN is exported in "cycle:basic block" format.
-@@ -18,7 +18,7 @@ Description:
- What:		/sys/fs/xfs/<disk>/log/reserve_grant_head
- Date:		July 2014
- KernelVersion:	3.17
--Contact:	xfs@oss.sgi.com
-+Contact:	linux-xfs@vger.kernel.org
- Description:
- 		The current state of the log reserve grant head. It
- 		represents the total log reservation of all currently
-@@ -29,7 +29,7 @@ Users:		xfstests
- What:		/sys/fs/xfs/<disk>/log/write_grant_head
- Date:		July 2014
- KernelVersion:	3.17
--Contact:	xfs@oss.sgi.com
-+Contact:	linux-xfs@vger.kernel.org
- Description:
- 		The current state of the log write grant head. It
- 		represents the total log reservation of all currently
--- 
-2.39.5
-
+--- a/drivers/video/fbdev/core/fbmem.c
++++ b/drivers/video/fbdev/core/fbmem.c
+@@ -388,7 +388,7 @@ static int fb_check_foreignness(struct f
+ 
+ static int do_register_framebuffer(struct fb_info *fb_info)
+ {
+-	int i;
++	int i, err = 0;
+ 	struct fb_videomode mode;
+ 
+ 	if (fb_check_foreignness(fb_info))
+@@ -397,10 +397,18 @@ static int do_register_framebuffer(struc
+ 	if (num_registered_fb == FB_MAX)
+ 		return -ENXIO;
+ 
+-	num_registered_fb++;
+ 	for (i = 0 ; i < FB_MAX; i++)
+ 		if (!registered_fb[i])
+ 			break;
++
++	if (!fb_info->modelist.prev || !fb_info->modelist.next)
++		INIT_LIST_HEAD(&fb_info->modelist);
++
++	fb_var_to_videomode(&mode, &fb_info->var);
++	err = fb_add_videomode(&mode, &fb_info->modelist);
++	if (err < 0)
++		return err;
++
+ 	fb_info->node = i;
+ 	refcount_set(&fb_info->count, 1);
+ 	mutex_init(&fb_info->lock);
+@@ -426,16 +434,12 @@ static int do_register_framebuffer(struc
+ 	if (bitmap_empty(fb_info->pixmap.blit_y, FB_MAX_BLIT_HEIGHT))
+ 		bitmap_fill(fb_info->pixmap.blit_y, FB_MAX_BLIT_HEIGHT);
+ 
+-	if (!fb_info->modelist.prev || !fb_info->modelist.next)
+-		INIT_LIST_HEAD(&fb_info->modelist);
+-
+ 	if (fb_info->skip_vt_switch)
+ 		pm_vt_switch_required(fb_info->device, false);
+ 	else
+ 		pm_vt_switch_required(fb_info->device, true);
+ 
+-	fb_var_to_videomode(&mode, &fb_info->var);
+-	fb_add_videomode(&mode, &fb_info->modelist);
++	num_registered_fb++;
+ 	registered_fb[i] = fb_info;
+ 
+ #ifdef CONFIG_GUMSTIX_AM200EPD
 
 
 
