@@ -1,52 +1,57 @@
-Return-Path: <stable+bounces-155831-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-155838-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B9D76AE43F5
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:38:11 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4A615AE442D
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:40:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 37FEB17EA09
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:31:59 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A4F403BEDB6
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:31:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42C042561B9;
-	Mon, 23 Jun 2025 13:30:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1BBC62522A8;
+	Mon, 23 Jun 2025 13:31:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qiDR9mRb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TEA4/Tb8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3D2A2561A8;
-	Mon, 23 Jun 2025 13:30:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDFF94C7F;
+	Mon, 23 Jun 2025 13:31:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750685441; cv=none; b=SQAS/5dxeQG/QACbuUjo6qAasHx1obaw8Ckgbbuv8S9GM+tQZOPcQTficdR0DgbD3f7EAw+pCmsMhxhR5bDspfmUA0yJaV6v1gY/BbI9Y9HBW9G75trA17UNX0G3PC4ZWhpmpeiyG3UN/fCzbVV66KYNN36DI282V0TI/3Q9HA0=
+	t=1750685462; cv=none; b=YVVMDAkUgMY2x0nFz9Yh//x/ssndyuvg5XC+3cf+98EbstZQ1XtMZbKGaCcbALHojZHU/JcTXRbEC3G6iJF5WffXNCPlp391cvc93HiQ3pemNXY7BKzBSU50/KdWgBf2FJ/UqcySSzwwHucQtFmtVlxlzYc7yPB0UwsOhzjWfC8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750685441; c=relaxed/simple;
-	bh=OP6Dt6USB7tKjJNkl23bT0dideAbwq0t3Kt0JvJyHKU=;
+	s=arc-20240116; t=1750685462; c=relaxed/simple;
+	bh=Wp7aTzOd6p6oXJHevi5UwZ7MS7HTcYwci3sIsVwKcDA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=C6vQ/mjr9gjN3iUzed8uymaT+UhE/VYROJpWI0jQHIHW4hNxy6tBdzBDO62Pol8qWQGp/VJxusuviJFMsvq9bmWemqyX44rFgKfzFcCZ48Nk09eHwlm1mI6Ac+WJe0PKRfXPXjyvHrlXontHuF6qvNiUwRPhJJ2+wgnXlXVWoU4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qiDR9mRb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87B63C4CEEA;
-	Mon, 23 Jun 2025 13:30:40 +0000 (UTC)
+	 MIME-Version; b=Ifp2SEYSzIBubOBjbT9h09I3YrE7cTluD7X9Cf4w1Iq8FEzI1leNLM5OAVAJkmfxxdNnA/CSBLy0H5HEfbupR1yHMGa61NsjQdlLVZWWt2uKwwJhEVus9tYLODgPXQxYSEQJehzYYUI7t4/5BKtEusjN47FZnpJHok3Qv4iDrR4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TEA4/Tb8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64409C4CEEA;
+	Mon, 23 Jun 2025 13:31:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750685440;
-	bh=OP6Dt6USB7tKjJNkl23bT0dideAbwq0t3Kt0JvJyHKU=;
+	s=korg; t=1750685462;
+	bh=Wp7aTzOd6p6oXJHevi5UwZ7MS7HTcYwci3sIsVwKcDA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qiDR9mRbp0MjtF48qfveT8mVjKvpobyWRNxMDNRHsnQGOqjoiQaxOP2/T7Nq7GZ3a
-	 68hb02diHNtwR8GqTfSwsW11eThzTEupErBKI2f1UGd+9NErWbrDyZKG54IUGswnAJ
-	 HgtFa5T+20NLH+b1okhtp9x4hVsZyWZyJh8Ozr9c=
+	b=TEA4/Tb8HIK0NC/D1gbsiTXTbvHg0cijQJEByrccmXj6cdy6B3RlqcEIHFY4anPkH
+	 JxJfFpEls+ZGEIa4PblT7mewDDr/qYE3lrdYlsHjdsIKaXAe4dz93E+/XUkSNBvFf1
+	 hTRAjXOvI17ZuY31nQHu9cQKBELEOB66MKOlwLSU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arnd Bergmann <arnd@arndb.de>,
-	Helge Deller <deller@gmx.de>
-Subject: [PATCH 5.4 120/222] parisc: fix building with gcc-15
-Date: Mon, 23 Jun 2025 15:07:35 +0200
-Message-ID: <20250623130615.708809214@linuxfoundation.org>
+	Jeongjun Park <aha310510@gmail.com>,
+	syzbot+a2b84e569d06ca3a949c@syzkaller.appspotmail.com,
+	Liam Howlett <liam.howlett@oracle.com>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Vasiliy Kulikov <segoon@openwall.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 5.4 121/222] ipc: fix to protect IPCS lookups using RCU
+Date: Mon, 23 Jun 2025 15:07:36 +0200
+Message-ID: <20250623130615.739079769@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
 In-Reply-To: <20250623130611.896514667@linuxfoundation.org>
 References: <20250623130611.896514667@linuxfoundation.org>
@@ -65,37 +70,54 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Jeongjun Park <aha310510@gmail.com>
 
-commit 7cbb015e2d3d6f180256cde0c908eab21268e7b9 upstream.
+commit d66adabe91803ef34a8b90613c81267b5ded1472 upstream.
 
-The decompressor is built with the default C dialect, which is now gnu23
-on gcc-15, and this clashes with the kernel's bool type definition:
+syzbot reported that it discovered a use-after-free vulnerability, [0]
 
-In file included from include/uapi/linux/posix_types.h:5,
-                 from arch/parisc/boot/compressed/misc.c:7:
-include/linux/stddef.h:11:9: error: cannot use keyword 'false' as enumeration constant
-   11 |         false   = 0,
+[0]: https://lore.kernel.org/all/67af13f8.050a0220.21dd3.0038.GAE@google.com/
 
-Add the -std=gnu11 argument here, as we do for all other architectures.
+idr_for_each() is protected by rwsem, but this is not enough.  If it is
+not protected by RCU read-critical region, when idr_for_each() calls
+radix_tree_node_free() through call_rcu() to free the radix_tree_node
+structure, the node will be freed immediately, and when reading the next
+node in radix_tree_for_each_slot(), the already freed memory may be read.
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Signed-off-by: Helge Deller <deller@gmx.de>
+Therefore, we need to add code to make sure that idr_for_each() is
+protected within the RCU read-critical region when we call it in
+shm_destroy_orphaned().
+
+Link: https://lkml.kernel.org/r/20250424143322.18830-1-aha310510@gmail.com
+Fixes: b34a6b1da371 ("ipc: introduce shm_rmid_forced sysctl")
+Signed-off-by: Jeongjun Park <aha310510@gmail.com>
+Reported-by: syzbot+a2b84e569d06ca3a949c@syzkaller.appspotmail.com
+Cc: Jeongjun Park <aha310510@gmail.com>
+Cc: Liam Howlett <liam.howlett@oracle.com>
+Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
+Cc: Vasiliy Kulikov <segoon@openwall.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/parisc/boot/compressed/Makefile |    1 +
- 1 file changed, 1 insertion(+)
+ ipc/shm.c |    5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
---- a/arch/parisc/boot/compressed/Makefile
-+++ b/arch/parisc/boot/compressed/Makefile
-@@ -21,6 +21,7 @@ KBUILD_CFLAGS += -fno-PIE -mno-space-reg
- ifndef CONFIG_64BIT
- KBUILD_CFLAGS += -mfast-indirect-calls
- endif
-+KBUILD_CFLAGS += -std=gnu11
- 
- OBJECTS += $(obj)/head.o $(obj)/real2.o $(obj)/firmware.o $(obj)/misc.o $(obj)/piggy.o
+--- a/ipc/shm.c
++++ b/ipc/shm.c
+@@ -417,8 +417,11 @@ static int shm_try_destroy_orphaned(int
+ void shm_destroy_orphaned(struct ipc_namespace *ns)
+ {
+ 	down_write(&shm_ids(ns).rwsem);
+-	if (shm_ids(ns).in_use)
++	if (shm_ids(ns).in_use) {
++		rcu_read_lock();
+ 		idr_for_each(&shm_ids(ns).ipcs_idr, &shm_try_destroy_orphaned, ns);
++		rcu_read_unlock();
++	}
+ 	up_write(&shm_ids(ns).rwsem);
+ }
  
 
 
