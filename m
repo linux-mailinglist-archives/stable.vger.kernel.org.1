@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-158110-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-158015-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D9C8FAE5740
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:27:33 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 260E0AE56DB
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:23:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9BA724A2D2F
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:24:46 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EA2EA3BAE22
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:20:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 49A15223DF0;
-	Mon, 23 Jun 2025 22:25:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 111AA223DF0;
+	Mon, 23 Jun 2025 22:21:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W4BowUZI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="arRk1s3C"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07E052192EC;
-	Mon, 23 Jun 2025 22:25:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3F0B15ADB4;
+	Mon, 23 Jun 2025 22:21:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750717509; cv=none; b=Sd8T6Tah1i7RPvLVQby0Df/n+fmYhZSXV8pNS7eGpjiCvqxzFPRh4AuCNEFmvOPP/XtXAF9PTQAYR0bkuRCO7tShRwucLceRCyYHBM/+bk5kKplIYzsnEM8D0V5UebyfsCyzvzp5dnLBLRFMBjIScxVJOBLA/W84mRXpxPLc5AE=
+	t=1750717277; cv=none; b=WkAcGn1Kmy9+f8GJ3vZoNwiw+P7DNNrci2FxJ3sHVqzNiuvxr6iZJ9mbMy4OVgW+5ZX+zy8zdtlTGSlvPcLHRlNnz45HmubqzkT6064zpT6PF0GbZdwSc8ZD6MIcBtE7Yh7MaNBhAKlROx4TcexiS99goIA73u544Z0HtOYj7/w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750717509; c=relaxed/simple;
-	bh=5UOhQfG6d6R/LsqOJbM8I5VJIrOf6P8oQV724GNE9bU=;
+	s=arc-20240116; t=1750717277; c=relaxed/simple;
+	bh=xdJVQENc/zCK7p9Kip2Skd/TBis/GsPDZFPr9beU2gQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Hkcj8/NMwGoGeQ8JpoKxDyHXnfKI3EVlGuQLVXLE8S5KpvN5pRrXkx4ZIpO4hFDpwSxtIBnjGW1l3FBXpRcmTlwb+1x+NSHT/widL78ZcKUazRFmEtKtE+UexIC41KNzWW8V5MN40s9sl9z3drnHOH3j5iYtsxdOktPYH9iEyoc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W4BowUZI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 949FDC4CEEA;
-	Mon, 23 Jun 2025 22:25:08 +0000 (UTC)
+	 MIME-Version; b=QEzYG7Z5rX0qDEbCR9kdCW4xoQE1ZfqiYaIiTKHFVPPM+TCk2H7XcQTfv71miSe5kcP1D5AAm+mZ8dfUOvmz5Bcz+KS1SK1w/lWmUTV1sdRKxcH623/1BCgHHvjnyAx6iMFiRzwHLnr7NveJOxBviJMK2kjSiVNVDPXDcv51FWw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=arRk1s3C; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D3E4C4CEED;
+	Mon, 23 Jun 2025 22:21:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750717508;
-	bh=5UOhQfG6d6R/LsqOJbM8I5VJIrOf6P8oQV724GNE9bU=;
+	s=korg; t=1750717277;
+	bh=xdJVQENc/zCK7p9Kip2Skd/TBis/GsPDZFPr9beU2gQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=W4BowUZIRT2XJqv/bdKJ64aCN7uIK0ylVSDGSUzuUITcZaiZhk84Yyq2tuLSzDqvE
-	 LLeA50dH3e197EbVAWfZpCX8W471N7Kajb09rxLbwheQNPsGCN5tadLweMe4D1xFmj
-	 bEGDfZQHpGTY5haoaQ/TVq1IlsCfR/NmPT/dtlDw=
+	b=arRk1s3CeLFSVAJL6rHgSFne0HGKmsvoV1b4dyK60CrbPmVvvifFb4LDthdxBOUoc
+	 RBt07R0IV3oSTclAJPXThP0Yv7FwE4WT39Z46dEygeoEP9HKuVWFsxCGhEXHhespVb
+	 BkddskAMlFCkVRISpe8KpWpp+BQRe6iZ0xUuBiW0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yao Zi <ziyao@disroot.org>,
-	Huacai Chen <chenhuacai@loongson.cn>
-Subject: [PATCH 6.1 443/508] platform/loongarch: laptop: Get brightness setting from EC on probe
+	Willem de Bruijn <willemb@google.com>,
+	David Ahern <dsahern@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.12 351/414] ipv6: replace ipcm6_init calls with ipcm6_init_sk
 Date: Mon, 23 Jun 2025 15:08:08 +0200
-Message-ID: <20250623130656.061787012@linuxfoundation.org>
+Message-ID: <20250623130650.750492836@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
-References: <20250623130645.255320792@linuxfoundation.org>
+In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
+References: <20250623130642.015559452@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,46 +62,144 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yao Zi <ziyao@disroot.org>
+From: Willem de Bruijn <willemb@google.com>
 
-commit 1205088fd0393bd9eae96b62bf1e4b9eb1b73edf upstream.
+commit 096208592b09c2f5fc0c1a174694efa41c04209d upstream.
 
-Previously during driver probe, 1 is unconditionally taken as current
-brightness value and set to props.brightness, which will be considered
-as the brightness before suspend and restored to EC on resume. Since a
-brightness value of 1 almost never matches EC's state on coldboot (my
-laptop's EC defaults to 80), this causes surprising changes of screen
-brightness on the first time of resume after coldboot.
+This initializes tclass and dontfrag before cmsg parsing, removing the
+need for explicit checks against -1 in each caller.
 
-Let's get brightness from EC and take it as the current brightness on
-probe of the laptop driver to avoid the surprising behavior. Tested on
-TongFang L860-T2 Loongson-3A5000 laptop.
+Leave hlimit set to -1, because its full initialization
+(in ip6_sk_dst_hoplimit) requires more state (dst, flowi6, ..).
 
-Cc: stable@vger.kernel.org
-Fixes: 6246ed09111f ("LoongArch: Add ACPI-based generic laptop driver")
-Signed-off-by: Yao Zi <ziyao@disroot.org>
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+This also prepares for calling sockcm_init in a follow-on patch.
+
+Signed-off-by: Willem de Bruijn <willemb@google.com>
+Reviewed-by: David Ahern <dsahern@kernel.org>
+Link: https://patch.msgid.link/20250214222720.3205500-7-willemdebruijn.kernel@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/platform/loongarch/loongson-laptop.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ include/net/ipv6.h  |    9 ---------
+ net/ipv6/raw.c      |    8 +-------
+ net/ipv6/udp.c      |    7 +------
+ net/l2tp/l2tp_ip6.c |    8 +-------
+ 4 files changed, 3 insertions(+), 29 deletions(-)
 
---- a/drivers/platform/loongarch/loongson-laptop.c
-+++ b/drivers/platform/loongarch/loongson-laptop.c
-@@ -392,8 +392,8 @@ static int laptop_backlight_register(voi
- 	if (!acpi_evalf(hotkey_handle, &status, "ECLL", "d"))
- 		return -EIO;
+--- a/include/net/ipv6.h
++++ b/include/net/ipv6.h
+@@ -363,15 +363,6 @@ struct ipcm6_cookie {
+ 	struct ipv6_txoptions *opt;
+ };
  
--	props.brightness = 1;
- 	props.max_brightness = status;
-+	props.brightness = ec_get_brightness();
- 	props.type = BACKLIGHT_PLATFORM;
+-static inline void ipcm6_init(struct ipcm6_cookie *ipc6)
+-{
+-	*ipc6 = (struct ipcm6_cookie) {
+-		.hlimit = -1,
+-		.tclass = -1,
+-		.dontfrag = -1,
+-	};
+-}
+-
+ static inline void ipcm6_init_sk(struct ipcm6_cookie *ipc6,
+ 				 const struct sock *sk)
+ {
+--- a/net/ipv6/raw.c
++++ b/net/ipv6/raw.c
+@@ -777,7 +777,7 @@ static int rawv6_sendmsg(struct sock *sk
+ 	fl6.flowi6_mark = READ_ONCE(sk->sk_mark);
+ 	fl6.flowi6_uid = sk->sk_uid;
  
- 	backlight_device_register("loongson_laptop",
+-	ipcm6_init(&ipc6);
++	ipcm6_init_sk(&ipc6, sk);
+ 	ipc6.sockc.tsflags = READ_ONCE(sk->sk_tsflags);
+ 	ipc6.sockc.mark = fl6.flowi6_mark;
+ 
+@@ -890,9 +890,6 @@ static int rawv6_sendmsg(struct sock *sk
+ 	if (hdrincl)
+ 		fl6.flowi6_flags |= FLOWI_FLAG_KNOWN_NH;
+ 
+-	if (ipc6.tclass < 0)
+-		ipc6.tclass = np->tclass;
+-
+ 	fl6.flowlabel = ip6_make_flowinfo(ipc6.tclass, fl6.flowlabel);
+ 
+ 	dst = ip6_dst_lookup_flow(sock_net(sk), sk, &fl6, final_p);
+@@ -903,9 +900,6 @@ static int rawv6_sendmsg(struct sock *sk
+ 	if (ipc6.hlimit < 0)
+ 		ipc6.hlimit = ip6_sk_dst_hoplimit(np, &fl6, dst);
+ 
+-	if (ipc6.dontfrag < 0)
+-		ipc6.dontfrag = inet6_test_bit(DONTFRAG, sk);
+-
+ 	if (msg->msg_flags&MSG_CONFIRM)
+ 		goto do_confirm;
+ 
+--- a/net/ipv6/udp.c
++++ b/net/ipv6/udp.c
+@@ -1399,7 +1399,7 @@ int udpv6_sendmsg(struct sock *sk, struc
+ 	int is_udplite = IS_UDPLITE(sk);
+ 	int (*getfrag)(void *, char *, int, int, int, struct sk_buff *);
+ 
+-	ipcm6_init(&ipc6);
++	ipcm6_init_sk(&ipc6, sk);
+ 	ipc6.gso_size = READ_ONCE(up->gso_size);
+ 	ipc6.sockc.tsflags = READ_ONCE(sk->sk_tsflags);
+ 	ipc6.sockc.mark = READ_ONCE(sk->sk_mark);
+@@ -1608,9 +1608,6 @@ do_udp_sendmsg:
+ 
+ 	security_sk_classify_flow(sk, flowi6_to_flowi_common(fl6));
+ 
+-	if (ipc6.tclass < 0)
+-		ipc6.tclass = np->tclass;
+-
+ 	fl6->flowlabel = ip6_make_flowinfo(ipc6.tclass, fl6->flowlabel);
+ 
+ 	dst = ip6_sk_dst_lookup_flow(sk, fl6, final_p, connected);
+@@ -1656,8 +1653,6 @@ back_from_confirm:
+ 	WRITE_ONCE(up->pending, AF_INET6);
+ 
+ do_append_data:
+-	if (ipc6.dontfrag < 0)
+-		ipc6.dontfrag = inet6_test_bit(DONTFRAG, sk);
+ 	up->len += ulen;
+ 	err = ip6_append_data(sk, getfrag, msg, ulen, sizeof(struct udphdr),
+ 			      &ipc6, fl6, dst_rt6_info(dst),
+--- a/net/l2tp/l2tp_ip6.c
++++ b/net/l2tp/l2tp_ip6.c
+@@ -547,7 +547,7 @@ static int l2tp_ip6_sendmsg(struct sock
+ 	fl6.flowi6_mark = READ_ONCE(sk->sk_mark);
+ 	fl6.flowi6_uid = sk->sk_uid;
+ 
+-	ipcm6_init(&ipc6);
++	ipcm6_init_sk(&ipc6, sk);
+ 
+ 	if (lsa) {
+ 		if (addr_len < SIN6_LEN_RFC2133)
+@@ -634,9 +634,6 @@ static int l2tp_ip6_sendmsg(struct sock
+ 
+ 	security_sk_classify_flow(sk, flowi6_to_flowi_common(&fl6));
+ 
+-	if (ipc6.tclass < 0)
+-		ipc6.tclass = np->tclass;
+-
+ 	fl6.flowlabel = ip6_make_flowinfo(ipc6.tclass, fl6.flowlabel);
+ 
+ 	dst = ip6_dst_lookup_flow(sock_net(sk), sk, &fl6, final_p);
+@@ -648,9 +645,6 @@ static int l2tp_ip6_sendmsg(struct sock
+ 	if (ipc6.hlimit < 0)
+ 		ipc6.hlimit = ip6_sk_dst_hoplimit(np, &fl6, dst);
+ 
+-	if (ipc6.dontfrag < 0)
+-		ipc6.dontfrag = inet6_test_bit(DONTFRAG, sk);
+-
+ 	if (msg->msg_flags & MSG_CONFIRM)
+ 		goto do_confirm;
+ 
 
 
 
