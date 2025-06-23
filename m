@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-156716-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156510-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2A51EAE50DA
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:28:40 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8F4F0AE4FDC
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:20:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B60103A748C
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:28:01 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 662FB1B61925
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:20:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E26E8223316;
-	Mon, 23 Jun 2025 21:28:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2EEFD18E377;
+	Mon, 23 Jun 2025 21:19:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vau/BgeA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0rMOxEaU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F6112222B7;
-	Mon, 23 Jun 2025 21:28:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0E8C219E0;
+	Mon, 23 Jun 2025 21:19:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750714091; cv=none; b=QXt9oiRen5xN49L5EW1ImGnEamHSwWCdU4OY+XtmEJ8cOlAfaqnpH9rSqSL+YUoWVq3E0xTEIpvJTAbb9f/p1s72GUC6hzEsbwgKwT544LSwzcEPBABXKgUY03/zi25KtCbckcnv6n+J83mSbLJqYkJfTCcrfjkX23vPZcjL9pQ=
+	t=1750713590; cv=none; b=YOxgK13ZcRRqJYIUUlg4bSXzAzWlRNNcVv9V1mAAkxl66ocah3Jm9078+Or2sFNiCUpwrb/ejq40yVMmrL2YdVTgzzdI5cvfDJ/AP3hAzYcQWmcKmlJ6We7eUoX9298I4Wk2h6GlBpGfCfn3OxBzYJku2ojiKkWfFqTjfj7cNFE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750714091; c=relaxed/simple;
-	bh=kP835cKUTtODxPz0n4s9/Et+CGzLDbx09heZY11FBXY=;
+	s=arc-20240116; t=1750713590; c=relaxed/simple;
+	bh=v7MFVQIOOzbkyD1nQhUKQnnuKefqs1VMYrTEujIMX0o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Hd12bKAoD9624mWFHbsJG7ntC0s1/s3/n95uW4hSHx2l7hp/NKFdGNoREbYNrLcbk54UVqZpyUeTWOuXQXBMf7oC/NwbEM1dTm3bSZ6XGzTBIvkhPcPmRfzDLSrfftJB8Bm5bYBljSJlpUW7zpVfXMSPKIckUUmBztlHBa3iUqA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vau/BgeA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3905DC4CEEA;
-	Mon, 23 Jun 2025 21:28:11 +0000 (UTC)
+	 MIME-Version; b=JjY979PAgrMQhTGp/jYh50ZovVjrdA3Nfe/k/ygQ8NaGAAZzyAQuFxAa8Kc06gLC/hizF0L8nu8b71L2q4G6l3ujYwBudX/tUedsq9Fnw5uXPbKddj2Hqc6omUH09lbsm6/cBH1DBu+tAOhbW2H1itXTPt+f4TmBVJjGMMYLs4k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0rMOxEaU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A47EC4CEEA;
+	Mon, 23 Jun 2025 21:19:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750714091;
-	bh=kP835cKUTtODxPz0n4s9/Et+CGzLDbx09heZY11FBXY=;
+	s=korg; t=1750713589;
+	bh=v7MFVQIOOzbkyD1nQhUKQnnuKefqs1VMYrTEujIMX0o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vau/BgeAWsA9xAYkUDgh/m3sbftDXnt3unhr+OZOqAk5swwvqp/Mf5wSKIoT643XF
-	 Ioib3l/kBnnhXi5J7wJZT/d4OhKuJEZdFz/M1G2RUGYt4FV7Ddu9z/3u0XQUELAzib
-	 yt/inkMifRkJztkgTK08E3R8eeczF8hZdDUYo1mo=
+	b=0rMOxEaU7c7Dm/4YEGwBDmvgeEm30k8B3pmg1tNSndhE7bWyuIZhjxfACSt2rDjaw
+	 pipT3jiGDnDuZnL72QdZ5GRtS6bOHHhMGaRiaYl07jOWKqGmKgccxlDCHgAvbAnYSs
+	 S5BQuYdDWQTEjwFnZE8ATgd6n/hktvFTReIw7L4Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Lee Jones <lee@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 144/508] mfd: exynos-lpass: Avoid calling exynos_lpass_disable() twice in exynos_lpass_remove()
+	Dmitry Nikiforov <Dm1tryNk@yandex.ru>,
+	Johan Hovold <johan@kernel.org>,
+	Hans Verkuil <hverkuil@xs4all.nl>
+Subject: [PATCH 6.12 052/414] media: davinci: vpif: Fix memory leak in probe error path
 Date: Mon, 23 Jun 2025 15:03:09 +0200
-Message-ID: <20250623130648.828804871@linuxfoundation.org>
+Message-ID: <20250623130643.351121149@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
-References: <20250623130645.255320792@linuxfoundation.org>
+In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
+References: <20250623130642.015559452@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,42 +62,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+From: Dmitry Nikiforov <Dm1tryNk@yandex.ru>
 
-[ Upstream commit b70b84556eeca5262d290e8619fe0af5b7664a52 ]
+commit 024bf40edf1155e7a587f0ec46294049777d9b02 upstream.
 
-exynos_lpass_disable() is called twice in the remove function. Remove
-one of these calls.
+If an error occurs during the initialization of `pdev_display`,
+the allocated platform device `pdev_capture` is not released properly,
+leading to a memory leak.
 
-Fixes: 90f447170c6f ("mfd: exynos-lpass: Add runtime PM support")
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Link: https://lore.kernel.org/r/74d69e8de10308c9855db6d54155a3de4b11abfd.1745247209.git.christophe.jaillet@wanadoo.fr
-Signed-off-by: Lee Jones <lee@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Adjust error path handling to fix the leak.
+
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
+
+Fixes: 43acb728bbc4 ("media: davinci: vpif: fix use-after-free on driver unbind")
+Cc: stable@vger.kernel.org
+Signed-off-by: Dmitry Nikiforov <Dm1tryNk@yandex.ru>
+Reviewed-by: Johan Hovold <johan@kernel.org>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mfd/exynos-lpass.c | 1 -
- 1 file changed, 1 deletion(-)
+ drivers/media/platform/ti/davinci/vpif.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/mfd/exynos-lpass.c b/drivers/mfd/exynos-lpass.c
-index 166cd21088cdd..5ee00f86e39c7 100644
---- a/drivers/mfd/exynos-lpass.c
-+++ b/drivers/mfd/exynos-lpass.c
-@@ -143,7 +143,6 @@ static int exynos_lpass_remove(struct platform_device *pdev)
- {
- 	struct exynos_lpass *lpass = platform_get_drvdata(pdev);
+--- a/drivers/media/platform/ti/davinci/vpif.c
++++ b/drivers/media/platform/ti/davinci/vpif.c
+@@ -504,7 +504,7 @@ static int vpif_probe(struct platform_de
+ 	pdev_display = kzalloc(sizeof(*pdev_display), GFP_KERNEL);
+ 	if (!pdev_display) {
+ 		ret = -ENOMEM;
+-		goto err_put_pdev_capture;
++		goto err_del_pdev_capture;
+ 	}
  
--	exynos_lpass_disable(lpass);
- 	pm_runtime_disable(&pdev->dev);
- 	if (!pm_runtime_status_suspended(&pdev->dev))
- 		exynos_lpass_disable(lpass);
--- 
-2.39.5
-
+ 	pdev_display->name = "vpif_display";
+@@ -527,6 +527,8 @@ static int vpif_probe(struct platform_de
+ 
+ err_put_pdev_display:
+ 	platform_device_put(pdev_display);
++err_del_pdev_capture:
++	platform_device_del(pdev_capture);
+ err_put_pdev_capture:
+ 	platform_device_put(pdev_capture);
+ err_put_rpm:
 
 
 
