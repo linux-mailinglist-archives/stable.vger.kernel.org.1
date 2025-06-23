@@ -1,56 +1,60 @@
-Return-Path: <stable+bounces-157820-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157737-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9D98EAE55E1
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:16:13 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9A7D7AE556E
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:11:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 95DFE4A365B
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:13:22 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0B9794C4784
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:10:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1AB21F7580;
-	Mon, 23 Jun 2025 22:13:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 87F09225A3D;
+	Mon, 23 Jun 2025 22:09:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z988FZnH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GxVg751k"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFC4421B8F6;
-	Mon, 23 Jun 2025 22:13:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45666222576;
+	Mon, 23 Jun 2025 22:09:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750716798; cv=none; b=uNmlhrtfBN6C7R+SoDT5yUkQW1fat/euO7IodqAP488NiZNmzGJ2CmDZLlAoN+mUPD6H9YCbVI19iX7FBAp7QaC4en3fDi6lXaDODYSnd4JVVX1c8M04QXmXJR094Uhr1pm2H1Z1ZO5LGITjZCer9mzU/GEskNgutWXLjck22k0=
+	t=1750716598; cv=none; b=sIVz9PuYIrA1EVHLqQ21qkLaXIDDOtYp6daXK1nrv0/VZLACxLiEtbGukiSOF/J1+ObaeNYXdMxe7M8wqZWpW5XRMHd0tHHeat/OfrnyC54wCcShhjZlY9ysrdYDN/TT7rKtC2TRyR8lzenJp34PEw4n5JbB1WVNzOouzQ7+9rM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750716798; c=relaxed/simple;
-	bh=cSx7xi5w3rHpkfUHO1192dPTQ2yrjwL7JIiPLhXaEL4=;
+	s=arc-20240116; t=1750716598; c=relaxed/simple;
+	bh=5frQLmnejkwYjByx8+w/jd5bNtqIW/nJ/GonxwhSADs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=spBKQYSq+vZCbhEJ8oLDh1lsQCcvqNh7kFZ8WLrQ+w3ESwP+xzFQ5X9eo8StqN9S04z+dUn784jLDRKsUro16XMdKDibnZyW5vAIJycIPcypMjYrmCer6zn7M9lkUhBBdWY096YTfE43s6L7YtMdc0omBLjBrnRHAWCcxxx2itQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z988FZnH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A451C4CEEA;
-	Mon, 23 Jun 2025 22:13:18 +0000 (UTC)
+	 MIME-Version; b=jByunL9DJ8RiklvUuDYC+rxwDNfSXhlE+YaFUaTZqKW4YR5fADSwo8miUI2T364eFR6pS4VgX/mQ9NzL3aVTrmjkQEa63qCQ9g3PtjEqaJ+Kf2xiiaMtusOGgTGjR0v2BLAb/++PqUqCkqZXNltM1/4HUepIxKd02sSFAPkP7Ps=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GxVg751k; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2E32C4CEF1;
+	Mon, 23 Jun 2025 22:09:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750716798;
-	bh=cSx7xi5w3rHpkfUHO1192dPTQ2yrjwL7JIiPLhXaEL4=;
+	s=korg; t=1750716598;
+	bh=5frQLmnejkwYjByx8+w/jd5bNtqIW/nJ/GonxwhSADs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=z988FZnHjorNe3ojuRDy9lY/QkC+cTQKM6bZHampAO3DRw+T6CYu1cFvmV3qmz49F
-	 VsZ0xNryxtdX3a7tUT0oXAFTO/ho8RyR3h8PKA8Q0688knb1feeiWzZ43xP73AiJpM
-	 p6UBxPcnPm/BQRop9SO/+lrbSq/zKo2DS9PMeJTI=
+	b=GxVg751kfg+bZcOzFj5G9uZH2OUVgoLFmZwadOeujqop3MPUjZmNSF/klqWFzHKcm
+	 RxLEbLyUUthZMXIZXtA0Oer+7TVgp8qM7dm1W2KCGGax4hyOHxSJTqX0zZjVKgZues
+	 H/4axgSjfZ4a1jJfOmOoj2m0Tu4MqjDvaNKVDme8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gabriel Shahrouzi <gshahrouzi@gmail.com>,
-	Marcelo Schmitt <marcelo.schmitt1@gmail.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 6.1 360/508] staging: iio: ad5933: Correct settling cycles encoding per datasheet
+	Kyungwook Boo <bookyungwook@gmail.com>,
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	Simon Horman <horms@kernel.org>,
+	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Sasha Levin <sashal@kernel.org>,
+	Rinitha S <sx.rinitha@intel.com>
+Subject: [PATCH 6.12 268/414] i40e: fix MMIO write access to an invalid page in i40e_clear_hw
 Date: Mon, 23 Jun 2025 15:06:45 +0200
-Message-ID: <20250623130654.220583563@linuxfoundation.org>
+Message-ID: <20250623130648.731133336@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
-References: <20250623130645.255320792@linuxfoundation.org>
+In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
+References: <20250623130642.015559452@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,41 +66,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gabriel Shahrouzi <gshahrouzi@gmail.com>
+From: Kyungwook Boo <bookyungwook@gmail.com>
 
-commit 60638e2a2d4bc03798f00d5ab65ce9b83cb8b03b upstream.
+[ Upstream commit 015bac5daca978448f2671478c553ce1f300c21e ]
 
-The AD5933 datasheet (Table 13) lists the maximum cycles to be 0x7FC
-(2044).
+When the device sends a specific input, an integer underflow can occur, leading
+to MMIO write access to an invalid page.
 
-Clamp the user input to the maximum effective value of 0x7FC cycles.
+Prevent the integer underflow by changing the type of related variables.
 
-Fixes: f94aa354d676 ("iio: impedance-analyzer: New driver for AD5933/4 Impedance Converter, Network Analyzer")
-Cc: stable@vger.kernel.org
-Signed-off-by: Gabriel Shahrouzi <gshahrouzi@gmail.com>
-Reviewed-by: Marcelo Schmitt <marcelo.schmitt1@gmail.com>
-Link: https://patch.msgid.link/20250420013009.847851-1-gshahrouzi@gmail.com
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Kyungwook Boo <bookyungwook@gmail.com>
+Link: https://lore.kernel.org/lkml/ffc91764-1142-4ba2-91b6-8c773f6f7095@gmail.com/T/
+Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+Tested-by: Rinitha S <sx.rinitha@intel.com> (A Contingent worker at Intel)
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/staging/iio/impedance-analyzer/ad5933.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/intel/i40e/i40e_common.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
---- a/drivers/staging/iio/impedance-analyzer/ad5933.c
-+++ b/drivers/staging/iio/impedance-analyzer/ad5933.c
-@@ -412,7 +412,7 @@ static ssize_t ad5933_store(struct devic
- 		ret = ad5933_cmd(st, 0);
- 		break;
- 	case AD5933_OUT_SETTLING_CYCLES:
--		val = clamp(val, (u16)0, (u16)0x7FF);
-+		val = clamp(val, (u16)0, (u16)0x7FC);
- 		st->settling_cycles = val;
+diff --git a/drivers/net/ethernet/intel/i40e/i40e_common.c b/drivers/net/ethernet/intel/i40e/i40e_common.c
+index e8031f1a9b4fc..2f5a850148676 100644
+--- a/drivers/net/ethernet/intel/i40e/i40e_common.c
++++ b/drivers/net/ethernet/intel/i40e/i40e_common.c
+@@ -817,10 +817,11 @@ int i40e_pf_reset(struct i40e_hw *hw)
+ void i40e_clear_hw(struct i40e_hw *hw)
+ {
+ 	u32 num_queues, base_queue;
+-	u32 num_pf_int;
+-	u32 num_vf_int;
++	s32 num_pf_int;
++	s32 num_vf_int;
+ 	u32 num_vfs;
+-	u32 i, j;
++	s32 i;
++	u32 j;
+ 	u32 val;
+ 	u32 eol = 0x7ff;
  
- 		/* 2x, 4x handling, see datasheet */
+-- 
+2.39.5
+
 
 
 
