@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-157073-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156645-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 20855AE5257
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:42:50 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 84F3FAE5074
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:25:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3E8C844363E
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:42:25 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 28E837A2CB7
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:24:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72C09221FCC;
-	Mon, 23 Jun 2025 21:42:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A69751EDA0F;
+	Mon, 23 Jun 2025 21:25:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="p0XkSvbt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nyC0sk8i"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 304D44315A;
-	Mon, 23 Jun 2025 21:42:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 657FB1E51FA;
+	Mon, 23 Jun 2025 21:25:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750714968; cv=none; b=Jo5SXgKcDf8NiCnJ6R35JZuandOGfmiNRpGNZ+FK1ammtQlZGpVvE0aGkIlD4rBimiSKmlGrJLFQzyuWRdFKBZgnb4T9uZgGcazy96AAquPpasCJptySif8bSn5DMy19aqkAPeHI+KXMuRbwIT75xYZhFyMF8hU+o9jfPZGBolA=
+	t=1750713920; cv=none; b=Nt4wib4DyomI2YEX3VBDPKZhrVaUCLUs9fv3bQ6dhHK7QgPDRgPimbPMdUoHZP7sOg1j/VSZ2nUYAZSPeWA0PQ9QoiLOP8MhRZyqdP4sPLp1gBQHtu0dhCp0dXyPk/eUrMBdhEgV3qGm3gBScSh96/wbjr8RC8OSKOfUoKlANAU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750714968; c=relaxed/simple;
-	bh=/tUszRO6cePgpFtBQ/DdboO5cuVkKErJ9U6L2nNXinQ=;
+	s=arc-20240116; t=1750713920; c=relaxed/simple;
+	bh=3CSfZOx3ZlZwjEHyjFeBdevzNHXBJ1A86K2D9LdPgR8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BXhUmm+zqeuBaeUWxs/IVUCiY4asIYXqAYW1PGsmaQ+9eeiNWCU4QHbHo7wWbH0/aU1n7Ehmyl8Cr0gtP8tXMxGFjCFp9v4J5mbNuZa5go1/eQM2TVB3v2KaEMi/8mGvIw5wgN8xlKw15MXsqbAwjjxI6a4CwQYWXJGrjAMPmto=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=p0XkSvbt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B449DC4CEEA;
-	Mon, 23 Jun 2025 21:42:47 +0000 (UTC)
+	 MIME-Version; b=nvFC/zp6omFy2Z27jjxGe/nwBFIQe+iMWS3eUP/orgCWSdMNne7wrQoTmD67OrFrEzaohAQWkDjrMTuIDKPAMRX3QyYQ+U0tXl755FQfsCBk//2eNE30rcRicLkMzrkGXgIoF5KGgbB92+Z6oiwcKcg3TICSvXhFABhf/o2JgnY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nyC0sk8i; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF468C4CEEA;
+	Mon, 23 Jun 2025 21:25:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750714968;
-	bh=/tUszRO6cePgpFtBQ/DdboO5cuVkKErJ9U6L2nNXinQ=;
+	s=korg; t=1750713920;
+	bh=3CSfZOx3ZlZwjEHyjFeBdevzNHXBJ1A86K2D9LdPgR8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=p0XkSvbtxMFqOZdItImuMfI1RYqIC9XgIWYv5WCNVPJzDlSP2mfahBwhxjJ1zOjTO
-	 gw8q3OKDqptepOkPhPepgTwSCIZLZnGHwA+nezhm3u9/JDnvBEjWOTb2FCv3L2A0V4
-	 YHOMZSt8Emfci/edJ+paQPnbfv954dKlPg3TlLeQ=
+	b=nyC0sk8ikBR8uBxGn2a0e1T54w2fJ64gh7mm/OMKKElTD5z+y4pt/R2loP5Ay7ZE0
+	 qnOh36iMoOfZHnfFUW6NrD/KB4sQsNSdAYNmzE7kMNq2JK9QJgMH6iy3H6k5T6Nyh1
+	 D/mIDwO4fkUTDa2DZc1BbiQGt01ookNHyJgMUCvw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ross Stutterheim <ross.stutterheim@garmin.com>,
-	Mike Rapoport <rppt@kernel.org>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>
-Subject: [PATCH 5.15 220/411] ARM: 9447/1: arm/memremap: fix arch_memremap_can_ram_remap()
+	Shyam Prasad N <sprasad@microsoft.com>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.6 103/290] cifs: update dstaddr whenever channel iface is updated
 Date: Mon, 23 Jun 2025 15:06:04 +0200
-Message-ID: <20250623130639.201972865@linuxfoundation.org>
+Message-ID: <20250623130630.058312482@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
-References: <20250623130632.993849527@linuxfoundation.org>
+In-Reply-To: <20250623130626.910356556@linuxfoundation.org>
+References: <20250623130626.910356556@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,53 +61,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ross Stutterheim <ross.stutterheim@garmin.com>
+From: Shyam Prasad N <sprasad@microsoft.com>
 
-commit 96e0b355883006554a0bee3697da475971d6bba8 upstream.
+commit c1846893991f3b4ec8a0cc12219ada153f0814d6 upstream.
 
-arm/memremap: fix arch_memremap_can_ram_remap()
+When the server interface info changes (more common in clustered
+servers like Azure Files), the per-channel iface gets updated.
+However, this did not update the corresponding dstaddr. As a result
+these channels will still connect (or try connecting) to older addresses.
 
-commit 260364d112bc ("arm[64]/memremap: don't abuse pfn_valid() to ensure
-presence of linear map") added the definition of
-arch_memremap_can_ram_remap() for arm[64] specific filtering of what pages
-can be used from the linear mapping. memblock_is_map_memory() was called
-with the pfn of the address given to arch_memremap_can_ram_remap();
-however, memblock_is_map_memory() expects to be given an address for arm,
-not a pfn.
-
-This results in calls to memremap() returning a newly mapped area when
-it should return an address in the existing linear mapping.
-
-Fix this by removing the address to pfn translation and pass the
-address directly.
-
-Fixes: 260364d112bc ("arm[64]/memremap: don't abuse pfn_valid() to ensure presence of linear map")
-Signed-off-by: Ross Stutterheim <ross.stutterheim@garmin.com>
-Cc: Mike Rapoport <rppt@kernel.org>
-Cc: stable@vger.kernel.org
-Reviewed-by: Catalin Marinas <catalin.marinas@arm.com>
-Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
-Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+Fixes: b54034a73baf ("cifs: during reconnect, update interface if necessary")
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Shyam Prasad N <sprasad@microsoft.com>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm/mm/ioremap.c |    4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ fs/smb/client/sess.c |    4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/arch/arm/mm/ioremap.c
-+++ b/arch/arm/mm/ioremap.c
-@@ -483,7 +483,5 @@ void __init early_ioremap_init(void)
- bool arch_memremap_can_ram_remap(resource_size_t offset, size_t size,
- 				 unsigned long flags)
- {
--	unsigned long pfn = PHYS_PFN(offset);
--
--	return memblock_is_map_memory(pfn);
-+	return memblock_is_map_memory(offset);
+--- a/fs/smb/client/sess.c
++++ b/fs/smb/client/sess.c
+@@ -485,6 +485,10 @@ cifs_chan_update_iface(struct cifs_ses *
+ 
+ 	ses->chans[chan_index].iface = iface;
+ 	spin_unlock(&ses->chan_lock);
++
++	spin_lock(&server->srv_lock);
++	memcpy(&server->dstaddr, &iface->sockaddr, sizeof(server->dstaddr));
++	spin_unlock(&server->srv_lock);
  }
+ 
+ /*
 
 
 
