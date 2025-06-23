@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-156734-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156586-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B38EAAE50ED
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:29:20 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 92634AE502F
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:23:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EDF19188B802
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:29:13 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 906AE164BC3
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:22:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D73651EDA0F;
-	Mon, 23 Jun 2025 21:28:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78E1B1EFFA6;
+	Mon, 23 Jun 2025 21:22:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vOTKXWmU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UugrrZPj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 944E41E5B71;
-	Mon, 23 Jun 2025 21:28:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3752E219E0;
+	Mon, 23 Jun 2025 21:22:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750714135; cv=none; b=NiKMKlbZzqHSchXACnoz/VhdBOGzZF+rJTNwU3D++ViyvlZ5Esj3ZZ32qGwfb+N85jHPwY5na883cmPZ6cb31kgduZo70QyIRJxacmMJER7snSs7slkiaGFweF4G5Ln5oi/BtkJEqYKzLt4b10R2XqIZ/WnPZD+xMzAWa9oqe3o=
+	t=1750713776; cv=none; b=lGlOUFxHJsddV6N87QCD6oiaokuM0WUhew4YzDti31Wrb6WS8iUcBHxah234On24nwJepp+oWsnQ4El5Zyt/PdZ8aqV8y56hE/MHsM/rG56i+FxySMGZqUM2thyKzA61zSaVOnqxyrxv2uio41nCTU1IOYt1SDopA8Ax/7F2ddY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750714135; c=relaxed/simple;
-	bh=smVLp9JTW0WXDYW5J+TquPK5Ara2yVkbVzpdOCZPC3Q=;
+	s=arc-20240116; t=1750713776; c=relaxed/simple;
+	bh=2x27rxLKYiQSZLmysyvH49Gm3BvB4xDL212iwN4jIjU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=shLsDclLLVhXssFCjkBcZsVOYMWuLUgpU6wsIzOt8ZEO4pVN3DhXljm6KIJnVKGOt137MEX8hFywrOPWRiPJvkwS84YLCZ09ZjWg53mN8/VJi1UFq3F+Mjix9ZxSLYHceh5Db+ohsIja+Cy/afnFKhQiDT+hXrRJUBKtJ1QEKqQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vOTKXWmU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E886C4CEEA;
-	Mon, 23 Jun 2025 21:28:55 +0000 (UTC)
+	 MIME-Version; b=CL5FGmopcV+CiBHmfrQyHLBsnRudmQPyje13cEPWIxKT+sq6GZJVFevWXombcQa3jtVmC7BVKRvVhFH4iqm9Kq59fcmHIcAWt9zkOIOSatfoGAOwwdlZ7BNCFAGhST1/vmQG5WUiWzhlbibbDj6gy2wFUUZJ6rhWvXb6MFm5auQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UugrrZPj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2AE2C4CEEA;
+	Mon, 23 Jun 2025 21:22:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750714135;
-	bh=smVLp9JTW0WXDYW5J+TquPK5Ara2yVkbVzpdOCZPC3Q=;
+	s=korg; t=1750713776;
+	bh=2x27rxLKYiQSZLmysyvH49Gm3BvB4xDL212iwN4jIjU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vOTKXWmU2p7yfhE2wfZtHrbY99IKlmtCZp9O2Qwv9WXadA5S5Tqel8hZcTrtWx1A4
-	 dZK1nActv17YncTK3wbB044cRzGYJDNU3w9Lfay/JHstq25RCPvg/nY2ZCB4mLEJkl
-	 rOPjHqGDOH+CMjHfwxCgURs/ofKRzqhrRyMlcpJI=
+	b=UugrrZPj3CeMygaUwLTlWXbhAEAI8wHzABz3Am3UIEGzHVWKXuTXvBnQHNlgu3vA7
+	 UeRpuBZLYT+98yWykv0YPJWUE7v3xq3wAMraWJeceEH0nECAdhYVZ/LSWJBrLDFrJ3
+	 P0yD/HwGYCSJIuSodrWg8q9AY4aWpGQK1VnrecWk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jonas Gorski <jonas.gorski@gmail.com>,
-	=?UTF-8?q?=C3=81lvaro=20Fern=C3=A1ndez=20Rojas?= <noltari@gmail.com>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 174/508] spi: bcm63xx-hsspi: fix shared reset
+	Brett Werling <brett.werling@garmin.com>,
+	Marc Kleine-Budde <mkl@pengutronix.de>
+Subject: [PATCH 6.12 082/414] can: tcan4x5x: fix power regulator retrieval during probe
 Date: Mon, 23 Jun 2025 15:03:39 +0200
-Message-ID: <20250623130649.555345259@linuxfoundation.org>
+Message-ID: <20250623130644.134539446@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
-References: <20250623130645.255320792@linuxfoundation.org>
+In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
+References: <20250623130642.015559452@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,47 +59,48 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Álvaro Fernández Rojas <noltari@gmail.com>
+From: Brett Werling <brett.werling@garmin.com>
 
-[ Upstream commit 3d6d84c8f2f66d3fd6a43a1e2ce8e6b54c573960 ]
+commit db22720545207f734aaa9d9f71637bfc8b0155e0 upstream.
 
-Some bmips SoCs (bcm6362, bcm63268) share the same SPI reset for both SPI
-and HSSPI controllers, so reset shouldn't be exclusive.
+Fixes the power regulator retrieval in tcan4x5x_can_probe() by ensuring
+the regulator pointer is not set to NULL in the successful return from
+devm_regulator_get_optional().
 
-Fixes: 0eeadddbf09a ("spi: bcm63xx-hsspi: add reset support")
-Reported-by: Jonas Gorski <jonas.gorski@gmail.com>
-Signed-off-by: Álvaro Fernández Rojas <noltari@gmail.com>
-Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
-Link: https://patch.msgid.link/20250529130915.2519590-3-noltari@gmail.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 3814ca3a10be ("can: tcan4x5x: tcan4x5x_can_probe(): turn on the power before parsing the config")
+Signed-off-by: Brett Werling <brett.werling@garmin.com>
+Link: https://patch.msgid.link/20250612191825.3646364-1-brett.werling@garmin.com
+Cc: stable@vger.kernel.org
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/spi/spi-bcm63xx-hsspi.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/can/m_can/tcan4x5x-core.c |    9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/spi/spi-bcm63xx-hsspi.c b/drivers/spi/spi-bcm63xx-hsspi.c
-index 02f56fc001b47..7d8e5c66f6d17 100644
---- a/drivers/spi/spi-bcm63xx-hsspi.c
-+++ b/drivers/spi/spi-bcm63xx-hsspi.c
-@@ -357,7 +357,7 @@ static int bcm63xx_hsspi_probe(struct platform_device *pdev)
- 	if (IS_ERR(clk))
- 		return PTR_ERR(clk);
+--- a/drivers/net/can/m_can/tcan4x5x-core.c
++++ b/drivers/net/can/m_can/tcan4x5x-core.c
+@@ -385,10 +385,11 @@ static int tcan4x5x_can_probe(struct spi
+ 	priv = cdev_to_priv(mcan_class);
  
--	reset = devm_reset_control_get_optional_exclusive(dev, NULL);
-+	reset = devm_reset_control_get_optional_shared(dev, NULL);
- 	if (IS_ERR(reset))
- 		return PTR_ERR(reset);
+ 	priv->power = devm_regulator_get_optional(&spi->dev, "vsup");
+-	if (PTR_ERR(priv->power) == -EPROBE_DEFER) {
+-		ret = -EPROBE_DEFER;
+-		goto out_m_can_class_free_dev;
+-	} else {
++	if (IS_ERR(priv->power)) {
++		if (PTR_ERR(priv->power) == -EPROBE_DEFER) {
++			ret = -EPROBE_DEFER;
++			goto out_m_can_class_free_dev;
++		}
+ 		priv->power = NULL;
+ 	}
  
--- 
-2.39.5
-
 
 
 
