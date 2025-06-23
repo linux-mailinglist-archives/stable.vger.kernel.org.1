@@ -1,62 +1,58 @@
-Return-Path: <stable+bounces-158147-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157857-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2AFDFAE5761
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:29:27 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7BE5AAE55F3
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:16:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0967D3ACA59
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:26:28 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8F3014C69AB
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:15:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B4A1226D1D;
-	Mon, 23 Jun 2025 22:26:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CEB85225A3D;
+	Mon, 23 Jun 2025 22:14:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VmMIhy4b"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w1JnCroq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 291D622370A;
-	Mon, 23 Jun 2025 22:26:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CA4E1F7580;
+	Mon, 23 Jun 2025 22:14:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750717600; cv=none; b=C36eJr51ztecwca6P20nwO5uU7moSiU7svwYajvKpXgZIKiTdNzygJt/2hxZh5AhP49G23UQ3QNTrFG5476zUo78/TxCWFTzhrZdiDq5fypbUe20OmoqbOlQcViX6u9d6cD97I1ZNSuj8zaOTauGL5ArMujKIY74L2ZyX9ysEOc=
+	t=1750716889; cv=none; b=ELvd7CDXbgH5Zqz4rbavO1ubv+TFmc6ssLnZn/RnOySfoECcXUQ+xGIUTTxiRqph8ti3ujNp5BgCwuUv3PtoFoebzvWx/rqcZNXMTjKjGtHeqs7T00hjWigemO33kUSsdkWMLgqHskFMocoWux1rBtX3DS2pLmrLv+RUuZFsqeY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750717600; c=relaxed/simple;
-	bh=TEAUb9Y+laqqY2Y9E/79hJJwBI39hTeyOO4ZpyRJ7fI=;
+	s=arc-20240116; t=1750716889; c=relaxed/simple;
+	bh=1z+8MjPfUVE8G3OvRZYvmtoN52VZ0brFrAtjp6asl6I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LLObU3IdT1FRsZYlLGHrALR4gti3thH+BBjpqVxOkpW1XR8g/VtCWrWcRSLVh+Xt60wA2RrczXqbaoVMmjax+CifRbhYNKHYprxyn6ytcJReaaBNyCDCduvKLgcHvJ9258fDrlfL1ZApaF54PsbjCm5use23QDGxNU8eRq2Ewt8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VmMIhy4b; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61806C4CEED;
-	Mon, 23 Jun 2025 22:26:39 +0000 (UTC)
+	 MIME-Version:Content-Type; b=uJQYzu6h7jm0pkJkQmjU5nKicjK9QUaJ/zuEw8UCZexV4K/viWRDy1RFQArYm7MTP6Yk8Ll1RTKehRG+uu6I+W+YZp312ZpiH6+gQL7u3XNb0fEkok/j7Xsk4YeWZERPOmcUv3QCCrCD0h+5id+HnzFEQRqefx7kSpzrQp0THsA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w1JnCroq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD74EC4CEEA;
+	Mon, 23 Jun 2025 22:14:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750717599;
-	bh=TEAUb9Y+laqqY2Y9E/79hJJwBI39hTeyOO4ZpyRJ7fI=;
+	s=korg; t=1750716889;
+	bh=1z+8MjPfUVE8G3OvRZYvmtoN52VZ0brFrAtjp6asl6I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VmMIhy4by9ScutlpnFTDMF9wcbY5zAKWE3sxUg8WnQpThjbb2m7iKxOYQHtm2sMCo
-	 aFAgYJwX3JKfmL4Vi5ojpvAXhQ+iqUjqlCVT8MZXNjXXAOE5TCMKl8D6JZwT8/uCOj
-	 g9KJharh5omEYYNGZA63teSBooVPY4k0YbgLbmlM=
+	b=w1JnCroqnNpnhe6YecD1k5c0o6u89Yhh5asTJRX7i8bo0gqWDSeDKWflptaHgQT4C
+	 NhGIwUsdMCyV4TGSwnFVLvBiDbiMRPsJ6Ess3lf7V7UvHzCd2lXV0gTqO2UL9tJ73x
+	 3MkTwJ4VhGcKBPoVHEb6zfxhBPrU7OPsHuwJX7mw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gavin Guo <gavinguo@igalia.com>,
-	David Hildenbrand <david@redhat.com>,
-	Hugh Dickins <hughd@google.com>,
-	Zi Yan <ziy@nvidia.com>,
-	Gavin Shan <gshan@redhat.com>,
-	Florent Revest <revest@google.com>,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Miaohe Lin <linmiaohe@huawei.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.1 466/508] mm/huge_memory: fix dereferencing invalid pmd migration entry
+	kernel test robot <lkp@intel.com>,
+	Timur Tabi <ttabi@nvidia.com>,
+	Jacob Keller <jacob.e.keller@intel.com>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 367/411] drm/nouveau/bl: increase buffer size to avoid truncate warning
 Date: Mon, 23 Jun 2025 15:08:31 +0200
-Message-ID: <20250623130656.572860328@linuxfoundation.org>
+Message-ID: <20250623130642.880943915@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
-References: <20250623130645.255320792@linuxfoundation.org>
+In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
+References: <20250623130632.993849527@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,107 +62,86 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gavin Guo <gavinguo@igalia.com>
+From: Jacob Keller <jacob.e.keller@intel.com>
 
-commit be6e843fc51a584672dfd9c4a6a24c8cb81d5fb7 upstream.
+[ Upstream commit 61b2b3737499f1fb361a54a16828db24a8345e85 ]
 
-When migrating a THP, concurrent access to the PMD migration entry during
-a deferred split scan can lead to an invalid address access, as
-illustrated below.  To prevent this invalid access, it is necessary to
-check the PMD migration entry and return early.  In this context, there is
-no need to use pmd_to_swp_entry and pfn_swap_entry_to_page to verify the
-equality of the target folio.  Since the PMD migration entry is locked, it
-cannot be served as the target.
+The nouveau_get_backlight_name() function generates a unique name for the
+backlight interface, appending an id from 1 to 99 for all backlight devices
+after the first.
 
-Mailing list discussion and explanation from Hugh Dickins: "An anon_vma
-lookup points to a location which may contain the folio of interest, but
-might instead contain another folio: and weeding out those other folios is
-precisely what the "folio != pmd_folio((*pmd)" check (and the "risk of
-replacing the wrong folio" comment a few lines above it) is for."
+GCC 15 (and likely other compilers) produce the following
+-Wformat-truncation warning:
 
-BUG: unable to handle page fault for address: ffffea60001db008
-CPU: 0 UID: 0 PID: 2199114 Comm: tee Not tainted 6.14.0+ #4 NONE
-Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
-RIP: 0010:split_huge_pmd_locked+0x3b5/0x2b60
-Call Trace:
-<TASK>
-try_to_migrate_one+0x28c/0x3730
-rmap_walk_anon+0x4f6/0x770
-unmap_folio+0x196/0x1f0
-split_huge_page_to_list_to_order+0x9f6/0x1560
-deferred_split_scan+0xac5/0x12a0
-shrinker_debugfs_scan_write+0x376/0x470
-full_proxy_write+0x15c/0x220
-vfs_write+0x2fc/0xcb0
-ksys_write+0x146/0x250
-do_syscall_64+0x6a/0x120
-entry_SYSCALL_64_after_hwframe+0x76/0x7e
+nouveau_backlight.c: In function ‘nouveau_backlight_init’:
+nouveau_backlight.c:56:69: error: ‘%d’ directive output may be truncated writing between 1 and 10 bytes into a region of size 3 [-Werror=format-truncation=]
+   56 |                 snprintf(backlight_name, BL_NAME_SIZE, "nv_backlight%d", nb);
+      |                                                                     ^~
+In function ‘nouveau_get_backlight_name’,
+    inlined from ‘nouveau_backlight_init’ at nouveau_backlight.c:351:7:
+nouveau_backlight.c:56:56: note: directive argument in the range [1, 2147483647]
+   56 |                 snprintf(backlight_name, BL_NAME_SIZE, "nv_backlight%d", nb);
+      |                                                        ^~~~~~~~~~~~~~~~
+nouveau_backlight.c:56:17: note: ‘snprintf’ output between 14 and 23 bytes into a destination of size 15
+   56 |                 snprintf(backlight_name, BL_NAME_SIZE, "nv_backlight%d", nb);
+      |                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-The bug is found by syzkaller on an internal kernel, then confirmed on
-upstream.
+The warning started appearing after commit ab244be47a8f ("drm/nouveau:
+Fix a potential theorical leak in nouveau_get_backlight_name()") This fix
+for the ida usage removed the explicit value check for ids larger than 99.
+The compiler is unable to intuit that the ida_alloc_max() limits the
+returned value range between 0 and 99.
 
-Link: https://lkml.kernel.org/r/20250421113536.3682201-1-gavinguo@igalia.com
-Link: https://lore.kernel.org/all/20250414072737.1698513-1-gavinguo@igalia.com/
-Link: https://lore.kernel.org/all/20250418085802.2973519-1-gavinguo@igalia.com/
-Fixes: 84c3fc4e9c56 ("mm: thp: check pmd migration entry in common path")
-Signed-off-by: Gavin Guo <gavinguo@igalia.com>
-Acked-by: David Hildenbrand <david@redhat.com>
-Acked-by: Hugh Dickins <hughd@google.com>
-Acked-by: Zi Yan <ziy@nvidia.com>
-Reviewed-by: Gavin Shan <gshan@redhat.com>
-Cc: Florent Revest <revest@google.com>
-Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
-Cc: Miaohe Lin <linmiaohe@huawei.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-[gavin: backport the migration checking logic to __split_huge_pmd]
-Signed-off-by: Gavin Guo <gavinguo@igalia.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Because the compiler can no longer infer that the number ranges from 0 to
+99, it thinks that it could use as many as 11 digits (10 + the potential -
+sign for negative numbers).
+
+The warning has gone unfixed for some time, with at least one kernel test
+robot report. The code breaks W=1 builds, which is especially frustrating
+with the introduction of CONFIG_WERROR.
+
+The string is stored temporarily on the stack and then copied into the
+device name. Its not a big deal to use 11 more bytes of stack rounding out
+to an even 24 bytes. Increase BL_NAME_SIZE to 24 to avoid the truncation
+warning. This fixes the W=1 builds that include this driver.
+
+Compile tested only.
+
+Fixes: ab244be47a8f ("drm/nouveau: Fix a potential theorical leak in nouveau_get_backlight_name()")
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202312050324.0kv4PnfZ-lkp@intel.com/
+Suggested-by: Timur Tabi <ttabi@nvidia.com>
+Signed-off-by: Jacob Keller <jacob.e.keller@intel.com>
+Link: https://lore.kernel.org/r/20250610-jk-nouveua-drm-bl-snprintf-fix-v2-1-7fdd4b84b48e@intel.com
+Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- mm/huge_memory.c |   11 ++++++-----
- 1 file changed, 6 insertions(+), 5 deletions(-)
+ drivers/gpu/drm/nouveau/nouveau_backlight.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/mm/huge_memory.c
-+++ b/mm/huge_memory.c
-@@ -2282,12 +2282,14 @@ void __split_huge_pmd(struct vm_area_str
- {
- 	spinlock_t *ptl;
- 	struct mmu_notifier_range range;
-+	bool pmd_migration;
+diff --git a/drivers/gpu/drm/nouveau/nouveau_backlight.c b/drivers/gpu/drm/nouveau/nouveau_backlight.c
+index aa8ed08fe9a7c..596a16b8b2de9 100644
+--- a/drivers/gpu/drm/nouveau/nouveau_backlight.c
++++ b/drivers/gpu/drm/nouveau/nouveau_backlight.c
+@@ -40,7 +40,7 @@
+ #include "nouveau_connector.h"
  
- 	mmu_notifier_range_init(&range, MMU_NOTIFY_CLEAR, 0, vma, vma->vm_mm,
- 				address & HPAGE_PMD_MASK,
- 				(address & HPAGE_PMD_MASK) + HPAGE_PMD_SIZE);
- 	mmu_notifier_invalidate_range_start(&range);
- 	ptl = pmd_lock(vma->vm_mm, pmd);
-+	pmd_migration = is_pmd_migration_entry(*pmd);
+ static struct ida bl_ida;
+-#define BL_NAME_SIZE 15 // 12 for name + 2 for digits + 1 for '\0'
++#define BL_NAME_SIZE 24 // 12 for name + 11 for digits + 1 for '\0'
  
- 	/*
- 	 * If caller asks to setup a migration entry, we need a folio to check
-@@ -2296,13 +2298,12 @@ void __split_huge_pmd(struct vm_area_str
- 	VM_BUG_ON(freeze && !folio);
- 	VM_WARN_ON_ONCE(folio && !folio_test_locked(folio));
- 
--	if (pmd_trans_huge(*pmd) || pmd_devmap(*pmd) ||
--	    is_pmd_migration_entry(*pmd)) {
-+	if (pmd_trans_huge(*pmd) || pmd_devmap(*pmd) || pmd_migration) {
- 		/*
--		 * It's safe to call pmd_page when folio is set because it's
--		 * guaranteed that pmd is present.
-+		 * Do not apply pmd_folio() to a migration entry; and folio lock
-+		 * guarantees that it must be of the wrong folio anyway.
- 		 */
--		if (folio && folio != page_folio(pmd_page(*pmd)))
-+		if (folio && (pmd_migration || folio != page_folio(pmd_page(*pmd))))
- 			goto out;
- 		__split_huge_pmd_locked(vma, pmd, range.start, freeze);
- 	}
+ static bool
+ nouveau_get_backlight_name(char backlight_name[BL_NAME_SIZE],
+-- 
+2.39.5
+
 
 
 
