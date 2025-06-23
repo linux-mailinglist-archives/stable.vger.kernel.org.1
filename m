@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-156736-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157309-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B08F2AE50EE
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:29:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E3763AE5367
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:52:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 720181892F78
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:29:18 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C7C6A1B6665F
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:52:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CBA11221299;
-	Mon, 23 Jun 2025 21:29:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AEA642222B7;
+	Mon, 23 Jun 2025 21:52:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Xz8eFaIL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QwCardAo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 869771EEA3C;
-	Mon, 23 Jun 2025 21:29:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 685D31AD3FA;
+	Mon, 23 Jun 2025 21:52:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750714140; cv=none; b=RlsXdTbVDykpeAGG95N7fJZFcD0ueO7iYabnrL2nbxN5W/DGxe45HT1mrg47bx67f/8+hPMr0E0gl/ZBY5cW+A0Mt77Oj5SGPe5+EvLo+3T19NF/WbVKW/Ry8I4ZHL2DDg/HuSirifWoVhtko73ouUXOIQ4BJREL3MYjW2WhWRE=
+	t=1750715553; cv=none; b=XkaP+P0FxuRVcXmitM2aPUqqQrO+qOjvitC3iHbZNB6wrS5wfv9bpht1K+zZ6DTMDgRvepb0i+wlDqu0NPRcWHv6IQsFx7HoXWMouyYZjm2m6YEZbLrZkv0Fxs3CHCsyu5ifRn8pvSRjGJw67Z2GO9Bv6Z5zrySmy6DhXpdFH/U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750714140; c=relaxed/simple;
-	bh=xF7hS/LfST8Hs1SLqcDd7sttmSLpb109vNrv8HvW/5k=;
+	s=arc-20240116; t=1750715553; c=relaxed/simple;
+	bh=ZdS+Z5KsdKj60QfXbXuxYW9JZKuCLI5XWXsofVfEBMw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Z6OnjU83APo/gdwwXLLobi1wAalxpui9fIkB5Qw2tsTMHXAV+ZL1xmHvVVHKwYYLPhlRQY4qlMVgYPSn7xjKzT1CeHDmWsendgFcdulVzhb2i7pa+mHXqBUyX9/KIbzWYgVjALoryisMcmCmiK+Vr3a2Tm/neAGVZdvdxq6UVqo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Xz8eFaIL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14F49C4CEEA;
-	Mon, 23 Jun 2025 21:28:59 +0000 (UTC)
+	 MIME-Version; b=Hybh4f2TSLVymnY8ORsxT8FJ1Kr9reKHAjERgOXKUXG94zKeQJmgLFmBGjC/YgdsxHPOVK5RoO+AYC6OzON1dKhuHayyOqQdORZO2aCTHh2U5IPNiyrqX9X3wyw3c1RMw70ltZOzb0i6CWm9n0DlyeeBsIJokH0ANaml7n1/1MU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QwCardAo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6C47C4CEEA;
+	Mon, 23 Jun 2025 21:52:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750714140;
-	bh=xF7hS/LfST8Hs1SLqcDd7sttmSLpb109vNrv8HvW/5k=;
+	s=korg; t=1750715553;
+	bh=ZdS+Z5KsdKj60QfXbXuxYW9JZKuCLI5XWXsofVfEBMw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Xz8eFaILfrmymosMCWTK0nC8HR3Q9txNQZluqNcy6m1cnSw852G8jVqZYfytWGSrd
-	 fWUEN9B96T52nVWnl6rExDTrgeGL5hjrQBMrS9vAXvN2zwEeZdw8WDgfp1epEDvd+G
-	 XlcA57gS66uR0aROkUvzWMERxHDe4DEGcUaK61EQ=
+	b=QwCardAo0XNlVMBmNsZu89nik163iKxABqPGwq0HdhA4I9RbLmObQbwG0ypN44Wg/
+	 n/hxEpJ/280W8b2yB4pL3lERE8J47rFKFvzAXMGd6FijC5ejXjfgEOIJJy0JXdx7Z8
+	 mHxxy/owN3panQPdgsN2NKLrcp5wrLTKFFHek82I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xianglai Li <lixianglai@loongson.cn>,
-	Huacai Chen <chenhuacai@loongson.cn>,
-	Bjorn Helgaas <bhelgaas@google.com>
-Subject: [PATCH 5.10 208/355] PCI: Add ACS quirk for Loongson PCIe
+	Armin Wolf <W_Armin@gmx.de>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 265/411] ACPI: bus: Bail out if acpi_kobj registration fails
 Date: Mon, 23 Jun 2025 15:06:49 +0200
-Message-ID: <20250623130632.999958836@linuxfoundation.org>
+Message-ID: <20250623130640.328322930@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130626.716971725@linuxfoundation.org>
-References: <20250623130626.716971725@linuxfoundation.org>
+In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
+References: <20250623130632.993849527@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,67 +62,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Huacai Chen <chenhuacai@loongson.cn>
+From: Armin Wolf <W_Armin@gmx.de>
 
-commit 1f3303aa92e15fa273779acac2d0023609de30f1 upstream.
+[ Upstream commit 94a370fc8def6038dbc02199db9584b0b3690f1a ]
 
-Loongson PCIe Root Ports don't advertise an ACS capability, but they do not
-allow peer-to-peer transactions between Root Ports. Add an ACS quirk so
-each Root Port can be in a separate IOMMU group.
+The ACPI sysfs code will fail to initialize if acpi_kobj is NULL,
+together with some ACPI drivers.
 
-Signed-off-by: Xianglai Li <lixianglai@loongson.cn>
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/20250403040756.720409-1-chenhuacai@loongson.cn
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Follow the other firmware subsystems and bail out if the kobject
+cannot be registered.
+
+Signed-off-by: Armin Wolf <W_Armin@gmx.de>
+Link: https://patch.msgid.link/20250518185111.3560-2-W_Armin@gmx.de
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/quirks.c |   23 +++++++++++++++++++++++
- 1 file changed, 23 insertions(+)
+ drivers/acpi/bus.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
---- a/drivers/pci/quirks.c
-+++ b/drivers/pci/quirks.c
-@@ -4828,6 +4828,18 @@ static int pci_quirk_brcm_acs(struct pci
- 		PCI_ACS_SV | PCI_ACS_RR | PCI_ACS_CR | PCI_ACS_UF);
- }
+diff --git a/drivers/acpi/bus.c b/drivers/acpi/bus.c
+index 9bc5bc5bc359b..ea63b8f272892 100644
+--- a/drivers/acpi/bus.c
++++ b/drivers/acpi/bus.c
+@@ -1335,8 +1335,10 @@ static int __init acpi_init(void)
+ 	}
  
-+static int pci_quirk_loongson_acs(struct pci_dev *dev, u16 acs_flags)
-+{
-+	/*
-+	 * Loongson PCIe Root Ports don't advertise an ACS capability, but
-+	 * they do not allow peer-to-peer transactions between Root Ports.
-+	 * Allow each Root Port to be in a separate IOMMU group by masking
-+	 * SV/RR/CR/UF bits.
-+	 */
-+	return pci_acs_ctrl_enabled(acs_flags,
-+		PCI_ACS_SV | PCI_ACS_RR | PCI_ACS_CR | PCI_ACS_UF);
-+}
-+
- /*
-  * Wangxun 40G/25G/10G/1G NICs have no ACS capability, but on
-  * multi-function devices, the hardware isolates the functions by
-@@ -4961,6 +4973,17 @@ static const struct pci_dev_acs_enabled
- 	{ PCI_VENDOR_ID_BROADCOM, 0x1762, pci_quirk_mf_endpoint_acs },
- 	{ PCI_VENDOR_ID_BROADCOM, 0x1763, pci_quirk_mf_endpoint_acs },
- 	{ PCI_VENDOR_ID_BROADCOM, 0xD714, pci_quirk_brcm_acs },
-+	/* Loongson PCIe Root Ports */
-+	{ PCI_VENDOR_ID_LOONGSON, 0x3C09, pci_quirk_loongson_acs },
-+	{ PCI_VENDOR_ID_LOONGSON, 0x3C19, pci_quirk_loongson_acs },
-+	{ PCI_VENDOR_ID_LOONGSON, 0x3C29, pci_quirk_loongson_acs },
-+	{ PCI_VENDOR_ID_LOONGSON, 0x7A09, pci_quirk_loongson_acs },
-+	{ PCI_VENDOR_ID_LOONGSON, 0x7A19, pci_quirk_loongson_acs },
-+	{ PCI_VENDOR_ID_LOONGSON, 0x7A29, pci_quirk_loongson_acs },
-+	{ PCI_VENDOR_ID_LOONGSON, 0x7A39, pci_quirk_loongson_acs },
-+	{ PCI_VENDOR_ID_LOONGSON, 0x7A49, pci_quirk_loongson_acs },
-+	{ PCI_VENDOR_ID_LOONGSON, 0x7A59, pci_quirk_loongson_acs },
-+	{ PCI_VENDOR_ID_LOONGSON, 0x7A69, pci_quirk_loongson_acs },
- 	/* Amazon Annapurna Labs */
- 	{ PCI_VENDOR_ID_AMAZON_ANNAPURNA_LABS, 0x0031, pci_quirk_al_acs },
- 	/* Zhaoxin multi-function devices */
+ 	acpi_kobj = kobject_create_and_add("acpi", firmware_kobj);
+-	if (!acpi_kobj)
+-		pr_debug("%s: kset create error\n", __func__);
++	if (!acpi_kobj) {
++		pr_err("Failed to register kobject\n");
++		return -ENOMEM;
++	}
+ 
+ 	init_prmt();
+ 	result = acpi_bus_init();
+-- 
+2.39.5
+
 
 
 
