@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-156950-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157235-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AC72AAE51D3
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:37:49 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 62B4AAE5328
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:50:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 444214A4995
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:37:50 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 092217AD629
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:48:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F91D2222C2;
-	Mon, 23 Jun 2025 21:37:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F006E21B9C9;
+	Mon, 23 Jun 2025 21:49:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Cj7b4P81"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Puy3jobW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D67819CC11;
-	Mon, 23 Jun 2025 21:37:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD3BB1A00F0;
+	Mon, 23 Jun 2025 21:49:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750714667; cv=none; b=d708TahMOu7K1QhrF5w2YSfjLdjAb5wG+ZeL6wRbkz7gJlgLb4a0V45dUlAEFwnFPdRtM4NB+8Ufa1HVH3i6og58fC5skhYIL3Xsfq2cfrmQNhCSUB3g3J85vbhPQzqSYQ0QUFyYK+8LV/YAejT7mTSQt/uQp34TtG5la6WtLMw=
+	t=1750715371; cv=none; b=ZsLuRHor5rBI0+lTKcKMQ/yLqz7yd66UW0W3e26hIUKqPEqTVGYMByB5mwRAvmUrkwuyKGdKr+lYISGtImHBgHye1J2FY3w6EhlFwC/cmazIWvirYIOLxeYd/DucIBarFu1dktjkrNfuAYMD7X4l5Cb/8+ENu8dniQeFf3Aiato=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750714667; c=relaxed/simple;
-	bh=/qSccqiN5/++vvqwg0yMtgx0ozK9GNDAD5JkySrhU1Q=;
+	s=arc-20240116; t=1750715371; c=relaxed/simple;
+	bh=AeTwDqoMDujZCM9P+O9HLW2S1dA0Tw0fC7FKNiKIQqk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=l46/9jDTlzFaZVYeqIUfJ9Ud8Yk3OlrX9xlorR4sNWss2ZwOwXjfhiFmWf5r0zvdUXFVRnoZkk1I5ElZf7pVEugbNr/PT9q9Krexqb1pTcmlkEko4e3eO4fag5AFbxGZ7bAaOIYF0lCgsCxJe2nKxX5y/cDt2Q+eTGZD1H37J+4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Cj7b4P81; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C70A1C4CEEA;
-	Mon, 23 Jun 2025 21:37:46 +0000 (UTC)
+	 MIME-Version; b=sn9es/8601Ow6/sgz8dlip2xgB6GjCs5uiXtxtpSPcQNDVHui/t+uPGWOP1ZNBJo3Srm6fG46c7QI5fVhZ7j8mC0yTONQ/tvK08j63mXYUiu19/SvnFwG+Jpb8QVqCDnqjaysGtoVWnjdlMbkH8D0pOfnbTrrAZUn/w/2Di5w+Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Puy3jobW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 430A1C4CEEA;
+	Mon, 23 Jun 2025 21:49:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750714667;
-	bh=/qSccqiN5/++vvqwg0yMtgx0ozK9GNDAD5JkySrhU1Q=;
+	s=korg; t=1750715371;
+	bh=AeTwDqoMDujZCM9P+O9HLW2S1dA0Tw0fC7FKNiKIQqk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Cj7b4P81dIIKUztdpFJpJla5h8WwIYr6NmDTaQkI8mAZKYobnNdVa68A/+UqAlufy
-	 UeFFQT2GXtmbiO0SpUIBOhM/t2L5P4nA4RKVv9xWkTmXevkMOmYvntW2HwasTaC3i9
-	 73I5Kz+e7yHo37n7FlbXeBh9W882+O9SnFzEaK4w=
+	b=Puy3jobW3zbG3sPe5KUDPEdjsIugpLl5ej2eUuAOUgZ0PYQ1O65Jz5IBoul6MhOum
+	 XVDKSE3MB9mZ5M9UbjtabcqEyeoMf3lo82Kc63SDynXvncUfCLApPL7btiNt8jtHTd
+	 9NW9wHukHxJikWa+Ds/iQwj7PoE7mr8CJAlc/yyI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dian-Syuan Yang <dian_syuan0116@realtek.com>,
-	Ping-Ke Shih <pkshih@realtek.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 151/290] wifi: rtw89: leave idle mode when setting WEP encryption for AP mode
+	Simon Trimmer <simont@opensource.cirrus.com>,
+	Charles Keepax <ckeepax@opensource.cirrus.com>,
+	Richard Fitzgerald <rf@opensource.cirrus.com>,
+	patches@opensource.cirrus.com,
+	Jaroslav Kysela <perex@perex.cz>,
+	Mark Brown <broonie@kernel.org>
+Subject: [PATCH 6.15 454/592] firmware: cs_dsp: Fix OOB memory read access in KUnit test (ctl cache)
 Date: Mon, 23 Jun 2025 15:06:52 +0200
-Message-ID: <20250623130631.438098383@linuxfoundation.org>
+Message-ID: <20250623130711.228112239@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130626.910356556@linuxfoundation.org>
-References: <20250623130626.910356556@linuxfoundation.org>
+In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
+References: <20250623130700.210182694@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,54 +65,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dian-Syuan Yang <dian_syuan0116@realtek.com>
+From: Jaroslav Kysela <perex@perex.cz>
 
-[ Upstream commit d105652b33245162867ac769bea336976e67efb8 ]
+commit f4ba2ea57da51d616b689c4b8826c517ff5a8523 upstream.
 
-Due to mac80211 triggering the hardware to enter idle mode, it fails
-to install WEP key causing connected station can't ping successfully.
-Currently, it forces the hardware to leave idle mode before driver
-adding WEP keys.
+KASAN reported out of bounds access - cs_dsp_ctl_cache_init_multiple_offsets().
+The code uses mock_coeff_template.length_bytes (4 bytes) for register value
+allocations. But later, this length is set to 8 bytes which causes
+test code failures.
 
-Signed-off-by: Dian-Syuan Yang <dian_syuan0116@realtek.com>
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
-Link: https://patch.msgid.link/20250507031203.8256-1-pkshih@realtek.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+As fix, just remove the lenght override, keeping the original value 4
+for all operations.
+
+Cc: Simon Trimmer <simont@opensource.cirrus.com>
+Cc: Charles Keepax <ckeepax@opensource.cirrus.com>
+Cc: Richard Fitzgerald <rf@opensource.cirrus.com>
+Cc: patches@opensource.cirrus.com
+Cc: stable@vger.kernel.org
+Signed-off-by: Jaroslav Kysela <perex@perex.cz>
+Reviewed-by: Richard Fitzgerald <rf@opensource.cirrus.com>
+Link: https://patch.msgid.link/20250523154151.1252585-1-perex@perex.cz
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/realtek/rtw89/cam.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/firmware/cirrus/test/cs_dsp_test_control_cache.c |    1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/drivers/net/wireless/realtek/rtw89/cam.c b/drivers/net/wireless/realtek/rtw89/cam.c
-index f5301c2bbf133..9a0ffaddb8360 100644
---- a/drivers/net/wireless/realtek/rtw89/cam.c
-+++ b/drivers/net/wireless/realtek/rtw89/cam.c
-@@ -6,6 +6,7 @@
- #include "debug.h"
- #include "fw.h"
- #include "mac.h"
-+#include "ps.h"
+--- a/drivers/firmware/cirrus/test/cs_dsp_test_control_cache.c
++++ b/drivers/firmware/cirrus/test/cs_dsp_test_control_cache.c
+@@ -776,7 +776,6 @@ static void cs_dsp_ctl_cache_init_multip
+ 					      "dummyalg", NULL);
  
- static struct sk_buff *
- rtw89_cam_get_sec_key_cmd(struct rtw89_dev *rtwdev,
-@@ -333,9 +334,11 @@ int rtw89_cam_sec_key_add(struct rtw89_dev *rtwdev,
- 
- 	switch (key->cipher) {
- 	case WLAN_CIPHER_SUITE_WEP40:
-+		rtw89_leave_ips_by_hwflags(rtwdev);
- 		hw_key_type = RTW89_SEC_KEY_TYPE_WEP40;
- 		break;
- 	case WLAN_CIPHER_SUITE_WEP104:
-+		rtw89_leave_ips_by_hwflags(rtwdev);
- 		hw_key_type = RTW89_SEC_KEY_TYPE_WEP104;
- 		break;
- 	case WLAN_CIPHER_SUITE_CCMP:
--- 
-2.39.5
-
+ 	/* Create controls identical except for offset */
+-	def.length_bytes = 8;
+ 	def.offset_dsp_words = 0;
+ 	def.shortname = "CtlA";
+ 	cs_dsp_mock_wmfw_add_coeff_desc(local->wmfw_builder, &def);
 
 
 
