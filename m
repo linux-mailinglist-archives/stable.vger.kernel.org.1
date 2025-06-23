@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-157256-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157030-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF696AE532D
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:51:03 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id ED2F1AE522C
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:41:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5BB331B66931
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:51:01 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 83CE24A5373
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:41:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA03F223316;
-	Mon, 23 Jun 2025 21:50:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 806942222A9;
+	Mon, 23 Jun 2025 21:41:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SpflxJ80"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RVAW/w/k"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A42B2221FBE;
-	Mon, 23 Jun 2025 21:50:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F0324315A;
+	Mon, 23 Jun 2025 21:41:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750715423; cv=none; b=amKwS9RuO5a3AWYl1MG79v+EJEZ4RMuAviZGwBIObf9NkIH9oyCghedJld+5oy8zvZjSQVS6FcI2HBsdC/6RlAZXzeWS0GhmTytyGF+ZCcjp0lAgCK/IFXiFxMBa/g18ENdU0xwClBTXQwLo5J9rnFgbH7Qq7E/ErlSY8oG2pJ4=
+	t=1750714863; cv=none; b=jiKBm8nTOagel2G67NpNnSNOHdMymBtMfsOZ9/b7mxH6mBC5vkPboX55uSZoeaCMjWn6iRBLDWFWQb7++pfSshR10dmoDJd8aMbfWuXwk3CTTJv5UntZM7qUITMVTissKaiQ+FpmdrgLWsQvKtTVpl3MhnV68QSr1nJ3Jg2NoIw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750715423; c=relaxed/simple;
-	bh=dTbqIC7qytD2R3Ei3W96XwzA99r2sz9LgIFLr+64M1Q=;
+	s=arc-20240116; t=1750714863; c=relaxed/simple;
+	bh=PfilexD8Os8Wia3vVZLuYShLaPCWq4g3wn/+iA8g5GM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rurnL2eND/b3Nti8dsyduwaAoA7PjGtJbGJ3KVIkmt98V/ibuUBo+e1HHrXbNXUeu+POfPu8W20C/UK9vVFvIVqlYCEyun8zpPkpSmx279u69W5lAQG4jctHbmy0KvJ/sRY+77sPAl0r65P/2ucHDkkj1eKKLQYtxQoqwLTBtHw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SpflxJ80; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3ADCCC4CEF2;
-	Mon, 23 Jun 2025 21:50:23 +0000 (UTC)
+	 MIME-Version; b=J0ea+8rT+fL8SUvLvnSvMfwFjfTwMVT6U1AiMA8ABJjYmjkOAYnJsAITOzcoX4cwmd8bU/zGafJFHNqRX2bZLw0nPq1o7Sdiva6J4kvpVttOqF3+ON6xR3KTN+aVco2sdtPvU0ejnzFAB7n8QCx7iTdncT9IdbJ0YfTQIr7Q/sg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RVAW/w/k; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA5D0C4CEEA;
+	Mon, 23 Jun 2025 21:41:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750715423;
-	bh=dTbqIC7qytD2R3Ei3W96XwzA99r2sz9LgIFLr+64M1Q=;
+	s=korg; t=1750714863;
+	bh=PfilexD8Os8Wia3vVZLuYShLaPCWq4g3wn/+iA8g5GM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SpflxJ807qh7bngTEAIR7ZboF+EeM1WulxTgrI8PTh1kx6k4uNtE1qoj03Hr5PhXz
-	 UKLxerrok3DsMWkwQxn232Tcr0936HseAU7mM4F68BjnEr5cTLZIf3MyIJfI7Xuiah
-	 B122RbZ2ZMp1VMPevOhW7ABRM4ph/GejsG7y7qRM=
+	b=RVAW/w/kqOz1daVJD3BVSRZAlyQ7f1Y7VkkE8PfaKTxVdnp5GMaNou5PJxqXuDnmo
+	 49MNTLjtEv8Ty5I05oWCNZP9LJK23XPZ9vO1wGAC6s4ovnyNsiXgaIGyzfyyYEJHHV
+	 pf4Mhi9x2n4322rI8KAQxcmAHlxmD7/eSGlAk5iM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jann Horn <jannh@google.com>,
-	Jens Wiklander <jens.wiklander@linaro.org>,
-	Rouven Czerwinski <rouven.czerwinski@linaro.org>,
+	David Ahern <dsahern@kernel.org>,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 198/290] tee: Prevent size calculation wraparound on 32-bit kernels
+Subject: [PATCH 5.10 258/355] ipv4/route: Use this_cpu_inc() for stats on PREEMPT_RT
 Date: Mon, 23 Jun 2025 15:07:39 +0200
-Message-ID: <20250623130632.802960354@linuxfoundation.org>
+Message-ID: <20250623130634.512700864@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130626.910356556@linuxfoundation.org>
-References: <20250623130626.910356556@linuxfoundation.org>
+In-Reply-To: <20250623130626.716971725@linuxfoundation.org>
+References: <20250623130626.716971725@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,89 +63,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jann Horn <jannh@google.com>
+From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 
-[ Upstream commit 39bb67edcc582b3b386a9ec983da67fa8a10ec03 ]
+[ Upstream commit 1c0829788a6e6e165846b9bedd0b908ef16260b6 ]
 
-The current code around TEE_IOCTL_PARAM_SIZE() is a bit wrong on
-32-bit kernels: Multiplying a user-provided 32-bit value with the
-size of a structure can wrap around on such platforms.
+The statistics are incremented with raw_cpu_inc() assuming it always
+happens with bottom half disabled. Without per-CPU locking in
+local_bh_disable() on PREEMPT_RT this is no longer true.
 
-Fix it by using saturating arithmetic for the size calculation.
+Use this_cpu_inc() on PREEMPT_RT for the increment to not worry about
+preemption.
 
-This has no security consequences because, in all users of
-TEE_IOCTL_PARAM_SIZE(), the subsequent kcalloc() implicitly checks
-for wrapping.
-
-Signed-off-by: Jann Horn <jannh@google.com>
-Signed-off-by: Jens Wiklander <jens.wiklander@linaro.org>
-Tested-by: Rouven Czerwinski <rouven.czerwinski@linaro.org>
+Cc: David Ahern <dsahern@kernel.org>
+Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Link: https://patch.msgid.link/20250512092736.229935-4-bigeasy@linutronix.de
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tee/tee_core.c | 11 ++++++-----
- 1 file changed, 6 insertions(+), 5 deletions(-)
+ net/ipv4/route.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/tee/tee_core.c b/drivers/tee/tee_core.c
-index 0eb342de0b001..d7ad16f262b2e 100644
---- a/drivers/tee/tee_core.c
-+++ b/drivers/tee/tee_core.c
-@@ -10,6 +10,7 @@
- #include <linux/fs.h>
- #include <linux/idr.h>
- #include <linux/module.h>
-+#include <linux/overflow.h>
- #include <linux/slab.h>
- #include <linux/tee_drv.h>
- #include <linux/uaccess.h>
-@@ -19,7 +20,7 @@
+diff --git a/net/ipv4/route.c b/net/ipv4/route.c
+index a2a7f2597e201..815b6b0089c29 100644
+--- a/net/ipv4/route.c
++++ b/net/ipv4/route.c
+@@ -197,7 +197,11 @@ const __u8 ip_tos2prio[16] = {
+ EXPORT_SYMBOL(ip_tos2prio);
  
- #define TEE_NUM_DEVICES	32
+ static DEFINE_PER_CPU(struct rt_cache_stat, rt_cache_stat);
++#ifndef CONFIG_PREEMPT_RT
+ #define RT_CACHE_STAT_INC(field) raw_cpu_inc(rt_cache_stat.field)
++#else
++#define RT_CACHE_STAT_INC(field) this_cpu_inc(rt_cache_stat.field)
++#endif
  
--#define TEE_IOCTL_PARAM_SIZE(x) (sizeof(struct tee_param) * (x))
-+#define TEE_IOCTL_PARAM_SIZE(x) (size_mul(sizeof(struct tee_param), (x)))
- 
- #define TEE_UUID_NS_NAME_SIZE	128
- 
-@@ -487,7 +488,7 @@ static int tee_ioctl_open_session(struct tee_context *ctx,
- 	if (copy_from_user(&arg, uarg, sizeof(arg)))
- 		return -EFAULT;
- 
--	if (sizeof(arg) + TEE_IOCTL_PARAM_SIZE(arg.num_params) != buf.buf_len)
-+	if (size_add(sizeof(arg), TEE_IOCTL_PARAM_SIZE(arg.num_params)) != buf.buf_len)
- 		return -EINVAL;
- 
- 	if (arg.num_params) {
-@@ -565,7 +566,7 @@ static int tee_ioctl_invoke(struct tee_context *ctx,
- 	if (copy_from_user(&arg, uarg, sizeof(arg)))
- 		return -EFAULT;
- 
--	if (sizeof(arg) + TEE_IOCTL_PARAM_SIZE(arg.num_params) != buf.buf_len)
-+	if (size_add(sizeof(arg), TEE_IOCTL_PARAM_SIZE(arg.num_params)) != buf.buf_len)
- 		return -EINVAL;
- 
- 	if (arg.num_params) {
-@@ -699,7 +700,7 @@ static int tee_ioctl_supp_recv(struct tee_context *ctx,
- 	if (get_user(num_params, &uarg->num_params))
- 		return -EFAULT;
- 
--	if (sizeof(*uarg) + TEE_IOCTL_PARAM_SIZE(num_params) != buf.buf_len)
-+	if (size_add(sizeof(*uarg), TEE_IOCTL_PARAM_SIZE(num_params)) != buf.buf_len)
- 		return -EINVAL;
- 
- 	params = kcalloc(num_params, sizeof(struct tee_param), GFP_KERNEL);
-@@ -798,7 +799,7 @@ static int tee_ioctl_supp_send(struct tee_context *ctx,
- 	    get_user(num_params, &uarg->num_params))
- 		return -EFAULT;
- 
--	if (sizeof(*uarg) + TEE_IOCTL_PARAM_SIZE(num_params) > buf.buf_len)
-+	if (size_add(sizeof(*uarg), TEE_IOCTL_PARAM_SIZE(num_params)) > buf.buf_len)
- 		return -EINVAL;
- 
- 	params = kcalloc(num_params, sizeof(struct tee_param), GFP_KERNEL);
+ #ifdef CONFIG_PROC_FS
+ static void *rt_cache_seq_start(struct seq_file *seq, loff_t *pos)
 -- 
 2.39.5
 
