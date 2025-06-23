@@ -1,53 +1,51 @@
-Return-Path: <stable+bounces-157914-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157918-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C41AAE562E
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:18:16 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id EDF8AAE5631
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:18:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0D0A5165A85
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:17:11 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0E5E81BC7AB3
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:17:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B671E221FC7;
-	Mon, 23 Jun 2025 22:17:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79BDA223708;
+	Mon, 23 Jun 2025 22:17:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mgBgXk2F"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LhpKnOOJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72F57B676;
-	Mon, 23 Jun 2025 22:17:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3664AB676;
+	Mon, 23 Jun 2025 22:17:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750717028; cv=none; b=dBrn73lD5rOCKi8lyvnwxgPdnzxquZ6P7Y0gO8g2eJdm3SccS6pl6x6OBjRfb9NtqjvSn9UeXajpQUgxVvAEXXz4KdJn+I086CiESAtWYqN4Kje8faWqCKTJOyCEMAvcjWWQ5CrlvFl5GTbLGrJZJYGYrhEY2fzivVECfjW231Y=
+	t=1750717038; cv=none; b=HYs6zLjugeieskXqvwAeTFSyPAwTeWg5LvOOX4AaIbyEB9C6TyJDwHwJ5OIq03I+xnNg62FEIFwGDVx6unOxsjX4Nt2YdebuZw+SSUYZElkzS93P3iiy1VQ7txr+9jT8bHXtkSY8YYVprdjOA7hq5CZjIKUqL3XX/Fj6EC7PoBQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750717028; c=relaxed/simple;
-	bh=b9YRZlGd1SIz5rBsBmYhMszyc2kXW98YEbUtsR1HRWM=;
+	s=arc-20240116; t=1750717038; c=relaxed/simple;
+	bh=jDDdRzBvwWeRSkXim6fb56MOACnn0HlR0NvQ9+Za8z4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Zq+TKxARJynhYFdE7qFwMm3gihgR0kRuTo0o0NaHQgT1cql+2pIJnFKwLKakzGpegY0a4z05Psq1garvDl5b4ZVmxk71ZfaSAcoTv9bBhgE/TY6dVMidCmNcsA83OX33oIsScQbFUiGSfTiKcZg82hWF/GyyyKKtoL+JDDWQC6o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mgBgXk2F; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09DBCC4CEEA;
-	Mon, 23 Jun 2025 22:17:07 +0000 (UTC)
+	 MIME-Version; b=FZyM41TP0GejJHANXgc2VTFdDWVxwGrEnkn9NykO9vGvVBEYC/TxDESzQayeupfGh2C0V4kW0Rm73MqPFfSXHD9T5AYCCLLdwoUagAZD0cyXMylZsWpMRW+48ur2RDIigpZyRp3EIbMHjY/CA4geysL7kmEeK7pZNIBOdAzvqWk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LhpKnOOJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2B9EC4CEEA;
+	Mon, 23 Jun 2025 22:17:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750717028;
-	bh=b9YRZlGd1SIz5rBsBmYhMszyc2kXW98YEbUtsR1HRWM=;
+	s=korg; t=1750717038;
+	bh=jDDdRzBvwWeRSkXim6fb56MOACnn0HlR0NvQ9+Za8z4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mgBgXk2FE7YNgDiEXc5tCi2CuzY1KkEU1L2njZnZjm+MwtEoF/xqxHDWMgjABlCnN
-	 sz5HBpcZKNHHjGbzq1yE3QqI01Hfu4y936yYo+9Mfc6Ozpz88Mk4mLMyWQEjWr+Xt3
-	 x6fpHuepV49TC6BeuHbYQszJ4BOK0VdyHIlkSBLU=
+	b=LhpKnOOJX04/djL9WWRDoJI7sVmVS3o03RrfZtRmvaDXH3qp0qDCdOt7DVilnXUsS
+	 0lEJ/jzjVdkzulhh5GodyZZFwUdn4ZUAH2ZFhmQHqk8fp3ETf08nJ8RJR+ZA3GALoq
+	 RmL10yW7YtTEhpJecxnwVqeDR/t+1UAtC9ixFWJ4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jim Mattson <jmattson@google.com>,
-	Yosry Ahmed <yosry.ahmed@linux.dev>,
-	Sean Christopherson <seanjc@google.com>
-Subject: [PATCH 6.1 355/508] KVM: SVM: Clear current_vmcb during vCPU free for all *possible* CPUs
-Date: Mon, 23 Jun 2025 15:06:40 +0200
-Message-ID: <20250623130654.096038126@linuxfoundation.org>
+	Mikulas Patocka <mpatocka@redhat.com>
+Subject: [PATCH 6.1 356/508] dm-mirror: fix a tiny race condition
+Date: Mon, 23 Jun 2025 15:06:41 +0200
+Message-ID: <20250623130654.121339873@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
 In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
 References: <20250623130645.255320792@linuxfoundation.org>
@@ -66,38 +64,54 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Yosry Ahmed <yosry.ahmed@linux.dev>
+From: Mikulas Patocka <mpatocka@redhat.com>
 
-commit 1bee4838eb3a2c689f23c7170ea66ae87ea7d93a upstream.
+commit 829451beaed6165eb11d7a9fb4e28eb17f489980 upstream.
 
-When freeing a vCPU and thus its VMCB, clear current_vmcb for all possible
-CPUs, not just online CPUs, as it's theoretically possible a CPU could go
-offline and come back online in conjunction with KVM reusing the page for
-a new VMCB.
+There's a tiny race condition in dm-mirror. The functions queue_bio and
+write_callback grab a spinlock, add a bio to the list, drop the spinlock
+and wake up the mirrord thread that processes bios in the list.
 
-Link: https://lore.kernel.org/all/20250320013759.3965869-1-yosry.ahmed@linux.dev
-Fixes: fd65d3142f73 ("kvm: svm: Ensure an IBPB on all affected CPUs when freeing a vmcb")
+It may be possible that the mirrord thread processes the bio just after
+spin_unlock_irqrestore is called, before wakeup_mirrord. This spurious
+wake-up is normally harmless, however if the device mapper device is
+unloaded just after the bio was processed, it may be possible that
+wakeup_mirrord(ms) uses invalid "ms" pointer.
+
+Fix this bug by moving wakeup_mirrord inside the spinlock.
+
+Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
 Cc: stable@vger.kernel.org
-Cc: Jim Mattson <jmattson@google.com>
-Signed-off-by: Yosry Ahmed <yosry.ahmed@linux.dev>
-[sean: split to separate patch, write changelog]
-Signed-off-by: Sean Christopherson <seanjc@google.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kvm/svm/svm.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/md/dm-raid1.c |    5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
---- a/arch/x86/kvm/svm/svm.c
-+++ b/arch/x86/kvm/svm/svm.c
-@@ -1426,7 +1426,7 @@ static void svm_clear_current_vmcb(struc
- {
- 	int i;
- 
--	for_each_online_cpu(i)
-+	for_each_possible_cpu(i)
- 		cmpxchg(per_cpu_ptr(&svm_data.current_vmcb, i), vmcb, NULL);
+--- a/drivers/md/dm-raid1.c
++++ b/drivers/md/dm-raid1.c
+@@ -128,10 +128,9 @@ static void queue_bio(struct mirror_set
+ 	spin_lock_irqsave(&ms->lock, flags);
+ 	should_wake = !(bl->head);
+ 	bio_list_add(bl, bio);
+-	spin_unlock_irqrestore(&ms->lock, flags);
+-
+ 	if (should_wake)
+ 		wakeup_mirrord(ms);
++	spin_unlock_irqrestore(&ms->lock, flags);
  }
  
+ static void dispatch_bios(void *context, struct bio_list *bio_list)
+@@ -635,9 +634,9 @@ static void write_callback(unsigned long
+ 	if (!ms->failures.head)
+ 		should_wake = 1;
+ 	bio_list_add(&ms->failures, bio);
+-	spin_unlock_irqrestore(&ms->lock, flags);
+ 	if (should_wake)
+ 		wakeup_mirrord(ms);
++	spin_unlock_irqrestore(&ms->lock, flags);
+ }
+ 
+ static void do_write(struct mirror_set *ms, struct bio *bio)
 
 
 
