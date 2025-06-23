@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-156609-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157036-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C8C3EAE5057
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:24:22 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D4B6AE5232
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:41:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BC170188343E
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:24:10 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1A90B4A5400
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:41:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C9D11EDA0F;
-	Mon, 23 Jun 2025 21:23:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B2082222C2;
+	Mon, 23 Jun 2025 21:41:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ptZ/L+Ad"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wzE8KkZZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF9BC1E521E;
-	Mon, 23 Jun 2025 21:23:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCD024315A;
+	Mon, 23 Jun 2025 21:41:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750713832; cv=none; b=KiyF/n0oy/n36q/JQNsT627CSO/rCx3cYJJCvJGLGyqetXKsqWtLm0n+Fq0gNHEdtDglANeYS2AaZRbUSL4SX4LOXrPuwPJ76WPhu8kaL1+vv0EfMTiF8RxdVH5KcyE22V3PBdiHJX5Smj3RvteZ32eGPS2R5oSZKp3gTi2wVgk=
+	t=1750714877; cv=none; b=Sn6mfGIRAUdQN2Tbt/QeKR2ulrsosCx3+DshZmXSdxBzj52EkOftHTOBxvSkkdY2I5k9BKuIPkReXAgXFmI2UyfVHPdLTaYgHhEKvKzzeSCtiW90gBaOk6OZG48VoWtRWM3w7eNVeNPn4CDDIPR6vnBB9QUgjm2z7BYFv5rjv10=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750713832; c=relaxed/simple;
-	bh=uGZ1q6xRh54ESqRWtUCLbTXaTfkAjX0USp1Zs9RQ8c8=;
+	s=arc-20240116; t=1750714877; c=relaxed/simple;
+	bh=vPDLesdtCiXjDFmz0pN+3qFR8CFFQ+Y2EDhlmw1WCtQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tgyF9VtI9jbyuQ+QRo77aAZHaU9fHTdayBQ+GUqvQFjd8DaX91V2Zm9dvyxBJKXXF+t13+7FsXEVVWobuPkjDV83u5pvd0CJCJZxaQJ8rAumaEV+6IV6/xoK2GVQfaE755OIYtrFXCRmBX8AlTEsTdswB8tFDf3kks+kFWDKyjA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ptZ/L+Ad; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68F5AC4CEEA;
-	Mon, 23 Jun 2025 21:23:52 +0000 (UTC)
+	 MIME-Version; b=gTt9/+azfRlKsQZ8lrFgpVmvfXa9pkCJRQyr9GoYPrBIARNHs+VvcQp0kxQr+D4dXk89FDAp+QmPsvZuZjiKGHhSx2r4B/Fx3omq46WhTCi4ObvOpRpQhEB4iDGHbXmwh1w/As5WxfVT7A2v3i3mEPh31yUZGG/rGA4tKf8mdFk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wzE8KkZZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66B43C4CEEA;
+	Mon, 23 Jun 2025 21:41:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750713832;
-	bh=uGZ1q6xRh54ESqRWtUCLbTXaTfkAjX0USp1Zs9RQ8c8=;
+	s=korg; t=1750714877;
+	bh=vPDLesdtCiXjDFmz0pN+3qFR8CFFQ+Y2EDhlmw1WCtQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ptZ/L+Ad7OxGefnMnOnL505nSat0eNJOQ/OXRwVlomKXNWezTaUNtfEFKDGrrckmn
-	 dbpHB0IvaovTnlbHMLXu9Dsit0XduayPdD7y/OswHyjtBB4zZhCakAj5cLRx3lXnBO
-	 zrMipVHv8pbQMhzfvuguiCQnHSws0LTIxr3rB5s8=
+	b=wzE8KkZZyqrCwrkHl9i48KX8V1NQj0KlSrKNHIwWrrLhL73z0NE4Zgm0gJ+xQikSH
+	 SRRWZAdtwI9Lklp+kN07khcztGCbe9RrOxZ7eyyQpIDqvfoS8PgFwqOJ3kyv0qUD11
+	 MeazrmYYENZXRw+dPWbyuOCdxMeBXvYuuJRNeQMg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thadeu Lima de Souza Cascardo <cascardo@igalia.com>,
-	"Guilherme G. Piccoli" <gpiccoli@igalia.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	"Paul E. McKenney" <paulmck@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 118/290] clocksource: Fix the CPUs choice in the watchdog per CPU verification
+	Niravkumar L Rabara <niravkumar.l.rabara@intel.com>,
+	Matthew Gerlach <matthew.gerlach@altera.com>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>,
+	Dinh Nguyen <dinguyen@kernel.org>,
+	stable@kernel.org
+Subject: [PATCH 5.15 235/411] EDAC/altera: Use correct write width with the INTTEST register
 Date: Mon, 23 Jun 2025 15:06:19 +0200
-Message-ID: <20250623130630.489994315@linuxfoundation.org>
+Message-ID: <20250623130639.571799860@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130626.910356556@linuxfoundation.org>
-References: <20250623130626.910356556@linuxfoundation.org>
+In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
+References: <20250623130632.993849527@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,64 +64,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Guilherme G. Piccoli <gpiccoli@igalia.com>
+From: Niravkumar L Rabara <niravkumar.l.rabara@intel.com>
 
-[ Upstream commit 08d7becc1a6b8c936e25d827becabfe3bff72a36 ]
+commit e5ef4cd2a47f27c0c9d8ff6c0f63a18937c071a3 upstream.
 
-Right now, if the clocksource watchdog detects a clocksource skew, it might
-perform a per CPU check, for example in the TSC case on x86.  In other
-words: supposing TSC is detected as unstable by the clocksource watchdog
-running at CPU1, as part of marking TSC unstable the kernel will also run a
-check of TSC readings on some CPUs to be sure it is synced between them
-all.
+On the SoCFPGA platform, the INTTEST register supports only 16-bit writes.
+A 32-bit write triggers an SError to the CPU so do 16-bit accesses only.
 
-But that check happens only on some CPUs, not all of them; this choice is
-based on the parameter "verify_n_cpus" and in some random cpumask
-calculation. So, the watchdog runs such per CPU checks on up to
-"verify_n_cpus" random CPUs among all online CPUs, with the risk of
-repeating CPUs (that aren't double checked) in the cpumask random
-calculation.
+  [ bp: AI-massage the commit message. ]
 
-But if "verify_n_cpus" > num_online_cpus(), it should skip the random
-calculation and just go ahead and check the clocksource sync between
-all online CPUs, without the risk of skipping some CPUs due to
-duplicity in the random cpumask calculation.
-
-Tests in a 4 CPU laptop with TSC skew detected led to some cases of the per
-CPU verification skipping some CPU even with verify_n_cpus=8, due to the
-duplicity on random cpumask generation. Skipping the randomization when the
-number of online CPUs is smaller than verify_n_cpus, solves that.
-
-Suggested-by: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
-Signed-off-by: Guilherme G. Piccoli <gpiccoli@igalia.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Reviewed-by: Paul E. McKenney <paulmck@kernel.org>
-Link: https://lore.kernel.org/all/20250323173857.372390-1-gpiccoli@igalia.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: c7b4be8db8bc ("EDAC, altera: Add Arria10 OCRAM ECC support")
+Signed-off-by: Niravkumar L Rabara <niravkumar.l.rabara@intel.com>
+Signed-off-by: Matthew Gerlach <matthew.gerlach@altera.com>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Acked-by: Dinh Nguyen <dinguyen@kernel.org>
+Cc: stable@kernel.org
+Link: https://lore.kernel.org/20250527145707.25458-1-matthew.gerlach@altera.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/time/clocksource.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/edac/altera_edac.c |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/kernel/time/clocksource.c b/kernel/time/clocksource.c
-index 3130f24daf597..353829883e66d 100644
---- a/kernel/time/clocksource.c
-+++ b/kernel/time/clocksource.c
-@@ -288,7 +288,7 @@ static void clocksource_verify_choose_cpus(void)
- {
- 	int cpu, i, n = verify_n_cpus;
+--- a/drivers/edac/altera_edac.c
++++ b/drivers/edac/altera_edac.c
+@@ -1718,9 +1718,9 @@ altr_edac_a10_device_trig(struct file *f
  
--	if (n < 0) {
-+	if (n < 0 || n >= num_online_cpus()) {
- 		/* Check all of the CPUs. */
- 		cpumask_copy(&cpus_chosen, cpu_online_mask);
- 		cpumask_clear_cpu(smp_processor_id(), &cpus_chosen);
--- 
-2.39.5
-
+ 	local_irq_save(flags);
+ 	if (trig_type == ALTR_UE_TRIGGER_CHAR)
+-		writel(priv->ue_set_mask, set_addr);
++		writew(priv->ue_set_mask, set_addr);
+ 	else
+-		writel(priv->ce_set_mask, set_addr);
++		writew(priv->ce_set_mask, set_addr);
+ 
+ 	/* Ensure the interrupt test bits are set */
+ 	wmb();
+@@ -1750,7 +1750,7 @@ altr_edac_a10_device_trig2(struct file *
+ 
+ 	local_irq_save(flags);
+ 	if (trig_type == ALTR_UE_TRIGGER_CHAR) {
+-		writel(priv->ue_set_mask, set_addr);
++		writew(priv->ue_set_mask, set_addr);
+ 	} else {
+ 		/* Setup read/write of 4 bytes */
+ 		writel(ECC_WORD_WRITE, drvdata->base + ECC_BLK_DBYTECTRL_OFST);
 
 
 
