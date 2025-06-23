@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-157349-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156229-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 92243AE53A1
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:55:15 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id ED240AE4EB9
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:08:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 96ACC189213B
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:54:39 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D3C2E1774F2
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:08:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 264DA223714;
-	Mon, 23 Jun 2025 21:54:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D9FE8221F24;
+	Mon, 23 Jun 2025 21:08:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="01vR6ar1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QTikezPr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D645119049B;
-	Mon, 23 Jun 2025 21:54:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 972F5221DBD;
+	Mon, 23 Jun 2025 21:08:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750715650; cv=none; b=nJFQ0MiaBgk+sZu9L6dFQvamiYL/nLDTXkU6SekRW9oWkWutD4B1LWU2vT8i4lTvtv5oe94I2hbjiRjjSEuBlfVG1qMByxgizWzbQVMBlVmB2FwC2XQvCORYy2QU/xis1+iW6q4sf5h8SmVfZHPltY+CRcRG5/bp8RUrab82xjI=
+	t=1750712898; cv=none; b=ZeVCONwgyYQykBTfgFjnETFBP92Scp5P4fvWZx0WVXWyWhz4vdoYhIqeLdN2um2pOygdxDsv0R3dP/l9IV9sdenYKIXTYc1HmwX0Fu87eTpW+8OhoA1zsiFIxtVyurg66vJkvvmEksmd2zfxCSkVDexI6gUzdHXCiCGMOp5GtNQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750715650; c=relaxed/simple;
-	bh=4ltBQJwblXA0q2YQKypRf/mIeuQQleayDS2VVM2UmFc=;
+	s=arc-20240116; t=1750712898; c=relaxed/simple;
+	bh=/1ff1EVy0sv4rkVGRoMzZXKaas1x2bXZn7EDZr959ys=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aZKMwtOrCffeqAeHK41+/8d8NGuhyxx+8P+x1WaHhd2WL7ZSBe6iEWOhcAPZFY+y68YEi36nep8TPcCCPj9PRWepA5ohRrgS0wgDaPGIEdCyLKz6p/JfguYVWDbzIPKhNuZONHNlTQxBGNUeVZoR6h8WnjhLgnFio1nDWfqZ4h0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=01vR6ar1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70565C4CEEA;
-	Mon, 23 Jun 2025 21:54:10 +0000 (UTC)
+	 MIME-Version; b=b9TI8VE1ZFQrZ0nQuJlDMmTXOoNWImrayPu7ob8FZ+3mlFyg7r79kVFgicrJDXAPvlS4Xym9RmXqiLKI13fpTmZVE27zBmT9cIuH/36iI4T05x1U0Q1kJdaHNlDreCFlx0KfHwrKZ8Ik5q/EgIPvCHUc0vNs2snQWAoE+nypNSo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QTikezPr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 323AAC4CEEA;
+	Mon, 23 Jun 2025 21:08:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750715650;
-	bh=4ltBQJwblXA0q2YQKypRf/mIeuQQleayDS2VVM2UmFc=;
+	s=korg; t=1750712898;
+	bh=/1ff1EVy0sv4rkVGRoMzZXKaas1x2bXZn7EDZr959ys=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=01vR6ar1EF6iQg2gDrh9ujAx7DKhbpRJElZoZxvrNGrC4PJbd5/F//E660lt98ZT2
-	 uXIo/IGhEvn458Bek8WmY77ghvdoipGLv5MP9dbDK76F7eHjjUYnnw/q0Pv3oC4lMp
-	 KEcsriJRLzqOr+sZMYjazzl1hjHySn9g+CmGii1M=
+	b=QTikezPrxfKaHzJsod7m+U5NjxH7wLWjPUyyGBelOBm1DqK26u30u+smgLvpizlUm
+	 5x5FRCA2jkFhP+7WXtd81iRpbsnN8JV5/vy8uaBdr+pJ7v7kOXOJqGDl9XHXgW1nN8
+	 voG2eSu84SjjZoJPQApC18EJK7ODVPDn+HYoMj4o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	M Nikhil <nikh1092@linux.ibm.com>,
-	Nihar Panda <niharp@linux.ibm.com>,
-	Peter Oberparleiter <oberpar@linux.ibm.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>
-Subject: [PATCH 5.10 288/355] scsi: s390: zfcp: Ensure synchronous unit_add
+	Amber Lin <Amber.Lin@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 154/222] drm/amdkfd: Set SDMA_RLCx_IB_CNTL/SWITCH_INSIDE_IB
 Date: Mon, 23 Jun 2025 15:08:09 +0200
-Message-ID: <20250623130635.432262617@linuxfoundation.org>
+Message-ID: <20250623130616.715009259@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130626.716971725@linuxfoundation.org>
-References: <20250623130626.716971725@linuxfoundation.org>
+In-Reply-To: <20250623130611.896514667@linuxfoundation.org>
+References: <20250623130611.896514667@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,51 +62,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peter Oberparleiter <oberpar@linux.ibm.com>
+From: Amber Lin <Amber.Lin@amd.com>
 
-commit 9697ca0d53e3db357be26d2414276143c4a2cd49 upstream.
+[ Upstream commit ab9fcc6362e0699fc1150aa1d8503c40fce2c1e1 ]
 
-Improve the usability of the unit_add sysfs attribute by ensuring that
-the associated FCP LUN scan processing is completed synchronously.  This
-enables configuration tooling to consistently determine the end of the
-scan process to allow for serialization of follow-on actions.
+When submitting MQD to CP, set SDMA_RLCx_IB_CNTL/SWITCH_INSIDE_IB bit so
+it'll allow SDMA preemption if there is a massive command buffer of
+long-running SDMA commands.
 
-While the scan process associated with unit_add typically completes
-synchronously, it is deferred to an asynchronous background process if
-unit_add is used before initial remote port scanning has completed.  This
-occurs when unit_add is used immediately after setting the associated FCP
-device online.
-
-To ensure synchronous unit_add processing, wait for remote port scanning
-to complete before initiating the FCP LUN scan.
-
-Cc: stable@vger.kernel.org
-Reviewed-by: M Nikhil <nikh1092@linux.ibm.com>
-Reviewed-by: Nihar Panda <niharp@linux.ibm.com>
-Signed-off-by: Peter Oberparleiter <oberpar@linux.ibm.com>
-Signed-off-by: Nihar Panda <niharp@linux.ibm.com>
-Link: https://lore.kernel.org/r/20250603182252.2287285-2-niharp@linux.ibm.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Amber Lin <Amber.Lin@amd.com>
+Acked-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/s390/scsi/zfcp_sysfs.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/gpu/drm/amd/amdkfd/kfd_mqd_manager_v9.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/drivers/s390/scsi/zfcp_sysfs.c
-+++ b/drivers/s390/scsi/zfcp_sysfs.c
-@@ -450,6 +450,8 @@ static ssize_t zfcp_sysfs_unit_add_store
- 	if (kstrtoull(buf, 0, (unsigned long long *) &fcp_lun))
- 		return -EINVAL;
+diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_mqd_manager_v9.c b/drivers/gpu/drm/amd/amdkfd/kfd_mqd_manager_v9.c
+index d978fcac26651..4110cdc71f045 100644
+--- a/drivers/gpu/drm/amd/amdkfd/kfd_mqd_manager_v9.c
++++ b/drivers/gpu/drm/amd/amdkfd/kfd_mqd_manager_v9.c
+@@ -387,6 +387,10 @@ static void update_mqd_sdma(struct mqd_manager *mm, void *mqd,
+ 	m->sdma_engine_id = q->sdma_engine_id;
+ 	m->sdma_queue_id = q->sdma_queue_id;
+ 	m->sdmax_rlcx_dummy_reg = SDMA_RLC_DUMMY_DEFAULT;
++	/* Allow context switch so we don't cross-process starve with a massive
++	 * command buffer of long-running SDMA commands
++	 */
++	m->sdmax_rlcx_ib_cntl |= SDMA0_GFX_IB_CNTL__SWITCH_INSIDE_IB_MASK;
  
-+	flush_work(&port->rport_work);
-+
- 	retval = zfcp_unit_add(port, fcp_lun);
- 	if (retval)
- 		return retval;
+ 	q->is_active = QUEUE_IS_ACTIVE(*q);
+ }
+-- 
+2.39.5
+
 
 
 
