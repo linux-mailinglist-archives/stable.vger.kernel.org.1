@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-155833-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-155929-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4E243AE440E
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:39:22 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D3B26AE4445
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:41:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AD6F23A657E
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:31:36 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5B768189BCF7
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:37:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B44C62561AE;
-	Mon, 23 Jun 2025 13:30:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 372A5254844;
+	Mon, 23 Jun 2025 13:35:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hFXFWJyu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xwc2Eh6k"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72E02255F59;
-	Mon, 23 Jun 2025 13:30:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E821F30E84D;
+	Mon, 23 Jun 2025 13:35:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750685446; cv=none; b=mmQ2AEveOp4NDNCe6HjlpvHCjizS2sZIXyVch1EFilRor4JFces7HNd2/8scIwFgVql12TZD+3Z4RQdeoreBE+EMzIPSQC1bPRbCAKwCr7P384YFYyW2C7h4ejo7itaIzCANktWJuCWgOwed3/17y/TMJJp2IW/lkUZduJTvi5A=
+	t=1750685701; cv=none; b=gGwkw+guuo2sjdF/y7J+dOZMt4aIRdMFU/upZiSCVBmVk4pUdNe32WAtl8Ac0Nc25Z7IkGe0TshhabDlMFdHfBhFbu75ugVPl+4g3TsgXKyd+4AQTWj36uwVDgSFjxx1NBZ8VgxO4b0LPeFyKSFVsyUK/1WXevkYmxHVteUPlVk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750685446; c=relaxed/simple;
-	bh=AfUGZ9sng1clDVGjFqNSID4FbTkget+emqPolUDhfz4=;
+	s=arc-20240116; t=1750685701; c=relaxed/simple;
+	bh=8iIUhNqAAmb+WEZJ8VoG4R9R6U3JT3Yjozyk2UVBqek=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PwoxbmKKS1B/cg3nIFLbsnpJyPIsxpUGtpZA1+w45U75U73rPILMGnBrs6gh37H7h3lyHPkYZrfmcD66MYoA+tuHQaOLJMqj++kydUjnKMlAk4/CHnAg0u+cUmujSZcdnrx60m9dLUijL7HkuGf6D/VRkm+mfOXgzCPBfRgwu9A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hFXFWJyu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D976C4CEEA;
-	Mon, 23 Jun 2025 13:30:45 +0000 (UTC)
+	 MIME-Version:Content-Type; b=s6EYYNfqk0CgpLiSZUd5f6rKWD2NYHjV0TxRi1o93d+vqjMAhTfsGxSdz7OGHIXVCgWKcqGNiLXZGNfSh5ziwijLnK0zFkUVa7Cgr0RabnD13MVK1/7Ae3nxwnXR6JcfqnU40ST/kJ3aoS9wpXgctUEcrZ7qM68nadH7BRZPjfo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xwc2Eh6k; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7EC5BC4CEEA;
+	Mon, 23 Jun 2025 13:35:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750685446;
-	bh=AfUGZ9sng1clDVGjFqNSID4FbTkget+emqPolUDhfz4=;
+	s=korg; t=1750685700;
+	bh=8iIUhNqAAmb+WEZJ8VoG4R9R6U3JT3Yjozyk2UVBqek=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hFXFWJyuA+3P1mPxi59JvakLUN/5jTiBT5oB5f3+9dh377BMx4Y09V9ralFls5RXq
-	 HO/ZZfgr0sx4ms9FvfV/Xtcz5uebtQcubIw7Da7zTvwWlupjJMr/cmtx9QTZkzO8zG
-	 M79B1531mRHq4yu/mOoMzI1fM9mf4U8kQMO55NwI=
+	b=xwc2Eh6klOJyfMq1OomCDIs3blmUp8G2KbNXiD/HIJ/w2CEodKuDKXHTNDKVA7zjz
+	 VK0yZ42x2/lMz/LGtEP5JnAfXBptIcz6gpUVzt8fqvzV8QzUzkH6QaT9tIrinYFQJ6
+	 VXoAwNeqjjOPjLFIIzXSqKiDj6xTF2rBu/Ehz3mU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gautam Menghani <gautam@linux.ibm.com>,
-	Venkat Rao Bagalkote <venkat88@linux.ibm.com>,
-	Vaibhav Jain <vaibhav@linux.ibm.com>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>
-Subject: [PATCH 6.6 008/290] powerpc/pseries/msi: Avoid reading PCI device registers in reduced power states
-Date: Mon, 23 Jun 2025 15:04:29 +0200
-Message-ID: <20250623130627.212896622@linuxfoundation.org>
+	Su Hui <suhui@nfschina.com>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Andrew Jeffery <andrew@codeconstruct.com.au>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 069/355] soc: aspeed: lpc: Fix impossible judgment condition
+Date: Mon, 23 Jun 2025 15:04:30 +0200
+Message-ID: <20250623130628.906178453@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130626.910356556@linuxfoundation.org>
-References: <20250623130626.910356556@linuxfoundation.org>
+In-Reply-To: <20250623130626.716971725@linuxfoundation.org>
+References: <20250623130626.716971725@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,64 +62,51 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gautam Menghani <gautam@linux.ibm.com>
+From: Su Hui <suhui@nfschina.com>
 
-commit 9cc0eafd28c7faef300822992bb08d79cab2a36c upstream.
+[ Upstream commit d9f0a97e859bdcef51f9c187b1eb712eb13fd3ff ]
 
-When a system is being suspended to RAM, the PCI devices are also
-suspended and the PPC code ends up calling pseries_msi_compose_msg() and
-this triggers the BUG_ON() in __pci_read_msi_msg() because the device at
-this point is in reduced power state. In reduced power state, the memory
-mapped registers of the PCI device are not accessible.
+smatch error：
+drivers/soc/aspeed/aspeed-lpc-snoop.c:169
+aspeed_lpc_snoop_config_irq() warn: platform_get_irq() does not return zero
 
-To replicate the bug:
-1. Make sure deep sleep is selected
-	# cat /sys/power/mem_sleep
-	s2idle [deep]
+platform_get_irq() return non-zero IRQ number or negative error code,
+change '!lpc_snoop->irq' to 'lpc_snoop->irq < 0' to fix this.
 
-2. Make sure console is not suspended (so that dmesg logs are visible)
-	echo N > /sys/module/printk/parameters/console_suspend
-
-3. Suspend the system
-	echo mem > /sys/power/state
-
-To fix this behaviour, read the cached msi message of the device when the
-device is not in PCI_D0 power state instead of touching the hardware.
-
-Fixes: a5f3d2c17b07 ("powerpc/pseries/pci: Add MSI domains")
-Cc: stable@vger.kernel.org # v5.15+
-Signed-off-by: Gautam Menghani <gautam@linux.ibm.com>
-Tested-by: Venkat Rao Bagalkote <venkat88@linux.ibm.com>
-Reviewed-by: Vaibhav Jain <vaibhav@linux.ibm.com>
-Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
-Link: https://patch.msgid.link/20250305090237.294633-1-gautam@linux.ibm.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 9f4f9ae81d0a ("drivers/misc: add Aspeed LPC snoop driver")
+Signed-off-by: Su Hui <suhui@nfschina.com>
+Reviewed-by: Dan Carpenter <dan.carpenter@linaro.org>
+Link: https://lore.kernel.org/r/20231027020703.1231875-1-suhui@nfschina.com
+Signed-off-by: Andrew Jeffery <andrew@codeconstruct.com.au>
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/platforms/pseries/msi.c |    7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ drivers/soc/aspeed/aspeed-lpc-snoop.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/powerpc/platforms/pseries/msi.c
-+++ b/arch/powerpc/platforms/pseries/msi.c
-@@ -519,7 +519,12 @@ static struct msi_domain_info pseries_ms
+diff --git a/drivers/soc/aspeed/aspeed-lpc-snoop.c b/drivers/soc/aspeed/aspeed-lpc-snoop.c
+index 538d7aab8db5c..8a2a22c40ef53 100644
+--- a/drivers/soc/aspeed/aspeed-lpc-snoop.c
++++ b/drivers/soc/aspeed/aspeed-lpc-snoop.c
+@@ -168,7 +168,7 @@ static int aspeed_lpc_snoop_config_irq(struct aspeed_lpc_snoop *lpc_snoop,
+ 	int rc;
  
- static void pseries_msi_compose_msg(struct irq_data *data, struct msi_msg *msg)
- {
--	__pci_read_msi_msg(irq_data_get_msi_desc(data), msg);
-+	struct pci_dev *dev = msi_desc_to_pci_dev(irq_data_get_msi_desc(data));
-+
-+	if (dev->current_state == PCI_D0)
-+		__pci_read_msi_msg(irq_data_get_msi_desc(data), msg);
-+	else
-+		get_cached_msi_msg(data->irq, msg);
- }
+ 	lpc_snoop->irq = platform_get_irq(pdev, 0);
+-	if (!lpc_snoop->irq)
++	if (lpc_snoop->irq < 0)
+ 		return -ENODEV;
  
- static struct irq_chip pseries_msi_irq_chip = {
+ 	rc = devm_request_irq(dev, lpc_snoop->irq,
+-- 
+2.39.5
+
 
 
 
