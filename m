@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-157488-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157216-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4EBA4AE542C
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:59:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B813EAE52F7
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:48:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9742D446BD1
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:59:28 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5DB213A8B7C
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:48:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3DBF223714;
-	Mon, 23 Jun 2025 21:59:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A854B219A7A;
+	Mon, 23 Jun 2025 21:48:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I/8QKf+S"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NtwDhgLj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B737221DA8;
-	Mon, 23 Jun 2025 21:59:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 611C21FECBA;
+	Mon, 23 Jun 2025 21:48:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750715990; cv=none; b=NmCNbFECE0zMOlDDtiRCAw99TQMukszzFQLzMGGicjd+nNyGIqTgvPDu+VDa/l3Up8k57/M2WxY9ZlVZ/qkJLGiSPwGxtHVMzXh9yrP3AiaftoN7nAWpWY74vWpaCD2K3S9wxO/zJCaeq2BjiWayGISzoao5y2HwvJyvmeqVlMw=
+	t=1750715324; cv=none; b=cgX0zweiMWXhE/hDVxtGoBWghi1Wqim6GKpjI/P76kylS4dpvnOZ1QrZtgTiDK1MNn8jFh36bGHzGZu1F3WDRSm2yNVNvb+XtBXcqbshSswNUHO8DLzkSpcldRp4LrYSWjNwnyXl4xbQpJat0Yrp+nY/9Pvujd1b2XRcAIJyEB8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750715990; c=relaxed/simple;
-	bh=2blfCXFKmwFtE8hXEHOSf6n7CF9mnJ0IxUuWZxLaI1I=;
+	s=arc-20240116; t=1750715324; c=relaxed/simple;
+	bh=Is5MoJfrJeHDJxDtF+G77dej9qKZWZ06s/LQBgcA7WI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GMlWjaMLTxAc65MHGGRill+6RcTeQuUilAZtRAx4e1J3xsJJ0K/kozRhr+7c2dTZuQSZHUS5nIUDxkWDbBkbUspl2HYAGzSqL7Pzxy49UN2vupcm9gS4YRWcLTGkw/bCN42iK6J4pzt0glNpjtoMzRl4AD8JVkT4l1jblHnq7/s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I/8QKf+S; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5ADDC4CEEA;
-	Mon, 23 Jun 2025 21:59:49 +0000 (UTC)
+	 MIME-Version; b=JnrFjqp7e3n+gqKFHG17Ffql22lkJqrwh2OSwmpGDUEtkWQiWzCXzttw/GOboafPnJ8Enu4zjirBpJ02Cfhq9hGVh+gvOMvP4/AhrWjMm1vt63qZALDlRUz0EQh12tSXqokD4mzzSLthISAFKTPEnJmoqUosHDWsC69vvsmO3kg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NtwDhgLj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB0A9C4CEEA;
+	Mon, 23 Jun 2025 21:48:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750715990;
-	bh=2blfCXFKmwFtE8hXEHOSf6n7CF9mnJ0IxUuWZxLaI1I=;
+	s=korg; t=1750715324;
+	bh=Is5MoJfrJeHDJxDtF+G77dej9qKZWZ06s/LQBgcA7WI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=I/8QKf+S7fZKWm6uIMYm4zU541boKm3EbvruVHgjdMroI04cbjNG26dLDBWvfCrPn
-	 sKuf+RxkfNVEzZroIDqjqAJdvW14hH78CjXVe90ba+iw3YPvHZfsAZf7M5YZjTPX8w
-	 2hXwwve6Atd9Z+TmwNgWFeJSH1xKvsxE/zak3mhY=
+	b=NtwDhgLjTpPKcfrz7cZdAKXrWFbdPkQuqNkOe9WDTkP0nxHC2GodwiWtWzQOqBoA1
+	 KnlTCLC8HseN9LBz0RwwInfryq42a1oGuyv5Qtx/snqfLGMXzp0L13XOEzgOXW/VmE
+	 10j1MLESM91TfDOvcvSSodZ8cADAKmrGEXRH6Vls=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Richard Fitzgerald <rf@opensource.cirrus.com>,
-	Nick Karaolidis <nick@karaolidis.com>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.15 495/592] ALSA: hda/realtek: Add quirk for Asus GU605C
+	Balamurugan S <quic_bselvara@quicinc.com>,
+	Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>,
+	Raj Kumar Bhagat <quic_rajkbhag@quicinc.com>,
+	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 192/290] wifi: ath12k: fix incorrect CE addresses
 Date: Mon, 23 Jun 2025 15:07:33 +0200
-Message-ID: <20250623130712.206040397@linuxfoundation.org>
+Message-ID: <20250623130632.635740830@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
-References: <20250623130700.210182694@linuxfoundation.org>
+In-Reply-To: <20250623130626.910356556@linuxfoundation.org>
+References: <20250623130626.910356556@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,42 +64,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Richard Fitzgerald <rf@opensource.cirrus.com>
+From: Balamurugan S <quic_bselvara@quicinc.com>
 
-commit 7b23887a0c70d15459f02c51651a111e9e5cab86 upstream.
+[ Upstream commit 60031d9c3589c7983fd1deb4a4c0bebf0929890e ]
 
-The GU605C has similar audio hardware to the GU605M so apply the
-same quirk.
+In the current ath12k implementation, the CE addresses
+CE_HOST_IE_ADDRESS and CE_HOST_IE_2_ADDRESS are incorrect. These
+values were inherited from ath11k, but ath12k does not currently use
+them.
 
-Note that in the linked bugzilla there are two separate problems
-with the GU605C. This patch fixes one of the problems, so I haven't
-added a Closes: tag.
+However, the Ath12k AHB support relies on these addresses. Therefore,
+correct the CE addresses for ath12k.
 
-Signed-off-by: Richard Fitzgerald <rf@opensource.cirrus.com>
-Reported-by: Nick Karaolidis <nick@karaolidis.com>
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=220152
-Cc: <stable@vger.kernel.org>
-Link: https://patch.msgid.link/20250609102125.63196-1-rf@opensource.cirrus.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Tested-on: IPQ5332 hw1.0 AHB WLAN.WBE.1.3.1-00130-QCAHKSWPL_SILICONZ-1
+Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.1.1-00210-QCAHKSWPL_SILICONZ-1
+
+Signed-off-by: Balamurugan S <quic_bselvara@quicinc.com>
+Reviewed-by: Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>
+Signed-off-by: Raj Kumar Bhagat <quic_rajkbhag@quicinc.com>
+Link: https://patch.msgid.link/20250321-ath12k-ahb-v12-2-bb389ed76ae5@quicinc.com
+Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/hda/patch_realtek.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/wireless/ath/ath12k/ce.h | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -10908,6 +10908,7 @@ static const struct hda_quirk alc269_fix
- 	SND_PCI_QUIRK(0x103c, 0x8e61, "HP Trekker ", ALC287_FIXUP_CS35L41_I2C_2),
- 	SND_PCI_QUIRK(0x103c, 0x8e62, "HP Trekker ", ALC287_FIXUP_CS35L41_I2C_2),
- 	SND_PCI_QUIRK(0x1043, 0x1032, "ASUS VivoBook X513EA", ALC256_FIXUP_ASUS_MIC_NO_PRESENCE),
-+	SND_PCI_QUIRK(0x1043, 0x1034, "ASUS GU605C", ALC285_FIXUP_ASUS_GU605_SPI_SPEAKER2_TO_DAC1),
- 	SND_PCI_QUIRK(0x1043, 0x103e, "ASUS X540SA", ALC256_FIXUP_ASUS_MIC),
- 	SND_PCI_QUIRK(0x1043, 0x103f, "ASUS TX300", ALC282_FIXUP_ASUS_TX300),
- 	SND_PCI_QUIRK(0x1043, 0x1054, "ASUS G614FH/FM/FP", ALC287_FIXUP_CS35L41_I2C_2),
+diff --git a/drivers/net/wireless/ath/ath12k/ce.h b/drivers/net/wireless/ath/ath12k/ce.h
+index 857bc5f9e946a..f9547a3945e44 100644
+--- a/drivers/net/wireless/ath/ath12k/ce.h
++++ b/drivers/net/wireless/ath/ath12k/ce.h
+@@ -1,7 +1,7 @@
+ /* SPDX-License-Identifier: BSD-3-Clause-Clear */
+ /*
+  * Copyright (c) 2018-2021 The Linux Foundation. All rights reserved.
+- * Copyright (c) 2021-2022, 2024 Qualcomm Innovation Center, Inc. All rights reserved.
++ * Copyright (c) 2021-2022, 2024-2025 Qualcomm Innovation Center, Inc. All rights reserved.
+  */
+ 
+ #ifndef ATH12K_CE_H
+@@ -39,8 +39,8 @@
+ #define PIPEDIR_INOUT_H2H	4 /* bidirectional, host to host */
+ 
+ /* CE address/mask */
+-#define CE_HOST_IE_ADDRESS	0x00A1803C
+-#define CE_HOST_IE_2_ADDRESS	0x00A18040
++#define CE_HOST_IE_ADDRESS	0x75804C
++#define CE_HOST_IE_2_ADDRESS	0x758050
+ #define CE_HOST_IE_3_ADDRESS	CE_HOST_IE_ADDRESS
+ 
+ #define CE_HOST_IE_3_SHIFT	0xC
+-- 
+2.39.5
+
 
 
 
