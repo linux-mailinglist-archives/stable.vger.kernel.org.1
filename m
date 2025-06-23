@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-155773-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-155725-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 79A94AE43AC
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:34:55 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D52C7AE4399
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:34:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7CBC61887219
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:29:28 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C13B617D673
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:26:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F5F92550D3;
-	Mon, 23 Jun 2025 13:28:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DBDCD253951;
+	Mon, 23 Jun 2025 13:26:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M+on9S0B"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gt1b40LT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1DBE2550A4;
-	Mon, 23 Jun 2025 13:28:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98EE8248191;
+	Mon, 23 Jun 2025 13:26:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750685295; cv=none; b=oeq/wkfy6TFRdFeeGp2C9fHYWO3Ehx61Nl2BijCmVMzf9LKYBezsKPbs9xZIz9LJlL9N0TOQ+rkv95yTjaFCgI3mgN2YAWL1mFvbuMctAnbo4siPImpJ/Ek2K3tAfg64ULMs+KZp9pT8z7sZKlsM/S+eTTJ3B0lP4ra+xPVtnNg=
+	t=1750685175; cv=none; b=oo2LsQah3L53QWV3R1LQOXq/htWV8P59blhYWxr0jgxUbSW/aQgEKMkoiUmdTSKaMHca/l+14vOxfwUOeuwhZMMgccNrCgIrJ3t0paKJaMqbmlBruFqgxJ2E88SiUoZjEgziEmI/7GEXLPxjKVvwnGb7cAtNPd40bBewZEiQE3k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750685295; c=relaxed/simple;
-	bh=5BAEjZyksUoWft7iFwVzBkp6F82fLJqW6KCtGZHx1m8=;
+	s=arc-20240116; t=1750685175; c=relaxed/simple;
+	bh=hAO1F06vslQv34ihdp7d47fAWfcmzGoGP0GN1UGyBKc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hrB3K7heGAf/kTbNHYeq9FlBWGgYKiJzGwrel2E2TvRGBUrSAjoWL9zviuof2SFyccvGEr+14p1iaMfCBCERSDdXYQHOXtmMJZIwh2HLP54rfKHj88e/wTzymz5yU4DgC2IKj+U5sXmM5swDMMhGh8+yCF7gFiq/tbVxoxK9kyY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M+on9S0B; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60AACC4CEF1;
-	Mon, 23 Jun 2025 13:28:15 +0000 (UTC)
+	 MIME-Version; b=uELD97ZETAssuAyq+//MEa3ST6LWdUzyay+rr/lAL+Kc6HXeaVEVz5JZwnp+mkQLyZcdgkaRWvH51WVyVLuLgoO1qYne9YiyJWIZ47X127AfdGlw1h2LTyPAAJLcICu1pINDVkDNm6T7Pm4LH4dhZSx9+gXWQQ4JG7FyasaSCVs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gt1b40LT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E889C4CEEA;
+	Mon, 23 Jun 2025 13:26:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750685295;
-	bh=5BAEjZyksUoWft7iFwVzBkp6F82fLJqW6KCtGZHx1m8=;
+	s=korg; t=1750685175;
+	bh=hAO1F06vslQv34ihdp7d47fAWfcmzGoGP0GN1UGyBKc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=M+on9S0BI58UJFRgG63ErDRgGp2m+joC3Tweqxv47u2PjNWC8pzrtC2t/I46nKxdn
-	 cD59N9c9S0SsLvGpQOLax4Op/v9CUQy0hHQulCJaTjIKDtUDLkPTMZJH4yFhgqDx/L
-	 7hm9kI715HvCqeL+9dylFh7I48RdGXoufERoo3dQ=
+	b=gt1b40LTs0pNla5zVGx1hdr398ZrU6sBwx/cZQp8m5D/Pahfbdl5hduWls1Qt8CyT
+	 plHNP+tcdvaZDC0IdujPHYhsYXGPPmdmj3N2NbPZKtHJMxCjqB0SjQMHJKF91447Io
+	 LZqrTknW4hSiIt9uIqi+YUo2WBwdNJ+VcHovZ8OM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jiaqing Zhao <jiaqing.zhao@linux.intel.com>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>,
+	Erick Shepherd <erick.shepherd@ni.com>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 024/411] x86/mtrr: Check if fixed-range MTRRs exist in mtrr_save_fixed_ranges()
-Date: Mon, 23 Jun 2025 15:02:48 +0200
-Message-ID: <20250623130633.729541120@linuxfoundation.org>
+Subject: [PATCH 6.15 211/592] mmc: Add quirk to disable DDR50 tuning
+Date: Mon, 23 Jun 2025 15:02:49 +0200
+Message-ID: <20250623130705.303394168@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
-References: <20250623130632.993849527@linuxfoundation.org>
+In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
+References: <20250623130700.210182694@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,48 +63,136 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiaqing Zhao <jiaqing.zhao@linux.intel.com>
+From: Erick Shepherd <erick.shepherd@ni.com>
 
-[ Upstream commit 824c6384e8d9275d4ec7204f3f79a4ac6bc10379 ]
+[ Upstream commit 9510b38dc0ba358c93cbf5ee7c28820afb85937b ]
 
-When suspending, save_processor_state() calls mtrr_save_fixed_ranges()
-to save fixed-range MTRRs.
+Adds the MMC_QUIRK_NO_UHS_DDR50_TUNING quirk and updates
+mmc_execute_tuning() to return 0 if that quirk is set. This fixes an
+issue on certain Swissbit SD cards that do not support DDR50 tuning
+where tuning requests caused I/O errors to be thrown.
 
-On platforms without fixed-range MTRRs like the ACRN hypervisor which
-has removed fixed-range MTRR emulation, accessing these MSRs will
-trigger an unchecked MSR access error. Make sure fixed-range MTRRs are
-supported before access to prevent such error.
-
-Since mtrr_state.have_fixed is only set when MTRRs are present and
-enabled, checking the CPU feature flag in mtrr_save_fixed_ranges() is
-unnecessary.
-
-Fixes: 3ebad5905609 ("[PATCH] x86: Save and restore the fixed-range MTRRs of the BSP when suspending")
-Signed-off-by: Jiaqing Zhao <jiaqing.zhao@linux.intel.com>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Link: https://lore.kernel.org/20250509170633.3411169-2-jiaqing.zhao@linux.intel.com
+Signed-off-by: Erick Shepherd <erick.shepherd@ni.com>
+Acked-by: Adrian Hunter <adrian.hunter@intel.com>
+Link: https://lore.kernel.org/r/20250331221337.1414534-1-erick.shepherd@ni.com
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kernel/cpu/mtrr/generic.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/mmc/core/card.h   |  6 ++++++
+ drivers/mmc/core/quirks.h | 10 ++++++++++
+ drivers/mmc/core/sd.c     | 32 ++++++++++++++++++++++++--------
+ include/linux/mmc/card.h  |  1 +
+ 4 files changed, 41 insertions(+), 8 deletions(-)
 
-diff --git a/arch/x86/kernel/cpu/mtrr/generic.c b/arch/x86/kernel/cpu/mtrr/generic.c
-index 558108296f3cf..31549e7f6b7c6 100644
---- a/arch/x86/kernel/cpu/mtrr/generic.c
-+++ b/arch/x86/kernel/cpu/mtrr/generic.c
-@@ -349,7 +349,7 @@ static void get_fixed_ranges(mtrr_type *frs)
- 
- void mtrr_save_fixed_ranges(void *info)
- {
--	if (boot_cpu_has(X86_FEATURE_MTRR))
-+	if (mtrr_state.have_fixed)
- 		get_fixed_ranges(mtrr_state.fixed_ranges);
+diff --git a/drivers/mmc/core/card.h b/drivers/mmc/core/card.h
+index 3205feb1e8ff6..9cbdd240c3a7d 100644
+--- a/drivers/mmc/core/card.h
++++ b/drivers/mmc/core/card.h
+@@ -89,6 +89,7 @@ struct mmc_fixup {
+ #define CID_MANFID_MICRON       0x13
+ #define CID_MANFID_SAMSUNG      0x15
+ #define CID_MANFID_APACER       0x27
++#define CID_MANFID_SWISSBIT     0x5D
+ #define CID_MANFID_KINGSTON     0x70
+ #define CID_MANFID_HYNIX	0x90
+ #define CID_MANFID_KINGSTON_SD	0x9F
+@@ -294,4 +295,9 @@ static inline int mmc_card_broken_sd_poweroff_notify(const struct mmc_card *c)
+ 	return c->quirks & MMC_QUIRK_BROKEN_SD_POWEROFF_NOTIFY;
  }
  
++static inline int mmc_card_no_uhs_ddr50_tuning(const struct mmc_card *c)
++{
++	return c->quirks & MMC_QUIRK_NO_UHS_DDR50_TUNING;
++}
++
+ #endif
+diff --git a/drivers/mmc/core/quirks.h b/drivers/mmc/core/quirks.h
+index 89b512905be14..7f893bafaa607 100644
+--- a/drivers/mmc/core/quirks.h
++++ b/drivers/mmc/core/quirks.h
+@@ -34,6 +34,16 @@ static const struct mmc_fixup __maybe_unused mmc_sd_fixups[] = {
+ 		   MMC_QUIRK_BROKEN_SD_CACHE | MMC_QUIRK_BROKEN_SD_POWEROFF_NOTIFY,
+ 		   EXT_CSD_REV_ANY),
+ 
++	/*
++	 * Swissbit series S46-u cards throw I/O errors during tuning requests
++	 * after the initial tuning request expectedly times out. This has
++	 * only been observed on cards manufactured on 01/2019 that are using
++	 * Bay Trail host controllers.
++	 */
++	_FIXUP_EXT("0016G", CID_MANFID_SWISSBIT, 0x5342, 2019, 1,
++		   0, -1ull, SDIO_ANY_ID, SDIO_ANY_ID, add_quirk_sd,
++		   MMC_QUIRK_NO_UHS_DDR50_TUNING, EXT_CSD_REV_ANY),
++
+ 	END_FIXUP
+ };
+ 
+diff --git a/drivers/mmc/core/sd.c b/drivers/mmc/core/sd.c
+index 8eba697d3d867..6847b3fe8887a 100644
+--- a/drivers/mmc/core/sd.c
++++ b/drivers/mmc/core/sd.c
+@@ -617,6 +617,29 @@ static int sd_set_current_limit(struct mmc_card *card, u8 *status)
+ 	return 0;
+ }
+ 
++/*
++ * Determine if the card should tune or not.
++ */
++static bool mmc_sd_use_tuning(struct mmc_card *card)
++{
++	/*
++	 * SPI mode doesn't define CMD19 and tuning is only valid for SDR50 and
++	 * SDR104 mode SD-cards. Note that tuning is mandatory for SDR104.
++	 */
++	if (mmc_host_is_spi(card->host))
++		return false;
++
++	switch (card->host->ios.timing) {
++	case MMC_TIMING_UHS_SDR50:
++	case MMC_TIMING_UHS_SDR104:
++		return true;
++	case MMC_TIMING_UHS_DDR50:
++		return !mmc_card_no_uhs_ddr50_tuning(card);
++	}
++
++	return false;
++}
++
+ /*
+  * UHS-I specific initialization procedure
+  */
+@@ -660,14 +683,7 @@ static int mmc_sd_init_uhs_card(struct mmc_card *card)
+ 	if (err)
+ 		goto out;
+ 
+-	/*
+-	 * SPI mode doesn't define CMD19 and tuning is only valid for SDR50 and
+-	 * SDR104 mode SD-cards. Note that tuning is mandatory for SDR104.
+-	 */
+-	if (!mmc_host_is_spi(card->host) &&
+-		(card->host->ios.timing == MMC_TIMING_UHS_SDR50 ||
+-		 card->host->ios.timing == MMC_TIMING_UHS_DDR50 ||
+-		 card->host->ios.timing == MMC_TIMING_UHS_SDR104)) {
++	if (mmc_sd_use_tuning(card)) {
+ 		err = mmc_execute_tuning(card);
+ 
+ 		/*
+diff --git a/include/linux/mmc/card.h b/include/linux/mmc/card.h
+index 526fce5816575..ddcdf23d731c4 100644
+--- a/include/linux/mmc/card.h
++++ b/include/linux/mmc/card.h
+@@ -329,6 +329,7 @@ struct mmc_card {
+ #define MMC_QUIRK_BROKEN_SD_CACHE	(1<<15)	/* Disable broken SD cache support */
+ #define MMC_QUIRK_BROKEN_CACHE_FLUSH	(1<<16)	/* Don't flush cache until the write has occurred */
+ #define MMC_QUIRK_BROKEN_SD_POWEROFF_NOTIFY	(1<<17) /* Disable broken SD poweroff notify support */
++#define MMC_QUIRK_NO_UHS_DDR50_TUNING	(1<<18) /* Disable DDR50 tuning */
+ 
+ 	bool			written_flag;	/* Indicates eMMC has been written since power on */
+ 	bool			reenable_cmdq;	/* Re-enable Command Queue */
 -- 
 2.39.5
 
