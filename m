@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-155970-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-155978-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 75DBCAE4478
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:43:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D39C5AE4488
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:43:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AF23A1898690
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:38:25 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 032071BC0882
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:38:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A044F25291F;
-	Mon, 23 Jun 2025 13:36:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 922832550A3;
+	Mon, 23 Jun 2025 13:37:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hMMu5mDB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xOL7pgxU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E19216419;
-	Mon, 23 Jun 2025 13:36:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51631347DD;
+	Mon, 23 Jun 2025 13:37:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750685810; cv=none; b=eqIRdOToNtf1CC2WC0wQC4uI2+GT4yV0+suoMZSr0C2+gsHyu4pEDB9WrRfxvTYQE33Cd2Zxy1j8Fqw4XUpRLFp6ZQQftCOHUpW7cGqxO/gggqxTDsv/0ala7eIP6AfVRdNaV04fe9jX2f+HGJD6xay/tTnChRzP/4u++v5DQRM=
+	t=1750685831; cv=none; b=ZUSkn23Nm5mEdCNVyUFp+VZ5Pkjkr/NZ0HF/a8LK6Ozf/2oouRD0P9v2rVNFhU/EbKU7/GPslpbiAb/SmXE92dE7fT7CLNLanSMc0B6aXQeHLDVtlHqsFTX0NZZuT4FrM6XWtte+xgMcNkILWmxrKzYkRt+9Qo7uinrBJ+TRNi4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750685810; c=relaxed/simple;
-	bh=fnHPn09GXRz7FjTUEt9fkpu4yTN4Qf5r9AAwU1qWU9o=;
+	s=arc-20240116; t=1750685831; c=relaxed/simple;
+	bh=KEOLCHl4dIJrEdmKZSmk1r0SBQHFm184WaTdjT5U7mc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rdZGD/mH8YCXZwzYJ4WvcKktFp9+pd/Yj4x2L4/f8IEypKPb/7QIMMaZ+CEnM5QsX0sgn1Nn9zfuOQO5Fi1kx+Aq/boUlgy9zyIpUIRT7FyoaNaFgzxem+omTNCQ6rkX1zK6IwIW8ZA37bt5H2RgvGuT652pspOsukLYUyj51Rk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hMMu5mDB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4E71C4CEEA;
-	Mon, 23 Jun 2025 13:36:49 +0000 (UTC)
+	 MIME-Version; b=eqVnk7QyBkSNa/BW0ZjX3bpmMt/GT8yWgWZx4DyK/mCj81zABy5N1siMM9riPwFBgBmwDMfec1x3iwckzRLsCcM9pdU9X8LijnsFK+t0F0zpgh9ys51L1lIvrSac3qHFzZB7mzNY7KgXvnSMcmc+e9DL15P44nd/vhneG8Xn5Yw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xOL7pgxU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D12A8C4CEEA;
+	Mon, 23 Jun 2025 13:37:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750685810;
-	bh=fnHPn09GXRz7FjTUEt9fkpu4yTN4Qf5r9AAwU1qWU9o=;
+	s=korg; t=1750685831;
+	bh=KEOLCHl4dIJrEdmKZSmk1r0SBQHFm184WaTdjT5U7mc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hMMu5mDBmZ2dVqxyK3zsKoIZUDcY71eaWW1auvX466ICYASqX6+DJ+vr0bSZs71PP
-	 JuOIh5A4mzGsgajynqWINFl/PmxYNKr78YSWu+uh8ibDjcJDj1NKXjLauxg95CCCVC
-	 eJaoUp2zUVD/gBFJiAXkr3jE76iIbUqSpwF4g9Do=
+	b=xOL7pgxUGRto4oSj97z0xdwqddipM3JS2eb7HWJPSW5cARR04y1PyiLnRuj61PbsO
+	 x6ONdOYnza5CPiYUlQ2f0GcR5yqKBWgnCxfoSUDuxU1YB5TZwT11TVx9i5/4ugNUWe
+	 Zsw31TJeRdeV+iSmaCdzdtufTNhSgrOoXO3n3/KE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Quentin Schulz <quentin.schulz@cherry.de>,
-	Maxime Chevallier <maxime.chevallier@bootlin.com>,
+	Alok Tiwari <alok.a.tiwari@oracle.com>,
 	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 095/355] net: stmmac: platform: guarantee uniqueness of bus_id
-Date: Mon, 23 Jun 2025 15:04:56 +0200
-Message-ID: <20250623130629.649007397@linuxfoundation.org>
+Subject: [PATCH 5.10 096/355] gve: Fix RX_BUFFERS_POSTED stat to report per-queue fill_cnt
+Date: Mon, 23 Jun 2025 15:04:57 +0200
+Message-ID: <20250623130629.676180837@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
 In-Reply-To: <20250623130626.716971725@linuxfoundation.org>
 References: <20250623130626.716971725@linuxfoundation.org>
@@ -67,66 +66,37 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Quentin Schulz <quentin.schulz@cherry.de>
+From: Alok Tiwari <alok.a.tiwari@oracle.com>
 
-[ Upstream commit eb7fd7aa35bfcc1e1fda4ecc42ccfcb526cdc780 ]
+[ Upstream commit f41a94aade120dc60322865f363cee7865f2df01 ]
 
-bus_id is currently derived from the ethernetX alias. If one is missing
-for the device, 0 is used. If ethernet0 points to another stmmac device
-or if there are 2+ stmmac devices without an ethernet alias, then bus_id
-will be 0 for all of those.
+Previously, the RX_BUFFERS_POSTED stat incorrectly reported the
+fill_cnt from RX queue 0 for all queues, resulting in inaccurate
+per-queue statistics.
+Fix this by correctly indexing priv->rx[idx].fill_cnt for each RX queue.
 
-This is an issue because the bus_id is used to generate the mdio bus id
-(new_bus->id in drivers/net/ethernet/stmicro/stmmac/stmmac_mdio.c
-stmmac_mdio_register) and this needs to be unique.
-
-This allows to avoid needing to define ethernet aliases for devices with
-multiple stmmac controllers (such as the Rockchip RK3588) for multiple
-stmmac devices to probe properly.
-
-Obviously, the bus_id isn't guaranteed to be stable across reboots if no
-alias is set for the device but that is easily fixed by simply adding an
-alias if this is desired.
-
-Fixes: 25c83b5c2e82 ("dt:net:stmmac: Add support to dwmac version 3.610 and 3.710")
-Signed-off-by: Quentin Schulz <quentin.schulz@cherry.de>
-Reviewed-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
-Link: https://patch.msgid.link/20250527-stmmac-mdio-bus_id-v2-1-a5ca78454e3c@cherry.de
+Fixes: 24aeb56f2d38 ("gve: Add Gvnic stats AQ command and ethtool show/set-priv-flags.")
+Signed-off-by: Alok Tiwari <alok.a.tiwari@oracle.com>
+Link: https://patch.msgid.link/20250527130830.1812903-1-alok.a.tiwari@oracle.com
 Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/stmicro/stmmac/stmmac_platform.c | 11 +++++++++--
- 1 file changed, 9 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/google/gve/gve_main.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_platform.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_platform.c
-index f02ce09020fbc..7ebbb81375e84 100644
---- a/drivers/net/ethernet/stmicro/stmmac/stmmac_platform.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_platform.c
-@@ -400,6 +400,7 @@ stmmac_probe_config_dt(struct platform_device *pdev, const char **mac)
- 	struct device_node *np = pdev->dev.of_node;
- 	struct plat_stmmacenet_data *plat;
- 	struct stmmac_dma_cfg *dma_cfg;
-+	static int bus_id = -ENODEV;
- 	int phy_mode;
- 	int rc;
- 
-@@ -435,8 +436,14 @@ stmmac_probe_config_dt(struct platform_device *pdev, const char **mac)
- 	of_property_read_u32(np, "max-speed", &plat->max_speed);
- 
- 	plat->bus_id = of_alias_get_id(np, "ethernet");
--	if (plat->bus_id < 0)
--		plat->bus_id = 0;
-+	if (plat->bus_id < 0) {
-+		if (bus_id < 0)
-+			bus_id = of_alias_get_highest_id("ethernet");
-+		/* No ethernet alias found, init at -1 so first bus_id is 0 */
-+		if (bus_id < 0)
-+			bus_id = -1;
-+		plat->bus_id = ++bus_id;
-+	}
- 
- 	/* Default to phy auto-detection */
- 	plat->phy_addr = -1;
+diff --git a/drivers/net/ethernet/google/gve/gve_main.c b/drivers/net/ethernet/google/gve/gve_main.c
+index b76d1d019a81d..f458a97dd7910 100644
+--- a/drivers/net/ethernet/google/gve/gve_main.c
++++ b/drivers/net/ethernet/google/gve/gve_main.c
+@@ -1086,7 +1086,7 @@ void gve_handle_report_stats(struct gve_priv *priv)
+ 			};
+ 			stats[stats_idx++] = (struct stats) {
+ 				.stat_name = cpu_to_be32(RX_BUFFERS_POSTED),
+-				.value = cpu_to_be64(priv->rx[0].fill_cnt),
++				.value = cpu_to_be64(priv->rx[idx].fill_cnt),
+ 				.queue_id = cpu_to_be32(idx),
+ 			};
+ 		}
 -- 
 2.39.5
 
