@@ -1,55 +1,53 @@
-Return-Path: <stable+bounces-156283-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156290-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9CF13AE4EEC
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:10:36 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 03FDCAE4EF3
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:10:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B9ECF3BEB9B
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:10:11 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AEC8A7AC245
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:09:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2B3121CA07;
-	Mon, 23 Jun 2025 21:10:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28E5F1F582A;
+	Mon, 23 Jun 2025 21:10:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gLe8Saio"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rcO6RD6B"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0DE570838;
-	Mon, 23 Jun 2025 21:10:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D865770838;
+	Mon, 23 Jun 2025 21:10:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750713034; cv=none; b=TkvIvGU9nWDrPzzSWbzuiu+CI8vYAy0TwsjdZYRRB/Ho6M8CNGLnt8fI90pndGhmxU9aIcqngPc3YMwM1zy8Rrf3lcLH/XQDWHZV5doGGW/g16tJV5ocOrumGcsvM1Uv3AFSPrfq8qDx/vXk7hYf7K1pmoQHKeodW9u0Xbq7OsI=
+	t=1750713051; cv=none; b=PVyiFHwDV1UIN6sVbaYWSoZiIN/7LcdQFC4YgmeKye6LkiyBYGS6hee3IT9hX7bd0Sju4e21GLot/NvUlxAtiEH2UXET0qFolDrB0vk8Qti/duHCYuL/QAJdscecu/2HwP8kJsj5tgh5aW4eZwi/hXvgpJ5U2Ihh9wXNMwBWHMg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750713034; c=relaxed/simple;
-	bh=7MJYK6nR+STF7NhJhFBiImhH/xH+dtYFiLwfvklo6BM=;
+	s=arc-20240116; t=1750713051; c=relaxed/simple;
+	bh=B0u8xqDLcooZ2UHoifr5j3zGCSO0RY4ou3k7odDAPMI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=u0qVgoh/ZUej+B2zOwLylsVx7o1zVAsZQ0xN10w/SdBq4cYbCzMZy4LpK1EJFrMc/PNMgQMTyjoKT7x3Xg09FXXftT15jShvLTOk7yaNiMQzV+yU007FVZXYjH2HR/KFahsCrMHEkEy4wqJEYk51J/c43YYbbg1R4N27SedcJl4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gLe8Saio; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39FC4C4CEEA;
-	Mon, 23 Jun 2025 21:10:34 +0000 (UTC)
+	 MIME-Version; b=AbrnygwifHadlQAZl+/HVF+Sp8tfmc+/wtI/okLSHMGdmZRw0dykkWoZ5IQeTQeytkfzHgS9BVNlHdNcvYiY8I5521yx8pRdU6XwS6cbmB78swuRK6z4MKrLBhUq++cZvJN1GXNknWBnuPeU05HYU8Qfr40WJ6+/TLimoCS2sIo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rcO6RD6B; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70B95C4CEF0;
+	Mon, 23 Jun 2025 21:10:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750713034;
-	bh=7MJYK6nR+STF7NhJhFBiImhH/xH+dtYFiLwfvklo6BM=;
+	s=korg; t=1750713051;
+	bh=B0u8xqDLcooZ2UHoifr5j3zGCSO0RY4ou3k7odDAPMI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gLe8SaiorGnf83AgzN2/ZAJV7jtpbndzzdgZkxxrQeFVFDFpuK3TAgPx6ujFr6O64
-	 d6EnOEI9eStprL3rhYut0kGkW7M1WQoMh0GMSk1ZL36FPUxevWU6orEtbVn2s3192r
-	 B3/QkrPTBrsiCLipJOVDB5DgQYtytFVnTDlj6cFs=
+	b=rcO6RD6BLu7SJTGjGJ2BkpEupdCyHwWbiPkZ1/vcwbTMho5vu4TGw6JLs8QWWXSwn
+	 VVxHlYarvxOSATn0uzTwNYpU3WKCWPG+PkYl63/FYuxOVTOwj5A/rlqbzWxCstcU3F
+	 31Awtl45Bm5emgpbssLS93o9F7YSU3hO/wQ62rao=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michal Luczaj <mhal@rbox.co>,
-	Jiayuan Chen <jiayuan.chen@linux.dev>,
-	Martin KaFai Lau <martin.lau@kernel.org>,
-	John Fastabend <john.fastabend@gmail.com>,
+	Fernando Fernandez Mancera <fmancera@suse.de>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 094/508] bpf, sockmap: Avoid using sk_socket after free when sending
-Date: Mon, 23 Jun 2025 15:02:19 +0200
-Message-ID: <20250623130647.571005433@linuxfoundation.org>
+Subject: [PATCH 6.1 095/508] netfilter: nft_tunnel: fix geneve_opt dump
+Date: Mon, 23 Jun 2025 15:02:20 +0200
+Message-ID: <20250623130647.597382043@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
 In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
 References: <20250623130645.255320792@linuxfoundation.org>
@@ -68,123 +66,69 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Jiayuan Chen <jiayuan.chen@linux.dev>
+From: Fernando Fernandez Mancera <fmancera@suse.de>
 
-[ Upstream commit 8259eb0e06d8f64c700f5fbdb28a5c18e10de291 ]
+[ Upstream commit 22a9613de4c29d7d0770bfb8a5a9d73eb8df7dad ]
 
-The sk->sk_socket is not locked or referenced in backlog thread, and
-during the call to skb_send_sock(), there is a race condition with
-the release of sk_socket. All types of sockets(tcp/udp/unix/vsock)
-will be affected.
+When dumping a nft_tunnel with more than one geneve_opt configured the
+netlink attribute hierarchy should be as follow:
 
-Race conditions:
-'''
-CPU0                               CPU1
+ NFTA_TUNNEL_KEY_OPTS
+ |
+ |--NFTA_TUNNEL_KEY_OPTS_GENEVE
+ |  |
+ |  |--NFTA_TUNNEL_KEY_GENEVE_CLASS
+ |  |--NFTA_TUNNEL_KEY_GENEVE_TYPE
+ |  |--NFTA_TUNNEL_KEY_GENEVE_DATA
+ |
+ |--NFTA_TUNNEL_KEY_OPTS_GENEVE
+ |  |
+ |  |--NFTA_TUNNEL_KEY_GENEVE_CLASS
+ |  |--NFTA_TUNNEL_KEY_GENEVE_TYPE
+ |  |--NFTA_TUNNEL_KEY_GENEVE_DATA
+ |
+ |--NFTA_TUNNEL_KEY_OPTS_GENEVE
+ ...
 
-backlog::skb_send_sock
-  sendmsg_unlocked
-    sock_sendmsg
-      sock_sendmsg_nosec
-                                   close(fd):
-                                     ...
-                                     ops->release() -> sock_map_close()
-                                     sk_socket->ops = NULL
-                                     free(socket)
-      sock->ops->sendmsg
-            ^
-            panic here
-'''
+Otherwise, userspace tools won't be able to fetch the geneve options
+configured correctly.
 
-The ref of psock become 0 after sock_map_close() executed.
-'''
-void sock_map_close()
-{
-    ...
-    if (likely(psock)) {
-    ...
-    // !! here we remove psock and the ref of psock become 0
-    sock_map_remove_links(sk, psock)
-    psock = sk_psock_get(sk);
-    if (unlikely(!psock))
-        goto no_psock; <=== Control jumps here via goto
-        ...
-        cancel_delayed_work_sync(&psock->work); <=== not executed
-        sk_psock_put(sk, psock);
-        ...
-}
-'''
-
-Based on the fact that we already wait for the workqueue to finish in
-sock_map_close() if psock is held, we simply increase the psock
-reference count to avoid race conditions.
-
-With this patch, if the backlog thread is running, sock_map_close() will
-wait for the backlog thread to complete and cancel all pending work.
-
-If no backlog running, any pending work that hasn't started by then will
-fail when invoked by sk_psock_get(), as the psock reference count have
-been zeroed, and sk_psock_drop() will cancel all jobs via
-cancel_delayed_work_sync().
-
-In summary, we require synchronization to coordinate the backlog thread
-and close() thread.
-
-The panic I catched:
-'''
-Workqueue: events sk_psock_backlog
-RIP: 0010:sock_sendmsg+0x21d/0x440
-RAX: 0000000000000000 RBX: ffffc9000521fad8 RCX: 0000000000000001
-...
-Call Trace:
- <TASK>
- ? die_addr+0x40/0xa0
- ? exc_general_protection+0x14c/0x230
- ? asm_exc_general_protection+0x26/0x30
- ? sock_sendmsg+0x21d/0x440
- ? sock_sendmsg+0x3e0/0x440
- ? __pfx_sock_sendmsg+0x10/0x10
- __skb_send_sock+0x543/0xb70
- sk_psock_backlog+0x247/0xb80
-...
-'''
-
-Fixes: 4b4647add7d3 ("sock_map: avoid race between sock_map_close and sk_psock_put")
-Reported-by: Michal Luczaj <mhal@rbox.co>
-Signed-off-by: Jiayuan Chen <jiayuan.chen@linux.dev>
-Signed-off-by: Martin KaFai Lau <martin.lau@kernel.org>
-Reviewed-by: John Fastabend <john.fastabend@gmail.com>
-Link: https://lore.kernel.org/r/20250516141713.291150-1-jiayuan.chen@linux.dev
+Fixes: 925d844696d9 ("netfilter: nft_tunnel: add support for geneve opts")
+Signed-off-by: Fernando Fernandez Mancera <fmancera@suse.de>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/core/skmsg.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ net/netfilter/nft_tunnel.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/net/core/skmsg.c b/net/core/skmsg.c
-index 0613f9a2543bb..e5ba57a5db126 100644
---- a/net/core/skmsg.c
-+++ b/net/core/skmsg.c
-@@ -654,6 +654,13 @@ static void sk_psock_backlog(struct work_struct *work)
- 	bool ingress;
- 	int ret;
+diff --git a/net/netfilter/nft_tunnel.c b/net/netfilter/nft_tunnel.c
+index d026982a00fc4..be741db50ffae 100644
+--- a/net/netfilter/nft_tunnel.c
++++ b/net/netfilter/nft_tunnel.c
+@@ -617,10 +617,10 @@ static int nft_tunnel_opts_dump(struct sk_buff *skb,
+ 		struct geneve_opt *opt;
+ 		int offset = 0;
  
-+	/* Increment the psock refcnt to synchronize with close(fd) path in
-+	 * sock_map_close(), ensuring we wait for backlog thread completion
-+	 * before sk_socket freed. If refcnt increment fails, it indicates
-+	 * sock_map_close() completed with sk_socket potentially already freed.
-+	 */
-+	if (!sk_psock_get(psock->sk))
-+		return;
- 	mutex_lock(&psock->work_mutex);
- 	while ((skb = skb_peek(&psock->ingress_skb))) {
- 		len = skb->len;
-@@ -705,6 +712,7 @@ static void sk_psock_backlog(struct work_struct *work)
+-		inner = nla_nest_start_noflag(skb, NFTA_TUNNEL_KEY_OPTS_GENEVE);
+-		if (!inner)
+-			goto failure;
+ 		while (opts->len > offset) {
++			inner = nla_nest_start_noflag(skb, NFTA_TUNNEL_KEY_OPTS_GENEVE);
++			if (!inner)
++				goto failure;
+ 			opt = (struct geneve_opt *)(opts->u.data + offset);
+ 			if (nla_put_be16(skb, NFTA_TUNNEL_KEY_GENEVE_CLASS,
+ 					 opt->opt_class) ||
+@@ -630,8 +630,8 @@ static int nft_tunnel_opts_dump(struct sk_buff *skb,
+ 				    opt->length * 4, opt->opt_data))
+ 				goto inner_failure;
+ 			offset += sizeof(*opt) + opt->length * 4;
++			nla_nest_end(skb, inner);
+ 		}
+-		nla_nest_end(skb, inner);
  	}
- end:
- 	mutex_unlock(&psock->work_mutex);
-+	sk_psock_put(psock->sk, psock);
- }
- 
- struct sk_psock *sk_psock_init(struct sock *sk, int node)
+ 	nla_nest_end(skb, nest);
+ 	return 0;
 -- 
 2.39.5
 
