@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-156606-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156761-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 56142AE5049
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:23:47 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id B078EAE5102
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:30:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 74E303BFAFE
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:23:22 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 46D734A28E9
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:30:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC2711EFFA6;
-	Mon, 23 Jun 2025 21:23:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4834221723;
+	Mon, 23 Jun 2025 21:30:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ak1QIIiS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uAdIdASf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78A4F2628C;
-	Mon, 23 Jun 2025 21:23:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E47628EA;
+	Mon, 23 Jun 2025 21:30:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750713825; cv=none; b=Fb0v9dANmBbd3kVfGftmCbQySFliHfDau3MC64y4u7W6Hszb2zFXVbUF9sI3A4b80D+kCuwE1ZosCLFiYv7Sv9TL8h0/lrhu3xURkKAKsnCoRvhHzLAGXGKiUuGbCoUGbT21PtB0FzbygC1H63NQmPDHI+nlZ3kWpIFrB8lU7o0=
+	t=1750714201; cv=none; b=Z+EWsaFeJwBFFWBJdcFl0/bNyr8IbiZEy+YLY7MoPx/hIqT6y83mAKRc5vdPurBv99kJsK3dAjAPltq5CgFnPfBVIfT3osu9qkoY8/4dQQ3+GjP31zA//Hd5pJ3KZzHzBE7DbOb8jTDcilz3fKMtc5oz+qXSkvC+KPB/fpJoNVk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750713825; c=relaxed/simple;
-	bh=49/os9vUMixhACmvNvg2EyYvSOgoQLQjEKCFG4zPaFI=;
+	s=arc-20240116; t=1750714201; c=relaxed/simple;
+	bh=Ki5PEygmHevPTQV3N4//0FfZR7hkN5aJHBzXxNtaKQQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=bQWW4cH8u9MNLoHB2x/OtM5uunT45IpSmF5+SV2k1gxR5A8YWn3bx5k9pOtOgqgaa+BnAJ+5oKsk+JhiZlY7vjDGMcPNfs7tUAv+PrLX8i/Bx2HpifAiiYEr1uWGlX9PhCePF+NpLYO6GgXY43RPipBVwNJCn2snVazs6ysokwM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ak1QIIiS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 108A9C4CEEA;
-	Mon, 23 Jun 2025 21:23:44 +0000 (UTC)
+	 MIME-Version:Content-Type; b=lFJl8cNoTd15m6aJ8ukqWkkXCKzq3xvnWTdZ/+G+RuFmMhttId5HpCeJ52ZCXlndYlafx/RrsyKdbzTq8+WZUDSrR0G4OK27O2P+Cdt5N+1sw9xPWNfXu/IU5B0mxX/JWCjcSi/3dU6HjZ0yAWK3ZF9O0bNj9COYjja56eOv5ZA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uAdIdASf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16036C4CEED;
+	Mon, 23 Jun 2025 21:30:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750713825;
-	bh=49/os9vUMixhACmvNvg2EyYvSOgoQLQjEKCFG4zPaFI=;
+	s=korg; t=1750714201;
+	bh=Ki5PEygmHevPTQV3N4//0FfZR7hkN5aJHBzXxNtaKQQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ak1QIIiSWgQoMojGHL6ZsPFYRmC0krW5h39JHzsD9/mty2QX1yrFuDhrQER/kyU3w
-	 ImEa52QDNvWDhIo3uRo/eZWt1S3dw7BbsfSFQ6YtKtPQgcf8zwylLbga3fsMfMvv4F
-	 k31rU3srD5zYTpkMOtbCVeNovGgQ44HxoXNtKMUI=
+	b=uAdIdASfTncnScns1Vd7o2akfRQWSUxF12+M1E6RqtCnegOfktvYiZXe2fe1kUOdN
+	 97dy4qX77vuE6nhn/RliPzIUDK1Qat0OrrxLjOmkuBuNGz/YXmY0V96AqKX6t5SAAc
+	 K1xAkAOIM0v8GD91LQNlY8ExyoMByHr0YAUi3TJk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhong Jiawei <zhongjiawei1@huawei.com>,
-	Chen Ridong <chenridong@huawei.com>,
-	=?UTF-8?q?Michal=20Koutn=C3=BD?= <mkoutny@suse.com>,
-	Tejun Heo <tj@kernel.org>
-Subject: [PATCH 6.12 085/414] cgroup,freezer: fix incomplete freezing when attaching tasks
-Date: Mon, 23 Jun 2025 15:03:42 +0200
-Message-ID: <20250623130644.209593991@linuxfoundation.org>
+	=?UTF-8?q?=C3=81lvaro=20Fern=C3=A1ndez=20Rojas?= <noltari@gmail.com>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 178/508] net: dsa: tag_brcm: legacy: fix pskb_may_pull length
+Date: Mon, 23 Jun 2025 15:03:43 +0200
+Message-ID: <20250623130649.652304574@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
-References: <20250623130642.015559452@linuxfoundation.org>
+In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
+References: <20250623130645.255320792@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,66 +64,43 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chen Ridong <chenridong@huawei.com>
+From: Álvaro Fernández Rojas <noltari@gmail.com>
 
-commit 37fb58a7273726e59f9429c89ade5116083a213d upstream.
+[ Upstream commit efdddc4484859082da6c7877ed144c8121c8ea55 ]
 
-An issue was found:
+BRCM_LEG_PORT_ID was incorrectly used for pskb_may_pull length.
+The correct check is BRCM_LEG_TAG_LEN + VLAN_HLEN, or 10 bytes.
 
-	# cd /sys/fs/cgroup/freezer/
-	# mkdir test
-	# echo FROZEN > test/freezer.state
-	# cat test/freezer.state
-	FROZEN
-	# sleep 1000 &
-	[1] 863
-	# echo 863 > test/cgroup.procs
-	# cat test/freezer.state
-	FREEZING
-
-When tasks are migrated to a frozen cgroup, the freezer fails to
-immediately freeze the tasks, causing the cgroup to remain in the
-"FREEZING".
-
-The freeze_task() function is called before clearing the CGROUP_FROZEN
-flag. This causes the freezing() check to incorrectly return false,
-preventing __freeze_task() from being invoked for the migrated task.
-
-To fix this issue, clear the CGROUP_FROZEN state before calling
-freeze_task().
-
-Fixes: f5d39b020809 ("freezer,sched: Rewrite core freezer logic")
-Cc: stable@vger.kernel.org # v6.1+
-Reported-by: Zhong Jiawei <zhongjiawei1@huawei.com>
-Signed-off-by: Chen Ridong <chenridong@huawei.com>
-Acked-by: Michal Koutný <mkoutny@suse.com>
-Signed-off-by: Tejun Heo <tj@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 964dbf186eaa ("net: dsa: tag_brcm: add support for legacy tags")
+Signed-off-by: Álvaro Fernández Rojas <noltari@gmail.com>
+Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Link: https://patch.msgid.link/20250529124406.2513779-1-noltari@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/cgroup/legacy_freezer.c |    3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ net/dsa/tag_brcm.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/kernel/cgroup/legacy_freezer.c
-+++ b/kernel/cgroup/legacy_freezer.c
-@@ -188,13 +188,12 @@ static void freezer_attach(struct cgroup
- 		if (!(freezer->state & CGROUP_FREEZING)) {
- 			__thaw_task(task);
- 		} else {
--			freeze_task(task);
--
- 			/* clear FROZEN and propagate upwards */
- 			while (freezer && (freezer->state & CGROUP_FROZEN)) {
- 				freezer->state &= ~CGROUP_FROZEN;
- 				freezer = parent_freezer(freezer);
- 			}
-+			freeze_task(task);
- 		}
- 	}
+diff --git a/net/dsa/tag_brcm.c b/net/dsa/tag_brcm.c
+index a65d62fb90094..04b57534fe4de 100644
+--- a/net/dsa/tag_brcm.c
++++ b/net/dsa/tag_brcm.c
+@@ -253,7 +253,7 @@ static struct sk_buff *brcm_leg_tag_rcv(struct sk_buff *skb,
+ 	int source_port;
+ 	u8 *brcm_tag;
  
+-	if (unlikely(!pskb_may_pull(skb, BRCM_LEG_PORT_ID)))
++	if (unlikely(!pskb_may_pull(skb, BRCM_LEG_TAG_LEN + VLAN_HLEN)))
+ 		return NULL;
+ 
+ 	brcm_tag = dsa_etype_header_pos_rx(skb);
+-- 
+2.39.5
+
 
 
 
