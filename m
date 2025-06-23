@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-156737-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156811-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 33984AE50F0
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:29:28 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 159BDAE513C
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:32:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 39BBB189D86B
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:29:24 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 32DF53BF5AD
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:31:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4163A1EFFA6;
-	Mon, 23 Jun 2025 21:29:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 150F57080C;
+	Mon, 23 Jun 2025 21:32:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="unwiIhPF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zfk4jhn8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 004831EDA0F;
-	Mon, 23 Jun 2025 21:29:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C77D9C2E0;
+	Mon, 23 Jun 2025 21:32:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750714143; cv=none; b=Lw7yKIJt+VDRcDPM1ab1lAo8my8mp33KeYatFQRYyk5Lw6dMwm1WbovU4Y4IjzC5NONPPFi2gR9ed69Z5B19GWUFMWsqP08MgdEFOCbRjmECJliSxHS9F9qcawJpMaVIkUM/sSsgytrF8/NPRw6CvhLRnT0n3n68VtXIIV78Raw=
+	t=1750714323; cv=none; b=jD3mScUKQeE2+Ej9YyoSeUbIWX781vvUY9XNoGLqRo969uodotABzgWKYy7cOZTSzZbrU6dJtmntIphLPnK4up6Rl4GCnO+grBoIMde4D2w6WMgEeyg/GjzyHP41VK+X+CWbLavJcZQuQjCl0B3KJ7WOtVHAa7wM1dujL/Vv+60=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750714143; c=relaxed/simple;
-	bh=tVCH850FGDG+orM3fqlfvoeGPw8nDYJEXcskEby89IY=;
+	s=arc-20240116; t=1750714323; c=relaxed/simple;
+	bh=nF+fcyq9WU773IWa0Awgs21XXQqMij/bkFq9Vbwad1o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gp+NPZLZdrwbQwfapnUELdiCC/jSu+x5MOvLyqvFYGAmktCo6wtVN6544HWCjSg6jrugPudQqcsZWrU3J04xUTxXZIJkM1D4vEHPlool9fCziDce2yf3YN417MdOl6kXsZl8xHbwUAHMJ0t+gcKsixIMDDPEvFQFNJLBT4sNWng=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=unwiIhPF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83D03C4CEEA;
-	Mon, 23 Jun 2025 21:29:02 +0000 (UTC)
+	 MIME-Version; b=ihDX33g/qrq0+0WrWvlS2ljDinYreEn2W7rMnMkGLijDbhC/ZwpdzxYV+wSfi0YfjckAPUDiBi85hWhzrLpIiybsKTpf8QBIrz/BuhE9pMU0KKm/i7tPkJbWK0TsVdHuGsILZd67vN4IKAYZ44IqZ1lkjJaYj8Z5HS+4IlMinpI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zfk4jhn8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5FB2FC4CEEA;
+	Mon, 23 Jun 2025 21:32:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750714142;
-	bh=tVCH850FGDG+orM3fqlfvoeGPw8nDYJEXcskEby89IY=;
+	s=korg; t=1750714323;
+	bh=nF+fcyq9WU773IWa0Awgs21XXQqMij/bkFq9Vbwad1o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=unwiIhPFTndchg3gZNii5KFAvpvUicguoTu+6qP3hFXrnXet72l46qEhn8uJT+OTu
-	 4bbrQjDLxrLZgabZ2hnaKFQ6HD08eNVdnN9rP69T6paT7AgYY6zosjskfbEHoLusWD
-	 lhWTrpC9K+Ny/TGJhTq7pWNqm+kzxKEwLNfsMX6Q=
+	b=zfk4jhn878lhjPR4s0SwL9f1oMTsOqSeMeJRAAOjF5BNiIMiKaDRa5uLcRrscu0Fh
+	 70UGAkp89N16ZBoEoEL6S8eE52AFtWa7FEwy9y1jxrMoIuv6rlrvMMKItWU/Nd0935
+	 6/1M6Hcmw3eTKh9/f6Dvdnt7OKZt+aP9rY7E+sug=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Benjamin Lin <benjamin-jw.lin@mediatek.com>,
-	Shayne Chen <shayne.chen@mediatek.com>,
-	Felix Fietkau <nbd@nbd.name>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 139/290] wifi: mt76: mt7996: drop fragments with multicast or broadcast RA
+	Wentao Liang <vulab@iscas.ac.cn>,
+	Miquel Raynal <miquel.raynal@bootlin.com>
+Subject: [PATCH 5.10 199/355] mtd: rawnand: sunxi: Add randomizer configuration in sunxi_nfc_hw_ecc_write_chunk
 Date: Mon, 23 Jun 2025 15:06:40 +0200
-Message-ID: <20250623130631.085263973@linuxfoundation.org>
+Message-ID: <20250623130632.647567560@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130626.910356556@linuxfoundation.org>
-References: <20250623130626.910356556@linuxfoundation.org>
+In-Reply-To: <20250623130626.716971725@linuxfoundation.org>
+References: <20250623130626.716971725@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,49 +61,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Benjamin Lin <benjamin-jw.lin@mediatek.com>
+From: Wentao Liang <vulab@iscas.ac.cn>
 
-[ Upstream commit 80fda1cd7b0a1edd0849dc71403a070d0922118d ]
+commit 44ed1f5ff73e9e115b6f5411744d5a22ea1c855b upstream.
 
-IEEE 802.11 fragmentation can only be applied to unicast frames.
-Therefore, drop fragments with multicast or broadcast RA. This patch
-addresses vulnerabilities such as CVE-2020-26145.
+The function sunxi_nfc_hw_ecc_write_chunk() calls the
+sunxi_nfc_hw_ecc_write_chunk(), but does not call the configuration
+function sunxi_nfc_randomizer_config(). Consequently, the randomization
+might not conduct correctly, which will affect the lifespan of NAND flash.
+A proper implementation can be found in sunxi_nfc_hw_ecc_write_page_dma().
 
-Signed-off-by: Benjamin Lin <benjamin-jw.lin@mediatek.com>
-Signed-off-by: Shayne Chen <shayne.chen@mediatek.com>
-Link: https://patch.msgid.link/20250515032952.1653494-4-shayne.chen@mediatek.com
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Add the sunxi_nfc_randomizer_config() to config randomizer.
+
+Fixes: 4be4e03efc7f ("mtd: nand: sunxi: add randomizer support")
+Cc: stable@vger.kernel.org # v4.6
+Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
+Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/mediatek/mt76/mt7996/mac.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ drivers/mtd/nand/raw/sunxi_nand.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mac.c b/drivers/net/wireless/mediatek/mt76/mt7996/mac.c
-index 35d9673ec0d8f..8fa16f95e6a7b 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7996/mac.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7996/mac.c
-@@ -650,6 +650,14 @@ mt7996_mac_fill_rx(struct mt7996_dev *dev, struct sk_buff *skb)
- 		status->last_amsdu = amsdu_info == MT_RXD4_LAST_AMSDU_FRAME;
- 	}
+--- a/drivers/mtd/nand/raw/sunxi_nand.c
++++ b/drivers/mtd/nand/raw/sunxi_nand.c
+@@ -1045,6 +1045,7 @@ static int sunxi_nfc_hw_ecc_write_chunk(
+ 	if (ret)
+ 		return ret;
  
-+	/* IEEE 802.11 fragmentation can only be applied to unicast frames.
-+	 * Hence, drop fragments with multicast/broadcast RA.
-+	 * This check fixes vulnerabilities, like CVE-2020-26145.
-+	 */
-+	if ((ieee80211_has_morefrags(fc) || seq_ctrl & IEEE80211_SCTL_FRAG) &&
-+	    FIELD_GET(MT_RXD3_NORMAL_ADDR_TYPE, rxd3) != MT_RXD3_NORMAL_U2M)
-+		return -EINVAL;
-+
- 	hdr_gap = (u8 *)rxd - skb->data + 2 * remove_pad;
- 	if (hdr_trans && ieee80211_has_morefrags(fc)) {
- 		if (mt7996_reverse_frag0_hdr_trans(skb, hdr_gap))
--- 
-2.39.5
-
++	sunxi_nfc_randomizer_config(nand, page, false);
+ 	sunxi_nfc_randomizer_enable(nand);
+ 	sunxi_nfc_hw_ecc_set_prot_oob_bytes(nand, oob, 0, bbm, page);
+ 
 
 
 
