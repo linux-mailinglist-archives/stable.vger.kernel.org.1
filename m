@@ -1,62 +1,55 @@
-Return-Path: <stable+bounces-157654-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-158181-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 10EC6AE5500
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:07:05 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9D485AE574E
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:28:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3DE723A777A
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:06:14 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4E2047B437D
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:26:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6960A221FD6;
-	Mon, 23 Jun 2025 22:06:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D08DD225776;
+	Mon, 23 Jun 2025 22:28:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GnIkDjQk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L8wvTQkl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 271771A4F12;
-	Mon, 23 Jun 2025 22:06:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F869223DCC;
+	Mon, 23 Jun 2025 22:28:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750716397; cv=none; b=bPe3/D3TTCLqyM74hoazgxweB2mCxB/nautWnJL7zfuQgBdQQ4JRr79Oger4YzAFkOglGbxId2TcR81hSvaVrIT4hk5dgVjrTU0OEfSCHHTJtJzwDsjoHE+9I4w5mjSODS2pxgtaAGsBQfz2pGpNtai7Vhd0eAB0iBXHgnrlflc=
+	t=1750717683; cv=none; b=VpJf4u9qj1xpej36YzOAzw4P7+7gI6JLNSvKpL6Nxf3YvtsroJJcDTSfhdBX7TByF1VhbK26ZmjHhxIAbvY3xaLbL7GOiyztywJynMdHxb1FujDXKp4+nyxF1fsJ1bfI1QemOX5R2TTerhDnR4madNy8imCWbJW03bVW9adLreg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750716397; c=relaxed/simple;
-	bh=ZUzYO9ldCxGnis+EKKTlVRrc3fYKuA+nc6u7PSxKJzc=;
+	s=arc-20240116; t=1750717683; c=relaxed/simple;
+	bh=40m5R+fdHCSl+sM3jMzmvrg1q6P7LVBCA4cuKPomqCo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YwbfvVUG/ILafSkbzlZDp4LL4XeJy/FI641QrStdCSUtaZ0FE4OF0demb8mxN4hd0HlklNKsNdaQFMWV/qvR+yWBr/r0rNiepH6kWkqjn4hUjERAcPlEggTTJHAHd8iGzO9i8X+ZsvB5UkTXEkp6TalZtaNHxHsr7WlQDqrJ7nQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GnIkDjQk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1D3FC4CEF2;
-	Mon, 23 Jun 2025 22:06:36 +0000 (UTC)
+	 MIME-Version; b=aiBavu6ndE8tZEwKV+p8vY9twIzl6VcddIK4kbHq9+J697zItM30VrnaCcM60tz0kVoKFUR6KUNvr3Xlr0S/iA27aqFzSeJ0kkAOuVO8igO4RO3Jap8h/Ra9RnVu3jB0yLarvbtS/YssMzWrMQlVDpmnHckB6jtBFvrxdsbqLe8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L8wvTQkl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28C7FC4CEEA;
+	Mon, 23 Jun 2025 22:28:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750716397;
-	bh=ZUzYO9ldCxGnis+EKKTlVRrc3fYKuA+nc6u7PSxKJzc=;
+	s=korg; t=1750717683;
+	bh=40m5R+fdHCSl+sM3jMzmvrg1q6P7LVBCA4cuKPomqCo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GnIkDjQkNTXU6piakyuUvNvkTEFOqjoiX3bh7bLbwrLlYSmhmxHBBlyyhLwAmB1vt
-	 44dcuRwn8GAfz5dtcNQ3WXquNohkXSKif3LmXqwaclCmFVHI66Balr6w8qiRCiH12G
-	 lUipwUyeaIm5pUiZJFnLmyTvmrqJmK3zwGZMzrCg=
+	b=L8wvTQkl03Gkb8nLBpvAYPB3FQ3SdsJArW8ZLx7HrgbdiJr2dnuv1ydYnZZoZnf75
+	 ch1V/zk8OlO/20LtFpvk1gFPBnN8MPHgpn9skFietHjV9IeW+7KWbrwoZbGxkfhr6y
+	 bGtioE6C+1GHzdZZ8wB986bvxEzlCPHg+EkMGtw0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gavin Guo <gavinguo@igalia.com>,
-	David Hildenbrand <david@redhat.com>,
-	Hugh Dickins <hughd@google.com>,
-	Zi Yan <ziy@nvidia.com>,
-	Gavin Shan <gshan@redhat.com>,
-	Florent Revest <revest@google.com>,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Miaohe Lin <linmiaohe@huawei.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 5.10 346/355] mm/huge_memory: fix dereferencing invalid pmd migration entry
+	Yao Zi <ziyao@disroot.org>,
+	Huacai Chen <chenhuacai@loongson.cn>
+Subject: [PATCH 6.1 502/508] platform/loongarch: laptop: Add backlight power control support
 Date: Mon, 23 Jun 2025 15:09:07 +0200
-Message-ID: <20250623130637.130239273@linuxfoundation.org>
+Message-ID: <20250623130657.359395012@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130626.716971725@linuxfoundation.org>
-References: <20250623130626.716971725@linuxfoundation.org>
+In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
+References: <20250623130645.255320792@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,81 +61,150 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gavin Guo <gavinguo@igalia.com>
+From: Yao Zi <ziyao@disroot.org>
 
-commit be6e843fc51a584672dfd9c4a6a24c8cb81d5fb7 upstream.
+commit 53c762b47f726e4079a1f06f684bce2fc0d56fba upstream.
 
-When migrating a THP, concurrent access to the PMD migration entry during
-a deferred split scan can lead to an invalid address access, as
-illustrated below.  To prevent this invalid access, it is necessary to
-check the PMD migration entry and return early.  In this context, there is
-no need to use pmd_to_swp_entry and pfn_swap_entry_to_page to verify the
-equality of the target folio.  Since the PMD migration entry is locked, it
-cannot be served as the target.
+loongson_laptop_turn_{on,off}_backlight() are designed for controlling
+the power of the backlight, but they aren't really used in the driver
+previously.
 
-Mailing list discussion and explanation from Hugh Dickins: "An anon_vma
-lookup points to a location which may contain the folio of interest, but
-might instead contain another folio: and weeding out those other folios is
-precisely what the "folio != pmd_folio((*pmd)" check (and the "risk of
-replacing the wrong folio" comment a few lines above it) is for."
+Unify these two functions since they only differ in arguments passed to
+ACPI method, and wire up loongson_laptop_backlight_update() to update
+the power state of the backlight as well. Tested on the TongFang L860-T2
+Loongson-3A5000 laptop.
 
-BUG: unable to handle page fault for address: ffffea60001db008
-CPU: 0 UID: 0 PID: 2199114 Comm: tee Not tainted 6.14.0+ #4 NONE
-Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
-RIP: 0010:split_huge_pmd_locked+0x3b5/0x2b60
-Call Trace:
-<TASK>
-try_to_migrate_one+0x28c/0x3730
-rmap_walk_anon+0x4f6/0x770
-unmap_folio+0x196/0x1f0
-split_huge_page_to_list_to_order+0x9f6/0x1560
-deferred_split_scan+0xac5/0x12a0
-shrinker_debugfs_scan_write+0x376/0x470
-full_proxy_write+0x15c/0x220
-vfs_write+0x2fc/0xcb0
-ksys_write+0x146/0x250
-do_syscall_64+0x6a/0x120
-entry_SYSCALL_64_after_hwframe+0x76/0x7e
-
-The bug is found by syzkaller on an internal kernel, then confirmed on
-upstream.
-
-Link: https://lkml.kernel.org/r/20250421113536.3682201-1-gavinguo@igalia.com
-Link: https://lore.kernel.org/all/20250414072737.1698513-1-gavinguo@igalia.com/
-Link: https://lore.kernel.org/all/20250418085802.2973519-1-gavinguo@igalia.com/
-Fixes: 84c3fc4e9c56 ("mm: thp: check pmd migration entry in common path")
-Signed-off-by: Gavin Guo <gavinguo@igalia.com>
-Acked-by: David Hildenbrand <david@redhat.com>
-Acked-by: Hugh Dickins <hughd@google.com>
-Acked-by: Zi Yan <ziy@nvidia.com>
-Reviewed-by: Gavin Shan <gshan@redhat.com>
-Cc: Florent Revest <revest@google.com>
-Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
-Cc: Miaohe Lin <linmiaohe@huawei.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-[gavin: backport the migration checking logic to __split_huge_pmd]
-Signed-off-by: Gavin Guo <gavinguo@igalia.com>
+Cc: stable@vger.kernel.org
+Fixes: 6246ed09111f ("LoongArch: Add ACPI-based generic laptop driver")
+Signed-off-by: Yao Zi <ziyao@disroot.org>
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/huge_memory.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/platform/loongarch/loongson-laptop.c |   73 +++++++++++++--------------
+ 1 file changed, 37 insertions(+), 36 deletions(-)
 
---- a/mm/huge_memory.c
-+++ b/mm/huge_memory.c
-@@ -2227,7 +2227,7 @@ void __split_huge_pmd(struct vm_area_str
- 	VM_BUG_ON(freeze && !page);
- 	if (page) {
- 		VM_WARN_ON_ONCE(!PageLocked(page));
--		if (page != pmd_page(*pmd))
-+		if (is_pmd_migration_entry(*pmd) || page != pmd_page(*pmd))
- 			goto out;
- 	}
+--- a/drivers/platform/loongarch/loongson-laptop.c
++++ b/drivers/platform/loongarch/loongson-laptop.c
+@@ -56,8 +56,7 @@ static struct input_dev *generic_inputde
+ static acpi_handle hotkey_handle;
+ static struct key_entry hotkey_keycode_map[GENERIC_HOTKEY_MAP_MAX];
  
+-int loongson_laptop_turn_on_backlight(void);
+-int loongson_laptop_turn_off_backlight(void);
++static bool bl_powered;
+ static int loongson_laptop_backlight_update(struct backlight_device *bd);
+ 
+ /* 2. ACPI Helpers and device model */
+@@ -354,16 +353,42 @@ static int ec_backlight_level(u8 level)
+ 	return level;
+ }
+ 
++static int ec_backlight_set_power(bool state)
++{
++	int status;
++	union acpi_object arg0 = { ACPI_TYPE_INTEGER };
++	struct acpi_object_list args = { 1, &arg0 };
++
++	arg0.integer.value = state;
++	status = acpi_evaluate_object(NULL, "\\BLSW", &args, NULL);
++	if (ACPI_FAILURE(status)) {
++		pr_info("Loongson lvds error: 0x%x\n", status);
++		return -EIO;
++	}
++
++	return 0;
++}
++
+ static int loongson_laptop_backlight_update(struct backlight_device *bd)
+ {
+-	int lvl = ec_backlight_level(bd->props.brightness);
++	bool target_powered = !backlight_is_blank(bd);
++	int ret = 0, lvl = ec_backlight_level(bd->props.brightness);
+ 
+ 	if (lvl < 0)
+ 		return -EIO;
++
+ 	if (ec_set_brightness(lvl))
+ 		return -EIO;
+ 
+-	return 0;
++	if (target_powered != bl_powered) {
++		ret = ec_backlight_set_power(target_powered);
++		if (ret < 0)
++			return ret;
++
++		bl_powered = target_powered;
++	}
++
++	return ret;
+ }
+ 
+ static int loongson_laptop_get_brightness(struct backlight_device *bd)
+@@ -384,7 +409,7 @@ static const struct backlight_ops backli
+ 
+ static int laptop_backlight_register(void)
+ {
+-	int status = 0;
++	int status = 0, ret;
+ 	struct backlight_properties props;
+ 
+ 	memset(&props, 0, sizeof(props));
+@@ -392,44 +417,20 @@ static int laptop_backlight_register(voi
+ 	if (!acpi_evalf(hotkey_handle, &status, "ECLL", "d"))
+ 		return -EIO;
+ 
++	ret = ec_backlight_set_power(true);
++	if (ret)
++		return ret;
++
++	bl_powered = true;
++
+ 	props.max_brightness = status;
+ 	props.brightness = ec_get_brightness();
++	props.power = FB_BLANK_UNBLANK;
+ 	props.type = BACKLIGHT_PLATFORM;
+ 
+ 	backlight_device_register("loongson_laptop",
+ 				NULL, NULL, &backlight_laptop_ops, &props);
+ 
+-	return 0;
+-}
+-
+-int loongson_laptop_turn_on_backlight(void)
+-{
+-	int status;
+-	union acpi_object arg0 = { ACPI_TYPE_INTEGER };
+-	struct acpi_object_list args = { 1, &arg0 };
+-
+-	arg0.integer.value = 1;
+-	status = acpi_evaluate_object(NULL, "\\BLSW", &args, NULL);
+-	if (ACPI_FAILURE(status)) {
+-		pr_info("Loongson lvds error: 0x%x\n", status);
+-		return -ENODEV;
+-	}
+-
+-	return 0;
+-}
+-
+-int loongson_laptop_turn_off_backlight(void)
+-{
+-	int status;
+-	union acpi_object arg0 = { ACPI_TYPE_INTEGER };
+-	struct acpi_object_list args = { 1, &arg0 };
+-
+-	arg0.integer.value = 0;
+-	status = acpi_evaluate_object(NULL, "\\BLSW", &args, NULL);
+-	if (ACPI_FAILURE(status)) {
+-		pr_info("Loongson lvds error: 0x%x\n", status);
+-		return -ENODEV;
+-	}
+ 
+ 	return 0;
+ }
 
 
 
