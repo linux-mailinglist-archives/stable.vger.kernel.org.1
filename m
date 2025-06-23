@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-157351-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157057-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 10FE9AE5398
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:54:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9479EAE5247
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:42:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1109D445B27
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:54:01 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B30314408B4
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:41:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13D16223DF0;
-	Mon, 23 Jun 2025 21:54:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9CCB42222C2;
+	Mon, 23 Jun 2025 21:42:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TAV6Kzgo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Th01mgP9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C56CC19049B;
-	Mon, 23 Jun 2025 21:54:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B4234315A;
+	Mon, 23 Jun 2025 21:42:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750715655; cv=none; b=FzdbzY/O8Xs/qWRVzsGCYRSYtM0hS4E9UrP449mbfxv4w8coqucAeuSbT6w95vdjwgP62H0UmRBmRzYSnzeWBuFW5TY1rNXFUEgm6E2LSC/mS+U7zFFvMQwAZqsxkiH6ltn7PzrATGavqrByzZ8Sg6ypoE3FZxyXy5ldLRIoEko=
+	t=1750714929; cv=none; b=NrcXxOZ4Ipk4R26jMIPXwekbUN0+/MbVOV1SlokK8xnlXSNDHPvn8dVeZFg7luHIkt5rgsFTc2SzM4sMThUfL9Q/Bazg7UgmPB1J2wNz9IKZV/Ys4cBeQ6Bp60Ziu90iQe/WB9acKTplqYgMajs84VYcc1lc4joWdisfEbJLo3s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750715655; c=relaxed/simple;
-	bh=cEtcxhBs7tFKjQ/WLBbKtx1BRpFo2LKGuYRmtwmNkZ4=;
+	s=arc-20240116; t=1750714929; c=relaxed/simple;
+	bh=PLwdwgWSE4ctemOaWl9CO3KzkLbNOB9DA4fgl/ialWM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=X9AcYKsJ6KOZfj9zNytbDI/A2gFrO95BXRd63b2jMP6k6F/HCbtDDp/uCbVxWv2hba1twKoco/HE6dUSDd/jFKRWWtu/H5WQMP6c2HjmILh4P7uVZl/w02LvEECF/yYW4ESkeyW4/bpaYFKicnavbl+qf2DkdaeiYjHWpXXhQTs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TAV6Kzgo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F37FC4CEEA;
-	Mon, 23 Jun 2025 21:54:15 +0000 (UTC)
+	 MIME-Version; b=hFeHSFyU3d2bM/tn3yShSsNnkr1oN4otQ+GbYXuSlzfN8/jw6gdsGn+zwaUNLJEa+9rV+pc1GGcJyVSn/tCM6YSmCHctB0qmPMcwDhOBWGX06uwMCoRScHrLn2S94u8fC8YA6dsqWoQyc1Pc+G5oRqd2hcUYDxkRSzs8+3ksGEg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Th01mgP9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9BF3FC4CEEA;
+	Mon, 23 Jun 2025 21:42:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750715655;
-	bh=cEtcxhBs7tFKjQ/WLBbKtx1BRpFo2LKGuYRmtwmNkZ4=;
+	s=korg; t=1750714928;
+	bh=PLwdwgWSE4ctemOaWl9CO3KzkLbNOB9DA4fgl/ialWM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TAV6KzgonCchvdRyneuRRieMZT9kmS8u+KYPzKwxkn9SdqILyA47ft/aPQGnVc0ir
-	 t5DqwG/5OGLKM5FQS0yqC5kn4A7zDg8y54Zg4fKZkv6XPOtAj3k+shBN7zlfP4gVVQ
-	 9MpBsPyena3wkYP4L8nyxvePQ1sRM9CE54TC9KXk=
+	b=Th01mgP93qhH0IeDsSo55MKuRD5v2LFQpAPURldLhzjBz0A03yqLhFxXXstsZxs8n
+	 9NJ72+1IxraDxKKSNocmx7HbaBfVzZ50gmPPAByBwHFwyZjaVfBcQjA0cgIZ3HdYTd
+	 iiaz81kQcGGDGdAXq0EsCT1WZNcujJgNL8U+gixg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Mike Rapoport (Microsoft)" <rppt@kernel.org>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>
-Subject: [PATCH 6.15 472/592] x86/Kconfig: only enable ROX cache in execmem when STRICT_MODULE_RWX is set
+	Sean Christopherson <seanjc@google.com>,
+	Joerg Roedel <jroedel@suse.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 169/290] iommu/amd: Ensure GA log notifier callbacks finish running before module unload
 Date: Mon, 23 Jun 2025 15:07:10 +0200
-Message-ID: <20250623130711.660583732@linuxfoundation.org>
+Message-ID: <20250623130631.974962608@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
-References: <20250623130700.210182694@linuxfoundation.org>
+In-Reply-To: <20250623130626.910356556@linuxfoundation.org>
+References: <20250623130626.910356556@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,43 +62,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mike Rapoport (Microsoft) <rppt@kernel.org>
+From: Sean Christopherson <seanjc@google.com>
 
-commit 47410d839fcda6890cb82828f874f97710982f24 upstream.
+[ Upstream commit 94c721ea03c7078163f41dbaa101ac721ddac329 ]
 
-Currently ROX cache in execmem is enabled regardless of
-STRICT_MODULE_RWX setting. This breaks an assumption that module memory
-is writable when STRICT_MODULE_RWX is disabled, for instance for kernel
-debuggin.
+Synchronize RCU when unregistering KVM's GA log notifier to ensure all
+in-flight interrupt handlers complete before KVM-the module is unloaded.
 
-Only enable ROX cache in execmem when STRICT_MODULE_RWX is set to
-restore the original behaviour of module text permissions.
-
-Fixes: 64f6a4e10c05 ("x86: re-enable EXECMEM_ROX support")
-Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Cc: stable@vger.kernel.org
-Link: https://lkml.kernel.org/r/20250603111446.2609381-3-rppt@kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+Link: https://lore.kernel.org/r/20250315031048.2374109-1-seanjc@google.com
+Signed-off-by: Joerg Roedel <jroedel@suse.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/Kconfig |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/iommu/amd/iommu.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
---- a/arch/x86/Kconfig
-+++ b/arch/x86/Kconfig
-@@ -88,7 +88,7 @@ config X86
- 	select ARCH_HAS_DMA_OPS			if GART_IOMMU || XEN
- 	select ARCH_HAS_EARLY_DEBUG		if KGDB
- 	select ARCH_HAS_ELF_RANDOMIZE
--	select ARCH_HAS_EXECMEM_ROX		if X86_64
-+	select ARCH_HAS_EXECMEM_ROX		if X86_64 && STRICT_MODULE_RWX
- 	select ARCH_HAS_FAST_MULTIPLIER
- 	select ARCH_HAS_FORTIFY_SOURCE
- 	select ARCH_HAS_GCOV_PROFILE_ALL
+diff --git a/drivers/iommu/amd/iommu.c b/drivers/iommu/amd/iommu.c
+index 83c5d786686d0..a5d6d786dba52 100644
+--- a/drivers/iommu/amd/iommu.c
++++ b/drivers/iommu/amd/iommu.c
+@@ -780,6 +780,14 @@ int amd_iommu_register_ga_log_notifier(int (*notifier)(u32))
+ {
+ 	iommu_ga_log_notifier = notifier;
+ 
++	/*
++	 * Ensure all in-flight IRQ handlers run to completion before returning
++	 * to the caller, e.g. to ensure module code isn't unloaded while it's
++	 * being executed in the IRQ handler.
++	 */
++	if (!notifier)
++		synchronize_rcu();
++
+ 	return 0;
+ }
+ EXPORT_SYMBOL(amd_iommu_register_ga_log_notifier);
+-- 
+2.39.5
+
 
 
 
