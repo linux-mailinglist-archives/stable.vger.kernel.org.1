@@ -1,51 +1,52 @@
-Return-Path: <stable+bounces-155546-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-155548-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id F184DAE429F
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:23:20 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id EF213AE4290
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:22:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 40316178220
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:19:17 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 633A71895293
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:19:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B095255E27;
-	Mon, 23 Jun 2025 13:18:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24D5C25392C;
+	Mon, 23 Jun 2025 13:18:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HE+gdaew"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ts7Pi9TP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCDC925524C;
-	Mon, 23 Jun 2025 13:18:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D74F0253359;
+	Mon, 23 Jun 2025 13:18:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750684707; cv=none; b=Y+m5EloCC+NFq/3qSj704BpqxNHGQbv/Moq6tuRqpUazkkYMBer68O6LeKXAlRZG2fcGvAsW02nEte7JS4dQw9T1KlYbUedFg6XdCm3qpw3UkiEDmHNo6j1qlV+kpgZb9WqP2ubeWhyHRqXPUk2R4tgqbz0rUrRV67/jzGpznWU=
+	t=1750684712; cv=none; b=dE0s6eTW8nIxdo45gZuQsHWleQe7931wfjXtwBdOKRp13hkiJEgrsJrUMJ5iv1gDctM0cDQhpJknvkogrrcG5luDloTddoFRQmkaUYl3A7Z6zqbLBe01my9AEKgTrKzNQ315SkAB5rfzExPYOeBvens0iypn6jEDCVLMj++c6+M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750684707; c=relaxed/simple;
-	bh=Ck/Ki3tBURTxrCjMyiPnPWitDU079iGT0B3QWAxr90M=;
+	s=arc-20240116; t=1750684712; c=relaxed/simple;
+	bh=z816RUjwpWza+i4tMAkBFlQZv2ZBMigTUTjrlEyIhH4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Y+FhNEsLSUw873e1Xzozm7fYyd7wCYUkIvZegItBAMyIEtcIdo95uFD7UfgPspMiLZd/giYF20AGKr6CQkdGnq7gFFvwKGIVcrxE+54C7N1ojeT7CdV2dx03EeM24uGcygubmV/MVDrNiFY+xlpTkwr8NdFQyA2eD/+Y3TPPJ0U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HE+gdaew; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51708C4CEFB;
-	Mon, 23 Jun 2025 13:18:27 +0000 (UTC)
+	 MIME-Version; b=T09LG8lMkzlCxvR4C47Sd+/gUyTz/shWF/oCpBMwBT2VOvenDiDaD4E0T7NQQYjrokEBAdyrw2ZYH/BAQdvQjJhG5EI4Pfp8cLzBI3lGK+dksZNEfrpGsd4RpSTRkRGityyVYHPqaVWE42eXoZM5X24PYpzI6RUQ2htDtXWInZU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ts7Pi9TP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6CE8BC4CEEA;
+	Mon, 23 Jun 2025 13:18:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750684707;
-	bh=Ck/Ki3tBURTxrCjMyiPnPWitDU079iGT0B3QWAxr90M=;
+	s=korg; t=1750684712;
+	bh=z816RUjwpWza+i4tMAkBFlQZv2ZBMigTUTjrlEyIhH4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HE+gdaewKoqI+AiwgsOrao/LLh+gB4ZA7WR78408GeXWbpJNcV1az8Vr8aah8sUsf
-	 TKEJXYJl8V3Byz6C5VJ6ivKRq8vv1fX/DzxPgWTBjk22cq9RT6PkBItIq++MtwtG0y
-	 VBMSbwteiisrGMb5AgRLJFMYPDe0rOzMo6F/w96g=
+	b=ts7Pi9TP9yUf76tvwtBtKPJ4KK/R7L3HV5qKSvBPywSuf5y73gcSAMYuL7dJg8mzX
+	 DpMboXBtGTwThLAxBgraszRh4RxfuCp+ZludfPs+p331nh0GZi9ep2DL6WsvoOZXSm
+	 UowKyiUi6zMWH+aKCMnRUYCeJLPaFcmRCHCzix4Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
+	John Garry <john.g.garry@oracle.com>,
 	Mikulas Patocka <mpatocka@redhat.com>
-Subject: [PATCH 6.15 157/592] dm: lock limits when reading them
-Date: Mon, 23 Jun 2025 15:01:55 +0200
-Message-ID: <20250623130704.013263510@linuxfoundation.org>
+Subject: [PATCH 6.15 158/592] dm-table: Set BLK_FEAT_ATOMIC_WRITES for target queue limits
+Date: Mon, 23 Jun 2025 15:01:56 +0200
+Message-ID: <20250623130704.036613877@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
 In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
 References: <20250623130700.210182694@linuxfoundation.org>
@@ -64,52 +65,51 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Mikulas Patocka <mpatocka@redhat.com>
+From: John Garry <john.g.garry@oracle.com>
 
-commit abb4cf2f4c1c1b637cad04d726f2e13fd3051e03 upstream.
+commit b7c18b17a173087ce97e809cefd55e581121f19e upstream.
 
-Lock queue limits when reading them, so that we don't read halfway
-modified values.
+Feature flag BLK_FEAT_ATOMIC_WRITES is not being properly set for the
+target queue limits, and this means that atomic writes are not being
+enabled for any dm personalities.
 
+When calling dm_set_device_limits() -> blk_stack_limits() ->
+... -> blk_stack_atomic_writes_limits(), the bottom device limits
+(which corresponds to intermediate target queue limits) does not have
+BLK_FEAT_ATOMIC_WRITES set, and so atomic writes can never be enabled.
+
+Typically such a flag would be inherited from the stacked device in
+dm_set_device_limits() -> blk_stack_limits() via BLK_FEAT_INHERIT_MASK,
+but BLK_FEAT_ATOMIC_WRITES is not inherited as it's preferred to manually
+enable on a per-personality basis.
+
+Set BLK_FEAT_ATOMIC_WRITES manually for the intermediate target queue
+limits from the stacked device to get atomic writes working.
+
+Fixes: 3194e36488e2 ("dm-table: atomic writes support")
+Cc: stable@vger.kernel.org	# v6.14
+Signed-off-by: John Garry <john.g.garry@oracle.com>
 Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
-Cc: stable@vger.kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/md/dm-table.c |    8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ drivers/md/dm-table.c |    6 ++++++
+ 1 file changed, 6 insertions(+)
 
 --- a/drivers/md/dm-table.c
 +++ b/drivers/md/dm-table.c
-@@ -431,6 +431,7 @@ static int dm_set_device_limits(struct d
+@@ -431,6 +431,12 @@ static int dm_set_device_limits(struct d
  		return 0;
  	}
  
-+	mutex_lock(&q->limits_lock);
++	/*
++	 * BLK_FEAT_ATOMIC_WRITES is not inherited from the bottom device in
++	 * blk_stack_limits(), so do it manually.
++	 */
++	limits->features |= (q->limits.features & BLK_FEAT_ATOMIC_WRITES);
++
+ 	mutex_lock(&q->limits_lock);
  	if (blk_stack_limits(limits, &q->limits,
  			get_start_sect(bdev) + start) < 0)
- 		DMWARN("%s: adding target device %pg caused an alignment inconsistency: "
-@@ -448,6 +449,7 @@ static int dm_set_device_limits(struct d
- 	 */
- 	if (!dm_target_has_integrity(ti->type))
- 		queue_limits_stack_integrity_bdev(limits, bdev);
-+	mutex_unlock(&q->limits_lock);
- 	return 0;
- }
- 
-@@ -1733,8 +1735,12 @@ static int device_not_write_zeroes_capab
- 					   sector_t start, sector_t len, void *data)
- {
- 	struct request_queue *q = bdev_get_queue(dev->bdev);
-+	int b;
- 
--	return !q->limits.max_write_zeroes_sectors;
-+	mutex_lock(&q->limits_lock);
-+	b = !q->limits.max_write_zeroes_sectors;
-+	mutex_unlock(&q->limits_lock);
-+	return b;
- }
- 
- static bool dm_table_supports_write_zeroes(struct dm_table *t)
 
 
 
