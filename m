@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-157550-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157420-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2F7BCAE5490
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:02:44 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1E2C9AE53E9
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:57:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2AB424435EF
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:01:59 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5DC611B677C7
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:57:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7190D1D86DC;
-	Mon, 23 Jun 2025 22:02:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 787842222CC;
+	Mon, 23 Jun 2025 21:57:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="phSBlawa"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EVNEPwP4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E7E14C74;
-	Mon, 23 Jun 2025 22:02:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 341DC3FB1B;
+	Mon, 23 Jun 2025 21:57:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750716142; cv=none; b=I8LbFqQSNhXpY24WNLaBA5U/0igvDVDfyVqCmbPcMjTq7bm75iH3e0LcJFADlXvlhuAgoFzYjV4KwRZ3zxHAjokvHDofIYNHQeK7OVJDAAJt/krHIp/sN8Yo8Qb+tz6F9NAGS2jRCNiOyrls2Rkn47gcYTt738W8Jhmd86NdCUc=
+	t=1750715822; cv=none; b=fBDSRwdvhyZomkSHJ/qPXCS5bixp1WLeII2GrO1iOwTWDi7IZ1NohTrOk1sP+XvdX54UU7NiCoX0OA3OknIUNsMwHH9ysCQOxNq1vaT9XlhyCQybkhbi9M4gZ4Nlqie7ZEY7j5zZUyf6+fS/mchTcRBE0LRSz3my1Vby/5yiRrE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750716142; c=relaxed/simple;
-	bh=B/aryXcazLkJPs1wVrJSDu92846uFPVDx2UK32mp69Y=;
+	s=arc-20240116; t=1750715822; c=relaxed/simple;
+	bh=P3OZNLzTzYud0PwJzMVaHz9TwTkLevChHw5qntH3iag=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GeG7BflZBOx2/PfCmyIGx3T97w4Lc2BlbT9gLuxa6nNkxYAkPYsXN8F6YIMeABIxc4XTrDJOSo2OPkjp2EyC2+K1yHKqbpXd72qK6sjs0bP7rkFihgiA7OiyznonyNSyvzSmy+gffW1iBd3KqGVgnZffMbMmPt57LS7X2oOY4Tw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=phSBlawa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9998C4CEEA;
-	Mon, 23 Jun 2025 22:02:21 +0000 (UTC)
+	 MIME-Version; b=JfsAdHpie1Jr0XTTCt5fMyDVWfPb+70gvaeH6BPvEtiNCntm6KdwbUDrKMuawJwp+0gnbBAa4O0gMxZjN0c+tAUyWBdW9wpxiYzUBiPguNHOyMJjInsfc/s2qS9cT7q/Rn+7jKHzT/PycQDn31CPSNy4CWzyNZ4gRPu0o3ySiiA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EVNEPwP4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD769C4CEEA;
+	Mon, 23 Jun 2025 21:57:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750716142;
-	bh=B/aryXcazLkJPs1wVrJSDu92846uFPVDx2UK32mp69Y=;
+	s=korg; t=1750715822;
+	bh=P3OZNLzTzYud0PwJzMVaHz9TwTkLevChHw5qntH3iag=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=phSBlawaz4tKNisk9n/uthB2jlu6h3WD4azXzWmRPhMvR9UK9tpN7GWtihfTrIee3
-	 I5XHFbbhPdMgB7PPL/dd9abqJ/YNRzERYOwkNzf9yl2mQNY70mzhRcL1rGzEol9bOV
-	 nQO8SOa4VfpvNLoWTOfZIHEqomg+gdAWJZcRqpXQ=
+	b=EVNEPwP4seArO0Ki3v6PW9LJVxUtnAhp2GUb+kkcdFrf1FklMhIxCnCnE9ddsgKM5
+	 Ed+cByYr0pkadj64/P5yutDHKnBGWoggMU6TVAuPJN66iD0bJm+lSVyVRIOqjOtOe0
+	 YM5sB2BT8Er5tvI1agVTT6dmbOTAJt6BvqTzSEd8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sergio Perez Gonzalez <sperezglz@gmail.com>,
-	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
+	Zilin Guan <zilin@seu.edu.cn>,
+	Tung Nguyen <tung.quang.nguyen@est.tech>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 305/411] net: macb: Check return value of dma_set_mask_and_coherent()
-Date: Mon, 23 Jun 2025 15:07:29 +0200
-Message-ID: <20250623130641.323411310@linuxfoundation.org>
+Subject: [PATCH 5.15 306/411] tipc: use kfree_sensitive() for aead cleanup
+Date: Mon, 23 Jun 2025 15:07:30 +0200
+Message-ID: <20250623130641.348001400@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
 In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
 References: <20250623130632.993849527@linuxfoundation.org>
@@ -67,40 +67,43 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Sergio Perez Gonzalez <sperezglz@gmail.com>
+From: Zilin Guan <zilin@seu.edu.cn>
 
-[ Upstream commit 3920a758800762917177a6b5ab39707d8e376fe6 ]
+[ Upstream commit c8ef20fe7274c5766a317f9193b70bed717b6b3d ]
 
-Issue flagged by coverity. Add a safety check for the return value
-of dma_set_mask_and_coherent, go to a safe exit if it returns error.
+The tipc_aead_free() function currently uses kfree() to release the aead
+structure. However, this structure contains sensitive information, such
+as key's SALT value, which should be securely erased from memory to
+prevent potential leakage.
 
-Link: https://scan7.scan.coverity.com/#/project-view/53936/11354?selectedIssue=1643754
-Signed-off-by: Sergio Perez Gonzalez <sperezglz@gmail.com>
-Reviewed-by: Claudiu Beznea <claudiu.beznea@tuxon.dev>
-Link: https://patch.msgid.link/20250526032034.84900-1-sperezglz@gmail.com
+To enhance security, replace kfree() with kfree_sensitive() when freeing
+the aead structure. This change ensures that sensitive data is explicitly
+cleared before memory deallocation, aligning with the approach used in
+tipc_aead_init() and adhering to best practices for handling confidential
+information.
+
+Signed-off-by: Zilin Guan <zilin@seu.edu.cn>
+Reviewed-by: Tung Nguyen <tung.quang.nguyen@est.tech>
+Link: https://patch.msgid.link/20250523114717.4021518-1-zilin@seu.edu.cn
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/cadence/macb_main.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ net/tipc/crypto.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/cadence/macb_main.c b/drivers/net/ethernet/cadence/macb_main.c
-index 667af80a739b9..2266a3ecc5533 100644
---- a/drivers/net/ethernet/cadence/macb_main.c
-+++ b/drivers/net/ethernet/cadence/macb_main.c
-@@ -4809,7 +4809,11 @@ static int macb_probe(struct platform_device *pdev)
- 
- #ifdef CONFIG_ARCH_DMA_ADDR_T_64BIT
- 	if (GEM_BFEXT(DAW64, gem_readl(bp, DCFG6))) {
--		dma_set_mask_and_coherent(&pdev->dev, DMA_BIT_MASK(44));
-+		err = dma_set_mask_and_coherent(&pdev->dev, DMA_BIT_MASK(44));
-+		if (err) {
-+			dev_err(&pdev->dev, "failed to set DMA mask\n");
-+			goto err_out_free_netdev;
-+		}
- 		bp->hw_dma_cap |= HW_DMA_CAP_64B;
+diff --git a/net/tipc/crypto.c b/net/tipc/crypto.c
+index 07f35c48bd3a2..b525e6483881a 100644
+--- a/net/tipc/crypto.c
++++ b/net/tipc/crypto.c
+@@ -425,7 +425,7 @@ static void tipc_aead_free(struct rcu_head *rp)
  	}
- #endif
+ 	free_percpu(aead->tfm_entry);
+ 	kfree_sensitive(aead->key);
+-	kfree(aead);
++	kfree_sensitive(aead);
+ }
+ 
+ static int tipc_aead_users(struct tipc_aead __rcu *aead)
 -- 
 2.39.5
 
