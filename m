@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-157899-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-158093-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B3C0AE5620
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:17:43 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 92DE0AE56EB
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:24:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DA5691BC6E7D
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:16:49 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8285F1C23329
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:24:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A905222576;
-	Mon, 23 Jun 2025 22:16:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1B70222581;
+	Mon, 23 Jun 2025 22:24:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CGsr0S0D"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yaZCSndL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00D86B676;
-	Mon, 23 Jun 2025 22:16:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EA3C2192EC;
+	Mon, 23 Jun 2025 22:24:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750716992; cv=none; b=UZ44YkcAtX26YDS1FDgua6tKkFbRNXElfa1f7BrTDqhgQz8lk6Je2Lhq4iUF2QjIF5j/9ZkOYZ8xFFZrTdq2eWT+Unq0CeJFzNMdaD/2HrsOq0ys9A1gUR8dJuKQ73/EF6WdfKOiJ6XZ7QsmoCPsdmhFVAr4Wz2JVv+0T2+lv58=
+	t=1750717465; cv=none; b=C6S4Pa16FPm+wMLuKYct/JbxGH92NRzgWwi8plq8Xirw4r0JdL5HH5SzZQeDFFio8HWJcDbD7pv8Hgj86Ctc+DEIk+HNRE2+xGDzsHFSlnN+cYspPQQiRHQh0GMTw6EoZU9KZIziXejOqYa4qmhyBW/FPFZEYOOmz7l9b/YhCTQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750716992; c=relaxed/simple;
-	bh=u3qQEd0eBFSaW68KXhzXh9jj04ZnHwnm4o34oZF0Gko=;
+	s=arc-20240116; t=1750717465; c=relaxed/simple;
+	bh=2RZr4mdnD2x7eRsQjz9Vb0OjynUPiyyVYnIxk/oEkJQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=GbfYbwiVovFO6NvAqenXXj0IiQmAhQPk18EdRonnYdDHB2RnvJ/deY95WwVJyBjmZxsEwO+ekubia3WwpzDATO14cccD3MUoi21DtBWJx7fqdr4TTqiITtp2QyjxedEezSizozsxk8uGpEDixZGnxTHrFF2QJcuYlz4QIjcnDF0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CGsr0S0D; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8578DC4CEEA;
-	Mon, 23 Jun 2025 22:16:31 +0000 (UTC)
+	 MIME-Version; b=gALgC0LWPh/7X9INySNcM+Z27IQN+fQIrWBlBWwGF7Nb+poYPiH8C6Nf1i3rDSM/qaUb7Z8BtpKfZNAyxF5YI4vkGcWOOLaXUXQHpqY0W5fhpCfUBxN38byCmKL8Y28fQDuZNRcDjH5M4dW9N71OWYEx5kLfSJDDlenYmKvqDRw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yaZCSndL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EBBB5C4CEEA;
+	Mon, 23 Jun 2025 22:24:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750716991;
-	bh=u3qQEd0eBFSaW68KXhzXh9jj04ZnHwnm4o34oZF0Gko=;
+	s=korg; t=1750717465;
+	bh=2RZr4mdnD2x7eRsQjz9Vb0OjynUPiyyVYnIxk/oEkJQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CGsr0S0Dnq0SWf1gQOGaEDnwpzARPK8eHZZGE6m5iNHBOa5IuqkkNQtFqGYlb3xk5
-	 ImYhSAhr3K2/0BRv1Rc3DcjiqNTcWi9VPVOSCoNQWi1EqWcTnRGTLeD2ZiPaCNzyPo
-	 LG0yKoCAUiT7qRQo2A/hFORrOs+F3aEic6WUmmAg=
+	b=yaZCSndLei1lJDwqxuMCAK8flGqorrfcthKwafet29y+ZePNqS+3lojdXoM8vvl0z
+	 rckoz4SSh6IGTIqEEQFIOcePAYIFZDxKazKJOI0XpuPhOSGSc7oISa9bomSjsqJ8cB
+	 qXEPaSj0Nit9MGUNe+I8rOXyhWZxcImUPCXI+pdA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Roger Quadros <rogerq@kernel.org>,
-	Kevin Hilman <khilman@baylibre.com>,
-	"Nobuhiro Iwamatsu (CIP)" <nobuhiro1.iwamatsu@toshiba.co.jp>
-Subject: [PATCH 5.15 385/411] ARM: dts: am335x-bone-common: Increase MDIO reset deassert delay to 50ms
+	David Thompson <davthompson@nvidia.com>,
+	Asmaa Mnebhi <asmaa@nvidia.com>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 392/414] mlxbf_gige: return EPROBE_DEFER if PHY IRQ is not available
 Date: Mon, 23 Jun 2025 15:08:49 +0200
-Message-ID: <20250623130643.345217437@linuxfoundation.org>
+Message-ID: <20250623130651.742126096@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
-References: <20250623130632.993849527@linuxfoundation.org>
+In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
+References: <20250623130642.015559452@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,52 +62,54 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Geert Uytterhoeven <geert+renesas@glider.be>
+From: David Thompson <davthompson@nvidia.com>
 
-commit 929d8490f8790164f5f63671c1c58d6c50411cb2 upstream.
+[ Upstream commit e7ea5f5b1858ddb96b152584d5fe06e6fc623e89 ]
 
-Commit b9bf5612610aa7e3 ("ARM: dts: am335x-bone-common: Increase MDIO
-reset deassert time") already increased the MDIO reset deassert delay
-from 6.5 to 13 ms, but this may still cause Ethernet PHY probe failures:
+The message "Error getting PHY irq. Use polling instead"
+is emitted when the mlxbf_gige driver is loaded by the
+kernel before the associated gpio-mlxbf driver, and thus
+the call to get the PHY IRQ fails since it is not yet
+available. The driver probe() must return -EPROBE_DEFER
+if acpi_dev_gpio_irq_get_by() returns the same.
 
-    SMSC LAN8710/LAN8720 4a101000.mdio:00: probe with driver SMSC LAN8710/LAN8720 failed with error -5
-
-On BeagleBone Black Rev. C3, ETH_RESETn is controlled by an open-drain
-AND gate.  It is pulled high by a 10K resistor, and has a 4.7µF
-capacitor to ground, giving an RC time constant of 47ms.  As it takes
-0.7RC to charge the capacitor above the threshold voltage of a CMOS
-input (VDD/2), the delay should be at least 33ms.  Considering the
-typical tolerance of 20% on capacitors, 40ms would be safer.  Add an
-additional safety margin and settle for 50ms.
-
-Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Reviewed-by: Roger Quadros <rogerq@kernel.org>
-Link: https://lore.kernel.org/r/9002a58daa1b2983f39815b748ee9d2f8dcc4829.1730366936.git.geert+renesas@glider.be
-Signed-off-by: Kevin Hilman <khilman@baylibre.com>
-Signed-off-by: Nobuhiro Iwamatsu (CIP) <nobuhiro1.iwamatsu@toshiba.co.jp>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 6c2a6ddca763 ("net: mellanox: mlxbf_gige: Replace non-standard interrupt handling")
+Signed-off-by: David Thompson <davthompson@nvidia.com>
+Reviewed-by: Asmaa Mnebhi <asmaa@nvidia.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20250618135902.346-1-davthompson@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/boot/dts/am335x-bone-common.dtsi |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/mellanox/mlxbf_gige/mlxbf_gige_main.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
---- a/arch/arm/boot/dts/am335x-bone-common.dtsi
-+++ b/arch/arm/boot/dts/am335x-bone-common.dtsi
-@@ -384,7 +384,7 @@
- 		/* Support GPIO reset on revision C3 boards */
- 		reset-gpios = <&gpio1 8 GPIO_ACTIVE_LOW>;
- 		reset-assert-us = <300>;
--		reset-deassert-us = <13000>;
-+		reset-deassert-us = <50000>;
- 	};
- };
+diff --git a/drivers/net/ethernet/mellanox/mlxbf_gige/mlxbf_gige_main.c b/drivers/net/ethernet/mellanox/mlxbf_gige/mlxbf_gige_main.c
+index 385a56ac73481..c82254a8ae661 100644
+--- a/drivers/net/ethernet/mellanox/mlxbf_gige/mlxbf_gige_main.c
++++ b/drivers/net/ethernet/mellanox/mlxbf_gige/mlxbf_gige_main.c
+@@ -447,8 +447,10 @@ static int mlxbf_gige_probe(struct platform_device *pdev)
+ 	priv->llu_plu_irq = platform_get_irq(pdev, MLXBF_GIGE_LLU_PLU_INTR_IDX);
  
+ 	phy_irq = acpi_dev_gpio_irq_get_by(ACPI_COMPANION(&pdev->dev), "phy", 0);
+-	if (phy_irq < 0) {
+-		dev_err(&pdev->dev, "Error getting PHY irq. Use polling instead");
++	if (phy_irq == -EPROBE_DEFER) {
++		err = -EPROBE_DEFER;
++		goto out;
++	} else if (phy_irq < 0) {
+ 		phy_irq = PHY_POLL;
+ 	}
+ 
+-- 
+2.39.5
+
 
 
 
