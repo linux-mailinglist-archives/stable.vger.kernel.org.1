@@ -1,53 +1,52 @@
-Return-Path: <stable+bounces-155889-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-155894-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1EFBEAE43FF
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:38:30 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 00CCFAE44A4
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:44:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 40D017AA843
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:32:48 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7382D443317
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:33:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 622AA347DD;
-	Mon, 23 Jun 2025 13:33:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A36E224DCFD;
+	Mon, 23 Jun 2025 13:33:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Xgr6gDl2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rAnjoXiC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18182253B47;
-	Mon, 23 Jun 2025 13:33:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61F1E4C7F;
+	Mon, 23 Jun 2025 13:33:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750685598; cv=none; b=grNYeIsG6UHhNwcNHxAuEdJpp+D0xYU/Nwi4zcpDSwBIPUe5EunRt7aiU4rTuRjcV6rnn5+kKHOe239PKke41YjA8sKzbKaJ3gR87TfREQ7RtRKyA1rnYA1UfHmeeHoI4LgRb0oFviyre52wP3bNN/1/uuza+NyWIYHj2DrsO3I=
+	t=1750685612; cv=none; b=Jpez6runNrNkKKQkJ/PdjOmHqM0LuAND3FAFuUecP/EEgSBFC7UOaas7CXKtR3OG/XCNoV/gmeISiReQYU1fj9DIEsrXNGyYRXAVkKbS4qPlGRk74sJ2HHWf299yeuFg18mJl8B8qqP+eF3ULnBlIjUYbtWn3wsRHpn38JbySPc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750685598; c=relaxed/simple;
-	bh=uiXO6OpOQugTGSskBgq8zgzvhUTkjRr4o4omFCz9bpc=;
+	s=arc-20240116; t=1750685612; c=relaxed/simple;
+	bh=s+1Adq8DJmoG78cDwj9aPBfaoqP0OkUBvCPHPdh2XmM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=us8W+6l4fEHIslT4v17urBv28QwmHGNY0/t8GSiY+tmsGhvGseAxq6yUPpWTM7MiLtbVlITP4j6vRm1XEUPWqj15qN2tZRNZNBf8udH5ulqzqFZp/H2OlRgdij8mk/h270sOOy5iSmEVdq3/D0AVk+6s3dFs+ZaAOZGFwPVKDJo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Xgr6gDl2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A08D2C4CEEA;
-	Mon, 23 Jun 2025 13:33:17 +0000 (UTC)
+	 MIME-Version; b=ojtrRPcTapgLXszi2SmPDkXwTEdTxXj/rZYGytPxAsNk6vRuqgb3rgSe+xlnwp6gRtJc+ELteZ2SJ611nl2JkOwXg1VlKh8Jyv3A/PgRFo76v8y6Coepr5SU51cSvJID6gCi1C7mmSkwlMgtG45NQosT0B/PAYFp/5TV5InB5Ik=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rAnjoXiC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1C02C4CEEA;
+	Mon, 23 Jun 2025 13:33:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750685598;
-	bh=uiXO6OpOQugTGSskBgq8zgzvhUTkjRr4o4omFCz9bpc=;
+	s=korg; t=1750685611;
+	bh=s+1Adq8DJmoG78cDwj9aPBfaoqP0OkUBvCPHPdh2XmM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Xgr6gDl2jLhJqDodINJ50qzPCrevy9CwtyNQ9nIoVELNSO8mO9sbe6ZGgs7v6I4HU
-	 dywyVbmWmKS0HlHU5FH2hrHzfiqv/Rss9Z/TkY7LiPWIULotF7a04xEYAuFefDy/+R
-	 hRvPiTxBixCfNVGiGEiDtlYFWRuUnVN3q6+FrA8g=
+	b=rAnjoXiCj3GWqb9is8siCswD0ow0V1SIqJESQSTZ6MtzVbI+9JcUY+oflRGn5JeeI
+	 3gUhROhDmkVVUvXHtDyDSL0VoSEos3X4Xgb7Vi/J8NfsvL8vRHeDzIyW3Z1lex/3Ti
+	 wIe5Lo13FZN5QceXiFv/4fKKv6FtcHeiW4PGNhzw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Liangliang Zou <rawdiamondmc@outlook.com>,
-	Mingcong Bai <jeffbai@aosc.io>,
-	Ping-Ke Shih <pkshih@realtek.com>
-Subject: [PATCH 5.4 106/222] wifi: rtlwifi: disable ASPM for RTL8723BE with subsystem ID 11ad:1723
-Date: Mon, 23 Jun 2025 15:07:21 +0200
-Message-ID: <20250623130615.300837247@linuxfoundation.org>
+	Wentao Liang <vulab@iscas.ac.cn>,
+	Hans Verkuil <hverkuil@xs4all.nl>
+Subject: [PATCH 5.4 107/222] media: gspca: Add error handling for stv06xx_read_sensor()
+Date: Mon, 23 Jun 2025 15:07:22 +0200
+Message-ID: <20250623130615.328478728@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
 In-Reply-To: <20250623130611.896514667@linuxfoundation.org>
 References: <20250623130611.896514667@linuxfoundation.org>
@@ -66,65 +65,42 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Mingcong Bai <jeffbai@aosc.io>
+From: Wentao Liang <vulab@iscas.ac.cn>
 
-commit 77a6407c6ab240527166fb19ee96e95f5be4d3cd upstream.
+commit 398a1b33f1479af35ca915c5efc9b00d6204f8fa upstream.
 
-RTL8723BE found on some ASUSTek laptops, such as F441U and X555UQ with
-subsystem ID 11ad:1723 are known to output large amounts of PCIe AER
-errors during and after boot up, causing heavy lags and at times lock-ups:
+In hdcs_init(), the return value of stv06xx_read_sensor() needs to be
+checked. A proper implementation can be found in vv6410_dump(). Add a
+check in loop condition and propergate error code to fix this issue.
 
-  pcieport 0000:00:1c.5: AER: Correctable error message received from 0000:00:1c.5
-  pcieport 0000:00:1c.5: PCIe Bus Error: severity=Correctable, type=Physical Layer, (Receiver ID)
-  pcieport 0000:00:1c.5:   device [8086:9d15] error status/mask=00000001/00002000
-  pcieport 0000:00:1c.5:    [ 0] RxErr
-
-Disable ASPM on this combo as a quirk.
-
-This patch is a revision of a previous patch (linked below) which
-attempted to disable ASPM for RTL8723BE on all Intel Skylake and Kaby Lake
-PCIe bridges. I take a more conservative approach as all known reports
-point to ASUSTek laptops of these two generations with this particular
-wireless card.
-
-Please note, however, before the rtl8723be finishes probing, the AER
-errors remained. After the module finishes probing, all AER errors would
-indeed be eliminated, along with heavy lags, poor network throughput,
-and/or occasional lock-ups.
-
-Cc: <stable@vger.kernel.org>
-Fixes: a619d1abe20c ("rtlwifi: rtl8723be: Add new driver")
-Reported-by: Liangliang Zou <rawdiamondmc@outlook.com>
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=218127
-Link: https://lore.kernel.org/lkml/05390e0b-27fd-4190-971e-e70a498c8221@lwfinger.net/T/
-Tested-by: Liangliang Zou <rawdiamondmc@outlook.com>
-Signed-off-by: Mingcong Bai <jeffbai@aosc.io>
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
-Link: https://patch.msgid.link/20250422061755.356535-1-jeffbai@aosc.io
+Fixes: 4c98834addfe ("V4L/DVB (10048): gspca - stv06xx: New subdriver.")
+Cc: stable@vger.kernel.org # v2.6+
+Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/realtek/rtlwifi/pci.c |   10 ++++++++++
- 1 file changed, 10 insertions(+)
+ drivers/media/usb/gspca/stv06xx/stv06xx_hdcs.c |    7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
---- a/drivers/net/wireless/realtek/rtlwifi/pci.c
-+++ b/drivers/net/wireless/realtek/rtlwifi/pci.c
-@@ -155,6 +155,16 @@ static void _rtl_pci_update_default_sett
- 	if (rtlpriv->rtlhal.hw_type == HARDWARE_TYPE_RTL8192SE &&
- 	    init_aspm == 0x43)
- 		ppsc->support_aspm = false;
-+
-+	/* RTL8723BE found on some ASUSTek laptops, such as F441U and
-+	 * X555UQ with subsystem ID 11ad:1723 are known to output large
-+	 * amounts of PCIe AER errors during and after boot up, causing
-+	 * heavy lags, poor network throughput, and occasional lock-ups.
-+	 */
-+	if (rtlpriv->rtlhal.hw_type == HARDWARE_TYPE_RTL8723BE &&
-+	    (rtlpci->pdev->subsystem_vendor == 0x11ad &&
-+	     rtlpci->pdev->subsystem_device == 0x1723))
-+		ppsc->support_aspm = false;
- }
+--- a/drivers/media/usb/gspca/stv06xx/stv06xx_hdcs.c
++++ b/drivers/media/usb/gspca/stv06xx/stv06xx_hdcs.c
+@@ -520,12 +520,13 @@ static int hdcs_init(struct sd *sd)
+ static int hdcs_dump(struct sd *sd)
+ {
+ 	u16 reg, val;
++	int err = 0;
  
- static bool _rtl_pci_platform_switch_device_pci_aspm(
+ 	pr_info("Dumping sensor registers:\n");
+ 
+-	for (reg = HDCS_IDENT; reg <= HDCS_ROWEXPH; reg++) {
+-		stv06xx_read_sensor(sd, reg, &val);
++	for (reg = HDCS_IDENT; reg <= HDCS_ROWEXPH && !err; reg++) {
++		err = stv06xx_read_sensor(sd, reg, &val);
+ 		pr_info("reg 0x%02x = 0x%02x\n", reg, val);
+ 	}
+-	return 0;
++	return (err < 0) ? err : 0;
+ }
 
 
 
