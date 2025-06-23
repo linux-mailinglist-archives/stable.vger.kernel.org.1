@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-155558-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-155560-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9CB2DAE42C4
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:25:18 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9048AAE42AD
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:24:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DD97917ACF4
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:20:32 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 55EE91899FD0
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:20:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22886257AD1;
-	Mon, 23 Jun 2025 13:18:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F307254844;
+	Mon, 23 Jun 2025 13:19:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UqYYiSGb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qsL4Ef/8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D59F3257AC1;
-	Mon, 23 Jun 2025 13:18:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D14ED253924;
+	Mon, 23 Jun 2025 13:19:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750684738; cv=none; b=M9WU1S09IagBIP7cpeIoCRzaBYyR9mFquvB5kYmPp9LixdLTYD2eIN4aT2l6mWm4vanQ3X+HiumKr68oto/Wqu/OfGxcsBcFkWKRmVino6jKJKyFv10KYUtpGY4iT6vDQY458TpdGKIAwT4gbuoNqQaZUPnONoGGsMJjJeKG4Xk=
+	t=1750684743; cv=none; b=M8vDI1faYFZvVT75BYZa8yiHALgNDnl+RB2fgjNaORPpW33KL4BC7SbPIlV3T1snIlNys+tbO87CSqjj+ChtKOxmuW/FfVBJSzvIATajpOJ/dSGiYoXxooGNY4Uvhhx0ohT9N07/jgTYScVGJaGRlD+ErjcWydJSejzC0Cy0rOM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750684738; c=relaxed/simple;
-	bh=bESmtmmf1HTBwAar1dss4wgQ8mr0KUiREIhYXqC5b/g=;
+	s=arc-20240116; t=1750684743; c=relaxed/simple;
+	bh=bbXdAdImmPT+Te8fye4PpdTBbR6TfFSjSznkhex9ySU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jd7hsGQ1ZM6bzs1FbSXhGCEBlv8lG7quZMWV+wvBW/KfQ/jQ8Ll//Ygv4/d+5J5ikJvZlUty/MNYfyrB+kMwu/FIDqlTZB7S8D9Jpu3lwtxm+ulUnxZxlc7XAG5RsLgP957TE8uhzpN4m9Pe2dVfH6qD2OJxFqvZwkrSadiJHIM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UqYYiSGb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11034C4CEF2;
-	Mon, 23 Jun 2025 13:18:57 +0000 (UTC)
+	 MIME-Version; b=o2ILvZXCOpQZj2JC+BCucC86k4J05KxRRttUHQymZTN2ra+7zOFmH8CUB6sPeBO/L6NPVEIUarTbJqjdH2pmj8vNtZK7ZiSFdMRrolGi9wHfKt5e4moR4hDsx+5EgYU8hnsQA4TlcUPAHqGVlUmBKI7AhgLbeuPTQ782JHPUkKI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qsL4Ef/8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21091C4CEEA;
+	Mon, 23 Jun 2025 13:19:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750684738;
-	bh=bESmtmmf1HTBwAar1dss4wgQ8mr0KUiREIhYXqC5b/g=;
+	s=korg; t=1750684743;
+	bh=bbXdAdImmPT+Te8fye4PpdTBbR6TfFSjSznkhex9ySU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UqYYiSGbfRXne/cjIsQ/7IbpuCBJMz0I4XFHnFTKg4gzlFslTstSc1YQfD1lrY1Ps
-	 30VxcuzfobrxD3tH3h/xOPsdbLHz1057DupR+diwOKm3dykQG/txQtXuX40OcvH4uK
-	 p9k7jq5X24yHZLwFLAxYS43/NjRS2vvlUyl2taog=
+	b=qsL4Ef/8Mb6NhO0wWownKjd5ASXYbZOzTxHrrA7Ajq+F9XUwIQP0GQj1sPx3109SB
+	 uvt2SdTffIkYdUoRaD4cpdm2OYh2R7uhPw+1C47HgI2gfaxOqJnJ9w4db9pPCx2pg3
+	 n7+mHIaQpQ6XnPGr007JYeeHO2ce53O1NbyACxug=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Mark Brown <broonie@kernel.org>,
+	Ian Forbes <ian.forbes@broadcom.com>,
+	Zack Rusin <zack.rusin@broadcom.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 018/222] spi: sh-msiof: Fix maximum DMA transfer size
-Date: Mon, 23 Jun 2025 15:05:53 +0200
-Message-ID: <20250623130612.451684962@linuxfoundation.org>
+Subject: [PATCH 5.4 019/222] drm/vmwgfx: Add seqno waiter for sync_files
+Date: Mon, 23 Jun 2025 15:05:54 +0200
+Message-ID: <20250623130612.482312429@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
 In-Reply-To: <20250623130611.896514667@linuxfoundation.org>
 References: <20250623130611.896514667@linuxfoundation.org>
@@ -66,69 +66,87 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Geert Uytterhoeven <geert+renesas@glider.be>
+From: Ian Forbes <ian.forbes@broadcom.com>
 
-[ Upstream commit 0941d5166629cb766000530945e54b4e49680c68 ]
+[ Upstream commit 0039a3b35b10d9c15d3d26320532ab56cc566750 ]
 
-The maximum amount of data to transfer in a single DMA request is
-calculated from the FIFO sizes (which is technically not 100% correct,
-but a simplification, as it is limited by the maximum word count values
-in the Transmit and Control Data Registers).  However, in case there is
-both data to transmit and to receive, the transmit limit is overwritten
-by the receive limit.
+Because sync_files are passive waiters they do not participate in
+the processing of fences like the traditional vmw_fence_wait IOCTL.
+If userspace exclusively uses sync_files for synchronization then
+nothing in the kernel actually processes fence updates as interrupts
+for fences are masked and ignored if the kernel does not indicate to the
+SVGA device that there are active waiters.
 
-Fix this by using the minimum applicable FIFO size instead.  Move the
-calculation outside the loop, so it is not repeated for each individual
-DMA transfer.
+This oversight results in a bug where the entire GUI can freeze waiting
+on a sync_file that will never be signalled as we've masked the interrupts
+to signal its completion. This bug is incredibly racy as any process which
+interacts with the fencing code via the 3D stack can process the stuck
+fences on behalf of the stuck process causing it to run again. Even a
+simple app like eglinfo is enough to resume the stuck process. Usually
+this bug is seen at a login screen like GDM because there are no other
+3D apps running.
 
-As currently tx_fifo_size is always equal to rx_fifo_size, this bug had
-no real impact.
+By adding a seqno waiter we re-enable interrupt based processing of the
+dma_fences associated with the sync_file which is signalled as part of a
+dma_fence_callback.
 
-Fixes: fe78d0b7691c0274 ("spi: sh-msiof: Fix FIFO size to 64 word from 256 word")
-Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Link: https://patch.msgid.link/d9961767a97758b2614f2ee8afe1bd56dc900a60.1747401908.git.geert+renesas@glider.be
-Signed-off-by: Mark Brown <broonie@kernel.org>
+This has likely been broken since it was initially added to the kernel in
+2017 but has gone unnoticed until mutter recently started using sync_files
+heavily over the course of 2024 as part of their explicit sync support.
+
+Fixes: c906965dee22 ("drm/vmwgfx: Add export fence to file descriptor support")
+Signed-off-by: Ian Forbes <ian.forbes@broadcom.com>
+Signed-off-by: Zack Rusin <zack.rusin@broadcom.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20250228200633.642417-1-ian.forbes@broadcom.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi-sh-msiof.c | 13 +++++++------
- 1 file changed, 7 insertions(+), 6 deletions(-)
+ drivers/gpu/drm/vmwgfx/vmwgfx_execbuf.c | 26 +++++++++++++++++++++++++
+ 1 file changed, 26 insertions(+)
 
-diff --git a/drivers/spi/spi-sh-msiof.c b/drivers/spi/spi-sh-msiof.c
-index edb26b0857063..80a39424dc1e2 100644
---- a/drivers/spi/spi-sh-msiof.c
-+++ b/drivers/spi/spi-sh-msiof.c
-@@ -918,6 +918,7 @@ static int sh_msiof_transfer_one(struct spi_controller *ctlr,
- 	void *rx_buf = t->rx_buf;
- 	unsigned int len = t->len;
- 	unsigned int bits = t->bits_per_word;
-+	unsigned int max_wdlen = 256;
- 	unsigned int bytes_per_word;
- 	unsigned int words;
- 	int n;
-@@ -931,17 +932,17 @@ static int sh_msiof_transfer_one(struct spi_controller *ctlr,
- 	if (!spi_controller_is_slave(p->ctlr))
- 		sh_msiof_spi_set_clk_regs(p, clk_get_rate(p->clk), t->speed_hz);
+diff --git a/drivers/gpu/drm/vmwgfx/vmwgfx_execbuf.c b/drivers/gpu/drm/vmwgfx/vmwgfx_execbuf.c
+index 8db3b3ddbb644..0d29fe6f60358 100644
+--- a/drivers/gpu/drm/vmwgfx/vmwgfx_execbuf.c
++++ b/drivers/gpu/drm/vmwgfx/vmwgfx_execbuf.c
+@@ -3621,6 +3621,23 @@ static int vmw_execbuf_tie_context(struct vmw_private *dev_priv,
+ 	return 0;
+ }
  
-+	if (tx_buf)
-+		max_wdlen = min(max_wdlen, p->tx_fifo_size);
-+	if (rx_buf)
-+		max_wdlen = min(max_wdlen, p->rx_fifo_size);
++/*
++ * DMA fence callback to remove a seqno_waiter
++ */
++struct seqno_waiter_rm_context {
++	struct dma_fence_cb base;
++	struct vmw_private *dev_priv;
++};
 +
- 	while (ctlr->dma_tx && len > 15) {
- 		/*
- 		 *  DMA supports 32-bit words only, hence pack 8-bit and 16-bit
- 		 *  words, with byte resp. word swapping.
- 		 */
--		unsigned int l = 0;
--
--		if (tx_buf)
--			l = min(round_down(len, 4), p->tx_fifo_size * 4);
--		if (rx_buf)
--			l = min(round_down(len, 4), p->rx_fifo_size * 4);
-+		unsigned int l = min(round_down(len, 4), max_wdlen * 4);
++static void seqno_waiter_rm_cb(struct dma_fence *f, struct dma_fence_cb *cb)
++{
++	struct seqno_waiter_rm_context *ctx =
++		container_of(cb, struct seqno_waiter_rm_context, base);
++
++	vmw_seqno_waiter_remove(ctx->dev_priv);
++	kfree(ctx);
++}
++
+ int vmw_execbuf_process(struct drm_file *file_priv,
+ 			struct vmw_private *dev_priv,
+ 			void __user *user_commands, void *kernel_commands,
+@@ -3814,6 +3831,15 @@ int vmw_execbuf_process(struct drm_file *file_priv,
+ 		} else {
+ 			/* Link the fence with the FD created earlier */
+ 			fd_install(out_fence_fd, sync_file->file);
++			struct seqno_waiter_rm_context *ctx =
++				kmalloc(sizeof(*ctx), GFP_KERNEL);
++			ctx->dev_priv = dev_priv;
++			vmw_seqno_waiter_add(dev_priv);
++			if (dma_fence_add_callback(&fence->base, &ctx->base,
++						   seqno_waiter_rm_cb) < 0) {
++				vmw_seqno_waiter_remove(dev_priv);
++				kfree(ctx);
++			}
+ 		}
+ 	}
  
- 		if (bits <= 8) {
- 			copy32 = copy_bswap32;
 -- 
 2.39.5
 
