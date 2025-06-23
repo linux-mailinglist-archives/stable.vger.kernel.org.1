@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-156288-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157529-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 09328AE4EF1
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:10:51 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 74E12AE547C
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:01:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A330F7AC14C
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:09:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 33CF8188F7E8
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:01:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F6181F582A;
-	Mon, 23 Jun 2025 21:10:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D24321A4F12;
+	Mon, 23 Jun 2025 22:01:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nS5jfZ3U"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M840zE9g"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F139470838;
-	Mon, 23 Jun 2025 21:10:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90FC44409;
+	Mon, 23 Jun 2025 22:01:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750713047; cv=none; b=eqV7r1TXKMjc9V/ugMwbx5aHdfLGgBgfB7GMism97LGSpzb2Qy+vZjmKjnSthDvRlSRz/bCYLLKdTnPHFvpILvsBmB50TQ0OGVJRrVnQHoQAyGkRj+n3XRPQU7r4VQ8HBxJ7IUWZAlYmyk0RBQj2YhH9j5Eus3gBFy7c6d376SY=
+	t=1750716090; cv=none; b=bkygkOW/IgtLfpLh9avdw9RMmYmWBMLID5rdhbVFelURQh/aWLW7F3J+uG1vqOuABVvDsHlO7r+Z8F7l+8nZlQygBQtB6cI3t8vKoyF739DYLUggyDDFc3rFRoGf8VMQBHyQE5SOcNyQUg/1VEsGBza8tYnQEhtKddoL6EKLDnM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750713047; c=relaxed/simple;
-	bh=UetWgWwNxH6ZtpxGj0QooftH/glfE7QiH1c/VQ9WLDE=;
+	s=arc-20240116; t=1750716090; c=relaxed/simple;
+	bh=6FfMaLHvTPnIPR3dsmKJzg5qnyRNXATgaEt2b+FtDHM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hKDi3DPbpuhpbWkcEAJXC5nhwNmrKOPOZSZJX5p1ZYAxSwrRSRZJ6lR3BiER8X3n5jhv17gQ+pM2gqWBQj3cLZi4MolcwYIevDk5jvGX6hdi/t6qo7QKM20yhjh6qEVBkqVkTOK2eUMexj2R+uC1umWBdraHQg5WZOUfbIg9XaY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nS5jfZ3U; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89265C4CEEA;
-	Mon, 23 Jun 2025 21:10:46 +0000 (UTC)
+	 MIME-Version:Content-Type; b=q1nAkbxgCmVcm+Z9nuZ11363QQ6gv7r6SJkYcrg+XSkzzYvhccDi50+UDTZ/6j9AWIxcTxzLnqE1LfUB7cixeEonqv+FU2VwaRqathDSMS3doKJMr27awoRxOfHjSnMffaLfh1b6cUaJi3b75EDIua397y9kgp7ogDvoH9CY51g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M840zE9g; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29238C4CEEA;
+	Mon, 23 Jun 2025 22:01:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750713046;
-	bh=UetWgWwNxH6ZtpxGj0QooftH/glfE7QiH1c/VQ9WLDE=;
+	s=korg; t=1750716090;
+	bh=6FfMaLHvTPnIPR3dsmKJzg5qnyRNXATgaEt2b+FtDHM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nS5jfZ3Uq2dlTdyRJRG+xtT2OrG2gZOkW4k6VonaDrUR4ggb+18pyIlsImvNNO3El
-	 VX5y4txxB7AVUrFtM96P8pdcKJ8/NIpR9uSJ7LKViOGZYcebt/MeOukBe/ZHdo7AzS
-	 SQw+6dh4Qzgp1Vl9JjzycmTB3CycR8/TTT1ueeKI=
+	b=M840zE9gBXruHS16sq9NknsjsDODjohDYKzVsmDElr7bEJVKU5cYEJyq0iTtQnQzC
+	 vPTxqJs1NKOdrUFr/d8w2Z7OOVDGeIMahD5c6lqWciI+t7DWTZ7xA6EkrA6nApWvIm
+	 5IzMY8UqKU3v6EEcGB3hFgUWt8HXhsQnzqEWPf4M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Narayana Murty N <nnmlinux@linux.ibm.com>,
-	Vaibhav Jain <vaibhav@linux.ibm.com>,
-	Ganesh Goudar <ganeshgr@linux.ibm.com>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 185/222] powerpc/eeh: Fix missing PE bridge reconfiguration during VFIO EEH recovery
-Date: Mon, 23 Jun 2025 15:08:40 +0200
-Message-ID: <20250623130617.735165926@linuxfoundation.org>
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Roger Quadros <rogerq@kernel.org>,
+	Kevin Hilman <khilman@baylibre.com>,
+	"Nobuhiro Iwamatsu (CIP)" <nobuhiro1.iwamatsu@toshiba.co.jp>
+Subject: [PATCH 5.10 320/355] ARM: dts: am335x-bone-common: Increase MDIO reset deassert delay to 50ms
+Date: Mon, 23 Jun 2025 15:08:41 +0200
+Message-ID: <20250623130636.385337147@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130611.896514667@linuxfoundation.org>
-References: <20250623130611.896514667@linuxfoundation.org>
+In-Reply-To: <20250623130626.716971725@linuxfoundation.org>
+References: <20250623130626.716971725@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,73 +61,52 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Narayana Murty N <nnmlinux@linux.ibm.com>
+From: Geert Uytterhoeven <geert+renesas@glider.be>
 
-[ Upstream commit 33bc69cf6655cf60829a803a45275f11a74899e5 ]
+commit 929d8490f8790164f5f63671c1c58d6c50411cb2 upstream.
 
-VFIO EEH recovery for PCI passthrough devices fails on PowerNV and pseries
-platforms due to missing host-side PE bridge reconfiguration. In the
-current implementation, eeh_pe_configure() only performs RTAS or OPAL-based
-bridge reconfiguration for native host devices, but skips it entirely for
-PEs managed through VFIO in guest passthrough scenarios.
+Commit b9bf5612610aa7e3 ("ARM: dts: am335x-bone-common: Increase MDIO
+reset deassert time") already increased the MDIO reset deassert delay
+from 6.5 to 13 ms, but this may still cause Ethernet PHY probe failures:
 
-This leads to incomplete EEH recovery when a PCI error affects a
-passthrough device assigned to a QEMU/KVM guest. Although VFIO triggers the
-EEH recovery flow through VFIO_EEH_PE_ENABLE ioctl, the platform-specific
-bridge reconfiguration step is silently bypassed. As a result, the PE's
-config space is not fully restored, causing subsequent config space access
-failures or EEH freeze-on-access errors inside the guest.
+    SMSC LAN8710/LAN8720 4a101000.mdio:00: probe with driver SMSC LAN8710/LAN8720 failed with error -5
 
-This patch fixes the issue by ensuring that eeh_pe_configure() always
-invokes the platform's configure_bridge() callback (e.g.,
-pseries_eeh_phb_configure_bridge) even for VFIO-managed PEs. This ensures
-that RTAS or OPAL calls to reconfigure the PE bridge are correctly issued
-on the host side, restoring the PE's configuration space after an EEH
-event.
+On BeagleBone Black Rev. C3, ETH_RESETn is controlled by an open-drain
+AND gate.  It is pulled high by a 10K resistor, and has a 4.7µF
+capacitor to ground, giving an RC time constant of 47ms.  As it takes
+0.7RC to charge the capacitor above the threshold voltage of a CMOS
+input (VDD/2), the delay should be at least 33ms.  Considering the
+typical tolerance of 20% on capacitors, 40ms would be safer.  Add an
+additional safety margin and settle for 50ms.
 
-This fix is essential for reliable EEH recovery in QEMU/KVM guests using
-VFIO PCI passthrough on PowerNV and pseries systems.
-
-Tested with:
-- QEMU/KVM guest using VFIO passthrough (IBM Power9,(lpar)Power11 host)
-- Injected EEH errors with pseries EEH errinjct tool on host, recovery
-  verified on qemu guest.
-- Verified successful config space access and CAP_EXP DevCtl restoration
-  after recovery
-
-Fixes: 212d16cdca2d ("powerpc/eeh: EEH support for VFIO PCI device")
-Signed-off-by: Narayana Murty N <nnmlinux@linux.ibm.com>
-Reviewed-by: Vaibhav Jain <vaibhav@linux.ibm.com>
-Reviewed-by: Ganesh Goudar <ganeshgr@linux.ibm.com>
-Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
-Link: https://patch.msgid.link/20250508062928.146043-1-nnmlinux@linux.ibm.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Reviewed-by: Roger Quadros <rogerq@kernel.org>
+Link: https://lore.kernel.org/r/9002a58daa1b2983f39815b748ee9d2f8dcc4829.1730366936.git.geert+renesas@glider.be
+Signed-off-by: Kevin Hilman <khilman@baylibre.com>
+Signed-off-by: Nobuhiro Iwamatsu (CIP) <nobuhiro1.iwamatsu@toshiba.co.jp>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/powerpc/kernel/eeh.c | 2 ++
- 1 file changed, 2 insertions(+)
+ arch/arm/boot/dts/am335x-bone-common.dtsi |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/powerpc/kernel/eeh.c b/arch/powerpc/kernel/eeh.c
-index 8b0e523b2abbe..301654971b32c 100644
---- a/arch/powerpc/kernel/eeh.c
-+++ b/arch/powerpc/kernel/eeh.c
-@@ -1723,6 +1723,8 @@ int eeh_pe_configure(struct eeh_pe *pe)
- 	/* Invalid PE ? */
- 	if (!pe)
- 		return -ENODEV;
-+	else
-+		ret = eeh_ops->configure_bridge(pe);
+--- a/arch/arm/boot/dts/am335x-bone-common.dtsi
++++ b/arch/arm/boot/dts/am335x-bone-common.dtsi
+@@ -381,7 +381,7 @@
+ 		/* Support GPIO reset on revision C3 boards */
+ 		reset-gpios = <&gpio1 8 GPIO_ACTIVE_LOW>;
+ 		reset-assert-us = <300>;
+-		reset-deassert-us = <13000>;
++		reset-deassert-us = <50000>;
+ 	};
+ };
  
- 	return ret;
- }
--- 
-2.39.5
-
 
 
 
