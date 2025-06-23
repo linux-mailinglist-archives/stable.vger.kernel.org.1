@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-156765-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156545-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B18BAE5107
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:30:20 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id D1CBAAE4FF7
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:21:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5F77D4A291F
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:30:20 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EA6C23BE34F
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:20:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E46F221723;
-	Mon, 23 Jun 2025 21:30:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0CD4B38DE1;
+	Mon, 23 Jun 2025 21:21:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xrwsQ25w"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="njo/ndi9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C9F61EE7C6;
-	Mon, 23 Jun 2025 21:30:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAEB72C9D;
+	Mon, 23 Jun 2025 21:21:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750714211; cv=none; b=b20MuAF1uybNXv4laYzx4v3QAfKZoNNwwLeRGou909EWPHyRIiJzus4P5cjgXgD7e1vF5jbZ+vKKaNzGrIbjrArj7Lu1bJsApbb8Eezfn6ecd29heQ7RAl3M5T8bWUNutuLFYvu8XjJWS0WwHjl2YhFdl/NGMqRwr80p6OgslRQ=
+	t=1750713676; cv=none; b=sxjZMZ9XYEEQcpkzf9iFf7E1BHK1kbX5LBzbuFOWFul5AUwqMxnJYXur1zDHYE+7qinHMopp2RV5sJ5K7Zpyx0Jw5wjM4YIdqZJqWvirvzvBX4kxfgZQ9e0FCauSWYs/rnAacoYW65T6yJU22rqebWg4LVNbVRcVI8ga5vNZVMA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750714211; c=relaxed/simple;
-	bh=R1gdINfvX4q0xlwtjdE0suaY9cJK/Hqb+lxAM59zk1k=;
+	s=arc-20240116; t=1750713676; c=relaxed/simple;
+	bh=7a1qna6USIWE9s3w0dJfmBqvR7DoV++nd9kOyeIxDrg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HkaPIk6UYQVfKOc1Ys4cNuMePH1C0WCREffM73ZDC2BvMo+jLwXst8QV1ISEuu8usL/OXfJiu+hJ84XJH2WBG5eF57hvXyFCTq2XBVVpyrMc5jeAabLoiauSkNn32WdQh67XRp9/k3BLZvUe+06cZpBRrAWho7u0o/qoMRzzFyU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xrwsQ25w; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5152C4CEEA;
-	Mon, 23 Jun 2025 21:30:10 +0000 (UTC)
+	 MIME-Version; b=mUs3EziKEbTfYNKeSbTFUljsrezP8ppR4tia2CEKxoFGHpDP1XrbXgH0i8Bnyek/Ay23f7TBlOy5+BoZl6p2XoGebp8y/8koA5aVEmnl+CTIVk9cexl3tTnR9+lVUtl+utNpBTMXa3T1UdX+tXOHDYdb52mA3G/a7W74vNYQ8M4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=njo/ndi9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0A2EC4CEEA;
+	Mon, 23 Jun 2025 21:21:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750714211;
-	bh=R1gdINfvX4q0xlwtjdE0suaY9cJK/Hqb+lxAM59zk1k=;
+	s=korg; t=1750713675;
+	bh=7a1qna6USIWE9s3w0dJfmBqvR7DoV++nd9kOyeIxDrg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xrwsQ25wfDJ9hFVLj5ns3usBMltdkXTJ25pMopVXK1sgYioi8wW6J/qlImZU64fm8
-	 xHn20Q1k3EoytYZ42UbyNBKzNYE6bFWNzlvEaxjSzDl7IG7sVSNc7hVxp/q6M0CCXo
-	 DJH0f6asAKDjtYlIzdHHodHnb/dRcsZhWOAaya4o=
+	b=njo/ndi98q5qNTenaEF0FVBVJYeqqb50W/a8nnHOI4n37W0Vj6PDw8Ous2emrV0pb
+	 m/jftUKnSKAyNlaq8qm7JNStQrEoP5J3nEJOLeP0+CZ3RuEzuIpx7vOMzcAwUuJ6n2
+	 7hU6Rf4PuRJSFXiaHu/Q7fedWhq0WBVkyblzgyRc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chao Yu <chao@kernel.org>,
-	Jaegeuk Kim <jaegeuk@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 376/592] f2fs: fix to bail out in get_new_segment()
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.6 073/290] net: ftgmac100: select FIXED_PHY
 Date: Mon, 23 Jun 2025 15:05:34 +0200
-Message-ID: <20250623130709.383509522@linuxfoundation.org>
+Message-ID: <20250623130629.188655289@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
-References: <20250623130700.210182694@linuxfoundation.org>
+In-Reply-To: <20250623130626.910356556@linuxfoundation.org>
+References: <20250623130626.910356556@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,74 +61,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chao Yu <chao@kernel.org>
+From: Heiner Kallweit <hkallweit1@gmail.com>
 
-[ Upstream commit bb5eb8a5b222fa5092f60d5555867a05ebc3bdf2 ]
+commit ae409629e022fbebbc6d31a1bfeccdbbeee20fd6 upstream.
 
-------------[ cut here ]------------
-WARNING: CPU: 3 PID: 579 at fs/f2fs/segment.c:2832 new_curseg+0x5e8/0x6dc
-pc : new_curseg+0x5e8/0x6dc
-Call trace:
- new_curseg+0x5e8/0x6dc
- f2fs_allocate_data_block+0xa54/0xe28
- do_write_page+0x6c/0x194
- f2fs_do_write_node_page+0x38/0x78
- __write_node_page+0x248/0x6d4
- f2fs_sync_node_pages+0x524/0x72c
- f2fs_write_checkpoint+0x4bc/0x9b0
- __checkpoint_and_complete_reqs+0x80/0x244
- issue_checkpoint_thread+0x8c/0xec
- kthread+0x114/0x1bc
- ret_from_fork+0x10/0x20
+Depending on e.g. DT configuration this driver uses a fixed link.
+So we shouldn't rely on the user to enable FIXED_PHY, select it in
+Kconfig instead. We may end up with a non-functional driver otherwise.
 
-get_new_segment() detects inconsistent status in between free_segmap
-and free_secmap, let's record such error into super block, and bail
-out get_new_segment() instead of continue using the segment.
-
-Signed-off-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 38561ded50d0 ("net: ftgmac100: support fixed link")
+Cc: stable@vger.kernel.org
+Signed-off-by: Heiner Kallweit <hkallweit1@gmail.com>
+Link: https://patch.msgid.link/476bb33b-5584-40f0-826a-7294980f2895@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/f2fs/segment.c       | 6 +++++-
- include/linux/f2fs_fs.h | 1 +
- 2 files changed, 6 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/faraday/Kconfig |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/fs/f2fs/segment.c b/fs/f2fs/segment.c
-index 41ca73622c8d4..c5d29c58f3d3e 100644
---- a/fs/f2fs/segment.c
-+++ b/fs/f2fs/segment.c
-@@ -2836,7 +2836,11 @@ static int get_new_segment(struct f2fs_sb_info *sbi,
- 	}
- got_it:
- 	/* set it as dirty segment in free segmap */
--	f2fs_bug_on(sbi, test_bit(segno, free_i->free_segmap));
-+	if (test_bit(segno, free_i->free_segmap)) {
-+		ret = -EFSCORRUPTED;
-+		f2fs_stop_checkpoint(sbi, false, STOP_CP_REASON_CORRUPTED_FREE_BITMAP);
-+		goto out_unlock;
-+	}
- 
- 	/* no free section in conventional device or conventional zone */
- 	if (new_sec && pinning &&
-diff --git a/include/linux/f2fs_fs.h b/include/linux/f2fs_fs.h
-index c24f8bc01045d..5206d63b33860 100644
---- a/include/linux/f2fs_fs.h
-+++ b/include/linux/f2fs_fs.h
-@@ -78,6 +78,7 @@ enum stop_cp_reason {
- 	STOP_CP_REASON_UPDATE_INODE,
- 	STOP_CP_REASON_FLUSH_FAIL,
- 	STOP_CP_REASON_NO_SEGMENT,
-+	STOP_CP_REASON_CORRUPTED_FREE_BITMAP,
- 	STOP_CP_REASON_MAX,
- };
- 
--- 
-2.39.5
-
+--- a/drivers/net/ethernet/faraday/Kconfig
++++ b/drivers/net/ethernet/faraday/Kconfig
+@@ -31,6 +31,7 @@ config FTGMAC100
+ 	depends on ARM || COMPILE_TEST
+ 	depends on !64BIT || BROKEN
+ 	select PHYLIB
++	select FIXED_PHY
+ 	select MDIO_ASPEED if MACH_ASPEED_G6
+ 	select CRC32
+ 	help
 
 
 
