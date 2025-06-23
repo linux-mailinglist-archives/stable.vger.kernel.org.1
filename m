@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-156456-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156361-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A6ACEAE4FD5
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:20:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E632AE4F50
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:14:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 82B6F7AD8BE
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:17:09 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E949C7ACC67
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:12:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55F8C223708;
-	Mon, 23 Jun 2025 21:17:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C7D92221F24;
+	Mon, 23 Jun 2025 21:13:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D4wayNxF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cQMGbXdN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13EB82222CA;
-	Mon, 23 Jun 2025 21:17:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8384C1DF98B;
+	Mon, 23 Jun 2025 21:13:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750713456; cv=none; b=PeAepDzAB5xol0MRJjCcVXm/g12LOqLNQg/7DvxmnKoXklMk77PxZWHZEVBncrGfk7DnLc8d0jDvN4PIcqwjIfwZEIoU/eMwD8t0I+P5/6o2gXEBzdvwp92vgSUdhf5cNHzqBwFNhdJepSR5jdDTrHqoBvxuavvO9KSMjA63xvU=
+	t=1750713226; cv=none; b=I54ot3r7SPO1HFBT7Gjxs4dqWYlln0DP1c3jNVdukgBRk8ISmL2+Ei71TSqG3kEaxZ9i5uBBG9TnSe904LPKBWyJOUGoBidLEKHeH6QXH406CRIJklo535q6K/F0WkHS2ETzlkMpSXv1V7ZXyYYJNPCxW9NDoAXzUUUA8CtZSc8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750713456; c=relaxed/simple;
-	bh=Trvkxt5lU7Ccqh3r82woi217cR3h+DMmWfjLlM1y68E=;
+	s=arc-20240116; t=1750713226; c=relaxed/simple;
+	bh=xBr224TaNc/D1iBDAkGcAPHLkAMKlPwPcnLYLcdTJMQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fu/BEaWqfJDI+7UX07nnI67h3+mlkOUgpyLOPUgFo8ES9x3iBto0XEr+arSlgGRS6l0EuCzhIhCyV054TDMIMOxD5N1dEMrGFy2knBnA2fUlP8Gpn+JeKvrGTIqPSbqNHpHp93klAKR3pJypOtFqxyam5zyMrQH9hyldpmcWQ00=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D4wayNxF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1833C4CEEA;
-	Mon, 23 Jun 2025 21:17:35 +0000 (UTC)
+	 MIME-Version; b=qvfrhuqaQZOM/hNWIBcSXdq7D2XrXMrT+Hu2jC28MgVx29/cqk2HpjKVBgEctLPBv72bTSjGeYKBx9Fxxz9MjlscILm5VWVHiPf9r2yjaBKwVdK3uKnSQkIvmvCLhWsVNo4TYTL2cSx2FOssVO/alm5X8ZrxSu1LrxvrIS0xuyk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cQMGbXdN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A941C4CEEA;
+	Mon, 23 Jun 2025 21:13:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750713456;
-	bh=Trvkxt5lU7Ccqh3r82woi217cR3h+DMmWfjLlM1y68E=;
+	s=korg; t=1750713226;
+	bh=xBr224TaNc/D1iBDAkGcAPHLkAMKlPwPcnLYLcdTJMQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=D4wayNxF6y1rm52sv1A/cBnsrgTvzMSQOfY78LBUx0j4Q2g+K0U5jruA5t4Gn4YN8
-	 baPDAf/+eDsvUX+dw87X5NsR+EYoVIfF4vUzn73vDLwxvrExJQ9fjLPIcO2zeTpo9T
-	 Z1N3V6qSgKybMhj0b24E7ZH5NLjJBlLg6buS0Nzw=
+	b=cQMGbXdNunOFUE2w0d5Lz/pRZKcj3uGbI2K+zigBaLEa5vP30pvs5yVJPfcKvdx+f
+	 /B1TSEdHeRG89f3FMyZOFf0PnlnurGZ2MYDZG6/97mEDjEmZix6BxwrlQeGFUkq3e/
+	 6tnVJvD1dJMUCk79OxxvrFHCb3LRegue1pxJCY0A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Quentin Schulz <quentin.schulz@cherry.de>,
-	Lukasz Czechowski <lukasz.czechowski@thaumatec.com>,
-	Heiko Stuebner <heiko@sntech.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 124/508] arm64: dts: rockchip: disable unrouted USB controllers and PHY on RK3399 Puma with Haikou
-Date: Mon, 23 Jun 2025 15:02:49 +0200
-Message-ID: <20250623130648.346375916@linuxfoundation.org>
+	Steve Sears <sjs@hammerspace.com>,
+	Jakub Kacinski <kuba@kernel.org>,
+	Mike Snitzer <snitzer@kernel.org>,
+	Chuck Lever <chuck.lever@oracle.com>,
+	Anna Schumaker <anna.schumaker@oracle.com>
+Subject: [PATCH 6.12 033/414] SUNRPC: Prevent hang on NFS mount with xprtsec=[m]tls
+Date: Mon, 23 Jun 2025 15:02:50 +0200
+Message-ID: <20250623130642.855638549@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
-References: <20250623130645.255320792@linuxfoundation.org>
+In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
+References: <20250623130642.015559452@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,71 +64,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Quentin Schulz <quentin.schulz@cherry.de>
+From: Chuck Lever <chuck.lever@oracle.com>
 
-[ Upstream commit febd8c6ab52c683b447fe22fc740918c86feae43 ]
+commit 0bd2f6b8996d4f1ca4573652454987826730a04a upstream.
 
-The u2phy0_host port is the part of the USB PHY0 (namely the
-HOST0_DP/DM lanes) which routes directly to the USB2.0 HOST
-controller[1]. The other lanes of the PHY are routed to the USB3.0 OTG
-controller (dwc3), which we do use.
+Engineers at Hammerspace noticed that sometimes mounting with
+"xprtsec=tls" hangs for a minute or so, and then times out, even
+when the NFS server is reachable and responsive.
 
-The HOST0_DP/DM lanes aren't routed on RK3399 Puma so let's simply
-disable the USB2.0 controllers.
+kTLS shuts off data_ready callbacks if strp->msg_ready is set to
+mitigate data_ready callbacks when a full TLS record is not yet
+ready to be read from the socket.
 
-USB3 OTG has been known to be unstable on RK3399 Puma Haikou for a
-while, one of the recurring issues being that only USB2 is detected and
-not USB3 in host mode. Reading the justification above and seeing that
-we are keeping u2phy0_host in the Haikou carrierboard DTS probably may
-have bothered you since it should be changed to u2phy0_otg. The issue is
-that if it's switched to that, USB OTG on Haikou is entirely broken. I
-have checked the routing in the Gerber file, the lanes are going to the
-expected ball pins (that is, NOT HOST0_DP/DM).
-u2phy0_host is for sure the wrong part of the PHY to use, but it's the
-only one that works at the moment for that board so keep it until we
-figure out what exactly is broken.
+Normally msg_ready is clear when the first TLS record arrives on
+a socket. However, I observed that sometimes tls_setsockopt() sets
+strp->msg_ready, and that prevents forward progress because
+tls_data_ready() becomes a no-op.
 
-No intended functional change.
+Moreover, Jakub says: "If there's a full record queued at the time
+when [tlshd] passes the socket back to the kernel, it's up to the
+reader to read the already queued data out." So SunRPC cannot
+expect a data_ready call when ingress data is already waiting.
 
-[1] https://rockchip.fr/Rockchip%20RK3399%20TRM%20V1.3%20Part2.pdf
-    Chapter 2 USB2.0 PHY
+Add an explicit poll after SunRPC's upper transport is set up to
+pick up any data that arrived after the TLS handshake but before
+transport set-up is complete.
 
-Fixes: 2c66fc34e945 ("arm64: dts: rockchip: add RK3399-Q7 (Puma) SoM")
-Signed-off-by: Quentin Schulz <quentin.schulz@cherry.de>
-Signed-off-by: Lukasz Czechowski <lukasz.czechowski@thaumatec.com>
-Link: https://lore.kernel.org/r/20250425-onboard_usb_dev-v2-5-4a76a474a010@thaumatec.com
-Signed-off-by: Heiko Stuebner <heiko@sntech.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reported-by: Steve Sears <sjs@hammerspace.com>
+Suggested-by: Jakub Kacinski <kuba@kernel.org>
+Fixes: 75eb6af7acdf ("SUNRPC: Add a TCP-with-TLS RPC transport class")
+Tested-by: Mike Snitzer <snitzer@kernel.org>
+Reviewed-by: Mike Snitzer <snitzer@kernel.org>
+Cc: stable@vger.kernel.org
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Signed-off-by: Anna Schumaker <anna.schumaker@oracle.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/boot/dts/rockchip/rk3399-puma-haikou.dts | 8 --------
- 1 file changed, 8 deletions(-)
+ net/sunrpc/xprtsock.c |    5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/arch/arm64/boot/dts/rockchip/rk3399-puma-haikou.dts b/arch/arm64/boot/dts/rockchip/rk3399-puma-haikou.dts
-index 115c14c0a3c68..396a6636073b5 100644
---- a/arch/arm64/boot/dts/rockchip/rk3399-puma-haikou.dts
-+++ b/arch/arm64/boot/dts/rockchip/rk3399-puma-haikou.dts
-@@ -251,14 +251,6 @@
- 	status = "okay";
- };
+--- a/net/sunrpc/xprtsock.c
++++ b/net/sunrpc/xprtsock.c
+@@ -2743,6 +2743,11 @@ static void xs_tcp_tls_setup_socket(stru
+ 	}
+ 	rpc_shutdown_client(lower_clnt);
  
--&usb_host0_ehci {
--	status = "okay";
--};
--
--&usb_host0_ohci {
--	status = "okay";
--};
--
- &vopb {
- 	status = "okay";
- };
--- 
-2.39.5
-
++	/* Check for ingress data that arrived before the socket's
++	 * ->data_ready callback was set up.
++	 */
++	xs_poll_check_readable(upper_transport);
++
+ out_unlock:
+ 	current_restore_flags(pflags, PF_MEMALLOC);
+ 	upper_transport->clnt = NULL;
 
 
 
