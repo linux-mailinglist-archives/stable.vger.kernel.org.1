@@ -1,59 +1,54 @@
-Return-Path: <stable+bounces-156687-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156695-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AE896AE50AC
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:27:22 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 64FF9AE50B8
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:27:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 52EC87AAB9C
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:25:59 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 846094A1943
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:27:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D20E2236E9;
-	Mon, 23 Jun 2025 21:27:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22A1722173D;
+	Mon, 23 Jun 2025 21:27:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JMit5sfJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PEd6HEMZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A4CD222582;
-	Mon, 23 Jun 2025 21:27:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D18EB1EDA0F;
+	Mon, 23 Jun 2025 21:27:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750714023; cv=none; b=SBmq2wD/mpH9pHMKfKjMm7RLNetnOVRX3GqhzaHkPuRnOJVbAN0iYl0Xmjy08onSXCwWu767rMNSfABtxQpxURMgIPdK9Q40FHSidVPYgAqmzmFxq3UYHVo/Ziq0aGoptvhDhukIdQEGPQfUZuJQ/soDd8kXRL+fNU5B8LEYLag=
+	t=1750714042; cv=none; b=YivSzifYwJWAeehNPvVcAnAL5HmnQbfEbBWMpcCRHFyRGUrduSX0T/f+jXhWSKXgwO3DTymJVrIlX4b7Hll43Azy3y7Vv67qYzRZuxlW0FqOo7tW9qOrn4hyMc5X66tBl56jvkH0MVo9KTyPy5JOVyJ+qiWjn+IU97f48vLH4vc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750714023; c=relaxed/simple;
-	bh=dBelJU5cKbSVEJSJ5IYiTlNQMvU2z3IpVHm2L00YJIo=;
+	s=arc-20240116; t=1750714042; c=relaxed/simple;
+	bh=7YCSJrMvNNu6OsN0NYFSe05up6+CJhsg1BtEog532Jc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gpdb0MKTU6xbU991bFXaFQCzB9ZUh3WG5Mu/0kvCGEeLHKDkm+jTovHH/bfCQX3arRpR1IbPb0FXmctvXSpw/r2l8QzZgGbACJUcebJ/NifkufDxDDR58lG+qedXCogWWXwhp7SPHl26meAWFb8dT3Lk7EeSdvAdr1Lgq0XvH48=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JMit5sfJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6EFFC4CEEA;
-	Mon, 23 Jun 2025 21:27:02 +0000 (UTC)
+	 MIME-Version; b=VE8rCltte/LqMeeNmOMp6KkjY4ot90ed2LiYesu1C6Z0llDWTvYGklRkqkIWcNcyg9FNWIrxsfGaIK9hIWjgKcsuLur5aJLCH1X1230ovn7vCaox2DD2MgvrYAe4hmuo/Ig18Culg2jTanEb3jq0fCRGlyqBNhEzV11cyMYA4ko=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PEd6HEMZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6BC7DC4CEEA;
+	Mon, 23 Jun 2025 21:27:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750714023;
-	bh=dBelJU5cKbSVEJSJ5IYiTlNQMvU2z3IpVHm2L00YJIo=;
+	s=korg; t=1750714042;
+	bh=7YCSJrMvNNu6OsN0NYFSe05up6+CJhsg1BtEog532Jc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JMit5sfJaeQ3aJ4e1OeAi2/ZK1UYCC99CowjbbNKizF6zKFTQrrx43bJscsg9t/+B
-	 Spi6lSf8fPZu48wpK5MRlxs46+20gAyRicgjaskE7yJtsTc4FOB3S2n0DlKENlJQmr
-	 EF3Ih91sh/qtDr+eWLLeQu97O0IMF8VffPZmtg2g=
+	b=PEd6HEMZQrUVbfLLk2DiymJMlVdveZb+0K9vr04NpOnRe52wrHixkL1dW7kjJalF3
+	 vXEUL1GSLfl02lOGnSesBUhxrhsWbipXew0tgZPHsEOvz708LdbkFjNa5v+QMchpaT
+	 KxzgLVm/ZYvSccmcIFvCyReB5BUBbHhbH63yCsWA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-	Ian Rogers <irogers@google.com>,
-	Jiri Olsa <jolsa@kernel.org>,
-	Kan Liang <kan.liang@linux.intel.com>,
-	Namhyung Kim <namhyung@kernel.org>,
-	Tony Jones <tonyj@suse.de>,
-	Arnaldo Carvalho de Melo <acme@redhat.com>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 140/508] perf scripts python: exported-sql-viewer.py: Fix pattern matching with Python 3
-Date: Mon, 23 Jun 2025 15:03:05 +0200
-Message-ID: <20250623130648.732031054@linuxfoundation.org>
+Subject: [PATCH 6.1 141/508] remoteproc: qcom_wcnss_iris: Add missing put_device() on error in probe
+Date: Mon, 23 Jun 2025 15:03:06 +0200
+Message-ID: <20250623130648.755607348@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
 In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
 References: <20250623130645.255320792@linuxfoundation.org>
@@ -72,50 +67,41 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Adrian Hunter <adrian.hunter@intel.com>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-[ Upstream commit 17e548405a81665fd14cee960db7d093d1396400 ]
+[ Upstream commit 0cb4b1b97041d8a1f773425208ded253c1cb5869 ]
 
-The script allows the user to enter patterns to find symbols.
+The device_del() call matches with the device_add() but we also need
+to call put_device() to trigger the qcom_iris_release().
 
-The pattern matching characters are converted for use in SQL.
-
-For PostgreSQL the conversion involves using the Python maketrans()
-method which is slightly different in Python 3 compared with Python 2.
-
-Fix to work in Python 3.
-
-Fixes: beda0e725e5f06ac ("perf script python: Add Python3 support to exported-sql-viewer.py")
-Signed-off-by: Adrian Hunter <adrian.hunter@intel.com>
-Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
-Cc: Ian Rogers <irogers@google.com>
-Cc: Jiri Olsa <jolsa@kernel.org>
-Cc: Kan Liang <kan.liang@linux.intel.com>
-Cc: Namhyung Kim <namhyung@kernel.org>
-Cc: Tony Jones <tonyj@suse.de>
-Link: https://lore.kernel.org/r/20250512093932.79854-4-adrian.hunter@intel.com
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Fixes: 1fcef985c8bd ("remoteproc: qcom: wcnss: Fix race with iris probe")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Link: https://lore.kernel.org/r/4604f7e0-3217-4095-b28a-3ff8b5afad3a@stanley.mountain
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/scripts/python/exported-sql-viewer.py | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/remoteproc/qcom_wcnss_iris.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/tools/perf/scripts/python/exported-sql-viewer.py b/tools/perf/scripts/python/exported-sql-viewer.py
-index 13f2d8a816109..99742013676b3 100755
---- a/tools/perf/scripts/python/exported-sql-viewer.py
-+++ b/tools/perf/scripts/python/exported-sql-viewer.py
-@@ -680,7 +680,10 @@ class CallGraphModelBase(TreeModel):
- 				s = value.replace("%", "\%")
- 				s = s.replace("_", "\_")
- 				# Translate * and ? into SQL LIKE pattern characters % and _
--				trans = string.maketrans("*?", "%_")
-+				if sys.version_info[0] == 3:
-+					trans = str.maketrans("*?", "%_")
-+				else:
-+					trans = string.maketrans("*?", "%_")
- 				match = " LIKE '" + str(s).translate(trans) + "'"
- 			else:
- 				match = " GLOB '" + str(value) + "'"
+diff --git a/drivers/remoteproc/qcom_wcnss_iris.c b/drivers/remoteproc/qcom_wcnss_iris.c
+index 09720ddddc857..7c7b688eda1d9 100644
+--- a/drivers/remoteproc/qcom_wcnss_iris.c
++++ b/drivers/remoteproc/qcom_wcnss_iris.c
+@@ -196,6 +196,7 @@ struct qcom_iris *qcom_iris_probe(struct device *parent, bool *use_48mhz_xo)
+ 
+ err_device_del:
+ 	device_del(&iris->dev);
++	put_device(&iris->dev);
+ 
+ 	return ERR_PTR(ret);
+ }
+@@ -203,4 +204,5 @@ struct qcom_iris *qcom_iris_probe(struct device *parent, bool *use_48mhz_xo)
+ void qcom_iris_remove(struct qcom_iris *iris)
+ {
+ 	device_del(&iris->dev);
++	put_device(&iris->dev);
+ }
 -- 
 2.39.5
 
