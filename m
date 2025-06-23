@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-156463-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156471-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7EDE0AE4FB0
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:18:41 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 304C6AE4FB7
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:18:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5D4831B614A6
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:18:57 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C1C93172522
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:18:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B63A22424C;
-	Mon, 23 Jun 2025 21:17:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD4B32222AA;
+	Mon, 23 Jun 2025 21:18:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A25HmfGN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K4XLbQdT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1926822422F;
-	Mon, 23 Jun 2025 21:17:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B8891EFFA6;
+	Mon, 23 Jun 2025 21:18:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750713473; cv=none; b=M/bHUHHCkjXLGnTw9rYHHNDIDRh2YouB74sb+I8eRwLrOUHvMFNjibMvw5tjM03RtqbT4ByC0oeivZl7mCYQcIRCT4WyCCN5tMmYN+cn2h9xCTo45pv29uU6ToDaezWN5ZX1hVAoH6l8Af6/MynFRSJEeP4VJrr/L0lxVJskvFs=
+	t=1750713494; cv=none; b=p2ShWQLtgnZ1zRr2eeVsyAVpt/G185QDLuWCTUQu5N9cTFnw+sTqn49CRKDDzKlss/FneKh9xixLyRJmMRsiAX4wXWcEthy6koyUK1uh2iizNfOWftPUBTTwOXlsAqNfkQMAdOxb6GT4EBbHXmnZ0AEcL0fRTUnpCJHbXwLw/pY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750713473; c=relaxed/simple;
-	bh=ULTUyBxtIMGypYywmkDgoHDVR6/jo4aGoGoogssOrVs=;
+	s=arc-20240116; t=1750713494; c=relaxed/simple;
+	bh=IABz0qtnwpDF15QZfiEiZ6AyiXE0xwpBWnWKGBw/U/0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cQ4Tt+POjWJG4i9ct1ZHHKKW37e/E1sESSkDJTX522EEKzw+0emGExNEuRsPzeDQAXNqjyZc9xG7RY9MqoFwG5RXpTuu2KFAaqNLfzcKtWiQzbNKYKedR2vEwRCJC5QQjOv+8vRVwwO5j+SKD7VBULRyQlzwhglVAHLeUsODpQE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A25HmfGN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A56F1C4CEEA;
-	Mon, 23 Jun 2025 21:17:52 +0000 (UTC)
+	 MIME-Version; b=s8L+lqrT+puSftUUJYYfqzHkgzY3SV8ZQfvFyCEY34VBwPQYAeNsaHjRH2fYglmhcP8UwdmWYl4Aq+vaqY2lLQHILVnQbWqMbDRaMwjTKnbmnHhHb8f7ZRlZ2C78ZTCGzcNBJhD85G+VZIsl4cmVju/I7jmw1yDrpeJoqEODJuY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K4XLbQdT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 332B8C4CEEA;
+	Mon, 23 Jun 2025 21:18:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750713473;
-	bh=ULTUyBxtIMGypYywmkDgoHDVR6/jo4aGoGoogssOrVs=;
+	s=korg; t=1750713494;
+	bh=IABz0qtnwpDF15QZfiEiZ6AyiXE0xwpBWnWKGBw/U/0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=A25HmfGNBFoKEYPYmfbdyO338QNhmEybFJ7ZRjEQY/l2vmjvo8h0XqXLg5IY4e7FK
-	 799IcFiJqPcIDHqUtkHeWtT9QIzS2XsPNpjzlEbsEVAUsHA8Ou92hhkINIFv3waN+w
-	 1JVePMhefXjOBFMR/7V6LBiwnoXIz3lKHLVYDY28=
+	b=K4XLbQdTQmSFPsR1FTA6gkYwaYRwEF3PjKtprdPrv26vt6w96Uu7fwmHtCA76zgC7
+	 OgxD2dkdRYS/nHLdLpOtgKc18EudTetHCT3s9fuL2OlpvfzmaA239Vbgn7KX/HwJYF
+	 0Nmc+bo/NjoJSGARL4IndtTb/dn/9vT7PrCQgO/Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Julien Massot <julien.massot@collabora.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Joel Stanley <joel@jms.id.au>,
+	Andrew Jeffery <andrew@codeconstruct.com.au>,
+	Arnd Bergmann <arnd@arndb.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 125/508] arm64: dts: mt6359: Rename RTC node to match binding expectations
-Date: Mon, 23 Jun 2025 15:02:50 +0200
-Message-ID: <20250623130648.370250581@linuxfoundation.org>
+Subject: [PATCH 6.1 126/508] ARM: aspeed: Dont select SRAM
+Date: Mon, 23 Jun 2025 15:02:51 +0200
+Message-ID: <20250623130648.395245372@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
 In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
 References: <20250623130645.255320792@linuxfoundation.org>
@@ -66,40 +67,35 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Julien Massot <julien.massot@collabora.com>
+From: Joel Stanley <joel@jms.id.au>
 
-[ Upstream commit cfe035d8662cfbd6edff9bd89c4b516bbb34c350 ]
+[ Upstream commit e4f59f873c3ffe2a0150e11115a83e2dfb671dbf ]
 
-Rename the node 'mt6359rtc' to 'rtc', as required by the binding.
+The ASPEED devices have SRAM, but don't require it for basic function
+(or any function; there's no known users of the driver).
 
-Fix the following dtb-check error:
-
-mediatek/mt8395-radxa-nio-12l.dtb: pmic: 'mt6359rtc' do not match
-any of the regexes: 'pinctrl-[0-9]+'
-
-Fixes: 3b7d143be4b7 ("arm64: dts: mt6359: add PMIC MT6359 related nodes")
-Signed-off-by: Julien Massot <julien.massot@collabora.com>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Link: https://lore.kernel.org/r/20250514-mt8395-dtb-errors-v2-3-d67b9077c59a@collabora.com
-Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Fixes: 8c2ed9bcfbeb ("arm: Add Aspeed machine")
+Signed-off-by: Joel Stanley <joel@jms.id.au>
+Link: https://patch.msgid.link/20250115103942.421429-1-joel@jms.id.au
+Signed-off-by: Andrew Jeffery <andrew@codeconstruct.com.au>
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/mediatek/mt6359.dtsi | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm/mach-aspeed/Kconfig | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/arch/arm64/boot/dts/mediatek/mt6359.dtsi b/arch/arm64/boot/dts/mediatek/mt6359.dtsi
-index ef6ab90b99f93..29e784bebb69e 100644
---- a/arch/arm64/boot/dts/mediatek/mt6359.dtsi
-+++ b/arch/arm64/boot/dts/mediatek/mt6359.dtsi
-@@ -293,7 +293,7 @@
- 			};
- 		};
- 
--		mt6359rtc: mt6359rtc {
-+		mt6359rtc: rtc {
- 			compatible = "mediatek,mt6358-rtc";
- 		};
- 	};
+diff --git a/arch/arm/mach-aspeed/Kconfig b/arch/arm/mach-aspeed/Kconfig
+index 080019aa6fcd8..fcf287edd0e5e 100644
+--- a/arch/arm/mach-aspeed/Kconfig
++++ b/arch/arm/mach-aspeed/Kconfig
+@@ -2,7 +2,6 @@
+ menuconfig ARCH_ASPEED
+ 	bool "Aspeed BMC architectures"
+ 	depends on (CPU_LITTLE_ENDIAN && ARCH_MULTI_V5) || ARCH_MULTI_V6 || ARCH_MULTI_V7
+-	select SRAM
+ 	select WATCHDOG
+ 	select ASPEED_WATCHDOG
+ 	select MFD_SYSCON
 -- 
 2.39.5
 
