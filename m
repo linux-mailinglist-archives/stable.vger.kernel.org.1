@@ -1,52 +1,53 @@
-Return-Path: <stable+bounces-155523-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-155526-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C028AAE4266
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:19:14 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id EF9CEAE4281
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:21:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 055FA18987CD
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:17:54 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 48EC6160D2F
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:17:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B3B323C4F8;
-	Mon, 23 Jun 2025 13:17:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52C9C2512C6;
+	Mon, 23 Jun 2025 13:17:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WCwyr25u"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zIhRe0m/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5963F248895;
-	Mon, 23 Jun 2025 13:17:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FEF324DCE8;
+	Mon, 23 Jun 2025 13:17:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750684653; cv=none; b=TmGB67f/5WZrKf9KlP13OnMOkpBKIg/OBDHHJp45rHBdViSesc9cMuG9f++aq1C0AJ2blw1hdDNfChRpWFgI8aL+5ytvf6o0QGoLDNR61vGFep/CfXD7ibtT3aTx67+khcalyoHpEPyLZaYSy0eWKxw1xPLnpH8IZ6DmC8JANPY=
+	t=1750684661; cv=none; b=GH6AcPj/38wedr39UUxB4tSB4Uf9aIrHiKvQgmznRp7NcDti939x0lqsho4ANd2jw78bfd2U1yPM+kCWfyb1sQi51Ayrd/CLTidED8dBfnUoDr79r5NEVE/+hDfstj3zXAuVHyKqggJ8v4wMy2vyG87Du9fQhTvZgwO1OTiboaM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750684653; c=relaxed/simple;
-	bh=GDWuN9zw6Tdr9Zg6/6rr9PIeMcKW+s4OeycTmj0OeAg=;
+	s=arc-20240116; t=1750684661; c=relaxed/simple;
+	bh=Fa9ib11ZviEsTVUUTlW8wPnB0f4NSTVIqNeIrhK5DDQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ag3JFwim16eaeXdk4Nf94Nv1HQ+jSeQwbyZmsAxnnFBpeQ3+UEs7Q1iohCfoA6fylGku5pq1alw4KFAogfNJhMlARG9tF4muvim8juC1GOnxEXSAO3ae/nH2FKALhsR4phIVg4nBqPaqzxpUsb6yneybw2+1IGw3WmUy9ypX4No=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WCwyr25u; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E119DC4CEF5;
-	Mon, 23 Jun 2025 13:17:32 +0000 (UTC)
+	 MIME-Version; b=OPmwLfP5XGNnD2EM7MrMnnwhVPGF26Bhaze0rMhelsGUPEfHzueUXFFMQ2bZFE8rYsg11JiQgrfMY1fZ99ZEdyZbArCOOVdrxcIHfTVz6EczzNXVA1EB3ThuNj8uKbEKJ5dzY/XtFmWQeggluJKs7nDJDC9RQJWguENV1L04MAM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zIhRe0m/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93CBCC4CEEA;
+	Mon, 23 Jun 2025 13:17:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750684653;
-	bh=GDWuN9zw6Tdr9Zg6/6rr9PIeMcKW+s4OeycTmj0OeAg=;
+	s=korg; t=1750684660;
+	bh=Fa9ib11ZviEsTVUUTlW8wPnB0f4NSTVIqNeIrhK5DDQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WCwyr25u0KuaNouVxCaNergSZ2cw+t9GMEgqrwYtPulJhB+wT9pO1ZAFS0NuWwWN9
-	 IcDLvHfvgRotXVtUgCxK9mYxXnxU1c0dYwHuyVuEhNhl+xmTuyRr1XmrBE4WbgoLPG
-	 Az4xCFxffPebItXyxo3UdJfMmuN3cYuLccQfPT0c=
+	b=zIhRe0m/BgqoFEOkHX9Hk61c7vO8nZRBc+vg2fx4DQI09AGZOQhhv5hDZxVAIlkpv
+	 mGzF6R3qwxZxoqWCEzAXS14Lu0YppbB/rRIOyfmOTCuhjgeVQYEPXBrPaReKi2yzQz
+	 EKxaXPXMa6KDXytcBn/q8mOflD8SI3TLHsI1/2rg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wentao Liang <vulab@iscas.ac.cn>,
-	Miquel Raynal <miquel.raynal@bootlin.com>
-Subject: [PATCH 6.15 148/592] mtd: nand: sunxi: Add randomizer configuration before randomizer enable
-Date: Mon, 23 Jun 2025 15:01:46 +0200
-Message-ID: <20250623130703.801130397@linuxfoundation.org>
+	Jim Mattson <jmattson@google.com>,
+	Yosry Ahmed <yosry.ahmed@linux.dev>,
+	Sean Christopherson <seanjc@google.com>
+Subject: [PATCH 6.15 149/592] KVM: SVM: Clear current_vmcb during vCPU free for all *possible* CPUs
+Date: Mon, 23 Jun 2025 15:01:47 +0200
+Message-ID: <20250623130703.826719365@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
 In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
 References: <20250623130700.210182694@linuxfoundation.org>
@@ -65,35 +66,38 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Wentao Liang <vulab@iscas.ac.cn>
+From: Yosry Ahmed <yosry.ahmed@linux.dev>
 
-commit 4a5a99bc79cdc4be63933653682b0261a67a0c9f upstream.
+commit 1bee4838eb3a2c689f23c7170ea66ae87ea7d93a upstream.
 
-In sunxi_nfc_hw_ecc_read_chunk(), the sunxi_nfc_randomizer_enable() is
-called without the config of randomizer. A proper implementation can be
-found in sunxi_nfc_hw_ecc_read_chunks_dma().
+When freeing a vCPU and thus its VMCB, clear current_vmcb for all possible
+CPUs, not just online CPUs, as it's theoretically possible a CPU could go
+offline and come back online in conjunction with KVM reusing the page for
+a new VMCB.
 
-Add sunxi_nfc_randomizer_config() before the start of randomization.
-
-Fixes: 4be4e03efc7f ("mtd: nand: sunxi: add randomizer support")
-Cc: stable@vger.kernel.org # v4.6
-Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Link: https://lore.kernel.org/all/20250320013759.3965869-1-yosry.ahmed@linux.dev
+Fixes: fd65d3142f73 ("kvm: svm: Ensure an IBPB on all affected CPUs when freeing a vmcb")
+Cc: stable@vger.kernel.org
+Cc: Jim Mattson <jmattson@google.com>
+Signed-off-by: Yosry Ahmed <yosry.ahmed@linux.dev>
+[sean: split to separate patch, write changelog]
+Signed-off-by: Sean Christopherson <seanjc@google.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mtd/nand/raw/sunxi_nand.c |    1 +
- 1 file changed, 1 insertion(+)
+ arch/x86/kvm/svm/svm.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/mtd/nand/raw/sunxi_nand.c
-+++ b/drivers/mtd/nand/raw/sunxi_nand.c
-@@ -817,6 +817,7 @@ static int sunxi_nfc_hw_ecc_read_chunk(s
- 	if (ret)
- 		return ret;
+--- a/arch/x86/kvm/svm/svm.c
++++ b/arch/x86/kvm/svm/svm.c
+@@ -1488,7 +1488,7 @@ static void svm_clear_current_vmcb(struc
+ {
+ 	int i;
  
-+	sunxi_nfc_randomizer_config(nand, page, false);
- 	sunxi_nfc_randomizer_enable(nand);
- 	writel(NFC_DATA_TRANS | NFC_DATA_SWAP_METHOD | NFC_ECC_OP,
- 	       nfc->regs + NFC_REG_CMD);
+-	for_each_online_cpu(i)
++	for_each_possible_cpu(i)
+ 		cmpxchg(per_cpu_ptr(&svm_data.current_vmcb, i), vmcb, NULL);
+ }
+ 
 
 
 
