@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-157023-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156662-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A414AE5222
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:40:48 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F506AE509B
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:27:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 26E0C4430F3
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:40:23 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 50821189F3E3
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:27:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76F682222C2;
-	Mon, 23 Jun 2025 21:40:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0BBB223335;
+	Mon, 23 Jun 2025 21:26:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G9dBP1p1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t/gy9LVO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34BF41E22E6;
-	Mon, 23 Jun 2025 21:40:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 997CE1F582A;
+	Mon, 23 Jun 2025 21:26:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750714846; cv=none; b=FntA5kpurrN67RgY6YZB8ypxGOLPGeIBcNvNomAO2PRVb4C7NCTiD+z0KlC47Y6OLs597rBdkSUjzTt2Gtc9Sv2+7c+gzKjJOAHz9R8mPN1V7vXQwVCvy5tSaw6F+BZzZPSmNPRENkSXnpPH7pYWShGqqFMXJ1ToIVQQ485dng4=
+	t=1750713962; cv=none; b=fgM9ELttfuHDy6oQ7XnD/glTgZxDv+M8gh7dxPVksEl6I1ioIopzOkB9w9bR5rHAVHgF6DRBzyj72f44kwV6XS3dS3w8xIhMH4WBd05aq5MEYr7G4VpYarF+UFhMAF4El/P40YIkWY7nMbricw0LnZWwnVPZiGq7yZDqwYg2idQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750714846; c=relaxed/simple;
-	bh=DH8mxAwtC9mqgVHqbQX/q/3oz7ticwxS9B22bpX62+4=;
+	s=arc-20240116; t=1750713962; c=relaxed/simple;
+	bh=4GP/CU8u9ZbSqW90dYFMxdvFNAMKDIE+0V/oIhJOVpU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PpL6uGEdeB8RaURUENU4EX0pKJ+p24+zCRmnI6ze4fEz2GC9CgWtYPEL5PA3EJWuTYCaDC3cZPiOVp+F+wVJcN7JycvQUlBbikAZCfGA+5LRVzZcYKcTMnrH1O9nvVGjMwTyLRcOtMdDWYpwnnK/MuGAz6wMqHu2Tadbm9S+1iw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G9dBP1p1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7C85C4CEEA;
-	Mon, 23 Jun 2025 21:40:45 +0000 (UTC)
+	 MIME-Version; b=OwsE2cHjw4uGASq9ALFvBo8X4Ntfk46qglNdwEs0aXJqB7yObWI5CaqpgXYsL23LcAZ1CvyfNl3mazlUocHyJcHvjMA0wIDxYmQZTi++7Ds1LwQ7zjgxv5PU+4IEY3tu7d0/r8tsbeSgrRGSioGo7ch5UDoSfQmyWlgQbJUzLLM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t/gy9LVO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0925C4CEEA;
+	Mon, 23 Jun 2025 21:26:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750714846;
-	bh=DH8mxAwtC9mqgVHqbQX/q/3oz7ticwxS9B22bpX62+4=;
+	s=korg; t=1750713962;
+	bh=4GP/CU8u9ZbSqW90dYFMxdvFNAMKDIE+0V/oIhJOVpU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=G9dBP1p1u+ZJGpu8uGfoDOzkwXdTkutUPjJuM0fpxiNeXyu3PoCCmgJ2dEsdfwulr
-	 Af3o0glSMaVhMyCy8NwV6NiY4RVYLR5cs733vlAuyX+4JEUcrYFvnGzQ5hIO7qI9Hy
-	 0MpobPXinCpBHdb1Zh8MHu1EnmGAVU3IgT0es4pE=
+	b=t/gy9LVOFZAnss8tgZMV4+5252SOwwl1pieG5VGVRRouDcAJn5FYMvmIkyQHbl4L1
+	 69Y6lBQeu4PmV9yVzVNy+aiyaaa0cdLUOfpF5JkzU7fi6VatXOnzWXl4WH1qBDOvrZ
+	 o1ZxdklHIsbwf2PWnu1u1LrzzYj/PWo+RNv7EKtY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chao Yu <chao@kernel.org>,
-	Jaegeuk Kim <jaegeuk@kernel.org>
-Subject: [PATCH 5.15 233/411] f2fs: fix to do sanity check on sit_bitmap_size
+	Marek Szyprowski <m.szyprowski@samsung.com>,
+	Sergey Senozhatsky <senozhatsky@chromium.org>,
+	Tomasz Figa <tfiga@chromium.org>,
+	Hans Verkuil <hverkuil@xs4all.nl>
+Subject: [PATCH 5.10 176/355] media: videobuf2: use sgtable-based scatterlist wrappers
 Date: Mon, 23 Jun 2025 15:06:17 +0200
-Message-ID: <20250623130639.524759522@linuxfoundation.org>
+Message-ID: <20250623130631.996728168@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
-References: <20250623130632.993849527@linuxfoundation.org>
+In-Reply-To: <20250623130626.716971725@linuxfoundation.org>
+References: <20250623130626.716971725@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,85 +63,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chao Yu <chao@kernel.org>
+From: Marek Szyprowski <m.szyprowski@samsung.com>
 
-commit 5db0d252c64e91ba1929c70112352e85dc5751e7 upstream.
+commit a704a3c503ae1cfd9de8a2e2d16a0c9430e98162 upstream.
 
-w/ below testcase, resize will generate a corrupted image which
-contains inconsistent metadata, so when mounting such image, it
-will trigger kernel panic:
+Use common wrappers operating directly on the struct sg_table objects to
+fix incorrect use of scatterlists sync calls. dma_sync_sg_for_*()
+functions have to be called with the number of elements originally passed
+to dma_map_sg_*() function, not the one returned in sgt->nents.
 
-touch img
-truncate -s $((512*1024*1024*1024)) img
-mkfs.f2fs -f img $((256*1024*1024))
-resize.f2fs -s -i img -t $((1024*1024*1024))
-mount img /mnt/f2fs
-
-------------[ cut here ]------------
-kernel BUG at fs/f2fs/segment.h:863!
-Oops: invalid opcode: 0000 [#1] SMP PTI
-CPU: 11 UID: 0 PID: 3922 Comm: mount Not tainted 6.15.0-rc1+ #191 PREEMPT(voluntary)
-Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
-RIP: 0010:f2fs_ra_meta_pages+0x47c/0x490
-
-Call Trace:
- f2fs_build_segment_manager+0x11c3/0x2600
- f2fs_fill_super+0xe97/0x2840
- mount_bdev+0xf4/0x140
- legacy_get_tree+0x2b/0x50
- vfs_get_tree+0x29/0xd0
- path_mount+0x487/0xaf0
- __x64_sys_mount+0x116/0x150
- do_syscall_64+0x82/0x190
- entry_SYSCALL_64_after_hwframe+0x76/0x7e
-RIP: 0033:0x7fdbfde1bcfe
-
-The reaseon is:
-
-sit_i->bitmap_size is 192, so size of sit bitmap is 192*8=1536, at maximum
-there are 1536 sit blocks, however MAIN_SEGS is 261893, so that sit_blk_cnt
-is 4762, build_sit_entries() -> current_sit_addr() tries to access
-out-of-boundary in sit_bitmap at offset from [1536, 4762), once sit_bitmap
-and sit_bitmap_mirror is not the same, it will trigger f2fs_bug_on().
-
-Let's add sanity check in f2fs_sanity_check_ckpt() to avoid panic.
-
-Cc: stable@vger.kernel.org
-Signed-off-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+Fixes: d4db5eb57cab ("media: videobuf2: add begin/end cpu_access callbacks to dma-sg")
+CC: stable@vger.kernel.org
+Signed-off-by: Marek Szyprowski <m.szyprowski@samsung.com>
+Reviewed-by: Sergey Senozhatsky <senozhatsky@chromium.org>
+Acked-by: Tomasz Figa <tfiga@chromium.org>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/f2fs/super.c |    8 ++++++++
- 1 file changed, 8 insertions(+)
+ drivers/media/common/videobuf2/videobuf2-dma-sg.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/fs/f2fs/super.c
-+++ b/fs/f2fs/super.c
-@@ -3450,6 +3450,7 @@ int f2fs_sanity_check_ckpt(struct f2fs_s
- 	block_t user_block_count, valid_user_blocks;
- 	block_t avail_node_count, valid_node_count;
- 	unsigned int nat_blocks, nat_bits_bytes, nat_bits_blocks;
-+	unsigned int sit_blk_cnt;
- 	int i, j;
+--- a/drivers/media/common/videobuf2/videobuf2-dma-sg.c
++++ b/drivers/media/common/videobuf2/videobuf2-dma-sg.c
+@@ -465,7 +465,7 @@ vb2_dma_sg_dmabuf_ops_begin_cpu_access(s
+ 	struct vb2_dma_sg_buf *buf = dbuf->priv;
+ 	struct sg_table *sgt = buf->dma_sgt;
  
- 	total = le32_to_cpu(raw_super->segment_count);
-@@ -3561,6 +3562,13 @@ skip_cross:
- 		return 1;
- 	}
+-	dma_sync_sg_for_cpu(buf->dev, sgt->sgl, sgt->nents, buf->dma_dir);
++	dma_sync_sgtable_for_cpu(buf->dev, sgt, buf->dma_dir);
+ 	return 0;
+ }
  
-+	sit_blk_cnt = DIV_ROUND_UP(main_segs, SIT_ENTRY_PER_BLOCK);
-+	if (sit_bitmap_size * 8 < sit_blk_cnt) {
-+		f2fs_err(sbi, "Wrong bitmap size: sit: %u, sit_blk_cnt:%u",
-+			 sit_bitmap_size, sit_blk_cnt);
-+		return 1;
-+	}
-+
- 	cp_pack_start_sum = __start_sum_addr(sbi);
- 	cp_payload = __cp_payload(sbi);
- 	if (cp_pack_start_sum < cp_payload + 1 ||
+@@ -476,7 +476,7 @@ vb2_dma_sg_dmabuf_ops_end_cpu_access(str
+ 	struct vb2_dma_sg_buf *buf = dbuf->priv;
+ 	struct sg_table *sgt = buf->dma_sgt;
+ 
+-	dma_sync_sg_for_device(buf->dev, sgt->sgl, sgt->nents, buf->dma_dir);
++	dma_sync_sgtable_for_device(buf->dev, sgt, buf->dma_dir);
+ 	return 0;
+ }
+ 
 
 
 
