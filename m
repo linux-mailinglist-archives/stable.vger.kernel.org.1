@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-156309-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156952-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 29491AE4F05
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:11:43 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 26E69AE51D5
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:37:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B0EE07AC53B
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:10:19 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B23A04A49C0
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:37:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F1F421CA07;
-	Mon, 23 Jun 2025 21:11:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B53F221FC7;
+	Mon, 23 Jun 2025 21:37:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MzNYonly"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XmJeJQW6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF3481ACEDA;
-	Mon, 23 Jun 2025 21:11:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 293B94409;
+	Mon, 23 Jun 2025 21:37:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750713099; cv=none; b=AGTPbkpXGhyiq78yOWRzkJAGhGbL+9ccy9YfJRGBK9dHatrrNPvBdfPRpdri3Oyv2bKkp6+3l3Akkb6pO6YPYV2BRhvijaj1fZfScRu5j47AYV/X6COEYxeLUub7Gxv9+4nmPRmytuUwrwSUJmilqy3+ojsKpedMUcP2k9QirrI=
+	t=1750714672; cv=none; b=T3qUYN7ZMAGIp/zEwwc37PUPPIogd+V7ojQnm0oojfce9DSi3W0x5C+6Seg7Tb0AOBR0Qi4qt2VZNB+yWbC7ohE+r0GhhttXkpVBU9StOGJodZ61fHxhhEL4wnYYZ/NoCyWRtODJb19cI1xDT/D4rYkfgpNdP+JlY9dF2MkvE3M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750713099; c=relaxed/simple;
-	bh=q1NAvCfxOMHaE1mPFmcG3nOu05BvI7CWNysTNqYzXp0=;
+	s=arc-20240116; t=1750714672; c=relaxed/simple;
+	bh=tXmSukYVWJlgmenilJ2w6BWTXAAwCf6R+3jtIeZVgpg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=L319/fC8MUN2qP4+kIiGOPtwC0t93rhUr3PxEfE2PgXefykQ7atUtzvD8W7cT66xp/ngsU86TJRo9hIv/8w/X6jJ8Hl/CFehGAo69xo4JEXWVSYNqYeZWYyWQCulK2qiKDjoaXugjGBDatn3Ldje590MyYttPwhn5h+VFiE/yVc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MzNYonly; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6EE2CC4CEEA;
-	Mon, 23 Jun 2025 21:11:38 +0000 (UTC)
+	 MIME-Version; b=Bra+e3AEX+pRPOJVZ8FZGWDm5WDW4xAGCtJJg+L5/cn9ybJlSX9eBG3h+vxGNjB0L8iYINmqFKPMD9JVMKsMBlQrLvieoxohOjJaWQwA28uJYqIMJqUn7FVymSmLvjBjGLndy24o2ED41Ehx2T4dgdtU6LJ1pwBgXS54JSlRyG0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XmJeJQW6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4C58C4CEEA;
+	Mon, 23 Jun 2025 21:37:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750713098;
-	bh=q1NAvCfxOMHaE1mPFmcG3nOu05BvI7CWNysTNqYzXp0=;
+	s=korg; t=1750714672;
+	bh=tXmSukYVWJlgmenilJ2w6BWTXAAwCf6R+3jtIeZVgpg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MzNYonlyXW21RErTvt8zfM4JbI13N7XyERwmOd5FW0RwjGzQMPi6V0CaIa1/A2WGP
-	 /t4zSjSrdE2cfrzmzYAdMoi8XjkQ8lsPm/dZNWK3cnyw/hTC9JpTqA1pkP5mGdHjoH
-	 bPZff0r+62m6GFzbwB6CXqj9soPHRbu7wOTPHQAI=
+	b=XmJeJQW6NMlqIbI/+ZGiToc/TOffj7GAt/emHzogHSBTUwo2ljWHIfMctLkxDEN/k
+	 3mJHVPyewfW7wE3rNrccCWMZROxNEJXQ8DoLlo6GDS5UhsC0maa3yPR1q0H7jBnE1X
+	 nGuZVk6ZvMFPaTp3RZ7mR+Nj3XFOxwBRz8mhw3Z0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nathan Chancellor <nathan@kernel.org>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Linux Kernel Functional Testing <lkft@linaro.org>,
-	Anders Roxell <anders.roxell@linaro.org>,
-	Masahiro Yamada <masahiroy@kernel.org>
-Subject: [PATCH 5.10 145/355] drm/amd/display: Do not add -mhard-float to dml_ccflags for clang
+	Jeff Layton <jlayton@kernel.org>,
+	Li Lingfeng <lilingfeng3@huawei.com>,
+	Chuck Lever <chuck.lever@oracle.com>
+Subject: [PATCH 5.15 202/411] nfsd: Initialize ssc before laundromat_work to prevent NULL dereference
 Date: Mon, 23 Jun 2025 15:05:46 +0200
-Message-ID: <20250623130631.068243045@linuxfoundation.org>
+Message-ID: <20250623130638.757990072@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130626.716971725@linuxfoundation.org>
-References: <20250623130626.716971725@linuxfoundation.org>
+In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
+References: <20250623130632.993849527@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,48 +62,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nathan Chancellor <nathan@kernel.org>
+From: Li Lingfeng <lilingfeng3@huawei.com>
 
-commit 7db038d9790eda558dd6c1dde4cdd58b64789c47 upstream.
+commit b31da62889e6d610114d81dc7a6edbcaa503fcf8 upstream.
 
-When clang's -Qunused-arguments is dropped from KBUILD_CPPFLAGS, it
-warns:
+In nfs4_state_start_net(), laundromat_work may access nfsd_ssc through
+nfs4_laundromat -> nfsd4_ssc_expire_umount. If nfsd_ssc isn't initialized,
+this can cause NULL pointer dereference.
 
-  clang-16: error: argument unused during compilation: '-mhard-float' [-Werror,-Wunused-command-line-argument]
+Normally the delayed start of laundromat_work allows sufficient time for
+nfsd_ssc initialization to complete. However, when the kernel waits too
+long for userspace responses (e.g. in nfs4_state_start_net ->
+nfsd4_end_grace -> nfsd4_record_grace_done -> nfsd4_cld_grace_done ->
+cld_pipe_upcall -> __cld_pipe_upcall -> wait_for_completion path), the
+delayed work may start before nfsd_ssc initialization finishes.
 
-Similar to commit 84edc2eff827 ("selftest/fpu: avoid clang warning"),
-just add this flag to GCC builds. Commit 0f0727d971f6 ("drm/amd/display:
-readd -msse2 to prevent Clang from emitting libcalls to undefined SW FP
-routines") added '-msse2' to prevent clang from emitting software
-floating point routines.
+Fix this by moving nfsd_ssc initialization before starting laundromat_work.
 
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
-Acked-by: Alex Deucher <alexander.deucher@amd.com>
-Tested-by: Linux Kernel Functional Testing <lkft@linaro.org>
-Tested-by: Anders Roxell <anders.roxell@linaro.org>
-Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+Fixes: f4e44b393389 ("NFSD: delay unmount source's export after inter-server copy completed.")
+Cc: stable@vger.kernel.org
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
+Signed-off-by: Li Lingfeng <lilingfeng3@huawei.com>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/display/dc/dml/Makefile |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ fs/nfsd/nfssvc.c |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
---- a/drivers/gpu/drm/amd/display/dc/dml/Makefile
-+++ b/drivers/gpu/drm/amd/display/dc/dml/Makefile
-@@ -26,7 +26,8 @@
- # subcomponents.
+--- a/fs/nfsd/nfssvc.c
++++ b/fs/nfsd/nfssvc.c
+@@ -427,13 +427,13 @@ static int nfsd_startup_net(struct net *
+ 	if (ret)
+ 		goto out_filecache;
  
- ifdef CONFIG_X86
--dml_ccflags := -mhard-float -msse
-+dml_ccflags-$(CONFIG_CC_IS_GCC) := -mhard-float
-+dml_ccflags := $(dml_ccflags-y) -msse
- endif
++#ifdef CONFIG_NFSD_V4_2_INTER_SSC
++	nfsd4_ssc_init_umount_work(nn);
++#endif
+ 	ret = nfs4_state_start_net(net);
+ 	if (ret)
+ 		goto out_reply_cache;
  
- ifdef CONFIG_PPC64
+-#ifdef CONFIG_NFSD_V4_2_INTER_SSC
+-	nfsd4_ssc_init_umount_work(nn);
+-#endif
+ 	nn->nfsd_net_up = true;
+ 	return 0;
+ 
 
 
 
