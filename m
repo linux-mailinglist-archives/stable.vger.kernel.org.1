@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-157557-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156190-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF682AE5494
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:02:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A93CAE4E86
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:06:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7201E4C149E
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:02:56 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E69CE17BF2E
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:06:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F088223714;
-	Mon, 23 Jun 2025 22:02:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B8E521CA07;
+	Mon, 23 Jun 2025 21:06:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GH484LrU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZIOZR9fM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BAC121FF50;
-	Mon, 23 Jun 2025 22:02:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48AA1219E0;
+	Mon, 23 Jun 2025 21:06:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750716159; cv=none; b=ObZZ5Z0kmSambplSB0RoqafcTNILCdjcycpMk8lDRF1AmNpyyRiFmkXVDNrbOh20UoSRWqeT+HCQm1B4d955x4bSRrW0DhTm2TJJ1JQnDDY6l4246xHFQoYOytyTAx07kG5U7bHcU5OM7LmXEx9RxbOAY2lcmU0rSgpWzTQQ/ic=
+	t=1750712800; cv=none; b=IaOqHFK87AE2E9cPZXJQltDytteuVAV8h9QQvsjTcNp1WHF1JBduoKIEr1XDjCcsWIjaJ3G+EkRoFH0XoNjXrZMIndqXCAE+GhLaP1fuwFoPqHX1vLwEXvrtXHuM0u/hAbCh7qkXySnq2JdF2zxVG19veKq3faresuW9NEUrNkY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750716159; c=relaxed/simple;
-	bh=wuLUvzTOAsAZa9ryNZUDecKatgtdtrKOkeJTbQjuzVg=;
+	s=arc-20240116; t=1750712800; c=relaxed/simple;
+	bh=AZgS98R8PjjQnzb4Q1B22d+lOC6u++fnUHE+u3m/ksQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iPcvcujLOtZaIelkR7D/mBSWop2GXizFX60LqgauqbnbexpbZ0MmzuWl53By/myAxxOnu16/VAdqC3056aQMXbyEWMpijqwa4vLjxlGRbqYNRTobLs+ncBeMc40qUqXxNzRBfnl6dwLGCqcBGpuVwzMuacOGuZVjZSJDLGXZx64=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GH484LrU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6FE6C4CEEA;
-	Mon, 23 Jun 2025 22:02:38 +0000 (UTC)
+	 MIME-Version; b=jD7TaK1v2weotEiucGXxXHqUr4c6dNUbNf91r68r5J6zptKS82WJK3Wpqk7QIJk4mSAOXPHcWrHlaY0pzQhDRMHoRy+f/W5IbE+pEYfpDFKMPBH42wPK/T0FZz5GANjSQicNm3f5yKSLxY7b7MuknhRPkzAKrlmQomCVjBu96hQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZIOZR9fM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D38FAC4CEED;
+	Mon, 23 Jun 2025 21:06:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750716159;
-	bh=wuLUvzTOAsAZa9ryNZUDecKatgtdtrKOkeJTbQjuzVg=;
+	s=korg; t=1750712800;
+	bh=AZgS98R8PjjQnzb4Q1B22d+lOC6u++fnUHE+u3m/ksQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GH484LrUdWxFmVXlRnfOn/LAMp2dnI9KvTl3kQvcXYjecE4/N39UDJB/5WJ45f5IE
-	 TeGrFA490VpA1vIzz1dxSWqanPEXQIYsRCM8HAzM24tyAB19ynbcx167X19VDb1Fq4
-	 8La+wXpueZZ4DWKl3WmFZRNGAvS+72+nEIp1lLRk=
+	b=ZIOZR9fMzV4tet0wCyzK48BZW1ELIC6jUj8GatGu2nZ8NOphxhHc8X+vMnMrMKKUP
+	 7J5GLRuBtG+mQEkfBsN9wYrXqbYYvxgT8sxn84EUFQ9cognANA7LGifwm0e1bWaQr0
+	 uzVvg7hbupZNciaMn+asxEPj9sizhL8dxuFwCadM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Grzegorz Nitka <grzegorz.nitka@intel.com>,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-	Simon Horman <horms@kernel.org>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Sasha Levin <sashal@kernel.org>,
-	Rinitha S <sx.rinitha@intel.com>
-Subject: [PATCH 6.15 526/592] ice: fix eswitch code memory leak in reset scenario
+	Rodrigo Siqueira <siqueira@igalia.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 149/222] drm/amdgpu/gfx7: fix CSIB handling
 Date: Mon, 23 Jun 2025 15:08:04 +0200
-Message-ID: <20250623130712.945517169@linuxfoundation.org>
+Message-ID: <20250623130616.569366552@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
-References: <20250623130700.210182694@linuxfoundation.org>
+In-Reply-To: <20250623130611.896514667@linuxfoundation.org>
+References: <20250623130611.896514667@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,80 +62,37 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Grzegorz Nitka <grzegorz.nitka@intel.com>
+From: Alex Deucher <alexander.deucher@amd.com>
 
-[ Upstream commit 48c8b214974dc55283bd5f12e3a483b27c403bbc ]
+[ Upstream commit be7652c23d833d1ab2c67b16e173b1a4e69d1ae6 ]
 
-Add simple eswitch mode checker in attaching VF procedure and allocate
-required port representor memory structures only in switchdev mode.
-The reset flows triggers VF (if present) detach/attach procedure.
-It might involve VF port representor(s) re-creation if the device is
-configured is switchdev mode (not legacy one).
-The memory was blindly allocated in current implementation,
-regardless of the mode and not freed if in legacy mode.
+We shouldn't return after the last section.
+We need to update the rest of the CSIB.
 
-Kmemeleak trace:
-unreferenced object (percpu) 0x7e3bce5b888458 (size 40):
-  comm "bash", pid 1784, jiffies 4295743894
-  hex dump (first 32 bytes on cpu 45):
-    00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
-    00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
-  backtrace (crc 0):
-    pcpu_alloc_noprof+0x4c4/0x7c0
-    ice_repr_create+0x66/0x130 [ice]
-    ice_repr_create_vf+0x22/0x70 [ice]
-    ice_eswitch_attach_vf+0x1b/0xa0 [ice]
-    ice_reset_all_vfs+0x1dd/0x2f0 [ice]
-    ice_pci_err_resume+0x3b/0xb0 [ice]
-    pci_reset_function+0x8f/0x120
-    reset_store+0x56/0xa0
-    kernfs_fop_write_iter+0x120/0x1b0
-    vfs_write+0x31c/0x430
-    ksys_write+0x61/0xd0
-    do_syscall_64+0x5b/0x180
-    entry_SYSCALL_64_after_hwframe+0x76/0x7e
-
-Testing hints (ethX is PF netdev):
-- create at least one VF
-    echo 1 > /sys/class/net/ethX/device/sriov_numvfs
-- trigger the reset
-    echo 1 > /sys/class/net/ethX/device/reset
-
-Fixes: 415db8399d06 ("ice: make representor code generic")
-Signed-off-by: Grzegorz Nitka <grzegorz.nitka@intel.com>
-Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Tested-by: Rinitha S <sx.rinitha@intel.com> (A Contingent worker at Intel)
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Reviewed-by: Rodrigo Siqueira <siqueira@igalia.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/ice/ice_eswitch.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/amd/amdgpu/gfx_v7_0.c | 2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/ice/ice_eswitch.c b/drivers/net/ethernet/intel/ice/ice_eswitch.c
-index ed21d7f55ac11..5b9a7ee278f17 100644
---- a/drivers/net/ethernet/intel/ice/ice_eswitch.c
-+++ b/drivers/net/ethernet/intel/ice/ice_eswitch.c
-@@ -502,10 +502,14 @@ ice_eswitch_attach(struct ice_pf *pf, struct ice_repr *repr, unsigned long *id)
-  */
- int ice_eswitch_attach_vf(struct ice_pf *pf, struct ice_vf *vf)
- {
--	struct ice_repr *repr = ice_repr_create_vf(vf);
- 	struct devlink *devlink = priv_to_devlink(pf);
-+	struct ice_repr *repr;
- 	int err;
- 
-+	if (!ice_is_eswitch_mode_switchdev(pf))
-+		return 0;
-+
-+	repr = ice_repr_create_vf(vf);
- 	if (IS_ERR(repr))
- 		return PTR_ERR(repr);
- 
+diff --git a/drivers/gpu/drm/amd/amdgpu/gfx_v7_0.c b/drivers/gpu/drm/amd/amdgpu/gfx_v7_0.c
+index d92e92e5d50b7..c1c3fb4d283d7 100644
+--- a/drivers/gpu/drm/amd/amdgpu/gfx_v7_0.c
++++ b/drivers/gpu/drm/amd/amdgpu/gfx_v7_0.c
+@@ -3992,8 +3992,6 @@ static void gfx_v7_0_get_csb_buffer(struct amdgpu_device *adev,
+ 				buffer[count++] = cpu_to_le32(ext->reg_index - PACKET3_SET_CONTEXT_REG_START);
+ 				for (i = 0; i < ext->reg_count; i++)
+ 					buffer[count++] = cpu_to_le32(ext->extent[i]);
+-			} else {
+-				return;
+ 			}
+ 		}
+ 	}
 -- 
 2.39.5
 
