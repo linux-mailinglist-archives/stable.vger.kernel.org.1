@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-156504-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157298-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D6716AE4FCC
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:19:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D5A65AE5355
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:52:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6E80317F521
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:19:43 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6CF394A7930
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:52:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 852541EEA3C;
-	Mon, 23 Jun 2025 21:19:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 712071E22E6;
+	Mon, 23 Jun 2025 21:52:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UYeLWlLx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g+JXHZtc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43C0E4C62;
-	Mon, 23 Jun 2025 21:19:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F3C71AD3FA;
+	Mon, 23 Jun 2025 21:52:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750713575; cv=none; b=osmpynN3rtKD/wPAN2qHVKcthxyFUbA77zPHzuZlfw+7L8Yo6k3Uu0jeXZWB0Iq4eA/NVf3QToYaJ6mwmQMfBcUCvxwhEISH4ANHuPMOr6bd1foluGcWS+BiPwJyZKQT9Sq7vl3OvsY2UXkrPeNwbnbpQmxzmZGZVl5s6IO+Kj0=
+	t=1750715526; cv=none; b=NHYogV9szMVF6lS7/x+ovfji7t5XtusEIyCw4zutmHjJCHyZyeTC84GG6OLgFOu6FfnRK1FbIWuDl9BEm+/bvucbW07CWv9MmLFI5YyXoMN12uspwKExKl9HrZsw0Db13GPLQyUe0CI64qWGimJ29I+G01+dHsgpH2NiKZZGfRE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750713575; c=relaxed/simple;
-	bh=E5ynI7/YTcVqjnsGpkvZwFumYYd3vW02uiAUs9pebyI=;
+	s=arc-20240116; t=1750715526; c=relaxed/simple;
+	bh=4nhZkk9lnppgTJO5dEDAifbm35WPA0c6AXshAv5pjXA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uNqmmJnJkuHPpvjsKWzloR382lHPFJzAIHYpfQP3AS7Rpqt7RCxRwh9q+ZUpOuoJFNMyyEVcAxLIA42WV3H94VK0OkX6+MVGccb6pTYiyRfLkjDxka6T+HU2ikx0+m4JA8D94A9OApjcLsaGAs+hRVFf+yehY209ZU+igSqTt/w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UYeLWlLx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF9D1C4CEEA;
-	Mon, 23 Jun 2025 21:19:34 +0000 (UTC)
+	 MIME-Version; b=DMt/LMcmGUL3D5XipUgZ+qdB0o6Bd4IFvSCuDSjwXMPuCyaOG+ZAd8qM8EmogxGCjx2zlZUpzA//yEO2Y9R3+XNt2pJqPROv5dhORmI5qa9dwVQQA6t2R2zrabeEsgRWDOEOwDpeDq9+68L5ud7j7VKq52yWOMSQ84fGoFLxDUU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g+JXHZtc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA7B0C4CEEA;
+	Mon, 23 Jun 2025 21:52:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750713575;
-	bh=E5ynI7/YTcVqjnsGpkvZwFumYYd3vW02uiAUs9pebyI=;
+	s=korg; t=1750715526;
+	bh=4nhZkk9lnppgTJO5dEDAifbm35WPA0c6AXshAv5pjXA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UYeLWlLx6tAJ1kXeoJOg0R9uz3IAXwp2p3X6qny76qejvofq5RKqvhikyssKo7AMo
-	 7TfgEysOJrQUt1RDmlm0PUbJ+FtXSuOLdpvdlILxt6CqETVSxeYjsz/9qPZxIbtYL6
-	 ih2scXcjHoF0kVntvszjVSQRwClWDz9wd22XhkzI=
+	b=g+JXHZtc6u3sQxlqc37VP+jKrzvxC6F1v0PMBvh7FU/EekfZ7vFLffQLRcHkXqilR
+	 DAtI8ihQD4jHbBvLL/pGtxXECssc8u5h5QiPi5DQj++HeYFyGAvNjrfM07J5Nb4f6V
+	 Pq6nbQXkCDWDoFUKiW2orUXFkv+7RSi0qf4lOmiI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Taniya Das <quic_tdas@quicinc.com>,
-	Imran Shaik <quic_imrashai@quicinc.com>,
-	Bjorn Andersson <andersson@kernel.org>,
+	Jakub Sitnicki <jakub@cloudflare.com>,
+	Michal Luczaj <mhal@rbox.co>,
+	Willem de Bruijn <willemb@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 335/592] clk: qcom: gcc-x1e80100: Set FORCE MEM CORE for UFS clocks
+Subject: [PATCH 6.1 248/508] net: Fix TOCTOU issue in sk_is_readable()
 Date: Mon, 23 Jun 2025 15:04:53 +0200
-Message-ID: <20250623130708.422102902@linuxfoundation.org>
+Message-ID: <20250623130651.353220219@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
-References: <20250623130700.210182694@linuxfoundation.org>
+In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
+References: <20250623130645.255320792@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,44 +64,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Taniya Das <quic_tdas@quicinc.com>
+From: Michal Luczaj <mhal@rbox.co>
 
-[ Upstream commit 201bf08ba9e26eeb0a96ba3fd5c026f531b31aed ]
+[ Upstream commit 2660a544fdc0940bba15f70508a46cf9a6491230 ]
 
-Update the force mem core bit for UFS ICE clock and UFS PHY AXI clock to
-force the core on signal to remain active during halt state of the clk.
-If force mem core bit of the clock is not set, the memories of the
-subsystem will not retain the logic across power states. This is
-required for the MCQ feature of UFS.
+sk->sk_prot->sock_is_readable is a valid function pointer when sk resides
+in a sockmap. After the last sk_psock_put() (which usually happens when
+socket is removed from sockmap), sk->sk_prot gets restored and
+sk->sk_prot->sock_is_readable becomes NULL.
 
-Signed-off-by: Taniya Das <quic_tdas@quicinc.com>
-Reviewed-by: Imran Shaik <quic_imrashai@quicinc.com>
-Link: https://lore.kernel.org/r/20250414-gcc_ufs_mem_core-v1-2-67b5529b9b5d@quicinc.com
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+This makes sk_is_readable() racy, if the value of sk->sk_prot is reloaded
+after the initial check. Which in turn may lead to a null pointer
+dereference.
+
+Ensure the function pointer does not turn NULL after the check.
+
+Fixes: 8934ce2fd081 ("bpf: sockmap redirect ingress support")
+Suggested-by: Jakub Sitnicki <jakub@cloudflare.com>
+Signed-off-by: Michal Luczaj <mhal@rbox.co>
+Reviewed-by: Willem de Bruijn <willemb@google.com>
+Link: https://patch.msgid.link/20250609-skisreadable-toctou-v1-1-d0dfb2d62c37@rbox.co
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/qcom/gcc-x1e80100.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ include/net/sock.h | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/clk/qcom/gcc-x1e80100.c b/drivers/clk/qcom/gcc-x1e80100.c
-index 009f39139b644..3e44757e25d32 100644
---- a/drivers/clk/qcom/gcc-x1e80100.c
-+++ b/drivers/clk/qcom/gcc-x1e80100.c
-@@ -6753,6 +6753,10 @@ static int gcc_x1e80100_probe(struct platform_device *pdev)
- 	/* Clear GDSC_SLEEP_ENA_VOTE to stop votes being auto-removed in sleep. */
- 	regmap_write(regmap, 0x52224, 0x0);
+diff --git a/include/net/sock.h b/include/net/sock.h
+index e716b2ba00bba..e00cd9d0bec8e 100644
+--- a/include/net/sock.h
++++ b/include/net/sock.h
+@@ -3061,8 +3061,11 @@ int sock_copy_user_timeval(struct __kernel_sock_timeval *tv,
  
-+	/* FORCE_MEM_CORE_ON for ufs phy ice core and gcc ufs phy axi clocks  */
-+	qcom_branch_set_force_mem_core(regmap, gcc_ufs_phy_ice_core_clk, true);
-+	qcom_branch_set_force_mem_core(regmap, gcc_ufs_phy_axi_clk, true);
+ static inline bool sk_is_readable(struct sock *sk)
+ {
+-	if (sk->sk_prot->sock_is_readable)
+-		return sk->sk_prot->sock_is_readable(sk);
++	const struct proto *prot = READ_ONCE(sk->sk_prot);
 +
- 	return qcom_cc_really_probe(&pdev->dev, &gcc_x1e80100_desc, regmap);
++	if (prot->sock_is_readable)
++		return prot->sock_is_readable(sk);
++
+ 	return false;
  }
- 
+ #endif	/* _SOCK_H */
 -- 
 2.39.5
 
