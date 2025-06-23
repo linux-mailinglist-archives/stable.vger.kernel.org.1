@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-157331-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157300-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A2D96AE5380
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:53:46 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1E2A1AE5362
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:52:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C3C134A607C
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:53:33 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D763B443655
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:52:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EFA322222B7;
-	Mon, 23 Jun 2025 21:53:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5816E223DF0;
+	Mon, 23 Jun 2025 21:52:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Rvitu4Gh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a5Knxqx0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A407A72624;
-	Mon, 23 Jun 2025 21:53:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14321223DEA;
+	Mon, 23 Jun 2025 21:52:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750715606; cv=none; b=FXJcMu8s67AbiDzOmL+nWYfdMpomf8CVs4UQCm4fWD9nVKCmqgWn+zvx5nGRz6bOqKEcfT+xqCjT96BAxo0MbjqFKmNcfBMaxe7J9WIbM3v5YuX2KSz4uIGXsFj8cxy9XTXoTsqEi5+/IjfM1IZ14RWaLkjMxLX4blDM6L0ra24=
+	t=1750715531; cv=none; b=acpRVuHDIPhE1DToaZ6+1i+kfixIqhDwmk0BI2KJI3wt4jth1Ou/bVWzWPXqK0hGZVyGhtVuP3znXxBWs20rF7DK8LAPM/M0LkjuV6cKidrDoKxuJdzhPixkeFoqOrBMQVwgV9cQJkc0e/G42JAFkbj7Rjk01Udb90ytuXwKNgs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750715606; c=relaxed/simple;
-	bh=6z5NIlGkhoEKmwd8GiUqb3HzfP1AdloX3ySw0U+OYPQ=;
+	s=arc-20240116; t=1750715531; c=relaxed/simple;
+	bh=kwbe4nB+NhrPNroktFFl1SUcyRCn37LERCJgUpI3DRk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=OkAZ3gK/++QZt/+pQFJh/ISZHQDXj1NaVTPhWGP89DLZLMJZtD/CQXlU4hbZvGiUtZUQwbC4TXvXReQgir+68yp5qOJDlXFotDSpLdHOL7kKPESlDhUh1KBCfJt17E0OqU7dIRCwZowF5RjocGVG2VufVSU7F1MTMclLqFsRuWQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Rvitu4Gh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3CD6EC4CEEA;
-	Mon, 23 Jun 2025 21:53:26 +0000 (UTC)
+	 MIME-Version; b=sM+ZY+Oe1VBBDa3+1GCqGDOLlFUMX7p85LoLDCoDSfVIy4ynTrBB+408dXfr9XcQKazdIqu5rJ341tDaMzSip3dayXJd0jTv1GtTzS1z4wOAUoQKE7N3YXyMVF5VVb8tYv5XE6R5QM9cyeqkROOmgGpPF7Xs/1y2tnqqO3NrT2Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a5Knxqx0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0C1DC4CEEA;
+	Mon, 23 Jun 2025 21:52:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750715606;
-	bh=6z5NIlGkhoEKmwd8GiUqb3HzfP1AdloX3ySw0U+OYPQ=;
+	s=korg; t=1750715531;
+	bh=kwbe4nB+NhrPNroktFFl1SUcyRCn37LERCJgUpI3DRk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Rvitu4GhMD7YIugKZSgBQgLp5iTNa1GqCRx/4Be86uEZSNAytInjo1PMgXXt37FpL
-	 UZwKV3EIqMAA3DFhBWU569D7lE8KELSHqCPSLPxzJdzjMeSd7NX+uWZNOcOC19oH+l
-	 7w3PEjdDbbe+T2faIgcOjklh6S7UyTfXxEejkLEI=
+	b=a5Knxqx0IQ+6+FAQ195d5orlOgdTzmYkGPPNMw+F2Rkj0VvRgHGa+QmwiEZE3M0yK
+	 I04S/fX1+Ora4dhAlwav/VAUvHvjO9U8xhaRuAtI/UhaFbslcwF+Mg9BuSPpWf6g8P
+	 HGSwvvZe5M5pTi2Mh/vnng3TqzBpxyZB79SMnDk0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
-	Vivek Kasireddy <vivek.kasireddy@intel.com>,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>
-Subject: [PATCH 6.15 469/592] udmabuf: use sgtable-based scatterlist wrappers
+	Rodrigo Siqueira <siqueira@igalia.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 283/411] drm/amdgpu/gfx10: fix CSIB handling
 Date: Mon, 23 Jun 2025 15:07:07 +0200
-Message-ID: <20250623130711.586666961@linuxfoundation.org>
+Message-ID: <20250623130640.772562884@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
-References: <20250623130700.210182694@linuxfoundation.org>
+In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
+References: <20250623130632.993849527@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,55 +60,42 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marek Szyprowski <m.szyprowski@samsung.com>
+From: Alex Deucher <alexander.deucher@amd.com>
 
-commit afe382843717d44b24ef5014d57dcbaab75a4052 upstream.
+[ Upstream commit 683308af030cd9b8d3f1de5cbc1ee51788878feb ]
 
-Use common wrappers operating directly on the struct sg_table objects to
-fix incorrect use of scatterlists sync calls. dma_sync_sg_for_*()
-functions have to be called with the number of elements originally passed
-to dma_map_sg_*() function, not the one returned in sgtable's nents.
+We shouldn't return after the last section.
+We need to update the rest of the CSIB.
 
-Fixes: 1ffe09590121 ("udmabuf: fix dma-buf cpu access")
-CC: stable@vger.kernel.org
-Signed-off-by: Marek Szyprowski <m.szyprowski@samsung.com>
-Acked-by: Vivek Kasireddy <vivek.kasireddy@intel.com>
-Reviewed-by: Christian König <christian.koenig@amd.com>
-Signed-off-by: Christian König <christian.koenig@amd.com>
-Link: https://lore.kernel.org/r/20250507160913.2084079-3-m.szyprowski@samsung.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reviewed-by: Rodrigo Siqueira <siqueira@igalia.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/dma-buf/udmabuf.c |    5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/gfx_v10_0.c | 2 --
+ 1 file changed, 2 deletions(-)
 
---- a/drivers/dma-buf/udmabuf.c
-+++ b/drivers/dma-buf/udmabuf.c
-@@ -264,8 +264,7 @@ static int begin_cpu_udmabuf(struct dma_
- 			ubuf->sg = NULL;
+diff --git a/drivers/gpu/drm/amd/amdgpu/gfx_v10_0.c b/drivers/gpu/drm/amd/amdgpu/gfx_v10_0.c
+index 938f13956aeef..d8926d510b3c6 100644
+--- a/drivers/gpu/drm/amd/amdgpu/gfx_v10_0.c
++++ b/drivers/gpu/drm/amd/amdgpu/gfx_v10_0.c
+@@ -4438,8 +4438,6 @@ static void gfx_v10_0_get_csb_buffer(struct amdgpu_device *adev,
+ 						PACKET3_SET_CONTEXT_REG_START);
+ 				for (i = 0; i < ext->reg_count; i++)
+ 					buffer[count++] = cpu_to_le32(ext->extent[i]);
+-			} else {
+-				return;
+ 			}
  		}
- 	} else {
--		dma_sync_sg_for_cpu(dev, ubuf->sg->sgl, ubuf->sg->nents,
--				    direction);
-+		dma_sync_sgtable_for_cpu(dev, ubuf->sg, direction);
  	}
- 
- 	return ret;
-@@ -280,7 +279,7 @@ static int end_cpu_udmabuf(struct dma_bu
- 	if (!ubuf->sg)
- 		return -EINVAL;
- 
--	dma_sync_sg_for_device(dev, ubuf->sg->sgl, ubuf->sg->nents, direction);
-+	dma_sync_sgtable_for_device(dev, ubuf->sg, direction);
- 	return 0;
- }
- 
+-- 
+2.39.5
+
 
 
 
