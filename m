@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-157727-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157756-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7A65CAE5551
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:10:20 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A1D87AE5575
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:11:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 284464C3663
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:09:36 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1E4991BC47F0
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:11:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E91821FF2B;
-	Mon, 23 Jun 2025 22:09:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 18FEF224B07;
+	Mon, 23 Jun 2025 22:10:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SiukiThM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1BQKW1mI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD3B32940B;
-	Mon, 23 Jun 2025 22:09:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C79701F7580;
+	Mon, 23 Jun 2025 22:10:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750716574; cv=none; b=K3hgRtCxZ1gPiRZcd8OT/5YVK8C5ple8XAUO6MKtHnu8/B6mKpkzshQcmbl+dV2Sal9jz6t6ZU5z8XNGnQ52MoiIOzeGQnuzH9/SqnHz1lX61UP3c+nNM3bH4mukLN/Xqc8j91w7L5EMHFi0GXU+AORp1JtmFACe8g3ZJZdzdYw=
+	t=1750716644; cv=none; b=IBaTWAEZF5iLIihADD5/wKOkjSzqGI/3vjdH1FJAHetcqWLi20IT9jgxX/82DwKMlM+dXZc0bKelaGwKvWZd4n0naOi3aqgTSwGfAF/RrvwFio53vPVWxYsTtfHrT7KnfPfd11U6s+apc8FrHIniVQUkCvio8AS/ClMzBcajNFc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750716574; c=relaxed/simple;
-	bh=/wqEmBVExkOjIk8DAQTEFtP5WD2G6OFnWNv5OkQ8qFQ=;
+	s=arc-20240116; t=1750716644; c=relaxed/simple;
+	bh=k6iFyZZJBemvHREQj4xxcFRhJf0akJNccL7JB37X3cg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EaBfDeUccJYX8mi6H+wNCXEtrT9B1RYeiaSl7laQPPXx3ZwdiY1cELla80kh6bEsaSUB4+WSHW0dSd49k5PN7KXCyppRyEcMFxdOofrYZO3DCFguPAKDEts7hMLs9a/kNIpUf2AFkg6KDqKO74fZs7Rm0DGovJY6ncUJAGQcuQI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SiukiThM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76C4BC4CEEA;
-	Mon, 23 Jun 2025 22:09:33 +0000 (UTC)
+	 MIME-Version; b=k5U/sIcLOk1sLoya9lnINj3/nQdevQXBMtjomuOgBvysaxGv0q1lP8Cc9sHCcgOVu9JWMP48fMTMHtAP1M/o88X9zYTbuAEBCz+h1kHVfPh7FVn5cGWhOQrv1VERcHY5O9K9+iBGFVu9WyepZUAMrHr35G7inGbfK1DNpVay7fI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1BQKW1mI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 607BEC4CEEA;
+	Mon, 23 Jun 2025 22:10:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750716573;
-	bh=/wqEmBVExkOjIk8DAQTEFtP5WD2G6OFnWNv5OkQ8qFQ=;
+	s=korg; t=1750716644;
+	bh=k6iFyZZJBemvHREQj4xxcFRhJf0akJNccL7JB37X3cg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SiukiThM5Lu+MBGbrhQqpV3XSbNs+BN/fhIba4tH2MN7yD7wau0FcqdeF0RMwQKbZ
-	 RQRA7FjQL5QcfMwMcwLgVA9S4YkoY/Qd4pbmQEZSogTKA5mPkTJAolayAWwugUFhFG
-	 0qwwQxHT7xG4ZN3IWCU4uEVft/Dv19b/pE9XUSnA=
+	b=1BQKW1mIhC/Att1JpqBF9FqStCIOexECmBYTvmcLqdQ+kQlD9x5S7UiqMmDEtR3dx
+	 Ea+aV/KHt2n9o1QkqF6RsUfOdV6wa03NduDDISDe9AAdYuhVkfQD7IkiYz8cyDSOhZ
+	 CnwYMtASvs59Re3xFAuZ/CIMKtsZz6RJdU9g9FiE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michael Chan <michael.chan@broadcom.com>,
-	Simon Horman <horms@kernel.org>,
-	David Wei <dw@davidwei.uk>,
-	Pavan Chebbi <pavan.chebbi@broadcom.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 533/592] bnxt_en: Add a helper function to configure MRU and RSS
+	Artem Sadovnikov <a.sadovnikov@ispras.ru>,
+	Zhihao Cheng <chengzhihao1@huawei.com>,
+	Richard Weinberger <richard@nod.at>
+Subject: [PATCH 5.15 347/411] jffs2: check that raw node were preallocated before writing summary
 Date: Mon, 23 Jun 2025 15:08:11 +0200
-Message-ID: <20250623130713.112075768@linuxfoundation.org>
+Message-ID: <20250623130642.381178341@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
-References: <20250623130700.210182694@linuxfoundation.org>
+In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
+References: <20250623130632.993849527@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,109 +62,92 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pavan Chebbi <pavan.chebbi@broadcom.com>
+From: Artem Sadovnikov <a.sadovnikov@ispras.ru>
 
-[ Upstream commit e11baaea94e2923739a98abeee85eb0667c04fd3 ]
+commit ec9e6f22bce433b260ea226de127ec68042849b0 upstream.
 
-Add a new helper function that will configure MRU and RSS table
-of a VNIC. This will be useful when we configure both on a VNIC
-when resetting an RX ring.  This function will be used again in
-the next bug fix patch where we have to reconfigure VNICs for RSS
-contexts.
+Syzkaller detected a kernel bug in jffs2_link_node_ref, caused by fault
+injection in jffs2_prealloc_raw_node_refs. jffs2_sum_write_sumnode doesn't
+check return value of jffs2_prealloc_raw_node_refs and simply lets any
+error propagate into jffs2_sum_write_data, which eventually calls
+jffs2_link_node_ref in order to link the summary to an expectedly allocated
+node.
 
-Suggested-by: Michael Chan <michael.chan@broadcom.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Reviewed-by: David Wei <dw@davidwei.uk>
-Signed-off-by: Pavan Chebbi <pavan.chebbi@broadcom.com>
-Signed-off-by: Michael Chan <michael.chan@broadcom.com>
-Link: https://patch.msgid.link/20250613231841.377988-3-michael.chan@broadcom.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Stable-dep-of: 5dacc94c6fe6 ("bnxt_en: Update MRU and RSS table of RSS contexts on queue reset")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+kernel BUG at fs/jffs2/nodelist.c:592!
+invalid opcode: 0000 [#1] PREEMPT SMP KASAN NOPTI
+CPU: 1 PID: 31277 Comm: syz-executor.7 Not tainted 6.1.128-syzkaller-00139-ge10f83ca10a1 #0
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.12.0-1 04/01/2014
+RIP: 0010:jffs2_link_node_ref+0x570/0x690 fs/jffs2/nodelist.c:592
+Call Trace:
+ <TASK>
+ jffs2_sum_write_data fs/jffs2/summary.c:841 [inline]
+ jffs2_sum_write_sumnode+0xd1a/0x1da0 fs/jffs2/summary.c:874
+ jffs2_do_reserve_space+0xa18/0xd60 fs/jffs2/nodemgmt.c:388
+ jffs2_reserve_space+0x55f/0xaa0 fs/jffs2/nodemgmt.c:197
+ jffs2_write_inode_range+0x246/0xb50 fs/jffs2/write.c:362
+ jffs2_write_end+0x726/0x15d0 fs/jffs2/file.c:301
+ generic_perform_write+0x314/0x5d0 mm/filemap.c:3856
+ __generic_file_write_iter+0x2ae/0x4d0 mm/filemap.c:3973
+ generic_file_write_iter+0xe3/0x350 mm/filemap.c:4005
+ call_write_iter include/linux/fs.h:2265 [inline]
+ do_iter_readv_writev+0x20f/0x3c0 fs/read_write.c:735
+ do_iter_write+0x186/0x710 fs/read_write.c:861
+ vfs_iter_write+0x70/0xa0 fs/read_write.c:902
+ iter_file_splice_write+0x73b/0xc90 fs/splice.c:685
+ do_splice_from fs/splice.c:763 [inline]
+ direct_splice_actor+0x10c/0x170 fs/splice.c:950
+ splice_direct_to_actor+0x337/0xa10 fs/splice.c:896
+ do_splice_direct+0x1a9/0x280 fs/splice.c:1002
+ do_sendfile+0xb13/0x12c0 fs/read_write.c:1255
+ __do_sys_sendfile64 fs/read_write.c:1323 [inline]
+ __se_sys_sendfile64 fs/read_write.c:1309 [inline]
+ __x64_sys_sendfile64+0x1cf/0x210 fs/read_write.c:1309
+ do_syscall_x64 arch/x86/entry/common.c:51 [inline]
+ do_syscall_64+0x35/0x80 arch/x86/entry/common.c:81
+ entry_SYSCALL_64_after_hwframe+0x6e/0xd8
+
+Fix this issue by checking return value of jffs2_prealloc_raw_node_refs
+before calling jffs2_sum_write_data.
+
+Found by Linux Verification Center (linuxtesting.org) with Syzkaller.
+
+Cc: stable@vger.kernel.org
+Fixes: 2f785402f39b ("[JFFS2] Reduce visibility of raw_node_ref to upper layers of JFFS2 code.")
+Signed-off-by: Artem Sadovnikov <a.sadovnikov@ispras.ru>
+Reviewed-by: Zhihao Cheng <chengzhihao1@huawei.com>
+Signed-off-by: Richard Weinberger <richard@nod.at>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/broadcom/bnxt/bnxt.c | 37 ++++++++++++++++-------
- 1 file changed, 26 insertions(+), 11 deletions(-)
+ fs/jffs2/summary.c |    7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt.c b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-index 6afc2ab6fad22..3d975e50f9438 100644
---- a/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-+++ b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-@@ -10738,6 +10738,26 @@ void bnxt_del_one_rss_ctx(struct bnxt *bp, struct bnxt_rss_ctx *rss_ctx,
- 	bp->num_rss_ctx--;
+--- a/fs/jffs2/summary.c
++++ b/fs/jffs2/summary.c
+@@ -858,7 +858,10 @@ int jffs2_sum_write_sumnode(struct jffs2
+ 	spin_unlock(&c->erase_completion_lock);
+ 
+ 	jeb = c->nextblock;
+-	jffs2_prealloc_raw_node_refs(c, jeb, 1);
++	ret = jffs2_prealloc_raw_node_refs(c, jeb, 1);
++
++	if (ret)
++		goto out;
+ 
+ 	if (!c->summary->sum_num || !c->summary->sum_list_head) {
+ 		JFFS2_WARNING("Empty summary info!!!\n");
+@@ -872,6 +875,8 @@ int jffs2_sum_write_sumnode(struct jffs2
+ 	datasize += padsize;
+ 
+ 	ret = jffs2_sum_write_data(c, jeb, infosize, datasize, padsize);
++
++out:
+ 	spin_lock(&c->erase_completion_lock);
+ 	return ret;
  }
- 
-+static int bnxt_set_vnic_mru_p5(struct bnxt *bp, struct bnxt_vnic_info *vnic,
-+				u16 mru)
-+{
-+	int rc;
-+
-+	if (mru) {
-+		rc = bnxt_hwrm_vnic_set_rss_p5(bp, vnic, true);
-+		if (rc) {
-+			netdev_err(bp->dev, "hwrm vnic %d set rss failure rc: %d\n",
-+				   vnic->vnic_id, rc);
-+			return rc;
-+		}
-+	}
-+	vnic->mru = mru;
-+	bnxt_hwrm_vnic_update(bp, vnic,
-+			      VNIC_UPDATE_REQ_ENABLES_MRU_VALID);
-+
-+	return 0;
-+}
-+
- static void bnxt_hwrm_realloc_rss_ctx_vnic(struct bnxt *bp)
- {
- 	bool set_tpa = !!(bp->flags & BNXT_FLAG_TPA);
-@@ -15884,6 +15904,7 @@ static int bnxt_queue_start(struct net_device *dev, void *qmem, int idx)
- 	struct bnxt_vnic_info *vnic;
- 	struct bnxt_napi *bnapi;
- 	int i, rc;
-+	u16 mru;
- 
- 	rxr = &bp->rx_ring[idx];
- 	clone = qmem;
-@@ -15933,18 +15954,13 @@ static int bnxt_queue_start(struct net_device *dev, void *qmem, int idx)
- 	napi_enable_locked(&bnapi->napi);
- 	bnxt_db_nq_arm(bp, &cpr->cp_db, cpr->cp_raw_cons);
- 
-+	mru = bp->dev->mtu + ETH_HLEN + VLAN_HLEN;
- 	for (i = 0; i < bp->nr_vnics; i++) {
- 		vnic = &bp->vnic_info[i];
- 
--		rc = bnxt_hwrm_vnic_set_rss_p5(bp, vnic, true);
--		if (rc) {
--			netdev_err(bp->dev, "hwrm vnic %d set rss failure rc: %d\n",
--				   vnic->vnic_id, rc);
-+		rc = bnxt_set_vnic_mru_p5(bp, vnic, mru);
-+		if (rc)
- 			return rc;
--		}
--		vnic->mru = bp->dev->mtu + ETH_HLEN + VLAN_HLEN;
--		bnxt_hwrm_vnic_update(bp, vnic,
--				      VNIC_UPDATE_REQ_ENABLES_MRU_VALID);
- 	}
- 
- 	return 0;
-@@ -15969,9 +15985,8 @@ static int bnxt_queue_stop(struct net_device *dev, void *qmem, int idx)
- 
- 	for (i = 0; i < bp->nr_vnics; i++) {
- 		vnic = &bp->vnic_info[i];
--		vnic->mru = 0;
--		bnxt_hwrm_vnic_update(bp, vnic,
--				      VNIC_UPDATE_REQ_ENABLES_MRU_VALID);
-+
-+		bnxt_set_vnic_mru_p5(bp, vnic, 0);
- 	}
- 	/* Make sure NAPI sees that the VNIC is disabled */
- 	synchronize_net();
--- 
-2.39.5
-
 
 
 
