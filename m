@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-157370-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156922-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id B3271AE53A2
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:55:18 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8A102AE51B0
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:36:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 44CB37B0C2E
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:53:55 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 269FB4A43CC
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:36:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3ADF22258C;
-	Mon, 23 Jun 2025 21:55:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A139221FDD;
+	Mon, 23 Jun 2025 21:36:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UU9uJbIK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fi/fqi61"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81E2D1AD3FA;
-	Mon, 23 Jun 2025 21:55:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 155DB221FDC;
+	Mon, 23 Jun 2025 21:36:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750715702; cv=none; b=t2t6JeFWHm21CJ0eRnPn4YGjnqcS4k6nTyC2HIqmPB/7TE3t+Y/8GG9JxYUpLJwH+AB7EczK0gCaAkk3ueF6lXWZolxbnbA6WqnREujF/uGueP7SI+ViIj/p660p5EKcLuw4rqXfY6bidIz19o8+/QJHpJ/LmbqfwWlWVL1MDGs=
+	t=1750714598; cv=none; b=AHFQC2erfbE+patTf2SM4Kq6zuaWOuTBD6zQ4MxsC/tKPtLEliMHlu7SmmbrNKqGlHqOq9/dGpPVanTwO3mqn57BNou1LfC2B1738u4nwZNmf6+58UYuoLMAgb4yI8Z9011CU9dnzQ2bVuSemNrXgAgpESbRon9aRXnOp+DWqlc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750715702; c=relaxed/simple;
-	bh=m44C448abW3Oih7Q3yUtvGv3zJ/e1iPo6VaZyn4kw14=;
+	s=arc-20240116; t=1750714598; c=relaxed/simple;
+	bh=CWqJwv0b90hUkawWMd+MphIWhwyhvct1UkOvZGBv3o8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=L/dZ2jiChONQUa7TavaVWmsCyKr3+rwDWY4Up9GET4vqXHh+kZYgGjganFnwnltRASWHI69bU0RKwRG+Ogt99eNx2dFeFHZKEfP3y9Lc8JDuoSVVYjdbNgsatCECwcPMEFHN32LcapiFi/04m0tXEfyrfyU+GC+x5JWl5rvkoKk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UU9uJbIK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1939AC4CEEA;
-	Mon, 23 Jun 2025 21:55:01 +0000 (UTC)
+	 MIME-Version:Content-Type; b=O3DpEzc+Aw753ejemiYD6ei2PXpoxvBuiZ7nXJW38Qlf6itrv8H6sS7OiA2M4a/Si4FyirjQpVPJD9hrS6D6lu8mZgCkr9oZxJ8PZg6PWUpR7bnFt+WDeOqqWeov5oSdJlwRa/Vgv0vgGnk+QhWNDL9atlnt9qg5K2S6ojoSNgo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fi/fqi61; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1B7BC4CEEA;
+	Mon, 23 Jun 2025 21:36:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750715702;
-	bh=m44C448abW3Oih7Q3yUtvGv3zJ/e1iPo6VaZyn4kw14=;
+	s=korg; t=1750714598;
+	bh=CWqJwv0b90hUkawWMd+MphIWhwyhvct1UkOvZGBv3o8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UU9uJbIKYQQBks7nTt6ZM03NsM1JihwAqfFccw9jDffEmRStt0X/mbrgqQrXrU9pC
-	 VIS75pQkIgkDaR7n+9fKoT1Pe2xU7nCrGHE/he0XlVHIn6Fhf7QqA9ZRfn74brYR2b
-	 bBNovV3NbYc3ChFsjSTJCkMLNm3hN2coyuXcvlpM=
+	b=fi/fqi61XNreYFixUdE/c6uPkkIHVjw9YUZTnsFCchDED1o1fAwwFHQfXILYjxwAp
+	 8deOesURFSkSJ1wy73+C9j+ZYO/+ORfD3rpZg5zVOlYTEoxwbLe/v7Lo+p6jvSFhHH
+	 cQSLuNBmONPkPKnufEporkNUv4MSmeFQHfna99jE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Long Li <leo.lilong@huawei.com>,
-	Chuck Lever <chuck.lever@oracle.com>,
+	=?UTF-8?q?Pali=20Roh=C3=A1r?= <pali@kernel.org>,
+	Jerry Lv <Jerry.Lv@axis.com>,
+	Sebastian Reichel <sebastian.reichel@collabora.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 273/411] sunrpc: update nextcheck time when adding new cache entries
-Date: Mon, 23 Jun 2025 15:06:57 +0200
-Message-ID: <20250623130640.527587619@linuxfoundation.org>
+Subject: [PATCH 5.10 217/355] power: supply: bq27xxx: Retrieve again when busy
+Date: Mon, 23 Jun 2025 15:06:58 +0200
+Message-ID: <20250623130633.269653090@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
-References: <20250623130632.993849527@linuxfoundation.org>
+In-Reply-To: <20250623130626.716971725@linuxfoundation.org>
+References: <20250623130626.716971725@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,55 +61,91 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Long Li <leo.lilong@huawei.com>
+From: Jerry Lv <Jerry.Lv@axis.com>
 
-[ Upstream commit 5ca00634c8bbb2979c73465588f486b9632f5ed5 ]
+[ Upstream commit f16d9fb6cf03fdbdefa41a8b32ba1e57afb7ae3d ]
 
-The cache_detail structure uses a "nextcheck" field to control hash table
-scanning intervals. When a table scan begins, nextcheck is set to current
-time plus 1800 seconds. During scanning, if cache_detail is not empty and
-a cache entry's expiry time is earlier than the current nextcheck, the
-nextcheck is updated to that expiry time.
+Multiple applications may access the battery gauge at the same time, so
+the gauge may be busy and EBUSY will be returned. The driver will set a
+flag to record the EBUSY state, and this flag will be kept until the next
+periodic update. When this flag is set, bq27xxx_battery_get_property()
+will just return ENODEV until the flag is updated.
 
-This mechanism ensures that:
-1) Empty cache_details are scanned every 1800 seconds to avoid unnecessary
-   scans
-2) Non-empty cache_details are scanned based on the earliest expiry time
-   found
+Even if the gauge was busy during the last accessing attempt, returning
+ENODEV is not ideal, and can cause confusion in the applications layer.
 
-However, when adding a new cache entry to an empty cache_detail, the
-nextcheck time was not being updated, remaining at 1800 seconds. This
-could delay cache cleanup for up to 1800 seconds, potentially blocking
-threads(such as nfsd) that are waiting for cache cleanup.
+Instead, retry accessing the I2C to update the flag is as expected, for
+the gauge typically recovers from busy state within a few milliseconds.
+If still failed to access the gauge, the real error code would be returned
+instead of ENODEV (as suggested by Pali Rohár).
 
-Fix this by updating the nextcheck time whenever a new cache entry is
-added.
-
-Signed-off-by: Long Li <leo.lilong@huawei.com>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Reviewed-by: Pali Rohár <pali@kernel.org>
+Signed-off-by: Jerry Lv <Jerry.Lv@axis.com>
+Link: https://lore.kernel.org/r/20250415-foo-fix-v2-1-5b45a395e4cc@axis.com
+Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sunrpc/cache.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/power/supply/bq27xxx_battery.c     |  2 +-
+ drivers/power/supply/bq27xxx_battery_i2c.c | 13 ++++++++++++-
+ 2 files changed, 13 insertions(+), 2 deletions(-)
 
-diff --git a/net/sunrpc/cache.c b/net/sunrpc/cache.c
-index 95aab48d32e67..e8448e9e03d59 100644
---- a/net/sunrpc/cache.c
-+++ b/net/sunrpc/cache.c
-@@ -133,6 +133,8 @@ static struct cache_head *sunrpc_cache_add_entry(struct cache_detail *detail,
+diff --git a/drivers/power/supply/bq27xxx_battery.c b/drivers/power/supply/bq27xxx_battery.c
+index be2aac8fbf430..b8131f823654d 100644
+--- a/drivers/power/supply/bq27xxx_battery.c
++++ b/drivers/power/supply/bq27xxx_battery.c
+@@ -2000,7 +2000,7 @@ static int bq27xxx_battery_get_property(struct power_supply *psy,
+ 	mutex_unlock(&di->lock);
  
- 	hlist_add_head_rcu(&new->cache_list, head);
- 	detail->entries++;
-+	if (detail->nextcheck > new->expiry_time)
-+		detail->nextcheck = new->expiry_time + 1;
- 	cache_get(new);
- 	spin_unlock(&detail->hash_lock);
+ 	if (psp != POWER_SUPPLY_PROP_PRESENT && di->cache.flags < 0)
+-		return -ENODEV;
++		return di->cache.flags;
+ 
+ 	switch (psp) {
+ 	case POWER_SUPPLY_PROP_STATUS:
+diff --git a/drivers/power/supply/bq27xxx_battery_i2c.c b/drivers/power/supply/bq27xxx_battery_i2c.c
+index 6fbae8fc2e501..d0c8edadec4bc 100644
+--- a/drivers/power/supply/bq27xxx_battery_i2c.c
++++ b/drivers/power/supply/bq27xxx_battery_i2c.c
+@@ -6,6 +6,7 @@
+  *	Andrew F. Davis <afd@ti.com>
+  */
+ 
++#include <linux/delay.h>
+ #include <linux/i2c.h>
+ #include <linux/interrupt.h>
+ #include <linux/module.h>
+@@ -32,6 +33,7 @@ static int bq27xxx_battery_i2c_read(struct bq27xxx_device_info *di, u8 reg,
+ 	struct i2c_msg msg[2];
+ 	u8 data[2];
+ 	int ret;
++	int retry = 0;
+ 
+ 	if (!client->adapter)
+ 		return -ENODEV;
+@@ -48,7 +50,16 @@ static int bq27xxx_battery_i2c_read(struct bq27xxx_device_info *di, u8 reg,
+ 	else
+ 		msg[1].len = 2;
+ 
+-	ret = i2c_transfer(client->adapter, msg, ARRAY_SIZE(msg));
++	do {
++		ret = i2c_transfer(client->adapter, msg, ARRAY_SIZE(msg));
++		if (ret == -EBUSY && ++retry < 3) {
++			/* sleep 10 milliseconds when busy */
++			usleep_range(10000, 11000);
++			continue;
++		}
++		break;
++	} while (1);
++
+ 	if (ret < 0)
+ 		return ret;
  
 -- 
 2.39.5
