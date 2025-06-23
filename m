@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-157741-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157819-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1EB57AE5567
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:11:03 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4926DAE55C5
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:14:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E22471BC49DD
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:10:52 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B508717B307
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:13:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68F57226CE6;
-	Mon, 23 Jun 2025 22:10:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81421229B15;
+	Mon, 23 Jun 2025 22:13:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g/kaoaSj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zimGTQxX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2446A1F7580;
-	Mon, 23 Jun 2025 22:10:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E0281F7580;
+	Mon, 23 Jun 2025 22:13:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750716608; cv=none; b=OoKvW/MIeAMcXe6fCHmUu4qSG7I+l2fzgV6E+bUXAJRnZglQzEuWB6f3T4v1xBogVNKJg8bLWJVtwF9L8tDM/RH2Mm/G0YWmVCLVQrX/8GNO8AsPJl2VhKaJXMdpCmwhuoNoF/XUkWHtL2A1wBYTC7J/FbmS2y/XiTdy9hHpjLA=
+	t=1750716796; cv=none; b=CY9afLaa84Lrxr43o9ZuWlTLQV8LlZsNGmenfAo/Jw1ROsTcpdbMBopTLJxnS7L8uF8T/wrE/NaEJYCE+3iKaEsUbu2lolijdYZnz13In0f1Zem+v0xd9aFvxo/i5tvxKAOYJ9RBukJyMbD+006JFj7YLh2NbG2e9ztLlJ4hfR4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750716608; c=relaxed/simple;
-	bh=Y8Pz0a15LwsnWvcdf4OnyKoizRrEDUJ1r+ONXj0ZKoM=;
+	s=arc-20240116; t=1750716796; c=relaxed/simple;
+	bh=XwVaDUe1ATspLoahMd0ZRKs/deUxhWmZEgUALPT043I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=BJuZAriBqQ3FztW2EKIfZLwq084Lls7DZ+OaVQ2vOTOImxlkbG34PnPvw4C4pf25KTPl1RT3sR1wE28QSFJSDuRjFUNk+pYexa5IiTp3czr+4W5GCI888jns7NUycIN/sAtPzNO1GJ2aGHhDWknLHzF1PARzFY0Zvwvb887zU/c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g/kaoaSj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AEA1FC4CEEA;
-	Mon, 23 Jun 2025 22:10:07 +0000 (UTC)
+	 MIME-Version; b=YLzE/WH78m2DAUZ5NTv+aOrFZTgmi01m5/NqumJQqgUHYroCqRJWg+V2a1mD/sJhFICCEEWKavxdlwdHJuVqSkxadobGj1Z1oWVE15awAk14YUU5S7RsZDZsnMN1Epxr+4IWym5zdJ75M0MfD3Au+t7YmwDZpDvyGf3mpxbA/8E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zimGTQxX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA954C4CEEA;
+	Mon, 23 Jun 2025 22:13:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750716608;
-	bh=Y8Pz0a15LwsnWvcdf4OnyKoizRrEDUJ1r+ONXj0ZKoM=;
+	s=korg; t=1750716796;
+	bh=XwVaDUe1ATspLoahMd0ZRKs/deUxhWmZEgUALPT043I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=g/kaoaSjUGhdAnYq/Qg64Sdd/j14aoyOZoV7B/cBZUnJB7L9NqHccTIB1WPTaXW2h
-	 9NILjTq/DOfW0aByMic+YM7HumOpd+6L3LJQpN0DX944S0pgrqNMNQkpv6Vo1L+Y4e
-	 414PYbxiMfnN/q36vXIlwu7FqmeG/Y3xzEdSx5+I=
+	b=zimGTQxXTnnjlz/MKhdeSRXXPFNf8QtVk/mEn75J0Lwc3Fi3Isgn9uiwn1ITx6JoI
+	 p2ZR8773AT3e1QcUSGKhXpq4qSmBZ9zjfqlkfbR8H/tTP1XZUJLTfOEqR/BPhWF1Tj
+	 ub984F7bQlLXKutCCV/3WuYOdHDKDBCEVkrzJAVE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Roger Quadros <rogerq@kernel.org>,
-	Kevin Hilman <khilman@baylibre.com>,
-	"Nobuhiro Iwamatsu (CIP)" <nobuhiro1.iwamatsu@toshiba.co.jp>
-Subject: [PATCH 6.6 276/290] ARM: dts: am335x-bone-common: Increase MDIO reset deassert delay to 50ms
+	Liu Song <liusong@linux.alibaba.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Pu Lehui <pulehui@huawei.com>
+Subject: [PATCH 5.15 393/411] arm64: spectre: increase parameters that can be used to turn off bhb mitigation individually
 Date: Mon, 23 Jun 2025 15:08:57 +0200
-Message-ID: <20250623130635.227004214@linuxfoundation.org>
+Message-ID: <20250623130643.570935408@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130626.910356556@linuxfoundation.org>
-References: <20250623130626.910356556@linuxfoundation.org>
+In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
+References: <20250623130632.993849527@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,52 +60,81 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Geert Uytterhoeven <geert+renesas@glider.be>
+From: Liu Song <liusong@linux.alibaba.com>
 
-commit 929d8490f8790164f5f63671c1c58d6c50411cb2 upstream.
+[ Upstream commit 877ace9eab7de032f954533afd5d1ecd0cf62eaf ]
 
-Commit b9bf5612610aa7e3 ("ARM: dts: am335x-bone-common: Increase MDIO
-reset deassert time") already increased the MDIO reset deassert delay
-from 6.5 to 13 ms, but this may still cause Ethernet PHY probe failures:
+In our environment, it was found that the mitigation BHB has a great
+impact on the benchmark performance. For example, in the lmbench test,
+the "process fork && exit" test performance drops by 20%.
+So it is necessary to have the ability to turn off the mitigation
+individually through cmdline, thus avoiding having to compile the
+kernel by adjusting the config.
 
-    SMSC LAN8710/LAN8720 4a101000.mdio:00: probe with driver SMSC LAN8710/LAN8720 failed with error -5
-
-On BeagleBone Black Rev. C3, ETH_RESETn is controlled by an open-drain
-AND gate.  It is pulled high by a 10K resistor, and has a 4.7µF
-capacitor to ground, giving an RC time constant of 47ms.  As it takes
-0.7RC to charge the capacitor above the threshold voltage of a CMOS
-input (VDD/2), the delay should be at least 33ms.  Considering the
-typical tolerance of 20% on capacitors, 40ms would be safer.  Add an
-additional safety margin and settle for 50ms.
-
-Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Reviewed-by: Roger Quadros <rogerq@kernel.org>
-Link: https://lore.kernel.org/r/9002a58daa1b2983f39815b748ee9d2f8dcc4829.1730366936.git.geert+renesas@glider.be
-Signed-off-by: Kevin Hilman <khilman@baylibre.com>
-Signed-off-by: Nobuhiro Iwamatsu (CIP) <nobuhiro1.iwamatsu@toshiba.co.jp>
+Signed-off-by: Liu Song <liusong@linux.alibaba.com>
+Acked-by: Catalin Marinas <catalin.marinas@arm.com>
+Link: https://lore.kernel.org/r/1661514050-22263-1-git-send-email-liusong@linux.alibaba.com
+Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
+Signed-off-by: Pu Lehui <pulehui@huawei.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm/boot/dts/ti/omap/am335x-bone-common.dtsi |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ Documentation/admin-guide/kernel-parameters.txt |    5 +++++
+ arch/arm64/kernel/proton-pack.c                 |   10 +++++++++-
+ 2 files changed, 14 insertions(+), 1 deletion(-)
 
---- a/arch/arm/boot/dts/ti/omap/am335x-bone-common.dtsi
-+++ b/arch/arm/boot/dts/ti/omap/am335x-bone-common.dtsi
-@@ -385,7 +385,7 @@
- 		/* Support GPIO reset on revision C3 boards */
- 		reset-gpios = <&gpio1 8 GPIO_ACTIVE_LOW>;
- 		reset-assert-us = <300>;
--		reset-deassert-us = <13000>;
-+		reset-deassert-us = <50000>;
- 	};
- };
+--- a/Documentation/admin-guide/kernel-parameters.txt
++++ b/Documentation/admin-guide/kernel-parameters.txt
+@@ -3105,6 +3105,7 @@
+ 					       spectre_bhi=off [X86]
+ 					       spectre_v2_user=off [X86]
+ 					       ssbd=force-off [ARM64]
++					       nospectre_bhb [ARM64]
+ 					       tsx_async_abort=off [X86]
  
+ 				Exceptions:
+@@ -3526,6 +3527,10 @@
+ 			vulnerability. System may allow data leaks with this
+ 			option.
+ 
++	nospectre_bhb	[ARM64] Disable all mitigations for Spectre-BHB (branch
++			history injection) vulnerability. System may allow data leaks
++			with this option.
++
+ 	nospec_store_bypass_disable
+ 			[HW] Disable all mitigations for the Speculative Store Bypass vulnerability
+ 
+--- a/arch/arm64/kernel/proton-pack.c
++++ b/arch/arm64/kernel/proton-pack.c
+@@ -1023,6 +1023,14 @@ static void this_cpu_set_vectors(enum ar
+ 	isb();
+ }
+ 
++static bool __read_mostly __nospectre_bhb;
++static int __init parse_spectre_bhb_param(char *str)
++{
++	__nospectre_bhb = true;
++	return 0;
++}
++early_param("nospectre_bhb", parse_spectre_bhb_param);
++
+ void spectre_bhb_enable_mitigation(const struct arm64_cpu_capabilities *entry)
+ {
+ 	bp_hardening_cb_t cpu_cb;
+@@ -1036,7 +1044,7 @@ void spectre_bhb_enable_mitigation(const
+ 		/* No point mitigating Spectre-BHB alone. */
+ 	} else if (!IS_ENABLED(CONFIG_MITIGATE_SPECTRE_BRANCH_HISTORY)) {
+ 		pr_info_once("spectre-bhb mitigation disabled by compile time option\n");
+-	} else if (cpu_mitigations_off()) {
++	} else if (cpu_mitigations_off() || __nospectre_bhb) {
+ 		pr_info_once("spectre-bhb mitigation disabled by command line option\n");
+ 	} else if (supports_ecbhb(SCOPE_LOCAL_CPU)) {
+ 		state = SPECTRE_MITIGATED;
 
 
 
