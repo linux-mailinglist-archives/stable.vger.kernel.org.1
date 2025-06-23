@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-157258-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157032-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 90126AE5345
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:51:50 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2EA38AE522E
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:41:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8B8697A5B4E
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:49:26 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 46AE24431EF
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:40:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2E7C223DE1;
-	Mon, 23 Jun 2025 21:50:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53329221FCC;
+	Mon, 23 Jun 2025 21:41:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WBRwjtwV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wgSd7nfT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E3472222B7;
-	Mon, 23 Jun 2025 21:50:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FF064315A;
+	Mon, 23 Jun 2025 21:41:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750715428; cv=none; b=dkUYGis80fTQ2LbnMPVBuB4Se50wwamcbj2big0JNQv64vqZhT+lObrQsBT6JsRsYj9A73+qYJKldcyvAi943x8UFWOIC26oy+yaJ3U4AqmDQ2CgjJ10yoc4GII1ImMeTX1gp4WDmHEaHEnthfn/suvss9UcrqD5XrO/ABFEvac=
+	t=1750714868; cv=none; b=eyLJbiLhv65/j985g/3dKSsentJTOyOQJkiNTPEk9Tqu34e55ySsylWgzvqJF0Vfp0l/6G9LvDql6npe6JJBalmYh09VEocak6uF7Z/omtynttfNlWfLrdfxOKd6DfNF/LXeO4Ff4pimHiYj64TDLRFe9JWAA0kBayn13HObObw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750715428; c=relaxed/simple;
-	bh=ZLg94wKt0DUOoMhXqtrrw1SrxzDnvCTvIwFCKL/TkIw=;
+	s=arc-20240116; t=1750714868; c=relaxed/simple;
+	bh=O74hH2FcnJZLfSYzHTBntOb3z9hrAEaptWY4b/yA1Yg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cyzA8zZqm+XHuCCZ8N2mphcD2O7OKND+4K7ZFJts/f3wTcfpxF87qRN99pubaT81g053GT970anf7XOVxLMIPkId50utNzQLBbWbJXXBY7anklqtDeYnrBOaMMuDIBJmQj2txDjMeV6aMF/duaB+xOdm/trV3GnTNRwrSlYRKrE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WBRwjtwV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27629C4CEEA;
-	Mon, 23 Jun 2025 21:50:28 +0000 (UTC)
+	 MIME-Version; b=cxO0t3UQ+q31g8ONPtnZQth/5vvmwluVSOfiTWFUKIShHFmNCayTlMtitw5rSmKZ+InSUco6SyHyk5KZR0df4mJMG7WdGJAhxX6AJcc1djaUXJrG24QfjRIPQaR3xATWMugpVdnvDIQkkh74ni68UVpLbXdvJUtHp7WpeUVkLF8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wgSd7nfT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9BEF2C4CEEA;
+	Mon, 23 Jun 2025 21:41:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750715428;
-	bh=ZLg94wKt0DUOoMhXqtrrw1SrxzDnvCTvIwFCKL/TkIw=;
+	s=korg; t=1750714867;
+	bh=O74hH2FcnJZLfSYzHTBntOb3z9hrAEaptWY4b/yA1Yg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WBRwjtwVnPPfijY8dtaI1boKDzAlUyzlAFFoD9a6yqAsmCYcWWlUPokXfDxI9WjAO
-	 vCnGXKX2WphoFen9yQTVjVC4MJf4rJ4Otg679+JWzOHLJGO+N+hnAOKrnL84djphro
-	 9F+d8V7fc7y829pOmTis/uWw1Foc6Gs95hl0uLW0=
+	b=wgSd7nfTYsBYamxCZHT/U1MUoWijwBi64aUwxrw9k5dfp3EQpMfEc547nvQ5d1PZH
+	 RBnhzx9HyHfXL8vVQHls/yhiUY+P+GU7OGeSobgvJbOYo+1uD5t14KFMT9dMB+8Wkx
+	 niUWHwbHtRq64v3I75qAuAWMqtUtWtseq4YrDwAM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Rodrigo Gobbi <rodrigo.gobbi.7@gmail.com>,
-	kernel test robot <lkp@intel.com>,
-	Dan Carpenter <error27@gmail.com>,
-	Baochen Qiang <quic_bqiang@quicinc.com>,
-	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 234/508] wifi: ath11k: validate ath11k_crypto_mode on top of ath11k_core_qmi_firmware_ready
+	Beleswar Padhi <b-padhi@ti.com>,
+	Hari Nagalla <hnagalla@ti.com>,
+	Martyn Welch <martyn.welch@collabora.com>,
+	Mathieu Poirier <mathieu.poirier@linaro.org>
+Subject: [PATCH 6.12 142/414] remoteproc: k3-m4: Dont assert reset in detach routine
 Date: Mon, 23 Jun 2025 15:04:39 +0200
-Message-ID: <20250623130651.015407759@linuxfoundation.org>
+Message-ID: <20250623130645.606294447@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
-References: <20250623130645.255320792@linuxfoundation.org>
+In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
+References: <20250623130642.015559452@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,84 +63,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rodrigo Gobbi <rodrigo.gobbi.7@gmail.com>
+From: Beleswar Padhi <b-padhi@ti.com>
 
-[ Upstream commit b0d226a60856a1b765bb9a3848c7b2322fd08c47 ]
+commit 23532524594c211871054a15c425812a4ac35102 upstream.
 
-if ath11k_crypto_mode is invalid (not ATH11K_CRYPT_MODE_SW/ATH11K_CRYPT_MODE_HW),
-ath11k_core_qmi_firmware_ready() will not undo some actions that was previously
-started/configured. Do the validation as soon as possible in order to avoid
-undoing actions in that case and also to fix the following smatch warning:
+The rproc_detach() function invokes __rproc_detach() before
+rproc_unprepare_device(). The __rproc_detach() function sets the
+rproc->state to "RPROC_DETACHED".
 
-drivers/net/wireless/ath/ath11k/core.c:2166 ath11k_core_qmi_firmware_ready()
-warn: missing unwind goto?
+However, the TI K3 M4 driver erroneously looks for "RPROC_ATTACHED"
+state in its .unprepare ops to identify IPC-only mode; which leads to
+resetting the rproc in detach routine.
 
-Signed-off-by: Rodrigo Gobbi <rodrigo.gobbi.7@gmail.com>
-Reported-by: kernel test robot <lkp@intel.com>
-Reported-by: Dan Carpenter <error27@gmail.com>
-Closes: https://lore.kernel.org/r/202304151955.oqAetVFd-lkp@intel.com/
-Fixes: aa2092a9bab3 ("ath11k: add raw mode and software crypto support")
-Reviewed-by: Baochen Qiang <quic_bqiang@quicinc.com>
-Link: https://patch.msgid.link/20250522200519.16858-1-rodrigo.gobbi.7@gmail.com
-Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Therefore, correct the IPC-only mode detection logic to look for
+"RPROC_DETACHED" in k3_m4_rproc_unprepare() function.
+
+Fixes: ebcf9008a895 ("remoteproc: k3-m4: Add a remoteproc driver for M4F subsystem")
+Signed-off-by: Beleswar Padhi <b-padhi@ti.com>
+Reviewed-by: Hari Nagalla <hnagalla@ti.com>
+Reviewed-by: Martyn Welch <martyn.welch@collabora.com>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20250513054510.3439842-5-b-padhi@ti.com
+Signed-off-by: Mathieu Poirier <mathieu.poirier@linaro.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/ath/ath11k/core.c | 28 +++++++++++++-------------
- 1 file changed, 14 insertions(+), 14 deletions(-)
+ drivers/remoteproc/ti_k3_m4_remoteproc.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/ath/ath11k/core.c b/drivers/net/wireless/ath/ath11k/core.c
-index a8bdddccca4cb..0910d06ed296f 100644
---- a/drivers/net/wireless/ath/ath11k/core.c
-+++ b/drivers/net/wireless/ath/ath11k/core.c
-@@ -1517,6 +1517,20 @@ int ath11k_core_qmi_firmware_ready(struct ath11k_base *ab)
- {
+--- a/drivers/remoteproc/ti_k3_m4_remoteproc.c
++++ b/drivers/remoteproc/ti_k3_m4_remoteproc.c
+@@ -228,7 +228,7 @@ static int k3_m4_rproc_unprepare(struct
  	int ret;
  
-+	switch (ath11k_crypto_mode) {
-+	case ATH11K_CRYPT_MODE_SW:
-+		set_bit(ATH11K_FLAG_HW_CRYPTO_DISABLED, &ab->dev_flags);
-+		set_bit(ATH11K_FLAG_RAW_MODE, &ab->dev_flags);
-+		break;
-+	case ATH11K_CRYPT_MODE_HW:
-+		clear_bit(ATH11K_FLAG_HW_CRYPTO_DISABLED, &ab->dev_flags);
-+		clear_bit(ATH11K_FLAG_RAW_MODE, &ab->dev_flags);
-+		break;
-+	default:
-+		ath11k_info(ab, "invalid crypto_mode: %d\n", ath11k_crypto_mode);
-+		return -EINVAL;
-+	}
-+
- 	ret = ath11k_core_start_firmware(ab, ATH11K_FIRMWARE_MODE_NORMAL);
- 	if (ret) {
- 		ath11k_err(ab, "failed to start firmware: %d\n", ret);
-@@ -1535,20 +1549,6 @@ int ath11k_core_qmi_firmware_ready(struct ath11k_base *ab)
- 		goto err_firmware_stop;
- 	}
+ 	/* If the core is going to be detached do not assert the module reset */
+-	if (rproc->state == RPROC_ATTACHED)
++	if (rproc->state == RPROC_DETACHED)
+ 		return 0;
  
--	switch (ath11k_crypto_mode) {
--	case ATH11K_CRYPT_MODE_SW:
--		set_bit(ATH11K_FLAG_HW_CRYPTO_DISABLED, &ab->dev_flags);
--		set_bit(ATH11K_FLAG_RAW_MODE, &ab->dev_flags);
--		break;
--	case ATH11K_CRYPT_MODE_HW:
--		clear_bit(ATH11K_FLAG_HW_CRYPTO_DISABLED, &ab->dev_flags);
--		clear_bit(ATH11K_FLAG_RAW_MODE, &ab->dev_flags);
--		break;
--	default:
--		ath11k_info(ab, "invalid crypto_mode: %d\n", ath11k_crypto_mode);
--		return -EINVAL;
--	}
--
- 	if (ath11k_frame_mode == ATH11K_HW_TXRX_RAW)
- 		set_bit(ATH11K_FLAG_RAW_MODE, &ab->dev_flags);
- 
--- 
-2.39.5
-
+ 	ret = kproc->ti_sci->ops.dev_ops.put_device(kproc->ti_sci,
 
 
 
