@@ -1,61 +1,55 @@
-Return-Path: <stable+bounces-156883-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156335-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 56743AE5185
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:35:09 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 42311AE4F20
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:12:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E3BE47A84EC
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:33:42 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DE3151B606F3
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:13:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66E4D1EE7C6;
-	Mon, 23 Jun 2025 21:35:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23F61221FD6;
+	Mon, 23 Jun 2025 21:12:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fHeKjBic"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2qX6bfAz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2358A1F3B96;
-	Mon, 23 Jun 2025 21:34:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4ADC221DAE;
+	Mon, 23 Jun 2025 21:12:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750714500; cv=none; b=JMfaMaH7TxBXhwVEKlDTBYTvbLMjDf0t/XMp8OJ39P7gJV+36Yma7OBAVhh9BTEAz+Kpxmjpo3hAqpnmYJHO9bUkiJ8m+dfL6rOwjGloKkGysEXDGPkjiF4qOqgyufmvmCKkRU8ctcUZQs3KH9mvVSwUP+3+qbpg5ET/kEnq4+I=
+	t=1750713162; cv=none; b=eAEhiYjDNP0HZS/RgF/NyDyMfajB+bhrz6JYnhpCirVosuzkVvEumMBWfKU72wlFJC7RFg/hZ6/5meTXSX+UrGarhKPtSbDrrXICYlTMkzq9+XX4xn73dJRqE/vw68uTHlONrd/D3ZrxGvyCVEe6IdrVfWx9b8NS9HpP/ihv6Bg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750714500; c=relaxed/simple;
-	bh=iRNeCOvvBWUTdlqU7QPmbCNypsxsrt2UYghwkCQ2aNA=;
+	s=arc-20240116; t=1750713162; c=relaxed/simple;
+	bh=+8c0WI741GyccjG+o0WrrtcZllVUWql/NXNaqrUIl70=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=B0AtT57FY5hWQVlZaTfwR5ZQCTWKopwQ2FSoNKIq2YeUleB4X4l7vKEmkIJdHw9MRJbVYdY4Er9MM1GUJI9EcCi4W4ZDjv8hoLzAwIo9/28FonrZ/NmV7qXvPG6esM1BPtPXwhGSOE1l/YF/sXGW3r9R0cXeDADinYMqJwDZqEU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fHeKjBic; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6ABE3C4CEEA;
-	Mon, 23 Jun 2025 21:34:59 +0000 (UTC)
+	 MIME-Version; b=c9n5tx3W6gqqIiBFC+4DS2kAK1JzhdMmgOyS9E8GUsPwam0XM1oVIuKn2bzlnrI46zecChgWxfxoYCUlMV/Yu3JBJMuK2Nupy7ZV7jmqrVsttVKQyYUnk/lE8Fj2C3Ht9n0f2BQnQlzxDp3ctuvGxFG4aQpPg0TqomxGChyyM8o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2qX6bfAz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6BC78C4CEEA;
+	Mon, 23 Jun 2025 21:12:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750714499;
-	bh=iRNeCOvvBWUTdlqU7QPmbCNypsxsrt2UYghwkCQ2aNA=;
+	s=korg; t=1750713162;
+	bh=+8c0WI741GyccjG+o0WrrtcZllVUWql/NXNaqrUIl70=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fHeKjBicwkWYu7ZS2xMuqkxfyHdoIO3ySewy8etawRU/x2k5gMoUJyHIqLycoiMl5
-	 9B+FmxU/ALa45Tuf5ZtffDMEXmiEb6uegphO1Sr/NG8WeU4L1bxUAd4gRHBLkCC1gt
-	 lAZ36dbhB2qIZbcKz97fOhajYnZpTL8mPpraCPIw=
+	b=2qX6bfAzTWmC7kDfzMbaEv8YAupi3XjiF2nRswxzQ3bkJIvie+d1bXtwd2aeOWudM
+	 +mboOFmx8L0sCVKM3gqTc90D3DYkF5m/iIsNIgrXfTrVzLgKuen7C0ZdZlnmAbgfId
+	 GByoxF6FyxA0IxwTVx2SpsHEcGAvkI5PVhALk7OM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Luo Gengkun <luogengkun@huaweicloud.com>,
-	"Nysal Jan K.A." <nysal@linux.ibm.com>,
-	Doug Anderson <dianders@chromium.org>,
-	Joel Granados <joel.granados@kernel.org>,
-	Song Liu <song@kernel.org>,
-	Thomas Gleinxer <tglx@linutronix.de>,
-	Venkat Rao Bagalkote <venkat88@linux.ibm.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.12 115/414] watchdog: fix watchdog may detect false positive of softlockup
+	Henry Martin <bsdhenrymartin@gmail.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 108/411] serial: Fix potential null-ptr-deref in mlb_usio_probe()
 Date: Mon, 23 Jun 2025 15:04:12 +0200
-Message-ID: <20250623130644.958450645@linuxfoundation.org>
+Message-ID: <20250623130636.238595874@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
-References: <20250623130642.015559452@linuxfoundation.org>
+In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
+References: <20250623130632.993849527@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,210 +61,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luo Gengkun <luogengkun@huaweicloud.com>
+From: Henry Martin <bsdhenrymartin@gmail.com>
 
-commit 7123dbbef88cfd9f09e8a7899b0911834600cfa3 upstream.
+[ Upstream commit 86bcae88c9209e334b2f8c252f4cc66beb261886 ]
 
-When updating `watchdog_thresh`, there is a race condition between writing
-the new `watchdog_thresh` value and stopping the old watchdog timer.  If
-the old timer triggers during this window, it may falsely detect a
-softlockup due to the old interval and the new `watchdog_thresh` value
-being used.  The problem can be described as follow:
+devm_ioremap() can return NULL on error. Currently, mlb_usio_probe()
+does not check for this case, which could result in a NULL pointer
+dereference.
 
- # We asuume previous watchdog_thresh is 60, so the watchdog timer is
- # coming every 24s.
-echo 10 > /proc/sys/kernel/watchdog_thresh (User space)
-|
-+------>+ update watchdog_thresh (We are in kernel now)
-	|
-	|	  # using old interval and new `watchdog_thresh`
-	+------>+ watchdog hrtimer (irq context: detect softlockup)
-		|
-		|
-	+-------+
-	|
-	|
-	+ softlockup_stop_all
+Add NULL check after devm_ioremap() to prevent this issue.
 
-To fix this problem, introduce a shadow variable for `watchdog_thresh`.
-The update to the actual `watchdog_thresh` is delayed until after the old
-timer is stopped, preventing false positives.
-
-The following testcase may help to understand this problem.
-
----------------------------------------------
-echo RT_RUNTIME_SHARE > /sys/kernel/debug/sched/features
-echo -1 > /proc/sys/kernel/sched_rt_runtime_us
-echo 0 > /sys/kernel/debug/sched/fair_server/cpu3/runtime
-echo 60 > /proc/sys/kernel/watchdog_thresh
-taskset -c 3 chrt -r 99 /bin/bash -c "while true;do true; done" &
-echo 10 > /proc/sys/kernel/watchdog_thresh &
----------------------------------------------
-
-The test case above first removes the throttling restrictions for
-real-time tasks.  It then sets watchdog_thresh to 60 and executes a
-real-time task ,a simple while(1) loop, on cpu3.  Consequently, the final
-command gets blocked because the presence of this real-time thread
-prevents kworker:3 from being selected by the scheduler.  This eventually
-triggers a softlockup detection on cpu3 due to watchdog_timer_fn operating
-with inconsistent variable - using both the old interval and the updated
-watchdog_thresh simultaneously.
-
-[nysal@linux.ibm.com: fix the SOFTLOCKUP_DETECTOR=n case]
-  Link: https://lkml.kernel.org/r/20250502111120.282690-1-nysal@linux.ibm.com
-Link: https://lkml.kernel.org/r/20250421035021.3507649-1-luogengkun@huaweicloud.com
-Signed-off-by: Luo Gengkun <luogengkun@huaweicloud.com>
-Signed-off-by: Nysal Jan K.A. <nysal@linux.ibm.com>
-Cc: Doug Anderson <dianders@chromium.org>
-Cc: Joel Granados <joel.granados@kernel.org>
-Cc: Song Liu <song@kernel.org>
-Cc: Thomas Gleinxer <tglx@linutronix.de>
-Cc: "Nysal Jan K.A." <nysal@linux.ibm.com>
-Cc: Venkat Rao Bagalkote <venkat88@linux.ibm.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Fixes: ba44dc043004 ("serial: Add Milbeaut serial control")
+Signed-off-by: Henry Martin <bsdhenrymartin@gmail.com>
+Link: https://lore.kernel.org/r/20250403070339.64990-1-bsdhenrymartin@gmail.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/watchdog.c |   41 +++++++++++++++++++++++++++--------------
- 1 file changed, 27 insertions(+), 14 deletions(-)
+ drivers/tty/serial/milbeaut_usio.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
---- a/kernel/watchdog.c
-+++ b/kernel/watchdog.c
-@@ -47,6 +47,7 @@ int __read_mostly watchdog_user_enabled
- static int __read_mostly watchdog_hardlockup_user_enabled = WATCHDOG_HARDLOCKUP_DEFAULT;
- static int __read_mostly watchdog_softlockup_user_enabled = 1;
- int __read_mostly watchdog_thresh = 10;
-+static int __read_mostly watchdog_thresh_next;
- static int __read_mostly watchdog_hardlockup_available;
- 
- struct cpumask watchdog_cpumask __read_mostly;
-@@ -863,12 +864,20 @@ int lockup_detector_offline_cpu(unsigned
- 	return 0;
- }
- 
--static void __lockup_detector_reconfigure(void)
-+static void __lockup_detector_reconfigure(bool thresh_changed)
- {
- 	cpus_read_lock();
- 	watchdog_hardlockup_stop();
- 
- 	softlockup_stop_all();
-+	/*
-+	 * To prevent watchdog_timer_fn from using the old interval and
-+	 * the new watchdog_thresh at the same time, which could lead to
-+	 * false softlockup reports, it is necessary to update the
-+	 * watchdog_thresh after the softlockup is completed.
-+	 */
-+	if (thresh_changed)
-+		watchdog_thresh = READ_ONCE(watchdog_thresh_next);
- 	set_sample_period();
- 	lockup_detector_update_enable();
- 	if (watchdog_enabled && watchdog_thresh)
-@@ -881,7 +890,7 @@ static void __lockup_detector_reconfigur
- void lockup_detector_reconfigure(void)
- {
- 	mutex_lock(&watchdog_mutex);
--	__lockup_detector_reconfigure();
-+	__lockup_detector_reconfigure(false);
- 	mutex_unlock(&watchdog_mutex);
- }
- 
-@@ -901,27 +910,29 @@ static __init void lockup_detector_setup
- 		return;
- 
- 	mutex_lock(&watchdog_mutex);
--	__lockup_detector_reconfigure();
-+	__lockup_detector_reconfigure(false);
- 	softlockup_initialized = true;
- 	mutex_unlock(&watchdog_mutex);
- }
- 
- #else /* CONFIG_SOFTLOCKUP_DETECTOR */
--static void __lockup_detector_reconfigure(void)
-+static void __lockup_detector_reconfigure(bool thresh_changed)
- {
- 	cpus_read_lock();
- 	watchdog_hardlockup_stop();
-+	if (thresh_changed)
-+		watchdog_thresh = READ_ONCE(watchdog_thresh_next);
- 	lockup_detector_update_enable();
- 	watchdog_hardlockup_start();
- 	cpus_read_unlock();
- }
- void lockup_detector_reconfigure(void)
- {
--	__lockup_detector_reconfigure();
-+	__lockup_detector_reconfigure(false);
- }
- static inline void lockup_detector_setup(void)
- {
--	__lockup_detector_reconfigure();
-+	__lockup_detector_reconfigure(false);
- }
- #endif /* !CONFIG_SOFTLOCKUP_DETECTOR */
- 
-@@ -939,11 +950,11 @@ void lockup_detector_soft_poweroff(void)
- #ifdef CONFIG_SYSCTL
- 
- /* Propagate any changes to the watchdog infrastructure */
--static void proc_watchdog_update(void)
-+static void proc_watchdog_update(bool thresh_changed)
- {
- 	/* Remove impossible cpus to keep sysctl output clean. */
- 	cpumask_and(&watchdog_cpumask, &watchdog_cpumask, cpu_possible_mask);
--	__lockup_detector_reconfigure();
-+	__lockup_detector_reconfigure(thresh_changed);
- }
- 
- /*
-@@ -976,7 +987,7 @@ static int proc_watchdog_common(int whic
- 		old = READ_ONCE(*param);
- 		err = proc_dointvec_minmax(table, write, buffer, lenp, ppos);
- 		if (!err && old != READ_ONCE(*param))
--			proc_watchdog_update();
-+			proc_watchdog_update(false);
+diff --git a/drivers/tty/serial/milbeaut_usio.c b/drivers/tty/serial/milbeaut_usio.c
+index 8f2cab7f66ad3..d9f094514945b 100644
+--- a/drivers/tty/serial/milbeaut_usio.c
++++ b/drivers/tty/serial/milbeaut_usio.c
+@@ -523,7 +523,10 @@ static int mlb_usio_probe(struct platform_device *pdev)
  	}
- 	mutex_unlock(&watchdog_mutex);
- 	return err;
-@@ -1027,11 +1038,13 @@ static int proc_watchdog_thresh(const st
+ 	port->membase = devm_ioremap(&pdev->dev, res->start,
+ 				resource_size(res));
+-
++	if (!port->membase) {
++		ret = -ENOMEM;
++		goto failed;
++	}
+ 	ret = platform_get_irq_byname(pdev, "rx");
+ 	mlb_usio_irq[index][RX] = ret;
  
- 	mutex_lock(&watchdog_mutex);
- 
--	old = READ_ONCE(watchdog_thresh);
-+	watchdog_thresh_next = READ_ONCE(watchdog_thresh);
-+
-+	old = watchdog_thresh_next;
- 	err = proc_dointvec_minmax(table, write, buffer, lenp, ppos);
- 
--	if (!err && write && old != READ_ONCE(watchdog_thresh))
--		proc_watchdog_update();
-+	if (!err && write && old != READ_ONCE(watchdog_thresh_next))
-+		proc_watchdog_update(true);
- 
- 	mutex_unlock(&watchdog_mutex);
- 	return err;
-@@ -1052,7 +1065,7 @@ static int proc_watchdog_cpumask(const s
- 
- 	err = proc_do_large_bitmap(table, write, buffer, lenp, ppos);
- 	if (!err && write)
--		proc_watchdog_update();
-+		proc_watchdog_update(false);
- 
- 	mutex_unlock(&watchdog_mutex);
- 	return err;
-@@ -1072,7 +1085,7 @@ static struct ctl_table watchdog_sysctls
- 	},
- 	{
- 		.procname	= "watchdog_thresh",
--		.data		= &watchdog_thresh,
-+		.data		= &watchdog_thresh_next,
- 		.maxlen		= sizeof(int),
- 		.mode		= 0644,
- 		.proc_handler	= proc_watchdog_thresh,
+-- 
+2.39.5
+
 
 
 
