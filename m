@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-155738-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-155793-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9F92EAE42ED
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:27:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 06E1EAE4367
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:32:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1DB057A9581
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:25:43 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id ABDE57A9F15
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:28:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25940253939;
-	Mon, 23 Jun 2025 13:26:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB05C2550AD;
+	Mon, 23 Jun 2025 13:29:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="18GrtrV5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sueAtRdu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D75F34C7F;
-	Mon, 23 Jun 2025 13:26:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88F7A25178C;
+	Mon, 23 Jun 2025 13:29:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750685208; cv=none; b=lrOt0CR3D9Pc0M5ydve97wb8nLUNiaj1ptla2ud4dTFi/p1tB45iUmZmvTBVSYwMVIXFPRY91KeXDJetPYw8oRXEZssgeEpPmvDl9KkdddemEg+hKoNYG/OJ+l2IaDOiBmAd50FfwUxaJtjetX0E3En2DVEecGly2vPd9G8aBuU=
+	t=1750685346; cv=none; b=Y8RJlA9H5w0P/IECVRUXFsLlaSGIgdX0zhg7lvuSeYYqCgrOmwLIGsmFTQKHclyO7u1i1GSaSWkARda1XB1AxklMDplfm7ff/yY2mVcsLFiR6s3VfxgdVF/6rTqkBQfJWno7GI+btQigvSVelcMqi0WQVLkkbGvQsuNiXMfHKsQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750685208; c=relaxed/simple;
-	bh=8Z+nvV26sWoRYRHNYFgeXRoqfmH0lrVX4827BJHsVJk=;
+	s=arc-20240116; t=1750685346; c=relaxed/simple;
+	bh=wNWW82chupB8hztxRRHiqHojoITsR7hQNOSo/PN2tg8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZEpEP+2MKIagPEiIBJ+sagTQJ8tijB/NyCNvS7pgRfrJ3eeziDTT4PWbiItBm9BZyQSPzqOwJYXNg1gDN5dJ8sQXf+YCyf9+UgLiSFMiiB1S6KJ4EZgK42Ot5byabk1Qe/n/RbRWpmxmf8Dk+V0AEoy0pzoq5nTTd7j41H+71aQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=18GrtrV5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66030C4CEEA;
-	Mon, 23 Jun 2025 13:26:48 +0000 (UTC)
+	 MIME-Version; b=OVkeClx9AqjW8ElL9XWioKKgx25g+hTR57kJ8nnMYT9Esg2Qqf5MQ4mWhKp+SsvLd6B+X/nZ3XGD72LBfAF3IjoM+bt0eXQHHPqOuWV5ZTh3nzu+1p/X1wE5kSbJfcSEtK59KdiwhRAUTtoSOh5U6/gqBmuPjgfN4kC9SZyvtE8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sueAtRdu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D3E3C4CEEA;
+	Mon, 23 Jun 2025 13:29:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750685208;
-	bh=8Z+nvV26sWoRYRHNYFgeXRoqfmH0lrVX4827BJHsVJk=;
+	s=korg; t=1750685346;
+	bh=wNWW82chupB8hztxRRHiqHojoITsR7hQNOSo/PN2tg8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=18GrtrV5I9fzUG2AxAwO30gyOeAOP2Ark4Dxae1F4EsPrHHQthJOM8TU8enugc+gw
-	 J7H76VQI2BaKvsGoyaOIRP2+YDTm1zFJhysRXwLy51SQkzzBYTSEq6/dLGoE7Y1IDp
-	 /0iz1bYjBU974pylGAwHLtjsxmIRhRLfCfkjUgMc=
+	b=sueAtRduVpvpGN4cQ91ASBugu+5Cbx8bQ+Hh57SZYZr3dapbWUr5/zakKi7iWF+KI
+	 DRASao2A1QILAUoHbr4Uc/BYeITi0+nZ2zgA/vKviBnQrNUKP9ZlnE7PWnz7p6Waux
+	 UmE44sIXDXHxo8BiJl2G6EujHauvmU6dxrxlZi1c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Qiuxu Zhuo <qiuxu.zhuo@intel.com>,
-	Tony Luck <tony.luck@intel.com>,
+	Andrey Vatoropin <a.vatoropin@crpt.ru>,
+	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 214/592] EDAC/igen6: Skip absent memory controllers
-Date: Mon, 23 Jun 2025 15:02:52 +0200
-Message-ID: <20250623130705.375507969@linuxfoundation.org>
+Subject: [PATCH 5.15 029/411] fs/ntfs3: handle hdr_first_de() return value
+Date: Mon, 23 Jun 2025 15:02:53 +0200
+Message-ID: <20250623130633.876550909@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
-References: <20250623130700.210182694@linuxfoundation.org>
+In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
+References: <20250623130632.993849527@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,161 +62,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Qiuxu Zhuo <qiuxu.zhuo@intel.com>
+From: Andrey Vatoropin <a.vatoropin@crpt.ru>
 
-[ Upstream commit 20e190b1c1fd88b21cc5106c12cfe6def5ab849d ]
+[ Upstream commit af5cab0e5b6f8edb0be51a9f47f3f620e0b4fd70 ]
 
-Some BIOS versions may fuse off certain memory controllers and set the
-registers of these absent memory controllers to ~0. The current igen6_edac
-mistakenly enumerates these absent memory controllers and registers them
-with the EDAC core.
+The hdr_first_de() function returns a pointer to a struct NTFS_DE. This
+pointer may be NULL. To handle the NULL error effectively, it is important
+to implement an error handler. This will help manage potential errors
+consistently.
 
-Skip the absent memory controllers to avoid mistakenly enumerating them.
+Additionally, error handling for the return value already exists at other
+points where this function is called.
 
-Signed-off-by: Qiuxu Zhuo <qiuxu.zhuo@intel.com>
-Signed-off-by: Tony Luck <tony.luck@intel.com>
-Link: https://lore.kernel.org/r/20250408132455.489046-2-qiuxu.zhuo@intel.com
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
+
+Fixes: 82cae269cfa9 ("fs/ntfs3: Add initialization of super block")
+Signed-off-by: Andrey Vatoropin <a.vatoropin@crpt.ru>
+Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/edac/igen6_edac.c | 78 +++++++++++++++++++++++++++++++--------
- 1 file changed, 62 insertions(+), 16 deletions(-)
+ fs/ntfs3/index.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/drivers/edac/igen6_edac.c b/drivers/edac/igen6_edac.c
-index 5807517ee32de..ec64bff8236f6 100644
---- a/drivers/edac/igen6_edac.c
-+++ b/drivers/edac/igen6_edac.c
-@@ -127,6 +127,7 @@
+diff --git a/fs/ntfs3/index.c b/fs/ntfs3/index.c
+index cc2d29261859a..0fe1b5696e855 100644
+--- a/fs/ntfs3/index.c
++++ b/fs/ntfs3/index.c
+@@ -2173,6 +2173,10 @@ static int indx_get_entry_to_replace(struct ntfs_index *indx,
  
- static const struct res_config {
- 	bool machine_check;
-+	/* The number of present memory controllers. */
- 	int num_imc;
- 	u32 imc_base;
- 	u32 cmf_base;
-@@ -1201,23 +1202,21 @@ static void igen6_check(struct mem_ctl_info *mci)
- 		irq_work_queue(&ecclog_irq_work);
- }
- 
--static int igen6_register_mci(int mc, u64 mchbar, struct pci_dev *pdev)
-+/* Check whether the memory controller is absent. */
-+static bool igen6_imc_absent(void __iomem *window)
-+{
-+	return readl(window + MAD_INTER_CHANNEL_OFFSET) == ~0;
-+}
-+
-+static int igen6_register_mci(int mc, void __iomem *window, struct pci_dev *pdev)
- {
- 	struct edac_mc_layer layers[2];
- 	struct mem_ctl_info *mci;
- 	struct igen6_imc *imc;
--	void __iomem *window;
- 	int rc;
- 
- 	edac_dbg(2, "\n");
- 
--	mchbar += mc * MCHBAR_SIZE;
--	window = ioremap(mchbar, MCHBAR_SIZE);
--	if (!window) {
--		igen6_printk(KERN_ERR, "Failed to ioremap 0x%llx\n", mchbar);
--		return -ENODEV;
--	}
--
- 	layers[0].type = EDAC_MC_LAYER_CHANNEL;
- 	layers[0].size = NUM_CHANNELS;
- 	layers[0].is_virt_csrow = false;
-@@ -1283,7 +1282,6 @@ static int igen6_register_mci(int mc, u64 mchbar, struct pci_dev *pdev)
- fail2:
- 	edac_mc_free(mci);
- fail:
--	iounmap(window);
- 	return rc;
- }
- 
-@@ -1309,6 +1307,56 @@ static void igen6_unregister_mcis(void)
- 	}
- }
- 
-+static int igen6_register_mcis(struct pci_dev *pdev, u64 mchbar)
-+{
-+	void __iomem *window;
-+	int lmc, pmc, rc;
-+	u64 base;
-+
-+	for (lmc = 0, pmc = 0; pmc < NUM_IMC; pmc++) {
-+		base   = mchbar + pmc * MCHBAR_SIZE;
-+		window = ioremap(base, MCHBAR_SIZE);
-+		if (!window) {
-+			igen6_printk(KERN_ERR, "Failed to ioremap 0x%llx for mc%d\n", base, pmc);
-+			rc = -ENOMEM;
-+			goto out_unregister_mcis;
+ 		e = hdr_first_de(&n->index->ihdr);
+ 		fnd_push(fnd, n, e);
++		if (!e) {
++			err = -EINVAL;
++			goto out;
 +		}
-+
-+		if (igen6_imc_absent(window)) {
-+			iounmap(window);
-+			edac_dbg(2, "Skip absent mc%d\n", pmc);
-+			continue;
-+		}
-+
-+		rc = igen6_register_mci(lmc, window, pdev);
-+		if (rc)
-+			goto out_iounmap;
-+
-+		/* Done, if all present MCs are detected and registered. */
-+		if (++lmc >= res_cfg->num_imc)
-+			break;
+ 
+ 		if (!de_is_last(e)) {
+ 			/*
+@@ -2194,6 +2198,10 @@ static int indx_get_entry_to_replace(struct ntfs_index *indx,
+ 
+ 	n = fnd->nodes[level];
+ 	te = hdr_first_de(&n->index->ihdr);
++	if (!te) {
++		err = -EINVAL;
++		goto out;
 +	}
-+
-+	if (!lmc) {
-+		igen6_printk(KERN_ERR, "No mc found.\n");
-+		return -ENODEV;
-+	}
-+
-+	if (lmc < res_cfg->num_imc)
-+		igen6_printk(KERN_WARNING, "Expected %d mcs, but only %d detected.",
-+			     res_cfg->num_imc, lmc);
-+
-+	return 0;
-+
-+out_iounmap:
-+	iounmap(window);
-+
-+out_unregister_mcis:
-+	igen6_unregister_mcis();
-+
-+	return rc;
-+}
-+
- static int igen6_mem_slice_setup(u64 mchbar)
- {
- 	struct igen6_imc *imc = &igen6_pvt->imc[0];
-@@ -1405,7 +1453,7 @@ static void opstate_set(const struct res_config *cfg, const struct pci_device_id
- static int igen6_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
- {
- 	u64 mchbar;
--	int i, rc;
-+	int rc;
- 
- 	edac_dbg(2, "\n");
- 
-@@ -1421,11 +1469,9 @@ static int igen6_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
- 
- 	opstate_set(res_cfg, ent);
- 
--	for (i = 0; i < res_cfg->num_imc; i++) {
--		rc = igen6_register_mci(i, mchbar, pdev);
--		if (rc)
--			goto fail2;
--	}
-+	rc = igen6_register_mcis(pdev, mchbar);
-+	if (rc)
-+		goto fail;
- 
- 	if (res_cfg->num_imc > 1) {
- 		rc = igen6_mem_slice_setup(mchbar);
+ 	/* Copy the candidate entry into the replacement entry buffer. */
+ 	re = kmalloc(le16_to_cpu(te->size) + sizeof(u64), GFP_NOFS);
+ 	if (!re) {
 -- 
 2.39.5
 
