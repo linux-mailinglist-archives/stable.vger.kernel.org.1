@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-156172-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156953-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7580AAE4E74
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:06:00 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7982DAE51D7
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:37:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 089BD17972C
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:06:01 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 753C1442A07
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:37:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8DECE1F582A;
-	Mon, 23 Jun 2025 21:05:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E5208222581;
+	Mon, 23 Jun 2025 21:37:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ag/XibzW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lnB2BKSy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30428219E0;
-	Mon, 23 Jun 2025 21:05:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FF8219CC11;
+	Mon, 23 Jun 2025 21:37:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750712756; cv=none; b=NqdDhSCapkJMzCrC+L6OibDf2CE8Gpqq00F394jYsbJvxb2b9o96GPjT5NP0Oue7oQPgR/8AAP8D7TfI6wUPhW//ZA+aVguQQWtOiN65Bcs8rMTIUiMv49GS74x5XIBE0bfCwIayAyL1hCRIRdxGDqkHvhgclifHSHU8lywuxHU=
+	t=1750714674; cv=none; b=cnlaYsk6vRDm8tU8bS+BA9lnJ9w7VXxb7aYDaWsp2/ggXCJZY0fQUEtAT82/pha6wT2qO/DNh/UCwkX+sdZ1Kt3JeIGyySBvSwpWd4dTIvrif7K00zUMXmw1JEBtBNfyNS3iYAVgVVl7tDENBPC6Aqe8B/mMJ16XNymBbtW2Uqk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750712756; c=relaxed/simple;
-	bh=CKx+Hb3Td+bELceguDVxpsykqo1GAefXT/cNEgyfz6s=;
+	s=arc-20240116; t=1750714674; c=relaxed/simple;
+	bh=yoqLCYWZ+OosKlIkxFGCk0Pf/G4hGLMitzLKLPylGEs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=L5sGLl6WmXFQYOUhpPhICEL0DyeoxjsL6C7FgMVEk1UIqp/eYvoV+/ukyI+HZJuE9IQ5GHJ6XJ/cqEkNpYFqERaVdr+SoA19BNYR9awr3L7lgOomU8x/t7MC0aLVpl+V+uwtU2lTfku+BAuE31Co74d3iQ3JuthZOunCzemCGI0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ag/XibzW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D6E7C4CEEA;
-	Mon, 23 Jun 2025 21:05:55 +0000 (UTC)
+	 MIME-Version; b=LjjEcOd2jcSJ4SujxEeRoGI/JPjnCSEXO2TAzIz1yvgGYg1twJPzVWgDqRxq/GVfBHaUerkSrZsJgCHWmQMQQ/eZwDYH3/ydyxRIvtH7iTKMnw8FXSWTC3o/FDwbBB4EGeFeZdWBQeTZNQ+UhEMTLRFEooT/vbRa+N8i01tzzMk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lnB2BKSy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2EAFEC4CEEA;
+	Mon, 23 Jun 2025 21:37:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750712755;
-	bh=CKx+Hb3Td+bELceguDVxpsykqo1GAefXT/cNEgyfz6s=;
+	s=korg; t=1750714674;
+	bh=yoqLCYWZ+OosKlIkxFGCk0Pf/G4hGLMitzLKLPylGEs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ag/XibzW/2JaE2VgfQTW7zi5/a2VMnX8eA4oCN8bUDh/K1dBSDqa1sTtRC/vYrsdI
-	 jaGUuRPziqsumEVEXk/tiBZ8+3UpJqGAyi1F36NDHN/jTVF1WGHYooCAxXF9C9Hwro
-	 /ombnYFwNCD7PYRtds1h1whWefvjIE1L8LXLxUI8=
+	b=lnB2BKSylaKsapFQD3nEX60eynHt1D2JuHRe+onM0oA4Iu53+W5cyflzHhdUojjVY
+	 RjLe+kRyKKWDVj8HJAsSUDO+ch+JlaoebN3EZ72p+G1bNmDT5s9dGBi9fAj80u7A/J
+	 odq1tZbNJo6EfplFbmcvThIPuHUeGVlLh/nvh1+I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
-	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 106/411] PCI/DPC: Initialize aer_err_info before using it
+	Da Xue <da@libre.computer>,
+	Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
+	Jerome Brunet <jbrunet@baylibre.com>
+Subject: [PATCH 6.12 113/414] clk: meson-g12a: add missing fclk_div2 to spicc
 Date: Mon, 23 Jun 2025 15:04:10 +0200
-Message-ID: <20250623130636.185117099@linuxfoundation.org>
+Message-ID: <20250623130644.912770055@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
-References: <20250623130632.993849527@linuxfoundation.org>
+In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
+References: <20250623130642.015559452@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,51 +60,44 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bjorn Helgaas <bhelgaas@google.com>
+From: Da Xue <da@libre.computer>
 
-[ Upstream commit a424b598e6a6c1e69a2bb801d6fd16e805ab2c38 ]
+commit daf004f87c3520c414992893e2eadd5db5f86a5a upstream.
 
-Previously the struct aer_err_info "info" was allocated on the stack
-without being initialized, so it contained junk except for the fields we
-explicitly set later.
+SPICC is missing fclk_div2, which means fclk_div5 and fclk_div7 indexes
+are wrong on this clock. This causes the spicc module to output sclk at
+2.5x the expected rate when clock index 3 is picked.
 
-Initialize "info" at declaration so it starts as all zeros.
+Adding the missing fclk_div2 resolves this.
 
-Fixes: 8aefa9b0d910 ("PCI/DPC: Print AER status in DPC event handling")
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Tested-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
-Reviewed-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Link: https://patch.msgid.link/20250522232339.1525671-2-helgaas@kernel.org
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+[jbrunet: amended commit description]
+Fixes: a18c8e0b7697 ("clk: meson: g12a: add support for the SPICC SCLK Source clocks")
+Cc: stable@vger.kernel.org # 6.1
+Signed-off-by: Da Xue <da@libre.computer>
+Reviewed-by: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+Link: https://lore.kernel.org/r/20250512142617.2175291-1-da@libre.computer
+Signed-off-by: Jerome Brunet <jbrunet@baylibre.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pci/pcie/dpc.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/clk/meson/g12a.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/pci/pcie/dpc.c b/drivers/pci/pcie/dpc.c
-index ab83f78f3eb1d..cabbaacdb6e61 100644
---- a/drivers/pci/pcie/dpc.c
-+++ b/drivers/pci/pcie/dpc.c
-@@ -263,7 +263,7 @@ static int dpc_get_aer_uncorrect_severity(struct pci_dev *dev,
- void dpc_process_error(struct pci_dev *pdev)
- {
- 	u16 cap = pdev->dpc_cap, status, source, reason, ext_reason;
--	struct aer_err_info info;
-+	struct aer_err_info info = {};
- 
- 	pci_read_config_word(pdev, cap + PCI_EXP_DPC_STATUS, &status);
- 	pci_read_config_word(pdev, cap + PCI_EXP_DPC_SOURCE_ID, &source);
--- 
-2.39.5
-
+--- a/drivers/clk/meson/g12a.c
++++ b/drivers/clk/meson/g12a.c
+@@ -4099,6 +4099,7 @@ static const struct clk_parent_data spic
+ 	{ .hw = &g12a_clk81.hw },
+ 	{ .hw = &g12a_fclk_div4.hw },
+ 	{ .hw = &g12a_fclk_div3.hw },
++	{ .hw = &g12a_fclk_div2.hw },
+ 	{ .hw = &g12a_fclk_div5.hw },
+ 	{ .hw = &g12a_fclk_div7.hw },
+ };
 
 
 
