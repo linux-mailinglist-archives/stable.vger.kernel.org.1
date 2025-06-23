@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-156671-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156823-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5F550AE50A5
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:27:13 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id D6445AE5148
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:32:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 183A5188988F
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:27:18 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 732884A3440
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:32:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD67422425B;
-	Mon, 23 Jun 2025 21:26:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 705791DDC04;
+	Mon, 23 Jun 2025 21:32:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="szi3U5UK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zqueeaVg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B0CD223DF0;
-	Mon, 23 Jun 2025 21:26:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D483C2E0;
+	Mon, 23 Jun 2025 21:32:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750713984; cv=none; b=SeC7O2lqzjzgMVdJ+DV/CmBqk14Uhhd9LaY4qZUPOyKkRxtM/9wR3rifZjBPuIqLGS9K4xTGY8FFLBOc0lOgLYr/KuPYmtMiu3XtTLYr8lHbikYWRmNipmaPhMEf4LBwQBb5hlEgCMcBx8YsRnTGVT5jboai7eiS6WfCNZpCoPU=
+	t=1750714353; cv=none; b=J5gO1u4H7mR2sFxPcfTd81TL6mnZYk6rhL070kLwvJB2Lw+55K3durl6TIANRgAwmQAnvgK+Np8sPYL+J/EhbRY+aO2hZhAQWaCZr9MWIvUCIwYB9Gd+dVE0JjDOt8QCxN9oSb6SuGWH9a5PJY32AF/KEtGgjZzpNSVJ5Fpfukw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750713984; c=relaxed/simple;
-	bh=uTXb2shSthsiLwR3tdRSDMoqeHpC3A4/b7pcDoYKspI=;
+	s=arc-20240116; t=1750714353; c=relaxed/simple;
+	bh=9tQq3bfwvOK2sX0XuGHuj43H3ouAxTEFwC1cHi2Ca/s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cKC2XNhxDJA2WVd7kXeaTD5foFjax/yNw7qF901yLJKt2932Jw/gw54dABYpuf9XHgO3XC4FYWbxtASzECo9gqeBv84udX+1Oea7L6HP24Zq3Tcb8ZqIX7EMi19aAK+P5tyHHmUmIECDjzmvIwL/x+GTq3XCpC/sep00NUQ4zow=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=szi3U5UK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4928C4CEEA;
-	Mon, 23 Jun 2025 21:26:23 +0000 (UTC)
+	 MIME-Version; b=HIMMsRlEHhpCjN5nhHn/TnTFJTo/06Xy1qPn4urvx5v9YsmZlVAck5iBeh/chprFeK9fiAZoZnbLPxitciI5339pbrrSlg04U/qPgtz6dZWFIW+4zMPP/QW/7Q2AVQXS6vQ0HBpZzXSBhQcqhk/2FlQOABOfjWUjrIcn4N/c3Xw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zqueeaVg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B770DC4CEEA;
+	Mon, 23 Jun 2025 21:32:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750713984;
-	bh=uTXb2shSthsiLwR3tdRSDMoqeHpC3A4/b7pcDoYKspI=;
+	s=korg; t=1750714353;
+	bh=9tQq3bfwvOK2sX0XuGHuj43H3ouAxTEFwC1cHi2Ca/s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=szi3U5UKowdUbXvdA1vJSOHg6yCD0OkUd4AhAioZHhegqG0jvC2nn7UGt2TNSVhoj
-	 rNC+BvvhvoFS6AkJBs/Oa3/orBc1QCc0GFZdcCD3bG8tS2hXdJSExxGoZvNs9+3D/7
-	 NRFZ4GqDp//P3PggrI8tDiCw4CPNx6736gI3XD7E=
+	b=zqueeaVgyqqTgenh00we4XpQRoDmJ4eSjcDuJbyLoiHlJE35CwGl8Y8bOIIkM3qVr
+	 B8CTw42kbgSzAMbQbMGb9Lu/3ql+NTuhipB6BQh+DkUH0BH51YpOa+wq+CQmqP4zmJ
+	 rBgb4h9aPot3fQbkuSAWfHI/1J10zpikmBCYwwXc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andreas Kemnade <andreas@kemnade.info>,
-	Kevin Hilman <khilman@baylibre.com>,
-	Tony Lindgren <tony@atomide.com>
-Subject: [PATCH 6.12 074/414] ARM: omap: pmic-cpcap: do not mess around without CPCAP or OMAP4
-Date: Mon, 23 Jun 2025 15:03:31 +0200
-Message-ID: <20250623130643.926848134@linuxfoundation.org>
+	Quentin Schulz <quentin.schulz@cherry.de>,
+	Maxime Chevallier <maxime.chevallier@bootlin.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 167/508] net: stmmac: platform: guarantee uniqueness of bus_id
+Date: Mon, 23 Jun 2025 15:03:32 +0200
+Message-ID: <20250623130649.383967926@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
-References: <20250623130642.015559452@linuxfoundation.org>
+In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
+References: <20250623130645.255320792@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,49 +63,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andreas Kemnade <andreas@kemnade.info>
+From: Quentin Schulz <quentin.schulz@cherry.de>
 
-commit 7397daf1029d5bfd3415ec8622f5179603d5702d upstream.
+[ Upstream commit eb7fd7aa35bfcc1e1fda4ecc42ccfcb526cdc780 ]
 
-The late init call just writes to omap4 registers as soon as
-CONFIG_MFD_CPCAP is enabled without checking whether the
-cpcap driver is actually there or the SoC is indeed an
-OMAP4.
-Rather do these things only with the right device combination.
+bus_id is currently derived from the ethernetX alias. If one is missing
+for the device, 0 is used. If ethernet0 points to another stmmac device
+or if there are 2+ stmmac devices without an ethernet alias, then bus_id
+will be 0 for all of those.
 
-Fixes booting the BT200 with said configuration enabled and non-factory
-X-Loader and probably also some surprising behavior on other devices.
+This is an issue because the bus_id is used to generate the mdio bus id
+(new_bus->id in drivers/net/ethernet/stmicro/stmmac/stmmac_mdio.c
+stmmac_mdio_register) and this needs to be unique.
 
-Fixes: c145649bf262 ("ARM: OMAP2+: Configure voltage controller for cpcap to low-speed")
-CC: stable@vger.kernel.org
-Signed-off-by: Andreas Kemnade <andreas@kemnade.info>
-Reivewed-by: Tony Lindgren <tony@atomide.com>
-Link: https://lore.kernel.org/r/20250331144439.769697-1-andreas@kemnade.info
-Signed-off-by: Kevin Hilman <khilman@baylibre.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+This allows to avoid needing to define ethernet aliases for devices with
+multiple stmmac controllers (such as the Rockchip RK3588) for multiple
+stmmac devices to probe properly.
+
+Obviously, the bus_id isn't guaranteed to be stable across reboots if no
+alias is set for the device but that is easily fixed by simply adding an
+alias if this is desired.
+
+Fixes: 25c83b5c2e82 ("dt:net:stmmac: Add support to dwmac version 3.610 and 3.710")
+Signed-off-by: Quentin Schulz <quentin.schulz@cherry.de>
+Reviewed-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
+Link: https://patch.msgid.link/20250527-stmmac-mdio-bus_id-v2-1-a5ca78454e3c@cherry.de
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/mach-omap2/pmic-cpcap.c |    6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/stmicro/stmmac/stmmac_platform.c | 11 +++++++++--
+ 1 file changed, 9 insertions(+), 2 deletions(-)
 
---- a/arch/arm/mach-omap2/pmic-cpcap.c
-+++ b/arch/arm/mach-omap2/pmic-cpcap.c
-@@ -264,7 +264,11 @@ int __init omap4_cpcap_init(void)
+diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_platform.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_platform.c
+index c368ef3cd9cb4..e81f54a4ac9b1 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/stmmac_platform.c
++++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_platform.c
+@@ -417,6 +417,7 @@ stmmac_probe_config_dt(struct platform_device *pdev, u8 *mac)
+ 	struct device_node *np = pdev->dev.of_node;
+ 	struct plat_stmmacenet_data *plat;
+ 	struct stmmac_dma_cfg *dma_cfg;
++	static int bus_id = -ENODEV;
+ 	int phy_mode;
+ 	void *ret;
+ 	int rc;
+@@ -453,8 +454,14 @@ stmmac_probe_config_dt(struct platform_device *pdev, u8 *mac)
+ 	of_property_read_u32(np, "max-speed", &plat->max_speed);
  
- static int __init cpcap_late_init(void)
- {
--	omap4_vc_set_pmic_signaling(PWRDM_POWER_RET);
-+	if (!of_find_compatible_node(NULL, NULL, "motorola,cpcap"))
-+		return 0;
-+
-+	if (soc_is_omap443x() || soc_is_omap446x() || soc_is_omap447x())
-+		omap4_vc_set_pmic_signaling(PWRDM_POWER_RET);
+ 	plat->bus_id = of_alias_get_id(np, "ethernet");
+-	if (plat->bus_id < 0)
+-		plat->bus_id = 0;
++	if (plat->bus_id < 0) {
++		if (bus_id < 0)
++			bus_id = of_alias_get_highest_id("ethernet");
++		/* No ethernet alias found, init at -1 so first bus_id is 0 */
++		if (bus_id < 0)
++			bus_id = -1;
++		plat->bus_id = ++bus_id;
++	}
  
- 	return 0;
- }
+ 	/* Default to phy auto-detection */
+ 	plat->phy_addr = -1;
+-- 
+2.39.5
+
 
 
 
