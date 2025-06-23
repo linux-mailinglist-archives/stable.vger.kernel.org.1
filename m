@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-157630-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156519-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D8713AE54E7
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:06:12 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EC94EAE4FDB
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:20:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C14284C290A
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:05:47 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 165103B0909
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:19:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77100221DAE;
-	Mon, 23 Jun 2025 22:05:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A5A01E521E;
+	Mon, 23 Jun 2025 21:20:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x9uiGypz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="inhVrqvV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34BF62222C2;
-	Mon, 23 Jun 2025 22:05:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC7C52C9D;
+	Mon, 23 Jun 2025 21:20:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750716338; cv=none; b=a/pNFHDWREoG38ftHf9hg6K3dodnXbAwcAP+0AF5YeZfPlq0UfOeAti2Lz0JEu6ntbOiJXE8llL+tyUBmqX4uCu2YIDx5/uAUeuD7uii5xf2Y23SY+ofcCY+iMASBmNsiTR4jThhNUGegluSjVxRqmVcK1T0+QCTiQkzrnemU+Y=
+	t=1750713612; cv=none; b=Tp+JhCfxN1csbuoDnyNVviGfREzYf8BK4iMW7YXwD+cUPq/iYWGummdTkEnj8IU2jbd5u/uAeQvcX1BjkjlQWLs8U7lTCay68Qb6929p6H0d7Et4plTYYpQ96iCQZz8gmuqRwnbynSOY1Z5T74/rB2yy5Rr3oUFqUZkB8kWVaUo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750716338; c=relaxed/simple;
-	bh=6ob2bAmSXbsBrLdeuxo6DI1njkvBM6aAUxAQVMa3tD0=;
+	s=arc-20240116; t=1750713612; c=relaxed/simple;
+	bh=pfkHc/bMy1um2h8nWy7aYiuhrKmeke8IbLuhXti0bU8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=UtoHKbVisXAw02C0+B3eC1UGshqRioYihqtu9KFLgnGBGmgMemQfi1+zOqFtiJaaGGhYa/dyJQXLgJB/Hi+iIjw5+YrnoZLmszhOCRfZS6SBVRO+fIoGpaRqaffHgPyqa0dBHvlFuqjljGNZGy1mf5Js5HRhR9s/HZ9I7qscjA8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x9uiGypz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BEE53C4CEEA;
-	Mon, 23 Jun 2025 22:05:37 +0000 (UTC)
+	 MIME-Version; b=Fgjt3uTHQtEpaEFuBBRL6/2fRkDuDV4+aTHW9cnMcyEzp5RZEYKYuCRODP7kxcNE9d2m6YqOhAof3CzJC9W86OSypMp7MiRuiZ5E6qryeZgWvxSbiynzxj3ejFyOpMaYVgMSEP9Q6Gw7zIxOTRxSkl2tQA1kMKA3QPY4e6GPfi8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=inhVrqvV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75CCBC4CEEA;
+	Mon, 23 Jun 2025 21:20:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750716338;
-	bh=6ob2bAmSXbsBrLdeuxo6DI1njkvBM6aAUxAQVMa3tD0=;
+	s=korg; t=1750713611;
+	bh=pfkHc/bMy1um2h8nWy7aYiuhrKmeke8IbLuhXti0bU8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=x9uiGypzQnv6SYsC/Ea6pDaBQE4oBDkq+QNp6IlIYgBaDn2J6xtp7vwMLJOv8EoFN
-	 SMu7K8pBHCdK91RvY5HrDuiuO3OpPhwgPzJOu4hdXjcyaTjcHT9iUIyjC6nvIcgAKd
-	 KMgNAYW3i5VMvuJm0uZ+R7DP6FHMytjNYaShio4o=
+	b=inhVrqvVIWgqwY+xArxyTdOqnPjKBc9PX9WASdu+Uc5tgtZ5yYUREs3RW+H4JgG2n
+	 coZPHLUlC/B916QnsO9VOyVvLfQAaK4l+kMCZfrWkpkcHTDLWLoY59y9QXq/kLjyfg
+	 7IypQ7fbwDD3iF2us7Yfkq6cHL2cgVPEujM3iwvw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Jo=C3=A3o=20Paulo=20Gon=C3=A7alves?= <jpaulo.silvagoncalves@gmail.com>,
-	Mark Brown <broonie@kernel.org>
-Subject: [PATCH 6.1 296/508] regulator: max20086: Fix MAX200086 chip id
+	Da Xue <da@libre.computer>,
+	Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
+	Jerome Brunet <jbrunet@baylibre.com>
+Subject: [PATCH 6.6 080/290] clk: meson-g12a: add missing fclk_div2 to spicc
 Date: Mon, 23 Jun 2025 15:05:41 +0200
-Message-ID: <20250623130652.574273463@linuxfoundation.org>
+Message-ID: <20250623130629.391592541@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
-References: <20250623130645.255320792@linuxfoundation.org>
+In-Reply-To: <20250623130626.910356556@linuxfoundation.org>
+References: <20250623130626.910356556@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,42 +60,44 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: João Paulo Gonçalves <jpaulo.silvagoncalves@gmail.com>
+From: Da Xue <da@libre.computer>
 
-commit 71406b6d1155d883c80c1b4405939a52f723aa05 upstream.
+commit daf004f87c3520c414992893e2eadd5db5f86a5a upstream.
 
->From MAX20086-MAX20089 datasheet, the id for a MAX20086 is 0x30 and not
-0x40. With the current code, the driver will fail on probe when the
-driver tries to identify the chip id from a MAX20086 device over I2C.
+SPICC is missing fclk_div2, which means fclk_div5 and fclk_div7 indexes
+are wrong on this clock. This causes the spicc module to output sclk at
+2.5x the expected rate when clock index 3 is picked.
 
-Cc: stable@vger.kernel.org
-Fixes: bfff546aae50 ("regulator: Add MAX20086-MAX20089 driver")
-Signed-off-by: João Paulo Gonçalves <jpaulo.silvagoncalves@gmail.com>
-Link: https://patch.msgid.link/20250420-fix-max20086-v1-1-8cc9ee0d5a08@gmail.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Adding the missing fclk_div2 resolves this.
+
+[jbrunet: amended commit description]
+Fixes: a18c8e0b7697 ("clk: meson: g12a: add support for the SPICC SCLK Source clocks")
+Cc: stable@vger.kernel.org # 6.1
+Signed-off-by: Da Xue <da@libre.computer>
+Reviewed-by: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+Link: https://lore.kernel.org/r/20250512142617.2175291-1-da@libre.computer
+Signed-off-by: Jerome Brunet <jbrunet@baylibre.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/regulator/max20086-regulator.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/clk/meson/g12a.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/regulator/max20086-regulator.c
-+++ b/drivers/regulator/max20086-regulator.c
-@@ -30,7 +30,7 @@
- #define	MAX20086_REG_ADC4		0x09
- 
- /* DEVICE IDs */
--#define MAX20086_DEVICE_ID_MAX20086	0x40
-+#define MAX20086_DEVICE_ID_MAX20086	0x30
- #define MAX20086_DEVICE_ID_MAX20087	0x20
- #define MAX20086_DEVICE_ID_MAX20088	0x10
- #define MAX20086_DEVICE_ID_MAX20089	0x00
+--- a/drivers/clk/meson/g12a.c
++++ b/drivers/clk/meson/g12a.c
+@@ -3971,6 +3971,7 @@ static const struct clk_parent_data spic
+ 	{ .hw = &g12a_clk81.hw },
+ 	{ .hw = &g12a_fclk_div4.hw },
+ 	{ .hw = &g12a_fclk_div3.hw },
++	{ .hw = &g12a_fclk_div2.hw },
+ 	{ .hw = &g12a_fclk_div5.hw },
+ 	{ .hw = &g12a_fclk_div7.hw },
+ };
 
 
 
