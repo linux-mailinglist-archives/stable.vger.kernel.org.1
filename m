@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-157379-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157202-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 837AEAE53C6
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:56:20 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E35DAE52F6
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:48:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6FEEC1B67E48
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:55:51 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 731687B020F
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:46:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CCDA11AD3FA;
-	Mon, 23 Jun 2025 21:55:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D83471AAA1C;
+	Mon, 23 Jun 2025 21:48:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hVlIzV3G"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dix/akcU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FE292236E5;
-	Mon, 23 Jun 2025 21:55:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95B063FD4;
+	Mon, 23 Jun 2025 21:48:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750715724; cv=none; b=ttdkp3rxqS7xiZb91cOWQrMbFL5fkyUO0CkWA3EenOIRWxWDH/EkRIWAeS3dADrfKvyDxz+VNJKbDCyPudz0xuB0qeHm2ZOUoSA9GETpWp64d7QeCmAt0wglPaNV7iRZz51UHj4AzhoB57njY91+NJ/eM/QpCwJPYnjAAP5XABM=
+	t=1750715289; cv=none; b=n6UeIemV1HihTdNGqWLvNkrcsFgY9HWYkfW5+XOrD5Z+nMGNz8n9Hhxq9hAXfdYXlxXIWf0AoxBIhrsGeJxq2ErVyQNCMO9kkLw/w72uYNZG0lzeTwIsnJjU4b2gw4873WZmBazcLV88GJRVJlwgJSbE40bnXbGTp6YEMycTBCE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750715724; c=relaxed/simple;
-	bh=bx9iYJ1DyQSFgYK13BzJ3OYpWs7613CzdjnfpHZKEmE=;
+	s=arc-20240116; t=1750715289; c=relaxed/simple;
+	bh=wGklmCljeo8MTlxqtWQcOtLUG+TTNMbXKkaqhrgHUis=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=vD52KNTgAvM9zCkA79LEp2VDSEGMUaBZcj5qhRbFURl7ydUVKFtaw7j4dF9KWTW6nu00ZlpSHt79eefHbf06Gb23w4siz1aIJdc9JdwR7yXBiVHEmwIu1CbGhnA8f9wqrP5m2R/kpCH31GAaAPMziBrFI4QwgHhEELNMGKWZpJU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hVlIzV3G; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17054C4CEED;
-	Mon, 23 Jun 2025 21:55:23 +0000 (UTC)
+	 MIME-Version; b=ROnlYUeiCz6NXMJieFreQdSJ12ubDB3TyOGd8mTxso2K2idA561HRWVtz//n5WEeZ1tGJGgC5EYRTmdV9ohQ6PJBHb8ylKpTh9TVQWs2rVQAGaMYhh1Ae3hFz4l2ngMH5tojS3qgh/E0e8newFMUGLU8GqeDxM30M+E01F8Xj9Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dix/akcU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2DCF1C4CEEA;
+	Mon, 23 Jun 2025 21:48:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750715724;
-	bh=bx9iYJ1DyQSFgYK13BzJ3OYpWs7613CzdjnfpHZKEmE=;
+	s=korg; t=1750715289;
+	bh=wGklmCljeo8MTlxqtWQcOtLUG+TTNMbXKkaqhrgHUis=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hVlIzV3GcQA5VjJboptoWnwscMxgyTfaIuiInPBAyV/fIRWoanXI4TJWD0g3VbtIs
-	 /Jfqu9cfZJ9wGllUs7Ul/a4UD6JC97YVtBKIWbgkxKw4D/so9ftWou3HoVdq2UvY7w
-	 E8yGko6weLiBCzAaYDKPGbasPEGGMl5veHJzog+U=
+	b=dix/akcUi2AIX6Url5t29d7mnZqjU9eSyv5B7fRicyjD9tQKnMpwFdM7Olcd4QcFj
+	 z4vBia57vO/ycuaNZSwrCJWO/aT5KdVo1SJF06+NLlSoRvPmrpvZRx3B5Lkc3eFScz
+	 1NaoqyLLWMl1/sxqqaRc26xToO229HfgCuCwKGc8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ahmed Salem <x0rw3ll@gmail.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 263/411] ACPICA: Avoid sequence overread in call to strncmp()
+	Yao Zi <ziyao@disroot.org>,
+	Huacai Chen <chenhuacai@loongson.cn>
+Subject: [PATCH 6.15 449/592] platform/loongarch: laptop: Unregister generic_sub_drivers on exit
 Date: Mon, 23 Jun 2025 15:06:47 +0200
-Message-ID: <20250623130640.278480453@linuxfoundation.org>
+Message-ID: <20250623130711.109167169@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
-References: <20250623130632.993849527@linuxfoundation.org>
+In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
+References: <20250623130700.210182694@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,62 +61,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ahmed Salem <x0rw3ll@gmail.com>
+From: Yao Zi <ziyao@disroot.org>
 
-[ Upstream commit 64b9dfd0776e9c38d733094859a09f13282ce6f8 ]
+commit f78fb2576f22b0ba5297412a9aa7691920666c41 upstream.
 
-ACPICA commit 8b83a8d88dfec59ea147fad35fc6deea8859c58c
+Without correct unregisteration, ACPI notify handlers and the platform
+drivers installed by generic_subdriver_init() will become dangling
+references after removing the loongson_laptop module, triggering various
+kernel faults when a hotkey is sent or at kernel shutdown.
 
-ap_get_table_length() checks if tables are valid by
-calling ap_is_valid_header(). The latter then calls
-ACPI_VALIDATE_RSDP_SIG(Table->Signature).
-
-ap_is_valid_header() accepts struct acpi_table_header as an argument, so
-the signature size is always fixed to 4 bytes.
-
-The problem is when the string comparison is between ACPI-defined table
-signature and ACPI_SIG_RSDP. Common ACPI table header specifies the
-Signature field to be 4 bytes long[1], with the exception of the RSDP
-structure whose signature is 8 bytes long "RSD PTR " (including the
-trailing blank character)[2]. Calling strncmp(sig, rsdp_sig, 8) would
-then result in a sequence overread[3] as sig would be smaller (4 bytes)
-than the specified bound (8 bytes).
-
-As a workaround, pass the bound conditionally based on the size of the
-signature being passed.
-
-Link: https://uefi.org/specs/ACPI/6.5_A/05_ACPI_Software_Programming_Model.html#system-description-table-header [1]
-Link: https://uefi.org/specs/ACPI/6.5_A/05_ACPI_Software_Programming_Model.html#root-system-description-pointer-rsdp-structure [2]
-Link: https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wstringop-overread [3]
-Link: https://github.com/acpica/acpica/commit/8b83a8d8
-Signed-off-by: Ahmed Salem <x0rw3ll@gmail.com>
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Link: https://patch.msgid.link/2248233.Mh6RI2rZIc@rjwysocki.net
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: 6246ed09111f ("LoongArch: Add ACPI-based generic laptop driver")
+Signed-off-by: Yao Zi <ziyao@disroot.org>
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/acpi/actypes.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/platform/loongarch/loongson-laptop.c |   12 +++++++++---
+ 1 file changed, 9 insertions(+), 3 deletions(-)
 
-diff --git a/include/acpi/actypes.h b/include/acpi/actypes.h
-index cefbb7ad253e0..ea50b9c469c9d 100644
---- a/include/acpi/actypes.h
-+++ b/include/acpi/actypes.h
-@@ -524,7 +524,7 @@ typedef u64 acpi_integer;
+--- a/drivers/platform/loongarch/loongson-laptop.c
++++ b/drivers/platform/loongarch/loongson-laptop.c
+@@ -611,11 +611,17 @@ static int __init generic_acpi_laptop_in
  
- /* Support for the special RSDP signature (8 characters) */
+ static void __exit generic_acpi_laptop_exit(void)
+ {
++	int i;
++
+ 	if (generic_inputdev) {
+-		if (input_device_registered)
+-			input_unregister_device(generic_inputdev);
+-		else
++		if (!input_device_registered) {
+ 			input_free_device(generic_inputdev);
++		} else {
++			input_unregister_device(generic_inputdev);
++
++			for (i = 0; i < ARRAY_SIZE(generic_sub_drivers); i++)
++				generic_subdriver_exit(&generic_sub_drivers[i]);
++		}
+ 	}
+ }
  
--#define ACPI_VALIDATE_RSDP_SIG(a)       (!strncmp (ACPI_CAST_PTR (char, (a)), ACPI_SIG_RSDP, 8))
-+#define ACPI_VALIDATE_RSDP_SIG(a)       (!strncmp (ACPI_CAST_PTR (char, (a)), ACPI_SIG_RSDP, (sizeof(a) < 8) ? ACPI_NAMESEG_SIZE : 8))
- #define ACPI_MAKE_RSDP_SIG(dest)        (memcpy (ACPI_CAST_PTR (char, (dest)), ACPI_SIG_RSDP, 8))
- 
- /* Support for OEMx signature (x can be any character) */
--- 
-2.39.5
-
 
 
 
