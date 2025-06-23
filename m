@@ -1,53 +1,57 @@
-Return-Path: <stable+bounces-155538-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-155540-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id F0E4EAE4275
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:19:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B97C1AE4276
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:20:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 104053B6A7D
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:18:14 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3F4923B6CD9
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:18:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 90A9E252906;
-	Mon, 23 Jun 2025 13:18:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E9CD253938;
+	Mon, 23 Jun 2025 13:18:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ary3YMmZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x2F8y6S0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EDC824BD00;
-	Mon, 23 Jun 2025 13:18:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD97C4C7F;
+	Mon, 23 Jun 2025 13:18:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750684692; cv=none; b=HGkdW3BSNC9sU0AcFPbM6hZnVVG8OfWIAibGY0BijHpZiABL3S+mtCYFg4he4e8hsBOQyyCHmDr+sXabn5B/ii+KqYyG9S3wzUSkP4C9oNaf5BZg12+WvmCGppbjldISetwp4yOApFlurdhmNlYqOhYr/UD6/rYiYaOvtIY3Ht4=
+	t=1750684697; cv=none; b=bcojK92k0u3TGdzLbcOzxs8BxtIZiZsU3xCOEBFq3gjGezPvTbNBtgmqba6FMnG2jQzkGzeXJaE1D7vemUSGpRx0qx2RcZD+yfwIswinSMgGyJWYYyTsK/jI5b2pomVqhmTcWPnK61GBmhxP16bbPJcEkl/NnZFquuotyNkGCvM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750684692; c=relaxed/simple;
-	bh=+Abb1MLVSUD3dqlwgdmven/7nBXCrkZhO6NN2CInXbc=;
+	s=arc-20240116; t=1750684697; c=relaxed/simple;
+	bh=O8TO5JDxkuBFz4XkXtuKxpwAxJI10zUJ3uHvW3YlySo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dz4BuVG/bqPjzN+zOb4H0Dqy4CToG3G+7snkSxNRjexpuNT6ab/FNY87sQzpfYKkJYjGkt3I2ofbNzY2pn/TXRle7vnZh/1jJz9wC716MRfZNTSiBo2mm59rfTIZTm2XX+BVb71AU7VRDqDe7YawuLXYYEr1gwCY+uYHBq+5stQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ary3YMmZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5619C4CEEA;
-	Mon, 23 Jun 2025 13:18:11 +0000 (UTC)
+	 MIME-Version; b=OymvxeMb2Zor9rJUeSzlIiwmdNChQbL3qS8xVZ4NYufNxvxXSdxps8ALrz0hYCEBYWufVPisZiwOiM9UTmIPoiRzhgMIZXflup4G3WP6AwItYwieJOPc6jpQnem2zM2xpOEYNKX4mj9l0g7jVDAqjDovZNs3/VV/qHne7uT6I/E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x2F8y6S0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F219BC4CEF0;
+	Mon, 23 Jun 2025 13:18:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750684692;
-	bh=+Abb1MLVSUD3dqlwgdmven/7nBXCrkZhO6NN2CInXbc=;
+	s=korg; t=1750684697;
+	bh=O8TO5JDxkuBFz4XkXtuKxpwAxJI10zUJ3uHvW3YlySo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ary3YMmZp+/OQFigXeUmAXH0MfS/dmEbYyzRVHa/9fP+nUJPwSp7rCPfcmAehZcN3
-	 eDnWG+AZ8C/M4KOazdYWgnLvLwQl4n7LvVwuuuhBV7Ct8Vlc+NFE6d1KrdCJ33LErL
-	 +xz515gx2pdvOGTC3x+RAXYbTVlwi8BgjOTxBOzo=
+	b=x2F8y6S0jQWM0z16mqPHHgyVZbiAuZsZ3tm2vv1bDawASY+rlfaVkkCbdr77VXAC8
+	 tmJMlMqsZmU0RWxaBb0pws0+u+FbGHkvlAeSTivNYqK6/5QI9QiWN8nzeAG1mf/mUk
+	 cRdZ5vKtveW57kz7qgfaBmUommZPDSkYGPcEWfyg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Qing Wang <wangqing7171@gmail.com>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	"Ahmed S. Darwish" <darwi@linutronix.de>,
+	Ingo Molnar <mingo@kernel.org>,
+	Andrew Cooper <andrew.cooper3@citrix.com>,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	John Ogness <john.ogness@linutronix.de>,
+	x86-cpuid@lists.linux.dev,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 010/222] perf/core: Fix broken throttling when max_samples_per_tick=1
-Date: Mon, 23 Jun 2025 15:05:45 +0200
-Message-ID: <20250623130612.209400084@linuxfoundation.org>
+Subject: [PATCH 5.4 011/222] x86/cpu: Sanitize CPUID(0x80000000) output
+Date: Mon, 23 Jun 2025 15:05:46 +0200
+Message-ID: <20250623130612.236444502@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
 In-Reply-To: <20250623130611.896514667@linuxfoundation.org>
 References: <20250623130611.896514667@linuxfoundation.org>
@@ -66,62 +70,90 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Qing Wang <wangqing7171@gmail.com>
+From: Ahmed S. Darwish <darwi@linutronix.de>
 
-[ Upstream commit f51972e6f8b9a737b2b3eb588069acb538fa72de ]
+[ Upstream commit cc663ba3fe383a628a812f893cc98aafff39ab04 ]
 
-According to the throttling mechanism, the pmu interrupts number can not
-exceed the max_samples_per_tick in one tick. But this mechanism is
-ineffective when max_samples_per_tick=1, because the throttling check is
-skipped during the first interrupt and only performed when the second
-interrupt arrives.
+CPUID(0x80000000).EAX returns the max extended CPUID leaf available.  On
+x86-32 machines without an extended CPUID range, a CPUID(0x80000000)
+query will just repeat the output of the last valid standard CPUID leaf
+on the CPU; i.e., a garbage values.  Current tip:x86/cpu code protects against
+this by doing:
 
-Perhaps this bug may cause little influence in one tick, but if in a
-larger time scale, the problem can not be underestimated.
+	eax = cpuid_eax(0x80000000);
+	c->extended_cpuid_level = eax;
 
-When max_samples_per_tick = 1:
-Allowed-interrupts-per-second max-samples-per-second  default-HZ  ARCH
-200                           100                     100         X86
-500                           250                     250         ARM64
-...
-Obviously, the pmu interrupt number far exceed the user's expect.
+	if ((eax & 0xffff0000) == 0x80000000) {
+		// CPU has an extended CPUID range. Check for 0x80000001
+		if (eax >= 0x80000001) {
+			cpuid(0x80000001, ...);
+		}
+	}
 
-Fixes: e050e3f0a71b ("perf: Fix broken interrupt rate throttling")
-Signed-off-by: Qing Wang <wangqing7171@gmail.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lkml.kernel.org/r/20250405141635.243786-3-wangqing7171@gmail.com
+This is correct so far.  Afterwards though, the same possibly broken EAX
+value is used to check the availability of other extended CPUID leaves:
+
+	if (c->extended_cpuid_level >= 0x80000007)
+		...
+	if (c->extended_cpuid_level >= 0x80000008)
+		...
+	if (c->extended_cpuid_level >= 0x8000000a)
+		...
+	if (c->extended_cpuid_level >= 0x8000001f)
+		...
+
+which is invalid.  Fix this by immediately setting the CPU's max extended
+CPUID leaf to zero if CPUID(0x80000000).EAX doesn't indicate a valid
+CPUID extended range.
+
+While at it, add a comment, similar to kernel/head_32.S, clarifying the
+CPUID(0x80000000) sanity check.
+
+References: 8a50e5135af0 ("x86-32: Use symbolic constants, safer CPUID when enabling EFER.NX")
+Fixes: 3da99c977637 ("x86: make (early)_identify_cpu more the same between 32bit and 64 bit")
+Signed-off-by: Ahmed S. Darwish <darwi@linutronix.de>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Cc: Andrew Cooper <andrew.cooper3@citrix.com>
+Cc: H. Peter Anvin <hpa@zytor.com>
+Cc: John Ogness <john.ogness@linutronix.de>
+Cc: x86-cpuid@lists.linux.dev
+Link: https://lore.kernel.org/r/20250506050437.10264-3-darwi@linutronix.de
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/events/core.c | 16 ++++++++--------
- 1 file changed, 8 insertions(+), 8 deletions(-)
+ arch/x86/kernel/cpu/common.c | 17 +++++++++--------
+ 1 file changed, 9 insertions(+), 8 deletions(-)
 
-diff --git a/kernel/events/core.c b/kernel/events/core.c
-index dd55fd475f121..7b97be4ed9d00 100644
---- a/kernel/events/core.c
-+++ b/kernel/events/core.c
-@@ -8266,14 +8266,14 @@ __perf_event_account_interrupt(struct perf_event *event, int throttle)
- 		hwc->interrupts = 1;
- 	} else {
- 		hwc->interrupts++;
--		if (unlikely(throttle &&
--			     hwc->interrupts > max_samples_per_tick)) {
--			__this_cpu_inc(perf_throttled_count);
--			tick_dep_set_cpu(smp_processor_id(), TICK_DEP_BIT_PERF_EVENTS);
--			hwc->interrupts = MAX_INTERRUPTS;
--			perf_log_throttle(event, 0);
--			ret = 1;
--		}
-+	}
-+
-+	if (unlikely(throttle && hwc->interrupts >= max_samples_per_tick)) {
-+		__this_cpu_inc(perf_throttled_count);
-+		tick_dep_set_cpu(smp_processor_id(), TICK_DEP_BIT_PERF_EVENTS);
-+		hwc->interrupts = MAX_INTERRUPTS;
-+		perf_log_throttle(event, 0);
-+		ret = 1;
+diff --git a/arch/x86/kernel/cpu/common.c b/arch/x86/kernel/cpu/common.c
+index ae9d8aa3ae48e..bd29a436e87e8 100644
+--- a/arch/x86/kernel/cpu/common.c
++++ b/arch/x86/kernel/cpu/common.c
+@@ -934,17 +934,18 @@ void get_cpu_cap(struct cpuinfo_x86 *c)
+ 		c->x86_capability[CPUID_D_1_EAX] = eax;
  	}
  
- 	if (event->attr.freq) {
+-	/* AMD-defined flags: level 0x80000001 */
++	/*
++	 * Check if extended CPUID leaves are implemented: Max extended
++	 * CPUID leaf must be in the 0x80000001-0x8000ffff range.
++	 */
+ 	eax = cpuid_eax(0x80000000);
+-	c->extended_cpuid_level = eax;
++	c->extended_cpuid_level = ((eax & 0xffff0000) == 0x80000000) ? eax : 0;
+ 
+-	if ((eax & 0xffff0000) == 0x80000000) {
+-		if (eax >= 0x80000001) {
+-			cpuid(0x80000001, &eax, &ebx, &ecx, &edx);
++	if (c->extended_cpuid_level >= 0x80000001) {
++		cpuid(0x80000001, &eax, &ebx, &ecx, &edx);
+ 
+-			c->x86_capability[CPUID_8000_0001_ECX] = ecx;
+-			c->x86_capability[CPUID_8000_0001_EDX] = edx;
+-		}
++		c->x86_capability[CPUID_8000_0001_ECX] = ecx;
++		c->x86_capability[CPUID_8000_0001_EDX] = edx;
+ 	}
+ 
+ 	if (c->extended_cpuid_level >= 0x80000007) {
 -- 
 2.39.5
 
