@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-157005-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157266-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C0222AE520F
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:40:03 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id E1526AE532B
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:50:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 578C64A4F16
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:40:04 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4552B4A74CD
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:50:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5283B19D084;
-	Mon, 23 Jun 2025 21:40:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 49AB719049B;
+	Mon, 23 Jun 2025 21:50:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vgIHgTUe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nrmLc3No"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D1AE1E22E6;
-	Mon, 23 Jun 2025 21:40:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06E9121B9C9;
+	Mon, 23 Jun 2025 21:50:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750714802; cv=none; b=E9c3zKoDrAWUisqqPYnLFdqLxYABqN1s6w0/iHR8F1n24KEzJ9/HSca1wb1ei6Nlylh9/ORoxzWweND7hNKtXhaJ8bLAswWPWzKyiZK315fm/wmTELCn+MKI8AVXxYQmPXhJh1ZnGniKHzpin6BrbDm5oSj3cSMbzG0SrSfjPHA=
+	t=1750715448; cv=none; b=rBvDo5lvfx3CO7vVSK6yLpSGUVVHjiHbtIqorhbWUXD+NPylm08Zmaijm4xnIB2927EqFBHPGiSHH+QWRy7b/n/nCrehcgPbbBBTlrrXVHuHTZKqxk8cjHIz6FCAIdnjfsnfd8jBjz0QCtZULR3l/gr+ty0+7UnRB36WdXqEEBU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750714802; c=relaxed/simple;
-	bh=jgZLBIQ84cjix9JkV5oahAPJ669nx5grUixBIKkFlqE=;
+	s=arc-20240116; t=1750715448; c=relaxed/simple;
+	bh=xl1DLFIwuXVbs9qAXeNYoO2buCQfe7s0aeg339AD2XY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=p8tpCICsuiS3ahzbQmxPWjbuuknJ1ISbdg00qvc0SYvHZj7pBEu5h6szHmh88TCB4+gRoMyLIQmMrQkG8eCLECM8qmBAKQYP85qx+H/63Tz+9DbtlflXy1o+ZKBQ9CP0nCP8CNRyoZUgBQQBYbVrecrS8hw0ljPNKzfJfXRe64Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vgIHgTUe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 911F3C4CEF0;
-	Mon, 23 Jun 2025 21:40:01 +0000 (UTC)
+	 MIME-Version; b=jxVATtY37LeZyYBlZ0nW/nU/aUCAaSrtYe08L6s3j1BNlsX1nLnS1ZN9p3cW8M8un2OV42VNZFkNKK+EP++p/ghUzlMhYVOauY2t4e9ozu0rk92AJZooRs7jTdFqzTe42KyZBEAz8gpeUwncPmtpVDeDTYW6zWCJocIz5QrQTU8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nrmLc3No; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9287BC4CEEA;
+	Mon, 23 Jun 2025 21:50:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750714801;
-	bh=jgZLBIQ84cjix9JkV5oahAPJ669nx5grUixBIKkFlqE=;
+	s=korg; t=1750715447;
+	bh=xl1DLFIwuXVbs9qAXeNYoO2buCQfe7s0aeg339AD2XY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vgIHgTUenOBj+APUVhRY99FZJHcN7ExQn6Gi8ta40ant9f++sosnJPQeb5pNilR3Q
-	 vqYJRoT17wpeJgBif73A0mypuTxcmwtKXgMaA20LWgg5s9oDs8qsjxWfnanMkcRiFg
-	 97eEIun9NdJ/cmKQlqDIqdxSVCFZuA6O3e7qT/S0=
+	b=nrmLc3NoumQXnZwf9lF8gCB16lbfxJAyswl4Xn38uq07YHHs/DfGZeuetiN2KiVqT
+	 Ts7cPGivZzURr6bb6FsHfdsFAidTc2Xu7tr/pUUxikyN3difqshrX3w881LsCCzqgB
+	 OBogrKkMiSqUVirUfP+lE3YqRtwzvme2tVH7Yzuo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stuart Hayes <stuart.w.hayes@gmail.com>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 439/592] platform/x86: dell_rbu: Stop overwriting data buffer
+	Long Li <longli@microsoft.com>,
+	Michael Kelley <mhklinux@outlook.com>,
+	Wei Liu <wei.liu@kernel.org>
+Subject: [PATCH 5.15 253/411] uio_hv_generic: Use correct size for interrupt and monitor pages
 Date: Mon, 23 Jun 2025 15:06:37 +0200
-Message-ID: <20250623130710.876239701@linuxfoundation.org>
+Message-ID: <20250623130640.016032852@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
-References: <20250623130700.210182694@linuxfoundation.org>
+In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
+References: <20250623130632.993849527@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,60 +60,53 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stuart Hayes <stuart.w.hayes@gmail.com>
+From: Long Li <longli@microsoft.com>
 
-[ Upstream commit f4b0fa38d5fefe9aed6ed831f3bd3538c168ee19 ]
+commit c951ab8fd3589cf6991ed4111d2130816f2e3ac2 upstream.
 
-The dell_rbu driver will use memset() to clear the data held by each
-packet when it is no longer needed (when the driver is unloaded, the
-packet size is changed, etc).
+Interrupt and monitor pages should be in Hyper-V page size (4k bytes).
+This can be different from the system page size.
 
-The amount of memory that is cleared (before this patch) is the normal
-packet size. However, the last packet in the list may be smaller.
+This size is read and used by the user-mode program to determine the
+mapped data region. An example of such user-mode program is the VMBus
+driver in DPDK.
 
-Fix this to only clear the memory actually used by each packet, to prevent
-it from writing past the end of data buffer.
-
-Because the packet data buffers are allocated with __get_free_pages() (in
-page-sized increments), this bug could only result in a buffer being
-overwritten when a packet size larger than one page is used. The only user
-of the dell_rbu module should be the Dell BIOS update program, which uses
-a packet size of 4096, so no issues should be seen without the patch, it
-just blocks the possiblity.
-
-Fixes: 6c54c28e69f2 ("[PATCH] dell_rbu: new Dell BIOS update driver")
-Signed-off-by: Stuart Hayes <stuart.w.hayes@gmail.com>
-Link: https://lore.kernel.org/r/20250609184659.7210-5-stuart.w.hayes@gmail.com
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: 95096f2fbd10 ("uio-hv-generic: new userspace i/o driver for VMBus")
+Signed-off-by: Long Li <longli@microsoft.com>
+Reviewed-by: Michael Kelley <mhklinux@outlook.com>
+Link: https://lore.kernel.org/r/1746492997-4599-3-git-send-email-longli@linuxonhyperv.com
+Signed-off-by: Wei Liu <wei.liu@kernel.org>
+Message-ID: <1746492997-4599-3-git-send-email-longli@linuxonhyperv.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/platform/x86/dell/dell_rbu.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/uio/uio_hv_generic.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/platform/x86/dell/dell_rbu.c b/drivers/platform/x86/dell/dell_rbu.c
-index e2afe51b66ee8..8dea70b7f8c15 100644
---- a/drivers/platform/x86/dell/dell_rbu.c
-+++ b/drivers/platform/x86/dell/dell_rbu.c
-@@ -322,7 +322,7 @@ static void packet_empty_list(void)
- 		 * zero out the RBU packet memory before freeing
- 		 * to make sure there are no stale RBU packets left in memory
- 		 */
--		memset(newpacket->data, 0, rbu_data.packetsize);
-+		memset(newpacket->data, 0, newpacket->length);
- 		set_memory_wb((unsigned long)newpacket->data,
- 			1 << newpacket->ordernum);
- 		free_pages((unsigned long) newpacket->data,
--- 
-2.39.5
-
+--- a/drivers/uio/uio_hv_generic.c
++++ b/drivers/uio/uio_hv_generic.c
+@@ -288,13 +288,13 @@ hv_uio_probe(struct hv_device *dev,
+ 	pdata->info.mem[INT_PAGE_MAP].name = "int_page";
+ 	pdata->info.mem[INT_PAGE_MAP].addr
+ 		= (uintptr_t)vmbus_connection.int_page;
+-	pdata->info.mem[INT_PAGE_MAP].size = PAGE_SIZE;
++	pdata->info.mem[INT_PAGE_MAP].size = HV_HYP_PAGE_SIZE;
+ 	pdata->info.mem[INT_PAGE_MAP].memtype = UIO_MEM_LOGICAL;
+ 
+ 	pdata->info.mem[MON_PAGE_MAP].name = "monitor_page";
+ 	pdata->info.mem[MON_PAGE_MAP].addr
+ 		= (uintptr_t)vmbus_connection.monitor_pages[1];
+-	pdata->info.mem[MON_PAGE_MAP].size = PAGE_SIZE;
++	pdata->info.mem[MON_PAGE_MAP].size = HV_HYP_PAGE_SIZE;
+ 	pdata->info.mem[MON_PAGE_MAP].memtype = UIO_MEM_LOGICAL;
+ 
+ 	pdata->recv_buf = vzalloc(RECV_BUFFER_SIZE);
 
 
 
