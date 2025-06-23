@@ -1,61 +1,57 @@
-Return-Path: <stable+bounces-157020-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157524-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E10DEAE521E
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:40:42 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id D5B44AE5476
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:01:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 80A227A8024
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:39:19 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2B0EC3A41F5
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:00:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F2EF1E22E6;
-	Mon, 23 Jun 2025 21:40:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C5DA1D86DC;
+	Mon, 23 Jun 2025 22:01:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CiinTHi8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2sZvo+YV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE97419D084;
-	Mon, 23 Jun 2025 21:40:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59FC14C74;
+	Mon, 23 Jun 2025 22:01:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750714838; cv=none; b=qdpBWnlcZrEQRg44yF6f9tpZHCDBpWRZB27nYPPp1AAJubWPvph28q14xHcy2ZFQSbqvjxkF8+mPZEQOIQmWJ2h9AyT7DYjn2Shl7oSfMNb/QUqcqihij+DHOsqkJYSfN2DOvqCCZBYBSD2sk85YCJWd7kuU5RP90Dowd8be9nA=
+	t=1750716078; cv=none; b=BdEy0zG5liFGozDwGqI46WiMhjsrX/l7NCiUSJXtxVJsr/v/WxSHFdqIZBI5fxbQ84Np+ONmj/m+km+NlYWCkzUrlbt+1NTxOLeTXcAMCoacBIWpS3mBDf/NdbbYQBbAjPHmgc5B93AwoSZ8rE4IK9/4u25/J3lAqzRGSaABtqo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750714838; c=relaxed/simple;
-	bh=gqPQtsQn9g5neX26umufQZQqR+eqwj+TZFz/F91mFuY=;
+	s=arc-20240116; t=1750716078; c=relaxed/simple;
+	bh=2QUyV2e4KtEHuiV3yKZq7To2q4V/x43PjFOcDEWGCCQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qJHbTd6NXFWuEqUjPGkPPMQal/uMPIapioNytRuVS6kQjugwbNfZ/ilHARW/Sq60BlSWP0Pa+w4ujIeXNgeYLb6WO9RVCoy45YwhVgGtx5ciy+Tn7AcgHgWom1a8FiFgM0wZqsbOAdFYgrMJdSbVCEm98f/8o7lubLjIPN4FXwQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CiinTHi8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56E9CC4CEEA;
-	Mon, 23 Jun 2025 21:40:38 +0000 (UTC)
+	 MIME-Version; b=HPpuTWEAVtrEhs8xGS7RXfQOwnxxBNS8zZfXsWjuRzlXGAetJY35CxDhuW1jaOdmw7nztntxqMqqsBgCPZdiEzPv5B2cVL3d1MBX8YBdEKj8IIKKSbPo7YJQrOzvmVTHxMtYZkzpgWcuQi3kKtJsM4HX8LkHhbUufrKWkDYePNM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2sZvo+YV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E746BC4CEED;
+	Mon, 23 Jun 2025 22:01:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750714838;
-	bh=gqPQtsQn9g5neX26umufQZQqR+eqwj+TZFz/F91mFuY=;
+	s=korg; t=1750716078;
+	bh=2QUyV2e4KtEHuiV3yKZq7To2q4V/x43PjFOcDEWGCCQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CiinTHi8AkQ8tjRaP6fnUVVWyWvb6zWGSqoMIvbX4XfOH5/erxZCadYDur8n88sbi
-	 exVPRZ46GPnc/blNq7TAm40S4MWwklW1vA6/ultoh0OVgI81RH4Y/RXBo/fROkTdiC
-	 vgwEK1MQhWwwm7hadW49g/IxtFKS3CViogk0Bmws=
+	b=2sZvo+YV357Swv0GmfM3Ni/y+QcX8NnujSvOka7dKDOpslpYIyuTywMxV6/RpZ5dI
+	 mZyMfnPoR3HCBSBsZoq7jLqW7iuCuRINt+6JjLzYuCmiSKTJNiQJJskxOdOGeJBcfH
+	 3RVpW4QJIPDjkGbdpS+ySO/gjhEsLfqNm4Efk/y4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mateusz Pacuszka <mateuszx.pacuszka@intel.com>,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-	Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
-	Larysa Zaremba <larysa.zaremba@intel.com>,
-	Simon Horman <horms@kernel.org>,
-	Rafal Romanowski <rafal.romanowski@intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Simon Schuster <schuster.simon@siemens-energy.com>,
+	Andreas Oetken <andreas.oetken@siemens-energy.com>,
+	Dinh Nguyen <dinguyen@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 184/290] ice: fix check for existing switch rule
+Subject: [PATCH 5.15 301/411] nios2: force update_mmu_cache on spurious tlb-permission--related pagefaults
 Date: Mon, 23 Jun 2025 15:07:25 +0200
-Message-ID: <20250623130632.409257442@linuxfoundation.org>
+Message-ID: <20250623130641.223790056@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130626.910356556@linuxfoundation.org>
-References: <20250623130626.910356556@linuxfoundation.org>
+In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
+References: <20250623130632.993849527@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,58 +63,86 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mateusz Pacuszka <mateuszx.pacuszka@intel.com>
+From: Simon Schuster <schuster.simon@siemens-energy.com>
 
-[ Upstream commit a808691df39b52cd9db861b118e88e18b63e2299 ]
+[ Upstream commit 2d8a3179ea035f9341b6a73e5ba4029fc67e983d ]
 
-In case the rule already exists and another VSI wants to subscribe to it
-new VSI list is being created and both VSIs are moved to it.
-Currently, the check for already existing VSI with the same rule is done
-based on fdw_id.hw_vsi_id, which applies only to LOOKUP_RX flag.
-Change it to vsi_handle. This is software VSI ID, but it can be applied
-here, because vsi_map itself is also based on it.
+NIOS2 uses a software-managed TLB for virtual address translation. To
+flush a cache line, the original mapping is replaced by one to physical
+address 0x0 with no permissions (rwx mapped to 0) set. This can lead to
+TLB-permission--related traps when such a nominally flushed entry is
+encountered as a mapping for an otherwise valid virtual address within a
+process (e.g. due to an MMU-PID-namespace rollover that previously
+flushed the complete TLB including entries of existing, running
+processes).
 
-Additionally change return status in case the VSI already exists in the
-VSI map to "Already exists". Such case should be handled by the caller.
+The default ptep_set_access_flags implementation from mm/pgtable-generic.c
+only forces a TLB-update when the page-table entry has changed within the
+page table:
 
-Signed-off-by: Mateusz Pacuszka <mateuszx.pacuszka@intel.com>
-Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
-Reviewed-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
-Signed-off-by: Larysa Zaremba <larysa.zaremba@intel.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Tested-by: Rafal Romanowski <rafal.romanowski@intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+	/*
+	 * [...] We return whether the PTE actually changed, which in turn
+	 * instructs the caller to do things like update__mmu_cache. [...]
+	 */
+	int ptep_set_access_flags(struct vm_area_struct *vma,
+				  unsigned long address, pte_t *ptep,
+				  pte_t entry, int dirty)
+	{
+		int changed = !pte_same(*ptep, entry);
+		if (changed) {
+			set_pte_at(vma->vm_mm, address, ptep, entry);
+			flush_tlb_fix_spurious_fault(vma, address);
+		}
+		return changed;
+	}
+
+However, no cross-referencing with the TLB-state occurs, so the
+flushing-induced pseudo entries that are responsible for the pagefault
+in the first place are never pre-empted from TLB on this code path.
+
+This commit fixes this behaviour by always requesting a TLB-update in
+this part of the pagefault handling, fixing spurious page-faults on the
+way. The handling is a straightforward port of the logic from the MIPS
+architecture via an arch-specific ptep_set_access_flags function ported
+from arch/mips/include/asm/pgtable.h.
+
+Signed-off-by: Simon Schuster <schuster.simon@siemens-energy.com>
+Signed-off-by: Andreas Oetken <andreas.oetken@siemens-energy.com>
+Signed-off-by: Dinh Nguyen <dinguyen@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/ice/ice_switch.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/nios2/include/asm/pgtable.h | 16 ++++++++++++++++
+ 1 file changed, 16 insertions(+)
 
-diff --git a/drivers/net/ethernet/intel/ice/ice_switch.c b/drivers/net/ethernet/intel/ice/ice_switch.c
-index 19f730a68fa21..ac004ef1d724d 100644
---- a/drivers/net/ethernet/intel/ice/ice_switch.c
-+++ b/drivers/net/ethernet/intel/ice/ice_switch.c
-@@ -3024,7 +3024,7 @@ ice_add_update_vsi_list(struct ice_hw *hw,
- 		u16 vsi_handle_arr[2];
+diff --git a/arch/nios2/include/asm/pgtable.h b/arch/nios2/include/asm/pgtable.h
+index 4a995fa628eef..58208325462cd 100644
+--- a/arch/nios2/include/asm/pgtable.h
++++ b/arch/nios2/include/asm/pgtable.h
+@@ -275,4 +275,20 @@ extern void __init mmu_init(void);
+ extern void update_mmu_cache(struct vm_area_struct *vma,
+ 			     unsigned long address, pte_t *pte);
  
- 		/* A rule already exists with the new VSI being added */
--		if (cur_fltr->fwd_id.hw_vsi_id == new_fltr->fwd_id.hw_vsi_id)
-+		if (cur_fltr->vsi_handle == new_fltr->vsi_handle)
- 			return -EEXIST;
- 
- 		vsi_handle_arr[0] = cur_fltr->vsi_handle;
-@@ -5991,7 +5991,7 @@ ice_adv_add_update_vsi_list(struct ice_hw *hw,
- 
- 		/* A rule already exists with the new VSI being added */
- 		if (test_bit(vsi_handle, m_entry->vsi_list_info->vsi_map))
--			return 0;
-+			return -EEXIST;
- 
- 		/* Update the previously created VSI list set with
- 		 * the new VSI ID passed in
++static inline int pte_same(pte_t pte_a, pte_t pte_b);
++
++#define __HAVE_ARCH_PTEP_SET_ACCESS_FLAGS
++static inline int ptep_set_access_flags(struct vm_area_struct *vma,
++					unsigned long address, pte_t *ptep,
++					pte_t entry, int dirty)
++{
++	if (!pte_same(*ptep, entry))
++		set_ptes(vma->vm_mm, address, ptep, entry, 1);
++	/*
++	 * update_mmu_cache will unconditionally execute, handling both
++	 * the case that the PTE changed and the spurious fault case.
++	 */
++	return true;
++}
++
+ #endif /* _ASM_NIOS2_PGTABLE_H */
 -- 
 2.39.5
 
