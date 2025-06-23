@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-157093-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156668-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 98C99AE526A
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:43:41 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id E3315AE50A1
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:27:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3F13F7A1A1D
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:42:17 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 625F51B626EA
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:27:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 11EBD221FCC;
-	Mon, 23 Jun 2025 21:43:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3EA14223DE1;
+	Mon, 23 Jun 2025 21:26:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M9B8UAYL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HKPrJe+W"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4A062AEE4;
-	Mon, 23 Jun 2025 21:43:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFCB01EDA0F;
+	Mon, 23 Jun 2025 21:26:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750715016; cv=none; b=ePlh/vCDffc8D/SCWt9U0dXuv913qX+4Xn9GCwmgK3Cwpe5q5+wjAHAZapNL/ZHguYM6Pt18q2hI4F9uFriO4ThsqRzisXwTsj9ASbEwfSoMuUBa0TnJUfTMtfkXIRkv3cJBN66yX2ayLBuKxvE5N3zouBtrcxJwYxZdHXXgjjs=
+	t=1750713977; cv=none; b=KY7hEbUOJTfIWpOiL/hpSyn2BawjHu3Z0GKWVvN+wRacauISOt2MRq3LnqU1bMDA0m7hhXvqB3gtRFGb9/n50RotBXsA2JUzrp5peAGwJf0ysJGwbO9bnASyAzUUVO1W37Adq2Z3qeVEVp2+KB9jWtrnckxSbPwIB+b4SRXbpP8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750715016; c=relaxed/simple;
-	bh=5qzvuXnVAbYm6JTegpdJu2DV7IJkleg0guKIptLOJXc=;
+	s=arc-20240116; t=1750713977; c=relaxed/simple;
+	bh=PcDUpuD4Jj6oUug3jz61saeaRPcNecGYU4Ui1L79q/c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uFgJU4fct3Uu+2I/jAYJQfhG5omzsD9mTdPJLEofRldtmNcJY4mooH/nlx8zBM/APeJpoELCNRFmgYC6yUKZI3mzJKMygS060qFnQ7XQlCfQOXSdeDGDI1nj0zfhhyy8Tvdl9JrWNCrewfcubrikZe7Bh7e5tlnDVhbdamh3JWM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M9B8UAYL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5CFA8C4CEEA;
-	Mon, 23 Jun 2025 21:43:36 +0000 (UTC)
+	 MIME-Version; b=qYZ3+x8chb9qgg4J9Nd3+c1kEva7aVIUbJrJwcENYglTN3WiMkGDw8PBiRVTAHxgOf8M09eTusJ1Q5PmRvv0KxRp8v4rgd548oMWNhmy8owKqIiQw1GX1kui1ZIVtAFUAMre2wDP05QS6Yg6S8zdOnAN0NaP4x02z2ecw6N9LUc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HKPrJe+W; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87EDCC4CEEA;
+	Mon, 23 Jun 2025 21:26:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750715016;
-	bh=5qzvuXnVAbYm6JTegpdJu2DV7IJkleg0guKIptLOJXc=;
+	s=korg; t=1750713976;
+	bh=PcDUpuD4Jj6oUug3jz61saeaRPcNecGYU4Ui1L79q/c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=M9B8UAYLNvRu1sppLHh9cIo/fqQqa1ShgyFrHXgXl4J9T5MAg7t4y56G805tIC9sB
-	 +Hc+gBSEXHob+SAVAkgmVzOvm/Wz3pmS9o53th/0zCx/cKX5tA7/Sf+FGA3zYeI++w
-	 NTfoBs4AF6ov+IPqoI4qM+ZUTC+x4Y/tOE60dQ5c=
+	b=HKPrJe+W1Tysi8OeLQpE8trFYEZKI8L/0WUuXCm4Hiv4tsCs3R2v0kLtuZVhXdB6j
+	 k8uAX5B2EXQzOBPFkZgXfwOgUuC3YBQKVat88fe2iTdqp2X/TJK/3zPtlQyPkl64W+
+	 MOdvpqP8U8rf8QZPveZIWTFM7toJB6zo1UqJxUTs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Brett Werling <brett.werling@garmin.com>,
-	Marc Kleine-Budde <mkl@pengutronix.de>
-Subject: [PATCH 5.15 223/411] can: tcan4x5x: fix power regulator retrieval during probe
+	Long Li <longli@microsoft.com>,
+	Michael Kelley <mhklinux@outlook.com>,
+	Wei Liu <wei.liu@kernel.org>
+Subject: [PATCH 6.6 106/290] Drivers: hv: Allocate interrupt and monitor pages aligned to system page boundary
 Date: Mon, 23 Jun 2025 15:06:07 +0200
-Message-ID: <20250623130639.274526338@linuxfoundation.org>
+Message-ID: <20250623130630.142114300@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
-References: <20250623130632.993849527@linuxfoundation.org>
+In-Reply-To: <20250623130626.910356556@linuxfoundation.org>
+References: <20250623130626.910356556@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,46 +62,94 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Brett Werling <brett.werling@garmin.com>
+From: Long Li <longli@microsoft.com>
 
-commit db22720545207f734aaa9d9f71637bfc8b0155e0 upstream.
+commit 09eea7ad0b8e973dcf5ed49902838e5d68177f8e upstream.
 
-Fixes the power regulator retrieval in tcan4x5x_can_probe() by ensuring
-the regulator pointer is not set to NULL in the successful return from
-devm_regulator_get_optional().
+There are use cases that interrupt and monitor pages are mapped to
+user-mode through UIO, so they need to be system page aligned. Some
+Hyper-V allocation APIs introduced earlier broke those requirements.
 
-Fixes: 3814ca3a10be ("can: tcan4x5x: tcan4x5x_can_probe(): turn on the power before parsing the config")
-Signed-off-by: Brett Werling <brett.werling@garmin.com>
-Link: https://patch.msgid.link/20250612191825.3646364-1-brett.werling@garmin.com
+Fix this by using page allocation functions directly for interrupt
+and monitor pages.
+
 Cc: stable@vger.kernel.org
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+Fixes: ca48739e59df ("Drivers: hv: vmbus: Move Hyper-V page allocator to arch neutral code")
+Signed-off-by: Long Li <longli@microsoft.com>
+Reviewed-by: Michael Kelley <mhklinux@outlook.com>
+Link: https://lore.kernel.org/r/1746492997-4599-2-git-send-email-longli@linuxonhyperv.com
+Signed-off-by: Wei Liu <wei.liu@kernel.org>
+Message-ID: <1746492997-4599-2-git-send-email-longli@linuxonhyperv.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/can/m_can/tcan4x5x-core.c |    9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
+ drivers/hv/connection.c |   23 +++++++++++++++++------
+ 1 file changed, 17 insertions(+), 6 deletions(-)
 
---- a/drivers/net/can/m_can/tcan4x5x-core.c
-+++ b/drivers/net/can/m_can/tcan4x5x-core.c
-@@ -310,10 +310,11 @@ static int tcan4x5x_can_probe(struct spi
- 	priv = cdev_to_priv(mcan_class);
+--- a/drivers/hv/connection.c
++++ b/drivers/hv/connection.c
+@@ -207,10 +207,19 @@ int vmbus_connect(void)
+ 	mutex_init(&vmbus_connection.channel_mutex);
  
- 	priv->power = devm_regulator_get_optional(&spi->dev, "vsup");
--	if (PTR_ERR(priv->power) == -EPROBE_DEFER) {
--		ret = -EPROBE_DEFER;
--		goto out_m_can_class_free_dev;
--	} else {
-+	if (IS_ERR(priv->power)) {
-+		if (PTR_ERR(priv->power) == -EPROBE_DEFER) {
-+			ret = -EPROBE_DEFER;
-+			goto out_m_can_class_free_dev;
-+		}
- 		priv->power = NULL;
+ 	/*
++	 * The following Hyper-V interrupt and monitor pages can be used by
++	 * UIO for mapping to user-space, so they should always be allocated on
++	 * system page boundaries. The system page size must be >= the Hyper-V
++	 * page size.
++	 */
++	BUILD_BUG_ON(PAGE_SIZE < HV_HYP_PAGE_SIZE);
++
++	/*
+ 	 * Setup the vmbus event connection for channel interrupt
+ 	 * abstraction stuff
+ 	 */
+-	vmbus_connection.int_page = hv_alloc_hyperv_zeroed_page();
++	vmbus_connection.int_page =
++		(void *)__get_free_page(GFP_KERNEL | __GFP_ZERO);
+ 	if (vmbus_connection.int_page == NULL) {
+ 		ret = -ENOMEM;
+ 		goto cleanup;
+@@ -225,8 +234,8 @@ int vmbus_connect(void)
+ 	 * Setup the monitor notification facility. The 1st page for
+ 	 * parent->child and the 2nd page for child->parent
+ 	 */
+-	vmbus_connection.monitor_pages[0] = hv_alloc_hyperv_page();
+-	vmbus_connection.monitor_pages[1] = hv_alloc_hyperv_page();
++	vmbus_connection.monitor_pages[0] = (void *)__get_free_page(GFP_KERNEL);
++	vmbus_connection.monitor_pages[1] = (void *)__get_free_page(GFP_KERNEL);
+ 	if ((vmbus_connection.monitor_pages[0] == NULL) ||
+ 	    (vmbus_connection.monitor_pages[1] == NULL)) {
+ 		ret = -ENOMEM;
+@@ -342,21 +351,23 @@ void vmbus_disconnect(void)
+ 		destroy_workqueue(vmbus_connection.work_queue);
+ 
+ 	if (vmbus_connection.int_page) {
+-		hv_free_hyperv_page(vmbus_connection.int_page);
++		free_page((unsigned long)vmbus_connection.int_page);
+ 		vmbus_connection.int_page = NULL;
  	}
  
+ 	if (vmbus_connection.monitor_pages[0]) {
+ 		if (!set_memory_encrypted(
+ 			(unsigned long)vmbus_connection.monitor_pages[0], 1))
+-			hv_free_hyperv_page(vmbus_connection.monitor_pages[0]);
++			free_page((unsigned long)
++				vmbus_connection.monitor_pages[0]);
+ 		vmbus_connection.monitor_pages[0] = NULL;
+ 	}
+ 
+ 	if (vmbus_connection.monitor_pages[1]) {
+ 		if (!set_memory_encrypted(
+ 			(unsigned long)vmbus_connection.monitor_pages[1], 1))
+-			hv_free_hyperv_page(vmbus_connection.monitor_pages[1]);
++			free_page((unsigned long)
++				vmbus_connection.monitor_pages[1]);
+ 		vmbus_connection.monitor_pages[1] = NULL;
+ 	}
+ }
 
 
 
