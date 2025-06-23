@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-157792-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157956-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0ECEAAE55BF
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:14:46 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6AA08AE565A
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:20:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A37374428C6
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:12:13 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 600EF188CCDE
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:19:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8EBA2225785;
-	Mon, 23 Jun 2025 22:12:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98BAF1E3DCD;
+	Mon, 23 Jun 2025 22:18:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="la3g+fz/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cUQTOH1m"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DD41C2E0;
-	Mon, 23 Jun 2025 22:12:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5698F221FC7;
+	Mon, 23 Jun 2025 22:18:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750716733; cv=none; b=fvZPj/gGCkypv0RVEYM5CdgBOvOV4ULXqOY+8Lf66TjFghy3gg4iK3cWBIJAQWk0xEkni451QHBtK3G4cHL9k8ku/S3/ngk8WNNfClv3TPmK/Y7q2YC2tgOEW2h1QQVDmEmojwM+o7PYPwVSkmDwXAZTYT7BIi30HXTC2jDMvQ0=
+	t=1750717131; cv=none; b=bMF2IoPi0NE4O24uKvatjKrIGRypWNAoTgBT+9Gnq8W4z5OSF4vLlB5TsHZJAaQNverWYtzhtxsMEH0VyoeD3oX+aAloMdc7MVHCOvcF9h33L537ZbncOHc87ujBxsf//2u7U0d+yqwgQKKB3hzevdGVIxCpq2WANdgE2fFiwCs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750716733; c=relaxed/simple;
-	bh=XReTc8/NXZj3tkRKqiSqfDeCnpSJw2oZ9eOmO1bWcfk=;
+	s=arc-20240116; t=1750717131; c=relaxed/simple;
+	bh=fvRCe91wRLrjMl0VswqNTkYxKbq6j8REdSGpjYZXE7M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XL0RwEUXzVFwZKa4fTtnHQsc4CO8ucbF2F4TgzxD3Ar2kmhh/gVI2mbLm2p89359PpwHUZFyY5udws6S9r0aIsf4/hwPCe5EU3mnGa64SjBdw1WDNsQ0QCAZs2Vqq4unm6AJLEjpshPn0/Lif4WDrtIZzd59Gss63LTxvwCPFoY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=la3g+fz/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7629AC4CEEA;
-	Mon, 23 Jun 2025 22:12:12 +0000 (UTC)
+	 MIME-Version; b=UkU4X/0oI6j7I5Vbjqi/DoeRozXPhj5xV22nXxt/+VARtTOIKZYzaxSlzT+Eb/3V9YFzJEx1gCxIGhxrQT3MTVW8+THNOr+r0sbHEYEw015MJE+pzf1jX9SjxL7FusGBBoWlquSewLCVLi7WwWnf3eT9eilIEY1jN9U4KXw435U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cUQTOH1m; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2AE7C4CEEA;
+	Mon, 23 Jun 2025 22:18:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750716732;
-	bh=XReTc8/NXZj3tkRKqiSqfDeCnpSJw2oZ9eOmO1bWcfk=;
+	s=korg; t=1750717131;
+	bh=fvRCe91wRLrjMl0VswqNTkYxKbq6j8REdSGpjYZXE7M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=la3g+fz/ckQFu2tUTUIX0ezZNloz4dI0BRNfxR2pPSXUrSjmQid00/Ddu8BdLr7x9
-	 5hLc7BH/mcVEG+JyX7L4IS+ysSuTCm9iE3nfpaW1SNjuZXaWu7bMWupS0uPfEf13Cf
-	 dWuEEqClljkOBgpWByIxE5vAbHy41cMyHPo9wlaA=
+	b=cUQTOH1magBlsh0ccu9szqB91/4YyRIHTGVJc5yjoU0XmlUaVUBIgTNtBRAmg40Ob
+	 +cv9GbOo4Ga9+4EVWonyYR4ggrsci+y7UDefK/BKqiik0Dswwn1W2eTfpDqAcr/dTJ
+	 yrNGBDj4mSsHfNVD0I0Ud3zkvAKxABeGQLNoToNM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hari Chandrakanthan <quic_haric@quicinc.com>,
-	Nicolas Escande <nico.escande@gmail.com>,
-	Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>,
-	Karthikeyan Periyasamy <quic_periyasa@quicinc.com>,
-	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 278/414] wifi: ath12k: fix link valid field initialization in the monitor Rx
+	Diederik de Haas <didi.debian@cknow.org>,
+	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+	Niklas Cassel <cassel@kernel.org>,
+	Dragan Simic <dsimic@manjaro.org>,
+	Shawn Lin <shawn.lin@rock-chips.com>
+Subject: [PATCH 6.1 370/508] PCI: dw-rockchip: Fix PHY function call sequence in rockchip_pcie_phy_deinit()
 Date: Mon, 23 Jun 2025 15:06:55 +0200
-Message-ID: <20250623130648.972239179@linuxfoundation.org>
+Message-ID: <20250623130654.446652976@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
-References: <20250623130642.015559452@linuxfoundation.org>
+In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
+References: <20250623130645.255320792@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,49 +64,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hari Chandrakanthan <quic_haric@quicinc.com>
+From: Diederik de Haas <didi.debian@cknow.org>
 
-[ Upstream commit 2826139f9295821fe2b049318a1cc057ec003131 ]
+commit 286ed198b899739862456f451eda884558526a9d upstream.
 
-Currently, the link_valid field is not initialized in the monitor Rx path.
-This can result in random values for the link_valid and link_id leads to
-undefined behaviour in mac80211. Therefore, initialize the link_valid
-field in the monitor Rx path.
+The documentation for the phy_power_off() function explicitly says that it
+must be called before phy_exit().
 
-Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.3.1-00173-QCAHKSWPL_SILICONZ-1
-Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0.c5-00481-QCAHMTSWPL_V1.0_V2.0_SILICONZ-3
+Hence, follow the same rule in rockchip_pcie_phy_deinit().
 
-Signed-off-by: Hari Chandrakanthan <quic_haric@quicinc.com>
-Tested-by: Nicolas Escande <nico.escande@gmail.com>
-Reviewed-by: Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>
-Signed-off-by: Karthikeyan Periyasamy <quic_periyasa@quicinc.com>
-Link: https://patch.msgid.link/20250324062518.2752822-2-quic_periyasa@quicinc.com
-Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 0e898eb8df4e ("PCI: rockchip-dwc: Add Rockchip RK356X host controller driver")
+Signed-off-by: Diederik de Haas <didi.debian@cknow.org>
+[mani: commit message change]
+Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Reviewed-by: Niklas Cassel <cassel@kernel.org>
+Reviewed-by: Dragan Simic <dsimic@manjaro.org>
+Acked-by: Shawn Lin <shawn.lin@rock-chips.com>
+Cc: stable@vger.kernel.org	# v5.15+
+Link: https://patch.msgid.link/20250417142138.1377451-1-didi.debian@cknow.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/ath/ath12k/dp_mon.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/pci/controller/dwc/pcie-dw-rockchip.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/ath/ath12k/dp_mon.c b/drivers/net/wireless/ath/ath12k/dp_mon.c
-index 6a88745369447..7bfd323cdf244 100644
---- a/drivers/net/wireless/ath/ath12k/dp_mon.c
-+++ b/drivers/net/wireless/ath/ath12k/dp_mon.c
-@@ -1080,6 +1080,8 @@ static void ath12k_dp_mon_rx_deliver_msdu(struct ath12k *ar, struct napi_struct
- 	bool is_mcbc = rxcb->is_mcbc;
- 	bool is_eapol_tkip = rxcb->is_eapol;
+--- a/drivers/pci/controller/dwc/pcie-dw-rockchip.c
++++ b/drivers/pci/controller/dwc/pcie-dw-rockchip.c
+@@ -275,8 +275,8 @@ static int rockchip_pcie_phy_init(struct
  
-+	status->link_valid = 0;
-+
- 	if ((status->encoding == RX_ENC_HE) && !(status->flag & RX_FLAG_RADIOTAP_HE) &&
- 	    !(status->flag & RX_FLAG_SKIP_MONITOR)) {
- 		he = skb_push(msdu, sizeof(known));
--- 
-2.39.5
-
+ static void rockchip_pcie_phy_deinit(struct rockchip_pcie *rockchip)
+ {
+-	phy_exit(rockchip->phy);
+ 	phy_power_off(rockchip->phy);
++	phy_exit(rockchip->phy);
+ }
+ 
+ static const struct dw_pcie_ops dw_pcie_ops = {
 
 
 
