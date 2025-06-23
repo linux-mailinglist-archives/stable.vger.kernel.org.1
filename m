@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-158169-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157735-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2640AAE576B
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:29:57 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8B6AFAE5560
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:10:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3085B3BA8CC
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:27:11 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 81BBF1BC4A8F
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:10:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 43FF622422F;
-	Mon, 23 Jun 2025 22:27:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A631222A4EF;
+	Mon, 23 Jun 2025 22:09:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZYV3JMyM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UrdY2av5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0161D1F463B;
-	Mon, 23 Jun 2025 22:27:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64C8C22A4E1;
+	Mon, 23 Jun 2025 22:09:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750717654; cv=none; b=pY1kn/Nsh0VPptuXXMKpXu3d1ZVg4Bh1qfH4sPAml5WWg2ijcluBCPH38xcmQcWxuhplKW8Rj0i4TKbVvrV86lSoTKBpY+wlER7ijkk/tOlFz9IkQuBLBnD7MH378oLMZ3sVUu4rApAGYnLaMh3T8500mQgKe5EizMJ8XE7LvGg=
+	t=1750716593; cv=none; b=hqmt0Gir6fMnBgctEe1PbkAxQufxc0n+nIJS8uf8MgdmeOvwsKcfk4P7NWJkMEXsc5yRkgy7Vikb9axSruxf3XGPPU3IcL3zmnWwGGS0p9iQ3rn+lEWkRwCr99SKR3+KdxjU4vHxmZMvwuyXE2EKvyqylup8uHUV9ts59ylUoRQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750717654; c=relaxed/simple;
-	bh=/6L7AUnn6g89jtlyXCZLJBbD0ap9duki49pa6RilMes=;
+	s=arc-20240116; t=1750716593; c=relaxed/simple;
+	bh=i1pYAlS3K6SOmBeIqkYRxO36QI/QFK5AIK8gr1DDQrY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=F3qS/FCiuQKzF0RTM2MAV/sRSuDhRGxMEIgkS/aiTB5Nux28LraxZja0KlqyTNBdv43lv1s7wtpedpzYz+JZ/PJombltmxcX1L3zELmE9+F11MfMmxmvSplfM/CWNFGXiPyij7HbkNvTH1kn32e2riJDurEO/04nEnizoexr9GM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZYV3JMyM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8BAB2C4CEEA;
-	Mon, 23 Jun 2025 22:27:33 +0000 (UTC)
+	 MIME-Version; b=ca90M1yp8OKasW7swc/Vrx40YW72qsrChwsNGqiSkJzhkIFZKU/r1ht7MwrXK7+vx+9jqZ8K6Ub5U2kFd3m39zNG7Cmqlhb623O0at5xeG0tglbNtorhe9iyW2lSrsE1KcQvwsmEJSNhifVY2G3f5UiFaHoPH3Dla1jLp3PXAFg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UrdY2av5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EECB5C4CEF6;
+	Mon, 23 Jun 2025 22:09:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750717653;
-	bh=/6L7AUnn6g89jtlyXCZLJBbD0ap9duki49pa6RilMes=;
+	s=korg; t=1750716593;
+	bh=i1pYAlS3K6SOmBeIqkYRxO36QI/QFK5AIK8gr1DDQrY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZYV3JMyMdpwHvift99emNmdG8D4tb/OxTvovS+z36FTu867v0newz8fXBauqgLQ2u
-	 ndA88cJOYOwBrV4zdGU/9yj6wI0iMztMSzvlV4BqwPfwgm+hXr7hSIO92LqG1r6kvK
-	 0tjshmysWOnO7+WCuOO4cgl+6nDSC7SMh/RM/I/8=
+	b=UrdY2av52DfyTBMSYv4dZyVLuIgC85iCuDGYyi28t330kBH2MRkgeY/TZF3Asr4rI
+	 FZQF2oB3GweOPuj0ebcLG2eWCPGdcogxWRbAzmtrTkkQ+qwAqVeOZqNUp6UR2OoNB+
+	 MsQFJtAo6BOWiKjQv+F1yIsuP88pBpfT+ufnkBrA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>,
-	Francois Romieu <romieu@fr.zoreil.com>
-Subject: [PATCH 6.1 491/508] net: atm: fix /proc/net/atm/lec handling
+	Colin Foster <colin.foster@in-advantage.com>,
+	Kevin Hilman <khilman@baylibre.com>,
+	"Nobuhiro Iwamatsu (CIP)" <nobuhiro1.iwamatsu@toshiba.co.jp>
+Subject: [PATCH 6.6 275/290] ARM: dts: am335x-bone-common: Increase MDIO reset deassert time
 Date: Mon, 23 Jun 2025 15:08:56 +0200
-Message-ID: <20250623130657.119287533@linuxfoundation.org>
+Message-ID: <20250623130635.195494801@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
-References: <20250623130645.255320792@linuxfoundation.org>
+In-Reply-To: <20250623130626.910356556@linuxfoundation.org>
+References: <20250623130626.910356556@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,63 +62,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Colin Foster <colin.foster@in-advantage.com>
 
-[ Upstream commit d03b79f459c7935cff830d98373474f440bd03ae ]
+commit b9bf5612610aa7e38d58fee16f489814db251c01 upstream.
 
-/proc/net/atm/lec must ensure safety against dev_lec[] changes.
+Prior to commit df16c1c51d81 ("net: phy: mdio_device: Reset device only
+when necessary") MDIO reset deasserts were performed twice during boot.
+Now that the second deassert is no longer performed, device probe
+failures happen due to the change in timing with the following error
+message:
 
-It appears it had dev_put() calls without prior dev_hold(),
-leading to imbalance and UAF.
+SMSC LAN8710/LAN8720: probe of 4a101000.mdio:00 failed with error -5
 
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Acked-by: Francois Romieu <romieu@fr.zoreil.com> # Minor atm contributor
-Link: https://patch.msgid.link/20250618140844.1686882-3-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Restore the original effective timing, which resolves the probe
+failures.
+
+Signed-off-by: Colin Foster <colin.foster@in-advantage.com>
+Link: https://lore.kernel.org/r/20240531183817.2698445-1-colin.foster@in-advantage.com
+Signed-off-by: Kevin Hilman <khilman@baylibre.com>
+Signed-off-by: Nobuhiro Iwamatsu (CIP) <nobuhiro1.iwamatsu@toshiba.co.jp>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/atm/lec.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ arch/arm/boot/dts/ti/omap/am335x-bone-common.dtsi |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/atm/lec.c b/net/atm/lec.c
-index d4ac1488eca6f..b7fa48a9b7205 100644
---- a/net/atm/lec.c
-+++ b/net/atm/lec.c
-@@ -909,7 +909,6 @@ static void *lec_itf_walk(struct lec_state *state, loff_t *l)
- 	v = (dev && netdev_priv(dev)) ?
- 		lec_priv_walk(state, l, netdev_priv(dev)) : NULL;
- 	if (!v && dev) {
--		dev_put(dev);
- 		/* Partial state reset for the next time we get called */
- 		dev = NULL;
- 	}
-@@ -933,6 +932,7 @@ static void *lec_seq_start(struct seq_file *seq, loff_t *pos)
- {
- 	struct lec_state *state = seq->private;
+--- a/arch/arm/boot/dts/ti/omap/am335x-bone-common.dtsi
++++ b/arch/arm/boot/dts/ti/omap/am335x-bone-common.dtsi
+@@ -385,7 +385,7 @@
+ 		/* Support GPIO reset on revision C3 boards */
+ 		reset-gpios = <&gpio1 8 GPIO_ACTIVE_LOW>;
+ 		reset-assert-us = <300>;
+-		reset-deassert-us = <6500>;
++		reset-deassert-us = <13000>;
+ 	};
+ };
  
-+	mutex_lock(&lec_mutex);
- 	state->itf = 0;
- 	state->dev = NULL;
- 	state->locked = NULL;
-@@ -950,8 +950,9 @@ static void lec_seq_stop(struct seq_file *seq, void *v)
- 	if (state->dev) {
- 		spin_unlock_irqrestore(&state->locked->lec_arp_lock,
- 				       state->flags);
--		dev_put(state->dev);
-+		state->dev = NULL;
- 	}
-+	mutex_unlock(&lec_mutex);
- }
- 
- static void *lec_seq_next(struct seq_file *seq, void *v, loff_t *pos)
--- 
-2.39.5
-
 
 
 
