@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-157194-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156204-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC382AE52D9
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:47:59 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 776C3AE4E96
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:07:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D5BD31B660D3
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:48:07 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 14AB917C100
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:07:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E69F31F5820;
-	Mon, 23 Jun 2025 21:47:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CCEE121638A;
+	Mon, 23 Jun 2025 21:07:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T9jkvdBy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VYI3gjvd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A60823FD4;
-	Mon, 23 Jun 2025 21:47:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BA6F70838;
+	Mon, 23 Jun 2025 21:07:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750715269; cv=none; b=cJozPWuLYJgMO68hy8vANfKdJxyZoxA9BqyRlkLqj2l2RlT6VwNgPFAqtImPxTGrqU1Uq/+fxgF4RXUIKdDequQqL8FzjDChCgz2TACyEk/4sYxtgAJfHIe4LcvVer50wZkolRxHKE68ixUF7CeqO3yI8kN9KoLllqCNeHjBMdY=
+	t=1750712839; cv=none; b=rcRR0SncmlHkvgO8S3BXpsMg4VMFD8ewxlEcawU5R5MGnS7EyjA+ddjTdeftKgleluaeTiqz1Bp5wIUXklufUjppVrA8X+oqxSjE46fCKvSv0De0xwZX7TUpp8b6pmNCrE0NGNecSx3UOj1wvd/LtzP/jutBArB9WKQUpJd+48Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750715269; c=relaxed/simple;
-	bh=RSGWcVYwbR7U01p+IeOdzgSoBV/xmm6BhEC047tUIzE=;
+	s=arc-20240116; t=1750712839; c=relaxed/simple;
+	bh=mYyAsl49KEAtnOcyEaKbIMqaDBw7Xj4Ivq9QmqK7WJc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PtWV5tps1ow3ycUGVMEaMyMBL8AqRq7OUd4QBT0yITp4E3fEowQZnrAL49m3IZaGgAtfaeJnUx7GoxfcXeKrhdTKyNBLsMGXulX7tkbnWP+XU7jFvkXJgP8BLYCAtpHEMACdswY2aPHepeeKss8mbhiKQelUIaP+4zsPMnsMq+0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T9jkvdBy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3BE42C4CEEA;
-	Mon, 23 Jun 2025 21:47:49 +0000 (UTC)
+	 MIME-Version; b=LaZCidt75noGUXCGLK3xUPT8jZ+dZcNxr3rnDzN6V44AySJDsjlC7y8jEuxjh1Iwu37DqD8/99yX8iUuCS8+RsP9M0gvSjDDhJ/9qXvoWzyF/8D4eGzSxgzuGag/LhNi1jSy+q7uzsvbYmiYuI7sl6BBbFNc3l1R/9xwzrWJb9k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VYI3gjvd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23547C4CEEA;
+	Mon, 23 Jun 2025 21:07:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750715269;
-	bh=RSGWcVYwbR7U01p+IeOdzgSoBV/xmm6BhEC047tUIzE=;
+	s=korg; t=1750712839;
+	bh=mYyAsl49KEAtnOcyEaKbIMqaDBw7Xj4Ivq9QmqK7WJc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=T9jkvdBylCgBI4QZXQFwZfiaDxa4R6CHXxcXAki0Lm/P3fHXa9Skw1Nx+hndFQJt6
-	 Q0ae7C6fGSvGtT73ui4HnqNdZI1wgsyTAJIJo/K0NryCd4CoVZE6tgn0xjLk4X5pra
-	 oye3ZnSxt5LZ7tWichiNhvebYNjOESTnBoUsk3yw=
+	b=VYI3gjvd6u4eG/GpvC+p1J4gMUpCDSQTb+iYgwMczZsq2F6c5x4U5DWwq8GEUXZS/
+	 lfLVxe739Ok0laj91th/Q9fSbBqhIsxoS8oeZGikPYFtTqfXcDh3G1TH2L248w+CBz
+	 1jY87py5YXd1yflTZnzcHzQzXfI7VzYz432ANHKY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ahmed Salem <x0rw3ll@gmail.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Zeal Robot <zealci@zte.com.cn>,
+	zhang songyi <zhang.songyi@zte.com.cn>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 172/414] ACPICA: Avoid sequence overread in call to strncmp()
+Subject: [PATCH 5.10 108/355] Input: synaptics-rmi4 - convert to use sysfs_emit() APIs
 Date: Mon, 23 Jun 2025 15:05:09 +0200
-Message-ID: <20250623130646.327745523@linuxfoundation.org>
+Message-ID: <20250623130630.018039539@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
-References: <20250623130642.015559452@linuxfoundation.org>
+In-Reply-To: <20250623130626.716971725@linuxfoundation.org>
+References: <20250623130626.716971725@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,59 +63,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ahmed Salem <x0rw3ll@gmail.com>
+From: zhang songyi <zhang.songyi@zte.com.cn>
 
-[ Upstream commit 64b9dfd0776e9c38d733094859a09f13282ce6f8 ]
+[ Upstream commit 9dedc915937c33302df7fcab01c45e7936d6195a ]
 
-ACPICA commit 8b83a8d88dfec59ea147fad35fc6deea8859c58c
+Follow the advice of the Documentation/filesystems/sysfs.rst and show()
+should only use sysfs_emit() or sysfs_emit_at() when formatting the value
+to be returned to user space.
 
-ap_get_table_length() checks if tables are valid by
-calling ap_is_valid_header(). The latter then calls
-ACPI_VALIDATE_RSDP_SIG(Table->Signature).
-
-ap_is_valid_header() accepts struct acpi_table_header as an argument, so
-the signature size is always fixed to 4 bytes.
-
-The problem is when the string comparison is between ACPI-defined table
-signature and ACPI_SIG_RSDP. Common ACPI table header specifies the
-Signature field to be 4 bytes long[1], with the exception of the RSDP
-structure whose signature is 8 bytes long "RSD PTR " (including the
-trailing blank character)[2]. Calling strncmp(sig, rsdp_sig, 8) would
-then result in a sequence overread[3] as sig would be smaller (4 bytes)
-than the specified bound (8 bytes).
-
-As a workaround, pass the bound conditionally based on the size of the
-signature being passed.
-
-Link: https://uefi.org/specs/ACPI/6.5_A/05_ACPI_Software_Programming_Model.html#system-description-table-header [1]
-Link: https://uefi.org/specs/ACPI/6.5_A/05_ACPI_Software_Programming_Model.html#root-system-description-pointer-rsdp-structure [2]
-Link: https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wstringop-overread [3]
-Link: https://github.com/acpica/acpica/commit/8b83a8d8
-Signed-off-by: Ahmed Salem <x0rw3ll@gmail.com>
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Link: https://patch.msgid.link/2248233.Mh6RI2rZIc@rjwysocki.net
+Reported-by: Zeal Robot <zealci@zte.com.cn>
+Signed-off-by: zhang songyi <zhang.songyi@zte.com.cn>
+Link: https://lore.kernel.org/r/20220927070936.258300-1-zhang.songyi@zte.com.cn
+Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Stable-dep-of: ca39500f6af9 ("Input: synaptics-rmi - fix crash with unsupported versions of F34")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/acpi/actypes.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/input/rmi4/rmi_f34.c | 16 ++++++++--------
+ 1 file changed, 8 insertions(+), 8 deletions(-)
 
-diff --git a/include/acpi/actypes.h b/include/acpi/actypes.h
-index 80767e8bf3ad4..d323dfffa4bfc 100644
---- a/include/acpi/actypes.h
-+++ b/include/acpi/actypes.h
-@@ -527,7 +527,7 @@ typedef u64 acpi_integer;
+diff --git a/drivers/input/rmi4/rmi_f34.c b/drivers/input/rmi4/rmi_f34.c
+index e5dca9868f87f..c26808f10827a 100644
+--- a/drivers/input/rmi4/rmi_f34.c
++++ b/drivers/input/rmi4/rmi_f34.c
+@@ -321,13 +321,13 @@ static ssize_t rmi_driver_bootloader_id_show(struct device *dev,
+ 		f34 = dev_get_drvdata(&fn->dev);
  
- /* Support for the special RSDP signature (8 characters) */
+ 		if (f34->bl_version == 5)
+-			return scnprintf(buf, PAGE_SIZE, "%c%c\n",
+-					 f34->bootloader_id[0],
+-					 f34->bootloader_id[1]);
++			return sysfs_emit(buf, "%c%c\n",
++					  f34->bootloader_id[0],
++					  f34->bootloader_id[1]);
+ 		else
+-			return scnprintf(buf, PAGE_SIZE, "V%d.%d\n",
+-					 f34->bootloader_id[1],
+-					 f34->bootloader_id[0]);
++			return sysfs_emit(buf, "V%d.%d\n",
++					  f34->bootloader_id[1],
++					  f34->bootloader_id[0]);
+ 	}
  
--#define ACPI_VALIDATE_RSDP_SIG(a)       (!strncmp (ACPI_CAST_PTR (char, (a)), ACPI_SIG_RSDP, 8))
-+#define ACPI_VALIDATE_RSDP_SIG(a)       (!strncmp (ACPI_CAST_PTR (char, (a)), ACPI_SIG_RSDP, (sizeof(a) < 8) ? ACPI_NAMESEG_SIZE : 8))
- #define ACPI_MAKE_RSDP_SIG(dest)        (memcpy (ACPI_CAST_PTR (char, (dest)), ACPI_SIG_RSDP, 8))
+ 	return 0;
+@@ -346,7 +346,7 @@ static ssize_t rmi_driver_configuration_id_show(struct device *dev,
+ 	if (fn) {
+ 		f34 = dev_get_drvdata(&fn->dev);
  
- /* Support for OEMx signature (x can be any character) */
+-		return scnprintf(buf, PAGE_SIZE, "%s\n", f34->configuration_id);
++		return sysfs_emit(buf, "%s\n", f34->configuration_id);
+ 	}
+ 
+ 	return 0;
+@@ -499,7 +499,7 @@ static ssize_t rmi_driver_update_fw_status_show(struct device *dev,
+ 	if (data->f34_container)
+ 		update_status = rmi_f34_status(data->f34_container);
+ 
+-	return scnprintf(buf, PAGE_SIZE, "%d\n", update_status);
++	return sysfs_emit(buf, "%d\n", update_status);
+ }
+ 
+ static DEVICE_ATTR(update_fw_status, 0444,
 -- 
 2.39.5
 
