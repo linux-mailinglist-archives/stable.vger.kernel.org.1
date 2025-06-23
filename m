@@ -1,51 +1,53 @@
-Return-Path: <stable+bounces-157536-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157543-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D78ADAE5477
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:01:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 17AABAE5482
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:02:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6EC644C105C
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:01:50 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A67554C11D8
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:02:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C4A31A4F12;
-	Mon, 23 Jun 2025 22:01:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64F5E21D3F6;
+	Mon, 23 Jun 2025 22:02:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="snMrE9GI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XTV1r/oz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15B664409;
-	Mon, 23 Jun 2025 22:01:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 220584C74;
+	Mon, 23 Jun 2025 22:02:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750716108; cv=none; b=mAlX7h36vymXfVjXxxailBuf9SmwP3VCk3W2VWRM5BAjBEBxUnTPLktvI+ar4rdWgdLJNYZzQ7fJXt0CanE7bWHMEbFNcCgej3/kKdCOLCH24AG+jiaZYa7HhFKcvyy+WTivItS+6NvmcdhgcTrPB46ZkD6khg4jUW6X8jiaDM8=
+	t=1750716125; cv=none; b=JZtlF7X3smBjuh/ns52QyYN1cfGVDeyDwka550OB6dGlMpuI+Ly6va8h7pWplO5LaLcbWs/bFR+RTQhMBJoS9UTswGT6aLLN0YF7QnrBoZ8PQ5JVvg/AeM5CV+dLiGE/RukEO8XdEhXtYGwsUaX0VLluLvRNzdpx4vwmXX5bIc8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750716108; c=relaxed/simple;
-	bh=EXd/rNYvzxUvxr61621OUGLbNfe67YoTBJg5mDN3qaQ=;
+	s=arc-20240116; t=1750716125; c=relaxed/simple;
+	bh=BmiZ93uaJky06OmjyRVCTlc6M0sx2JDCzMv5WLyFtZM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KCQaV8iocHQm+EliCIOmCKRifZSjuck8pdDlRvHxgvyoe0XWwJEdZaodtnheqwoytBmR30dSKZQkKqRax0CSjnQs6GHWXqgK8R7wHHMlrNfm2EzagDffJXPdFPw0SkDfSr5Ro/PjK/xY8/oWk8W1xOLSQv4qli5b72SyGqPG4NM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=snMrE9GI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9FFE0C4CEEA;
-	Mon, 23 Jun 2025 22:01:47 +0000 (UTC)
+	 MIME-Version; b=BmuDWpO+h7o9Jf2G6z1JkauwBKFatzZDuo4lSXJbZkv1H7xwTwRngslVoFKz7bbKCu4pA3tdPV8GmxOuT8H32ew33AFof+FbDnd1kwu+0GerDtmkschEYDdrtjlYbg+s2xM/rgZiGRz2OSiayn7H+PQOEk0a8pYGVQfnY0BNDlk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XTV1r/oz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ACE93C4CEEA;
+	Mon, 23 Jun 2025 22:02:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750716108;
-	bh=EXd/rNYvzxUvxr61621OUGLbNfe67YoTBJg5mDN3qaQ=;
+	s=korg; t=1750716125;
+	bh=BmiZ93uaJky06OmjyRVCTlc6M0sx2JDCzMv5WLyFtZM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=snMrE9GI7xK4vG0fTDDjzlAtdeAmJ0vaV848aZpMpZl7g1g1WKTExD303WIsO6AVT
-	 k3lTkS0/w4/AqUUUBe6G35juG8FKXrKjG3t/2INqYZS+RX5k93sYDw2mNWX9B1Ujq+
-	 LTZ/kz9lJrACpl5SMcJ1I5qwjhErRqW5Mj/zOxhQ=
+	b=XTV1r/oz3NyrmgrlXH7B7WwUraEAZAkhK3a0D6ZLF5c5MnX4q6DsJ2t4ClmXCI29J
+	 ETvdqvPFE6biJ9kqigQsR6n49e7NkU+Y+NCWnmu+vr/f4LC/IDKi138tK9QbkBbibd
+	 c90LSVGn5Za+DRFCNf12YHdKNzfgadJiOuAv3vP8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
-Subject: [PATCH 5.10 321/355] serial: sh-sci: Increment the runtime usage counter for the earlycon device
-Date: Mon, 23 Jun 2025 15:08:42 +0200
-Message-ID: <20250623130636.414481713@linuxfoundation.org>
+	Julien Thierry <jthierry@redhat.com>,
+	Will Deacon <will@kernel.org>,
+	Pu Lehui <pulehui@huawei.com>
+Subject: [PATCH 5.10 322/355] arm64: insn: Add barrier encodings
+Date: Mon, 23 Jun 2025 15:08:43 +0200
+Message-ID: <20250623130636.441828377@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
 In-Reply-To: <20250623130626.716971725@linuxfoundation.org>
 References: <20250623130626.716971725@linuxfoundation.org>
@@ -64,86 +66,62 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+From: Julien Thierry <jthierry@redhat.com>
 
-commit 651dee03696e1dfde6d9a7e8664bbdcd9a10ea7f upstream.
+[ Upstream commit d4b217330d7e0320084ff04c8491964f1f68980a ]
 
-In the sh-sci driver, serial ports are mapped to the sci_ports[] array,
-with earlycon mapped at index zero.
+Create necessary functions to encode/decode aarch64 barrier
+instructions.
 
-The uart_add_one_port() function eventually calls __device_attach(),
-which, in turn, calls pm_request_idle(). The identified code path is as
-follows:
+DSB needs special case handling as it has multiple encodings.
 
-uart_add_one_port() ->
-  serial_ctrl_register_port() ->
-    serial_core_register_port() ->
-      serial_core_port_device_add() ->
-        serial_base_port_add() ->
-          device_add() ->
-            bus_probe_device() ->
-              device_initial_probe() ->
-                __device_attach() ->
-                  // ...
-                  if (dev->p->dead) {
-                    // ...
-                  } else if (dev->driver) {
-                    // ...
-                  } else {
-                    // ...
-                    pm_request_idle(dev);
-                    // ...
-                  }
-
-The earlycon device clocks are enabled by the bootloader. However, the
-pm_request_idle() call in __device_attach() disables the SCI port clocks
-while earlycon is still active.
-
-The earlycon write function, serial_console_write(), calls
-sci_poll_put_char() via serial_console_putchar(). If the SCI port clocks
-are disabled, writing to earlycon may sometimes cause the SR.TDFE bit to
-remain unset indefinitely, causing the while loop in sci_poll_put_char()
-to never exit. On single-core SoCs, this can result in the system being
-blocked during boot when this issue occurs.
-
-To resolve this, increment the runtime PM usage counter for the earlycon
-SCI device before registering the UART port.
-
-Fixes: 0b0cced19ab1 ("serial: sh-sci: Add CONFIG_SERIAL_EARLYCON support")
-Cc: stable@vger.kernel.org
-Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
-Link: https://lore.kernel.org/r/20250116182249.3828577-6-claudiu.beznea.uj@bp.renesas.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Julien Thierry <jthierry@redhat.com>
+Link: https://lore.kernel.org/r/20210303170536.1838032-7-jthierry@redhat.com
+[will: Don't reject DSB #4]
+Signed-off-by: Will Deacon <will@kernel.org>
+Signed-off-by: Pu Lehui <pulehui@huawei.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/tty/serial/sh-sci.c |   16 ++++++++++++++++
- 1 file changed, 16 insertions(+)
+ arch/arm64/include/asm/insn.h |   21 +++++++++++++++++++++
+ 1 file changed, 21 insertions(+)
 
---- a/drivers/tty/serial/sh-sci.c
-+++ b/drivers/tty/serial/sh-sci.c
-@@ -3359,6 +3359,22 @@ static int sci_probe_single(struct platf
+--- a/arch/arm64/include/asm/insn.h
++++ b/arch/arm64/include/asm/insn.h
+@@ -370,6 +370,14 @@ __AARCH64_INSN_FUNCS(eret_auth,	0xFFFFFB
+ __AARCH64_INSN_FUNCS(mrs,	0xFFF00000, 0xD5300000)
+ __AARCH64_INSN_FUNCS(msr_imm,	0xFFF8F01F, 0xD500401F)
+ __AARCH64_INSN_FUNCS(msr_reg,	0xFFF00000, 0xD5100000)
++__AARCH64_INSN_FUNCS(dmb,	0xFFFFF0FF, 0xD50330BF)
++__AARCH64_INSN_FUNCS(dsb_base,	0xFFFFF0FF, 0xD503309F)
++__AARCH64_INSN_FUNCS(dsb_nxs,	0xFFFFF3FF, 0xD503323F)
++__AARCH64_INSN_FUNCS(isb,	0xFFFFF0FF, 0xD50330DF)
++__AARCH64_INSN_FUNCS(sb,	0xFFFFFFFF, 0xD50330FF)
++__AARCH64_INSN_FUNCS(clrex,	0xFFFFF0FF, 0xD503305F)
++__AARCH64_INSN_FUNCS(ssbb,	0xFFFFFFFF, 0xD503309F)
++__AARCH64_INSN_FUNCS(pssbb,	0xFFFFFFFF, 0xD503349F)
  
- 	if (sci_uart_earlycon && sci_ports[0].port.mapbase == sci_res->start) {
- 		/*
-+		 * In case:
-+		 * - this is the earlycon port (mapped on index 0 in sci_ports[]) and
-+		 * - it now maps to an alias other than zero and
-+		 * - the earlycon is still alive (e.g., "earlycon keep_bootcon" is
-+		 *   available in bootargs)
-+		 *
-+		 * we need to avoid disabling clocks and PM domains through the runtime
-+		 * PM APIs called in __device_attach(). For this, increment the runtime
-+		 * PM reference counter (the clocks and PM domains were already enabled
-+		 * by the bootloader). Otherwise the earlycon may access the HW when it
-+		 * has no clocks enabled leading to failures (infinite loop in
-+		 * sci_poll_put_char()).
-+		 */
-+		pm_runtime_get_noresume(&dev->dev);
+ #undef	__AARCH64_INSN_FUNCS
+ 
+@@ -381,6 +389,19 @@ static inline bool aarch64_insn_is_adr_a
+ 	return aarch64_insn_is_adr(insn) || aarch64_insn_is_adrp(insn);
+ }
+ 
++static inline bool aarch64_insn_is_dsb(u32 insn)
++{
++	return aarch64_insn_is_dsb_base(insn) || aarch64_insn_is_dsb_nxs(insn);
++}
 +
-+		/*
- 		 * Skip cleanup the sci_port[0] in early_console_exit(), this
- 		 * port is the same as the earlycon one.
- 		 */
++static inline bool aarch64_insn_is_barrier(u32 insn)
++{
++	return aarch64_insn_is_dmb(insn) || aarch64_insn_is_dsb(insn) ||
++	       aarch64_insn_is_isb(insn) || aarch64_insn_is_sb(insn) ||
++	       aarch64_insn_is_clrex(insn) || aarch64_insn_is_ssbb(insn) ||
++	       aarch64_insn_is_pssbb(insn);
++}
++
+ int aarch64_insn_read(void *addr, u32 *insnp);
+ int aarch64_insn_write(void *addr, u32 insn);
+ enum aarch64_insn_encoding_class aarch64_get_insn_class(u32 insn);
 
 
 
