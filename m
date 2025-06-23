@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-157352-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156486-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 11FB5AE5399
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:54:44 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7EC56AE4FFE
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:21:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7CF793B1050
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:54:02 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7966A7AB7A6
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:17:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F1D22222B7;
-	Mon, 23 Jun 2025 21:54:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8AC7121FF50;
+	Mon, 23 Jun 2025 21:18:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LAhiNvas"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pREPQy2+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C69B19049B;
-	Mon, 23 Jun 2025 21:54:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 484CF4C62;
+	Mon, 23 Jun 2025 21:18:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750715658; cv=none; b=e0qXzq+12wSccw3dg3quQMGG/9Bb2RxgKDZmWhYx8GrDBMq0FqCToebhCCpTkcVTYZFy+4Y4xM6kMmCFi7/UTgSKoXL0jXTOq1q2FJqmEws6IAlqFYl/iUjbHtJA12xtVVlik2jp81LPVdvv9CtksfD2riTCuFCDchpqE8bBHug=
+	t=1750713531; cv=none; b=n8tByo1I7bj7M+HWM9M780o5yguVviwI1SUJkx9gHsqPH+DOTnI3o0IzRuvENrMvBSH9VFcHGyvdMIzEKOVRtkBd1wK9Pn5o4tvVlVNNdRBzFGWaF0ioOOwqe8TYE2/TzXPc5Zx8+mmCo+ivrQbVbOtNCYZqdpKtJg9J4+YQ9gs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750715658; c=relaxed/simple;
-	bh=I6C8KyKAG6VlTSlVHy7t5qwtkE16zypg+/JSh6cSNhc=;
+	s=arc-20240116; t=1750713531; c=relaxed/simple;
+	bh=0D+AyoGkqTG3UdjKeaxShxVNHCB8uPuhdnAA/HhbJAM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HvXf/qDYe4SGX1FuWaXRtve3ynjNnDlOziGmR0Wm8pwmt28jeJETiN6dRcMEPyx/L+LGzZqUbBC8z0np7olTlAzskYuSDyXy5J08qhLj2FMFptpPLz01qQj14IH0mJRPnp6XGPOuI6bRVcLd/RNVJI3p8mI5+UeYA0VHd296v0w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LAhiNvas; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF812C4CEEA;
-	Mon, 23 Jun 2025 21:54:17 +0000 (UTC)
+	 MIME-Version; b=mKkVO7hKudp75BuUAMY/hBKKjdOYUQqPTcJXRXKGJzqxVlwUL668OjdM7h16RzohuZJXyVxjjtFzQwPwJyziSwsrF2+5UxcpASaQCdQaQDWWLiVyZwwBlGn6D3BMaxvHsbfZNHin58p7sJRQv4uEtr/A3rNp6+sWKQRDwo5WD/A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pREPQy2+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6774C4CEEA;
+	Mon, 23 Jun 2025 21:18:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750715658;
-	bh=I6C8KyKAG6VlTSlVHy7t5qwtkE16zypg+/JSh6cSNhc=;
+	s=korg; t=1750713531;
+	bh=0D+AyoGkqTG3UdjKeaxShxVNHCB8uPuhdnAA/HhbJAM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LAhiNvas6WIT4XqI0ym5txnnLTCfuyvDHu1pdNVH1ENR+EkUsJm7l7nXeDRtb7jHY
-	 BXVrp6cNzImezbPPQEv8U9dLofLOrcZ4OM5n6LaYAogsZ63fVAnzW1Lu75IfVaBGoA
-	 nGJk16Nj9+VuBmSplbpGuzg4hs37Z4jUv4ZvFbQc=
+	b=pREPQy2+KsSXn1J97fcMbYGswceA/GhClD/T4CgjQbE0SH1lANzrjP+eSrt/Coi/b
+	 H/8XGJGUyAT/lnCdlJypEnbK/24mE0wJr1FAEmsrMmAnmIW/h6UVS265+4uW8vqfgX
+	 SkjYOmKDVxmr2X0ch4ESIt4+/bAe81s1pKvOkT14=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alok Tiwari <alok.a.tiwari@oracle.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 199/414] emulex/benet: correct command version selection in be_cmd_get_stats()
+	Niravkumar L Rabara <niravkumar.l.rabara@intel.com>,
+	Matthew Gerlach <matthew.gerlach@altera.com>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>,
+	Dinh Nguyen <dinguyen@kernel.org>,
+	stable@kernel.org
+Subject: [PATCH 6.6 075/290] EDAC/altera: Use correct write width with the INTTEST register
 Date: Mon, 23 Jun 2025 15:05:36 +0200
-Message-ID: <20250623130646.985879994@linuxfoundation.org>
+Message-ID: <20250623130629.245520173@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
-References: <20250623130642.015559452@linuxfoundation.org>
+In-Reply-To: <20250623130626.910356556@linuxfoundation.org>
+References: <20250623130626.910356556@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,44 +64,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alok Tiwari <alok.a.tiwari@oracle.com>
+From: Niravkumar L Rabara <niravkumar.l.rabara@intel.com>
 
-[ Upstream commit edb888d29748cee674006a52e544925dacc7728e ]
+commit e5ef4cd2a47f27c0c9d8ff6c0f63a18937c071a3 upstream.
 
-Logic here always sets hdr->version to 2 if it is not a BE3 or Lancer chip,
-even if it is BE2. Use 'else if' to prevent multiple assignments, setting
-version 0 for BE2, version 1 for BE3 and Lancer, and version 2 for others.
-Fixes potential incorrect version setting when BE2_chip and
-BE3_chip/lancer_chip checks could both be true.
+On the SoCFPGA platform, the INTTEST register supports only 16-bit writes.
+A 32-bit write triggers an SError to the CPU so do 16-bit accesses only.
 
-Signed-off-by: Alok Tiwari <alok.a.tiwari@oracle.com>
-Link: https://patch.msgid.link/20250519141731.691136-1-alok.a.tiwari@oracle.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+  [ bp: AI-massage the commit message. ]
+
+Fixes: c7b4be8db8bc ("EDAC, altera: Add Arria10 OCRAM ECC support")
+Signed-off-by: Niravkumar L Rabara <niravkumar.l.rabara@intel.com>
+Signed-off-by: Matthew Gerlach <matthew.gerlach@altera.com>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Acked-by: Dinh Nguyen <dinguyen@kernel.org>
+Cc: stable@kernel.org
+Link: https://lore.kernel.org/20250527145707.25458-1-matthew.gerlach@altera.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/emulex/benet/be_cmds.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/edac/altera_edac.c |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/ethernet/emulex/benet/be_cmds.c b/drivers/net/ethernet/emulex/benet/be_cmds.c
-index 51b8377edd1d0..a89aa4ac0a064 100644
---- a/drivers/net/ethernet/emulex/benet/be_cmds.c
-+++ b/drivers/net/ethernet/emulex/benet/be_cmds.c
-@@ -1609,7 +1609,7 @@ int be_cmd_get_stats(struct be_adapter *adapter, struct be_dma_mem *nonemb_cmd)
- 	/* version 1 of the cmd is not supported only by BE2 */
- 	if (BE2_chip(adapter))
- 		hdr->version = 0;
--	if (BE3_chip(adapter) || lancer_chip(adapter))
-+	else if (BE3_chip(adapter) || lancer_chip(adapter))
- 		hdr->version = 1;
+--- a/drivers/edac/altera_edac.c
++++ b/drivers/edac/altera_edac.c
+@@ -1756,9 +1756,9 @@ altr_edac_a10_device_trig(struct file *f
+ 
+ 	local_irq_save(flags);
+ 	if (trig_type == ALTR_UE_TRIGGER_CHAR)
+-		writel(priv->ue_set_mask, set_addr);
++		writew(priv->ue_set_mask, set_addr);
  	else
- 		hdr->version = 2;
--- 
-2.39.5
-
+-		writel(priv->ce_set_mask, set_addr);
++		writew(priv->ce_set_mask, set_addr);
+ 
+ 	/* Ensure the interrupt test bits are set */
+ 	wmb();
+@@ -1788,7 +1788,7 @@ altr_edac_a10_device_trig2(struct file *
+ 
+ 	local_irq_save(flags);
+ 	if (trig_type == ALTR_UE_TRIGGER_CHAR) {
+-		writel(priv->ue_set_mask, set_addr);
++		writew(priv->ue_set_mask, set_addr);
+ 	} else {
+ 		/* Setup read/write of 4 bytes */
+ 		writel(ECC_WORD_WRITE, drvdata->base + ECC_BLK_DBYTECTRL_OFST);
 
 
 
