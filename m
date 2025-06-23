@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-156126-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156134-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9236DAE452A
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:49:02 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D0CDEAE452F
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:49:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 782BF189D9B0
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:44:04 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4B65F4A033E
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:43:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59B8C253356;
-	Mon, 23 Jun 2025 13:43:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C67624A067;
+	Mon, 23 Jun 2025 13:43:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Fa8ngsZe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FvgJAuGW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19079250C06;
-	Mon, 23 Jun 2025 13:43:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D43464C6E;
+	Mon, 23 Jun 2025 13:43:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750686213; cv=none; b=DieozVAnK3RjOA8UHnFadqnqjFtpppiUADiMo3yaChNTFWabs2GlrvJ71lFd4DCX/2ma9yW0bmSDovxdlJydIJDbSFWM6WR1VNBdT3ZBVDWdzmTK1CdUb+RzW5KJh6zVFyfQh86g9ucFG4dqd95D0j8z+Et6BPYaJ7V62bh/Yy0=
+	t=1750686233; cv=none; b=J/HLXut7yhF3KHY1nJjIWoy9JNzUNqSKF6dKmg07XFvm+90HV5RQunKTOqd1Xs4+slR8swjSg9qspVrjLy5ovUZKZQi6jvGfP/UW4yXehy6foNlQ0Z6ne8RGCEJrK3/oVZLGhh+yhtH7PrEk1QY+SX99oQ2kma/l0IVrFTPed30=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750686213; c=relaxed/simple;
-	bh=zYAjwshePavOLH3WNWgqmUnOH/FRWT8ItNO9LFA2yAM=;
+	s=arc-20240116; t=1750686233; c=relaxed/simple;
+	bh=RILQruk9yMhZRsqQf/L/dgHtQ+PVedhNZxWq6LfWq3I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RenEcdXOKGP7ZapJJFXFCWK0nvy2oeXxzZ2kEEtI2bdw7WP7CB6wYdOj4h6ZYqDNY6jUP+LxYN2KFdUzGDFlGMbF/dLOs/hNmk+KpYnuF8ientG66AYDjdOferN60a7OmDOJMIlaZ70IJ+hiSz2oylpuoMi3eILB9Q6Ll5AzxLA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Fa8ngsZe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9FCE5C4CEEA;
-	Mon, 23 Jun 2025 13:43:32 +0000 (UTC)
+	 MIME-Version; b=JCfkdfLXAOhIBB1VIa3Rpcx51ss0GwwC5whFVasrAi6e1IbhGbevcPosfB74EYrXi9CgAZ8Zmp9oQJVIjcb5zNTLqm7/NSXlIhS0EFX2Lcb7mstMT5d66WXb6gYKcJBwLRTI/hN2B5vvLtgeN7eatpj4BP8Tn+hR4eAvot2LnsI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FvgJAuGW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64355C4CEEA;
+	Mon, 23 Jun 2025 13:43:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750686213;
-	bh=zYAjwshePavOLH3WNWgqmUnOH/FRWT8ItNO9LFA2yAM=;
+	s=korg; t=1750686233;
+	bh=RILQruk9yMhZRsqQf/L/dgHtQ+PVedhNZxWq6LfWq3I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Fa8ngsZev5B7ynD6U2qF86uuasMaLtJ55G8yP7zZaAR07xQYbCkRwVctEhWsgKDeg
-	 qsPn8NLRRKvR7O3zv/bs4TQj3tJZMUhFT3WDN0vRWt6k7y6uCOMJIKoDjP4t3uP2eD
-	 KR9cPXzBY1cMCo+nzVXcJgrktZ911atsplOXQXXg=
+	b=FvgJAuGWsv2+pTHrNBpSTwi8Zq501A4q7Q8w3F6JyQMtwh+j15Ef77jcqiHA/rfEN
+	 Z7eONna5JBgSwTv0rgQ2Jrabn7vfOOExA4ZtSOOgBDqpTtvr/6VqvqGgm6xp1KnZyu
+	 nITZJe085jROXwpdEA6Ac76nUMtuuiYN6sNUe+7k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Eric Dumazet <edumazet@google.com>,
+	Wei Wang <weiwan@google.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 164/222] tcp: always seek for minimal rtt in tcp_rcv_rtt_update()
-Date: Mon, 23 Jun 2025 15:08:19 +0200
-Message-ID: <20250623130617.011527020@linuxfoundation.org>
+Subject: [PATCH 5.4 165/222] tcp: fix initial tp->rcvq_space.space value for passive TS enabled flows
+Date: Mon, 23 Jun 2025 15:08:20 +0200
+Message-ID: <20250623130617.038382653@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
 In-Reply-To: <20250623130611.896514667@linuxfoundation.org>
 References: <20250623130611.896514667@linuxfoundation.org>
@@ -68,67 +69,47 @@ Content-Transfer-Encoding: 8bit
 
 From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit b879dcb1aeeca278eacaac0b1e2425b1c7599f9f ]
+[ Upstream commit cd171461b90a2d2cf230943df60d580174633718 ]
 
-tcp_rcv_rtt_update() goal is to maintain an estimation of the RTT
-in tp->rcv_rtt_est.rtt_us, used by tcp_rcv_space_adjust()
+tcp_rcv_state_process() must tweak tp->advmss for TS enabled flows
+before the call to tcp_init_transfer() / tcp_init_buffer_space().
 
-When TCP TS are enabled, tcp_rcv_rtt_update() is using
-EWMA to smooth the samples.
-
-Change this to immediately latch the incoming value if it
-is lower than tp->rcv_rtt_est.rtt_us, so that tcp_rcv_space_adjust()
-does not overshoot tp->rcvq_space.space and sk->sk_rcvbuf.
+Otherwise tp->rcvq_space.space is off by 120 bytes
+(TCP_INIT_CWND * TCPOLEN_TSTAMP_ALIGNED).
 
 Signed-off-by: Eric Dumazet <edumazet@google.com>
-Link: https://patch.msgid.link/20250513193919.1089692-8-edumazet@google.com
+Reviewed-by: Wei Wang <weiwan@google.com>
+Link: https://patch.msgid.link/20250513193919.1089692-7-edumazet@google.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/tcp_input.c | 22 ++++++++--------------
- 1 file changed, 8 insertions(+), 14 deletions(-)
+ net/ipv4/tcp_input.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
 diff --git a/net/ipv4/tcp_input.c b/net/ipv4/tcp_input.c
-index 5923261312912..d07aa23943c13 100644
+index d07aa23943c13..2378d561d171d 100644
 --- a/net/ipv4/tcp_input.c
 +++ b/net/ipv4/tcp_input.c
-@@ -539,10 +539,12 @@ EXPORT_SYMBOL(tcp_initialize_rcv_mss);
-  */
- static void tcp_rcv_rtt_update(struct tcp_sock *tp, u32 sample, int win_dep)
- {
--	u32 new_sample = tp->rcv_rtt_est.rtt_us;
--	long m = sample;
-+	u32 new_sample, old_sample = tp->rcv_rtt_est.rtt_us;
-+	long m = sample << 3;
+@@ -6333,6 +6333,9 @@ int tcp_rcv_state_process(struct sock *sk, struct sk_buff *skb)
+ 		if (!tp->srtt_us)
+ 			tcp_synack_rtt_meas(sk, req);
  
--	if (new_sample != 0) {
-+	if (old_sample == 0 || m < old_sample) {
-+		new_sample = m;
-+	} else {
- 		/* If we sample in larger samples in the non-timestamp
- 		 * case, we could grossly overestimate the RTT especially
- 		 * with chatty applications or bulk transfer apps which
-@@ -553,17 +555,9 @@ static void tcp_rcv_rtt_update(struct tcp_sock *tp, u32 sample, int win_dep)
- 		 * else with timestamps disabled convergence takes too
- 		 * long.
- 		 */
--		if (!win_dep) {
--			m -= (new_sample >> 3);
--			new_sample += m;
--		} else {
--			m <<= 3;
--			if (m < new_sample)
--				new_sample = m;
--		}
--	} else {
--		/* No previous measure. */
--		new_sample = m << 3;
-+		if (win_dep)
-+			return;
-+		new_sample = old_sample - (old_sample >> 3) + sample;
- 	}
++		if (tp->rx_opt.tstamp_ok)
++			tp->advmss -= TCPOLEN_TSTAMP_ALIGNED;
++
+ 		if (req) {
+ 			tcp_rcv_synrecv_state_fastopen(sk);
+ 		} else {
+@@ -6356,9 +6359,6 @@ int tcp_rcv_state_process(struct sock *sk, struct sk_buff *skb)
+ 		tp->snd_wnd = ntohs(th->window) << tp->rx_opt.snd_wscale;
+ 		tcp_init_wl(tp, TCP_SKB_CB(skb)->seq);
  
- 	tp->rcv_rtt_est.rtt_us = new_sample;
+-		if (tp->rx_opt.tstamp_ok)
+-			tp->advmss -= TCPOLEN_TSTAMP_ALIGNED;
+-
+ 		if (!inet_csk(sk)->icsk_ca_ops->cong_control)
+ 			tcp_update_pacing_rate(sk);
+ 
 -- 
 2.39.5
 
