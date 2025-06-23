@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-155948-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-155767-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 34C61AE450A
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:47:46 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D61D1AE43BC
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:35:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1EB2A444D31
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:36:56 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C87FD178CCE
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:28:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D84CA255F26;
-	Mon, 23 Jun 2025 13:35:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE3FB25394B;
+	Mon, 23 Jun 2025 13:28:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vSChmR7k"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FWYg8e1C"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9522024FBFF;
-	Mon, 23 Jun 2025 13:35:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A304248191;
+	Mon, 23 Jun 2025 13:28:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750685749; cv=none; b=s8R8f0gRtQuSzuoeQVObI1il47oDdr+9iRWhwYSEFI06brK8HHV8iKzF17Ukm5itViB98f1d0tMg9HPNN2C6APgDNrGsHZKpRcV5tSNA3shJ8Uz3MxNnjQmrOB4232Z2KOYXrRLWkQx5vH9IAVSgfmzPljBXF+7zbOpuXmPGS9Q=
+	t=1750685280; cv=none; b=MxwJuogivxURu6jwli4NxPqwNhSGH9uIVx/39O+Lcm4ArYC97R9B3a/UU/FCFvscrvqJGXZonHl9NMjfF1cWP7noEqbBiSkULi/gBSEPpjlRAJE9LbUGkLQ4Y6T/t6ve7wy3Lj2A9J6yimdta1MZqj5HOS0U+z/e2XQA9kBrobk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750685749; c=relaxed/simple;
-	bh=GvdJgakxtL+4vmd7m/s98YhMyinqb1c3YFZihKs/H+I=;
+	s=arc-20240116; t=1750685280; c=relaxed/simple;
+	bh=2tmdsAwYmQPv3xmECw2k4JpmdY4nhg0P7GbGs1c1UEw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WLiIJy+42DnLeZF+JtURqHDFO1sGqFvHAuPMKQgPLeH4O+0lDzgRRjWi2/L2y8nMjwvl8BdIonP+LJOJfkAdodtiuCL736wq6Dc608BuzMuNcbCfHtQbNfJo63J7iQVHpgcwC/gLGDPba/jtA8X+4fIRDkpkUeGjvZLIQmAucgY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vSChmR7k; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B375C4CEF0;
-	Mon, 23 Jun 2025 13:35:49 +0000 (UTC)
+	 MIME-Version; b=rBmOdBKku3eWKTe1sabiayjv+6f3KL1A+/inmrx33TVCgMuh1D0xVF67iX66mlbJ9aBprcGfuA6otzPDlsds6Sc/EPCMx3/c003bDldKWdm4DDM3rIbPIZCB5enOrwRq57J1l8LgpAfYyyM5xFIf/q85M5qjeypkmXTksYIR9Z0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FWYg8e1C; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F917C4CEEA;
+	Mon, 23 Jun 2025 13:27:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750685749;
-	bh=GvdJgakxtL+4vmd7m/s98YhMyinqb1c3YFZihKs/H+I=;
+	s=korg; t=1750685280;
+	bh=2tmdsAwYmQPv3xmECw2k4JpmdY4nhg0P7GbGs1c1UEw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vSChmR7kncCYioG8jNTFiiLb3jYXJ/ey45I/MvXrCKpJ5dGnXczr5ijn7PR/rvQhj
-	 Rd8YMzN3QJBuhFkWkPnumgpCUB6U2oRyKRwqq2dLlVpum8VoJe9aA+Livsw02uob9b
-	 J05UQX3fzFWLg1Atb1vL8FSt9HgLlMOxWjXa1QOI=
+	b=FWYg8e1CcVg4cTHyRDd2Z1gZ8QHQ3/tKczrM/+7OvOlkjAqRHfFd238XV0g4bAh1l
+	 BhmwMHNb3OK50SCWLB8c5RfEsWxQhrPRA53ttD4HwZtUVxV3iWVGvktf1yNUCsVYoH
+	 FofiHMWAQFMXEEtpuGXgo1ysAO5Dyxi9Mx8te6RU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aric Cyr <aric.cyr@amd.com>,
-	Dillon Varone <dillon.varone@amd.com>,
-	Fangzhi Zuo <jerry.zuo@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Patrisious Haddad <phaddad@nvidia.com>,
+	Leon Romanovsky <leon@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 283/592] drm/amd/display: Fix Vertical Interrupt definitions for dcn32, dcn401
-Date: Mon, 23 Jun 2025 15:04:01 +0200
-Message-ID: <20250623130707.082404560@linuxfoundation.org>
+Subject: [PATCH 5.10 041/355] RDMA/mlx5: Fix error flow upon firmware failure for RQ destruction
+Date: Mon, 23 Jun 2025 15:04:02 +0200
+Message-ID: <20250623130628.057727375@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
-References: <20250623130700.210182694@linuxfoundation.org>
+In-Reply-To: <20250623130626.716971725@linuxfoundation.org>
+References: <20250623130626.716971725@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,272 +62,142 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dillon Varone <dillon.varone@amd.com>
+From: Patrisious Haddad <phaddad@nvidia.com>
 
-[ Upstream commit e8cc149ed906a371a5962ff8065393bae28165c9 ]
+[ Upstream commit 5d2ea5aebbb2f3ebde4403f9c55b2b057e5dd2d6 ]
 
-[WHY&HOW]
-- VUPDATE_NO_LOCK should be used in place of VUPDATE always
-- Add VERTICAL_INTERRUPT1 and VERTICAL_INTERRUPT2 definitions
+Upon RQ destruction if the firmware command fails which is the
+last resource to be destroyed some SW resources were already cleaned
+regardless of the failure.
 
-Reviewed-by: Aric Cyr <aric.cyr@amd.com>
-Signed-off-by: Dillon Varone <dillon.varone@amd.com>
-Signed-off-by: Fangzhi Zuo <jerry.zuo@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Now properly rollback the object to its original state upon such failure.
+
+In order to avoid a use-after free in case someone tries to destroy the
+object again, which results in the following kernel trace:
+refcount_t: underflow; use-after-free.
+WARNING: CPU: 0 PID: 37589 at lib/refcount.c:28 refcount_warn_saturate+0xf4/0x148
+Modules linked in: rdma_ucm(OE) rdma_cm(OE) iw_cm(OE) ib_ipoib(OE) ib_cm(OE) ib_umad(OE) mlx5_ib(OE) rfkill mlx5_core(OE) mlxdevm(OE) ib_uverbs(OE) ib_core(OE) psample mlxfw(OE) mlx_compat(OE) macsec tls pci_hyperv_intf sunrpc vfat fat virtio_net net_failover failover fuse loop nfnetlink vsock_loopback vmw_vsock_virtio_transport_common vmw_vsock_vmci_transport vmw_vmci vsock xfs crct10dif_ce ghash_ce sha2_ce sha256_arm64 sha1_ce virtio_console virtio_gpu virtio_blk virtio_dma_buf virtio_mmio dm_mirror dm_region_hash dm_log dm_mod xpmem(OE)
+CPU: 0 UID: 0 PID: 37589 Comm: python3 Kdump: loaded Tainted: G           OE     -------  ---  6.12.0-54.el10.aarch64 #1
+Tainted: [O]=OOT_MODULE, [E]=UNSIGNED_MODULE
+Hardware name: QEMU KVM Virtual Machine, BIOS 0.0.0 02/06/2015
+pstate: 60400005 (nZCv daif +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+pc : refcount_warn_saturate+0xf4/0x148
+lr : refcount_warn_saturate+0xf4/0x148
+sp : ffff80008b81b7e0
+x29: ffff80008b81b7e0 x28: ffff000133d51600 x27: 0000000000000001
+x26: 0000000000000000 x25: 00000000ffffffea x24: ffff00010ae80f00
+x23: ffff00010ae80f80 x22: ffff0000c66e5d08 x21: 0000000000000000
+x20: ffff0000c66e0000 x19: ffff00010ae80340 x18: 0000000000000006
+x17: 0000000000000000 x16: 0000000000000020 x15: ffff80008b81b37f
+x14: 0000000000000000 x13: 2e656572662d7265 x12: ffff80008283ef78
+x11: ffff80008257efd0 x10: ffff80008283efd0 x9 : ffff80008021ed90
+x8 : 0000000000000001 x7 : 00000000000bffe8 x6 : c0000000ffff7fff
+x5 : ffff0001fb8e3408 x4 : 0000000000000000 x3 : ffff800179993000
+x2 : 0000000000000000 x1 : 0000000000000000 x0 : ffff000133d51600
+Call trace:
+ refcount_warn_saturate+0xf4/0x148
+ mlx5_core_put_rsc+0x88/0xa0 [mlx5_ib]
+ mlx5_core_destroy_rq_tracked+0x64/0x98 [mlx5_ib]
+ mlx5_ib_destroy_wq+0x34/0x80 [mlx5_ib]
+ ib_destroy_wq_user+0x30/0xc0 [ib_core]
+ uverbs_free_wq+0x28/0x58 [ib_uverbs]
+ destroy_hw_idr_uobject+0x34/0x78 [ib_uverbs]
+ uverbs_destroy_uobject+0x48/0x240 [ib_uverbs]
+ __uverbs_cleanup_ufile+0xd4/0x1a8 [ib_uverbs]
+ uverbs_destroy_ufile_hw+0x48/0x120 [ib_uverbs]
+ ib_uverbs_close+0x2c/0x100 [ib_uverbs]
+ __fput+0xd8/0x2f0
+ __fput_sync+0x50/0x70
+ __arm64_sys_close+0x40/0x90
+ invoke_syscall.constprop.0+0x74/0xd0
+ do_el0_svc+0x48/0xe8
+ el0_svc+0x44/0x1d0
+ el0t_64_sync_handler+0x120/0x130
+ el0t_64_sync+0x1a4/0x1a8
+
+Fixes: e2013b212f9f ("net/mlx5_core: Add RQ and SQ event handling")
+Signed-off-by: Patrisious Haddad <phaddad@nvidia.com>
+Link: https://patch.msgid.link/3181433ccdd695c63560eeeb3f0c990961732101.1745839855.git.leon@kernel.org
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../display/dc/irq/dcn32/irq_service_dcn32.c  | 61 ++++++++++++++-----
- .../dc/irq/dcn401/irq_service_dcn401.c        | 60 +++++++++++++-----
- drivers/gpu/drm/amd/display/dc/irq_types.h    |  9 +++
- 3 files changed, 101 insertions(+), 29 deletions(-)
+ drivers/infiniband/hw/mlx5/qpc.c | 30 ++++++++++++++++++++++++++++--
+ include/linux/mlx5/driver.h      |  1 +
+ 2 files changed, 29 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/irq/dcn32/irq_service_dcn32.c b/drivers/gpu/drm/amd/display/dc/irq/dcn32/irq_service_dcn32.c
-index f0ac0aeeac512..f839afacd5a5c 100644
---- a/drivers/gpu/drm/amd/display/dc/irq/dcn32/irq_service_dcn32.c
-+++ b/drivers/gpu/drm/amd/display/dc/irq/dcn32/irq_service_dcn32.c
-@@ -191,6 +191,16 @@ static struct irq_source_info_funcs vline0_irq_info_funcs = {
- 	.ack = NULL
- };
+diff --git a/drivers/infiniband/hw/mlx5/qpc.c b/drivers/infiniband/hw/mlx5/qpc.c
+index 9a306da7f9496..245b7675bb4d9 100644
+--- a/drivers/infiniband/hw/mlx5/qpc.c
++++ b/drivers/infiniband/hw/mlx5/qpc.c
+@@ -21,8 +21,10 @@ mlx5_get_rsc(struct mlx5_qp_table *table, u32 rsn)
+ 	spin_lock_irqsave(&table->lock, flags);
  
-+static struct irq_source_info_funcs vline1_irq_info_funcs = {
-+	.set = NULL,
-+	.ack = NULL
-+};
+ 	common = radix_tree_lookup(&table->tree, rsn);
+-	if (common)
++	if (common && !common->invalid)
+ 		refcount_inc(&common->refcount);
++	else
++		common = NULL;
+ 
+ 	spin_unlock_irqrestore(&table->lock, flags);
+ 
+@@ -172,6 +174,18 @@ static int create_resource_common(struct mlx5_ib_dev *dev,
+ 	return 0;
+ }
+ 
++static void modify_resource_common_state(struct mlx5_ib_dev *dev,
++					 struct mlx5_core_qp *qp,
++					 bool invalid)
++{
++	struct mlx5_qp_table *table = &dev->qp_table;
++	unsigned long flags;
 +
-+static struct irq_source_info_funcs vline2_irq_info_funcs = {
-+	.set = NULL,
-+	.ack = NULL
-+};
++	spin_lock_irqsave(&table->lock, flags);
++	qp->common.invalid = invalid;
++	spin_unlock_irqrestore(&table->lock, flags);
++}
 +
- #undef BASE_INNER
- #define BASE_INNER(seg) DCN_BASE__INST0_SEG ## seg
- 
-@@ -259,6 +269,13 @@ static struct irq_source_info_funcs vline0_irq_info_funcs = {
- 		.funcs = &pflip_irq_info_funcs\
- 	}
- 
-+#define vblank_int_entry(reg_num)\
-+	[DC_IRQ_SOURCE_VBLANK1 + reg_num] = {\
-+		IRQ_REG_ENTRY(OTG, reg_num,\
-+			OTG_GLOBAL_SYNC_STATUS, VSTARTUP_INT_EN,\
-+			OTG_GLOBAL_SYNC_STATUS, VSTARTUP_EVENT_CLEAR),\
-+		.funcs = &vblank_irq_info_funcs\
-+	}
- /* vupdate_no_lock_int_entry maps to DC_IRQ_SOURCE_VUPDATEx, to match semantic
-  * of DCE's DC_IRQ_SOURCE_VUPDATEx.
-  */
-@@ -270,14 +287,6 @@ static struct irq_source_info_funcs vline0_irq_info_funcs = {
- 		.funcs = &vupdate_no_lock_irq_info_funcs\
- 	}
- 
--#define vblank_int_entry(reg_num)\
--	[DC_IRQ_SOURCE_VBLANK1 + reg_num] = {\
--		IRQ_REG_ENTRY(OTG, reg_num,\
--			OTG_GLOBAL_SYNC_STATUS, VSTARTUP_INT_EN,\
--			OTG_GLOBAL_SYNC_STATUS, VSTARTUP_EVENT_CLEAR),\
--		.funcs = &vblank_irq_info_funcs\
--}
--
- #define vline0_int_entry(reg_num)\
- 	[DC_IRQ_SOURCE_DC1_VLINE0 + reg_num] = {\
- 		IRQ_REG_ENTRY(OTG, reg_num,\
-@@ -285,6 +294,20 @@ static struct irq_source_info_funcs vline0_irq_info_funcs = {
- 			OTG_VERTICAL_INTERRUPT0_CONTROL, OTG_VERTICAL_INTERRUPT0_CLEAR),\
- 		.funcs = &vline0_irq_info_funcs\
- 	}
-+#define vline1_int_entry(reg_num)\
-+	[DC_IRQ_SOURCE_DC1_VLINE1 + reg_num] = {\
-+		IRQ_REG_ENTRY(OTG, reg_num,\
-+			OTG_VERTICAL_INTERRUPT1_CONTROL, OTG_VERTICAL_INTERRUPT1_INT_ENABLE,\
-+			OTG_VERTICAL_INTERRUPT1_CONTROL, OTG_VERTICAL_INTERRUPT1_CLEAR),\
-+		.funcs = &vline1_irq_info_funcs\
-+	}
-+#define vline2_int_entry(reg_num)\
-+	[DC_IRQ_SOURCE_DC1_VLINE2 + reg_num] = {\
-+		IRQ_REG_ENTRY(OTG, reg_num,\
-+			OTG_VERTICAL_INTERRUPT2_CONTROL, OTG_VERTICAL_INTERRUPT2_INT_ENABLE,\
-+			OTG_VERTICAL_INTERRUPT2_CONTROL, OTG_VERTICAL_INTERRUPT2_CLEAR),\
-+		.funcs = &vline2_irq_info_funcs\
-+	}
- #define dmub_outbox_int_entry()\
- 	[DC_IRQ_SOURCE_DMCUB_OUTBOX] = {\
- 		IRQ_REG_ENTRY_DMUB(\
-@@ -387,21 +410,29 @@ irq_source_info_dcn32[DAL_IRQ_SOURCES_NUMBER] = {
- 	dc_underflow_int_entry(6),
- 	[DC_IRQ_SOURCE_DMCU_SCP] = dummy_irq_entry(),
- 	[DC_IRQ_SOURCE_VBIOS_SW] = dummy_irq_entry(),
--	vupdate_no_lock_int_entry(0),
--	vupdate_no_lock_int_entry(1),
--	vupdate_no_lock_int_entry(2),
--	vupdate_no_lock_int_entry(3),
- 	vblank_int_entry(0),
- 	vblank_int_entry(1),
- 	vblank_int_entry(2),
- 	vblank_int_entry(3),
-+	[DC_IRQ_SOURCE_DC5_VLINE1] = dummy_irq_entry(),
-+	[DC_IRQ_SOURCE_DC6_VLINE1] = dummy_irq_entry(),
-+	dmub_outbox_int_entry(),
-+	vupdate_no_lock_int_entry(0),
-+	vupdate_no_lock_int_entry(1),
-+	vupdate_no_lock_int_entry(2),
-+	vupdate_no_lock_int_entry(3),
- 	vline0_int_entry(0),
- 	vline0_int_entry(1),
- 	vline0_int_entry(2),
- 	vline0_int_entry(3),
--	[DC_IRQ_SOURCE_DC5_VLINE1] = dummy_irq_entry(),
--	[DC_IRQ_SOURCE_DC6_VLINE1] = dummy_irq_entry(),
--	dmub_outbox_int_entry(),
-+	vline1_int_entry(0),
-+	vline1_int_entry(1),
-+	vline1_int_entry(2),
-+	vline1_int_entry(3),
-+	vline2_int_entry(0),
-+	vline2_int_entry(1),
-+	vline2_int_entry(2),
-+	vline2_int_entry(3)
- };
- 
- static const struct irq_service_funcs irq_service_funcs_dcn32 = {
-diff --git a/drivers/gpu/drm/amd/display/dc/irq/dcn401/irq_service_dcn401.c b/drivers/gpu/drm/amd/display/dc/irq/dcn401/irq_service_dcn401.c
-index b43c9524b0de1..8499e505cf3ef 100644
---- a/drivers/gpu/drm/amd/display/dc/irq/dcn401/irq_service_dcn401.c
-+++ b/drivers/gpu/drm/amd/display/dc/irq/dcn401/irq_service_dcn401.c
-@@ -171,6 +171,16 @@ static struct irq_source_info_funcs vline0_irq_info_funcs = {
- 	.ack = NULL
- };
- 
-+static struct irq_source_info_funcs vline1_irq_info_funcs = {
-+	.set = NULL,
-+	.ack = NULL
-+};
+ static void destroy_resource_common(struct mlx5_ib_dev *dev,
+ 				    struct mlx5_core_qp *qp)
+ {
+@@ -578,8 +592,20 @@ int mlx5_core_create_rq_tracked(struct mlx5_ib_dev *dev, u32 *in, int inlen,
+ int mlx5_core_destroy_rq_tracked(struct mlx5_ib_dev *dev,
+ 				 struct mlx5_core_qp *rq)
+ {
++	int ret;
 +
-+static struct irq_source_info_funcs vline2_irq_info_funcs = {
-+	.set = NULL,
-+	.ack = NULL
-+};
-+
- #undef BASE_INNER
- #define BASE_INNER(seg) DCN_BASE__INST0_SEG ## seg
- 
-@@ -239,6 +249,13 @@ static struct irq_source_info_funcs vline0_irq_info_funcs = {
- 		.funcs = &pflip_irq_info_funcs\
- 	}
- 
-+#define vblank_int_entry(reg_num)\
-+	[DC_IRQ_SOURCE_VBLANK1 + reg_num] = {\
-+		IRQ_REG_ENTRY(OTG, reg_num,\
-+			OTG_GLOBAL_SYNC_STATUS, VSTARTUP_INT_EN,\
-+			OTG_GLOBAL_SYNC_STATUS, VSTARTUP_EVENT_CLEAR),\
-+		.funcs = &vblank_irq_info_funcs\
++	/* The rq destruction can be called again in case it fails, hence we
++	 * mark the common resource as invalid and only once FW destruction
++	 * is completed successfully we actually destroy the resources.
++	 */
++	modify_resource_common_state(dev, rq, true);
++	ret = destroy_rq_tracked(dev, rq->qpn, rq->uid);
++	if (ret) {
++		modify_resource_common_state(dev, rq, false);
++		return ret;
 +	}
- /* vupdate_no_lock_int_entry maps to DC_IRQ_SOURCE_VUPDATEx, to match semantic
-  * of DCE's DC_IRQ_SOURCE_VUPDATEx.
-  */
-@@ -250,13 +267,6 @@ static struct irq_source_info_funcs vline0_irq_info_funcs = {
- 		.funcs = &vupdate_no_lock_irq_info_funcs\
- 	}
+ 	destroy_resource_common(dev, rq);
+-	return destroy_rq_tracked(dev, rq->qpn, rq->uid);
++	return 0;
+ }
  
--#define vblank_int_entry(reg_num)\
--	[DC_IRQ_SOURCE_VBLANK1 + reg_num] = {\
--		IRQ_REG_ENTRY(OTG, reg_num,\
--			OTG_GLOBAL_SYNC_STATUS, VSTARTUP_INT_EN,\
--			OTG_GLOBAL_SYNC_STATUS, VSTARTUP_EVENT_CLEAR),\
--		.funcs = &vblank_irq_info_funcs\
--	}
- #define vline0_int_entry(reg_num)\
- 	[DC_IRQ_SOURCE_DC1_VLINE0 + reg_num] = {\
- 		IRQ_REG_ENTRY(OTG, reg_num,\
-@@ -264,6 +274,20 @@ static struct irq_source_info_funcs vline0_irq_info_funcs = {
- 			OTG_VERTICAL_INTERRUPT0_CONTROL, OTG_VERTICAL_INTERRUPT0_CLEAR),\
- 		.funcs = &vline0_irq_info_funcs\
- 	}
-+#define vline1_int_entry(reg_num)\
-+	[DC_IRQ_SOURCE_DC1_VLINE1 + reg_num] = {\
-+		IRQ_REG_ENTRY(OTG, reg_num,\
-+			OTG_VERTICAL_INTERRUPT1_CONTROL, OTG_VERTICAL_INTERRUPT1_INT_ENABLE,\
-+			OTG_VERTICAL_INTERRUPT1_CONTROL, OTG_VERTICAL_INTERRUPT1_CLEAR),\
-+		.funcs = &vline1_irq_info_funcs\
-+	}
-+#define vline2_int_entry(reg_num)\
-+	[DC_IRQ_SOURCE_DC1_VLINE2 + reg_num] = {\
-+		IRQ_REG_ENTRY(OTG, reg_num,\
-+			OTG_VERTICAL_INTERRUPT2_CONTROL, OTG_VERTICAL_INTERRUPT2_INT_ENABLE,\
-+			OTG_VERTICAL_INTERRUPT2_CONTROL, OTG_VERTICAL_INTERRUPT2_CLEAR),\
-+		.funcs = &vline2_irq_info_funcs\
-+	}
- #define dmub_outbox_int_entry()\
- 	[DC_IRQ_SOURCE_DMCUB_OUTBOX] = {\
- 		IRQ_REG_ENTRY_DMUB(\
-@@ -364,21 +388,29 @@ irq_source_info_dcn401[DAL_IRQ_SOURCES_NUMBER] = {
- 	dc_underflow_int_entry(6),
- 	[DC_IRQ_SOURCE_DMCU_SCP] = dummy_irq_entry(),
- 	[DC_IRQ_SOURCE_VBIOS_SW] = dummy_irq_entry(),
--	vupdate_no_lock_int_entry(0),
--	vupdate_no_lock_int_entry(1),
--	vupdate_no_lock_int_entry(2),
--	vupdate_no_lock_int_entry(3),
- 	vblank_int_entry(0),
- 	vblank_int_entry(1),
- 	vblank_int_entry(2),
- 	vblank_int_entry(3),
-+	[DC_IRQ_SOURCE_DC5_VLINE1] = dummy_irq_entry(),
-+	[DC_IRQ_SOURCE_DC6_VLINE1] = dummy_irq_entry(),
-+	dmub_outbox_int_entry(),
-+	vupdate_no_lock_int_entry(0),
-+	vupdate_no_lock_int_entry(1),
-+	vupdate_no_lock_int_entry(2),
-+	vupdate_no_lock_int_entry(3),
- 	vline0_int_entry(0),
- 	vline0_int_entry(1),
- 	vline0_int_entry(2),
- 	vline0_int_entry(3),
--	[DC_IRQ_SOURCE_DC5_VLINE1] = dummy_irq_entry(),
--	[DC_IRQ_SOURCE_DC6_VLINE1] = dummy_irq_entry(),
--	dmub_outbox_int_entry(),
-+	vline1_int_entry(0),
-+	vline1_int_entry(1),
-+	vline1_int_entry(2),
-+	vline1_int_entry(3),
-+	vline2_int_entry(0),
-+	vline2_int_entry(1),
-+	vline2_int_entry(2),
-+	vline2_int_entry(3),
+ static void destroy_sq_tracked(struct mlx5_ib_dev *dev, u32 sqn, u16 uid)
+diff --git a/include/linux/mlx5/driver.h b/include/linux/mlx5/driver.h
+index 56cb2fbc496e6..0737d5fc35c75 100644
+--- a/include/linux/mlx5/driver.h
++++ b/include/linux/mlx5/driver.h
+@@ -390,6 +390,7 @@ struct mlx5_core_rsc_common {
+ 	enum mlx5_res_type	res;
+ 	refcount_t		refcount;
+ 	struct completion	free;
++	bool			invalid;
  };
  
- static const struct irq_service_funcs irq_service_funcs_dcn401 = {
-diff --git a/drivers/gpu/drm/amd/display/dc/irq_types.h b/drivers/gpu/drm/amd/display/dc/irq_types.h
-index 110f656d43aee..eadab0a2afebe 100644
---- a/drivers/gpu/drm/amd/display/dc/irq_types.h
-+++ b/drivers/gpu/drm/amd/display/dc/irq_types.h
-@@ -161,6 +161,13 @@ enum dc_irq_source {
- 	DC_IRQ_SOURCE_DPCX_TX_PHYE,
- 	DC_IRQ_SOURCE_DPCX_TX_PHYF,
- 
-+	DC_IRQ_SOURCE_DC1_VLINE2,
-+	DC_IRQ_SOURCE_DC2_VLINE2,
-+	DC_IRQ_SOURCE_DC3_VLINE2,
-+	DC_IRQ_SOURCE_DC4_VLINE2,
-+	DC_IRQ_SOURCE_DC5_VLINE2,
-+	DC_IRQ_SOURCE_DC6_VLINE2,
-+
- 	DAL_IRQ_SOURCES_NUMBER
- };
- 
-@@ -170,6 +177,8 @@ enum irq_type
- 	IRQ_TYPE_VUPDATE = DC_IRQ_SOURCE_VUPDATE1,
- 	IRQ_TYPE_VBLANK = DC_IRQ_SOURCE_VBLANK1,
- 	IRQ_TYPE_VLINE0 = DC_IRQ_SOURCE_DC1_VLINE0,
-+	IRQ_TYPE_VLINE1 = DC_IRQ_SOURCE_DC1_VLINE1,
-+	IRQ_TYPE_VLINE2 = DC_IRQ_SOURCE_DC1_VLINE2,
- 	IRQ_TYPE_DCUNDERFLOW = DC_IRQ_SOURCE_DC1UNDERFLOW,
- };
- 
+ struct mlx5_uars_page {
 -- 
 2.39.5
 
