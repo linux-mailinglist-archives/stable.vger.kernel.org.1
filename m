@@ -1,96 +1,129 @@
-Return-Path: <stable+bounces-155294-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-155295-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 25D09AE35B0
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 08:28:22 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 75CF9AE35B8
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 08:30:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E17121891EDD
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 06:28:37 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 107E316F4DD
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 06:30:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B76AD1DC9BB;
-	Mon, 23 Jun 2025 06:28:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C26261DF96F;
+	Mon, 23 Jun 2025 06:30:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oRnFs++g"
+	dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b="E2gU2oxY";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="U37P0tUD"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from fout-b4-smtp.messagingengine.com (fout-b4-smtp.messagingengine.com [202.12.124.147])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65A861A072C;
-	Mon, 23 Jun 2025 06:28:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4326E184;
+	Mon, 23 Jun 2025 06:30:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.147
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750660096; cv=none; b=T9t+9RburUzqmfyZ1AYyoVNIT60YulFiLyp78ecc7LeQYQ7wK0VUYYi6j8MVbAbQaIvjCHW7p6zNiacbjTXvMM1s39Dv/fyC2xurVaMYVj9bb9WAmmiiaTKLhIbeFMdlwcAvqOjF+8DvTDCxlJHJZTZCSkeUFSw09QL2iWbIgOQ=
+	t=1750660227; cv=none; b=Dg6GDdP5r2jreihoL9zC0Wh1icVIsUkT59FEXgQTrdrDjhO2PvYyLBL0kJCeN82iwZRC5gswM+AqIevzpoWbchpfw/wK6xmBHMyi12mzBro4sA7mj2rdpLdwCrAa8XBBLqVr/0jousuwE1xJIkke4rlgGysqd0M5cwznKmfb6eQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750660096; c=relaxed/simple;
-	bh=HagfiHIsWhwV2eaS8RFEYMwbq2J6hxG1xCpPj6Ss2ew=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=hTRI5ls0RzVrEIDZHcOqevy6QYk458zRLo1LbP+3blb//qOAVaKJxnwClJQJaahwemJTCyTqXwf5PWS5dGUnGEkLiU6n9zr3dnCzBBhrT8t1l0i9tmWsMOrVBxal6s4YGvX9gDAOlS2csPe41WIgIkennHnNIosdQxS0MC+698U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oRnFs++g; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90DECC4CEED;
-	Mon, 23 Jun 2025 06:28:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750660094;
-	bh=HagfiHIsWhwV2eaS8RFEYMwbq2J6hxG1xCpPj6Ss2ew=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=oRnFs++gnVEAvl7o7Ruxy8QBPqaKMkhUB7gQkDl+ezSTSZ+zUvWqDcRY0prZIy4sC
-	 8Mc3a0ffakJzlX376fFqrGTmzQ2vT2UXdvDLoaK5BXFqo7EOhOFAxwZC8M3HnAZL0X
-	 j56JDN34QgevP+OcQPRvKX8eNK9RtBv6xZXjlit8=
-Date: Mon, 23 Jun 2025 08:28:12 +0200
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Huacai Chen <chenhuacai@kernel.org>
-Cc: Huacai Chen <chenhuacai@loongson.cn>, Sasha Levin <sashal@kernel.org>,
-	Xuerui Wang <kernel@xen0n.name>, stable@vger.kernel.org,
-	ziyao@disroot.org, linux-kernel@vger.kernel.org,
-	loongarch@lists.linux.dev
-Subject: Re: [PATCH for 6.1/6.6] platform/loongarch: laptop: Fix build error
- due to backport
-Message-ID: <2025062349-proximity-trapeze-24c6@gregkh>
-References: <20250622110148.3108758-1-chenhuacai@loongson.cn>
- <2025062206-roundish-thumb-a20e@gregkh>
- <CAAhV-H4S=z5O0+pq-x9X4-VjYsJQVxib+V-35g50WeaivryHLA@mail.gmail.com>
+	s=arc-20240116; t=1750660227; c=relaxed/simple;
+	bh=SRMe8CK6JM0ZIj4kHHMpEAD3KRdvvSxXxOxTfrCuYTI=;
+	h=From:Date:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=pAxxnlcaIzvixXDQ8DA9VBNkRw/Thbbjnn2+rzWfB9J6HRGsriSPBZTH5KGwTpy1JMdIof/z5UJK2i7BfN/kow6ldY+pdnM1fxu6rqURLbF1klsDczGVgrV32UYkTr60GI9AeQiOM58FT9Wvp8pD/JCCtPHU1XcJY1Qdif+qFk8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com; spf=pass smtp.mailfrom=kroah.com; dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b=E2gU2oxY; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=U37P0tUD; arc=none smtp.client-ip=202.12.124.147
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kroah.com
+Received: from phl-compute-09.internal (phl-compute-09.phl.internal [10.202.2.49])
+	by mailfout.stl.internal (Postfix) with ESMTP id F0769114013F;
+	Mon, 23 Jun 2025 02:30:23 -0400 (EDT)
+Received: from phl-mailfrontend-01 ([10.202.2.162])
+  by phl-compute-09.internal (MEProxy); Mon, 23 Jun 2025 02:30:24 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kroah.com; h=cc
+	:cc:content-type:content-type:date:date:from:from:in-reply-to
+	:in-reply-to:message-id:mime-version:references:reply-to:subject
+	:subject:to:to; s=fm1; t=1750660223; x=1750746623; bh=jXMI8apfLB
+	SadjxcnczIexFKVfL5KGNIjzbI2JHZohc=; b=E2gU2oxYOxGurvsnsB90R9AsY7
+	i9+cSDEj7dCb+GrNF9b99b3f46ZVSE8MgU1/a3RHa7K2xP7BaXmfrSA5s31XMAWr
+	2q85dbLVWHe7ByVJ4HYV8UKXYKCCTxNBoZe3DeGnX7hggjbmqea1UWWliQRtube+
+	HeDJ2NYjpa1MW6s6qJFNzvrZdrHCZzt/SxHtC0S0/hMwZ3Km1bcC3WU+exQIN/cC
+	wf3pl66cwlT6sl3EkeAifs+pvgaMvhF14E1shDL6pj0LL3neNyEGlivHBfxMG9uZ
+	jN6TIfQExJWPr3u5mzTFyfjtADJ2VSxe2iFY8EeEDI39womuvoZnyClfgr7g==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-type:content-type:date:date
+	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=
+	1750660223; x=1750746623; bh=jXMI8apfLBSadjxcnczIexFKVfL5KGNIjzb
+	I2JHZohc=; b=U37P0tUD+YqsYxjChSS+303lvhswX7rwyBCUX4RMd4knc4EAAU6
+	UB/vOHYImaIg/GL6n4ncZ6XZutxiS/vJxVxUsy4GEch1OtCd3AVz7NA91hIzWCJn
+	kSya+kjlk6NaE+6FtuqGVqE0p0rgMS0LSA17kvDQirkWYXIhL7cZXkSPtoPgI8UA
+	W2n521aTjlhw99lCleqGZwhNss6iVXkg6nEOl8Rn+IuGwOnr6mrqsofmi4lAWYY+
+	zpdtlpM55tifEuHd7GZSIojpobePCNh51VnrAmjgtfY/FT617//XZXxmen39qBTa
+	pjC4omY47sEt/RvrvoBsom7dHiO7WGQyJIQ==
+X-ME-Sender: <xms:f_RYaJ5U8Ic6yEhZsJVpqT5mRiXz80P4jGPM9S7DWZDyOaC8Wudu3Q>
+    <xme:f_RYaG4X-Bo_MR4Px0bHv5JlKZlQ9tPjhuP8HahJQZrqf21OHqgM9yfK9Dsc2NQZ5
+    2VRdcUigqcDBQ>
+X-ME-Received: <xmr:f_RYaAcmd1UbdC7tOYeoyYFMyMXXKXN4owXpogBIBgMJUk3DFnAM7ztgx25izbZQz7YKLMQAjRtuzAYRr3AYymHy2HjkEuEfVhcE>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtddvgdduieefudcutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
+    ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
+    hrpefhfffvvefukfhfgggtuggjsehttdertddttddvnecuhfhrohhmpehgrhgvgheskhhr
+    ohgrhhdrtghomhenucggtffrrghtthgvrhhnpeduvddvffevgfegleekgfdvvedtfeelue
+    elhfefvdejvddtgfdvkeejtdetfeeiffenucffohhmrghinhepkhgvrhhnvghlrdhorhhg
+    necuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepghhrvg
+    hgsehkrhhorghhrdgtohhmpdhnsggprhgtphhtthhopeduvddpmhhouggvpehsmhhtphho
+    uhhtpdhrtghpthhtohepfihilhhlsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehsth
+    grsghlvgeskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepshhtrggslhgvsehvghgvrhdr
+    khgvrhhnvghlrdhorhhgpdhrtghpthhtohepshhtrggslhgvqdgtohhmmhhithhssehvgh
+    gvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtohephigvsghinhdutdeshhhurgifvghi
+    rdgtohhmpdhrtghpthhtoheptggrthgrlhhinhdrmhgrrhhinhgrshesrghrmhdrtghomh
+X-ME-Proxy: <xmx:f_RYaCLnPNV3oX99oShD8JZvvSB6YuyzUqTWXBcop3M2fZNXiidB8w>
+    <xmx:f_RYaNK5Mk5P5RvyyjO0rTwX2LTrvmeuq3PIzWAf1rO3CuSA-cjCYQ>
+    <xmx:f_RYaLxmCsluthG2dWTZy8cE_FUe3844v-C5JvPSO5hIsKifPNdhEw>
+    <xmx:f_RYaJI3qCGrkZEEcSP_IpKL3EWjWxbBKV6meG5vsMzKJPr2JeONMA>
+    <xmx:f_RYaAAsIFg9iTPd7wn6N9TwfrtO3xrZPS_BEnzyiL2L0Ajhd8HxsS-i>
+Feedback-ID: i787e41f1:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
+ 23 Jun 2025 02:30:22 -0400 (EDT)
+From: greg@kroah.com
+Date: Mon, 23 Jun 2025 08:30:20 +0200
+To: Will Deacon <will@kernel.org>
+Cc: stable <stable@kernel.org>, stable@vger.kernel.org,
+	stable-commits@vger.kernel.org, yebin10@huawei.com,
+	Catalin Marinas <catalin.marinas@arm.com>
+Subject: Re: Patch "arm64/cpuinfo: only show one cpu's info in c_show()" has
+ been added to the 6.15-stable tree
+Message-ID: <2025062310-quartered-garland-eaf4@gregkh>
+References: <20250620022800.2601874-1-sashal@kernel.org>
+ <20250620101956.GB22514@willie-the-truck>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAAhV-H4S=z5O0+pq-x9X4-VjYsJQVxib+V-35g50WeaivryHLA@mail.gmail.com>
+In-Reply-To: <20250620101956.GB22514@willie-the-truck>
 
-On Sun, Jun 22, 2025 at 09:11:44PM +0800, Huacai Chen wrote:
-> On Sun, Jun 22, 2025 at 9:10 PM Greg Kroah-Hartman
-> <gregkh@linuxfoundation.org> wrote:
-> >
-> > On Sun, Jun 22, 2025 at 07:01:48PM +0800, Huacai Chen wrote:
-> > > In 6.1/6.6 there is no BACKLIGHT_POWER_ON definition so a build error
-> > > occurs due to recently backport:
-> > >
-> > >   CC      drivers/platform/loongarch/loongson-laptop.o
-> > > drivers/platform/loongarch/loongson-laptop.c: In function 'laptop_backlight_register':
-> > > drivers/platform/loongarch/loongson-laptop.c:428:23: error: 'BACKLIGHT_POWER_ON' undeclared (first use in this function)
-> > >   428 |         props.power = BACKLIGHT_POWER_ON;
-> > >       |                       ^~~~~~~~~~~~~~~~~~
-> > >
-> > > Use FB_BLANK_UNBLANK instead which has the same meaning.
-> > >
-> > > Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
-> > > ---
-> > >  drivers/platform/loongarch/loongson-laptop.c | 2 +-
-> > >  1 file changed, 1 insertion(+), 1 deletion(-)
-> >
-> > What commit id is this fixing?
+On Fri, Jun 20, 2025 at 11:19:56AM +0100, Will Deacon wrote:
+> On Thu, Jun 19, 2025 at 10:28:00PM -0400, Sasha Levin wrote:
+> > This is a note to let you know that I've just added the patch titled
+> > 
+> >     arm64/cpuinfo: only show one cpu's info in c_show()
+> > 
+> > to the 6.15-stable tree which can be found at:
+> >     http://www.kernel.org/git/?p=linux/kernel/git/stable/stable-queue.git;a=summary
+> > 
+> > The filename of the patch is:
+> >      arm64-cpuinfo-only-show-one-cpu-s-info-in-c_show.patch
+> > and it can be found in the queue-6.15 subdirectory.
+> > 
+> > If you, or anyone else, feels it should not be added to the stable tree,
+> > please let <stable@vger.kernel.org> know about it.
 > 
-> commit 53c762b47f726e4079a1f06f684bce2fc0d56fba upstream.
+> I don't think this one needs to be backported.
 
-Great, can you resend this with a proper Fixes: tag so I don't have to
-manually add it myself?
-
-thanks,
+Now dropped from all queues, thanks.
 
 greg k-h
 
