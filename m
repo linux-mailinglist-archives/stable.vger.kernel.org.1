@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-157841-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157992-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D3A51AE560E
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:17:21 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id EB198AE567F
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:21:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1C7CD3A63E9
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:14:27 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5A65C4C3EA3
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:20:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C3EE226D04;
-	Mon, 23 Jun 2025 22:14:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D190E223DF0;
+	Mon, 23 Jun 2025 22:20:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FuyIEpKJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qat+Gegl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18FE5223DD0;
-	Mon, 23 Jun 2025 22:14:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D75E1E3DCD;
+	Mon, 23 Jun 2025 22:20:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750716850; cv=none; b=RWzg0z0lrBmMb0a+1ULxDvsGWqK1JxQNpEcUQ4Eymlbdj6fH++OrceBBGISc7NfX6L+W52rstgRxbWoY7qV8nPS6SPzX7Mv7tIkgH1atwf4CR784lsb5wOW2ueqZYIOqJ84gP0YF9a8ElQRNVT1Buw/E3F/VORf8S1PA/cqqZio=
+	t=1750717219; cv=none; b=GeLH2Oz4zV8pYcGk0I9MhuG2q9P8B55z4iaIgp/lpP7iGa77Yc/Nc0FayZS2taCdU3m7MzMefiuNA2iMf4eQzrUiVJHWUtP+oKE5g9YYmEo54j2q3HFZ55o3w3mDBeAMBkxzjf+ui+iJGQlONcdtyZw7prj8MayaIV1VhGgWo+M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750716850; c=relaxed/simple;
-	bh=ym+DM5H4RVruw5rbBEH1jDQcRWDPV+jeG9kk0XMW/9k=;
+	s=arc-20240116; t=1750717219; c=relaxed/simple;
+	bh=ZcGA1rkgbngT4Pxwo00zaP6DUPEReRgECC+RNxHoFfk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=CYwmuBa3sR6t0HutJC9sfWEx8icdsu2w+tWBxvwYhlycdypMMb57VdCeIN8TvG8T3x7cmlNxwbr2zcWBvwCjmjIyeWUZjXidG9kt8rhV7ERCPBAy71ab92s96KkK//SCDIYj8FOKvx2pZ530Y2YTKFcaDf5R8WYJIj4IXVfCpds=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FuyIEpKJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A07E5C4CEEA;
-	Mon, 23 Jun 2025 22:14:09 +0000 (UTC)
+	 MIME-Version; b=CPsMdyl5tI/SGHuYOfeB/KHl0aPD+DNKwwpOpqDUi92ZaoSbfk7qt45yQyXihqA3LMpOxVvCVPPVU8qJ9RjTJn2tHnprc5xkyitdW1OslC9Tje9MczH+nRIOsa+cgnthB7VHvlY4tyoNX/6tTg8yFgU4xXF/V9N49p96k7iNMJg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qat+Gegl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E030C4CEEA;
+	Mon, 23 Jun 2025 22:20:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750716850;
-	bh=ym+DM5H4RVruw5rbBEH1jDQcRWDPV+jeG9kk0XMW/9k=;
+	s=korg; t=1750717219;
+	bh=ZcGA1rkgbngT4Pxwo00zaP6DUPEReRgECC+RNxHoFfk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FuyIEpKJ26rtfMXjEMTIA6+ZVpA2HiASjuShU1GDgWDMQyGvqzgeGBBavx+WlFd35
-	 V0V+7dzCGsMP+3uD8r8azDu7hR8AAj2sSqXaOa9RhddM8niZ/xPjF7HJKQAB8w9sls
-	 JMFItuTdu1hTh0Ai4X5rK9LSoNiQm66FRdlojzHc=
+	b=qat+GeglRrqxwmaMF9nHOg4PZUIcuvwBeJwUEBSlxrGT40PGx+gWVZJhjON8ZzgRk
+	 ZgezIUWL/u6mSWvyElV+J5n5a+4ThiTBEB+FjGkWMfBUUMQbl//W1Fq3jlwnUhInPY
+	 pHhd2vyS5e/7E/ke4jTgwwr6JiM6bFcZuJ5KNz70=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stuart Hayes <stuart.w.hayes@gmail.com>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	gldrk <me@rarity.fan>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 291/414] platform/x86: dell_rbu: Fix list usage
+Subject: [PATCH 6.1 383/508] ACPICA: utilities: Fix overflow check in vsnprintf()
 Date: Mon, 23 Jun 2025 15:07:08 +0200
-Message-ID: <20250623130649.287548626@linuxfoundation.org>
+Message-ID: <20250623130654.725158722@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
-References: <20250623130642.015559452@linuxfoundation.org>
+In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
+References: <20250623130645.255320792@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,56 +60,50 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stuart Hayes <stuart.w.hayes@gmail.com>
+From: gldrk <me@rarity.fan>
 
-[ Upstream commit 61ce04601e0d8265ec6d2ffa6df5a7e1bce64854 ]
+[ Upstream commit 12b660251007e00a3e4d47ec62dbe3a7ace7023e ]
 
-Pass the correct list head to list_for_each_entry*() when looping through
-the packet list.
+ACPICA commit d9d59b7918514ae55063b93f3ec041b1a569bf49
 
-Without this patch, reading the packet data via sysfs will show the data
-incorrectly (because it starts at the wrong packet), and clearing the
-packet list will result in a NULL pointer dereference.
+The old version breaks sprintf on 64-bit systems for buffers
+outside [0..UINT32_MAX].
 
-Fixes: d19f359fbdc6 ("platform/x86: dell_rbu: don't open code list_for_each_entry*()")
-Signed-off-by: Stuart Hayes <stuart.w.hayes@gmail.com>
-Link: https://lore.kernel.org/r/20250609184659.7210-3-stuart.w.hayes@gmail.com
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Link: https://github.com/acpica/acpica/commit/d9d59b79
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Link: https://patch.msgid.link/4994935.GXAFRqVoOG@rjwysocki.net
+Signed-off-by: gldrk <me@rarity.fan>
+[ rjw: Added the tag from gldrk ]
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/x86/dell/dell_rbu.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/acpi/acpica/utprint.c | 7 ++-----
+ 1 file changed, 2 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/platform/x86/dell/dell_rbu.c b/drivers/platform/x86/dell/dell_rbu.c
-index 9f51e0fcab04e..4d2b5f6dd513f 100644
---- a/drivers/platform/x86/dell/dell_rbu.c
-+++ b/drivers/platform/x86/dell/dell_rbu.c
-@@ -292,7 +292,7 @@ static int packet_read_list(char *data, size_t * pread_length)
- 	remaining_bytes = *pread_length;
- 	bytes_read = rbu_data.packet_read_count;
+diff --git a/drivers/acpi/acpica/utprint.c b/drivers/acpi/acpica/utprint.c
+index d5aa2109847f3..67104bfc184de 100644
+--- a/drivers/acpi/acpica/utprint.c
++++ b/drivers/acpi/acpica/utprint.c
+@@ -333,11 +333,8 @@ int vsnprintf(char *string, acpi_size size, const char *format, va_list args)
  
--	list_for_each_entry(newpacket, (&packet_data_head.list)->next, list) {
-+	list_for_each_entry(newpacket, &packet_data_head.list, list) {
- 		bytes_copied = do_packet_read(pdest, newpacket,
- 			remaining_bytes, bytes_read, &temp_count);
- 		remaining_bytes -= bytes_copied;
-@@ -315,7 +315,7 @@ static void packet_empty_list(void)
- {
- 	struct packet_data *newpacket, *tmp;
+ 	pos = string;
  
--	list_for_each_entry_safe(newpacket, tmp, (&packet_data_head.list)->next, list) {
-+	list_for_each_entry_safe(newpacket, tmp, &packet_data_head.list, list) {
- 		list_del(&newpacket->list);
+-	if (size != ACPI_UINT32_MAX) {
+-		end = string + size;
+-	} else {
+-		end = ACPI_CAST_PTR(char, ACPI_UINT32_MAX);
+-	}
++	size = ACPI_MIN(size, ACPI_PTR_DIFF(ACPI_MAX_PTR, string));
++	end = string + size;
  
- 		/*
+ 	for (; *format; ++format) {
+ 		if (*format != '%') {
 -- 
 2.39.5
 
