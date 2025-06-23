@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-157184-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157191-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED0F4AE52CF
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:47:42 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 45B0CAE52E7
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:48:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 123C11B65CC2
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:47:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1B1604406E3
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:47:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1372D21B9E5;
-	Mon, 23 Jun 2025 21:47:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6396742056;
+	Mon, 23 Jun 2025 21:47:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QC989zQ1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e6f8v/Ge"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C42473FD4;
-	Mon, 23 Jun 2025 21:47:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F1D63FD4;
+	Mon, 23 Jun 2025 21:47:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750715242; cv=none; b=YoChlvdxwv8VI41GWYdtTy+cNdS7pcHS1JGn1412D/Pl88WNKv2/s3/7v5iENgttnXaiydSNH7cEceiRDEQN5JmLpP4sO/JdRf5DJk5Fs2/RlZfJ47CC0C3Sq4R18b3HaQwEeZ87kO/uxIBRvhy1KAc7V8F3q0WuzfqNi44oSjM=
+	t=1750715262; cv=none; b=heDPlb/o+3TU5uJxg+om76UcfOlchK02hJsNcjtTXKEKwwzVudcWG4jcqHeCy1Xs4zDHbX/Kt8OV4bpUEbIZ6j1lxEDxXQmvO1yVOuVlnb4Ge0apRx2MsdWrixYnVPp0Kad/L7qHdNUd37DttgGPwIw1VaHsCMVv09QIYWKVvE4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750715242; c=relaxed/simple;
-	bh=M34Q3sf/1UvGivuftYlyONL+8lkdNux1WPBej4JzE1U=;
+	s=arc-20240116; t=1750715262; c=relaxed/simple;
+	bh=JJ4TN8onF338IM3Zpo/BQLnsysvJgcn8JGkfBxJKz8k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=q/bHbuyCTY+oghtPZoxGEUQ8sSACrVKTgxwFwCLlWLqd5RKPSqpBO+blV9Jp6ouSWZzSUQ0SKJ1HXPrZfcGADHMqfxGeRwN9pHl1MDCJ4JTBPyqdmfr0AMVeYewamGGRv3Uwxmr3DRr5efp6jLQCvjcmhr71ugbetQxbmZlzkfY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QC989zQ1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C861C4CEEA;
-	Mon, 23 Jun 2025 21:47:22 +0000 (UTC)
+	 MIME-Version; b=p5kdnLDr7ifuZ7QhiGHkIVHB6R5miEywYJnsszafVSTkbS0bj8VSdWkGjjU+DgfdD42zJ1C7hsWk2wBYlb0qqf0Q77tabpfJsU0OMLIRl/Dpeil/+vWXFshvEDXFq2u9hqAVjm7971NEMYpfNb7wYdF5mc3TJOEZowRukFuwOmY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e6f8v/Ge; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9008C4CEEA;
+	Mon, 23 Jun 2025 21:47:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750715242;
-	bh=M34Q3sf/1UvGivuftYlyONL+8lkdNux1WPBej4JzE1U=;
+	s=korg; t=1750715262;
+	bh=JJ4TN8onF338IM3Zpo/BQLnsysvJgcn8JGkfBxJKz8k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QC989zQ1xtnDcpm2ec7gAZrSneIAMYg97bwWcQzsrUkGgT361BnMQ0xfm42I4/Ddi
-	 FXcOFfcrz+1UhIb8AZQWC37rj1PyItgYZMuQUjLvCnpZOYf19N7LLl3GnWSOdMwMJ1
-	 1mPw1vDbWjD6SVRT/bvW6tL9pRnLgP8fLqqKHFBk=
+	b=e6f8v/GewdDgoSB37bwqg75WxKG5C5M/SOxc6n5VRbHQ8jQLjgvB0aXUBu0WkXoDZ
+	 uHNtnPPOQ8zhWzbehwRFgpg1oO18aLM+fSudjsgPNVYoVEE8VzI/8CIOzNQ3UuLX5w
+	 cpTWj8HctkjvJBGU8Q6baCfdkWHGpMDiKFz5WiQw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sanjeev Yadav <sanjeev.y@mediatek.com>,
-	Bart Van Assche <bvanassche@acm.org>,
-	Peter Wang <peter.wang@mediatek.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Pauli Virtanen <pav@iki.fi>,
+	Paul Menzel <pmenzel@molgen.mpg.de>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 223/508] scsi: core: ufs: Fix a hang in the error handler
-Date: Mon, 23 Jun 2025 15:04:28 +0200
-Message-ID: <20250623130650.750490372@linuxfoundation.org>
+Subject: [PATCH 6.1 224/508] Bluetooth: hci_core: fix list_for_each_entry_rcu usage
+Date: Mon, 23 Jun 2025 15:04:29 +0200
+Message-ID: <20250623130650.775679958@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
 In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
 References: <20250623130645.255320792@linuxfoundation.org>
@@ -68,71 +67,55 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Sanjeev Yadav <sanjeev.y@mediatek.com>
+From: Pauli Virtanen <pav@iki.fi>
 
-[ Upstream commit 8a3514d348de87a9d5e2ac00fbac4faae0b97996 ]
+[ Upstream commit 308a3a8ce8ea41b26c46169f3263e50f5997c28e ]
 
-ufshcd_err_handling_prepare() calls ufshcd_rpm_get_sync(). The latter
-function can only succeed if UFSHCD_EH_IN_PROGRESS is not set because
-resuming involves submitting a SCSI command and ufshcd_queuecommand()
-returns SCSI_MLQUEUE_HOST_BUSY if UFSHCD_EH_IN_PROGRESS is set. Fix this
-hang by setting UFSHCD_EH_IN_PROGRESS after ufshcd_rpm_get_sync() has
-been called instead of before.
+Releasing + re-acquiring RCU lock inside list_for_each_entry_rcu() loop
+body is not correct.
 
-Backtrace:
-__switch_to+0x174/0x338
-__schedule+0x600/0x9e4
-schedule+0x7c/0xe8
-schedule_timeout+0xa4/0x1c8
-io_schedule_timeout+0x48/0x70
-wait_for_common_io+0xa8/0x160 //waiting on START_STOP
-wait_for_completion_io_timeout+0x10/0x20
-blk_execute_rq+0xe4/0x1e4
-scsi_execute_cmd+0x108/0x244
-ufshcd_set_dev_pwr_mode+0xe8/0x250
-__ufshcd_wl_resume+0x94/0x354
-ufshcd_wl_runtime_resume+0x3c/0x174
-scsi_runtime_resume+0x64/0xa4
-rpm_resume+0x15c/0xa1c
-__pm_runtime_resume+0x4c/0x90 // Runtime resume ongoing
-ufshcd_err_handler+0x1a0/0xd08
-process_one_work+0x174/0x808
-worker_thread+0x15c/0x490
-kthread+0xf4/0x1ec
-ret_from_fork+0x10/0x20
+Fix by taking the update-side hdev->lock instead.
 
-Signed-off-by: Sanjeev Yadav <sanjeev.y@mediatek.com>
-[ bvanassche: rewrote patch description ]
-Fixes: 62694735ca95 ("[SCSI] ufs: Add runtime PM support for UFS host controller driver")
-Signed-off-by: Bart Van Assche <bvanassche@acm.org>
-Link: https://lore.kernel.org/r/20250523201409.1676055-1-bvanassche@acm.org
-Reviewed-by: Peter Wang <peter.wang@mediatek.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Fixes: c7eaf80bfb0c ("Bluetooth: Fix hci_link_tx_to RCU lock usage")
+Signed-off-by: Pauli Virtanen <pav@iki.fi>
+Reviewed-by: Paul Menzel <pmenzel@molgen.mpg.de>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/ufs/core/ufshcd.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ net/bluetooth/hci_core.c | 11 +++--------
+ 1 file changed, 3 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/ufs/core/ufshcd.c b/drivers/ufs/core/ufshcd.c
-index c5115f6adbdc2..dc17ae1dfe260 100644
---- a/drivers/ufs/core/ufshcd.c
-+++ b/drivers/ufs/core/ufshcd.c
-@@ -6285,9 +6285,14 @@ static void ufshcd_err_handler(struct work_struct *work)
- 		up(&hba->host_sem);
- 		return;
+diff --git a/net/bluetooth/hci_core.c b/net/bluetooth/hci_core.c
+index 3cd7c212375fc..dc53e3078ba79 100644
+--- a/net/bluetooth/hci_core.c
++++ b/net/bluetooth/hci_core.c
+@@ -3402,23 +3402,18 @@ static void hci_link_tx_to(struct hci_dev *hdev, __u8 type)
+ 
+ 	bt_dev_err(hdev, "link tx timeout");
+ 
+-	rcu_read_lock();
++	hci_dev_lock(hdev);
+ 
+ 	/* Kill stalled connections */
+-	list_for_each_entry_rcu(c, &h->list, list) {
++	list_for_each_entry(c, &h->list, list) {
+ 		if (c->type == type && c->sent) {
+ 			bt_dev_err(hdev, "killing stalled connection %pMR",
+ 				   &c->dst);
+-			/* hci_disconnect might sleep, so, we have to release
+-			 * the RCU read lock before calling it.
+-			 */
+-			rcu_read_unlock();
+ 			hci_disconnect(c, HCI_ERROR_REMOTE_USER_TERM);
+-			rcu_read_lock();
+ 		}
  	}
--	ufshcd_set_eh_in_progress(hba);
- 	spin_unlock_irqrestore(hba->host->host_lock, flags);
-+
- 	ufshcd_err_handling_prepare(hba);
-+
-+	spin_lock_irqsave(hba->host->host_lock, flags);
-+	ufshcd_set_eh_in_progress(hba);
-+	spin_unlock_irqrestore(hba->host->host_lock, flags);
-+
- 	/* Complete requests that have door-bell cleared by h/w */
- 	ufshcd_complete_requests(hba);
- 	spin_lock_irqsave(hba->host->host_lock, flags);
+ 
+-	rcu_read_unlock();
++	hci_dev_unlock(hdev);
+ }
+ 
+ static struct hci_chan *hci_chan_sent(struct hci_dev *hdev, __u8 type,
 -- 
 2.39.5
 
