@@ -1,56 +1,64 @@
-Return-Path: <stable+bounces-156532-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156594-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 66EFEAE5033
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:23:10 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7DF29AE503A
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:23:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 015A97A2E3B
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:19:24 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 514A11B62243
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:23:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C18DC2628C;
-	Mon, 23 Jun 2025 21:20:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7168A1EF397;
+	Mon, 23 Jun 2025 21:23:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2S/ZFO29"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J8OWSZuc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FA2B2C9D;
-	Mon, 23 Jun 2025 21:20:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 305632628C;
+	Mon, 23 Jun 2025 21:23:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750713643; cv=none; b=lQTSP1yuvof0KLjZ3YmLIZT1O1HAaKCpiI2Z4bt2gMy4IiZiSUmCbGKpxTQIni9/GNRTggpcEQtVCIw/wT43Es6Tq5kmHXMYGPx3x7ERRGuzPWohromhzL8gm22uiyqdSDEQJkuB5DRY4khfIuj/8Qtn4v3wFMqaPopk7+WdQzs=
+	t=1750713796; cv=none; b=LRT452NVdT4t6R3WGe34Tv2lgPAIvaoOgE0sZ3YvTr8Mi5zUKlruS6tarTs6ulFRh48q/M2SbvXPfSBn2kmzJd0+RBkV++IiksGtChprOtSFiq1illUmT/6uIO+nyLZBVpAZNKM5QW0O6KPjQ4DyhCbMf7ybmJaNCMxzwd31zbc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750713643; c=relaxed/simple;
-	bh=e5DjP0BFvxnZWVGKYZAOoweyqRhk+4fSKJOutSrDvtE=;
+	s=arc-20240116; t=1750713796; c=relaxed/simple;
+	bh=BvMUtMuE1HURSGe6a8hUemWuS0F86mq8qFJSr0c/r8g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GbPxvBg0hBypwoATMrPkZM8z8Yperg382qPQ5eTqEnpNIs35qm/8k7sGZ+qznPbeXBASculx9NWxzKpY+i79o8NGjInKtJR1oQe2EJ8Lo7fA1I6JsegObiynUmcjUwysxHtqFoM+MOHBrqNYOPtmWJfagYbnOJl4GB+YwH8UrU4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2S/ZFO29; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10362C4CEEA;
-	Mon, 23 Jun 2025 21:20:42 +0000 (UTC)
+	 MIME-Version; b=YjGKcmqfB4/pq/43DcxTpXEpKr5w6hF05K2X+UIH/0SRR21P0kjWdFc1MgChe0jeWVb6Tv6QksOE6i/LAW+hSnMZCzkyM9qwqHKAuYSkewHdVtVhcV9svKe/pEarmrYIRcYZEYAGpf+tdpHAY6PFDiXF8ieBct0uJsG3vPU7OAw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J8OWSZuc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91846C4CEEA;
+	Mon, 23 Jun 2025 21:23:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750713643;
-	bh=e5DjP0BFvxnZWVGKYZAOoweyqRhk+4fSKJOutSrDvtE=;
+	s=korg; t=1750713796;
+	bh=BvMUtMuE1HURSGe6a8hUemWuS0F86mq8qFJSr0c/r8g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2S/ZFO292LkF29wAwOfJK2kn4r+6mTHs/jEwfPI8/aYeVy1Q2X6vDw0xDGDfqDJ0j
-	 55XfoONT+Yj6YHuBBBuILlM8871ggbUP0KCjELUmKx2FfZQwWcywBQRJ81xqvuz0Dy
-	 V52EvE8eldYEs6GyqvhzPmiwu+gIo3IaqIA3tUVw=
+	b=J8OWSZuc9zWE/E+upAsGOUIWm6ZX1PMi9M2lqfhFoXcxQYNEkS+aiMT4vvQ8auXOA
+	 81D8oTXD4q1J0w7N0XH6UiHVccc8PrFIbCknOdDBkT5OemM2X049zXJe73WNKjP3GG
+	 DQIaJ6EiRLH0FYAE2qPR67C0Q1iRLkd9gzSXysgI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Haoxiang Li <haoxiang_li2024@163.com>,
-	Nicolas Dufresne <nicolas.dufresne@collabora.com>,
-	Hans Verkuil <hverkuil@xs4all.nl>
-Subject: [PATCH 6.12 055/414] media: imagination: fix a potential memory leak in e5010_probe()
+	Ian Rogers <irogers@google.com>,
+	Dapeng Mi <dapeng1.mi@linux.intel.com>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+	Andi Kleen <ak@linux.intel.com>,
+	Ingo Molnar <mingo@redhat.com>,
+	Kan Liang <kan.liang@linux.intel.com>,
+	Namhyung Kim <namhyung@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Arnaldo Carvalho de Melo <acme@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 147/508] perf record: Fix incorrect --user-regs comments
 Date: Mon, 23 Jun 2025 15:03:12 +0200
-Message-ID: <20250623130643.437833838@linuxfoundation.org>
+Message-ID: <20250623130648.900607120@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
-References: <20250623130642.015559452@linuxfoundation.org>
+In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
+References: <20250623130645.255320792@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,57 +70,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Haoxiang Li <haoxiang_li2024@163.com>
+From: Dapeng Mi <dapeng1.mi@linux.intel.com>
 
-commit 609ba05b9484856b08869f827a6edee51d51b5f3 upstream.
+[ Upstream commit a4a859eb6704a8aa46aa1cec5396c8d41383a26b ]
 
-Add video_device_release() to release the memory allocated by
-video_device_alloc() if something goes wrong.
+The comment of "--user-regs" option is not correct, fix it.
 
-Fixes: a1e294045885 ("media: imagination: Add E5010 JPEG Encoder driver")
-Cc: stable@vger.kernel.org
-Signed-off-by: Haoxiang Li <haoxiang_li2024@163.com>
-Reviewed-by: Nicolas Dufresne <nicolas.dufresne@collabora.com>
-Signed-off-by: Nicolas Dufresne <nicolas.dufresne@collabora.com>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+"on interrupt," -> "in user space,"
+
+Fixes: 84c417422798c897 ("perf record: Support direct --user-regs arguments")
+Reviewed-by: Ian Rogers <irogers@google.com>
+Signed-off-by: Dapeng Mi <dapeng1.mi@linux.intel.com>
+Cc: Adrian Hunter <adrian.hunter@intel.com>
+Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
+Cc: Andi Kleen <ak@linux.intel.com>
+Cc: Ingo Molnar <mingo@redhat.com>
+Cc: Kan Liang <kan.liang@linux.intel.com>
+Cc: Namhyung Kim <namhyung@kernel.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Link: https://lore.kernel.org/r/20250403060810.196028-1-dapeng1.mi@linux.intel.com
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/platform/imagination/e5010-jpeg-enc.c | 9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+ tools/perf/builtin-record.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/media/platform/imagination/e5010-jpeg-enc.c b/drivers/media/platform/imagination/e5010-jpeg-enc.c
-index c194f830577f..ae868d9f73e1 100644
---- a/drivers/media/platform/imagination/e5010-jpeg-enc.c
-+++ b/drivers/media/platform/imagination/e5010-jpeg-enc.c
-@@ -1057,8 +1057,11 @@ static int e5010_probe(struct platform_device *pdev)
- 	e5010->vdev->lock = &e5010->mutex;
- 
- 	ret = v4l2_device_register(dev, &e5010->v4l2_dev);
--	if (ret)
--		return dev_err_probe(dev, ret, "failed to register v4l2 device\n");
-+	if (ret) {
-+		dev_err_probe(dev, ret, "failed to register v4l2 device\n");
-+		goto fail_after_video_device_alloc;
-+	}
-+
- 
- 	e5010->m2m_dev = v4l2_m2m_init(&e5010_m2m_ops);
- 	if (IS_ERR(e5010->m2m_dev)) {
-@@ -1118,6 +1121,8 @@ static int e5010_probe(struct platform_device *pdev)
- 	v4l2_m2m_release(e5010->m2m_dev);
- fail_after_v4l2_register:
- 	v4l2_device_unregister(&e5010->v4l2_dev);
-+fail_after_video_device_alloc:
-+	video_device_release(e5010->vdev);
- 	return ret;
- }
- 
+diff --git a/tools/perf/builtin-record.c b/tools/perf/builtin-record.c
+index ee3a5c4b8251e..a257a30a42efd 100644
+--- a/tools/perf/builtin-record.c
++++ b/tools/perf/builtin-record.c
+@@ -3438,7 +3438,7 @@ static struct option __record_options[] = {
+ 		    "sample selected machine registers on interrupt,"
+ 		    " use '-I?' to list register names", parse_intr_regs),
+ 	OPT_CALLBACK_OPTARG(0, "user-regs", &record.opts.sample_user_regs, NULL, "any register",
+-		    "sample selected machine registers on interrupt,"
++		    "sample selected machine registers in user space,"
+ 		    " use '--user-regs=?' to list register names", parse_user_regs),
+ 	OPT_BOOLEAN(0, "running-time", &record.opts.running_time,
+ 		    "Record running/enabled time of read (:S) events"),
 -- 
-2.50.0
+2.39.5
 
 
 
