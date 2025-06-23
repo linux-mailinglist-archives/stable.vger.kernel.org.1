@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-156898-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157459-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 61F1CAE5195
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:35:38 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id C3486AE540E
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:58:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F33244A3FF4
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:35:38 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 108904C041C
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:58:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD26E221F17;
-	Mon, 23 Jun 2025 21:35:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14E6421FF2B;
+	Mon, 23 Jun 2025 21:58:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YdNkzj01"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z+PIlkqk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B7CD1EE7C6;
-	Mon, 23 Jun 2025 21:35:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C777770838;
+	Mon, 23 Jun 2025 21:58:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750714536; cv=none; b=anRns8D2A5kWVE9OqiYMuPk7fW1HEmiG8FcTJx9gukx98r86Dhkir0ASvRguU1HQBiZRYkeepYI3X6JzLW2eADFr+KOfBoq8cKvuiEZjQFFaTyulgPnvVEX/eK68JQPjE9AeptfkPobdYblwiuZwgsUSUk/5EuREiVE9n5ALOHQ=
+	t=1750715919; cv=none; b=KnNjqS96qK2tH1rnoRxozD4sgz6c9J6JmlFjdTNNx2ki77iZbO+/aZasa5Td2cAJUc+MAzreCDxioGRxR9PFHW7Z5tKnTXc4QIxLksBOMA1wfLDxvANWA1hxJjIAjrDU7Rlw8samWat1/PDZkg/Hq/yvgCH9aXhc6Y/mJc3Siao=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750714536; c=relaxed/simple;
-	bh=xqgduZBmRgpr9ZFDyV0bN27KhFhRB5QbccYcaCaLWfI=;
+	s=arc-20240116; t=1750715919; c=relaxed/simple;
+	bh=VTFOE6qqWsxf6glJ2dldK/ir8FckXw1fZwGYSBNfkMM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EzKIe+4rnlASRg1LXeK+S7w68RSrl14aR5l+aUYp8FvJzGHXRvQ2frE02j2AsMb7BNXliX9eRTNR5x3KJW2ypGMtnVgZqVE7pXQvg+UQDPp4TVPDelOsfT9RZY4xvTU1+oszzz5rbGNunTYI0ppsl7U0BmaMeqE1UXT4EgPnEu0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YdNkzj01; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31CFDC4CEEA;
-	Mon, 23 Jun 2025 21:35:36 +0000 (UTC)
+	 MIME-Version; b=snNtWwDIlHo+EJyF/HB3lD1bV+Vjo/4oiRji28ixr1OE3/aJ5YaRexcZN4iKGTpNrAEGBARq/wkC3uo44J/tR9BtqEuNlHVYBNpyAXAG1kHJihyW2tegvA+WjzZoMzlVbIDLIaxIfsvJ2keL2Mww0pRh9I7X+2UgrTklEotAZso=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z+PIlkqk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA280C4CEEA;
+	Mon, 23 Jun 2025 21:58:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750714536;
-	bh=xqgduZBmRgpr9ZFDyV0bN27KhFhRB5QbccYcaCaLWfI=;
+	s=korg; t=1750715917;
+	bh=VTFOE6qqWsxf6glJ2dldK/ir8FckXw1fZwGYSBNfkMM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YdNkzj01C1byoLrMD3m3UtAIQbBRQ7adna4kdTkrLhYMnTH+qB8ICLh5VOBUEoIen
-	 Nu3LhWVAO2sDHVH+uYya3oU8kJ1/9FqdJVu0EBlUD7esE2xNrZzsPPb4wXXAauZDM/
-	 pzEOQ1UoAxM5x53HboxxBOzOHsBZns2MEe0s4bhE=
+	b=Z+PIlkqkD6SUlGovj20F9B9fbdbkSeBFy8QwRRk2VTIHYHz1zkI1Otvw/N1ndaACc
+	 xX9zVDyqj78cGbu7pwIDTQaGUinIjZFf5bxwmrEaqP6NOtdr02MPvAZoToooeaQU36
+	 lcMqY1Eq7zLu3/Ke1kwkI/eV8hirttcDuPUwRIUY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+b974bd41515f770c608b@syzkaller.appspotmail.com,
-	Aditya Dutt <duttaditya18@gmail.com>,
-	Dave Kleikamp <dave.kleikamp@oracle.com>,
+	Long Li <leo.lilong@huawei.com>,
+	Chuck Lever <chuck.lever@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 234/355] jfs: fix array-index-out-of-bounds read in add_missing_indices
+Subject: [PATCH 5.15 291/411] sunrpc: fix race in cache cleanup causing stale nextcheck time
 Date: Mon, 23 Jun 2025 15:07:15 +0200
-Message-ID: <20250623130633.786762374@linuxfoundation.org>
+Message-ID: <20250623130640.978088296@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130626.716971725@linuxfoundation.org>
-References: <20250623130626.716971725@linuxfoundation.org>
+In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
+References: <20250623130632.993849527@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,87 +62,83 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Aditya Dutt <duttaditya18@gmail.com>
+From: Long Li <leo.lilong@huawei.com>
 
-[ Upstream commit 5dff41a86377563f7a2b968aae00d25b4ceb37c9 ]
+[ Upstream commit 2298abcbe11e9b553d03c0f1d084da786f7eff88 ]
 
-stbl is s8 but it must contain offsets into slot which can go from 0 to
-127.
+When cache cleanup runs concurrently with cache entry removal, a race
+condition can occur that leads to incorrect nextcheck times. This can
+delay cache cleanup for the cache_detail by up to 1800 seconds:
 
-Added a bound check for that error and return -EIO if the check fails.
-Also make jfs_readdir return with error if add_missing_indices returns
-with an error.
+1. cache_clean() sets nextcheck to current time plus 1800 seconds
+2. While scanning a non-empty bucket, concurrent cache entry removal can
+   empty that bucket
+3. cache_clean() finds no cache entries in the now-empty bucket to update
+   the nextcheck time
+4. This maybe delays the next scan of the cache_detail by up to 1800
+   seconds even when it should be scanned earlier based on remaining
+   entries
 
-Reported-by: syzbot+b974bd41515f770c608b@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com./bug?extid=b974bd41515f770c608b
-Signed-off-by: Aditya Dutt <duttaditya18@gmail.com>
-Signed-off-by: Dave Kleikamp <dave.kleikamp@oracle.com>
+Fix this by moving the hash_lock acquisition earlier in cache_clean().
+This ensures bucket emptiness checks and nextcheck updates happen
+atomically, preventing the race between cleanup and entry removal.
+
+Signed-off-by: Long Li <leo.lilong@huawei.com>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/jfs/jfs_dtree.c | 18 +++++++++++++++---
- 1 file changed, 15 insertions(+), 3 deletions(-)
+ net/sunrpc/cache.c | 15 +++++++--------
+ 1 file changed, 7 insertions(+), 8 deletions(-)
 
-diff --git a/fs/jfs/jfs_dtree.c b/fs/jfs/jfs_dtree.c
-index 417d1c2fc2911..27ca98614b0bb 100644
---- a/fs/jfs/jfs_dtree.c
-+++ b/fs/jfs/jfs_dtree.c
-@@ -2909,7 +2909,7 @@ void dtInitRoot(tid_t tid, struct inode *ip, u32 idotdot)
-  *	     fsck.jfs should really fix this, but it currently does not.
-  *	     Called from jfs_readdir when bad index is detected.
-  */
--static void add_missing_indices(struct inode *inode, s64 bn)
-+static int add_missing_indices(struct inode *inode, s64 bn)
- {
- 	struct ldtentry *d;
- 	struct dt_lock *dtlck;
-@@ -2918,7 +2918,7 @@ static void add_missing_indices(struct inode *inode, s64 bn)
- 	struct lv *lv;
- 	struct metapage *mp;
- 	dtpage_t *p;
--	int rc;
-+	int rc = 0;
- 	s8 *stbl;
- 	tid_t tid;
- 	struct tlock *tlck;
-@@ -2943,6 +2943,16 @@ static void add_missing_indices(struct inode *inode, s64 bn)
+diff --git a/net/sunrpc/cache.c b/net/sunrpc/cache.c
+index e8448e9e03d59..715f7d080f7a2 100644
+--- a/net/sunrpc/cache.c
++++ b/net/sunrpc/cache.c
+@@ -451,24 +451,21 @@ static int cache_clean(void)
+ 		}
+ 	}
  
- 	stbl = DT_GETSTBL(p);
- 	for (i = 0; i < p->header.nextindex; i++) {
-+		if (stbl[i] < 0) {
-+			jfs_err("jfs: add_missing_indices: Invalid stbl[%d] = %d for inode %ld, block = %lld",
-+				i, stbl[i], (long)inode->i_ino, (long long)bn);
-+			rc = -EIO;
++	spin_lock(&current_detail->hash_lock);
 +
-+			DT_PUTPAGE(mp);
-+			txAbort(tid, 0);
-+			goto end;
-+		}
-+
- 		d = (struct ldtentry *) &p->slot[stbl[i]];
- 		index = le32_to_cpu(d->index);
- 		if ((index < 2) || (index >= JFS_IP(inode)->next_index)) {
-@@ -2960,6 +2970,7 @@ static void add_missing_indices(struct inode *inode, s64 bn)
- 	(void) txCommit(tid, 1, &inode, 0);
- end:
- 	txEnd(tid);
-+	return rc;
+ 	/* find a non-empty bucket in the table */
+-	while (current_detail &&
+-	       current_index < current_detail->hash_size &&
++	while (current_index < current_detail->hash_size &&
+ 	       hlist_empty(&current_detail->hash_table[current_index]))
+ 		current_index++;
+ 
+ 	/* find a cleanable entry in the bucket and clean it, or set to next bucket */
+-
+-	if (current_detail && current_index < current_detail->hash_size) {
++	if (current_index < current_detail->hash_size) {
+ 		struct cache_head *ch = NULL;
+ 		struct cache_detail *d;
+ 		struct hlist_head *head;
+ 		struct hlist_node *tmp;
+ 
+-		spin_lock(&current_detail->hash_lock);
+-
+ 		/* Ok, now to clean this strand */
+-
+ 		head = &current_detail->hash_table[current_index];
+ 		hlist_for_each_entry_safe(ch, tmp, head, cache_list) {
+ 			if (current_detail->nextcheck > ch->expiry_time)
+@@ -489,8 +486,10 @@ static int cache_clean(void)
+ 		spin_unlock(&cache_list_lock);
+ 		if (ch)
+ 			sunrpc_end_cache_remove_entry(ch, d);
+-	} else
++	} else {
++		spin_unlock(&current_detail->hash_lock);
+ 		spin_unlock(&cache_list_lock);
++	}
+ 
+ 	return rv;
  }
- 
- /*
-@@ -3313,7 +3324,8 @@ int jfs_readdir(struct file *file, struct dir_context *ctx)
- 		}
- 
- 		if (fix_page) {
--			add_missing_indices(ip, bn);
-+			if ((rc = add_missing_indices(ip, bn)))
-+				goto out;
- 			page_fixed = 1;
- 		}
- 
 -- 
 2.39.5
 
