@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-157740-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-158110-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0B78FAE5566
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:11:02 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id D9C8FAE5740
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:27:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B399E1BC4C9E
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:10:51 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9BA724A2D2F
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:24:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E7A002236FB;
-	Mon, 23 Jun 2025 22:10:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 49A15223DF0;
+	Mon, 23 Jun 2025 22:25:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="odSQV/X7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W4BowUZI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2E39222576;
-	Mon, 23 Jun 2025 22:10:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07E052192EC;
+	Mon, 23 Jun 2025 22:25:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750716605; cv=none; b=Y1e3MkcJZhnPsAejbap2rNbi8csv/VBWIdcD/Yn+FwDhz5+mONMo9qY1LZxz74uJNLo8e3Z9gQrf5rL2MkXnMZE48BEMj0qpVClcNtsFwSHey2jzBup4aWAzYbJERxWstcvy8v/1OmxjT5dN1EbQxE/RQfYAl3CwuGe84SiYE/M=
+	t=1750717509; cv=none; b=Sd8T6Tah1i7RPvLVQby0Df/n+fmYhZSXV8pNS7eGpjiCvqxzFPRh4AuCNEFmvOPP/XtXAF9PTQAYR0bkuRCO7tShRwucLceRCyYHBM/+bk5kKplIYzsnEM8D0V5UebyfsCyzvzp5dnLBLRFMBjIScxVJOBLA/W84mRXpxPLc5AE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750716605; c=relaxed/simple;
-	bh=vPTLzsygsymOsHNYr59LKeitVuPvb3CmRw1DHoLyVNI=;
+	s=arc-20240116; t=1750717509; c=relaxed/simple;
+	bh=5UOhQfG6d6R/LsqOJbM8I5VJIrOf6P8oQV724GNE9bU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YoTup9+hVfYT2up+14ycZ47EAYKfaWozqaf/RJhb2NR3fjeI3uDA+DZiLmV3bdYafV2MMO4/bGFZ06K77TgY5eE2vq3zXkuaPAVd+HQ9CmQt19IGhplhexXYfxOE+Znz9qDvk23iDRi52V7SSUNLIx0RFYoaRJqzcX+mljFQV2o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=odSQV/X7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3CEDBC4CEEA;
-	Mon, 23 Jun 2025 22:10:05 +0000 (UTC)
+	 MIME-Version; b=Hkcj8/NMwGoGeQ8JpoKxDyHXnfKI3EVlGuQLVXLE8S5KpvN5pRrXkx4ZIpO4hFDpwSxtIBnjGW1l3FBXpRcmTlwb+1x+NSHT/widL78ZcKUazRFmEtKtE+UexIC41KNzWW8V5MN40s9sl9z3drnHOH3j5iYtsxdOktPYH9iEyoc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W4BowUZI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 949FDC4CEEA;
+	Mon, 23 Jun 2025 22:25:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750716605;
-	bh=vPTLzsygsymOsHNYr59LKeitVuPvb3CmRw1DHoLyVNI=;
+	s=korg; t=1750717508;
+	bh=5UOhQfG6d6R/LsqOJbM8I5VJIrOf6P8oQV724GNE9bU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=odSQV/X7+UB+IifL9BPMV8f8Qa+r5JkATmSaqG7T/JtDjqyMf6F8AnO7kdM8Iwy0f
-	 Gz7d187186peKz5A1gwO0oucWHYl+VE0G6XPzykO08hZ2aAamiIKIFTrMJfCbUK/NG
-	 Lxah8IS8+7nXOb+p+89fb+6JpVjgeGpljV53fanM=
+	b=W4BowUZIRT2XJqv/bdKJ64aCN7uIK0ylVSDGSUzuUITcZaiZhk84Yyq2tuLSzDqvE
+	 LLeA50dH3e197EbVAWfZpCX8W471N7Kajb09rxLbwheQNPsGCN5tadLweMe4D1xFmj
+	 bEGDfZQHpGTY5haoaQ/TVq1IlsCfR/NmPT/dtlDw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Narayana Murty N <nnmlinux@linux.ibm.com>,
-	Vaibhav Jain <vaibhav@linux.ibm.com>,
-	Ganesh Goudar <ganeshgr@linux.ibm.com>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 344/411] powerpc/eeh: Fix missing PE bridge reconfiguration during VFIO EEH recovery
+	Yao Zi <ziyao@disroot.org>,
+	Huacai Chen <chenhuacai@loongson.cn>
+Subject: [PATCH 6.1 443/508] platform/loongarch: laptop: Get brightness setting from EC on probe
 Date: Mon, 23 Jun 2025 15:08:08 +0200
-Message-ID: <20250623130642.308500714@linuxfoundation.org>
+Message-ID: <20250623130656.061787012@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
-References: <20250623130632.993849527@linuxfoundation.org>
+In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
+References: <20250623130645.255320792@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,71 +61,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Narayana Murty N <nnmlinux@linux.ibm.com>
+From: Yao Zi <ziyao@disroot.org>
 
-[ Upstream commit 33bc69cf6655cf60829a803a45275f11a74899e5 ]
+commit 1205088fd0393bd9eae96b62bf1e4b9eb1b73edf upstream.
 
-VFIO EEH recovery for PCI passthrough devices fails on PowerNV and pseries
-platforms due to missing host-side PE bridge reconfiguration. In the
-current implementation, eeh_pe_configure() only performs RTAS or OPAL-based
-bridge reconfiguration for native host devices, but skips it entirely for
-PEs managed through VFIO in guest passthrough scenarios.
+Previously during driver probe, 1 is unconditionally taken as current
+brightness value and set to props.brightness, which will be considered
+as the brightness before suspend and restored to EC on resume. Since a
+brightness value of 1 almost never matches EC's state on coldboot (my
+laptop's EC defaults to 80), this causes surprising changes of screen
+brightness on the first time of resume after coldboot.
 
-This leads to incomplete EEH recovery when a PCI error affects a
-passthrough device assigned to a QEMU/KVM guest. Although VFIO triggers the
-EEH recovery flow through VFIO_EEH_PE_ENABLE ioctl, the platform-specific
-bridge reconfiguration step is silently bypassed. As a result, the PE's
-config space is not fully restored, causing subsequent config space access
-failures or EEH freeze-on-access errors inside the guest.
+Let's get brightness from EC and take it as the current brightness on
+probe of the laptop driver to avoid the surprising behavior. Tested on
+TongFang L860-T2 Loongson-3A5000 laptop.
 
-This patch fixes the issue by ensuring that eeh_pe_configure() always
-invokes the platform's configure_bridge() callback (e.g.,
-pseries_eeh_phb_configure_bridge) even for VFIO-managed PEs. This ensures
-that RTAS or OPAL calls to reconfigure the PE bridge are correctly issued
-on the host side, restoring the PE's configuration space after an EEH
-event.
-
-This fix is essential for reliable EEH recovery in QEMU/KVM guests using
-VFIO PCI passthrough on PowerNV and pseries systems.
-
-Tested with:
-- QEMU/KVM guest using VFIO passthrough (IBM Power9,(lpar)Power11 host)
-- Injected EEH errors with pseries EEH errinjct tool on host, recovery
-  verified on qemu guest.
-- Verified successful config space access and CAP_EXP DevCtl restoration
-  after recovery
-
-Fixes: 212d16cdca2d ("powerpc/eeh: EEH support for VFIO PCI device")
-Signed-off-by: Narayana Murty N <nnmlinux@linux.ibm.com>
-Reviewed-by: Vaibhav Jain <vaibhav@linux.ibm.com>
-Reviewed-by: Ganesh Goudar <ganeshgr@linux.ibm.com>
-Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
-Link: https://patch.msgid.link/20250508062928.146043-1-nnmlinux@linux.ibm.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: 6246ed09111f ("LoongArch: Add ACPI-based generic laptop driver")
+Signed-off-by: Yao Zi <ziyao@disroot.org>
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/powerpc/kernel/eeh.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/platform/loongarch/loongson-laptop.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/powerpc/kernel/eeh.c b/arch/powerpc/kernel/eeh.c
-index e9b597ed423cf..209d1a61eb94f 100644
---- a/arch/powerpc/kernel/eeh.c
-+++ b/arch/powerpc/kernel/eeh.c
-@@ -1504,6 +1504,8 @@ int eeh_pe_configure(struct eeh_pe *pe)
- 	/* Invalid PE ? */
- 	if (!pe)
- 		return -ENODEV;
-+	else
-+		ret = eeh_ops->configure_bridge(pe);
+--- a/drivers/platform/loongarch/loongson-laptop.c
++++ b/drivers/platform/loongarch/loongson-laptop.c
+@@ -392,8 +392,8 @@ static int laptop_backlight_register(voi
+ 	if (!acpi_evalf(hotkey_handle, &status, "ECLL", "d"))
+ 		return -EIO;
  
- 	return ret;
- }
--- 
-2.39.5
-
+-	props.brightness = 1;
+ 	props.max_brightness = status;
++	props.brightness = ec_get_brightness();
+ 	props.type = BACKLIGHT_PLATFORM;
+ 
+ 	backlight_device_register("loongson_laptop",
 
 
 
