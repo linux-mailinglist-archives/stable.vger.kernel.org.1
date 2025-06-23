@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-155983-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156075-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 02961AE453D
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:50:01 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id BA719AE44EE
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:46:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A02834455D6
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:38:16 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 47F5C16A009
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:41:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 018E7255F2B;
-	Mon, 23 Jun 2025 13:37:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C7C0248895;
+	Mon, 23 Jun 2025 13:41:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MQv6oPV4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0AxKxfYc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2CA52550D7;
-	Mon, 23 Jun 2025 13:37:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCDF424728E;
+	Mon, 23 Jun 2025 13:41:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750685846; cv=none; b=jX7h3ENzEa2y5cOD7nNEAmyEjwAmZrc9ICnmpJPE5xXYtdDScD62Vz1MEmrFjJHbhtn5K1woOarT197ZznU8CluxUXbRWgXixtMBic2RwSkXwn1HzT2qGPvwK2n4UCErnNZAOSGLYgF39frD+U72KZugO14wrBzoDj4AHmUwmLc=
+	t=1750686086; cv=none; b=TirFTxsFfKXzhYFZ0KT/32AOty2v7c7sHNPj2NYKHoo4iZGfluhR+4zXI5UWK9kJQlTAYceMImGp/YjgyJQphXjYwXa0FVCvQoQ8rQoNDyV9z2gPc1ZCSK6C5ZWaRn7WELpaZR6bM8TKJOc8sEKgPFaiP0nBJRUm5s3g6rFCOtQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750685846; c=relaxed/simple;
-	bh=DJy/NLrHGfd9BJx9i/rDXjsP4r3qMrU+MtNxYC1TmPw=;
+	s=arc-20240116; t=1750686086; c=relaxed/simple;
+	bh=BMk99MlMjTrvBkk/Yv9RxOYHvhadQOQHD3htWtCr6oA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eOgwuz3KhwrrF2JXAbLC2uTjAGnnRod29K9tKAUC/9X4bEekgRrednuwdbdAlpuVTdEbJJZFCnMX7uM4zC97MVr1JSzWsGb5AarNYL0gmjrXITF+XpsMlTaWju0xENZ6h/KupZBJ21rwd7aDBtCU8M/gxkvy0cMceECMPo4yA+U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MQv6oPV4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 469D1C4CEEA;
-	Mon, 23 Jun 2025 13:37:26 +0000 (UTC)
+	 MIME-Version:Content-Type; b=duxs1ZsXTWkHVTWp9GmqDyFIqi0Uh0wuk1rUHNHMeNpzEf/WfXz4edqiJpaR347kPK65BsSu27jw6YXjNVn4YfuDxrQni9/BaxRNJHEmH271CPh5RoMoSdvFBn5ugTU0Zk3DVHGXSyqgr1y6ayp5PU8Po77PDZfkXedJkI2o0JI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0AxKxfYc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 512FAC4CEEA;
+	Mon, 23 Jun 2025 13:41:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750685846;
-	bh=DJy/NLrHGfd9BJx9i/rDXjsP4r3qMrU+MtNxYC1TmPw=;
+	s=korg; t=1750686086;
+	bh=BMk99MlMjTrvBkk/Yv9RxOYHvhadQOQHD3htWtCr6oA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MQv6oPV4i8elamJ9qEGVTM61JOgtCh8jH7BfGAj+G4vdsw6exOW498A+/DL7TBlJ7
-	 ez+4rCqXycCX+ENiRbqR/WE85Hf1EYuzi2mjAU9xlijooHeTQXg0Eoaj6oDQm+A+YC
-	 EQgpG4CnpYmraAcpAvTyz6mUu8s3DgNc9xCLNJGg=
+	b=0AxKxfYcxpKLvme5bA+v9j1dVrmjD/GwX3W7Y6egKfawTD8u2XS+tC9BZIKZdmJFj
+	 nSIXNnlIMLA/76mGxKcddUuaSUxjM0KtBbt6rH6RJ1CW7gUaAFAXxSV76dX3x3pIC1
+	 R2FR/JeTqlgOS2C45IY1zimutg4wET2Nc7nsDzjo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-	Hans Verkuil <hverkuil@xs4all.nl>
-Subject: [PATCH 6.6 029/290] media: ccs-pll: Start OP pre-PLL multiplier search from correct value
+	Alexandre Mergnat <amergnat@baylibre.com>,
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 089/355] rtc: Fix offset calculation for .start_secs < 0
 Date: Mon, 23 Jun 2025 15:04:50 +0200
-Message-ID: <20250623130627.862029716@linuxfoundation.org>
+Message-ID: <20250623130629.478467508@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130626.910356556@linuxfoundation.org>
-References: <20250623130626.910356556@linuxfoundation.org>
+In-Reply-To: <20250623130626.716971725@linuxfoundation.org>
+References: <20250623130626.716971725@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,43 +61,63 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sakari Ailus <sakari.ailus@linux.intel.com>
+From: Alexandre Mergnat <amergnat@baylibre.com>
 
-commit 660e613d05e449766784c549faf5927ffaf281f1 upstream.
+[ Upstream commit fe9f5f96cfe8b82d0f24cbfa93718925560f4f8d ]
 
-The ccs_pll_calculate() function does a search over possible PLL
-configurations to find the "best" one. If the sensor does not support odd
-pre-PLL divisors and the minimum value (with constraints) isn't 1, other
-odd values could be errorneously searched (and selected) for the pre-PLL
-divisor. Fix this.
+The comparison
 
-Fixes: 415ddd993978 ("media: ccs-pll: Split limits and PLL configuration into front and back parts")
-Cc: stable@vger.kernel.org
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+        rtc->start_secs > rtc->range_max
+
+has a signed left-hand side and an unsigned right-hand side.
+So the comparison might become true for negative start_secs which is
+interpreted as a (possibly very large) positive value.
+
+As a negative value can never be bigger than an unsigned value
+the correct representation of the (mathematical) comparison
+
+        rtc->start_secs > rtc->range_max
+
+in C is:
+
+        rtc->start_secs >= 0 && rtc->start_secs > rtc->range_max
+
+Use that to fix the offset calculation currently used in the
+rtc-mt6397 driver.
+
+Fixes: 989515647e783 ("rtc: Add one offset seconds to expand RTC range")
+Signed-off-by: Alexandre Mergnat <amergnat@baylibre.com>
+Reviewed-by: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
+Link: https://lore.kernel.org/r/20250428-enable-rtc-v4-2-2b2f7e3f9349@baylibre.com
+Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/i2c/ccs-pll.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/rtc/class.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/media/i2c/ccs-pll.c
-+++ b/drivers/media/i2c/ccs-pll.c
-@@ -817,6 +817,8 @@ int ccs_pll_calculate(struct device *dev
- 			      one_or_more(
- 				      DIV_ROUND_UP(op_lim_fr->max_pll_op_clk_freq_hz,
- 						   pll->ext_clk_freq_hz))));
-+	if (!(pll->flags & CCS_PLL_FLAG_EXT_IP_PLL_DIVIDER))
-+		min_op_pre_pll_clk_div = clk_div_even(min_op_pre_pll_clk_div);
- 	dev_dbg(dev, "pll_op check: min / max op_pre_pll_clk_div: %u / %u\n",
- 		min_op_pre_pll_clk_div, max_op_pre_pll_clk_div);
- 
+diff --git a/drivers/rtc/class.c b/drivers/rtc/class.c
+index 625effe6cb65f..b1ce3bd724b2c 100644
+--- a/drivers/rtc/class.c
++++ b/drivers/rtc/class.c
+@@ -314,7 +314,7 @@ static void rtc_device_get_offset(struct rtc_device *rtc)
+ 	 *
+ 	 * Otherwise the offset seconds should be 0.
+ 	 */
+-	if (rtc->start_secs > rtc->range_max ||
++	if ((rtc->start_secs >= 0 && rtc->start_secs > rtc->range_max) ||
+ 	    rtc->start_secs + range_secs - 1 < rtc->range_min)
+ 		rtc->offset_secs = rtc->start_secs - rtc->range_min;
+ 	else if (rtc->start_secs > rtc->range_min)
+-- 
+2.39.5
+
 
 
 
