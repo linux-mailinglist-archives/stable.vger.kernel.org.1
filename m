@@ -1,69 +1,55 @@
-Return-Path: <stable+bounces-158126-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-158182-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 17460AE5712
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:25:51 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B78E4AE575B
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:28:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DEDE11C23B5D
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:26:06 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 43184171995
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:28:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96FB5225413;
-	Mon, 23 Jun 2025 22:25:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5163422422F;
+	Mon, 23 Jun 2025 22:28:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xXS74aTv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xpRkD4AK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54E76221543;
-	Mon, 23 Jun 2025 22:25:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F46E222581;
+	Mon, 23 Jun 2025 22:28:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750717548; cv=none; b=cJqgu73OdsW+oTlKvGFgIzC2Dho4Xkk78PrlMZZtZzMynfi0fhgtKItTyGNT7czu18UvYxEvVtPntvxFtGnJUCYYrySqHHUhhUuB2rw88LrTPk/IlMbnaUyWVJpm3yJWWmD7EyBb6B+TYZ/FGxhvugJk3J2kGxGlbCe1q10TC/w=
+	t=1750717686; cv=none; b=pr6ABkXsI/lmU5Bc23dR/rsJkWFc7qLlRHnLwGd0yN4Bz6MiZ4JTKw4Jhhb6kqNNnZVYp8dRQSyXWJQZXz6e2+I9XnlEx1dIoSwkpv0vSL8Z8/1aYxWfQMan7xuUdQftLLXAGXL1okr3gJl0OiT31XHCAHZY/XBbFEOkyhfrGOU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750717548; c=relaxed/simple;
-	bh=CnnuTi5oGar73iwmeqyNWOPlGKR5d8sgsvhQb1lJ01A=;
+	s=arc-20240116; t=1750717686; c=relaxed/simple;
+	bh=aFY5dGug+OAKgehe4s4PnQfMuP2WHwuzgYGnzA4lgsU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tOpgn7o363VMAgQRf/9mgIHy8Do7HB3XlvKG1R5UepY2aGcFKhThiOjKSjC9kRTlaWdgYZbrYXXk6gQO4nka3YMeLcGYs0ycppLGyfqodjm7D6qFjIkVUxAi6Yc31g44Fl/nyVvKTBqvpPpHuL1MbLQqnCaskZfQhthx0wsCry8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xXS74aTv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA5BBC4CEEA;
-	Mon, 23 Jun 2025 22:25:47 +0000 (UTC)
+	 MIME-Version; b=Zu3SWvhonPrftywLlUNTLTn6iHahEXds6GcYIH3pNZh99MxQPM7Ib6ct3tJ5UZgpZxgZaC4f5BCAmjX5QPkzX6rjalL5Nj0bXIh3WqqLAcc3BpMaAnenKExdbDkyEgEA/J/l6pRmS97xDT0X3kLTD+dAzp0UnuJHc+dNDkrhAwk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xpRkD4AK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B32AC4CEEA;
+	Mon, 23 Jun 2025 22:28:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750717548;
-	bh=CnnuTi5oGar73iwmeqyNWOPlGKR5d8sgsvhQb1lJ01A=;
+	s=korg; t=1750717685;
+	bh=aFY5dGug+OAKgehe4s4PnQfMuP2WHwuzgYGnzA4lgsU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xXS74aTvS2wMidmhyCFzEtrsadD1h1wPIkCk4bnyLYR/LWU/Z2mrhv9FhUu0zeoNZ
-	 pBIXAukXsOdtne/sB3RBId8VrVi53GJHC+23eSTN/004bmLUuXDbTtZL/pquZ3prnV
-	 pxKO3UJQWWbPR/15BKfgUMtXM+Wegu9XEPCy81zs=
+	b=xpRkD4AKDbL3freFYMdPHIoviBBneK14SvqFVMyJmIrwCKW60RlGzv+kD/kmR/5QQ
+	 hzIZzW9b+/lyu0a0KunyaW8/RmtgyjoeCbFQEGQP11hhS/pYpkvNZK/EmfXZOti7K7
+	 46Y+KW8H5H1sw3tKD4j6xOXX3a8jCQ245yfXHaqQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ian Rogers <irogers@google.com>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-	Andi Kleen <ak@linux.intel.com>,
-	Ingo Molnar <mingo@redhat.com>,
-	Jiapeng Chong <jiapeng.chong@linux.alibaba.com>,
-	Jiri Olsa <jolsa@kernel.org>,
-	Kan Liang <kan.liang@linux.intel.com>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Michael Petlan <mpetlan@redhat.com>,
-	Namhyung Kim <namhyung@kernel.org>,
-	Namhyung Kim <namhyung.kim@lge.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Tiezhu Yang <yangtiezhu@loongson.cn>,
-	Arnaldo Carvalho de Melo <acme@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 411/414] perf evsel: Missed close() when probing hybrid core PMUs
+	Niklas Schnelle <schnelle@linux.ibm.com>,
+	Heiko Carstens <hca@linux.ibm.com>
+Subject: [PATCH 6.1 503/508] s390/pci: Fix __pcilg_mio_inuser() inline assembly
 Date: Mon, 23 Jun 2025 15:09:08 +0200
-Message-ID: <20250623130652.224732800@linuxfoundation.org>
+Message-ID: <20250623130657.380571232@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
-References: <20250623130642.015559452@linuxfoundation.org>
+In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
+References: <20250623130645.255320792@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -75,59 +61,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ian Rogers <irogers@google.com>
+From: Heiko Carstens <hca@linux.ibm.com>
 
-[ Upstream commit ebec62bc7ec435b475722a5467d67c720a1ad79f ]
+commit c4abe6234246c75cdc43326415d9cff88b7cf06c upstream.
 
-Add missing close() to avoid leaking perf events.
+Use "a" constraint for the shift operand of the __pcilg_mio_inuser() inline
+assembly. The used "d" constraint allows the compiler to use any general
+purpose register for the shift operand, including register zero.
 
-In past perfs this mattered little as the function was just used by 'perf
-list'.
+If register zero is used this my result in incorrect code generation:
 
-As the function is now used to detect hybrid PMUs leaking the perf event
-is somewhat more painful.
+ 8f6:   a7 0a ff f8             ahi     %r0,-8
+ 8fa:   eb 32 00 00 00 0c       srlg    %r3,%r2,0  <----
 
-Fixes: b41f1cec91c37eee ("perf list: Skip unsupported events")
-Signed-off-by: Ian Rogers <irogers@google.com>
-Cc: Adrian Hunter <adrian.hunter@intel.com>
-Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
-Cc: Andi Kleen <ak@linux.intel.com>
-Cc: Ingo Molnar <mingo@redhat.com>
-Cc: Jiapeng Chong <jiapeng.chong@linux.alibaba.com>
-Cc: Jiri Olsa <jolsa@kernel.org>
-Cc: Kan Liang <kan.liang@linux.intel.com>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Michael Petlan <mpetlan@redhat.com>
-Cc: Namhyung Kim <namhyung@kernel.org>
-Cc: Namhyung Kim <namhyung.kim@lge.com>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Tiezhu Yang <yangtiezhu@loongson.cn>
-Link: https://lore.kernel.org/r/20250614004108.1650988-2-irogers@google.com
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+If register zero is selected to contain the shift value, the srlg
+instruction ignores the contents of the register and always shifts zero
+bits. Therefore use the "a" constraint which does not permit to select
+register zero.
+
+Fixes: f058599e22d5 ("s390/pci: Fix s390_mmio_read/write with MIO")
+Cc: stable@vger.kernel.org
+Reported-by: Niklas Schnelle <schnelle@linux.ibm.com>
+Reviewed-by: Niklas Schnelle <schnelle@linux.ibm.com>
+Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
+Signed-off-by: Niklas Schnelle <schnelle@linux.ibm.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/perf/util/print-events.c | 1 +
- 1 file changed, 1 insertion(+)
+ arch/s390/pci/pci_mmio.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tools/perf/util/print-events.c b/tools/perf/util/print-events.c
-index 81e0135cddf01..a1c71d9793bd8 100644
---- a/tools/perf/util/print-events.c
-+++ b/tools/perf/util/print-events.c
-@@ -282,6 +282,7 @@ bool is_event_supported(u8 type, u64 config)
- 			ret = evsel__open(evsel, NULL, tmap) >= 0;
- 		}
+--- a/arch/s390/pci/pci_mmio.c
++++ b/arch/s390/pci/pci_mmio.c
+@@ -223,7 +223,7 @@ static inline int __pcilg_mio_inuser(
+ 		[ioaddr_len] "+&d" (ioaddr_len.pair),
+ 		[cc] "+d" (cc), [val] "=d" (val),
+ 		[dst] "+a" (dst), [cnt] "+d" (cnt), [tmp] "=d" (tmp),
+-		[shift] "+d" (shift)
++		[shift] "+a" (shift)
+ 		:: "cc", "memory");
  
-+		evsel__close(evsel);
- 		evsel__delete(evsel);
- 	}
- 
--- 
-2.39.5
-
+ 	/* did we write everything to the user space buffer? */
 
 
 
