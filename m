@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-157832-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-158174-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id D67D6AE55B9
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:14:23 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E7E0AE576C
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:30:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 23EA27A8966
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:12:53 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 651D53B1EB6
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:27:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9EF38228CB0;
-	Mon, 23 Jun 2025 22:13:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A13321F463B;
+	Mon, 23 Jun 2025 22:27:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MSdFmCnZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ia41r0we"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55BF9226D16;
-	Mon, 23 Jun 2025 22:13:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60160222581;
+	Mon, 23 Jun 2025 22:27:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750716828; cv=none; b=ur3tkcqRFOd2T6Expdbvwk/iI8uEgyo1PJZj8qnz8wzcQawqoKGJL9MVuxrF+BhtXvRfoLoEpjDdFGuXhB1LWuKuXh/B0AgLb2mRg1c2d/DYWignzgsjppBGeBAVkLmusoGkXhPPPXJRhx4zU3ImXV1dyfGlj05Tmu5nDPIvu1o=
+	t=1750717666; cv=none; b=ftmbKaSREYCwIwyHbg+2YkFgQ0Tqy3rlJ/Rh3XSyQqN8AfvhZTv+8/RE9DbIlLIqPDvk//5QCq0LerLnEkpopP7CR/+38W2iNxcmtC0FmXHOVJoYfsUlqvUxcmOnpPJl4kP52if06W92KZa4U50LkKnVU+Zo1bwPHzIHil4SA5c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750716828; c=relaxed/simple;
-	bh=GlZ9yneoNTpDJumUuErplhJj+YMdPAAzIbR0vTRgtaw=;
+	s=arc-20240116; t=1750717666; c=relaxed/simple;
+	bh=3Ylf70tKEjp2V/O29JqyWhmvuIgH4wTf7lpT2lYFU38=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=c6hlPmk9H+udUNZTTFmVR4aBlpFnaiHPhBVOCuIw4YysqLTVrspj8JBzHAJUe36HujX2cMgais5sxavk6s7rV8C5mqOu944kcEHEdrovPkAQGSBeOU3wGrLleDefiZp4Rgeb1LPotNHJtKCABaiAHNdV9a9Fly/+s4u0LXNoIp0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MSdFmCnZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E168C4CEEA;
-	Mon, 23 Jun 2025 22:13:47 +0000 (UTC)
+	 MIME-Version; b=TeE2Ouh1g0ntEpa7GSabYqUj3+5wnPog6KAxX1vHOof98/0d4G+F3fsS6wzUO+2Tzbjiv+WFq3Pvggdir2XM6ryZ58dQuC1k8BbGRrYqgBMiafRzFCHq7+3L5NcI/sfqEY7339+Isr8zHiBGTDBaSleWtjhzt2icOa6wOJoJh44=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ia41r0we; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E997FC4CEEA;
+	Mon, 23 Jun 2025 22:27:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750716827;
-	bh=GlZ9yneoNTpDJumUuErplhJj+YMdPAAzIbR0vTRgtaw=;
+	s=korg; t=1750717666;
+	bh=3Ylf70tKEjp2V/O29JqyWhmvuIgH4wTf7lpT2lYFU38=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MSdFmCnZA7YrG/9cszBdgTTETTQ0q8SCi6bggTZgqJbVdf7RJE/dJC4tGMD3rB2KQ
-	 Rq/u6J7pGo6iUoVdGS/tFsGdVSBZvaotaBWV0wKiLZNAEIcnzplAHFL+E5odkmKc+f
-	 dLQ+TYTyu6fFbDai30fZh5YBH084PX7VeHeZx7Hc=
+	b=ia41r0weOIQKFTiJ2JFp4XNOEszdLpmMEDAa+Rhb8+ljIlWoWJHBoJbey11U9mPWo
+	 Z8nmiRmB8PCSmZpMR4QFXe3jyUBWc9g7ZV/DuiLqAiqpQeFdcIUdEpo3S2e4l/JZJw
+	 xV/94F9XezNyNDuwNL7va+PABnCX4IkbmS8Izkjs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	James Morse <james.morse@arm.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Pu Lehui <pulehui@huawei.com>
-Subject: [PATCH 5.15 396/411] arm64: proton-pack: Add new CPUs k values for branch mitigation
+	Colin Foster <colin.foster@in-advantage.com>,
+	Kevin Hilman <khilman@baylibre.com>,
+	"Nobuhiro Iwamatsu (CIP)" <nobuhiro1.iwamatsu@toshiba.co.jp>
+Subject: [PATCH 6.1 495/508] ARM: dts: am335x-bone-common: Increase MDIO reset deassert time
 Date: Mon, 23 Jun 2025 15:09:00 +0200
-Message-ID: <20250623130643.647165645@linuxfoundation.org>
+Message-ID: <20250623130657.208599816@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
-References: <20250623130632.993849527@linuxfoundation.org>
+In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
+References: <20250623130645.255320792@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,58 +62,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: James Morse <james.morse@arm.com>
+From: Colin Foster <colin.foster@in-advantage.com>
 
-[ Upstream commit efe676a1a7554219eae0b0dcfe1e0cdcc9ef9aef ]
+commit b9bf5612610aa7e38d58fee16f489814db251c01 upstream.
 
-Update the list of 'k' values for the branch mitigation from arm's
-website.
+Prior to commit df16c1c51d81 ("net: phy: mdio_device: Reset device only
+when necessary") MDIO reset deasserts were performed twice during boot.
+Now that the second deassert is no longer performed, device probe
+failures happen due to the change in timing with the following error
+message:
 
-Add the values for Cortex-X1C. The MIDR_EL1 value can be found here:
-https://developer.arm.com/documentation/101968/0002/Register-descriptions/AArch>
+SMSC LAN8710/LAN8720: probe of 4a101000.mdio:00 failed with error -5
 
-Link: https://developer.arm.com/documentation/110280/2-0/?lang=en
-Signed-off-by: James Morse <james.morse@arm.com>
-Reviewed-by: Catalin Marinas <catalin.marinas@arm.com>
-Signed-off-by: Pu Lehui <pulehui@huawei.com>
+Restore the original effective timing, which resolves the probe
+failures.
+
+Signed-off-by: Colin Foster <colin.foster@in-advantage.com>
+Link: https://lore.kernel.org/r/20240531183817.2698445-1-colin.foster@in-advantage.com
+Signed-off-by: Kevin Hilman <khilman@baylibre.com>
+Signed-off-by: Nobuhiro Iwamatsu (CIP) <nobuhiro1.iwamatsu@toshiba.co.jp>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/include/asm/cputype.h |    2 ++
- arch/arm64/kernel/proton-pack.c  |    1 +
- 2 files changed, 3 insertions(+)
+ arch/arm/boot/dts/am335x-bone-common.dtsi |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/arm64/include/asm/cputype.h
-+++ b/arch/arm64/include/asm/cputype.h
-@@ -81,6 +81,7 @@
- #define ARM_CPU_PART_CORTEX_A78AE	0xD42
- #define ARM_CPU_PART_CORTEX_X1		0xD44
- #define ARM_CPU_PART_CORTEX_A510	0xD46
-+#define ARM_CPU_PART_CORTEX_X1C		0xD4C
- #define ARM_CPU_PART_CORTEX_A520	0xD80
- #define ARM_CPU_PART_CORTEX_A710	0xD47
- #define ARM_CPU_PART_CORTEX_A715	0xD4D
-@@ -147,6 +148,7 @@
- #define MIDR_CORTEX_A78AE	MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_A78AE)
- #define MIDR_CORTEX_X1	MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_X1)
- #define MIDR_CORTEX_A510 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_A510)
-+#define MIDR_CORTEX_X1C MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_X1C)
- #define MIDR_CORTEX_A520 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_A520)
- #define MIDR_CORTEX_A710 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_A710)
- #define MIDR_CORTEX_A715 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_A715)
---- a/arch/arm64/kernel/proton-pack.c
-+++ b/arch/arm64/kernel/proton-pack.c
-@@ -891,6 +891,7 @@ static u8 spectre_bhb_loop_affected(void
- 		MIDR_ALL_VERSIONS(MIDR_CORTEX_A78AE),
- 		MIDR_ALL_VERSIONS(MIDR_CORTEX_A78C),
- 		MIDR_ALL_VERSIONS(MIDR_CORTEX_X1),
-+		MIDR_ALL_VERSIONS(MIDR_CORTEX_X1C),
- 		MIDR_ALL_VERSIONS(MIDR_CORTEX_A710),
- 		MIDR_ALL_VERSIONS(MIDR_CORTEX_X2),
- 		MIDR_ALL_VERSIONS(MIDR_NEOVERSE_N2),
+--- a/arch/arm/boot/dts/am335x-bone-common.dtsi
++++ b/arch/arm/boot/dts/am335x-bone-common.dtsi
+@@ -384,7 +384,7 @@
+ 		/* Support GPIO reset on revision C3 boards */
+ 		reset-gpios = <&gpio1 8 GPIO_ACTIVE_LOW>;
+ 		reset-assert-us = <300>;
+-		reset-deassert-us = <6500>;
++		reset-deassert-us = <13000>;
+ 	};
+ };
+ 
 
 
 
