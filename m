@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-156084-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-155966-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4A93CAE44FE
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:47:17 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B4AB4AE4482
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:43:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F2ED016CC10
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:41:51 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 06E6817C436
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:38:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E07052475E3;
-	Mon, 23 Jun 2025 13:41:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24B8C24DFF3;
+	Mon, 23 Jun 2025 13:36:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QM7A1H0i"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kEvWEYQf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A3A4248891;
-	Mon, 23 Jun 2025 13:41:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D905916419;
+	Mon, 23 Jun 2025 13:36:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750686109; cv=none; b=GF36EZxcNo/FN8+76w0H1e2fVN45HHX+LA+Yf8twrTJNvbbwUvdhHAI/ENc0MY3CX9ZUqWldSrVQcRSalI1EY9wqhUVnoXmUql3m5rpKV7mNFVT7IEErNGU5V1pc20ZDtek1DilIY2jDQGV8t2HW//pdA6ena4iOVRRNGP6qxYU=
+	t=1750685799; cv=none; b=Isl350gyyzt0xKVuDmuULtq5WehPLmi17gHXSUEswIXj7GIsB8j5Ap1GDgPe/liKsAKpaVcjyBhCFeZK2w6leshl9zY1fHCjdDJzOGyKPM9s6DAWZ/uqZwsQY1egPLLOqIO1pXuWvI8WvllZs2QW5CGevtzV0/qirHQ9FEJN3M0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750686109; c=relaxed/simple;
-	bh=yfe9flI3bV5y+bJWBFdmxFJhLRsdUoMl2QcS814l5yY=;
+	s=arc-20240116; t=1750685799; c=relaxed/simple;
+	bh=rjwNsbE/iED57gMiTj/eMO9bdb8RwUbQuyUmoSPfkrg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=X11Z8Yn55V73h8yMyU80Yr8CQhI6feyAAPjqfoq8qB28KZEw7I74+sEismjYOnl763jTVHZUkNIj4FikLZynlEK9GMmqENt1+AWwEwsOMUpC1dD2Xy/WY1xSZ+HcdN/sIEsX3hnrJpK6R1mnTemyXBeyPwWANY75a0TvM7HvNGo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QM7A1H0i; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F4A6C4CEEA;
-	Mon, 23 Jun 2025 13:41:49 +0000 (UTC)
+	 MIME-Version; b=piXWWsLzE57/98Uwz9eycW5RxKJ8b4qrEg5msyBfSOoD3W2lL5C7kgP2t5Hm1huGpXfnEfgzn6BujG859ShAwLFX8KZADSy3hwsX9mmwThIUwHuLkIZQdlJ5DrOkhvJIn3IUgPTpDVab2R5IhWhxyai288gk6wLW8VzcHiUJEcg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kEvWEYQf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F459C4CEEA;
+	Mon, 23 Jun 2025 13:36:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750686109;
-	bh=yfe9flI3bV5y+bJWBFdmxFJhLRsdUoMl2QcS814l5yY=;
+	s=korg; t=1750685799;
+	bh=rjwNsbE/iED57gMiTj/eMO9bdb8RwUbQuyUmoSPfkrg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QM7A1H0iuqLKRsOygYUSDzTxaacOg8cW7WOhyIMu/1t0ro/sVDlca2kFMQ8N1hXZ8
-	 NhEEDX5U5NTkD3jG43wA65mha5QlQpqopid7G9PZ7W7XakbNXaBVV96PU1pLuDPp4/
-	 RJEUGM9wh23Qjt9GchoK2Ohx8eWCbGK4BhxmLEsA=
+	b=kEvWEYQf2efSUxzX+qbslVds0lZYHNOOwpXWC2RVw6Lggx7yKmqUjsjYHhoFxgybN
+	 N6uhxQXyfG4niIS5FZBwSOGpB1VpCaxe9fsl2vxPVGQn4E1Sm1BJydoahfPn8J5fe6
+	 dnS+Lgj+Q6xfAVP6tsiP8B9JncpMf+6dw06tyVVc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wayne Lin <wayne.lin@amd.com>,
-	Fangzhi Zuo <Jerry.Zuo@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Tarang Raval <tarang.raval@siliconsignals.io>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Hans Verkuil <hverkuil@xs4all.nl>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 267/592] drm/amd/display: Do Not Consider DSC if Valid Config Not Found
-Date: Mon, 23 Jun 2025 15:03:45 +0200
-Message-ID: <20250623130706.667671746@linuxfoundation.org>
+Subject: [PATCH 6.15 268/592] media: i2c: imx334: Fix runtime PM handling in remove function
+Date: Mon, 23 Jun 2025 15:03:46 +0200
+Message-ID: <20250623130706.694171195@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
 In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
 References: <20250623130700.210182694@linuxfoundation.org>
@@ -68,62 +67,44 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Fangzhi Zuo <Jerry.Zuo@amd.com>
+From: Tarang Raval <tarang.raval@siliconsignals.io>
 
-[ Upstream commit 146a4429b5674b7520a96aea34233949731c6086 ]
+[ Upstream commit b493cd3c03641f9bbaa9787e43ca92163cb50051 ]
 
-[why]
-In the mode validation, mst dsc is considered for bw calculation after
-common dsc config is determined. Currently it considered common dsc config
-is found if max and min target bpp are non zero which is not accurate. Invalid
-max and min target bpp values would not get max_kbps and min_kbps calculated,
-leading to falsefully pass a mode that does not have valid dsc parameters
-available.
+pm_runtime_suspended() only checks the current runtime PM status and does
+not modify it, making it ineffective in this context. This could result in
+improper power management if the device remains active when removed.
 
-[how]
-Use the return value of decide_dsc_bandwidth_range() to determine whether valid
-dsc common config is found or not. Prune out modes that do not have valid common
-dsc config determined.
+This patch fixes the issue by introducing a check with
+pm_runtime_status_suspended() to determine if the device is already
+suspended. If it is not, it calls imx334_power_off() to power down the
+device and then uses pm_runtime_set_suspended() to correctly update the
+runtime PM status to suspended.
 
-Reviewed-by: Wayne Lin <wayne.lin@amd.com>
-Signed-off-by: Fangzhi Zuo <Jerry.Zuo@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Tarang Raval <tarang.raval@siliconsignals.io>
+Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../amd/display/amdgpu_dm/amdgpu_dm_mst_types.c | 17 +++++++++--------
- 1 file changed, 9 insertions(+), 8 deletions(-)
+ drivers/media/i2c/imx334.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_mst_types.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_mst_types.c
-index 5cdbc86ef8f5a..25e8befbcc479 100644
---- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_mst_types.c
-+++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_mst_types.c
-@@ -1739,16 +1739,17 @@ static bool is_dsc_common_config_possible(struct dc_stream_state *stream,
- 					  struct dc_dsc_bw_range *bw_range)
- {
- 	struct dc_dsc_policy dsc_policy = {0};
-+	bool is_dsc_possible;
+diff --git a/drivers/media/i2c/imx334.c b/drivers/media/i2c/imx334.c
+index b51721c01e1d6..63d812a41542f 100644
+--- a/drivers/media/i2c/imx334.c
++++ b/drivers/media/i2c/imx334.c
+@@ -1435,7 +1435,10 @@ static void imx334_remove(struct i2c_client *client)
+ 	v4l2_ctrl_handler_free(sd->ctrl_handler);
  
- 	dc_dsc_get_policy_for_timing(&stream->timing, 0, &dsc_policy, dc_link_get_highest_encoding_format(stream->link));
--	dc_dsc_compute_bandwidth_range(stream->sink->ctx->dc->res_pool->dscs[0],
--				       stream->sink->ctx->dc->debug.dsc_min_slice_height_override,
--				       dsc_policy.min_target_bpp * 16,
--				       dsc_policy.max_target_bpp * 16,
--				       &stream->sink->dsc_caps.dsc_dec_caps,
--				       &stream->timing, dc_link_get_highest_encoding_format(stream->link), bw_range);
--
--	return bw_range->max_target_bpp_x16 && bw_range->min_target_bpp_x16;
-+	is_dsc_possible = dc_dsc_compute_bandwidth_range(stream->sink->ctx->dc->res_pool->dscs[0],
-+							 stream->sink->ctx->dc->debug.dsc_min_slice_height_override,
-+							 dsc_policy.min_target_bpp * 16,
-+							 dsc_policy.max_target_bpp * 16,
-+							 &stream->sink->dsc_caps.dsc_dec_caps,
-+							 &stream->timing, dc_link_get_highest_encoding_format(stream->link), bw_range);
-+
-+	return is_dsc_possible;
+ 	pm_runtime_disable(&client->dev);
+-	pm_runtime_suspended(&client->dev);
++	if (!pm_runtime_status_suspended(&client->dev)) {
++		imx334_power_off(&client->dev);
++		pm_runtime_set_suspended(&client->dev);
++	}
+ 
+ 	mutex_destroy(&imx334->mutex);
  }
- #endif
- 
 -- 
 2.39.5
 
