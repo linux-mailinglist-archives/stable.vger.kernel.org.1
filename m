@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-157437-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156455-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 72219AE53EB
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:57:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CFC79AE4FAD
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:18:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 099CA4A8CD6
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:57:46 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BC04516E51E
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:18:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB724222576;
-	Mon, 23 Jun 2025 21:57:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8626223DC1;
+	Mon, 23 Jun 2025 21:17:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fqCfO1he"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Szn+M2ea"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8812B1FC0E3;
-	Mon, 23 Jun 2025 21:57:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A10D52236EF;
+	Mon, 23 Jun 2025 21:17:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750715863; cv=none; b=JZzxmz2IsAQU/6p7RAWEDoMuUeDeNNL4cFYrY14K2jC649p1EXWKj9rS+oWDgKToEj6MlqyzBGwDtp2uEXWa6u8dD5XG82Qu5gKInz8xKv0QfciqfsUgSa7uDl5O+rVo8tcvS95oqY/cR5ykVbWLyvcIvK0Rs80ZUPSC2gRgRcc=
+	t=1750713453; cv=none; b=ZWGo8B4hwpv7Ll4r5VGVxLdTkMCm1Wk/1Kx2x+he0w1lAl1c9AjgVeDl2sVdvOuzm+I8AXWfmJgIdEFNTIpgf0OsojLDOukycQUNfhmb77n5fPUZC9A1FYuZXiq9yDnZ3HjJdzC9LfOvz/ry9V9k/4v54XMKcKu/vHjcpssEfdM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750715863; c=relaxed/simple;
-	bh=Ai7uRoDV7skqDb7G8lXdGNweu7bKetCo8z+wj7hQN6A=;
+	s=arc-20240116; t=1750713453; c=relaxed/simple;
+	bh=e6vfMvgjGyrHiejPiHzmCVcEMGQJyBDSUajrTwiQ1AA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SnpjbyRpQHmqyhgnlDfAzLLbRCyvX34XPA1jtdvVDfVg17xACmZPKN2r70KQSaYUgguEqmp5XxJmgQ+Pq+BbdciuZsi0q7jjRnpbIr/0IO9EcO5F7evK8L2ZyjaUV0+xajOEoBTqMuxGvjeQQ847cCxqm4O1dfLciEpq9br03YA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fqCfO1he; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1DDE2C4CEEA;
-	Mon, 23 Jun 2025 21:57:42 +0000 (UTC)
+	 MIME-Version; b=giCqgU0rSq56ZelifALcXaq7/NY4X9jrjb3BkEW5UZbCLN8EuzNmQQIwKA7vU8Za/IFITdV1gU0udl0VgPApzVrgmFPoKIETXcyeLbeMQZWAuElyWF7a8BwoTHOus1GGI5xAvSdqR6xFBXjU5NMFviI1sMPHiFJg1QVr0Ru0070=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Szn+M2ea; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38270C4CEEA;
+	Mon, 23 Jun 2025 21:17:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750715863;
-	bh=Ai7uRoDV7skqDb7G8lXdGNweu7bKetCo8z+wj7hQN6A=;
+	s=korg; t=1750713453;
+	bh=e6vfMvgjGyrHiejPiHzmCVcEMGQJyBDSUajrTwiQ1AA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fqCfO1hem46Z3E0jy1DkFE70mpWbToLR55EUo5mlYpVLeAN+FuEKhkjxUabQPtlcS
-	 VjSkztyOqGYMZ4Whmwkvs0Dvegy+VqC/6d5Q5UY/J+I9GVeKhIGKwI1XxzDjMWGKfY
-	 VpScid5DXxHDg24AqwNOyUOlx1wfgYqUmsXhxI28=
+	b=Szn+M2eap4UH4O5wsD+V46svmH07jQpOeX4TGiynjMdYWFgfg0mkzCdD+ScEg6s4Q
+	 6D/L+u1e+dIAsDkWdqnG2TH7y35TSBhkeIkxT1sDbUlb67tef/e+L8wWYSDssE4jaH
+	 9LV//VU5qNJ2mmXK94b6J492WCvBOihBRNkbZ8GA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Vasant Hegde <vasant.hegde@amd.com>,
-	Joerg Roedel <jroedel@suse.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 215/414] iommu/amd: Allow matching ACPI HID devices without matching UIDs
+	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+	Lakshmi Sowjanya D <quic_laksd@quicinc.com>,
+	Md Sadre Alam <quic_mdalam@quicinc.com>,
+	Miquel Raynal <miquel.raynal@bootlin.com>
+Subject: [PATCH 6.6 091/290] mtd: rawnand: qcom: Fix read len for onfi param page
 Date: Mon, 23 Jun 2025 15:05:52 +0200
-Message-ID: <20250623130647.388657129@linuxfoundation.org>
+Message-ID: <20250623130629.711402471@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
-References: <20250623130642.015559452@linuxfoundation.org>
+In-Reply-To: <20250623130626.910356556@linuxfoundation.org>
+References: <20250623130626.910356556@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,119 +63,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mario Limonciello <mario.limonciello@amd.com>
+From: Md Sadre Alam <quic_mdalam@quicinc.com>
 
-[ Upstream commit 51c33f333bbf7bdb6aa2a327e3a3e4bbb2591511 ]
+commit e6031b11544b44966ba020c867fe438bccd3bdfa upstream.
 
-A BIOS upgrade has changed the IVRS DTE UID for a device that no
-longer matches the UID in the SSDT. In this case there is only
-one ACPI device on the system with that _HID but the _UID mismatch.
+The minimum size to fetch the data from device to QPIC buffer
+is 512-bytes. If size is less than 512-bytes the data will not be
+protected by ECC as per QPIC standard. So while reading onfi parameter
+page from NAND device set nandc->buf_count = 512.
 
-IVRS:
-```
-              Subtable Type : F0 [Device Entry: ACPI HID Named Device]
-                  Device ID : 0060
-Data Setting (decoded below) : 40
-                 INITPass : 0
-                 EIntPass : 0
-                 NMIPass : 0
-                 Reserved : 0
-                 System MGMT : 0
-                 LINT0 Pass : 1
-                 LINT1 Pass : 0
-                   ACPI HID : "MSFT0201"
-                   ACPI CID : 0000000000000000
-                 UID Format : 02
-                 UID Length : 09
-                        UID : "\_SB.MHSP"
-```
-
-SSDT:
-```
-Device (MHSP)
-{
-    Name (_ADR, Zero)  // _ADR: Address
-    Name (_HID, "MSFT0201")  // _HID: Hardware ID
-    Name (_UID, One)  // _UID: Unique ID
-```
-
-To handle this case; while enumerating ACPI devices in
-get_acpihid_device_id() count the number of matching ACPI devices with
-a matching _HID. If there is exactly one _HID match then accept it even
-if the UID doesn't match. Other operating systems allow this, but the
-current IVRS spec leaves some ambiguity whether to allow or disallow it.
-This should be clarified in future revisions of the spec. Output
-'Firmware Bug' for this case to encourage it to be solved in the BIOS.
-
-Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
-Reviewed-by: Vasant Hegde <vasant.hegde@amd.com>
-Link: https://lore.kernel.org/r/20250512173129.1274275-1-superm1@kernel.org
-Signed-off-by: Joerg Roedel <jroedel@suse.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: 89550beb098e ("mtd: rawnand: qcom: Implement exec_op()")
+Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Tested-by: Lakshmi Sowjanya D <quic_laksd@quicinc.com>
+Signed-off-by: Md Sadre Alam <quic_mdalam@quicinc.com>
+Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iommu/amd/iommu.c | 33 ++++++++++++++++++++++++++++-----
- 1 file changed, 28 insertions(+), 5 deletions(-)
+ drivers/mtd/nand/raw/qcom_nandc.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/iommu/amd/iommu.c b/drivers/iommu/amd/iommu.c
-index f61e48f237324..4428a9557f295 100644
---- a/drivers/iommu/amd/iommu.c
-+++ b/drivers/iommu/amd/iommu.c
-@@ -107,7 +107,9 @@ static inline int get_acpihid_device_id(struct device *dev,
- 					struct acpihid_map_entry **entry)
- {
- 	struct acpi_device *adev = ACPI_COMPANION(dev);
--	struct acpihid_map_entry *p;
-+	struct acpihid_map_entry *p, *p1 = NULL;
-+	int hid_count = 0;
-+	bool fw_bug;
- 
- 	if (!adev)
- 		return -ENODEV;
-@@ -115,12 +117,33 @@ static inline int get_acpihid_device_id(struct device *dev,
- 	list_for_each_entry(p, &acpihid_map, list) {
- 		if (acpi_dev_hid_uid_match(adev, p->hid,
- 					   p->uid[0] ? p->uid : NULL)) {
--			if (entry)
--				*entry = p;
--			return p->devid;
-+			p1 = p;
-+			fw_bug = false;
-+			hid_count = 1;
-+			break;
-+		}
-+
-+		/*
-+		 * Count HID matches w/o UID, raise FW_BUG but allow exactly one match
-+		 */
-+		if (acpi_dev_hid_match(adev, p->hid)) {
-+			p1 = p;
-+			hid_count++;
-+			fw_bug = true;
- 		}
+--- a/drivers/mtd/nand/raw/qcom_nandc.c
++++ b/drivers/mtd/nand/raw/qcom_nandc.c
+@@ -2917,7 +2917,7 @@ static int qcom_param_page_type_exec(str
+ 		write_reg_dma(nandc, NAND_DEV_CMD1, 1, NAND_BAM_NEXT_SGL);
  	}
--	return -EINVAL;
-+
-+	if (!p1)
-+		return -EINVAL;
-+	if (fw_bug)
-+		dev_err_once(dev, FW_BUG "No ACPI device matched UID, but %d device%s matched HID.\n",
-+			     hid_count, hid_count > 1 ? "s" : "");
-+	if (hid_count > 1)
-+		return -EINVAL;
-+	if (entry)
-+		*entry = p1;
-+
-+	return p1->devid;
- }
  
- static inline int get_device_sbdf_id(struct device *dev)
--- 
-2.39.5
-
+-	nandc->buf_count = len;
++	nandc->buf_count = 512;
+ 	memset(nandc->data_buffer, 0xff, nandc->buf_count);
+ 
+ 	config_nand_single_cw_page_read(chip, false, 0);
 
 
 
