@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-157202-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156857-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E35DAE52F6
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:48:55 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4805FAE5179
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:34:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 731687B020F
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:46:50 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5F8E718857DE
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:34:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D83471AAA1C;
-	Mon, 23 Jun 2025 21:48:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9575F1EEA5D;
+	Mon, 23 Jun 2025 21:33:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dix/akcU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E0gltBMM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95B063FD4;
-	Mon, 23 Jun 2025 21:48:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53F8F1DDC04;
+	Mon, 23 Jun 2025 21:33:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750715289; cv=none; b=n6UeIemV1HihTdNGqWLvNkrcsFgY9HWYkfW5+XOrD5Z+nMGNz8n9Hhxq9hAXfdYXlxXIWf0AoxBIhrsGeJxq2ErVyQNCMO9kkLw/w72uYNZG0lzeTwIsnJjU4b2gw4873WZmBazcLV88GJRVJlwgJSbE40bnXbGTp6YEMycTBCE=
+	t=1750714436; cv=none; b=HC67SIu40RLfKO9QYetD0kffHnnK0b8WpCYTjSJL+a54+vYWUVpsG7N0BV8Yeh3mqX6fKXEwXmjH7jnayA/4YkM9z6SAALWF/M1vv9FRCWZy6gHBboUNKEKTpaOi/BTjPAyFTc57TIjbqVpFEIqlpmJ3p8NE2Gs5lkRNljHUayI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750715289; c=relaxed/simple;
-	bh=wGklmCljeo8MTlxqtWQcOtLUG+TTNMbXKkaqhrgHUis=;
+	s=arc-20240116; t=1750714436; c=relaxed/simple;
+	bh=cacyccKlhFuJPy7Dk8dCzvMxqMoH7oVSF5zH4cjT6Vs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ROnlYUeiCz6NXMJieFreQdSJ12ubDB3TyOGd8mTxso2K2idA561HRWVtz//n5WEeZ1tGJGgC5EYRTmdV9ohQ6PJBHb8ylKpTh9TVQWs2rVQAGaMYhh1Ae3hFz4l2ngMH5tojS3qgh/E0e8newFMUGLU8GqeDxM30M+E01F8Xj9Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dix/akcU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2DCF1C4CEEA;
-	Mon, 23 Jun 2025 21:48:09 +0000 (UTC)
+	 MIME-Version; b=m3CqgFHqjfT1S3u/RNjCr036F6vdmrJDr5x60UcN1lBD34++DWb6n0ZfnEbVe10ISKM9LOHakD8f9oGh5BQD8qWhQh0CarNmVSPMHvrrqu39gCR0CwY83k8c2PzWeSV+g37AxCiG5xStBxNfzS6VpN7IJIIWQl2+qn9SUu7Ts74=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E0gltBMM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6A8DC4CEEA;
+	Mon, 23 Jun 2025 21:33:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750715289;
-	bh=wGklmCljeo8MTlxqtWQcOtLUG+TTNMbXKkaqhrgHUis=;
+	s=korg; t=1750714436;
+	bh=cacyccKlhFuJPy7Dk8dCzvMxqMoH7oVSF5zH4cjT6Vs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dix/akcUi2AIX6Url5t29d7mnZqjU9eSyv5B7fRicyjD9tQKnMpwFdM7Olcd4QcFj
-	 z4vBia57vO/ycuaNZSwrCJWO/aT5KdVo1SJF06+NLlSoRvPmrpvZRx3B5Lkc3eFScz
-	 1NaoqyLLWMl1/sxqqaRc26xToO229HfgCuCwKGc8=
+	b=E0gltBMMF0zNfitOfdjkQnVyKhHTKjDAdrkEja6CCarP+IPx30mGf033aYgCO51XM
+	 BElzQjiMWhHIMwR96kRRI4m55q72CaneM0gApQjG+tSh7ieQf4BDETPuxRisWFfw1A
+	 Inm2o/0ak4GqaJJlVM2xiZdRC/DnQ3+jSV8fMGVA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yao Zi <ziyao@disroot.org>,
-	Huacai Chen <chenhuacai@loongson.cn>
-Subject: [PATCH 6.15 449/592] platform/loongarch: laptop: Unregister generic_sub_drivers on exit
+	Wentao Liang <vulab@iscas.ac.cn>,
+	Mark Brown <broonie@kernel.org>
+Subject: [PATCH 5.10 206/355] regulator: max14577: Add error check for max14577_read_reg()
 Date: Mon, 23 Jun 2025 15:06:47 +0200
-Message-ID: <20250623130711.109167169@linuxfoundation.org>
+Message-ID: <20250623130632.911464985@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
-References: <20250623130700.210182694@linuxfoundation.org>
+In-Reply-To: <20250623130626.716971725@linuxfoundation.org>
+References: <20250623130626.716971725@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,51 +61,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yao Zi <ziyao@disroot.org>
+From: Wentao Liang <vulab@iscas.ac.cn>
 
-commit f78fb2576f22b0ba5297412a9aa7691920666c41 upstream.
+commit 65271f868cb1dca709ff69e45939bbef8d6d0b70 upstream.
 
-Without correct unregisteration, ACPI notify handlers and the platform
-drivers installed by generic_subdriver_init() will become dangling
-references after removing the loongson_laptop module, triggering various
-kernel faults when a hotkey is sent or at kernel shutdown.
+The function max14577_reg_get_current_limit() calls the function
+max14577_read_reg(), but does not check its return value. A proper
+implementation can be found in max14577_get_online().
 
-Cc: stable@vger.kernel.org
-Fixes: 6246ed09111f ("LoongArch: Add ACPI-based generic laptop driver")
-Signed-off-by: Yao Zi <ziyao@disroot.org>
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+Add a error check for the max14577_read_reg() and return error code
+if the function fails.
+
+Fixes: b0902bbeb768 ("regulator: max14577: Add regulator driver for Maxim 14577")
+Cc: stable@vger.kernel.org # v3.14
+Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
+Link: https://patch.msgid.link/20250526025627.407-1-vulab@iscas.ac.cn
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/platform/loongarch/loongson-laptop.c |   12 +++++++++---
- 1 file changed, 9 insertions(+), 3 deletions(-)
+ drivers/regulator/max14577-regulator.c |    5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
---- a/drivers/platform/loongarch/loongson-laptop.c
-+++ b/drivers/platform/loongarch/loongson-laptop.c
-@@ -611,11 +611,17 @@ static int __init generic_acpi_laptop_in
+--- a/drivers/regulator/max14577-regulator.c
++++ b/drivers/regulator/max14577-regulator.c
+@@ -40,11 +40,14 @@ static int max14577_reg_get_current_limi
+ 	struct max14577 *max14577 = rdev_get_drvdata(rdev);
+ 	const struct maxim_charger_current *limits =
+ 		&maxim_charger_currents[max14577->dev_type];
++	int ret;
  
- static void __exit generic_acpi_laptop_exit(void)
- {
-+	int i;
-+
- 	if (generic_inputdev) {
--		if (input_device_registered)
--			input_unregister_device(generic_inputdev);
--		else
-+		if (!input_device_registered) {
- 			input_free_device(generic_inputdev);
-+		} else {
-+			input_unregister_device(generic_inputdev);
-+
-+			for (i = 0; i < ARRAY_SIZE(generic_sub_drivers); i++)
-+				generic_subdriver_exit(&generic_sub_drivers[i]);
-+		}
- 	}
- }
+ 	if (rdev_get_id(rdev) != MAX14577_CHARGER)
+ 		return -EINVAL;
  
+-	max14577_read_reg(rmap, MAX14577_CHG_REG_CHG_CTRL4, &reg_data);
++	ret = max14577_read_reg(rmap, MAX14577_CHG_REG_CHG_CTRL4, &reg_data);
++	if (ret < 0)
++		return ret;
+ 
+ 	if ((reg_data & CHGCTRL4_MBCICHWRCL_MASK) == 0)
+ 		return limits->min;
 
 
 
