@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-156750-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157038-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 44374AE50F6
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:29:39 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AC5B2AE5233
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:41:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5B018440F4B
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:29:14 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4944E4A5457
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:41:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28E901EFF9F;
-	Mon, 23 Jun 2025 21:29:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB32E2222A9;
+	Mon, 23 Jun 2025 21:41:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WIPUdfl0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J5vBC4Ma"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB7292222CA;
-	Mon, 23 Jun 2025 21:29:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9BD419D084;
+	Mon, 23 Jun 2025 21:41:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750714174; cv=none; b=IBZ1tJ8odmHcNkr6IZc1DQzd7MYKFZAY8CVrY0i7oZaF0C6G4uY1Us9VWgA0Z8ceZANkEH4XnNmtUP/cnecy/z4BiX3DfX84C2ybVBUSeiOKIH323djrlL1kNwHZNL3poieykCthz0VZCcJ88G+wo1ObVgEWC+nrKBzzRzw0xQQ=
+	t=1750714882; cv=none; b=b/XE4gJYdqCYaeOTO07AckutjIYT33JJxzSyR+5bTFrPB+zQ56+HfxRMlY02tz6vEtjYa/cm4/hgvShEvyeALQFmZbpgEn2XNgvjA093SkEll5zxT8SSCtbtIF1J6CtDF6UGg2777uIQEFSwCd5/2S4DfC0ry1BlVhf9vL3gClE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750714174; c=relaxed/simple;
-	bh=miQOrr3Fwf1xm/DRqT1MyBH/gFKBW+pR77ff4VpyIsY=;
+	s=arc-20240116; t=1750714882; c=relaxed/simple;
+	bh=GBVY3RyBK1kgFUss4cUJu9ZbTVj1MPJi26In/n4fQrg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gp7btStRR8jk3954DdCU2gho5TpVLFiWXSl2qpcIPzWmaN0i1JIX4Z/V8Vjytsf6//ju5bGb2ZLovGk4GEColviI1wPnc7hvzcMLZML6cm+p7FMKRDKViqqWruNsHPhfLF2cjRfJgGmB5zPeUJbb7mHf1d3J8waDiC06zYyUvOg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WIPUdfl0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37C71C4CEEA;
-	Mon, 23 Jun 2025 21:29:34 +0000 (UTC)
+	 MIME-Version; b=EJ5oxBqiAoUxVnc4ceLUoSyxxQP0WhRW4PybIoKQU/jq/zq3sggsK0vVsYHrpGwKm7vx9sYpNnejHlOXA9p2SbRFkAWdkm3sTmJ2UHbfC+z+zHw3XLTkCZtVQ6ZYbAJkq9tIigvC+QLbQDsQSks3GDj6YE9ciLskqfi4NtZPAeE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J5vBC4Ma; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B7A6C4CEEA;
+	Mon, 23 Jun 2025 21:41:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750714174;
-	bh=miQOrr3Fwf1xm/DRqT1MyBH/gFKBW+pR77ff4VpyIsY=;
+	s=korg; t=1750714882;
+	bh=GBVY3RyBK1kgFUss4cUJu9ZbTVj1MPJi26In/n4fQrg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WIPUdfl02sXoq8T8WSe81DsMhH9zhMoWJ8meHEol2fdkv1iS/tjPoq3cteXK5PCyn
-	 93gz1mYS6rF7PeRkLWFO7SVqDLweh3R8UQz14TRsY0W9gZlKjxfDJ1b163VSRYfhTE
-	 G8NJ5WA191riuGBW3ewc2AR32NhyhIS7TslziiqU=
+	b=J5vBC4MaRX+letZMSNzM64AAbrlSBLalmt332F7gjgSOmSL0RayLcumOqokG46Qa+
+	 mVNaD6d8TsYko+wd4nWL9PBkGq7AYjjn8FGWceKe3Ya33WwUiEgwTPiCRhYd7wsQ9Q
+	 kp47D6aK0ydgMTirVNy7ciL9BC7gB6cbpqvPzAB0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Henk Vergonet <henk.vergonet@gmail.com>,
-	Lorenzo Bianconi <lorenzo@kernel.org>,
-	Felix Fietkau <nbd@nbd.name>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 141/290] wifi: mt76: mt76x2: Add support for LiteOn WN4516R,WN4519R
+	Christian Mazakas <christian.mazakas@gmail.com>,
+	Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 6.15 444/592] io_uring/kbuf: dont truncate end buffer for multiple buffer peeks
 Date: Mon, 23 Jun 2025 15:06:42 +0200
-Message-ID: <20250623130631.143312542@linuxfoundation.org>
+Message-ID: <20250623130710.992601964@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130626.910356556@linuxfoundation.org>
-References: <20250623130626.910356556@linuxfoundation.org>
+In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
+References: <20250623130700.210182694@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,91 +61,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Henk Vergonet <henk.vergonet@gmail.com>
+From: Jens Axboe <axboe@kernel.dk>
 
-[ Upstream commit 3c0e4f606d8693795a2c965d6f4987b1bfc31097 ]
+commit 26ec15e4b0c1d7b25214d9c0be1d50492e2f006c upstream.
 
-Adds support for:
- - LiteOn WN4516R
- - LiteOn WN4519R
- Both use:
- - A nonstandard USB connector
- - Mediatek chipset MT7600U
- - ASIC revision: 76320044
+If peeking a bunch of buffers, normally io_ring_buffers_peek() will
+truncate the end buffer. This isn't optimal as presumably more data will
+be arriving later, and hence it's better to stop with the last full
+buffer rather than truncate the end buffer.
 
-Disabled VHT support on ASIC revision 76320044:
-
- This fixes the 5G connectibity issue on LiteOn WN4519R module
- see https://github.com/openwrt/mt76/issues/971
-
- And may also fix the 5G issues on the XBox One Wireless Adapter
- see https://github.com/openwrt/mt76/issues/200
-
- I have looked at the FCC info related to the MT7632U chip as mentioned in here:
- https://github.com/openwrt/mt76/issues/459
- These confirm the chipset does not support 'ac' mode and hence VHT should be turned of.
-
-Signed-off-by: Henk Vergonet <henk.vergonet@gmail.com>
-Acked-by: Lorenzo Bianconi <lorenzo@kernel.org>
-Link: https://patch.msgid.link/20250418143914.31384-1-henk.vergonet@gmail.com
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: 35c8711c8fc4 ("io_uring/kbuf: add helpers for getting/peeking multiple buffers")
+Reported-by: Christian Mazakas <christian.mazakas@gmail.com>
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/mediatek/mt76/mt76x2/usb.c     |  2 ++
- .../net/wireless/mediatek/mt76/mt76x2/usb_init.c    | 13 ++++++++++++-
- 2 files changed, 14 insertions(+), 1 deletion(-)
+ io_uring/kbuf.c |    5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76x2/usb.c b/drivers/net/wireless/mediatek/mt76/mt76x2/usb.c
-index 70d3895762b4c..00248e2b21ea7 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76x2/usb.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt76x2/usb.c
-@@ -17,6 +17,8 @@ static const struct usb_device_id mt76x2u_device_table[] = {
- 	{ USB_DEVICE(0x057c, 0x8503) },	/* Avm FRITZ!WLAN AC860 */
- 	{ USB_DEVICE(0x7392, 0xb711) },	/* Edimax EW 7722 UAC */
- 	{ USB_DEVICE(0x0e8d, 0x7632) },	/* HC-M7662BU1 */
-+	{ USB_DEVICE(0x0471, 0x2126) }, /* LiteOn WN4516R module, nonstandard USB connector */
-+	{ USB_DEVICE(0x0471, 0x7600) }, /* LiteOn WN4519R module, nonstandard USB connector */
- 	{ USB_DEVICE(0x2c4e, 0x0103) },	/* Mercury UD13 */
- 	{ USB_DEVICE(0x0846, 0x9053) },	/* Netgear A6210 */
- 	{ USB_DEVICE(0x045e, 0x02e6) },	/* XBox One Wireless Adapter */
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76x2/usb_init.c b/drivers/net/wireless/mediatek/mt76/mt76x2/usb_init.c
-index 33a14365ec9b9..3b55628115115 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76x2/usb_init.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt76x2/usb_init.c
-@@ -191,6 +191,7 @@ int mt76x2u_register_device(struct mt76x02_dev *dev)
- {
- 	struct ieee80211_hw *hw = mt76_hw(dev);
- 	struct mt76_usb *usb = &dev->mt76.usb;
-+	bool vht;
- 	int err;
+--- a/io_uring/kbuf.c
++++ b/io_uring/kbuf.c
+@@ -270,8 +270,11 @@ static int io_ring_buffers_peek(struct i
+ 		/* truncate end piece, if needed, for non partial buffers */
+ 		if (len > arg->max_len) {
+ 			len = arg->max_len;
+-			if (!(bl->flags & IOBL_INC))
++			if (!(bl->flags & IOBL_INC)) {
++				if (iov != arg->iovs)
++					break;
+ 				buf->len = len;
++			}
+ 		}
  
- 	INIT_DELAYED_WORK(&dev->cal_work, mt76x2u_phy_calibrate);
-@@ -217,7 +218,17 @@ int mt76x2u_register_device(struct mt76x02_dev *dev)
- 
- 	/* check hw sg support in order to enable AMSDU */
- 	hw->max_tx_fragments = dev->mt76.usb.sg_en ? MT_TX_SG_MAX_SIZE : 1;
--	err = mt76_register_device(&dev->mt76, true, mt76x02_rates,
-+	switch (dev->mt76.rev) {
-+	case 0x76320044:
-+		/* these ASIC revisions do not support VHT */
-+		vht = false;
-+		break;
-+	default:
-+		vht = true;
-+		break;
-+	}
-+
-+	err = mt76_register_device(&dev->mt76, vht, mt76x02_rates,
- 				   ARRAY_SIZE(mt76x02_rates));
- 	if (err)
- 		goto fail;
--- 
-2.39.5
-
+ 		iov->iov_base = u64_to_user_ptr(buf->addr);
 
 
 
