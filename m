@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-156468-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156772-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF63BAE4FB5
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:18:48 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 80AB7AE5114
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:30:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 768A71766AC
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:18:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DD6D144128F
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:30:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE1EC221734;
-	Mon, 23 Jun 2025 21:18:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4669223335;
+	Mon, 23 Jun 2025 21:30:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fWJy/ins"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FGl5Yz75"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9AFBD1EFFA6;
-	Mon, 23 Jun 2025 21:18:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7297022156B;
+	Mon, 23 Jun 2025 21:30:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750713485; cv=none; b=HqODjB3Cs+AsQxhD2jjPQd41Ub7o9Uja0u5ywpaTiCNhDoaglGxzllnGNt19GQeA+S9vOmQGqhVDYXis2LdNJNYwd782MO//VHx+/uMvd5ZXHA72oolFOn5m5OM3/f/WT0E6N/br4ZbSoyOK4coHXdRIfvcAKdRFOW5kwAPBWbM=
+	t=1750714228; cv=none; b=jjoOkD7fdCJF5SrNxUfFMTFcQ9GsKrt39SlqPbKeHDJxg4sJFpbeCoSXmF+4PRTYh0aI0XoRgMQkKkPLGH/+k9N6wySz01OOtOtPh1lO/QVIUWkVRlqYv7RZtmckJPyNoJNegsb/4raX0Rf0BQtIphA3XRZ2UPafn39K4Fim6t4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750713485; c=relaxed/simple;
-	bh=Az51LPuBZHk/REtVqjvzbPWZPsMW5Oh1R81LCP56Guo=;
+	s=arc-20240116; t=1750714228; c=relaxed/simple;
+	bh=T301ESbOih4yi2wHzSfIP/HE1C9qAlWtyqhG8l/vi1g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=S8Y1uDNvbSCAbSQxoYDNDATlJq2sLJvLcI98fCIk1nPlKLSsrMkgPsEz3SIIicGSfQQbd/OuenPrwpVlaEcisici5oSGdc7HFSAskBiNoRkqE2CS9doicfcgcvI7EsFYBLk//gRj4ygE22IS281nV86MuJJWouJVxvi9ePo8Ixw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fWJy/ins; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1EABC4CEF0;
-	Mon, 23 Jun 2025 21:18:04 +0000 (UTC)
+	 MIME-Version; b=OzvzsJRvMlyDhRa+7WM6cZANcc1pYA7Iru4xsf105MBbtUlX4mB5hVCo7WdqhreSpY7PvJLFulWhbyyfi1lwd/ErHJ+RA0sRvuE24zqrHWttLhl1vTtGMLArXu7D5nOK3OseQh0f49TEzGLwo802a6S5hgyjbMtsBkI0MK/dUo8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FGl5Yz75; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10A6DC4CEEA;
+	Mon, 23 Jun 2025 21:30:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750713485;
-	bh=Az51LPuBZHk/REtVqjvzbPWZPsMW5Oh1R81LCP56Guo=;
+	s=korg; t=1750714228;
+	bh=T301ESbOih4yi2wHzSfIP/HE1C9qAlWtyqhG8l/vi1g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fWJy/insojNinsJpt2U4jfViszy0YO88s1p2tMF2zdjO+O6mLbi9KVCMgP46UCZmm
-	 gZUVFKDVT7q54j2lZr0HFU7fo0xU7ZUZqQAwNzH+CauI9XmRwjh/RPWxtTUeZrHVvH
-	 Lf3uldT4kFk2O1eClPV4s9EPahacRORSmTVvO960=
+	b=FGl5Yz75hgh+LLi2JBTZZiUjSyn9N/nIl7GKs4/jyZYDKbdADPqu3n490DdbHF5+g
+	 BsSF5BJtLIfUyho4s9iXwLxIunOEHd1yweZP88XeV03Ay6BO8C1QEeCX4r3jNOfip/
+	 sUoPnQ9ZOAMeh5MIPhMnxgJ4HetUHYV0bP8nlAvc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ming Qian <ming.qian@oss.nxp.com>,
-	Nicolas Dufresne <nicolas.dufresne@collabora.com>,
-	Frank Li <Frank.Li@nxp.com>,
-	Hans Verkuil <hverkuil@xs4all.nl>
-Subject: [PATCH 6.12 066/414] media: imx-jpeg: Move mxc_jpeg_free_slot_data() ahead
-Date: Mon, 23 Jun 2025 15:03:23 +0200
-Message-ID: <20250623130643.720720682@linuxfoundation.org>
+	Sam Winchenbach <swinchenbach@arka.org>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 159/508] iio: filter: admv8818: fix integer overflow
+Date: Mon, 23 Jun 2025 15:03:24 +0200
+Message-ID: <20250623130649.190566248@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
-References: <20250623130642.015559452@linuxfoundation.org>
+In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
+References: <20250623130645.255320792@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,86 +62,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ming Qian <ming.qian@oss.nxp.com>
+From: Sam Winchenbach <swinchenbach@arka.org>
 
-commit 46e9c092f850bd7b4d06de92d3d21877f49a3fcb upstream.
+[ Upstream commit fb6009a28d77edec4eb548b5875dae8c79b88467 ]
 
-Move function mxc_jpeg_free_slot_data() above mxc_jpeg_alloc_slot_data()
-allowing to call that function during allocation failures.
-No functional changes are made.
+HZ_PER_MHZ is only unsigned long. This math overflows, leading to
+incorrect results.
 
-Fixes: 2db16c6ed72c ("media: imx-jpeg: Add V4L2 driver for i.MX8 JPEG Encoder/Decoder")
-Cc: stable@vger.kernel.org
-Signed-off-by: Ming Qian <ming.qian@oss.nxp.com>
-Reviewed-by: Nicolas Dufresne <nicolas.dufresne@collabora.com>
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
-Signed-off-by: Nicolas Dufresne <nicolas.dufresne@collabora.com>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: f34fe888ad05 ("iio:filter:admv8818: add support for ADMV8818")
+Signed-off-by: Sam Winchenbach <swinchenbach@arka.org>
+Link: https://patch.msgid.link/20250328174831.227202-4-sam.winchenbach@framepointer.org
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/platform/nxp/imx-jpeg/mxc-jpeg.c |   40 ++++++++++++-------------
- 1 file changed, 20 insertions(+), 20 deletions(-)
+ drivers/iio/filter/admv8818.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/media/platform/nxp/imx-jpeg/mxc-jpeg.c
-+++ b/drivers/media/platform/nxp/imx-jpeg/mxc-jpeg.c
-@@ -752,6 +752,26 @@ static int mxc_get_free_slot(struct mxc_
- 	return -1;
- }
+diff --git a/drivers/iio/filter/admv8818.c b/drivers/iio/filter/admv8818.c
+index a50a8ea2f8dda..831427aa89d83 100644
+--- a/drivers/iio/filter/admv8818.c
++++ b/drivers/iio/filter/admv8818.c
+@@ -152,7 +152,7 @@ static int __admv8818_hpf_select(struct admv8818_state *st, u64 freq)
+ 	}
  
-+static void mxc_jpeg_free_slot_data(struct mxc_jpeg_dev *jpeg)
-+{
-+	/* free descriptor for decoding/encoding phase */
-+	dma_free_coherent(jpeg->dev, sizeof(struct mxc_jpeg_desc),
-+			  jpeg->slot_data.desc,
-+			  jpeg->slot_data.desc_handle);
-+
-+	/* free descriptor for encoder configuration phase / decoder DHT */
-+	dma_free_coherent(jpeg->dev, sizeof(struct mxc_jpeg_desc),
-+			  jpeg->slot_data.cfg_desc,
-+			  jpeg->slot_data.cfg_desc_handle);
-+
-+	/* free configuration stream */
-+	dma_free_coherent(jpeg->dev, MXC_JPEG_MAX_CFG_STREAM,
-+			  jpeg->slot_data.cfg_stream_vaddr,
-+			  jpeg->slot_data.cfg_stream_handle);
-+
-+	jpeg->slot_data.used = false;
-+}
-+
- static bool mxc_jpeg_alloc_slot_data(struct mxc_jpeg_dev *jpeg)
- {
- 	struct mxc_jpeg_desc *desc;
-@@ -798,26 +818,6 @@ err:
- 	return false;
- }
- 
--static void mxc_jpeg_free_slot_data(struct mxc_jpeg_dev *jpeg)
--{
--	/* free descriptor for decoding/encoding phase */
--	dma_free_coherent(jpeg->dev, sizeof(struct mxc_jpeg_desc),
--			  jpeg->slot_data.desc,
--			  jpeg->slot_data.desc_handle);
--
--	/* free descriptor for encoder configuration phase / decoder DHT */
--	dma_free_coherent(jpeg->dev, sizeof(struct mxc_jpeg_desc),
--			  jpeg->slot_data.cfg_desc,
--			  jpeg->slot_data.cfg_desc_handle);
--
--	/* free configuration stream */
--	dma_free_coherent(jpeg->dev, MXC_JPEG_MAX_CFG_STREAM,
--			  jpeg->slot_data.cfg_stream_vaddr,
--			  jpeg->slot_data.cfg_stream_handle);
--
--	jpeg->slot_data.used = false;
--}
--
- static void mxc_jpeg_check_and_set_last_buffer(struct mxc_jpeg_ctx *ctx,
- 					       struct vb2_v4l2_buffer *src_buf,
- 					       struct vb2_v4l2_buffer *dst_buf)
+ 	/* Close HPF frequency gap between 12 and 12.5 GHz */
+-	if (freq >= 12000 * HZ_PER_MHZ && freq <= 12500 * HZ_PER_MHZ) {
++	if (freq >= 12000ULL * HZ_PER_MHZ && freq < 12500ULL * HZ_PER_MHZ) {
+ 		hpf_band = 3;
+ 		hpf_step = 15;
+ 	}
+-- 
+2.39.5
+
 
 
 
