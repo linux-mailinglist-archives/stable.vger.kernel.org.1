@@ -1,62 +1,56 @@
-Return-Path: <stable+bounces-157280-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156961-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 33969AE5341
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:51:37 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 65EBAAE51DF
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:38:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DD9F81B669E2
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:51:40 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A45E77A33B9
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:36:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E6551FECBA;
-	Mon, 23 Jun 2025 21:51:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 674E9221FDC;
+	Mon, 23 Jun 2025 21:38:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CJdZlOaL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sGXMDREQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BFC1136348;
-	Mon, 23 Jun 2025 21:51:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 255054409;
+	Mon, 23 Jun 2025 21:38:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750715482; cv=none; b=dCBlol5s/7eXguyH31u5ZgYJc5LQyP9Uf46PJmLT4lQXJSUfCkkCzPC3r8jR8XMPCn/AXVHRfqT06X9vw8opwwT0B/JV5nAF7TUIRBqqDCLabKsChGxFEJ2Bjkvy0PboYLosARF45PGP4GYnS7NgQ6iZtnXdwKy3dV2zHnxc5V0=
+	t=1750714694; cv=none; b=OFIx7IPBE1z4AhdY+nj4CeL1RE9DSAUe4UwfNpxyBG3LOnr5jzAWYqXTlrGmUCKWzCEkRkORIlfTy+h3yDz2Fzh3JHrpqFggvL7GEJK5BovbDqEnuKT3qNZ/ymJivcsbGfF0DT4dh+4xd+OLak2lokqaHNR3z0D+Nuo6evZylFg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750715482; c=relaxed/simple;
-	bh=mZ1rC8E0LuCPKhNiKDAO4l8VYYwOWcqSkzRda54YhkA=;
+	s=arc-20240116; t=1750714694; c=relaxed/simple;
+	bh=J1taC+dlnXLbay+iOthXHJTJCHl4uqv4UjEa6Z/GOq4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ftprqwvtVWxeCVjBM/e4t3IZ5910VILycNTePvyzzSwzfRAcM5RHLEmIB/2elCHgdCuDZ/60WKiSfAm4drbO/5Blb52MmAHuspjuSSG/BGgf4mNLw70puyhLzljdNGtNbymmP8rgJ8FLRpo5AesJ83cy/iNHt5DytU3XUl86uhY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CJdZlOaL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA232C4CEEA;
-	Mon, 23 Jun 2025 21:51:21 +0000 (UTC)
+	 MIME-Version; b=EOvnUxhCaVCuLTtrZxZI0pXtqZGLLZW6fQAmlbRpZDPNeBikxMdgKxpNDUnAOT2WRBikUcd25G9ZLV5CbFiH5E20TwqX0nwHdkExjFdXmn49byYG1JoFrasFoBhkHQTQXsR7UPZE+tJ1c2CPFm9sQIQRJS2c29wYPUyBzVJbSQw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sGXMDREQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3769C4CEEA;
+	Mon, 23 Jun 2025 21:38:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750715482;
-	bh=mZ1rC8E0LuCPKhNiKDAO4l8VYYwOWcqSkzRda54YhkA=;
+	s=korg; t=1750714694;
+	bh=J1taC+dlnXLbay+iOthXHJTJCHl4uqv4UjEa6Z/GOq4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CJdZlOaLNa5GH0QdfgulqnjHvsb9eo+3GNXywXe6LiPOXcQEeesON5EzrYG98IEp/
-	 7+RWdUx+XYIWIdc40yuS3Is/LIP29twEwRA53bqYsrf8MOAnEb4CTZd4MZeB25Hith
-	 cYAegAoL65NEcvduiy0gdNVZI2GD4qZCw2//sR7M=
+	b=sGXMDREQK0MPesyxo8wALVyLRXfeqNOTxBuFdDSWY4Xv5A6ZIu3GRIyQxStQaZJxb
+	 mw81foI6U1TQGDftmHFcnHwG5lToLwF+8tKCR2CjXmIXwo1yXrsw9FpXf43G95pTMi
+	 fejccGPLmmTNoxoQpp0cwc63Cz8Ti2f8YGw6M/V0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Harry Wentland <harry.wentland@amd.com>,
-	Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>,
-	Tom Chung <chiahsuan.chung@amd.com>,
-	Roman Li <roman.li@amd.com>,
-	Alex Hung <alex.hung@amd.com>,
-	Aurabindo Pillai <aurabindo.pillai@amd.com>,
-	Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Long Li <leo.lilong@huawei.com>,
+	Chuck Lever <chuck.lever@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 280/411] drm/amd/display: Add NULL pointer checks in dm_force_atomic_commit()
+Subject: [PATCH 5.10 223/355] sunrpc: update nextcheck time when adding new cache entries
 Date: Mon, 23 Jun 2025 15:07:04 +0200
-Message-ID: <20250623130640.698642911@linuxfoundation.org>
+Message-ID: <20250623130633.444061962@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
-References: <20250623130632.993849527@linuxfoundation.org>
+In-Reply-To: <20250623130626.716971725@linuxfoundation.org>
+References: <20250623130626.716971725@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,84 +62,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
+From: Long Li <leo.lilong@huawei.com>
 
-[ Upstream commit 3f397cd203f247879c2f1a061e90d4c8d23655de ]
+[ Upstream commit 5ca00634c8bbb2979c73465588f486b9632f5ed5 ]
 
-This commit updates the dm_force_atomic_commit function to replace the
-usage of PTR_ERR_OR_ZERO with IS_ERR for checking error states after
-retrieving the Connector (drm_atomic_get_connector_state), CRTC
-(drm_atomic_get_crtc_state), and Plane (drm_atomic_get_plane_state)
-states.
+The cache_detail structure uses a "nextcheck" field to control hash table
+scanning intervals. When a table scan begins, nextcheck is set to current
+time plus 1800 seconds. During scanning, if cache_detail is not empty and
+a cache entry's expiry time is earlier than the current nextcheck, the
+nextcheck is updated to that expiry time.
 
-The function utilized PTR_ERR_OR_ZERO for error checking. However, this
-approach is inappropriate in this context because the respective
-functions do not return NULL; they return pointers that encode errors.
+This mechanism ensures that:
+1) Empty cache_details are scanned every 1800 seconds to avoid unnecessary
+   scans
+2) Non-empty cache_details are scanned based on the earliest expiry time
+   found
 
-This change ensures that error pointers are properly checked using
-IS_ERR before attempting to dereference.
+However, when adding a new cache entry to an empty cache_detail, the
+nextcheck time was not being updated, remaining at 1800 seconds. This
+could delay cache cleanup for up to 1800 seconds, potentially blocking
+threads(such as nfsd) that are waiting for cache cleanup.
 
-Cc: Harry Wentland <harry.wentland@amd.com>
-Cc: Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>
-Cc: Tom Chung <chiahsuan.chung@amd.com>
-Cc: Roman Li <roman.li@amd.com>
-Cc: Alex Hung <alex.hung@amd.com>
-Cc: Aurabindo Pillai <aurabindo.pillai@amd.com>
-Signed-off-by: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
-Reviewed-by: Aurabindo Pillai <aurabindo.pillai@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Fix this by updating the nextcheck time whenever a new cache entry is
+added.
+
+Signed-off-by: Long Li <leo.lilong@huawei.com>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c  | 18 ++++++++++++------
- 1 file changed, 12 insertions(+), 6 deletions(-)
+ net/sunrpc/cache.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-index e9f592bdac27f..24bb7063670ae 100644
---- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-+++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-@@ -10044,16 +10044,20 @@ static int dm_force_atomic_commit(struct drm_connector *connector)
- 	 */
- 	conn_state = drm_atomic_get_connector_state(state, connector);
+diff --git a/net/sunrpc/cache.c b/net/sunrpc/cache.c
+index 486c466ab4668..0a91945db88fe 100644
+--- a/net/sunrpc/cache.c
++++ b/net/sunrpc/cache.c
+@@ -133,6 +133,8 @@ static struct cache_head *sunrpc_cache_add_entry(struct cache_detail *detail,
  
--	ret = PTR_ERR_OR_ZERO(conn_state);
--	if (ret)
-+	/* Check for error in getting connector state */
-+	if (IS_ERR(conn_state)) {
-+		ret = PTR_ERR(conn_state);
- 		goto out;
-+	}
+ 	hlist_add_head_rcu(&new->cache_list, head);
+ 	detail->entries++;
++	if (detail->nextcheck > new->expiry_time)
++		detail->nextcheck = new->expiry_time + 1;
+ 	cache_get(new);
+ 	spin_unlock(&detail->hash_lock);
  
- 	/* Attach crtc to drm_atomic_state*/
- 	crtc_state = drm_atomic_get_crtc_state(state, &disconnected_acrtc->base);
- 
--	ret = PTR_ERR_OR_ZERO(crtc_state);
--	if (ret)
-+	/* Check for error in getting crtc state */
-+	if (IS_ERR(crtc_state)) {
-+		ret = PTR_ERR(crtc_state);
- 		goto out;
-+	}
- 
- 	/* force a restore */
- 	crtc_state->mode_changed = true;
-@@ -10061,9 +10065,11 @@ static int dm_force_atomic_commit(struct drm_connector *connector)
- 	/* Attach plane to drm_atomic_state */
- 	plane_state = drm_atomic_get_plane_state(state, plane);
- 
--	ret = PTR_ERR_OR_ZERO(plane_state);
--	if (ret)
-+	/* Check for error in getting plane state */
-+	if (IS_ERR(plane_state)) {
-+		ret = PTR_ERR(plane_state);
- 		goto out;
-+	}
- 
- 	/* Call commit internally with the state we just constructed */
- 	ret = drm_atomic_commit(state);
 -- 
 2.39.5
 
