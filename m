@@ -1,122 +1,89 @@
-Return-Path: <stable+bounces-155328-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-155329-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 70E81AE39A6
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 11:16:07 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AFC13AE39CC
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 11:20:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3B1D41896725
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 09:16:23 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7A9D67A73F1
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 09:18:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5AF221B19D;
-	Mon, 23 Jun 2025 09:16:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C35DD230996;
+	Mon, 23 Jun 2025 09:20:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=hmeau.com header.i=@hmeau.com header.b="nYRSKHTX"
 X-Original-To: stable@vger.kernel.org
-Received: from relay2-d.mail.gandi.net (relay2-d.mail.gandi.net [217.70.183.194])
+Received: from abb.hmeau.com (abb.hmeau.com [144.6.53.87])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2B2813FD86;
-	Mon, 23 Jun 2025 09:15:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.194
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9ADC822F74D;
+	Mon, 23 Jun 2025 09:20:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=144.6.53.87
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750670162; cv=none; b=ohfmvWSR6VD1EYlrONZ3BzDZf20KMc5JaEGXM9z/M+90z9jVLiG6Cuio95kk7a9ijGRYh4Aj/pSyN+hVM/DpNZiO85DrWOaii4nL60Ml/dLNyuQ6EfzAXPnWpkTQLEZXEH3srGax2ZE7uTBa5KwBVlhd2PCGhGH2/9lJHmQBbvU=
+	t=1750670412; cv=none; b=q1qGHm0qrMCTn2K+dKxzLQduHbXsTgvbk1Ln8w4T0TL4nqG/eCOHu2uSccc/F7Ij4BLJtBBN1IethHEoOpREXLlK3sTnoXYMnLG0EutWtpFb7in6EOF2TXEfu3CblldWtJaY0mDRien8+o0g4HrIxzP655rGoNWeASFkKyCuei4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750670162; c=relaxed/simple;
-	bh=CdYWB1HHn5KIwcQQ9Kqi9JFPTBckXzWwoZEkVi60h3g=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=RhHUTcgNnG2lgMEwD/jQUGwFk3LS4m+s8mKvPnZYabjLuHTq+oKM5AAFUzMqHCdp+FZs9QIVUxXZPZRxf47Jk5advIK7QEM2qMyeg48e1+uByyoE18N4hIl1Qb4o5a4EPDicOZ2H4kRz5gjDxkZJWTSaRng+xqKuwBt0+nDDm7A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ghiti.fr; spf=pass smtp.mailfrom=ghiti.fr; arc=none smtp.client-ip=217.70.183.194
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ghiti.fr
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ghiti.fr
-Received: by mail.gandi.net (Postfix) with ESMTPSA id BD23D41B5F;
-	Mon, 23 Jun 2025 09:15:48 +0000 (UTC)
-Message-ID: <027ef1a9-6a5c-4dba-8816-159411739b71@ghiti.fr>
-Date: Mon, 23 Jun 2025 11:15:48 +0200
+	s=arc-20240116; t=1750670412; c=relaxed/simple;
+	bh=pgz5yZJHh1OA/qVvcjVcv+LfrTvsvl71ofScf4jNulY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=u7NG7sE2V3JLDE3mLOYL53ZWBKgwm3UKSlehtRkMs1gwC81lW3xFIiLYI+Huax3tL2ZLuldrSitSd6dfWlbz20yCC1ofaysz8EID85cvaSglV14l/NbE+xu7iDG99iZcLWfiGnkANxi/i4YnRgnZwBuH6l4lIsfAJFhRdiZxFpk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gondor.apana.org.au; spf=pass smtp.mailfrom=gondor.apana.org.au; dkim=pass (2048-bit key) header.d=hmeau.com header.i=@hmeau.com header.b=nYRSKHTX; arc=none smtp.client-ip=144.6.53.87
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gondor.apana.org.au
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gondor.apana.org.au
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=hmeau.com;
+	s=formenos; h=In-Reply-To:Content-Type:MIME-Version:References:Message-ID:
+	Subject:Cc:To:From:Date:Sender:Reply-To:Content-Transfer-Encoding:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+	List-Post:List-Owner:List-Archive;
+	bh=r5Jc+CQrkK73bB0V8VwOxnwQpA1eSxslP9GajFKoFdM=; b=nYRSKHTXEeTelqyfGQy1aN7iiZ
+	xr7YRWqv8aWfQITslky2iZ/97dQZzgW+Zi1LlPTdX3rwAYV8MCjXDc2m42zHgrwUCVTfFtTo+ykRY
+	7j4Dl3P6vY/wprFSkWowBm+1eKwXgan/psShKpZFciUWfxP9ZUUNEwUV5GzDn0zpnE//n7AhNK63e
+	ej7/2BiyHmwVtSlMi3ssYiCKPl+vgHhFZp0acq2y57W4SANVnU95PxigG/azwq2143MxZbwXOi25B
+	gZ7WS2JMGhzK9fZ/firYJDitv11isLyqhXg/EVDkofsINQqp23K0qWbuAxFTcEqenjW+pvo5s9lpy
+	3+wxFGrA==;
+Received: from loth.rohan.me.apana.org.au ([192.168.167.2])
+	by formenos.hmeau.com with smtp (Exim 4.96 #2 (Debian))
+	id 1uTd5y-000FYD-2D;
+	Mon, 23 Jun 2025 17:20:04 +0800
+Received: by loth.rohan.me.apana.org.au (sSMTP sendmail emulation); Mon, 23 Jun 2025 17:20:03 +0800
+Date: Mon, 23 Jun 2025 17:20:03 +0800
+From: Herbert Xu <herbert@gondor.apana.org.au>
+To: Giovanni Cabiddu <giovanni.cabiddu@intel.com>
+Cc: ebiggers@kernel.org, linux-crypto@vger.kernel.org, qat-linux@intel.com,
+	stable@vger.kernel.org
+Subject: Re: [PATCH] crypto: qat - lower priority for skcipher and aead
+ algorithms
+Message-ID: <aFkcQ5yw7nPIRjcf@gondor.apana.org.au>
+References: <20250613103309.22440-1-giovanni.cabiddu@intel.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] Revert "riscv: Define TASK_SIZE_MAX for __access_ok()"
-To: Nam Cao <namcao@linutronix.de>, Paul Walmsley <paul.walmsley@sifive.com>,
- Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>,
- linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org
-Cc: rtm@csail.mit.edu, stable@vger.kernel.org
-References: <20250619155858.1249789-1-namcao@linutronix.de>
-Content-Language: en-US
-From: Alexandre Ghiti <alex@ghiti.fr>
-In-Reply-To: <20250619155858.1249789-1-namcao@linutronix.de>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-GND-State: clean
-X-GND-Score: -100
-X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtddvgdduieeigecutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfitefpfffkpdcuggftfghnshhusghstghrihgsvgenuceurghilhhouhhtmecufedtudenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhepkfffgggfuffvvehfhfgjtgfgsehtjeertddtvdejnecuhfhrohhmpeetlhgvgigrnhgurhgvucfihhhithhiuceorghlvgigsehghhhithhirdhfrheqnecuggftrfgrthhtvghrnhephffhuddtveegleeggeefledtudfhudelvdetudfhgeffffeigffgkeethfejudejnecuffhomhgrihhnpehkvghrnhgvlhdrohhrghenucfkphepvddttddumeekiedumeeffeekvdemvghfledtmedvieeijeemvgejvgdtmeehudeltdemfhgvtdehnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepvddttddumeekiedumeeffeekvdemvghfledtmedvieeijeemvgejvgdtmeehudeltdemfhgvtdehpdhhvghloheplgfkrfggieemvddttddumeekiedumeeffeekvdemvghfledtmedvieeijeemvgejvgdtmeehudeltdemfhgvtdehngdpmhgrihhlfhhrohhmpegrlhgvgiesghhhihhtihdrfhhrpdhnsggprhgtphhtthhopeekpdhrtghpthhtohepnhgrmhgtrghosehlihhnuhhtrhhonhhigidruggvpdhrtghpthhtohepphgruhhlrdifrghlmhhslhgvhiesshhifhhivhgvrdgtohhmpdhrtghpthhtohepp
- hgrlhhmvghrsegurggssggvlhhtrdgtohhmpdhrtghpthhtoheprghouhesvggvtghsrdgsvghrkhgvlhgvhidrvgguuhdprhgtphhtthhopehlihhnuhigqdhrihhstghvsehlihhsthhsrdhinhhfrhgruggvrggurdhorhhgpdhrtghpthhtoheplhhinhhugidqkhgvrhhnvghlsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheprhhtmhestghsrghilhdrmhhithdrvgguuhdprhgtphhtthhopehsthgrsghlvgesvhhgvghrrdhkvghrnhgvlhdrohhrgh
-X-GND-Sasl: alex@ghiti.fr
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250613103309.22440-1-giovanni.cabiddu@intel.com>
 
-Hi Nam,
-
-On 6/19/25 17:58, Nam Cao wrote:
-> This reverts commit ad5643cf2f69 ("riscv: Define TASK_SIZE_MAX for
-> __access_ok()").
->
-> This commit changes TASK_SIZE_MAX to be LONG_MAX to optimize access_ok(),
-> because the previous TASK_SIZE_MAX (default to TASK_SIZE) requires some
-> computation.
->
-> The reasoning was that all user addresses are less than LONG_MAX, and all
-> kernel addresses are greater than LONG_MAX. Therefore access_ok() can
-> filter kernel addresses.
->
-> Addresses between TASK_SIZE and LONG_MAX are not valid user addresses, but
-> access_ok() let them pass. That was thought to be okay, because they are
-> not valid addresses at hardware level.
->
-> Unfortunately, one case is missed: get_user_pages_fast() happily accepts
-> addresses between TASK_SIZE and LONG_MAX. futex(), for instance, uses
-> get_user_pages_fast(). This causes the problem reported by Robert [1].
->
-> Therefore, revert this commit. TASK_SIZE_MAX is changed to the default:
-> TASK_SIZE.
->
-> This unfortunately reduces performance, because TASK_SIZE is more expensive
-> to compute compared to LONG_MAX. But correctness first, we can think about
-> optimization later, if required.
->
-> Reported-by: <rtm@csail.mit.edu>
-> Closes: https://lore.kernel.org/linux-riscv/77605.1750245028@localhost/
-> Signed-off-by: Nam Cao <namcao@linutronix.de>
+On Fri, Jun 13, 2025 at 11:32:27AM +0100, Giovanni Cabiddu wrote:
+> Most kernel applications utilizing the crypto API operate synchronously
+> and on small buffer sizes, therefore do not benefit from QAT acceleration.
+> 
+> Reduce the priority of QAT implementations for both skcipher and aead
+> algorithms, allowing more suitable alternatives to be selected by default.
+> 
+> Signed-off-by: Giovanni Cabiddu <giovanni.cabiddu@intel.com>
+> Link: https://lore.kernel.org/all/20250613012357.GA3603104@google.com/
 > Cc: stable@vger.kernel.org
 > ---
->   arch/riscv/include/asm/pgtable.h | 1 -
->   1 file changed, 1 deletion(-)
->
-> diff --git a/arch/riscv/include/asm/pgtable.h b/arch/riscv/include/asm/pgtable.h
-> index 438ce7df24c39..5bd5aae60d536 100644
-> --- a/arch/riscv/include/asm/pgtable.h
-> +++ b/arch/riscv/include/asm/pgtable.h
-> @@ -1075,7 +1075,6 @@ static inline pte_t pte_swp_clear_exclusive(pte_t pte)
->    */
->   #ifdef CONFIG_64BIT
->   #define TASK_SIZE_64	(PGDIR_SIZE * PTRS_PER_PGD / 2)
-> -#define TASK_SIZE_MAX	LONG_MAX
->   
->   #ifdef CONFIG_COMPAT
->   #define TASK_SIZE_32	(_AC(0x80000000, UL) - PAGE_SIZE)
+>  drivers/crypto/intel/qat/qat_common/qat_algs.c | 12 ++++++------
+>  1 file changed, 6 insertions(+), 6 deletions(-)
 
-
-I agree with this revert, the next step is to implement the same 
-optimization using alternatives (like x86 does).
-
-Reviewed-by: Alexandre Ghiti <alexghiti@rivosinc.com>
-
-It should land into -fixes.
-
-Thanks,
-
-Alex
-
+Patch applied.  Thanks.
+-- 
+Email: Herbert Xu <herbert@gondor.apana.org.au>
+Home Page: http://gondor.apana.org.au/~herbert/
+PGP Key: http://gondor.apana.org.au/~herbert/pubkey.txt
 
