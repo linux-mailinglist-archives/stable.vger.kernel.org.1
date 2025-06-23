@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-157791-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157797-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 58504AE5591
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:12:39 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 48C9AAE55C2
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:14:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EABC07AF18C
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:11:15 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8122A4452A4
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:12:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B2A2E223DD0;
-	Mon, 23 Jun 2025 22:12:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 65981226D00;
+	Mon, 23 Jun 2025 22:12:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A/R9TQgq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kAb4+EBD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DFFE2940B;
-	Mon, 23 Jun 2025 22:12:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20929226888;
+	Mon, 23 Jun 2025 22:12:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750716730; cv=none; b=fH8fh4EbqFUeSzYNBbqu1TnoxoyU1zaikwJNln5wWMxY9PF2EGyJu3WbNleOVd1E0OtBAxV5wz5ujf6Wb8xozB0zyzx91Un9jSa8yfHcMbtolefiyLioKhVREjP3zp8Bf/FyVUewT7EuNqiLgMv/ETQJYmmMp/EogFBRuq9R1zQ=
+	t=1750716745; cv=none; b=oWg6Vk5VyBcpPj8T52NLt30ncyv6azYoWLi8hgM9LRDdQL+ZcU8E+wvtzJUjzD0IZETZj6AZ0VahtNl2+qTfL0jpXbKgG6Bksp3jEIyk0ausKaXAMlw0W97cmA5/X7Z0oDrcZ1d4hl0GUv8N8qrU0ufUfdoHcLlo2Yjf/sETav4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750716730; c=relaxed/simple;
-	bh=fuopPG3iOahIvJvX0/8KlD4VdnjkY5fm1lNPL8/+uOA=;
+	s=arc-20240116; t=1750716745; c=relaxed/simple;
+	bh=D6m7ggV1cgeXqjaos+fclKsK3T74yq+Q3u2gNyx4DYk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=giFLIgufSDmkRDxGlLhsk/kiPDB5ND8GQCOCJJMPKLWA1vT594oZZt/RTcv5Ux1uzged9MJQYUr3WRP2iQM/NlD3Erx4O9HNDU59HurDC7b8ezTiyzDP4mLIXJivjn5+oZFPHl33hlt7dxD5HcT1Glx4tntA3d4TOAEhVAr0z40=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A/R9TQgq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06B7BC4CEEA;
-	Mon, 23 Jun 2025 22:12:09 +0000 (UTC)
+	 MIME-Version; b=uOqvNRaytH0fMKagkY7ABFoZqUSi5qMCoHG8wmN461YKMCwCrpqNKfeeKF9ic/6lmuzHxB8rVSJrmDHhED3eTZoCIiEnsV6UfxVSRvMVjUkh9gWcDJwcme8oazMcBoQnODzgynmXtCyNba8UfYc/5ELvsOg38rxmOJiW7NkgTyM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kAb4+EBD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD6C0C4CEEA;
+	Mon, 23 Jun 2025 22:12:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750716730;
-	bh=fuopPG3iOahIvJvX0/8KlD4VdnjkY5fm1lNPL8/+uOA=;
+	s=korg; t=1750716745;
+	bh=D6m7ggV1cgeXqjaos+fclKsK3T74yq+Q3u2gNyx4DYk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=A/R9TQgqe0hqtLty8WXdNAXpUzGcuiIyY4Dm6uq3XpJiulpuJy36uJVtBJ/c7ppcn
-	 uFbSHMIqW53yR0CN4v8/giU6XsI/p43dUP4BMsjPRGNQJklEycSgqwadsSDu4KZSmw
-	 COrbNlvkXy6cetoHHlDiaqQF0PjJwj0ra43Ycn+8=
+	b=kAb4+EBDBQjcxtLVEMnbvRABNJJR91lhahnbYd5+6FrByYX+7Gx3eGimTwEHqiTuI
+	 OQmkiQpdf0AeWjoKuClcA20goHfm7/BVPfvGF2FQVx/GRPQKBtRVQan+189EItiAex
+	 OK3GWv8pg44qGyl91CuVTYCg6F84QiRh6qMS6ry0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Douglas Anderson <dianders@chromium.org>,
-	Ricardo Ribalda <ribalda@chromium.org>,
-	Hans de Goede <hdegoede@redhat.com>,
-	Hans Verkuil <hverkuil@xs4all.nl>
-Subject: [PATCH 6.1 324/508] media: uvcvideo: Fix deferred probing error
-Date: Mon, 23 Jun 2025 15:06:09 +0200
-Message-ID: <20250623130653.300399654@linuxfoundation.org>
+	Ross Stutterheim <ross.stutterheim@garmin.com>,
+	Mike Rapoport <rppt@kernel.org>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>
+Subject: [PATCH 6.1 325/508] ARM: 9447/1: arm/memremap: fix arch_memremap_can_ram_remap()
+Date: Mon, 23 Jun 2025 15:06:10 +0200
+Message-ID: <20250623130653.323474224@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
 In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
 References: <20250623130645.255320792@linuxfoundation.org>
@@ -67,101 +68,49 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Ricardo Ribalda <ribalda@chromium.org>
+From: Ross Stutterheim <ross.stutterheim@garmin.com>
 
-commit 387e8939307192d5a852a2afeeb83427fa477151 upstream.
+commit 96e0b355883006554a0bee3697da475971d6bba8 upstream.
 
-uvc_gpio_parse() can return -EPROBE_DEFER when the GPIOs it depends on
-have not yet been probed. This return code should be propagated to the
-caller of uvc_probe() to ensure that probing is retried when the required
-GPIOs become available.
+arm/memremap: fix arch_memremap_can_ram_remap()
 
-Currently, this error code is incorrectly converted to -ENODEV,
-causing some internal cameras to be ignored.
+commit 260364d112bc ("arm[64]/memremap: don't abuse pfn_valid() to ensure
+presence of linear map") added the definition of
+arch_memremap_can_ram_remap() for arm[64] specific filtering of what pages
+can be used from the linear mapping. memblock_is_map_memory() was called
+with the pfn of the address given to arch_memremap_can_ram_remap();
+however, memblock_is_map_memory() expects to be given an address for arm,
+not a pfn.
 
-This commit fixes this issue by propagating the -EPROBE_DEFER error.
+This results in calls to memremap() returning a newly mapped area when
+it should return an address in the existing linear mapping.
 
+Fix this by removing the address to pfn translation and pass the
+address directly.
+
+Fixes: 260364d112bc ("arm[64]/memremap: don't abuse pfn_valid() to ensure presence of linear map")
+Signed-off-by: Ross Stutterheim <ross.stutterheim@garmin.com>
+Cc: Mike Rapoport <rppt@kernel.org>
 Cc: stable@vger.kernel.org
-Fixes: 2886477ff987 ("media: uvcvideo: Implement UVC_EXT_GPIO_UNIT")
-Reviewed-by: Douglas Anderson <dianders@chromium.org>
-Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
-Message-ID: <20250313-uvc-eprobedefer-v3-1-a1d312708eef@chromium.org>
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+Reviewed-by: Catalin Marinas <catalin.marinas@arm.com>
+Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/usb/uvc/uvc_driver.c |   27 +++++++++++++++++++--------
- 1 file changed, 19 insertions(+), 8 deletions(-)
+ arch/arm/mm/ioremap.c |    4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
---- a/drivers/media/usb/uvc/uvc_driver.c
-+++ b/drivers/media/usb/uvc/uvc_driver.c
-@@ -2181,13 +2181,16 @@ static int uvc_probe(struct usb_interfac
- #endif
- 
- 	/* Parse the Video Class control descriptor. */
--	if (uvc_parse_control(dev) < 0) {
-+	ret = uvc_parse_control(dev);
-+	if (ret < 0) {
-+		ret = -ENODEV;
- 		uvc_dbg(dev, PROBE, "Unable to parse UVC descriptors\n");
- 		goto error;
- 	}
- 
- 	/* Parse the associated GPIOs. */
--	if (uvc_gpio_parse(dev) < 0) {
-+	ret = uvc_gpio_parse(dev);
-+	if (ret < 0) {
- 		uvc_dbg(dev, PROBE, "Unable to parse UVC GPIOs\n");
- 		goto error;
- 	}
-@@ -2213,24 +2216,32 @@ static int uvc_probe(struct usb_interfac
- 	}
- 
- 	/* Register the V4L2 device. */
--	if (v4l2_device_register(&intf->dev, &dev->vdev) < 0)
-+	ret = v4l2_device_register(&intf->dev, &dev->vdev);
-+	if (ret < 0)
- 		goto error;
- 
- 	/* Scan the device for video chains. */
--	if (uvc_scan_device(dev) < 0)
-+	if (uvc_scan_device(dev) < 0) {
-+		ret = -ENODEV;
- 		goto error;
-+	}
- 
- 	/* Initialize controls. */
--	if (uvc_ctrl_init_device(dev) < 0)
-+	if (uvc_ctrl_init_device(dev) < 0) {
-+		ret = -ENODEV;
- 		goto error;
-+	}
- 
- 	/* Register video device nodes. */
--	if (uvc_register_chains(dev) < 0)
-+	if (uvc_register_chains(dev) < 0) {
-+		ret = -ENODEV;
- 		goto error;
-+	}
- 
- #ifdef CONFIG_MEDIA_CONTROLLER
- 	/* Register the media device node */
--	if (media_device_register(&dev->mdev) < 0)
-+	ret = media_device_register(&dev->mdev);
-+	if (ret < 0)
- 		goto error;
- #endif
- 	/* Save our data pointer in the interface data. */
-@@ -2257,7 +2268,7 @@ static int uvc_probe(struct usb_interfac
- error:
- 	uvc_unregister_video(dev);
- 	kref_put(&dev->ref, uvc_delete);
--	return -ENODEV;
-+	return ret;
+--- a/arch/arm/mm/ioremap.c
++++ b/arch/arm/mm/ioremap.c
+@@ -515,7 +515,5 @@ void __init early_ioremap_init(void)
+ bool arch_memremap_can_ram_remap(resource_size_t offset, size_t size,
+ 				 unsigned long flags)
+ {
+-	unsigned long pfn = PHYS_PFN(offset);
+-
+-	return memblock_is_map_memory(pfn);
++	return memblock_is_map_memory(offset);
  }
- 
- static void uvc_disconnect(struct usb_interface *intf)
 
 
 
