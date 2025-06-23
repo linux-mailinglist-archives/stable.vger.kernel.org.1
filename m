@@ -1,59 +1,63 @@
-Return-Path: <stable+bounces-157453-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157501-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 56558AE540A
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:58:44 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 501DBAE546B
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:01:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DF50B3A8C43
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:57:59 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id F05CD188F95F
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:00:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DEB492036FA;
-	Mon, 23 Jun 2025 21:58:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 521304C74;
+	Mon, 23 Jun 2025 22:00:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EAN16PCm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wNgT2/xA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CC491B87D9;
-	Mon, 23 Jun 2025 21:58:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 101486136;
+	Mon, 23 Jun 2025 22:00:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750715902; cv=none; b=WMrbp9VuTjM3f2WkxbV4telLod8xIvMj47UE6Z6tNriljX1onkEtMAIX50/Dd/gI+795bhSsaj3ITgoB+wM3CmLX/zyqX850JC6zvyPsV4/3Lsq2akW4i9LDDaB+UyXrGy/VWKNPnWADS+kuThYEqkL/whTjMtJkyqHVBY/x61E=
+	t=1750716022; cv=none; b=ctZZYInmMxnNLxA9aSfkUP3nQYuuP0LtV2vPLqSZ3E1ZHISz3G0GKzcOmZR4UF6zavyI/30Hhn1S8gnPzBlQcwCNu/52bQXx4nMpG9ClfScRMj/FFXMv9phEFyXUtnMSZiZSgztMdUB2U/OXyr4VLha0ddpbH2qfnF08TP6poAo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750715902; c=relaxed/simple;
-	bh=e8PzW024Y6EEUdTjfI5iUg/cQeeVTvaPG3JbuHMfOOo=;
+	s=arc-20240116; t=1750716022; c=relaxed/simple;
+	bh=ZiBURmDAdIvI9ImGBQhhk3U4J/gfaFI20z5jU34vRGw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=scWZ8MqHMwKtj2HcOzVOKw+/QPUboKe00iVH0FaCJE5Ql1uG0WldTCjJELfqV8e+mrmcukQgkG/mLBi1a0f6a4/y96MfheEnMQRwbTSrBCUQhd0Bope7H7op1VdsBNKYrsQTSrTZ8SPEfE3rbN2tAyxBdS+YBBRgWrEY6j9rn9A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EAN16PCm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37A11C4CEEA;
-	Mon, 23 Jun 2025 21:58:22 +0000 (UTC)
+	 MIME-Version; b=TwaeX7t6r9vjvmxSlWgB/WmH/vHa+kOUdPtzcYm4/Ob5NttLf2X4knL0xh8h0E6y0UWFyuacmfPDrmnVodJtMU7dLObCFglRlYEiqa6UWIJOZgCVVtdjRgJbwIRLqi+fUen8UxRtp9FngYZMcMCcEScTuFEQAmUjSdLYpjmx08k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wNgT2/xA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9EB18C4CEEA;
+	Mon, 23 Jun 2025 22:00:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750715902;
-	bh=e8PzW024Y6EEUdTjfI5iUg/cQeeVTvaPG3JbuHMfOOo=;
+	s=korg; t=1750716021;
+	bh=ZiBURmDAdIvI9ImGBQhhk3U4J/gfaFI20z5jU34vRGw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EAN16PCm0lGqRsfpaz6AB3RnoxPVvEMj+8lML/ELdpVYLZ9C0TYjLWreyCEPkWv+q
-	 +5TD60tismJd57YaxkHulDBXV6saYXJn15nW7k+mTaMB+aH2q8d1Ia3QNaO0LzT/Ix
-	 Ts0QkNRffgNQQFotnubad9NZGtT0wsT9e7nVpfLM=
+	b=wNgT2/xAjWrKlH15ANjouzcCuUomAHR8FAnq3hsKArERe2/zZy3CZkAAJywAfXJIo
+	 us2whHPoqpqfAMEbcK3uK2iqH3OD+SR1oVOVcqI0UnLldJXt18TAT4XznCk3YqYxpo
+	 cVDahBQT5BN6bYn5PvsvqcnNggKjYeAck+6DEYdg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mike Tipton <quic_mdtipton@quicinc.com>,
-	Peng Fan <peng.fan@nxp.com>,
-	Cristian Marussi <cristian.marussi@arm.com>,
-	Sudeep Holla <sudeep.holla@arm.com>,
-	Viresh Kumar <viresh.kumar@linaro.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 311/411] cpufreq: scmi: Skip SCMI devices that arent used by the CPUs
+	SeongJae Park <sj@kernel.org>,
+	Barry Song <21cnbao@gmail.com>,
+	Jann Horn <jannh@google.com>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	David Hildenbrand <david@redhat.com>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Barry Song <baohua@kernel.org>,
+	Liam Howlett <liam.howlett@oracle.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.15 497/592] mm/madvise: handle madvise_lock() failure during race unwinding
 Date: Mon, 23 Jun 2025 15:07:35 +0200
-Message-ID: <20250623130641.470159723@linuxfoundation.org>
+Message-ID: <20250623130712.254231443@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
-References: <20250623130632.993849527@linuxfoundation.org>
+In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
+References: <20250623130700.210182694@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,94 +69,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mike Tipton <quic_mdtipton@quicinc.com>
+From: SeongJae Park <sj@kernel.org>
 
-[ Upstream commit 6c9bb86922728c7a4cceb99f131e00dd87514f20 ]
+commit 9c49e5d09f076001e05537734d7df002162eb2b5 upstream.
 
-Currently, all SCMI devices with performance domains attempt to register
-a cpufreq driver, even if their performance domains aren't used to
-control the CPUs. The cpufreq framework only supports registering a
-single driver, so only the first device will succeed. And if that device
-isn't used for the CPUs, then cpufreq will scale the wrong domains.
+When unwinding race on -ERESTARTNOINTR handling of process_madvise(),
+madvise_lock() failure is ignored.  Check the failure and abort remaining
+works in the case.
 
-To avoid this, return early from scmi_cpufreq_probe() if the probing
-SCMI device isn't referenced by the CPU device phandles.
-
-This keeps the existing assumption that all CPUs are controlled by a
-single SCMI device.
-
-Signed-off-by: Mike Tipton <quic_mdtipton@quicinc.com>
-Reviewed-by: Peng Fan <peng.fan@nxp.com>
-Reviewed-by: Cristian Marussi <cristian.marussi@arm.com>
-Reviewed-by: Sudeep Holla <sudeep.holla@arm.com>
-Tested-by: Cristian Marussi <cristian.marussi@arm.com>
-Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://lkml.kernel.org/r/20250602174926.1074-1-sj@kernel.org
+Fixes: 4000e3d0a367 ("mm/madvise: remove redundant mmap_lock operations from process_madvise()")
+Signed-off-by: SeongJae Park <sj@kernel.org>
+Reported-by: Barry Song <21cnbao@gmail.com>
+Closes: https://lore.kernel.org/CAGsJ_4xJXXO0G+4BizhohSZ4yDteziPw43_uF8nPXPWxUVChzw@mail.gmail.com
+Reviewed-by: Jann Horn <jannh@google.com>
+Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Acked-by: David Hildenbrand <david@redhat.com>
+Reviewed-by: Shakeel Butt <shakeel.butt@linux.dev>
+Reviewed-by: Barry Song <baohua@kernel.org>
+Cc: Liam Howlett <liam.howlett@oracle.com>
+Cc: Vlastimil Babka <vbabka@suse.cz>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/cpufreq/scmi-cpufreq.c | 36 +++++++++++++++++++++++++++++++++-
- 1 file changed, 35 insertions(+), 1 deletion(-)
+ mm/madvise.c |    5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/cpufreq/scmi-cpufreq.c b/drivers/cpufreq/scmi-cpufreq.c
-index 8c9c2f710790f..1f12109526fa6 100644
---- a/drivers/cpufreq/scmi-cpufreq.c
-+++ b/drivers/cpufreq/scmi-cpufreq.c
-@@ -288,6 +288,40 @@ static struct cpufreq_driver scmi_cpufreq_driver = {
- 	.register_em	= scmi_cpufreq_register_em,
- };
+--- a/mm/madvise.c
++++ b/mm/madvise.c
+@@ -1832,7 +1832,9 @@ static ssize_t vector_madvise(struct mm_
  
-+static bool scmi_dev_used_by_cpus(struct device *scmi_dev)
-+{
-+	struct device_node *scmi_np = dev_of_node(scmi_dev);
-+	struct device_node *cpu_np, *np;
-+	struct device *cpu_dev;
-+	int cpu, idx;
-+
-+	if (!scmi_np)
-+		return false;
-+
-+	for_each_possible_cpu(cpu) {
-+		cpu_dev = get_cpu_device(cpu);
-+		if (!cpu_dev)
-+			continue;
-+
-+		cpu_np = dev_of_node(cpu_dev);
-+
-+		np = of_parse_phandle(cpu_np, "clocks", 0);
-+		of_node_put(np);
-+
-+		if (np == scmi_np)
-+			return true;
-+
-+		idx = of_property_match_string(cpu_np, "power-domain-names", "perf");
-+		np = of_parse_phandle(cpu_np, "power-domains", idx);
-+		of_node_put(np);
-+
-+		if (np == scmi_np)
-+			return true;
-+	}
-+
-+	return false;
-+}
-+
- static int scmi_cpufreq_probe(struct scmi_device *sdev)
- {
- 	int ret;
-@@ -296,7 +330,7 @@ static int scmi_cpufreq_probe(struct scmi_device *sdev)
+ 			/* Drop and reacquire lock to unwind race. */
+ 			madvise_unlock(mm, behavior);
+-			madvise_lock(mm, behavior);
++			ret = madvise_lock(mm, behavior);
++			if (ret)
++				goto out;
+ 			continue;
+ 		}
+ 		if (ret < 0)
+@@ -1841,6 +1843,7 @@ static ssize_t vector_madvise(struct mm_
+ 	}
+ 	madvise_unlock(mm, behavior);
  
- 	handle = sdev->handle;
++out:
+ 	ret = (total_len - iov_iter_count(iter)) ? : ret;
  
--	if (!handle)
-+	if (!handle || !scmi_dev_used_by_cpus(dev))
- 		return -ENODEV;
- 
- 	perf_ops = handle->devm_protocol_get(sdev, SCMI_PROTOCOL_PERF, &ph);
--- 
-2.39.5
-
+ 	return ret;
 
 
 
