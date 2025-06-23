@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-157288-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157130-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A45EAE535C
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:52:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 64FCAAE52A8
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:46:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 727107AC79D
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:50:36 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A737E7AD4FC
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:44:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E795021B9C9;
-	Mon, 23 Jun 2025 21:51:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98B2A229B15;
+	Mon, 23 Jun 2025 21:45:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Oa+s275j"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xz4mnGoN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3FFE19049B;
-	Mon, 23 Jun 2025 21:51:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56B6A223DF0;
+	Mon, 23 Jun 2025 21:45:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750715501; cv=none; b=jmDmezUta++7Ylw/n/Hhhnw2JprntHHR2DW2FIMDDfp9vBqsjBraiusFLYm3elxNSjO+wCut7L+cvV025wvQmEOldTCN6ilEGyVlaZInhlc/E30P+dBnHXNLQQT8WvQ/IQMcaMj3L5rPHPoVDcTwZ0iamfuImZBh/MS67HX7/Is=
+	t=1750715108; cv=none; b=sWdsgRsF9Axv54JSyXwq36isMhNxRWts9kgxZzeE0mm4UrfODVr8Yrlh7bGWyPefKpUQ6SZLzF0LMo15XB4lnVGEIp/nyfiSlVsype7q1wve8DV0tGm77VTB5I5WUINGlCaqhcmTpb/IOrbNVpJDQ7I7Wa2MHZXtMPL+QPMRJLA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750715501; c=relaxed/simple;
-	bh=4B8S/JbmTrIYbHZ2/7BTSysffOn6ClflCRR901CVkTM=;
+	s=arc-20240116; t=1750715108; c=relaxed/simple;
+	bh=ptdjcebJ/vLj6GA8GipiuFrwjGYLuBY7/kvxl4ngouU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=HAb6W4e+PQpNy1VNn24077d6UShb5T65WEp7tg90Ki2iOLS8ooWeyyD/D/eQqoO/UPKWjnBUPBe72qZ6d7OgZCicwPK9ft6MIP4+CdAFj4e5LmyUfi0xOP83X8wfsP+AijnHqKxTvnkVmcvffmjb5YtKhPaJyIqIA5qKCF7eef4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Oa+s275j; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3AB56C4CEEA;
-	Mon, 23 Jun 2025 21:51:41 +0000 (UTC)
+	 MIME-Version; b=k9ttPMGyASf29DD26LPEWIxPadlQ9VD1L3kI90aGkYSkZKnjpk6UOjEpYQsoa8zW0na49E1Tpji+h8OGJ+wM4WVwn3G5N6T76iycMfY6+/tlOqxLTVS+wVh3eRgaD+rOb7mxxjNoJFekMLC98RD5cbNYIMuInRnMZueFdhW9xMk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xz4mnGoN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91176C4CEED;
+	Mon, 23 Jun 2025 21:45:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750715501;
-	bh=4B8S/JbmTrIYbHZ2/7BTSysffOn6ClflCRR901CVkTM=;
+	s=korg; t=1750715107;
+	bh=ptdjcebJ/vLj6GA8GipiuFrwjGYLuBY7/kvxl4ngouU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Oa+s275jYNhk9qlyDiDZwpAkM8nSL94qQ8tb/ya9jo3brSgs4towOMgG5wpWXyMcP
-	 LqToHN/42JSe/FrfNqFVC/nKZuiLq8tNMRCfTWe6LQmN18a+Ez8AYBTql6tbCrGu85
-	 n2qidzsVwWymD5yM+UV8QA0wz9SjbEcl22QVwZmA=
+	b=xz4mnGoNep+Z9U8B3L5nllNTtQ6/ZUfZMw5inZBs3a8TJ2wTUvTsZVFopTt4UGJfV
+	 4puMjbVmL+oRwCa8RMHzFp2ZpWPAMxEysxD/CGdV47OWm/ydAu98pib5SDvwYosKCs
+	 DxlrxFLRtRRCKGtDr4m9rSwbqVr+PV4EH3lLgDDw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
-Subject: [PATCH 6.15 483/592] platform/x86/intel-uncore-freq: Fail module load when plat_info is NULL
+	Aditya Kumar Singh <aditya.kumar.singh@oss.qualcomm.com>,
+	Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>,
+	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 180/290] wifi: ath12k: fix failed to set mhi state error during reboot with hardware grouping
 Date: Mon, 23 Jun 2025 15:07:21 +0200
-Message-ID: <20250623130711.922655942@linuxfoundation.org>
+Message-ID: <20250623130632.291904713@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
-References: <20250623130700.210182694@linuxfoundation.org>
+In-Reply-To: <20250623130626.910356556@linuxfoundation.org>
+References: <20250623130626.910356556@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,64 +61,67 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
+From: Aditya Kumar Singh <aditya.kumar.singh@oss.qualcomm.com>
 
-commit 685f88c72a0c4d12d3bd2ff50286938f14486f85 upstream.
+[ Upstream commit dce7aec6b1f74b0a46b901ab8de1f7bd0515f733 ]
 
-Address a Smatch static checker warning regarding an unchecked
-dereference in the function call:
-set_cdie_id(i, cluster_info, plat_info)
-when plat_info is NULL.
+With hardware grouping, during reboot, whenever a device is removed, it
+powers down itself and all its partner devices in the same group. Now this
+is done by all devices and hence there is multiple power down for devices
+and hence the following error messages can be seen:
 
-Instead of addressing this one case, in general if plat_info is NULL
-then it can cause other issues. For example in a two package system it
-will give warning for duplicate sysfs entry as package ID will be always
-zero for both packages when creating string for attribute group name.
+ath12k_pci 0002:01:00.0: failed to set mhi state POWER_OFF(3) in current mhi state (0x0)
+ath12k_pci 0002:01:00.0: failed to set mhi state: POWER_OFF(3)
+ath12k_pci 0002:01:00.0: failed to set mhi state DEINIT(1) in current mhi state (0x0)
+ath12k_pci 0002:01:00.0: failed to set mhi state: DEINIT(1)
+ath12k_pci 0003:01:00.0: failed to set mhi state POWER_OFF(3) in current mhi state (0x0)
+ath12k_pci 0003:01:00.0: failed to set mhi state: POWER_OFF(3)
+ath12k_pci 0003:01:00.0: failed to set mhi state DEINIT(1) in current mhi state (0x0)
+ath12k_pci 0003:01:00.0: failed to set mhi state: DEINIT(1)
+ath12k_pci 0004:01:00.0: failed to set mhi state POWER_OFF(3) in current mhi state (0x0)
+ath12k_pci 0004:01:00.0: failed to set mhi state: POWER_OFF(3)
 
-plat_info is derived from TPMI ID TPMI_BUS_INFO, which is integral to
-the core TPMI design. Therefore, it should not be NULL on a production
-platform. Consequently, the module should fail to load if plat_info is
-NULL.
+To prevent this, check if the ATH12K_PCI_FLAG_INIT_DONE flag is already
+set before powering down. If it is set, it indicates that another partner
+device has already performed the power down, and this device can skip this
+step.
 
-Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
-Closes: https://lore.kernel.org/platform-driver-x86/aEKvGCLd1qmX04Tc@stanley.mountain/T/#u
-Fixes: 8a54e2253e4c ("platform/x86/intel-uncore-freq: Uncore frequency control via TPMI")
-Signed-off-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20250606205300.2384494-1-srinivas.pandruvada@linux.intel.com
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.3.1-00173-QCAHKSWPL_SILICONZ-1
+Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.4.1-00199-QCAHKSWPL_SILICONZ-1
+Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0.c5-00481-QCAHMTSWPL_V1.0_V2.0_SILICONZ-3
+
+Signed-off-by: Aditya Kumar Singh <aditya.kumar.singh@oss.qualcomm.com>
+Reviewed-by: Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>
+Link: https://patch.msgid.link/20250408-fix_reboot_issues_with_hw_grouping-v4-3-95e7bf048595@oss.qualcomm.com
+Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/x86/intel/uncore-frequency/uncore-frequency-tpmi.c |    9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ drivers/net/wireless/ath/ath12k/pci.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/drivers/platform/x86/intel/uncore-frequency/uncore-frequency-tpmi.c
-+++ b/drivers/platform/x86/intel/uncore-frequency/uncore-frequency-tpmi.c
-@@ -467,10 +467,13 @@ static int uncore_probe(struct auxiliary
+diff --git a/drivers/net/wireless/ath/ath12k/pci.c b/drivers/net/wireless/ath/ath12k/pci.c
+index 5fd80f90ecafe..7dfbabf0637d2 100644
+--- a/drivers/net/wireless/ath/ath12k/pci.c
++++ b/drivers/net/wireless/ath/ath12k/pci.c
+@@ -1153,6 +1153,9 @@ void ath12k_pci_power_down(struct ath12k_base *ab)
+ {
+ 	struct ath12k_pci *ab_pci = ath12k_pci_priv(ab);
  
- 	/* Get the package ID from the TPMI core */
- 	plat_info = tpmi_get_platform_data(auxdev);
--	if (plat_info)
--		pkg = plat_info->package_id;
--	else
-+	if (unlikely(!plat_info)) {
- 		dev_info(&auxdev->dev, "Platform information is NULL\n");
-+		ret = -ENODEV;
-+		goto err_rem_common;
-+	}
++	if (!test_bit(ATH12K_PCI_FLAG_INIT_DONE, &ab_pci->flags))
++		return;
 +
-+	pkg = plat_info->package_id;
+ 	/* restore aspm in case firmware bootup fails */
+ 	ath12k_pci_aspm_restore(ab_pci);
  
- 	for (i = 0; i < num_resources; ++i) {
- 		struct tpmi_uncore_power_domain_info *pd_info;
+-- 
+2.39.5
+
 
 
 
