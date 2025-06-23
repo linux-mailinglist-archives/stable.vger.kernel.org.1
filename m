@@ -1,54 +1,57 @@
-Return-Path: <stable+bounces-157317-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156665-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C02ADAE5369
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:52:54 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 716A1AE509F
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:27:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5819B4A7C04
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:52:55 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E349D3AA320
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:26:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 375BB1E22E6;
-	Mon, 23 Jun 2025 21:52:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0C5522333B;
+	Mon, 23 Jun 2025 21:26:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dkqdhcq5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bHkiJsSF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E764972624;
-	Mon, 23 Jun 2025 21:52:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC302222581;
+	Mon, 23 Jun 2025 21:26:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750715573; cv=none; b=tz6qs+mWGJg+y9H6Si8mf0t9GmBDNhtSJIv54cW9fsdIAnGm8w+5kpU3ZyeqAN1P6gqmy0XdhJfl4LuKGSudCld0D17fXqfJAy1kUONPmi2qAkg+g7GW1jCf3E3uXtGVAakw4fVU0lnRdBagCcLsq9OUxWJhn5+4WGXbd+VtC/M=
+	t=1750713969; cv=none; b=Dyk8VcJhIJoF9Ya3lcNFYUUWRp3jlqpA/PIuLMV5K95cQkax5aLhOkTOUfwB1N+i5+eYan79Lm5qBiHLoEHlqQtSxEufypr5/u06csbrUJjI+iq3KvJA8EGh+Y4u9CNkPZozXtCXNPtM76QZH87+CFA3bR120RwjKQq3KTXXTn0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750715573; c=relaxed/simple;
-	bh=tEXMoqpAwbVrijksfwbI0VQJyJn4xgivgLi0wm9k+Bg=;
+	s=arc-20240116; t=1750713969; c=relaxed/simple;
+	bh=/feKkd7WSEO5RMo2HxXnIYCN1lBNuSaIvVI3UHKC058=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=i27FL3SMge56EuPxOU3gtrPGHcGHEz+QD81s00cphgB4ny1iOi6C9qFAC5YZ2hlxWclB9/kJlN8/xfZ2ZCN+sFhCFpCRILpVjY1J+Ro3CCm9Wl8YQseBuoXiIxhLywZM3Q7RsEQat2yCU1WQPw3oWnqy+yxY+UxLD3Z6Ucbkqpc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dkqdhcq5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A5B6C4CEEA;
-	Mon, 23 Jun 2025 21:52:52 +0000 (UTC)
+	 MIME-Version; b=sTXQWkGGidsd8BK1Oe5kpZ22jrAp9XbLCfQyRgq1S3I19NwhAHMZGWUHbNkXH7UAwfJfyfesKmF6/gOU6Dgsm4AFDbCFgWWbwv+/tkL+56i4USZZ0uRDubezJzKJh0PE3HUn5o08h3Fz3q3NIx/JHYBPqEAv38ImSp7ezogOJwY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bHkiJsSF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28A97C4CEEA;
+	Mon, 23 Jun 2025 21:26:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750715572;
-	bh=tEXMoqpAwbVrijksfwbI0VQJyJn4xgivgLi0wm9k+Bg=;
+	s=korg; t=1750713969;
+	bh=/feKkd7WSEO5RMo2HxXnIYCN1lBNuSaIvVI3UHKC058=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dkqdhcq5ENnCf4ULYlB4qNmtlohpRnMtveaGTnyVn0XwLsfRbUg0EfbslEC44fkZ/
-	 LhzAv0kP/M2f9KTnPA6J2I/X2srj4g2Vtr1wCsMWhiVFeZC5A0WiUkWgbg0KiFa/2V
-	 A80/Gv2zXnTfohz0dn/CGHQdoL6Ye9YRIj3Qv+/s=
+	b=bHkiJsSFzZVqBt2Mgc+7YBIyY1cSelTG4lHYMAU6dmarnp0h4AFeB7wmTdEOeZ+jN
+	 5eVRTXey9o0wnGJAa0vybQy/SFqpSamCNlbr01OMemycfqKdvpEKR3PsGBhvDVD/bM
+	 Mc7h/4lqir0HyesEzubd0m/gc564LQXJ3GWVuskU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 6.1 269/508] Revert "io_uring: ensure deferred completions are posted for multishot"
+	Ilya Leoshkevich <iii@linux.ibm.com>,
+	Martin KaFai Lau <martin.lau@kernel.org>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.15 356/592] bpf: Pass the same orig_call value to trampoline functions
 Date: Mon, 23 Jun 2025 15:05:14 +0200
-Message-ID: <20250623130651.864576415@linuxfoundation.org>
+Message-ID: <20250623130708.910794493@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
-References: <20250623130645.255320792@linuxfoundation.org>
+In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
+References: <20250623130700.210182694@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,44 +63,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+From: Ilya Leoshkevich <iii@linux.ibm.com>
 
-This reverts commit b82c386898f7b00cb49abe3fbd622017aaa61230 which is
-commit 687b2bae0efff9b25e071737d6af5004e6e35af5 upstream.
+[ Upstream commit 94bde253d3ae5d8a01cb958663b12daef1d06574 ]
 
-Jens writes:
-	There's some missing dependencies that makes this not work
-	right, I'll bring it back in a series instead.
+There is currently some confusion in the s390x JIT regarding whether
+orig_call can be NULL and what that means. Originally the NULL value
+was used to distinguish the struct_ops case, but this was superseded by
+BPF_TRAMP_F_INDIRECT (see commit 0c970ed2f87c ("s390/bpf: Fix indirect
+trampoline generation").
 
-Link: https://lore.kernel.org/r/313f2335-626f-4eea-8502-d5c3773db35a@kernel.dk
-Reported-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+The remaining reason to have this check is that NULL can actually be
+passed to the arch_bpf_trampoline_size() call - but not to the
+respective arch_prepare_bpf_trampoline()! call - by
+bpf_struct_ops_prepare_trampoline().
+
+Remove this asymmetry by passing stub_func to both functions, so that
+JITs may rely on orig_call never being NULL.
+
+Signed-off-by: Ilya Leoshkevich <iii@linux.ibm.com>
+Acked-by: Martin KaFai Lau <martin.lau@kernel.org>
+Link: https://lore.kernel.org/r/20250512221911.61314-2-iii@linux.ibm.com
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- io_uring/io_uring.c |    8 --------
- 1 file changed, 8 deletions(-)
+ kernel/bpf/bpf_struct_ops.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/io_uring/io_uring.c
-+++ b/io_uring/io_uring.c
-@@ -820,14 +820,6 @@ bool io_post_aux_cqe(struct io_ring_ctx
- {
- 	bool filled;
+diff --git a/kernel/bpf/bpf_struct_ops.c b/kernel/bpf/bpf_struct_ops.c
+index db13ee70d94d5..96113633e391a 100644
+--- a/kernel/bpf/bpf_struct_ops.c
++++ b/kernel/bpf/bpf_struct_ops.c
+@@ -601,7 +601,7 @@ int bpf_struct_ops_prepare_trampoline(struct bpf_tramp_links *tlinks,
+ 	if (model->ret_size > 0)
+ 		flags |= BPF_TRAMP_F_RET_FENTRY_RET;
  
--	/*
--	 * If multishot has already posted deferred completions, ensure that
--	 * those are flushed first before posting this one. If not, CQEs
--	 * could get reordered.
--	 */
--	if (!wq_list_empty(&ctx->submit_state.compl_reqs))
--		__io_submit_flush_completions(ctx);
--
- 	io_cq_lock(ctx);
- 	filled = io_fill_cqe_aux(ctx, user_data, res, cflags, allow_overflow);
- 	io_cq_unlock_post(ctx);
+-	size = arch_bpf_trampoline_size(model, flags, tlinks, NULL);
++	size = arch_bpf_trampoline_size(model, flags, tlinks, stub_func);
+ 	if (size <= 0)
+ 		return size ? : -EFAULT;
+ 
+-- 
+2.39.5
+
 
 
 
