@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-155509-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156092-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1DCD4AE4232
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:17:01 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 98DBFAE4567
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:52:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C0EAC7A81A0
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:15:37 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3A873441C98
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:41:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1400C22FF35;
-	Mon, 23 Jun 2025 13:16:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 16A7A24728E;
+	Mon, 23 Jun 2025 13:42:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mas+HJNO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E6sloK1k"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C651023BF9F;
-	Mon, 23 Jun 2025 13:16:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C910D1E487;
+	Mon, 23 Jun 2025 13:42:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750684616; cv=none; b=eHeCcP0IuaVD4QEXIXADJO9Xg3aM0AvPeu5tVxaEeRk4glu7zvSr5rSUzckV1YmToqZSIY5fW6lKK0Q9GM3NJ/oNGHM8AumbMkVUmD/zVoVq0vye1wVZe7Hy4J4VNKTeNEn9BR6WdKF1U6dFnJf64j/aFUXJMuLdK9YquHIlWbc=
+	t=1750686129; cv=none; b=PNq5l7LWossgjB/m/ThRf7Kc3sOb3XeEc+ykVtS22JnrFKAqQFoaaJ90Mb1uU65qAL3mwvx+lNKbJgErXUbtBqK4eE6ndpPo6ovg1le7OmVU8cE3semAOIWQ+zqpdekXdQosFkyZXDTGxSh3tGBP9Cfm22rXAM4l1omvlsFcKhI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750684616; c=relaxed/simple;
-	bh=gbM7kOwXXWs2FUC4mOem9SLn2OqJEemdRv8D9j/A9m0=;
+	s=arc-20240116; t=1750686129; c=relaxed/simple;
+	bh=gMHFwdfkRif53xaCMkvTGo0Lao+GxteB1TsNYvBdOxM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Rlpb6N9AXodPzjgKOZjU02Nt1JT8sus/ei2cvhuKu7mWFAF3hinugmqQKH63DnOv4uw0V0XoRkSt23JK84d8JebrV44gYOfg7/TY1mf9fEVQMXZeRlfi+QA1TEwAtiDfYwQj3qBuTUZqoRDfNeK5slMFW4ggHuvRUp9Aq9Ts/YE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mas+HJNO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58C28C4CEEA;
-	Mon, 23 Jun 2025 13:16:56 +0000 (UTC)
+	 MIME-Version; b=erZWiEyQVts35YhoLNOWcwx1NZxKMx45zemhkm7EDM8i0f3zJUYsS+pVS8csx24bHBT3lqxP2IHo0K0djAigOa7Huk5KAWTGTmlFilsUKWkeqh+FxLWuS00Tt9sI7ak3QIkRAh9qXbRn7NfanxfxiWK+zWd0wVpuXHyO+XNV7B0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E6sloK1k; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E5F9C4CEEA;
+	Mon, 23 Jun 2025 13:42:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750684616;
-	bh=gbM7kOwXXWs2FUC4mOem9SLn2OqJEemdRv8D9j/A9m0=;
+	s=korg; t=1750686129;
+	bh=gMHFwdfkRif53xaCMkvTGo0Lao+GxteB1TsNYvBdOxM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mas+HJNOzKK3K4YAvWXt1XYv92b3B1x/8x/Rya2ShlIcD+qZWqcIs21EiOkvQE+o9
-	 eKsgJvRnSfoXCR0yfGCAKVHAfRMN51koHUh6DZMgLCfjxf4hKaNE4WPORVxdE3VEO6
-	 +FIYYaKARrY6KfqO2J0isg1kO+KOTo5JBSmkbz6k=
+	b=E6sloK1k5beDS25UMlrpJq1HxdgKN2z+2Avae6zL1QX812hu5T3hCyIWigqnJRayb
+	 cy/Ugj0VbKA60u8RWxSf/moc5m7UomvkP0JnSFU1zhdkMDaGIrk8DDp5NVozj/WKwp
+	 C5aKzxTXk/acZZlyDMRrS6tvWuquXxZ3xBDZhg2k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arnd Bergmann <arnd@arndb.de>,
-	Helge Deller <deller@gmx.de>
-Subject: [PATCH 6.15 136/592] parisc: fix building with gcc-15
+	Kees Cook <kees@kernel.org>,
+	Louis Chauvet <louis.chauvet@bootlin.com>,
+	Louis Chauvet <contact@louischauvet.fr>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 049/508] drm/vkms: Adjust vkms_state->active_planes allocation type
 Date: Mon, 23 Jun 2025 15:01:34 +0200
-Message-ID: <20250623130703.507416973@linuxfoundation.org>
+Message-ID: <20250623130646.453551913@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
-References: <20250623130700.210182694@linuxfoundation.org>
+In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
+References: <20250623130645.255320792@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,42 +63,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Kees Cook <kees@kernel.org>
 
-commit 7cbb015e2d3d6f180256cde0c908eab21268e7b9 upstream.
+[ Upstream commit 258aebf100540d36aba910f545d4d5ddf4ecaf0b ]
 
-The decompressor is built with the default C dialect, which is now gnu23
-on gcc-15, and this clashes with the kernel's bool type definition:
+In preparation for making the kmalloc family of allocators type aware,
+we need to make sure that the returned type from the allocation matches
+the type of the variable being assigned. (Before, the allocator would
+always return "void *", which can be implicitly cast to any pointer type.)
 
-In file included from include/uapi/linux/posix_types.h:5,
-                 from arch/parisc/boot/compressed/misc.c:7:
-include/linux/stddef.h:11:9: error: cannot use keyword 'false' as enumeration constant
-   11 |         false   = 0,
+The assigned type is "struct vkms_plane_state **", but the returned type
+will be "struct drm_plane **". These are the same size (pointer size), but
+the types don't match. Adjust the allocation type to match the assignment.
 
-Add the -std=gnu11 argument here, as we do for all other architectures.
-
-Cc: stable@vger.kernel.org
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Signed-off-by: Helge Deller <deller@gmx.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Kees Cook <kees@kernel.org>
+Reviewed-by: Louis Chauvet <louis.chauvet@bootlin.com>
+Fixes: 8b1865873651 ("drm/vkms: totally reworked crc data tracking")
+Link: https://lore.kernel.org/r/20250426061431.work.304-kees@kernel.org
+Signed-off-by: Louis Chauvet <contact@louischauvet.fr>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/parisc/boot/compressed/Makefile |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/gpu/drm/vkms/vkms_crtc.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/parisc/boot/compressed/Makefile
-+++ b/arch/parisc/boot/compressed/Makefile
-@@ -18,6 +18,7 @@ KBUILD_CFLAGS += -fno-PIE -mno-space-reg
- ifndef CONFIG_64BIT
- KBUILD_CFLAGS += -mfast-indirect-calls
- endif
-+KBUILD_CFLAGS += -std=gnu11
+diff --git a/drivers/gpu/drm/vkms/vkms_crtc.c b/drivers/gpu/drm/vkms/vkms_crtc.c
+index 57bbd32e9bebb..de8c2d5cc89c0 100644
+--- a/drivers/gpu/drm/vkms/vkms_crtc.c
++++ b/drivers/gpu/drm/vkms/vkms_crtc.c
+@@ -202,7 +202,7 @@ static int vkms_crtc_atomic_check(struct drm_crtc *crtc,
+ 		i++;
+ 	}
  
- LDFLAGS_vmlinux := -X -e startup --as-needed -T
- $(obj)/vmlinux: $(obj)/vmlinux.lds $(addprefix $(obj)/, $(OBJECTS)) $(LIBGCC) FORCE
+-	vkms_state->active_planes = kcalloc(i, sizeof(plane), GFP_KERNEL);
++	vkms_state->active_planes = kcalloc(i, sizeof(*vkms_state->active_planes), GFP_KERNEL);
+ 	if (!vkms_state->active_planes)
+ 		return -ENOMEM;
+ 	vkms_state->num_active_planes = i;
+-- 
+2.39.5
+
 
 
 
