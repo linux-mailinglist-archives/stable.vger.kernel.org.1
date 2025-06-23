@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-156098-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-155779-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id C140FAE44F3
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:47:05 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E563AE43B4
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:35:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DCF577AE55B
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:41:23 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 25C281894240
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:29:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2061F248895;
-	Mon, 23 Jun 2025 13:42:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51EB22566D3;
+	Mon, 23 Jun 2025 13:28:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kTrpLIBb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QdHFQLGK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D25811E487;
-	Mon, 23 Jun 2025 13:42:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EE2D25393A;
+	Mon, 23 Jun 2025 13:28:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750686144; cv=none; b=Tju9QzOyv8N+Ge4KVDwoCeHgFCmEfWoKtCgiqvXOcq9IGmHIYilmWJnp7AvZzuw9OS52SrBoCwS5SZcZ5/Rs/dz2LyXbGSGsN2JZMaR6nee/lRG8iUPfELbQQjGT4aaoXAvl/Jlyq5Jtc9fse64P7NdXwgMU/vDwJsOZh00cAfg=
+	t=1750685311; cv=none; b=RMH2GiLwLus0p+4xCYIwOcw3ly6vJWSnm9emhIsrYVvL35qD1O0eGHursYkPpBa4DLVpwhih1aoX/K7UzRk7791IIe1l9yyog2ezjI7Qn9Y8S9LzPILFm6MJrl6QcEEMGk8agZ48+HlwzyAViP45oLDckg9GHTH1+bM+1yZPCJE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750686144; c=relaxed/simple;
-	bh=O81aQ0bg2gC60KXlFPGpytEGmdXvSEpPWzeGOyYCxiE=;
+	s=arc-20240116; t=1750685311; c=relaxed/simple;
+	bh=mlfSFA80V1VBftvNRVBEsOT95sEu4Y4BUNMyHwLWBUQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=D1UIfMPMBHnnJVekYf4nWTscWJlhG6faviUUF7N32y2JaKtz2om9gQvF6xD7PaH6ewxgyGVSezeT4g64ifaDox4rC4qjfMdCWXmap/Dy6GLodwQCePjgq8eaR61+EvDw8iEF3nHFKIdN/8hD9mX/uO1lw3dU4TwX5QJ+OczSHQA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kTrpLIBb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 675E5C4CEF0;
-	Mon, 23 Jun 2025 13:42:24 +0000 (UTC)
+	 MIME-Version; b=GzalLVxRgfm/MMi4ZmO4Zsdxewi9LpVMgac+4twxOICyLBj9T9Erg0DPCR+lzTVtYUK4wxehOMZ1tduqYiTb8iX/bd9wPxGygKCbZf0EFIMWF4NBOAEb5kUGCHHw99b6XV3aXQAK3M+/N7Rvjh3YS3hnt7qi5/9O5DTWCo0jLaQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QdHFQLGK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 981DCC4CEF0;
+	Mon, 23 Jun 2025 13:28:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750686144;
-	bh=O81aQ0bg2gC60KXlFPGpytEGmdXvSEpPWzeGOyYCxiE=;
+	s=korg; t=1750685310;
+	bh=mlfSFA80V1VBftvNRVBEsOT95sEu4Y4BUNMyHwLWBUQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kTrpLIBbylKspMbcFHBa6VcMJA9U5qVVt60Vt8A4dr1shs5dK9Cp5U+ec3kF5A0kL
-	 MfBn+LYq5lCq/HemPx77UR5I8UljjqrivJPCKJs3VQ1jBZH1KDA6ywPRD1S/XQJrNy
-	 cw7oxo8nIEq6xMe0u4lkHkhwe0Sig4XNbJIg1RSA=
+	b=QdHFQLGKPNWVafxVR970YsH4QrGZCHzQJcoXa9bmKTUTCLZXyIhPXrf5p0/2/dOWi
+	 7R6I0FmdV4m5hKNYgSkTeoaec4slk7clWEF1OINDgsG2HyoBenYlnmqCWuURSfgh0o
+	 skzmNTwfD3Em+GoUtmP+LF3LR4zO8qE+yeMXkSuM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Li Lingfeng <lilingfeng3@huawei.com>,
-	Anna Schumaker <anna.schumaker@oracle.com>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Anton Protopopov <a.s.protopopov@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 101/411] nfs: clear SB_RDONLY before getting superblock
+Subject: [PATCH 5.10 044/355] libbpf: Use proper errno value in nlattr
 Date: Mon, 23 Jun 2025 15:04:05 +0200
-Message-ID: <20250623130636.043994071@linuxfoundation.org>
+Message-ID: <20250623130628.151124578@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
-References: <20250623130632.993849527@linuxfoundation.org>
+In-Reply-To: <20250623130626.716971725@linuxfoundation.org>
+References: <20250623130626.716971725@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,70 +62,120 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Li Lingfeng <lilingfeng3@huawei.com>
+From: Anton Protopopov <a.s.protopopov@gmail.com>
 
-[ Upstream commit 8cd9b785943c57a136536250da80ba1eb6f8eb18 ]
+[ Upstream commit fd5fd538a1f4b34cee6823ba0ddda2f7a55aca96 ]
 
-As described in the link, commit 52cb7f8f1778 ("nfs: ignore SB_RDONLY when
-mounting nfs") removed the check for the ro flag when determining whether
-to share the superblock, which caused issues when mounting different
-subdirectories under the same export directory via NFSv3. However, this
-change did not affect NFSv4.
+Return value of the validate_nla() function can be propagated all the
+way up to users of libbpf API. In case of error this libbpf version
+of validate_nla returns -1 which will be seen as -EPERM from user's
+point of view. Instead, return a more reasonable -EINVAL.
 
-For NFSv3:
-1) A single superblock is created for the initial mount.
-2) When mounted read-only, this superblock carries the SB_RDONLY flag.
-3) Before commit 52cb7f8f1778 ("nfs: ignore SB_RDONLY when mounting nfs"):
-Subsequent rw mounts would not share the existing ro superblock due to
-flag mismatch, creating a new superblock without SB_RDONLY.
-After the commit:
-  The SB_RDONLY flag is ignored during superblock comparison, and this leads
-  to sharing the existing superblock even for rw mounts.
-  Ultimately results in write operations being rejected at the VFS layer.
-
-For NFSv4:
-1) Multiple superblocks are created and the last one will be kept.
-2) The actually used superblock for ro mounts doesn't carry SB_RDONLY flag.
-Therefore, commit 52cb7f8f1778 doesn't affect NFSv4 mounts.
-
-Clear SB_RDONLY before getting superblock when NFS_MOUNT_UNSHARED is not
-set to fix it.
-
-Fixes: 52cb7f8f1778 ("nfs: ignore SB_RDONLY when mounting nfs")
-Closes: https://lore.kernel.org/all/12d7ea53-1202-4e21-a7ef-431c94758ce5@app.fastmail.com/T/
-Signed-off-by: Li Lingfeng <lilingfeng3@huawei.com>
-Signed-off-by: Anna Schumaker <anna.schumaker@oracle.com>
+Fixes: bbf48c18ee0c ("libbpf: add error reporting in XDP")
+Suggested-by: Andrii Nakryiko <andrii@kernel.org>
+Signed-off-by: Anton Protopopov <a.s.protopopov@gmail.com>
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Link: https://lore.kernel.org/bpf/20250510182011.2246631-1-a.s.protopopov@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfs/super.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
+ tools/lib/bpf/nlattr.c | 15 +++++++--------
+ 1 file changed, 7 insertions(+), 8 deletions(-)
 
-diff --git a/fs/nfs/super.c b/fs/nfs/super.c
-index f91cb1267b44e..aa11a6dcf6ce7 100644
---- a/fs/nfs/super.c
-+++ b/fs/nfs/super.c
-@@ -1269,8 +1269,17 @@ int nfs_get_tree_common(struct fs_context *fc)
- 	if (IS_ERR(server))
- 		return PTR_ERR(server);
+diff --git a/tools/lib/bpf/nlattr.c b/tools/lib/bpf/nlattr.c
+index 1a04299a2a604..35ad5a845a147 100644
+--- a/tools/lib/bpf/nlattr.c
++++ b/tools/lib/bpf/nlattr.c
+@@ -63,16 +63,16 @@ static int validate_nla(struct nlattr *nla, int maxtype,
+ 		minlen = nla_attr_minlen[pt->type];
  
-+	/*
-+	 * When NFS_MOUNT_UNSHARED is not set, NFS forces the sharing of a
-+	 * superblock among each filesystem that mounts sub-directories
-+	 * belonging to a single exported root path.
-+	 * To prevent interference between different filesystems, the
-+	 * SB_RDONLY flag should be removed from the superblock.
-+	 */
- 	if (server->flags & NFS_MOUNT_UNSHARED)
- 		compare_super = NULL;
-+	else
-+		fc->sb_flags &= ~SB_RDONLY;
+ 	if (libbpf_nla_len(nla) < minlen)
+-		return -1;
++		return -EINVAL;
  
- 	/* -o noac implies -o sync */
- 	if (server->flags & NFS_MOUNT_NOAC)
+ 	if (pt->maxlen && libbpf_nla_len(nla) > pt->maxlen)
+-		return -1;
++		return -EINVAL;
+ 
+ 	if (pt->type == LIBBPF_NLA_STRING) {
+ 		char *data = libbpf_nla_data(nla);
+ 
+ 		if (data[libbpf_nla_len(nla) - 1] != '\0')
+-			return -1;
++			return -EINVAL;
+ 	}
+ 
+ 	return 0;
+@@ -118,19 +118,18 @@ int libbpf_nla_parse(struct nlattr *tb[], int maxtype, struct nlattr *head,
+ 		if (policy) {
+ 			err = validate_nla(nla, maxtype, policy);
+ 			if (err < 0)
+-				goto errout;
++				return err;
+ 		}
+ 
+-		if (tb[type])
++		if (tb[type]) {
+ 			pr_warn("Attribute of type %#x found multiple times in message, "
+ 				"previous attribute is being ignored.\n", type);
++		}
+ 
+ 		tb[type] = nla;
+ 	}
+ 
+-	err = 0;
+-errout:
+-	return err;
++	return 0;
+ }
+ 
+ /**
+-- 
+2.39.5
+
+
+
+wer/supply/bq27xxx_battery_i2c.c b/drivers/power/supply/bq27xxx_battery_i2c.c
+index ba0d22d904295..868e95f0887e1 100644
+--- a/drivers/power/supply/bq27xxx_battery_i2c.c
++++ b/drivers/power/supply/bq27xxx_battery_i2c.c
+@@ -6,6 +6,7 @@
+  *	Andrew F. Davis <afd@ti.com>
+  */
+ 
++#include <linux/delay.h>
+ #include <linux/i2c.h>
+ #include <linux/interrupt.h>
+ #include <linux/module.h>
+@@ -31,6 +32,7 @@ static int bq27xxx_battery_i2c_read(struct bq27xxx_device_info *di, u8 reg,
+ 	struct i2c_msg msg[2];
+ 	u8 data[2];
+ 	int ret;
++	int retry = 0;
+ 
+ 	if (!client->adapter)
+ 		return -ENODEV;
+@@ -47,7 +49,16 @@ static int bq27xxx_battery_i2c_read(struct bq27xxx_device_info *di, u8 reg,
+ 	else
+ 		msg[1].len = 2;
+ 
+-	ret = i2c_transfer(client->adapter, msg, ARRAY_SIZE(msg));
++	do {
++		ret = i2c_transfer(client->adapter, msg, ARRAY_SIZE(msg));
++		if (ret == -EBUSY && ++retry < 3) {
++			/* sleep 10 milliseconds when busy */
++			usleep_range(10000, 11000);
++			continue;
++		}
++		break;
++	} while (1);
++
+ 	if (ret < 0)
+ 		return ret;
+ 
 -- 
 2.39.5
 
