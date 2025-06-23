@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-155619-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-155984-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 137C7AE42E2
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:26:31 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F42EAE448E
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:43:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 648E21893A8A
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:22:35 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CAE581BC0917
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:38:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 916AD253F03;
-	Mon, 23 Jun 2025 13:21:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC119255F3C;
+	Mon, 23 Jun 2025 13:37:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OJdQmubv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z6ABrRM+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F799252912;
-	Mon, 23 Jun 2025 13:21:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 655612550D7;
+	Mon, 23 Jun 2025 13:37:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750684902; cv=none; b=Jo0D5+o3TQQPncVRl0/llMJ4zXrV+YDWMkFyLgIJhz8/fHx/G0YYnmArdNifSkzUS0AFlr8SvOZLPYXp8aUAQICAGDIY07Gtpmo0y3npPV9Li9kowYmei0p7Nsh+kQxUiwO+oNQjF1djr/VD0kyhlEW5dcvx2OeCSVyPT7mrxOI=
+	t=1750685849; cv=none; b=eOrE0+8vJgn6aLG+PtafKFAbQmPkkf2SsTXK/UXi6FDxg7VNzZZRS2pr+TRILUo31KGoSZctfyLesfot30RB7Mal3e1zW8RgtRRo31DwPwyy0JL9LHtywxE6PzkXt/9ciwdXMfcxnJ2INne0/RrQPUFsO+kYPw0VNXHclPAKNl4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750684902; c=relaxed/simple;
-	bh=+/gPUGpsUdtM/wRpKaPPr3gmXCpXgM1hK68KptBOrSE=;
+	s=arc-20240116; t=1750685849; c=relaxed/simple;
+	bh=Whim5WcmjeUinMqtTsm9t9A9YrrqJBXDa8LZ7uK6y1o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ANU5bxBdjNsdV4JVX80ZSGYk9iFL0mvsRkiEBuPKErnUtvohNSaZuje4oyOHfpFD5+Le7NCbTp8AkXjXlrbp3b8eXOmEtEaLO20oVWgaRiE+44FqhAuHZc1PmWfnnzY25AKD2N7qseidGuqiGjrszQvobZw4ie78jHnthI+R9kA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OJdQmubv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71B10C4CEEA;
-	Mon, 23 Jun 2025 13:21:41 +0000 (UTC)
+	 MIME-Version; b=mDMR480fnsNJm9fFBVUwdo1lYtUjbq8/5sxf3/yXRwhLLKwFimpfFDWYFFRvrTJChaUQ3aPqLNfpN80tqVUpc6F3nQku7PcCkX6idLVf6IYf/y2NUTVBd1xCkQY+TymcLk3h0EThtO3d3SLqU0Ff03MVC7NUN+OGvDDPVnmF6Og=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z6ABrRM+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF05BC4CEEA;
+	Mon, 23 Jun 2025 13:37:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750684901;
-	bh=+/gPUGpsUdtM/wRpKaPPr3gmXCpXgM1hK68KptBOrSE=;
+	s=korg; t=1750685849;
+	bh=Whim5WcmjeUinMqtTsm9t9A9YrrqJBXDa8LZ7uK6y1o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OJdQmubv/+JLceLjfqEqmXtdZmTLd9lnNfEPfpmiIJtK/4UdFuM1dgdPfiJ4+mlSA
-	 8JIfqAYbbGqiRDrCi4Zs6P3N1bitHamAkSLh8q0Hnpwe9pzJ1SqkCKJtqB1GYpmCow
-	 +PLZ0+HzvBv2fXrgry8F93pCEJ67Q0TrfDzQ0wws=
+	b=z6ABrRM+bExIhc2NWLaHzwdLGSrnclp2qnpsFT5KD9Z7SGs/Hdet9icRxqykSq5dX
+	 znMWduwS+jmsdAm3d0RMvEVmgaZZpbtpn7tL+acvsRZ0Ux+AbFqUgujZf46CLq7yk6
+	 OZR0u56EmZKA8xyHDFxGEGzP3Wg9JYuzGfYPOzhM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marcelo Schmitt <marcelo.schmitt1@gmail.com>,
-	Sean Nyekjaer <sean@geanix.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 6.15 188/592] iio: accel: fxls8962af: Fix temperature scan element sign
-Date: Mon, 23 Jun 2025 15:02:26 +0200
-Message-ID: <20250623130704.754945235@linuxfoundation.org>
+	Christian Hewitt <christianshewitt@gmail.com>,
+	Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
+	Mark Brown <broonie@kernel.org>
+Subject: [PATCH 6.12 010/414] ASoC: meson: meson-card-utils: use of_property_present() for DT parsing
+Date: Mon, 23 Jun 2025 15:02:27 +0200
+Message-ID: <20250623130642.284595471@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
-References: <20250623130700.210182694@linuxfoundation.org>
+In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
+References: <20250623130642.015559452@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,40 +62,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Nyekjaer <sean@geanix.com>
+From: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
 
-commit 9c78317b42e7c32523c91099859bc4721e9f75dd upstream.
+commit 171eb6f71e9e3ba6a7410a1d93f3ac213f39dae2 upstream.
 
-Mark the temperature element signed, data read from the TEMP_OUT register
-is in two's complement format.
-This will avoid the temperature being mishandled and miss displayed.
+Commit c141ecc3cecd ("of: Warn when of_property_read_bool() is used on
+non-boolean properties") added a warning when trying to parse a property
+with a value (boolean properties are defined as: absent = false, present
+without any value = true). This causes a warning from meson-card-utils.
 
-Fixes: a3e0b51884ee ("iio: accel: add support for FXLS8962AF/FXLS8964AF accelerometers")
-Suggested-by: Marcelo Schmitt <marcelo.schmitt1@gmail.com>
+meson-card-utils needs to know about the existence of the
+"audio-routing" and/or "audio-widgets" properties in order to properly
+parse them. Switch to of_property_present() in order to silence the
+following warning messages during boot:
+  OF: /sound: Read of boolean property 'audio-routing' with a value.
+  OF: /sound: Read of boolean property 'audio-widgets' with a value.
+
+Fixes: 7864a79f37b5 ("ASoC: meson: add axg sound card support")
+Tested-by: Christian Hewitt <christianshewitt@gmail.com>
 Cc: stable@vger.kernel.org
-Reviewed-by: Marcelo Schmitt <marcelo.schmitt1@gmail.com>
-Signed-off-by: Sean Nyekjaer <sean@geanix.com>
-Link: https://patch.msgid.link/20250505-fxls-v4-2-a38652e21738@geanix.com
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Signed-off-by: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+Link: https://patch.msgid.link/20250419213448.59647-1-martin.blumenstingl@googlemail.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/accel/fxls8962af-core.c |    1 +
- 1 file changed, 1 insertion(+)
+ sound/soc/meson/meson-card-utils.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/iio/accel/fxls8962af-core.c
-+++ b/drivers/iio/accel/fxls8962af-core.c
-@@ -739,6 +739,7 @@ static const struct iio_event_spec fxls8
- 			      BIT(IIO_CHAN_INFO_OFFSET),\
- 	.scan_index = -1, \
- 	.scan_type = { \
-+		.sign = 's', \
- 		.realbits = 8, \
- 		.storagebits = 8, \
- 	}, \
+--- a/sound/soc/meson/meson-card-utils.c
++++ b/sound/soc/meson/meson-card-utils.c
+@@ -231,7 +231,7 @@ static int meson_card_parse_of_optional(
+ 						    const char *p))
+ {
+ 	/* If property is not provided, don't fail ... */
+-	if (!of_property_read_bool(card->dev->of_node, propname))
++	if (!of_property_present(card->dev->of_node, propname))
+ 		return 0;
+ 
+ 	/* ... but do fail if it is provided and the parsing fails */
 
 
 
