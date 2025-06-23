@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-157513-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156602-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD910AE545D
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:00:54 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 97E1DAE5045
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:23:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 661004C0AC1
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:00:55 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 570C31B623A0
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:23:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 375F219DF4A;
-	Mon, 23 Jun 2025 22:00:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E432D1EF397;
+	Mon, 23 Jun 2025 21:23:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0/D2xldg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KwCSyIKp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E85B24409;
-	Mon, 23 Jun 2025 22:00:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1E782628C;
+	Mon, 23 Jun 2025 21:23:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750716052; cv=none; b=WSqc3mbC53xSzPFUqZRcc07XBLE10s3F6WuoClAwjGi79k6Deatc8WL+pWhka0wEbd4/i7YA/YO03bJHoeBPDAw51nQEnFydZ0mrjNrrx2SxYOpRn4Kt3eLRocxN7ap1YEc5B8MRfa1B8/WMtwIZvCv2OcsrsjdFc98UdDTFlIs=
+	t=1750713815; cv=none; b=jIdx6W0MP96FRDp3btsXzXA6w/bR7BwDfZnasI0WlTLJ2OfqSODj0w6vuoBGPa8t9uL1worYiTX9NGEeSqXt1yxSTr6Kkn+20MQu25lBPslG5trV09d2Q7HnXaAlJBVX1jM2APtU0ZDRQSz8M7eWmO1jiiMgAZFfZKUgBMQstFQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750716052; c=relaxed/simple;
-	bh=1aVZ8lPUoZBXSYHeYLuXvTMFp0AxZM21/9+DnRGtqxo=;
+	s=arc-20240116; t=1750713815; c=relaxed/simple;
+	bh=RvrFSFtz5VVSquKtPgeuCuJfuJcqI9AowsXmut6BiWo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tOojipapR9y+kM2h8QTbZyyGBIfkROIG5JI5QPkvntCQ1tgHHipx7a4Ud26iF20OHE4D7vl611JjU+qjCHJyNmnssSh335FXkjDXdHgijWilQLQsBoQpLI7cpRc66GVSaABuK4dzHPHt7daSwHXQSnkOopsQnSRlBTWN0zdvyms=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0/D2xldg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0763CC4CEEA;
-	Mon, 23 Jun 2025 22:00:50 +0000 (UTC)
+	 MIME-Version; b=nRC5euVR7I4foIPv1WXfXLCXMgTYg3fpoPaGS4J9L0NfiZoh1KyPL9epeifzt5fBPSFWMrxl/XA/Tq9dAFucDHPP/91BIjzB50WnEWi1C73xmDxza6S0p7Ouxi1TSrBKI8iN/DfGB2S+gyIDdjpzkUG1zxt0Zlh8pZXDOScjWd4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KwCSyIKp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3BF62C4CEEA;
+	Mon, 23 Jun 2025 21:23:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750716051;
-	bh=1aVZ8lPUoZBXSYHeYLuXvTMFp0AxZM21/9+DnRGtqxo=;
+	s=korg; t=1750713815;
+	bh=RvrFSFtz5VVSquKtPgeuCuJfuJcqI9AowsXmut6BiWo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0/D2xldgYXuaud144+XxZJdnZ/XhkLO4SFxlHCQCO6yhmQKEtoCsQiD9P/0SCQgZZ
-	 LwRU4f2FJsiWE78xKrS1j5wzn0p1MNV6urXY4j9/LmPsZYd+3CvlhghIMM+rgpmigQ
-	 BMRYY8ZvfX0D7blaWIfBOB/xW8b+khKKYcdlCflQ=
+	b=KwCSyIKpYwDpRcK10KsIYyQgkqslqe9EXQOExD5ANmI+70JVZGkXOKRn1PIL5Whg+
+	 Ks46o6kDT4MTn/EtJUhUXvmQWZueJYWi1OL5BvyP71UCbUd2OJ0imjkpjtYovlg7vo
+	 jhUcHfHy2qSGlTUeV/3qS36VoYpAYIbnaWTTghcw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Leon Romanovsky <leonro@nvidia.com>,
-	Steffen Klassert <steffen.klassert@secunet.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 224/414] xfrm: validate assignment of maximal possible SEQ number
+	Mathieu Poirier <mathieu.poirier@linaro.org>,
+	Xiaolei Wang <xiaolei.wang@windriver.com>,
+	Peng Fan <peng.fan@nxp.com>
+Subject: [PATCH 6.6 100/290] remoteproc: core: Cleanup acquired resources when rproc_handle_resources() fails in rproc_attach()
 Date: Mon, 23 Jun 2025 15:06:01 +0200
-Message-ID: <20250623130647.629700726@linuxfoundation.org>
+Message-ID: <20250623130629.974202624@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
-References: <20250623130642.015559452@linuxfoundation.org>
+In-Reply-To: <20250623130626.910356556@linuxfoundation.org>
+References: <20250623130626.910356556@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,109 +62,88 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Leon Romanovsky <leonro@nvidia.com>
+From: Xiaolei Wang <xiaolei.wang@windriver.com>
 
-[ Upstream commit e86212b6b13a20c5ad404c5597933f57fd0f1519 ]
+commit 7692c9fbedd9087dc9050903f58095915458d9b1 upstream.
 
-Users can set any seq/seq_hi/oseq/oseq_hi values. The XFRM core code
-doesn't prevent from them to set even 0xFFFFFFFF, however this value
-will cause for traffic drop.
+When rproc->state = RPROC_DETACHED and rproc_attach() is used
+to attach to the remote processor, if rproc_handle_resources()
+returns a failure, the resources allocated by imx_rproc_prepare()
+should be released, otherwise the following memory leak will occur.
 
-Is is happening because SEQ numbers here mean that packet with such
-number was processed and next number should be sent on the wire. In this
-case, the next number will be 0, and it means overflow which causes to
-(expected) packet drops.
+Since almost the same thing is done in imx_rproc_prepare() and
+rproc_resource_cleanup(), Function rproc_resource_cleanup() is able
+to deal with empty lists so it is better to fix the "goto" statements
+in rproc_attach(). replace the "unprepare_device" goto statement with
+"clean_up_resources" and get rid of the "unprepare_device" label.
 
-While it can be considered as misconfiguration and handled by XFRM
-datapath in the same manner as any other SEQ number, let's add
-validation to easy for packet offloads implementations which need to
-configure HW with next SEQ to send and not with current SEQ like it is
-done in core code.
+unreferenced object 0xffff0000861c5d00 (size 128):
+comm "kworker/u12:3", pid 59, jiffies 4294893509 (age 149.220s)
+hex dump (first 32 bytes):
+00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00 00 02 88 00 00 00 00 00 00 10 00 00 00 00 00 ............
+backtrace:
+ [<00000000f949fe18>] slab_post_alloc_hook+0x98/0x37c
+ [<00000000adbfb3e7>] __kmem_cache_alloc_node+0x138/0x2e0
+ [<00000000521c0345>] kmalloc_trace+0x40/0x158
+ [<000000004e330a49>] rproc_mem_entry_init+0x60/0xf8
+ [<000000002815755e>] imx_rproc_prepare+0xe0/0x180
+ [<0000000003f61b4e>] rproc_boot+0x2ec/0x528
+ [<00000000e7e994ac>] rproc_add+0x124/0x17c
+ [<0000000048594076>] imx_rproc_probe+0x4ec/0x5d4
+ [<00000000efc298a1>] platform_probe+0x68/0xd8
+ [<00000000110be6fe>] really_probe+0x110/0x27c
+ [<00000000e245c0ae>] __driver_probe_device+0x78/0x12c
+ [<00000000f61f6f5e>] driver_probe_device+0x3c/0x118
+ [<00000000a7874938>] __device_attach_driver+0xb8/0xf8
+ [<0000000065319e69>] bus_for_each_drv+0x84/0xe4
+ [<00000000db3eb243>] __device_attach+0xfc/0x18c
+ [<0000000072e4e1a4>] device_initial_probe+0x14/0x20
 
-Signed-off-by: Leon Romanovsky <leonro@nvidia.com>
-Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 10a3d4079eae ("remoteproc: imx_rproc: move memory parsing to rproc_ops")
+Suggested-by: Mathieu Poirier <mathieu.poirier@linaro.org>
+Signed-off-by: Xiaolei Wang <xiaolei.wang@windriver.com>
+Reviewed-by: Peng Fan <peng.fan@nxp.com>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20250430092043.1819308-2-xiaolei.wang@windriver.com
+Signed-off-by: Mathieu Poirier <mathieu.poirier@linaro.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/xfrm/xfrm_user.c | 52 +++++++++++++++++++++++++++++++++++---------
- 1 file changed, 42 insertions(+), 10 deletions(-)
+ drivers/remoteproc/remoteproc_core.c |    5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/net/xfrm/xfrm_user.c b/net/xfrm/xfrm_user.c
-index da2a1c00ca8a6..d41e5642625e3 100644
---- a/net/xfrm/xfrm_user.c
-+++ b/net/xfrm/xfrm_user.c
-@@ -178,11 +178,27 @@ static inline int verify_replay(struct xfrm_usersa_info *p,
- 				       "Replay seq and seq_hi should be 0 for output SA");
- 			return -EINVAL;
- 		}
--		if (rs->oseq_hi && !(p->flags & XFRM_STATE_ESN)) {
--			NL_SET_ERR_MSG(
--				extack,
--				"Replay oseq_hi should be 0 in non-ESN mode for output SA");
--			return -EINVAL;
-+
-+		if (!(p->flags & XFRM_STATE_ESN)) {
-+			if (rs->oseq_hi) {
-+				NL_SET_ERR_MSG(
-+					extack,
-+					"Replay oseq_hi should be 0 in non-ESN mode for output SA");
-+				return -EINVAL;
-+			}
-+			if (rs->oseq == U32_MAX) {
-+				NL_SET_ERR_MSG(
-+					extack,
-+					"Replay oseq should be less than 0xFFFFFFFF in non-ESN mode for output SA");
-+				return -EINVAL;
-+			}
-+		} else {
-+			if (rs->oseq == U32_MAX && rs->oseq_hi == U32_MAX) {
-+				NL_SET_ERR_MSG(
-+					extack,
-+					"Replay oseq and oseq_hi should be less than 0xFFFFFFFF for output SA");
-+				return -EINVAL;
-+			}
- 		}
- 		if (rs->bmp_len) {
- 			NL_SET_ERR_MSG(extack, "Replay bmp_len should 0 for output SA");
-@@ -196,11 +212,27 @@ static inline int verify_replay(struct xfrm_usersa_info *p,
- 				       "Replay oseq and oseq_hi should be 0 for input SA");
- 			return -EINVAL;
- 		}
--		if (rs->seq_hi && !(p->flags & XFRM_STATE_ESN)) {
--			NL_SET_ERR_MSG(
--				extack,
--				"Replay seq_hi should be 0 in non-ESN mode for input SA");
--			return -EINVAL;
-+		if (!(p->flags & XFRM_STATE_ESN)) {
-+			if (rs->seq_hi) {
-+				NL_SET_ERR_MSG(
-+					extack,
-+					"Replay seq_hi should be 0 in non-ESN mode for input SA");
-+				return -EINVAL;
-+			}
-+
-+			if (rs->seq == U32_MAX) {
-+				NL_SET_ERR_MSG(
-+					extack,
-+					"Replay seq should be less than 0xFFFFFFFF in non-ESN mode for input SA");
-+				return -EINVAL;
-+			}
-+		} else {
-+			if (rs->seq == U32_MAX && rs->seq_hi == U32_MAX) {
-+				NL_SET_ERR_MSG(
-+					extack,
-+					"Replay seq and seq_hi should be less than 0xFFFFFFFF for input SA");
-+				return -EINVAL;
-+			}
- 		}
+--- a/drivers/remoteproc/remoteproc_core.c
++++ b/drivers/remoteproc/remoteproc_core.c
+@@ -1616,7 +1616,7 @@ static int rproc_attach(struct rproc *rp
+ 	ret = rproc_set_rsc_table(rproc);
+ 	if (ret) {
+ 		dev_err(dev, "can't load resource table: %d\n", ret);
+-		goto unprepare_device;
++		goto clean_up_resources;
  	}
  
--- 
-2.39.5
-
+ 	/* reset max_notifyid */
+@@ -1633,7 +1633,7 @@ static int rproc_attach(struct rproc *rp
+ 	ret = rproc_handle_resources(rproc, rproc_loading_handlers);
+ 	if (ret) {
+ 		dev_err(dev, "Failed to process resources: %d\n", ret);
+-		goto unprepare_device;
++		goto clean_up_resources;
+ 	}
+ 
+ 	/* Allocate carveout resources associated to rproc */
+@@ -1652,7 +1652,6 @@ static int rproc_attach(struct rproc *rp
+ 
+ clean_up_resources:
+ 	rproc_resource_cleanup(rproc);
+-unprepare_device:
+ 	/* release HW resources if needed */
+ 	rproc_unprepare_device(rproc);
+ disable_iommu:
 
 
 
