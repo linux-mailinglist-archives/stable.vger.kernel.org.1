@@ -1,58 +1,54 @@
-Return-Path: <stable+bounces-155472-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-155858-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D8CEAE4247
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:18:01 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 57873AE445E
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:42:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 58C4017436F
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:15:17 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 66E91442157
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:32:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45E37248895;
-	Mon, 23 Jun 2025 13:15:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C4FE2561B9;
+	Mon, 23 Jun 2025 13:31:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d/Hf3D1z"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JKwPRVQ1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0104E1E487;
-	Mon, 23 Jun 2025 13:15:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2196A347DD;
+	Mon, 23 Jun 2025 13:31:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750684515; cv=none; b=MuWPv+iQ/86sh6X+bu9annY0lpySr511LGgrM8+/QmHmtYdyiWR7b4tINzWlOSav8bFNqdgbpP8DZjUj5ZlfRGKck+uDi2St/N1UBUJhbNTdg0xQn5PRhVFA6XQkL2QN+35HUv+5RLkqtl5rvyEmGj9epajBmE3qDjtHyejcJyY=
+	t=1750685519; cv=none; b=BkzOuxmm4OorwQ7OhuQgVD9VlXDlbwtgWgRsKN8t3FPpSRdnovjFC9RewdaDKjBF7egqod7YC6RY9p6WTPH+Kv9IFM+rR5gSFycaIowMM5zJLYUoyvoCavKWMpCsKDTbNUiet0U1wWsDZY2LHswew+t0vbPHQaFAexBCWyUQZ8w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750684515; c=relaxed/simple;
-	bh=ziDLXIbWAXOZE0tn2IhuFQDf1Ho5tZ4LRzAACAs/fLg=;
+	s=arc-20240116; t=1750685519; c=relaxed/simple;
+	bh=xGwIIxaX9M0a6ZU/k396wVPyPdYis+WG3qPLJY04+vI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VqTQ250/ugVoXQCTgiss53KlP3071iECt9AZRlBBn5g/RWPxIS1nvQtXVqZSHzkhSxqR9CqvZ8M2mRaUveJBIg68/xWrULgN0PLImIIOgBOncCsazYmgyKuNyhgbTByrHYbuYkkFTR11UJ+JrZi23bCGUHTclG68Fbr7/GAC3AQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d/Hf3D1z; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 879EBC4CEEA;
-	Mon, 23 Jun 2025 13:15:14 +0000 (UTC)
+	 MIME-Version; b=Mzo+BxTeCvEFB9+pb6bldWIX7VmLy3MxZ8sOmpBb2KnvCUlTcorU60iElxL8PGC2bRiSOe2tnuaNS5AgmQ5VpAy8xO/f2c3NVTM0TlJKAcknz87m1GP0mAfV0cUHm6p3C9nZ3reg28Fpr4k74hhOmlVtXBULwtJK192qtiW9hx0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JKwPRVQ1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9B91C4CEEA;
+	Mon, 23 Jun 2025 13:31:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750684514;
-	bh=ziDLXIbWAXOZE0tn2IhuFQDf1Ho5tZ4LRzAACAs/fLg=;
+	s=korg; t=1750685519;
+	bh=xGwIIxaX9M0a6ZU/k396wVPyPdYis+WG3qPLJY04+vI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=d/Hf3D1zUu06mur9UbfaA0eU7fEa69Q10mV8qijuPY8hQ91NJsAgp/QE4r6xnHr68
-	 aRy/Od293ydP6IIu7KM6dCzBtBaBrlJF5DTM5lc73O9fKYvJUjmZycQnYOzpTJlISM
-	 GcGsMH2KWYHuKMKyxavDFpe4UlgtLLBtuzrZvoxo=
+	b=JKwPRVQ1VmomwbgR56d2CHFWdZrHxHFRTBRGtwxhbFjSlPAU5YFZ5zZQ4d3h3UEPY
+	 yCJ+x/HUff3Rem3cC37x2WEDnm7ZXPvlHsVvzxdXAtCUD4n9vH80Wva4//mkXXodcU
+	 t2nu4RvLb5d+X02kk3kS7mlf+urzkLeIybMavbZg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Damien Le Moal <dlemoal@kernel.org>,
-	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
-	Hannes Reinecke <hare@suse.de>,
-	Christoph Hellwig <hch@lst.de>,
-	Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 6.15 098/592] block: Clear BIO_EMULATES_ZONE_APPEND flag on BIO completion
-Date: Mon, 23 Jun 2025 15:00:56 +0200
-Message-ID: <20250623130702.608252826@linuxfoundation.org>
+	Dave Penkler <dpenkler@gmail.com>
+Subject: [PATCH 6.1 012/508] usb: usbtmc: Fix timeout value in get_stb
+Date: Mon, 23 Jun 2025 15:00:57 +0200
+Message-ID: <20250623130645.556060034@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
-References: <20250623130700.210182694@linuxfoundation.org>
+In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
+References: <20250623130645.255320792@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,43 +60,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Damien Le Moal <dlemoal@kernel.org>
+From: Dave Penkler <dpenkler@gmail.com>
 
-commit f705d33c2f0353039d03e5d6f18f70467d86080e upstream.
+commit 342e4955a1f1ce28c70a589999b76365082dbf10 upstream.
 
-When blk_zone_write_plug_bio_endio() is called for a regular write BIO
-used to emulate a zone append operation, that is, a BIO flagged with
-BIO_EMULATES_ZONE_APPEND, the BIO operation code is restored to the
-original REQ_OP_ZONE_APPEND but the BIO_EMULATES_ZONE_APPEND flag is not
-cleared. Clear it to fully return the BIO to its orginal definition.
+wait_event_interruptible_timeout requires a timeout argument
+in units of jiffies. It was being called in usbtmc_get_stb
+with the usb timeout value which is in units of milliseconds.
 
-Fixes: 9b1ce7f0c6f8 ("block: Implement zone append emulation")
+Pass the timeout argument converted to jiffies.
+
+Fixes: 048c6d88a021 ("usb: usbtmc: Add ioctls to set/get usb timeout")
 Cc: stable@vger.kernel.org
-Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
-Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
-Reviewed-by: Hannes Reinecke <hare@suse.de>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Link: https://lore.kernel.org/r/20250611005915.89843-1-dlemoal@kernel.org
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Dave Penkler <dpenkler@gmail.com>
+Link: https://lore.kernel.org/r/20250521121656.18174-4-dpenkler@gmail.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- block/blk-zoned.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/usb/class/usbtmc.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/block/blk-zoned.c
-+++ b/block/blk-zoned.c
-@@ -1225,6 +1225,7 @@ void blk_zone_write_plug_bio_endio(struc
- 	if (bio_flagged(bio, BIO_EMULATES_ZONE_APPEND)) {
- 		bio->bi_opf &= ~REQ_OP_MASK;
- 		bio->bi_opf |= REQ_OP_ZONE_APPEND;
-+		bio_clear_flag(bio, BIO_EMULATES_ZONE_APPEND);
+--- a/drivers/usb/class/usbtmc.c
++++ b/drivers/usb/class/usbtmc.c
+@@ -483,6 +483,7 @@ static int usbtmc_get_stb(struct usbtmc_
+ 	u8 tag;
+ 	int rv;
+ 	long wait_rv;
++	unsigned long expire;
+ 
+ 	dev_dbg(dev, "Enter ioctl_read_stb iin_ep_present: %d\n",
+ 		data->iin_ep_present);
+@@ -512,10 +513,11 @@ static int usbtmc_get_stb(struct usbtmc_
  	}
  
- 	/*
+ 	if (data->iin_ep_present) {
++		expire = msecs_to_jiffies(file_data->timeout);
+ 		wait_rv = wait_event_interruptible_timeout(
+ 			data->waitq,
+ 			atomic_read(&data->iin_data_valid) != 0,
+-			file_data->timeout);
++			expire);
+ 		if (wait_rv < 0) {
+ 			dev_dbg(dev, "wait interrupted %ld\n", wait_rv);
+ 			rv = wait_rv;
 
 
 
