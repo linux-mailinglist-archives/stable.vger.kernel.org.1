@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-157475-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156871-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 56060AE543B
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:00:13 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3B6C5AE5182
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:35:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 475AB1BC0C8B
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:59:49 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5AD10189A10B
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:34:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6419223DD0;
-	Mon, 23 Jun 2025 21:59:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3EBF1F3B96;
+	Mon, 23 Jun 2025 21:34:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vSDutfWX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cPZwtLwk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A35CA222576;
-	Mon, 23 Jun 2025 21:59:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 811444409;
+	Mon, 23 Jun 2025 21:34:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750715958; cv=none; b=q3qWx8lbbP5MuDxa7ImACnu0sDb2RcCfQNyXTw0MDK3unWA5ujNuadBGEXX8x0CFtfwn/BamOQFgTHHpHH8CqFEMM/JCgM0NpWr3gkKGDsiBKbdovOp7kIiq/RBlOxrQ/3HuOT8EjRoW1cINrphtJ+b8+EiZUdpudVXkF7G70kE=
+	t=1750714470; cv=none; b=GfzyLNzIcPqIRwtVtgKbdMk7weclcUn3+diEet9BofV7APe+WZMWJdoVO1WHEaRcNUlkrwrvCIDgL+4izDo5mE2Q7VzX8qchPc71fwW6BcEv1S+DbrDmzfFSe4Zt9ARcZ6oP8uatBYJ6f9oRGz7tDNVKO/tR7cfVkcrmjGbWb5E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750715958; c=relaxed/simple;
-	bh=1BD0GDfymz6TFYnv5lk1eGAHL2UbBInQMn1VJUUrzhE=;
+	s=arc-20240116; t=1750714470; c=relaxed/simple;
+	bh=+OiklWF7evc6CbH/5u/om4Rq1GSYHxrt2HULJQFzl4U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ujYopJb1lUHaO6INZ1+A2AYno/YKzc6/iD9lK11QMYge2kZ3gL9IKp8B3zOlFJB+rpKEEEn2PN4QqBbfmsRZGLLvRDz+HpI3xQ57T/em/Q1y+jEbLzEn/E52YsNAyMSV1z+nEngRpKJjzxZ8m+6R77SK+VKDjwdKqdhz8ef324w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vSDutfWX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39B66C4CEEA;
-	Mon, 23 Jun 2025 21:59:18 +0000 (UTC)
+	 MIME-Version; b=QePtNz3ZE0yUOBHfTzVCYy73BcAF9H/k4NjVOn8L4Wd/GGakt5hR/qZGyqDFsm8savDpJmAeGF3Tv3JgAITaXXSaz1Kmb5SHjbuObydRPEnkLi3LwBJbn+FfDpLqjTArn6WrrjaxbRph8ew/VpPuT7GT1wAmSNshUSbtvfTKSBI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cPZwtLwk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B621C4CEEA;
+	Mon, 23 Jun 2025 21:34:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750715958;
-	bh=1BD0GDfymz6TFYnv5lk1eGAHL2UbBInQMn1VJUUrzhE=;
+	s=korg; t=1750714470;
+	bh=+OiklWF7evc6CbH/5u/om4Rq1GSYHxrt2HULJQFzl4U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vSDutfWXuNgezyDIVHq+g1u1FgScGjRk5hfNUNnpkTcKJLXMoYXeaG7GtVXw0hsVZ
-	 L0+JIYXLbIwQjP0QAzYni/JVLPo81kAMKwO82S0ul12Hu45ShlbLLn0q6rQ/JdP/te
-	 d2a+bv8Mn+s7n43kCuFaVPvUv+Wznb1UlelBsjnk=
+	b=cPZwtLwkrYmXcq+DP9+n5nvVj4V4zIATdk7ESNYPXBlGNl69KcaQJixftfyXg4N5o
+	 r8ReuUx9jBBD4xCyBEoueVU0azyBjTOovQwsPm1cMopEz7v5JPQfCnCsvcaykJkJaw
+	 5H6RYX/fnjIK36LcwGPo72cWm4Ltlx+w9WoycrSU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhang Yi <yi.zhang@huawei.com>,
-	Theodore Tso <tytso@mit.edu>,
+	Rodrigo Siqueira <siqueira@igalia.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 287/411] ext4: ext4: unify EXT4_EX_NOCACHE|NOFAIL flags in ext4_ext_remove_space()
+Subject: [PATCH 5.10 230/355] drm/amdgpu/gfx10: fix CSIB handling
 Date: Mon, 23 Jun 2025 15:07:11 +0200
-Message-ID: <20250623130640.872880497@linuxfoundation.org>
+Message-ID: <20250623130633.663373513@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
-References: <20250623130632.993849527@linuxfoundation.org>
+In-Reply-To: <20250623130626.716971725@linuxfoundation.org>
+References: <20250623130626.716971725@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,109 +62,37 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhang Yi <yi.zhang@huawei.com>
+From: Alex Deucher <alexander.deucher@amd.com>
 
-[ Upstream commit 53ce42accd2002cc490fc86000ac532530507a74 ]
+[ Upstream commit 683308af030cd9b8d3f1de5cbc1ee51788878feb ]
 
-When removing space, we should use EXT4_EX_NOCACHE because we don't
-need to cache extents, and we should also use EXT4_EX_NOFAIL to prevent
-metadata inconsistencies that may arise from memory allocation failures.
-While ext4_ext_remove_space() already uses these two flags in most
-places, they are missing in ext4_ext_search_right() and
-read_extent_tree_block() calls. Unify the flags to ensure consistent
-behavior throughout the extent removal process.
+We shouldn't return after the last section.
+We need to update the rest of the CSIB.
 
-Signed-off-by: Zhang Yi <yi.zhang@huawei.com>
-Link: https://patch.msgid.link/20250423085257.122685-2-yi.zhang@huaweicloud.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Reviewed-by: Rodrigo Siqueira <siqueira@igalia.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ext4/extents.c | 19 ++++++++++---------
- 1 file changed, 10 insertions(+), 9 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/gfx_v10_0.c | 2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/fs/ext4/extents.c b/fs/ext4/extents.c
-index 461a698794d22..e41a6d642472b 100644
---- a/fs/ext4/extents.c
-+++ b/fs/ext4/extents.c
-@@ -1531,7 +1531,7 @@ static int ext4_ext_search_left(struct inode *inode,
- static int ext4_ext_search_right(struct inode *inode,
- 				 struct ext4_ext_path *path,
- 				 ext4_lblk_t *logical, ext4_fsblk_t *phys,
--				 struct ext4_extent *ret_ex)
-+				 struct ext4_extent *ret_ex, int flags)
- {
- 	struct buffer_head *bh = NULL;
- 	struct ext4_extent_header *eh;
-@@ -1605,7 +1605,8 @@ static int ext4_ext_search_right(struct inode *inode,
- 	ix++;
- 	while (++depth < path->p_depth) {
- 		/* subtract from p_depth to get proper eh_depth */
--		bh = read_extent_tree_block(inode, ix, path->p_depth - depth, 0);
-+		bh = read_extent_tree_block(inode, ix, path->p_depth - depth,
-+					    flags);
- 		if (IS_ERR(bh))
- 			return PTR_ERR(bh);
- 		eh = ext_block_hdr(bh);
-@@ -1613,7 +1614,7 @@ static int ext4_ext_search_right(struct inode *inode,
- 		put_bh(bh);
+diff --git a/drivers/gpu/drm/amd/amdgpu/gfx_v10_0.c b/drivers/gpu/drm/amd/amdgpu/gfx_v10_0.c
+index 72410a2d4e6bf..567183a69660c 100644
+--- a/drivers/gpu/drm/amd/amdgpu/gfx_v10_0.c
++++ b/drivers/gpu/drm/amd/amdgpu/gfx_v10_0.c
+@@ -4002,8 +4002,6 @@ static void gfx_v10_0_get_csb_buffer(struct amdgpu_device *adev,
+ 						PACKET3_SET_CONTEXT_REG_START);
+ 				for (i = 0; i < ext->reg_count; i++)
+ 					buffer[count++] = cpu_to_le32(ext->extent[i]);
+-			} else {
+-				return;
+ 			}
+ 		}
  	}
- 
--	bh = read_extent_tree_block(inode, ix, path->p_depth - depth, 0);
-+	bh = read_extent_tree_block(inode, ix, path->p_depth - depth, flags);
- 	if (IS_ERR(bh))
- 		return PTR_ERR(bh);
- 	eh = ext_block_hdr(bh);
-@@ -2799,6 +2800,7 @@ int ext4_ext_remove_space(struct inode *inode, ext4_lblk_t start,
- 	struct partial_cluster partial;
- 	handle_t *handle;
- 	int i = 0, err = 0;
-+	int flags = EXT4_EX_NOCACHE | EXT4_EX_NOFAIL;
- 
- 	partial.pclu = 0;
- 	partial.lblk = 0;
-@@ -2829,8 +2831,7 @@ int ext4_ext_remove_space(struct inode *inode, ext4_lblk_t start,
- 		ext4_fsblk_t pblk;
- 
- 		/* find extent for or closest extent to this block */
--		path = ext4_find_extent(inode, end, NULL,
--					EXT4_EX_NOCACHE | EXT4_EX_NOFAIL);
-+		path = ext4_find_extent(inode, end, NULL, flags);
- 		if (IS_ERR(path)) {
- 			ext4_journal_stop(handle);
- 			return PTR_ERR(path);
-@@ -2895,7 +2896,7 @@ int ext4_ext_remove_space(struct inode *inode, ext4_lblk_t start,
- 			 */
- 			lblk = ex_end + 1;
- 			err = ext4_ext_search_right(inode, path, &lblk, &pblk,
--						    NULL);
-+						    NULL, flags);
- 			if (err < 0)
- 				goto out;
- 			if (pblk) {
-@@ -2972,8 +2973,7 @@ int ext4_ext_remove_space(struct inode *inode, ext4_lblk_t start,
- 				  i + 1, ext4_idx_pblock(path[i].p_idx));
- 			memset(path + i + 1, 0, sizeof(*path));
- 			bh = read_extent_tree_block(inode, path[i].p_idx,
--						    depth - i - 1,
--						    EXT4_EX_NOCACHE);
-+						    depth - i - 1, flags);
- 			if (IS_ERR(bh)) {
- 				/* should we reset i_size? */
- 				err = PTR_ERR(bh);
-@@ -4276,7 +4276,8 @@ int ext4_ext_map_blocks(handle_t *handle, struct inode *inode,
- 	if (err)
- 		goto out;
- 	ar.lright = map->m_lblk;
--	err = ext4_ext_search_right(inode, path, &ar.lright, &ar.pright, &ex2);
-+	err = ext4_ext_search_right(inode, path, &ar.lright, &ar.pright,
-+				    &ex2, 0);
- 	if (err < 0)
- 		goto out;
- 
 -- 
 2.39.5
 
