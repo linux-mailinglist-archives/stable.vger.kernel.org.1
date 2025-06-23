@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-156455-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156747-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id CFC79AE4FAD
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:18:34 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 63727AE50F7
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:29:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BC04516E51E
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:18:29 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 69C71189D932
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:29:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8626223DC1;
-	Mon, 23 Jun 2025 21:17:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A103F21FF50;
+	Mon, 23 Jun 2025 21:29:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Szn+M2ea"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o+edq7Tk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A10D52236EF;
-	Mon, 23 Jun 2025 21:17:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E9171EFFA6;
+	Mon, 23 Jun 2025 21:29:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750713453; cv=none; b=ZWGo8B4hwpv7Ll4r5VGVxLdTkMCm1Wk/1Kx2x+he0w1lAl1c9AjgVeDl2sVdvOuzm+I8AXWfmJgIdEFNTIpgf0OsojLDOukycQUNfhmb77n5fPUZC9A1FYuZXiq9yDnZ3HjJdzC9LfOvz/ry9V9k/4v54XMKcKu/vHjcpssEfdM=
+	t=1750714167; cv=none; b=K9LETmTna/c2dJN8K8wxlYMdG30RxgXTS35F2V3hPeH0XK+PI+PMV6vT/CStu337PwBqrUe1odK3D8av4L1+OW2hIY0sn5+h/8ZN1nEzLeBk/1Jhg5flHuNl1DhOe6iavVBw3ZN0iyNzScrngPFijUzvpDQJpIOpobgTD8Vutms=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750713453; c=relaxed/simple;
-	bh=e6vfMvgjGyrHiejPiHzmCVcEMGQJyBDSUajrTwiQ1AA=;
+	s=arc-20240116; t=1750714167; c=relaxed/simple;
+	bh=5A9gLUUI6oT34TIW/a7InOgx1uNzHwBdEtF2Rt2i+AU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=giCqgU0rSq56ZelifALcXaq7/NY4X9jrjb3BkEW5UZbCLN8EuzNmQQIwKA7vU8Za/IFITdV1gU0udl0VgPApzVrgmFPoKIETXcyeLbeMQZWAuElyWF7a8BwoTHOus1GGI5xAvSdqR6xFBXjU5NMFviI1sMPHiFJg1QVr0Ru0070=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Szn+M2ea; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38270C4CEEA;
-	Mon, 23 Jun 2025 21:17:33 +0000 (UTC)
+	 MIME-Version; b=cPxXg6y6zDzKjtecUk1OtAHq05CS84Rfn76VHq9DF+G9StCTrW5ubm6ks9erlHVg0Kr86YfFztif36gUsP7R98mKMi/ztGdxiPVFpTVPy88G02Ds6r7jBJNQsay+0M/HjWTor4NzRDc1qL694i0e9RW+9VZKfXSuhzgKkaT+RiM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o+edq7Tk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA487C4CEEA;
+	Mon, 23 Jun 2025 21:29:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750713453;
-	bh=e6vfMvgjGyrHiejPiHzmCVcEMGQJyBDSUajrTwiQ1AA=;
+	s=korg; t=1750714167;
+	bh=5A9gLUUI6oT34TIW/a7InOgx1uNzHwBdEtF2Rt2i+AU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Szn+M2eap4UH4O5wsD+V46svmH07jQpOeX4TGiynjMdYWFgfg0mkzCdD+ScEg6s4Q
-	 6D/L+u1e+dIAsDkWdqnG2TH7y35TSBhkeIkxT1sDbUlb67tef/e+L8wWYSDssE4jaH
-	 9LV//VU5qNJ2mmXK94b6J492WCvBOihBRNkbZ8GA=
+	b=o+edq7TkooZUxY15MvDRfE93q0oOigS7jf7hMXHtIuRsLt2jn7G7PrQmWwYd4WXYZ
+	 yD/lUQWrji22xrosz42V6WWpalHdg7gUowwlBKwuYI0XRddWxCfgZAhssWLrAK72rW
+	 PetZDcVKnQD3BjbEfGzLJOX5QBQ4a6ltRSeZRYwA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-	Lakshmi Sowjanya D <quic_laksd@quicinc.com>,
-	Md Sadre Alam <quic_mdalam@quicinc.com>,
-	Miquel Raynal <miquel.raynal@bootlin.com>
-Subject: [PATCH 6.6 091/290] mtd: rawnand: qcom: Fix read len for onfi param page
+	Petr Machata <petrm@nvidia.com>,
+	Ido Schimmel <idosch@nvidia.com>,
+	Nikolay Aleksandrov <razor@blackwall.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.15 394/592] vxlan: Do not treat dst cache initialization errors as fatal
 Date: Mon, 23 Jun 2025 15:05:52 +0200
-Message-ID: <20250623130629.711402471@linuxfoundation.org>
+Message-ID: <20250623130709.816401277@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130626.910356556@linuxfoundation.org>
-References: <20250623130626.910356556@linuxfoundation.org>
+In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
+References: <20250623130700.210182694@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,41 +64,80 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Md Sadre Alam <quic_mdalam@quicinc.com>
+From: Ido Schimmel <idosch@nvidia.com>
 
-commit e6031b11544b44966ba020c867fe438bccd3bdfa upstream.
+[ Upstream commit 20c76dadc783759fd3819d289c72be590660cc8b ]
 
-The minimum size to fetch the data from device to QPIC buffer
-is 512-bytes. If size is less than 512-bytes the data will not be
-protected by ECC as per QPIC standard. So while reading onfi parameter
-page from NAND device set nandc->buf_count = 512.
+FDB entries are allocated in an atomic context as they can be added from
+the data path when learning is enabled.
 
-Cc: stable@vger.kernel.org
-Fixes: 89550beb098e ("mtd: rawnand: qcom: Implement exec_op()")
-Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Tested-by: Lakshmi Sowjanya D <quic_laksd@quicinc.com>
-Signed-off-by: Md Sadre Alam <quic_mdalam@quicinc.com>
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+After converting the FDB hash table to rhashtable, the insertion rate
+will be much higher (*) which will entail a much higher rate of per-CPU
+allocations via dst_cache_init().
+
+When adding a large number of entries (e.g., 256k) in a batch, a small
+percentage (< 0.02%) of these per-CPU allocations will fail [1]. This
+does not happen with the current code since the insertion rate is low
+enough to give the per-CPU allocator a chance to asynchronously create
+new chunks of per-CPU memory.
+
+Given that:
+
+a. Only a small percentage of these per-CPU allocations fail.
+
+b. The scenario where this happens might not be the most realistic one.
+
+c. The driver can work correctly without dst caches. The dst_cache_*()
+APIs first check that the dst cache was properly initialized.
+
+d. The dst caches are not always used (e.g., 'tos inherit').
+
+It seems reasonable to not treat these allocation failures as fatal.
+
+Therefore, do not bail when dst_cache_init() fails and suppress warnings
+by specifying '__GFP_NOWARN'.
+
+[1] percpu: allocation failed, size=40 align=8 atomic=1, atomic alloc failed, no space left
+
+(*) 97% reduction in average latency of vxlan_fdb_update() when adding
+256k entries in a batch.
+
+Reviewed-by: Petr Machata <petrm@nvidia.com>
+Signed-off-by: Ido Schimmel <idosch@nvidia.com>
+Link: https://patch.msgid.link/20250415121143.345227-14-idosch@nvidia.com
+Reviewed-by: Nikolay Aleksandrov <razor@blackwall.org>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mtd/nand/raw/qcom_nandc.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/vxlan/vxlan_core.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
---- a/drivers/mtd/nand/raw/qcom_nandc.c
-+++ b/drivers/mtd/nand/raw/qcom_nandc.c
-@@ -2917,7 +2917,7 @@ static int qcom_param_page_type_exec(str
- 		write_reg_dma(nandc, NAND_DEV_CMD1, 1, NAND_BAM_NEXT_SGL);
- 	}
+diff --git a/drivers/net/vxlan/vxlan_core.c b/drivers/net/vxlan/vxlan_core.c
+index 9ccc3f09f71b8..e83197fac1e0f 100644
+--- a/drivers/net/vxlan/vxlan_core.c
++++ b/drivers/net/vxlan/vxlan_core.c
+@@ -610,10 +610,10 @@ static int vxlan_fdb_append(struct vxlan_fdb *f,
+ 	if (rd == NULL)
+ 		return -ENOMEM;
  
--	nandc->buf_count = len;
-+	nandc->buf_count = 512;
- 	memset(nandc->data_buffer, 0xff, nandc->buf_count);
+-	if (dst_cache_init(&rd->dst_cache, GFP_ATOMIC)) {
+-		kfree(rd);
+-		return -ENOMEM;
+-	}
++	/* The driver can work correctly without a dst cache, so do not treat
++	 * dst cache initialization errors as fatal.
++	 */
++	dst_cache_init(&rd->dst_cache, GFP_ATOMIC | __GFP_NOWARN);
  
- 	config_nand_single_cw_page_read(chip, false, 0);
+ 	rd->remote_ip = *ip;
+ 	rd->remote_port = port;
+-- 
+2.39.5
+
 
 
 
