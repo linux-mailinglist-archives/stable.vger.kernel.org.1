@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-158136-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157750-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4D647AE571A
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:26:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1C30DAE5571
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:11:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 202D21C23D63
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:26:31 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 70A991BC4C78
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:11:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81CD3223DCC;
-	Mon, 23 Jun 2025 22:26:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67DE8229B1F;
+	Mon, 23 Jun 2025 22:10:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EzGbuKM7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PwNTa1L7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4090E221543;
-	Mon, 23 Jun 2025 22:26:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23166225417;
+	Mon, 23 Jun 2025 22:10:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750717573; cv=none; b=LbIXATQev533kwviOeJZkaWtcu76FURoo0ZVYrCeJpCwEpdYVHHBIexpXRzF9FfgbaPdTgiCjU6B0Hc1jo7x3DX/EbibUoqJ2EQnTG+529yAb6bimG8FedGdGLANvjqCA+Hrw9C3F0LIKgh+l9RVWWYBHrZ7lTc98FzrFtCye0w=
+	t=1750716630; cv=none; b=RcBISoaDnr71p2sc2ADGdFth69N3FH87Xjww8Gi05fJZPa+mRHKhVPtYUyewVNLRAk6CKm5tHNi33uIriCEvozuapFk1dabKmBY9Z3pxriSN8fbe44SocDND/UXxegTVuZL1xAmGy5T6/GKgGNQx2ZTr1ToTkI0sNITh1UDi488=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750717573; c=relaxed/simple;
-	bh=pbGzdYOdyLaH36n6PgGd4iXrd1LMYSKWmO7M+57cByY=;
+	s=arc-20240116; t=1750716630; c=relaxed/simple;
+	bh=3WNK9dK4T+zjeZ9M55ASDhKwnUxM6Eru7EDJ6dENMdQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Tfiry9v6TUw1N6M+M1SNIw2949IYWfHFOIrup79sLWrO34anwS220MMNVc6AMpTzWrflCwyKhq5sttLEyMqsP6jWqLU8nIgh0MaXXcvXxrEIPahyJtTApDTPK/Cj8Gd/CttdIwa0MP5p7UmdPetoH22LYaDugIWdUNyHdizZwOY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EzGbuKM7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78642C4CEEA;
-	Mon, 23 Jun 2025 22:26:12 +0000 (UTC)
+	 MIME-Version; b=og7unYGgXoFQFvvhXVKePsfxZBKMvp21d1JaWZ1gm8OnuBpYpAIu6Z8funRtHQ7EmcF58YiUv3lcjKf14BQjyEdN7Wm67g5lMsXaRUKTcrPPotiNb9aQ2ow9j6f/r+xm8OsJpL8+eYY3gYl6OVCkWAo8Fie/Dj7iaFpYtPApZmU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PwNTa1L7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A68FBC4CEF1;
+	Mon, 23 Jun 2025 22:10:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750717572;
-	bh=pbGzdYOdyLaH36n6PgGd4iXrd1LMYSKWmO7M+57cByY=;
+	s=korg; t=1750716630;
+	bh=3WNK9dK4T+zjeZ9M55ASDhKwnUxM6Eru7EDJ6dENMdQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EzGbuKM7mRh8+Ztb+M/Wd74ooR6xYjl7zvb2VzZ0IWE6+ScluURx03jmpUQJ+gfN0
-	 VTjE3Iqwi0jAzo4Fk7X3DrkipYRBMh7jFa9M+/4s06cfbCkXPi1K8lm/SDBG88wlJs
-	 ZqRM7UholEudGp/8wqjs+4d/jzA3gJ1wbheZoxI4=
+	b=PwNTa1L7otfJLKRrk4e7yLFV1MGkYPTdsE21V74488HXz+22VoLcwZfwidfgPnCLg
+	 a3qcnkJNVJIw6evnU+oN04HREFSwc8sQOw6/ORaGn+XTknENdYuVl9Il/iIu0fIPWl
+	 igHlHn0o16R7BC7Qo8Sy1saIVzhHNvZWTQAM0Mo0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
+	Hariprasad Kelam <hkelam@marvell.com>,
 	Simon Horman <horms@kernel.org>,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.1 456/508] atm: Revert atm_account_tx() if copy_from_iter_full() fails.
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.15 543/592] Octeontx2-pf: Fix Backpresure configuration
 Date: Mon, 23 Jun 2025 15:08:21 +0200
-Message-ID: <20250623130656.355810306@linuxfoundation.org>
+Message-ID: <20250623130713.356619217@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
-References: <20250623130645.255320792@linuxfoundation.org>
+In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
+References: <20250623130700.210182694@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,80 +63,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuniyuki Iwashima <kuniyu@google.com>
+From: Hariprasad Kelam <hkelam@marvell.com>
 
-commit 7851263998d4269125fd6cb3fdbfc7c6db853859 upstream.
+[ Upstream commit 9ac8d0c640a161486eaf71d1999ee990fad62947 ]
 
-In vcc_sendmsg(), we account skb->truesize to sk->sk_wmem_alloc by
-atm_account_tx().
+NIX block can receive packets from multiple links such as
+MAC (RPM), LBK and CPT.
 
-It is expected to be reverted by atm_pop_raw() later called by
-vcc->dev->ops->send(vcc, skb).
+       -----------------
+ RPM --|     NIX       |
+       -----------------
+             |
+             |
+            LBK
 
-However, vcc_sendmsg() misses the same revert when copy_from_iter_full()
-fails, and then we will leak a socket.
+Each link supports multiple channels for example RPM link supports
+16 channels. In case of link oversubsribe, NIX will assert backpressure
+on receive channels.
 
-Let's factorise the revert part as atm_return_tx() and call it in
-the failure path.
+The previous patch considered a single channel per link, resulting in
+backpressure not being enabled on the remaining channels
 
-Note that the corresponding sk_wmem_alloc operation can be found in
-alloc_tx() as of the blamed commit.
-
-  $ git blame -L:alloc_tx net/atm/common.c c55fa3cccbc2c~
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Reported-by: Simon Horman <horms@kernel.org>
-Closes: https://lore.kernel.org/netdev/20250614161959.GR414686@horms.kernel.org/
-Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
-Link: https://patch.msgid.link/20250616182147.963333-3-kuni1840@gmail.com
+Fixes: a7ef63dbd588 ("octeontx2-af: Disable backpressure between CPT and NIX")
+Signed-off-by: Hariprasad Kelam <hkelam@marvell.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20250617063403.3582210-1-hkelam@marvell.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/atmdev.h |    6 ++++++
- net/atm/common.c       |    1 +
- net/atm/raw.c          |    2 +-
- 3 files changed, 8 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/include/linux/atmdev.h
-+++ b/include/linux/atmdev.h
-@@ -249,6 +249,12 @@ static inline void atm_account_tx(struct
- 	ATM_SKB(skb)->atm_options = vcc->atm_options;
- }
+diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.c b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.c
+index 84cd029a85aab..1b3004ba4493e 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.c
++++ b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.c
+@@ -1822,7 +1822,7 @@ int otx2_nix_config_bp(struct otx2_nic *pfvf, bool enable)
+ 		req->chan_cnt = IEEE_8021QAZ_MAX_TCS;
+ 		req->bpid_per_chan = 1;
+ 	} else {
+-		req->chan_cnt = 1;
++		req->chan_cnt = pfvf->hw.rx_chan_cnt;
+ 		req->bpid_per_chan = 0;
+ 	}
  
-+static inline void atm_return_tx(struct atm_vcc *vcc, struct sk_buff *skb)
-+{
-+	WARN_ON_ONCE(refcount_sub_and_test(ATM_SKB(skb)->acct_truesize,
-+					   &sk_atm(vcc)->sk_wmem_alloc));
-+}
-+
- static inline void atm_force_charge(struct atm_vcc *vcc,int truesize)
- {
- 	atomic_add(truesize, &sk_atm(vcc)->sk_rmem_alloc);
---- a/net/atm/common.c
-+++ b/net/atm/common.c
-@@ -635,6 +635,7 @@ int vcc_sendmsg(struct socket *sock, str
+@@ -1847,7 +1847,7 @@ int otx2_nix_cpt_config_bp(struct otx2_nic *pfvf, bool enable)
+ 		req->chan_cnt = IEEE_8021QAZ_MAX_TCS;
+ 		req->bpid_per_chan = 1;
+ 	} else {
+-		req->chan_cnt = 1;
++		req->chan_cnt = pfvf->hw.rx_chan_cnt;
+ 		req->bpid_per_chan = 0;
+ 	}
  
- 	skb->dev = NULL; /* for paths shared with net_device interfaces */
- 	if (!copy_from_iter_full(skb_put(skb, size), size, &m->msg_iter)) {
-+		atm_return_tx(vcc, skb);
- 		kfree_skb(skb);
- 		error = -EFAULT;
- 		goto out;
---- a/net/atm/raw.c
-+++ b/net/atm/raw.c
-@@ -36,7 +36,7 @@ static void atm_pop_raw(struct atm_vcc *
- 
- 	pr_debug("(%d) %d -= %d\n",
- 		 vcc->vci, sk_wmem_alloc_get(sk), ATM_SKB(skb)->acct_truesize);
--	WARN_ON(refcount_sub_and_test(ATM_SKB(skb)->acct_truesize, &sk->sk_wmem_alloc));
-+	atm_return_tx(vcc, skb);
- 	dev_kfree_skb_any(skb);
- 	sk->sk_write_space(sk);
- }
+-- 
+2.39.5
+
 
 
 
