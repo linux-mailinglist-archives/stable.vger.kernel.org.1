@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-158004-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157684-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id EEE84AE568B
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:21:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6B221AE5518
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:07:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D16301C2196C
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:21:10 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 174531BC3810
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:08:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F1A8225A23;
-	Mon, 23 Jun 2025 22:20:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A128222599;
+	Mon, 23 Jun 2025 22:07:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iUd9wDiW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i7BZwD0/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEBFD16D9BF;
-	Mon, 23 Jun 2025 22:20:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27F5A21B8F6;
+	Mon, 23 Jun 2025 22:07:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750717248; cv=none; b=RZlWGAXtDkK6+tNJAxb+QdBolMi1yS+DsZSXTbp9T3C3Cz/eiuCOcxptYIyoIIvOElcDOdA7vAmRmbf1Ocf0chCiJ5HOA9w/bKoiG0CC3Sf+38pL42RHl6zrhcm6v4GbJXXnWyofBZh9acXVEax+Q8DLCRAwbbIIHtvWS+ECmkA=
+	t=1750716471; cv=none; b=LtJAD5CSR4v39Y4iQv4eRom3Xpw6ka+LwQ2pzEtum43nRjsRqQheERZ2FleIATfgeCeHxypjle1vSRMfz1CCzOpD5qwEy6Apb+wYKfTIvASMQihmrkXj+mQfwTMN6i0NUpetrsnqPDnUqDezozpYSLRmcqvEL2E/bX3cTloYWhA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750717248; c=relaxed/simple;
-	bh=vJMGfa6+oSYjdYWrnrE+8GcMeeTojLYRF3mwfvkMbBs=;
+	s=arc-20240116; t=1750716471; c=relaxed/simple;
+	bh=Wd+S4BABUCqBgotGc3Y0AQT4Uz7V/zmoXMeknMxXkVs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eBbQ+T2xHNmJlbQ/V1Ehom2tu7fnlWgWaIZv9jT6Vk6aTK743Ob/gdJMfYufPKhw58ZBlyvyAzIr/fAAYQkIPvMjc5Y4Dw70huOqOnkyviq1RZfYVPTp/BJGTK346EPJPZODNkML3LHH+7yhcFExX+uOBLIvTx9k/z2oNnZsMo8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iUd9wDiW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5808BC4CEEA;
-	Mon, 23 Jun 2025 22:20:48 +0000 (UTC)
+	 MIME-Version; b=eJlEezBEJVd1MK2KMqXpI/uaaL1hNjyXr1UQuksM/J2tRL0INBZaBi1mNvGO6MAUxOcz7FI5YvkcbBdBb7fRyBnphEMVGNpqj+3GKNewZz89+FoObcDUSklxjzBU/E1kVAYg6QhuXIq7thI+RELgWLMwuwEorSb0mGtuqkrCmmg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i7BZwD0/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B31EEC4CEEA;
+	Mon, 23 Jun 2025 22:07:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750717248;
-	bh=vJMGfa6+oSYjdYWrnrE+8GcMeeTojLYRF3mwfvkMbBs=;
+	s=korg; t=1750716471;
+	bh=Wd+S4BABUCqBgotGc3Y0AQT4Uz7V/zmoXMeknMxXkVs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iUd9wDiWsMOGqAc794ZVT7SqrnXvq5pIXhzRCP5jtbf9kciS5uhKvhKSLZYJh3fc9
-	 QHPvFkT2AToEeo9w3AFSZEwBQKywdNDTw+A2LNcPZ54cU8Bo4oBM3DBmKmnKYimudk
-	 Q7N/Yldd/7aALtNFajU9GcuL/yH2ggh8oriC1LU0=
+	b=i7BZwD0/l6SXqw18/NZoXInP4V9EnBytT/DH45+Z8hZyN/gNl+TrXtvqc20E6mY1O
+	 0CQ4jOksnBJM2i9j9DEPS+dOE/E0EBq3LH9iUlrPdar61lHCsMcFvuBwoHFGtF+qNR
+	 N/S/KuQ6FGyEreKYipiiv2BNcRmiuVQyU+n6KKrw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	tianshuo han <hantianshuo233@gmail.com>,
-	Chuck Lever <chuck.lever@oracle.com>,
-	Jeff Layton <jlayton@kernel.org>
-Subject: [PATCH 6.12 346/414] sunrpc: handle SVC_GARBAGE during svc auth processing as auth error
+	Krishna Kumar <krikku@gmail.com>,
+	Simon Horman <horms@kernel.org>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Sasha Levin <sashal@kernel.org>,
+	Rinitha S <sx.rinitha@intel.com>
+Subject: [PATCH 6.15 525/592] net: ice: Perform accurate aRFS flow match
 Date: Mon, 23 Jun 2025 15:08:03 +0200
-Message-ID: <20250623130650.626391923@linuxfoundation.org>
+Message-ID: <20250623130712.922322584@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
-References: <20250623130642.015559452@linuxfoundation.org>
+In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
+References: <20250623130700.210182694@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,72 +64,163 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jeff Layton <jlayton@kernel.org>
+From: Krishna Kumar <krikku@gmail.com>
 
-commit 94d10a4dba0bc482f2b01e39f06d5513d0f75742 upstream.
+[ Upstream commit 5d3bc9e5e725aa36cca9b794e340057feb6880b4 ]
 
-tianshuo han reported a remotely-triggerable crash if the client sends a
-kernel RPC server a specially crafted packet. If decoding the RPC reply
-fails in such a way that SVC_GARBAGE is returned without setting the
-rq_accept_statp pointer, then that pointer can be dereferenced and a
-value stored there.
+This patch fixes an issue seen in a large-scale deployment under heavy
+incoming pkts where the aRFS flow wrongly matches a flow and reprograms the
+NIC with wrong settings. That mis-steering causes RX-path latency spikes
+and noisy neighbor effects when many connections collide on the same
+hash (some of our production servers have 20-30K connections).
 
-If it's the first time the thread has processed an RPC, then that
-pointer will be set to NULL and the kernel will crash. In other cases,
-it could create a memory scribble.
+set_rps_cpu() calls ndo_rx_flow_steer() with flow_id that is calculated by
+hashing the skb sized by the per rx-queue table size. This results in
+multiple connections (even across different rx-queues) getting the same
+hash value. The driver steer function modifies the wrong flow to use this
+rx-queue, e.g.: Flow#1 is first added:
+    Flow#1:  <ip1, port1, ip2, port2>, Hash 'h', q#10
 
-The server sunrpc code treats a SVC_GARBAGE return from svc_authenticate
-or pg_authenticate as if it should send a GARBAGE_ARGS reply. RFC 5531
-says that if authentication fails that the RPC should be rejected
-instead with a status of AUTH_ERR.
+Later when a new flow needs to be added:
+	    Flow#2:  <ip3, port3, ip4, port4>, Hash 'h', q#20
 
-Handle a SVC_GARBAGE return as an AUTH_ERROR, with a reason of
-AUTH_BADCRED instead of returning GARBAGE_ARGS in that case. This
-sidesteps the whole problem of touching the rpc_accept_statp pointer in
-this situation and avoids the crash.
+The driver finds the hash 'h' from Flow#1 and updates it to use q#20. This
+results in both flows getting un-optimized - packets for Flow#1 goes to
+q#20, and then reprogrammed back to q#10 later and so on; and Flow #2
+programming is never done as Flow#1 is matched first for all misses. Many
+flows may wrongly share the same hash and reprogram rules of the original
+flow each with their own q#.
 
-Cc: stable@kernel.org
-Fixes: 29cd2927fb91 ("SUNRPC: Fix encoding of accepted but unsuccessful RPC replies")
-Reported-by: tianshuo han <hantianshuo233@gmail.com>
-Reviewed-by: Chuck Lever <chuck.lever@oracle.com>
-Signed-off-by: Jeff Layton <jlayton@kernel.org>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Tested on two 144-core servers with 16K netperf sessions for 180s. Netperf
+clients are pinned to cores 0-71 sequentially (so that wrong packets on q#s
+72-143 can be measured). IRQs are set 1:1 for queues -> CPUs, enable XPS,
+enable aRFS (global value is 144 * rps_flow_cnt).
+
+Test notes about results from ice_rx_flow_steer():
+---------------------------------------------------
+1. "Skip:" counter increments here:
+    if (fltr_info->q_index == rxq_idx ||
+	arfs_entry->fltr_state != ICE_ARFS_ACTIVE)
+	    goto out;
+2. "Add:" counter increments here:
+    ret = arfs_entry->fltr_info.fltr_id;
+    INIT_HLIST_NODE(&arfs_entry->list_entry);
+3. "Update:" counter increments here:
+    /* update the queue to forward to on an already existing flow */
+
+Runtime comparison: original code vs with the patch for different
+rps_flow_cnt values.
+
++-------------------------------+--------------+--------------+
+| rps_flow_cnt                  |      512     |    2048      |
++-------------------------------+--------------+--------------+
+| Ratio of Pkts on Good:Bad q's | 214 vs 822K  | 1.1M vs 980K |
+| Avoid wrong aRFS programming  | 0 vs 310K    | 0 vs 30K     |
+| CPU User                      | 216 vs 183   | 216 vs 206   |
+| CPU System                    | 1441 vs 1171 | 1447 vs 1320 |
+| CPU Softirq                   | 1245 vs 920  | 1238 vs 961  |
+| CPU Total                     | 29 vs 22.7   | 29 vs 24.9   |
+| aRFS Update                   | 533K vs 59   | 521K vs 32   |
+| aRFS Skip                     | 82M vs 77M   | 7.2M vs 4.5M |
++-------------------------------+--------------+--------------+
+
+A separate TCP_STREAM and TCP_RR with 1,4,8,16,64,128,256,512 connections
+showed no performance degradation.
+
+Some points on the patch/aRFS behavior:
+1. Enabling full tuple matching ensures flows are always correctly matched,
+   even with smaller hash sizes.
+2. 5-6% drop in CPU utilization as the packets arrive at the correct CPUs
+   and fewer calls to driver for programming on misses.
+3. Larger hash tables reduces mis-steering due to more unique flow hashes,
+   but still has clashes. However, with larger per-device rps_flow_cnt, old
+   flows take more time to expire and new aRFS flows cannot be added if h/w
+   limits are reached (rps_may_expire_flow() succeeds when 10*rps_flow_cnt
+   pkts have been processed by this cpu that are not part of the flow).
+
+Fixes: 28bf26724fdb0 ("ice: Implement aRFS")
+Signed-off-by: Krishna Kumar <krikku@gmail.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Tested-by: Rinitha S <sx.rinitha@intel.com> (A Contingent worker at Intel)
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sunrpc/svc.c |   11 ++---------
- 1 file changed, 2 insertions(+), 9 deletions(-)
+ drivers/net/ethernet/intel/ice/ice_arfs.c | 48 +++++++++++++++++++++++
+ 1 file changed, 48 insertions(+)
 
---- a/net/sunrpc/svc.c
-+++ b/net/sunrpc/svc.c
-@@ -1369,7 +1369,8 @@ svc_process_common(struct svc_rqst *rqst
- 	case SVC_OK:
- 		break;
- 	case SVC_GARBAGE:
--		goto err_garbage_args;
-+		rqstp->rq_auth_stat = rpc_autherr_badcred;
-+		goto err_bad_auth;
- 	case SVC_SYSERR:
- 		goto err_system_err;
- 	case SVC_DENIED:
-@@ -1510,14 +1511,6 @@ err_bad_proc:
- 	*rqstp->rq_accept_statp = rpc_proc_unavail;
- 	goto sendit;
+diff --git a/drivers/net/ethernet/intel/ice/ice_arfs.c b/drivers/net/ethernet/intel/ice/ice_arfs.c
+index 2bc5c7f598444..1f7834c035502 100644
+--- a/drivers/net/ethernet/intel/ice/ice_arfs.c
++++ b/drivers/net/ethernet/intel/ice/ice_arfs.c
+@@ -377,6 +377,50 @@ ice_arfs_is_perfect_flow_set(struct ice_hw *hw, __be16 l3_proto, u8 l4_proto)
+ 	return false;
+ }
  
--err_garbage_args:
--	svc_printk(rqstp, "failed to decode RPC header\n");
--
--	if (serv->sv_stats)
--		serv->sv_stats->rpcbadfmt++;
--	*rqstp->rq_accept_statp = rpc_garbage_args;
--	goto sendit;
--
- err_system_err:
- 	if (serv->sv_stats)
- 		serv->sv_stats->rpcbadfmt++;
++/**
++ * ice_arfs_cmp - Check if aRFS filter matches this flow.
++ * @fltr_info: filter info of the saved ARFS entry.
++ * @fk: flow dissector keys.
++ * @n_proto:  One of htons(ETH_P_IP) or htons(ETH_P_IPV6).
++ * @ip_proto: One of IPPROTO_TCP or IPPROTO_UDP.
++ *
++ * Since this function assumes limited values for n_proto and ip_proto, it
++ * is meant to be called only from ice_rx_flow_steer().
++ *
++ * Return:
++ * * true	- fltr_info refers to the same flow as fk.
++ * * false	- fltr_info and fk refer to different flows.
++ */
++static bool
++ice_arfs_cmp(const struct ice_fdir_fltr *fltr_info, const struct flow_keys *fk,
++	     __be16 n_proto, u8 ip_proto)
++{
++	/* Determine if the filter is for IPv4 or IPv6 based on flow_type,
++	 * which is one of ICE_FLTR_PTYPE_NONF_IPV{4,6}_{TCP,UDP}.
++	 */
++	bool is_v4 = fltr_info->flow_type == ICE_FLTR_PTYPE_NONF_IPV4_TCP ||
++		     fltr_info->flow_type == ICE_FLTR_PTYPE_NONF_IPV4_UDP;
++
++	/* Following checks are arranged in the quickest and most discriminative
++	 * fields first for early failure.
++	 */
++	if (is_v4)
++		return n_proto == htons(ETH_P_IP) &&
++			fltr_info->ip.v4.src_port == fk->ports.src &&
++			fltr_info->ip.v4.dst_port == fk->ports.dst &&
++			fltr_info->ip.v4.src_ip == fk->addrs.v4addrs.src &&
++			fltr_info->ip.v4.dst_ip == fk->addrs.v4addrs.dst &&
++			fltr_info->ip.v4.proto == ip_proto;
++
++	return fltr_info->ip.v6.src_port == fk->ports.src &&
++		fltr_info->ip.v6.dst_port == fk->ports.dst &&
++		fltr_info->ip.v6.proto == ip_proto &&
++		!memcmp(&fltr_info->ip.v6.src_ip, &fk->addrs.v6addrs.src,
++			sizeof(struct in6_addr)) &&
++		!memcmp(&fltr_info->ip.v6.dst_ip, &fk->addrs.v6addrs.dst,
++			sizeof(struct in6_addr));
++}
++
+ /**
+  * ice_rx_flow_steer - steer the Rx flow to where application is being run
+  * @netdev: ptr to the netdev being adjusted
+@@ -448,6 +492,10 @@ ice_rx_flow_steer(struct net_device *netdev, const struct sk_buff *skb,
+ 			continue;
+ 
+ 		fltr_info = &arfs_entry->fltr_info;
++
++		if (!ice_arfs_cmp(fltr_info, &fk, n_proto, ip_proto))
++			continue;
++
+ 		ret = fltr_info->fltr_id;
+ 
+ 		if (fltr_info->q_index == rxq_idx ||
+-- 
+2.39.5
+
 
 
 
