@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-157302-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157556-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED986AE536D
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:53:06 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id E0207AE5493
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:02:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C4F027AF181
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:51:08 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 520C84C1454
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:02:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E9A4223DEF;
-	Mon, 23 Jun 2025 21:52:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2920519DF4A;
+	Mon, 23 Jun 2025 22:02:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="n63QtS1U"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X9jjYFkD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0147223DED;
-	Mon, 23 Jun 2025 21:52:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8F2B21FF50;
+	Mon, 23 Jun 2025 22:02:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750715536; cv=none; b=NrhFpcQgZmms1CWfy/UgLFfj0VXiM+YUK8bGp8O+FvmxrgYJdNQsKNL0kbTonxKy6Xi4T+Lk6uGz5OkcVl+m3AuBUHo220HKDJ9y73KD5nhR4k4r0+sKaZI3mrzQl2eE43DejzB3bac0QxoEg1H6fddZx0LNkYOr9eS0/wgZMF4=
+	t=1750716156; cv=none; b=CTHi2sWrcYz35KftB8iLyWl1DD4Jvh+p94ECt9PaQ6NZR8m03sAyHf/2JOthd6gFxJbuzY89jSgfi9GCEN8cKFtRIULbbNbvZmZaSi54uSZcKNeiMXba8/TwlrUtC3MhgxfezDuSItpLbFDgNmBe9xR4bAFpTngMHr+D61cZusk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750715536; c=relaxed/simple;
-	bh=bUtVv/oMRkDLUCeb2hY9zHJpjk134RcY1B3VJT4dswo=;
+	s=arc-20240116; t=1750716156; c=relaxed/simple;
+	bh=06j5iUQKFClkoJp9GdvWa61URj8aNCoDw4F2LwZp6Yg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LSEzwj+Th5ZLBIJXiM4UZJoY2HS2mHeb8UtnHB1muEgUP38lZqUyvlKwLTnH5ShjiII5CYUMFv2wK2XGzLnqT80IxCgZERcXgi1H767vgzW3WwdToPUSwu0XOi0e5Q3pjlaC70wYzpmWhBRZJxkVPI/d95JtetUcNa211ssYjfA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=n63QtS1U; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86B46C4CEEA;
-	Mon, 23 Jun 2025 21:52:15 +0000 (UTC)
+	 MIME-Version; b=TgvU6v/B9SuQlV0JMa2wC67I9VNGNtTdxyr3FlyPDnXbyGwGrNqnCbKIfLrxeLMNrYQI7mMfeZcnFkYndXBMLzUaufEGXo49hdaTtus2LPayLRRNv3h0pE0zbocRYi6DkWY1NUVPIiuZqZeh0trE6g3yAr+MFqQE4fjASQOVbdg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X9jjYFkD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 695F8C4CEEA;
+	Mon, 23 Jun 2025 22:02:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750715535;
-	bh=bUtVv/oMRkDLUCeb2hY9zHJpjk134RcY1B3VJT4dswo=;
+	s=korg; t=1750716156;
+	bh=06j5iUQKFClkoJp9GdvWa61URj8aNCoDw4F2LwZp6Yg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=n63QtS1UxUsR99xPjJOgKW4PnE4a4UvCcRzeWDzB4VqxPw6eqQqjLiaGl+3qrX5nd
-	 1Xnm3F+ou6yloC+382/oi8xlYVqSF89ydFpPesXN9SPIr5TP1ivuDYTtnweJoVxvMw
-	 yRNBo2idAARKyHbM1UqN9UIanIrTvh68VfVkCs8A=
+	b=X9jjYFkD175q6+zY8b81O2rSbx/LwIEgMz1/kZJdtCmdIcS2cNKi1FroF/sIEpPfz
+	 vWNRejW9UBaEo4XqKrEap2np4IEAU3yUnD3J08AC8gfWlvAtZA54Iep8/iUnILX1NX
+	 O1+6VMdHyrr8XTIi4eIMRzI0aNrH3VgzTBzrBjTw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kang Yang <kang.yang@oss.qualcomm.com>,
-	Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>,
-	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 212/414] wifi: ath12k: fix macro definition HAL_RX_MSDU_PKT_LENGTH_GET
-Date: Mon, 23 Jun 2025 15:05:49 +0200
-Message-ID: <20250623130647.308714983@linuxfoundation.org>
+	syzbot+de24c3fe3c4091051710@syzkaller.appspotmail.com,
+	Jeongjun Park <aha310510@gmail.com>,
+	Jan Kara <jack@suse.cz>,
+	Theodore Tso <tytso@mit.edu>,
+	stable@kernel.org
+Subject: [PATCH 6.1 305/508] jbd2: fix data-race and null-ptr-deref in jbd2_journal_dirty_metadata()
+Date: Mon, 23 Jun 2025 15:05:50 +0200
+Message-ID: <20250623130652.812329298@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
-References: <20250623130642.015559452@linuxfoundation.org>
+In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
+References: <20250623130645.255320792@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,49 +64,87 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kang Yang <kang.yang@oss.qualcomm.com>
+From: Jeongjun Park <aha310510@gmail.com>
 
-[ Upstream commit a69bbf89d751ba2d6da21d773c4e29c91c5e53c4 ]
+commit af98b0157adf6504fade79b3e6cb260c4ff68e37 upstream.
 
-Currently, HAL_RX_MSDU_PKT_LENGTH_GET uses u32_get_bits to obtain the
-MSDU length from the MSDU description.
+Since handle->h_transaction may be a NULL pointer, so we should change it
+to call is_handle_aborted(handle) first before dereferencing it.
 
-This is not right. Because all halphy descriptions are little endian.
+And the following data-race was reported in my fuzzer:
 
-So use le32_get_bits for HAL_RX_MSDU_PKT_LENGTH_GET.
+==================================================================
+BUG: KCSAN: data-race in jbd2_journal_dirty_metadata / jbd2_journal_dirty_metadata
 
-Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0.c5-00481-QCAHMTSWPL_V1.0_V2.0_SILICONZ-3
-Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.3.1-00173-QCAHKSWPL_SILICONZ-1
+write to 0xffff888011024104 of 4 bytes by task 10881 on cpu 1:
+ jbd2_journal_dirty_metadata+0x2a5/0x770 fs/jbd2/transaction.c:1556
+ __ext4_handle_dirty_metadata+0xe7/0x4b0 fs/ext4/ext4_jbd2.c:358
+ ext4_do_update_inode fs/ext4/inode.c:5220 [inline]
+ ext4_mark_iloc_dirty+0x32c/0xd50 fs/ext4/inode.c:5869
+ __ext4_mark_inode_dirty+0xe1/0x450 fs/ext4/inode.c:6074
+ ext4_dirty_inode+0x98/0xc0 fs/ext4/inode.c:6103
+....
 
-Signed-off-by: Kang Yang <kang.yang@oss.qualcomm.com>
-Reviewed-by: Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>
-Link: https://patch.msgid.link/20250421023444.1778-9-kang.yang@oss.qualcomm.com
-Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+read to 0xffff888011024104 of 4 bytes by task 10880 on cpu 0:
+ jbd2_journal_dirty_metadata+0xf2/0x770 fs/jbd2/transaction.c:1512
+ __ext4_handle_dirty_metadata+0xe7/0x4b0 fs/ext4/ext4_jbd2.c:358
+ ext4_do_update_inode fs/ext4/inode.c:5220 [inline]
+ ext4_mark_iloc_dirty+0x32c/0xd50 fs/ext4/inode.c:5869
+ __ext4_mark_inode_dirty+0xe1/0x450 fs/ext4/inode.c:6074
+ ext4_dirty_inode+0x98/0xc0 fs/ext4/inode.c:6103
+....
+
+value changed: 0x00000000 -> 0x00000001
+==================================================================
+
+This issue is caused by missing data-race annotation for jh->b_modified.
+Therefore, the missing annotation needs to be added.
+
+Reported-by: syzbot+de24c3fe3c4091051710@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=de24c3fe3c4091051710
+Fixes: 6e06ae88edae ("jbd2: speedup jbd2_journal_dirty_metadata()")
+Signed-off-by: Jeongjun Park <aha310510@gmail.com>
+Reviewed-by: Jan Kara <jack@suse.cz>
+Link: https://patch.msgid.link/20250514130855.99010-1-aha310510@gmail.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Cc: stable@kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/ath/ath12k/hal_desc.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/jbd2/transaction.c |    5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath12k/hal_desc.h b/drivers/net/wireless/ath/ath12k/hal_desc.h
-index c68998e9667c9..8cbe28950d0c0 100644
---- a/drivers/net/wireless/ath/ath12k/hal_desc.h
-+++ b/drivers/net/wireless/ath/ath12k/hal_desc.h
-@@ -705,7 +705,7 @@ enum hal_rx_msdu_desc_reo_dest_ind {
- #define RX_MSDU_DESC_INFO0_DECAP_FORMAT		GENMASK(30, 29)
+--- a/fs/jbd2/transaction.c
++++ b/fs/jbd2/transaction.c
+@@ -1518,7 +1518,7 @@ int jbd2_journal_dirty_metadata(handle_t
+ 				jh->b_next_transaction == transaction);
+ 		spin_unlock(&jh->b_state_lock);
+ 	}
+-	if (jh->b_modified == 1) {
++	if (data_race(jh->b_modified == 1)) {
+ 		/* If it's in our transaction it must be in BJ_Metadata list. */
+ 		if (data_race(jh->b_transaction == transaction &&
+ 		    jh->b_jlist != BJ_Metadata)) {
+@@ -1537,7 +1537,6 @@ int jbd2_journal_dirty_metadata(handle_t
+ 		goto out;
+ 	}
  
- #define HAL_RX_MSDU_PKT_LENGTH_GET(val)		\
--	(u32_get_bits((val), RX_MSDU_DESC_INFO0_MSDU_LENGTH))
-+	(le32_get_bits((val), RX_MSDU_DESC_INFO0_MSDU_LENGTH))
+-	journal = transaction->t_journal;
+ 	spin_lock(&jh->b_state_lock);
  
- struct rx_msdu_desc {
- 	__le32 info0;
--- 
-2.39.5
-
+ 	if (is_handle_aborted(handle)) {
+@@ -1552,6 +1551,8 @@ int jbd2_journal_dirty_metadata(handle_t
+ 		goto out_unlock_bh;
+ 	}
+ 
++	journal = transaction->t_journal;
++
+ 	if (jh->b_modified == 0) {
+ 		/*
+ 		 * This buffer's got modified and becoming part
 
 
 
