@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-156804-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156330-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id B0610AE5135
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:31:50 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 62DB9AE4F1D
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:12:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4E43D7A625F
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:30:27 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F421017DFC1
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:12:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0F711E1A05;
-	Mon, 23 Jun 2025 21:31:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31A092222CA;
+	Mon, 23 Jun 2025 21:12:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t98704ka"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PTVB8SIs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F43DC2E0;
-	Mon, 23 Jun 2025 21:31:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1A2C1DF98B;
+	Mon, 23 Jun 2025 21:12:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750714306; cv=none; b=YlO8AHRtq91DphKIyhgzLx3qGKzKWD1wNqtjFsiXsYoc5pDVeXSVqGJfftn9ft0PeqzGKjvOcCeeiB9m2Bc78a+zIWFumqTYdoLXLfviQ/5cXU8H6M0AQo8/TUCG1cchpz9Hu6cIt8ULveVeTyhXJ5ZPhYmC1AInMlDyeK5yapc=
+	t=1750713151; cv=none; b=Sdpf9c/IwT6iWn7EVP3efMQYQ4O6/0aF0eToQMLXF/0xRpUHZVkprELN/qIRc41BPs9FihvVdn9agVIcnbXQfnfi2+SKv6WLI/JK7xSgVUFBTwpLf5ZT07EFck5jTlGOlNnF26CfuI0PnFFMm8K1tvcWZIaEKS6A1IaLoDHN3gI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750714306; c=relaxed/simple;
-	bh=sW52VtgbloQ0PmdN/59wBMHQryqpZXWlwkOJ787KEdM=;
+	s=arc-20240116; t=1750713151; c=relaxed/simple;
+	bh=l8PaH5k81/KDcVQgp4UGbGprlEZowR0mKolOfYZl7sQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qvm249H9g8rDOoMYQDK/Qz/wd6wHlpfGgj8NYv/d3dDofLvbP9WpXIlxwaHfmoI8wpeHuSJd5l0OmYNr9thMXXIzKPw7+NCI1HvIuoTnZ4CxDez+x/ieqk8HHgu3Mz0W2wvl1WplGgq3Hcs/3YG06iVAJq0Ma0wO+ZxPc+z4pQM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t98704ka; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37E37C4CEEA;
-	Mon, 23 Jun 2025 21:31:46 +0000 (UTC)
+	 MIME-Version; b=fpgJ1ky4ffdmwNmaNOM1GPJQSu8djlHocHUukMs/5udqU27z3tDoC2JoGQKVM4bSB9Xp+rChHaSRJ9CU81zvN3newYvmBLL/gtA2LYzBBR3uUjSGCRJT00/jNjqVY6v9vIalDhmY7uDj40oJJAW9eTnfXFErZmzis0uVyk2xnic=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PTVB8SIs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F92FC4CEEA;
+	Mon, 23 Jun 2025 21:12:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750714306;
-	bh=sW52VtgbloQ0PmdN/59wBMHQryqpZXWlwkOJ787KEdM=;
+	s=korg; t=1750713150;
+	bh=l8PaH5k81/KDcVQgp4UGbGprlEZowR0mKolOfYZl7sQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=t98704ka58Lj+5WD2mvvfo/uJHtg5o8TxM3DSFq9x3S8ukSK/WoJHh9+QPxqxTs2e
-	 RCuGv91euaaSCrNkP2iAoagSet+nUloeANMlTDXGHx19UMLge8nkcy/zB4uvI+BFqB
-	 aHdseVPoH0xeDEsLwyLOh1cK2tMAeKPd2asRy6sk=
+	b=PTVB8SIskc2qzUu/BAWGFpd453hbf7/LUyIac1yLm2drMG0HlLqoFin1WzS9uTBNT
+	 akU5nIxyHHpqf6ZzJLQq13tTrThyHqJbp85UkIbmFABxW20Z37r9W2HpCzE0osR03L
+	 Q2KnHZN8OXfOhFTXWqg5soMe/IDg4/VlpOmaU6DA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johannes Berg <johannes.berg@intel.com>,
-	Ilan Peer <ilan.peer@intel.com>,
-	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 373/592] wifi: iwlwifi: mvm: fix beacon CCK flag
+	Gui-Dong Han <hanguidong02@gmail.com>,
+	Guenter Roeck <linux@roeck-us.net>
+Subject: [PATCH 6.6 070/290] hwmon: (ftsteutates) Fix TOCTOU race in fts_read()
 Date: Mon, 23 Jun 2025 15:05:31 +0200
-Message-ID: <20250623130709.312944052@linuxfoundation.org>
+Message-ID: <20250623130629.101044828@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
-References: <20250623130700.210182694@linuxfoundation.org>
+In-Reply-To: <20250623130626.910356556@linuxfoundation.org>
+References: <20250623130626.910356556@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,50 +61,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johannes Berg <johannes.berg@intel.com>
+From: Gui-Dong Han <hanguidong02@gmail.com>
 
-[ Upstream commit 8d7f08922a8cb621aa5d00bdce6a7afe57af1665 ]
+commit 14c9ede9ca4cd078ad76a6ab9617b81074eb58bf upstream.
 
-The beacon CCK flag should be set for any CCK rate, not
-just for 1 Mbps. Fix that.
+In the fts_read() function, when handling hwmon_pwm_auto_channels_temp,
+the code accesses the shared variable data->fan_source[channel] twice
+without holding any locks. It is first checked against
+FTS_FAN_SOURCE_INVALID, and if the check passes, it is read again
+when used as an argument to the BIT() macro.
 
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Reviewed-by: Ilan Peer <ilan.peer@intel.com>
-Link: https://patch.msgid.link/20250505215513.fe18b7d92d7d.I7bb40a92cea102677b695beb1e2a62a5ea72678b@changeid
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This creates a Time-of-Check to Time-of-Use (TOCTOU) race condition.
+Another thread executing fts_update_device() can modify the value of
+data->fan_source[channel] between the check and its use. If the value
+is changed to FTS_FAN_SOURCE_INVALID (0xff) during this window, the
+BIT() macro will be called with a large shift value (BIT(255)).
+A bit shift by a value greater than or equal to the type width is
+undefined behavior and can lead to a crash or incorrect values being
+returned to userspace.
+
+Fix this by reading data->fan_source[channel] into a local variable
+once, eliminating the race condition. Additionally, add a bounds check
+to ensure the value is less than BITS_PER_LONG before passing it to
+the BIT() macro, making the code more robust against undefined behavior.
+
+This possible bug was found by an experimental static analysis tool
+developed by our team.
+
+Fixes: 1c5759d8ce05 ("hwmon: (ftsteutates) Replace fanX_source with pwmX_auto_channels_temp")
+Cc: stable@vger.kernel.org
+Signed-off-by: Gui-Dong Han <hanguidong02@gmail.com>
+Link: https://lore.kernel.org/r/20250606071640.501262-1-hanguidong02@gmail.com
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/intel/iwlwifi/mvm/mac-ctxt.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/hwmon/ftsteutates.c |    9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mac-ctxt.c b/drivers/net/wireless/intel/iwlwifi/mvm/mac-ctxt.c
-index bec18d197f310..83f1ed94ccab9 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/mac-ctxt.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/mac-ctxt.c
-@@ -1,6 +1,6 @@
- // SPDX-License-Identifier: GPL-2.0 OR BSD-3-Clause
- /*
-- * Copyright (C) 2012-2014, 2018-2024 Intel Corporation
-+ * Copyright (C) 2012-2014, 2018-2025 Intel Corporation
-  * Copyright (C) 2013-2014 Intel Mobile Communications GmbH
-  * Copyright (C) 2015-2017 Intel Deutschland GmbH
-  */
-@@ -941,7 +941,7 @@ u16 iwl_mvm_mac_ctxt_get_beacon_flags(const struct iwl_fw *fw, u8 rate_idx)
- 	u16 flags = iwl_mvm_mac80211_idx_to_hwrate(fw, rate_idx);
- 	bool is_new_rate = iwl_fw_lookup_cmd_ver(fw, BEACON_TEMPLATE_CMD, 0) > 10;
+--- a/drivers/hwmon/ftsteutates.c
++++ b/drivers/hwmon/ftsteutates.c
+@@ -423,13 +423,16 @@ static int fts_read(struct device *dev,
+ 		break;
+ 	case hwmon_pwm:
+ 		switch (attr) {
+-		case hwmon_pwm_auto_channels_temp:
+-			if (data->fan_source[channel] == FTS_FAN_SOURCE_INVALID)
++		case hwmon_pwm_auto_channels_temp: {
++			u8 fan_source = data->fan_source[channel];
++
++			if (fan_source == FTS_FAN_SOURCE_INVALID || fan_source >= BITS_PER_LONG)
+ 				*val = 0;
+ 			else
+-				*val = BIT(data->fan_source[channel]);
++				*val = BIT(fan_source);
  
--	if (rate_idx <= IWL_FIRST_CCK_RATE)
-+	if (rate_idx <= IWL_LAST_CCK_RATE)
- 		flags |= is_new_rate ? IWL_MAC_BEACON_CCK
- 			  : IWL_MAC_BEACON_CCK_V1;
- 
--- 
-2.39.5
-
+ 			return 0;
++		}
+ 		default:
+ 			break;
+ 		}
 
 
 
