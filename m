@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-156823-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156679-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D6445AE5148
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:32:35 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 41398AE50A3
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:27:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 732884A3440
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:32:36 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BC3874A172C
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:27:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 705791DDC04;
-	Mon, 23 Jun 2025 21:32:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A61F2248B5;
+	Mon, 23 Jun 2025 21:26:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zqueeaVg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aj6nIkrL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D483C2E0;
-	Mon, 23 Jun 2025 21:32:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35CFA1E521E;
+	Mon, 23 Jun 2025 21:26:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750714353; cv=none; b=J5gO1u4H7mR2sFxPcfTd81TL6mnZYk6rhL070kLwvJB2Lw+55K3durl6TIANRgAwmQAnvgK+Np8sPYL+J/EhbRY+aO2hZhAQWaCZr9MWIvUCIwYB9Gd+dVE0JjDOt8QCxN9oSb6SuGWH9a5PJY32AF/KEtGgjZzpNSVJ5Fpfukw=
+	t=1750714004; cv=none; b=dPG8RqZshCYTJe6lVs/2mkPuGxHKUNcuR2EZn564jn6ZIBTL8F1rgD9uJKKyJiJroE0H4ZLmUZo3Ggj3xPXX0AAyePJs8FEmVC2QeTYb88Yu2JgLL5VxNJGks3OVQs470oFwUtwg0730rmNMFaidlaDcb2aniAMb12oIUXYqjwE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750714353; c=relaxed/simple;
-	bh=9tQq3bfwvOK2sX0XuGHuj43H3ouAxTEFwC1cHi2Ca/s=;
+	s=arc-20240116; t=1750714004; c=relaxed/simple;
+	bh=sK8Y1giYHmQo+7XV9dNZX4UDMw+v7DuaZK9IbFPis2I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HIMMsRlEHhpCjN5nhHn/TnTFJTo/06Xy1qPn4urvx5v9YsmZlVAck5iBeh/chprFeK9fiAZoZnbLPxitciI5339pbrrSlg04U/qPgtz6dZWFIW+4zMPP/QW/7Q2AVQXS6vQ0HBpZzXSBhQcqhk/2FlQOABOfjWUjrIcn4N/c3Xw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zqueeaVg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B770DC4CEEA;
-	Mon, 23 Jun 2025 21:32:32 +0000 (UTC)
+	 MIME-Version; b=rnHgCHUWmchqZ4P/DgMVGpEph03PqHm9ET5j6altn6T0eM5t0DPnls7jx0PoCAWbe22blQ+Budm9Rvfo7fuvyVxJQuCngfZxMfw7tiV0dl/lElk8+R+BaAfMWS7rFQF5A1N7fpWhhfEtY1YVmcG5Tjw0FiNXhj03H11pm08e7jM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aj6nIkrL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F257C4CEEA;
+	Mon, 23 Jun 2025 21:26:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750714353;
-	bh=9tQq3bfwvOK2sX0XuGHuj43H3ouAxTEFwC1cHi2Ca/s=;
+	s=korg; t=1750714003;
+	bh=sK8Y1giYHmQo+7XV9dNZX4UDMw+v7DuaZK9IbFPis2I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zqueeaVgyqqTgenh00we4XpQRoDmJ4eSjcDuJbyLoiHlJE35CwGl8Y8bOIIkM3qVr
-	 B8CTw42kbgSzAMbQbMGb9Lu/3ql+NTuhipB6BQh+DkUH0BH51YpOa+wq+CQmqP4zmJ
-	 rBgb4h9aPot3fQbkuSAWfHI/1J10zpikmBCYwwXc=
+	b=aj6nIkrLkH6HApaq/BT06ATyP/3wMYnSj/tWfnpb0Zdw0YJc4mfbyn6FEz2Pdi5iW
+	 Og8E/wy8Cr9A1DcPijTUfiZxD9e9BUGYnC858nYYxxj/Kg2gQ7VE/Lt18SCIBmUBL7
+	 lJLTm9i/xNWXs+jUWwWrJUuS7NSvLeBXKqYlEDXQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Quentin Schulz <quentin.schulz@cherry.de>,
-	Maxime Chevallier <maxime.chevallier@bootlin.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 167/508] net: stmmac: platform: guarantee uniqueness of bus_id
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Mark Brown <broonie@kernel.org>
+Subject: [PATCH 6.12 075/414] ASoC: codecs: wcd9375: Fix double free of regulator supplies
 Date: Mon, 23 Jun 2025 15:03:32 +0200
-Message-ID: <20250623130649.383967926@linuxfoundation.org>
+Message-ID: <20250623130643.952448654@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
-References: <20250623130645.255320792@linuxfoundation.org>
+In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
+References: <20250623130642.015559452@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,73 +61,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Quentin Schulz <quentin.schulz@cherry.de>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-[ Upstream commit eb7fd7aa35bfcc1e1fda4ecc42ccfcb526cdc780 ]
+commit 63fe298652d4eda07d738bfcbbc59d1343a675ef upstream.
 
-bus_id is currently derived from the ethernetX alias. If one is missing
-for the device, 0 is used. If ethernet0 points to another stmmac device
-or if there are 2+ stmmac devices without an ethernet alias, then bus_id
-will be 0 for all of those.
+Driver gets regulator supplies in probe path with
+devm_regulator_bulk_get(), so should not call regulator_bulk_free() in
+error and remove paths to avoid double free.
 
-This is an issue because the bus_id is used to generate the mdio bus id
-(new_bus->id in drivers/net/ethernet/stmicro/stmmac/stmmac_mdio.c
-stmmac_mdio_register) and this needs to be unique.
-
-This allows to avoid needing to define ethernet aliases for devices with
-multiple stmmac controllers (such as the Rockchip RK3588) for multiple
-stmmac devices to probe properly.
-
-Obviously, the bus_id isn't guaranteed to be stable across reboots if no
-alias is set for the device but that is easily fixed by simply adding an
-alias if this is desired.
-
-Fixes: 25c83b5c2e82 ("dt:net:stmmac: Add support to dwmac version 3.610 and 3.710")
-Signed-off-by: Quentin Schulz <quentin.schulz@cherry.de>
-Reviewed-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
-Link: https://patch.msgid.link/20250527-stmmac-mdio-bus_id-v2-1-a5ca78454e3c@cherry.de
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 216d04139a6d ("ASoC: codecs: wcd937x: Remove separate handling for vdd-buck supply")
+Cc: stable@vger.kernel.org
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Link: https://patch.msgid.link/20250526-b4-b4-asoc-wcd9395-vdd-px-fixes-v1-3-0b8a2993b7d3@linaro.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/stmicro/stmmac/stmmac_platform.c | 11 +++++++++--
- 1 file changed, 9 insertions(+), 2 deletions(-)
+ sound/soc/codecs/wcd937x.c |    6 +-----
+ 1 file changed, 1 insertion(+), 5 deletions(-)
 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_platform.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_platform.c
-index c368ef3cd9cb4..e81f54a4ac9b1 100644
---- a/drivers/net/ethernet/stmicro/stmmac/stmmac_platform.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_platform.c
-@@ -417,6 +417,7 @@ stmmac_probe_config_dt(struct platform_device *pdev, u8 *mac)
- 	struct device_node *np = pdev->dev.of_node;
- 	struct plat_stmmacenet_data *plat;
- 	struct stmmac_dma_cfg *dma_cfg;
-+	static int bus_id = -ENODEV;
- 	int phy_mode;
- 	void *ret;
- 	int rc;
-@@ -453,8 +454,14 @@ stmmac_probe_config_dt(struct platform_device *pdev, u8 *mac)
- 	of_property_read_u32(np, "max-speed", &plat->max_speed);
+--- a/sound/soc/codecs/wcd937x.c
++++ b/sound/soc/codecs/wcd937x.c
+@@ -2897,10 +2897,8 @@ static int wcd937x_probe(struct platform
+ 		return dev_err_probe(dev, ret, "Failed to get supplies\n");
  
- 	plat->bus_id = of_alias_get_id(np, "ethernet");
--	if (plat->bus_id < 0)
--		plat->bus_id = 0;
-+	if (plat->bus_id < 0) {
-+		if (bus_id < 0)
-+			bus_id = of_alias_get_highest_id("ethernet");
-+		/* No ethernet alias found, init at -1 so first bus_id is 0 */
-+		if (bus_id < 0)
-+			bus_id = -1;
-+		plat->bus_id = ++bus_id;
-+	}
+ 	ret = regulator_bulk_enable(WCD937X_MAX_BULK_SUPPLY, wcd937x->supplies);
+-	if (ret) {
+-		regulator_bulk_free(WCD937X_MAX_BULK_SUPPLY, wcd937x->supplies);
++	if (ret)
+ 		return dev_err_probe(dev, ret, "Failed to enable supplies\n");
+-	}
  
- 	/* Default to phy auto-detection */
- 	plat->phy_addr = -1;
--- 
-2.39.5
-
+ 	wcd937x_dt_parse_micbias_info(dev, wcd937x);
+ 
+@@ -2936,7 +2934,6 @@ static int wcd937x_probe(struct platform
+ 
+ err_disable_regulators:
+ 	regulator_bulk_disable(WCD937X_MAX_BULK_SUPPLY, wcd937x->supplies);
+-	regulator_bulk_free(WCD937X_MAX_BULK_SUPPLY, wcd937x->supplies);
+ 
+ 	return ret;
+ }
+@@ -2953,7 +2950,6 @@ static void wcd937x_remove(struct platfo
+ 	pm_runtime_dont_use_autosuspend(dev);
+ 
+ 	regulator_bulk_disable(WCD937X_MAX_BULK_SUPPLY, wcd937x->supplies);
+-	regulator_bulk_free(WCD937X_MAX_BULK_SUPPLY, wcd937x->supplies);
+ }
+ 
+ #if defined(CONFIG_OF)
 
 
 
