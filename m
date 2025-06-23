@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-156605-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157088-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CFD02AE5048
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:23:44 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 352ECAE5264
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:43:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 66ACC4A0868
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:23:45 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 51C23443835
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:43:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A6901F3B96;
-	Mon, 23 Jun 2025 21:23:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0A61222599;
+	Mon, 23 Jun 2025 21:43:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KnrwP9++"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o0Tj4R3Y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECAE61E5B71;
-	Mon, 23 Jun 2025 21:23:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E6151DDC04;
+	Mon, 23 Jun 2025 21:43:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750713823; cv=none; b=kJywKn5qdQVUIn4N9ep/jTj7Kj/Os17UkYv+okxexm7lMRAgmmV5ROminzlpu+eJNwa/zpgrYj0BdVlm9896XeIX0hjB7P2UFqbBxfG7xCuhzdZHg1w3PZsiolVWslpS/DqCpFynMviaiMVvUtcE/hitC8nHvnFBGATnUus8NaA=
+	t=1750715004; cv=none; b=Dk3/EwvWEUloecBRGTcBsMmCO8CmjDfMTfJZ11xLZN1uOYC+1wbi4I9qrhjVQrSoTtRcM04nqqZdk08rxiUXooKMXqwb2KSb3yU+JN8H5Vb/N5YqHUM/7sXRaazDl2PwLUMZiO7nN/L2sdbip2utSYWG2qcZI3/L2nW2TU7qhnI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750713823; c=relaxed/simple;
-	bh=1XGppuLFuU2T0+4Lawc8zSDoQioEjiVMNtfCWwMiEAM=;
+	s=arc-20240116; t=1750715004; c=relaxed/simple;
+	bh=rw/z9NhhNP5etsRWjAUArgncQDKcgK715g0Jp5/7DTw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=S/71r/gyih+LmTJKUAPoLvKxUsxQW/XMBmYY9INhxtezFK0wXUHSB+SP2baESxKWTyJF6UnjRWCeRCoX6FE0spWfQnHvL6ra/A1Qc86DkS5Z3Z/qve93q+I7ZbK5zcbbbcY01g4OX05zTayHBfF/C/J7QyEDIjzMaWsFmQwfn6Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KnrwP9++; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 844FBC4CEEA;
-	Mon, 23 Jun 2025 21:23:42 +0000 (UTC)
+	 MIME-Version; b=jSwnG+HraIFWWnHq3NZRqRdN3QzWK/vrIErAewnhc1LQI6oEah92+iX0mVme99F2YxoNGuWUU42XU4iP5hu0s3aDvF+OREwgWQKzwOa4nTDzd2xVNrkifXW4UliTiC5GW5rBQhMfvxc2kVOCgbi9eAlOX0DswSU+1HKnPGxpcGo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o0Tj4R3Y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26F3BC4CEEA;
+	Mon, 23 Jun 2025 21:43:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750713822;
-	bh=1XGppuLFuU2T0+4Lawc8zSDoQioEjiVMNtfCWwMiEAM=;
+	s=korg; t=1750715004;
+	bh=rw/z9NhhNP5etsRWjAUArgncQDKcgK715g0Jp5/7DTw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KnrwP9++IDa8sN0GNxuNdCYDqk9nVrYDWp12ufMej0vi3MiAd9VJVNseFVTvy2mti
-	 yXEs2nM2ckLo9wsknP/e2g8wGiXbotJ1hkvJ0JqopxgpEhf+9nRgpdbW3qF9D+kbpp
-	 GIY4aJGJtDm8qdzuHrGPXxzXqOOhtThFbss55Tm0=
+	b=o0Tj4R3YZTIrJrmgCK9Dmsew7mMU4BYOmB8I5APxu1cJRvi4RjrYk79lNV5Ubx3wP
+	 V0rV5dxzFNNsopFb/ujV09G9rx4s3FqvbezXBf12xXyTQygTOej9WsCWCFg/PTgOXf
+	 mms8+BQLKeiug6F2IdRU+akS+XJawyrnuASVs9p8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Subject: [PATCH 5.10 188/355] Input: ims-pcu - check record size in ims_pcu_flash_firmware()
+	Sukrut Bellary <sbellary@baylibre.com>,
+	Judith Mendez <jm@ti.com>,
+	Kevin Hilman <khilman@baylibre.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.15 431/592] ARM: OMAP2+: Fix l4ls clk domain handling in STANDBY
 Date: Mon, 23 Jun 2025 15:06:29 +0200
-Message-ID: <20250623130632.333978802@linuxfoundation.org>
+Message-ID: <20250623130710.687405434@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130626.716971725@linuxfoundation.org>
-References: <20250623130626.716971725@linuxfoundation.org>
+In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
+References: <20250623130700.210182694@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,44 +63,92 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Sukrut Bellary <sbellary@baylibre.com>
 
-commit a95ef0199e80f3384eb992889322957d26c00102 upstream.
+[ Upstream commit 47fe74098f3dadba2f9cc1e507d813a4aa93f5f3 ]
 
-The "len" variable comes from the firmware and we generally do
-trust firmware, but it's always better to double check.  If the "len"
-is too large it could result in memory corruption when we do
-"memcpy(fragment->data, rec->data, len);"
+Don't put the l4ls clk domain to sleep in case of standby.
+Since CM3 PM FW[1](ti-v4.1.y) doesn't wake-up/enable the l4ls clk domain
+upon wake-up, CM3 PM FW fails to wake-up the MPU.
 
-Fixes: 628329d52474 ("Input: add IMS Passenger Control Unit driver")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Link: https://lore.kernel.org/r/131fd1ae92c828ee9f4fa2de03d8c210ae1f3524.1748463049.git.dan.carpenter@linaro.org
-Cc: stable@vger.kernel.org
-Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+[1] https://git.ti.com/cgit/processor-firmware/ti-amx3-cm3-pm-firmware/
+
+Signed-off-by: Sukrut Bellary <sbellary@baylibre.com>
+Tested-by: Judith Mendez <jm@ti.com>
+Link: https://lore.kernel.org/r/20250318230042.3138542-2-sbellary@baylibre.com
+Signed-off-by: Kevin Hilman <khilman@baylibre.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/input/misc/ims-pcu.c |    6 ++++++
- 1 file changed, 6 insertions(+)
+ arch/arm/mach-omap2/clockdomain.h           |  1 +
+ arch/arm/mach-omap2/clockdomains33xx_data.c |  2 +-
+ arch/arm/mach-omap2/cm33xx.c                | 14 +++++++++++++-
+ 3 files changed, 15 insertions(+), 2 deletions(-)
 
---- a/drivers/input/misc/ims-pcu.c
-+++ b/drivers/input/misc/ims-pcu.c
-@@ -845,6 +845,12 @@ static int ims_pcu_flash_firmware(struct
- 		addr = be32_to_cpu(rec->addr) / 2;
- 		len = be16_to_cpu(rec->len);
+diff --git a/arch/arm/mach-omap2/clockdomain.h b/arch/arm/mach-omap2/clockdomain.h
+index c36fb27212615..86a2f9e5d0ef9 100644
+--- a/arch/arm/mach-omap2/clockdomain.h
++++ b/arch/arm/mach-omap2/clockdomain.h
+@@ -48,6 +48,7 @@
+ #define CLKDM_NO_AUTODEPS			(1 << 4)
+ #define CLKDM_ACTIVE_WITH_MPU			(1 << 5)
+ #define CLKDM_MISSING_IDLE_REPORTING		(1 << 6)
++#define CLKDM_STANDBY_FORCE_WAKEUP		BIT(7)
  
-+		if (len > sizeof(pcu->cmd_buf) - 1 - sizeof(*fragment)) {
-+			dev_err(pcu->dev,
-+				"Invalid record length in firmware: %d\n", len);
-+			return -EINVAL;
-+		}
-+
- 		fragment = (void *)&pcu->cmd_buf[1];
- 		put_unaligned_le32(addr, &fragment->addr);
- 		fragment->len = len;
+ #define CLKDM_CAN_HWSUP		(CLKDM_CAN_ENABLE_AUTO | CLKDM_CAN_DISABLE_AUTO)
+ #define CLKDM_CAN_SWSUP		(CLKDM_CAN_FORCE_SLEEP | CLKDM_CAN_FORCE_WAKEUP)
+diff --git a/arch/arm/mach-omap2/clockdomains33xx_data.c b/arch/arm/mach-omap2/clockdomains33xx_data.c
+index 87f4e927eb183..c05a3c07d4486 100644
+--- a/arch/arm/mach-omap2/clockdomains33xx_data.c
++++ b/arch/arm/mach-omap2/clockdomains33xx_data.c
+@@ -19,7 +19,7 @@ static struct clockdomain l4ls_am33xx_clkdm = {
+ 	.pwrdm		= { .name = "per_pwrdm" },
+ 	.cm_inst	= AM33XX_CM_PER_MOD,
+ 	.clkdm_offs	= AM33XX_CM_PER_L4LS_CLKSTCTRL_OFFSET,
+-	.flags		= CLKDM_CAN_SWSUP,
++	.flags		= CLKDM_CAN_SWSUP | CLKDM_STANDBY_FORCE_WAKEUP,
+ };
+ 
+ static struct clockdomain l3s_am33xx_clkdm = {
+diff --git a/arch/arm/mach-omap2/cm33xx.c b/arch/arm/mach-omap2/cm33xx.c
+index acdf72a541c02..a4dd42abda89b 100644
+--- a/arch/arm/mach-omap2/cm33xx.c
++++ b/arch/arm/mach-omap2/cm33xx.c
+@@ -20,6 +20,9 @@
+ #include "cm-regbits-34xx.h"
+ #include "cm-regbits-33xx.h"
+ #include "prm33xx.h"
++#if IS_ENABLED(CONFIG_SUSPEND)
++#include <linux/suspend.h>
++#endif
+ 
+ /*
+  * CLKCTRL_IDLEST_*: possible values for the CM_*_CLKCTRL.IDLEST bitfield:
+@@ -328,8 +331,17 @@ static int am33xx_clkdm_clk_disable(struct clockdomain *clkdm)
+ {
+ 	bool hwsup = false;
+ 
++#if IS_ENABLED(CONFIG_SUSPEND)
++	/*
++	 * In case of standby, Don't put the l4ls clk domain to sleep.
++	 * Since CM3 PM FW doesn't wake-up/enable the l4ls clk domain
++	 * upon wake-up, CM3 PM FW fails to wake-up th MPU.
++	 */
++	if (pm_suspend_target_state == PM_SUSPEND_STANDBY &&
++	    (clkdm->flags & CLKDM_STANDBY_FORCE_WAKEUP))
++		return 0;
++#endif
+ 	hwsup = am33xx_cm_is_clkdm_in_hwsup(clkdm->cm_inst, clkdm->clkdm_offs);
+-
+ 	if (!hwsup && (clkdm->flags & CLKDM_CAN_FORCE_SLEEP))
+ 		am33xx_clkdm_sleep(clkdm);
+ 
+-- 
+2.39.5
+
 
 
 
