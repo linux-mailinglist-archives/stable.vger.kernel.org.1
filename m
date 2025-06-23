@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-157875-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-158009-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 98ECCAE5608
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:17:16 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id D9A8CAE5699
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:21:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C95ED169F5C
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:16:00 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 46E2E17D3E6
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:21:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 86F09223DFF;
-	Mon, 23 Jun 2025 22:15:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2DEA7223DE8;
+	Mon, 23 Jun 2025 22:21:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bvWhUxNj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W3kPyf4v"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44E501F7580;
-	Mon, 23 Jun 2025 22:15:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEFD3199FBA;
+	Mon, 23 Jun 2025 22:21:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750716933; cv=none; b=pZaWvNxM5pFu6dozIe5jO2DnFPP6yeITfpy01tNxXKqdRYW88OAbLNtjfqp48dflUjz9LAPt6mZX8F0YodUsP2dMYvV2DzGmcLfsk9chR710+Qmm18O5b+nffRM4ABE35q8eqoDVfzZvDs+fAkegw0LH6t0ebWZ6tyLoM+l+WoM=
+	t=1750717263; cv=none; b=bNnJYBzDukl+e5lNvuWre5er09WxxqQVXanFoIdvdYoPMTvmxoWjuvfvSF8lz+M4fiHjSnysdEDapOVtgRQACwLWUrrOHGfeh1OHYOuD/gEmWHyaTOsfri2DXqGyCprYy/DBQACaDw/0rV0/leoqiN6yWqmEGRxzZovc/MtsKSE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750716933; c=relaxed/simple;
-	bh=gAjbOeANzQ5Mo/U+k9zcPSaJMzPZ9IQDjdfu4vuGQuM=;
+	s=arc-20240116; t=1750717263; c=relaxed/simple;
+	bh=TP460RtVM3m3NmNyP+Gty3WVdu1cBHRIlSBKRFGLsos=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jKtdfXgg8/ONsoJeBLmuSNFV4cmTik/8zDe/zjS3mSBWNHCpDPLz7YTDxfNPnfuDBVxSRgb1IG651jHRiP9oFAWOBAWEBcB2dUl69zs4RPEBszU82Fg4ZLnmGPd3c/OqqV7r8KArbvK0Hk7Dmwyw8VKdpd5obpwaiftv0FRUBbo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bvWhUxNj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2DA2C4CEEA;
-	Mon, 23 Jun 2025 22:15:32 +0000 (UTC)
+	 MIME-Version; b=CDN7ZAP3uOZj15PaWt9hc3MvUl7avrCYPavcvMhOwJFWXDL9qA3aPQ5Op8cMnqDL0cGtHeQtAMUSLakMpDNM8YV/joB93bVlVUYPSQJ9G7X4xXQ0FYaRsrj/xL7h0CHCBUBRrib0+agROrJakh5grJyJcxVg8/QApCyoqViHG6Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W3kPyf4v; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 743F9C4CEED;
+	Mon, 23 Jun 2025 22:21:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750716933;
-	bh=gAjbOeANzQ5Mo/U+k9zcPSaJMzPZ9IQDjdfu4vuGQuM=;
+	s=korg; t=1750717262;
+	bh=TP460RtVM3m3NmNyP+Gty3WVdu1cBHRIlSBKRFGLsos=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bvWhUxNj7tqs0ak7iS8XXZmfrsxDl0EikAPWaB3Zsu1yGGLPYcVQ2eQvcy3+LXzCj
-	 rrlIw26ahJdKCpvueHmq8ZuPkxAqmrp1WR1Bwyt8GukebuZRZPXVHRSWD19Rt6kAAf
-	 EmIUEvVnhd3P6/v168tR4tRRal8gTeqIAPGa08kw=
+	b=W3kPyf4vqmbCIZX5sAtgjnA2ZZSgOnr2hvWVm402cWaBpj4ZEZhZGKTI4FLn4ONEn
+	 Ec1eL/6bXvV25DIN+zCd6vg2NRsnX8SuMpROjNwoS/ZpfYDY0/LXrgt1ANhQ/EM62o
+	 m5shUUGPgUVA6TRUgIJrhdH/dWlcIuuQeWWRYdEQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yao Zi <ziyao@disroot.org>,
-	Huacai Chen <chenhuacai@loongson.cn>
-Subject: [PATCH 6.12 299/414] platform/loongarch: laptop: Unregister generic_sub_drivers on exit
+	Tan En De <ende.tan@starfivetech.com>,
+	Jarkko Nikula <jarkko.nikula@linux.intel.com>,
+	Andi Shyti <andi.shyti@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 391/508] i2c: designware: Invoke runtime suspend on quick slave re-registration
 Date: Mon, 23 Jun 2025 15:07:16 +0200
-Message-ID: <20250623130649.481820971@linuxfoundation.org>
+Message-ID: <20250623130654.895582579@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
-References: <20250623130642.015559452@linuxfoundation.org>
+In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
+References: <20250623130645.255320792@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,51 +63,83 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yao Zi <ziyao@disroot.org>
+From: Tan En De <ende.tan@starfivetech.com>
 
-commit f78fb2576f22b0ba5297412a9aa7691920666c41 upstream.
+[ Upstream commit 2fe2b969d911a09abcd6a47401a3c66c38a310e6 ]
 
-Without correct unregisteration, ACPI notify handlers and the platform
-drivers installed by generic_subdriver_init() will become dangling
-references after removing the loongson_laptop module, triggering various
-kernel faults when a hotkey is sent or at kernel shutdown.
+Replaced pm_runtime_put() with pm_runtime_put_sync_suspend() to ensure
+the runtime suspend is invoked immediately when unregistering a slave.
+This prevents a race condition where suspend was skipped when
+unregistering and registering slave in quick succession.
 
-Cc: stable@vger.kernel.org
-Fixes: 6246ed09111f ("LoongArch: Add ACPI-based generic laptop driver")
-Signed-off-by: Yao Zi <ziyao@disroot.org>
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+For example, consider the rapid sequence of
+`delete_device -> new_device -> delete_device -> new_device`.
+In this sequence, it is observed that the dw_i2c_plat_runtime_suspend()
+might not be invoked after `delete_device` operation.
+
+This is because after `delete_device` operation, when the
+pm_runtime_put() is about to trigger suspend, the following `new_device`
+operation might race and cancel the suspend.
+
+If that happens, during the `new_device` operation,
+dw_i2c_plat_runtime_resume() is skipped (since there was no suspend), which
+means `i_dev->init()`, i.e. i2c_dw_init_slave(), is skipped.
+Since i2c_dw_init_slave() is skipped, i2c_dw_configure_fifo_slave() is
+skipped too, which leaves `DW_IC_INTR_MASK` unconfigured. If we inspect
+the interrupt mask register using devmem, it will show as zero.
+
+Example shell script to reproduce the issue:
+```
+  #!/bin/sh
+
+  SLAVE_LADDR=0x1010
+  SLAVE_BUS=13
+  NEW_DEVICE=/sys/bus/i2c/devices/i2c-$SLAVE_BUS/new_device
+  DELETE_DEVICE=/sys/bus/i2c/devices/i2c-$SLAVE_BUS/delete_device
+
+  # Create initial device
+  echo slave-24c02 $SLAVE_LADDR > $NEW_DEVICE
+  sleep 2
+
+  # Rapid sequence of
+  # delete_device -> new_device -> delete_device -> new_device
+  echo $SLAVE_LADDR > $DELETE_DEVICE
+  echo slave-24c02 $SLAVE_LADDR > $NEW_DEVICE
+  echo $SLAVE_LADDR > $DELETE_DEVICE
+  echo slave-24c02 $SLAVE_LADDR > $NEW_DEVICE
+
+  # Using devmem to inspect IC_INTR_MASK will show as zero
+```
+
+Signed-off-by: Tan En De <ende.tan@starfivetech.com>
+Acked-by: Jarkko Nikula <jarkko.nikula@linux.intel.com>
+Link: https://lore.kernel.org/r/20250412023303.378600-1-ende.tan@starfivetech.com
+Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/loongarch/loongson-laptop.c |   12 +++++++++---
- 1 file changed, 9 insertions(+), 3 deletions(-)
+ drivers/i2c/busses/i2c-designware-slave.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/platform/loongarch/loongson-laptop.c
-+++ b/drivers/platform/loongarch/loongson-laptop.c
-@@ -611,11 +611,17 @@ static int __init generic_acpi_laptop_in
+diff --git a/drivers/i2c/busses/i2c-designware-slave.c b/drivers/i2c/busses/i2c-designware-slave.c
+index 5b54a9b9ed1a3..09b8ccc040c6e 100644
+--- a/drivers/i2c/busses/i2c-designware-slave.c
++++ b/drivers/i2c/busses/i2c-designware-slave.c
+@@ -97,7 +97,7 @@ static int i2c_dw_unreg_slave(struct i2c_client *slave)
+ 	dev->disable(dev);
+ 	synchronize_irq(dev->irq);
+ 	dev->slave = NULL;
+-	pm_runtime_put(dev->dev);
++	pm_runtime_put_sync_suspend(dev->dev);
  
- static void __exit generic_acpi_laptop_exit(void)
- {
-+	int i;
-+
- 	if (generic_inputdev) {
--		if (input_device_registered)
--			input_unregister_device(generic_inputdev);
--		else
-+		if (!input_device_registered) {
- 			input_free_device(generic_inputdev);
-+		} else {
-+			input_unregister_device(generic_inputdev);
-+
-+			for (i = 0; i < ARRAY_SIZE(generic_sub_drivers); i++)
-+				generic_subdriver_exit(&generic_sub_drivers[i]);
-+		}
- 	}
+ 	return 0;
  }
- 
+-- 
+2.39.5
+
 
 
 
