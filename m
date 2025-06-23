@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-157436-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156343-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 492BBAE53F6
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:58:07 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 33FF7AE4F2D
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:13:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 31E9C1B67855
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:57:59 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1439A169ADA
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:13:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 699B9221DA8;
-	Mon, 23 Jun 2025 21:57:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4240B22069F;
+	Mon, 23 Jun 2025 21:13:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yrCWdQ+u"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KguZNEA+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2661F1AD3FA;
-	Mon, 23 Jun 2025 21:57:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 001E11DF98B;
+	Mon, 23 Jun 2025 21:13:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750715861; cv=none; b=jbM5IPCWJd662/VSgzu4A1Fw3jgCZB8qsFDSA8Ym7AsXZDDXyLZ5xv4PD1bE36Ps+7H+f3piEkHZDM+chIXtuaDY2U0oeslqa9ZihPNfNZXNexZKsk7OVGmI9UGhG63XWTNcunaKFw+dIMGYsYwvi2/Fdn3OWo8PkJMWisflkds=
+	t=1750713183; cv=none; b=Clepun8QGyLLuSt1ksmY1pqUnsC1ZPnQRjvaHy1FH1x2XxJ97gRFpNVHy4cf9EXV3Sk96XJxnHTzusZ0mAUa39vf4tIITTgJZSO0xOwhwuNgxmm5IovywhOz9iAfHdL5NQUvzI6m16ZglwUQL1+oxrl1WVO/0w2F+7OZ9SfxTaY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750715861; c=relaxed/simple;
-	bh=xwp1KuGz6HG3hyissKTcCEki84nVJjuM0A6XFqleOUI=;
+	s=arc-20240116; t=1750713183; c=relaxed/simple;
+	bh=hp36e8zGMb5ZNxGqY3mMmOwlISIwVzFnu1AVStFlqqk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Xt7EYuFV6WqUeM002b/DmC05hmBS+xfE5uHKANvOZdORTD5PYwoFGNs9YkFxF2uiC5Pncd6ZUVREav5xRs0Vjg5iKleUmr20/rSt3GLrfyff/nOtgYEarnMbQ2HdKa4Td0vMJI5O1gbxH/y9CVHk4S8sByCzJOiZuxeEyS4xRUk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yrCWdQ+u; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF479C4CEEA;
-	Mon, 23 Jun 2025 21:57:40 +0000 (UTC)
+	 MIME-Version; b=aFHoEDl6dEUL63DIdn9it3KHyk9Ge5j66HBQ5rsknmkD1jQ97l7d2pfCE9SbfMJr1Pwtfoq7BVtvmW3Tl1hyDn4q0xlJxDutkRIi+VC2rWkD4oan+p6ERRPhv8gp6MRVsjNZCVV+oClGVCEX0c2Y5on3QGsEV/85Y3BNgrv9cX4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KguZNEA+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2CB36C4CEEA;
+	Mon, 23 Jun 2025 21:13:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750715861;
-	bh=xwp1KuGz6HG3hyissKTcCEki84nVJjuM0A6XFqleOUI=;
+	s=korg; t=1750713182;
+	bh=hp36e8zGMb5ZNxGqY3mMmOwlISIwVzFnu1AVStFlqqk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yrCWdQ+uUAOQHvn9DdjoroJgtBH4bdf1yMHXuZ2//Qm0cJBkXa6i7goWLg/6l6r/Y
-	 sPpZ9UB/IlZGpLbKZZUKoMnE0PmJ8qHbQ6Owm4iUsoKjmbuAc9wHCNANYeGSbPubEp
-	 PlWE6aqypj7UQWOn+ZuXWZaWaik7Jp/vr7Rwv8pE=
+	b=KguZNEA+IK0uH1dSqHre/RjwFsW1G02Z1XWhyPJLK5xm/NLGAudh0fca8mUUV4dU2
+	 ZkN16tyQzza/izmOWXVLtbkG222klsePfEbTusHxqxV7I/+LsKC5V3wke1INd0GRmy
+	 gInRNoRl1ZGTIpZEaTB436ZskFQGwSDaw9R/cpiw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	I Hsin Cheng <richard120310@gmail.com>,
-	Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
-	Neil Armstrong <neil.armstrong@linaro.org>
-Subject: [PATCH 6.1 286/508] drm/meson: Use 1000ULL when operating with mode->clock
+	Andrew Lunn <andrew@lunn.ch>,
+	Michael Walle <michael@walle.cc>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 130/355] net: mdio: C22 is now optional, EOPNOTSUPP if not provided
 Date: Mon, 23 Jun 2025 15:05:31 +0200
-Message-ID: <20250623130652.306228557@linuxfoundation.org>
+Message-ID: <20250623130630.647589511@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
-References: <20250623130645.255320792@linuxfoundation.org>
+In-Reply-To: <20250623130626.716971725@linuxfoundation.org>
+References: <20250623130626.716971725@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,49 +63,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: I Hsin Cheng <richard120310@gmail.com>
+From: Andrew Lunn <andrew@lunn.ch>
 
-commit eb0851e14432f3b87c77b704c835ac376deda03a upstream.
+[ Upstream commit b063b1924fd9bf0bc157cf644764dc2151d04ccc ]
 
-Coverity scan reported the usage of "mode->clock * 1000" may lead to
-integer overflow. Use "1000ULL" instead of "1000"
-when utilizing it to avoid potential integer overflow issue.
+When performing a C22 operation, check that the bus driver actually
+provides the methods, and return -EOPNOTSUPP if not. C45 only busses
+do exist, and in future their C22 methods will be NULL.
 
-Link: https://scan5.scan.coverity.com/#/project-view/10074/10063?selectedIssue=1646759
-Signed-off-by: I Hsin Cheng <richard120310@gmail.com>
-Reviewed-by: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
-Fixes: 1017560164b6 ("drm/meson: use unsigned long long / Hz for frequency types")
-Link: https://lore.kernel.org/r/20250505184338.678540-1-richard120310@gmail.com
-Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Andrew Lunn <andrew@lunn.ch>
+Signed-off-by: Michael Walle <michael@walle.cc>
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Stable-dep-of: 0e629694126c ("net/mdiobus: Fix potential out-of-bounds read/write access")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/meson/meson_encoder_hdmi.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/net/phy/mdio_bus.c | 10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
 
---- a/drivers/gpu/drm/meson/meson_encoder_hdmi.c
-+++ b/drivers/gpu/drm/meson/meson_encoder_hdmi.c
-@@ -73,7 +73,7 @@ static void meson_encoder_hdmi_set_vclk(
- 	unsigned long long venc_freq;
- 	unsigned long long hdmi_freq;
+diff --git a/drivers/net/phy/mdio_bus.c b/drivers/net/phy/mdio_bus.c
+index e9303be486556..743a63eca7840 100644
+--- a/drivers/net/phy/mdio_bus.c
++++ b/drivers/net/phy/mdio_bus.c
+@@ -754,7 +754,10 @@ int __mdiobus_read(struct mii_bus *bus, int addr, u32 regnum)
  
--	vclk_freq = mode->clock * 1000;
-+	vclk_freq = mode->clock * 1000ULL;
+ 	WARN_ON_ONCE(!mutex_is_locked(&bus->mdio_lock));
  
- 	/* For 420, pixel clock is half unlike venc clock */
- 	if (encoder_hdmi->output_bus_fmt == MEDIA_BUS_FMT_UYYVYY8_0_5X24)
-@@ -121,7 +121,7 @@ static enum drm_mode_status meson_encode
- 	struct meson_encoder_hdmi *encoder_hdmi = bridge_to_meson_encoder_hdmi(bridge);
- 	struct meson_drm *priv = encoder_hdmi->priv;
- 	bool is_hdmi2_sink = display_info->hdmi.scdc.supported;
--	unsigned long long clock = mode->clock * 1000;
-+	unsigned long long clock = mode->clock * 1000ULL;
- 	unsigned long long phy_freq;
- 	unsigned long long vclk_freq;
- 	unsigned long long venc_freq;
+-	retval = bus->read(bus, addr, regnum);
++	if (bus->read)
++		retval = bus->read(bus, addr, regnum);
++	else
++		retval = -EOPNOTSUPP;
+ 
+ 	trace_mdio_access(bus, 1, addr, regnum, retval, retval);
+ 	mdiobus_stats_acct(&bus->stats[addr], true, retval);
+@@ -780,7 +783,10 @@ int __mdiobus_write(struct mii_bus *bus, int addr, u32 regnum, u16 val)
+ 
+ 	WARN_ON_ONCE(!mutex_is_locked(&bus->mdio_lock));
+ 
+-	err = bus->write(bus, addr, regnum, val);
++	if (bus->write)
++		err = bus->write(bus, addr, regnum, val);
++	else
++		err = -EOPNOTSUPP;
+ 
+ 	trace_mdio_access(bus, 0, addr, regnum, val, err);
+ 	mdiobus_stats_acct(&bus->stats[addr], false, err);
+-- 
+2.39.5
+
 
 
 
