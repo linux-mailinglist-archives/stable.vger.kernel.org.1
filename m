@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-157120-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157433-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E2D93AE528E
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:45:07 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C3E5EAE53F4
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:58:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5D34B7A69B2
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:43:35 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B4F981B65A72
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:57:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3F84223DD7;
-	Mon, 23 Jun 2025 21:44:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17999222576;
+	Mon, 23 Jun 2025 21:57:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mOtTb5Zb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XQICwlym"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0FA81F5820;
-	Mon, 23 Jun 2025 21:44:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C868D1AD3FA;
+	Mon, 23 Jun 2025 21:57:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750715082; cv=none; b=KUoUfyAAz9cG68/pWj723OLT8sbvpW93Ab4be9mVwbdUp1rOtixPqsR/lWfEmDlU+drmnaH3R3Le624yNe3x/l8yTVI87SzYmqhgQmzjEQhCYt80r2fzDAfqIOa4W3NBx2l2+es9/ZL5VwNmoH87074tFr3OD1HM7lrSEcRiFoI=
+	t=1750715853; cv=none; b=C5CuplbPdeQYpvuDtJl/ZsgAfWzZInoYOHE1ow82celgfKwMUtm0YkeLLZh9Ftog0dZw3mEEEGYVYWhZMIFsIEHTb+9/IpWxsVQXJQ9a2vURl5r6oQ7Bx9Efv9VEtrJOIDpTULrNAqt7A7nH/CnDEb/MzSw9ocNJKCQl10RS6Oo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750715082; c=relaxed/simple;
-	bh=k7qRBrtYsVuH956lfbYjV36lqpMDWb9eQUMQYSYwf60=;
+	s=arc-20240116; t=1750715853; c=relaxed/simple;
+	bh=6kfQUZZg3k+dORl+5O4iXq9+0nNpM3ND9HTXQkBSl3k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Dn89EI+El5q28RKwBI62rIvIf8imf6wp0MCz94NOzOE3QhQ+ecjNzO+vnNZ3feCDCnos2BgtTJmroYvX+z1GSuSSLQ7HrYSyX+lFvMMWM9QNhOJOrhyq/c+5oYYR9fvgyDgOtZuLgVXxZA1SlUFytWVVNfIBa3aLvl+cNChjE6U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mOtTb5Zb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38ADAC4CEEA;
-	Mon, 23 Jun 2025 21:44:42 +0000 (UTC)
+	 MIME-Version; b=ZabbIAxsYf3xRrvOTA4XYfGODF3QELyC+Tedt5N9naly1iawy12myVJYx1mL1icZyTcNM73xQbWcDHsPol29XS8smT8B8x3/TprPoZ1gdQ5Cv9qy8UNx3cHE1vO3wBMOnYqme/jqhzlWeFHFFviNJH/a580VCmrshzyej78kono=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XQICwlym; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F681C4CEEA;
+	Mon, 23 Jun 2025 21:57:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750715082;
-	bh=k7qRBrtYsVuH956lfbYjV36lqpMDWb9eQUMQYSYwf60=;
+	s=korg; t=1750715853;
+	bh=6kfQUZZg3k+dORl+5O4iXq9+0nNpM3ND9HTXQkBSl3k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mOtTb5Zb+K8dLekNG+ZeNeD/fDdW9BQ1myN2754qfnUjhMeIXS8L+Y2L5uycxVJMz
-	 9ixNEfvnbY10g5dM36j1/osod8M9mXuEesouctb/evqHEvGs/OKXQ0rDSuq/hORKhn
-	 4czSNn1NqvorqTKxncVCz/F9uJJkhPgSRg7bB/uk=
+	b=XQICwlymA6MYMO4okxXsA+hEm0DTMROIFwR9XuYzcohMERFPkdGeuh+59VUJv2EuT
+	 D87mQAitw1Jv4muUjh3JYJfXLV9roGim4Sqks88txfWc9Mu8mved9QQsujHTuguu5X
+	 U9T2+o7JEk9+K27O9DgIFbRH8Mz019eo7Ep5Q/cw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -45,12 +45,12 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Alok Tiwari <alok.a.tiwari@oracle.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 251/355] emulex/benet: correct command version selection in be_cmd_get_stats()
+Subject: [PATCH 5.15 308/411] emulex/benet: correct command version selection in be_cmd_get_stats()
 Date: Mon, 23 Jun 2025 15:07:32 +0200
-Message-ID: <20250623130634.297471210@linuxfoundation.org>
+Message-ID: <20250623130641.396970875@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130626.716971725@linuxfoundation.org>
-References: <20250623130626.716971725@linuxfoundation.org>
+In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
+References: <20250623130632.993849527@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,7 +62,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
@@ -85,7 +85,7 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/drivers/net/ethernet/emulex/benet/be_cmds.c b/drivers/net/ethernet/emulex/benet/be_cmds.c
-index 9812a9a5d033b..d9bceb26f4e5b 100644
+index 88f69c486ed09..1cdb7ca019f57 100644
 --- a/drivers/net/ethernet/emulex/benet/be_cmds.c
 +++ b/drivers/net/ethernet/emulex/benet/be_cmds.c
 @@ -1608,7 +1608,7 @@ int be_cmd_get_stats(struct be_adapter *adapter, struct be_dma_mem *nonemb_cmd)
