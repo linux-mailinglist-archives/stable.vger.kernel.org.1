@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-156878-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157364-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0F603AE5180
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:34:58 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id EF0B5AE53AE
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:55:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 276724420B2
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:34:33 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B749C18839A8
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:55:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0E25221FDD;
-	Mon, 23 Jun 2025 21:34:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19A661E22E6;
+	Mon, 23 Jun 2025 21:54:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cuNZkGLu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YHlcxop1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E39A221FD2;
-	Mon, 23 Jun 2025 21:34:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBBCF1FECBA;
+	Mon, 23 Jun 2025 21:54:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750714487; cv=none; b=nhiN/8ImjJfmD3IC8A2lPshlEZKT2cZ/grkGxtLyDFSfOShIJ1h0V4RE93J0EtdqBog2XVv4calHUo684Udm49UTxTtiGqtgTSjFFxSQq+y+PwkTLEh9iQUmM1S1MTS3iu6RPnrZSUj+hgENpt3+FOT6ThdgAMWXZGrMwkSy7O0=
+	t=1750715687; cv=none; b=LEZDyujJ3wi6NtlA9wJEGPCTPFzIS9mW/VQkWSqSoNcG0IP94d/dwRLl65KWPRYeLCPsOxeWzEPhKKau+oVx3mB6qPik7vwhbctg7C1JPlsNTUU6vC8nFunML5oKAOxyGfQ/i52j31ZLUoJ5xiWfZS3yPLsdiQZzKMir0WMEVa4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750714487; c=relaxed/simple;
-	bh=T3q32kSZ746yuURuZafRTuoZcKRxGYSQh90zmeDpsxM=;
+	s=arc-20240116; t=1750715687; c=relaxed/simple;
+	bh=7FxE1X6750jXuUPQ8q8jBsULnx6ONtiLEx6yEHZFk4U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LNNiw2sJHhh3XGR+uH4BVMcoCALOH8HySW4eyOrjSul9JP6nXHSEinp/Pu2XAtcmO4DzdW8m9uWxneltvAVDYIeT9u5RGsUTjCauTJSJjWGFVw39+KhOhG/YtHX8P8f08DJAHB9QF5SW5aWFMkLi4oBRjA5uOaraV9miIkgvako=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cuNZkGLu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26DF9C4CEEA;
-	Mon, 23 Jun 2025 21:34:47 +0000 (UTC)
+	 MIME-Version; b=ClpZ868zloEer26yTT+OGC9g7gLBYy2mwRez+bh7iCi5W4ul2O5z7CaQVz1+eN4mNAW+jCAvAE9FkJls+J+Nw0biI6sxYhjsWJ7K5fSnmOZf/x95vsMSSiMoUoh5iqCViASnTvcG7XkyGAdpjHVuXg1uvZbTQmdaJBwDakDXF44=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YHlcxop1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5AE45C4CEEA;
+	Mon, 23 Jun 2025 21:54:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750714487;
-	bh=T3q32kSZ746yuURuZafRTuoZcKRxGYSQh90zmeDpsxM=;
+	s=korg; t=1750715687;
+	bh=7FxE1X6750jXuUPQ8q8jBsULnx6ONtiLEx6yEHZFk4U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cuNZkGLuYQcFEgOI2Q3kpXWSOZsSVpbtfKo4I3gv2ABWMdPdhcclY1EgxxqcAkXqJ
-	 cnvLKXifVDpX/7MJbp1GLCCgWvtFqNXKqUJbQuIYX1oER2QhlpiYJuNPoDjM1CWhqh
-	 6YE9Y1yOmIyNuGA5GiflxQ3ywpuWDzi3Hq8qOPoU=
+	b=YHlcxop19xGq4fplEi3Ylq4L10292ZXklmf3XFEedFgVFOIG8B2obarOIbQ3Wh6tu
+	 xoHeTDBZRlA9WD+IEwNw0FyBhsc9YRZktPkXzdUeDsKIcZMnT0JcrlLqikxI4t3I7c
+	 USuG7DSxzFozO36uAMM10HKcMtdiSWNjf15tuqRg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nas Chung <nas.chung@chipsnmedia.com>,
-	Michael Tretter <m.tretter@pengutronix.de>,
-	Sebastian Fricke <sebastian.fricke@collabora.com>,
-	Hans Verkuil <hverkuil@xs4all.nl>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 231/355] media: uapi: v4l: Change V4L2_TYPE_IS_CAPTURE condition
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	"Mike Rapoport (Microsoft)" <rppt@kernel.org>,
+	Nikolay Borisov <nik.borisov@suse.com>
+Subject: [PATCH 6.15 474/592] x86/its: explicitly manage permissions for ITS pages
 Date: Mon, 23 Jun 2025 15:07:12 +0200
-Message-ID: <20250623130633.694406580@linuxfoundation.org>
+Message-ID: <20250623130711.707223050@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130626.716971725@linuxfoundation.org>
-References: <20250623130626.716971725@linuxfoundation.org>
+In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
+References: <20250623130700.210182694@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,62 +62,158 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nas Chung <nas.chung@chipsnmedia.com>
+From: Peter Zijlstra (Intel) <peterz@infradead.org>
 
-[ Upstream commit ad2698efce37e910dcf3c3914263e6cb3e86f8cd ]
+commit a82b26451de126a5ae130361081986bc459afe9b upstream.
 
-Explicitly compare a buffer type only with valid buffer types,
-to avoid matching a buffer type outside of the valid buffer type set.
+execmem_alloc() sets permissions differently depending on the kernel
+configuration, CPU support for PSE and whether a page is allocated
+before or after mark_rodata_ro().
 
-Signed-off-by: Nas Chung <nas.chung@chipsnmedia.com>
-Reviewed-by: Michael Tretter <m.tretter@pengutronix.de>
-Signed-off-by: Sebastian Fricke <sebastian.fricke@collabora.com>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Add tracking for pages allocated for ITS when patching the core kernel
+and make sure the permissions for ITS pages are explicitly managed for
+both kernel and module allocations.
+
+Fixes: 872df34d7c51 ("x86/its: Use dynamic thunks for indirect branches")
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Co-developed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Reviewed-by: Nikolay Borisov <nik.borisov@suse.com>
+Cc: stable@vger.kernel.org
+Link: https://lkml.kernel.org/r/20250603111446.2609381-5-rppt@kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/uapi/linux/videodev2.h | 11 ++++++++++-
- 1 file changed, 10 insertions(+), 1 deletion(-)
+ arch/x86/kernel/alternative.c |   74 +++++++++++++++++++++++++++++-------------
+ 1 file changed, 52 insertions(+), 22 deletions(-)
 
-diff --git a/include/uapi/linux/videodev2.h b/include/uapi/linux/videodev2.h
-index a0671e510bc4a..1ee25344c0760 100644
---- a/include/uapi/linux/videodev2.h
-+++ b/include/uapi/linux/videodev2.h
-@@ -153,10 +153,18 @@ enum v4l2_buf_type {
- 	V4L2_BUF_TYPE_SDR_OUTPUT           = 12,
- 	V4L2_BUF_TYPE_META_CAPTURE         = 13,
- 	V4L2_BUF_TYPE_META_OUTPUT	   = 14,
-+	/*
-+	 * Note: V4L2_TYPE_IS_VALID and V4L2_TYPE_IS_OUTPUT must
-+	 * be updated if a new type is added.
-+	 */
- 	/* Deprecated, do not use */
- 	V4L2_BUF_TYPE_PRIVATE              = 0x80,
- };
- 
-+#define V4L2_TYPE_IS_VALID(type)		 \
-+	((type) >= V4L2_BUF_TYPE_VIDEO_CAPTURE &&\
-+	 (type) <= V4L2_BUF_TYPE_META_OUTPUT)
+--- a/arch/x86/kernel/alternative.c
++++ b/arch/x86/kernel/alternative.c
+@@ -138,6 +138,24 @@ static struct module *its_mod;
+ #endif
+ static void *its_page;
+ static unsigned int its_offset;
++struct its_array its_pages;
 +
- #define V4L2_TYPE_IS_MULTIPLANAR(type)			\
- 	((type) == V4L2_BUF_TYPE_VIDEO_CAPTURE_MPLANE	\
- 	 || (type) == V4L2_BUF_TYPE_VIDEO_OUTPUT_MPLANE)
-@@ -170,7 +178,8 @@ enum v4l2_buf_type {
- 	 || (type) == V4L2_BUF_TYPE_SDR_OUTPUT			\
- 	 || (type) == V4L2_BUF_TYPE_META_OUTPUT)
++static void *__its_alloc(struct its_array *pages)
++{
++	void *page __free(execmem) = execmem_alloc(EXECMEM_MODULE_TEXT, PAGE_SIZE);
++	if (!page)
++		return NULL;
++
++	void *tmp = krealloc(pages->pages, (pages->num+1) * sizeof(void *),
++			     GFP_KERNEL);
++	if (!tmp)
++		return NULL;
++
++	pages->pages = tmp;
++	pages->pages[pages->num++] = page;
++
++	return no_free_ptr(page);
++}
  
--#define V4L2_TYPE_IS_CAPTURE(type) (!V4L2_TYPE_IS_OUTPUT(type))
-+#define V4L2_TYPE_IS_CAPTURE(type)	\
-+	(V4L2_TYPE_IS_VALID(type) && !V4L2_TYPE_IS_OUTPUT(type))
+ /* Initialize a thunk with the "jmp *reg; int3" instructions. */
+ static void *its_init_thunk(void *thunk, int reg)
+@@ -173,6 +191,21 @@ static void *its_init_thunk(void *thunk,
+ 	return thunk + offset;
+ }
  
- enum v4l2_tuner_type {
- 	V4L2_TUNER_RADIO	     = 1,
--- 
-2.39.5
-
++static void its_pages_protect(struct its_array *pages)
++{
++	for (int i = 0; i < pages->num; i++) {
++		void *page = pages->pages[i];
++		execmem_restore_rox(page, PAGE_SIZE);
++	}
++}
++
++static void its_fini_core(void)
++{
++	if (IS_ENABLED(CONFIG_STRICT_KERNEL_RWX))
++		its_pages_protect(&its_pages);
++	kfree(its_pages.pages);
++}
++
+ #ifdef CONFIG_MODULES
+ void its_init_mod(struct module *mod)
+ {
+@@ -195,10 +228,8 @@ void its_fini_mod(struct module *mod)
+ 	its_page = NULL;
+ 	mutex_unlock(&text_mutex);
+ 
+-	for (int i = 0; i < mod->arch.its_pages.num; i++) {
+-		void *page = mod->arch.its_pages.pages[i];
+-		execmem_restore_rox(page, PAGE_SIZE);
+-	}
++	if (IS_ENABLED(CONFIG_STRICT_MODULE_RWX))
++		its_pages_protect(&mod->arch.its_pages);
+ }
+ 
+ void its_free_mod(struct module *mod)
+@@ -216,28 +247,23 @@ void its_free_mod(struct module *mod)
+ 
+ static void *its_alloc(void)
+ {
+-	void *page __free(execmem) = execmem_alloc(EXECMEM_MODULE_TEXT, PAGE_SIZE);
++	struct its_array *pages = &its_pages;
++	void *page;
+ 
++#ifdef CONFIG_MODULE
++	if (its_mod)
++		pages = &its_mod->arch.its_pages;
++#endif
++
++	page = __its_alloc(pages);
+ 	if (!page)
+ 		return NULL;
+ 
+-#ifdef CONFIG_MODULES
+-	if (its_mod) {
+-		struct its_array *pages = &its_mod->arch.its_pages;
+-		void *tmp = krealloc(pages->pages,
+-				     (pages->num+1) * sizeof(void *),
+-				     GFP_KERNEL);
+-		if (!tmp)
+-			return NULL;
+-
+-		pages->pages = tmp;
+-		pages->pages[pages->num++] = page;
++	execmem_make_temp_rw(page, PAGE_SIZE);
++	if (pages == &its_pages)
++		set_memory_x((unsigned long)page, 1);
+ 
+-		execmem_make_temp_rw(page, PAGE_SIZE);
+-	}
+-#endif /* CONFIG_MODULES */
+-
+-	return no_free_ptr(page);
++	return page;
+ }
+ 
+ static void *its_allocate_thunk(int reg)
+@@ -291,7 +317,9 @@ u8 *its_static_thunk(int reg)
+ 	return thunk;
+ }
+ 
+-#endif
++#else
++static inline void its_fini_core(void) {}
++#endif /* CONFIG_MITIGATION_ITS */
+ 
+ /*
+  * Nomenclature for variable names to simplify and clarify this code and ease
+@@ -2368,6 +2396,8 @@ void __init alternative_instructions(voi
+ 	apply_retpolines(__retpoline_sites, __retpoline_sites_end);
+ 	apply_returns(__return_sites, __return_sites_end);
+ 
++	its_fini_core();
++
+ 	/*
+ 	 * Adjust all CALL instructions to point to func()-10, including
+ 	 * those in .altinstr_replacement.
 
 
 
