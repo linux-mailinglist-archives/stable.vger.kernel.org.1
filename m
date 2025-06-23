@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-156291-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156782-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 888CEAE4EF4
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:10:56 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C288FAE511F
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:31:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A0AE43BEBDD
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:10:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 506AD4413DB
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:30:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EAE7021CA07;
-	Mon, 23 Jun 2025 21:10:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59648C2E0;
+	Mon, 23 Jun 2025 21:30:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OPeIsauF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G5hA+gc2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A783E70838;
-	Mon, 23 Jun 2025 21:10:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16E5644C77;
+	Mon, 23 Jun 2025 21:30:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750713054; cv=none; b=cEbZinuoDx+05lf/dw+WZB9a+XyKllu5Cz1EluiQW/2xqAfKqAru95uU8FuuouMk3MLK4slENlZr0OCNq8TpDhCl5+QATbaLHqSf5AZn+nB9XMb/17q6z0Kpm7WBsmLdu3/+T4mmqCWMliZBHomS0Ms4Al65coGMZsfqMy8CYbE=
+	t=1750714253; cv=none; b=WmacNFkC5Sjj5Ks+7/HOIdE4z85t7Qjw7dCTtoHppOSitGklGMbc02LY54h1f1FIveOY1qAFrqs9npF9ND7r3CZQ1KY3cl7vO0WXtp2tcm+tp/3L8+L5ZiARJA14+HsrmdcocufkRG4fvj+EkcVnpgxeZZN7vv/LEHiS32CM5PY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750713054; c=relaxed/simple;
-	bh=JxXYELSmYGCPe+F1Vd/8GTw2WDkogA6BwkxzAMZiFus=;
+	s=arc-20240116; t=1750714253; c=relaxed/simple;
+	bh=FxyB3uJ6krmaWHZigvjDrivY80o4UlmrMhS6daBhLp0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QlW7jf4PPRvh3RM2wmSROpQ+B9qAmuyG2UtzBwxghMoD641EMfaP3apRGJo1u2kzMWijfm/Yn/cYKs9OHsYlmC7Tpd0fAYGwBOITc+uz4Nuy668v7WQlauOLrC9AlqqhbpZ1ZGhPbH0qZ3dVjjlh+hql114b2MSCZLaTycey3jU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OPeIsauF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3CDB9C4CEF0;
-	Mon, 23 Jun 2025 21:10:54 +0000 (UTC)
+	 MIME-Version; b=htboQXMxrdGeWLBGKmDsJKeqwy9dNk+qYXsgz3+FhDR0tR6HaPicPgA4ZaXYhvyoDw65c2TVzAeO038j7K5xrAuiUV4uX9WssRxjhip5AEVV959JmAMRIyBcwhNqC2HGd3p4CQis9TTS+CUrj4h16EEchhF3dJH8o+JJBJV/sBo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G5hA+gc2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50C8DC4CEEA;
+	Mon, 23 Jun 2025 21:30:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750713054;
-	bh=JxXYELSmYGCPe+F1Vd/8GTw2WDkogA6BwkxzAMZiFus=;
+	s=korg; t=1750714252;
+	bh=FxyB3uJ6krmaWHZigvjDrivY80o4UlmrMhS6daBhLp0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OPeIsauFan46Mj4s+H+VvgdEd2HEH9LfvPjADRgFdjhm9rekDjZDQlsGlE8bSocyo
-	 tIBq6OWZf+i5Civ5FRqrU4RLSU4WVGGJQfx/+KIZP2fW2KHwfXZk02Nh8Kb+2WJqXN
-	 ok3mT5JSLqN/gaQfUZ/S7nXJxxbcJ0bSbaVgEYD4=
+	b=G5hA+gc2AokKmjOfaMOWwa7F3PO1d6sX6APWcunBNxCvxUBM0Cdl97zhhMGZj+HDi
+	 +h/w0ZWyep/pDDt5OH6W4uZW2RIttnKJ+rHHwMcihuGnbiYVJ+CMngF8j93NAH5Q7g
+	 DEzz6isMh9lX9JnVgkh4U9L7bJ/xNch5cjJwc7vA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jakub Sitnicki <jakub@cloudflare.com>,
-	Michal Luczaj <mhal@rbox.co>,
-	Willem de Bruijn <willemb@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Haiyong Sun <sunhaiyong@loongson.cn>,
+	Tiezhu Yang <yangtiezhu@loongson.cn>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 128/355] net: Fix TOCTOU issue in sk_is_readable()
-Date: Mon, 23 Jun 2025 15:05:29 +0200
-Message-ID: <20250623130630.591249304@linuxfoundation.org>
+Subject: [PATCH 6.15 372/592] rtla: Define __NR_sched_setattr for LoongArch
+Date: Mon, 23 Jun 2025 15:05:30 +0200
+Message-ID: <20250623130709.289779825@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130626.716971725@linuxfoundation.org>
-References: <20250623130626.716971725@linuxfoundation.org>
+In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
+References: <20250623130700.210182694@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,54 +63,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michal Luczaj <mhal@rbox.co>
+From: Tiezhu Yang <yangtiezhu@loongson.cn>
 
-[ Upstream commit 2660a544fdc0940bba15f70508a46cf9a6491230 ]
+[ Upstream commit 6a38c51a2557d4d50748818a858d507c250f3bee ]
 
-sk->sk_prot->sock_is_readable is a valid function pointer when sk resides
-in a sockmap. After the last sk_psock_put() (which usually happens when
-socket is removed from sockmap), sk->sk_prot gets restored and
-sk->sk_prot->sock_is_readable becomes NULL.
+When executing "make -C tools/tracing/rtla" on LoongArch, there exists
+the following error:
 
-This makes sk_is_readable() racy, if the value of sk->sk_prot is reloaded
-after the initial check. Which in turn may lead to a null pointer
-dereference.
+  src/utils.c:237:24: error: '__NR_sched_setattr' undeclared
 
-Ensure the function pointer does not turn NULL after the check.
+Just define __NR_sched_setattr for LoongArch if not exist.
 
-Fixes: 8934ce2fd081 ("bpf: sockmap redirect ingress support")
-Suggested-by: Jakub Sitnicki <jakub@cloudflare.com>
-Signed-off-by: Michal Luczaj <mhal@rbox.co>
-Reviewed-by: Willem de Bruijn <willemb@google.com>
-Link: https://patch.msgid.link/20250609-skisreadable-toctou-v1-1-d0dfb2d62c37@rbox.co
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Link: https://lore.kernel.org/20250422074917.25771-1-yangtiezhu@loongson.cn
+Reported-by: Haiyong Sun <sunhaiyong@loongson.cn>
+Signed-off-by: Tiezhu Yang <yangtiezhu@loongson.cn>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/sock.h | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ tools/tracing/rtla/src/utils.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/include/net/sock.h b/include/net/sock.h
-index b9e34b955c561..bc9a1e535d580 100644
---- a/include/net/sock.h
-+++ b/include/net/sock.h
-@@ -2827,8 +2827,11 @@ int sock_bind_add(struct sock *sk, struct sockaddr *addr, int addr_len);
+diff --git a/tools/tracing/rtla/src/utils.c b/tools/tracing/rtla/src/utils.c
+index 4995d35cf3ec6..d6ab15dcb4907 100644
+--- a/tools/tracing/rtla/src/utils.c
++++ b/tools/tracing/rtla/src/utils.c
+@@ -227,6 +227,8 @@ long parse_ns_duration(char *val)
+ #  define __NR_sched_setattr	355
+ # elif __s390x__
+ #  define __NR_sched_setattr	345
++# elif __loongarch__
++#  define __NR_sched_setattr	274
+ # endif
+ #endif
  
- static inline bool sk_is_readable(struct sock *sk)
- {
--	if (sk->sk_prot->sock_is_readable)
--		return sk->sk_prot->sock_is_readable(sk);
-+	const struct proto *prot = READ_ONCE(sk->sk_prot);
-+
-+	if (prot->sock_is_readable)
-+		return prot->sock_is_readable(sk);
-+
- 	return false;
- }
- #endif	/* _SOCK_H */
 -- 
 2.39.5
 
