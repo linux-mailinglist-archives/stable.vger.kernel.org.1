@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-157111-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156485-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA25BAE527B
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:44:23 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 31FDCAE4FC1
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:19:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 030EA443AE8
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:43:59 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C379017F2C5
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:19:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED68621D3DD;
-	Mon, 23 Jun 2025 21:44:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E2551E5B71;
+	Mon, 23 Jun 2025 21:18:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S/aU1rsH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FsxgK1gO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABD3D2AEE4;
-	Mon, 23 Jun 2025 21:44:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEB372628C;
+	Mon, 23 Jun 2025 21:18:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750715060; cv=none; b=mElPiPxJgJsR70bFEQce/nI6ZJqFa+G1bs82FgsmLuTRDad0eNp3ptlyRxXsLypKfuaYWSJMLDaUiQm1/74eMcTvXJsNWCy4yEIrJFBVjKqgI0dhwf/bVolaErqjw2VQ90sL6LbKcau/Jw3DtJncI4Os/RBnhZ8mTC8uZ+rNRiA=
+	t=1750713528; cv=none; b=LvjazGiMGu48t/2YhwPTV74V34li/fbI1aaEiJQiJFKe1xIg/w8aiktdcnG6yIQxRpy4psMpxo4Pp6KtvHqS1wdJPLB1VqC354JvDRxgHZtNqX1swC8lgeM3/zImoxn/1QBh7r/LkQ3fg/LOSMWTu5Pfm8CzNMZ01XgurgiM2KA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750715060; c=relaxed/simple;
-	bh=tGquDvr+w0QixDsgWD7pv1cDNyiauElJi5aG5Zf/UG4=;
+	s=arc-20240116; t=1750713528; c=relaxed/simple;
+	bh=1vEo3528gqoYA2sXidg9QHflznVKys2GO4/3v7zVFdQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=lvhHSVXIDjWzV6bOetTsTo4cd5oqNz6IS74/4XMcNB3Tzc4vHChey9enpWtG2UrPT8SvzZGbln2vhyegeAIxFxpIy5eMjkOfdR7wmWO7pzWcp4fKZ5FIfl9zS6NvNSGYlfZZkcuKRfztlGirUe4ByqJKzXjm9Kf26DL1gq8rpLU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S/aU1rsH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3905AC4CEF2;
-	Mon, 23 Jun 2025 21:44:20 +0000 (UTC)
+	 MIME-Version; b=KQRz2Au8cFR1W7p/F548xfVI8jmWXeREo5krLU4RHuTUk/XLN+wOsgrJl7doGsfUTTF7CQh104Smp3VduSQx2KxKlZDFCII4UsqYnSUIPDfI3OdRDMxV3naLF/8u5ns4j908BG0BUDluRo2c2uz4MIlBy1W8Qn32Yh+32L59C0U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FsxgK1gO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 669DFC4CEEA;
+	Mon, 23 Jun 2025 21:18:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750715060;
-	bh=tGquDvr+w0QixDsgWD7pv1cDNyiauElJi5aG5Zf/UG4=;
+	s=korg; t=1750713528;
+	bh=1vEo3528gqoYA2sXidg9QHflznVKys2GO4/3v7zVFdQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=S/aU1rsHSndYTJteHcQT1zUyDm9m514+52yh5iKWe4GZkVQGrRiEwd3qnNZMgTm0R
-	 RfJ+fqwkpgnRT1E7z4qW6CyVSe4YDG5DzU/5wsK25XeGBUduHBHr14YRYdh9RdyRKW
-	 v42v0u5qqWczvjhw9BKnseZWGTN7e/3QPz5wn7sI=
+	b=FsxgK1gOgeVC3Mf6GXdxgPfMbSAQHyxwy/WYM9hdTzbPZPk901UjnuVe36GVJcqWJ
+	 M62hfRuPcxriiWjG9Z4E1pSMpVtdgMzT9kqqi07Y/Mh7gSE5Wehm5rSklXp4uMzDKw
+	 NHZCa6eABhQqZTz85in4loWhf+1/dC3eTf/nlfis=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Lukas Wunner <lukas@wunner.de>,
-	Dave Jiang <dave.jiang@intel.com>
-Subject: [PATCH 6.12 153/414] PCI: Fix lock symmetry in pci_slot_unlock()
+	Akhil R <akhilrajeev@nvidia.com>,
+	Thierry Reding <treding@nvidia.com>,
+	Andi Shyti <andi.shyti@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.15 332/592] i2c: tegra: check msg length in SMBUS block read
 Date: Mon, 23 Jun 2025 15:04:50 +0200
-Message-ID: <20250623130645.868891125@linuxfoundation.org>
+Message-ID: <20250623130708.352836415@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
-References: <20250623130642.015559452@linuxfoundation.org>
+In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
+References: <20250623130700.210182694@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,53 +61,47 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+From: Akhil R <akhilrajeev@nvidia.com>
 
-commit f3efb9569b4a21354ef2caf7ab0608a3e14cc6e4 upstream.
+[ Upstream commit a6e04f05ce0b070ab39d5775580e65c7d943da0b ]
 
-The commit a4e772898f8b ("PCI: Add missing bridge lock to pci_bus_lock()")
-made the lock function to call depend on dev->subordinate but left
-pci_slot_unlock() unmodified creating locking asymmetry compared with
-pci_slot_lock().
+For SMBUS block read, do not continue to read if the message length
+passed from the device is '0' or greater than the maximum allowed bytes.
 
-Because of the asymmetric lock handling, the same bridge device is unlocked
-twice. First pci_bus_unlock() unlocks bus->self and then pci_slot_unlock()
-will unconditionally unlock the same bridge device.
-
-Move pci_dev_unlock() inside an else branch to match the logic in
-pci_slot_lock().
-
-Fixes: a4e772898f8b ("PCI: Add missing bridge lock to pci_bus_lock()")
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Reviewed-by: Lukas Wunner <lukas@wunner.de>
-Reviewed-by: Dave Jiang <dave.jiang@intel.com>
-Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/20250505115412.37628-1-ilpo.jarvinen@linux.intel.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Akhil R <akhilrajeev@nvidia.com>
+Acked-by: Thierry Reding <treding@nvidia.com>
+Link: https://lore.kernel.org/r/20250424053320.19211-1-akhilrajeev@nvidia.com
+Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/pci.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/i2c/busses/i2c-tegra.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
---- a/drivers/pci/pci.c
-+++ b/drivers/pci/pci.c
-@@ -5643,7 +5643,8 @@ static void pci_slot_unlock(struct pci_s
- 			continue;
- 		if (dev->subordinate)
- 			pci_bus_unlock(dev->subordinate);
--		pci_dev_unlock(dev);
-+		else
-+			pci_dev_unlock(dev);
- 	}
- }
- 
+diff --git a/drivers/i2c/busses/i2c-tegra.c b/drivers/i2c/busses/i2c-tegra.c
+index 87976e99e6d00..049b4d154c233 100644
+--- a/drivers/i2c/busses/i2c-tegra.c
++++ b/drivers/i2c/busses/i2c-tegra.c
+@@ -1395,6 +1395,11 @@ static int tegra_i2c_xfer(struct i2c_adapter *adap, struct i2c_msg msgs[],
+ 			ret = tegra_i2c_xfer_msg(i2c_dev, &msgs[i], MSG_END_CONTINUE);
+ 			if (ret)
+ 				break;
++
++			/* Validate message length before proceeding */
++			if (msgs[i].buf[0] == 0 || msgs[i].buf[0] > I2C_SMBUS_BLOCK_MAX)
++				break;
++
+ 			/* Set the msg length from first byte */
+ 			msgs[i].len += msgs[i].buf[0];
+ 			dev_dbg(i2c_dev->dev, "reading %d bytes\n", msgs[i].len);
+-- 
+2.39.5
+
 
 
 
