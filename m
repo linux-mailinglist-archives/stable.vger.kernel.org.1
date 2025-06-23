@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-157519-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156345-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C50FBAE5462
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:01:07 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 436F9AE4F2F
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:13:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5C8284C0D50
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:01:08 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DAB2C16AF10
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:13:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E5682940B;
-	Mon, 23 Jun 2025 22:01:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C0FC8202983;
+	Mon, 23 Jun 2025 21:13:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ar7Pdi0q"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UJyIMO92"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C4FE4409;
-	Mon, 23 Jun 2025 22:01:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F6631DF98B;
+	Mon, 23 Jun 2025 21:13:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750716066; cv=none; b=r0xa1HBzU5CRSrivrWPtgl5ZfGTrZWR9UBPF6TY4PfvyI5d4oSnamsMMpu0BFIV/TGAWVZf6Mx0IT81jvPERCBqy02O93I6oLE6AT7QZKZfpZe/VwgisL0lJxpbP4j2xfDZR+QSjW5/0K+WS9e6uqJbXdwZGY+KlKxHf7tyuRDc=
+	t=1750713187; cv=none; b=Ta6AgFKekCQXZSmI/afXR+1RLXXbXkXTngpKcYDdPwS/cOYxBmRhHe5rW2FenlX5c8JrQUI+9NqkQ300V3ZzTOYgAeInXAYNDBc70Mgs0eklwB670+kgDGs11nwzpGVLo7fyqc77LSlKqbUNeIqSHoPZdGXjujlx7GPBiFBquNI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750716066; c=relaxed/simple;
-	bh=ZXQC6USEbEgF1KBAtKCGQgIhFMjYpcU63PGTvrmngaw=;
+	s=arc-20240116; t=1750713187; c=relaxed/simple;
+	bh=3cbG5qoQnzCzHvtdl+5U44kRmtlAe9e08KAjpq0ZH88=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=o9TKqNHRX4A31k1essUPEQSBRErV/CWO2h4CDsEEVvL55E6p6xbr8syOyjxHaqbjWLW5IjzdjB/q+JmANlOh7Q27c0wzXHQmcTK0P5xEhDYJWsMYXIBUFIYTeGtbf45NqlfHE7hJZcTbfUgs61MJBGeeDjqm3coaAdzssHdzpZA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ar7Pdi0q; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8F27C4CEEA;
-	Mon, 23 Jun 2025 22:01:05 +0000 (UTC)
+	 MIME-Version; b=Y7jafkTnAWXqFTXt035T9D9oELkaStykhEeMdSh0AXwA2E47njWz8Sjl9y1ci/GrE08mjZrR3bBOVzqhL1dsnUtdAOxc0Ayg0wqaTqTakCRxo0m3K9J+PkoFPB1zwXSMZQwLZWXtruLYUSTOCm8QH8x6GLVVPmLwFldxRD+gpfs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UJyIMO92; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1786BC4CEEA;
+	Mon, 23 Jun 2025 21:13:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750716066;
-	bh=ZXQC6USEbEgF1KBAtKCGQgIhFMjYpcU63PGTvrmngaw=;
+	s=korg; t=1750713187;
+	bh=3cbG5qoQnzCzHvtdl+5U44kRmtlAe9e08KAjpq0ZH88=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ar7Pdi0q32zJJ0+MNuYs3wf6qegANhnjHxIRtn63dtCve6M3Jars27szKyA4H4LEJ
-	 gi/iy3nbI57J4sTloJDArVHN20bJ0aH8f80wED+ZCm52BTdGsMxpJXAQRCXKmfFQXh
-	 gFI1++eRpHmQeYYu3YRMSVJIWaeOdoLjXIDNtD40=
+	b=UJyIMO92MShF1n2/xMlVJ6A+cYLidcNJsDgazOXMfTCAVXggxtrtglcbhibbcawQx
+	 K+ZjLerdZKMNsU5SQ25lKEwDwEbKB8Ob2Xvx/sVngm7ljJnnl3KhixQt0DOCKDUTm4
+	 mITUmz8ZgnSSIjUZ7C7kmEMvn1AHXCfsK7drXTCU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Simon Horman <horms@kernel.org>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Heiko Stuebner <heiko@sntech.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 307/355] pldmfw: Select CRC32 when PLDMFW is selected
+Subject: [PATCH 5.4 173/222] clk: rockchip: rk3036: mark ddrphy as critical
 Date: Mon, 23 Jun 2025 15:08:28 +0200
-Message-ID: <20250623130636.008769051@linuxfoundation.org>
+Message-ID: <20250623130617.272273993@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130626.716971725@linuxfoundation.org>
-References: <20250623130626.716971725@linuxfoundation.org>
+In-Reply-To: <20250623130611.896514667@linuxfoundation.org>
+References: <20250623130611.896514667@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,51 +61,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Simon Horman <horms@kernel.org>
+From: Heiko Stuebner <heiko@sntech.de>
 
-[ Upstream commit 1224b218a4b9203656ecc932152f4c81a97b4fcc ]
+[ Upstream commit 596a977b34a722c00245801a5774aa79cec4e81d ]
 
-pldmfw calls crc32 code and depends on it being enabled, else
-there is a link error as follows. So PLDMFW should select CRC32.
+The ddrphy is supplied by the dpll, but due to the limited number of PLLs
+on the rk3036, the dpll also is used for other periperhals, like the GPU.
 
-  lib/pldmfw/pldmfw.o: In function `pldmfw_flash_image':
-  pldmfw.c:(.text+0x70f): undefined reference to `crc32_le_base'
+So it happened, when the Lima driver turned off the gpu clock, this in
+turn also disabled the dpll and thus the ram.
 
-This problem was introduced by commit b8265621f488 ("Add pldmfw library
-for PLDM firmware update").
-
-It manifests as of commit d69ea414c9b4 ("ice: implement device flash
-update via devlink").
-
-And is more likely to occur as of commit 9ad19171b6d6 ("lib/crc: remove
-unnecessary prompt for CONFIG_CRC32 and drop 'default y'").
-
-Found by chance while exercising builds based on tinyconfig.
-
-Fixes: b8265621f488 ("Add pldmfw library for PLDM firmware update")
-Signed-off-by: Simon Horman <horms@kernel.org>
-Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
-Link: https://patch.msgid.link/20250613-pldmfw-crc32-v1-1-f3fad109eee6@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Heiko Stuebner <heiko@sntech.de>
+Link: https://lore.kernel.org/r/20250503202532.992033-4-heiko@sntech.de
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- lib/Kconfig | 1 +
+ drivers/clk/rockchip/clk-rk3036.c | 1 +
  1 file changed, 1 insertion(+)
 
-diff --git a/lib/Kconfig b/lib/Kconfig
-index 36326864249dd..4f280d0d93dbd 100644
---- a/lib/Kconfig
-+++ b/lib/Kconfig
-@@ -692,4 +692,5 @@ config GENERIC_LIB_UCMPDI2
+diff --git a/drivers/clk/rockchip/clk-rk3036.c b/drivers/clk/rockchip/clk-rk3036.c
+index 6a46f85ad8372..4a8c72d995735 100644
+--- a/drivers/clk/rockchip/clk-rk3036.c
++++ b/drivers/clk/rockchip/clk-rk3036.c
+@@ -429,6 +429,7 @@ static const char *const rk3036_critical_clocks[] __initconst = {
+ 	"hclk_peri",
+ 	"pclk_peri",
+ 	"pclk_ddrupctl",
++	"ddrphy",
+ };
  
- config PLDMFW
- 	bool
-+	select CRC32
- 	default n
+ static void __init rk3036_clk_init(struct device_node *np)
 -- 
 2.39.5
 
