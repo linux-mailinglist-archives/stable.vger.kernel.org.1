@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-156486-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157601-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7EC56AE4FFE
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:21:33 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 347E4AE54C5
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:05:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7966A7AB7A6
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:17:54 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D5D014A160E
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:04:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8AC7121FF50;
-	Mon, 23 Jun 2025 21:18:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BFF1D221FD6;
+	Mon, 23 Jun 2025 22:04:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pREPQy2+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ohXs+Sg6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 484CF4C62;
-	Mon, 23 Jun 2025 21:18:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B4C11A4F12;
+	Mon, 23 Jun 2025 22:04:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750713531; cv=none; b=n8tByo1I7bj7M+HWM9M780o5yguVviwI1SUJkx9gHsqPH+DOTnI3o0IzRuvENrMvBSH9VFcHGyvdMIzEKOVRtkBd1wK9Pn5o4tvVlVNNdRBzFGWaF0ioOOwqe8TYE2/TzXPc5Zx8+mmCo+ivrQbVbOtNCYZqdpKtJg9J4+YQ9gs=
+	t=1750716267; cv=none; b=LwkhTQaJdlhiwxa2+lhFPI5RUup5nW4HB6ygRl8lePyjzUHRoqGwfiCJYMMTASnK/q8oSje0O1c7fZhkxmHGKjD7TD2cs7IVkuEFnyh3V/VlXy1nivsMUu0iS7t5eviCMbO+k+RiTfQtFjA0QbxAQ6xYQutN1RK4h9WOCIeEogo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750713531; c=relaxed/simple;
-	bh=0D+AyoGkqTG3UdjKeaxShxVNHCB8uPuhdnAA/HhbJAM=;
+	s=arc-20240116; t=1750716267; c=relaxed/simple;
+	bh=TQJV651lQzDCbKp3rjSkr46WDy8MfXZa5B5ev2YvSNM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mKkVO7hKudp75BuUAMY/hBKKjdOYUQqPTcJXRXKGJzqxVlwUL668OjdM7h16RzohuZJXyVxjjtFzQwPwJyziSwsrF2+5UxcpASaQCdQaQDWWLiVyZwwBlGn6D3BMaxvHsbfZNHin58p7sJRQv4uEtr/A3rNp6+sWKQRDwo5WD/A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pREPQy2+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6774C4CEEA;
-	Mon, 23 Jun 2025 21:18:50 +0000 (UTC)
+	 MIME-Version; b=qOfsInNcEAdx6gviYF7fKfb0XkuzdPMlLzyopb1swVct8MZDFu9aZK9odMRIJ6MoKcoUQJABo8fYzaVobX7NsBZtJg0f2Cy3FRGK5OZCBqPND1uAXo1IRSW2+vET75d8YBNRnK3F0lfjer6J7W28B3Qu2cZQIzIkKnw1J/t07Qs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ohXs+Sg6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 139A5C4CEEA;
+	Mon, 23 Jun 2025 22:04:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750713531;
-	bh=0D+AyoGkqTG3UdjKeaxShxVNHCB8uPuhdnAA/HhbJAM=;
+	s=korg; t=1750716267;
+	bh=TQJV651lQzDCbKp3rjSkr46WDy8MfXZa5B5ev2YvSNM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pREPQy2+KsSXn1J97fcMbYGswceA/GhClD/T4CgjQbE0SH1lANzrjP+eSrt/Coi/b
-	 H/8XGJGUyAT/lnCdlJypEnbK/24mE0wJr1FAEmsrMmAnmIW/h6UVS265+4uW8vqfgX
-	 SkjYOmKDVxmr2X0ch4ESIt4+/bAe81s1pKvOkT14=
+	b=ohXs+Sg607nFkJ7IB7447EMXYgMh0krBP8K9/jCjB1tMAs8R6k2RuT4mT913hAij5
+	 RI1o6lIhrv38nHkIY3Ege0LhAYnXm4ftdiBLvWscilAyl7K1zoJDOgU2979yYnhh+v
+	 rme6rDH+C4s2ckrIh0nDISoE5L/3LcqF+c5CW5Mc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Niravkumar L Rabara <niravkumar.l.rabara@intel.com>,
-	Matthew Gerlach <matthew.gerlach@altera.com>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>,
-	Dinh Nguyen <dinguyen@kernel.org>,
-	stable@kernel.org
-Subject: [PATCH 6.6 075/290] EDAC/altera: Use correct write width with the INTTEST register
+	Andreas Gruenbacher <agruenba@redhat.com>,
+	Alexander Aring <aahringo@redhat.com>
+Subject: [PATCH 6.1 291/508] gfs2: move msleep to sleepable context
 Date: Mon, 23 Jun 2025 15:05:36 +0200
-Message-ID: <20250623130629.245520173@linuxfoundation.org>
+Message-ID: <20250623130652.437730295@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130626.910356556@linuxfoundation.org>
-References: <20250623130626.910356556@linuxfoundation.org>
+In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
+References: <20250623130645.255320792@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,54 +61,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Niravkumar L Rabara <niravkumar.l.rabara@intel.com>
+From: Alexander Aring <aahringo@redhat.com>
 
-commit e5ef4cd2a47f27c0c9d8ff6c0f63a18937c071a3 upstream.
+commit ac5ee087d31ed93b6e45d2968a66828c6f621d8c upstream.
 
-On the SoCFPGA platform, the INTTEST register supports only 16-bit writes.
-A 32-bit write triggers an SError to the CPU so do 16-bit accesses only.
+This patch moves the msleep_interruptible() out of the non-sleepable
+context by moving the ls->ls_recover_spin spinlock around so
+msleep_interruptible() will be called in a sleepable context.
 
-  [ bp: AI-massage the commit message. ]
-
-Fixes: c7b4be8db8bc ("EDAC, altera: Add Arria10 OCRAM ECC support")
-Signed-off-by: Niravkumar L Rabara <niravkumar.l.rabara@intel.com>
-Signed-off-by: Matthew Gerlach <matthew.gerlach@altera.com>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Acked-by: Dinh Nguyen <dinguyen@kernel.org>
-Cc: stable@kernel.org
-Link: https://lore.kernel.org/20250527145707.25458-1-matthew.gerlach@altera.com
+Cc: stable@vger.kernel.org
+Fixes: 4a7727725dc7 ("GFS2: Fix recovery issues for spectators")
+Suggested-by: Andreas Gruenbacher <agruenba@redhat.com>
+Signed-off-by: Alexander Aring <aahringo@redhat.com>
+Signed-off-by: Andreas Gruenbacher <agruenba@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/edac/altera_edac.c |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ fs/gfs2/lock_dlm.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/edac/altera_edac.c
-+++ b/drivers/edac/altera_edac.c
-@@ -1756,9 +1756,9 @@ altr_edac_a10_device_trig(struct file *f
+--- a/fs/gfs2/lock_dlm.c
++++ b/fs/gfs2/lock_dlm.c
+@@ -950,14 +950,15 @@ locks_done:
+ 		if (sdp->sd_args.ar_spectator) {
+ 			fs_info(sdp, "Recovery is required. Waiting for a "
+ 				"non-spectator to mount.\n");
++			spin_unlock(&ls->ls_recover_spin);
+ 			msleep_interruptible(1000);
+ 		} else {
+ 			fs_info(sdp, "control_mount wait1 block %u start %u "
+ 				"mount %u lvb %u flags %lx\n", block_gen,
+ 				start_gen, mount_gen, lvb_gen,
+ 				ls->ls_recover_flags);
++			spin_unlock(&ls->ls_recover_spin);
+ 		}
+-		spin_unlock(&ls->ls_recover_spin);
+ 		goto restart;
+ 	}
  
- 	local_irq_save(flags);
- 	if (trig_type == ALTR_UE_TRIGGER_CHAR)
--		writel(priv->ue_set_mask, set_addr);
-+		writew(priv->ue_set_mask, set_addr);
- 	else
--		writel(priv->ce_set_mask, set_addr);
-+		writew(priv->ce_set_mask, set_addr);
- 
- 	/* Ensure the interrupt test bits are set */
- 	wmb();
-@@ -1788,7 +1788,7 @@ altr_edac_a10_device_trig2(struct file *
- 
- 	local_irq_save(flags);
- 	if (trig_type == ALTR_UE_TRIGGER_CHAR) {
--		writel(priv->ue_set_mask, set_addr);
-+		writew(priv->ue_set_mask, set_addr);
- 	} else {
- 		/* Setup read/write of 4 bytes */
- 		writel(ECC_WORD_WRITE, drvdata->base + ECC_BLK_DBYTECTRL_OFST);
 
 
 
