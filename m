@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-156000-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-155629-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id A07B9AE448A
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:43:49 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id F3F46AE42F7
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:27:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 773AB7A66CA
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:37:54 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3B608188BAFE
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:23:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4FBC2571AD;
-	Mon, 23 Jun 2025 13:38:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9D2D2512D1;
+	Mon, 23 Jun 2025 13:22:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zIApeS9j"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Vot51BdD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62AF92571A5;
-	Mon, 23 Jun 2025 13:38:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 880622367B0;
+	Mon, 23 Jun 2025 13:22:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750685890; cv=none; b=gSYgyhg+xvsG+XtKHBTx7Vg54y4o5HUyZOUl/iggkVbqRBDgGowJaUjN5TJcyOouF1LmMDt0vBdymhFI/dLgWFpPCF6vSDgqSc7d6v8EtdyNCIEXfQejxM5PW6VpxQe9niSWY8FKWCv8htsvuMCFXfq1ntX6xCTYCBgr9cSEBCQ=
+	t=1750684927; cv=none; b=J+68v+8JxjnJGT3GHQiA0Z09bE5PCWjFCj549z1Xiwnpyj2ZypvGDHcCGk7gWiWC1HsWwUzy9SKLytQJUUEZ4NnETlBdwo0SW8qOkl2yerVa0P82h3kApeY4LFrucJ296R/wuPEsah8klAspfTk9SIdir97FqXkNtTUqVinEv4c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750685890; c=relaxed/simple;
-	bh=FhJ69nZENyPhky/ZMxXLWQoRzL3SA/KTZFXrUyXUbEc=;
+	s=arc-20240116; t=1750684927; c=relaxed/simple;
+	bh=Bwr+bU+p+WwJVRjrN2WAdbC+Y5d4Ty2X77qBBkM8sDk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pR3OwvoRmwypR8kzN22Tk0vRwTOXrSfotymY1ryd4HuJRrWXCOuBvD7SNqK/p97aLkXki229wehWUh2v/60xp7uZoR+Tcke65leOaIr/TPnfbjQ32/T3x+RejHBrK1K7yZNFzLSkcnDcxcXAP6jtvxhVXvzH49K0HWaYhfbECFs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zIApeS9j; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EDECDC4CEEA;
-	Mon, 23 Jun 2025 13:38:09 +0000 (UTC)
+	 MIME-Version; b=IK/+s7Owbh7THErZzW3fOYmwt+TCEVHGUb+KbdBdhoyPYDcx/0ienj45IpHwbO1cjBJLO0xgQD54pk/9zvguR6ZYrGiENITwUVuWHRo4e3FkSyz/8WaUzrl0zCl/GF0knUmm8SnRmujxMzrYX/336kXb5WSvN5+f5/LIWW10z2Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Vot51BdD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C89D7C4CEEA;
+	Mon, 23 Jun 2025 13:22:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750685890;
-	bh=FhJ69nZENyPhky/ZMxXLWQoRzL3SA/KTZFXrUyXUbEc=;
+	s=korg; t=1750684927;
+	bh=Bwr+bU+p+WwJVRjrN2WAdbC+Y5d4Ty2X77qBBkM8sDk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zIApeS9jblHSUiUEiD0HegYyT2H5zXw9xNjJbAFA2e9pc3utnIVPI2OYeRZH4Syr7
-	 4pwigU08IPI6sPVSyIRB2yvfHcSV2Si+rVL021vHiD5A3C58M3+QD1etFtR2NOt8Ef
-	 VFog9jhrtPmYkesbp6gNb9WdHS16l1UXMCs+Ka3M=
+	b=Vot51BdDymxmPWSTqvn2HqlNtlDRhRbUQkFn9/H6oHFlvjNZA1gfOyVZIlCMEIKBx
+	 VPR+/W6s0/a2bHLOxonbrKbwhxlmI4V0xoOa1Bl3r9mLiuicl+CuT1YDmUC/F2khrd
+	 s6biwbhlRlnb/qJIepJo+2KEbhqiiAa135+Vp4QM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pavel Begunkov <asml.silence@gmail.com>,
-	Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 6.12 012/414] io_uring: account drain memory to cgroup
+	Lizhi Hou <lizhi.hou@amd.com>,
+	Jeff Hugo <jeff.hugo@oss.qualcomm.com>,
+	Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>
+Subject: [PATCH 6.15 191/592] accel/ivpu: Use firmware names from upstream repo
 Date: Mon, 23 Jun 2025 15:02:29 +0200
-Message-ID: <20250623130642.332488652@linuxfoundation.org>
+Message-ID: <20250623130704.829403024@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
-References: <20250623130642.015559452@linuxfoundation.org>
+In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
+References: <20250623130700.210182694@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,38 +62,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pavel Begunkov <asml.silence@gmail.com>
+From: Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>
 
-commit f979c20547e72568e3c793bc92c7522bc3166246 upstream.
+commit 1c2c0e29f24360b3130c005a3c261cb8c7b363c6 upstream.
 
-Account drain allocations against memcg. It's not a big problem as each
-such allocation is paired with a request, which is accounted, but it's
-nicer to follow the limits more closely.
+Use FW names from linux-firmware repo instead of deprecated ones.
+The vpu_37xx.bin style names were never released and were only used for
+internal testing, so it is safe to remove them.
 
-Cc: stable@vger.kernel.org # 6.1
-Signed-off-by: Pavel Begunkov <asml.silence@gmail.com>
-Link: https://lore.kernel.org/r/f8dfdbd755c41fd9c75d12b858af07dfba5bbb68.1746788718.git.asml.silence@gmail.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Fixes: c140244f0cfb ("accel/ivpu: Add initial Panther Lake support")
+Cc: stable@vger.kernel.org # v6.13+
+Reviewed-by: Lizhi Hou <lizhi.hou@amd.com>
+Reviewed-by: Jeff Hugo <jeff.hugo@oss.qualcomm.com>
+Signed-off-by: Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>
+Link: https://lore.kernel.org/r/20250506092030.280276-1-jacek.lawrynowicz@linux.intel.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- io_uring/io_uring.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/accel/ivpu/ivpu_fw.c |   12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
---- a/io_uring/io_uring.c
-+++ b/io_uring/io_uring.c
-@@ -1681,7 +1681,7 @@ queue:
- 	spin_unlock(&ctx->completion_lock);
+--- a/drivers/accel/ivpu/ivpu_fw.c
++++ b/drivers/accel/ivpu/ivpu_fw.c
+@@ -55,18 +55,18 @@ static struct {
+ 	int gen;
+ 	const char *name;
+ } fw_names[] = {
+-	{ IVPU_HW_IP_37XX, "vpu_37xx.bin" },
++	{ IVPU_HW_IP_37XX, "intel/vpu/vpu_37xx_v1.bin" },
+ 	{ IVPU_HW_IP_37XX, "intel/vpu/vpu_37xx_v0.0.bin" },
+-	{ IVPU_HW_IP_40XX, "vpu_40xx.bin" },
++	{ IVPU_HW_IP_40XX, "intel/vpu/vpu_40xx_v1.bin" },
+ 	{ IVPU_HW_IP_40XX, "intel/vpu/vpu_40xx_v0.0.bin" },
+-	{ IVPU_HW_IP_50XX, "vpu_50xx.bin" },
++	{ IVPU_HW_IP_50XX, "intel/vpu/vpu_50xx_v1.bin" },
+ 	{ IVPU_HW_IP_50XX, "intel/vpu/vpu_50xx_v0.0.bin" },
+ };
  
- 	io_prep_async_link(req);
--	de = kmalloc(sizeof(*de), GFP_KERNEL);
-+	de = kmalloc(sizeof(*de), GFP_KERNEL_ACCOUNT);
- 	if (!de) {
- 		ret = -ENOMEM;
- 		io_req_defer_failed(req, ret);
+ /* Production fw_names from the table above */
+-MODULE_FIRMWARE("intel/vpu/vpu_37xx_v0.0.bin");
+-MODULE_FIRMWARE("intel/vpu/vpu_40xx_v0.0.bin");
+-MODULE_FIRMWARE("intel/vpu/vpu_50xx_v0.0.bin");
++MODULE_FIRMWARE("intel/vpu/vpu_37xx_v1.bin");
++MODULE_FIRMWARE("intel/vpu/vpu_40xx_v1.bin");
++MODULE_FIRMWARE("intel/vpu/vpu_50xx_v1.bin");
+ 
+ static int ivpu_fw_request(struct ivpu_device *vdev)
+ {
 
 
 
