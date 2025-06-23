@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-157218-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156534-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 39FEAAE531D
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:50:23 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id B0D4FAE4FEB
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:20:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9B3B77A742E
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:47:54 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3F3D11B61989
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:21:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A60E225771;
-	Mon, 23 Jun 2025 21:48:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 965101E5B71;
+	Mon, 23 Jun 2025 21:20:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Uc/EGSpO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pWd98uBW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45B8F136348;
-	Mon, 23 Jun 2025 21:48:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54E707482;
+	Mon, 23 Jun 2025 21:20:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750715329; cv=none; b=AJ/gkV4/LXdooTb9Upu56oqOlZFdl1XgS/RRyZAnw14tQGtP8rnH/Mb3CEHlyyjJconrkz+j5IdHUQEGcZBNtrOMAkFSJSLapoWvD/VZu7dD/ly0X2qD2fx/hmxUvnm5ow3W6dvm/dAoNi2ESAGW4yWWPn4PSBMq11DVMFzridI=
+	t=1750713648; cv=none; b=n+NrvHB3gkgpOIsx1OeLL39nPVd4YK/gc0xTzdCZ66KTCoVfEuPjjqQuqRJd/vvEU1lsa8eaeZdrtaiMk+U6sIB0zYDTgBXqmT8KUyIOx/t0+hbmLGRCTKdjvS4OUoxF7RxUTdgJdSyp0CHGZjkHB6lCVakpFHnR5FlM21BDO3s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750715329; c=relaxed/simple;
-	bh=EnHTfcbo39MC5bf9LEHjUpORicMi+0rGQihQJM0tnnE=;
+	s=arc-20240116; t=1750713648; c=relaxed/simple;
+	bh=JI7W7p+MK82w5uXN08HMKFHd3WeiBPueeglXISHw2q8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZaZzJ7zYzNSsj/wfFPfDHe772mr3m7wVZ7ZyaHv9uRzeAPdvhf4JzEcK2OHTNr5HwTHGhT1BHAhDNsnrY9S3EW0M6b5w+HSoVG0k0ESKgNaQbl5xVxLwVeYO9GpGLU5MWF9rM3QEh+UYFaX0awCfR/TBk3lDiLyGMabzy1+B8gc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Uc/EGSpO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D349CC4CEEA;
-	Mon, 23 Jun 2025 21:48:48 +0000 (UTC)
+	 MIME-Version; b=cEaIShx/wU7TA/yVXy0PoJJVdDaFn6rm2IrhteS8CdHZjBJ0icsGXOFP5El9JXPh4EiNB3WqFq/OGbarT8+XcvXawf9Iq6345EYGeuH7MdyBqZLFtLZjp03rigZ4Vhj8ZU/eRsxNgGboV2mx9p7GGPXRu0L2uOnam2jhLTUgp0w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pWd98uBW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E014DC4CEEA;
+	Mon, 23 Jun 2025 21:20:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750715329;
-	bh=EnHTfcbo39MC5bf9LEHjUpORicMi+0rGQihQJM0tnnE=;
+	s=korg; t=1750713648;
+	bh=JI7W7p+MK82w5uXN08HMKFHd3WeiBPueeglXISHw2q8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Uc/EGSpO3ZlcExN8DDdfAqq/K+3ev/22b7gfX4tKVfkvi6w2SK25l8ebEGzTQI4TF
-	 JEvnU1h1FP3jVK3P63fB500n8NzdnrdEjp12oIB5PXoyXbcFMvX7NbZd6s/z1t/nJp
-	 RpwK2UjYzijDk5MHhPE++k+m5tIVyNVlCDTjYlYk=
+	b=pWd98uBWU6rE7nNHc/JkgLE/iLp72hygzBuSmp1FvUku8zuRQTOx7ucwN5KMumZzp
+	 s9SgFtd8ZkHJbm0AWURZw1R4eAM4VW4VVJCnmX8JZKdcwPORNqjTqzwOVzVtTxJ4LV
+	 zd9cA+dJzw1BhjN7gmuJSbrkrQgN/jd1WZqrcgJs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Govindaraj Saminathan <quic_gsaminat@quicinc.com>,
-	Raj Kumar Bhagat <quic_rajkbhag@quicinc.com>,
-	Kalle Valo <quic_kvalo@quicinc.com>,
+	Christian Brauner <brauner@kernel.org>,
+	"Orlando, Noah" <Noah.Orlando@deshaw.com>,
+	Al Viro <viro@zeniv.linux.org.uk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 228/508] wifi: ath11k: remove unused function ath11k_tm_event_wmi()
+Subject: [PATCH 5.15 129/411] do_change_type(): refuse to operate on unmounted/not ours mounts
 Date: Mon, 23 Jun 2025 15:04:33 +0200
-Message-ID: <20250623130650.870136066@linuxfoundation.org>
+Message-ID: <20250623130636.814326218@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
-References: <20250623130645.255320792@linuxfoundation.org>
+In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
+References: <20250623130632.993849527@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,142 +63,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Govindaraj Saminathan <quic_gsaminat@quicinc.com>
+From: Al Viro <viro@zeniv.linux.org.uk>
 
-[ Upstream commit 86f85575a3f6a20cef1c8bb98e78585fe3a53ccc ]
+[ Upstream commit 12f147ddd6de7382dad54812e65f3f08d05809fc ]
 
-The function ath11k_tm_event_wmi() is only defined and it is not used
-anywhere. Hence remove the unused.
+Ensure that propagation settings can only be changed for mounts located
+in the caller's mount namespace. This change aligns permission checking
+with the rest of mount(2).
 
-Tested-on: IPQ8074 hw2.0 AHB WLAN.HK.2.7.0.1-01744-QCAHKSWPL_SILICONZ-1
-
-Signed-off-by: Govindaraj Saminathan <quic_gsaminat@quicinc.com>
-Signed-off-by: Raj Kumar Bhagat <quic_rajkbhag@quicinc.com>
-Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
-Link: https://lore.kernel.org/r/20230517135934.16408-2-quic_rajkbhag@quicinc.com
-Stable-dep-of: 9f6e82d11bb9 ("wifi: ath11k: avoid burning CPU in ath11k_debugfs_fw_stats_request()")
+Reviewed-by: Christian Brauner <brauner@kernel.org>
+Fixes: 07b20889e305 ("beginning of the shared-subtree proper")
+Reported-by: "Orlando, Noah" <Noah.Orlando@deshaw.com>
+Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath11k/testmode.c | 64 +---------------------
- drivers/net/wireless/ath/ath11k/testmode.h |  8 +--
- 2 files changed, 2 insertions(+), 70 deletions(-)
+ fs/namespace.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/net/wireless/ath/ath11k/testmode.c b/drivers/net/wireless/ath/ath11k/testmode.c
-index 4bf1931adbaae..ebeca5eb6a67a 100644
---- a/drivers/net/wireless/ath/ath11k/testmode.c
-+++ b/drivers/net/wireless/ath/ath11k/testmode.c
-@@ -1,6 +1,7 @@
- // SPDX-License-Identifier: BSD-3-Clause-Clear
- /*
-  * Copyright (c) 2018-2019 The Linux Foundation. All rights reserved.
-+ * Copyright (c) 2023 Qualcomm Innovation Center, Inc. All rights reserved.
-  */
+diff --git a/fs/namespace.c b/fs/namespace.c
+index 76a1cf75457be..900738eab33ff 100644
+--- a/fs/namespace.c
++++ b/fs/namespace.c
+@@ -2327,6 +2327,10 @@ static int do_change_type(struct path *path, int ms_flags)
+ 		return -EINVAL;
  
- #include "testmode.h"
-@@ -20,69 +21,6 @@ static const struct nla_policy ath11k_tm_policy[ATH11K_TM_ATTR_MAX + 1] = {
- 	[ATH11K_TM_ATTR_VERSION_MINOR]	= { .type = NLA_U32 },
- };
- 
--/* Returns true if callee consumes the skb and the skb should be discarded.
-- * Returns false if skb is not used. Does not sleep.
-- */
--bool ath11k_tm_event_wmi(struct ath11k *ar, u32 cmd_id, struct sk_buff *skb)
--{
--	struct sk_buff *nl_skb;
--	bool consumed;
--	int ret;
--
--	ath11k_dbg(ar->ab, ATH11K_DBG_TESTMODE,
--		   "testmode event wmi cmd_id %d skb %pK skb->len %d\n",
--		   cmd_id, skb, skb->len);
--
--	ath11k_dbg_dump(ar->ab, ATH11K_DBG_TESTMODE, NULL, "", skb->data, skb->len);
--
--	spin_lock_bh(&ar->data_lock);
--
--	consumed = true;
--
--	nl_skb = cfg80211_testmode_alloc_event_skb(ar->hw->wiphy,
--						   2 * sizeof(u32) + skb->len,
--						   GFP_ATOMIC);
--	if (!nl_skb) {
--		ath11k_warn(ar->ab,
--			    "failed to allocate skb for testmode wmi event\n");
--		goto out;
--	}
--
--	ret = nla_put_u32(nl_skb, ATH11K_TM_ATTR_CMD, ATH11K_TM_CMD_WMI);
--	if (ret) {
--		ath11k_warn(ar->ab,
--			    "failed to put testmode wmi event cmd attribute: %d\n",
--			    ret);
--		kfree_skb(nl_skb);
--		goto out;
--	}
--
--	ret = nla_put_u32(nl_skb, ATH11K_TM_ATTR_WMI_CMDID, cmd_id);
--	if (ret) {
--		ath11k_warn(ar->ab,
--			    "failed to put testmode wmi even cmd_id: %d\n",
--			    ret);
--		kfree_skb(nl_skb);
--		goto out;
--	}
--
--	ret = nla_put(nl_skb, ATH11K_TM_ATTR_DATA, skb->len, skb->data);
--	if (ret) {
--		ath11k_warn(ar->ab,
--			    "failed to copy skb to testmode wmi event: %d\n",
--			    ret);
--		kfree_skb(nl_skb);
--		goto out;
--	}
--
--	cfg80211_testmode_event(nl_skb, GFP_ATOMIC);
--
--out:
--	spin_unlock_bh(&ar->data_lock);
--
--	return consumed;
--}
--
- static int ath11k_tm_cmd_get_version(struct ath11k *ar, struct nlattr *tb[])
- {
- 	struct sk_buff *skb;
-diff --git a/drivers/net/wireless/ath/ath11k/testmode.h b/drivers/net/wireless/ath/ath11k/testmode.h
-index aaa122ed90697..ffdb0c30b276c 100644
---- a/drivers/net/wireless/ath/ath11k/testmode.h
-+++ b/drivers/net/wireless/ath/ath11k/testmode.h
-@@ -1,24 +1,18 @@
- /* SPDX-License-Identifier: BSD-3-Clause-Clear */
- /*
-  * Copyright (c) 2018-2019 The Linux Foundation. All rights reserved.
-+ * Copyright (c) 2023 Qualcomm Innovation Center, Inc. All rights reserved.
-  */
- 
- #include "core.h"
- 
- #ifdef CONFIG_NL80211_TESTMODE
- 
--bool ath11k_tm_event_wmi(struct ath11k *ar, u32 cmd_id, struct sk_buff *skb);
- int ath11k_tm_cmd(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
- 		  void *data, int len);
- 
- #else
- 
--static inline bool ath11k_tm_event_wmi(struct ath11k *ar, u32 cmd_id,
--				       struct sk_buff *skb)
--{
--	return false;
--}
--
- static inline int ath11k_tm_cmd(struct ieee80211_hw *hw,
- 				struct ieee80211_vif *vif,
- 				void *data, int len)
+ 	namespace_lock();
++	if (!check_mnt(mnt)) {
++		err = -EINVAL;
++		goto out_unlock;
++	}
+ 	if (type == MS_SHARED) {
+ 		err = invent_group_ids(mnt, recurse);
+ 		if (err)
 -- 
 2.39.5
 
