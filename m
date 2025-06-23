@@ -1,53 +1,51 @@
-Return-Path: <stable+bounces-155528-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-155530-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 94371AE4278
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:20:04 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5EBD6AE426F
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:19:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CC486188D15C
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:18:28 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 279C83B5B12
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:18:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C05FC253B7E;
-	Mon, 23 Jun 2025 13:17:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC83E254844;
+	Mon, 23 Jun 2025 13:17:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l9MyLPZD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yzG000U9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E004253B68;
-	Mon, 23 Jun 2025 13:17:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A771C2517A0;
+	Mon, 23 Jun 2025 13:17:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750684666; cv=none; b=Kt6ITHAvkT/a1Bh235C1EqYgVtJyyr5R0fPzQcjpR2/DHfyhz4+g5d3AkpeYeZUOelZLRFAnMieJiq1+AE6xavXT0J4n3GJCBtQkS1qpTmbunbU3Gw4PbQSLy7PoB3b22AHEiG3XckJ7EmWYwNUWv1enCYn46Jt/W7eScIyRAg8=
+	t=1750684671; cv=none; b=uTaoES+cQE4675ntmwYNx/3k2WIlVZH18hf8gP9GjvkTllQ/P/op41yosEiWxp6EomYKTZiKCFMzDZYyYxdETKKeNLdd9up1Rpm/DIMgd94mypHGdtCnz4OG964X6kBn5Wbj9hhsZEvmU/YYgdcefVdOb2zWGygADq37ESHGeCc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750684666; c=relaxed/simple;
-	bh=IKchYsAOxz/TRVz2OgbfMXdbp0r/ZrUqwMiia3ewGqE=;
+	s=arc-20240116; t=1750684671; c=relaxed/simple;
+	bh=NHVsoOpFVYYYZP9nreZhVb1lvIOMMbZ5CHAzudVLsOQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AFVUzCASRYd8dnbHVRmkCMXcyv5Yzj5hrHSYmnAAeGmxXfUbPwCBQWOSzCtLn3VAuj+77c9XrGBmX9FSZPSQd3Ee5TUSAz5gRF6opcfct3NdAYwEnY3fYgVtGV/Oyu1Cw82BjuecFxUWtKtbHrD6wzA5jXa6xs20k/BbrapBses=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l9MyLPZD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13C21C4CEF0;
-	Mon, 23 Jun 2025 13:17:45 +0000 (UTC)
+	 MIME-Version; b=VOYgOGus2AWKDPgSqNXN7/dDpWS6RADxuy3qg1eW2XAQXhWeCOaIb1PGwzSafvwZWTO9md5vTAcx0bsHnRNhn6PypaHNxEHm16Ik3tdl8nPLZ+sC+TNquns30JyQX0D2wc7+8NSU+FbtOotjgmh2l0dOOCgelhbnLqtCqtvldKs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yzG000U9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32744C4CEF2;
+	Mon, 23 Jun 2025 13:17:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750684666;
-	bh=IKchYsAOxz/TRVz2OgbfMXdbp0r/ZrUqwMiia3ewGqE=;
+	s=korg; t=1750684671;
+	bh=NHVsoOpFVYYYZP9nreZhVb1lvIOMMbZ5CHAzudVLsOQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=l9MyLPZDS9dAPbca3aUtxw1J1c1vdv7J8W+u5cAsAX8k9+NhU6sTh8juzisCMTxhM
-	 YISwowDm3YJwXesibGpAeC3VQ0Kkwe+IGg+Tym0/4FIBSWG5Dyt/pTqT/u6Qc0SHRj
-	 HVWeUZpij5eyym2XZPLMy+FixLprdjFDiq69glR4=
+	b=yzG000U9c5490U907N0WIzJubCyUZALWcIaJhO6REgLTvF8ViE8g++iYGKfIAQeCT
+	 qjl56l93ROHF1EteVHIowD5X0GjtNldK76I/TvofbCBrpgX3nopgIUntrgOPL0/SLd
+	 zyxnafnWBApPgGaYK/C6X1fzPyZoqAztrr54tcfU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chao Gao <chao.gao@intel.com>,
-	Kai Huang <kai.huang@intel.com>,
-	Sean Christopherson <seanjc@google.com>
-Subject: [PATCH 6.15 150/592] KVM: VMX: Flush shadow VMCS on emergency reboot
-Date: Mon, 23 Jun 2025 15:01:48 +0200
-Message-ID: <20250623130703.850174780@linuxfoundation.org>
+	Mikulas Patocka <mpatocka@redhat.com>
+Subject: [PATCH 6.15 151/592] dm-mirror: fix a tiny race condition
+Date: Mon, 23 Jun 2025 15:01:49 +0200
+Message-ID: <20250623130703.875140334@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
 In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
 References: <20250623130700.210182694@linuxfoundation.org>
@@ -66,49 +64,54 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Chao Gao <chao.gao@intel.com>
+From: Mikulas Patocka <mpatocka@redhat.com>
 
-commit a0ee1d5faff135e28810f29e0f06328c66f89852 upstream.
+commit 829451beaed6165eb11d7a9fb4e28eb17f489980 upstream.
 
-Ensure the shadow VMCS cache is evicted during an emergency reboot to
-prevent potential memory corruption if the cache is evicted after reboot.
+There's a tiny race condition in dm-mirror. The functions queue_bio and
+write_callback grab a spinlock, add a bio to the list, drop the spinlock
+and wake up the mirrord thread that processes bios in the list.
 
-This issue was identified through code inspection, as __loaded_vmcs_clear()
-flushes both the normal VMCS and the shadow VMCS.
+It may be possible that the mirrord thread processes the bio just after
+spin_unlock_irqrestore is called, before wakeup_mirrord. This spurious
+wake-up is normally harmless, however if the device mapper device is
+unloaded just after the bio was processed, it may be possible that
+wakeup_mirrord(ms) uses invalid "ms" pointer.
 
-Avoid checking the "launched" state during an emergency reboot, unlike the
-behavior in __loaded_vmcs_clear(). This is important because reboot NMIs
-can interfere with operations like copy_shadow_to_vmcs12(), where shadow
-VMCSes are loaded directly using VMPTRLD. In such cases, if NMIs occur
-right after the VMCS load, the shadow VMCSes will be active but the
-"launched" state may not be set.
+Fix this bug by moving wakeup_mirrord inside the spinlock.
 
-Fixes: 16f5b9034b69 ("KVM: nVMX: Copy processor-specific shadow-vmcs to VMCS12")
+Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
 Cc: stable@vger.kernel.org
-Signed-off-by: Chao Gao <chao.gao@intel.com>
-Reviewed-by: Kai Huang <kai.huang@intel.com>
-Link: https://lore.kernel.org/r/20250324140849.2099723-1-chao.gao@intel.com
-Signed-off-by: Sean Christopherson <seanjc@google.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kvm/vmx/vmx.c |    5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/md/dm-raid1.c |    5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
---- a/arch/x86/kvm/vmx/vmx.c
-+++ b/arch/x86/kvm/vmx/vmx.c
-@@ -769,8 +769,11 @@ void vmx_emergency_disable_virtualizatio
- 		return;
- 
- 	list_for_each_entry(v, &per_cpu(loaded_vmcss_on_cpu, cpu),
--			    loaded_vmcss_on_cpu_link)
-+			    loaded_vmcss_on_cpu_link) {
- 		vmcs_clear(v->vmcs);
-+		if (v->shadow_vmcs)
-+			vmcs_clear(v->shadow_vmcs);
-+	}
- 
- 	kvm_cpu_vmxoff();
+--- a/drivers/md/dm-raid1.c
++++ b/drivers/md/dm-raid1.c
+@@ -133,10 +133,9 @@ static void queue_bio(struct mirror_set
+ 	spin_lock_irqsave(&ms->lock, flags);
+ 	should_wake = !(bl->head);
+ 	bio_list_add(bl, bio);
+-	spin_unlock_irqrestore(&ms->lock, flags);
+-
+ 	if (should_wake)
+ 		wakeup_mirrord(ms);
++	spin_unlock_irqrestore(&ms->lock, flags);
  }
+ 
+ static void dispatch_bios(void *context, struct bio_list *bio_list)
+@@ -646,9 +645,9 @@ static void write_callback(unsigned long
+ 	if (!ms->failures.head)
+ 		should_wake = 1;
+ 	bio_list_add(&ms->failures, bio);
+-	spin_unlock_irqrestore(&ms->lock, flags);
+ 	if (should_wake)
+ 		wakeup_mirrord(ms);
++	spin_unlock_irqrestore(&ms->lock, flags);
+ }
+ 
+ static void do_write(struct mirror_set *ms, struct bio *bio)
 
 
 
