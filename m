@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-157674-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-158131-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C9BA9AE550C
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:07:28 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D2E47AE5751
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:28:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7AA861BC34B1
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:07:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EED4D4A782E
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:25:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E662F222599;
-	Mon, 23 Jun 2025 22:07:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 429DF22370A;
+	Mon, 23 Jun 2025 22:26:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H79UsE8r"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lxaTO1Oh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CAC1222576;
-	Mon, 23 Jun 2025 22:07:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3472221543;
+	Mon, 23 Jun 2025 22:26:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750716446; cv=none; b=WHbh3dKr9lPM4nHXLyQ5Rx92TPlT4P3nm0oOUgF8ZRYMrnvGGqPmj0mHaN3FcmekUVrVpWoA97H5qaI3aL6vXJguEeOXxpRbN++/YhtPw5ZdvjE2qOHylH9Y2ttcTb5Qksoz11XUTU3pKe8U/NV2AyUDTqrC2z21VZzmYmGSZFc=
+	t=1750717561; cv=none; b=pF7coyOrCR96rc7yvn3ayvmdcGZdnbpguxwplvUyymkMfcnTsaYCuMBj8cOPc53vfNaqt4kn1jlLmA7l1mtAdm8MPYnlUe7ZUJhxUWNhVbgW8fK+s80WJCOUW30+vqh/ArJUme3Sk9z4VWsagA60jffHSTzZ1pI8ocLrr8w11iU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750716446; c=relaxed/simple;
-	bh=uTF4iwJkVLnP5uv2TGQBGH7UI5gIk5+WoqEQxqD0Reg=;
+	s=arc-20240116; t=1750717561; c=relaxed/simple;
+	bh=gIl1VuyhxCb2W+WX2JrFWsYDuGfl/MPsDRSCBXvMnyU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BLkgK25gcCuJKHwpomSh/qIuyfteOoQ6M1xhHCUgx2n9sAsSFg3lXdVneslaQgkh9XCPRt0vuLCCAO0zZwGfKrWDRRkZHDLhe9UkIugQ02BkU0pbl+dQooX81DHQJMTJx7RUPrLS+a7PIlJPnhGY0OBya1Y8u743r2l/txh7ETY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H79UsE8r; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 325CBC4CEEA;
-	Mon, 23 Jun 2025 22:07:26 +0000 (UTC)
+	 MIME-Version; b=Wf2mR/yrjdij+vCbMoY3SC4jHSBJ1NODliXVofhizHUzV/DaJ22qz+wvDdieIIsOQRvz0i6FTWIWcPl8J94tZ72NWt6HzOkS5ZzLwjjp53VO7+vUMKRo1z2f5lQrE23pSkGqOzFJ0qp21Gyhpp8HqfQHq7TwZCL+BtIkd1NscHs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lxaTO1Oh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 341E2C4CEEA;
+	Mon, 23 Jun 2025 22:26:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750716446;
-	bh=uTF4iwJkVLnP5uv2TGQBGH7UI5gIk5+WoqEQxqD0Reg=;
+	s=korg; t=1750717560;
+	bh=gIl1VuyhxCb2W+WX2JrFWsYDuGfl/MPsDRSCBXvMnyU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=H79UsE8rC7Vets/VjFvftI2agsQ06Y92bsWavfXxZsiFkwtug4itN3q8MkxQmAntV
-	 u54qo+SXq3800McCDKH7KNTZIfeEmrNd9eWR+rY3glD1l/7DHMMLK1+STdeaLCfKdb
-	 DY3lzuf+76SXNVso5DyPplGNkY2YgiCfvOLK25qQ=
+	b=lxaTO1OhRUIMPgnvGBxQ4YikkT2y8WarVx3mromeSXJVELvU2saaUlzkMY+251e7k
+	 yGpNxXrgzru/oo2+Z7L2qT65eXUZnovcbzKx962Eg1gydnTKx36YUWfo7Vz0FK00j3
+	 meUs+ekSDSsNUwHz3i693R9Kw6ZIwN2PbBtxN7pA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Niklas Schnelle <schnelle@linux.ibm.com>,
-	Heiko Carstens <hca@linux.ibm.com>
-Subject: [PATCH 5.10 349/355] s390/pci: Fix __pcilg_mio_inuser() inline assembly
+	David Thompson <davthompson@nvidia.com>,
+	Shravan Kumar Ramani <shravankr@nvidia.com>,
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 413/414] gpio: mlxbf3: only get IRQ for device instance 0
 Date: Mon, 23 Jun 2025 15:09:10 +0200
-Message-ID: <20250623130637.216863166@linuxfoundation.org>
+Message-ID: <20250623130652.278700061@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130626.716971725@linuxfoundation.org>
-References: <20250623130626.716971725@linuxfoundation.org>
+In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
+References: <20250623130642.015559452@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,50 +63,108 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Heiko Carstens <hca@linux.ibm.com>
+From: David Thompson <davthompson@nvidia.com>
 
-commit c4abe6234246c75cdc43326415d9cff88b7cf06c upstream.
+[ Upstream commit 10af0273a35ab4513ca1546644b8c853044da134 ]
 
-Use "a" constraint for the shift operand of the __pcilg_mio_inuser() inline
-assembly. The used "d" constraint allows the compiler to use any general
-purpose register for the shift operand, including register zero.
+The gpio-mlxbf3 driver interfaces with two GPIO controllers,
+device instance 0 and 1. There is a single IRQ resource shared
+between the two controllers, and it is found in the ACPI table for
+device instance 0.  The driver should not attempt to get an IRQ
+resource when probing device instance 1, otherwise the following
+error is logged:
+  mlxbf3_gpio MLNXBF33:01: error -ENXIO: IRQ index 0 not found
 
-If register zero is used this my result in incorrect code generation:
-
- 8f6:   a7 0a ff f8             ahi     %r0,-8
- 8fa:   eb 32 00 00 00 0c       srlg    %r3,%r2,0  <----
-
-If register zero is selected to contain the shift value, the srlg
-instruction ignores the contents of the register and always shifts zero
-bits. Therefore use the "a" constraint which does not permit to select
-register zero.
-
-Fixes: f058599e22d5 ("s390/pci: Fix s390_mmio_read/write with MIO")
-Cc: stable@vger.kernel.org
-Reported-by: Niklas Schnelle <schnelle@linux.ibm.com>
-Reviewed-by: Niklas Schnelle <schnelle@linux.ibm.com>
-Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
-Signed-off-by: Niklas Schnelle <schnelle@linux.ibm.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: David Thompson <davthompson@nvidia.com>
+Reviewed-by: Shravan Kumar Ramani <shravankr@nvidia.com>
+Fixes: cd33f216d241 ("gpio: mlxbf3: Add gpio driver support")
+Link: https://lore.kernel.org/r/20250613163443.1065217-1-davthompson@nvidia.com
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/s390/pci/pci_mmio.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpio/gpio-mlxbf3.c | 54 ++++++++++++++++++++++++--------------
+ 1 file changed, 35 insertions(+), 19 deletions(-)
 
---- a/arch/s390/pci/pci_mmio.c
-+++ b/arch/s390/pci/pci_mmio.c
-@@ -229,7 +229,7 @@ static inline int __pcilg_mio_inuser(
- 		:
- 		[cc] "+d" (cc), [val] "=d" (val), [len] "+d" (len),
- 		[dst] "+a" (dst), [cnt] "+d" (cnt), [tmp] "=d" (tmp),
--		[shift] "+d" (shift)
-+		[shift] "+a" (shift)
- 		:
- 		[ioaddr] "a" (addr)
- 		: "cc", "memory");
+diff --git a/drivers/gpio/gpio-mlxbf3.c b/drivers/gpio/gpio-mlxbf3.c
+index 10ea71273c891..9875e34bde72a 100644
+--- a/drivers/gpio/gpio-mlxbf3.c
++++ b/drivers/gpio/gpio-mlxbf3.c
+@@ -190,7 +190,9 @@ static int mlxbf3_gpio_probe(struct platform_device *pdev)
+ 	struct mlxbf3_gpio_context *gs;
+ 	struct gpio_irq_chip *girq;
+ 	struct gpio_chip *gc;
++	char *colon_ptr;
+ 	int ret, irq;
++	long num;
+ 
+ 	gs = devm_kzalloc(dev, sizeof(*gs), GFP_KERNEL);
+ 	if (!gs)
+@@ -227,25 +229,39 @@ static int mlxbf3_gpio_probe(struct platform_device *pdev)
+ 	gc->owner = THIS_MODULE;
+ 	gc->add_pin_ranges = mlxbf3_gpio_add_pin_ranges;
+ 
+-	irq = platform_get_irq(pdev, 0);
+-	if (irq >= 0) {
+-		girq = &gs->gc.irq;
+-		gpio_irq_chip_set_chip(girq, &gpio_mlxbf3_irqchip);
+-		girq->default_type = IRQ_TYPE_NONE;
+-		/* This will let us handle the parent IRQ in the driver */
+-		girq->num_parents = 0;
+-		girq->parents = NULL;
+-		girq->parent_handler = NULL;
+-		girq->handler = handle_bad_irq;
+-
+-		/*
+-		 * Directly request the irq here instead of passing
+-		 * a flow-handler because the irq is shared.
+-		 */
+-		ret = devm_request_irq(dev, irq, mlxbf3_gpio_irq_handler,
+-				       IRQF_SHARED, dev_name(dev), gs);
+-		if (ret)
+-			return dev_err_probe(dev, ret, "failed to request IRQ");
++	colon_ptr = strchr(dev_name(dev), ':');
++	if (!colon_ptr) {
++		dev_err(dev, "invalid device name format\n");
++		return -EINVAL;
++	}
++
++	ret = kstrtol(++colon_ptr, 16, &num);
++	if (ret) {
++		dev_err(dev, "invalid device instance\n");
++		return ret;
++	}
++
++	if (!num) {
++		irq = platform_get_irq(pdev, 0);
++		if (irq >= 0) {
++			girq = &gs->gc.irq;
++			gpio_irq_chip_set_chip(girq, &gpio_mlxbf3_irqchip);
++			girq->default_type = IRQ_TYPE_NONE;
++			/* This will let us handle the parent IRQ in the driver */
++			girq->num_parents = 0;
++			girq->parents = NULL;
++			girq->parent_handler = NULL;
++			girq->handler = handle_bad_irq;
++
++			/*
++			 * Directly request the irq here instead of passing
++			 * a flow-handler because the irq is shared.
++			 */
++			ret = devm_request_irq(dev, irq, mlxbf3_gpio_irq_handler,
++					       IRQF_SHARED, dev_name(dev), gs);
++			if (ret)
++				return dev_err_probe(dev, ret, "failed to request IRQ");
++		}
+ 	}
+ 
+ 	platform_set_drvdata(pdev, gs);
+-- 
+2.39.5
+
 
 
 
