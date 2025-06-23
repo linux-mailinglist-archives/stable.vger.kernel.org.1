@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-156976-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157112-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 16AB1AE51EE
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:38:53 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 84D12AE5281
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:44:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A47354A4999
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:38:53 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BB9731B6240B
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:44:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C1C82222CA;
-	Mon, 23 Jun 2025 21:38:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A36AE1FE46D;
+	Mon, 23 Jun 2025 21:44:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jOZBl0Mm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UU7f94zb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDB7E221734;
-	Mon, 23 Jun 2025 21:38:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61C6B2AEE4;
+	Mon, 23 Jun 2025 21:44:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750714731; cv=none; b=DL5IcgBlMTrY7Eu1KZBpbao1P0RZpAsYlOivkNux7cekR90rhzYou2/sb0uxM3NSXJH8J5r2dYC7gTi/5bFJzDTEP4B18x/tGhk1ylJuYwzik1GsVmZL8Wzwcp5+QQ75O2neKsewW4tq5s6VFNFNg8zUZIq04/Ss/iM3f0t8SaM=
+	t=1750715063; cv=none; b=d/eAuDT5BR/GxQjvoLbl94eX/bj+omt/61ySsuay0ga1qvsJ/prfXzYzgR7qM1ewcLLN/6zQFj0ZHv/r4ygphJsmAFHoLoKLfakHg46gy5epVBtznFe+UTA6JrFU+/Zu8RR0k9F+bWU39+XuDQGwBXHUSn6X3jIIuNXK94HH90E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750714731; c=relaxed/simple;
-	bh=YHwyWGE6AYUwEwpIE5mM6RU05a6hUWmLC1dBFqIDopw=;
+	s=arc-20240116; t=1750715063; c=relaxed/simple;
+	bh=I0eMfIul1OCqhIlmPv/SRFxi46PiDEbWzYs2P6CqoRU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cDBO0O/OwZ9uHqVWyuumL2/alSK9mcx6ZJxaFX1It0Z5fb6LWjhTAVdx2yHeXVMrJoyxnOGvnLB/qNuROsfpnXwcMf77TpczacnG1hx8mORFABN1cEXVokabp1nI5V4ebWa3p+ZIFrXHYKuQTXHo5qNFKqGN4ja5OMpZYpFil9o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jOZBl0Mm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84CE8C4CEEA;
-	Mon, 23 Jun 2025 21:38:50 +0000 (UTC)
+	 MIME-Version; b=ruGLiW869epkiWHCZ4ght7GuXhiRauN0lcleIV0osB34y6v2iwHlw3kfJ051eBg5Rpf4dkQ2lxTKc/jAhnGlFLgLAtE5V8arhI2V/DteXSBFz3OrAXqvpfRtsKqdwnBhXdK9F4+9+WwEUsvh/ggT4esv5IYhYYwF92rUZ1MVocs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UU7f94zb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2744C4CEEA;
+	Mon, 23 Jun 2025 21:44:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750714730;
-	bh=YHwyWGE6AYUwEwpIE5mM6RU05a6hUWmLC1dBFqIDopw=;
+	s=korg; t=1750715063;
+	bh=I0eMfIul1OCqhIlmPv/SRFxi46PiDEbWzYs2P6CqoRU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jOZBl0Mmmu/VFvYYaki0nfI62BVxhjhKAeqzzMkD20tw42gGbZHNwKm6UmYriiOYS
-	 QuXqVwTUGX1jdqsBg2ne3Rti1DuQjZWuTIDmqaHnVAWiKXv/7NkmV8edqNzHGY9aDM
-	 9P0a7gSgBPYbIbPcZdfTA07tS9A1bXNFxYaNtDuw=
+	b=UU7f94zb89BeimONnq350FSmKJhL/217m6r59Gi0XW2fEnQ4MR2Z/00BU8IJUHf3p
+	 Zfm5KUPVFobbDHw8KSIh1AmQaAxjl6cYPG4Y9Sxcp8qa2cL2xygC3bR4bPQDWdGw7b
+	 8REq8G4aA3dBLmGjj0BQiOEHb/3VmBdzII93rY+Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daeho Jeong <daehojeong@google.com>,
-	Zhiguo Niu <zhiguo.niu@unisoc.com>,
-	Chao Yu <chao@kernel.org>,
-	Jaegeuk Kim <jaegeuk@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 412/592] f2fs: fix to set atomic write status more clear
+	Wan Junjie <junjie.wan@inceptio.ai>,
+	Ioana Ciornei <ioana.ciornei@nxp.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>
+Subject: [PATCH 5.15 226/411] bus: fsl-mc: fix GET/SET_TAILDROP command ids
 Date: Mon, 23 Jun 2025 15:06:10 +0200
-Message-ID: <20250623130710.235647453@linuxfoundation.org>
+Message-ID: <20250623130639.351196023@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
-References: <20250623130700.210182694@linuxfoundation.org>
+In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
+References: <20250623130632.993849527@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,86 +62,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chao Yu <chao@kernel.org>
+From: Wan Junjie <junjie.wan@inceptio.ai>
 
-[ Upstream commit db03c20c0850dc8d2bcabfa54b9438f7d666c863 ]
+commit c78230ad34f82c6c0e0e986865073aeeef1f5d30 upstream.
 
-1. After we start atomic write in a database file, before committing
-all data, we'd better not set inode w/ vfs dirty status to avoid
-redundant updates, instead, we only set inode w/ atomic dirty status.
+Command ids for taildrop get/set can not pass the check when they are
+using from the restool user space utility. Correct them according to the
+user manual.
 
-2. After we commit all data, before committing metadata, we need to
-clear atomic dirty status, and set vfs dirty status to allow vfs flush
-dirty inode.
-
-Cc: Daeho Jeong <daehojeong@google.com>
-Reported-by: Zhiguo Niu <zhiguo.niu@unisoc.com>
-Signed-off-by: Chao Yu <chao@kernel.org>
-Reviewed-by: Daeho Jeong <daehojeong@google.com>
-Reviewed-by: Zhiguo Niu <zhiguo.niu@unisoc.com>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: d67cc29e6d1f ("bus: fsl-mc: list more commands as accepted through the ioctl")
+Signed-off-by: Wan Junjie <junjie.wan@inceptio.ai>
+Signed-off-by: Ioana Ciornei <ioana.ciornei@nxp.com>
+Cc: stable@vger.kernel.org
+Reviewed-by: Ioana Ciornei <ioana.ciornei@nxp.com>
+Link: https://lore.kernel.org/r/20250408105814.2837951-4-ioana.ciornei@nxp.com
+Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/f2fs/inode.c   | 4 +++-
- fs/f2fs/segment.c | 6 ++++++
- fs/f2fs/super.c   | 4 +++-
- 3 files changed, 12 insertions(+), 2 deletions(-)
+ drivers/bus/fsl-mc/fsl-mc-uapi.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/fs/f2fs/inode.c b/fs/f2fs/inode.c
-index 5c8634eaef7be..f5991e8751b9b 100644
---- a/fs/f2fs/inode.c
-+++ b/fs/f2fs/inode.c
-@@ -34,7 +34,9 @@ void f2fs_mark_inode_dirty_sync(struct inode *inode, bool sync)
- 	if (f2fs_inode_dirtied(inode, sync))
- 		return;
- 
--	if (f2fs_is_atomic_file(inode))
-+	/* only atomic file w/ FI_ATOMIC_COMMITTED can be set vfs dirty */
-+	if (f2fs_is_atomic_file(inode) &&
-+			!is_inode_flag_set(inode, FI_ATOMIC_COMMITTED))
- 		return;
- 
- 	mark_inode_dirty_sync(inode);
-diff --git a/fs/f2fs/segment.c b/fs/f2fs/segment.c
-index c5d29c58f3d3e..876e97ec5f570 100644
---- a/fs/f2fs/segment.c
-+++ b/fs/f2fs/segment.c
-@@ -376,7 +376,13 @@ static int __f2fs_commit_atomic_write(struct inode *inode)
- 	} else {
- 		sbi->committed_atomic_block += fi->atomic_write_cnt;
- 		set_inode_flag(inode, FI_ATOMIC_COMMITTED);
-+
-+		/*
-+		 * inode may has no FI_ATOMIC_DIRTIED flag due to no write
-+		 * before commit.
-+		 */
- 		if (is_inode_flag_set(inode, FI_ATOMIC_DIRTIED)) {
-+			/* clear atomic dirty status and set vfs dirty status */
- 			clear_inode_flag(inode, FI_ATOMIC_DIRTIED);
- 			f2fs_mark_inode_dirty_sync(inode, true);
- 		}
-diff --git a/fs/f2fs/super.c b/fs/f2fs/super.c
-index ee039bf02c148..bc510c91f3eba 100644
---- a/fs/f2fs/super.c
-+++ b/fs/f2fs/super.c
-@@ -1531,7 +1531,9 @@ int f2fs_inode_dirtied(struct inode *inode, bool sync)
- 	}
- 	spin_unlock(&sbi->inode_lock[DIRTY_META]);
- 
--	if (!ret && f2fs_is_atomic_file(inode))
-+	/* if atomic write is not committed, set inode w/ atomic dirty */
-+	if (!ret && f2fs_is_atomic_file(inode) &&
-+			!is_inode_flag_set(inode, FI_ATOMIC_COMMITTED))
- 		set_inode_flag(inode, FI_ATOMIC_DIRTIED);
- 
- 	return ret;
--- 
-2.39.5
-
+--- a/drivers/bus/fsl-mc/fsl-mc-uapi.c
++++ b/drivers/bus/fsl-mc/fsl-mc-uapi.c
+@@ -275,13 +275,13 @@ static struct fsl_mc_cmd_desc fsl_mc_acc
+ 		.size = 8,
+ 	},
+ 	[DPSW_GET_TAILDROP] = {
+-		.cmdid_value = 0x0A80,
++		.cmdid_value = 0x0A90,
+ 		.cmdid_mask = 0xFFF0,
+ 		.token = true,
+ 		.size = 14,
+ 	},
+ 	[DPSW_SET_TAILDROP] = {
+-		.cmdid_value = 0x0A90,
++		.cmdid_value = 0x0A80,
+ 		.cmdid_mask = 0xFFF0,
+ 		.token = true,
+ 		.size = 24,
 
 
 
