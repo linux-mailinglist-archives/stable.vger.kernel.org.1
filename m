@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-156382-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157069-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 07829AE4F54
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:14:48 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F9E9AE5253
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:42:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D984C1B60B96
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:14:55 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6C50F443596
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:42:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48471202983;
-	Mon, 23 Jun 2025 21:14:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD680221FCC;
+	Mon, 23 Jun 2025 21:42:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TjgQ2BH4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eYpVoALe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05F1A1DF98B;
-	Mon, 23 Jun 2025 21:14:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6962A4315A;
+	Mon, 23 Jun 2025 21:42:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750713278; cv=none; b=FbdpGG17acAUoIOyhtwvWlxjOcc5aTe0mBGbPnpKIkIgA7s3piZLeRD315don2y2/9mlZTouhihTWGBj1USzeHzekYbILqMeg6Yep38wVs3WCBbW+R6xYQA5FoBsDkdRykHVQBaX3CwLexn0p+Y1xfO33whBv1asyAJ98Ozh0ok=
+	t=1750714958; cv=none; b=k66xJhoZPq9wBibRo5VRltH4bMO0Iqa3Gj5J5NKTnpV6y/kM7p0SRnPLeegA+cQbLsZy0X/cumlynrmKbbfj85nk8242HH02IEIzF5Dal/K7rt6uYRwOrEEQ53E7xgWru7Mp3u8yH/cPbD6RklFzjS7JUcgGHKr2M9l+8zOg7js=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750713278; c=relaxed/simple;
-	bh=MGVe8HzDs09gf3X8m9VwF+C3+t0lsqwzmtrtXajBQUs=;
+	s=arc-20240116; t=1750714958; c=relaxed/simple;
+	bh=bcIjHemZn4dS0uum3Dz94L0aGBQoO+Mb81a2ZtMWYf4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GYOAKlpmPjgJQUadAq8Z4zQoOrQ5MHTbXJFy8M+34fryCw0y786Bkovt2QJoRbnB+CXvib/VolOAjft2tvW2jz9s1ErqjrxqGQDn+GwDrkARcmV9Yq3eN5k5PAvAUMxPvtwRvjY7HZfg7FbLmQoH/br6Ja9GjUiCCwlC31jgv9Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TjgQ2BH4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9384AC4CEEA;
-	Mon, 23 Jun 2025 21:14:37 +0000 (UTC)
+	 MIME-Version; b=RkD03QeAsRJLlR1IXlm7hT3pCr/BsNkyAuEyJbivcTIMlUHAabv8o9jtMkfneORLLPcnioHDUj1iXEa5h1E6F+kWzQb4XuPt+NI2ymg/msiQgyTt43uh1x3YBpURdlAR5pbC8DWPRrAQafdlstaKRFfFzrXo+fmIFS0IcNugkQE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eYpVoALe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0334EC4CEEA;
+	Mon, 23 Jun 2025 21:42:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750713277;
-	bh=MGVe8HzDs09gf3X8m9VwF+C3+t0lsqwzmtrtXajBQUs=;
+	s=korg; t=1750714958;
+	bh=bcIjHemZn4dS0uum3Dz94L0aGBQoO+Mb81a2ZtMWYf4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TjgQ2BH4DpLbSv79YoM2e25ews0Pixlcca86k38vgOtpZzO6U7WxzlzMVlBMgvmmV
-	 29xvG3FXU06DtVpT2XYFU9+YfAJuSrXIqLpMEse1Jn6hce4JUYgN1cZgCHThO+9O9b
-	 ZwzJzUMOuoYTADQrAb8JrZ/JaaKtanFBYEeXmn6s=
+	b=eYpVoALe7sqbu9UgFf3jCwYHySrVALUIqFN+36DoSAq7eZ44OpfTfVMGLpGHBgveA
+	 RzVcHpJ9980ZmE2J72EnJzc1kStF+QOIcNsywt4X3kY/P4E9bPPqSdTd6eavmcVmLU
+	 pyM0Vwdn/AJh/eKQeZun4/DLph2CfGB+1HiCSVxg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Benjamin Lin <benjamin-jw.lin@mediatek.com>,
-	Shayne Chen <shayne.chen@mediatek.com>,
-	Felix Fietkau <nbd@nbd.name>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 318/592] wifi: mt76: mt7996: drop fragments with multicast or broadcast RA
+	Wentao Liang <vulab@iscas.ac.cn>,
+	Mark Brown <broonie@kernel.org>
+Subject: [PATCH 6.12 139/414] regulator: max14577: Add error check for max14577_read_reg()
 Date: Mon, 23 Jun 2025 15:04:36 +0200
-Message-ID: <20250623130707.995396956@linuxfoundation.org>
+Message-ID: <20250623130645.530554572@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
-References: <20250623130700.210182694@linuxfoundation.org>
+In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
+References: <20250623130642.015559452@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,49 +61,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Benjamin Lin <benjamin-jw.lin@mediatek.com>
+From: Wentao Liang <vulab@iscas.ac.cn>
 
-[ Upstream commit 80fda1cd7b0a1edd0849dc71403a070d0922118d ]
+commit 65271f868cb1dca709ff69e45939bbef8d6d0b70 upstream.
 
-IEEE 802.11 fragmentation can only be applied to unicast frames.
-Therefore, drop fragments with multicast or broadcast RA. This patch
-addresses vulnerabilities such as CVE-2020-26145.
+The function max14577_reg_get_current_limit() calls the function
+max14577_read_reg(), but does not check its return value. A proper
+implementation can be found in max14577_get_online().
 
-Signed-off-by: Benjamin Lin <benjamin-jw.lin@mediatek.com>
-Signed-off-by: Shayne Chen <shayne.chen@mediatek.com>
-Link: https://patch.msgid.link/20250515032952.1653494-4-shayne.chen@mediatek.com
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Add a error check for the max14577_read_reg() and return error code
+if the function fails.
+
+Fixes: b0902bbeb768 ("regulator: max14577: Add regulator driver for Maxim 14577")
+Cc: stable@vger.kernel.org # v3.14
+Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
+Link: https://patch.msgid.link/20250526025627.407-1-vulab@iscas.ac.cn
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/mediatek/mt76/mt7996/mac.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ drivers/regulator/max14577-regulator.c |    5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mac.c b/drivers/net/wireless/mediatek/mt76/mt7996/mac.c
-index d89c06f47997f..2108361543a0c 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7996/mac.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7996/mac.c
-@@ -647,6 +647,14 @@ mt7996_mac_fill_rx(struct mt7996_dev *dev, enum mt76_rxq_id q,
- 		status->last_amsdu = amsdu_info == MT_RXD4_LAST_AMSDU_FRAME;
- 	}
+--- a/drivers/regulator/max14577-regulator.c
++++ b/drivers/regulator/max14577-regulator.c
+@@ -40,11 +40,14 @@ static int max14577_reg_get_current_limi
+ 	struct max14577 *max14577 = rdev_get_drvdata(rdev);
+ 	const struct maxim_charger_current *limits =
+ 		&maxim_charger_currents[max14577->dev_type];
++	int ret;
  
-+	/* IEEE 802.11 fragmentation can only be applied to unicast frames.
-+	 * Hence, drop fragments with multicast/broadcast RA.
-+	 * This check fixes vulnerabilities, like CVE-2020-26145.
-+	 */
-+	if ((ieee80211_has_morefrags(fc) || seq_ctrl & IEEE80211_SCTL_FRAG) &&
-+	    FIELD_GET(MT_RXD3_NORMAL_ADDR_TYPE, rxd3) != MT_RXD3_NORMAL_U2M)
-+		return -EINVAL;
-+
- 	hdr_gap = (u8 *)rxd - skb->data + 2 * remove_pad;
- 	if (hdr_trans && ieee80211_has_morefrags(fc)) {
- 		if (mt7996_reverse_frag0_hdr_trans(skb, hdr_gap))
--- 
-2.39.5
-
+ 	if (rdev_get_id(rdev) != MAX14577_CHARGER)
+ 		return -EINVAL;
+ 
+-	max14577_read_reg(rmap, MAX14577_CHG_REG_CHG_CTRL4, &reg_data);
++	ret = max14577_read_reg(rmap, MAX14577_CHG_REG_CHG_CTRL4, &reg_data);
++	if (ret < 0)
++		return ret;
+ 
+ 	if ((reg_data & CHGCTRL4_MBCICHWRCL_MASK) == 0)
+ 		return limits->min;
 
 
 
