@@ -1,57 +1,60 @@
-Return-Path: <stable+bounces-157270-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157572-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B3392AE533A
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:51:21 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B4F00AE54A0
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:03:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B885B1B668FE
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:51:18 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 692EA447E1C
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:02:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1C1A221DA8;
-	Mon, 23 Jun 2025 21:50:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6039022173D;
+	Mon, 23 Jun 2025 22:03:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W4CzA8EG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LSXwWKdz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0E341F4628;
-	Mon, 23 Jun 2025 21:50:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DCD41D86DC;
+	Mon, 23 Jun 2025 22:03:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750715457; cv=none; b=tT3/ysXRvJqd+BKc0qEbo5rqzGqZamydETFlZfNypr4yU1lyHLwE3pw9QsDrZa7Fkmd4gcDHDn209aoK1xZ+iD1GPS2JkXElhne5K2ztDz2a5HYf9LIdvgTVkHFuWaGmQ8YvX1JlzpYHhTZLiW4hcxWatJGWeDzi9imVV3pKhK0=
+	t=1750716196; cv=none; b=r0DL+j9xYrAdCGqBgITzeBgmZHuUas8lSrlxyjXR6AJFF3LtqERoZI1jhmlXSWIiOTKLN5hAKEWP76COYO1/ydWC4s1qqFlriXmqGK610dJjlfuBx/3TDNbJPKFtdjZ24gmOihYgYP3Ptu/VpEjgzGIT2RRAdB4jDPpKQqJ+yOk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750715457; c=relaxed/simple;
-	bh=H0pdb09Pr1KauIxf6kggPe2uqV++eI4keTuQIU6rdbk=;
+	s=arc-20240116; t=1750716196; c=relaxed/simple;
+	bh=tAG6K8G0bQ7qKwL+eSJcO9IWrvk+CmiMBoVSE4PDqgc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OGvI/MpvdOEaTa693LLoQ9zMi8ocILuaF0intj7cdgNhjoqEQS727Y4lJACBiszTuiRJ8d/wI4QJALKjRg30TnUa6W7ZOHE55pUy/GuPXwtiLdSswoF90DFAx8+5D6xyJYrNn9gJ4Ib+h85lX4QuhqE2Q6Op+kLbJx5E+k7zaWI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W4CzA8EG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49DFDC4CEEA;
-	Mon, 23 Jun 2025 21:50:57 +0000 (UTC)
+	 MIME-Version; b=Xo4U999j7OTrdDosQ4kp/rD7zF77rtDptjNGIYotOxTbR72lb+qTXflCUX7Vb1xTwbUsL3MTVUwjqlzDYRi1d33Zp1d1e333LzvknFevVzdmyPIuFsLNw7ruBKVnzZMpmvpXXvNLqLPBxBxbuWcxj2JfpJJLXfaWXqUhgtdLxCs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LSXwWKdz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AAD48C4CEEA;
+	Mon, 23 Jun 2025 22:03:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750715457;
-	bh=H0pdb09Pr1KauIxf6kggPe2uqV++eI4keTuQIU6rdbk=;
+	s=korg; t=1750716196;
+	bh=tAG6K8G0bQ7qKwL+eSJcO9IWrvk+CmiMBoVSE4PDqgc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=W4CzA8EGz/5qb9wr724luaMHnfyO/lCGTZI+dUEBqFnKRSQI6tY4RB7rQvug5Ku+a
-	 CStax/La2s9ChV3g8WdPYD76KtwCrX+qf42EzqCWzF8OAtewBXTh8g18OzerND/5qj
-	 7aAwd/gOtIkfufuuX01A7zz8vCVFSpMOM9fAnWH0=
+	b=LSXwWKdzpZMgal3YO9VJKz0vM0iwsvKeom6TzScCdhm1gA4oabdj3dPmBbt5QShxo
+	 MXgNbUfDQ/+yvfY9fylo46iMuGp/7MRO/4YMVt8yS18uzn+Qom4UoEv1+cQOn73Dkh
+	 KSMWhPtMBrUaCz4CGMsHFVgtV0kvaV44BRo0zSDQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sukrut Bellary <sbellary@baylibre.com>,
-	Judith Mendez <jm@ti.com>,
-	Kevin Hilman <khilman@baylibre.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 276/355] ARM: OMAP2+: Fix l4ls clk domain handling in STANDBY
-Date: Mon, 23 Jun 2025 15:07:57 +0200
-Message-ID: <20250623130635.071650024@linuxfoundation.org>
+	Kyungwook Boo <bookyungwook@gmail.com>,
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	Simon Horman <horms@kernel.org>,
+	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Sasha Levin <sashal@kernel.org>,
+	Rinitha S <sx.rinitha@intel.com>
+Subject: [PATCH 5.15 334/411] i40e: fix MMIO write access to an invalid page in i40e_clear_hw
+Date: Mon, 23 Jun 2025 15:07:58 +0200
+Message-ID: <20250623130642.056912685@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130626.716971725@linuxfoundation.org>
-References: <20250623130626.716971725@linuxfoundation.org>
+In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
+References: <20250623130632.993849527@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,88 +66,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sukrut Bellary <sbellary@baylibre.com>
+From: Kyungwook Boo <bookyungwook@gmail.com>
 
-[ Upstream commit 47fe74098f3dadba2f9cc1e507d813a4aa93f5f3 ]
+[ Upstream commit 015bac5daca978448f2671478c553ce1f300c21e ]
 
-Don't put the l4ls clk domain to sleep in case of standby.
-Since CM3 PM FW[1](ti-v4.1.y) doesn't wake-up/enable the l4ls clk domain
-upon wake-up, CM3 PM FW fails to wake-up the MPU.
+When the device sends a specific input, an integer underflow can occur, leading
+to MMIO write access to an invalid page.
 
-[1] https://git.ti.com/cgit/processor-firmware/ti-amx3-cm3-pm-firmware/
+Prevent the integer underflow by changing the type of related variables.
 
-Signed-off-by: Sukrut Bellary <sbellary@baylibre.com>
-Tested-by: Judith Mendez <jm@ti.com>
-Link: https://lore.kernel.org/r/20250318230042.3138542-2-sbellary@baylibre.com
-Signed-off-by: Kevin Hilman <khilman@baylibre.com>
+Signed-off-by: Kyungwook Boo <bookyungwook@gmail.com>
+Link: https://lore.kernel.org/lkml/ffc91764-1142-4ba2-91b6-8c773f6f7095@gmail.com/T/
+Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+Tested-by: Rinitha S <sx.rinitha@intel.com> (A Contingent worker at Intel)
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/mach-omap2/clockdomain.h           |  1 +
- arch/arm/mach-omap2/clockdomains33xx_data.c |  2 +-
- arch/arm/mach-omap2/cm33xx.c                | 14 +++++++++++++-
- 3 files changed, 15 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/intel/i40e/i40e_common.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/arch/arm/mach-omap2/clockdomain.h b/arch/arm/mach-omap2/clockdomain.h
-index 68550b23c938d..eb6ca2ea80679 100644
---- a/arch/arm/mach-omap2/clockdomain.h
-+++ b/arch/arm/mach-omap2/clockdomain.h
-@@ -48,6 +48,7 @@
- #define CLKDM_NO_AUTODEPS			(1 << 4)
- #define CLKDM_ACTIVE_WITH_MPU			(1 << 5)
- #define CLKDM_MISSING_IDLE_REPORTING		(1 << 6)
-+#define CLKDM_STANDBY_FORCE_WAKEUP		BIT(7)
- 
- #define CLKDM_CAN_HWSUP		(CLKDM_CAN_ENABLE_AUTO | CLKDM_CAN_DISABLE_AUTO)
- #define CLKDM_CAN_SWSUP		(CLKDM_CAN_FORCE_SLEEP | CLKDM_CAN_FORCE_WAKEUP)
-diff --git a/arch/arm/mach-omap2/clockdomains33xx_data.c b/arch/arm/mach-omap2/clockdomains33xx_data.c
-index b4d5144df4454..c53df9d42ecf8 100644
---- a/arch/arm/mach-omap2/clockdomains33xx_data.c
-+++ b/arch/arm/mach-omap2/clockdomains33xx_data.c
-@@ -27,7 +27,7 @@ static struct clockdomain l4ls_am33xx_clkdm = {
- 	.pwrdm		= { .name = "per_pwrdm" },
- 	.cm_inst	= AM33XX_CM_PER_MOD,
- 	.clkdm_offs	= AM33XX_CM_PER_L4LS_CLKSTCTRL_OFFSET,
--	.flags		= CLKDM_CAN_SWSUP,
-+	.flags		= CLKDM_CAN_SWSUP | CLKDM_STANDBY_FORCE_WAKEUP,
- };
- 
- static struct clockdomain l3s_am33xx_clkdm = {
-diff --git a/arch/arm/mach-omap2/cm33xx.c b/arch/arm/mach-omap2/cm33xx.c
-index ac4882ebdca33..be84c6750026e 100644
---- a/arch/arm/mach-omap2/cm33xx.c
-+++ b/arch/arm/mach-omap2/cm33xx.c
-@@ -28,6 +28,9 @@
- #include "cm-regbits-34xx.h"
- #include "cm-regbits-33xx.h"
- #include "prm33xx.h"
-+#if IS_ENABLED(CONFIG_SUSPEND)
-+#include <linux/suspend.h>
-+#endif
- 
- /*
-  * CLKCTRL_IDLEST_*: possible values for the CM_*_CLKCTRL.IDLEST bitfield:
-@@ -336,8 +339,17 @@ static int am33xx_clkdm_clk_disable(struct clockdomain *clkdm)
+diff --git a/drivers/net/ethernet/intel/i40e/i40e_common.c b/drivers/net/ethernet/intel/i40e/i40e_common.c
+index 99dd8187476ba..fe8e6db53f23b 100644
+--- a/drivers/net/ethernet/intel/i40e/i40e_common.c
++++ b/drivers/net/ethernet/intel/i40e/i40e_common.c
+@@ -1061,10 +1061,11 @@ int i40e_pf_reset(struct i40e_hw *hw)
+ void i40e_clear_hw(struct i40e_hw *hw)
  {
- 	bool hwsup = false;
- 
-+#if IS_ENABLED(CONFIG_SUSPEND)
-+	/*
-+	 * In case of standby, Don't put the l4ls clk domain to sleep.
-+	 * Since CM3 PM FW doesn't wake-up/enable the l4ls clk domain
-+	 * upon wake-up, CM3 PM FW fails to wake-up th MPU.
-+	 */
-+	if (pm_suspend_target_state == PM_SUSPEND_STANDBY &&
-+	    (clkdm->flags & CLKDM_STANDBY_FORCE_WAKEUP))
-+		return 0;
-+#endif
- 	hwsup = am33xx_cm_is_clkdm_in_hwsup(clkdm->cm_inst, clkdm->clkdm_offs);
--
- 	if (!hwsup && (clkdm->flags & CLKDM_CAN_FORCE_SLEEP))
- 		am33xx_clkdm_sleep(clkdm);
+ 	u32 num_queues, base_queue;
+-	u32 num_pf_int;
+-	u32 num_vf_int;
++	s32 num_pf_int;
++	s32 num_vf_int;
+ 	u32 num_vfs;
+-	u32 i, j;
++	s32 i;
++	u32 j;
+ 	u32 val;
+ 	u32 eol = 0x7ff;
  
 -- 
 2.39.5
