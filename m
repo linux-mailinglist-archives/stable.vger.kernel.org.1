@@ -1,54 +1,58 @@
-Return-Path: <stable+bounces-156498-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156397-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 069B7AE4FD0
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:19:54 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5DD40AE4F5F
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:15:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E00BF1B61976
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:19:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 759453BEE1F
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:14:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D36151F4628;
-	Mon, 23 Jun 2025 21:19:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A5D81EFFA6;
+	Mon, 23 Jun 2025 21:15:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0b7zn78O"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cLjhHuAP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9276E2628C;
-	Mon, 23 Jun 2025 21:19:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 075AB4C62;
+	Mon, 23 Jun 2025 21:15:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750713560; cv=none; b=MMvQslTPbQj/i2Dmg8qkebO0Q3ZMah8u+z+tnXVjQnc75EN5olhWiuueoBKsNVmEIMWQI2/uREGqE7PjusRznNeIoeIIVsnWAFNkjp7TKTRfTQOKne3A8/dMme0Kk+28YuFIb6RkNIJ5DOHyXVVk7O6c0QdJgVybUCs0DjpYKrw=
+	t=1750713315; cv=none; b=DH/TeJy3mHNlk96GSUA3pl7sZG9B7Ict4yQO2yLiaNjeOfzhoKc0q7apBEitM27o4IXJb8RPL/tr8WIuHWX/4pdv42K73kLEhh53nLM+gREJRV2VhUel23zoWLxrajkIycMFckPo4GJyavWaz7xY5uHzdwdYcN+E4+GQ7e7GegI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750713560; c=relaxed/simple;
-	bh=I3bH8DzU2l5xz+SBTlftQZP/izLFfoPZSOy+gw3i+z4=;
+	s=arc-20240116; t=1750713315; c=relaxed/simple;
+	bh=P7he+0IXfE0cBLLELaXKok9PTxDmtsq2YWRmi2ioYe4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dhi8Bst9b/3VI+Gkb22IzsSxcrlA/JFN0RYs3+dBa5kDJpc7vEAiYgJ1egRykP3ijnvPGZo9appCLRqOsUcnUd9zwMM+JjmAd4+1zI5SSAHj4icCBBzCG7emBwfqo0EeryOl4coydWKArlMCGo2kFC5UPE3rZRlunLud2Rtzbe4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0b7zn78O; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A973C4CEEA;
-	Mon, 23 Jun 2025 21:19:20 +0000 (UTC)
+	 MIME-Version; b=TLyYfuSy+KtvJtTydJISgdraBBBNdAuXOJROXmkmYQkTZ94LNK1NrmGQzeXWkZtLJsBWHrdHH3QPbd4ZB98SOGAIbQGgJdBMh86Fpnd0pbABjZJJqJGs7j4vrbiCxcNw2wCZfbW7w7MCEAFLNyCN0bbR5ALFRO8SCz/Z/7/aXyw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cLjhHuAP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44FA1C4CEEA;
+	Mon, 23 Jun 2025 21:15:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750713560;
-	bh=I3bH8DzU2l5xz+SBTlftQZP/izLFfoPZSOy+gw3i+z4=;
+	s=korg; t=1750713314;
+	bh=P7he+0IXfE0cBLLELaXKok9PTxDmtsq2YWRmi2ioYe4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0b7zn78OLOgRjc/WvkMnnW3SL1hK5A01s8h0TXk9nfQLaTDOi9alCmmdU6sbydv/q
-	 +skvcNcEYqCrCZJfrusfhaxPxTGAvwFVHBwatSZ9ogzE5VoE7b1BpGNXg6dBVCvF1V
-	 PiQjUWhuN/SkFlKk1HRY7PK64q5fml9NL4jiQ+2o=
+	b=cLjhHuAP6Dl5nao4K2+rJDmF3A/Z+qIK0fJj8j8b5tszzLCDbKV4BCBrbtnqMaiiX
+	 88iyVNkr6+8prx2MYbhbCncXVkmbkKKGwd32u5oxSqID391EnaET1Sk/DTLRIRid88
+	 eRC7CM6I41HKJWOxFUc1WWfUVizquirg6l7VvEC8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Helge Deller <deller@gmx.de>
-Subject: [PATCH 6.6 077/290] parisc/unaligned: Fix hex output to show 8 hex chars
+	Gerrard Tai <gerrard.tai@starlabs.sg>,
+	Cong Wang <xiyou.wangcong@gmail.com>,
+	Jamal Hadi Salim <jhs@mojatatu.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 137/355] sch_ets: make est_qlen_notify() idempotent
 Date: Mon, 23 Jun 2025 15:05:38 +0200
-Message-ID: <20250623130629.301600852@linuxfoundation.org>
+Message-ID: <20250623130630.844557176@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130626.910356556@linuxfoundation.org>
-References: <20250623130626.910356556@linuxfoundation.org>
+In-Reply-To: <20250623130626.716971725@linuxfoundation.org>
+References: <20250623130626.716971725@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,66 +64,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Helge Deller <deller@gmx.de>
+From: Cong Wang <xiyou.wangcong@gmail.com>
 
-commit 213205889d5ffc19cb8df06aa6778b2d4724c887 upstream.
+[ Upstream commit a7a15f39c682ac4268624da2abdb9114bdde96d5 ]
 
-Change back printk format to 0x%08lx instead of %#08lx, since the latter
-does not seem to reliably format the value to 8 hex chars.
+est_qlen_notify() deletes its class from its active list with
+list_del() when qlen is 0, therefore, it is not idempotent and
+not friendly to its callers, like fq_codel_dequeue().
 
-Signed-off-by: Helge Deller <deller@gmx.de>
-Cc: stable@vger.kernel.org # v5.18+
-Fixes: e5e9e7f222e5b ("parisc/unaligned: Enhance user-space visible output")
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Let's make it idempotent to ease qdisc_tree_reduce_backlog() callers'
+life. Also change other list_del()'s to list_del_init() just to be
+extra safe.
+
+Reported-by: Gerrard Tai <gerrard.tai@starlabs.sg>
+Signed-off-by: Cong Wang <xiyou.wangcong@gmail.com>
+Link: https://patch.msgid.link/20250403211033.166059-6-xiyou.wangcong@gmail.com
+Acked-by: Jamal Hadi Salim <jhs@mojatatu.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Stable-dep-of: d92adacdd8c2 ("net_sched: ets: fix a race in ets_qdisc_change()")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/parisc/kernel/unaligned.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/sched/sch_ets.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
---- a/arch/parisc/kernel/unaligned.c
-+++ b/arch/parisc/kernel/unaligned.c
-@@ -24,7 +24,7 @@
- #define DPRINTF(fmt, args...)
- #endif
+diff --git a/net/sched/sch_ets.c b/net/sched/sch_ets.c
+index 35b8577aef7dc..55b3362d27106 100644
+--- a/net/sched/sch_ets.c
++++ b/net/sched/sch_ets.c
+@@ -298,7 +298,7 @@ static void ets_class_qlen_notify(struct Qdisc *sch, unsigned long arg)
+ 	 * to remove them.
+ 	 */
+ 	if (!ets_class_is_strict(q, cl) && sch->q.qlen)
+-		list_del(&cl->alist);
++		list_del_init(&cl->alist);
+ }
  
--#define RFMT "%#08lx"
-+#define RFMT "0x%08lx"
+ static int ets_class_dump(struct Qdisc *sch, unsigned long arg,
+@@ -499,7 +499,7 @@ static struct sk_buff *ets_qdisc_dequeue(struct Qdisc *sch)
+ 			if (unlikely(!skb))
+ 				goto out;
+ 			if (cl->qdisc->q.qlen == 0)
+-				list_del(&cl->alist);
++				list_del_init(&cl->alist);
+ 			return ets_qdisc_dequeue_skb(sch, skb);
+ 		}
  
- /* 1111 1100 0000 0000 0001 0011 1100 0000 */
- #define OPCODE1(a,b,c)	((a)<<26|(b)<<12|(c)<<6) 
-
-
-@kernel.org>
----
- drivers/i2c/busses/i2c-npcm7xx.c | 12 ++++++++----
- 1 file changed, 8 insertions(+), 4 deletions(-)
-
-diff --git a/drivers/i2c/busses/i2c-npcm7xx.c b/drivers/i2c/busses/i2c-npcm7xx.c
-index de713b5747fe5..05a140ec2b64d 100644
---- a/drivers/i2c/busses/i2c-npcm7xx.c
-+++ b/drivers/i2c/busses/i2c-npcm7xx.c
-@@ -2178,10 +2178,14 @@ static int npcm_i2c_init_module(struct npcm_i2c *bus, enum i2c_mode mode,
- 
- 	/* Check HW is OK: SDA and SCL should be high at this point. */
- 	if ((npcm_i2c_get_SDA(&bus->adap) == 0) || (npcm_i2c_get_SCL(&bus->adap) == 0)) {
--		dev_err(bus->dev, "I2C%d init fail: lines are low\n", bus->num);
--		dev_err(bus->dev, "SDA=%d SCL=%d\n", npcm_i2c_get_SDA(&bus->adap),
--			npcm_i2c_get_SCL(&bus->adap));
--		return -ENXIO;
-+		dev_warn(bus->dev, " I2C%d SDA=%d SCL=%d, attempting to recover\n", bus->num,
-+				 npcm_i2c_get_SDA(&bus->adap), npcm_i2c_get_SCL(&bus->adap));
-+		if (npcm_i2c_recovery_tgclk(&bus->adap)) {
-+			dev_err(bus->dev, "I2C%d init fail: SDA=%d SCL=%d\n",
-+				bus->num, npcm_i2c_get_SDA(&bus->adap),
-+				npcm_i2c_get_SCL(&bus->adap));
-+			return -ENXIO;
-+		}
+@@ -674,7 +674,7 @@ static int ets_qdisc_change(struct Qdisc *sch, struct nlattr *opt,
  	}
+ 	for (i = q->nbands; i < oldbands; i++) {
+ 		if (i >= q->nstrict && q->classes[i].qdisc->q.qlen)
+-			list_del(&q->classes[i].alist);
++			list_del_init(&q->classes[i].alist);
+ 		qdisc_tree_flush_backlog(q->classes[i].qdisc);
+ 	}
+ 	q->nstrict = nstrict;
+@@ -723,7 +723,7 @@ static void ets_qdisc_reset(struct Qdisc *sch)
  
- 	npcm_i2c_int_enable(bus, true);
+ 	for (band = q->nstrict; band < q->nbands; band++) {
+ 		if (q->classes[band].qdisc->q.qlen)
+-			list_del(&q->classes[band].alist);
++			list_del_init(&q->classes[band].alist);
+ 	}
+ 	for (band = 0; band < q->nbands; band++)
+ 		qdisc_reset(q->classes[band].qdisc);
 -- 
 2.39.5
 
