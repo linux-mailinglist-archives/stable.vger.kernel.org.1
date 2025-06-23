@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-157222-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156937-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 30C83AE5307
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:49:46 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 19D20AE51C3
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:37:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1E1B81B664CC
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:49:37 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AAEFE4A46CF
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:37:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69DC32222B7;
-	Mon, 23 Jun 2025 21:48:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66400221DA8;
+	Mon, 23 Jun 2025 21:37:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QqmUvtjR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bQTnleDp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26F421E5206;
-	Mon, 23 Jun 2025 21:48:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 210934409;
+	Mon, 23 Jun 2025 21:37:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750715339; cv=none; b=sVZ5YNDOGjc1ppYN4k/LwpQbv1Jomvkvlc4bzphIoFNk2VpPJTJY3Ip2y7zQw+29XrOwycQEpDtHSJi0GkBScFNjPEs55RLKAJ4N66staaiCHdmzeJ5kLAGFfpbTY0ugLyVR7vBmVjdUS+ZN9xbg8LqARdLx+1zcimSxhbFW7qA=
+	t=1750714635; cv=none; b=hir4TVdd9W2KQYGj1SD3DuTfGrQqaFRkwKndehAeIDYjKB2HvPz8s+P7+4D5AhcxmF2k9MpLwOaMS8BVeNVpm1Y2FC6WNXfXq7gsygzJuq711eZiqeazl9X/P8h+uez9UTSDUlQsOa7DjH1ey3m58s3ZKGhPjc91I5GgaQYaZNc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750715339; c=relaxed/simple;
-	bh=bXxqvV/lcPiktTBWE8bZ9qDFnF2yS3hoFXlTRAJqMI0=;
+	s=arc-20240116; t=1750714635; c=relaxed/simple;
+	bh=2HTazyz7+eberrSatoHSCEfsrctxmCb3AfV6sMb1xcM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ox/EOevNiZ8eRZuQ6Z/wE1hXNriadU3OEWL4cUOpEnmCqKnttPY46scytK358qZ2cRDFkoo3c0CfLgao7kZiRa8H675qyoEHQBoaHIxU81WMJ2XHcwOYTnHoV1PW3SPYfuR6dZOThAVYkv6XkAV/NV/vqpA24A+tQFPs8EYBgdc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QqmUvtjR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B38C9C4CEEA;
-	Mon, 23 Jun 2025 21:48:58 +0000 (UTC)
+	 MIME-Version; b=ga/pxiCdloPPoZPc6iffKz46ql6PCmkdoHMkQfYc7KTER3hSFfagUE3y/3f4MG2UetPalnmOb0Z1w/X84blPcwP9uqmkrcZhICWk9/YEPoQ5HFfwMRYfDs5q+eCIBdp8WOnNLARb+18QIgLFK2wpY5zcODz91kic30eBk9DpCK4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bQTnleDp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC257C4CEEA;
+	Mon, 23 Jun 2025 21:37:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750715339;
-	bh=bXxqvV/lcPiktTBWE8bZ9qDFnF2yS3hoFXlTRAJqMI0=;
+	s=korg; t=1750714635;
+	bh=2HTazyz7+eberrSatoHSCEfsrctxmCb3AfV6sMb1xcM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QqmUvtjRK2fpKU/4tG5tT8idH8OkSckhhndSP45j2Q4kniNBQKBnajNextnkZYqVl
-	 9LMpaIpDClkIr0kEm+gSLbtcZDItWH8IpHI92T45NbcQu5gBEDlhJ1OUHHSPOQByZo
-	 U5XerCZlc41nFYY+vy7TP1Br422rQOvsRWsEHsFA=
+	b=bQTnleDpv48z5hbRYrcrIcW/jfcn0q6Yy9pRBYme2F7d3A6kPkH8wV7EupJK5J30I
+	 prk6/kP7dkbkS8GS0NPSwgp3vVy3NZcj7ZQdJ47dsN72+8K2fitWJr/POhxvEnYhw2
+	 CaFgLASf1QRhFSFKJmuqyXz/mOwy6CS6TsHSLlVw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yanteng Si <si.yanteng@linux.dev>,
-	WANG Rui <wangrui@loongson.cn>,
-	Huacai Chen <chenhuacai@loongson.cn>
-Subject: [PATCH 6.15 452/592] LoongArch: Avoid using $r0/$r1 as "mask" for csrxchg
+	Baochen Qiang <quic_bqiang@quicinc.com>,
+	Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>,
+	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 149/290] wifi: ath12k: fix a possible dead lock caused by ab->base_lock
 Date: Mon, 23 Jun 2025 15:06:50 +0200
-Message-ID: <20250623130711.181150043@linuxfoundation.org>
+Message-ID: <20250623130631.376853573@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
-References: <20250623130700.210182694@linuxfoundation.org>
+In-Reply-To: <20250623130626.910356556@linuxfoundation.org>
+References: <20250623130626.910356556@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,95 +63,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Huacai Chen <chenhuacai@loongson.cn>
+From: Baochen Qiang <quic_bqiang@quicinc.com>
 
-commit 52c22661c79a7b6af7fad9f77200738fc6c51878 upstream.
+[ Upstream commit ef115c265a21e3c11deee7f73bd1061775a7bf20 ]
 
-When building kernel with LLVM there are occasionally such errors:
+spin_lock/spin_unlock are used in ath12k_reg_chan_list_event
+to acquire/release ab->base_lock. For now this is safe because
+that function is only called in soft IRQ context.
 
-In file included from ./include/linux/spinlock.h:59:
-In file included from ./include/linux/irqflags.h:17:
-arch/loongarch/include/asm/irqflags.h:38:3: error: must not be $r0 or $r1
-   38 |                 "csrxchg %[val], %[mask], %[reg]\n\t"
-      |                 ^
-<inline asm>:1:16: note: instantiated into assembly here
-    1 |         csrxchg $a1, $ra, 0
-      |                       ^
+But ath12k_reg_chan_list_event() will be called from process
+context in an upcoming patch, and this can result in a deadlock
+if ab->base_lock is acquired in process context and then soft
+IRQ occurs on the same CPU and tries to acquire that lock.
 
-To prevent the compiler from allocating $r0 or $r1 for the "mask" of the
-csrxchg instruction, the 'q' constraint must be used but Clang < 21 does
-not support it. So force to use $t0 in the inline asm, in order to avoid
-using $r0/$r1 while keeping the backward compatibility.
+Fix it by using spin_lock_bh and spin_unlock_bh instead.
 
-Cc: stable@vger.kernel.org
-Link: https://github.com/llvm/llvm-project/pull/141037
-Reviewed-by: Yanteng Si <si.yanteng@linux.dev>
-Suggested-by: WANG Rui <wangrui@loongson.cn>
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0.c5-00481-QCAHMTSWPL_V1.0_V2.0_SILICONZ-3
+
+Signed-off-by: Baochen Qiang <quic_bqiang@quicinc.com>
+Reviewed-by: Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>
+Link: https://patch.msgid.link/20250418-ath12k-6g-lp-vlp-v1-1-c869c86cad60@quicinc.com
+Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/loongarch/include/asm/irqflags.h |   16 ++++++++++++----
- 1 file changed, 12 insertions(+), 4 deletions(-)
+ drivers/net/wireless/ath/ath12k/wmi.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/arch/loongarch/include/asm/irqflags.h
-+++ b/arch/loongarch/include/asm/irqflags.h
-@@ -14,40 +14,48 @@
- static inline void arch_local_irq_enable(void)
- {
- 	u32 flags = CSR_CRMD_IE;
-+	register u32 mask asm("t0") = CSR_CRMD_IE;
-+
- 	__asm__ __volatile__(
- 		"csrxchg %[val], %[mask], %[reg]\n\t"
- 		: [val] "+r" (flags)
--		: [mask] "r" (CSR_CRMD_IE), [reg] "i" (LOONGARCH_CSR_CRMD)
-+		: [mask] "r" (mask), [reg] "i" (LOONGARCH_CSR_CRMD)
- 		: "memory");
- }
+diff --git a/drivers/net/wireless/ath/ath12k/wmi.c b/drivers/net/wireless/ath/ath12k/wmi.c
+index a0ac2f350934f..31af940bc5722 100644
+--- a/drivers/net/wireless/ath/ath12k/wmi.c
++++ b/drivers/net/wireless/ath/ath12k/wmi.c
+@@ -5503,7 +5503,7 @@ static int ath12k_reg_chan_list_event(struct ath12k_base *ab, struct sk_buff *sk
+ 		goto fallback;
+ 	}
  
- static inline void arch_local_irq_disable(void)
- {
- 	u32 flags = 0;
-+	register u32 mask asm("t0") = CSR_CRMD_IE;
-+
- 	__asm__ __volatile__(
- 		"csrxchg %[val], %[mask], %[reg]\n\t"
- 		: [val] "+r" (flags)
--		: [mask] "r" (CSR_CRMD_IE), [reg] "i" (LOONGARCH_CSR_CRMD)
-+		: [mask] "r" (mask), [reg] "i" (LOONGARCH_CSR_CRMD)
- 		: "memory");
- }
+-	spin_lock(&ab->base_lock);
++	spin_lock_bh(&ab->base_lock);
+ 	if (test_bit(ATH12K_FLAG_REGISTERED, &ab->dev_flags)) {
+ 		/* Once mac is registered, ar is valid and all CC events from
+ 		 * fw is considered to be received due to user requests
+@@ -5527,7 +5527,7 @@ static int ath12k_reg_chan_list_event(struct ath12k_base *ab, struct sk_buff *sk
+ 		ab->default_regd[pdev_idx] = regd;
+ 	}
+ 	ab->dfs_region = reg_info->dfs_region;
+-	spin_unlock(&ab->base_lock);
++	spin_unlock_bh(&ab->base_lock);
  
- static inline unsigned long arch_local_irq_save(void)
- {
- 	u32 flags = 0;
-+	register u32 mask asm("t0") = CSR_CRMD_IE;
-+
- 	__asm__ __volatile__(
- 		"csrxchg %[val], %[mask], %[reg]\n\t"
- 		: [val] "+r" (flags)
--		: [mask] "r" (CSR_CRMD_IE), [reg] "i" (LOONGARCH_CSR_CRMD)
-+		: [mask] "r" (mask), [reg] "i" (LOONGARCH_CSR_CRMD)
- 		: "memory");
- 	return flags;
- }
+ 	goto mem_free;
  
- static inline void arch_local_irq_restore(unsigned long flags)
- {
-+	register u32 mask asm("t0") = CSR_CRMD_IE;
-+
- 	__asm__ __volatile__(
- 		"csrxchg %[val], %[mask], %[reg]\n\t"
- 		: [val] "+r" (flags)
--		: [mask] "r" (CSR_CRMD_IE), [reg] "i" (LOONGARCH_CSR_CRMD)
-+		: [mask] "r" (mask), [reg] "i" (LOONGARCH_CSR_CRMD)
- 		: "memory");
- }
- 
+-- 
+2.39.5
+
 
 
 
