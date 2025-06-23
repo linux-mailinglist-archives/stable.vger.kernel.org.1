@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-157011-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157600-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC2D3AE5216
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:40:18 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 97B7AAE54C1
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:05:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5317F4A4F2D
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:40:19 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 259711B67FBA
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:04:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1DBDF221FCC;
-	Mon, 23 Jun 2025 21:40:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51D9421FF2B;
+	Mon, 23 Jun 2025 22:04:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qiCWW3ny"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FZ7rx3IW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE2F21E22E6;
-	Mon, 23 Jun 2025 21:40:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F7461A4F12;
+	Mon, 23 Jun 2025 22:04:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750714816; cv=none; b=OekGzmUfAL0jujpVDppjWODRDCHNiC6nH0cN09ZrzRUzDAjMNv6/FiaLQmRXFZpIqr9eSWA/QWxr4PYCQ4BpQmAwYYrIia0qtkGb0v2XoDC7oS83PugvWyua2ujUsViDC0lDIPO1K2b/vGY7s8ABbYytLaqg/1hLRO/jHTGeyYw=
+	t=1750716265; cv=none; b=QMiNlL0K9ZRLfIqoa7xKn5FJ5NRrH2CB7lMIxgOcdeMjSpx1Z7FQYXO0apgClBmKYrUBrtJLT8vddzzPJXLMwYvJ83ACfPC/r6ULWBoWN2HCGSDt0USRMac9/flX4x4csoa46Qi8oLeT6522l070fEjjbbaYbg+vAI7Mxbl2lkI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750714816; c=relaxed/simple;
-	bh=JAbzIA7wQNmmszRxiVM+VUV7fLYrje2MUTNHxbNgGc8=;
+	s=arc-20240116; t=1750716265; c=relaxed/simple;
+	bh=Rjjk9uo8GykzxZ1vTRinvcOU7j3eEXxI5jAD6NAeQVA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pgZURgAchsrhnzJwJxZZP6oulIScsOiSTg6spj1G4B0p1dHslpm2ciFMbGHNqOo4ZBXwVjCdSfFTZBxu9vxugwutSlAynmLzAM1XIT7Krhw0NXUrfAZhFPkBj4ei/Gp0wLMnkWj45EwWkop4S6EuuuZ22u8+jwsfuy4IVNG36tw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qiCWW3ny; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F106C4CEEA;
-	Mon, 23 Jun 2025 21:40:16 +0000 (UTC)
+	 MIME-Version; b=mFzYW5WgwfXftfbeeF9L4/m7aMxALap6YnIsldlx/xJIpYhw3qLQDI/5+pIMZ3he60yEVCiiSvjP78NfgwUONFPyB7Sr0noURI/Ew8ASfqThNee1KHXP8PV70qiwPiVqg3k6V7Sj7YMqoCJ+Gu5IuwAZbW8urTaoQVqxdSzrXk0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FZ7rx3IW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B8C9C4CEEA;
+	Mon, 23 Jun 2025 22:04:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750714816;
-	bh=JAbzIA7wQNmmszRxiVM+VUV7fLYrje2MUTNHxbNgGc8=;
+	s=korg; t=1750716264;
+	bh=Rjjk9uo8GykzxZ1vTRinvcOU7j3eEXxI5jAD6NAeQVA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qiCWW3ny2WV28SW2SAsDnIGP/hpuCO1JbQnhu9Fm595Y6ikNIlJMUqwJNqep3lafX
-	 wngW8EjyH2exIB1ANd6Y3LyBAXR7GHb72zTqD7Uf7whIJgm7kql4ETbjPk+DY6miDb
-	 4AHcYqH4LRMZNHjNcbqYUXW108XKiRpK+0o5LmRQ=
+	b=FZ7rx3IWCS2g1u6d8qYYEgnAUIc8A3LYz76q1GsfFsVb1KbU5Frq9DUxYGuDeTE1S
+	 PC/uySc5cY/52/ussQX3xCQuKfjg8EfvWb01mRL+EB0+8vK7NpAy2MemYr7rqFTs6L
+	 4gHq+vdYuwf8C5V1iQ/m9L5v30W5B/IlXr73J0z8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Moon Yeounsu <yyyynoom@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Tali Perry <tali.perry1@gmail.com>,
+	Mohammed Elbadry <mohammed.0.elbadry@gmail.com>,
+	Mukesh Kumar Savaliya <quic_msavaliy@quicinc.com>,
+	Andi Shyti <andi.shyti@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 255/355] net: dlink: add synchronization for stats update
+Subject: [PATCH 5.15 312/411] i2c: npcm: Add clock toggle recovery
 Date: Mon, 23 Jun 2025 15:07:36 +0200
-Message-ID: <20250623130634.421980527@linuxfoundation.org>
+Message-ID: <20250623130641.494471991@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130626.716971725@linuxfoundation.org>
-References: <20250623130626.716971725@linuxfoundation.org>
+In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
+References: <20250623130632.993849527@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,107 +64,79 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Moon Yeounsu <yyyynoom@gmail.com>
+From: Tali Perry <tali.perry1@gmail.com>
 
-[ Upstream commit 12889ce926e9a9baf6b83d809ba316af539b89e2 ]
+[ Upstream commit 38010591a0fc3203f1cee45b01ab358b72dd9ab2 ]
 
-This patch synchronizes code that accesses from both user-space
-and IRQ contexts. The `get_stats()` function can be called from both
-context.
+During init of the bus, the module checks that the bus is idle.
+If one of the lines are stuck try to recover them first before failing.
+Sometimes SDA and SCL are low if improper reset occurs (e.g., reboot).
 
-`dev->stats.tx_errors` and `dev->stats.collisions` are also updated
-in the `tx_errors()` function. Therefore, these fields must also be
-protected by synchronized.
-
-There is no code that accessses `dev->stats.tx_errors` between the
-previous and updated lines, so the updating point can be moved.
-
-Signed-off-by: Moon Yeounsu <yyyynoom@gmail.com>
-Link: https://patch.msgid.link/20250515075333.48290-1-yyyynoom@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Tali Perry <tali.perry1@gmail.com>
+Signed-off-by: Mohammed Elbadry <mohammed.0.elbadry@gmail.com>
+Reviewed-by: Mukesh Kumar Savaliya <quic_msavaliy@quicinc.com>
+Link: https://lore.kernel.org/r/20250328193252.1570811-1-mohammed.0.elbadry@gmail.com
+Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/dlink/dl2k.c | 14 +++++++++++++-
- drivers/net/ethernet/dlink/dl2k.h |  2 ++
- 2 files changed, 15 insertions(+), 1 deletion(-)
+ drivers/i2c/busses/i2c-npcm7xx.c | 12 ++++++++----
+ 1 file changed, 8 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/ethernet/dlink/dl2k.c b/drivers/net/ethernet/dlink/dl2k.c
-index 66e0fbdcef220..b7f992103da3c 100644
---- a/drivers/net/ethernet/dlink/dl2k.c
-+++ b/drivers/net/ethernet/dlink/dl2k.c
-@@ -146,6 +146,8 @@ rio_probe1 (struct pci_dev *pdev, const struct pci_device_id *ent)
- 	np->ioaddr = ioaddr;
- 	np->chip_id = chip_idx;
- 	np->pdev = pdev;
-+
-+	spin_lock_init(&np->stats_lock);
- 	spin_lock_init (&np->tx_lock);
- 	spin_lock_init (&np->rx_lock);
+diff --git a/drivers/i2c/busses/i2c-npcm7xx.c b/drivers/i2c/busses/i2c-npcm7xx.c
+index d97694ac29ca9..3f30c3cff7201 100644
+--- a/drivers/i2c/busses/i2c-npcm7xx.c
++++ b/drivers/i2c/busses/i2c-npcm7xx.c
+@@ -1950,10 +1950,14 @@ static int npcm_i2c_init_module(struct npcm_i2c *bus, enum i2c_mode mode,
  
-@@ -869,7 +871,6 @@ tx_error (struct net_device *dev, int tx_status)
- 	frame_id = (tx_status & 0xffff0000);
- 	printk (KERN_ERR "%s: Transmit error, TxStatus %4.4x, FrameId %d.\n",
- 		dev->name, tx_status, frame_id);
--	dev->stats.tx_errors++;
- 	/* Ttransmit Underrun */
- 	if (tx_status & 0x10) {
- 		dev->stats.tx_fifo_errors++;
-@@ -906,9 +907,15 @@ tx_error (struct net_device *dev, int tx_status)
- 		rio_set_led_mode(dev);
- 		/* Let TxStartThresh stay default value */
+ 	/* check HW is OK: SDA and SCL should be high at this point. */
+ 	if ((npcm_i2c_get_SDA(&bus->adap) == 0) || (npcm_i2c_get_SCL(&bus->adap) == 0)) {
+-		dev_err(bus->dev, "I2C%d init fail: lines are low\n", bus->num);
+-		dev_err(bus->dev, "SDA=%d SCL=%d\n", npcm_i2c_get_SDA(&bus->adap),
+-			npcm_i2c_get_SCL(&bus->adap));
+-		return -ENXIO;
++		dev_warn(bus->dev, " I2C%d SDA=%d SCL=%d, attempting to recover\n", bus->num,
++				 npcm_i2c_get_SDA(&bus->adap), npcm_i2c_get_SCL(&bus->adap));
++		if (npcm_i2c_recovery_tgclk(&bus->adap)) {
++			dev_err(bus->dev, "I2C%d init fail: SDA=%d SCL=%d\n",
++				bus->num, npcm_i2c_get_SDA(&bus->adap),
++				npcm_i2c_get_SCL(&bus->adap));
++			return -ENXIO;
++		}
  	}
-+
-+	spin_lock(&np->stats_lock);
- 	/* Maximum Collisions */
- 	if (tx_status & 0x08)
- 		dev->stats.collisions++;
-+
-+	dev->stats.tx_errors++;
-+	spin_unlock(&np->stats_lock);
-+
- 	/* Restart the Tx */
- 	dw32(MACCtrl, dr16(MACCtrl) | TxEnable);
- }
-@@ -1077,7 +1084,9 @@ get_stats (struct net_device *dev)
- 	int i;
- #endif
- 	unsigned int stat_reg;
-+	unsigned long flags;
  
-+	spin_lock_irqsave(&np->stats_lock, flags);
- 	/* All statistics registers need to be acknowledged,
- 	   else statistic overflow could cause problems */
- 
-@@ -1127,6 +1136,9 @@ get_stats (struct net_device *dev)
- 	dr16(TCPCheckSumErrors);
- 	dr16(UDPCheckSumErrors);
- 	dr16(IPCheckSumErrors);
-+
-+	spin_unlock_irqrestore(&np->stats_lock, flags);
-+
- 	return &dev->stats;
- }
- 
-diff --git a/drivers/net/ethernet/dlink/dl2k.h b/drivers/net/ethernet/dlink/dl2k.h
-index 0e33e2eaae960..56aff2f0bdbfa 100644
---- a/drivers/net/ethernet/dlink/dl2k.h
-+++ b/drivers/net/ethernet/dlink/dl2k.h
-@@ -372,6 +372,8 @@ struct netdev_private {
- 	struct pci_dev *pdev;
- 	void __iomem *ioaddr;
- 	void __iomem *eeprom_addr;
-+	// To ensure synchronization when stats are updated.
-+	spinlock_t stats_lock;
- 	spinlock_t tx_lock;
- 	spinlock_t rx_lock;
- 	unsigned int rx_buf_sz;		/* Based on MTU+slack. */
+ 	npcm_i2c_int_enable(bus, true);
 -- 
 2.39.5
 
+
+
+ cha
+ #endif /* CONFIG_KVM */
+ 
+ static bool spectre_bhb_fw_mitigated;
++static bool __read_mostly __nospectre_bhb;
++static int __init parse_spectre_bhb_param(char *str)
++{
++	__nospectre_bhb = true;
++	return 0;
++}
++early_param("nospectre_bhb", parse_spectre_bhb_param);
+ 
+ void spectre_bhb_enable_mitigation(const struct arm64_cpu_capabilities *entry)
+ {
+@@ -1100,7 +1107,7 @@ void spectre_bhb_enable_mitigation(const
+ 		/* No point mitigating Spectre-BHB alone. */
+ 	} else if (!IS_ENABLED(CONFIG_MITIGATE_SPECTRE_BRANCH_HISTORY)) {
+ 		pr_info_once("spectre-bhb mitigation disabled by compile time option\n");
+-	} else if (cpu_mitigations_off()) {
++	} else if (cpu_mitigations_off() || __nospectre_bhb) {
+ 		pr_info_once("spectre-bhb mitigation disabled by command line option\n");
+ 	} else if (supports_ecbhb(SCOPE_LOCAL_CPU)) {
+ 		state = SPECTRE_MITIGATED;
 
 
 
