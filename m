@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-157827-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157757-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9D521AE55CA
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:15:08 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6505AAE5589
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:12:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 778A1163001
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:13:56 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6EB923AC794
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:10:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2516C225417;
-	Mon, 23 Jun 2025 22:13:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82920225792;
+	Mon, 23 Jun 2025 22:10:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pJzGT15V"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SU1ySfQ1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4DEDC2E0;
-	Mon, 23 Jun 2025 22:13:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E05C224B01;
+	Mon, 23 Jun 2025 22:10:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750716815; cv=none; b=hT6gPEDvQZ/MywM11xxJHTNC1GkSuy9QZGsLgan+sISRrFPhexAyUDIBeeojK5s5rm+GdIcLTyaRZvyXc7cgHJ7fDbzRFk+H+xecVqClaixDv73QMXm3vFFkRrh8PrAIsdfpWo/+whqO+lLP8Ef4PIrjwFV1jAwsJxwgky0Ooqw=
+	t=1750716647; cv=none; b=Oixvk9MlfH0ZCnNwJpHAaOa7+Ybi5UGM6qJaGiHrKABabQnCcGjaT2HD+TjfMcTOt6p41DXcGZv05Oz1PiNmYhh+e/Nhhvlh9uMSl2zrj1yuU9w6f4MC1l6sKv5DJboMWX8kKibt/gvIQfWFSCA8MwS7q+tV+emb9O0an0AUbAc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750716815; c=relaxed/simple;
-	bh=yPsh4551LxyCwjVPKqflFqC2KqaO6VyENBNufYUXA5E=;
+	s=arc-20240116; t=1750716647; c=relaxed/simple;
+	bh=hsFUNYkbto6fByHwa1+5UPgh0lvs+3Xs73/ZzWFSpMQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IXXvfp9DtX3BPpsGm+0rUNSvbKMb/Xoa5xjAaQ3cMczB9Dp8qAnhBy8GASPsTUMNMXWbo3FYWRAFq/oBvvTmT3k7MdfXPzIXDAgPkMOuXstz9DGf9OXex44eiJcUOq0Tu1dIvwwUjt8hO11WVs0zSWwcL7Zj4usE1O3nJfq4hWI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pJzGT15V; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6CE24C4CEEA;
-	Mon, 23 Jun 2025 22:13:35 +0000 (UTC)
+	 MIME-Version; b=PmNHr9qV9II8vYH/6+yxUfYE8FUtSulRsho3L395U412ZpI6SStMe/2v/LPRVM9nO0snTLB7NOTdFW9t1/Jd+9LHLAQMnqY9+sEpts9BSwKVQx4acutlrLL2kilxyBF4JRtfjIc8o7kffiEtROWhbY/7EZfOwrVrk8tl/9OReCY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SU1ySfQ1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA4ABC4CEEA;
+	Mon, 23 Jun 2025 22:10:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750716815;
-	bh=yPsh4551LxyCwjVPKqflFqC2KqaO6VyENBNufYUXA5E=;
+	s=korg; t=1750716647;
+	bh=hsFUNYkbto6fByHwa1+5UPgh0lvs+3Xs73/ZzWFSpMQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pJzGT15VZf+9ec/iWyXve2ORTvEjDgFI3bz7yyBMOB73pRCH9+z/5u+amhwu+HeD9
-	 SrV4k38jDqDsuzdIkITkAgSPl8r7D1mf9Nc+qQSna8Lo4musWL9lZXUgxs5wHg8v56
-	 aTiL/9fMj8qmXcm4Wzt1KV9YtBZK6Vf+ElcWT8TQ=
+	b=SU1ySfQ12dhyruB7PUGAHcJ99+OtMFoZ5qltjogSeCtoUqfUtybk1xOnyJjWtXTTh
+	 U1sJZG/vGosJHu7lGNILXu8wJiMq4Evca9pDj2m753/UDc2M6b5wc5FCOPsXZm8bUU
+	 em8pF690wlX1a/M3EUS0PpefNOR3i5U2c+615bFo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	James Morse <james.morse@arm.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Pu Lehui <pulehui@huawei.com>
-Subject: [PATCH 5.15 395/411] arm64: bpf: Only mitigate cBPF programs loaded by unprivileged users
-Date: Mon, 23 Jun 2025 15:08:59 +0200
-Message-ID: <20250623130643.621280039@linuxfoundation.org>
+	Yao Zi <ziyao@disroot.org>,
+	Huacai Chen <chenhuacai@loongson.cn>
+Subject: [PATCH 6.6 279/290] platform/loongarch: laptop: Add backlight power control support
+Date: Mon, 23 Jun 2025 15:09:00 +0200
+Message-ID: <20250623130635.314390752@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
-References: <20250623130632.993849527@linuxfoundation.org>
+In-Reply-To: <20250623130626.910356556@linuxfoundation.org>
+References: <20250623130626.910356556@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,42 +61,150 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: James Morse <james.morse@arm.com>
+From: Yao Zi <ziyao@disroot.org>
 
-[ Upstream commit f300769ead032513a68e4a02e806393402e626f8 ]
+commit 53c762b47f726e4079a1f06f684bce2fc0d56fba upstream.
 
-Support for eBPF programs loaded by unprivileged users is typically
-disabled. This means only cBPF programs need to be mitigated for BHB.
+loongson_laptop_turn_{on,off}_backlight() are designed for controlling
+the power of the backlight, but they aren't really used in the driver
+previously.
 
-In addition, only mitigate cBPF programs that were loaded by an
-unprivileged user. Privileged users can also load the same program
-via eBPF, making the mitigation pointless.
+Unify these two functions since they only differ in arguments passed to
+ACPI method, and wire up loongson_laptop_backlight_update() to update
+the power state of the backlight as well. Tested on the TongFang L860-T2
+Loongson-3A5000 laptop.
 
-Signed-off-by: James Morse <james.morse@arm.com>
-Reviewed-by: Catalin Marinas <catalin.marinas@arm.com>
-Acked-by: Daniel Borkmann <daniel@iogearbox.net>
-Signed-off-by: Pu Lehui <pulehui@huawei.com>
+Cc: stable@vger.kernel.org
+Fixes: 6246ed09111f ("LoongArch: Add ACPI-based generic laptop driver")
+Signed-off-by: Yao Zi <ziyao@disroot.org>
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/net/bpf_jit_comp.c |    3 +++
- 1 file changed, 3 insertions(+)
+ drivers/platform/loongarch/loongson-laptop.c |   73 +++++++++++++--------------
+ 1 file changed, 37 insertions(+), 36 deletions(-)
 
---- a/arch/arm64/net/bpf_jit_comp.c
-+++ b/arch/arm64/net/bpf_jit_comp.c
-@@ -341,6 +341,9 @@ static void __maybe_unused build_bhb_mit
- 	    arm64_get_spectre_v2_state() == SPECTRE_VULNERABLE)
- 		return;
+--- a/drivers/platform/loongarch/loongson-laptop.c
++++ b/drivers/platform/loongarch/loongson-laptop.c
+@@ -56,8 +56,7 @@ static struct input_dev *generic_inputde
+ static acpi_handle hotkey_handle;
+ static struct key_entry hotkey_keycode_map[GENERIC_HOTKEY_MAP_MAX];
  
-+	if (capable(CAP_SYS_ADMIN))
-+		return;
+-int loongson_laptop_turn_on_backlight(void);
+-int loongson_laptop_turn_off_backlight(void);
++static bool bl_powered;
+ static int loongson_laptop_backlight_update(struct backlight_device *bd);
+ 
+ /* 2. ACPI Helpers and device model */
+@@ -354,16 +353,42 @@ static int ec_backlight_level(u8 level)
+ 	return level;
+ }
+ 
++static int ec_backlight_set_power(bool state)
++{
++	int status;
++	union acpi_object arg0 = { ACPI_TYPE_INTEGER };
++	struct acpi_object_list args = { 1, &arg0 };
 +
- 	if (supports_clearbhb(SCOPE_SYSTEM)) {
- 		emit(aarch64_insn_gen_hint(AARCH64_INSN_HINT_CLEARBHB), ctx);
- 		return;
++	arg0.integer.value = state;
++	status = acpi_evaluate_object(NULL, "\\BLSW", &args, NULL);
++	if (ACPI_FAILURE(status)) {
++		pr_info("Loongson lvds error: 0x%x\n", status);
++		return -EIO;
++	}
++
++	return 0;
++}
++
+ static int loongson_laptop_backlight_update(struct backlight_device *bd)
+ {
+-	int lvl = ec_backlight_level(bd->props.brightness);
++	bool target_powered = !backlight_is_blank(bd);
++	int ret = 0, lvl = ec_backlight_level(bd->props.brightness);
+ 
+ 	if (lvl < 0)
+ 		return -EIO;
++
+ 	if (ec_set_brightness(lvl))
+ 		return -EIO;
+ 
+-	return 0;
++	if (target_powered != bl_powered) {
++		ret = ec_backlight_set_power(target_powered);
++		if (ret < 0)
++			return ret;
++
++		bl_powered = target_powered;
++	}
++
++	return ret;
+ }
+ 
+ static int loongson_laptop_get_brightness(struct backlight_device *bd)
+@@ -384,7 +409,7 @@ static const struct backlight_ops backli
+ 
+ static int laptop_backlight_register(void)
+ {
+-	int status = 0;
++	int status = 0, ret;
+ 	struct backlight_properties props;
+ 
+ 	memset(&props, 0, sizeof(props));
+@@ -392,44 +417,20 @@ static int laptop_backlight_register(voi
+ 	if (!acpi_evalf(hotkey_handle, &status, "ECLL", "d"))
+ 		return -EIO;
+ 
++	ret = ec_backlight_set_power(true);
++	if (ret)
++		return ret;
++
++	bl_powered = true;
++
+ 	props.max_brightness = status;
+ 	props.brightness = ec_get_brightness();
++	props.power = FB_BLANK_UNBLANK;
+ 	props.type = BACKLIGHT_PLATFORM;
+ 
+ 	backlight_device_register("loongson_laptop",
+ 				NULL, NULL, &backlight_laptop_ops, &props);
+ 
+-	return 0;
+-}
+-
+-int loongson_laptop_turn_on_backlight(void)
+-{
+-	int status;
+-	union acpi_object arg0 = { ACPI_TYPE_INTEGER };
+-	struct acpi_object_list args = { 1, &arg0 };
+-
+-	arg0.integer.value = 1;
+-	status = acpi_evaluate_object(NULL, "\\BLSW", &args, NULL);
+-	if (ACPI_FAILURE(status)) {
+-		pr_info("Loongson lvds error: 0x%x\n", status);
+-		return -ENODEV;
+-	}
+-
+-	return 0;
+-}
+-
+-int loongson_laptop_turn_off_backlight(void)
+-{
+-	int status;
+-	union acpi_object arg0 = { ACPI_TYPE_INTEGER };
+-	struct acpi_object_list args = { 1, &arg0 };
+-
+-	arg0.integer.value = 0;
+-	status = acpi_evaluate_object(NULL, "\\BLSW", &args, NULL);
+-	if (ACPI_FAILURE(status)) {
+-		pr_info("Loongson lvds error: 0x%x\n", status);
+-		return -ENODEV;
+-	}
+ 
+ 	return 0;
+ }
 
 
 
