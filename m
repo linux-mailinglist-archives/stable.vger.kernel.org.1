@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-155632-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-155754-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 309B2AE4334
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:30:10 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 53D38AE43A7
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:34:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B256A1791F1
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:23:18 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 71C4E3AB18E
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:27:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E01B2571A0;
-	Mon, 23 Jun 2025 13:22:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 672E0252917;
+	Mon, 23 Jun 2025 13:27:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J7Zg0S+M"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W0hl76ww"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB88E253950;
-	Mon, 23 Jun 2025 13:22:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23C0524EF8C;
+	Mon, 23 Jun 2025 13:27:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750684935; cv=none; b=NpbWXMr4AXcf5Lqn+EwuYZfKvuYDGo5i2PfYjBuzqRIVtei61dksaxDGHNhyWCeAGEptIlFC1BsROKnzGoeRS1imuZb+6+fjwLXdcPIa7ZQSdMRClHwnNvZ3oOKbn5O6mw2SFEZV58c7H+E7XcklF9QJgI51HweC80UX9P994WU=
+	t=1750685250; cv=none; b=r7rb/jIwrdSjPCwVYkCTWne/HX1asS/HpU+M6lDqCgIBfErpJ+2rzrTfa5lnkbf9YCyy7SoCQhRNyzZBlf6SFKBXYVYd2JnhNPmTdR1CGHQ/45uwWKObPa5a8zy7HmOQ/xUvOdcLJaOMaF+MHspUBSCZlA+m3cQxj4S5pmcZhjA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750684935; c=relaxed/simple;
-	bh=dAfG191cg9+vj1GlasOaxYMZvKEwjPnsNumUbngBbt4=;
+	s=arc-20240116; t=1750685250; c=relaxed/simple;
+	bh=OYUwpms9Dsap5deIkXdK+wsDPV8Asv2Coyhu0UZVUEA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UdH3OyphHH1ifQ4uL0U7blp+a5/7n+sjlPP3Ha3YALMW3daTTA8ptsBi+wzSIbKHoxPAjKZ4vWxEHZGHRocl7VEQW97aPY+JSaDftl0irBAVQ5FWjMG2MVRBlRr3StkhSnFTMyw1/4NAc9zjcu1+OCB9Hn1y5KgaVkzd7+4UXDk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J7Zg0S+M; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F406C4CEEA;
-	Mon, 23 Jun 2025 13:22:14 +0000 (UTC)
+	 MIME-Version:Content-Type; b=tcZQggbDMy5ygMuZSvCgFRvvvcj4oBVtKyHafPTGc64kxvoYzBPlhG/YslfMhNbl2dy2CoKFGUoQlD/dPuH5FUdaffEr5bj3Nt/0hTh6c0Vf3ex5rphPsbi7LWRt5nnBNdQD3UTHZCjF4GHzS12+sDF3aWWy3XBsQy9KY0n9x0w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W0hl76ww; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5962CC4CEEA;
+	Mon, 23 Jun 2025 13:27:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750684934;
-	bh=dAfG191cg9+vj1GlasOaxYMZvKEwjPnsNumUbngBbt4=;
+	s=korg; t=1750685249;
+	bh=OYUwpms9Dsap5deIkXdK+wsDPV8Asv2Coyhu0UZVUEA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=J7Zg0S+MNdDPPHyedLf8A0OP+Ll2gJ928eB1lh1G3glpOKI+mfgpRZhofXGBjHnVd
-	 1Lxcl7A3deH57DNtITR9oRjPsxxIVUN+BWFy3oBP8mj56B3EGZL/CBxNtaKoClb0Qq
-	 sVeqUFzlWUFfPDX9AjY253CotOfx/+oLRkq649yE=
+	b=W0hl76wwVnFGS7EP+yTQhOjeA/6s1WRd+VY3hgm7Z+sZ7GJ8itEeHxv6+uPH9T823
+	 OaPek5ojvIZ00jz/OWSEhoZvnd5GL6QWELk8iKKZXlTZfoaOqtN15gLmY9GxSZzNeK
+	 Wmrsp3Cu6VVyoGBSQB74igmVf7vVMws4xO0jtiwU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Karol Wachowski <karol.wachowski@intel.com>,
-	Lizhi Hou <lizhi.hou@amd.com>,
-	Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>
-Subject: [PATCH 6.15 192/592] accel/ivpu: Trigger device recovery on engine reset/resume failure
+	Alexandre Mergnat <amergnat@baylibre.com>,
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>
+Subject: [PATCH 5.15 006/411] rtc: Fix offset calculation for .start_secs < 0
 Date: Mon, 23 Jun 2025 15:02:30 +0200
-Message-ID: <20250623130704.853443840@linuxfoundation.org>
+Message-ID: <20250623130633.184293373@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
-References: <20250623130700.210182694@linuxfoundation.org>
+In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
+References: <20250623130632.993849527@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,92 +60,59 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Karol Wachowski <karol.wachowski@intel.com>
+From: Alexandre Mergnat <amergnat@baylibre.com>
 
-commit a47e36dc5d90dc664cac87304c17d50f1595d634 upstream.
+commit fe9f5f96cfe8b82d0f24cbfa93718925560f4f8d upstream.
 
-Trigger full device recovery when the driver fails to restore device state
-via engine reset and resume operations. This is necessary because, even if
-submissions from a faulty context are blocked, the NPU may still process
-previously submitted faulty jobs if the engine reset fails to abort them.
-Such jobs can continue to generate faults and occupy device resources.
-When engine reset is ineffective, the only way to recover is to perform
-a full device recovery.
+The comparison
 
-Fixes: dad945c27a42 ("accel/ivpu: Add handling of VPU_JSM_STATUS_MVNCI_CONTEXT_VIOLATION_HW")
-Cc: stable@vger.kernel.org # v6.15+
-Signed-off-by: Karol Wachowski <karol.wachowski@intel.com>
-Reviewed-by: Lizhi Hou <lizhi.hou@amd.com>
-Signed-off-by: Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>
-Link: https://lore.kernel.org/r/20250528154253.500556-1-jacek.lawrynowicz@linux.intel.com
+        rtc->start_secs > rtc->range_max
+
+has a signed left-hand side and an unsigned right-hand side.
+So the comparison might become true for negative start_secs which is
+interpreted as a (possibly very large) positive value.
+
+As a negative value can never be bigger than an unsigned value
+the correct representation of the (mathematical) comparison
+
+        rtc->start_secs > rtc->range_max
+
+in C is:
+
+        rtc->start_secs >= 0 && rtc->start_secs > rtc->range_max
+
+Use that to fix the offset calculation currently used in the
+rtc-mt6397 driver.
+
+Fixes: 989515647e783 ("rtc: Add one offset seconds to expand RTC range")
+Signed-off-by: Alexandre Mergnat <amergnat@baylibre.com>
+Reviewed-by: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
+Link: https://lore.kernel.org/r/20250428-enable-rtc-v4-2-2b2f7e3f9349@baylibre.com
+Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+Signed-off-by: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/accel/ivpu/ivpu_job.c     |    6 ++++--
- drivers/accel/ivpu/ivpu_jsm_msg.c |    9 +++++++--
- 2 files changed, 11 insertions(+), 4 deletions(-)
+ drivers/rtc/class.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/accel/ivpu/ivpu_job.c
-+++ b/drivers/accel/ivpu/ivpu_job.c
-@@ -986,7 +986,8 @@ void ivpu_context_abort_work_fn(struct w
- 		return;
- 
- 	if (vdev->fw->sched_mode == VPU_SCHEDULING_MODE_HW)
--		ivpu_jsm_reset_engine(vdev, 0);
-+		if (ivpu_jsm_reset_engine(vdev, 0))
-+			return;
- 
- 	mutex_lock(&vdev->context_list_lock);
- 	xa_for_each(&vdev->context_xa, ctx_id, file_priv) {
-@@ -1009,7 +1010,8 @@ void ivpu_context_abort_work_fn(struct w
- 	if (vdev->fw->sched_mode != VPU_SCHEDULING_MODE_HW)
- 		goto runtime_put;
- 
--	ivpu_jsm_hws_resume_engine(vdev, 0);
-+	if (ivpu_jsm_hws_resume_engine(vdev, 0))
-+		return;
- 	/*
- 	 * In hardware scheduling mode NPU already has stopped processing jobs
- 	 * and won't send us any further notifications, thus we have to free job related resources
---- a/drivers/accel/ivpu/ivpu_jsm_msg.c
-+++ b/drivers/accel/ivpu/ivpu_jsm_msg.c
-@@ -7,6 +7,7 @@
- #include "ivpu_hw.h"
- #include "ivpu_ipc.h"
- #include "ivpu_jsm_msg.h"
-+#include "ivpu_pm.h"
- #include "vpu_jsm_api.h"
- 
- const char *ivpu_jsm_msg_type_to_str(enum vpu_ipc_msg_type type)
-@@ -163,8 +164,10 @@ int ivpu_jsm_reset_engine(struct ivpu_de
- 
- 	ret = ivpu_ipc_send_receive(vdev, &req, VPU_JSM_MSG_ENGINE_RESET_DONE, &resp,
- 				    VPU_IPC_CHAN_ASYNC_CMD, vdev->timeout.jsm);
--	if (ret)
-+	if (ret) {
- 		ivpu_err_ratelimited(vdev, "Failed to reset engine %d: %d\n", engine, ret);
-+		ivpu_pm_trigger_recovery(vdev, "Engine reset failed");
-+	}
- 
- 	return ret;
- }
-@@ -354,8 +357,10 @@ int ivpu_jsm_hws_resume_engine(struct iv
- 
- 	ret = ivpu_ipc_send_receive(vdev, &req, VPU_JSM_MSG_HWS_RESUME_ENGINE_DONE, &resp,
- 				    VPU_IPC_CHAN_ASYNC_CMD, vdev->timeout.jsm);
--	if (ret)
-+	if (ret) {
- 		ivpu_err_ratelimited(vdev, "Failed to resume engine %d: %d\n", engine, ret);
-+		ivpu_pm_trigger_recovery(vdev, "Engine resume failed");
-+	}
- 
- 	return ret;
- }
+--- a/drivers/rtc/class.c
++++ b/drivers/rtc/class.c
+@@ -322,7 +322,7 @@ static void rtc_device_get_offset(struct
+ 	 *
+ 	 * Otherwise the offset seconds should be 0.
+ 	 */
+-	if (rtc->start_secs > rtc->range_max ||
++	if ((rtc->start_secs >= 0 && rtc->start_secs > rtc->range_max) ||
+ 	    rtc->start_secs + range_secs - 1 < rtc->range_min)
+ 		rtc->offset_secs = rtc->start_secs - rtc->range_min;
+ 	else if (rtc->start_secs > rtc->range_min)
 
 
 
