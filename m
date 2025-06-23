@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-155777-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-155636-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 68E2BAE43C5
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:36:22 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C48D5AE433D
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:30:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9CE10161A89
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:29:25 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8A67C1793FB
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:23:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 334C5253358;
-	Mon, 23 Jun 2025 13:28:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6FD79253B47;
+	Mon, 23 Jun 2025 13:22:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OTS+h+AG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mja1cQEs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5A5524C060;
-	Mon, 23 Jun 2025 13:28:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D66223A9BE;
+	Mon, 23 Jun 2025 13:22:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750685306; cv=none; b=Fgj1kwSOolTfiamxBG2+paQoUKms2OuJbWgOvEmLU8Mmkvq6kM1heGXBbT4QiG+Y/5hGs4zHdycL35KCOVpZAbXF4C3x5PRsHXpFeONZqKTwWNJsjZziWitjr1TDfXaRtV22Vn++Ln7kElidssXl7LIUiFm2bKfnsreay4LF7vU=
+	t=1750684945; cv=none; b=R3SzwIiq8+/xc7YFapRyL4DkGgptyYIVku6zJl1Gv6mZ5w7f7S22a/ItMaGwOyTMPy7Dx2YCnoUuRyRRpNtrPiSQrXvGofKifqXkjBZwd2ct6xxfHT2OLS62CbclhyFx3ZotUHt8XmT+jDBte24C9/iaKxsurWFWEB5ihTlNwNk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750685306; c=relaxed/simple;
-	bh=ATGfDo7fyw30hfPnqvYg9gYQfPetur8gD6axjLIUD8o=;
+	s=arc-20240116; t=1750684945; c=relaxed/simple;
+	bh=cDGwtBm37b2v7VBVwdgzlRRpUvaMUfs7uk6hE1Yo/Pg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=J+R/MT4T97wijydlMZn934ZrgG+bf4lwl+PtgDev+brEM832XuRW1AJtCpyYJl1KrVn4SYk5Ysy9a/2F9vCPoCbV6QfUS25yo9kBJJycqwmx2S0sCA7hl98r3pAXfFdY+8mFbhADArTkN/g8kFYtToO5D/+q3zGl2/WnjM8NAUM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OTS+h+AG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C9C6C4CEEA;
-	Mon, 23 Jun 2025 13:28:25 +0000 (UTC)
+	 MIME-Version; b=osPhKTn21k1gvytmyrtDWPrZodaad7pMy6K3hlUcmOzyCXnd80udqocSicdfoQ1lgh85RQTNRmtB069qh49afdPLyT7dp2RD+IcT9plx/6B0aowEtnBjirSqAuERxD71i+xvgTTLTph6pSor3LxgwmKGauCeCqpi8gt172s9450=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mja1cQEs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6B18C4CEEA;
+	Mon, 23 Jun 2025 13:22:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750685305;
-	bh=ATGfDo7fyw30hfPnqvYg9gYQfPetur8gD6axjLIUD8o=;
+	s=korg; t=1750684945;
+	bh=cDGwtBm37b2v7VBVwdgzlRRpUvaMUfs7uk6hE1Yo/Pg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OTS+h+AGsyJJco6h23SaOOeJs40ZPaGogPzSo9Di8cFK11Nx/SuJMrjTjF8SZHtWa
-	 4C6b3EIhkMw7OJnnQWBf6KSLQ8t1vMb/BZcJgbE0UxlhwVrzpNg0tbq4NO0d41dcsW
-	 jNbhrBzP72/HqEXm6zICHBlaSGU/qWiWdZP2YSu4=
+	b=mja1cQEs617xPefr9CidgUeXkKOb4ntIWRcwsWIF4/W1ygQrijocjOrUFrg9T/Zn7
+	 9+uq23ihU633Rlo5nemWvqFe+sjr44n+TH34EFTUS53iw0yRl4heByJmcpyDGt6LVK
+	 oHr/BTO4ujpdrFMFtM2+j7PLwJeknCFPPtUbondc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jiayi Li <lijiayi@kylinos.cn>,
-	stable <stable@kernel.org>
-Subject: [PATCH 5.15 007/411] usb: quirks: Add NO_LPM quirk for SanDisk Extreme 55AE
+	Lizhi Hou <lizhi.hou@amd.com>,
+	Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>
+Subject: [PATCH 6.15 193/592] accel/ivpu: Use dma_resv_lock() instead of a custom mutex
 Date: Mon, 23 Jun 2025 15:02:31 +0200
-Message-ID: <20250623130633.213483024@linuxfoundation.org>
+Message-ID: <20250623130704.879076429@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
-References: <20250623130632.993849527@linuxfoundation.org>
+In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
+References: <20250623130700.210182694@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,49 +61,237 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiayi Li <lijiayi@kylinos.cn>
+From: Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>
 
-commit 19f795591947596b5b9efa86fd4b9058e45786e9 upstream.
+commit 98d3f772ca7d6822bdfc8c960f5f909574db97c9 upstream.
 
-This device exhibits I/O errors during file transfers due to unstable
-link power management (LPM) behavior. The kernel logs show repeated
-warm resets and eventual disconnection when LPM is enabled:
+This fixes a potential race conditions in:
+ - ivpu_bo_unbind_locked() where we modified the shmem->sgt without
+   holding the dma_resv_lock().
+ - ivpu_bo_print_info() where we read the shmem->pages without
+   holding the dma_resv_lock().
 
-[ 3467.810740] hub 2-0:1.0: state 7 ports 6 chg 0000 evt 0020
-[ 3467.810740] usb usb2-port5: do warm reset
-[ 3467.866444] usb usb2-port5: not warm reset yet, waiting 50ms
-[ 3467.907407] sd 0:0:0:0: [sda] tag#12 sense submit err -19
-[ 3467.994423] usb usb2-port5: status 02c0, change 0001, 10.0 Gb/s
-[ 3467.994453] usb 2-5: USB disconnect, device number 4
+Using dma_resv_lock() also protects against future syncronisation
+issues that may arise when accessing drm_gem_shmem_object or
+drm_gem_object members.
 
-The error -19 (ENODEV) occurs when the device disappears during write
-operations. Adding USB_QUIRK_NO_LPM disables link power management
-for this specific device, resolving the stability issues.
-
-Signed-off-by: Jiayi Li <lijiayi@kylinos.cn>
-Cc: stable <stable@kernel.org>
-Link: https://lore.kernel.org/r/20250508055947.764538-1-lijiayi@kylinos.cn
+Fixes: 42328003ecb6 ("accel/ivpu: Refactor BO creation functions")
+Cc: stable@vger.kernel.org # v6.9+
+Reviewed-by: Lizhi Hou <lizhi.hou@amd.com>
+Signed-off-by: Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>
+Link: https://lore.kernel.org/r/20250528154325.500684-1-jacek.lawrynowicz@linux.intel.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/core/quirks.c |    3 +++
- 1 file changed, 3 insertions(+)
+ drivers/accel/ivpu/ivpu_gem.c |   63 ++++++++++++++++++++++--------------------
+ drivers/accel/ivpu/ivpu_gem.h |    1 
+ 2 files changed, 34 insertions(+), 30 deletions(-)
 
---- a/drivers/usb/core/quirks.c
-+++ b/drivers/usb/core/quirks.c
-@@ -369,6 +369,9 @@ static const struct usb_device_id usb_qu
- 	/* SanDisk Corp. SanDisk 3.2Gen1 */
- 	{ USB_DEVICE(0x0781, 0x55a3), .driver_info = USB_QUIRK_DELAY_INIT },
+--- a/drivers/accel/ivpu/ivpu_gem.c
++++ b/drivers/accel/ivpu/ivpu_gem.c
+@@ -33,6 +33,16 @@ static inline void ivpu_dbg_bo(struct iv
+ 		 (bool)bo->base.base.import_attach);
+ }
  
-+	/* SanDisk Extreme 55AE */
-+	{ USB_DEVICE(0x0781, 0x55ae), .driver_info = USB_QUIRK_NO_LPM },
++static inline int ivpu_bo_lock(struct ivpu_bo *bo)
++{
++	return dma_resv_lock(bo->base.base.resv, NULL);
++}
 +
- 	/* Realforce 87U Keyboard */
- 	{ USB_DEVICE(0x0853, 0x011b), .driver_info = USB_QUIRK_NO_LPM },
++static inline void ivpu_bo_unlock(struct ivpu_bo *bo)
++{
++	dma_resv_unlock(bo->base.base.resv);
++}
++
+ /*
+  * ivpu_bo_pin() - pin the backing physical pages and map them to VPU.
+  *
+@@ -43,22 +53,22 @@ static inline void ivpu_dbg_bo(struct iv
+ int __must_check ivpu_bo_pin(struct ivpu_bo *bo)
+ {
+ 	struct ivpu_device *vdev = ivpu_bo_to_vdev(bo);
++	struct sg_table *sgt;
+ 	int ret = 0;
  
+-	mutex_lock(&bo->lock);
+-
+ 	ivpu_dbg_bo(vdev, bo, "pin");
+-	drm_WARN_ON(&vdev->drm, !bo->ctx);
+ 
+-	if (!bo->mmu_mapped) {
+-		struct sg_table *sgt = drm_gem_shmem_get_pages_sgt(&bo->base);
++	sgt = drm_gem_shmem_get_pages_sgt(&bo->base);
++	if (IS_ERR(sgt)) {
++		ret = PTR_ERR(sgt);
++		ivpu_err(vdev, "Failed to map BO in IOMMU: %d\n", ret);
++		return ret;
++	}
+ 
+-		if (IS_ERR(sgt)) {
+-			ret = PTR_ERR(sgt);
+-			ivpu_err(vdev, "Failed to map BO in IOMMU: %d\n", ret);
+-			goto unlock;
+-		}
++	ivpu_bo_lock(bo);
+ 
++	if (!bo->mmu_mapped) {
++		drm_WARN_ON(&vdev->drm, !bo->ctx);
+ 		ret = ivpu_mmu_context_map_sgt(vdev, bo->ctx, bo->vpu_addr, sgt,
+ 					       ivpu_bo_is_snooped(bo));
+ 		if (ret) {
+@@ -69,7 +79,7 @@ int __must_check ivpu_bo_pin(struct ivpu
+ 	}
+ 
+ unlock:
+-	mutex_unlock(&bo->lock);
++	ivpu_bo_unlock(bo);
+ 
+ 	return ret;
+ }
+@@ -84,7 +94,7 @@ ivpu_bo_alloc_vpu_addr(struct ivpu_bo *b
+ 	if (!drm_dev_enter(&vdev->drm, &idx))
+ 		return -ENODEV;
+ 
+-	mutex_lock(&bo->lock);
++	ivpu_bo_lock(bo);
+ 
+ 	ret = ivpu_mmu_context_insert_node(ctx, range, ivpu_bo_size(bo), &bo->mm_node);
+ 	if (!ret) {
+@@ -94,7 +104,7 @@ ivpu_bo_alloc_vpu_addr(struct ivpu_bo *b
+ 		ivpu_err(vdev, "Failed to add BO to context %u: %d\n", ctx->id, ret);
+ 	}
+ 
+-	mutex_unlock(&bo->lock);
++	ivpu_bo_unlock(bo);
+ 
+ 	drm_dev_exit(idx);
+ 
+@@ -105,7 +115,7 @@ static void ivpu_bo_unbind_locked(struct
+ {
+ 	struct ivpu_device *vdev = ivpu_bo_to_vdev(bo);
+ 
+-	lockdep_assert(lockdep_is_held(&bo->lock) || !kref_read(&bo->base.base.refcount));
++	lockdep_assert(dma_resv_held(bo->base.base.resv) || !kref_read(&bo->base.base.refcount));
+ 
+ 	if (bo->mmu_mapped) {
+ 		drm_WARN_ON(&vdev->drm, !bo->ctx);
+@@ -123,14 +133,12 @@ static void ivpu_bo_unbind_locked(struct
+ 	if (bo->base.base.import_attach)
+ 		return;
+ 
+-	dma_resv_lock(bo->base.base.resv, NULL);
+ 	if (bo->base.sgt) {
+ 		dma_unmap_sgtable(vdev->drm.dev, bo->base.sgt, DMA_BIDIRECTIONAL, 0);
+ 		sg_free_table(bo->base.sgt);
+ 		kfree(bo->base.sgt);
+ 		bo->base.sgt = NULL;
+ 	}
+-	dma_resv_unlock(bo->base.base.resv);
+ }
+ 
+ void ivpu_bo_unbind_all_bos_from_context(struct ivpu_device *vdev, struct ivpu_mmu_context *ctx)
+@@ -142,12 +150,12 @@ void ivpu_bo_unbind_all_bos_from_context
+ 
+ 	mutex_lock(&vdev->bo_list_lock);
+ 	list_for_each_entry(bo, &vdev->bo_list, bo_list_node) {
+-		mutex_lock(&bo->lock);
++		ivpu_bo_lock(bo);
+ 		if (bo->ctx == ctx) {
+ 			ivpu_dbg_bo(vdev, bo, "unbind");
+ 			ivpu_bo_unbind_locked(bo);
+ 		}
+-		mutex_unlock(&bo->lock);
++		ivpu_bo_unlock(bo);
+ 	}
+ 	mutex_unlock(&vdev->bo_list_lock);
+ }
+@@ -167,7 +175,6 @@ struct drm_gem_object *ivpu_gem_create_o
+ 	bo->base.pages_mark_dirty_on_put = true; /* VPU can dirty a BO anytime */
+ 
+ 	INIT_LIST_HEAD(&bo->bo_list_node);
+-	mutex_init(&bo->lock);
+ 
+ 	return &bo->base.base;
+ }
+@@ -286,8 +293,6 @@ static void ivpu_gem_bo_free(struct drm_
+ 	drm_WARN_ON(&vdev->drm, bo->mmu_mapped);
+ 	drm_WARN_ON(&vdev->drm, bo->ctx);
+ 
+-	mutex_destroy(&bo->lock);
+-
+ 	drm_WARN_ON(obj->dev, bo->base.pages_use_count > 1);
+ 	drm_gem_shmem_free(&bo->base);
+ }
+@@ -370,9 +375,9 @@ ivpu_bo_create(struct ivpu_device *vdev,
+ 		goto err_put;
+ 
+ 	if (flags & DRM_IVPU_BO_MAPPABLE) {
+-		dma_resv_lock(bo->base.base.resv, NULL);
++		ivpu_bo_lock(bo);
+ 		ret = drm_gem_shmem_vmap(&bo->base, &map);
+-		dma_resv_unlock(bo->base.base.resv);
++		ivpu_bo_unlock(bo);
+ 
+ 		if (ret)
+ 			goto err_put;
+@@ -395,9 +400,9 @@ void ivpu_bo_free(struct ivpu_bo *bo)
+ 	struct iosys_map map = IOSYS_MAP_INIT_VADDR(bo->base.vaddr);
+ 
+ 	if (bo->flags & DRM_IVPU_BO_MAPPABLE) {
+-		dma_resv_lock(bo->base.base.resv, NULL);
++		ivpu_bo_lock(bo);
+ 		drm_gem_shmem_vunmap(&bo->base, &map);
+-		dma_resv_unlock(bo->base.base.resv);
++		ivpu_bo_unlock(bo);
+ 	}
+ 
+ 	drm_gem_object_put(&bo->base.base);
+@@ -416,12 +421,12 @@ int ivpu_bo_info_ioctl(struct drm_device
+ 
+ 	bo = to_ivpu_bo(obj);
+ 
+-	mutex_lock(&bo->lock);
++	ivpu_bo_lock(bo);
+ 	args->flags = bo->flags;
+ 	args->mmap_offset = drm_vma_node_offset_addr(&obj->vma_node);
+ 	args->vpu_addr = bo->vpu_addr;
+ 	args->size = obj->size;
+-	mutex_unlock(&bo->lock);
++	ivpu_bo_unlock(bo);
+ 
+ 	drm_gem_object_put(obj);
+ 	return ret;
+@@ -458,7 +463,7 @@ int ivpu_bo_wait_ioctl(struct drm_device
+ 
+ static void ivpu_bo_print_info(struct ivpu_bo *bo, struct drm_printer *p)
+ {
+-	mutex_lock(&bo->lock);
++	ivpu_bo_lock(bo);
+ 
+ 	drm_printf(p, "%-9p %-3u 0x%-12llx %-10lu 0x%-8x %-4u",
+ 		   bo, bo->ctx_id, bo->vpu_addr, bo->base.base.size,
+@@ -475,7 +480,7 @@ static void ivpu_bo_print_info(struct iv
+ 
+ 	drm_printf(p, "\n");
+ 
+-	mutex_unlock(&bo->lock);
++	ivpu_bo_unlock(bo);
+ }
+ 
+ void ivpu_bo_list(struct drm_device *dev, struct drm_printer *p)
+--- a/drivers/accel/ivpu/ivpu_gem.h
++++ b/drivers/accel/ivpu/ivpu_gem.h
+@@ -17,7 +17,6 @@ struct ivpu_bo {
+ 	struct list_head bo_list_node;
+ 	struct drm_mm_node mm_node;
+ 
+-	struct mutex lock; /* Protects: ctx, mmu_mapped, vpu_addr */
+ 	u64 vpu_addr;
+ 	u32 flags;
+ 	u32 job_status; /* Valid only for command buffer */
 
 
 
