@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-156990-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157376-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D071AAE51FE
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:39:36 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id DA5C0AE53BA
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:56:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6D49C4A4D6E
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:39:37 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 13FC6189A603
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:55:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 462212236F8;
-	Mon, 23 Jun 2025 21:39:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76DDD222581;
+	Mon, 23 Jun 2025 21:55:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LOo+B9dr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F8LcfRoZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04442222576;
-	Mon, 23 Jun 2025 21:39:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34103221FBE;
+	Mon, 23 Jun 2025 21:55:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750714765; cv=none; b=NZrowRXqS6HUt3odYA6dN7t2S2xJ6KRRcYWN8cR7n+UW96um14BH0gSwqrLETYv16IC+MSPr2x3f88wBlFY2nn2C4jNq4j0nOpCfou4gPydrtzju5ciZ2UzAfgr+quAS9LpAOED00vojvxlrFJsR73fN41Jwk2FkCT6p4G2HHBc=
+	t=1750715717; cv=none; b=RG1BZLu5VeUPFUmZ6PywwwGXT4C5qXoLrl1HDFZbV2XI2FVoS4712gOcJNAdzun5xcXhW1rPcvLYCtzM++tfvNQLld337gjvXQHAVFhkyVXN4p7CL0BPCU3dUtJ5ExvtovnxZQjxXM8nACmDrBNw8xCxy6G6S+U8Nsf2eTYP3hY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750714765; c=relaxed/simple;
-	bh=yniziJcUbMzCO/m7mcPKZHxiYJQ0Mj5uamB4DqzzPwk=;
+	s=arc-20240116; t=1750715717; c=relaxed/simple;
+	bh=3osOHv8ptPzm36t49Uvvj7NNIOLaaWjblirFt2SBMlk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=thw9xoWFQitvtF5QlFKv0IkfFTH0VGNLAgZ801zP0sKFNuXrLX32A3Rk7dp3kEzg/5vvIdUFW7qEZSjrMt8bh1IpYcLGUp3/cLphswqi5iI4J8I8QEevUjphT7uAbJJAUXolPvODmoxDq0fm1eUakQFHByrqh7+Bx5NMM8ymfxA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LOo+B9dr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90882C4CEED;
-	Mon, 23 Jun 2025 21:39:24 +0000 (UTC)
+	 MIME-Version; b=PewC3XxYNRtSb3Pkyaz4KqWYWp3X3OsFq9Z0OLKKTtsb042VEWCv+gIwX0/hksS/Dm+JGYhgW4N6e0o8X2qXi5joPI5vHuQ3J5TKdT9XqBrFSjtghAc5t81iF3O+uc3asojaK0yNpfr92urUz+aUkHoDv59jv78iS8uxXWpBYhs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F8LcfRoZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0BAAC4CEEA;
+	Mon, 23 Jun 2025 21:55:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750714764;
-	bh=yniziJcUbMzCO/m7mcPKZHxiYJQ0Mj5uamB4DqzzPwk=;
+	s=korg; t=1750715717;
+	bh=3osOHv8ptPzm36t49Uvvj7NNIOLaaWjblirFt2SBMlk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LOo+B9drBQAK5rp6MD+WqozdWSfQs16OCk6ZHo+HvkkG4juxAt/z4pju45aw7Rhfh
-	 28/G1Q7B1YFZPy5NmiMaTQ2GcOolZLrMzjgt56FwQpX1yA+eqgAXkA0O73u8HxYs0w
-	 bTBuC8wjdf895cXKjTLwKlJHs9CJwHgcobiGAa4k=
+	b=F8LcfRoZ81iAL2Z3KwlRzzY6DLInVdPo+jHnx9Gp01KM2nry3n8mgqy8UrvG2Lq2d
+	 ce4hPyAV96mhfl6jyUupYZjQVy0M6GGfoNgo5Di6CtkhPpHatU8CjZClR7wUSmb3+M
+	 /RQ+KRjmRgX8XvgosKz/1e+nV3HUERcPcGU5r9EE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Imre Kaloz <kaloz@openwrt.org>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Gabor Juhos <j4g8y7@gmail.com>,
-	Linus Walleij <linus.walleij@linaro.org>,
+	Douglas Anderson <dianders@chromium.org>,
+	Damon Ding <damon.ding@rock-chips.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 157/290] pinctrl: armada-37xx: propagate error from armada_37xx_pmx_set_by_name()
+Subject: [PATCH 5.15 274/411] drm/bridge: analogix_dp: Add irq flag IRQF_NO_AUTOEN instead of calling disable_irq()
 Date: Mon, 23 Jun 2025 15:06:58 +0200
-Message-ID: <20250623130631.615631211@linuxfoundation.org>
+Message-ID: <20250623130640.551990577@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130626.910356556@linuxfoundation.org>
-References: <20250623130626.910356556@linuxfoundation.org>
+In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
+References: <20250623130632.993849527@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,42 +63,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gabor Juhos <j4g8y7@gmail.com>
+From: Damon Ding <damon.ding@rock-chips.com>
 
-[ Upstream commit 4229c28323db141eda69cb99427be75d3edba071 ]
+[ Upstream commit efab13e7d13a641a22c7508cde6e1a5285161944 ]
 
-The regmap_update_bits() function can fail, so propagate its error
-up to the stack instead of silently ignoring that.
+The IRQF_NO_AUTOEN can be used for the drivers that don't want
+interrupts to be enabled automatically via devm_request_threaded_irq().
+Using this flag can provide be more robust compared to the way of
+calling disable_irq() after devm_request_threaded_irq() without the
+IRQF_NO_AUTOEN flag.
 
-Signed-off-by: Imre Kaloz <kaloz@openwrt.org>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Signed-off-by: Gabor Juhos <j4g8y7@gmail.com>
-Link: https://lore.kernel.org/20250514-pinctrl-a37xx-fixes-v2-7-07e9ac1ab737@gmail.com
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+Suggested-by: Douglas Anderson <dianders@chromium.org>
+Reviewed-by: Douglas Anderson <dianders@chromium.org>
+Signed-off-by: Damon Ding <damon.ding@rock-chips.com>
+Link: https://lore.kernel.org/r/20250310104114.2608063-2-damon.ding@rock-chips.com
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pinctrl/mvebu/pinctrl-armada-37xx.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ drivers/gpu/drm/bridge/analogix/analogix_dp_core.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/pinctrl/mvebu/pinctrl-armada-37xx.c b/drivers/pinctrl/mvebu/pinctrl-armada-37xx.c
-index 1a39fd97a9005..1d9aa4e76a23b 100644
---- a/drivers/pinctrl/mvebu/pinctrl-armada-37xx.c
-+++ b/drivers/pinctrl/mvebu/pinctrl-armada-37xx.c
-@@ -358,9 +358,7 @@ static int armada_37xx_pmx_set_by_name(struct pinctrl_dev *pctldev,
+diff --git a/drivers/gpu/drm/bridge/analogix/analogix_dp_core.c b/drivers/gpu/drm/bridge/analogix/analogix_dp_core.c
+index f0305f833b6c0..8c35bc016dbcc 100644
+--- a/drivers/gpu/drm/bridge/analogix/analogix_dp_core.c
++++ b/drivers/gpu/drm/bridge/analogix/analogix_dp_core.c
+@@ -1771,10 +1771,10 @@ analogix_dp_probe(struct device *dev, struct analogix_dp_plat_data *plat_data)
+ 		 * that we can get the current state of the GPIO.
+ 		 */
+ 		dp->irq = gpiod_to_irq(dp->hpd_gpiod);
+-		irq_flags = IRQF_TRIGGER_RISING | IRQF_TRIGGER_FALLING;
++		irq_flags = IRQF_TRIGGER_RISING | IRQF_TRIGGER_FALLING | IRQF_NO_AUTOEN;
+ 	} else {
+ 		dp->irq = platform_get_irq(pdev, 0);
+-		irq_flags = 0;
++		irq_flags = IRQF_NO_AUTOEN;
+ 	}
  
- 	val = grp->val[func];
+ 	if (dp->irq == -ENXIO) {
+@@ -1791,7 +1791,6 @@ analogix_dp_probe(struct device *dev, struct analogix_dp_plat_data *plat_data)
+ 		dev_err(&pdev->dev, "failed to request irq\n");
+ 		goto err_disable_clk;
+ 	}
+-	disable_irq(dp->irq);
  
--	regmap_update_bits(info->regmap, reg, mask, val);
--
--	return 0;
-+	return regmap_update_bits(info->regmap, reg, mask, val);
- }
+ 	return dp;
  
- static int armada_37xx_pmx_set(struct pinctrl_dev *pctldev,
 -- 
 2.39.5
 
