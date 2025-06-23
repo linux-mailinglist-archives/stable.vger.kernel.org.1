@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-156955-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157171-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4CE74AE51D9
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:38:02 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 570A6AE52BE
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:47:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 010124429C3
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:37:37 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 73F8B4A6B74
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:47:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2B3E221FCC;
-	Mon, 23 Jun 2025 21:37:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 18A4F223DE5;
+	Mon, 23 Jun 2025 21:46:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lScSkHFa"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xRAjdAdd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FC714409;
-	Mon, 23 Jun 2025 21:37:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9C9C219A7A;
+	Mon, 23 Jun 2025 21:46:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750714679; cv=none; b=XjoaacVWLoP0NoJ6TYLwv2S51IpahI/K8WKIapE0V+LMeK4mf96b9T7EGwMU+kR4iqeqU+6So0bYTlN0vJXfNGtp1TRG4gRHV+AMHBt61SC1mKekJp/wTFTq///QKX97E94i3PqncGtideGVhbBBgjzfI3GNXT9cBAIGjZoocuQ=
+	t=1750715210; cv=none; b=r5AYBZlczSJI7V3DWtW2LKDbigtYfSO77N9QS1eb2W8B+UorZXdRKYbLgUVLVP7L7lR9AhVIx1pHIn2D2YngFlBP6iDJSEbYnVIefEkU2wt7RqswW4DjZK6FiwzjK0f7JJYpW+66DkyhdumPnJrbz+D2kNnBpo2XAC4FkvVJg2A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750714679; c=relaxed/simple;
-	bh=16dpxD8lAsO60ECWFUqm2srvFDxIVScKXuijJ0A14h0=;
+	s=arc-20240116; t=1750715210; c=relaxed/simple;
+	bh=omYwGHGT28UP6nhq3cH47ZYkNenkgjjBgqklWBz8tb8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OyHkqiMcK/IpQxjPG4xiaYdQJYy6wqJmhSyRynnMF5OMYBTBYXSAM/fwIXTqhFhesxh+lMP6SmKaLlE1bkMK8SyqoKMiALL7vLWXu+wgITmRFhO2rwap5wPwBL/zQkbjqL5QnLjLu7aJfMMQk257XPtePu7sKfgDqBXBzfEZTUM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lScSkHFa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16B69C4CEEA;
-	Mon, 23 Jun 2025 21:37:58 +0000 (UTC)
+	 MIME-Version; b=UnGemTURRfcK2VqLsbLo2AY9XS0F/9nJAFHeUoWLn5yPHGYLgmyvMkJsQm4YyzpRmpRf495TBuxYQwN4DtWft7VCk4lxep5GCr7rYt7xG39JYUF80LCnRfYtj8XmS/Ep29JqL+tZY071MLfUOt0awy8vOrdUdLSEbNqcPlptZWs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xRAjdAdd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 627DCC4CEEA;
+	Mon, 23 Jun 2025 21:46:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750714679;
-	bh=16dpxD8lAsO60ECWFUqm2srvFDxIVScKXuijJ0A14h0=;
+	s=korg; t=1750715210;
+	bh=omYwGHGT28UP6nhq3cH47ZYkNenkgjjBgqklWBz8tb8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lScSkHFaRHMh51cmOmzTGHHRyTxZ/JwZ+08et9xDgSsfl1s5lFqM+CJKRNFe6yoOG
-	 kW/Kr5rUAZ7ioS+Jpe7FAxWlZiwQiYj162fO4AtBAhE0P3bs9P30oAGwohablBBbTA
-	 +be5LVwjXj7E+HwP/JiZnq08aEknX5o86Z3vShyA=
+	b=xRAjdAdd36Xu5H5jsxh/H55lwUgNOeAQpeuEhmDkfUgjnLtT2NtglGMm5vwTkMA+8
+	 Vxgb+cyCjkBTAcHViDJcfQqrZxxt7HwMUYNz8Qh5ZuXL9eqbOtpfvOEp6FC8qksaEK
+	 dAIVm4GGdNWw9AkIt56/YAjq/FzzBfujfZJ6mytk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Rodrigo Siqueira <siqueira@igalia.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 222/355] drm/amdgpu/gfx6: fix CSIB handling
+	Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 6.15 465/592] nvme: always punt polled uring_cmd end_io work to task_work
 Date: Mon, 23 Jun 2025 15:07:03 +0200
-Message-ID: <20250623130633.413942173@linuxfoundation.org>
+Message-ID: <20250623130711.489438767@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130626.716971725@linuxfoundation.org>
-References: <20250623130626.716971725@linuxfoundation.org>
+In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
+References: <20250623130700.210182694@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,40 +60,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Deucher <alexander.deucher@amd.com>
+From: Jens Axboe <axboe@kernel.dk>
 
-[ Upstream commit 8307ebc15c1ea98a8a0b7837af1faa6c01514577 ]
+commit 9ce6c9875f3e995be5fd720b65835291f8a609b1 upstream.
 
-We shouldn't return after the last section.
-We need to update the rest of the CSIB.
+Currently NVMe uring_cmd completions will complete locally, if they are
+polled. This is done because those completions are always invoked from
+task context. And while that is true, there's no guarantee that it's
+invoked under the right ring context, or even task. If someone does
+NVMe passthrough via multiple threads and with a limited number of
+poll queues, then ringA may find completions from ringB. For that case,
+completing the request may not be sound.
 
-Reviewed-by: Rodrigo Siqueira <siqueira@igalia.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Always just punt the passthrough completions via task_work, which will
+redirect the completion, if needed.
+
+Cc: stable@vger.kernel.org
+Fixes: 585079b6e425 ("nvme: wire up async polling for io passthrough commands")
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/amdgpu/gfx_v6_0.c | 2 --
- 1 file changed, 2 deletions(-)
+ drivers/nvme/host/ioctl.c |   21 +++++++--------------
+ 1 file changed, 7 insertions(+), 14 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/gfx_v6_0.c b/drivers/gpu/drm/amd/amdgpu/gfx_v6_0.c
-index 79c52c7a02e3a..d447b2416b98b 100644
---- a/drivers/gpu/drm/amd/amdgpu/gfx_v6_0.c
-+++ b/drivers/gpu/drm/amd/amdgpu/gfx_v6_0.c
-@@ -2896,8 +2896,6 @@ static void gfx_v6_0_get_csb_buffer(struct amdgpu_device *adev,
- 				buffer[count++] = cpu_to_le32(ext->reg_index - 0xa000);
- 				for (i = 0; i < ext->reg_count; i++)
- 					buffer[count++] = cpu_to_le32(ext->extent[i]);
--			} else {
--				return;
- 			}
- 		}
- 	}
--- 
-2.39.5
-
+--- a/drivers/nvme/host/ioctl.c
++++ b/drivers/nvme/host/ioctl.c
+@@ -429,21 +429,14 @@ static enum rq_end_io_ret nvme_uring_cmd
+ 	pdu->result = le64_to_cpu(nvme_req(req)->result.u64);
+ 
+ 	/*
+-	 * For iopoll, complete it directly. Note that using the uring_cmd
+-	 * helper for this is safe only because we check blk_rq_is_poll().
+-	 * As that returns false if we're NOT on a polled queue, then it's
+-	 * safe to use the polled completion helper.
+-	 *
+-	 * Otherwise, move the completion to task work.
++	 * IOPOLL could potentially complete this request directly, but
++	 * if multiple rings are polling on the same queue, then it's possible
++	 * for one ring to find completions for another ring. Punting the
++	 * completion via task_work will always direct it to the right
++	 * location, rather than potentially complete requests for ringA
++	 * under iopoll invocations from ringB.
+ 	 */
+-	if (blk_rq_is_poll(req)) {
+-		if (pdu->bio)
+-			blk_rq_unmap_user(pdu->bio);
+-		io_uring_cmd_iopoll_done(ioucmd, pdu->result, pdu->status);
+-	} else {
+-		io_uring_cmd_do_in_task_lazy(ioucmd, nvme_uring_task_cb);
+-	}
+-
++	io_uring_cmd_do_in_task_lazy(ioucmd, nvme_uring_task_cb);
+ 	return RQ_END_IO_FREE;
+ }
+ 
 
 
 
