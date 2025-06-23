@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-156035-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-155721-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D3D9AE44C4
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:45:37 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C19E6AE436A
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:32:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AB03E4A2C03
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:40:02 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0AC9B3BECAE
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:25:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3C58253340;
-	Mon, 23 Jun 2025 13:39:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B03B24BBE4;
+	Mon, 23 Jun 2025 13:26:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GArBciU6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Kpu87nUD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7200D16419;
-	Mon, 23 Jun 2025 13:39:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 082B34C7F;
+	Mon, 23 Jun 2025 13:26:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750685976; cv=none; b=asrAWvT1oNYeIESqnpTphdJc37p0ZLTjEpng/8V0xpEd+bEArKNsqdMFUj3xbYG95sacIvmWlQRBORSkXwUc+/naSNWa7T5JKmX4NSIUYv4rZ3M/9WKXexuTZNuyOrZ4XpERzRK2wYJOcWhbwiZG1zAKWEIbFsfOABSY9oK8o5U=
+	t=1750685163; cv=none; b=IRNrNow8w9tF0ghU2dRWpbpV1wXXSrLa7UgYXqGlt1PniIVymYqNNWf3C5kmfuBnbp+Xgn9BHK9osIxRf9+JtGLqemyC+ei/9DV4WaF/GlqMgp5kQsOw1aRiBL+JGnB8FzKMuVySqcPwAdpOMxaYw7/84aH9XqCEE0BcwJmxBvU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750685976; c=relaxed/simple;
-	bh=CdexktZbFwoDXiMcXYQDtNxD/z+zO85y40LY9sQS7VM=;
+	s=arc-20240116; t=1750685163; c=relaxed/simple;
+	bh=DT6xVSaY+PgXwGKH4Vl5MX4QM7P3QMkau7bKJq9s3ro=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=mGrKGhO7hxpxGrsUf0prk2sIoJP78Cwjt5x7O3VaARLDCNsSjCeogdt05axlr6QGZqYOpfkz/gHLk4f2ujIxIR8tDvc8LxZIt0MY6E8T5W49FafGM73Dyj06OLpSaYijs6g04n5V9xSfvtT2lzQmVifZQMo331Ivh8VSyBx9BIw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GArBciU6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08899C4CEEA;
-	Mon, 23 Jun 2025 13:39:35 +0000 (UTC)
+	 MIME-Version; b=fEYlUIZhg1/yOqZQpR+8SIzEfAOAm1KD/muleZCMfPLYyFCN2H/DvuZEFCpJnkXZ08JigyIufe4sjiHP8R3MrcJMZmnDE29qPf1BL9HoNaj8dM6ZqW3Bn2dR3EW+copliFo7PYJct/Y0fuUYXwnVHxphwqTRk/A7qc1cAt7+FWU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Kpu87nUD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 891A1C4CEEA;
+	Mon, 23 Jun 2025 13:26:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750685976;
-	bh=CdexktZbFwoDXiMcXYQDtNxD/z+zO85y40LY9sQS7VM=;
+	s=korg; t=1750685162;
+	bh=DT6xVSaY+PgXwGKH4Vl5MX4QM7P3QMkau7bKJq9s3ro=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GArBciU6BaQyhU6NX3uDEacxaBBqZ4f0xep1SBTPBNEOgE+YuyjWxpjt4WemLW8a/
-	 et+G2P5Yl0aQhrIn3zp27HrOPPZO8L/dozHgIpek+szLra6aM6M+fIElSKgRkpQ0KY
-	 2RcLlKWDmGpXok9Zw425jDegVFZdCXAS1yLFUoF0=
+	b=Kpu87nUD1PlUJYGRmz0/ntsvQDvT4URLmM8nqnc4gBXNsIc+Ev5fP0kbXMHtmimjD
+	 GTqWJFPq9j5tw1Vc5kjPhZMhocg/WzUNQCI6VYdCCkiDiXT9EcKW894f0HW9GJTD+K
+	 DqfAiofWO4kBQ44ppZfCYcML3hS8jZumA7TTXy0o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Qasim Ijaz <qasdev00@gmail.com>,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Kees Cook <kees@kernel.org>,
+	Louis Chauvet <louis.chauvet@bootlin.com>,
+	Louis Chauvet <contact@louischauvet.fr>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 274/592] drm/ttm/tests: fix incorrect assert in ttm_bo_unreserve_bulk()
+Subject: [PATCH 5.10 031/355] drm/vkms: Adjust vkms_state->active_planes allocation type
 Date: Mon, 23 Jun 2025 15:03:52 +0200
-Message-ID: <20250623130706.851589080@linuxfoundation.org>
+Message-ID: <20250623130627.746378374@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
-References: <20250623130700.210182694@linuxfoundation.org>
+In-Reply-To: <20250623130626.716971725@linuxfoundation.org>
+References: <20250623130626.716971725@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,45 +61,48 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Qasim Ijaz <qasdev00@gmail.com>
+From: Kees Cook <kees@kernel.org>
 
-[ Upstream commit 878516a9e62cd220379e511d43dcf58df3a6ca9f ]
+[ Upstream commit 258aebf100540d36aba910f545d4d5ddf4ecaf0b ]
 
-In the ttm_bo_unreserve_bulk() test function, resv is allocated using
-kunit_kzalloc(), but the subsequent assertion mistakenly verifies the
-ttm_dev pointer instead of the resv pointer.
+In preparation for making the kmalloc family of allocators type aware,
+we need to make sure that the returned type from the allocation matches
+the type of the variable being assigned. (Before, the allocator would
+always return "void *", which can be implicitly cast to any pointer type.)
 
-Fix the assertion to properly verify the resv pointer.
+The assigned type is "struct vkms_plane_state **", but the returned type
+will be "struct drm_plane **". These are the same size (pointer size), but
+the types don't match. Adjust the allocation type to match the assignment.
 
-Signed-off-by: Qasim Ijaz <qasdev00@gmail.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20250313161424.10688-1-qasdev00@gmail.com
-Reviewed-by: Christian König <christian.koenig@amd.com>
-Signed-off-by: Christian König <christian.koenig@amd.com>
+Signed-off-by: Kees Cook <kees@kernel.org>
+Reviewed-by: Louis Chauvet <louis.chauvet@bootlin.com>
+Fixes: 8b1865873651 ("drm/vkms: totally reworked crc data tracking")
+Link: https://lore.kernel.org/r/20250426061431.work.304-kees@kernel.org
+Signed-off-by: Louis Chauvet <contact@louischauvet.fr>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/ttm/tests/ttm_bo_test.c | 2 +-
+ drivers/gpu/drm/vkms/vkms_crtc.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/ttm/tests/ttm_bo_test.c b/drivers/gpu/drm/ttm/tests/ttm_bo_test.c
-index f8f20d2f61740..e08e5a138420e 100644
---- a/drivers/gpu/drm/ttm/tests/ttm_bo_test.c
-+++ b/drivers/gpu/drm/ttm/tests/ttm_bo_test.c
-@@ -340,7 +340,7 @@ static void ttm_bo_unreserve_bulk(struct kunit *test)
- 	KUNIT_ASSERT_NOT_NULL(test, ttm_dev);
+diff --git a/drivers/gpu/drm/vkms/vkms_crtc.c b/drivers/gpu/drm/vkms/vkms_crtc.c
+index 1ae5cd47d9546..2225e764e709f 100644
+--- a/drivers/gpu/drm/vkms/vkms_crtc.c
++++ b/drivers/gpu/drm/vkms/vkms_crtc.c
+@@ -194,7 +194,7 @@ static int vkms_crtc_atomic_check(struct drm_crtc *crtc,
+ 		i++;
+ 	}
  
- 	resv = kunit_kzalloc(test, sizeof(*resv), GFP_KERNEL);
--	KUNIT_ASSERT_NOT_NULL(test, ttm_dev);
-+	KUNIT_ASSERT_NOT_NULL(test, resv);
- 
- 	err = ttm_device_kunit_init(priv, ttm_dev, false, false);
- 	KUNIT_ASSERT_EQ(test, err, 0);
+-	vkms_state->active_planes = kcalloc(i, sizeof(plane), GFP_KERNEL);
++	vkms_state->active_planes = kcalloc(i, sizeof(*vkms_state->active_planes), GFP_KERNEL);
+ 	if (!vkms_state->active_planes)
+ 		return -ENOMEM;
+ 	vkms_state->num_active_planes = i;
 -- 
 2.39.5
 
