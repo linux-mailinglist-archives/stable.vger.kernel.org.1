@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-156557-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157282-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id AFBC2AE5009
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:21:59 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8CEDDAE5343
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:51:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F1BFE1B61EC4
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:22:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1FA8A3A79FD
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:51:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A96C22257E;
-	Mon, 23 Jun 2025 21:21:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3DA0721B9C9;
+	Mon, 23 Jun 2025 21:51:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y9hiBU/U"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Tp8Qw8UY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB9A07482;
-	Mon, 23 Jun 2025 21:21:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFC22136348;
+	Mon, 23 Jun 2025 21:51:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750713704; cv=none; b=sPyOwPnjRtfhqdiePH/dyzm5AGOzHpf7TTCJ/7DtW4CpnyrAwMAFJf1NrmFHq1dyuEX09KN+Tfv3XvcQgBTH5ViZfXyg6WDeAJRyXNM71MDC/S5o0cqYXYipRiiUA+wffYEeb/m84f9idxPG22TVS3oSpE9br2KYhIi9Sl/AtzQ=
+	t=1750715487; cv=none; b=Yy/2F1iprsBbdSHNRL5WFKz3z07QWuIuYaiHfd3Kyt2GRJtk/Ltr8EhdTMmeeFeoQ4VUJHRT4brFDH9yTIIda+ddNfN/uI8RfEWbMyUUrQA4MVJ7b5L9eR4skllGKceYc9yLfvUDeXanHUnWDFM+th8g06HHcP4Kx49zaF5NKiY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750713704; c=relaxed/simple;
-	bh=dEGsmv5WZmUdNTTZLKSjx2hOysYoAq/vqJRwp5Fg4gY=;
+	s=arc-20240116; t=1750715487; c=relaxed/simple;
+	bh=YaoyhqXInuD943DPzPvLM1W+vhqeobS446ZLauqWAFU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GF4AAy6cRxGQNq191Zk5XObDWRmvk5vIl9L1NZU21k6lac7VfSd8mp+jRN0L9WSV/cKYT7wyUdwVdUN1uC8FAnie/D7qCpRB8u6EKwq6YCGxXKdnFwk6m+Y3hRAlSbHO6Cz1tm8FAqNmHnUeKKGn5IADha/mp2OUBQIng0IIG68=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y9hiBU/U; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51590C4CEEA;
-	Mon, 23 Jun 2025 21:21:44 +0000 (UTC)
+	 MIME-Version; b=ofy56+2/4o76Ft8Cdv10U3f9Vry+TlmXDD95SKMhIQ4Q4NhSYfXzwuxM/QDkBXIJe5j4LXNunqFNBowLt8af3T86v+hb75YktgnmuGeFNBMGgCxNHR2f/+2+1Z0qhvZ12cAtJHw+7vIZC/nA0TC7SGRxPnFKRXOX67QjNO2zAfw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Tp8Qw8UY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89307C4CEEA;
+	Mon, 23 Jun 2025 21:51:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750713704;
-	bh=dEGsmv5WZmUdNTTZLKSjx2hOysYoAq/vqJRwp5Fg4gY=;
+	s=korg; t=1750715486;
+	bh=YaoyhqXInuD943DPzPvLM1W+vhqeobS446ZLauqWAFU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=y9hiBU/Ut5JqRg8lubbIi1ms03Hx8iEBwQze+viIez36bQxZhZhMo/goCybbWjJ/Q
-	 20QfiqVZ8SgNAmUdndVVALjZo1vAyZduC3FKTxJECio+OwOXF/+zyQQvbk8MH4ckMT
-	 IXW8yRMGrsustqcaPrBpBqSMXjy/kBaWSoUgFESk=
+	b=Tp8Qw8UYd1fqeMTEkMXbioA1bLLCLFgX1UtMhSfNX8zoALN8ngLFI8aReenDDCjjf
+	 v0c9soiOdamgAVBjkwmnLIDq7rU0NcTKFFg7eFZRgTpQwMt+Lr3BkcNzGiQlT0+f6U
+	 KeC0pJh7+JcZylGNw3iv0q784d8s77+RothRpL0I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wentao Liang <vulab@iscas.ac.cn>,
-	Miquel Raynal <miquel.raynal@bootlin.com>
-Subject: [PATCH 6.6 085/290] mtd: rawnand: sunxi: Add randomizer configuration in sunxi_nfc_hw_ecc_write_chunk
+	Tali Perry <tali.perry1@gmail.com>,
+	Mohammed Elbadry <mohammed.0.elbadry@gmail.com>,
+	Mukesh Kumar Savaliya <quic_msavaliy@quicinc.com>,
+	Andi Shyti <andi.shyti@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 209/414] i2c: npcm: Add clock toggle recovery
 Date: Mon, 23 Jun 2025 15:05:46 +0200
-Message-ID: <20250623130629.541787391@linuxfoundation.org>
+Message-ID: <20250623130647.233393165@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130626.910356556@linuxfoundation.org>
-References: <20250623130626.910356556@linuxfoundation.org>
+In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
+References: <20250623130642.015559452@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,41 +64,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wentao Liang <vulab@iscas.ac.cn>
+From: Tali Perry <tali.perry1@gmail.com>
 
-commit 44ed1f5ff73e9e115b6f5411744d5a22ea1c855b upstream.
+[ Upstream commit 38010591a0fc3203f1cee45b01ab358b72dd9ab2 ]
 
-The function sunxi_nfc_hw_ecc_write_chunk() calls the
-sunxi_nfc_hw_ecc_write_chunk(), but does not call the configuration
-function sunxi_nfc_randomizer_config(). Consequently, the randomization
-might not conduct correctly, which will affect the lifespan of NAND flash.
-A proper implementation can be found in sunxi_nfc_hw_ecc_write_page_dma().
+During init of the bus, the module checks that the bus is idle.
+If one of the lines are stuck try to recover them first before failing.
+Sometimes SDA and SCL are low if improper reset occurs (e.g., reboot).
 
-Add the sunxi_nfc_randomizer_config() to config randomizer.
-
-Fixes: 4be4e03efc7f ("mtd: nand: sunxi: add randomizer support")
-Cc: stable@vger.kernel.org # v4.6
-Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Tali Perry <tali.perry1@gmail.com>
+Signed-off-by: Mohammed Elbadry <mohammed.0.elbadry@gmail.com>
+Reviewed-by: Mukesh Kumar Savaliya <quic_msavaliy@quicinc.com>
+Link: https://lore.kernel.org/r/20250328193252.1570811-1-mohammed.0.elbadry@gmail.com
+Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mtd/nand/raw/sunxi_nand.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/i2c/busses/i2c-npcm7xx.c | 12 ++++++++----
+ 1 file changed, 8 insertions(+), 4 deletions(-)
 
---- a/drivers/mtd/nand/raw/sunxi_nand.c
-+++ b/drivers/mtd/nand/raw/sunxi_nand.c
-@@ -1049,6 +1049,7 @@ static int sunxi_nfc_hw_ecc_write_chunk(
- 	if (ret)
- 		return ret;
+diff --git a/drivers/i2c/busses/i2c-npcm7xx.c b/drivers/i2c/busses/i2c-npcm7xx.c
+index a693ebb64edf4..7b6eb2bfb412e 100644
+--- a/drivers/i2c/busses/i2c-npcm7xx.c
++++ b/drivers/i2c/busses/i2c-npcm7xx.c
+@@ -1969,10 +1969,14 @@ static int npcm_i2c_init_module(struct npcm_i2c *bus, enum i2c_mode mode,
  
-+	sunxi_nfc_randomizer_config(nand, page, false);
- 	sunxi_nfc_randomizer_enable(nand);
- 	sunxi_nfc_hw_ecc_set_prot_oob_bytes(nand, oob, 0, bbm, page);
+ 	/* Check HW is OK: SDA and SCL should be high at this point. */
+ 	if ((npcm_i2c_get_SDA(&bus->adap) == 0) || (npcm_i2c_get_SCL(&bus->adap) == 0)) {
+-		dev_err(bus->dev, "I2C%d init fail: lines are low\n", bus->num);
+-		dev_err(bus->dev, "SDA=%d SCL=%d\n", npcm_i2c_get_SDA(&bus->adap),
+-			npcm_i2c_get_SCL(&bus->adap));
+-		return -ENXIO;
++		dev_warn(bus->dev, " I2C%d SDA=%d SCL=%d, attempting to recover\n", bus->num,
++				 npcm_i2c_get_SDA(&bus->adap), npcm_i2c_get_SCL(&bus->adap));
++		if (npcm_i2c_recovery_tgclk(&bus->adap)) {
++			dev_err(bus->dev, "I2C%d init fail: SDA=%d SCL=%d\n",
++				bus->num, npcm_i2c_get_SDA(&bus->adap),
++				npcm_i2c_get_SCL(&bus->adap));
++			return -ENXIO;
++		}
+ 	}
  
+ 	npcm_i2c_int_enable(bus, true);
+-- 
+2.39.5
+
 
 
 
