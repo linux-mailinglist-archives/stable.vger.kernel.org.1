@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-157872-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-158192-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id CCFDBAE5604
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:17:10 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C11FEAE576E
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:30:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CE0C61BC7770
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:16:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E62F94416A8
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:28:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46743224B1F;
-	Mon, 23 Jun 2025 22:15:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6857223DCC;
+	Mon, 23 Jun 2025 22:28:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d8xF/j4Q"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U5e9ld5A"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04DD4224B07;
-	Mon, 23 Jun 2025 22:15:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80D85B676;
+	Mon, 23 Jun 2025 22:28:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750716926; cv=none; b=dBx8EpcoakqqCakpNtd91iG7YX1lPsOah8dmXsEeQAtuBm5w4RsuWOO8AcnECHQlGtLsXeKirogx1xGrsj5+FrrtrjlvxMrbjh3teZuDNE3G4xy38psT7V6Kj8aMYVMcSgqB3QdhR3vSyG68lziTIkmmCqA2GrmBZjcoakCa4r8=
+	t=1750717710; cv=none; b=lR8p0kAVPHwgO2zQExj/1nJOt4hbybuta4TV/kdAsPZM3orZx1uP7Bnraj5jvtU88GDHGOE5p800YdmZu25DpdzZWBzEY5ZC4UmQgeDUXfnOWLvLJ7qtsE4SXjAKGRBHgHw/1PY+A9+6EtcFCnJSAvznfATZXbuToXhtZi5UXsk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750716926; c=relaxed/simple;
-	bh=gY0gfT6qWDb7GR8/cxmRFvmd7zoOhZV8QzIcmWD00wc=;
+	s=arc-20240116; t=1750717710; c=relaxed/simple;
+	bh=EZ54n3aLudQfASNTvu/xADx8OwyTd1Tirbb94NWX20U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GyKDs6TZEFogkK9IDjjAFMn+Us62fNCwawalDWarw8+WC3X2WBTtbkPYQ3sVKEFSLzdpdSSYhzU1pWvZJawmtUITHFGpmN1HSRuX6Zx9b68bWMsMQaiygZmdtHgaO5V6tQTylsuQ75QfCQbwyEN5LNdxVAKbM/4W20O991pON1U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d8xF/j4Q; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 904D3C4CEEA;
-	Mon, 23 Jun 2025 22:15:25 +0000 (UTC)
+	 MIME-Version; b=mHeYtnbrXuoZQKPMjEeYaGaNYCi3xcu9dXjkVEVMG2nCLaWvIOEMLZceCP3gABx3wL6B67Oat7C62fC9OURPmx6fVs53eiZLXiNCcxkJDNdy2TVHpMVgM+ITVDviPUdrVt6skdqerkRfmdQVlZCvWbyl/VIBkDHd58QtCDzj5ts=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U5e9ld5A; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B0C5C4CEEA;
+	Mon, 23 Jun 2025 22:28:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750716925;
-	bh=gY0gfT6qWDb7GR8/cxmRFvmd7zoOhZV8QzIcmWD00wc=;
+	s=korg; t=1750717710;
+	bh=EZ54n3aLudQfASNTvu/xADx8OwyTd1Tirbb94NWX20U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=d8xF/j4Qh2SdCHep0LtwtTHvteQ1ebiaY9zkxuZQCnzIGSsgtDoOV7NpKB83SReLN
-	 h72PzMF0aarI2L7zT9UPoFDw4xvMEGt5N24YPTsDvt7ChQTLYmhxC9piyDvnbz2sjJ
-	 wgxXdScTxdAF5YDOBt3EBdFbZgdfVpHItoXo9on0=
+	b=U5e9ld5A1I5DNFntO37D3u75+s335b7esC05UiZWzT7+Gt1mjZPkap4fYqGrszt0M
+	 obpyRg0ommirMCOsWToEOSrmlia4jwAZ1Jhp0eAWvvXOXTaZluXDmXNJOekXjCFwCY
+	 pkPIsuuz6tOoBF/+RdFoi/MhsXDmQW/muJ/JtkkQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	kernel test robot <lkp@intel.com>,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>
-Subject: [PATCH 6.15 569/592] tracing: Do not free "head" on error path of filter_free_subsystem_filters()
+	syzbot+8a583bdd1a5cc0b0e068@syzkaller.appspotmail.com,
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 482/508] mpls: Use rcu_dereference_rtnl() in mpls_route_input_rcu().
 Date: Mon, 23 Jun 2025 15:08:47 +0200
-Message-ID: <20250623130713.976149735@linuxfoundation.org>
+Message-ID: <20250623130656.924242720@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
-References: <20250623130700.210182694@linuxfoundation.org>
+In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
+References: <20250623130645.255320792@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,49 +63,100 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Steven Rostedt <rostedt@goodmis.org>
+From: Kuniyuki Iwashima <kuniyu@google.com>
 
-commit 8a157d8a00e815cab4432653cb50c9cedbbb4931 upstream.
+[ Upstream commit 6dbb0d97c5096072c78a6abffe393584e57ae945 ]
 
-The variable "head" is allocated and initialized as a list before
-allocating the first "item" for the list. If the allocation of "item"
-fails, it frees "head" and then jumps to the label "free_now" which will
-process head and free it.
+As syzbot reported [0], mpls_route_input_rcu() can be called
+from mpls_getroute(), where is under RTNL.
 
-This will cause a UAF of "head", and it doesn't need to free it before
-jumping to the "free_now" label as that code will free it.
+net->mpls.platform_label is only updated under RTNL.
 
-Cc: Masami Hiramatsu <mhiramat@kernel.org>
-Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Link: https://lore.kernel.org/20250610093348.33c5643a@gandalf.local.home
-Fixes: a9d0aab5eb33 ("tracing: Fix regression of filter waiting a long time on RCU synchronization")
-Reported-by: kernel test robot <lkp@intel.com>
-Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
-Closes: https://lore.kernel.org/r/202506070424.lCiNreTI-lkp@intel.com/
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Let's use rcu_dereference_rtnl() in mpls_route_input_rcu() to
+silence the splat.
+
+[0]:
+WARNING: suspicious RCU usage
+6.15.0-rc7-syzkaller-00082-g5cdb2c77c4c3 #0 Not tainted
+ ----------------------------
+net/mpls/af_mpls.c:84 suspicious rcu_dereference_check() usage!
+
+other info that might help us debug this:
+
+rcu_scheduler_active = 2, debug_locks = 1
+1 lock held by syz.2.4451/17730:
+ #0: ffffffff9012a3e8 (rtnl_mutex){+.+.}-{4:4}, at: rtnl_lock net/core/rtnetlink.c:80 [inline]
+ #0: ffffffff9012a3e8 (rtnl_mutex){+.+.}-{4:4}, at: rtnetlink_rcv_msg+0x371/0xe90 net/core/rtnetlink.c:6961
+
+stack backtrace:
+CPU: 1 UID: 0 PID: 17730 Comm: syz.2.4451 Not tainted 6.15.0-rc7-syzkaller-00082-g5cdb2c77c4c3 #0 PREEMPT(full)
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 05/07/2025
+Call Trace:
+ <TASK>
+ __dump_stack lib/dump_stack.c:94 [inline]
+ dump_stack_lvl+0x16c/0x1f0 lib/dump_stack.c:120
+ lockdep_rcu_suspicious+0x166/0x260 kernel/locking/lockdep.c:6865
+ mpls_route_input_rcu+0x1d4/0x200 net/mpls/af_mpls.c:84
+ mpls_getroute+0x621/0x1ea0 net/mpls/af_mpls.c:2381
+ rtnetlink_rcv_msg+0x3c9/0xe90 net/core/rtnetlink.c:6964
+ netlink_rcv_skb+0x16d/0x440 net/netlink/af_netlink.c:2534
+ netlink_unicast_kernel net/netlink/af_netlink.c:1313 [inline]
+ netlink_unicast+0x53a/0x7f0 net/netlink/af_netlink.c:1339
+ netlink_sendmsg+0x8d1/0xdd0 net/netlink/af_netlink.c:1883
+ sock_sendmsg_nosec net/socket.c:712 [inline]
+ __sock_sendmsg net/socket.c:727 [inline]
+ ____sys_sendmsg+0xa98/0xc70 net/socket.c:2566
+ ___sys_sendmsg+0x134/0x1d0 net/socket.c:2620
+ __sys_sendmmsg+0x200/0x420 net/socket.c:2709
+ __do_sys_sendmmsg net/socket.c:2736 [inline]
+ __se_sys_sendmmsg net/socket.c:2733 [inline]
+ __x64_sys_sendmmsg+0x9c/0x100 net/socket.c:2733
+ do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+ do_syscall_64+0xcd/0x230 arch/x86/entry/syscall_64.c:94
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+RIP: 0033:0x7f0a2818e969
+Code: ff ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 40 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 a8 ff ff ff f7 d8 64 89 01 48
+RSP: 002b:00007f0a28f52038 EFLAGS: 00000246 ORIG_RAX: 0000000000000133
+RAX: ffffffffffffffda RBX: 00007f0a283b5fa0 RCX: 00007f0a2818e969
+RDX: 0000000000000003 RSI: 0000200000000080 RDI: 0000000000000003
+RBP: 00007f0a28210ab1 R08: 0000000000000000 R09: 0000000000000000
+R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
+R13: 0000000000000000 R14: 00007f0a283b5fa0 R15: 00007ffce5e9f268
+ </TASK>
+
+Fixes: 0189197f4416 ("mpls: Basic routing support")
+Reported-by: syzbot+8a583bdd1a5cc0b0e068@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/netdev/68507981.a70a0220.395abc.01ef.GAE@google.com/
+Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
+Link: https://patch.msgid.link/20250616201532.1036568-1-kuni1840@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/trace/trace_events_filter.c |    4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ net/mpls/af_mpls.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/kernel/trace/trace_events_filter.c
-+++ b/kernel/trace/trace_events_filter.c
-@@ -1435,10 +1435,8 @@ static void filter_free_subsystem_filter
- 	INIT_LIST_HEAD(&head->list);
+diff --git a/net/mpls/af_mpls.c b/net/mpls/af_mpls.c
+index f1f43894efb8e..2d29d230f5698 100644
+--- a/net/mpls/af_mpls.c
++++ b/net/mpls/af_mpls.c
+@@ -80,8 +80,8 @@ static struct mpls_route *mpls_route_input_rcu(struct net *net, unsigned index)
  
- 	item = kmalloc(sizeof(*item), GFP_KERNEL);
--	if (!item) {
--		kfree(head);
-+	if (!item)
- 		goto free_now;
--	}
- 
- 	item->filter = filter;
- 	list_add_tail(&item->list, &head->list);
+ 	if (index < net->mpls.platform_labels) {
+ 		struct mpls_route __rcu **platform_label =
+-			rcu_dereference(net->mpls.platform_label);
+-		rt = rcu_dereference(platform_label[index]);
++			rcu_dereference_rtnl(net->mpls.platform_label);
++		rt = rcu_dereference_rtnl(platform_label[index]);
+ 	}
+ 	return rt;
+ }
+-- 
+2.39.5
+
 
 
 
