@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-155820-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156123-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6FB33AE4390
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:33:43 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B85DAAE4528
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:49:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D284A7A2FA2
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:29:46 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 07D4117E672
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:43:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 177CE24DCFD;
-	Mon, 23 Jun 2025 13:30:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 151CB252910;
+	Mon, 23 Jun 2025 13:43:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GedZY+eZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PVRsgEMh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5DD22550CF;
-	Mon, 23 Jun 2025 13:30:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4B552472A2;
+	Mon, 23 Jun 2025 13:43:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750685412; cv=none; b=d67Zl/h5gHfYQ+MHS2uccNcN8m5KFrD6KDIzUIxAHCw4G0CpGlCJs/k6GNGY1X6jtK3fLBsfOWeFtkmsUkeULiO+xVuVgej1x2s+PBo0B43x2IoLk3hh3ByxhnNScjSqI1yjFojEVYys4Xq6ZYDN+uHAtrt54MqeR0uGV6ZMib0=
+	t=1750686205; cv=none; b=qs6kIoafkoRvTpLltJZeFL/8M5yFk+FvFLE41wVz+zJtzDU98gqJFKC4V4IbcKc9fEwqTAV/0LP9dNKU7+dw03x3yAL0rkxZp2qcH7DxFzcFdlpw3YFMAN5fixFinpjddv0CIGFDlyX3X5463UO97No7ySBptmx6ndwlWWopG5M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750685412; c=relaxed/simple;
-	bh=vtXEEAFGflJ+Z6K+yZvZuycwBQe0iakKewGJLmjon68=;
+	s=arc-20240116; t=1750686205; c=relaxed/simple;
+	bh=5GnFsoZ6zKVOvEvInc74nLiYMhEg5mgixQ4GyWMEMDc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RUHNgD3wj9PdoW8e79loG+b+CwxJjqQ6L0OgbO1WwcWWHanI6Ugbs9Fv4SNRDlJl5rMt2HnsDbqQ2HaNOGubLMI7Z4WXs927iMmdel0Bdlb0yZIuhKwTT94swng60U/1fp3YlR/Y6cquuDrr/B2lRaNdqaNhWLs1g6uC4gooPig=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GedZY+eZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D992C4CEEA;
-	Mon, 23 Jun 2025 13:30:12 +0000 (UTC)
+	 MIME-Version; b=h+9C+22EI/OyW41eaLLjQXe9RWodDSJCH7knFXNSv4OvmZYh9j0vQNTS8TE/YhJBgXy5SLyB1pN5OE06lWAe6UF59UownE6RIJxeVXKvIa1hofZi7YIHJoY8lNSLwiAmrHzkdcv/2MaycKdrzU6wsQGtD1eRZT37CU8q/YgpZp4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PVRsgEMh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11318C4CEEA;
+	Mon, 23 Jun 2025 13:43:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750685412;
-	bh=vtXEEAFGflJ+Z6K+yZvZuycwBQe0iakKewGJLmjon68=;
+	s=korg; t=1750686205;
+	bh=5GnFsoZ6zKVOvEvInc74nLiYMhEg5mgixQ4GyWMEMDc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GedZY+eZQoc0PZEFRNvStUrgWhmFLI92mui9lDmYbmcT4Cux7nSBdIB9D/sD8bcf5
-	 r3KGWOTYzUzFTxrFrrjVpm3B35xQnAI6aq7gtXoaCxgQtosnqZxGPr7QTcPxTXXluy
-	 IfvOjgid5NbW9s6AzqC191Ssx8lTmJE53oKJgBEc=
+	b=PVRsgEMhc07qnf7OCxpm0aDYQ9dCpD6lNh72PCfmIwUA+ttCF1avdfWpYnF5Vdj6w
+	 N2FhwPqIjlhDSCDaqeEtlAiBcaEGFcwG2XlgBq2HUcaEgcFJG2k5MM1EclmJ+1JcTd
+	 VS45bEcK77++o6y446tDu86QI8ogHm929PLRgVpo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pavel Begunkov <asml.silence@gmail.com>,
-	Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 6.6 006/290] io_uring: account drain memory to cgroup
+	Nas Chung <nas.chung@chipsnmedia.com>,
+	Sebastian Fricke <sebastian.fricke@collabora.com>,
+	Hans Verkuil <hverkuil@xs4all.nl>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.15 309/592] media: qcom: venus: Fix uninitialized variable warning
 Date: Mon, 23 Jun 2025 15:04:27 +0200
-Message-ID: <20250623130627.144078049@linuxfoundation.org>
+Message-ID: <20250623130707.759875648@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130626.910356556@linuxfoundation.org>
-References: <20250623130626.910356556@linuxfoundation.org>
+In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
+References: <20250623130700.210182694@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,38 +63,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pavel Begunkov <asml.silence@gmail.com>
+From: Nas Chung <nas.chung@chipsnmedia.com>
 
-commit f979c20547e72568e3c793bc92c7522bc3166246 upstream.
+[ Upstream commit 8e172e38a623ce284baf2514f963b29e4d47c62e ]
 
-Account drain allocations against memcg. It's not a big problem as each
-such allocation is paired with a request, which is accounted, but it's
-nicer to follow the limits more closely.
+Avoid uninitialized variable when both V4L2_TYPE_IS_OUTPUT() and
+V4L2_TYPE_IS_CAPTURE() return false.
 
-Cc: stable@vger.kernel.org # 6.1
-Signed-off-by: Pavel Begunkov <asml.silence@gmail.com>
-Link: https://lore.kernel.org/r/f8dfdbd755c41fd9c75d12b858af07dfba5bbb68.1746788718.git.asml.silence@gmail.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Nas Chung <nas.chung@chipsnmedia.com>
+Signed-off-by: Sebastian Fricke <sebastian.fricke@collabora.com>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- io_uring/io_uring.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/media/platform/qcom/venus/vdec.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/io_uring/io_uring.c
-+++ b/io_uring/io_uring.c
-@@ -1808,7 +1808,7 @@ queue:
- 	spin_unlock(&ctx->completion_lock);
+diff --git a/drivers/media/platform/qcom/venus/vdec.c b/drivers/media/platform/qcom/venus/vdec.c
+index 9f82882b77bcc..39d0556d7237d 100644
+--- a/drivers/media/platform/qcom/venus/vdec.c
++++ b/drivers/media/platform/qcom/venus/vdec.c
+@@ -154,14 +154,14 @@ find_format_by_index(struct venus_inst *inst, unsigned int index, u32 type)
+ 		return NULL;
  
- 	io_prep_async_link(req);
--	de = kmalloc(sizeof(*de), GFP_KERNEL);
-+	de = kmalloc(sizeof(*de), GFP_KERNEL_ACCOUNT);
- 	if (!de) {
- 		ret = -ENOMEM;
- 		io_req_defer_failed(req, ret);
+ 	for (i = 0; i < size; i++) {
+-		bool valid;
++		bool valid = false;
+ 
+ 		if (fmt[i].type != type)
+ 			continue;
+ 
+ 		if (V4L2_TYPE_IS_OUTPUT(type)) {
+ 			valid = venus_helper_check_codec(inst, fmt[i].pixfmt);
+-		} else if (V4L2_TYPE_IS_CAPTURE(type)) {
++		} else {
+ 			valid = venus_helper_check_format(inst, fmt[i].pixfmt);
+ 
+ 			if (fmt[i].pixfmt == V4L2_PIX_FMT_QC10C &&
+-- 
+2.39.5
+
 
 
 
