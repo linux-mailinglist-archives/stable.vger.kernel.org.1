@@ -1,53 +1,55 @@
-Return-Path: <stable+bounces-155940-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-155806-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 04B2EAE44D6
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:46:18 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 48BDBAE43F8
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:38:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 71C6F3BC114
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:36:45 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BFEDD3B89F8
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:30:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 587A8255E27;
-	Mon, 23 Jun 2025 13:35:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ACFC1255E27;
+	Mon, 23 Jun 2025 13:29:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QGmi7XMW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z/3iMJGm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 138CD238C19;
-	Mon, 23 Jun 2025 13:35:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AC1C239E63;
+	Mon, 23 Jun 2025 13:29:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750685729; cv=none; b=F4xMVsKJSm835A9dDQMp7M33eOny1PJCUrTlhqUgYnfj6eoEBI+XSTo5tyVslpuJNvVo3a6uece8Hex1Dh3hTpfs5doR7IWqGvuRIw5oPxuUueX3sH2fUDvhM1J3kXzlb6Dysk73x7QonPMFmUWIrBppoE3WA9YdAxeET6so688=
+	t=1750685379; cv=none; b=GQO6Y+ZlP39KG+y6oEZ/Wupz2QTQ1uMoPad7kIL6h4vdq16++/ykGd4UVILhmx9/3fWvkaffWUuaUl0XaeeDOPrNlwyJhCHURRK1oTknqu7kN3pJgl7AU47zc2w5VvuuVbcAA8hg1tPDXzWyRWZYJAY5ubmmacZH4Wwm3HBvOEk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750685729; c=relaxed/simple;
-	bh=gWlCGWusZL2vjY161oldXb7G32q8Y9cYXsHU5chlcbw=;
+	s=arc-20240116; t=1750685379; c=relaxed/simple;
+	bh=yULW/eopDeGfU5e4HKbZZxHNxt/VjBGJZ2Hy1xm03lc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=psK4JgGDJog0r/jQ6pKjvevJRGGZugWsPFH8DXJpg6GvUsNqsq/qevrh76o9oIbqpUbW7knuRj6AmHrfaPRohAhTenWaC/zGUBPkLykRw6Cmq3GnSkgYtWjqwjOO9e5UagQ3Btz1ZaZRKZkWO53ptPFU9XfY4fm5FGtA/Cyf0hI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QGmi7XMW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A0BDC4CEF0;
-	Mon, 23 Jun 2025 13:35:28 +0000 (UTC)
+	 MIME-Version:Content-Type; b=H2I8WAVov6SGe/DY/HnDYhOFBdtRXuGPcCwN+lowfHDx1GAbrsuae+RQgYbNFUy153uG2HXy0sUMgL3SDyem820xmgw2HRX7U/ezQqn8nSGhjQqtKgwk3KUl97t3aJ+9wOw2qfSSQl5GAUg/7tjZgDlEl636uBOtOC4+9wRXHXI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z/3iMJGm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00B18C4CEEA;
+	Mon, 23 Jun 2025 13:29:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750685728;
-	bh=gWlCGWusZL2vjY161oldXb7G32q8Y9cYXsHU5chlcbw=;
+	s=korg; t=1750685379;
+	bh=yULW/eopDeGfU5e4HKbZZxHNxt/VjBGJZ2Hy1xm03lc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QGmi7XMWAG57mLbjIRR2lckmCYTDUvkmax8gPxAQdHTU+6le/WhObnNl+dzbdwkip
-	 yEhqf2eMfLdgpmHqm8XwUdoC4aBt7ZZoVZV8tcRs55sCEciq8Pet2rJJylZcJjYdH5
-	 p1l4FmJwYt0vSN4maVslmbnIEvCXR0oJpL8jthp4=
+	b=Z/3iMJGmnzZJ2l5oncg18oZNbA96qHyEN5hQAucAlnIPTFex6hbLJOKojVpQn5/2F
+	 wAAXvDrLNdP+ukI3Cy49GxT+CpcLMiMZbWgso1AldSgP/9i+hmZQ2pz9vQfYRsM5L+
+	 tz2/TVo/o1rDO1jzpgKgnQms6p2kRE71kLfS0t60=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sergey Shtylyov <s.shtylyov@omp.ru>,
-	Helge Deller <deller@gmx.de>,
+	"Dr. David Alan Gilbert" <linux@treblig.org>,
+	Mark Brown <broonie@kernel.org>,
+	WangYuli <wangyuli@uniontech.com>,
+	Kees Cook <kees@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 071/355] fbdev: core: fbcvt: avoid division by 0 in fb_cvt_hperiod()
-Date: Mon, 23 Jun 2025 15:04:32 +0200
-Message-ID: <20250623130628.962943880@linuxfoundation.org>
+Subject: [PATCH 5.10 072/355] randstruct: gcc-plugin: Remove bogus void member
+Date: Mon, 23 Jun 2025 15:04:33 +0200
+Message-ID: <20250623130628.991484851@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
 In-Reply-To: <20250623130626.716971725@linuxfoundation.org>
 References: <20250623130626.716971725@linuxfoundation.org>
@@ -60,46 +62,121 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sergey Shtylyov <s.shtylyov@omp.ru>
+From: Kees Cook <kees@kernel.org>
 
-[ Upstream commit 3f6dae09fc8c306eb70fdfef70726e1f154e173a ]
+[ Upstream commit e136a4062174a9a8d1c1447ca040ea81accfa6a8 ]
 
-In fb_find_mode_cvt(), iff mode->refresh somehow happens to be 0x80000000,
-cvt.f_refresh will become 0 when multiplying it by 2 due to overflow. It's
-then passed to fb_cvt_hperiod(), where it's used as a divider -- division
-by 0 will result in kernel oops. Add a sanity check for cvt.f_refresh to
-avoid such overflow...
+When building the randomized replacement tree of struct members, the
+randstruct GCC plugin would insert, as the first member, a 0-sized void
+member. This appears as though it was done to catch non-designated
+("unnamed") static initializers, which wouldn't be stable since they
+depend on the original struct layout order.
 
-Found by Linux Verification Center (linuxtesting.org) with the Svace static
-analysis tool.
+This was accomplished by having the side-effect of the "void member"
+tripping an assert in GCC internals (count_type_elements) if the member
+list ever needed to be counted (e.g. for figuring out the order of members
+during a non-designated initialization), which would catch impossible type
+(void) in the struct:
 
-Fixes: 96fe6a2109db ("[PATCH] fbdev: Add VESA Coordinated Video Timings (CVT) support")
-Signed-off-by: Sergey Shtylyov <s.shtylyov@omp.ru>
-Signed-off-by: Helge Deller <deller@gmx.de>
+security/landlock/fs.c: In function ‘hook_file_ioctl_common’:
+security/landlock/fs.c:1745:61: internal compiler error: in count_type_elements, at expr.cc:7075
+ 1745 |                         .u.op = &(struct lsm_ioctlop_audit) {
+      |                                                             ^
+
+static HOST_WIDE_INT
+count_type_elements (const_tree type, bool for_ctor_p)
+{
+  switch (TREE_CODE (type))
+...
+    case VOID_TYPE:
+    default:
+      gcc_unreachable ();
+    }
+}
+
+However this is a redundant safety measure since randstruct uses the
+__designated_initializer attribute both internally and within the
+__randomized_layout attribute macro so that this would be enforced
+by the compiler directly even when randstruct was not enabled (via
+-Wdesignated-init).
+
+A recent change in Landlock ended up tripping the same member counting
+routine when using a full-struct copy initializer as part of an anonymous
+initializer. This, however, is a false positive as the initializer is
+copying between identical structs (and hence identical layouts). The
+"path" member is "struct path", a randomized struct, and is being copied
+to from another "struct path", the "f_path" member:
+
+        landlock_log_denial(landlock_cred(file->f_cred), &(struct landlock_request) {
+                .type = LANDLOCK_REQUEST_FS_ACCESS,
+                .audit = {
+                        .type = LSM_AUDIT_DATA_IOCTL_OP,
+                        .u.op = &(struct lsm_ioctlop_audit) {
+                                .path = file->f_path,
+                                .cmd = cmd,
+                        },
+                },
+	...
+
+As can be seen with the coming randstruct KUnit test, there appears to
+be no behavioral problems with this kind of initialization when the void
+member is removed from the randstruct GCC plugin, so remove it.
+
+Reported-by: "Dr. David Alan Gilbert" <linux@treblig.org>
+Closes: https://lore.kernel.org/lkml/Z_PRaKx7q70MKgCA@gallifrey/
+Reported-by: Mark Brown <broonie@kernel.org>
+Closes: https://lore.kernel.org/lkml/20250407-kbuild-disable-gcc-plugins-v1-1-5d46ae583f5e@kernel.org/
+Reported-by: WangYuli <wangyuli@uniontech.com>
+Closes: https://lore.kernel.org/lkml/337D5D4887277B27+3c677db3-a8b9-47f0-93a4-7809355f1381@uniontech.com/
+Fixes: 313dd1b62921 ("gcc-plugins: Add the randstruct plugin")
+Signed-off-by: Kees Cook <kees@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/video/fbdev/core/fbcvt.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ scripts/gcc-plugins/randomize_layout_plugin.c | 18 +-----------------
+ 1 file changed, 1 insertion(+), 17 deletions(-)
 
-diff --git a/drivers/video/fbdev/core/fbcvt.c b/drivers/video/fbdev/core/fbcvt.c
-index 64843464c6613..cd3821bd82e56 100644
---- a/drivers/video/fbdev/core/fbcvt.c
-+++ b/drivers/video/fbdev/core/fbcvt.c
-@@ -312,7 +312,7 @@ int fb_find_mode_cvt(struct fb_videomode *mode, int margins, int rb)
- 	cvt.f_refresh = cvt.refresh;
- 	cvt.interlace = 1;
+diff --git a/scripts/gcc-plugins/randomize_layout_plugin.c b/scripts/gcc-plugins/randomize_layout_plugin.c
+index c7ff92b4189cb..a5aea51ecca99 100644
+--- a/scripts/gcc-plugins/randomize_layout_plugin.c
++++ b/scripts/gcc-plugins/randomize_layout_plugin.c
+@@ -377,29 +377,13 @@ static int relayout_struct(tree type)
  
--	if (!cvt.xres || !cvt.yres || !cvt.refresh) {
-+	if (!cvt.xres || !cvt.yres || !cvt.refresh || cvt.f_refresh > INT_MAX) {
- 		printk(KERN_INFO "fbcvt: Invalid input parameters\n");
- 		return 1;
- 	}
+ 	shuffle(type, (tree *)newtree, shuffle_length);
+ 
+-	/*
+-	 * set up a bogus anonymous struct field designed to error out on unnamed struct initializers
+-	 * as gcc provides no other way to detect such code
+-	 */
+-	list = make_node(FIELD_DECL);
+-	TREE_CHAIN(list) = newtree[0];
+-	TREE_TYPE(list) = void_type_node;
+-	DECL_SIZE(list) = bitsize_zero_node;
+-	DECL_NONADDRESSABLE_P(list) = 1;
+-	DECL_FIELD_BIT_OFFSET(list) = bitsize_zero_node;
+-	DECL_SIZE_UNIT(list) = size_zero_node;
+-	DECL_FIELD_OFFSET(list) = size_zero_node;
+-	DECL_CONTEXT(list) = type;
+-	// to satisfy the constify plugin
+-	TREE_READONLY(list) = 1;
+-
+ 	for (i = 0; i < num_fields - 1; i++)
+ 		TREE_CHAIN(newtree[i]) = newtree[i+1];
+ 	TREE_CHAIN(newtree[num_fields - 1]) = NULL_TREE;
+ 
+ 	main_variant = TYPE_MAIN_VARIANT(type);
+ 	for (variant = main_variant; variant; variant = TYPE_NEXT_VARIANT(variant)) {
+-		TYPE_FIELDS(variant) = list;
++		TYPE_FIELDS(variant) = newtree[0];
+ 		TYPE_ATTRIBUTES(variant) = copy_list(TYPE_ATTRIBUTES(variant));
+ 		TYPE_ATTRIBUTES(variant) = tree_cons(get_identifier("randomize_performed"), NULL_TREE, TYPE_ATTRIBUTES(variant));
+ 		TYPE_ATTRIBUTES(variant) = tree_cons(get_identifier("designated_init"), NULL_TREE, TYPE_ATTRIBUTES(variant));
 -- 
 2.39.5
 
