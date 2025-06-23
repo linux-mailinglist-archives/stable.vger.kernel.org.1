@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-156325-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157295-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 047CAAE4F19
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:12:39 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id A9CD3AE5356
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:52:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2171C3BC7EB
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:12:14 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D02941B66A1D
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:52:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DDD0E221727;
-	Mon, 23 Jun 2025 21:12:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 239A6224B1E;
+	Mon, 23 Jun 2025 21:51:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xDYUBDqV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HRi1kv71"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 991D01DF98B;
-	Mon, 23 Jun 2025 21:12:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D09D5224AFA;
+	Mon, 23 Jun 2025 21:51:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750713138; cv=none; b=n5QEvYPM8zGlROd4k7iPn3Y3IrWAOgnmpPlysbTdCzPakHqPuYu8oiJY1Wt71TrvZNmoBSLxgNjUd/fZGPnCQSTz0Db+0BCmRpnIY5MB/LjoIenZAiuA9XEcWVodJi4wsinSFaWbZ9/SSV3pd6Mvygq3nhoqz7CoAvKQI3Vzj8o=
+	t=1750715518; cv=none; b=acYULNuJW6iNZJtdlm5KrMxLpp7KVpsneyQoBODtz0eVVezd7B0QOyiCSX+UU3Rczx9W7ivRqAiUijdkKVWtLwBVS0TLVR5IKt3JkFRJC6jIXycU6LCK0KpK3F+63/fUI20qViLgd/Atylv5JoPpX6Kbhtj+zs0F7Rp/nMU2few=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750713138; c=relaxed/simple;
-	bh=bH1vtAD20jMDp/KOwytvc7WS25YHHQ+oJTtR45qv3ZY=;
+	s=arc-20240116; t=1750715518; c=relaxed/simple;
+	bh=53/A5mWpzhgWoFXLuPNXVE4dAgQ9i6rRJDJD61aDHdk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ocqOgENiXQaPzSFznKG0FUPAyMMDS0IGztwzmN+0+OFjIcCKc7IpmmWi1ETz4h7HV+bRCJh4xbM/dI4aprBqe7jhJIG6QzXDtyhPFDVko6ex8VnE2dz85Lx/x6Z+eZfhngT1wf0VBqr5EOUkbtNkh2YP2FKOhoqMT6+k88rJjgE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xDYUBDqV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E477FC4CEEA;
-	Mon, 23 Jun 2025 21:12:17 +0000 (UTC)
+	 MIME-Version; b=DRCEcviHKjCNNx7bxv/YFOXCSUZXi2YmIevpn81pLcuMsiqbQ14B/CaunXbdSbXmKFeVX1TqvI5Xyf3u9YCUOTlHHjsjnGi3nP8tgUj0pFXVP6d7qFQOnR3MV7pP2SlZSpnw/njoa3DdJ2HQYDP+XMyzcbqhY/HhS3Jn9rf0NSY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HRi1kv71; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6864BC4CEF1;
+	Mon, 23 Jun 2025 21:51:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750713138;
-	bh=bH1vtAD20jMDp/KOwytvc7WS25YHHQ+oJTtR45qv3ZY=;
+	s=korg; t=1750715518;
+	bh=53/A5mWpzhgWoFXLuPNXVE4dAgQ9i6rRJDJD61aDHdk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xDYUBDqV0poDHYQz3uzNLgkAwMy2UHrBdQl5GJoZi9lY9xJ2Tad8JLVDAkcMeMp8g
-	 VsU9bzqOVMT1XttPi7KIJ8RW5UsaNkAmxy96rnwswv75My7giNik7RyZkQivLsI25M
-	 PbOJ/Dvd1ZZg5/33a3nM8iI62SXQmU8AOvhMQwIs=
+	b=HRi1kv71bJQbOgcZqmwbVZ27xf7J4rLfE4JA+r9Y1yPp7zh5EvPhZSpc6AhDYPWBT
+	 fRHzBmK0O0EessUD3aEjQEH0NZ6TXmtzlaqLTcAy3KmpNGVCJU9wPan1QpK3Y+gFHy
+	 zT6xq06eEikaKckUp1Q4UOo69sYl1ToO8hYeNTHk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nathan Chancellor <nathan@kernel.org>,
-	Masahiro Yamada <masahiroy@kernel.org>
-Subject: [PATCH 5.10 147/355] kbuild: Add CLANG_FLAGS to as-instr
+	Moon Yeounsu <yyyynoom@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 211/414] net: dlink: add synchronization for stats update
 Date: Mon, 23 Jun 2025 15:05:48 +0200
-Message-ID: <20250623130631.128775626@linuxfoundation.org>
+Message-ID: <20250623130647.283197880@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130626.716971725@linuxfoundation.org>
-References: <20250623130626.716971725@linuxfoundation.org>
+In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
+References: <20250623130642.015559452@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,48 +62,107 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nathan Chancellor <nathan@kernel.org>
+From: Moon Yeounsu <yyyynoom@gmail.com>
 
-commit cff6e7f50bd315e5b39c4e46c704ac587ceb965f upstream.
+[ Upstream commit 12889ce926e9a9baf6b83d809ba316af539b89e2 ]
 
-A future change will move CLANG_FLAGS from KBUILD_{A,C}FLAGS to
-KBUILD_CPPFLAGS so that '--target' is available while preprocessing.
-When that occurs, the following errors appear multiple times when
-building ARCH=powerpc powernv_defconfig:
+This patch synchronizes code that accesses from both user-space
+and IRQ contexts. The `get_stats()` function can be called from both
+context.
 
-  ld.lld: error: vmlinux.a(arch/powerpc/kernel/head_64.o):(.text+0x12d4): relocation R_PPC64_ADDR16_HI out of range: -4611686018409717520 is not in [-2147483648, 2147483647]; references '__start___soft_mask_table'
-  ld.lld: error: vmlinux.a(arch/powerpc/kernel/head_64.o):(.text+0x12e8): relocation R_PPC64_ADDR16_HI out of range: -4611686018409717392 is not in [-2147483648, 2147483647]; references '__stop___soft_mask_table'
+`dev->stats.tx_errors` and `dev->stats.collisions` are also updated
+in the `tx_errors()` function. Therefore, these fields must also be
+protected by synchronized.
 
-Diffing the .o.cmd files reveals that -DHAVE_AS_ATHIGH=1 is not present
-anymore, because as-instr only uses KBUILD_AFLAGS, which will no longer
-contain '--target'.
+There is no code that accessses `dev->stats.tx_errors` between the
+previous and updated lines, so the updating point can be moved.
 
-Mirror Kconfig's as-instr and add CLANG_FLAGS explicitly to the
-invocation to ensure the target information is always present.
-
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
-Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Moon Yeounsu <yyyynoom@gmail.com>
+Link: https://patch.msgid.link/20250515075333.48290-1-yyyynoom@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- scripts/Kbuild.include |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/dlink/dl2k.c | 14 +++++++++++++-
+ drivers/net/ethernet/dlink/dl2k.h |  2 ++
+ 2 files changed, 15 insertions(+), 1 deletion(-)
 
---- a/scripts/Kbuild.include
-+++ b/scripts/Kbuild.include
-@@ -110,7 +110,7 @@ as-option = $(call try-run,\
- # Usage: aflags-y += $(call as-instr,instr,option1,option2)
+diff --git a/drivers/net/ethernet/dlink/dl2k.c b/drivers/net/ethernet/dlink/dl2k.c
+index 6bf8a7aeef908..787218d60c6b1 100644
+--- a/drivers/net/ethernet/dlink/dl2k.c
++++ b/drivers/net/ethernet/dlink/dl2k.c
+@@ -146,6 +146,8 @@ rio_probe1 (struct pci_dev *pdev, const struct pci_device_id *ent)
+ 	np->ioaddr = ioaddr;
+ 	np->chip_id = chip_idx;
+ 	np->pdev = pdev;
++
++	spin_lock_init(&np->stats_lock);
+ 	spin_lock_init (&np->tx_lock);
+ 	spin_lock_init (&np->rx_lock);
  
- as-instr = $(call try-run,\
--	printf "%b\n" "$(1)" | $(CC) -Werror $(KBUILD_AFLAGS) -c -x assembler-with-cpp -o "$$TMP" -,$(2),$(3))
-+	printf "%b\n" "$(1)" | $(CC) -Werror $(CLANG_FLAGS) $(KBUILD_AFLAGS) -c -x assembler-with-cpp -o "$$TMP" -,$(2),$(3))
+@@ -865,7 +867,6 @@ tx_error (struct net_device *dev, int tx_status)
+ 	frame_id = (tx_status & 0xffff0000);
+ 	printk (KERN_ERR "%s: Transmit error, TxStatus %4.4x, FrameId %d.\n",
+ 		dev->name, tx_status, frame_id);
+-	dev->stats.tx_errors++;
+ 	/* Ttransmit Underrun */
+ 	if (tx_status & 0x10) {
+ 		dev->stats.tx_fifo_errors++;
+@@ -902,9 +903,15 @@ tx_error (struct net_device *dev, int tx_status)
+ 		rio_set_led_mode(dev);
+ 		/* Let TxStartThresh stay default value */
+ 	}
++
++	spin_lock(&np->stats_lock);
+ 	/* Maximum Collisions */
+ 	if (tx_status & 0x08)
+ 		dev->stats.collisions++;
++
++	dev->stats.tx_errors++;
++	spin_unlock(&np->stats_lock);
++
+ 	/* Restart the Tx */
+ 	dw32(MACCtrl, dr16(MACCtrl) | TxEnable);
+ }
+@@ -1073,7 +1080,9 @@ get_stats (struct net_device *dev)
+ 	int i;
+ #endif
+ 	unsigned int stat_reg;
++	unsigned long flags;
  
- # __cc-option
- # Usage: MY_CFLAGS += $(call __cc-option,$(CC),$(MY_CFLAGS),-march=winchip-c6,-march=i586)
++	spin_lock_irqsave(&np->stats_lock, flags);
+ 	/* All statistics registers need to be acknowledged,
+ 	   else statistic overflow could cause problems */
+ 
+@@ -1123,6 +1132,9 @@ get_stats (struct net_device *dev)
+ 	dr16(TCPCheckSumErrors);
+ 	dr16(UDPCheckSumErrors);
+ 	dr16(IPCheckSumErrors);
++
++	spin_unlock_irqrestore(&np->stats_lock, flags);
++
+ 	return &dev->stats;
+ }
+ 
+diff --git a/drivers/net/ethernet/dlink/dl2k.h b/drivers/net/ethernet/dlink/dl2k.h
+index 0e33e2eaae960..56aff2f0bdbfa 100644
+--- a/drivers/net/ethernet/dlink/dl2k.h
++++ b/drivers/net/ethernet/dlink/dl2k.h
+@@ -372,6 +372,8 @@ struct netdev_private {
+ 	struct pci_dev *pdev;
+ 	void __iomem *ioaddr;
+ 	void __iomem *eeprom_addr;
++	// To ensure synchronization when stats are updated.
++	spinlock_t stats_lock;
+ 	spinlock_t tx_lock;
+ 	spinlock_t rx_lock;
+ 	unsigned int rx_buf_sz;		/* Based on MTU+slack. */
+-- 
+2.39.5
+
 
 
 
