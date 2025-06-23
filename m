@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-156384-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156633-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 092A4AE4F51
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:14:45 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 096ABAE5073
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:25:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9AA8317E6F0
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:14:45 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 19BF31B60D34
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:25:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3BEE322069F;
-	Mon, 23 Jun 2025 21:14:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56DFB1EEA3C;
+	Mon, 23 Jun 2025 21:24:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="B01SYN+G"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wF0U8EgT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC8D91DF98B;
-	Mon, 23 Jun 2025 21:14:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 107AB1E51FA;
+	Mon, 23 Jun 2025 21:24:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750713283; cv=none; b=NHxBrzPPcHrrmaGCcavwx2bZAfbOgbCKeNrhnFoA+dh5J9YeNJ5LHZYg2jfNXkGhC49q9S60K92BH1WCnMbuycrTxas5WWZd2BRyCLusuzzHLBTlUFaO2g8Wno3YFZneqfgkE2Ku8zbyEuyqK1BclAG8eaHUWTknh872r5n7O/M=
+	t=1750713889; cv=none; b=DbPYHe7Wk5O/MmmlrH4ORSpOtAA/NcfxKIw7OqHwW4M0Yp6kup2NktKxRRzVORfu8UOxD8UvSRprHwbeC8cowqtiIHjn7vKVWvGVSsZKG3emDAEjY5yMtwp+pLf8ARD8VTNoVkm5SJnmLmoj9yf3BamRGUvuwxem3oFexeBdKhc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750713283; c=relaxed/simple;
-	bh=overGrjYdluEC46GsNnqdGd8TAFQvxToYFWG1EK2u+Q=;
+	s=arc-20240116; t=1750713889; c=relaxed/simple;
+	bh=8R93PAgZ2d//YaFyvpJf+1wCmCuBURr/hAIFswuyGbA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SekBeBuvTw6L6lGJklfIpGhQNkTarjgpE00H2YKoXezgIP020VPmtAF9SJnUX4TpoaoYbKZZhi0q/lxrz03100Gc+NvBlklbaQkc+b7/V2y8G/Tub/05mQiE8/Ls7AURPNFfhFhSY5pCr83J3RP02WfkT6++GAnOh4hCzsFXAG8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=B01SYN+G; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83A75C4CEEA;
-	Mon, 23 Jun 2025 21:14:42 +0000 (UTC)
+	 MIME-Version; b=OK6TWYBgsIBghQDDLkCCV6ge4aWeBd0sxuxyLcSRW5LylhSqee60WkuvLmuIHeRCIko7Y5hcfvn500HNF/6YUWsFfSuXcn5FfO1mE13TbBcllHqkIdQdRnYDUJs1dHBwSEV8Zun2itRSoYgXjqEbru0szYBq4q3YikLpVrn9orU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wF0U8EgT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9DCE7C4CEEA;
+	Mon, 23 Jun 2025 21:24:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750713282;
-	bh=overGrjYdluEC46GsNnqdGd8TAFQvxToYFWG1EK2u+Q=;
+	s=korg; t=1750713888;
+	bh=8R93PAgZ2d//YaFyvpJf+1wCmCuBURr/hAIFswuyGbA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=B01SYN+GZmDwy3fG52hzbCXq6bKQeScdfAPLeUQbUM90nLRjI8zLJompifXo5MSPa
-	 Cm39RW0afWKrwtzaLjtc5cnw3xucqHeIeNsNQOCUcvZ0u/j9c+kyQ5qIotMIeWSO9R
-	 Z1RCDgsDwn0OfJ+xpM7zZGV8qlk3hvH3jtaSPjLY=
+	b=wF0U8EgTxoXYQBM/VU/LEutVPSuXLy5iBw6pLoMqaIFw/MbfwLdXM58XE5y/ZwxVc
+	 OOih/+FcmBZZhBnwfheTaex+uKrJfM+kzeao0yyGGpLUoOj3osN/dm60/87xs21tOy
+	 S+z9aP1c/56r4XnyrxjPcJZEBiNQ/HZstuuzTh3g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Miaoqing Pan <quic_miaoqing@quicinc.com>,
-	Johan Hovold <johan+linaro@kernel.org>,
-	Jeff Johnson <jeff.johnson@oss.qualcomm.com>
-Subject: [PATCH 6.12 036/414] wifi: ath12k: fix ring-buffer corruption
+	Henry Martin <bsdhenrymartin@gmail.com>,
+	Andrew Jeffery <andrew@codeconstruct.com.au>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 128/508] soc: aspeed: Add NULL check in aspeed_lpc_enable_snoop()
 Date: Mon, 23 Jun 2025 15:02:53 +0200
-Message-ID: <20250623130642.930130378@linuxfoundation.org>
+Message-ID: <20250623130648.441592665@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
-References: <20250623130642.015559452@linuxfoundation.org>
+In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
+References: <20250623130645.255320792@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,104 +63,78 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan+linaro@kernel.org>
+From: Henry Martin <bsdhenrymartin@gmail.com>
 
-commit 6b67d2cf14ea997061f61e9c8afd4e1c0f22acb9 upstream.
+[ Upstream commit f1706e0e1a74b095cbc60375b9b1e6205f5f4c98 ]
 
-Users of the Lenovo ThinkPad X13s have reported that Wi-Fi sometimes
-breaks and the log fills up with errors like:
+devm_kasprintf() returns NULL when memory allocation fails. Currently,
+aspeed_lpc_enable_snoop() does not check for this case, which results in a
+NULL pointer dereference.
 
-    ath11k_pci 0006:01:00.0: HTC Rx: insufficient length, got 1484, expected 1492
-    ath11k_pci 0006:01:00.0: HTC Rx: insufficient length, got 1460, expected 1484
+Add NULL check after devm_kasprintf() to prevent this issue.
 
-which based on a quick look at the ath11k driver seemed to indicate some
-kind of ring-buffer corruption.
-
-Miaoqing Pan tracked it down to the host seeing the updated destination
-ring head pointer before the updated descriptor, and the error handling
-for that in turn leaves the ring buffer in an inconsistent state.
-
-While this has not yet been observed with ath12k, the ring-buffer
-implementation is very similar to the ath11k one and it suffers from the
-same bugs.
-
-Add the missing memory barrier to make sure that the descriptor is read
-after the head pointer to address the root cause of the corruption while
-fixing up the error handling in case there are ever any (ordering) bugs
-on the device side.
-
-Note that the READ_ONCE() are only needed to avoid compiler mischief in
-case the ring-buffer helpers are ever inlined.
-
-Tested-on: WCN7850 hw2.0 WLAN.HMT.1.0.c5-00481-QCAHMTSWPL_V1.0_V2.0_SILICONZ-3
-
-Fixes: d889913205cf ("wifi: ath12k: driver for Qualcomm Wi-Fi 7 devices")
-Cc: stable@vger.kernel.org	# 6.3
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=218623
-Link: https://lore.kernel.org/20250310010217.3845141-3-quic_miaoqing@quicinc.com
-Cc: Miaoqing Pan <quic_miaoqing@quicinc.com>
-Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
-Reviewed-by: Miaoqing Pan <quic_miaoqing@quicinc.com>
-Link: https://patch.msgid.link/20250321095219.19369-1-johan+linaro@kernel.org
-Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 3772e5da4454 ("drivers/misc: Aspeed LPC snoop output using misc chardev")
+Signed-off-by: Henry Martin <bsdhenrymartin@gmail.com>
+Link: https://patch.msgid.link/20250401074647.21300-1-bsdhenrymartin@gmail.com
+[arj: Fix Fixes: tag to use subject from 3772e5da4454]
+Signed-off-by: Andrew Jeffery <andrew@codeconstruct.com.au>
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath12k/ce.c  |   11 +++++------
- drivers/net/wireless/ath/ath12k/hal.c |    4 ++--
- 2 files changed, 7 insertions(+), 8 deletions(-)
+ drivers/soc/aspeed/aspeed-lpc-snoop.c | 15 +++++++++++++--
+ 1 file changed, 13 insertions(+), 2 deletions(-)
 
---- a/drivers/net/wireless/ath/ath12k/ce.c
-+++ b/drivers/net/wireless/ath/ath12k/ce.c
-@@ -343,11 +343,10 @@ static int ath12k_ce_completed_recv_next
- 		goto err;
+diff --git a/drivers/soc/aspeed/aspeed-lpc-snoop.c b/drivers/soc/aspeed/aspeed-lpc-snoop.c
+index d9bdc2e084086..22619b853f449 100644
+--- a/drivers/soc/aspeed/aspeed-lpc-snoop.c
++++ b/drivers/soc/aspeed/aspeed-lpc-snoop.c
+@@ -201,11 +201,15 @@ static int aspeed_lpc_enable_snoop(struct aspeed_lpc_snoop *lpc_snoop,
+ 	lpc_snoop->chan[channel].miscdev.minor = MISC_DYNAMIC_MINOR;
+ 	lpc_snoop->chan[channel].miscdev.name =
+ 		devm_kasprintf(dev, GFP_KERNEL, "%s%d", DEVICE_NAME, channel);
++	if (!lpc_snoop->chan[channel].miscdev.name) {
++		rc = -ENOMEM;
++		goto err_free_fifo;
++	}
+ 	lpc_snoop->chan[channel].miscdev.fops = &snoop_fops;
+ 	lpc_snoop->chan[channel].miscdev.parent = dev;
+ 	rc = misc_register(&lpc_snoop->chan[channel].miscdev);
+ 	if (rc)
+-		return rc;
++		goto err_free_fifo;
+ 
+ 	/* Enable LPC snoop channel at requested port */
+ 	switch (channel) {
+@@ -222,7 +226,8 @@ static int aspeed_lpc_enable_snoop(struct aspeed_lpc_snoop *lpc_snoop,
+ 		hicrb_en = HICRB_ENSNP1D;
+ 		break;
+ 	default:
+-		return -EINVAL;
++		rc = -EINVAL;
++		goto err_misc_deregister;
  	}
  
-+	/* Make sure descriptor is read after the head pointer. */
-+	dma_rmb();
+ 	regmap_update_bits(lpc_snoop->regmap, HICR5, hicr5_en, hicr5_en);
+@@ -232,6 +237,12 @@ static int aspeed_lpc_enable_snoop(struct aspeed_lpc_snoop *lpc_snoop,
+ 		regmap_update_bits(lpc_snoop->regmap, HICRB,
+ 				hicrb_en, hicrb_en);
+ 
++	return 0;
 +
- 	*nbytes = ath12k_hal_ce_dst_status_get_length(desc);
--	if (*nbytes == 0) {
--		ret = -EIO;
--		goto err;
--	}
- 
- 	*skb = pipe->dest_ring->skb[sw_index];
- 	pipe->dest_ring->skb[sw_index] = NULL;
-@@ -380,8 +379,8 @@ static void ath12k_ce_recv_process_cb(st
- 		dma_unmap_single(ab->dev, ATH12K_SKB_RXCB(skb)->paddr,
- 				 max_nbytes, DMA_FROM_DEVICE);
- 
--		if (unlikely(max_nbytes < nbytes)) {
--			ath12k_warn(ab, "rxed more than expected (nbytes %d, max %d)",
-+		if (unlikely(max_nbytes < nbytes || nbytes == 0)) {
-+			ath12k_warn(ab, "unexpected rx length (nbytes %d, max %d)",
- 				    nbytes, max_nbytes);
- 			dev_kfree_skb_any(skb);
- 			continue;
---- a/drivers/net/wireless/ath/ath12k/hal.c
-+++ b/drivers/net/wireless/ath/ath12k/hal.c
-@@ -1943,7 +1943,7 @@ u32 ath12k_hal_ce_dst_status_get_length(
- {
- 	u32 len;
- 
--	len = le32_get_bits(desc->flags, HAL_CE_DST_STATUS_DESC_FLAGS_LEN);
-+	len = le32_get_bits(READ_ONCE(desc->flags), HAL_CE_DST_STATUS_DESC_FLAGS_LEN);
- 	desc->flags &= ~cpu_to_le32(HAL_CE_DST_STATUS_DESC_FLAGS_LEN);
- 
- 	return len;
-@@ -2113,7 +2113,7 @@ void ath12k_hal_srng_access_begin(struct
- 		srng->u.src_ring.cached_tp =
- 			*(volatile u32 *)srng->u.src_ring.tp_addr;
- 	else
--		srng->u.dst_ring.cached_hp = *srng->u.dst_ring.hp_addr;
-+		srng->u.dst_ring.cached_hp = READ_ONCE(*srng->u.dst_ring.hp_addr);
++err_misc_deregister:
++	misc_deregister(&lpc_snoop->chan[channel].miscdev);
++err_free_fifo:
++	kfifo_free(&lpc_snoop->chan[channel].fifo);
+ 	return rc;
  }
  
- /* Update cached ring head/tail pointers to HW. ath12k_hal_srng_access_begin()
+-- 
+2.39.5
+
 
 
 
