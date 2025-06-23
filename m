@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-157225-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156998-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 390F3AE5320
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:50:36 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id ADB27AE5209
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:39:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AAB937A8464
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:48:03 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0B77D7A631C
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:38:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D9D73223DCE;
-	Mon, 23 Jun 2025 21:49:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F010F1E22E6;
+	Mon, 23 Jun 2025 21:39:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RKRj03yq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nCRttMS+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97B6D221FCC;
-	Mon, 23 Jun 2025 21:49:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACCBE1EE7C6;
+	Mon, 23 Jun 2025 21:39:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750715346; cv=none; b=IVGPPbvNsqmQgwwil8GpbkKcMRaB7T2IzVhJVooHjYrOL6j6kXzuEnEARnNcUnIxLNeeXHUJtOJG4G6Azdb8OH8cuPaHGI5jvp5g/J6H4B1w2qcAwIqejH7xfkFp3meVy8UxZwUAwK2R0f9v+1BfaStr+Yl0QrYF5F3DRnNm1+Q=
+	t=1750714784; cv=none; b=WP5ArU85/mBzflRVYzvRVvvDZy9whptI1RtLgH6pUmv++BHHio2M9eUyGHllDOYIKS10eFRqlpDF5nzmOQrAWWSibzpyPtyIeECZQdp1T2TWdjT6NqcdX4Kg41fEpebK+pL6MifU94E1uSV6bww/uHjnvf2B3cZcftEvx78Lo2k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750715346; c=relaxed/simple;
-	bh=ZL5AFCgdyXwIGk4Yb8rB65FH30OnjhI+MW6uy84ZkTw=;
+	s=arc-20240116; t=1750714784; c=relaxed/simple;
+	bh=7UwPdoB1KqsK03/r9ouVIoJVkRZfcbduaAsdGXBls/A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sm9MT5JKUIh4/MO6eT3ZL8IhV7Xs1VfOQ6x15vX6Lt72hPsE6ylOia8rd10CPmYI9fta6en4/WSSNmMIa1ehrz4fk5m5uEmppdk4660VsTVv5yPAHd/Bq+8hXuHL26p9GTEGiPstCHVsj4/1S2HH1tPwkI0lvA06uw+TS2u1vi4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RKRj03yq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30813C4CEEA;
-	Mon, 23 Jun 2025 21:49:06 +0000 (UTC)
+	 MIME-Version; b=UdtGiS1dxHQ+D50YEueskxGCS9rwi7m1py4TCRfh2du3xs1NRaVDgvI0FSvisAJUswMyLoNKxdms8N5M5Z5VR1GG5eRa+4/gln8kZm3Ybkn8NDbG7mrXrVGDXWZa9KXuWO1pnQwSusUXR+sUg4GXSMt+rXdgfffPCAheuvbh00U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nCRttMS+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4486AC4CEEA;
+	Mon, 23 Jun 2025 21:39:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750715346;
-	bh=ZL5AFCgdyXwIGk4Yb8rB65FH30OnjhI+MW6uy84ZkTw=;
+	s=korg; t=1750714784;
+	bh=7UwPdoB1KqsK03/r9ouVIoJVkRZfcbduaAsdGXBls/A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RKRj03yqBrgCHK1KC/M8ibJ63juktpuZRhAvNjheTEV639rPv8qE945CU0lpyUtgQ
-	 HYl8HyfIgIzbxaFp2gqLVGXCPEu+CUCfvB9TXlJ6t4t3lEnO51WRbz1/hqe1+/6MlO
-	 BFHXnDXLKOt94FJvV9Z5NzzB0eV32yj7OcYdkiwI=
+	b=nCRttMS+e3Uqw4GHimwSI51gdJHaIN+xvuNBoLlIJIV3H1yfuu+OzNN0EzloXYmJY
+	 awumrND3r4B/uCop4k3rCIhm385GSMvZ5iFIkE3V1B3iLzRABfT5gPTu5I1sHR37tj
+	 OEQhiRP+tMxr5L2Zckjdu/egwdvNluuMhrfOcgzE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jeff Johnson <quic_jjohnson@quicinc.com>,
-	Kalle Valo <quic_kvalo@quicinc.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 229/508] wifi: ath11k: fix soc_dp_stats debugfs file permission
+	Khem Raj <raj.khem@gmail.com>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Subject: [PATCH 6.12 137/414] mips: Add -std= flag specified in KBUILD_CFLAGS to vdso CFLAGS
 Date: Mon, 23 Jun 2025 15:04:34 +0200
-Message-ID: <20250623130650.893592925@linuxfoundation.org>
+Message-ID: <20250623130645.479384050@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
-References: <20250623130645.255320792@linuxfoundation.org>
+In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
+References: <20250623130642.015559452@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,61 +61,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jeff Johnson <quic_jjohnson@quicinc.com>
+From: Khem Raj <raj.khem@gmail.com>
 
-[ Upstream commit fa645e663165d69f05f95a0c3aa3b3d08f4fdeda ]
+commit 0f4ae7c6ecb89bfda026d210dcf8216fb67d2333 upstream.
 
-Currently the soc_dp_stats debugfs file has the following permissions:
+GCC 15 changed the default C standard dialect from gnu17 to gnu23,
+which should not have impacted the kernel because it explicitly requests
+the gnu11 standard in the main Makefile. However, mips/vdso code uses
+its own CFLAGS without a '-std=' value, which break with this dialect
+change because of the kernel's own definitions of bool, false, and true
+conflicting with the C23 reserved keywords.
 
--rw------- 1 root root 0 Mar  4 15:04 /sys/kernel/debug/ath11k/pci-0000:03:00.0/soc_dp_stats
+  include/linux/stddef.h:11:9: error: cannot use keyword 'false' as enumeration constant
+     11 |         false   = 0,
+        |         ^~~~~
+  include/linux/stddef.h:11:9: note: 'false' is a keyword with '-std=c23' onwards
+  include/linux/types.h:35:33: error: 'bool' cannot be defined via 'typedef'
+     35 | typedef _Bool                   bool;
+        |                                 ^~~~
+  include/linux/types.h:35:33: note: 'bool' is a keyword with '-std=c23' onwards
 
-However this file does not actually support write operations -- no .write()
-method is registered. Therefore use the correct permissions when creating
-the file.
+Add -std as specified in KBUILD_CFLAGS to the decompressor and purgatory
+CFLAGS to eliminate these errors and make the C standard version of these
+areas match the rest of the kernel.
 
-After the change:
-
--r-------- 1 root root 0 Mar  4 15:15 /sys/kernel/debug/ath11k/pci-0000:03:00.0/soc_dp_stats
-
-Tested-on: WCN6855 hw2.1 PCI WLAN.HSP.1.1-03125-QCAHSPSWPL_V1_V2_SILICONZ_LITE-3.6510.30
-
-Signed-off-by: Jeff Johnson <quic_jjohnson@quicinc.com>
-Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
-Link: https://msgid.link/20240305-fix-soc_dp_stats-permission-v1-1-2ec10b42f755@quicinc.com
-Stable-dep-of: 9f6e82d11bb9 ("wifi: ath11k: avoid burning CPU in ath11k_debugfs_fw_stats_request()")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Khem Raj <raj.khem@gmail.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/ath/ath11k/debugfs.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ arch/mips/vdso/Makefile |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/wireless/ath/ath11k/debugfs.c b/drivers/net/wireless/ath/ath11k/debugfs.c
-index 5bb6fd17fdf6f..34aa04d27a1d7 100644
---- a/drivers/net/wireless/ath/ath11k/debugfs.c
-+++ b/drivers/net/wireless/ath/ath11k/debugfs.c
-@@ -1,6 +1,7 @@
- // SPDX-License-Identifier: BSD-3-Clause-Clear
- /*
-  * Copyright (c) 2018-2020 The Linux Foundation. All rights reserved.
-+ * Copyright (c) 2021-2024 Qualcomm Innovation Center, Inc. All rights reserved.
-  */
- 
- #include <linux/vmalloc.h>
-@@ -979,7 +980,7 @@ int ath11k_debugfs_pdev_create(struct ath11k_base *ab)
- 	debugfs_create_file("simulate_fw_crash", 0600, ab->debugfs_soc, ab,
- 			    &fops_simulate_fw_crash);
- 
--	debugfs_create_file("soc_dp_stats", 0600, ab->debugfs_soc, ab,
-+	debugfs_create_file("soc_dp_stats", 0400, ab->debugfs_soc, ab,
- 			    &fops_soc_dp_stats);
- 
- 	if (ab->hw_params.sram_dump.start != 0)
--- 
-2.39.5
-
+--- a/arch/mips/vdso/Makefile
++++ b/arch/mips/vdso/Makefile
+@@ -27,6 +27,7 @@ endif
+ # offsets.
+ cflags-vdso := $(ccflags-vdso) \
+ 	$(filter -W%,$(filter-out -Wa$(comma)%,$(KBUILD_CFLAGS))) \
++	$(filter -std=%,$(KBUILD_CFLAGS)) \
+ 	-O3 -g -fPIC -fno-strict-aliasing -fno-common -fno-builtin -G 0 \
+ 	-mrelax-pic-calls $(call cc-option, -mexplicit-relocs) \
+ 	-fno-stack-protector -fno-jump-tables -DDISABLE_BRANCH_PROFILING \
 
 
 
