@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-157612-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157496-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6FF3AAE54D2
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:05:30 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 60A3FAE5463
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:01:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0C52A4C2628
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:05:02 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 315321BC15CA
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:00:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B608C222590;
-	Mon, 23 Jun 2025 22:04:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 226A1223DEE;
+	Mon, 23 Jun 2025 22:00:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="B7l4ji/U"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h1rbv84m"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71BDE3FB1B;
-	Mon, 23 Jun 2025 22:04:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D201C221543;
+	Mon, 23 Jun 2025 22:00:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750716294; cv=none; b=dNQ8IAye1Lqez7rDDW2noLrwesg07h9ol3MrrhygspdWbL0XzIrQZ9eM0gToS9HyiTLlSeufqymd9cwDxUK4EEVikE5Yx2qwdHayRf2cnTOilLQmspGbHI2B3uyBailzgyouJvm1nWpAGv0GxULJKL8JZubf7kYZVQNJ8UUux3I=
+	t=1750716009; cv=none; b=Z+KYsKMBKxfofFYmpGjDO9fDAOhTadA9b6DK0lmUNScSRNz2R2RgocEUFdQNPar6pE+KGiGsevfrLyiSvra44QpAZOXQGq3vTtnMe2Wj5YI+4DQmXvn1K5j3j42JvUjimcAEFUDr+yPke1RwekRh7JFo13WIMuEequdSuVNaRXY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750716294; c=relaxed/simple;
-	bh=ioFG+NfGpGSMNl88S/VkEkRX5wAdlUsV76C3KowqE9k=;
+	s=arc-20240116; t=1750716009; c=relaxed/simple;
+	bh=vFr+y4r5VvjUAfWLTnOxVMQQRnFr7ax3JMb7py1JbMU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=plgbuxgy7BwgMSe9/qn7x/J/SDcRSOMnmw17eL23MXazcDRUPG0TkggcVrzcERWKIBKMQ71gxvZ40G65bUBtNSUBJjxlE9PZ4YsvcsXXrSrcyr/TZ9kFTAL7MvMOVVqPiGp20scTmCe07bEYeh5kGm/7jKKDbL+pCB8rUyThEwE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=B7l4ji/U; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02161C4CEEA;
-	Mon, 23 Jun 2025 22:04:53 +0000 (UTC)
+	 MIME-Version; b=qh+NrN2m6CqsPuvdrBhs9FDM7lzn7EfuuV8i/QWOt4dr3jAcmmQsPiiB8IWB+OeDhecAqNTKdeNq2SxLuqhDpHb5u4L0bwTahPXfuUwFnFcG0PWdxC7qU1Z9nR+ucJ49QTXZkOmdRtVbH4/IGXP4ljt1+ZYArCtBmdye0KSYyio=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=h1rbv84m; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68B67C4CEED;
+	Mon, 23 Jun 2025 22:00:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750716294;
-	bh=ioFG+NfGpGSMNl88S/VkEkRX5wAdlUsV76C3KowqE9k=;
+	s=korg; t=1750716009;
+	bh=vFr+y4r5VvjUAfWLTnOxVMQQRnFr7ax3JMb7py1JbMU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=B7l4ji/Uu78eoxhKy68ym00qpee5Eilm47T3zGKtjSATOd+HgOmkhhi+jQyEHjONU
-	 kP1RELdKmqvUi53yjSOeJGukkvPpfY2GDgSIlds470UtvkqY4ygZ76Fv9poCRXbbVj
-	 xIXolE1/3Pc6SPEsmU29asnqv5+anjP/U4FGemhk=
+	b=h1rbv84mi9QNfnf/cXd8NGls57eM7nnlJwk8bR7jiRm5qx1U9/SZGOBn/aYdCy2wF
+	 WAFBf/rf+n77cSGYFbbK+8UNGw0jXQQpnFE7zTSLm6LkMPBTcGxLdWHL9xnaiA612i
+	 WrscwlXxjuI6v25zycxFuM2jwSdGTRlKCwn0u7pQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vitaly Lifshits <vitaly.lifshits@intel.com>,
-	Mor Bar-Gabay <morx.bar.gabay@intel.com>,
-	Gil Fine <gil.fine@linux.intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	syzkaller <syzkaller@googlegroups.com>,
+	John Cheung <john.cs.hey@gmail.com>,
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	Paul Moore <paul@paul-moore.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 254/290] e1000e: set fixed clock frequency indication for Nahum 11 and Nahum 13
-Date: Mon, 23 Jun 2025 15:08:35 +0200
-Message-ID: <20250623130634.565741466@linuxfoundation.org>
+Subject: [PATCH 5.10 315/355] calipso: Fix null-ptr-deref in calipso_req_{set,del}attr().
+Date: Mon, 23 Jun 2025 15:08:36 +0200
+Message-ID: <20250623130636.243745839@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130626.910356556@linuxfoundation.org>
-References: <20250623130626.910356556@linuxfoundation.org>
+In-Reply-To: <20250623130626.716971725@linuxfoundation.org>
+References: <20250623130626.716971725@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,91 +65,198 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vitaly Lifshits <vitaly.lifshits@intel.com>
+From: Kuniyuki Iwashima <kuniyu@google.com>
 
-[ Upstream commit 688a0d61b2d7427189c4eb036ce485d8fc957cbb ]
+[ Upstream commit 10876da918fa1aec0227fb4c67647513447f53a9 ]
 
-On some systems with Nahum 11 and Nahum 13 the value of the XTAL clock in
-the software STRAP is incorrect. This causes the PTP timer to run at the
-wrong rate and can lead to synchronization issues.
+syzkaller reported a null-ptr-deref in sock_omalloc() while allocating
+a CALIPSO option.  [0]
 
-The STRAP value is configured by the system firmware, and a firmware
-update is not always possible. Since the XTAL clock on these systems
-always runs at 38.4MHz, the driver may ignore the STRAP and just set
-the correct value.
+The NULL is of struct sock, which was fetched by sk_to_full_sk() in
+calipso_req_setattr().
 
-Fixes: cc23f4f0b6b9 ("e1000e: Add support for Meteor Lake")
-Signed-off-by: Vitaly Lifshits <vitaly.lifshits@intel.com>
-Tested-by: Mor Bar-Gabay <morx.bar.gabay@intel.com>
-Reviewed-by: Gil Fine <gil.fine@linux.intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Since commit a1a5344ddbe8 ("tcp: avoid two atomic ops for syncookies"),
+reqsk->rsk_listener could be NULL when SYN Cookie is returned to its
+client, as hinted by the leading SYN Cookie log.
+
+Here are 3 options to fix the bug:
+
+  1) Return 0 in calipso_req_setattr()
+  2) Return an error in calipso_req_setattr()
+  3) Alaways set rsk_listener
+
+1) is no go as it bypasses LSM, but 2) effectively disables SYN Cookie
+for CALIPSO.  3) is also no go as there have been many efforts to reduce
+atomic ops and make TCP robust against DDoS.  See also commit 3b24d854cb35
+("tcp/dccp: do not touch listener sk_refcnt under synflood").
+
+As of the blamed commit, SYN Cookie already did not need refcounting,
+and no one has stumbled on the bug for 9 years, so no CALIPSO user will
+care about SYN Cookie.
+
+Let's return an error in calipso_req_setattr() and calipso_req_delattr()
+in the SYN Cookie case.
+
+This can be reproduced by [1] on Fedora and now connect() of nc times out.
+
+[0]:
+TCP: request_sock_TCPv6: Possible SYN flooding on port [::]:20002. Sending cookies.
+Oops: general protection fault, probably for non-canonical address 0xdffffc0000000006: 0000 [#1] PREEMPT SMP KASAN NOPTI
+KASAN: null-ptr-deref in range [0x0000000000000030-0x0000000000000037]
+CPU: 3 UID: 0 PID: 12262 Comm: syz.1.2611 Not tainted 6.14.0 #2
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.16.3-0-ga6ed6b701f0a-prebuilt.qemu.org 04/01/2014
+RIP: 0010:read_pnet include/net/net_namespace.h:406 [inline]
+RIP: 0010:sock_net include/net/sock.h:655 [inline]
+RIP: 0010:sock_kmalloc+0x35/0x170 net/core/sock.c:2806
+Code: 89 d5 41 54 55 89 f5 53 48 89 fb e8 25 e3 c6 fd e8 f0 91 e3 00 48 8d 7b 30 48 b8 00 00 00 00 00 fc ff df 48 89 fa 48 c1 ea 03 <80> 3c 02 00 0f 85 26 01 00 00 48 b8 00 00 00 00 00 fc ff df 4c 8b
+RSP: 0018:ffff88811af89038 EFLAGS: 00010216
+RAX: dffffc0000000000 RBX: 0000000000000000 RCX: ffff888105266400
+RDX: 0000000000000006 RSI: ffff88800c890000 RDI: 0000000000000030
+RBP: 0000000000000050 R08: 0000000000000000 R09: ffff88810526640e
+R10: ffffed1020a4cc81 R11: ffff88810526640f R12: 0000000000000000
+R13: 0000000000000820 R14: ffff888105266400 R15: 0000000000000050
+FS:  00007f0653a07640(0000) GS:ffff88811af80000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00007f863ba096f4 CR3: 00000000163c0005 CR4: 0000000000770ef0
+PKRU: 80000000
+Call Trace:
+ <IRQ>
+ ipv6_renew_options+0x279/0x950 net/ipv6/exthdrs.c:1288
+ calipso_req_setattr+0x181/0x340 net/ipv6/calipso.c:1204
+ calipso_req_setattr+0x56/0x80 net/netlabel/netlabel_calipso.c:597
+ netlbl_req_setattr+0x18a/0x440 net/netlabel/netlabel_kapi.c:1249
+ selinux_netlbl_inet_conn_request+0x1fb/0x320 security/selinux/netlabel.c:342
+ selinux_inet_conn_request+0x1eb/0x2c0 security/selinux/hooks.c:5551
+ security_inet_conn_request+0x50/0xa0 security/security.c:4945
+ tcp_v6_route_req+0x22c/0x550 net/ipv6/tcp_ipv6.c:825
+ tcp_conn_request+0xec8/0x2b70 net/ipv4/tcp_input.c:7275
+ tcp_v6_conn_request+0x1e3/0x440 net/ipv6/tcp_ipv6.c:1328
+ tcp_rcv_state_process+0xafa/0x52b0 net/ipv4/tcp_input.c:6781
+ tcp_v6_do_rcv+0x8a6/0x1a40 net/ipv6/tcp_ipv6.c:1667
+ tcp_v6_rcv+0x505e/0x5b50 net/ipv6/tcp_ipv6.c:1904
+ ip6_protocol_deliver_rcu+0x17c/0x1da0 net/ipv6/ip6_input.c:436
+ ip6_input_finish+0x103/0x180 net/ipv6/ip6_input.c:480
+ NF_HOOK include/linux/netfilter.h:314 [inline]
+ NF_HOOK include/linux/netfilter.h:308 [inline]
+ ip6_input+0x13c/0x6b0 net/ipv6/ip6_input.c:491
+ dst_input include/net/dst.h:469 [inline]
+ ip6_rcv_finish net/ipv6/ip6_input.c:79 [inline]
+ ip6_rcv_finish+0xb6/0x490 net/ipv6/ip6_input.c:69
+ NF_HOOK include/linux/netfilter.h:314 [inline]
+ NF_HOOK include/linux/netfilter.h:308 [inline]
+ ipv6_rcv+0xf9/0x490 net/ipv6/ip6_input.c:309
+ __netif_receive_skb_one_core+0x12e/0x1f0 net/core/dev.c:5896
+ __netif_receive_skb+0x1d/0x170 net/core/dev.c:6009
+ process_backlog+0x41e/0x13b0 net/core/dev.c:6357
+ __napi_poll+0xbd/0x710 net/core/dev.c:7191
+ napi_poll net/core/dev.c:7260 [inline]
+ net_rx_action+0x9de/0xde0 net/core/dev.c:7382
+ handle_softirqs+0x19a/0x770 kernel/softirq.c:561
+ do_softirq.part.0+0x36/0x70 kernel/softirq.c:462
+ </IRQ>
+ <TASK>
+ do_softirq arch/x86/include/asm/preempt.h:26 [inline]
+ __local_bh_enable_ip+0xf1/0x110 kernel/softirq.c:389
+ local_bh_enable include/linux/bottom_half.h:33 [inline]
+ rcu_read_unlock_bh include/linux/rcupdate.h:919 [inline]
+ __dev_queue_xmit+0xc2a/0x3c40 net/core/dev.c:4679
+ dev_queue_xmit include/linux/netdevice.h:3313 [inline]
+ neigh_hh_output include/net/neighbour.h:523 [inline]
+ neigh_output include/net/neighbour.h:537 [inline]
+ ip6_finish_output2+0xd69/0x1f80 net/ipv6/ip6_output.c:141
+ __ip6_finish_output net/ipv6/ip6_output.c:215 [inline]
+ ip6_finish_output+0x5dc/0xd60 net/ipv6/ip6_output.c:226
+ NF_HOOK_COND include/linux/netfilter.h:303 [inline]
+ ip6_output+0x24b/0x8d0 net/ipv6/ip6_output.c:247
+ dst_output include/net/dst.h:459 [inline]
+ NF_HOOK include/linux/netfilter.h:314 [inline]
+ NF_HOOK include/linux/netfilter.h:308 [inline]
+ ip6_xmit+0xbbc/0x20d0 net/ipv6/ip6_output.c:366
+ inet6_csk_xmit+0x39a/0x720 net/ipv6/inet6_connection_sock.c:135
+ __tcp_transmit_skb+0x1a7b/0x3b40 net/ipv4/tcp_output.c:1471
+ tcp_transmit_skb net/ipv4/tcp_output.c:1489 [inline]
+ tcp_send_syn_data net/ipv4/tcp_output.c:4059 [inline]
+ tcp_connect+0x1c0c/0x4510 net/ipv4/tcp_output.c:4148
+ tcp_v6_connect+0x156c/0x2080 net/ipv6/tcp_ipv6.c:333
+ __inet_stream_connect+0x3a7/0xed0 net/ipv4/af_inet.c:677
+ tcp_sendmsg_fastopen+0x3e2/0x710 net/ipv4/tcp.c:1039
+ tcp_sendmsg_locked+0x1e82/0x3570 net/ipv4/tcp.c:1091
+ tcp_sendmsg+0x2f/0x50 net/ipv4/tcp.c:1358
+ inet6_sendmsg+0xb9/0x150 net/ipv6/af_inet6.c:659
+ sock_sendmsg_nosec net/socket.c:718 [inline]
+ __sock_sendmsg+0xf4/0x2a0 net/socket.c:733
+ __sys_sendto+0x29a/0x390 net/socket.c:2187
+ __do_sys_sendto net/socket.c:2194 [inline]
+ __se_sys_sendto net/socket.c:2190 [inline]
+ __x64_sys_sendto+0xe1/0x1c0 net/socket.c:2190
+ do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+ do_syscall_64+0xc3/0x1d0 arch/x86/entry/common.c:83
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+RIP: 0033:0x7f06553c47ed
+Code: 02 b8 ff ff ff ff c3 66 0f 1f 44 00 00 f3 0f 1e fa 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 a8 ff ff ff f7 d8 64 89 01 48
+RSP: 002b:00007f0653a06fc8 EFLAGS: 00000246 ORIG_RAX: 000000000000002c
+RAX: ffffffffffffffda RBX: 00007f0655605fa0 RCX: 00007f06553c47ed
+RDX: 0000000000000000 RSI: 0000000000000000 RDI: 000000000000000b
+RBP: 00007f065545db38 R08: 0000200000000140 R09: 000000000000001c
+R10: f7384d4ea84b01bd R11: 0000000000000246 R12: 0000000000000000
+R13: 00007f0655605fac R14: 00007f0655606038 R15: 00007f06539e7000
+ </TASK>
+Modules linked in:
+
+[1]:
+dnf install -y selinux-policy-targeted policycoreutils netlabel_tools procps-ng nmap-ncat
+mount -t selinuxfs none /sys/fs/selinux
+load_policy
+netlabelctl calipso add pass doi:1
+netlabelctl map del default
+netlabelctl map add default address:::1 protocol:calipso,1
+sysctl net.ipv4.tcp_syncookies=2
+nc -l ::1 80 &
+nc ::1 80
+
+Fixes: e1adea927080 ("calipso: Allow request sockets to be relabelled by the lsm.")
+Reported-by: syzkaller <syzkaller@googlegroups.com>
+Reported-by: John Cheung <john.cs.hey@gmail.com>
+Closes: https://lore.kernel.org/netdev/CAP=Rh=MvfhrGADy+-WJiftV2_WzMH4VEhEFmeT28qY+4yxNu4w@mail.gmail.com/
+Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
+Acked-by: Paul Moore <paul@paul-moore.com>
+Link: https://patch.msgid.link/20250617224125.17299-1-kuni1840@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/e1000e/netdev.c | 14 +++++++++++---
- drivers/net/ethernet/intel/e1000e/ptp.c    |  8 +++++---
- 2 files changed, 16 insertions(+), 6 deletions(-)
+ net/ipv6/calipso.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/drivers/net/ethernet/intel/e1000e/netdev.c b/drivers/net/ethernet/intel/e1000e/netdev.c
-index 721c098f2bb1b..7e4fea0e186b6 100644
---- a/drivers/net/ethernet/intel/e1000e/netdev.c
-+++ b/drivers/net/ethernet/intel/e1000e/netdev.c
-@@ -3540,9 +3540,6 @@ s32 e1000e_get_base_timinca(struct e1000_adapter *adapter, u32 *timinca)
- 	case e1000_pch_cnp:
- 	case e1000_pch_tgp:
- 	case e1000_pch_adp:
--	case e1000_pch_mtp:
--	case e1000_pch_lnp:
--	case e1000_pch_ptp:
- 	case e1000_pch_nvp:
- 		if (er32(TSYNCRXCTL) & E1000_TSYNCRXCTL_SYSCFI) {
- 			/* Stable 24MHz frequency */
-@@ -3558,6 +3555,17 @@ s32 e1000e_get_base_timinca(struct e1000_adapter *adapter, u32 *timinca)
- 			adapter->cc.shift = shift;
- 		}
- 		break;
-+	case e1000_pch_mtp:
-+	case e1000_pch_lnp:
-+	case e1000_pch_ptp:
-+		/* System firmware can misreport this value, so set it to a
-+		 * stable 38400KHz frequency.
-+		 */
-+		incperiod = INCPERIOD_38400KHZ;
-+		incvalue = INCVALUE_38400KHZ;
-+		shift = INCVALUE_SHIFT_38400KHZ;
-+		adapter->cc.shift = shift;
-+		break;
- 	case e1000_82574:
- 	case e1000_82583:
- 		/* Stable 25MHz frequency */
-diff --git a/drivers/net/ethernet/intel/e1000e/ptp.c b/drivers/net/ethernet/intel/e1000e/ptp.c
-index bbcfd529399b0..d039dea48ca32 100644
---- a/drivers/net/ethernet/intel/e1000e/ptp.c
-+++ b/drivers/net/ethernet/intel/e1000e/ptp.c
-@@ -294,15 +294,17 @@ void e1000e_ptp_init(struct e1000_adapter *adapter)
- 	case e1000_pch_cnp:
- 	case e1000_pch_tgp:
- 	case e1000_pch_adp:
--	case e1000_pch_mtp:
--	case e1000_pch_lnp:
--	case e1000_pch_ptp:
- 	case e1000_pch_nvp:
- 		if (er32(TSYNCRXCTL) & E1000_TSYNCRXCTL_SYSCFI)
- 			adapter->ptp_clock_info.max_adj = MAX_PPB_24MHZ;
- 		else
- 			adapter->ptp_clock_info.max_adj = MAX_PPB_38400KHZ;
- 		break;
-+	case e1000_pch_mtp:
-+	case e1000_pch_lnp:
-+	case e1000_pch_ptp:
-+		adapter->ptp_clock_info.max_adj = MAX_PPB_38400KHZ;
-+		break;
- 	case e1000_82574:
- 	case e1000_82583:
- 		adapter->ptp_clock_info.max_adj = MAX_PPB_25MHZ;
+diff --git a/net/ipv6/calipso.c b/net/ipv6/calipso.c
+index e17e756bb1ad9..59997e5d1343e 100644
+--- a/net/ipv6/calipso.c
++++ b/net/ipv6/calipso.c
+@@ -1210,6 +1210,10 @@ static int calipso_req_setattr(struct request_sock *req,
+ 	struct ipv6_opt_hdr *old, *new;
+ 	struct sock *sk = sk_to_full_sk(req_to_sk(req));
+ 
++	/* sk is NULL for SYN+ACK w/ SYN Cookie */
++	if (!sk)
++		return -ENOMEM;
++
+ 	if (req_inet->ipv6_opt && req_inet->ipv6_opt->hopopt)
+ 		old = req_inet->ipv6_opt->hopopt;
+ 	else
+@@ -1250,6 +1254,10 @@ static void calipso_req_delattr(struct request_sock *req)
+ 	struct ipv6_txoptions *txopts;
+ 	struct sock *sk = sk_to_full_sk(req_to_sk(req));
+ 
++	/* sk is NULL for SYN+ACK w/ SYN Cookie */
++	if (!sk)
++		return;
++
+ 	if (!req_inet->ipv6_opt || !req_inet->ipv6_opt->hopopt)
+ 		return;
+ 
 -- 
 2.39.5
 
