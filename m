@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-155993-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156096-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5C8A6AE447B
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:43:31 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 152CBAE4552
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:51:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2F5507A2926
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:37:33 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5BBCE4426C4
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:42:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E83942566D2;
-	Mon, 23 Jun 2025 13:37:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 194DA2522A8;
+	Mon, 23 Jun 2025 13:42:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NxZ4PDRA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aTMJinUt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A67352472AF;
-	Mon, 23 Jun 2025 13:37:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA75724A06D;
+	Mon, 23 Jun 2025 13:42:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750685872; cv=none; b=Sly3FqDtcQ6I4etaCWV9nPjWDtKGyCkEvZjGVBOSEFYe+VZXh4e/nJSjd7zi1cyHxjdyiClM+muFVBKs6I2szoUzCbV0LsJD6kqs1anGdoNm6xceiv8S7FXybAJEii38YDNiUFNjhVLe86opHF0aR23NbddyAXjtHVXXMeLz21U=
+	t=1750686139; cv=none; b=BE+vNQAnMsow/E6AAHVOrDSOzdcmdX6JSgn01DqBqBngedSH9JDAaeL9Ybo0Ejdt/fb2cJV5GetKsV2HhXmUcN8zv+2NU9rVzrQlt6SsByou7Gz+D9qaBzKz4ahVaHYK8ACq5/Mr7bW1y48PcFOxkJyNbjlajs0mDXx4Wu1Tgrc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750685872; c=relaxed/simple;
-	bh=BX/Z2C5+KZz71ECZcgeMzUxTdyQ27r0KYBXYhWAOsNE=;
+	s=arc-20240116; t=1750686139; c=relaxed/simple;
+	bh=AvubVWhCH4vpvhwCSf8bZIZTaFWJgvplZV+nAdWTLek=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=X8tk20n9DoGWKqUr+e8aubNFzdkG/0H9Cr510f4MBh7zbI97Z/mtAtlGUjY0ln1+A5B/RguTjzJ6hnfOLOp521qS25iYMm72LM7CtR4wZK7+nXi+nfchgv1bcE/mVC3NWIoJIlF/TBphzSbId9GjPYOldzWxgWGoCvbgYMntWjM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NxZ4PDRA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E6D9C4CEEA;
-	Mon, 23 Jun 2025 13:37:52 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Pzq0RuyNMVp+41pUK1bkeAtkn1E7C+02mzTcf3g6S/vGEPeKAI1xQVEUDuECROaZjA98YROhxC0Y+ruNZCzXjGSN5hVrBw+H9xLmkYq/o/79sagKeNYRjoySTf93us3evta9Fywa63oTWKM5N7F2gN1VlGESHe6pF8tJiWPugTQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aTMJinUt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5EB82C4CEEA;
+	Mon, 23 Jun 2025 13:42:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750685872;
-	bh=BX/Z2C5+KZz71ECZcgeMzUxTdyQ27r0KYBXYhWAOsNE=;
+	s=korg; t=1750686139;
+	bh=AvubVWhCH4vpvhwCSf8bZIZTaFWJgvplZV+nAdWTLek=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NxZ4PDRAmu6xTMKj0eBejpgMrLzM13iKZprSrrO3FWSzh2pLDtphIUU3GeWVCv5la
-	 p93g/oMLwK/6bE5rFCXUVFm1EWMjF+rbxTiGDCgvmY0UvtQ8CPAIN0B88kpTDKQEG0
-	 oxkW1wmqCqJKBqLU5QCWkHnhqmZ8kzMPSVMpUdgI=
+	b=aTMJinUtAFXJKkwtx2MN1FKPHB6h1r6YrqNfEuqi/+j0Yss4YqcS+Y1PZjC0Aprk4
+	 rDPN68NDfEEoXv0FKeBY/R1etIKcxmnZIx56qQoH3KJKRIGGixOWtc44lV1ekwgwYl
+	 LG9CQOW1nkAIBCDevYqeRDjNUzHY8yS2WN0z9Mkc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yanqing Wang <ot_yanqing.wang@mediatek.com>,
-	Macpaul Lin <macpaul.lin@mediatek.com>,
-	Biao Huang <biao.huang@mediatek.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Jonas Gorski <jonas.gorski@gmail.com>,
+	=?UTF-8?q?=C3=81lvaro=20Fern=C3=A1ndez=20Rojas?= <noltari@gmail.com>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 098/355] driver: net: ethernet: mtk_star_emac: fix suspend/resume issue
-Date: Mon, 23 Jun 2025 15:04:59 +0200
-Message-ID: <20250623130629.734695693@linuxfoundation.org>
+Subject: [PATCH 5.10 100/355] spi: bcm63xx-spi: fix shared reset
+Date: Mon, 23 Jun 2025 15:05:01 +0200
+Message-ID: <20250623130629.792769681@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
 In-Reply-To: <20250623130626.716971725@linuxfoundation.org>
 References: <20250623130626.716971725@linuxfoundation.org>
@@ -62,56 +62,43 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yanqing Wang <ot_yanqing.wang@mediatek.com>
+From: Álvaro Fernández Rojas <noltari@gmail.com>
 
-[ Upstream commit ba99c627aac85bc746fb4a6e2d79edb3ad100326 ]
+[ Upstream commit 5ad20e3d8cfe3b2e42bbddc7e0ebaa74479bb589 ]
 
-Identify the cause of the suspend/resume hang: netif_carrier_off()
-is called during link state changes and becomes stuck while
-executing linkwatch_work().
+Some bmips SoCs (bcm6362, bcm63268) share the same SPI reset for both SPI
+and HSSPI controllers, so reset shouldn't be exclusive.
 
-To resolve this issue, call netif_device_detach() during the Ethernet
-suspend process to temporarily detach the network device from the
-kernel and prevent the suspend/resume hang.
-
-Fixes: 8c7bd5a454ff ("net: ethernet: mtk-star-emac: new driver")
-Signed-off-by: Yanqing Wang <ot_yanqing.wang@mediatek.com>
-Signed-off-by: Macpaul Lin <macpaul.lin@mediatek.com>
-Signed-off-by: Biao Huang <biao.huang@mediatek.com>
-Link: https://patch.msgid.link/20250528075351.593068-1-macpaul.lin@mediatek.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: 38807adeaf1e ("spi: bcm63xx-spi: add reset support")
+Reported-by: Jonas Gorski <jonas.gorski@gmail.com>
+Signed-off-by: Álvaro Fernández Rojas <noltari@gmail.com>
+Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Link: https://patch.msgid.link/20250529130915.2519590-2-noltari@gmail.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/mediatek/mtk_star_emac.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/spi/spi-bcm63xx.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/mediatek/mtk_star_emac.c b/drivers/net/ethernet/mediatek/mtk_star_emac.c
-index 96d2891f1675a..9d884699ed9cc 100644
---- a/drivers/net/ethernet/mediatek/mtk_star_emac.c
-+++ b/drivers/net/ethernet/mediatek/mtk_star_emac.c
-@@ -1409,6 +1409,8 @@ static __maybe_unused int mtk_star_suspend(struct device *dev)
- 	if (netif_running(ndev))
- 		mtk_star_disable(ndev);
- 
-+	netif_device_detach(ndev);
-+
- 	clk_bulk_disable_unprepare(MTK_STAR_NCLKS, priv->clks);
- 
- 	return 0;
-@@ -1433,6 +1435,8 @@ static __maybe_unused int mtk_star_resume(struct device *dev)
- 			clk_bulk_disable_unprepare(MTK_STAR_NCLKS, priv->clks);
+diff --git a/drivers/spi/spi-bcm63xx.c b/drivers/spi/spi-bcm63xx.c
+index b31b5f4e959e5..da559b86f6b17 100644
+--- a/drivers/spi/spi-bcm63xx.c
++++ b/drivers/spi/spi-bcm63xx.c
+@@ -533,7 +533,7 @@ static int bcm63xx_spi_probe(struct platform_device *pdev)
+ 		return PTR_ERR(clk);
  	}
  
-+	netif_device_attach(ndev);
-+
- 	return ret;
- }
+-	reset = devm_reset_control_get_optional_exclusive(dev, NULL);
++	reset = devm_reset_control_get_optional_shared(dev, NULL);
+ 	if (IS_ERR(reset))
+ 		return PTR_ERR(reset);
  
 -- 
 2.39.5
