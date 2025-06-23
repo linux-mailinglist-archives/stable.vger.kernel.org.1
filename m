@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-155590-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-155593-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C848AAE42C5
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:25:18 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4A96BAE42F1
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:27:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 303A33BAB65
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:21:22 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AECB617E234
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:21:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92CDA256C8A;
-	Mon, 23 Jun 2025 13:20:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41143253F2D;
+	Mon, 23 Jun 2025 13:20:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FmVsbuAO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t36A8vAX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CF182F24;
-	Mon, 23 Jun 2025 13:20:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F234C2F24;
+	Mon, 23 Jun 2025 13:20:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750684820; cv=none; b=XhqcKt4KnmxlXhGHBJKNLOrWpVEc7L5HYL+HAGQNHtCk9mLfLXcrghUZQeQNubOhwIcq8cWhsNfx3nU4znxQsgo4ibo8h5UCKElwLQMkSKD+AtK/vJuG3M+RpbkXNiaKrwjlPZYF7gFZPC4C06oeYavypcoEJCTkZyI7HucHVlM=
+	t=1750684828; cv=none; b=iLP6Zoo6qg4GCzi/b8z9B5+CZTJucw6JLzLylZ+E3fr5QU2nKpkP9boUvb+tvFw7pGvI8p/6P77HLuGzEXHjy2saIPakrKUD45UarWl9ZOJ+2ljixN27+Ra+1aLLEQd9FKTwJN8PXLfB+wSlajMAl3HQLZVStcGb3aQxZ23r2F8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750684820; c=relaxed/simple;
-	bh=TDOhGNvUPfdG/EOzzCdBZS2SCj6KvKWG/mvSBp30sCI=;
+	s=arc-20240116; t=1750684828; c=relaxed/simple;
+	bh=KE17pWozH5UtL2SAPuJz7E6I2h+H1O1E59GVBPgIaQI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=LcT04bYpzOFQL6Ca00uIxlVwlWuH7Jztfyz9P+xM2NdsbCh9y7T1nmSiH0DEfax3IQqtClDE+dju/G7jwhv/FEaYORygSIm8ctFbCx7Q0uTHzGSwcsCv7AKp8ks2CnJNbCB4+sLhhdy5no8NkR5EFhxFGvg35237XZjh9WfBuAk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FmVsbuAO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC3B7C4CEEA;
-	Mon, 23 Jun 2025 13:20:19 +0000 (UTC)
+	 MIME-Version; b=lkDIrM8NJcTeO0DJY7IFTaqw3Cm8mArZ0x8QXOhBdPqsKazRNliW305KqB+MuEiy3s+A5pAUchS+IYMAKPJ363huZXz/y/uTVNf4KTN/Y49+TyO0rZURurDnGbR5CFIkJMyKyxl+ZhaeaKgS89D4daur1y0ar76jxOU0OGmaTiM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t36A8vAX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85E5DC4CEEA;
+	Mon, 23 Jun 2025 13:20:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750684820;
-	bh=TDOhGNvUPfdG/EOzzCdBZS2SCj6KvKWG/mvSBp30sCI=;
+	s=korg; t=1750684827;
+	bh=KE17pWozH5UtL2SAPuJz7E6I2h+H1O1E59GVBPgIaQI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FmVsbuAOFkApOnoBRVq3NGHVlX4h9kFTaFsCVIN6gYWXVYdAE3fgBLz/p9Oy/bkut
-	 OATLMZbvCmhbwHJI16M/Wj1ubkFB4FYJ5EMVsI0GivE0FhgAVoO3/pFYieuFkq7WZX
-	 VFilih8XQt2juJOgaRrFfOAAk+1+iL2ktqDlkBL0=
+	b=t36A8vAXuTlLgMpkZhBp4VkjhmTjl9NCSmDkjjLLna6UJyoGqtU+2K8XSQwk5kZvQ
+	 RUN1NYJ/qQjHKPQdejm7BHFvOqvS54z5gU86U6SXLGzFg2VkaoTSvJpyrVrkLS8mwD
+	 A1S8+eYMYZaP9bHntUyEFtog7WjPcs4Gf9xlaw/E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Robert Morris <rtm@csail.mit.edu>,
-	=?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>,
-	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
+	Florian Westphal <fw@strlen.de>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 035/222] wifi: ath9k_htc: Abort software beacon handling if disabled
-Date: Mon, 23 Jun 2025 15:06:10 +0200
-Message-ID: <20250623130612.954933315@linuxfoundation.org>
+Subject: [PATCH 5.4 036/222] netfilter: nf_tables: nft_fib_ipv6: fix VRF ipv4/ipv6 result discrepancy
+Date: Mon, 23 Jun 2025 15:06:11 +0200
+Message-ID: <20250623130612.984583073@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
 In-Reply-To: <20250623130611.896514667@linuxfoundation.org>
 References: <20250623130611.896514667@linuxfoundation.org>
@@ -61,50 +60,83 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Toke Høiland-Jørgensen <toke@toke.dk>
+From: Florian Westphal <fw@strlen.de>
 
-[ Upstream commit ac4e317a95a1092b5da5b9918b7118759342641c ]
+[ Upstream commit 8b53f46eb430fe5b42d485873b85331d2de2c469 ]
 
-A malicious USB device can send a WMI_SWBA_EVENTID event from an
-ath9k_htc-managed device before beaconing has been enabled. This causes
-a device-by-zero error in the driver, leading to either a crash or an
-out of bounds read.
+With a VRF, ipv4 and ipv6 FIB expression behave differently.
 
-Prevent this by aborting the handling in ath9k_htc_swba() if beacons are
-not enabled.
+   fib daddr . iif oif
 
-Reported-by: Robert Morris <rtm@csail.mit.edu>
-Closes: https://lore.kernel.org/r/88967.1743099372@localhost
-Fixes: 832f6a18fc2a ("ath9k_htc: Add beacon slots")
-Signed-off-by: Toke Høiland-Jørgensen <toke@toke.dk>
-Link: https://patch.msgid.link/20250402112217.58533-1-toke@toke.dk
-Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+Will return the input interface name for ipv4, but the real device
+for ipv6.  Example:
+
+If VRF device name is tvrf and real (incoming) device is veth0.
+First round is ok, both ipv4 and ipv6 will yield 'veth0'.
+
+But in the second round (incoming device will be set to "tvrf"), ipv4
+will yield "tvrf" whereas ipv6 returns "veth0" for the second round too.
+
+This makes ipv6 behave like ipv4.
+
+A followup patch will add a test case for this, without this change
+it will fail with:
+  get element inet t fibif6iif { tvrf . dead:1::99 . tvrf }
+  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  FAIL: did not find tvrf . dead:1::99 . tvrf in fibif6iif
+
+Alternatively we could either not do anything at all or change
+ipv4 to also return the lower/real device, however, nft (userspace)
+doc says "iif: if fib lookup provides a route then check its output
+interface is identical to the packets input interface." which is what
+the nft fib ipv4 behaviour is.
+
+Fixes: f6d0cbcf09c5 ("netfilter: nf_tables: add fib expression")
+Signed-off-by: Florian Westphal <fw@strlen.de>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath9k/htc_drv_beacon.c | 3 +++
- 1 file changed, 3 insertions(+)
+ net/ipv6/netfilter/nft_fib_ipv6.c | 13 +++++++++----
+ 1 file changed, 9 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath9k/htc_drv_beacon.c b/drivers/net/wireless/ath/ath9k/htc_drv_beacon.c
-index f20c839aeda22..6db484ee7ee08 100644
---- a/drivers/net/wireless/ath/ath9k/htc_drv_beacon.c
-+++ b/drivers/net/wireless/ath/ath9k/htc_drv_beacon.c
-@@ -290,6 +290,9 @@ void ath9k_htc_swba(struct ath9k_htc_priv *priv,
- 	struct ath_common *common = ath9k_hw_common(priv->ah);
- 	int slot;
+diff --git a/net/ipv6/netfilter/nft_fib_ipv6.c b/net/ipv6/netfilter/nft_fib_ipv6.c
+index 03dbd16f9ad53..018f01efeca5a 100644
+--- a/net/ipv6/netfilter/nft_fib_ipv6.c
++++ b/net/ipv6/netfilter/nft_fib_ipv6.c
+@@ -143,6 +143,7 @@ void nft_fib6_eval(const struct nft_expr *expr, struct nft_regs *regs,
+ {
+ 	const struct nft_fib *priv = nft_expr_priv(expr);
+ 	int noff = skb_network_offset(pkt->skb);
++	const struct net_device *found = NULL;
+ 	const struct net_device *oif = NULL;
+ 	u32 *dest = &regs->data[priv->dreg];
+ 	struct ipv6hdr *iph, _iph;
+@@ -182,11 +183,15 @@ void nft_fib6_eval(const struct nft_expr *expr, struct nft_regs *regs,
+ 	if (rt->rt6i_flags & (RTF_REJECT | RTF_ANYCAST | RTF_LOCAL))
+ 		goto put_rt_err;
  
-+	if (!priv->cur_beacon_conf.enable_beacon)
-+		return;
-+
- 	if (swba->beacon_pending != 0) {
- 		priv->beacon.bmisscnt++;
- 		if (priv->beacon.bmisscnt > BSTUCK_THRESHOLD) {
+-	if (oif && oif != rt->rt6i_idev->dev &&
+-	    l3mdev_master_ifindex_rcu(rt->rt6i_idev->dev) != oif->ifindex)
+-		goto put_rt_err;
++	if (!oif) {
++		found = rt->rt6i_idev->dev;
++	} else {
++		if (oif == rt->rt6i_idev->dev ||
++		    l3mdev_master_ifindex_rcu(rt->rt6i_idev->dev) == oif->ifindex)
++			found = oif;
++	}
+ 
+-	nft_fib_store_result(dest, priv, rt->rt6i_idev->dev);
++	nft_fib_store_result(dest, priv, found);
+  put_rt_err:
+ 	ip6_rt_put(rt);
+ }
 -- 
 2.39.5
 
