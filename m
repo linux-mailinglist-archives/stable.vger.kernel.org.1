@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-156797-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156648-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C5203AE512E
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:31:31 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 14C72AE5078
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:25:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A34DF1B632D8
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:31:47 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9BF697A3C6F
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:24:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA1691C5D46;
-	Mon, 23 Jun 2025 21:31:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55D421EDA0F;
+	Mon, 23 Jun 2025 21:25:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R0uZjj4M"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MbZYFGpV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 772E6C2E0;
-	Mon, 23 Jun 2025 21:31:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 147C01E51FA;
+	Mon, 23 Jun 2025 21:25:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750714289; cv=none; b=dkYwNZHuXZNtUOKyoScFei11yiLnpZdhKNhpnkL4PGfFnnT4AmhIVcqwbekNTH0e2cjZuuws4gRHK+bb6gmLqw0i18roActKIv7mr5JguqCR8LOuWz/Bhv4pPMgyEG2d4xqHcXca1WqMedYcIjffDz2w1MEvzDpau6Ef5HBT0/w=
+	t=1750713928; cv=none; b=gmVf3IQN+yhXyY7cexl+bWbJkOKFDjE20mjrPq1vxCNHp5Iu08Ts0z8ayW1A9DFSyi4PtvN23tdQaWhzlxWV9TS5S///lxwWztPS4hxAtZlHjjS850rnkT21jjljMhmdFCQN0hVu2BrXy75oc4XhnFwUumgSPl0PzBtqrjypX74=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750714289; c=relaxed/simple;
-	bh=7jNopkZbxCuyWk92S4h1UIaowHIjYqwzuuA/2Tm9yY4=;
+	s=arc-20240116; t=1750713928; c=relaxed/simple;
+	bh=f+HNSjQFLpV7GVzVMIbtmhMQey6j5d+h6l+jzzJO1C8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=R4edjWGNf1/OLd96bgEbb+OjSQ+EusSf4KXRCllpUxK5TPI1m4h0TzMywbQjFVtdZuxAalcM9xrAvJgW2D9rpnUYF0n/45xiklBKn4uJv3h0sN9mllr5l6tz6uQ9SG6HZvY7BwWfYq6ZIDv7s8FDXYrKD3aQ+VmlRNHdWIxAzC4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R0uZjj4M; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F4B0C4CEEA;
-	Mon, 23 Jun 2025 21:31:28 +0000 (UTC)
+	 MIME-Version; b=rgaSDxIlPWi+c0oNkxp7JQQ+l9P1S+3EbKeQt2vj+3p2vIwuNkgEbC4lBpi+vqYRqAo1dersJrnWfstxnyGkG/6udrjWLa9ToagZ1dpfzrvjo8emJCLhW5sPdjyeGEZ2/bLC1xuVG1OhoroJSVUZ1yQuCffligCFaoYbTdvlmU8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MbZYFGpV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55195C4CEEA;
+	Mon, 23 Jun 2025 21:25:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750714289;
-	bh=7jNopkZbxCuyWk92S4h1UIaowHIjYqwzuuA/2Tm9yY4=;
+	s=korg; t=1750713927;
+	bh=f+HNSjQFLpV7GVzVMIbtmhMQey6j5d+h6l+jzzJO1C8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=R0uZjj4Mh1/EU9rKTdhwFpYxeLv7bRCCpfxeKxxTAbKBQsI42LqN6Jd8FYqPyU0uU
-	 1Gt9Uc7RAGy+Ob1V9fiAbJ27yxrV9FJ+7qOsQZBiygMkKhxy5dQHnDGyZSpF4W0ouC
-	 I9CdqLXSwKOs7Yt/FKdtZbocgepgsZp8yXOD36JE=
+	b=MbZYFGpVDXeDoV96wXo4fA+oLTJO5qvcgnTJfO80LBV5VWZzPUlUfwb9dOjBQYghA
+	 tZy6i8W5YGIT/Ad2lBINYd7c2Zr8uk0xutEdA1GqrnCRIHyKjWhq+J+MNt4m8MCuPD
+	 7hifPuzelmT1tpPwW1x3cqeJjj8D187GujFwr0D0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	WangYuli <wangyuli@uniontech.com>,
-	=?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 163/508] MIPS: Loongson64: Add missing #interrupt-cells for loongson64c_ls7a
+	Douglas Anderson <dianders@chromium.org>,
+	Ricardo Ribalda <ribalda@chromium.org>,
+	Hans de Goede <hdegoede@redhat.com>,
+	Hans Verkuil <hverkuil@xs4all.nl>
+Subject: [PATCH 6.12 071/414] media: uvcvideo: Fix deferred probing error
 Date: Mon, 23 Jun 2025 15:03:28 +0200
-Message-ID: <20250623130649.287665085@linuxfoundation.org>
+Message-ID: <20250623130643.848362365@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
-References: <20250623130645.255320792@linuxfoundation.org>
+In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
+References: <20250623130642.015559452@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,48 +61,107 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: WangYuli <wangyuli@uniontech.com>
+From: Ricardo Ribalda <ribalda@chromium.org>
 
-[ Upstream commit 6d223b8ffcd1593d032b71875def2daa71c53111 ]
+commit 387e8939307192d5a852a2afeeb83427fa477151 upstream.
 
-Similar to commit 98a9e2ac3755 ("MIPS: Loongson64: DTS: Fix msi node for ls7a").
+uvc_gpio_parse() can return -EPROBE_DEFER when the GPIOs it depends on
+have not yet been probed. This return code should be propagated to the
+caller of uvc_probe() to ensure that probing is retried when the required
+GPIOs become available.
 
-Fix follow warnings:
-  arch/mips/boot/dts/loongson/loongson64c_4core_ls7a.dts:28.31-36.4: Warning (interrupt_provider): /bus@10000000/msi-controller@2ff00000: Missing '#interrupt-cells' in interrupt provider
-  arch/mips/boot/dts/loongson/loongson64c_4core_ls7a.dtb: Warning (interrupt_map): Failed prerequisite 'interrupt_provider'
+Currently, this error code is incorrectly converted to -ENODEV,
+causing some internal cameras to be ignored.
 
-Fixes: 24af105962c8 ("MIPS: Loongson64: DeviceTree for LS7A PCH")
-Tested-by: WangYuli <wangyuli@uniontech.com>
-Signed-off-by: WangYuli <wangyuli@uniontech.com>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This commit fixes this issue by propagating the -EPROBE_DEFER error.
+
+Cc: stable@vger.kernel.org
+Fixes: 2886477ff987 ("media: uvcvideo: Implement UVC_EXT_GPIO_UNIT")
+Reviewed-by: Douglas Anderson <dianders@chromium.org>
+Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
+Message-ID: <20250313-uvc-eprobedefer-v3-1-a1d312708eef@chromium.org>
+Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/mips/boot/dts/loongson/loongson64c_4core_ls7a.dts | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/media/usb/uvc/uvc_driver.c |   27 +++++++++++++++++++--------
+ 1 file changed, 19 insertions(+), 8 deletions(-)
 
-diff --git a/arch/mips/boot/dts/loongson/loongson64c_4core_ls7a.dts b/arch/mips/boot/dts/loongson/loongson64c_4core_ls7a.dts
-index c7ea4f1c0bb21..6c277ab83d4b9 100644
---- a/arch/mips/boot/dts/loongson/loongson64c_4core_ls7a.dts
-+++ b/arch/mips/boot/dts/loongson/loongson64c_4core_ls7a.dts
-@@ -29,6 +29,7 @@
- 		compatible = "loongson,pch-msi-1.0";
- 		reg = <0 0x2ff00000 0 0x8>;
- 		interrupt-controller;
-+		#interrupt-cells = <1>;
- 		msi-controller;
- 		loongson,msi-base-vec = <64>;
- 		loongson,msi-num-vecs = <64>;
--- 
-2.39.5
-
+--- a/drivers/media/usb/uvc/uvc_driver.c
++++ b/drivers/media/usb/uvc/uvc_driver.c
+@@ -2217,13 +2217,16 @@ static int uvc_probe(struct usb_interfac
+ #endif
+ 
+ 	/* Parse the Video Class control descriptor. */
+-	if (uvc_parse_control(dev) < 0) {
++	ret = uvc_parse_control(dev);
++	if (ret < 0) {
++		ret = -ENODEV;
+ 		uvc_dbg(dev, PROBE, "Unable to parse UVC descriptors\n");
+ 		goto error;
+ 	}
+ 
+ 	/* Parse the associated GPIOs. */
+-	if (uvc_gpio_parse(dev) < 0) {
++	ret = uvc_gpio_parse(dev);
++	if (ret < 0) {
+ 		uvc_dbg(dev, PROBE, "Unable to parse UVC GPIOs\n");
+ 		goto error;
+ 	}
+@@ -2249,24 +2252,32 @@ static int uvc_probe(struct usb_interfac
+ 	}
+ 
+ 	/* Register the V4L2 device. */
+-	if (v4l2_device_register(&intf->dev, &dev->vdev) < 0)
++	ret = v4l2_device_register(&intf->dev, &dev->vdev);
++	if (ret < 0)
+ 		goto error;
+ 
+ 	/* Scan the device for video chains. */
+-	if (uvc_scan_device(dev) < 0)
++	if (uvc_scan_device(dev) < 0) {
++		ret = -ENODEV;
+ 		goto error;
++	}
+ 
+ 	/* Initialize controls. */
+-	if (uvc_ctrl_init_device(dev) < 0)
++	if (uvc_ctrl_init_device(dev) < 0) {
++		ret = -ENODEV;
+ 		goto error;
++	}
+ 
+ 	/* Register video device nodes. */
+-	if (uvc_register_chains(dev) < 0)
++	if (uvc_register_chains(dev) < 0) {
++		ret = -ENODEV;
+ 		goto error;
++	}
+ 
+ #ifdef CONFIG_MEDIA_CONTROLLER
+ 	/* Register the media device node */
+-	if (media_device_register(&dev->mdev) < 0)
++	ret = media_device_register(&dev->mdev);
++	if (ret < 0)
+ 		goto error;
+ #endif
+ 	/* Save our data pointer in the interface data. */
+@@ -2300,7 +2311,7 @@ static int uvc_probe(struct usb_interfac
+ error:
+ 	uvc_unregister_video(dev);
+ 	kref_put(&dev->ref, uvc_delete);
+-	return -ENODEV;
++	return ret;
+ }
+ 
+ static void uvc_disconnect(struct usb_interface *intf)
 
 
 
