@@ -1,52 +1,52 @@
-Return-Path: <stable+bounces-157858-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157862-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 806A3AE55CC
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:15:15 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 433AEAE55FC
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:16:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1CC887ACE55
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:13:52 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 704454C48FF
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:15:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 06C43227B8C;
-	Mon, 23 Jun 2025 22:14:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9D7022839A;
+	Mon, 23 Jun 2025 22:15:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kCGHNbQz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NKYmAocJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B692E225417;
-	Mon, 23 Jun 2025 22:14:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87E84223DEF;
+	Mon, 23 Jun 2025 22:15:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750716891; cv=none; b=lWJoXwSE+HRBzg5rA27ecajhBlMeOwYL2BgEAKjjHnKIZ6kq08K8EitzQNalKBc2MzmQXhmVTMGZadblhn4WB39YxscQz+Tt3xJTJLqZSs3K9jWXqlLF28KfJzjDW1laxUPHDlT7SgAGJP3S5cd1drsev/H46Unzaz784u9W9bQ=
+	t=1750716901; cv=none; b=XCCRMfMast0kEcu2xIKRMvDIiftV9PQ/ahUErd5BJbrOAhHxuhMyHyzkm2TwaA+M6z6nn6xpK6FbOR12BYzpII9lX0gvtLE8NnqBVZ+CkPT6jsJRPjEOmqsxs9QcMK/3l33IHqZihCtWPrtlGvCr+qGKNhsAw/CQAmcjxAQ+B6k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750716891; c=relaxed/simple;
-	bh=Kg9C1XcyZah9fl3gNzFSftLgK1fLrYvm3qdu3JcpK5U=;
+	s=arc-20240116; t=1750716901; c=relaxed/simple;
+	bh=YaUBrQACstyGvg3M+Ml4++sGlsi1MLx/KOHDYNEGyew=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QV5XN7Zi2o7vXPGswVnorXXZVJGs6l3eC7z0UvPDjQaz/0pplUoeIKZfmwVj575NF5peQrXettlNHSe1zPRhGzKMcKvq5FIQy6g34JsS57fxNZ0o4ttwF+qH3dd73VtOupbNFvsVYNK9Pn21v4nA9xMTFcE+DvDk1Fr2Q0mo+Jg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kCGHNbQz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4DA74C4CEEA;
-	Mon, 23 Jun 2025 22:14:51 +0000 (UTC)
+	 MIME-Version; b=hZTLAo35LxFuTNyJa9b37WW7eSGfjyyhW47vVKviOhkmBbiY2KxEelOXKasrOqMGGsFkTLX7sE4QnXsJBcjf2o+PGKPM2rLQUi5tukTMUfriLnEu/ME33Nh5aUV3vBMyE8B3TImm7E5RNw4YUJK4cD0Hro0eK0d6MIqtQGDB/p8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NKYmAocJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E4E7C4CEEA;
+	Mon, 23 Jun 2025 22:15:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750716891;
-	bh=Kg9C1XcyZah9fl3gNzFSftLgK1fLrYvm3qdu3JcpK5U=;
+	s=korg; t=1750716901;
+	bh=YaUBrQACstyGvg3M+Ml4++sGlsi1MLx/KOHDYNEGyew=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kCGHNbQzcC/MBnfpM1ComQF/lczvIxO4rl5yj0l1Fm0tSr7VcUEGvMEKSHDjFv9Sa
-	 EZbhsHFxMGYNuI2rdQ/TVkEni8s1KKLW2evi1l/kWVlr59bmOfqWXGDYkg4+Zuin84
-	 4QsAZIje/ivSczhx/LykfMfcdfTFI0xrxmVtiOls=
+	b=NKYmAocJX1em74FYvWeKEBJK8MvRU7XiU9xYmX2gCxNh13poHmXqxoFyrx8mMAFVW
+	 FxjemFm7Z8f2ORd86+Zyo78YIf6Opc0x+5N4eGf6vUAqAGSvJV6G8vwMkr1APjLRGG
+	 gcbPcKZqrH3ZysCctkaJs8DlyFxk40JzujNRygaE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christian Mazakas <christian.mazakas@gmail.com>,
+	Penglei Jiang <superman.xpt@gmail.com>,
 	Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 6.12 295/414] io_uring/kbuf: dont truncate end buffer for multiple buffer peeks
-Date: Mon, 23 Jun 2025 15:07:12 +0200
-Message-ID: <20250623130649.384133557@linuxfoundation.org>
+Subject: [PATCH 6.12 296/414] io_uring: fix task leak issue in io_wq_create()
+Date: Mon, 23 Jun 2025 15:07:13 +0200
+Message-ID: <20250623130649.409641954@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
 In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
 References: <20250623130642.015559452@linuxfoundation.org>
@@ -65,39 +65,36 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Jens Axboe <axboe@kernel.dk>
+From: Penglei Jiang <superman.xpt@gmail.com>
 
-commit 26ec15e4b0c1d7b25214d9c0be1d50492e2f006c upstream.
+commit 89465d923bda180299e69ee2800aab84ad0ba689 upstream.
 
-If peeking a bunch of buffers, normally io_ring_buffers_peek() will
-truncate the end buffer. This isn't optimal as presumably more data will
-be arriving later, and hence it's better to stop with the last full
-buffer rather than truncate the end buffer.
+Add missing put_task_struct() in the error path
 
 Cc: stable@vger.kernel.org
-Fixes: 35c8711c8fc4 ("io_uring/kbuf: add helpers for getting/peeking multiple buffers")
-Reported-by: Christian Mazakas <christian.mazakas@gmail.com>
+Fixes: 0f8baa3c9802 ("io-wq: fully initialize wqe before calling cpuhp_state_add_instance_nocalls()")
+Signed-off-by: Penglei Jiang <superman.xpt@gmail.com>
+Link: https://lore.kernel.org/r/20250615163906.2367-1-superman.xpt@gmail.com
 Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- io_uring/kbuf.c |    5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ io_uring/io-wq.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/io_uring/kbuf.c
-+++ b/io_uring/kbuf.c
-@@ -262,8 +262,11 @@ static int io_ring_buffers_peek(struct i
- 		/* truncate end piece, if needed, for non partial buffers */
- 		if (len > arg->max_len) {
- 			len = arg->max_len;
--			if (!(bl->flags & IOBL_INC))
-+			if (!(bl->flags & IOBL_INC)) {
-+				if (iov != arg->iovs)
-+					break;
- 				buf->len = len;
-+			}
- 		}
+--- a/io_uring/io-wq.c
++++ b/io_uring/io-wq.c
+@@ -1204,8 +1204,10 @@ struct io_wq *io_wq_create(unsigned boun
+ 	atomic_set(&wq->worker_refs, 1);
+ 	init_completion(&wq->worker_done);
+ 	ret = cpuhp_state_add_instance_nocalls(io_wq_online, &wq->cpuhp_node);
+-	if (ret)
++	if (ret) {
++		put_task_struct(wq->task);
+ 		goto err;
++	}
  
- 		iov->iov_base = u64_to_user_ptr(buf->addr);
+ 	return wq;
+ err:
 
 
 
