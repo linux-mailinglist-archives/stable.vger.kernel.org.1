@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-156861-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156677-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 66214AE5170
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:34:13 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id E7D92AE50A0
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:27:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C8D2D7A2070
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:32:46 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C23704A1702
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:27:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56FB91F3B96;
-	Mon, 23 Jun 2025 21:34:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5324F1E5B71;
+	Mon, 23 Jun 2025 21:26:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="p6t2L9rB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HkxwVhWF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14BCB4409;
-	Mon, 23 Jun 2025 21:34:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0966121B9C9;
+	Mon, 23 Jun 2025 21:26:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750714446; cv=none; b=i4RiDe38QHTD7CoDts+8TL72TAeFQxhTyfrs0dohnhT+nbfEc0CX4KMTFJRRfhqyYXbXWfrnS0e96l2SHXoeC5k9V4ZPczbWlQEmyUyEkeh+xPBwnIY5+O5WuiTknYs8JyOn2Obl6TYyGpXKVnHFOm6EvxO0dQ64AXXpVjoAc9A=
+	t=1750713999; cv=none; b=X8ucEzdeG2ha7OnSX/9AHc68/q/pRC5UoSlG3AdkEheLEpUd3d3rbawWtCggIkcuEEWKEDX8y/kYLmbEVib/IoV/ChfvUgS3bnVsYGhBj1KtAI48oDRkwVUIYzdkEpT8FyW/KbDSqx7hNVJBIASsTGXYrWTCqEH+XFnYVGax4ys=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750714446; c=relaxed/simple;
-	bh=J/5K9t3agVva8ue1HDUklup5OjALSproTpzKCT2SIgE=;
+	s=arc-20240116; t=1750713999; c=relaxed/simple;
+	bh=elH5IQGF1t0PwlGaZkNnSZvFYhul5gYuVgh2dZDKPgs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=j2Bjma2aRtjD6lJJFS8CLh15mu/ubYdw/EPLJZMMpqCGG4UWVT0HEuoNLSBfU9YnxkgcF/mR6L8cVBzxh5pzYBOvZQ1v+peOj91IVTY4ldpXR66D5KLOrVlxUxHMmXfCZYMgr57umq3Re6QoXb02wrVZaLxvi52w34MPR/zgh3g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=p6t2L9rB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2FB2C4CEEA;
-	Mon, 23 Jun 2025 21:34:05 +0000 (UTC)
+	 MIME-Version; b=ck1dYPdUxmhZ6XiAGhDQ7GmAOPTtlNXK3MKL9PFDIozsYGtImHvOvvmk06jyk69P/Vd+8JFJsY9dcB3Ki1Xc6zM6pPerqv8gxdvdCf4ZgTW/HOrVAkWiFDqK6yvNokG9zG8+WFLlVxd0jNpiE+L7LhRGKzVW+BY7YeOk/7C6/6Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HkxwVhWF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88602C4CEED;
+	Mon, 23 Jun 2025 21:26:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750714446;
-	bh=J/5K9t3agVva8ue1HDUklup5OjALSproTpzKCT2SIgE=;
+	s=korg; t=1750713998;
+	bh=elH5IQGF1t0PwlGaZkNnSZvFYhul5gYuVgh2dZDKPgs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=p6t2L9rBwv8ojVt5ZFy7XAqVMfE1mRX6UYpU5x1cOZDeOkdCQMhwYpQKTv5sS4VtU
-	 dnpcte/cYeLcGJmvHghBZHCyroML0oLuTqQh5SlZpmd7P/P+IRhgkcmYRVCOCqeAEX
-	 Eq7arBqeid+vd04t16PuOOPsSNPU/yjtk+7cXIDQ=
+	b=HkxwVhWF4NoT0HSm35zoFWS25T9IgqN0qw1vFpUUIhTBw8GqZCuBzd/uKWr1/MLtW
+	 kllOylX+ufkP8ASh4xRjwVT2j7/2ny/DyFhYL/Pn039KT3h/8t4QnB9w0JgztIFsRF
+	 t26tVJMvM2d+20GG9NtJuhvk2p+9YEZCLZT9L8IM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Zijun Hu <quic_zijuhu@quicinc.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 400/592] software node: Correct a OOB check in software_node_get_reference_args()
-Date: Mon, 23 Jun 2025 15:05:58 +0200
-Message-ID: <20250623130709.957164354@linuxfoundation.org>
+	Khem Raj <raj.khem@gmail.com>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Subject: [PATCH 6.6 098/290] mips: Add -std= flag specified in KBUILD_CFLAGS to vdso CFLAGS
+Date: Mon, 23 Jun 2025 15:05:59 +0200
+Message-ID: <20250623130629.916074755@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
-References: <20250623130700.210182694@linuxfoundation.org>
+In-Reply-To: <20250623130626.910356556@linuxfoundation.org>
+References: <20250623130626.910356556@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,46 +61,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zijun Hu <quic_zijuhu@quicinc.com>
+From: Khem Raj <raj.khem@gmail.com>
 
-[ Upstream commit 31e4e12e0e9609850cefd4b2e1adf782f56337d6 ]
+commit 0f4ae7c6ecb89bfda026d210dcf8216fb67d2333 upstream.
 
-software_node_get_reference_args() wants to get @index-th element, so
-the property value requires at least '(index + 1) * sizeof(*ref)' bytes
-but that can not be guaranteed by current OOB check, and may cause OOB
-for malformed property.
+GCC 15 changed the default C standard dialect from gnu17 to gnu23,
+which should not have impacted the kernel because it explicitly requests
+the gnu11 standard in the main Makefile. However, mips/vdso code uses
+its own CFLAGS without a '-std=' value, which break with this dialect
+change because of the kernel's own definitions of bool, false, and true
+conflicting with the C23 reserved keywords.
 
-Fix by using as OOB check '((index + 1) * sizeof(*ref) > prop->length)'.
+  include/linux/stddef.h:11:9: error: cannot use keyword 'false' as enumeration constant
+     11 |         false   = 0,
+        |         ^~~~~
+  include/linux/stddef.h:11:9: note: 'false' is a keyword with '-std=c23' onwards
+  include/linux/types.h:35:33: error: 'bool' cannot be defined via 'typedef'
+     35 | typedef _Bool                   bool;
+        |                                 ^~~~
+  include/linux/types.h:35:33: note: 'bool' is a keyword with '-std=c23' onwards
 
-Reviewed-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Signed-off-by: Zijun Hu <quic_zijuhu@quicinc.com>
-Link: https://lore.kernel.org/r/20250414-fix_swnode-v2-1-9c9e6ae11eab@quicinc.com
+Add -std as specified in KBUILD_CFLAGS to the decompressor and purgatory
+CFLAGS to eliminate these errors and make the C standard version of these
+areas match the rest of the kernel.
+
+Signed-off-by: Khem Raj <raj.khem@gmail.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/base/swnode.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/mips/vdso/Makefile |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/base/swnode.c b/drivers/base/swnode.c
-index 5c78fa6ae7725..deda7f35a0598 100644
---- a/drivers/base/swnode.c
-+++ b/drivers/base/swnode.c
-@@ -529,7 +529,7 @@ software_node_get_reference_args(const struct fwnode_handle *fwnode,
- 	if (prop->is_inline)
- 		return -EINVAL;
- 
--	if (index * sizeof(*ref) >= prop->length)
-+	if ((index + 1) * sizeof(*ref) > prop->length)
- 		return -ENOENT;
- 
- 	ref_array = prop->pointer;
--- 
-2.39.5
-
+--- a/arch/mips/vdso/Makefile
++++ b/arch/mips/vdso/Makefile
+@@ -30,6 +30,7 @@ endif
+ # offsets.
+ cflags-vdso := $(ccflags-vdso) \
+ 	$(filter -W%,$(filter-out -Wa$(comma)%,$(KBUILD_CFLAGS))) \
++	$(filter -std=%,$(KBUILD_CFLAGS)) \
+ 	-O3 -g -fPIC -fno-strict-aliasing -fno-common -fno-builtin -G 0 \
+ 	-mrelax-pic-calls $(call cc-option, -mexplicit-relocs) \
+ 	-fno-stack-protector -fno-jump-tables -DDISABLE_BRANCH_PROFILING \
 
 
 
