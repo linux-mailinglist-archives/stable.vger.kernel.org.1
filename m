@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-157430-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156846-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF442AE53F1
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:57:56 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id AD8DFAE5162
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:33:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7F9411B67FFE
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:57:44 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5114B1B63B32
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:33:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D09E1220686;
-	Mon, 23 Jun 2025 21:57:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F93D222562;
+	Mon, 23 Jun 2025 21:33:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IJfoZXjf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BcXJcf7W"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CC6D3FB1B;
-	Mon, 23 Jun 2025 21:57:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 496CD221DA8;
+	Mon, 23 Jun 2025 21:33:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750715846; cv=none; b=QF/HrVXQ3XwTgAuZcw3ybo3F0sEcHR7VMnxd+VWW4EMfK3MmKFCtTTi1uoUu3kSjwjLTrYh2ZoMVhd8yht028dmvW3l7iDnBX/gI2JAvYKIa2GbncCsa8desCbILckF7U8wgSTcovP+l5BS5ifv145l8OMP7MPJkB2SMJMS9ukI=
+	t=1750714409; cv=none; b=JcNGXvpve2wb3Ngou+9CEz8+C7B92+iY3h32LG0pLc7Vn1ixn5oDRXMMprnpUoemMRUtLFdtg3AtrPP7yPEvPN+hkO26ft34VLAAIHhmRfn5b47JLP8Z7xwhrqTAhRWbRNVMlW9/HpM4eFjHEZ0/rNxJ5CwtRIE8oaAj8Y3pWnw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750715846; c=relaxed/simple;
-	bh=mjaYp0+snr7S4g/eBOWaY7qgBTmSgzCCXLC3S+0VIDI=;
+	s=arc-20240116; t=1750714409; c=relaxed/simple;
+	bh=fN5WhomNSM5cVeVT5hHvLJ4aEbsvkoBOazHyB3eU2fM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tNxwqNkcIaUp4th7318GOx4TkstxWd96vtThiYDtoAz3Msu7IjY0gBLW32ka8COMrYnjCO4yF/drXuPWXpjkCdDAfIu7Jaq5uezrVEtMFiWKd5kbCVdnaifCQrUpKuilm5K2grj24EYXFfHu0eS96g2P72sb75XFI4eSn7JUz+4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IJfoZXjf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C92BC4CEEA;
-	Mon, 23 Jun 2025 21:57:25 +0000 (UTC)
+	 MIME-Version; b=gOWFnEEryc2v2Qm6+Sh4h1/Birll8Z8QKKcWoarCqTUXLikN9WN/N7pAoZTlpm/bPtaqGKYBqRIGhnB+EVLW3OqRlaBlive3TaVvc9z/5C9ZJuH1OEpmR7Akcrk46E9SNYSGyAMlrq/CXMW1e8mxBuZq+YP+ZPUHl0VL/JVnpUA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BcXJcf7W; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4C7EC4CEEA;
+	Mon, 23 Jun 2025 21:33:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750715846;
-	bh=mjaYp0+snr7S4g/eBOWaY7qgBTmSgzCCXLC3S+0VIDI=;
+	s=korg; t=1750714409;
+	bh=fN5WhomNSM5cVeVT5hHvLJ4aEbsvkoBOazHyB3eU2fM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IJfoZXjfEH5I9gBz7rsnv+L/zC1ZQPlaUaDr0xSFZnY8TgW10t9aQ+9kHdoAMDYUN
-	 kWjloD3Lj4AU7yQOH0nt/tZNH6iFIXryaGA3U0OTTyHd0l1cgE1bOLsl9SBByFCWPD
-	 mQF0xV519i39jrP6Ovbf1DOETACFtrtho4IoYdyM=
+	b=BcXJcf7WOLR0i+6M3OQgrC5606ja5rGPdIbWkXh3huR+6/4CO0baNCM0fkkiPYhdS
+	 glil8EHLCBC3Iejsdj4KaVLCuHql27jNt01nG8AAE8iu0kViSYSvFLacSTc9AIWMyX
+	 554j59Elz4uHbu2juHZsOt6tpX694nrAPrXsHlcc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Oliver Neukum <oneukum@suse.com>,
-	Andrew Lunn <andrew@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>
-Subject: [PATCH 6.1 285/508] net: usb: aqc111: debug info before sanitation
+	syzbot <syzkaller@googlegroups.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Kuniyuki Iwashima <kuniyu@amazon.com>,
+	Paul Moore <paul@paul-moore.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 5.15 186/411] calipso: unlock rcu before returning -EAFNOSUPPORT
 Date: Mon, 23 Jun 2025 15:05:30 +0200
-Message-ID: <20250623130652.279563415@linuxfoundation.org>
+Message-ID: <20250623130638.363960975@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
-References: <20250623130645.255320792@linuxfoundation.org>
+In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
+References: <20250623130632.993849527@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,56 +64,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Oliver Neukum <oneukum@suse.com>
+From: Eric Dumazet <edumazet@google.com>
 
-commit d3faab9b5a6a0477d69c38bd11c43aa5e936f929 upstream.
+commit 3cae906e1a6184cdc9e4d260e4dbdf9a118d94ad upstream.
 
-If we sanitize error returns, the debug statements need
-to come before that so that we don't lose information.
+syzbot reported that a recent patch forgot to unlock rcu
+in the error path.
 
-Signed-off-by: Oliver Neukum <oneukum@suse.com>
-Fixes: 405b0d610745 ("net: usb: aqc111: fix error handling of usbnet read calls")
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Adopt the convention that netlbl_conn_setattr() is already using.
+
+Fixes: 6e9f2df1c550 ("calipso: Don't call calipso functions for AF_INET sk.")
+Reported-by: syzbot <syzkaller@googlegroups.com>
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Cc: Kuniyuki Iwashima <kuniyu@amazon.com>
+Acked-by: Paul Moore <paul@paul-moore.com>
+Link: https://patch.msgid.link/20250604133826.1667664-1-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/usb/aqc111.c |    8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ net/netlabel/netlabel_kapi.c |    6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
---- a/drivers/net/usb/aqc111.c
-+++ b/drivers/net/usb/aqc111.c
-@@ -31,11 +31,11 @@ static int aqc111_read_cmd_nopm(struct u
- 				   USB_RECIP_DEVICE, value, index, data, size);
+--- a/net/netlabel/netlabel_kapi.c
++++ b/net/netlabel/netlabel_kapi.c
+@@ -1140,8 +1140,10 @@ int netlbl_conn_setattr(struct sock *sk,
+ 		break;
+ #if IS_ENABLED(CONFIG_IPV6)
+ 	case AF_INET6:
+-		if (sk->sk_family != AF_INET6)
+-			return -EAFNOSUPPORT;
++		if (sk->sk_family != AF_INET6) {
++			ret_val = -EAFNOSUPPORT;
++			goto conn_setattr_return;
++		}
  
- 	if (unlikely(ret < size)) {
--		ret = ret < 0 ? ret : -ENODATA;
--
- 		netdev_warn(dev->net,
- 			    "Failed to read(0x%x) reg index 0x%04x: %d\n",
- 			    cmd, index, ret);
-+
-+		ret = ret < 0 ? ret : -ENODATA;
- 	}
- 
- 	return ret;
-@@ -50,11 +50,11 @@ static int aqc111_read_cmd(struct usbnet
- 			      USB_RECIP_DEVICE, value, index, data, size);
- 
- 	if (unlikely(ret < size)) {
--		ret = ret < 0 ? ret : -ENODATA;
--
- 		netdev_warn(dev->net,
- 			    "Failed to read(0x%x) reg index 0x%04x: %d\n",
- 			    cmd, index, ret);
-+
-+		ret = ret < 0 ? ret : -ENODATA;
- 	}
- 
- 	return ret;
+ 		addr6 = (struct sockaddr_in6 *)addr;
+ 		entry = netlbl_domhsh_getentry_af6(secattr->domain,
 
 
 
