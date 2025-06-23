@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-157852-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157665-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9256CAE561B
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:17:37 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 34504AE5503
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:07:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 000F53ACA43
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:14:40 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 60F261BC3054
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:07:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D7B7321B8F6;
-	Mon, 23 Jun 2025 22:14:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9961222576;
+	Mon, 23 Jun 2025 22:07:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uy/4v6xa"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jiUKttEb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 900251F7580;
-	Mon, 23 Jun 2025 22:14:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 779343597E;
+	Mon, 23 Jun 2025 22:07:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750716878; cv=none; b=MPbR9PflQEn2hXr7UtJLNyMTM/r0NGAXLfOlEfuLgHWBrhTThpIP4NU/yVdsWrDWME47IzcHGWnBbEow0jlAt2HNXZ3kF3A+3dHeBD4sDZEtz4rNIci6tu8MyOGpLQYVyvrDRZbXXwAv1oTbR7XeAmqJ2Fii3KQFe7aBYGk3RIs=
+	t=1750716424; cv=none; b=MRmychyBYP4yhW18FO1VMZ98yVaIVCFwH3QpSR37I5pliQZmJ1/7GvG/ujbHHMiG5SWNgpvKEXEHDcJZ9jEKz3kvzbIIzGP0fyQt1jX2EnYHMd6qJ8N7r901nWi3IqM8jzSVwsD+Jt3Tn9vdJxuDAAWHWfcNp+EzvtdaIJ9SO5Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750716878; c=relaxed/simple;
-	bh=I45C3qjn0yrhPWC6PWNd9hcAcK1ik5gOrjPwcGGzN3k=;
+	s=arc-20240116; t=1750716424; c=relaxed/simple;
+	bh=ykX1wcOSssNcYiOcppAlaYOX1FPdOLNmJvIc/OJkioc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nU4DhgyS5J5IfHCtw6uTH1slpSECF7YRHs3V4ZnTdWhx8gLZNcEZEJdX/b24BS4JWGKlTIS3ENpFe0zTvnwuf9Ijy9vc+NJl5UUadT1SMvjofvPPhcjySbUKR4KLTL1oJxyAeUIMw8vtPwiaQgY6Pb6PxUJ3Lfoh0yM2HprBONg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uy/4v6xa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3CEEC4CEED;
-	Mon, 23 Jun 2025 22:14:36 +0000 (UTC)
+	 MIME-Version; b=cePmYC+zBxXWu2uEgN9Lfk5yUAShzMVbM5v8KZZK4IKiyFAmrvoAoIm7xsC+Fi9GxF5S9mHv1s2f4Lg4qsXH6jid/MjwZJoQiMto/Oyv+lSZhr5f5iZ/YX+SSsuDRy/Wkhn1QccFS6kmdO/SlNJMxeDthQ79MSbrSLUr4WoiGsE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jiUKttEb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E193C4CEEA;
+	Mon, 23 Jun 2025 22:07:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750716877;
-	bh=I45C3qjn0yrhPWC6PWNd9hcAcK1ik5gOrjPwcGGzN3k=;
+	s=korg; t=1750716424;
+	bh=ykX1wcOSssNcYiOcppAlaYOX1FPdOLNmJvIc/OJkioc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uy/4v6xaI8NNnb1z2am6qeVaqK6Oy+WGzFyZ0ZElHSDRasYJBi6KbLqlU0w3117qv
-	 4SMsb0jFW1v51BDF/Okpfi3yHml3n/7KKHkKlnNG8HA0AMub6o0wQSmyRT06ymrL4X
-	 tjhtzR5uGdjnvDxEMAdSul+mk9IYgFTXysI3khb4=
+	b=jiUKttEbJKnOoCYKYO1Cj49smoHXGTT0KVOoCUOXqe3xk1VuZy4I8eLLI+SK9lBW/
+	 T2UXrCabTqmigXfQHPmJb+7PlzIVe5FGhvKl7562qs8hOMwyrsJimUe65u09Q7QTDU
+	 QZaf66VyJLXGh2r4M867MFKhGzv324Ft3mLxaurI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chao Yu <chao@kernel.org>,
-	Jaegeuk Kim <jaegeuk@kernel.org>
-Subject: [PATCH 6.1 341/508] f2fs: fix to do sanity check on sit_bitmap_size
-Date: Mon, 23 Jun 2025 15:06:26 +0200
-Message-ID: <20250623130653.729715407@linuxfoundation.org>
+	Joe Damato <jdamato@fastly.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 250/414] netdevsim: Mark NAPI ID on skb in nsim_rcv
+Date: Mon, 23 Jun 2025 15:06:27 +0200
+Message-ID: <20250623130648.297488095@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
-References: <20250623130645.255320792@linuxfoundation.org>
+In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
+References: <20250623130642.015559452@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,85 +62,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chao Yu <chao@kernel.org>
+From: Joe Damato <jdamato@fastly.com>
 
-commit 5db0d252c64e91ba1929c70112352e85dc5751e7 upstream.
+[ Upstream commit f71c549b26a33fd62f1e9c7deeba738bfc73fbfc ]
 
-w/ below testcase, resize will generate a corrupted image which
-contains inconsistent metadata, so when mounting such image, it
-will trigger kernel panic:
+Previously, nsim_rcv was not marking the NAPI ID on the skb, leading to
+applications seeing a napi ID of 0 when using SO_INCOMING_NAPI_ID.
 
-touch img
-truncate -s $((512*1024*1024*1024)) img
-mkfs.f2fs -f img $((256*1024*1024))
-resize.f2fs -s -i img -t $((1024*1024*1024))
-mount img /mnt/f2fs
+To add to the userland confusion, netlink appears to correctly report
+the NAPI IDs for netdevsim queues but the resulting file descriptor from
+a call to accept() was reporting a NAPI ID of 0.
 
-------------[ cut here ]------------
-kernel BUG at fs/f2fs/segment.h:863!
-Oops: invalid opcode: 0000 [#1] SMP PTI
-CPU: 11 UID: 0 PID: 3922 Comm: mount Not tainted 6.15.0-rc1+ #191 PREEMPT(voluntary)
-Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
-RIP: 0010:f2fs_ra_meta_pages+0x47c/0x490
-
-Call Trace:
- f2fs_build_segment_manager+0x11c3/0x2600
- f2fs_fill_super+0xe97/0x2840
- mount_bdev+0xf4/0x140
- legacy_get_tree+0x2b/0x50
- vfs_get_tree+0x29/0xd0
- path_mount+0x487/0xaf0
- __x64_sys_mount+0x116/0x150
- do_syscall_64+0x82/0x190
- entry_SYSCALL_64_after_hwframe+0x76/0x7e
-RIP: 0033:0x7fdbfde1bcfe
-
-The reaseon is:
-
-sit_i->bitmap_size is 192, so size of sit bitmap is 192*8=1536, at maximum
-there are 1536 sit blocks, however MAIN_SEGS is 261893, so that sit_blk_cnt
-is 4762, build_sit_entries() -> current_sit_addr() tries to access
-out-of-boundary in sit_bitmap at offset from [1536, 4762), once sit_bitmap
-and sit_bitmap_mirror is not the same, it will trigger f2fs_bug_on().
-
-Let's add sanity check in f2fs_sanity_check_ckpt() to avoid panic.
-
-Cc: stable@vger.kernel.org
-Signed-off-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Joe Damato <jdamato@fastly.com>
+Link: https://patch.msgid.link/20250424002746.16891-2-jdamato@fastly.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/f2fs/super.c |    8 ++++++++
- 1 file changed, 8 insertions(+)
+ drivers/net/netdevsim/netdev.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/fs/f2fs/super.c
-+++ b/fs/f2fs/super.c
-@@ -3499,6 +3499,7 @@ int f2fs_sanity_check_ckpt(struct f2fs_s
- 	block_t user_block_count, valid_user_blocks;
- 	block_t avail_node_count, valid_node_count;
- 	unsigned int nat_blocks, nat_bits_bytes, nat_bits_blocks;
-+	unsigned int sit_blk_cnt;
- 	int i, j;
+diff --git a/drivers/net/netdevsim/netdev.c b/drivers/net/netdevsim/netdev.c
+index 79b898311819d..ee2a7b2f6268d 100644
+--- a/drivers/net/netdevsim/netdev.c
++++ b/drivers/net/netdevsim/netdev.c
+@@ -25,6 +25,7 @@
+ #include <net/pkt_cls.h>
+ #include <net/rtnetlink.h>
+ #include <net/udp_tunnel.h>
++#include <net/busy_poll.h>
  
- 	total = le32_to_cpu(raw_super->segment_count);
-@@ -3610,6 +3611,13 @@ skip_cross:
- 		return 1;
+ #include "netdevsim.h"
+ 
+@@ -341,6 +342,7 @@ static int nsim_rcv(struct nsim_rq *rq, int budget)
+ 			break;
+ 
+ 		skb = skb_dequeue(&rq->skb_queue);
++		skb_mark_napi_id(skb, &rq->napi);
+ 		netif_receive_skb(skb);
  	}
  
-+	sit_blk_cnt = DIV_ROUND_UP(main_segs, SIT_ENTRY_PER_BLOCK);
-+	if (sit_bitmap_size * 8 < sit_blk_cnt) {
-+		f2fs_err(sbi, "Wrong bitmap size: sit: %u, sit_blk_cnt:%u",
-+			 sit_bitmap_size, sit_blk_cnt);
-+		return 1;
-+	}
-+
- 	cp_pack_start_sum = __start_sum_addr(sbi);
- 	cp_payload = __cp_payload(sbi);
- 	if (cp_pack_start_sum < cp_payload + 1 ||
+-- 
+2.39.5
+
 
 
 
