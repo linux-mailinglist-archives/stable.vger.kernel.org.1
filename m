@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-156518-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156614-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 95BDCAE4FDA
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:20:11 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6A474AE5064
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:24:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 32DB617F7CA
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:20:12 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BA65B1B614E3
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:24:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B164D18E377;
-	Mon, 23 Jun 2025 21:20:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CDB21222587;
+	Mon, 23 Jun 2025 21:24:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KJ3lw+Wh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xVRScM0Y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D8CC2C9D;
-	Mon, 23 Jun 2025 21:20:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B417222571;
+	Mon, 23 Jun 2025 21:24:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750713609; cv=none; b=JXp1x+8LybEO/HAKKRDXs8IYaeig40E1ypkFI4nk6k+55uTmOabvyJjjNC380LV9K00LmxJynpN6byYzfN3UjlDoDLDQ6yVAkS4dsC1YGguJ4nAudC/j51r68BheBUMHUr6CXH0FDC0fmj7v4S8DgsRnyRKNmneApzsyYBRL7gQ=
+	t=1750713842; cv=none; b=C48OOXaditXKr0d13Yw0ee+ID0NxrCF88ceeVnoZSZPf7hiH2QSKz9nrQ/Mhv0PjpTFbTG8gBf0x1hL2w87Qu4Hu3t8o0JFxuIM4W1IKb9+b9+2E64xbX5RKPJiag8EZDXRrXU2fxVvqmHZbjZu8xbpYstL7UXjCuwbSlLTCEIQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750713609; c=relaxed/simple;
-	bh=0nxZMud13ZLQqi/GKh8Abk47OrXSMh3CD2pnU4TCOl0=;
+	s=arc-20240116; t=1750713842; c=relaxed/simple;
+	bh=UghdCmTu+Ne2QTDKV3sR7QW2FZcqlr9UktV0qVzJEso=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KOVqjO18ITMOWUb1Hmv8yhyFcl2XNYOcEOdVUnDACUDNo1qBJ54apburAwF0iUjYGQWm5qyyaYR2h4VXyzg9iCfA0VdMn/AvjJw/wDB1WzGDPNiM+n56qpzv4XOoZzof1kctQugMFA2LHEij4K/fmy85bnG0FfD4pQYb1F+Hj4Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KJ3lw+Wh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07D95C4CEEA;
-	Mon, 23 Jun 2025 21:20:08 +0000 (UTC)
+	 MIME-Version; b=sTzlLQ2KIuy7fWBZLi1AHjBfAIDkFh/WRFYSepKidPHxMFNV0NGEFVE0AJ/fc6wgyrrLRgiZs04hZRXg2ylOEB76CbT9qdasajTRajlwR14cTdEFZZspZBc8kDU7BuTpIgvv+bfWE2JcqVH4RAdOEWwOyNXnkQD2KiUoMnZZQEc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xVRScM0Y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23956C4CEED;
+	Mon, 23 Jun 2025 21:24:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750713609;
-	bh=0nxZMud13ZLQqi/GKh8Abk47OrXSMh3CD2pnU4TCOl0=;
+	s=korg; t=1750713842;
+	bh=UghdCmTu+Ne2QTDKV3sR7QW2FZcqlr9UktV0qVzJEso=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KJ3lw+Who/rUu2QPWiLdDH1G5Qoc7yUkXrL3hfY5mJrgA+uRTWBNp16dHdhJWKM3f
-	 hnXU6RkvBzfbCEciJNawR4ldLWSkJHu6qvTl755l9EnsE00tjATXJ6KmiCPeZKp81x
-	 4nignZrQBYQUxjjKyb6p81hDQD89x1JQBcEWKtVc=
+	b=xVRScM0YnVA2yq5JxWhV9/QBTbRtGRrjjC4ypua45oXQKZLOj0CiP0Ekd3CgiPrNk
+	 MAPMOcbYgH/4n0kJugrKNWaMQ6A7f4CVMvMfq1jJWgC8B7dALv4UXUf8R8M8KgsZu4
+	 Ux+XdNg6T6tJGw4o3PvJs00UJTMCqe0FJaQM+s3A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Moon Yeounsu <yyyynoom@gmail.com>,
+	Jakub Sitnicki <jakub@cloudflare.com>,
+	Michal Luczaj <mhal@rbox.co>,
+	Willem de Bruijn <willemb@google.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 337/592] net: dlink: add synchronization for stats update
-Date: Mon, 23 Jun 2025 15:04:55 +0200
-Message-ID: <20250623130708.468975059@linuxfoundation.org>
+Subject: [PATCH 5.15 152/411] net: Fix TOCTOU issue in sk_is_readable()
+Date: Mon, 23 Jun 2025 15:04:56 +0200
+Message-ID: <20250623130637.457376343@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
-References: <20250623130700.210182694@linuxfoundation.org>
+In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
+References: <20250623130632.993849527@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,104 +64,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Moon Yeounsu <yyyynoom@gmail.com>
+From: Michal Luczaj <mhal@rbox.co>
 
-[ Upstream commit 12889ce926e9a9baf6b83d809ba316af539b89e2 ]
+[ Upstream commit 2660a544fdc0940bba15f70508a46cf9a6491230 ]
 
-This patch synchronizes code that accesses from both user-space
-and IRQ contexts. The `get_stats()` function can be called from both
-context.
+sk->sk_prot->sock_is_readable is a valid function pointer when sk resides
+in a sockmap. After the last sk_psock_put() (which usually happens when
+socket is removed from sockmap), sk->sk_prot gets restored and
+sk->sk_prot->sock_is_readable becomes NULL.
 
-`dev->stats.tx_errors` and `dev->stats.collisions` are also updated
-in the `tx_errors()` function. Therefore, these fields must also be
-protected by synchronized.
+This makes sk_is_readable() racy, if the value of sk->sk_prot is reloaded
+after the initial check. Which in turn may lead to a null pointer
+dereference.
 
-There is no code that accessses `dev->stats.tx_errors` between the
-previous and updated lines, so the updating point can be moved.
+Ensure the function pointer does not turn NULL after the check.
 
-Signed-off-by: Moon Yeounsu <yyyynoom@gmail.com>
-Link: https://patch.msgid.link/20250515075333.48290-1-yyyynoom@gmail.com
+Fixes: 8934ce2fd081 ("bpf: sockmap redirect ingress support")
+Suggested-by: Jakub Sitnicki <jakub@cloudflare.com>
+Signed-off-by: Michal Luczaj <mhal@rbox.co>
+Reviewed-by: Willem de Bruijn <willemb@google.com>
+Link: https://patch.msgid.link/20250609-skisreadable-toctou-v1-1-d0dfb2d62c37@rbox.co
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/dlink/dl2k.c | 14 +++++++++++++-
- drivers/net/ethernet/dlink/dl2k.h |  2 ++
- 2 files changed, 15 insertions(+), 1 deletion(-)
+ include/net/sock.h | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/dlink/dl2k.c b/drivers/net/ethernet/dlink/dl2k.c
-index 232e839a9d071..038a0400c1f95 100644
---- a/drivers/net/ethernet/dlink/dl2k.c
-+++ b/drivers/net/ethernet/dlink/dl2k.c
-@@ -146,6 +146,8 @@ rio_probe1 (struct pci_dev *pdev, const struct pci_device_id *ent)
- 	np->ioaddr = ioaddr;
- 	np->chip_id = chip_idx;
- 	np->pdev = pdev;
-+
-+	spin_lock_init(&np->stats_lock);
- 	spin_lock_init (&np->tx_lock);
- 	spin_lock_init (&np->rx_lock);
+diff --git a/include/net/sock.h b/include/net/sock.h
+index 0461890f10ae7..fd68fd0adae7f 100644
+--- a/include/net/sock.h
++++ b/include/net/sock.h
+@@ -2935,8 +2935,11 @@ int sock_bind_add(struct sock *sk, struct sockaddr *addr, int addr_len);
  
-@@ -865,7 +867,6 @@ tx_error (struct net_device *dev, int tx_status)
- 	frame_id = (tx_status & 0xffff0000);
- 	printk (KERN_ERR "%s: Transmit error, TxStatus %4.4x, FrameId %d.\n",
- 		dev->name, tx_status, frame_id);
--	dev->stats.tx_errors++;
- 	/* Ttransmit Underrun */
- 	if (tx_status & 0x10) {
- 		dev->stats.tx_fifo_errors++;
-@@ -902,9 +903,15 @@ tx_error (struct net_device *dev, int tx_status)
- 		rio_set_led_mode(dev);
- 		/* Let TxStartThresh stay default value */
- 	}
+ static inline bool sk_is_readable(struct sock *sk)
+ {
+-	if (sk->sk_prot->sock_is_readable)
+-		return sk->sk_prot->sock_is_readable(sk);
++	const struct proto *prot = READ_ONCE(sk->sk_prot);
 +
-+	spin_lock(&np->stats_lock);
- 	/* Maximum Collisions */
- 	if (tx_status & 0x08)
- 		dev->stats.collisions++;
++	if (prot->sock_is_readable)
++		return prot->sock_is_readable(sk);
 +
-+	dev->stats.tx_errors++;
-+	spin_unlock(&np->stats_lock);
-+
- 	/* Restart the Tx */
- 	dw32(MACCtrl, dr16(MACCtrl) | TxEnable);
+ 	return false;
  }
-@@ -1073,7 +1080,9 @@ get_stats (struct net_device *dev)
- 	int i;
- #endif
- 	unsigned int stat_reg;
-+	unsigned long flags;
- 
-+	spin_lock_irqsave(&np->stats_lock, flags);
- 	/* All statistics registers need to be acknowledged,
- 	   else statistic overflow could cause problems */
- 
-@@ -1123,6 +1132,9 @@ get_stats (struct net_device *dev)
- 	dr16(TCPCheckSumErrors);
- 	dr16(UDPCheckSumErrors);
- 	dr16(IPCheckSumErrors);
-+
-+	spin_unlock_irqrestore(&np->stats_lock, flags);
-+
- 	return &dev->stats;
- }
- 
-diff --git a/drivers/net/ethernet/dlink/dl2k.h b/drivers/net/ethernet/dlink/dl2k.h
-index 0e33e2eaae960..56aff2f0bdbfa 100644
---- a/drivers/net/ethernet/dlink/dl2k.h
-+++ b/drivers/net/ethernet/dlink/dl2k.h
-@@ -372,6 +372,8 @@ struct netdev_private {
- 	struct pci_dev *pdev;
- 	void __iomem *ioaddr;
- 	void __iomem *eeprom_addr;
-+	// To ensure synchronization when stats are updated.
-+	spinlock_t stats_lock;
- 	spinlock_t tx_lock;
- 	spinlock_t rx_lock;
- 	unsigned int rx_buf_sz;		/* Based on MTU+slack. */
+ #endif	/* _SOCK_H */
 -- 
 2.39.5
 
