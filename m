@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-157548-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157139-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 548EAAE548F
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:02:39 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0F6BDAE52AC
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:46:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5EE5E3B4A2F
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:01:54 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A5A817AEA1D
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:44:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 97EE621FF50;
-	Mon, 23 Jun 2025 22:02:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4CC2C22578D;
+	Mon, 23 Jun 2025 21:45:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Q4siDoUN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tnTfm19W"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DFC24C74;
-	Mon, 23 Jun 2025 22:02:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09EDF225413;
+	Mon, 23 Jun 2025 21:45:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750716137; cv=none; b=EBJcssi0kIIHknbDlexoaKw4BiJvnlBU0gDNTUtmOr3bJe3vk6hrjnBQOAiPGaUphHGAyuaxAEpNq5CKheYCgK7yXcGLVT+DHuOjQiXvoqHfMoISlkdOLI0xVNzzRDbvQkistDBEUzFTmE2HCgnEeYvLs9OZPhctk6Er2aSVleM=
+	t=1750715130; cv=none; b=ICZjoBc2nvqjz+F81CGAed1EauF4dlOykc7Mgpc0RH62d8Cp1B1Jm8hlT3N5AEVBPMr8V5GmW9HlGuTPA8Grvuo7JnNKpIkUyWynjU7m/M6ZUn92hsLfGKWjXk2x9LvGuBryfly+M285Y0eXBNdvT3oaTFEwDRVKrxgxPvLb8as=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750716137; c=relaxed/simple;
-	bh=I5784QhwCrI4bPjmLjC6CngW3k4BbxnqI0NyPRbP+AI=;
+	s=arc-20240116; t=1750715130; c=relaxed/simple;
+	bh=X84Pgj3Pwt/WXmui1+yB6oiB+j05Hl6w/UdYtbtdyV8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Mji/Rg1M/ZVT7QkVNhVe5/CeyrI4m6sXx9pATPfGVjiXe4ESk+1dTuJBIxGVsZIdsSYpIpKRiL9PEoI21BiSMCqQi2ri3Rs5JlTpCPCjTdUMgRSgB2HCX3ZjR/s6vlPW7XO6ZQnHIWWrgQ0Ys/umT624f94E4i05xwH01Uc5PI8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Q4siDoUN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC80DC4CEEA;
-	Mon, 23 Jun 2025 22:02:16 +0000 (UTC)
+	 MIME-Version:Content-Type; b=lovU0sok8mTt1sfhASQST/rdFKv71x3h6uacEd2Z59Gnj2Afjb8iLxZw1vyOeVUaY+O8vqdMBtdpe9VQ0YCFtbj55gFTnhfRfftJ7AFqRfmpA4g2JJIi5Lzwo54oiJ8o1l15kgArUkgYOUImiGgD3XUMGAfh18cKqAu3/Y+Mg3Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tnTfm19W; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96BC4C4CEF0;
+	Mon, 23 Jun 2025 21:45:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750716137;
-	bh=I5784QhwCrI4bPjmLjC6CngW3k4BbxnqI0NyPRbP+AI=;
+	s=korg; t=1750715129;
+	bh=X84Pgj3Pwt/WXmui1+yB6oiB+j05Hl6w/UdYtbtdyV8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Q4siDoUNGgnr3myp7TW+RQL3eFzVl8/FXEylnPzP7OiPZIDLNcUezpHTlHCgUbeeJ
-	 2AU7aTcMxu6EcBUli9axJ8+eG20kX8fVXniyEGA5Ir4Z5oz7HZ0AU/e1mK+XzOykt7
-	 01GMC3Yjdo3+z5Fq0glRY4uA9rEOUrvUg/4aiUng=
+	b=tnTfm19W+0GgMe8E8w6jmgZfNkKD2BVtpc/5tnaXr4s4dgTH+1me0f/muK6Evx9CO
+	 HjqYs03apJ2ycj3OZvtvvOiXeyJrFJIuolLJYsT1pOkXWqv2ZVV16923HeRTbsC+hr
+	 Cti3qm8dmMK/qnI2u6rE4qb3cQHVS+4ymyZ1DyDc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shyam Prasad N <sprasad@microsoft.com>,
-	Bharath SM <bharathsm@microsoft.com>,
-	xfuren <xfuren@gmail.com>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.15 504/592] smb: fix secondary channel creation issue with kerberos by populating hostname when adding channels
+	Mario Limonciello <mario.limonciello@amd.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 201/290] platform/x86/amd: pmc: Clear metrics table at start of cycle
 Date: Mon, 23 Jun 2025 15:07:42 +0200
-Message-ID: <20250623130712.423292018@linuxfoundation.org>
+Message-ID: <20250623130632.980392672@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
-References: <20250623130700.210182694@linuxfoundation.org>
+In-Reply-To: <20250623130626.910356556@linuxfoundation.org>
+References: <20250623130626.910356556@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,47 +60,54 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bharath SM <bharathsm@microsoft.com>
+From: Mario Limonciello <mario.limonciello@amd.com>
 
-commit 306cb65bb0cb243389fcbd0a66907d5bdea07d1e upstream.
+[ Upstream commit 4dbd11796f3a8eb95647507befc41995458a4023 ]
 
-When mounting a share with kerberos authentication with multichannel
-support, share mounts correctly, but fails to create secondary
-channels. This occurs because the hostname is not populated when
-adding the channels. The hostname is necessary for the userspace
-cifs.upcall program to retrieve the required credentials and pass
-it back to kernel, without hostname secondary channels fails
-establish.
+The area of memory that contains the metrics table may contain garbage
+when the cycle starts.  This normally doesn't matter because the cycle
+itself will populate it with valid data, however commit 9f5595d5f03fd
+("platform/x86/amd: pmc: Require at least 2.5 seconds between HW sleep
+cycles") started to use it during the check() phase.  Depending upon
+what garbage is in the table it's possible that the system will wait
+2.5 seconds for even the first cycle, which will be visible to a user.
 
-Cc: stable@vger.kernel.org
-Reviewed-by: Shyam Prasad N <sprasad@microsoft.com>
-Signed-off-by: Bharath SM <bharathsm@microsoft.com>
-Reported-by: xfuren <xfuren@gmail.com>
-Link: https://bugzilla.samba.org/show_bug.cgi?id=15824
-Signed-off-by: Steve French <stfrench@microsoft.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To prevent this from happening explicitly clear the table when logging
+is started.
+
+Fixes: 9f5595d5f03fd ("platform/x86/amd: pmc: Require at least 2.5 seconds between HW sleep cycles")
+Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+Link: https://lore.kernel.org/r/20250603132412.3555302-1-superm1@kernel.org
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/client/sess.c |    3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/platform/x86/amd/pmc/pmc.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/fs/smb/client/sess.c
-+++ b/fs/smb/client/sess.c
-@@ -498,8 +498,7 @@ cifs_ses_add_channel(struct cifs_ses *se
- 	ctx->domainauto = ses->domainAuto;
- 	ctx->domainname = ses->domainName;
+diff --git a/drivers/platform/x86/amd/pmc/pmc.c b/drivers/platform/x86/amd/pmc/pmc.c
+index 946a546cd9dd0..af5cc8aa7988c 100644
+--- a/drivers/platform/x86/amd/pmc/pmc.c
++++ b/drivers/platform/x86/amd/pmc/pmc.c
+@@ -332,6 +332,8 @@ static int amd_pmc_setup_smu_logging(struct amd_pmc_dev *dev)
+ 			return -ENOMEM;
+ 	}
  
--	/* no hostname for extra channels */
--	ctx->server_hostname = "";
-+	ctx->server_hostname = ses->server->hostname;
- 
- 	ctx->username = ses->user_name;
- 	ctx->password = ses->password;
++	memset_io(dev->smu_virt_addr, 0, sizeof(struct smu_metrics));
++
+ 	/* Start the logging */
+ 	amd_pmc_send_cmd(dev, 0, NULL, SMU_MSG_LOG_RESET, false);
+ 	amd_pmc_send_cmd(dev, 0, NULL, SMU_MSG_LOG_START, false);
+-- 
+2.39.5
+
 
 
 
