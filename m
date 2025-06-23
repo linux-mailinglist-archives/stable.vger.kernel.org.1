@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-158038-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157702-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7CE83AE56B9
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:22:40 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7269CAE5539
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:09:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A33934E0954
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:22:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9446C4A19E5
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:08:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7330E223DE5;
-	Mon, 23 Jun 2025 22:22:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5EA34225417;
+	Mon, 23 Jun 2025 22:08:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1eY8Zjzd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Xgh5RmKY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 300DA199FBA;
-	Mon, 23 Jun 2025 22:22:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CD2921FF2B;
+	Mon, 23 Jun 2025 22:08:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750717331; cv=none; b=CEVUjBlOPz0bEddthYzNu8PqMwzktXW97JgBbtlOQEqWRKfT0KB75Bjik8tNdiGkPbJbdLyIHztaxMBtpaaoiB7zFj3fzNklJ5n3PS3esb53zHLR5mXojQPLDlgNJlA6JGd8jxkhXgqzpAoYtKEYsKhfblNX9xjJZ8Z6eOsSnro=
+	t=1750716515; cv=none; b=sKGkOYsPCdO4Fn5FJw2agaRpueHuPJ3HohIjbfhLUiKxBMK3xIRwAoDIUZiIkauodPxKBarXTqMkVmsjaVJtY3R2uXBlcyKkq6YGv1RosCekJHRNFpzLyOyvAwIj6D86N1i0VPdQwBEyt7AKgWEnxzhA0uL5/g0qKKIvQ6A79zk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750717331; c=relaxed/simple;
-	bh=mejS2GtGrnbKyQK67XKwc/rrypyUof17UoxlhEhQLD8=;
+	s=arc-20240116; t=1750716515; c=relaxed/simple;
+	bh=BXXOy2dPk1iI0E7KQJ+57z0AWoReDPmdqNIjvlyrkF8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=C4HVm9iKaMKJo0cdHGmUBWx8t+hVQKTaGKWxh16vroYK+OqlNQ0Sd3G1q/MvzXXO419D3Sc6c+/KbQQH2sgc3zU1FLt+jsV6ZbSVHX/odxp4hx+n1Oroe9XIYmnIW4CUox6rc8rJ6QgUYep1th0ejdLjbR3dZgScEZiGtdzO7/s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1eY8Zjzd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BBF9DC4CEEA;
-	Mon, 23 Jun 2025 22:22:10 +0000 (UTC)
+	 MIME-Version; b=RBh9KZq3YAdxLCv4A6jjll74yO64Jva644X4Hq6dmn8uCAa9d/6jf9VD7xYmTRhHtYCqaT6wEfZgxLdir5bAZ/KlTN2i3f8oHRdm844fk/3qyDEokCuhhr02Am23DRE2PymIDJsc2zaXuPm8j9P+SJjh6FMfQ4qHwnxpUH64LQg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Xgh5RmKY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A855FC4CEEA;
+	Mon, 23 Jun 2025 22:08:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750717331;
-	bh=mejS2GtGrnbKyQK67XKwc/rrypyUof17UoxlhEhQLD8=;
+	s=korg; t=1750716515;
+	bh=BXXOy2dPk1iI0E7KQJ+57z0AWoReDPmdqNIjvlyrkF8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1eY8ZjzdLV2vAJYzKBuqYTQXDdj1CugUUqpBIIcTvWK9GueWeJATxWBerBF0soIat
-	 xSeyFK+1TJIk64fru7vp5jKkbwV2j5xhgvLzz/mxY+FHjmZWdvoN8dT1JenAqPY5FV
-	 ov2vT+UY+WtbW4bouzfMCxyXEBN8FIQK2Xsofccs=
+	b=Xgh5RmKYt6KLVpNc86bVpDTPNR/X0dmLbTSF4958bU7jtGYQVhW+lR6UZlGNewKw2
+	 dvpw6TIP2f4yYvqqSCm67AiSMyPt1GtSEO+7H5FLojPcnTQFqbcPSmW3I2jyP1NJGU
+	 VK+3NI2dwkAZbHAS792jFTveNg/dSo6znf11tnWE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Krishna Kumar <krikku@gmail.com>,
-	Simon Horman <horms@kernel.org>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Sasha Levin <sashal@kernel.org>,
-	Rinitha S <sx.rinitha@intel.com>
-Subject: [PATCH 6.12 367/414] net: ice: Perform accurate aRFS flow match
+	Jonathan Lane <jon@borg.moe>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 5.15 360/411] ALSA: hda/realtek: enable headset mic on Latitude 5420 Rugged
 Date: Mon, 23 Jun 2025 15:08:24 +0200
-Message-ID: <20250623130651.135707544@linuxfoundation.org>
+Message-ID: <20250623130642.704275679@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
-References: <20250623130642.015559452@linuxfoundation.org>
+In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
+References: <20250623130632.993849527@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,163 +61,37 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krishna Kumar <krikku@gmail.com>
+From: Jonathan Lane <jon@borg.moe>
 
-[ Upstream commit 5d3bc9e5e725aa36cca9b794e340057feb6880b4 ]
+commit efa6bdf1bc75e26cafaa5f1d775e8bb7c5b0c431 upstream.
 
-This patch fixes an issue seen in a large-scale deployment under heavy
-incoming pkts where the aRFS flow wrongly matches a flow and reprograms the
-NIC with wrong settings. That mis-steering causes RX-path latency spikes
-and noisy neighbor effects when many connections collide on the same
-hash (some of our production servers have 20-30K connections).
+Like many Dell laptops, the 3.5mm port by default can not detect a
+combined headphones+mic headset or even a pure microphone.  This
+change enables the port's functionality.
 
-set_rps_cpu() calls ndo_rx_flow_steer() with flow_id that is calculated by
-hashing the skb sized by the per rx-queue table size. This results in
-multiple connections (even across different rx-queues) getting the same
-hash value. The driver steer function modifies the wrong flow to use this
-rx-queue, e.g.: Flow#1 is first added:
-    Flow#1:  <ip1, port1, ip2, port2>, Hash 'h', q#10
-
-Later when a new flow needs to be added:
-	    Flow#2:  <ip3, port3, ip4, port4>, Hash 'h', q#20
-
-The driver finds the hash 'h' from Flow#1 and updates it to use q#20. This
-results in both flows getting un-optimized - packets for Flow#1 goes to
-q#20, and then reprogrammed back to q#10 later and so on; and Flow #2
-programming is never done as Flow#1 is matched first for all misses. Many
-flows may wrongly share the same hash and reprogram rules of the original
-flow each with their own q#.
-
-Tested on two 144-core servers with 16K netperf sessions for 180s. Netperf
-clients are pinned to cores 0-71 sequentially (so that wrong packets on q#s
-72-143 can be measured). IRQs are set 1:1 for queues -> CPUs, enable XPS,
-enable aRFS (global value is 144 * rps_flow_cnt).
-
-Test notes about results from ice_rx_flow_steer():
----------------------------------------------------
-1. "Skip:" counter increments here:
-    if (fltr_info->q_index == rxq_idx ||
-	arfs_entry->fltr_state != ICE_ARFS_ACTIVE)
-	    goto out;
-2. "Add:" counter increments here:
-    ret = arfs_entry->fltr_info.fltr_id;
-    INIT_HLIST_NODE(&arfs_entry->list_entry);
-3. "Update:" counter increments here:
-    /* update the queue to forward to on an already existing flow */
-
-Runtime comparison: original code vs with the patch for different
-rps_flow_cnt values.
-
-+-------------------------------+--------------+--------------+
-| rps_flow_cnt                  |      512     |    2048      |
-+-------------------------------+--------------+--------------+
-| Ratio of Pkts on Good:Bad q's | 214 vs 822K  | 1.1M vs 980K |
-| Avoid wrong aRFS programming  | 0 vs 310K    | 0 vs 30K     |
-| CPU User                      | 216 vs 183   | 216 vs 206   |
-| CPU System                    | 1441 vs 1171 | 1447 vs 1320 |
-| CPU Softirq                   | 1245 vs 920  | 1238 vs 961  |
-| CPU Total                     | 29 vs 22.7   | 29 vs 24.9   |
-| aRFS Update                   | 533K vs 59   | 521K vs 32   |
-| aRFS Skip                     | 82M vs 77M   | 7.2M vs 4.5M |
-+-------------------------------+--------------+--------------+
-
-A separate TCP_STREAM and TCP_RR with 1,4,8,16,64,128,256,512 connections
-showed no performance degradation.
-
-Some points on the patch/aRFS behavior:
-1. Enabling full tuple matching ensures flows are always correctly matched,
-   even with smaller hash sizes.
-2. 5-6% drop in CPU utilization as the packets arrive at the correct CPUs
-   and fewer calls to driver for programming on misses.
-3. Larger hash tables reduces mis-steering due to more unique flow hashes,
-   but still has clashes. However, with larger per-device rps_flow_cnt, old
-   flows take more time to expire and new aRFS flows cannot be added if h/w
-   limits are reached (rps_may_expire_flow() succeeds when 10*rps_flow_cnt
-   pkts have been processed by this cpu that are not part of the flow).
-
-Fixes: 28bf26724fdb0 ("ice: Implement aRFS")
-Signed-off-by: Krishna Kumar <krikku@gmail.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Tested-by: Rinitha S <sx.rinitha@intel.com> (A Contingent worker at Intel)
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Jonathan Lane <jon@borg.moe>
+Cc: <stable@vger.kernel.org>
+Link: https://patch.msgid.link/20250611193124.26141-2-jon@borg.moe
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/intel/ice/ice_arfs.c | 48 +++++++++++++++++++++++
- 1 file changed, 48 insertions(+)
+ sound/pci/hda/patch_realtek.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/ethernet/intel/ice/ice_arfs.c b/drivers/net/ethernet/intel/ice/ice_arfs.c
-index 405ddd17de1bf..0bb4fb56fbe61 100644
---- a/drivers/net/ethernet/intel/ice/ice_arfs.c
-+++ b/drivers/net/ethernet/intel/ice/ice_arfs.c
-@@ -377,6 +377,50 @@ ice_arfs_is_perfect_flow_set(struct ice_hw *hw, __be16 l3_proto, u8 l4_proto)
- 	return false;
- }
- 
-+/**
-+ * ice_arfs_cmp - Check if aRFS filter matches this flow.
-+ * @fltr_info: filter info of the saved ARFS entry.
-+ * @fk: flow dissector keys.
-+ * @n_proto:  One of htons(ETH_P_IP) or htons(ETH_P_IPV6).
-+ * @ip_proto: One of IPPROTO_TCP or IPPROTO_UDP.
-+ *
-+ * Since this function assumes limited values for n_proto and ip_proto, it
-+ * is meant to be called only from ice_rx_flow_steer().
-+ *
-+ * Return:
-+ * * true	- fltr_info refers to the same flow as fk.
-+ * * false	- fltr_info and fk refer to different flows.
-+ */
-+static bool
-+ice_arfs_cmp(const struct ice_fdir_fltr *fltr_info, const struct flow_keys *fk,
-+	     __be16 n_proto, u8 ip_proto)
-+{
-+	/* Determine if the filter is for IPv4 or IPv6 based on flow_type,
-+	 * which is one of ICE_FLTR_PTYPE_NONF_IPV{4,6}_{TCP,UDP}.
-+	 */
-+	bool is_v4 = fltr_info->flow_type == ICE_FLTR_PTYPE_NONF_IPV4_TCP ||
-+		     fltr_info->flow_type == ICE_FLTR_PTYPE_NONF_IPV4_UDP;
-+
-+	/* Following checks are arranged in the quickest and most discriminative
-+	 * fields first for early failure.
-+	 */
-+	if (is_v4)
-+		return n_proto == htons(ETH_P_IP) &&
-+			fltr_info->ip.v4.src_port == fk->ports.src &&
-+			fltr_info->ip.v4.dst_port == fk->ports.dst &&
-+			fltr_info->ip.v4.src_ip == fk->addrs.v4addrs.src &&
-+			fltr_info->ip.v4.dst_ip == fk->addrs.v4addrs.dst &&
-+			fltr_info->ip.v4.proto == ip_proto;
-+
-+	return fltr_info->ip.v6.src_port == fk->ports.src &&
-+		fltr_info->ip.v6.dst_port == fk->ports.dst &&
-+		fltr_info->ip.v6.proto == ip_proto &&
-+		!memcmp(&fltr_info->ip.v6.src_ip, &fk->addrs.v6addrs.src,
-+			sizeof(struct in6_addr)) &&
-+		!memcmp(&fltr_info->ip.v6.dst_ip, &fk->addrs.v6addrs.dst,
-+			sizeof(struct in6_addr));
-+}
-+
- /**
-  * ice_rx_flow_steer - steer the Rx flow to where application is being run
-  * @netdev: ptr to the netdev being adjusted
-@@ -448,6 +492,10 @@ ice_rx_flow_steer(struct net_device *netdev, const struct sk_buff *skb,
- 			continue;
- 
- 		fltr_info = &arfs_entry->fltr_info;
-+
-+		if (!ice_arfs_cmp(fltr_info, &fk, n_proto, ip_proto))
-+			continue;
-+
- 		ret = fltr_info->fltr_id;
- 
- 		if (fltr_info->q_index == rxq_idx ||
--- 
-2.39.5
-
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -9214,6 +9214,7 @@ static const struct snd_pci_quirk alc269
+ 	SND_PCI_QUIRK(0x1028, 0x0871, "Dell Precision 3630", ALC255_FIXUP_DELL_HEADSET_MIC),
+ 	SND_PCI_QUIRK(0x1028, 0x0872, "Dell Precision 3630", ALC255_FIXUP_DELL_HEADSET_MIC),
+ 	SND_PCI_QUIRK(0x1028, 0x0873, "Dell Precision 3930", ALC255_FIXUP_DUMMY_LINEOUT_VERB),
++	SND_PCI_QUIRK(0x1028, 0x0879, "Dell Latitude 5420 Rugged", ALC269_FIXUP_DELL4_MIC_NO_PRESENCE),
+ 	SND_PCI_QUIRK(0x1028, 0x08ad, "Dell WYSE AIO", ALC225_FIXUP_DELL_WYSE_AIO_MIC_NO_PRESENCE),
+ 	SND_PCI_QUIRK(0x1028, 0x08ae, "Dell WYSE NB", ALC225_FIXUP_DELL1_MIC_NO_PRESENCE),
+ 	SND_PCI_QUIRK(0x1028, 0x0935, "Dell", ALC274_FIXUP_DELL_AIO_LINEOUT_VERB),
 
 
 
