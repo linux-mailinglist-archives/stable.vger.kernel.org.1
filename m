@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-157116-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156233-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3E525AE5284
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:44:51 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 01C59AE4EB8
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:08:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C949F4A5F85
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:44:51 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D92CF189FD1C
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:08:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 32A9A2AEE4;
-	Mon, 23 Jun 2025 21:44:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E14821FF2B;
+	Mon, 23 Jun 2025 21:08:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PkwpLMLy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TlQGXNUx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3C681E1A05;
-	Mon, 23 Jun 2025 21:44:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEAA41ACEDA;
+	Mon, 23 Jun 2025 21:08:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750715073; cv=none; b=Sxl2BT9ThcJujWhqqw1y2d2n5pAp48hP36Hlk8BVRug015/uXwQqH8/TgeppM3l/+klXf+rCWKh4w1kyYfkUpiv7pIK52rwq6aeqkHOKt1zNJDn2PUQdyaEPK75tYMzklRhR/RrMuY66LSKiMaier08tynhHYlKzr3UKJ6Y6k4k=
+	t=1750712908; cv=none; b=bEFpnZGa1ObhZTW+W2b6kIqgoe+W4/iLkNaDZvuNGZmCgdI4g5/ID2wm6SCDg9yt5u6kfFpD01ZRIUK0oqbBB2mAojUJ01E3J013wYsoauYVZri+l27bqxsTQTzPncASWI2jx62qYY2eaSY7ZpQk4lE0tq6T2hcJR5KaMqF7Crk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750715073; c=relaxed/simple;
-	bh=P/amph1TE09FI6+nfj+qibd2yYmxBJNoFHDfEzjI9wI=;
+	s=arc-20240116; t=1750712908; c=relaxed/simple;
+	bh=SbgKOSHaynTdD91CfpivsZvfrOui6cFg33hbaCL+wZE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aqfRF/OfG/QSaI0IJ7gJbp5+WdWrdDK7zjC1gwXEwFFJJcIRsbIvNaFlgD5KrwCmnv2rJpZNvL14FLSfSmYlU7WQfSikERq5wBD+8mGCTVldXfbLKdRFXRN79qHvLfmyrRgyXxQqAlQ+QVYKLUIagZH5N26LRk4Paf3DRob7EL0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PkwpLMLy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7BC4CC4CEEA;
-	Mon, 23 Jun 2025 21:44:32 +0000 (UTC)
+	 MIME-Version; b=Y50VfmV40pd9eG7e7fQUjyXCROTE2MSpN0FTN/t57fwNLU1wkg0qRdUzvScv9pibyhmbUcz9etfkXnp9vIENqdGaMGGsMLQKYfCbU9FaQ7yL3yo6zrprc6cNW7W9C6yIHeBno1wxM0MSBhq3FIDITsuznW+ALdAtUHNcxCIV5NM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TlQGXNUx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14A34C4CEEA;
+	Mon, 23 Jun 2025 21:08:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750715072;
-	bh=P/amph1TE09FI6+nfj+qibd2yYmxBJNoFHDfEzjI9wI=;
+	s=korg; t=1750712908;
+	bh=SbgKOSHaynTdD91CfpivsZvfrOui6cFg33hbaCL+wZE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PkwpLMLy71Uy6sAeCe3UwAubgBhnwog97/S8plpVTzTHCKWOXacwhvRHda07HPCD0
-	 PH2SJCjBVsRwvERKVTg4ExEYMSU+GqCyMfZyxkGv6mxUQ5c6e2noYDxYhsLsN8w/QA
-	 juTseP46A5PBhNh6bF3HWmSKcNDGZ0bAO65ZmShw=
+	b=TlQGXNUxUgaj/jKTGYEAJ7KO7Vffze0se839rjlL4wFdc8zrkM2J+OFgnSdOH0veE
+	 tg4LY8y8D3OAMb2ggMea0ISiDrJVoefwtz5L+0lYB9s8RzqFzfM0Ck0dQH54Am/8C8
+	 r5xIFKh0Qs0ZiigwpgwmgFbHDje4ho78VIYcG0vo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christoph Hellwig <hch@lst.de>,
-	"Darrick J. Wong" <djwong@kernel.org>,
-	Chandan Babu R <chandanbabu@kernel.org>,
-	Leah Rumancik <leah.rumancik@gmail.com>,
+	Amber Lin <Amber.Lin@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 213/508] xfs: reset rootdir extent size hint after growfsrt
+Subject: [PATCH 6.15 300/592] drm/amdkfd: Set SDMA_RLCx_IB_CNTL/SWITCH_INSIDE_IB
 Date: Mon, 23 Jun 2025 15:04:18 +0200
-Message-ID: <20250623130650.504681145@linuxfoundation.org>
+Message-ID: <20250623130707.528389969@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
-References: <20250623130645.255320792@linuxfoundation.org>
+In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
+References: <20250623130700.210182694@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,97 +62,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Darrick J. Wong <djwong@kernel.org>
+From: Amber Lin <Amber.Lin@amd.com>
 
-[ Upstream commit a24cae8fc1f13f6f6929351309f248fd2e9351ce ]
+[ Upstream commit ab9fcc6362e0699fc1150aa1d8503c40fce2c1e1 ]
 
-If growfsrt is run on a filesystem that doesn't have a rt volume, it's
-possible to change the rt extent size.  If the root directory was
-previously set up with an inherited extent size hint and rtinherit, it's
-possible that the hint is no longer a multiple of the rt extent size.
-Although the verifiers don't complain about this, xfs_repair will, so if
-we detect this situation, log the root directory to clean it up.  This
-is still racy, but it's better than nothing.
+When submitting MQD to CP, set SDMA_RLCx_IB_CNTL/SWITCH_INSIDE_IB bit so
+it'll allow SDMA preemption if there is a massive command buffer of
+long-running SDMA commands.
 
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Darrick J. Wong <djwong@kernel.org>
-Signed-off-by: Chandan Babu R <chandanbabu@kernel.org>
-Signed-off-by: Leah Rumancik <leah.rumancik@gmail.com>
-Acked-by: "Darrick J. Wong" <djwong@kernel.org>
+Signed-off-by: Amber Lin <Amber.Lin@amd.com>
+Acked-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/xfs/xfs_rtalloc.c | 40 ++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 40 insertions(+)
+ drivers/gpu/drm/amd/amdkfd/kfd_mqd_manager_v9.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/fs/xfs/xfs_rtalloc.c b/fs/xfs/xfs_rtalloc.c
-index 149fcfc485d89..fc21b4e81ade8 100644
---- a/fs/xfs/xfs_rtalloc.c
-+++ b/fs/xfs/xfs_rtalloc.c
-@@ -915,6 +915,39 @@ xfs_alloc_rsum_cache(
- 		xfs_warn(mp, "could not allocate realtime summary cache");
+diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_mqd_manager_v9.c b/drivers/gpu/drm/amd/amdkfd/kfd_mqd_manager_v9.c
+index 80320a6c8854a..97933d2a38032 100644
+--- a/drivers/gpu/drm/amd/amdkfd/kfd_mqd_manager_v9.c
++++ b/drivers/gpu/drm/amd/amdkfd/kfd_mqd_manager_v9.c
+@@ -495,6 +495,10 @@ static void update_mqd_sdma(struct mqd_manager *mm, void *mqd,
+ 	m->sdma_engine_id = q->sdma_engine_id;
+ 	m->sdma_queue_id = q->sdma_queue_id;
+ 	m->sdmax_rlcx_dummy_reg = SDMA_RLC_DUMMY_DEFAULT;
++	/* Allow context switch so we don't cross-process starve with a massive
++	 * command buffer of long-running SDMA commands
++	 */
++	m->sdmax_rlcx_ib_cntl |= SDMA0_GFX_IB_CNTL__SWITCH_INSIDE_IB_MASK;
+ 
+ 	q->is_active = QUEUE_IS_ACTIVE(*q);
  }
- 
-+/*
-+ * If we changed the rt extent size (meaning there was no rt volume previously)
-+ * and the root directory had EXTSZINHERIT and RTINHERIT set, it's possible
-+ * that the extent size hint on the root directory is no longer congruent with
-+ * the new rt extent size.  Log the rootdir inode to fix this.
-+ */
-+static int
-+xfs_growfs_rt_fixup_extsize(
-+	struct xfs_mount	*mp)
-+{
-+	struct xfs_inode	*ip = mp->m_rootip;
-+	struct xfs_trans	*tp;
-+	int			error = 0;
-+
-+	xfs_ilock(ip, XFS_IOLOCK_EXCL);
-+	if (!(ip->i_diflags & XFS_DIFLAG_RTINHERIT) ||
-+	    !(ip->i_diflags & XFS_DIFLAG_EXTSZINHERIT))
-+		goto out_iolock;
-+
-+	error = xfs_trans_alloc_inode(ip, &M_RES(mp)->tr_ichange, 0, 0, false,
-+			&tp);
-+	if (error)
-+		goto out_iolock;
-+
-+	xfs_trans_log_inode(tp, ip, XFS_ILOG_CORE);
-+	error = xfs_trans_commit(tp);
-+	xfs_iunlock(ip, XFS_ILOCK_EXCL);
-+
-+out_iolock:
-+	xfs_iunlock(ip, XFS_IOLOCK_EXCL);
-+	return error;
-+}
-+
- /*
-  * Visible (exported) functions.
-  */
-@@ -944,6 +977,7 @@ xfs_growfs_rt(
- 	xfs_sb_t	*sbp;		/* old superblock */
- 	xfs_fsblock_t	sumbno;		/* summary block number */
- 	uint8_t		*rsum_cache;	/* old summary cache */
-+	xfs_agblock_t	old_rextsize = mp->m_sb.sb_rextsize;
- 
- 	sbp = &mp->m_sb;
- 
-@@ -1177,6 +1211,12 @@ xfs_growfs_rt(
- 	if (error)
- 		goto out_free;
- 
-+	if (old_rextsize != in->extsize) {
-+		error = xfs_growfs_rt_fixup_extsize(mp);
-+		if (error)
-+			goto out_free;
-+	}
-+
- 	/* Update secondary superblocks now the physical grow has completed */
- 	error = xfs_update_secondary_sbs(mp);
- 
 -- 
 2.39.5
 
