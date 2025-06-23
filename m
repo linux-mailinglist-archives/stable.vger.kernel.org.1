@@ -1,55 +1,53 @@
-Return-Path: <stable+bounces-156119-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156127-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A7A9AAE454E
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:51:08 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1051FAE452B
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:49:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6CE6E3B6428
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:43:14 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D86391898C44
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:44:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED6C024728E;
-	Mon, 23 Jun 2025 13:43:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D8028252900;
+	Mon, 23 Jun 2025 13:43:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="meMib5Y/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zMMy95Mk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB60D347DD;
-	Mon, 23 Jun 2025 13:43:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97461250C06;
+	Mon, 23 Jun 2025 13:43:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750686195; cv=none; b=qCuj9JcZaj+4nM+kqGpHSwkEhpfSkKWWXonwfe/AbWtQE4CNLm3GUx+/jTicbCzd9zcrd7POiD2lKamt+Zh1E5/R36UZSDLfmSq7GXjmdyuVwVkKjXNVZDoHmBAwGg6BWrXfVG3F1sSu5VumifiapTboi9QIS/PkFZNcNgu2jdo=
+	t=1750686215; cv=none; b=iUv/mHqs1bIINoD0gVmFaUg5whFJme5FvMvnQNqfmYiU4Ws1ULKrj2HuFmUO2d4u5PHbvmy87rb7C6EZSdY7m/AEFdGAv8rdE4XYXHb7Mesfp/bT/o3qddYxvkw68VOJh0hEeohP7YChh/vZH0nJqVhEJSFwFE8JGKTvKxQkwZw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750686195; c=relaxed/simple;
-	bh=s/fqaUEoxpBxil9Xr/zTXUv91GvSZojZpfXS80or/tU=;
+	s=arc-20240116; t=1750686215; c=relaxed/simple;
+	bh=+LHcmqV9Wwfkqb+IBOblDqFapeVN85lv4KTSi7kvTvI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gYWmofCFTmiK+i/Pz8XlIiM0Lu8VWk3leBoN4RDyLZ/OJcw6/i100AWMX8OrMGNv1Kxj6c05mA71PFoO7V3YdibH00qAzJjXGMLJBoyMimbUbqc3vtedpKhlR+wkgGmwZDfv4Kwi9uv7dbswzV06vmtjTfJUVXqcoJKh6fMI1SM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=meMib5Y/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5179C4CEEA;
-	Mon, 23 Jun 2025 13:43:14 +0000 (UTC)
+	 MIME-Version; b=fEXX4XqE58O4HKLMu+egpiCv5HwnE9Ve0fCzQuAeu3oUyRAI1Is8WKhVhtWiJG1PZq86fbJsHLxgepTQtZPfRQUXwJUsLb1y8GB5G9gB04i1PjIXFqfB2iC6QMTK9fabD6ef6+E7wbyGhKA/Jx21rKMhWCqWz9yxdNVSA1npUiY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zMMy95Mk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27FD6C4CEF0;
+	Mon, 23 Jun 2025 13:43:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750686195;
-	bh=s/fqaUEoxpBxil9Xr/zTXUv91GvSZojZpfXS80or/tU=;
+	s=korg; t=1750686215;
+	bh=+LHcmqV9Wwfkqb+IBOblDqFapeVN85lv4KTSi7kvTvI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=meMib5Y/00+eE6YvfsyCPy/3e9o6RC4cjdAHg7XJ3kFgthucfmLzBspQzINalB64f
-	 mooKlPlItMMuYAgnYT+RqMiidYMim/c8jiC4Nz3x1l0JOCgLb389AaJOn0V/2KEG2s
-	 Nrw2tCEbhHH8AKGkTHFPpPvSFRyWlkTHUVJybZR0=
+	b=zMMy95MkrPJE48cCpqVTzetSb+p/oDhfLpsFZUGNU9vU/21nNF4iC9W96PvVkQjNu
+	 P7uJ/FOtQfZ0Gmq8eZafWr6kLOdh/VoeO4D+cm9/FmKbIAxscC3YUjnAmyC8FZb+TW
+	 bzwhVI+IkOIyD+OreiS0ZDsmihYssV6iytrCVPPk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Henry Martin <bsdhenrymartin@gmail.com>,
-	Dave Stevenson <dave.stevenson@raspberrypi.com>,
-	Stefan Wahren <wahrenst@gmx.net>,
-	Stephen Boyd <sboyd@kernel.org>,
+	Hans Zhang <18255117159@163.com>,
+	Ard Biesheuvel <ardb@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 075/508] clk: bcm: rpi: Add NULL check in raspberrypi_clk_register()
-Date: Mon, 23 Jun 2025 15:02:00 +0200
-Message-ID: <20250623130647.082478420@linuxfoundation.org>
+Subject: [PATCH 6.1 076/508] efi/libstub: Describe missing out parameter in efi_load_initrd
+Date: Mon, 23 Jun 2025 15:02:01 +0200
+Message-ID: <20250623130647.107296088@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
 In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
 References: <20250623130645.255320792@linuxfoundation.org>
@@ -68,40 +66,38 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Henry Martin <bsdhenrymartin@gmail.com>
+From: Hans Zhang <18255117159@163.com>
 
-[ Upstream commit 73c46d9a93d071ca69858dea3f569111b03e549e ]
+[ Upstream commit c8e1927e7f7d63721e32ec41d27ccb0eb1a1b0fc ]
 
-devm_kasprintf() returns NULL when memory allocation fails. Currently,
-raspberrypi_clk_register() does not check for this case, which results
-in a NULL pointer dereference.
+The function efi_load_initrd() had a documentation warning due to
+the missing description for the 'out' parameter. Add the parameter
+description to the kernel-doc comment to resolve the warning and
+improve API documentation.
 
-Add NULL check after devm_kasprintf() to prevent this issue.
+Fixes the following compiler warning:
+drivers/firmware/efi/libstub/efi-stub-helper.c:611: warning: Function parameter or struct member 'out' not described in 'efi_load_initrd'
 
-Fixes: 93d2725affd6 ("clk: bcm: rpi: Discover the firmware clocks")
-Signed-off-by: Henry Martin <bsdhenrymartin@gmail.com>
-Reviewed-by: Dave Stevenson <dave.stevenson@raspberrypi.com>
-Link: https://lore.kernel.org/r/20250402020513.42628-1-bsdhenrymartin@gmail.com
-Reviewed-by: Stefan Wahren <wahrenst@gmx.net>
-Signed-off-by: Stephen Boyd <sboyd@kernel.org>
+Fixes: f4dc7fffa987 ("efi: libstub: unify initrd loading between architectures")
+Signed-off-by: Hans Zhang <18255117159@163.com>
+Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/bcm/clk-raspberrypi.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/firmware/efi/libstub/efi-stub-helper.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/clk/bcm/clk-raspberrypi.c b/drivers/clk/bcm/clk-raspberrypi.c
-index 278f845572813..a7e18789839fe 100644
---- a/drivers/clk/bcm/clk-raspberrypi.c
-+++ b/drivers/clk/bcm/clk-raspberrypi.c
-@@ -290,6 +290,8 @@ static struct clk_hw *raspberrypi_clk_register(struct raspberrypi_clk *rpi,
- 	init.name = devm_kasprintf(rpi->dev, GFP_KERNEL,
- 				   "fw-clk-%s",
- 				   rpi_firmware_clk_names[id]);
-+	if (!init.name)
-+		return ERR_PTR(-ENOMEM);
- 	init.ops = &raspberrypi_firmware_clk_ops;
- 	init.flags = CLK_GET_RATE_NOCACHE;
- 
+diff --git a/drivers/firmware/efi/libstub/efi-stub-helper.c b/drivers/firmware/efi/libstub/efi-stub-helper.c
+index 97744822dd951..587ba946ba9d8 100644
+--- a/drivers/firmware/efi/libstub/efi-stub-helper.c
++++ b/drivers/firmware/efi/libstub/efi-stub-helper.c
+@@ -697,6 +697,7 @@ efi_status_t efi_load_initrd_cmdline(efi_loaded_image_t *image,
+  * @image:	EFI loaded image protocol
+  * @soft_limit:	preferred address for loading the initrd
+  * @hard_limit:	upper limit address for loading the initrd
++ * @out:	pointer to store the address of the initrd table
+  *
+  * Return:	status code
+  */
 -- 
 2.39.5
 
