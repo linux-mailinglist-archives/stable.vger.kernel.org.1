@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-157176-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156299-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C24CFAE52C2
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:47:24 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9A0B0AE4EFB
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:11:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E43B44A6D1C
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:47:23 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6D6791B602BE
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:11:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D91E220686;
-	Mon, 23 Jun 2025 21:47:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94FF61F582A;
+	Mon, 23 Jun 2025 21:11:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G7gaRFiG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lFs0y407"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B1234414;
-	Mon, 23 Jun 2025 21:47:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 526B670838;
+	Mon, 23 Jun 2025 21:11:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750715223; cv=none; b=pG+rVODzJ1WWzMY5WmsT4E1fW2lGyePZUJJ+TZ/8Y7IltDCqZ1KEBKC5pRKqa1kJWmD8R5Ot6fEGPcjgvLHTfaoXU8weAoXxn0l7XX6kBbBPb0Wq+7Ou+M8DBPJLlyxV6wzAdwM6Y2nT3pI3ERX135O9TleBB156CnwK1/W/Y+Q=
+	t=1750713074; cv=none; b=AVQNNYnn4Stsxg9E0Hxv79LF6m1REAfIWN9RImxwYipHwh8BHaYnl7HMRDP+w3+g6LifIp5fdxLPhrFj9qynv5PLvsbDicWyPLJ0EyeI0DFA7FJ/+5KBQrFYqJWCvb0rK806TQ8CZjbyljZlyEB6rdN0/xHPoG5HrdQQ93Wh3ZA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750715223; c=relaxed/simple;
-	bh=xXza+kR8OLSi9W65a6DnBLIz0ceoLTiHQoUE5N4OSfw=;
+	s=arc-20240116; t=1750713074; c=relaxed/simple;
+	bh=e2bUwGnLwyI+1x4hOUlbmGwQKWQqZ4IR39IZzvOfTvs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bA6E7JGMycHLTYjQmXBIMTILZYA7/cjSOXG6Ti51pBmcM/sB2h/uj9rOATRJB825dRSHSCILT1GrkeTdKRbBU8azsOB7YkBdeyLKeko5rIV9rWMGziQVukHOgyuzaU/81tw/pYfcqCZxcKGLNIHyZlsgpFaFq0ti9VMWnYJSKH0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G7gaRFiG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6656C4CEEA;
-	Mon, 23 Jun 2025 21:47:02 +0000 (UTC)
+	 MIME-Version; b=jHDBvXTWZgwL+bPDkGHTvQxkkQwGhvE9CD89k+p24wZLEK/5goOP1PcCispPUOoKdKUoodRp04/W5RNFJaGhSFyrKLr3G0UhLa+3SbP17I7pQEsuy4lB6XpQbREHGIBghYmD7zXs5KsgAMa2m5qb91vKWsvCuaFpwTAVlpsiErA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lFs0y407; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE1CAC4CEEA;
+	Mon, 23 Jun 2025 21:11:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750715223;
-	bh=xXza+kR8OLSi9W65a6DnBLIz0ceoLTiHQoUE5N4OSfw=;
+	s=korg; t=1750713074;
+	bh=e2bUwGnLwyI+1x4hOUlbmGwQKWQqZ4IR39IZzvOfTvs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=G7gaRFiGzr+YhNWw2HNHWJ9ZinrauJ1fodyHEnxBfTDNqC7C4wOPXWnTJzaGfhUUv
-	 lxx7t1ofgAwwzg+pyFP493roYsWxutheDMETNXPRS3FNzTP8xctiVgG0zWzjHZBh7E
-	 ZzEd3dPhiQHcrD6kKBe+/vQctVeWdQdIYfVhe0KU=
+	b=lFs0y407b/0HXIsLvZjK+G0sAcASMKWPH1oRoe7s+EiYhL6eR8xn1AZ9y0OsQ/C1N
+	 M4xZGeev4aCNGKTY7JVwMopEKqeAWWhLThkrKE2URr293DmjE6d8VW91IRNsp+v9io
+	 Z8lIB6Z/vsJSy69x6u13SVaOk+C/LiEwwEOjeztw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peter Marheine <pmarheine@chromium.org>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 190/414] ACPI: battery: negate current when discharging
+	Gatien Chevallier <gatien.chevallier@foss.st.com>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Subject: [PATCH 6.6 066/290] Input: gpio-keys - fix possible concurrent access in gpio_keys_irq_timer()
 Date: Mon, 23 Jun 2025 15:05:27 +0200
-Message-ID: <20250623130646.770142062@linuxfoundation.org>
+Message-ID: <20250623130628.985446947@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
-References: <20250623130642.015559452@linuxfoundation.org>
+In-Reply-To: <20250623130626.910356556@linuxfoundation.org>
+References: <20250623130626.910356556@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,68 +61,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peter Marheine <pmarheine@chromium.org>
+From: Gatien Chevallier <gatien.chevallier@foss.st.com>
 
-[ Upstream commit 234f71555019d308c6bc6f98c78c5551cb8cd56a ]
+commit 8f38219fa139623c29db2cb0f17d0a197a86e344 upstream.
 
-The ACPI specification requires that battery rate is always positive,
-but the kernel ABI for POWER_SUPPLY_PROP_CURRENT_NOW
-(Documentation/ABI/testing/sysfs-class-power) specifies that it should
-be negative when a battery is discharging. When reporting CURRENT_NOW,
-massage the value to match the documented ABI.
+gpio_keys_irq_isr() and gpio_keys_irq_timer() access the same resources.
+There could be a concurrent access if a GPIO interrupt occurs in parallel
+of a HR timer interrupt.
 
-This only changes the sign of `current_now` and not `power_now` because
-documentation doesn't describe any particular meaning for `power_now` so
-leaving `power_now` unchanged is less likely to confuse userspace
-unnecessarily, whereas becoming consistent with the documented ABI is
-worth potentially confusing clients that read `current_now`.
+Guard back those resources with a spinlock.
 
-Signed-off-by: Peter Marheine <pmarheine@chromium.org>
-Link: https://patch.msgid.link/20250508024146.1436129-1-pmarheine@chromium.org
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 019002f20cb5 ("Input: gpio-keys - use hrtimer for release timer")
+Signed-off-by: Gatien Chevallier <gatien.chevallier@foss.st.com>
+Link: https://lore.kernel.org/r/20250528-gpio_keys_preempt_rt-v2-2-3fc55a9c3619@foss.st.com
+Cc: stable@vger.kernel.org
+Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/acpi/battery.c | 19 ++++++++++++++++---
- 1 file changed, 16 insertions(+), 3 deletions(-)
+ drivers/input/keyboard/gpio_keys.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/acpi/battery.c b/drivers/acpi/battery.c
-index 65fa3444367a1..6a7ac34d73bda 100644
---- a/drivers/acpi/battery.c
-+++ b/drivers/acpi/battery.c
-@@ -243,10 +243,23 @@ static int acpi_battery_get_property(struct power_supply *psy,
- 		break;
- 	case POWER_SUPPLY_PROP_CURRENT_NOW:
- 	case POWER_SUPPLY_PROP_POWER_NOW:
--		if (battery->rate_now == ACPI_BATTERY_VALUE_UNKNOWN)
-+		if (battery->rate_now == ACPI_BATTERY_VALUE_UNKNOWN) {
- 			ret = -ENODEV;
--		else
--			val->intval = battery->rate_now * 1000;
-+			break;
-+		}
+--- a/drivers/input/keyboard/gpio_keys.c
++++ b/drivers/input/keyboard/gpio_keys.c
+@@ -455,6 +455,8 @@ static enum hrtimer_restart gpio_keys_ir
+ 						      release_timer);
+ 	struct input_dev *input = bdata->input;
+ 
++	guard(spinlock_irqsave)(&bdata->lock);
 +
-+		val->intval = battery->rate_now * 1000;
-+		/*
-+		 * When discharging, the current should be reported as a
-+		 * negative number as per the power supply class interface
-+		 * definition.
-+		 */
-+		if (psp == POWER_SUPPLY_PROP_CURRENT_NOW &&
-+		    (battery->state & ACPI_BATTERY_STATE_DISCHARGING) &&
-+		    acpi_battery_handle_discharging(battery)
-+				== POWER_SUPPLY_STATUS_DISCHARGING)
-+			val->intval = -val->intval;
-+
- 		break;
- 	case POWER_SUPPLY_PROP_CHARGE_FULL_DESIGN:
- 	case POWER_SUPPLY_PROP_ENERGY_FULL_DESIGN:
--- 
-2.39.5
-
+ 	if (bdata->key_pressed) {
+ 		input_report_key(input, *bdata->code, 0);
+ 		input_sync(input);
 
 
 
