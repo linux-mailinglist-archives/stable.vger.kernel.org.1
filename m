@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-156828-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156965-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4E7EEAE514D
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:32:47 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 71BD2AE51E7
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:38:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E05014A34EB
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:32:47 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2A2624A2BB3
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:38:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C198F1EEA5D;
-	Mon, 23 Jun 2025 21:32:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2AB2D221FCC;
+	Mon, 23 Jun 2025 21:38:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BVJQ8fSP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G6BTyNK8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FF8C2AD04;
-	Mon, 23 Jun 2025 21:32:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC7AB4409;
+	Mon, 23 Jun 2025 21:38:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750714365; cv=none; b=WuCL6foGhveCNsurIxwCEgcule3KRECljZMRAvFtDuEFzAioSBSbdi4ZrghRRUaSX7KO4RqhMzs+zbQJCUdWLvXj2Dp+kf8wCApifwlmoe15R3XFY0cqXdRunBNdjxJ8mt0tci1k4peHCi0j4WpiKGeXLyRu+CWLsboeMmbWdNQ=
+	t=1750714704; cv=none; b=TdX0jU3XCgP0R5I3Hy4AlEAuNAp9vDWhla4yPp8FR/tr6bteuU1FzkTxA2zJpqfpRh4lJMGGWKPWND6oriXLrIb9Ha79gT0bDr5FsxlJZLKd5Uv6muRtNh0WwMxumtAAuc+kfj8O3iiX/KboV9y76PgbKyvZ5Ama96y6DI308Wc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750714365; c=relaxed/simple;
-	bh=GNo6LJMB3dZiyFGgb4oJG8UmtQ8ePVrB2BRaXliglLo=;
+	s=arc-20240116; t=1750714704; c=relaxed/simple;
+	bh=iJgMYC1kQboYugp4QPKRWJMT54LbS11hqVXYjtLJMcM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dK9+i2NDb02j/zigyacXBT8izuduTpqeIyqfS08G1pR2iHTH4WZPQbLrPbrv6BYfgRR414+9ZbaukWipBV0P7uU9m/xNxt7n6XmeJky1/XMYxEfC8omlRB9J+NpUTH7XTFYkeCX+VzvWJq5G56QHozZxy9L2g2xtT4UJ0fw6AYY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BVJQ8fSP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 073BAC4CEEA;
-	Mon, 23 Jun 2025 21:32:44 +0000 (UTC)
+	 MIME-Version; b=gb4U5QGbYR2Kdu41DTcEjzgPw/8eT3up8gwd44PxPQPxoHYKPJApmdR5KhamUxYE9cUqZbpkAc3J6Ye9TYFgfz8jl1PMVYq2LikpqLiELVb15GusECeovQoqkGJ3GdETIzcWEfSReMFXw/1v6r5wet7BcV6uFIMOwkS9tC36TZ0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G6BTyNK8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73A73C4CEEA;
+	Mon, 23 Jun 2025 21:38:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750714365;
-	bh=GNo6LJMB3dZiyFGgb4oJG8UmtQ8ePVrB2BRaXliglLo=;
+	s=korg; t=1750714703;
+	bh=iJgMYC1kQboYugp4QPKRWJMT54LbS11hqVXYjtLJMcM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BVJQ8fSP5sqxw+233h65L7AFSa28Dq7FMKvGGinyDdU3hzbcPf/+DPe9jDX+3Xsje
-	 undja8FTK1b7toBUtNDPoTNeBX8SbcjirtJAaZqmxcEl8h9RwSkBcXz6FDzIxd68JD
-	 ktS0YlZbFV3lISrDkYQE1IQrh7mtKgmULyL2/O9Q=
+	b=G6BTyNK8Lw9o79AA8ZGyvIG++ouBEDCWANcmNIESnPs3bLM3dfhdZO7A/scDgsyw3
+	 0GzwsJtYAQFoWps1m9QyjIDw1vEWB6GlDisqDNdpjA/6oSjTS43Lb/ZY+l472JlPGP
+	 jK36iz0D6o6EhpIiUnbHge9msPUUJV3sPVQKIKlc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gatien Chevallier <gatien.chevallier@foss.st.com>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Subject: [PATCH 6.12 098/414] Input: gpio-keys - fix possible concurrent access in gpio_keys_irq_timer()
+	Christian Brauner <brauner@kernel.org>,
+	"Orlando, Noah" <Noah.Orlando@deshaw.com>,
+	Al Viro <viro@zeniv.linux.org.uk>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 190/508] do_change_type(): refuse to operate on unmounted/not ours mounts
 Date: Mon, 23 Jun 2025 15:03:55 +0200
-Message-ID: <20250623130644.544941434@linuxfoundation.org>
+Message-ID: <20250623130649.946796214@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
-References: <20250623130642.015559452@linuxfoundation.org>
+In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
+References: <20250623130645.255320792@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,41 +63,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gatien Chevallier <gatien.chevallier@foss.st.com>
+From: Al Viro <viro@zeniv.linux.org.uk>
 
-commit 8f38219fa139623c29db2cb0f17d0a197a86e344 upstream.
+[ Upstream commit 12f147ddd6de7382dad54812e65f3f08d05809fc ]
 
-gpio_keys_irq_isr() and gpio_keys_irq_timer() access the same resources.
-There could be a concurrent access if a GPIO interrupt occurs in parallel
-of a HR timer interrupt.
+Ensure that propagation settings can only be changed for mounts located
+in the caller's mount namespace. This change aligns permission checking
+with the rest of mount(2).
 
-Guard back those resources with a spinlock.
-
-Fixes: 019002f20cb5 ("Input: gpio-keys - use hrtimer for release timer")
-Signed-off-by: Gatien Chevallier <gatien.chevallier@foss.st.com>
-Link: https://lore.kernel.org/r/20250528-gpio_keys_preempt_rt-v2-2-3fc55a9c3619@foss.st.com
-Cc: stable@vger.kernel.org
-Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reviewed-by: Christian Brauner <brauner@kernel.org>
+Fixes: 07b20889e305 ("beginning of the shared-subtree proper")
+Reported-by: "Orlando, Noah" <Noah.Orlando@deshaw.com>
+Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/input/keyboard/gpio_keys.c |    2 ++
- 1 file changed, 2 insertions(+)
+ fs/namespace.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/drivers/input/keyboard/gpio_keys.c
-+++ b/drivers/input/keyboard/gpio_keys.c
-@@ -449,6 +449,8 @@ static enum hrtimer_restart gpio_keys_ir
- 						      release_timer);
- 	struct input_dev *input = bdata->input;
+diff --git a/fs/namespace.c b/fs/namespace.c
+index 65aa3495db6a1..aae1a77ac2d3f 100644
+--- a/fs/namespace.c
++++ b/fs/namespace.c
+@@ -2371,6 +2371,10 @@ static int do_change_type(struct path *path, int ms_flags)
+ 		return -EINVAL;
  
-+	guard(spinlock_irqsave)(&bdata->lock);
-+
- 	if (bdata->key_pressed) {
- 		input_report_key(input, *bdata->code, 0);
- 		input_sync(input);
+ 	namespace_lock();
++	if (!check_mnt(mnt)) {
++		err = -EINVAL;
++		goto out_unlock;
++	}
+ 	if (type == MS_SHARED) {
+ 		err = invent_group_ids(mnt, recurse);
+ 		if (err)
+-- 
+2.39.5
+
 
 
 
