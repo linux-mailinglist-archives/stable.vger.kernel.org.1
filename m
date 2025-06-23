@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-156556-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156203-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8F412AE5007
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:21:53 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4117FAE4E95
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:07:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5657B1B618A8
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:22:08 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CCF9317C014
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:07:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94B6C221FC7;
-	Mon, 23 Jun 2025 21:21:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 613352153C1;
+	Mon, 23 Jun 2025 21:07:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jBOrjKk5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nG3JTEkd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51406221734;
-	Mon, 23 Jun 2025 21:21:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F4F570838;
+	Mon, 23 Jun 2025 21:07:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750713702; cv=none; b=EzmNoslUabw3YNlHmXiAbxhao17E4So773hJypVQcrSH4H61UgvIh2U8KbO+wb0a1ICyuLAVdpwpBLiXpFBH6Ts8YB71kdWr7uDYvtmRJVJxMqir4HEGYCfehkZlERoor/yiLPUVxPtQ8NYNp/VQVTIyy8kusaYEx2MKTfW3jYY=
+	t=1750712837; cv=none; b=XuD9+//YNSfggKsG3Cg3haHFPqVuqgc6Dz1iQdzN/octv/+yOfUV71ikji5Sqykb8AZiOrwuICJh3LtHJ3CXyJeVFReouivrivb/rY/pkdi7cC7CGs0xcRrLIf8KsysSvVRsW1Bfua1cobzKPzR+OHFvO7iPNqfZfqDCLs4w5bo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750713702; c=relaxed/simple;
-	bh=m2+d8bYtr91j+uxOWuHSTXzM5uJepDBj+WkTVxPSeXg=;
+	s=arc-20240116; t=1750712837; c=relaxed/simple;
+	bh=oI2l6eOMYe6sHG/KADsrbaK3kdg4Za6Ng42HsV0joP0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PFbsbKHB+mn6RCTgAcp/4Z20Nhmuo5HN/3e86ggzB9vJL6CiNfsHk+eXvG2FrVuVtg5fpnY5sFVhpVdjfd/67EKkrOudROzO1uLy8R4N8pSLmWW5nr4VMoaNgmpoidkavUYbMDCt13Q0Gu/IqcUi1V3Yn3Ab0rT1/65mE+iw5oM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jBOrjKk5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DBD5CC4CEED;
-	Mon, 23 Jun 2025 21:21:41 +0000 (UTC)
+	 MIME-Version; b=KtTQxGFECqgwiRbwdcK/lD/Eecj6kobaWjUk/z64/BVQ1xjMTMe3O/Ili+HVwcmDJ6qbJSHMSxi1g3CvuynXC0ibsTCnxcymWXSQ8r3XBtTahJnToLucJ8LcwCkWv0eix0YYRtdN/qz2XaqwDzGNPmyOvlM080mO12vdZYfMae4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nG3JTEkd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB9E9C4CEEA;
+	Mon, 23 Jun 2025 21:07:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750713702;
-	bh=m2+d8bYtr91j+uxOWuHSTXzM5uJepDBj+WkTVxPSeXg=;
+	s=korg; t=1750712837;
+	bh=oI2l6eOMYe6sHG/KADsrbaK3kdg4Za6Ng42HsV0joP0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jBOrjKk58T9ks5aIb1pCl86CuKjOkiE/voE6RdzKlXquiDtWZuI2ef/sgItlmA641
-	 1hjcITP4G/I5BRuiHra3KcNADz68BN0V6TgHZauEh/OUp8HaLwf5LFWlwd4knk8dOU
-	 rai6mrUSWsMwBkMze5205qr3W/ZRvKW57/qXX6Vw=
+	b=nG3JTEkd2h5vuy0Sg3iEiblyX/7NovYH2xSomQ6VT+hs0CsiQZ/mu9ZwVB6rV4oPy
+	 zruy3Fy8Vmeqte479u4sgLpxb4pt5TeD0mt3aeIhnUxlCGRys4z6DRueNhZxqKSvoi
+	 GoncbOz6mkGtEecd9PwB/imZEMmREmP5j/jBNsTc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xilin Wu <wuxilin123@gmail.com>,
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
-	Bjorn Andersson <andersson@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 106/508] arm64: dts: qcom: sm8250: Fix CPU7 opp table
+	Gautam Menghani <gautam@linux.ibm.com>,
+	Venkat Rao Bagalkote <venkat88@linux.ibm.com>,
+	Vaibhav Jain <vaibhav@linux.ibm.com>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>
+Subject: [PATCH 6.12 014/414] powerpc/pseries/msi: Avoid reading PCI device registers in reduced power states
 Date: Mon, 23 Jun 2025 15:02:31 +0200
-Message-ID: <20250623130647.889565325@linuxfoundation.org>
+Message-ID: <20250623130642.381178451@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
-References: <20250623130645.255320792@linuxfoundation.org>
+In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
+References: <20250623130642.015559452@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,46 +63,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xilin Wu <wuxilin123@gmail.com>
+From: Gautam Menghani <gautam@linux.ibm.com>
 
-[ Upstream commit 28f997b89967afdc0855d8aa7538b251fb44f654 ]
+commit 9cc0eafd28c7faef300822992bb08d79cab2a36c upstream.
 
-There is a typo in cpu7_opp9. Fix it to get rid of the following
-errors.
+When a system is being suspended to RAM, the PCI devices are also
+suspended and the PPC code ends up calling pseries_msi_compose_msg() and
+this triggers the BUG_ON() in __pci_read_msi_msg() because the device at
+this point is in reduced power state. In reduced power state, the memory
+mapped registers of the PCI device are not accessible.
 
-[    0.198043] cpu cpu7: Voltage update failed freq=1747200
-[    0.198052] cpu cpu7: failed to update OPP for freq=1747200
+To replicate the bug:
+1. Make sure deep sleep is selected
+	# cat /sys/power/mem_sleep
+	s2idle [deep]
 
-Fixes: 8e0e8016cb79 ("arm64: dts: qcom: sm8250: Add CPU opp tables")
-Signed-off-by: Xilin Wu <wuxilin123@gmail.com>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Link: https://lore.kernel.org/r/20250308-fix-sm8250-cpufreq-v1-1-8a0226721399@gmail.com
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+2. Make sure console is not suspended (so that dmesg logs are visible)
+	echo N > /sys/module/printk/parameters/console_suspend
+
+3. Suspend the system
+	echo mem > /sys/power/state
+
+To fix this behaviour, read the cached msi message of the device when the
+device is not in PCI_D0 power state instead of touching the hardware.
+
+Fixes: a5f3d2c17b07 ("powerpc/pseries/pci: Add MSI domains")
+Cc: stable@vger.kernel.org # v5.15+
+Signed-off-by: Gautam Menghani <gautam@linux.ibm.com>
+Tested-by: Venkat Rao Bagalkote <venkat88@linux.ibm.com>
+Reviewed-by: Vaibhav Jain <vaibhav@linux.ibm.com>
+Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
+Link: https://patch.msgid.link/20250305090237.294633-1-gautam@linux.ibm.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/boot/dts/qcom/sm8250.dtsi | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/powerpc/platforms/pseries/msi.c |    7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/arch/arm64/boot/dts/qcom/sm8250.dtsi b/arch/arm64/boot/dts/qcom/sm8250.dtsi
-index eb500cb67c86c..72ab4ca129459 100644
---- a/arch/arm64/boot/dts/qcom/sm8250.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sm8250.dtsi
-@@ -569,7 +569,7 @@
- 		};
+--- a/arch/powerpc/platforms/pseries/msi.c
++++ b/arch/powerpc/platforms/pseries/msi.c
+@@ -524,7 +524,12 @@ static struct msi_domain_info pseries_ms
  
- 		cpu7_opp9: opp-1747200000 {
--			opp-hz = /bits/ 64 <1708800000>;
-+			opp-hz = /bits/ 64 <1747200000>;
- 			opp-peak-kBps = <5412000 42393600>;
- 		};
+ static void pseries_msi_compose_msg(struct irq_data *data, struct msi_msg *msg)
+ {
+-	__pci_read_msi_msg(irq_data_get_msi_desc(data), msg);
++	struct pci_dev *dev = msi_desc_to_pci_dev(irq_data_get_msi_desc(data));
++
++	if (dev->current_state == PCI_D0)
++		__pci_read_msi_msg(irq_data_get_msi_desc(data), msg);
++	else
++		get_cached_msi_msg(data->irq, msg);
+ }
  
--- 
-2.39.5
-
+ static struct irq_chip pseries_msi_irq_chip = {
 
 
 
