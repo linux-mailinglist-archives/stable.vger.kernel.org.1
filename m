@@ -1,60 +1,57 @@
-Return-Path: <stable+bounces-155733-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-155664-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 01F47AE4386
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:33:33 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id F0E02AE4323
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:29:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DB8683A3287
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:26:31 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8610418918EF
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:24:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A99732512EE;
-	Mon, 23 Jun 2025 13:26:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15FDE253950;
+	Mon, 23 Jun 2025 13:23:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iEvNHlxC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T5+3pEmH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 643EE248191;
-	Mon, 23 Jun 2025 13:26:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7A81253F2D;
+	Mon, 23 Jun 2025 13:23:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750685196; cv=none; b=jH0bP+m6wsIb5L9Xnf8YOKpcIR19ylzzs+aoR8wBcw/+oF91/9gSykq+qb8KUE4iFqlc3zUYWQQUf1KD6e5MHE+KSIXJc/G/sWFxQaNs/4JX1nYE2/9z+oCjEWeJ9l15mn1MIZ7M19+qw/8BH9JuBIlfY3HCT4gP9YJzBElgtcg=
+	t=1750685013; cv=none; b=JBBVeQzkzdulkPYd54vHtrrRS+EOm0lyZPAGGbTXnWEXdcKHaMhdBbaX4D5NOqxmtiXff6pVyEy+bQO20BxT1mN9E1iuigrx0TeEYX/qm62vj9GHgjRjEqYP1I5OWDb8FnXdbwwHBUunKXwNfmMrAIL7LREYesZtS3Pqsdm36uY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750685196; c=relaxed/simple;
-	bh=4P35LHm/toWONjJ4v4eGslgipe/CHQAgskgsedjdRCQ=;
+	s=arc-20240116; t=1750685013; c=relaxed/simple;
+	bh=99WlCNPA5r2f6EJSsqUmEzwYyPmoHMYj5QQcWJv8QWY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=n7idNueZcSkVKak+KKJ68mSmkCSdH+arsC39LIgZQGWBxnWx89XCvMurGjVh5OOgthF/Jk7NqQyPvpVK1OMRdtvyTQWDlY5fpH8kxH9DDOl8X9H0+3uroGXt9db0YtlJf+nYkL3p5bRTWNjVFwcAgujVGpIYTt1L4iUsXywcwNc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iEvNHlxC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3107C4CEEA;
-	Mon, 23 Jun 2025 13:26:35 +0000 (UTC)
+	 MIME-Version:Content-Type; b=d8xJVUcRhBnDHDVJ0345HsqL9lErCYycPVJN0Jvec6/eoPkfFP93swWDmhUTlvUb9VwBJCGODlakAs8B/6gbH+k+SQkPXDxYlQBX+dh5CC7sMJ8t28xX2YZcNtbDg7iW2sQ5DnhWzUrd2P1jd/MAJmfexqmWzkEL+VF7FpIz5OA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T5+3pEmH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5AA0AC4CEEA;
+	Mon, 23 Jun 2025 13:23:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750685196;
-	bh=4P35LHm/toWONjJ4v4eGslgipe/CHQAgskgsedjdRCQ=;
+	s=korg; t=1750685013;
+	bh=99WlCNPA5r2f6EJSsqUmEzwYyPmoHMYj5QQcWJv8QWY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iEvNHlxCMHRPp1jmxrOzQDKoVaY3oULARBbJ8UR8ygSWyHgGX4SNAjB/D6oSsUp/Y
-	 Pf6SrDwCtChX09v04J9ik5yrBBevTZ93OgsSANwWLhX34xljpdYHdg0MvL8KVE6E8p
-	 zdZw7iz1HR1HgAGjo/8VUwI61g1XhBrxKtp8Sk6U=
+	b=T5+3pEmH4iJhw2UDlX2HOBF6x0zMPWKBWQyJDSwZn91yXRyfYmzV+xKCaUSYztHiI
+	 RGEpHaOp/Ea923cw5LBr+fYsElg8ZfI04M7ZTglB59qZnAJUO4vd0MyGceqRk7cowJ
+	 KJnHw05bLbIkc1wPALYOMPEwS4Vv8Mo+FsLpZBM4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Ahmed S. Darwish" <darwi@linutronix.de>,
-	Ingo Molnar <mingo@kernel.org>,
-	Andrew Cooper <andrew.cooper3@citrix.com>,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	John Ogness <john.ogness@linutronix.de>,
-	x86-cpuid@lists.linux.dev,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 015/411] x86/cpu: Sanitize CPUID(0x80000000) output
+	David Lechner <dlechner@baylibre.com>,
+	=?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
+	Stable@vger.kernel.org,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 6.15 201/592] iio: adc: ad7944: mask high bits on direct read
 Date: Mon, 23 Jun 2025 15:02:39 +0200
-Message-ID: <20250623130633.448996011@linuxfoundation.org>
+Message-ID: <20250623130705.070217678@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
-References: <20250623130632.993849527@linuxfoundation.org>
+In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
+References: <20250623130700.210182694@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,99 +61,45 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ahmed S. Darwish <darwi@linutronix.de>
+From: David Lechner <dlechner@baylibre.com>
 
-[ Upstream commit cc663ba3fe383a628a812f893cc98aafff39ab04 ]
+commit 7cdfbc0113d087348b8e65dd79276d0f57b89a10 upstream.
 
-CPUID(0x80000000).EAX returns the max extended CPUID leaf available.  On
-x86-32 machines without an extended CPUID range, a CPUID(0x80000000)
-query will just repeat the output of the last valid standard CPUID leaf
-on the CPU; i.e., a garbage values.  Current tip:x86/cpu code protects against
-this by doing:
+Apply a mask to the raw value received over the SPI bus for unsigned
+direct reads. As we found recently, SPI controllers may not set unused
+bits to 0 when reading with bits_per_word != {8,16,32}. The ad7944 uses
+bits_per_word of 14 and 18, so we need to mask the value to be sure we
+returning the correct value to userspace during a direct read.
 
-	eax = cpuid_eax(0x80000000);
-	c->extended_cpuid_level = eax;
-
-	if ((eax & 0xffff0000) == 0x80000000) {
-		// CPU has an extended CPUID range. Check for 0x80000001
-		if (eax >= 0x80000001) {
-			cpuid(0x80000001, ...);
-		}
-	}
-
-This is correct so far.  Afterwards though, the same possibly broken EAX
-value is used to check the availability of other extended CPUID leaves:
-
-	if (c->extended_cpuid_level >= 0x80000007)
-		...
-	if (c->extended_cpuid_level >= 0x80000008)
-		...
-	if (c->extended_cpuid_level >= 0x8000000a)
-		...
-	if (c->extended_cpuid_level >= 0x8000001f)
-		...
-
-which is invalid.  Fix this by immediately setting the CPU's max extended
-CPUID leaf to zero if CPUID(0x80000000).EAX doesn't indicate a valid
-CPUID extended range.
-
-While at it, add a comment, similar to kernel/head_32.S, clarifying the
-CPUID(0x80000000) sanity check.
-
-References: 8a50e5135af0 ("x86-32: Use symbolic constants, safer CPUID when enabling EFER.NX")
-Fixes: 3da99c977637 ("x86: make (early)_identify_cpu more the same between 32bit and 64 bit")
-Signed-off-by: Ahmed S. Darwish <darwi@linutronix.de>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Cc: Andrew Cooper <andrew.cooper3@citrix.com>
-Cc: H. Peter Anvin <hpa@zytor.com>
-Cc: John Ogness <john.ogness@linutronix.de>
-Cc: x86-cpuid@lists.linux.dev
-Link: https://lore.kernel.org/r/20250506050437.10264-3-darwi@linutronix.de
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: d1efcf8871db ("iio: adc: ad7944: add driver for AD7944/AD7985/AD7986")
+Signed-off-by: David Lechner <dlechner@baylibre.com>
+Reviewed-by: Nuno Sá <nuno.sa@analog.com>
+Link: https://patch.msgid.link/20250505-iio-adc-ad7944-max-high-bits-on-direct-read-v1-1-b173facceefe@baylibre.com
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kernel/cpu/common.c | 17 +++++++++--------
- 1 file changed, 9 insertions(+), 8 deletions(-)
+ drivers/iio/adc/ad7944.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/arch/x86/kernel/cpu/common.c b/arch/x86/kernel/cpu/common.c
-index dc15568e14d93..8db11483e1e15 100644
---- a/arch/x86/kernel/cpu/common.c
-+++ b/arch/x86/kernel/cpu/common.c
-@@ -937,17 +937,18 @@ void get_cpu_cap(struct cpuinfo_x86 *c)
- 		c->x86_capability[CPUID_D_1_EAX] = eax;
- 	}
+--- a/drivers/iio/adc/ad7944.c
++++ b/drivers/iio/adc/ad7944.c
+@@ -377,6 +377,8 @@ static int ad7944_single_conversion(stru
  
--	/* AMD-defined flags: level 0x80000001 */
-+	/*
-+	 * Check if extended CPUID leaves are implemented: Max extended
-+	 * CPUID leaf must be in the 0x80000001-0x8000ffff range.
-+	 */
- 	eax = cpuid_eax(0x80000000);
--	c->extended_cpuid_level = eax;
-+	c->extended_cpuid_level = ((eax & 0xffff0000) == 0x80000000) ? eax : 0;
+ 	if (chan->scan_type.sign == 's')
+ 		*val = sign_extend32(*val, chan->scan_type.realbits - 1);
++	else
++		*val &= GENMASK(chan->scan_type.realbits - 1, 0);
  
--	if ((eax & 0xffff0000) == 0x80000000) {
--		if (eax >= 0x80000001) {
--			cpuid(0x80000001, &eax, &ebx, &ecx, &edx);
-+	if (c->extended_cpuid_level >= 0x80000001) {
-+		cpuid(0x80000001, &eax, &ebx, &ecx, &edx);
- 
--			c->x86_capability[CPUID_8000_0001_ECX] = ecx;
--			c->x86_capability[CPUID_8000_0001_EDX] = edx;
--		}
-+		c->x86_capability[CPUID_8000_0001_ECX] = ecx;
-+		c->x86_capability[CPUID_8000_0001_EDX] = edx;
- 	}
- 
- 	if (c->extended_cpuid_level >= 0x80000007) {
--- 
-2.39.5
-
+ 	return IIO_VAL_INT;
+ }
 
 
 
