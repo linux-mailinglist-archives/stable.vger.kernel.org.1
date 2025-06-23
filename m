@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-156836-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156694-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id F4092AE515F
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:33:36 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id BBAECAE50C3
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:27:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4273A4A3575
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:33:27 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F3A823A717E
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:27:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2CBB02236FB;
-	Mon, 23 Jun 2025 21:33:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B7C401F582A;
+	Mon, 23 Jun 2025 21:27:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VzDEjNJ9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sKgyEp1x"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB900223708;
-	Mon, 23 Jun 2025 21:33:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7430C22173D;
+	Mon, 23 Jun 2025 21:27:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750714384; cv=none; b=AZc9euqnTDaspzyZ1NnEKDhhZwA15w4wElbgUXO7QoDq6Q225YJ6dEMYIij51ml7ShWdVqmKTuhD2CN1aSw2LSp0vttmBFhomHmUWTQslE1RGSvQgdkPLAeKTuVJVRb/ACTkksDj4vF6hc59AdQZzLVsovjLn0kBpVFWJ8Wi04g=
+	t=1750714040; cv=none; b=kPf+eG3rhfUWu5FLUfSLogUTEtffaYPI7S4X3Mberz0hSRJY2TeAn3BztLf9Psfn+zyiaOD8jRUqlEF/FE2f2PFtYqFjI8+9EuTY7rWmF1JgtSAmmsMqP7UW4uIgSS6xNX5A0Fe/P2EMH7ZplC8hYdVKLADqJmHBa5RB7itM3OA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750714384; c=relaxed/simple;
-	bh=dljJvUXa4aC1LRyHwjCVcKc+KCk74oj1znmZcgUKyU8=;
+	s=arc-20240116; t=1750714040; c=relaxed/simple;
+	bh=8bOe9lXqL/UoMxgZG8qAwbpMsxCjFqcjDoRXwqu5vXk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=s93sTDSDuleQ6DN7CU9LtaU08h7ZehzupgVxFYUYiYgFbNjQ6tEp3O1sYp/VQ5iwmO4Xh8wPmMiJJSChIH1+wues0hF0ILi9jTo/KOQJuRY48gc54UMMEGmCZ9CM899C+9ey5Q+nP7p2wqjl8COd5km3MeyI4j9eSoW0gBshAjw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VzDEjNJ9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71F2BC4CEEA;
-	Mon, 23 Jun 2025 21:33:04 +0000 (UTC)
+	 MIME-Version; b=kzZZZHj9oHr7VqdjaSSTRNcGtEod3URKDjSCebvohCv1JTBdwAR7BASkTVUVLuU/8PdRfK00DapZk4JyF4jaMm7Xe2sQtvAVItNTfq9b7INqDnhBo45ysxbxfle+Yvi8GNbWsJpFRs8i6I+67/LF+96CHmTJtXC6f6ni4/+PpIQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sKgyEp1x; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 037A2C4CEEA;
+	Mon, 23 Jun 2025 21:27:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750714384;
-	bh=dljJvUXa4aC1LRyHwjCVcKc+KCk74oj1znmZcgUKyU8=;
+	s=korg; t=1750714040;
+	bh=8bOe9lXqL/UoMxgZG8qAwbpMsxCjFqcjDoRXwqu5vXk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VzDEjNJ9WNv0Ji9Wk857kgo22uAOiIGjWr8HATBUXjAM+JDNx9Q8EsGaYb5Bvvem+
-	 Y9325oCpBxpwRizFkwoacjOl19HnMswKQ48BAdYV8ZwiTPXyTKnAAqLvacNJFOFo3H
-	 fX2AHMwRiR3r5R3GoIGER8/VukItHSLMpQB+R/AA=
+	b=sKgyEp1xsBPmj3SlMn97cuRqYoD/2xh17lDnjwxsbp5uYY1o4RUte+qKOV1rduXdk
+	 M4bsPeCAKv98lhVy32cA95G7IkLA50Xw/ScjVv6Q0288r3fqfb1AQRBsE5Ni4vAIlK
+	 c9wjfjSWtncYX8wUPfubmlrwBNk93piLeAbHdNl8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+f0c4a4aba757549ae26c@syzkaller.appspotmail.com,
-	Charalampos Mitrodimas <charmitro@posteo.net>,
-	Tung Nguyen <tung.quang.nguyen@est.tech>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 169/508] net: tipc: fix refcount warning in tipc_aead_encrypt
+	Hazem Mohamed Abuelfotoh <abuehaze@amazon.com>,
+	Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 6.12 077/414] block: use plug request list tail for one-shot backmerge attempt
 Date: Mon, 23 Jun 2025 15:03:34 +0200
-Message-ID: <20250623130649.434738005@linuxfoundation.org>
+Message-ID: <20250623130644.006124248@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
-References: <20250623130645.255320792@linuxfoundation.org>
+In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
+References: <20250623130642.015559452@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,62 +61,75 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Charalampos Mitrodimas <charmitro@posteo.net>
+From: Jens Axboe <axboe@kernel.dk>
 
-[ Upstream commit f29ccaa07cf3d35990f4d25028cc55470d29372b ]
+commit 961296e89dc3800e6a3abc3f5d5bb4192cf31e98 upstream.
 
-syzbot reported a refcount warning [1] caused by calling get_net() on
-a network namespace that is being destroyed (refcount=0). This happens
-when a TIPC discovery timer fires during network namespace cleanup.
+Previously, the block layer stored the requests in the plug list in
+LIFO order. For this reason, blk_attempt_plug_merge() would check
+just the head entry for a back merge attempt, and abort after that
+unless requests for multiple queues existed in the plug list. If more
+than one request is present in the plug list, this makes the one-shot
+back merging less useful than before, as it'll always fail to find a
+quick merge candidate.
 
-The recently added get_net() call in commit e279024617134 ("net/tipc:
-fix slab-use-after-free Read in tipc_aead_encrypt_done") attempts to
-hold a reference to the network namespace. However, if the namespace
-is already being destroyed, its refcount might be zero, leading to the
-use-after-free warning.
+Use the tail entry for the one-shot merge attempt, which is the last
+added request in the list. If that fails, abort immediately unless
+there are multiple queues available. If multiple queues are available,
+then scan the list. Ideally the latter scan would be a backwards scan
+of the list, but as it currently stands, the plug list is singly linked
+and hence this isn't easily feasible.
 
-Replace get_net() with maybe_get_net(), which safely checks if the
-refcount is non-zero before incrementing it. If the namespace is being
-destroyed, return -ENODEV early, after releasing the bearer reference.
-
-[1]: https://lore.kernel.org/all/68342b55.a70a0220.253bc2.0091.GAE@google.com/T/#m12019cf9ae77e1954f666914640efa36d52704a2
-
-Reported-by: syzbot+f0c4a4aba757549ae26c@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/all/68342b55.a70a0220.253bc2.0091.GAE@google.com/T/#m12019cf9ae77e1954f666914640efa36d52704a2
-Fixes: e27902461713 ("net/tipc: fix slab-use-after-free Read in tipc_aead_encrypt_done")
-Signed-off-by: Charalampos Mitrodimas <charmitro@posteo.net>
-Reviewed-by: Tung Nguyen <tung.quang.nguyen@est.tech>
-Link: https://patch.msgid.link/20250527-net-tipc-warning-v2-1-df3dc398a047@posteo.net
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/linux-block/20250611121626.7252-1-abuehaze@amazon.com/
+Reported-by: Hazem Mohamed Abuelfotoh <abuehaze@amazon.com>
+Fixes: e70c301faece ("block: don't reorder requests in blk_add_rq_to_plug")
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/tipc/crypto.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ block/blk-merge.c |   26 +++++++++++++-------------
+ 1 file changed, 13 insertions(+), 13 deletions(-)
 
-diff --git a/net/tipc/crypto.c b/net/tipc/crypto.c
-index a9c02fac039b5..17e2b09002853 100644
---- a/net/tipc/crypto.c
-+++ b/net/tipc/crypto.c
-@@ -818,7 +818,11 @@ static int tipc_aead_encrypt(struct tipc_aead *aead, struct sk_buff *skb,
+--- a/block/blk-merge.c
++++ b/block/blk-merge.c
+@@ -1180,20 +1180,20 @@ bool blk_attempt_plug_merge(struct reque
+ 	if (!plug || rq_list_empty(&plug->mq_list))
+ 		return false;
+ 
+-	rq_list_for_each(&plug->mq_list, rq) {
+-		if (rq->q == q) {
+-			if (blk_attempt_bio_merge(q, rq, bio, nr_segs, false) ==
+-			    BIO_MERGE_OK)
+-				return true;
+-			break;
+-		}
++	rq = plug->mq_list.tail;
++	if (rq->q == q)
++		return blk_attempt_bio_merge(q, rq, bio, nr_segs, false) ==
++			BIO_MERGE_OK;
++	else if (!plug->multiple_queues)
++		return false;
+ 
+-		/*
+-		 * Only keep iterating plug list for merges if we have multiple
+-		 * queues
+-		 */
+-		if (!plug->multiple_queues)
+-			break;
++	rq_list_for_each(&plug->mq_list, rq) {
++		if (rq->q != q)
++			continue;
++		if (blk_attempt_bio_merge(q, rq, bio, nr_segs, false) ==
++		    BIO_MERGE_OK)
++			return true;
++		break;
  	}
- 
- 	/* Get net to avoid freed tipc_crypto when delete namespace */
--	get_net(aead->crypto->net);
-+	if (!maybe_get_net(aead->crypto->net)) {
-+		tipc_bearer_put(b);
-+		rc = -ENODEV;
-+		goto exit;
-+	}
- 
- 	/* Now, do encrypt */
- 	rc = crypto_aead_encrypt(req);
--- 
-2.39.5
-
+ 	return false;
+ }
 
 
 
