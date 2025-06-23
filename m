@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-156695-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156336-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 64FF9AE50B8
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:27:41 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AC287AE4F2B
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:13:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 846094A1943
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:27:37 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EFCA57AC613
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:11:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22A1722173D;
-	Mon, 23 Jun 2025 21:27:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F6BB221DAC;
+	Mon, 23 Jun 2025 21:12:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PEd6HEMZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oapgn7EJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D18EB1EDA0F;
-	Mon, 23 Jun 2025 21:27:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B5E6220F50;
+	Mon, 23 Jun 2025 21:12:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750714042; cv=none; b=YivSzifYwJWAeehNPvVcAnAL5HmnQbfEbBWMpcCRHFyRGUrduSX0T/f+jXhWSKXgwO3DTymJVrIlX4b7Hll43Azy3y7Vv67qYzRZuxlW0FqOo7tW9qOrn4hyMc5X66tBl56jvkH0MVo9KTyPy5JOVyJ+qiWjn+IU97f48vLH4vc=
+	t=1750713165; cv=none; b=iaDxylXtfQJzl5Aw+NJBYzK8oV4N+PCsD5Y3HxO5ioaAlpV7Q6Ksw2inZooZFsat0XHKyeAJ49X8+gOG9/KyH+clhAAmt3rO9PyB/b50NMUN+SkoHqmncUYBvzGDIA/MxhZeSw/XPoeUSJ0y0t/j/HVSYy+coRAjEinffZFBSRo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750714042; c=relaxed/simple;
-	bh=7YCSJrMvNNu6OsN0NYFSe05up6+CJhsg1BtEog532Jc=;
+	s=arc-20240116; t=1750713165; c=relaxed/simple;
+	bh=KL3u4gYgjDgApU6hM4NZEmL0QYwD8FIktsdCglww3ww=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VE8rCltte/LqMeeNmOMp6KkjY4ot90ed2LiYesu1C6Z0llDWTvYGklRkqkIWcNcyg9FNWIrxsfGaIK9hIWjgKcsuLur5aJLCH1X1230ovn7vCaox2DD2MgvrYAe4hmuo/Ig18Culg2jTanEb3jq0fCRGlyqBNhEzV11cyMYA4ko=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PEd6HEMZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6BC7DC4CEEA;
-	Mon, 23 Jun 2025 21:27:22 +0000 (UTC)
+	 MIME-Version; b=XfLyW0g6bQf/F0ZJrWY3tbH6FQZ2cr3RD01kdlj2BF6LU9NjxigMUShssjY7zdRYyH0+3sPgCWx5sQKwMWLJVRGyDSWRlq/89d4KR/NrEeURFv9L7JVxbyL/80dnDXCOFyVOOqCCUA1Z5Woo9kNGcF2p6opm/5LcnuD+urfM1uw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oapgn7EJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8114C4CEEA;
+	Mon, 23 Jun 2025 21:12:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750714042;
-	bh=7YCSJrMvNNu6OsN0NYFSe05up6+CJhsg1BtEog532Jc=;
+	s=korg; t=1750713165;
+	bh=KL3u4gYgjDgApU6hM4NZEmL0QYwD8FIktsdCglww3ww=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PEd6HEMZQrUVbfLLk2DiymJMlVdveZb+0K9vr04NpOnRe52wrHixkL1dW7kjJalF3
-	 vXEUL1GSLfl02lOGnSesBUhxrhsWbipXew0tgZPHsEOvz708LdbkFjNa5v+QMchpaT
-	 KxzgLVm/ZYvSccmcIFvCyReB5BUBbHhbH63yCsWA=
+	b=oapgn7EJN0pfE/ukQh7dkveyFngivdsF2Z5a2/4ZXx6N5M+XBmiy6l+DSv1PmWDP5
+	 x+Y68cUabde24MYR7uco82JPOkfaj+l1xnEqVF0tq0/rCZVHvCsmEeFYHZ2SLPfl4A
+	 CgPpT+LiMhyKS/cll7bfWpsO1UhpWyki7chzd8Ts=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
-	Bjorn Andersson <andersson@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 141/508] remoteproc: qcom_wcnss_iris: Add missing put_device() on error in probe
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+	Hans Verkuil <hverkuil@xs4all.nl>
+Subject: [PATCH 6.12 049/414] media: ccs-pll: Correct the upper limit of maximum op_pre_pll_clk_div
 Date: Mon, 23 Jun 2025 15:03:06 +0200
-Message-ID: <20250623130648.755607348@linuxfoundation.org>
+Message-ID: <20250623130643.270053736@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
-References: <20250623130645.255320792@linuxfoundation.org>
+In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
+References: <20250623130642.015559452@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,48 +62,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Sakari Ailus <sakari.ailus@linux.intel.com>
 
-[ Upstream commit 0cb4b1b97041d8a1f773425208ded253c1cb5869 ]
+commit f639494db450770fa30d6845d9c84b9cb009758f upstream.
 
-The device_del() call matches with the device_add() but we also need
-to call put_device() to trigger the qcom_iris_release().
+The PLL calculator does a search of the PLL configuration space for all
+valid OP pre-PLL clock dividers. The maximum did not take into account the
+CCS PLL flag CCS_PLL_FLAG_EXT_IP_PLL_DIVIDER in which case also odd PLL
+dividers (other than 1) are valid. Do that now.
 
-Fixes: 1fcef985c8bd ("remoteproc: qcom: wcnss: Fix race with iris probe")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Link: https://lore.kernel.org/r/4604f7e0-3217-4095-b28a-3ff8b5afad3a@stanley.mountain
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 4e1e8d240dff ("media: ccs-pll: Add support for extended input PLL clock divider")
+Cc: stable@vger.kernel.org
+Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/remoteproc/qcom_wcnss_iris.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/media/i2c/ccs-pll.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/remoteproc/qcom_wcnss_iris.c b/drivers/remoteproc/qcom_wcnss_iris.c
-index 09720ddddc857..7c7b688eda1d9 100644
---- a/drivers/remoteproc/qcom_wcnss_iris.c
-+++ b/drivers/remoteproc/qcom_wcnss_iris.c
-@@ -196,6 +196,7 @@ struct qcom_iris *qcom_iris_probe(struct device *parent, bool *use_48mhz_xo)
- 
- err_device_del:
- 	device_del(&iris->dev);
-+	put_device(&iris->dev);
- 
- 	return ERR_PTR(ret);
- }
-@@ -203,4 +204,5 @@ struct qcom_iris *qcom_iris_probe(struct device *parent, bool *use_48mhz_xo)
- void qcom_iris_remove(struct qcom_iris *iris)
- {
- 	device_del(&iris->dev);
-+	put_device(&iris->dev);
- }
--- 
-2.39.5
-
+--- a/drivers/media/i2c/ccs-pll.c
++++ b/drivers/media/i2c/ccs-pll.c
+@@ -794,7 +794,7 @@ int ccs_pll_calculate(struct device *dev
+ 		op_lim_fr->min_pre_pll_clk_div, op_lim_fr->max_pre_pll_clk_div);
+ 	max_op_pre_pll_clk_div =
+ 		min_t(u16, op_lim_fr->max_pre_pll_clk_div,
+-		      clk_div_even(pll->ext_clk_freq_hz /
++		      DIV_ROUND_UP(pll->ext_clk_freq_hz,
+ 				   op_lim_fr->min_pll_ip_clk_freq_hz));
+ 	min_op_pre_pll_clk_div =
+ 		max_t(u16, op_lim_fr->min_pre_pll_clk_div,
 
 
 
