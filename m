@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-156618-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156673-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id EAEF4AE5058
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:24:23 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D9FE7AE50A8
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:27:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AD18C3BFE83
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:23:55 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A516344096C
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:26:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 948312628C;
-	Mon, 23 Jun 2025 21:24:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6BCAA223DFF;
+	Mon, 23 Jun 2025 21:26:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yKoXuibC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RWkcqoD5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51ABD1ACEDA;
-	Mon, 23 Jun 2025 21:24:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 285D3222571;
+	Mon, 23 Jun 2025 21:26:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750713852; cv=none; b=kMycTT6WRcE9RVFNqthmAGAfeFbBEDjTknPKQ5DGR/Vf1P7dCRjxTl0U6BmUrOl3LljA9wKyruChb+wmxlpuvxge5c9HxX0m6mIou6Y4q69z5Z9+zdLhvxjBQAZhACtB41r7Cd5xOFs4oOU9gwkRf0WcAwuEME7uRnti3xGqq08=
+	t=1750713989; cv=none; b=B0sbGQEGvTJjn3Ykps97H7QxdJm4xrpI5rFavT12pLnBEUiEGxNt3FAhB/Px8cRc3Lnv7de0Nr5q6AYGqQNfPF+YqgShsEDU7BHxXtk2AWDRntRW+CMWMSK0UWMMGNLsaYISK9kJhLIri53l2vNFQ3JiJN3I6JO4PoXIjWkoj3E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750713852; c=relaxed/simple;
-	bh=RFtkHTkCsC31eysJ0Jbq4wZDS7rcUMj12+OuOXs0UFg=;
+	s=arc-20240116; t=1750713989; c=relaxed/simple;
+	bh=o5LReWh77fLLb8yniY+Doik4tZMgVVWgk05N27z4Bmc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OXHonOw6Yp/H3cBpjVsLAdd6MXfTjK1N0b5nrLc8+75AFbP84Fet5i/FZ2+5Kuylp1qu78IZeDnA3SDmi/MmZqFvtm26WAOtgtPi9LzNnkv1dj0MoTmt6hD8uVOorRgWfF022s87aT83NNZH7sMxaNk9Rt+wRA0A8jR042oESKE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yKoXuibC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE34FC4CEEA;
-	Mon, 23 Jun 2025 21:24:11 +0000 (UTC)
+	 MIME-Version; b=ieV0cvmOga/2ucTB2WF2APWfjoSChFYdLP3oU5EENNmewsyrYZOO18lDvGM4YIeIuZEb8NBeCcUCyO36n5anCa94o8fDz6evklQT/pLC454qmhFXxOo04ymngFVUqOwL8GghCrQdzRpaG935pf4C7oQ7TOqKZgTbzc1awYhUBKc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RWkcqoD5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4B5FC4CEEA;
+	Mon, 23 Jun 2025 21:26:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750713852;
-	bh=RFtkHTkCsC31eysJ0Jbq4wZDS7rcUMj12+OuOXs0UFg=;
+	s=korg; t=1750713989;
+	bh=o5LReWh77fLLb8yniY+Doik4tZMgVVWgk05N27z4Bmc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yKoXuibCRhiylrcLntctVBC30XfiQR2FGfx5apNykL1vQGUyGYWotm+XfMYQNcR0F
-	 IDBkhM3GND9ZNclINDWqsUv2Uwu9Rt1/zZXYgZgfoWxN0h33yVk0ptvKuVDGOhL3jw
-	 dMz+n1VJPcJ9T0+vR6N4exgMulokHHvYKclrGtIU=
+	b=RWkcqoD5k6u8WfIlSXeQzuZFBmKRk3/Bx4DpIx2N+jtXZZKj2kt5KiNfEwK2E82OW
+	 t1V5qXMK0IRqiI82Ryr7DkdQ5woNdHyXeb99k8YZ2U9wylXb1ttXWG5hKjdGY3FI8B
+	 d4pP8WfCH3nrNjJ6ge9yhgK6IZH9M3bu1VUUp0vY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Masahiro Yamada <masahiroy@kernel.org>,
-	Nick Desaulniers <ndesaulniers@google.com>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Linux Kernel Functional Testing <lkft@linaro.org>,
-	Anders Roxell <anders.roxell@linaro.org>
-Subject: [PATCH 5.15 171/411] kbuild: Update assembler calls to use proper flags and language target
+	Jason Xing <kernelxing@tencent.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.15 357/592] net: stmmac: generate software timestamp just before the doorbell
 Date: Mon, 23 Jun 2025 15:05:15 +0200
-Message-ID: <20250623130637.996853582@linuxfoundation.org>
+Message-ID: <20250623130708.934194404@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
-References: <20250623130632.993849527@linuxfoundation.org>
+In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
+References: <20250623130700.210182694@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,96 +62,72 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nick Desaulniers <ndesaulniers@google.com>
+From: Jason Xing <kernelxing@tencent.com>
 
-commit d5c8d6e0fa61401a729e9eb6a9c7077b2d3aebb0 upstream.
+[ Upstream commit 33d4cc81fcd930fdbcca7ac9e8959225cbec0a5e ]
 
-as-instr uses KBUILD_AFLAGS, but as-option uses KBUILD_CFLAGS. This can
-cause as-option to fail unexpectedly when CONFIG_WERROR is set, because
-clang will emit -Werror,-Wunused-command-line-argument for various -m
-and -f flags in KBUILD_CFLAGS for assembler sources.
+Make sure the call of skb_tx_timestamp is as close as possbile to the
+doorbell.
 
-Callers of as-option and as-instr should be adding flags to
-KBUILD_AFLAGS / aflags-y, not KBUILD_CFLAGS / cflags-y. Use
-KBUILD_AFLAGS in all macros to clear up the initial problem.
+The patch also adjusts the order of setting SKBTX_IN_PROGRESS and
+generate software timestamp so that without SOF_TIMESTAMPING_OPT_TX_SWHW
+being set the software and hardware timestamps will not appear in the
+error queue of socket nearly at the same time (Please see __skb_tstamp_tx()).
 
-Unfortunately, -Wunused-command-line-argument can still be triggered
-with clang by the presence of warning flags or macro definitions because
-'-x assembler' is used, instead of '-x assembler-with-cpp', which will
-consume these flags. Switch to '-x assembler-with-cpp' in places where
-'-x assembler' is used, as the compiler is always used as the driver for
-out of line assembler sources in the kernel.
-
-Finally, add -Werror to these macros so that they behave consistently
-whether or not CONFIG_WERROR is set.
-
-[nathan: Reworded and expanded on problems in commit message
-         Use '-x assembler-with-cpp' in a couple more places]
-
-Link: https://github.com/ClangBuiltLinux/linux/issues/1699
-Suggested-by: Masahiro Yamada <masahiroy@kernel.org>
-Signed-off-by: Nick Desaulniers <ndesaulniers@google.com>
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
-Tested-by: Linux Kernel Functional Testing <lkft@linaro.org>
-Tested-by: Anders Roxell <anders.roxell@linaro.org>
-Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Jason Xing <kernelxing@tencent.com>
+Link: https://patch.msgid.link/20250510134812.48199-4-kerneljasonxing@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- scripts/Kconfig.include   |    2 +-
- scripts/Makefile.compiler |    8 ++++----
- scripts/as-version.sh     |    2 +-
- 3 files changed, 6 insertions(+), 6 deletions(-)
+ drivers/net/ethernet/stmicro/stmmac/stmmac_main.c | 7 ++-----
+ 1 file changed, 2 insertions(+), 5 deletions(-)
 
---- a/scripts/Kconfig.include
-+++ b/scripts/Kconfig.include
-@@ -33,7 +33,7 @@ ld-option = $(success,$(LD) -v $(1))
+diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+index 3a049a158ea11..1d716cee0cb10 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
++++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+@@ -4493,8 +4493,6 @@ static netdev_tx_t stmmac_tso_xmit(struct sk_buff *skb, struct net_device *dev)
+ 	if (priv->sarc_type)
+ 		stmmac_set_desc_sarc(priv, first, priv->sarc_type);
  
- # $(as-instr,<instr>)
- # Return y if the assembler supports <instr>, n otherwise
--as-instr = $(success,printf "%b\n" "$(1)" | $(CC) $(CLANG_FLAGS) -c -x assembler -o /dev/null -)
-+as-instr = $(success,printf "%b\n" "$(1)" | $(CC) $(CLANG_FLAGS) -c -x assembler-with-cpp -o /dev/null -)
+-	skb_tx_timestamp(skb);
+-
+ 	if (unlikely((skb_shinfo(skb)->tx_flags & SKBTX_HW_TSTAMP) &&
+ 		     priv->hwts_tx_en)) {
+ 		/* declare that device is doing timestamping */
+@@ -4527,6 +4525,7 @@ static netdev_tx_t stmmac_tso_xmit(struct sk_buff *skb, struct net_device *dev)
+ 	}
  
- # check if $(CC) and $(LD) exist
- $(error-if,$(failure,command -v $(CC)),compiler '$(CC)' not found)
---- a/scripts/Makefile.compiler
-+++ b/scripts/Makefile.compiler
-@@ -29,16 +29,16 @@ try-run = $(shell set -e;		\
- 	fi)
+ 	netdev_tx_sent_queue(netdev_get_tx_queue(dev, queue), skb->len);
++	skb_tx_timestamp(skb);
  
- # as-option
--# Usage: cflags-y += $(call as-option,-Wa$(comma)-isa=foo,)
-+# Usage: aflags-y += $(call as-option,-Wa$(comma)-isa=foo,)
+ 	stmmac_flush_tx_descriptors(priv, queue);
+ 	stmmac_tx_timer_arm(priv, queue);
+@@ -4770,8 +4769,6 @@ static netdev_tx_t stmmac_xmit(struct sk_buff *skb, struct net_device *dev)
+ 	if (priv->sarc_type)
+ 		stmmac_set_desc_sarc(priv, first, priv->sarc_type);
  
- as-option = $(call try-run,\
--	$(CC) $(KBUILD_CFLAGS) $(1) -c -x assembler /dev/null -o "$$TMP",$(1),$(2))
-+	$(CC) -Werror $(KBUILD_AFLAGS) $(1) -c -x assembler-with-cpp /dev/null -o "$$TMP",$(1),$(2))
+-	skb_tx_timestamp(skb);
+-
+ 	/* Ready to fill the first descriptor and set the OWN bit w/o any
+ 	 * problems because all the descriptors are actually ready to be
+ 	 * passed to the DMA engine.
+@@ -4818,7 +4815,7 @@ static netdev_tx_t stmmac_xmit(struct sk_buff *skb, struct net_device *dev)
+ 	netdev_tx_sent_queue(netdev_get_tx_queue(dev, queue), skb->len);
  
- # as-instr
--# Usage: cflags-y += $(call as-instr,instr,option1,option2)
-+# Usage: aflags-y += $(call as-instr,instr,option1,option2)
+ 	stmmac_enable_dma_transmission(priv, priv->ioaddr, queue);
+-
++	skb_tx_timestamp(skb);
+ 	stmmac_flush_tx_descriptors(priv, queue);
+ 	stmmac_tx_timer_arm(priv, queue);
  
- as-instr = $(call try-run,\
--	printf "%b\n" "$(1)" | $(CC) $(KBUILD_AFLAGS) -c -x assembler -o "$$TMP" -,$(2),$(3))
-+	printf "%b\n" "$(1)" | $(CC) -Werror $(KBUILD_AFLAGS) -c -x assembler-with-cpp -o "$$TMP" -,$(2),$(3))
- 
- # __cc-option
- # Usage: MY_CFLAGS += $(call __cc-option,$(CC),$(MY_CFLAGS),-march=winchip-c6,-march=i586)
---- a/scripts/as-version.sh
-+++ b/scripts/as-version.sh
-@@ -45,7 +45,7 @@ orig_args="$@"
- # Get the first line of the --version output.
- IFS='
- '
--set -- $(LC_ALL=C "$@" -Wa,--version -c -x assembler /dev/null -o /dev/null 2>/dev/null)
-+set -- $(LC_ALL=C "$@" -Wa,--version -c -x assembler-with-cpp /dev/null -o /dev/null 2>/dev/null)
- 
- # Split the line on spaces.
- IFS=' '
+-- 
+2.39.5
+
 
 
 
