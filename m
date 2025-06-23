@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-158013-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157734-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6092BAE5690
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:21:35 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D75D2AE5564
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:10:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AFF1D1C21E6B
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:21:30 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 99F6B4C3D20
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:10:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE44F223DF0;
-	Mon, 23 Jun 2025 22:21:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46A38226888;
+	Mon, 23 Jun 2025 22:09:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y0qXMUSn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A7DauHZ4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CA9815ADB4;
-	Mon, 23 Jun 2025 22:21:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04193229B38;
+	Mon, 23 Jun 2025 22:09:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750717272; cv=none; b=FS5I7YWYnS5rFw+3A48Veef1Zu960079oWBjZAEE6JaU8WQO/MgNWBNB8vkjGAvUWM5PR1Uc+vfw2XYYXZ+9BEQ/tRU5Le8hlcAIizzzTCA8FZqn6jlsSzqzceUo4hRt8m4YaFNKhJTjui3twxJxLOQ+ao8L/AbI0Rn8p2yEUnY=
+	t=1750716591; cv=none; b=VW+/f1g9VhjrzRTGZUqz+/ucV+qALR48TS1l+I3LsvgPaM3VEWPjQt7iagLCvr0+Yzk2K/LY8gBkd/mRMx3hIGeRNobOKvSGijWr2qGrLd2fg9IxGLuJnWOpv0JkqXitBBoV34gFKo7nZ32WIZePi2nFqydpi/aMzpXzFwFOAlw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750717272; c=relaxed/simple;
-	bh=SE8pE2Qy380dGX6kkBHXLiIplFKPTowJtwCP7Q1JPqM=;
+	s=arc-20240116; t=1750716591; c=relaxed/simple;
+	bh=EXkaC5Kv4H6u0hz/Rr4pD9y1lTQrM7aZjTAvG4D8eyw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DxQLYr7UzacklZ6LbROqzFWgyKQRfci/E3h6mIqc3zxJIf0CU9WFMq12RD5zB3BKo54Ydq2IU6eisXqOuOShuHT9FTURSDZr9WDU6CKVNac9H5HkJEfpF1+1ZsriAfwijCjaxMuJlNfcH6w8NhFsjEv/ijwT4lgD6nGEwsdM3rE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y0qXMUSn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33808C4CEED;
-	Mon, 23 Jun 2025 22:21:12 +0000 (UTC)
+	 MIME-Version:Content-Type; b=PythrvzZwPv5m/1B02BR1IMgz3QdzWMqG1HIvD4dADqdmcMLiFssmRt4tY9gSx5t6SWGzbE+v+5kdz591Yy+xFzjH5D0uzmX/CNNaT9rfDa2BQyXzKWmgPbOr2VG7dddvRErruqfrYqiTXMkr4T4QyE3CPTTTGA5HIUoDBn2acw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A7DauHZ4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9008EC4CEF3;
+	Mon, 23 Jun 2025 22:09:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750717272;
-	bh=SE8pE2Qy380dGX6kkBHXLiIplFKPTowJtwCP7Q1JPqM=;
+	s=korg; t=1750716590;
+	bh=EXkaC5Kv4H6u0hz/Rr4pD9y1lTQrM7aZjTAvG4D8eyw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=y0qXMUSn6hvvcNXMPUl1KWMYFvwXXGTTjneyxtkYbzVfUrHxIiMDsgrTkBYwgSQwM
-	 DCVqK3iLquRk0V4vlMPS5IUgqpdQEILSORihVCh3Rw0RvjvXuyRvGOxwLSuCW01lBh
-	 BSD78mUDQKJrL+bTkWdjA5y6jLDQwJIYg4VKg23Y=
+	b=A7DauHZ44Pvv+n57semf0nS1pLFEnK4MfCpwt02PFg0d54pEg57wOojt3x3Hq4mk2
+	 cPydIgE8vHCLlJFAed8BHC+OP067mmAaREBSe+SAuGTn/WLscWanFa/clhhnV/ZRuB
+	 w8gryjuIIPEoIESJlEswBWtpqZ+cXaXJ7tqHLRSc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Willem de Bruijn <willemb@google.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.12 350/414] ipv6: remove leftover ip6 cookie initializer
+	Stuart Hayes <stuart.w.hayes@gmail.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 343/411] platform/x86: dell_rbu: Stop overwriting data buffer
 Date: Mon, 23 Jun 2025 15:08:07 +0200
-Message-ID: <20250623130650.726178264@linuxfoundation.org>
+Message-ID: <20250623130642.283285929@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
-References: <20250623130642.015559452@linuxfoundation.org>
+In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
+References: <20250623130632.993849527@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,49 +60,60 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Willem de Bruijn <willemb@google.com>
+From: Stuart Hayes <stuart.w.hayes@gmail.com>
 
-commit 54580ccdd8a9c6821fd6f72171d435480867e4c3 upstream.
+[ Upstream commit f4b0fa38d5fefe9aed6ed831f3bd3538c168ee19 ]
 
-As of the blamed commit ipc6.dontfrag is always initialized at the
-start of udpv6_sendmsg, by ipcm6_init_sk, to either 0 or 1.
+The dell_rbu driver will use memset() to clear the data held by each
+packet when it is no longer needed (when the driver is unloaded, the
+packet size is changed, etc).
 
-Later checks against -1 are no longer needed and the branches are now
-dead code.
+The amount of memory that is cleared (before this patch) is the normal
+packet size. However, the last packet in the list may be smaller.
 
-The blamed commit had removed those branches. But I had overlooked
-this one case.
+Fix this to only clear the memory actually used by each packet, to prevent
+it from writing past the end of data buffer.
 
-UDP has both a lockless fast path and a slower path for corked
-requests. This branch remained in the fast path.
+Because the packet data buffers are allocated with __get_free_pages() (in
+page-sized increments), this bug could only result in a buffer being
+overwritten when a packet size larger than one page is used. The only user
+of the dell_rbu module should be the Dell BIOS update program, which uses
+a packet size of 4096, so no issues should be seen without the patch, it
+just blocks the possiblity.
 
-Fixes: 096208592b09 ("ipv6: replace ipcm6_init calls with ipcm6_init_sk")
-Signed-off-by: Willem de Bruijn <willemb@google.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Link: https://patch.msgid.link/20250307033620.411611-2-willemdebruijn.kernel@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 6c54c28e69f2 ("[PATCH] dell_rbu: new Dell BIOS update driver")
+Signed-off-by: Stuart Hayes <stuart.w.hayes@gmail.com>
+Link: https://lore.kernel.org/r/20250609184659.7210-5-stuart.w.hayes@gmail.com
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv6/ip6_output.c |    2 --
- 1 file changed, 2 deletions(-)
+ drivers/platform/x86/dell/dell_rbu.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/net/ipv6/ip6_output.c
-+++ b/net/ipv6/ip6_output.c
-@@ -2043,8 +2043,6 @@ struct sk_buff *ip6_make_skb(struct sock
- 		ip6_cork_release(cork, &v6_cork);
- 		return ERR_PTR(err);
- 	}
--	if (ipc6->dontfrag < 0)
--		ipc6->dontfrag = inet6_test_bit(DONTFRAG, sk);
- 
- 	err = __ip6_append_data(sk, &queue, cork, &v6_cork,
- 				&current->task_frag, getfrag, from,
+diff --git a/drivers/platform/x86/dell/dell_rbu.c b/drivers/platform/x86/dell/dell_rbu.c
+index 25a01c728c072..9fc5d3e9e7934 100644
+--- a/drivers/platform/x86/dell/dell_rbu.c
++++ b/drivers/platform/x86/dell/dell_rbu.c
+@@ -322,7 +322,7 @@ static void packet_empty_list(void)
+ 		 * zero out the RBU packet memory before freeing
+ 		 * to make sure there are no stale RBU packets left in memory
+ 		 */
+-		memset(newpacket->data, 0, rbu_data.packetsize);
++		memset(newpacket->data, 0, newpacket->length);
+ 		set_memory_wb((unsigned long)newpacket->data,
+ 			1 << newpacket->ordernum);
+ 		free_pages((unsigned long) newpacket->data,
+-- 
+2.39.5
+
 
 
 
