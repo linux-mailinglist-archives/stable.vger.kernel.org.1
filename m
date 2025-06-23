@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-156826-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157443-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A940AE514B
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:32:42 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A6CBFAE5402
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:58:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 686E01B637B6
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:32:58 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F36374466D4
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:57:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD6121E1A05;
-	Mon, 23 Jun 2025 21:32:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D6AC1222581;
+	Mon, 23 Jun 2025 21:57:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sjSQKTfX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I+MdLmeh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A648C2E0;
-	Mon, 23 Jun 2025 21:32:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 947BE1F4628;
+	Mon, 23 Jun 2025 21:57:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750714360; cv=none; b=SD4iAffJlPHBFRHd+ZUNcdxtPOOTDIJUPnen+lrL3s43UzLmeyTJIkxTzvohoNApILlZmvLwlwCPrIXDDCtatyzREw+hvlQrPSGk/ee8njHRYSb3YCmY1TqDJ6ifOnHEbI/fxV4M1MJDLB1NKppciwLGHq3rTfAzpk6oe/gxIAs=
+	t=1750715878; cv=none; b=gAo5PZQ6mD7gMo5u3DNBKieHy2EN2nHirEr12d//T9NGWf/R1Ej+1wklQHjUX1L1PMM+eCoSdLiEl9fUvs1RGea4W9PO9bVYkf3J18vyVGYJS9TnLRRUJr7ZDWin5HNrPGRoKVDdcpViqhjQSXR9Ujf1OjuSO+rg9lYtbIUJ78c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750714360; c=relaxed/simple;
-	bh=6KQKOnYG1jYYdulgaiccl6QVzM1u0oOjIowYRx40/38=;
+	s=arc-20240116; t=1750715878; c=relaxed/simple;
+	bh=jhUiJNXaFCeLz/Zhe/RZlots3Zu2tL/SwzF9XhHxnfE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aptOu9FMq8eSFJJ2QVksmrBuxdTDuPT17AmcMiOR5wxOsRTY8QOGSg4fOXTJ1ek5V+D52mpr5Xra5dSuLUmvMhPXt+A8xjAxEcN9k68fuAdFCYbdQZAERhoXw+jk/OYUV35tWjL3FBrWTNb7NSWZG/agsyLE5vw8f/nS04CNYac=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sjSQKTfX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11CA6C4CEEA;
-	Mon, 23 Jun 2025 21:32:39 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Oxe0R/6pBj8TQ7yUwfLqLNlSdpPDg2Pl64YqTdt5UlmqVxSVgROyUHnevi33II7rEPziGApF24w/zKg4ARXZ54ugGA/VTLKj8MoQVGWojv8e2zw7J1BELJyj7dor2aDATIqweuTExdWC2LU/RcEDIjs/HR6b2BFiAL2/ooADR/E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I+MdLmeh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2F1DC4CEEA;
+	Mon, 23 Jun 2025 21:57:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750714360;
-	bh=6KQKOnYG1jYYdulgaiccl6QVzM1u0oOjIowYRx40/38=;
+	s=korg; t=1750715878;
+	bh=jhUiJNXaFCeLz/Zhe/RZlots3Zu2tL/SwzF9XhHxnfE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sjSQKTfXkfKS9gIKITvMH5AN+V/CMhdGCEJUyrLnq+Lr8FXYiD4VfKAeXiZGOvZ4y
-	 F0u0WqenqEF/X6GRq+RU7wT0fbDcfsvkV7foGGTbOSikeEEuYC7DtZN8lFX+6VERzI
-	 5NdOY5j6GMm+5P7lJQsmTXzdZ2xN5LfKFwRg1d60=
+	b=I+MdLmehG905WEDNqRBog1TFk8Ad66MeJWL+zZmQDp8OZsrU93JnYyXT2boTFwOsw
+	 KQd3Zo4FG5GI4gXeLWF+YRb/Le/IVIqu4Miux5Cr0kfZ4ZuiDAnzzkpkhns4ltxMkW
+	 CFDBzGvi2ZpvYRSGPvafbBV/lquc1wWM4q1OK6/k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johannes Berg <johannes.berg@intel.com>,
-	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 374/592] wifi: iwlwifi: dvm: pair transport op-mode enter/leave
+	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Masahiro Yamada <masahiroy@kernel.org>
+Subject: [PATCH 6.1 287/508] kbuild: userprogs: fix bitsize and target detection on clang
 Date: Mon, 23 Jun 2025 15:05:32 +0200
-Message-ID: <20250623130709.336838754@linuxfoundation.org>
+Message-ID: <20250623130652.333050563@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
-References: <20250623130700.210182694@linuxfoundation.org>
+In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
+References: <20250623130645.255320792@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,60 +60,47 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johannes Berg <johannes.berg@intel.com>
+From: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
 
-[ Upstream commit 6b340a694cee9e7a24b2be827c738b5b6cb13c84 ]
+commit 1b71c2fb04e7a713abc6edde4a412416ff3158f2 upstream.
 
-If there's a failure and the op-mode didn't actually fully
-initialize, it should leave the transport again. Fix that.
+scripts/Makefile.clang was changed in the linked commit to move --target from
+KBUILD_CFLAGS to KBUILD_CPPFLAGS, as that generally has a broader scope.
+However that variable is not inspected by the userprogs logic,
+breaking cross compilation on clang.
 
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Link: https://patch.msgid.link/20250504132447.714c3517548b.I49557e7ba8c03be2b558cc9fb5efa2a9fbab890e@changeid
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Use both variables to detect bitsize and target arguments for userprogs.
+
+Fixes: feb843a469fb ("kbuild: add $(CLANG_FLAGS) to KBUILD_CPPFLAGS")
+Cc: stable@vger.kernel.org
+Signed-off-by: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
+Reviewed-by: Nathan Chancellor <nathan@kernel.org>
+Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/intel/iwlwifi/dvm/main.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ Makefile |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/dvm/main.c b/drivers/net/wireless/intel/iwlwifi/dvm/main.c
-index a27a72cc017a3..a7f9e244c0975 100644
---- a/drivers/net/wireless/intel/iwlwifi/dvm/main.c
-+++ b/drivers/net/wireless/intel/iwlwifi/dvm/main.c
-@@ -1382,14 +1382,14 @@ static struct iwl_op_mode *iwl_op_mode_dvm_start(struct iwl_trans *trans,
+--- a/Makefile
++++ b/Makefile
+@@ -1139,8 +1139,8 @@ LDFLAGS_vmlinux += --orphan-handling=war
+ endif
  
- 	err = iwl_trans_start_hw(priv->trans);
- 	if (err)
--		goto out_free_hw;
-+		goto out_leave_trans;
+ # Align the bit size of userspace programs with the kernel
+-KBUILD_USERCFLAGS  += $(filter -m32 -m64 --target=%, $(KBUILD_CFLAGS))
+-KBUILD_USERLDFLAGS += $(filter -m32 -m64 --target=%, $(KBUILD_CFLAGS))
++KBUILD_USERCFLAGS  += $(filter -m32 -m64 --target=%, $(KBUILD_CPPFLAGS) $(KBUILD_CFLAGS))
++KBUILD_USERLDFLAGS += $(filter -m32 -m64 --target=%, $(KBUILD_CPPFLAGS) $(KBUILD_CFLAGS))
  
- 	/* Read the EEPROM */
- 	err = iwl_read_eeprom(priv->trans, &priv->eeprom_blob,
- 			      &priv->eeprom_blob_size);
- 	if (err) {
- 		IWL_ERR(priv, "Unable to init EEPROM\n");
--		goto out_free_hw;
-+		goto out_leave_trans;
- 	}
- 
- 	/* Reset chip to save power until we load uCode during "up". */
-@@ -1508,6 +1508,8 @@ static struct iwl_op_mode *iwl_op_mode_dvm_start(struct iwl_trans *trans,
- 	kfree(priv->eeprom_blob);
- out_free_eeprom:
- 	kfree(priv->nvm_data);
-+out_leave_trans:
-+	iwl_trans_op_mode_leave(priv->trans);
- out_free_hw:
- 	ieee80211_free_hw(priv->hw);
- out:
--- 
-2.39.5
-
+ # userspace programs are linked via the compiler, use the correct linker
+ ifeq ($(CONFIG_CC_IS_CLANG)$(CONFIG_LD_IS_LLD),yy)
 
 
 
