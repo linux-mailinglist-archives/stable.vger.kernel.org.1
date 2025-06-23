@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-156252-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157369-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 90452AE4ECD
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:09:17 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id DD3B9AE53A5
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:55:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 276061782A1
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:09:18 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 92256445120
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:54:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D22221638A;
-	Mon, 23 Jun 2025 21:09:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F50E222581;
+	Mon, 23 Jun 2025 21:55:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GyrKrMRD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VEwIvjbU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF38270838;
-	Mon, 23 Jun 2025 21:09:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C8EE1AD3FA;
+	Mon, 23 Jun 2025 21:55:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750712955; cv=none; b=kLgI8MHXujv6VNUVaHwWcAV10kNtZyN1CClFit8yofrA6xeCRrf1s7XaFwAmOuZvmEH0lCiwQEbAjRiQUbh7w7ZwH7ao+/CVUjT0uit474BjxTuzQCRxxnFr/8hiz1OjcimYM+tdurwHSOLPyT8LE6FYhIC0HeStfFPGdLKugpc=
+	t=1750715700; cv=none; b=Efx2nXhXU2dN+NMoucwQ0EmTldFJNDDiDoO02JiJwXaMroF3HY3i+Vj2WgRKBdWJymjJZqCBVzQL6/7MCYD00cQpwkZEtzKKalJiJH8BV72LJMOgo/IHQXMNhRP8E5sY9Ag1yzkAXyyIrLx1u4eTlKf5t/pauIclGbIPpx7B1Ms=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750712955; c=relaxed/simple;
-	bh=31/XzM6SPUrSjFThxSVIYqSeAFGufEdRAiZPafCNiHk=;
+	s=arc-20240116; t=1750715700; c=relaxed/simple;
+	bh=Jp/YxAID9leY4M28bBfIA6Jm0bmCwVbvk+mwXMKtIbE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mfj3jpdGv2RJPjFxC/bclaV4UofwNVLitiU3Ma+8tGcwFBFV99aFjKKYvp3XjAOO/1ZeC+zeRB+8wwaUKyJuAhkmXX1WLicFKZ/S8VZUd7Zo9FTB62tROh/EWIxwnawHNEstu4p4R5XO8QX8NARZ5zM2IOqwFXnOfJzxyRy+PPk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GyrKrMRD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56981C4CEEA;
-	Mon, 23 Jun 2025 21:09:15 +0000 (UTC)
+	 MIME-Version; b=aCvEej58Tm0BVkpd8ZAdxzrG0okeDa84FeNVptENCScr0gMH4L2Pg42i0wp2sa7Jk297U6cvZkJx1docYxpgQOZPfpJ5+C/PHygvHzsVUp+i5J65OcUwJtwTV2N1NTPRQVkdVa0xh0CWBetl0pKtE7l6yh5xKbGgxQ0kNdiMTGg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VEwIvjbU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A90D0C4CEF3;
+	Mon, 23 Jun 2025 21:54:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750712955;
-	bh=31/XzM6SPUrSjFThxSVIYqSeAFGufEdRAiZPafCNiHk=;
+	s=korg; t=1750715700;
+	bh=Jp/YxAID9leY4M28bBfIA6Jm0bmCwVbvk+mwXMKtIbE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GyrKrMRDOxW4C/p13cxujQ0+gBMyTjQvdolUtp2igG1cC2I4TLiAcealrwknjF2f3
-	 kqtv2eBoefmEKIpwaP6UM4q25/YJ1V0YwceG9mALvMvS6N+GZFk2gLfRzzfOKj+GQL
-	 yfo26FLIcxvb2OwFJv4sv5655qtgrfgpuh3pqIi8=
+	b=VEwIvjbUdjrnbzAA6RHhq/Sn6enlHPvhmxiu7IQ3/1Iu9AdGgfkUlgHkSZZDv6aTs
+	 g/5hkDADznzsG87IYVcVEqZdyqmggBcxCaP0rUkQGbfNNnNliuweb1ttA0Z9qfXBDs
+	 +JF7//BBRYDZ/ykH1jwhj4rod4UeZopb0Qh2YsqA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Simon Schuster <schuster.simon@siemens-energy.com>,
-	Andreas Oetken <andreas.oetken@siemens-energy.com>,
-	Dinh Nguyen <dinguyen@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 157/222] nios2: force update_mmu_cache on spurious tlb-permission--related pagefaults
+	Simon Horman <horms@kernel.org>,
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 5.10 291/355] atm: Revert atm_account_tx() if copy_from_iter_full() fails.
 Date: Mon, 23 Jun 2025 15:08:12 +0200
-Message-ID: <20250623130616.805674177@linuxfoundation.org>
+Message-ID: <20250623130635.523772849@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130611.896514667@linuxfoundation.org>
-References: <20250623130611.896514667@linuxfoundation.org>
+In-Reply-To: <20250623130626.716971725@linuxfoundation.org>
+References: <20250623130626.716971725@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,89 +62,80 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Simon Schuster <schuster.simon@siemens-energy.com>
+From: Kuniyuki Iwashima <kuniyu@google.com>
 
-[ Upstream commit 2d8a3179ea035f9341b6a73e5ba4029fc67e983d ]
+commit 7851263998d4269125fd6cb3fdbfc7c6db853859 upstream.
 
-NIOS2 uses a software-managed TLB for virtual address translation. To
-flush a cache line, the original mapping is replaced by one to physical
-address 0x0 with no permissions (rwx mapped to 0) set. This can lead to
-TLB-permission--related traps when such a nominally flushed entry is
-encountered as a mapping for an otherwise valid virtual address within a
-process (e.g. due to an MMU-PID-namespace rollover that previously
-flushed the complete TLB including entries of existing, running
-processes).
+In vcc_sendmsg(), we account skb->truesize to sk->sk_wmem_alloc by
+atm_account_tx().
 
-The default ptep_set_access_flags implementation from mm/pgtable-generic.c
-only forces a TLB-update when the page-table entry has changed within the
-page table:
+It is expected to be reverted by atm_pop_raw() later called by
+vcc->dev->ops->send(vcc, skb).
 
-	/*
-	 * [...] We return whether the PTE actually changed, which in turn
-	 * instructs the caller to do things like update__mmu_cache. [...]
-	 */
-	int ptep_set_access_flags(struct vm_area_struct *vma,
-				  unsigned long address, pte_t *ptep,
-				  pte_t entry, int dirty)
-	{
-		int changed = !pte_same(*ptep, entry);
-		if (changed) {
-			set_pte_at(vma->vm_mm, address, ptep, entry);
-			flush_tlb_fix_spurious_fault(vma, address);
-		}
-		return changed;
-	}
+However, vcc_sendmsg() misses the same revert when copy_from_iter_full()
+fails, and then we will leak a socket.
 
-However, no cross-referencing with the TLB-state occurs, so the
-flushing-induced pseudo entries that are responsible for the pagefault
-in the first place are never pre-empted from TLB on this code path.
+Let's factorise the revert part as atm_return_tx() and call it in
+the failure path.
 
-This commit fixes this behaviour by always requesting a TLB-update in
-this part of the pagefault handling, fixing spurious page-faults on the
-way. The handling is a straightforward port of the logic from the MIPS
-architecture via an arch-specific ptep_set_access_flags function ported
-from arch/mips/include/asm/pgtable.h.
+Note that the corresponding sk_wmem_alloc operation can be found in
+alloc_tx() as of the blamed commit.
 
-Signed-off-by: Simon Schuster <schuster.simon@siemens-energy.com>
-Signed-off-by: Andreas Oetken <andreas.oetken@siemens-energy.com>
-Signed-off-by: Dinh Nguyen <dinguyen@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+  $ git blame -L:alloc_tx net/atm/common.c c55fa3cccbc2c~
+
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Reported-by: Simon Horman <horms@kernel.org>
+Closes: https://lore.kernel.org/netdev/20250614161959.GR414686@horms.kernel.org/
+Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
+Link: https://patch.msgid.link/20250616182147.963333-3-kuni1840@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/nios2/include/asm/pgtable.h | 16 ++++++++++++++++
- 1 file changed, 16 insertions(+)
+ include/linux/atmdev.h |    6 ++++++
+ net/atm/common.c       |    1 +
+ net/atm/raw.c          |    2 +-
+ 3 files changed, 8 insertions(+), 1 deletion(-)
 
-diff --git a/arch/nios2/include/asm/pgtable.h b/arch/nios2/include/asm/pgtable.h
-index 99985d8b71664..506bbc7730879 100644
---- a/arch/nios2/include/asm/pgtable.h
-+++ b/arch/nios2/include/asm/pgtable.h
-@@ -297,4 +297,20 @@ extern void __init mmu_init(void);
- extern void update_mmu_cache(struct vm_area_struct *vma,
- 			     unsigned long address, pte_t *pte);
+--- a/include/linux/atmdev.h
++++ b/include/linux/atmdev.h
+@@ -248,6 +248,12 @@ static inline void atm_account_tx(struct
+ 	ATM_SKB(skb)->atm_options = vcc->atm_options;
+ }
  
-+static inline int pte_same(pte_t pte_a, pte_t pte_b);
-+
-+#define __HAVE_ARCH_PTEP_SET_ACCESS_FLAGS
-+static inline int ptep_set_access_flags(struct vm_area_struct *vma,
-+					unsigned long address, pte_t *ptep,
-+					pte_t entry, int dirty)
++static inline void atm_return_tx(struct atm_vcc *vcc, struct sk_buff *skb)
 +{
-+	if (!pte_same(*ptep, entry))
-+		set_ptes(vma->vm_mm, address, ptep, entry, 1);
-+	/*
-+	 * update_mmu_cache will unconditionally execute, handling both
-+	 * the case that the PTE changed and the spurious fault case.
-+	 */
-+	return true;
++	WARN_ON_ONCE(refcount_sub_and_test(ATM_SKB(skb)->acct_truesize,
++					   &sk_atm(vcc)->sk_wmem_alloc));
 +}
 +
- #endif /* _ASM_NIOS2_PGTABLE_H */
--- 
-2.39.5
-
+ static inline void atm_force_charge(struct atm_vcc *vcc,int truesize)
+ {
+ 	atomic_add(truesize, &sk_atm(vcc)->sk_rmem_alloc);
+--- a/net/atm/common.c
++++ b/net/atm/common.c
+@@ -635,6 +635,7 @@ int vcc_sendmsg(struct socket *sock, str
+ 
+ 	skb->dev = NULL; /* for paths shared with net_device interfaces */
+ 	if (!copy_from_iter_full(skb_put(skb, size), size, &m->msg_iter)) {
++		atm_return_tx(vcc, skb);
+ 		kfree_skb(skb);
+ 		error = -EFAULT;
+ 		goto out;
+--- a/net/atm/raw.c
++++ b/net/atm/raw.c
+@@ -36,7 +36,7 @@ static void atm_pop_raw(struct atm_vcc *
+ 
+ 	pr_debug("(%d) %d -= %d\n",
+ 		 vcc->vci, sk_wmem_alloc_get(sk), ATM_SKB(skb)->acct_truesize);
+-	WARN_ON(refcount_sub_and_test(ATM_SKB(skb)->acct_truesize, &sk->sk_wmem_alloc));
++	atm_return_tx(vcc, skb);
+ 	dev_kfree_skb_any(skb);
+ 	sk->sk_write_space(sk);
+ }
 
 
 
