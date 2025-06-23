@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-156367-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156567-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 004A7AE4F42
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:14:03 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 72D50AE501B
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:22:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C011717E3CE
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:14:03 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 97FEF3B535E
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:22:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6254221FF50;
-	Mon, 23 Jun 2025 21:14:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8059D222576;
+	Mon, 23 Jun 2025 21:22:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TZTqcoVU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vIqPn+nZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20B591F582A;
-	Mon, 23 Jun 2025 21:14:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C0BD1ACEDA;
+	Mon, 23 Jun 2025 21:22:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750713241; cv=none; b=Kz8Kb/ZjIbezxByxXetfReRjTCld5/rPdcnVNqvlw1txL0fLjKjDJpJWduzMAundKos954QqbZVGcEBfZrvpcURIrYTwDw1OzTQLUbkBKrXn3oJqVrDJ9t4CJ9CzmOJAn48yTJy1WxYgmSKF3pNru7VM3tp4pzFQxkT58I7Tigk=
+	t=1750713729; cv=none; b=OFSzLrDpXaMaHj6FIMRUYymHYYuBEXHMx6LH3tVI7IBViW707M324m13iaml0TC4AzvFjCnX6paGk0foIp5Q9NRm5miB3b8SmKl848WhT3pX5qsoYBOuk1OPYJ2zUmTqggsIKjxY8pwswmN7Dgw5hOeZJbf5hBvNT5A0L2o65Vk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750713241; c=relaxed/simple;
-	bh=o6mclz4DpA5+J2QjQu4o62R6m+CygRmoL5v29Hs4PfI=;
+	s=arc-20240116; t=1750713729; c=relaxed/simple;
+	bh=OgYjDORQxV1llXdfrZ4ofmli5S5njiTSYl05idCJrtg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KYKxQxU7ioGPWdjgtI64khZezHPA3g+9fp1TMJSG3cUYaISyg09ewdxU4X/E2p61peVqdxw8rP2D50ViOd3E8i/PwjsUU5MLnB82hsV/knpLR3bsYeEwwbSqkM9Os8YVotxqfK40BPfUhZ/8T0QMSIuV2YQgNFIfIdxpFlOjVV8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TZTqcoVU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ACB7EC4CEEA;
-	Mon, 23 Jun 2025 21:14:00 +0000 (UTC)
+	 MIME-Version; b=P6siMvlmmiqMIhHfeyFCoAt4Hz/WcC1wtNPubEJBegqgTmyelp6cGxepV+C8PZ/ZF6dt8eWKOKVYE85lomUHTU4wTiW3Nnt/fgfSG4UNjMGF6ypIkOmrjLSfmKjGOl2P+Cus7Dc4ZYGV3NdJS21T0ghmaQV/ef3M20eBJhHr8Ds=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vIqPn+nZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0C57C4CEEA;
+	Mon, 23 Jun 2025 21:22:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750713241;
-	bh=o6mclz4DpA5+J2QjQu4o62R6m+CygRmoL5v29Hs4PfI=;
+	s=korg; t=1750713729;
+	bh=OgYjDORQxV1llXdfrZ4ofmli5S5njiTSYl05idCJrtg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TZTqcoVUnxFSawIBliJ7bnotsjWwf4h2lLE6BwwzidOIvRY36OOx66kY4CLRfmH9J
-	 j7ts9LwsOiOX/cZyXVVmKxlrFMy050jsak9rBLT6rMYOMuegRFvoV4vADn8Vh1zPl+
-	 wxklj9bgcZMeuhiFekAvgddKM5BLJwWn5a0H45/4=
+	b=vIqPn+nZ769LFkoIS7IT8WyqkdlYxaSEup43Ew8fEgF5uig7JJlaRH6xHKHdF9Tls
+	 CUcjPACFBkGVCtpsj7umNV+heMaNBW7GaCyNTm+7auAazpqhFnKctE/kHYuVvoW+bV
+	 BziraUdOMBZdOgumr3nR9ttRYWqhiSyrGIH/rncA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Liwei Sun <sunliweis@126.com>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Ulf Hansson <ulf.hansson@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 316/592] Bluetooth: btusb: Add new VID/PID 13d3/3584 for MT7922
+Subject: [PATCH 5.15 130/411] pmdomain: core: Fix error checking in genpd_dev_pm_attach_by_id()
 Date: Mon, 23 Jun 2025 15:04:34 +0200
-Message-ID: <20250623130707.941976366@linuxfoundation.org>
+Message-ID: <20250623130636.842468519@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
-References: <20250623130700.210182694@linuxfoundation.org>
+In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
+References: <20250623130632.993849527@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,99 +62,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Liwei Sun <sunliweis@126.com>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-[ Upstream commit 71d9d3522aec301e4a1c4eae4b5e0656fc4a7262 ]
+[ Upstream commit 0f5757667ec0aaf2456c3b76fcf0c6c3ea3591fe ]
 
-A new variant of MT7922 wireless device has been identified.
-The device introduces itself as MEDIATEK MT7922,
-so treat it as MediaTek device.
-With this patch, btusb driver works as expected:
-[    3.151162] Bluetooth: Core ver 2.22
-[    3.151185] Bluetooth: HCI device and connection manager initialized
-[    3.151189] Bluetooth: HCI socket layer initialized
-[    3.151191] Bluetooth: L2CAP socket layer initialized
-[    3.151194] Bluetooth: SCO socket layer initialized
-[    3.295718] Bluetooth: hci0: HW/SW Version: 0x008a008a, Build Time: 20241106163512
-[    4.676634] Bluetooth: BNEP (Ethernet Emulation) ver 1.3
-[    4.676637] Bluetooth: BNEP filters: protocol multicast
-[    4.676640] Bluetooth: BNEP socket layer initialized
-[    5.560453] Bluetooth: hci0: Device setup in 2320660 usecs
-[    5.560457] Bluetooth: hci0: HCI Enhanced Setup Synchronous Connection command is advertised, but not supported.
-[    5.619197] Bluetooth: hci0: AOSP extensions version v1.00
-[    5.619204] Bluetooth: hci0: AOSP quality report is supported
-[    5.619301] Bluetooth: MGMT ver 1.23
-[    6.741247] Bluetooth: RFCOMM TTY layer initialized
-[    6.741258] Bluetooth: RFCOMM socket layer initialized
-[    6.741261] Bluetooth: RFCOMM ver 1.11
+The error checking for of_count_phandle_with_args() does not handle
+negative error codes correctly.  The problem is that "index" is a u32 so
+in the condition "if (index >= num_domains)" negative error codes stored
+in "num_domains" are type promoted to very high positive values and
+"index" is always going to be valid.
 
-lspci output:
-04:00.0 Network controller: MEDIATEK Corp. MT7922 802.11ax PCI Express Wireless Network Adapter
+Test for negative error codes first and then test if "index" is valid.
 
-USB information:
-T:  Bus=01 Lev=01 Prnt=01 Port=04 Cnt=02 Dev#=  3 Spd=480  MxCh= 0
-D:  Ver= 2.10 Cls=ef(misc ) Sub=02 Prot=01 MxPS=64 #Cfgs=  1
-P:  Vendor=13d3 ProdID=3584 Rev= 1.00
-S:  Manufacturer=MediaTek Inc.
-S:  Product=Wireless_Device
-S:  SerialNumber=000000000
-C:* #Ifs= 3 Cfg#= 1 Atr=e0 MxPwr=100mA
-A:  FirstIf#= 0 IfCount= 3 Cls=e0(wlcon) Sub=01 Prot=01
-I:* If#= 0 Alt= 0 #EPs= 3 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E:  Ad=81(I) Atr=03(Int.) MxPS=  16 Ivl=125us
-E:  Ad=82(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:* If#= 1 Alt= 0 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E:  Ad=83(I) Atr=01(Isoc) MxPS=   0 Ivl=1ms
-E:  Ad=03(O) Atr=01(Isoc) MxPS=   0 Ivl=1ms
-I:  If#= 1 Alt= 1 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E:  Ad=83(I) Atr=01(Isoc) MxPS=   9 Ivl=1ms
-E:  Ad=03(O) Atr=01(Isoc) MxPS=   9 Ivl=1ms
-I:  If#= 1 Alt= 2 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E:  Ad=83(I) Atr=01(Isoc) MxPS=  17 Ivl=1ms
-E:  Ad=03(O) Atr=01(Isoc) MxPS=  17 Ivl=1ms
-I:  If#= 1 Alt= 3 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E:  Ad=83(I) Atr=01(Isoc) MxPS=  25 Ivl=1ms
-E:  Ad=03(O) Atr=01(Isoc) MxPS=  25 Ivl=1ms
-I:  If#= 1 Alt= 4 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E:  Ad=83(I) Atr=01(Isoc) MxPS=  33 Ivl=1ms
-E:  Ad=03(O) Atr=01(Isoc) MxPS=  33 Ivl=1ms
-I:  If#= 1 Alt= 5 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E:  Ad=83(I) Atr=01(Isoc) MxPS=  49 Ivl=1ms
-E:  Ad=03(O) Atr=01(Isoc) MxPS=  49 Ivl=1ms
-I:  If#= 1 Alt= 6 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E:  Ad=83(I) Atr=01(Isoc) MxPS=  63 Ivl=1ms
-E:  Ad=03(O) Atr=01(Isoc) MxPS=  63 Ivl=1ms
-I:  If#= 2 Alt= 0 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E:  Ad=8a(I) Atr=03(Int.) MxPS=  64 Ivl=125us
-E:  Ad=0a(O) Atr=03(Int.) MxPS=  64 Ivl=125us
-I:* If#= 2 Alt= 1 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E:  Ad=8a(I) Atr=03(Int.) MxPS= 512 Ivl=125us
-
-Signed-off-by: Liwei Sun <sunliweis@126.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Fixes: 3ccf3f0cd197 ("PM / Domains: Enable genpd_dev_pm_attach_by_id|name() for single PM domain")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/aBxPQ8AI8N5v-7rL@stanley.mountain
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/bluetooth/btusb.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/base/power/domain.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/bluetooth/btusb.c b/drivers/bluetooth/btusb.c
-index 256b451bbe065..df3380a8de85e 100644
---- a/drivers/bluetooth/btusb.c
-+++ b/drivers/bluetooth/btusb.c
-@@ -678,6 +678,8 @@ static const struct usb_device_id quirks_table[] = {
- 						     BTUSB_WIDEBAND_SPEECH },
- 	{ USB_DEVICE(0x13d3, 0x3568), .driver_info = BTUSB_MEDIATEK |
- 						     BTUSB_WIDEBAND_SPEECH },
-+	{ USB_DEVICE(0x13d3, 0x3584), .driver_info = BTUSB_MEDIATEK |
-+						     BTUSB_WIDEBAND_SPEECH },
- 	{ USB_DEVICE(0x13d3, 0x3605), .driver_info = BTUSB_MEDIATEK |
- 						     BTUSB_WIDEBAND_SPEECH },
- 	{ USB_DEVICE(0x13d3, 0x3607), .driver_info = BTUSB_MEDIATEK |
+diff --git a/drivers/base/power/domain.c b/drivers/base/power/domain.c
+index fda0a5e50a2d9..005ece1a658e5 100644
+--- a/drivers/base/power/domain.c
++++ b/drivers/base/power/domain.c
+@@ -2773,7 +2773,7 @@ struct device *genpd_dev_pm_attach_by_id(struct device *dev,
+ 	/* Verify that the index is within a valid range. */
+ 	num_domains = of_count_phandle_with_args(dev->of_node, "power-domains",
+ 						 "#power-domain-cells");
+-	if (index >= num_domains)
++	if (num_domains < 0 || index >= num_domains)
+ 		return NULL;
+ 
+ 	/* Allocate and register device on the genpd bus. */
 -- 
 2.39.5
 
