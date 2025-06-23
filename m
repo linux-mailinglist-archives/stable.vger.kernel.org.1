@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-155951-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-155684-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5FDD4AE446C
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:43:02 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7B544AE4346
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:30:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4C4254A1B47
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:37:32 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 082C83BC91E
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:24:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DFC14256C7C;
-	Mon, 23 Jun 2025 13:36:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 409DD248191;
+	Mon, 23 Jun 2025 13:24:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cw4mawtA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N5bw+fMi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BE9224DCFD;
-	Mon, 23 Jun 2025 13:36:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F21DA1EDA14;
+	Mon, 23 Jun 2025 13:24:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750685761; cv=none; b=eX5WUwzL4LKNEySCzPBGBmTn3BXXndq2H+QsztpCxgMuMB7EX3B8f2moXvvEU6PRPHpnHDKBx+vsewz1CCVj8XHCLJlPX8mGYsSXOFpIHjXnqcltc8l/eiXL/wP/u01X4SLchpsiZYWlCpalF0IVXX4wUVn57F408sJZW2+1qnQ=
+	t=1750685065; cv=none; b=S7Nb9kij5twYuBySm2Mz4VNoWP4Ugmpzf3RC83TvNftwd+XRT/cLQFxbe7Y7nTwNq8VieUSZ4ZpWFsxbuqTipeGNmOA+FguFnVKAz1Gthk460XlHpapCxHN7WDkZHLCk6vHT+KeMAeQqsMbiy4RzwTy0ZAOkMfwTj6oCTslln2A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750685761; c=relaxed/simple;
-	bh=1Vpnx8dR+Z6KbyNE/qDJ0Ey/wOy01vB6VGN29redVis=;
+	s=arc-20240116; t=1750685065; c=relaxed/simple;
+	bh=/5spZJhPTrfYjp+MJyH2r8h+BusUY/iYn82acOjwVtI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EiljmNeKg1QaHoVBs5ZFS2do9tVrpmdxMqx8Rgai+n6nnybppVczN21ue9kdAT6KTMcfnNYjA4WIwQ5N/TmD/zORBbxSgiQizxTcOus+AXQ+egoav0dzE2nKaxtR5OtgA3h5N+2W+8BxNtVQwenc22ebJmdYHF9kyGdDMYdjoFY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cw4mawtA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F185C4CEEA;
-	Mon, 23 Jun 2025 13:36:01 +0000 (UTC)
+	 MIME-Version; b=p6x1tEY5Dnx8W5TaOFW+BYIjKgLW4BDPNiGodAkO18wcf/keJE5ip2FM8vPlkrCmQJbxRL0MC68ewK1RgE21AhBQrzSvv76410+1SITIqL5MbJ1MNqKOBm3LpUJw7jNTaqHLM7zLKWsIDGFq2fKf79WqdtlgCWqVIOq61WypCi4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=N5bw+fMi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87EB0C4CEEA;
+	Mon, 23 Jun 2025 13:24:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750685761;
-	bh=1Vpnx8dR+Z6KbyNE/qDJ0Ey/wOy01vB6VGN29redVis=;
+	s=korg; t=1750685064;
+	bh=/5spZJhPTrfYjp+MJyH2r8h+BusUY/iYn82acOjwVtI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cw4mawtAR61JkQVW3e9Z7zgAJ0gCebaZ+ud+dv4+/zPuyGux6bp/145WqJddS02E+
-	 44yLtGqBPRLtLpYv1nWbB6ZascA9SP+J626wVI7lfyA6DdiJkF7XkZSj0ivcY30+2W
-	 7NCTehukdUPfskGpw/0nGQ/4eg9lEYZutzrkTHcw=
+	b=N5bw+fMi4PXVO6a/7VLPqRxOJDlnDrXyOaldhQscILGYKQl28dPHzwQsHxCTP3Bu8
+	 Mw915w91p3MIM+hVxjxJ/08rzwcXfBFcSFLHWUvsRh0wWQVI8chgkE2UaInCpHCjeb
+	 gsPMQdAGbHq7SplJFZZgIquRiRur1tNU2tzEa7PQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ryusuke Konishi <konishi.ryusuke@gmail.com>,
-	Wentao Liang <vulab@iscas.ac.cn>,
-	Andrew Morton <akpm@linux-foundation.org>,
+	Alex Bee <knaerzche@gmail.com>,
+	Jonas Karlman <jonas@kwiboo.se>,
+	Nicolas Dufresne <nicolas.dufresne@collabora.com>,
+	Hans Verkuil <hverkuil@xs4all.nl>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 082/411] nilfs2: do not propagate ENOENT error from nilfs_btree_propagate()
-Date: Mon, 23 Jun 2025 15:03:46 +0200
-Message-ID: <20250623130635.467796076@linuxfoundation.org>
+Subject: [PATCH 5.10 026/355] media: rkvdec: Fix frame size enumeration
+Date: Mon, 23 Jun 2025 15:03:47 +0200
+Message-ID: <20250623130627.595057395@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
-References: <20250623130632.993849527@linuxfoundation.org>
+In-Reply-To: <20250623130626.716971725@linuxfoundation.org>
+References: <20250623130626.716971725@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,56 +64,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+From: Jonas Karlman <jonas@kwiboo.se>
 
-[ Upstream commit 8e39fbb1edbb4ec9d7c1124f403877fc167fcecd ]
+[ Upstream commit f270005b99fa19fee9a6b4006e8dee37c10f1944 ]
 
-In preparation for writing logs, in nilfs_btree_propagate(), which makes
-parent and ancestor node blocks dirty starting from a modified data block
-or b-tree node block, if the starting block does not belong to the b-tree,
-i.e.  is isolated, nilfs_btree_do_lookup() called within the function
-fails with -ENOENT.
+The VIDIOC_ENUM_FRAMESIZES ioctl should return all frame sizes (i.e.
+width and height in pixels) that the device supports for the given pixel
+format.
 
-In this case, even though -ENOENT is an internal code, it is propagated to
-the log writer via nilfs_bmap_propagate() and may be erroneously returned
-to system calls such as fsync().
+It doesn't make a lot of sense to return the frame-sizes in a stepwise
+manner, which is used to enforce hardware alignments requirements for
+CAPTURE buffers, for coded formats.
 
-Fix this issue by changing the error code to -EINVAL in this case, and
-having the bmap layer detect metadata corruption and convert the error
-code appropriately.
+Instead, applications should receive an indication, about the maximum
+supported frame size for that hardware decoder, via a continuous
+frame-size enumeration.
 
-Link: https://lkml.kernel.org/r/20250428173808.6452-3-konishi.ryusuke@gmail.com
-Fixes: 1f5abe7e7dbc ("nilfs2: replace BUG_ON and BUG calls triggerable from ioctl")
-Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Cc: Wentao Liang <vulab@iscas.ac.cn>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Fixes: cd33c830448b ("media: rkvdec: Add the rkvdec driver")
+Suggested-by: Alex Bee <knaerzche@gmail.com>
+Signed-off-by: Jonas Karlman <jonas@kwiboo.se>
+Reviewed-by: Nicolas Dufresne <nicolas.dufresne@collabora.com>
+Signed-off-by: Nicolas Dufresne <nicolas.dufresne@collabora.com>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nilfs2/btree.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/staging/media/rkvdec/rkvdec.c | 10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
 
-diff --git a/fs/nilfs2/btree.c b/fs/nilfs2/btree.c
-index 29f967fb7e9b6..b2abab4b28732 100644
---- a/fs/nilfs2/btree.c
-+++ b/fs/nilfs2/btree.c
-@@ -2096,11 +2096,13 @@ static int nilfs_btree_propagate(struct nilfs_bmap *btree,
+diff --git a/drivers/staging/media/rkvdec/rkvdec.c b/drivers/staging/media/rkvdec/rkvdec.c
+index 86483f1c070b9..a5eca08ff2597 100644
+--- a/drivers/staging/media/rkvdec/rkvdec.c
++++ b/drivers/staging/media/rkvdec/rkvdec.c
+@@ -178,8 +178,14 @@ static int rkvdec_enum_framesizes(struct file *file, void *priv,
+ 	if (!fmt)
+ 		return -EINVAL;
  
- 	ret = nilfs_btree_do_lookup(btree, path, key, NULL, level + 1, 0);
- 	if (ret < 0) {
--		if (unlikely(ret == -ENOENT))
-+		if (unlikely(ret == -ENOENT)) {
- 			nilfs_crit(btree->b_inode->i_sb,
- 				   "writing node/leaf block does not appear in b-tree (ino=%lu) at key=%llu, level=%d",
- 				   btree->b_inode->i_ino,
- 				   (unsigned long long)key, level);
-+			ret = -EINVAL;
-+		}
- 		goto out;
- 	}
+-	fsize->type = V4L2_FRMSIZE_TYPE_STEPWISE;
+-	fsize->stepwise = fmt->frmsize;
++	fsize->type = V4L2_FRMSIZE_TYPE_CONTINUOUS;
++	fsize->stepwise.min_width = 1;
++	fsize->stepwise.max_width = fmt->frmsize.max_width;
++	fsize->stepwise.step_width = 1;
++	fsize->stepwise.min_height = 1;
++	fsize->stepwise.max_height = fmt->frmsize.max_height;
++	fsize->stepwise.step_height = 1;
++
+ 	return 0;
+ }
  
 -- 
 2.39.5
