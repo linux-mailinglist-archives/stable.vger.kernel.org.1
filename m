@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-157739-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-158029-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D3D4AE5570
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:11:19 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id C2DDDAE569F
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:21:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0AA544C11BA
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:10:35 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5D05E1C2231E
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:22:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D6C1224B1F;
-	Mon, 23 Jun 2025 22:10:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8CF2C223DE8;
+	Mon, 23 Jun 2025 22:21:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M+etyPjw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vUAaZ4ni"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 491412940B;
-	Mon, 23 Jun 2025 22:10:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49E6315ADB4;
+	Mon, 23 Jun 2025 22:21:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750716603; cv=none; b=tNQW/tuSSPFZ0GqKr1BTjyk28jkFwc8/zov8rKY+ANfuARDomzSRdKyivEAKw70wySKzkLxHuZ2SH4uypYmrC/Qd5fH8bmWD1pEQbS4au5DchjddVXHERWQt6eB9imw3KYwkZNHCaQfsAOsLc4JXjIPxK3I4CxzrTDDRS4dS7Rg=
+	t=1750717309; cv=none; b=jrPoB6yylBy3IhOBZ18bPZYGWmFwFEwUhuJ6FcWAQW83vb/Pxz6kkT4BLTxfptu3s79uEAueHWv89SZsZMXmfFbepORRCHwoCtFnbQEx1BBdWpHseea54NtU06xmRd/4jSrPAGLzhdHueFDssT+DEzwCCSKQsMYe4VaWBHcoN5k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750716603; c=relaxed/simple;
-	bh=Tnx3LreYGabuf1Gih05XkvV3fJXvoYqJIDEUKadD9Uc=;
+	s=arc-20240116; t=1750717309; c=relaxed/simple;
+	bh=qzVzaZdjkG2zr/Io6IitburOimGwpIYAMMRLqgFwZYk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KP3UezWirywzQGwDdLq1kuLxrfl8ITqpmVR37NP3T2hwLvGXKfE/bYniN9vLz6heMJWrv6sbIwj/BnRrUYrNYNmKXtcf9olokoX2r8DOg6KDsMmKTimKNHaX+GQzFd62Ivd8ABtSZ0OKADsR6ER1/rLXZbSiCe6+0thkhOSRXXc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M+etyPjw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B17DBC4CEEA;
-	Mon, 23 Jun 2025 22:10:02 +0000 (UTC)
+	 MIME-Version:Content-Type; b=XFhgEi4rmRuZicwoHxq269qQjP5R/lwBjrzXI1Zgo4Y20g1CJqqkhf1pKuvAGTJQzFKaoELvNaasXGy/8LN4vZKhcswXjSPv3/q8K9YvGOpvGaQYSqGevat5IhnV3HhR+z668G+0GRXS6j0gnZmzpKm6coLZFk99Julbt6lHMDA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vUAaZ4ni; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5D05C4CEEA;
+	Mon, 23 Jun 2025 22:21:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750716603;
-	bh=Tnx3LreYGabuf1Gih05XkvV3fJXvoYqJIDEUKadD9Uc=;
+	s=korg; t=1750717309;
+	bh=qzVzaZdjkG2zr/Io6IitburOimGwpIYAMMRLqgFwZYk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=M+etyPjwUQWtxH9g9f1ajpzqxBAP+wHDJhYNsy6CM/EUCNyOI8WoJKg2YEZchXA5J
-	 R4L4pJH//lezlCe45CSeMaZiqlNVZDEFU1iX4L8AOk/2d7z32syF9n6sW6ZarTNE1P
-	 kkPvDPnzwfJU3M4h858U4DJ1mR9HmRMa9YHtkHsA=
+	b=vUAaZ4ni5YLT+qQs6Uac3sN0UleZcESLOq9CLMDanDouexB0RNKKUOcZqLjOfUEWy
+	 4Z2IWqK3Iaw4/ngMyIUiBZY1xtypctk6Vzyp2mARQWbLhrIagZmSUHPchbbjeeB1Ci
+	 yQDwonLPzFuj9NL7cAbexHsLd0AUX+Zk5UjjfRTg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Penglei Jiang <superman.xpt@gmail.com>,
-	Jens Axboe <axboe@kernel.dk>,
+	=?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
+	Guenter Roeck <linux@roeck-us.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 541/592] io_uring: fix potential page leak in io_sqe_buffer_register()
-Date: Mon, 23 Jun 2025 15:08:19 +0200
-Message-ID: <20250623130713.308619580@linuxfoundation.org>
+Subject: [PATCH 6.12 363/414] hwmon: (ltc4282) avoid repeated register write
+Date: Mon, 23 Jun 2025 15:08:20 +0200
+Message-ID: <20250623130651.041399013@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
-References: <20250623130700.210182694@linuxfoundation.org>
+In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
+References: <20250623130642.015559452@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,57 +60,47 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Penglei Jiang <superman.xpt@gmail.com>
+From: Nuno Sá <nuno.sa@analog.com>
 
-[ Upstream commit e1c75831f682eef0f68b35723437146ed86070b1 ]
+[ Upstream commit c25892b7a1744355e16281cd24a9b59ec15ec974 ]
 
-If allocation of the 'imu' fails, then the existing pages aren't
-unpinned in the error path. This is mostly a theoretical issue,
-requiring fault injection to hit.
+The fault enabled bits were being mistankenly enabled twice in case the FW
+property is present. Remove one of the writes.
 
-Move unpin_user_pages() to unified error handling to fix the page leak
-issue.
-
-Fixes: d8c2237d0aa9 ("io_uring: add io_pin_pages() helper")
-Signed-off-by: Penglei Jiang <superman.xpt@gmail.com>
-Link: https://lore.kernel.org/r/20250617165644.79165-1-superman.xpt@gmail.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Fixes: cbc29538dbf7 ("hwmon: Add driver for LTC4282")
+Signed-off-by: Nuno Sá <nuno.sa@analog.com>
+Link: https://lore.kernel.org/r/20250611-fix-ltc4282-repetead-write-v1-1-fe46edd08cf1@analog.com
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- io_uring/rsrc.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/hwmon/ltc4282.c | 7 -------
+ 1 file changed, 7 deletions(-)
 
-diff --git a/io_uring/rsrc.c b/io_uring/rsrc.c
-index 91c5cb2e1f066..794d4ae6f0bc8 100644
---- a/io_uring/rsrc.c
-+++ b/io_uring/rsrc.c
-@@ -810,10 +810,8 @@ static struct io_rsrc_node *io_sqe_buffer_register(struct io_ring_ctx *ctx,
- 
- 	imu->nr_bvecs = nr_pages;
- 	ret = io_buffer_account_pin(ctx, pages, nr_pages, imu, last_hpage);
--	if (ret) {
--		unpin_user_pages(pages, nr_pages);
-+	if (ret)
- 		goto done;
--	}
- 
- 	size = iov->iov_len;
- 	/* store original address for later verification */
-@@ -843,6 +841,8 @@ static struct io_rsrc_node *io_sqe_buffer_register(struct io_ring_ctx *ctx,
- 	if (ret) {
- 		if (imu)
- 			io_free_imu(ctx, imu);
-+		if (pages)
-+			unpin_user_pages(pages, nr_pages);
- 		io_cache_free(&ctx->node_cache, node);
- 		node = ERR_PTR(ret);
+diff --git a/drivers/hwmon/ltc4282.c b/drivers/hwmon/ltc4282.c
+index 4f608a3790fb7..953dfe2bd166c 100644
+--- a/drivers/hwmon/ltc4282.c
++++ b/drivers/hwmon/ltc4282.c
+@@ -1511,13 +1511,6 @@ static int ltc4282_setup(struct ltc4282_state *st, struct device *dev)
+ 			return ret;
  	}
+ 
+-	if (device_property_read_bool(dev, "adi,fault-log-enable")) {
+-		ret = regmap_set_bits(st->map, LTC4282_ADC_CTRL,
+-				      LTC4282_FAULT_LOG_EN_MASK);
+-		if (ret)
+-			return ret;
+-	}
+-
+ 	if (device_property_read_bool(dev, "adi,fault-log-enable")) {
+ 		ret = regmap_set_bits(st->map, LTC4282_ADC_CTRL, LTC4282_FAULT_LOG_EN_MASK);
+ 		if (ret)
 -- 
 2.39.5
 
