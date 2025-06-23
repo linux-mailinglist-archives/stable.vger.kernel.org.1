@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-157380-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157140-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8F309AE53B3
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:55:57 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 96369AE52AA
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:46:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 921D5445BCE
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:55:18 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 69D131B65890
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:46:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 818D8225761;
-	Mon, 23 Jun 2025 21:55:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28A7D223DCE;
+	Mon, 23 Jun 2025 21:45:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jthC0IKo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AdOxqGV7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4000C223DD0;
-	Mon, 23 Jun 2025 21:55:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8768226CF8;
+	Mon, 23 Jun 2025 21:45:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750715727; cv=none; b=kecMbOaB32QU6HtOuPWJJ+2Pd1JZsPMYV+oxxIL6mot9I7tPAQTFVTqFqHjP6/A5YvwvIHBxVIO2mVfue6qAGM7KXX3l0XzhEzONXa0DJCwdOXS1bKjEIrbLRV99oqvrLAWJXhTcFnZZpEeq/5hDq40LKS+yjseaXOPG6lzDXNg=
+	t=1750715132; cv=none; b=XiDJYypIY8UAgbcGBD30xEBmy4Wwspz0AGxhJ4fh2cAhrXighlf/BbUsuvFPwbQ8pXU4X7Ae/wrWQItrdKQ+m3TmhXXAOgIiwAXMDvOkk9MYCI3RnOYU/yYndGiDq5zTrOX/aO4qlEMlx0EWE3VVVeFy9QsZBCaHk+27JfYc02o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750715727; c=relaxed/simple;
-	bh=FUJzrs+UnRYI3NngdG3yT+LGJ62VpfSFgKCpLfVZXng=;
+	s=arc-20240116; t=1750715132; c=relaxed/simple;
+	bh=/DY4sYPvdMCE94NM93uGY38tmoPmZpStEeXuw92qS9k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZfdZRImlDn3gefesV9A5Qg4iDcLtjEjaQ4tRQJAn0Fj4jLTl0b3HsfINzGBWJfgQZfzF7S5BONYJPUo4kSU5HlTuOJ9DV4XROQlXsGFh6icjvDYw4s7GthqXdJvU8OJbrE1b0KE1nJlaQTJybthQWYCDK+HOahWF6JIovI/RyeI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jthC0IKo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7CB19C4CEEA;
-	Mon, 23 Jun 2025 21:55:26 +0000 (UTC)
+	 MIME-Version; b=VTsteZaLzNxsT28BW0jp8czslCGhs0syS11KMKyQSycsg5uY+egTiIKagt/R1uReCileeBCco+WLwXJ/yyfunnDLmtTEI2e/yyuVvqAmBM17W6k2x71lcN7LyzbyzRiap67zRhbhB+hAFlBgnYz/3kO1ZpeBqwNDqH/fF3rLk6E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AdOxqGV7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12390C4CEEA;
+	Mon, 23 Jun 2025 21:45:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750715726;
-	bh=FUJzrs+UnRYI3NngdG3yT+LGJ62VpfSFgKCpLfVZXng=;
+	s=korg; t=1750715132;
+	bh=/DY4sYPvdMCE94NM93uGY38tmoPmZpStEeXuw92qS9k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jthC0IKoAxBhsmXtJo38f2uQNgaMAVP6Wy8gzxiVNQwvs5PJ4lNERtUGGs/tYYgeg
-	 +KZCBQQ8JluDiCjWuDeJ7QuAXjllb9T+iTYbjMvHkikiEwny6joOvcmAt/DDgaDgfJ
-	 N+Pxu8cpTyubh3hpywrnyXIqqQT3ENXR5vyg8hgw=
+	b=AdOxqGV7w9NOHgkvxeNO0tt7SucI+WypGjzcV207E5tCWnR7MaRInydsgwLgKVmTB
+	 NXIT7YtfHS/41p3+ucctV0cDtYiDVQGXoirIbb+MSF+s2/WQBLbCS11MiLNQHSe/ua
+	 wk6IZotA73DZrOifGW0H2SNHCFFJpr7i6Qfv8Iww=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shyam Prasad N <sprasad@microsoft.com>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.6 217/290] cifs: do not disable interface polling on failure
+	Jann Horn <jannh@google.com>,
+	Jens Wiklander <jens.wiklander@linaro.org>,
+	Rouven Czerwinski <rouven.czerwinski@linaro.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 277/355] tee: Prevent size calculation wraparound on 32-bit kernels
 Date: Mon, 23 Jun 2025 15:07:58 +0200
-Message-ID: <20250623130633.456292482@linuxfoundation.org>
+Message-ID: <20250623130635.101910078@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130626.910356556@linuxfoundation.org>
-References: <20250623130626.910356556@linuxfoundation.org>
+In-Reply-To: <20250623130626.716971725@linuxfoundation.org>
+References: <20250623130626.716971725@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,74 +63,92 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shyam Prasad N <sprasad@microsoft.com>
+From: Jann Horn <jannh@google.com>
 
-commit 42ca547b13a20e7cbb04fbdf8d5f089ac4bb35b7 upstream.
+[ Upstream commit 39bb67edcc582b3b386a9ec983da67fa8a10ec03 ]
 
-When a server has multichannel enabled, we keep polling the server
-for interfaces periodically. However, when this query fails, we
-disable the polling. This can be problematic as it takes away the
-chance for the server to start advertizing again.
+The current code around TEE_IOCTL_PARAM_SIZE() is a bit wrong on
+32-bit kernels: Multiplying a user-provided 32-bit value with the
+size of a structure can wrap around on such platforms.
 
-This change reschedules the delayed work, even if the current call
-failed. That way, multichannel sessions can recover.
+Fix it by using saturating arithmetic for the size calculation.
 
-Signed-off-by: Shyam Prasad N <sprasad@microsoft.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Steve French <stfrench@microsoft.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+This has no security consequences because, in all users of
+TEE_IOCTL_PARAM_SIZE(), the subsequent kcalloc() implicitly checks
+for wrapping.
+
+Signed-off-by: Jann Horn <jannh@google.com>
+Signed-off-by: Jens Wiklander <jens.wiklander@linaro.org>
+Tested-by: Rouven Czerwinski <rouven.czerwinski@linaro.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/client/connect.c |    6 +-----
- fs/smb/client/smb2pdu.c |    9 +++++----
- 2 files changed, 6 insertions(+), 9 deletions(-)
+ drivers/tee/tee_core.c | 11 ++++++-----
+ 1 file changed, 6 insertions(+), 5 deletions(-)
 
---- a/fs/smb/client/connect.c
-+++ b/fs/smb/client/connect.c
-@@ -132,13 +132,9 @@ static void smb2_query_server_interfaces
- 	rc = server->ops->query_server_interfaces(xid, tcon, false);
- 	free_xid(xid);
+diff --git a/drivers/tee/tee_core.c b/drivers/tee/tee_core.c
+index 9cc4a7b63b0d6..e6de0e80b793e 100644
+--- a/drivers/tee/tee_core.c
++++ b/drivers/tee/tee_core.c
+@@ -10,6 +10,7 @@
+ #include <linux/fs.h>
+ #include <linux/idr.h>
+ #include <linux/module.h>
++#include <linux/overflow.h>
+ #include <linux/slab.h>
+ #include <linux/tee_drv.h>
+ #include <linux/uaccess.h>
+@@ -19,7 +20,7 @@
  
--	if (rc) {
--		if (rc == -EOPNOTSUPP)
--			return;
--
-+	if (rc)
- 		cifs_dbg(FYI, "%s: failed to query server interfaces: %d\n",
- 				__func__, rc);
--	}
+ #define TEE_NUM_DEVICES	32
  
- 	queue_delayed_work(cifsiod_wq, &tcon->query_interfaces,
- 			   (SMB_INTERFACE_POLL_INTERVAL * HZ));
---- a/fs/smb/client/smb2pdu.c
-+++ b/fs/smb/client/smb2pdu.c
-@@ -437,6 +437,10 @@ skip_sess_setup:
- 		free_xid(xid);
- 		ses->flags &= ~CIFS_SES_FLAGS_PENDING_QUERY_INTERFACES;
+-#define TEE_IOCTL_PARAM_SIZE(x) (sizeof(struct tee_param) * (x))
++#define TEE_IOCTL_PARAM_SIZE(x) (size_mul(sizeof(struct tee_param), (x)))
  
-+		/* regardless of rc value, setup polling */
-+		queue_delayed_work(cifsiod_wq, &tcon->query_interfaces,
-+				   (SMB_INTERFACE_POLL_INTERVAL * HZ));
-+
- 		mutex_unlock(&ses->session_mutex);
+ #define TEE_UUID_NS_NAME_SIZE	128
  
- 		if (rc == -EOPNOTSUPP && ses->chan_count > 1) {
-@@ -457,11 +461,8 @@ skip_sess_setup:
- 		if (ses->chan_max > ses->chan_count &&
- 		    ses->iface_count &&
- 		    !SERVER_IS_CHAN(server)) {
--			if (ses->chan_count == 1) {
-+			if (ses->chan_count == 1)
- 				cifs_server_dbg(VFS, "supports multichannel now\n");
--				queue_delayed_work(cifsiod_wq, &tcon->query_interfaces,
--						 (SMB_INTERFACE_POLL_INTERVAL * HZ));
--			}
+@@ -492,7 +493,7 @@ static int tee_ioctl_open_session(struct tee_context *ctx,
+ 	if (copy_from_user(&arg, uarg, sizeof(arg)))
+ 		return -EFAULT;
  
- 			cifs_try_adding_channels(ses);
- 		}
+-	if (sizeof(arg) + TEE_IOCTL_PARAM_SIZE(arg.num_params) != buf.buf_len)
++	if (size_add(sizeof(arg), TEE_IOCTL_PARAM_SIZE(arg.num_params)) != buf.buf_len)
+ 		return -EINVAL;
+ 
+ 	if (arg.num_params) {
+@@ -570,7 +571,7 @@ static int tee_ioctl_invoke(struct tee_context *ctx,
+ 	if (copy_from_user(&arg, uarg, sizeof(arg)))
+ 		return -EFAULT;
+ 
+-	if (sizeof(arg) + TEE_IOCTL_PARAM_SIZE(arg.num_params) != buf.buf_len)
++	if (size_add(sizeof(arg), TEE_IOCTL_PARAM_SIZE(arg.num_params)) != buf.buf_len)
+ 		return -EINVAL;
+ 
+ 	if (arg.num_params) {
+@@ -704,7 +705,7 @@ static int tee_ioctl_supp_recv(struct tee_context *ctx,
+ 	if (get_user(num_params, &uarg->num_params))
+ 		return -EFAULT;
+ 
+-	if (sizeof(*uarg) + TEE_IOCTL_PARAM_SIZE(num_params) != buf.buf_len)
++	if (size_add(sizeof(*uarg), TEE_IOCTL_PARAM_SIZE(num_params)) != buf.buf_len)
+ 		return -EINVAL;
+ 
+ 	params = kcalloc(num_params, sizeof(struct tee_param), GFP_KERNEL);
+@@ -803,7 +804,7 @@ static int tee_ioctl_supp_send(struct tee_context *ctx,
+ 	    get_user(num_params, &uarg->num_params))
+ 		return -EFAULT;
+ 
+-	if (sizeof(*uarg) + TEE_IOCTL_PARAM_SIZE(num_params) > buf.buf_len)
++	if (size_add(sizeof(*uarg), TEE_IOCTL_PARAM_SIZE(num_params)) > buf.buf_len)
+ 		return -EINVAL;
+ 
+ 	params = kcalloc(num_params, sizeof(struct tee_param), GFP_KERNEL);
+-- 
+2.39.5
+
 
 
 
