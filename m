@@ -1,55 +1,60 @@
-Return-Path: <stable+bounces-157980-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-158083-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 634A0AE566F
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:20:41 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 08BF4AE56E4
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:24:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 410861BC808E
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:20:08 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 630D817E21C
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:24:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6EB091F6667;
-	Mon, 23 Jun 2025 22:19:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 488FC22370A;
+	Mon, 23 Jun 2025 22:24:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r8QKTqqK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZZlFANan"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A52D19F120;
-	Mon, 23 Jun 2025 22:19:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07B152192EC;
+	Mon, 23 Jun 2025 22:24:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750717190; cv=none; b=ULVjk/P8d7awbxtJI4UinBn8wJsLWu9IIy14tIsEL4mGGo5xHlPUp+YwMXI34HU5lMTptF5zNYqW9oXGTiVpBNk6zhIVOylU2VoDDYWMA/imyPN1E7IQ8Cb2ZMOT6/ES7OZ05OTC0GKevAmKdJn7jDzhPEoo9wb4FHojEY0zUfE=
+	t=1750717441; cv=none; b=lmCpR6T2sq1jp+KdKa0Q0HEWo8eI0PnRKCu5LcwBKPtW55BtvtGzW362j0P0LKN4lg0nqMVj+VWFFquXOkorEsk/gZ60VTY7eZXbBhZ/FzlvvbYveSbjYb1tf/sm60+hFA4+iH1npdmHVt/JitqczbJkP8Db8UUTG8lll4nXfPM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750717190; c=relaxed/simple;
-	bh=fSE2ERtrPYlvZ80qT/wnBIvS4RMb7wcgTx8n4v0diVc=;
+	s=arc-20240116; t=1750717441; c=relaxed/simple;
+	bh=WZj+yO3+tsu1+TZlRRUQnTg5dp/kr3fPTnstNcYbX3U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=F/hJmym9WnbLMSX5Ui5mShezhXCikPLmjC0dmV9oO1aDZbTHqt2fRoHxSDdLzkYuL92H2D1vSWUUIQALUwMPSEcYDY+U1xgxTGdQpHYeSubjI/QW+BJGmU1WgvNE1gCeAtqQHtnMRVauHL3rfBGe/DJhZevhEOTUy3J/EsXFUZw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r8QKTqqK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B66D7C4CEEA;
-	Mon, 23 Jun 2025 22:19:49 +0000 (UTC)
+	 MIME-Version; b=LSXaGNSNOM4F0pTxukpBYWPM8oe8iYR5+wig5inahXRpCyR0S5bvU8Ry7cGd0hLnBD7iCYhXupvP5P0HoEThstxRr+KjvtKCF5/4HztLTCskuB+e+W9mbtWv/dZgHynz6RPxGwjy1eZgnnFIKb8k1Oi8PZ6QYsM5/YHVzV11E5E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZZlFANan; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93C3CC4CEEA;
+	Mon, 23 Jun 2025 22:24:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750717190;
-	bh=fSE2ERtrPYlvZ80qT/wnBIvS4RMb7wcgTx8n4v0diVc=;
+	s=korg; t=1750717440;
+	bh=WZj+yO3+tsu1+TZlRRUQnTg5dp/kr3fPTnstNcYbX3U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=r8QKTqqK63NcYqHqpCkaMBl7rOju9BoxkNurGiMZahsoa2PRSWiUQJkfAw4R5HlDj
-	 g8YQEzJJd7FH1zhpggrmoh1umZDJSqhcNO3fJcxka9hkmlKHOj4R3dGx1pSt/I3tHp
-	 ihMW1out1CgbmjWXB2vGnEXmXtBxitu4x5rFbbWU=
+	b=ZZlFANanNzoxdQwcTAxZy30RtU812gR1x+JKTq2cfLcPj4l+giMUd+RpaCQR7WRbx
+	 dksVj55mD5PGzwInS0uph/3nGDLuXLGYfTOPCPsK8xe1hESkeljsBn5mNSg5Cf9K1P
+	 2gAubdh2obkjfElKfa+o7MpIeLskqL2gqaLFK5ek=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chris Chiu <chris.chiu@canonical.com>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.12 335/414] ALSA: hda/realtek: Fix built-in mic on ASUS VivoBook X513EA
+	Kyungwook Boo <bookyungwook@gmail.com>,
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	Simon Horman <horms@kernel.org>,
+	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Sasha Levin <sashal@kernel.org>,
+	Rinitha S <sx.rinitha@intel.com>
+Subject: [PATCH 6.1 427/508] i40e: fix MMIO write access to an invalid page in i40e_clear_hw
 Date: Mon, 23 Jun 2025 15:07:52 +0200
-Message-ID: <20250623130650.359178609@linuxfoundation.org>
+Message-ID: <20250623130655.687518825@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
-References: <20250623130642.015559452@linuxfoundation.org>
+In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
+References: <20250623130645.255320792@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,38 +66,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chris Chiu <chris.chiu@canonical.com>
+From: Kyungwook Boo <bookyungwook@gmail.com>
 
-commit c6451a7325874c119def1d4094f6815c0c8fdc23 upstream.
+[ Upstream commit 015bac5daca978448f2671478c553ce1f300c21e ]
 
-The built-in mic of ASUS VivoBook X513EA is broken recently by the
-fix of the pin sort. The fixup ALC256_FIXUP_ASUS_MIC_NO_PRESENCE
-is working for addressing the regression, too.
+When the device sends a specific input, an integer underflow can occur, leading
+to MMIO write access to an invalid page.
 
-Fixes: 3b4309546b48 ("ALSA: hda: Fix headset detection failure due to unstable sort")
-Signed-off-by: Chris Chiu <chris.chiu@canonical.com>
-Cc: <stable@vger.kernel.org>
-Link: https://patch.msgid.link/20250610035607.690771-1-chris.chiu@canonical.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Prevent the integer underflow by changing the type of related variables.
+
+Signed-off-by: Kyungwook Boo <bookyungwook@gmail.com>
+Link: https://lore.kernel.org/lkml/ffc91764-1142-4ba2-91b6-8c773f6f7095@gmail.com/T/
+Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+Tested-by: Rinitha S <sx.rinitha@intel.com> (A Contingent worker at Intel)
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/hda/patch_realtek.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/ethernet/intel/i40e/i40e_common.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -10840,6 +10840,7 @@ static const struct hda_quirk alc269_fix
- 	SND_PCI_QUIRK(0x103c, 0x8e60, "HP Trekker ", ALC287_FIXUP_CS35L41_I2C_2),
- 	SND_PCI_QUIRK(0x103c, 0x8e61, "HP Trekker ", ALC287_FIXUP_CS35L41_I2C_2),
- 	SND_PCI_QUIRK(0x103c, 0x8e62, "HP Trekker ", ALC287_FIXUP_CS35L41_I2C_2),
-+	SND_PCI_QUIRK(0x1043, 0x1032, "ASUS VivoBook X513EA", ALC256_FIXUP_ASUS_MIC_NO_PRESENCE),
- 	SND_PCI_QUIRK(0x1043, 0x103e, "ASUS X540SA", ALC256_FIXUP_ASUS_MIC),
- 	SND_PCI_QUIRK(0x1043, 0x103f, "ASUS TX300", ALC282_FIXUP_ASUS_TX300),
- 	SND_PCI_QUIRK(0x1043, 0x1054, "ASUS G614FH/FM/FP", ALC287_FIXUP_CS35L41_I2C_2),
+diff --git a/drivers/net/ethernet/intel/i40e/i40e_common.c b/drivers/net/ethernet/intel/i40e/i40e_common.c
+index 6266756b47b9d..a707974e42794 100644
+--- a/drivers/net/ethernet/intel/i40e/i40e_common.c
++++ b/drivers/net/ethernet/intel/i40e/i40e_common.c
+@@ -1063,10 +1063,11 @@ int i40e_pf_reset(struct i40e_hw *hw)
+ void i40e_clear_hw(struct i40e_hw *hw)
+ {
+ 	u32 num_queues, base_queue;
+-	u32 num_pf_int;
+-	u32 num_vf_int;
++	s32 num_pf_int;
++	s32 num_vf_int;
+ 	u32 num_vfs;
+-	u32 i, j;
++	s32 i;
++	u32 j;
+ 	u32 val;
+ 	u32 eol = 0x7ff;
+ 
+-- 
+2.39.5
+
 
 
 
