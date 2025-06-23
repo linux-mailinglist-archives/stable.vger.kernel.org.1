@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-157504-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157061-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F07BAE5453
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:00:31 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id EE215AE524B
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:42:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 060924C0A85
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:00:32 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C18591B64D38
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:42:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 076FD19DF4A;
-	Mon, 23 Jun 2025 22:00:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 220562222C2;
+	Mon, 23 Jun 2025 21:42:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MxxwMJfH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MFOQBQyo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA7E44409;
-	Mon, 23 Jun 2025 22:00:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D44674315A;
+	Mon, 23 Jun 2025 21:42:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750716029; cv=none; b=B+XbUsIPCH5unIU2czoT0EFReXVRiK0Z83bV78u7PucLmkmde1JrSsxEJWgkYZiX7VOWXnn6b+ziQISjWwuo5ImTXkpVg+bdYYQKJq+6JtX8NK0oJjaZioyYNibSbWSsmw+Ms4+RZpdEKJ9cmpht23N1V3n8QvlDnfvWu3rwets=
+	t=1750714938; cv=none; b=h2WzW8ryWEGHDEKY7rLhZTx3OIVJcPBPDhR7p1qeUSnsQ5TFt3ECHXcDFPdI+MckWwW1+FU614OG5dTtGM8FMS5CwCggitWQylEFOOCGmu0vXzhuviFZ2k5wPxG/cyj3DW7lGMlBp5dsei+zrQMEUB8F3oKiImH9Tt1NEHCUcRU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750716029; c=relaxed/simple;
-	bh=wuTb0BveLSa3xwhDWy+dcGdgj2vz61HHPaAGhNGAFMo=;
+	s=arc-20240116; t=1750714938; c=relaxed/simple;
+	bh=piSKYISZLy3LkDHnAjsSKejnS55llDyPE5ExYFawhyI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=seUiodaaQU4Pu8t2fEc09fyawWMtk9TNbwK1uU+qwX0uScv4bThFdUw2NEjMTX44BtH2xJhNDSMNmVz2PeHDE7ZWMIrjI6zTGHPEzFsAcqyQmSDKwT4NLa361GoXVY89L6LXppe0uVdbULXFQFDYHf60n+nLRy32ONNtIq+KGe4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MxxwMJfH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 014DFC4CEEA;
-	Mon, 23 Jun 2025 22:00:28 +0000 (UTC)
+	 MIME-Version; b=I8LOCeAbW5CB7X4YXZjsUitndiahpqhuGbYlM2x+LnW/WFfOs5Xzjw5nSTJEni0c6sUPkKTLRYgAmGCUVMuMOo1eIeRypLpJGriq/lu+KGCqJsfSXMTxUWYThWs2HyYKOiJDdQU+8w2hOF+2VuvTSBCPOZdlTJklspGHAX+ZW6g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MFOQBQyo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69DDAC4CEEA;
+	Mon, 23 Jun 2025 21:42:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750716029;
-	bh=wuTb0BveLSa3xwhDWy+dcGdgj2vz61HHPaAGhNGAFMo=;
+	s=korg; t=1750714938;
+	bh=piSKYISZLy3LkDHnAjsSKejnS55llDyPE5ExYFawhyI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MxxwMJfHMLierCVTXnZznmUgoPekOOyprs9HmckcW53Mc7QaFhB0xLWQLeVb6boUu
-	 xD/IzLAe16HzBF0JCj2EhtYsK2FB9QDdp3rxMGu33zhzhXrEoiUROHh/v6TWNI8T3V
-	 FmfTgdUkMxSUw+/jT9rj04PvKmafNNC2YqxwanP0=
+	b=MFOQBQyoiN9PjhLzdal2ayy9BfHXzPabfWmRz4MQVa7+WECj/NNRMMOSoQAXdSjTW
+	 A42Rwvvt4CaTyPxzrChlrWo2B+zf7ZlGr/gbYNF2L2RkRZ6uiWJB+qs66QbFYU/rQl
+	 6XGBKncuIurSNs39pBrIxXhPFSXEpVPsUpTSDtVk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hans Verkuil <hverkuil@xs4all.nl>,
-	Maxime Ripard <mripard@kernel.org>,
-	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+	Amber Lin <Amber.Lin@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 298/411] media: tc358743: ignore video while HPD is low
-Date: Mon, 23 Jun 2025 15:07:22 +0200
-Message-ID: <20250623130641.149130422@linuxfoundation.org>
+Subject: [PATCH 5.10 242/355] drm/amdkfd: Set SDMA_RLCx_IB_CNTL/SWITCH_INSIDE_IB
+Date: Mon, 23 Jun 2025 15:07:23 +0200
+Message-ID: <20250623130634.024258721@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
-References: <20250623130632.993849527@linuxfoundation.org>
+In-Reply-To: <20250623130626.716971725@linuxfoundation.org>
+References: <20250623130626.716971725@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,45 +62,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hans Verkuil <hverkuil@xs4all.nl>
+From: Amber Lin <Amber.Lin@amd.com>
 
-[ Upstream commit 6829c5b5d26b1be31880d74ec24cb32d2d75f1ae ]
+[ Upstream commit ab9fcc6362e0699fc1150aa1d8503c40fce2c1e1 ]
 
-If the HPD is low (happens if there is no EDID or the
-EDID is being updated), then return -ENOLINK in
-tc358743_get_detected_timings() instead of detecting video.
+When submitting MQD to CP, set SDMA_RLCx_IB_CNTL/SWITCH_INSIDE_IB bit so
+it'll allow SDMA preemption if there is a massive command buffer of
+long-running SDMA commands.
 
-This avoids userspace thinking that it can start streaming when
-the HPD is low.
-
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
-Tested-by: Maxime Ripard <mripard@kernel.org>
-Link: https://lore.kernel.org/linux-media/20240628-stoic-bettong-of-fortitude-e25611@houat/
-Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+Signed-off-by: Amber Lin <Amber.Lin@amd.com>
+Acked-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/i2c/tc358743.c | 4 ++++
+ drivers/gpu/drm/amd/amdkfd/kfd_mqd_manager_v9.c | 4 ++++
  1 file changed, 4 insertions(+)
 
-diff --git a/drivers/media/i2c/tc358743.c b/drivers/media/i2c/tc358743.c
-index 6f5ca3d63dbdb..87feada1f6020 100644
---- a/drivers/media/i2c/tc358743.c
-+++ b/drivers/media/i2c/tc358743.c
-@@ -309,6 +309,10 @@ static int tc358743_get_detected_timings(struct v4l2_subdev *sd,
+diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_mqd_manager_v9.c b/drivers/gpu/drm/amd/amdkfd/kfd_mqd_manager_v9.c
+index dadeb2013fd9a..dc468dfce391e 100644
+--- a/drivers/gpu/drm/amd/amdkfd/kfd_mqd_manager_v9.c
++++ b/drivers/gpu/drm/amd/amdkfd/kfd_mqd_manager_v9.c
+@@ -396,6 +396,10 @@ static void update_mqd_sdma(struct mqd_manager *mm, void *mqd,
+ 	m->sdma_engine_id = q->sdma_engine_id;
+ 	m->sdma_queue_id = q->sdma_queue_id;
+ 	m->sdmax_rlcx_dummy_reg = SDMA_RLC_DUMMY_DEFAULT;
++	/* Allow context switch so we don't cross-process starve with a massive
++	 * command buffer of long-running SDMA commands
++	 */
++	m->sdmax_rlcx_ib_cntl |= SDMA0_GFX_IB_CNTL__SWITCH_INSIDE_IB_MASK;
  
- 	memset(timings, 0, sizeof(struct v4l2_dv_timings));
- 
-+	/* if HPD is low, ignore any video */
-+	if (!(i2c_rd8(sd, HPD_CTL) & MASK_HPD_OUT0))
-+		return -ENOLINK;
-+
- 	if (no_signal(sd)) {
- 		v4l2_dbg(1, debug, sd, "%s: no valid signal\n", __func__);
- 		return -ENOLINK;
+ 	q->is_active = QUEUE_IS_ACTIVE(*q);
+ }
 -- 
 2.39.5
 
