@@ -1,59 +1,55 @@
-Return-Path: <stable+bounces-157210-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157481-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 54F11AE52F9
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:48:59 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 36FB2AE5426
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:59:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D4CE6176543
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:48:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7F3DF446B42
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:59:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB65D1C84A0;
-	Mon, 23 Jun 2025 21:48:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 058261F8722;
+	Mon, 23 Jun 2025 21:59:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tWqOJ2wt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FG2D6YOT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 793CB3FD4;
-	Mon, 23 Jun 2025 21:48:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B85DC224AFA;
+	Mon, 23 Jun 2025 21:59:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750715309; cv=none; b=X9QDeF3O3Uz9GZBNVV2vJ8iVboxbRn4wDhPC7GhqUUXLgwYZyo2pntLt44NyFWCpONU7+qQIwR0Pzir1maO1AyKXHsIea0z0EIjLRm3B9Or8Ghm2sRauPxQCi1xhvNCREZQFV/k4uTjjf4nlm/IbLscgylr3fL5c5r3EzPZdIsc=
+	t=1750715973; cv=none; b=kc54FoUgm2tJBmbUIV94kx0WsfwZgx8c5UQvVfJMAjIYHMfba1VMShtR/A2gnJ4Ejfr8C01cD3zTalZ3akVqHng0+m92y3M0wV1SUKLNgT2uINVTzBU04OPKjaISdUitZLNOiDyPqCSsq6X5nIOCA88ESnB6G8k79dnNYw4DdY0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750715309; c=relaxed/simple;
-	bh=eXYYSW7TlsNBYiQSlbfOhbNRRD3buLqhMtMqYnCLEPk=;
+	s=arc-20240116; t=1750715973; c=relaxed/simple;
+	bh=xPN7JKgQGk/KLoQjZikTnmb66yyaHQAVYNuf5g5VZo0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JyxJ8u2nJQkE1dZrWBB4rMOkL3f3yf0G9by552bnNXWw/FBjFpYdoRJizTxJ7r375iev3+EZYirw2Rw4zW6CiCxwGCApdQUmZ2n5cMX/6bsZiprKcSjWtufMYVfMcqAsQ/U5rtvhfbss65wye+5nRmEFC+H7aBAzo1nLHBPPCxE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tWqOJ2wt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F78BC4CEEA;
-	Mon, 23 Jun 2025 21:48:28 +0000 (UTC)
+	 MIME-Version; b=SByeZRowGMwC3c06YAJ8oTLp+z5r+BcA1ksGsE5zWf/o1hyesihJVthzbyQvujdVkOz7i7O52A0MvfB1e5hhThSUu/IqpZuCBM1rCcnEbxddx2wvp/8jn9Pgt4M2tBpIxWjPOTT1SYK2jimGOU71q2lEq7C7gjMrp6bMkWhMz8o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FG2D6YOT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DFFA2C4CEED;
+	Mon, 23 Jun 2025 21:59:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750715309;
-	bh=eXYYSW7TlsNBYiQSlbfOhbNRRD3buLqhMtMqYnCLEPk=;
+	s=korg; t=1750715973;
+	bh=xPN7JKgQGk/KLoQjZikTnmb66yyaHQAVYNuf5g5VZo0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tWqOJ2wtbTsbt+WLNKDtL0WfOku2dcR24/hBeZ3ajHfPNIsuZkSvtk0cen72tQpua
-	 5hM/zTwvLLbm4ZTwVbbusDy/iIzNu/PYuMxsDmEeWqbxP7OphldRTmxZtRYBvnLEp3
-	 v2/RTa9rRKpi3YYAszNm1Di5IPPAKe66YMwscA9I=
+	b=FG2D6YOTgxU78BsGMqEF8gq12ssPtdbK4R1cTnD5FmT/GluAZOo9WV/JXJM20bbhG
+	 EPnEIv+r6fLRGATLfRibO1jNzrAwdFj7h40NUUNrD2fdIorDSHtcxJZneqH4GU1bRC
+	 FjUaTZaU8y0ljnOsVL84nNl6WLZv+Aps/TzWKbso=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hari Chandrakanthan <quic_haric@quicinc.com>,
-	Nicolas Escande <nico.escande@gmail.com>,
-	Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>,
-	Karthikeyan Periyasamy <quic_periyasa@quicinc.com>,
-	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 191/290] wifi: ath12k: fix link valid field initialization in the monitor Rx
+	Chris Chiu <chris.chiu@canonical.com>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 6.15 494/592] ALSA: hda/realtek: Fix built-in mic on ASUS VivoBook X513EA
 Date: Mon, 23 Jun 2025 15:07:32 +0200
-Message-ID: <20250623130632.606817390@linuxfoundation.org>
+Message-ID: <20250623130712.182144534@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130626.910356556@linuxfoundation.org>
-References: <20250623130626.910356556@linuxfoundation.org>
+In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
+References: <20250623130700.210182694@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,49 +61,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hari Chandrakanthan <quic_haric@quicinc.com>
+From: Chris Chiu <chris.chiu@canonical.com>
 
-[ Upstream commit 2826139f9295821fe2b049318a1cc057ec003131 ]
+commit c6451a7325874c119def1d4094f6815c0c8fdc23 upstream.
 
-Currently, the link_valid field is not initialized in the monitor Rx path.
-This can result in random values for the link_valid and link_id leads to
-undefined behaviour in mac80211. Therefore, initialize the link_valid
-field in the monitor Rx path.
+The built-in mic of ASUS VivoBook X513EA is broken recently by the
+fix of the pin sort. The fixup ALC256_FIXUP_ASUS_MIC_NO_PRESENCE
+is working for addressing the regression, too.
 
-Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.3.1-00173-QCAHKSWPL_SILICONZ-1
-Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0.c5-00481-QCAHMTSWPL_V1.0_V2.0_SILICONZ-3
-
-Signed-off-by: Hari Chandrakanthan <quic_haric@quicinc.com>
-Tested-by: Nicolas Escande <nico.escande@gmail.com>
-Reviewed-by: Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>
-Signed-off-by: Karthikeyan Periyasamy <quic_periyasa@quicinc.com>
-Link: https://patch.msgid.link/20250324062518.2752822-2-quic_periyasa@quicinc.com
-Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 3b4309546b48 ("ALSA: hda: Fix headset detection failure due to unstable sort")
+Signed-off-by: Chris Chiu <chris.chiu@canonical.com>
+Cc: <stable@vger.kernel.org>
+Link: https://patch.msgid.link/20250610035607.690771-1-chris.chiu@canonical.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/ath/ath12k/dp_mon.c | 2 ++
- 1 file changed, 2 insertions(+)
+ sound/pci/hda/patch_realtek.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/wireless/ath/ath12k/dp_mon.c b/drivers/net/wireless/ath/ath12k/dp_mon.c
-index 35f22a4a16cf2..69bf75ebd7518 100644
---- a/drivers/net/wireless/ath/ath12k/dp_mon.c
-+++ b/drivers/net/wireless/ath/ath12k/dp_mon.c
-@@ -1077,6 +1077,8 @@ static void ath12k_dp_mon_rx_deliver_msdu(struct ath12k *ar, struct napi_struct
- 	bool is_mcbc = rxcb->is_mcbc;
- 	bool is_eapol_tkip = rxcb->is_eapol;
- 
-+	status->link_valid = 0;
-+
- 	if ((status->encoding == RX_ENC_HE) && !(status->flag & RX_FLAG_RADIOTAP_HE) &&
- 	    !(status->flag & RX_FLAG_SKIP_MONITOR)) {
- 		he = skb_push(msdu, sizeof(known));
--- 
-2.39.5
-
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -10907,6 +10907,7 @@ static const struct hda_quirk alc269_fix
+ 	SND_PCI_QUIRK(0x103c, 0x8e60, "HP Trekker ", ALC287_FIXUP_CS35L41_I2C_2),
+ 	SND_PCI_QUIRK(0x103c, 0x8e61, "HP Trekker ", ALC287_FIXUP_CS35L41_I2C_2),
+ 	SND_PCI_QUIRK(0x103c, 0x8e62, "HP Trekker ", ALC287_FIXUP_CS35L41_I2C_2),
++	SND_PCI_QUIRK(0x1043, 0x1032, "ASUS VivoBook X513EA", ALC256_FIXUP_ASUS_MIC_NO_PRESENCE),
+ 	SND_PCI_QUIRK(0x1043, 0x103e, "ASUS X540SA", ALC256_FIXUP_ASUS_MIC),
+ 	SND_PCI_QUIRK(0x1043, 0x103f, "ASUS TX300", ALC282_FIXUP_ASUS_TX300),
+ 	SND_PCI_QUIRK(0x1043, 0x1054, "ASUS G614FH/FM/FP", ALC287_FIXUP_CS35L41_I2C_2),
 
 
 
