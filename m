@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-157945-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-158122-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A7AF8AE564A
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:19:24 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E1947AE574B
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:28:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 85C7B1C2008E
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:18:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 376214A6DF4
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:25:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DACB9219A7A;
-	Mon, 23 Jun 2025 22:18:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE40B226533;
+	Mon, 23 Jun 2025 22:25:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2aALiREe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R9ysLjDs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92F881F6667;
-	Mon, 23 Jun 2025 22:18:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 799D222370A;
+	Mon, 23 Jun 2025 22:25:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750717104; cv=none; b=IIWAaJ0DsyE5ogxrBj/lkcH/ybJ08pxdL7l5l5Zh24KloBRiEVDtcxa0CEhmnapvnqwhvD9ZdK0e4SzpVG7J4rLVKnPKpkvZIripocZD3n5bLmtLVbehijNo4DmW7k3V4WICUTwJVVysHFYrDbOLUpUOlGEzx79Jb84pjuPrgwM=
+	t=1750717538; cv=none; b=iyqsWGG8e0rjvSZL3EOz4ZHFuIxClxl8Dx46d19GpO3IBTvJsB4eoTlLzZTckOC3ux+zNH5HCjKRPfSwRNZ+Y4EH+6lrRQX6/L7k1UROiG+tE+RQgvIODs6ibs8j08024O1rquf50vE1MUkynz4TZMmJGgsPRmfPVudoQ79bYP4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750717104; c=relaxed/simple;
-	bh=oIxUzeLJglHW0DKImIM9huXOhAyeNJnhEbGF9HeFHVE=;
+	s=arc-20240116; t=1750717538; c=relaxed/simple;
+	bh=Ktb63+2mYSmP5oRxrQtR/ayfRwI02lHYeC27uYiZTwg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LyTzkAaXMOaqs1dFN1J6VFaQNuQGM41ugaGzQRSVz8Ex2sB1EuJ4vCBECJAAmAMxjzGqRFjPpc2yJRLDvFulMnhsSzvfv6zVDiJT7DJBF+cvkpEOFAzFZS7hvqjK9p5twHNATGhpblCkQnlm8X4/bM1/XLkwHFRpXrdklKMk7gM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2aALiREe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27BE2C4CEEA;
-	Mon, 23 Jun 2025 22:18:24 +0000 (UTC)
+	 MIME-Version:Content-Type; b=SRwQHnuIlRjCub/lpkWMGgrVmRJKIgFSScKKQnaOceE3spedT6Q9f07xalz3fTcQKzp/235iCZAcLMGH40SQ/nJmws2hQoHVZrs5BB0m7llDExxw6yn6e0WkfH2kaPyhYvvfng8BrZ7xveLYywY+BkhyuT0fgrT4EO9gz8Yc8+4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R9ysLjDs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11C18C4CEEA;
+	Mon, 23 Jun 2025 22:25:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750717104;
-	bh=oIxUzeLJglHW0DKImIM9huXOhAyeNJnhEbGF9HeFHVE=;
+	s=korg; t=1750717538;
+	bh=Ktb63+2mYSmP5oRxrQtR/ayfRwI02lHYeC27uYiZTwg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2aALiREeSJ070NNJc2Y/x29hO9zXUbVwiNnkaMZrk20SkqgUbZgY8Z6oWW6cxK19a
-	 IBhmyHCcF5C6B3GGvhvlcXGEFsg4YV61J9LAocpeuxDXUrL5Cl1/ZHsFPgdl707FXK
-	 tuuY1ssBnHp+8v/9k/DHH/2AtWDuCoxVddpcEsaI=
+	b=R9ysLjDs8Ur/K1viqCgmMdTTxWbZoTuCbhtr6p2kmzmFVLaaLZ08gF/ou7/jSXdfd
+	 rPky2pj7l/szO4TaNBEq+z9uZQQh61GKd0j5KlkcWwvkHKEkmJUqwyDUTl57NjQ7SQ
+	 GBhxw1B6kcKUbY7dnMjSRVrnH/YoM5nM0+2OM6to=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gerrard Tai <gerrard.tai@starlabs.sg>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 5.15 402/411] net_sched: sch_sfq: reject invalid perturb period
+	Atish Patra <atishp@rivosinc.com>,
+	Anup Patel <apatel@ventanamicro.com>,
+	Anup Patel <anup@brainfault.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 409/414] RISC-V: KVM: Dont treat SBI HFENCE calls as NOPs
 Date: Mon, 23 Jun 2025 15:09:06 +0200
-Message-ID: <20250623130643.799344459@linuxfoundation.org>
+Message-ID: <20250623130652.172819952@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
-References: <20250623130632.993849527@linuxfoundation.org>
+In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
+References: <20250623130642.015559452@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,79 +61,51 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Anup Patel <apatel@ventanamicro.com>
 
-commit 7ca52541c05c832d32b112274f81a985101f9ba8 upstream.
+[ Upstream commit 2e7be162996640bbe3b6da694cc064c511b8a5d9 ]
 
-Gerrard Tai reported that SFQ perturb_period has no range check yet,
-and this can be used to trigger a race condition fixed in a separate patch.
+The SBI specification clearly states that SBI HFENCE calls should
+return SBI_ERR_NOT_SUPPORTED when one of the target hart doesn’t
+support hypervisor extension (aka nested virtualization in-case
+of KVM RISC-V).
 
-We want to make sure ctl->perturb_period * HZ will not overflow
-and is positive.
-
-Tested:
-
-tc qd add dev lo root sfq perturb -10   # negative value : error
-Error: sch_sfq: invalid perturb period.
-
-tc qd add dev lo root sfq perturb 1000000000 # too big : error
-Error: sch_sfq: invalid perturb period.
-
-tc qd add dev lo root sfq perturb 2000000 # acceptable value
-tc -s -d qd sh dev lo
-qdisc sfq 8005: root refcnt 2 limit 127p quantum 64Kb depth 127 flows 128 divisor 1024 perturb 2000000sec
- Sent 0 bytes 0 pkt (dropped 0, overlimits 0 requeues 0)
- backlog 0b 0p requeues 0
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Reported-by: Gerrard Tai <gerrard.tai@starlabs.sg>
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/20250611083501.1810459-1-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: c7fa3c48de86 ("RISC-V: KVM: Treat SBI HFENCE calls as NOPs")
+Reviewed-by: Atish Patra <atishp@rivosinc.com>
+Signed-off-by: Anup Patel <apatel@ventanamicro.com>
+Link: https://lore.kernel.org/r/20250605061458.196003-3-apatel@ventanamicro.com
+Signed-off-by: Anup Patel <anup@brainfault.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sched/sch_sfq.c |   10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
+ arch/riscv/kvm/vcpu_sbi_replace.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/net/sched/sch_sfq.c
-+++ b/net/sched/sch_sfq.c
-@@ -653,6 +653,14 @@ static int sfq_change(struct Qdisc *sch,
- 		NL_SET_ERR_MSG_MOD(extack, "invalid quantum");
- 		return -EINVAL;
+diff --git a/arch/riscv/kvm/vcpu_sbi_replace.c b/arch/riscv/kvm/vcpu_sbi_replace.c
+index 9752d2ffff683..b17fad091babd 100644
+--- a/arch/riscv/kvm/vcpu_sbi_replace.c
++++ b/arch/riscv/kvm/vcpu_sbi_replace.c
+@@ -127,9 +127,9 @@ static int kvm_sbi_ext_rfence_handler(struct kvm_vcpu *vcpu, struct kvm_run *run
+ 	case SBI_EXT_RFENCE_REMOTE_HFENCE_VVMA_ASID:
+ 		/*
+ 		 * Until nested virtualization is implemented, the
+-		 * SBI HFENCE calls should be treated as NOPs
++		 * SBI HFENCE calls should return not supported
++		 * hence fallthrough.
+ 		 */
+-		break;
+ 	default:
+ 		retdata->err_val = SBI_ERR_NOT_SUPPORTED;
  	}
-+
-+	if (ctl->perturb_period < 0 ||
-+	    ctl->perturb_period > INT_MAX / HZ) {
-+		NL_SET_ERR_MSG_MOD(extack, "invalid perturb period");
-+		return -EINVAL;
-+	}
-+	perturb_period = ctl->perturb_period * HZ;
-+
- 	if (ctl_v1 && !red_check_params(ctl_v1->qth_min, ctl_v1->qth_max,
- 					ctl_v1->Wlog, ctl_v1->Scell_log, NULL))
- 		return -EINVAL;
-@@ -669,14 +677,12 @@ static int sfq_change(struct Qdisc *sch,
- 	headdrop = q->headdrop;
- 	maxdepth = q->maxdepth;
- 	maxflows = q->maxflows;
--	perturb_period = q->perturb_period;
- 	quantum = q->quantum;
- 	flags = q->flags;
- 
- 	/* update and validate configuration */
- 	if (ctl->quantum)
- 		quantum = ctl->quantum;
--	perturb_period = ctl->perturb_period * HZ;
- 	if (ctl->flows)
- 		maxflows = min_t(u32, ctl->flows, SFQ_MAX_FLOWS);
- 	if (ctl->divisor) {
+-- 
+2.39.5
+
 
 
 
