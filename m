@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-157770-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157947-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7EE26AE558C
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:12:28 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A6032AE5652
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:19:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 896604C4D14
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:11:46 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2E77F170EC4
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:18:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8EC73229B2E;
-	Mon, 23 Jun 2025 22:11:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BECAD2192EC;
+	Mon, 23 Jun 2025 22:18:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ytwoc6WL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wFt0JFnL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CA48229B16;
-	Mon, 23 Jun 2025 22:11:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BAE516D9BF;
+	Mon, 23 Jun 2025 22:18:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750716680; cv=none; b=rPBMiszKOphPqAWG2mbD+8qzXPuYwRfzadUEfQ/GvzW0+9p12/XslnB6mSJJ1Q1Yuw7J/QlZpHWQX1M/+jQzBzTnj7/ThGAlwqhEXCRcHR7pmIjlUMBgCSDMqzcAPMF1ucIUQTt2FWHTTy/7MjtLD57cUzfiBtfJ0f6F9tzWP6E=
+	t=1750717109; cv=none; b=qJu5+5JUBrItXO2CcZA0QCfG+im/+uEu5Z7F+dEsxJYjh5WFvIWNinCrJBFnbNTPxxTUW2rx5pXJquX3oos5f0C9DQVYJoe+VnaDMxzS50JNNwV91GNxwCrdzFbB7mY6i5aZtEG0zJISTLsq6Xusbfu6Zk70gSS6rEIZEqqZyMA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750716680; c=relaxed/simple;
-	bh=2celsTrBJb+YiZ/ur1JSJXMSgaola/dCv5loiiBKGzc=;
+	s=arc-20240116; t=1750717109; c=relaxed/simple;
+	bh=U8FplPlMzD6l61erJluzmBnZV88GlH41D4EqABhfSGA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UC8wnwJN57bgRoEgKy1o21Hrrzn7Fm82phQFmeRMzU58lkDspZB4dyMIqsfAV4LJm3mA6xJLML20CxI81EEA7ohrISTl3MuttRiNNDF2yWjtH0AnHMsW4qSWgTUrn2+DN0yMyRNWbHUQ/iN6RgwMpP7tEPoJJUFXoCe/xwa1TIo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ytwoc6WL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97929C4CEF2;
-	Mon, 23 Jun 2025 22:11:18 +0000 (UTC)
+	 MIME-Version; b=ZL59wx2dCbwRISfLw/XyAOTABhorbdbKoTbTfs6R1VSmwL6fIjYLe4shLJocL71a5YBS1buoZwTViCvA9TOGcbfNZH50YEh09ps/+6zQnM98gO/kT65cV3qaC6WkFA1QnEvgXSyxGAWZYioq8soiyKcq+1zssKmOnUL7DtQ/sns=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wFt0JFnL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D2C3C4CEEA;
+	Mon, 23 Jun 2025 22:18:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750716678;
-	bh=2celsTrBJb+YiZ/ur1JSJXMSgaola/dCv5loiiBKGzc=;
+	s=korg; t=1750717109;
+	bh=U8FplPlMzD6l61erJluzmBnZV88GlH41D4EqABhfSGA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ytwoc6WLLRd1eWshBAhRvHHrR0xtOzcEASwuEvshi1PWNeubIs2yw6VqSc3nxCekt
-	 6It1sWc77lYJmMAV1+eeB1xIEfQWfC+x+qnRHBUd5KJi6tN+20/Kmjtc4+VQeJMyOT
-	 blRaF8lQL8uo1kPTQMJs3iEr1x4938GzsWCnYgNI=
+	b=wFt0JFnL2Sq0s15z8WEclOaN0ESW2QaD5tQoj92urIdDKR4YiE11TaXWNVSXI8Gdk
+	 HmZtPHQ+hA21+O4+TzxyiaWPSUDQft5klHu7Ub3xuomPxE38uAN/8eA0ltDYlU2yfm
+	 x+eSLuAWlceNFeHXcl1df0tCwZXtNBf7+jn4tamU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jiayuan Chen <jiayuan.chen@linux.dev>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 274/414] bpf, sockmap: Fix data lost during EAGAIN retries
-Date: Mon, 23 Jun 2025 15:06:51 +0200
-Message-ID: <20250623130648.875954833@linuxfoundation.org>
+	Niklas Cassel <cassel@kernel.org>,
+	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Wilfred Mallawa <wilfred.mallawa@wdc.com>,
+	Damien Le Moal <dlemoal@kernel.org>
+Subject: [PATCH 6.1 367/508] PCI: cadence-ep: Correct PBA offset in .set_msix() callback
+Date: Mon, 23 Jun 2025 15:06:52 +0200
+Message-ID: <20250623130654.383703385@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
-References: <20250623130642.015559452@linuxfoundation.org>
+In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
+References: <20250623130645.255320792@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,73 +64,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiayuan Chen <jiayuan.chen@linux.dev>
+From: Niklas Cassel <cassel@kernel.org>
 
-[ Upstream commit 7683167196bd727ad5f3c3fc6a9ca70f54520a81 ]
+commit c8bcb01352a86bc5592403904109c22b66bd916e upstream.
 
-We call skb_bpf_redirect_clear() to clean _sk_redir before handling skb in
-backlog, but when sk_psock_handle_skb() return EAGAIN due to sk_rcvbuf
-limit, the redirect info in _sk_redir is not recovered.
+While cdns_pcie_ep_set_msix() writes the Table Size field correctly (N-1),
+the calculation of the PBA offset is wrong because it calculates space for
+(N-1) entries instead of N.
 
-Fix skb redir loss during EAGAIN retries by restoring _sk_redir
-information using skb_bpf_set_redir().
+This results in the following QEMU error when using PCI passthrough on a
+device which relies on the PCI endpoint subsystem:
 
-Before this patch:
-'''
-./bench sockmap -c 2 -p 1 -a --rx-verdict-ingress
-Setting up benchmark 'sockmap'...
-create socket fd c1:13 p1:14 c2:15 p2:16
-Benchmark 'sockmap' started.
-Send Speed 1343.172 MB/s, BPF Speed 1343.238 MB/s, Rcv Speed   65.271 MB/s
-Send Speed 1352.022 MB/s, BPF Speed 1352.088 MB/s, Rcv Speed   0 MB/s
-Send Speed 1354.105 MB/s, BPF Speed 1354.105 MB/s, Rcv Speed   0 MB/s
-Send Speed 1355.018 MB/s, BPF Speed 1354.887 MB/s, Rcv Speed   0 MB/s
-'''
-Due to the high send rate, the RX processing path may frequently hit the
-sk_rcvbuf limit. Once triggered, incorrect _sk_redir will cause the flow
-to mistakenly enter the "!ingress" path, leading to send failures.
-(The Rcv speed depends on tcp_rmem).
+  failed to add PCI capability 0x11[0x50]@0xb0: table & pba overlap, or they don't fit in BARs, or don't align
 
-After this patch:
-'''
-./bench sockmap -c 2 -p 1 -a --rx-verdict-ingress
-Setting up benchmark 'sockmap'...
-create socket fd c1:13 p1:14 c2:15 p2:16
-Benchmark 'sockmap' started.
-Send Speed 1347.236 MB/s, BPF Speed 1347.367 MB/s, Rcv Speed   65.402 MB/s
-Send Speed 1353.320 MB/s, BPF Speed 1353.320 MB/s, Rcv Speed   65.536 MB/s
-Send Speed 1353.186 MB/s, BPF Speed 1353.121 MB/s, Rcv Speed   65.536 MB/s
-'''
+Fix the calculation of PBA offset in the MSI-X capability.
 
-Signed-off-by: Jiayuan Chen <jiayuan.chen@linux.dev>
-Link: https://lore.kernel.org/r/20250407142234.47591-2-jiayuan.chen@linux.dev
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+[bhelgaas: more specific subject and commit log]
+
+Fixes: 3ef5d16f50f8 ("PCI: cadence: Add MSI-X support to Endpoint driver")
+Signed-off-by: Niklas Cassel <cassel@kernel.org>
+Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Reviewed-by: Wilfred Mallawa <wilfred.mallawa@wdc.com>
+Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
+Cc: stable@vger.kernel.org
+Link: https://patch.msgid.link/20250514074313.283156-10-cassel@kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/core/skmsg.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/pci/controller/cadence/pcie-cadence-ep.c |    5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/net/core/skmsg.c b/net/core/skmsg.c
-index a8d238dd982af..97f52394d1eb1 100644
---- a/net/core/skmsg.c
-+++ b/net/core/skmsg.c
-@@ -689,7 +689,8 @@ static void sk_psock_backlog(struct work_struct *work)
- 			if (ret <= 0) {
- 				if (ret == -EAGAIN) {
- 					sk_psock_skb_state(psock, state, len, off);
--
-+					/* Restore redir info we cleared before */
-+					skb_bpf_set_redir(skb, psock->sk, ingress);
- 					/* Delay slightly to prioritize any
- 					 * other work that might be here.
- 					 */
--- 
-2.39.5
-
+--- a/drivers/pci/controller/cadence/pcie-cadence-ep.c
++++ b/drivers/pci/controller/cadence/pcie-cadence-ep.c
+@@ -294,13 +294,14 @@ static int cdns_pcie_ep_set_msix(struct
+ 	struct cdns_pcie *pcie = &ep->pcie;
+ 	u32 cap = CDNS_PCIE_EP_FUNC_MSIX_CAP_OFFSET;
+ 	u32 val, reg;
++	u16 actual_interrupts = interrupts + 1;
+ 
+ 	fn = cdns_pcie_get_fn_from_vfn(pcie, fn, vfn);
+ 
+ 	reg = cap + PCI_MSIX_FLAGS;
+ 	val = cdns_pcie_ep_fn_readw(pcie, fn, reg);
+ 	val &= ~PCI_MSIX_FLAGS_QSIZE;
+-	val |= interrupts;
++	val |= interrupts; /* 0's based value */
+ 	cdns_pcie_ep_fn_writew(pcie, fn, reg, val);
+ 
+ 	/* Set MSIX BAR and offset */
+@@ -310,7 +311,7 @@ static int cdns_pcie_ep_set_msix(struct
+ 
+ 	/* Set PBA BAR and offset.  BAR must match MSIX BAR */
+ 	reg = cap + PCI_MSIX_PBA;
+-	val = (offset + (interrupts * PCI_MSIX_ENTRY_SIZE)) | bir;
++	val = (offset + (actual_interrupts * PCI_MSIX_ENTRY_SIZE)) | bir;
+ 	cdns_pcie_ep_fn_writel(pcie, fn, reg, val);
+ 
+ 	return 0;
 
 
 
