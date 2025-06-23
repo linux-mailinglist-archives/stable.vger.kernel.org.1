@@ -1,58 +1,61 @@
-Return-Path: <stable+bounces-156881-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156263-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 55D48AE5193
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:35:34 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 503FDAE4ED8
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:09:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CC4D21B63E1E
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:35:17 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6EE073BE87A
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:09:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 38F4E222599;
-	Mon, 23 Jun 2025 21:34:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F841202983;
+	Mon, 23 Jun 2025 21:09:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l1BjH2k8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C75M2QFd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9705221734;
-	Mon, 23 Jun 2025 21:34:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C64070838;
+	Mon, 23 Jun 2025 21:09:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750714495; cv=none; b=jK6lOOl3gLyk+z4+yt/N3JkI/21RGEv8uwE3+a4nH2WzwtKtrkTKt5LFPjSBlL47ue7nDFdmeYiIgVf9CJqg0ekpsnrigTiIYB2+zCq2n8GrMV5xsejsQtVW2tibZQFDH4iS3Mee/mA2xrGX90YyPyG+3LmRUEOw7UwTtTCBKhs=
+	t=1750712985; cv=none; b=B13aGLIAnuKGbP+wd9nFj9FZ+2/BMuBBm3DBezQTbFrT3n7WP81wU0rM90a6D+Flqzs1RHC/bWc+i87tbXaX4OotCsjhJNxXzZmpfRQdd+NI5gTORinndUI3WU4IPO2h6mISvEMA2ws6Hxm9yiKvR91zG2KvKPoVZmGrUlneg4A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750714495; c=relaxed/simple;
-	bh=cWWGOVhRXWnwO+L8d4/hHs0FxaiCx3vc00+CcD/Th08=;
+	s=arc-20240116; t=1750712985; c=relaxed/simple;
+	bh=97XCfldlVipqjpx5BCOIvv6g0MXBSVHcrAuxBl3P+3w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JPdMxecyNHsJ/nB5qbkmrvqBtvSKmom3DS2m6U2wVDSZQxkexUN2SF50gJzCsIGxz+b42LrXg9/zE9yfUzt5Mv0uACNy+9MBTXNPmCqZfmpQo871VCwOf9WkDHu1S+8PoWnhaeD/8gfoA2J8HpiPAcbJr/jZDswqSBTmf/406BM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l1BjH2k8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F642C4CEED;
-	Mon, 23 Jun 2025 21:34:54 +0000 (UTC)
+	 MIME-Version; b=WO2YaVKE7xc+4HJZiY0rrZUUdaynRtjbqf3DyA0sGEzxCqkJt/AszA8WDbOSyUhxje0lXYnD3vcnCFvF5oafXaexD7pNY12dFmPfROqm2H8hF+apFI/tpUpZgZZpb1rOSs30/M0C5rB34m28gsN5fs6ACPx+xIjT9O9rfeHDpwQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C75M2QFd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DFEBDC4CEEA;
+	Mon, 23 Jun 2025 21:09:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750714494;
-	bh=cWWGOVhRXWnwO+L8d4/hHs0FxaiCx3vc00+CcD/Th08=;
+	s=korg; t=1750712985;
+	bh=97XCfldlVipqjpx5BCOIvv6g0MXBSVHcrAuxBl3P+3w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=l1BjH2k81GpdWMYrnY28aSN1hL09kRg6THD/YTzShhrfbuKW/+OYF/6GiukJMjkaa
-	 rlNrnSpxvshbbS8TrlAvUeuVRAs1pvZRu3Nh4DPdHLY3aYj0ojfwrZ2ORMyUAOlZAT
-	 r7BatnZxI3f2uUnPwjg6EDumJ9Y5ENFF37hYK1vE=
+	b=C75M2QFdilnJAMhs4iQjmuplhT5feBFoMOxZn8nUcXCrRTBu8JFc4+Q2rCK5LA4DD
+	 uCZHHVtNpgfISn+dvkno+LJ3Zd787n8v9hDLDUUZ3/ZofsB6evfMjsd1XP2hBZgQq7
+	 lJPp8H4mYW5eiEWtVtGjGf8yANKF7VH0EtPfvPVE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dave Chinner <david@fromorbit.com>,
-	"Darrick J. Wong" <djwong@kernel.org>,
-	Dave Chinner <dchinner@redhat.com>,
-	Leah Rumancik <leah.rumancik@gmail.com>,
+	Ian Rogers <irogers@google.com>,
+	Leo Yan <leo.yan@arm.com>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	James Clark <james.clark@linaro.org>,
+	Kan Liang <kan.liang@linux.intel.com>,
+	Namhyung Kim <namhyung@kernel.org>,
+	Arnaldo Carvalho de Melo <acme@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 198/508] xfs: fix an agbno overflow in __xfs_getfsmap_datadev
+Subject: [PATCH 5.15 099/411] perf tests switch-tracking: Fix timestamp comparison
 Date: Mon, 23 Jun 2025 15:04:03 +0200
-Message-ID: <20250623130650.141909099@linuxfoundation.org>
+Message-ID: <20250623130635.985156909@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
-References: <20250623130645.255320792@linuxfoundation.org>
+In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
+References: <20250623130632.993849527@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,124 +67,104 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Darrick J. Wong <djwong@kernel.org>
+From: Leo Yan <leo.yan@arm.com>
 
-[ Upstream commit cfa2df68b7ceb49ac9eb2d295ab0c5974dbf17e7 ]
+[ Upstream commit 628e124404b3db5e10e17228e680a2999018ab33 ]
 
-Dave Chinner reported that xfs/273 fails if the AG size happens to be an
-exact power of two.  I traced this to an agbno integer overflow when the
-current GETFSMAP call is a continuation of a previous GETFSMAP call, and
-the last record returned was non-shareable space at the end of an AG.
+The test might fail on the Arm64 platform with the error:
 
-__xfs_getfsmap_datadev sets up a data device query by converting the
-incoming fmr_physical into an xfs_fsblock_t and cracking it into an agno
-and agbno pair.  In the (failing) case of where fmr_blockcount of the
-low key is nonzero and the record was for a non-shareable extent, it
-will add fmr_blockcount to start_fsb and info->low.rm_startblock.
+  # perf test -vvv "Track with sched_switch"
+  Missing sched_switch events
+  #
 
-If the low key was actually the last record for that AG, then this
-addition causes info->low.rm_startblock to point beyond EOAG.  When the
-rmapbt range query starts, it'll return an empty set, and fsmap moves on
-to the next AG.
+The issue is caused by incorrect handling of timestamp comparisons. The
+comparison result, a signed 64-bit value, was being directly cast to an
+int, leading to incorrect sorting for sched events.
 
-Or so I thought.  Remember how we added to start_fsb?
+The case does not fail everytime, usually I can trigger the failure
+after run 20 ~ 30 times:
 
-If agsize < 1<<agblklog, start_fsb points to the same AG as the original
-fmr_physical from the low key.  We run the rmapbt query, which returns
-nothing, so getfsmap zeroes info->low and moves on to the next AG.
+  # while true; do perf test "Track with sched_switch"; done
+  106: Track with sched_switch                                         : Ok
+  106: Track with sched_switch                                         : Ok
+  106: Track with sched_switch                                         : Ok
+  106: Track with sched_switch                                         : Ok
+  106: Track with sched_switch                                         : Ok
+  106: Track with sched_switch                                         : Ok
+  106: Track with sched_switch                                         : Ok
+  106: Track with sched_switch                                         : Ok
+  106: Track with sched_switch                                         : Ok
+  106: Track with sched_switch                                         : Ok
+  106: Track with sched_switch                                         : Ok
+  106: Track with sched_switch                                         : Ok
+  106: Track with sched_switch                                         : Ok
+  106: Track with sched_switch                                         : Ok
+  106: Track with sched_switch                                         : FAILED!
+  106: Track with sched_switch                                         : Ok
+  106: Track with sched_switch                                         : Ok
+  106: Track with sched_switch                                         : Ok
+  106: Track with sched_switch                                         : Ok
+  106: Track with sched_switch                                         : Ok
+  106: Track with sched_switch                                         : Ok
+  106: Track with sched_switch                                         : Ok
+  106: Track with sched_switch                                         : Ok
+  106: Track with sched_switch                                         : FAILED!
+  106: Track with sched_switch                                         : Ok
+  106: Track with sched_switch                                         : Ok
 
-If agsize == 1<<agblklog, start_fsb now points to the next AG.  We run
-the rmapbt query on the next AG with the excessively large
-rm_startblock.  If this next AG is actually the last AG, we'll set
-info->high to EOFS (which is now has a lower rm_startblock than
-info->low), and the ranged btree query code will return -EINVAL.  If
-it's not the last AG, we ignore all records for the intermediate AGs.
+I used cross compiler to build Perf tool on my host machine and tested on
+Debian / Juno board.  Generally, I think this issue is not very specific
+to GCC versions.  As both internal CI and my local env can reproduce the
+issue.
 
-Oops.
+My Host Build compiler:
 
-Fix this by decoding start_fsb into agno and agbno only after making
-adjustments to start_fsb.  This means that info->low.rm_startblock will
-always be set to a valid agbno, and we always start the rmapbt iteration
-in the correct AG.
+  # aarch64-linux-gnu-gcc --version
+  aarch64-linux-gnu-gcc (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
 
-While we're at it, fix the predicate for determining if an fsmap record
-represents non-shareable space to include file data on pre-reflink
-filesystems.
+Juno Board:
 
-Reported-by: Dave Chinner <david@fromorbit.com>
-Fixes: 63ef7a35912dd ("xfs: fix interval filtering in multi-step fsmap queries")
-Signed-off-by: Darrick J. Wong <djwong@kernel.org>
-Reviewed-by: Dave Chinner <dchinner@redhat.com>
-Signed-off-by: Leah Rumancik <leah.rumancik@gmail.com>
-Acked-by: "Darrick J. Wong" <djwong@kernel.org>
+  # lsb_release -a
+  No LSB modules are available.
+  Distributor ID: Debian
+  Description:    Debian GNU/Linux 12 (bookworm)
+  Release:        12
+  Codename:       bookworm
+
+Fix this by explicitly returning 0, 1, or -1 based on whether the result
+is zero, positive, or negative.
+
+Fixes: d44bc558297222d9 ("perf tests: Add a test for tracking with sched_switch")
+Reviewed-by: Ian Rogers <irogers@google.com>
+Signed-off-by: Leo Yan <leo.yan@arm.com>
+Cc: Adrian Hunter <adrian.hunter@intel.com>
+Cc: James Clark <james.clark@linaro.org>
+Cc: Kan Liang <kan.liang@linux.intel.com>
+Cc: Namhyung Kim <namhyung@kernel.org>
+Link: https://lore.kernel.org/r/20250331172759.115604-1-leo.yan@arm.com
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/xfs/xfs_fsmap.c | 25 ++++++++++++++++++-------
- 1 file changed, 18 insertions(+), 7 deletions(-)
+ tools/perf/tests/switch-tracking.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/xfs/xfs_fsmap.c b/fs/xfs/xfs_fsmap.c
-index d10f2c719220d..956a5670e56ce 100644
---- a/fs/xfs/xfs_fsmap.c
-+++ b/fs/xfs/xfs_fsmap.c
-@@ -565,6 +565,19 @@ xfs_getfsmap_rtdev_rtbitmap(
+diff --git a/tools/perf/tests/switch-tracking.c b/tools/perf/tests/switch-tracking.c
+index 72abf5d86f712..e6a4efc20fd61 100644
+--- a/tools/perf/tests/switch-tracking.c
++++ b/tools/perf/tests/switch-tracking.c
+@@ -256,7 +256,7 @@ static int compar(const void *a, const void *b)
+ 	const struct event_node *nodeb = b;
+ 	s64 cmp = nodea->event_time - nodeb->event_time;
+ 
+-	return cmp;
++	return cmp < 0 ? -1 : (cmp > 0 ? 1 : 0);
  }
- #endif /* CONFIG_XFS_RT */
  
-+static inline bool
-+rmap_not_shareable(struct xfs_mount *mp, const struct xfs_rmap_irec *r)
-+{
-+	if (!xfs_has_reflink(mp))
-+		return true;
-+	if (XFS_RMAP_NON_INODE_OWNER(r->rm_owner))
-+		return true;
-+	if (r->rm_flags & (XFS_RMAP_ATTR_FORK | XFS_RMAP_BMBT_BLOCK |
-+			   XFS_RMAP_UNWRITTEN))
-+		return true;
-+	return false;
-+}
-+
- /* Execute a getfsmap query against the regular data device. */
- STATIC int
- __xfs_getfsmap_datadev(
-@@ -598,7 +611,6 @@ __xfs_getfsmap_datadev(
- 	 * low to the fsmap low key and max out the high key to the end
- 	 * of the AG.
- 	 */
--	info->low.rm_startblock = XFS_FSB_TO_AGBNO(mp, start_fsb);
- 	info->low.rm_offset = XFS_BB_TO_FSBT(mp, keys[0].fmr_offset);
- 	error = xfs_fsmap_owner_to_rmap(&info->low, &keys[0]);
- 	if (error)
-@@ -608,12 +620,9 @@ __xfs_getfsmap_datadev(
- 
- 	/* Adjust the low key if we are continuing from where we left off. */
- 	if (info->low.rm_blockcount == 0) {
--		/* empty */
--	} else if (XFS_RMAP_NON_INODE_OWNER(info->low.rm_owner) ||
--		   (info->low.rm_flags & (XFS_RMAP_ATTR_FORK |
--					  XFS_RMAP_BMBT_BLOCK |
--					  XFS_RMAP_UNWRITTEN))) {
--		info->low.rm_startblock += info->low.rm_blockcount;
-+		/* No previous record from which to continue */
-+	} else if (rmap_not_shareable(mp, &info->low)) {
-+		/* Last record seen was an unshareable extent */
- 		info->low.rm_owner = 0;
- 		info->low.rm_offset = 0;
- 
-@@ -621,8 +630,10 @@ __xfs_getfsmap_datadev(
- 		if (XFS_FSB_TO_DADDR(mp, start_fsb) >= eofs)
- 			return 0;
- 	} else {
-+		/* Last record seen was a shareable file data extent */
- 		info->low.rm_offset += info->low.rm_blockcount;
- 	}
-+	info->low.rm_startblock = XFS_FSB_TO_AGBNO(mp, start_fsb);
- 
- 	info->high.rm_startblock = -1U;
- 	info->high.rm_owner = ULLONG_MAX;
+ static int process_events(struct evlist *evlist,
 -- 
 2.39.5
 
