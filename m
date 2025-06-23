@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-156837-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156452-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 41FFFAE5157
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:33:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C4150AE4FA9
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:18:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 461DB441B8C
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:33:03 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DBF493BF6A6
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:17:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9064421B8F6;
-	Mon, 23 Jun 2025 21:33:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E0C3223335;
+	Mon, 23 Jun 2025 21:17:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wgIbarfu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yMowCDDO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D9E31C5D46;
-	Mon, 23 Jun 2025 21:33:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58FE8221299;
+	Mon, 23 Jun 2025 21:17:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750714387; cv=none; b=LCyMMsPj2rGxz76ggpqryXWnFngilApeWrfaDd2cdS1B6Rzr2lIObs0w9ZNN1E+zzC5SOj7DV8Hbx8wM5tBTjWJW/EjrxD+TJHY1KbJ0ZPgt1m5380nhYzxOa41o0k5EzY6zmqzfu7SIzkm+X0I/NItBokag5vvgv7XRECZMZCQ=
+	t=1750713446; cv=none; b=bNxAH5Ydd/erAeFB5XsF/3v8GYYGvgFv5xvhkHlPpbpR79hGTuwxvVIZqcostOGYEiPHXL5u/vR3TrI/aUeyW44S2kd0IbAHmKh4ZqQlFO54q1AXcRFg70iD7Il0B7dBzCh6Av77/6xZMl88Jfmu7zhsDlgJb9IjQFFlIR/r7Fk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750714387; c=relaxed/simple;
-	bh=UHamFqM2sji1GT9JSoeTELwu8PieDmui/RUFtv5dce0=;
+	s=arc-20240116; t=1750713446; c=relaxed/simple;
+	bh=CGwPd7gyaeWoLTlBwhYiTLYXYtQxu+NFTLxsLgaWaXw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=m30QLNKQUkCeXzA0tyhbORH1rRIB9B/Z2fOiocNKsrju61H40P87DaCJ+wtgl7dbXoU9w4OushIIuM2qi3J8O0htV3xRT1tubkAbtppaECSNwY//LC1AQ5bORCS1JOPgLsuceLUilVORm+7YS2RJOD7mFsG5hQzFFmkoRxQUcL0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wgIbarfu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA99CC4CEEA;
-	Mon, 23 Jun 2025 21:33:06 +0000 (UTC)
+	 MIME-Version; b=LcwJCQoHPLonZ+76w7RFnZw92Vt0lcFc4UetNf4M/yzu8BGsOw/alPEdCblgHI8FM4JGH7HC3WbkwReJLSPk0GlWOW3K8pAJfU+Fn5EwmrTiKrKCAzB3ZR387x0wKuiNAWlD87KiZA6RNDFRnwugv2i2ooQI07/vifiAPUdWWvo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yMowCDDO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E641DC4CEEA;
+	Mon, 23 Jun 2025 21:17:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750714387;
-	bh=UHamFqM2sji1GT9JSoeTELwu8PieDmui/RUFtv5dce0=;
+	s=korg; t=1750713446;
+	bh=CGwPd7gyaeWoLTlBwhYiTLYXYtQxu+NFTLxsLgaWaXw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wgIbarfufsamYfjZQPcnRfa3uxeNN182C4ZKvkXHHqKBBBOM98JfEITesLK/rsMSZ
-	 y3OOxiB6dvMqH5YB9qv0OGXJCegLC+dEBfd4XIOQBi/3/yb/a+BnJ5ap1Q9Rmzncrz
-	 vQ/V6rXWNxDiFxy+fTy6QT2vCsbvMwXuG+SmTiPE=
+	b=yMowCDDO/cpJUdNqIc7e+ClSeIUv6YHeS1+YZjszMRz+hR0uOh9pWA9kQd8j+n1lK
+	 6o1cI87QCpT3NnmDqZ4147x9etKFuvtxZ0i7MH9Q1fCxQAdvsiyacOePH5fmZzMYlh
+	 mpR0JRpqA4qLahu4feJLOuhPs3DQxa5IlXYagrc4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
-	Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 156/508] usb: renesas_usbhs: Reorder clock handling and power management in probe
+	syzbot+365005005522b70a36f2@syzkaller.appspotmail.com,
+	Denis Arefev <arefev@swemel.ru>,
+	Hans Verkuil <hverkuil@xs4all.nl>
+Subject: [PATCH 6.12 064/414] media: vivid: Change the siize of the composing
 Date: Mon, 23 Jun 2025 15:03:21 +0200
-Message-ID: <20250623130649.118827198@linuxfoundation.org>
+Message-ID: <20250623130643.671701624@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
-References: <20250623130645.255320792@linuxfoundation.org>
+In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
+References: <20250623130642.015559452@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,196 +62,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
+From: Denis Arefev <arefev@swemel.ru>
 
-[ Upstream commit ffb34a60ce86656ba12d46e91f1ccc71dd221251 ]
+commit f83ac8d30c43fd902af7c84c480f216157b60ef0 upstream.
 
-Reorder the initialization sequence in `usbhs_probe()` to enable runtime
-PM before accessing registers, preventing potential crashes due to
-uninitialized clocks.
+syzkaller found a bug:
 
-Currently, in the probe path, registers are accessed before enabling the
-clocks, leading to a synchronous external abort on the RZ/V2H SoC.
-The problematic call flow is as follows:
+BUG: KASAN: vmalloc-out-of-bounds in tpg_fill_plane_pattern drivers/media/common/v4l2-tpg/v4l2-tpg-core.c:2608 [inline]
+BUG: KASAN: vmalloc-out-of-bounds in tpg_fill_plane_buffer+0x1a9c/0x5af0 drivers/media/common/v4l2-tpg/v4l2-tpg-core.c:2705
+Write of size 1440 at addr ffffc9000d0ffda0 by task vivid-000-vid-c/5304
 
-    usbhs_probe()
-        usbhs_sys_clock_ctrl()
-            usbhs_bset()
-                usbhs_write()
-                    iowrite16()  <-- Register access before enabling clocks
+CPU: 0 UID: 0 PID: 5304 Comm: vivid-000-vid-c Not tainted 6.14.0-rc2-syzkaller-00039-g09fbf3d50205 #0
+Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2~bpo12+1 04/01/2014
 
-Since `iowrite16()` is performed without ensuring the required clocks are
-enabled, this can lead to access errors. To fix this, enable PM runtime
-early in the probe function and ensure clocks are acquired before register
-access, preventing crashes like the following on RZ/V2H:
+Call Trace:
+ <TASK>
+ __dump_stack lib/dump_stack.c:94 [inline]
+ dump_stack_lvl+0x241/0x360 lib/dump_stack.c:120
+ print_address_description mm/kasan/report.c:378 [inline]
+ print_report+0x169/0x550 mm/kasan/report.c:489
+ kasan_report+0x143/0x180 mm/kasan/report.c:602
+ kasan_check_range+0x282/0x290 mm/kasan/generic.c:189
+ __asan_memcpy+0x40/0x70 mm/kasan/shadow.c:106
+ tpg_fill_plane_pattern drivers/media/common/v4l2-tpg/v4l2-tpg-core.c:2608 [inline]
+ tpg_fill_plane_buffer+0x1a9c/0x5af0 drivers/media/common/v4l2-tpg/v4l2-tpg-core.c:2705
+ vivid_fillbuff drivers/media/test-drivers/vivid/vivid-kthread-cap.c:470 [inline]
+ vivid_thread_vid_cap_tick+0xf8e/0x60d0 drivers/media/test-drivers/vivid/vivid-kthread-cap.c:629
+ vivid_thread_vid_cap+0x8aa/0xf30 drivers/media/test-drivers/vivid/vivid-kthread-cap.c:767
+ kthread+0x7a9/0x920 kernel/kthread.c:464
+ ret_from_fork+0x4b/0x80 arch/x86/kernel/process.c:148
+ ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:244
+ </TASK>
 
-[13.272640] Internal error: synchronous external abort: 0000000096000010 [#1] PREEMPT SMP
-[13.280814] Modules linked in: cec renesas_usbhs(+) drm_kms_helper fuse drm backlight ipv6
-[13.289088] CPU: 1 UID: 0 PID: 195 Comm: (udev-worker) Not tainted 6.14.0-rc7+ #98
-[13.296640] Hardware name: Renesas RZ/V2H EVK Board based on r9a09g057h44 (DT)
-[13.303834] pstate: 60400005 (nZCv daif +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
-[13.310770] pc : usbhs_bset+0x14/0x4c [renesas_usbhs]
-[13.315831] lr : usbhs_probe+0x2e4/0x5ac [renesas_usbhs]
-[13.321138] sp : ffff8000827e3850
-[13.324438] x29: ffff8000827e3860 x28: 0000000000000000 x27: ffff8000827e3ca0
-[13.331554] x26: ffff8000827e3ba0 x25: ffff800081729668 x24: 0000000000000025
-[13.338670] x23: ffff0000c0f08000 x22: 0000000000000000 x21: ffff0000c0f08010
-[13.345783] x20: 0000000000000000 x19: ffff0000c3b52080 x18: 00000000ffffffff
-[13.352895] x17: 0000000000000000 x16: 0000000000000000 x15: ffff8000827e36ce
-[13.360009] x14: 00000000000003d7 x13: 00000000000003d7 x12: 0000000000000000
-[13.367122] x11: 0000000000000000 x10: 0000000000000aa0 x9 : ffff8000827e3750
-[13.374235] x8 : ffff0000c1850b00 x7 : 0000000003826060 x6 : 000000000000001c
-[13.381347] x5 : 000000030d5fcc00 x4 : ffff8000825c0000 x3 : 0000000000000000
-[13.388459] x2 : 0000000000000400 x1 : 0000000000000000 x0 : ffff0000c3b52080
-[13.395574] Call trace:
-[13.398013]  usbhs_bset+0x14/0x4c [renesas_usbhs] (P)
-[13.403076]  platform_probe+0x68/0xdc
-[13.406738]  really_probe+0xbc/0x2c0
-[13.410306]  __driver_probe_device+0x78/0x120
-[13.414653]  driver_probe_device+0x3c/0x154
-[13.418825]  __driver_attach+0x90/0x1a0
-[13.422647]  bus_for_each_dev+0x7c/0xe0
-[13.426470]  driver_attach+0x24/0x30
-[13.430032]  bus_add_driver+0xe4/0x208
-[13.433766]  driver_register+0x68/0x130
-[13.437587]  __platform_driver_register+0x24/0x30
-[13.442273]  renesas_usbhs_driver_init+0x20/0x1000 [renesas_usbhs]
-[13.448450]  do_one_initcall+0x60/0x1d4
-[13.452276]  do_init_module+0x54/0x1f8
-[13.456014]  load_module+0x1754/0x1c98
-[13.459750]  init_module_from_file+0x88/0xcc
-[13.464004]  __arm64_sys_finit_module+0x1c4/0x328
-[13.468689]  invoke_syscall+0x48/0x104
-[13.472426]  el0_svc_common.constprop.0+0xc0/0xe0
-[13.477113]  do_el0_svc+0x1c/0x28
-[13.480415]  el0_svc+0x30/0xcc
-[13.483460]  el0t_64_sync_handler+0x10c/0x138
-[13.487800]  el0t_64_sync+0x198/0x19c
-[13.491453] Code: 2a0103e1 12003c42 12003c63 8b010084 (79400084)
-[13.497522] ---[ end trace 0000000000000000 ]---
+The composition size cannot be larger than the size of fmt_cap_rect.
+So execute v4l2_rect_map_inside() even if has_compose_cap == 0.
 
-Fixes: f1407d5c66240 ("usb: renesas_usbhs: Add Renesas USBHS common code")
-Signed-off-by: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
-Reviewed-by: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
-Tested-by: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
-Link: https://lore.kernel.org/r/20250407105002.107181-4-prabhakar.mahadev-lad.rj@bp.renesas.com
+Fixes: 94a7ad928346 ("media: vivid: fix compose size exceed boundary")
+Cc: stable@vger.kernel.org
+Reported-by: syzbot+365005005522b70a36f2@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?id=8ed8e8cc30cbe0d86c9a25bd1d6a5775129b8ea3
+Signed-off-by: Denis Arefev <arefev@swemel.ru>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/renesas_usbhs/common.c | 50 +++++++++++++++++++++++-------
- 1 file changed, 38 insertions(+), 12 deletions(-)
+ drivers/media/test-drivers/vivid/vivid-vid-cap.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/usb/renesas_usbhs/common.c b/drivers/usb/renesas_usbhs/common.c
-index 9af61f17dfc75..6343ef4e184b5 100644
---- a/drivers/usb/renesas_usbhs/common.c
-+++ b/drivers/usb/renesas_usbhs/common.c
-@@ -674,10 +674,29 @@ static int usbhs_probe(struct platform_device *pdev)
- 	INIT_DELAYED_WORK(&priv->notify_hotplug_work, usbhsc_notify_hotplug);
- 	spin_lock_init(usbhs_priv_to_lock(priv));
- 
-+	/*
-+	 * Acquire clocks and enable power management (PM) early in the
-+	 * probe process, as the driver accesses registers during
-+	 * initialization. Ensure the device is active before proceeding.
-+	 */
-+	pm_runtime_enable(dev);
-+
-+	ret = usbhsc_clk_get(dev, priv);
-+	if (ret)
-+		goto probe_pm_disable;
-+
-+	ret = pm_runtime_resume_and_get(dev);
-+	if (ret)
-+		goto probe_clk_put;
-+
-+	ret = usbhsc_clk_prepare_enable(priv);
-+	if (ret)
-+		goto probe_pm_put;
-+
- 	/* call pipe and module init */
- 	ret = usbhs_pipe_probe(priv);
- 	if (ret < 0)
--		return ret;
-+		goto probe_clk_dis_unprepare;
- 
- 	ret = usbhs_fifo_probe(priv);
- 	if (ret < 0)
-@@ -694,10 +713,6 @@ static int usbhs_probe(struct platform_device *pdev)
- 	if (ret)
- 		goto probe_fail_rst;
- 
--	ret = usbhsc_clk_get(dev, priv);
--	if (ret)
--		goto probe_fail_clks;
--
- 	/*
- 	 * deviece reset here because
- 	 * USB device might be used in boot loader.
-@@ -710,7 +725,7 @@ static int usbhs_probe(struct platform_device *pdev)
- 		if (ret) {
- 			dev_warn(dev, "USB function not selected (GPIO)\n");
- 			ret = -ENOTSUPP;
--			goto probe_end_mod_exit;
-+			goto probe_assert_rest;
- 		}
- 	}
- 
-@@ -724,14 +739,19 @@ static int usbhs_probe(struct platform_device *pdev)
- 	ret = usbhs_platform_call(priv, hardware_init, pdev);
- 	if (ret < 0) {
- 		dev_err(dev, "platform init failed.\n");
--		goto probe_end_mod_exit;
-+		goto probe_assert_rest;
- 	}
- 
- 	/* reset phy for connection */
- 	usbhs_platform_call(priv, phy_reset, pdev);
- 
--	/* power control */
--	pm_runtime_enable(dev);
-+	/*
-+	 * Disable the clocks that were enabled earlier in the probe path,
-+	 * and let the driver handle the clocks beyond this point.
-+	 */
-+	usbhsc_clk_disable_unprepare(priv);
-+	pm_runtime_put(dev);
-+
- 	if (!usbhs_get_dparam(priv, runtime_pwctrl)) {
- 		usbhsc_power_ctrl(priv, 1);
- 		usbhs_mod_autonomy_mode(priv);
-@@ -748,9 +768,7 @@ static int usbhs_probe(struct platform_device *pdev)
- 
- 	return ret;
- 
--probe_end_mod_exit:
--	usbhsc_clk_put(priv);
--probe_fail_clks:
-+probe_assert_rest:
- 	reset_control_assert(priv->rsts);
- probe_fail_rst:
- 	usbhs_mod_remove(priv);
-@@ -758,6 +776,14 @@ static int usbhs_probe(struct platform_device *pdev)
- 	usbhs_fifo_remove(priv);
- probe_end_pipe_exit:
- 	usbhs_pipe_remove(priv);
-+probe_clk_dis_unprepare:
-+	usbhsc_clk_disable_unprepare(priv);
-+probe_pm_put:
-+	pm_runtime_put(dev);
-+probe_clk_put:
-+	usbhsc_clk_put(priv);
-+probe_pm_disable:
-+	pm_runtime_disable(dev);
- 
- 	dev_info(dev, "probe failed (%d)\n", ret);
- 
--- 
-2.39.5
-
+--- a/drivers/media/test-drivers/vivid/vivid-vid-cap.c
++++ b/drivers/media/test-drivers/vivid/vivid-vid-cap.c
+@@ -947,8 +947,8 @@ int vivid_vid_cap_s_selection(struct fil
+ 			if (dev->has_compose_cap) {
+ 				v4l2_rect_set_min_size(compose, &min_rect);
+ 				v4l2_rect_set_max_size(compose, &max_rect);
+-				v4l2_rect_map_inside(compose, &fmt);
+ 			}
++			v4l2_rect_map_inside(compose, &fmt);
+ 			dev->fmt_cap_rect = fmt;
+ 			tpg_s_buf_height(&dev->tpg, fmt.height);
+ 		} else if (dev->has_compose_cap) {
 
 
 
