@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-157499-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157403-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id BE5F2AE5467
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:01:13 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8AFA3AE53C7
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:56:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BCC1A188ADA2
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:00:35 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 154A04A879C
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:56:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6AD81221FD6;
-	Mon, 23 Jun 2025 22:00:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D21FD223316;
+	Mon, 23 Jun 2025 21:56:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NzMnn06M"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hLd3aczD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28A344409;
-	Mon, 23 Jun 2025 22:00:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 909EB1AD3FA;
+	Mon, 23 Jun 2025 21:56:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750716017; cv=none; b=Mpxsx25tVryzkgziJvj5QUKXNExj27slzAKGvN/epgifBiF234/OuGRNXJjV4lfTFLCLlX89aNO0bMaPfo+ZZB5sBtlSSdvU/6BNDCNqTmkNsFdTSmW/bo4aJPjVp4xqg6QUWJgeKd1BKa4SsvvwUdBFO9Of+DMTHBZ7OzZ/96s=
+	t=1750715780; cv=none; b=dihfsTpPoCwp8AIJKqJkl2LoMItxfzdBo6mw0aWO83w/2LjHHDiep/TLcRi5q9DR+L6lrGR/mnlcWzgVCZqriUpdaOfCEPoT2mTFh0/IMRIEpqi9I1KTV+NzCJUgKCaaev7mW7OOhhEmmsL9A97z8SAbJ8jDkzHL8TgVYKDPnUo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750716017; c=relaxed/simple;
-	bh=WO2J9Q5W5Sz6as3RsFqoLmWApkiG7p9mrEc4PCtdVgE=;
+	s=arc-20240116; t=1750715780; c=relaxed/simple;
+	bh=zg61Hd4iI/yAZrn/cYIgjUnZAKgbkTeGzZBI4fBQQTk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=n35XhN8FPnTydEGSFyUQUHnIZUSovGLKQQNYel12+MoRQFDUm9U/I0WJjvmmE6kK1FCXkCScqCozSLD7meJ+GYWqA8ZalAjykq0RSg8dkQ88C3OMuYuDhWovbLj3vDYoAZsR3t1jFBm+9oGthIoNZ8KMhZVmKjxJD2ZB0U+WRz8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NzMnn06M; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B267FC4CEEA;
-	Mon, 23 Jun 2025 22:00:16 +0000 (UTC)
+	 MIME-Version; b=HcCfeRd+jG6z91NjrKOU/zVeVLHNjeaf/vH++hvQ9Tq0Ij0hx+461hdvS+lAg9TbCuRWCLrSIsjdv4R5tPWNDcC8Ju1Vue+KIGCkzHB8U6p5s+fgI9FKc9d2uVuvKePvOXTPmKdTNfBCh9+N8sE7GNodoh72keHPdgJJYmw0J28=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hLd3aczD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2950EC4CEEA;
+	Mon, 23 Jun 2025 21:56:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750716017;
-	bh=WO2J9Q5W5Sz6as3RsFqoLmWApkiG7p9mrEc4PCtdVgE=;
+	s=korg; t=1750715780;
+	bh=zg61Hd4iI/yAZrn/cYIgjUnZAKgbkTeGzZBI4fBQQTk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NzMnn06MYOAi+ADMPzLJTv7LTWh3pmvJmze5dHLkEwwzy2rTYCnVdQjv8QMzBdoD6
-	 YuVXQE4bsYLHJS8a3lq3fo/zA7wEbEcvbU5AWkcGuE7A0r1CCHJfYNElJdGZz1tCmS
-	 AiYURKqJ1PimW7UKhJM3eI/XvyQIdO+Qf3Gorbng=
+	b=hLd3aczDfHoTloW6B+dc5D8anZgWvqb1EBXw5GDFFsCXZHv0BrbEMzNPP+EmX9epo
+	 kcVkzb1roUYqe3FcLuVuWw2tlxDdKqjev9JXf+h5xRT6N9uVG8mo4gUUxs64jT6m6V
+	 IY4721uRMkXB+FKJnMUTWmXKBYPGHmdBmHSHaudE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Jonathan Lane <jon@borg.moe>,
 	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.6 235/290] ALSA: hda/realtek: enable headset mic on Latitude 5420 Rugged
-Date: Mon, 23 Jun 2025 15:08:16 +0200
-Message-ID: <20250623130633.996435910@linuxfoundation.org>
+Subject: [PATCH 5.10 296/355] ALSA: hda/realtek: enable headset mic on Latitude 5420 Rugged
+Date: Mon, 23 Jun 2025 15:08:17 +0200
+Message-ID: <20250623130635.674525716@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130626.910356556@linuxfoundation.org>
-References: <20250623130626.910356556@linuxfoundation.org>
+In-Reply-To: <20250623130626.716971725@linuxfoundation.org>
+References: <20250623130626.716971725@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,7 +61,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
@@ -84,7 +84,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 --- a/sound/pci/hda/patch_realtek.c
 +++ b/sound/pci/hda/patch_realtek.c
-@@ -9952,6 +9952,7 @@ static const struct hda_quirk alc269_fix
+@@ -9151,6 +9151,7 @@ static const struct snd_pci_quirk alc269
  	SND_PCI_QUIRK(0x1028, 0x0871, "Dell Precision 3630", ALC255_FIXUP_DELL_HEADSET_MIC),
  	SND_PCI_QUIRK(0x1028, 0x0872, "Dell Precision 3630", ALC255_FIXUP_DELL_HEADSET_MIC),
  	SND_PCI_QUIRK(0x1028, 0x0873, "Dell Precision 3930", ALC255_FIXUP_DUMMY_LINEOUT_VERB),
