@@ -1,192 +1,159 @@
-Return-Path: <stable+bounces-157709-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157800-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 18A79AE5541
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:09:41 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id BD36EAE55A3
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:13:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4DC9E179CE3
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:09:06 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 570311BC5D10
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:13:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF6ED21FF2B;
-	Mon, 23 Jun 2025 22:08:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D74B5226888;
+	Mon, 23 Jun 2025 22:12:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="bXSKF7ry"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="S0OwI887"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f171.google.com (mail-pf1-f171.google.com [209.85.210.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA5591F7580
-	for <stable@vger.kernel.org>; Mon, 23 Jun 2025 22:08:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.177.32
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C1E6B676;
+	Mon, 23 Jun 2025 22:12:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750716531; cv=none; b=kaGiASvEHKC8Pkg+YSb9mLzZJIkqLT/oMJb7VOJoRKqM+n5bReOF/WqfdJTQs/hqS+RHBRL2wXsPLObSoSuLHEdQIbhKg/g/A4XoSJ9EAccwo7SaftHTSd76l5OjxhNe4+TPPIm46K7DV2IDpzBmBaneL2V/q0RlxLSn/GhH5I8=
+	t=1750716751; cv=none; b=YVn7tY3iv/0HpsxwBzpwqJNGFYJdPHjcVmtjmdMHy4w9mo71x3oXQd1+TAx7F6UgBTj13gMMEDKRW2yXyA+TAOle0Y6itSlYG8Yev6BnahwzuLpr2plIJ9xt1cIi+OiBaMp3wu3QgXd5FhopkTrc2Dv/nmg7gwSfmdTpn3W6vcU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750716531; c=relaxed/simple;
-	bh=eD5nJ93Id6JHaUcDUQCd20/vTy2jzxP08xvcZQwDF6A=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=MseAOQ7gJj8bid/ZFPi4qfG4Gfhqp4vVmgvS45pms+m2rp1Bj9uvnixAQCt7Xa6Ie3EFEFKFBLGlSUlAAsltdn30k3wMYF5wwUZwElxI1wNZxuE2CAlKiVvC8sey7wE1bewg4gQhPAFJWnCtd5JQCEY/gC/miYWCpE4mGKNQvQE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=bXSKF7ry; arc=none smtp.client-ip=205.220.177.32
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oracle.com
-Received: from pps.filterd (m0246632.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 55NLfY5a004782;
-	Mon, 23 Jun 2025 22:08:46 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
-	:content-transfer-encoding:date:from:message-id:mime-version
-	:subject:to; s=corp-2025-04-25; bh=Qv5ruZDLl5WhePHy00GMtmaM9VHwq
-	xwcU7TRKwc+8Rs=; b=bXSKF7ryNRaX65VWGJYKtIWieiYtUsRAU3hfHDKybPVhf
-	Vs02/qdTU6R5II2yb/QKPYj8TFtgyKe+iuY6M5huuJQgUTEn5ncgy2GAKhYvl2Qc
-	ubOF0SEy0cFI8zjDQMmDP3aX8zk1fAfYRJf7xreWEtPEFqH7c5Iwzw2JxieZ4THN
-	LlpAc38+JE5hO1Rny9y8r1DOb2ZBH9Zz/hVOs4viprKSDL8Rvzp+KgLCnmfkkJOl
-	928rNnjUFIuVW6W87SmyO12icq6f3m9klwN2ZzovBsy2252LFG5VpY0gnlOY6Omu
-	731Ok+fbkaKHy+qlDRzCD08oDIdLOx7ygUw89YEHA==
-Received: from iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta02.appoci.oracle.com [147.154.18.20])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 47egt7aq2q-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 23 Jun 2025 22:08:46 +0000 (GMT)
-Received: from pps.filterd (iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
-	by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 55NKODfR025062;
-	Mon, 23 Jun 2025 22:08:45 GMT
-Received: from pps.reinject (localhost [127.0.0.1])
-	by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id 47ehvvd73a-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 23 Jun 2025 22:08:45 +0000
-Received: from iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 55NM8j2Y022831;
-	Mon, 23 Jun 2025 22:08:45 GMT
-Received: from ca-dev110.us.oracle.com (ca-dev110.us.oracle.com [10.129.136.45])
-	by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTP id 47ehvvd72w-1;
-	Mon, 23 Jun 2025 22:08:45 +0000
-From: Larry Bassel <larry.bassel@oracle.com>
-To: stable@vger.kernel.org
-Cc: sweettea-kernel@dorminy.me, anand.jain@oracle.com, osandov@fb.com,
-        dsterba@suse.com
-Subject: [PATCH 5.4.y] btrfs: don't abort filesystem when attempting to snapshot deleted subvolume
-Date: Mon, 23 Jun 2025 15:08:16 -0700
-Message-ID: <20250623220816.51405-1-larry.bassel@oracle.com>
-X-Mailer: git-send-email 2.46.0
+	s=arc-20240116; t=1750716751; c=relaxed/simple;
+	bh=vX8V9d5czqB7qJFtk/cKvJmbgNp7qUz5USbg6t/IFEg=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Sfev0LOdsLP+0vrC8/qogAfbzOKpqTyDGdwBLlek7koyyvsLDcdEzhgxQZiKt4SFckPaqVadNi/4sU7IDVzf02L8O6cGbpfcrK88S9BOjQXt4jz6d+avMtBOr1fab30EQTooc0cxvbbA7Ht51gnIHl+ruLZfgTD0NLMOxrZ3ChE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=S0OwI887; arc=none smtp.client-ip=209.85.210.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pf1-f171.google.com with SMTP id d2e1a72fcca58-73c17c770a7so5317386b3a.2;
+        Mon, 23 Jun 2025 15:12:30 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1750716749; x=1751321549; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=rNNk9iay4TFsaR3oROHDPyt7j9eK6fHVYAQhw0ci6+U=;
+        b=S0OwI887Mi+S73obchApej0WKlYKy1cXfi3ZGs6Rp/DZdsMgoKdrI37kKZF+qOqpJV
+         fxWq8iAo+hgcW2jmrFlAcUnJkpDg62DncFfRQTroykN1E4Zx0gVF+ZlhK6VAH5QCIIKq
+         qawwoRu6EAdkyUJ4xyTnarZLNyUqoq03Ysl/Kz01lGANv2KkpnWABHnh5RJ+sKVHCLZv
+         DJUHoj1UgqOy/GHeL1sSgI+P6MpoHGxHZn4g8UBtX50ZpORbsSAn/4NSpOm/ebnpMmMf
+         7JqmpcRjQDc3eCi6+c10ZDpSwo5coS+VKpuq8CEwoY8K5Gzn62O/evOJnefo+DQchHuz
+         CdKQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1750716749; x=1751321549;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=rNNk9iay4TFsaR3oROHDPyt7j9eK6fHVYAQhw0ci6+U=;
+        b=pslJlvTMaBuEkbm3+IiWChrrh6nPpWwWMA3gfbkURnjINTX2iuyOlXRuBKkt+Jy42x
+         iTQ1PtoVBMYxZDNxvouONHT62NVs3ptzfwf2woUbMKf4928eGXLhybEaMgKCKYaCjrPQ
+         dBEoIG31G/mY3oPb18PK6a0m+kcuRzNQj6zunS+QDeEiUAhbx4ibiMD8k0UjV5NiC+fT
+         /5FPtWyI+9BsD0rPGwZegVtfh5aqNeQ8FyM2++fizjBcVGN0LuLhxIoPgqPaAqM3OgXP
+         nrG8zEiGPH1vI3JhToHOtkg2nAdLHaBh1DrhCGrnfL51rqQ1/egmUgdcl+27FzN1A86h
+         MPmg==
+X-Forwarded-Encrypted: i=1; AJvYcCVyVCSsJRcuZ7k8tmVm8D0krCX2/hh6yQAq0YSyZihRUtGJn8E1FT/4l3zSSn1ZrVflwQH4Fw0i/N3eAaU=@vger.kernel.org, AJvYcCWOQoYnY1CL8D2b5TgmneDuUc+9D8MqaWsNuuEYNtyo7gDmTEygevvTWf8OK4qE7jwjkPHqmDq0@vger.kernel.org
+X-Gm-Message-State: AOJu0YxPYatFGP49hRSIN0AA1BxD0uQipqRK2ZNgA+eq19gyNFBNBE96
+	A84iemitXVvSHLaqmuV0Mg+sw6WXtrMWcXRAq4R/LEliLnJdIJVJYjfPFhV3SgME
+X-Gm-Gg: ASbGncsDaU8d06BszgAnm/mGNj3H/z/EOMJsixN1fRCANIX/JdzOAKxHk/Bhn6unLRS
+	7FQnFb84RJikAzvhGF5SSxVlHZr1ZhIMlUnW2Qs1uYH/SZBQKbYS2n/h3XjET7LqiGNH66usJgb
+	wQBc4uyU5VArk7GIsIQySmH2KFI9lidd3jbDmZjy9ErN8erKxiPfZ5KAXm5VK963Y55Bh4m2I9E
+	juxNl9lWQRcR0fdkYHVlS1xLM3LEX9jmFRo4l1grQo4qBCVE9gVuIqMcmP47S3x2NhZWd0TPGkx
+	/GjMmSD//X1BwT+x609GaWKm5VouSGYcVSFq7BOJ5LAopDBTWW2xEL9HTMhiKAvGbeQSmsodVLg
+	Rp+4N8Q94zMTu9BiGN0BvfDAl
+X-Google-Smtp-Source: AGHT+IFkA9rLLTXE/wzSDCD/eX9kG0gVoLWTteo6t/0lF66T7wkylkPLNX8ySW5Xjw4muC09909y/A==
+X-Received: by 2002:a05:6a00:4fc2:b0:736:35d4:f03f with SMTP id d2e1a72fcca58-7490d52ca7cmr21366005b3a.6.1750716749472;
+        Mon, 23 Jun 2025 15:12:29 -0700 (PDT)
+Received: from [10.67.48.245] ([192.19.223.252])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-b31f118e851sm7376633a12.4.2025.06.23.15.12.25
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 23 Jun 2025 15:12:28 -0700 (PDT)
+Message-ID: <2a1bcdf7-a6e9-4035-b85f-123c76e4ca7b@gmail.com>
+Date: Mon, 23 Jun 2025 15:12:25 -0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.7,FMLib:17.12.80.40
- definitions=2025-06-23_07,2025-06-23_07,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxscore=0 bulkscore=0 spamscore=0
- phishscore=0 adultscore=0 malwarescore=0 suspectscore=0 mlxlogscore=999
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2505160000
- definitions=main-2506230150
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNjIzMDE1MCBTYWx0ZWRfX688A4neQPW8q bAYzbee4RyckYXzpDXISKUIJq3N+FJaOJ7qxN5ilhGNWYPEnLceC5ePtzW4VheNOQ4iaPv2CRLt QO3HXiHHnPAN4nYd1IrAA5nSmTvROgUtHN3e4SBjzNR2ytO/BlHkyvzMMI1KOfOfSrrCGdwpHOk
- KsFyuCl0NIn2l97CS/5eK8nKdHuDJT6g9ium/EniTl688ALqy7m8ZbOahLNmnweFrF/AvKAI/2c Q6h7M2h9UzzK+w89LI5IjzyzXGdhWVSI9VBOdhFJM+TZCGA91PFCOmwYOv51Y3a+7vr3SAycIPI wH82wXJKrrTxxtfcaRZrzfyGbcu8zzsTuPxtZikd5N+VoaW7wa1Fe/o6vpEXGYQMOgA80QmRaM8
- balgWMJ79G6+/6aZ58J9qd8E8UNvG3T+lko1quZ3i7+vv4ut8QCnX3hZuV1ngQ9tWhYhcoCY
-X-Proofpoint-GUID: LH4fX9re1JP31i8jFMerDbPYM0trUPm7
-X-Authority-Analysis: v=2.4 cv=QNpoRhLL c=1 sm=1 tr=0 ts=6859d06e b=1 cx=c_pps a=e1sVV491RgrpLwSTMOnk8w==:117 a=e1sVV491RgrpLwSTMOnk8w==:17 a=6IFa9wvqVegA:10 a=FOH2dFAWAAAA:8 a=VwQbUJbxAAAA:8 a=yPCof4ZbAAAA:8 a=iox4zFpeAAAA:8 a=lhZV_6TAlmzbfNDFBXoA:9
- a=WzC6qhA0u3u7Ye7llzcV:22 cc=ntf awl=host:14714
-X-Proofpoint-ORIG-GUID: LH4fX9re1JP31i8jFMerDbPYM0trUPm7
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 6.1 000/508] 6.1.142-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+ sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+ conor@kernel.org, hargar@microsoft.com, broonie@kernel.org
+References: <20250623130645.255320792@linuxfoundation.org>
+Content-Language: en-US
+From: Florian Fainelli <f.fainelli@gmail.com>
+Autocrypt: addr=f.fainelli@gmail.com; keydata=
+ xsDiBEjPuBIRBACW9MxSJU9fvEOCTnRNqG/13rAGsj+vJqontvoDSNxRgmafP8d3nesnqPyR
+ xGlkaOSDuu09rxuW+69Y2f1TzjFuGpBk4ysWOR85O2Nx8AJ6fYGCoeTbovrNlGT1M9obSFGQ
+ X3IzRnWoqlfudjTO5TKoqkbOgpYqIo5n1QbEjCCwCwCg3DOH/4ug2AUUlcIT9/l3pGvoRJ0E
+ AICDzi3l7pmC5IWn2n1mvP5247urtHFs/uusE827DDj3K8Upn2vYiOFMBhGsxAk6YKV6IP0d
+ ZdWX6fqkJJlu9cSDvWtO1hXeHIfQIE/xcqvlRH783KrihLcsmnBqOiS6rJDO2x1eAgC8meAX
+ SAgsrBhcgGl2Rl5gh/jkeA5ykwbxA/9u1eEuL70Qzt5APJmqVXR+kWvrqdBVPoUNy/tQ8mYc
+ nzJJ63ng3tHhnwHXZOu8hL4nqwlYHRa9eeglXYhBqja4ZvIvCEqSmEukfivk+DlIgVoOAJbh
+ qIWgvr3SIEuR6ayY3f5j0f2ejUMYlYYnKdiHXFlF9uXm1ELrb0YX4GMHz80nRmxvcmlhbiBG
+ YWluZWxsaSA8Zi5mYWluZWxsaUBnbWFpbC5jb20+wmYEExECACYCGyMGCwkIBwMCBBUCCAME
+ FgIDAQIeAQIXgAUCZ7gLLgUJMbXO7gAKCRBhV5kVtWN2DlsbAJ9zUK0VNvlLPOclJV3YM5HQ
+ LkaemACgkF/tnkq2cL6CVpOk3NexhMLw2xzOw00ESM+4EhAQAL/o09boR9D3Vk1Tt7+gpYr3
+ WQ6hgYVON905q2ndEoA2J0dQxJNRw3snabHDDzQBAcqOvdi7YidfBVdKi0wxHhSuRBfuOppu
+ pdXkb7zxuPQuSveCLqqZWRQ+Cc2QgF7SBqgznbe6Ngout5qXY5Dcagk9LqFNGhJQzUGHAsIs
+ hap1f0B1PoUyUNeEInV98D8Xd/edM3mhO9nRpUXRK9Bvt4iEZUXGuVtZLT52nK6Wv2EZ1TiT
+ OiqZlf1P+vxYLBx9eKmabPdm3yjalhY8yr1S1vL0gSA/C6W1o/TowdieF1rWN/MYHlkpyj9c
+ Rpc281gAO0AP3V1G00YzBEdYyi0gaJbCEQnq8Vz1vDXFxHzyhgGz7umBsVKmYwZgA8DrrB0M
+ oaP35wuGR3RJcaG30AnJpEDkBYHznI2apxdcuTPOHZyEilIRrBGzDwGtAhldzlBoBwE3Z3MY
+ 31TOpACu1ZpNOMysZ6xiE35pWkwc0KYm4hJA5GFfmWSN6DniimW3pmdDIiw4Ifcx8b3mFrRO
+ BbDIW13E51j9RjbO/nAaK9ndZ5LRO1B/8Fwat7bLzmsCiEXOJY7NNpIEpkoNoEUfCcZwmLrU
+ +eOTPzaF6drw6ayewEi5yzPg3TAT6FV3oBsNg3xlwU0gPK3v6gYPX5w9+ovPZ1/qqNfOrbsE
+ FRuiSVsZQ5s3AAMFD/9XjlnnVDh9GX/r/6hjmr4U9tEsM+VQXaVXqZuHKaSmojOLUCP/YVQo
+ 7IiYaNssCS4FCPe4yrL4FJJfJAsbeyDykMN7wAnBcOkbZ9BPJPNCbqU6dowLOiy8AuTYQ48m
+ vIyQ4Ijnb6GTrtxIUDQeOBNuQC/gyyx3nbL/lVlHbxr4tb6YkhkO6shjXhQh7nQb33FjGO4P
+ WU11Nr9i/qoV8QCo12MQEo244RRA6VMud06y/E449rWZFSTwGqb0FS0seTcYNvxt8PB2izX+
+ HZA8SL54j479ubxhfuoTu5nXdtFYFj5Lj5x34LKPx7MpgAmj0H7SDhpFWF2FzcC1bjiW9mjW
+ HaKaX23Awt97AqQZXegbfkJwX2Y53ufq8Np3e1542lh3/mpiGSilCsaTahEGrHK+lIusl6mz
+ Joil+u3k01ofvJMK0ZdzGUZ/aPMZ16LofjFA+MNxWrZFrkYmiGdv+LG45zSlZyIvzSiG2lKy
+ kuVag+IijCIom78P9jRtB1q1Q5lwZp2TLAJlz92DmFwBg1hyFzwDADjZ2nrDxKUiybXIgZp9
+ aU2d++ptEGCVJOfEW4qpWCCLPbOT7XBr+g/4H3qWbs3j/cDDq7LuVYIe+wchy/iXEJaQVeTC
+ y5arMQorqTFWlEOgRA8OP47L9knl9i4xuR0euV6DChDrguup2aJVU8JPBBgRAgAPAhsMBQJn
+ uAtCBQkxtc7uAAoJEGFXmRW1Y3YOJHUAoLuIJDcJtl7ZksBQa+n2T7T5zXoZAJ9EnFa2JZh7
+ WlfRzlpjIPmdjgoicA==
+In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-From: Omar Sandoval <osandov@fb.com>
+On 6/23/25 06:00, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.1.142 release.
+> There are 508 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+> 
+> Responses should be made by Wed, 25 Jun 2025 13:05:52 +0000.
+> Anything received after that time might be too late.
+> 
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.1.142-rc1.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.1.y
+> and the diffstat can be found below.
+> 
+> thanks,
+> 
+> greg k-h
 
-[ Upstream commit 7081929ab2572920e94d70be3d332e5c9f97095a ]
+On ARCH_BRCMSTB using 32-bit and 64-bit ARM kernels, build tested on 
+BMIPS_GENERIC:
 
-If the source file descriptor to the snapshot ioctl refers to a deleted
-subvolume, we get the following abort:
-
-  BTRFS: Transaction aborted (error -2)
-  WARNING: CPU: 0 PID: 833 at fs/btrfs/transaction.c:1875 create_pending_snapshot+0x1040/0x1190 [btrfs]
-  Modules linked in: pata_acpi btrfs ata_piix libata scsi_mod virtio_net blake2b_generic xor net_failover virtio_rng failover scsi_common rng_core raid6_pq libcrc32c
-  CPU: 0 PID: 833 Comm: t_snapshot_dele Not tainted 6.7.0-rc6 #2
-  Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.3-1.fc39 04/01/2014
-  RIP: 0010:create_pending_snapshot+0x1040/0x1190 [btrfs]
-  RSP: 0018:ffffa09c01337af8 EFLAGS: 00010282
-  RAX: 0000000000000000 RBX: ffff9982053e7c78 RCX: 0000000000000027
-  RDX: ffff99827dc20848 RSI: 0000000000000001 RDI: ffff99827dc20840
-  RBP: ffffa09c01337c00 R08: 0000000000000000 R09: ffffa09c01337998
-  R10: 0000000000000003 R11: ffffffffb96da248 R12: fffffffffffffffe
-  R13: ffff99820535bb28 R14: ffff99820b7bd000 R15: ffff99820381ea80
-  FS:  00007fe20aadabc0(0000) GS:ffff99827dc00000(0000) knlGS:0000000000000000
-  CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-  CR2: 0000559a120b502f CR3: 00000000055b6000 CR4: 00000000000006f0
-  Call Trace:
-   <TASK>
-   ? create_pending_snapshot+0x1040/0x1190 [btrfs]
-   ? __warn+0x81/0x130
-   ? create_pending_snapshot+0x1040/0x1190 [btrfs]
-   ? report_bug+0x171/0x1a0
-   ? handle_bug+0x3a/0x70
-   ? exc_invalid_op+0x17/0x70
-   ? asm_exc_invalid_op+0x1a/0x20
-   ? create_pending_snapshot+0x1040/0x1190 [btrfs]
-   ? create_pending_snapshot+0x1040/0x1190 [btrfs]
-   create_pending_snapshots+0x92/0xc0 [btrfs]
-   btrfs_commit_transaction+0x66b/0xf40 [btrfs]
-   btrfs_mksubvol+0x301/0x4d0 [btrfs]
-   btrfs_mksnapshot+0x80/0xb0 [btrfs]
-   __btrfs_ioctl_snap_create+0x1c2/0x1d0 [btrfs]
-   btrfs_ioctl_snap_create_v2+0xc4/0x150 [btrfs]
-   btrfs_ioctl+0x8a6/0x2650 [btrfs]
-   ? kmem_cache_free+0x22/0x340
-   ? do_sys_openat2+0x97/0xe0
-   __x64_sys_ioctl+0x97/0xd0
-   do_syscall_64+0x46/0xf0
-   entry_SYSCALL_64_after_hwframe+0x6e/0x76
-  RIP: 0033:0x7fe20abe83af
-  RSP: 002b:00007ffe6eff1360 EFLAGS: 00000246 ORIG_RAX: 0000000000000010
-  RAX: ffffffffffffffda RBX: 0000000000000004 RCX: 00007fe20abe83af
-  RDX: 00007ffe6eff23c0 RSI: 0000000050009417 RDI: 0000000000000003
-  RBP: 0000000000000003 R08: 0000000000000000 R09: 00007fe20ad16cd0
-  R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
-  R13: 00007ffe6eff13c0 R14: 00007fe20ad45000 R15: 0000559a120b6d58
-   </TASK>
-  ---[ end trace 0000000000000000 ]---
-  BTRFS: error (device vdc: state A) in create_pending_snapshot:1875: errno=-2 No such entry
-  BTRFS info (device vdc: state EA): forced readonly
-  BTRFS warning (device vdc: state EA): Skipping commit of aborted transaction.
-  BTRFS: error (device vdc: state EA) in cleanup_transaction:2055: errno=-2 No such entry
-
-This happens because create_pending_snapshot() initializes the new root
-item as a copy of the source root item. This includes the refs field,
-which is 0 for a deleted subvolume. The call to btrfs_insert_root()
-therefore inserts a root with refs == 0. btrfs_get_new_fs_root() then
-finds the root and returns -ENOENT if refs == 0, which causes
-create_pending_snapshot() to abort.
-
-Fix it by checking the source root's refs before attempting the
-snapshot, but after locking subvol_sem to avoid racing with deletion.
-
-CC: stable@vger.kernel.org # 4.14+
-Reviewed-by: Sweet Tea Dorminy <sweettea-kernel@dorminy.me>
-Reviewed-by: Anand Jain <anand.jain@oracle.com>
-Signed-off-by: Omar Sandoval <osandov@fb.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
-(cherry picked from commit 7081929ab2572920e94d70be3d332e5c9f97095a)
-[Larry: backport to 5.4.y. Minor conflict resolved due to missing commit 92a7cc425223
-btrfs: rename BTRFS_ROOT_REF_COWS to BTRFS_ROOT_SHAREABLE]
-Signed-off-by: Larry Bassel <larry.bassel@oracle.com>
----
- fs/btrfs/ioctl.c | 3 +++
- 1 file changed, 3 insertions(+)
-
-diff --git a/fs/btrfs/ioctl.c b/fs/btrfs/ioctl.c
-index 674d774eb662..a29182be29fa 100644
---- a/fs/btrfs/ioctl.c
-+++ b/fs/btrfs/ioctl.c
-@@ -793,6 +793,9 @@ static int create_snapshot(struct btrfs_root *root, struct inode *dir,
- 	if (!test_bit(BTRFS_ROOT_REF_COWS, &root->state))
- 		return -EINVAL;
- 
-+	if (btrfs_root_refs(&root->root_item) == 0)
-+		return -ENOENT;
-+
- 	if (atomic_read(&root->nr_swapfiles)) {
- 		btrfs_warn(fs_info,
- 			   "cannot snapshot subvolume with active swapfile");
+Tested-by: Florian Fainelli <florian.fainelli@broadcom.com>
 -- 
-2.46.0
-
+Florian
 
