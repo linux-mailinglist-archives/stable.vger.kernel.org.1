@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-158132-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-158027-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 61A17AE5752
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:28:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 08A14AE56F6
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:24:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 41B3D3A8DFB
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:25:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 148CF3AAE31
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:21:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A642223DE5;
-	Mon, 23 Jun 2025 22:26:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3D0A223DE8;
+	Mon, 23 Jun 2025 22:21:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="15j7K4FB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KhDc8dpJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 181EE221543;
-	Mon, 23 Jun 2025 22:26:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6245A2192EC;
+	Mon, 23 Jun 2025 22:21:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750717563; cv=none; b=TdJH+7UH0CVIvz0NS75S5HsrXiIypE753K69IETn0osJoG+fXsgcE7v5+LVVKrqojJ6NNDSN3mEqvxyg6lVK+deZurcr0diRaGQEz7GlNWDAL0o+T/x7JCblrM9xWLDm5CsMiQ+qoOC4CIgvfkgMZv8/WTHnW3KMlO3nkQ3Rv68=
+	t=1750717304; cv=none; b=vBMxjluonuD8I6PVUfQ0TtxdObjLbEzW3wIL2qFSldxsZgwm1zBuT0wijny2ar+BvqcTCZJoBHEWYlK0YhpFZiq3j5Nk/omL/VH6eSzIjucV/6DDEt06FwyCkazMAjo5qXPL0Fh2yo2AyruUYXVVarfJHk3m0URjrFtRNAvIxhE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750717563; c=relaxed/simple;
-	bh=JKUNB9HDZhRhJKbiXYmFI9sNV9oNd3VQpKbnCYal/FQ=;
+	s=arc-20240116; t=1750717304; c=relaxed/simple;
+	bh=y2w6YAwagjSdx3Ex9I/hqCcLqschHAjKa/vYGyDTNXI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=dVctjv4OszwJ52A8UvN00ioWqF3M1M9irDkxoH8SUocelmq9Yx2Q8OUPLUm2tvDY02W7eq7TslMjQSTCcEEqraX++bwGqv0MRjVXX+aOykuTm8fSFjPYuCJERgsIsM6b1XDOZ7weyPtfCYlSJrLnUmbco1m5uxezPjfNPsYAZyI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=15j7K4FB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1B95C4CEEA;
-	Mon, 23 Jun 2025 22:26:02 +0000 (UTC)
+	 MIME-Version; b=CUCA+fwT+5NROXIatasXMWM1vEu7ayhbgGdC3tQtBYsvqrpPfXmrWVlLQz3q0vIFZHVqbBGFIahrKGYpFoUliR4DkGV7iBhXLTuEgfsefGInn56xqiPzRpIFTRl2Ks78RG8cLV2UlJDn+7HWVrVWhEPhAowL7ZzHd3an4Ne1jP8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KhDc8dpJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED59BC4CEEA;
+	Mon, 23 Jun 2025 22:21:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750717563;
-	bh=JKUNB9HDZhRhJKbiXYmFI9sNV9oNd3VQpKbnCYal/FQ=;
+	s=korg; t=1750717304;
+	bh=y2w6YAwagjSdx3Ex9I/hqCcLqschHAjKa/vYGyDTNXI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=15j7K4FB03eQQs7yQMO6rUn8oLX9Y8AGFmOGdl3LGPM6K3YLx+pc01qWlx7XOik4I
-	 18tMC+GLglkP21UiCmgZdVI/sdZaJFeLqewI1wiVrNnr2OAgBk1gQzc60+Stpn/bNN
-	 Gy9jdthA8zInSR3DT7s3HQGTsYyv1bZ1LxtjAAjs=
+	b=KhDc8dpJHU/I+SIFLpHukuSGpw01PA2Fc1/funzIVDHhHszHDaauOsSZjZK2ATHVk
+	 d7okBzQHva5oVZibeTtFFUS5b8wzQGE4aYsgquwSNcXum6zdIQPqW3zjjmZ50Ce4ik
+	 GId6CCyZxPeb5MuTpryZ3y13u4zNyUmYQ9buphts=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Xin Li (Intel)" <xin@zytor.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Sohil Mehta <sohil.mehta@intel.com>
-Subject: [PATCH 6.1 453/508] selftests/x86: Add a test to detect infinite SIGTRAP handler loop
-Date: Mon, 23 Jun 2025 15:08:18 +0200
-Message-ID: <20250623130656.287018409@linuxfoundation.org>
+	Arnd Bergmann <arnd@arndb.de>,
+	Guenter Roeck <linux@roeck-us.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 362/414] hwmon: (occ) fix unaligned accesses
+Date: Mon, 23 Jun 2025 15:08:19 +0200
+Message-ID: <20250623130651.016984324@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
-References: <20250623130645.255320792@linuxfoundation.org>
+In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
+References: <20250623130642.015559452@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,157 +60,116 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xin Li (Intel) <xin@zytor.com>
+From: Arnd Bergmann <arnd@arndb.de>
 
-commit f287822688eeb44ae1cf6ac45701d965efc33218 upstream.
+[ Upstream commit 2c021b45c154958566aad0cae9f74ab26a2d5732 ]
 
-When FRED is enabled, if the Trap Flag (TF) is set without an external
-debugger attached, it can lead to an infinite loop in the SIGTRAP
-handler.  To avoid this, the software event flag in the augmented SS
-must be cleared, ensuring that no single-step trap remains pending when
-ERETU completes.
+Passing a pointer to an unaligned integer as a function argument is
+undefined behavior:
 
-This test checks for that specific scenario—verifying whether the kernel
-correctly prevents an infinite SIGTRAP loop in this edge case when FRED
-is enabled.
+drivers/hwmon/occ/common.c:492:27: warning: taking address of packed member 'accumulator' of class or structure 'power_sensor_2' may result in an unaligned pointer value [-Waddress-of-packed-member]
+  492 |   val = occ_get_powr_avg(&power->accumulator,
+      |                           ^~~~~~~~~~~~~~~~~~
+drivers/hwmon/occ/common.c:493:13: warning: taking address of packed member 'update_tag' of class or structure 'power_sensor_2' may result in an unaligned pointer value [-Waddress-of-packed-member]
+  493 |            &power->update_tag);
+      |             ^~~~~~~~~~~~~~~~~
 
-The test should _always_ pass with IDT event delivery, thus no need to
-disable the test even when FRED is not enabled.
+Move the get_unaligned() calls out of the function and pass these
+through argument registers instead.
 
-Signed-off-by: Xin Li (Intel) <xin@zytor.com>
-Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
-Tested-by: Sohil Mehta <sohil.mehta@intel.com>
-Cc:stable@vger.kernel.org
-Link: https://lore.kernel.org/all/20250609084054.2083189-3-xin%40zytor.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: c10e753d43eb ("hwmon (occ): Add sensor types and versions")
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Link: https://lore.kernel.org/r/20250610092553.2641094-1-arnd@kernel.org
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/x86/Makefile       |    2 
- tools/testing/selftests/x86/sigtrap_loop.c |  101 +++++++++++++++++++++++++++++
- 2 files changed, 102 insertions(+), 1 deletion(-)
- create mode 100644 tools/testing/selftests/x86/sigtrap_loop.c
+ drivers/hwmon/occ/common.c | 28 +++++++++++++---------------
+ 1 file changed, 13 insertions(+), 15 deletions(-)
 
---- a/tools/testing/selftests/x86/Makefile
-+++ b/tools/testing/selftests/x86/Makefile
-@@ -12,7 +12,7 @@ CAN_BUILD_WITH_NOPIE := $(shell ./check_
+diff --git a/drivers/hwmon/occ/common.c b/drivers/hwmon/occ/common.c
+index 9029ad53790b1..b3694a4209b97 100644
+--- a/drivers/hwmon/occ/common.c
++++ b/drivers/hwmon/occ/common.c
+@@ -459,12 +459,10 @@ static ssize_t occ_show_power_1(struct device *dev,
+ 	return sysfs_emit(buf, "%llu\n", val);
+ }
  
- TARGETS_C_BOTHBITS := single_step_syscall sysret_ss_attrs syscall_nt test_mremap_vdso \
- 			check_initial_reg_state sigreturn iopl ioperm \
--			test_vsyscall mov_ss_trap \
-+			test_vsyscall mov_ss_trap sigtrap_loop \
- 			syscall_arg_fault fsgsbase_restore sigaltstack
- TARGETS_C_32BIT_ONLY := entry_from_vm86 test_syscall_vdso unwind_vdso \
- 			test_FCMOV test_FCOMI test_FISTTP \
---- /dev/null
-+++ b/tools/testing/selftests/x86/sigtrap_loop.c
-@@ -0,0 +1,101 @@
-+// SPDX-License-Identifier: GPL-2.0-only
-+/*
-+ * Copyright (C) 2025 Intel Corporation
-+ */
-+#define _GNU_SOURCE
-+
-+#include <err.h>
-+#include <signal.h>
-+#include <stdio.h>
-+#include <stdlib.h>
-+#include <string.h>
-+#include <sys/ucontext.h>
-+
-+#ifdef __x86_64__
-+# define REG_IP REG_RIP
-+#else
-+# define REG_IP REG_EIP
-+#endif
-+
-+static void sethandler(int sig, void (*handler)(int, siginfo_t *, void *), int flags)
-+{
-+	struct sigaction sa;
-+
-+	memset(&sa, 0, sizeof(sa));
-+	sa.sa_sigaction = handler;
-+	sa.sa_flags = SA_SIGINFO | flags;
-+	sigemptyset(&sa.sa_mask);
-+
-+	if (sigaction(sig, &sa, 0))
-+		err(1, "sigaction");
-+
-+	return;
-+}
-+
-+static void sigtrap(int sig, siginfo_t *info, void *ctx_void)
-+{
-+	ucontext_t *ctx = (ucontext_t *)ctx_void;
-+	static unsigned int loop_count_on_same_ip;
-+	static unsigned long last_trap_ip;
-+
-+	if (last_trap_ip == ctx->uc_mcontext.gregs[REG_IP]) {
-+		printf("\tTrapped at %016lx\n", last_trap_ip);
-+
-+		/*
-+		 * If the same IP is hit more than 10 times in a row, it is
-+		 * _considered_ an infinite loop.
-+		 */
-+		if (++loop_count_on_same_ip > 10) {
-+			printf("[FAIL]\tDetected SIGTRAP infinite loop\n");
-+			exit(1);
-+		}
-+
-+		return;
-+	}
-+
-+	loop_count_on_same_ip = 0;
-+	last_trap_ip = ctx->uc_mcontext.gregs[REG_IP];
-+	printf("\tTrapped at %016lx\n", last_trap_ip);
-+}
-+
-+int main(int argc, char *argv[])
-+{
-+	sethandler(SIGTRAP, sigtrap, 0);
-+
-+	/*
-+	 * Set the Trap Flag (TF) to single-step the test code, therefore to
-+	 * trigger a SIGTRAP signal after each instruction until the TF is
-+	 * cleared.
-+	 *
-+	 * Because the arithmetic flags are not significant here, the TF is
-+	 * set by pushing 0x302 onto the stack and then popping it into the
-+	 * flags register.
-+	 *
-+	 * Four instructions in the following asm code are executed with the
-+	 * TF set, thus the SIGTRAP handler is expected to run four times.
-+	 */
-+	printf("[RUN]\tSIGTRAP infinite loop detection\n");
-+	asm volatile(
-+#ifdef __x86_64__
-+		/*
-+		 * Avoid clobbering the redzone
-+		 *
-+		 * Equivalent to "sub $128, %rsp", however -128 can be encoded
-+		 * in a single byte immediate while 128 uses 4 bytes.
-+		 */
-+		"add $-128, %rsp\n\t"
-+#endif
-+		"push $0x302\n\t"
-+		"popf\n\t"
-+		"nop\n\t"
-+		"nop\n\t"
-+		"push $0x202\n\t"
-+		"popf\n\t"
-+#ifdef __x86_64__
-+		"sub $-128, %rsp\n\t"
-+#endif
-+	);
-+
-+	printf("[OK]\tNo SIGTRAP infinite loop detected\n");
-+	return 0;
-+}
+-static u64 occ_get_powr_avg(u64 *accum, u32 *samples)
++static u64 occ_get_powr_avg(u64 accum, u32 samples)
+ {
+-	u64 divisor = get_unaligned_be32(samples);
+-
+-	return (divisor == 0) ? 0 :
+-		div64_u64(get_unaligned_be64(accum) * 1000000ULL, divisor);
++	return (samples == 0) ? 0 :
++		mul_u64_u32_div(accum, 1000000UL, samples);
+ }
+ 
+ static ssize_t occ_show_power_2(struct device *dev,
+@@ -489,8 +487,8 @@ static ssize_t occ_show_power_2(struct device *dev,
+ 				  get_unaligned_be32(&power->sensor_id),
+ 				  power->function_id, power->apss_channel);
+ 	case 1:
+-		val = occ_get_powr_avg(&power->accumulator,
+-				       &power->update_tag);
++		val = occ_get_powr_avg(get_unaligned_be64(&power->accumulator),
++				       get_unaligned_be32(&power->update_tag));
+ 		break;
+ 	case 2:
+ 		val = (u64)get_unaligned_be32(&power->update_tag) *
+@@ -527,8 +525,8 @@ static ssize_t occ_show_power_a0(struct device *dev,
+ 		return sysfs_emit(buf, "%u_system\n",
+ 				  get_unaligned_be32(&power->sensor_id));
+ 	case 1:
+-		val = occ_get_powr_avg(&power->system.accumulator,
+-				       &power->system.update_tag);
++		val = occ_get_powr_avg(get_unaligned_be64(&power->system.accumulator),
++				       get_unaligned_be32(&power->system.update_tag));
+ 		break;
+ 	case 2:
+ 		val = (u64)get_unaligned_be32(&power->system.update_tag) *
+@@ -541,8 +539,8 @@ static ssize_t occ_show_power_a0(struct device *dev,
+ 		return sysfs_emit(buf, "%u_proc\n",
+ 				  get_unaligned_be32(&power->sensor_id));
+ 	case 5:
+-		val = occ_get_powr_avg(&power->proc.accumulator,
+-				       &power->proc.update_tag);
++		val = occ_get_powr_avg(get_unaligned_be64(&power->proc.accumulator),
++				       get_unaligned_be32(&power->proc.update_tag));
+ 		break;
+ 	case 6:
+ 		val = (u64)get_unaligned_be32(&power->proc.update_tag) *
+@@ -555,8 +553,8 @@ static ssize_t occ_show_power_a0(struct device *dev,
+ 		return sysfs_emit(buf, "%u_vdd\n",
+ 				  get_unaligned_be32(&power->sensor_id));
+ 	case 9:
+-		val = occ_get_powr_avg(&power->vdd.accumulator,
+-				       &power->vdd.update_tag);
++		val = occ_get_powr_avg(get_unaligned_be64(&power->vdd.accumulator),
++				       get_unaligned_be32(&power->vdd.update_tag));
+ 		break;
+ 	case 10:
+ 		val = (u64)get_unaligned_be32(&power->vdd.update_tag) *
+@@ -569,8 +567,8 @@ static ssize_t occ_show_power_a0(struct device *dev,
+ 		return sysfs_emit(buf, "%u_vdn\n",
+ 				  get_unaligned_be32(&power->sensor_id));
+ 	case 13:
+-		val = occ_get_powr_avg(&power->vdn.accumulator,
+-				       &power->vdn.update_tag);
++		val = occ_get_powr_avg(get_unaligned_be64(&power->vdn.accumulator),
++				       get_unaligned_be32(&power->vdn.update_tag));
+ 		break;
+ 	case 14:
+ 		val = (u64)get_unaligned_be32(&power->vdn.update_tag) *
+-- 
+2.39.5
+
 
 
 
