@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-156974-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157293-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2267BAE51EF
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:38:57 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 493C4AE5361
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:52:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E17827A3605
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:37:26 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8222E7A403E
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:50:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D5C3221FD2;
-	Mon, 23 Jun 2025 21:38:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 32CEA223DE5;
+	Mon, 23 Jun 2025 21:51:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jxpByocN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lB0/8nFa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 167EC21D3DD;
-	Mon, 23 Jun 2025 21:38:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4FB919049B;
+	Mon, 23 Jun 2025 21:51:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750714726; cv=none; b=I6BaNT+kcbsiB5HvUgBHfrRuMX0wFZZS2pQmIX98/ysKa9xmUmDiryQLSQnNzCBKpawS40dgU37Duit0thyT1fME3oWzJy5VBLafkQ7PHCwf7DBeukHjfxqTtibbrEf33zt48CQJjLoC3Zv73HrJxJ2UUn2mz0IahwaxE72u/xA=
+	t=1750715514; cv=none; b=s6XoVfT6oI6oCbf1Q/DmJHBkD+pqN8o0uv61juEISJ3c83W8vAovZwiMLsbsPHIGbH5murbNFbEMNbsdYADX1ukirhwuRa/QDJ99IXizUIiLGZbSXIMYbkcTZCNbivxIXHrDsN1lG5243y9InP5K3p10t37AmuMJWntmgxCCuww=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750714726; c=relaxed/simple;
-	bh=+1Jb+dc8mYjzOZMU48BsCcDpje1kVknZ4ioB4hkWy/Q=;
+	s=arc-20240116; t=1750715514; c=relaxed/simple;
+	bh=isD6UlRdCjiO57F6yBt1fVlpyeDjyfSCpkx8W/jj2lE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iGfQ6Ep0Ybo1e7s4bk4z+gp5u6zCcNbt7V773Ceb3+V7HR4rt6bALW70gn4Na86tygt1MVl/LpjKx7zC7ps2eC0iot0sTUsAdGQW3P1Ykhe02siI7j03C3mDC/D1fLHvicp+6w20WT1AUK1bG621uhSiCXaOudzLv4CkHG8N+GI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jxpByocN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A20A0C4CEEA;
-	Mon, 23 Jun 2025 21:38:45 +0000 (UTC)
+	 MIME-Version; b=skdjpsIoUa/JPMAzc5onbJRdpZ0xv2W3qCX7WB3Fg1p1sKX47b54upMeE/+GBnyepXOEVTryEye0KeloIaAay3mIuyC1kmDrIKuAW8dxSX8lo27bYdZ2YSER+64j3oMkZbDTgTp7XWfVYszCxaqqM4GcAikmdnXUYQAkMLdn72w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lB0/8nFa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7CF5AC4CEEA;
+	Mon, 23 Jun 2025 21:51:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750714726;
-	bh=+1Jb+dc8mYjzOZMU48BsCcDpje1kVknZ4ioB4hkWy/Q=;
+	s=korg; t=1750715513;
+	bh=isD6UlRdCjiO57F6yBt1fVlpyeDjyfSCpkx8W/jj2lE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jxpByocNC20C5ymYKYSxT3V1GOBKARLhoJniaRHe8VjNccBChKWLLdH77A6XrXrEs
-	 gDXlf4ZDpRgocKeBzo7yoneYex+8wh9OJKiS85775dAFL1Au7anwmHsTNrAb9UDMdf
-	 j+HMzBcWArcRJmuSEvW1rVStscWYbqgiU0/RsnYA=
+	b=lB0/8nFaXiYZCpTx6qXtxl/8NH5/WsOMBrFzDXxe6zDbOHs2LIvc6XIANn9WALu2w
+	 DGuy+oMgJb8VEN+anQqvbZlJ7vGSaQyuDWcKSx/FfNuX7loC5csy3XVwSypsFm8PpC
+	 zUNz2q/RM9apdg89wRfOV0crnBsWEQ5azgTe+GZk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jianzhou Zhao <xnxc22xnxc22@qq.com>,
-	Namjae Jeon <linkinjeon@kernel.org>,
+	Tarang Raval <tarang.raval@siliconsignals.io>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Hans Verkuil <hverkuil@xs4all.nl>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 225/355] exfat: fix double free in delayed_free
+Subject: [PATCH 5.15 282/411] media: i2c: imx334: Fix runtime PM handling in remove function
 Date: Mon, 23 Jun 2025 15:07:06 +0200
-Message-ID: <20250623130633.508901622@linuxfoundation.org>
+Message-ID: <20250623130640.748563033@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130626.716971725@linuxfoundation.org>
-References: <20250623130626.716971725@linuxfoundation.org>
+In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
+References: <20250623130632.993849527@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,42 +63,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Namjae Jeon <linkinjeon@kernel.org>
+From: Tarang Raval <tarang.raval@siliconsignals.io>
 
-[ Upstream commit 1f3d9724e16d62c7d42c67d6613b8512f2887c22 ]
+[ Upstream commit b493cd3c03641f9bbaa9787e43ca92163cb50051 ]
 
-The double free could happen in the following path.
+pm_runtime_suspended() only checks the current runtime PM status and does
+not modify it, making it ineffective in this context. This could result in
+improper power management if the device remains active when removed.
 
-exfat_create_upcase_table()
-        exfat_create_upcase_table() : return error
-        exfat_free_upcase_table() : free ->vol_utbl
-        exfat_load_default_upcase_table : return error
-     exfat_kill_sb()
-           delayed_free()
-                  exfat_free_upcase_table() <--------- double free
-This patch set ->vol_util as NULL after freeing it.
+This patch fixes the issue by introducing a check with
+pm_runtime_status_suspended() to determine if the device is already
+suspended. If it is not, it calls imx334_power_off() to power down the
+device and then uses pm_runtime_set_suspended() to correctly update the
+runtime PM status to suspended.
 
-Reported-by: Jianzhou Zhao <xnxc22xnxc22@qq.com>
-Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Tarang Raval <tarang.raval@siliconsignals.io>
+Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/exfat/nls.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/media/i2c/imx334.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/fs/exfat/nls.c b/fs/exfat/nls.c
-index 314d5407a1be5..a75d5fb2404c7 100644
---- a/fs/exfat/nls.c
-+++ b/fs/exfat/nls.c
-@@ -804,4 +804,5 @@ int exfat_create_upcase_table(struct super_block *sb)
- void exfat_free_upcase_table(struct exfat_sb_info *sbi)
- {
- 	kvfree(sbi->vol_utbl);
-+	sbi->vol_utbl = NULL;
- }
+diff --git a/drivers/media/i2c/imx334.c b/drivers/media/i2c/imx334.c
+index 57b7416bbfab3..af09aafeddf78 100644
+--- a/drivers/media/i2c/imx334.c
++++ b/drivers/media/i2c/imx334.c
+@@ -1102,7 +1102,10 @@ static int imx334_remove(struct i2c_client *client)
+ 	v4l2_ctrl_handler_free(sd->ctrl_handler);
+ 
+ 	pm_runtime_disable(&client->dev);
+-	pm_runtime_suspended(&client->dev);
++	if (!pm_runtime_status_suspended(&client->dev)) {
++		imx334_power_off(&client->dev);
++		pm_runtime_set_suspended(&client->dev);
++	}
+ 
+ 	mutex_destroy(&imx334->mutex);
+ 
 -- 
 2.39.5
 
