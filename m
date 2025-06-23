@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-155787-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-155792-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0D8BEAE43D1
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:37:00 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CD4B7AE43CB
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:36:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 777AB3BC185
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:29:31 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E72C9177F71
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:30:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A8EDF25394B;
-	Mon, 23 Jun 2025 13:28:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 483D0254B19;
+	Mon, 23 Jun 2025 13:29:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0QnvSio+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YX4AWovH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 672B9250BEC;
-	Mon, 23 Jun 2025 13:28:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06DA3253F30;
+	Mon, 23 Jun 2025 13:29:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750685331; cv=none; b=OiQ7w3ynRFflhuNGK4LI/aCDuAVyWki9arE5hFrjs/Vddp33UFEOCvpo68bvwhep/wxj0Z4fN0rPzd6cIB6BK8M//d04YlbRqDFZNvGTquyaSPKJAXf9VriP7ahmep05PmqayHBtpomIKA1T8OE4hWTUBzx2RaBaA0juqL1UKaA=
+	t=1750685344; cv=none; b=Jj0AVRSuMGkqmUlai4XsQ7geSEMkiA0dVKlvKFNR4dgTrFKSD0BegmPQvqz8PcfFFM1zpdoMR+c5XfTKC4lrfTh7PbZoLxEggOMiKk+NjDlgEvqX/TjuUwLDlOfPMOcXIJTT9/fv6A1h5/XeXIIOWzYOL4a+Jfap2qi8hbx18bU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750685331; c=relaxed/simple;
-	bh=QSSmpiv5FBe9B/o8u996/+lNauUB17u7wHMbTonn32I=;
+	s=arc-20240116; t=1750685344; c=relaxed/simple;
+	bh=jAizF0WEhlSfLjUKgUXfJtF00dm2ByZvXN05Vb64dIY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rivN5C7F/kTqy1ozJPtyr52CovRM7NUiYbMX/l0KprgFR3dpXwWhDEoxZCrAOKRcA2U9LCXcGVcu4kgq4d1Cwal9uC5+7JimS9e76jqHHAWCEVL/YhNrMGR1NYEbXzmNoGXsAXnRlFlXyYqajPhYCz0fzeGLisYpCQUeowdaqzU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0QnvSio+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F04D2C4CEEA;
-	Mon, 23 Jun 2025 13:28:50 +0000 (UTC)
+	 MIME-Version; b=D6jiA9hnYPW+9qpL6V0cMXrhjKo+4hen3LJZWr289/el+ohbGsOMTN8d6+qpB8fC2aHvzHxAJ+4uJc/wpqM2WkSR59FkH6XpFNxNNgDWkeb8h1zEqt4SqCoUwG1tn5G7jk3lVcN0up+QExPbPIFSLz+Xg7iK1G1/zEKTKlZPm20=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YX4AWovH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 922D1C4CEEA;
+	Mon, 23 Jun 2025 13:29:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750685331;
-	bh=QSSmpiv5FBe9B/o8u996/+lNauUB17u7wHMbTonn32I=;
+	s=korg; t=1750685343;
+	bh=jAizF0WEhlSfLjUKgUXfJtF00dm2ByZvXN05Vb64dIY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0QnvSio+xfdUGtk9C06uOSjBg66IylBbFzWeiecOiYBfGEcHdkeOpErDz7t3yp3Nn
-	 QOXQOjMxExSkQ7RMlDLBtJw32Qp5aFly9e8odkVurx9Gvn9JQs2csaWs1A7ogFxwiA
-	 0deUBv1axjnvaFb/Iq0N+ozYTTJkRcFXwD5hczxA=
+	b=YX4AWovHj+lBknO/QhJwiCK+yFYTaBce5jWbNXkETwEStjBXGkgtsOqWO6Hq6fcht
+	 9ZONOymYWoa3p2TKf9mYFoldLP0VM3ML22LeVby1q8ZtngkBtYv4mMgcjBnD2VmYrh
+	 3JxPjs7urLnHuWNkXoIoi1s9PdxTSaG+CMIOoWbU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrew Lunn <andrew@lunn.ch>,
-	Michael Walle <michael@walle.cc>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 086/222] net: mdio: C22 is now optional, EOPNOTSUPP if not provided
-Date: Mon, 23 Jun 2025 15:07:01 +0200
-Message-ID: <20250623130614.689593769@linuxfoundation.org>
+	Masahiro Yamada <masahiroy@kernel.org>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Nick Desaulniers <ndesaulniers@google.com>,
+	Linux Kernel Functional Testing <lkft@linaro.org>,
+	Anders Roxell <anders.roxell@linaro.org>
+Subject: [PATCH 5.4 087/222] x86/boot/compressed: prefer cc-option for CFLAGS additions
+Date: Mon, 23 Jun 2025 15:07:02 +0200
+Message-ID: <20250623130614.718063127@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
 In-Reply-To: <20250623130611.896514667@linuxfoundation.org>
 References: <20250623130611.896514667@linuxfoundation.org>
@@ -67,54 +68,44 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Andrew Lunn <andrew@lunn.ch>
+From: Nick Desaulniers <ndesaulniers@google.com>
 
-[ Upstream commit b063b1924fd9bf0bc157cf644764dc2151d04ccc ]
+commit 994f5f7816ff963f49269cfc97f63cb2e4edb84f upstream.
 
-When performing a C22 operation, check that the bus driver actually
-provides the methods, and return -EOPNOTSUPP if not. C45 only busses
-do exist, and in future their C22 methods will be NULL.
+as-option tests new options using KBUILD_CFLAGS, which causes problems
+when using as-option to update KBUILD_AFLAGS because many compiler
+options are not valid assembler options.
 
-Signed-off-by: Andrew Lunn <andrew@lunn.ch>
-Signed-off-by: Michael Walle <michael@walle.cc>
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Stable-dep-of: 0e629694126c ("net/mdiobus: Fix potential out-of-bounds read/write access")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This will be fixed in a follow up patch. Before doing so, move the
+assembler test for -Wa,-mrelax-relocations=no from using as-option to
+cc-option.
+
+Link: https://lore.kernel.org/llvm/CAK7LNATcHt7GcXZ=jMszyH=+M_LC9Qr6yeAGRCBbE6xriLxtUQ@mail.gmail.com/
+Suggested-by: Masahiro Yamada <masahiroy@kernel.org>
+Reviewed-by: Nathan Chancellor <nathan@kernel.org>
+Tested-by: Nathan Chancellor <nathan@kernel.org>
+Signed-off-by: Nick Desaulniers <ndesaulniers@google.com>
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+Tested-by: Linux Kernel Functional Testing <lkft@linaro.org>
+Tested-by: Anders Roxell <anders.roxell@linaro.org>
+Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/phy/mdio_bus.c | 10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
+ arch/x86/boot/compressed/Makefile |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/phy/mdio_bus.c b/drivers/net/phy/mdio_bus.c
-index fdf8221f46fa5..e5c25beae21e0 100644
---- a/drivers/net/phy/mdio_bus.c
-+++ b/drivers/net/phy/mdio_bus.c
-@@ -565,7 +565,10 @@ int __mdiobus_read(struct mii_bus *bus, int addr, u32 regnum)
+--- a/arch/x86/boot/compressed/Makefile
++++ b/arch/x86/boot/compressed/Makefile
+@@ -39,7 +39,7 @@ KBUILD_CFLAGS += $(call cc-disable-warni
+ KBUILD_CFLAGS += $(call cc-disable-warning, gnu)
+ KBUILD_CFLAGS += -Wno-pointer-sign
+ # Disable relocation relaxation in case the link is not PIE.
+-KBUILD_CFLAGS += $(call as-option,-Wa$(comma)-mrelax-relocations=no)
++KBUILD_CFLAGS += $(call cc-option,-Wa$(comma)-mrelax-relocations=no)
  
- 	WARN_ON_ONCE(!mutex_is_locked(&bus->mdio_lock));
- 
--	retval = bus->read(bus, addr, regnum);
-+	if (bus->read)
-+		retval = bus->read(bus, addr, regnum);
-+	else
-+		retval = -EOPNOTSUPP;
- 
- 	trace_mdio_access(bus, 1, addr, regnum, retval, retval);
- 
-@@ -590,7 +593,10 @@ int __mdiobus_write(struct mii_bus *bus, int addr, u32 regnum, u16 val)
- 
- 	WARN_ON_ONCE(!mutex_is_locked(&bus->mdio_lock));
- 
--	err = bus->write(bus, addr, regnum, val);
-+	if (bus->write)
-+		err = bus->write(bus, addr, regnum, val);
-+	else
-+		err = -EOPNOTSUPP;
- 
- 	trace_mdio_access(bus, 0, addr, regnum, val, err);
- 
--- 
-2.39.5
-
+ KBUILD_AFLAGS  := $(KBUILD_CFLAGS) -D__ASSEMBLY__
+ GCOV_PROFILE := n
 
 
 
