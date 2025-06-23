@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-156807-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157156-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 10287AE5138
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:31:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5CFD4AE52B3
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:46:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A116E4A31F4
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:31:56 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EEEAA4A68CB
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:46:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 584041DDC04;
-	Mon, 23 Jun 2025 21:31:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50E942236E5;
+	Mon, 23 Jun 2025 21:46:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ay4YS30O"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kUpiYRWL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13DF5C2E0;
-	Mon, 23 Jun 2025 21:31:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BDE8218AC1;
+	Mon, 23 Jun 2025 21:46:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750714314; cv=none; b=bIsgo4ugqyvYWCsJcFEvvwt671uW3zj2Q17tclVzjFPBx6zcMSgQP/nlj/EmsbxULnojb0gkICXq/h8OV3TuQvnjDL3NqDCbhtFy/TpNcLH7cLnZe2AMj8lCYbn5RVU7a4InIDiG4HGkQZMEaKPX2el/pVHMQJv//QKTkjyHnp8=
+	t=1750715174; cv=none; b=fplP3piurZm8Tntjyx37o8i8k4Cp9cMU/d7s0ZhdZWJ193qHGJtea17qeLVelIP7seV6bjW9SxCqF6hd8Q2bdtcOA0TXX/PI2ubvVRoFWvDqHxXoaLqdW+vttg2QKPdl0i5tPgguXtAzn1+QsuKQnq/wAXXke0NHix/W2a7EVEg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750714314; c=relaxed/simple;
-	bh=O3zN4yi4ORNAgt8Gqq3QzNWLUhQ3Im4eY5/Pgag6cWw=;
+	s=arc-20240116; t=1750715174; c=relaxed/simple;
+	bh=4KbrGx0TQhi11RMBVmL5h+4p0SljSvFBWlhLkM9262w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Gp3BTjH+dMex2gS0Rzioqa89HnaMrZULVQ28fdHwtAJ10PBaXgPPwxzUkRr3KxRC5t5Ac47Cgmh84J+j7QpRC7zS8csVQs1Bm0r1Izk4PYxI5DLl0pOoB9TXoic/VC8gGNool37bPazoff6GoZHY9lB98u76UhUtbkDg3nqLJVs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ay4YS30O; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93A38C4CEEA;
-	Mon, 23 Jun 2025 21:31:53 +0000 (UTC)
+	 MIME-Version; b=f9qBnpCkVnSAGmiMeRH7LcbTOEWdjii7fAM1GqJObGtpgrdRCi4kB5cInGtCtmfFw7IyV8nA0ndMtC++0S6csgkVoFJaxNaJfuep02CfbwT04G1CtU1p1Rt/lfh4mTqHr0JHf3wBhvWLsgEPj1S0hEz5iOv/Lq3MAlaUNEJB2No=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kUpiYRWL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C95CC4CEED;
+	Mon, 23 Jun 2025 21:46:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750714313;
-	bh=O3zN4yi4ORNAgt8Gqq3QzNWLUhQ3Im4eY5/Pgag6cWw=;
+	s=korg; t=1750715173;
+	bh=4KbrGx0TQhi11RMBVmL5h+4p0SljSvFBWlhLkM9262w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ay4YS30OsoNg2HTMrut+aEc46quf4RqFV7dheKrGi7+4nPThXKLhdNbm27QWa8PT6
-	 G3LazlMtCInIHTPw710xyNfHTCBavfeiflsBzmyz2pB+82qp5ABTOKsv6Ea/LJtJjo
-	 JBcvJmbEm814LgXkCeLkYeij4JZalyJiruHxKVsE=
+	b=kUpiYRWL82kELrrfkVDUP1fFtDUAdhFDHbngKZb0Xl3BNA6JLfBLeoJYKyVYYHoFg
+	 FUmNKtxivu5jb1jAPh76dlu25SIGzsgBP9nzoXWHMMhl7ans/ggOMM6IhtNCcV9xqm
+	 2Ckq/5Ch37N1mh/c2Shk19/b11+s6hCq1LRvMPVA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Pawel Laszczak <pawell@cadence.com>,
-	Peter Chen <peter.chen@kernel.org>
-Subject: [PATCH 5.15 180/411] usb: cdnsp: Fix issue with detecting command completion event
+	Peng Fan <peng.fan@nxp.com>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 187/414] gpiolib: of: Add polarity quirk for s5m8767
 Date: Mon, 23 Jun 2025 15:05:24 +0200
-Message-ID: <20250623130638.216185769@linuxfoundation.org>
+Message-ID: <20250623130646.694013867@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
-References: <20250623130632.993849527@linuxfoundation.org>
+In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
+References: <20250623130642.015559452@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,80 +63,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pawel Laszczak <pawell@cadence.com>
+From: Peng Fan <peng.fan@nxp.com>
 
-commit f4ecdc352646f7d23f348e5c544dbe3212c94fc8 upstream.
+[ Upstream commit 4e310626eb4df52a31a142c1360fead0fcbd3793 ]
 
-In some cases, there is a small-time gap in which CMD_RING_BUSY can be
-cleared by controller but adding command completion event to event ring
-will be delayed. As the result driver will return error code.
+This is prepare patch for switching s5m8767 regulator driver to
+use GPIO descriptor. DTS for exynos5250 spring incorrectly specifies
+"active low" polarity for the DVS and DS line. But per datasheet,
+they are actually active high. So add polarity quirk for it.
 
-This behavior has been detected on usbtest driver (test 9) with
-configuration including ep1in/ep1out bulk and ep2in/ep2out isoc
-endpoint.
-
-Probably this gap occurred because controller was busy with adding some
-other events to event ring.
-
-The CMD_RING_BUSY is cleared to '0' when the Command Descriptor has been
-executed and not when command completion event has been added to event
-ring.
-
-To fix this issue for this test the small delay is sufficient less than
-10us) but to make sure the problem doesn't happen again in the future
-the patch introduces 10 retries to check with delay about 20us before
-returning error code.
-
-Fixes: 3d82904559f4 ("usb: cdnsp: cdns3 Add main part of Cadence USBSSP DRD Driver")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Pawel Laszczak <pawell@cadence.com>
-Acked-by: Peter Chen <peter.chen@kernel.org>
-Link: https://lore.kernel.org/r/PH7PR07MB9538AA45362ACCF1B94EE9B7DD96A@PH7PR07MB9538.namprd07.prod.outlook.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Peng Fan <peng.fan@nxp.com>
+Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+Link: https://lore.kernel.org/r/20250327004945.563765-1-peng.fan@oss.nxp.com
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/cdns3/cdnsp-gadget.c |   18 +++++++++++++++++-
- 1 file changed, 17 insertions(+), 1 deletion(-)
+ drivers/gpio/gpiolib-of.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
---- a/drivers/usb/cdns3/cdnsp-gadget.c
-+++ b/drivers/usb/cdns3/cdnsp-gadget.c
-@@ -546,6 +546,7 @@ int cdnsp_wait_for_cmd_compl(struct cdns
- 	dma_addr_t cmd_deq_dma;
- 	union cdnsp_trb *event;
- 	u32 cycle_state;
-+	u32 retry = 10;
- 	int ret, val;
- 	u64 cmd_dma;
- 	u32  flags;
-@@ -577,8 +578,23 @@ int cdnsp_wait_for_cmd_compl(struct cdns
- 		flags = le32_to_cpu(event->event_cmd.flags);
- 
- 		/* Check the owner of the TRB. */
--		if ((flags & TRB_CYCLE) != cycle_state)
-+		if ((flags & TRB_CYCLE) != cycle_state) {
-+			/*
-+			 * Give some extra time to get chance controller
-+			 * to finish command before returning error code.
-+			 * Checking CMD_RING_BUSY is not sufficient because
-+			 * this bit is cleared to '0' when the Command
-+			 * Descriptor has been executed by controller
-+			 * and not when command completion event has
-+			 * be added to event ring.
-+			 */
-+			if (retry--) {
-+				udelay(20);
-+				continue;
-+			}
-+
- 			return -EINVAL;
-+		}
- 
- 		cmd_dma = le64_to_cpu(event->event_cmd.cmd_trb);
- 
+diff --git a/drivers/gpio/gpiolib-of.c b/drivers/gpio/gpiolib-of.c
+index 626daedb01698..36f8c7bb79d81 100644
+--- a/drivers/gpio/gpiolib-of.c
++++ b/drivers/gpio/gpiolib-of.c
+@@ -215,6 +215,15 @@ static void of_gpio_try_fixup_polarity(const struct device_node *np,
+ 		 */
+ 		{ "lantiq,pci-xway",	"gpio-reset",	false },
+ #endif
++#if IS_ENABLED(CONFIG_REGULATOR_S5M8767)
++		/*
++		 * According to S5M8767, the DVS and DS pin are
++		 * active-high signals. However, exynos5250-spring.dts use
++		 * active-low setting.
++		 */
++		{ "samsung,s5m8767-pmic", "s5m8767,pmic-buck-dvs-gpios", true },
++		{ "samsung,s5m8767-pmic", "s5m8767,pmic-buck-ds-gpios", true },
++#endif
+ #if IS_ENABLED(CONFIG_TOUCHSCREEN_TSC2005)
+ 		/*
+ 		 * DTS for Nokia N900 incorrectly specified "active high"
+-- 
+2.39.5
+
 
 
 
