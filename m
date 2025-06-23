@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-156004-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-155627-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 86B33AE44A8
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:44:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 08AC3AE42F5
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:27:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0C0D31BC253D
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:39:37 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 13FDA188C802
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:23:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C815E25291F;
-	Mon, 23 Jun 2025 13:38:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6844224DFF3;
+	Mon, 23 Jun 2025 13:22:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zlxIIVg8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZpJPW2hO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 857ED16419;
-	Mon, 23 Jun 2025 13:38:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25ECD30E84D;
+	Mon, 23 Jun 2025 13:22:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750685900; cv=none; b=nbJddKlwVwjRND+lESKkeYOeGf6vUZMDDuJX5G7Rb+ZWmLgVA+NWQ5kCu6bZRCjgyBCSpqKw9azoCfFfZQKrFsoFxrDgbo6xAGW0Kf3/NvlrCNXLi90GtGuKX58GUHjYGim+AQosjn+PTu2sNjntHCRSLg/eFB4a+Tpw45PuhyI=
+	t=1750684922; cv=none; b=ZAILADeun2D/Tv8HI0Ns+VIJ7rv4Xcaq1ZWEgGiussy/BZigGB75DUGkd7C8jW+NGyfstjg4/mTjXdMzU/p/Y1rbdQ8VLEbHImhgIbNWogM4zC01zf66lF8JED+Z6ggwAkBnD/WqyGIF1w1Ae3pguJXgxcY6Lvv7EaIQ26/VYDo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750685900; c=relaxed/simple;
-	bh=IWkGBORHTGRh2LB3BIwEHZIOdUHR4/ih0iMQq4Hhr34=;
+	s=arc-20240116; t=1750684922; c=relaxed/simple;
+	bh=tGOHNyVCnxrmrHG/OgPivLq6C41Z/WVO3dP+malVlB4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rJnGTIfIcmaAVR5Exo//kbO00pmIlTrjX3QeocV5FSj92xvvmGLXodbGgJejZXJYf1xk0Q2MFbFOrfnqddOMlHwT/A5x9weJZ6jf1BJad/L7R3LIJYd7c+/tDKV2kCzISJQ4DUZDslCi9UslKMN0Lj0Utcu6TEPVi/6Fy/brXkU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zlxIIVg8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17F64C4CEEA;
-	Mon, 23 Jun 2025 13:38:19 +0000 (UTC)
+	 MIME-Version; b=ivXQFHccRW0H5KCYNSWfpujI0mcAen3lUpTU8sw7TMBTXfVt6/Env2ZZqOg5O6wlnsZqsy0u2pIb/Lp8OW9z1/DM08IO+ioUMMn1vrtOufDuIjsfIehXxGkc9kt41G+fImWXGuXm5/oDVkkS6YIQzFPJVRcsW0Jr42Pld+P6Qzo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZpJPW2hO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF4E2C4CEEA;
+	Mon, 23 Jun 2025 13:22:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750685900;
-	bh=IWkGBORHTGRh2LB3BIwEHZIOdUHR4/ih0iMQq4Hhr34=;
+	s=korg; t=1750684922;
+	bh=tGOHNyVCnxrmrHG/OgPivLq6C41Z/WVO3dP+malVlB4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zlxIIVg8i3GtRtdD0nrq4bNichXCWSXOZ7ItLBjd3XSaZOVJ3pcoW25dk4XSC0qmm
-	 qVcEY3jnwL0WNOVB8BqjZBP2roA/Cd4ufYFdozC2GRpoq1XzTk52VDuPe0lzKJFu8w
-	 N+Vo7Y0zjWxQLVr9GJgpdanjn2CPIkCRCJX59+Bc=
+	b=ZpJPW2hOgJO+sA6lb0buqJh1fvEEdJfOKIyJqcNoVvIN1TUsFvLWurLfJrw6NF/uN
+	 29zoABgtNcLhLqzyM23Ds4OSvg8WHJD5jCO0TCUII35+sDhokmI0SVXawd0kep0f+S
+	 nOIdgHNihbH4Pl+DJkq/toAt0gVk4GPThI6vFBeA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+0903f6d7f285e41cdf10@syzkaller.appspotmail.com,
-	KaFai Wan <mannkafai@gmail.com>,
-	Alexei Starovoitov <ast@kernel.org>,
+	Qing Wang <wangqing7171@gmail.com>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 068/411] bpf: Avoid __bpf_prog_ret0_warn when jit fails
+Subject: [PATCH 5.10 011/355] perf/core: Fix broken throttling when max_samples_per_tick=1
 Date: Mon, 23 Jun 2025 15:03:32 +0200
-Message-ID: <20250623130635.040647825@linuxfoundation.org>
+Message-ID: <20250623130627.094426138@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
-References: <20250623130632.993849527@linuxfoundation.org>
+In-Reply-To: <20250623130626.716971725@linuxfoundation.org>
+References: <20250623130626.716971725@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,59 +62,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: KaFai Wan <mannkafai@gmail.com>
+From: Qing Wang <wangqing7171@gmail.com>
 
-[ Upstream commit 86bc9c742426a16b52a10ef61f5b721aecca2344 ]
+[ Upstream commit f51972e6f8b9a737b2b3eb588069acb538fa72de ]
 
-syzkaller reported an issue:
+According to the throttling mechanism, the pmu interrupts number can not
+exceed the max_samples_per_tick in one tick. But this mechanism is
+ineffective when max_samples_per_tick=1, because the throttling check is
+skipped during the first interrupt and only performed when the second
+interrupt arrives.
 
-WARNING: CPU: 3 PID: 217 at kernel/bpf/core.c:2357 __bpf_prog_ret0_warn+0xa/0x20 kernel/bpf/core.c:2357
-Modules linked in:
-CPU: 3 UID: 0 PID: 217 Comm: kworker/u32:6 Not tainted 6.15.0-rc4-syzkaller-00040-g8bac8898fe39
-RIP: 0010:__bpf_prog_ret0_warn+0xa/0x20 kernel/bpf/core.c:2357
-Call Trace:
- <TASK>
- bpf_dispatcher_nop_func include/linux/bpf.h:1316 [inline]
- __bpf_prog_run include/linux/filter.h:718 [inline]
- bpf_prog_run include/linux/filter.h:725 [inline]
- cls_bpf_classify+0x74a/0x1110 net/sched/cls_bpf.c:105
- ...
+Perhaps this bug may cause little influence in one tick, but if in a
+larger time scale, the problem can not be underestimated.
 
-When creating bpf program, 'fp->jit_requested' depends on bpf_jit_enable.
-This issue is triggered because of CONFIG_BPF_JIT_ALWAYS_ON is not set
-and bpf_jit_enable is set to 1, causing the arch to attempt JIT the prog,
-but jit failed due to FAULT_INJECTION. As a result, incorrectly
-treats the program as valid, when the program runs it calls
-`__bpf_prog_ret0_warn` and triggers the WARN_ON_ONCE(1).
+When max_samples_per_tick = 1:
+Allowed-interrupts-per-second max-samples-per-second  default-HZ  ARCH
+200                           100                     100         X86
+500                           250                     250         ARM64
+...
+Obviously, the pmu interrupt number far exceed the user's expect.
 
-Reported-by: syzbot+0903f6d7f285e41cdf10@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/bpf/6816e34e.a70a0220.254cdc.002c.GAE@google.com
-Fixes: fa9dd599b4da ("bpf: get rid of pure_initcall dependency to enable jits")
-Signed-off-by: KaFai Wan <mannkafai@gmail.com>
-Link: https://lore.kernel.org/r/20250526133358.2594176-1-mannkafai@gmail.com
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Fixes: e050e3f0a71b ("perf: Fix broken interrupt rate throttling")
+Signed-off-by: Qing Wang <wangqing7171@gmail.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Link: https://lkml.kernel.org/r/20250405141635.243786-3-wangqing7171@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/bpf/core.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ kernel/events/core.c | 16 ++++++++--------
+ 1 file changed, 8 insertions(+), 8 deletions(-)
 
-diff --git a/kernel/bpf/core.c b/kernel/bpf/core.c
-index d7dbca573df31..1ded3eb492b8e 100644
---- a/kernel/bpf/core.c
-+++ b/kernel/bpf/core.c
-@@ -1909,7 +1909,7 @@ struct bpf_prog *bpf_prog_select_runtime(struct bpf_prog *fp, int *err)
- 	/* In case of BPF to BPF calls, verifier did all the prep
- 	 * work with regards to JITing, etc.
- 	 */
--	bool jit_needed = false;
-+	bool jit_needed = fp->jit_requested;
+diff --git a/kernel/events/core.c b/kernel/events/core.c
+index 8f19d6ab039ef..21f56dd6c05a3 100644
+--- a/kernel/events/core.c
++++ b/kernel/events/core.c
+@@ -9031,14 +9031,14 @@ __perf_event_account_interrupt(struct perf_event *event, int throttle)
+ 		hwc->interrupts = 1;
+ 	} else {
+ 		hwc->interrupts++;
+-		if (unlikely(throttle &&
+-			     hwc->interrupts > max_samples_per_tick)) {
+-			__this_cpu_inc(perf_throttled_count);
+-			tick_dep_set_cpu(smp_processor_id(), TICK_DEP_BIT_PERF_EVENTS);
+-			hwc->interrupts = MAX_INTERRUPTS;
+-			perf_log_throttle(event, 0);
+-			ret = 1;
+-		}
++	}
++
++	if (unlikely(throttle && hwc->interrupts >= max_samples_per_tick)) {
++		__this_cpu_inc(perf_throttled_count);
++		tick_dep_set_cpu(smp_processor_id(), TICK_DEP_BIT_PERF_EVENTS);
++		hwc->interrupts = MAX_INTERRUPTS;
++		perf_log_throttle(event, 0);
++		ret = 1;
+ 	}
  
- 	if (fp->bpf_func)
- 		goto finalize;
+ 	if (event->attr.freq) {
 -- 
 2.39.5
 
