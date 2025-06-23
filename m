@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-156494-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157432-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C562AE4FCE
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:19:48 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3A006AE53E5
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:57:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E62ED189D15D
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:19:43 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BD4E44A8C1D
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:57:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20FF82222CA;
-	Mon, 23 Jun 2025 21:19:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE3032222CC;
+	Mon, 23 Jun 2025 21:57:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W0tOnykc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qKgmTneV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1A2B155C87;
-	Mon, 23 Jun 2025 21:19:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61BB8221DA8;
+	Mon, 23 Jun 2025 21:57:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750713550; cv=none; b=ltz2xG9ForrqdQFzcUVHUokv8VRqCOGnwOcf+ZjFResguMSj8OQNdWz7t3x+glOVbpHRnVfM12QuS/evRjAFKkVytza8032e0dri3gRT3jPZTghtqE7OIXXG0XAbTIxN9uWR2/7uHcOg2WDAHsljvHkZWPTGr6MvF6dIWcqZDZU=
+	t=1750715851; cv=none; b=IfuecGgMm3kv8VndgVC0wrXFZIn57AJpyOF4ukrrWL6gyH13HzW/MIPrr6lMOn3mSOCcZvEl42SAAotAETKILmwL1f4OQFUr28+jWbKQ/Vk8dl+nUuIEIwKSEH7Mv5kjMi1c5IGre77XPIv2AhuE+H/GUhZGxSF5+tiXig2zXJg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750713550; c=relaxed/simple;
-	bh=LSVAvqn5PSvniXmbKCP3Kmu9MPQSPuev4WSVkYKRRUY=;
+	s=arc-20240116; t=1750715851; c=relaxed/simple;
+	bh=a1vvDuXNviOC2TKUVnecYnyWfhHhWbWmGTgEKGpuhYc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=R59+wuNrK7zMOb7cIVnpvZJzPhNYm8B2kFWQHQy5Od0rOh3HoxGmM0uE2WxctXNMrosayrBU+TtOp3bA3PcdGGB8rE72J012Av+Eq+sTBmAu4Ip5Gff7AiyufLCFDW8kaHiMQLmywIAZHeFu5b7dmtG9KGDGxiO7aZ62Cp3UYDM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W0tOnykc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F629C4CEEA;
-	Mon, 23 Jun 2025 21:19:10 +0000 (UTC)
+	 MIME-Version; b=ojE+JaPHGK0uZQLkNpfFIP70OFk6JMu1quR9eq6Ft232FeAEBfcXEXVAMtaAsm6CeN3uFj/lShCTmdvJDAbaxg3qZTDeX7T1/rGzOeAzv3WDZDNvE1r0sYbnvNH237HBpqKzUrBxXQbRvfTTRp18HsLp6kYnAJGXQnW9Zdm7F4U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qKgmTneV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB312C4CEEA;
+	Mon, 23 Jun 2025 21:57:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750713550;
-	bh=LSVAvqn5PSvniXmbKCP3Kmu9MPQSPuev4WSVkYKRRUY=;
+	s=korg; t=1750715851;
+	bh=a1vvDuXNviOC2TKUVnecYnyWfhHhWbWmGTgEKGpuhYc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=W0tOnykc8bfZfRqcbbyGiZHGYdnF4xTSbjLHMCKPxB1GS6HheE8pGv7rJ0rUuArCV
-	 7coftGggrX9fGBl/v9ry8xU6WKXUWIX2jO31HJVaQP+amYjvl+8mtBbfPjXUdoN+bt
-	 ePUtcAwoLIdrYHhgW/+bTB4cKE3h4PNBQ7j6xKB8=
+	b=qKgmTneVXzHgG6fvEjMfcFVzNTX6NYB4+qEqpwRNTpuKXyvB2zRyG1+jPWZgSHZOj
+	 UIXtSIBkigMLxu5w/5uJM+IErK9H7nIjVpJNv21xjLSADnVbPu0BDEw3sc0D7dDnG5
+	 IgKBU3akV+MgXP6jT8bh3aCLBgTmxOyHU7IoGIWc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Christian=20G=C3=B6ttsche?= <cgzones@googlemail.com>,
-	Stephen Smalley <stephen.smalley.work@gmail.com>,
-	Paul Moore <paul@paul-moore.com>
-Subject: [PATCH 5.4 192/222] selinux: fix selinux_xfrm_alloc_user() to set correct ctx_len
+	James Morse <james.morse@arm.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Pu Lehui <pulehui@huawei.com>
+Subject: [PATCH 5.10 326/355] arm64: proton-pack: Expose whether the platform is mitigated by firmware
 Date: Mon, 23 Jun 2025 15:08:47 +0200
-Message-ID: <20250623130618.006011370@linuxfoundation.org>
+Message-ID: <20250623130636.556520652@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130611.896514667@linuxfoundation.org>
-References: <20250623130611.896514667@linuxfoundation.org>
+In-Reply-To: <20250623130626.716971725@linuxfoundation.org>
+References: <20250623130626.716971725@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,46 +60,82 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stephen Smalley <stephen.smalley.work@gmail.com>
+From: James Morse <james.morse@arm.com>
 
-commit 86c8db86af43f52f682e53a0f2f0828683be1e52 upstream.
+[ Upstream commit e7956c92f396a44eeeb6eaf7a5b5e1ad24db6748 ]
 
-We should count the terminating NUL byte as part of the ctx_len.
-Otherwise, UBSAN logs a warning:
-  UBSAN: array-index-out-of-bounds in security/selinux/xfrm.c:99:14
-  index 60 is out of range for type 'char [*]'
+is_spectre_bhb_fw_affected() allows the caller to determine if the CPU
+is known to need a firmware mitigation. CPUs are either on the list
+of CPUs we know about, or firmware has been queried and reported that
+the platform is affected - and mitigated by firmware.
 
-The allocation itself is correct so there is no actual out of bounds
-indexing, just a warning.
+This helper is not useful to determine if the platform is mitigated
+by firmware. A CPU could be on the know list, but the firmware may
+not be implemented. Its affected but not mitigated.
 
-Cc: stable@vger.kernel.org
-Suggested-by: Christian Göttsche <cgzones@googlemail.com>
-Link: https://lore.kernel.org/selinux/CAEjxPJ6tA5+LxsGfOJokzdPeRomBHjKLBVR6zbrg+_w3ZZbM3A@mail.gmail.com/
-Signed-off-by: Stephen Smalley <stephen.smalley.work@gmail.com>
-Signed-off-by: Paul Moore <paul@paul-moore.com>
+spectre_bhb_enable_mitigation() handles this distinction by checking
+the firmware state before enabling the mitigation.
+
+Add a helper to expose this state. This will be used by the BPF JIT
+to determine if calling firmware for a mitigation is necessary and
+supported.
+
+Signed-off-by: James Morse <james.morse@arm.com>
+Reviewed-by: Catalin Marinas <catalin.marinas@arm.com>
+[The conflicts were due to not include bitmap of mitigations]
+Signed-off-by: Pu Lehui <pulehui@huawei.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- security/selinux/xfrm.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm64/include/asm/spectre.h |    1 +
+ arch/arm64/kernel/proton-pack.c  |    8 ++++++++
+ 2 files changed, 9 insertions(+)
 
---- a/security/selinux/xfrm.c
-+++ b/security/selinux/xfrm.c
-@@ -95,7 +95,7 @@ static int selinux_xfrm_alloc_user(struc
+--- a/arch/arm64/include/asm/spectre.h
++++ b/arch/arm64/include/asm/spectre.h
+@@ -32,6 +32,7 @@ void spectre_v4_enable_task_mitigation(s
  
- 	ctx->ctx_doi = XFRM_SC_DOI_LSM;
- 	ctx->ctx_alg = XFRM_SC_ALG_SELINUX;
--	ctx->ctx_len = str_len;
-+	ctx->ctx_len = str_len + 1;
- 	memcpy(ctx->ctx_str, &uctx[1], str_len);
- 	ctx->ctx_str[str_len] = '\0';
- 	rc = security_context_to_sid(&selinux_state, ctx->ctx_str, str_len,
+ enum mitigation_state arm64_get_spectre_bhb_state(void);
+ bool is_spectre_bhb_affected(const struct arm64_cpu_capabilities *entry, int scope);
++bool is_spectre_bhb_fw_mitigated(void);
+ u8 spectre_bhb_loop_affected(int scope);
+ void spectre_bhb_enable_mitigation(const struct arm64_cpu_capabilities *__unused);
+ bool try_emulate_el1_ssbs(struct pt_regs *regs, u32 instr);
+--- a/arch/arm64/kernel/proton-pack.c
++++ b/arch/arm64/kernel/proton-pack.c
+@@ -1059,6 +1059,8 @@ static void kvm_setup_bhb_slot(const cha
+ static void kvm_setup_bhb_slot(const char *hyp_vecs_start) { }
+ #endif /* CONFIG_KVM */
+ 
++static bool spectre_bhb_fw_mitigated;
++
+ void spectre_bhb_enable_mitigation(const struct arm64_cpu_capabilities *entry)
+ {
+ 	enum mitigation_state fw_state, state = SPECTRE_VULNERABLE;
+@@ -1103,12 +1105,18 @@ void spectre_bhb_enable_mitigation(const
+ 			this_cpu_set_vectors(EL1_VECTOR_BHB_FW);
+ 
+ 			state = SPECTRE_MITIGATED;
++			spectre_bhb_fw_mitigated = true;
+ 		}
+ 	}
+ 
+ 	update_mitigation_state(&spectre_bhb_state, state);
+ }
+ 
++bool is_spectre_bhb_fw_mitigated(void)
++{
++	return spectre_bhb_fw_mitigated;
++}
++
+ /* Patched to correct the immediate */
+ void noinstr spectre_bhb_patch_loop_iter(struct alt_instr *alt,
+ 				   __le32 *origptr, __le32 *updptr, int nr_inst)
 
 
 
