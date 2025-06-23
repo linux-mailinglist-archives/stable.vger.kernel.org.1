@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-155924-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-155833-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B7CBAE443D
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:41:30 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E243AE440E
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:39:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5BFE57AC737
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:35:26 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AD6F23A657E
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:31:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2DCC425393C;
-	Mon, 23 Jun 2025 13:34:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B44C62561AE;
+	Mon, 23 Jun 2025 13:30:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xaKNVtMX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hFXFWJyu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEC6A2F24;
-	Mon, 23 Jun 2025 13:34:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72E02255F59;
+	Mon, 23 Jun 2025 13:30:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750685688; cv=none; b=GIL0cNnJy2xzbg7Q7ch/4mx5lFARaMH2tQTkQjd5Ry6Hf1ToexyIk5V9fZ6ZLNm7NF6pjSlmy1nxvuxqIU+sa8IguwFoUHLcv6Qgm0HJ4w4WMeUfCwhL30AE9G7wdIz1tM9Jr86ovYy6tUnQauCOyBh/u3tvzfJk4CD/twirfkE=
+	t=1750685446; cv=none; b=mmQ2AEveOp4NDNCe6HjlpvHCjizS2sZIXyVch1EFilRor4JFces7HNd2/8scIwFgVql12TZD+3Z4RQdeoreBE+EMzIPSQC1bPRbCAKwCr7P384YFYyW2C7h4ejo7itaIzCANktWJuCWgOwed3/17y/TMJJp2IW/lkUZduJTvi5A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750685688; c=relaxed/simple;
-	bh=DxhnOKOfnb1sI544a+94XInGSITEMRhhLsTsAIbdHyA=;
+	s=arc-20240116; t=1750685446; c=relaxed/simple;
+	bh=AfUGZ9sng1clDVGjFqNSID4FbTkget+emqPolUDhfz4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pL9vk6u8MUqe5ajV04iNweBatOiOITEU34TyiCkruo3Ke0pCcnMq9gaheobik+AcYFNVFq+YzxqKIgAJx180KXkbbQN3tqsKTvfbNfs0FPZqjwLnE2lcV8cCD9dcJLaHRnIJiTwB1WSRmOuFv+8ot0VuqYTsmRZEWdX26noMFh0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xaKNVtMX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6FB83C4CEEA;
-	Mon, 23 Jun 2025 13:34:47 +0000 (UTC)
+	 MIME-Version; b=PwoxbmKKS1B/cg3nIFLbsnpJyPIsxpUGtpZA1+w45U75U73rPILMGnBrs6gh37H7h3lyHPkYZrfmcD66MYoA+tuHQaOLJMqj++kydUjnKMlAk4/CHnAg0u+cUmujSZcdnrx60m9dLUijL7HkuGf6D/VRkm+mfOXgzCPBfRgwu9A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hFXFWJyu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D976C4CEEA;
+	Mon, 23 Jun 2025 13:30:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750685687;
-	bh=DxhnOKOfnb1sI544a+94XInGSITEMRhhLsTsAIbdHyA=;
+	s=korg; t=1750685446;
+	bh=AfUGZ9sng1clDVGjFqNSID4FbTkget+emqPolUDhfz4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xaKNVtMXX5Qu5CkDH78lIqyrAxU7vc5o4oQF1jlHpsMWfimmzTsgS0N6LW1kXr+Oe
-	 k1/U2ZhxU+vNepAXWieHjFRE65uh4bhJpBFXiBoN8/xhrcykFhqGttLKhaOIF/6okT
-	 Q3D2IparTORL2LlTOKgtYDc5qo09Nyjn8mEAVZvk=
+	b=hFXFWJyuA+3P1mPxi59JvakLUN/5jTiBT5oB5f3+9dh377BMx4Y09V9ralFls5RXq
+	 HO/ZZfgr0sx4ms9FvfV/Xtcz5uebtQcubIw7Da7zTvwWlupjJMr/cmtx9QTZkzO8zG
+	 M79B1531mRHq4yu/mOoMzI1fM9mf4U8kQMO55NwI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Quentin Schulz <quentin.schulz@cherry.de>,
-	Lukasz Czechowski <lukasz.czechowski@thaumatec.com>,
-	Heiko Stuebner <heiko@sntech.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 068/355] arm64: dts: rockchip: disable unrouted USB controllers and PHY on RK3399 Puma with Haikou
+	Gautam Menghani <gautam@linux.ibm.com>,
+	Venkat Rao Bagalkote <venkat88@linux.ibm.com>,
+	Vaibhav Jain <vaibhav@linux.ibm.com>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>
+Subject: [PATCH 6.6 008/290] powerpc/pseries/msi: Avoid reading PCI device registers in reduced power states
 Date: Mon, 23 Jun 2025 15:04:29 +0200
-Message-ID: <20250623130628.876084521@linuxfoundation.org>
+Message-ID: <20250623130627.212896622@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130626.716971725@linuxfoundation.org>
-References: <20250623130626.716971725@linuxfoundation.org>
+In-Reply-To: <20250623130626.910356556@linuxfoundation.org>
+References: <20250623130626.910356556@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,71 +63,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Quentin Schulz <quentin.schulz@cherry.de>
+From: Gautam Menghani <gautam@linux.ibm.com>
 
-[ Upstream commit febd8c6ab52c683b447fe22fc740918c86feae43 ]
+commit 9cc0eafd28c7faef300822992bb08d79cab2a36c upstream.
 
-The u2phy0_host port is the part of the USB PHY0 (namely the
-HOST0_DP/DM lanes) which routes directly to the USB2.0 HOST
-controller[1]. The other lanes of the PHY are routed to the USB3.0 OTG
-controller (dwc3), which we do use.
+When a system is being suspended to RAM, the PCI devices are also
+suspended and the PPC code ends up calling pseries_msi_compose_msg() and
+this triggers the BUG_ON() in __pci_read_msi_msg() because the device at
+this point is in reduced power state. In reduced power state, the memory
+mapped registers of the PCI device are not accessible.
 
-The HOST0_DP/DM lanes aren't routed on RK3399 Puma so let's simply
-disable the USB2.0 controllers.
+To replicate the bug:
+1. Make sure deep sleep is selected
+	# cat /sys/power/mem_sleep
+	s2idle [deep]
 
-USB3 OTG has been known to be unstable on RK3399 Puma Haikou for a
-while, one of the recurring issues being that only USB2 is detected and
-not USB3 in host mode. Reading the justification above and seeing that
-we are keeping u2phy0_host in the Haikou carrierboard DTS probably may
-have bothered you since it should be changed to u2phy0_otg. The issue is
-that if it's switched to that, USB OTG on Haikou is entirely broken. I
-have checked the routing in the Gerber file, the lanes are going to the
-expected ball pins (that is, NOT HOST0_DP/DM).
-u2phy0_host is for sure the wrong part of the PHY to use, but it's the
-only one that works at the moment for that board so keep it until we
-figure out what exactly is broken.
+2. Make sure console is not suspended (so that dmesg logs are visible)
+	echo N > /sys/module/printk/parameters/console_suspend
 
-No intended functional change.
+3. Suspend the system
+	echo mem > /sys/power/state
 
-[1] https://rockchip.fr/Rockchip%20RK3399%20TRM%20V1.3%20Part2.pdf
-    Chapter 2 USB2.0 PHY
+To fix this behaviour, read the cached msi message of the device when the
+device is not in PCI_D0 power state instead of touching the hardware.
 
-Fixes: 2c66fc34e945 ("arm64: dts: rockchip: add RK3399-Q7 (Puma) SoM")
-Signed-off-by: Quentin Schulz <quentin.schulz@cherry.de>
-Signed-off-by: Lukasz Czechowski <lukasz.czechowski@thaumatec.com>
-Link: https://lore.kernel.org/r/20250425-onboard_usb_dev-v2-5-4a76a474a010@thaumatec.com
-Signed-off-by: Heiko Stuebner <heiko@sntech.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: a5f3d2c17b07 ("powerpc/pseries/pci: Add MSI domains")
+Cc: stable@vger.kernel.org # v5.15+
+Signed-off-by: Gautam Menghani <gautam@linux.ibm.com>
+Tested-by: Venkat Rao Bagalkote <venkat88@linux.ibm.com>
+Reviewed-by: Vaibhav Jain <vaibhav@linux.ibm.com>
+Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
+Link: https://patch.msgid.link/20250305090237.294633-1-gautam@linux.ibm.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/boot/dts/rockchip/rk3399-puma-haikou.dts | 8 --------
- 1 file changed, 8 deletions(-)
+ arch/powerpc/platforms/pseries/msi.c |    7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/arch/arm64/boot/dts/rockchip/rk3399-puma-haikou.dts b/arch/arm64/boot/dts/rockchip/rk3399-puma-haikou.dts
-index 3fc761c8d550a..40be64a37c47d 100644
---- a/arch/arm64/boot/dts/rockchip/rk3399-puma-haikou.dts
-+++ b/arch/arm64/boot/dts/rockchip/rk3399-puma-haikou.dts
-@@ -246,14 +246,6 @@
- 	status = "okay";
- };
+--- a/arch/powerpc/platforms/pseries/msi.c
++++ b/arch/powerpc/platforms/pseries/msi.c
+@@ -519,7 +519,12 @@ static struct msi_domain_info pseries_ms
  
--&usb_host0_ehci {
--	status = "okay";
--};
--
--&usb_host0_ohci {
--	status = "okay";
--};
--
- &vopb {
- 	status = "okay";
- };
--- 
-2.39.5
-
+ static void pseries_msi_compose_msg(struct irq_data *data, struct msi_msg *msg)
+ {
+-	__pci_read_msi_msg(irq_data_get_msi_desc(data), msg);
++	struct pci_dev *dev = msi_desc_to_pci_dev(irq_data_get_msi_desc(data));
++
++	if (dev->current_state == PCI_D0)
++		__pci_read_msi_msg(irq_data_get_msi_desc(data), msg);
++	else
++		get_cached_msi_msg(data->irq, msg);
+ }
+ 
+ static struct irq_chip pseries_msi_irq_chip = {
 
 
 
