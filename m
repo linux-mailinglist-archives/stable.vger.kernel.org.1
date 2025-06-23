@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-156916-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157053-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B1933AE51AE
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:36:37 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F57BAE5243
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:42:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E457A1B64102
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:36:41 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1C4AE4A5677
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:42:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C885221FCA;
-	Mon, 23 Jun 2025 21:36:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 938E92222CA;
+	Mon, 23 Jun 2025 21:41:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ruty5hl5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ibgDGz54"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29797221734;
-	Mon, 23 Jun 2025 21:36:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E4994315A;
+	Mon, 23 Jun 2025 21:41:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750714583; cv=none; b=RHkvK1BKLXYu3KDIgqCEe+/Jl0gbw8Jz+Y74RASLP8RFXflskEze/LQiGyL8Ek4cRtJePkV7a9/LKxDAw0ol+EmbV0DE6lLh5hwv8GbLIudDUqHh0mK1OPyjmdy9A8UFn1ROUPI9FwDTE50v+5tqWLwUoTmJ9cww0F5jeYPV0KU=
+	t=1750714919; cv=none; b=n6VWKrm4kvwrsItisNjnijypW1Uvdl8UenhoJJeVMtqKM1ULxfNloBTNiLMouiR0xe9XSeyztw0wRVd2MjJw0gOT74XLxxHzdK7ME0+4Pcg6QKFgk4B4ndHUMylUI827bmN1P43B6dbiKwBu3GKXAyYdiD8nnsxVUaL4CBoEDAk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750714583; c=relaxed/simple;
-	bh=segoUwQoDf2HcHC53esITE73Cl7efff4pq/gKMhL3hU=;
+	s=arc-20240116; t=1750714919; c=relaxed/simple;
+	bh=Bx7kDJyX3Ncq1L9BPzWa69eQ+Re/1XRqB0xVJnidWTc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sZFLD9rkGJeEf7MelTngOHSDTxJH3RiK9Jp2xK7cK1TYHYCB0gfYu85RxUcKitFEOP3d2piV32KlF13wAi0D5zY3+qrBDA5YAuNRLEu6gTERtbq6KjBjeTY7A5TA2gYd9WYNgNIO6RqHE3L/8sW3NT97Ul73AO4Ex/XaPJMXth8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ruty5hl5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6602C4CEEA;
-	Mon, 23 Jun 2025 21:36:22 +0000 (UTC)
+	 MIME-Version; b=EB6vwhvFjmAwBpwxl6xp2HPDb4Zfzsj9keGAjcsdCiKTRr4xbeZeadJnYfdDfaBr+ST05EjN/+63yms+KqLB4Jvy0iw5BWCWHhxm3Mou8jMtWROEJxJyAozhSBAHOXaV5eGTtl30iBff8zMS972Vu2ZRgeUKXoqEUOSmj4W4mac=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ibgDGz54; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE28DC4CEF1;
+	Mon, 23 Jun 2025 21:41:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750714583;
-	bh=segoUwQoDf2HcHC53esITE73Cl7efff4pq/gKMhL3hU=;
+	s=korg; t=1750714919;
+	bh=Bx7kDJyX3Ncq1L9BPzWa69eQ+Re/1XRqB0xVJnidWTc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ruty5hl5imrZ0nL5YdzbWuY8N/34Bc5fH3GCTCPJqF4hNLIyCJ7+brfpXq9dm0o4U
-	 PWjUtRWhp7cPk5vkeVoB00tGbZDLK9i+WmSxxRqzQKLA9dIjPUxqAqh62qHz046cm6
-	 XmH/wuc40IWDpCj4Vz/beO0QPwXNO6f4BOZN+eWA=
+	b=ibgDGz54HfmghGABMmn59kwiBNb+pwVkncSPzrV9/ATCKJ+aEyt0DgtyHykiVuwnX
+	 8wfh662gWngtBbDoKk5EPD7gerE8BoNFqXLXCnhyVGo9y2K5xFyJTVYeP1lH8PS0Pc
+	 ek2YpuRYBdL8kJxGwGNiXLoI+OfHbgKMXfCjnNYE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mike Looijmans <mike.looijmans@topic.nl>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 403/592] pinctrl: mcp23s08: Reset all pins to input at probe
+	stable@kernel.org,
+	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+	Ricardo Ribalda <ribalda@chromium.org>,
+	Hans de Goede <hdegoede@redhat.com>,
+	Hans Verkuil <hverkuil@xs4all.nl>
+Subject: [PATCH 5.15 217/411] media: uvcvideo: Return the number of processed controls
 Date: Mon, 23 Jun 2025 15:06:01 +0200
-Message-ID: <20250623130710.026912817@linuxfoundation.org>
+Message-ID: <20250623130639.128307520@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
-References: <20250623130700.210182694@linuxfoundation.org>
+In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
+References: <20250623130632.993849527@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,52 +64,76 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mike Looijmans <mike.looijmans@topic.nl>
+From: Ricardo Ribalda <ribalda@chromium.org>
 
-[ Upstream commit 3ede3f8b4b4b399b0ca41e44959f80d5cf84fc98 ]
+commit ba4fafb02ad6a4eb2e00f861893b5db42ba54369 upstream.
 
-At startup, the driver just assumes that all registers have their
-default values. But after a soft reset, the chip will just be in the
-state it was, and some pins may have been configured as outputs. Any
-modification of the output register will cause these pins to be driven
-low, which leads to unexpected/unwanted effects. To prevent this from
-happening, set the chip's IO configuration register to a known safe
-mode (all inputs) before toggling any other bits.
+If we let know our callers that we have not done anything, they will be
+able to optimize their decisions.
 
-Signed-off-by: Mike Looijmans <mike.looijmans@topic.nl>
-Link: https://lore.kernel.org/20250314151803.28903-1-mike.looijmans@topic.nl
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@kernel.org
+Fixes: b4012002f3a3 ("[media] uvcvideo: Add support for control events")
+Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
+Message-ID: <20250224-uvc-data-backup-v2-1-de993ed9823b@chromium.org>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pinctrl/pinctrl-mcp23s08.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ drivers/media/usb/uvc/uvc_ctrl.c |   11 ++++++++++-
+ 1 file changed, 10 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/pinctrl/pinctrl-mcp23s08.c b/drivers/pinctrl/pinctrl-mcp23s08.c
-index 4d1f41488017e..c2f4b16f42d20 100644
---- a/drivers/pinctrl/pinctrl-mcp23s08.c
-+++ b/drivers/pinctrl/pinctrl-mcp23s08.c
-@@ -636,6 +636,14 @@ int mcp23s08_probe_one(struct mcp23s08 *mcp, struct device *dev,
+--- a/drivers/media/usb/uvc/uvc_ctrl.c
++++ b/drivers/media/usb/uvc/uvc_ctrl.c
+@@ -1679,12 +1679,17 @@ int uvc_ctrl_begin(struct uvc_video_chai
+ 	return mutex_lock_interruptible(&chain->ctrl_mutex) ? -ERESTARTSYS : 0;
+ }
  
- 	mcp->reset_gpio = devm_gpiod_get_optional(dev, "reset", GPIOD_OUT_LOW);
++/*
++ * Returns the number of uvc controls that have been correctly set, or a
++ * negative number if there has been an error.
++ */
+ static int uvc_ctrl_commit_entity(struct uvc_device *dev,
+ 				  struct uvc_fh *handle,
+ 				  struct uvc_entity *entity,
+ 				  int rollback,
+ 				  struct uvc_control **err_ctrl)
+ {
++	unsigned int processed_ctrls = 0;
+ 	struct uvc_control *ctrl;
+ 	unsigned int i;
+ 	int ret;
+@@ -1718,6 +1723,9 @@ static int uvc_ctrl_commit_entity(struct
+ 		else
+ 			ret = 0;
  
-+	/*
-+	 * Reset the chip - we don't really know what state it's in, so reset
-+	 * all pins to input first to prevent surprises.
-+	 */
-+	ret = mcp_write(mcp, MCP_IODIR, mcp->chip.ngpio == 16 ? 0xFFFF : 0xFF);
-+	if (ret < 0)
-+		return ret;
++		if (!ret)
++			processed_ctrls++;
 +
- 	/* verify MCP_IOCON.SEQOP = 0, so sequential reads work,
- 	 * and MCP_IOCON.HAEN = 1, so we work with all chips.
- 	 */
--- 
-2.39.5
-
+ 		if (rollback || ret < 0)
+ 			memcpy(uvc_ctrl_data(ctrl, UVC_CTRL_DATA_CURRENT),
+ 			       uvc_ctrl_data(ctrl, UVC_CTRL_DATA_BACKUP),
+@@ -1736,7 +1744,7 @@ static int uvc_ctrl_commit_entity(struct
+ 			uvc_ctrl_set_handle(handle, ctrl, handle);
+ 	}
+ 
+-	return 0;
++	return processed_ctrls;
+ }
+ 
+ static int uvc_ctrl_find_ctrl_idx(struct uvc_entity *entity,
+@@ -1783,6 +1791,7 @@ int __uvc_ctrl_commit(struct uvc_fh *han
+ 
+ 	if (!rollback)
+ 		uvc_ctrl_send_events(handle, ctrls->controls, ctrls->count);
++	ret = 0;
+ done:
+ 	mutex_unlock(&chain->ctrl_mutex);
+ 	return ret;
 
 
 
