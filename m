@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-157123-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157281-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E3CF9AE5289
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:45:00 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F491AE5342
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:51:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0D8B6443D18
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:44:36 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 922341B66A08
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:51:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3310A223DEA;
-	Mon, 23 Jun 2025 21:44:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C7C5C219A7A;
+	Mon, 23 Jun 2025 21:51:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HtHXwQ1m"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bzUoY/LJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2AB81DDC04;
-	Mon, 23 Jun 2025 21:44:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84F5D136348;
+	Mon, 23 Jun 2025 21:51:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750715090; cv=none; b=olo6lJZs423u7nvzeKEpeS+UB45KItO9AUIJ89C+HvhyAAxF7xXN2F8VZvq855hgPiqvgQNQ7e2yLMJTBlmn4H/X4U904kKlF/m5xIAv9OtTztTNRIvWeeK/dVRL2PrHtheowaPrwvD6yR3CZTvGzqvJTaFH4lA0r6ONOt8eJIg=
+	t=1750715484; cv=none; b=L8u7OGZDXoe+tlAZfY4ukIVEK+iseGMmmnt1ST/xcbwWx0kojVfxv5rk0N8KIQqyN+3VuQ6zCGt0y9XKihQ0yb+Tb6jvKeIOhCI8pWiwMalM6stNjUouSP5DY4I+jWwyVJrtkOxzHizNtDMRzGi8TS2/WTSdqJZprAlWGX1jYJs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750715090; c=relaxed/simple;
-	bh=M18CLnsiVZUupjjMGtJOsiOoYFoTGeEBcz8klWHCmvY=;
+	s=arc-20240116; t=1750715484; c=relaxed/simple;
+	bh=LHsfskMnFBmo/VMPKa7fk9yNsA59gPhVon71kWbiLJg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CKgWCIHx7+RjmgbPXdQTIQUsG38XWJPyADZmEWoGbfHebXFep3X38Xu4EMDqOkYGDzTbH8bmef8xFdFWn8ZPaUArKiMmzl5qNCLX+KHTZdl/G+E50K0NyLCW5yVPUjRJGxZqurNjk1lx2ENcgxW7SXE8ZYr4RZjhmGm5SzUl/0A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HtHXwQ1m; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7CD62C4CEEA;
-	Mon, 23 Jun 2025 21:44:49 +0000 (UTC)
+	 MIME-Version:Content-Type; b=tMcbF8Mz2UjSPdcyPQzIWVB1KYp7lyArdOoVGF4X851fMBWqmeKT4eNhDOgRKoSGvgDkZ+wChnQbYUN5qecgb91PKCebA7Zckk7gny9s6C1HYsE9/PqFwIlwcZLCAFP2Xs5o8cieslRT0drO2iW0fpSCxP/yfrOqnMjHJta0Hjs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bzUoY/LJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1BFCBC4CEEA;
+	Mon, 23 Jun 2025 21:51:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750715089;
-	bh=M18CLnsiVZUupjjMGtJOsiOoYFoTGeEBcz8klWHCmvY=;
+	s=korg; t=1750715484;
+	bh=LHsfskMnFBmo/VMPKa7fk9yNsA59gPhVon71kWbiLJg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HtHXwQ1menbizC+6LkwW21k0Fz1nmNfs3vK4NQj5MhXZZei+pmCGLCpg0ZbyV135f
-	 ZV+/3rR5hRksr0Shpk8Xm2kO14HngDXowFYBgEHIrRdxE8PeH3iLQsfqOMKFJLSgju
-	 MuYzslOHB8D5MrUGZGo64dqv5op0Vt3SMnyGSMms=
+	b=bzUoY/LJmfS96dyDe50g3YAEu30BS78/Bp2Ah0OxdyJWP3FGcowrQ+s++9aiuLV5m
+	 283oNpHcpjmYKrHcRzEa6RLzqbqQSZ5DtcXQS8hZ1jJ6exYJ7RQHynzCon3rgxCOmQ
+	 nQrxsMcDVFptIB3Q7BXELutJVQkBf9h0ZDnYleMg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mike Looijmans <mike.looijmans@topic.nl>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 179/290] pinctrl: mcp23s08: Reset all pins to input at probe
+	=?UTF-8?q?Christian=20G=C3=B6ttsche?= <cgzones@googlemail.com>,
+	Stephen Smalley <stephen.smalley.work@gmail.com>,
+	Paul Moore <paul@paul-moore.com>
+Subject: [PATCH 6.15 482/592] selinux: fix selinux_xfrm_alloc_user() to set correct ctx_len
 Date: Mon, 23 Jun 2025 15:07:20 +0200
-Message-ID: <20250623130632.262212396@linuxfoundation.org>
+Message-ID: <20250623130711.899295666@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130626.910356556@linuxfoundation.org>
-References: <20250623130626.910356556@linuxfoundation.org>
+In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
+References: <20250623130700.210182694@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,54 +60,46 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mike Looijmans <mike.looijmans@topic.nl>
+From: Stephen Smalley <stephen.smalley.work@gmail.com>
 
-[ Upstream commit 3ede3f8b4b4b399b0ca41e44959f80d5cf84fc98 ]
+commit 86c8db86af43f52f682e53a0f2f0828683be1e52 upstream.
 
-At startup, the driver just assumes that all registers have their
-default values. But after a soft reset, the chip will just be in the
-state it was, and some pins may have been configured as outputs. Any
-modification of the output register will cause these pins to be driven
-low, which leads to unexpected/unwanted effects. To prevent this from
-happening, set the chip's IO configuration register to a known safe
-mode (all inputs) before toggling any other bits.
+We should count the terminating NUL byte as part of the ctx_len.
+Otherwise, UBSAN logs a warning:
+  UBSAN: array-index-out-of-bounds in security/selinux/xfrm.c:99:14
+  index 60 is out of range for type 'char [*]'
 
-Signed-off-by: Mike Looijmans <mike.looijmans@topic.nl>
-Link: https://lore.kernel.org/20250314151803.28903-1-mike.looijmans@topic.nl
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+The allocation itself is correct so there is no actual out of bounds
+indexing, just a warning.
+
+Cc: stable@vger.kernel.org
+Suggested-by: Christian Göttsche <cgzones@googlemail.com>
+Link: https://lore.kernel.org/selinux/CAEjxPJ6tA5+LxsGfOJokzdPeRomBHjKLBVR6zbrg+_w3ZZbM3A@mail.gmail.com/
+Signed-off-by: Stephen Smalley <stephen.smalley.work@gmail.com>
+Signed-off-by: Paul Moore <paul@paul-moore.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pinctrl/pinctrl-mcp23s08.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ security/selinux/xfrm.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/pinctrl/pinctrl-mcp23s08.c b/drivers/pinctrl/pinctrl-mcp23s08.c
-index fd97b6ee2a8d1..ca45c1f36a89b 100644
---- a/drivers/pinctrl/pinctrl-mcp23s08.c
-+++ b/drivers/pinctrl/pinctrl-mcp23s08.c
-@@ -612,6 +612,14 @@ int mcp23s08_probe_one(struct mcp23s08 *mcp, struct device *dev,
+--- a/security/selinux/xfrm.c
++++ b/security/selinux/xfrm.c
+@@ -94,7 +94,7 @@ static int selinux_xfrm_alloc_user(struc
  
- 	mcp->reset_gpio = devm_gpiod_get_optional(dev, "reset", GPIOD_OUT_LOW);
- 
-+	/*
-+	 * Reset the chip - we don't really know what state it's in, so reset
-+	 * all pins to input first to prevent surprises.
-+	 */
-+	ret = mcp_write(mcp, MCP_IODIR, mcp->chip.ngpio == 16 ? 0xFFFF : 0xFF);
-+	if (ret < 0)
-+		return ret;
-+
- 	/* verify MCP_IOCON.SEQOP = 0, so sequential reads work,
- 	 * and MCP_IOCON.HAEN = 1, so we work with all chips.
- 	 */
--- 
-2.39.5
-
+ 	ctx->ctx_doi = XFRM_SC_DOI_LSM;
+ 	ctx->ctx_alg = XFRM_SC_ALG_SELINUX;
+-	ctx->ctx_len = str_len;
++	ctx->ctx_len = str_len + 1;
+ 	memcpy(ctx->ctx_str, &uctx[1], str_len);
+ 	ctx->ctx_str[str_len] = '\0';
+ 	rc = security_context_to_sid(ctx->ctx_str, str_len,
 
 
 
