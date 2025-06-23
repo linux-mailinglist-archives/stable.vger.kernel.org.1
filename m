@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-156115-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-155907-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 74124AE4523
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:48:48 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1576DAE4475
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:43:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 20814189888F
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:43:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1EA824435E5
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:34:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8673224DD0B;
-	Mon, 23 Jun 2025 13:43:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B769253B52;
+	Mon, 23 Jun 2025 13:34:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0+GCMMHp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O1UcqllA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42ADC24EAB1;
-	Mon, 23 Jun 2025 13:43:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 399664C6E;
+	Mon, 23 Jun 2025 13:34:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750686185; cv=none; b=hyFv0u9mrPuSRgExJdKuS9L1sM8FHvIzNZZPChIlCrOvzzxCtJAtgaEACLMydX3xFwqCU5s+dDAll6K/h8sC9+dVtKdEHxxWOD6Qnl7oTAYKI0FPQS80dRQnt6aj6tHXhIwKK6LzrdKsCM62syXI3KIvngCp5K1voPvv5O//9tc=
+	t=1750685644; cv=none; b=JdhXZFQPS2MBtjr2O/WCI9Gdcn0/9lMNinhJEQVg0vTnuvxLrz41F7R7NHrXlkQygfBo+WpTXlTNQTiRWevxoNrVXXlPovWJ8XAmhctgSOTKJXe6uhaAYCEintW9R6ewdX7+v1C5ECU1OyLCikfC3vgIbNVzpafY/XuIBQzJfsA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750686185; c=relaxed/simple;
-	bh=IDOvj8U1r8cSMawFdYrP2zl0wuiNvCJHAkeDpLVvIvU=;
+	s=arc-20240116; t=1750685644; c=relaxed/simple;
+	bh=e+vFM7mvgdCkvdPkEYcF7qSuLkAayb8japHDBUUVVko=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GKuHTz+hkjgvmRHG/3eXK5Yild3LZz/yH78IuJZxl1OF8dUaC2K//WlHTO51mW0TAFoR2QF2s/xTH9wrai3IXzGyWWO7KJjsBpI5UGXPxYCSZfWi4IlZA+kyMBt7ZOtknMunB3fRGa86v9FEhrQpW9jGjrIYbUQqER0vLdkGtdI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0+GCMMHp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CBE4CC4CEEA;
-	Mon, 23 Jun 2025 13:43:04 +0000 (UTC)
+	 MIME-Version; b=bPU1f1+RuPdT5NJar7EFDuPXYaPO9MoWidlXGEtpp3eDa+hSA8CvWfBbpqSxwybQ5PvpYa5a/M1D06bCrloAH2/suqiWAL4QbiFqSzgFcK0V3N+8HOF0nYp9XgbWmQv/woNbjvYeZpyThqDGplEAjKwxxnkURdxjW5Z9GghWLq0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O1UcqllA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C01DEC4CEEA;
+	Mon, 23 Jun 2025 13:34:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750686185;
-	bh=IDOvj8U1r8cSMawFdYrP2zl0wuiNvCJHAkeDpLVvIvU=;
+	s=korg; t=1750685644;
+	bh=e+vFM7mvgdCkvdPkEYcF7qSuLkAayb8japHDBUUVVko=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0+GCMMHpL4ZHbXTTPqqYTX4nnkMu7/Xt9j4oB8wwPRoe2AONnwvjbIoF1B1uzzhrO
-	 w5XkSzzV7Nb9d2jM2juwQYGY7zioDUl0zu1Li4ZxjA5lLvXoYoX2HKSCi4gKcSdMe1
-	 Rvth4ZOy2Rdn/st2ZIhp2DHwtO9ej/ZhRChALZ8I=
+	b=O1UcqllAiY46L/RjBb1jP/c3N8NHAAAvqRJ3R44oNxOUcFq/fT6eb3SLa4rMXlit6
+	 HizoHg3TYe5HZ0mG/7Mn+1IxUGu4ZS4aIBmmL1FBg1rztszHQYyZJEENYAQ6z6uhBz
+	 qGgMskc28vYOhUzLVwoMQrmuk5eV4cOjWAoh17h8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	John Harrison <John.C.Harrison@Intel.com>,
-	Lucas De Marchi <lucas.demarchi@intel.com>,
+	Ryusuke Konishi <konishi.ryusuke@gmail.com>,
+	Wentao Liang <vulab@iscas.ac.cn>,
+	Andrew Morton <akpm@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 308/592] drm/xe/uc: Remove static from loop variable
+Subject: [PATCH 5.10 065/355] nilfs2: do not propagate ENOENT error from nilfs_btree_propagate()
 Date: Mon, 23 Jun 2025 15:04:26 +0200
-Message-ID: <20250623130707.732415694@linuxfoundation.org>
+Message-ID: <20250623130628.782265225@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
-References: <20250623130700.210182694@linuxfoundation.org>
+In-Reply-To: <20250623130626.716971725@linuxfoundation.org>
+References: <20250623130626.716971725@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,38 +63,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lucas De Marchi <lucas.demarchi@intel.com>
+From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
 
-[ Upstream commit 75584c8213d341ddd5b7c72abf822e62f4b3ab27 ]
+[ Upstream commit 8e39fbb1edbb4ec9d7c1124f403877fc167fcecd ]
 
-The `entries` variable is used to loop through the array - it's supposed
-to be const, but not static.
+In preparation for writing logs, in nilfs_btree_propagate(), which makes
+parent and ancestor node blocks dirty starting from a modified data block
+or b-tree node block, if the starting block does not belong to the b-tree,
+i.e.  is isolated, nilfs_btree_do_lookup() called within the function
+fails with -ENOENT.
 
-Reviewed-by: John Harrison <John.C.Harrison@Intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20250307-xe-per-gt-fw-v1-1-459574d76400@intel.com
-Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
+In this case, even though -ENOENT is an internal code, it is propagated to
+the log writer via nilfs_bmap_propagate() and may be erroneously returned
+to system calls such as fsync().
+
+Fix this issue by changing the error code to -EINVAL in this case, and
+having the bmap layer detect metadata corruption and convert the error
+code appropriately.
+
+Link: https://lkml.kernel.org/r/20250428173808.6452-3-konishi.ryusuke@gmail.com
+Fixes: 1f5abe7e7dbc ("nilfs2: replace BUG_ON and BUG calls triggerable from ioctl")
+Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+Cc: Wentao Liang <vulab@iscas.ac.cn>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/xe/xe_uc_fw.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/nilfs2/btree.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/xe/xe_uc_fw.c b/drivers/gpu/drm/xe/xe_uc_fw.c
-index fb0eda3d56829..b553079ae3d64 100644
---- a/drivers/gpu/drm/xe/xe_uc_fw.c
-+++ b/drivers/gpu/drm/xe/xe_uc_fw.c
-@@ -222,8 +222,8 @@ uc_fw_auto_select(struct xe_device *xe, struct xe_uc_fw *uc_fw)
- 		[XE_UC_FW_TYPE_HUC] = { entries_huc, ARRAY_SIZE(entries_huc) },
- 		[XE_UC_FW_TYPE_GSC] = { entries_gsc, ARRAY_SIZE(entries_gsc) },
- 	};
--	static const struct uc_fw_entry *entries;
- 	enum xe_platform p = xe->info.platform;
-+	const struct uc_fw_entry *entries;
- 	u32 count;
- 	int i;
+diff --git a/fs/nilfs2/btree.c b/fs/nilfs2/btree.c
+index 7c9f4d79bdbc5..4a5e8495fa674 100644
+--- a/fs/nilfs2/btree.c
++++ b/fs/nilfs2/btree.c
+@@ -2097,11 +2097,13 @@ static int nilfs_btree_propagate(struct nilfs_bmap *btree,
+ 
+ 	ret = nilfs_btree_do_lookup(btree, path, key, NULL, level + 1, 0);
+ 	if (ret < 0) {
+-		if (unlikely(ret == -ENOENT))
++		if (unlikely(ret == -ENOENT)) {
+ 			nilfs_crit(btree->b_inode->i_sb,
+ 				   "writing node/leaf block does not appear in b-tree (ino=%lu) at key=%llu, level=%d",
+ 				   btree->b_inode->i_ino,
+ 				   (unsigned long long)key, level);
++			ret = -EINVAL;
++		}
+ 		goto out;
+ 	}
  
 -- 
 2.39.5
