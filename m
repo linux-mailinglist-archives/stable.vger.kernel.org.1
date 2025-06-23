@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-157413-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156575-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5C87FAE53E3
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:57:29 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id DB2A4AE504C
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:24:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 52CA41B68300
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:57:08 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 389C47AE9C2
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:21:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 37A9022422F;
-	Mon, 23 Jun 2025 21:56:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D9C82206BB;
+	Mon, 23 Jun 2025 21:22:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PWy6FdBg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g6iLdOKL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7BAD223335;
-	Mon, 23 Jun 2025 21:56:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C63D219E0;
+	Mon, 23 Jun 2025 21:22:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750715805; cv=none; b=SsDI7u2z5tJYz1KCSlIxXud8DHf4Z+3VGcjpRhON46uE88bFLS11G6SO2DRlHLdtPuSzjcDONkS5+1ISOB16Vd38W4ZTVFcjiJyFe6w8Gz93jvH29mJKx2PKK/PVbnLgt2+2B/Za92BrZqaL1PLokp9E0UnLvZLK23MZzwFxhvI=
+	t=1750713749; cv=none; b=BPuBhcApzycU20W+BMC3vLS4b23Vg0zJz9NfvXQ3Rrjl1T2Idjg3fjBtBrY/k3HAfqIlSAUvIgvLdiIZU98Vh3XQQgF3gS0mdaUSDOkYsCsGx+syHjA/v0BgqaMCItKebRSm+OJuLQzxqb+PRhKyGRc0UFw4p9ChG17iCLlRZ+g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750715805; c=relaxed/simple;
-	bh=ShgV9xFjDjzzeqyVS3obLu7mSBo5LZOfXxJg4RBPzpw=;
+	s=arc-20240116; t=1750713749; c=relaxed/simple;
+	bh=ANNng+4wRf/S8tBkdWTmY9yCrqRJMdHzAG4YO+1DWuI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mUU3yj7C4IlNLITEpb9uloV2VKKNeOHvjQTFLQt8EDdBWXxO2oh7+2eRC0gMlMnooyH2dYLHAoZKDWLHt9z0fM0/UzsxUnEhwxrjfl28o45w+VfGsd2FnNKaFawZOZJ7x1hqi0mhrrHFe3u0nsTgR1PPRKIxmf03hemXSxDUWMY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PWy6FdBg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80311C4CEEA;
-	Mon, 23 Jun 2025 21:56:44 +0000 (UTC)
+	 MIME-Version; b=t6viyXJUJBtDbn05kHeDXWDM04F79xJkgCH5gzQYf5y0UVtVARKnbXbwITOlU6AsBHY5k3UehzZo3j7QFtUoUZsT72SLbDv6bPo0kVqJxiOUoilcnbclI8ukmftc8OOIgo/33Cx22dE9r50o69kqN8M0Bid8A7D3eBf1O1k0t80=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g6iLdOKL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C94EAC4CEEA;
+	Mon, 23 Jun 2025 21:22:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750715804;
-	bh=ShgV9xFjDjzzeqyVS3obLu7mSBo5LZOfXxJg4RBPzpw=;
+	s=korg; t=1750713749;
+	bh=ANNng+4wRf/S8tBkdWTmY9yCrqRJMdHzAG4YO+1DWuI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PWy6FdBgszqVYRr7ORWOY0ZGfj2Xo2HiHL0RaRYv1vZOQyQuDrudS1JuwL+Cg2K8b
-	 kLmhAKJLkssVVvMTTHTbj05gCzBuBd4AXdARqjninwjfMHRUWoeihKMHJHB+Erer28
-	 MDNVPm3oJjLtAT8ZGmbeiOeY4Ryyzqscf9QcUzCs=
+	b=g6iLdOKLpfDwAFCZHf0NTLmWBdjwDEz1WEgGByOaK7ip13IkDeOmjwzRhKFhtXpZA
+	 UIPX2fOJul7Zb5/VSiUNHCfskmw1mGGpPqSNFgouhrmXUwjahYZBqp1zSGKItu7p84
+	 5gwR4ovsZt3RAPEFHM0tHddxMLkEVMZCSJv6Xua8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
+	Jonathan Greental <yonatan02greental@gmail.com>,
+	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 243/508] drm/meson: use vclk_freq instead of pixel_freq in debug print
+Subject: [PATCH 5.15 144/411] powerpc/powernv/memtrace: Fix out of bounds issue in memtrace mmap
 Date: Mon, 23 Jun 2025 15:04:48 +0200
-Message-ID: <20250623130651.232941735@linuxfoundation.org>
+Message-ID: <20250623130637.235289286@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
-References: <20250623130645.255320792@linuxfoundation.org>
+In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
+References: <20250623130632.993849527@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,48 +63,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+From: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
 
-[ Upstream commit faf2f8382088e8c74bd6eeb236c8c9190e61615e ]
+[ Upstream commit cd097df4596f3a1e9d75eb8520162de1eb8485b2 ]
 
-meson_vclk_vic_supported_freq() has a debug print which includes the
-pixel freq. However, within the whole function the pixel freq is
-irrelevant, other than checking the end of the params array. Switch to
-printing the vclk_freq which is being compared / matched against the
-inputs to the function to avoid confusion when analyzing error reports
-from users.
+memtrace mmap issue has an out of bounds issue. This patch fixes the by
+checking that the requested mapping region size should stay within the
+allocated region size.
 
-Fixes: e5fab2ec9ca4 ("drm/meson: vclk: add support for YUV420 setup")
-Signed-off-by: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
-Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
-Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
-Link: https://lore.kernel.org/r/20250606221031.3419353-1-martin.blumenstingl@googlemail.com
+Reported-by: Jonathan Greental <yonatan02greental@gmail.com>
+Fixes: 08a022ad3dfa ("powerpc/powernv/memtrace: Allow mmaping trace buffers")
+Signed-off-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
+Link: https://patch.msgid.link/20250610021227.361980-1-maddy@linux.ibm.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/meson/meson_vclk.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ arch/powerpc/platforms/powernv/memtrace.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/meson/meson_vclk.c b/drivers/gpu/drm/meson/meson_vclk.c
-index 3325580d885d0..c4123bb958e4c 100644
---- a/drivers/gpu/drm/meson/meson_vclk.c
-+++ b/drivers/gpu/drm/meson/meson_vclk.c
-@@ -790,9 +790,9 @@ meson_vclk_vic_supported_freq(struct meson_drm *priv,
- 	}
+diff --git a/arch/powerpc/platforms/powernv/memtrace.c b/arch/powerpc/platforms/powernv/memtrace.c
+index 877720c645151..35471b679638a 100644
+--- a/arch/powerpc/platforms/powernv/memtrace.c
++++ b/arch/powerpc/platforms/powernv/memtrace.c
+@@ -48,11 +48,15 @@ static ssize_t memtrace_read(struct file *filp, char __user *ubuf,
+ static int memtrace_mmap(struct file *filp, struct vm_area_struct *vma)
+ {
+ 	struct memtrace_entry *ent = filp->private_data;
++	unsigned long ent_nrpages = ent->size >> PAGE_SHIFT;
++	unsigned long vma_nrpages = vma_pages(vma);
  
- 	for (i = 0 ; params[i].pixel_freq ; ++i) {
--		DRM_DEBUG_DRIVER("i = %d pixel_freq = %lluHz alt = %lluHz\n",
--				 i, params[i].pixel_freq,
--				 PIXEL_FREQ_1000_1001(params[i].pixel_freq));
-+		DRM_DEBUG_DRIVER("i = %d vclk_freq = %lluHz alt = %lluHz\n",
-+				 i, params[i].vclk_freq,
-+				 PIXEL_FREQ_1000_1001(params[i].vclk_freq));
- 		DRM_DEBUG_DRIVER("i = %d phy_freq = %lluHz alt = %lluHz\n",
- 				 i, params[i].phy_freq,
- 				 PHY_FREQ_1000_1001(params[i].phy_freq));
+-	if (ent->size < vma->vm_end - vma->vm_start)
++	/* The requested page offset should be within object's page count */
++	if (vma->vm_pgoff >= ent_nrpages)
+ 		return -EINVAL;
+ 
+-	if (vma->vm_pgoff << PAGE_SHIFT >= ent->size)
++	/* The requested mapping range should remain within the bounds */
++	if (vma_nrpages > ent_nrpages - vma->vm_pgoff)
+ 		return -EINVAL;
+ 
+ 	vma->vm_page_prot = pgprot_noncached(vma->vm_page_prot);
 -- 
 2.39.5
 
