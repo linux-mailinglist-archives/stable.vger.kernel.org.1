@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-157263-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156447-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8B56AAE5332
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:51:12 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CCA49AE4F9E
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:18:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 100B1188DBFF
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:51:10 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 52F7D3BB9A2
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:17:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B3E52222C2;
-	Mon, 23 Jun 2025 21:50:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6723E221F34;
+	Mon, 23 Jun 2025 21:17:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b6HvQvUv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="olFj91ty"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0819B1DD0C7;
-	Mon, 23 Jun 2025 21:50:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2378C7482;
+	Mon, 23 Jun 2025 21:17:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750715441; cv=none; b=GsTyOveXOHyZjrYeJMdCWtNX8gUo/fcTIuMOSN/RFJij8DxAPB/8R9BorimLCmRxpFIxgMoc0ZSqNo5ttEgYKhxp4K5VFCAGGrMUG/scNWsGPegx1UL3qy7FXDBCqaVVQp8JUOjkHzJhdc/9iCH7Ezu6v8IU/it/FEFyMJKJjTk=
+	t=1750713434; cv=none; b=I7iyM5DJ7Kcd4wrkpKGCEQjsYc42xFATUzMnSnuI8XHxpVcWrpRaqKOsfIB1hTI8HeVWnl4aJdqFvxR/MD683C/Ok2MRAR5hA9FPNxn0ITtAXXG4CzXrzKO7OGrQJgleGVXRJzw9Vnw4tZfs7/w5JnFok5ST7FH9XW88fATmxWY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750715441; c=relaxed/simple;
-	bh=QisKRNzHYn4CVk4sy0+R9zTe19+hHXWdD3hczA8kNXQ=;
+	s=arc-20240116; t=1750713434; c=relaxed/simple;
+	bh=75O6i1Ge4GR9dJM1rc/sQKGC4hxSMpclL+AOv2L4mz4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Pf/WwBrmrA01GcqwWKclPOQCjBYfHo7vEXrPZe3h8yFUq2YXytnGNO0k9TIYIJJ3HIdnsnNvsDtHzV1650T4yfhz6ZHdD31HJflvdMKHKKyk0U1ZOG4UgdX62XpvvBVREav2ieeQJ5Hhzj9DJmEdBk7EVr1n4jgSa8YfNSlooMk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b6HvQvUv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59884C4CEEA;
-	Mon, 23 Jun 2025 21:50:40 +0000 (UTC)
+	 MIME-Version; b=dJMvMV9ibLdAaFr/3k7r/7DH9tgHklgMVYxPV1MR5nNXHBL4aQtLGECDcNdLqVCryLKnIhL2KfBu5R1LYNDdArMsoOY+lJ2+X+QCu8IDyomdOCu8raZKjXoW/MD5AhfklZTXkv1rffvjOv371RtrvpvQm4P9qgAUVn/j/uYI0yM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=olFj91ty; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B04A6C4CEEA;
+	Mon, 23 Jun 2025 21:17:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750715440;
-	bh=QisKRNzHYn4CVk4sy0+R9zTe19+hHXWdD3hczA8kNXQ=;
+	s=korg; t=1750713434;
+	bh=75O6i1Ge4GR9dJM1rc/sQKGC4hxSMpclL+AOv2L4mz4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=b6HvQvUvPnc76rI0Xw3uc7kpumHpHuich+XMvvo24IDCSyP2n23h8b/J708VMQ0AU
-	 kjVBlAXluLVCEzAVJfiI0woZRCvenz7V+1EuW5zbK8JZmncB4UxZ9P98nK4Z33blp+
-	 BiLYJdEKzH1PnvwoLOk6/BtR/Q9af5+S6gimtMYQ=
+	b=olFj91tyJNMvpBeCLVwb14ezYtrfMn5vhMBia6GKouorNkAxFUUl5ic9Aj5LxQNgC
+	 uVm0lFnaNQUGvOOzV5UvE+JoBIkzFDe/A1AU8EQmkEytDiqL2LOrBLEb3iyitTvX4e
+	 6xRVmtwI5H45zbmlUBvrtcggelGMYlBMBMmyC2ag=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Talhah Peerbhai <talhah.peerbhai@gmail.com>,
-	Mark Brown <broonie@kernel.org>,
+	Eric Dumazet <edumazet@google.com>,
+	Wei Wang <weiwan@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 168/414] ASoC: amd: yc: Add quirk for Lenovo Yoga Pro 7 14ASP9
+Subject: [PATCH 6.15 347/592] tcp: add receive queue awareness in tcp_rcv_space_adjust()
 Date: Mon, 23 Jun 2025 15:05:05 +0200
-Message-ID: <20250623130646.231049712@linuxfoundation.org>
+Message-ID: <20250623130708.701975706@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
-References: <20250623130642.015559452@linuxfoundation.org>
+In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
+References: <20250623130700.210182694@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,53 +63,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Talhah Peerbhai <talhah.peerbhai@gmail.com>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit a28206060dc5848a1a2a15b7f6ac6223d869084d ]
+[ Upstream commit ea33537d82921e71f852ea2ed985acc562125efe ]
 
-Similar to many other Lenovo models with AMD chips, the Lenovo
-Yoga Pro 7 14ASP9 (product name 83HN) requires a specific quirk
-to ensure internal mic detection. This patch adds a quirk fixing this.
+If the application can not drain fast enough a TCP socket queue,
+tcp_rcv_space_adjust() can overestimate tp->rcvq_space.space.
 
-Signed-off-by: Talhah Peerbhai <talhah.peerbhai@gmail.com>
-Link: https://patch.msgid.link/20250515222741.144616-1-talhah.peerbhai@gmail.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Then sk->sk_rcvbuf can grow and hit tcp_rmem[2] for no good reason.
+
+Fix this by taking into acount the number of available bytes.
+
+Keeping sk->sk_rcvbuf at the right size allows better cache efficiency.
+
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: Wei Wang <weiwan@google.com>
+Link: https://patch.msgid.link/20250513193919.1089692-5-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/amd/yc/acp6x-mach.c | 9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+ include/linux/tcp.h  | 2 +-
+ net/ipv4/tcp_input.c | 6 ++++--
+ 2 files changed, 5 insertions(+), 3 deletions(-)
 
-diff --git a/sound/soc/amd/yc/acp6x-mach.c b/sound/soc/amd/yc/acp6x-mach.c
-index e632f16c91025..3d9da93d22ee8 100644
---- a/sound/soc/amd/yc/acp6x-mach.c
-+++ b/sound/soc/amd/yc/acp6x-mach.c
-@@ -311,6 +311,13 @@ static const struct dmi_system_id yc_acp_quirk_table[] = {
- 			DMI_MATCH(DMI_PRODUCT_NAME, "83AS"),
- 		}
- 	},
-+	{
-+		.driver_data = &acp6x_card,
-+		.matches = {
-+			DMI_MATCH(DMI_BOARD_VENDOR, "LENOVO"),
-+			DMI_MATCH(DMI_PRODUCT_NAME, "83HN"),
-+		}
-+	},
- 	{
- 		.driver_data = &acp6x_card,
- 		.matches = {
-@@ -360,7 +367,7 @@ static const struct dmi_system_id yc_acp_quirk_table[] = {
- 			DMI_MATCH(DMI_PRODUCT_NAME, "M5402RA"),
- 		}
- 	},
--        {
-+	{
- 		.driver_data = &acp6x_card,
- 		.matches = {
- 			DMI_MATCH(DMI_BOARD_VENDOR, "ASUSTeK COMPUTER INC."),
+diff --git a/include/linux/tcp.h b/include/linux/tcp.h
+index 1669d95bb0f9a..5c7c5038d47b5 100644
+--- a/include/linux/tcp.h
++++ b/include/linux/tcp.h
+@@ -340,7 +340,7 @@ struct tcp_sock {
+ 	} rcv_rtt_est;
+ /* Receiver queue space */
+ 	struct {
+-		u32	space;
++		int	space;
+ 		u32	seq;
+ 		u64	time;
+ 	} rcvq_space;
+diff --git a/net/ipv4/tcp_input.c b/net/ipv4/tcp_input.c
+index ed5f0ffab60dc..49adcbd73074d 100644
+--- a/net/ipv4/tcp_input.c
++++ b/net/ipv4/tcp_input.c
+@@ -748,8 +748,7 @@ static inline void tcp_rcv_rtt_measure_ts(struct sock *sk,
+ void tcp_rcv_space_adjust(struct sock *sk)
+ {
+ 	struct tcp_sock *tp = tcp_sk(sk);
+-	u32 copied;
+-	int time;
++	int time, inq, copied;
+ 
+ 	trace_tcp_rcv_space_adjust(sk);
+ 
+@@ -760,6 +759,9 @@ void tcp_rcv_space_adjust(struct sock *sk)
+ 
+ 	/* Number of bytes copied to user in last RTT */
+ 	copied = tp->copied_seq - tp->rcvq_space.seq;
++	/* Number of bytes in receive queue. */
++	inq = tp->rcv_nxt - tp->copied_seq;
++	copied -= inq;
+ 	if (copied <= tp->rcvq_space.space)
+ 		goto new_measure;
+ 
 -- 
 2.39.5
 
