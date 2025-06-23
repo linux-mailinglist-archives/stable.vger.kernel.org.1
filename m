@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-156589-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157596-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id CEBF3AE5031
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:23:05 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F961AE54B5
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:04:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A20531B61FB4
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:23:21 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 91013445734
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:03:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D40421F3B96;
-	Mon, 23 Jun 2025 21:23:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8DF9B21D3F6;
+	Mon, 23 Jun 2025 22:04:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pFwdCdGS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XZCVW7b/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9117E2628C;
-	Mon, 23 Jun 2025 21:23:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4664C3FB1B;
+	Mon, 23 Jun 2025 22:04:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750713783; cv=none; b=YRAAzv1kk3wqNpwtrkJvxtIk6NzM0SQm9F73nqsPQRtbI8eLdPtxJhUceMN4YhsHUhit0JEOGylah9Vv0GrXpRRcTUB4cWlgWyKU47iGlfzY/hoSThgBKblrxXWrElUvrwtgMLdA8RT9ZP3+Fcg++wrWmdsW2ByxbSZGGx+b9dw=
+	t=1750716255; cv=none; b=OX8oNLaDthDIq2MLpS+2MKtrEDz0gLJ96VCzKWm6gDHrN8ysvcIOiLNZY1Vzc76OQfDxQfRHq1ww1UT2ZTdHqOwhufe+DPoWxTOoA/r06p+6jKCdvG1b0N3DhZ+c85GOYXNYCocT6LDO+uQuRFFOYWkEcKW6X/jmaGmjRj08zvY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750713783; c=relaxed/simple;
-	bh=UCCk82f7m7a4jf/CfoTQXXfI9k4OV47UKzJA7ABAxQs=;
+	s=arc-20240116; t=1750716255; c=relaxed/simple;
+	bh=3/+9QZ5/XDida0s28YDWQsQqy0EqdR0okbQfJgKhw7s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kgKtx3/NcSbnpZbTGv0dQg+B+ZN03w1qg9Z08mX0C05ioV3Tr76qauyUSoMtiE+jzRRBP7DqmXxYR8nLdcaVvgfy5Bp3dlaP0XP5Vo/FjYj3Eqeeqm3NDMfbcbdvTS9mbCrpdGKdnzRmQzu4XONM4BPlFprA0MPQtbVJgFlwHVw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pFwdCdGS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1EFECC4CEEA;
-	Mon, 23 Jun 2025 21:23:02 +0000 (UTC)
+	 MIME-Version:Content-Type; b=jnw0BWynQK4vdc4W70OxcwRa+0czG5qX6zU1TpuHNJIeAd67Tze6VxVmHM+s5naVSWQhWPdi+o7GPIhs0puOgptRH6u1RSAxW4hfHLsqbiak3UCZRZaQE1QRvA3i0NorM8MWzJxg0w/OgApAhFLogv4BCukIYlvEd52Ozm9lB90=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XZCVW7b/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF803C4CEEA;
+	Mon, 23 Jun 2025 22:04:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750713783;
-	bh=UCCk82f7m7a4jf/CfoTQXXfI9k4OV47UKzJA7ABAxQs=;
+	s=korg; t=1750716255;
+	bh=3/+9QZ5/XDida0s28YDWQsQqy0EqdR0okbQfJgKhw7s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pFwdCdGSpIVJzeMeYN8j8GB670s1ScgnTR4/D23oy+yim7NefxmwaMbhrxsrTEOyp
-	 zv2F+HmxzvrO0x+2Q23+m+5W5/bbRhvUTHOuhv/XOq9SXdBL3Qlhwn91YjcfOL0wPx
-	 EJbhnudC+QuFGayjKwDuzPdmpMxOMZvzWkTQWcMg=
+	b=XZCVW7b/qbhMpuSrgNP43DCZEwf+wt8KKlLlxgILQ5KQkDBhZxwiezcgHfO2F7lln
+	 RCOgJJQ/vf1rmkKaRvcmGdhpMUVn/rJquYybInS3fYtVjYVbUYeKFdlimDWRBxO+vi
+	 TNflli/YSslcK5YXYRcpBj9dHJ1n5vnbm4phI2+M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Lechner <dlechner@baylibre.com>,
-	Angelo Dureghello <adureghello@baylibre.com>,
-	Stable@vger.kernel.org,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 6.6 115/290] iio: adc: ad7606_spi: fix reg write value mask
+	"Luke D. Jones" <luke@ljones.dev>,
+	Mario Limonciello <mario.limonciello@amd.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 239/414] hid-asus: check ROG Ally MCU version and warn
 Date: Mon, 23 Jun 2025 15:06:16 +0200
-Message-ID: <20250623130630.405087419@linuxfoundation.org>
+Message-ID: <20250623130648.021261390@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130626.910356556@linuxfoundation.org>
-References: <20250623130626.910356556@linuxfoundation.org>
+In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
+References: <20250623130642.015559452@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,42 +61,187 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Lechner <dlechner@baylibre.com>
+From: Luke D. Jones <luke@ljones.dev>
 
-commit 89944d88f8795c6c89b9514cb365998145511cd4 upstream.
+[ Upstream commit 00e005c952f74f50a3f86af96f56877be4685e14 ]
 
-Fix incorrect value mask for register write. Register values are 8-bit,
-not 9. If this function was called with a value > 0xFF and an even addr,
-it would cause writing to the next register.
+ASUS have fixed suspend issues arising from a flag not being cleared in
+the MCU FW in both the ROG Ally 1 and the ROG Ally X.
 
-Fixes: f2a22e1e172f ("iio: adc: ad7606: Add support for software mode for ad7616")
-Signed-off-by: David Lechner <dlechner@baylibre.com>
-Reviewed-by: Angelo Dureghello <adureghello@baylibre.com>
-Link: https://patch.msgid.link/20250428-iio-adc-ad7606_spi-fix-write-value-mask-v1-1-a2d5e85a809f@baylibre.com
-Cc: <Stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Implement a check and a warning to encourage users to update the FW to
+a minimum supported version.
+
+Signed-off-by: Luke D. Jones <luke@ljones.dev>
+Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
+Link: https://lore.kernel.org/r/20250323023421.78012-2-luke@ljones.dev
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iio/adc/ad7606_spi.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/hid/hid-asus.c | 107 ++++++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 105 insertions(+), 2 deletions(-)
 
---- a/drivers/iio/adc/ad7606_spi.c
-+++ b/drivers/iio/adc/ad7606_spi.c
-@@ -151,7 +151,7 @@ static int ad7606_spi_reg_write(struct a
- 	struct spi_device *spi = to_spi_device(st->dev);
+diff --git a/drivers/hid/hid-asus.c b/drivers/hid/hid-asus.c
+index bcdd168cdc6d7..c5bdf0f1b32f7 100644
+--- a/drivers/hid/hid-asus.c
++++ b/drivers/hid/hid-asus.c
+@@ -52,6 +52,10 @@ MODULE_DESCRIPTION("Asus HID Keyboard and TouchPad");
+ #define FEATURE_KBD_LED_REPORT_ID1 0x5d
+ #define FEATURE_KBD_LED_REPORT_ID2 0x5e
  
- 	st->d16[0] = cpu_to_be16((st->bops->rd_wr_cmd(addr, 1) << 8) |
--				  (val & 0x1FF));
-+				  (val & 0xFF));
++#define ROG_ALLY_REPORT_SIZE 64
++#define ROG_ALLY_X_MIN_MCU 313
++#define ROG_ALLY_MIN_MCU 319
++
+ #define SUPPORT_KBD_BACKLIGHT BIT(0)
  
- 	return spi_write(spi, &st->d16[0], sizeof(st->d16[0]));
+ #define MAX_TOUCH_MAJOR 8
+@@ -84,6 +88,7 @@ MODULE_DESCRIPTION("Asus HID Keyboard and TouchPad");
+ #define QUIRK_MEDION_E1239T		BIT(10)
+ #define QUIRK_ROG_NKEY_KEYBOARD		BIT(11)
+ #define QUIRK_ROG_CLAYMORE_II_KEYBOARD BIT(12)
++#define QUIRK_ROG_ALLY_XPAD		BIT(13)
+ 
+ #define I2C_KEYBOARD_QUIRKS			(QUIRK_FIX_NOTEBOOK_REPORT | \
+ 						 QUIRK_NO_INIT_REPORTS | \
+@@ -534,9 +539,99 @@ static bool asus_kbd_wmi_led_control_present(struct hid_device *hdev)
+ 	return !!(value & ASUS_WMI_DSTS_PRESENCE_BIT);
  }
+ 
++/*
++ * We don't care about any other part of the string except the version section.
++ * Example strings: FGA80100.RC72LA.312_T01, FGA80100.RC71LS.318_T01
++ * The bytes "5a 05 03 31 00 1a 13" and possibly more come before the version
++ * string, and there may be additional bytes after the version string such as
++ * "75 00 74 00 65 00" or a postfix such as "_T01"
++ */
++static int mcu_parse_version_string(const u8 *response, size_t response_size)
++{
++	const u8 *end = response + response_size;
++	const u8 *p = response;
++	int dots, err, version;
++	char buf[4];
++
++	dots = 0;
++	while (p < end && dots < 2) {
++		if (*p++ == '.')
++			dots++;
++	}
++
++	if (dots != 2 || p >= end || (p + 3) >= end)
++		return -EINVAL;
++
++	memcpy(buf, p, 3);
++	buf[3] = '\0';
++
++	err = kstrtoint(buf, 10, &version);
++	if (err || version < 0)
++		return -EINVAL;
++
++	return version;
++}
++
++static int mcu_request_version(struct hid_device *hdev)
++{
++	u8 *response __free(kfree) = kzalloc(ROG_ALLY_REPORT_SIZE, GFP_KERNEL);
++	const u8 request[] = { 0x5a, 0x05, 0x03, 0x31, 0x00, 0x20 };
++	int ret;
++
++	if (!response)
++		return -ENOMEM;
++
++	ret = asus_kbd_set_report(hdev, request, sizeof(request));
++	if (ret < 0)
++		return ret;
++
++	ret = hid_hw_raw_request(hdev, FEATURE_REPORT_ID, response,
++				ROG_ALLY_REPORT_SIZE, HID_FEATURE_REPORT,
++				HID_REQ_GET_REPORT);
++	if (ret < 0)
++		return ret;
++
++	ret = mcu_parse_version_string(response, ROG_ALLY_REPORT_SIZE);
++	if (ret < 0) {
++		pr_err("Failed to parse MCU version: %d\n", ret);
++		print_hex_dump(KERN_ERR, "MCU: ", DUMP_PREFIX_NONE,
++			      16, 1, response, ROG_ALLY_REPORT_SIZE, false);
++	}
++
++	return ret;
++}
++
++static void validate_mcu_fw_version(struct hid_device *hdev, int idProduct)
++{
++	int min_version, version;
++
++	version = mcu_request_version(hdev);
++	if (version < 0)
++		return;
++
++	switch (idProduct) {
++	case USB_DEVICE_ID_ASUSTEK_ROG_NKEY_ALLY:
++		min_version = ROG_ALLY_MIN_MCU;
++		break;
++	case USB_DEVICE_ID_ASUSTEK_ROG_NKEY_ALLY_X:
++		min_version = ROG_ALLY_X_MIN_MCU;
++		break;
++	default:
++		min_version = 0;
++	}
++
++	if (version < min_version) {
++		hid_warn(hdev,
++			"The MCU firmware version must be %d or greater to avoid issues with suspend.\n",
++			min_version);
++	}
++}
++
+ static int asus_kbd_register_leds(struct hid_device *hdev)
+ {
+ 	struct asus_drvdata *drvdata = hid_get_drvdata(hdev);
++	struct usb_interface *intf;
++	struct usb_device *udev;
+ 	unsigned char kbd_func;
+ 	int ret;
+ 
+@@ -560,6 +655,14 @@ static int asus_kbd_register_leds(struct hid_device *hdev)
+ 			if (ret < 0)
+ 				return ret;
+ 		}
++
++		if (drvdata->quirks & QUIRK_ROG_ALLY_XPAD) {
++			intf = to_usb_interface(hdev->dev.parent);
++			udev = interface_to_usbdev(intf);
++			validate_mcu_fw_version(hdev,
++				le16_to_cpu(udev->descriptor.idProduct));
++		}
++
+ 	} else {
+ 		/* Initialize keyboard */
+ 		ret = asus_kbd_init(hdev, FEATURE_KBD_REPORT_ID);
+@@ -1280,10 +1383,10 @@ static const struct hid_device_id asus_devices[] = {
+ 	  QUIRK_USE_KBD_BACKLIGHT | QUIRK_ROG_NKEY_KEYBOARD },
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_ASUSTEK,
+ 	    USB_DEVICE_ID_ASUSTEK_ROG_NKEY_ALLY),
+-	  QUIRK_USE_KBD_BACKLIGHT | QUIRK_ROG_NKEY_KEYBOARD },
++	  QUIRK_USE_KBD_BACKLIGHT | QUIRK_ROG_NKEY_KEYBOARD | QUIRK_ROG_ALLY_XPAD},
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_ASUSTEK,
+ 	    USB_DEVICE_ID_ASUSTEK_ROG_NKEY_ALLY_X),
+-	  QUIRK_USE_KBD_BACKLIGHT | QUIRK_ROG_NKEY_KEYBOARD },
++	  QUIRK_USE_KBD_BACKLIGHT | QUIRK_ROG_NKEY_KEYBOARD | QUIRK_ROG_ALLY_XPAD },
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_ASUSTEK,
+ 	    USB_DEVICE_ID_ASUSTEK_ROG_CLAYMORE_II_KEYBOARD),
+ 	  QUIRK_ROG_CLAYMORE_II_KEYBOARD },
+-- 
+2.39.5
+
 
 
 
