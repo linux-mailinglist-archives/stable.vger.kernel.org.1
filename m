@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-157247-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156757-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD6D4AE5319
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:50:15 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 98117AE50FB
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:29:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 519491B6378C
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:50:20 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2F72E4A2795
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:29:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98BD421B9C9;
-	Mon, 23 Jun 2025 21:50:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 136FD21FF50;
+	Mon, 23 Jun 2025 21:29:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WW9BW4X6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Tu+SBoWd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54677136348;
-	Mon, 23 Jun 2025 21:50:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C633B1E5B71;
+	Mon, 23 Jun 2025 21:29:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750715401; cv=none; b=Zdlq3ny2p8ZEMKqW36CtdjFsHWBI0BkRbFIexyLhY1Yznb1G5lxwkiG46PXUe9IskTP+mLSMJ7DiJOyIbaWQdzKkWAGWliBKO1TktHbBmrMs7RBoRoDkjv3kt3iPGLce3VKpxYghAK37DL6/pj/Je/7GnSPms0rFdzRG4EbExeY=
+	t=1750714191; cv=none; b=jXExAOKQnZ2Q9NMGISgZtJSoBd/AMbPtt0IBBr4IGuXuTkT2d6g9mQYQVvYqnJz7YB2EGWDivJJ4B/zD9j9FfU7JwRqmgKu+ni/QjMNQo9pNaPl6Lx8OGRPp8qXMOTxKgGIIfh1OESVGUC2KiKK3KFZmIABvKNR4h2XNjnYzEzs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750715401; c=relaxed/simple;
-	bh=5e84Hv55r+Gv0Oli+bxhGlxI3HpDn9Sq+dwHgw4KycU=;
+	s=arc-20240116; t=1750714191; c=relaxed/simple;
+	bh=Ly/oH3BoDVWmBR3znof1FS6Q+792LOdzErVvCxMZutE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NJJ2KFUMUSX/4gJIQ8+sfeYnxc7uyvDn/PBMr7KXu+qVdI3R0PpTQ9FnhR9Tlcxb5yX1mvdD8cqbnOvTqq2sGnF/yLgebt2BMXLrT5s11sLQfciYeU+AHpSD7qkbB0j5PkS8MUrBdSZxObIaVxr5k4ZJG5p7JWvmuNSNKyXStu0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WW9BW4X6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF5F4C4CEEA;
-	Mon, 23 Jun 2025 21:50:00 +0000 (UTC)
+	 MIME-Version; b=qYcndt+WC9eVfBbiAAGrBRRHb9qnCwxLmLwh/wxBzALahw2KOaB5+98hrFPxL4EOa2j6AbasQBWVZ3gqcDSQHIJBp8SwRB1HuYnDIsEs1suDSea4Mp2w2mZz1oUpH2oKcGxfHzPfd3B2A/jHwdVAqrgi4HBkt9T8J50TZQoeSTE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Tu+SBoWd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60CA0C4CEEA;
+	Mon, 23 Jun 2025 21:29:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750715401;
-	bh=5e84Hv55r+Gv0Oli+bxhGlxI3HpDn9Sq+dwHgw4KycU=;
+	s=korg; t=1750714191;
+	bh=Ly/oH3BoDVWmBR3znof1FS6Q+792LOdzErVvCxMZutE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WW9BW4X637JDyHjYHp7Mt6AFFCEYwFGHsUKRogmyTYzs2hMWQenMdGnMK52I3IKBw
-	 ee3deNVH0mj5vpMY725NZ6UAHPCgbcNaMkOY9oGEPGyPZJzpepnPWmoMZrgj7Sry0x
-	 uZ2LDnXaqsl/sAslvItVr1YfbASfwOW32ATwkPd8=
+	b=Tu+SBoWd2Xn9RiC11ni4BDnIYX3FVsneXKYmLlhQfr1ANrzXwYEZtNC2TbAL6+Z2O
+	 bQmnme9pFE60VDkQYnHFiHIpTdDY4md5i7m1qphvfiE5RTjdXyn6Ko/k/rGz4okOHg
+	 ktUYPRns7IxEtQ2gXv3b7yvqfshJSCekRq3ZBRq8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stefan Binding <sbinding@opensource.cirrus.com>,
-	Takashi Iwai <tiwai@suse.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 180/414] ALSA: hda: cs35l41: Fix swapped l/r audio channels for Acer Helios laptops
+	Nathan Chancellor <nathan@kernel.org>,
+	Masahiro Yamada <masahiroy@kernel.org>
+Subject: [PATCH 5.15 173/411] mips: Include KBUILD_CPPFLAGS in CHECKFLAGS invocation
 Date: Mon, 23 Jun 2025 15:05:17 +0200
-Message-ID: <20250623130646.526555592@linuxfoundation.org>
+Message-ID: <20250623130638.046097364@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
-References: <20250623130642.015559452@linuxfoundation.org>
+In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
+References: <20250623130632.993849527@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,51 +61,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stefan Binding <sbinding@opensource.cirrus.com>
+From: Nathan Chancellor <nathan@kernel.org>
 
-[ Upstream commit e43a93c41982e82c1b703dd7fa9c1d965260fbb3 ]
+commit 08f6554ff90ef189e6b8f0303e57005bddfdd6a7 upstream.
 
-Fixes audio channel assignment from ACPI using configuration table.
+A future change will move CLANG_FLAGS from KBUILD_{A,C}FLAGS to
+KBUILD_CPPFLAGS so that '--target' is available while preprocessing.
+When that occurs, the following error appears when building ARCH=mips
+with clang (tip of tree error shown):
 
-Signed-off-by: Stefan Binding <sbinding@opensource.cirrus.com>
-Link: https://patch.msgid.link/20250515162848.405055-3-sbinding@opensource.cirrus.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+  clang: error: unsupported option '-mabi=' for target 'x86_64-pc-linux-gnu'
+
+Add KBUILD_CPPFLAGS in the CHECKFLAGS invocation to keep everything
+working after the move.
+
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/pci/hda/cs35l41_hda_property.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ arch/mips/Makefile |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/sound/pci/hda/cs35l41_hda_property.c b/sound/pci/hda/cs35l41_hda_property.c
-index 61d2314834e7b..d8249d997c2a0 100644
---- a/sound/pci/hda/cs35l41_hda_property.c
-+++ b/sound/pci/hda/cs35l41_hda_property.c
-@@ -31,6 +31,9 @@ struct cs35l41_config {
- };
+--- a/arch/mips/Makefile
++++ b/arch/mips/Makefile
+@@ -322,7 +322,7 @@ KBUILD_CFLAGS += -fno-asynchronous-unwin
+ KBUILD_LDFLAGS		+= -m $(ld-emul)
  
- static const struct cs35l41_config cs35l41_config_table[] = {
-+	{ "10251826", 2, EXTERNAL, { CS35L41_LEFT, CS35L41_RIGHT, 0, 0 }, 0, -1, -1, 0, 0, 0 },
-+	{ "1025182C", 2, EXTERNAL, { CS35L41_LEFT, CS35L41_RIGHT, 0, 0 }, 0, -1, -1, 0, 0, 0 },
-+	{ "10251844", 2, EXTERNAL, { CS35L41_LEFT, CS35L41_RIGHT, 0, 0 }, 0, -1, -1, 0, 0, 0 },
- 	{ "10280B27", 2, INTERNAL, { CS35L41_LEFT, CS35L41_RIGHT, 0, 0 }, 1, 2, 0, 1000, 4500, 24 },
- 	{ "10280B28", 2, INTERNAL, { CS35L41_LEFT, CS35L41_RIGHT, 0, 0 }, 1, 2, 0, 1000, 4500, 24 },
- 	{ "10280BEB", 2, EXTERNAL, { CS35L41_LEFT, CS35L41_RIGHT, 0, 0 }, 1, -1, 0, 0, 0, 0 },
-@@ -452,6 +455,9 @@ struct cs35l41_prop_model {
- static const struct cs35l41_prop_model cs35l41_prop_model_table[] = {
- 	{ "CLSA0100", NULL, lenovo_legion_no_acpi },
- 	{ "CLSA0101", NULL, lenovo_legion_no_acpi },
-+	{ "CSC3551", "10251826", generic_dsd_config },
-+	{ "CSC3551", "1025182C", generic_dsd_config },
-+	{ "CSC3551", "10251844", generic_dsd_config },
- 	{ "CSC3551", "10280B27", generic_dsd_config },
- 	{ "CSC3551", "10280B28", generic_dsd_config },
- 	{ "CSC3551", "10280BEB", generic_dsd_config },
--- 
-2.39.5
-
+ ifdef need-compiler
+-CHECKFLAGS += $(shell $(CC) $(KBUILD_CFLAGS) -dM -E -x c /dev/null | \
++CHECKFLAGS += $(shell $(CC) $(KBUILD_CPPFLAGS) $(KBUILD_CFLAGS) -dM -E -x c /dev/null | \
+ 	grep -E -vw '__GNUC_(MINOR_|PATCHLEVEL_)?_' | \
+ 	sed -e "s/^\#define /-D'/" -e "s/ /'='/" -e "s/$$/'/" -e 's/\$$/&&/g')
+ endif
 
 
 
