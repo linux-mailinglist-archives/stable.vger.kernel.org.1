@@ -1,60 +1,58 @@
-Return-Path: <stable+bounces-156798-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157272-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id CEB45AE512F
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:31:35 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3CBF2AE5331
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:51:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6D1C77A3F7D
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:30:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 67A1F444B91
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:50:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 374AE1C5D46;
-	Mon, 23 Jun 2025 21:31:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD855219A7A;
+	Mon, 23 Jun 2025 21:51:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nFVQFI/S"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ucFuZkYf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E85EFC2E0;
-	Mon, 23 Jun 2025 21:31:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B188136348;
+	Mon, 23 Jun 2025 21:51:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750714292; cv=none; b=alaD0FVbvd48fk7tt5vd40nW348/BpoePPZ98wYUXpNnXPY/32nhwqECYsL63L7vkvSAdTnCrpLr5MX9lDADxbimOPROC/guiGB400B00oFafIyxVlgn5ZbXGS/EG9SsIEGCMx8iHx6cKMc/2a3eRyYOK+eWscQ0SLs+pbWJA3E=
+	t=1750715462; cv=none; b=u8O4xjaOGOQMD63OOFEa0pAbkLv6gy5GI3SEu7SuWERe7oV/JR4vKH47XEcJvjnOQ1St05ZsarHqMGtQJlNfIjDLN9P1LetWEqDlNzC70NySYBCpBcvDVOxCJsH+utVYJpaogM+vjhkUMxomt2O6c8lLkKIhpiQAEptM2Pk3fZ4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750714292; c=relaxed/simple;
-	bh=9NGdw5DeSX20CyUdUJtBdSYycmxhpWS6LEjkWn786OU=;
+	s=arc-20240116; t=1750715462; c=relaxed/simple;
+	bh=KikcGz6noxFYh49wNwNxfwSXU3CFHMqxuLdnDoEzk34=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MGLNqyBtJHawCVAm9UUDwHsB2OJbCQkSFw9ybLytxqk1TA9K8dhanbRKcxbKvGjqwZqtTgb9QoI8sEFH1v2UghhHtddtl9JIzV2RPjxmX8hMVOB2O1si/f8Sc75G0fzakf3lQIWfjo+aU436tm/F66daKAAra6Gf6Eggl31tWH4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nFVQFI/S; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C14CC4CEEA;
-	Mon, 23 Jun 2025 21:31:31 +0000 (UTC)
+	 MIME-Version; b=Kpz8Ev721q5IvXI/JuLUWqJQ8u+i6NFES/Y/d2skHCkBq9dHQInEYB/aWjySdpy4RlacmU5pcWYzePbxb1SI+CG9wJTeXTWZHKkTk7C8Z5h2nw0wn4DBrPGnUziVkmCv8j9GAZ06u4WkIr9hjkDnX62JKN2n/LIYJeZDutieKkk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ucFuZkYf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24E35C4CEEA;
+	Mon, 23 Jun 2025 21:51:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750714291;
-	bh=9NGdw5DeSX20CyUdUJtBdSYycmxhpWS6LEjkWn786OU=;
+	s=korg; t=1750715462;
+	bh=KikcGz6noxFYh49wNwNxfwSXU3CFHMqxuLdnDoEzk34=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nFVQFI/SiqaKo3OvIdFoBEt5veFjHwkBZ7KcfYvXH2Mxe4iM7b4YnvLpq8ANp1bhD
-	 N+/BqDi8nU96607BZtzngAuBpeIUfiB/o9WlCBswp7xRIsb5KJD31RPowy1I5jZASn
-	 cw00MwkaKpIaCIrT8xgkQJtdw83N1Bju4cbGsnoM=
+	b=ucFuZkYfeLvGJRPJPT4MjWkx4X7JJlKulGVNpNZ47BjNDuVMS9u6uccHTRm5Rmnpw
+	 l4MqQZIvEAKIiMbXyuYkLQjor1kqixObWzKsjiSpa+3OGNh7py2tTigKEXhqGvFRb4
+	 9OeqL1bbr99XmMaSHKvCbcKqU+xzNB3KmNbJN4hU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jeongjun Park <aha310510@gmail.com>,
-	syzbot+a2b84e569d06ca3a949c@syzkaller.appspotmail.com,
-	Liam Howlett <liam.howlett@oracle.com>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Vasiliy Kulikov <segoon@openwall.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 5.10 197/355] ipc: fix to protect IPCS lookups using RCU
+	Niklas Cassel <cassel@kernel.org>,
+	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Wilfred Mallawa <wilfred.mallawa@wdc.com>,
+	Damien Le Moal <dlemoal@kernel.org>
+Subject: [PATCH 5.15 254/411] PCI: cadence-ep: Correct PBA offset in .set_msix() callback
 Date: Mon, 23 Jun 2025 15:06:38 +0200
-Message-ID: <20250623130632.592209791@linuxfoundation.org>
+Message-ID: <20250623130640.039865859@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130626.716971725@linuxfoundation.org>
-References: <20250623130626.716971725@linuxfoundation.org>
+In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
+References: <20250623130632.993849527@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,59 +64,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jeongjun Park <aha310510@gmail.com>
+From: Niklas Cassel <cassel@kernel.org>
 
-commit d66adabe91803ef34a8b90613c81267b5ded1472 upstream.
+commit c8bcb01352a86bc5592403904109c22b66bd916e upstream.
 
-syzbot reported that it discovered a use-after-free vulnerability, [0]
+While cdns_pcie_ep_set_msix() writes the Table Size field correctly (N-1),
+the calculation of the PBA offset is wrong because it calculates space for
+(N-1) entries instead of N.
 
-[0]: https://lore.kernel.org/all/67af13f8.050a0220.21dd3.0038.GAE@google.com/
+This results in the following QEMU error when using PCI passthrough on a
+device which relies on the PCI endpoint subsystem:
 
-idr_for_each() is protected by rwsem, but this is not enough.  If it is
-not protected by RCU read-critical region, when idr_for_each() calls
-radix_tree_node_free() through call_rcu() to free the radix_tree_node
-structure, the node will be freed immediately, and when reading the next
-node in radix_tree_for_each_slot(), the already freed memory may be read.
+  failed to add PCI capability 0x11[0x50]@0xb0: table & pba overlap, or they don't fit in BARs, or don't align
 
-Therefore, we need to add code to make sure that idr_for_each() is
-protected within the RCU read-critical region when we call it in
-shm_destroy_orphaned().
+Fix the calculation of PBA offset in the MSI-X capability.
 
-Link: https://lkml.kernel.org/r/20250424143322.18830-1-aha310510@gmail.com
-Fixes: b34a6b1da371 ("ipc: introduce shm_rmid_forced sysctl")
-Signed-off-by: Jeongjun Park <aha310510@gmail.com>
-Reported-by: syzbot+a2b84e569d06ca3a949c@syzkaller.appspotmail.com
-Cc: Jeongjun Park <aha310510@gmail.com>
-Cc: Liam Howlett <liam.howlett@oracle.com>
-Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
-Cc: Vasiliy Kulikov <segoon@openwall.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+[bhelgaas: more specific subject and commit log]
+
+Fixes: 3ef5d16f50f8 ("PCI: cadence: Add MSI-X support to Endpoint driver")
+Signed-off-by: Niklas Cassel <cassel@kernel.org>
+Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Reviewed-by: Wilfred Mallawa <wilfred.mallawa@wdc.com>
+Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
+Cc: stable@vger.kernel.org
+Link: https://patch.msgid.link/20250514074313.283156-10-cassel@kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- ipc/shm.c |    5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/pci/controller/cadence/pcie-cadence-ep.c |    5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
---- a/ipc/shm.c
-+++ b/ipc/shm.c
-@@ -417,8 +417,11 @@ static int shm_try_destroy_orphaned(int
- void shm_destroy_orphaned(struct ipc_namespace *ns)
- {
- 	down_write(&shm_ids(ns).rwsem);
--	if (shm_ids(ns).in_use)
-+	if (shm_ids(ns).in_use) {
-+		rcu_read_lock();
- 		idr_for_each(&shm_ids(ns).ipcs_idr, &shm_try_destroy_orphaned, ns);
-+		rcu_read_unlock();
-+	}
- 	up_write(&shm_ids(ns).rwsem);
- }
+--- a/drivers/pci/controller/cadence/pcie-cadence-ep.c
++++ b/drivers/pci/controller/cadence/pcie-cadence-ep.c
+@@ -294,13 +294,14 @@ static int cdns_pcie_ep_set_msix(struct
+ 	struct cdns_pcie *pcie = &ep->pcie;
+ 	u32 cap = CDNS_PCIE_EP_FUNC_MSIX_CAP_OFFSET;
+ 	u32 val, reg;
++	u16 actual_interrupts = interrupts + 1;
  
+ 	fn = cdns_pcie_get_fn_from_vfn(pcie, fn, vfn);
+ 
+ 	reg = cap + PCI_MSIX_FLAGS;
+ 	val = cdns_pcie_ep_fn_readw(pcie, fn, reg);
+ 	val &= ~PCI_MSIX_FLAGS_QSIZE;
+-	val |= interrupts;
++	val |= interrupts; /* 0's based value */
+ 	cdns_pcie_ep_fn_writew(pcie, fn, reg, val);
+ 
+ 	/* Set MSIX BAR and offset */
+@@ -310,7 +311,7 @@ static int cdns_pcie_ep_set_msix(struct
+ 
+ 	/* Set PBA BAR and offset.  BAR must match MSIX BAR */
+ 	reg = cap + PCI_MSIX_PBA;
+-	val = (offset + (interrupts * PCI_MSIX_ENTRY_SIZE)) | bir;
++	val = (offset + (actual_interrupts * PCI_MSIX_ENTRY_SIZE)) | bir;
+ 	cdns_pcie_ep_fn_writel(pcie, fn, reg, val);
+ 
+ 	return 0;
 
 
 
