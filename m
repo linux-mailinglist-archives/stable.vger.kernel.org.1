@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-155954-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-155962-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D920AAE446F
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:43:06 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1F10CAE447D
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:43:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 59BD1174C8D
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:37:36 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EEDDB1775B8
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:37:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7DAC0256C9B;
-	Mon, 23 Jun 2025 13:36:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF9F9257AEC;
+	Mon, 23 Jun 2025 13:36:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="scTbO/JG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kC/kZm3M"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B8F1252903;
-	Mon, 23 Jun 2025 13:36:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABE9F246BC9;
+	Mon, 23 Jun 2025 13:36:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750685769; cv=none; b=j5VqpL4CvQun74cQFKQRY7op3th3h90OYjDWLh1QLV9nMIQo537qc7kRL5gzTLjvG6rLRpm6Xa2lpSsFBt80eMbqloj1tnearxrvn+y/OZBqhgsr7N6pUorTFE0rU1CDhbAWX+J4T+6Hq+3WQMfnuLz5cpq1Ov/t9QQaDkuV9Es=
+	t=1750685789; cv=none; b=f4qUNRVXSo4vM5SXwF0qzY/kXXuh3Sjq+ZpNCIs+3J4gIdyr4mWqyxcnMvLoJOt5XJCVs010e98SkzOJpqEs3nbW5HV7mYACdQUCJWCBBClEQJebBTCZy5Gk6Lfxij7n920zZL/YTwn7jkysfrnMmb5onvS7822IxDr2cV7+cao=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750685769; c=relaxed/simple;
-	bh=3HOG8ig37Oo1mgHlShFD0aE5WpHKfaeW9YcuF5WvOFs=;
+	s=arc-20240116; t=1750685789; c=relaxed/simple;
+	bh=xxHoxiZP9rVV7MyeFf+lE0H882+l4ITr5DjzwNFV5i4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ZI5kq0m39x8gfjq1mETWhc7boezzIG8/EmsgWvWmeRo9n42caO3RFdWzcKl0xuvZBNGkQixQWdmnXAJ9TsylZJJ5vn9AOvcWRNRl8MKrllxBxtCPuFBNcfELwU0sVFbcszp8bWHPJ55MUkqPStne8xzBTcoNJA0hBlMxiI3K4XU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=scTbO/JG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3D28C4CEEA;
-	Mon, 23 Jun 2025 13:36:08 +0000 (UTC)
+	 MIME-Version; b=kW6sZYLe6gr/IQaFg2Nve3+Xeky6s1TCLJ2yEVc/Pu92thbuxvTAUBHISDk7jZ2ku4qRzMyndfYTcQCX1jNnO9FykSxOGhkCbxYSv18cVSVvHNE1nPYmia8R05m8ur4g8Z0gfp1SRUf9EabMoSCOA/INdnXH+htj5WzHfS1Yt/I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kC/kZm3M; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F382C4CEEA;
+	Mon, 23 Jun 2025 13:36:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750685769;
-	bh=3HOG8ig37Oo1mgHlShFD0aE5WpHKfaeW9YcuF5WvOFs=;
+	s=korg; t=1750685789;
+	bh=xxHoxiZP9rVV7MyeFf+lE0H882+l4ITr5DjzwNFV5i4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=scTbO/JGd/yTB/9OVpcSMkxPqUincpp12Q81MbBfuf8Mo47ZLf1mYEda8qMDXiOtT
-	 WP5IjGm/M9EWOFfvjyMdRCs51ezAKpMINuwIOju4SYHaIBhMJSMTMpsk4UIykeUSnq
-	 W7RLGkefNXim4thvBUF+YbMOlx+xDB44D0Hvo0P0=
+	b=kC/kZm3MTuzgJI9bTf5M48cvh49DCz+tkmRqdjOwo7g0zirZWcF5K3Qu5CZTw5y4/
+	 psoe5JeVfq2pVIYN33HhVHN95goNwz+MVfrHEe8oDTibBIIcf40qC6vfkc5WvI3PIl
+	 d0zGlyVmjBxmvas+I/zPW8CQa26/fAmTua077a24=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	WangYuli <wangyuli@uniontech.com>,
-	=?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+	Nicolas Pitre <npitre@baylibre.com>,
+	Jiri Slaby <jirislaby@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 093/355] MIPS: Loongson64: Add missing #interrupt-cells for loongson64c_ls7a
-Date: Mon, 23 Jun 2025 15:04:54 +0200
-Message-ID: <20250623130629.591893826@linuxfoundation.org>
+Subject: [PATCH 5.10 094/355] vt: remove VT_RESIZE and VT_RESIZEX from vt_compat_ioctl()
+Date: Mon, 23 Jun 2025 15:04:55 +0200
+Message-ID: <20250623130629.620807117@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
 In-Reply-To: <20250623130626.716971725@linuxfoundation.org>
 References: <20250623130626.716971725@linuxfoundation.org>
@@ -61,45 +60,43 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: WangYuli <wangyuli@uniontech.com>
+From: Nicolas Pitre <npitre@baylibre.com>
 
-[ Upstream commit 6d223b8ffcd1593d032b71875def2daa71c53111 ]
+[ Upstream commit c4c7ead7b86c1e7f11c64915b7e5bb6d2e242691 ]
 
-Similar to commit 98a9e2ac3755 ("MIPS: Loongson64: DTS: Fix msi node for ls7a").
+They are listed amon those cmd values that "treat 'arg' as an integer"
+which is wrong. They should instead fall into the default case. Probably
+nobody ever relied on that code since 2009 but still.
 
-Fix follow warnings:
-  arch/mips/boot/dts/loongson/loongson64c_4core_ls7a.dts:28.31-36.4: Warning (interrupt_provider): /bus@10000000/msi-controller@2ff00000: Missing '#interrupt-cells' in interrupt provider
-  arch/mips/boot/dts/loongson/loongson64c_4core_ls7a.dtb: Warning (interrupt_map): Failed prerequisite 'interrupt_provider'
-
-Fixes: 24af105962c8 ("MIPS: Loongson64: DeviceTree for LS7A PCH")
-Tested-by: WangYuli <wangyuli@uniontech.com>
-Signed-off-by: WangYuli <wangyuli@uniontech.com>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Fixes: e92166517e3c ("tty: handle VT specific compat ioctls in vt driver")
+Signed-off-by: Nicolas Pitre <npitre@baylibre.com>
+Reviewed-by: Jiri Slaby <jirislaby@kernel.org>
+Link: https://lore.kernel.org/r/pr214s15-36r8-6732-2pop-159nq85o48r7@syhkavp.arg
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/mips/boot/dts/loongson/loongson64c_4core_ls7a.dts | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/tty/vt/vt_ioctl.c | 2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/arch/mips/boot/dts/loongson/loongson64c_4core_ls7a.dts b/arch/mips/boot/dts/loongson/loongson64c_4core_ls7a.dts
-index c7ea4f1c0bb21..6c277ab83d4b9 100644
---- a/arch/mips/boot/dts/loongson/loongson64c_4core_ls7a.dts
-+++ b/arch/mips/boot/dts/loongson/loongson64c_4core_ls7a.dts
-@@ -29,6 +29,7 @@
- 		compatible = "loongson,pch-msi-1.0";
- 		reg = <0 0x2ff00000 0 0x8>;
- 		interrupt-controller;
-+		#interrupt-cells = <1>;
- 		msi-controller;
- 		loongson,msi-base-vec = <64>;
- 		loongson,msi-num-vecs = <64>;
+diff --git a/drivers/tty/vt/vt_ioctl.c b/drivers/tty/vt/vt_ioctl.c
+index b10b86e2c17e9..b62ab122fb4af 100644
+--- a/drivers/tty/vt/vt_ioctl.c
++++ b/drivers/tty/vt/vt_ioctl.c
+@@ -1104,8 +1104,6 @@ long vt_compat_ioctl(struct tty_struct *tty,
+ 	case VT_WAITACTIVE:
+ 	case VT_RELDISP:
+ 	case VT_DISALLOCATE:
+-	case VT_RESIZE:
+-	case VT_RESIZEX:
+ 		return vt_ioctl(tty, cmd, arg);
+ 
+ 	/*
 -- 
 2.39.5
 
