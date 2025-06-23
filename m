@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-156417-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156588-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A0F0AE4F73
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:16:05 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 541D3AE5052
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:24:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8752E3BF35F
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:15:40 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2B70A7AEAA2
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:21:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE30D1F582A;
-	Mon, 23 Jun 2025 21:16:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5CB7B1EFFA6;
+	Mon, 23 Jun 2025 21:23:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0xOO1d2m"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w6diXQf9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D2CF2628C;
-	Mon, 23 Jun 2025 21:16:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18D862628C;
+	Mon, 23 Jun 2025 21:23:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750713363; cv=none; b=EjVkI6L5r/DOBIhKuAiP5siskjADtxCm1KPz6lMIFokzek74iCMa2K7bhiDyg6HAp2roDC7GAvvYdljp2oCtECzQjj2uXwTmXlGRnAPcNYz5ZqSj2IE4DcEXBmzLGvCkRyb5AmLGqWWX+ItSTJPcu1sAk1jLWZ/o86xdSMlPjl4=
+	t=1750713781; cv=none; b=hWs0m6nW6fifOT+GgS3zyjgY00V/b/gmx8DJ2BDq0Bmrvk6OVaW3MI1MaIxkFAfuMOCVLUl0AU9LO4MwjV35TlSA5omcR5eTeZztV0rFYfUaCuiNMgx8fhGykxjuFMUChBv8laWXxQtfD9dvXbLMGBob/bpL3cj+F0m73eUZQHg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750713363; c=relaxed/simple;
-	bh=wDOjEp4ShBDsxnjTPeD6K+oHRmvtc8eyiZHTJRKYunw=;
+	s=arc-20240116; t=1750713781; c=relaxed/simple;
+	bh=bNo6Q/Kl+EZgRz5zFiov81yNQUFscwuY8+BExovazMc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aY/UNdrAEpqOpIN+srY1LMJ+C7VixSxy/hxxJTMn6blZlfEeid6x+0eEm6Veqbzd+7P03L5qkgZ+ogbbtJ9mKtyKTVECnWard8KYDeMWpFyPt08kGATf3JevftupbAzibu/iouK7IADBKikqj8QDD/HqJVcNO0byhWIafJkRelc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0xOO1d2m; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03734C4CEED;
-	Mon, 23 Jun 2025 21:16:02 +0000 (UTC)
+	 MIME-Version; b=Y4mRBhFAmmRUHkFVlsb05EQaNuJ6ZGD1+8Y+j90jqEPweuS1QiYV5UWvAXF4pFQxSEuuGr1BNyCIyn0jkN+mJnygqif7/b+9ai7cf17S9pYLbrrQw3t1D9uLOjZmObUonr6lKV/+ZnlDwRO2GXT/dIqg35HIIepXTaSVD3snVec=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w6diXQf9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5787C4CEF0;
+	Mon, 23 Jun 2025 21:23:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750713363;
-	bh=wDOjEp4ShBDsxnjTPeD6K+oHRmvtc8eyiZHTJRKYunw=;
+	s=korg; t=1750713781;
+	bh=bNo6Q/Kl+EZgRz5zFiov81yNQUFscwuY8+BExovazMc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0xOO1d2mWr2jBW4WNRpMz/MryaxrPEpdgRjMV3VpSAebeuXHiZzKxQ6zMhjOYpPpS
-	 VbmP31oOQjS5LXHZtxRWrVc/i4b+erTWudsUGkIXVjFzwqZpPncsJcaLCXqfRmw4eL
-	 NSDEs4sGEcB6uR0yDOw65NWic8JsUXnMzlHAy8PM=
+	b=w6diXQf906kaeWDPAZM2clST8BXs3Z/9EKS/yRFJ5H7ePYGXf8U6M9a2xP880IUQo
+	 q1FQBxJEsfck/G7ymL4LMBReQDCi/uP9uaayIE3EPekngbJHCPYuE4sIhgOOGbIClN
+	 fi60g8rogPdgU1H8OVu+RoU673dRZvAKfFENJCf0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhang Yi <yi.zhang@huawei.com>,
-	Jan Kara <jack@suse.cz>,
-	Baokun Li <libaokun1@huawei.com>,
-	Theodore Tso <tytso@mit.edu>,
-	stable@kernel.org
-Subject: [PATCH 6.6 062/290] ext4: factor out ext4_get_maxbytes()
+	Benjamin Berg <benjamin.berg@intel.com>,
+	Johannes Berg <johannes.berg@intel.com>,
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.15 365/592] wifi: iwlwifi: mld: call thermal exit without wiphy lock held
 Date: Mon, 23 Jun 2025 15:05:23 +0200
-Message-ID: <20250623130628.870031309@linuxfoundation.org>
+Message-ID: <20250623130709.124320241@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130626.910356556@linuxfoundation.org>
-References: <20250623130626.910356556@linuxfoundation.org>
+In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
+References: <20250623130700.210182694@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,79 +63,79 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhang Yi <yi.zhang@huawei.com>
+From: Benjamin Berg <benjamin.berg@intel.com>
 
-commit dbe27f06fa38b9bfc598f8864ae1c5d5831d9992 upstream.
+[ Upstream commit 83128399f3b4926ab73ce8e5081ce6595e9230e9 ]
 
-There are several locations that get the correct maxbytes value based on
-the inode's block type. It would be beneficial to extract a common
-helper function to make the code more clear.
+The driver must not hold the wiphy mutex when unregistering the thermal
+devices. Do not hold the lock for the call to iwl_mld_thermal_exit and
+only do a lock/unlock to cancel the ct_kill_exit_wk work.
 
-Signed-off-by: Zhang Yi <yi.zhang@huawei.com>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Reviewed-by: Baokun Li <libaokun1@huawei.com>
-Link: https://patch.msgid.link/20250506012009.3896990-3-yi.zhang@huaweicloud.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Cc: stable@kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+The problem is that iwl_mld_tzone_get_temp needs to take the wiphy lock
+while the thermal code is holding its own locks already. When
+unregistering the device, the reverse would happen as the driver was
+calling thermal_cooling_device_unregister with the wiphy mutex already
+held.
+
+It is not likely to trigger this deadlock as it can only happen if the
+thermal code is polling the temperature while the driver is being
+unloaded. However, lockdep reported it so fix it.
+
+Signed-off-by: Benjamin Berg <benjamin.berg@intel.com>
+Reviewed-by: Johannes Berg <johannes.berg@intel.com>
+Link: https://patch.msgid.link/20250506194102.3407967-12-miriam.rachel.korenblit@intel.com
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ext4/ext4.h    |    7 +++++++
- fs/ext4/extents.c |    7 +------
- fs/ext4/file.c    |    7 +------
- 3 files changed, 9 insertions(+), 12 deletions(-)
+ drivers/net/wireless/intel/iwlwifi/mld/mld.c     | 3 ++-
+ drivers/net/wireless/intel/iwlwifi/mld/thermal.c | 4 ++++
+ 2 files changed, 6 insertions(+), 1 deletion(-)
 
---- a/fs/ext4/ext4.h
-+++ b/fs/ext4/ext4.h
-@@ -3351,6 +3351,13 @@ static inline unsigned int ext4_flex_bg_
- 	return 1 << sbi->s_log_groups_per_flex;
- }
+diff --git a/drivers/net/wireless/intel/iwlwifi/mld/mld.c b/drivers/net/wireless/intel/iwlwifi/mld/mld.c
+index 7a098942dc802..21f65442638dd 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mld/mld.c
++++ b/drivers/net/wireless/intel/iwlwifi/mld/mld.c
+@@ -475,8 +475,9 @@ iwl_op_mode_mld_stop(struct iwl_op_mode *op_mode)
+ 	iwl_mld_ptp_remove(mld);
+ 	iwl_mld_leds_exit(mld);
  
-+static inline loff_t ext4_get_maxbytes(struct inode *inode)
-+{
-+	if (ext4_test_inode_flag(inode, EXT4_INODE_EXTENTS))
-+		return inode->i_sb->s_maxbytes;
-+	return EXT4_SB(inode->i_sb)->s_bitmap_maxbytes;
-+}
+-	wiphy_lock(mld->wiphy);
+ 	iwl_mld_thermal_exit(mld);
 +
- #define ext4_std_error(sb, errno)				\
- do {								\
- 	if ((errno))						\
---- a/fs/ext4/extents.c
-+++ b/fs/ext4/extents.c
-@@ -4970,12 +4970,7 @@ static const struct iomap_ops ext4_iomap
++	wiphy_lock(mld->wiphy);
+ 	iwl_mld_low_latency_stop(mld);
+ 	iwl_mld_deinit_time_sync(mld);
+ 	wiphy_unlock(mld->wiphy);
+diff --git a/drivers/net/wireless/intel/iwlwifi/mld/thermal.c b/drivers/net/wireless/intel/iwlwifi/mld/thermal.c
+index 1909953a9be98..670ac43528006 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mld/thermal.c
++++ b/drivers/net/wireless/intel/iwlwifi/mld/thermal.c
+@@ -419,6 +419,8 @@ static void iwl_mld_cooling_device_unregister(struct iwl_mld *mld)
  
- static int ext4_fiemap_check_ranges(struct inode *inode, u64 start, u64 *len)
+ void iwl_mld_thermal_initialize(struct iwl_mld *mld)
  {
--	u64 maxbytes;
--
--	if (ext4_test_inode_flag(inode, EXT4_INODE_EXTENTS))
--		maxbytes = inode->i_sb->s_maxbytes;
--	else
--		maxbytes = EXT4_SB(inode->i_sb)->s_bitmap_maxbytes;
-+	u64 maxbytes = ext4_get_maxbytes(inode);
++	lockdep_assert_not_held(&mld->wiphy->mtx);
++
+ 	wiphy_delayed_work_init(&mld->ct_kill_exit_wk, iwl_mld_exit_ctkill);
  
- 	if (*len == 0)
- 		return -EINVAL;
---- a/fs/ext4/file.c
-+++ b/fs/ext4/file.c
-@@ -898,12 +898,7 @@ static int ext4_file_open(struct inode *
- loff_t ext4_llseek(struct file *file, loff_t offset, int whence)
+ #ifdef CONFIG_THERMAL
+@@ -429,7 +431,9 @@ void iwl_mld_thermal_initialize(struct iwl_mld *mld)
+ 
+ void iwl_mld_thermal_exit(struct iwl_mld *mld)
  {
- 	struct inode *inode = file->f_mapping->host;
--	loff_t maxbytes;
--
--	if (!(ext4_test_inode_flag(inode, EXT4_INODE_EXTENTS)))
--		maxbytes = EXT4_SB(inode->i_sb)->s_bitmap_maxbytes;
--	else
--		maxbytes = inode->i_sb->s_maxbytes;
-+	loff_t maxbytes = ext4_get_maxbytes(inode);
++	wiphy_lock(mld->wiphy);
+ 	wiphy_delayed_work_cancel(mld->wiphy, &mld->ct_kill_exit_wk);
++	wiphy_unlock(mld->wiphy);
  
- 	switch (whence) {
- 	default:
+ #ifdef CONFIG_THERMAL
+ 	iwl_mld_cooling_device_unregister(mld);
+-- 
+2.39.5
+
 
 
 
