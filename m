@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-156041-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-155945-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A95CAE4512
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:48:18 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7175BAE449B
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:44:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AD650440D42
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:39:45 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0396E444CA4
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:36:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 059862505A9;
-	Mon, 23 Jun 2025 13:39:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14DB92561A7;
+	Mon, 23 Jun 2025 13:35:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="stWsfRGV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bUUCaFAR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7E5B16419;
-	Mon, 23 Jun 2025 13:39:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5BD8255F3C;
+	Mon, 23 Jun 2025 13:35:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750685991; cv=none; b=kpMRbbWK/0u7wfwtc/ClrQM3wF2gNQLSb4qWkmPGQbZibQBUGVV21ftQfsMXceyBRhi5NOMiwJ8uNdxARrWY0VoSajLiwzT/ckAfdsmdqzf/GCOkxzttNLhASUeaD7lP5Ao6KxqjNyq5horYi0BT5VwIjQ3RQ/DmT5VbsXumh8I=
+	t=1750685741; cv=none; b=qc9gLMCuwOLyfYVQOJ8wnDiXdc1eaCHlrJgtrrpRbtAdthliH1a4xV4M3ipKhCgIxtxqgghRyrXKC0E4SVieaWBXFildb1+mUSqhDk84qNkoaZWa91b+eqpHVbdtfAnbblNJgcXreTrHlIulnpCmTWch3L+w2gQfbxZy1F/bt2M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750685991; c=relaxed/simple;
-	bh=IjMzSt29O6DfBb2H9LPLDe9LTf9XAyPLXaArA6TqpT4=;
+	s=arc-20240116; t=1750685741; c=relaxed/simple;
+	bh=Jxh5mhMQDVDY+R44pe92eaACobz20ITMDksEko7IEgw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RZ69hY3aMVKBRbeF4l1wS72LQ5Bblr5C4zyyFsvtnQoQVyav99P1i2tksee6wcaIqkMZ6Tt2/GFr7bD+hiko1Qh4/LhmQWFkJjqz0VSklrgS+VB3wkJSQDDzWV2cmkUuvWgy+BpTB1eAzxXkjlswPiEf4M6TQRc4XxNNTaRElNE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=stWsfRGV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B4E7C4CEEA;
-	Mon, 23 Jun 2025 13:39:51 +0000 (UTC)
+	 MIME-Version; b=oSs15kr7z4VHi6gK/uqkd84F6Y5wK/n/XiGuAhqymmE9Bg/WLbKBmvBkF5oH4F7397Y7PZ/rWiiPmYN/rmusDEHT1pgg890Nwq3Ly05bHcwncUfRZ+6oUyZhIbjeUXl/YP/mU0db6xTB9PXGNDahdfUc2ggU6n5A/AS75p6E/hg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bUUCaFAR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59522C4CEEA;
+	Mon, 23 Jun 2025 13:35:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750685991;
-	bh=IjMzSt29O6DfBb2H9LPLDe9LTf9XAyPLXaArA6TqpT4=;
+	s=korg; t=1750685741;
+	bh=Jxh5mhMQDVDY+R44pe92eaACobz20ITMDksEko7IEgw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=stWsfRGVCYE5MLbU/R+0+nS63WWwhcXZul3gmfXdOxAmyDGDfd7otgelH1gTqGbSc
-	 mIiuaeg3LMXWWN6Zg5vHBv9mIx6wM28MD7byD4pNJqqrLNa3frXR/R+GFKIURSeYbf
-	 3rDIkHP0ecG+MsS4+PRYO5u+gL8D73fmpSFbcv1I=
+	b=bUUCaFARCsnOE3QxZf9Jz2YUyeOFBBr+hU8r0TE5hWW5lt1vC38uW8DNmbo0hPAru
+	 P1k0lJe1PC7ajLnG290sFVvpQJFl+4iX7TWCVGAoTILGoQU3vzGHe0TidRSR4ek2R6
+	 4S5xu9H/v5EXJiffGSwB8f95y8oiGnOxhRQ/vvso=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Li Lingfeng <lilingfeng3@huawei.com>,
-	Anna Schumaker <anna.schumaker@oracle.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 084/355] nfs: ignore SB_RDONLY when remounting nfs
+	Johan Hovold <johan+linaro@kernel.org>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Hans Verkuil <hverkuil@xs4all.nl>
+Subject: [PATCH 6.6 024/290] media: ov8856: suppress probe deferral errors
 Date: Mon, 23 Jun 2025 15:04:45 +0200
-Message-ID: <20250623130629.333763193@linuxfoundation.org>
+Message-ID: <20250623130627.710131321@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130626.716971725@linuxfoundation.org>
-References: <20250623130626.716971725@linuxfoundation.org>
+In-Reply-To: <20250623130626.910356556@linuxfoundation.org>
+References: <20250623130626.910356556@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,77 +62,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Li Lingfeng <lilingfeng3@huawei.com>
+From: Johan Hovold <johan+linaro@kernel.org>
 
-[ Upstream commit 80c4de6ab44c14e910117a02f2f8241ffc6ec54a ]
+commit e3d86847fba58cf71f66e81b6a2515e07039ae17 upstream.
 
-In some scenarios, when mounting NFS, more than one superblock may be
-created. The final superblock used is the last one created, but only the
-first superblock carries the ro flag passed from user space. If a ro flag
-is added to the superblock via remount, it will trigger the issue
-described in Link[1].
+Probe deferral should not be logged as an error:
 
-Link[2] attempted to address this by marking the superblock as ro during
-the initial mount. However, this introduced a new problem in scenarios
-where multiple mount points share the same superblock:
-[root@a ~]# mount /dev/sdb /mnt/sdb
-[root@a ~]# echo "/mnt/sdb *(rw,no_root_squash)" > /etc/exports
-[root@a ~]# echo "/mnt/sdb/test_dir2 *(ro,no_root_squash)" >> /etc/exports
-[root@a ~]# systemctl restart nfs-server
-[root@a ~]# mount -t nfs -o rw 127.0.0.1:/mnt/sdb/test_dir1 /mnt/test_mp1
-[root@a ~]# mount | grep nfs4
-127.0.0.1:/mnt/sdb/test_dir1 on /mnt/test_mp1 type nfs4 (rw,relatime,...
-[root@a ~]# mount -t nfs -o ro 127.0.0.1:/mnt/sdb/test_dir2 /mnt/test_mp2
-[root@a ~]# mount | grep nfs4
-127.0.0.1:/mnt/sdb/test_dir1 on /mnt/test_mp1 type nfs4 (ro,relatime,...
-127.0.0.1:/mnt/sdb/test_dir2 on /mnt/test_mp2 type nfs4 (ro,relatime,...
-[root@a ~]#
+	ov8856 24-0010: failed to get HW configuration: -517
 
-When mounting the second NFS, the shared superblock is marked as ro,
-causing the previous NFS mount to become read-only.
+Use dev_err_probe() for the clock lookup and drop the (mostly) redundant
+dev_err() from sensor probe() to suppress it.
 
-To resolve both issues, the ro flag is no longer applied to the superblock
-during remount. Instead, the ro flag on the mount is used to control
-whether the mount point is read-only.
+Note that errors during regulator lookup is already correctly logged
+using dev_err_probe().
 
-Fixes: 281cad46b34d ("NFS: Create a submount rpc_op")
-Link[1]: https://lore.kernel.org/all/20240604112636.236517-3-lilingfeng@huaweicloud.com/
-Link[2]: https://lore.kernel.org/all/20241130035818.1459775-1-lilingfeng3@huawei.com/
-Signed-off-by: Li Lingfeng <lilingfeng3@huawei.com>
-Signed-off-by: Anna Schumaker <anna.schumaker@oracle.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 0c2c7a1e0d69 ("media: ov8856: Add devicetree support")
+Cc: stable@vger.kernel.org
+Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
+Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nfs/super.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+ drivers/media/i2c/ov8856.c |    9 +++------
+ 1 file changed, 3 insertions(+), 6 deletions(-)
 
-diff --git a/fs/nfs/super.c b/fs/nfs/super.c
-index 27923c2b36f77..7c58a1688f7f7 100644
---- a/fs/nfs/super.c
-+++ b/fs/nfs/super.c
-@@ -1000,6 +1000,16 @@ int nfs_reconfigure(struct fs_context *fc)
+--- a/drivers/media/i2c/ov8856.c
++++ b/drivers/media/i2c/ov8856.c
+@@ -2323,8 +2323,8 @@ static int ov8856_get_hwcfg(struct ov885
+ 	if (!is_acpi_node(fwnode)) {
+ 		ov8856->xvclk = devm_clk_get(dev, "xvclk");
+ 		if (IS_ERR(ov8856->xvclk)) {
+-			dev_err(dev, "could not get xvclk clock (%pe)\n",
+-				ov8856->xvclk);
++			dev_err_probe(dev, PTR_ERR(ov8856->xvclk),
++				      "could not get xvclk clock\n");
+ 			return PTR_ERR(ov8856->xvclk);
+ 		}
  
- 	sync_filesystem(sb);
+@@ -2429,11 +2429,8 @@ static int ov8856_probe(struct i2c_clien
+ 		return -ENOMEM;
  
-+	/*
-+	 * The SB_RDONLY flag has been removed from the superblock during
-+	 * mounts to prevent interference between different filesystems.
-+	 * Similarly, it is also necessary to ignore the SB_RDONLY flag
-+	 * during reconfiguration; otherwise, it may also result in the
-+	 * creation of redundant superblocks when mounting a directory with
-+	 * different rw and ro flags multiple times.
-+	 */
-+	fc->sb_flags_mask &= ~SB_RDONLY;
-+
- 	/*
- 	 * Userspace mount programs that send binary options generally send
- 	 * them populated with default values. We have no way to know which
--- 
-2.39.5
-
+ 	ret = ov8856_get_hwcfg(ov8856, &client->dev);
+-	if (ret) {
+-		dev_err(&client->dev, "failed to get HW configuration: %d",
+-			ret);
++	if (ret)
+ 		return ret;
+-	}
+ 
+ 	v4l2_i2c_subdev_init(&ov8856->sd, client, &ov8856_subdev_ops);
+ 
 
 
 
