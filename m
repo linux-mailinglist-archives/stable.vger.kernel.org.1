@@ -1,54 +1,58 @@
-Return-Path: <stable+bounces-155882-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-155888-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 460D6AE441E
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:39:56 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F42EAE445D
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:42:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7D6D117AEE9
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:33:48 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3DD7B3B6D80
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:33:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9243825486D;
-	Mon, 23 Jun 2025 13:33:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D6CE0255F5C;
+	Mon, 23 Jun 2025 13:33:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WLPDPfoE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z68ECnCi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E054253358;
-	Mon, 23 Jun 2025 13:33:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91B31255F39;
+	Mon, 23 Jun 2025 13:33:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750685580; cv=none; b=Recc6Hfhce7ksxzK0jsgbX10M0KE63AMNi+cZ9bmTwTDldL8xvpLCGVQUL58NyyMGTNaSpzL2zwcLuEC8s/wKRQDB1yuslB6lFpgadm+PXgwbuPb6Vn/9yr37oIkh/m8zi8Jd1OjjAL/AadBeltNstm6gUhcaa9g4M9raq5wAXg=
+	t=1750685595; cv=none; b=hlqsgcDPN2k8hQQFXSZTkMyxCzqddEle1u4b/sbp60fkY3Pbu7L6JCCzwY2qWndgcHlqykB0Rb1th1pdamIxdm31M5g2c4uRBRtTuS7HzwXmJHWHRYPLHZbN9lHfRNEhumKsnUPOE6vRIWZH+bXACLHDlLieeJf4GlfHTIABwQk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750685580; c=relaxed/simple;
-	bh=96YlGFluljy9DlVc1102v3C7SzxRcFIpQhIwX7iOMd0=;
+	s=arc-20240116; t=1750685595; c=relaxed/simple;
+	bh=ScdX52xqNsqqF4TNrIDaje2WGAl8sCsVPypMA4fJdMY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ef2LdS+jyoWQLuicP86ZWCjmhyCp6xO7QEUm/hfOib6gt7FAvq2hzUh9cpiugXxtWmFqJj9EMPjHk2rYjn+M6f3AoJqYK/HjcyEXn49qGWmK2xYSxjMF6WAj9hJ81fZ3FWjK1M/ltIf6hzGhsEWD218waB1XfIYIcOQkgJQSUKc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WLPDPfoE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D65FDC4CEEA;
-	Mon, 23 Jun 2025 13:32:59 +0000 (UTC)
+	 MIME-Version; b=BPmufer8fNI73snLOQJdUhluhtbaWmuRqr4imNfRERVZhUkcy35wgKni6gpVk2Swie6JMggjdYub4A+QXRM1G5V3Xmce6acEVjlsbh5CO/OdWWBoFdPi57piQkCwxxeW/fktQC2qcxk14PD9QRQplMPwqNcV33SMR5P9lGsWui4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z68ECnCi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D710C4CEEA;
+	Mon, 23 Jun 2025 13:33:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750685580;
-	bh=96YlGFluljy9DlVc1102v3C7SzxRcFIpQhIwX7iOMd0=;
+	s=korg; t=1750685595;
+	bh=ScdX52xqNsqqF4TNrIDaje2WGAl8sCsVPypMA4fJdMY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WLPDPfoEqjkGSXA+mYzcwOgE5bsaUI2cF00Asgq81Uh9+wTRqJoyKQsrxKp8aRRsh
-	 CwS2JYkfWQ7BZ7eJXgGFCjm7jIHRjAeuPhZsteHhLwYHV/74dXSxQQG6CXOdg8a54j
-	 NPaHT8NE7z4jRPVmNSdv8VeAtF+xk9LOL2XOudAA=
+	b=z68ECnCibJja/OZ4ooPlXPQVw9aBtCdbP30oyLWnCp1pE9e1ASFDW38WoTdAm/Q9N
+	 hlnPgwSr/Ljy0E/uRydHW3TI6jRT2QONB7lX6fXNWe1UQW94M+jZ91l3Ge9aBz/gIm
+	 R4krWstHU9Ftr04MdjZ/wfrDi0BEe7BRxQje3BZM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+01affb1491750534256d@syzkaller.appspotmail.com,
-	Jiayuan Chen <jiayuan.chen@linux.dev>,
-	Tejun Heo <tj@kernel.org>,
+	Maxime Ripard <mripard@kernel.org>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Tejas Vipin <tejasvipin76@gmail.com>,
+	Doug Anderson <dianders@chromium.org>,
+	Anusha Srivatsa <asrivats@redhat.com>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 245/592] workqueue: Fix race condition in wq->stats incrementation
-Date: Mon, 23 Jun 2025 15:03:23 +0200
-Message-ID: <20250623130706.119801453@linuxfoundation.org>
+Subject: [PATCH 6.15 246/592] drm/panel/sharp-ls043t1le01: Use _multi variants
+Date: Mon, 23 Jun 2025 15:03:24 +0200
+Message-ID: <20250623130706.144660247@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
 In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
 References: <20250623130700.210182694@linuxfoundation.org>
@@ -67,94 +71,124 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Jiayuan Chen <jiayuan.chen@linux.dev>
+From: Anusha Srivatsa <asrivats@redhat.com>
 
-[ Upstream commit 70e1683ca3a6474360af1d3a020a9a98c8492cc0 ]
+[ Upstream commit 20e8219205145e1af3b98b6a0a3cc59568116a05 ]
 
-Fixed a race condition in incrementing wq->stats[PWQ_STAT_COMPLETED] by
-moving the operation under pool->lock.
+Move away from using deprecated API and use _multi variants
+if available. Use mipi_dsi_msleep() and mipi_dsi_usleep_range()
+instead of msleep() and usleep_range() respectively.
 
-Reported-by: syzbot+01affb1491750534256d@syzkaller.appspotmail.com
-Signed-off-by: Jiayuan Chen <jiayuan.chen@linux.dev>
-Signed-off-by: Tejun Heo <tj@kernel.org>
+Used Coccinelle to find the _multi variant APIs,replacing
+mpi_dsi_msleep() where necessary and for returning
+dsi_ctx.accum_err in these functions. mipi_dsi_dcs_write()
+does not have a corresponding _multi() variant. Replacing it with
+mipi_dsi_dcs_write_seq_multi() instead. This change is manual.
+
+The Coccinelle script is the same as the one in commit c8ba07caaecc
+("drm/panel/synaptics-r63353: Use _multi variants")
+
+v2: Use mipi_dsi_write_buffer_multi() in place of
+mipi_dsi_dcs_write(). (Dmitry)
+
+v3: add commit details where the same coccinelle script is
+used and remove the actual script from commit log.
+Use mipi_dsi_dcs_write_seq_multi() for mipi_dsi_dcs_write() (Doug)
+
+Cc: Maxime Ripard <mripard@kernel.org>
+Cc: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Cc: Tejas Vipin <tejasvipin76@gmail.com>
+Cc: Doug Anderson <dianders@chromium.org>
+Signed-off-by: Anusha Srivatsa <asrivats@redhat.com>
+Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
+Reviewed-by: Douglas Anderson <dianders@chromium.org>
+Link: https://lore.kernel.org/r/20250326-b4-panel-ls043t1le01-v3-1-96c554c0ea2b@redhat.com
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/workqueue.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ .../gpu/drm/panel/panel-sharp-ls043t1le01.c   | 41 +++++++------------
+ 1 file changed, 15 insertions(+), 26 deletions(-)
 
-diff --git a/kernel/workqueue.c b/kernel/workqueue.c
-index cf62032827375..1ea62b8c76b32 100644
---- a/kernel/workqueue.c
-+++ b/kernel/workqueue.c
-@@ -3241,7 +3241,7 @@ __acquires(&pool->lock)
- 	 * point will only record its address.
- 	 */
- 	trace_workqueue_execute_end(work, worker->current_func);
--	pwq->stats[PWQ_STAT_COMPLETED]++;
-+
- 	lock_map_release(&lockdep_map);
- 	if (!bh_draining)
- 		lock_map_release(pwq->wq->lockdep_map);
-@@ -3272,6 +3272,8 @@ __acquires(&pool->lock)
+diff --git a/drivers/gpu/drm/panel/panel-sharp-ls043t1le01.c b/drivers/gpu/drm/panel/panel-sharp-ls043t1le01.c
+index 729cbb0d8403f..36abfa2e65e96 100644
+--- a/drivers/gpu/drm/panel/panel-sharp-ls043t1le01.c
++++ b/drivers/gpu/drm/panel/panel-sharp-ls043t1le01.c
+@@ -36,60 +36,49 @@ static inline struct sharp_nt_panel *to_sharp_nt_panel(struct drm_panel *panel)
+ static int sharp_nt_panel_init(struct sharp_nt_panel *sharp_nt)
+ {
+ 	struct mipi_dsi_device *dsi = sharp_nt->dsi;
+-	int ret;
++	struct mipi_dsi_multi_context dsi_ctx = { .dsi = dsi };
  
- 	raw_spin_lock_irq(&pool->lock);
+ 	dsi->mode_flags |= MIPI_DSI_MODE_LPM;
  
-+	pwq->stats[PWQ_STAT_COMPLETED]++;
-+
- 	/*
- 	 * In addition to %WQ_CPU_INTENSIVE, @worker may also have been marked
- 	 * CPU intensive by wq_worker_tick() if @work hogged CPU longer than
--- 
-2.39.5
-
-
-
-w_v2.c
-+++ b/drivers/infiniband/hw/hns/hns_roce_hw_v2.c
-@@ -42,7 +42,6 @@
- #include <rdma/ib_umem.h>
- #include <rdma/uverbs_ioctl.h>
+-	ret = mipi_dsi_dcs_exit_sleep_mode(dsi);
+-	if (ret < 0)
+-		return ret;
++	mipi_dsi_dcs_exit_sleep_mode_multi(&dsi_ctx);
  
--#include "hnae3.h"
- #include "hns_roce_common.h"
- #include "hns_roce_device.h"
- #include "hns_roce_cmd.h"
-diff --git a/drivers/infiniband/hw/hns/hns_roce_hw_v2.h b/drivers/infiniband/hw/hns/hns_roce_hw_v2.h
-index a03dfde796ca4..07ea5fe4a59bb 100644
---- a/drivers/infiniband/hw/hns/hns_roce_hw_v2.h
-+++ b/drivers/infiniband/hw/hns/hns_roce_hw_v2.h
-@@ -34,6 +34,7 @@
- #define _HNS_ROCE_HW_V2_H
+-	msleep(120);
++	mipi_dsi_msleep(&dsi_ctx, 120);
  
- #include <linux/bitops.h>
-+#include "hnae3.h"
+ 	/* Novatek two-lane operation */
+-	ret = mipi_dsi_dcs_write(dsi, 0xae, (u8[]){ 0x03 }, 1);
+-	if (ret < 0)
+-		return ret;
++	mipi_dsi_dcs_write_seq_multi(&dsi_ctx, 0xae,  0x03);
  
- #define HNS_ROCE_VF_QPC_BT_NUM			256
- #define HNS_ROCE_VF_SCCC_BT_NUM			64
-diff --git a/drivers/infiniband/hw/hns/hns_roce_main.c b/drivers/infiniband/hw/hns/hns_roce_main.c
-index 4fc8e0c8b7ab0..5bafd451ca8da 100644
---- a/drivers/infiniband/hw/hns/hns_roce_main.c
-+++ b/drivers/infiniband/hw/hns/hns_roce_main.c
-@@ -38,7 +38,6 @@
- #include <rdma/ib_smi.h>
- #include <rdma/ib_user_verbs.h>
- #include <rdma/ib_cache.h>
--#include "hnae3.h"
- #include "hns_roce_common.h"
- #include "hns_roce_device.h"
- #include "hns_roce_hem.h"
-diff --git a/drivers/infiniband/hw/hns/hns_roce_restrack.c b/drivers/infiniband/hw/hns/hns_roce_restrack.c
-index 259444c0a6301..8acab99f7ea6a 100644
---- a/drivers/infiniband/hw/hns/hns_roce_restrack.c
-+++ b/drivers/infiniband/hw/hns/hns_roce_restrack.c
-@@ -4,7 +4,6 @@
- #include <rdma/rdma_cm.h>
- #include <rdma/restrack.h>
- #include <uapi/rdma/rdma_netlink.h>
--#include "hnae3.h"
- #include "hns_roce_common.h"
- #include "hns_roce_device.h"
- #include "hns_roce_hw_v2.h"
+ 	/* Set both MCU and RGB I/F to 24bpp */
+-	ret = mipi_dsi_dcs_set_pixel_format(dsi, MIPI_DCS_PIXEL_FMT_24BIT |
+-					(MIPI_DCS_PIXEL_FMT_24BIT << 4));
+-	if (ret < 0)
+-		return ret;
++	mipi_dsi_dcs_set_pixel_format_multi(&dsi_ctx,
++					    MIPI_DCS_PIXEL_FMT_24BIT |
++					    (MIPI_DCS_PIXEL_FMT_24BIT << 4));
+ 
+-	return 0;
++	return dsi_ctx.accum_err;
+ }
+ 
+ static int sharp_nt_panel_on(struct sharp_nt_panel *sharp_nt)
+ {
+ 	struct mipi_dsi_device *dsi = sharp_nt->dsi;
+-	int ret;
++	struct mipi_dsi_multi_context dsi_ctx = { .dsi = dsi };
+ 
+ 	dsi->mode_flags |= MIPI_DSI_MODE_LPM;
+ 
+-	ret = mipi_dsi_dcs_set_display_on(dsi);
+-	if (ret < 0)
+-		return ret;
++	mipi_dsi_dcs_set_display_on_multi(&dsi_ctx);
+ 
+-	return 0;
++	return dsi_ctx.accum_err;
+ }
+ 
+ static int sharp_nt_panel_off(struct sharp_nt_panel *sharp_nt)
+ {
+ 	struct mipi_dsi_device *dsi = sharp_nt->dsi;
+-	int ret;
++	struct mipi_dsi_multi_context dsi_ctx = { .dsi = dsi };
+ 
+ 	dsi->mode_flags &= ~MIPI_DSI_MODE_LPM;
+ 
+-	ret = mipi_dsi_dcs_set_display_off(dsi);
+-	if (ret < 0)
+-		return ret;
++	mipi_dsi_dcs_set_display_off_multi(&dsi_ctx);
+ 
+-	ret = mipi_dsi_dcs_enter_sleep_mode(dsi);
+-	if (ret < 0)
+-		return ret;
++	mipi_dsi_dcs_enter_sleep_mode_multi(&dsi_ctx);
+ 
+-	return 0;
++	return dsi_ctx.accum_err;
+ }
+ 
+ static int sharp_nt_panel_unprepare(struct drm_panel *panel)
 -- 
 2.39.5
 
