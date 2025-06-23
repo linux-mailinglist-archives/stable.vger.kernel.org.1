@@ -1,76 +1,76 @@
-Return-Path: <stable+bounces-156107-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156138-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 54CB6AE451B
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:48:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8B80BAE4592
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:56:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3D688189C4DE
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:43:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id F1352188CEFB
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:55:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 153902475E3;
-	Mon, 23 Jun 2025 13:42:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94836253931;
+	Mon, 23 Jun 2025 13:55:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="VEw91Ptb"
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="Er+EQ51C"
 X-Original-To: stable@vger.kernel.org
 Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47B412472A2
-	for <stable@vger.kernel.org>; Mon, 23 Jun 2025 13:42:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7AC2248191
+	for <stable@vger.kernel.org>; Mon, 23 Jun 2025 13:55:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750686165; cv=none; b=E6QbM1Agm/x7Kkx+KYQipdFEpl9j8/YF3nR/7EkhLbHQPYutEHk+LwPb0kL+hJNxQ9nFDBAmHQdtSf/jPUKSpxMQkGlQwHGCI6fdXTZUezmuOHOaMEPMmOU0leE1bOjD2zWe2tjl/uswvv6iKJZoNibJeL/kgg7ZevFy7s3SB40=
+	t=1750686902; cv=none; b=p8AtI+XboctLweSLVhFFpJVW45EyLtYE01Kqxnx3wNHJ8C+uxdNc7WpSBNBde8eL+4iG2p3SWiidsB/pQz0ohLTpATFkC9drCYF9w7pFB4YfV/8XWIAraFb7nUsUmGR4po6Tz4gUUIi7ZSFRg/jxTyFHrughAeMzo8toJj7Rt50=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750686165; c=relaxed/simple;
-	bh=qdg+EM3mbIekM+thba+QaUCgMAyoog061H5vK+udLrY=;
-	h=From:To:Subject:Date:Message-ID:MIME-Version; b=M0+QrSofsf9pE7+wckjeYukYCzi7e8s1VCbNKuE+acXhBDRXs2FGrVmrJFDFRxSxaUKcGCjrOSU2jcKzY0niIRXcUbIXgbXafQ0iIvWtnMuzI40GiB8CjwhJbHH8buCe5h7OG6bxIK4BdwvIvBIDmxX1tYG0OumKCbvKGz60UlA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=VEw91Ptb; arc=none smtp.client-ip=148.163.156.1
+	s=arc-20240116; t=1750686902; c=relaxed/simple;
+	bh=RcQ5DNWlVjg7CLphIWxzcSLDr18b2aUdJVRuqEArGsw=;
+	h=From:To:Subject:Date:Message-ID:MIME-Version; b=Yz+E1fCgIeyHzVOzmo9CWc1huj6hRs4bRWOv6VeVEYMHhpl+BOgg0202LgOm7pMkftA30CXb7dV5UV4wYNxOASMcBFbzmEHm1m96javGpJQsZiX7e8puyg+npvDcwglTktmgxJXn7t24MR7AgQeoabckmuOwzimCpmTremAkAKA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=Er+EQ51C; arc=none smtp.client-ip=148.163.156.1
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
-Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 55NBJV1B010884
-	for <stable@vger.kernel.org>; Mon, 23 Jun 2025 13:42:43 GMT
+Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 55NA7Jtu017454
+	for <stable@vger.kernel.org>; Mon, 23 Jun 2025 13:55:00 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=
 	content-transfer-encoding:date:from:message-id:mime-version
-	:subject:to; s=pp1; bh=qOUb6rVnC9PRVGI3ps4c4HopqKEHYZGdgSEqxlR3k
-	OM=; b=VEw91PtbVdPtsCmiq8iuovP4UM+RcZftTZYPDtiJNXHU6BpncksUzfzCL
-	/Wh3RSV2qizi0koQvonly6YZyvF9Z9h/lem+Rq19KSl2QULIo36Yr+F5BVkhL+Aj
-	m62iXLW60Eo3aBIGI6dU/6zagG4JJV3mgt7qrbwqQ1SswJdo96CMn1jWR1zxBIQa
-	n8Nk50PfO0vYVFjotY5m/mYCvBGVeU1xOChruoYNhmoha9VVJMJ1a+jXA20oEAkR
-	3faSBeA9+gOEiIWQ5gcUgBYDQrU5b+fkjJtyN/i98Wr3/cLnZO11iRCZgZDIu76/
-	fVtYD4Szc/Hh0AFafnMkxJ2MAOBgw==
-Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 47dme12a9c-1
+	:subject:to; s=pp1; bh=F8fuu8Br3ZYo72Q2/Sa0Rht8hZmE6zGuUK3veIutH
+	N4=; b=Er+EQ51ClRNrOIxdrf5haoKSkWM6gGJi3OhVavzdwy6wc6+y5Sif2JSyt
+	DmveL94Ha8XvFfCEU7DMXm4tn4U7gNNQD2cgI25kGEpbUaalyXqM1aPhUpEBYLDj
+	LcTwb97szfMx7/nOKx6Di6kOVCxmxfmBKrBOO1Kv2BWHaKeYno1n78L5RSqOMns1
+	iAEbE+/ft9uEGY5AAcwtZYFFKeAo4yIq0bLJcMd5bhxjpJGx4abTvBP2WXRIdmK2
+	dbGORZ9pVu6+qmntlSXozJGbd2rZ8zK7ca6Md/8Mo6BVUlPBSMWZRWhPzVw3DL2I
+	K+vl4r6tIBawTus8o8Iz7NLL87k4Q==
+Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 47dmfe2dtp-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
-	for <stable@vger.kernel.org>; Mon, 23 Jun 2025 13:42:43 +0000 (GMT)
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma11.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 55NCb9Tc014748
-	for <stable@vger.kernel.org>; Mon, 23 Jun 2025 13:42:42 GMT
-Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
-	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 47e9s26p0j-1
+	for <stable@vger.kernel.org>; Mon, 23 Jun 2025 13:54:59 +0000 (GMT)
+Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma12.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 55NDK4iV015025
+	for <stable@vger.kernel.org>; Mon, 23 Jun 2025 13:54:59 GMT
+Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
+	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 47e72tf7hk-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
-	for <stable@vger.kernel.org>; Mon, 23 Jun 2025 13:42:42 +0000
-Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
-	by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 55NDgeH758392878
+	for <stable@vger.kernel.org>; Mon, 23 Jun 2025 13:54:58 +0000
+Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com [10.20.54.102])
+	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 55NDsvCO22085896
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK)
-	for <stable@vger.kernel.org>; Mon, 23 Jun 2025 13:42:40 GMT
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 9A2382004B
-	for <stable@vger.kernel.org>; Mon, 23 Jun 2025 13:42:40 +0000 (GMT)
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 7D77B20043
-	for <stable@vger.kernel.org>; Mon, 23 Jun 2025 13:42:40 +0000 (GMT)
+	for <stable@vger.kernel.org>; Mon, 23 Jun 2025 13:54:57 GMT
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 3F41C20043
+	for <stable@vger.kernel.org>; Mon, 23 Jun 2025 13:54:57 +0000 (GMT)
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 2628620040
+	for <stable@vger.kernel.org>; Mon, 23 Jun 2025 13:54:57 +0000 (GMT)
 Received: from tuxmaker.lnxne.boe (unknown [9.152.85.9])
-	by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTP
-	for <stable@vger.kernel.org>; Mon, 23 Jun 2025 13:42:40 +0000 (GMT)
+	by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTP
+	for <stable@vger.kernel.org>; Mon, 23 Jun 2025 13:54:57 +0000 (GMT)
 From: Heiko Carstens <hca@linux.ibm.com>
 To: stable@vger.kernel.org
-Subject: [PATCH 5.10.y] s390: Add '-std=gnu11' to decompressor and purgatory CFLAGS
-Date: Mon, 23 Jun 2025 15:42:40 +0200
-Message-ID: <20250623134240.1107347-1-hca@linux.ibm.com>
+Subject: [PATCH 5.4.y] s390: Add '-std=gnu11' to decompressor and purgatory CFLAGS
+Date: Mon, 23 Jun 2025 15:54:56 +0200
+Message-ID: <20250623135456.1264864-1-hca@linux.ibm.com>
 X-Mailer: git-send-email 2.48.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -80,21 +80,21 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Authority-Analysis: v=2.4 cv=Tc6WtQQh c=1 sm=1 tr=0 ts=685959d3 cx=c_pps a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17 a=6IFa9wvqVegA:10 a=VwQbUJbxAAAA:8 a=VnNF1IyMAAAA:8 a=O4dmbfcdmyx46WCdPC8A:9
-X-Proofpoint-GUID: N7Og9YBi4hwsWg7lMrIj-aoEkotGBrH8
-X-Proofpoint-ORIG-GUID: N7Og9YBi4hwsWg7lMrIj-aoEkotGBrH8
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNjIzMDA4MCBTYWx0ZWRfX5D0MnKcmkeZC A0li4bGmfJCszyNAqRGT1qqCj3oWG+92Le0WNbwj0NRqc2Nn/PuM5ED2/6qURMs7+WGIcHsjeJR scqyqsyJaV+wHqyHUs8IpyvdzG8vdwebfjSHksGSAawaSN8yZJEkp3chsF47BpHDG27qub9PNt8
- czgv6XkcXZkrNI6kl14NpN1bwzoyBDhQtDTBZqRVgQsm6nPr0j58wlX/7MsTPOvTlIELGh6EZ7a pGQF85rlQT9ksl/KAXfeFn/wYlYEuTx6d0fkcPSkVxJuRTv77MJuLN1Tsc941NR7Wtph0FiK5H6 23j3o1up7Mo6eQfi6xonM7EWNDY4Qyf6+YOkXwjy/6AF7BnKemvRJhS8PLZraSbTfG4Fpte5oQQ
- QzONrNvcPr4WvnB1QKnzHxMy1366P/VtREGB1W3VQQZZzmrc9LoiiX4jlmAuqvAqe+IyI2Q6
+X-Proofpoint-ORIG-GUID: _On0p6TN5dtfkkbYBYNG2Pg8Uh2BB4HE
+X-Proofpoint-GUID: _On0p6TN5dtfkkbYBYNG2Pg8Uh2BB4HE
+X-Authority-Analysis: v=2.4 cv=BpqdwZX5 c=1 sm=1 tr=0 ts=68595cb3 cx=c_pps a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17 a=6IFa9wvqVegA:10 a=VwQbUJbxAAAA:8 a=VnNF1IyMAAAA:8 a=O4dmbfcdmyx46WCdPC8A:9
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNjIzMDA4MiBTYWx0ZWRfXzLfmZ+wGQhGZ KWZbUOqzgHkBcSydXY5+e89Tm/tm8MnLYMz5wmKyt01FE+BcIhiBeFnO+5wK2j6GbgdyKbxATxQ soy2/nVLzu4jUkPGQ+d52G4ST2/buOtr5Cnw7EtoLH0gg13l7F10j1+FySB1vLvx2B4FFqi29NP
+ fn3Wf0YlHwbdL+bWhrE62LTA1rgPXB7JMR7BiG/2dU5shehY+J9qwx1YEh+9pScl/jtwNC3u2hB huDWTaSiPFNsHsttjNwyfSPF1Ayv8C4FIZNjnvCzuJvuOFG4mXul7owd8PhE9rIpVZIHRWywV3J R3vaLN3I3TdMSsCvp06vkbbWQO7dRKyW4PmjvhQy0w+M1iAtZAFzdtQ+sKmy9i0oEPEiQrtomKu
+ Fs7umLAwfIvU202AMX9X6sDQY1I+oN6ptfflcE7aH7hCBLnrF5Z0M6N/sU5mhhrEyemKX6Dk
 X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
- definitions=2025-06-23_03,2025-06-23_03,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
- priorityscore=1501 mlxscore=0 mlxlogscore=839 phishscore=0 spamscore=0
- malwarescore=0 suspectscore=0 impostorscore=0 clxscore=1015 adultscore=0
- bulkscore=0 classifier=spam authscore=0 authtc=n/a authcc= route=outbound
- adjust=0 reason=mlx scancount=1 engine=8.19.0-2505280000
- definitions=main-2506230080
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.7,FMLib:17.12.80.40
+ definitions=2025-06-23_04,2025-06-23_05,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 lowpriorityscore=0
+ impostorscore=0 clxscore=1015 spamscore=0 mlxlogscore=839
+ priorityscore=1501 phishscore=0 malwarescore=0 adultscore=0 bulkscore=0
+ suspectscore=0 classifier=spam authscore=0 authtc=n/a authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2505280000
+ definitions=main-2506230082
 
 From: Nathan Chancellor <nathan@kernel.org>
 
@@ -133,7 +133,7 @@ Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
  2 files changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/arch/s390/Makefile b/arch/s390/Makefile
-index 39ffcd4389f1..92f2426d8797 100644
+index 71e3d7c0b870..22dc393b5a83 100644
 --- a/arch/s390/Makefile
 +++ b/arch/s390/Makefile
 @@ -23,7 +23,7 @@ endif
@@ -146,7 +146,7 @@ index 39ffcd4389f1..92f2426d8797 100644
  KBUILD_CFLAGS_DECOMPRESSOR += -fno-delete-null-pointer-checks -msoft-float
  KBUILD_CFLAGS_DECOMPRESSOR += -fno-asynchronous-unwind-tables
 diff --git a/arch/s390/purgatory/Makefile b/arch/s390/purgatory/Makefile
-index a93c9aba834b..955f113cf320 100644
+index 9de56065f28c..2f4d8422bdfb 100644
 --- a/arch/s390/purgatory/Makefile
 +++ b/arch/s390/purgatory/Makefile
 @@ -20,7 +20,7 @@ GCOV_PROFILE := n
