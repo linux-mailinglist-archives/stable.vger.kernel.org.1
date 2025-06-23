@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-157102-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157110-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 701DCAE5275
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:44:08 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id F2871AE527C
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:44:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 64D057A33AB
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:42:39 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0E0C37A365F
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:43:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA8F9221FCC;
-	Mon, 23 Jun 2025 21:43:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D350422256B;
+	Mon, 23 Jun 2025 21:44:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sE5MvOiZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fB03Un5k"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9968D2AEE4;
-	Mon, 23 Jun 2025 21:43:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F10D1DDC04;
+	Mon, 23 Jun 2025 21:44:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750715038; cv=none; b=IfFHOO0ZdYSWdRDDZl2EJBC9Plg+jeapQ3w/qcDdKhACLYwyS7WHTUUU6p1DzT8TdRmgi6A8mbFKPHBg7hDRec9yOiF3BfomsGfH9mqWmiamTRI1KYevIoboOeiHYnraPJ9PLMqTimCokNY7h2/NbHV76rJRf6NMQZDfmsnAm64=
+	t=1750715059; cv=none; b=s+1JwOBkuYwKs7uKWfMGDygyv+Lt10w/p8sJ7Xs2NUNUE7YCq1hryJtaLVfQ2P0hL3tzmElGlu87g9NsA4hj6oUZmtPQNONFkAGYo6TyJFwfM/ypio+BrgwBZo44OD0bx68b/ZTvoncSfYnbmu2BpzWhtVNRIzY63OhPKMRh4Lc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750715038; c=relaxed/simple;
-	bh=APX3t7zx2eHOoh0jUhJIiwqZDnLm5evEmLyELypPvvM=;
+	s=arc-20240116; t=1750715059; c=relaxed/simple;
+	bh=Gs9Vfmzvce1MQQS1poJq+DMqPOHTrir2rzMLcHLQt3w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=J86ZJsd0+xPWhtQI/HN64f74/rsY9O8VYAvqQIh4tO6Y0AQwj9rJV8s7hXFPu7MGFC3G+oqyDBD9JGw0WNzUixWGLP5FKRhKYlRIa6hBWmTV9GytsefWwJQ4clcuAKsKglkmsyQCdod1C2ft4dhg8cFH8rQZ9+9v+TmrVvmZtUc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sE5MvOiZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3216AC4CEEA;
-	Mon, 23 Jun 2025 21:43:58 +0000 (UTC)
+	 MIME-Version; b=Vky5OQM+V/OR5/mhjXKBwfNY7c/2xkp+KgMXSg0M8PimMCgnWRJF7qj+JzpJf2Xx3HWtf98ci2Lx+4tnJIbSoUxH6xB3k2Gt13JGg1WQzRqeIadhB3ABBtNDPENxQcYbha5bHgVaUoMe19pEjGDExq7Y01Ur6GnpY7efBHzr/U0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fB03Un5k; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3535C4CEED;
+	Mon, 23 Jun 2025 21:44:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750715038;
-	bh=APX3t7zx2eHOoh0jUhJIiwqZDnLm5evEmLyELypPvvM=;
+	s=korg; t=1750715058;
+	bh=Gs9Vfmzvce1MQQS1poJq+DMqPOHTrir2rzMLcHLQt3w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sE5MvOiZmHMFk268gNFLEbiqrJapI/Gj/2gSNXDXvOgElnZH4DTzkSMLBHFzxQwgM
-	 zBcH520TcUmNtutbgq+a2nJn7JdeGPJvSRDuUu3sulkdxU0dLxRAt5BLsPOl4Dn0XS
-	 ovKsZhePxJIZdTRV2kk+07FneqxMFmUNRyt7reQk=
+	b=fB03Un5kEQ6gT7rBVFuBzLvHX/o2EfX17yLXdIdYkVeq2Qm3XAcPkBMTI80f8ydeL
+	 OXbECkpCusxasaP/jiVA2uHB8t+oONbQtEIEnAdKYhL8jEFep+zqbWfYdetalRjKZw
+	 sJ1Bl1HbgxH3fXyif3W43AKbUklMJxfJijZZznPY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhang Yi <yi.zhang@huawei.com>,
-	Theodore Tso <tytso@mit.edu>,
+	Michael Walle <mwalle@kernel.org>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 237/355] ext4: prevent stale extent cache entries caused by concurrent get es_cache
+Subject: [PATCH 6.6 177/290] net: ethernet: ti: am65-cpsw: handle -EPROBE_DEFER
 Date: Mon, 23 Jun 2025 15:07:18 +0200
-Message-ID: <20250623130633.876717633@linuxfoundation.org>
+Message-ID: <20250623130632.204197430@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130626.716971725@linuxfoundation.org>
-References: <20250623130626.716971725@linuxfoundation.org>
+In-Reply-To: <20250623130626.910356556@linuxfoundation.org>
+References: <20250623130626.910356556@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,74 +63,83 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhang Yi <yi.zhang@huawei.com>
+From: Michael Walle <mwalle@kernel.org>
 
-[ Upstream commit f22a0ef2231a7d8374bb021eb86404d0e9de5a02 ]
+[ Upstream commit 09737cb80b8686ffca4ed1805fee745d5c85604d ]
 
-The EXT4_IOC_GET_ES_CACHE and EXT4_IOC_PRECACHE_EXTENTS currently
-invokes ext4_ext_precache() to preload the extent cache without holding
-the inode's i_rwsem. This can result in stale extent cache entries when
-competing with operations such as ext4_collapse_range() which calls
-ext4_ext_remove_space() or ext4_ext_shift_extents().
+of_get_mac_address() might fetch the MAC address from NVMEM and that
+driver might not have been loaded. In that case, -EPROBE_DEFER is
+returned. Right now, this will trigger an immediate fallback to
+am65_cpsw_am654_get_efuse_macid() possibly resulting in a random MAC
+address although the MAC address is stored in the referenced NVMEM.
 
-The problem arises when ext4_ext_remove_space() temporarily releases
-i_data_sem due to insufficient journal credits. During this interval, a
-concurrent EXT4_IOC_GET_ES_CACHE or EXT4_IOC_PRECACHE_EXTENTS may cache
-extent entries that are about to be deleted. As a result, these cached
-entries become stale and inconsistent with the actual extents.
+Fix it by handling the -EPROBE_DEFER return code correctly. This also
+means that the creation of the MDIO device has to be moved to a later
+stage as -EPROBE_DEFER must not be returned after child devices are
+created.
 
-Loading the extents cache without holding the inode's i_rwsem or the
-mapping's invalidate_lock is not permitted besides during the writeback.
-Fix this by holding the i_rwsem during EXT4_IOC_GET_ES_CACHE and
-EXT4_IOC_PRECACHE_EXTENTS.
-
-Signed-off-by: Zhang Yi <yi.zhang@huawei.com>
-Link: https://patch.msgid.link/20250423085257.122685-6-yi.zhang@huaweicloud.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Signed-off-by: Michael Walle <mwalle@kernel.org>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Link: https://patch.msgid.link/20250414084336.4017237-3-mwalle@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ext4/extents.c | 2 ++
- fs/ext4/ioctl.c   | 8 +++++++-
- 2 files changed, 9 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/ti/am65-cpsw-nuss.c | 24 +++++++++++++-----------
+ 1 file changed, 13 insertions(+), 11 deletions(-)
 
-diff --git a/fs/ext4/extents.c b/fs/ext4/extents.c
-index ac97ef3c76e97..12da59c03c7cf 100644
---- a/fs/ext4/extents.c
-+++ b/fs/ext4/extents.c
-@@ -5034,7 +5034,9 @@ int ext4_get_es_cache(struct inode *inode, struct fiemap_extent_info *fieinfo,
+diff --git a/drivers/net/ethernet/ti/am65-cpsw-nuss.c b/drivers/net/ethernet/ti/am65-cpsw-nuss.c
+index c379a958380ce..28cc23736a69b 100644
+--- a/drivers/net/ethernet/ti/am65-cpsw-nuss.c
++++ b/drivers/net/ethernet/ti/am65-cpsw-nuss.c
+@@ -2089,7 +2089,9 @@ static int am65_cpsw_nuss_init_slave_ports(struct am65_cpsw_common *common)
+ 			goto of_node_put;
+ 
+ 		ret = of_get_mac_address(port_np, port->slave.mac_addr);
+-		if (ret) {
++		if (ret == -EPROBE_DEFER) {
++			goto of_node_put;
++		} else if (ret) {
+ 			am65_cpsw_am654_get_efuse_macid(port_np,
+ 							port->port_id,
+ 							port->slave.mac_addr);
+@@ -2949,6 +2951,16 @@ static int am65_cpsw_nuss_probe(struct platform_device *pdev)
+ 		return ret;
  	}
  
- 	if (fieinfo->fi_flags & FIEMAP_FLAG_CACHE) {
-+		inode_lock_shared(inode);
- 		error = ext4_ext_precache(inode);
-+		inode_unlock_shared(inode);
- 		if (error)
- 			return error;
- 		fieinfo->fi_flags &= ~FIEMAP_FLAG_CACHE;
-diff --git a/fs/ext4/ioctl.c b/fs/ext4/ioctl.c
-index 56829507e68c8..b6da12b4c8a82 100644
---- a/fs/ext4/ioctl.c
-+++ b/fs/ext4/ioctl.c
-@@ -1139,8 +1139,14 @@ static long __ext4_ioctl(struct file *filp, unsigned int cmd, unsigned long arg)
- 		return 0;
++	am65_cpsw_nuss_get_ver(common);
++
++	ret = am65_cpsw_nuss_init_host_p(common);
++	if (ret)
++		goto err_pm_clear;
++
++	ret = am65_cpsw_nuss_init_slave_ports(common);
++	if (ret)
++		goto err_pm_clear;
++
+ 	node = of_get_child_by_name(dev->of_node, "mdio");
+ 	if (!node) {
+ 		dev_warn(dev, "MDIO node not found\n");
+@@ -2965,16 +2977,6 @@ static int am65_cpsw_nuss_probe(struct platform_device *pdev)
  	}
- 	case EXT4_IOC_PRECACHE_EXTENTS:
--		return ext4_ext_precache(inode);
-+	{
-+		int ret;
+ 	of_node_put(node);
  
-+		inode_lock_shared(inode);
-+		ret = ext4_ext_precache(inode);
-+		inode_unlock_shared(inode);
-+		return ret;
-+	}
- 	case FS_IOC_SET_ENCRYPTION_POLICY:
- 		if (!ext4_has_feature_encrypt(sb))
- 			return -EOPNOTSUPP;
+-	am65_cpsw_nuss_get_ver(common);
+-
+-	ret = am65_cpsw_nuss_init_host_p(common);
+-	if (ret)
+-		goto err_of_clear;
+-
+-	ret = am65_cpsw_nuss_init_slave_ports(common);
+-	if (ret)
+-		goto err_of_clear;
+-
+ 	/* init common data */
+ 	ale_params.dev = dev;
+ 	ale_params.ale_ageout = AM65_CPSW_ALE_AGEOUT_DEFAULT;
 -- 
 2.39.5
 
