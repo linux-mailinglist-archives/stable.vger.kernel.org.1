@@ -1,60 +1,56 @@
-Return-Path: <stable+bounces-156527-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156926-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 86959AE502D
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:23:03 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D42DAE51B7
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:36:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D10AC7AE308
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:19:11 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2660A1B63E9F
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:37:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9869F38DE1;
-	Mon, 23 Jun 2025 21:20:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50A3F221FDC;
+	Mon, 23 Jun 2025 21:36:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vm/xDZYe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SO4u2g7N"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 553272C9D;
-	Mon, 23 Jun 2025 21:20:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06C0919CC11;
+	Mon, 23 Jun 2025 21:36:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750713631; cv=none; b=mAnHT68yH94YyIMDevwYKTAMtN7qvdgYJhsPP5epGgFcJBJAEjBUHCTlyE3UQcfTTQHwhifGN9hR2pZUdQbt+mB+KdmoXlgTkFneLk+3PVCNbrMkHR5zcEBG5+qiaCQj+HFHT4u0VLN8dywtQgpY7C9ZAAUZzXemnJG35f5GlVw=
+	t=1750714608; cv=none; b=syx1HyjDyfy1vQ6SRRHY7aqUcA0wTxy2L3XbWjnzWAv4vZIUiT1MJS2JS5UW+rlaSuPxnl6/Cv9FLMUlcOK79jGntQVmavUfiHkfb0Q0g1yqyaDlWX0B/HUJc2UtFh/3ADq9PinREE85QW0Ovp5QYIzChTDevsxTqcO0t8/NVSM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750713631; c=relaxed/simple;
-	bh=Q8RHzzxr1VwnqaGeXDLlfYfZrjG27y8ZzGsT9GYwZPg=;
+	s=arc-20240116; t=1750714608; c=relaxed/simple;
+	bh=s8TEzrKie1pswt6jYo4M2s5TOryEEqs0P+A5g19OigA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XWIosowEfB8zohCepUfgtvP5iBaHSW1KsJMiImWT5pJFVQZV2Qzd6yQL+a6LL2ZrkCy+blBhxB8MGi4j3II4RLDy6LhNwezScNEgekXujf/wXrGdSQoxFJoMCMFNusLhSveGI5KU4orMGKKqteNEUkjEK+T+XT/yX4SjWQ4Mohs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vm/xDZYe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DFDD7C4CEEA;
-	Mon, 23 Jun 2025 21:20:30 +0000 (UTC)
+	 MIME-Version; b=vELo7EU3qg9eDNnDUtl/toDxMbj2dUXwLM0+5ibaUwYkNCgEOZjtyUYXMWHxqFXjPqeaWgXUej5LlnypQSLpz3xMXaA+R8BUREq5cOd41MEEYK4KuQzBO/xhNK+CoMbsDJ2WUlYm40tI18wWypErq3r3Tn4gBBaXPaFAPR3BRfU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SO4u2g7N; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93502C4CEEA;
+	Mon, 23 Jun 2025 21:36:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750713631;
-	bh=Q8RHzzxr1VwnqaGeXDLlfYfZrjG27y8ZzGsT9GYwZPg=;
+	s=korg; t=1750714607;
+	bh=s8TEzrKie1pswt6jYo4M2s5TOryEEqs0P+A5g19OigA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vm/xDZYeb0bqbawihnk5q/saJzaJiU4VDah2/vCTT80NrMRJEcT0W1johyu4/tb7/
-	 P2JWaVvMbxNQrzD6YDqTTcz5RFFXCoBZALptaIqVgydGBKDKQkf6F5hvnnLfHWGC6f
-	 pN0NJAHfIanYh30t19BtgSt0Dg2rxKIguy7l6rqM=
+	b=SO4u2g7NvGhHI7DTNPc7DsbjmCsKE1uRxXvEgwiJzvaBZ5gjVPo+91ffx6pjlB478
+	 9PKxU/8Nx2FsMVfAR1FtV5o278EFkXbBUOt2RgJSuOBPD3fecoojAl84+t0gq/QR3D
+	 Ox9IBOjsn+KERiOMpDjS5Afh5SVlYh/Jc2IjV0Ds=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jeongjun Park <aha310510@gmail.com>,
-	syzbot+a2b84e569d06ca3a949c@syzkaller.appspotmail.com,
-	Liam Howlett <liam.howlett@oracle.com>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Vasiliy Kulikov <segoon@openwall.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.6 081/290] ipc: fix to protect IPCS lookups using RCU
+	Wentao Liang <vulab@iscas.ac.cn>,
+	Tariq Toukan <tariqt@nvidia.com>,
+	Paolo Abeni <pabeni@redhat.com>
+Subject: [PATCH 5.15 198/411] net/mlx5_core: Add error handling inmlx5_query_nic_vport_qkey_viol_cntr()
 Date: Mon, 23 Jun 2025 15:05:42 +0200
-Message-ID: <20250623130629.423561258@linuxfoundation.org>
+Message-ID: <20250623130638.659902261@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130626.910356556@linuxfoundation.org>
-References: <20250623130626.910356556@linuxfoundation.org>
+In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
+References: <20250623130632.993849527@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,58 +62,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jeongjun Park <aha310510@gmail.com>
+From: Wentao Liang <vulab@iscas.ac.cn>
 
-commit d66adabe91803ef34a8b90613c81267b5ded1472 upstream.
+commit f0b50730bdd8f2734e548de541e845c0d40dceb6 upstream.
 
-syzbot reported that it discovered a use-after-free vulnerability, [0]
+The function mlx5_query_nic_vport_qkey_viol_cntr() calls the function
+mlx5_query_nic_vport_context() but does not check its return value. This
+could lead to undefined behavior if the query fails. A proper
+implementation can be found in mlx5_nic_vport_query_local_lb().
 
-[0]: https://lore.kernel.org/all/67af13f8.050a0220.21dd3.0038.GAE@google.com/
+Add error handling for mlx5_query_nic_vport_context(). If it fails, free
+the out buffer via kvfree() and return error code.
 
-idr_for_each() is protected by rwsem, but this is not enough.  If it is
-not protected by RCU read-critical region, when idr_for_each() calls
-radix_tree_node_free() through call_rcu() to free the radix_tree_node
-structure, the node will be freed immediately, and when reading the next
-node in radix_tree_for_each_slot(), the already freed memory may be read.
-
-Therefore, we need to add code to make sure that idr_for_each() is
-protected within the RCU read-critical region when we call it in
-shm_destroy_orphaned().
-
-Link: https://lkml.kernel.org/r/20250424143322.18830-1-aha310510@gmail.com
-Fixes: b34a6b1da371 ("ipc: introduce shm_rmid_forced sysctl")
-Signed-off-by: Jeongjun Park <aha310510@gmail.com>
-Reported-by: syzbot+a2b84e569d06ca3a949c@syzkaller.appspotmail.com
-Cc: Jeongjun Park <aha310510@gmail.com>
-Cc: Liam Howlett <liam.howlett@oracle.com>
-Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
-Cc: Vasiliy Kulikov <segoon@openwall.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Fixes: 9efa75254593 ("net/mlx5_core: Introduce access functions to query vport RoCE fields")
+Cc: stable@vger.kernel.org # v4.5
+Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
+Reviewed-by: Tariq Toukan <tariqt@nvidia.com>
+Link: https://patch.msgid.link/20250521133620.912-1-vulab@iscas.ac.cn
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- ipc/shm.c |    5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/mellanox/mlx5/core/vport.c |    9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
---- a/ipc/shm.c
-+++ b/ipc/shm.c
-@@ -430,8 +430,11 @@ static int shm_try_destroy_orphaned(int
- void shm_destroy_orphaned(struct ipc_namespace *ns)
+--- a/drivers/net/ethernet/mellanox/mlx5/core/vport.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/vport.c
+@@ -495,19 +495,22 @@ int mlx5_query_nic_vport_qkey_viol_cntr(
  {
- 	down_write(&shm_ids(ns).rwsem);
--	if (shm_ids(ns).in_use)
-+	if (shm_ids(ns).in_use) {
-+		rcu_read_lock();
- 		idr_for_each(&shm_ids(ns).ipcs_idr, &shm_try_destroy_orphaned, ns);
-+		rcu_read_unlock();
-+	}
- 	up_write(&shm_ids(ns).rwsem);
+ 	u32 *out;
+ 	int outlen = MLX5_ST_SZ_BYTES(query_nic_vport_context_out);
++	int err;
+ 
+ 	out = kvzalloc(outlen, GFP_KERNEL);
+ 	if (!out)
+ 		return -ENOMEM;
+ 
+-	mlx5_query_nic_vport_context(mdev, 0, out);
++	err = mlx5_query_nic_vport_context(mdev, 0, out);
++	if (err)
++		goto out;
+ 
+ 	*qkey_viol_cntr = MLX5_GET(query_nic_vport_context_out, out,
+ 				   nic_vport_context.qkey_violation_counter);
+-
++out:
+ 	kvfree(out);
+ 
+-	return 0;
++	return err;
  }
+ EXPORT_SYMBOL_GPL(mlx5_query_nic_vport_qkey_viol_cntr);
  
 
 
