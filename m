@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-156061-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156068-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D5404AE44DE
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:46:37 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E635AE44E3
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:46:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 97DF4172953
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:40:56 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 40D3C188DAB1
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:41:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B29342522A8;
-	Mon, 23 Jun 2025 13:40:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3DD8C2472A2;
+	Mon, 23 Jun 2025 13:40:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Bi5D2mUr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vetXUeKj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F39E347DD;
-	Mon, 23 Jun 2025 13:40:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF2A016419;
+	Mon, 23 Jun 2025 13:40:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750686040; cv=none; b=lFBCzwVJZZDk5okvyVnDmVczZAztYGBywKg1fgVwBAfV+uIlGq6DhObRvCxyxleYAM69tg5doB4nw3n36SxA9SvbBJTL+ZK+NzmN2SU4jlLKe1HbYVFRnLof7sh0dZcqboqARpOSfUL5gho17p2xaidjvPddGvD1vZslDqYGNPM=
+	t=1750686058; cv=none; b=FowG+EFA7Mx5jBiNZK/G2WtyraetsfIZ8c4BQ6zsvFrLmDFmymhHaLn0zYHfVQHAQfRmLZP35ntxoyoXxmmsOABBsm8sCBMmkuf42TGBgZEftwcJ2KrY3pP9P1v6bmZ89aBwBtvX4ab23bBM5/cajIW1Y2zrOF7y98mwbn0a2YU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750686040; c=relaxed/simple;
-	bh=2IeKjg8l+4NPVIkkIVvAgkMbYjeVqn/9Y6fdnpoTy0o=;
+	s=arc-20240116; t=1750686058; c=relaxed/simple;
+	bh=eBW6pC8FycgUSplev3FfGUNWr49lRd9Ba1SYBOrRLyA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lux6DT6geMCpttemo6/b4qS0ZueeqS1crspgtzEKWDsw8Qwi/WF0h41+Bz4SKk1otykq72O1DTfAqtLpX4wtQSghz+/XseTj8nk5CT3tD82iu8D5cTzf35lAUplkhnOI6zUy9qidBrfMkA7w0xZQMcyIGuU+SpY7wrpJXYOd+pk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Bi5D2mUr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02E5FC4CEEA;
-	Mon, 23 Jun 2025 13:40:39 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Bz+E8kzo3KdJVJ5wHrmhAts2m6dt7Zf5i+qLrmmF3aFccneUwrV8m2xiTmwmf/CSyBS4qBG97mfLUVq5yWBtaBgs2lL0cTHWbbbIRL230x4XJWliXp0+eNR+pFjNRygNaHA9Lgs1HkoWuqywZO7a/fHYcHViKtwBHf0g0T8PRsE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vetXUeKj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82A13C4CEEA;
+	Mon, 23 Jun 2025 13:40:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750686040;
-	bh=2IeKjg8l+4NPVIkkIVvAgkMbYjeVqn/9Y6fdnpoTy0o=;
+	s=korg; t=1750686057;
+	bh=eBW6pC8FycgUSplev3FfGUNWr49lRd9Ba1SYBOrRLyA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Bi5D2mUr4kI3WBlVhM9iXfHYRQCNjWT83efSoKRnA7UbEkJzmsSONX/z86BYJevCC
-	 GHF2T8XxYixf5jvzG5C17Xgad2s8bpR6vcFWRXcDkp5tgzhCEl4tcrHDzMOr+YbJJA
-	 dD4NI7jABM5gCFFdLO2Ojxn09CoPZvHlgGlsGnbk=
+	b=vetXUeKjTzc0hg1ZO+2nkL5nlPANoO3IRITSu4MhjmPu/ed1ZubXZbzD/owrq3NuY
+	 5PMb5r943Oyd/TsOwaTEzuf1Z7bnInwrnMcJnhkgaIaDYjSrHiwkQyxo6URNWEyY+9
+	 hAJtTEHib6K0UzSEYBlHSi6FaF9cY/5QX0tLLj/w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Henry Martin <bsdhenrymartin@gmail.com>,
-	Nathan Lynch <nathan.lynch@amd.com>,
-	Peter Ujfalusi <peter.ujfalusi@gmail.com>,
-	Vinod Koul <vkoul@kernel.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 087/355] dmaengine: ti: Add NULL check in udma_probe()
-Date: Mon, 23 Jun 2025 15:04:48 +0200
-Message-ID: <20250623130629.420543363@linuxfoundation.org>
+Subject: [PATCH 5.10 088/355] PCI/DPC: Initialize aer_err_info before using it
+Date: Mon, 23 Jun 2025 15:04:49 +0200
+Message-ID: <20250623130629.448729306@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
 In-Reply-To: <20250623130626.716971725@linuxfoundation.org>
 References: <20250623130626.716971725@linuxfoundation.org>
@@ -62,47 +63,48 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Henry Martin <bsdhenrymartin@gmail.com>
+From: Bjorn Helgaas <bhelgaas@google.com>
 
-[ Upstream commit fd447415e74bccd7362f760d4ea727f8e1ebfe91 ]
+[ Upstream commit a424b598e6a6c1e69a2bb801d6fd16e805ab2c38 ]
 
-devm_kasprintf() returns NULL when memory allocation fails. Currently,
-udma_probe() does not check for this case, which results in a NULL
-pointer dereference.
+Previously the struct aer_err_info "info" was allocated on the stack
+without being initialized, so it contained junk except for the fields we
+explicitly set later.
 
-Add NULL check after devm_kasprintf() to prevent this issue.
+Initialize "info" at declaration so it starts as all zeros.
 
-Fixes: 25dcb5dd7b7c ("dmaengine: ti: New driver for K3 UDMA")
-Signed-off-by: Henry Martin <bsdhenrymartin@gmail.com>
-Reviewed-by: Nathan Lynch <nathan.lynch@amd.com>
-Acked-by: Peter Ujfalusi <peter.ujfalusi@gmail.com>
-Link: https://lore.kernel.org/r/20250402023900.43440-1-bsdhenrymartin@gmail.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Fixes: 8aefa9b0d910 ("PCI/DPC: Print AER status in DPC event handling")
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Tested-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
+Reviewed-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Link: https://patch.msgid.link/20250522232339.1525671-2-helgaas@kernel.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/dma/ti/k3-udma.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/pci/pcie/dpc.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/dma/ti/k3-udma.c b/drivers/dma/ti/k3-udma.c
-index 1f01bd483c6ba..cade321095d20 100644
---- a/drivers/dma/ti/k3-udma.c
-+++ b/drivers/dma/ti/k3-udma.c
-@@ -3672,7 +3672,8 @@ static int udma_probe(struct platform_device *pdev)
- 		uc->config.dir = DMA_MEM_TO_MEM;
- 		uc->name = devm_kasprintf(dev, GFP_KERNEL, "%s chan%d",
- 					  dev_name(dev), i);
--
-+		if (!uc->name)
-+			return -ENOMEM;
- 		vchan_init(&uc->vc, &ud->ddev);
- 		/* Use custom vchan completion handling */
- 		tasklet_setup(&uc->vc.task, udma_vchan_complete);
+diff --git a/drivers/pci/pcie/dpc.c b/drivers/pci/pcie/dpc.c
+index ab83f78f3eb1d..cabbaacdb6e61 100644
+--- a/drivers/pci/pcie/dpc.c
++++ b/drivers/pci/pcie/dpc.c
+@@ -263,7 +263,7 @@ static int dpc_get_aer_uncorrect_severity(struct pci_dev *dev,
+ void dpc_process_error(struct pci_dev *pdev)
+ {
+ 	u16 cap = pdev->dpc_cap, status, source, reason, ext_reason;
+-	struct aer_err_info info;
++	struct aer_err_info info = {};
+ 
+ 	pci_read_config_word(pdev, cap + PCI_EXP_DPC_STATUS, &status);
+ 	pci_read_config_word(pdev, cap + PCI_EXP_DPC_SOURCE_ID, &source);
 -- 
 2.39.5
 
