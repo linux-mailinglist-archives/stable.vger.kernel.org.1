@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-156381-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157352-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0897CAE4F53
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:14:46 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 11FB5AE5399
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:54:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 663D01B60AB6
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:14:53 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7CF793B1050
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:54:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73FBE21FF50;
-	Mon, 23 Jun 2025 21:14:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F1D22222B7;
+	Mon, 23 Jun 2025 21:54:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JU4QCXVo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LAhiNvas"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 337191DF98B;
-	Mon, 23 Jun 2025 21:14:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C69B19049B;
+	Mon, 23 Jun 2025 21:54:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750713275; cv=none; b=YW/sVdZMmkCaVABvfl6x4rIdM7O/6R86H7RbtRIz6Qym2oq0tTfbbrMUYxNhSBnLOGq7FzL0mRc6vnWvorlGhWD2rY70UhnGodU/9Dp8585iaZT8pGNw0AYhRBqUlMM0KceuzJwJpik2yqKwMoeOMK36DLc8L1i9Kqj9fuogjfI=
+	t=1750715658; cv=none; b=e0qXzq+12wSccw3dg3quQMGG/9Bb2RxgKDZmWhYx8GrDBMq0FqCToebhCCpTkcVTYZFy+4Y4xM6kMmCFi7/UTgSKoXL0jXTOq1q2FJqmEws6IAlqFYl/iUjbHtJA12xtVVlik2jp81LPVdvv9CtksfD2riTCuFCDchpqE8bBHug=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750713275; c=relaxed/simple;
-	bh=6r100YmSMt1Q27+zkDoq660nq/UCGBiTc+kg97Nc0QQ=;
+	s=arc-20240116; t=1750715658; c=relaxed/simple;
+	bh=I6C8KyKAG6VlTSlVHy7t5qwtkE16zypg+/JSh6cSNhc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fH5sSOCzPqFfKquAAEFLSStjVdcrRKYn6wWX9F6WfnTkL6hpjK9J87US6BUONpu/+6/Ya73+c2CSAB8yXT6EG+bBMeDyqI63r98ZQ7uCIZ9ynqeXNDZjmU/ceZjDobPgOX7o9IrDThS7LLMa2mCxCHPRK6wIkzjplmFR7D5gV6Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JU4QCXVo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2300C4CEEA;
-	Mon, 23 Jun 2025 21:14:34 +0000 (UTC)
+	 MIME-Version; b=HvXf/qDYe4SGX1FuWaXRtve3ynjNnDlOziGmR0Wm8pwmt28jeJETiN6dRcMEPyx/L+LGzZqUbBC8z0np7olTlAzskYuSDyXy5J08qhLj2FMFptpPLz01qQj14IH0mJRPnp6XGPOuI6bRVcLd/RNVJI3p8mI5+UeYA0VHd296v0w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LAhiNvas; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF812C4CEEA;
+	Mon, 23 Jun 2025 21:54:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750713275;
-	bh=6r100YmSMt1Q27+zkDoq660nq/UCGBiTc+kg97Nc0QQ=;
+	s=korg; t=1750715658;
+	bh=I6C8KyKAG6VlTSlVHy7t5qwtkE16zypg+/JSh6cSNhc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JU4QCXVo/KkN3HTs/aJF7ohZYKVfqhuhno2lP2h0XYF5R9T2AqFCZpbV4g7Tq9GW5
-	 2NXesmeDFelZlQ04J3Le/vEda4KMhZBja2CUGbA2gx9pIVmytJptip/69jTTtzAKKm
-	 Jivo3szOLxc3fDa/Q0rlMeat+ZLghpULMb4aCNfk=
+	b=LAhiNvas6WIT4XqI0ym5txnnLTCfuyvDHu1pdNVH1ENR+EkUsJm7l7nXeDRtb7jHY
+	 BXVrp6cNzImezbPPQEv8U9dLofLOrcZ4OM5n6LaYAogsZ63fVAnzW1Lu75IfVaBGoA
+	 nGJk16Nj9+VuBmSplbpGuzg4hs37Z4jUv4ZvFbQc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gerrard Tai <gerrard.tai@starlabs.sg>,
-	Eric Dumazet <edumazet@google.com>,
+	Alok Tiwari <alok.a.tiwari@oracle.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 135/355] net_sched: red: fix a race in __red_change()
+Subject: [PATCH 6.12 199/414] emulex/benet: correct command version selection in be_cmd_get_stats()
 Date: Mon, 23 Jun 2025 15:05:36 +0200
-Message-ID: <20250623130630.787386678@linuxfoundation.org>
+Message-ID: <20250623130646.985879994@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130626.716971725@linuxfoundation.org>
-References: <20250623130626.716971725@linuxfoundation.org>
+In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
+References: <20250623130642.015559452@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,60 +62,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Alok Tiwari <alok.a.tiwari@oracle.com>
 
-[ Upstream commit 85a3e0ede38450ea3053b8c45d28cf55208409b8 ]
+[ Upstream commit edb888d29748cee674006a52e544925dacc7728e ]
 
-Gerrard Tai reported a race condition in RED, whenever SFQ perturb timer
-fires at the wrong time.
+Logic here always sets hdr->version to 2 if it is not a BE3 or Lancer chip,
+even if it is BE2. Use 'else if' to prevent multiple assignments, setting
+version 0 for BE2, version 1 for BE3 and Lancer, and version 2 for others.
+Fixes potential incorrect version setting when BE2_chip and
+BE3_chip/lancer_chip checks could both be true.
 
-The race is as follows:
-
-CPU 0                                 CPU 1
-[1]: lock root
-[2]: qdisc_tree_flush_backlog()
-[3]: unlock root
- |
- |                                    [5]: lock root
- |                                    [6]: rehash
- |                                    [7]: qdisc_tree_reduce_backlog()
- |
-[4]: qdisc_put()
-
-This can be abused to underflow a parent's qlen.
-
-Calling qdisc_purge_queue() instead of qdisc_tree_flush_backlog()
-should fix the race, because all packets will be purged from the qdisc
-before releasing the lock.
-
-Fixes: 0c8d13ac9607 ("net: sched: red: delay destroying child qdisc on replace")
-Reported-by: Gerrard Tai <gerrard.tai@starlabs.sg>
-Suggested-by: Gerrard Tai <gerrard.tai@starlabs.sg>
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Link: https://patch.msgid.link/20250611111515.1983366-3-edumazet@google.com
+Signed-off-by: Alok Tiwari <alok.a.tiwari@oracle.com>
+Link: https://patch.msgid.link/20250519141731.691136-1-alok.a.tiwari@oracle.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sched/sch_red.c | 2 +-
+ drivers/net/ethernet/emulex/benet/be_cmds.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/sched/sch_red.c b/net/sched/sch_red.c
-index 935d90874b1b7..1b69b7b90d858 100644
---- a/net/sched/sch_red.c
-+++ b/net/sched/sch_red.c
-@@ -283,7 +283,7 @@ static int __red_change(struct Qdisc *sch, struct nlattr **tb,
- 	q->userbits = userbits;
- 	q->limit = ctl->limit;
- 	if (child) {
--		qdisc_tree_flush_backlog(q->qdisc);
-+		qdisc_purge_queue(q->qdisc);
- 		old_child = q->qdisc;
- 		q->qdisc = child;
- 	}
+diff --git a/drivers/net/ethernet/emulex/benet/be_cmds.c b/drivers/net/ethernet/emulex/benet/be_cmds.c
+index 51b8377edd1d0..a89aa4ac0a064 100644
+--- a/drivers/net/ethernet/emulex/benet/be_cmds.c
++++ b/drivers/net/ethernet/emulex/benet/be_cmds.c
+@@ -1609,7 +1609,7 @@ int be_cmd_get_stats(struct be_adapter *adapter, struct be_dma_mem *nonemb_cmd)
+ 	/* version 1 of the cmd is not supported only by BE2 */
+ 	if (BE2_chip(adapter))
+ 		hdr->version = 0;
+-	if (BE3_chip(adapter) || lancer_chip(adapter))
++	else if (BE3_chip(adapter) || lancer_chip(adapter))
+ 		hdr->version = 1;
+ 	else
+ 		hdr->version = 2;
 -- 
 2.39.5
 
