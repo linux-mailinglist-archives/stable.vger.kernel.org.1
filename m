@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-157608-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157029-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D535AE54CF
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:05:26 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E92DAAE522B
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:41:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 961754C253F
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:04:57 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 88D9B7A9B9B
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:39:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B50A2236E9;
-	Mon, 23 Jun 2025 22:04:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14B8B221FC7;
+	Mon, 23 Jun 2025 21:41:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dWm6fhq4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hgp5trTV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06BA93FB1B;
-	Mon, 23 Jun 2025 22:04:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4DC64315A;
+	Mon, 23 Jun 2025 21:41:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750716285; cv=none; b=ARmor0Zy/pAFsuSxyWgCAZtOQpMzyLs1vbLG1SiksN/Diqt/8xYVqmERo992aeybZdDgCERPGdwRH0AJ8PuxLD6NAyafu/JmidI3EyS5xggtzVWrOEVIKylX+BQjAPlLefaG+g0HiiHEK2Xp9XAeAolQehsBgCzImHmQiE3ZtV0=
+	t=1750714860; cv=none; b=M5QGznJeoXYQNLRcj8rdP8L2qmn58U0D0CXIs86mZZ2uIfEKLUvNO+xabGl1E+0bqOJf0j9u6eMcYRO4ZfQowGmqdYLTcMZBbbLBrh6ah1jp5vQk2U8pUXl1i67LvBskkU+CRevzmvKHNWu9gvTAptz59sU0+1TQI/qGH1aZQ7s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750716285; c=relaxed/simple;
-	bh=z+io1kUgWoBvD8dk2fKl+DFDESLE91qOUAy93X8oKy8=;
+	s=arc-20240116; t=1750714860; c=relaxed/simple;
+	bh=FRxTu3fHfYEum/TFb2S78o6VxtHCtIm9X4jkiAxPZQ4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MM8/dgvj/7IfwqW8Awxv8x/90hzq9y9ZJjRiDWx7vcev8M8J37FRRG1JxAGlX2qrFox4AFnln2uTUULr4QqakfujAnLa266lmm3OhR+AifxLyOv/4DjaSfl2ZceoG8novahwPnnux1YCyqTHlPQx8n7t2bBW9wv8xsj4ewdUHuI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dWm6fhq4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42750C4CEEA;
-	Mon, 23 Jun 2025 22:04:44 +0000 (UTC)
+	 MIME-Version; b=KwALObCcUI48H37ttwHLnLM1uaqmeXGUeAvYSDrhJiQ06NUmcKzZtKU1fZ+jD3XzASI7D6TLQ8dPpZ62LsIvLI3NntJtdMIZEiNV7vFJfGakIpPmwCzf0ztThiVysSS6iTo4E3RsxEUcaL6kYRaw+RogxBsbIDbvQibP8bncjLk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hgp5trTV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E730C4CEEA;
+	Mon, 23 Jun 2025 21:41:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750716284;
-	bh=z+io1kUgWoBvD8dk2fKl+DFDESLE91qOUAy93X8oKy8=;
+	s=korg; t=1750714860;
+	bh=FRxTu3fHfYEum/TFb2S78o6VxtHCtIm9X4jkiAxPZQ4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dWm6fhq4iLo65vFEHp4lrjSBY5bTg1iYpAmOtApvHwFF72Rtffg8TFPbtHnFqmmqv
-	 7qIimx2pB786afDrbEP6/K1jLKqFzvL4brbyjYdqsyYRWd3vNLDho1zDEfV0kvOtJs
-	 UlT04mzu4kpbf+3iGw9CcjbDAaGqpe1bmWZXKAY8=
+	b=hgp5trTVYukxYtM0pJA5Ts+ULd1i0cUhK+OAKT8ZG5Zhs6HmfeBq/fTf6gSpBFpLP
+	 5wtulOQmXHpU+ZHCaaydNq/o84KOcxS0eHZB3IZLd0QAnWKVG3NHJo+BkO1r7R1st9
+	 fWSldPTzjSlvaviG+2viFu5oyKNus+7wzE8kLcog=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chao Yu <chao@kernel.org>,
-	Jaegeuk Kim <jaegeuk@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 241/414] f2fs: fix to bail out in get_new_segment()
+	Linus Torvalds <torvalds@linuxfoundation.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 5.15 234/411] NFC: nci: uart: Set tty->disc_data only in success path
 Date: Mon, 23 Jun 2025 15:06:18 +0200
-Message-ID: <20250623130648.073178436@linuxfoundation.org>
+Message-ID: <20250623130639.547496418@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
-References: <20250623130642.015559452@linuxfoundation.org>
+In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
+References: <20250623130632.993849527@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,74 +62,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chao Yu <chao@kernel.org>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-[ Upstream commit bb5eb8a5b222fa5092f60d5555867a05ebc3bdf2 ]
+commit fc27ab48904ceb7e4792f0c400f1ef175edf16fe upstream.
 
-------------[ cut here ]------------
-WARNING: CPU: 3 PID: 579 at fs/f2fs/segment.c:2832 new_curseg+0x5e8/0x6dc
-pc : new_curseg+0x5e8/0x6dc
-Call trace:
- new_curseg+0x5e8/0x6dc
- f2fs_allocate_data_block+0xa54/0xe28
- do_write_page+0x6c/0x194
- f2fs_do_write_node_page+0x38/0x78
- __write_node_page+0x248/0x6d4
- f2fs_sync_node_pages+0x524/0x72c
- f2fs_write_checkpoint+0x4bc/0x9b0
- __checkpoint_and_complete_reqs+0x80/0x244
- issue_checkpoint_thread+0x8c/0xec
- kthread+0x114/0x1bc
- ret_from_fork+0x10/0x20
+Setting tty->disc_data before opening the NCI device means we need to
+clean it up on error paths.  This also opens some short window if device
+starts sending data, even before NCIUARTSETDRIVER IOCTL succeeded
+(broken hardware?).  Close the window by exposing tty->disc_data only on
+the success path, when opening of the NCI device and try_module_get()
+succeeds.
 
-get_new_segment() detects inconsistent status in between free_segmap
-and free_secmap, let's record such error into super block, and bail
-out get_new_segment() instead of continue using the segment.
+The code differs in error path in one aspect: tty->disc_data won't be
+ever assigned thus NULL-ified.  This however should not be relevant
+difference, because of "tty->disc_data=NULL" in nci_uart_tty_open().
 
-Signed-off-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: Linus Torvalds <torvalds@linuxfoundation.org>
+Fixes: 9961127d4bce ("NFC: nci: add generic uart support")
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Reviewed-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://patch.msgid.link/20250618073649.25049-2-krzysztof.kozlowski@linaro.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/f2fs/segment.c       | 6 +++++-
- include/linux/f2fs_fs.h | 1 +
- 2 files changed, 6 insertions(+), 1 deletion(-)
+ net/nfc/nci/uart.c |    8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/fs/f2fs/segment.c b/fs/f2fs/segment.c
-index b9ffb2ee9548a..769a90b609e2c 100644
---- a/fs/f2fs/segment.c
-+++ b/fs/f2fs/segment.c
-@@ -2772,7 +2772,11 @@ static int get_new_segment(struct f2fs_sb_info *sbi,
+--- a/net/nfc/nci/uart.c
++++ b/net/nfc/nci/uart.c
+@@ -131,22 +131,22 @@ static int nci_uart_set_driver(struct tt
+ 
+ 	memcpy(nu, nci_uart_drivers[driver], sizeof(struct nci_uart));
+ 	nu->tty = tty;
+-	tty->disc_data = nu;
+ 	skb_queue_head_init(&nu->tx_q);
+ 	INIT_WORK(&nu->write_work, nci_uart_write_work);
+ 	spin_lock_init(&nu->rx_lock);
+ 
+ 	ret = nu->ops.open(nu);
+ 	if (ret) {
+-		tty->disc_data = NULL;
+ 		kfree(nu);
++		return ret;
+ 	} else if (!try_module_get(nu->owner)) {
+ 		nu->ops.close(nu);
+-		tty->disc_data = NULL;
+ 		kfree(nu);
+ 		return -ENOENT;
  	}
- got_it:
- 	/* set it as dirty segment in free segmap */
--	f2fs_bug_on(sbi, test_bit(segno, free_i->free_segmap));
-+	if (test_bit(segno, free_i->free_segmap)) {
-+		ret = -EFSCORRUPTED;
-+		f2fs_stop_checkpoint(sbi, false, STOP_CP_REASON_CORRUPTED_FREE_BITMAP);
-+		goto out_unlock;
-+	}
+-	return ret;
++	tty->disc_data = nu;
++
++	return 0;
+ }
  
- 	/* no free section in conventional zone */
- 	if (new_sec && pinning &&
-diff --git a/include/linux/f2fs_fs.h b/include/linux/f2fs_fs.h
-index c24f8bc01045d..5206d63b33860 100644
---- a/include/linux/f2fs_fs.h
-+++ b/include/linux/f2fs_fs.h
-@@ -78,6 +78,7 @@ enum stop_cp_reason {
- 	STOP_CP_REASON_UPDATE_INODE,
- 	STOP_CP_REASON_FLUSH_FAIL,
- 	STOP_CP_REASON_NO_SEGMENT,
-+	STOP_CP_REASON_CORRUPTED_FREE_BITMAP,
- 	STOP_CP_REASON_MAX,
- };
- 
--- 
-2.39.5
-
+ /* ------ LDISC part ------ */
 
 
 
