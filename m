@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-157369-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157473-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD3B9AE53A5
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:55:26 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C8E49AE541C
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:59:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 92256445120
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:54:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 56609446856
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:58:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F50E222581;
-	Mon, 23 Jun 2025 21:55:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D99F222422F;
+	Mon, 23 Jun 2025 21:59:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VEwIvjbU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ju5jbiqL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C8EE1AD3FA;
-	Mon, 23 Jun 2025 21:55:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9425770838;
+	Mon, 23 Jun 2025 21:59:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750715700; cv=none; b=Efx2nXhXU2dN+NMoucwQ0EmTldFJNDDiDoO02JiJwXaMroF3HY3i+Vj2WgRKBdWJymjJZqCBVzQL6/7MCYD00cQpwkZEtzKKalJiJH8BV72LJMOgo/IHQXMNhRP8E5sY9Ag1yzkAXyyIrLx1u4eTlKf5t/pauIclGbIPpx7B1Ms=
+	t=1750715951; cv=none; b=p3F04mWSvi4KT8oH0Ca8F8FkZtcPog469kRJKa5D4FLkJrEPpRzQfV7QU7gOKoXIz4Lv//D0ZV/eLkOtEyDpPh8adxL7xH1Qu0dPApzZlTF9X5AXxf7pweBELHY0OoKA/J02iCDCmqsse5HNSX0soinP2rly8iD1uhuI/3E3ejU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750715700; c=relaxed/simple;
-	bh=Jp/YxAID9leY4M28bBfIA6Jm0bmCwVbvk+mwXMKtIbE=;
+	s=arc-20240116; t=1750715951; c=relaxed/simple;
+	bh=nNI5BkSwe3sKYjGsWOPzKnzWWLck64JopXx+/2dKxUg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aCvEej58Tm0BVkpd8ZAdxzrG0okeDa84FeNVptENCScr0gMH4L2Pg42i0wp2sa7Jk297U6cvZkJx1docYxpgQOZPfpJ5+C/PHygvHzsVUp+i5J65OcUwJtwTV2N1NTPRQVkdVa0xh0CWBetl0pKtE7l6yh5xKbGgxQ0kNdiMTGg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VEwIvjbU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A90D0C4CEF3;
-	Mon, 23 Jun 2025 21:54:59 +0000 (UTC)
+	 MIME-Version; b=dblHelqrBXLV2Qce1ua3izmGRe/UW8Eq828jDNn60AXeNq6ZW/ln/cQ7D24r9P9GpIptmNdqOTHBS5yP93xIMoM8mrCVhmWGVnIZIYL2kWT0CqLgeq1cLEO2hLNC51uj8LNSFeusRvR4D9Ak++WidUbZBmKBzuTnxz8Q0tKkU9M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ju5jbiqL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2BC82C4CEF2;
+	Mon, 23 Jun 2025 21:59:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750715700;
-	bh=Jp/YxAID9leY4M28bBfIA6Jm0bmCwVbvk+mwXMKtIbE=;
+	s=korg; t=1750715951;
+	bh=nNI5BkSwe3sKYjGsWOPzKnzWWLck64JopXx+/2dKxUg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VEwIvjbUdjrnbzAA6RHhq/Sn6enlHPvhmxiu7IQ3/1Iu9AdGgfkUlgHkSZZDv6aTs
-	 g/5hkDADznzsG87IYVcVEqZdyqmggBcxCaP0rUkQGbfNNnNliuweb1ttA0Z9qfXBDs
-	 +JF7//BBRYDZ/ykH1jwhj4rod4UeZopb0Qh2YsqA=
+	b=Ju5jbiqL8mdcAesMiv0P2EKk38Ox4NVo6cU37wr7TRZVc4Am2XQGUYbifQ4YYSPYp
+	 Y0FzkGnCVCLVNtG8rKOYaDCHwNnG/0DkysFEtwVoSgRYP7+kTkbkZnLCV52D5nZF8P
+	 Xgnw3aS5SaSpMMBFrp/dTYJ/HyGC1B2lUi5O/UHI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Simon Horman <horms@kernel.org>,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 5.10 291/355] atm: Revert atm_account_tx() if copy_from_iter_full() fails.
+	Chin-Yen Lee <timlee@realtek.com>,
+	Ping-Ke Shih <pkshih@realtek.com>,
+	Kalle Valo <kvalo@kernel.org>,
+	Zenm Chen <zenmchen@gmail.com>
+Subject: [PATCH 6.6 231/290] wifi: rtw89: pci: use DBI function for 8852AE/8852BE/8851BE
 Date: Mon, 23 Jun 2025 15:08:12 +0200
-Message-ID: <20250623130635.523772849@linuxfoundation.org>
+Message-ID: <20250623130633.876550929@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130626.716971725@linuxfoundation.org>
-References: <20250623130626.716971725@linuxfoundation.org>
+In-Reply-To: <20250623130626.910356556@linuxfoundation.org>
+References: <20250623130626.910356556@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,80 +63,134 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuniyuki Iwashima <kuniyu@google.com>
+From: Chin-Yen Lee <timlee@realtek.com>
 
-commit 7851263998d4269125fd6cb3fdbfc7c6db853859 upstream.
+commit 9496d62f3877bc0f97b415bc04af98d092878026 upstream.
 
-In vcc_sendmsg(), we account skb->truesize to sk->sk_wmem_alloc by
-atm_account_tx().
+Sometimes driver can't use kernel API pci_read/write_config_byte
+to access the PCI config space of above address 0x100 due to
+the negotiated PCI setting. 8852AE/8852BE/8851BE provide another
+way called DBI function, which belongs to WiFi mac and could
+access all PCI config space for this case.
 
-It is expected to be reverted by atm_pop_raw() later called by
-vcc->dev->ops->send(vcc, skb).
-
-However, vcc_sendmsg() misses the same revert when copy_from_iter_full()
-fails, and then we will leak a socket.
-
-Let's factorise the revert part as atm_return_tx() and call it in
-the failure path.
-
-Note that the corresponding sk_wmem_alloc operation can be found in
-alloc_tx() as of the blamed commit.
-
-  $ git blame -L:alloc_tx net/atm/common.c c55fa3cccbc2c~
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Reported-by: Simon Horman <horms@kernel.org>
-Closes: https://lore.kernel.org/netdev/20250614161959.GR414686@horms.kernel.org/
-Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
-Link: https://patch.msgid.link/20250616182147.963333-3-kuni1840@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Link: https://lore.kernel.org/linux-wireless/79fe81b7db7148b9a7da2353c16d70fb@realtek.com/T/#t
+Signed-off-by: Chin-Yen Lee <timlee@realtek.com>
+Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+Signed-off-by: Kalle Valo <kvalo@kernel.org>
+Link: https://msgid.link/20240103012346.6822-1-pkshih@realtek.com
+Signed-off-by: Zenm Chen <zenmchen@gmail.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/atmdev.h |    6 ++++++
- net/atm/common.c       |    1 +
- net/atm/raw.c          |    2 +-
- 3 files changed, 8 insertions(+), 1 deletion(-)
+ drivers/net/wireless/realtek/rtw89/pci.c |   69 ++++++++++++++++++++++++++++++-
+ drivers/net/wireless/realtek/rtw89/pci.h |    1 
+ 2 files changed, 68 insertions(+), 2 deletions(-)
 
---- a/include/linux/atmdev.h
-+++ b/include/linux/atmdev.h
-@@ -248,6 +248,12 @@ static inline void atm_account_tx(struct
- 	ATM_SKB(skb)->atm_options = vcc->atm_options;
+--- a/drivers/net/wireless/realtek/rtw89/pci.c
++++ b/drivers/net/wireless/realtek/rtw89/pci.c
+@@ -1822,22 +1822,87 @@ static int rtw89_write16_mdio_clr(struct
+ 	return 0;
  }
  
-+static inline void atm_return_tx(struct atm_vcc *vcc, struct sk_buff *skb)
++static int rtw89_dbi_write8(struct rtw89_dev *rtwdev, u16 addr, u8 data)
 +{
-+	WARN_ON_ONCE(refcount_sub_and_test(ATM_SKB(skb)->acct_truesize,
-+					   &sk_atm(vcc)->sk_wmem_alloc));
++	u16 addr_2lsb = addr & B_AX_DBI_2LSB;
++	u16 write_addr;
++	u8 flag;
++	int ret;
++
++	write_addr = addr & B_AX_DBI_ADDR_MSK;
++	write_addr |= u16_encode_bits(BIT(addr_2lsb), B_AX_DBI_WREN_MSK);
++	rtw89_write8(rtwdev, R_AX_DBI_WDATA + addr_2lsb, data);
++	rtw89_write16(rtwdev, R_AX_DBI_FLAG, write_addr);
++	rtw89_write8(rtwdev, R_AX_DBI_FLAG + 2, B_AX_DBI_WFLAG >> 16);
++
++	ret = read_poll_timeout_atomic(rtw89_read8, flag, !flag, 10,
++				       10 * RTW89_PCI_WR_RETRY_CNT, false,
++				       rtwdev, R_AX_DBI_FLAG + 2);
++	if (ret)
++		rtw89_err(rtwdev, "failed to write DBI register, addr=0x%X\n",
++			  addr);
++
++	return ret;
 +}
 +
- static inline void atm_force_charge(struct atm_vcc *vcc,int truesize)
++static int rtw89_dbi_read8(struct rtw89_dev *rtwdev, u16 addr, u8 *value)
++{
++	u16 read_addr = addr & B_AX_DBI_ADDR_MSK;
++	u8 flag;
++	int ret;
++
++	rtw89_write16(rtwdev, R_AX_DBI_FLAG, read_addr);
++	rtw89_write8(rtwdev, R_AX_DBI_FLAG + 2, B_AX_DBI_RFLAG >> 16);
++
++	ret = read_poll_timeout_atomic(rtw89_read8, flag, !flag, 10,
++				       10 * RTW89_PCI_WR_RETRY_CNT, false,
++				       rtwdev, R_AX_DBI_FLAG + 2);
++	if (ret) {
++		rtw89_err(rtwdev, "failed to read DBI register, addr=0x%X\n",
++			  addr);
++		return ret;
++	}
++
++	read_addr = R_AX_DBI_RDATA + (addr & 3);
++	*value = rtw89_read8(rtwdev, read_addr);
++
++	return 0;
++}
++
+ static int rtw89_pci_write_config_byte(struct rtw89_dev *rtwdev, u16 addr,
+ 				       u8 data)
  {
- 	atomic_add(truesize, &sk_atm(vcc)->sk_rmem_alloc);
---- a/net/atm/common.c
-+++ b/net/atm/common.c
-@@ -635,6 +635,7 @@ int vcc_sendmsg(struct socket *sock, str
+ 	struct rtw89_pci *rtwpci = (struct rtw89_pci *)rtwdev->priv;
++	enum rtw89_core_chip_id chip_id = rtwdev->chip->chip_id;
+ 	struct pci_dev *pdev = rtwpci->pdev;
++	int ret;
  
- 	skb->dev = NULL; /* for paths shared with net_device interfaces */
- 	if (!copy_from_iter_full(skb_put(skb, size), size, &m->msg_iter)) {
-+		atm_return_tx(vcc, skb);
- 		kfree_skb(skb);
- 		error = -EFAULT;
- 		goto out;
---- a/net/atm/raw.c
-+++ b/net/atm/raw.c
-@@ -36,7 +36,7 @@ static void atm_pop_raw(struct atm_vcc *
- 
- 	pr_debug("(%d) %d -= %d\n",
- 		 vcc->vci, sk_wmem_alloc_get(sk), ATM_SKB(skb)->acct_truesize);
--	WARN_ON(refcount_sub_and_test(ATM_SKB(skb)->acct_truesize, &sk->sk_wmem_alloc));
-+	atm_return_tx(vcc, skb);
- 	dev_kfree_skb_any(skb);
- 	sk->sk_write_space(sk);
+-	return pci_write_config_byte(pdev, addr, data);
++	ret = pci_write_config_byte(pdev, addr, data);
++	if (!ret)
++		return 0;
++
++	if (chip_id == RTL8852A || chip_id == RTL8852B || chip_id == RTL8851B)
++		ret = rtw89_dbi_write8(rtwdev, addr, data);
++
++	return ret;
  }
+ 
+ static int rtw89_pci_read_config_byte(struct rtw89_dev *rtwdev, u16 addr,
+ 				      u8 *value)
+ {
+ 	struct rtw89_pci *rtwpci = (struct rtw89_pci *)rtwdev->priv;
++	enum rtw89_core_chip_id chip_id = rtwdev->chip->chip_id;
+ 	struct pci_dev *pdev = rtwpci->pdev;
++	int ret;
++
++	ret = pci_read_config_byte(pdev, addr, value);
++	if (!ret)
++		return 0;
++
++	if (chip_id == RTL8852A || chip_id == RTL8852B || chip_id == RTL8851B)
++		ret = rtw89_dbi_read8(rtwdev, addr, value);
+ 
+-	return pci_read_config_byte(pdev, addr, value);
++	return ret;
+ }
+ 
+ static int rtw89_pci_config_byte_set(struct rtw89_dev *rtwdev, u16 addr,
+--- a/drivers/net/wireless/realtek/rtw89/pci.h
++++ b/drivers/net/wireless/realtek/rtw89/pci.h
+@@ -42,6 +42,7 @@
+ #define B_AX_DBI_WFLAG			BIT(16)
+ #define B_AX_DBI_WREN_MSK		GENMASK(15, 12)
+ #define B_AX_DBI_ADDR_MSK		GENMASK(11, 2)
++#define B_AX_DBI_2LSB			GENMASK(1, 0)
+ #define R_AX_DBI_WDATA			0x1094
+ #define R_AX_DBI_RDATA			0x1098
+ 
 
 
 
