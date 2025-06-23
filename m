@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-156451-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157118-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 59A0DAE4FA5
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:18:17 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 01B9DAE5286
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:44:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2BF3A1B613A9
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:18:33 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1E975443C25
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:44:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30E95223339;
-	Mon, 23 Jun 2025 21:17:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13C4C2236E5;
+	Mon, 23 Jun 2025 21:44:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1Ygkc6qH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F6EFzVcW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E154A224B0D;
-	Mon, 23 Jun 2025 21:17:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C81AF4315A;
+	Mon, 23 Jun 2025 21:44:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750713444; cv=none; b=OkrY8f1DKwUPKo4DnGE/kf4rm/xovP6Zxk/qAOMplstRalSIsIiOBDbC7UllDG+4RHblZDrEq5NVtDxsyf6utFUTEZAr+Ibu7j1RPzzbYFYZD5sbwkyf3RVVbw5Mh3AFv8ITyn56eQOA66vGfavu2I+HJkCBe13HTu110DBCEZA=
+	t=1750715077; cv=none; b=a9Qr/f3sAB5akLBBuEAXhW7vyYQhAURqhgULvle2CxSLnfRF6XP4+yGjDytAlXILeQXPVx16oB0tCTWAbB3B3CVD1Lt50ArUI1S3WUkx9bWcFbWN8eKXrdAqn/tzQwT9rKzCBcm1Y8Jb0nSPvo2j6djL86okDAilx4AG6e4PNiM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750713444; c=relaxed/simple;
-	bh=xJrnR6lBmhR5FiDQvZy9DdtWiMqlh0LNfNbQxKOUyUY=;
+	s=arc-20240116; t=1750715077; c=relaxed/simple;
+	bh=gpFAzxP0YDpn8bou5VPEkMpzGXArcmtw6Qj+RW4/HhA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YktwCzSLagvacJNW+nX19BdlF4xqWXOWQJzQayS5kXaky/UI4/HQg7MdVgRxd5tBongUNku91yytRbxW5DyDBfUFayafdD/xjvbTo/4x+dB/zjbHfNsO2xgcZdyH25nY3d7wuiYPDH8mQ7bNwlGtBlfNdseYrS0xOuI40S6XuF4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1Ygkc6qH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78490C4CEED;
-	Mon, 23 Jun 2025 21:17:23 +0000 (UTC)
+	 MIME-Version; b=CGZePfb3Uk043N6cFRlx+01oG9K758dTlXlxr2WidmheXEuE6o832nttSwAco0/KZ2ZyjnQaEfvxqbQU8ZYddyzGcWn66oinLxjoS75Lnuf5zv4PxSShPrDJiViQF9u8QFn2MWZtzGtsd3ujkJo1fSzSV7cUC3ne/fUO0bSTwMY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F6EFzVcW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5FD82C4CEEA;
+	Mon, 23 Jun 2025 21:44:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750713443;
-	bh=xJrnR6lBmhR5FiDQvZy9DdtWiMqlh0LNfNbQxKOUyUY=;
+	s=korg; t=1750715077;
+	bh=gpFAzxP0YDpn8bou5VPEkMpzGXArcmtw6Qj+RW4/HhA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1Ygkc6qHVDKxuRui7O1/UKTItz99belUvIRxpUYsnu3gLDlJcKiaYF+drCPYlnF5z
-	 jPFR2mLIdyIf5go2ih0M09CbzPIl7DdT+kBfPqdLWfubbuL/Zxytp5YqwdiCieZk78
-	 BNiZuhnrZi5TIR7om5fG6TP37al2y8nhI/fleVGo=
+	b=F6EFzVcWyq/kYhcNtc7zdrI4Wx4ZQMGUNlookp9RurDqt/YSZ4U71x+2rhSbugzCf
+	 c5o6XCuy9idxjTMPVFgR8i0bmH0eYNP2Rwg+UkzzVvXFD/qqg2uorOm+nH8eFSSe24
+	 iTjzkb/SfOv/OOPbzokiKaSuMZtpNCCNfZJw6XMk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 147/411] drm/meson: fix debug log statement when setting the HDMI clocks
+	Shawn Lin <shawn.lin@rock-chips.com>,
+	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+	Niklas Cassel <cassel@kernel.org>
+Subject: [PATCH 6.12 154/414] PCI: dw-rockchip: Remove PCIE_L0S_ENTRY check from rockchip_pcie_link_up()
 Date: Mon, 23 Jun 2025 15:04:51 +0200
-Message-ID: <20250623130637.318895194@linuxfoundation.org>
+Message-ID: <20250623130645.892738138@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
-References: <20250623130632.993849527@linuxfoundation.org>
+In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
+References: <20250623130642.015559452@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,121 +62,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+From: Shawn Lin <shawn.lin@rock-chips.com>
 
-[ Upstream commit d17e61ab63fb7747b340d6a66bf1408cd5c6562b ]
+commit 7d9b5d6115532cf90a789ed6afd3f4c70ebbd827 upstream.
 
-The "phy" and "vclk" frequency labels were swapped, making it more
-difficult to debug driver errors. Swap the label order to make them
-match with the actual frequencies printed to correct this.
+rockchip_pcie_link_up() currently has two issues:
+1. Value 0x11 of PCIE_L0S_ENTRY corresponds to L0 state, not L0S. So the
+naming is wrong from the very beginning.
+2. Checking for value 0x11 treats other states like L0S and L1 as link
+down, which is wrong.
 
-Fixes: e5fab2ec9ca4 ("drm/meson: vclk: add support for YUV420 setup")
-Signed-off-by: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
-Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
-Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
-Link: https://lore.kernel.org/r/20250606203729.3311592-1-martin.blumenstingl@googlemail.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- drivers/gpu/drm/meson/meson_encoder_hdmi.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Hence, remove the PCIE_L0S_ENTRY check and also its definition. This allows
+adding ASPM support in the successive commits.
 
-diff --git a/drivers/gpu/drm/meson/meson_encoder_hdmi.c b/drivers/gpu/drm/meson/meson_encoder_hdmi.c
-index 95137c2d3c56d..1fd17de93fc34 100644
---- a/drivers/gpu/drm/meson/meson_encoder_hdmi.c
-+++ b/drivers/gpu/drm/meson/meson_encoder_hdmi.c
-@@ -106,7 +106,7 @@ static void meson_encoder_hdmi_set_vclk(struct meson_encoder_hdmi *encoder_hdmi,
- 		venc_freq /= 2;
- 
- 	dev_dbg(priv->dev,
--		"vclk:%lluHz phy=%lluHz venc=%lluHz hdmi=%lluHz enci=%d\n",
-+		"phy:%lluHz vclk=%lluHz venc=%lluHz hdmi=%lluHz enci=%d\n",
- 		phy_freq, vclk_freq, venc_freq, hdmi_freq,
- 		priv->venc.hdmi_use_enci);
- 
--- 
-2.39.5
-
-
-
-ies them.
-
-The one, small saving grace is: Before the driver tries to read the eeprom,
-it needs to upload >a< firmware. the vendor firmware has a proprietary
-license and as a reason, it is not present on most distributions by
-default.
-
-Cc: <stable@kernel.org>
-Reported-by: Robert Morris <rtm@mit.edu>
-Closes: https://lore.kernel.org/linux-wireless/28782.1747258414@localhost/
-Fixes: 7cb770729ba8 ("p54: move eeprom code into common library")
-Signed-off-by: Christian Lamparter <chunkeey@gmail.com>
-Link: https://patch.msgid.link/20250516184107.47794-1-chunkeey@gmail.com
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Fixes: 0e898eb8df4e ("PCI: rockchip-dwc: Add Rockchip RK356X host controller driver")
+Signed-off-by: Shawn Lin <shawn.lin@rock-chips.com>
+[mani: commit message rewording]
+Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Reviewed-by: Niklas Cassel <cassel@kernel.org>
+Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Cc: stable@vger.kernel.org
+Link: https://patch.msgid.link/1744850111-236269-1-git-send-email-shawn.lin@rock-chips.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/intersil/p54/fwio.c |    2 ++
- drivers/net/wireless/intersil/p54/p54.h  |    1 +
- drivers/net/wireless/intersil/p54/txrx.c |   13 +++++++++----
- 3 files changed, 12 insertions(+), 4 deletions(-)
+ drivers/pci/controller/dwc/pcie-dw-rockchip.c |    4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
---- a/drivers/net/wireless/intersil/p54/fwio.c
-+++ b/drivers/net/wireless/intersil/p54/fwio.c
-@@ -233,6 +233,7 @@ int p54_download_eeprom(struct p54_commo
+--- a/drivers/pci/controller/dwc/pcie-dw-rockchip.c
++++ b/drivers/pci/controller/dwc/pcie-dw-rockchip.c
+@@ -44,7 +44,6 @@
+ #define PCIE_LINKUP			(PCIE_SMLH_LINKUP | PCIE_RDLH_LINKUP)
+ #define PCIE_RDLH_LINK_UP_CHGED		BIT(1)
+ #define PCIE_LINK_REQ_RST_NOT_INT	BIT(2)
+-#define PCIE_L0S_ENTRY			0x11
+ #define PCIE_CLIENT_GENERAL_CONTROL	0x0
+ #define PCIE_CLIENT_INTR_STATUS_LEGACY	0x8
+ #define PCIE_CLIENT_INTR_MASK_LEGACY	0x1c
+@@ -177,8 +176,7 @@ static int rockchip_pcie_link_up(struct
+ 	struct rockchip_pcie *rockchip = to_rockchip_pcie(pci);
+ 	u32 val = rockchip_pcie_get_ltssm(rockchip);
  
- 	mutex_lock(&priv->eeprom_mutex);
- 	priv->eeprom = buf;
-+	priv->eeprom_slice_size = len;
- 	eeprom_hdr = skb_put(skb, eeprom_hdr_size + len);
+-	if ((val & PCIE_LINKUP) == PCIE_LINKUP &&
+-	    (val & PCIE_LTSSM_STATUS_MASK) == PCIE_L0S_ENTRY)
++	if ((val & PCIE_LINKUP) == PCIE_LINKUP)
+ 		return 1;
  
- 	if (priv->fw_var < 0x509) {
-@@ -255,6 +256,7 @@ int p54_download_eeprom(struct p54_commo
- 		ret = -EBUSY;
- 	}
- 	priv->eeprom = NULL;
-+	priv->eeprom_slice_size = 0;
- 	mutex_unlock(&priv->eeprom_mutex);
- 	return ret;
- }
---- a/drivers/net/wireless/intersil/p54/p54.h
-+++ b/drivers/net/wireless/intersil/p54/p54.h
-@@ -258,6 +258,7 @@ struct p54_common {
- 
- 	/* eeprom handling */
- 	void *eeprom;
-+	size_t eeprom_slice_size;
- 	struct completion eeprom_comp;
- 	struct mutex eeprom_mutex;
- };
---- a/drivers/net/wireless/intersil/p54/txrx.c
-+++ b/drivers/net/wireless/intersil/p54/txrx.c
-@@ -500,14 +500,19 @@ static void p54_rx_eeprom_readback(struc
- 		return ;
- 
- 	if (priv->fw_var >= 0x509) {
--		memcpy(priv->eeprom, eeprom->v2.data,
--		       le16_to_cpu(eeprom->v2.len));
-+		if (le16_to_cpu(eeprom->v2.len) != priv->eeprom_slice_size)
-+			return;
-+
-+		memcpy(priv->eeprom, eeprom->v2.data, priv->eeprom_slice_size);
- 	} else {
--		memcpy(priv->eeprom, eeprom->v1.data,
--		       le16_to_cpu(eeprom->v1.len));
-+		if (le16_to_cpu(eeprom->v1.len) != priv->eeprom_slice_size)
-+			return;
-+
-+		memcpy(priv->eeprom, eeprom->v1.data, priv->eeprom_slice_size);
- 	}
- 
- 	priv->eeprom = NULL;
-+	priv->eeprom_slice_size = 0;
- 	tmp = p54_find_and_unlink_skb(priv, hdr->req_id);
- 	dev_kfree_skb_any(tmp);
- 	complete(&priv->eeprom_comp);
+ 	return 0;
 
 
 
