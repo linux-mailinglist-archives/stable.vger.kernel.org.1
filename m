@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-157994-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157845-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA377AE5683
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:21:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 941E5AE55E5
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:16:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CEB1E4C4AD5
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:20:27 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0148F17368B
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:14:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0072C199FBA;
-	Mon, 23 Jun 2025 22:20:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A21F223DF0;
+	Mon, 23 Jun 2025 22:14:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nsP5z9Vn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EZqGcdgt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2D0516D9BF;
-	Mon, 23 Jun 2025 22:20:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4874F21B8F6;
+	Mon, 23 Jun 2025 22:14:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750717224; cv=none; b=d0JRpxbFGv9tIQE7nOaai7hCg07FxiUuFWuvonsfL+LMD1hjKeBerH3KI2K6QtGPcJnEI0WlVtiGW7UdLA2tonREfDgucrmWKAURaneKRtcvjT6R36eF+28egRzugrkMxLjwuT7CNNX5/uxmDsQnl6/aXTXJUwzD8DIQDG2Dh4Y=
+	t=1750716860; cv=none; b=pogTAiaeMbdZGkVT4gLDSYYpM5EXUex85ejohjaSn+lZLTKm/WgzUj9rZh7a7qyrH3rjYhJ7MCacxKXbaWKvL1h+Xh8X5bADdoHMuu81Bf5Gt7n9ydUTfYfYUBLm8K1LFU13mNNDiqKzp8tR/6tTuebie9sFH2NRIgyBlD98b90=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750717224; c=relaxed/simple;
-	bh=HtUUt892CiB2mT22u5AOyURCOMUs49c8k5IQB8KysAk=;
+	s=arc-20240116; t=1750716860; c=relaxed/simple;
+	bh=PCsHjhSSbUY/grINkEo112OKh7rFVQQyEU8Lffu/J1Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dImbi4n7m2B97/uMLD9Wua8ZhebdjxFp8AmRd3Cd3JxtR9DZVQVnJ3BjuGUI78tq9FHLYMu4anKL7cxHkNKTYRDP5KrxP0ImNW5MseSY7u8dVY7tTDZDNeMHzjldsuda12OY6AtGnflcSwkkDhn2F6aNC6iZ8N9sGM8KZQQJWlY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nsP5z9Vn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 070DFC4CEEA;
-	Mon, 23 Jun 2025 22:20:23 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Z9e4m27lFuxm2UjNtRynlK196BGZ1/U6VdnvuW+qhUy0XJK9gAZ1ubntsTyOr0YRoE1EAGwhOpdr4oFfgEfto5xKhhzngoSLFuRUa2ps+s79sLO4G7buy15XwFDWjpyi+awvmdDX+jdHJcFjWtIqL733yPritgdar0IQ1EknBis=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EZqGcdgt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E488C4CEEA;
+	Mon, 23 Jun 2025 22:14:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750717224;
-	bh=HtUUt892CiB2mT22u5AOyURCOMUs49c8k5IQB8KysAk=;
+	s=korg; t=1750716859;
+	bh=PCsHjhSSbUY/grINkEo112OKh7rFVQQyEU8Lffu/J1Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nsP5z9Vn2lCnFvMxvZj4VZ+ppoGLbaThMgNPV60b2OyxAYXwhJ47GaqSog9in9ugY
-	 ItI+NGJGFzpGtgAO3O+pbzUZRx5jQZR4wjlCjNUPhETTlKI33iD7qn01AmgruLIJ4R
-	 JGocL26jb3gYdo1e5Bf2tySYJCkZcuUYzOEyU2lo=
+	b=EZqGcdgtZFH/+fzdESvpF94CwwOXOFJvWsRBee8kgrNK/omC7FBRa2CoW/Igd5ycT
+	 FdHyv2Z99y54GVuqcSDXr+G/cG62WfKEyT0dRrcSoWpminmRvSqRJHTRFFWo9W82q5
+	 52VPbsBrkDJcx4yMYCUpxEZTFQKm75JA94PyMvfA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yuanjun Gong <ruc_gongyuanjun@163.com>,
-	Mark Brown <broonie@kernel.org>,
+	Stuart Hayes <stuart.w.hayes@gmail.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 384/508] ASoC: tegra210_ahub: Add check to of_device_get_match_data()
+Subject: [PATCH 6.12 292/414] platform/x86: dell_rbu: Stop overwriting data buffer
 Date: Mon, 23 Jun 2025 15:07:09 +0200
-Message-ID: <20250623130654.745139464@linuxfoundation.org>
+Message-ID: <20250623130649.311829444@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
-References: <20250623130645.255320792@linuxfoundation.org>
+In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
+References: <20250623130642.015559452@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,40 +60,57 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yuanjun Gong <ruc_gongyuanjun@163.com>
+From: Stuart Hayes <stuart.w.hayes@gmail.com>
 
-[ Upstream commit 04cb269c204398763a620d426cbee43064854000 ]
+[ Upstream commit f4b0fa38d5fefe9aed6ed831f3bd3538c168ee19 ]
 
-In tegra_ahub_probe(), check the result of function
-of_device_get_match_data(), return an error code in case it fails.
+The dell_rbu driver will use memset() to clear the data held by each
+packet when it is no longer needed (when the driver is unloaded, the
+packet size is changed, etc).
 
-Signed-off-by: Yuanjun Gong <ruc_gongyuanjun@163.com>
-Link: https://patch.msgid.link/20250513123744.3041724-1-ruc_gongyuanjun@163.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+The amount of memory that is cleared (before this patch) is the normal
+packet size. However, the last packet in the list may be smaller.
+
+Fix this to only clear the memory actually used by each packet, to prevent
+it from writing past the end of data buffer.
+
+Because the packet data buffers are allocated with __get_free_pages() (in
+page-sized increments), this bug could only result in a buffer being
+overwritten when a packet size larger than one page is used. The only user
+of the dell_rbu module should be the Dell BIOS update program, which uses
+a packet size of 4096, so no issues should be seen without the patch, it
+just blocks the possiblity.
+
+Fixes: 6c54c28e69f2 ("[PATCH] dell_rbu: new Dell BIOS update driver")
+Signed-off-by: Stuart Hayes <stuart.w.hayes@gmail.com>
+Link: https://lore.kernel.org/r/20250609184659.7210-5-stuart.w.hayes@gmail.com
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/tegra/tegra210_ahub.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/platform/x86/dell/dell_rbu.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/sound/soc/tegra/tegra210_ahub.c b/sound/soc/tegra/tegra210_ahub.c
-index dfdcb4580cd75..4be5683504154 100644
---- a/sound/soc/tegra/tegra210_ahub.c
-+++ b/sound/soc/tegra/tegra210_ahub.c
-@@ -1369,6 +1369,8 @@ static int tegra_ahub_probe(struct platform_device *pdev)
- 		return -ENOMEM;
- 
- 	ahub->soc_data = of_device_get_match_data(&pdev->dev);
-+	if (!ahub->soc_data)
-+		return -ENODEV;
- 
- 	platform_set_drvdata(pdev, ahub);
- 
+diff --git a/drivers/platform/x86/dell/dell_rbu.c b/drivers/platform/x86/dell/dell_rbu.c
+index 4d2b5f6dd513f..fee20866b41e4 100644
+--- a/drivers/platform/x86/dell/dell_rbu.c
++++ b/drivers/platform/x86/dell/dell_rbu.c
+@@ -322,7 +322,7 @@ static void packet_empty_list(void)
+ 		 * zero out the RBU packet memory before freeing
+ 		 * to make sure there are no stale RBU packets left in memory
+ 		 */
+-		memset(newpacket->data, 0, rbu_data.packetsize);
++		memset(newpacket->data, 0, newpacket->length);
+ 		set_memory_wb((unsigned long)newpacket->data,
+ 			1 << newpacket->ordernum);
+ 		free_pages((unsigned long) newpacket->data,
 -- 
 2.39.5
 
