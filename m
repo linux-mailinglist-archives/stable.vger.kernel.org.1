@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-156870-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157184-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 25C4BAE5177
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:34:30 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id ED0F4AE52CF
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:47:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B224D4A3AE7
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:34:30 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 123C11B65CC2
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:47:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5FB251EEA5D;
-	Mon, 23 Jun 2025 21:34:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1372D21B9E5;
+	Mon, 23 Jun 2025 21:47:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mzR2ui1R"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QC989zQ1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DF4F4409;
-	Mon, 23 Jun 2025 21:34:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C42473FD4;
+	Mon, 23 Jun 2025 21:47:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750714468; cv=none; b=A6zKk+F2qoiSQzj3G4PB8bl/tNCRH2WbpTXl+Elr862Mui7c/O7io+FTf3n9e+8JFKkAAv7kgtOiERshn2Qi+1tDanC8822NMDNpr8vOnM8azzCWnH4atJ40DF+CX/UJxzHU77IZNmpffY8ucUkhyIf3S76QBd6uY5s+2z0pQkM=
+	t=1750715242; cv=none; b=YoChlvdxwv8VI41GWYdtTy+cNdS7pcHS1JGn1412D/Pl88WNKv2/s3/7v5iENgttnXaiydSNH7cEceiRDEQN5JmLpP4sO/JdRf5DJk5Fs2/RlZfJ47CC0C3Sq4R18b3HaQwEeZ87kO/uxIBRvhy1KAc7V8F3q0WuzfqNi44oSjM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750714468; c=relaxed/simple;
-	bh=bvzbXHGq2oMva2bz5FPHxtaocweaqqaCnrwsL3mh+8k=;
+	s=arc-20240116; t=1750715242; c=relaxed/simple;
+	bh=M34Q3sf/1UvGivuftYlyONL+8lkdNux1WPBej4JzE1U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BmwObR8Qjh4LrGUBoY7AcFdaQGct7xuvyk2G/TgWPlJG0okVjkaxFjhKRpzqz98dTgQxFwmUGm+7nsMvdzlMl/qyQi1bpuSEFLXvKq/ple50Zab+slDcF+R1zfJ8bl8DiM6BstFpA3nf71eyVyUVaoG3KdKpoh40eheFHW4I/JM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mzR2ui1R; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A16D2C4CEEA;
-	Mon, 23 Jun 2025 21:34:27 +0000 (UTC)
+	 MIME-Version; b=q/bHbuyCTY+oghtPZoxGEUQ8sSACrVKTgxwFwCLlWLqd5RKPSqpBO+blV9Jp6ouSWZzSUQ0SKJ1HXPrZfcGADHMqfxGeRwN9pHl1MDCJ4JTBPyqdmfr0AMVeYewamGGRv3Uwxmr3DRr5efp6jLQCvjcmhr71ugbetQxbmZlzkfY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QC989zQ1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C861C4CEEA;
+	Mon, 23 Jun 2025 21:47:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750714468;
-	bh=bvzbXHGq2oMva2bz5FPHxtaocweaqqaCnrwsL3mh+8k=;
+	s=korg; t=1750715242;
+	bh=M34Q3sf/1UvGivuftYlyONL+8lkdNux1WPBej4JzE1U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mzR2ui1RTxbsyRZ/WBq5uibAy/U9XIM4nv3W5miNbZ9+JNc4nfGGAHnNJeYC7vI60
-	 MQBaWPfoRTqqlojstjqmzvw1mlTtoSPqqGktlC1BpbsccL7EYC5Vq/99zqwsATo3X0
-	 zl5144r3mqQdVmgH1O8rSV3Talp0WXjoqr8c75II=
+	b=QC989zQ1xtnDcpm2ec7gAZrSneIAMYg97bwWcQzsrUkGgT361BnMQ0xfm42I4/Ddi
+	 FXcOFfcrz+1UhIb8AZQWC37rj1PyItgYZMuQUjLvCnpZOYf19N7LLl3GnWSOdMwMJ1
+	 1mPw1vDbWjD6SVRT/bvW6tL9pRnLgP8fLqqKHFBk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot <syzbot+3361c2d6f78a3e0892f9@syzkaller.appspotmail.com>,
-	Qasim Ijaz <qasdev00@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.12 131/414] net: ch9200: fix uninitialised access during mii_nway_restart
+	Sanjeev Yadav <sanjeev.y@mediatek.com>,
+	Bart Van Assche <bvanassche@acm.org>,
+	Peter Wang <peter.wang@mediatek.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 223/508] scsi: core: ufs: Fix a hang in the error handler
 Date: Mon, 23 Jun 2025 15:04:28 +0200
-Message-ID: <20250623130645.330708494@linuxfoundation.org>
+Message-ID: <20250623130650.750490372@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
-References: <20250623130642.015559452@linuxfoundation.org>
+In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
+References: <20250623130645.255320792@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,74 +64,78 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Qasim Ijaz <qasdev00@gmail.com>
+From: Sanjeev Yadav <sanjeev.y@mediatek.com>
 
-commit 9ad0452c0277b816a435433cca601304cfac7c21 upstream.
+[ Upstream commit 8a3514d348de87a9d5e2ac00fbac4faae0b97996 ]
 
-In mii_nway_restart() the code attempts to call
-mii->mdio_read which is ch9200_mdio_read(). ch9200_mdio_read()
-utilises a local buffer called "buff", which is initialised
-with control_read(). However "buff" is conditionally
-initialised inside control_read():
+ufshcd_err_handling_prepare() calls ufshcd_rpm_get_sync(). The latter
+function can only succeed if UFSHCD_EH_IN_PROGRESS is not set because
+resuming involves submitting a SCSI command and ufshcd_queuecommand()
+returns SCSI_MLQUEUE_HOST_BUSY if UFSHCD_EH_IN_PROGRESS is set. Fix this
+hang by setting UFSHCD_EH_IN_PROGRESS after ufshcd_rpm_get_sync() has
+been called instead of before.
 
-        if (err == size) {
-                memcpy(data, buf, size);
-        }
+Backtrace:
+__switch_to+0x174/0x338
+__schedule+0x600/0x9e4
+schedule+0x7c/0xe8
+schedule_timeout+0xa4/0x1c8
+io_schedule_timeout+0x48/0x70
+wait_for_common_io+0xa8/0x160 //waiting on START_STOP
+wait_for_completion_io_timeout+0x10/0x20
+blk_execute_rq+0xe4/0x1e4
+scsi_execute_cmd+0x108/0x244
+ufshcd_set_dev_pwr_mode+0xe8/0x250
+__ufshcd_wl_resume+0x94/0x354
+ufshcd_wl_runtime_resume+0x3c/0x174
+scsi_runtime_resume+0x64/0xa4
+rpm_resume+0x15c/0xa1c
+__pm_runtime_resume+0x4c/0x90 // Runtime resume ongoing
+ufshcd_err_handler+0x1a0/0xd08
+process_one_work+0x174/0x808
+worker_thread+0x15c/0x490
+kthread+0xf4/0x1ec
+ret_from_fork+0x10/0x20
 
-If the condition of "err == size" is not met, then
-"buff" remains uninitialised. Once this happens the
-uninitialised "buff" is accessed and returned during
-ch9200_mdio_read():
-
-        return (buff[0] | buff[1] << 8);
-
-The problem stems from the fact that ch9200_mdio_read()
-ignores the return value of control_read(), leading to
-uinit-access of "buff".
-
-To fix this we should check the return value of
-control_read() and return early on error.
-
-Reported-by: syzbot <syzbot+3361c2d6f78a3e0892f9@syzkaller.appspotmail.com>
-Closes: https://syzkaller.appspot.com/bug?extid=3361c2d6f78a3e0892f9
-Tested-by: syzbot <syzbot+3361c2d6f78a3e0892f9@syzkaller.appspotmail.com>
-Fixes: 4a476bd6d1d9 ("usbnet: New driver for QinHeng CH9200 devices")
-Cc: stable@vger.kernel.org
-Signed-off-by: Qasim Ijaz <qasdev00@gmail.com>
-Link: https://patch.msgid.link/20250526183607.66527-1-qasdev00@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sanjeev Yadav <sanjeev.y@mediatek.com>
+[ bvanassche: rewrote patch description ]
+Fixes: 62694735ca95 ("[SCSI] ufs: Add runtime PM support for UFS host controller driver")
+Signed-off-by: Bart Van Assche <bvanassche@acm.org>
+Link: https://lore.kernel.org/r/20250523201409.1676055-1-bvanassche@acm.org
+Reviewed-by: Peter Wang <peter.wang@mediatek.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/usb/ch9200.c |    7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ drivers/ufs/core/ufshcd.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
---- a/drivers/net/usb/ch9200.c
-+++ b/drivers/net/usb/ch9200.c
-@@ -178,6 +178,7 @@ static int ch9200_mdio_read(struct net_d
- {
- 	struct usbnet *dev = netdev_priv(netdev);
- 	unsigned char buff[2];
-+	int ret;
- 
- 	netdev_dbg(netdev, "%s phy_id:%02x loc:%02x\n",
- 		   __func__, phy_id, loc);
-@@ -185,8 +186,10 @@ static int ch9200_mdio_read(struct net_d
- 	if (phy_id != 0)
- 		return -ENODEV;
- 
--	control_read(dev, REQUEST_READ, 0, loc * 2, buff, 0x02,
--		     CONTROL_TIMEOUT_MS);
-+	ret = control_read(dev, REQUEST_READ, 0, loc * 2, buff, 0x02,
-+			   CONTROL_TIMEOUT_MS);
-+	if (ret < 0)
-+		return ret;
- 
- 	return (buff[0] | buff[1] << 8);
- }
+diff --git a/drivers/ufs/core/ufshcd.c b/drivers/ufs/core/ufshcd.c
+index c5115f6adbdc2..dc17ae1dfe260 100644
+--- a/drivers/ufs/core/ufshcd.c
++++ b/drivers/ufs/core/ufshcd.c
+@@ -6285,9 +6285,14 @@ static void ufshcd_err_handler(struct work_struct *work)
+ 		up(&hba->host_sem);
+ 		return;
+ 	}
+-	ufshcd_set_eh_in_progress(hba);
+ 	spin_unlock_irqrestore(hba->host->host_lock, flags);
++
+ 	ufshcd_err_handling_prepare(hba);
++
++	spin_lock_irqsave(hba->host->host_lock, flags);
++	ufshcd_set_eh_in_progress(hba);
++	spin_unlock_irqrestore(hba->host->host_lock, flags);
++
+ 	/* Complete requests that have door-bell cleared by h/w */
+ 	ufshcd_complete_requests(hba);
+ 	spin_lock_irqsave(hba->host->host_lock, flags);
+-- 
+2.39.5
+
 
 
 
