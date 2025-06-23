@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-156295-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157161-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D34F6AE4EF7
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:11:06 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5FECBAE52B9
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:47:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6FE4817DA69
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:11:07 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 425624A691B
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:47:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3699220F50;
-	Mon, 23 Jun 2025 21:11:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 699EC224B1E;
+	Mon, 23 Jun 2025 21:46:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Psn6hxlS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vJKF4wgs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F7B570838;
-	Mon, 23 Jun 2025 21:11:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 247581C84A0;
+	Mon, 23 Jun 2025 21:46:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750713064; cv=none; b=Mxu+pMcnFSpu4bnwhC6DYoXxPPOxY+DPihUD73hww5d6ArEocyhhO/g7kOxwRP4BgLsMsGgyR8m6TDdGrNr+agdRfb3ovU+N1aQRIyot6mkTUFlz9lLSL2VfggA3xMUo2qnsfW4geYS0VRw152pZpQUBX10Uxj8TFcEr7um6ay4=
+	t=1750715186; cv=none; b=UMFT51hKyFa5isov4S0xYMYsJmrWst+RriC+FXXb8n4BV2HhmmVaH4p8k6A+0qZLKRH3OznAl58R6f9u+SugAWmY8FDtTGF3PDq9edmN6xc218LTzNrYUcn0eNHDM4k/5KLGwWIJnfskqq6IZJ6wMKzEULNbRD53PdjU/0vtnVA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750713064; c=relaxed/simple;
-	bh=sF/gL5nw3eEnYa9iIcunDGTo+9zyXKeXQRUHzC13l2o=;
+	s=arc-20240116; t=1750715186; c=relaxed/simple;
+	bh=sae+piEytPIA76lVBVi+KRvdNIhvoHLTVQ7gACmchQQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uVJOoozGR2hn3isytmuwwMXQ0CLYYeX4Riv1TgPIVJsTk5nAQysqOFmpDIuhtMa2Vp7la7wDlDyxwJ0onXc3gr147mY+wiULpVZXRIQ+OqiMpfm5a90fh/JkrKzjD03rjozh2c3//Nc1bXHMw4dHfRKW/JxNsTvXKCG3tH4v/nc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Psn6hxlS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D09CC4CEEA;
-	Mon, 23 Jun 2025 21:11:03 +0000 (UTC)
+	 MIME-Version; b=G1oMDbSD2DcCFNnTiyk07TL5WXl+p/cTqOI0nYu8SWAa0jOfeQOWCHKFmucucakC4ou/YhIyIAz8kmjKSMbxSjXWqf8BRp0RmhOawZ15DxtUnGd1XcudoqY1l9TZFPF3ZFgN9zRGA1dbL8xlub+c70sV8B9VRYLOyd2vThtG+8c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vJKF4wgs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7232C4CEEA;
+	Mon, 23 Jun 2025 21:46:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750713064;
-	bh=sF/gL5nw3eEnYa9iIcunDGTo+9zyXKeXQRUHzC13l2o=;
+	s=korg; t=1750715186;
+	bh=sae+piEytPIA76lVBVi+KRvdNIhvoHLTVQ7gACmchQQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Psn6hxlSe/RKMxrTtvxFTyfoe4Ow2MG+bvyQx7VIHa89Q6S6PK08IeIB0t0NyCsGk
-	 UCV3IJCO0MEaeO98jJsZUiLybFWNXCCdv9e55ZBkmqsnE6A90wcRY37U3SzJWbQ3OO
-	 e8s8hXRIuXJqV+86mAX0EhWIDGXjcd5q3TcLgl0A=
+	b=vJKF4wgs1uipALn9fhAToQFW6ITcN/seehkKjZx+MVEf23qitldfFGHiyhFxco7GH
+	 FVz9/+Mdi3koVxIa1ZaD7PqYiUdHFAAq/dmbKnZaD2pIonH/PVpAaQMLAr3gJnbJj5
+	 GMQMlByo9VUDSDitZpq/DhzOO9NrpUAntDptthh0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Samuel Williams <sam8641@gmail.com>,
-	Felix Fietkau <nbd@nbd.name>,
+	Jonathan Greental <yonatan02greental@gmail.com>,
+	Haren Myneni <haren@linux.ibm.com>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 326/592] wifi: mt76: mt7921: add 160 MHz AP for mt7922 device
-Date: Mon, 23 Jun 2025 15:04:44 +0200
-Message-ID: <20250623130708.207707890@linuxfoundation.org>
+Subject: [PATCH 6.1 240/508] powerpc/vas: Return -EINVAL if the offset is non-zero in mmap()
+Date: Mon, 23 Jun 2025 15:04:45 +0200
+Message-ID: <20250623130651.159217111@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
-References: <20250623130700.210182694@linuxfoundation.org>
+In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
+References: <20250623130645.255320792@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,40 +63,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Samuel Williams <sam8641@gmail.com>
+From: Haren Myneni <haren@linux.ibm.com>
 
-[ Upstream commit 7011faebe543f8f094fdb3281d0ec9e1eab81309 ]
+[ Upstream commit 0d67f0dee6c9176bc09a5482dd7346e3a0f14d0b ]
 
-This allows mt7922 in hostapd mode to transmit up to 1.4 Gbps.
+The user space calls mmap() to map VAS window paste address
+and the kernel returns the complete mapped page for each
+window. So return -EINVAL if non-zero is passed for offset
+parameter to mmap().
 
-Signed-off-by: Samuel Williams <sam8641@gmail.com>
-Link: https://patch.msgid.link/20250511005316.1118961-1-sam8641@gmail.com
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
+See Documentation/arch/powerpc/vas-api.rst for mmap()
+restrictions.
+
+Co-developed-by: Jonathan Greental <yonatan02greental@gmail.com>
+Signed-off-by: Jonathan Greental <yonatan02greental@gmail.com>
+Reported-by: Jonathan Greental <yonatan02greental@gmail.com>
+Fixes: dda44eb29c23 ("powerpc/vas: Add VAS user space API")
+Signed-off-by: Haren Myneni <haren@linux.ibm.com>
+Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
+Link: https://patch.msgid.link/20250610021227.361980-2-maddy@linux.ibm.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/mediatek/mt76/mt7921/main.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ arch/powerpc/platforms/book3s/vas-api.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/main.c b/drivers/net/wireless/mediatek/mt76/mt7921/main.c
-index 826c48a2ee696..1fffa43379b2b 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7921/main.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/main.c
-@@ -83,6 +83,11 @@ mt7921_init_he_caps(struct mt792x_phy *phy, enum nl80211_band band,
- 			he_cap_elem->phy_cap_info[9] |=
- 				IEEE80211_HE_PHY_CAP9_TX_1024_QAM_LESS_THAN_242_TONE_RU |
- 				IEEE80211_HE_PHY_CAP9_RX_1024_QAM_LESS_THAN_242_TONE_RU;
+diff --git a/arch/powerpc/platforms/book3s/vas-api.c b/arch/powerpc/platforms/book3s/vas-api.c
+index d954ddf7f0592..0f73554c6ae90 100644
+--- a/arch/powerpc/platforms/book3s/vas-api.c
++++ b/arch/powerpc/platforms/book3s/vas-api.c
+@@ -521,6 +521,15 @@ static int coproc_mmap(struct file *fp, struct vm_area_struct *vma)
+ 		return -EINVAL;
+ 	}
+ 
++	/*
++	 * Map complete page to the paste address. So the user
++	 * space should pass 0ULL to the offset parameter.
++	 */
++	if (vma->vm_pgoff) {
++		pr_debug("Page offset unsupported to map paste address\n");
++		return -EINVAL;
++	}
 +
-+			if (is_mt7922(phy->mt76->dev)) {
-+				he_cap_elem->phy_cap_info[0] |=
-+					IEEE80211_HE_PHY_CAP0_CHANNEL_WIDTH_SET_160MHZ_IN_5G;
-+			}
- 			break;
- 		case NL80211_IFTYPE_STATION:
- 			he_cap_elem->mac_cap_info[1] |=
+ 	/* Ensure instance has an open send window */
+ 	if (!txwin) {
+ 		pr_err("No send window open?\n");
 -- 
 2.39.5
 
