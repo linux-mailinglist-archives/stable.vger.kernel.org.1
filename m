@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-155643-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-155710-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D94D5AE4343
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:30:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6EFF1AE438F
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:33:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1F37F173AC4
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:23:33 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 21F6C178A5A
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:25:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4EFC25523C;
-	Mon, 23 Jun 2025 13:22:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B0D4B24BBE4;
+	Mon, 23 Jun 2025 13:25:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ULhsGxjj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cexON60Y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63D5A23A9BE;
-	Mon, 23 Jun 2025 13:22:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E69D4C7F;
+	Mon, 23 Jun 2025 13:25:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750684960; cv=none; b=cvjYHeuWtvv8W+zfJ3eAUy/5QSVl3o16O/Ap9G59Z5kV60cSYq/d3VoEjttAPN/deKxCODMmsI5o/Fcoa3ZsoOZwFKBk9GSs0g+XgylHpfXhVBcIt5xVRa+UJHIkfc9tRUX8lLLEBNJioQTAwwnROVAjZI/JvfUW3qrrJwBZgpo=
+	t=1750685131; cv=none; b=RXJ+JRoavQ9Gn4JWuYOL70ffLOPLJGb8G8gzBQLCuHMd+8kRnw4l3Xln48fM65B2r+YUMdRPxLEjLXjPkAmWGGxyQ3sTA7qWyE58DfsxK6FrqlSBHGWOKurqzOwUZT9TXqVFxdVgutH8iLT6kFvcPEZraBV0wGhLEJCnt53kcCQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750684960; c=relaxed/simple;
-	bh=BwwFDHWdEaPN+CuFuKA4Z6GdLx+lrbltHzQ9iH3Yk34=;
+	s=arc-20240116; t=1750685131; c=relaxed/simple;
+	bh=RlAJpMo0A+UE442BaxHNezXSie+Bf3Eyid1LmPb1JQk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bfUdeHiuffj2rU1fwZ28FAfvvyeyqQxyGgc/3ZgSPfpzAdtw0GeywNPg13NZvnAdIKcIPcg+fQ759+1eCjA3RLf+gJgz6kmN5Y/254s+OC2sAcoCNOqT+UbIhoptfP7tWjv7vw4cjvQGSnTwt0meVVDKKRdt6ZKnHQKj7fnznHE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ULhsGxjj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ECB7EC4CEEA;
-	Mon, 23 Jun 2025 13:22:39 +0000 (UTC)
+	 MIME-Version; b=AmJ8xBbdYFR6Zk2EK5JAc/UBWFgZG51L9S9DWIhQGOXzMcgbikK36hZTxt2Z4zTnLEWvGvL8j6bDr8HUrU+xpyjx9UBJFGdlDQjqHYm4Ji++9aXHDAfMWEY9IRmoNu3Yz4LZlmavq5lE/vUOBCDIb7W0r9cGGmkR7F3FUGadR9k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cexON60Y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02916C4CEEA;
+	Mon, 23 Jun 2025 13:25:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750684960;
-	bh=BwwFDHWdEaPN+CuFuKA4Z6GdLx+lrbltHzQ9iH3Yk34=;
+	s=korg; t=1750685131;
+	bh=RlAJpMo0A+UE442BaxHNezXSie+Bf3Eyid1LmPb1JQk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ULhsGxjjD70J1yYmBbCHj/g+NiFtnvoKd9WQWLK3Yzko67sa7wYbxrS4sOqejok95
-	 PCK8yikh6nK/b/RIrLx2s/CZqlpLjt1ea126VXsczU1UYNT+28YKr9oOPqtiRDv9S3
-	 ZMhMoHhTWln2uxTEHn+ggU/x6stchGd5BfklQ4ec=
+	b=cexON60YOxTmMV/67Myw61+EEyFOHFanlnWNivpsd7K2HKNvPJ/BSV3bwl2Jh2lF6
+	 Ii+nTLLXbsb7wnyTx9DEdKqYBWx9qcPraituPvX2jr100yPZsBzRXhhytK0mMYmBFl
+	 LvJufSecRf/j/XFE/+lgvg4Xxc+bv+uKMe+uVNYM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christian Mazakas <christian.mazakas@gmail.com>,
-	Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 6.15 195/592] io_uring/net: only consider msg_inq if larger than 1
-Date: Mon, 23 Jun 2025 15:02:33 +0200
-Message-ID: <20250623130704.928707695@linuxfoundation.org>
+	Dave Penkler <dpenkler@gmail.com>
+Subject: [PATCH 5.15 010/411] usb: usbtmc: Fix timeout value in get_stb
+Date: Mon, 23 Jun 2025 15:02:34 +0200
+Message-ID: <20250623130633.298070929@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
-References: <20250623130700.210182694@linuxfoundation.org>
+In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
+References: <20250623130632.993849527@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,54 +60,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jens Axboe <axboe@kernel.dk>
+From: Dave Penkler <dpenkler@gmail.com>
 
-commit 2c7f023219966777be0687e15b57689894304cd3 upstream.
+commit 342e4955a1f1ce28c70a589999b76365082dbf10 upstream.
 
-Currently retry and general validity of msg_inq is gated on it being
-larger than zero, but it's entirely possible for this to be slightly
-inaccurate. In particular, if FIN is received, it'll return 1.
+wait_event_interruptible_timeout requires a timeout argument
+in units of jiffies. It was being called in usbtmc_get_stb
+with the usb timeout value which is in units of milliseconds.
 
-Just use larger than 1 as the check. This covers both the FIN case, and
-at the same time, it doesn't make much sense to retry a recv immediately
-if there's even just a single 1 byte of valid data in the socket.
+Pass the timeout argument converted to jiffies.
 
-Leave the SOCK_NONEMPTY flagging when larger than 0 still, as an app may
-use that for the final receive.
-
+Fixes: 048c6d88a021 ("usb: usbtmc: Add ioctls to set/get usb timeout")
 Cc: stable@vger.kernel.org
-Reported-by: Christian Mazakas <christian.mazakas@gmail.com>
-Fixes: 7c71a0af81ba ("io_uring/net: improve recv bundles")
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Dave Penkler <dpenkler@gmail.com>
+Link: https://lore.kernel.org/r/20250521121656.18174-4-dpenkler@gmail.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- io_uring/net.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/usb/class/usbtmc.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/io_uring/net.c
-+++ b/io_uring/net.c
-@@ -840,7 +840,7 @@ static inline bool io_recv_finish(struct
- 		 * If more is available AND it was a full transfer, retry and
- 		 * append to this one
- 		 */
--		if (!sr->retry && kmsg->msg.msg_inq > 0 && this_ret > 0 &&
-+		if (!sr->retry && kmsg->msg.msg_inq > 1 && this_ret > 0 &&
- 		    !iov_iter_count(&kmsg->msg.msg_iter)) {
- 			req->cqe.flags = cflags & ~CQE_F_MASK;
- 			sr->len = kmsg->msg.msg_inq;
-@@ -1077,7 +1077,7 @@ static int io_recv_buf_select(struct io_
- 			arg.mode |= KBUF_MODE_FREE;
- 		}
+--- a/drivers/usb/class/usbtmc.c
++++ b/drivers/usb/class/usbtmc.c
+@@ -483,6 +483,7 @@ static int usbtmc_get_stb(struct usbtmc_
+ 	u8 tag;
+ 	int rv;
+ 	long wait_rv;
++	unsigned long expire;
  
--		if (kmsg->msg.msg_inq > 0)
-+		if (kmsg->msg.msg_inq > 1)
- 			arg.max_len = min_not_zero(sr->len, kmsg->msg.msg_inq);
+ 	dev_dbg(dev, "Enter ioctl_read_stb iin_ep_present: %d\n",
+ 		data->iin_ep_present);
+@@ -512,10 +513,11 @@ static int usbtmc_get_stb(struct usbtmc_
+ 	}
  
- 		ret = io_buffers_peek(req, &arg);
+ 	if (data->iin_ep_present) {
++		expire = msecs_to_jiffies(file_data->timeout);
+ 		wait_rv = wait_event_interruptible_timeout(
+ 			data->waitq,
+ 			atomic_read(&data->iin_data_valid) != 0,
+-			file_data->timeout);
++			expire);
+ 		if (wait_rv < 0) {
+ 			dev_dbg(dev, "wait interrupted %ld\n", wait_rv);
+ 			rv = wait_rv;
 
 
 
