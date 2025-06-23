@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-156022-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-155500-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D2D45AE4542
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:50:30 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A7183AE4235
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:17:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C70913BD6B6
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:39:19 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2651D3B62F4
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:16:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF964250BEC;
-	Mon, 23 Jun 2025 13:39:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D0E124DCE8;
+	Mon, 23 Jun 2025 13:16:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pLyOM7az"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hWuJ5s4z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CBA1246BC9;
-	Mon, 23 Jun 2025 13:39:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B70B13A265;
+	Mon, 23 Jun 2025 13:16:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750685946; cv=none; b=ZvHofkw+pwX+W6+zTI/8Wqhlnl/vBWlO6p3gLk1qKgs1N06FMS2rvSbEL1oMXru3mSgKqW7apBXUfOdo1P6R9XDfF7yM2unk7A6W7jK/y7sjDntrVjD4XHYL2fBIOKknlCtrJfQuSxAQ3F79GWbFG/plCIQLzmW8L04PWMNNHk8=
+	t=1750684594; cv=none; b=OSX2JFFE34dO0gKrr3SueQZgxFsIqY8UeftzFeF9KUW8DCkg+wM8BfbBS6bkMRe76jQAHPNhQ84WzjowKUappNcspl3bxzJ2SNdl9N5YpUhDIyyf1dKcJk3fUgVYK7fuslfUvPrE4kHzg6uVxqcIyDhNqKZBsarp9ecitAQBvQc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750685946; c=relaxed/simple;
-	bh=81IlkyopLFeubM1rvtIvsiitUEZMgv7se9R5iEXcz7M=;
+	s=arc-20240116; t=1750684594; c=relaxed/simple;
+	bh=heszwoDvolpQlNdvcdmp2j/3Kv6AiXvrFcMcIExW86o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NZ0TeNTfDPL/S8cnuC3laYAPhOwjo2EDMhRJKcLeWLqVSajMSu+FKB2nj9O7cFsEaYTr4Xj0yYynbWb28fbEsJw27vd3HheiWdmq6p+YFhO5jHOAUIFTivXUjnTsQVHG7a1GTCKeaPy0kQ693d+jOIWXoPM8Ldj9XKcKZ98e8q0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pLyOM7az; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA651C4CEEA;
-	Mon, 23 Jun 2025 13:39:05 +0000 (UTC)
+	 MIME-Version; b=LMrBLjm4oJBfcKwQioxZ4+VJv17Yb2UcGRDVkyyEsppXUR4228dZCeQ+Btv8aOBIKphADtSzq7BKTpAhECms7DkJknaNS+irl/qVFuoKN4CF3mrwEdWvT+DcaYmq3zTki53SVQTD9Acb3ecdIYHcKQenmp8VKJpqS/gZOKHG1o4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hWuJ5s4z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A5CDC4CEEA;
+	Mon, 23 Jun 2025 13:16:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750685946;
-	bh=81IlkyopLFeubM1rvtIvsiitUEZMgv7se9R5iEXcz7M=;
+	s=korg; t=1750684593;
+	bh=heszwoDvolpQlNdvcdmp2j/3Kv6AiXvrFcMcIExW86o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pLyOM7azNIqHN49yR6zrklxUhU/NTAV+GxoOGSZrRq3fY/ivyHLOrDB6iRpkjlD9r
-	 yL+f1Jj5SOMIThV1qUuYFKfJZ8mPqkVcH5R/Wu/ErFUlDtCZwA2L41oJxfVTz125j9
-	 aSEVTDRXZACEdnSZg1aUvMgEwJLBWysbm6SJFQac=
+	b=hWuJ5s4zP6yyEA3+O+OXpYGPvzIjg7blyaUzdliAD7IbmgiBPufk9CCEJr8GsIGyC
+	 eqp5ekZxPqAWYf6/a6A65ZegQ9uENdBtcdMXEA/Lb8tbe9M7HWAvLdA728nvwffDgv
+	 oG68tf7eaSg2prKrpLBdZfFXR8Nb/uM1CAOPS540=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mark Rutland <mark.rutland@arm.com>,
-	Mark Brown <broonie@kernel.org>,
-	Marc Zyngier <maz@kernel.org>,
-	Will Deacon <will@kernel.org>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 039/508] arm64/fpsimd: Discard stale CPU state when handling SME traps
-Date: Mon, 23 Jun 2025 15:01:24 +0200
-Message-ID: <20250623130646.207740530@linuxfoundation.org>
+	Linus Torvalds <torvalds@linuxfoundation.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.15 127/592] NFC: nci: uart: Set tty->disc_data only in success path
+Date: Mon, 23 Jun 2025 15:01:25 +0200
+Message-ID: <20250623130703.291468596@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
-References: <20250623130645.255320792@linuxfoundation.org>
+In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
+References: <20250623130700.210182694@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,106 +62,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mark Brown <broonie@kernel.org>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-[ Upstream commit d3eaab3c70905c5467e5c4ea403053d67505adeb ]
+commit fc27ab48904ceb7e4792f0c400f1ef175edf16fe upstream.
 
-The logic for handling SME traps manipulates saved FPSIMD/SVE/SME state
-incorrectly, and a race with preemption can result in a task having
-TIF_SME set and TIF_FOREIGN_FPSTATE clear even though the live CPU state
-is stale (e.g. with SME traps enabled). This can result in warnings from
-do_sme_acc() where SME traps are not expected while TIF_SME is set:
+Setting tty->disc_data before opening the NCI device means we need to
+clean it up on error paths.  This also opens some short window if device
+starts sending data, even before NCIUARTSETDRIVER IOCTL succeeded
+(broken hardware?).  Close the window by exposing tty->disc_data only on
+the success path, when opening of the NCI device and try_module_get()
+succeeds.
 
-|        /* With TIF_SME userspace shouldn't generate any traps */
-|        if (test_and_set_thread_flag(TIF_SME))
-|                WARN_ON(1);
+The code differs in error path in one aspect: tty->disc_data won't be
+ever assigned thus NULL-ified.  This however should not be relevant
+difference, because of "tty->disc_data=NULL" in nci_uart_tty_open().
 
-This is very similar to the SVE issue we fixed in commit:
-
-  751ecf6afd6568ad ("arm64/sve: Discard stale CPU state when handling SVE traps")
-
-The race can occur when the SME trap handler is preempted before and
-after manipulating the saved FPSIMD/SVE/SME state, starting and ending on
-the same CPU, e.g.
-
-| void do_sme_acc(unsigned long esr, struct pt_regs *regs)
-| {
-|         // Trap on CPU 0 with TIF_SME clear, SME traps enabled
-|         // task->fpsimd_cpu is 0.
-|         // per_cpu_ptr(&fpsimd_last_state, 0) is task.
-|
-|         ...
-|
-|         // Preempted; migrated from CPU 0 to CPU 1.
-|         // TIF_FOREIGN_FPSTATE is set.
-|
-|         get_cpu_fpsimd_context();
-|
-|         /* With TIF_SME userspace shouldn't generate any traps */
-|         if (test_and_set_thread_flag(TIF_SME))
-|                 WARN_ON(1);
-|
-|         if (!test_thread_flag(TIF_FOREIGN_FPSTATE)) {
-|                 unsigned long vq_minus_one =
-|                         sve_vq_from_vl(task_get_sme_vl(current)) - 1;
-|                 sme_set_vq(vq_minus_one);
-|
-|                 fpsimd_bind_task_to_cpu();
-|         }
-|
-|         put_cpu_fpsimd_context();
-|
-|         // Preempted; migrated from CPU 1 to CPU 0.
-|         // task->fpsimd_cpu is still 0
-|         // If per_cpu_ptr(&fpsimd_last_state, 0) is still task then:
-|         // - Stale HW state is reused (with SME traps enabled)
-|         // - TIF_FOREIGN_FPSTATE is cleared
-|         // - A return to userspace skips HW state restore
-| }
-
-Fix the case where the state is not live and TIF_FOREIGN_FPSTATE is set
-by calling fpsimd_flush_task_state() to detach from the saved CPU
-state. This ensures that a subsequent context switch will not reuse the
-stale CPU state, and will instead set TIF_FOREIGN_FPSTATE, forcing the
-new state to be reloaded from memory prior to a return to userspace.
-
-Note: this was originallly posted as [1].
-
-Fixes: 8bd7f91c03d8 ("arm64/sme: Implement traps and syscall handling for SME")
-Reported-by: Mark Rutland <mark.rutland@arm.com>
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Link: https://lore.kernel.org/linux-arm-kernel/20241204-arm64-sme-reenable-v2-1-bae87728251d@kernel.org/
-[ Rutland: rewrite commit message ]
-Signed-off-by: Mark Rutland <mark.rutland@arm.com>
-Cc: Marc Zyngier <maz@kernel.org>
-Cc: Will Deacon <will@kernel.org>
-Link: https://lore.kernel.org/r/20250409164010.3480271-6-mark.rutland@arm.com
-Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: Linus Torvalds <torvalds@linuxfoundation.org>
+Fixes: 9961127d4bce ("NFC: nci: add generic uart support")
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Reviewed-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://patch.msgid.link/20250618073649.25049-2-krzysztof.kozlowski@linaro.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/kernel/fpsimd.c | 2 ++
- 1 file changed, 2 insertions(+)
+ net/nfc/nci/uart.c |    8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/arch/arm64/kernel/fpsimd.c b/arch/arm64/kernel/fpsimd.c
-index b3e101a7d04f8..235131db8b8db 100644
---- a/arch/arm64/kernel/fpsimd.c
-+++ b/arch/arm64/kernel/fpsimd.c
-@@ -1504,6 +1504,8 @@ void do_sme_acc(unsigned long esr, struct pt_regs *regs)
- 		sme_set_vq(vq_minus_one);
+--- a/net/nfc/nci/uart.c
++++ b/net/nfc/nci/uart.c
+@@ -119,22 +119,22 @@ static int nci_uart_set_driver(struct tt
  
- 		fpsimd_bind_task_to_cpu();
-+	} else {
-+		fpsimd_flush_task_state(current);
+ 	memcpy(nu, nci_uart_drivers[driver], sizeof(struct nci_uart));
+ 	nu->tty = tty;
+-	tty->disc_data = nu;
+ 	skb_queue_head_init(&nu->tx_q);
+ 	INIT_WORK(&nu->write_work, nci_uart_write_work);
+ 	spin_lock_init(&nu->rx_lock);
+ 
+ 	ret = nu->ops.open(nu);
+ 	if (ret) {
+-		tty->disc_data = NULL;
+ 		kfree(nu);
++		return ret;
+ 	} else if (!try_module_get(nu->owner)) {
+ 		nu->ops.close(nu);
+-		tty->disc_data = NULL;
+ 		kfree(nu);
+ 		return -ENOENT;
  	}
+-	return ret;
++	tty->disc_data = nu;
++
++	return 0;
+ }
  
- 	put_cpu_fpsimd_context();
--- 
-2.39.5
-
+ /* ------ LDISC part ------ */
 
 
 
